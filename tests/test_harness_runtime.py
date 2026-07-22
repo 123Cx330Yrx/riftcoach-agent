@@ -65,6 +65,44 @@ class UnexpectedReviser:
         raise AssertionError("The passing path must not call the reviser.")
 
 
+class SequenceEvaluator:
+    def __init__(self, results: list[EvaluationResult | Exception | object]) -> None:
+        self.results = list(results)
+        self.requests: list[EvaluationRequest] = []
+
+    def evaluate(self, request: EvaluationRequest) -> EvaluationResult:
+        self.requests.append(request)
+        result = self.results.pop(0)
+        if isinstance(result, Exception):
+            raise result
+        return result  # type: ignore[return-value]
+
+
+class FixedReviser:
+    def __init__(self, report: str) -> None:
+        self.report = report
+        self.requests: list[RevisionRequest] = []
+
+    def revise(self, request: RevisionRequest) -> CoachDraft:
+        self.requests.append(request)
+        return CoachDraft(report=self.report)
+
+
+class RaisingRetriever:
+    def retrieve(self, request: RetrievalRequest) -> KnowledgeEvidence:
+        raise RuntimeError("retrieval unavailable")
+
+
+class RaisingGenerator:
+    def generate(self, request: GenerationRequest) -> CoachDraft:
+        raise RuntimeError("generation unavailable")
+
+
+class OverreachingReviser:
+    def revise(self, request: RevisionRequest) -> CoachDraft:
+        raise ValueError("revision changed content outside reported issues")
+
+
 class ReviewHarnessPassingPathTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary_directory = tempfile.TemporaryDirectory()
@@ -148,6 +186,235 @@ class ReviewHarnessPassingPathTests(unittest.TestCase):
         self.assertEqual(
             self.generator.requests[0].knowledge,
             self.evaluator.requests[0].knowledge,
+        )
+
+    def test_revision_passes_re_evaluation_and_publishes_revised_report(self) -> None:
+        initial = EvaluationResult(
+            score=72,
+            verdict=EvaluationVerdict.NEEDS_REVISION,
+            issues=({"category": "causality", "quote": "导致"},),
+        )
+        passing = EvaluationResult(
+            score=91,
+            verdict=EvaluationVerdict.PASS,
+            passed_checks=("因果边界",),
+        )
+        evaluator = SequenceEvaluator([initial, passing])
+        revised_report = "# RiftCoach 教练式复盘报告\n\n两项指标可能相关。\n"
+        reviser = FixedReviser(revised_report)
+        harness = self._build_harness(evaluator=evaluator, reviser=reviser)
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self.assertEqual(RunStatus.PUBLISHED, manifest.status)
+        self.assertEqual(1, manifest.revision_count)
+        self.assertEqual(1, manifest.attempt_id)
+        self.assertEqual(1, len(reviser.requests))
+        self.assertEqual(2, len(evaluator.requests))
+
+        records = {row["kind"]: row for row in manifest.artifacts}
+        revised = records[ArtifactKind.REVISED_REPORT.value]
+        final = records[ArtifactKind.FINAL_REPORT.value]
+        draft = records[ArtifactKind.COACH_DRAFT.value]
+        self.assertEqual(revised["sha256"], final["sha256"])
+        self.assertNotEqual(draft["sha256"], final["sha256"])
+        self.assertEqual(
+            revised_report.encode("utf-8"),
+            self.store.read_artifact(final),
+        )
+        evaluation_paths = {
+            row["path"]
+            for row in manifest.artifacts
+            if row["kind"] == ArtifactKind.EVALUATION_RESULT.value
+        }
+        self.assertEqual(
+            {
+                "evaluations/evaluation_attempt_0.json",
+                "evaluations/evaluation_attempt_1.json",
+            },
+            evaluation_paths,
+        )
+
+    def test_failed_re_evaluation_degrades_to_deterministic_report(self) -> None:
+        needs_revision = EvaluationResult(
+            score=70,
+            verdict=EvaluationVerdict.NEEDS_REVISION,
+            issues=({"category": "fact_error"},),
+        )
+        still_failing = EvaluationResult(
+            score=60,
+            verdict=EvaluationVerdict.FAIL,
+            issues=({"category": "fact_error"},),
+        )
+        harness = self._build_harness(
+            evaluator=SequenceEvaluator([needs_revision, still_failing]),
+            reviser=FixedReviser("# RiftCoach 教练式复盘报告\n\n仍有错误。\n"),
+        )
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self._assert_deterministic_fallback(manifest)
+        transition_targets = [row["to"] for row in manifest.transitions]
+        self.assertEqual("re_evaluating", transition_targets[-2])
+        self.assertEqual("degraded", transition_targets[-1])
+
+    def test_retrieval_failure_degrades_without_calling_later_steps(self) -> None:
+        generator = FakeGenerator()
+        evaluator = SequenceEvaluator([])
+        harness = self._build_harness(
+            retriever=RaisingRetriever(),
+            generator=generator,
+            evaluator=evaluator,
+        )
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self._assert_deterministic_fallback(manifest)
+        self.assertEqual([], generator.requests)
+        self.assertEqual([], evaluator.requests)
+
+    def test_generation_failure_degrades_to_deterministic_report(self) -> None:
+        evaluator = SequenceEvaluator([])
+        harness = self._build_harness(
+            generator=RaisingGenerator(),
+            evaluator=evaluator,
+        )
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self._assert_deterministic_fallback(manifest)
+        self.assertEqual([], evaluator.requests)
+
+    def test_invalid_evaluation_degrades_instead_of_publishing(self) -> None:
+        harness = self._build_harness(
+            evaluator=SequenceEvaluator([{"score": 100, "verdict": "pass"}])
+        )
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self._assert_deterministic_fallback(manifest)
+
+    def test_evaluation_exception_degrades_instead_of_publishing(self) -> None:
+        harness = self._build_harness(
+            evaluator=SequenceEvaluator([RuntimeError("evaluator unavailable")])
+        )
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self._assert_deterministic_fallback(manifest)
+
+    def test_revision_policy_failure_degrades_without_publishing_draft(self) -> None:
+        evaluator = SequenceEvaluator(
+            [
+                EvaluationResult(
+                    score=75,
+                    verdict=EvaluationVerdict.NEEDS_REVISION,
+                    issues=({"category": "causality"},),
+                )
+            ]
+        )
+        harness = self._build_harness(
+            evaluator=evaluator,
+            reviser=OverreachingReviser(),
+        )
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self._assert_deterministic_fallback(manifest)
+
+    def test_zero_revision_budget_degrades_without_calling_reviser(self) -> None:
+        evaluator = SequenceEvaluator(
+            [
+                EvaluationResult(
+                    score=75,
+                    verdict=EvaluationVerdict.NEEDS_REVISION,
+                    issues=({"category": "causality"},),
+                )
+            ]
+        )
+        reviser = FixedReviser("# RiftCoach 教练式复盘报告\n不应被调用")
+        harness = self._build_harness(
+            evaluator=evaluator,
+            reviser=reviser,
+            config=HarnessConfig(max_revisions=0),
+        )
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self._assert_deterministic_fallback(manifest)
+        self.assertEqual([], reviser.requests)
+
+    def test_failure_rejects_when_deterministic_fallback_is_disabled(self) -> None:
+        harness = self._build_harness(
+            retriever=RaisingRetriever(),
+            config=HarnessConfig(allow_deterministic_fallback=False),
+        )
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self.assertEqual(RunStatus.REJECTED, manifest.status)
+        self.assertEqual("rejected", manifest.final_decision)
+        self.assertFalse((self.store.run_directory / "output/final_report.md").exists())
+        self.assertNotIn(
+            ArtifactKind.FINAL_REPORT.value,
+            {row["kind"] for row in manifest.artifacts},
+        )
+
+    def _build_harness(
+        self,
+        *,
+        retriever=None,
+        generator=None,
+        evaluator=None,
+        reviser=None,
+        config=None,
+    ) -> ReviewHarness:
+        return ReviewHarness(
+            store=self.store,
+            retriever=retriever or self.retriever,
+            generator=generator or self.generator,
+            evaluator=evaluator or self.evaluator,
+            reviser=reviser or self.reviser,
+            config=config or HarnessConfig(publish_score_threshold=85),
+        )
+
+    def _assert_deterministic_fallback(self, manifest) -> None:
+        self.assertEqual(RunStatus.DEGRADED, manifest.status)
+        self.assertEqual("deterministic_fallback", manifest.final_decision)
+        records = {row["kind"]: row for row in manifest.artifacts}
+        final = records[ArtifactKind.FINAL_REPORT.value]
+        deterministic = records[ArtifactKind.DETERMINISTIC_REPORT.value]
+        self.assertEqual(deterministic["sha256"], final["sha256"])
+        self.assertEqual(
+            self.deterministic_report.encode("utf-8"),
+            self.store.read_artifact(final),
         )
 
 

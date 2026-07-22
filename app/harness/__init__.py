@@ -1,7 +1,7 @@
 """Deterministic runtime primitives for RiftCoach review workflows."""
 
 from .models import ArtifactKind, HarnessConfig, RunManifest, RunStatus
-from .runtime import ReviewHarness, UnsupportedEvaluationOutcomeError
+from .runtime import ReviewHarness
 from .store import ArtifactIntegrityError, FileRunStore
 from .state_machine import (
     ALLOWED_TRANSITIONS,
@@ -47,6 +47,5 @@ __all__ = [
     "RevisionRequest",
     "ReviserStep",
     "StaleAttemptError",
-    "UnsupportedEvaluationOutcomeError",
     "advance",
 ]
