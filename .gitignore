@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Env
+.env
+
+# Local data
+data/cache/
+data/*.json
+data/static/ddragon/
+data/terminology/*.bak.json
+
+# Generated report artifacts
+reports/*.md
+reports/*.eval.json
+reports/*.pre_revision.md
+reports/*.revised.md
+reports/cn_name_experiment_*.json
+reports/cn_terminology_review_*.json
+
+# Harness runs
+data/runs/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

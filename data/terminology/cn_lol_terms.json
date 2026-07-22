@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "items": {
+    "3040": {
+      "official_name": "炽天使之拥",
+      "preferred_name": "大天使",
+      "alternatives": [
+        "炽天使"
+      ],
+      "status": "confirmed",
+      "source": "user_correction"
+    },
+    "3073": {
+      "official_name": "海克斯注力刚壁",
+      "preferred_name": "钢壁",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "user_correction"
+    },
+    "3089": {
+      "official_name": "裂隙制造者",
+      "preferred_name": "峡谷",
+      "alternatives": [
+        "峡谷制造者"
+      ],
+      "status": "confirmed",
+      "source": "user_correction"
+    },
+    "3157": {
+      "official_name": "中娅沙漏",
+      "preferred_name": "中娅",
+      "alternatives": [
+        "金身"
+      ],
+      "status": "confirmed",
+      "source": "user_correction"
+    },
+    "3171": {
+      "official_name": "猩红明朗",
+      "preferred_name": "三级CD鞋",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "user_correction"
+    },
+    "1038": {
+      "official_name": "暴风之剑",
+      "preferred_name": "暴风大剑",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "1054": {
+      "official_name": "多兰之盾",
+      "preferred_name": "多兰盾",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "1056": {
+      "official_name": "多兰之戒",
+      "preferred_name": "多兰戒",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "1082": {
+      "official_name": "黑暗封印",
+      "preferred_name": "杀人戒",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "1086": {
+      "official_name": "多兰之弓",
+      "preferred_name": "多兰弓",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "2031": {
+      "official_name": "复用型药水",
+      "preferred_name": "复用药水",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "2055": {
+      "official_name": "控制守卫",
+      "preferred_name": "真眼",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "3006": {
+      "official_name": "狂战士胫甲",
+      "preferred_name": "攻速鞋",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "3041": {
+      "official_name": "梅贾的窃魂卷",
+      "preferred_name": "杀人书",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "3047": {
+      "official_name": "铁板靴",
+      "preferred_name": "布甲鞋",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "3102": {
+      "official_name": "女妖面纱",
+      "preferred_name": "女妖",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "3135": {
+      "official_name": "虚空之杖",
+      "preferred_name": "法穿棒",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "3152": {
+      "official_name": "海克斯科技火箭腰带",
+      "preferred_name": "推推棒",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "3153": {
+      "official_name": "破败王者之刃",
+      "preferred_name": "破败",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "3158": {
+      "official_name": "明朗之靴",
+      "preferred_name": "CD鞋",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "3190": {
+      "official_name": "钢铁烈阳之匣",
+      "preferred_name": "鸟盾",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "3340": {
+      "official_name": "侦察守卫",
+      "preferred_name": "假眼",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "3363": {
+      "official_name": "远见改造",
+      "preferred_name": "蓝眼",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "3364": {
+      "official_name": "神谕透镜",
+      "preferred_name": "扫描",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "6655": {
+      "official_name": "卢登的回声",
+      "preferred_name": "卢登",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "6673": {
+      "official_name": "不朽盾弓",
+      "preferred_name": "盾弓",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    }
+  },
+  "champions": {
+    "58": {
+      "official_name": "雷克顿",
+      "preferred_name": "鳄鱼",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "61": {
+      "official_name": "奥莉安娜",
+      "preferred_name": "发条",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "103": {
+      "official_name": "阿狸",
+      "preferred_name": "狐狸",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "111": {
+      "official_name": "诺提勒斯",
+      "preferred_name": "泰坦",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "115": {
+      "official_name": "吉格斯",
+      "preferred_name": "炸弹人",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "134": {
+      "official_name": "辛德拉",
+      "preferred_name": "辛德拉",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "777": {
+      "official_name": "永恩",
+      "preferred_name": "永恩",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    },
+    "893": {
+      "official_name": "阿萝拉",
+      "preferred_name": "阿萝拉",
+      "alternatives": [],
+      "status": "confirmed",
+      "source": "reviewed_glm_candidate"
+    }
+  }
+}

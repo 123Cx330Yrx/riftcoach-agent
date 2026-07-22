@@ -1,0 +1,56 @@
+# RiftCoach Agent 项目决策记录
+
+## 项目定位
+
+RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与长期训练助手。
+
+项目只分析已经结束的公开赛后数据，不提供实时对局辅助，不读取客户端内存，不追踪隐藏敌方信息，不自动操作游戏，也不提供不公平竞技优势。
+
+## 当前能力基线
+
+当前已经实现：
+
+- Riot ID、PUUID、最近对局与 Timeline 数据链路；
+- MatchAnalyzer 确定性指标；
+- Data Dragon 静态中文映射；
+- 中文确定性报告；
+- 本地轻量 RAG v0.1；
+- 智谱 GLM 教练报告；
+- 独立事实评测、受限修订、再评测与发布门控原型；
+- 术语治理与局部自动化测试。
+
+当前仍未实现：
+
+- 统一 Harness 状态机；
+- Tool/Provider Runtime；
+- Skill Router；
+- FastAPI 会话入口；
+- 玩家长期 Memory；
+- 标准 MCP Client/Server；
+- 真正具有独立上下文和工具权限的 Multi-Agent；
+- LoL 专属前端和完整可观测性。
+
+## 架构母本与参考项目
+
+RiftCoach 保持独立仓库和自主领域核心，不直接 fork 或换皮 EchoMind、AGI-Saber、Sea-Mult-Agent。
+
+- EchoMind 作为应用架构参考，选择性吸收 Tool Manager、用户与会话、Memory、Monitor 和 Evaluation 思想；
+- AGI-Saber 作为高级运行时参考，后期选择性吸收 Context Builder、父子块检索、DAG、取消、快照和恢复；
+- Sea-Mult-Agent 作为可靠执行参考，阶段 2 吸收 Artifact、预算和终态原则，阶段 8 再评估租约、事件历史、恢复与迟到结果隔离；
+- 不迁移到 Go，不引入与 LoL 复盘无关的科研沙箱、论文复现或 Benchmark 业务模块；
+- EchoMind 与 AGI-Saber 现有的所谓 MCP 均不视为标准 MCP 实现，RiftCoach 将独立实现标准协议。
+
+## 数据职责
+
+- Riot API：玩家已经发生的比赛事实；
+- Data Dragon：英雄、装备、符文和召唤师技能的静态映射；
+- RAG：指标解释、复盘方法、训练规则与可追溯知识；
+- OP.GG MCP：后续接入的动态版本 Meta；
+- Memory：玩家画像、历史训练目标和进度，不存放全部原始对局数据；
+- GLM：组织和解释证据，不负责创造比赛事实。
+
+## 质量原则
+
+任何 LLM Coach 报告必须经过独立评测。评测失败时只允许根据结构化问题做受限修订；达到修订上限仍不通过时，拒绝发布 LLM 报告或降级到确定性报告。
+
+完整阶段路线见 `docs/roadmap.md`，正式架构决策见 `docs/adr/`。
