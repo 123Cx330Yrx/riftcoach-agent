@@ -70,6 +70,34 @@ python scripts\evaluate_coach_report.py --summary data\cache\player_summary_<GAM
 python scripts\revise_coach_report.py --report reports\riftcoach_coach_report_<GAME_NAME>_<TAG_LINE>.md
 ```
 
+## Harness v1 单入口
+
+阶段 2 将原先需要人工串联的“检索、生成、评测、受限修订、再评测、发布”组织为确定性状态机。Harness 负责执行顺序、修订预算、Artifact 留存和发布门控；模型只能产生候选内容，不能自行决定报告是否发布。
+
+先使用 `--dry-run` 验证本地闭环。该模式会执行真实的 Summary 校验、本地 RAG、状态机、文件型 Run Store、哈希登记和发布过程，但使用确定性 Fake 替代收费的模型生成、评测和修订调用：
+
+```powershell
+python scripts\run_review_harness.py `
+  --summary data\cache\player_summary_<GAME_NAME>_<TAG_LINE>.json `
+  --deterministic-report reports\riftcoach_report_<GAME_NAME>_<TAG_LINE>.md `
+  --run-id local_dry_run `
+  --dry-run
+```
+
+确认 dry-run 后，移除 `--dry-run` 执行真实 GLM 质量闭环：
+
+```powershell
+python scripts\run_review_harness.py `
+  --summary data\cache\player_summary_<GAME_NAME>_<TAG_LINE>.json `
+  --deterministic-report reports\riftcoach_report_<GAME_NAME>_<TAG_LINE>.md `
+  --publish-score-threshold 85 `
+  --max-revisions 1
+```
+
+每次运行默认写入 `data/runs/<run_id>/`，其中保存输入、RAG 证据、草稿、每轮评测、修订稿、最终报告和带 SHA-256 的 `manifest.json`。未通过质量门控的 Coach 草稿不会成为最终报告；失败时默认发布确定性报告并标记为 `degraded`，也可以通过 `--no-deterministic-fallback` 改为拒绝发布。
+
+Task 7 的 GLM 客户端装配仍是过渡实现。阶段 3 会将模型、RAG 和外部 API 统一迁移到 Provider 与 Tool Runtime，并补充超时、重试、缓存、熔断和运行指标；当前 Harness 不提前承担这些职责。
+
 ## 本地 RAG v0.1
 
 知识文档位于 `data/rag_docs/`。当前实现按 Markdown 标题切块，使用适配中文的词元与双字组合进行本地相关性检索，不依赖向量数据库或外部 Embedding 服务。
