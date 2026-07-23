@@ -9,6 +9,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from app.rag.evaluation import evaluate_retrieval, load_retrieval_cases
+from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.rag.legacy_provider import LegacyLocalKnowledgeProvider
 from app.rag.retriever import LocalKnowledgeRetriever
 
@@ -19,18 +20,24 @@ def main() -> None:
     )
     parser.add_argument("--knowledge-dir", default="data/rag_docs")
     parser.add_argument(
+        "--provider",
+        choices=("legacy", "hybrid"),
+        default="legacy",
+    )
+    parser.add_argument(
         "--cases",
         default="data/evaluation/rag_retrieval_cases.json",
     )
-    parser.add_argument(
-        "--output",
-        default="data/evaluation/results/rag_v0_1_baseline.json",
-    )
+    parser.add_argument("--output")
     args = parser.parse_args()
 
-    provider = LegacyLocalKnowledgeProvider(
-        LocalKnowledgeRetriever(Path(args.knowledge_dir))
-    )
+    knowledge_dir = Path(args.knowledge_dir)
+    if args.provider == "hybrid":
+        provider = LocalHybridKnowledgeProvider.from_directory(knowledge_dir)
+    else:
+        provider = LegacyLocalKnowledgeProvider(
+            LocalKnowledgeRetriever(knowledge_dir)
+        )
     evaluation = evaluate_retrieval(
         provider,
         load_retrieval_cases(Path(args.cases)),
@@ -38,7 +45,14 @@ def main() -> None:
     payload = asdict(evaluation)
     payload["provider"] = provider.provider_name
 
-    output_path = Path(args.output)
+    output_path = Path(
+        args.output
+        or (
+            "data/evaluation/results/rag_v1_hybrid_baseline.json"
+            if args.provider == "hybrid"
+            else "data/evaluation/results/rag_v0_1_baseline.json"
+        )
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2),
@@ -59,4 +73,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -1,3 +1,11 @@
+---
+source_id: 01_metric_interpretation.md
+knowledge_type: metric_interpretation
+version: evergreen
+updated_at: 2026-07-23
+positions: ALL
+---
+
 # 指标解释原则
 
 ## 补刀与经济

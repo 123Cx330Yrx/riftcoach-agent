@@ -88,6 +88,14 @@ python scripts\evaluate_rag_retrieval.py
 
 结果写入 `data/evaluation/results/`，用于后续 BM25、Embedding 和融合实验对比。
 
+结构化父子块与本地混合检索完成后，可以运行：
+
+```powershell
+python scripts\evaluate_rag_retrieval.py --provider hybrid
+```
+
+当前混合检索使用真实 BM25、Provider-neutral Embedding 接口、确定性 hashing embedding 基线与 RRF。Hashing 方案用于验证本地可复现链路，不等同于语义语言模型。
+
 ## 7. 这一步没有做什么
 
 - 没有部署 Chroma、Milvus、Elasticsearch 或 Neo4j；

@@ -122,6 +122,8 @@ python scripts\query_rag.py "输局视野分和经济下降应该怎么复盘" -
 
 阶段 4 已先完成 RAG v0.1 现状审计、`KnowledgeProvider` 契约和第一版固定检索评测基线。当前基线证明词法检索能命中这组简单的来源级问题，但库外问题误召回率仍为 100%，不能据此宣称 RAG 已经成熟。原理、指标和边界详见 [RAG v1 现状审计与检索基线](docs/rag_v1_baseline.md)。
 
+当前已进一步完成结构化 Markdown 元数据、父子块索引、BM25、可替换 Embedding 接口、确定性 hashing embedding 基线和 RRF 混合召回。混合基线保持 Recall@K 与 MRR，但 nDCG@K 为 0.9866，且尚未解决库外问题误召回；因此去重、拒答阈值、版本冲突和重排仍是阶段 4 的必要收尾，而不是可选优化。设计取舍详见 [RAG v1 结构化索引与混合召回设计](docs/plans/2026-07-23-rag-v1-index-retrieval-design.md)。
+
 ## 测试
 
 ```powershell

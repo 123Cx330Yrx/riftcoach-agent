@@ -55,6 +55,7 @@ class KnowledgeHit:
     score: float
     rank: int
     metadata: KnowledgeMetadata
+    matched_content: str | None = None
 
     def __post_init__(self) -> None:
         if not self.chunk_id.strip():
@@ -78,4 +79,3 @@ class KnowledgeSearchResult:
         actual_ranks = tuple(hit.rank for hit in self.hits)
         if actual_ranks != expected_ranks:
             raise ValueError("Knowledge hit ranks must be contiguous and ordered.")
-

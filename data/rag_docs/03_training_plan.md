@@ -1,3 +1,11 @@
+---
+source_id: 03_training_plan.md
+knowledge_type: training_rule
+version: evergreen
+updated_at: 2026-07-23
+positions: ALL
+---
+
 # 训练计划设计
 
 ## 可执行性

@@ -1,3 +1,11 @@
+---
+source_id: 02_review_method.md
+knowledge_type: review_method
+version: evergreen
+updated_at: 2026-07-23
+positions: ALL
+---
+
 # 赛后复盘方法
 
 ## 证据分层

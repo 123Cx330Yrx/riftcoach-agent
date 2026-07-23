@@ -1,3 +1,11 @@
+---
+source_id: 04_data_boundaries.md
+knowledge_type: data_boundary
+version: evergreen
+updated_at: 2026-07-23
+positions: ALL
+---
+
 # 数据边界与安全规则
 
 ## 当前可用数据
