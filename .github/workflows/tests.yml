@@ -28,3 +28,12 @@ jobs:
 
       - name: Run tests
         run: python -m pytest -q
+
+      - name: Run Harness dry-run fixture
+        run: |
+          python scripts/run_review_harness.py \
+            --summary examples/fixtures/player_summary_demo.json \
+            --deterministic-report examples/fixtures/deterministic_report_demo.md \
+            --runs-root "${RUNNER_TEMP}/riftcoach-runs" \
+            --run-id ci_harness_v1 \
+            --dry-run

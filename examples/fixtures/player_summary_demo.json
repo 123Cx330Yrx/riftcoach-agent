@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "metadata": {
+    "generated_at_utc": "2026-07-23T00:00:00+00:00",
+    "source": "synthetic_fixture",
+    "matches_requested": 2,
+    "matches_received": 2,
+    "matches_analyzed": 2
+  },
+  "player": {
+    "game_name": "RiftCoachDemo",
+    "tag_line": "TEST",
+    "riot_id": "RiftCoachDemo#TEST",
+    "puuid_prefix": "synthetic..."
+  },
+  "request": {
+    "count": 2,
+    "queue": 420,
+    "region": "asia"
+  },
+  "recent_summary": {
+    "games_analyzed": 2,
+    "wins": 1,
+    "losses": 1,
+    "win_rate": 50.0,
+    "main_role": "MIDDLE",
+    "main_champions": [
+      "示例英雄甲",
+      "示例英雄乙"
+    ],
+    "averages": {
+      "kda": 3.0,
+      "cs_per_min": 8.5,
+      "gold_per_min": 430.0,
+      "damage_per_min": 700.0,
+      "vision_score": 20.0,
+      "kill_participation_percent": 50.0,
+      "damage_share_percent": 25.0,
+      "gold_share_percent": 22.0,
+      "deaths_before_15": 0.5
+    },
+    "win_loss_comparison": {
+      "wins": {
+        "cs_per_min": 9.0,
+        "gold_per_min": 460.0,
+        "damage_per_min": 760.0,
+        "vision_score": 24.0,
+        "deaths_before_15": 0.0
+      },
+      "losses": {
+        "cs_per_min": 8.0,
+        "gold_per_min": 400.0,
+        "damage_per_min": 640.0,
+        "vision_score": 16.0,
+        "deaths_before_15": 1.0
+      }
+    },
+    "champion_summary": [
+      {
+        "champion": "示例英雄甲",
+        "games": 1,
+        "wins": 1,
+        "win_rate": 100.0
+      },
+      {
+        "champion": "示例英雄乙",
+        "games": 1,
+        "wins": 0,
+        "win_rate": 0.0
+      }
+    ],
+    "role_summary": [
+      {
+        "role": "MIDDLE",
+        "games": 2,
+        "wins": 1,
+        "win_rate": 50.0
+      }
+    ]
+  },
+  "matches": [
+    {
+      "match_id": "SYNTHETIC_WIN_001",
+      "game_duration_seconds": 1800,
+      "champion_id": 900001,
+      "champion_name": "示例英雄甲",
+      "champion_name_en": "SyntheticChampionA",
+      "role": "MIDDLE",
+      "win": true,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "kills": 5,
+      "deaths": 1,
+      "assists": 6,
+      "cs_per_min": 9.0,
+      "gold_per_min": 460.0,
+      "damage_per_min": 760.0,
+      "vision_score": 24,
+      "kill_participation": 0.55,
+      "damage_share": 0.27,
+      "gold_share": 0.23,
+      "deaths_before_15": 0,
+      "death_times": [
+        "21:30"
+      ],
+      "items": [],
+      "item_names": [],
+      "item_purchases": []
+    },
+    {
+      "match_id": "SYNTHETIC_LOSS_002",
+      "game_duration_seconds": 1800,
+      "champion_id": 900002,
+      "champion_name": "示例英雄乙",
+      "champion_name_en": "SyntheticChampionB",
+      "role": "MIDDLE",
+      "win": false,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "kills": 2,
+      "deaths": 3,
+      "assists": 4,
+      "cs_per_min": 8.0,
+      "gold_per_min": 400.0,
+      "damage_per_min": 640.0,
+      "vision_score": 16,
+      "kill_participation": 0.45,
+      "damage_share": 0.23,
+      "gold_share": 0.21,
+      "deaths_before_15": 1,
+      "death_times": [
+        "11:20",
+        "19:10",
+        "27:40"
+      ],
+      "items": [],
+      "item_names": [],
+      "item_purchases": []
+    }
+  ],
+  "failed_matches": [],
+  "excluded_matches": []
+}

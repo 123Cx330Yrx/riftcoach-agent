@@ -98,6 +98,18 @@ python scripts\run_review_harness.py `
 
 Task 7 的 GLM 客户端装配仍是过渡实现。阶段 3 会将模型、RAG 和外部 API 统一迁移到 Provider 与 Tool Runtime，并补充超时、重试、缓存、熔断和运行指标；当前 Harness 不提前承担这些职责。
 
+不需要真实玩家数据或模型密钥的完整合成示例：
+
+```powershell
+python scripts\run_review_harness.py `
+  --summary examples\fixtures\player_summary_demo.json `
+  --deterministic-report examples\fixtures\deterministic_report_demo.md `
+  --run-id harness_v1_demo `
+  --dry-run
+```
+
+状态机、Artifact 目录、故障降级和表述边界详见 [Harness v1 使用与原理](docs/harness_v1_usage.md)。
+
 ## 本地 RAG v0.1
 
 知识文档位于 `data/rag_docs/`。当前实现按 Markdown 标题切块，使用适配中文的词元与双字组合进行本地相关性检索，不依赖向量数据库或外部 Embedding 服务。
