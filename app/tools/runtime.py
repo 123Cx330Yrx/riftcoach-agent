@@ -155,6 +155,7 @@ class ToolRuntime:
                 attempt=attempts,
                 deadline_monotonic=deadline,
                 metadata=metadata or {},
+                clock=self._clock,
             )
 
             try:
@@ -275,6 +276,7 @@ class ToolRuntime:
             attempt=max(1, attempts),
             deadline_monotonic=deadline,
             metadata=metadata or {},
+            clock=self._clock,
         )
         try:
             data = definition.fallback(params, context, cause)

@@ -75,6 +75,11 @@ class ToolContext:
     attempt: int
     deadline_monotonic: float
     metadata: Mapping[str, Any] = field(default_factory=dict)
+    clock: Callable[[], float] = field(
+        default=time.monotonic,
+        repr=False,
+        compare=False,
+    )
 
     def __post_init__(self) -> None:
         if not self.call_id.strip():
@@ -85,7 +90,7 @@ class ToolContext:
             raise ValueError("deadline_monotonic must be positive")
 
     def remaining_s(self, *, now_monotonic: float | None = None) -> float:
-        now = time.monotonic() if now_monotonic is None else now_monotonic
+        now = self.clock() if now_monotonic is None else now_monotonic
         return max(0.0, self.deadline_monotonic - now)
 
 
