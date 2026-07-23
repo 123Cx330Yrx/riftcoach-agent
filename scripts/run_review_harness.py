@@ -1,13 +1,11 @@
 import argparse
 import json
-import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
 
 from dotenv import load_dotenv
-from openai import OpenAI
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -35,7 +33,11 @@ from app.harness.steps import (
 )
 from app.harness.store import FileRunStore
 from app.lol.summary_schema import validate_summary_document
+from app.providers.config import create_zhipu_provider, load_zhipu_settings
 from app.rag.retriever import LocalKnowledgeRetriever
+from app.tools.adapters import build_knowledge_tools, build_llm_tools
+from app.tools.registry import ToolRegistry
+from app.tools.runtime import ToolRuntime
 from scripts.generate_llm_coach_report import (
     SYSTEM_PROMPT,
     build_retrieval_query,
@@ -151,8 +153,13 @@ def main(argv: list[str] | None = None) -> int:
 
     run_id = args.run_id or generate_run_id()
     store = FileRunStore(args.runs_root, run_id)
-    retriever = LocalRagAdapter(
+    provider = None if args.dry_run else create_llm_provider()
+    tool_runtime = create_tool_runtime(
         retriever=LocalKnowledgeRetriever(Path(args.knowledge_dir)),
+        provider=provider,
+    )
+    retriever = LocalRagAdapter(
+        runtime=tool_runtime,
         query_builder=build_retrieval_query,
         top_k=args.rag_top_k,
     )
@@ -161,25 +168,21 @@ def main(argv: list[str] | None = None) -> int:
         evaluator = DryRunEvaluator()
         reviser = DryRunReviser()
     else:
-        client, model = create_llm_client()
         generator = ChatCoachGenerator(
-            client=client,
-            model=model,
+            runtime=tool_runtime,
             system_prompt=SYSTEM_PROMPT,
             summary_compactor=compact_summary,
             prompt_builder=build_user_prompt,
         )
         evaluator = ChatEvaluationAdapter(
-            client=client,
-            model=model,
+            runtime=tool_runtime,
             system_prompt=EVALUATOR_SYSTEM_PROMPT,
             fact_pack_builder=build_fact_pack,
             prompt_builder=build_evaluation_prompt,
             response_parser=parse_evaluation_response,
         )
         reviser = ChatCoachReviser(
-            client=client,
-            model=model,
+            runtime=tool_runtime,
             system_prompt=REVISER_SYSTEM_PROMPT,
             prompt_builder=build_revision_prompt,
             validator=validate_revised_report,
@@ -212,25 +215,19 @@ def main(argv: list[str] | None = None) -> int:
     return 0 if manifest.status.value in {"published", "degraded"} else 1
 
 
-def create_llm_client() -> tuple[OpenAI, str]:
-    """Temporary wiring; Stage 3 will replace this with the Provider Runtime."""
-
+def create_llm_provider():
     load_dotenv()
-    api_key = os.getenv("LLM_API_KEY")
-    base_url = os.getenv("LLM_BASE_URL")
-    model = os.getenv("LLM_MODEL")
-    missing = [
-        name
-        for name, value in (
-            ("LLM_API_KEY", api_key),
-            ("LLM_BASE_URL", base_url),
-            ("LLM_MODEL", model),
-        )
-        if not value
-    ]
-    if missing:
-        raise RuntimeError(f"Missing LLM configuration: {', '.join(missing)}")
-    return OpenAI(api_key=api_key, base_url=base_url), model
+    return create_zhipu_provider(load_zhipu_settings())
+
+
+def create_tool_runtime(*, retriever, provider=None) -> ToolRuntime:
+    registry = ToolRegistry()
+    for definition in build_knowledge_tools(retriever):
+        registry.register(definition)
+    if provider is not None:
+        for definition in build_llm_tools(provider):
+            registry.register(definition)
+    return ToolRuntime(registry)
 
 
 def generate_run_id() -> str:

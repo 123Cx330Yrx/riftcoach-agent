@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Any
 
-from app.rag.retriever import LocalKnowledgeRetriever, format_evidence
+from app.tools.runtime import ToolRuntime
 
 from .steps import (
     CoachDraft,
@@ -28,47 +28,52 @@ RevisionValidator = Callable[[str, str], None]
 
 
 class LocalRagAdapter:
-    """Translate the local lexical retriever into the Harness retrieval contract."""
+    """Translate knowledge.search results into the Harness evidence contract."""
 
     def __init__(
         self,
         *,
-        retriever: LocalKnowledgeRetriever,
+        runtime: ToolRuntime,
         query_builder: RetrievalQueryBuilder,
         top_k: int = 5,
     ) -> None:
         if top_k <= 0:
             raise ValueError("top_k must be greater than zero.")
-        self.retriever = retriever
+        self.runtime = runtime
         self.query_builder = query_builder
         self.top_k = top_k
 
     def retrieve(self, request: RetrievalRequest) -> KnowledgeEvidence:
-        summary = dict(request.player_summary)
-        query = self.query_builder(summary)
-        chunks = self.retriever.search(query, top_k=self.top_k)
-        source_ids = tuple(dict.fromkeys(chunk.source for chunk in chunks))
+        query = self.query_builder(dict(request.player_summary))
+        result = self.runtime.execute(
+            "knowledge.search",
+            {"query": query, "top_k": self.top_k},
+            metadata={"harness_step": "retrieve"},
+        )
+        data = _require_success(result, "knowledge.search")
+        chunks = data["chunks"]
+        source_ids = tuple(
+            dict.fromkeys(chunk["source"] for chunk in chunks)
+        )
         return KnowledgeEvidence(
-            context=format_evidence(chunks),
+            context=_format_knowledge_chunks(chunks),
             source_ids=source_ids,
         )
 
 
 class ChatCoachGenerator:
-    """Adapt an OpenAI-compatible chat client to the Coach generation step."""
+    """Translate the generation step into one llm.chat tool call."""
 
     def __init__(
         self,
         *,
-        client: Any,
-        model: str,
+        runtime: ToolRuntime,
         system_prompt: str,
         summary_compactor: SummaryCompactor,
         prompt_builder: GenerationPromptBuilder,
         temperature: float = 0.3,
     ) -> None:
-        self.client = client
-        self.model = model
+        self.runtime = runtime
         self.system_prompt = system_prompt
         self.summary_compactor = summary_compactor
         self.prompt_builder = prompt_builder
@@ -81,32 +86,31 @@ class ChatCoachGenerator:
             request.deterministic_report,
             request.knowledge.context,
         )
-        content = _chat_content(
-            self.client,
-            model=self.model,
-            system_prompt=self.system_prompt,
-            user_prompt=prompt,
-            temperature=self.temperature,
+        return CoachDraft(
+            report=_chat_content(
+                self.runtime,
+                system_prompt=self.system_prompt,
+                user_prompt=prompt,
+                temperature=self.temperature,
+                harness_step="generate",
+            )
         )
-        return CoachDraft(report=content)
 
 
 class ChatEvaluationAdapter:
-    """Reuse the existing fact pack, evaluation prompt, and parser."""
+    """Reuse the deterministic fact pack and parser around llm.chat."""
 
     def __init__(
         self,
         *,
-        client: Any,
-        model: str,
+        runtime: ToolRuntime,
         system_prompt: str,
         fact_pack_builder: FactPackBuilder,
         prompt_builder: EvaluationPromptBuilder,
         response_parser: EvaluationResponseParser,
         temperature: float = 0.0,
     ) -> None:
-        self.client = client
-        self.model = model
+        self.runtime = runtime
         self.system_prompt = system_prompt
         self.fact_pack_builder = fact_pack_builder
         self.prompt_builder = prompt_builder
@@ -117,11 +121,11 @@ class ChatEvaluationAdapter:
         fact_pack = self.fact_pack_builder(dict(request.player_summary))
         prompt = self.prompt_builder(fact_pack, request.report)
         content = _chat_content(
-            self.client,
-            model=self.model,
+            self.runtime,
             system_prompt=self.system_prompt,
             user_prompt=prompt,
             temperature=self.temperature,
+            harness_step="evaluate",
         )
         payload = self.response_parser(content)
         return EvaluationResult(
@@ -134,60 +138,84 @@ class ChatEvaluationAdapter:
 
 
 class ChatCoachReviser:
-    """Adapt bounded report revision and preserve the existing validator."""
+    """Perform bounded revision through llm.chat and preserve validation."""
 
     def __init__(
         self,
         *,
-        client: Any,
-        model: str,
+        runtime: ToolRuntime,
         system_prompt: str,
         prompt_builder: RevisionPromptBuilder,
         validator: RevisionValidator,
         temperature: float = 0.0,
     ) -> None:
-        self.client = client
-        self.model = model
+        self.runtime = runtime
         self.system_prompt = system_prompt
         self.prompt_builder = prompt_builder
         self.validator = validator
         self.temperature = temperature
 
     def revise(self, request: RevisionRequest) -> CoachDraft:
-        evaluation = _evaluation_payload(request.evaluation)
-        prompt = self.prompt_builder(request.report, evaluation)
+        prompt = self.prompt_builder(
+            request.report,
+            _evaluation_payload(request.evaluation),
+        )
         content = _chat_content(
-            self.client,
-            model=self.model,
+            self.runtime,
             system_prompt=self.system_prompt,
             user_prompt=prompt,
             temperature=self.temperature,
+            harness_step="revise",
         )
         self.validator(content, request.report)
         return CoachDraft(report=content)
 
 
 def _chat_content(
-    client: Any,
+    runtime: ToolRuntime,
     *,
-    model: str,
     system_prompt: str,
     user_prompt: str,
     temperature: float,
+    harness_step: str,
 ) -> str:
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-        temperature=temperature,
+    result = runtime.execute(
+        "llm.chat",
+        {
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            "temperature": temperature,
+        },
+        metadata={"harness_step": harness_step},
     )
-    content = response.choices[0].message.content or ""
-    content = content.strip()
+    data = _require_success(result, "llm.chat")
+    content = data["content"].strip()
     if not content:
         raise ValueError("Chat model returned empty content.")
     return content
+
+
+def _require_success(result: Any, tool_name: str) -> dict[str, Any]:
+    if not result.success:
+        code = result.error.code if result.error is not None else "unknown"
+        raise RuntimeError(f"{tool_name} failed with safe code: {code}")
+    if result.data is None:
+        raise RuntimeError(f"{tool_name} returned no data")
+    return dict(result.data)
+
+
+def _format_knowledge_chunks(chunks: list[dict[str, Any]]) -> str:
+    if not chunks:
+        return "未检索到可用知识。"
+    sections = []
+    for index, chunk in enumerate(chunks, start=1):
+        sections.append(
+            f"[知识 {index}] 来源：{chunk['source']}；章节：{chunk['title']}\n"
+            f"{chunk['content']}"
+        )
+    return "\n\n".join(sections)
 
 
 def _evaluation_payload(result: EvaluationResult) -> dict[str, Any]:

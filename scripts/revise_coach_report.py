@@ -1,26 +1,49 @@
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
-from openai import OpenAI
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from app.evaluation.coach_report import build_revision_prompt, validate_revised_report
 from app.artifacts import evaluation_path, revised_report_path
+from app.evaluation.coach_report import (
+    build_revision_prompt,
+    validate_revised_report,
+)
+from app.harness.adapters import ChatCoachReviser
+from app.harness.steps import (
+    EvaluationResult,
+    EvaluationVerdict,
+    KnowledgeEvidence,
+    RevisionRequest,
+)
+from app.providers.config import create_zhipu_provider, load_zhipu_settings
+from app.tools.adapters import build_llm_tools
+from app.tools.registry import ToolRegistry
+from app.tools.runtime import ToolRuntime
+
+
+REVISER_SYSTEM_PROMPT = "你是报告校订员，只修正已经明确指出的事实问题。"
+
+
+def create_revision_runtime() -> ToolRuntime:
+    load_dotenv()
+    provider = create_zhipu_provider(load_zhipu_settings())
+    registry = ToolRegistry()
+    for definition in build_llm_tools(provider):
+        registry.register(definition)
+    return ToolRuntime(registry)
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Revise a Coach report from evaluation issues.")
-    parser.add_argument(
-        "--report",
-        required=True,
+    parser = argparse.ArgumentParser(
+        description="Revise a Coach report from evaluation issues."
     )
+    parser.add_argument("--report", required=True)
     parser.add_argument(
         "--evaluation",
         help="Optional evaluation path derived from the report when omitted.",
@@ -33,42 +56,46 @@ def main():
 
     report_path = Path(args.report)
     evaluation_file = (
-        Path(args.evaluation) if args.evaluation else evaluation_path(report_path)
+        Path(args.evaluation)
+        if args.evaluation
+        else evaluation_path(report_path)
     )
-    output_path = Path(args.output) if args.output else revised_report_path(report_path)
+    output_path = (
+        Path(args.output)
+        if args.output
+        else revised_report_path(report_path)
+    )
     report = report_path.read_text(encoding="utf-8")
     evaluation = json.loads(evaluation_file.read_text(encoding="utf-8"))
     if not evaluation.get("issues"):
         print("Evaluation has no issues; no revision is needed.")
         return
 
-    load_dotenv()
-    api_key = os.getenv("LLM_API_KEY")
-    base_url = os.getenv("LLM_BASE_URL")
-    model = os.getenv("LLM_MODEL")
-    if not all((api_key, base_url, model)):
-        raise RuntimeError("LLM_API_KEY, LLM_BASE_URL and LLM_MODEL are required.")
-
-    client = OpenAI(api_key=api_key, base_url=base_url)
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {
-                "role": "system",
-                "content": "你是报告校订员，只修正已明确指出的事实问题。",
-            },
-            {
-                "role": "user",
-                "content": build_revision_prompt(report, evaluation),
-            },
-        ],
-        temperature=0.0,
+    result = EvaluationResult(
+        score=evaluation["score"],
+        verdict=EvaluationVerdict(evaluation["verdict"]),
+        issues=tuple(evaluation.get("issues", [])),
+        passed_checks=tuple(evaluation.get("passed_checks", [])),
+        summary=evaluation.get("summary", ""),
     )
-    revised = (response.choices[0].message.content or "").strip()
-    validate_revised_report(revised, report)
+    adapter = ChatCoachReviser(
+        runtime=create_revision_runtime(),
+        system_prompt=REVISER_SYSTEM_PROMPT,
+        prompt_builder=build_revision_prompt,
+        validator=validate_revised_report,
+    )
+    revised = adapter.revise(
+        RevisionRequest(
+            player_summary={},
+            deterministic_report="",
+            knowledge=KnowledgeEvidence.empty(),
+            report=report,
+            evaluation=result,
+        )
+    )
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(revised + "\n", encoding="utf-8")
+    output_path.write_text(revised.report + "\n", encoding="utf-8")
     print(f"Revised report saved to: {output_path}")
 
 

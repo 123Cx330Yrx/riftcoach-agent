@@ -1,29 +1,47 @@
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
-from openai import OpenAI
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from app.artifacts import coach_report_path, evaluation_path
 from app.evaluation.coach_report import (
     build_evaluation_prompt,
     build_fact_pack,
     parse_evaluation_response,
 )
-from app.artifacts import coach_report_path, evaluation_path
+from app.harness.adapters import ChatEvaluationAdapter
+from app.harness.steps import EvaluationRequest, KnowledgeEvidence
 from app.lol.data_dragon import DataDragonService
 from app.lol.summary_schema import validate_summary_document
 from app.lol.terminology import TerminologyStore
+from app.providers.config import create_zhipu_provider, load_zhipu_settings
+from app.tools.adapters import build_llm_tools
+from app.tools.registry import ToolRegistry
+from app.tools.runtime import ToolRuntime
+
+
+EVALUATOR_SYSTEM_PROMPT = "你是独立事实审查员，只依据输入证据检查报告。"
+
+
+def create_evaluation_runtime() -> ToolRuntime:
+    load_dotenv()
+    provider = create_zhipu_provider(load_zhipu_settings())
+    registry = ToolRegistry()
+    for definition in build_llm_tools(provider):
+        registry.register(definition)
+    return ToolRuntime(registry)
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Evaluate a RiftCoach Coach report.")
+    parser = argparse.ArgumentParser(
+        description="Evaluate a RiftCoach Coach report."
+    )
     parser.add_argument("--summary", required=True)
     parser.add_argument(
         "--report",
@@ -41,41 +59,42 @@ def main():
 
     summary = json.loads(Path(args.summary).read_text(encoding="utf-8"))
     validate_summary_document(summary)
-    report_path = Path(args.report) if args.report else coach_report_path(summary)
-    output_path = Path(args.output) if args.output else evaluation_path(report_path)
+    report_path = (
+        Path(args.report) if args.report else coach_report_path(summary)
+    )
+    output_path = (
+        Path(args.output) if args.output else evaluation_path(report_path)
+    )
     terminology = TerminologyStore(Path(args.terminology))
     display_summary = terminology.apply_to_summary(
         summary,
         DataDragonService(language="zh_CN"),
     )
-    fact_pack = build_fact_pack(display_summary)
     report = report_path.read_text(encoding="utf-8")
 
-    load_dotenv()
-    api_key = os.getenv("LLM_API_KEY")
-    base_url = os.getenv("LLM_BASE_URL")
-    model = os.getenv("LLM_MODEL")
-    if not all((api_key, base_url, model)):
-        raise RuntimeError("LLM_API_KEY, LLM_BASE_URL and LLM_MODEL are required.")
+    adapter = ChatEvaluationAdapter(
+        runtime=create_evaluation_runtime(),
+        system_prompt=EVALUATOR_SYSTEM_PROMPT,
+        fact_pack_builder=build_fact_pack,
+        prompt_builder=build_evaluation_prompt,
+        response_parser=parse_evaluation_response,
+    )
+    result = adapter.evaluate(
+        EvaluationRequest(
+            player_summary=display_summary,
+            deterministic_report="",
+            knowledge=KnowledgeEvidence.empty(),
+            report=report,
+        )
+    )
+    evaluation = {
+        "score": result.score,
+        "verdict": result.verdict.value,
+        "issues": [dict(issue) for issue in result.issues],
+        "passed_checks": list(result.passed_checks),
+        "summary": result.summary,
+    }
 
-    client = OpenAI(api_key=api_key, base_url=base_url)
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {
-                "role": "system",
-                "content": "你是独立事实审查员，只依据输入证据检查报告。",
-            },
-            {
-                "role": "user",
-                "content": build_evaluation_prompt(fact_pack, report),
-            },
-        ],
-        temperature=0.0,
-    )
-    evaluation = parse_evaluation_response(
-        response.choices[0].message.content or ""
-    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
         json.dumps(evaluation, ensure_ascii=False, indent=2),

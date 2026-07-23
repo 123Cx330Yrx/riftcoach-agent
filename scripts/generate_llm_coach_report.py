@@ -1,17 +1,21 @@
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
-from openai import OpenAI
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from app.rag.retriever import LocalKnowledgeRetriever, format_evidence
+from app.harness.adapters import ChatCoachGenerator, LocalRagAdapter
+from app.harness.steps import GenerationRequest, RetrievalRequest
+from app.providers.config import create_zhipu_provider, load_zhipu_settings
+from app.rag.retriever import LocalKnowledgeRetriever
+from app.tools.adapters import build_knowledge_tools, build_llm_tools
+from app.tools.registry import ToolRegistry
+from app.tools.runtime import ToolRuntime
 from app.artifacts import coach_report_path, deterministic_report_path
 from app.lol.data_dragon import DataDragonService
 from app.lol.summary_schema import validate_summary_document
@@ -163,29 +167,20 @@ def build_user_prompt(
 """.strip()
 
 
-def create_llm_client() -> tuple[OpenAI, str]:
+def create_llm_provider():
     load_dotenv()
-    provider = os.getenv("LLM_PROVIDER", "zhipu")
-    api_key = os.getenv("LLM_API_KEY")
-    base_url = os.getenv("LLM_BASE_URL")
-    model = os.getenv("LLM_MODEL")
+    return create_zhipu_provider(load_zhipu_settings())
 
-    missing = [
-        name
-        for name, value in (
-            ("LLM_API_KEY", api_key),
-            ("LLM_BASE_URL", base_url),
-            ("LLM_MODEL", model),
-        )
-        if not value
-    ]
-    if missing:
-        raise RuntimeError(f"Missing LLM configuration: {', '.join(missing)}")
 
-    print("LLM Provider:", provider)
-    print("LLM Base URL:", base_url)
-    print("LLM Model:", model)
-    return OpenAI(api_key=api_key, base_url=base_url), model
+def create_report_runtime(retriever: LocalKnowledgeRetriever) -> ToolRuntime:
+    provider = create_llm_provider()
+    registry = ToolRegistry()
+    for definition in (
+        *build_knowledge_tools(retriever),
+        *build_llm_tools(provider),
+    ):
+        registry.register(definition)
+    return ToolRuntime(registry)
 
 
 def main():
@@ -227,37 +222,43 @@ def main():
     terminology = TerminologyStore(Path(args.terminology))
     ddragon = DataDragonService(language="zh_CN")
     display_summary = terminology.apply_to_summary(raw_summary, ddragon)
-    summary = compact_summary(display_summary)
     deterministic_report = read_text(report_path)
     retriever = LocalKnowledgeRetriever(Path(args.knowledge_dir))
-    evidence = retriever.search(build_retrieval_query(summary), top_k=args.rag_top_k)
-    knowledge_evidence = format_evidence(evidence)
+    runtime = create_report_runtime(retriever)
+    rag_step = LocalRagAdapter(
+        runtime=runtime,
+        query_builder=build_retrieval_query,
+        top_k=args.rag_top_k,
+    )
+    knowledge = rag_step.retrieve(
+        RetrievalRequest(
+            player_summary=display_summary,
+            deterministic_report=deterministic_report,
+        )
+    )
 
     print(f"RAG documents: {retriever.document_count}")
     print(f"RAG chunks: {retriever.chunk_count}")
-    print("RAG sources:", ", ".join(item.source for item in evidence) or "none")
+    print("RAG sources:", ", ".join(knowledge.source_ids) or "none")
 
-    client, model = create_llm_client()
-    response = client.chat.completions.create(
-        model=model,
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {
-                "role": "user",
-                "content": build_user_prompt(
-                    summary,
-                    deterministic_report,
-                    knowledge_evidence,
-                ),
-            },
-        ],
+    generator = ChatCoachGenerator(
+        runtime=runtime,
+        system_prompt=SYSTEM_PROMPT,
+        summary_compactor=compact_summary,
+        prompt_builder=build_user_prompt,
         temperature=0.3,
     )
+    draft = generator.generate(
+        GenerationRequest(
+            player_summary=display_summary,
+            deterministic_report=deterministic_report,
+            knowledge=knowledge,
+        )
+    )
 
-    report = response.choices[0].message.content or ""
     output_path = Path(args.output) if args.output else coach_report_path(raw_summary)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(report, encoding="utf-8")
+    output_path.write_text(draft.report, encoding="utf-8")
     print("GLM coach report generated:", output_path)
 
 
