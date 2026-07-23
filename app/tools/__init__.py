@@ -1,5 +1,11 @@
 """Reliable local tool contracts and registration."""
 
+from .cache import TTLCache, make_cache_key
+from .circuit_breaker import (
+    CircuitBreaker,
+    CircuitBreakerRegistry,
+    CircuitState,
+)
 from .errors import (
     DuplicateToolError,
     ToolError,
@@ -23,7 +29,10 @@ from .schema import check_tool_schemas, validate_tool_input, validate_tool_outpu
 
 __all__ = [
     "CachePolicy",
+    "CircuitBreaker",
     "CircuitBreakerPolicy",
+    "CircuitBreakerRegistry",
+    "CircuitState",
     "DuplicateToolError",
     "RetryPolicy",
     "ToolContext",
@@ -37,7 +46,9 @@ __all__ = [
     "ToolRegistry",
     "ToolResult",
     "ToolSchemaDefinitionError",
+    "TTLCache",
     "check_tool_schemas",
+    "make_cache_key",
     "validate_tool_input",
     "validate_tool_output",
 ]
