@@ -1,5 +1,10 @@
 """Provider-neutral model contracts and implementations."""
 
+from .config import (
+    ZhipuSettings,
+    create_zhipu_provider,
+    load_zhipu_settings,
+)
 from .errors import (
     ProviderAuthenticationError,
     ProviderConfigurationError,
@@ -17,6 +22,7 @@ from .models import (
     TokenUsage,
 )
 from .protocol import LLMProvider
+from .zhipu import ZhipuProvider
 
 __all__ = [
     "ChatMessage",
@@ -32,4 +38,8 @@ __all__ = [
     "ProviderTimeoutError",
     "ProviderUnavailableError",
     "TokenUsage",
+    "ZhipuProvider",
+    "ZhipuSettings",
+    "create_zhipu_provider",
+    "load_zhipu_settings",
 ]
