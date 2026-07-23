@@ -159,8 +159,15 @@ class ToolResult:
             raise ValueError("a result cannot be both cached and fallback-generated")
         if self.attempts < 0:
             raise ValueError("attempts cannot be negative")
-        if not self.cached and self.attempts < 1:
-            raise ValueError("non-cached results require at least one attempt")
+        if (
+            self.success
+            and not self.cached
+            and not self.fallback_used
+            and self.attempts < 1
+        ):
+            raise ValueError(
+                "successful non-cached results require at least one attempt"
+            )
         if self.latency_ms < 0:
             raise ValueError("latency_ms cannot be negative")
 
@@ -213,4 +220,3 @@ class ToolResult:
             latency_ms=latency_ms,
             upstream_error=upstream_error,
         )
-

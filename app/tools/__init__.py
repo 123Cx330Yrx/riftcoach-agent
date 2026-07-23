@@ -14,6 +14,7 @@ from .errors import (
     ToolOutputValidationError,
     ToolSchemaDefinitionError,
 )
+from .metrics import ToolMetrics, ToolMetricsSnapshot
 from .models import (
     CachePolicy,
     CircuitBreakerPolicy,
@@ -25,6 +26,7 @@ from .models import (
     ToolResult,
 )
 from .registry import ToolRegistry
+from .runtime import ToolRuntime
 from .schema import check_tool_schemas, validate_tool_input, validate_tool_output
 
 __all__ = [
@@ -40,11 +42,14 @@ __all__ = [
     "ToolError",
     "ToolErrorInfo",
     "ToolInputValidationError",
+    "ToolMetrics",
+    "ToolMetricsSnapshot",
     "ToolNotFoundError",
     "ToolOutputValidationError",
     "ToolPolicy",
     "ToolRegistry",
     "ToolResult",
+    "ToolRuntime",
     "ToolSchemaDefinitionError",
     "TTLCache",
     "check_tool_schemas",
