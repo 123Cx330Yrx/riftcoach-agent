@@ -1,0 +1,55 @@
+{
+  "version": "1.0.0",
+  "description": "RiftCoach RAG v0.1 source-level retrieval baseline.",
+  "cases": [
+    {
+      "case_id": "metric_vision_boundary",
+      "query": "输局视野分更低，能不能直接断言玩家不买真眼？",
+      "relevant_source_ids": ["01_metric_interpretation.md"],
+      "top_k": 3
+    },
+    {
+      "case_id": "metric_early_death",
+      "query": "赢局和输局十五分钟前死亡差异很小应该怎样解释？",
+      "relevant_source_ids": ["01_metric_interpretation.md", "02_review_method.md"],
+      "top_k": 5
+    },
+    {
+      "case_id": "review_small_sample",
+      "query": "只有十局而且混合多个位置，结论可靠吗？",
+      "relevant_source_ids": ["02_review_method.md"],
+      "top_k": 3
+    },
+    {
+      "case_id": "training_no_fake_threshold",
+      "query": "没有位置和段位基准时可以规定每分钟补刀必须达到多少吗？",
+      "relevant_source_ids": ["03_training_plan.md"],
+      "top_k": 3
+    },
+    {
+      "case_id": "meta_source_boundary",
+      "query": "Data Dragon 能否证明某英雄当前版本胜率和主流出装？",
+      "relevant_source_ids": ["04_data_boundaries.md"],
+      "top_k": 3
+    },
+    {
+      "case_id": "fair_play_boundary",
+      "query": "可以提供实时敌方技能冷却追踪和自动操作吗？",
+      "relevant_source_ids": ["04_data_boundaries.md"],
+      "top_k": 3
+    },
+    {
+      "case_id": "no_answer_weather",
+      "query": "今天北京的天气和降雨概率是多少？",
+      "relevant_source_ids": [],
+      "top_k": 3
+    },
+    {
+      "case_id": "no_answer_tft",
+      "query": "云顶之弈当前版本最强阵容是什么？",
+      "relevant_source_ids": [],
+      "top_k": 3
+    }
+  ]
+}
+

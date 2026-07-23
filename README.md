@@ -120,6 +120,8 @@ python scripts\query_rag.py "输局视野分和经济下降应该怎么复盘" -
 
 这是业务可行性验证版本，不代表正式 RAG 已完成。正式 RAG 将在 Harness 与 Tool Runtime 稳定后补充来源元数据、引用、混合检索、重排与检索评测。
 
+阶段 4 已先完成 RAG v0.1 现状审计、`KnowledgeProvider` 契约和第一版固定检索评测基线。当前基线证明词法检索能命中这组简单的来源级问题，但库外问题误召回率仍为 100%，不能据此宣称 RAG 已经成熟。原理、指标和边界详见 [RAG v1 现状审计与检索基线](docs/rag_v1_baseline.md)。
+
 ## 测试
 
 ```powershell
