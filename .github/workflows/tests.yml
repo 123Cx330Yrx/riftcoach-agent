@@ -29,6 +29,28 @@ jobs:
       - name: Run tests
         run: python -m pytest -q
 
+      - name: Compile Python sources
+        run: python -m compileall -q app scripts tests
+
+      - name: Enforce Harness SDK boundary
+        run: |
+          if grep -E "chat\.completions|\.choices" \
+            app/harness/adapters.py \
+            scripts/run_review_harness.py \
+            scripts/generate_llm_coach_report.py \
+            scripts/evaluate_coach_report.py \
+            scripts/revise_coach_report.py; then
+            echo "Production Harness code must use Provider and Tool Runtime contracts."
+            exit 1
+          fi
+
+      - name: Reject tracked local secrets and run data
+        run: |
+          if git ls-files | grep -E '(^|/)\.env$|^data/cache/|^data/runs/'; then
+            echo "Local secrets or private run data must not be tracked."
+            exit 1
+          fi
+
       - name: Run Harness dry-run fixture
         run: |
           python scripts/run_review_harness.py \

@@ -4,7 +4,7 @@ RiftCoach 是一个基于 Riot 公开赛后数据的英雄联盟复盘与训练�
 
 ## 当前定位
 
-当前版本是 RiftCoach 的独立领域核心与 Agentic Workflow 原型，尚未直接接入 EchoMind 或 AGI-Saber，也尚未实现完整的会话式 Agent 平台。
+当前版本是 RiftCoach 的独立领域核心、质量门控 Harness 与可靠 Tool Runtime，尚未直接合并 EchoMind 或 AGI-Saber，也尚未实现完整的会话式 Agent 平台。
 
 当前数据分工：
 
@@ -96,7 +96,7 @@ python scripts\run_review_harness.py `
 
 每次运行默认写入 `data/runs/<run_id>/`，其中保存输入、RAG 证据、草稿、每轮评测、修订稿、最终报告和带 SHA-256 的 `manifest.json`。未通过质量门控的 Coach 草稿不会成为最终报告；失败时默认发布确定性报告并标记为 `degraded`，也可以通过 `--no-deterministic-fallback` 改为拒绝发布。
 
-Task 7 的 GLM 客户端装配仍是过渡实现。阶段 3 会将模型、RAG 和外部 API 统一迁移到 Provider 与 Tool Runtime，并补充超时、重试、缓存、熔断和运行指标；当前 Harness 不提前承担这些职责。
+阶段 3 已为模型、RAG、Riot API 和 Data Dragon 建立统一的 Provider / Tool 契约与适配器。Harness 的生成、评测和修订不再访问具体 SDK 的 `choices` 结构，而是统一调用 `llm.chat`；检索统一调用 `knowledge.search`。Runtime 负责 Schema、有限重试、缓存、三态熔断、fallback 和运行指标，Harness 继续只负责任务级状态与发布门控。现有数据构建脚本暂时保持兼容，后续入口可以逐步改用已经注册的 Riot API 与 Data Dragon 工具。
 
 不需要真实玩家数据或模型密钥的完整合成示例：
 
@@ -108,7 +108,7 @@ python scripts\run_review_harness.py `
   --dry-run
 ```
 
-状态机、Artifact 目录、故障降级和表述边界详见 [Harness v1 使用与原理](docs/harness_v1_usage.md)。
+状态机、Artifact 目录、故障降级和表述边界详见 [Harness v1 使用与原理](docs/harness_v1_usage.md)。Provider、Tool Runtime、EchoMind 迁移边界和 MCP 区别详见 [Provider 与 Tool Runtime 使用说明](docs/provider_tool_runtime_usage.md)。
 
 ## 本地 RAG v0.1
 

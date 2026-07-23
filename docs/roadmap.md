@@ -18,7 +18,7 @@
 | 0 | 基线与证据建档 | 我们已经有什么，参考项目真实实现了什么 | 自主审计 | 已完成 |
 | 1 | 领域核心 v1 | 能否稳定产生可信、版本化的 LoL 事实 | RiftCoach 自主实现 | 已完成，进入维护 |
 | 2 | Harness v1 | 一次报告运行如何被控制、追踪、评测和发布 | 现有质量闭环 + Sea 可靠执行思想 | 已完成，进入维护 |
-| 3 | Provider 与 Tool Runtime | 外部模型和工具如何统一、可靠地调用 | EchoMind 迁移重构 | 未开始 |
+| 3 | Provider 与 Tool Runtime | 外部模型和工具如何统一、可靠地调用 | EchoMind 迁移重构 | 已完成，进入维护 |
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | v0.1 已实验，正式阶段未开始 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 未开始 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | EchoMind 迁移重构 | 未开始 |
@@ -109,7 +109,7 @@ Harness 是控制一次 Agent 运行生命周期的确定性运行层，不是�
 
 Provider 隔离厂商差异；Tool Runtime 统一工具契约和可靠性。它们解决“如何可靠调用”，而不是“调用后如何编排”。
 
-### 实施内容
+### 已完成
 
 - 抽象 `LLMProvider`，首个实现为智谱 GLM；
 - 把 Riot、Data Dragon、RAG 和 LLM 包装为类型明确的工具；
@@ -268,11 +268,11 @@ MCP 负责跨系统标准互操作，内部 Tool Runtime 负责本应用可靠�
 阶段 0 已完成
 → 阶段 1 已完成并进入维护
 → 阶段 2 Harness v1 已完成并进入维护
-→ 下一步实施阶段 3 Provider / Tool Runtime
-→ 阶段 4 正式完善 RAG v1
+→ 阶段 3 Provider / Tool Runtime 已完成并进入维护
+→ 下一步实施阶段 4 RAG v1
 ```
 
-因此，当前不继续横向扩写 RAG。轻量 RAG v0.1 保留并服务于 Harness；等 Harness 和 Tool Runtime 稳定后，再用可评测方式完成 RAG v1。
+因此，下一步不是继续扩写 Harness 或堆叠 Agent 名词，而是以现有 `knowledge.search` 契约为边界，用可评测方式完成 RAG v1。
 
 ## 贯穿主路线的交付检查点
 
