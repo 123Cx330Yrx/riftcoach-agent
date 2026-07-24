@@ -120,9 +120,9 @@ python scripts\query_rag.py "输局视野分和经济下降应该怎么复盘" -
 
 这是业务可行性验证版本，不代表正式 RAG 已完成。正式 RAG 将在 Harness 与 Tool Runtime 稳定后补充来源元数据、引用、混合检索、重排与检索评测。
 
-阶段 4 已先完成 RAG v0.1 现状审计、`KnowledgeProvider` 契约和第一版固定检索评测基线。当前基线证明词法检索能命中这组简单的来源级问题，但库外问题误召回率仍为 100%，不能据此宣称 RAG 已经成熟。原理、指标和边界详见 [RAG v1 现状审计与检索基线](docs/rag_v1_baseline.md)。
+阶段 4 RAG v1 已完成并进入维护：包括结构化 Markdown 元数据、父子块索引、BM25、可替换 Embedding 接口、确定性 hashing embedding 基线、RRF 混合召回、证据门控、来源多样性、版本/位置/有效期过滤、冲突处理和 chunk 级 Harness 引用。当前八题开发集结果为 Recall@K 1.0、MRR 1.0、nDCG@K 1.0、无答案误召回率 0.0。
 
-当前已进一步完成结构化 Markdown 元数据、父子块索引、BM25、可替换 Embedding 接口、确定性 hashing embedding 基线和 RRF 混合召回。混合基线保持 Recall@K 与 MRR，但 nDCG@K 为 0.9866，且尚未解决库外问题误召回；因此去重、拒答阈值、版本冲突和重排仍是阶段 4 的必要收尾，而不是可选优化。设计取舍详见 [RAG v1 结构化索引与混合召回设计](docs/plans/2026-07-23-rag-v1-index-retrieval-design.md)。
+这组问题也参与了初始阈值校准，因此结果只证明当前开发基线可复现，不是独立泛化证明；hashing embedding 也不等同于语义语言模型。后续需要扩充独立保留集和引用语义正确率评测。原理和边界详见 [RAG v1 现状审计与检索基线](docs/rag_v1_baseline.md)、[结构化索引与混合召回设计](docs/plans/2026-07-23-rag-v1-index-retrieval-design.md)及[证据策略与 Harness 接入设计](docs/plans/2026-07-24-rag-v1-policy-harness-design.md)。
 
 ## 测试
 

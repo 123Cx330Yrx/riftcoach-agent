@@ -96,7 +96,27 @@ python scripts\evaluate_rag_retrieval.py --provider hybrid
 
 当前混合检索使用真实 BM25、Provider-neutral Embedding 接口、确定性 hashing embedding 基线与 RRF。Hashing 方案用于验证本地可复现链路，不等同于语义语言模型。
 
-## 7. 这一步没有做什么
+## 7. 阶段 4 收尾结果
+
+加入证据支持门控、确定性重排、来源多样性、版本/位置/有效期过滤和冲突处理后，当前开发集结果为：
+
+```text
+Recall@K：1.0000
+MRR：1.0000
+nDCG@K：1.0000
+无答案误召回率：0.0000
+```
+
+`knowledge.search` v2 会返回 `abstained`、diagnostics、稳定 chunk/parent ID 和版本元数据。Harness 将命中证据分配为 `[K1]` 等固定引用，并把映射保存到 `retrieval_evidence.json`；模型生成不存在的引用 ID 时，发布前会被确定性拦截。
+
+当前八题同时用于初始阈值校准和结果报告，因此属于开发集，不是独立测试集。后续维护至少需要：
+
+- 扩充未参与阈值选择的保留问题；
+- 接入真实语义 Embedding 后重新校准；
+- 增加 chunk 级相关性和引用语义正确率；
+- 按知识类型、版本和位置分别报告指标。
+
+## 8. 这一步没有做什么
 
 - 没有部署 Chroma、Milvus、Elasticsearch 或 Neo4j；
 - 没有引入 Embedding；

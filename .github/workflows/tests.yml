@@ -29,6 +29,16 @@ jobs:
       - name: Run tests
         run: python -m pytest -q
 
+      - name: Enforce RAG v1 retrieval quality gate
+        run: |
+          python scripts/evaluate_rag_retrieval.py \
+            --provider hybrid \
+            --output "${RUNNER_TEMP}/rag-v1-evaluation.json" \
+            --min-recall 1.0 \
+            --min-mrr 1.0 \
+            --min-ndcg 1.0 \
+            --max-no-answer-fpr 0.0
+
       - name: Compile Python sources
         run: python -m compileall -q app scripts tests
 

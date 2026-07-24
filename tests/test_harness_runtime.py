@@ -11,6 +11,7 @@ from app.harness.steps import (
     EvaluationResult,
     EvaluationVerdict,
     GenerationRequest,
+    KnowledgeCitation,
     KnowledgeEvidence,
     RetrievalRequest,
     RevisionRequest,
@@ -27,6 +28,16 @@ class FakeRetriever:
         return KnowledgeEvidence(
             context="视野分只能作为复盘线索，不能单独证明因果。",
             source_ids=("review-rules-v1",),
+            citations=(
+                KnowledgeCitation(
+                    citation_id="K1",
+                    chunk_id="review-rules-v1:child:1",
+                    parent_id="review-rules-v1:parent:1",
+                    source_id="review-rules-v1",
+                    title="视野规则",
+                    content="视野分只能作为复盘线索，不能单独证明因果。",
+                ),
+            ),
         )
 
 
@@ -93,9 +104,25 @@ class RaisingRetriever:
         raise RuntimeError("retrieval unavailable")
 
 
+class AbstainingRetriever:
+    def retrieve(self, request: RetrievalRequest) -> KnowledgeEvidence:
+        return KnowledgeEvidence(
+            context="未检索到足够相关的可用知识。",
+            abstained=True,
+            diagnostics={"reason": "insufficient_evidence"},
+        )
+
+
 class RaisingGenerator:
     def generate(self, request: GenerationRequest) -> CoachDraft:
         raise RuntimeError("generation unavailable")
+
+
+class UnknownCitationGenerator:
+    def generate(self, request: GenerationRequest) -> CoachDraft:
+        return CoachDraft(
+            report="# RiftCoach 教练式复盘报告\n\n错误引用 [K999]。\n"
+        )
 
 
 class OverreachingReviser:
@@ -175,6 +202,15 @@ class ReviewHarnessPassingPathTests(unittest.TestCase):
         )
         self.assertEqual(92, evaluation_payload["score"])
         self.assertEqual("pass", evaluation_payload["verdict"])
+        evidence_record = records_by_kind[ArtifactKind.RETRIEVAL_EVIDENCE.value]
+        evidence_payload = json.loads(
+            self.store.read_artifact(evidence_record).decode("utf-8")
+        )
+        self.assertEqual("K1", evidence_payload["citations"][0]["citation_id"])
+        self.assertEqual(
+            "review-rules-v1:child:1",
+            evidence_payload["citations"][0]["chunk_id"],
+        )
 
         self.assertEqual(1, len(self.retriever.requests))
         self.assertEqual(1, len(self.generator.requests))
@@ -282,10 +318,36 @@ class ReviewHarnessPassingPathTests(unittest.TestCase):
         self.assertEqual([], generator.requests)
         self.assertEqual([], evaluator.requests)
 
+    def test_normal_retrieval_abstention_continues_without_degrading(self) -> None:
+        harness = self._build_harness(retriever=AbstainingRetriever())
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self.assertEqual(RunStatus.PUBLISHED, manifest.status)
+        self.assertEqual("published", manifest.final_decision)
+
     def test_generation_failure_degrades_to_deterministic_report(self) -> None:
         evaluator = SequenceEvaluator([])
         harness = self._build_harness(
             generator=RaisingGenerator(),
+            evaluator=evaluator,
+        )
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self._assert_deterministic_fallback(manifest)
+        self.assertEqual([], evaluator.requests)
+
+    def test_unknown_generated_citation_degrades_before_evaluation(self) -> None:
+        evaluator = SequenceEvaluator([])
+        harness = self._build_harness(
+            generator=UnknownCitationGenerator(),
             evaluator=evaluator,
         )
 

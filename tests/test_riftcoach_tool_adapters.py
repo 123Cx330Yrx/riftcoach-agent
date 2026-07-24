@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
 
 from app.providers.models import ChatResponse, TokenUsage
 from app.rag.retriever import KnowledgeChunk
+from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.tools.adapters import (
     build_data_dragon_tools,
     build_knowledge_tools,
@@ -182,16 +184,55 @@ def test_knowledge_adapter_returns_structured_evidence_and_is_cached():
     assert tool.policy.cache.ttl_s > 0
     assert retriever.calls == [("如何解释经济差异", 3)]
     assert result == {
+        "provider": "legacy-local-tfidf",
+        "abstained": False,
+        "diagnostics": {},
         "chunks": [
             {
-                "source": "metric_rules.md",
+                "chunk_id": "metric_rules.md#经济指标",
+                "parent_id": None,
+                "source_id": "metric_rules.md",
                 "title": "经济指标",
                 "content": "经济/分钟只能作为相关性线索。",
+                "matched_content": None,
                 "score": 3.25,
+                "rank": 1,
+                "knowledge_type": "unknown",
+                "version": None,
+                "updated_at": None,
+                "valid_from": None,
+                "valid_until": None,
+                "positions": [],
+                "attributes": {},
             }
         ],
         "count": 1,
     }
+
+
+def test_hybrid_knowledge_adapter_exposes_citations_and_abstention_diagnostics():
+    provider = LocalHybridKnowledgeProvider.from_directory(Path("data/rag_docs"))
+    tool = build_knowledge_tools(provider)[0]
+
+    answered = tool.handler(
+        {"query": "Data Dragon 能提供英雄胜率吗", "top_k": 3},
+        context(),
+    )
+    abstained = tool.handler(
+        {"query": "今天北京天气降雨概率", "top_k": 3},
+        context(),
+    )
+
+    assert tool.version == "2.0.0"
+    assert answered["abstained"] is False
+    assert answered["chunks"][0]["source_id"] == "04_data_boundaries.md"
+    assert answered["chunks"][0]["chunk_id"]
+    assert answered["chunks"][0]["parent_id"]
+    assert answered["chunks"][0]["matched_content"]
+    assert answered["chunks"][0]["knowledge_type"] == "data_boundary"
+    assert abstained["abstained"] is True
+    assert abstained["chunks"] == []
+    assert abstained["diagnostics"]["reason"] == "insufficient_evidence"
 
 
 def test_llm_adapter_maps_messages_and_uses_context_budget():

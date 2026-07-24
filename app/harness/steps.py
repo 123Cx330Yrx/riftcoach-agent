@@ -18,15 +18,33 @@ class EvaluationVerdict(str, Enum):
 
 
 @dataclass(frozen=True)
+class KnowledgeCitation:
+    """A model-independent citation mapping produced by retrieval."""
+
+    citation_id: str
+    chunk_id: str
+    parent_id: str | None
+    source_id: str
+    title: str
+    content: str
+    matched_content: str | None = None
+    version: str | None = None
+    updated_at: str | None = None
+
+
+@dataclass(frozen=True)
 class KnowledgeEvidence:
     """Bounded knowledge supplied to generation, evaluation, and revision."""
 
     context: str
     source_ids: tuple[str, ...] = field(default_factory=tuple)
+    citations: tuple[KnowledgeCitation, ...] = field(default_factory=tuple)
+    abstained: bool = False
+    diagnostics: Mapping[str, Any] = field(default_factory=dict)
 
     @classmethod
     def empty(cls) -> "KnowledgeEvidence":
-        return cls(context="", source_ids=())
+        return cls(context="", source_ids=(), citations=(), abstained=False)
 
 
 @dataclass(frozen=True)

@@ -11,6 +11,7 @@ from .steps import (
     EvaluationResult,
     EvaluationVerdict,
     GenerationRequest,
+    KnowledgeCitation,
     KnowledgeEvidence,
     RetrievalRequest,
     RevisionRequest,
@@ -19,6 +20,7 @@ from .steps import (
 
 SummaryCompactor = Callable[[dict[str, Any]], dict[str, Any]]
 RetrievalQueryBuilder = Callable[[dict[str, Any]], str]
+RetrievalFilterBuilder = Callable[[dict[str, Any]], dict[str, Any]]
 GenerationPromptBuilder = Callable[[dict[str, Any], str, str], str]
 FactPackBuilder = Callable[[dict[str, Any]], dict[str, Any]]
 EvaluationPromptBuilder = Callable[[dict[str, Any], str], str]
@@ -35,29 +37,53 @@ class LocalRagAdapter:
         *,
         runtime: ToolRuntime,
         query_builder: RetrievalQueryBuilder,
+        filter_builder: RetrievalFilterBuilder | None = None,
         top_k: int = 5,
     ) -> None:
         if top_k <= 0:
             raise ValueError("top_k must be greater than zero.")
         self.runtime = runtime
         self.query_builder = query_builder
+        self.filter_builder = filter_builder
         self.top_k = top_k
 
     def retrieve(self, request: RetrievalRequest) -> KnowledgeEvidence:
         query = self.query_builder(dict(request.player_summary))
+        filters = (
+            self.filter_builder(dict(request.player_summary))
+            if self.filter_builder is not None
+            else {}
+        )
         result = self.runtime.execute(
             "knowledge.search",
-            {"query": query, "top_k": self.top_k},
+            {"query": query, "top_k": self.top_k, "filters": filters},
             metadata={"harness_step": "retrieve"},
         )
         data = _require_success(result, "knowledge.search")
         chunks = data["chunks"]
         source_ids = tuple(
-            dict.fromkeys(chunk["source"] for chunk in chunks)
+            dict.fromkeys(chunk["source_id"] for chunk in chunks)
+        )
+        citations = tuple(
+            KnowledgeCitation(
+                citation_id=f"K{index}",
+                chunk_id=chunk["chunk_id"],
+                parent_id=chunk["parent_id"],
+                source_id=chunk["source_id"],
+                title=chunk["title"],
+                content=chunk["content"],
+                matched_content=chunk["matched_content"],
+                version=chunk["version"],
+                updated_at=chunk["updated_at"],
+            )
+            for index, chunk in enumerate(chunks, start=1)
         )
         return KnowledgeEvidence(
-            context=_format_knowledge_chunks(chunks),
+            context=_format_knowledge_chunks(chunks, citations),
             source_ids=source_ids,
+            citations=citations,
+            abstained=bool(data["abstained"]),
+            diagnostics=dict(data["diagnostics"]),
         )
 
 
@@ -206,13 +232,18 @@ def _require_success(result: Any, tool_name: str) -> dict[str, Any]:
     return dict(result.data)
 
 
-def _format_knowledge_chunks(chunks: list[dict[str, Any]]) -> str:
+def _format_knowledge_chunks(
+    chunks: list[dict[str, Any]],
+    citations: tuple[KnowledgeCitation, ...],
+) -> str:
     if not chunks:
-        return "未检索到可用知识。"
+        return "未检索到足够相关的可用知识；不得用相近但不相关的内容补足。"
     sections = []
-    for index, chunk in enumerate(chunks, start=1):
+    for chunk, citation in zip(chunks, citations):
+        version_text = f"；版本：{citation.version}" if citation.version else ""
         sections.append(
-            f"[知识 {index}] 来源：{chunk['source']}；章节：{chunk['title']}\n"
+            f"[{citation.citation_id}] 来源：{chunk['source_id']}；"
+            f"章节：{chunk['title']}{version_text}\n"
             f"{chunk['content']}"
         )
     return "\n\n".join(sections)

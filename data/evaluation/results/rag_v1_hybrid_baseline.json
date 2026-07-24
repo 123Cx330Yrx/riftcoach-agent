@@ -3,8 +3,6 @@
     {
       "case_id": "metric_vision_boundary",
       "retrieved_source_ids": [
-        "01_metric_interpretation.md",
-        "01_metric_interpretation.md",
         "01_metric_interpretation.md"
       ],
       "recall_at_k": 1.0,
@@ -16,22 +14,17 @@
       "case_id": "metric_early_death",
       "retrieved_source_ids": [
         "01_metric_interpretation.md",
-        "01_metric_interpretation.md",
-        "02_review_method.md",
-        "01_metric_interpretation.md",
-        "01_metric_interpretation.md"
+        "02_review_method.md"
       ],
       "recall_at_k": 1.0,
       "reciprocal_rank": 1.0,
-      "ndcg_at_k": 0.919721,
+      "ndcg_at_k": 1.0,
       "false_positive": false
     },
     {
       "case_id": "review_small_sample",
       "retrieved_source_ids": [
-        "02_review_method.md",
-        "01_metric_interpretation.md",
-        "03_training_plan.md"
+        "02_review_method.md"
       ],
       "recall_at_k": 1.0,
       "reciprocal_rank": 1.0,
@@ -42,7 +35,6 @@
       "case_id": "training_no_fake_threshold",
       "retrieved_source_ids": [
         "03_training_plan.md",
-        "01_metric_interpretation.md",
         "01_metric_interpretation.md"
       ],
       "recall_at_k": 1.0,
@@ -53,9 +45,7 @@
     {
       "case_id": "meta_source_boundary",
       "retrieved_source_ids": [
-        "04_data_boundaries.md",
-        "04_data_boundaries.md",
-        "01_metric_interpretation.md"
+        "04_data_boundaries.md"
       ],
       "recall_at_k": 1.0,
       "reciprocal_rank": 1.0,
@@ -65,9 +55,7 @@
     {
       "case_id": "fair_play_boundary",
       "retrieved_source_ids": [
-        "04_data_boundaries.md",
-        "04_data_boundaries.md",
-        "02_review_method.md"
+        "04_data_boundaries.md"
       ],
       "recall_at_k": 1.0,
       "reciprocal_rank": 1.0,
@@ -76,32 +64,24 @@
     },
     {
       "case_id": "no_answer_weather",
-      "retrieved_source_ids": [
-        "04_data_boundaries.md",
-        "02_review_method.md",
-        "04_data_boundaries.md"
-      ],
+      "retrieved_source_ids": [],
       "recall_at_k": 0.0,
       "reciprocal_rank": 0.0,
       "ndcg_at_k": 0.0,
-      "false_positive": true
+      "false_positive": false
     },
     {
       "case_id": "no_answer_tft",
-      "retrieved_source_ids": [
-        "04_data_boundaries.md",
-        "04_data_boundaries.md",
-        "01_metric_interpretation.md"
-      ],
+      "retrieved_source_ids": [],
       "recall_at_k": 0.0,
       "reciprocal_rank": 0.0,
       "ndcg_at_k": 0.0,
-      "false_positive": true
+      "false_positive": false
     }
   ],
   "recall_at_k": 1.0,
   "mrr": 1.0,
-  "ndcg_at_k": 0.98662,
-  "no_answer_false_positive_rate": 1.0,
+  "ndcg_at_k": 1.0,
+  "no_answer_false_positive_rate": 0.0,
   "provider": "local-hybrid-rrf"
 }

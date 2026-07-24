@@ -12,7 +12,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from app.harness.adapters import ChatCoachGenerator, LocalRagAdapter
 from app.harness.steps import GenerationRequest, RetrievalRequest
 from app.providers.config import create_zhipu_provider, load_zhipu_settings
-from app.rag.retriever import LocalKnowledgeRetriever
+from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.tools.adapters import build_knowledge_tools, build_llm_tools
 from app.tools.registry import ToolRegistry
 from app.tools.runtime import ToolRuntime
@@ -41,6 +41,7 @@ SYSTEM_PROMPT = """
 11. 不提供实时辅助、隐藏信息追踪、脚本或自动化等不公平竞技建议。
 12. 不得声称知识库包含当前版本 Meta；版本强度、胜率和主流出装需要独立 Meta 数据支持。
 13. 报告末尾必须说明数据边界，并列出本次实际采用的知识来源。
+14. 使用知识性结论时，只能引用输入中提供的 [K1]、[K2] 等引用 ID；不得创造不存在的引用。
 
 输出 Markdown，固定结构：
 # RiftCoach 教练式复盘报告
@@ -141,6 +142,20 @@ def build_retrieval_query(summary: dict) -> str:
     )
 
 
+def build_retrieval_filters(summary: dict) -> dict:
+    filters = {}
+    main_role = (summary.get("recent_summary") or {}).get("main_role")
+    if main_role:
+        filters["position"] = main_role
+    matches = summary.get("matches") or []
+    if matches and matches[0].get("game_version"):
+        filters["version"] = matches[0]["game_version"]
+    generated_at = (summary.get("metadata") or {}).get("generated_at_utc")
+    if generated_at:
+        filters["as_of"] = generated_at[:10]
+    return filters
+
+
 def build_user_prompt(
     summary: dict,
     deterministic_report: str,
@@ -172,11 +187,11 @@ def create_llm_provider():
     return create_zhipu_provider(load_zhipu_settings())
 
 
-def create_report_runtime(retriever: LocalKnowledgeRetriever) -> ToolRuntime:
+def create_report_runtime(knowledge_provider) -> ToolRuntime:
     provider = create_llm_provider()
     registry = ToolRegistry()
     for definition in (
-        *build_knowledge_tools(retriever),
+        *build_knowledge_tools(knowledge_provider),
         *build_llm_tools(provider),
     ):
         registry.register(definition)
@@ -223,11 +238,14 @@ def main():
     ddragon = DataDragonService(language="zh_CN")
     display_summary = terminology.apply_to_summary(raw_summary, ddragon)
     deterministic_report = read_text(report_path)
-    retriever = LocalKnowledgeRetriever(Path(args.knowledge_dir))
-    runtime = create_report_runtime(retriever)
+    knowledge_provider = LocalHybridKnowledgeProvider.from_directory(
+        Path(args.knowledge_dir)
+    )
+    runtime = create_report_runtime(knowledge_provider)
     rag_step = LocalRagAdapter(
         runtime=runtime,
         query_builder=build_retrieval_query,
+        filter_builder=build_retrieval_filters,
         top_k=args.rag_top_k,
     )
     knowledge = rag_step.retrieve(
@@ -237,9 +255,10 @@ def main():
         )
     )
 
-    print(f"RAG documents: {retriever.document_count}")
-    print(f"RAG chunks: {retriever.chunk_count}")
+    print(f"RAG parent chunks: {len(knowledge_provider.corpus.parents)}")
+    print(f"RAG child chunks: {len(knowledge_provider.corpus.children)}")
     print("RAG sources:", ", ".join(knowledge.source_ids) or "none")
+    print("RAG abstained:", knowledge.abstained)
 
     generator = ChatCoachGenerator(
         runtime=runtime,

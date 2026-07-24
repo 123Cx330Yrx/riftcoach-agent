@@ -7,6 +7,7 @@ from app.rag.documents import ChildChunk, KnowledgeCorpus, ParentChunk
 from app.rag.embedding import DenseIndex, HashingEmbeddingProvider
 from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.rag.models import KnowledgeMetadata, KnowledgeQuery
+from app.rag.policy import EvidencePolicy, EvidencePolicyConfig
 
 
 def chunk_pair(name: str, content: str):
@@ -23,6 +24,16 @@ def chunk_pair(name: str, content: str):
         metadata=metadata,
     )
     return parent, child
+
+
+def permissive_policy():
+    return EvidencePolicy(
+        EvidencePolicyConfig(
+            minimum_bm25_score=0,
+            minimum_query_coverage=0,
+            max_hits_per_source=5,
+        )
+    )
 
 
 class FailingQueryEmbeddingProvider:
@@ -69,7 +80,10 @@ def test_hybrid_provider_returns_parent_context_and_channel_trace():
         parents=tuple(pair[0] for pair in pairs),
         children=tuple(pair[1] for pair in pairs),
     )
-    provider = LocalHybridKnowledgeProvider(corpus)
+    provider = LocalHybridKnowledgeProvider(
+        corpus,
+        evidence_policy=permissive_policy(),
+    )
 
     result = provider.search(KnowledgeQuery(text="视野分 信息准备", top_k=1))
 
@@ -88,6 +102,7 @@ def test_hybrid_provider_degrades_to_bm25_when_query_embedding_fails():
         KnowledgeCorpus(parents=(parent,), children=(child,)),
         embedding_provider=FailingQueryEmbeddingProvider(),
         allow_embedding_fallback=True,
+        evidence_policy=permissive_policy(),
     )
 
     result = provider.search(KnowledgeQuery(text="视野分", top_k=1))

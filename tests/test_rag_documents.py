@@ -11,6 +11,8 @@ source_id: rules.md
 knowledge_type: review_rule
 version: 16.13
 updated_at: 2026-07-23
+valid_from: 2026-07-20
+valid_until: 2026-08-20
 positions: MIDDLE, TOP
 ---
 # 复盘规则
@@ -36,6 +38,8 @@ positions: MIDDLE, TOP
     assert parents[0].metadata.version == "16.13"
     assert parents[0].metadata.positions == ("MIDDLE", "TOP")
     assert parents[0].metadata.updated_at.isoformat() == "2026-07-23"
+    assert parents[0].metadata.valid_from.isoformat() == "2026-07-20"
+    assert parents[0].metadata.valid_until.isoformat() == "2026-08-20"
     assert "## 统计边界" in parents[0].content
     assert "统计边界" in children[0].content
 
@@ -73,6 +77,19 @@ def test_chunk_ids_are_deterministic_and_change_with_content():
     assert first[0][0].parent_id == same[0][0].parent_id
     assert first[1][0].child_id == same[1][0].child_id
     assert first[0][0].parent_id != changed[0][0].parent_id
+
+
+def test_h1_only_document_is_retained_as_one_parent_section():
+    parents, children = parse_markdown_document(
+        source_name="overview.md",
+        text="# Overview\n\nThis document has useful content but no H2 heading.",
+    )
+
+    assert len(parents) == 1
+    assert len(children) == 1
+    assert parents[0].metadata.title == "Overview"
+    assert "useful content" in parents[0].content
+    assert children[0].parent_id == parents[0].parent_id
 
 
 def test_invalid_front_matter_fails_explicitly_without_exposing_content():

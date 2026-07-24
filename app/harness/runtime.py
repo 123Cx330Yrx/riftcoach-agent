@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from typing import Any, Mapping
 
 from .models import ArtifactKind, HarnessConfig, RunManifest, RunStatus
@@ -90,7 +91,7 @@ class ReviewHarness:
             kind=ArtifactKind.RETRIEVAL_EVIDENCE,
             relative_path="knowledge/retrieval_evidence.json",
             content=self._knowledge_bytes(knowledge),
-            schema_version="1.0",
+            schema_version="2.0",
             producer="retriever",
         )
         manifest = self._transition(RunStatus.KNOWLEDGE_READY)
@@ -105,6 +106,7 @@ class ReviewHarness:
             )
             if not isinstance(draft, CoachDraft):
                 raise TypeError("Generator must return CoachDraft.")
+            self._validate_report_citations(draft.report, knowledge)
         except Exception as exc:
             return self._finish_unsuccessful_run(
                 deterministic_content,
@@ -183,6 +185,7 @@ class ReviewHarness:
                 )
                 if not isinstance(revised, CoachDraft):
                     raise TypeError("Reviser must return CoachDraft.")
+                self._validate_report_citations(revised.report, knowledge)
             except Exception as exc:
                 return self._finish_unsuccessful_run(
                     deterministic_content,
@@ -302,8 +305,41 @@ class ReviewHarness:
             {
                 "context": knowledge.context,
                 "source_ids": list(knowledge.source_ids),
+                "citations": [
+                    {
+                        "citation_id": citation.citation_id,
+                        "chunk_id": citation.chunk_id,
+                        "parent_id": citation.parent_id,
+                        "source_id": citation.source_id,
+                        "title": citation.title,
+                        "content": citation.content,
+                        "matched_content": citation.matched_content,
+                        "version": citation.version,
+                        "updated_at": citation.updated_at,
+                    }
+                    for citation in knowledge.citations
+                ],
+                "abstained": knowledge.abstained,
+                "diagnostics": dict(knowledge.diagnostics),
             }
         )
+
+    @staticmethod
+    def _validate_report_citations(
+        report: str,
+        knowledge: KnowledgeEvidence,
+    ) -> None:
+        cited_ids = set(re.findall(r"\[(K\d+)\]", report))
+        allowed_ids = {
+            citation.citation_id
+            for citation in knowledge.citations
+        }
+        unknown = sorted(cited_ids.difference(allowed_ids))
+        if unknown:
+            raise ValueError(
+                "Coach report contains unknown knowledge citation IDs: "
+                + ", ".join(unknown)
+            )
 
     @classmethod
     def _evaluation_bytes(cls, evaluation: EvaluationResult) -> bytes:

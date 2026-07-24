@@ -29,6 +29,10 @@ def main() -> None:
         default="data/evaluation/rag_retrieval_cases.json",
     )
     parser.add_argument("--output")
+    parser.add_argument("--min-recall", type=float)
+    parser.add_argument("--min-mrr", type=float)
+    parser.add_argument("--min-ndcg", type=float)
+    parser.add_argument("--max-no-answer-fpr", type=float)
     args = parser.parse_args()
 
     knowledge_dir = Path(args.knowledge_dir)
@@ -55,7 +59,7 @@ def main() -> None:
     )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2),
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
 
@@ -69,6 +73,37 @@ def main() -> None:
         f"{evaluation.no_answer_false_positive_rate:.4f}"
     )
     print(f"Saved: {output_path}")
+
+    failures = []
+    if (
+        args.min_recall is not None
+        and evaluation.recall_at_k < args.min_recall
+    ):
+        failures.append(
+            f"Recall@K {evaluation.recall_at_k:.4f} < {args.min_recall:.4f}"
+        )
+    if args.min_mrr is not None and evaluation.mrr < args.min_mrr:
+        failures.append(f"MRR {evaluation.mrr:.4f} < {args.min_mrr:.4f}")
+    if args.min_ndcg is not None and evaluation.ndcg_at_k < args.min_ndcg:
+        failures.append(
+            f"nDCG@K {evaluation.ndcg_at_k:.4f} < {args.min_ndcg:.4f}"
+        )
+    if (
+        args.max_no_answer_fpr is not None
+        and evaluation.no_answer_false_positive_rate
+        > args.max_no_answer_fpr
+    ):
+        failures.append(
+            "No-answer false-positive rate "
+            f"{evaluation.no_answer_false_positive_rate:.4f} "
+            f"> {args.max_no_answer_fpr:.4f}"
+        )
+
+    if failures:
+        print("Retrieval quality gate failed:", file=sys.stderr)
+        for failure in failures:
+            print(f"- {failure}", file=sys.stderr)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

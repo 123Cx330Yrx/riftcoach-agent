@@ -14,6 +14,7 @@ from .models import (
     KnowledgeQuery,
     KnowledgeSearchResult,
 )
+from .policy import EvidencePolicy
 
 
 @dataclass
@@ -37,6 +38,7 @@ class LocalHybridKnowledgeProvider:
         rrf_k: int = 60,
         candidate_multiplier: int = 4,
         allow_embedding_fallback: bool = True,
+        evidence_policy: EvidencePolicy | None = None,
     ) -> None:
         if rrf_k <= 0:
             raise ValueError("rrf_k must be positive.")
@@ -48,6 +50,7 @@ class LocalHybridKnowledgeProvider:
         self.rrf_k = rrf_k
         self.candidate_multiplier = candidate_multiplier
         self.allow_embedding_fallback = allow_embedding_fallback
+        self.evidence_policy = evidence_policy or EvidencePolicy()
         self.bm25 = BM25Index(corpus.children)
         self.dense = DenseIndex(corpus.children, self.embedding_provider)
 
@@ -103,10 +106,8 @@ class LocalHybridKnowledgeProvider:
                 continue
             seen_parents.add(row.child.parent_id)
             parent_rows.append(row)
-            if len(parent_rows) >= query.top_k:
-                break
 
-        hits = tuple(
+        candidate_hits = tuple(
             self._to_hit(
                 row,
                 rank=rank,
@@ -114,10 +115,13 @@ class LocalHybridKnowledgeProvider:
             )
             for rank, row in enumerate(parent_rows, start=1)
         )
+        outcome = self.evidence_policy.apply(query, candidate_hits)
         return KnowledgeSearchResult(
             query=query,
-            hits=hits,
+            hits=outcome.hits,
             provider=self.provider_name,
+            abstained=outcome.abstained,
+            diagnostics=outcome.diagnostics,
         )
 
     def _to_hit(
@@ -154,6 +158,8 @@ class LocalHybridKnowledgeProvider:
                 knowledge_type=metadata.knowledge_type,
                 version=metadata.version,
                 updated_at=metadata.updated_at,
+                valid_from=metadata.valid_from,
+                valid_until=metadata.valid_until,
                 positions=metadata.positions,
                 language=metadata.language,
                 attributes=attributes,

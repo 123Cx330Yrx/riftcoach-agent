@@ -74,7 +74,21 @@ def parse_markdown_document(
 
     knowledge_type = front_matter.get("knowledge_type", "unknown").strip()
     version = front_matter.get("version") or None
-    updated_at = _parse_date(front_matter.get("updated_at"), source_name)
+    updated_at = _parse_date(
+        front_matter.get("updated_at"),
+        source_name,
+        field_name="updated_at",
+    )
+    valid_from = _parse_date(
+        front_matter.get("valid_from"),
+        source_name,
+        field_name="valid_from",
+    )
+    valid_until = _parse_date(
+        front_matter.get("valid_until"),
+        source_name,
+        field_name="valid_until",
+    )
     positions = tuple(
         item.strip()
         for item in front_matter.get("positions", "").split(",")
@@ -92,8 +106,16 @@ def parse_markdown_document(
             knowledge_type=knowledge_type,
             version=version,
             updated_at=updated_at,
+            valid_from=valid_from,
+            valid_until=valid_until,
             positions=positions,
-            attributes={"document_title": document_title},
+            attributes={
+                "document_title": document_title,
+                "knowledge_key": front_matter.get(
+                    "knowledge_key",
+                    f"{source_id}#{section_title}",
+                ),
+            },
         )
         parents.append(
             ParentChunk(
@@ -155,8 +177,8 @@ def _parse_sections(body: str) -> tuple[str, list[tuple[str, str]]]:
     def flush() -> None:
         nonlocal current_lines
         content = "\n".join(current_lines).strip()
-        if current_title and content:
-            sections.append((current_title, content))
+        if content:
+            sections.append((current_title or document_title, content))
         current_lines = []
 
     for line in body.splitlines():
@@ -196,13 +218,18 @@ def _hard_split(text: str, max_chars: int) -> tuple[str, ...]:
     return tuple(text[index : index + max_chars] for index in range(0, len(text), max_chars))
 
 
-def _parse_date(value: str | None, source_name: str) -> date | None:
+def _parse_date(
+    value: str | None,
+    source_name: str,
+    *,
+    field_name: str,
+) -> date | None:
     if not value:
         return None
     try:
         return date.fromisoformat(value)
     except ValueError as exc:
-        raise ValueError(f"Invalid updated_at date in {source_name}") from exc
+        raise ValueError(f"Invalid {field_name} date in {source_name}") from exc
 
 
 def _content_id(kind: str, source_id: str, title: str, content: str) -> str:

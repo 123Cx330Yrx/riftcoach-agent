@@ -34,12 +34,13 @@ from app.harness.steps import (
 from app.harness.store import FileRunStore
 from app.lol.summary_schema import validate_summary_document
 from app.providers.config import create_zhipu_provider, load_zhipu_settings
-from app.rag.retriever import LocalKnowledgeRetriever
+from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.tools.adapters import build_knowledge_tools, build_llm_tools
 from app.tools.registry import ToolRegistry
 from app.tools.runtime import ToolRuntime
 from scripts.generate_llm_coach_report import (
     SYSTEM_PROMPT,
+    build_retrieval_filters,
     build_retrieval_query,
     build_user_prompt,
     compact_summary,
@@ -54,7 +55,13 @@ class DryRunGenerator:
     """Deterministic model substitute; all non-model Harness steps remain real."""
 
     def generate(self, request) -> CoachDraft:
-        sources = "、".join(request.knowledge.source_ids) or "未命中知识来源"
+        sources = (
+            "、".join(
+                f"[{citation.citation_id}] {citation.source_id}"
+                for citation in request.knowledge.citations
+            )
+            or "未命中知识来源"
+        )
         return CoachDraft(
             report=(
                 "# RiftCoach 教练式复盘报告\n\n"
@@ -155,12 +162,15 @@ def main(argv: list[str] | None = None) -> int:
     store = FileRunStore(args.runs_root, run_id)
     provider = None if args.dry_run else create_llm_provider()
     tool_runtime = create_tool_runtime(
-        retriever=LocalKnowledgeRetriever(Path(args.knowledge_dir)),
+        knowledge_provider=LocalHybridKnowledgeProvider.from_directory(
+            Path(args.knowledge_dir)
+        ),
         provider=provider,
     )
     retriever = LocalRagAdapter(
         runtime=tool_runtime,
         query_builder=build_retrieval_query,
+        filter_builder=build_retrieval_filters,
         top_k=args.rag_top_k,
     )
     if args.dry_run:
@@ -220,9 +230,9 @@ def create_llm_provider():
     return create_zhipu_provider(load_zhipu_settings())
 
 
-def create_tool_runtime(*, retriever, provider=None) -> ToolRuntime:
+def create_tool_runtime(*, knowledge_provider, provider=None) -> ToolRuntime:
     registry = ToolRegistry()
-    for definition in build_knowledge_tools(retriever):
+    for definition in build_knowledge_tools(knowledge_provider):
         registry.register(definition)
     if provider is not None:
         for definition in build_llm_tools(provider):

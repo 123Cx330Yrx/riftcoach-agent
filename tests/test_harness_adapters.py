@@ -89,6 +89,10 @@ class LocalRagAdapterTests(unittest.TestCase):
 
         self.assertIn("视野分只能作为录像复盘线索", result.context)
         self.assertEqual(("review.md",), result.source_ids)
+        self.assertEqual(1, len(result.citations))
+        self.assertEqual("K1", result.citations[0].citation_id)
+        self.assertEqual("review.md", result.citations[0].source_id)
+        self.assertIn("[K1]", result.context)
 
 
 class ChatCoachGeneratorTests(unittest.TestCase):
