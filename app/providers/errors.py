@@ -22,6 +22,27 @@ class ProviderConfigurationError(ProviderError):
     pass
 
 
+class ProviderCapabilityError(ProviderError):
+    """The selected adapter cannot satisfy an explicit request requirement."""
+
+    def __init__(
+        self,
+        *,
+        provider: str,
+        missing_capabilities: tuple[str, ...],
+    ) -> None:
+        if not missing_capabilities:
+            raise ValueError("missing_capabilities must not be empty.")
+        if any(not value.strip() for value in missing_capabilities):
+            raise ValueError("missing capabilities must not be blank.")
+        self.missing_capabilities = missing_capabilities
+        super().__init__(provider=provider, code="unsupported_capability")
+
+
+class ProviderRegistryError(ProviderError):
+    """A safe configuration or lookup failure inside ProviderRegistry."""
+
+
 class ProviderAuthenticationError(ProviderError):
     pass
 

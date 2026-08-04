@@ -11,13 +11,19 @@ from app.providers.config import (
 )
 from app.providers.errors import (
     ProviderAuthenticationError,
+    ProviderCapabilityError,
     ProviderConfigurationError,
     ProviderRateLimitError,
     ProviderResponseError,
     ProviderTimeoutError,
     ProviderUnavailableError,
 )
-from app.providers.models import ChatMessage, ChatRequest, MessageRole
+from app.providers.models import (
+    ChatMessage,
+    ChatRequest,
+    MessageRole,
+    ToolSpec,
+)
 from app.providers.zhipu import ZhipuProvider
 
 
@@ -138,6 +144,29 @@ class ZhipuProviderMappingTests(unittest.TestCase):
                         )
                     )
                 self.assertEqual("invalid_chat_response", captured.exception.code)
+
+    def test_rejects_tool_request_before_calling_sdk_until_mapping_exists(self) -> None:
+        client = FakeClient(sdk_response())
+        provider = ZhipuProvider(client=client, model="glm-test")
+        request = ChatRequest(
+            messages=(ChatMessage(MessageRole.USER, "查询最近比赛。"),),
+            tools=(
+                ToolSpec(
+                    name="riot.recent_match_ids",
+                    description="查询最近比赛。",
+                    input_schema={"type": "object", "properties": {}},
+                ),
+            ),
+        )
+
+        with self.assertRaises(ProviderCapabilityError) as captured:
+            provider.chat(request)
+
+        self.assertEqual(
+            ("tool_calling",),
+            captured.exception.missing_capabilities,
+        )
+        self.assertEqual([], client.completions.calls)
 
 
 class ZhipuProviderErrorMappingTests(unittest.TestCase):
@@ -291,6 +320,7 @@ class ZhipuSettingsTests(unittest.TestCase):
         )
 
         self.assertIsInstance(provider, ZhipuProvider)
+        self.assertEqual("glm-test", provider.model_name)
         self.assertEqual(
             [
                 {

@@ -8,6 +8,8 @@ from typing import Any
 from openai import OpenAI
 
 from .errors import ProviderConfigurationError
+from .protocol import LLMProvider
+from .registry import ProviderRegistry
 from .zhipu import ZhipuProvider
 
 
@@ -40,6 +42,21 @@ class ZhipuSettings:
             )
 
 
+@dataclass(frozen=True)
+class ProviderRegistrySettings:
+    default_provider_id: str
+
+    def __post_init__(self) -> None:
+        if (
+            not isinstance(self.default_provider_id, str)
+            or not self.default_provider_id.strip()
+        ):
+            raise ProviderConfigurationError(
+                provider="registry",
+                code="missing_default_provider_id",
+            )
+
+
 def load_zhipu_settings(
     environ: Mapping[str, str] | None = None,
 ) -> ZhipuSettings:
@@ -68,6 +85,17 @@ def load_zhipu_settings(
     )
 
 
+def load_provider_registry_settings(
+    environ: Mapping[str, str] | None = None,
+) -> ProviderRegistrySettings:
+    values = os.environ if environ is None else environ
+    default_provider_id = values.get(
+        "LLM_DEFAULT_PROVIDER",
+        values.get("LLM_PROVIDER", "zhipu"),
+    )
+    return ProviderRegistrySettings(default_provider_id=default_provider_id)
+
+
 def create_zhipu_provider(
     settings: ZhipuSettings,
     *,
@@ -79,3 +107,14 @@ def create_zhipu_provider(
         timeout=settings.default_timeout_s,
     )
     return ZhipuProvider(client=client, model=settings.model)
+
+
+def create_provider_registry(
+    providers: Mapping[str, LLMProvider],
+    settings: ProviderRegistrySettings,
+) -> ProviderRegistry:
+    registry = ProviderRegistry()
+    for provider_id, provider in providers.items():
+        registry.register(provider_id, provider)
+    registry.set_default(settings.default_provider_id)
+    return registry

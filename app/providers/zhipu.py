@@ -4,6 +4,7 @@ from typing import Any
 
 import openai
 
+from .capabilities import ProviderCapabilities, require_provider_capabilities
 from .errors import (
     ProviderAuthenticationError,
     ProviderRateLimitError,
@@ -18,6 +19,7 @@ class ZhipuProvider:
     """Translate RiftCoach chat contracts to Zhipu's OpenAI-compatible API."""
 
     provider_name = "zhipu"
+    capabilities = ProviderCapabilities(text_chat=True)
 
     def __init__(self, *, client: Any, model: str) -> None:
         if client is None:
@@ -25,11 +27,16 @@ class ZhipuProvider:
         if not model.strip():
             raise ValueError("model must not be empty.")
         self._client = client
-        self._model = model
+        self.model_name = model
 
     def chat(self, request: ChatRequest) -> ChatResponse:
+        require_provider_capabilities(
+            provider_name=self.provider_name,
+            capabilities=self.capabilities,
+            request=request,
+        )
         payload: dict[str, Any] = {
-            "model": self._model,
+            "model": self.model_name,
             "messages": [
                 {
                     "role": message.role.value,
@@ -54,7 +61,7 @@ class ZhipuProvider:
             if not isinstance(content, str) or not content.strip():
                 raise ValueError("empty content")
 
-            model = getattr(raw_response, "model", None) or self._model
+            model = getattr(raw_response, "model", None) or self.model_name
             finish_reason = getattr(choice, "finish_reason", None)
             request_id = getattr(raw_response, "id", None)
             usage = self._normalize_usage(getattr(raw_response, "usage", None))

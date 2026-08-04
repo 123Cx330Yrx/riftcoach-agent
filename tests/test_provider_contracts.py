@@ -1,5 +1,6 @@
 import unittest
 
+from app.providers.capabilities import ProviderCapabilities
 from app.providers.errors import (
     ProviderAuthenticationError,
     ProviderConfigurationError,
@@ -87,6 +88,8 @@ class ProviderModelTests(unittest.TestCase):
 
 class FakeProvider:
     provider_name = "fake"
+    model_name = "fake-model"
+    capabilities = ProviderCapabilities(text_chat=True)
 
     def chat(self, request: ChatRequest) -> ChatResponse:
         return ChatResponse(
