@@ -33,6 +33,9 @@
 - 将暂存区导出为不含 5C-5 WIP 的独立公开快照；结果为
   `228 passed, 57 subtests passed`，compileall 与治理预检通过，证明公开提交树
   不依赖未验收评测文件。临时快照已在校验绝对路径后清理。
+- 按 4M、5A、5B/5C-4、治理状态四个逻辑提交推送到 GitHub `main`；本地与
+  `origin/main` 同步。GitHub Actions run `31063937488` 的测试、治理预检、
+  两层 RAG 门禁、编译、Harness 边界、密钥检查和 dry-run 全部通过。
 - 用户进一步指出“有文件”仍不足以保证后续不会靠模型记忆漂移；复核确认原有
   CI 没有项目状态一致性门禁。
 - 为 `project_execution_state.md` 增加机器可读状态头；新增
