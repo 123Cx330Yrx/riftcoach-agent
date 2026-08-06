@@ -113,3 +113,4 @@ Phase 3 - 5C-5 Router Evaluation（in progress）
 | `gh run view/list` 连续两次遇到 GitHub API TLS 握手超时 | 2 | 等待后改用 PowerShell REST 客户端查询同一公开 run，确认 CI 成功 |
 | 静态搜索把复杂正则和 PowerShell 双引号混用，导致 unopened group | 1 | 改用单引号与多个 `rg -e` 固定模式，搜索随后成功 |
 | 合并测试补丁时把 Router 测试上下文误指到 Contract 测试文件 | 1 | `apply_patch` 原子拒绝、未产生部分修改；按真实文件拆成小补丁后成功 |
+| 历史结果的 Windows CRLF 字节哈希在 Linux CI checkout 后变化 | 1 | 仅将该不可变归档标为 Git binary，保留原始字节；两个后续 Actions run 均成功 |

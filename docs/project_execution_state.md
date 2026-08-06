@@ -66,7 +66,7 @@ blocked_before: "5D"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C-1 至 5C-4 和第二个真实 Skill Contract；5C-5 已完成数据生命周期第一批，进行中 | 5C 或阶段 5 已完成 |
 | 项目理解 | 已逐步讲解并固化到单局 Skill Contract；本轮已讲清 development/holdout 泄漏边界；5C-5 正式结果和 5C-6 仍需讲解确认 | 测试通过就等于项目所有者已理解 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 单局 Skill 提交 `4103d42` 已推送到 `main`，Actions run `31068654700` 成功；未验收 5C-5 评测继续留在本地；网页产品尚未部署 | 本地 WIP 已全部同步到 GitHub 或线上 |
+| GitHub/部署 | 5C-5 数据生命周期第一批已推送到 `main`；修复/属性提交 `8bfb876`、`318755d` 的 Actions run `31076388257`、`31076432192` 均成功；正式 Router 成绩尚未运行，网页产品尚未部署 | 已推送就等于 5C-5 已验收或已有 holdout 成绩 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

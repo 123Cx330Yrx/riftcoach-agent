@@ -109,3 +109,9 @@
   CLI 默认 development 模式拒绝 holdout，未运行任何新数据集正式 Router 评测。
 - 第一批定向验证：`12 passed`；完整回归为 `252 passed, 57 subtests passed`；当前唯一下一步改为只运行双 Skill development v2
   并分析误路由，仍不得进入 holdout、5C-6 或 5D。
+- 第一批提交 `1d13128` 推送后，Actions run `31075838501` 在 Linux 的历史结果
+  SHA-256 测试失败；原因是 Git 把原始 CRLF 文本规范化为 LF，本地字节哈希不能
+  跨平台复现。
+- 为该单一不可变历史快照增加 Git binary 属性并重新存入原始字节；修复提交
+  `8bfb876` 的 run `31076388257` 成功，属性收尾提交 `318755d` 的 run
+  `31076432192` 也成功。普通 JSON 仍保持文本 diff，不扩大 binary 范围。
