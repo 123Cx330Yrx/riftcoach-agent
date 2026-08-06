@@ -30,7 +30,7 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 - 真实 Provider Tool Calling 和经过领域评测的第二 Provider；
 - 5C-5、5C-6 的独立验收与最终 Skill Router 收尾；
 - 受限 Skill Agent Loop、Context Builder V1 和统一 AgentRuntime；
-- 首批另外两个真实业务 Skill；
+- 第二个真实用户 Skill `single-match-review`；
 - FastAPI 会话入口；
 - 玩家长期 Memory；
 - 标准 MCP Client/Server；
@@ -46,6 +46,18 @@ RiftCoach 保持独立仓库和自主领域核心，不直接 fork 或换皮 Ech
 - Sea-Mult-Agent 作为可靠执行参考，阶段 2 吸收 Artifact、预算和终态原则，阶段 8 再评估租约、事件历史、恢复与迟到结果隔离；
 - 不迁移到 Go，不引入与 LoL 复盘无关的科研沙箱、论文复现或 Benchmark 业务模块；
 - EchoMind 与 AGI-Saber 现有的所谓 MCP 均不视为标准 MCP 实现，RiftCoach 将独立实现标准协议。
+
+## Skill 与事实审查边界
+
+- `recent-form-review` 与 `single-match-review` 是用户请求 Router 选择的两个领域
+  Skill；
+- 报告事实审查不是第三个 Skill，而是现有 Harness 的强制 `EvaluatorStep`；
+- Harness 掌握评测时机、修订预算、阈值、发布、降级和拒绝，Router 不能绕过；
+- 不为维持 Skill 数量复制已有 Evaluator 合同，也不在没有真实内部 Skill 时提前
+  扩展 Manifest 调用模式；
+- 这仍是单 Runtime 的多阶段工作流，不等于 Multi-Agent。
+
+原内部 Skill 提案见 ADR-0008，当前决策见 ADR-0009。
 
 ## 数据职责
 

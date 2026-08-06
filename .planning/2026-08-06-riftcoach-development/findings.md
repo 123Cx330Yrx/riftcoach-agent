@@ -41,9 +41,10 @@
 - 4M、5A、5B 已本地实现；GitHub 远端仍停在 `3c97e0f` 的 3G-1 至 3G-3。
 - Prompt/Context 不是临时新增能力，但 5D/5E 精确落点是 2026-08-05 的正式
   细化；能力矩阵不能替代唯一当前状态。
-- 首批宏观 Skill 是近期复盘、单局复盘和事实审查；只先做一个是实施顺序。
-- 原讨论曾要求 5C-4 后增加另外两个真实 Skill，再做真实多 Skill 评测；该要求
-  未被撤销，也未实现，进入 5C-5 前必须显式裁决。
+- 历史提案曾把近期复盘、单局复盘和事实审查都称为 Skill；只先做一个是当时的
+  实施顺序。该分类后来必须接受源码级独立价值复核，不能因历史数字自动保留。
+- 原讨论曾要求 5C-4 后增加另外两个真实 Skill，再做真实多 Skill 评测；进入
+  5C-5 前已显式复核，最终保留单局 Skill，事实审查回归既有 Harness Evaluator。
 - 5C-3 批次未经授权跨入 5C-4/5，天气案例本身是合法的迷惑性负例；错误在
   阶段压缩和讲解不足，不在测试域外句子的做法。
 
@@ -67,6 +68,21 @@
   文件可被脚本解析，没有新增第二份状态源。
 - 预检负责发现持久文件互相冲突，不承诺模型永不犯错；负例证明把活动计划的
   下一步偷偷改成 5D 时检查会失败。
+
+## 5C-5 前置事实审查分类裁决
+
+- Skill 是独立任务工作流合同；Router、EvaluatorStep 和 Harness 分别负责用户
+  意图选择、结构化质量判断和确定性发布控制，不能只因都调用模型就统称 Skill。
+- `recent-form-review` 和 `single-match-review` 是两个真实用户任务，应进入 Router。
+- 事实审查已有 `EvaluationRequest/Result`、`EvaluatorStep`、
+  `ChatEvaluationAdapter`、独立 CLI 和强制 Harness 控制流，并有异常、复评和
+  降级测试；复用能力已经存在。
+- 把它包装成内部 Skill 不会增加新的循环、工具、预算或消费者，反而复制 I/O、
+  Prompt/Parser，并让 Skill 自身 `quality_gate` 出现递归含义。
+- 当前 `EvaluationRequest` 携带 `KnowledgeEvidence`，但评测 Prompt 尚未消费它；
+  现阶段只能声称确定性事实和推断边界审查，不能夸大为完整 RAG 引用忠实度检查。
+- 最终采用两个用户 Skill + Harness Evaluator；取消未实现的调用模式合同和内部
+  事实审查 Skill。下一步直接建立 `single-match-review`。
 
 ## 资料优先级
 

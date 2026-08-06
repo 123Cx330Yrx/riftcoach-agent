@@ -2,7 +2,7 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5C"
-current_checkpoint: "5C-5-precondition"
+current_checkpoint: "5C-5-prep-2"
 status: in_progress
 blocked_before: "5D"
 ---
@@ -19,8 +19,8 @@ blocked_before: "5D"
 - 最后更新：2026-08-06
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5C Skill Router，进行中
-- 唯一下一步：5C-5-precondition 首批真实 Skill 时序裁决
-- 禁止越过：在前置裁决以及 5C-5、5C-6 分别完成前，不得进入 5D
+- 唯一下一步：5C-5-prep-2 single-match-review Skill Contract
+- 禁止越过：第二个真实用户 Skill 以及 5C-5、5C-6 分别完成前，不得进入 5D
 
 ## 5C 原始子阶段账本
 
@@ -30,7 +30,7 @@ blocked_before: "5D"
 | 5C-2 Skill Catalog | 发现、严格加载并投影可用 Skill | 已完成 | Catalog 代码和测试 | 进入维护 |
 | 5C-3 Deterministic Router | 依据机器可读触发信号做可解释选择 | 已完成 | 确定性 Router、Manifest 信号、单元测试 | 进入维护 |
 | 5C-4 Rejection / Ambiguity | 不支持时拒绝；多候选时不得擅自猜测 | 已完成 | 教学验收文档、排除合同不变量、候选顺序与域外硬负例测试 | 进入维护 |
-| 5C-5 Router Evaluation | 建立正例、负例、歧义、越界和误路由评测 | 初步实现，未收尾 | 15 条开发/校准案例；精确匹配率 `1.0`，错误选择率 `0.0` | 独立审计覆盖、指标和门禁；明确开发集不是 holdout；先裁决首批真实 Skill 与真实多 Skill 评测时序 |
+| 5C-5 Router Evaluation | 建立正例、负例、歧义、越界和误路由评测 | 初步实现，未收尾 | 15 条开发/校准案例；精确匹配率 `1.0`，错误选择率 `0.0` | 先建立 `single-match-review`；再冻结旧单 Skill 基线，并建立双 Skill 开发集与独立保留集 |
 | 5C-6 Model Fallback Decision | 仅在确定性路由出现真实 Bad Case 后评估模型兜底 | 未正式开始 | 设计文档仅记录了暂不引入模型的倾向 | 基于 5C-5 证据做正式“采用/暂缓”决策并记录理由 |
 
 ## 当前真实能力边界
@@ -63,18 +63,25 @@ blocked_before: "5D"
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
 | GitHub/部署 | `main` 与 `origin/main` 已同步公开 4M、5A、5B 和 5C-4；首次公开 CI run `31063937488` 全部通过；未验收的 5C-5 开发评测继续留在本地；网页产品尚未部署 | 本地 WIP 已全部同步到 GitHub 或线上 |
 
-## 待裁决的首批 Skill 时序
+## 已裁决的首批 Skill 与事实审查边界
 
 2026-08-05 的讨论同时确认了两点：
 
 1. 先用一个 `recent-form-review` 样板稳定 Skill Contract 和 Router；
-2. 首批宏观目标仍是近期复盘、单局复盘和报告事实审查，并曾明确提出在
-   5C-4 后增加另外两个真实 Skill，再完成真实多 Skill 路由评测。
+2. 首批宏观能力仍包含近期复盘、单局复盘和报告事实审查，并曾把三者都称为
+   Skill，要求在 5C-4 后补齐再完成真实多 Skill 路由评测。
 
-当前代码只满足第一点。合成候选可以证明歧义算法，但不能证明三个真实业务
-Skill 的触发边界合理。该历史要求没有被明确撤销，也不应在本轮治理修复中直接
-强制实现。5C-4 现已完成；进入 5C-5 前，必须向用户讲清“维持原时序”与
-“按调用性质调整真实 Skill 扩展”的架构与工作量差异，并取得明确裁决。
+源码级复核发现，事实审查并不是缺失的第三个工作流：`EvaluatorStep`、
+`ChatEvaluationAdapter` 和 `ReviewHarness` 已经提供类型化输入输出、复用入口、
+修订预算和强制发布门禁。把它再包装成 Skill 只会复制合同。
+
+- `recent-form-review`：已存在的用户可路由 Skill；
+- `single-match-review`：下一步建立的第二个用户可路由 Skill；
+- 报告事实审查：继续作为 Harness `EvaluatorStep` 强制执行，不是 Skill。
+
+未实现的调用模式合同和 `report-fact-check` Skill 已在写代码前取消。实施顺序修正
+为单局 Skill、真实双 Skill 路由评测、模型兜底决策。详细裁决见 ADR-0008 和
+ADR-0009。
 
 ## 2026-08-06 阶段漂移事件
 
@@ -108,9 +115,12 @@ Skill 的触发边界合理。该历史要求没有被明确撤销，也不应�
   九阶段编号、需求编号和工作约束；任何冲突都先阻止功能推进；
 - 自动检查降低再次漂移的概率并让错误可见，但不能替代用户对阶段验收的确认。
 
-## 当前决策门的范围
+## 下一检查点的范围
 
-`5C-5-precondition` 不是新增产品子阶段，而是执行 RQ-018 已记录的进入条件：
-判断 `single-match-review` 是否应成为第二个用户可路由 Skill，以及
-`report-fact-check` 应由用户 Router 选择还是由 Harness/Runtime 内部确定性调用。
-取得用户明确裁决前，不实现新 Skill，不收尾 5C-5，也不进入 5D。
+`5C-5-prep-1 Skill Invocation Contract` 与 `5C-5-prep-3 report-fact-check Skill`
+已在功能代码开始前由 ADR-0009 取消，并保留在历史记录中。
+
+`5C-5-prep-2` 只建立 `single-match-review` 的 Skill Contract：明确单局输入、
+输出、触发/排除边界、工具权限、预算、步骤和成功标准，使 Catalog 出现第二个真实
+用户候选。本检查点不执行 Skill、不调用模型、不修改 Harness，也不进入 5C-5 或
+5D。

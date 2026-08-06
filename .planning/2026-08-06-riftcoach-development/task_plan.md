@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 2.5 - 5C-5-precondition Skill 时序裁决（in progress）
+Phase 2.6 - 5C-5-prep-2 single-match-review（in progress）
 
 ## Phases
 
@@ -28,10 +28,20 @@ Phase 2.5 - 5C-5-precondition Skill 时序裁决（in progress）
 
 ### Phase 2.5 - 5C-5 前置 Skill 时序裁决
 
-- Status: in_progress
+- Status: complete
 - 本项是进入 5C-5 前的决策门，不是新增主阶段或替代原 5C-5。
-- 讲清两个新增真实 Skill 的调用性质、Router 边界和两种实施顺序。
-- 取得用户明确裁决后，才更新 Phase 3 的进入条件并开始实现。
+- 先形成用户 Skill / 内部 Skill 的初步方案，再回到 Harness/Evaluation 源码复核。
+- 发现事实审查已有完整 `EvaluatorStep` 后，用 ADR-0009 取代未实现的内部 Skill
+  方案；保留事实审查能力，但不复制为第三个 Skill。
+
+### Phase 2.6 - 5C-5 第二个真实 Skill 准备
+
+- Status: in_progress
+- `5C-5-prep-1`：Skill Invocation Contract，写代码前取消。
+- `5C-5-prep-2`：创建用户可路由的 `single-match-review`。
+- `5C-5-prep-3`：内部 `report-fact-check` Skill，写代码前取消。
+- 明确单局输入输出、触发边界、工具权限、预算、步骤和成功标准。
+- 本项完成后才进入 Phase 3；不创建 `report-fact-check` Skill。
 
 ### Phase 3 - 5C-5 Router Evaluation 收尾
 
@@ -60,9 +70,9 @@ Phase 2.5 - 5C-5-precondition Skill 时序裁决（in progress）
 
 ## Next Step
 
-5C-5-precondition：向用户交付 5C-4 结果，并裁决 `single-match-review` 与
-`report-fact-check` 的真实调用性质和实施时序。取得明确决定前不得进入 5C-5，
-也不得进入 5D。
+5C-5-prep-2：建立 `single-match-review` Skill Contract，使 Catalog 拥有第二个
+真实用户候选；本检查点不执行 Skill、不调用模型、不修改 Harness，也不进入
+5C-5 Router Evaluation 或 5D。
 
 ## Decisions Made
 
@@ -75,6 +85,9 @@ Phase 2.5 - 5C-5-precondition Skill 时序裁决（in progress）
 | 完整 GPT 导出只用于定向查漏 | 全量历史混有早期和已撤回方案，专项导出与后续明确确认更适合判定当前路线 |
 | 首批三 Skill 时序标为待裁决 | 历史承诺没有被撤销，但治理修复也不能直接替用户决定继续维持还是调整 |
 | 5C-4 只补合同不变量和边界测试 | 保留已正确的匹配算法，同时让排除信号在算法与决策合同两层都成为硬否决 |
+| 两个用户任务进入 Router，事实审查保留为 EvaluatorStep | Router 选择用户意图；Harness 的强制质量端口不是第三种用户任务 |
+| 不实现 Skill Invocation Contract | 当前没有真实内部 Skill；为一个重复包装扩展 Manifest 会增加无消费者的抽象 |
+| 用 ADR-0009 取代 ADR-0008 原方案 | 保留决策历史，同时确保最终路线由源码证据而不是“三个 Skill”数字驱动 |
 
 ## Errors Encountered
 
@@ -89,3 +102,6 @@ Phase 2.5 - 5C-5-precondition Skill 时序裁决（in progress）
 | 状态源使用 `5C-5-precondition`，活动计划 Current Phase 只写中文简称 | 1 | 在 Current Phase 保留同一机器键，预检随后通过 |
 | 治理负例测试硬编码旧检查点 `5C-4`，状态正常推进后失败 | 1 | 改为断言稳定的“Next Step 与 canonical checkpoint 不一致”语义 |
 | 暂存区快照命令把计算路径和递归清理写在同一调用，被终端策略拒绝 | 1 | 改用仓库内固定临时目录，先验证快照，再校验绝对路径并分步清理 |
+| 假定 `docs/adr/README.md` 存在，实际仓库只有编号 ADR 文件 | 1 | 改读最新 ADR 实例；以后先用 `rg --files docs/adr` 确认文件 |
+| 初步把事实审查分类为内部 Skill，未先核对既有 EvaluatorStep | 1 | 暂停实现，完整审计 Harness/Evaluation 与测试；用 ADR-0009 取代方案并取消重复代码 |
+| `python -m pytest` 命中桌面应用 Hermes Python，缺少 pytest | 1 | 改用仓库 `.venv\\Scripts\\python.exe` 执行项目测试，不重复错误解释器 |

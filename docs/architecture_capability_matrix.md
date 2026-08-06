@@ -26,8 +26,8 @@
 | A04 | Tool Runtime | Schema、超时、重试、缓存、熔断、fallback、指标 | 阶段 3 | 阶段 7 适配标准 MCP 工具 | 故障注入、缓存、熔断、fallback 和越权测试 | 已完成 |
 | A05 | RAG 与证据 | 混合检索、父子块、引用、冲突、拒答、独立保留集 | 阶段 4 | 维护数据集；按规模证据决定是否升级存储 | Recall/MRR/nDCG、abstain、引用支持与冲突测试 | 已完成 |
 | A06 | 最小 Agent Loop | Assistant ToolCall、Tool Observation、预算和停止原因 | 阶段 5A | 阶段 5D 接入 Skill，5E 统一 Runtime | Fake Provider + 真实知识工具、重复调用和越权测试 | 已完成 |
-| A07 | Skill Contract | Manifest、SKILL.md、Pydantic I/O、工具白名单和预算 | 阶段 5B | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill | 坏 Manifest、Schema、权限漂移和发布边界测试 | 已完成 |
-| A08 | Skill Router | 5C-1 至 5C-4 已完成；5C-5 仅有未验收的本地开发评测 | 阶段 5C | 扩充真实多 Skill 与独立保留集；Bad Case 证明需要后才加模型兜底 | 正例、负例、歧义、未支持、误路由和拒绝测试 | 部分完成 |
+| A07 | Skill Contract | Manifest、SKILL.md、Pydantic I/O、工具白名单和预算；已有 `recent-form-review` 样板 | 阶段 5B 已完成基础，5C-5 前增加 `single-match-review` | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill；真实内部 Skill 出现后才设计调用模式 | 坏 Manifest、Schema、权限漂移、预算和发布边界测试 | 部分完成 |
+| A08 | Skill Router | 5C-1 至 5C-4 已完成；5C-5 仅有未验收的本地开发评测 | 阶段 5C | 两个真实用户 Skill 与独立保留集；Bad Case 证明需要后才加模型兜底 | 正例、负例、歧义、未支持、误路由和拒绝测试 | 部分完成 |
 | A09 | Prompt/Context Engineering | Harness Prompt V0、RAG 上下文、SKILL.md 指令 | 阶段 5D-5E | 阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、回归和消融测试 | 需显式补齐 |
 | A10 | 结构化模型输出 | 内部 Pydantic/Dataclass 契约已有，真实 Provider 输出未统一 | 阶段 5D | 第二 Provider 在真实 Skill 场景复验 | 合法、缺字段、额外字段、截断、非 JSON 和修复上限测试 | 需显式补齐 |
 | A11 | AgentRuntime V1 | AgentLoop 与 Harness 分别存在 | 阶段 5D-5E | 阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 已规划 |
@@ -118,6 +118,7 @@
 目前只有一个真实 Skill，因此歧义只由合成候选证明算法行为，不能代表真实多
 Skill 业务边界已经验证。5C-6 尚未正式完成模型兜底采用决策。
 
-当前唯一下一步是 `5C-5-precondition`：裁决首批另外两个真实 Skill 的调用性质
-与真实多 Skill 评测时序。5C 仍然没有执行
-Skill、调用 Tool 或调用 LLM；完成 5C-4、5C-5、5C-6 之前不得进入 5D。
+首批能力分类已经完成源码级复核：近期复盘和单局复盘是两个用户 Skill；事实审查
+继续由现有 Harness `EvaluatorStep` 强制调用，不重复包装为 Skill。当前唯一下一步
+是 `5C-5-prep-2` 单局 Skill Contract。5C 仍然没有执行 Skill、调用 Tool 或调用
+LLM；完成 5C-5、5C-6 之前不得进入 5D。

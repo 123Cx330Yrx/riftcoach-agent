@@ -44,3 +44,22 @@
 - 将治理预检接入 pytest 和 GitHub Actions，并加入一个故意把下一步改成 5D 的
   负例，证明阶段漂移会被测试拒绝。
 - 治理加固完成后，唯一下一步仍为 5C-4 独立复核，没有推进 5C-5 或 5D。
+- 用户在收到明确推荐后以“继续”授权 `5C-5-precondition`，确认保留三个真实
+  Skill，但区分用户路由与内部质量调用。
+- 接受 ADR-0008：近期复盘和单局复盘为 `user_routable`；报告事实审查为
+  `internal`，由 Harness/Runtime 显式调用，不进入用户 Router。
+- 固化 `5C-5-prep-1 -> prep-2 -> prep-3 -> 5C-5 -> 5C-6` 的小步顺序；
+  本轮只完成决策和文档，不编写调用模式或新 Skill 代码。
+- 在准备实现前回查 `app/harness`、`app/evaluation`、独立评测 CLI 和相关测试，
+  发现 `report-fact-check` 与现有 `EvaluatorStep` 完整重叠。
+- 两份独立源码审查均建议保留 Harness Evaluator，不新增内部 Skill；定向 Harness /
+  Evaluation 测试证据覆盖首次评测、复评、非法输出、异常降级与发布门禁。
+- 用 RQ-024 和 ADR-0009 修正初步方案：事实审查能力继续强制存在，但不再分类为
+  Skill；ADR-0008 保留为未落地且已取代的历史方案。
+- `5C-5-prep-1` 调用模式合同与 `prep-3` 内部事实审查 Skill 均标记为写代码前
+  取消，没有伪装成已完成；唯一下一步沿用原编号 `5C-5-prep-2`，建立
+  `single-match-review`。
+- 首次比例化测试命令命中 Hermes 自带 Python，因未安装 pytest 而在测试收集前
+  退出；已确认应改用仓库 `.venv`，该结果不计为项目测试失败。
+- 改用仓库 `.venv` 后，Harness、Evaluation 与治理定向回归为 `30 passed`；
+  `compileall` 通过，`git diff --check` 仅显示既有 LF/CRLF 转换提示，治理预检通过。

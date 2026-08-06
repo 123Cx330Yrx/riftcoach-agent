@@ -22,11 +22,13 @@
 | RQ-015 | 2026-08-04 | 生效 | GLM 是当前唯一真实 Provider 基线；DeepSeek、Qwen 等是未锁定候选 | 显式 Provider 选择、任务级自动模型路由和 Multi-Agent 分开设计；只有同任务同评测后才选第二 Provider |
 | RQ-016 | 2026-08-02 | 生效 | Pi、Claude Agent SDK 等属于条件性 Runtime 采用实验，不是项目默认底座 | 阶段 5F 用真实切片、对照、成本和 ADR 决定采用、局部采用或拒绝；它们不能替代 Harness、Tool Runtime 和领域核心 |
 | RQ-017 | 2026-08-05 | 生效 | Prompt/Context Engineering 跨阶段演进，并有明确 V1 落点 | 阶段 2 Prompt V0；5B Skill 指令；5D Context Assembly/结构化输出/不可信边界；5E 版本、Trace、Usage、预算；6-8 继续加入 Memory、Meta、Compaction 和隔离上下文 |
-| RQ-018 | 2026-08-05 | 待裁决 | 首批业务目标是 `recent-form-review`、`single-match-review`、`report-fact-check`；一个样板先行不等于缩减为一个 | 历史顺序要求 5C-4 后补真实 Skill 并做真实多 Skill 评测；该时序尚未被撤销，必须在 5C-5 前向用户说明并明确维持或修订 |
+| RQ-018 | 2026-08-05 | 由 RQ-024 取代 | 首批业务目标是 `recent-form-review`、`single-match-review`、`report-fact-check`；一个样板先行不等于缩减为一个 | 历史三 Skill 分类经源码审计修正；保留两个领域 Skill，事实审查继续由已有 Harness Evaluator 承担 |
 | RQ-019 | 2026-08-05 | 生效 | 后续阶段可以通过稳定契约深化前面的 V1 能力，但不能借“后续完善”掩盖当前未完成 | 每次深化都记录消费者、接口变化、回归证据和能力边界，不整层推翻重写 |
 | RQ-020 | 2026-08-04 | 生效 | 3G-4 及后续真实 Provider 工作被延后，不是取消 | 等真实 Skill/Agent 任务形成后，以领域评测重新触发；近期路线不得擅自插回连续 Provider 接入 |
 | RQ-021 | 2026-08-06 | 生效 | 1198 页完整 GPT 导出用于定向查漏；后续专项导出和本任务确认记录更适合判定当前路线 | 不按文件更新时间或篇幅判断权威性；完整历史中的旧方案必须结合后续纠正标注状态 |
 | RQ-022 | 2026-08-06 | 生效 | 上下文连续性不能只依赖模型记忆或人工自觉读取文档 | 当前执行状态提供机器可读元数据；每轮恢复和子阶段收尾运行治理预检，冲突时停止功能开发 |
+| RQ-023 | 2026-08-06 | 由 RQ-024 取代 | 首批三个真实 Skill 均保留，但用户任务与内部质量步骤必须分开调用 | 该方案在功能代码开始前经源码审计修正；事实审查已有完整 Harness Evaluator，不再重复包装为内部 Skill |
+| RQ-024 | 2026-08-06 | 生效 | Skill 数量由独立工作流价值决定，不为维持历史数字复制已有 Harness 能力 | 首批 Skill 修正为 `recent-form-review` 与 `single-match-review`；事实审查保留为强制 `EvaluatorStep`，取消未实现的 invocation mode 与 `report-fact-check` Skill；未来只有真实独立用例和 Bad Case 才重新评估内部 Skill |
 
 ## 新条目格式
 

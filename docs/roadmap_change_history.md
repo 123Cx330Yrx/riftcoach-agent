@@ -77,8 +77,8 @@
 
 - `IMPLEMENTED`：建立 `manifest.yaml + SKILL.md + Pydantic I/O`，并完成唯一
   真实样板 `recent-form-review`。
-- `CURRENT`：首批业务目标仍是近期复盘、单局复盘和报告事实审查三个 Skill；
-  先做一个样板是实施顺序，不是把宏观目标缩成一个。
+- `SUPERSEDED`：曾把近期复盘、单局复盘和报告事实审查都归类为 Skill；后续
+  源码审计确认事实审查已由 Harness Evaluator 完整承担，分类由 ADR-0009 修正。
 - `CURRENT`：简单查询不必包装为 Skill；后续 Skill 数量由多步骤、独立权限、
   I/O、成功标准和评测价值决定。
 
@@ -116,6 +116,25 @@
 - `IMPLEMENTED`：为唯一执行状态增加机器可读元数据，并把治理一致性预检接入
   pytest 与 CI；活动计划偷跳到 5D 的负例会失败。
 - `CURRENT`：每次需求或检查点变化后必须同步状态、计划、路线冲突和测试证据。
+
+### 2026-08-06：首批 Skill 调用边界裁决
+
+- `SUPERSEDED`：默认把首批三个真实 Skill 全部作为用户 Router 候选的隐含假设。
+- `SUPERSEDED`：曾决定把 `report-fact-check` 做成内部 Skill，并先增加 Manifest
+  调用模式；该方案只完成 ADR-0008 草案，没有进入功能代码。
+
+### 2026-08-06：事实审查源码复核与分类修正
+
+- `IMPLEMENTED`：复核 `EvaluatorStep`、`ChatEvaluationAdapter`、
+  `ReviewHarness`、独立评测 CLI 和对应测试，确认事实审查已有完整、可复用边界。
+- `CURRENT`：首批 Skill 为 `recent-form-review` 与 `single-match-review`；事实审查
+  是强制 Harness Evaluation Policy，不是第三个 Skill，也不进入 Router。
+- `SUPERSEDED-BEFORE-CODE`：取消 `Skill Invocation Contract` 和
+  `report-fact-check` Skill 两个未实现准备项；未来只有真实独立用例才重新评估
+  内部 Skill 调用模式。
+- `CURRENT`：下一步建立 `single-match-review`，随后用两个真实 Skill 完成
+  Router Evaluation；事实审查仍按 ADR-0003 强制执行，没有被删除或降级。
+- `IMPLEMENTED`：ADR-0008 保留被取代方案，ADR-0009 记录最终裁决。
 
 ## 当前不变的宏观路线
 

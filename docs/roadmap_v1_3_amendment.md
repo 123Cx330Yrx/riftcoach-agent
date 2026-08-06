@@ -167,11 +167,14 @@ OP.GG MCP
 
 5C 路由开发集当前有 15 个参与校准的小型案例，精确匹配率为 `1.0`、错误选择率为
 `0.0`。当前只有一个真实 Skill，歧义能力由合成候选单测验证；该开发集不是独立
-保留集，不代表自然语言路由已经充分泛化。首批另外两个真实 Skill 与真实多 Skill
-评测的时序仍是 5C-5 前的待裁决项，不能用合成候选静默替代。
+保留集，不代表自然语言路由已经充分泛化。
 
-当前唯一下一步是 `5C-5-precondition` 首批真实 Skill 时序裁决。它不是新增
-产品子阶段，而是进入 5C-5 前执行既有约束。动态状态以
+源码审计已修正首批 Skill 分类：`recent-form-review` 与 `single-match-review` 是
+两个真实用户任务；报告事实审查继续由已经实现的 `EvaluatorStep` 和
+`ReviewHarness` 强制执行，不重复包装为内部 Skill。未实现的调用模式合同已取消。
+先建立 `single-match-review`，再冻结旧单 Skill 开发基线并重做双 Skill 开发集与
+独立保留集。原 `prep-1` 与 `prep-3` 均在写代码前取消；当前唯一下一步沿用原编号
+`5C-5-prep-2`；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动
 路由暂不作为连续任务；它们要等 Skill 和 Agent Loop 形成真实调用场景后，按同一
