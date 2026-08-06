@@ -112,3 +112,20 @@
   目标 Timeline 缺失时增加必要验证，不越级重写阶段 1 Schema。
 - 旧 15 条路由开发集按一个真实 Skill 校准；第二个 Skill 加入后预期已过时，必须
   在 5C-5 冻结为历史基线后重建双 Skill development 和 independent holdout。
+
+## 5C-5 第一批数据生命周期复核
+
+- 旧 15 条案例和结果已原样归档；SHA-256 分别记录在
+  `data/evaluation/history/skill_router_v1_single_skill_baseline_manifest.json`，
+  没有重新生成或改写旧 `1.0` 结果。
+- 旧运行的精确未提交工作树 SHA 无法从 Git 恢复；可由结果、单候选行为、
+  `recent-form-review@0.1.0` Manifest 和公开提交 `02528db` 重建兼容快照，
+  因此 provenance 明确标记为 reconstructed。
+- 双 Skill development v2 共 23 条，保留旧案例但逐条记录 Manifest 示例、历史
+  校准、Bad Case、直接单测或边界设计等污染来源；它只用于调试和回归。
+- independent holdout v1 共 12 条，声明 `role=held_out`、
+  `calibration_excluded=true`，并要求规则冻结确认；它是小型维护者编写的合成集，
+  不是生产自然语言泛化证明。
+- Router 评测现在校验数据集角色、案例数量和 `(Skill name, version)` 快照；开发
+  CLI 默认拒绝 holdout，防止误用。该批只验证生命周期门禁，没有运行任何新数据集
+  的正式 Router 成绩。

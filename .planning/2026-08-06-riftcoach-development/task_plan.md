@@ -70,9 +70,9 @@ Phase 3 - 5C-5 Router Evaluation（in progress）
 
 ## Next Step
 
-5C-5 第一批：先冻结旧单 Skill 开发/校准基线，再把双 Skill development 与
-independent holdout 的角色、污染记录和案例边界写清楚；本批不执行 Skill、不调用
-模型、不修改 Harness，也不进入 5C-6 或 5D。
+5C-5 第二批：只运行双 Skill development v2，分析逐条误路由并决定开发门禁是否
+接受；本批不运行 holdout，不执行 Skill、不调用模型、不修改 Harness，也不进入
+5C-6 或 5D。
 
 ## Decisions Made
 
@@ -90,6 +90,8 @@ independent holdout 的角色、污染记录和案例边界写清楚；本批不
 | 用 ADR-0009 取代 ADR-0008 原方案 | 保留决策历史，同时确保最终路线由源码证据而不是“三个 Skill”数字驱动 |
 | 单局 Skill 接收完整 Summary、确定性报告与唯一 target_match_id | 复用版本化事实契约，同时避免给 Agent Riot API 权限；5D 再抽取最小上下文 |
 | 近期与单局范围同时出现时返回 ambiguous | 字面 Router 无法可靠判断语序语义；澄清优于静默丢失其中一个任务 |
+| 旧单 Skill 评测先归档，再重建双 Skill 数据集 | 旧 15 案例参与过规则校准且候选集合已变化；保留历史证据，不能冒充当前泛化成绩 |
+| development 与 held_out 由数据角色和候选版本快照强制区分 | 防止把旧题库或新 Skill 版本静默放入错误评测，降低人工调规则造成的泄漏 |
 
 ## Errors Encountered
 

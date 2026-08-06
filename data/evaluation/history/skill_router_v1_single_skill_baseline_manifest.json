@@ -1,0 +1,37 @@
+{
+  "archive_id": "skill-router-v1-single-skill-development-baseline-1.0.0",
+  "status": "frozen_historical_baseline",
+  "archived_at": "2026-08-06",
+  "original_dataset_path": "data/evaluation/skill_router_v1_development_cases.json",
+  "archived_dataset_path": "data/evaluation/history/skill_router_v1_single_skill_development_cases_1_0_0.json",
+  "dataset_sha256": "216f0f94a535c2847580968a409c30b69f5bf053fb9ddc8831f66f5e26dfbdd9",
+  "original_result_path": "data/evaluation/results/skill_router_v1_development_baseline.json",
+  "archived_result_path": "data/evaluation/results/history/skill_router_v1_single_skill_development_baseline_1_0_0.json",
+  "result_sha256": "b057b470ee2e6d0b0a6a1fedecca84d2a084930a4c215aac8b1cdb251a2165a8",
+  "candidate_snapshot": {
+    "snapshot_id": "single-skill-reconstructed-2026-08-06",
+    "skills": [
+      {
+        "name": "recent-form-review",
+        "version": "0.1.0",
+        "manifest_git_blob": "ef1c95d7c074a1aab1880fe327570eaa6e34100a"
+      }
+    ]
+  },
+  "provenance": {
+    "confidence": "reconstructed_from_local_artifacts_and_git",
+    "compatible_public_commit": "02528dba8a563f5a225b33406faab3c3332b5148",
+    "exact_run_commit_known": false,
+    "evidence": [
+      "The archived result records recent-form-review as its only candidate.",
+      "The single-match case was rejected, which is incompatible with the current two-Skill Catalog.",
+      "The compatible public commit contains recent-form-review version 0.1.0 with the matching trigger contract."
+    ]
+  },
+  "interpretation_limits": [
+    "The 15 cases participated in trigger calibration.",
+    "The result is not an independent holdout measurement.",
+    "The result does not measure the current two-Skill Catalog.",
+    "The exact uncommitted working-tree SHA that produced the run is unavailable."
+  ]
+}

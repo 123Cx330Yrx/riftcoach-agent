@@ -1,0 +1,145 @@
+{
+  "dataset_version": "skill-router-v1-development-1.0.0",
+  "role": "development",
+  "calibration_excluded": false,
+  "created_at": "2026-08-06",
+  "selection_note": "Small calibration set for deterministic Router V1. It is not an independent holdout and must not be used to claim natural-language generalization.",
+  "cases": [
+    {
+      "case_id": "recent_exact_state",
+      "utterance": "分析一下我最近十局的状态",
+      "category": "selected_exact",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"]
+    },
+    {
+      "case_id": "recent_exact_recurring_problem",
+      "utterance": "看看我最近反复出现的问题",
+      "category": "selected_exact",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"]
+    },
+    {
+      "case_id": "recent_exact_training_focus",
+      "utterance": "根据近期对局给我一个训练重点",
+      "category": "selected_exact",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"]
+    },
+    {
+      "case_id": "recent_paraphrase_trend",
+      "utterance": "能分析下近期比赛的表现趋势吗",
+      "category": "selected_paraphrase",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"]
+    },
+    {
+      "case_id": "recent_paraphrase_compact",
+      "utterance": "最近几局战绩怎么样",
+      "category": "selected_paraphrase",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"]
+    },
+    {
+      "case_id": "recent_negative_sentiment_not_negated_intent",
+      "utterance": "最近十局状态不是很好，帮我分析",
+      "category": "selected_paraphrase",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"]
+    },
+    {
+      "case_id": "unsupported_single_match",
+      "utterance": "深度复盘这一场比赛",
+      "category": "rejected_other_skill",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    },
+    {
+      "case_id": "unsupported_current_meta",
+      "utterance": "当前版本哪个英雄胜率最高",
+      "category": "rejected_other_skill",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    },
+    {
+      "case_id": "unsupported_live_cooldown",
+      "utterance": "帮我查看敌方技能冷却",
+      "category": "rejected_compliance_boundary",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    },
+    {
+      "case_id": "unsupported_greeting",
+      "utterance": "你好",
+      "category": "rejected_no_signal",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    },
+    {
+      "case_id": "partial_recent_scope_only",
+      "utterance": "我最近换了键盘",
+      "category": "rejected_partial_match",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    },
+    {
+      "case_id": "training_plan_without_recent_scope",
+      "utterance": "帮我制定一个长期训练计划",
+      "category": "rejected_partial_match",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    },
+    {
+      "case_id": "out_of_domain_weather_false_friend",
+      "utterance": "最近天气状态怎么样",
+      "category": "rejected_false_friend",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    },
+    {
+      "case_id": "recent_version_false_friend",
+      "utterance": "分析最近版本英雄的表现趋势",
+      "category": "rejected_false_friend",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    },
+    {
+      "case_id": "no_available_skills",
+      "utterance": "分析一下我最近十局的状态",
+      "category": "rejected_no_available",
+      "available_skill_names": [],
+      "expected_outcome": "rejected",
+      "expected_reason": "no_available_skills",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    }
+  ]
+}

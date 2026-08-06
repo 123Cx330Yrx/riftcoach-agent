@@ -29,6 +29,7 @@
 | RQ-022 | 2026-08-06 | 生效 | 上下文连续性不能只依赖模型记忆或人工自觉读取文档 | 当前执行状态提供机器可读元数据；每轮恢复和子阶段收尾运行治理预检，冲突时停止功能开发 |
 | RQ-023 | 2026-08-06 | 由 RQ-024 取代 | 首批三个真实 Skill 均保留，但用户任务与内部质量步骤必须分开调用 | 该方案在功能代码开始前经源码审计修正；事实审查已有完整 Harness Evaluator，不再重复包装为内部 Skill |
 | RQ-024 | 2026-08-06 | 生效 | Skill 数量由独立工作流价值决定，不为维持历史数字复制已有 Harness 能力 | 首批 Skill 修正为 `recent-form-review` 与 `single-match-review`；事实审查保留为强制 `EvaluatorStep`，取消未实现的 invocation mode 与 `report-fact-check` Skill；未来只有真实独立用例和 Bad Case 才重新评估内部 Skill |
+| RQ-025 | 2026-08-06 | 生效 | Router 评测必须区分历史基线、可校准 development 与规则冻结后的 independent holdout；holdout 失败不得反向调规则 | 数据集强制声明角色、污染记录、案例数量和候选 Skill 版本快照；默认 CLI 拒绝 holdout，污染后必须退休并升级版本 |
 
 ## 新条目格式
 

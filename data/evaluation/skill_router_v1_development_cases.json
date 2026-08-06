@@ -1,0 +1,254 @@
+{
+  "dataset_id": "skill-router-v1-two-skill-development",
+  "dataset_version": "2.0.0",
+  "role": "development",
+  "calibration_excluded": false,
+  "created_at": "2026-08-06",
+  "case_count": 23,
+  "candidate_snapshot": {
+    "snapshot_id": "two-skill-contract-2026-08-06",
+    "skills": [
+      {"name": "recent-form-review", "version": "0.2.0"},
+      {"name": "single-match-review", "version": "0.1.0"}
+    ]
+  },
+  "contamination_notes": [
+    "This set is intentionally available for Router development and calibration.",
+    "Several cases are copied from Skill examples, prior unit tests, or Bad Cases that changed trigger rules.",
+    "Scores on this set are regression evidence only and must not be reported as generalization evidence."
+  ],
+  "lifecycle_policy": "Cases may be added or relabeled during development, but every rule-influencing source must be recorded and the dataset version must change.",
+  "cases": [
+    {
+      "case_id": "recent_exact_state",
+      "utterance": "分析一下我最近十局的状态",
+      "category": "selected_recent_exact",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"],
+      "contamination_sources": ["recent_manifest_positive_example", "historical_development_set"]
+    },
+    {
+      "case_id": "recent_exact_recurring_problem",
+      "utterance": "看看我最近反复出现的问题",
+      "category": "selected_recent_exact",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"],
+      "contamination_sources": ["recent_manifest_positive_example", "historical_development_set"]
+    },
+    {
+      "case_id": "recent_exact_training_focus",
+      "utterance": "根据近期对局给我一个训练重点",
+      "category": "selected_recent_exact",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"],
+      "contamination_sources": ["recent_manifest_positive_example", "historical_development_set"]
+    },
+    {
+      "case_id": "recent_paraphrase_trend",
+      "utterance": "能分析下近期比赛的表现趋势吗",
+      "category": "selected_recent_paraphrase",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"],
+      "contamination_sources": ["historical_development_set"]
+    },
+    {
+      "case_id": "recent_paraphrase_compact",
+      "utterance": "最近几局战绩怎么样",
+      "category": "selected_recent_paraphrase",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"],
+      "contamination_sources": ["historical_development_set"]
+    },
+    {
+      "case_id": "recent_negative_sentiment_not_negated_intent",
+      "utterance": "最近十局状态不是很好，帮我分析",
+      "category": "selected_recent_paraphrase",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"],
+      "contamination_sources": ["historical_development_set"]
+    },
+    {
+      "case_id": "single_exact_deep_review",
+      "utterance": "深度复盘这一场比赛",
+      "category": "selected_single_exact",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "single-match-review",
+      "expected_candidate_skills": ["single-match-review"],
+      "contamination_sources": ["single_manifest_positive_example", "historical_case_relabel"]
+    },
+    {
+      "case_id": "single_exact_problem",
+      "utterance": "分析这局反映出的问题",
+      "category": "selected_single_exact",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "single-match-review",
+      "expected_candidate_skills": ["single-match-review"],
+      "contamination_sources": ["single_manifest_positive_example"]
+    },
+    {
+      "case_id": "single_explicit_match_id",
+      "utterance": "复盘比赛编号 KR_8287337995",
+      "category": "selected_single_exact",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "single-match-review",
+      "expected_candidate_skills": ["single-match-review"],
+      "contamination_sources": ["single_manifest_positive_example"]
+    },
+    {
+      "case_id": "single_compact_state",
+      "utterance": "这场表现怎么样",
+      "category": "selected_single_paraphrase",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "single-match-review",
+      "expected_candidate_skills": ["single-match-review"],
+      "contamination_sources": ["single_contract_development"]
+    },
+    {
+      "case_id": "ambiguous_recent_then_single",
+      "utterance": "分析最近十局状态，再复盘这一场",
+      "category": "ambiguous_mixed_scope",
+      "expected_outcome": "ambiguous",
+      "expected_reason": "multiple_skills_matched",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": ["recent-form-review", "single-match-review"],
+      "contamination_sources": ["routing_bad_case_changed_trigger_contract"]
+    },
+    {
+      "case_id": "ambiguous_single_then_recent",
+      "utterance": "复盘这一场，再分析最近十局状态",
+      "category": "ambiguous_mixed_scope",
+      "expected_outcome": "ambiguous",
+      "expected_reason": "multiple_skills_matched",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": ["recent-form-review", "single-match-review"],
+      "contamination_sources": ["routing_bad_case_changed_trigger_contract"]
+    },
+    {
+      "case_id": "unsupported_current_meta",
+      "utterance": "当前版本哪个英雄胜率最高",
+      "category": "rejected_other_skill",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": [],
+      "contamination_sources": ["historical_development_set"]
+    },
+    {
+      "case_id": "unsupported_live_cooldown",
+      "utterance": "帮我查看敌方技能冷却",
+      "category": "rejected_compliance_boundary",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": [],
+      "contamination_sources": ["historical_development_set"]
+    },
+    {
+      "case_id": "unsupported_greeting",
+      "utterance": "你好",
+      "category": "rejected_no_signal",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": [],
+      "contamination_sources": ["historical_development_set"]
+    },
+    {
+      "case_id": "partial_recent_scope_only",
+      "utterance": "我最近换了键盘",
+      "category": "rejected_partial_match",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": [],
+      "contamination_sources": ["historical_development_set"]
+    },
+    {
+      "case_id": "training_plan_without_scope",
+      "utterance": "帮我制定一个长期训练计划",
+      "category": "rejected_partial_match",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": [],
+      "contamination_sources": ["historical_development_set"]
+    },
+    {
+      "case_id": "out_of_domain_weather_false_friend",
+      "utterance": "最近天气状态怎么样",
+      "category": "rejected_false_friend",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": [],
+      "contamination_sources": ["historical_case_changed_exclusions"]
+    },
+    {
+      "case_id": "recent_version_false_friend",
+      "utterance": "分析最近版本英雄的表现趋势",
+      "category": "rejected_false_friend",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": [],
+      "contamination_sources": ["historical_case_changed_exclusions"]
+    },
+    {
+      "case_id": "bare_match_id",
+      "utterance": "复盘 KR_8287337995",
+      "category": "rejected_missing_scope_label",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": [],
+      "contamination_sources": ["single_contract_direct_unit_test"]
+    },
+    {
+      "case_id": "bare_recent_scope",
+      "utterance": "最近十局",
+      "category": "rejected_partial_match",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": [],
+      "contamination_sources": ["required_signal_group_contract"]
+    },
+    {
+      "case_id": "bare_single_scope",
+      "utterance": "这一场",
+      "category": "rejected_partial_match",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": [],
+      "contamination_sources": ["required_signal_group_contract"]
+    },
+    {
+      "case_id": "no_available_skills",
+      "utterance": "分析一下我最近十局的状态",
+      "category": "rejected_no_available",
+      "available_skill_names": [],
+      "expected_outcome": "rejected",
+      "expected_reason": "no_available_skills",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": [],
+      "contamination_sources": ["router_contract_direct_unit_test"]
+    }
+  ]
+}

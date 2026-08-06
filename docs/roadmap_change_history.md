@@ -148,6 +148,17 @@
 - `CURRENT`：5C-5 正式进行中。旧 15 条单 Skill 开发/校准结果先冻结为历史基线，
   再建立双 Skill development 与 independent holdout；不得提前进入 5C-6 或 5D。
 
+### 2026-08-06：5C-5 第一批数据生命周期
+
+- `IMPLEMENTED`：旧单 Skill 15 条案例和结果已原样移入 history 目录，并以 SHA-256
+  和重建来源 Manifest 固定；精确未提交运行 SHA 不可恢复，未被伪装成已知证据。
+- `IMPLEMENTED`：双 Skill development v2（23 条）与 independent holdout v1（12 条）
+  已建立，数据集强制声明 role、污染记录、案例数量和候选 Skill 版本快照。
+- `IMPLEMENTED`：development CLI 默认拒绝 held-out 数据，holdout 运行需要显式
+  确认规则已冻结；本批只验证生命周期门禁，没有运行新数据集正式 Router 成绩。
+- `CURRENT`：下一批只运行 development v2 并分析误路由；holdout 仍不得用于调规则，
+  `5C-6` 与 `5D` 继续被阻止。
+
 ## 当前不变的宏观路线
 
 ```text

@@ -1,0 +1,138 @@
+{
+  "dataset_id": "skill-router-v1-two-skill-holdout",
+  "dataset_version": "1.0.0",
+  "role": "held_out",
+  "calibration_excluded": true,
+  "created_at": "2026-08-06",
+  "case_count": 12,
+  "candidate_snapshot": {
+    "snapshot_id": "two-skill-contract-2026-08-06",
+    "skills": [
+      {"name": "recent-form-review", "version": "0.2.0"},
+      {"name": "single-match-review", "version": "0.1.0"}
+    ]
+  },
+  "contamination_notes": [
+    "These synthetic cases were authored only after the two-Skill trigger contracts were frozen.",
+    "No case in this version may be used to add signals, exclusions, or tie-break rules.",
+    "If a result from this set influences routing rules, this version must be retired and a new untouched holdout must be created."
+  ],
+  "rules_frozen_at_commit": "cfd20847788810d5781312e03aaeab0eff8011bd",
+  "sealed_before_first_run": true,
+  "lifecycle_policy": "Run once after development evaluation is accepted. Preserve failures as evidence; never tune against this version.",
+  "limitations": [
+    "This is a small maintainer-authored synthetic holdout, not a blind external benchmark.",
+    "It measures exact routing decisions for two Skills, not Skill execution quality or natural-language coverage at production scale."
+  ],
+  "cases": [
+    {
+      "case_id": "holdout_recent_overall_performance",
+      "utterance": "请看看近二十局整体表现",
+      "category": "selected_recent_paraphrase",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"]
+    },
+    {
+      "case_id": "holdout_recent_compact_record",
+      "utterance": "近来战绩如何",
+      "category": "selected_recent_paraphrase",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "expected_candidate_skills": ["recent-form-review"]
+    },
+    {
+      "case_id": "holdout_single_deep_problem",
+      "utterance": "想深入看看这局的问题",
+      "category": "selected_single_paraphrase",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "single-match-review",
+      "expected_candidate_skills": ["single-match-review"]
+    },
+    {
+      "case_id": "holdout_single_specified_match",
+      "utterance": "分析指定比赛的状态",
+      "category": "selected_single_paraphrase",
+      "expected_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "expected_selected_skill": "single-match-review",
+      "expected_candidate_skills": ["single-match-review"]
+    },
+    {
+      "case_id": "holdout_ambiguous_recent_then_single",
+      "utterance": "先分析近期表现，然后深入看看这局",
+      "category": "ambiguous_mixed_scope",
+      "expected_outcome": "ambiguous",
+      "expected_reason": "multiple_skills_matched",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": ["recent-form-review", "single-match-review"]
+    },
+    {
+      "case_id": "holdout_ambiguous_single_then_recent",
+      "utterance": "这场复盘完也看看近几局趋势",
+      "category": "ambiguous_mixed_scope",
+      "expected_outcome": "ambiguous",
+      "expected_reason": "multiple_skills_matched",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": ["recent-form-review", "single-match-review"]
+    },
+    {
+      "case_id": "holdout_device_performance_false_friend",
+      "utterance": "分析一下我最近键盘的表现",
+      "category": "rejected_false_friend",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    },
+    {
+      "case_id": "holdout_single_version_boundary",
+      "utterance": "分析这场比赛的当前版本环境",
+      "category": "rejected_other_skill",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    },
+    {
+      "case_id": "holdout_single_weather_false_friend",
+      "utterance": "这局天气状态如何",
+      "category": "rejected_false_friend",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    },
+    {
+      "case_id": "holdout_bare_match_identifier",
+      "utterance": "复盘 KR_9000000001",
+      "category": "rejected_missing_scope_label",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    },
+    {
+      "case_id": "holdout_training_plan_without_scope",
+      "utterance": "给我安排一套训练计划",
+      "category": "rejected_partial_match",
+      "expected_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    },
+    {
+      "case_id": "holdout_no_available_skills",
+      "utterance": "请看看近二十局整体表现",
+      "category": "rejected_no_available",
+      "available_skill_names": [],
+      "expected_outcome": "rejected",
+      "expected_reason": "no_available_skills",
+      "expected_selected_skill": null,
+      "expected_candidate_skills": []
+    }
+  ]
+}

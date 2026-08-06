@@ -27,7 +27,7 @@
 | A05 | RAG 与证据 | 混合检索、父子块、引用、冲突、拒答、独立保留集 | 阶段 4 | 维护数据集；按规模证据决定是否升级存储 | Recall/MRR/nDCG、abstain、引用支持与冲突测试 | 已完成 |
 | A06 | 最小 Agent Loop | Assistant ToolCall、Tool Observation、预算和停止原因 | 阶段 5A | 阶段 5D 接入 Skill，5E 统一 Runtime | Fake Provider + 真实知识工具、重复调用和越权测试 | 已完成 |
 | A07 | Skill Contract | `recent-form-review` 与 `single-match-review` 均有 Manifest、SKILL.md、Pydantic I/O、工具白名单和预算 | 阶段 5B 基础 + 5C-5 前第二个真实合同 | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill；真实内部 Skill 出现后才设计调用模式 | 坏 Manifest、Schema、权限漂移、预算和发布边界测试 | 已完成 |
-| A08 | Skill Router | 5C-1 至 5C-4 已完成；两个真实候选已存在，5C-5 旧单 Skill 开发评测尚待重建 | 阶段 5C | 双 Skill 开发集与独立保留集；Bad Case 证明需要后才加模型兜底 | 正例、负例、歧义、未支持、误路由和拒绝测试 | 部分完成 |
+| A08 | Skill Router | 5C-1 至 5C-4 已完成；双 Skill development/holdout 生命周期已建立，正式成绩尚未运行 | 阶段 5C | 先接受 development 误路由分析，再单次运行 holdout；Bad Case 证明需要后才加模型兜底 | 正例、负例、歧义、未支持、误路由、版本快照和拒绝测试 | 部分完成 |
 | A09 | Prompt/Context Engineering | Harness Prompt V0、RAG 上下文、SKILL.md 指令 | 阶段 5D-5E | 阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、回归和消融测试 | 需显式补齐 |
 | A10 | 结构化模型输出 | 内部 Pydantic/Dataclass 契约已有，真实 Provider 输出未统一 | 阶段 5D | 第二 Provider 在真实 Skill 场景复验 | 合法、缺字段、额外字段、截断、非 JSON 和修复上限测试 | 需显式补齐 |
 | A11 | AgentRuntime V1 | AgentLoop 与 Harness 分别存在 | 阶段 5D-5E | 阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 已规划 |
@@ -114,12 +114,13 @@
 5C-4 已独立验收无 Skill、无完整匹配、排除否决和合成多候选歧义，并在决策
 合同层禁止带排除证据的匹配候选。`single-match-review` 已作为第二个真实用户
 Skill 加入 Catalog，并直接测试近期、单局、混合范围歧义、裸 ID 拒绝和域外边界。
-5C-5 在本地工作树已有的 15 个开发/校准案例仍基于旧单 Skill 状态，精确匹配率
-`1.0` 和错误选择率 `0.0` 只能作为待冻结的历史结果；它不是独立保留集，也不能
-代表当前双 Skill 泛化。5C-6 尚未正式完成模型兜底采用决策。
+5C-5 的旧 15 个开发/校准案例仍基于旧单 Skill 状态，精确匹配率 `1.0` 和错误
+选择率 `0.0` 已原样归档为历史结果；它不是独立保留集，也不能代表当前双 Skill
+泛化。双 Skill development v2 与 independent holdout v1 已建立角色、污染记录和
+候选版本快照，但尚未运行正式成绩。5C-6 尚未正式完成模型兜底采用决策。
 
 首批能力分类已经完成源码级复核：近期复盘和单局复盘是两个用户 Skill；事实审查
 继续由现有 Harness `EvaluatorStep` 强制调用，不重复包装为 Skill。单局 Skill
-Contract 已完成，当前唯一下一步是 5C-5 Router Evaluation 的双 Skill 数据集与
-门禁收尾。5C 仍然没有执行 Skill、调用 Tool 或调用 LLM；完成 5C-5、5C-6 之前
-不得进入 5D。
+Contract 已完成，5C-5 第一批已建立双 Skill 数据集生命周期与 CLI 门禁，当前唯一
+下一步是只运行 development v2 并分析误路由。5C 仍然没有执行 Skill、调用 Tool
+或调用 LLM；完成 5C-5、5C-6 之前不得进入 5D。

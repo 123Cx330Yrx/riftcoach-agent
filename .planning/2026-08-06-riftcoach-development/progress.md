@@ -99,3 +99,13 @@
   编译、治理预检和 cached diff check 均通过。
 - 创建并推送 `4103d42 feat(skills): add single match review contract`；GitHub Actions
   run `31068654700` 对同一 SHA 完成且结论为 `success`。
+- 进入 5C-5 第一批后，审计五个 WIP 文件，确认旧 15 条结果只有单一
+  `recent-form-review@0.1.0` 候选，且精确运行 SHA 无法恢复；旧案例和结果原样移入
+  history 目录，以 SHA-256 和重建来源 Manifest 冻结，不再作为当前默认数据集。
+- 新增双 Skill development v2（23 条）与 independent holdout v1（12 条），分别
+  声明角色、候选版本快照、案例数量、污染记录和封存规则。development 保留用于
+  调试，holdout 不能用于调规则。
+- 扩展路由评测契约，加入数据集生命周期校验、候选版本漂移校验和 ambiguity accuracy；
+  CLI 默认 development 模式拒绝 holdout，未运行任何新数据集正式 Router 评测。
+- 第一批定向验证：`12 passed`；完整回归为 `252 passed, 57 subtests passed`；当前唯一下一步改为只运行双 Skill development v2
+  并分析误路由，仍不得进入 holdout、5C-6 或 5D。
