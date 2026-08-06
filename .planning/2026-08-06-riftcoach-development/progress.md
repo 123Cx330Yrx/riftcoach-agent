@@ -63,3 +63,7 @@
   退出；已确认应改用仓库 `.venv`，该结果不计为项目测试失败。
 - 改用仓库 `.venv` 后，Harness、Evaluation 与治理定向回归为 `30 passed`；
   `compileall` 通过，`git diff --check` 仅显示既有 LF/CRLF 转换提示，治理预检通过。
+- 架构裁决提交 `5f288cb` 已推送到 GitHub `main`；本地 HEAD 与 `origin/main`
+  一致，五个未验收 5C-5 WIP 文件保持未跟踪、未提交。
+- GitHub CLI 两次查询遇到 TLS 握手超时；等待后改用公开 REST API 成功确认
+  Actions run `31066598955` 对提交 `5f288cb` 的结论为 `success`。
