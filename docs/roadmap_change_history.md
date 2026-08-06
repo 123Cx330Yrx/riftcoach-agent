@@ -132,9 +132,21 @@
 - `SUPERSEDED-BEFORE-CODE`：取消 `Skill Invocation Contract` 和
   `report-fact-check` Skill 两个未实现准备项；未来只有真实独立用例才重新评估
   内部 Skill 调用模式。
-- `CURRENT`：下一步建立 `single-match-review`，随后用两个真实 Skill 完成
-  Router Evaluation；事实审查仍按 ADR-0003 强制执行，没有被删除或降级。
+- `IMPLEMENTED`：`single-match-review` 已建立，事实审查仍按 ADR-0003 强制
+  执行，没有被删除或降级。
 - `IMPLEMENTED`：ADR-0008 保留被取代方案，ADR-0009 记录最终裁决。
+
+### 2026-08-06：第二个真实用户 Skill Contract
+
+- `IMPLEMENTED`：新增 `single-match-review` Manifest、SKILL.md 和独立 Pydantic
+  I/O；复用 Summary v1.0，目标 match ID 必须唯一，不向 Skill 开放 Riot API。
+- `IMPLEMENTED`：短局仍可单局审查；Timeline 缺失保持显式未知；两个真实候选的
+  近期选择、单局选择、混合范围歧义、裸 ID 拒绝和域外否决已有直接单测。
+- `SUPERSEDED-BEFORE-COMMIT`：初版“更具体单局范围优先 + 连接词排除双任务”被
+  双任务语序 Bad Case 推翻；最终规则是两种范围同时出现一律 `ambiguous`。
+- `IMPLEMENTED`：`recent-form-review` 触发合同变化后由 `0.1.0` 升级为 `0.2.0`。
+- `CURRENT`：5C-5 正式进行中。旧 15 条单 Skill 开发/校准结果先冻结为历史基线，
+  再建立双 Skill development 与 independent holdout；不得提前进入 5C-6 或 5D。
 
 ## 当前不变的宏观路线
 

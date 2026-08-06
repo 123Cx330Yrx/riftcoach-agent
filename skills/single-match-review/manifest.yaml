@@ -1,0 +1,62 @@
+schema_version: "1.0"
+name: single-match-review
+version: "0.1.0"
+description: >-
+  Review one specified completed match from a validated RiftCoach summary using
+  attributable knowledge. Use for a deep review of this match, one game, or an
+  explicit match ID.
+instructions: SKILL.md
+models:
+  input: app.skills.single_match_review:SingleMatchReviewInput
+  output: app.skills.single_match_review:SingleMatchReviewOutput
+triggers:
+  intent: single_match_review
+  positive_examples:
+    - 深度复盘这一场的表现
+    - 分析这局反映出的问题
+    - 复盘比赛编号 KR_1234567890
+  negative_examples:
+    - 分析一下我最近十局的状态
+    - 当前版本哪个英雄胜率最高
+    - 帮我查看敌方技能冷却
+    - 这一场天气怎么样
+  required_signal_groups:
+    - name: match_scope
+      any_of:
+        - 这一局
+        - 这局
+        - 这一场
+        - 这场
+        - 单局
+        - match id
+        - 比赛编号
+        - 指定比赛
+    - name: review_goal
+      any_of:
+        - 深度复盘
+        - 复盘
+        - 分析
+        - 表现
+        - 问题
+        - 状态
+        - 深入看看
+        - 怎么样
+        - 如何
+  excluded_signals:
+    - 版本
+    - 敌方技能
+    - 冷却
+    - 实时
+    - 天气
+permissions:
+  allowed_tools:
+    - knowledge.search
+budgets:
+  max_iterations: 4
+  max_tool_calls: 3
+  timeout_s: 30
+  max_context_tokens: 16000
+quality_gate:
+  required: true
+  minimum_score: 85
+  allow_deterministic_fallback: true

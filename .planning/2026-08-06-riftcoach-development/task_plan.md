@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 2.6 - 5C-5-prep-2 single-match-review（in progress）
+Phase 3 - 5C-5 Router Evaluation（in progress）
 
 ## Phases
 
@@ -36,7 +36,7 @@ Phase 2.6 - 5C-5-prep-2 single-match-review（in progress）
 
 ### Phase 2.6 - 5C-5 第二个真实 Skill 准备
 
-- Status: in_progress
+- Status: complete
 - `5C-5-prep-1`：Skill Invocation Contract，写代码前取消。
 - `5C-5-prep-2`：创建用户可路由的 `single-match-review`。
 - `5C-5-prep-3`：内部 `report-fact-check` Skill，写代码前取消。
@@ -45,7 +45,7 @@ Phase 2.6 - 5C-5-prep-2 single-match-review（in progress）
 
 ### Phase 3 - 5C-5 Router Evaluation 收尾
 
-- Status: pending
+- Status: in_progress
 - 审计开发集覆盖、指标、门禁和局限。
 - 区分 development/calibration 与 independent holdout。
 - 记录可复现的最终基线，但不夸大泛化能力。
@@ -70,9 +70,9 @@ Phase 2.6 - 5C-5-prep-2 single-match-review（in progress）
 
 ## Next Step
 
-5C-5-prep-2：建立 `single-match-review` Skill Contract，使 Catalog 拥有第二个
-真实用户候选；本检查点不执行 Skill、不调用模型、不修改 Harness，也不进入
-5C-5 Router Evaluation 或 5D。
+5C-5 第一批：先冻结旧单 Skill 开发/校准基线，再把双 Skill development 与
+independent holdout 的角色、污染记录和案例边界写清楚；本批不执行 Skill、不调用
+模型、不修改 Harness，也不进入 5C-6 或 5D。
 
 ## Decisions Made
 
@@ -88,6 +88,8 @@ Phase 2.6 - 5C-5-prep-2 single-match-review（in progress）
 | 两个用户任务进入 Router，事实审查保留为 EvaluatorStep | Router 选择用户意图；Harness 的强制质量端口不是第三种用户任务 |
 | 不实现 Skill Invocation Contract | 当前没有真实内部 Skill；为一个重复包装扩展 Manifest 会增加无消费者的抽象 |
 | 用 ADR-0009 取代 ADR-0008 原方案 | 保留决策历史，同时确保最终路线由源码证据而不是“三个 Skill”数字驱动 |
+| 单局 Skill 接收完整 Summary、确定性报告与唯一 target_match_id | 复用版本化事实契约，同时避免给 Agent Riot API 权限；5D 再抽取最小上下文 |
+| 近期与单局范围同时出现时返回 ambiguous | 字面 Router 无法可靠判断语序语义；澄清优于静默丢失其中一个任务 |
 
 ## Errors Encountered
 
@@ -97,12 +99,15 @@ Phase 2.6 - 5C-5-prep-2 single-match-review（in progress）
 | 旧规划目录无 active pointer 且停在 2026-08-01 | 1 | 新建持续开发计划并写入 `.planning/.active_plan` |
 | `session-logs` 说明依赖的 `jq` 在本机不可用 | 1 | 使用 `rg` 和 PowerShell `ConvertFrom-Json` 流式读取同一原始 JSONL |
 | PowerShell 默认读取 UTF-8 中文出现乱码 | 1 | 所有中文审计统一显式使用 `Get-Content -Encoding utf8` |
-| 最终并行一致性扫描因 `rg` 无匹配返回退出码 1 | 1 | 将“无匹配”显式视为成功结果后重跑，得到 `NO_STALE_MATCHES` |
+| 最终并行一致性扫描因 `rg` 无匹配返回退出码 1 | 2 | 无匹配搜索单独运行并显式输出 `NO_STALE_MATCHES`；不再与测试、编译等门禁共享失败传播 |
 | 治理文件已有读取协议，但缺少机器可执行的一致性预检 | 1 | 在继续 5C-4 前增加仓库预检脚本、测试和 CI 门禁 |
 | 状态源使用 `5C-5-precondition`，活动计划 Current Phase 只写中文简称 | 1 | 在 Current Phase 保留同一机器键，预检随后通过 |
 | 治理负例测试硬编码旧检查点 `5C-4`，状态正常推进后失败 | 1 | 改为断言稳定的“Next Step 与 canonical checkpoint 不一致”语义 |
 | 暂存区快照命令把计算路径和递归清理写在同一调用，被终端策略拒绝 | 1 | 改用仓库内固定临时目录，先验证快照，再校验绝对路径并分步清理 |
 | 假定 `docs/adr/README.md` 存在，实际仓库只有编号 ADR 文件 | 1 | 改读最新 ADR 实例；以后先用 `rg --files docs/adr` 确认文件 |
+| 推测 ADR-0003 文件名时使用了不存在的 `quality-gated-review-harness` | 1 | 先列出 `docs/adr`，按真实文件名 `quality-gated-agent-harness` 读取 |
 | 初步把事实审查分类为内部 Skill，未先核对既有 EvaluatorStep | 1 | 暂停实现，完整审计 Harness/Evaluation 与测试；用 ADR-0009 取代方案并取消重复代码 |
 | `python -m pytest` 命中桌面应用 Hermes Python，缺少 pytest | 1 | 改用仓库 `.venv\\Scripts\\python.exe` 执行项目测试，不重复错误解释器 |
 | `gh run view/list` 连续两次遇到 GitHub API TLS 握手超时 | 2 | 等待后改用 PowerShell REST 客户端查询同一公开 run，确认 CI 成功 |
+| 静态搜索把复杂正则和 PowerShell 双引号混用，导致 unopened group | 1 | 改用单引号与多个 `rg -e` 固定模式，搜索随后成功 |
+| 合并测试补丁时把 Router 测试上下文误指到 Contract 测试文件 | 1 | `apply_patch` 原子拒绝、未产生部分修改；按真实文件拆成小补丁后成功 |

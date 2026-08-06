@@ -1,6 +1,6 @@
 schema_version: "1.0"
 name: recent-form-review
-version: "0.1.0"
+version: "0.2.0"
 description: >-
   Review a validated recent-match summary and deterministic report using
   attributable RiftCoach knowledge. Use for recent form, recent match trends,
@@ -45,12 +45,6 @@ triggers:
         - 怎么样
         - 如何
   excluded_signals:
-    - 这一局
-    - 这局
-    - 这一场
-    - 这场
-    - 单局
-    - match id
     - 版本
     - 敌方技能
     - 冷却

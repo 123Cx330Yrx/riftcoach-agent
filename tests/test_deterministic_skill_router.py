@@ -12,7 +12,11 @@ from app.skills.routing_models import (
 
 
 def recent_form_candidate() -> SkillRouteCandidate:
-    return SkillCatalog.from_directory("skills").route_candidates[0]
+    return next(
+        candidate
+        for candidate in SkillCatalog.from_directory("skills").route_candidates
+        if candidate.name == "recent-form-review"
+    )
 
 
 def synthetic_candidate(
@@ -66,6 +70,119 @@ def test_router_selects_one_skill_only_after_every_group_matches():
     assert decision.evidence[0].negative_signals == ()
 
 
+def test_router_selects_recent_form_with_both_real_skills_available():
+    candidates = SkillCatalog.from_directory("skills").route_candidates
+    decision = DeterministicSkillRouter().route(
+        RouterRequest(
+            utterance="请分析一下我最近十局的状态",
+            available_skills=candidates,
+        )
+    )
+
+    assert decision.outcome is RouteOutcome.SELECTED
+    assert decision.selected_skill == "recent-form-review"
+
+
+def test_router_selects_single_match_for_explicit_match_scope():
+    candidates = SkillCatalog.from_directory("skills").route_candidates
+
+    for utterance in (
+        "请深入复盘这一场的表现",
+        "请分析 match_id KR_123 的问题",
+    ):
+        decision = DeterministicSkillRouter().route(
+            RouterRequest(utterance=utterance, available_skills=candidates)
+        )
+
+        assert decision.outcome is RouteOutcome.SELECTED
+        assert decision.selected_skill == "single-match-review"
+
+
+def test_router_returns_ambiguous_when_recent_and_single_scopes_both_appear():
+    decision = DeterministicSkillRouter().route(
+        RouterRequest(
+            utterance="分析最近十局里这一场的状态",
+            available_skills=SkillCatalog.from_directory(
+                "skills"
+            ).route_candidates,
+        )
+    )
+
+    assert decision.outcome is RouteOutcome.AMBIGUOUS
+    assert set(decision.candidate_skills) == {
+        "recent-form-review",
+        "single-match-review",
+    }
+
+
+def test_router_returns_ambiguous_for_a_true_recent_vs_single_comparison():
+    decision = DeterministicSkillRouter().route(
+        RouterRequest(
+            utterance="比较这场和最近十局的表现",
+            available_skills=SkillCatalog.from_directory(
+                "skills"
+            ).route_candidates,
+        )
+    )
+
+    assert decision.outcome is RouteOutcome.AMBIGUOUS
+    assert decision.reason is RouteReason.MULTIPLE_SKILLS_MATCHED
+
+
+def test_real_mixed_scope_ambiguity_is_independent_of_word_and_candidate_order():
+    candidates = SkillCatalog.from_directory("skills").route_candidates
+    utterances = (
+        "分析最近十局状态，再复盘这一场",
+        "先复盘这一场表现，再分析最近十局状态",
+        "比较最近十局状态和这场表现",
+    )
+
+    for utterance in utterances:
+        for ordered_candidates in (candidates, tuple(reversed(candidates))):
+            decision = DeterministicSkillRouter().route(
+                RouterRequest(
+                    utterance=utterance,
+                    available_skills=ordered_candidates,
+                )
+            )
+
+            assert decision.outcome is RouteOutcome.AMBIGUOUS
+            assert set(decision.candidate_skills) == {
+                "recent-form-review",
+                "single-match-review",
+            }
+
+
+def test_router_rejects_a_bare_match_id_without_an_explicit_match_scope():
+    decision = DeterministicSkillRouter().route(
+        RouterRequest(
+            utterance="复盘 KR_8287337995",
+            available_skills=SkillCatalog.from_directory(
+                "skills"
+            ).route_candidates,
+        )
+    )
+
+    assert decision.outcome is RouteOutcome.REJECTED
+    assert decision.reason is RouteReason.NO_MATCHING_SKILL
+
+
+def test_single_match_domain_exclusions_remain_hard_vetoes():
+    candidates = SkillCatalog.from_directory("skills").route_candidates
+
+    for utterance in (
+        "分析这场当前版本表现",
+        "复盘这一局实时表现",
+        "这一场天气怎么样",
+    ):
+        decision = DeterministicSkillRouter().route(
+            RouterRequest(utterance=utterance, available_skills=candidates)
+        )
+
+        assert decision.outcome is RouteOutcome.REJECTED
+        assert decision.reason is RouteReason.NO_MATCHING_SKILL
+
+
 def test_router_rejects_partial_match_but_preserves_partial_evidence():
     decision = DeterministicSkillRouter().route(
         RouterRequest(
@@ -83,7 +200,7 @@ def test_router_rejects_partial_match_but_preserves_partial_evidence():
 def test_router_exclusion_vetoes_an_otherwise_complete_match():
     decision = DeterministicSkillRouter().route(
         RouterRequest(
-            utterance="分析最近十局里这一场的状态",
+            utterance="分析最近十局当前版本的状态",
             available_skills=(recent_form_candidate(),),
         )
     )
@@ -91,7 +208,7 @@ def test_router_exclusion_vetoes_an_otherwise_complete_match():
     assert decision.outcome is RouteOutcome.REJECTED
     assert decision.reason is RouteReason.NO_MATCHING_SKILL
     assert decision.evidence[0].positive_signals == ("最近十局", "状态")
-    assert decision.evidence[0].negative_signals == ("这一场",)
+    assert decision.evidence[0].negative_signals == ("版本",)
 
 
 def test_domain_exclusion_vetoes_an_otherwise_complete_literal_match():
@@ -115,7 +232,7 @@ def test_excluded_candidate_cannot_create_ambiguity_with_a_valid_match():
     )
     decision = DeterministicSkillRouter().route(
         RouterRequest(
-            utterance="根据最近十局里这一场的状态给我训练重点",
+            utterance="根据最近十局当前版本的状态给我训练重点",
             available_skills=(recent_form_candidate(), training_candidate),
         )
     )

@@ -21,7 +21,7 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 - 本地混合 RAG v1 与 4M 小型独立评测门禁；
 - 智谱 GLM 教练报告；
 - 最小 Provider-neutral Agent Loop；
-- `recent-form-review` Skill Contract 样板；
+- `recent-form-review` 与 `single-match-review` 两个用户 Skill Contract；
 - Skill Router 的 5C-1 至 5C-4；
 - 独立事实评测、受限修订、再评测与发布门控。
 
@@ -30,7 +30,6 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 - 真实 Provider Tool Calling 和经过领域评测的第二 Provider；
 - 5C-5、5C-6 的独立验收与最终 Skill Router 收尾；
 - 受限 Skill Agent Loop、Context Builder V1 和统一 AgentRuntime；
-- 第二个真实用户 Skill `single-match-review`；
 - FastAPI 会话入口；
 - 玩家长期 Memory；
 - 标准 MCP Client/Server；

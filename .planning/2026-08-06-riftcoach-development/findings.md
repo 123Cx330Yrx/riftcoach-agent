@@ -90,3 +90,25 @@
 - 原始 Codex JSONL 用于确认本项目何时接受、修改或撤回这些建议。
 - 1198 页 PDF (5) 是完整 GPT 历史，只做关键词和前因后果查漏，不机械继承。
 - 实现完成度以仓库代码、测试、Git 和 `project_execution_state.md` 为准。
+
+## 5C-5-prep-2 单局 Skill Contract
+
+- 单局 Skill 不应接收 Riot ID 后自行拉取数据；它复用阶段 1 已验证的 Player
+  Summary v1.0，并用 `target_match_id` 在 `matches` 中锁定恰好一行。
+- 只传裸 match row 会丢失 Schema 版本、玩家身份和请求来源；传完整 Summary 是
+  输入验证边界，不等于未来把所有 match rows 注入模型。最小上下文抽取属于 5D。
+- 短局排除只影响近期聚合，不影响单局事实存在，因此短局可以复盘但必须提示
+  外推限制。
+- Timeline 缺失不能阻止所有单局分析，但错误原因必须非空，Timeline 派生标量
+  保持 `None`、集合保持为空，不能把未知编码为零。
+- Manifest 仍只授权 `knowledge.search`；玩家事实、Data Dragon 和发布决定分别由
+  上游领域核心与下游 Harness 负责。
+- 初版曾让“最近十局里这一场”优先单局，并尝试用连接词排除真正双任务。只读
+  复核构造出“分析最近十局状态，再复盘这一场”等漏网语序，会静默选择单局并
+  丢失半个请求。确定性字面 Router 无法可靠做句法优先级，因此最终边界改为：
+  两种范围同时出现一律返回 `ambiguous`，由未来上层澄清。
+- `summary_schema.md`、`validate_summary_document()` 与部分旧 fixture 对
+  `timeline_error`、`is_short_game` 等辅助字段的严格度存在历史差异。本轮只在单局
+  目标 Timeline 缺失时增加必要验证，不越级重写阶段 1 Schema。
+- 旧 15 条路由开发集按一个真实 Skill 校准；第二个 Skill 加入后预期已过时，必须
+  在 5C-5 冻结为历史基线后重建双 Skill development 和 independent holdout。

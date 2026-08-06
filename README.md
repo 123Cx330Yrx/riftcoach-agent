@@ -129,9 +129,11 @@ python scripts\query_rag.py "输局视野分和经济下降应该怎么复盘" -
 工具次数和停止原因约束。它已用 Fake Provider 和真实 `knowledge.search` 工具验证，
 但尚未证明 GLM 或其他真实 Provider 已完成 Tool Calling。
 
-阶段 5B 建立 `manifest.yaml + SKILL.md + Pydantic I/O` Skill Contract；当前唯一
-真实业务 Skill 是 `recent-form-review`。阶段 5C-1 至 5C-4 已完成 Router 请求与
-决策合同、严格 Catalog、声明式确定性匹配，以及拒绝/排除否决/多候选歧义验收：
+阶段 5B 建立 `manifest.yaml + SKILL.md + Pydantic I/O` Skill Contract；Catalog
+现在包含 `recent-form-review` 与 `single-match-review` 两个真实用户 Skill。单局
+合同复用 Player Summary v1.0，并要求目标 match ID 唯一；短局可以审查，Timeline
+缺失保持显式未知。阶段 5C-1 至 5C-4 已完成 Router 请求与决策合同、严格 Catalog、
+声明式确定性匹配，以及拒绝/排除否决/多候选歧义验收：
 
 ```text
 用户表达 + 可用 Skill 路由元数据
@@ -140,10 +142,12 @@ python scripts\query_rag.py "输局视野分和经济下降应该怎么复盘" -
 → 稳定原因码与可解释证据
 ```
 
-Router 只选择工作流，不执行 Skill、Tool、Harness 或模型。当前歧义测试使用合成
-第二候选，只证明算法不会按候选顺序猜测，不证明真实多 Skill 边界已经完成；
-5C-5 路由评测和 5C-6 模型兜底决策仍未验收。原理与边界见
+Router 只选择工作流，不执行 Skill、Tool、Harness 或模型。两个真实候选已有近期、
+单局、混合范围歧义、裸 ID 拒绝和域外边界单测；其他重叠候选仍由合成测试验证。
+旧 15 条路由开发集基于单 Skill 校准，尚未重建为双 Skill development 与独立
+holdout，因此 5C-5 路由评测和 5C-6 模型兜底决策仍未验收。原理与边界见
 [Agent Loop v1](docs/agent_loop_v1.md)、[Skill Contract v1](docs/plans/2026-08-05-skill-contract-v1-design.md)
+、[单局 Skill Contract](docs/plans/2026-08-06-single-match-review-skill-design.md)
 和 [Router 拒绝与歧义验收](docs/plans/2026-08-06-router-rejection-ambiguity-review.md)。
 
 ## 测试

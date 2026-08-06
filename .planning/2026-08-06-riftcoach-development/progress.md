@@ -67,3 +67,33 @@
   一致，五个未验收 5C-5 WIP 文件保持未跟踪、未提交。
 - GitHub CLI 两次查询遇到 TLS 握手超时；等待后改用公开 REST API 成功确认
   Actions run `31066598955` 对提交 `5f288cb` 的结论为 `success`。
+- 恢复唯一检查点 `5C-5-prep-2`，运行治理预检通过，并完整复核 Summary Schema、
+  MatchAnalyzer、现有 Skill Contract、Catalog、Router、ADRs 和边界测试。
+- 比较三种单局输入方案后采用 `player_summary + deterministic_report +
+  target_match_id + focus`；不授予 Riot API 权限，短局可审查，Timeline 缺失必须
+  保持未知语义。
+- 新增 `single-match-review` 的 Manifest、SKILL.md 和独立 Pydantic I/O；输出显式
+  携带目标 match ID，唯一工具仍为 `knowledge.search`。
+- 初版把 `最近十局里这一场` 设为更具体的单局范围，并尝试用连接词拒绝真正的
+  “这场 vs 最近”比较；后续 Bad Case 证明该连接词方案会漏掉双任务语序。
+- 先写测试得到预期红灯：缺少 `app.skills.single_match_review`；实现后 Contract、
+  Catalog、Router 定向测试通过。
+- 全部已跟踪回归为 `238 passed, 57 subtests passed`；五个未验收 5C-5 WIP 文件
+  保持未跟踪、未修改。
+- `5C-5-prep-2` 完成。当前进入 5C-5 Router Evaluation；第一批先冻结旧单 Skill
+  基线并重建双 Skill 数据集角色，不进入 5C-6 或 5D。
+- 首次提交前聚合验证因陈旧短语搜索无匹配返回 `rg=1` 而丢失并行输出；这不是
+  测试失败，但重复了已记录陷阱。已改为关键门禁与“无匹配即成功”搜索分开重跑。
+- 并行只读复核构造“分析最近十局状态，再复盘这一场”，发现初版会静默只选
+  单局 Skill；新增两种语序和候选顺序 Bad Case，先得到 3 个预期失败。
+- 删除两个真实 Skill 之间的范围互斥词，混合范围统一返回 `ambiguous`；保留版本、
+  实时和天气等域外否决。近期 Skill 因触发合同变化升级到 `0.2.0`。
+- 补充单局输入缺失目标 ID、坏 Summary、空白报告和裸 Match ID 拒绝测试；修正后
+  Contract、Catalog、Router 定向测试为 `37 passed`。
+- 最终已跟踪回归为 `240 passed, 57 subtests passed`；compileall、治理预检和
+  `git diff --check` 通过，后者只有既有 Windows LF/CRLF 提示。
+- 当前状态文件的陈旧短语扫描输出 `NO_STALE_MATCHES`；历史进度与变更记录保留
+  已被推翻的初版方案，不参与当前状态冲突判定。
+- 只暂存本检查点 18 个文件；五个 5C-5 评测 WIP 文件保持未跟踪。由 Git 索引
+  生成的公开树测试为 `240 passed, 57 subtests passed`，全部已跟踪 Python 文件
+  编译、治理预检和 cached diff check 均通过。

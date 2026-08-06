@@ -40,16 +40,32 @@ def test_catalog_loads_real_skill_and_projects_router_metadata():
     assert catalog.root == Path("skills").resolve()
     assert tuple(skill.manifest.name for skill in catalog.skills) == (
         "recent-form-review",
+        "single-match-review",
     )
-    assert catalog.get("recent-form-review") is catalog.skills[0]
+    skills_by_name = {skill.manifest.name: skill for skill in catalog.skills}
+    assert catalog.get("recent-form-review") is skills_by_name[
+        "recent-form-review"
+    ]
+    assert catalog.get("single-match-review") is skills_by_name[
+        "single-match-review"
+    ]
     assert catalog.get("missing-skill") is None
 
     candidates = catalog.route_candidates
     assert tuple(candidate.name for candidate in candidates) == (
         "recent-form-review",
+        "single-match-review",
     )
-    assert candidates[0].triggers.intent == "recent_form_review"
-    assert not hasattr(candidates[0], "permissions")
+    candidates_by_name = {candidate.name: candidate for candidate in candidates}
+    assert (
+        candidates_by_name["recent-form-review"].triggers.intent
+        == "recent_form_review"
+    )
+    assert (
+        candidates_by_name["single-match-review"].triggers.intent
+        == "single_match_review"
+    )
+    assert not hasattr(candidates_by_name["recent-form-review"], "permissions")
 
     request = RouterRequest(
         utterance="分析我最近十局的状态",
@@ -120,7 +136,8 @@ def test_catalog_rejects_missing_or_non_directory_roots(tmp_path):
 
 
 def test_catalog_constructor_rejects_duplicate_or_unordered_snapshots(tmp_path):
-    loaded = SkillCatalog.from_directory("skills").skills[0]
+    loaded = SkillCatalog.from_directory("skills").get("recent-form-review")
+    assert loaded is not None
 
     with pytest.raises(SkillCatalogError, match="names must be unique"):
         SkillCatalog(root=Path("skills").resolve(), _skills=(loaded, loaded))
