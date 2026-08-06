@@ -8,7 +8,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from app.rag.evaluation import evaluate_retrieval, load_retrieval_cases
+from app.rag.evaluation import evaluate_retrieval, load_retrieval_dataset
 from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.rag.legacy_provider import LegacyLocalKnowledgeProvider
 from app.rag.retriever import LocalKnowledgeRetriever
@@ -28,12 +28,40 @@ def main() -> None:
         "--cases",
         default="data/evaluation/rag_retrieval_cases.json",
     )
+    parser.add_argument(
+        "--split",
+        help="Evaluate only cases from this dataset split.",
+    )
+    parser.add_argument(
+        "--require-independent",
+        action="store_true",
+        help="Require a held-out dataset explicitly excluded from calibration.",
+    )
     parser.add_argument("--output")
     parser.add_argument("--min-recall", type=float)
     parser.add_argument("--min-mrr", type=float)
     parser.add_argument("--min-ndcg", type=float)
     parser.add_argument("--max-no-answer-fpr", type=float)
+    parser.add_argument("--min-abstention-accuracy", type=float)
+    parser.add_argument("--min-citation-support", type=float)
     args = parser.parse_args()
+
+    dataset = load_retrieval_dataset(Path(args.cases))
+    if args.require_independent and (
+        dataset.role != "held_out" or not dataset.calibration_excluded
+    ):
+        raise SystemExit(
+            "Independent evaluation requires role=held_out and "
+            "calibration_excluded=true."
+        )
+
+    cases = (
+        tuple(case for case in dataset.cases if case.split == args.split)
+        if args.split
+        else dataset.cases
+    )
+    if not cases:
+        raise SystemExit("No retrieval cases matched the requested split.")
 
     knowledge_dir = Path(args.knowledge_dir)
     if args.provider == "hybrid":
@@ -44,10 +72,14 @@ def main() -> None:
         )
     evaluation = evaluate_retrieval(
         provider,
-        load_retrieval_cases(Path(args.cases)),
+        cases,
     )
     payload = asdict(evaluation)
     payload["provider"] = provider.provider_name
+    payload["dataset_version"] = dataset.dataset_version
+    payload["dataset_role"] = dataset.role
+    payload["calibration_excluded"] = dataset.calibration_excluded
+    payload["selected_split"] = args.split
 
     output_path = Path(
         args.output
@@ -64,6 +96,7 @@ def main() -> None:
     )
 
     print(f"Provider: {provider.provider_name}")
+    print(f"Dataset: {dataset.dataset_version} ({dataset.role})")
     print(f"Cases: {len(evaluation.cases)}")
     print(f"Recall@K: {evaluation.recall_at_k:.4f}")
     print(f"MRR: {evaluation.mrr:.4f}")
@@ -71,6 +104,14 @@ def main() -> None:
     print(
         "No-answer false-positive rate: "
         f"{evaluation.no_answer_false_positive_rate:.4f}"
+    )
+    print(
+        "Abstention accuracy: "
+        f"{_format_metric(evaluation.abstention_accuracy)}"
+    )
+    print(
+        "Citation support rate: "
+        f"{_format_metric(evaluation.citation_support_rate)}"
     )
     print(f"Saved: {output_path}")
 
@@ -98,12 +139,34 @@ def main() -> None:
             f"{evaluation.no_answer_false_positive_rate:.4f} "
             f"> {args.max_no_answer_fpr:.4f}"
         )
+    if args.min_abstention_accuracy is not None:
+        if evaluation.abstention_accuracy is None:
+            failures.append("Abstention accuracy has no annotated cases")
+        elif evaluation.abstention_accuracy < args.min_abstention_accuracy:
+            failures.append(
+                "Abstention accuracy "
+                f"{evaluation.abstention_accuracy:.4f} < "
+                f"{args.min_abstention_accuracy:.4f}"
+            )
+    if args.min_citation_support is not None:
+        if evaluation.citation_support_rate is None:
+            failures.append("Citation support rate has no annotated cases")
+        elif evaluation.citation_support_rate < args.min_citation_support:
+            failures.append(
+                "Citation support rate "
+                f"{evaluation.citation_support_rate:.4f} < "
+                f"{args.min_citation_support:.4f}"
+            )
 
     if failures:
         print("Retrieval quality gate failed:", file=sys.stderr)
         for failure in failures:
             print(f"- {failure}", file=sys.stderr)
         raise SystemExit(1)
+
+
+def _format_metric(value: float | None) -> str:
+    return "n/a" if value is None else f"{value:.4f}"
 
 
 if __name__ == "__main__":

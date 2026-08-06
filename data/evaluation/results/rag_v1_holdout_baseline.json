@@ -1,0 +1,124 @@
+{
+  "cases": [
+    {
+      "case_id": "held_out_fact_vs_cause",
+      "split": "held_out",
+      "category": "citation_support",
+      "retrieved_source_ids": [
+        "01_metric_interpretation.md"
+      ],
+      "abstained": false,
+      "expected_abstained": null,
+      "abstention_match": null,
+      "citation_supported": true,
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "false_positive": false
+    },
+    {
+      "case_id": "held_out_sample_stability",
+      "split": "held_out",
+      "category": "citation_support",
+      "retrieved_source_ids": [
+        "02_review_method.md",
+        "01_metric_interpretation.md"
+      ],
+      "abstained": false,
+      "expected_abstained": null,
+      "abstention_match": null,
+      "citation_supported": true,
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "false_positive": false
+    },
+    {
+      "case_id": "held_out_training_observation",
+      "split": "held_out",
+      "category": "citation_support",
+      "retrieved_source_ids": [
+        "03_training_plan.md"
+      ],
+      "abstained": false,
+      "expected_abstained": null,
+      "abstention_match": null,
+      "citation_supported": true,
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "false_positive": false
+    },
+    {
+      "case_id": "held_out_data_boundary",
+      "split": "held_out",
+      "category": "citation_support",
+      "retrieved_source_ids": [
+        "04_data_boundaries.md"
+      ],
+      "abstained": false,
+      "expected_abstained": null,
+      "abstention_match": null,
+      "citation_supported": true,
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "false_positive": false
+    },
+    {
+      "case_id": "held_out_no_answer_weather",
+      "split": "held_out",
+      "category": "no_answer",
+      "retrieved_source_ids": [],
+      "abstained": true,
+      "expected_abstained": true,
+      "abstention_match": true,
+      "citation_supported": null,
+      "recall_at_k": 0.0,
+      "reciprocal_rank": 0.0,
+      "ndcg_at_k": 0.0,
+      "false_positive": false
+    },
+    {
+      "case_id": "held_out_no_answer_valorant",
+      "split": "held_out",
+      "category": "no_answer",
+      "retrieved_source_ids": [],
+      "abstained": true,
+      "expected_abstained": true,
+      "abstention_match": true,
+      "citation_supported": null,
+      "recall_at_k": 0.0,
+      "reciprocal_rank": 0.0,
+      "ndcg_at_k": 0.0,
+      "false_positive": false
+    },
+    {
+      "case_id": "held_out_version_boundary",
+      "split": "held_out",
+      "category": "version_boundary",
+      "retrieved_source_ids": [
+        "04_data_boundaries.md"
+      ],
+      "abstained": false,
+      "expected_abstained": null,
+      "abstention_match": null,
+      "citation_supported": true,
+      "recall_at_k": 1.0,
+      "reciprocal_rank": 1.0,
+      "ndcg_at_k": 1.0,
+      "false_positive": false
+    }
+  ],
+  "recall_at_k": 1.0,
+  "mrr": 1.0,
+  "ndcg_at_k": 1.0,
+  "no_answer_false_positive_rate": 0.0,
+  "abstention_accuracy": 1.0,
+  "citation_support_rate": 1.0,
+  "provider": "local-hybrid-rrf",
+  "dataset_version": "rag-v1-4m-holdout-1.0.0",
+  "dataset_role": "held_out",
+  "calibration_excluded": true,
+  "selected_split": null
+}

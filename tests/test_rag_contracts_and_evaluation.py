@@ -2,7 +2,11 @@ from datetime import date
 
 import pytest
 
-from app.rag.evaluation import RetrievalCase, evaluate_retrieval
+from app.rag.evaluation import (
+    RetrievalCase,
+    evaluate_retrieval,
+    load_retrieval_dataset,
+)
 from app.rag.legacy_provider import LegacyLocalKnowledgeProvider
 from app.rag.models import (
     KnowledgeHit,
@@ -40,6 +44,37 @@ class FixedProvider:
                     ),
                 )
                 for rank, source_id in enumerate(self.source_ids, start=1)
+            ),
+        )
+
+
+class AnnotatedProvider:
+    provider_name = "annotated"
+
+    def search(self, query):
+        if query.text == "库外问题":
+            return KnowledgeSearchResult(
+                query=query,
+                provider=self.provider_name,
+                hits=(),
+                abstained=True,
+            )
+        return KnowledgeSearchResult(
+            query=query,
+            provider=self.provider_name,
+            hits=(
+                KnowledgeHit(
+                    chunk_id="boundaries#chunk",
+                    parent_id="boundaries#parent",
+                    content="Data Dragon 提供静态名称，不提供当前版本英雄胜率。",
+                    matched_content="Data Dragon 不提供当前版本英雄胜率",
+                    score=1.0,
+                    rank=1,
+                    metadata=KnowledgeMetadata(
+                        source_id="boundaries.md",
+                        title="边界",
+                    ),
+                ),
             ),
         )
 
@@ -138,3 +173,46 @@ def test_ndcg_does_not_reward_duplicate_chunks_from_the_same_source():
     )
 
     assert evaluation.ndcg_at_k == 1.0
+
+
+def test_versioned_holdout_annotations_measure_abstention_and_citation_support(
+    tmp_path,
+):
+    dataset_path = tmp_path / "holdout.json"
+    dataset_path.write_text(
+        """
+        {
+          "dataset_version": "test-holdout-1",
+          "role": "held_out",
+          "calibration_excluded": true,
+          "cases": [
+            {
+              "case_id": "supported",
+              "query": "supported",
+              "relevant_source_ids": ["boundaries.md"],
+              "citation_terms": ["Data Dragon", "英雄胜率"],
+              "split": "held_out",
+              "category": "citation_support"
+            },
+            {
+              "case_id": "unknown",
+              "query": "库外问题",
+              "relevant_source_ids": [],
+              "expected_abstained": true,
+              "split": "held_out",
+              "category": "no_answer"
+            }
+          ]
+        }
+        """,
+        encoding="utf-8",
+    )
+
+    dataset = load_retrieval_dataset(dataset_path)
+    evaluation = evaluate_retrieval(AnnotatedProvider(), dataset.cases)
+
+    assert dataset.dataset_version == "test-holdout-1"
+    assert dataset.role == "held_out"
+    assert dataset.calibration_excluded is True
+    assert evaluation.abstention_accuracy == 1.0
+    assert evaluation.citation_support_rate == 1.0

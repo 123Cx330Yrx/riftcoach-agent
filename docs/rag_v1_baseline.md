@@ -109,7 +109,7 @@ nDCG@K：1.0000
 
 `knowledge.search` v2 会返回 `abstained`、diagnostics、稳定 chunk/parent ID 和版本元数据。Harness 将命中证据分配为 `[K1]` 等固定引用，并把映射保存到 `retrieval_evidence.json`；模型生成不存在的引用 ID 时，发布前会被确定性拦截。
 
-当前八题同时用于初始阈值校准和结果报告，因此属于开发集，不是独立测试集。后续维护至少需要：
+当前八题同时用于初始阈值校准和结果报告，因此属于开发集，不是独立测试集。阶段 4M 已增加带版本和污染声明的独立保留集，并把 abstain 与确定性引用支持检查接入质量门禁。实现与边界详见 [RAG 4M 独立评测门禁](plans/2026-08-04-rag-4m-independent-gate.md)。后续维护至少需要：
 
 - 扩充未参与阈值选择的保留问题；
 - 接入真实语义 Embedding 后重新校准；

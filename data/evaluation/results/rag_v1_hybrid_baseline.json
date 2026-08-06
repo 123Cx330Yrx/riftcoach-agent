@@ -2,9 +2,15 @@
   "cases": [
     {
       "case_id": "metric_vision_boundary",
+      "split": "development",
+      "category": "answerable",
       "retrieved_source_ids": [
         "01_metric_interpretation.md"
       ],
+      "abstained": false,
+      "expected_abstained": null,
+      "abstention_match": null,
+      "citation_supported": null,
       "recall_at_k": 1.0,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0,
@@ -12,10 +18,16 @@
     },
     {
       "case_id": "metric_early_death",
+      "split": "development",
+      "category": "answerable",
       "retrieved_source_ids": [
         "01_metric_interpretation.md",
         "02_review_method.md"
       ],
+      "abstained": false,
+      "expected_abstained": null,
+      "abstention_match": null,
+      "citation_supported": null,
       "recall_at_k": 1.0,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0,
@@ -23,9 +35,15 @@
     },
     {
       "case_id": "review_small_sample",
+      "split": "development",
+      "category": "answerable",
       "retrieved_source_ids": [
         "02_review_method.md"
       ],
+      "abstained": false,
+      "expected_abstained": null,
+      "abstention_match": null,
+      "citation_supported": null,
       "recall_at_k": 1.0,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0,
@@ -33,10 +51,16 @@
     },
     {
       "case_id": "training_no_fake_threshold",
+      "split": "development",
+      "category": "answerable",
       "retrieved_source_ids": [
         "03_training_plan.md",
         "01_metric_interpretation.md"
       ],
+      "abstained": false,
+      "expected_abstained": null,
+      "abstention_match": null,
+      "citation_supported": null,
       "recall_at_k": 1.0,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0,
@@ -44,9 +68,15 @@
     },
     {
       "case_id": "meta_source_boundary",
+      "split": "development",
+      "category": "answerable",
       "retrieved_source_ids": [
         "04_data_boundaries.md"
       ],
+      "abstained": false,
+      "expected_abstained": null,
+      "abstention_match": null,
+      "citation_supported": null,
       "recall_at_k": 1.0,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0,
@@ -54,9 +84,15 @@
     },
     {
       "case_id": "fair_play_boundary",
+      "split": "development",
+      "category": "answerable",
       "retrieved_source_ids": [
         "04_data_boundaries.md"
       ],
+      "abstained": false,
+      "expected_abstained": null,
+      "abstention_match": null,
+      "citation_supported": null,
       "recall_at_k": 1.0,
       "reciprocal_rank": 1.0,
       "ndcg_at_k": 1.0,
@@ -64,7 +100,13 @@
     },
     {
       "case_id": "no_answer_weather",
+      "split": "development",
+      "category": "no_answer",
       "retrieved_source_ids": [],
+      "abstained": true,
+      "expected_abstained": null,
+      "abstention_match": null,
+      "citation_supported": null,
       "recall_at_k": 0.0,
       "reciprocal_rank": 0.0,
       "ndcg_at_k": 0.0,
@@ -72,7 +114,13 @@
     },
     {
       "case_id": "no_answer_tft",
+      "split": "development",
+      "category": "no_answer",
       "retrieved_source_ids": [],
+      "abstained": true,
+      "expected_abstained": null,
+      "abstention_match": null,
+      "citation_supported": null,
       "recall_at_k": 0.0,
       "reciprocal_rank": 0.0,
       "ndcg_at_k": 0.0,
@@ -83,5 +131,11 @@
   "mrr": 1.0,
   "ndcg_at_k": 1.0,
   "no_answer_false_positive_rate": 0.0,
-  "provider": "local-hybrid-rrf"
+  "abstention_accuracy": null,
+  "citation_support_rate": null,
+  "provider": "local-hybrid-rrf",
+  "dataset_version": "1.0.0",
+  "dataset_role": "development",
+  "calibration_excluded": false,
+  "selected_split": null
 }

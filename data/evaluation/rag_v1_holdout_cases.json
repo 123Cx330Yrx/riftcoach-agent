@@ -1,0 +1,76 @@
+{
+  "dataset_version": "rag-v1-4m-holdout-1.0.0",
+  "role": "held_out",
+  "calibration_excluded": true,
+  "created_at": "2026-08-04",
+  "selection_note": "Written after the development thresholds were fixed; these cases are not used to tune evidence thresholds.",
+  "cases": [
+    {
+      "case_id": "held_out_fact_vs_cause",
+      "query": "伤害占比下降能不能直接证明经济落后导致输局？",
+      "relevant_source_ids": ["01_metric_interpretation.md"],
+      "top_k": 3,
+      "split": "held_out",
+      "category": "citation_support",
+      "citation_terms": ["伤害/分钟", "不能证明"]
+    },
+    {
+      "case_id": "held_out_sample_stability",
+      "query": "多位置混合的十局样本能直接评价英雄池强弱吗？",
+      "relevant_source_ids": ["02_review_method.md"],
+      "top_k": 3,
+      "split": "held_out",
+      "category": "citation_support",
+      "citation_terms": ["多个位置", "不应依据胜率"]
+    },
+    {
+      "case_id": "held_out_training_observation",
+      "query": "训练计划应该设置几个观察目标并记录多久？",
+      "relevant_source_ids": ["03_training_plan.md"],
+      "top_k": 3,
+      "split": "held_out",
+      "category": "citation_support",
+      "citation_terms": ["一到两个可观察目标", "观察周期"]
+    },
+    {
+      "case_id": "held_out_data_boundary",
+      "query": "Riot API 和 Data Dragon 能否提供英雄当前版本胜率？",
+      "relevant_source_ids": ["04_data_boundaries.md"],
+      "top_k": 3,
+      "split": "held_out",
+      "category": "citation_support",
+      "citation_terms": ["Data Dragon", "不提供当前版本英雄胜率"]
+    },
+    {
+      "case_id": "held_out_no_answer_weather",
+      "query": "上海今天会下雨吗？",
+      "relevant_source_ids": [],
+      "top_k": 3,
+      "split": "held_out",
+      "category": "no_answer",
+      "expected_abstained": true
+    },
+    {
+      "case_id": "held_out_no_answer_valorant",
+      "query": "无畏契约当前版本最强武器是什么？",
+      "relevant_source_ids": [],
+      "top_k": 3,
+      "split": "held_out",
+      "category": "no_answer",
+      "expected_abstained": true
+    },
+    {
+      "case_id": "held_out_version_boundary",
+      "query": "当前版本英雄胜率和主流出装应当来自哪里？",
+      "relevant_source_ids": ["04_data_boundaries.md"],
+      "top_k": 3,
+      "split": "held_out",
+      "category": "version_boundary",
+      "filters": {
+        "version": "16.13",
+        "position": "TOP"
+      },
+      "citation_terms": ["Data Dragon", "不提供当前版本英雄胜率"]
+    }
+  ]
+}
