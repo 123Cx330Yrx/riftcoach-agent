@@ -187,7 +187,7 @@ is_default
 
 ## 8. 当前尚未实现什么
 
-3G-3 不能声称已经实现：
+3G-3 这个交付本身不包含：
 
 - 第二 Provider；
 - 智谱 Tool Calling SDK 映射；
@@ -196,9 +196,11 @@ is_default
 - 自动 Fallback；
 - 动态热注册；
 - 多租户 Provider 配置；
-- Agent Loop。
+- Agent Loop（后来已在 5A 单独实现最小版本）。
 
-下一步 3G-4 会完成智谱 Tool Calling 映射，让当前 `ZhipuProvider` 的 `tool_calling` 从“未实现”变成经过测试的真实能力。
+原顺序曾把 3G-4 智谱 Tool Calling 映射列为紧邻下一步。2026-08-04 的后续决策
+已将 3G-4 至 3G-6 延后到真实 Skill/Agent 调用场景形成之后，再用同一领域评测
+触发。当前动态下一步见 `docs/project_execution_state.md`。
 
 ## 9. 测试证明什么
 

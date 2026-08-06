@@ -26,6 +26,9 @@ jobs:
       - name: Install project and test dependencies
         run: python -m pip install -e ".[dev]"
 
+      - name: Check project governance continuity
+        run: python scripts/check_project_governance.py
+
       - name: Run tests
         run: python -m pytest -q
 
@@ -38,6 +41,20 @@ jobs:
             --min-mrr 1.0 \
             --min-ndcg 1.0 \
             --max-no-answer-fpr 0.0
+
+      - name: Enforce independent RAG 4M holdout gate
+        run: |
+          python scripts/evaluate_rag_retrieval.py \
+            --provider hybrid \
+            --cases data/evaluation/rag_v1_holdout_cases.json \
+            --require-independent \
+            --output "${RUNNER_TEMP}/rag-v1-holdout-evaluation.json" \
+            --min-recall 1.0 \
+            --min-mrr 1.0 \
+            --min-ndcg 1.0 \
+            --max-no-answer-fpr 0.0 \
+            --min-abstention-accuracy 1.0 \
+            --min-citation-support 1.0
 
       - name: Compile Python sources
         run: python -m compileall -q app scripts tests

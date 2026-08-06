@@ -4,14 +4,14 @@ RiftCoach 是一个基于 Riot 公开赛后数据的英雄联盟复盘与训练�
 
 ## 当前定位
 
-当前版本是 RiftCoach 的独立领域核心、质量门控 Harness 与可靠 Tool Runtime，尚未直接合并 EchoMind 或 AGI-Saber，也尚未实现完整的会话式 Agent 平台。
+当前版本包含 RiftCoach 独立领域核心、质量门控 Harness、可靠 Tool Runtime、RAG v1、最小 Agent Loop 与 Skill Router 基础。项目没有直接合并 EchoMind 或 AGI-Saber，也尚未实现完整的会话式 Agent 平台。
 
 当前数据分工：
 
 - Riot API：账号、对局详情与时间线事实；
 - MatchAnalyzer：补刀、经济、伤害、视野、参团率与死亡时间等确定性指标；
 - Data Dragon：英雄、装备、符文和召唤师技能的官方静态中文映射；
-- 本地 RAG v0.1：指标解释、复盘方法、训练原则与数据边界；
+- 本地 RAG v1：混合召回、来源过滤、引用证据、拒答和独立保留集门禁；
 - 智谱 GLM：依据事实与检索证据生成教练式中文报告；
 - 独立评测：检查数字忠实度、证据边界与过度推断，并支持受限修订和再评测。
 
@@ -110,7 +110,7 @@ python scripts\run_review_harness.py `
 
 状态机、Artifact 目录、故障降级和表述边界详见 [Harness v1 使用与原理](docs/harness_v1_usage.md)。Provider、Tool Runtime、EchoMind 迁移边界和 MCP 区别详见 [Provider 与 Tool Runtime 使用说明](docs/provider_tool_runtime_usage.md)。
 
-## 本地 RAG v0.1
+## 本地 RAG v1
 
 知识文档位于 `data/rag_docs/`。当前实现按 Markdown 标题切块，使用适配中文的词元与双字组合进行本地相关性检索，不依赖向量数据库或外部 Embedding 服务。
 
@@ -118,11 +118,33 @@ python scripts\run_review_harness.py `
 python scripts\query_rag.py "输局视野分和经济下降应该怎么复盘" --top-k 3
 ```
 
-这是业务可行性验证版本，不代表正式 RAG 已完成。正式 RAG 将在 Harness 与 Tool Runtime 稳定后补充来源元数据、引用、混合检索、重排与检索评测。
+阶段 4 RAG v1 已完成并进入维护：包括结构化 Markdown 元数据、父子块索引、BM25、可替换 Embedding 接口、确定性 hashing embedding 基线、RRF 混合召回、证据门控、来源多样性、版本/位置/有效期过滤、冲突处理和 chunk 级 Harness 引用。当前八题开发集结果为 Recall@K 1.0、MRR 1.0、nDCG@K 1.0、无答案误召回率 0.0；阶段 4M 另有独立保留集门禁。
 
-阶段 4 RAG v1 已完成并进入维护：包括结构化 Markdown 元数据、父子块索引、BM25、可替换 Embedding 接口、确定性 hashing embedding 基线、RRF 混合召回、证据门控、来源多样性、版本/位置/有效期过滤、冲突处理和 chunk 级 Harness 引用。当前八题开发集结果为 Recall@K 1.0、MRR 1.0、nDCG@K 1.0、无答案误召回率 0.0。
+这组问题也参与了初始阈值校准，因此结果只证明当前开发基线可复现，不是独立泛化证明；hashing embedding 也不等同于语义语言模型。独立保留集、abstain 与引用支持门禁详见 [RAG 4M 独立评测门禁](docs/plans/2026-08-04-rag-4m-independent-gate.md)以及 [RAG v1 现状审计与检索基线](docs/rag_v1_baseline.md)。
 
-这组问题也参与了初始阈值校准，因此结果只证明当前开发基线可复现，不是独立泛化证明；hashing embedding 也不等同于语义语言模型。后续需要扩充独立保留集和引用语义正确率评测。原理和边界详见 [RAG v1 现状审计与检索基线](docs/rag_v1_baseline.md)、[结构化索引与混合召回设计](docs/plans/2026-07-23-rag-v1-index-retrieval-design.md)及[证据策略与 Harness 接入设计](docs/plans/2026-07-24-rag-v1-policy-harness-design.md)。
+## Agent Loop 与 Skill Router
+
+阶段 5A 建立了 Provider-neutral 的最小受限 Agent Loop：模型只能通过结构化
+`ToolCall` 请求白名单工具，Runtime 返回 `ToolObservation`，循环受迭代次数、
+工具次数和停止原因约束。它已用 Fake Provider 和真实 `knowledge.search` 工具验证，
+但尚未证明 GLM 或其他真实 Provider 已完成 Tool Calling。
+
+阶段 5B 建立 `manifest.yaml + SKILL.md + Pydantic I/O` Skill Contract；当前唯一
+真实业务 Skill 是 `recent-form-review`。阶段 5C-1 至 5C-4 已完成 Router 请求与
+决策合同、严格 Catalog、声明式确定性匹配，以及拒绝/排除否决/多候选歧义验收：
+
+```text
+用户表达 + 可用 Skill 路由元数据
+→ 检查每个候选的必需信号组与排除信号
+→ selected / rejected / ambiguous
+→ 稳定原因码与可解释证据
+```
+
+Router 只选择工作流，不执行 Skill、Tool、Harness 或模型。当前歧义测试使用合成
+第二候选，只证明算法不会按候选顺序猜测，不证明真实多 Skill 边界已经完成；
+5C-5 路由评测和 5C-6 模型兜底决策仍未验收。原理与边界见
+[Agent Loop v1](docs/agent_loop_v1.md)、[Skill Contract v1](docs/plans/2026-08-05-skill-contract-v1-design.md)
+和 [Router 拒绝与歧义验收](docs/plans/2026-08-06-router-rejection-ambiguity-review.md)。
 
 ## 测试
 
@@ -131,6 +153,7 @@ python -m pytest -q
 ```
 
 Pull Request 和推送到默认分支时，GitHub Actions 会在 Python 3.11 环境重复执行同一测试命令。
+CI 还会检查项目治理状态连续性，并执行阶段 4M 的独立 RAG 保留集门禁。
 
 ## 架构路线
 

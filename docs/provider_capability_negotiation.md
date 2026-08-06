@@ -44,7 +44,7 @@ streaming = false
 parallel_tool_calls = false
 ```
 
-这不是说智谱平台永远不能 Tool Calling，而是说 **RiftCoach 当前还没有完成智谱 Tool Calling 适配**。等 3G-4 完成 SDK 映射和契约测试后，才能把 `tool_calling` 改成 `true`。
+这不是说智谱平台永远不能 Tool Calling，而是说 **RiftCoach 当前还没有完成智谱 Tool Calling 适配**。只有未来 3G-4 在真实 Skill/Agent 场景中完成 SDK 映射、契约和领域评测后，才能把 `tool_calling` 改成 `true`；该任务目前已延后，不是当前下一步。
 
 ## 3. 三个核心对象
 
@@ -139,15 +139,15 @@ missing_capabilities
 
 ```text
 3G-1  厂商无关 Tool Calling 消息模型
-3G-2  Provider 能力声明与运行前协商（当前）
+3G-2  Provider 能力声明与运行前协商（已完成）
 3G-3  Provider Registry 与配置选择（已完成）
-3G-4  智谱 Tool Calling 映射与真实冒烟
-3G-5  第二 Provider 同契约验证
-3G-6  任务级路由、Fallback 与健康状态
-5D   Python 受限 Agent Loop
+3G-4  智谱 Tool Calling 映射与真实冒烟（延后，等待真实业务触发）
+3G-5  第二 Provider 同契约验证（延后）
+3G-6  任务级路由、Fallback 与健康状态（条件采用）
+5A    最小 Python Agent Loop（已完成）
 ```
 
-Agent Loop 不应直接猜测 Provider 能力；它应向 Provider 契约提出需求，由能力协商结果决定能否运行。
+Agent Loop 不应直接猜测 Provider 能力；它应向 Provider 契约提出需求，由能力协商结果决定能否运行。动态下一步统一见 `docs/project_execution_state.md`。
 
 3G-3 详见：[Provider Registry 与配置选择](provider_registry.md)。
 

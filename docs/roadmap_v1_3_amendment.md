@@ -18,7 +18,7 @@
 ## 2. 近期顺序
 
 ```text
-3G Provider Tool Calling 契约与第二 Provider 验证
+3G-1 至 3G-3 Tool Calling 契约、能力协商与 Provider Registry
 → 4M RAG 独立评测门禁
 → 5A Agent Loop 教学
 → 5B Skill Contract
@@ -30,15 +30,20 @@
 → 6A 完整 FastAPI 与 SQL 任务模型
 ```
 
+原 v1.3 曾把第二 Provider 验证放在 4M 之前。2026-08-04 的后续讨论已调整为：
+先冻结 3G-1 至 3G-3，进入 4M 和真实 Skill/Agent 场景；3G-4 至 3G-6 在该场景
+形成后再按同一领域评测触发。它们是延后，不是取消。
+
 ## 3. 3G 多模型边界
 
-第一轮真实验收为：
+当前唯一真实基线是 GLM。DeepSeek、Qwen、Kimi 等均为候选，尚未锁定第二家。
+选择第二 Provider 的触发条件是：出现真实 Skill/Agent 任务后，候选与 GLM 通过
+同一套 Tool Calling、结构化输出、错误、质量、延迟和成本评测。第三家只用于验证
+扩展性，不以 Provider 数量代替架构证据。
 
-- GLM；
-- 一家协议行为差异明显的第二 Provider；
-- Qwen、Kimi 等保留 Capability、配置和 Adapter 扩展点。
-
-第二家必须与 GLM 通过同一套 Tool Calling、结构化输出、错误和领域契约测试。第三家作为扩展性复验，不以 Provider 数量代替架构证据。
+模型能力需要分成三层：启动配置更换默认 Provider、调用方显式选择 Provider、
+系统按任务自动路由。Registry 目前只提供前两者所需的内部解析骨架，产品级选择
+和自动路由尚未实现；多模型也不等于 Multi-Agent。
 
 3G 声明 Streaming 能力，但完整流式实现可以随阶段 5 产品切片和阶段 6 SSE 消费者逐步补齐。
 
@@ -129,3 +134,45 @@ OP.GG MCP
 `8-Core` 是必须完成的产品、部署、合规、Eval 和作品集交付线。
 
 `8-Advanced` 至少完成一个高级能力采用实验，包含 Bad Case、实现、对照、消融、成本和 ADR。实验可以得出采用、局部采用或拒绝采用；不预先强制 Multi-Agent、DAG、Agentic Retrieval 或微调上线。
+
+## 10. 当前执行状态
+
+当前仓库已经完成：
+
+```text
+3G-1 Tool Calling 内部消息契约
+3G-2 Provider 能力协商
+3G-3 Provider Registry
+4M 独立 RAG 保留集首个门禁
+5A 最小 Agent Loop 与真实 knowledge.search 领域切片
+5B Skill Contract 与 recent-form-review 样板
+5C-1 Skill Router 输入输出契约与三态决策约束
+5C-2 Skill Catalog 严格发现、稳定快照与候选投影
+5C-3 声明式确定性路由
+5C-4 拒绝、排除否决与多候选歧义验收
+```
+
+4M 当前使用 7 个小型保留案例，结果用于证明门禁机制可运行，不代表检索已经具备充分泛化能力。后续应扩充按知识类型、版本和位置分层的保留集，但不因此引入重型向量基础设施。
+
+5C 的完整原始检查点和当前状态为：
+
+```text
+5C-1 Router Contract          已完成
+5C-2 Skill Catalog            已完成
+5C-3 Deterministic Router     已完成
+5C-4 Rejection / Ambiguity    已完成
+5C-5 Router Evaluation        初版开发评测存在，未收尾
+5C-6 Model Fallback Decision  未正式开始
+```
+
+5C 路由开发集当前有 15 个参与校准的小型案例，精确匹配率为 `1.0`、错误选择率为
+`0.0`。当前只有一个真实 Skill，歧义能力由合成候选单测验证；该开发集不是独立
+保留集，不代表自然语言路由已经充分泛化。首批另外两个真实 Skill 与真实多 Skill
+评测的时序仍是 5C-5 前的待裁决项，不能用合成候选静默替代。
+
+当前唯一下一步是 `5C-5-precondition` 首批真实 Skill 时序裁决。它不是新增
+产品子阶段，而是进入 5C-5 前执行既有约束。动态状态以
+`docs/project_execution_state.md` 为准。
+`3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动
+路由暂不作为连续任务；它们要等 Skill 和 Agent Loop 形成真实调用场景后，按同一
+套契约和领域评测重新触发。

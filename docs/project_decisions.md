@@ -6,24 +6,31 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 
 项目只分析已经结束的公开赛后数据，不提供实时对局辅助，不读取客户端内存，不追踪隐藏敌方信息，不自动操作游戏，也不提供不公平竞技优势。
 
-## 当前能力基线
+## 能力基线
 
-当前已经实现：
+动态进度和唯一下一步只看 `docs/project_execution_state.md`。截至
+2026-08-06，已经实现并有测试证据的本地基础包括：
 
 - Riot ID、PUUID、最近对局与 Timeline 数据链路；
 - MatchAnalyzer 确定性指标；
 - Data Dragon 静态中文映射；
 - 中文确定性报告；
-- 本地轻量 RAG v0.1；
+- 质量门控 Harness v1；
+- Provider 抽象、能力协商与 Registry；
+- 带 Schema、超时、重试、缓存、熔断和指标的 Tool Runtime；
+- 本地混合 RAG v1 与 4M 小型独立评测门禁；
 - 智谱 GLM 教练报告；
-- 独立事实评测、受限修订、再评测与发布门控原型；
-- 术语治理与局部自动化测试。
+- 最小 Provider-neutral Agent Loop；
+- `recent-form-review` Skill Contract 样板；
+- Skill Router 的 5C-1 至 5C-4；
+- 独立事实评测、受限修订、再评测与发布门控。
 
 当前仍未实现：
 
-- 统一 Harness 状态机；
-- Tool/Provider Runtime；
-- Skill Router；
+- 真实 Provider Tool Calling 和经过领域评测的第二 Provider；
+- 5C-5、5C-6 的独立验收与最终 Skill Router 收尾；
+- 受限 Skill Agent Loop、Context Builder V1 和统一 AgentRuntime；
+- 首批另外两个真实业务 Skill；
 - FastAPI 会话入口；
 - 玩家长期 Memory；
 - 标准 MCP Client/Server；
@@ -47,7 +54,8 @@ RiftCoach 保持独立仓库和自主领域核心，不直接 fork 或换皮 Ech
 - RAG：指标解释、复盘方法、训练规则与可追溯知识；
 - OP.GG MCP：后续接入的动态版本 Meta；
 - Memory：玩家画像、历史训练目标和进度，不存放全部原始对局数据；
-- GLM：组织和解释证据，不负责创造比赛事实。
+- GLM：当前唯一真实模型基线，负责组织和解释证据，不负责创造比赛事实；
+- DeepSeek、Qwen 等：待同任务评测的 Provider 候选，尚未锁定为生产组合。
 
 ## 质量原则
 
