@@ -1,0 +1,2 @@
+# Preserve the byte-for-byte CRLF snapshot used by the historical hash test.
+/data/evaluation/results/history/skill_router_v1_single_skill_development_baseline_1_0_0.json -text
