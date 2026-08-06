@@ -1,0 +1,70 @@
+schema_version: "1.0"
+name: recent-form-review
+version: "0.1.0"
+description: >-
+  Review a validated recent-match summary and deterministic report using
+  attributable RiftCoach knowledge. Use for recent form, recent match trends,
+  recurring weaknesses, or short training-priority requests.
+instructions: SKILL.md
+models:
+  input: app.skills.recent_form_review:RecentFormReviewInput
+  output: app.skills.recent_form_review:RecentFormReviewOutput
+triggers:
+  intent: recent_form_review
+  positive_examples:
+    - 分析一下我最近十局的状态
+    - 看看我最近反复出现的问题
+    - 根据近期对局给我一个训练重点
+  negative_examples:
+    - 深度复盘这一场比赛
+    - 当前版本哪个英雄胜率最高
+    - 帮我查看敌方技能冷却
+    - 最近天气状态怎么样
+  required_signal_groups:
+    - name: recent_scope
+      any_of:
+        - 最近十局
+        - 最近二十局
+        - 最近几局
+        - 近十局
+        - 近二十局
+        - 近几局
+        - 最近
+        - 近期
+        - 近来
+    - name: review_goal
+      any_of:
+        - 训练重点
+        - 状态
+        - 表现
+        - 问题
+        - 趋势
+        - 战绩
+        - 复盘
+        - 分析
+        - 怎么样
+        - 如何
+  excluded_signals:
+    - 这一局
+    - 这局
+    - 这一场
+    - 这场
+    - 单局
+    - match id
+    - 版本
+    - 敌方技能
+    - 冷却
+    - 实时
+    - 天气
+permissions:
+  allowed_tools:
+    - knowledge.search
+budgets:
+  max_iterations: 4
+  max_tool_calls: 3
+  timeout_s: 30
+  max_context_tokens: 16000
+quality_gate:
+  required: true
+  minimum_score: 85
+  allow_deterministic_fallback: true

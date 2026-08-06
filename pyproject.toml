@@ -11,6 +11,8 @@ requires-python = ">=3.11"
 dependencies = [
     "jsonschema>=4,<5",
     "openai",
+    "pydantic>=2,<3",
+    "PyYAML>=6,<7",
     "requests",
     "python-dotenv",
 ]
