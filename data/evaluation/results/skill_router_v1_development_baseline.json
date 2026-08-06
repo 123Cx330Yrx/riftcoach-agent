@@ -1,0 +1,381 @@
+{
+  "cases": [
+    {
+      "case_id": "recent_exact_state",
+      "category": "selected_recent_exact",
+      "expected_outcome": "selected",
+      "actual_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "actual_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "actual_selected_skill": "recent-form-review",
+      "expected_candidate_skills": [
+        "recent-form-review"
+      ],
+      "actual_candidate_skills": [
+        "recent-form-review"
+      ],
+      "exact_match": true
+    },
+    {
+      "case_id": "recent_exact_recurring_problem",
+      "category": "selected_recent_exact",
+      "expected_outcome": "selected",
+      "actual_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "actual_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "actual_selected_skill": "recent-form-review",
+      "expected_candidate_skills": [
+        "recent-form-review"
+      ],
+      "actual_candidate_skills": [
+        "recent-form-review"
+      ],
+      "exact_match": true
+    },
+    {
+      "case_id": "recent_exact_training_focus",
+      "category": "selected_recent_exact",
+      "expected_outcome": "selected",
+      "actual_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "actual_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "actual_selected_skill": "recent-form-review",
+      "expected_candidate_skills": [
+        "recent-form-review"
+      ],
+      "actual_candidate_skills": [
+        "recent-form-review"
+      ],
+      "exact_match": true
+    },
+    {
+      "case_id": "recent_paraphrase_trend",
+      "category": "selected_recent_paraphrase",
+      "expected_outcome": "selected",
+      "actual_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "actual_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "actual_selected_skill": "recent-form-review",
+      "expected_candidate_skills": [
+        "recent-form-review"
+      ],
+      "actual_candidate_skills": [
+        "recent-form-review"
+      ],
+      "exact_match": true
+    },
+    {
+      "case_id": "recent_paraphrase_compact",
+      "category": "selected_recent_paraphrase",
+      "expected_outcome": "selected",
+      "actual_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "actual_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "actual_selected_skill": "recent-form-review",
+      "expected_candidate_skills": [
+        "recent-form-review"
+      ],
+      "actual_candidate_skills": [
+        "recent-form-review"
+      ],
+      "exact_match": true
+    },
+    {
+      "case_id": "recent_negative_sentiment_not_negated_intent",
+      "category": "selected_recent_paraphrase",
+      "expected_outcome": "selected",
+      "actual_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "actual_reason": "matched_skill",
+      "expected_selected_skill": "recent-form-review",
+      "actual_selected_skill": "recent-form-review",
+      "expected_candidate_skills": [
+        "recent-form-review"
+      ],
+      "actual_candidate_skills": [
+        "recent-form-review"
+      ],
+      "exact_match": true
+    },
+    {
+      "case_id": "single_exact_deep_review",
+      "category": "selected_single_exact",
+      "expected_outcome": "selected",
+      "actual_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "actual_reason": "matched_skill",
+      "expected_selected_skill": "single-match-review",
+      "actual_selected_skill": "single-match-review",
+      "expected_candidate_skills": [
+        "single-match-review"
+      ],
+      "actual_candidate_skills": [
+        "single-match-review"
+      ],
+      "exact_match": true
+    },
+    {
+      "case_id": "single_exact_problem",
+      "category": "selected_single_exact",
+      "expected_outcome": "selected",
+      "actual_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "actual_reason": "matched_skill",
+      "expected_selected_skill": "single-match-review",
+      "actual_selected_skill": "single-match-review",
+      "expected_candidate_skills": [
+        "single-match-review"
+      ],
+      "actual_candidate_skills": [
+        "single-match-review"
+      ],
+      "exact_match": true
+    },
+    {
+      "case_id": "single_explicit_match_id",
+      "category": "selected_single_exact",
+      "expected_outcome": "selected",
+      "actual_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "actual_reason": "matched_skill",
+      "expected_selected_skill": "single-match-review",
+      "actual_selected_skill": "single-match-review",
+      "expected_candidate_skills": [
+        "single-match-review"
+      ],
+      "actual_candidate_skills": [
+        "single-match-review"
+      ],
+      "exact_match": true
+    },
+    {
+      "case_id": "single_compact_state",
+      "category": "selected_single_paraphrase",
+      "expected_outcome": "selected",
+      "actual_outcome": "selected",
+      "expected_reason": "matched_skill",
+      "actual_reason": "matched_skill",
+      "expected_selected_skill": "single-match-review",
+      "actual_selected_skill": "single-match-review",
+      "expected_candidate_skills": [
+        "single-match-review"
+      ],
+      "actual_candidate_skills": [
+        "single-match-review"
+      ],
+      "exact_match": true
+    },
+    {
+      "case_id": "ambiguous_recent_then_single",
+      "category": "ambiguous_mixed_scope",
+      "expected_outcome": "ambiguous",
+      "actual_outcome": "ambiguous",
+      "expected_reason": "multiple_skills_matched",
+      "actual_reason": "multiple_skills_matched",
+      "expected_selected_skill": null,
+      "actual_selected_skill": null,
+      "expected_candidate_skills": [
+        "recent-form-review",
+        "single-match-review"
+      ],
+      "actual_candidate_skills": [
+        "recent-form-review",
+        "single-match-review"
+      ],
+      "exact_match": true
+    },
+    {
+      "case_id": "ambiguous_single_then_recent",
+      "category": "ambiguous_mixed_scope",
+      "expected_outcome": "ambiguous",
+      "actual_outcome": "ambiguous",
+      "expected_reason": "multiple_skills_matched",
+      "actual_reason": "multiple_skills_matched",
+      "expected_selected_skill": null,
+      "actual_selected_skill": null,
+      "expected_candidate_skills": [
+        "recent-form-review",
+        "single-match-review"
+      ],
+      "actual_candidate_skills": [
+        "recent-form-review",
+        "single-match-review"
+      ],
+      "exact_match": true
+    },
+    {
+      "case_id": "unsupported_current_meta",
+      "category": "rejected_other_skill",
+      "expected_outcome": "rejected",
+      "actual_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "actual_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "actual_selected_skill": null,
+      "expected_candidate_skills": [],
+      "actual_candidate_skills": [],
+      "exact_match": true
+    },
+    {
+      "case_id": "unsupported_live_cooldown",
+      "category": "rejected_compliance_boundary",
+      "expected_outcome": "rejected",
+      "actual_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "actual_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "actual_selected_skill": null,
+      "expected_candidate_skills": [],
+      "actual_candidate_skills": [],
+      "exact_match": true
+    },
+    {
+      "case_id": "unsupported_greeting",
+      "category": "rejected_no_signal",
+      "expected_outcome": "rejected",
+      "actual_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "actual_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "actual_selected_skill": null,
+      "expected_candidate_skills": [],
+      "actual_candidate_skills": [],
+      "exact_match": true
+    },
+    {
+      "case_id": "partial_recent_scope_only",
+      "category": "rejected_partial_match",
+      "expected_outcome": "rejected",
+      "actual_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "actual_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "actual_selected_skill": null,
+      "expected_candidate_skills": [],
+      "actual_candidate_skills": [],
+      "exact_match": true
+    },
+    {
+      "case_id": "training_plan_without_scope",
+      "category": "rejected_partial_match",
+      "expected_outcome": "rejected",
+      "actual_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "actual_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "actual_selected_skill": null,
+      "expected_candidate_skills": [],
+      "actual_candidate_skills": [],
+      "exact_match": true
+    },
+    {
+      "case_id": "out_of_domain_weather_false_friend",
+      "category": "rejected_false_friend",
+      "expected_outcome": "rejected",
+      "actual_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "actual_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "actual_selected_skill": null,
+      "expected_candidate_skills": [],
+      "actual_candidate_skills": [],
+      "exact_match": true
+    },
+    {
+      "case_id": "recent_version_false_friend",
+      "category": "rejected_false_friend",
+      "expected_outcome": "rejected",
+      "actual_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "actual_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "actual_selected_skill": null,
+      "expected_candidate_skills": [],
+      "actual_candidate_skills": [],
+      "exact_match": true
+    },
+    {
+      "case_id": "bare_match_id",
+      "category": "rejected_missing_scope_label",
+      "expected_outcome": "rejected",
+      "actual_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "actual_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "actual_selected_skill": null,
+      "expected_candidate_skills": [],
+      "actual_candidate_skills": [],
+      "exact_match": true
+    },
+    {
+      "case_id": "bare_recent_scope",
+      "category": "rejected_partial_match",
+      "expected_outcome": "rejected",
+      "actual_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "actual_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "actual_selected_skill": null,
+      "expected_candidate_skills": [],
+      "actual_candidate_skills": [],
+      "exact_match": true
+    },
+    {
+      "case_id": "bare_single_scope",
+      "category": "rejected_partial_match",
+      "expected_outcome": "rejected",
+      "actual_outcome": "rejected",
+      "expected_reason": "no_matching_skill",
+      "actual_reason": "no_matching_skill",
+      "expected_selected_skill": null,
+      "actual_selected_skill": null,
+      "expected_candidate_skills": [],
+      "actual_candidate_skills": [],
+      "exact_match": true
+    },
+    {
+      "case_id": "no_available_skills",
+      "category": "rejected_no_available",
+      "expected_outcome": "rejected",
+      "actual_outcome": "rejected",
+      "expected_reason": "no_available_skills",
+      "actual_reason": "no_available_skills",
+      "expected_selected_skill": null,
+      "actual_selected_skill": null,
+      "expected_candidate_skills": [],
+      "actual_candidate_skills": [],
+      "exact_match": true
+    }
+  ],
+  "exact_match_accuracy": 1.0,
+  "selection_accuracy": 1.0,
+  "rejection_accuracy": 1.0,
+  "ambiguity_accuracy": 1.0,
+  "false_selection_rate": 0.0,
+  "dataset_id": "skill-router-v1-two-skill-development",
+  "dataset_version": "2.0.0",
+  "dataset_role": "development",
+  "calibration_excluded": false,
+  "candidate_snapshot": {
+    "snapshot_id": "two-skill-contract-2026-08-06",
+    "skills": [
+      {
+        "name": "recent-form-review",
+        "version": "0.2.0"
+      },
+      {
+        "name": "single-match-review",
+        "version": "0.1.0"
+      }
+    ]
+  },
+  "skill_names": [
+    "recent-form-review",
+    "single-match-review"
+  ]
+}

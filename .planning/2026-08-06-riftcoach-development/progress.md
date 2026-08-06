@@ -115,3 +115,13 @@
 - 为该单一不可变历史快照增加 Git binary 属性并重新存入原始字节；修复提交
   `8bfb876` 的 run `31076388257` 成功，属性收尾提交 `318755d` 的 run
   `31076432192` 也成功。普通 JSON 仍保持文本 diff，不扩大 binary 范围。
+- 运行治理预检通过后，按授权只执行双 Skill development v2；没有运行 holdout，
+  也没有调用 Skill、Tool、Harness 或模型。
+- development v2 的 23 条全部精确匹配：selection/rejection/ambiguity accuracy 均为
+  `1.0`，false-selection rate 为 `0.0`；明细为 10 selected、11 rejected、2 ambiguous，
+  mismatch 为 0。
+- 结果保存到 `data/evaluation/results/skill_router_v1_development_baseline.json`；
+  当前开发规则接受并冻结，唯一下一步改为单次运行 independent holdout v1 并原样分析。
+- 收尾验证：Skill/Router 定向测试 `62 passed`；完整回归
+  `252 passed, 57 subtests passed`；compileall、治理预检和 `git diff --check` 通过。
+  diff check 只有既有 Windows LF/CRLF 转换提示。

@@ -129,3 +129,17 @@
 - Router 评测现在校验数据集角色、案例数量和 `(Skill name, version)` 快照；开发
   CLI 默认拒绝 holdout，防止误用。该批只验证生命周期门禁，没有运行任何新数据集
   的正式 Router 成绩。
+
+## 5C-5 第二批 development v2 结果
+
+- 在治理预检通过、工作树干净且候选快照仍为 `recent-form-review@0.2.0` 与
+  `single-match-review@0.1.0` 后，只运行了 development v2，没有运行 holdout。
+- 23 条案例全部精确匹配：10 条 selected、11 条 rejected、2 条 ambiguous；
+  selection、rejection、ambiguity accuracy 均为 `1.0`，false-selection rate 为 `0.0`。
+- 逐条结果没有 mismatch，因此没有触发词、排除词、期望标签或产品歧义需要修改。
+- 结果文件 SHA-256 为
+  `1e57bcdf6f8727c28ea0f733817fd2a17705db99816d28f3afb7b3da4a6ab586`。
+- 该数据集明确参与过开发校准，`1.0` 只证明当前规则覆盖已知开发案例；它不足以
+  证明自然语言泛化，也不构成引入 LLM Router fallback 的证据。
+- 当前开发规则可以冻结。下一步只能单次运行 independent holdout v1；其失败必须
+  原样保存，不能反向用于修改本版本规则。

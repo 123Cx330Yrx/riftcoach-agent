@@ -159,6 +159,15 @@
 - `CURRENT`：下一批只运行 development v2 并分析误路由；holdout 仍不得用于调规则，
   `5C-6` 与 `5D` 继续被阻止。
 
+### 2026-08-06：5C-5 第二批 development 验收
+
+- `IMPLEMENTED`：双 Skill development v2 已正式运行并保存结果；23 条全部精确
+  匹配，selection/rejection/ambiguity accuracy 均为 `1.0`，错误选择率为 `0.0`。
+- `CURRENT`：该开发集参与过规则校准，成绩只作为回归与规则冻结证据，不能表述为
+  自然语言泛化成绩。
+- `CURRENT`：当前候选版本与确定性规则已经冻结；下一批只单次运行 independent
+  holdout v1，失败原样保存且不得用于反向调规则；`5C-6` 与 `5D` 仍被阻止。
+
 ## 当前不变的宏观路线
 
 ```text
