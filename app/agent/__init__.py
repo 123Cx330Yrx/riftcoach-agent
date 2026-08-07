@@ -1,5 +1,15 @@
 """Small, provider-neutral agent execution primitives."""
 
+from .context import (
+    ContextBuilderV1,
+    ContextBudgetError,
+    ContextBuildError,
+    ContextBundle,
+    ContextSection,
+    ContextSizer,
+    ContextTrust,
+    DeterministicContextSizer,
+)
 from .loop import (
     AgentLoop,
     AgentRunRequest,
@@ -15,5 +25,13 @@ __all__ = [
     "AgentRunResult",
     "AgentRunStatus",
     "AgentStopReason",
+    "ContextBuilderV1",
+    "ContextBudgetError",
+    "ContextBuildError",
+    "ContextBundle",
+    "ContextSection",
+    "ContextSizer",
+    "ContextTrust",
+    "DeterministicContextSizer",
     "ToolExecutionRecord",
 ]

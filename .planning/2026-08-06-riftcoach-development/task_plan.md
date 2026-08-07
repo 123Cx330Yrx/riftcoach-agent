@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.2 - 5D-2（next; implementation not started）
+Phase 6.3 - 5D-3（next; implementation not started）
 
 ## Phases
 
@@ -69,17 +69,20 @@ Phase 6.2 - 5D-2（next; implementation not started）
 - `5D-entry-design` 已完成：审计现有接缝、比较三种组合方案并接受 ADR-0011。
 - `5D-1` 已完成：统一 Skill I/O 文本、selected name/version、安全 run ID、Harness
   规范输入摘要和 Catalog-backed 执行前校验。
-- 唯一下一步是 5D-2 Context Builder V1；尚未编译或执行 Agent 请求。
+- `5D-2` 已完成：两个 Skill 的 allowlisted 最小上下文、信任标签、确定性
+  `ContextSizer`、整段预算选择和不可信知识引用投影均已有 TDD 证据。
+- 唯一下一步是 5D-3 Skill Run Compiler & Budget Enforcement；尚未编译或执行
+  Agent 请求。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-2 Context Builder V1：为近期复盘和单局复盘分别构造最小上下文；显式标记内部
-策略、Skill 指令、确定性事实、用户文本和外部证据的信任语义；实现确定性
-`ContextSizer` 与整体 section 裁剪。本检查点不编译 `AgentRunRequest`，不调用
-AgentLoop、Tool 或 Provider，也不进入 5D-3。
+5D-3 Skill Run Compiler & Budget Enforcement：只从已验证 Manifest 与
+`ContextBundle` 编译 `AgentRunRequest`，映射工具白名单、迭代/工具调用/超时预算，
+并在每次 Provider 调用前约束包含 Tool Observation 的累积消息大小。本检查点不执行
+真实 Agent、Provider 或 Harness，也不进入 5D-4。
 
 ## Decisions Made
 
@@ -112,6 +115,10 @@ AgentLoop、Tool 或 Provider，也不进入 5D-3。
 | run ID 使用一个跨 Harness/Skill 的可移植规范 | Manifest、Store 和执行入口若各自校验会产生安全与兼容漂移；ASCII 单组件同时适配 Windows 和 Linux |
 | 输入绑定复用 Harness 真实 Artifact 字节编码 | 对同一语义采用不同 JSON 格式会得到不同哈希；共享编码才能让 5D-5 的真实 Artifact 与 5D-1 内容承诺逐字节对上 |
 | 5D-1 只做内容承诺，不创建 Harness run | 真实落盘、状态迁移和 terminal output 属于 5D-5；当前先建立可独立测试的执行前 fail-closed 边界 |
+| 5D-2 使用 trust-typed section 再渲染现有 ChatMessage | 先保留来源、指令权限、必需性和优先级，才能机器检查不可信边界；不另造 Provider 消息协议 |
+| 近期与单局使用不同 allowlist 投影 | Summary 允许扩展字段；整份序列化会静默扩大模型可见数据，并让单局上下文混入近期聚合与其他对局 |
+| 必需段超预算失败，可选段只整段保留或省略 | Policy、Skill 指令和核心事实不能静默截断；完整 section 选择避免半截 JSON、表格行和 citation |
+| 默认 ContextSizer 是可注入的确定性 preflight | 真实 Provider 尚未在 5D-6b 准入；当前估算保证可重复选择，不冒充厂商 tokenizer 或真实 Usage |
 
 ## Errors Encountered
 
@@ -141,3 +148,8 @@ AgentLoop、Tool 或 Provider，也不进入 5D-3。
 | 5C 退出复核发现 `RouterDecision` 允许命中候选夹带无关证据 | 1 | 先补失败测试，再要求 selected/ambiguous 的 evidence 身份与 candidate 身份完全一致；rejected 仍保留部分证据 |
 | holdout 元数据把双 Skill 冻结点误写为前一个文档提交 `cfd2084` | 1 | 用 Git 树确认真实双 Skill 合同首次位于 `4103d42`，只更正 provenance 并加回归断言，不改案例、规则或结果 |
 | 治理负例把 `5D` 硬编码为陈旧检查点，状态合法推进到 5D 后不再失败 | 1 | 改用不可能与正式路线重合的 `stale-checkpoint`，让测试验证不一致语义而非某个阶段名 |
+| 5D-2 初始并行读取猜测 `app/agent/models.py` 存在，导致命令组返回非零 | 1 | 没有修改文件；停止猜测 Agent 路径，先用 `rg --files app` 列出真实模块再读取 |
+| 5D-2 首个合同补丁假设 `app/agent/__init__.py` 的 docstring 文本，原子校验拒绝 | 1 | 确认没有创建半个 context 模块；读取真实小文件后将新增模块与导出补丁拆开 |
+| 恢复活动计划时把 `.active_plan` 值误当成仓库根相对路径，漏掉 `.planning/` | 1 | 命令只读且未改文件；改为显式从 `.planning` 拼接活动计划目录，并继续按恢复顺序读取 |
+| 读取执行边界测试时猜测不存在的 `tests/test_skill_execution.py` | 1 | 先用 `rg --files tests` 查到真实 `test_skill_execution_boundary.py` 后读取；未改测试或源码 |
+| 5D-2 聚焦回归猜测不存在的 `tests/test_provider_models.py` | 1 | 该次 pytest 未收集任何测试；列出真实 Provider 测试后改跑 `test_provider_tool_calling_models.py` 与 `test_provider_contracts.py` |

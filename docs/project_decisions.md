@@ -26,13 +26,14 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
   11/12，ADR-0010 暂缓 LLM Router fallback；
 - 5D-1 Skill 执行前边界：selected name/version、共享安全 run ID、typed input 与
   Harness 输入内容摘要绑定；
+- 5D-2 Context Builder V1：两个 Skill 的最小事实 allowlist、信任分层、初始知识
+  citation 投影与 Manifest ceiling 内的确定性整段选择；
 - 独立事实评测、受限修订、再评测与发布门控。
 
 当前仍未实现：
 
 - 真实 Provider Tool Calling 和经过领域评测的第二 Provider；
-- Context Builder V1、Skill request 编译、受限 Agent 执行、Harness 组合和统一
-  AgentRuntime；
+- Skill request 编译、受限 Agent 执行、Harness 组合和统一 AgentRuntime；
 - FastAPI 会话入口；
 - 玩家长期 Memory；
 - 标准 MCP Client/Server；
@@ -73,6 +74,9 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - 其中 5D-1 已实现执行前核对部分：Router 锁定 name/version，Catalog 重新取得
   `LoadedSkill`，Skill input model 验证 payload，并以同一安全 run ID 和规范字节
   SHA-256 绑定未来 Harness 输入；权限/预算编译仍属于 5D-3；
+- 5D-2 已实现 Context 构造：内部 Policy 与 SKILL.md 为 system 指令，玩家事实、
+  用户请求和初始 citation 为 user/data-only；近期与单局使用不同 allowlist，预算
+  只整段保留或省略；
 - AgentLoop 只负责白名单工具调用和 Coach 草稿准备，不拥有发布权；
 - 新 `DraftPreparationStep` 返回同一 `CoachDraft + KnowledgeEvidence`，用于兼容旧
   Retriever/Generator 路径与新 Agent 路径；
@@ -81,7 +85,7 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   Observation 分层，权限永远不从不可信文本获得；
 - 结构化模型输出先服务机器消费的 EvaluationResult，Coach 报告仍为 Markdown；
 - 真实 Provider 与第二 Provider 选择必须等 5D-6b 用同一领域任务评测，不提前锁定；
-- 该方案由 ADR-0011 接受；当前只实现 5D-1，不等于整个 5D、LangGraph 或
+- 该方案由 ADR-0011 接受；当前只实现到 5D-2，不等于整个 5D、LangGraph 或
   Multi-Agent 已实现。
 
 ## 数据职责

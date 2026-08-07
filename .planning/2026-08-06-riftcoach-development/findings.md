@@ -301,3 +301,61 @@
   `RouterRequest` identity. The application currently passes both in one call; an immutable
   route-request-event provenance chain remains a 5E Runtime/Trace concern and must not be claimed
   as solved by the input Artifact binding.
+
+## 2026-08-07 5D-2 initial Context Builder audit
+
+- The Provider layer already owns provider-neutral `ChatMessage` and `MessageRole` contracts.
+  5D-2 should compile typed context sections into those messages rather than invent a parallel
+  prompt-message type; creating `AgentRunRequest` itself remains 5D-3.
+- The existing Harness `SummaryCompactor` is an untyped callable used by the legacy one-shot
+  generator. It does not encode trust class, source, required/optional status, or whole-section
+  trimming, so it cannot be reused as the new Context Builder contract without changing its
+  semantics.
+- `ValidatedSkillExecution` already provides the exact loaded Skill instructions, typed input,
+  run identity, and input binding needed by 5D-2. Context permissions and budgets must still not
+  be copied from user/RAG text; 5D-3 will compile them from the verified Manifest.
+- The Summary v1 validator guarantees top-level player/recent/matches structure but intentionally
+  permits richer per-match fields. 5D-2 therefore needs explicit allowlisted projections for
+  recent-form and single-match facts instead of serializing the full input document blindly.
+- The legacy `compact_summary()` is useful field evidence but still includes all match rows and
+  copies excluded/failed rows wholesale. The new recent-form projection should explicitly retain
+  aggregate metrics and a bounded set of allowlisted match facts; raw failure text is unnecessary
+  model context and should not be copied.
+- `single-match-review` must include exactly the selected match row plus its short-game,
+  aggregate-inclusion, Timeline status/error, death/item/objective facts. It must omit
+  `recent_summary` and every non-target match. A deterministic-report excerpt can include only
+  lines that contain the exact target match ID; when no such excerpt exists, the typed target row
+  remains the required fact source.
+- `KnowledgeEvidence` already represents attributable RAG context. Initial citations can be
+  projected as separate optional non-instructional sections so budget trimming removes a whole
+  citation at a time. Dynamic Tool Observations are not initial messages and remain 5D-3/4 work.
+- Manifest `max_context_tokens` is the hard ceiling. 5D-2 may accept only a lower test/runtime
+  ceiling, never a higher override. 5D-3 must still re-check the compiled request and cumulative
+  AgentLoop messages after tool observations.
+- A vendor tokenizer is intentionally premature. V1 needs an injectable `ContextSizer` and a
+  deterministic heuristic for preflight selection; its estimate is not actual provider usage and
+  must be described as such until 5D-6b/5D-7 calibration.
+
+## 2026-08-07 5D-2 Context Builder implementation findings
+
+- A single generic summary compactor is unsafe for both Skills. Recent form needs aggregate plus a
+  bounded trend sample, while single match must exclude `recent_summary`, every non-target row,
+  and report lines that also mention another known match ID.
+- Trust is derived from `ContextTrust`, not accepted as a caller-supplied boolean. Only internal
+  policy and verified SKILL.md become system/instructional sections; player facts, user text and
+  citations always render into the data-only user message.
+- JSON envelopes preserve section identity/source/trust through final `ChatMessage` rendering.
+  This narrows prompt-injection authority but is not proof that a model will ignore all malicious
+  text; 5D-7 still needs adversarial model-level evaluation.
+- Summary Schema v1 intentionally permits extension fields, so Context projections must remain
+  explicit allowlists. This is both a token-control mechanism and a least-data boundary.
+- Failed-match provider error text is operational diagnostics rather than coaching evidence. The
+  recent context keeps only counts and safe match IDs; excluded rows keep only match ID, duration
+  and exclusion reason.
+- Whole-section selection is deterministic with the current small section count. Required sections
+  are measured first; optional sections are tried by descending priority and stable source order,
+  then rendered in original logical order. No JSON, Markdown row or citation is truncated.
+- Dynamic Tool Observations are intentionally absent from the initial bundle. They remain normal
+  `tool` messages and require cumulative pre-call budget enforcement in 5D-3.
+- The completed builder still does not compile permissions, tool specs, loop limits or timeouts,
+  call a Provider/Tool/AgentLoop, write Harness Artifacts, or publish a report.

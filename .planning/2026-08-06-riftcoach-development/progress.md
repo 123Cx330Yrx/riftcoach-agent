@@ -213,3 +213,23 @@
 - 创建并推送 `6bc4309 feat(skills): harden skill run boundary`；本地 HEAD 与
   `origin/main` 一致。GitHub Actions run `31179571780` 对该精确 SHA 的治理、pytest、
   两层 RAG 门禁、compileall、Harness 边界、密钥检查和 dry-run 全部成功。
+- 开始 5D-2 后先冻结 Context Builder 设计与五任务 TDD 计划；明确输出为
+  `ContextBundle` 而不是 `AgentRunRequest`，不引入 LangGraph、Pi 或厂商 tokenizer。
+- Task 1 先以缺少 `app.agent.context` 得到预期收集红灯；实现 trust、section、bundle
+  与确定性 sizer 合同后为 `8 passed`。
+- Task 2 为近期复盘增加真实 Catalog/Router/ExecutionBoundary 测试；最终只投影
+  allowlisted scope/aggregate/boundary/report，最多构造 10 个可选 match sections，
+  不复制未知扩展和 failed-match 原始异常文本。
+- Task 3 为单局复盘只投影唯一 target row；`recent_summary`、其他 match ID 与跨局
+  报告行不会进入 Context，短局和 Timeline unavailable 的 null/empty/error 语义保留。
+- Task 4 将每个初始 KnowledgeCitation 投影为独立 data-only optional section；恶意
+  用户、事实和知识字符串不能获得 instructional/system 语义。重复/空白 citation
+  fail closed。
+- 预算选择以 Manifest `max_context_tokens` 为硬上限，调用方只能降低；required
+  context 先验不合格时失败，optional 按 priority 和原顺序逐个整段尝试，并记录
+  omitted IDs。默认 sizer 是稳定启发式，不声称等于真实 Provider Usage。
+- 5D-2 聚焦 Context/Skill/Provider 回归为 `61 passed, 17 subtests passed`；完整回归
+  为 `292 passed, 80 subtests passed`；compileall 与 `git diff --check` 通过。
+- 按不可信输入安全复核检查权限提升、注入、错误泄漏和最小数据暴露；未发现需要
+  扩大本检查点的高危问题。角色/JSON 分层仍只是一层防御，模型级攻击与动态 Tool
+  Observation 必须在 5D-3/5D-7 继续验证。

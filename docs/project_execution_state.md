@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5D"
-current_checkpoint: "5D-2"
+current_checkpoint: "5D-3"
 status: in_progress
-blocked_before: "5D-3"
+blocked_before: "5D-4"
 ---
 
 # RiftCoach 当前执行状态
@@ -18,9 +18,9 @@ blocked_before: "5D-3"
 
 - 最后更新：2026-08-07
 - 主阶段：阶段 5，进行中
-- 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 已完成
-- 唯一下一步：5D-2 Context Builder V1，只构造两个 Skill 的最小分层上下文、信任标签、确定性裁剪和 ContextSizer
-- 禁止越过：5D-2 完成前不得进入 5D-3；5D-1 没有编译 `AgentRunRequest`、调用 AgentLoop/Tool/Provider 或接入 Harness
+- 当前子阶段组：5D Python 受限 Agent Loop，entry design、5D-1 与 5D-2 已完成
+- 唯一下一步：5D-3 Skill Run Compiler & Budget Enforcement，只从已验证 Manifest 与 ContextBundle 编译请求、权限和运行预算
+- 禁止越过：5D-3 完成前不得进入 5D-4；5D-2 没有编译 `AgentRunRequest`、调用 AgentLoop/Tool/Provider 或接入 Harness
 
 ## 5C 原始子阶段账本
 
@@ -39,8 +39,8 @@ blocked_before: "5D-3"
 |---|---|---|---|
 | 5D-entry-design | 审计现有接缝、比较组合方案、冻结数据流与教学顺序 | 已完成 | 5D 设计文档、ADR-0011、治理检查 |
 | 5D-1 Skill Run Boundary Hardening | 统一 I/O 非空文本、selected identity、run_id 和输入 Artifact 绑定 | 已完成 | 设计/TDD 文档、`SkillExecutionBoundary`、共享 run ID/Artifact 编码、合同与篡改测试 |
-| 5D-2 Context Builder V1 | 两个 Skill 的最小上下文、信任标签、确定性裁剪和 ContextSizer | 唯一下一步 | 尚无代码或测试 |
-| 5D-3 Skill Run Compiler & Budget Enforcement | Manifest 权限/预算编译为 AgentRunRequest，并约束累积上下文 | 未开始 | 尚无代码或测试 |
+| 5D-2 Context Builder V1 | 两个 Skill 的最小上下文、信任标签、确定性裁剪和 ContextSizer | 已完成 | 设计/TDD 文档、`ContextBuilderV1`、两个 Skill allowlist、citation/注入/预算边界测试 |
+| 5D-3 Skill Run Compiler & Budget Enforcement | Manifest 权限/预算编译为 AgentRunRequest，并约束累积上下文 | 唯一下一步 | 尚无代码或测试 |
 | 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 未开始 | 尚无代码或测试 |
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 未开始 | 尚无代码或测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 未开始 | 尚无代码或测试 |
@@ -92,12 +92,27 @@ blocked_before: "5D-3"
   确定性报告的 kind、schema version 和 SHA-256；5D-5 仍需核对真实落盘 Artifact；
 - `SkillExecutionBoundary` 会拒绝非 selected、缺失/漂移 Skill、错误 input model、
   run 不一致和内容/元数据篡改，并返回与调用方 payload 脱钩的输入快照；
-- 当前本地完整回归：`276 passed, 80 subtests passed`；compileall、diff check 与治理
+- `ContextBuilderV1` 把内部 Policy 与已校验 SKILL.md 固定为 system/instructional，
+  把确定性事实、用户请求和初始知识引用固定为 user/data-only；
+- 近期复盘只接收 allowlisted scope、aggregate、样本边界、完整确定性报告和最多
+  10 个可选 match 投影；单局复盘只接收唯一 target row 与不含其他 match 的精确
+  报告行，不注入 `recent_summary`；
+- Timeline unavailable 的 null/empty/error 与短局边界保持原义；failed-match 原始异常
+  和未知 Summary 扩展字段不会自动进入上下文；
+- Manifest context ceiling 不可被调用方提高；required sections 超限时 fail closed，
+  optional match/citation 按优先级完整保留或省略，省略 ID 可审计；
+- 默认 `DeterministicContextSizer` 只提供稳定的 tokenizer-free preflight，不代表真实
+  Provider Usage；Tool Observation 的累积预算仍归 5D-3；
+- 当前本地完整回归：`292 passed, 80 subtests passed`；compileall、diff check 与治理
   预检均通过。
 
 当前不能声称：
 
-- 5D-2 Context Builder 或任何更后的 5D 功能已经实现；
+- 5D-3 Agent request 编译或任何更后的 5D 功能已经实现；
+- 已经执行 AgentLoop、Tool、Provider 或 Harness，或生成/发布了新 Coach 报告；
+- 默认 ContextSizer 等于真实厂商 tokenizer 或真实 Token Usage；
+- trust/JSON 分层已经彻底解决 Prompt Injection；
+- 动态 Tool Observation 已经进入 Context 或受到累积消息预算约束；
 - 路由对自然语言具有充分泛化能力；
 - 小型合成 holdout 已证明路由对自然语言充分泛化；
 - 已把 holdout 失败用于调节 Router 规则；
@@ -110,8 +125,8 @@ blocked_before: "5D-3"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1，下一步为 5D-2 | 阶段 5 或整个 5D 已完成 |
-| 项目理解 | 5D-1 已讲清路由版本锁定、安全 run identity、Artifact 规范字节/摘要和执行前 fail-closed 验票；Context 构造仍需在 5D-2 单独教学 | 输入绑定完成就等于 Agent 已经运行 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design、5D-1 与 5D-2，下一步为 5D-3 | 阶段 5 或整个 5D 已完成 |
+| 项目理解 | 5D-2 已讲清 Prompt 与 Context Engineering 的区别、信任分层、Skill-specific 最小投影、整段预算选择和 tokenizer-free 估算边界 | Context 构造完成就等于 Agent 已经运行或注入问题已解决 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
 | GitHub/部署 | `main` 已包含 5D-1 实现提交 `6bc4309`；GitHub Actions run `31179571780` 对该精确 SHA 全部通过；仍没有正式网页部署 | 代码与 CI 通过就等于已有可运行 Web Agent |
 
@@ -197,7 +212,13 @@ name/version、共享安全 run ID、Harness 规范输入字节摘要和 Catalog
 校验均已有 TDD 证据。该内容绑定尚未创建真实 Harness Artifact，也没有调用模型或
 工具。
 
-唯一下一检查点为 `5D-2 Context Builder V1`。它只负责为近期复盘和单局复盘构造
-不同的最小上下文，标记内部策略、Skill 指令、确定性事实、用户文本和外部证据的
-信任语义，并用确定性 `ContextSizer` 裁剪。不得提前编译 `AgentRunRequest`、执行
-AgentLoop 或进入 5D-3。
+`5D-2 Context Builder V1` 已完成：`ValidatedSkillExecution` 被投影为 trust-typed
+sections，经 Manifest 硬上限做 required-first、optional whole-section 选择，再渲染为
+现有 system/user `ChatMessage`。近期与单局使用不同事实 allowlist；初始 citation
+逐条作为 data-only section；设计和 TDD 证据见
+`docs/plans/2026-08-07-context-builder-v1-design.md` 与对应 implementation plan。
+
+唯一下一检查点为 `5D-3 Skill Run Compiler & Budget Enforcement`。它只负责从已验证
+Manifest 和 `ContextBundle` 编译 `AgentRunRequest`、工具白名单及迭代/工具/超时预算，
+并定义动态 Tool Observation 加入后的累积消息预算。不得提前执行 AgentLoop、Provider、
+ToolRuntime 或 Harness，也不得进入 5D-4。

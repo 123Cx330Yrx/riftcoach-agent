@@ -236,6 +236,27 @@
   `276 passed, 80 subtests passed`；compileall、diff check 与治理预检通过。
 - `CURRENT`：5D-1 完成；唯一下一步为 5D-2 Context Builder V1，不得进入 5D-3。
 
+### 2026-08-07：5D-2 Context Builder V1
+
+- `IMPLEMENTED`：新增 provider-neutral `ContextSection`、`ContextBundle`、可注入
+  `ContextSizer` 与 `ContextBuilderV1`；复用现有 system/user `ChatMessage`，没有创建
+  第二套消息协议或提前编译 `AgentRunRequest`。
+- `IMPLEMENTED`：内部 Policy 与已校验 SKILL.md 是 instructional/system；确定性
+  事实、用户请求和知识 citation 是 data-only/user。恶意文本单测证明角色与标签
+  不会被内容提升，但不把该结果夸大为模型级 Prompt Injection 已解决。
+- `IMPLEMENTED`：近期复盘使用 allowlisted aggregate、样本边界、确定性报告和最多
+  10 条可选 match 投影；单局复盘只含 target row，不含 `recent_summary`、其他 match
+  ID 或同时引用其他已知对局的报告行。
+- `IMPLEMENTED`：Manifest context ceiling 不可提高；required context 超限 fail
+  closed，optional match/citation 按 priority 与稳定原顺序整段选择，并记录省略 ID。
+- `BOUNDARY`：默认 sizer 是可重复的 tokenizer-free preflight，不等于真实 Provider
+  Usage；动态 Tool Observation、权限/预算编译和每次 Provider 调用前的累积预算仍属于
+  5D-3。
+- `VERIFIED`：聚焦回归 `61 passed, 17 subtests passed`；完整回归
+  `292 passed, 80 subtests passed`；compileall 与 diff check 通过。
+- `CURRENT`：5D-2 完成；唯一下一步为 5D-3 Skill Run Compiler & Budget
+  Enforcement，不得进入 5D-4。
+
 ## 当前不变的宏观路线
 
 ```text
