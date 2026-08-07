@@ -1,5 +1,9 @@
 """Deterministic runtime primitives for RiftCoach review workflows."""
 
+from .knowledge import (
+    KnowledgeEvidenceBuildError,
+    knowledge_evidence_from_search_payloads,
+)
 from .models import ArtifactKind, HarnessConfig, RunManifest, RunStatus
 from .runtime import ReviewHarness
 from .store import ArtifactIntegrityError, FileRunStore
@@ -38,6 +42,7 @@ __all__ = [
     "GeneratorStep",
     "HarnessConfig",
     "KnowledgeEvidence",
+    "KnowledgeEvidenceBuildError",
     "ReviewHarness",
     "RunManifest",
     "RunStatus",
@@ -48,4 +53,5 @@ __all__ = [
     "ReviserStep",
     "StaleAttemptError",
     "advance",
+    "knowledge_evidence_from_search_payloads",
 ]

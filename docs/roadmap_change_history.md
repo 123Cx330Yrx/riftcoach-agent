@@ -276,6 +276,25 @@
 - `CURRENT`：5D-3 完成；唯一下一步为 5D-4 Evidence-Aware Agent Draft
   Preparation，不得进入 5D-5。
 
+### 2026-08-08：5D-4 Evidence-Aware Agent Draft Preparation
+
+- `IMPLEMENTED`：知识搜索 payload 到 `KnowledgeEvidence` 的映射已抽成新旧路径共享
+  的 fail-closed 转换器；单/多检索、稳定 K1、source 去重、显式拒答、count 与重复
+  chunk 归因冲突均有直接测试。
+- `IMPLEMENTED`：新增 `SkillAgentDraftPreparer`，只从同一 AgentLoop Registry 编译
+  并执行请求；仅接受 `completed/final_response` 与非空最终文本，返回尚未发布的
+  `CoachDraft + KnowledgeEvidence + AgentRunResult`。
+- `VERIFIED`：`recent-form-review` 与 `single-match-review` 均通过真实 Catalog、
+  Router、ExecutionBoundary、ContextBuilder、Compiler、AgentLoop、ToolRuntime 与
+  本地 `knowledge.search`；Provider 为确定性 Fake，模型虚构来源不会进入 Evidence。
+- `BOUNDARY`：知识工具失败、坏 payload、非知识工具和预算/重复/超时停止均 fail
+  closed；本检查点没有修改 ReviewHarness、构造 terminal Skill Output、调用真实
+  Provider 或发布报告。
+- `VERIFIED`：聚焦回归 `102 passed`；完整回归 `325 passed, 80 subtests passed`；
+  compileall 与 diff check 通过。
+- `CURRENT`：5D-4 完成；唯一下一步为 5D-5 Harness Composition & Typed Terminal
+  Output，不得进入 5D-6a。
+
 ## 当前不变的宏观路线
 
 ```text

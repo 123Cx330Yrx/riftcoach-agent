@@ -404,3 +404,43 @@
 - 5D-3 still does not create a Skill draft preparer, interpret knowledge ToolResult payloads as
   `KnowledgeEvidence`, call a real Provider, compose Harness or publish a report. Those boundaries
   remain 5D-4 and later.
+
+## 2026-08-08 5D-4 initial draft/evidence audit
+
+- `knowledge.search` already returns provider, abstained, diagnostics and fully attributable chunk
+  rows through a validated ToolResult. Agent evidence must be derived from these actual execution
+  records, never from source names claimed in the model's final Markdown.
+- `LocalRagAdapter` already maps one knowledge payload into `KnowledgeEvidence` and citation IDs.
+  Duplicating that logic in an Agent adapter would create two citation semantics; 5D-4 should
+  extract one pure converter that both the legacy retrieval path and Agent path reuse.
+- The new Agent path should return `CoachDraft + KnowledgeEvidence + AgentRunResult` as a bounded
+  preparation result. The raw final response is only a draft and cannot become a Skill terminal
+  output or published report before 5D-5 Harness composition.
+- A failed knowledge tool call, malformed result payload, non-completed Agent run or missing final
+  text must fail the preparation step explicitly. A direct final response with no tool call is
+  valid and produces empty knowledge evidence.
+- Multiple distinct searches can retrieve overlapping chunks. Evidence should preserve first-seen
+  execution/rank order, deduplicate identical chunk IDs, assign stable K1..Kn IDs and fail closed
+  if the same chunk ID carries conflicting attributable content.
+
+## 2026-08-08 5D-4 implementation findings
+
+- One shared converter can preserve the legacy single-search K1/source/context contract while
+  extending it to multiple actual searches. It distinguishes no search from explicit all-search
+  abstention, deduplicates first-seen chunks, and rejects count or attributable-content conflicts.
+- `SkillAgentDraftPreparer` remains thin: it creates `AgentRunCompiler` from the exact Registry
+  owned by its AgentLoop, validates the completed/final terminal state, and never evaluates,
+  revises, publishes or constructs a Skill Output.
+- Both real Skill identities now pass through Catalog, deterministic Router, execution boundary,
+  ContextBuilder, Compiler and AgentLoop under a Fake Provider while ToolRuntime and local hybrid
+  `knowledge.search` are real. This proves composition deterministically, not real-Provider tool
+  calling quality.
+- Model-authored Markdown is deliberately not parsed for evidence. A fabricated source string in
+  the final response remains in the untrusted draft but never enters `KnowledgeEvidence`; only
+  successful validated ToolExecutionRecords contribute sources and citations.
+- A successful final response cannot rescue a failed knowledge call. Output-schema failures,
+  unsupported non-knowledge executions, malformed attributable payloads and bounded stop reasons
+  all prevent any preparation result from being returned.
+- Runtime-level K1..Kn IDs are assigned after the searches complete. 5D-4 does not rewrite the
+  model draft to invent citation coverage; Harness unknown-citation checks and domain citation
+  evaluation remain 5D-5/5D-7 responsibilities.

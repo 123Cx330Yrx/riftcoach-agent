@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.4 - 5D-4（next; implementation not started）
+Phase 6.5 - 5D-5（next; implementation not started）
 
 ## Phases
 
@@ -73,18 +73,22 @@ Phase 6.4 - 5D-4（next; implementation not started）
   `ContextSizer`、整段预算选择和不可信知识引用投影均已有 TDD 证据。
 - `5D-3` 已完成：Manifest-only `AgentRunCompiler`、完整消息估算、逐轮累计 Context
   门禁和协作式总 deadline 均已有 TDD 证据。
-- 唯一下一步是 5D-4 Evidence-Aware Agent Draft Preparation；尚未创建 Agent 草稿
-  准备器、转换 `KnowledgeEvidence` 或接入 Harness。
+- `5D-4` 已完成：共享知识 evidence converter、`SkillAgentDraftPreparer`、两个真实
+  Skill 的 Fake Provider + 真实 `knowledge.search` 以及 provenance/失败边界均已有
+  TDD 证据。
+- 唯一下一步是 5D-5 Harness Composition & Typed Terminal Output；尚未修改
+  `ReviewHarness` 控制流、创建 terminal Skill Output 或发布 Agent 草稿。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-4 Evidence-Aware Agent Draft Preparation：只把已编译的受限
-`AgentRunRequest` 交给 AgentLoop，通过 `knowledge.search` 准备 Coach 草稿，并把实际
-工具结果转换为现有 `KnowledgeEvidence`。本检查点不组合 Harness、不产生 terminal
-Skill Output、不调用真实 Provider，也不进入 5D-5。
+5D-5 Harness Composition & Typed Terminal Output：只增加 `DraftPreparationStep`
+接缝，让现有 `ReviewHarness` 消费同一 `CoachDraft + KnowledgeEvidence`，并从
+Harness terminal manifest、最终 Artifact、Evaluation 与实际 Evidence 构造两个
+Skill 的 typed terminal output。本检查点不实现结构化 Provider 输出、不调用真实
+Provider，也不进入 5D-6a。
 
 ## Decisions Made
 
@@ -125,6 +129,9 @@ Skill Output、不调用真实 Provider，也不进入 5D-5。
 | Context ceiling 成为 `AgentRunRequest` 一等字段 | 只写 metadata 无法阻止第二轮 Provider 调用；Loop 必须在累计消息增长后仍能读取硬上限 |
 | 完整消息估算包含 ToolCall envelope | 大参数存在于 `tool_calls.arguments` 而非 content；只估 content 会留下可绕过的预算缺口 |
 | Manifest `timeout_s` 收紧为 cooperative total deadline | 每次外部调用只获得 remaining budget；同步函数不可硬抢占的限制保留，不伪装成强制取消 |
+| 5D-4 新旧路径共用一个 KnowledgeEvidence converter | citation 编号、来源去重与冲突拒绝必须只有一套语义，避免旧 Harness 和 Agent 路径漂移 |
+| Agent 证据只来自实际 ToolExecutionRecord | 模型 Markdown 中声明的来源不可作为 provenance；无工具回答合法但 Evidence 必须为空 |
+| 5D-4 不重写模型文本补 K1 引用 | 运行后 citation ID 与模型生成时观察到的工具 payload 尚未统一；引用覆盖和支持度留给 5D-5/5D-7 验证 |
 
 ## Errors Encountered
 
@@ -159,3 +166,9 @@ Skill Output、不调用真实 Provider，也不进入 5D-5。
 | 恢复活动计划时把 `.active_plan` 值误当成仓库根相对路径，漏掉 `.planning/` | 1 | 命令只读且未改文件；改为显式从 `.planning` 拼接活动计划目录，并继续按恢复顺序读取 |
 | 读取执行边界测试时猜测不存在的 `tests/test_skill_execution.py` | 1 | 先用 `rg --files tests` 查到真实 `test_skill_execution_boundary.py` 后读取；未改测试或源码 |
 | 5D-2 聚焦回归猜测不存在的 `tests/test_provider_models.py` | 1 | 该次 pytest 未收集任何测试；列出真实 Provider 测试后改跑 `test_provider_tool_calling_models.py` 与 `test_provider_contracts.py` |
+| 5D-4 共享证据转换首个补丁假设了 Harness `__init__` docstring | 1 | `apply_patch` 原子拒绝且没有产生部分源码修改；读取真实文件后把新增模块、Adapter 与导出拆成独立小补丁 |
+| 5D-4 直接回答 Fake Provider 只声明 text chat | 1 | 编译后的 Skill 请求仍携带白名单工具规范，能力协商正确拒绝；修正测试 Provider 声明 `tool_calling`，不放宽生产门禁 |
+| 5D-4 聚焦回归猜测不存在的 `tests/test_rag_provider.py` | 1 | pytest 在收集前退出、没有测试运行；先用 `rg --files tests` 获取真实 RAG 文件，再重跑实际测试集合 |
+| 5D-4 ToolRuntime 失败测试的 Fake Provider 无条件读取成功 payload | 1 | 真实失败 Observation 的 `data` 为 null，测试 double 先按 `success` 分支，再验证 Preparer 从失败执行记录拒绝草稿并只暴露安全 code |
+| 5D-4 项目决策同步补丁假设 `截至` 独占一行 | 1 | `apply_patch` 原子拒绝且无部分修改；按真实相邻日期行拆小补丁后同步 |
+| 5D-4 收尾猜测 workflow 名为 `.github/workflows/ci.yml` | 1 | 只读失败且未执行脚本；先用 `rg --files .github/workflows` 找到真实 `tests.yml` 后按其门禁核对 |

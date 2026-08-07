@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5D"
-current_checkpoint: "5D-4"
+current_checkpoint: "5D-5"
 status: in_progress
-blocked_before: "5D-5"
+blocked_before: "5D-6a"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,11 +16,14 @@ blocked_before: "5D-5"
 
 ## 状态元数据
 
-- 最后更新：2026-08-07
+- 最后更新：2026-08-08
 - 主阶段：阶段 5，进行中
-- 当前子阶段组：5D Python 受限 Agent Loop，entry design、5D-1、5D-2 与 5D-3 已完成
-- 唯一下一步：5D-4 Evidence-Aware Agent Draft Preparation，只把受限 AgentLoop 的知识工具结果转换为 `CoachDraft + KnowledgeEvidence`
-- 禁止越过：5D-4 完成前不得进入 5D-5；5D-3 没有创建 draft preparer、转换知识证据、调用真实 Provider 或接入 Harness
+- 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-4 已完成
+- 唯一下一步：5D-5 Harness Composition & Typed Terminal Output，只通过
+  `DraftPreparationStep` 把 Agent 草稿/证据接入现有唯一质量门禁，并从 Harness
+  终态与 Artifact 构造 typed Skill Output
+- 禁止越过：5D-5 完成前不得进入 5D-6a；5D-4 没有修改 ReviewHarness 控制流、
+  产生 terminal Skill Output、调用真实 Provider 或发布 Coach 报告
 
 ## 5C 原始子阶段账本
 
@@ -41,8 +44,8 @@ blocked_before: "5D-5"
 | 5D-1 Skill Run Boundary Hardening | 统一 I/O 非空文本、selected identity、run_id 和输入 Artifact 绑定 | 已完成 | 设计/TDD 文档、`SkillExecutionBoundary`、共享 run ID/Artifact 编码、合同与篡改测试 |
 | 5D-2 Context Builder V1 | 两个 Skill 的最小上下文、信任标签、确定性裁剪和 ContextSizer | 已完成 | 设计/TDD 文档、`ContextBuilderV1`、两个 Skill allowlist、citation/注入/预算边界测试 |
 | 5D-3 Skill Run Compiler & Budget Enforcement | Manifest 权限/预算编译为 AgentRunRequest，并约束累积上下文 | 已完成 | 设计/TDD 文档、`AgentRunCompiler`、完整消息估算、逐轮 Context 门禁与协作式总 deadline 测试 |
-| 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 唯一下一步 | 尚无代码或测试 |
-| 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 未开始 | 尚无代码或测试 |
+| 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 已完成 | 共享 evidence converter、`SkillAgentDraftPreparer`、两个真实 Skill + Fake Provider + 真实 `knowledge.search`，成功/拒答/去重/冲突/失败与停止边界测试 |
+| 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 唯一下一步 | 尚无代码或测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 未开始 | 尚无代码或测试 |
 | 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 未开始 | 尚未选择厂商或模型 |
 | 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 未开始 | 尚无新数据集或结果 |
@@ -111,14 +114,23 @@ blocked_before: "5D-5"
   超限均以 `context_budget_exceeded` 停止，不再继续调用 Provider；
 - Manifest `timeout_s` 被收紧为协作式总 deadline；Provider 获得递减剩余时间，
   ToolRuntime 取运行剩余时间与工具 policy timeout 的较小值，耗尽后以 `timeout` 停止；
-- 当前本地完整回归：`308 passed, 80 subtests passed`；compileall、diff check 与治理
-  预检均通过。
+- 旧 `LocalRagAdapter` 与新 Agent 路径共用 fail-closed 的知识 payload 转换器；只有
+  实际成功且归因字段合法的 `knowledge.search` ToolResult 才能生成稳定 K1..Kn、
+  去重 source IDs 与 `KnowledgeEvidence`，重复 chunk 归因冲突会被拒绝；
+- `SkillAgentDraftPreparer` 使用 AgentLoop 的同一 ToolRegistry 编译并执行请求，只在
+  `completed/final_response` 且最终文本非空时生成尚未发布的 `CoachDraft`；失败知识
+  工具、非知识工具、坏 payload 与预算/重复/超时停止均 fail closed；
+- `recent-form-review` 与 `single-match-review` 已在 Fake Provider 下通过真实 Catalog、
+  Router、ExecutionBoundary、ContextBuilder、Compiler、AgentLoop、ToolRuntime 与本地
+  `knowledge.search`；模型只在 Markdown 声称的虚假来源不会进入 Evidence；
+- 当前本地完整回归：`325 passed, 80 subtests passed`；compileall、diff check 与状态
+  同步后的治理预检均通过。
 
 当前不能声称：
 
-- 5D-4 Agent draft/evidence preparation 或任何更后的 5D 功能已经实现；
-- 已经用真实 Provider 执行 Skill Agent、把 ToolResult 转为 KnowledgeEvidence、接入
-  Harness，或生成/发布了新 Coach 报告；
+- 5D-5 Harness composition、terminal Skill Output 或任何更后的 5D 功能已经实现；
+- 已经用真实 Provider 执行 Skill Agent、把 Agent 草稿接入 Harness，或生成/发布了
+  新 Coach 报告；
 - 默认 ContextSizer 等于真实厂商 tokenizer 或真实 Token Usage；
 - trust/JSON 分层已经彻底解决 Prompt Injection；
 - 已经实现 Tool Observation compaction，或协作式 deadline 能硬中断任意阻塞函数；
@@ -134,8 +146,8 @@ blocked_before: "5D-5"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design、5D-1、5D-2 与 5D-3，下一步为 5D-4 | 阶段 5 或整个 5D 已完成 |
-| 项目理解 | 5D-3 已讲清 Context 与权限控制面的区别、Manifest-only 编译、完整累计消息预算和协作式总 deadline | 编译和预算门禁完成就等于真实 Skill Agent、证据转换或 Harness 已运行 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-4，下一步为 5D-5 | 阶段 5 或整个 5D 已完成 |
+| 项目理解 | 5D-4 已讲清模型文本与实际工具 provenance 的区别、draft/evidence 双产物和 fail-closed 终态校验 | 草稿与证据已准备就等于 Harness 已评测、发布或 terminal Skill Output 已生成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
 | GitHub/部署 | `main` 已包含 5D-3 实现提交 `6f25108`；GitHub Actions run `31191462744` 对精确 SHA `6f251082ae03059961bd508bdbc43c4f1bf247af` 全部通过；仍没有正式网页部署 | 代码与 CI 通过就等于已有可运行 Web Agent |
 
@@ -234,7 +246,15 @@ Manifest 与 `ContextBundle` 编译现有 `AgentRunRequest`，不接受权限或
 deadline。设计与 TDD 证据见
 `docs/plans/2026-08-07-skill-run-compiler-budget-design.md` 与对应 implementation plan。
 
-唯一下一检查点为 `5D-4 Evidence-Aware Agent Draft Preparation`。它只负责让受限
-AgentLoop 通过 `knowledge.search` 准备草稿，并把实际工具结果规范化为现有
-`KnowledgeEvidence`。不得提前组合 Harness、产生 terminal Skill Output、调用真实
-Provider 或进入 5D-5。
+`5D-4 Evidence-Aware Agent Draft Preparation` 已完成：知识 payload 转换逻辑已从
+旧 `LocalRagAdapter` 抽成共享纯函数；`SkillAgentDraftPreparer` 将受限 AgentLoop 的
+最终文本降格为 `CoachDraft`，只从实际成功的 `knowledge.search` 执行记录构造
+`KnowledgeEvidence`。两个真实 Skill 已用 Fake Provider + 真实本地知识工具走通；
+设计和 TDD 证据见 `docs/plans/2026-08-08-skill-agent-draft-preparation-design.md` 与
+对应 implementation plan。该检查点没有运行 Harness 或真实 Provider。
+
+唯一下一检查点为 `5D-5 Harness Composition & Typed Terminal Output`。它只负责
+通过 `DraftPreparationStep` 接缝让现有 `ReviewHarness` 消费草稿与证据，并从
+Harness terminal manifest、最终 Artifact、Evaluation 与实际 Evidence 构造两个
+Skill 的 typed terminal output。不得提前实现结构化 Provider 输出、调用真实
+Provider 或进入 5D-6a。

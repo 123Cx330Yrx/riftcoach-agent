@@ -11,6 +11,11 @@ from .context import (
     ContextTrust,
     DeterministicContextSizer,
 )
+from .draft import (
+    AgentDraftPreparationError,
+    AgentDraftPreparationResult,
+    SkillAgentDraftPreparer,
+)
 from .loop import (
     AgentLoop,
     AgentRunRequest,
@@ -22,6 +27,8 @@ from .loop import (
 
 __all__ = [
     "AgentLoop",
+    "AgentDraftPreparationError",
+    "AgentDraftPreparationResult",
     "AgentRunCompileError",
     "AgentRunCompiler",
     "AgentRunRequest",
@@ -36,5 +43,6 @@ __all__ = [
     "ContextSizer",
     "ContextTrust",
     "DeterministicContextSizer",
+    "SkillAgentDraftPreparer",
     "ToolExecutionRecord",
 ]

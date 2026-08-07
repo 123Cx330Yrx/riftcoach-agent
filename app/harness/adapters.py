@@ -5,13 +5,13 @@ from typing import Any
 
 from app.tools.runtime import ToolRuntime
 
+from .knowledge import knowledge_evidence_from_search_payloads
 from .steps import (
     CoachDraft,
     EvaluationRequest,
     EvaluationResult,
     EvaluationVerdict,
     GenerationRequest,
-    KnowledgeCitation,
     KnowledgeEvidence,
     RetrievalRequest,
     RevisionRequest,
@@ -60,31 +60,7 @@ class LocalRagAdapter:
             metadata={"harness_step": "retrieve"},
         )
         data = _require_success(result, "knowledge.search")
-        chunks = data["chunks"]
-        source_ids = tuple(
-            dict.fromkeys(chunk["source_id"] for chunk in chunks)
-        )
-        citations = tuple(
-            KnowledgeCitation(
-                citation_id=f"K{index}",
-                chunk_id=chunk["chunk_id"],
-                parent_id=chunk["parent_id"],
-                source_id=chunk["source_id"],
-                title=chunk["title"],
-                content=chunk["content"],
-                matched_content=chunk["matched_content"],
-                version=chunk["version"],
-                updated_at=chunk["updated_at"],
-            )
-            for index, chunk in enumerate(chunks, start=1)
-        )
-        return KnowledgeEvidence(
-            context=_format_knowledge_chunks(chunks, citations),
-            source_ids=source_ids,
-            citations=citations,
-            abstained=bool(data["abstained"]),
-            diagnostics=dict(data["diagnostics"]),
-        )
+        return knowledge_evidence_from_search_payloads((data,))
 
 
 class ChatCoachGenerator:
@@ -230,23 +206,6 @@ def _require_success(result: Any, tool_name: str) -> dict[str, Any]:
     if result.data is None:
         raise RuntimeError(f"{tool_name} returned no data")
     return dict(result.data)
-
-
-def _format_knowledge_chunks(
-    chunks: list[dict[str, Any]],
-    citations: tuple[KnowledgeCitation, ...],
-) -> str:
-    if not chunks:
-        return "未检索到足够相关的可用知识；不得用相近但不相关的内容补足。"
-    sections = []
-    for chunk, citation in zip(chunks, citations):
-        version_text = f"；版本：{citation.version}" if citation.version else ""
-        sections.append(
-            f"[{citation.citation_id}] 来源：{chunk['source_id']}；"
-            f"章节：{chunk['title']}{version_text}\n"
-            f"{chunk['content']}"
-        )
-    return "\n\n".join(sections)
 
 
 def _evaluation_payload(result: EvaluationResult) -> dict[str, Any]:

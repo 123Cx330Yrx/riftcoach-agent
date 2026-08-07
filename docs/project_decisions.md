@@ -9,7 +9,7 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 ## 能力基线
 
 动态进度和唯一下一步只看 `docs/project_execution_state.md`。截至
-2026-08-07，已经实现并有测试证据的本地基础包括：
+2026-08-08，已经实现并有测试证据的本地基础包括：
 
 - Riot ID、PUUID、最近对局与 Timeline 数据链路；
 - MatchAnalyzer 确定性指标；
@@ -30,12 +30,14 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
   citation 投影与 Manifest ceiling 内的确定性整段选择；
 - 5D-3 Skill Run Compiler & Budget Enforcement：Manifest-only 权限/预算编译、完整
   消息估算、逐轮累计 Context 门禁与协作式总 deadline；
+- 5D-4 Evidence-Aware Agent Draft Preparation：只从实际知识工具执行构造共享
+  `KnowledgeEvidence`，并把 Agent 最终文本保留为尚未发布的 `CoachDraft`；
 - 独立事实评测、受限修订、再评测与发布门控。
 
 当前仍未实现：
 
 - 真实 Provider Tool Calling 和经过领域评测的第二 Provider；
-- Agent draft/evidence preparation、Harness 组合和统一 AgentRuntime；
+- Agent/Harness 组合、typed terminal Skill Output 和统一 AgentRuntime；
 - FastAPI 会话入口；
 - 玩家长期 Memory；
 - 标准 MCP Client/Server；
@@ -81,6 +83,9 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   只整段保留或省略；
 - 5D-3 已实现请求编译和运行预算：权限与迭代/工具/超时只来自 Manifest，累计消息
   在每次 Provider 调用前检查，Provider/Tool 共用递减的协作式总 deadline；
+- 5D-4 已实现证据化草稿准备：新旧路径共用知识 payload 转换器，Agent 最终文本
+  只能成为 `CoachDraft`，只有成功且归因合法的实际 `knowledge.search`
+  ToolExecutionRecord 才能成为 `KnowledgeEvidence`；
 - AgentLoop 只负责白名单工具调用和 Coach 草稿准备，不拥有发布权；
 - 新 `DraftPreparationStep` 返回同一 `CoachDraft + KnowledgeEvidence`，用于兼容旧
   Retriever/Generator 路径与新 Agent 路径；
@@ -89,7 +94,7 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   Observation 分层，权限永远不从不可信文本获得；
 - 结构化模型输出先服务机器消费的 EvaluationResult，Coach 报告仍为 Markdown；
 - 真实 Provider 与第二 Provider 选择必须等 5D-6b 用同一领域任务评测，不提前锁定；
-- 该方案由 ADR-0011 接受；当前只实现到 5D-3，不等于整个 5D、LangGraph 或
+- 该方案由 ADR-0011 接受；当前只实现到 5D-4，不等于整个 5D、LangGraph 或
   Multi-Agent 已实现。
 
 ## 数据职责

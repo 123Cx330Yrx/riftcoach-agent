@@ -276,3 +276,38 @@
   `origin/main` 一致。GitHub Actions run `31191462744` 对精确 SHA
   `6f251082ae03059961bd508bdbc43c4f1bf247af` 的治理、pytest、两层 RAG 门禁、
   compileall、Harness 边界、密钥检查和 dry-run 全部成功。
+
+## 2026-08-08
+
+- 用户以“继续下一步”授权唯一检查点 5D-4；按强制恢复顺序读取 canonical state、
+  活动计划、需求、路线、能力矩阵、ADR-0011 与 5D 设计，session catchup 无未同步
+  内容，治理预检通过，起始 HEAD/origin 均为 `98bbda0` 且工作树干净。
+- 初始源码审计确认 AgentLoop 已保留实际 `ToolExecutionRecord`，`knowledge.search`
+  输出已由 ToolRuntime 做 Schema 校验，旧 `LocalRagAdapter` 已有单次 payload 到
+  `KnowledgeEvidence` 的转换；5D-4 将抽取共享纯转换器而不是复制或重新检索。
+- Task 1 已先以缺少 `app.harness.knowledge` 得到预期收集红灯。首个实现补丁因猜错
+  `app/harness/__init__.py` docstring 被原子拒绝；确认没有部分源码修改后，改为读取
+  真实文件并拆分小补丁，错误已写入计划账本。
+- Task 1 已完成：新增共享 fail-closed 知识 payload 转换器，旧 `LocalRagAdapter`
+  改为复用同一实现；单/多检索、稳定 K1、去重、拒答、count 与归因冲突测试连同
+  旧 Harness Adapter 回归为 `11 passed`。
+- Task 2 已完成：新增不可变 `AgentDraftPreparationResult` 与薄
+  `SkillAgentDraftPreparer`；它从 AgentLoop 的同一 ToolRegistry 编译请求，并拒绝
+  非 completed、无最终文本、失败知识调用及非知识工具执行。相关 Agent/Compiler/
+  Loop 回归为 `25 passed`。
+- Task 3 已完成：两个真实 Skill 均通过真实 Catalog、Router、ExecutionBoundary、
+  ContextBuilder、Compiler 与 AgentLoop；Fake Provider 调用真实本地
+  `knowledge.search`，模型虚构的 `ghost-only.md` 没有进入 Evidence。
+- Task 4 已完成：补齐真实 ToolRuntime 输出 Schema 失败与 max-tool/duplicate/timeout
+  停止边界；Agent、Context、ToolRuntime、RAG 与 Harness Adapter 聚焦回归为
+  `102 passed`，失败路径不会返回半成品 preparation result。
+- Task 5 本地收尾进行中：功能完成后的首次完整回归为
+  `325 passed, 80 subtests passed`，compileall 与 diff check 通过；canonical state、
+  活动计划、路线历史、v1.3、能力矩阵和项目决策均只推进到“5D-4 完成、5D-5
+  唯一下一步”，治理预检与当前状态陈旧短语扫描通过。
+- 状态同步后的最终完整回归仍为 `325 passed, 80 subtests passed`；compileall、
+  `git diff --check` 与治理预检全部通过，diff check 只有既有 Windows 换行提示。
+- 按真实 GitHub Actions workflow 复跑本地门禁：RAG development 8 条与 independent
+  holdout 7 条的 Recall/MRR/nDCG 均为 `1.0`，holdout abstention/citation support 也为
+  `1.0`；Harness 旧路径 dry-run published，SDK 边界与 tracked secret/run-data 检查
+  均通过。该 dry-run 只验证旧 Harness 兼容性，不表示 Agent 草稿已接入 Harness。

@@ -171,6 +171,7 @@ OP.GG MCP
 5D-1 Skill Run Boundary       已完成；身份、run ID 与输入内容绑定已加固
 5D-2 Context Builder V1       已完成；最小事实投影、信任分层与整段预算选择已加固
 5D-3 Run Compiler & Budgets   已完成；Manifest-only 编译、累计 Context 与总 deadline 已加固
+5D-4 Agent Draft & Evidence   已完成；实际知识工具记录已转换为未发布草稿与可审计证据
 ```
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
@@ -196,8 +197,10 @@ Provider 准入、5D-7 领域评测和 exit review。5D-1 已实现执行前身�
 投影事实，以 trust 标签区分 system 指令与 data-only 内容，并在 Manifest ceiling 内
 整段选择可选 match/citation。5D-3 已实现 `AgentRunCompiler`，只从 Manifest 映射
 工具与运行预算，并在每次 Provider 调用前检查包含 Tool Observation 的完整累计消息；
-Provider/Tool 共享递减的协作式总 deadline。当前唯一下一步为 5D-4，尚未准备 Agent
-草稿、转换知识证据或接入 Harness。
+Provider/Tool 共享递减的协作式总 deadline。5D-4 已让两个真实 Skill 在 Fake Provider
+下调用真实本地 `knowledge.search`，并只从实际成功的 ToolExecutionRecord 构造
+`KnowledgeEvidence`；最终模型文本仍只是未发布 `CoachDraft`。当前唯一下一步为
+5D-5，尚未把 Agent 草稿/证据接入 Harness 或构造 terminal Skill Output。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动
