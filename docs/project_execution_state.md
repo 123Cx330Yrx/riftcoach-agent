@@ -128,7 +128,7 @@ blocked_before: "5D-4"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design、5D-1 与 5D-2，下一步为 5D-3 | 阶段 5 或整个 5D 已完成 |
 | 项目理解 | 5D-2 已讲清 Prompt 与 Context Engineering 的区别、信任分层、Skill-specific 最小投影、整段预算选择和 tokenizer-free 估算边界 | Context 构造完成就等于 Agent 已经运行或注入问题已解决 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | `main` 已包含 5D-1 实现提交 `6bc4309`；GitHub Actions run `31179571780` 对该精确 SHA 全部通过；仍没有正式网页部署 | 代码与 CI 通过就等于已有可运行 Web Agent |
+| GitHub/部署 | `main` 已包含 5D-2 实现提交 `9275d9c`；GitHub Actions run `31185773854` 对该精确 SHA 全部通过；仍没有正式网页部署 | 代码与 CI 通过就等于已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
