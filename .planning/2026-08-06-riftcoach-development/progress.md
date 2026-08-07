@@ -191,3 +191,22 @@
   Boundary Hardening，本批没有实现任何 5D 功能代码。
 - 5D entry design 回归：完整 pytest `256 passed, 57 subtests passed`；compileall、
   `git diff --check` 与治理预检通过。只有既有 Windows LF/CRLF 提示。
+- 开始 5D-1 后先新增设计与 TDD 实施计划，明确本轮只做 Skill I/O、selected
+  identity/version、安全 run ID 与输入内容绑定，不进入 Context Builder。
+- Skill I/O 红灯为 `5 failed, 13 passed`；统一输入报告、输出 run/report、来源和
+  warning 的去空白、非空与去重规则后恢复为 `18 passed`。
+- Router 版本红灯为 `2 failed, 31 passed`；`RouterDecision` 增加
+  `selected_skill_version`，真实 Router 从命中候选填入版本，相关回归为 `47 passed`，
+  没有重跑或改写 sealed holdout。
+- run ID 红灯覆盖 Manifest、Store 与 Skill 输出的路径、盘符、Windows 保留名、
+  空格和超长值；三处改用一个共享规范后为 `32 passed, 25 subtests passed`。
+- 新增 `SkillExecutionBoundary`、输入 Artifact 内容承诺与 Harness 共享字节编码；
+  先得到缺少 execution module 的预期收集错误，最小实现后执行边界 `11 passed`。
+- 深层可变性复核发现 frozen model 不会冻结嵌套 dict；补红灯后改为内部深拷贝快照
+  与对外副本，避免调用方修改已验证输入。
+- 5D-1 聚焦回归 `107 passed, 25 subtests passed`；完整回归
+  `276 passed, 80 subtests passed`；compileall、`git diff --check` 与治理预检通过。
+- 状态同步后的首次陈旧短语扫描再次把含 `|` 的 rg 正则放进 PowerShell 双引号，
+  命令解析失败但未改文件；改用单引号多个 `-e` 后成功，仅命中应保留的历史记录。
+- 5D-1 本地实现与教学验收完成；唯一下一步改为 5D-2 Context Builder V1，尚未
+  构造 Context、编译 `AgentRunRequest` 或调用 AgentLoop/Tool/Provider/Harness。

@@ -102,6 +102,7 @@ class RouterDecision(SkillContractModel):
     outcome: RouteOutcome
     reason: RouteReason
     selected_skill: str | None = None
+    selected_skill_version: str | None = None
     candidate_skills: tuple[str, ...] = ()
     evidence: tuple[RouteEvidence, ...] = ()
     explanation: str = Field(min_length=1)
@@ -114,6 +115,19 @@ class RouterDecision(SkillContractModel):
         normalized = value.strip()
         if not normalized:
             raise ValueError("selected_skill must not be blank")
+        return normalized
+
+    @field_validator("selected_skill_version")
+    @classmethod
+    def normalize_selected_skill_version(
+        cls,
+        value: str | None,
+    ) -> str | None:
+        if value is None:
+            return None
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("selected_skill_version must not be blank")
         return normalized
 
     @field_validator("candidate_skills")
@@ -153,6 +167,10 @@ class RouterDecision(SkillContractModel):
             raise ValueError("selected outcome requires matched_skill reason")
         if self.selected_skill is None:
             raise ValueError("selected outcome requires selected_skill")
+        if self.selected_skill_version is None:
+            raise ValueError(
+                "selected outcome requires selected_skill_version"
+            )
         if self.candidate_skills != (self.selected_skill,):
             raise ValueError(
                 "selected outcome requires exactly the selected candidate"
@@ -180,6 +198,8 @@ class RouterDecision(SkillContractModel):
             )
         if self.selected_skill is not None:
             raise ValueError("ambiguous outcome cannot select a skill")
+        if self.selected_skill_version is not None:
+            raise ValueError("ambiguous outcome cannot select a skill version")
         if len(self.candidate_skills) < 2:
             raise ValueError("ambiguous outcome requires at least two candidates")
         if not set(self.candidate_skills).issubset(evidence_names):
@@ -212,6 +232,8 @@ class RouterDecision(SkillContractModel):
             raise ValueError("rejected outcome requires a rejection reason")
         if self.selected_skill is not None:
             raise ValueError("rejected outcome cannot select a skill")
+        if self.selected_skill_version is not None:
+            raise ValueError("rejected outcome cannot select a skill version")
         if self.candidate_skills:
             raise ValueError("rejected outcome cannot expose candidates")
         if self.reason is RouteReason.NO_AVAILABLE_SKILLS and self.evidence:

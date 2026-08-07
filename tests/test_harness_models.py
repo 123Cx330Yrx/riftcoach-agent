@@ -41,7 +41,7 @@ class HarnessModelTests(unittest.TestCase):
 
     def test_new_manifest_starts_in_created_state(self):
         manifest = RunManifest.new(
-            run_id="review_20260722_example",
+            run_id="  review_20260722_example  ",
             config=HarnessConfig(),
         )
 
@@ -51,6 +51,28 @@ class HarnessModelTests(unittest.TestCase):
         self.assertEqual(0, manifest.attempt_id)
         self.assertEqual([], manifest.artifacts)
         self.assertEqual([], manifest.transitions)
+
+    def test_new_manifest_rejects_non_portable_or_unsafe_run_ids(self):
+        unsafe_ids = (
+            "",
+            "   ",
+            ".",
+            "..",
+            "../outside",
+            "folder/run",
+            "folder\\run",
+            "C:drive",
+            "run with spaces",
+            "CON",
+            "con.json",
+            "run.",
+            "r" * 129,
+        )
+
+        for run_id in unsafe_ids:
+            with self.subTest(run_id=run_id):
+                with self.assertRaises(ValueError):
+                    RunManifest.new(run_id=run_id, config=HarnessConfig())
 
 
 if __name__ == "__main__":

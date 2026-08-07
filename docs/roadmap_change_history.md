@@ -219,6 +219,23 @@
 - `VERIFIED`：本批未改功能代码；完整回归 `256 passed, 57 subtests passed`，
   compileall、diff check 与治理预检通过。
 
+### 2026-08-07：5D-1 Skill Run Boundary Hardening
+
+- `IMPLEMENTED`：两个 Skill 对确定性报告、terminal report、run ID、evidence IDs
+  与 warnings 使用一致的去空白、非空和去重合同。
+- `IMPLEMENTED`：selected `RouterDecision` 锁定 Skill name/version；执行边界从
+  Catalog 重新取得同名 Skill，版本漂移或缺失时 fail closed。
+- `IMPLEMENTED`：`RunManifest`、`FileRunStore`、Skill 输出与执行请求共享跨平台
+  安全 run ID，拒绝路径、盘符、Windows 保留名和超长值。
+- `IMPLEMENTED`：输入绑定复用 Harness 实际 JSON/text 字节编码，记录 Summary 与
+  确定性报告的 kind、schema version 和 SHA-256；`ValidatedSkillExecution` 保存与
+  调用方可变 payload 脱钩的 typed input 快照。
+- `BOUNDARY`：本检查点只承诺未来 Artifact 内容，没有创建 FileRunStore run、构造
+  Context/`AgentRunRequest`、调用 Tool/Provider/AgentLoop 或接入 Harness 发布。
+- `VERIFIED`：聚焦回归 `107 passed, 25 subtests passed`；完整回归
+  `276 passed, 80 subtests passed`；compileall、diff check 与治理预检通过。
+- `CURRENT`：5D-1 完成；唯一下一步为 5D-2 Context Builder V1，不得进入 5D-3。
+
 ## 当前不变的宏观路线
 
 ```text

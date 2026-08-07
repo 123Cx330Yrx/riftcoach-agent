@@ -50,6 +50,7 @@ def test_selected_decision_requires_one_candidate_and_evidence():
         outcome=RouteOutcome.SELECTED,
         reason=RouteReason.MATCHED_SKILL,
         selected_skill="recent-form-review",
+        selected_skill_version="0.2.0",
         candidate_skills=("recent-form-review",),
         evidence=(
             RouteEvidence(
@@ -68,6 +69,7 @@ def test_selected_decision_requires_one_candidate_and_evidence():
             outcome=RouteOutcome.SELECTED,
             reason=RouteReason.MATCHED_SKILL,
             selected_skill="recent-form-review",
+            selected_skill_version="0.2.0",
             candidate_skills=("recent-form-review",),
             explanation="缺少证据。",
         )
@@ -77,6 +79,7 @@ def test_selected_decision_requires_one_candidate_and_evidence():
             outcome=RouteOutcome.SELECTED,
             reason=RouteReason.MATCHED_SKILL,
             selected_skill="recent-form-review",
+            selected_skill_version="0.2.0",
             candidate_skills=("recent-form-review",),
             evidence=(
                 RouteEvidence(
@@ -85,6 +88,31 @@ def test_selected_decision_requires_one_candidate_and_evidence():
                 ),
             ),
             explanation="不能仅凭负面证据选中 Skill。",
+        )
+
+
+def test_selected_decision_requires_version_and_non_selected_forbids_it():
+    with pytest.raises(ValidationError, match="requires selected_skill_version"):
+        RouterDecision(
+            outcome=RouteOutcome.SELECTED,
+            reason=RouteReason.MATCHED_SKILL,
+            selected_skill="recent-form-review",
+            candidate_skills=("recent-form-review",),
+            evidence=(
+                RouteEvidence(
+                    skill_name="recent-form-review",
+                    positive_signals=("最近十局", "状态"),
+                ),
+            ),
+            explanation="名称不足以锁定将要执行的 Skill 版本。",
+        )
+
+    with pytest.raises(ValidationError, match="cannot select a skill version"):
+        RouterDecision(
+            outcome=RouteOutcome.REJECTED,
+            reason=RouteReason.NO_MATCHING_SKILL,
+            selected_skill_version="0.2.0",
+            explanation="拒绝结果不能携带选中版本。",
         )
 
 
@@ -132,6 +160,7 @@ def test_rejected_decision_cannot_select_or_expose_candidates():
             RouteReason.NO_MATCHING_SKILL,
             {
                 "selected_skill": "recent-form-review",
+                "selected_skill_version": "0.2.0",
                 "candidate_skills": ("recent-form-review",),
                 "evidence": (
                     RouteEvidence(
@@ -263,6 +292,9 @@ def test_matched_candidates_cannot_contain_exclusion_evidence(
                 if outcome is RouteOutcome.SELECTED
                 else None
             ),
+            selected_skill_version=(
+                "0.2.0" if outcome is RouteOutcome.SELECTED else None
+            ),
             candidate_skills=candidate_skills,
             evidence=tuple(evidence),
             explanation="命中排除信号的 Skill 不能成为匹配候选。",
@@ -334,6 +366,7 @@ def test_router_contract_rejects_duplicate_decision_identity_and_evidence():
             outcome=RouteOutcome.SELECTED,
             reason=RouteReason.MATCHED_SKILL,
             selected_skill="recent-form-review",
+            selected_skill_version="0.2.0",
             candidate_skills=("recent-form-review",),
             evidence=(
                 RouteEvidence(
@@ -403,6 +436,9 @@ def test_matched_decision_evidence_identity_must_equal_candidate_identity(
                 else RouteReason.MULTIPLE_SKILLS_MATCHED
             ),
             selected_skill=selected_skill,
+            selected_skill_version=(
+                "0.2.0" if outcome is RouteOutcome.SELECTED else None
+            ),
             candidate_skills=candidate_skills,
             evidence=evidence,
             explanation="命中决策不能附带不属于候选集合的额外证据。",

@@ -7,6 +7,13 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from app.lol.summary_schema import validate_summary_document
+from app.harness.run_ids import normalize_run_id
+
+from .text_contracts import (
+    normalize_optional_text,
+    normalize_required_text,
+    normalize_unique_texts,
+)
 
 
 _TIMELINE_SCALAR_FIELDS = ("deaths_before_10", "deaths_before_15")
@@ -34,11 +41,8 @@ class SingleMatchReviewInput(BaseModel):
 
     @field_validator("deterministic_report", "target_match_id")
     @classmethod
-    def normalize_required_text(cls, value: str) -> str:
-        normalized = value.strip()
-        if not normalized:
-            raise ValueError("single-match input text must not be blank")
-        return normalized
+    def normalize_input_text(cls, value: str, info) -> str:
+        return normalize_required_text(value, field_name=info.field_name)
 
     @model_validator(mode="after")
     def validate_target_match(self) -> "SingleMatchReviewInput":
@@ -96,13 +100,29 @@ class SingleMatchReviewOutput(BaseModel):
     evidence_source_ids: tuple[str, ...] = ()
     warnings: tuple[str, ...] = ()
 
+    @field_validator("run_id")
+    @classmethod
+    def normalize_output_run_id(cls, value: str) -> str:
+        return normalize_run_id(value)
+
     @field_validator("target_match_id")
     @classmethod
-    def normalize_target_match_id(cls, value: str) -> str:
-        normalized = value.strip()
-        if not normalized:
-            raise ValueError("target_match_id must not be blank")
-        return normalized
+    def normalize_output_target_match_id(cls, value: str) -> str:
+        return normalize_required_text(value, field_name="target_match_id")
+
+    @field_validator("report")
+    @classmethod
+    def normalize_report(cls, value: str | None) -> str | None:
+        return normalize_optional_text(value, field_name="report")
+
+    @field_validator("evidence_source_ids", "warnings")
+    @classmethod
+    def normalize_output_texts(
+        cls,
+        values: tuple[str, ...],
+        info,
+    ) -> tuple[str, ...]:
+        return normalize_unique_texts(values, field_name=info.field_name)
 
     @model_validator(mode="after")
     def validate_terminal_output(self) -> "SingleMatchReviewOutput":

@@ -24,12 +24,15 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 - `recent-form-review` 与 `single-match-review` 两个用户 Skill Contract；
 - 完整 Skill Router V1（含 5C 退出复核）；development 为 23/23，单次 holdout 为
   11/12，ADR-0010 暂缓 LLM Router fallback；
+- 5D-1 Skill 执行前边界：selected name/version、共享安全 run ID、typed input 与
+  Harness 输入内容摘要绑定；
 - 独立事实评测、受限修订、再评测与发布门控。
 
 当前仍未实现：
 
 - 真实 Provider Tool Calling 和经过领域评测的第二 Provider；
-- 受限 Skill Agent Loop、Context Builder V1 和统一 AgentRuntime；
+- Context Builder V1、Skill request 编译、受限 Agent 执行、Harness 组合和统一
+  AgentRuntime；
 - FastAPI 会话入口；
 - 玩家长期 Memory；
 - 标准 MCP Client/Server；
@@ -67,6 +70,9 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 
 - `SkillReviewExecutor` 负责核对 selected RouterDecision、加载同名同版本 Skill、
   验证输入并从 Manifest 编译权限、预算和质量门槛；
+- 其中 5D-1 已实现执行前核对部分：Router 锁定 name/version，Catalog 重新取得
+  `LoadedSkill`，Skill input model 验证 payload，并以同一安全 run ID 和规范字节
+  SHA-256 绑定未来 Harness 输入；权限/预算编译仍属于 5D-3；
 - AgentLoop 只负责白名单工具调用和 Coach 草稿准备，不拥有发布权；
 - 新 `DraftPreparationStep` 返回同一 `CoachDraft + KnowledgeEvidence`，用于兼容旧
   Retriever/Generator 路径与新 Agent 路径；
@@ -75,7 +81,8 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   Observation 分层，权限永远不从不可信文本获得；
 - 结构化模型输出先服务机器消费的 EvaluationResult，Coach 报告仍为 Markdown；
 - 真实 Provider 与第二 Provider 选择必须等 5D-6b 用同一领域任务评测，不提前锁定；
-- 该方案由 ADR-0011 接受，不等于已经实现 5D，也不等于 LangGraph/Multi-Agent。
+- 该方案由 ADR-0011 接受；当前只实现 5D-1，不等于整个 5D、LangGraph 或
+  Multi-Agent 已实现。
 
 ## 数据职责
 

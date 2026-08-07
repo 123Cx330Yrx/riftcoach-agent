@@ -126,6 +126,27 @@ def test_recent_form_input_reuses_player_summary_validation():
         )
 
 
+def test_both_skill_inputs_normalize_and_reject_blank_deterministic_report():
+    recent = RecentFormReviewInput(
+        player_summary=valid_summary(),
+        deterministic_report="  # Deterministic facts  ",
+    )
+    single = SingleMatchReviewInput(
+        player_summary=valid_summary(),
+        deterministic_report="  # Deterministic facts  ",
+        target_match_id="KR_1",
+    )
+
+    assert recent.deterministic_report == "# Deterministic facts"
+    assert single.deterministic_report == "# Deterministic facts"
+
+    with pytest.raises(ValidationError, match="must not be blank"):
+        RecentFormReviewInput(
+            player_summary=valid_summary(),
+            deterministic_report="   ",
+        )
+
+
 def test_recent_form_output_enforces_publication_boundary():
     published = RecentFormReviewOutput(
         run_id="run-1",
@@ -144,6 +165,87 @@ def test_recent_form_output_enforces_publication_boundary():
             run_id="run-3",
             status="rejected",
             report="unapproved draft",
+        )
+
+
+@pytest.mark.parametrize(
+    "output_model, extra_fields",
+    [
+        (RecentFormReviewOutput, {}),
+        (SingleMatchReviewOutput, {"target_match_id": "KR_1"}),
+    ],
+)
+def test_skill_outputs_normalize_nonblank_text_collections(
+    output_model,
+    extra_fields: dict,
+):
+    output = output_model(
+        run_id="  run-output-1  ",
+        status="published",
+        report="  # Coach report  ",
+        evidence_source_ids=("  metric_rules.md  ", "vision_rules.md"),
+        warnings=("  timeline unavailable  ",),
+        **extra_fields,
+    )
+
+    assert output.run_id == "run-output-1"
+    assert output.report == "# Coach report"
+    assert output.evidence_source_ids == (
+        "metric_rules.md",
+        "vision_rules.md",
+    )
+    assert output.warnings == ("timeline unavailable",)
+
+
+@pytest.mark.parametrize(
+    "output_model, extra_fields",
+    [
+        (RecentFormReviewOutput, {}),
+        (SingleMatchReviewOutput, {"target_match_id": "KR_1"}),
+    ],
+)
+def test_skill_outputs_reject_blank_or_duplicate_text(
+    output_model,
+    extra_fields: dict,
+):
+    with pytest.raises(ValidationError, match="run_id"):
+        output_model(
+            run_id="   ",
+            status="rejected",
+            **extra_fields,
+        )
+
+    with pytest.raises(ValidationError, match="run_id"):
+        output_model(
+            run_id="../escape",
+            status="rejected",
+            **extra_fields,
+        )
+
+    with pytest.raises(ValidationError, match="report"):
+        output_model(
+            run_id="run-output-2",
+            status="published",
+            report="   ",
+            **extra_fields,
+        )
+
+    with pytest.raises(ValidationError, match="must not contain blank"):
+        output_model(
+            run_id="run-output-3",
+            status="published",
+            report="report",
+            evidence_source_ids=("   ",),
+            **extra_fields,
+        )
+
+    with pytest.raises(ValidationError, match="must not contain duplicates"):
+        output_model(
+            run_id="run-output-4",
+            status="published",
+            report="report",
+            warnings=("same warning", " same warning "),
+            **extra_fields,
         )
 
 

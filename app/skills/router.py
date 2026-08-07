@@ -58,6 +58,7 @@ class DeterministicSkillRouter:
                 outcome=RouteOutcome.SELECTED,
                 reason=RouteReason.MATCHED_SKILL,
                 selected_skill=match.candidate.name,
+                selected_skill_version=match.candidate.version,
                 candidate_skills=(match.candidate.name,),
                 evidence=(match.to_evidence(),),
                 explanation=(

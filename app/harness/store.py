@@ -11,6 +11,7 @@ from typing import Any
 from uuid import uuid4
 
 from .models import ArtifactKind, HarnessConfig, RunManifest, RunStatus
+from .run_ids import normalize_run_id
 
 
 class ArtifactIntegrityError(RuntimeError):
@@ -21,13 +22,7 @@ class FileRunStore:
     """File-backed storage for one immutable Harness run namespace."""
 
     def __init__(self, runs_root: str | Path, run_id: str) -> None:
-        if not run_id or run_id in {".", ".."}:
-            raise ValueError("run_id must be a non-empty directory name.")
-
-        run_id_path = Path(run_id)
-        if run_id_path.is_absolute() or len(run_id_path.parts) != 1:
-            raise ValueError("run_id must not contain path separators.")
-
+        run_id = normalize_run_id(run_id)
         self.runs_root = Path(runs_root).resolve()
         self.run_id = run_id
         self.run_directory = self.runs_root / run_id

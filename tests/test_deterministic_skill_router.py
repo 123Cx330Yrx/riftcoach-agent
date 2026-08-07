@@ -65,6 +65,7 @@ def test_router_selects_one_skill_only_after_every_group_matches():
     assert decision.outcome is RouteOutcome.SELECTED
     assert decision.reason is RouteReason.MATCHED_SKILL
     assert decision.selected_skill == "recent-form-review"
+    assert decision.selected_skill_version == "0.2.0"
     assert decision.candidate_skills == ("recent-form-review",)
     assert decision.evidence[0].positive_signals == ("最近十局", "状态")
     assert decision.evidence[0].negative_signals == ()

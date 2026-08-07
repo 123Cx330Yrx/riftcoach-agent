@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import json
 import re
 from typing import Any, Mapping
 
+from .artifact_content import encode_json_artifact, encode_text_artifact
 from .models import ArtifactKind, HarnessConfig, RunManifest, RunStatus
 from .state_machine import advance
 from .steps import (
@@ -51,8 +51,8 @@ class ReviewHarness:
     ) -> RunManifest:
         """Run a bounded review workflow and publish only an accepted artifact."""
 
-        summary_content = self._json_bytes(player_summary)
-        deterministic_content = deterministic_report.encode("utf-8")
+        summary_content = encode_json_artifact(player_summary)
+        deterministic_content = encode_text_artifact(deterministic_report)
 
         manifest = RunManifest.new(self.store.run_id, self.config)
         self.store.create_run(manifest)
@@ -294,10 +294,7 @@ class ReviewHarness:
 
     @staticmethod
     def _json_bytes(payload: Mapping[str, Any]) -> bytes:
-        return (
-            json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8")
-            + b"\n"
-        )
+        return encode_json_artifact(payload)
 
     @classmethod
     def _knowledge_bytes(cls, knowledge: KnowledgeEvidence) -> bytes:

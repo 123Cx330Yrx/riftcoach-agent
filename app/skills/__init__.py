@@ -1,6 +1,14 @@
 """Project-local Skill contracts and loading primitives."""
 
 from .catalog import SkillCatalog, SkillCatalogError
+from .execution import (
+    InputArtifactCommitment,
+    SkillExecutionBoundary,
+    SkillExecutionBoundaryError,
+    SkillExecutionRequest,
+    SkillInputArtifactBinding,
+    ValidatedSkillExecution,
+)
 from .loader import (
     LoadedSkill,
     SkillContractError,
@@ -28,6 +36,7 @@ from .routing_models import (
 
 __all__ = [
     "DeterministicSkillRouter",
+    "InputArtifactCommitment",
     "LoadedSkill",
     "RouteEvidence",
     "RouteOutcome",
@@ -38,6 +47,10 @@ __all__ = [
     "SkillCatalog",
     "SkillCatalogError",
     "SkillContractError",
+    "SkillExecutionBoundary",
+    "SkillExecutionBoundaryError",
+    "SkillExecutionRequest",
+    "SkillInputArtifactBinding",
     "SkillManifest",
     "SkillModelReferences",
     "SkillPermissions",
@@ -47,4 +60,5 @@ __all__ = [
     "SkillTriggers",
     "load_skill",
     "validate_skill_tools",
+    "ValidatedSkillExecution",
 ]

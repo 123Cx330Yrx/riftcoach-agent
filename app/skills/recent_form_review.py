@@ -4,9 +4,16 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from app.lol.summary_schema import validate_summary_document
+from app.harness.run_ids import normalize_run_id
+
+from .text_contracts import (
+    normalize_optional_text,
+    normalize_required_text,
+    normalize_unique_texts,
+)
 
 
 class RecentFormReviewInput(BaseModel):
@@ -21,6 +28,14 @@ class RecentFormReviewInput(BaseModel):
         "economy",
         "vision",
     ] = "overall"
+
+    @field_validator("deterministic_report")
+    @classmethod
+    def normalize_deterministic_report(cls, value: str) -> str:
+        return normalize_required_text(
+            value,
+            field_name="deterministic_report",
+        )
 
     @model_validator(mode="after")
     def validate_player_summary(self) -> "RecentFormReviewInput":
@@ -37,6 +52,25 @@ class RecentFormReviewOutput(BaseModel):
     evaluation_score: int | None = Field(default=None, ge=0, le=100)
     evidence_source_ids: tuple[str, ...] = ()
     warnings: tuple[str, ...] = ()
+
+    @field_validator("run_id")
+    @classmethod
+    def normalize_output_run_id(cls, value: str) -> str:
+        return normalize_run_id(value)
+
+    @field_validator("report")
+    @classmethod
+    def normalize_report(cls, value: str | None) -> str | None:
+        return normalize_optional_text(value, field_name="report")
+
+    @field_validator("evidence_source_ids", "warnings")
+    @classmethod
+    def normalize_output_texts(
+        cls,
+        values: tuple[str, ...],
+        info,
+    ) -> tuple[str, ...]:
+        return normalize_unique_texts(values, field_name=info.field_name)
 
     @model_validator(mode="after")
     def validate_terminal_output(self) -> "RecentFormReviewOutput":

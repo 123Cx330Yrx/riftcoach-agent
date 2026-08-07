@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5D"
-current_checkpoint: "5D-1"
+current_checkpoint: "5D-2"
 status: in_progress
-blocked_before: "5D-2"
+blocked_before: "5D-3"
 ---
 
 # RiftCoach 当前执行状态
@@ -18,9 +18,9 @@ blocked_before: "5D-2"
 
 - 最后更新：2026-08-07
 - 主阶段：阶段 5，进行中
-- 当前子阶段组：5D Python 受限 Agent Loop，entry design 已完成，功能实现尚未开始
-- 唯一下一步：5D-1 Skill Run Boundary Hardening，只收紧 Skill I/O、路由/Skill 身份、run_id 与输入 Artifact 绑定
-- 禁止越过：5D-1 完成前不得进入 5D-2；本次 entry design 没有实现 Context Builder、Agent 执行或真实 Provider 能力
+- 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 已完成
+- 唯一下一步：5D-2 Context Builder V1，只构造两个 Skill 的最小分层上下文、信任标签、确定性裁剪和 ContextSizer
+- 禁止越过：5D-2 完成前不得进入 5D-3；5D-1 没有编译 `AgentRunRequest`、调用 AgentLoop/Tool/Provider 或接入 Harness
 
 ## 5C 原始子阶段账本
 
@@ -38,8 +38,8 @@ blocked_before: "5D-2"
 | 子阶段 | 职责 | 当前状态 | 完成证据 |
 |---|---|---|---|
 | 5D-entry-design | 审计现有接缝、比较组合方案、冻结数据流与教学顺序 | 已完成 | 5D 设计文档、ADR-0011、治理检查 |
-| 5D-1 Skill Run Boundary Hardening | 统一 I/O 非空文本、selected identity、run_id 和输入 Artifact 绑定 | 唯一下一步 | 尚未实现 |
-| 5D-2 Context Builder V1 | 两个 Skill 的最小上下文、信任标签、确定性裁剪和 ContextSizer | 未开始 | 尚无代码或测试 |
+| 5D-1 Skill Run Boundary Hardening | 统一 I/O 非空文本、selected identity、run_id 和输入 Artifact 绑定 | 已完成 | 设计/TDD 文档、`SkillExecutionBoundary`、共享 run ID/Artifact 编码、合同与篡改测试 |
+| 5D-2 Context Builder V1 | 两个 Skill 的最小上下文、信任标签、确定性裁剪和 ContextSizer | 唯一下一步 | 尚无代码或测试 |
 | 5D-3 Skill Run Compiler & Budget Enforcement | Manifest 权限/预算编译为 AgentRunRequest，并约束累积上下文 | 未开始 | 尚无代码或测试 |
 | 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 未开始 | 尚无代码或测试 |
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 未开始 | 尚无代码或测试 |
@@ -82,26 +82,38 @@ blocked_before: "5D-2"
 - 5D entry design 已完成源码级接缝审计；ADR-0011 决定 AgentLoop 只作为
   evidence-aware draft preparation，ReviewHarness 保持唯一评测和发布控制；
 - 5D 已拆为 5D-1 至 5D-7 和 exit review；拆分本身不是功能实现；
-- 当前本地完整回归：`256 passed, 57 subtests passed`；5D entry design 未改功能
-  代码，compileall、diff check 与治理预检均通过。
+- 两个 Skill 的关键输入输出文本现共享去空白、非空、集合去重规则，Skill 输出
+  `run_id` 使用统一安全目录组件合同；
+- selected `RouterDecision` 现在同时锁定 Skill 名称与版本，执行前必须与 Catalog
+  中当前 `LoadedSkill` 的 Manifest 身份完全一致；
+- `RunManifest`、`FileRunStore` 与 Skill 执行请求共享同一跨平台 run ID 规范，拒绝
+  路径、盘符、Windows 保留名和超长值；
+- `SkillInputArtifactBinding` 使用 Harness 实际 JSON/text 字节编码记录 Summary 与
+  确定性报告的 kind、schema version 和 SHA-256；5D-5 仍需核对真实落盘 Artifact；
+- `SkillExecutionBoundary` 会拒绝非 selected、缺失/漂移 Skill、错误 input model、
+  run 不一致和内容/元数据篡改，并返回与调用方 payload 脱钩的输入快照；
+- 当前本地完整回归：`276 passed, 80 subtests passed`；compileall、diff check 与治理
+  预检均通过。
 
 当前不能声称：
 
-- 5D-1 或任何 5D 功能已经实现；
+- 5D-2 Context Builder 或任何更后的 5D 功能已经实现；
 - 路由对自然语言具有充分泛化能力；
 - 小型合成 holdout 已证明路由对自然语言充分泛化；
 - 已把 holdout 失败用于调节 Router 规则；
 - 已实现 LLM Router fallback 或修复设备域假朋友；
 - Router 已执行 Skill、Tool、Harness 或模型调用。
+- 5D-1 的内容承诺已经等同于真实 Harness Artifact 落盘或 Agent 执行。
+- `user_utterance` 已通过统一 Runtime/Trace 与最初 `RouterRequest` 形成不可变来源链。
 
 ## 四条进度线
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C 和 5D entry design，5D 功能代码尚未开始 | 阶段 5 或 5D 已完成 |
-| 项目理解 | 5D entry design 已讲清现有组件接缝、三种方案、目标数据流、Context/信任边界和原子顺序；各实现仍需逐项教学 | 设计文档存在就等于已经掌握实现细节 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1，下一步为 5D-2 | 阶段 5 或整个 5D 已完成 |
+| 项目理解 | 5D-1 已讲清路由版本锁定、安全 run identity、Artifact 规范字节/摘要和执行前 fail-closed 验票；Context 构造仍需在 5D-2 单独教学 | 输入绑定完成就等于 Agent 已经运行 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | `main` 通过本次独立提交包含完整 5C 与 5D entry design；仍没有正式网页部署 | 设计完成就等于已有可运行 Web Agent |
+| GitHub/部署 | `main` 的既有公开基线包含完整 5C 与 5D entry design；5D-1 本地验收后进入本批提交/CI 收尾，仍没有正式网页部署 | 本地测试通过就等于远端 CI 或 Web 部署完成 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -180,7 +192,12 @@ Case 不足以抵消模型带来的结构化输出、延迟、成本和故障复
 同时兼容旧顺序 Retriever/Generator 和新 Agent 路径。完整设计见
 `docs/plans/2026-08-07-constrained-skill-agent-loop-design.md`。
 
-唯一下一检查点为 `5D-1 Skill Run Boundary Hardening`。本轮只统一两个 Skill I/O
-的非空文本规则，定义并验证 selected RouterDecision、LoadedSkill identity/version、
-run_id 与同一 Harness 输入 Artifact 的绑定。它不实现 Context Builder、不调用模型
-或工具，也不进入 5D-2。
+`5D-1 Skill Run Boundary Hardening` 已完成：两个 Skill 的关键文本合同、selected
+name/version、共享安全 run ID、Harness 规范输入字节摘要和 Catalog-backed 执行前
+校验均已有 TDD 证据。该内容绑定尚未创建真实 Harness Artifact，也没有调用模型或
+工具。
+
+唯一下一检查点为 `5D-2 Context Builder V1`。它只负责为近期复盘和单局复盘构造
+不同的最小上下文，标记内部策略、Skill 指令、确定性事实、用户文本和外部证据的
+信任语义，并用确定性 `ContextSizer` 裁剪。不得提前编译 `AgentRunRequest`、执行
+AgentLoop 或进入 5D-3。

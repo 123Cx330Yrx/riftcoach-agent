@@ -3,6 +3,8 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import Any
 
+from .run_ids import normalize_run_id
+
 
 class RunStatus(str, Enum):
     CREATED = "created"
@@ -66,8 +68,7 @@ class RunManifest:
 
     @classmethod
     def new(cls, run_id: str, config: HarnessConfig) -> "RunManifest":
-        if not run_id.strip():
-            raise ValueError("run_id must not be empty.")
+        run_id = normalize_run_id(run_id)
         now = datetime.now(timezone.utc).isoformat()
         return cls(
             run_id=run_id,

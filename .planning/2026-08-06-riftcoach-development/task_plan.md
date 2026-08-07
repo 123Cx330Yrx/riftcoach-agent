@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.1 - 5D-1（next; implementation not started）
+Phase 6.2 - 5D-2（next; implementation not started）
 
 ## Phases
 
@@ -67,16 +67,19 @@ Phase 6.1 - 5D-1（next; implementation not started）
 
 - Status: in_progress
 - `5D-entry-design` 已完成：审计现有接缝、比较三种组合方案并接受 ADR-0011。
-- 当前没有实现 5D 功能；唯一下一步是 5D-1 Skill Run Boundary Hardening。
+- `5D-1` 已完成：统一 Skill I/O 文本、selected name/version、安全 run ID、Harness
+  规范输入摘要和 Catalog-backed 执行前校验。
+- 唯一下一步是 5D-2 Context Builder V1；尚未编译或执行 Agent 请求。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-1 Skill Run Boundary Hardening：统一两个 Skill I/O 非空文本规则；定义并验证
-selected RouterDecision、LoadedSkill identity/version、run_id 与同一 Harness 输入
-Artifact 的绑定。本检查点不实现 Context Builder、AgentLoop 接线或模型调用。
+5D-2 Context Builder V1：为近期复盘和单局复盘分别构造最小上下文；显式标记内部
+策略、Skill 指令、确定性事实、用户文本和外部证据的信任语义；实现确定性
+`ContextSizer` 与整体 section 裁剪。本检查点不编译 `AgentRunRequest`，不调用
+AgentLoop、Tool 或 Provider，也不进入 5D-3。
 
 ## Decisions Made
 
@@ -105,6 +108,10 @@ Artifact 的绑定。本检查点不实现 Context Builder、AgentLoop 接线或
 | AgentLoop 作为 Harness 的 evidence-aware draft preparation | 保留 Agent 的动态白名单工具选择，同时让现有 Harness 继续掌握唯一评测、修订和发布权 |
 | 用 `DraftPreparationStep` 作为唯一新接缝 | 旧 Retriever/Generator 可通过顺序 Adapter 兼容，新 Agent 路径返回同一 CoachDraft + KnowledgeEvidence，不制造第二套质量平台 |
 | Provider 厂商选择放在 5D-6b 准入门 | 先稳定结构化输出和领域评测合同，再实测 GLM 并最多比较一个候选；不按视频热度提前锁定 DeepSeek/Qwen/Kimi |
+| 5D-1 用 selected name + version 锁定路由身份 | 只保留名称无法发现路由后 Catalog Skill 版本漂移；权限仍从当前同名同版本 Manifest 重新取得 |
+| run ID 使用一个跨 Harness/Skill 的可移植规范 | Manifest、Store 和执行入口若各自校验会产生安全与兼容漂移；ASCII 单组件同时适配 Windows 和 Linux |
+| 输入绑定复用 Harness 真实 Artifact 字节编码 | 对同一语义采用不同 JSON 格式会得到不同哈希；共享编码才能让 5D-5 的真实 Artifact 与 5D-1 内容承诺逐字节对上 |
+| 5D-1 只做内容承诺，不创建 Harness run | 真实落盘、状态迁移和 terminal output 属于 5D-5；当前先建立可独立测试的执行前 fail-closed 边界 |
 
 ## Errors Encountered
 
@@ -126,7 +133,7 @@ Artifact 的绑定。本检查点不实现 Context Builder、AgentLoop 接线或
 | 初步把事实审查分类为内部 Skill，未先核对既有 EvaluatorStep | 1 | 暂停实现，完整审计 Harness/Evaluation 与测试；用 ADR-0009 取代方案并取消重复代码 |
 | `python -m pytest` 命中桌面应用 Hermes Python，缺少 pytest | 1 | 改用仓库 `.venv\\Scripts\\python.exe` 执行项目测试，不重复错误解释器 |
 | `gh run view/list` 连续两次遇到 GitHub API TLS 握手超时 | 2 | 等待后改用 PowerShell REST 客户端查询同一公开 run，确认 CI 成功 |
-| 静态搜索把复杂正则和 PowerShell 双引号混用，导致 unopened group | 1 | 改用单引号与多个 `rg -e` 固定模式，搜索随后成功 |
+| 静态搜索把复杂正则和 PowerShell 双引号混用，导致解析错误 | 2 | 5D-1 状态扫描再次复发但未修改文件；立即改用单引号与多个 `rg -e` 模式，后续禁止把含 `|` 的 rg 表达式放进 PowerShell 双引号 |
 | 合并测试补丁时把 Router 测试上下文误指到 Contract 测试文件 | 1 | `apply_patch` 原子拒绝、未产生部分修改；按真实文件拆成小补丁后成功 |
 | 历史结果的 Windows CRLF 字节哈希在 Linux CI checkout 后变化 | 1 | 仅将该不可变归档标为 Git binary，保留原始字节；两个后续 Actions run 均成功 |
 | 5C-6 首次陈旧短语扫描把“不得进入 5D”和“不能声称 5C 已完成”等保护语句误报为陈旧状态 | 1 | 收窄为检查旧 checkpoint、旧唯一下一步和 5C-6 未开始/进行中等精确矛盾短语，结果为 `NO_CURRENT_STALE_MATCHES` |

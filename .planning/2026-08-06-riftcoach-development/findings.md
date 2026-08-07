@@ -279,3 +279,25 @@
   Provider admission is delayed until the schema and domain evaluation contract are stable.
 - 5D is now split into entry design, 5D-1..5D-7 (with 5D-6a/6b separated), and exit review. The
   exact next checkpoint is 5D-1 input/identity/run binding only; no Context Builder or model call.
+
+## 2026-08-07 5D-1 execution-boundary audit
+
+- `RecentFormReviewInput.deterministic_report` still accepts whitespace-only text, while the
+  single-match input already strips and rejects it. Both Skill outputs also accept blank-looking
+  `run_id`/`report` values and unnormalized blank or duplicate evidence/warning strings.
+- `SkillRouteCandidate` carries the Manifest version, but `RouterDecision` currently retains only
+  the selected name. An execution boundary therefore cannot prove that the routed version is the
+  same `LoadedSkill` version obtained from the Catalog immediately before execution.
+- `RunManifest.new()` and `FileRunStore` validate run IDs separately. The store blocks obvious path
+  traversal, but the duplicated rules can drift and do not define one portable, bounded run-name
+  grammar.
+- 5D-1 needs an immutable pre-execution contract that binds a selected Router decision, the exact
+  Catalog Skill name/version, a validated typed input, a safe run ID, and content digests for the
+  player summary and deterministic report.
+- This binding is a content commitment for future Harness input Artifacts. It must not create a
+  second run namespace, write `FileRunStore` records, build model context, compile an
+  `AgentRunRequest`, call a model/tool, or compose the Harness; those remain later 5D checkpoints.
+- 5D-1 can validate non-blank `user_utterance`, but `RouterDecision` does not carry the originating
+  `RouterRequest` identity. The application currently passes both in one call; an immutable
+  route-request-event provenance chain remains a 5E Runtime/Trace concern and must not be claimed
+  as solved by the input Artifact binding.

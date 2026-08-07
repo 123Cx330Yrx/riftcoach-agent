@@ -168,6 +168,7 @@ OP.GG MCP
 5C-6 Model Fallback Decision  已完成；ADR-0010 暂缓 LLM fallback
 5C-exit-review                已完成；合同、证据、限制和 5D 前置项已复核
 5D-entry-design               已完成；ADR-0011 与原子检查点已冻结
+5D-1 Skill Run Boundary       已完成；身份、run ID 与输入内容绑定已加固
 ```
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
@@ -188,7 +189,8 @@ holdout 调词，也不立即引入模型；类型化入口和澄清优先，模
 作为 Harness 的 evidence-aware draft preparation，并保持 Harness 唯一发布权。
 后续顺序为 5D-1 输入/身份/Artifact 边界、5D-2 Context Builder、5D-3 编译与预算、
 5D-4 Agent draft/evidence、5D-5 Harness/终态输出、5D-6a 结构化输出、5D-6b 真实
-Provider 准入、5D-7 领域评测和 exit review。当前只进入 5D-1，尚未实现 5D 功能。
+Provider 准入、5D-7 领域评测和 exit review。5D-1 已实现执行前身份与输入完整性
+边界；当前唯一下一步为 5D-2，尚未构造 Context 或执行 Agent。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动

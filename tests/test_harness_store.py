@@ -77,6 +77,32 @@ class FileRunStoreTests(unittest.TestCase):
                         producer="test",
                     )
 
+    def test_store_normalizes_run_id_with_the_manifest_rule(self):
+        store = FileRunStore(self.runs_root, "  review_normalized  ")
+
+        self.assertEqual("review_normalized", store.run_id)
+        self.assertEqual(
+            self.runs_root / "review_normalized",
+            store.run_directory,
+        )
+
+    def test_store_rejects_non_portable_or_unsafe_run_ids(self):
+        for run_id in (
+            "",
+            "../outside",
+            "folder/run",
+            "folder\\run",
+            "C:drive",
+            "run with spaces",
+            "NUL",
+            "com1.log",
+            "run.",
+            "r" * 129,
+        ):
+            with self.subTest(run_id=run_id):
+                with self.assertRaises(ValueError):
+                    FileRunStore(self.runs_root, run_id)
+
     def test_artifact_paths_are_immutable_after_first_write(self):
         self.store.create_run(self.manifest)
         arguments = {

@@ -27,10 +27,10 @@
 | A05 | RAG 与证据 | 混合检索、父子块、引用、冲突、拒答、独立保留集 | 阶段 4 | 维护数据集；按规模证据决定是否升级存储 | Recall/MRR/nDCG、abstain、引用支持与冲突测试 | 已完成 |
 | A06 | 最小 Agent Loop | Assistant ToolCall、Tool Observation、预算和停止原因 | 阶段 5A | 阶段 5D 接入 Skill，5E 统一 Runtime | Fake Provider + 真实知识工具、重复调用和越权测试 | 已完成 |
 | A07 | Skill Contract | `recent-form-review` 与 `single-match-review` 均有 Manifest、SKILL.md、Pydantic I/O、工具白名单和预算 | 阶段 5B 基础 + 5C-5 前第二个真实合同 | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill；真实内部 Skill 出现后才设计调用模式 | 坏 Manifest、Schema、权限漂移、预算和发布边界测试 | 已完成 |
-| A08 | Skill Router | 5C-1 至 5C-6 与退出复核均完成；development 23/23、holdout 11/12；ADR-0010 暂缓 LLM fallback | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试、退出复核和 ADR | 已完成 |
+| A08 | Skill Router | 5C-1 至 5C-6 与退出复核均完成；development 23/23、holdout 11/12；selected 决策锁定 Skill name/version；ADR-0010 暂缓 LLM fallback | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试、退出复核和 ADR | 已完成 |
 | A09 | Prompt/Context Engineering | Harness Prompt V0、RAG 上下文、SKILL.md 指令 | 阶段 5D-5E | 阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、回归和消融测试 | 需显式补齐 |
 | A10 | 结构化模型输出 | 内部 Pydantic/Dataclass 契约已有，真实 Provider 输出未统一 | 阶段 5D | 第二 Provider 在真实 Skill 场景复验 | 合法、缺字段、额外字段、截断、非 JSON 和修复上限测试 | 需显式补齐 |
-| A11 | AgentRuntime V1 | AgentLoop 与 Harness 分别存在 | 阶段 5D-5E | 阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 已规划 |
+| A11 | AgentRuntime V1 | AgentLoop 与 Harness 分别存在；5D-1 已加入 Catalog-backed Skill 执行前边界与同一 run/input 内容承诺 | 阶段 5D-5E | 阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 部分完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有，任务级选择未实现 | 阶段 5F 或真实业务触发点 | 按质量、能力、成本选择，不按厂商数量堆叠 | 同一评测集、故障降级、成本和延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
 | A14 | API 与任务持久化 | CLI 和文件型 Run Store | 阶段 5P 提供早期切片，阶段 6 加 SQL | 阶段 8 扩展恢复与运行治理 | API 契约、幂等、并发、鉴权、隔离和恢复测试 | 已规划 |
@@ -42,7 +42,7 @@
 | ID | 能力 | 当前基础 | V1 负责阶段 | 后续深化 | 验收证据 | 状态 |
 |---|---|---|---|---|---|---|
 | Q01 | 端到端 Evaluation | 报告事实评测、RAG 独立保留集、路由开发评测 | 阶段 5C 增加路由 Eval，5D 增加 Prompt Eval | 阶段 8 固定产品回归集和消融 | 数字忠实度、引用、路由、工具选择、建议边界 | 部分完成 |
-| Q02 | Trace 与 Observability | Harness Artifact、工具指标、Usage 基础 | 阶段 5E | 阶段 8 增加生产日志、告警和前端轨迹 | run_id 串联 Prompt、模型、工具、证据、耗时和决策 | 部分完成 |
+| Q02 | Trace 与 Observability | Harness Artifact、工具指标、Usage 基础；5D-1 统一安全 run ID 并绑定输入 kind/schema/digest | 阶段 5E | 阶段 8 增加生产日志、告警和前端轨迹 | run_id 串联 Prompt、模型、工具、证据、耗时和决策 | 部分完成 |
 | Q03 | Prompt/上下文注入防护 | 工具白名单、Schema、RAG 来源过滤 | 阶段 5D 建立不可信输入边界 | 阶段 6 覆盖会话，阶段 7 覆盖外部 MCP 内容 | 恶意用户输入、恶意文档、恶意工具结果和越权测试 | 需显式补齐 |
 | Q04 | 应用安全 | `.env` 隔离、日志脱敏、离线赛后合规边界 | 阶段 6 建立鉴权、限流、CORS 与用户隔离 | 阶段 8 部署威胁模型、安全扫描和响应流程 | 密钥扫描、权限、限流、数据越权和依赖审计 | 部分完成 |
 | Q05 | 数据生命周期与隐私 | 本地缓存不提交，Memory 尚未落库 | 阶段 6 | 阶段 8 加备份、恢复和公开隐私说明 | 原始比赛、Run、Memory 的保留、更正、导出和删除测试 | 需显式补齐 |
@@ -141,10 +141,15 @@ selected Skill + validated input
 → typed terminal Skill Output
 ```
 
-该设计开始落实 A09、A10、A11、Q01 与 Q03，但设计文档不改变它们的实现状态。
-Context Builder、结构化输出、Agent/Harness composition 和 Prompt Evaluation 仍然
-没有功能代码或新评测结果。A11 的统一 `run/stream/event/trace/usage` 表面继续属于
-5E；5D 只建立可被该 Runtime 消费的真实 Skill 执行切片。
+5D-1 已完成第一段真实组合切片：统一两个 Skill I/O 文本；selected RouterDecision
+锁定 name/version；Manifest、Store 与执行请求共享安全 run ID；
+`SkillExecutionBoundary` 从 Catalog 重新核对 Skill、验证 typed input，并比较采用
+Harness 真实字节编码的输入 kind/schema/digest。该步骤只产生
+`ValidatedSkillExecution`，没有写 Harness Artifact 或执行 Agent。
 
-唯一下一步为 5D-1：收紧 Skill I/O 非空文本，并建立 selected RouterDecision、
-LoadedSkill identity/version、run_id 与输入 Artifact 的绑定。不得提前进入 5D-2。
+因此 A11 改为部分完成；A09、A10、Q01 与 Q03 的关键真实场景仍未验收。Context
+Builder、结构化输出、Agent/Harness composition 和 Prompt Evaluation 依然没有功能
+代码或新评测结果。统一 `run/stream/event/trace/usage` 表面继续属于 5E。
+
+唯一下一步为 5D-2：构造两个 Skill 的最小上下文、信任标签、确定性裁剪与
+`ContextSizer`。不得提前编译 `AgentRunRequest` 或进入 5D-3。
