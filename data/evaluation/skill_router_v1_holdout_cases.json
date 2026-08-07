@@ -17,7 +17,7 @@
     "No case in this version may be used to add signals, exclusions, or tie-break rules.",
     "If a result from this set influences routing rules, this version must be retired and a new untouched holdout must be created."
   ],
-  "rules_frozen_at_commit": "cfd20847788810d5781312e03aaeab0eff8011bd",
+  "rules_frozen_at_commit": "4103d4297e17b6dc54fa1402764414b0a1ef542c",
   "sealed_before_first_run": true,
   "lifecycle_policy": "Run once after development evaluation is accepted. Preserve failures as evidence; never tune against this version.",
   "limitations": [

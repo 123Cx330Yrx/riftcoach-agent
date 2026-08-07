@@ -25,7 +25,7 @@ def test_project_governance_rejects_a_stale_active_plan(tmp_path):
     decisions_start = task_plan.index("## Decisions Made")
     task_plan_path.write_text(
         task_plan[:next_step_start]
-        + "## Next Step\n\n直接进入 5D。\n\n"
+        + "## Next Step\n\n直接进入 stale-checkpoint。\n\n"
         + task_plan[decisions_start:],
         encoding="utf-8",
     )

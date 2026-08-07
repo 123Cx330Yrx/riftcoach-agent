@@ -347,3 +347,63 @@ def test_router_contract_rejects_duplicate_decision_identity_and_evidence():
             ),
             explanation="同一 Skill 只能有一组归并后的证据。",
         )
+
+
+@pytest.mark.parametrize(
+    ("outcome", "selected_skill", "candidate_skills", "evidence"),
+    [
+        (
+            RouteOutcome.SELECTED,
+            "recent-form-review",
+            ("recent-form-review",),
+            (
+                RouteEvidence(
+                    skill_name="recent-form-review",
+                    positive_signals=("最近十局", "状态"),
+                ),
+                RouteEvidence(
+                    skill_name="single-match-review",
+                    positive_signals=("这一场",),
+                ),
+            ),
+        ),
+        (
+            RouteOutcome.AMBIGUOUS,
+            None,
+            ("recent-form-review", "single-match-review"),
+            (
+                RouteEvidence(
+                    skill_name="recent-form-review",
+                    positive_signals=("最近十局", "状态"),
+                ),
+                RouteEvidence(
+                    skill_name="single-match-review",
+                    positive_signals=("这一场", "复盘"),
+                ),
+                RouteEvidence(
+                    skill_name="training-plan",
+                    positive_signals=("训练计划",),
+                ),
+            ),
+        ),
+    ],
+)
+def test_matched_decision_evidence_identity_must_equal_candidate_identity(
+    outcome: RouteOutcome,
+    selected_skill: str | None,
+    candidate_skills: tuple[str, ...],
+    evidence: tuple[RouteEvidence, ...],
+):
+    with pytest.raises(ValidationError, match="exactly match candidate skills"):
+        RouterDecision(
+            outcome=outcome,
+            reason=(
+                RouteReason.MATCHED_SKILL
+                if outcome is RouteOutcome.SELECTED
+                else RouteReason.MULTIPLE_SKILLS_MATCHED
+            ),
+            selected_skill=selected_skill,
+            candidate_skills=candidate_skills,
+            evidence=evidence,
+            explanation="命中决策不能附带不属于候选集合的额外证据。",
+        )

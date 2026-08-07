@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 5 - 5C-exit-review（in progress）
+Phase 6 - 5D（next; implementation not started）
 
 ## Phases
 
@@ -59,20 +59,23 @@ Phase 5 - 5C-exit-review（in progress）
 
 ### Phase 5 - 进入 5D 前复核
 
-- Status: in_progress
+- Status: complete
 - 只有 5C-1 至 5C-6 全部完成后，才把唯一下一步改为 5D。
 - 对照路线、能力矩阵、需求账本和测试，确认没有遗漏或越级。
 
-### Phase 6 - 按固定 0-8 路线继续
+### Phase 6 - 5D Python 受限 Agent Loop
 
-- Status: pending
-- 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开。
+- Status: in_progress
+- 当前只把 5D 设为下一检查点，尚未实现 5D 功能。
+- 第一轮先恢复既定目标并拆分 Context Builder、结构化输出、Skill 权限/预算转换、
+  不可信输入边界和 Prompt Evaluation 的教学检查点。
+- 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5C-exit-review：对照 5C-1 至 5C-6、ADR-0010、路线、能力矩阵、需求账本和测试，
-确认 Skill Router V1 的完成证据、已知限制和后续深化均无遗漏；只有复核通过后，
-才把唯一下一步改为 5D。
+5D：先对照现有 Agent Loop、两个 Skill 合同、Harness、Prompt V0 和能力矩阵，形成
+受限 Skill 执行的细分设计与验收顺序；本次状态切换不表示 5D 已经开始实现，也不
+授权一次性完成全部 5D。
 
 ## Decisions Made
 
@@ -96,6 +99,8 @@ Phase 5 - 5C-exit-review（in progress）
 | 5C-5 以 holdout 11/12 和原样 Bad Case 收尾 | Evaluation 的目标是获得可信证据而不是强制满分；唯一失败已分类且未用于调规则，足以进入 5C-6 方案决策 |
 | 5C V1 暂缓 LLM Router fallback | 只有一个小型合成域语义失败；立即引入模型必须复核 selected，且当前 GLM Adapter 没有端到端结构化输出，收益不足以覆盖延迟、成本和故障复杂度 |
 | 类型化入口和澄清优先于模型语义复核 | 显式任务上下文比猜测自由文本更可靠；未来只有新鲜数据出现多个独立失败族并通过新 Eval/ADR 时才重开模型方案 |
+| 5C 退出复核通过，5D 成为唯一下一步 | 六个检查点均有实现、评测或 ADR 证据；退出审计修复了命中证据身份与冻结点标注，已知执行缺口明确归入 5D |
+| 5D 先设计和拆分再实施 | Context、结构化输出、权限预算和 Harness 接线都需要独立教学验收，不能再次把一个大批次等同于整个子阶段完成 |
 
 ## Errors Encountered
 
@@ -122,3 +127,6 @@ Phase 5 - 5C-exit-review（in progress）
 | 历史结果的 Windows CRLF 字节哈希在 Linux CI checkout 后变化 | 1 | 仅将该不可变归档标为 Git binary，保留原始字节；两个后续 Actions run 均成功 |
 | 5C-6 首次陈旧短语扫描把“不得进入 5D”和“不能声称 5C 已完成”等保护语句误报为陈旧状态 | 1 | 收窄为检查旧 checkpoint、旧唯一下一步和 5C-6 未开始/进行中等精确矛盾短语，结果为 `NO_CURRENT_STALE_MATCHES` |
 | 5C-6 首次暂存区格式检查发现 ADR-0010 文件末尾有多余空白行 | 1 | 删除尾部空行，重新暂存后再运行 cached diff check |
+| 5C 退出复核发现 `RouterDecision` 允许命中候选夹带无关证据 | 1 | 先补失败测试，再要求 selected/ambiguous 的 evidence 身份与 candidate 身份完全一致；rejected 仍保留部分证据 |
+| holdout 元数据把双 Skill 冻结点误写为前一个文档提交 `cfd2084` | 1 | 用 Git 树确认真实双 Skill 合同首次位于 `4103d42`，只更正 provenance 并加回归断言，不改案例、规则或结果 |
+| 治理负例把 `5D` 硬编码为陈旧检查点，状态合法推进到 5D 后不再失败 | 1 | 改用不可能与正式路线重合的 `stale-checkpoint`，让测试验证不一致语义而非某个阶段名 |

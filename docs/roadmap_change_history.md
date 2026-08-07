@@ -188,6 +188,20 @@
   新 ADR 重开模型方案。
 - `CURRENT`：5C-1 至 5C-6 已分别完成；下一步只做 5C 退出复核，尚未进入 5D。
 
+### 2026-08-07：5C Skill Router V1 退出复核
+
+- `FIXED`：`RouterDecision` 原先允许 selected/ambiguous 夹带非候选 Skill 证据；
+  现要求 evidence 身份与 candidate 身份完全一致，并由先失败后通过的合同测试保护。
+- `FIXED`：holdout 的冻结点误标为尚未包含双 Skill 合同的 `cfd2084`；Git 审计确认
+  实际冻结提交为 `4103d42`，且到首次结果提交前 Router、规范化和两个 Manifest
+  零差异。只更正 provenance，不改案例、规则、标签或结果，也没有重跑 holdout。
+- `DOCUMENTED`：旧 5C-4 单 Skill 文档增加双 Skill 演进说明；退出复核统一记录
+  数据/控制流、层间边界、评测解释、已知限制、框架替换边界和面试安全表述。
+- `IMPLEMENTED`：聚焦回归 `66 passed`，完整回归 `256 passed, 57 subtests passed`；
+  5C-1 至 5C-6 和退出复核均完成，A08 Skill Router 状态改为已完成。
+- `CURRENT`：阶段 5 仍进行中，唯一下一检查点为 5D。5D 只被设置为下一步，尚未
+  开始实现；进入时先拆分 Context Builder、结构化输出、权限预算和不可信边界。
+
 ## 当前不变的宏观路线
 
 ```text

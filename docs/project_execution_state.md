@@ -1,10 +1,10 @@
 ---
 state_schema: 1
 main_stage: 5
-substage_group: "5C"
-current_checkpoint: "5C-exit-review"
+substage_group: "5D"
+current_checkpoint: "5D"
 status: in_progress
-blocked_before: "5D"
+blocked_before: "5E"
 ---
 
 # RiftCoach 当前执行状态
@@ -18,9 +18,9 @@ blocked_before: "5D"
 
 - 最后更新：2026-08-07
 - 主阶段：阶段 5，进行中
-- 当前子阶段组：5C Skill Router，进行中
-- 唯一下一步：5C-exit-review，核对 5C-1 至 5C-6、路线、能力矩阵、测试和未完成边界后再决定是否进入 5D
-- 禁止越过：5C-exit-review 完成并显式把下一步改为 5D 前，不得进入 5D
+- 当前子阶段组：5D Python 受限 Agent Loop，尚未开始实现
+- 唯一下一步：5D，先设计并拆分受限 Skill 执行、Context Builder V1、结构化输出与不可信上下文边界，再逐个检查点实施
+- 禁止越过：5D 尚未完成前，不得进入 5E；本次 5C 退出复核没有实现任何 5D 功能
 
 ## 5C 原始子阶段账本
 
@@ -61,13 +61,15 @@ blocked_before: "5D"
 - 5C-6 已完成采用决策：确定性 Router V1 保持不变，不根据 holdout 增加“键盘”
   排除词，也不引入 LLM/Embedding；优先等待类型化产品入口、会话澄清与新鲜误路由
   数据，具体重新采用门槛见 ADR-0010；
-- 当前本地完整回归：`252 passed, 57 subtests passed`；本批 Skill/Router/Provider
-  定向测试 `80 passed, 14 subtests passed`；compileall、治理预检和
-  `git diff --check` 通过。
+- 5C 退出复核将命中决策的证据身份收紧为必须与候选 Skill 身份完全一致；
+- holdout 冻结点元数据已从不包含双 Skill 合同的 `cfd2084` 更正为实际双 Skill
+  合同提交 `4103d42`，没有修改案例、期望、规则或既有结果；
+- 当前本地完整回归：`256 passed, 57 subtests passed`；本批 5C 聚焦测试
+  `66 passed`；compileall、治理预检和 diff 检查均通过。
 
 当前不能声称：
 
-- 5C 已经完成；
+- 5D 已经开始或完成；
 - 路由对自然语言具有充分泛化能力；
 - 小型合成 holdout 已证明路由对自然语言充分泛化；
 - 已把 holdout 失败用于调节 Router 规则；
@@ -78,10 +80,10 @@ blocked_before: "5D"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B 和 5C-1 至 5C-6，当前等待 5C 退出复核 | 5C、阶段 5 或 5D 已完成 |
-| 项目理解 | 已讲清唯一误路由为何要求复核 selected、五种备选方案、当前 Provider 前置缺口及暂缓模型的重新采用门槛；仍需完成 5C 总复核 | 测试通过就等于项目所有者已理解 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B 和完整 5C，当前尚未开始 5D | 阶段 5 或 5D 已完成 |
+| 项目理解 | 5C 退出复核已讲清 Router 数据/控制流、跨层边界、评测解释、框架替换边界与面试表述；5D 仍需逐项教学 | 测试通过就等于项目所有者已理解 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | `main` 已包含 holdout v1 原始结果；本批交付新增 ADR-0010 与 5C-6 暂缓模型决策，网页产品尚未部署 | 路由 ADR 已交付就等于已有 Web 产品或模型 Router |
+| GitHub/部署 | `main` 包含完整 5C 退出证据后仍没有正式网页部署 | 5C 已交付就等于已有 Web 产品或模型 Router |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -152,5 +154,14 @@ Case 不足以抵消模型带来的结构化输出、延迟、成本和故障复
 也只声明 `text_chat`。未来先采用类型化入口和澄清，再以新鲜数据、新 holdout、
 结构化输出与质量/成本证据重开模型实验。
 
-下一检查点为 `5C-exit-review`：只核对 5C-1 至 5C-6 的合同、证据、状态和遗留
-边界，确认没有遗漏后才把唯一下一步改为 5D。本轮不进入 5D。
+`5C-exit-review` 已通过：完整证据、修复项、限制、框架中立边界和面试安全表述见
+`docs/plans/2026-08-07-skill-router-v1-exit-review.md`。5C 现已完成。
+
+唯一下一检查点为 `5D`。第一轮只负责恢复 5D 既定目标、对照能力矩阵和现有
+Agent Loop/Harness/Skill 合同，形成细分设计与验收顺序；不能因为 5D 名称是一个
+子阶段，就在一次“继续”里把 Context Builder、结构化输出、受限执行和 Prompt
+Evaluation 全部写完。
+
+已知 5D 前置硬化包括：统一两个 Skill I/O 的非空文本规则、建立 Artifact 关联、
+只抽取最小任务上下文、区分可信事实与不可信用户/RAG/工具内容、把 Skill 权限和
+预算转换为 AgentRunRequest，并保证现有 Harness 仍是唯一发布出口。5D 尚未开始。

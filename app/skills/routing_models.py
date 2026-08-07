@@ -159,6 +159,10 @@ class RouterDecision(SkillContractModel):
             )
         if self.selected_skill not in evidence_names:
             raise ValueError("selected outcome requires evidence for the skill")
+        if set(evidence_names) != set(self.candidate_skills):
+            raise ValueError(
+                "selected evidence names must exactly match candidate skills"
+            )
         selected_evidence = next(
             item for item in self.evidence if item.skill_name == self.selected_skill
         )
@@ -180,6 +184,10 @@ class RouterDecision(SkillContractModel):
             raise ValueError("ambiguous outcome requires at least two candidates")
         if not set(self.candidate_skills).issubset(evidence_names):
             raise ValueError("ambiguous outcome requires evidence for every candidate")
+        if set(evidence_names) != set(self.candidate_skills):
+            raise ValueError(
+                "ambiguous evidence names must exactly match candidate skills"
+            )
         evidence_by_name = {item.skill_name: item for item in self.evidence}
         if any(
             not evidence_by_name[name].positive_signals

@@ -27,7 +27,7 @@
 | A05 | RAG 与证据 | 混合检索、父子块、引用、冲突、拒答、独立保留集 | 阶段 4 | 维护数据集；按规模证据决定是否升级存储 | Recall/MRR/nDCG、abstain、引用支持与冲突测试 | 已完成 |
 | A06 | 最小 Agent Loop | Assistant ToolCall、Tool Observation、预算和停止原因 | 阶段 5A | 阶段 5D 接入 Skill，5E 统一 Runtime | Fake Provider + 真实知识工具、重复调用和越权测试 | 已完成 |
 | A07 | Skill Contract | `recent-form-review` 与 `single-match-review` 均有 Manifest、SKILL.md、Pydantic I/O、工具白名单和预算 | 阶段 5B 基础 + 5C-5 前第二个真实合同 | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill；真实内部 Skill 出现后才设计调用模式 | 坏 Manifest、Schema、权限漂移、预算和发布边界测试 | 已完成 |
-| A08 | Skill Router | 5C-1 至 5C-6 已完成；development 23/23、holdout 11/12；ADR-0010 暂缓 LLM fallback，等待 5C 退出复核 | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试和 ADR | 部分完成 |
+| A08 | Skill Router | 5C-1 至 5C-6 与退出复核均完成；development 23/23、holdout 11/12；ADR-0010 暂缓 LLM fallback | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试、退出复核和 ADR | 已完成 |
 | A09 | Prompt/Context Engineering | Harness Prompt V0、RAG 上下文、SKILL.md 指令 | 阶段 5D-5E | 阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、回归和消融测试 | 需显式补齐 |
 | A10 | 结构化模型输出 | 内部 Pydantic/Dataclass 契约已有，真实 Provider 输出未统一 | 阶段 5D | 第二 Provider 在真实 Skill 场景复验 | 合法、缺字段、额外字段、截断、非 JSON 和修复上限测试 | 需显式补齐 |
 | A11 | AgentRuntime V1 | AgentLoop 与 Harness 分别存在 | 阶段 5D-5E | 阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 已规划 |
@@ -93,7 +93,7 @@
 3. 新发现的基础缺口先进入矩阵，再决定阶段归属；
 4. 不因新增缺口随意增加或重排 0-8 主阶段。
 
-## 7. 当前检查点：阶段 5C 进行中
+## 7. 已完成检查点：阶段 5C Skill Router V1
 
 5C 只负责 Skill 选择，不执行 Skill，不调用 Tool，不生成报告。其最小契约应为：
 
@@ -123,5 +123,7 @@ holdout v1 已按冻结规则单次运行并得到 11/12；唯一设备域假朋
 首批能力分类已经完成源码级复核：近期复盘和单局复盘是两个用户 Skill；事实审查
 继续由现有 Harness `EvaluatorStep` 强制调用，不重复包装为 Skill。单局 Skill
 Contract 已完成，5C-5 已建立数据生命周期、接受 development 并单次运行 holdout；
-当前唯一下一步是 5C-exit-review。5C 仍然没有执行 Skill、调用 Tool 或调用 LLM；
-退出复核完成并显式更新状态前不得进入 5D。
+5C 退出复核已经通过，并补强命中证据身份不变量、更正 holdout 冻结点 provenance、
+记录 5D 前置硬化和框架中立边界。5C 仍然没有执行 Skill、调用 Tool 或调用 LLM；
+这些不是遗漏，而是下一检查点 5D 的职责。完整结论见
+`docs/plans/2026-08-07-skill-router-v1-exit-review.md`。

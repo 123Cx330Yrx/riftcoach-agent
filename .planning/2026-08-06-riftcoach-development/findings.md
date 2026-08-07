@@ -146,9 +146,9 @@
 
 ## 5C-5 第三批 independent holdout v1 结果
 
-- 正式运行前确认治理预检与 12 个生命周期测试通过，输出文件不存在；从数据集声明的
-  `cfd20847788810d5781312e03aaeab0eff8011bd` 冻结点到当前 HEAD，Router、文本规范化
-  和两个 Skill Manifest 没有差异。
+- 正式运行前确认治理预检与 12 个生命周期测试通过，输出文件不存在；从两 Skill
+  合同实际冻结提交 `4103d4297e17b6dc54fa1402764414b0a1ef542c` 到首次 holdout
+  结果提交，Router、文本规范化和两个 Skill Manifest 没有差异。
 - holdout v1 只运行一次：12 条中 11 条精确匹配；selection accuracy `1.0`、
   rejection accuracy `0.8333`、ambiguity accuracy `1.0`、false-selection rate
   `0.1667`。
@@ -164,6 +164,9 @@
   列表、澄清和模型兜底，但本轮不预先选择方案。
 - 这是 12 条维护者合成案例，不是外部盲测或生产流量；11/12 不能证明自然语言
   充分泛化，也不能单凭一条案例证明必须引入 LLM Router。
+- 5C exit review 发现 holdout 元数据曾误填前一个文档提交 `cfd2084`；该提交尚未
+  包含两 Skill 合同。现只更正 provenance 为 `4103d42`，没有改用例、期望标签或
+  路由规则，也没有重跑 holdout，因而不会把独立失败污染成开发校准数据。
 
 ## 5C-6 Model Fallback Decision
 
@@ -184,3 +187,25 @@
   以及越界或 Provider 失败时 fail closed。
 - 详细教学与非功能需求见
   `docs/plans/2026-08-07-skill-router-model-fallback-decision.md`，最终决策见 ADR-0010。
+
+## 5C Exit Review
+
+- 5C-1 至 5C-6 的实现、评测和决策证据齐全；Skill Router V1 可以退出，但该结论
+  只涵盖选择层，不包含 Skill 执行、Provider、Tool、Harness 或报告生成。
+- `RouterDecision` 原合同只要求候选证据存在，允许夹带非候选 Skill 证据。先补两条
+  失败测试后，现要求 selected/ambiguous 的 evidence 身份与 candidate 身份完全
+  一致；rejected 的部分证据语义保持不变。
+- holdout 的 `rules_frozen_at_commit` 原填 `cfd2084`，但 Git 树证明该提交还没有
+  `single-match-review`；真实双 Skill 合同首次完整提交为 `4103d42`。从该提交到
+  首次结果提交 `6a0d952`，Router、规范化代码和两个 Manifest 零差异。
+- provenance 更正没有改 holdout 案例、标签、规则或结果，也没有重跑 holdout；
+  11/12 与设备域 Bad Case 继续作为未污染证据。
+- 5C-4 教学文档已增加后续演进说明，区分当时单 Skill 排除边界与当前双 Skill
+  混合范围歧义，避免历史快照冒充当前规则。
+- 发现 `RecentFormReviewInput.deterministic_report` 和两个 Skill Output 的非空文本
+  规范化仍不一致。这不改变 Router 结果，作为 5D 执行输入硬化前置项保留。
+- 5D 只能通过现有 Pydantic/Protocol 边界接入 Agent Loop；未来 LangGraph、Pi 或
+  Claude Agent SDK 也只能替换 Runtime 编排，不能绕过 Skill 权限、Tool Runtime
+  或 Harness 发布门禁。
+- 聚焦回归 `66 passed`；完整回归 `256 passed, 57 subtests passed`。5C 通过退出
+  复核，唯一下一步变为 5D 的设计和细分，尚未实现 5D。

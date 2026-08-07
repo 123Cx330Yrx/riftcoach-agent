@@ -160,3 +160,20 @@
   输出 `NO_CURRENT_STALE_MATCHES`。首次过宽扫描只命中正确保护语句，已记录并修正。
 - 首次 `git diff --cached --check` 发现 ADR-0010 末尾多余空白行；已删除并准备
   重新验证，没有改变决策内容。
+- 开始 `5C-exit-review` 后重新审计 Router/Catalog/Contract/两套数据集、结果、
+  ADR-0010 和 5D 前置边界；治理预检在修改前通过。
+- 新增两个命中证据身份负例，先得到预期 `2 failed`；随后最小收紧
+  `RouterDecision`，要求 selected/ambiguous 的 evidence Skill 集合与 candidate
+  Skill 集合完全一致，模型测试恢复为 `15 passed`。
+- Git 审计发现 holdout 声明的 `cfd2084` 尚不包含双 Skill 合同；真实冻结提交为
+  `4103d42`，且到首次 holdout 结果 `6a0d952` 的 Router/规范化/Manifest 零差异。
+  只更正元数据并加断言，没有改案例、标签、规则或既有结果，也没有重跑 holdout。
+- 为 5C-4 历史教学补演进说明，并新增完整 5C 退出复核文档，讲清数据/控制流、
+  跨层职责、评测解释、已知限制、框架替换边界、5D 前置项和面试安全表述。
+- 5C 聚焦测试 `66 passed`；完整回归 `256 passed, 57 subtests passed`。5C 退出复核
+  通过，状态只推进到 5D 为唯一下一步，未实现任何 5D 功能。
+- 首次状态切换后全量回归有 1 条治理负例失败：它把 `5D` 硬编码为陈旧 Next Step，
+  而 5D 现在正是合法检查点。已改为稳定的 `stale-checkpoint`，避免合法阶段推进反向
+  使负例失效；这没有改变治理脚本本身。
+- 修复治理测试后，最终完整回归 `256 passed, 57 subtests passed`；compileall、
+  `git diff --check` 与治理预检全部通过。diff check 仅有既有 Windows 换行提示。

@@ -25,6 +25,12 @@ DEVELOPMENT_PATH = Path(
     "data/evaluation/skill_router_v1_development_cases.json"
 )
 HOLDOUT_PATH = Path("data/evaluation/skill_router_v1_holdout_cases.json")
+DEVELOPMENT_RESULT_PATH = Path(
+    "data/evaluation/results/skill_router_v1_development_baseline.json"
+)
+HOLDOUT_RESULT_PATH = Path(
+    "data/evaluation/results/skill_router_v1_holdout_baseline.json"
+)
 ARCHIVE_MANIFEST_PATH = Path(
     "data/evaluation/history/skill_router_v1_single_skill_baseline_manifest.json"
 )
@@ -55,6 +61,9 @@ def test_holdout_dataset_is_sealed_and_has_no_calibration_sources():
     assert dataset.calibration_excluded is True
     assert len(dataset.cases) == 12
     assert dataset.metadata["sealed_before_first_run"] is True
+    assert dataset.metadata["rules_frozen_at_commit"] == (
+        "4103d4297e17b6dc54fa1402764414b0a1ef542c"
+    )
     assert all(not case.contamination_sources for case in dataset.cases)
 
 
@@ -146,6 +155,79 @@ def test_historical_files_match_the_frozen_archive_hashes():
         }
     ]
     assert manifest["provenance"]["exact_run_commit_known"] is False
+
+
+@pytest.mark.parametrize(
+    ("dataset_path", "result_path"),
+    [
+        (DEVELOPMENT_PATH, DEVELOPMENT_RESULT_PATH),
+        (HOLDOUT_PATH, HOLDOUT_RESULT_PATH),
+    ],
+)
+def test_saved_baseline_matches_dataset_identity_labels_and_metrics(
+    dataset_path: Path,
+    result_path: Path,
+):
+    dataset = json.loads(dataset_path.read_text(encoding="utf-8"))
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+
+    for field in (
+        "dataset_id",
+        "dataset_version",
+        "calibration_excluded",
+        "candidate_snapshot",
+    ):
+        assert result[field] == dataset[field]
+    assert result["dataset_role"] == dataset["role"]
+
+    expected_cases = {case["case_id"]: case for case in dataset["cases"]}
+    actual_cases = {case["case_id"]: case for case in result["cases"]}
+    assert len(actual_cases) == dataset["case_count"]
+    assert actual_cases.keys() == expected_cases.keys()
+
+    for case_id, expected in expected_cases.items():
+        actual = actual_cases[case_id]
+        assert actual["expected_outcome"] == expected["expected_outcome"]
+        assert actual["expected_reason"] == expected["expected_reason"]
+        assert actual["expected_selected_skill"] == expected[
+            "expected_selected_skill"
+        ]
+        assert actual["expected_candidate_skills"] == expected[
+            "expected_candidate_skills"
+        ]
+
+    exact_matches = sum(case["exact_match"] for case in result["cases"])
+    assert result["exact_match_accuracy"] == round(
+        exact_matches / len(result["cases"]),
+        6,
+    )
+    for outcome, metric in (
+        ("selected", "selection_accuracy"),
+        ("rejected", "rejection_accuracy"),
+        ("ambiguous", "ambiguity_accuracy"),
+    ):
+        cases = [
+            case
+            for case in result["cases"]
+            if case["expected_outcome"] == outcome
+        ]
+        assert result[metric] == round(
+            sum(case["exact_match"] for case in cases) / len(cases),
+            6,
+        )
+
+    rejected_cases = [
+        case
+        for case in result["cases"]
+        if case["expected_outcome"] == "rejected"
+    ]
+    false_selections = sum(
+        case["actual_outcome"] == "selected" for case in rejected_cases
+    )
+    assert result["false_selection_rate"] == round(
+        false_selections / len(rejected_cases),
+        6,
+    )
 
 
 def test_evaluator_reports_ambiguity_accuracy():
