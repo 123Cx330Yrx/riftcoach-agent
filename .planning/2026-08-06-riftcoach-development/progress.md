@@ -210,3 +210,6 @@
   命令解析失败但未改文件；改用单引号多个 `-e` 后成功，仅命中应保留的历史记录。
 - 5D-1 本地实现与教学验收完成；唯一下一步改为 5D-2 Context Builder V1，尚未
   构造 Context、编译 `AgentRunRequest` 或调用 AgentLoop/Tool/Provider/Harness。
+- 创建并推送 `6bc4309 feat(skills): harden skill run boundary`；本地 HEAD 与
+  `origin/main` 一致。GitHub Actions run `31179571780` 对该精确 SHA 的治理、pytest、
+  两层 RAG 门禁、compileall、Harness 边界、密钥检查和 dry-run 全部成功。

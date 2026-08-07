@@ -113,7 +113,7 @@ blocked_before: "5D-3"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1，下一步为 5D-2 | 阶段 5 或整个 5D 已完成 |
 | 项目理解 | 5D-1 已讲清路由版本锁定、安全 run identity、Artifact 规范字节/摘要和执行前 fail-closed 验票；Context 构造仍需在 5D-2 单独教学 | 输入绑定完成就等于 Agent 已经运行 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | `main` 的既有公开基线包含完整 5C 与 5D entry design；5D-1 本地验收后进入本批提交/CI 收尾，仍没有正式网页部署 | 本地测试通过就等于远端 CI 或 Web 部署完成 |
+| GitHub/部署 | `main` 已包含 5D-1 实现提交 `6bc4309`；GitHub Actions run `31179571780` 对该精确 SHA 全部通过；仍没有正式网页部署 | 代码与 CI 通过就等于已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
