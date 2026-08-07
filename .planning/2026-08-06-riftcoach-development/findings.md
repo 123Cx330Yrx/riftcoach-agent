@@ -209,3 +209,73 @@
   或 Harness 发布门禁。
 - 聚焦回归 `66 passed`；完整回归 `256 passed, 57 subtests passed`。5C 通过退出
   复核，唯一下一步变为 5D 的设计和细分，尚未实现 5D。
+
+## 5D Entry Design - Initial Recovery
+
+- Canonical state authorizes only the 5D entry-design checkpoint: audit existing contracts,
+  compare integration approaches, and split 5D into teachable checkpoints. No 5D feature code
+  is authorized in this turn.
+- 5D must connect existing 5A Agent Loop, two Skill contracts, Provider/Tool Runtime and Harness;
+  it must not create a second orchestration stack or bypass the Harness publication gate.
+- Capability matrix assigns Prompt/Context Builder V1, structured Provider output, untrusted
+  context boundaries and Prompt Evaluation to 5D. Unified Trace/Usage/runtime surface remains
+  5E; Session/Memory remains stage 6; third-party Runtime adoption remains 5F.
+- Current architecture remains framework-neutral. LangGraph, Pi or Claude Agent SDK may later
+  replace orchestration only after the same domain contracts and evaluations can be preserved.
+- `AgentRunRequest` already owns messages, allowed tool names, iteration/tool budgets, timeout and
+  metadata. 5D should translate Skill permissions/budgets into this existing request instead of
+  inventing a parallel executor contract.
+- `AgentLoop` currently returns raw `ChatResponse.content`; it does not validate a Skill output
+  schema, attach Artifact identity, invoke Harness evaluation, or distinguish trusted facts from
+  untrusted user/RAG/tool text.
+- Provider capability flags already include `STRUCTURED_OUTPUT`, but `ChatRequest` has no response
+  schema/format field and capability negotiation cannot yet require it. `ZhipuProvider` honestly
+  declares text chat only, so real structured output is a missing end-to-end capability, not a
+  switch that can simply be enabled.
+- Tool observations are stable JSON envelopes and tool allowlists are enforced before execution,
+  but observation text can still contain untrusted external content. 5D needs explicit context
+  labels and instructions; JSON serialization alone is not prompt-injection isolation.
+- The 5A loop is deliberately synchronous and bounded. Streaming, cancellation, resume, unified
+  Trace and session state should not be pulled into 5D because their approved consumers are 5E/6.
+- Skill Manifest budgets map directly to existing `AgentRunRequest` iteration/tool/timeout fields;
+  `max_context_tokens` has no active enforcer yet. Skill quality-gate fields map to HarnessConfig,
+  but no composition layer currently performs either translation.
+- `LoadedSkill` already bundles validated Manifest, SKILL.md instructions and Pydantic input/output
+  model classes. Loading intentionally grants no execution authority; 5D needs a consumer that
+  validates input first, then derives the least-privilege run request.
+- Skill outputs are terminal product contracts (`published/degraded/rejected`, run_id, report,
+  score, evidence IDs and warnings). A raw AgentLoop final message therefore cannot be returned as
+  a Skill output; only the Harness terminal decision and final Artifact may populate that contract.
+- `ReviewHarness` already owns retrieval, draft generation, evaluation, bounded revision and the
+  sole publication/fallback decision. It currently has no Skill identity, target-match/focus input,
+  or AgentLoop integration, so 5D should adapt a Skill execution into existing Harness steps rather
+  than create a second quality gate.
+- Existing chat generator/evaluator/reviser adapters call the LLM through the `llm.chat` tool path.
+  5D must deliberately decide where the AgentLoop participates to avoid two nested or competing
+  model execution paths.
+- The current CLI composition pre-retrieves RAG, then calls a one-shot `ChatCoachGenerator` through
+  `llm.chat`; it never uses `AgentLoop`. Simply wrapping this unchanged path in a Skill would satisfy
+  naming but would not produce the approved 5D bounded Agent execution.
+- Conversely, letting AgentLoop call `knowledge.search` dynamically conflicts with the current
+  Harness order (`retrieve -> generate`) unless collected tool evidence is converted back into the
+  same `KnowledgeEvidence`/Artifact contract before evaluation. This is the central 5D integration
+  seam, not a reason to replace Harness.
+- The safest likely direction is one outer Skill execution coordinator: validate Skill input,
+  assemble trusted context, run the bounded AgentLoop as draft generation with only the Skill
+  allowlist, normalize its tool evidence, then hand the draft/evidence into the existing Harness
+  evaluation/publication path. Exact method boundaries require a small Harness extension rather
+  than a second Harness or nested LLM ToolRuntime.
+- `FileRunStore` already gives immutable run namespaces and Artifact digests. 5D should attach
+  selected Skill/input/context artifacts to this existing run identity rather than create a new
+  unrelated run ID. Adding the richer unified event/usage Trace remains 5E.
+- Three approaches were compared. Wrapping the legacy Harness path would not use AgentLoop;
+  letting AgentLoop own evaluation/publication would duplicate Harness; using AgentLoop as an
+  evidence-aware `DraftPreparationStep` preserves both dynamic tool choice and one quality gate.
+- ADR-0011 adopts the third approach. `SkillReviewExecutor` validates selected identity and typed
+  input, Context Builder/Compiler derive messages/permissions/budgets, AgentLoop returns a draft
+  plus actual tool evidence, and ReviewHarness alone constructs terminal publication state.
+- Structured output is intentionally scoped first to machine-consumed `EvaluationResult`; the
+  Coach report remains Markdown and terminal Skill Output is built from Harness artifacts. Real
+  Provider admission is delayed until the schema and domain evaluation contract are stable.
+- 5D is now split into entry design, 5D-1..5D-7 (with 5D-6a/6b separated), and exit review. The
+  exact next checkpoint is 5D-1 input/identity/run binding only; no Context Builder or model call.

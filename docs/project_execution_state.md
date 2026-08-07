@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5D"
-current_checkpoint: "5D"
+current_checkpoint: "5D-1"
 status: in_progress
-blocked_before: "5E"
+blocked_before: "5D-2"
 ---
 
 # RiftCoach 当前执行状态
@@ -18,9 +18,9 @@ blocked_before: "5E"
 
 - 最后更新：2026-08-07
 - 主阶段：阶段 5，进行中
-- 当前子阶段组：5D Python 受限 Agent Loop，尚未开始实现
-- 唯一下一步：5D，先设计并拆分受限 Skill 执行、Context Builder V1、结构化输出与不可信上下文边界，再逐个检查点实施
-- 禁止越过：5D 尚未完成前，不得进入 5E；本次 5C 退出复核没有实现任何 5D 功能
+- 当前子阶段组：5D Python 受限 Agent Loop，entry design 已完成，功能实现尚未开始
+- 唯一下一步：5D-1 Skill Run Boundary Hardening，只收紧 Skill I/O、路由/Skill 身份、run_id 与输入 Artifact 绑定
+- 禁止越过：5D-1 完成前不得进入 5D-2；本次 entry design 没有实现 Context Builder、Agent 执行或真实 Provider 能力
 
 ## 5C 原始子阶段账本
 
@@ -32,6 +32,21 @@ blocked_before: "5E"
 | 5C-4 Rejection / Ambiguity | 不支持时拒绝；多候选时不得擅自猜测 | 已完成 | 教学验收文档、排除合同不变量、候选顺序与域外硬负例测试 | 进入维护 |
 | 5C-5 Router Evaluation | 建立正例、负例、歧义、越界和误路由评测 | 已完成 | development v2 为 23/23；independent holdout v1 单次运行后为 11/12，唯一失败已原样保存并分类 | 进入维护；holdout v1 永不用于调节当前规则 |
 | 5C-6 Model Fallback Decision | 仅在确定性路由出现真实 Bad Case 后评估模型兜底 | 已完成 | ADR-0010 比较排除词、LoL 域信号、澄清、LLM 与 Embedding；决定 V1 暂缓模型兜底并定义重新采用门槛 | 进入维护；新鲜数据满足门槛后才能用新 ADR 重开 |
+
+## 5D 原子子阶段账本
+
+| 子阶段 | 职责 | 当前状态 | 完成证据 |
+|---|---|---|---|
+| 5D-entry-design | 审计现有接缝、比较组合方案、冻结数据流与教学顺序 | 已完成 | 5D 设计文档、ADR-0011、治理检查 |
+| 5D-1 Skill Run Boundary Hardening | 统一 I/O 非空文本、selected identity、run_id 和输入 Artifact 绑定 | 唯一下一步 | 尚未实现 |
+| 5D-2 Context Builder V1 | 两个 Skill 的最小上下文、信任标签、确定性裁剪和 ContextSizer | 未开始 | 尚无代码或测试 |
+| 5D-3 Skill Run Compiler & Budget Enforcement | Manifest 权限/预算编译为 AgentRunRequest，并约束累积上下文 | 未开始 | 尚无代码或测试 |
+| 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 未开始 | 尚无代码或测试 |
+| 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 未开始 | 尚无代码或测试 |
+| 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 未开始 | 尚无代码或测试 |
+| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 未开始 | 尚未选择厂商或模型 |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 未开始 | 尚无新数据集或结果 |
+| 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界
 
@@ -64,12 +79,15 @@ blocked_before: "5E"
 - 5C 退出复核将命中决策的证据身份收紧为必须与候选 Skill 身份完全一致；
 - holdout 冻结点元数据已从不包含双 Skill 合同的 `cfd2084` 更正为实际双 Skill
   合同提交 `4103d42`，没有修改案例、期望、规则或既有结果；
-- 当前本地完整回归：`256 passed, 57 subtests passed`；本批 5C 聚焦测试
-  `66 passed`；compileall、治理预检和 diff 检查均通过。
+- 5D entry design 已完成源码级接缝审计；ADR-0011 决定 AgentLoop 只作为
+  evidence-aware draft preparation，ReviewHarness 保持唯一评测和发布控制；
+- 5D 已拆为 5D-1 至 5D-7 和 exit review；拆分本身不是功能实现；
+- 当前本地完整回归：`256 passed, 57 subtests passed`；5D entry design 未改功能
+  代码，compileall、diff check 与治理预检均通过。
 
 当前不能声称：
 
-- 5D 已经开始或完成；
+- 5D-1 或任何 5D 功能已经实现；
 - 路由对自然语言具有充分泛化能力；
 - 小型合成 holdout 已证明路由对自然语言充分泛化；
 - 已把 holdout 失败用于调节 Router 规则；
@@ -80,10 +98,10 @@ blocked_before: "5E"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B 和完整 5C，当前尚未开始 5D | 阶段 5 或 5D 已完成 |
-| 项目理解 | 5C 退出复核已讲清 Router 数据/控制流、跨层边界、评测解释、框架替换边界与面试表述；5D 仍需逐项教学 | 测试通过就等于项目所有者已理解 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C 和 5D entry design，5D 功能代码尚未开始 | 阶段 5 或 5D 已完成 |
+| 项目理解 | 5D entry design 已讲清现有组件接缝、三种方案、目标数据流、Context/信任边界和原子顺序；各实现仍需逐项教学 | 设计文档存在就等于已经掌握实现细节 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | `main` 包含完整 5C 退出证据后仍没有正式网页部署 | 5C 已交付就等于已有 Web 产品或模型 Router |
+| GitHub/部署 | `main` 通过本次独立提交包含完整 5C 与 5D entry design；仍没有正式网页部署 | 设计完成就等于已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -157,11 +175,12 @@ Case 不足以抵消模型带来的结构化输出、延迟、成本和故障复
 `5C-exit-review` 已通过：完整证据、修复项、限制、框架中立边界和面试安全表述见
 `docs/plans/2026-08-07-skill-router-v1-exit-review.md`。5C 现已完成。
 
-唯一下一检查点为 `5D`。第一轮只负责恢复 5D 既定目标、对照能力矩阵和现有
-Agent Loop/Harness/Skill 合同，形成细分设计与验收顺序；不能因为 5D 名称是一个
-子阶段，就在一次“继续”里把 Context Builder、结构化输出、受限执行和 Prompt
-Evaluation 全部写完。
+`5D-entry-design` 已完成。采用 ADR-0011：AgentLoop 负责白名单工具调用和草稿准备，
+`ReviewHarness` 仍是唯一评测、修订和发布控制面；通过 `DraftPreparationStep` 接缝
+同时兼容旧顺序 Retriever/Generator 和新 Agent 路径。完整设计见
+`docs/plans/2026-08-07-constrained-skill-agent-loop-design.md`。
 
-已知 5D 前置硬化包括：统一两个 Skill I/O 的非空文本规则、建立 Artifact 关联、
-只抽取最小任务上下文、区分可信事实与不可信用户/RAG/工具内容、把 Skill 权限和
-预算转换为 AgentRunRequest，并保证现有 Harness 仍是唯一发布出口。5D 尚未开始。
+唯一下一检查点为 `5D-1 Skill Run Boundary Hardening`。本轮只统一两个 Skill I/O
+的非空文本规则，定义并验证 selected RouterDecision、LoadedSkill identity/version、
+run_id 与同一 Harness 输入 Artifact 的绑定。它不实现 Context Builder、不调用模型
+或工具，也不进入 5D-2。

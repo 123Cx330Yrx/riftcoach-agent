@@ -127,3 +127,24 @@ Contract 已完成，5C-5 已建立数据生命周期、接受 development 并�
 记录 5D 前置硬化和框架中立边界。5C 仍然没有执行 Skill、调用 Tool 或调用 LLM；
 这些不是遗漏，而是下一检查点 5D 的职责。完整结论见
 `docs/plans/2026-08-07-skill-router-v1-exit-review.md`。
+
+## 8. 当前检查点：阶段 5D 受限 Skill Agent Loop
+
+`5D-entry-design` 已完成。ADR-0011 选择如下组合边界：
+
+```text
+selected Skill + validated input
+→ Context Builder / AgentRunRequest compiler
+→ AgentLoop + Skill allowlisted ToolRuntime
+→ CoachDraft + KnowledgeEvidence
+→ existing ReviewHarness quality gate
+→ typed terminal Skill Output
+```
+
+该设计开始落实 A09、A10、A11、Q01 与 Q03，但设计文档不改变它们的实现状态。
+Context Builder、结构化输出、Agent/Harness composition 和 Prompt Evaluation 仍然
+没有功能代码或新评测结果。A11 的统一 `run/stream/event/trace/usage` 表面继续属于
+5E；5D 只建立可被该 Runtime 消费的真实 Skill 执行切片。
+
+唯一下一步为 5D-1：收紧 Skill I/O 非空文本，并建立 selected RouterDecision、
+LoadedSkill identity/version、run_id 与输入 Artifact 的绑定。不得提前进入 5D-2。

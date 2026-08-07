@@ -177,3 +177,17 @@
   使负例失效；这没有改变治理脚本本身。
 - 修复治理测试后，最终完整回归 `256 passed, 57 subtests passed`；compileall、
   `git diff --check` 与治理预检全部通过。diff check 仅有既有 Windows 换行提示。
+- 进入 `5D-entry-design` 后按强制恢复顺序读取唯一状态、活动计划、需求、路线、
+  能力矩阵和架构非功能检查表；治理预检通过，起始工作树干净。
+- 完整复核 AgentLoop、Provider contract/capability、ToolRuntime、两个 Skill I/O 与
+  Manifest、ReviewHarness、chat adapters、Prompt/Parser、FileRunStore 和相关 ADR。
+- 发现核心接缝：旧 Harness 是 eager retrieval + one-shot generation，AgentLoop 是
+  dynamic tool use；直接并存会产生两套证据路径，Agent 全接管又会复制质量门禁。
+- 比较三种方案后新增 ADR-0011，接受 AgentLoop 作为 evidence-aware
+  `DraftPreparationStep`，ReviewHarness 保持唯一发布者。
+- 新增 5D 初学者设计文档，覆盖问题、目标数据流、Context trust 分层、Token 预算、
+  结构化输出、失败模式、测试、后续边界和面试表述。
+- 将 5D 拆为 5D-1 至 5D-7 与 exit review；canonical 下一步仅为 5D-1 Skill Run
+  Boundary Hardening，本批没有实现任何 5D 功能代码。
+- 5D entry design 回归：完整 pytest `256 passed, 57 subtests passed`；compileall、
+  `git diff --check` 与治理预检通过。只有既有 Windows LF/CRLF 提示。

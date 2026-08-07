@@ -167,6 +167,7 @@ OP.GG MCP
 5C-5 Router Evaluation        已完成；development 23/23，holdout 11/12
 5C-6 Model Fallback Decision  已完成；ADR-0010 暂缓 LLM fallback
 5C-exit-review                已完成；合同、证据、限制和 5D 前置项已复核
+5D-entry-design               已完成；ADR-0011 与原子检查点已冻结
 ```
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
@@ -183,8 +184,12 @@ development/holdout 的角色、污染和版本快照门禁；第二批 developm
 23/23 精确匹配接受并冻结规则，第三批 holdout v1 已单次运行并以 11/12 原样收尾。
 5C-6 已基于唯一设备域 Bad Case 完成方案比较：V1 保持确定性 Router，不根据
 holdout 调词，也不立即引入模型；类型化入口和澄清优先，模型重开需满足新鲜数据、
-结构化输出与质量/成本门槛。5C 退出复核已通过；下一步只进入 5D 的设计与细分，
-尚未实现 5D。原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
+结构化输出与质量/成本门槛。5C 退出复核已通过；5D entry design 选择 AgentLoop
+作为 Harness 的 evidence-aware draft preparation，并保持 Harness 唯一发布权。
+后续顺序为 5D-1 输入/身份/Artifact 边界、5D-2 Context Builder、5D-3 编译与预算、
+5D-4 Agent draft/evidence、5D-5 Harness/终态输出、5D-6a 结构化输出、5D-6b 真实
+Provider 准入、5D-7 领域评测和 exit review。当前只进入 5D-1，尚未实现 5D 功能。
+原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动
 路由暂不作为连续任务；它们要等 Skill 和 Agent Loop 形成真实调用场景后，按同一

@@ -63,6 +63,20 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 原内部 Skill 提案见 ADR-0008，当前决策见 ADR-0009。
 模型路由采用决策见 ADR-0010。
 
+## 5D 受限 Skill 执行组合
+
+- `SkillReviewExecutor` 负责核对 selected RouterDecision、加载同名同版本 Skill、
+  验证输入并从 Manifest 编译权限、预算和质量门槛；
+- AgentLoop 只负责白名单工具调用和 Coach 草稿准备，不拥有发布权；
+- 新 `DraftPreparationStep` 返回同一 `CoachDraft + KnowledgeEvidence`，用于兼容旧
+  Retriever/Generator 路径与新 Agent 路径；
+- `ReviewHarness` 继续是评测、受限修订、发布、降级和拒绝的唯一控制面；
+- Context Builder 把内部策略、Skill 指令、确定性事实、用户文本、RAG 和 Tool
+  Observation 分层，权限永远不从不可信文本获得；
+- 结构化模型输出先服务机器消费的 EvaluationResult，Coach 报告仍为 Markdown；
+- 真实 Provider 与第二 Provider 选择必须等 5D-6b 用同一领域任务评测，不提前锁定；
+- 该方案由 ADR-0011 接受，不等于已经实现 5D，也不等于 LangGraph/Multi-Agent。
+
 ## 数据职责
 
 - Riot API：玩家已经发生的比赛事实；

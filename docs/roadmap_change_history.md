@@ -202,6 +202,23 @@
 - `CURRENT`：阶段 5 仍进行中，唯一下一检查点为 5D。5D 只被设置为下一步，尚未
   开始实现；进入时先拆分 Context Builder、结构化输出、权限预算和不可信边界。
 
+### 2026-08-07：5D 受限 Skill Agent Loop 入口设计
+
+- `AUDITED`：现有 Harness 使用 eager retrieval + one-shot generation，AgentLoop
+  支持 dynamic tool use；简单叠加会形成两套检索/证据路径。
+- `REJECTED`：仅给旧 Harness 套 Skill 外壳，因为它没有接入 5A AgentLoop；也拒绝
+  让 AgentLoop 接管评测/发布，因为会复制 Harness 并扩大模型控制面。
+- `ACCEPTED`：ADR-0011 采用 AgentLoop 作为 evidence-aware `DraftPreparationStep`；
+  它输出 CoachDraft + KnowledgeEvidence，现有 ReviewHarness 保持唯一质量和发布门禁。
+- `CURRENT`：Context Builder 对内部策略、Skill 指令、事实、用户、RAG 和 Tool
+  Observation 分层；权限只来自同名同版本 Manifest，不从文本推断。
+- `CURRENT`：真实 Provider 准入位于 5D-6b。先稳定结构化输出和领域评测，再实测
+  GLM 并至多比较一个候选，不提前锁定 DeepSeek、Qwen 或 Kimi。
+- `CURRENT`：5D 拆为 5D-1 至 5D-7 与 exit review；唯一下一步是 5D-1 Skill Run
+  Boundary Hardening，本设计批没有实现 5D 功能代码，不得进入 5D-2。
+- `VERIFIED`：本批未改功能代码；完整回归 `256 passed, 57 subtests passed`，
+  compileall、diff check 与治理预检通过。
+
 ## 当前不变的宏观路线
 
 ```text

@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6 - 5D（next; implementation not started）
+Phase 6.1 - 5D-1（next; implementation not started）
 
 ## Phases
 
@@ -66,16 +66,17 @@ Phase 6 - 5D（next; implementation not started）
 ### Phase 6 - 5D Python 受限 Agent Loop
 
 - Status: in_progress
-- 当前只把 5D 设为下一检查点，尚未实现 5D 功能。
-- 第一轮先恢复既定目标并拆分 Context Builder、结构化输出、Skill 权限/预算转换、
-  不可信输入边界和 Prompt Evaluation 的教学检查点。
+- `5D-entry-design` 已完成：审计现有接缝、比较三种组合方案并接受 ADR-0011。
+- 当前没有实现 5D 功能；唯一下一步是 5D-1 Skill Run Boundary Hardening。
+- 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
+  逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D：先对照现有 Agent Loop、两个 Skill 合同、Harness、Prompt V0 和能力矩阵，形成
-受限 Skill 执行的细分设计与验收顺序；本次状态切换不表示 5D 已经开始实现，也不
-授权一次性完成全部 5D。
+5D-1 Skill Run Boundary Hardening：统一两个 Skill I/O 非空文本规则；定义并验证
+selected RouterDecision、LoadedSkill identity/version、run_id 与同一 Harness 输入
+Artifact 的绑定。本检查点不实现 Context Builder、AgentLoop 接线或模型调用。
 
 ## Decisions Made
 
@@ -101,6 +102,9 @@ Phase 6 - 5D（next; implementation not started）
 | 类型化入口和澄清优先于模型语义复核 | 显式任务上下文比猜测自由文本更可靠；未来只有新鲜数据出现多个独立失败族并通过新 Eval/ADR 时才重开模型方案 |
 | 5C 退出复核通过，5D 成为唯一下一步 | 六个检查点均有实现、评测或 ADR 证据；退出审计修复了命中证据身份与冻结点标注，已知执行缺口明确归入 5D |
 | 5D 先设计和拆分再实施 | Context、结构化输出、权限预算和 Harness 接线都需要独立教学验收，不能再次把一个大批次等同于整个子阶段完成 |
+| AgentLoop 作为 Harness 的 evidence-aware draft preparation | 保留 Agent 的动态白名单工具选择，同时让现有 Harness 继续掌握唯一评测、修订和发布权 |
+| 用 `DraftPreparationStep` 作为唯一新接缝 | 旧 Retriever/Generator 可通过顺序 Adapter 兼容，新 Agent 路径返回同一 CoachDraft + KnowledgeEvidence，不制造第二套质量平台 |
+| Provider 厂商选择放在 5D-6b 准入门 | 先稳定结构化输出和领域评测合同，再实测 GLM 并最多比较一个候选；不按视频热度提前锁定 DeepSeek/Qwen/Kimi |
 
 ## Errors Encountered
 
