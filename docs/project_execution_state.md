@@ -2,7 +2,7 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5C"
-current_checkpoint: "5C-5"
+current_checkpoint: "5C-6"
 status: in_progress
 blocked_before: "5D"
 ---
@@ -16,11 +16,11 @@ blocked_before: "5D"
 
 ## 状态元数据
 
-- 最后更新：2026-08-06
+- 最后更新：2026-08-07
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5C Skill Router，进行中
-- 唯一下一步：5C-5 Router Evaluation 第三批，单次运行 independent holdout v1 并原样分析结果
-- 禁止越过：5C-5、5C-6 分别完成前，不得进入 5D
+- 唯一下一步：5C-6 Model Fallback Decision，基于已冻结的 holdout Bad Case 比较确定性改进、澄清与模型兜底
+- 禁止越过：5C-6 完成前，不得进入 5D
 
 ## 5C 原始子阶段账本
 
@@ -30,8 +30,8 @@ blocked_before: "5D"
 | 5C-2 Skill Catalog | 发现、严格加载并投影可用 Skill | 已完成 | Catalog 代码和测试 | 进入维护 |
 | 5C-3 Deterministic Router | 依据机器可读触发信号做可解释选择 | 已完成 | 确定性 Router、Manifest 信号、单元测试 | 进入维护 |
 | 5C-4 Rejection / Ambiguity | 不支持时拒绝；多候选时不得擅自猜测 | 已完成 | 教学验收文档、排除合同不变量、候选顺序与域外硬负例测试 | 进入维护 |
-| 5C-5 Router Evaluation | 建立正例、负例、歧义、越界和误路由评测 | 进行中 | 旧单 Skill 结果已原样归档；双 Skill development v2 的 23 条全部精确匹配，错误选择率为 `0.0`，开发规则已冻结 | 单次运行 independent holdout v1，原样保存失败且不得据此调规则；随后总结 5C-5 边界 |
-| 5C-6 Model Fallback Decision | 仅在确定性路由出现真实 Bad Case 后评估模型兜底 | 未正式开始 | 设计文档仅记录了暂不引入模型的倾向 | 基于 5C-5 证据做正式“采用/暂缓”决策并记录理由 |
+| 5C-5 Router Evaluation | 建立正例、负例、歧义、越界和误路由评测 | 已完成 | development v2 为 23/23；independent holdout v1 单次运行后为 11/12，唯一失败已原样保存并分类 | 进入维护；holdout v1 永不用于调节当前规则 |
+| 5C-6 Model Fallback Decision | 仅在确定性路由出现真实 Bad Case 后评估模型兜底 | 未正式开始 | holdout 暴露“最近 + 表现”把键盘设备问题误选为近期复盘的真实 Bad Case | 比较补充 LoL 域信号、排除词、澄清机制和模型兜底的收益、成本与风险，形成正式采用/暂缓决策 |
 
 ## 当前真实能力边界
 
@@ -51,6 +51,13 @@ blocked_before: "5D"
   `data/evaluation/results/skill_router_v1_development_baseline.json`：23/23 精确匹配，
   selection/rejection/ambiguity accuracy 均为 `1.0`，false-selection rate 为 `0.0`；
 - development 明细中没有误路由；该结果只支持冻结当前开发规则，不是泛化证据；
+- independent holdout v1 已单次运行并保存到
+  `data/evaluation/results/skill_router_v1_holdout_baseline.json`：11/12 精确匹配，
+  selection/ambiguity accuracy 为 `1.0`，rejection accuracy 为 `0.8333`，
+  false-selection rate 为 `0.1667`；
+- 唯一失败 `holdout_device_performance_false_friend` 把“分析一下我最近键盘的表现”
+  误选为 `recent-form-review`；实现符合当前字面合同，产品期望拒绝，分类为确定性
+  Router 的域语义局限；
 - 当前本地完整回归：`252 passed, 57 subtests passed`；本批 Skill/Router 定向测试
   `62 passed`；compileall、治理预检和 `git diff --check` 通过。
 
@@ -58,7 +65,7 @@ blocked_before: "5D"
 
 - 5C 已经完成；
 - 路由对自然语言具有充分泛化能力；
-- 已用 holdout 成绩验证两个真实业务 Skill 的泛化或真实歧义处理；
+- 小型合成 holdout 已证明路由对自然语言充分泛化；
 - 已把 holdout 失败用于调节 Router 规则；
 - 已决定或实现 LLM Router fallback；
 - Router 已执行 Skill、Tool、Harness 或模型调用。
@@ -67,10 +74,10 @@ blocked_before: "5D"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C-1 至 5C-4 和第二个真实 Skill Contract；5C-5 已完成数据生命周期第一批，进行中 | 5C 或阶段 5 已完成 |
-| 项目理解 | 已逐步讲解并固化到单局 Skill Contract；已讲清 development/holdout 泄漏边界与 development `1.0` 的有限含义；holdout 结果和 5C-6 仍需讲解确认 | 测试通过就等于项目所有者已理解 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C-1 至 5C-5，5C-6 尚待正式决策 | 5C 或阶段 5 已完成 |
+| 项目理解 | 已讲清 development/holdout 泄漏边界、单次运行规则、唯一误路由的字面匹配根因及小型合成集局限；5C-6 方案权衡仍需讲解确认 | 测试通过就等于项目所有者已理解 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | `main` 已包含 5C-5 数据生命周期第一批；本批交付新增 development v2 结果与规则冻结记录；holdout 未运行，网页产品尚未部署 | development 成绩已交付就等于 5C-5 已验收或已有 holdout 成绩 |
+| GitHub/部署 | `main` 已包含 development v2 基线；本批交付新增 holdout v1 原始结果与 5C-5 收尾记录，网页产品尚未部署 | 路由评测已交付就等于已有 Web 产品或生产泛化能力 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -132,9 +139,10 @@ ADR-0009。
 `5C-5-prep-2` 已完成：单局 Skill 明确了输入、输出、触发/排除边界、工具权限、
 预算、步骤和成功标准，Catalog 现在有两个真实用户候选。
 
-`5C-5` 第一批已经把旧单 Skill 开发/校准结果原样冻结为历史基线，并建立双 Skill
-development v2 与 independent holdout v1 的角色、污染记录、案例边界和 CLI 门禁。
-第二批已运行 development v2：23 条全部精确匹配，没有误路由，当前 Manifest 与
-确定性规则可以冻结。下一批只单次运行 holdout v1，结果无论成败都原样保留，且不得
-反向调节当前规则。5C-5 不执行 Skill、不调用 Tool、Harness 或模型，也不完成
-5C-6 的模型兜底决策。
+`5C-5` 已完成：旧单 Skill 基线原样归档；development v2 以 23/23 冻结规则；
+independent holdout v1 随后只运行一次并得到 11/12。唯一失败是设备语义假朋友，
+其期望拒绝、实际选中近期复盘，结果已原样保留且不会用于调节本版本规则。
+
+下一检查点为 `5C-6 Model Fallback Decision`。它只基于现有 Bad Case 比较继续使用
+确定性边界、增加 LoL 域信号、扩展排除词、请求澄清或引入模型兜底，不默认编写
+LLM Router。5C-6 正式完成前仍不得进入 5D。

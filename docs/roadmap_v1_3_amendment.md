@@ -162,21 +162,23 @@ OP.GG MCP
 5C-2 Skill Catalog            已完成
 5C-3 Deterministic Router     已完成
 5C-4 Rejection / Ambiguity    已完成
-5C-5 Router Evaluation        进行中；development v2 已接受，holdout 待单次运行
+5C-5 Router Evaluation        已完成；development 23/23，holdout 11/12
 5C-6 Model Fallback Decision  未正式开始
 ```
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
 错误选择率为 `0.0`。它已原样归档并附带 SHA-256 与重建来源说明。现在 Catalog
 已有两个真实 Skill，旧结果因候选集合变化而有意过时；双 Skill development v2
-的 23 条已全部精确匹配，independent holdout v1 尚未运行。
+的 23 条已全部精确匹配；independent holdout v1 单次运行结果为 11/12，唯一失败
+是设备语义假朋友被误选为近期复盘，且未据此修改规则。
 
 源码审计已修正首批 Skill 分类：`recent-form-review` 与 `single-match-review` 是
 两个真实用户任务；报告事实审查继续由已经实现的 `EvaluatorStep` 和
 `ReviewHarness` 强制执行，不重复包装为内部 Skill。未实现的调用模式合同已取消。
 `single-match-review` 已完成，5C-5 第一批已冻结旧单 Skill 基线并建立双 Skill
 development/holdout 的角色、污染和版本快照门禁；第二批 development v2 已以
-23/23 精确匹配接受并冻结规则，下一步只进行 holdout 单次验收。原 `prep-1` 与
+23/23 精确匹配接受并冻结规则，第三批 holdout v1 已单次运行并以 11/12 原样收尾。
+下一步进入 5C-6 模型兜底采用决策。原 `prep-1` 与
 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动

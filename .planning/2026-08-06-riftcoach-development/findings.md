@@ -143,3 +143,24 @@
   证明自然语言泛化，也不构成引入 LLM Router fallback 的证据。
 - 当前开发规则可以冻结。下一步只能单次运行 independent holdout v1；其失败必须
   原样保存，不能反向用于修改本版本规则。
+
+## 5C-5 第三批 independent holdout v1 结果
+
+- 正式运行前确认治理预检与 12 个生命周期测试通过，输出文件不存在；从数据集声明的
+  `cfd20847788810d5781312e03aaeab0eff8011bd` 冻结点到当前 HEAD，Router、文本规范化
+  和两个 Skill Manifest 没有差异。
+- holdout v1 只运行一次：12 条中 11 条精确匹配；selection accuracy `1.0`、
+  rejection accuracy `0.8333`、ambiguity accuracy `1.0`、false-selection rate
+  `0.1667`。
+- 唯一失败为 `holdout_device_performance_false_friend`：期望拒绝“分析一下我最近
+  键盘的表现”，实际选中 `recent-form-review`。
+- 该句同时命中 `recent_scope=最近` 和 `review_goal=表现/分析`，又未命中任何排除词；
+  Router 实现符合当前 Manifest 字面合同。由于目标实体是键盘设备而非 LoL 对局，
+  期望标签正确，产品要求也明确，因此分类为确定性 Router 的域语义局限，不是实现
+  bug、错误标签或需求歧义。
+- 结果文件 SHA-256 为
+  `b21a03c61a865df62997c0a110105de872d83b50c49734e92e77df6614430d88`。
+- holdout v1 不得用于补“键盘”排除词或修改规则。5C-6 应比较域信号、开放式排除
+  列表、澄清和模型兜底，但本轮不预先选择方案。
+- 这是 12 条维护者合成案例，不是外部盲测或生产流量；11/12 不能证明自然语言
+  充分泛化，也不能单凭一条案例证明必须引入 LLM Router。

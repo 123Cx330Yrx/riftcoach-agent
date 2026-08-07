@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 3 - 5C-5 Router Evaluation（in progress）
+Phase 4 - 5C-6 Model Fallback Decision（in progress）
 
 ## Phases
 
@@ -45,14 +45,14 @@ Phase 3 - 5C-5 Router Evaluation（in progress）
 
 ### Phase 3 - 5C-5 Router Evaluation 收尾
 
-- Status: in_progress
+- Status: complete
 - 审计开发集覆盖、指标、门禁和局限。
 - 区分 development/calibration 与 independent holdout。
 - 记录可复现的最终基线，但不夸大泛化能力。
 
 ### Phase 4 - 5C-6 Model Fallback Decision
 
-- Status: pending
+- Status: in_progress
 - 根据真实 Bad Case 和 5C-5 证据决定暂缓还是引入模型兜底。
 - 记录收益、风险、替代方案和采用门槛。
 - 本阶段是决策门，不默认需要编写 LLM Router。
@@ -70,9 +70,9 @@ Phase 3 - 5C-5 Router Evaluation（in progress）
 
 ## Next Step
 
-5C-5 第三批：在 development v2 的 23 条全部精确匹配、开发规则已冻结后，单次运行
-independent holdout v1 并原样分析每条失败；不得用 holdout 调规则，不执行 Skill、
-不调用模型、不修改 Harness，也不进入 5C-6 或 5D。
+5C-6 Model Fallback Decision：基于 holdout v1 已原样保存的设备语义假朋友 Bad Case，
+比较确定性 LoL 域信号、排除词、澄清机制与模型兜底；记录收益、成本、风险和采用
+门槛。本检查点先做决策，不默认编写 LLM Router，也不进入 5D。
 
 ## Decisions Made
 
@@ -93,6 +93,7 @@ independent holdout v1 并原样分析每条失败；不得用 holdout 调规则
 | 旧单 Skill 评测先归档，再重建双 Skill 数据集 | 旧 15 案例参与过规则校准且候选集合已变化；保留历史证据，不能冒充当前泛化成绩 |
 | development 与 held_out 由数据角色和候选版本快照强制区分 | 防止把旧题库或新 Skill 版本静默放入错误评测，降低人工调规则造成的泄漏 |
 | development v2 以 23/23 精确匹配接受并冻结当前规则 | 没有误路由需要修改；继续调词只会增加过拟合风险，下一步应按既定门禁单次运行 holdout |
+| 5C-5 以 holdout 11/12 和原样 Bad Case 收尾 | Evaluation 的目标是获得可信证据而不是强制满分；唯一失败已分类且未用于调规则，足以进入 5C-6 方案决策 |
 
 ## Errors Encountered
 
@@ -109,6 +110,8 @@ independent holdout v1 并原样分析每条失败；不得用 holdout 调规则
 | 暂存区快照命令把计算路径和递归清理写在同一调用，被终端策略拒绝 | 1 | 改用仓库内固定临时目录，先验证快照，再校验绝对路径并分步清理 |
 | 假定 `docs/adr/README.md` 存在，实际仓库只有编号 ADR 文件 | 1 | 改读最新 ADR 实例；以后先用 `rg --files docs/adr` 确认文件 |
 | 推测 ADR-0003 文件名时使用了不存在的 `quality-gated-review-harness` | 1 | 先列出 `docs/adr`，按真实文件名 `quality-gated-agent-harness` 读取 |
+| 恢复 5C-5 第三批时再次直接猜错 ADR-0009 文件名 | 2 | 停止该并行读取，先运行 `rg --files docs/adr`，再按真实文件名读取；将“列目录后读取”继续作为强制恢复动作 |
+| 5C-5 收尾多文件补丁因末尾文档换行上下文不匹配而原子拒绝 | 1 | 确认无部分文档修改后，将补丁拆为状态、计划、路线和项目决策小组分别应用 |
 | 初步把事实审查分类为内部 Skill，未先核对既有 EvaluatorStep | 1 | 暂停实现，完整审计 Harness/Evaluation 与测试；用 ADR-0009 取代方案并取消重复代码 |
 | `python -m pytest` 命中桌面应用 Hermes Python，缺少 pytest | 1 | 改用仓库 `.venv\\Scripts\\python.exe` 执行项目测试，不重复错误解释器 |
 | `gh run view/list` 连续两次遇到 GitHub API TLS 握手超时 | 2 | 等待后改用 PowerShell REST 客户端查询同一公开 run，确认 CI 成功 |

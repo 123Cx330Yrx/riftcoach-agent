@@ -9,7 +9,7 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 ## 能力基线
 
 动态进度和唯一下一步只看 `docs/project_execution_state.md`。截至
-2026-08-06，已经实现并有测试证据的本地基础包括：
+2026-08-07，已经实现并有测试证据的本地基础包括：
 
 - Riot ID、PUUID、最近对局与 Timeline 数据链路；
 - MatchAnalyzer 确定性指标；
@@ -22,13 +22,13 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 - 智谱 GLM 教练报告；
 - 最小 Provider-neutral Agent Loop；
 - `recent-form-review` 与 `single-match-review` 两个用户 Skill Contract；
-- Skill Router 的 5C-1 至 5C-4；
+- Skill Router 的 5C-1 至 5C-5；development 为 23/23，单次 holdout 为 11/12；
 - 独立事实评测、受限修订、再评测与发布门控。
 
 当前仍未实现：
 
 - 真实 Provider Tool Calling 和经过领域评测的第二 Provider；
-- 5C-5、5C-6 的独立验收与最终 Skill Router 收尾；
+- 5C-6 模型兜底采用决策与最终 Skill Router 收尾；
 - 受限 Skill Agent Loop、Context Builder V1 和统一 AgentRuntime；
 - FastAPI 会话入口；
 - 玩家长期 Memory；

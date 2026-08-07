@@ -125,3 +125,21 @@
 - 收尾验证：Skill/Router 定向测试 `62 passed`；完整回归
   `252 passed, 57 subtests passed`；compileall、治理预检和 `git diff --check` 通过。
   diff check 只有既有 Windows LF/CRLF 转换提示。
+
+## 2026-08-07
+
+- 恢复 `5C-5` 第三批时首次并行读取猜错 ADR-0009 文件名；没有运行评测或修改文件。
+  随后先列出 `docs/adr` 并按真实路径读取，错误已写入计划错误表。
+- 确认工作树干净、HEAD 为 `4c86e3e`、holdout 结果不存在；治理预检和
+  `tests/test_skill_router_evaluation.py` 的 12 个生命周期测试通过。
+- 对比 holdout 声明的冻结提交与当前 HEAD，Router、文本规范化和两个 Manifest
+  零差异；候选仍为 `recent-form-review@0.2.0` 与
+  `single-match-review@0.1.0`。
+- 带显式 `--mode held_out --confirm-rules-frozen` 单次运行 holdout v1；结果为
+  11/12，selection/ambiguity accuracy 为 `1.0`，rejection accuracy 为 `0.8333`，
+  false-selection rate 为 `0.1667`。
+- 唯一失败把“分析一下我最近键盘的表现”选为近期复盘；分类为字面 Router 无法
+  理解目标实体所属领域的真实 Bad Case。未修改触发词、排除词、Router 或标签。
+- 5C-5 完成，当前唯一下一步推进为 5C-6 Model Fallback Decision；本轮不做该决策。
+- 收尾验证：Skill/Router 定向测试 `62 passed`；完整回归
+  `252 passed, 57 subtests passed`；compileall、治理预检与陈旧状态扫描通过。
