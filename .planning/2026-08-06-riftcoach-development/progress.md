@@ -311,3 +311,7 @@
   holdout 7 条的 Recall/MRR/nDCG 均为 `1.0`，holdout abstention/citation support 也为
   `1.0`；Harness 旧路径 dry-run published，SDK 边界与 tracked secret/run-data 检查
   均通过。该 dry-run 只验证旧 Harness 兼容性，不表示 Agent 草稿已接入 Harness。
+- 创建并推送 `dfe357c feat(agent): prepare evidence-aware skill drafts`；GitHub Actions
+  run `31206608536` 对精确 SHA `dfe357ccd9680f7a406dad43a7d39fed3820e951`
+  完成且结论为 `success`。5D-4 本地实现、教学证据与公开 CI 均完成；唯一下一步仍
+  是 5D-5，本轮不进入。

@@ -149,7 +149,7 @@ blocked_before: "5D-6a"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-4，下一步为 5D-5 | 阶段 5 或整个 5D 已完成 |
 | 项目理解 | 5D-4 已讲清模型文本与实际工具 provenance 的区别、draft/evidence 双产物和 fail-closed 终态校验 | 草稿与证据已准备就等于 Harness 已评测、发布或 terminal Skill Output 已生成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | `main` 已包含 5D-3 实现提交 `6f25108`；GitHub Actions run `31191462744` 对精确 SHA `6f251082ae03059961bd508bdbc43c4f1bf247af` 全部通过；仍没有正式网页部署 | 代码与 CI 通过就等于已有可运行 Web Agent |
+| GitHub/部署 | `main` 已包含 5D-4 实现提交 `dfe357c`；GitHub Actions run `31206608536` 对精确 SHA `dfe357ccd9680f7a406dad43a7d39fed3820e951` 全部通过；仍没有正式网页部署 | 代码与 CI 通过就等于已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
