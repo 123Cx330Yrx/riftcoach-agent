@@ -137,7 +137,7 @@ blocked_before: "5D-5"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design、5D-1、5D-2 与 5D-3，下一步为 5D-4 | 阶段 5 或整个 5D 已完成 |
 | 项目理解 | 5D-3 已讲清 Context 与权限控制面的区别、Manifest-only 编译、完整累计消息预算和协作式总 deadline | 编译和预算门禁完成就等于真实 Skill Agent、证据转换或 Harness 已运行 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | `main` 已包含 5D-2 实现提交 `9275d9c`；GitHub Actions run `31185773854` 对该精确 SHA 全部通过；仍没有正式网页部署 | 代码与 CI 通过就等于已有可运行 Web Agent |
+| GitHub/部署 | `main` 已包含 5D-3 实现提交 `6f25108`；GitHub Actions run `31191462744` 对精确 SHA `6f251082ae03059961bd508bdbc43c4f1bf247af` 全部通过；仍没有正式网页部署 | 代码与 CI 通过就等于已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

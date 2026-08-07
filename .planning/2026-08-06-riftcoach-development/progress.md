@@ -272,3 +272,7 @@
   门禁放进同一并行批次，导致聚合调用失败且隐藏其他输出；没有修改文件，也不是
   代码测试失败。随后按既定规则单独运行并得到 `NO_CURRENT_STALE_MATCHES`，再独立
   确认治理预检与 diff check 通过；复发次数已写回错误账本。
+- 创建并推送 `6f25108 feat(agent): enforce skill run budgets`；本地功能提交与
+  `origin/main` 一致。GitHub Actions run `31191462744` 对精确 SHA
+  `6f251082ae03059961bd508bdbc43c4f1bf247af` 的治理、pytest、两层 RAG 门禁、
+  compileall、Harness 边界、密钥检查和 dry-run 全部成功。
