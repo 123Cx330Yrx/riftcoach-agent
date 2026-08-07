@@ -359,3 +359,48 @@
   `tool` messages and require cumulative pre-call budget enforcement in 5D-3.
 - The completed builder still does not compile permissions, tool specs, loop limits or timeouts,
   call a Provider/Tool/AgentLoop, write Harness Artifacts, or publish a report.
+
+## 2026-08-07 5D-3 initial compiler and cumulative-budget audit
+
+- `AgentRunRequest` already owns messages, allowed tool names, iteration/tool-call limits and
+  Provider timeout, so 5D-3 should extend this contract instead of creating a parallel Skill run
+  request type.
+- No compiler currently binds `ValidatedSkillExecution` and `ContextBundle`. A caller could still
+  hand-assemble an `AgentRunRequest`; the new compiler must reject run/Skill/version drift and
+  derive every permission/budget only from the verified Manifest.
+- `AgentRunRequest` has no context ceiling, and `AgentLoop` never re-estimates accumulated messages
+  before Provider calls. A Tool Observation can therefore make iteration 2 larger than the
+  initial 5D-2 bundle without any deterministic stop.
+- The current `DeterministicContextSizer` counts message content but not assistant `tool_calls`
+  IDs, names or argument JSON. Cumulative enforcement must size the complete provider-neutral
+  message envelope or large tool arguments can bypass the estimate.
+- `ToolRegistry` provides deterministic `get()` and immutable ToolDefinition values. Compiler-time
+  allowlist validation can therefore fail before any Provider call while `AgentLoop` retains its
+  runtime defense-in-depth check.
+- Existing `timeout_s` is passed to each `ChatRequest`; ToolRuntime has a separate per-tool deadline.
+  5D-3 should map the Manifest value honestly without silently claiming a preemptive whole-run
+  deadline, which the current synchronous Runtime cannot guarantee.
+
+## 2026-08-07 5D-3 implementation findings
+
+- `AgentRunCompiler` can remain a thin composition boundary because `AgentRunRequest` already owns
+  every required control field. It rejects run/Skill/version drift, a Context ceiling above the
+  Manifest, re-estimated message overflow and unregistered Manifest tools before AgentLoop.
+- Context integrity belongs partly in `ContextBundle`: requiring messages to equal the canonical
+  rendering of sections prevents a caller from pairing trusted section metadata with an unrelated
+  forged system/user prompt.
+- The original content-only sizer gave identical estimates (`13`) to short and very large ToolCall
+  arguments. Serializing the complete provider-neutral message envelope closes that deterministic
+  bypass while remaining tokenizer-free and injectable.
+- Context enforcement must run before every Provider call, not only during initial ContextBuilder
+  selection. Tests prove initial overflow makes zero Provider calls and post-observation overflow
+  prevents the second Provider call.
+- Manifest `timeout_s` is now a cooperative total deadline, not a preemptive cancellation claim.
+  Provider requests receive decreasing remaining time; ToolRuntime receives an optional cap and
+  uses the smaller of run remaining and tool policy timeout.
+- A synchronous handler that ignores `ToolContext.remaining_s()` still cannot be hard-killed safely.
+  The Loop checks the deadline after Provider/Tool return and performs no further step; process-level
+  cancellation, resume and recovery remain stages 6/8.
+- 5D-3 still does not create a Skill draft preparer, interpret knowledge ToolResult payloads as
+  `KnowledgeEvidence`, call a real Provider, compose Harness or publish a report. Those boundaries
+  remain 5D-4 and later.

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import pytest
+
 from app.agent.loop import (
     AgentLoop,
     AgentRunRequest,
@@ -65,16 +67,50 @@ class ScriptedProvider:
         return self.responses.pop(0)
 
 
-def build_loop(provider):
+class FakeClock:
+    def __init__(self, now: float = 100.0):
+        self.now = now
+
+    def __call__(self) -> float:
+        return self.now
+
+    def advance(self, seconds: float) -> None:
+        self.now += seconds
+
+
+class ClockedProvider(ScriptedProvider):
+    def __init__(self, responses, *, clock, advances):
+        super().__init__(responses=responses)
+        self.clock = clock
+        self.advances = list(advances)
+
+    def chat(self, request):
+        self.requests.append(request)
+        self.clock.advance(self.advances.pop(0))
+        return self.responses.pop(0)
+
+
+def build_loop(
+    provider,
+    *,
+    context_sizer=None,
+    clock=None,
+    tool_definition=None,
+):
     registry = ToolRegistry()
-    registry.register(echo_definition())
+    registry.register(tool_definition or echo_definition())
+    runtime_kwargs = {"call_id_factory": lambda: "runtime-call"}
+    loop_kwargs = {}
+    if clock is not None:
+        runtime_kwargs["clock"] = clock
+        loop_kwargs["clock"] = clock
+    if context_sizer is not None:
+        loop_kwargs["context_sizer"] = context_sizer
     return AgentLoop(
         provider=provider,
         tool_registry=registry,
-        tool_runtime=ToolRuntime(
-            registry,
-            call_id_factory=lambda: "runtime-call",
-        ),
+        tool_runtime=ToolRuntime(registry, **runtime_kwargs),
+        **loop_kwargs,
     )
 
 
@@ -147,6 +183,24 @@ def test_agent_loop_can_finish_without_tools():
     assert provider.requests[0].tools == ()
 
 
+def test_agent_run_request_validates_context_ceiling_contract():
+    messages = (ChatMessage(role=MessageRole.USER, content="你好"),)
+
+    request = AgentRunRequest(messages=messages)
+    assert request.max_context_tokens == 200_000
+    assert AgentStopReason.CONTEXT_BUDGET_EXCEEDED.value == (
+        "context_budget_exceeded"
+    )
+    assert AgentStopReason.TIMEOUT.value == "timeout"
+
+    for invalid in (0, -1, True):
+        with pytest.raises(ValueError, match="max_context_tokens"):
+            AgentRunRequest(
+                messages=messages,
+                max_context_tokens=invalid,
+            )
+
+
 def test_agent_loop_rejects_tool_outside_allowlist():
     provider = ScriptedProvider([tool_response(name="system.secret")])
     result = build_loop(provider).run(
@@ -208,3 +262,140 @@ def test_agent_loop_stops_repeated_identical_tool_calls():
     assert result.status is AgentRunStatus.STOPPED
     assert result.stop_reason is AgentStopReason.DUPLICATE_TOOL_CALL
     assert len(result.tool_executions) == 1
+
+
+def test_agent_loop_stops_initial_context_overflow_before_provider_call():
+    class OversizedSizer:
+        def estimate_messages(self, messages):
+            return 101
+
+    provider = ScriptedProvider([final_response("must not be called")])
+    result = build_loop(
+        provider,
+        context_sizer=OversizedSizer(),
+    ).run(
+        AgentRunRequest(
+            messages=(ChatMessage(role=MessageRole.USER, content="你好"),),
+            max_context_tokens=100,
+        )
+    )
+
+    assert result.status is AgentRunStatus.STOPPED
+    assert result.stop_reason is AgentStopReason.CONTEXT_BUDGET_EXCEEDED
+    assert result.iterations == 0
+    assert provider.requests == []
+
+
+def test_agent_loop_blocks_second_provider_call_after_observation_overflow():
+    class GrowingSizer:
+        def __init__(self):
+            self.estimates = iter((1, 101))
+
+        def estimate_messages(self, messages):
+            return next(self.estimates)
+
+    provider = ScriptedProvider(
+        [tool_response(), final_response("must not be called")]
+    )
+    result = build_loop(
+        provider,
+        context_sizer=GrowingSizer(),
+    ).run(
+        AgentRunRequest(
+            messages=(ChatMessage(role=MessageRole.USER, content="执行工具"),),
+            allowed_tools=("system.echo",),
+            max_context_tokens=100,
+        )
+    )
+
+    assert result.status is AgentRunStatus.STOPPED
+    assert result.stop_reason is AgentStopReason.CONTEXT_BUDGET_EXCEEDED
+    assert result.iterations == 1
+    assert len(provider.requests) == 1
+    assert len(result.tool_executions) == 1
+
+
+def test_agent_loop_passes_decreasing_total_deadline_to_provider_and_tool():
+    clock = FakeClock()
+    tool_remaining: list[float] = []
+
+    def handler(params, context):
+        tool_remaining.append(context.remaining_s())
+        clock.advance(3)
+        return {"echo": params["message"]}
+
+    tool = ToolDefinition(
+        name="system.echo",
+        version="1.0.0",
+        description="Echo with a fake-clock delay.",
+        handler=handler,
+        input_schema=ECHO_INPUT,
+        output_schema=ECHO_OUTPUT,
+        policy=ToolPolicy(timeout_s=30),
+    )
+    provider = ClockedProvider(
+        [tool_response(), final_response("done")],
+        clock=clock,
+        advances=[2, 0],
+    )
+
+    result = build_loop(
+        provider,
+        clock=clock,
+        tool_definition=tool,
+    ).run(
+        AgentRunRequest(
+            messages=(ChatMessage(role=MessageRole.USER, content="执行工具"),),
+            allowed_tools=("system.echo",),
+            timeout_s=10,
+        )
+    )
+
+    assert result.status is AgentRunStatus.COMPLETED
+    assert [request.timeout_s for request in provider.requests] == pytest.approx(
+        [10, 5]
+    )
+    assert tool_remaining == pytest.approx([8])
+
+
+def test_agent_loop_does_not_execute_tool_after_total_deadline():
+    clock = FakeClock()
+    tool_calls = 0
+
+    def handler(params, context):
+        nonlocal tool_calls
+        tool_calls += 1
+        return {"echo": params["message"]}
+
+    tool = ToolDefinition(
+        name="system.echo",
+        version="1.0.0",
+        description="A tool that must not run after the deadline.",
+        handler=handler,
+        input_schema=ECHO_INPUT,
+        output_schema=ECHO_OUTPUT,
+        policy=ToolPolicy(timeout_s=30),
+    )
+    provider = ClockedProvider(
+        [tool_response()],
+        clock=clock,
+        advances=[11],
+    )
+
+    result = build_loop(
+        provider,
+        clock=clock,
+        tool_definition=tool,
+    ).run(
+        AgentRunRequest(
+            messages=(ChatMessage(role=MessageRole.USER, content="执行工具"),),
+            allowed_tools=("system.echo",),
+            timeout_s=10,
+        )
+    )
+
+    assert result.status is AgentRunStatus.STOPPED
+    assert result.stop_reason is AgentStopReason.TIMEOUT
+    assert result.iterations == 1
+    assert tool_calls == 0
+    assert result.tool_executions == ()

@@ -1,5 +1,6 @@
 """Small, provider-neutral agent execution primitives."""
 
+from .compiler import AgentRunCompileError, AgentRunCompiler
 from .context import (
     ContextBuilderV1,
     ContextBudgetError,
@@ -21,6 +22,8 @@ from .loop import (
 
 __all__ = [
     "AgentLoop",
+    "AgentRunCompileError",
+    "AgentRunCompiler",
     "AgentRunRequest",
     "AgentRunResult",
     "AgentRunStatus",

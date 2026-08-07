@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.3 - 5D-3（next; implementation not started）
+Phase 6.4 - 5D-4（next; implementation not started）
 
 ## Phases
 
@@ -71,18 +71,20 @@ Phase 6.3 - 5D-3（next; implementation not started）
   规范输入摘要和 Catalog-backed 执行前校验。
 - `5D-2` 已完成：两个 Skill 的 allowlisted 最小上下文、信任标签、确定性
   `ContextSizer`、整段预算选择和不可信知识引用投影均已有 TDD 证据。
-- 唯一下一步是 5D-3 Skill Run Compiler & Budget Enforcement；尚未编译或执行
-  Agent 请求。
+- `5D-3` 已完成：Manifest-only `AgentRunCompiler`、完整消息估算、逐轮累计 Context
+  门禁和协作式总 deadline 均已有 TDD 证据。
+- 唯一下一步是 5D-4 Evidence-Aware Agent Draft Preparation；尚未创建 Agent 草稿
+  准备器、转换 `KnowledgeEvidence` 或接入 Harness。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-3 Skill Run Compiler & Budget Enforcement：只从已验证 Manifest 与
-`ContextBundle` 编译 `AgentRunRequest`，映射工具白名单、迭代/工具调用/超时预算，
-并在每次 Provider 调用前约束包含 Tool Observation 的累积消息大小。本检查点不执行
-真实 Agent、Provider 或 Harness，也不进入 5D-4。
+5D-4 Evidence-Aware Agent Draft Preparation：只把已编译的受限
+`AgentRunRequest` 交给 AgentLoop，通过 `knowledge.search` 准备 Coach 草稿，并把实际
+工具结果转换为现有 `KnowledgeEvidence`。本检查点不组合 Harness、不产生 terminal
+Skill Output、不调用真实 Provider，也不进入 5D-5。
 
 ## Decisions Made
 
@@ -119,6 +121,10 @@ Phase 6.3 - 5D-3（next; implementation not started）
 | 近期与单局使用不同 allowlist 投影 | Summary 允许扩展字段；整份序列化会静默扩大模型可见数据，并让单局上下文混入近期聚合与其他对局 |
 | 必需段超预算失败，可选段只整段保留或省略 | Policy、Skill 指令和核心事实不能静默截断；完整 section 选择避免半截 JSON、表格行和 citation |
 | 默认 ContextSizer 是可注入的确定性 preflight | 真实 Provider 尚未在 5D-6b 准入；当前估算保证可重复选择，不冒充厂商 tokenizer 或真实 Usage |
+| 5D-3 采用薄 `AgentRunCompiler` 并扩展现有请求/Loop | 现有 `AgentRunRequest` 已拥有大部分权限预算字段；包装或平行请求会复制控制面 |
+| Context ceiling 成为 `AgentRunRequest` 一等字段 | 只写 metadata 无法阻止第二轮 Provider 调用；Loop 必须在累计消息增长后仍能读取硬上限 |
+| 完整消息估算包含 ToolCall envelope | 大参数存在于 `tool_calls.arguments` 而非 content；只估 content 会留下可绕过的预算缺口 |
+| Manifest `timeout_s` 收紧为 cooperative total deadline | 每次外部调用只获得 remaining budget；同步函数不可硬抢占的限制保留，不伪装成强制取消 |
 
 ## Errors Encountered
 
@@ -128,7 +134,7 @@ Phase 6.3 - 5D-3（next; implementation not started）
 | 旧规划目录无 active pointer 且停在 2026-08-01 | 1 | 新建持续开发计划并写入 `.planning/.active_plan` |
 | `session-logs` 说明依赖的 `jq` 在本机不可用 | 1 | 使用 `rg` 和 PowerShell `ConvertFrom-Json` 流式读取同一原始 JSONL |
 | PowerShell 默认读取 UTF-8 中文出现乱码 | 1 | 所有中文审计统一显式使用 `Get-Content -Encoding utf8` |
-| 最终并行一致性扫描因 `rg` 无匹配返回退出码 1 | 2 | 无匹配搜索单独运行并显式输出 `NO_STALE_MATCHES`；不再与测试、编译等门禁共享失败传播 |
+| 最终并行一致性扫描因 `rg` 无匹配返回退出码 1 | 3 | 5D-3 收尾再次复发但未修改文件；无匹配搜索必须单独运行并显式输出 `NO_STALE_MATCHES`，严禁与测试、编译或治理门禁共享失败传播 |
 | 治理文件已有读取协议，但缺少机器可执行的一致性预检 | 1 | 在继续 5C-4 前增加仓库预检脚本、测试和 CI 门禁 |
 | 状态源使用 `5C-5-precondition`，活动计划 Current Phase 只写中文简称 | 1 | 在 Current Phase 保留同一机器键，预检随后通过 |
 | 治理负例测试硬编码旧检查点 `5C-4`，状态正常推进后失败 | 1 | 改为断言稳定的“Next Step 与 canonical checkpoint 不一致”语义 |

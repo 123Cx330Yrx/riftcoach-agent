@@ -236,3 +236,39 @@
 - 创建并推送 `9275d9c feat(agent): add context builder v1`；GitHub Actions run
   `31185773854` 对精确 SHA `9275d9c8d73a364bb30d6f532cdb8b1da369ccbd`
   完成且结论为 `success`。
+- 用户以“继续下一步”授权唯一检查点 5D-3；按强制恢复顺序读取状态、活动计划、
+  需求、路线、能力矩阵、ADR-0011、5D/Context 设计和相关源码，session catchup 无
+  未同步内容，治理预检通过，起始工作树干净。
+- 初始审计确认 `AgentRunRequest` 尚无 context ceiling，`AgentLoop` 尚无逐轮累积消息
+  检查，默认 sizer 也未计入 ToolCall 参数；5D-3 将先写独立设计/TDD 计划，不执行
+  Provider、ToolRuntime、AgentLoop 或 Harness。
+- 比较扩展现有请求/Loop、外层预算包装器和 metadata-only 三种方案；采用薄
+  `AgentRunCompiler` + 现有 AgentLoop guard，拒绝复制循环和假门禁。
+- 新增 5D-3 初学者设计与五任务实施计划；明确 Context integrity、Manifest-only
+  permission/budget 编译、完整消息 sizing、累计 Context 保护和 cooperative total
+  deadline，仍不进入 draft/evidence 或 Harness composition。
+- Task 1 红灯为 2 个预期失败：ContextBundle 接受伪造 messages，AgentRunRequest
+  缺少 context ceiling/停止原因。最小实现加入 canonical rendering 校验、
+  `max_context_tokens` 与 context/timeout stop reasons 后为 `24 passed`。
+- Task 2 先以缺少 `app.agent.compiler` 得到预期收集红灯；最小实现
+  `AgentRunCompiler` 后，两个真实 Skill 的 Manifest 权限/预算映射、身份漂移、Ceiling、
+  重新估算溢出和未注册工具测试为 `8 passed`，相关边界回归为 `40 passed`。
+- Task 3 先证明长短 ToolCall arguments 都被旧 sizer 估为 `13`；随后改为完整消息
+  envelope 的确定性 JSON 估算，Context/Provider 合同回归为
+  `34 passed, 17 subtests passed`。
+- Task 4 的红灯为 `5 failed, 18 passed`：Loop 尚不能注入 ContextSizer/FakeClock，
+  ToolRuntime 尚无 run remaining cap。实现逐轮 Context 门禁与协作式总 deadline 后，
+  Loop/ToolRuntime 为 `23 passed`。
+- FakeSizer 证明初始溢出时 Provider 调用为 0，Tool Observation 导致溢出时第二次
+  Provider 调用被阻止；FakeClock 证明 Provider timeout 从 10 秒递减到 5 秒，工具只
+  获得当时剩余 8 秒，deadline 过期后不执行工具。
+- 5D-3 聚焦 Compiler/Context/Loop/ToolRuntime/真实 knowledge 工具集成回归为
+  `85 passed, 17 subtests passed`；完整回归为 `308 passed, 80 subtests passed`；
+  compileall 与 `git diff --check` 通过，后者只有既有 Windows 换行提示。
+- 5D-3 本地实现与教学验收完成；唯一下一步改为 5D-4 Evidence-Aware Agent Draft
+  Preparation。尚未创建 draft preparer、转换 `KnowledgeEvidence`、调用真实 Provider、
+  组合 Harness 或产生 terminal Skill Output。
+- 5D-3 状态同步后的首次聚合检查又把“无匹配返回 1”的陈旧短语 `rg` 与治理/格式
+  门禁放进同一并行批次，导致聚合调用失败且隐藏其他输出；没有修改文件，也不是
+  代码测试失败。随后按既定规则单独运行并得到 `NO_CURRENT_STALE_MATCHES`，再独立
+  确认治理预检与 diff check 通过；复发次数已写回错误账本。

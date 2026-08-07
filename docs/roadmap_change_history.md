@@ -257,6 +257,25 @@
 - `CURRENT`：5D-2 完成；唯一下一步为 5D-3 Skill Run Compiler & Budget
   Enforcement，不得进入 5D-4。
 
+### 2026-08-07：5D-3 Skill Run Compiler & Budget Enforcement
+
+- `IMPLEMENTED`：新增薄 `AgentRunCompiler`，只从已验证 Manifest 与
+  `ContextBundle` 编译现有 `AgentRunRequest`；run/Skill/version 漂移、Context ceiling
+  提高、重新估算溢出和 Manifest 工具未注册均在 Loop 前 fail closed。
+- `IMPLEMENTED`：`ContextBundle.messages` 必须是 sections 的规范渲染；默认 sizer
+  计算 role/content、ToolCall id/name/arguments 与 Tool result metadata 的完整消息
+  envelope，大参数不能再绕过确定性 preflight。
+- `IMPLEMENTED`：AgentLoop 在每次 Provider 调用前检查累计 Context；初始越界时
+  Provider 调用为 0，Tool Observation 导致越界时不会进行第二次 Provider 调用。
+- `IMPLEMENTED`：Manifest timeout 被收紧为协作式总 deadline；Provider 获得递减
+  剩余时间，ToolRuntime 使用运行剩余与工具 policy timeout 的较小值。
+- `BOUNDARY`：该 deadline 不能硬中断任意阻塞同步函数；5D-3 没有调用真实 Provider、
+  创建 draft preparer、转换 KnowledgeEvidence、组合 Harness 或发布报告。
+- `VERIFIED`：聚焦回归 `85 passed, 17 subtests passed`；完整回归
+  `308 passed, 80 subtests passed`；compileall 与 diff check 通过。
+- `CURRENT`：5D-3 完成；唯一下一步为 5D-4 Evidence-Aware Agent Draft
+  Preparation，不得进入 5D-5。
+
 ## 当前不变的宏观路线
 
 ```text

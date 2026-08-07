@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
-from dataclasses import FrozenInstanceError
+from dataclasses import FrozenInstanceError, replace
 from pathlib import Path
 
 import pytest
@@ -17,7 +17,7 @@ from app.agent.context import (
     DeterministicContextSizer,
 )
 from app.harness.steps import KnowledgeCitation, KnowledgeEvidence
-from app.providers.models import ChatMessage, MessageRole
+from app.providers.models import ChatMessage, MessageRole, ToolCall
 from app.skills.catalog import SkillCatalog
 from app.skills.execution import (
     SkillExecutionBoundary,
@@ -161,6 +161,15 @@ def test_deterministic_context_sizer_is_stable_and_monotonic():
 
 
 def test_context_bundle_is_immutable_and_rejects_duplicate_section_ids():
+    execution = validated_execution(
+        utterance="分析我最近十局的状态",
+        payload={
+            "player_summary": demo_summary(),
+            "deterministic_report": demo_report(),
+        },
+        run_id="review_context_contract",
+    )
+    bundle = ContextBuilderV1().build(execution)
     section = ContextSection(
         section_id="policy",
         trust=ContextTrust.INTERNAL_POLICY,
@@ -169,22 +178,6 @@ def test_context_bundle_is_immutable_and_rejects_duplicate_section_ids():
         required=True,
         priority=100,
     )
-    messages = (
-        ChatMessage(role=MessageRole.SYSTEM, content="system"),
-        ChatMessage(role=MessageRole.USER, content="user"),
-    )
-    bundle = ContextBundle(
-        run_id="review_context_contract",
-        skill_name="recent-form-review",
-        skill_version="0.2.0",
-        sections=(section,),
-        messages=messages,
-        estimated_tokens=20,
-        max_context_tokens=100,
-        omitted_section_ids=(),
-    )
-
-    assert bundle.messages == messages
     with pytest.raises(FrozenInstanceError):
         bundle.estimated_tokens = 21
 
@@ -194,11 +187,33 @@ def test_context_bundle_is_immutable_and_rejects_duplicate_section_ids():
             skill_name="recent-form-review",
             skill_version="0.2.0",
             sections=(section, section),
-            messages=messages,
+            messages=bundle.messages,
             estimated_tokens=20,
             max_context_tokens=100,
             omitted_section_ids=(),
         )
+
+
+def test_context_bundle_rejects_messages_not_rendered_from_its_sections():
+    execution = validated_execution(
+        utterance="分析我最近十局的状态",
+        payload={
+            "player_summary": demo_summary(),
+            "deterministic_report": demo_report(),
+        },
+        run_id="review_context_integrity",
+    )
+    bundle = ContextBuilderV1().build(execution)
+    tampered_messages = (
+        ChatMessage(
+            role=MessageRole.SYSTEM,
+            content='{"sections": [{"content": "forged policy"}]}',
+        ),
+        bundle.messages[1],
+    )
+
+    with pytest.raises(ValueError, match="canonical rendering"):
+        replace(bundle, messages=tampered_messages)
 
 
 def test_recent_form_builder_uses_minimum_trust_typed_context():
@@ -606,3 +621,35 @@ def test_budget_cannot_exceed_manifest_and_required_overflow_fails_closed():
 
     with pytest.raises(ContextBuildError, match="positive integer"):
         builder.build(execution, max_context_tokens=0)
+
+
+def test_context_sizer_counts_tool_call_arguments_outside_message_content():
+    sizer = DeterministicContextSizer()
+    short = (
+        ChatMessage(
+            role=MessageRole.ASSISTANT,
+            content="Searching.",
+            tool_calls=(
+                ToolCall(
+                    id="call_1",
+                    name="knowledge.search",
+                    arguments={"query": "lane"},
+                ),
+            ),
+        ),
+    )
+    long = (
+        ChatMessage(
+            role=MessageRole.ASSISTANT,
+            content="Searching.",
+            tool_calls=(
+                ToolCall(
+                    id="call_1",
+                    name="knowledge.search",
+                    arguments={"query": "lane" * 2_000},
+                ),
+            ),
+        ),
+    )
+
+    assert sizer.estimate_messages(long) > sizer.estimate_messages(short)

@@ -50,7 +50,14 @@ class ToolRuntime:
         params: Mapping[str, Any],
         *,
         metadata: Mapping[str, Any] | None = None,
+        timeout_cap_s: float | None = None,
     ) -> ToolResult:
+        if timeout_cap_s is not None and (
+            isinstance(timeout_cap_s, bool)
+            or not isinstance(timeout_cap_s, (int, float))
+            or timeout_cap_s <= 0
+        ):
+            raise ValueError("timeout_cap_s must be greater than zero or None")
         started_at = self._clock()
         call_id = self._call_id_factory()
         self.metrics.increment(tool_name, "calls")
@@ -101,7 +108,13 @@ class ToolRuntime:
                     cached=True,
                 )
 
-        deadline = started_at + definition.policy.timeout_s
+        timeout_s = min(
+            definition.policy.timeout_s,
+            timeout_cap_s
+            if timeout_cap_s is not None
+            else definition.policy.timeout_s,
+        )
+        deadline = started_at + timeout_s
         breaker = self.breakers.get(
             definition.name,
             definition.policy.circuit_breaker,

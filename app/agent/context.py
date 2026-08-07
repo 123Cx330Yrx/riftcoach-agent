@@ -104,7 +104,26 @@ class DeterministicContextSizer:
         return sum(self._estimate_message(message) for message in messages)
 
     def _estimate_message(self, message: ChatMessage) -> int:
-        content = message.content or ""
+        content = json.dumps(
+            {
+                "content": message.content,
+                "name": message.name,
+                "role": message.role.value,
+                "tool_call_id": message.tool_call_id,
+                "tool_calls": [
+                    {
+                        "arguments": dict(tool_call.arguments),
+                        "id": tool_call.id,
+                        "name": tool_call.name,
+                    }
+                    for tool_call in message.tool_calls
+                ],
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            default=str,
+        )
         word_characters = sum(
             len(match.group(0))
             for match in self._ASCII_WORD_RUN.finditer(content)
@@ -841,6 +860,10 @@ class ContextBundle:
         ):
             raise ValueError(
                 "initial context messages must be one system and one user message"
+            )
+        if self.messages != _render_messages(self.sections):
+            raise ValueError(
+                "messages must be the canonical rendering of context sections"
             )
         if (
             isinstance(self.max_context_tokens, bool)

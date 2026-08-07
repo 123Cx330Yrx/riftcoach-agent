@@ -112,6 +112,33 @@ def test_success_validates_input_and_output_and_records_metrics():
     assert snapshot.failures == 0
 
 
+def test_run_timeout_cap_and_tool_policy_use_the_smaller_deadline():
+    clock = FakeClock()
+    remaining: list[float] = []
+
+    def handler(params, context):
+        remaining.append(context.remaining_s())
+        return {"echo": params["message"]}
+
+    tool = definition(handler, policy=ToolPolicy(timeout_s=4))
+    runtime = runtime_with(tool, clock=clock)
+
+    first = runtime.execute(
+        tool.name,
+        {"message": "run cap"},
+        timeout_cap_s=2,
+    )
+    second = runtime.execute(
+        tool.name,
+        {"message": "tool cap"},
+        timeout_cap_s=10,
+    )
+
+    assert first.success is True
+    assert second.success is True
+    assert remaining == [2, 4]
+
+
 def test_unknown_tool_returns_safe_failure_without_handler_attempt():
     runtime = runtime_with(None)
 
@@ -395,4 +422,3 @@ def test_metrics_returns_zero_snapshot_for_unseen_tool():
     assert snapshot.calls == 0
     assert snapshot.failures == 0
     assert snapshot.total_latency_ms == 0
-

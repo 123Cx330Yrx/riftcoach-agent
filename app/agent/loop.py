@@ -7,10 +7,11 @@ model APIs, while ToolRuntime validates and executes local tools.
 from __future__ import annotations
 
 import json
+import time
 from dataclasses import dataclass, field
 from enum import Enum
 from types import MappingProxyType
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 from app.providers.capabilities import require_provider_capabilities
 from app.providers.errors import ProviderError
@@ -29,6 +30,8 @@ from app.tools.models import ToolResult
 from app.tools.registry import ToolRegistry
 from app.tools.runtime import ToolRuntime
 
+from .context import ContextSizer, DeterministicContextSizer
+
 
 class AgentRunStatus(str, Enum):
     COMPLETED = "completed"
@@ -44,6 +47,8 @@ class AgentStopReason(str, Enum):
     TOOL_NOT_ALLOWED = "tool_not_allowed"
     PROVIDER_ERROR = "provider_error"
     INVALID_TOOL_CONFIGURATION = "invalid_tool_configuration"
+    CONTEXT_BUDGET_EXCEEDED = "context_budget_exceeded"
+    TIMEOUT = "timeout"
 
 
 @dataclass(frozen=True)
@@ -55,6 +60,7 @@ class AgentRunRequest:
     max_iterations: int = 4
     max_tool_calls: int = 8
     timeout_s: float = 30.0
+    max_context_tokens: int = 200_000
     metadata: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
@@ -76,6 +82,12 @@ class AgentRunRequest:
             or self.timeout_s <= 0
         ):
             raise ValueError("timeout_s must be greater than zero.")
+        if (
+            isinstance(self.max_context_tokens, bool)
+            or not isinstance(self.max_context_tokens, int)
+            or self.max_context_tokens <= 0
+        ):
+            raise ValueError("max_context_tokens must be a positive integer.")
         object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
 
 
@@ -111,10 +123,14 @@ class AgentLoop:
         provider: LLMProvider,
         tool_registry: ToolRegistry,
         tool_runtime: ToolRuntime,
+        context_sizer: ContextSizer | None = None,
+        clock: Callable[[], float] = time.monotonic,
     ) -> None:
         self.provider = provider
         self.tool_registry = tool_registry
         self.tool_runtime = tool_runtime
+        self._context_sizer = context_sizer or DeterministicContextSizer()
+        self._clock = clock
 
     def run(self, request: AgentRunRequest) -> AgentRunResult:
         try:
@@ -136,8 +152,37 @@ class AgentLoop:
         seen_calls: set[tuple[str, str]] = set()
         total_usage = TokenUsage()
         tool_specs = tuple(_to_tool_spec(definition) for definition in definitions.values())
+        deadline = self._clock() + request.timeout_s
 
         for iteration in range(1, request.max_iterations + 1):
+            if (
+                self._context_sizer.estimate_messages(tuple(messages))
+                > request.max_context_tokens
+            ):
+                return self._result(
+                    request,
+                    status=AgentRunStatus.STOPPED,
+                    stop_reason=AgentStopReason.CONTEXT_BUDGET_EXCEEDED,
+                    messages=messages,
+                    provider_responses=provider_responses,
+                    tool_executions=tool_executions,
+                    usage=total_usage,
+                    iterations=iteration - 1,
+                )
+
+            remaining_s = deadline - self._clock()
+            if remaining_s <= 0:
+                return self._result(
+                    request,
+                    status=AgentRunStatus.STOPPED,
+                    stop_reason=AgentStopReason.TIMEOUT,
+                    messages=messages,
+                    provider_responses=provider_responses,
+                    tool_executions=tool_executions,
+                    usage=total_usage,
+                    iterations=iteration - 1,
+                )
+
             chat_request = ChatRequest(
                 messages=tuple(messages),
                 tools=tool_specs,
@@ -146,7 +191,7 @@ class AgentLoop:
                     if tool_specs
                     else ToolChoiceMode.NONE
                 ),
-                timeout_s=request.timeout_s,
+                timeout_s=remaining_s,
                 metadata={
                     **request.metadata,
                     "agent_loop_iteration": iteration,
@@ -181,6 +226,18 @@ class AgentLoop:
                     tool_calls=response.tool_calls,
                 )
             )
+
+            if self._clock() >= deadline:
+                return self._result(
+                    request,
+                    status=AgentRunStatus.STOPPED,
+                    stop_reason=AgentStopReason.TIMEOUT,
+                    messages=messages,
+                    provider_responses=provider_responses,
+                    tool_executions=tool_executions,
+                    usage=total_usage,
+                    iterations=iteration,
+                )
 
             if not response.tool_calls:
                 return self._result(
@@ -247,6 +304,18 @@ class AgentLoop:
                 seen_calls.add(signature)
 
             for tool_call in response.tool_calls:
+                remaining_s = deadline - self._clock()
+                if remaining_s <= 0:
+                    return self._result(
+                        request,
+                        status=AgentRunStatus.STOPPED,
+                        stop_reason=AgentStopReason.TIMEOUT,
+                        messages=messages,
+                        provider_responses=provider_responses,
+                        tool_executions=tool_executions,
+                        usage=total_usage,
+                        iterations=iteration,
+                    )
                 result = self.tool_runtime.execute(
                     tool_call.name,
                     tool_call.arguments,
@@ -255,6 +324,7 @@ class AgentLoop:
                         "agent_loop_iteration": iteration,
                         "tool_call_id": tool_call.id,
                     },
+                    timeout_cap_s=remaining_s,
                 )
                 tool_executions.append(
                     ToolExecutionRecord(
@@ -272,6 +342,17 @@ class AgentLoop:
                         name=tool_call.name,
                     )
                 )
+                if self._clock() >= deadline:
+                    return self._result(
+                        request,
+                        status=AgentRunStatus.STOPPED,
+                        stop_reason=AgentStopReason.TIMEOUT,
+                        messages=messages,
+                        provider_responses=provider_responses,
+                        tool_executions=tool_executions,
+                        usage=total_usage,
+                        iterations=iteration,
+                    )
 
         return self._result(
             request,
