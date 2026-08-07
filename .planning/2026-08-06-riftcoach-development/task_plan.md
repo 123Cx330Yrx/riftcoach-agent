@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 4 - 5C-6 Model Fallback Decision（in progress）
+Phase 5 - 5C-exit-review（in progress）
 
 ## Phases
 
@@ -52,14 +52,14 @@ Phase 4 - 5C-6 Model Fallback Decision（in progress）
 
 ### Phase 4 - 5C-6 Model Fallback Decision
 
-- Status: in_progress
+- Status: complete
 - 根据真实 Bad Case 和 5C-5 证据决定暂缓还是引入模型兜底。
 - 记录收益、风险、替代方案和采用门槛。
 - 本阶段是决策门，不默认需要编写 LLM Router。
 
 ### Phase 5 - 进入 5D 前复核
 
-- Status: pending
+- Status: in_progress
 - 只有 5C-1 至 5C-6 全部完成后，才把唯一下一步改为 5D。
 - 对照路线、能力矩阵、需求账本和测试，确认没有遗漏或越级。
 
@@ -70,9 +70,9 @@ Phase 4 - 5C-6 Model Fallback Decision（in progress）
 
 ## Next Step
 
-5C-6 Model Fallback Decision：基于 holdout v1 已原样保存的设备语义假朋友 Bad Case，
-比较确定性 LoL 域信号、排除词、澄清机制与模型兜底；记录收益、成本、风险和采用
-门槛。本检查点先做决策，不默认编写 LLM Router，也不进入 5D。
+5C-exit-review：对照 5C-1 至 5C-6、ADR-0010、路线、能力矩阵、需求账本和测试，
+确认 Skill Router V1 的完成证据、已知限制和后续深化均无遗漏；只有复核通过后，
+才把唯一下一步改为 5D。
 
 ## Decisions Made
 
@@ -94,6 +94,8 @@ Phase 4 - 5C-6 Model Fallback Decision（in progress）
 | development 与 held_out 由数据角色和候选版本快照强制区分 | 防止把旧题库或新 Skill 版本静默放入错误评测，降低人工调规则造成的泄漏 |
 | development v2 以 23/23 精确匹配接受并冻结当前规则 | 没有误路由需要修改；继续调词只会增加过拟合风险，下一步应按既定门禁单次运行 holdout |
 | 5C-5 以 holdout 11/12 和原样 Bad Case 收尾 | Evaluation 的目标是获得可信证据而不是强制满分；唯一失败已分类且未用于调规则，足以进入 5C-6 方案决策 |
+| 5C V1 暂缓 LLM Router fallback | 只有一个小型合成域语义失败；立即引入模型必须复核 selected，且当前 GLM Adapter 没有端到端结构化输出，收益不足以覆盖延迟、成本和故障复杂度 |
+| 类型化入口和澄清优先于模型语义复核 | 显式任务上下文比猜测自由文本更可靠；未来只有新鲜数据出现多个独立失败族并通过新 Eval/ADR 时才重开模型方案 |
 
 ## Errors Encountered
 
@@ -118,3 +120,5 @@ Phase 4 - 5C-6 Model Fallback Decision（in progress）
 | 静态搜索把复杂正则和 PowerShell 双引号混用，导致 unopened group | 1 | 改用单引号与多个 `rg -e` 固定模式，搜索随后成功 |
 | 合并测试补丁时把 Router 测试上下文误指到 Contract 测试文件 | 1 | `apply_patch` 原子拒绝、未产生部分修改；按真实文件拆成小补丁后成功 |
 | 历史结果的 Windows CRLF 字节哈希在 Linux CI checkout 后变化 | 1 | 仅将该不可变归档标为 Git binary，保留原始字节；两个后续 Actions run 均成功 |
+| 5C-6 首次陈旧短语扫描把“不得进入 5D”和“不能声称 5C 已完成”等保护语句误报为陈旧状态 | 1 | 收窄为检查旧 checkpoint、旧唯一下一步和 5C-6 未开始/进行中等精确矛盾短语，结果为 `NO_CURRENT_STALE_MATCHES` |
+| 5C-6 首次暂存区格式检查发现 ADR-0010 文件末尾有多余空白行 | 1 | 删除尾部空行，重新暂存后再运行 cached diff check |

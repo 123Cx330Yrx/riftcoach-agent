@@ -2,7 +2,7 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5C"
-current_checkpoint: "5C-6"
+current_checkpoint: "5C-exit-review"
 status: in_progress
 blocked_before: "5D"
 ---
@@ -19,8 +19,8 @@ blocked_before: "5D"
 - 最后更新：2026-08-07
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5C Skill Router，进行中
-- 唯一下一步：5C-6 Model Fallback Decision，基于已冻结的 holdout Bad Case 比较确定性改进、澄清与模型兜底
-- 禁止越过：5C-6 完成前，不得进入 5D
+- 唯一下一步：5C-exit-review，核对 5C-1 至 5C-6、路线、能力矩阵、测试和未完成边界后再决定是否进入 5D
+- 禁止越过：5C-exit-review 完成并显式把下一步改为 5D 前，不得进入 5D
 
 ## 5C 原始子阶段账本
 
@@ -31,7 +31,7 @@ blocked_before: "5D"
 | 5C-3 Deterministic Router | 依据机器可读触发信号做可解释选择 | 已完成 | 确定性 Router、Manifest 信号、单元测试 | 进入维护 |
 | 5C-4 Rejection / Ambiguity | 不支持时拒绝；多候选时不得擅自猜测 | 已完成 | 教学验收文档、排除合同不变量、候选顺序与域外硬负例测试 | 进入维护 |
 | 5C-5 Router Evaluation | 建立正例、负例、歧义、越界和误路由评测 | 已完成 | development v2 为 23/23；independent holdout v1 单次运行后为 11/12，唯一失败已原样保存并分类 | 进入维护；holdout v1 永不用于调节当前规则 |
-| 5C-6 Model Fallback Decision | 仅在确定性路由出现真实 Bad Case 后评估模型兜底 | 未正式开始 | holdout 暴露“最近 + 表现”把键盘设备问题误选为近期复盘的真实 Bad Case | 比较补充 LoL 域信号、排除词、澄清机制和模型兜底的收益、成本与风险，形成正式采用/暂缓决策 |
+| 5C-6 Model Fallback Decision | 仅在确定性路由出现真实 Bad Case 后评估模型兜底 | 已完成 | ADR-0010 比较排除词、LoL 域信号、澄清、LLM 与 Embedding；决定 V1 暂缓模型兜底并定义重新采用门槛 | 进入维护；新鲜数据满足门槛后才能用新 ADR 重开 |
 
 ## 当前真实能力边界
 
@@ -58,8 +58,12 @@ blocked_before: "5D"
 - 唯一失败 `holdout_device_performance_false_friend` 把“分析一下我最近键盘的表现”
   误选为 `recent-form-review`；实现符合当前字面合同，产品期望拒绝，分类为确定性
   Router 的域语义局限；
-- 当前本地完整回归：`252 passed, 57 subtests passed`；本批 Skill/Router 定向测试
-  `62 passed`；compileall、治理预检和 `git diff --check` 通过。
+- 5C-6 已完成采用决策：确定性 Router V1 保持不变，不根据 holdout 增加“键盘”
+  排除词，也不引入 LLM/Embedding；优先等待类型化产品入口、会话澄清与新鲜误路由
+  数据，具体重新采用门槛见 ADR-0010；
+- 当前本地完整回归：`252 passed, 57 subtests passed`；本批 Skill/Router/Provider
+  定向测试 `80 passed, 14 subtests passed`；compileall、治理预检和
+  `git diff --check` 通过。
 
 当前不能声称：
 
@@ -67,17 +71,17 @@ blocked_before: "5D"
 - 路由对自然语言具有充分泛化能力；
 - 小型合成 holdout 已证明路由对自然语言充分泛化；
 - 已把 holdout 失败用于调节 Router 规则；
-- 已决定或实现 LLM Router fallback；
+- 已实现 LLM Router fallback 或修复设备域假朋友；
 - Router 已执行 Skill、Tool、Harness 或模型调用。
 
 ## 四条进度线
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C-1 至 5C-5，5C-6 尚待正式决策 | 5C 或阶段 5 已完成 |
-| 项目理解 | 已讲清 development/holdout 泄漏边界、单次运行规则、唯一误路由的字面匹配根因及小型合成集局限；5C-6 方案权衡仍需讲解确认 | 测试通过就等于项目所有者已理解 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B 和 5C-1 至 5C-6，当前等待 5C 退出复核 | 5C、阶段 5 或 5D 已完成 |
+| 项目理解 | 已讲清唯一误路由为何要求复核 selected、五种备选方案、当前 Provider 前置缺口及暂缓模型的重新采用门槛；仍需完成 5C 总复核 | 测试通过就等于项目所有者已理解 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | `main` 已包含 development v2 基线；本批交付新增 holdout v1 原始结果与 5C-5 收尾记录，网页产品尚未部署 | 路由评测已交付就等于已有 Web 产品或生产泛化能力 |
+| GitHub/部署 | `main` 已包含 holdout v1 原始结果；本批交付新增 ADR-0010 与 5C-6 暂缓模型决策，网页产品尚未部署 | 路由 ADR 已交付就等于已有 Web 产品或模型 Router |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -143,6 +147,10 @@ ADR-0009。
 independent holdout v1 随后只运行一次并得到 11/12。唯一失败是设备语义假朋友，
 其期望拒绝、实际选中近期复盘，结果已原样保留且不会用于调节本版本规则。
 
-下一检查点为 `5C-6 Model Fallback Decision`。它只基于现有 Bad Case 比较继续使用
-确定性边界、增加 LoL 域信号、扩展排除词、请求澄清或引入模型兜底，不默认编写
-LLM Router。5C-6 正式完成前仍不得进入 5D。
+`5C-6` 已完成：ADR-0010 决定 V1 暂缓 LLM Router fallback。单一小型合成 Bad
+Case 不足以抵消模型带来的结构化输出、延迟、成本和故障复杂度；现有 GLM Adapter
+也只声明 `text_chat`。未来先采用类型化入口和澄清，再以新鲜数据、新 holdout、
+结构化输出与质量/成本证据重开模型实验。
+
+下一检查点为 `5C-exit-review`：只核对 5C-1 至 5C-6 的合同、证据、状态和遗留
+边界，确认没有遗漏后才把唯一下一步改为 5D。本轮不进入 5D。

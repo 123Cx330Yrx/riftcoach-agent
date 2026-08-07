@@ -151,6 +151,8 @@ OP.GG MCP
 5C-3 声明式确定性路由
 5C-4 拒绝、排除否决与多候选歧义验收
 5C-5-prep-2 single-match-review 第二个真实 Skill Contract
+5C-5 双 Skill development/holdout Router Evaluation
+5C-6 Model Fallback Decision（ADR-0010 暂缓 LLM fallback）
 ```
 
 4M 当前使用 7 个小型保留案例，结果用于证明门禁机制可运行，不代表检索已经具备充分泛化能力。后续应扩充按知识类型、版本和位置分层的保留集，但不因此引入重型向量基础设施。
@@ -163,7 +165,7 @@ OP.GG MCP
 5C-3 Deterministic Router     已完成
 5C-4 Rejection / Ambiguity    已完成
 5C-5 Router Evaluation        已完成；development 23/23，holdout 11/12
-5C-6 Model Fallback Decision  未正式开始
+5C-6 Model Fallback Decision  已完成；ADR-0010 暂缓 LLM fallback
 ```
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
@@ -178,8 +180,10 @@ OP.GG MCP
 `single-match-review` 已完成，5C-5 第一批已冻结旧单 Skill 基线并建立双 Skill
 development/holdout 的角色、污染和版本快照门禁；第二批 development v2 已以
 23/23 精确匹配接受并冻结规则，第三批 holdout v1 已单次运行并以 11/12 原样收尾。
-下一步进入 5C-6 模型兜底采用决策。原 `prep-1` 与
-`prep-3` 均在写代码前取消；动态状态以
+5C-6 已基于唯一设备域 Bad Case 完成方案比较：V1 保持确定性 Router，不根据
+holdout 调词，也不立即引入模型；类型化入口和澄清优先，模型重开需满足新鲜数据、
+结构化输出与质量/成本门槛。下一步只做 5C 退出复核。原 `prep-1` 与 `prep-3`
+均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动
 路由暂不作为连续任务；它们要等 Skill 和 Agent Loop 形成真实调用场景后，按同一

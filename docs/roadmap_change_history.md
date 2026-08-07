@@ -177,6 +177,17 @@
 - `CURRENT`：5C-5 已完成。小型维护者合成 holdout 不证明生产泛化，也不单独证明
   必须采用模型；下一检查点为 5C-6 Model Fallback Decision，5D 继续被阻止。
 
+### 2026-08-07：5C-6 模型兜底采用决策
+
+- `IMPLEMENTED`：ADR-0010 比较设备排除词、强 LoL 域信号、类型化入口/澄清、
+  LLM 语义复核和 Embedding/分类器，并检查结构化输出、延迟、成本和故障边界。
+- `CURRENT`：5C V1 暂缓 LLM Router fallback，保持冻结的确定性 Router 与
+  Manifest 不变；单一小型合成失败不足以引入模型。
+- `CONDITIONAL`：只有新鲜数据出现多个独立语义失败族，新 development/holdout、
+  Provider 结构化输出、质量/成本/延迟/故障评测和 fail-closed 合同均通过后，才用
+  新 ADR 重开模型方案。
+- `CURRENT`：5C-1 至 5C-6 已分别完成；下一步只做 5C 退出复核，尚未进入 5D。
+
 ## 当前不变的宏观路线
 
 ```text

@@ -164,3 +164,23 @@
   列表、澄清和模型兜底，但本轮不预先选择方案。
 - 这是 12 条维护者合成案例，不是外部盲测或生产流量；11/12 不能证明自然语言
   充分泛化，也不能单凭一条案例证明必须引入 LLM Router。
+
+## 5C-6 Model Fallback Decision
+
+- 这次错误是 `selected`，因此“只在 rejected/ambiguous 时问模型”的常见兜底方案
+  无法捕获它。若用模型修复，必须先定义低领域证据 selected，或复核所有 selected。
+- 给排除词添加“键盘”会直接利用 holdout 调规则，并把开放世界域外概念变成无穷
+  黑名单；强制所有请求含 LoL 专属词又会误拒绝“最近状态怎么样”等合法简写。
+- 类型化产品入口能直接提供可信任务范围；当前 5P 明确的是近期复盘 API，其他
+  复盘范围和对话澄清由阶段 6 的完整入口继续承接。它们比在当前路由层增加网络
+  模型更符合产品依赖顺序。
+- 当前 `ZhipuProvider.capabilities` 只有 `text_chat=True`，结构化输出尚未端到端实现。
+  直接接 LLM Router 需要文本解析、非法输出、越界候选、429/超时和成本处理，不能
+  只因为 Provider Registry 已存在就声称前置条件齐备。
+- 决策为暂缓模型兜底，保持 `DeterministicSkillRouter` 与 Manifest 不变。设备域
+  假朋友继续作为已知限制，而不是被隐藏或伪装修复。
+- 重开门槛包括：新鲜数据中的多个独立失败族、新 development/holdout、Provider
+  结构化输出、false-selection 改善且无硬排除/歧义回退、延迟/Token/成本/故障指标，
+  以及越界或 Provider 失败时 fail closed。
+- 详细教学与非功能需求见
+  `docs/plans/2026-08-07-skill-router-model-fallback-decision.md`，最终决策见 ADR-0010。

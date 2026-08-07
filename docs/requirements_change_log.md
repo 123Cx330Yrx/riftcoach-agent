@@ -11,7 +11,7 @@
 | RQ-004 | 2026-08-01 | 生效 | 用户需要真正理解 Agent 的底层逻辑，以便面试和简历陈述 | 每个子阶段都要留下教学说明和可验证证据，避免无法解释的技术名词 |
 | RQ-005 | 2026-08-01 | 生效 | EchoMind、AGI-Saber、Sea/OpenResearch 等是选择性来源，不是必须照搬的底座 | 每项吸收必须对应 RiftCoach 的真实需求、边界和测试 |
 | RQ-006 | 2026-08-01 | 生效 | 不盲目堆叠 SDK、LangGraph、Multi-Agent、向量数据库等技术 | 先记录 Bad Case、备选方案、收益与成本，再通过 Eval 和 ADR 决定 |
-| RQ-007 | 2026-08-05 | 生效 | Skill 先建立一个真实样板，稳定后再扩展首批其他 Skill | 当前只有 `recent-form-review` 是真实业务 Skill，不用假 Skill 冒充业务完成度 |
+| RQ-007 | 2026-08-05 | 已完成，当前状态见 RQ-024 | Skill 先建立一个真实样板，稳定后再扩展首批其他 Skill | 实施顺序已完成；当前真实用户 Skill 为 `recent-form-review` 与 `single-match-review`，不用假 Skill 冒充业务完成度 |
 | RQ-008 | 2026-07-22 | 生效 | GitHub 开源和部署是横向交付检查点，不替换 0-8 主路线 | MIT、CI、README 等按成熟度维护；Web/API 在对应能力具备后上线 |
 | RQ-009 | 2026-08-06 | 生效 | 不得把多个已规划子阶段静默压缩成一个实现批次并宣称完成 | 即使代码提前覆盖后续内容，也必须回到原检查点逐项复核和确认 |
 | RQ-010 | 2026-08-06 | 生效 | 必须用仓库文件维持跨上下文连续性 | 每次接受子阶段或长期需求变化后，更新状态、活动计划、进度和冲突文档 |
@@ -30,6 +30,7 @@
 | RQ-023 | 2026-08-06 | 由 RQ-024 取代 | 首批三个真实 Skill 均保留，但用户任务与内部质量步骤必须分开调用 | 该方案在功能代码开始前经源码审计修正；事实审查已有完整 Harness Evaluator，不再重复包装为内部 Skill |
 | RQ-024 | 2026-08-06 | 生效 | Skill 数量由独立工作流价值决定，不为维持历史数字复制已有 Harness 能力 | 首批 Skill 修正为 `recent-form-review` 与 `single-match-review`；事实审查保留为强制 `EvaluatorStep`，取消未实现的 invocation mode 与 `report-fact-check` Skill；未来只有真实独立用例和 Bad Case 才重新评估内部 Skill |
 | RQ-025 | 2026-08-06 | 生效 | Router 评测必须区分历史基线、可校准 development 与规则冻结后的 independent holdout；holdout 失败不得反向调规则 | 数据集强制声明角色、污染记录、案例数量和候选 Skill 版本快照；默认 CLI 拒绝 holdout，污染后必须退休并升级版本 |
+| RQ-026 | 2026-08-07 | 生效 | 5C V1 暂缓 LLM Router fallback；一个小型合成语义 Bad Case 不足以引入模型调用 | 保留确定性 Router 与冻结规则；优先类型化入口和澄清。只有新鲜数据出现多个独立失败族、Provider 结构化输出与质量/延迟/成本/故障评测通过后，才用新 ADR 重新评估 |
 
 ## 新条目格式
 

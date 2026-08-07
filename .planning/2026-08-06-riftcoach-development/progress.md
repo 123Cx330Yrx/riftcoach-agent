@@ -143,3 +143,20 @@
 - 5C-5 完成，当前唯一下一步推进为 5C-6 Model Fallback Decision；本轮不做该决策。
 - 收尾验证：Skill/Router 定向测试 `62 passed`；完整回归
   `252 passed, 57 subtests passed`；compileall、治理预检与陈旧状态扫描通过。
+- 开始 5C-6 后复核 Router、RouterDecision、两个 Manifest、GLM Provider 能力和
+  holdout Bad Case；确认模型只处理 rejected/ambiguous 无法捕获本次 selected 错误。
+- 比较设备排除词、强 LoL 域信号、类型化入口/澄清、LLM 语义复核和 Embedding/
+  分类器五类方案，并显式检查性能、可靠性、安全、维护和成本。
+- 新增教学设计文档与 ADR-0010，决定 5C V1 暂缓 LLM Router fallback；没有修改
+  Router、Manifest、Provider 或 holdout。
+- 追加 RQ-026，记录重新采用模型必须具备新鲜失败族、新数据集、结构化输出、
+  质量/延迟/成本/故障证据和 fail-closed 边界。
+- 5C-6 完成；唯一下一步推进为 `5C-exit-review`，尚未进入 5D。
+- 提交前完整 diff review 发现 5D 重复列项，以及教学文档把 5P 现有近期 API
+  误写为近期/单局 API；已收紧为既有 5P 近期切片与阶段 6 完整入口，不新增路线范围。
+- 5C-6 收尾聚焦回归（Skill/Router/Provider）为
+  `80 passed, 14 subtests passed`；完整回归为 `252 passed, 57 subtests passed`。
+- `compileall`、`git diff --check` 和治理预检通过；收窄后的当前状态陈旧短语扫描
+  输出 `NO_CURRENT_STALE_MATCHES`。首次过宽扫描只命中正确保护语句，已记录并修正。
+- 首次 `git diff --cached --check` 发现 ADR-0010 末尾多余空白行；已删除并准备
+  重新验证，没有改变决策内容。

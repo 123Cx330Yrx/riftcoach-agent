@@ -22,13 +22,14 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 - 智谱 GLM 教练报告；
 - 最小 Provider-neutral Agent Loop；
 - `recent-form-review` 与 `single-match-review` 两个用户 Skill Contract；
-- Skill Router 的 5C-1 至 5C-5；development 为 23/23，单次 holdout 为 11/12；
+- Skill Router 的 5C-1 至 5C-6；development 为 23/23，单次 holdout 为 11/12，
+  ADR-0010 暂缓 LLM Router fallback；
 - 独立事实评测、受限修订、再评测与发布门控。
 
 当前仍未实现：
 
 - 真实 Provider Tool Calling 和经过领域评测的第二 Provider；
-- 5C-6 模型兜底采用决策与最终 Skill Router 收尾；
+- 5C 退出复核；
 - 受限 Skill Agent Loop、Context Builder V1 和统一 AgentRuntime；
 - FastAPI 会话入口；
 - 玩家长期 Memory；
@@ -56,7 +57,12 @@ RiftCoach 保持独立仓库和自主领域核心，不直接 fork 或换皮 Ech
   扩展 Manifest 调用模式；
 - 这仍是单 Runtime 的多阶段工作流，不等于 Multi-Agent。
 
+Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdout 的唯一设备域
+假朋友不足以证明 LLM fallback 的收益；ADR-0010 决定优先类型化入口与会话澄清，
+只有新鲜失败族、新数据集、结构化输出、质量/成本/故障证据齐备后才重开模型实验。
+
 原内部 Skill 提案见 ADR-0008，当前决策见 ADR-0009。
+模型路由采用决策见 ADR-0010。
 
 ## 数据职责
 
