@@ -315,6 +315,9 @@
 - `VERIFIED`：聚焦回归 `179 passed, 25 subtests passed`；完整回归
   `343 passed, 80 subtests passed`；旧 Harness CLI dry-run published，compileall、
   diff check 与治理预检通过。
+- `PUBLIC-VERIFIED`：5D-5 功能提交为 `7662dea`；GitHub Actions run
+  `31232630971` 对精确 SHA `7662dea335e28f76edb78a7c0ac3d07680412cc1`
+  完成且结论为 `success`。
 - `CURRENT`：5D-5 完成；唯一下一步为 5D-6a Structured Output Contract，不得进入
   5D-6b。
 

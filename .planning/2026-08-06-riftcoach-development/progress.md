@@ -356,3 +356,17 @@
   全部通过。
 - 首次 `git diff --cached --check` 只发现两份新增设计/实施文档尾部各一行多余空白；
   已删除尾部空白并重新暂存，未改功能代码。
+- 创建本地功能提交 `24e761c feat(agent): compose skill drafts through harness`；首次
+  push 遇到 GitHub schannel TLS 握手失败，提交仍完整保留，待按瞬时网络故障重试。
+- 第二次相同 push 仍为 schannel TLS 握手失败；停止原样重复，下一次改用命令级
+  `http.sslBackend=openssl`，不改变仓库或用户的持久配置。
+- Git smart-HTTP 经 schannel、OpenSSL、HTTP/1.1 与 TLS1.2 共五次仍在 GitHub TLS
+  握手层失败；GitHub CLI 认证和 API、443 TCP 均正常，SSH 诊断则无已授权公钥。
+- 改用 GitHub Git Database API：19 个提交文件逐一以本地 Git blob bytes 上传并核对
+  SHA，tree SHA 精确等于 `8b558dc`。首次 commit body 因 PowerShell 多行消息成为数组
+  返回 422，remote ref 未更新；改成单行后发现 API 与 CLI 只差消息尾部换行字节。
+- 在不改项目 tree 的前提下精确重建 API commit `7662dea`，先以 expected-old
+  `21ca076` 原子更新远端 main，再以 expected-old `24e761c` 同步本地 main；本地 HEAD、
+  origin/main 与远端 API 三方均为 `7662dea335e28f76edb78a7c0ac3d07680412cc1`。
+- GitHub Actions run `31232630971` 已对精确功能 SHA `7662dea` 完成，结论为
+  `success`；5D-5 的本地实现、教学证据和公开 CI 均已完成。
