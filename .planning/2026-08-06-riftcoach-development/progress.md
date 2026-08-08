@@ -402,3 +402,6 @@
 - 5D-6a 聚焦回归为 `89 passed, 40 subtests passed`；完整回归为
   `359 passed, 95 subtests passed`。compileall、diff check 和治理预检通过，当前状态只
   推进到 5D-6b；尚未调用真实 Provider、实现 Zhipu 原生 Schema 映射或选择第二厂商。
+- 5D-6a 提交 `ecb8234` 已推送到 GitHub `main`；Actions run `31255771786` 对精确
+  SHA `ecb82341467634dce865c65f886340c295b8388f` 完成且结论为 `success`。公开进度线
+  已与本地状态一致，当前唯一下一步仍为 5D-6b。
