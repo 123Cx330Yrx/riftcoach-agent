@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5D"
-current_checkpoint: "5D-6a"
+current_checkpoint: "5D-6b"
 status: pending
-blocked_before: "5D-6b"
+blocked_before: "5D-7"
 ---
 
 # RiftCoach 当前执行状态
@@ -18,11 +18,11 @@ blocked_before: "5D-6b"
 
 - 最后更新：2026-08-08
 - 主阶段：阶段 5，进行中
-- 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-5 已完成
-- 唯一下一步：5D-6a Structured Output Contract，只建立 Provider-neutral 结构化
-  响应 Schema、Pydantic 校验、有限修复和 fail-closed 边界
-- 禁止越过：5D-6a 完成前不得进入 5D-6b；5D-5 没有调用真实 Provider、实现
-  Provider 原生结构化输出、完成 Prompt E2E Evaluation 或统一 AgentRuntime
+- 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6a 已完成
+- 唯一下一步：5D-6b Real Provider Capability Gate，只实测 GLM 的结构化输出/工具
+  能力，并按同一领域任务证据决定是否接入最多一个第二 Provider 候选
+- 禁止越过：5D-6b 完成前不得实现第二 Provider、完成 Prompt E2E Evaluation、进入
+  5D-7 或统一 AgentRuntime；5D-6a 没有调用真实 Provider 或实现厂商原生 SDK 映射
 
 ## 5C 原始子阶段账本
 
@@ -45,8 +45,8 @@ blocked_before: "5D-6b"
 | 5D-3 Skill Run Compiler & Budget Enforcement | Manifest 权限/预算编译为 AgentRunRequest，并约束累积上下文 | 已完成 | 设计/TDD 文档、`AgentRunCompiler`、完整消息估算、逐轮 Context 门禁与协作式总 deadline 测试 |
 | 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 已完成 | 共享 evidence converter、`SkillAgentDraftPreparer`、两个真实 Skill + Fake Provider + 真实 `knowledge.search`，成功/拒答/去重/冲突/失败与停止边界测试 |
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
-| 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 唯一下一步 | 尚无代码或测试 |
-| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 未开始 | 尚未选择厂商或模型 |
+| 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
+| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 唯一下一步 | 尚未选择厂商或模型；不得假设现有 Zhipu Adapter 已支持该能力 |
 | 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 未开始 | 尚无新数据集或结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
@@ -139,7 +139,7 @@ blocked_before: "5D-6b"
 
 当前不能声称：
 
-- 5D-6a 结构化 Provider 输出或任何更后的 5D 功能已经实现；
+- GLM 或任何真实 Provider 已实现、实测或映射原生结构化输出；
 - 已经用真实 Provider 执行 Skill Agent，或真实模型生成的新 Coach 报告已经通过
   当前端到端领域评测；
 - 默认 ContextSizer 等于真实厂商 tokenizer 或真实 Token Usage；
@@ -157,8 +157,8 @@ blocked_before: "5D-6b"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-5，下一步为 5D-6a | 阶段 5 或整个 5D 已完成 |
-| 项目理解 | 5D-5 已讲清 Agent 草稿准备、Harness 发布权与 Artifact 驱动 terminal output 的边界 | Fake Provider 端到端通过就等于真实模型质量或结构化 Provider 输出已完成 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6a，下一步为 5D-6b | 阶段 5 或整个 5D 已完成 |
+| 项目理解 | 5D-6a 已讲清“机器控制数据的 Schema 合同”与 Markdown 报告的区别、一次修复和 fail-closed 边界 | Fake Provider 通过就等于真实模型质量或 GLM 原生结构化输出已完成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
 | GitHub/部署 | `main` 已包含 5D-5 实现提交 `7662dea`；GitHub Actions run `31232630971` 对精确 SHA `7662dea335e28f76edb78a7c0ac3d07680412cc1` 全部通过；仍没有正式网页部署 | 代码与 CI 通过就等于已有可运行 Web Agent |
 
@@ -271,6 +271,14 @@ Output 只从 terminal Manifest 与完整性校验通过的 Artifact 构造。�
 已通过 Fake Provider + 真实本地知识工具的完整组合测试。设计和 TDD 证据见
 `docs/plans/2026-08-08-skill-harness-composition-design.md` 与对应 implementation plan。
 
-唯一下一检查点为 `5D-6a Structured Output Contract`。它只负责 Provider-neutral
-结构化响应 Schema、Pydantic 校验、有限修复与 fail-closed 边界。不得提前调用真实
-Provider、决定第二厂商、完成 Prompt E2E Evaluation 或进入 5D-6b。
+`5D-6a Structured Output Contract` 已完成：`ChatRequest` 可以显式携带冻结的
+`StructuredResponseContract`，能力协商会要求 `STRUCTURED_OUTPUT`；严格 Pydantic
+Evaluation 模型同时提供 JSON Schema 和本地验证；非法 JSON、额外/缺失字段、错误嵌套
+类型、非法枚举、fence 和截断都会被拒绝。最多允许一次携带同一合同的格式修复，第二次
+失败返回安全错误；Harness 只会 deterministic fallback 或 rejected，不能发布 Agent
+草稿。`ZhipuProvider` 仍是 text-only，结构化请求会在 SDK 调用前失败。本检查点的
+Fake Provider 证据不等于真实 Provider 准入。
+
+唯一下一检查点为 `5D-6b Real Provider Capability Gate`。它才负责核验当前 GLM
+官方接口与实际结构化/Tool Calling 行为，并在同一领域评测下决定是否比较一个第二
+Provider 候选；不得提前进入 5D-7。

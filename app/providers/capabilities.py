@@ -75,6 +75,8 @@ def required_capabilities_for(
     required = {ProviderCapability.TEXT_CHAT}
     if request.tools and request.tool_choice is not ToolChoiceMode.NONE:
         required.add(ProviderCapability.TOOL_CALLING)
+    if request.response_contract is not None:
+        required.add(ProviderCapability.STRUCTURED_OUTPUT)
     return frozenset(required)
 
 

@@ -32,6 +32,7 @@ from .models import (
     ChatRequest,
     ChatResponse,
     MessageRole,
+    StructuredResponseContract,
     TokenUsage,
     ToolCall,
     ToolChoiceMode,
@@ -44,6 +45,12 @@ from .registry import (
     ProviderSelection,
 )
 from .zhipu import ZhipuProvider
+from .structured import (
+    StructuredDecodeResult,
+    StructuredRepairRequest,
+    contract_for_model,
+    decode_structured_response,
+)
 
 __all__ = [
     "ChatMessage",
@@ -67,6 +74,9 @@ __all__ = [
     "ProviderTimeoutError",
     "ProviderUnavailableError",
     "ProviderSelection",
+    "StructuredResponseContract",
+    "StructuredDecodeResult",
+    "StructuredRepairRequest",
     "TokenUsage",
     "ToolCall",
     "ToolChoiceMode",
@@ -75,6 +85,8 @@ __all__ = [
     "ZhipuSettings",
     "create_provider_registry",
     "create_zhipu_provider",
+    "contract_for_model",
+    "decode_structured_response",
     "load_provider_registry_settings",
     "load_zhipu_settings",
     "negotiate_capabilities",

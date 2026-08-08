@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.6 - 5D-6a（next; implementation not started）
+Phase 6.7 - 5D-6b（next; implementation not started）
 
 ## Phases
 
@@ -79,17 +79,19 @@ Phase 6.6 - 5D-6a（next; implementation not started）
 - `5D-5` 已完成：统一 `DraftPreparationStep`、旧顺序 Adapter、唯一 ReviewHarness
   控制流、`SkillReviewExecutor` 和 Artifact 驱动 typed terminal output 均已有 TDD
   证据；两个真实 Skill 已通过 Fake Provider + 真实本地知识工具的完整组合测试。
-- 唯一下一步是 5D-6a Structured Output Contract；尚未实现 Provider-neutral 结构化
-  响应 Schema、有限修复或真实 Provider 结构化输出。
+- `5D-6a` 已完成：`StructuredResponseContract` 贯通 ChatRequest、Capability
+  Negotiation 与 `llm.chat`；严格 Pydantic Evaluation Schema、最多一次同合同
+  repair 和 Harness fail-closed 降级均有 Fake Provider TDD 证据。当前 Zhipu Adapter
+  仍只声明 text chat，未调用真实 Provider 或实现厂商 SDK 映射。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-6a Structured Output Contract：只建立 Provider-neutral 结构化响应 Schema、
-Pydantic 校验、有限修复和 fail-closed 边界；不调用真实 Provider、不决定第二
-Provider、不完成 Prompt E2E Evaluation，也不进入 5D-6b。
+5D-6b Real Provider Capability Gate：先设计 GLM 真实准入实验、领域任务、成功/失败
+边界、成本/延迟记录和第二 Provider 决策门；不得先调用真实 Provider 或预选厂商，
+设计完成后才等待用户授权实验实现。
 
 ## Decisions Made
 
@@ -137,6 +139,11 @@ Provider、不完成 Prompt E2E Evaluation，也不进入 5D-6b。
 | AgentRunResult 保留在 SkillReviewExecutor 外层 | Harness 只消费领域中立 draft/evidence，不反向依赖 Agent 模块；Trace 持久化仍留给 5E |
 | typed output 只从 terminal Manifest 与已验证 Artifact 构造 | 模型返回和内存对象不是发布真相源；最终报告、最终 attempt 分数、证据来源与输入 commitment 均可独立审计 |
 | 5D-5 不从 `app.skills` 根包重导出 executor | 显式子模块导入保持 Agent compiler → Skill execution 的依赖方向，避免 package initializer 循环引用 |
+| 5D-6a 采用请求声明 + capability + Adapter 严格验证 | 只替换 parser 不能让 Provider 知道结构化要求；另造 Harness 调用路径又会复制控制面 |
+| Coach 报告继续使用 Markdown | 结构化输出首先保护机器消费的 Evaluation 控制数据，不为 JSON 形式牺牲报告可读性 |
+| Schema repair 最多一次且必须重新严格验证 | 修复是受限的第二次模型调用，不允许正则抽取、默认补字段或无限自愈 |
+| 5D-6a 首先接入 Evaluation 控制数据 | 评测 score/verdict/issues 会影响发布；Coach Markdown 继续使用现有质量门禁而非被强制 JSON 化 |
+| 5D-6a 不改 Zhipu SDK 映射 | 合同和本地验证可先稳定；真实厂商能力、响应格式和成本必须由 5D-6b 实测决定 |
 
 ## Errors Encountered
 
@@ -184,6 +191,11 @@ Provider、不完成 Prompt E2E Evaluation，也不进入 5D-6b。
 | 5D-5 dry-run 临时目录的 `Remove-Item -Recurse` 被终端策略拒绝 | 1 | 已先验证绝对路径位于仓库 tmp；随后用 `apply_patch` 删除本轮生成的全部文件，未改用跨 shell 删除或放宽权限 |
 | 5D-5 首次 cached diff check 发现两份新增计划文档尾部多余空白行 | 1 | 删除尾部空白行并重新暂存两份文档，再独立复跑 cached diff check |
 | 5D-5 功能提交的 Git smart-HTTP 连续遇到 TLS 握手失败/EOF | 5 | schannel、OpenSSL、HTTP/1.1 与 TLS1.2 均未降低校验且失败；改用 GitHub Git Database API，逐 blob/tree/commit SHA 校验后原子更新 main |
+| 5D-6a 恢复时把工具返回包装误当成 `.active_plan` 内容 | 1 | 只读命令未改文件；改为在同一 PowerShell 进程内读取并拼接 `.planning/<active>`，不再从工具展示字符串解析路径 |
+| 5D-6a 审计时猜测不存在的 `app/tools/contracts.py` | 1 | 只读失败且未改文件；先用 `rg --files app/tools` 获取真实路径，确认合同位于 `models.py` 与 `schema.py` |
+| 5D-6a 首个设计/状态合并补丁猜错错误账本的精确行 | 1 | `apply_patch` 原子拒绝，未创建半份设计；先独立新增设计文件，再读取计划尾部并用小补丁更新状态 |
+| 5D-6a Adapter 初稿错误地从函数注解推导 output model | 1 | 在运行测试前发现；改为显式 `EvaluationResponseModel`，保证 transport Schema 与本地验证模型可审计对应 |
+| 5D-6a Harness 失败路径测试遗漏 `CoachDraft` 导入 | 1 | 首次只覆盖 draft-preparation failure；补导入后重跑，确认真实覆盖两次非法结构化响应后的 deterministic fallback |
 | SSH 诊断在 accept-new 后返回 `Permission denied (publickey)` | 1 | 只新增 GitHub host key，未修改 remote 或上传密钥；确认现有 SSH key 未获 GitHub 授权后停止 SSH 路径 |
 | Git Database API 首个内联脚本含 PowerShell backtick，触发 JS 解析错误 | 1 | 脚本未执行、没有外部写入；改用字符串拼接构造 `HEAD:path` 后再运行 |
 | GitHub commit API 首次把 PowerShell 多行消息序列化为数组并返回 422 | 1 | blobs/tree 已通过 SHA 校验，remote ref 未更新；改用单行 subject 重做 commit 步骤 |

@@ -12,6 +12,7 @@ from app.providers.models import (
     ChatMessage,
     ChatRequest,
     MessageRole,
+    StructuredResponseContract,
     ToolChoiceMode,
     ToolSpec,
 )
@@ -29,6 +30,19 @@ def tool_spec() -> ToolSpec:
             "type": "object",
             "properties": {"puuid": {"type": "string"}},
             "required": ["puuid"],
+            "additionalProperties": False,
+        },
+    )
+
+
+def response_contract() -> StructuredResponseContract:
+    return StructuredResponseContract(
+        name="coach_evaluation",
+        version="1.0.0",
+        json_schema={
+            "type": "object",
+            "properties": {"score": {"type": "integer"}},
+            "required": ["score"],
             "additionalProperties": False,
         },
     )
@@ -96,6 +110,34 @@ class CapabilityNegotiationTests(unittest.TestCase):
             ProviderCapability.TOOL_CALLING,
             decision.required,
         )
+
+    def test_response_contract_requires_structured_output_support(self) -> None:
+        request = ChatRequest(
+            messages=user_message(),
+            response_contract=response_contract(),
+        )
+
+        decision = negotiate_capabilities(ProviderCapabilities(), request)
+
+        self.assertFalse(decision.compatible)
+        self.assertEqual(
+            frozenset({ProviderCapability.STRUCTURED_OUTPUT}),
+            decision.missing,
+        )
+
+    def test_structured_output_capability_satisfies_response_contract(self) -> None:
+        request = ChatRequest(
+            messages=user_message(),
+            response_contract=response_contract(),
+        )
+
+        decision = require_provider_capabilities(
+            provider_name="fake",
+            capabilities=ProviderCapabilities(structured_output=True),
+            request=request,
+        )
+
+        self.assertTrue(decision.compatible)
 
     def test_supported_tool_request_passes_negotiation(self) -> None:
         request = ChatRequest(

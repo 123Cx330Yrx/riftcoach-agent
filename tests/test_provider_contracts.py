@@ -15,12 +15,65 @@ from app.providers.models import (
     ChatRequest,
     ChatResponse,
     MessageRole,
+    StructuredResponseContract,
     TokenUsage,
 )
 from app.providers.protocol import LLMProvider
 
 
 class ProviderModelTests(unittest.TestCase):
+    def test_structured_response_contract_snapshots_object_schema(self) -> None:
+        schema = {
+            "type": "object",
+            "properties": {
+                "score": {"type": "integer"},
+            },
+            "required": ["score"],
+            "additionalProperties": False,
+        }
+
+        contract = StructuredResponseContract(
+            name="coach_evaluation",
+            version="1.0.0",
+            json_schema=schema,
+        )
+        schema["properties"]["score"]["type"] = "string"
+
+        self.assertEqual(
+            "integer",
+            contract.json_schema["properties"]["score"]["type"],
+        )
+        with self.assertRaises(TypeError):
+            contract.json_schema["properties"]["score"]["type"] = "number"
+
+    def test_structured_response_contract_rejects_invalid_identity_or_schema(
+        self,
+    ) -> None:
+        valid_schema = {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": False,
+        }
+        cases = (
+            {"name": " ", "version": "1.0.0", "json_schema": valid_schema},
+            {"name": "evaluation", "version": "v1", "json_schema": valid_schema},
+            {
+                "name": "evaluation",
+                "version": "1.0.0",
+                "json_schema": {"type": "array"},
+            },
+            {
+                "name": "evaluation",
+                "version": "1.0.0",
+                "json_schema": {"type": "not-a-json-schema-type"},
+            },
+        )
+
+        for kwargs in cases:
+            with self.subTest(kwargs=kwargs):
+                with self.assertRaises(ValueError):
+                    StructuredResponseContract(**kwargs)
+
     def test_chat_request_accepts_bounded_provider_neutral_fields(self) -> None:
         request = ChatRequest(
             messages=(

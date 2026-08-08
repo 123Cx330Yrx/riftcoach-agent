@@ -10,15 +10,21 @@ from app.harness.adapters import (
     ChatEvaluationAdapter,
     LocalRagAdapter,
 )
+from app.harness.models import HarnessConfig, RunStatus
+from app.harness.runtime import ReviewHarness
 from app.harness.steps import (
+    CoachDraft,
     EvaluationRequest,
     EvaluationResult,
     EvaluationVerdict,
+    DraftPreparationRequest,
+    DraftPreparationResult,
     GenerationRequest,
     KnowledgeEvidence,
     RetrievalRequest,
     RevisionRequest,
 )
+from app.harness.store import FileRunStore
 from app.providers.errors import ProviderResponseError
 from app.providers.models import ChatResponse
 from app.rag.retriever import LocalKnowledgeRetriever
@@ -149,20 +155,30 @@ class ChatCoachGeneratorTests(unittest.TestCase):
 
 
 class ChatEvaluationAdapterTests(unittest.TestCase):
-    def test_evaluator_converts_parser_output_to_step_result(self) -> None:
-        provider = RecordingProvider(["raw evaluator response"])
+    def test_evaluator_converts_strict_response_to_step_result(self) -> None:
+        provider = RecordingProvider(
+            [
+                """{
+                "score": 78,
+                "verdict": "needs_revision",
+                "issues": [{
+                    "severity": "medium",
+                    "category": "causality",
+                    "quote": "A 导致 B。",
+                    "evidence": "输入只显示相关变化。",
+                    "explanation": "因果结论没有证据。",
+                    "suggested_correction": "改为待验证假设。"
+                }],
+                "passed_checks": ["数字忠实"],
+                "summary": "需要收紧因果结论。"
+                }"""
+            ]
+        )
         adapter = ChatEvaluationAdapter(
             runtime=llm_runtime(provider),
             system_prompt="review system",
             fact_pack_builder=lambda summary: {"facts": summary["value"]},
             prompt_builder=lambda facts, report: f"{facts['facts']}::{report}",
-            response_parser=lambda content: {
-                "score": 78,
-                "verdict": "needs_revision",
-                "issues": [{"category": "causality"}],
-                "passed_checks": ["数字忠实"],
-                "summary": content,
-            },
         )
 
         result = adapter.evaluate(
@@ -176,8 +192,105 @@ class ChatEvaluationAdapterTests(unittest.TestCase):
 
         self.assertEqual(78, result.score)
         self.assertIs(EvaluationVerdict.NEEDS_REVISION, result.verdict)
-        self.assertEqual(({"category": "causality"},), result.issues)
-        self.assertEqual("raw evaluator response", result.summary)
+        self.assertEqual("causality", result.issues[0]["category"])
+        self.assertEqual("需要收紧因果结论。", result.summary)
+        self.assertIsNotNone(provider.requests[0].response_contract)
+
+    def test_evaluator_repairs_one_invalid_response_using_same_contract(self) -> None:
+        provider = RecordingProvider(
+            [
+                '{"score":"bad"}',
+                '{"score":90,"verdict":"pass","issues":[],"passed_checks":["数字忠实"],"summary":"通过。"}',
+            ]
+        )
+        adapter = ChatEvaluationAdapter(
+            runtime=llm_runtime(provider),
+            system_prompt="review system",
+            fact_pack_builder=lambda summary: summary,
+            prompt_builder=lambda facts, report: "evaluate",
+        )
+
+        result = adapter.evaluate(
+            EvaluationRequest(
+                player_summary={},
+                deterministic_report="facts",
+                knowledge=KnowledgeEvidence.empty(),
+                report="draft",
+            )
+        )
+
+        self.assertEqual(90, result.score)
+        self.assertEqual(2, len(provider.requests))
+        self.assertEqual(
+            provider.requests[0].response_contract,
+            provider.requests[1].response_contract,
+        )
+
+    def test_evaluator_stops_after_one_failed_repair(self) -> None:
+        provider = RecordingProvider(["not json", '{"score":"still-bad"}'])
+        adapter = ChatEvaluationAdapter(
+            runtime=llm_runtime(provider),
+            system_prompt="review system",
+            fact_pack_builder=lambda summary: summary,
+            prompt_builder=lambda facts, report: "evaluate",
+        )
+
+        with self.assertRaises(ProviderResponseError) as captured:
+            adapter.evaluate(
+                EvaluationRequest(
+                    player_summary={},
+                    deterministic_report="facts",
+                    knowledge=KnowledgeEvidence.empty(),
+                    report="draft",
+                )
+            )
+
+        self.assertEqual("invalid_structured_output", captured.exception.code)
+        self.assertEqual(2, len(provider.requests))
+
+    def test_harness_never_publishes_draft_after_structured_output_failure(
+        self,
+    ) -> None:
+        class FixedDraftPreparer:
+            def prepare(self, request: DraftPreparationRequest) -> DraftPreparationResult:
+                return DraftPreparationResult(
+                    draft=CoachDraft("# Agent 草稿\n\n不得发布。"),
+                    knowledge=KnowledgeEvidence.empty(),
+                )
+
+        class UnexpectedReviser:
+            def revise(self, request):
+                raise AssertionError("invalid evaluation must not revise")
+
+        provider = RecordingProvider(["not json", '{"score":"still-bad"}'])
+        evaluator = ChatEvaluationAdapter(
+            runtime=llm_runtime(provider),
+            system_prompt="review system",
+            fact_pack_builder=lambda summary: summary,
+            prompt_builder=lambda facts, report: "evaluate",
+        )
+
+        with TemporaryDirectory() as directory:
+            store = FileRunStore(Path(directory), "structured_failure")
+            harness = ReviewHarness(
+                store=store,
+                draft_preparer=FixedDraftPreparer(),
+                evaluator=evaluator,
+                reviser=UnexpectedReviser(),
+                config=HarnessConfig(allow_deterministic_fallback=True),
+            )
+            manifest = harness.run(
+                player_summary={"schema_version": "1.0"},
+                deterministic_report="# 确定性报告\n\n安全降级。",
+            )
+            final_report = (
+                store.run_directory / "output" / "final_report.md"
+            ).read_text(encoding="utf-8")
+
+        self.assertIs(RunStatus.DEGRADED, manifest.status)
+        self.assertEqual("deterministic_fallback", manifest.final_decision)
+        self.assertEqual("# 确定性报告\n\n安全降级。", final_report)
+        self.assertEqual(2, len(provider.requests))
 
 
 class ChatCoachReviserTests(unittest.TestCase):

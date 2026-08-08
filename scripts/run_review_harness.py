@@ -15,7 +15,6 @@ from app.evaluation.coach_report import (
     build_evaluation_prompt,
     build_fact_pack,
     build_revision_prompt,
-    parse_evaluation_response,
     validate_revised_report,
 )
 from app.harness.adapters import (
@@ -190,7 +189,6 @@ def main(argv: list[str] | None = None) -> int:
             system_prompt=EVALUATOR_SYSTEM_PROMPT,
             fact_pack_builder=build_fact_pack,
             prompt_builder=build_evaluation_prompt,
-            response_parser=parse_evaluation_response,
         )
         reviser = ChatCoachReviser(
             runtime=tool_runtime,

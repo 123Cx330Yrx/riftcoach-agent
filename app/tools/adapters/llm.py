@@ -4,7 +4,12 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
-from app.providers.models import ChatMessage, ChatRequest, MessageRole
+from app.providers.models import (
+    ChatMessage,
+    ChatRequest,
+    MessageRole,
+    StructuredResponseContract,
+)
 
 from ..models import (
     CircuitBreakerPolicy,
@@ -20,6 +25,17 @@ def build_llm_tools(provider: Any) -> tuple[ToolDefinition, ...]:
         params: Mapping[str, Any],
         context: ToolContext,
     ) -> Mapping[str, Any]:
+        raw_contract = params.get("response_contract")
+        response_contract = (
+            StructuredResponseContract(
+                name=raw_contract["name"],
+                version=raw_contract["version"],
+                json_schema=raw_contract["json_schema"],
+                strict=raw_contract.get("strict", True),
+            )
+            if raw_contract is not None
+            else None
+        )
         request = ChatRequest(
             messages=tuple(
                 ChatMessage(
@@ -31,6 +47,7 @@ def build_llm_tools(provider: Any) -> tuple[ToolDefinition, ...]:
             temperature=params.get("temperature", 0.0),
             max_tokens=params.get("max_tokens"),
             timeout_s=max(0.001, context.remaining_s()),
+            response_contract=response_contract,
             metadata=context.metadata,
         )
         response = provider.chat(request)
@@ -89,6 +106,25 @@ def build_llm_tools(provider: Any) -> tuple[ToolDefinition, ...]:
                     "max_tokens": {
                         "type": ["integer", "null"],
                         "minimum": 1,
+                    },
+                    "response_contract": {
+                        "type": "object",
+                        "properties": {
+                            "name": {"type": "string", "minLength": 1},
+                            "version": {
+                                "type": "string",
+                                "pattern": "^\\d+\\.\\d+\\.\\d+$",
+                            },
+                            "json_schema": {"type": "object"},
+                            "strict": {"const": True},
+                        },
+                        "required": [
+                            "name",
+                            "version",
+                            "json_schema",
+                            "strict",
+                        ],
+                        "additionalProperties": False,
                     },
                 },
                 "required": ["messages"],

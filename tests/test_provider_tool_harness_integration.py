@@ -72,7 +72,7 @@ def test_harness_adapters_use_provider_and_tool_contracts_not_sdk_shapes():
     provider = QueueProvider(
         responses=[
             "# RiftCoach 教练式复盘报告\n\n草稿",
-            '{"score": 90}',
+            '{"score":90,"verdict":"pass","issues":[],"passed_checks":["数字忠实"],"summary":"通过。"}',
             "# RiftCoach 教练式复盘报告\n\n修订稿",
         ]
     )
@@ -112,13 +112,6 @@ def test_harness_adapters_use_provider_and_tool_contracts_not_sdk_shapes():
         system_prompt="evaluator-system",
         fact_pack_builder=lambda summary: {"facts": True},
         prompt_builder=lambda facts, report: "evaluate",
-        response_parser=lambda content: {
-            "score": 90,
-            "verdict": "pass",
-            "issues": [],
-            "passed_checks": ["facts"],
-            "summary": content,
-        },
     )
     evaluation = evaluator.evaluate(
         EvaluationRequest(
@@ -161,4 +154,3 @@ def test_harness_adapters_use_provider_and_tool_contracts_not_sdk_shapes():
     )
     assert ".choices" not in adapter_source
     assert "chat.completions" not in adapter_source
-

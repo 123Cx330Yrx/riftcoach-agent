@@ -29,7 +29,7 @@
 | A07 | Skill Contract | `recent-form-review` 与 `single-match-review` 均有 Manifest、SKILL.md、Pydantic I/O、工具白名单和预算 | 阶段 5B 基础 + 5C-5 前第二个真实合同 | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill；真实内部 Skill 出现后才设计调用模式 | 坏 Manifest、Schema、权限漂移、预算和发布边界测试 | 已完成 |
 | A08 | Skill Router | 5C-1 至 5C-6 与退出复核均完成；development 23/23、holdout 11/12；selected 决策锁定 Skill name/version；ADR-0010 暂缓 LLM fallback | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试、退出复核和 ADR | 已完成 |
 | A09 | Prompt/Context Engineering | Harness Prompt V0、SKILL.md 指令；5D-2 已实现 trust-typed Context Builder，5D-3 已实现完整累计消息估算与逐轮 Context 门禁 | 阶段 5D-5E | 5E 加 Prompt 版本/Trace，阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、回归和消融测试 | 部分完成 |
-| A10 | 结构化模型输出 | 内部 Pydantic/Dataclass 契约已有，真实 Provider 输出未统一 | 阶段 5D | 第二 Provider 在真实 Skill 场景复验 | 合法、缺字段、额外字段、截断、非 JSON 和修复上限测试 | 需显式补齐 |
+| A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral `StructuredResponseContract`、严格 Pydantic Evaluation 模型、一次 repair 和 fail-closed；真实 Provider 输出尚未映射或实测 | 阶段 5D | 5D-6b 实测 GLM，并仅在同任务证据充分时比较一个候选 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移和修复上限测试 | 部分完成 |
 | A11 | AgentRuntime V1 | 5D-1/2 已建立执行与 Context 边界，5D-3 已编译 Manifest 权限/预算并加入有界停止，5D-4 已产生可审计 draft/evidence，5D-5 已通过唯一 ReviewHarness 组合为 typed terminal output | 阶段 5D-5E | 5D-6a/6b/7 补结构化输出、真实 Provider 与领域评测；5E 统一 run/stream/event/trace/usage；阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 部分完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有，任务级选择未实现 | 阶段 5F 或真实业务触发点 | 按质量、能力、成本选择，不按厂商数量堆叠 | 同一评测集、故障降级、成本和延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
@@ -169,8 +169,13 @@ commitment 构造，并再次通过 Skill 声明的 Pydantic Output Model。
 
 因此 A09、A11、Q03 与 Q07 继续是部分完成；A10、Q01 的关键真实场景仍未验收。
 Provider-neutral 结构化响应、真实 Provider Tool Calling 和 Prompt E2E Evaluation
-仍没有功能代码或新评测结果。
+5D-6a 已补齐 provider-neutral 结构化响应合同：`ChatRequest` 声明冻结 JSON Schema，
+Capability Negotiation 因此要求 `STRUCTURED_OUTPUT`；Evaluation Adapter 用同一
+Pydantic 模型生成 Schema 并严格验证结果，非 JSON、fence、截断和 Schema 错误最多
+修复一次，第二次失败交回 Harness 降级/拒绝。当前 Zhipu Adapter 仍 text-only，尚未有
+真实 Provider SDK 映射或实测结果。
 统一 `run/stream/event/trace/usage` 表面继续属于 5E。
 
-唯一下一步为 5D-6a：建立 Provider-neutral 结构化响应 Schema、Pydantic 校验、
-有限修复与 fail-closed 边界。不得提前调用真实 Provider、决定第二厂商或进入 5D-6b。
+唯一下一步为 5D-6b：实测 GLM 的结构化输出/工具能力，并按同一领域任务证据决定是否
+比较一个第二 Provider 候选。不得提前进入 5D-7 或把 Fake Provider 合同测试称为真实
+Provider 准入。

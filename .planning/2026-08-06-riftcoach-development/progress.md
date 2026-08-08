@@ -370,3 +370,35 @@
   origin/main 与远端 API 三方均为 `7662dea335e28f76edb78a7c0ac3d07680412cc1`。
 - GitHub Actions run `31232630971` 已对精确功能 SHA `7662dea` 完成，结论为
   `success`；5D-5 的本地实现、教学证据和公开 CI 均已完成。
+- 5D-5 文档收尾提交 `3fc1e05` 已与 `origin/main` 同步；公开 Actions run
+  `31234711309` 对同一 SHA 成功，起始工作树干净。
+- 用户以“继续下一步”授权唯一检查点 5D-6a；按强制恢复顺序读取 canonical state、
+  活动计划、需求/路线/能力矩阵、ADR-0011、Provider/Tool/Harness/Evaluation 源码和测试，
+  治理预检通过，HEAD 与 origin/main 均为 `3fc1e05`。
+- 恢复时一次把工具返回包装误当 `.active_plan` 内容，一次猜测不存在的
+  `app/tools/contracts.py`；两次均为只读失败且未改文件，已按不同方法恢复并写入错误账本。
+- 比较“只换 Pydantic parser”“Harness 内另建结构化调用路径”和“现有 Provider/Tool
+  请求合同贯通”三种方案，采用第三种：请求声明 Schema、能力协商、Tool Adapter 传递、
+  Evaluation Adapter 严格验证与最多一次修复。
+- 新增 5D-6a 初学者设计和 TDD 实施计划；当前只把检查点标记为进行中，功能代码尚未
+  开始，真实 GLM、第二 Provider、Prompt E2E 和 5D-6b 继续被阻止。
+- Task 1 先为 `StructuredResponseContract` 与 capability 需求写红灯；缺少合同类型时
+  Provider 测试收集失败。实现后 Schema 在 Draft 2020-12 校验后递归冻结，结构化请求
+  会要求 `STRUCTURED_OUTPUT`，Provider 定向回归为 `21 passed, 15 subtests passed`。
+- Task 2 先以缺少 `app.providers.structured` 得到预期红灯；新增严格 Pydantic decoder、
+  合同/模型一致性校验、截断拒绝与一次 repair callback 后为
+  `27 passed, 22 subtests passed`。错误不会包含原始模型输出。
+- Task 3 先证明 `llm.chat` 忽略 response contract；扩展 Tool Schema/Handler 后，合同
+  进入 `ChatRequest`。当前 text-only `ZhipuProvider` 对结构化请求在 SDK 调用前拒绝，
+  三个聚焦测试通过。
+- Task 4 用 `EvaluationResponseModel`/`EvaluationIssueModel` 统一 Prompt Schema 和严格
+  parser。fenced JSON 不再走宽容抽取，而是按 5D-6a 的一次 repair 处理；评测合同与
+  decoder 回归为 `12 passed, 11 subtests passed`。
+- Task 5 替换 `ChatEvaluationAdapter` 的任意 dict parser：初始评测和最多一次 repair
+  都携带同一 contract，完整 `ChatResponse` 保留 finish reason 供截断判断。适配器与
+  Provider/Tool 集成回归为 `11 passed`。
+- Harness failure 测试首次漏导入 `CoachDraft`，只覆盖到草稿准备降级；修正 fixture 后，
+  确认两次非法 JSON 触发 `invalid_structured_output`，Harness 只持久化确定性报告。
+- 5D-6a 聚焦回归为 `89 passed, 40 subtests passed`；完整回归为
+  `359 passed, 95 subtests passed`。compileall、diff check 和治理预检通过，当前状态只
+  推进到 5D-6b；尚未调用真实 Provider、实现 Zhipu 原生 Schema 映射或选择第二厂商。

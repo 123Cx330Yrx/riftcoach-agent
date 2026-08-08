@@ -491,3 +491,46 @@
   AgentRunCompiler, AgentLoop, real local `knowledge.search`, ReviewHarness and their declared
   output model. The Fake Provider's invented `ghost-only.md` remains in its untrusted draft but does
   not enter persisted evidence source IDs.
+
+## 2026-08-08 5D-6a initial structured-output audit
+
+- `ProviderCapability.STRUCTURED_OUTPUT` already exists, but `ChatRequest` cannot declare a response
+  contract and `required_capabilities_for()` never requires that capability. The flag is currently
+  descriptive only, not an enforced request boundary.
+- `ChatEvaluationAdapter` receives arbitrary parser output as a dict. The production parser checks
+  top-level JSON, score, verdict and the existence of an issues list, but does not forbid unknown
+  fields or validate the nested issue contract completely.
+- The Coach report should remain Markdown. The first high-risk structured consumer is evaluator
+  control data because its score, verdict and issues influence revision and publication.
+- Only replacing the parser with Pydantic would leave Provider capability negotiation inactive.
+  A second direct Provider loop inside Harness would bypass the existing Tool Runtime reliability
+  path. The selected design passes one response contract through the current `llm.chat` adapter and
+  validates it at the domain Adapter boundary.
+- Repair must be a new bounded model call using the same response contract, not local regex
+  extraction or default insertion. The original and repair response pass through the same strict
+  decoder; a second failure becomes a sanitized `ProviderResponseError`.
+- Current `ZhipuProvider` deliberately remains text-only in 5D-6a. A structured request must fail
+  capability negotiation before SDK I/O until 5D-6b verifies and implements the real mapping.
+
+## 2026-08-08 5D-6a implementation findings
+
+- `StructuredResponseContract` validates a Draft 2020-12 JSON object Schema before recursively
+  freezing it. `schema_dict()` returns a defensive transport copy, so a caller cannot mutate the
+  schema after capability negotiation or alter a nested field through the original mapping.
+- `ChatRequest.response_contract` is optional. Its presence adds only `STRUCTURED_OUTPUT` to the
+  existing required capability set; ordinary text and Tool Calling behavior remains unchanged.
+- The strict decoder checks the transport Schema against the exact Pydantic model schema before it
+  accepts a response. It rejects a model whose config does not forbid extra fields, response fences,
+  non-JSON text, incomplete finish reasons and all Pydantic validation errors without retaining raw
+  model content in the surfaced Provider error.
+- A repair callback receives the same immutable contract and may run once. The repaired response
+  passes through the exact same decoder. Repair does not extract JSON locally, insert defaults or
+  retry recursively.
+- The LLM Tool Adapter only transports the contract and returns the existing normalized response
+  envelope. Evaluation-specific Pydantic validation stays in `ChatEvaluationAdapter`, preserving
+  Provider/Tool/Harness responsibility boundaries.
+- `ChatEvaluationAdapter` now uses `EvaluationResponseModel` for both prompt Schema and response
+  validation. When two invalid responses occur, `ReviewHarness` persists only the deterministic
+  fallback and does not publish the Agent draft.
+- Full local regression after implementation is `359 passed, 95 subtests passed`. This is Fake
+  Provider evidence only; the text-only Zhipu Adapter rejects structured requests before SDK I/O.

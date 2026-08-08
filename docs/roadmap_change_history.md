@@ -321,6 +321,24 @@
 - `CURRENT`：5D-5 完成；唯一下一步为 5D-6a Structured Output Contract，不得进入
   5D-6b。
 
+### 2026-08-08：5D-6a Structured Output Contract
+
+- `IMPLEMENTED`：新增不可变、Provider-neutral `StructuredResponseContract`；结构化
+  请求会使 Capability Negotiation 明确要求 `STRUCTURED_OUTPUT`，普通文本和 Tool
+  Calling 请求保持原行为。
+- `IMPLEMENTED`：新增严格 Pydantic Evaluation 模型，作为 Prompt Schema、transport
+  Schema 和本地验证的共同来源；非法 JSON、fence、缺/多字段、嵌套类型错误、非法枚举
+  与截断都会 fail closed。
+- `IMPLEMENTED`：一次格式 repair 使用与首次调用相同的合同，修复结果必须重新严格
+  验证；第二次失败返回安全错误。Harness 集成测试确认此时只发布确定性 fallback，
+  不会发布 Agent 草稿。
+- `CURRENT`：Zhipu Adapter 仍只声明 text chat，结构化请求在 SDK I/O 前被拒绝；Fake
+  Provider 合同测试不是 GLM 原生结构化输出或真实 Tool Calling 的证据。
+- `VERIFIED`：聚焦回归 `89 passed, 40 subtests passed`；完整回归
+  `359 passed, 95 subtests passed`；compileall、diff check 与治理预检通过。
+- `CURRENT`：5D-6a 完成；唯一下一步为 5D-6b Real Provider Capability Gate。该检查点
+  先设计真实 GLM 准入实验和第二 Provider 决策门，不得直接进入 5D-7。
+
 ## 当前不变的宏观路线
 
 ```text

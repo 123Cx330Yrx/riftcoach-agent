@@ -13,7 +13,6 @@ from app.artifacts import coach_report_path, evaluation_path
 from app.evaluation.coach_report import (
     build_evaluation_prompt,
     build_fact_pack,
-    parse_evaluation_response,
 )
 from app.harness.adapters import ChatEvaluationAdapter
 from app.harness.steps import EvaluationRequest, KnowledgeEvidence
@@ -77,7 +76,6 @@ def main():
         system_prompt=EVALUATOR_SYSTEM_PROMPT,
         fact_pack_builder=build_fact_pack,
         prompt_builder=build_evaluation_prompt,
-        response_parser=parse_evaluation_response,
     )
     result = adapter.evaluate(
         EvaluationRequest(

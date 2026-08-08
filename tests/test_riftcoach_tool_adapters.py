@@ -272,6 +272,36 @@ def test_llm_adapter_maps_messages_and_uses_context_budget():
     }
 
 
+def test_llm_adapter_passes_structured_response_contract() -> None:
+    provider = FakeProvider()
+    tool = build_llm_tools(provider)[0]
+    schema = {
+        "type": "object",
+        "properties": {"score": {"type": "integer"}},
+        "required": ["score"],
+        "additionalProperties": False,
+    }
+
+    tool.handler(
+        {
+            "messages": [{"role": "user", "content": "返回评测 JSON。"}],
+            "response_contract": {
+                "name": "coach_evaluation",
+                "version": "1.0.0",
+                "json_schema": schema,
+                "strict": True,
+            },
+        },
+        context(),
+    )
+
+    request = provider.requests[0]
+    assert request.response_contract is not None
+    assert request.response_contract.name == "coach_evaluation"
+    assert request.response_contract.version == "1.0.0"
+    assert request.response_contract.schema_dict() == schema
+
+
 def test_all_adapters_register_and_execute_through_runtime():
     registry = ToolRegistry()
     provider = FakeProvider()

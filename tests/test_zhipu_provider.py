@@ -22,6 +22,7 @@ from app.providers.models import (
     ChatMessage,
     ChatRequest,
     MessageRole,
+    StructuredResponseContract,
     ToolSpec,
 )
 from app.providers.zhipu import ZhipuProvider
@@ -164,6 +165,34 @@ class ZhipuProviderMappingTests(unittest.TestCase):
 
         self.assertEqual(
             ("tool_calling",),
+            captured.exception.missing_capabilities,
+        )
+        self.assertEqual([], client.completions.calls)
+
+    def test_rejects_structured_request_before_calling_sdk_until_mapping_exists(
+        self,
+    ) -> None:
+        client = FakeClient(sdk_response())
+        provider = ZhipuProvider(client=client, model="glm-test")
+        request = ChatRequest(
+            messages=(ChatMessage(MessageRole.USER, "返回评测 JSON。"),),
+            response_contract=StructuredResponseContract(
+                name="coach_evaluation",
+                version="1.0.0",
+                json_schema={
+                    "type": "object",
+                    "properties": {"score": {"type": "integer"}},
+                    "required": ["score"],
+                    "additionalProperties": False,
+                },
+            ),
+        )
+
+        with self.assertRaises(ProviderCapabilityError) as captured:
+            provider.chat(request)
+
+        self.assertEqual(
+            ("structured_output",),
             captured.exception.missing_capabilities,
         )
         self.assertEqual([], client.completions.calls)

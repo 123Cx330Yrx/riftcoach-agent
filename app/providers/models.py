@@ -1,8 +1,36 @@
 from __future__ import annotations
 
+import copy
+import re
 from dataclasses import dataclass, field
 from enum import Enum
+from types import MappingProxyType
 from typing import Any, Mapping
+
+from jsonschema import Draft202012Validator
+from jsonschema.exceptions import SchemaError
+
+
+_CONTRACT_NAME_PATTERN = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]{0,127}$")
+_SEMANTIC_VERSION_PATTERN = re.compile(r"^\d+\.\d+\.\d+$")
+
+
+def _freeze_json(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return MappingProxyType(
+            {str(key): _freeze_json(item) for key, item in value.items()}
+        )
+    if isinstance(value, list):
+        return tuple(_freeze_json(item) for item in value)
+    return value
+
+
+def _thaw_json(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {str(key): _thaw_json(item) for key, item in value.items()}
+    if isinstance(value, tuple):
+        return [_thaw_json(item) for item in value]
+    return copy.deepcopy(value)
 
 
 class MessageRole(str, Enum):
@@ -18,6 +46,45 @@ class ToolChoiceMode(str, Enum):
     AUTO = "auto"
     NONE = "none"
     REQUIRED = "required"
+
+
+@dataclass(frozen=True)
+class StructuredResponseContract:
+    """One provider-neutral JSON object contract for a model response."""
+
+    name: str
+    version: str
+    json_schema: Mapping[str, Any]
+    strict: bool = True
+
+    def __post_init__(self) -> None:
+        name = self.name.strip()
+        version = self.version.strip()
+        if not _CONTRACT_NAME_PATTERN.fullmatch(name):
+            raise ValueError("response contract name is invalid.")
+        if not _SEMANTIC_VERSION_PATTERN.fullmatch(version):
+            raise ValueError("response contract version must use MAJOR.MINOR.PATCH.")
+        if not isinstance(self.json_schema, Mapping):
+            raise ValueError("response contract json_schema must be a mapping.")
+
+        schema = copy.deepcopy(dict(self.json_schema))
+        if schema.get("type") != "object":
+            raise ValueError("response contract must describe a JSON object.")
+        try:
+            Draft202012Validator.check_schema(schema)
+        except SchemaError as exc:
+            raise ValueError("response contract json_schema is invalid.") from exc
+        if self.strict is not True:
+            raise ValueError("response contract strict mode must be enabled.")
+
+        object.__setattr__(self, "name", name)
+        object.__setattr__(self, "version", version)
+        object.__setattr__(self, "json_schema", _freeze_json(schema))
+
+    def schema_dict(self) -> dict[str, Any]:
+        """Return a mutable transport copy without exposing internal state."""
+
+        return _thaw_json(self.json_schema)
 
 
 @dataclass(frozen=True)
@@ -109,6 +176,7 @@ class ChatRequest:
     temperature: float = 0.0
     max_tokens: int | None = None
     timeout_s: float = 30.0
+    response_contract: StructuredResponseContract | None = None
     metadata: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
@@ -142,6 +210,13 @@ class ChatRequest:
             or self.timeout_s <= 0
         ):
             raise ValueError("timeout_s must be greater than zero.")
+        if self.response_contract is not None and not isinstance(
+            self.response_contract,
+            StructuredResponseContract,
+        ):
+            raise ValueError(
+                "response_contract must be StructuredResponseContract or None."
+            )
 
 
 @dataclass(frozen=True)

@@ -34,6 +34,8 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
   `KnowledgeEvidence`，并把 Agent 最终文本保留为尚未发布的 `CoachDraft`；
 - 5D-5 Harness Composition & Typed Terminal Output：统一 `DraftPreparationStep`、旧
   顺序 Adapter、唯一 ReviewHarness 控制流，以及由终态 Artifact 构造的 typed Output；
+- 5D-6a Structured Output Contract：请求声明 Provider-neutral JSON Schema，严格
+  Pydantic Evaluation 验证、最多一次同合同 repair，以及解析失败的 fail-closed 降级边界；
 - 独立事实评测、受限修订、再评测与发布门控。
 
 当前仍未实现：
@@ -101,8 +103,10 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - Context Builder 把内部策略、Skill 指令、确定性事实、用户文本、RAG 和 Tool
   Observation 分层，权限永远不从不可信文本获得；
 - 结构化模型输出先服务机器消费的 EvaluationResult，Coach 报告仍为 Markdown；
+- 结构化请求必须经过 capability negotiation；当前 Zhipu text-only Adapter 会在 SDK
+  调用前拒绝，不能把 Fake Provider 成功说成真实厂商已支持；
 - 真实 Provider 与第二 Provider 选择必须等 5D-6b 用同一领域任务评测，不提前锁定；
-- 该方案由 ADR-0011 接受；当前只实现到 5D-5，不等于整个 5D、LangGraph 或
+- 该方案由 ADR-0011 接受；当前只实现到 5D-6a，不等于整个 5D、LangGraph 或
   Multi-Agent 已实现。
 
 ## 数据职责

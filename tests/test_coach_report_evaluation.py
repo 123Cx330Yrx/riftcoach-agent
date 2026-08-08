@@ -1,8 +1,11 @@
 import unittest
 
+from pydantic import ValidationError
+
 from app.evaluation.coach_report import (
     build_fact_pack,
     build_revision_prompt,
+    EvaluationResponseModel,
     parse_evaluation_response,
     validate_revised_report,
 )
@@ -33,16 +36,30 @@ class CoachReportEvaluationTests(unittest.TestCase):
         self.assertEqual(498, facts["matches"][0]["damage_per_min"])
 
     def test_parses_valid_evaluation(self):
-        content = """```json
-        {"score": 85, "verdict": "needs_revision", "issues": [], "passed_checks": [], "summary": "ok"}
-        ```"""
+        content = '{"score":85,"verdict":"needs_revision","issues":[],"passed_checks":[],"summary":"ok"}'
         result = parse_evaluation_response(content)
         self.assertEqual(85, result["score"])
 
-    def test_rejects_invalid_score(self):
-        with self.assertRaises(ValueError):
+    def test_strict_evaluation_model_rejects_invalid_or_unknown_fields(self):
+        invalid_contents = (
+            '{"score":101,"verdict":"pass","issues":[],"passed_checks":[],"summary":"ok"}',
+            '{"score":"85","verdict":"pass","issues":[],"passed_checks":[],"summary":"ok"}',
+            '{"score":85,"verdict":"pass","issues":[],"passed_checks":[],"summary":"ok","extra":true}',
+            '{"score":85,"verdict":"pass","issues":[{"severity":"high","category":"fact_error","quote":"x","evidence":"y","explanation":"z","suggested_correction":"q","extra":true}],"passed_checks":[],"summary":"ok"}',
+        )
+
+        for content in invalid_contents:
+            with self.subTest(content=content):
+                with self.assertRaises(ValidationError):
+                    EvaluationResponseModel.model_validate_json(
+                        content,
+                        strict=True,
+                    )
+
+    def test_compatibility_parser_uses_the_same_strict_model(self):
+        with self.assertRaises(ValidationError):
             parse_evaluation_response(
-                '{"score": 101, "verdict": "pass", "issues": []}'
+                '```json\n{"score":85,"verdict":"pass","issues":[],"passed_checks":[],"summary":"ok"}\n```'
             )
 
     def test_revision_prompt_contains_only_structured_issues_and_report(self):

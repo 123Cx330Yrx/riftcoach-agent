@@ -173,6 +173,7 @@ OP.GG MCP
 5D-3 Run Compiler & Budgets   已完成；Manifest-only 编译、累计 Context 与总 deadline 已加固
 5D-4 Agent Draft & Evidence   已完成；实际知识工具记录已转换为未发布草稿与可审计证据
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
+5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 ```
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
@@ -203,8 +204,10 @@ Provider/Tool 共享递减的协作式总 deadline。5D-4 已让两个真实 Ski
 `KnowledgeEvidence`；最终模型文本仍只是未发布 `CoachDraft`。5D-5 已增加统一
 `DraftPreparationStep` 与旧顺序 Adapter，让 Agent draft/evidence 进入现有唯一
 ReviewHarness；`SkillReviewExecutor` 从 Manifest 映射质量门禁，terminal Skill Output
-只从完整性校验通过的最终 Artifact 构造。当前唯一下一步为 5D-6a，只建立
-Provider-neutral 结构化输出合同，尚未调用真实 Provider 或完成 Prompt E2E Evaluation。
+只从完整性校验通过的最终 Artifact 构造。5D-6a 已建立 Provider-neutral 结构化输出
+合同：请求声明 Schema、能力协商要求 structured output、严格 Pydantic Evaluation 验证、
+最多一次同合同 repair 和 fail-closed Harness 降级/拒绝。尚未调用真实 Provider 或完成
+Prompt E2E Evaluation；唯一下一步为 5D-6b GLM 实测准入，尚未选择第二 Provider。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动
