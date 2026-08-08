@@ -444,3 +444,50 @@
 - Runtime-level K1..Kn IDs are assigned after the searches complete. 5D-4 does not rewrite the
   model draft to invent citation coverage; Harness unknown-citation checks and domain citation
   evaluation remain 5D-5/5D-7 responsibilities.
+
+## 2026-08-08 5D-5 initial composition audit
+
+- `ReviewHarness` still owns separate `RetrieverStep` and `GeneratorStep` dependencies. The safe
+  composition seam is one `DraftPreparationStep` returning `CoachDraft + KnowledgeEvidence`;
+  a sequential adapter can preserve the legacy path without creating `run_prepared()` or a second
+  quality-control flow.
+- `SkillAgentDraftPreparer` already returns the exact draft/evidence pair needed by that seam and
+  separately preserves `AgentRunResult`. The Harness should consume only the domain-neutral pair;
+  the outer Skill executor should retain the Agent run so `app.harness` does not depend on
+  `app.agent`.
+- Skill terminal output must be rebuilt from the terminal manifest and integrity-checked artifacts:
+  FINAL_REPORT for report text, the evaluation artifact matching the final attempt for score, and
+  RETRIEVAL_EVIDENCE for source IDs. In-memory Provider text or pre-persistence evidence is not a
+  terminal truth source.
+- The two real manifests require a quality gate with minimum score 85 and deterministic fallback.
+  5D-5 should map these values directly into `HarnessConfig`; `max_revisions` remains the existing
+  bounded Harness policy because the Skill Manifest has no such field.
+- `SkillInputArtifactBinding` already commits kind, schema version and SHA-256 using the same byte
+  encoders as `ReviewHarness`. The composition layer must verify the actual stored input records and
+  bytes against those commitments before returning a typed output.
+- A final evaluation is identified by `evaluation_attempt_{manifest.attempt_id}.json`; this avoids
+  accidentally returning the initial failed score after a successful revision. If no valid
+  evaluation was persisted, the typed output score is `None`.
+- Published output has no warning. Degraded/rejected outputs derive stable warning codes from the
+  terminal decision and sanitized terminal reason, never from raw exceptions, Provider output or
+  retrieved document text.
+
+## 2026-08-08 5D-5 composition implementation findings
+
+- The Harness seam is small enough to remain provider-neutral: `DraftPreparationResult` contains
+  only `CoachDraft + KnowledgeEvidence`. The bound Skill adapter retains `AgentRunResult` outside
+  Harness, so the quality package does not import Agent orchestration details.
+- Re-exporting `review_executor` from `app.skills.__init__` creates a real circular dependency:
+  Agent compiler imports `app.skills.execution`, while the package initializer would import the
+  review executor back into partially initialized Agent modules. The executor therefore remains an
+  explicit submodule import; this preserves the intended dependency direction instead of hiding the
+  cycle with delayed imports.
+- A score of 84 with verdict PASS still degrades under the real Skill minimum of 85. This proves
+  publication is the Harness/Manifest decision, not the evaluator verdict alone.
+- An Agent preparation exception is caught inside the Harness preparation step and becomes a safe
+  `draft_preparation_failed` terminal reason. No evaluator runs, no draft is exposed, and the
+  Manifest alone decides deterministic fallback versus rejection.
+- Both real Skill identities now traverse Catalog, Router, ExecutionBoundary, ContextBuilder,
+  AgentRunCompiler, AgentLoop, real local `knowledge.search`, ReviewHarness and their declared
+  output model. The Fake Provider's invented `ghost-only.md` remains in its untrusted draft but does
+  not enter persisted evidence source IDs.

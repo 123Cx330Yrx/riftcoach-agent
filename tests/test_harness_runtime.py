@@ -3,6 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from app.harness.adapters import SequentialDraftPreparer
 from app.harness.models import ArtifactKind, HarnessConfig, RunStatus
 from app.harness.runtime import ReviewHarness
 from app.harness.steps import (
@@ -130,6 +131,11 @@ class OverreachingReviser:
         raise ValueError("revision changed content outside reported issues")
 
 
+class MalformedDraftPreparer:
+    def prepare(self, request):
+        return {"draft": "not-a-contract"}
+
+
 class ReviewHarnessPassingPathTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary_directory = tempfile.TemporaryDirectory()
@@ -143,8 +149,10 @@ class ReviewHarnessPassingPathTests(unittest.TestCase):
         self.reviser = UnexpectedReviser()
         self.harness = ReviewHarness(
             store=self.store,
-            retriever=self.retriever,
-            generator=self.generator,
+            draft_preparer=SequentialDraftPreparer(
+                retriever=self.retriever,
+                generator=self.generator,
+            ),
             evaluator=self.evaluator,
             reviser=self.reviser,
             config=HarnessConfig(publish_score_threshold=85),
@@ -359,6 +367,21 @@ class ReviewHarnessPassingPathTests(unittest.TestCase):
         self._assert_deterministic_fallback(manifest)
         self.assertEqual([], evaluator.requests)
 
+    def test_malformed_preparation_result_degrades_before_evaluation(self) -> None:
+        evaluator = SequenceEvaluator([])
+        harness = self._build_harness(
+            draft_preparer=MalformedDraftPreparer(),
+            evaluator=evaluator,
+        )
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self._assert_deterministic_fallback(manifest)
+        self.assertEqual([], evaluator.requests)
+
     def test_invalid_evaluation_degrades_instead_of_publishing(self) -> None:
         harness = self._build_harness(
             evaluator=SequenceEvaluator([{"score": 100, "verdict": "pass"}])
@@ -454,14 +477,18 @@ class ReviewHarnessPassingPathTests(unittest.TestCase):
         *,
         retriever=None,
         generator=None,
+        draft_preparer=None,
         evaluator=None,
         reviser=None,
         config=None,
     ) -> ReviewHarness:
         return ReviewHarness(
             store=self.store,
-            retriever=retriever or self.retriever,
-            generator=generator or self.generator,
+            draft_preparer=draft_preparer
+            or SequentialDraftPreparer(
+                retriever=retriever or self.retriever,
+                generator=generator or self.generator,
+            ),
             evaluator=evaluator or self.evaluator,
             reviser=reviser or self.reviser,
             config=config or HarnessConfig(publish_score_threshold=85),

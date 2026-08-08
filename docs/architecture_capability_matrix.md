@@ -30,7 +30,7 @@
 | A08 | Skill Router | 5C-1 至 5C-6 与退出复核均完成；development 23/23、holdout 11/12；selected 决策锁定 Skill name/version；ADR-0010 暂缓 LLM fallback | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试、退出复核和 ADR | 已完成 |
 | A09 | Prompt/Context Engineering | Harness Prompt V0、SKILL.md 指令；5D-2 已实现 trust-typed Context Builder，5D-3 已实现完整累计消息估算与逐轮 Context 门禁 | 阶段 5D-5E | 5E 加 Prompt 版本/Trace，阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、回归和消融测试 | 部分完成 |
 | A10 | 结构化模型输出 | 内部 Pydantic/Dataclass 契约已有，真实 Provider 输出未统一 | 阶段 5D | 第二 Provider 在真实 Skill 场景复验 | 合法、缺字段、额外字段、截断、非 JSON 和修复上限测试 | 需显式补齐 |
-| A11 | AgentRuntime V1 | AgentLoop 与 Harness 分别存在；5D-1/2 已建立执行与 Context 边界，5D-3 已编译 Manifest 权限/预算并加入有界停止，5D-4 已把实际知识工具执行转成未发布 draft + evidence | 阶段 5D-5E | 阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 部分完成 |
+| A11 | AgentRuntime V1 | 5D-1/2 已建立执行与 Context 边界，5D-3 已编译 Manifest 权限/预算并加入有界停止，5D-4 已产生可审计 draft/evidence，5D-5 已通过唯一 ReviewHarness 组合为 typed terminal output | 阶段 5D-5E | 5D-6a/6b/7 补结构化输出、真实 Provider 与领域评测；5E 统一 run/stream/event/trace/usage；阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 部分完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有，任务级选择未实现 | 阶段 5F 或真实业务触发点 | 按质量、能力、成本选择，不按厂商数量堆叠 | 同一评测集、故障降级、成本和延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
 | A14 | API 与任务持久化 | CLI 和文件型 Run Store | 阶段 5P 提供早期切片，阶段 6 加 SQL | 阶段 8 扩展恢复与运行治理 | API 契约、幂等、并发、鉴权、隔离和恢复测试 | 已规划 |
@@ -161,11 +161,16 @@ Manifest ceiling 驱动 required-first 与 optional whole-section 选择。单�
 `knowledge.search` ToolExecutionRecord 构造共享 `KnowledgeEvidence`。两个真实
 Skill 已用 Fake Provider + 真实本地知识工具验证；模型自称来源不会成为证据。
 
+5D-5 已完成第五段组合切片：`ReviewHarness` 只依赖统一 `DraftPreparationStep`，旧
+Retriever/Generator 由顺序 Adapter 兼容；`SkillReviewExecutor` 把 Agent 草稿/证据
+交给同一 Evaluator、受限修订和发布/降级/拒绝状态机。typed terminal output 只从
+terminal Manifest、最终 Artifact、最终 attempt Evaluation、实际 Evidence 与输入
+commitment 构造，并再次通过 Skill 声明的 Pydantic Output Model。
+
 因此 A09、A11、Q03 与 Q07 继续是部分完成；A10、Q01 的关键真实场景仍未验收。
-结构化输出、Agent/Harness composition、terminal Skill Output 和 Prompt E2E
-Evaluation 仍没有功能代码或新评测结果。
+Provider-neutral 结构化响应、真实 Provider Tool Calling 和 Prompt E2E Evaluation
+仍没有功能代码或新评测结果。
 统一 `run/stream/event/trace/usage` 表面继续属于 5E。
 
-唯一下一步为 5D-5：通过 `DraftPreparationStep` 把 Agent 草稿与证据交给现有唯一
-ReviewHarness，并从 terminal manifest、最终 Artifact、Evaluation 与实际 Evidence
-构造 typed Skill Output。不得提前进入 5D-6a。
+唯一下一步为 5D-6a：建立 Provider-neutral 结构化响应 Schema、Pydantic 校验、
+有限修复与 fail-closed 边界。不得提前调用真实 Provider、决定第二厂商或进入 5D-6b。

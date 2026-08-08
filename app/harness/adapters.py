@@ -8,12 +8,16 @@ from app.tools.runtime import ToolRuntime
 from .knowledge import knowledge_evidence_from_search_payloads
 from .steps import (
     CoachDraft,
+    DraftPreparationRequest,
+    DraftPreparationResult,
     EvaluationRequest,
     EvaluationResult,
     EvaluationVerdict,
     GenerationRequest,
+    GeneratorStep,
     KnowledgeEvidence,
     RetrievalRequest,
+    RetrieverStep,
     RevisionRequest,
 )
 
@@ -27,6 +31,43 @@ EvaluationPromptBuilder = Callable[[dict[str, Any], str], str]
 EvaluationResponseParser = Callable[[str], dict[str, Any]]
 RevisionPromptBuilder = Callable[[str, dict[str, Any]], str]
 RevisionValidator = Callable[[str, str], None]
+
+
+class SequentialDraftPreparer:
+    """Adapt the legacy retrieve-then-generate path to one preparation step."""
+
+    def __init__(
+        self,
+        *,
+        retriever: RetrieverStep,
+        generator: GeneratorStep,
+    ) -> None:
+        self.retriever = retriever
+        self.generator = generator
+
+    def prepare(
+        self,
+        request: DraftPreparationRequest,
+    ) -> DraftPreparationResult:
+        knowledge = self.retriever.retrieve(
+            RetrievalRequest(
+                player_summary=request.player_summary,
+                deterministic_report=request.deterministic_report,
+            )
+        )
+        if not isinstance(knowledge, KnowledgeEvidence):
+            raise TypeError("Retriever must return KnowledgeEvidence.")
+
+        draft = self.generator.generate(
+            GenerationRequest(
+                player_summary=request.player_summary,
+                deterministic_report=request.deterministic_report,
+                knowledge=knowledge,
+            )
+        )
+        if not isinstance(draft, CoachDraft):
+            raise TypeError("Generator must return CoachDraft.")
+        return DraftPreparationResult(draft=draft, knowledge=knowledge)
 
 
 class LocalRagAdapter:

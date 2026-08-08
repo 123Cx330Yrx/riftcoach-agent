@@ -1,7 +1,11 @@
 import unittest
 
+from app.harness.adapters import SequentialDraftPreparer
 from app.harness.steps import (
     CoachDraft,
+    DraftPreparationRequest,
+    DraftPreparationResult,
+    DraftPreparationStep,
     EvaluationRequest,
     EvaluationResult,
     EvaluationVerdict,
@@ -60,6 +64,38 @@ class HarnessStepContractTests(unittest.TestCase):
         self.assertIsInstance(FakeGenerator(), GeneratorStep)
         self.assertIsInstance(FakeEvaluator(), EvaluatorStep)
         self.assertIsInstance(FakeReviser(), ReviserStep)
+
+    def test_sequential_adapter_satisfies_unified_preparation_contract(self):
+        retriever = FakeRetriever()
+        generator = FakeGenerator()
+        preparer = SequentialDraftPreparer(
+            retriever=retriever,
+            generator=generator,
+        )
+        request = DraftPreparationRequest(
+            player_summary=self.retrieval_request.player_summary,
+            deterministic_report=self.retrieval_request.deterministic_report,
+        )
+
+        result = preparer.prepare(request)
+
+        self.assertIsInstance(preparer, DraftPreparationStep)
+        self.assertIsInstance(result, DraftPreparationResult)
+        self.assertEqual("metric-guide-v1", result.knowledge.source_ids[0])
+        self.assertTrue(result.draft.report.startswith("# RiftCoach"))
+
+    def test_preparation_result_rejects_wrong_contract_values(self):
+        with self.assertRaises(TypeError):
+            DraftPreparationResult(
+                draft="not-a-draft",  # type: ignore[arg-type]
+                knowledge=KnowledgeEvidence.empty(),
+            )
+
+        with self.assertRaises(TypeError):
+            DraftPreparationResult(
+                draft=CoachDraft(report="valid"),
+                knowledge={},  # type: ignore[arg-type]
+            )
 
     def test_retrieval_contract_returns_context_and_source_ids(self):
         result = FakeRetriever().retrieve(self.retrieval_request)

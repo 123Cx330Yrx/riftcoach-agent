@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5D"
-current_checkpoint: "5D-5"
-status: in_progress
-blocked_before: "5D-6a"
+current_checkpoint: "5D-6a"
+status: pending
+blocked_before: "5D-6b"
 ---
 
 # RiftCoach 当前执行状态
@@ -18,12 +18,11 @@ blocked_before: "5D-6a"
 
 - 最后更新：2026-08-08
 - 主阶段：阶段 5，进行中
-- 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-4 已完成
-- 唯一下一步：5D-5 Harness Composition & Typed Terminal Output，只通过
-  `DraftPreparationStep` 把 Agent 草稿/证据接入现有唯一质量门禁，并从 Harness
-  终态与 Artifact 构造 typed Skill Output
-- 禁止越过：5D-5 完成前不得进入 5D-6a；5D-4 没有修改 ReviewHarness 控制流、
-  产生 terminal Skill Output、调用真实 Provider 或发布 Coach 报告
+- 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-5 已完成
+- 唯一下一步：5D-6a Structured Output Contract，只建立 Provider-neutral 结构化
+  响应 Schema、Pydantic 校验、有限修复和 fail-closed 边界
+- 禁止越过：5D-6a 完成前不得进入 5D-6b；5D-5 没有调用真实 Provider、实现
+  Provider 原生结构化输出、完成 Prompt E2E Evaluation 或统一 AgentRuntime
 
 ## 5C 原始子阶段账本
 
@@ -45,8 +44,8 @@ blocked_before: "5D-6a"
 | 5D-2 Context Builder V1 | 两个 Skill 的最小上下文、信任标签、确定性裁剪和 ContextSizer | 已完成 | 设计/TDD 文档、`ContextBuilderV1`、两个 Skill allowlist、citation/注入/预算边界测试 |
 | 5D-3 Skill Run Compiler & Budget Enforcement | Manifest 权限/预算编译为 AgentRunRequest，并约束累积上下文 | 已完成 | 设计/TDD 文档、`AgentRunCompiler`、完整消息估算、逐轮 Context 门禁与协作式总 deadline 测试 |
 | 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 已完成 | 共享 evidence converter、`SkillAgentDraftPreparer`、两个真实 Skill + Fake Provider + 真实 `knowledge.search`，成功/拒答/去重/冲突/失败与停止边界测试 |
-| 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 唯一下一步 | 尚无代码或测试 |
-| 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 未开始 | 尚无代码或测试 |
+| 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
+| 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 唯一下一步 | 尚无代码或测试 |
 | 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 未开始 | 尚未选择厂商或模型 |
 | 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 未开始 | 尚无新数据集或结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
@@ -92,7 +91,8 @@ blocked_before: "5D-6a"
 - `RunManifest`、`FileRunStore` 与 Skill 执行请求共享同一跨平台 run ID 规范，拒绝
   路径、盘符、Windows 保留名和超长值；
 - `SkillInputArtifactBinding` 使用 Harness 实际 JSON/text 字节编码记录 Summary 与
-  确定性报告的 kind、schema version 和 SHA-256；5D-5 仍需核对真实落盘 Artifact；
+  确定性报告的 kind、schema version 和 SHA-256；5D-5 已在 terminal output 前逐项
+  核对真实落盘记录、物理字节与该内容承诺；
 - `SkillExecutionBoundary` 会拒绝非 selected、缺失/漂移 Skill、错误 input model、
   run 不一致和内容/元数据篡改，并返回与调用方 payload 脱钩的输入快照；
 - `ContextBuilderV1` 把内部 Policy 与已校验 SKILL.md 固定为 system/instructional，
@@ -123,14 +123,25 @@ blocked_before: "5D-6a"
 - `recent-form-review` 与 `single-match-review` 已在 Fake Provider 下通过真实 Catalog、
   Router、ExecutionBoundary、ContextBuilder、Compiler、AgentLoop、ToolRuntime 与本地
   `knowledge.search`；模型只在 Markdown 声称的虚假来源不会进入 Evidence；
-- 当前本地完整回归：`325 passed, 80 subtests passed`；compileall、diff check 与状态
+- `DraftPreparationStep` 现在是 ReviewHarness 唯一草稿准备接缝；旧 Retriever/Generator
+  通过 `SequentialDraftPreparer` 兼容，新 Agent 路径返回同一 draft/evidence 合同，
+  没有第二套 Harness 控制流；
+- `SkillReviewExecutor` 校验 execution/context 身份，只从 Skill Manifest 映射质量阈值
+  和 deterministic fallback，并把 Agent 草稿交给现有 Evaluator/修订/发布状态机；
+- `SkillTerminalOutputBuilder` 只从 terminal Manifest 和完整性校验通过的 FINAL_REPORT、
+  最终 attempt Evaluation、RETRIEVAL_EVIDENCE 及输入 Artifact 构造 Manifest 声明的
+  Pydantic Output；rejected 不暴露报告，降级只返回确定性报告；
+- 两个真实 Skill 已在 Fake Provider 下完整走过 Catalog、Router、ExecutionBoundary、
+  ContextBuilder、AgentLoop、真实本地 `knowledge.search`、唯一 ReviewHarness 与 typed
+  output；该证据不等于真实 Provider Tool Calling；
+- 当前本地完整回归：`343 passed, 80 subtests passed`；compileall、diff check 与状态
   同步后的治理预检均通过。
 
 当前不能声称：
 
-- 5D-5 Harness composition、terminal Skill Output 或任何更后的 5D 功能已经实现；
-- 已经用真实 Provider 执行 Skill Agent、把 Agent 草稿接入 Harness，或生成/发布了
-  新 Coach 报告；
+- 5D-6a 结构化 Provider 输出或任何更后的 5D 功能已经实现；
+- 已经用真实 Provider 执行 Skill Agent，或真实模型生成的新 Coach 报告已经通过
+  当前端到端领域评测；
 - 默认 ContextSizer 等于真实厂商 tokenizer 或真实 Token Usage；
 - trust/JSON 分层已经彻底解决 Prompt Injection；
 - 已经实现 Tool Observation compaction，或协作式 deadline 能硬中断任意阻塞函数；
@@ -146,8 +157,8 @@ blocked_before: "5D-6a"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-4，下一步为 5D-5 | 阶段 5 或整个 5D 已完成 |
-| 项目理解 | 5D-4 已讲清模型文本与实际工具 provenance 的区别、draft/evidence 双产物和 fail-closed 终态校验 | 草稿与证据已准备就等于 Harness 已评测、发布或 terminal Skill Output 已生成 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-5，下一步为 5D-6a | 阶段 5 或整个 5D 已完成 |
+| 项目理解 | 5D-5 已讲清 Agent 草稿准备、Harness 发布权与 Artifact 驱动 terminal output 的边界 | Fake Provider 端到端通过就等于真实模型质量或结构化 Provider 输出已完成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
 | GitHub/部署 | `main` 已包含 5D-4 实现提交 `dfe357c`；GitHub Actions run `31206608536` 对精确 SHA `dfe357ccd9680f7a406dad43a7d39fed3820e951` 全部通过；仍没有正式网页部署 | 代码与 CI 通过就等于已有可运行 Web Agent |
 
@@ -253,8 +264,13 @@ deadline。设计与 TDD 证据见
 设计和 TDD 证据见 `docs/plans/2026-08-08-skill-agent-draft-preparation-design.md` 与
 对应 implementation plan。该检查点没有运行 Harness 或真实 Provider。
 
-唯一下一检查点为 `5D-5 Harness Composition & Typed Terminal Output`。它只负责
-通过 `DraftPreparationStep` 接缝让现有 `ReviewHarness` 消费草稿与证据，并从
-Harness terminal manifest、最终 Artifact、Evaluation 与实际 Evidence 构造两个
-Skill 的 typed terminal output。不得提前实现结构化 Provider 输出、调用真实
-Provider 或进入 5D-6a。
+`5D-5 Harness Composition & Typed Terminal Output` 已完成：`ReviewHarness` 只依赖
+统一 `DraftPreparationStep`，旧路径由顺序 Adapter 兼容；`SkillReviewExecutor` 把
+5D-4 的 Agent draft/evidence 交给同一评测、修订、发布/降级/拒绝控制流；最终 Skill
+Output 只从 terminal Manifest 与完整性校验通过的 Artifact 构造。两个真实 Skill
+已通过 Fake Provider + 真实本地知识工具的完整组合测试。设计和 TDD 证据见
+`docs/plans/2026-08-08-skill-harness-composition-design.md` 与对应 implementation plan。
+
+唯一下一检查点为 `5D-6a Structured Output Contract`。它只负责 Provider-neutral
+结构化响应 Schema、Pydantic 校验、有限修复与 fail-closed 边界。不得提前调用真实
+Provider、决定第二厂商、完成 Prompt E2E Evaluation 或进入 5D-6b。

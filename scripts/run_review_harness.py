@@ -23,6 +23,7 @@ from app.harness.adapters import (
     ChatCoachReviser,
     ChatEvaluationAdapter,
     LocalRagAdapter,
+    SequentialDraftPreparer,
 )
 from app.harness.models import HarnessConfig
 from app.harness.runtime import ReviewHarness
@@ -200,8 +201,10 @@ def main(argv: list[str] | None = None) -> int:
 
     harness = ReviewHarness(
         store=store,
-        retriever=retriever,
-        generator=generator,
+        draft_preparer=SequentialDraftPreparer(
+            retriever=retriever,
+            generator=generator,
+        ),
         evaluator=evaluator,
         reviser=reviser,
         config=HarnessConfig(

@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.5 - 5D-5（next; implementation not started）
+Phase 6.6 - 5D-6a（next; implementation not started）
 
 ## Phases
 
@@ -76,19 +76,20 @@ Phase 6.5 - 5D-5（next; implementation not started）
 - `5D-4` 已完成：共享知识 evidence converter、`SkillAgentDraftPreparer`、两个真实
   Skill 的 Fake Provider + 真实 `knowledge.search` 以及 provenance/失败边界均已有
   TDD 证据。
-- 唯一下一步是 5D-5 Harness Composition & Typed Terminal Output；尚未修改
-  `ReviewHarness` 控制流、创建 terminal Skill Output 或发布 Agent 草稿。
+- `5D-5` 已完成：统一 `DraftPreparationStep`、旧顺序 Adapter、唯一 ReviewHarness
+  控制流、`SkillReviewExecutor` 和 Artifact 驱动 typed terminal output 均已有 TDD
+  证据；两个真实 Skill 已通过 Fake Provider + 真实本地知识工具的完整组合测试。
+- 唯一下一步是 5D-6a Structured Output Contract；尚未实现 Provider-neutral 结构化
+  响应 Schema、有限修复或真实 Provider 结构化输出。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-5 Harness Composition & Typed Terminal Output：只增加 `DraftPreparationStep`
-接缝，让现有 `ReviewHarness` 消费同一 `CoachDraft + KnowledgeEvidence`，并从
-Harness terminal manifest、最终 Artifact、Evaluation 与实际 Evidence 构造两个
-Skill 的 typed terminal output。本检查点不实现结构化 Provider 输出、不调用真实
-Provider，也不进入 5D-6a。
+5D-6a Structured Output Contract：只建立 Provider-neutral 结构化响应 Schema、
+Pydantic 校验、有限修复和 fail-closed 边界；不调用真实 Provider、不决定第二
+Provider、不完成 Prompt E2E Evaluation，也不进入 5D-6b。
 
 ## Decisions Made
 
@@ -132,6 +133,10 @@ Provider，也不进入 5D-6a。
 | 5D-4 新旧路径共用一个 KnowledgeEvidence converter | citation 编号、来源去重与冲突拒绝必须只有一套语义，避免旧 Harness 和 Agent 路径漂移 |
 | Agent 证据只来自实际 ToolExecutionRecord | 模型 Markdown 中声明的来源不可作为 provenance；无工具回答合法但 Evidence 必须为空 |
 | 5D-4 不重写模型文本补 K1 引用 | 运行后 citation ID 与模型生成时观察到的工具 payload 尚未统一；引用覆盖和支持度留给 5D-5/5D-7 验证 |
+| ReviewHarness 只依赖一个 DraftPreparationStep | 新旧路径都进入同一评测、修订与发布状态机，避免可选构造器组合或 `run_prepared()` 形成第二套控制流 |
+| AgentRunResult 保留在 SkillReviewExecutor 外层 | Harness 只消费领域中立 draft/evidence，不反向依赖 Agent 模块；Trace 持久化仍留给 5E |
+| typed output 只从 terminal Manifest 与已验证 Artifact 构造 | 模型返回和内存对象不是发布真相源；最终报告、最终 attempt 分数、证据来源与输入 commitment 均可独立审计 |
+| 5D-5 不从 `app.skills` 根包重导出 executor | 显式子模块导入保持 Agent compiler → Skill execution 的依赖方向，避免 package initializer 循环引用 |
 
 ## Errors Encountered
 
@@ -172,3 +177,9 @@ Provider，也不进入 5D-6a。
 | 5D-4 ToolRuntime 失败测试的 Fake Provider 无条件读取成功 payload | 1 | 真实失败 Observation 的 `data` 为 null，测试 double 先按 `success` 分支，再验证 Preparer 从失败执行记录拒绝草稿并只暴露安全 code |
 | 5D-4 项目决策同步补丁假设 `截至` 独占一行 | 1 | `apply_patch` 原子拒绝且无部分修改；按真实相邻日期行拆小补丁后同步 |
 | 5D-4 收尾猜测 workflow 名为 `.github/workflows/ci.yml` | 1 | 只读失败且未执行脚本；先用 `rg --files .github/workflows` 找到真实 `tests.yml` 后按其门禁核对 |
+| 5D-5 初始并行审计再次让无匹配 `rg` 的退出码 1 传播到整个批次 | 4 | 无文件修改；立即拆分治理预检与只读审计，后续无匹配搜索继续单独运行并显式处理 |
+| 5D-5 审计猜测 Skill 输出模型位于独立 `output_schema.py`/聚合 `schemas.py` | 1 | 无文件修改；先读真实 Manifest 的模型引用并用 `rg` 定位到两个现有 Skill 模块 |
+| 5D-5 terminal builder 测试 helper 用规范化前报告计算输入 commitment | 1 | 生产边界正确拒绝全部 7 个案例；测试改为先经过真实 Skill Input Model，再生成与未来 Harness 字节一致的 binding |
+| 5D-5 从 `app.skills` 根包重导出 review executor 形成 Agent/Skill 循环 import | 1 | 收集阶段失败且无运行时产物；移除根包重导出，保持 executor 仅从显式子模块导入并记录依赖方向 |
+| 5D-5 dry-run 临时目录的 `Remove-Item -Recurse` 被终端策略拒绝 | 1 | 已先验证绝对路径位于仓库 tmp；随后用 `apply_patch` 删除本轮生成的全部文件，未改用跨 shell 删除或放宽权限 |
+| 5D-5 首次 cached diff check 发现两份新增计划文档尾部多余空白行 | 1 | 删除尾部空白行并重新暂存两份文档，再独立复跑 cached diff check |

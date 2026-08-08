@@ -7,6 +7,7 @@ from .knowledge import (
 from .models import ArtifactKind, HarnessConfig, RunManifest, RunStatus
 from .runtime import ReviewHarness
 from .store import ArtifactIntegrityError, FileRunStore
+from .adapters import SequentialDraftPreparer
 from .state_machine import (
     ALLOWED_TRANSITIONS,
     IllegalTransitionError,
@@ -15,6 +16,9 @@ from .state_machine import (
 )
 from .steps import (
     CoachDraft,
+    DraftPreparationRequest,
+    DraftPreparationResult,
+    DraftPreparationStep,
     EvaluationRequest,
     EvaluationResult,
     EvaluationVerdict,
@@ -33,6 +37,9 @@ __all__ = [
     "ArtifactIntegrityError",
     "ALLOWED_TRANSITIONS",
     "CoachDraft",
+    "DraftPreparationRequest",
+    "DraftPreparationResult",
+    "DraftPreparationStep",
     "EvaluationRequest",
     "EvaluationResult",
     "EvaluationVerdict",
@@ -44,6 +51,7 @@ __all__ = [
     "KnowledgeEvidence",
     "KnowledgeEvidenceBuildError",
     "ReviewHarness",
+    "SequentialDraftPreparer",
     "RunManifest",
     "RunStatus",
     "IllegalTransitionError",

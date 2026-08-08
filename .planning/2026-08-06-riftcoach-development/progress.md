@@ -315,3 +315,44 @@
   run `31206608536` 对精确 SHA `dfe357ccd9680f7a406dad43a7d39fed3820e951`
   完成且结论为 `success`。5D-4 本地实现、教学证据与公开 CI 均完成；唯一下一步仍
   是 5D-5，本轮不进入。
+- 用户授权唯一检查点 5D-5；恢复 canonical state、活动计划、需求/路线/ADR 和 5D-4
+  交接后，确认起始工作树干净，`HEAD` 与 `origin/main` 均为 `21ca076`。
+- `session-catchup.py` 无未同步输出，治理预检通过。初始源码审计确认本轮需要一个
+  `DraftPreparationStep` 接缝、旧顺序 Adapter、Skill/Harness 组合执行器和只读
+  terminal Artifact 到 typed Skill Output 的构造器；不需要第二套 Harness。
+- 审计时一组并行读取因无匹配 `rg` 返回 1 而整体失败；随后拆分命令完成读取。另两次
+  猜测不存在的 output schema 聚合文件路径失败，已改为先读取真实 Manifest 中的模型
+  引用，再定位 `recent_form_review.py` 与 `single_match_review.py`。
+- 5D-5 Task 1/2 已按 TDD 完成：新增统一 `DraftPreparationStep` 与顺序 Adapter，
+  `ReviewHarness` 只依赖一个 preparation step，CLI 显式适配旧 Retriever/Generator；
+  Harness/Step/Provider Tool 聚焦回归为 `21 passed`。
+- Task 3 已完成：新增只读 `SkillTerminalOutputBuilder`，从 terminal Manifest、FINAL_REPORT、
+  最终 attempt Evaluation、RETRIEVAL_EVIDENCE 和两份输入 Artifact commitment 构造
+  Manifest 声明的 Pydantic Output；发布、修订、降级、拒绝、篡改和错误 Output Model
+  的 7 个测试通过。
+- Task 3 首次测试 helper 直接用未规范化的报告计算 commitment，正确触发 5D-1 boundary
+  mismatch；修正为先经过真实 Skill Input Model，再用规范化内容生成 commitment，没有
+  放宽生产校验。
+- Task 4 已完成：`SkillReviewExecutor` 校验 execution/context identity，从 Manifest 唯一
+  映射 85 分阈值与 fallback，把 `AgentDraftPreparationResult` 降格为 Harness 中立结果，
+  并在外层保留真实 AgentRunResult；组合测试累计 `13 passed`。
+- 首次从 `app.skills.__init__` 重导出 executor 时触发 Agent compiler/Skill package 循环
+  import；移除根包重导出，改为显式 `app.skills.review_executor` 模块边界后测试通过，
+  没有使用延迟 import 掩盖依赖问题。
+- Task 5 已完成：近期状态与单局复盘均通过真实 Catalog/Router/Boundary/ContextBuilder/
+  AgentLoop/本地 RAG/Harness 到 typed output；Fake Provider 共两轮调用真实
+  `knowledge.search`，15 个 executor 测试通过，未调用真实 Provider。
+- 5D-5 聚焦回归覆盖 Harness、Skill、Agent、ToolRuntime 与 RAG：
+  `179 passed, 25 subtests passed`；完整回归为 `343 passed, 80 subtests passed`，
+  compileall、`git diff --check` 与治理预检通过。
+- 旧 `scripts/run_review_harness.py --dry-run` 经顺序 Adapter 仍得到 published；临时
+  run 文件已清除。首次递归删除命令被终端策略拒绝，随后使用 `apply_patch` 删除已验证
+  路径下的全部生成文件，没有使用跨 shell 删除。
+- canonical state、活动计划、路线补充、能力矩阵与项目决策开始同步为“5D-5 完成、
+  5D-6a 唯一下一步”；本轮仍未实现结构化 Provider 输出或调用真实 Provider。
+- 按真实 GitHub Actions workflow 复跑本地门禁：RAG development 8 条与 independent
+  holdout 7 条的 Recall/MRR/nDCG 均为 `1.0`，holdout abstention/citation support 均为
+  `1.0`；Harness SDK 边界、tracked secret/run-data 检查和临时目录 dry-run published
+  全部通过。
+- 首次 `git diff --cached --check` 只发现两份新增设计/实施文档尾部各一行多余空白；
+  已删除尾部空白并重新暂存，未改功能代码。

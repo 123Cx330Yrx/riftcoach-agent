@@ -8,15 +8,14 @@ from .models import ArtifactKind, HarnessConfig, RunManifest, RunStatus
 from .state_machine import advance
 from .steps import (
     CoachDraft,
+    DraftPreparationRequest,
+    DraftPreparationResult,
+    DraftPreparationStep,
     EvaluationRequest,
     EvaluationResult,
     EvaluationVerdict,
     EvaluatorStep,
-    GenerationRequest,
-    GeneratorStep,
     KnowledgeEvidence,
-    RetrievalRequest,
-    RetrieverStep,
     RevisionRequest,
     ReviserStep,
 )
@@ -30,15 +29,13 @@ class ReviewHarness:
         self,
         *,
         store: FileRunStore,
-        retriever: RetrieverStep,
-        generator: GeneratorStep,
+        draft_preparer: DraftPreparationStep,
         evaluator: EvaluatorStep,
         reviser: ReviserStep,
         config: HarnessConfig | None = None,
     ) -> None:
         self.store = store
-        self.retriever = retriever
-        self.generator = generator
+        self.draft_preparer = draft_preparer
         self.evaluator = evaluator
         self.reviser = reviser
         self.config = config or HarnessConfig()
@@ -74,43 +71,38 @@ class ReviewHarness:
         manifest = self._transition(RunStatus.FACTS_READY)
 
         try:
-            knowledge = self.retriever.retrieve(
-                RetrievalRequest(
+            preparation = self.draft_preparer.prepare(
+                DraftPreparationRequest(
                     player_summary=player_summary,
                     deterministic_report=deterministic_report,
                 )
             )
-            if not isinstance(knowledge, KnowledgeEvidence):
-                raise TypeError("Retriever must return KnowledgeEvidence.")
+            if not isinstance(preparation, DraftPreparationResult):
+                raise TypeError(
+                    "Draft preparer must return DraftPreparationResult."
+                )
         except Exception as exc:
             return self._finish_unsuccessful_run(
                 deterministic_content,
-                reason=self._step_failure_reason("retrieval", exc),
+                reason=self._step_failure_reason("draft_preparation", exc),
             )
+        knowledge = preparation.knowledge
+        draft = preparation.draft
         self.store.write_artifact(
             kind=ArtifactKind.RETRIEVAL_EVIDENCE,
             relative_path="knowledge/retrieval_evidence.json",
             content=self._knowledge_bytes(knowledge),
             schema_version="2.0",
-            producer="retriever",
+            producer="draft_preparer",
         )
         manifest = self._transition(RunStatus.KNOWLEDGE_READY)
 
         try:
-            draft = self.generator.generate(
-                GenerationRequest(
-                    player_summary=player_summary,
-                    deterministic_report=deterministic_report,
-                    knowledge=knowledge,
-                )
-            )
-            if not isinstance(draft, CoachDraft):
-                raise TypeError("Generator must return CoachDraft.")
             self._validate_report_citations(draft.report, knowledge)
         except Exception as exc:
             return self._finish_unsuccessful_run(
                 deterministic_content,
-                reason=self._step_failure_reason("generation", exc),
+                reason=self._step_failure_reason("draft_validation", exc),
             )
         draft_content = draft.report.encode("utf-8")
         self.store.write_artifact(
@@ -118,7 +110,7 @@ class ReviewHarness:
             relative_path="drafts/coach_draft_attempt_0.md",
             content=draft_content,
             schema_version="1.0",
-            producer="generator",
+            producer="draft_preparer",
         )
         manifest = self._transition(RunStatus.DRAFT_READY)
         manifest = self._transition(RunStatus.EVALUATING)

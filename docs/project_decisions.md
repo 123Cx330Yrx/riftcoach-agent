@@ -32,12 +32,14 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
   消息估算、逐轮累计 Context 门禁与协作式总 deadline；
 - 5D-4 Evidence-Aware Agent Draft Preparation：只从实际知识工具执行构造共享
   `KnowledgeEvidence`，并把 Agent 最终文本保留为尚未发布的 `CoachDraft`；
+- 5D-5 Harness Composition & Typed Terminal Output：统一 `DraftPreparationStep`、旧
+  顺序 Adapter、唯一 ReviewHarness 控制流，以及由终态 Artifact 构造的 typed Output；
 - 独立事实评测、受限修订、再评测与发布门控。
 
 当前仍未实现：
 
 - 真实 Provider Tool Calling 和经过领域评测的第二 Provider；
-- Agent/Harness 组合、typed terminal Skill Output 和统一 AgentRuntime；
+- Provider-neutral 结构化响应、真实 Provider Tool Calling 和统一 AgentRuntime；
 - FastAPI 会话入口；
 - 玩家长期 Memory；
 - 标准 MCP Client/Server；
@@ -73,8 +75,9 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 
 ## 5D 受限 Skill 执行组合
 
-- `SkillReviewExecutor` 负责核对 selected RouterDecision、加载同名同版本 Skill、
-  验证输入并协调后续 Context、Agent 与 Harness 接缝；
+- `SkillExecutionBoundary` 负责核对 selected RouterDecision、加载同名同版本 Skill
+  并验证输入；`SkillReviewExecutor` 只接受该验证结果，核对 Context 身份并协调
+  Agent 与 Harness 接缝；
 - 其中 5D-1 已实现执行前核对部分：Router 锁定 name/version，Catalog 重新取得
   `LoadedSkill`，Skill input model 验证 payload，并以同一安全 run ID 和规范字节
   SHA-256 绑定未来 Harness 输入；
@@ -86,6 +89,11 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - 5D-4 已实现证据化草稿准备：新旧路径共用知识 payload 转换器，Agent 最终文本
   只能成为 `CoachDraft`，只有成功且归因合法的实际 `knowledge.search`
   ToolExecutionRecord 才能成为 `KnowledgeEvidence`；
+- 5D-5 已实现单一质量控制流：`ReviewHarness` 只消费统一 preparation 合同，旧
+  Retriever/Generator 使用顺序 Adapter；Agent 路径的质量阈值和 fallback 只来自
+  Skill Manifest；
+- terminal Skill Output 不从模型响应直接构造，只读取 terminal Manifest、带摘要校验
+  的 FINAL_REPORT、最终 attempt Evaluation、实际 Evidence 和两份输入 Artifact；
 - AgentLoop 只负责白名单工具调用和 Coach 草稿准备，不拥有发布权；
 - 新 `DraftPreparationStep` 返回同一 `CoachDraft + KnowledgeEvidence`，用于兼容旧
   Retriever/Generator 路径与新 Agent 路径；
@@ -94,7 +102,7 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   Observation 分层，权限永远不从不可信文本获得；
 - 结构化模型输出先服务机器消费的 EvaluationResult，Coach 报告仍为 Markdown；
 - 真实 Provider 与第二 Provider 选择必须等 5D-6b 用同一领域任务评测，不提前锁定；
-- 该方案由 ADR-0011 接受；当前只实现到 5D-4，不等于整个 5D、LangGraph 或
+- 该方案由 ADR-0011 接受；当前只实现到 5D-5，不等于整个 5D、LangGraph 或
   Multi-Agent 已实现。
 
 ## 数据职责

@@ -295,6 +295,29 @@
 - `CURRENT`：5D-4 完成；唯一下一步为 5D-5 Harness Composition & Typed Terminal
   Output，不得进入 5D-6a。
 
+### 2026-08-08：5D-5 Harness Composition & Typed Terminal Output
+
+- `IMPLEMENTED`：新增 provider-neutral `DraftPreparationStep`；旧 Retriever/Generator
+  通过 `SequentialDraftPreparer` 适配，`ReviewHarness` 不再维护两套草稿入口或新增
+  `run_prepared()` 控制流。
+- `IMPLEMENTED`：新增 `SkillReviewExecutor`，校验 validated execution 与 Context
+  identity，只从 Skill Manifest 映射发布阈值和 deterministic fallback，并把 5D-4
+  Agent draft/evidence 交给现有 Evaluator、受限修订和终态状态机。
+- `IMPLEMENTED`：新增 `SkillTerminalOutputBuilder`；最终报告、最终 attempt 分数和
+  evidence source IDs 只从完整性校验通过的 Artifact 读取，两份输入 Artifact 必须与
+  5D-1 commitment 的 run/kind/schema/SHA 一致，最后再由 Manifest 声明的 Output Model
+  校验。
+- `VERIFIED`：published、修订后 published、deterministic degraded、rejected、篡改、
+  identity 漂移与错误 Output Model 均有直接测试；两个真实 Skill 通过 Fake Provider、
+  真实本地 `knowledge.search` 和唯一 ReviewHarness 到 typed terminal output。
+- `BOUNDARY`：该端到端证据不包含真实 Provider；尚未实现 Provider-neutral 结构化响应、
+  Prompt E2E Evaluation、统一 Trace/Session、LangGraph、Agent SDK 或 Multi-Agent。
+- `VERIFIED`：聚焦回归 `179 passed, 25 subtests passed`；完整回归
+  `343 passed, 80 subtests passed`；旧 Harness CLI dry-run published，compileall、
+  diff check 与治理预检通过。
+- `CURRENT`：5D-5 完成；唯一下一步为 5D-6a Structured Output Contract，不得进入
+  5D-6b。
+
 ## 当前不变的宏观路线
 
 ```text

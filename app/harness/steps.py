@@ -59,6 +59,28 @@ class CoachDraft:
 
 
 @dataclass(frozen=True)
+class DraftPreparationRequest:
+    """Deterministic facts required to prepare one unpublished draft."""
+
+    player_summary: SummaryData
+    deterministic_report: str
+
+
+@dataclass(frozen=True)
+class DraftPreparationResult:
+    """Provider-neutral draft and evidence consumed by ReviewHarness."""
+
+    draft: CoachDraft
+    knowledge: KnowledgeEvidence
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.draft, CoachDraft):
+            raise TypeError("draft must be a CoachDraft")
+        if not isinstance(self.knowledge, KnowledgeEvidence):
+            raise TypeError("knowledge must be KnowledgeEvidence")
+
+
+@dataclass(frozen=True)
 class EvaluationResult:
     """Structured evaluator output consumed by the deterministic runtime."""
 
@@ -111,6 +133,15 @@ class RevisionRequest:
 class RetrieverStep(Protocol):
     def retrieve(self, request: RetrievalRequest) -> KnowledgeEvidence:
         """Retrieve attributable knowledge without changing match facts."""
+
+
+@runtime_checkable
+class DraftPreparationStep(Protocol):
+    def prepare(
+        self,
+        request: DraftPreparationRequest,
+    ) -> DraftPreparationResult:
+        """Prepare one unpublished draft and its attributable evidence."""
 
 
 @runtime_checkable
