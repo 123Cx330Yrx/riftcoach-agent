@@ -57,6 +57,11 @@ Provider/AgentLoop/ToolRuntime/ReviewHarness、pytest。
 4. 核对结果不含 API Key、完整 Prompt、原始响应或原始异常。
 5. 若任一 mandatory case 失败，保存结果并停止进入 Task 4；若全部通过，进入下一批。
 
+**Execution result (2026-08-09):** code SHA `b07f986421b1c14ef36656f3a44698decacc9d24`
+只执行了 P1；API 返回后未得到符合非空文本合同的 message content，脱敏错误码为
+`invalid_text_response`，耗时 4265 ms。P2-P5 按依赖规则 skipped，调用数为 1/5，Task 4
+按本计划停止。任何诊断性重跑都需要先补强脱敏元数据设计并重新取得显式授权。
+
 ### Task 4: Production Zhipu Adapter mapping
 
 **Files:**

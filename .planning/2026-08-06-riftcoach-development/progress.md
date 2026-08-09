@@ -458,3 +458,14 @@
   误记为 baseline 通过。
 - 一次宽回归命令猜测了不存在的 `tests/test_provider_structured.py`，pytest 未收集测试；
   已先列出真实路径并重跑正确集合，不把空跑计作证据。Task 3 真实 P1-P5 微探针尚未执行。
+- 离线探针提交 `b07f986` 已推送到 `origin/main`，GitHub Actions run `31302982591`
+  对精确 SHA `b07f986421b1c14ef36656f3a44698decacc9d24` 完成且结论为 success；因此真实
+  结果可以追溯到公开、通过 CI 的探针代码。
+- Task 3 已按用户授权执行一次真实 P1-P5：本地必需配置均存在，模型为 `glm-5.2`；
+  `.env` 的 `LLM_PROVIDER=glm` 只在子进程规范为内部 ID `zhipu`，没有修改或打印密钥。
+  P1 在 4265 ms 后以 `invalid_text_response` 失败，只消耗 1/5 次；P2-P5 按依赖规则全部
+  skipped，结果落盘为 `zhipu_glm52_p1_p5.json`，未自动重试。
+- 该结果说明 API 调用返回后，message content 未满足非空文本合同；它不是认证、限流、
+  超时、连接或 HTTP 状态错误。但现有脱敏失败记录没有保留 finish reason、resolved model
+  和 usage，因此不能进一步判断空内容原因，也不能据此断言 GLM 不支持 RiftCoach。
+  按计划停止 Task 4，下一步只允许设计 P1 诊断补强与新的显式调用授权。

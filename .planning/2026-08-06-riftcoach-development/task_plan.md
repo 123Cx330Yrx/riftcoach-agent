@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.7 - 5D-6b（in progress: first capability-probe batch）
+Phase 6.7 - 5D-6b（in progress: P1 failure diagnosis gate）
 
 ## Phases
 
@@ -89,9 +89,9 @@ Phase 6.7 - 5D-6b（in progress: first capability-probe batch）
 
 ## Next Step
 
-按 `docs/plans/2026-08-09-real-provider-capability-gate-implementation.md` 执行 5D-6b
-第一批 Task 1-3：先完成脱敏结果/调用预算合同和 P1-P5 探针离线 TDD，再在 5 次硬
-上限内运行真实 GLM 微探针；不得提前修改生产 Adapter、选择第二厂商或进入 5D-7。
+在 5D-6b 内先设计 P1 `invalid_text_response` 的脱敏诊断补强，明确哪些已规范化元数据
+可以安全保留以及是否值得重新授权一次 baseline 调用；在新授权前不得重跑真实调用，
+也不得提前修改生产 Adapter、选择第二厂商或进入 5D-7。
 
 ## Decisions Made
 

@@ -584,3 +584,18 @@
   needs a per-request deterministic alias map and must translate both historical assistant tool
   calls and returned calls; changing the internal registry name would leak one provider's grammar
   into Skills and ToolRuntime.
+- The authorized P1-P5 run at code SHA `b07f986421b1c14ef36656f3a44698decacc9d24`
+  consumed one call and stopped fail-closed at P1 with `invalid_text_response` after 4265 ms. This
+  proves the SDK call returned a response object rather than raising authentication, rate-limit,
+  timeout, connection or HTTP-status errors; it does not prove why message content was absent or
+  empty, because raw output was intentionally not persisted.
+- P2-P5 were skipped as designed, so this run provides no evidence for or against GLM-5.2 JSON
+  mode or Function Calling. The provider is not admitted, but one malformed/empty baseline response
+  is not enough to conclude that GLM cannot satisfy RiftCoach.
+- The sanitized failure contract currently discards safe response metadata such as finish reason,
+  resolved model and usage when semantic validation fails. A diagnosis design must decide whether
+  to retain those already-normalized fields without retaining raw content before any separately
+  authorized rerun; Task 4 production Adapter work remains stopped.
+- Local `.env` uses product label `LLM_PROVIDER=glm`, while the registry/config contract identifies
+  this adapter as `zhipu`. The experiment normalized only the child process to `zhipu`; this naming
+  mismatch is configuration taxonomy, not a model capability failure.
