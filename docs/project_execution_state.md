@@ -160,7 +160,7 @@ blocked_before: "5D-7"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6a，下一步为 5D-6b | 阶段 5 或整个 5D 已完成 |
 | 项目理解 | 5D-6a 已讲清“机器控制数据的 Schema 合同”与 Markdown 报告的区别、一次修复和 fail-closed 边界 | Fake Provider 通过就等于真实模型质量或 GLM 原生结构化输出已完成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | `main` 已包含 5D-6a 提交 `ecb8234`；GitHub Actions run `31255771786` 对精确 SHA `ecb82341467634dce865c65f886340c295b8388f` 全部通过；仍没有正式网页部署 | 代码与 CI 通过就等于已有可运行 Web Agent |
+| GitHub/部署 | `main` 已包含 5D-6b 设计草案提交 `ef97ec7`；GitHub Actions run `31297965601` 对精确 SHA `ef97ec72358f7f803f09d63a68c7bc32bcc98385` 全部通过；仍没有正式网页部署 | 设计与 CI 通过就等于真实 GLM 已准入或已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

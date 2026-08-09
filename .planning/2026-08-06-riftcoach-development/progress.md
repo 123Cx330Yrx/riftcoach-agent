@@ -431,3 +431,7 @@
 - 首次提交前把 `git diff --cached --check` 与 commit 用分号串行，检查正确发现设计
   文档 EOF 多余空行，但没有阻止 commit。已立即删除空行并写入错误账本；后续改为
   检查与提交分开执行，不重复该流程错误。
+- 删除 EOF 空行并把流程错误写入账本后，将设计草案提交为 `ef97ec7` 并推送至
+  `origin/main`；GitHub Actions run `31297965601` 对精确 SHA
+  `ef97ec72358f7f803f09d63a68c7bc32bcc98385` 完成且结论为 success。该公开证据只证明
+  文档/治理和既有回归通过，不证明任何真实 GLM capability。
