@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.7 - 5D-6b（next; implementation not started）
+Phase 6.7 - 5D-6b（in progress: capability-gate design only）
 
 ## Phases
 
@@ -89,9 +89,9 @@ Phase 6.7 - 5D-6b（next; implementation not started）
 
 ## Next Step
 
-5D-6b Real Provider Capability Gate：先设计 GLM 真实准入实验、领域任务、成功/失败
-边界、成本/延迟记录和第二 Provider 决策门；不得先调用真实 Provider 或预选厂商，
-设计完成后才等待用户授权实验实现。
+请用户审阅 `docs/plans/2026-08-09-real-provider-capability-gate-design.md`。确认后才为
+5D-6b 编写分层 probe/Adapter 实施计划并执行真实 GLM 实验；不得预选第二厂商或进入
+5D-7。
 
 ## Decisions Made
 
@@ -149,6 +149,9 @@ Phase 6.7 - 5D-6b（next; implementation not started）
 
 | Error | Attempt | Resolution |
 |---|---:|---|
+| 5D-6b 状态/决策同步补丁把 `截至` 误当独立一行 | 1 | `apply_patch` 原子拒绝且无部分修改；拆为 canonical state 与真实相邻日期文本两个补丁 |
+| canonical status 改为进行中时移除了治理要求的“唯一下一步”固定元数据行 | 1 | 保留 `status: in_progress`，恢复唯一一条“唯一下一步”并在该行注明当前只做实验设计 |
+| 提交前把多个 Git 检查用分号串行，cached diff 的 EOF 空行失败未阻止后续 commit | 1 | 立即删除多余 EOF 空行并补记错误；后续检查与 commit 分开调用，成功检查后才提交 |
 | 原始 5C-1 至 5C-6 未持久化，文档误写 5C 完成 | 1 | 恢复完整账本，建立根级约束和活动计划，并修正所有冲突状态 |
 | 旧规划目录无 active pointer 且停在 2026-08-01 | 1 | 新建持续开发计划并写入 `.planning/.active_plan` |
 | `session-logs` 说明依赖的 `jq` 在本机不可用 | 1 | 使用 `rg` 和 PowerShell `ConvertFrom-Json` 流式读取同一原始 JSONL |

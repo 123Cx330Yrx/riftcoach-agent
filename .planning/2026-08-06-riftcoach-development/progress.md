@@ -405,3 +405,29 @@
 - 5D-6a 提交 `ecb8234` 已推送到 GitHub `main`；Actions run `31255771786` 对精确
   SHA `ecb82341467634dce865c65f886340c295b8388f` 完成且结论为 `success`。公开进度线
   已与本地状态一致，当前唯一下一步仍为 5D-6b。
+
+## 2026-08-09
+
+- 用户以“继续下一步”授权 5D-6b；本轮按活动计划只设计 Real Provider Capability
+  Gate，不调用真实 Provider、不预选第二厂商，也不进入 5D-7。
+- 已完整恢复 canonical state、活动计划、需求账本、路线、v1.3 与能力矩阵；治理预检
+  通过，起始工作树干净，`HEAD` 与 `origin/main` 均为 `ad068ce`。
+- 初始源码审计确认当前 Zhipu Adapter 只映射 text chat；Provider-neutral structured
+  output、Tool Calling、AgentLoop 与 Harness 合同已经就绪，但真实厂商 transport 与
+  response normalization 尚未实现。
+- 第一次同步 canonical status 与项目决策的组合补丁因错误假设 `截至` 独占一行而原子
+  拒绝，没有产生部分修改；按真实文本拆分后已把 5D-6b 标为实验设计进行中，并修正
+  5D-6a 已完成但项目决策仍重复写“Provider-neutral 结构化响应未实现”的陈旧表述。
+- 首次状态同步治理预检发现 canonical 正文缺少固定“唯一下一步”行；这不是功能测试
+  失败。保留进行中状态并恢复唯一一条该元数据后再运行治理检查。
+- 已核对智谱官方 Function Calling、结构化输出与 chat completions 文档：GLM-5.2 声明
+  支持工具调用，公开 `tool_choice` 仅有 auto；结构化模式为 `json_object`，未声明原生
+  strict JSON Schema transport。因此设计保留 5D-6a 本地 Pydantic 为最终权威。
+- 新增 5D-6b 设计草案，比较文档直接开关、整链先行和两层准入三种方案；采用“最多
+  5 次微探针 → Adapter 离线 TDD → 最多 7 次领域切片”，GLM 全部通过时不比较第二
+  Provider，出现真实协议/预算阻断才筛选最多一个候选。尚未调用真实 Provider。
+- 设计草案同步后的治理预检通过，治理测试 `2 passed`，`git diff --check` 通过；本轮
+  只有文档和持久计划变化，没有运行功能回归或消耗模型额度。
+- 首次提交前把 `git diff --cached --check` 与 commit 用分号串行，检查正确发现设计
+  文档 EOF 多余空行，但没有阻止 commit。已立即删除空行并写入错误账本；后续改为
+  检查与提交分开执行，不重复该流程错误。

@@ -3,7 +3,7 @@ state_schema: 1
 main_stage: 5
 substage_group: "5D"
 current_checkpoint: "5D-6b"
-status: pending
+status: in_progress
 blocked_before: "5D-7"
 ---
 
@@ -16,11 +16,11 @@ blocked_before: "5D-7"
 
 ## 状态元数据
 
-- 最后更新：2026-08-08
+- 最后更新：2026-08-09
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6a 已完成
-- 唯一下一步：5D-6b Real Provider Capability Gate，只实测 GLM 的结构化输出/工具
-  能力，并按同一领域任务证据决定是否接入最多一个第二 Provider 候选
+- 唯一下一步：审阅 5D-6b Real Provider Capability Gate 设计草案；确认后才实现 GLM
+  结构化输出/工具能力探针与 Adapter，本轮没有调用真实 Provider
 - 禁止越过：5D-6b 完成前不得实现第二 Provider、完成 Prompt E2E Evaluation、进入
   5D-7 或统一 AgentRuntime；5D-6a 没有调用真实 Provider 或实现厂商原生 SDK 映射
 
@@ -46,7 +46,7 @@ blocked_before: "5D-7"
 | 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 已完成 | 共享 evidence converter、`SkillAgentDraftPreparer`、两个真实 Skill + Fake Provider + 真实 `knowledge.search`，成功/拒答/去重/冲突/失败与停止边界测试 |
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
-| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 唯一下一步 | 尚未选择厂商或模型；不得假设现有 Zhipu Adapter 已支持该能力 |
+| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（设计待确认） | 两层准入草案已形成；尚未调用真实 Provider 或选择第二厂商，不得假设现有 Zhipu Adapter 已支持该能力 |
 | 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 未开始 | 尚无新数据集或结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
@@ -279,6 +279,6 @@ Evaluation 模型同时提供 JSON Schema 和本地验证；非法 JSON、额外
 草稿。`ZhipuProvider` 仍是 text-only，结构化请求会在 SDK 调用前失败。本检查点的
 Fake Provider 证据不等于真实 Provider 准入。
 
-唯一下一检查点为 `5D-6b Real Provider Capability Gate`。它才负责核验当前 GLM
-官方接口与实际结构化/Tool Calling 行为，并在同一领域评测下决定是否比较一个第二
-Provider 候选；不得提前进入 5D-7。
+当前检查点为 `5D-6b Real Provider Capability Gate`。两层准入、调用预算和第二
+Provider 决策门的设计草案已经形成；用户确认后才编写实施计划和执行真实调用。
+不得提前进入 5D-7。

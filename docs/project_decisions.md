@@ -9,7 +9,7 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 ## 能力基线
 
 动态进度和唯一下一步只看 `docs/project_execution_state.md`。截至
-2026-08-08，已经实现并有测试证据的本地基础包括：
+2026-08-09，已经实现并有测试证据的本地基础包括：
 
 - Riot ID、PUUID、最近对局与 Timeline 数据链路；
 - MatchAnalyzer 确定性指标；
@@ -41,7 +41,7 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 当前仍未实现：
 
 - 真实 Provider Tool Calling 和经过领域评测的第二 Provider；
-- Provider-neutral 结构化响应、真实 Provider Tool Calling 和统一 AgentRuntime；
+- 真实 Provider 原生结构化输出映射、真实 Provider Tool Calling 和统一 AgentRuntime；
 - FastAPI 会话入口；
 - 玩家长期 Memory；
 - 标准 MCP Client/Server；

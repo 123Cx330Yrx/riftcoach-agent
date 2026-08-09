@@ -534,3 +534,48 @@
   fallback and does not publish the Agent draft.
 - Full local regression after implementation is `359 passed, 95 subtests passed`. This is Fake
   Provider evidence only; the text-only Zhipu Adapter rejects structured requests before SDK I/O.
+
+## 2026-08-09 5D-6b initial capability-gate audit
+
+- Canonical state and governance agree that 5D-6b is the only next checkpoint; 5D-7 Prompt E2E,
+  a second Provider implementation, automatic model routing, LangGraph and Multi-Agent remain
+  blocked.
+- The current `ZhipuProvider` maps only plain role/content messages and normalizes text content,
+  finish reason and token usage. It does not transport ToolSpec/ToolChoice, parse provider tool
+  calls, or transport `StructuredResponseContract`; its advertised capabilities correctly remain
+  text-only.
+- The internal contracts needed for admission already exist: strict structured response schema,
+  provider-neutral ToolCall/ToolSpec, capability negotiation, AgentLoop, real local
+  `knowledge.search`, and Harness fail-closed publication. 5D-6b therefore needs an isolated
+  capability probe and minimal domain slice, not another Agent loop or quality platform.
+- The experiment must distinguish SDK/API reachability from end-to-end capability. A successful
+  text request does not prove native structured output; a returned tool call does not prove that
+  RiftCoach can normalize it, execute an allowlisted tool, feed an observation back, and obtain a
+  final response.
+- Current official Zhipu documentation lists `glm-5.2` as supporting Function Calling and JSON
+  structured output. The chat API transports function definitions in `tools`; returned arguments
+  are JSON strings; the assistant tool-call message and a `role=tool` observation must be sent back
+  for the final response. Source: https://docs.bigmodel.cn/cn/guide/capabilities/function-calling
+- The official API currently documents only `tool_choice="auto"`; it does not document the
+  provider-neutral `required` mode. Therefore the Zhipu adapter must reject REQUIRED rather than
+  silently translate it to AUTO unless a real probe and documentation support a safe mapping.
+- Official structured output is currently `response_format={"type":"json_object"}`. The docs show
+  the desired JSON Schema in the prompt and validate it client-side; they do not document a native
+  strict `json_schema` transport. RiftCoach can only advertise end-to-end structured output if it
+  sends JSON mode plus the exact contract in trusted instructions and still applies the strict
+  local Pydantic decoder from 5D-6a. Source:
+  https://docs.bigmodel.cn/api-reference/%E6%A8%A1%E5%9E%8B-api/%E5%AF%B9%E8%AF%9D%E8%A1%A5%E5%85%A8
+- The real probe must record returned model identity, request ID, finish reason, prompt/completion
+  tokens, wall-clock latency and sanitized error category. Monetary cost must be computed from a
+  separately captured official price snapshot at run time; it must not be guessed from token usage
+  or Coding Plan subscription examples.
+- The current Evaluation prompt already embeds the exact Pydantic JSON Schema. Zhipu therefore only
+  needs to map the response contract to documented `json_object` mode; local strict validation stays
+  authoritative. The adapter must not inject an unmetered hidden Schema message or claim native
+  server-side strict-schema enforcement.
+- The existing AgentLoop always requests AUTO when tools exist and NONE otherwise, which fits the
+  current official Zhipu limitation. Provider-neutral REQUIRED must still be rejected explicitly in
+  the adapter because silently weakening REQUIRED to AUTO would violate the caller contract.
+- A two-layer real gate limits diagnosis ambiguity and spend: five no-retry API microprobes first,
+  then offline adapter TDD, then one recent-form domain slice with a seven-call worst-case cap. A
+  low-level failure stops the expensive slice.
