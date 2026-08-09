@@ -1,7 +1,7 @@
 # 5D-6b Real Provider Capability Gate 设计草案
 
-> 状态：待用户确认。本文只冻结实验设计，不调用真实 Provider，不选择第二厂商，
-> 不完成 5D-7 Prompt/Context & Domain E2E Evaluation。
+> 状态：用户已于 2026-08-09 确认，进入分批实施。本文冻结实验设计，不选择第二
+> 厂商，不完成 5D-7 Prompt/Context & Domain E2E Evaluation。
 
 ## 1. 当前问题
 
@@ -129,6 +129,9 @@ P4/P5 只提供一个只读函数 Schema，函数名和参数形状与 `knowledg
 - `REQUIRED` 因官方未声明支持而明确拒绝，不能静默降为 AUTO；
 - assistant `content=None + tool_calls` 合法归一化；
 - arguments 必须解析为 JSON object，非 JSON、array、重复 ID、空名称都拒绝；
+- 智谱函数名只允许 `[a-zA-Z0-9_-]`，而 RiftCoach 使用 `knowledge.search`；Adapter
+  为每个请求建立确定性、冲突检测的安全别名表，发送前编码、响应后还原，内部工具
+  名、Manifest 白名单和 ToolRuntime 均不改名；
 - response contract 映射为 `json_object`；
 - 普通文本路径保持现有行为和错误脱敏；
 - `parallel_tool_calls` 继续为 false，未经独立实测不得宣称支持。
@@ -225,6 +228,7 @@ Provider Registry 已证明架构可扩展，多接一家不会自动增加业�
 - 一个显式命令运行真实 probe，默认 pytest/CI 不消耗额度；
 - 聚焦回归、完整 pytest、compileall、diff check、治理和公开 CI。
 
-设计确认后，下一轮才编写实验与 Adapter。真实调用仍需用户明确授权。5D-6b 完成前
-不能声称：GLM 已支持 RiftCoach Tool Calling、GLM 已通过结构化输出准入、第二 Provider
-已选定、Prompt E2E 已完成、AgentRuntime V1 已完成，或项目已经是 Multi-Agent。
+设计已经确认，后续按实施计划先编写并离线验证探针，再在显式调用预算内执行真实
+GLM 请求。5D-6b 完成前不能声称：GLM 已支持 RiftCoach Tool Calling、GLM 已通过
+结构化输出准入、第二 Provider 已选定、Prompt E2E 已完成、AgentRuntime V1 已完成，
+或项目已经是 Multi-Agent。

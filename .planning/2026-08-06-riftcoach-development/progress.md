@@ -435,3 +435,26 @@
   `origin/main`；GitHub Actions run `31297965601` 对精确 SHA
   `ef97ec72358f7f803f09d63a68c7bc32bcc98385` 完成且结论为 success。该公开证据只证明
   文档/治理和既有回归通过，不证明任何真实 GLM capability。
+- 用户明确确认 5D-6b 实验实现，并询问“边界”含义；已解释它主要是 Provider 合同
+  兼容边界，不是预判 GLM 模型能力不足。
+- 官方 Schema 进一步确认函数名只允许字母、数字、下划线和连字符，内部
+  `knowledge.search` 不能原样发送。设计补入请求级确定性别名表，并新增七任务实施
+  计划；当前第一批严格限制为 Task 1-3 和最多 5 次真实微探针。
+- 实施计划首次治理预检发现 Next Step 虽指向正确实施文件，但未包含 canonical
+  `5D-6b` 字面键；预检在功能代码前正确阻止。已补回同一检查点名称，范围未变化。
+- 5D-6b Task 1 先以缺少 `app.evaluation.provider_capability_gate` 得到预期收集红灯；
+  最小实现新增严格、冻结的 case/report Pydantic 合同和 `ExternalCallBudget`。passed
+  必须有输出摘要，failed/skipped 必须有安全错误码，5 次后第 6 次在调用前被拒绝。
+- Task 1 目标测试为 `4 passed`；上游调用即使抛错也会消耗一次预算，而预算拒绝本身
+  不会执行或计数，从而不能用重试掩盖真实调用成本。
+- 5D-6b Task 2 已完成离线 TDD：新增隔离的 `ZhipuCapabilityProbe` 与显式授权 CLI，
+  P1 失败会跳过 P2-P5，P4 失败会跳过 P5；SDK `max_retries=0`，结果只保留摘要哈希、
+  安全错误码、usage、延迟和解析后的状态，不落盘原始提示、响应、request id 或异常。
+- CLI 只允许精确 5 次预算，并把结果限制在
+  `data/evaluation/results/provider_capabilities/`；未带 `--confirm-real-call` 时在创建客户端
+  前拒绝。Task 1/2 目标测试 `10 passed`，与现有结构化输出和评测合同的聚焦回归为
+  `23 passed, 11 subtests passed`，完整回归为 `370 passed, 95 subtests passed`，
+  compileall、治理预检和 diff check 通过。P1 还会精确校验约定哨兵，不把任意非空文本
+  误记为 baseline 通过。
+- 一次宽回归命令猜测了不存在的 `tests/test_provider_structured.py`，pytest 未收集测试；
+  已先列出真实路径并重跑正确集合，不把空跑计作证据。Task 3 真实 P1-P5 微探针尚未执行。

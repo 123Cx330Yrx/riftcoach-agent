@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.7 - 5D-6b（in progress: capability-gate design only）
+Phase 6.7 - 5D-6b（in progress: first capability-probe batch）
 
 ## Phases
 
@@ -89,9 +89,9 @@ Phase 6.7 - 5D-6b（in progress: capability-gate design only）
 
 ## Next Step
 
-请用户审阅 `docs/plans/2026-08-09-real-provider-capability-gate-design.md`。确认后才为
-5D-6b 编写分层 probe/Adapter 实施计划并执行真实 GLM 实验；不得预选第二厂商或进入
-5D-7。
+按 `docs/plans/2026-08-09-real-provider-capability-gate-implementation.md` 执行 5D-6b
+第一批 Task 1-3：先完成脱敏结果/调用预算合同和 P1-P5 探针离线 TDD，再在 5 次硬
+上限内运行真实 GLM 微探针；不得提前修改生产 Adapter、选择第二厂商或进入 5D-7。
 
 ## Decisions Made
 
@@ -144,6 +144,7 @@ Phase 6.7 - 5D-6b（in progress: capability-gate design only）
 | Schema repair 最多一次且必须重新严格验证 | 修复是受限的第二次模型调用，不允许正则抽取、默认补字段或无限自愈 |
 | 5D-6a 首先接入 Evaluation 控制数据 | 评测 score/verdict/issues 会影响发布；Coach Markdown 继续使用现有质量门禁而非被强制 JSON 化 |
 | 5D-6a 不改 Zhipu SDK 映射 | 合同和本地验证可先稳定；真实厂商能力、响应格式和成本必须由 5D-6b 实测决定 |
+| 5D-6b 使用请求级工具别名表 | 智谱函数名不允许点号，而 RiftCoach 内部使用 `knowledge.search`；Adapter 编解码隔离厂商约束，不污染 Manifest 与 ToolRuntime |
 
 ## Errors Encountered
 
@@ -152,6 +153,9 @@ Phase 6.7 - 5D-6b（in progress: capability-gate design only）
 | 5D-6b 状态/决策同步补丁把 `截至` 误当独立一行 | 1 | `apply_patch` 原子拒绝且无部分修改；拆为 canonical state 与真实相邻日期文本两个补丁 |
 | canonical status 改为进行中时移除了治理要求的“唯一下一步”固定元数据行 | 1 | 保留 `status: in_progress`，恢复唯一一条“唯一下一步”并在该行注明当前只做实验设计 |
 | 提交前把多个 Git 检查用分号串行，cached diff 的 EOF 空行失败未阻止后续 commit | 1 | 立即删除多余 EOF 空行并补记错误；后续检查与 commit 分开调用，成功检查后才提交 |
+| 5D-6b 实施计划 Next Step 只写实施文件与 Task，漏掉 canonical checkpoint 字面键 | 1 | 治理预检在功能代码前阻止；补回 `5D-6b` 后重跑，不改变阶段或任务范围 |
+| 5D-6b 宽回归命令猜测了不存在的 `tests/test_provider_structured.py` | 1 | pytest 未收集任何测试；先列出真实测试路径，再改跑 `test_structured_output.py` 与实际评测测试，获得有效回归证据 |
+| P1 改为精确哨兵校验后，P4 失败案例的旧夹具仍返回泛化 `ok` | 1 | 严格边界正确让案例提前停在 P1；只把该夹具改为精确哨兵，保留 P4 才是目标失败点并重跑完整回归 |
 | 原始 5C-1 至 5C-6 未持久化，文档误写 5C 完成 | 1 | 恢复完整账本，建立根级约束和活动计划，并修正所有冲突状态 |
 | 旧规划目录无 active pointer 且停在 2026-08-01 | 1 | 新建持续开发计划并写入 `.planning/.active_plan` |
 | `session-logs` 说明依赖的 `jq` 在本机不可用 | 1 | 使用 `rg` 和 PowerShell `ConvertFrom-Json` 流式读取同一原始 JSONL |

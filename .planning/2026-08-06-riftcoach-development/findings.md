@@ -579,3 +579,8 @@
 - A two-layer real gate limits diagnosis ambiguity and spend: five no-retry API microprobes first,
   then offline adapter TDD, then one recent-form domain slice with a seven-call worst-case cap. A
   low-level failure stops the expensive slice.
+- The official Zhipu tokenizer/API schema documents function names with pattern
+  `^[a-zA-Z0-9_-]+$`. RiftCoach's `knowledge.search` therefore cannot be sent verbatim. The adapter
+  needs a per-request deterministic alias map and must translate both historical assistant tool
+  calls and returned calls; changing the internal registry name would leak one provider's grammar
+  into Skills and ToolRuntime.
