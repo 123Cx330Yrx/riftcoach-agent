@@ -20,6 +20,8 @@ from app.evaluation.provider_capability_gate import (
     CapabilityProbeCaseResult,
     CapabilityProbeReport,
     ExternalCallBudget,
+    ProbeScope,
+    ResponseFieldState,
 )
 from app.providers.models import ChatResponse, TokenUsage
 from app.providers.structured import decode_structured_response
@@ -84,6 +86,20 @@ class _ObservedResponse:
     tool_call_count: int = 0
 
 
+@dataclass(frozen=True)
+class _SafeResponseObservation:
+    """Whitelisted response metadata that never contains model text or raw IDs."""
+
+    response_received: bool
+    content_state: ResponseFieldState
+    reasoning_content_state: ResponseFieldState
+    resolved_model: str | None
+    finish_reason: str | None
+    usage: TokenUsage
+    request_id_sha256: str | None
+    tool_call_count: int
+
+
 class ZhipuCapabilityProbe:
     """Run five bounded raw API cases without Provider retries or raw persistence."""
 
@@ -93,6 +109,7 @@ class ZhipuCapabilityProbe:
         client: Any,
         model: str,
         code_sha: str,
+        scope: ProbeScope = "p1_p5",
         max_calls: int = 5,
         clock: Callable[[], float] = time.monotonic,
         now: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
@@ -103,11 +120,17 @@ class ZhipuCapabilityProbe:
             raise ValueError("model must not be empty.")
         if not isinstance(code_sha, str) or not code_sha.strip():
             raise ValueError("code_sha must not be empty.")
-        if max_calls != 5:
-            raise ValueError("P1-P5 capability probe requires exactly 5 calls.")
+        if scope not in ("p1_p5", "p1_diagnostic"):
+            raise ValueError("unsupported capability probe scope.")
+        expected_calls = 1 if scope == "p1_diagnostic" else 5
+        if max_calls != expected_calls:
+            raise ValueError(
+                f"{scope} capability probe requires exactly {expected_calls} calls."
+            )
         self._client = client
         self._model = model.strip()
         self._code_sha = code_sha.strip().lower()
+        self._scope = scope
         self._budget = ExternalCallBudget(max_calls=max_calls)
         self._clock = clock
         self._now = now
@@ -132,6 +155,8 @@ class ZhipuCapabilityProbe:
             validator=self._validate_baseline_text,
         )
         cases.append(p1)
+        if self._scope == "p1_diagnostic":
+            return self._report(cases)
         if p1.status != "passed":
             cases.extend(
                 self._skipped(case_id, capability, "p1_baseline_failed")
@@ -210,11 +235,13 @@ class ZhipuCapabilityProbe:
         validator: Callable[[Any], _ObservedResponse],
     ) -> tuple[CapabilityProbeCaseResult, Any | None]:
         started = self._clock()
+        safe_observation: _SafeResponseObservation | None = None
         try:
             raw = self._budget.run(
                 self._client.chat.completions.create,
                 **dict(request),
             )
+            safe_observation = _capture_safe_observation(raw)
             observed = validator(raw)
             elapsed_ms = max(0, round((self._clock() - started) * 1000))
             output_digest = _digest(observed.output_value)
@@ -223,36 +250,43 @@ class ZhipuCapabilityProbe:
                 capability=capability,
                 status="passed",
                 error_code=None,
-                latency_ms=elapsed_ms,
-                input_tokens=observed.usage.input_tokens,
-                output_tokens=observed.usage.output_tokens,
-                finish_reason=observed.finish_reason,
-                resolved_model=observed.resolved_model,
-                request_id_sha256=(
-                    _digest(observed.request_id)
-                    if observed.request_id is not None
-                    else None
+                response_received=True,
+                content_state=safe_observation.content_state,
+                reasoning_content_state=(
+                    safe_observation.reasoning_content_state
                 ),
-                tool_call_count=observed.tool_call_count,
+                latency_ms=elapsed_ms,
+                input_tokens=safe_observation.usage.input_tokens,
+                output_tokens=safe_observation.usage.output_tokens,
+                finish_reason=safe_observation.finish_reason,
+                resolved_model=safe_observation.resolved_model,
+                request_id_sha256=safe_observation.request_id_sha256,
+                tool_call_count=safe_observation.tool_call_count,
                 repair_count=0,
                 output_sha256=output_digest,
             )
             return case, observed.output_value
         except Exception as error:
             elapsed_ms = max(0, round((self._clock() - started) * 1000))
+            observation = safe_observation or _no_response_observation()
             return (
                 CapabilityProbeCaseResult(
                     case_id=case_id,
                     capability=capability,
                     status="failed",
                     error_code=_safe_error_code(error),
+                    response_received=observation.response_received,
+                    content_state=observation.content_state,
+                    reasoning_content_state=(
+                        observation.reasoning_content_state
+                    ),
                     latency_ms=elapsed_ms,
-                    input_tokens=0,
-                    output_tokens=0,
-                    finish_reason=None,
-                    resolved_model=None,
-                    request_id_sha256=None,
-                    tool_call_count=0,
+                    input_tokens=observation.usage.input_tokens,
+                    output_tokens=observation.usage.output_tokens,
+                    finish_reason=observation.finish_reason,
+                    resolved_model=observation.resolved_model,
+                    request_id_sha256=observation.request_id_sha256,
+                    tool_call_count=observation.tool_call_count,
                     repair_count=0,
                     output_sha256=None,
                 ),
@@ -276,6 +310,8 @@ class ZhipuCapabilityProbe:
             )
         )
         return CapabilityProbeReport(
+            schema_version="1.1",
+            probe_scope=self._scope,
             provider_id="zhipu",
             requested_model=self._model,
             code_sha=self._code_sha,
@@ -461,6 +497,9 @@ class ZhipuCapabilityProbe:
             capability=capability,
             status="skipped",
             error_code=reason,
+            response_received=False,
+            content_state="not_observed",
+            reasoning_content_state="not_observed",
             latency_ms=0,
             input_tokens=0,
             output_tokens=0,
@@ -500,6 +539,92 @@ def _common_observation(raw: Any) -> _ObservedResponse:
         )
     except Exception:
         raise _ProbeFailure("invalid_sdk_response") from None
+
+
+def _capture_safe_observation(raw: Any) -> _SafeResponseObservation:
+    choice = _first_choice(raw)
+    message = getattr(choice, "message", _MISSING)
+    usage = getattr(raw, "usage", None)
+    request_id = getattr(raw, "id", None)
+    tool_calls = (
+        getattr(message, "tool_calls", None) if message is not _MISSING else None
+    )
+    return _SafeResponseObservation(
+        response_received=True,
+        content_state=_classify_field(message, "content"),
+        reasoning_content_state=_classify_field(message, "reasoning_content"),
+        resolved_model=_safe_optional_text(getattr(raw, "model", None)),
+        finish_reason=_safe_optional_text(
+            getattr(choice, "finish_reason", None) if choice is not None else None
+        ),
+        usage=TokenUsage(
+            input_tokens=_safe_token_count(
+                getattr(usage, "prompt_tokens", 0) if usage is not None else 0
+            ),
+            output_tokens=_safe_token_count(
+                getattr(usage, "completion_tokens", 0) if usage is not None else 0
+            ),
+        ),
+        request_id_sha256=(
+            _digest(request_id)
+            if isinstance(request_id, str) and request_id
+            else None
+        ),
+        tool_call_count=_safe_collection_length(tool_calls),
+    )
+
+
+def _no_response_observation() -> _SafeResponseObservation:
+    return _SafeResponseObservation(
+        response_received=False,
+        content_state="not_observed",
+        reasoning_content_state="not_observed",
+        resolved_model=None,
+        finish_reason=None,
+        usage=TokenUsage(),
+        request_id_sha256=None,
+        tool_call_count=0,
+    )
+
+
+_MISSING = object()
+
+
+def _first_choice(raw: Any) -> Any | None:
+    try:
+        return raw.choices[0]
+    except Exception:
+        return None
+
+
+def _classify_field(container: Any, field_name: str) -> ResponseFieldState:
+    if container is _MISSING or container is None or not hasattr(container, field_name):
+        return "missing"
+    value = getattr(container, field_name)
+    if value is None:
+        return "null"
+    if not isinstance(value, str):
+        return "non_string"
+    return "non_empty" if value.strip() else "empty"
+
+
+def _safe_optional_text(value: Any) -> str | None:
+    return value.strip() if isinstance(value, str) and value.strip() else None
+
+
+def _safe_token_count(value: Any) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        return 0
+    return value
+
+
+def _safe_collection_length(value: Any) -> int:
+    if value is None or isinstance(value, (str, bytes, bytearray)):
+        return 0
+    try:
+        return max(0, len(value))
+    except (TypeError, ValueError):
+        return 0
 
 
 def _message(raw: Any) -> Any:

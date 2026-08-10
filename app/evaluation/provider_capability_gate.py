@@ -12,6 +12,15 @@ from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_vali
 NonBlankText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
 Sha256Text = Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
 CodeShaText = Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{40,64}$")]
+ResponseFieldState = Literal[
+    "not_observed",
+    "missing",
+    "null",
+    "empty",
+    "non_empty",
+    "non_string",
+]
+ProbeScope = Literal["p1_p5", "p1_diagnostic"]
 
 MANDATORY_CASE_IDS = (
     "P1_text_baseline",
@@ -31,6 +40,9 @@ class CapabilityProbeCaseResult(BaseModel):
     capability: Literal["text_chat", "structured_output", "tool_calling"]
     status: Literal["passed", "failed", "skipped"]
     error_code: NonBlankText | None = None
+    response_received: bool | None = None
+    content_state: ResponseFieldState = "not_observed"
+    reasoning_content_state: ResponseFieldState = "not_observed"
     latency_ms: int = Field(ge=0)
     input_tokens: int = Field(ge=0)
     output_tokens: int = Field(ge=0)
@@ -63,6 +75,39 @@ class CapabilityProbeCaseResult(BaseModel):
             )
         ):
             raise ValueError("skipped capability case cannot contain call metrics.")
+        if self.status == "skipped" and self.response_received is True:
+            raise ValueError("skipped capability case cannot claim a response.")
+        if self.status == "skipped" and (
+            self.content_state != "not_observed"
+            or self.reasoning_content_state != "not_observed"
+        ):
+            raise ValueError("skipped capability case cannot contain response states.")
+        if self.response_received is False:
+            if (
+                self.content_state != "not_observed"
+                or self.reasoning_content_state != "not_observed"
+            ):
+                raise ValueError("unreceived response cannot contain field states.")
+            if any(
+                (
+                    self.input_tokens,
+                    self.output_tokens,
+                    self.tool_call_count,
+                )
+            ) or any(
+                value is not None
+                for value in (
+                    self.finish_reason,
+                    self.resolved_model,
+                    self.request_id_sha256,
+                )
+            ):
+                raise ValueError("unreceived response cannot contain response metadata.")
+        if self.response_received is True and (
+            self.content_state == "not_observed"
+            or self.reasoning_content_state == "not_observed"
+        ):
+            raise ValueError("received response requires explicit field states.")
         return self
 
 
@@ -71,7 +116,8 @@ class CapabilityProbeReport(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["1.0"] = "1.0"
+    schema_version: Literal["1.0", "1.1"] = "1.1"
+    probe_scope: ProbeScope = "p1_p5"
     provider_id: NonBlankText
     requested_model: NonBlankText
     code_sha: CodeShaText
@@ -94,15 +140,25 @@ class CapabilityProbeReport(BaseModel):
         case_ids = tuple(case.case_id for case in self.cases)
         if len(case_ids) != len(set(case_ids)):
             raise ValueError("capability case ids must be unique.")
+        if self.schema_version == "1.1" and any(
+            case.response_received is None for case in self.cases
+        ):
+            raise ValueError(
+                "schema v1.1 requires explicit response_received for every case."
+            )
         executed_count = sum(case.status != "skipped" for case in self.cases)
         if self.calls_used != executed_count:
             raise ValueError("calls_used must equal the number of executed cases.")
         by_id = {case.case_id: case for case in self.cases}
-        expected_admission = all(
-            by_id.get(case_id) is not None
-            and by_id[case_id].status == "passed"
+        expected_admission = self.probe_scope == "p1_p5" and all(
+            by_id.get(case_id) is not None and by_id[case_id].status == "passed"
             for case_id in MANDATORY_CASE_IDS
         )
+        if self.probe_scope == "p1_diagnostic":
+            if self.max_calls != 1:
+                raise ValueError("p1_diagnostic requires a one-call budget.")
+            if case_ids != ("P1_text_baseline",):
+                raise ValueError("p1_diagnostic may contain only the P1 case.")
         if self.admitted is not expected_admission:
             raise ValueError("admitted must match all mandatory case results.")
         return self

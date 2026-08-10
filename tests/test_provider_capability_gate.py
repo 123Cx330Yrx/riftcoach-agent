@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
@@ -19,6 +20,9 @@ def passed_case(case_id: str) -> CapabilityProbeCaseResult:
         capability="text_chat",
         status="passed",
         error_code=None,
+        response_received=True,
+        content_state="non_empty",
+        reasoning_content_state="missing",
         latency_ms=12,
         input_tokens=3,
         output_tokens=2,
@@ -138,3 +142,79 @@ def test_executed_failure_consumes_budget_but_rejected_call_does_not() -> None:
     with pytest.raises(ExternalCallBudgetExceeded):
         budget.run(lambda: "never")
     assert budget.calls_used == 1
+
+
+def test_v10_result_remains_readable_with_unknown_observation() -> None:
+    result_path = Path(
+        "data/evaluation/results/provider_capabilities/zhipu_glm52_p1_p5.json"
+    )
+
+    report = CapabilityProbeReport.model_validate_json(
+        result_path.read_text(encoding="utf-8")
+    )
+
+    assert report.schema_version == "1.0"
+    assert report.probe_scope == "p1_p5"
+    assert report.cases[0].response_received is None
+    assert report.cases[0].content_state == "not_observed"
+    assert report.cases[0].reasoning_content_state == "not_observed"
+
+
+def test_v11_requires_explicit_consistent_response_observation() -> None:
+    case = passed_case("P1_text_baseline").model_dump()
+    case.pop("response_received")
+    case.pop("content_state")
+    case.pop("reasoning_content_state")
+
+    with pytest.raises(ValidationError, match="response_received"):
+        CapabilityProbeReport(
+            schema_version="1.1",
+            probe_scope="p1_diagnostic",
+            provider_id="zhipu",
+            requested_model="glm-test",
+            code_sha="b" * 40,
+            documentation_snapshot_date="2026-08-10",
+            run_timestamp_utc=datetime(2026, 8, 10, tzinfo=timezone.utc),
+            max_calls=1,
+            calls_used=1,
+            admitted=False,
+            cases=[case],
+        )
+
+    case.update(
+        response_received=True,
+        content_state="non_empty",
+        reasoning_content_state="missing",
+    )
+    report = CapabilityProbeReport(
+        schema_version="1.1",
+        probe_scope="p1_diagnostic",
+        provider_id="zhipu",
+        requested_model="glm-test",
+        code_sha="b" * 40,
+        documentation_snapshot_date="2026-08-10",
+        run_timestamp_utc=datetime(2026, 8, 10, tzinfo=timezone.utc),
+        max_calls=1,
+        calls_used=1,
+        admitted=False,
+        cases=[case],
+    )
+    assert report.admitted is False
+
+
+def test_skipped_case_rejects_claimed_response_observation() -> None:
+    with pytest.raises(ValidationError, match="skipped"):
+        CapabilityProbeCaseResult(
+            case_id="P2_structured_pass",
+            capability="structured_output",
+            status="skipped",
+            error_code="p1_baseline_failed",
+            response_received=True,
+            content_state="null",
+            reasoning_content_state="missing",
+            latency_ms=0,
+            input_tokens=0,
+            output_tokens=0,
+            tool_call_count=0,
+            repair_count=0,
+        )

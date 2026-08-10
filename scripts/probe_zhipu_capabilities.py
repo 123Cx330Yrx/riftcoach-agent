@@ -13,21 +13,31 @@ from typing import Any
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from app.evaluation.provider_capability_gate import CapabilityProbeReport
+from app.evaluation.provider_capability_gate import (
+    CapabilityProbeReport,
+    ProbeScope,
+)
 from app.providers.config import load_zhipu_settings
 from app.providers.zhipu_probe import ZhipuCapabilityProbe
 
 
-_DEFAULT_OUTPUT = Path(
-    "data/evaluation/results/provider_capabilities/zhipu_glm52_p1_p5.json"
-)
+_DEFAULT_OUTPUTS = {
+    "p1_p5": Path(
+        "data/evaluation/results/provider_capabilities/zhipu_glm52_p1_p5.json"
+    ),
+    "p1_diagnostic": Path(
+        "data/evaluation/results/provider_capabilities/"
+        "zhipu_glm52_p1_diagnostic.json"
+    ),
+}
 
 
 @dataclass(frozen=True)
 class ProbeCliOptions:
     confirm_real_call: bool
+    scope: ProbeScope
     max_calls: int
-    output: Path
+    output: Path | None
 
 
 def run_cli(
@@ -36,13 +46,19 @@ def run_cli(
     environ: Mapping[str, str] | None = None,
     repository_root: Path | None = None,
     client_factory: Callable[..., Any] = OpenAI,
+    code_sha_reader: Callable[[Path], str] | None = None,
 ) -> CapabilityProbeReport:
-    """Validate all safety gates, perform at most five calls, and persist evidence."""
+    """Validate safety gates, run the selected bounded scope, and persist evidence."""
 
     if not options.confirm_real_call:
         raise RuntimeError("Real provider calls require explicit confirmation.")
-    if options.max_calls != 5:
-        raise ValueError("The P1-P5 experiment requires an exact five-call budget.")
+    if options.scope not in _DEFAULT_OUTPUTS:
+        raise ValueError("Unsupported capability probe scope.")
+    expected_calls = 1 if options.scope == "p1_diagnostic" else 5
+    if options.max_calls != expected_calls:
+        raise ValueError(
+            f"{options.scope} requires an exact {expected_calls}-call budget."
+        )
 
     root = (
         repository_root
@@ -52,7 +68,7 @@ def run_cli(
     allowed_root = (
         root / "data/evaluation/results/provider_capabilities"
     ).resolve()
-    output = options.output
+    output = options.output or _DEFAULT_OUTPUTS[options.scope]
     if not output.is_absolute():
         output = root / output
     output = output.resolve()
@@ -62,7 +78,7 @@ def run_cli(
         )
 
     settings = load_zhipu_settings(environ)
-    code_sha = _read_code_sha(root)
+    code_sha = (code_sha_reader or _read_code_sha)(root)
     client = client_factory(
         api_key=settings.api_key,
         base_url=settings.base_url,
@@ -73,6 +89,7 @@ def run_cli(
         client=client,
         model=settings.model,
         code_sha=code_sha,
+        scope=options.scope,
         max_calls=options.max_calls,
     ).run()
 
@@ -102,12 +119,21 @@ def _parse_args(argv: Sequence[str] | None = None) -> ProbeCliOptions:
         action="store_true",
         help="Acknowledge that this command performs billable external calls.",
     )
-    parser.add_argument("--max-calls", type=int, default=5)
-    parser.add_argument("--output", type=Path, default=_DEFAULT_OUTPUT)
+    parser.add_argument(
+        "--scope",
+        choices=("p1_p5", "p1_diagnostic"),
+        default="p1_p5",
+    )
+    parser.add_argument("--max-calls", type=int)
+    parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
+    max_calls = args.max_calls
+    if max_calls is None:
+        max_calls = 1 if args.scope == "p1_diagnostic" else 5
     return ProbeCliOptions(
         confirm_real_call=args.confirm_real_call,
-        max_calls=args.max_calls,
+        scope=args.scope,
+        max_calls=max_calls,
         output=args.output,
     )
 

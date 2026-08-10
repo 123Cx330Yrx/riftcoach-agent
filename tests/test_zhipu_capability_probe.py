@@ -9,23 +9,29 @@ import pytest
 from app.providers.zhipu_probe import ZhipuCapabilityProbe
 
 
+MISSING = object()
+
+
 def sdk_response(
     *,
-    content: str | None,
+    content: object = MISSING,
+    reasoning_content: object = MISSING,
     tool_calls: list[SimpleNamespace] | None = None,
     finish_reason: str = "stop",
     request_id: str = "request-secret-id",
 ) -> SimpleNamespace:
+    message_fields = {"tool_calls": tool_calls or []}
+    if content is not MISSING:
+        message_fields["content"] = content
+    if reasoning_content is not MISSING:
+        message_fields["reasoning_content"] = reasoning_content
     return SimpleNamespace(
         id=request_id,
         model="glm-test-resolved",
         choices=[
             SimpleNamespace(
                 finish_reason=finish_reason,
-                message=SimpleNamespace(
-                    content=content,
-                    tool_calls=tool_calls or [],
-                ),
+                message=SimpleNamespace(**message_fields),
             )
         ],
         usage=SimpleNamespace(prompt_tokens=10, completion_tokens=5),
@@ -94,12 +100,19 @@ class FakeClient:
         self.chat = SimpleNamespace(completions=self.completions)
 
 
-def build_probe(client: FakeClient) -> ZhipuCapabilityProbe:
+def build_probe(
+    client: FakeClient,
+    *,
+    scope: str = "p1_p5",
+    max_calls: int = 5,
+) -> ZhipuCapabilityProbe:
     timestamps = iter([0.0, 0.01, 1.0, 1.02, 2.0, 2.03, 3.0, 3.04, 4.0, 4.05])
     return ZhipuCapabilityProbe(
         client=client,
         model="glm-test",
         code_sha="a" * 40,
+        scope=scope,
+        max_calls=max_calls,
         clock=lambda: next(timestamps),
         now=lambda: datetime(2026, 8, 9, tzinfo=timezone.utc),
     )
@@ -167,6 +180,68 @@ def test_p1_semantic_mismatch_fails_closed_without_more_calls() -> None:
     assert "RAW_SECRET" not in report.model_dump_json()
 
 
+def test_invalid_text_preserves_only_safe_response_observation() -> None:
+    client = FakeClient(
+        [
+            sdk_response(
+                content=None,
+                reasoning_content="RAW_REASONING_SECRET",
+                finish_reason="length",
+            )
+        ]
+    )
+
+    report = build_probe(client).run()
+    case = report.cases[0]
+
+    assert case.status == "failed"
+    assert case.error_code == "invalid_text_response"
+    assert case.response_received is True
+    assert case.content_state == "null"
+    assert case.reasoning_content_state == "non_empty"
+    assert case.resolved_model == "glm-test-resolved"
+    assert case.finish_reason == "length"
+    assert case.input_tokens == 10
+    assert case.output_tokens == 5
+    assert case.request_id_sha256 is not None
+    serialized = report.model_dump_json()
+    assert "RAW_REASONING_SECRET" not in serialized
+    assert "request-secret-id" not in serialized
+
+
+@pytest.mark.parametrize(
+    ("content", "expected_state"),
+    [
+        (MISSING, "missing"),
+        ("", "empty"),
+        (123, "non_string"),
+    ],
+)
+def test_content_shape_is_classified_without_persisting_value(
+    content: object,
+    expected_state: str,
+) -> None:
+    client = FakeClient([sdk_response(content=content)])
+
+    report = build_probe(client).run()
+
+    assert report.cases[0].content_state == expected_state
+    assert "123" not in report.model_dump_json()
+
+
+def test_sdk_error_records_that_no_response_was_received() -> None:
+    client = FakeClient([RuntimeError("RAW_SECRET upstream")])
+
+    report = build_probe(client).run()
+    case = report.cases[0]
+
+    assert case.response_received is False
+    assert case.content_state == "not_observed"
+    assert case.reasoning_content_state == "not_observed"
+    assert case.input_tokens == 0
+    assert case.output_tokens == 0
+
+
 def test_bad_tool_call_skips_p5_and_never_uses_the_fifth_call() -> None:
     client = FakeClient(
         [
@@ -193,4 +268,44 @@ def test_probe_requires_the_exact_five_call_budget() -> None:
             model="glm-test",
             code_sha="a" * 40,
             max_calls=4,
+        )
+
+
+def test_p1_diagnostic_scope_stops_after_one_successful_call() -> None:
+    client = FakeClient(
+        [
+            sdk_response(content="RIFTCOACH_PROVIDER_OK"),
+            sdk_response(content=PASS_JSON),
+        ]
+    )
+
+    report = build_probe(
+        client,
+        scope="p1_diagnostic",
+        max_calls=1,
+    ).run()
+
+    assert report.schema_version == "1.1"
+    assert report.probe_scope == "p1_diagnostic"
+    assert report.calls_used == 1
+    assert report.admitted is False
+    assert [case.case_id for case in report.cases] == ["P1_text_baseline"]
+    assert len(client.completions.calls) == 1
+
+
+@pytest.mark.parametrize(
+    ("scope", "max_calls"),
+    [("p1_diagnostic", 5), ("p1_p5", 1)],
+)
+def test_probe_scope_requires_its_exact_budget(
+    scope: str,
+    max_calls: int,
+) -> None:
+    with pytest.raises(ValueError, match="requires exactly"):
+        ZhipuCapabilityProbe(
+            client=FakeClient([]),
+            model="glm-test",
+            code_sha="a" * 40,
+            scope=scope,
+            max_calls=max_calls,
         )

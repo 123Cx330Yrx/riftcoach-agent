@@ -608,3 +608,11 @@
 - Any diagnostic rerun should be a separate one-call `p1_diagnostic` scope. Reusing the full P1-P5
   command would silently spend four more calls if P1 happened to pass, which exceeds the purpose of
   diagnosis and weakens user authorization boundaries.
+- Schema v1.0 compatibility must preserve absence as unknown (`response_received=null`); mapping it
+  to false would fabricate that no response existed. New v1.1 reports require an explicit boolean
+  for every executed or skipped case.
+- `p1_diagnostic` is evidence collection, not Provider admission. Even when its only P1 case passes,
+  the report remains `admitted=false`; full admission still requires the separate P1-P5 scope.
+- Scope and budget are one invariant: `p1_p5` requires exactly five calls and `p1_diagnostic`
+  exactly one. Separate default result paths prevent a diagnostic run from overwriting the immutable
+  first P1-P5 experiment.

@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.7 - 5D-6b（in progress: P1 diagnostic design review）
+Phase 6.7 - 5D-6b（in progress: P1 diagnostic offline closeout）
 
 ## Phases
 
@@ -89,9 +89,9 @@ Phase 6.7 - 5D-6b（in progress: P1 diagnostic design review）
 
 ## Next Step
 
-确认 `docs/plans/2026-08-10-p1-sanitized-failure-diagnostics-design.md` 后，在 5D-6b 内
-按 TDD 离线实现安全 observation 和单调用 diagnostic scope；该确认只授权离线代码，
-任何真实重跑仍需另行明确授权，不得提前进入生产 Adapter、第二厂商或 5D-7。
+按 `docs/plans/2026-08-10-p1-sanitized-failure-diagnostics-implementation.md` 执行
+5D-6b P1 诊断 Task 4：完成全量离线验收、状态收尾和真实调用授权门复核；不得在该
+收尾批次调用 GLM，也不得提前进入生产 Adapter、第二厂商或 5D-7。
 
 ## Decisions Made
 

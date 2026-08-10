@@ -483,3 +483,20 @@
   数据流、测试和单调用 diagnostic scope。本批没有修改功能代码或调用真实 Provider。
 - 设计状态同步后的治理预检与治理测试通过（`2 passed`），`git diff --check` 通过；
   当前唯一下一步是用户确认设计后的离线 TDD，确认不等于授权真实模型调用。
+- 用户以“继续下一轮”确认 P1 白名单诊断设计，只授权离线 TDD。实施前把旧 v1.0 的
+  未采集 `response_received` 收紧为 `null/unknown`，避免伪造 false；新增四任务实施
+  计划，本轮按 executing-plans 只执行首批 Task 1-3，不调用真实 GLM。
+- P1 诊断 Task 1 先得到 `3 failed, 4 passed` 的预期红灯；实现 v1.0/v1.1、probe scope、
+  response/content/reasoning 状态及一致性校验后为 `7 passed`。旧实验字节不变且读取为
+  unknown，新 v1.1 必须明确 true/false，diagnostic 永远不能误标为完整 Provider admitted。
+- Task 2 新测试先使旧 probe 出现 `9 failed, 1 passed`：v1.1 正确拒绝丢失 observation
+  的旧构造。实现冻结的白名单 `_SafeResponseObservation` 后，语义失败仍保留 model、
+  finish、usage、request hash 与字段形状；SDK 异常明确未收到响应，reasoning/content
+  原文不落盘。Task 1/2 聚焦回归为 `17 passed`。
+- Task 3 的 scope/CLI 红灯为 `16 failed, 1 passed`；实现 `p1_p5/5` 与
+  `p1_diagnostic/1` 精确配对、独立默认输出路径和 scope 控制流后，P1 成功也只调用
+  一次且 `admitted=false`。Task 1-3 聚焦回归为 `24 passed`，全部使用 Fake SDK，
+  没有读取本地 Key 或进行网络调用。
+- 首批 Task 1-3 的 Provider/structured/CLI 比例回归为 `82 passed, 42 subtests passed`；
+  compileall、治理预检和 `git diff --check` 通过。本轮未执行完整 pytest、未读取密钥、
+  未调用 GLM；这些与状态收尾留给下一批 Task 4。

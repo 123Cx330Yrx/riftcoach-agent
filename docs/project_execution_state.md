@@ -19,8 +19,8 @@ blocked_before: "5D-7"
 - 最后更新：2026-08-10
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6a 已完成
-- 唯一下一步：确认 5D-6b P1 脱敏诊断设计后，以离线 TDD 实现安全 observation 与
-  单调用 diagnostic scope；任何新真实调用仍需另行明确授权
+- 唯一下一步：执行 5D-6b P1 脱敏诊断 Task 4，完成完整离线验收、状态收尾与真实
+  调用授权门复核；该收尾批次不得调用真实 GLM
 - 禁止越过：5D-6b 完成前不得实现第二 Provider、完成 Prompt E2E Evaluation、进入
   5D-7 或统一 AgentRuntime；5D-6a 没有调用真实 Provider 或实现厂商原生 SDK 映射
 
@@ -46,7 +46,7 @@ blocked_before: "5D-7"
 | 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 已完成 | 共享 evidence converter、`SkillAgentDraftPreparer`、两个真实 Skill + Fake Provider + 真实 `knowledge.search`，成功/拒答/去重/冲突/失败与停止边界测试 |
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
-| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（P1 诊断设计待确认） | 原探针 TDD 已完成；真实 P1 仅调用 1 次后以 `invalid_text_response` 停止；白名单安全 observation 与单调用诊断 scope 已形成设计草案，尚未实现或重跑 |
+| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（P1 诊断离线收尾） | v1.1 白名单 observation、v1.0 unknown 兼容与 `p1_diagnostic/1` scope 已完成 Fake SDK TDD；尚未完整回归或再次调用 GLM |
 | 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 未开始 | 尚无新数据集或结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 

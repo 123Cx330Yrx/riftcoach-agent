@@ -1,6 +1,6 @@
 # 5D-6b P1 脱敏失败诊断设计
 
-> 状态：提案，等待用户确认后才进入离线 TDD。本文不授权任何真实 Provider 调用，
+> 状态：用户已于 2026-08-10 确认，进入离线 TDD。本文不授权任何真实 Provider 调用，
 > 不修改生产 `ZhipuProvider`，也不进入 5D-6b Task 4。
 
 ## 1. 现在究竟在测试什么
@@ -81,7 +81,7 @@ raw SDK response（仅瞬时存在）
 公开结果只新增以下机器字段：
 
 ```text
-response_received: bool
+response_received: bool | null  # null 只用于旧 v1.0 未采集证据
 content_state:
   not_observed | missing | null | empty | non_empty | non_string
 reasoning_content_state:
@@ -129,8 +129,9 @@ SDK 返回响应
 `CapabilityProbeCaseResult` 继续要求 failed case 没有 `output_sha256`；只有响应层元数据可以
 保留。skipped case 仍然没有调用指标，所有状态为 `not_observed`。
 
-公开 Schema 升到 `1.1`。旧 `1.0` 结果保持字节不变；解析器接受旧版并为新增字段提供
-保守默认值，新运行才写 `1.1`，不重写历史实验来伪造当时没有采集的证据。
+公开 Schema 升到 `1.1`。旧 `1.0` 结果保持字节不变；解析器接受旧版并把未采集的
+`response_received` 表示为 `null/unknown`，而不是伪造为 false。新 `1.1` 结果必须明确
+写 true/false；新运行才写 `1.1`，不重写历史实验来伪造当时没有采集的证据。
 
 ## 6. 诊断重跑边界
 
