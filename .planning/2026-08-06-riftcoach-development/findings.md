@@ -599,3 +599,12 @@
 - Local `.env` uses product label `LLM_PROVIDER=glm`, while the registry/config contract identifies
   this adapter as `zhipu`. The experiment normalized only the child process to `zhipu`; this naming
   mismatch is configuration taxonomy, not a model capability failure.
+- P1 diagnosis compared three choices: preserve only the current error code, persist the raw SDK
+  response locally, or project a strict metadata allowlist. The allowlist is preferred because it
+  distinguishes response shape without adding a raw prompt/output data lifecycle.
+- The minimum useful safe projection is response-received state, content/reasoning-content shape,
+  resolved model, finish reason, usage, request-ID hash and tool-call count. Presence of reasoning
+  content must never be interpreted as permission to publish or as a passed text response.
+- Any diagnostic rerun should be a separate one-call `p1_diagnostic` scope. Reusing the full P1-P5
+  command would silently spend four more calls if P1 happened to pass, which exceeds the purpose of
+  diagnosis and weakens user authorization boundaries.

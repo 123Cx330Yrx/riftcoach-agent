@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.7 - 5D-6b（in progress: P1 failure diagnosis gate）
+Phase 6.7 - 5D-6b（in progress: P1 diagnostic design review）
 
 ## Phases
 
@@ -89,9 +89,9 @@ Phase 6.7 - 5D-6b（in progress: P1 failure diagnosis gate）
 
 ## Next Step
 
-在 5D-6b 内先设计 P1 `invalid_text_response` 的脱敏诊断补强，明确哪些已规范化元数据
-可以安全保留以及是否值得重新授权一次 baseline 调用；在新授权前不得重跑真实调用，
-也不得提前修改生产 Adapter、选择第二厂商或进入 5D-7。
+确认 `docs/plans/2026-08-10-p1-sanitized-failure-diagnostics-design.md` 后，在 5D-6b 内
+按 TDD 离线实现安全 observation 和单调用 diagnostic scope；该确认只授权离线代码，
+任何真实重跑仍需另行明确授权，不得提前进入生产 Adapter、第二厂商或 5D-7。
 
 ## Decisions Made
 
@@ -156,6 +156,7 @@ Phase 6.7 - 5D-6b（in progress: P1 failure diagnosis gate）
 | 5D-6b 实施计划 Next Step 只写实施文件与 Task，漏掉 canonical checkpoint 字面键 | 1 | 治理预检在功能代码前阻止；补回 `5D-6b` 后重跑，不改变阶段或任务范围 |
 | 5D-6b 宽回归命令猜测了不存在的 `tests/test_provider_structured.py` | 1 | pytest 未收集任何测试；先列出真实测试路径，再改跑 `test_structured_output.py` 与实际评测测试，获得有效回归证据 |
 | P1 改为精确哨兵校验后，P4 失败案例的旧夹具仍返回泛化 `ok` | 1 | 严格边界正确让案例提前停在 P1；只把该夹具改为精确哨兵，保留 P4 才是目标失败点并重跑完整回归 |
+| 5D-6b P1 诊断恢复时猜错 ADR-0011 文件名 | 1 | 只读命令未改文件；先用 `rg --files docs/adr` 列出真实路径，再读取 `0011-compose-skill-agent-loop-through-harness-preparation.md` |
 | 原始 5C-1 至 5C-6 未持久化，文档误写 5C 完成 | 1 | 恢复完整账本，建立根级约束和活动计划，并修正所有冲突状态 |
 | 旧规划目录无 active pointer 且停在 2026-08-01 | 1 | 新建持续开发计划并写入 `.planning/.active_plan` |
 | `session-logs` 说明依赖的 `jq` 在本机不可用 | 1 | 使用 `rg` 和 PowerShell `ConvertFrom-Json` 流式读取同一原始 JSONL |

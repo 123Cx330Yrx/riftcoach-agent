@@ -469,3 +469,17 @@
   超时、连接或 HTTP 状态错误。但现有脱敏失败记录没有保留 finish reason、resolved model
   和 usage，因此不能进一步判断空内容原因，也不能据此断言 GLM 不支持 RiftCoach。
   按计划停止 Task 4，下一步只允许设计 P1 诊断补强与新的显式调用授权。
+
+## 2026-08-10
+
+- 用户以“继续下一步”授权 canonical 唯一动作：5D-6b P1 脱敏诊断补强设计与离线
+  实现；本轮不重新调用真实 GLM，不进入生产 Adapter Task 4，也不选择第二 Provider。
+- 已按强制顺序恢复 canonical state、活动计划、需求/路线/能力矩阵与 5D-6b 设计；
+  治理预检通过，起始 `HEAD` 与 `origin/main` 均为 `9333b66`，工作树干净。
+- 恢复时猜错 ADR-0011 文件名，只有只读命令失败且未改代码；列出真实 ADR 目录后
+  改读 `0011-compose-skill-agent-loop-through-harness-preparation.md`，错误已写入账本。
+- 已比较“只留错误码”“本地保存原始响应”“公开白名单元数据”三种 P1 诊断方案，
+  推荐第三种；新增初学者设计草案，定义安全 observation、Schema v1.1 兼容、失败
+  数据流、测试和单调用 diagnostic scope。本批没有修改功能代码或调用真实 Provider。
+- 设计状态同步后的治理预检与治理测试通过（`2 passed`），`git diff --check` 通过；
+  当前唯一下一步是用户确认设计后的离线 TDD，确认不等于授权真实模型调用。
