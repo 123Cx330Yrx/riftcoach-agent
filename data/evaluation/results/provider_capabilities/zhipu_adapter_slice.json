@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "probe_scope": "adapter_protocol",
+  "provider_id": "zhipu",
+  "requested_model": "glm-5.2",
+  "code_sha": "f1d171d5591a511f9d6a9788a1bc8068172b0d51",
+  "documentation_snapshot_date": "2026-08-09",
+  "run_timestamp_utc": "2026-08-12T18:03:55.859492Z",
+  "max_calls": 3,
+  "calls_used": 3,
+  "admitted": true,
+  "cases": [
+    {
+      "case_id": "A1_structured_contract",
+      "status": "passed",
+      "error_code": null,
+      "external_calls": 1,
+      "latency_ms": 2344,
+      "input_tokens": 427,
+      "output_tokens": 59,
+      "response_count": 1,
+      "resolved_models": [
+        "glm-5.2"
+      ],
+      "finish_reasons": [
+        "stop"
+      ],
+      "request_id_sha256": [
+        "55ed75bb526f7ca3b2aa82a3e5b92269feaac1ab1b3fefa9cee9b3c4732c91c4"
+      ],
+      "output_sha256": "52e0981ffdf89cfbe7c21f9d03b0337483c2546dcaeb7f5eca454c9fad447579",
+      "tool_call_count": 0,
+      "tool_execution_count": 0,
+      "tool_arguments_sha256": null,
+      "tool_result_sha256": null
+    },
+    {
+      "case_id": "A2_agent_tool_round_trip",
+      "status": "passed",
+      "error_code": null,
+      "external_calls": 2,
+      "latency_ms": 5360,
+      "input_tokens": 562,
+      "output_tokens": 36,
+      "response_count": 2,
+      "resolved_models": [
+        "glm-5.2",
+        "glm-5.2"
+      ],
+      "finish_reasons": [
+        "tool_calls",
+        "stop"
+      ],
+      "request_id_sha256": [
+        "692ca0901e1f634080b2e73675d2bff1248e47b6eb532cec52f3e1afece5d7bd",
+        "751cf21617f95e6706588cf661309a98b1e5121aeeab34faf5ef299fda90f34c"
+      ],
+      "output_sha256": "b8e1581bbee7a74eb6755501c2be669718a40bc99516143f04826cf751dd92e1",
+      "tool_call_count": 1,
+      "tool_execution_count": 1,
+      "tool_arguments_sha256": "61761343984a584f2264c6d2803663c9a95c3796718ea1518c9744d7db22f18b",
+      "tool_result_sha256": "445f578a388b68049269b39d9842e769b2cb00952c3442b98de231f97b4588f2"
+    }
+  ],
+  "estimated_cost": null,
+  "cost_note": "No verified unit-price snapshot was applied."
+}

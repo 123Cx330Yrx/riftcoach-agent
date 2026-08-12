@@ -88,6 +88,13 @@ Provider/AgentLoop/ToolRuntime/ReviewHarness、pytest。
 3. 调用计入第二层 7 次总预算，不得和 P1-P5 各自无限增长。
 4. 保存脱敏协议结果；失败时保持相应 capability 未准入并停止领域 Harness。
 
+**Execution result (2026-08-13):** 控制器提交
+`f1d171d5591a511f9d6a9788a1bc8068172b0d51` 先通过 GitHub Actions run
+`31625669630`。随后只执行一次 `adapter_protocol/3`，A1 structured contract 使用
+1 call，A2 现有 AgentLoop + 固定只读 `knowledge.search` 使用 2 calls，总计 3/3，
+全部 passed 且 `admitted=true`。脱敏结果为 `zhipu_adapter_slice.json`；Task 6 仍未
+开始，必须先离线设计与 Task 5 合计 7 次的预算核算，不能把两层上限叠成 10 次。
+
 ### Task 6: One real recent-form domain slice
 
 **Files:**

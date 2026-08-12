@@ -388,6 +388,24 @@
 - `CURRENT`：5D-6b 仍进行中；下一步先提交并公开验证该控制器，再执行一次精确
   3-call 真实 Adapter 协议切片。不进入领域 Skill、第二 Provider 或 5D-7。
 
+### 2026-08-13：5D-6b Adapter Protocol Slice 真实结果
+
+- `PUBLIC-VERIFIED`：协议控制器提交 `f1d171d5591a511f9d6a9788a1bc8068172b0d51`
+  已推送；GitHub Actions run `31625669630` 对该精确 SHA 全部通过，CI 不含真实模型调用。
+- `REAL-EVIDENCE`：随后只执行一次显式 `adapter_protocol/3`，SDK 自动重试为 0；A1
+  structured contract 使用 1 call，A2 现有 AgentLoop + 固定只读 `knowledge.search`
+  使用 2 calls，总计 3/3，二者均 passed，`admitted=true`。
+- `OBSERVED`：A1 为 427/59 tokens、2344 ms；A2 为 562/36 tokens、5360 ms，两个
+  Provider response 的 finish sequence 为 `tool_calls -> stop`，工具调用/执行均为 1。
+- `SANITIZED`：结果的 code SHA 指向上述公开 CI 成功提交；公开文件只包含安全状态、
+  计数、model/finish metadata 与哈希，不含 Prompt、模型原文、observation、原始 request
+  ID、异常或 Key。无可靠单价快照，成本保持 null。
+- `BOUNDARY`：这次证据准入生产 Zhipu Adapter 的最小 structured/tool 协议切片，不
+  准入 `recent-form-review`、ReviewHarness 报告质量、最终模型选择或 5D 整体。
+- `CURRENT`：5D-6b 仍进行中；唯一下一步是 Recent-form Domain Slice 的离线设计/TDD，
+  先解决原定累计 7-call 上限与已用 3 calls 的核算，再决定真实领域执行。不进入第二
+  Provider 或 5D-7。
+
 ## 当前不变的宏观路线
 
 ```text

@@ -19,10 +19,10 @@ blocked_before: "5D-7"
 - 最后更新：2026-08-13
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6a 已完成；
-  5D-6b 已完成低层 P1-P5、生产 Adapter 离线映射和 Adapter Protocol Slice 离线 TDD
-- 唯一下一步：先把 5D-6b Real Adapter Protocol Slice 控制器提交并通过精确 SHA 的
-  公开 CI，再使用同一生产 `ZhipuProvider` 执行一次精确 3-call 真实协议切片；失败即停，
-  不执行领域 Skill、第二 Provider 或 5D-7
+  5D-6b 已完成低层 P1-P5、生产 Adapter 离线映射和真实 Adapter Protocol Slice
+- 唯一下一步：进入 5D-6b Recent-form Domain Slice 的离线设计与 TDD，复用同一
+  `ZhipuProvider`、真实 Skill/Harness 组合，先冻结与已用 3-call 协议切片一致的累计
+  7-call 预算核算和脱敏结果合同；本步不执行真实领域调用、第二 Provider 或 5D-7
 - 禁止越过：5D-6b 完成前不得实现第二 Provider、完成 Prompt E2E Evaluation、进入
   5D-7 或统一 AgentRuntime；离线 Adapter 映射不等于真实 Adapter 或领域 Skill 准入
 
@@ -48,7 +48,7 @@ blocked_before: "5D-7"
 | 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 已完成 | 共享 evidence converter、`SkillAgentDraftPreparer`、两个真实 Skill + Fake Provider + 真实 `knowledge.search`，成功/拒答/去重/冲突/失败与停止边界测试 |
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
-| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（P1-P5、生产 Adapter 离线映射与 3-call 协议控制器 TDD 已完成；真实协议切片待执行） | 最终受控微探针在公开 SHA `6a15a00` 上使用 5/5 calls 并全部通过；生产 `ZhipuProvider` 已离线映射；`AdapterProtocolSliceRunner` 现用一个预算 Provider 组合严格 structured request、现有 AgentLoop 和固定只读 `knowledge.search`，聚焦 `22 passed`、完整回归 `415 passed, 103 subtests passed`；尚无真实 Adapter 或领域 Skill 准入证据 |
+| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（P1-P5 与真实 3-call Adapter 协议切片已通过；真实领域 Skill 切片待设计/执行） | 最终微探针在公开 SHA `6a15a00` 上 5/5 通过；生产协议切片在公开 CI 成功 SHA `f1d171d` 上精确使用 3/3 calls：A1 严格 structured contract 与 A2 现有 AgentLoop + 固定只读 `knowledge.search` 均 passed，`admitted=true`；这准入最小 Adapter 协议，不等于领域 Skill、报告质量或最终模型选型 |
 | 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 未开始 | 尚无新数据集或结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
@@ -150,14 +150,18 @@ blocked_before: "5D-7"
   `max_calls=3`，OpenAI-compatible SDK 自动重试固定为 0；公开结果只保存安全错误码、
   调用/Token/响应计数和 SHA-256，不保存 Prompt、模型原文、observation 或原始异常；
 - 当前本地完整回归：`415 passed, 103 subtests passed`；协议/CLI/结果合同聚焦回归
-  `22 passed`；compileall 与 diff check 通过。上述协议切片新增结果仍是 Fake
-  Provider/Fake SDK 离线证据，尚未执行真实 3-call 请求。
+  `22 passed`；compileall 与 diff check 通过；
+- 协议控制器提交 `f1d171d5591a511f9d6a9788a1bc8068172b0d51` 的 GitHub Actions
+  run `31625669630` 全部通过后，只执行一次真实 `adapter_protocol/3`：A1 使用 1 call，
+  A2 使用 2 calls，总计 3/3，二者均 passed，`admitted=true`；
+- 真实 A1 为 427/59 tokens、2344 ms；A2 为 562/36 tokens、5360 ms，finish sequence
+  为 `tool_calls -> stop`，工具调用/执行均为 1；未取得可靠单价快照，因此成本保持 null，
+  不伪造为 0。
 
 当前不能声称：
 
-- GLM 或任何真实 Provider 已完成生产 Adapter/领域 Skill 准入；当前只完成隔离微探针的
-  P1-P5 低层协议准入、生产 `ZhipuProvider` 离线映射和协议切片离线控制器，尚未用同一
-  Adapter 执行真实 Provider-neutral structured/tool round trip；
+- GLM 或任何真实 Provider 已完成领域 Skill/Harness 准入；当前生产 `ZhipuProvider`
+  只通过最小 Provider-neutral structured/tool 协议切片，尚未执行真实近期复盘领域链路；
 - 已经用真实 Provider 执行 Skill Agent，或真实模型生成的新 Coach 报告已经通过
   当前端到端领域评测；
 - 默认 ContextSizer 等于真实厂商 tokenizer 或真实 Token Usage；
@@ -175,10 +179,10 @@ blocked_before: "5D-7"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6a；5D-6b 已完成 P1-P5、生产 Adapter 离线映射和精确 3-call 协议控制器，下一步为公开验证后执行真实 Adapter 协议切片 | 阶段 5、整个 5D 或真实 Provider 准入已完成 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6a；5D-6b 已完成 P1-P5 和真实 Adapter 最小协议切片，下一步为近期复盘领域切片离线设计/TDD | 阶段 5、整个 5D、领域 Skill 或报告质量准入已完成 |
 | 项目理解 | GLM-5.2 默认 Thinking 会挤占短控制输出预算；Provider Adapter 是厂商协议双向翻译边界，工具别名不能泄漏到 Manifest/Runtime | 微探针或 Fake SDK 映射就等于报告质量、最终模型选型或真实 Skill 准入 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5D-6b 生产 `ZhipuProvider` 离线映射已进入 `main` 提交 `75159e9`；GitHub Actions run `31619089608` 对精确 SHA `75159e9e8501d246986520a5341e2d82e3f8196d` 全部通过；此前 P1-P5 真实微探针证据仍保留，当前仍没有正式网页部署 | 离线映射、低层微探针和 CI 就等于完整 GLM Agent、最终厂商选型或已有可运行 Web Agent |
+| GitHub/部署 | 5D-6b 协议控制器已进入 `main` 提交 `f1d171d`；GitHub Actions run `31625669630` 对精确 SHA `f1d171d5591a511f9d6a9788a1bc8068172b0d51` 全部通过；真实 3-call 脱敏结果进入本次证据提交，当前仍没有正式网页部署 | 最小协议切片、CI 和一次真实成功就等于完整 GLM Agent、领域质量准入、最终厂商选型或已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -299,5 +303,6 @@ Evaluation 模型同时提供 JSON Schema 和本地验证；非法 JSON、额外
 
 当前检查点为 `5D-6b Real Provider Capability Gate`。两层准入、调用预算和第二
 Provider 决策门已经确认；P1-P5 微探针、生产 Adapter 离线映射和精确 3-call 协议
-控制器的离线 TDD 已经完成。下一步先公开验证该控制器，再执行一次真实 Adapter
-structured/tool 协议切片；不得提前进入领域 Skill、第二 Provider 或 5D-7。
+切片已经真实通过。下一步为 Recent-form Domain Slice 的离线设计/TDD，先把累计 7-call
+预算与本轮已使用的 3 calls 对齐，再组合真实 Skill/Harness；不得直接执行真实领域调用、
+选择第二 Provider 或进入 5D-7。

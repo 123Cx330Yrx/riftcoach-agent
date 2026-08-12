@@ -710,3 +710,11 @@
   Focused tests now pass 22/22 and full regression is `415 passed, 103 subtests passed`.
 - This remains offline Fake Provider/Fake SDK evidence. The real three-call slice must run only
   after this controller is committed, pushed and verified at an exact public CI SHA.
+- Commit `f1d171d5591a511f9d6a9788a1bc8068172b0d51` passed GitHub Actions run
+  `31625669630`. The single real adapter-protocol execution then used exactly 3/3 calls and
+  admitted both cases: strict structured output and the existing AgentLoop tool round trip.
+- Real sanitized observations were A1 427/59 tokens at 2344 ms and A2 562/36 tokens at 5360 ms;
+  the tool path returned `tool_calls` then `stop`, with one tool proposal and one execution.
+- This admits the production adapter's minimum protocol, not a domain Skill. The next design must
+  reconcile the broader seven-call domain ceiling with the three calls already consumed rather
+  than silently treating Task 5 and Task 6 as separate unlimited experiments.

@@ -29,7 +29,7 @@
 | A07 | Skill Contract | `recent-form-review` 与 `single-match-review` 均有 Manifest、SKILL.md、Pydantic I/O、工具白名单和预算 | 阶段 5B 基础 + 5C-5 前第二个真实合同 | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill；真实内部 Skill 出现后才设计调用模式 | 坏 Manifest、Schema、权限漂移、预算和发布边界测试 | 已完成 |
 | A08 | Skill Router | 5C-1 至 5C-6 与退出复核均完成；development 23/23、holdout 11/12；selected 决策锁定 Skill name/version；ADR-0010 暂缓 LLM fallback | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试、退出复核和 ADR | 已完成 |
 | A09 | Prompt/Context Engineering | Harness Prompt V0、SKILL.md 指令；5D-2 已实现 trust-typed Context Builder，5D-3 已实现完整累计消息估算与逐轮 Context 门禁 | 阶段 5D-5E | 5E 加 Prompt 版本/Trace，阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、回归和消融测试 | 部分完成 |
-| A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral 合同；5D-6b 微探针通过两类真实 Evaluation JSON，生产 Zhipu Adapter 已离线映射，3-call 协议控制器已组合严格 decoder 与 AgentLoop | 阶段 5D | 公开验证后执行真实 Adapter 协议与领域切片；仅在真实阻断或模型选型门打开时比较一个候选 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移、Thinking 预算、调用预算和修复上限测试 | 部分完成 |
+| A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral 合同；5D-6b 微探针通过两类真实 Evaluation JSON，生产 Zhipu Adapter 的 3-call structured/tool 协议切片已真实通过 | 阶段 5D | 设计并执行真实领域 Skill/Harness 切片；仅在真实阻断或模型选型门打开时比较一个候选 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移、Thinking 预算、调用预算和修复上限测试 | 部分完成 |
 | A11 | AgentRuntime V1 | 5D-1/2 已建立执行与 Context 边界，5D-3 已编译 Manifest 权限/预算并加入有界停止，5D-4 已产生可审计 draft/evidence，5D-5 已通过唯一 ReviewHarness 组合为 typed terminal output | 阶段 5D-5E | 5D-6a/6b/7 补结构化输出、真实 Provider 与领域评测；5E 统一 run/stream/event/trace/usage；阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 部分完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有，任务级选择未实现 | 阶段 5F 或真实业务触发点 | 按质量、能力、成本选择，不按厂商数量堆叠 | 同一评测集、故障降级、成本和延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
@@ -176,10 +176,10 @@ Pydantic 模型生成 Schema 并严格验证结果，非 JSON、fence、截断�
 Thinking 后 5/5 通过并 `admitted=true`；生产 Zhipu Adapter 随后已用离线 TDD 映射
 四类消息、JSON mode、Tool Calling、可逆工具别名和严格坏响应边界。精确 3-call
 `AdapterProtocolSliceRunner` 又用共享预算 Provider 组合严格 structured request、现有
-AgentLoop 和固定只读 `knowledge.search`；当前仍是离线 Fake SDK 证据，不是生产 Adapter
-或领域 Skill 真实准入。
+AgentLoop 和固定只读 `knowledge.search`；在公开 CI 成功 SHA `f1d171d` 上真实执行后，
+A1/A2 都 passed 且 `admitted=true`。这准入最小生产 Adapter 协议，不准入领域 Skill。
 统一 `run/stream/event/trace/usage` 表面继续属于 5E。
 
-唯一下一步仍为 5D-6b：先让协议控制器通过精确 SHA 的公开 CI，再执行一次有界 3-call
-真实 Adapter structured/tool 验证。不得提前进入领域 Skill、第二 Provider 或 5D-7，
-也不能把微探针、Fake SDK 映射或离线控制器称为完整 Provider/Skill 准入。
+唯一下一步仍为 5D-6b：先离线设计/TDD 化真实近期复盘 Skill/Harness 切片，并把原定
+累计 7-call 上限与已经真实使用的 3 calls 对齐。不得直接执行领域调用、选择第二
+Provider 或进入 5D-7，也不能把最小协议准入称为报告质量或完整 Skill 准入。

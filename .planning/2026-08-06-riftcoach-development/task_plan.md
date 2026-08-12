@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.9 - 5D-6b（in progress: adapter protocol controller offline TDD complete; public verification then exact 3-call real execution next）
+Phase 6.9 - 5D-6b（in progress: real adapter protocol slice passed; recent-form domain slice offline design/TDD next）
 
 ## Phases
 
@@ -84,18 +84,18 @@ Phase 6.9 - 5D-6b（in progress: adapter protocol controller offline TDD complet
   repair 和 Harness fail-closed 降级均有 Fake Provider TDD 证据。
 - `5D-6b` 进行中：disabled-thinking 下 P1-P5 低层协议 5/5 真实通过；生产
   `ZhipuProvider` 已用离线 TDD 映射四类消息、JSON mode、Function Calling、请求级
-  工具别名与 fail-closed 响应边界；精确 3-call Adapter Protocol Slice 控制器也已完成
-  离线 TDD，尚未执行真实 Adapter 协议或领域 Skill 切片。
+  工具别名与 fail-closed 响应边界；精确 3-call Adapter Protocol Slice 已经真实
+  3/3 passed 并 admitted，尚未执行领域 Skill/Harness 切片。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-先提交并公开验证 5D-6b Real Adapter Protocol Slice 控制器；精确 SHA 的 CI 通过后，
-用同一生产 `ZhipuProvider` 执行一次精确 3-call structured request 与
-`AgentLoop + fixed read-only knowledge.search` 往返。失败即停，不执行领域 Skill、
-第二厂商或 5D-7。
+进入 5D-6b Recent-form Domain Slice 的离线设计与 TDD：复用同一生产
+`ZhipuProvider`、真实 `recent-form-review` 与现有唯一 ReviewHarness，先冻结原设计
+累计 7-call 上限如何扣除已用 3-call 协议切片，并建立脱敏结果与失败停止合同。本步
+不执行真实领域调用、第二厂商或 5D-7。
 
 ## Decisions Made
 

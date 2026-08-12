@@ -624,3 +624,12 @@
   compileall 与 diff check 通过。
 - 当前仍是离线证据。唯一下一步：提交、推送并核验精确 SHA 的公开 CI，随后按 RQ-027
   执行一次精确 3-call 真实 Adapter 协议切片；不执行领域 Skill、第二 Provider 或 5D-7。
+- 协议控制器提交 `f1d171d5591a511f9d6a9788a1bc8068172b0d51` 已推送；GitHub
+  Actions run `31625669630` 对精确 SHA 全部通过。
+- 随后只运行一次真实 `adapter_protocol/3`：A1 structured 使用 1 call，A2 AgentLoop
+  工具往返使用 2 calls，总计 3/3，全部 passed，`admitted=true`。结果 code SHA 与公开
+  CI 提交一致，并通过 Pydantic 复读与原文/异常/ID 脱敏检查。
+- 真实 A1 为 427/59 tokens、2344 ms；A2 为 562/36 tokens、5360 ms，finish sequence
+  为 `tool_calls -> stop`，工具调用和成功执行均为 1。成本因无可靠单价快照保持 null。
+- 当前 5D-6b 尚未完成。唯一下一步改为 Recent-form Domain Slice 离线设计/TDD，先对齐
+  原定累计 7-call 上限与已用 3 calls；本轮不直接执行领域 Skill、第二 Provider 或 5D-7。
