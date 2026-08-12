@@ -1,7 +1,8 @@
 # 5D-6b P1 脱敏失败诊断设计
 
-> 状态：用户已于 2026-08-10 确认，进入离线 TDD。本文不授权任何真实 Provider 调用，
-> 不修改生产 `ZhipuProvider`，也不进入 5D-6b Task 4。
+> 状态：用户已于 2026-08-10 确认设计；离线 TDD 与完整离线验收已于 2026-08-12
+> 完成。本文仍不授权任何真实 Provider 调用，不修改生产 `ZhipuProvider`，也不进入
+> production Adapter 实现。
 
 ## 1. 现在究竟在测试什么
 
@@ -167,6 +168,12 @@ SDK 返回响应
 7. baseline-only CLI 未确认时不创建客户端，预算严格为 1；
 8. 默认 pytest/CI 不进行真实网络调用；
 9. 完整回归、compileall、密钥/运行数据检查和治理预检通过。
+
+2026-08-12 的离线收尾结果：完整回归 `383 passed, 95 subtests passed`；Provider/
+结构化输出比例回归 `82 passed, 42 subtests passed`；development 与 independent
+holdout 两套 RAG 门禁均为 `1.0`；compileall、Harness SDK 边界、tracked secret/run-data、
+Harness dry-run 和项目治理检查均通过。该证据只说明诊断程序已具备安全运行条件，
+不说明 GLM 已通过 P1。
 
 ## 8. 本设计不做什么
 

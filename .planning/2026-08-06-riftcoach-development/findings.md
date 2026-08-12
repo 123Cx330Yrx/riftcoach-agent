@@ -616,3 +616,8 @@
 - Scope and budget are one invariant: `p1_p5` requires exactly five calls and `p1_diagnostic`
   exactly one. Separate default result paths prevent a diagnostic run from overwriting the immutable
   first P1-P5 experiment.
+- The 2026-08-12 full offline closeout passed `383` tests plus `95` subtests. This is a regression
+  guarantee for the repository and a readiness signal for the diagnostic program; it is not new
+  evidence about GLM because no SDK client, API key or model endpoint was used.
+- Authorization is a control-plane input, not a conclusion inferred from test success. The next
+  real P1 diagnostic must remain a separate user-approved action even though all offline gates pass.

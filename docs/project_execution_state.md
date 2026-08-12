@@ -16,11 +16,11 @@ blocked_before: "5D-7"
 
 ## 状态元数据
 
-- 最后更新：2026-08-10
+- 最后更新：2026-08-12
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6a 已完成
-- 唯一下一步：执行 5D-6b P1 脱敏诊断 Task 4，完成完整离线验收、状态收尾与真实
-  调用授权门复核；该收尾批次不得调用真实 GLM
+- 唯一下一步：等待用户单独决定是否授权 5D-6b 的一次真实 `p1_diagnostic/1` 调用；
+  未获得明确真实调用授权前，不读取 API Key、不创建真实客户端、不调用 GLM
 - 禁止越过：5D-6b 完成前不得实现第二 Provider、完成 Prompt E2E Evaluation、进入
   5D-7 或统一 AgentRuntime；5D-6a 没有调用真实 Provider 或实现厂商原生 SDK 映射
 
@@ -46,7 +46,7 @@ blocked_before: "5D-7"
 | 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 已完成 | 共享 evidence converter、`SkillAgentDraftPreparer`、两个真实 Skill + Fake Provider + 真实 `knowledge.search`，成功/拒答/去重/冲突/失败与停止边界测试 |
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
-| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（P1 诊断离线收尾） | v1.1 白名单 observation、v1.0 unknown 兼容与 `p1_diagnostic/1` scope 已完成 Fake SDK TDD；尚未完整回归或再次调用 GLM |
+| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（等待一次 P1 诊断授权） | v1.1 白名单 observation、v1.0 unknown 兼容与 `p1_diagnostic/1` scope 已完成 Fake SDK TDD 和完整离线回归；尚未再次调用 GLM |
 | 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 未开始 | 尚无新数据集或结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
@@ -134,8 +134,9 @@ blocked_before: "5D-7"
 - 两个真实 Skill 已在 Fake Provider 下完整走过 Catalog、Router、ExecutionBoundary、
   ContextBuilder、AgentLoop、真实本地 `knowledge.search`、唯一 ReviewHarness 与 typed
   output；该证据不等于真实 Provider Tool Calling；
-- 当前本地完整回归：`343 passed, 80 subtests passed`；compileall、diff check 与状态
-  同步后的治理预检均通过。
+- 当前本地完整回归：`383 passed, 95 subtests passed`；Provider/structured 比例回归
+  `82 passed, 42 subtests passed`；两套 RAG 门禁、compileall、Harness SDK boundary、
+  tracked secret/run-data、Harness dry-run 与治理预检均通过。上述均为离线证据。
 
 当前不能声称：
 
@@ -158,9 +159,9 @@ blocked_before: "5D-7"
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6a，下一步为 5D-6b | 阶段 5 或整个 5D 已完成 |
-| 项目理解 | 5D-6a 已讲清“机器控制数据的 Schema 合同”与 Markdown 报告的区别、一次修复和 fail-closed 边界 | Fake Provider 通过就等于真实模型质量或 GLM 原生结构化输出已完成 |
+| 项目理解 | 5D-6b 已区分离线诊断就绪、一次真实 P1 观察、完整 P1-P5 准入和生产 Adapter 四层证据 | 完整离线回归通过就等于 GLM 已准入 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | `main` 已包含脱敏 P1 实验结果提交 `9333b66`；GitHub Actions run `31303109515` 对精确 SHA `9333b661e9356164dadf9bd50f9c12fe14d0ea1a` 全部通过；仍没有正式网页部署 | P1 失败记录与 CI 通过就等于真实 GLM 已准入或已有可运行 Web Agent |
+| GitHub/部署 | `main` 已包含 P1 脱敏诊断 Tasks 1-3 提交 `f7a2f87`；GitHub Actions run `31371997487` 对精确 SHA `f7a2f8753eca7660ba0582a4e685364461bb317f` 全部通过；仍没有正式网页部署 | 诊断代码与 CI 通过就等于真实 GLM 已准入或已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

@@ -72,4 +72,9 @@ scope 同时决定调用预算和独立输出路径。原始响应只在调用�
 - Focused result/Probe/CLI tests: `24 passed`.
 - Proportional Provider/structured regression: `82 passed, 42 subtests passed`.
 - No real Provider call, API-key read, production Adapter change or P2-P5 execution occurred.
-- Task 4 remains the only next batch.
+- Task 4 completed offline on 2026-08-12: full regression `383 passed, 95 subtests passed`;
+  both RAG gates, compileall, Harness SDK boundary, tracked secret/run-data check, Harness dry-run
+  and governance passed.
+- The plan is complete. The repository now stops at a separate authorization gate: only a new,
+  explicit user approval may permit one `p1_diagnostic/1` real call. That approval would not permit
+  P2-P5, production Adapter work, a second Provider or 5D-7.

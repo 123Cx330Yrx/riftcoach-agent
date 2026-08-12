@@ -500,3 +500,18 @@
 - 首批 Task 1-3 的 Provider/structured/CLI 比例回归为 `82 passed, 42 subtests passed`；
   compileall、治理预检和 `git diff --check` 通过。本轮未执行完整 pytest、未读取密钥、
   未调用 GLM；这些与状态收尾留给下一批 Task 4。
+
+## 2026-08-12
+
+- 用户以“继续下一步”授权 canonical 唯一动作：5D-6b P1 脱敏诊断 Task 4 离线收尾；
+  本轮没有授权或执行真实 GLM 调用。
+- 起始治理预检通过，工作树干净，`HEAD` 与 `origin/main` 均为 `f7a2f87`。
+- 完整本地回归为 `383 passed, 95 subtests passed`；Provider/structured 比例回归仍为
+  `82 passed, 42 subtests passed`。
+- RAG development 与 independent holdout 门禁全部通过，Recall/MRR/nDCG 均为 `1.0`；
+  holdout abstention 与 citation support 也为 `1.0`。
+- compileall、Harness SDK boundary、tracked secret/run-data 检查和 Harness dry-run 均
+  通过；dry-run 产物只写入系统临时目录。
+- 离线实施计划现已完成。唯一下一步收紧为等待用户单独授权一次真实
+  `p1_diagnostic/1`；未获授权不得读取 Key、创建真实客户端或调用 GLM，授权也不包含
+  P2-P5、生产 Adapter、第二 Provider 或 5D-7。

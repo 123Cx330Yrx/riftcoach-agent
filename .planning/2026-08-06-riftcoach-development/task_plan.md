@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.7 - 5D-6b（in progress: P1 diagnostic offline closeout）
+Phase 6.7 - 5D-6b（in progress: awaiting explicit P1 diagnostic authorization）
 
 ## Phases
 
@@ -89,9 +89,9 @@ Phase 6.7 - 5D-6b（in progress: P1 diagnostic offline closeout）
 
 ## Next Step
 
-按 `docs/plans/2026-08-10-p1-sanitized-failure-diagnostics-implementation.md` 执行
-5D-6b P1 诊断 Task 4：完成全量离线验收、状态收尾和真实调用授权门复核；不得在该
-收尾批次调用 GLM，也不得提前进入生产 Adapter、第二厂商或 5D-7。
+等待用户单独决定是否授权 5D-6b 的一次真实 `p1_diagnostic/1` 调用。未获得包含
+“真实调用”含义的明确授权前，不读取本地 API Key、不创建真实客户端、不调用 GLM；
+即使授权，也只运行 P1 一次，不运行 P2-P5，不进入生产 Adapter、第二厂商或 5D-7。
 
 ## Decisions Made
 
@@ -150,6 +150,8 @@ Phase 6.7 - 5D-6b（in progress: P1 diagnostic offline closeout）
 
 | Error | Attempt | Resolution |
 |---|---:|---|
+| Task 4 收尾把唯一下一步写成授权门时漏掉 canonical `5D-6b` 字面键 | 1 | 治理预检阻止接受状态；保持授权范围不变，只在唯一下一步补回检查点键后重跑 |
+| Task 4 陈旧状态扫描把 `*` 直接放进 Windows `rg` 路径参数 | 1 | 命令在只读扫描阶段返回路径语法错误且未运行后续门禁；改为显式列出两个设计文件，不重复通配路径 |
 | 5D-6b 状态/决策同步补丁把 `截至` 误当独立一行 | 1 | `apply_patch` 原子拒绝且无部分修改；拆为 canonical state 与真实相邻日期文本两个补丁 |
 | canonical status 改为进行中时移除了治理要求的“唯一下一步”固定元数据行 | 1 | 保留 `status: in_progress`，恢复唯一一条“唯一下一步”并在该行注明当前只做实验设计 |
 | 提交前把多个 Git 检查用分号串行，cached diff 的 EOF 空行失败未阻止后续 commit | 1 | 立即删除多余 EOF 空行并补记错误；后续检查与 commit 分开调用，成功检查后才提交 |
