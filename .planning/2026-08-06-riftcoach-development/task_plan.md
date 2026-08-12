@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.8 - 5D-6b（in progress: P1/P2 passed; controlled P3/P4 diagnosis）
+Phase 6.9 - 5D-6b（in progress: P1-P5 admitted; production adapter offline TDD next）
 
 ## Phases
 
@@ -89,9 +89,9 @@ Phase 6.8 - 5D-6b（in progress: P1/P2 passed; controlled P3/P4 diagnosis）
 
 ## Next Step
 
-完成 5D-6b 受控 Thinking / Tool arguments 探针的离线验证并先通过公开 CI，再依据
-RQ-027 执行一次最多 5 calls、零 SDK 自动重试、依赖失败即停的真实 P1-P5。该授权
-不自动进入生产 Adapter、第二厂商或 5D-7。
+进入 5D-6b Production Zhipu Adapter Mapping 的离线 TDD：把低层探针已经真实证明的
+disabled-thinking、JSON mode、Function Calling 和 Tool Observation 映射到现有
+Provider-neutral 请求/响应合同。本步不执行领域真实切片、第二厂商或 5D-7。
 
 ## Decisions Made
 

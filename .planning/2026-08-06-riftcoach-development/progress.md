@@ -565,3 +565,12 @@
 - 随后的真实轮在 P1 使用 1/5 calls 后按依赖停止：content empty、reasoning non-empty、
   `finish_reason=length`、22/128 tokens，P2-P5 全部 skipped。该结果证明 P1 也必须显式
   disabled-thinking；新增测试先让旧实现失败，再做单行请求策略修正，不原样重跑。
+- P1 修正后的聚焦回归为 `30 passed`，完整回归仍为 `389 passed, 95 subtests passed`；
+  compileall、治理、结果 Schema/脱敏和 diff check 通过。修正提交 `6a15a00` 已推送，
+  GitHub Actions run `31614645836` 对精确 SHA 全部通过。
+- 最终受控 P1-P5 使用 5/5 calls 并全部 passed，报告 `admitted=true`。所有 case 的
+  reasoning state 为 missing；P4 返回一个合法 ToolCall，P5 在固定只读 Observation 后
+  返回 final text。结果只保存脱敏元数据和哈希，未保存模型正文或思维链。
+- 新增公开结果集合合同测试，CI 将遍历 provider capability 目录全部 5 份 JSON 并按
+  版本化 Pydantic 模型复读。最终聚焦回归 `31 passed`，完整回归
+  `390 passed, 95 subtests passed`；compileall、治理和 diff check 通过。

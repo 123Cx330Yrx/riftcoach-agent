@@ -160,6 +160,17 @@ def test_v10_result_remains_readable_with_unknown_observation() -> None:
     assert report.cases[0].reasoning_content_state == "not_observed"
 
 
+def test_all_public_provider_capability_results_match_versioned_contract() -> None:
+    result_root = Path("data/evaluation/results/provider_capabilities")
+    result_paths = sorted(result_root.glob("*.json"))
+
+    assert result_paths
+    for result_path in result_paths:
+        CapabilityProbeReport.model_validate_json(
+            result_path.read_text(encoding="utf-8")
+        )
+
+
 def test_v11_requires_explicit_consistent_response_observation() -> None:
     case = passed_case("P1_text_baseline").model_dump()
     case.pop("response_received")

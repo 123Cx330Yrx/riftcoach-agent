@@ -353,7 +353,11 @@
 - `REAL-EVIDENCE`：首个受控版本在公开 SHA `860c203` 上只使用 1/5 calls；P1 因仍采用
   默认 Thinking 而耗尽 128 output tokens，content empty、reasoning non-empty、finish
   `length`，P2-P5 依赖跳过。P1 随后也纳入 disabled-thinking，历史失败原样保留。
-- `CURRENT`：5D-6b 仍进行中；不进入生产 Adapter、第二 Provider 或 5D-7。
+- `REAL-EVIDENCE`：最终版本在公开 SHA `6a15a00` 上使用 5/5 calls；P1 文本、P2 简单
+  JSON、P3 嵌套 issue JSON、P4 Function Call、P5 Tool Observation final 全部通过，
+  `admitted=true`，且所有 case 的 reasoning state 都为 missing。
+- `CURRENT`：5D-6b 仍进行中；唯一下一步为生产 Zhipu Adapter 离线映射 TDD，不进入
+  第二 Provider 或 5D-7。
 
 ## 当前不变的宏观路线
 

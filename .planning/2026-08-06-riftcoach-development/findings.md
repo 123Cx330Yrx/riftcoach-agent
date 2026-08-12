@@ -653,3 +653,11 @@
   Thinking failure family and shows that the one successful diagnostic was not a stable basis for
   leaving P1 implicit. P1 must also disable Thinking because its purpose is transport baseline,
   not sampling the provider's default reasoning policy.
+- The final controlled run at public code SHA `6a15a00aaf57d160af3f147b7219b65927b8bb24`
+  used exactly 5/5 calls and passed P1-P5 with `admitted=true`. With Thinking disabled, reasoning
+  content was missing in every case; P1/P2/P3/P5 returned final content with finish `stop`, while
+  P4 returned one tool call with finish `tool_calls`. This admits the isolated low-level protocol,
+  not the production adapter or a real RiftCoach Skill slice.
+- Sanitized per-case usage/latency was: P1 16/8 tokens and 1391 ms; P2 568/36 and 984 ms; P3
+  617/85 and 1250 ms; P4 204/21 and 3172 ms; P5 270/18 and 3718 ms. Official unit pricing remains
+  unverified, so estimated cost correctly remains null rather than fabricated as zero.

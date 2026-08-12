@@ -106,7 +106,9 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - 结构化请求必须经过 capability negotiation；当前 Zhipu text-only Adapter 会在 SDK
   调用前拒绝，不能把 Fake Provider 成功说成真实厂商已支持；
 - 真实 Provider 与第二 Provider 选择必须等 5D-6b 用同一领域任务评测，不提前锁定；
-  当前 P1/P2 已真实通过，P3/P4 暴露默认 Thinking 和旧参数验收边界，仍不构成准入；
+  早期 P1/P2 通过而 P3/P4 暴露默认 Thinking 和旧参数验收边界的结果已保留；
+- 最终 P1-P5 在显式 disabled-thinking 后 5/5 低层通过；生产 Adapter 仍须离线映射与
+  真实领域切片，不能把微探针结果写成 GLM Agent 已上线；
 - 该方案由 ADR-0011 接受；当前只实现到 5D-6a，不等于整个 5D、LangGraph 或
   Multi-Agent 已实现。
 
