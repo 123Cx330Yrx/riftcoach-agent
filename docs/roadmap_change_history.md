@@ -339,6 +339,19 @@
 - `CURRENT`：5D-6a 完成；唯一下一步为 5D-6b Real Provider Capability Gate。该检查点
   先设计真实 GLM 准入实验和第二 Provider 决策门，不得直接进入 5D-7。
 
+### 2026-08-12：5D-6b P1-P5 部分证据与受控诊断
+
+- `REAL-EVIDENCE`：完整重跑使用 4/5 calls；P1 文本和 P2 简单 Evaluation JSON 通过。
+  P3 在默认 Thinking 下以 1024 output tokens、`finish_reason=length` 和空 final content
+  失败；P4 返回一个 ToolCall，但未通过旧的 fixture 精确参数相等；P5 依赖跳过。
+- `DECISION`：不原样重试。官方文档确认 GLM-5.2 默认 Thinking，且交错式工具思考
+  需要回传完整 reasoning；RiftCoach V1 不保存思维链，因此 P2-P5 受控复核显式关闭
+  Thinking，并继续由本地 Pydantic/Tool JSON Schema 掌握严格验收。
+- `BOUNDARY`：Schema 合法的 query 不再要求与 fixture 逐字相同；额外键、类型/范围、
+  主题语义和 disabled 后仍出现 reasoning 均 fail closed。新的真实调用仍最多 5 次、
+  零 SDK 自动重试，先提交探针并通过公开 CI。
+- `CURRENT`：5D-6b 仍进行中；不进入生产 Adapter、第二 Provider 或 5D-7。
+
 ## 当前不变的宏观路线
 
 ```text

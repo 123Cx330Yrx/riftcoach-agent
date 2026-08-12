@@ -19,8 +19,9 @@ blocked_before: "5D-7"
 - 最后更新：2026-08-12
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6a 已完成
-- 唯一下一步：等待用户单独决定是否授权 5D-6b 的一次完整 `p1_p5/5` 重跑；未获得
-  明确真实调用授权前，不再调用 GLM，也不进入生产 Adapter、第二 Provider 或 5D-7
+- 唯一下一步：完成 5D-6b 的受控 Thinking / Tool arguments 微探针离线验收，先让探针
+  代码通过公开 CI，再按 RQ-027 执行一次最多 5 calls 的真实 P1-P5；不进入生产
+  Adapter、第二 Provider 或 5D-7
 - 禁止越过：5D-6b 完成前不得实现第二 Provider、完成 Prompt E2E Evaluation、进入
   5D-7 或统一 AgentRuntime；5D-6a 没有调用真实 Provider 或实现厂商原生 SDK 映射
 
@@ -46,7 +47,7 @@ blocked_before: "5D-7"
 | 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 已完成 | 共享 evidence converter、`SkillAgentDraftPreparer`、两个真实 Skill + Fake Provider + 真实 `knowledge.search`，成功/拒答/去重/冲突/失败与停止边界测试 |
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
-| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（P1 诊断已通过，等待完整探针授权） | `p1_diagnostic/1` 已在 `6ee7476` 上真实调用一次：P1 通过、1/1 call、`admitted=false`；P2-P5 仍无新证据 |
+| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（完整重跑已得到 P1/P2 通过和 P3/P4 Bad Case，受控诊断实现中） | `p1_diagnostic/1` 在 `6ee7476` 上通过；`p1_p5/5` 在 `dbcce14` 上使用 4/5 calls：P1/P2 通过，P3 因默认 Thinking 耗尽 1024 输出 tokens，P4 返回一个 ToolCall 但未通过旧精确参数合同，P5 依赖跳过，`admitted=false` |
 | 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 未开始 | 尚无新数据集或结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
@@ -141,8 +142,9 @@ blocked_before: "5D-7"
 
 当前不能声称：
 
-- GLM 或任何真实 Provider 已实现或映射原生结构化输出；当前只实测通过基础文本 P1，
-  JSON mode、Function Calling 与 Tool Observation 仍未重新运行；
+- GLM 或任何真实 Provider 已完成生产 Adapter 准入；当前真实证据仅支持文本 P1、简单
+  Evaluation JSON P2 和 Function Call 入口可达，复杂 P3、参数合同 P4 与 Tool
+  Observation P5 仍未通过同一受控轮；
 - 已经用真实 Provider 执行 Skill Agent，或真实模型生成的新 Coach 报告已经通过
   当前端到端领域评测；
 - 默认 ContextSizer 等于真实厂商 tokenizer 或真实 Token Usage；
@@ -161,9 +163,9 @@ blocked_before: "5D-7"
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6a，下一步为 5D-6b | 阶段 5 或整个 5D 已完成 |
-| 项目理解 | 5D-6b 已真实观察到 GLM-5.2 的 P1 文本通过，同时保持 diagnostic `admitted=false` | 一次 P1 通过就等于完整 Provider 准入 |
+| 项目理解 | 5D-6b 已真实观察到 P1/P2 通过；P3 暴露默认 Thinking 与输出预算冲突，P4 产生 ToolCall 但旧参数合同未通过 | 部分协议信号就等于完整 Provider 或真实 Skill 准入 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | `main` 已包含真实 P1 脱敏诊断结果 `a05551e`；GitHub Actions run `31611988551` 对精确 SHA `a05551e7ea97422f70722b2fefee4e2349a643f8` 全部通过；仍没有正式网页部署 | P1 结果与 CI 通过就等于完整 GLM 准入或已有可运行 Web Agent |
+| GitHub/部署 | `main` 已包含真实 P1 脱敏诊断结果；新的完整 P1-P5 脱敏结果与受控诊断代码尚未提交/公开验证；仍没有正式网页部署 | 本地新结果或 P1 CI 就等于完整 GLM 准入或已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

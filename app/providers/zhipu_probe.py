@@ -11,6 +11,8 @@ from datetime import datetime, timezone
 from typing import Any
 
 import openai
+from jsonschema import Draft202012Validator
+from jsonschema.exceptions import ValidationError as JsonSchemaValidationError
 
 from app.evaluation.coach_report import (
     EvaluationResponseModel,
@@ -45,6 +47,7 @@ _TOOL_SPEC = {
         },
     },
 }
+_DISABLED_THINKING = {"thinking": {"type": "disabled"}}
 _PASS_PAYLOAD = {
     "score": 100,
     "verdict": "pass",
@@ -203,6 +206,7 @@ class ZhipuCapabilityProbe:
                 "tool_choice": "auto",
                 "temperature": 0.0,
                 "max_tokens": 512,
+                "extra_body": _DISABLED_THINKING,
             },
             validator=self._validate_tool_request,
         )
@@ -315,7 +319,7 @@ class ZhipuCapabilityProbe:
             provider_id="zhipu",
             requested_model=self._model,
             code_sha=self._code_sha,
-            documentation_snapshot_date="2026-08-09",
+            documentation_snapshot_date="2026-08-12",
             run_timestamp_utc=self._now(),
             max_calls=self._budget.max_calls,
             calls_used=self._budget.calls_used,
@@ -350,6 +354,7 @@ class ZhipuCapabilityProbe:
             "response_format": {"type": "json_object"},
             "temperature": 0.0,
             "max_tokens": 1024,
+            "extra_body": _DISABLED_THINKING,
         }
 
     def _tool_final_request(self, state: Mapping[str, Any]) -> dict[str, Any]:
@@ -401,6 +406,7 @@ class ZhipuCapabilityProbe:
             "tool_choice": "auto",
             "temperature": 0.0,
             "max_tokens": 512,
+            "extra_body": _DISABLED_THINKING,
         }
 
     @staticmethod
@@ -456,7 +462,11 @@ class ZhipuCapabilityProbe:
     @staticmethod
     def _validate_tool_request(raw: Any) -> _ObservedResponse:
         observed = _common_observation(raw)
-        tool_calls = list(getattr(_message(raw), "tool_calls", None) or [])
+        message = _message(raw)
+        reasoning_state = _classify_field(message, "reasoning_content")
+        if reasoning_state not in ("missing", "null", "empty"):
+            raise _ProbeFailure("unexpected_reasoning_content")
+        tool_calls = list(getattr(message, "tool_calls", None) or [])
         if len(tool_calls) != 1:
             raise _ProbeFailure("tool_call_not_observed")
         call = tool_calls[0]
@@ -474,7 +484,16 @@ class ZhipuCapabilityProbe:
             arguments = json.loads(arguments_text)
         except (TypeError, ValueError):
             raise _ProbeFailure("invalid_tool_arguments") from None
-        if not isinstance(arguments, dict) or arguments != _TOOL_ARGUMENTS:
+        if not isinstance(arguments, dict):
+            raise _ProbeFailure("invalid_tool_arguments")
+        try:
+            Draft202012Validator(
+                _TOOL_SPEC["function"]["parameters"]
+            ).validate(arguments)
+        except JsonSchemaValidationError:
+            raise _ProbeFailure("invalid_tool_arguments") from None
+        query = arguments["query"]
+        if "前15分钟" not in query or "死亡" not in query:
             raise _ProbeFailure("invalid_tool_arguments")
         state = {"id": call_id.strip(), "name": name, "arguments": arguments}
         return _ObservedResponse(

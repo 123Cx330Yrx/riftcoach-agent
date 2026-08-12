@@ -31,6 +31,7 @@
 | RQ-024 | 2026-08-06 | 生效 | Skill 数量由独立工作流价值决定，不为维持历史数字复制已有 Harness 能力 | 首批 Skill 修正为 `recent-form-review` 与 `single-match-review`；事实审查保留为强制 `EvaluatorStep`，取消未实现的 invocation mode 与 `report-fact-check` Skill；未来只有真实独立用例和 Bad Case 才重新评估内部 Skill |
 | RQ-025 | 2026-08-06 | 生效 | Router 评测必须区分历史基线、可校准 development 与规则冻结后的 independent holdout；holdout 失败不得反向调规则 | 数据集强制声明角色、污染记录、案例数量和候选 Skill 版本快照；默认 CLI 拒绝 holdout，污染后必须退休并升级版本 |
 | RQ-026 | 2026-08-07 | 生效 | 5C V1 暂缓 LLM Router fallback；一个小型合成语义 Bad Case 不足以引入模型调用 | 保留确定性 Router 与冻结规则；优先类型化入口和澄清。只有新鲜数据出现多个独立失败族、Provider 结构化输出与质量/延迟/成本/故障评测通过后，才用新 ADR 重新评估 |
+| RQ-027 | 2026-08-12 | 生效 | 用户授权 5D-6b 内后续有明确实验目的、脚本硬预算和脱敏边界的真实 Provider 测试不必逐次询问，并要求完整验证 | 只覆盖当前已批准检查点内的有界测试，不等于无限调用、盲目重试、扩大厂商数量或越过阶段；每次仍须先离线设计/TDD、设置调用上限、失败即停并记录成本与证据 |
 
 ## 新条目格式
 

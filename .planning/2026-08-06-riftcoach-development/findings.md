@@ -633,3 +633,17 @@
 - The earlier P1 empty-text failure is therefore not stable across these two observations. This
   does not establish its cause and does not justify hiding it. P2-P5 remain skipped in the original
   run and absent from the diagnostic scope, so full Provider admission is still unsupported.
+- The separately authorized full rerun at code SHA `dbcce145dc458379772ec36583ebb41b0787a4bb`
+  used 4/5 calls: P1 and P2 passed; P3 returned empty content, non-empty reasoning,
+  `finish_reason=length`, and exactly 1024 output tokens; P4 returned one tool call but failed the
+  old exact-arguments equality; P5 was skipped. The report remained `admitted=false` and no raw
+  model or reasoning text was persisted.
+- Current official Zhipu documentation says GLM-5.2 defaults to Thinking and permits
+  `thinking={"type":"disabled"}`. It also requires complete, unmodified reasoning content to be
+  returned when interleaved Thinking is used with tools. RiftCoach's V1 runtime intentionally does
+  not persist or replay chain-of-thought, so structured-control and tool-protocol rounds must
+  explicitly disable Thinking rather than silently discard reasoning.
+- The original P4 validator was stricter than the frozen design: it required the entire arguments
+  object to equal one fixture, while the design promised a valid JSON object matching the tool
+  schema. The controlled probe will keep strict JSON Schema, `top_k`, extra-key and topic checks,
+  but will not require semantically valid query wording to be byte-identical.

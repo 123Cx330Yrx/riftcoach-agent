@@ -144,12 +144,110 @@ def test_runs_p1_to_p5_and_exposes_only_sanitized_evidence() -> None:
     assert all(case.output_sha256 for case in report.cases)
 
     calls = client.completions.calls
+    assert "extra_body" not in calls[0]
+    assert all(
+        call["extra_body"] == {"thinking": {"type": "disabled"}}
+        for call in calls[1:]
+    )
     assert calls[1]["response_format"] == {"type": "json_object"}
     assert calls[2]["response_format"] == {"type": "json_object"}
     assert calls[3]["tools"][0]["function"]["name"] == "knowledge_search"
     assert calls[3]["tool_choice"] == "auto"
     assert calls[4]["messages"][-1]["role"] == "tool"
     assert calls[4]["messages"][-1]["tool_call_id"] == "call-123"
+
+
+def test_tool_arguments_are_validated_by_contract_not_fixture_wording() -> None:
+    client = FakeClient(
+        [
+            sdk_response(content="RIFTCOACH_PROVIDER_OK"),
+            sdk_response(content=PASS_JSON),
+            sdk_response(content=ISSUE_JSON),
+            sdk_response(
+                content=None,
+                tool_calls=[
+                    tool_call(
+                        arguments=(
+                            '{"query":"检索前15分钟死亡相关复盘知识",'
+                            '"top_k":1}'
+                        )
+                    )
+                ],
+                finish_reason="tool_calls",
+            ),
+            sdk_response(content="根据工具结果生成最终回答"),
+        ]
+    )
+
+    report = build_probe(client).run()
+
+    assert report.admitted is True
+    forwarded_arguments = json.loads(
+        client.completions.calls[4]["messages"][2]["tool_calls"][0][
+            "function"
+        ]["arguments"]
+    )
+    assert forwarded_arguments == {
+        "query": "检索前15分钟死亡相关复盘知识",
+        "top_k": 1,
+    }
+
+
+@pytest.mark.parametrize(
+    "arguments",
+    [
+        '{"query":"前15分钟死亡","top_k":1,"extra":true}',
+        '{"query":"前15分钟死亡","top_k":"1"}',
+        '{"query":"前15分钟死亡","top_k":0}',
+        '{"query":"装备选择","top_k":1}',
+    ],
+)
+def test_tool_arguments_fail_closed_on_schema_or_topic_mismatch(
+    arguments: str,
+) -> None:
+    client = FakeClient(
+        [
+            sdk_response(content="RIFTCOACH_PROVIDER_OK"),
+            sdk_response(content=PASS_JSON),
+            sdk_response(content=ISSUE_JSON),
+            sdk_response(
+                content=None,
+                tool_calls=[tool_call(arguments=arguments)],
+                finish_reason="tool_calls",
+            ),
+        ]
+    )
+
+    report = build_probe(client).run()
+
+    assert report.calls_used == 4
+    assert report.cases[3].status == "failed"
+    assert report.cases[3].error_code == "invalid_tool_arguments"
+    assert report.cases[4].error_code == "p4_tool_request_failed"
+
+
+def test_non_empty_reasoning_after_disabled_thinking_stops_before_p5() -> None:
+    client = FakeClient(
+        [
+            sdk_response(content="RIFTCOACH_PROVIDER_OK"),
+            sdk_response(content=PASS_JSON),
+            sdk_response(content=ISSUE_JSON),
+            sdk_response(
+                content=None,
+                reasoning_content="RAW_REASONING_SECRET",
+                tool_calls=[tool_call()],
+                finish_reason="tool_calls",
+            ),
+        ]
+    )
+
+    report = build_probe(client).run()
+
+    assert report.calls_used == 4
+    assert report.cases[3].error_code == "unexpected_reasoning_content"
+    assert report.cases[3].reasoning_content_state == "non_empty"
+    assert report.cases[4].status == "skipped"
+    assert "RAW_REASONING_SECRET" not in report.model_dump_json()
 
 
 def test_p1_failure_skips_all_remaining_cases_without_more_calls() -> None:

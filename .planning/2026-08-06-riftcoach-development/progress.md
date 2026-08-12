@@ -537,3 +537,26 @@
 - 脱敏实验结果提交 `a05551e` 已推送；GitHub Actions run `31611988551` 对精确 SHA
   `a05551e7ea97422f70722b2fefee4e2349a643f8` 全部通过。CI 没有本地 `.env`，不会产生
   额外模型调用；它只验证提交后的结果合同与仓库回归。
+- 用户明确授权完整 P1-P5 和此后 5D-6b 内有脚本硬预算、无盲目重试的真实测试；该
+  长期控制面要求记录为 RQ-027，不扩大到第二 Provider、生产 Adapter 或后续阶段。
+- 完整 `p1_p5/5` 在 `dbcce14` 上只执行一次并使用 4/5 calls：P1/P2 passed；P3 为
+  `finish_reason=length`、1024 output tokens、reasoning non-empty/content empty；P4 返回
+  1 个 ToolCall 但旧参数精确相等合同失败；P5 按依赖 skipped。结果独立落盘且
+  `admitted=false`，没有自动重试。
+- 恢复诊断时误写 `app/evaluation/zhipu_probe.py` 路径，并猜测不存在的
+  `ProviderCapabilityReport` 类名；两个只读命令失败、未改文件。随后先从实际导出和
+  `rg --files` 定位到 `app/providers/zhipu_probe.py` 与 `CapabilityProbeReport`，不再原样
+  猜测。
+- 官方文档复核确认 GLM-5.2 默认 Thinking，交错式 Thinking + Tool 需要回传完整
+  reasoning；受控方案决定 P2-P5 显式 disabled-thinking，继续由本地 Pydantic/JSON
+  Schema 掌握严格验收，不保存或回传思维链。
+- 新增受控诊断设计与实施计划。Fake SDK 红灯精确得到 3 failed/16 passed，分别命中
+  缺少 disabled-thinking、query 逐字相等误拒和 P4 reasoning 未阻断 P5；最小实现后
+  `tests/test_zhipu_capability_probe.py` 为 19 passed。尚未再次调用真实 GLM。
+- 首次多文件状态补丁因活动计划真实换行与截断输出推测不一致而被 `apply_patch` 原子
+  拒绝，未产生半更新；改为先读取真实相邻行并拆分小补丁，随后完成同步。
+- 受控探针提交前比例回归为 `56 passed, 21 subtests passed`，完整回归为
+  `389 passed, 95 subtests passed`；第一轮结果通过 Schema v1.1 复读，RAG development
+  与 holdout 门禁、compileall、治理、Harness SDK boundary、tracked secret/run-data、
+  结果脱敏扫描、diff check 与 Harness dry-run 均通过。下一步先公开验证探针代码 SHA，
+  再执行新的有界真实调用。
