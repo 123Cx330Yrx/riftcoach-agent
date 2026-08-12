@@ -78,6 +78,8 @@ scope 同时决定调用预算和独立输出路径。原始响应只在调用�
 - The first public closeout run exposed an unbounded OpenAI SDK major-version drift. The verified
   contract is now pinned to `openai>=2,<3`; a clean TEMP venv resolved `openai 2.54.0` and passed
   the same `383` tests plus `95` subtests.
+- Public GitHub Actions run `31611205222` passed for exact repair SHA
+  `be7a8723a6f2785e8d1d87f4f493705abfb5925c`.
 - The plan is complete. The repository now stops at a separate authorization gate: only a new,
   explicit user approval may permit one `p1_diagnostic/1` real call. That approval would not permit
   P2-P5, production Adapter work, a second Provider or 5D-7.

@@ -522,3 +522,6 @@
 - 随机新建的 TEMP venv 从 `.[dev]` 完整安装后解析为 `openai 2.54.0` 与
   `httpx 0.28.1`，全量回归仍为 `383 passed, 95 subtests passed`。该证据排除了依赖
   本机旧环境的假通过；临时环境未写入仓库。
+- 修复提交 `be7a872` 已推送；GitHub Actions run `31611205222` 对精确 SHA
+  `be7a8723a6f2785e8d1d87f4f493705abfb5925c` 全部通过，包含 pytest、两套 RAG 门禁、
+  compileall、治理、Harness SDK boundary、secret/run-data 和 Harness dry-run。

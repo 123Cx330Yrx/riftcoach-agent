@@ -162,7 +162,7 @@ blocked_before: "5D-7"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6a，下一步为 5D-6b | 阶段 5 或整个 5D 已完成 |
 | 项目理解 | 5D-6b 已区分离线诊断就绪、一次真实 P1 观察、完整 P1-P5 准入和生产 Adapter 四层证据 | 完整离线回归通过就等于 GLM 已准入 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | `main` 已包含 P1 脱敏诊断 Tasks 1-3 提交 `f7a2f87`；GitHub Actions run `31371997487` 对精确 SHA `f7a2f8753eca7660ba0582a4e685364461bb317f` 全部通过；仍没有正式网页部署 | 诊断代码与 CI 通过就等于真实 GLM 已准入或已有可运行 Web Agent |
+| GitHub/部署 | `main` 已包含 P1 脱敏诊断离线收尾和 SDK major 约束修复 `be7a872`；GitHub Actions run `31611205222` 对精确 SHA `be7a8723a6f2785e8d1d87f4f493705abfb5925c` 全部通过；仍没有正式网页部署 | 诊断代码与 CI 通过就等于真实 GLM 已准入或已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
