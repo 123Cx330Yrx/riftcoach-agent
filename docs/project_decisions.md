@@ -103,13 +103,15 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - Context Builder 把内部策略、Skill 指令、确定性事实、用户文本、RAG 和 Tool
   Observation 分层，权限永远不从不可信文本获得；
 - 结构化模型输出先服务机器消费的 EvaluationResult，Coach 报告仍为 Markdown；
-- 结构化请求必须经过 capability negotiation；当前 Zhipu text-only Adapter 会在 SDK
-  调用前拒绝，不能把 Fake Provider 成功说成真实厂商已支持；
+- 结构化请求必须经过 capability negotiation；5D-6b 的生产 Zhipu Adapter 已离线映射
+  JSON mode 与 Tool Calling，但 Fake SDK 成功仍不能说成真实 Adapter/Skill 已准入；
 - 真实 Provider 与第二 Provider 选择必须等 5D-6b 用同一领域任务评测，不提前锁定；
   早期 P1/P2 通过而 P3/P4 暴露默认 Thinking 和旧参数验收边界的结果已保留；
-- 最终 P1-P5 在显式 disabled-thinking 后 5/5 低层通过；生产 Adapter 仍须离线映射与
-  真实领域切片，不能把微探针结果写成 GLM Agent 已上线；
-- 该方案由 ADR-0011 接受；当前只实现到 5D-6a，不等于整个 5D、LangGraph 或
+- 最终 P1-P5 在显式 disabled-thinking 后 5/5 低层通过；生产 Adapter 已完成离线双向
+  映射，仍须真实 Adapter 协议与领域切片，不能把微探针/映射写成 GLM Agent 已上线；
+- GLM 是首个真实基准 Adapter，不是永久模型选择；DeepSeek、Qwen 等只在同任务同评测
+  决策门打开后比较，不能因发布热度直接替换或一次接入多家；
+- 该方案由 ADR-0011 接受；当前仍处于 5D-6b，不等于整个 5D、LangGraph 或
   Multi-Agent 已实现。
 
 ## 数据职责

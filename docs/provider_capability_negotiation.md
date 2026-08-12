@@ -34,7 +34,7 @@ ToolSpec
 
 > 当前 RiftCoach 适配器已经完成映射、解析、错误处理和测试验证的端到端能力。
 
-因此当前 `ZhipuProvider` 的声明是：
+3G-2 建立时，`ZhipuProvider` 的声明是：
 
 ```text
 text_chat = true
@@ -44,7 +44,19 @@ streaming = false
 parallel_tool_calls = false
 ```
 
-这不是说智谱平台永远不能 Tool Calling，而是说 **RiftCoach 当前还没有完成智谱 Tool Calling 适配**。只有未来 3G-4 在真实 Skill/Agent 场景中完成 SDK 映射、契约和领域评测后，才能把 `tool_calling` 改成 `true`；该任务目前已延后，不是当前下一步。
+这不是说智谱平台永远不能 Tool Calling，而是当时 RiftCoach 尚未完成智谱适配。
+5D-6b 现已在真实 P1-P5 微探针后完成生产 Adapter 的离线双向映射，因此当前声明为：
+
+```text
+text_chat = true
+tool_calling = true
+structured_output = true
+streaming = false
+parallel_tool_calls = false
+```
+
+这里的 true 表示 Adapter 已有映射、失败边界和离线合同测试，可以进入下一层真实协议
+切片；它仍不等于真实领域 Skill、质量、SLA 或最终 Provider 选型已经准入。
 
 ## 3. 三个核心对象
 
@@ -161,7 +173,8 @@ Agent Loop 不应直接猜测 Provider 能力；它应向 Provider 契约提出�
 - `auto`/`required` 工具请求会发现缺失 `TOOL_CALLING`；
 - `none` 请求不会错误要求 Tool Calling；
 - 支持 Tool Calling 的画像可以通过协商；
-- 智谱适配器遇到未实现的工具请求时，在 SDK 调用前拒绝，调用次数为零。
+- 智谱适配器能映射 AUTO 工具请求与 JSON mode；REQUIRED、并行 ToolCall、坏参数和
+  未知工具别名会在适当边界安全拒绝。
 
 这些测试证明的是运行前契约，不证明智谱已经完成 Tool Calling。
 
@@ -169,7 +182,9 @@ Agent Loop 不应直接猜测 Provider 能力；它应向 Provider 契约提出�
 
 可以说：
 
-> 我没有把厂商支持矩阵写死在 Agent 逻辑里，而是建立了 Provider Capability Contract。Harness 会从请求推导所需能力，在 Provider 适配器执行外部调用前完成协商；当前智谱适配器只宣称已验证的文本能力，对尚未完成映射的 Tool Calling 会安全拒绝。
+> 我没有把厂商支持矩阵写死在 Agent 逻辑里，而是建立了 Provider Capability Contract。
+> Runtime 会从请求推导所需能力，在外部调用前完成协商；智谱适配器只声明已有映射和
+> 测试证据的文本、结构化输出与 Tool Calling，REQUIRED 和并行调用仍安全拒绝。
 
 暂时不能说：
 

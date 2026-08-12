@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.9 - 5D-6b（in progress: P1-P5 admitted; production adapter offline TDD next）
+Phase 6.9 - 5D-6b（in progress: P1-P5 and production adapter offline mapping complete; real adapter protocol slice next）
 
 ## Phases
 
@@ -81,17 +81,19 @@ Phase 6.9 - 5D-6b（in progress: P1-P5 admitted; production adapter offline TDD 
   证据；两个真实 Skill 已通过 Fake Provider + 真实本地知识工具的完整组合测试。
 - `5D-6a` 已完成：`StructuredResponseContract` 贯通 ChatRequest、Capability
   Negotiation 与 `llm.chat`；严格 Pydantic Evaluation Schema、最多一次同合同
-  repair 和 Harness fail-closed 降级均有 Fake Provider TDD 证据。当前 Zhipu Adapter
-  仍只声明 text chat，未调用真实 Provider 或实现厂商 SDK 映射。
+  repair 和 Harness fail-closed 降级均有 Fake Provider TDD 证据。
+- `5D-6b` 进行中：disabled-thinking 下 P1-P5 低层协议 5/5 真实通过；生产
+  `ZhipuProvider` 已用离线 TDD 映射四类消息、JSON mode、Function Calling、请求级
+  工具别名与 fail-closed 响应边界，尚未执行真实 Adapter 协议或领域 Skill 切片。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-进入 5D-6b Production Zhipu Adapter Mapping 的离线 TDD：把低层探针已经真实证明的
-disabled-thinking、JSON mode、Function Calling 和 Tool Observation 映射到现有
-Provider-neutral 请求/响应合同。本步不执行领域真实切片、第二厂商或 5D-7。
+进入 5D-6b Real Adapter Protocol Slice 的离线设计与 TDD：为同一生产
+`ZhipuProvider` 的真实 structured request 与 `AgentLoop + fixed read-only tool`
+往返建立硬调用预算、脱敏结果和失败停止合同。本步不执行领域 Skill、第二厂商或 5D-7。
 
 ## Decisions Made
 
@@ -145,6 +147,7 @@ Provider-neutral 请求/响应合同。本步不执行领域真实切片、第�
 | 5D-6a 首先接入 Evaluation 控制数据 | 评测 score/verdict/issues 会影响发布；Coach Markdown 继续使用现有质量门禁而非被强制 JSON 化 |
 | 5D-6a 不改 Zhipu SDK 映射 | 合同和本地验证可先稳定；真实厂商能力、响应格式和成本必须由 5D-6b 实测决定 |
 | 5D-6b 使用请求级工具别名表 | 智谱函数名不允许点号，而 RiftCoach 内部使用 `knowledge.search`；Adapter 编解码隔离厂商约束，不污染 Manifest 与 ToolRuntime |
+| GLM 作为首个生产 Adapter，不是最终厂商锁定 | 先用一套真实实现证明 Provider-neutral 边界；DeepSeek/Qwen 等只在同任务同评测决策门打开后比较，不能把适配正确性与模型优劣混成一个变量 |
 
 ## Errors Encountered
 
@@ -215,3 +218,6 @@ Provider-neutral 请求/响应合同。本步不执行领域真实切片、第�
 | GitHub commit API 首次把 PowerShell 多行消息序列化为数组并返回 422 | 1 | blobs/tree 已通过 SHA 校验，remote ref 未更新；改用单行 subject 重做 commit 步骤 |
 | GitHub API commit 与本地 CLI commit 因消息尾部换行得到不同 SHA | 1 | 证明 tree/parent/作者/时间/消息均一致，定位仅差最后一字节；精确重建 API commit 对象并用 expected-old 原子同步本地/远端 refs，原提交仍在 reflog |
 | 5D-5 公开验证记录组合补丁假设错误账本行顺序 | 1 | `apply_patch` 原子拒绝且没有部分修改；读取真实尾部后拆成状态/历史与计划/进度两组补丁 |
+| 5D-6b 严格 JSON 补强补丁把两个文件更新块错误写进同一 hunk | 1 | `apply_patch` 原子拒绝且没有部分修改；立即拆为测试与实现两个小补丁，再单独运行 Zhipu 测试 |
+| 5D-6b 能力组合边界补丁两次假设错误的源码相邻顺序 | 2 | 两次 `apply_patch` 均原子拒绝；读取精确行后把请求组合、参数编码与响应 finish reason 拆为独立补丁，不重复猜测上下文 |
+| 5D-6b 收尾差异审查把“无陈旧措辞”的 `rg` 退出码 1 直接透传为整条命令失败 | 1 | 差异输出已完整生成且没有陈旧匹配；后续 stale scan 显式把无匹配视为通过，不再与长差异输出串成一个成功条件 |

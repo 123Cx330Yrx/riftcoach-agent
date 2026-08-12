@@ -661,3 +661,32 @@
 - Sanitized per-case usage/latency was: P1 16/8 tokens and 1391 ms; P2 568/36 and 984 ms; P3
   617/85 and 1250 ms; P4 204/21 and 3172 ms; P5 270/18 and 3718 ms. Official unit pricing remains
   unverified, so estimated cost correctly remains null rather than fabricated as zero.
+
+## 2026-08-13 5D-6b production Zhipu Adapter mapping
+
+- The production adapter can stay a translation boundary: provider-neutral messages, tools and
+  structured contracts map to Zhipu transport without changing Skill manifests, ToolRegistry,
+  AgentLoop or Harness.
+- Every production call currently disables Thinking. This is a V1 protocol decision because the
+  runtime does not persist/replay provider reasoning state; it is not a claim that reasoning is
+  universally undesirable.
+- `StructuredResponseContract` maps only to documented `json_object` mode. The 5D-6a strict local
+  Pydantic decoder remains authoritative; the adapter does not claim native strict-schema support.
+- Request-local tool aliases preserve internal `knowledge.search` while satisfying the provider
+  function-name grammar. Alias collisions fail before SDK I/O; returned unknown aliases fail closed.
+- Returned ToolCalls accept only `type=function`, one non-parallel call, a normalized unique ID,
+  a known alias and strict JSON object arguments. NaN, arrays, duplicate JSON keys, malformed JSON,
+  bad content and non-empty reasoning are rejected with sanitized Provider errors.
+- `REQUIRED` remains unsupported rather than being weakened to AUTO. NONE omits tool transport;
+  AUTO sends function tools and `tool_choice=auto`.
+- Atomic structured-output and tool-calling capabilities do not imply their same-request
+  combination. That unproven mode is rejected before SDK I/O, and tool-call presence must agree
+  with `finish_reason=tool_calls` in both directions.
+- Offline TDD first produced `11 failed, 11 passed`; after implementation and boundary review the
+  Zhipu target suite is `26 passed, 22 subtests passed`, focused cross-layer regression is
+  `73 passed, 50 subtests passed`, and full regression is `405 passed, 103 subtests passed`.
+- These results admit only the offline production mapping. A real Provider-neutral structured/tool
+  round trip remains required before the adapter itself is admitted, and a real domain Skill slice
+  remains separate after that.
+- GLM is the first baseline adapter, not a permanent model winner. DeepSeek/Qwen candidates remain
+  gated by same-task quality, tool correctness, latency, cost and stability evaluation.

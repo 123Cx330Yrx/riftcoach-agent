@@ -29,7 +29,7 @@
 | A07 | Skill Contract | `recent-form-review` 与 `single-match-review` 均有 Manifest、SKILL.md、Pydantic I/O、工具白名单和预算 | 阶段 5B 基础 + 5C-5 前第二个真实合同 | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill；真实内部 Skill 出现后才设计调用模式 | 坏 Manifest、Schema、权限漂移、预算和发布边界测试 | 已完成 |
 | A08 | Skill Router | 5C-1 至 5C-6 与退出复核均完成；development 23/23、holdout 11/12；selected 决策锁定 Skill name/version；ADR-0010 暂缓 LLM fallback | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试、退出复核和 ADR | 已完成 |
 | A09 | Prompt/Context Engineering | Harness Prompt V0、SKILL.md 指令；5D-2 已实现 trust-typed Context Builder，5D-3 已实现完整累计消息估算与逐轮 Context 门禁 | 阶段 5D-5E | 5E 加 Prompt 版本/Trace，阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、回归和消融测试 | 部分完成 |
-| A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral 合同；5D-6b 隔离微探针在 disabled-thinking 下通过简单/嵌套两类真实 Evaluation JSON，但生产 Adapter 尚未映射 | 阶段 5D | 先做生产 Adapter 离线 TDD 与领域切片；仅在真实阻断时比较一个候选 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移、Thinking 预算和修复上限测试 | 部分完成 |
+| A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral 合同；5D-6b 微探针通过两类真实 Evaluation JSON，生产 Zhipu Adapter 已离线映射 JSON mode 与严格响应边界 | 阶段 5D | 先做真实 Adapter 协议与领域切片；仅在真实阻断或模型选型门打开时比较一个候选 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移、Thinking 预算和修复上限测试 | 部分完成 |
 | A11 | AgentRuntime V1 | 5D-1/2 已建立执行与 Context 边界，5D-3 已编译 Manifest 权限/预算并加入有界停止，5D-4 已产生可审计 draft/evidence，5D-5 已通过唯一 ReviewHarness 组合为 typed terminal output | 阶段 5D-5E | 5D-6a/6b/7 补结构化输出、真实 Provider 与领域评测；5E 统一 run/stream/event/trace/usage；阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 部分完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有，任务级选择未实现 | 阶段 5F 或真实业务触发点 | 按质量、能力、成本选择，不按厂商数量堆叠 | 同一评测集、故障降级、成本和延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
@@ -172,11 +172,12 @@ Provider-neutral 结构化响应、真实 Provider Tool Calling 和 Prompt E2E E
 5D-6a 已补齐 provider-neutral 结构化响应合同：`ChatRequest` 声明冻结 JSON Schema，
 Capability Negotiation 因此要求 `STRUCTURED_OUTPUT`；Evaluation Adapter 用同一
 Pydantic 模型生成 Schema 并严格验证结果，非 JSON、fence、截断和 Schema 错误最多
-修复一次，第二次失败交回 Harness 降级/拒绝。当前 Zhipu Adapter 仍 text-only，尚未有
-生产 Provider SDK 映射尚未实现。最终真实微探针在 P1-P5 全部显式关闭 Thinking 后
-5/5 通过并 `admitted=true`；这只准入隔离低层协议，不是生产 Adapter 或领域 Skill
-准入。
+修复一次，第二次失败交回 Harness 降级/拒绝。最终真实微探针在 P1-P5 全部显式关闭
+Thinking 后 5/5 通过并 `admitted=true`；生产 Zhipu Adapter 随后已用离线 TDD 映射
+四类消息、JSON mode、Tool Calling、可逆工具别名和严格坏响应边界。两者合起来仍只
+证明低层协议与本地翻译，不是生产 Adapter 或领域 Skill 真实准入。
 统一 `run/stream/event/trace/usage` 表面继续属于 5E。
 
-唯一下一步仍为 5D-6b：进入生产 Zhipu Adapter 离线映射 TDD，再做真实 Adapter 与领域
-切片。不得提前进入 5D-7，或把微探针准入称为完整 Provider/Skill 准入。
+唯一下一步仍为 5D-6b：先为真实 Adapter structured/tool 协议切片设计并 TDD 化硬预算
+与脱敏结果，再执行有界真实验证。不得提前进入领域 Skill、第二 Provider 或 5D-7，
+也不能把微探针或 Fake SDK 映射称为完整 Provider/Skill 准入。

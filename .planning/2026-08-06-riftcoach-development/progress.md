@@ -578,3 +578,26 @@
   `880ba1b4e9fd74fcfbd8d568a3c16218bad48ad4` 全部通过，包含 390-test 回归、两套 RAG
   门禁、compileall、治理、安全边界和 Harness dry-run。下一步保持生产 Adapter 离线
   TDD，不因微探针通过而跳到领域切片或 5D-7。
+
+## 2026-08-13
+
+- 用户以“继续下一步”授权 5D-6b 生产 Zhipu Adapter 离线映射；按强制恢复顺序读取
+  canonical state、活动计划、需求/路线/能力矩阵与 5D-6b 设计，治理预检通过，起始
+  HEAD/origin 均为 `232e71d` 且工作树干净。
+- 先补四类消息、ToolSpec、AUTO/NONE、JSON mode、ToolCall response、REQUIRED、坏
+  arguments、未知别名、重复 ID 与别名冲突测试；旧实现得到预期
+  `11 failed, 11 passed`，确认缺口真实存在。
+- 生产 `ZhipuProvider` 现显式 disabled-thinking，映射 structured contract 为
+  `json_object`，并用请求级可逆别名编码/解码 `knowledge.search`；内部 Manifest、
+  Registry、AgentLoop 与 ToolRuntime 不改名。
+- 响应边界拒绝非 function、非严格 JSON object、NaN、重复键、未知别名、规范化后重复
+  ID、并行 ToolCall、坏 content 与非空 reasoning；历史 ToolCall 参数也使用严格 JSON
+  编码。REQUIRED 与尚未准入的 structured+tool 同轮组合在调用前拒绝，不能静默降级；
+  ToolCall 存在性与 `finish_reason=tool_calls` 必须一致。
+- 严格 JSON 补强的首个多文件补丁因 hunk 格式错误被 `apply_patch` 原子拒绝，没有半
+  修改；拆为小补丁后最终 Zhipu 测试为 `26 passed, 22 subtests passed`。
+- 聚焦 Provider/Structured/AgentLoop 回归为 `73 passed, 50 subtests passed`；完整回归
+  为 `405 passed, 103 subtests passed`，compileall、diff check 与治理预检通过。
+- 新增初学者教学复核文档。当前只完成生产 Adapter 离线映射，唯一下一步仍在 5D-6b：
+  先为真实 Adapter structured/tool 协议切片设计并 TDD 化硬预算与脱敏结果；不进入领域
+  Skill、第二 Provider 或 5D-7。

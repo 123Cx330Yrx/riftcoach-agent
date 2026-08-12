@@ -332,8 +332,9 @@
 - `IMPLEMENTED`：一次格式 repair 使用与首次调用相同的合同，修复结果必须重新严格
   验证；第二次失败返回安全错误。Harness 集成测试确认此时只发布确定性 fallback，
   不会发布 Agent 草稿。
-- `CURRENT`：Zhipu Adapter 仍只声明 text chat，结构化请求在 SDK I/O 前被拒绝；Fake
-  Provider 合同测试不是 GLM 原生结构化输出或真实 Tool Calling 的证据。
+- `AT-CHECKPOINT`：5D-6a 收尾时 Zhipu Adapter 仍只声明 text chat，结构化请求在 SDK
+  I/O 前被拒绝；该历史 Fake Provider 合同测试不是 GLM 原生结构化输出或真实 Tool
+  Calling 的证据。后续离线映射状态见下方 5D-6b 条目。
 - `VERIFIED`：聚焦回归 `89 passed, 40 subtests passed`；完整回归
   `359 passed, 95 subtests passed`；compileall、diff check 与治理预检通过。
 - `CURRENT`：5D-6a 完成；唯一下一步为 5D-6b Real Provider Capability Gate。该检查点
@@ -358,8 +359,14 @@
   `admitted=true`，且所有 case 的 reasoning state 都为 missing。
 - `PUBLIC-VERIFIED`：最终脱敏结果提交 `880ba1b` 的 GitHub Actions run `31615159223`
   对精确 SHA `880ba1b4e9fd74fcfbd8d568a3c16218bad48ad4` 全部通过。
-- `CURRENT`：5D-6b 仍进行中；唯一下一步为生产 Zhipu Adapter 离线映射 TDD，不进入
-  第二 Provider 或 5D-7。
+- `IMPLEMENTED-OFFLINE`：生产 `ZhipuProvider` 已映射 disabled-thinking、四类消息、
+  JSON mode、ToolSpec/ToolCall、AUTO/NONE 与请求级可逆工具别名；REQUIRED、别名冲突、
+  未知别名、非严格 JSON、重复/并行 ToolCall 和不可回放 reasoning 均 fail closed。
+- `VERIFIED-OFFLINE`：聚焦回归 `73 passed, 50 subtests passed`，完整回归
+  `405 passed, 103 subtests passed`；这仍是 Fake SDK 映射证据，不是生产 Adapter 或
+  领域 Skill 真实准入。
+- `CURRENT`：5D-6b 仍进行中；唯一下一步为真实 Adapter 协议切片的离线设计/TDD，
+  不进入领域 Skill、第二 Provider 或 5D-7。GLM 是首个基准 Adapter，不是最终厂商锁定。
 
 ## 当前不变的宏观路线
 
