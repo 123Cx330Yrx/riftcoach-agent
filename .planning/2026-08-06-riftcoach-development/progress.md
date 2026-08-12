@@ -534,3 +534,6 @@
 - 脱敏 observation 为 content/reasoning 均 `non_empty`、finish `stop`、22/115 tokens、
   4563 ms、tool calls 0；只保存 request/output 哈希，没有模型正文、推理正文、原始
   request ID 或 Key。下一步必须另行授权完整 `p1_p5/5`，本轮不自动继续。
+- 脱敏实验结果提交 `a05551e` 已推送；GitHub Actions run `31611988551` 对精确 SHA
+  `a05551e7ea97422f70722b2fefee4e2349a643f8` 全部通过。CI 没有本地 `.env`，不会产生
+  额外模型调用；它只验证提交后的结果合同与仓库回归。
