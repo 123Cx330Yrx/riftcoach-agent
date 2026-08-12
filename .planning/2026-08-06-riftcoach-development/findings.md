@@ -626,3 +626,10 @@
   Adapter/error-construction contract targets OpenAI Python SDK 2.x and its `httpx` objects. The
   safe maintenance fix is `openai>=2,<3`; adding `httpx` alone would hide the unreviewed SDK-major
   migration instead of preserving the verified production contract.
+- The separately authorized `p1_diagnostic/1` at code SHA `6ee74763a99ca2830abf89e2a199b2843bedb20b`
+  used exactly one real call and passed the exact P1 sentinel. The response had non-empty final and
+  reasoning fields, `finish_reason=stop`, resolved model `glm-5.2`, 22 input tokens, 115 output
+  tokens and 4563 ms latency. Only field states and hashes were persisted; no raw text or request ID.
+- The earlier P1 empty-text failure is therefore not stable across these two observations. This
+  does not establish its cause and does not justify hiding it. P2-P5 remain skipped in the original
+  run and absent from the diagnostic scope, so full Provider admission is still unsupported.

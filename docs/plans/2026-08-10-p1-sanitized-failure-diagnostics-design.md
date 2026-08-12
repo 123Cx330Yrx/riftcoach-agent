@@ -196,3 +196,14 @@ Harness dry-run 和项目治理检查均通过。该证据只说明诊断程序�
 不能说：
 
 > GLM 已经证明不支持 RiftCoach，或 GLM 已经通过 Tool Calling / Agent 准入。
+
+## 10. 真实诊断结果
+
+2026-08-12 经用户单独授权，在代码 SHA `6ee74763a99ca2830abf89e2a199b2843bedb20b`
+执行一次 `p1_diagnostic/1`。首次 CLI 启动因本地产品标签 `glm` 与内部 ID `zhipu`
+不一致而在客户端创建前拒绝，外部调用数为 0；随后只在子进程规范该 ID，未修改
+`.env`，完成唯一授权请求。
+
+P1 精确哨兵通过，使用 1/1 次调用，最终与 reasoning 字段均为 `non_empty`，finish 为
+`stop`，22 input / 115 output tokens，延迟 4563 ms。结果仍为 `admitted=false`，因为
+diagnostic scope 永不代表完整准入。P2-P5 没有执行；下一步必须另行授权完整探针。

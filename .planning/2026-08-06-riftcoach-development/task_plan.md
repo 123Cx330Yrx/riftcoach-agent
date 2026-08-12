@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.7 - 5D-6b（in progress: awaiting explicit P1 diagnostic authorization）
+Phase 6.7 - 5D-6b（in progress: P1 diagnostic passed; awaiting full-probe authorization）
 
 ## Phases
 
@@ -89,9 +89,10 @@ Phase 6.7 - 5D-6b（in progress: awaiting explicit P1 diagnostic authorization�
 
 ## Next Step
 
-等待用户单独决定是否授权 5D-6b 的一次真实 `p1_diagnostic/1` 调用。未获得包含
-“真实调用”含义的明确授权前，不读取本地 API Key、不创建真实客户端、不调用 GLM；
-即使授权，也只运行 P1 一次，不运行 P2-P5，不进入生产 Adapter、第二厂商或 5D-7。
+等待用户单独决定是否授权 5D-6b 的一次完整 `p1_p5/5` 重跑。P1 diagnostic 已经
+真实通过但不能准入 Provider；未获得新的明确授权前不再调用 GLM。即使以后授权完整
+探针，也必须遵守最多 5 次、零 SDK 自动重试和依赖失败即停止，且不自动进入生产
+Adapter、第二厂商或 5D-7。
 
 ## Decisions Made
 
@@ -150,6 +151,7 @@ Phase 6.7 - 5D-6b（in progress: awaiting explicit P1 diagnostic authorization�
 
 | Error | Attempt | Resolution |
 |---|---:|---|
+| 授权后的 P1 diagnostic 首次启动被本地 `LLM_PROVIDER=glm` 与内部 ID `zhipu` 的配置门禁拒绝 | 1 | 在 client factory 前失败，真实调用数为 0；沿用首轮实验的子进程级规范化为 `zhipu`，不改 `.env`、不打印 Key，再执行唯一获授权请求 |
 | 干净环境验证把 TEMP 内旧 venv 的递归清理与安装串在同一 PowerShell 命令，被终端安全策略拒绝 | 1 | 命令未执行、无文件变化；改用带随机 ID 的全新 TEMP 目录且不做任何递归删除 |
 | Task 4 首次公开 CI 因无上界 `openai` 解析到 3.0.0、缺少 SDK 2.x 的 `httpx` 合同而收集失败 | 1 | 不用额外 `httpx` 掩盖大版本漂移；把当前已验证合同收紧为 `openai>=2,<3`，用全新临时环境重装、回归并重新验证 CI |
 | Task 4 收尾把唯一下一步写成授权门时漏掉 canonical `5D-6b` 字面键 | 1 | 治理预检阻止接受状态；保持授权范围不变，只在唯一下一步补回检查点键后重跑 |

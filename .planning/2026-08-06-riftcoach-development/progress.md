@@ -525,3 +525,12 @@
 - 修复提交 `be7a872` 已推送；GitHub Actions run `31611205222` 对精确 SHA
   `be7a8723a6f2785e8d1d87f4f493705abfb5925c` 全部通过，包含 pytest、两套 RAG 门禁、
   compileall、治理、Harness SDK boundary、secret/run-data 和 Harness dry-run。
+- 用户明确授权一次真实 `p1_diagnostic/1`。首次 CLI 启动在创建客户端前被
+  `LLM_PROVIDER=glm` 与内部 `zhipu` ID 不一致拦截，真实外部调用数为 `0`；未修改
+  `.env` 或读取/打印 Key。下一次只在子进程中规范 Provider ID 后执行该唯一授权请求。
+- 仅在子进程把 `LLM_PROVIDER` 规范为内部 ID `zhipu` 后，真实 diagnostic 使用 1/1 次
+  调用并得到 `P1_text_baseline=passed`。报告仍按合同写 `admitted=false`，没有继续
+  P2-P5。结果保存为 `zhipu_glm52_p1_diagnostic.json`，code SHA 为 `6ee7476`。
+- 脱敏 observation 为 content/reasoning 均 `non_empty`、finish `stop`、22/115 tokens、
+  4563 ms、tool calls 0；只保存 request/output 哈希，没有模型正文、推理正文、原始
+  request ID 或 Key。下一步必须另行授权完整 `p1_p5/5`，本轮不自动继续。

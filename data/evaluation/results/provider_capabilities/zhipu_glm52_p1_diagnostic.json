@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.1",
+  "probe_scope": "p1_diagnostic",
+  "provider_id": "zhipu",
+  "requested_model": "glm-5.2",
+  "code_sha": "6ee74763a99ca2830abf89e2a199b2843bedb20b",
+  "documentation_snapshot_date": "2026-08-09",
+  "run_timestamp_utc": "2026-08-12T15:19:50.150996Z",
+  "max_calls": 1,
+  "calls_used": 1,
+  "admitted": false,
+  "cases": [
+    {
+      "case_id": "P1_text_baseline",
+      "capability": "text_chat",
+      "status": "passed",
+      "error_code": null,
+      "response_received": true,
+      "content_state": "non_empty",
+      "reasoning_content_state": "non_empty",
+      "latency_ms": 4563,
+      "input_tokens": 22,
+      "output_tokens": 115,
+      "finish_reason": "stop",
+      "resolved_model": "glm-5.2",
+      "request_id_sha256": "5b75bba6048c8dc2d1489791614a959d23cf0cde6b2c78fe459e0e4a5697d5e7",
+      "tool_call_count": 0,
+      "repair_count": 0,
+      "output_sha256": "f245e63bad51e1496662a41f2d6deb68ff586fbd733a143520322607a5e55166"
+    }
+  ],
+  "estimated_cost": null,
+  "cost_note": "Official per-token unit price was not verified for this run."
+}
