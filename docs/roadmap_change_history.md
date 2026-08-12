@@ -356,6 +356,8 @@
 - `REAL-EVIDENCE`：最终版本在公开 SHA `6a15a00` 上使用 5/5 calls；P1 文本、P2 简单
   JSON、P3 嵌套 issue JSON、P4 Function Call、P5 Tool Observation final 全部通过，
   `admitted=true`，且所有 case 的 reasoning state 都为 missing。
+- `PUBLIC-VERIFIED`：最终脱敏结果提交 `880ba1b` 的 GitHub Actions run `31615159223`
+  对精确 SHA `880ba1b4e9fd74fcfbd8d568a3c16218bad48ad4` 全部通过。
 - `CURRENT`：5D-6b 仍进行中；唯一下一步为生产 Zhipu Adapter 离线映射 TDD，不进入
   第二 Provider 或 5D-7。
 
