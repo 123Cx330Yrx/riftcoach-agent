@@ -169,7 +169,7 @@ blocked_before: "5D-7"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6a；5D-6b 已完成 P1-P5 和生产 Adapter 离线映射，下一步为真实 Adapter 协议切片 | 阶段 5、整个 5D 或真实 Provider 准入已完成 |
 | 项目理解 | GLM-5.2 默认 Thinking 会挤占短控制输出预算；Provider Adapter 是厂商协议双向翻译边界，工具别名不能泄漏到 Manifest/Runtime | 微探针或 Fake SDK 映射就等于报告质量、最终模型选型或真实 Skill 准入 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 最终 5/5 脱敏结果已进入 `main` 提交 `880ba1b`；GitHub Actions run `31615159223` 对精确 SHA `880ba1b4e9fd74fcfbd8d568a3c16218bad48ad4` 全部通过；仍没有正式网页部署 | 低层微探针和 CI 就等于完整 GLM Agent 或已有可运行 Web Agent |
+| GitHub/部署 | 5D-6b 生产 `ZhipuProvider` 离线映射已进入 `main` 提交 `75159e9`；GitHub Actions run `31619089608` 对精确 SHA `75159e9e8501d246986520a5341e2d82e3f8196d` 全部通过；此前 P1-P5 真实微探针证据仍保留，当前仍没有正式网页部署 | 离线映射、低层微探针和 CI 就等于完整 GLM Agent、最终厂商选型或已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

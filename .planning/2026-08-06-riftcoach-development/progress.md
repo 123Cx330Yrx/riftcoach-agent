@@ -601,3 +601,6 @@
 - 新增初学者教学复核文档。当前只完成生产 Adapter 离线映射，唯一下一步仍在 5D-6b：
   先为真实 Adapter structured/tool 协议切片设计并 TDD 化硬预算与脱敏结果；不进入领域
   Skill、第二 Provider 或 5D-7。
+- 功能与文档快照以提交 `75159e9e8501d246986520a5341e2d82e3f8196d` 推送到
+  `origin/main`；GitHub Actions run `31619089608` 对该精确 SHA 的全测试、RAG 开发/
+  独立 holdout、compileall、Harness SDK 边界、敏感文件和 dry-run 门禁全部通过。
