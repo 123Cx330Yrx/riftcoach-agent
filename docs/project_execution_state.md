@@ -136,7 +136,8 @@ blocked_before: "5D-7"
   output；该证据不等于真实 Provider Tool Calling；
 - 当前本地完整回归：`383 passed, 95 subtests passed`；Provider/structured 比例回归
   `82 passed, 42 subtests passed`；两套 RAG 门禁、compileall、Harness SDK boundary、
-  tracked secret/run-data、Harness dry-run 与治理预检均通过。上述均为离线证据。
+  tracked secret/run-data、Harness dry-run 与治理预检均通过；全新 TEMP venv 从
+  `.[dev]` 安装 `openai 2.54.0` 后也得到相同全量结果。上述均为离线证据。
 
 当前不能声称：
 

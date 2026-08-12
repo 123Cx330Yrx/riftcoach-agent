@@ -75,6 +75,9 @@ scope 同时决定调用预算和独立输出路径。原始响应只在调用�
 - Task 4 completed offline on 2026-08-12: full regression `383 passed, 95 subtests passed`;
   both RAG gates, compileall, Harness SDK boundary, tracked secret/run-data check, Harness dry-run
   and governance passed.
+- The first public closeout run exposed an unbounded OpenAI SDK major-version drift. The verified
+  contract is now pinned to `openai>=2,<3`; a clean TEMP venv resolved `openai 2.54.0` and passed
+  the same `383` tests plus `95` subtests.
 - The plan is complete. The repository now stops at a separate authorization gate: only a new,
   explicit user approval may permit one `p1_diagnostic/1` real call. That approval would not permit
   P2-P5, production Adapter work, a second Provider or 5D-7.

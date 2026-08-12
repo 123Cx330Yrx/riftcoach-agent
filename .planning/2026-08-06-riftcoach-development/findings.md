@@ -621,3 +621,8 @@
   evidence about GLM because no SDK client, API key or model endpoint was used.
 - Authorization is a control-plane input, not a conclusion inferred from test success. The next
   real P1 diagnostic must remain a separate user-approved action even though all offline gates pass.
+- GitHub Actions run `31610552899` exposed an undeclared major-version assumption: the unbounded
+  `openai` dependency resolved to `3.0.0`, which now installs `httpx2`, while RiftCoach's tested
+  Adapter/error-construction contract targets OpenAI Python SDK 2.x and its `httpx` objects. The
+  safe maintenance fix is `openai>=2,<3`; adding `httpx` alone would hide the unreviewed SDK-major
+  migration instead of preserving the verified production contract.
