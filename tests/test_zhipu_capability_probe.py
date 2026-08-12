@@ -144,10 +144,9 @@ def test_runs_p1_to_p5_and_exposes_only_sanitized_evidence() -> None:
     assert all(case.output_sha256 for case in report.cases)
 
     calls = client.completions.calls
-    assert "extra_body" not in calls[0]
     assert all(
         call["extra_body"] == {"thinking": {"type": "disabled"}}
-        for call in calls[1:]
+        for call in calls
     )
     assert calls[1]["response_format"] == {"type": "json_object"}
     assert calls[2]["response_format"] == {"type": "json_object"}

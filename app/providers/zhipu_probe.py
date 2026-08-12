@@ -154,6 +154,7 @@ class ZhipuCapabilityProbe:
                 ],
                 "temperature": 0.0,
                 "max_tokens": 128,
+                "extra_body": _DISABLED_THINKING,
             },
             validator=self._validate_baseline_text,
         )

@@ -7,7 +7,7 @@
 
 **Files:** `tests/test_zhipu_capability_probe.py`
 
-1. 写红灯：P2-P5 必须显式关闭 Thinking，P1 保持默认基线。
+1. 写红灯：P1-P5 必须显式关闭 Thinking。
 2. 写红灯：Schema 合法但 query 措辞不同的 arguments 应通过并进入 P5。
 3. 写红灯：额外键、非法类型/范围与 disabled 后非空 reasoning 必须 fail closed。
 4. 运行目标测试并确认失败来自旧实现，而不是测试夹具错误。

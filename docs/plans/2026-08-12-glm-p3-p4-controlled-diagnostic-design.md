@@ -47,7 +47,8 @@ reasoning，探针 fail closed。
 
 ### 方案 C：受控 Thinking + Schema 参数验收（采用）
 
-- P1 保留默认行为，继续作为普通文本基线；
+- P1-P5 全部显式 `thinking=disabled`。P1 的职责是认证、端点、模型和文本协议基线，
+  不是测试不稳定的厂商默认思考策略；
 - P2/P3/P4/P5 显式 `thinking=disabled`；
 - P2/P3 继续使用相同 JSON mode、Pydantic 模型和严格语义相等校验；
 - P4 的 tool name、call ID 和 arguments JSON object 仍严格验证；arguments 改为按
@@ -61,7 +62,7 @@ reasoning，探针 fail closed。
 
 ```text
 冻结请求与最大 5 次预算
-→ P1 默认文本基线
+→ P1 disabled-thinking 文本基线
 → P2 disabled-thinking 简单 JSON
 → P3 disabled-thinking 嵌套 JSON
 → P4 disabled-thinking Function Call
@@ -78,7 +79,7 @@ P1 失败仍停止 P2-P5；P4 失败仍停止 P5；无 SDK 自动重试。新结
 
 先用 Fake SDK 证明：
 
-1. P2-P5 请求都带 disabled-thinking，P1 不带；
+1. P1-P5 请求都带 disabled-thinking；
 2. P3 在关闭 thinking 后可通过同一严格 Evaluation Schema；
 3. P4 接受 Schema 合法但 query 措辞不同的参数；
 4. P4 拒绝额外键、类型错误、范围错误和 disabled 后仍非空的 reasoning；
@@ -87,6 +88,14 @@ P1 失败仍停止 P2-P5；P4 失败仍停止 P5；无 SDK 自动重试。新结
 
 离线回归通过后，最多执行一次新的 5-call 探针。五项全部通过才能进入生产 Adapter
 离线 TDD；任一项失败都保留 5D-6b，并根据该项的新证据决定下一诊断，而不是盲目重试。
+
+### 2026-08-12 运行后修正
+
+首个受控版本只对 P2-P5 关闭 Thinking，但真实运行在 P1 使用 1/5 calls 后停止：API
+返回响应，content 为空、reasoning 非空、`finish_reason=length`，128 output tokens 全部
+耗尽。这与早期 P1 失败和 P3 失败属于同一默认 Thinking 故障族，而一次 P1 diagnostic
+成功只说明默认行为不稳定。故将 P1 也纳入显式 disabled-thinking；历史结果保留，
+不得覆盖或描述成网络/认证故障。
 
 ## 6. 当前限制与准确表述
 

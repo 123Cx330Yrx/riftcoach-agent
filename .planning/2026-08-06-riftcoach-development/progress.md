@@ -560,3 +560,8 @@
   与 holdout 门禁、compileall、治理、Harness SDK boundary、tracked secret/run-data、
   结果脱敏扫描、diff check 与 Harness dry-run 均通过。下一步先公开验证探针代码 SHA，
   再执行新的有界真实调用。
+- 受控探针代码提交 `860c203` 已推送；GitHub Actions run `31614219338` 对精确 SHA
+  `860c2035435afb5a914a2d9c403876df42138478` 全部通过，CI 没有真实 Provider 调用。
+- 随后的真实轮在 P1 使用 1/5 calls 后按依赖停止：content empty、reasoning non-empty、
+  `finish_reason=length`、22/128 tokens，P2-P5 全部 skipped。该结果证明 P1 也必须显式
+  disabled-thinking；新增测试先让旧实现失败，再做单行请求策略修正，不原样重跑。

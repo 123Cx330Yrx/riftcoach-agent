@@ -647,3 +647,9 @@
   object to equal one fixture, while the design promised a valid JSON object matching the tool
   schema. The controlled probe will keep strict JSON Schema, `top_k`, extra-key and topic checks,
   but will not require semantically valid query wording to be byte-identical.
+- The first controlled run at public code SHA `860c2035435afb5a914a2d9c403876df42138478`
+  used 1/5 calls and stopped at P1: content was empty, reasoning non-empty,
+  `finish_reason=length`, and all 128 output tokens were consumed. This reproduces the default
+  Thinking failure family and shows that the one successful diagnostic was not a stable basis for
+  leaving P1 implicit. P1 must also disable Thinking because its purpose is transport baseline,
+  not sampling the provider's default reasoning policy.

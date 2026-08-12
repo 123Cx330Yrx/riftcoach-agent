@@ -19,9 +19,8 @@ blocked_before: "5D-7"
 - 最后更新：2026-08-12
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6a 已完成
-- 唯一下一步：完成 5D-6b 的受控 Thinking / Tool arguments 微探针离线验收，先让探针
-  代码通过公开 CI，再按 RQ-027 执行一次最多 5 calls 的真实 P1-P5；不进入生产
-  Adapter、第二 Provider 或 5D-7
+- 唯一下一步：完成 5D-6b 的 P1 disabled-thinking 修正与公开 CI，再按 RQ-027 执行
+  最后一次最多 5 calls 的受控 P1-P5；不进入生产 Adapter、第二 Provider 或 5D-7
 - 禁止越过：5D-6b 完成前不得实现第二 Provider、完成 Prompt E2E Evaluation、进入
   5D-7 或统一 AgentRuntime；5D-6a 没有调用真实 Provider 或实现厂商原生 SDK 映射
 
@@ -47,7 +46,7 @@ blocked_before: "5D-7"
 | 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 已完成 | 共享 evidence converter、`SkillAgentDraftPreparer`、两个真实 Skill + Fake Provider + 真实 `knowledge.search`，成功/拒答/去重/冲突/失败与停止边界测试 |
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
-| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（完整重跑已得到 P1/P2 通过和 P3/P4 Bad Case，受控诊断实现中） | `p1_diagnostic/1` 在 `6ee7476` 上通过；`p1_p5/5` 在 `dbcce14` 上使用 4/5 calls：P1/P2 通过，P3 因默认 Thinking 耗尽 1024 输出 tokens，P4 返回一个 ToolCall 但未通过旧精确参数合同，P5 依赖跳过，`admitted=false` |
+| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（默认 Thinking 故障族已复现，P1 控制变量修正中） | `p1_diagnostic/1` 曾通过；`dbcce14` 重跑 P1/P2 通过、P3/P4 失败；`860c203` 受控轮因 P1 仍保留默认 Thinking 而在 1/5 calls 后以 128-token length 停止；P1-P5 现统一显式 disabled-thinking，尚待最终复核 |
 | 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 未开始 | 尚无新数据集或结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 

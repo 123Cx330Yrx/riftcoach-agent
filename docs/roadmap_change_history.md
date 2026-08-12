@@ -350,6 +350,9 @@
 - `BOUNDARY`：Schema 合法的 query 不再要求与 fixture 逐字相同；额外键、类型/范围、
   主题语义和 disabled 后仍出现 reasoning 均 fail closed。新的真实调用仍最多 5 次、
   零 SDK 自动重试，先提交探针并通过公开 CI。
+- `REAL-EVIDENCE`：首个受控版本在公开 SHA `860c203` 上只使用 1/5 calls；P1 因仍采用
+  默认 Thinking 而耗尽 128 output tokens，content empty、reasoning non-empty、finish
+  `length`，P2-P5 依赖跳过。P1 随后也纳入 disabled-thinking，历史失败原样保留。
 - `CURRENT`：5D-6b 仍进行中；不进入生产 Adapter、第二 Provider 或 5D-7。
 
 ## 当前不变的宏观路线
