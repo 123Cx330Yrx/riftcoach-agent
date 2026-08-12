@@ -108,7 +108,9 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - 真实 Provider 与第二 Provider 选择必须等 5D-6b 用同一领域任务评测，不提前锁定；
   早期 P1/P2 通过而 P3/P4 暴露默认 Thinking 和旧参数验收边界的结果已保留；
 - 最终 P1-P5 在显式 disabled-thinking 后 5/5 低层通过；生产 Adapter 已完成离线双向
-  映射，仍须真实 Adapter 协议与领域切片，不能把微探针/映射写成 GLM Agent 已上线；
+  映射；3-call 协议控制器用一个预算 Provider 组合严格 structured request、现有
+  AgentLoop 和固定只读知识工具，仍须真实 Adapter 协议与领域切片，不能把微探针/
+  映射/离线控制器写成 GLM Agent 已上线；
 - GLM 是首个真实基准 Adapter，不是永久模型选择；DeepSeek、Qwen 等只在同任务同评测
   决策门打开后比较，不能因发布热度直接替换或一次接入多家；
 - 该方案由 ADR-0011 接受；当前仍处于 5D-6b，不等于整个 5D、LangGraph 或

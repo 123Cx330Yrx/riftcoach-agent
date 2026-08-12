@@ -690,3 +690,23 @@
   remains separate after that.
 - GLM is the first baseline adapter, not a permanent model winner. DeepSeek/Qwen candidates remain
   gated by same-task quality, tool correctness, latency, cost and stability evaluation.
+
+## 2026-08-13 5D-6b Adapter Protocol Slice offline controller
+
+- The protocol slice must not extend the raw P1-P5 probe or create a second Function Calling loop.
+  Reusing the existing AgentLoop tests the production control flow, while a Provider wrapper puts
+  one hard pre-I/O budget around both direct structured calls and Agent iterations.
+- The successful path uses exactly three model calls: one strict structured request, one tool-call
+  response and one final response. The previously approved seven-call ceiling belongs to the later
+  domain slice and is not borrowed or silently stacked here.
+- The fixed `knowledge.search` handler is a local read-only protocol fixture, not a RAG quality
+  test. It proves the dotted internal name survives Zhipu request-local aliasing and returns through
+  ToolRegistry, ToolRuntime and AgentLoop without changing the internal contract.
+- Public evidence stores only stable state, safe error codes, counts, normalized metadata and
+  SHA-256 digests. Raw prompts, model text, tool observations, request IDs and exceptions are not
+  persisted.
+- Full test collection exposed a package cycle when the orchestration runner was re-exported from
+  `app.evaluation.__init__`; the re-export was removed so consumers use the explicit submodule.
+  Focused tests now pass 22/22 and full regression is `415 passed, 103 subtests passed`.
+- This remains offline Fake Provider/Fake SDK evidence. The real three-call slice must run only
+  after this controller is committed, pushed and verified at an exact public CI SHA.

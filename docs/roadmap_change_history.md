@@ -368,6 +368,26 @@
 - `CURRENT`：5D-6b 仍进行中；唯一下一步为真实 Adapter 协议切片的离线设计/TDD，
   不进入领域 Skill、第二 Provider 或 5D-7。GLM 是首个基准 Adapter，不是最终厂商锁定。
 
+### 2026-08-13：5D-6b Adapter Protocol Slice 离线控制器
+
+- `DESIGNED`：拒绝继续扩展 raw 微探针和另写两轮 Function Calling 循环；采用一个
+  `BudgetedProvider` 组合生产 Provider、现有 AgentLoop 与固定只读工具，保持单一
+  Agent 控制流和 Adapter 边界。
+- `IMPLEMENTED-OFFLINE`：A1 通过生产 Provider-neutral structured request 与 5D-6a
+  严格 decoder；A2 运行 `AgentLoop(max_iterations=2, max_tool_calls=1)`，只允许一次
+  `knowledge.search`，成功 observation 后要求精确终止标记。
+- `BOUNDARY`：两案共享精确 3-call 预算，第 4 次会在底层 Provider 前被拒绝；A1 失败
+  跳过 A2。CLI 必须显式确认真实调用、使用 `adapter_protocol` scope、精确预算 3，
+  且 SDK 自动重试为 0。
+- `SANITIZED`：公开结果只保存 case 状态、安全错误码、调用/Token/响应/工具计数、
+  resolved model、finish reason 与 SHA-256；不保存 Prompt、模型原文、工具 observation、
+  原始 request ID 或原始异常。
+- `VERIFIED-OFFLINE`：协议/CLI/结果合同聚焦回归 `22 passed`；完整回归
+  `415 passed, 103 subtests passed`。全量测试曾发现 package 重导出造成的循环 import，
+  已通过只允许显式子模块导入 runner 修复。
+- `CURRENT`：5D-6b 仍进行中；下一步先提交并公开验证该控制器，再执行一次精确
+  3-call 真实 Adapter 协议切片。不进入领域 Skill、第二 Provider 或 5D-7。
+
 ## 当前不变的宏观路线
 
 ```text

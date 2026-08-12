@@ -1,4 +1,4 @@
-"""Run the explicitly authorized, bounded Zhipu P1-P5 capability probe."""
+"""Run explicitly authorized, bounded Zhipu capability/admission probes."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import subprocess
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -17,8 +17,17 @@ from app.evaluation.provider_capability_gate import (
     CapabilityProbeReport,
     ProbeScope,
 )
+from app.evaluation.provider_adapter_protocol import (
+    AdapterProtocolSliceReport,
+    AdapterProtocolSliceRunner,
+)
 from app.providers.config import load_zhipu_settings
+from app.providers.zhipu import ZhipuProvider
 from app.providers.zhipu_probe import ZhipuCapabilityProbe
+
+
+ProbeCliScope = Literal["p1_p5", "p1_diagnostic", "adapter_protocol"]
+ProbeCliReport = CapabilityProbeReport | AdapterProtocolSliceReport
 
 
 _DEFAULT_OUTPUTS = {
@@ -29,13 +38,16 @@ _DEFAULT_OUTPUTS = {
         "data/evaluation/results/provider_capabilities/"
         "zhipu_glm52_p1_diagnostic.json"
     ),
+    "adapter_protocol": Path(
+        "data/evaluation/results/provider_capabilities/zhipu_adapter_slice.json"
+    ),
 }
 
 
 @dataclass(frozen=True)
 class ProbeCliOptions:
     confirm_real_call: bool
-    scope: ProbeScope
+    scope: ProbeCliScope
     max_calls: int
     output: Path | None
 
@@ -47,14 +59,18 @@ def run_cli(
     repository_root: Path | None = None,
     client_factory: Callable[..., Any] = OpenAI,
     code_sha_reader: Callable[[Path], str] | None = None,
-) -> CapabilityProbeReport:
+) -> ProbeCliReport:
     """Validate safety gates, run the selected bounded scope, and persist evidence."""
 
     if not options.confirm_real_call:
         raise RuntimeError("Real provider calls require explicit confirmation.")
     if options.scope not in _DEFAULT_OUTPUTS:
         raise ValueError("Unsupported capability probe scope.")
-    expected_calls = 1 if options.scope == "p1_diagnostic" else 5
+    expected_calls = {
+        "p1_diagnostic": 1,
+        "p1_p5": 5,
+        "adapter_protocol": 3,
+    }[options.scope]
     if options.max_calls != expected_calls:
         raise ValueError(
             f"{options.scope} requires an exact {expected_calls}-call budget."
@@ -85,13 +101,21 @@ def run_cli(
         timeout=settings.default_timeout_s,
         max_retries=0,
     )
-    report = ZhipuCapabilityProbe(
-        client=client,
-        model=settings.model,
-        code_sha=code_sha,
-        scope=options.scope,
-        max_calls=options.max_calls,
-    ).run()
+    if options.scope == "adapter_protocol":
+        report = AdapterProtocolSliceRunner(
+            provider=ZhipuProvider(client=client, model=settings.model),
+            code_sha=code_sha,
+            max_calls=options.max_calls,
+        ).run()
+    else:
+        probe_scope: ProbeScope = options.scope
+        report = ZhipuCapabilityProbe(
+            client=client,
+            model=settings.model,
+            code_sha=code_sha,
+            scope=probe_scope,
+            max_calls=options.max_calls,
+        ).run()
 
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(report.model_dump_json(indent=2), encoding="utf-8")
@@ -121,7 +145,7 @@ def _parse_args(argv: Sequence[str] | None = None) -> ProbeCliOptions:
     )
     parser.add_argument(
         "--scope",
-        choices=("p1_p5", "p1_diagnostic"),
+        choices=("p1_p5", "p1_diagnostic", "adapter_protocol"),
         default="p1_p5",
     )
     parser.add_argument("--max-calls", type=int)
@@ -129,7 +153,11 @@ def _parse_args(argv: Sequence[str] | None = None) -> ProbeCliOptions:
     args = parser.parse_args(argv)
     max_calls = args.max_calls
     if max_calls is None:
-        max_calls = 1 if args.scope == "p1_diagnostic" else 5
+        max_calls = {
+            "p1_diagnostic": 1,
+            "p1_p5": 5,
+            "adapter_protocol": 3,
+        }[args.scope]
     return ProbeCliOptions(
         confirm_real_call=args.confirm_real_call,
         scope=args.scope,

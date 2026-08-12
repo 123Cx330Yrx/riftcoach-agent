@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -12,6 +13,7 @@ from app.evaluation.provider_capability_gate import (
     ExternalCallBudget,
     ExternalCallBudgetExceeded,
 )
+from app.evaluation.provider_adapter_protocol import AdapterProtocolSliceReport
 
 
 def passed_case(case_id: str) -> CapabilityProbeCaseResult:
@@ -166,9 +168,14 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
 
     assert result_paths
     for result_path in result_paths:
-        CapabilityProbeReport.model_validate_json(
-            result_path.read_text(encoding="utf-8")
+        content = result_path.read_text(encoding="utf-8")
+        scope = json.loads(content).get("probe_scope", "p1_p5")
+        model = (
+            AdapterProtocolSliceReport
+            if scope == "adapter_protocol"
+            else CapabilityProbeReport
         )
+        model.model_validate_json(content)
 
 
 def test_v11_requires_explicit_consistent_response_observation() -> None:

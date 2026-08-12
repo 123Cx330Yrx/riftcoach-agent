@@ -604,3 +604,23 @@
 - 功能与文档快照以提交 `75159e9e8501d246986520a5341e2d82e3f8196d` 推送到
   `origin/main`；GitHub Actions run `31619089608` 对该精确 SHA 的全测试、RAG 开发/
   独立 holdout、compileall、Harness SDK 边界、敏感文件和 dry-run 门禁全部通过。
+
+### 2026-08-13：5D-6b Adapter Protocol Slice 离线 TDD
+
+- 比较扩展 raw 微探针、复制两轮调用器和组合现有 AgentLoop 三种方案；采用共享预算
+  Provider + 现有 AgentLoop，不新增第二套控制流。
+- 新增严格 `AdapterProtocolSliceReport` 与两个顺序 case：A1 structured contract、
+  A2 agent tool round trip。成功路径必须精确使用 3 次模型调用，失败依赖会 skipped，
+  第 4 次调用在底层 Provider 前 fail closed。
+- A1 复用 `EvaluationResponseModel` 和严格 decoder；A2 只注册固定、只读、幂等、一次
+  执行的 `knowledge.search` fixture，并要求一轮 ToolCall、一轮 observation 后 final。
+- 扩展 Provider probe CLI：新增显式 `adapter_protocol` scope、精确 `max_calls=3` 和独立
+  脱敏输出路径；真实 client 固定 `max_retries=0`，pytest/Fake SDK 不访问网络。
+- 新增异常、结构化失败、跳过、直接回答、坏工具参数、别名往返、CLI 授权/预算和公开
+  JSON 脱敏测试。全量测试首次发现 evaluation 根包重导出造成循环 import；移除重导出
+  后通过。
+- 聚焦回归：`22 passed`；跨 Provider/Structured/AgentLoop/Tool 回归：
+  `85 passed, 53 subtests passed`；完整回归：`415 passed, 103 subtests passed`；
+  compileall 与 diff check 通过。
+- 当前仍是离线证据。唯一下一步：提交、推送并核验精确 SHA 的公开 CI，随后按 RQ-027
+  执行一次精确 3-call 真实 Adapter 协议切片；不执行领域 Skill、第二 Provider 或 5D-7。
