@@ -181,6 +181,7 @@ Phase 6.10 - 5D-7（in progress: Batch A layered evaluation baseline complete; B
 | 5D-7 首次红灯测试使用当前 PATH 的 Hermes `python`，该环境没有 pytest | 1 | 未安装或修改全局环境；确认仓库 `.venv` 含 pytest 9.1.1，后续测试显式使用 `.venv\\Scripts\\python.exe` |
 | 5D-7 最终验证猜测 CI 文件为 `.github/workflows/ci.yml` | 1 | 只读并行命令提前停止且未改代码；用 `rg --files .github scripts` 定位真实文件为 `.github/workflows/tests.yml`，后续复用其精确门禁 |
 | 5D-7 暂存快照检查发现 ADR-0013 与领域评测 CLI 多余 EOF 空行 | 1 | cached diff check 阻止提交；删除两个多余空行并重新暂存，只有 cached check 成功后才提交 |
+| 5D-7 GitHub Actions 的 `gh run watch` 遇到 unexpected EOF，随后两次短查询遇到 TLS handshake timeout | 3 | 停止重复 `gh` 路径；改用带 10 秒连接/20 秒总上限的公开 REST 查询，确认 run `31661582544` 对精确 SHA completed/success |
 | 5D-6b P1 诊断恢复时猜错 ADR-0011 文件名 | 1 | 只读命令未改文件；先用 `rg --files docs/adr` 列出真实路径，再读取 `0011-compose-skill-agent-loop-through-harness-preparation.md` |
 | 原始 5C-1 至 5C-6 未持久化，文档误写 5C 完成 | 1 | 恢复完整账本，建立根级约束和活动计划，并修正所有冲突状态 |
 | 旧规划目录无 active pointer 且停在 2026-08-01 | 1 | 新建持续开发计划并写入 `.planning/.active_plan` |

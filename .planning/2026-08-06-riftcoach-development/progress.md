@@ -709,3 +709,8 @@
   governance 和 diff check 均通过。
 - 当前 5D-7 仍进行中。唯一下一步为 Batch B Prompt/Context 评测身份和可重复实验入口；
   不调 Prompt、不运行真实 Provider、不创建 held-out、不接第二 Provider。
+- Batch A 提交 `9f0d7d1177ac84c4d25c3397da85bf8e43859a6f` 已推送；GitHub Actions
+  run `31661582544` 对该精确 SHA 全部通过。
+- `gh run watch/view/list` 在 CI 查询期间依次遇到 unexpected EOF 和两次 TLS handshake
+  timeout；没有重复长连接。改用 `curl` 公开 REST 查询并设置 10 秒连接、20 秒总上限，
+  成功确认 run 已 completed/success。该网络问题没有影响 CI 或提交内容。

@@ -486,6 +486,8 @@
 - `CURRENT`：5D-7 保持进行中。唯一下一步为 Batch B：冻结 Prompt/Context 评测身份
   和可重复实验入口；不调 Prompt、不运行真实 Provider、不接第二 Provider，不进入
   5D exit review 或 5E。
+- `PUBLIC-VERIFIED`：Batch A 提交 `9f0d7d1` 已推送；GitHub Actions run
+  `31661582544` 对精确 SHA `9f0d7d1177ac84c4d25c3397da85bf8e43859a6f` 全部通过。
 
 ## 当前不变的宏观路线
 

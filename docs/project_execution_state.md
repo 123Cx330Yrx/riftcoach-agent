@@ -209,7 +209,7 @@ blocked_before: "5D-exit-review"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 Batch A 已建立分层领域评测合同、生命周期门禁和 10 案例离线 development 基线 | 阶段 5、整个 5D、Prompt/Context 实验、真实领域 Skill 或报告质量准入已完成 |
 | 项目理解 | 已区分 Provider 协议准入、领域控制流准入和多案例质量评测；理解最终文本不是完整 Agent 证据，也理解 fail/unknown/not-applicable、development/held-out 与故障场景正确降级的区别 | 离线分类 10/10 等于真实模型质量 100%、1/10 unsafe publication 是生产事故，或单个真实失败已经证明 GLM 整体不可用 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5D-6b 真实失败证据与 ADR-0012 已在提交 `34ea5c3` 公开；GitHub Actions run `31659371226` 对精确 SHA `34ea5c32e5c124207fcba7b0521a4e5a62af6845` 全部通过；正式网页仍未部署 | 公开失败证据就等于真实领域能力可用、报告质量准入、最终厂商选型或已有可运行 Web Agent |
+| GitHub/部署 | 5D-7 Batch A 已在提交 `9f0d7d1` 公开；GitHub Actions run `31661582544` 对精确 SHA `9f0d7d1177ac84c4d25c3397da85bf8e43859a6f` 全部通过；正式网页仍未部署 | 公开离线评测器就等于 Prompt/真实领域能力可用、报告质量准入、最终厂商选型或已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
