@@ -1,7 +1,7 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "dataset_id": "domain-e2e-v1-development",
-  "dataset_version": "1.0.0",
+  "dataset_version": "1.1.0",
   "dataset_role": "development",
   "calibration_excluded": false,
   "candidate_id": "offline-controlled-observations-v1",
@@ -10,7 +10,9 @@
     "skill_name": "recent-form-review",
     "skill_version": "0.2.0",
     "context_contract": "context-builder-v1",
-    "evaluation_contract": "coach_evaluation@1.0.0"
+    "evaluation_contract": "coach_evaluation@1.0.0",
+    "prompt_context_snapshot_id": "recent-form-prompt-context-v1",
+    "prompt_context_snapshot_sha256": "88af3ed94e2458dc67e92c311de3543ca23c5923c0591ad83cfa3d2db6fd95e0"
   },
   "external_provider_calls": 0,
   "case_count": 10,

@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.10 - 5D-7（in progress: Batch A layered evaluation baseline complete; Batch B Prompt/Context experiment identity next）
+Phase 6.10 - 5D-7（in progress: Batch A layered baseline and Batch B Prompt/Context identity complete; Batch C entry next）
 
 ## Phases
 
@@ -89,17 +89,17 @@ Phase 6.10 - 5D-7（in progress: Batch A layered evaluation baseline complete; B
   call 后没有形成统一 `ChatResponse`、工具证据或 Evaluation，领域 `admitted=false`，
   Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider。
 - `5D-7` 进行中：Batch A 已以真实 Bad Case 冻结分层 Dataset/Candidate/Result 合同、
-  development/held-out 生命周期和 10 案例离线基线；Batch B 将冻结 Prompt/Context
-  实验身份，不重跑 5D-6b，也不临场调 Prompt 追求通过。
+  development/held-out 生命周期和 10 案例离线基线；Batch B 已以双层语义指纹冻结
+  Skill、Context、知识工具、Evaluation 与 demo 案例身份，并建立零外部调用 admission。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-继续 5D-7 Batch B：冻结 Prompt/Context 评测身份和可重复实验入口，让每个后续候选
-绑定相同 Skill、Context 与 Evaluation 合同；本批不调 Prompt、不运行真实 Provider、
-不创建 held-out、不接第二 Provider，也不进入 5D exit review 或 5E。
+继续 5D-7 Batch C 入口设计与离线 TDD：要求可执行 development 候选先通过 Batch B
+admission，再分层验证工具选择、事实、引用和模型级注入；不直接运行真实 Provider、
+不创建或运行 held-out、不接第二 Provider，也不进入 5D exit review 或 5E。
 
 ## Decisions Made
 
@@ -160,6 +160,8 @@ Phase 6.10 - 5D-7（in progress: Batch A layered evaluation baseline complete; B
 | 5D-6b 按部分采用收尾 | 真实准入门的合法输出可以是拒绝；低层协议通过不能覆盖领域失败，领域失败也不能抹除协议证据。保留确定性 fallback，不重跑或调 Prompt 追绿，ADR-0012 将 Bad Case 交给 5D-7 |
 | 5D-7 采用分层领域评测 | 最终文本无法证明工具、证据与发布路径；ADR-0013 用 development/held-out 生命周期和 Provider/Agent、Tool、Evidence、Evaluation、Terminal、Resources 分层观测，为后续 Prompt/Provider 提供同一把尺子 |
 | 离线分类基线不等于模型质量 | 10 个可控观测用于验收评测器，故意保留 unsafe-publication 和资源超限负例；外部调用为 0，不能宣称 Prompt、真实 Provider 或注入防护已准入 |
+| 5D-7 Batch B 采用组件 + 案例双层语义身份 | 人工版本号会漏掉未升版漂移，只哈希最终消息又无法定位来源；实际 Skill、Context、知识工具与 Evaluation 形成组件指纹，demo Artifact/section/message 形成案例指纹 |
+| 任何执行型候选必须先取得离线 admission | 当前代码重建值、冻结快照和 Dataset 声明必须精确一致；漂移在 Provider 前失败关闭，公开证据只保存哈希与安全元数据 |
 
 ## Errors Encountered
 
@@ -182,6 +184,7 @@ Phase 6.10 - 5D-7（in progress: Batch A layered evaluation baseline complete; B
 | 5D-7 最终验证猜测 CI 文件为 `.github/workflows/ci.yml` | 1 | 只读并行命令提前停止且未改代码；用 `rg --files .github scripts` 定位真实文件为 `.github/workflows/tests.yml`，后续复用其精确门禁 |
 | 5D-7 暂存快照检查发现 ADR-0013 与领域评测 CLI 多余 EOF 空行 | 1 | cached diff check 阻止提交；删除两个多余空行并重新暂存，只有 cached check 成功后才提交 |
 | 5D-7 GitHub Actions 的 `gh run watch` 遇到 unexpected EOF，随后两次短查询遇到 TLS handshake timeout | 3 | 停止重复 `gh` 路径；改用带 10 秒连接/20 秒总上限的公开 REST 查询，确认 run `31661582544` 对精确 SHA completed/success |
+| 5D-7 Batch B 入口审计把 Windows 通配符直接作为 `rg` 路径参数 | 1 | 只读命令返回路径语法错误且未改文件；后续先用 `rg --files` 获取真实文件名再读取 |
 | 5D-6b P1 诊断恢复时猜错 ADR-0011 文件名 | 1 | 只读命令未改文件；先用 `rg --files docs/adr` 列出真实路径，再读取 `0011-compose-skill-agent-loop-through-harness-preparation.md` |
 | 原始 5C-1 至 5C-6 未持久化，文档误写 5C 完成 | 1 | 恢复完整账本，建立根级约束和活动计划，并修正所有冲突状态 |
 | 旧规划目录无 active pointer 且停在 2026-08-01 | 1 | 新建持续开发计划并写入 `.planning/.active_plan` |

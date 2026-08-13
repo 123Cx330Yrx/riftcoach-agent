@@ -34,7 +34,8 @@ def test_development_dataset_freezes_layered_contract_and_contamination():
     dataset = load_domain_dataset(DEVELOPMENT_DATASET_PATH)
 
     assert dataset.dataset_id == "domain-e2e-v1-development"
-    assert dataset.dataset_version == "1.0.0"
+    assert dataset.schema_version == "1.1"
+    assert dataset.dataset_version == "1.1.0"
     assert dataset.role is DomainDatasetRole.DEVELOPMENT
     assert dataset.calibration_excluded is False
     assert dataset.contract_snapshot.skill_name == "recent-form-review"
@@ -43,6 +44,12 @@ def test_development_dataset_freezes_layered_contract_and_contamination():
     assert dataset.contract_snapshot.evaluation_contract == (
         "coach_evaluation@1.0.0"
     )
+    assert dataset.contract_snapshot.prompt_context_snapshot_id == (
+        "recent-form-prompt-context-v1"
+    )
+    assert len(
+        dataset.contract_snapshot.prompt_context_snapshot_sha256
+    ) == 64
     assert len(dataset.cases) == 10
     assert all(case.contamination_sources for case in dataset.cases)
 

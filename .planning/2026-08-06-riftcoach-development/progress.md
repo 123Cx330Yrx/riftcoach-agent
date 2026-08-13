@@ -714,3 +714,31 @@
 - `gh run watch/view/list` 在 CI 查询期间依次遇到 unexpected EOF 和两次 TLS handshake
   timeout；没有重复长连接。改用 `curl` 公开 REST 查询并设置 10 秒连接、20 秒总上限，
   成功确认 run 已 completed/success。该网络问题没有影响 CI 或提交内容。
+
+### 2026-08-13：5D-7 Batch B Prompt/Context 实验身份
+
+- 比较人工版本号、只哈希最终消息、组件 + 案例双层语义指纹三种方案；ADR-0014 采用
+  第三种，避免未升版本的行为漂移，也保留变化定位能力。
+- 新增严格 `PromptContextSnapshot` 和 `DomainExperimentAdmission`：组件层覆盖 Skill
+  Manifest/Instructions、Context Policy、`knowledge.search` 合同、Evaluation Schema/
+  事实投影与 prompt builders；案例层覆盖 Artifact、typed options、section、最终消息
+  和 Context 预算。
+- 快照通过真实 Catalog、Router、ExecutionBoundary 与 ContextBuilder 离线重建；冻结
+  `recent-form-prompt-context-v1` 自摘要为
+  `88af3ed94e2458dc67e92c311de3543ca23c5923c0591ad83cfa3d2db6fd95e0`。
+- Domain E2E Dataset/Candidate/Result 升至 Schema 1.1，案例和标签未改；当前 10 案例
+  离线基线重新生成，任务结果与主失败分类保持 10/10，外部调用保持 0。
+- 新增离线 preparation CLI；只有当前重建快照、冻结快照与 Dataset 声明完全一致才
+  产生 `admitted=true`。有效 Skill 或 fixture 漂移、伪造自摘要、合同漂移和项目外输入
+  都会在 Provider 前失败关闭。
+- TDD 红灯先证明模块和 1.1 绑定缺失；实现与冻结后，快照/领域聚焦测试 `20 passed`，
+  相邻纵向回归 `87 passed, 4 subtests passed`，完整回归
+  `450 passed, 103 subtests passed`。
+- RAG development 与 independent holdout 的 Recall/MRR/nDCG 均为 `1.0`，holdout
+  abstention/citation support 均为 `1.0`；compileall、Harness SDK boundary、tracked
+  secret/run-data、Harness dry-run、公开快照正文脱敏、治理和 diff check 均通过。
+- 领域 1.1 基线与 admission 从 CLI 临时输出逐字节复现；任务结果/主失败分类保持
+  10/10，故意 unsafe publication 保持 1/10，admission 为 `admitted=true` 且外部调用 0。
+- 当前 5D-7 仍进行中；唯一下一步为 Batch C 入口设计与离线 TDD，以 Batch B admission
+  作为所有可执行 development 候选的前置门，再验证工具、事实、引用和模型级注入。
+  不直接运行真实 Provider、不创建/运行 held-out、不接第二 Provider、不进入 5E。

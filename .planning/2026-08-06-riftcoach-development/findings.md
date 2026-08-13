@@ -788,3 +788,20 @@
 - 评测方案比较结果：拒绝“复用单样例追绿”和“只用 Judge 看最终报告”；采用带
   development/held-out 生命周期的分层领域评测。入口批次先用离线可控观测证明评测器
   本身和失败分类，再考虑 Prompt 实验或第二 Provider。
+# 2026-08-13：5D-7 Batch B Prompt/Context 身份入口审计
+
+- Batch A 的 `ContractSnapshot` 只保存 `skill_name/version`、`context_contract` 和
+  `evaluation_contract` 三类人工标识；它能发现显式版本漂移，但不能发现未升版本的
+  `SKILL.md`、内部 Context Policy、上下文渲染或 Evaluation Prompt/Schema 漂移。
+- `ContextBuilderV1` 已经产生规范的两条 system/user `ChatMessage`，并保留 section 的
+  trust、source、required、priority、选中/省略和预算信息；因此 Batch B 应复用实际
+  `ContextBundle` 生成案例级内容身份，不另造 Context Builder。
+- 只哈希最终消息虽然能发现变化，却无法定位变化来自 Skill、Context 规则还是案例事实；
+  只哈希 Python 文件又会把注释/import 等非行为改动误判为实验漂移。
+- 推荐采用双层语义身份：组件层分别记录 Skill 包、Context 合同和 Evaluation 合同的
+  公开安全 SHA-256；案例层记录实际输入 Artifact commitment、选中/省略 section 和最终
+  规范消息的 SHA-256。实验入口在 Provider 调用前复算并逐项匹配，漂移即 fail closed。
+- 快照只保存 ID、版本、路径相对标识、结构化元数据和哈希，不保存 Prompt、事实、模型
+  正文、异常、request ID 或密钥；它属于 5D-7 的实验前置身份，不替代 5E 的运行 Trace。
+- 本批不修改 Prompt/Context 行为、不运行真实 Provider、不创建 held-out、不接第二
+  Provider。后续 Batch C 才使用该入口运行多案例工具、事实、引用和模型级注入评测。

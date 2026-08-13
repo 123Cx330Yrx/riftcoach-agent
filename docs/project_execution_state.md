@@ -20,9 +20,9 @@ blocked_before: "5D-exit-review"
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6b 已完成；
   5D-6b 的最终结论是 Adapter 最小协议准入、GLM recent-form 领域能力不准入
-- 唯一下一步：继续 5D-7 Batch B，冻结 Prompt/Context 评测身份和可重复实验入口，
-  让后续候选明确绑定同一 Skill、Context 与 Evaluation 合同；不调 Prompt、不调用真实
-  Provider，也不立即接入第二 Provider
+- 唯一下一步：继续 5D-7 Batch C 入口设计与离线 TDD，让可执行 development 候选先
+  通过 Batch B admission，再分层验证工具选择、事实、引用和模型级注入；不直接调用
+  真实 Provider，不创建或运行 held-out，也不立即接入第二 Provider
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；第二
   Provider 必须等待同任务评测设计和新 ADR，不能用发布热度替代准入证据
 
@@ -49,7 +49,7 @@ blocked_before: "5D-exit-review"
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（Batch A 已完成） | ADR-0013、严格 Dataset/Candidate/Result 合同、10 个 development 离线案例与基线；任务结果和主失败分类均为 10/10，故意保留 1 个 unsafe-publication 和 1 个资源超限负例，外部调用为 0；尚无 held-out、Prompt 实验或真实 Provider 多案例质量结果 |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（Batch A-B 已完成） | Batch A：ADR-0013、严格 Dataset/Candidate/Result 合同、10 个 development 离线案例与基线；Batch B：ADR-0014、组件/案例双层 SHA-256 快照、Domain E2E 1.1 强绑定和零外部调用 admission；尚无 held-out、模型级 Prompt 实验或真实 Provider 多案例质量结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界
@@ -183,6 +183,23 @@ blocked_before: "5D-exit-review"
 - ADR-0012 据此分层收尾 5D-6b：Zhipu Adapter 最小 structured/tool 协议准入，
   GLM-5.2 recent-form 领域能力不准入；不重跑、不临场调 Prompt、不立即接入第二
   Provider，真实失败进入 5D-7 的评测与错误归因设计。
+- ADR-0014 让后续领域实验强绑定 Prompt/Context 语义身份：组件层覆盖 Skill Manifest/
+  Instructions、Context Policy、`knowledge.search` 合同、Evaluation Schema/事实投影与
+  prompt builders；案例层覆盖输入 Artifact、typed options、实际 section、最终消息与
+  Context 预算；
+- 冻结快照 `recent-form-prompt-context-v1` 的自摘要为
+  `88af3ed94e2458dc67e92c311de3543ca23c5923c0591ad83cfa3d2db6fd95e0`；
+  Domain Dataset/Candidate/Result 已升至 Schema 1.1 并强绑定该 ID/SHA；
+- `prepare_domain_e2e_experiment.py` 会在 Provider 前从当前真实 Catalog、Router、
+  ExecutionBoundary 与 ContextBuilder 重建快照，核对冻结快照与 Dataset 后才产生
+  `admitted=true`；当前 admission 的 `external_provider_calls=0`；
+- 快照和 admission 只保存安全元数据及摘要，不保存 Prompt、玩家事实、模型正文、
+  Tool Observation、异常、request ID 或 Key；它们是实验前置身份，不是 5E Trace。
+- Batch B 聚焦测试为 `20 passed`，相邻纵向回归为 `87 passed, 4 subtests passed`，
+  完整回归为 `450 passed, 103 subtests passed`；两套 RAG、compileall、Harness SDK/
+  tracked-data、dry-run、快照正文脱敏、治理和 diff check 均通过；
+- Domain E2E 1.1 基线与 admission 已从 CLI 临时输出逐字节复现，当前尚待提交、推送和
+  精确 SHA GitHub Actions 核验。
 
 当前不能声称：
 
@@ -206,10 +223,10 @@ blocked_before: "5D-exit-review"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 Batch A 已建立分层领域评测合同、生命周期门禁和 10 案例离线 development 基线 | 阶段 5、整个 5D、Prompt/Context 实验、真实领域 Skill 或报告质量准入已完成 |
-| 项目理解 | 已区分 Provider 协议准入、领域控制流准入和多案例质量评测；理解最终文本不是完整 Agent 证据，也理解 fail/unknown/not-applicable、development/held-out 与故障场景正确降级的区别 | 离线分类 10/10 等于真实模型质量 100%、1/10 unsafe publication 是生产事故，或单个真实失败已经证明 GLM 整体不可用 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 Batch A-B 已建立分层领域评测、生命周期门禁、双层 Prompt/Context 身份和零调用 admission | 阶段 5、整个 5D、模型级 Prompt 实验、真实领域 Skill 或报告质量准入已完成 |
+| 项目理解 | 已区分 Provider 协议准入、领域控制流准入和多案例质量评测；理解最终文本不是完整 Agent 证据，并理解双层指纹只保证控制变量可复现，不评价 Prompt/模型好坏 | admission=true 等于真实模型准入、离线分类 10/10 等于真实质量 100%，或哈希快照已经彻底防住 Prompt Injection |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5D-7 Batch A 已在提交 `9f0d7d1` 公开；GitHub Actions run `31661582544` 对精确 SHA `9f0d7d1177ac84c4d25c3397da85bf8e43859a6f` 全部通过；正式网页仍未部署 | 公开离线评测器就等于 Prompt/真实领域能力可用、报告质量准入、最终厂商选型或已有可运行 Web Agent |
+| GitHub/部署 | 5D-7 Batch A 已在提交 `9f0d7d1` 公开并通过 run `31661582544`；Batch B 尚待本轮提交、推送和精确 SHA CI 核验；正式网页仍未部署 | 本地 Batch B 证据已经公开验证，或公开离线评测器等于 Prompt/真实领域能力、最终厂商选型或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -334,12 +351,12 @@ Adapter 协议切片通过；真实 recent-form 领域切片只尝试一次，�
 准入、领域能力不准入，而不是 GLM 整体成功或整体失败。
 
 当前检查点为 `5D-7 Prompt/Context & Domain E2E Evaluation`。Batch A 已把上述真实
-Bad Case 纳入 development，并建立 Provider/Agent、Tool、Evidence、Evaluation、
-Terminal 与 Resources 的严格分层合同；离线基线 10 个案例的任务结果和主失败分类均为
-10/10，`unsafe_publication_rate=1/10` 来自故意构造的发布门禁负例，另有 1 个资源超限
-负例，外部调用为 0。该结果
-只证明评测器能够识别已知离线观测，不证明 Prompt、真实模型或未知注入已通过。
+Bad Case 纳入 development，并建立分层合同和 10 案例离线基线；Batch B 又以 ADR-0014
+冻结组件级与案例级 Prompt/Context 语义身份，让 Dataset 1.1 和后续候选绑定相同
+Skill、Context、知识工具及 Evaluation 合同。离线 admission 会在 Provider 前重建并
+精确核对快照，当前外部调用为 0。它只证明实验条件可重复，不证明 Prompt、真实模型、
+未知注入或报告质量已经通过。
 
-唯一下一步是 5D-7 Batch B：冻结 Prompt/Context 的评测身份与可重复实验入口；不调
-Prompt、不运行真实 Provider、不创建 held-out、不接入第二 Provider，也不进入
-5D exit review 或 5E。
+唯一下一步是 5D-7 Batch C 入口设计与离线 TDD：所有可执行 development 候选先经过
+Batch B admission，再逐类验证工具选择、事实、引用和模型级注入；不直接运行真实
+Provider、不创建或运行 held-out、不接入第二 Provider，也不进入 5D exit review 或 5E。

@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "admission_id": "domain-e2e-v1-development-prompt-context",
+  "dataset_id": "domain-e2e-v1-development",
+  "dataset_version": "1.1.0",
+  "dataset_sha256": "4f3d1cb7422ed7625fd1964c3fb8b675f080273433bf7877c4be3cdbbc06ee49",
+  "prompt_context_snapshot_id": "recent-form-prompt-context-v1",
+  "prompt_context_snapshot_sha256": "88af3ed94e2458dc67e92c311de3543ca23c5923c0591ad83cfa3d2db6fd95e0",
+  "skill_name": "recent-form-review",
+  "skill_version": "0.2.0",
+  "context_contract": "context-builder-v1",
+  "evaluation_contract": "coach_evaluation@1.0.0",
+  "external_provider_calls": 0,
+  "admitted": true
+}

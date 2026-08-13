@@ -507,3 +507,29 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 应用、会话、Memory 和工具可靠性思路；Saber 提供检索、Context、DAG、取消和
 快照候选；Sea/OpenResearch 提供 Artifact、预算、租约、事件与恢复候选。任何
 吸收都必须回到 RiftCoach 的真实问题、对照实验、成本和 ADR。
+
+### 2026-08-13：5D-7 Batch B Prompt/Context 双层身份与实验 admission
+
+- `ACCEPTED`：ADR-0014 在“只靠人工版本”“只哈希最终消息”和“组件 + 案例双层
+  语义身份”之间选择第三种；有效行为变化可被发现并定位，注释/import 等无关源码
+  变化不自动污染实验身份。
+- `COMPONENT-IDENTITY`：Skill Manifest/Instructions、Context Policy、
+  `knowledge.search` 版本/Schema/策略、Evaluation Schema/事实投影以及评测、repair、
+  revision prompt builders 分别形成规范 SHA-256。
+- `CASE-IDENTITY`：真实 recent-form demo 经 Catalog、Router、ExecutionBoundary 与
+  ContextBuilder 形成输入 Artifact、typed options、选中/省略 section、最终 system/user
+  message 和 Context 预算摘要。
+- `BOUND`：Domain E2E Dataset/Candidate/Result 升至 Schema 1.1，并强绑定冻结快照 ID/
+  SHA；案例、期望标签和 Batch A 失败分类未变。
+- `FAIL-CLOSED`：离线 preparation 会在 Provider 前重建当前快照；当前值、冻结文件或
+  Dataset 声明任一漂移都不产生 admission。冻结 admission 为 `admitted=true` 且
+  `external_provider_calls=0`。
+- `SANITIZED`：公开快照/admission 只含标识、结构化元数据和摘要，不保存 Prompt、玩家
+  事实、模型正文、Tool Observation、异常、request ID 或 Key；该身份层不是 5E Trace。
+- `VERIFIED-LOCAL`：聚焦测试 `20 passed`，相邻纵向回归
+  `87 passed, 4 subtests passed`，完整回归 `450 passed, 103 subtests passed`；两套 RAG、
+  compileall、Harness SDK/tracked-data、dry-run、快照正文脱敏、治理和 diff check 通过；
+  Domain E2E 1.1 基线/admission 可逐字节复现，外部调用为 0。
+- `CURRENT`：5D-7 仍进行中。唯一下一步为 Batch C 入口设计与离线 TDD；先让可执行
+  development 候选经过 admission，再验证工具、事实、引用与模型级注入，不直接运行
+  真实 Provider、不创建/运行 held-out、不接第二 Provider、不进入 5D exit review 或 5E。

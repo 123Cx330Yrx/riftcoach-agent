@@ -251,6 +251,42 @@ _SINGLE_MATCH_FIELDS = (
 )
 
 
+def context_contract_descriptor() -> dict[str, Any]:
+    """Return the semantic V1 context contract used for experiment identity."""
+
+    return {
+        "contract_id": "context-builder-v1",
+        "message_schema_version": "1.0",
+        "internal_policy": _INTERNAL_POLICY.strip(),
+        "message_roles": [MessageRole.SYSTEM.value, MessageRole.USER.value],
+        "selection_policy": {
+            "required": "all_required_or_fail",
+            "optional": "priority_desc_then_source_order_whole_sections",
+            "effective_limit": "min(manifest_ceiling, caller_ceiling)",
+        },
+        "recent_form_projection": {
+            "scope_metadata_fields": list(_SCOPE_METADATA_FIELDS),
+            "scope_player_fields": list(_SCOPE_PLAYER_FIELDS),
+            "scope_request_fields": list(_SCOPE_REQUEST_FIELDS),
+            "recent_scalar_fields": list(_RECENT_SCALAR_FIELDS),
+            "recent_average_fields": list(_RECENT_AVERAGE_FIELDS),
+            "recent_comparison_fields": list(_RECENT_COMPARISON_FIELDS),
+            "recent_match_fields": list(_RECENT_MATCH_FIELDS),
+            "recent_match_projection_cap": _RECENT_MATCH_PROJECTION_CAP,
+        },
+        "single_match_projection": {
+            "single_match_fields": list(_SINGLE_MATCH_FIELDS),
+        },
+        "trust_roles": {
+            trust.value: {
+                "instructional": trust.instructional,
+                "message_role": trust.message_role.value,
+            }
+            for trust in ContextTrust
+        },
+    }
+
+
 class ContextBuilderV1:
     """Build bounded initial messages without compiling an Agent request."""
 

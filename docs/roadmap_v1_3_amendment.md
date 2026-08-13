@@ -175,7 +175,7 @@ OP.GG MCP
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
-5D-7 Prompt/Context Eval      进行中；Batch A 已建立分层合同、生命周期门禁和离线 development 基线
+5D-7 Prompt/Context Eval      进行中；Batch A-B 已建立分层基线、双层语义身份和零调用 admission
 ```
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
@@ -222,9 +222,11 @@ Adapter 协议、拒绝 GLM recent-form 领域能力、保留 fallback；不重�
 也不立即接入第二 Provider。5D-7 Batch A 随后采用 ADR-0013 的分层领域评测，建立严格
 Dataset/Candidate/Result 合同、development/held-out 生命周期和 10 案例离线基线；任务
 结果与主失败分类均为 10/10，并保留 1 个故意构造的 unsafe-publication 负例与 1 个
-资源超限负例。该结果只
-验收评测器，不验收真实模型。唯一下一步仍在 5D-7 内：冻结 Prompt/Context 评测身份
-和可重复实验入口。
+资源超限负例。Batch B 再采用 ADR-0014，以组件与案例双层 SHA-256 冻结 Skill、Context、
+知识工具、Evaluation 和 demo 输入身份，把 Domain E2E 合同升至 1.1，并建立 Provider
+前零调用 admission。上述证据只验收评测器和实验可比性，不验收真实模型。唯一下一步
+仍在 5D-7 内：Batch C 先离线构建工具、事实、引用和模型级注入的可执行 development
+候选，不直接运行真实 Provider。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动

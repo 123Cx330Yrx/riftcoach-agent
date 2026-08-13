@@ -9,6 +9,13 @@ from app.providers.structured import contract_for_model
 
 NonBlankText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
 
+EVALUATOR_SYSTEM_PROMPT = (
+    "你是独立事实审查员，只依据输入证据检查报告。"
+)
+REVISER_SYSTEM_PROMPT = (
+    "你是报告校订员，只修正已经明确指出的事实问题。"
+)
+
 
 class EvaluationIssueModel(BaseModel):
     """One strictly typed concern discovered by the Coach report evaluator."""

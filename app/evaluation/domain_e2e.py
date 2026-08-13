@@ -59,6 +59,8 @@ class ContractSnapshot(BaseModel):
     skill_version: NonBlankText
     context_contract: NonBlankText
     evaluation_contract: NonBlankText
+    prompt_context_snapshot_id: NonBlankText
+    prompt_context_snapshot_sha256: Sha256Text
 
 
 class DomainCaseRequirements(BaseModel):
@@ -130,7 +132,7 @@ class DomainEvaluationCase(BaseModel):
 class DomainEvaluationDataset(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["1.0"] = "1.0"
+    schema_version: Literal["1.1"] = "1.1"
     dataset_id: NonBlankText
     dataset_version: NonBlankText
     role: DomainDatasetRole
@@ -224,7 +226,7 @@ class DomainCandidateCase(BaseModel):
 class DomainCandidate(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["1.0"] = "1.0"
+    schema_version: Literal["1.1"] = "1.1"
     candidate_id: NonBlankText
     candidate_kind: Literal["offline_recorded", "real_provider_recorded"]
     dataset_id: NonBlankText
@@ -291,7 +293,7 @@ class DomainCaseResult(BaseModel):
 class DomainEvaluationResult(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["1.0"] = "1.0"
+    schema_version: Literal["1.1"] = "1.1"
     dataset_id: NonBlankText
     dataset_version: NonBlankText
     dataset_role: DomainDatasetRole

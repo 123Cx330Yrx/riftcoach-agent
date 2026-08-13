@@ -16,6 +16,8 @@ from app.agent.context import ContextBuilderV1
 from app.agent.draft import SkillAgentDraftPreparer
 from app.agent.loop import AgentLoop, AgentRunStatus, AgentStopReason
 from app.evaluation.coach_report import (
+    EVALUATOR_SYSTEM_PROMPT,
+    REVISER_SYSTEM_PROMPT,
     build_evaluation_prompt,
     build_fact_pack,
     build_revision_prompt,
@@ -57,8 +59,6 @@ _PRIOR_PROTOCOL_CALLS = 3
 _DOMAIN_MAX_CALLS = _CUMULATIVE_MAX_CALLS - _PRIOR_PROTOCOL_CALLS
 _DOMAIN_RUN_ID = "zhipu_recent_form_domain_slice"
 _DOMAIN_UTTERANCE = "分析我最近几局的状态"
-_EVALUATOR_SYSTEM_PROMPT = "你是独立事实审查员，只依据输入证据检查报告。"
-_REVISER_SYSTEM_PROMPT = "你是报告校订员，只修正已经明确指出的事实问题。"
 _PHASES = ("agent", "evaluation", "evaluation_repair", "revision")
 _CODE_SHA_ADAPTER = TypeAdapter(CodeShaText)
 
@@ -321,13 +321,13 @@ class DomainSkillSliceRunner:
                 draft_preparer=SkillAgentDraftPreparer(agent_loop),
                 evaluator=ChatEvaluationAdapter(
                     runtime=harness_runtime,
-                    system_prompt=_EVALUATOR_SYSTEM_PROMPT,
+                    system_prompt=EVALUATOR_SYSTEM_PROMPT,
                     fact_pack_builder=build_fact_pack,
                     prompt_builder=build_evaluation_prompt,
                 ),
                 reviser=ChatCoachReviser(
                     runtime=harness_runtime,
-                    system_prompt=_REVISER_SYSTEM_PROMPT,
+                    system_prompt=REVISER_SYSTEM_PROMPT,
                     prompt_builder=build_revision_prompt,
                     validator=validate_revised_report,
                 ),
