@@ -5,8 +5,11 @@ from typing import Any
 
 from app.evaluation.coach_report import (
     EvaluationResponseModel,
+    EvaluationResponseModelV11,
     build_evaluation_repair_prompt,
+    build_secure_evaluation_prompt,
     evaluation_response_contract,
+    evaluation_response_contract_v11,
 )
 from app.providers.models import (
     ChatResponse,
@@ -208,6 +211,68 @@ class ChatEvaluationAdapter:
         )
 
 
+class SecureChatEvaluationAdapter:
+    """Evaluate with the versioned v1.1 security input/output contract."""
+
+    def __init__(
+        self,
+        *,
+        runtime: ToolRuntime,
+        system_prompt: str,
+        fact_pack_builder: FactPackBuilder,
+        temperature: float = 0.0,
+    ) -> None:
+        self.runtime = runtime
+        self.system_prompt = system_prompt
+        self.fact_pack_builder = fact_pack_builder
+        self.temperature = temperature
+
+    def evaluate(self, request: EvaluationRequest) -> EvaluationResult:
+        if not request.user_utterance or not request.user_utterance.strip():
+            raise ValueError("security-aware evaluation requires user_utterance")
+        fact_pack = self.fact_pack_builder(dict(request.player_summary))
+        knowledge = _knowledge_evaluation_projection(request.knowledge)
+        prompt = build_secure_evaluation_prompt(
+            fact_pack,
+            request.report,
+            user_utterance=request.user_utterance,
+            knowledge=knowledge,
+        )
+        contract = evaluation_response_contract_v11()
+        response = _chat_response(
+            self.runtime,
+            system_prompt=self.system_prompt,
+            user_prompt=prompt,
+            temperature=self.temperature,
+            harness_step="evaluate",
+            response_contract=contract,
+        )
+        decoded = decode_structured_response(
+            response=response,
+            contract=contract,
+            output_model=EvaluationResponseModelV11,
+            repair=lambda repair_request: _chat_response(
+                self.runtime,
+                system_prompt=self.system_prompt,
+                user_prompt=build_evaluation_repair_prompt(
+                    contract=repair_request.contract,
+                    invalid_content=repair_request.invalid_content,
+                ),
+                temperature=self.temperature,
+                harness_step="evaluate_repair",
+                response_contract=repair_request.contract,
+            ),
+        )
+        payload = decoded.value
+        return EvaluationResult(
+            score=payload.score,
+            verdict=EvaluationVerdict(payload.verdict),
+            issues=tuple(issue.model_dump(mode="json") for issue in payload.issues),
+            passed_checks=tuple(payload.passed_checks),
+            summary=payload.summary,
+        )
+
+
 class ChatCoachReviser:
     """Perform bounded revision through llm.chat and preserve validation."""
 
@@ -322,4 +387,28 @@ def _evaluation_payload(result: EvaluationResult) -> dict[str, Any]:
         "issues": [dict(issue) for issue in result.issues],
         "passed_checks": list(result.passed_checks),
         "summary": result.summary,
+    }
+
+
+def _knowledge_evaluation_projection(knowledge: KnowledgeEvidence) -> dict[str, Any]:
+    """Project only bounded, attributable evidence into the security prompt."""
+
+    return {
+        "context": knowledge.context,
+        "abstained": knowledge.abstained,
+        "source_ids": list(knowledge.source_ids),
+        "citations": [
+            {
+                "citation_id": citation.citation_id,
+                "chunk_id": citation.chunk_id,
+                "parent_id": citation.parent_id,
+                "source_id": citation.source_id,
+                "title": citation.title,
+                "content": citation.content,
+                "matched_content": citation.matched_content,
+                "version": citation.version,
+                "updated_at": citation.updated_at,
+            }
+            for citation in knowledge.citations
+        ],
     }

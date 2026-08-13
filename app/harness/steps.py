@@ -118,6 +118,7 @@ class EvaluationRequest:
     deterministic_report: str
     knowledge: KnowledgeEvidence
     report: str
+    user_utterance: str | None = None
 
 
 @dataclass(frozen=True)

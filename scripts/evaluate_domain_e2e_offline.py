@@ -108,6 +108,10 @@ def _execute(
         dataset_path=dataset_path,
         snapshot_path=snapshot_path,
         runs_root=runs_root,
+        secure_evaluation=(
+            dataset.contract_snapshot.evaluation_contract
+            == "coach_evaluation@1.1.0"
+        ),
     ).run()
     return candidate, evaluate_domain_candidate(dataset, candidate)
 

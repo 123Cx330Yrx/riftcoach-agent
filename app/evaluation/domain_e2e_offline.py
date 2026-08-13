@@ -20,7 +20,11 @@ from app.evaluation.coach_report import (
     build_revision_prompt,
     validate_revised_report,
 )
-from app.harness.adapters import ChatCoachReviser, ChatEvaluationAdapter
+from app.harness.adapters import (
+    ChatCoachReviser,
+    ChatEvaluationAdapter,
+    SecureChatEvaluationAdapter,
+)
 from app.harness.models import RunManifest
 from app.harness.store import FileRunStore
 from app.providers.capabilities import ProviderCapabilities
@@ -135,6 +139,7 @@ class _InjectedKnowledgeProvider:
 @dataclass
 class _ScriptedOfflineProvider:
     scenario: _Scenario
+    secure_evaluation: bool = False
     provider_name: str = "offline-scripted-provider"
     model_name: str = "offline-scripted-model"
     capabilities: ProviderCapabilities = ProviderCapabilities(
@@ -191,6 +196,28 @@ class _ScriptedOfflineProvider:
 
     def _evaluation_response(self) -> ChatResponse:
         behavior = self.scenario.behavior
+        if self.secure_evaluation and behavior in {
+            "user_injection",
+            "knowledge_injection",
+            "injection_overlooked",
+        }:
+            payload = {
+                "score": 20,
+                "verdict": "fail",
+                "issues": [
+                    {
+                        "severity": "high",
+                        "category": "prompt_injection",
+                        "quote": "synthetic injection canary",
+                        "evidence": "untrusted input was followed by the draft",
+                        "explanation": "the draft contains the injected instruction result",
+                        "suggested_correction": "discard the draft and use deterministic fallback",
+                    }
+                ],
+                "passed_checks": ["security contract"],
+                "summary": "blocked by security policy",
+            }
+            return self._text_response(json.dumps(payload, ensure_ascii=False))
         if behavior in {
             "missing_tool",
             "bad_fact",
@@ -263,11 +290,13 @@ class OfflineDomainExecutionRunner:
         dataset_path: str | Path,
         snapshot_path: str | Path,
         runs_root: str | Path,
+        secure_evaluation: bool = False,
     ) -> None:
         self._root = Path(project_root).resolve()
         self._dataset_path = Path(dataset_path).resolve()
         self._snapshot_path = Path(snapshot_path).resolve()
         self._runs_root = Path(runs_root).resolve()
+        self._secure_evaluation = secure_evaluation
 
     def run(self) -> DomainCandidate:
         dataset = load_domain_dataset(self._dataset_path)
@@ -279,7 +308,11 @@ class OfflineDomainExecutionRunner:
         cases = tuple(self._run_case(scenario) for scenario in _SCENARIOS)
         return DomainCandidate(
             schema_version=dataset.schema_version,
-            candidate_id="offline-executable-controls-v1",
+            candidate_id=(
+                "offline-executable-controls-v1-1-secure"
+                if self._secure_evaluation
+                else "offline-executable-controls-v1"
+            ),
             candidate_kind="offline_executable",
             dataset_id=dataset.dataset_id,
             dataset_version=dataset.dataset_version,
@@ -316,7 +349,10 @@ class OfflineDomainExecutionRunner:
         registry = ToolRegistry()
         for definition in build_knowledge_tools(knowledge):
             registry.register(definition)
-        provider = _ScriptedOfflineProvider(scenario)
+        provider = _ScriptedOfflineProvider(
+            scenario,
+            secure_evaluation=self._secure_evaluation,
+        )
         agent_loop = AgentLoop(
             provider=provider,
             tool_registry=registry,
@@ -325,15 +361,24 @@ class OfflineDomainExecutionRunner:
                 call_id_factory=lambda: f"{scenario.case_id}-tool-runtime",
             ),
         )
-        result = SkillReviewExecutor(
-            runs_root=self._runs_root,
-            draft_preparer=SkillAgentDraftPreparer(agent_loop),
-            evaluator=ChatEvaluationAdapter(
+        evaluator = (
+            SecureChatEvaluationAdapter(
+                runtime=_single_attempt_llm_runtime(provider, scenario.case_id),
+                system_prompt=EVALUATOR_SYSTEM_PROMPT,
+                fact_pack_builder=build_fact_pack,
+            )
+            if self._secure_evaluation
+            else ChatEvaluationAdapter(
                 runtime=_single_attempt_llm_runtime(provider, scenario.case_id),
                 system_prompt=EVALUATOR_SYSTEM_PROMPT,
                 fact_pack_builder=build_fact_pack,
                 prompt_builder=build_evaluation_prompt,
-            ),
+            )
+        )
+        result = SkillReviewExecutor(
+            runs_root=self._runs_root,
+            draft_preparer=SkillAgentDraftPreparer(agent_loop),
+            evaluator=evaluator,
             reviser=ChatCoachReviser(
                 runtime=_single_attempt_llm_runtime(provider, scenario.case_id),
                 system_prompt=REVISER_SYSTEM_PROMPT,

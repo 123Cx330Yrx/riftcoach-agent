@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D entry design complete; D1 offline TDD next）
+Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D3 complete; D4 Provider gate design next）
 
 ## Phases
 
@@ -95,18 +95,20 @@ Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D entry design complete; D1
   admission，再真实经过 Skill、AgentLoop、ToolRuntime、本地 RAG 和 Harness；工具、
   事实、引用、用户/RAG 注入及一个真实 unsafe-publication 开发 Bad Case 均有 TDD 证据，
   外部调用为 0。它不代表真实模型能力或 held-out 结果。
-- `5D-7` Batch D 入口设计已完成：ADR-0016 保留 `coach_evaluation@1.0.0` 历史复现，
-  规划 1.1.0 安全评测输入/输出与不可修订 blocking policy，并冻结 held-out、有限真实
-  调用和第二 Provider 的门；设计不等于功能已实现。
+- `5D-7` Batch D 的 D1-D2 已完成：保留 `coach_evaluation@1.0.0` 历史复现，新增并接入
+  `coach_evaluation@1.1.0` 安全评测输入/输出与不可修订 blocking policy；secure offline
+  executable development 7 场的 task/failure accuracy 均为 `1.0`，unsafe publication 为
+  `0.0`，external calls 为 `0`。D3 已创建 3 场独立 held-out，并通过防污染/显式确认门；
+  held-out 尚未运行，设计与结果边界不能混淆。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-继续 5D-7 Batch D 的 D1 离线 TDD：保留 `coach_evaluation@1.0.0`，实现 1.1.0 的
-安全评测输入/输出合同和不可修订 blocking policy；本轮不创建或运行 held-out、不调用
-真实 Provider、不接第二 Provider，也不进入 5D exit review 或 5E。
+继续 5D-7 Batch D 的 D4 候选 Provider 采用门设计：先写新 ADR，固定同任务比较、能力
+前置条件、失败分类、调用/成本上限和停止规则；本轮不自动调用真实 Provider、不接入第二
+Provider、不运行 held-out，也不进入 5D exit review 或 5E。
 
 ## Decisions Made
 
@@ -174,6 +176,9 @@ Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D entry design complete; D1
 | Batch D 采用版本化安全评测 Profile | 原地修改 1.0.0 会破坏历史身份，单加枚举又缺用户/RAG 来源上下文；保留 1.0.0，以 1.1.0 增加最小安全输入和 blocking policy |
 | Canary 只作为实验 oracle | 硬编码已知 canary 只能通过考题；生产策略识别类型化 blocking issue，不维护攻击关键词黑名单 |
 | held-out 与真实 Provider 分阶段开门 | D1/D2 冻结后才创建独立 held-out；第二 Provider 需新 ADR，真实首轮使用同一 3 场、每 Provider 领域最多 12 calls、零 SDK retry |
+| D1-D2 采用安全评测 1.1 并保留 1.0.0 | 历史结果必须可复现；新版本需要接收用户请求与 bounded KnowledgeEvidence，并由 Harness 对 `prompt_injection` 直接阻断，不交给 Reviser |
+| D3 只创建 held-out，不在同一批运行 | 防止数据集创建与规则调节互相污染；首次运行必须在规则冻结后由显式确认触发 |
+| D4 先设计 Provider 采用门，再决定是否调用 | 5D-6b 暴露了统一响应/错误归因缺口；第二 Provider 不能在同任务合同、预算与失败分类未冻结前接入 |
 
 ## Errors Encountered
 
@@ -267,3 +272,4 @@ Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D entry design complete; D1
 | Batch C 批量审查让预期无匹配 `rg` 的退出码 1 传播 | 1 | 拆分候选、结果和安全扫描；显式把无 case-id 硬编码匹配记录为通过，不掩盖其他检查 |
 | Batch C 状态写回三次假设 roadmap/planning 尾部上下文 | 3 | `apply_patch` 原子拒绝，无半写入；读取每个文件真实尾部后分别追加，并将矩阵/决策拆开更新 |
 | Batch D 入口审计把不存在的 `app/providers/chat_adapter.py` 加入只读 `rg` 路径 | 1 | 命令未改文件；用 `rg --files app` 定位实际 `ChatEvaluationAdapter` 在 `app/harness/adapters.py`，再完整读取真实接缝 |
+| D1 首次测试补丁把旧 Harness 断言插入新安全测试 | 1 | 聚焦测试及时发现断言位置错误；移动断言回原测试并单独验证 1.0.0/1.1.0 两条路径 |

@@ -186,6 +186,7 @@ class SkillReviewExecutor:
             ).run(
                 player_summary=typed_input.player_summary,
                 deterministic_report=typed_input.deterministic_report,
+                user_utterance=execution.user_utterance,
             )
         except Exception as exc:
             raise SkillReviewExecutionError(

@@ -584,3 +584,21 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   held-out、调用真实 Provider 或选择第二 Provider，也没有进入 5E。
 - `CURRENT`：唯一下一步仍在 5D-7 Batch D，为 D1 离线 TDD：实现兼容的 Evaluation
   1.1 与 blocking policy，同时保护 1.0.0 和 Batch A-C 历史复现。
+
+### 2026-08-14：5D-7 Batch D D1-D3 安全评测迁移与 held-out 创建
+
+- `D1-IMPLEMENTED`：保留 `coach_evaluation@1.0.0` 历史合同，新增并接入
+  `coach_evaluation@1.1.0`；安全 Prompt 接收 bounded、data-only 的用户请求与知识证据，
+  `prompt_injection` 必须为 high severity。
+- `D1-POLICY`：ReviewHarness 对类型化 blocking issue 使用 `security_policy_blocked`
+  直接 deterministic fallback/rejection，不交给 Reviser，不在生产代码扫描已知 canary。
+- `D2-VERIFIED`：7 个 secure offline executable development 场景通过真实本地
+  Skill/Agent/Tool/RAG/Harness 控制流；task outcome accuracy `1.0`、failure
+  classification accuracy `1.0`、unsafe publication rate `0.0`、external calls `0`。
+  旧 1.0.0 与 Batch C 1/7 unsafe-publication Bad Case 保持可复现。
+- `D3-CREATED`：在合同、secure snapshot 与规则冻结后创建 3 场独立 held-out，标记
+  `calibration_excluded=true`，通过无污染与显式确认生命周期测试；本批不运行 held-out。
+- `BOUNDARY`：D1-D3 不调用真实 Provider、不接入第二 Provider，不代表真实模型抗注入
+  或领域质量已准入。
+- `CURRENT`：唯一下一步改为 D4 候选 Provider 采用门设计；先用新 ADR 固定同任务比较、
+  能力/错误归因、调用/成本预算和停止规则，之后才考虑一次有界真实比较。

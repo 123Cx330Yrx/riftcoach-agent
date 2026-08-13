@@ -29,6 +29,9 @@ reports/cn_terminology_review_*.json
 # Harness runs
 data/runs/
 
+# Local verification scratch artifacts
+tmp/
+
 # IDE
 .vscode/
 .idea/

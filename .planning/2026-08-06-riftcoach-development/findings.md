@@ -843,3 +843,22 @@
   Provider 比较还需要 Adapter 能力、零自动重试、共享 pre-I/O 预算和新 ADR。
 - 设计门把真实首轮限制为 3 场、每 Provider 领域最多 12 calls；小样本只做准入，不能
   宣称模型排行或统计显著性。
+
+### 2026-08-14：5D-7 Batch D D1-D3 结果
+
+- D1 不能原地扩展 1.0.0：历史 Evaluation 输入没有用户原话和实际知识证据，且旧
+  结果身份必须可复现。新增 1.1.0 最小合同，用 bounded data-only projection 提供
+  安全判断所需上下文；`prompt_injection` 必须是 high severity。
+- 安全问题不进入 Reviser。Harness 在写入 Evaluation Artifact 后先检查 blocking issue，
+  命中即以 `security_policy_blocked` deterministic fallback/rejection 结束；这样修订器
+  不会再次接触攻击相关上下文，也不会把“改写成功”误当成安全保证。
+- D2 的 7 个 secure development 场景真实复用生产本地控制流，Scripted Provider 仅替换
+  模型响应；7/7 task outcome、7/7 primary failure classification、0/7 unsafe publication，
+  外部调用为 0。该结果是控制流/评测门基线，不是 GLM/DeepSeek/Qwen 的能力结果。
+- D3 held-out 在 D1/D2 合同、secure snapshot 与规则冻结后才创建，包含正常、用户注入、
+  检索证据注入三类最小案例。数据集声明 `calibration_excluded=true`，测试要求显式确认
+  规则冻结；创建文件不等于已经运行或已经证明泛化。
+- 公开安全工件只保存合同/案例身份、SHA-256、结构化结果与安全错误码；不保存攻击原文、
+  canary、Prompt、模型正文、Tool Observation、request ID、异常或密钥。
+- 5D-6b 的错误来源丢失仍未被本批“猜测修复”；它被保留为 D4 前的可观测性缺口。下一步
+  先设计候选 Provider 采用门，再决定是否进行一次有界真实比较。

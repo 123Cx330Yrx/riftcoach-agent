@@ -175,7 +175,7 @@ OP.GG MCP
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
-5D-7 Prompt/Context Eval      进行中；Batch A-C 与 Batch D 入口设计已完成，Evaluation 1.1 功能迁移待实施
+5D-7 Prompt/Context Eval      进行中；Batch A-C 与 Batch D D1-D3 已完成，D4 Provider 采用门待设计
 ```
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
@@ -226,10 +226,12 @@ Dataset/Candidate/Result 合同、development/held-out 生命周期和 10 案例
 知识工具、Evaluation 和 demo 输入身份，把 Domain E2E 合同升至 1.1，并建立 Provider
 前零调用 admission。Batch C 又以 Scripted Provider 驱动 7 个真实本地控制流场景并
 保留 1/7 unsafe-publication Bad Case。Batch D 入口由 ADR-0016 冻结版本化迁移：保留
-`coach_evaluation@1.0.0`，后续以 1.1.0 增加最小用户/RAG 安全上下文和不可修订
-blocking policy；D1/D2 冻结后才能创建 held-out，再以新 ADR 决定最多一个第二 Provider。
-上述证据仍不验收真实模型。唯一下一步仍在 5D-7 内：D1 先离线 TDD Evaluation 1.1，
-不创建/运行 held-out、不调用真实 Provider。
+`coach_evaluation@1.0.0`，以 1.1.0 增加最小用户/RAG 安全上下文和不可修订
+blocking policy。D1-D2 已在 7 场 secure offline executable development 基线上验证，
+task/failure accuracy 均为 `1.0`、unsafe publication 为 `0.0`、external calls 为 `0`；
+D3 已在规则冻结后创建 3 场独立 held-out，但没有运行。上述证据仍不验收真实模型。
+唯一下一步仍在 5D-7 内：D4 先设计候选 Provider 采用门，再由新 ADR 决定是否最多比较
+一个第二 Provider；本轮不调用真实 Provider、不接第二 Provider。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动

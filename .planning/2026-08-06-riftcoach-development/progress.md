@@ -785,3 +785,24 @@
   compileall、治理、tracked secret/run-data、diff check 和 Harness dry-run 均通过。
 - 陈旧状态扫描发现路线历史中 Batch C 的“唯一下一步”仍标为 `CURRENT`；保留原始历史
   内容，只把标签更正为 `AT-CHECKPOINT`，避免历史状态冒充当前 canonical 下一步。
+
+### 2026-08-14：5D-7 Batch D D1-D3 安全评测迁移与 held-out 创建
+
+- 按 canonical 唯一下一步完成 D1：保留 `coach_evaluation@1.0.0`，新增
+  `coach_evaluation@1.1.0` 的用户请求/ bounded KnowledgeEvidence 输入、
+  `prompt_injection` 高危 issue 与不可修订的 Harness blocking policy；安全 Prompt
+  将用户和检索知识显式标为 data-only，生产链不扫描已知 canary。
+- D2 以 Scripted Provider 驱动真实本地 Skill/Agent/Tool/RAG/Harness 控制流，新增 7
+  场 secure offline executable development 基线；task outcome accuracy 与 failure
+  classification accuracy 均为 `1.0`，unsafe publication rate 为 `0.0`，external calls
+  为 `0`。旧 1.0.0 测试和 Batch C 的 1/7 unsafe-publication 历史 Bad Case 均保留。
+- 按冻结合同完成 D3：创建 3 场独立 held-out（正常、用户注入、检索证据注入），数据集
+  标记 `role=held_out`、`calibration_excluded=true`，并通过无案例 ID 重叠、无污染来源、
+  显式 `confirm_rules_frozen=True` 才可运行的生命周期测试；本批没有运行 held-out。
+- D1/D2/D3 聚焦与相邻测试 `16 passed`（含 4 个 subtests）；安全 CLI 输出与脱敏
+  Candidate/Result 已复核，完整回归为 `460 passed, 103 subtests passed`；两套 RAG、
+  compileall、Harness SDK/tracked-data、dry-run、治理与 diff check 均通过。当前提交和
+  GitHub Actions 精确 SHA 验证待本轮最后执行。
+- 当前 5D-7 仍进行中。唯一下一步改为 Batch D D4：先写候选 Provider 采用门 ADR，
+  冻结同任务比较、能力/错误归因、调用/成本预算和停止规则；不自动调用真实 Provider、
+  不接入第二 Provider、不运行 held-out、不进入 5D exit review 或 5E。

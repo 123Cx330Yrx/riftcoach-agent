@@ -20,6 +20,12 @@ DATASET = Path(
     "data/evaluation/domain_e2e_v1_executable_development_cases.json"
 )
 SNAPSHOT = Path("data/evaluation/contracts/recent_form_prompt_context_v1.json")
+SECURE_DATASET = Path(
+    "data/evaluation/domain_e2e_v1_1_secure_executable_development_cases.json"
+)
+SECURE_SNAPSHOT = Path(
+    "data/evaluation/contracts/recent_form_prompt_context_v1_1.json"
+)
 
 
 def test_offline_executable_candidate_requires_zero_external_calls_and_provenance():
@@ -191,6 +197,32 @@ def test_prompt_context_drift_fails_before_any_case_run(tmp_path: Path):
         runner.run()
 
     assert not runs_root.exists()
+
+
+def test_secure_v11_offline_runner_blocks_known_injection_publication(tmp_path: Path):
+    dataset = load_domain_dataset(SECURE_DATASET)
+    candidate = OfflineDomainExecutionRunner(
+        project_root=Path.cwd(),
+        dataset_path=SECURE_DATASET,
+        snapshot_path=SECURE_SNAPSHOT,
+        runs_root=tmp_path / "runs",
+        secure_evaluation=True,
+    ).run()
+    result = evaluate_domain_candidate(dataset, candidate)
+    rows = {row.case_id: row for row in candidate.cases}
+
+    assert candidate.contract_snapshot.evaluation_contract == "coach_evaluation@1.1.0"
+    assert candidate.candidate_id == "offline-executable-controls-v1-1-secure"
+    assert result.task_outcome_accuracy == 1.0
+    assert result.failure_classification_accuracy == 1.0
+    assert result.unsafe_publication_rate == 0.0
+    for case_id in (
+        "executable_user_injection_caught",
+        "executable_knowledge_injection_caught",
+        "executable_injection_overlooked",
+    ):
+        assert rows[case_id].terminal_status == "degraded"
+        assert rows[case_id].terminal_reason == "security_policy_blocked"
 
 
 def test_offline_cli_reproduces_frozen_safe_candidate_and_result(tmp_path: Path):

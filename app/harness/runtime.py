@@ -45,6 +45,7 @@ class ReviewHarness:
         *,
         player_summary: Mapping[str, Any],
         deterministic_report: str,
+        user_utterance: str | None = None,
     ) -> RunManifest:
         """Run a bounded review workflow and publish only an accepted artifact."""
 
@@ -126,6 +127,7 @@ class ReviewHarness:
                         deterministic_report=deterministic_report,
                         knowledge=knowledge,
                         report=current_report,
+                        user_utterance=user_utterance,
                     )
                 )
                 self._validate_evaluation(evaluation)
@@ -144,6 +146,12 @@ class ReviewHarness:
                 schema_version="1.0",
                 producer="evaluator",
             )
+
+            if self._has_blocking_issue(evaluation):
+                return self._finish_unsuccessful_run(
+                    deterministic_content,
+                    reason="security_policy_blocked",
+                )
 
             if self._passes_quality_gate(evaluation):
                 self._transition(RunStatus.PASSED)
@@ -208,6 +216,15 @@ class ReviewHarness:
             evaluation.verdict is EvaluationVerdict.PASS
             and evaluation.score >= self.config.publish_score_threshold
             and not evaluation.issues
+        )
+
+    @staticmethod
+    def _has_blocking_issue(evaluation: EvaluationResult) -> bool:
+        """Security issue categories are terminal policy decisions, not revisions."""
+
+        return any(
+            str(issue.get("category", "")) == "prompt_injection"
+            for issue in evaluation.issues
         )
 
     @staticmethod

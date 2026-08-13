@@ -21,9 +21,11 @@ from app.evaluation.coach_report import (
     REVISER_SYSTEM_PROMPT,
     build_evaluation_prompt,
     build_evaluation_repair_prompt,
+    build_secure_evaluation_prompt,
     build_fact_pack,
     build_revision_prompt,
     evaluation_response_contract,
+    evaluation_response_contract_v11,
 )
 from app.skills.catalog import SkillCatalog
 from app.skills.execution import (
@@ -161,6 +163,8 @@ def build_prompt_context_snapshot(
     skills_root: str | Path,
     player_summary: dict[str, Any],
     deterministic_report: str,
+    snapshot_id: str = _SNAPSHOT_ID,
+    evaluation_contract_version: str = "1.0.0",
 ) -> PromptContextSnapshot:
     catalog = SkillCatalog.from_directory(skills_root)
     decision = DeterministicSkillRouter().route(
@@ -193,7 +197,10 @@ def build_prompt_context_snapshot(
         )
     )
     context = ContextBuilderV1().build(execution)
-    components = _component_fingerprints(skill)
+    components = _component_fingerprints(
+        skill,
+        evaluation_contract_version=evaluation_contract_version,
+    )
     case_context = CaseContextFingerprint(
         case_id=_CASE_ID,
         player_summary_sha256=binding.player_summary.sha256,
@@ -226,11 +233,11 @@ def build_prompt_context_snapshot(
     )
     payload_without_digest = {
         "schema_version": "1.0",
-        "snapshot_id": _SNAPSHOT_ID,
+        "snapshot_id": snapshot_id,
         "skill_name": skill.manifest.name,
         "skill_version": skill.manifest.version,
         "context_contract": _CONTEXT_CONTRACT,
-        "evaluation_contract": _EVALUATION_CONTRACT,
+        "evaluation_contract": f"coach_evaluation@{evaluation_contract_version}",
         "components": [row.model_dump(mode="json") for row in components],
         "case_contexts": [case_context.model_dump(mode="json")],
     }
@@ -268,12 +275,18 @@ def prepare_domain_experiment(
         skills_root=skills_root or root / "skills",
         player_summary=json.loads(summary_file.read_text(encoding="utf-8")),
         deterministic_report=report_file.read_text(encoding="utf-8"),
+        snapshot_id=frozen_snapshot.snapshot_id,
+        evaluation_contract_version=frozen_snapshot.evaluation_contract.rsplit("@", 1)[-1],
     )
     if current_snapshot != frozen_snapshot:
         raise ValueError("Prompt/Context snapshot mismatch")
     _validate_dataset_snapshot(dataset, frozen_snapshot)
     return DomainExperimentAdmission(
-        admission_id="domain-e2e-v1-development-prompt-context",
+        admission_id=(
+            "domain-e2e-v1-1-secure-development-prompt-context"
+            if frozen_snapshot.evaluation_contract == "coach_evaluation@1.1.0"
+            else "domain-e2e-v1-development-prompt-context"
+        ),
         dataset_id=dataset.dataset_id,
         dataset_version=dataset.dataset_version,
         dataset_sha256=_digest_json(dataset.model_dump(mode="json")),
@@ -311,8 +324,17 @@ def _validate_dataset_snapshot(
         raise ValueError("Dataset Prompt/Context contract mismatch")
 
 
-def _component_fingerprints(skill) -> tuple[ComponentFingerprint, ...]:
-    contract = evaluation_response_contract()
+def _component_fingerprints(
+    skill,
+    *,
+    evaluation_contract_version: str = "1.0.0",
+) -> tuple[ComponentFingerprint, ...]:
+    secure = evaluation_contract_version == "1.1.0"
+    contract = (
+        evaluation_response_contract_v11()
+        if secure
+        else evaluation_response_contract()
+    )
     probe_facts = {"probe": "FACT_SENTINEL"}
     probe_report = "REPORT_SENTINEL"
     repair_probe = build_evaluation_repair_prompt(
@@ -373,6 +395,16 @@ def _component_fingerprints(skill) -> tuple[ComponentFingerprint, ...]:
             },
         },
     }
+    evaluation_prompt = (
+        build_secure_evaluation_prompt(
+            probe_facts,
+            probe_report,
+            user_utterance="USER_REQUEST_SENTINEL",
+            knowledge={"context": "KNOWLEDGE_SENTINEL", "citations": []},
+        )
+        if secure
+        else build_evaluation_prompt(probe_facts, probe_report)
+    )
     rows = (
         (
             "skill_manifest",
@@ -396,7 +428,7 @@ def _component_fingerprints(skill) -> tuple[ComponentFingerprint, ...]:
         ),
         (
             "evaluation_schema",
-            "app.evaluation.coach_report:coach_evaluation@1.0.0",
+            f"app.evaluation.coach_report:coach_evaluation@{evaluation_contract_version}",
             contract.schema_dict(),
         ),
         (
@@ -411,8 +443,12 @@ def _component_fingerprints(skill) -> tuple[ComponentFingerprint, ...]:
         ),
         (
             "evaluation_prompt_probe",
-            "app.evaluation.coach_report:build_evaluation_prompt",
-            build_evaluation_prompt(probe_facts, probe_report),
+            (
+                "app.evaluation.coach_report:build_secure_evaluation_prompt"
+                if secure
+                else "app.evaluation.coach_report:build_evaluation_prompt"
+            ),
+            evaluation_prompt,
         ),
         (
             "evaluation_repair_probe",
