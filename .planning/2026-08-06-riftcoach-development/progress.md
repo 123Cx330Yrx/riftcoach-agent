@@ -761,3 +761,5 @@
   diff check 和 Harness dry-run 全部通过。
 - 当前仍是 5D-7 in progress。下一步为 Batch D 入口设计，不直接调用真实 Provider、
   不立即创建/运行 held-out、不接第二 Provider、不进入 5D exit review 或 5E。
+- Batch C 功能提交 `06cf769be54c8062aeddcd8c36283306e63bfc9a` 已推送；GitHub
+  Actions run `31705232946` 对精确 SHA 全部通过，CI 未调用真实 Provider。

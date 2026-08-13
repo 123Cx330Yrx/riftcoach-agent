@@ -245,7 +245,7 @@ blocked_before: "5D-exit-review"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 Batch A-C 已建立分层评测、实验身份和 7 场真实本地控制流的 executable development 基线 | 阶段 5、整个 5D、真实模型 Prompt 实验、held-out、第二 Provider 或报告质量准入已完成 |
 | 项目理解 | 已区分记录型评测样本与可执行本地实验；理解 Scripted Provider 只固定模型响应，而 Skill/Agent/Tool/RAG/Harness 可真实运行，也理解 unsafe publication 用于暴露评测漏判 | 脚本 Provider 等于真实模型、离线 7/7 分类匹配等于真实质量 100%，或 canary 已证明通用抗注入 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | Batch C 本地功能与全门禁已完成，等待本批提交、推送和精确 SHA CI；正式网页仍未部署 | 本地门禁等于 GitHub 已同步，或离线 executable 基线等于真实领域能力、最终厂商选型或 Web Agent 可用 |
+| GitHub/部署 | Batch C 功能提交 `06cf769be54c8062aeddcd8c36283306e63bfc9a` 已公开；GitHub Actions run `31705232946` 对该精确 SHA 全部通过；正式网页仍未部署 | 公开 executable 基线等于真实领域能力、最终厂商选型或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

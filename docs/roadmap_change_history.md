@@ -560,3 +560,7 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `CURRENT`：5D-7 仍进行中。唯一下一步为 Batch D 入口设计，先裁决 injection
   Evaluation 合同、held-out、有限真实运行和第二 Provider 决策门；不直接调用真实
   Provider、不立即创建/运行 held-out、不接第二 Provider、不进入 5E。
+- `PUBLIC-VERIFIED`：Batch C 功能提交
+  `06cf769be54c8062aeddcd8c36283306e63bfc9a` 已推送；GitHub Actions run
+  `31705232946` 对该精确 SHA 的全测试、两套 RAG、compileall、治理、Harness SDK/
+  tracked-data 和 dry-run 门禁全部通过，CI 未调用真实 Provider。
