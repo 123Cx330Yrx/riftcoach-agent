@@ -337,7 +337,7 @@
   Calling 的证据。后续离线映射状态见下方 5D-6b 条目。
 - `VERIFIED`：聚焦回归 `89 passed, 40 subtests passed`；完整回归
   `359 passed, 95 subtests passed`；compileall、diff check 与治理预检通过。
-- `CURRENT`：5D-6a 完成；唯一下一步为 5D-6b Real Provider Capability Gate。该检查点
+- `AT-CHECKPOINT`：5D-6a 完成；当时唯一下一步为 5D-6b Real Provider Capability Gate。该检查点
   先设计真实 GLM 准入实验和第二 Provider 决策门，不得直接进入 5D-7。
 
 ### 2026-08-12：5D-6b P1-P5 部分证据与受控诊断
@@ -365,7 +365,7 @@
 - `VERIFIED-OFFLINE`：聚焦回归 `73 passed, 50 subtests passed`，完整回归
   `405 passed, 103 subtests passed`；这仍是 Fake SDK 映射证据，不是生产 Adapter 或
   领域 Skill 真实准入。
-- `CURRENT`：5D-6b 仍进行中；唯一下一步为真实 Adapter 协议切片的离线设计/TDD，
+- `AT-CHECKPOINT`：当时 5D-6b 仍进行中；唯一下一步为真实 Adapter 协议切片的离线设计/TDD，
   不进入领域 Skill、第二 Provider 或 5D-7。GLM 是首个基准 Adapter，不是最终厂商锁定。
 
 ### 2026-08-13：5D-6b Adapter Protocol Slice 离线控制器
@@ -385,7 +385,7 @@
 - `VERIFIED-OFFLINE`：协议/CLI/结果合同聚焦回归 `22 passed`；完整回归
   `415 passed, 103 subtests passed`。全量测试曾发现 package 重导出造成的循环 import，
   已通过只允许显式子模块导入 runner 修复。
-- `CURRENT`：5D-6b 仍进行中；下一步先提交并公开验证该控制器，再执行一次精确
+- `AT-CHECKPOINT`：当时 5D-6b 仍进行中；下一步先提交并公开验证该控制器，再执行一次精确
   3-call 真实 Adapter 协议切片。不进入领域 Skill、第二 Provider 或 5D-7。
 
 ### 2026-08-13：5D-6b Adapter Protocol Slice 真实结果
@@ -402,7 +402,7 @@
   ID、异常或 Key。无可靠单价快照，成本保持 null。
 - `BOUNDARY`：这次证据准入生产 Zhipu Adapter 的最小 structured/tool 协议切片，不
   准入 `recent-form-review`、ReviewHarness 报告质量、最终模型选择或 5D 整体。
-- `CURRENT`：5D-6b 仍进行中；唯一下一步是 Recent-form Domain Slice 的离线设计/TDD，
+- `AT-CHECKPOINT`：当时 5D-6b 仍进行中；唯一下一步是 Recent-form Domain Slice 的离线设计/TDD，
   先解决原定累计 7-call 上限与已用 3 calls 的核算，再决定真实领域执行。不进入第二
   Provider 或 5D-7。
 
@@ -426,7 +426,7 @@
   `141 passed, 29 subtests passed`；全量回归 `430 passed, 103 subtests passed`；两套
   RAG 门禁、compileall、Harness SDK/敏感文件边界和 dry-run 全部通过。仓库中没有真实
   recent-form 结果文件，未调用 GLM。
-- `CURRENT`：5D-6b 仍进行中；唯一下一步是提交、推送并验证离线控制器精确 SHA 的
+- `AT-CHECKPOINT`：当时 5D-6b 仍进行中；唯一下一步是提交、推送并验证离线控制器精确 SHA 的
   公开 CI，通过后才按 RQ-027 执行一次剩余最多 4-call 的真实领域切片。不得进入第二
   Provider 或 5D-7。
 
@@ -438,9 +438,29 @@
 - `CI-SCOPE`：公开门禁包含全量 pytest、RAG development/independent holdout、
   compileall、Harness SDK boundary、tracked secret/run-data 和 Harness dry-run；CI 没有
   本地 `.env`，未调用真实 Provider。
-- `CURRENT`：离线控制器现已公开可复现，5D-6b 仍进行中；唯一下一步为按 RQ-027
+- `AT-CHECKPOINT`：离线控制器公开可复现后，5D-6b 仍进行中；当时唯一下一步为按 RQ-027
   执行一次累计 7-call、领域剩余最多 4-call 的真实 GLM recent-form 切片并原样保存
   脱敏结果。本离线批次不得直接继续该调用，也不得进入第二 Provider 或 5D-7。
+
+### 2026-08-13：5D-6b 真实领域准入与 ADR-0012
+
+- `REAL-EVIDENCE`：在公开 CI 成功 SHA
+  `f5e97ead20c5aa7d4798f308bd60e820842061bc` 上只执行一次真实 recent-form
+  领域切片；领域调用为 1，累计为 4/7，没有重试或 Prompt 调整。
+- `REJECTED-DOMAIN`：外部请求发生后没有统一 `ChatResponse` 进入 Agent 结果，
+  response/tool/evidence 均为 0，未进入 Evaluation，没有质量分；领域
+  `admitted=false`，安全错误为 `knowledge_round_trip_incomplete`。
+- `FALLBACK-VERIFIED`：Harness 到达 `degraded` 并只输出确定性报告，真实证明外部
+  Provider 失败不会发布未经评测的 Agent 草稿。
+- `OBSERVABILITY-BOUNDARY`：脱敏证据无法区分 Adapter 规范化拒绝和其他统一响应
+  形成前的 Provider 错误；草稿准备接缝没有向 runner 暴露失败的 `AgentRunResult`，
+  该错误来源丢失进入 5D-7，而不是通过猜测原文或重跑补齐。
+- `ACCEPTED`：ADR-0012 以部分采用收尾 5D-6b：准入 Zhipu 最小 structured/tool
+  协议，拒绝 GLM-5.2 recent-form 领域能力，保留确定性 fallback，并在同任务评测
+  合同冻结前暂缓第二 Provider。
+- `CURRENT`：唯一下一步为 5D-7 Prompt/Context & Domain E2E Evaluation。先冻结
+  案例、失败分类、可观测性和基线，再决定是否需要 Prompt 调整或第二 Provider；不得
+  进入 5D exit review、5E、LangGraph、Agent SDK 或 Multi-Agent。
 
 ## 当前不变的宏观路线
 

@@ -751,3 +751,23 @@
 - Controller commit `d51d8fa9da13ca16f47747260a1eca74c1ffdd76` passed GitHub Actions
   run `31657764638`, including full pytest, both RAG gates, compileall, Harness SDK/tracked-data
   boundaries and dry-run. CI had no local environment file and made no real Provider call.
+
+## 2026-08-13 5D-6b real domain admission result
+
+- The authorized recent-form domain slice ran exactly once on publicly verified code SHA
+  `f5e97ead20c5aa7d4798f308bd60e820842061bc`. It consumed one domain call, bringing the
+  cumulative experiment to 4/7 calls; there was no retry or Prompt change.
+- The external request was attempted and billed, but no normalized `ChatResponse` reached the
+  Agent result: response count, ToolCall count, tool executions and knowledge sources are all zero,
+  while `agent_status` is null. It is therefore incorrect to classify this as a direct-text answer.
+- With no attributable knowledge round trip, the flow never reached structured Evaluation and has
+  no quality score. The only publishable terminal output was the deterministic fallback, recorded as
+  `degraded`; this is real evidence that the Harness prevented an unevaluated draft from publishing.
+- The sanitized result cannot distinguish an Adapter response-normalization rejection from another
+  Provider error before normalized response formation. The draft-preparation seam exposes
+  `AgentRunResult` only after successful preparation, so the domain runner collapses this branch into
+  `knowledge_round_trip_incomplete`. This loss of safe error provenance is a 5D-7 observability Bad
+  Case, not a reason to mutate or rerun the 5D-6b sample.
+- ADR-0012 closes 5D-6b with partial adoption: admit the minimum Zhipu structured/tool protocol,
+  reject GLM-5.2 recent-form domain capability, retain deterministic fallback, and defer any second
+  Provider until a same-task 5D-7 evaluation contract exists.

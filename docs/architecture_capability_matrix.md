@@ -22,14 +22,14 @@
 |---|---|---|---|---|---|---|
 | A01 | LoL 确定性事实 | Riot API、MatchAnalyzer、Schema v1 | 阶段 1 | 阶段 7 增加 Meta，但保持事实分层 | 指标单测、合成样例、Timeline 缺失与短局测试 | 已完成 |
 | A02 | 质量门控 Harness | 状态机、Artifact、评测、受限修订、降级 | 阶段 2 | 阶段 8 增加恢复与复杂运行治理 | 状态迁移、错误数字、修订越权、发布门禁测试 | 已完成 |
-| A03 | 模型 Provider 抽象 | 统一 ChatRequest/Response、Registry、能力协商；首个 Zhipu Adapter 已通过真实最小 structured/tool 协议，领域控制器已离线组合并通过公开 CI | 阶段 3 | 先完成一次受控真实领域准入；真实第二 Provider 在阶段 5 同任务场景触发后验收 | 同一领域案例、Tool Calling、结构化输出和错误契约 | 部分完成 |
+| A03 | 模型 Provider 抽象 | 统一 ChatRequest/Response、Registry、能力协商；Zhipu Adapter 真实最小 structured/tool 协议已准入，但 recent-form 真实领域运行在统一响应形成前失败并被拒绝 | 阶段 3 | 5D-7 先补同任务失败归因与领域评测；第二 Provider 由新 ADR 决定 | 同一领域案例、Tool Calling、结构化输出和错误契约 | 部分完成 |
 | A04 | Tool Runtime | Schema、超时、重试、缓存、熔断、fallback、指标 | 阶段 3 | 阶段 7 适配标准 MCP 工具 | 故障注入、缓存、熔断、fallback 和越权测试 | 已完成 |
 | A05 | RAG 与证据 | 混合检索、父子块、引用、冲突、拒答、独立保留集 | 阶段 4 | 维护数据集；按规模证据决定是否升级存储 | Recall/MRR/nDCG、abstain、引用支持与冲突测试 | 已完成 |
 | A06 | 最小 Agent Loop | Assistant ToolCall、Tool Observation、预算和停止原因 | 阶段 5A | 阶段 5D 接入 Skill，5E 统一 Runtime | Fake Provider + 真实知识工具、重复调用和越权测试 | 已完成 |
 | A07 | Skill Contract | `recent-form-review` 与 `single-match-review` 均有 Manifest、SKILL.md、Pydantic I/O、工具白名单和预算 | 阶段 5B 基础 + 5C-5 前第二个真实合同 | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill；真实内部 Skill 出现后才设计调用模式 | 坏 Manifest、Schema、权限漂移、预算和发布边界测试 | 已完成 |
 | A08 | Skill Router | 5C-1 至 5C-6 与退出复核均完成；development 23/23、holdout 11/12；selected 决策锁定 Skill name/version；ADR-0010 暂缓 LLM fallback | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试、退出复核和 ADR | 已完成 |
 | A09 | Prompt/Context Engineering | Harness Prompt V0、SKILL.md 指令；5D-2 已实现 trust-typed Context Builder，5D-3 已实现完整累计消息估算与逐轮 Context 门禁 | 阶段 5D-5E | 5E 加 Prompt 版本/Trace，阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、回归和消融测试 | 部分完成 |
-| A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral 合同；5D-6b 的生产 Zhipu Adapter 已真实通过 3-call structured/tool 协议，领域控制器已离线覆盖严格 Evaluation 与一次 repair，并通过公开 CI | 阶段 5D | 执行一次受控真实领域 Skill/Harness；仅在真实阻断或模型选型门打开时比较一个候选 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移、Thinking 预算、调用预算和修复上限测试 | 部分完成 |
+| A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral 合同；Zhipu 真实 3-call structured/tool 协议通过，但真实领域运行未到 Evaluation，尚无领域结构化质量证据 | 阶段 5D | 5D-7 用多案例验证领域 Evaluation、失败归因和修复边界；第二候选需同任务决策 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移、Thinking 预算、调用预算和修复上限测试 | 部分完成 |
 | A11 | AgentRuntime V1 | 5D-1/2 已建立执行与 Context 边界，5D-3 已编译 Manifest 权限/预算并加入有界停止，5D-4 已产生可审计 draft/evidence，5D-5 已通过唯一 ReviewHarness 组合为 typed terminal output | 阶段 5D-5E | 5D-6a/6b/7 补结构化输出、真实 Provider 与领域评测；5E 统一 run/stream/event/trace/usage；阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 部分完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有，任务级选择未实现 | 阶段 5F 或真实业务触发点 | 按质量、能力、成本选择，不按厂商数量堆叠 | 同一评测集、故障降级、成本和延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
@@ -180,7 +180,8 @@ AgentLoop 和固定只读 `knowledge.search`；在公开 CI 成功 SHA `f1d171d`
 A1/A2 都 passed 且 `admitted=true`。这准入最小生产 Adapter 协议，不准入领域 Skill。
 统一 `run/stream/event/trace/usage` 表面继续属于 5E。
 
-近期复盘 Skill/Harness 离线控制器已把原定累计 7-call 上限与已经真实使用的 3 calls
-对齐，并用同一剩余 4-call 预算覆盖 Agent 与 Harness；精确 SHA `d51d8fa` 的公开 CI
-已经通过。唯一下一步仍为 5D-6b：执行一次受控真实领域调用。不得选择第二 Provider
-或进入 5D-7，也不能把 Fake Provider 纵向切片称为报告质量或真实 Skill 准入。
+近期复盘 Skill/Harness 控制器已把累计 7-call 与历史 3 calls 对齐；真实运行随后只使用
+一个领域 call，但没有统一响应进入 Agent，也没有工具证据或 Evaluation，Harness 安全
+降级。ADR-0012 因此准入最小 Adapter 协议、拒绝 GLM recent-form 领域能力并收尾
+5D-6b。唯一下一步为 5D-7：用真实 Bad Case 建立多案例 Prompt/Context、领域质量、
+注入、成本/延迟与错误归因评测；第二 Provider 仍需同任务数据和新 ADR。

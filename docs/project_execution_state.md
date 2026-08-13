@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5D"
-current_checkpoint: "5D-6b"
+current_checkpoint: "5D-7"
 status: in_progress
-blocked_before: "5D-7"
+blocked_before: "5D-exit-review"
 ---
 
 # RiftCoach 当前执行状态
@@ -18,14 +18,13 @@ blocked_before: "5D-7"
 
 - 最后更新：2026-08-13
 - 主阶段：阶段 5，进行中
-- 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6a 已完成；
-  5D-6b 已完成低层 P1-P5、生产 Adapter 离线映射、真实 Adapter Protocol Slice 和
-  Recent-form Domain Slice 离线控制器
-- 唯一下一步：按 RQ-027 执行一次 5D-6b Recent-form Domain Slice 真实 GLM 运行；
-  必须使用公开 CI 成功控制器、累计 7-call、领域剩余最多 4-call 的硬预算并原样保存
-  脱敏结果。本批不执行该真实调用、第二 Provider 或 5D-7
-- 禁止越过：5D-6b 完成前不得实现第二 Provider、完成 Prompt E2E Evaluation、进入
-  5D-7 或统一 AgentRuntime；离线 Adapter 映射不等于真实 Adapter 或领域 Skill 准入
+- 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6b 已完成；
+  5D-6b 的最终结论是 Adapter 最小协议准入、GLM recent-form 领域能力不准入
+- 唯一下一步：进入 5D-7 Prompt/Context & Domain E2E Evaluation，先以 ADR-0012
+  的真实领域 Bad Case 冻结评测问题、数据合同和基线，不重跑 5D-6b，不立即接入第二
+  Provider
+- 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；第二
+  Provider 必须等待同任务评测设计和新 ADR，不能用发布热度替代准入证据
 
 ## 5C 原始子阶段账本
 
@@ -49,8 +48,8 @@ blocked_before: "5D-7"
 | 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 已完成 | 共享 evidence converter、`SkillAgentDraftPreparer`、两个真实 Skill + Fake Provider + 真实 `knowledge.search`，成功/拒答/去重/冲突/失败与停止边界测试 |
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
-| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（P1-P5 与真实 3-call Adapter 协议切片已通过；Recent-form Domain Slice 离线控制器公开 CI 已通过，真实领域运行待执行） | 最终微探针在公开 SHA `6a15a00` 上 5/5 通过；生产协议切片在公开 CI 成功 SHA `f1d171d` 上精确使用 3/3 calls；领域控制器复用真实 Skill/RAG/AgentLoop/Harness，严格复读历史 3-call 证据并以共享预算限制剩余 4 calls，Fake Provider happy path 为 3 calls，一次 Evaluation repair 为第 4 call，后续再评测在出网前拒绝；这仍不等于真实领域 Skill、报告质量或最终模型选型 |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 未开始 | 尚无新数据集或结果 |
+| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（入口待设计） | 已有首个真实 Bad Case：请求已计费但无统一响应进入 Agent，错误被上层压缩；尚无 5D-7 数据集或基线结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界
@@ -174,13 +173,24 @@ blocked_before: "5D-7"
 - 领域控制器提交 `d51d8fa9da13ca16f47747260a1eca74c1ffdd76` 已推送到
   `origin/main`；GitHub Actions run `31657764638` 对该精确 SHA 的全测试、两套 RAG、
   compileall、Harness SDK/敏感文件边界和 dry-run 全部通过，CI 未调用真实 Provider。
+- 真实 recent-form 领域切片随后只执行一次：使用 1 个领域 call，累计调用为 4/7；
+  该计费请求没有形成进入 Agent 结果的统一 `ChatResponse`，因此 response/tool/evidence
+  均为 0，也没有进入 Evaluation；公开结果为 `admitted=false`、
+  `knowledge_round_trip_incomplete` 和 terminal `degraded`；
+- 这次 `degraded` 证明确定性 fallback 在真实外部失败时阻止了未经评测草稿发布；它不
+  证明 GLM 报告质量。当前脱敏证据不能继续区分 Adapter 规范化拒绝或其他统一响应前的
+  Provider 错误，且没有质量分或可靠成本估算；
+- ADR-0012 据此分层收尾 5D-6b：Zhipu Adapter 最小 structured/tool 协议准入，
+  GLM-5.2 recent-form 领域能力不准入；不重跑、不临场调 Prompt、不立即接入第二
+  Provider，真实失败进入 5D-7 的评测与错误归因设计。
 
 当前不能声称：
 
 - GLM 或任何真实 Provider 已完成领域 Skill/Harness 准入；当前生产 `ZhipuProvider`
-  只通过最小 Provider-neutral structured/tool 协议切片，尚未执行真实近期复盘领域链路；
-- 已经用真实 Provider 执行 Skill Agent，或真实模型生成的新 Coach 报告已经通过
-  当前端到端领域评测；
+  只通过最小 Provider-neutral structured/tool 协议切片，真实近期复盘领域链路已尝试
+  但未准入；
+- 真实模型生成的新 Coach 报告已经通过当前端到端领域评测；本次没有统一响应进入
+  Agent，也没有草稿、知识证据、Evaluation 或质量分；
 - 默认 ContextSizer 等于真实厂商 tokenizer 或真实 Token Usage；
 - trust/JSON 分层已经彻底解决 Prompt Injection；
 - 已经实现 Tool Observation compaction，或协作式 deadline 能硬中断任意阻塞函数；
@@ -196,10 +206,10 @@ blocked_before: "5D-7"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6a；5D-6b 已完成 P1-P5、真实 Adapter 最小协议切片和领域准入离线控制器，下一步为提交/公开 CI 后一次受控真实领域运行 | 阶段 5、整个 5D、真实领域 Skill 或报告质量准入已完成 |
-| 项目理解 | 已区分 Provider 协议准入、领域控制流准入和多案例质量评测；共享 pre-I/O 预算必须同时覆盖 Agent 与 Harness，Skill/Agent 不拥有发布权 | Fake Provider 纵向切片就等于真实 GLM 领域准入、Prompt 质量或最终模型选型 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；真实结果准入 Adapter 最小协议、拒绝 GLM recent-form 领域能力，当前进入 5D-7 | 阶段 5、整个 5D、真实领域 Skill 或报告质量准入已完成 |
+| 项目理解 | 已区分 Provider 协议准入、领域控制流准入和多案例质量评测；理解计费请求不等于统一响应，也理解 fallback 是发布安全边界 | 单个真实失败已经证明 GLM 整体不可用、Prompt 必然错误或第二 Provider 必须立即接入 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5D-6b 领域控制器已进入 `main` 提交 `d51d8fa`；GitHub Actions run `31657764638` 对精确 SHA `d51d8fa9da13ca16f47747260a1eca74c1ffdd76` 全部通过；当前仍没有真实领域结果或正式网页部署 | 离线领域控制器与公开 CI 就等于真实 GLM 领域准入、报告质量准入、最终厂商选型或已有可运行 Web Agent |
+| GitHub/部署 | 5D-6b 控制器与 CI 证据已公开；真实领域失败结果与 ADR-0012 正在本批提交，正式网页仍未部署 | 公开失败证据就等于真实领域能力可用、报告质量准入、最终厂商选型或已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -318,8 +328,12 @@ Evaluation 模型同时提供 JSON Schema 和本地验证；非法 JSON、额外
 草稿。该检查点当时保持 `ZhipuProvider` text-only；5D-6b 现已补齐离线厂商映射，
 但 Fake SDK 证据仍不等于真实 Adapter 或领域 Skill 准入。
 
-当前检查点为 `5D-6b Real Provider Capability Gate`。两层准入、调用预算和第二
-Provider 决策门已经确认；P1-P5 微探针、生产 Adapter 离线映射和精确 3-call 协议
-切片已经真实通过。下一步为 Recent-form Domain Slice 的离线设计/TDD，先把累计 7-call
-预算与本轮已使用的 3 calls 对齐，再组合真实 Skill/Harness；不得直接执行真实领域调用、
-选择第二 Provider 或进入 5D-7。
+`5D-6b Real Provider Capability Gate` 已由 ADR-0012 收尾。P1-P5 与精确 3-call
+Adapter 协议切片通过；真实 recent-form 领域切片只尝试一次，在一个计费请求后未形成
+统一 `ChatResponse`，没有工具证据或 Evaluation，并安全降级。结论是最小协议能力
+准入、领域能力不准入，而不是 GLM 整体成功或整体失败。
+
+当前检查点为 `5D-7 Prompt/Context & Domain E2E Evaluation`。第一步先把上述真实
+Bad Case 变成可复现的失败分类、数据合同和评测基线，覆盖工具选择、事实/引用、注入、
+质量、延迟、成本与错误归因；不重跑 5D-6b，不立即接入第二 Provider，也不进入
+5D exit review 或 5E。

@@ -666,3 +666,19 @@
 - 按实施计划，本离线批次停止在真实调用之前。唯一下一步收紧为按 RQ-027 运行一次
   累计 7-call、领域剩余最多 4-call 的真实 GLM recent-form 切片并原样保存脱敏结果；
   不进入第二 Provider 或 5D-7。
+
+### 2026-08-13：5D-6b 真实领域结果与部分采用收尾
+
+- 在公开 CI 成功代码 `f5e97ead20c5aa7d4798f308bd60e820842061bc` 上只运行一次
+  真实 recent-form 领域切片；使用领域 1 call，累计 4/7，没有重试或 Prompt 调整。
+- 真实请求发生后没有统一 `ChatResponse` 进入 Agent 结果：response/tool/evidence 均为
+  0，`agent_status=null`；因此不能把它描述成模型直接回答或单纯忘记调工具。
+- 领域链未进入 Evaluation，没有质量分；Harness 以 `degraded` 返回确定性报告，证明
+  真实 Provider 失败没有让未经评测的 Agent 草稿越过发布门禁。
+- 脱敏证据无法区分 Adapter 响应规范化拒绝和其他统一响应形成前的 Provider 错误；
+  上层结果将其归为 `knowledge_round_trip_incomplete`。该安全错误来源丢失已登记为
+  5D-7 可观测性 Bad Case，本批不改功能代码、不恢复临时原文、不重跑实验。
+- 新增 ADR-0012：Zhipu 最小 structured/tool 协议准入，GLM-5.2 recent-form 领域能力
+  不准入，确定性 fallback 保留，第二 Provider 暂缓到同任务 5D-7 评测合同冻结后决定。
+- `5D-6b` 因准入门已作出可审计接受/拒绝结论而完成；唯一下一步推进到 `5D-7
+  Prompt/Context & Domain E2E Evaluation`，并不表示领域能力或整个 5D 已完成。

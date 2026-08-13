@@ -109,6 +109,12 @@ Provider/AgentLoop/ToolRuntime/ReviewHarness、pytest。
 4. 不根据本例调 Prompt；published/degraded/rejected 原样记录，协议成功与报告质量分开。
 5. 清除未跟踪的本地 run 原文，只保留脱敏结果。
 
+**Execution result (2026-08-13):** 在公开 CI 成功代码
+`f5e97ead20c5aa7d4798f308bd60e820842061bc` 上只执行一次。领域使用 1 call，累计
+4/7；请求发生后没有统一 `ChatResponse` 进入 Agent，response/tool/evidence 均为 0，
+没有进入 Evaluation，领域 `admitted=false`，Harness 以 `degraded` 返回确定性报告。
+没有重试、Prompt 调整、质量分或可靠成本估算。
+
 ### Task 7: Admission decision and checkpoint closeout
 
 **Files:**
@@ -121,3 +127,8 @@ Provider/AgentLoop/ToolRuntime/ReviewHarness、pytest。
 3. 运行聚焦回归、完整 pytest、compileall、diff check、治理和仓库现有 CI 门禁。
 4. 提交、推送并核对精确 SHA 的 GitHub Actions。
 5. 只在全部准入工作完成后把唯一下一步改为 5D-7；否则保持 5D-6b 并写明阻断。
+
+**Execution result (2026-08-13):** ADR-0012 选择局部采用：准入 Zhipu 最小
+structured/tool 协议，不准入 GLM-5.2 recent-form 领域能力，保留确定性 fallback，
+不重跑、不临场调 Prompt、不立即接入第二 Provider。准入门已完成接受/拒绝裁决，
+因此下一检查点为 5D-7；这不表示领域能力或整个 5D 已完成。

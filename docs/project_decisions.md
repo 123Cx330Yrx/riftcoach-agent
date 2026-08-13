@@ -36,8 +36,9 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
   顺序 Adapter、唯一 ReviewHarness 控制流，以及由终态 Artifact 构造的 typed Output；
 - 5D-6a Structured Output Contract：请求声明 Provider-neutral JSON Schema，严格
   Pydantic Evaluation 验证、最多一次同合同 repair，以及解析失败的 fail-closed 降级边界；
-- 5D-6b 的生产 Zhipu Adapter 与真实最小 structured/tool 协议准入，以及复用真实
-  recent-form Skill/RAG/AgentLoop/Harness、累计 3+4 call 预算的离线领域准入控制器；
+- 5D-6b 的生产 Zhipu Adapter 与真实最小 structured/tool 协议准入；recent-form
+  真实领域运行已尝试但未形成统一响应、工具证据或 Evaluation，ADR-0012 明确领域
+  能力不准入并保留确定性 fallback；
 - 独立事实评测、受限修订、再评测与发布门控。
 
 当前仍未实现：
@@ -105,22 +106,24 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - Context Builder 把内部策略、Skill 指令、确定性事实、用户文本、RAG 和 Tool
   Observation 分层，权限永远不从不可信文本获得；
 - 结构化模型输出先服务机器消费的 EvaluationResult，Coach 报告仍为 Markdown；
-- 结构化请求必须经过 capability negotiation；5D-6b 的生产 Zhipu Adapter 已离线映射
-  JSON mode 与 Tool Calling，但 Fake SDK 成功仍不能说成真实 Adapter/Skill 已准入；
-- 真实 Provider 与第二 Provider 选择必须等 5D-6b 用同一领域任务评测，不提前锁定；
+- 结构化请求必须经过 capability negotiation；5D-6b 的生产 Zhipu Adapter 已真实准入
+  最小 JSON mode 与 Tool Calling 协议，但这不等于领域 Skill 已准入；
+- 真实第二 Provider 选择必须等待 5D-7 冻结同一领域任务、指标和失败分类，不提前锁定；
   早期 P1/P2 通过而 P3/P4 暴露默认 Thinking 和旧参数验收边界的结果已保留；
 - 最终 P1-P5 在显式 disabled-thinking 后 5/5 低层通过；生产 Adapter 已完成离线双向
   映射；3-call 协议控制器用一个预算 Provider 组合严格 structured request、现有
   AgentLoop 和固定只读知识工具；该切片随后在公开 CI 成功 SHA 上真实 3/3 通过，只
   准入最小 Adapter 协议，仍须领域 Skill/Harness 切片，不能写成 GLM Agent 已上线；
-- Recent-form Domain Slice 离线控制器已组合真实 Catalog/Router/Context、AgentLoop、
-  本地 RAG、唯一 ReviewHarness 和 typed output；它严格复读上一轮 3-call 结果，并让
-  Agent 与 Harness 共用剩余 4 calls。该证据仍来自 Fake Provider，真实领域运行只能在
-  控制器公开 CI 通过后执行一次；控制器 SHA `d51d8fa` 的 run `31657764638` 已通过，
-  因此当前下一门禁是该单次受控真实运行；
+- Recent-form Domain Slice 控制器组合真实 Catalog/Router/Context、AgentLoop、本地
+  RAG、唯一 ReviewHarness 和 typed output，并让 Agent/Harness 共用剩余 4 calls；
+  真实运行只执行一次，在一个计费请求后没有统一 `ChatResponse` 进入 Agent，故无
+  ToolCall、证据、Evaluation 或质量分，Harness 安全降级；
+- ADR-0012 分层裁决：Zhipu 最小协议准入，GLM-5.2 recent-form 领域能力不准入；不
+  重跑或临场调 Prompt，错误来源丢失与多案例领域质量进入 5D-7；
 - GLM 是首个真实基准 Adapter，不是永久模型选择；DeepSeek、Qwen 等只在同任务同评测
   决策门打开后比较，不能因发布热度直接替换或一次接入多家；
-- 该方案由 ADR-0011 接受；当前仍处于 5D-6b，不等于整个 5D、LangGraph 或
+- 该组合方案由 ADR-0011 接受，分层准入结论由 ADR-0012 接受；当前处于 5D-7，
+  不等于整个 5D、LangGraph 或
   Multi-Agent 已实现。
 
 ## 数据职责

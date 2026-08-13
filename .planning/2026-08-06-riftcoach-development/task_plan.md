@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.9 - 5D-6b（in progress: recent-form controller public-CI verified; one bounded real domain run next）
+Phase 6.10 - 5D-7（in progress: use the rejected real domain slice to design Prompt/Context and domain E2E evaluation）
 
 ## Phases
 
@@ -82,21 +82,23 @@ Phase 6.9 - 5D-6b（in progress: recent-form controller public-CI verified; one 
 - `5D-6a` 已完成：`StructuredResponseContract` 贯通 ChatRequest、Capability
   Negotiation 与 `llm.chat`；严格 Pydantic Evaluation Schema、最多一次同合同
   repair 和 Harness fail-closed 降级均有 Fake Provider TDD 证据。
-- `5D-6b` 进行中：disabled-thinking 下 P1-P5 低层协议 5/5 真实通过；生产
+- `5D-6b` 已完成（部分采用）：disabled-thinking 下 P1-P5 低层协议 5/5 真实通过；生产
   `ZhipuProvider` 已用离线 TDD 映射四类消息、JSON mode、Function Calling、请求级
   工具别名与 fail-closed 响应边界；精确 3-call Adapter Protocol Slice 已经真实
-  3/3 passed 并 admitted；Recent-form Domain Slice 离线控制器已用 Fake Provider
-  走通真实 Skill/RAG/AgentLoop/Harness，并用历史 3 + 领域最多 4 的共享预算约束，
-  尚未执行真实领域 Skill/Harness。
+  3/3 passed 并 admitted；Recent-form Domain Slice 真实运行只执行一次，在一个领域
+  call 后没有形成统一 `ChatResponse`、工具证据或 Evaluation，领域 `admitted=false`，
+  Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider。
+- `5D-7` 进行中：先以该真实 Bad Case 冻结 Prompt/Context 与领域 E2E 评测问题、
+  数据合同和基线，不重跑 5D-6b，也不临场调 Prompt 追求通过。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-按 RQ-027 执行一次 5D-6b Recent-form Domain Slice 真实 GLM 运行：必须使用公开 CI
-成功控制器、累计 7-call、领域剩余最多 4-call 的硬预算并原样保存脱敏结果。本离线批次
-停止在真实调用之前，不进入第二厂商或 5D-7。
+进入 5D-7 Prompt/Context & Domain E2E Evaluation：先根据 ADR-0012 的真实领域失败
+设计评测问题、案例分层、失败分类、可观测性合同和无真实调用的基线门禁；在同任务
+评测冻结前不接入第二 Provider，也不进入 5D exit review 或 5E。
 
 ## Decisions Made
 
@@ -154,6 +156,7 @@ Phase 6.9 - 5D-6b（in progress: recent-form controller public-CI verified; one 
 | Adapter Protocol Slice 复用现有 AgentLoop 并在 Provider 边界计数 | 避免 raw 微探针绕过生产 Adapter，也避免另写两轮循环；结构化直调与 Agent 两轮共享精确 3-call 预算，第 4 次在出网前拒绝 |
 | Recent-form Domain Slice 复读历史证据并共享剩余预算 | 已用 3-call 协议结果必须严格复读并哈希；Agent 与 Harness 共用剩余 4-call 的 pre-I/O 预算，不能把累计 7 次重新解释为额外 7 次 |
 | 领域准入与 Prompt 质量分开 | 本切片只证明真实领域控制流可由 Provider 完成；多案例工具选择、事实、引用、注入、质量、延迟与成本属于 5D-7，不在单样例上临场调 Prompt |
+| 5D-6b 按部分采用收尾 | 真实准入门的合法输出可以是拒绝；低层协议通过不能覆盖领域失败，领域失败也不能抹除协议证据。保留确定性 fallback，不重跑或调 Prompt 追绿，ADR-0012 将 Bad Case 交给 5D-7 |
 
 ## Errors Encountered
 
@@ -234,3 +237,4 @@ Phase 6.9 - 5D-6b（in progress: recent-form controller public-CI verified; one 
 | 5D-6b 活动计划 findings/progress 追加补丁错误假设两文件共享同一尾部上下文 | 1 | `apply_patch` 原子拒绝且没有半写入；分别读取真实尾部并拆成两个追加块，功能与 canonical 状态不受影响 |
 | 5D-6b 领域状态追加补丁错误假设路线历史尾句，工作树安全补丁又错误假设设计列表措辞 | 2 | 两次 `apply_patch` 均原子拒绝且无半写入；先读取各文件真实尾部/匹配行，再把代码测试、路线历史和教学文档拆开更新 |
 | 5D-6b 提交前安全扫描再次把复杂引号正则放入 PowerShell 字符串 | 1 | 只读批次在解析阶段失败，无暂存或文件修改；改为多个简单固定字符串扫描，禁止在 PowerShell 命令参数中内嵌混合单双引号密钥正则 |
+| 5D-6b 最终陈旧状态扫描把多个含空格模式放在 PowerShell 双引号命令中 | 1 | 扫描未执行且无文件修改；改为单引号 `rg -e` 模式并将治理检查、扫描和差异审查分开运行 |
