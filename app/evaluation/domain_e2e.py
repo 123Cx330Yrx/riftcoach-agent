@@ -23,6 +23,13 @@ SafeCodeText = Annotated[
     StringConstraints(pattern=r"^[A-Za-z][A-Za-z0-9_.:-]*$"),
 ]
 
+DomainSchemaVersion = Literal["1.1", "1.2"]
+DomainCandidateKind = Literal[
+    "offline_recorded",
+    "offline_executable",
+    "real_provider_recorded",
+]
+
 
 class DomainDatasetRole(str, Enum):
     DEVELOPMENT = "development"
@@ -132,7 +139,7 @@ class DomainEvaluationCase(BaseModel):
 class DomainEvaluationDataset(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["1.1"] = "1.1"
+    schema_version: DomainSchemaVersion = "1.1"
     dataset_id: NonBlankText
     dataset_version: NonBlankText
     role: DomainDatasetRole
@@ -226,9 +233,9 @@ class DomainCandidateCase(BaseModel):
 class DomainCandidate(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["1.1"] = "1.1"
+    schema_version: DomainSchemaVersion = "1.1"
     candidate_id: NonBlankText
-    candidate_kind: Literal["offline_recorded", "real_provider_recorded"]
+    candidate_kind: DomainCandidateKind
     dataset_id: NonBlankText
     dataset_version: NonBlankText
     contract_snapshot: ContractSnapshot
@@ -243,8 +250,23 @@ class DomainCandidate(BaseModel):
         case_ids = tuple(case.case_id for case in self.cases)
         if len(set(case_ids)) != len(case_ids):
             raise ValueError("candidate case IDs must be unique")
-        if self.candidate_kind == "offline_recorded" and self.external_provider_calls:
-            raise ValueError("offline candidate cannot make external Provider calls")
+        if self.candidate_kind.startswith("offline_") and self.external_provider_calls:
+            raise ValueError(
+                "offline candidate cannot make external Provider calls"
+            )
+        if self.candidate_kind == "offline_executable" and any(
+            row.provenance_sha256 is None for row in self.cases
+        ):
+            raise ValueError(
+                "offline executable cases require provenance_sha256"
+            )
+        if (
+            self.candidate_kind == "offline_executable"
+            and self.schema_version != "1.2"
+        ):
+            raise ValueError(
+                "offline executable candidates require schema version 1.2"
+            )
         return self
 
 
@@ -293,13 +315,13 @@ class DomainCaseResult(BaseModel):
 class DomainEvaluationResult(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["1.1"] = "1.1"
+    schema_version: DomainSchemaVersion = "1.1"
     dataset_id: NonBlankText
     dataset_version: NonBlankText
     dataset_role: DomainDatasetRole
     calibration_excluded: bool
     candidate_id: NonBlankText
-    candidate_kind: Literal["offline_recorded", "real_provider_recorded"]
+    candidate_kind: DomainCandidateKind
     contract_snapshot: ContractSnapshot
     external_provider_calls: int = Field(ge=0)
     case_count: int = Field(gt=0)
@@ -340,6 +362,8 @@ def evaluate_domain_candidate(
     dataset: DomainEvaluationDataset,
     candidate: DomainCandidate,
 ) -> DomainEvaluationResult:
+    if candidate.schema_version != dataset.schema_version:
+        raise ValueError("candidate and dataset schema version mismatch")
     if (candidate.dataset_id, candidate.dataset_version) != (
         dataset.dataset_id,
         dataset.dataset_version,
@@ -357,6 +381,7 @@ def evaluate_domain_candidate(
         _evaluate_case(case, observed[case.case_id]) for case in dataset.cases
     )
     return DomainEvaluationResult(
+        schema_version=dataset.schema_version,
         dataset_id=dataset.dataset_id,
         dataset_version=dataset.dataset_version,
         dataset_role=dataset.role,

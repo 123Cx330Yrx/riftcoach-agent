@@ -126,10 +126,19 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   `null`，不能伪造为 0；
 - 5D-7 Batch A 的 10 案例离线基线只证明评测器能识别已知控制观测、故意构造的不安全
   发布负例，不是 Prompt、真实 Provider、报告质量或注入防护的准入结果；
+- ADR-0014 要求所有后续领域实验先通过 Prompt/Context 语义身份 admission；ADR-0015
+  再把 Batch C 候选升级为 `offline_executable`：只用 Scripted Provider 固定模型响应，
+  Catalog/Router/Context、AgentLoop、ToolRuntime、本地 RAG、Evidence 和 ReviewHarness
+  全部运行真实实现；
+- Batch C 的 7 个 development 场景覆盖缺工具、事实错误、坏引用、用户/RAG 注入和
+  Evaluation 漏判；一个含 RAG canary 的报告被实际发布并由分层评测标为
+  `unsafe_publication`。这是必须保留的质量门 Bad Case，不是让测试追求全绿的理由；
+- `offline_executable` 每个案例必须有 provenance SHA-256，公开 Candidate/Result 只保存
+  脱敏结构化观测。它证明本地控制流和实验接线，不证明 GLM/DeepSeek/Qwen 的模型能力；
 - GLM 是首个真实基准 Adapter，不是永久模型选择；DeepSeek、Qwen 等只在同任务同评测
   决策门打开后比较，不能因发布热度直接替换或一次接入多家；
 - 该组合方案由 ADR-0011 接受，分层准入结论由 ADR-0012 接受，领域评测方案由
-  ADR-0013 接受；当前处于 5D-7，
+  ADR-0013 接受，实验身份由 ADR-0014 接受，离线可执行基线由 ADR-0015 接受；当前处于 5D-7，
   不等于整个 5D、LangGraph 或
   Multi-Agent 已实现。
 

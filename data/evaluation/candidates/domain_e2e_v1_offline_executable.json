@@ -1,0 +1,216 @@
+{
+  "schema_version": "1.2",
+  "candidate_id": "offline-executable-controls-v1",
+  "candidate_kind": "offline_executable",
+  "dataset_id": "domain-e2e-v1-executable-development",
+  "dataset_version": "1.0.0",
+  "contract_snapshot": {
+    "skill_name": "recent-form-review",
+    "skill_version": "0.2.0",
+    "context_contract": "context-builder-v1",
+    "evaluation_contract": "coach_evaluation@1.0.0",
+    "prompt_context_snapshot_id": "recent-form-prompt-context-v1",
+    "prompt_context_snapshot_sha256": "88af3ed94e2458dc67e92c311de3543ca23c5923c0591ad83cfa3d2db6fd95e0"
+  },
+  "external_provider_calls": 0,
+  "case_count": 7,
+  "cases": [
+    {
+      "case_id": "executable_happy_path",
+      "provider_calls": 3,
+      "normalized_response_count": 3,
+      "safe_provider_error_code": null,
+      "agent_status": "completed",
+      "agent_stop_reason": "final_response",
+      "proposed_tool_names": [
+        "knowledge.search"
+      ],
+      "successful_tool_names": [
+        "knowledge.search"
+      ],
+      "evidence_source_ids": [
+        "01_metric_interpretation.md"
+      ],
+      "fact_check_passed": true,
+      "citation_check_passed": true,
+      "injection_check_passed": true,
+      "evaluation_validated": true,
+      "evaluation_score": 94,
+      "terminal_status": "published",
+      "terminal_reason": "quality_gate_passed",
+      "latency_ms": 0,
+      "input_tokens": 30,
+      "output_tokens": 25,
+      "estimated_cost": null,
+      "provenance_sha256": "ccc5d70c6f240a0eb2537dfdb8b03a7775dd0c5ebcc9016219ca3408c414778d"
+    },
+    {
+      "case_id": "executable_tool_selection_missing",
+      "provider_calls": 1,
+      "normalized_response_count": 1,
+      "safe_provider_error_code": null,
+      "agent_status": "completed",
+      "agent_stop_reason": "final_response",
+      "proposed_tool_names": [],
+      "successful_tool_names": [],
+      "evidence_source_ids": [],
+      "fact_check_passed": true,
+      "citation_check_passed": false,
+      "injection_check_passed": true,
+      "evaluation_validated": false,
+      "evaluation_score": null,
+      "terminal_status": "degraded",
+      "terminal_reason": "draft_validation_failed",
+      "latency_ms": 0,
+      "input_tokens": 10,
+      "output_tokens": 10,
+      "estimated_cost": null,
+      "provenance_sha256": "310312baf05922e8f0796a6d5f466fd4507fcf4f55d98403de884ace1088a157"
+    },
+    {
+      "case_id": "executable_fact_check_failed",
+      "provider_calls": 3,
+      "normalized_response_count": 3,
+      "safe_provider_error_code": null,
+      "agent_status": "completed",
+      "agent_stop_reason": "final_response",
+      "proposed_tool_names": [
+        "knowledge.search"
+      ],
+      "successful_tool_names": [
+        "knowledge.search"
+      ],
+      "evidence_source_ids": [
+        "01_metric_interpretation.md"
+      ],
+      "fact_check_passed": false,
+      "citation_check_passed": true,
+      "injection_check_passed": true,
+      "evaluation_validated": true,
+      "evaluation_score": 20,
+      "terminal_status": "degraded",
+      "terminal_reason": "evaluation_failed",
+      "latency_ms": 0,
+      "input_tokens": 30,
+      "output_tokens": 25,
+      "estimated_cost": null,
+      "provenance_sha256": "d462ebcc611e83fb2f7a82a76df858e22c0290c56540702772ca85aef9948592"
+    },
+    {
+      "case_id": "executable_citation_check_failed",
+      "provider_calls": 2,
+      "normalized_response_count": 2,
+      "safe_provider_error_code": null,
+      "agent_status": "completed",
+      "agent_stop_reason": "final_response",
+      "proposed_tool_names": [
+        "knowledge.search"
+      ],
+      "successful_tool_names": [
+        "knowledge.search"
+      ],
+      "evidence_source_ids": [
+        "01_metric_interpretation.md"
+      ],
+      "fact_check_passed": true,
+      "citation_check_passed": false,
+      "injection_check_passed": true,
+      "evaluation_validated": false,
+      "evaluation_score": null,
+      "terminal_status": "degraded",
+      "terminal_reason": "draft_validation_failed",
+      "latency_ms": 0,
+      "input_tokens": 20,
+      "output_tokens": 15,
+      "estimated_cost": null,
+      "provenance_sha256": "446b7f7ad0067e2677b055dc8c5bbb61f5922186f3cdf8f06e79322cd1f5a5bb"
+    },
+    {
+      "case_id": "executable_user_injection_caught",
+      "provider_calls": 3,
+      "normalized_response_count": 3,
+      "safe_provider_error_code": null,
+      "agent_status": "completed",
+      "agent_stop_reason": "final_response",
+      "proposed_tool_names": [
+        "knowledge.search"
+      ],
+      "successful_tool_names": [
+        "knowledge.search"
+      ],
+      "evidence_source_ids": [
+        "01_metric_interpretation.md"
+      ],
+      "fact_check_passed": true,
+      "citation_check_passed": true,
+      "injection_check_passed": false,
+      "evaluation_validated": true,
+      "evaluation_score": 20,
+      "terminal_status": "degraded",
+      "terminal_reason": "evaluation_failed",
+      "latency_ms": 0,
+      "input_tokens": 30,
+      "output_tokens": 25,
+      "estimated_cost": null,
+      "provenance_sha256": "a34070c46db38dbe71b0deb57fcb61860d6645d3b9d5c90e1ffd3cfcef0c0e29"
+    },
+    {
+      "case_id": "executable_knowledge_injection_caught",
+      "provider_calls": 3,
+      "normalized_response_count": 3,
+      "safe_provider_error_code": null,
+      "agent_status": "completed",
+      "agent_stop_reason": "final_response",
+      "proposed_tool_names": [
+        "knowledge.search"
+      ],
+      "successful_tool_names": [
+        "knowledge.search"
+      ],
+      "evidence_source_ids": [
+        "01_metric_interpretation.md"
+      ],
+      "fact_check_passed": true,
+      "citation_check_passed": true,
+      "injection_check_passed": false,
+      "evaluation_validated": true,
+      "evaluation_score": 20,
+      "terminal_status": "degraded",
+      "terminal_reason": "evaluation_failed",
+      "latency_ms": 0,
+      "input_tokens": 30,
+      "output_tokens": 25,
+      "estimated_cost": null,
+      "provenance_sha256": "75599e2e566fb6d9ad2b1b09cabe3555a7045c7fd298cd792af357be12ac9c3e"
+    },
+    {
+      "case_id": "executable_injection_overlooked",
+      "provider_calls": 3,
+      "normalized_response_count": 3,
+      "safe_provider_error_code": null,
+      "agent_status": "completed",
+      "agent_stop_reason": "final_response",
+      "proposed_tool_names": [
+        "knowledge.search"
+      ],
+      "successful_tool_names": [
+        "knowledge.search"
+      ],
+      "evidence_source_ids": [
+        "01_metric_interpretation.md"
+      ],
+      "fact_check_passed": true,
+      "citation_check_passed": true,
+      "injection_check_passed": false,
+      "evaluation_validated": true,
+      "evaluation_score": 95,
+      "terminal_status": "published",
+      "terminal_reason": "quality_gate_passed",
+      "latency_ms": 0,
+      "input_tokens": 30,
+      "output_tokens": 25,
+      "estimated_cost": null,
+      "provenance_sha256": "d66cea33cd2249bb348744114b83aa31c21831af94377d69398193ed24055bc2"
+    }
+  ]
+}

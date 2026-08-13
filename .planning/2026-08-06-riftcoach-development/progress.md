@@ -745,3 +745,19 @@
 - Batch B 功能提交 `e56b00091ef2ab299af692e902945b8342fbc99e` 已推送；GitHub
   Actions run `31690698734` 对该精确 SHA 的全测试、两套 RAG、compileall、治理、
   Harness SDK/tracked-data 和 dry-run 门禁全部通过，CI 未调用真实 Provider。
+
+### 2026-08-13：5D-7 Batch C 离线可执行基线
+
+- 完成源码接缝审计和初学者设计，ADR-0015 选择 Scripted Provider + 真实本地控制流，
+  没有修改 Prompt、接入第二 Provider 或调用真实模型。
+- TDD 红灯先因 `app.evaluation.domain_e2e_offline` 缺失失败；实现后新增 Schema 1.2
+  `offline_executable` 合同、7 案例 development Dataset、执行 Runner 和零调用 CLI。
+- 每个场景先经过 Batch B admission，再运行真实 Skill/AgentLoop/ToolRuntime/local RAG/
+  Harness；验证 happy path、缺工具、坏事实、坏引用、用户注入、RAG 注入和注入漏判。
+- 冻结 Candidate/Result 可由 CLI 逐字节复现：task outcome accuracy `1.0`、failure
+  classification accuracy `1.0`、unsafe publication rate `0.142857`、external calls `0`。
+- 聚焦/相邻测试 `25 passed`；全量 `455 passed, 103 subtests passed`；RAG development/
+  independent holdout、compileall、Harness SDK/tracked-data、artifact 脱敏、governance、
+  diff check 和 Harness dry-run 全部通过。
+- 当前仍是 5D-7 in progress。下一步为 Batch D 入口设计，不直接调用真实 Provider、
+  不立即创建/运行 held-out、不接第二 Provider、不进入 5D exit review 或 5E。

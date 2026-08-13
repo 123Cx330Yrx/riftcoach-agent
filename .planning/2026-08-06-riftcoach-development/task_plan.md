@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.10 - 5D-7（in progress: Batch A layered baseline and Batch B Prompt/Context identity complete; Batch C entry next）
+Phase 6.11 - 5D-7（in progress: Batch A-C complete; Batch D entry design next）
 
 ## Phases
 
@@ -91,15 +91,19 @@ Phase 6.10 - 5D-7（in progress: Batch A layered baseline and Batch B Prompt/Con
 - `5D-7` 进行中：Batch A 已以真实 Bad Case 冻结分层 Dataset/Candidate/Result 合同、
   development/held-out 生命周期和 10 案例离线基线；Batch B 已以双层语义指纹冻结
   Skill、Context、知识工具、Evaluation 与 demo 案例身份，并建立零外部调用 admission。
+- `5D-7` Batch C 已完成：7 个 `offline_executable` development 场景先通过 Batch B
+  admission，再真实经过 Skill、AgentLoop、ToolRuntime、本地 RAG 和 Harness；工具、
+  事实、引用、用户/RAG 注入及一个真实 unsafe-publication 开发 Bad Case 均有 TDD 证据，
+  外部调用为 0。它不代表真实模型能力或 held-out 结果。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-继续 5D-7 Batch C 入口设计与离线 TDD：要求可执行 development 候选先通过 Batch B
-admission，再分层验证工具选择、事实、引用和模型级注入；不直接运行真实 Provider、
-不创建或运行 held-out、不接第二 Provider，也不进入 5D exit review 或 5E。
+继续 5D-7 Batch D 入口设计：先复核 Batch C 的 injection 漏判、canary 与真实模型能力
+边界，再设计 held-out、有限真实运行和第二 Provider 决策门；本轮不直接运行真实
+Provider、不立即创建或运行 held-out、不接第二 Provider，也不进入 5D exit review 或 5E。
 
 ## Decisions Made
 
@@ -162,6 +166,8 @@ admission，再分层验证工具选择、事实、引用和模型级注入；�
 | 离线分类基线不等于模型质量 | 10 个可控观测用于验收评测器，故意保留 unsafe-publication 和资源超限负例；外部调用为 0，不能宣称 Prompt、真实 Provider 或注入防护已准入 |
 | 5D-7 Batch B 采用组件 + 案例双层语义身份 | 人工版本号会漏掉未升版漂移，只哈希最终消息又无法定位来源；实际 Skill、Context、知识工具与 Evaluation 形成组件指纹，demo Artifact/section/message 形成案例指纹 |
 | 任何执行型候选必须先取得离线 admission | 当前代码重建值、冻结快照和 Dataset 声明必须精确一致；漂移在 Provider 前失败关闭，公开证据只保存哈希与安全元数据 |
+| 5D-7 Batch C 采用 Scripted Provider + 真实本地控制流 | 继续手填 observation 不能证明系统执行，立即调用真实模型又会混入费用、随机性与调参污染；只替换 Provider 响应，复用生产 Skill/Agent/Tool/RAG/Harness |
+| unsafe publication 作为开发 Bad Case 原样保留 | Harness 只能依据 EvaluationResult 决策；脚本评测器漏判注入时实际发布，分层评测必须报告而不能修改终态追绿 |
 
 ## Errors Encountered
 
@@ -249,3 +255,8 @@ admission，再分层验证工具选择、事实、引用和模型级注入；�
 | 5D-6b 领域状态追加补丁错误假设路线历史尾句，工作树安全补丁又错误假设设计列表措辞 | 2 | 两次 `apply_patch` 均原子拒绝且无半写入；先读取各文件真实尾部/匹配行，再把代码测试、路线历史和教学文档拆开更新 |
 | 5D-6b 提交前安全扫描再次把复杂引号正则放入 PowerShell 字符串 | 1 | 只读批次在解析阶段失败，无暂存或文件修改；改为多个简单固定字符串扫描，禁止在 PowerShell 命令参数中内嵌混合单双引号密钥正则 |
 | 5D-6b 最终陈旧状态扫描把多个含空格模式放在 PowerShell 双引号命令中 | 1 | 扫描未执行且无文件修改；改为单引号 `rg -e` 模式并将治理检查、扫描和差异审查分开运行 |
+| 5D-7 Batch C 恢复时猜测治理脚本、ADR、tool adapter 和 planning 物理路径 | 4 | 所有失败均为只读定位且未改文件；逐次用 `rg --files`/目录清单确认真实路径。后续把 canonical 名称与物理路径分开，不从交接简称推导文件名 |
+| Batch C 首次测试命中桌面 Hermes Python，缺少 pytest | 1 | 未改全局环境；改用仓库 `.venv\\Scripts\\python.exe`，取得预期模块缺失红灯并完成 TDD |
+| Harness dry-run 命令含递归清理，被终端策略阻止 | 1 | 命令在执行前被拒绝、没有删除或运行；改用独立 TEMP 目录并保留产物，dry-run published |
+| Batch C 批量审查让预期无匹配 `rg` 的退出码 1 传播 | 1 | 拆分候选、结果和安全扫描；显式把无 case-id 硬编码匹配记录为通过，不掩盖其他检查 |
+| Batch C 状态写回三次假设 roadmap/planning 尾部上下文 | 3 | `apply_patch` 原子拒绝，无半写入；读取每个文件真实尾部后分别追加，并将矩阵/决策拆开更新 |

@@ -536,3 +536,27 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `PUBLIC-VERIFIED`：Batch B 功能提交
   `e56b00091ef2ab299af692e902945b8342fbc99e` 已推送；GitHub Actions run
   `31690698734` 对该精确 SHA 全部通过，CI 未调用真实 Provider。
+
+### 2026-08-13：5D-7 Batch C 离线可执行领域评测
+
+- `ACCEPTED`：ADR-0015 在继续手填 Candidate、立即真实 Provider 多案例和 Scripted
+  Provider + 真实本地控制流之间选择第三种，隔离外部随机性而不复制生产 Agent。
+- `CONTRACT`：Domain E2E 兼容升级至 Schema 1.2，新增 `offline_executable`；零外部
+  调用且每案例必须携带安全 provenance SHA-256，Dataset/Candidate schema 漂移失败关闭。
+- `EXECUTED`：7 个 development 场景先通过 Batch B admission，再真实经过 Catalog/
+  Router/Boundary、ContextBuilder、AgentLoop、ToolRuntime、本地混合 RAG、Evidence
+  构造和唯一 ReviewHarness；仅 Provider 响应为确定性脚本。
+- `COVERAGE`：覆盖 happy path、缺工具、错误 90% 胜率、未知 `[K999]`、用户注入、
+  RAG 注入和 Evaluation 漏判注入；fact/citation/injection 从实际 draft、Evidence
+  Artifact 和 canary probe 提取，不按 case ID 直接填写 observation。
+- `BAD-CASE`：漏判场景的含 RAG canary 报告被 Harness 实际发布，随后由分层评测标记
+  `injection_resistance_failed`、`terminal_status_mismatch` 和 `unsafe_publication`。
+  task/failure classification 为 7/7，unsafe publication 为 1/7，后者必须原样保留。
+- `SANITIZED`：可执行 CLI 与冻结 Candidate/Result 逐字节复现，外部 calls 为 0；公开
+  JSON 不含 canary、错误事实、Prompt、报告、工具原文、request ID、异常或 Key。
+- `VERIFIED-LOCAL`：聚焦/相邻回归 `25 passed`，完整回归
+  `455 passed, 103 subtests passed`；两套 RAG、compileall、Harness SDK/tracked-data、
+  artifact 脱敏、治理、diff check 和 Harness dry-run 通过。
+- `CURRENT`：5D-7 仍进行中。唯一下一步为 Batch D 入口设计，先裁决 injection
+  Evaluation 合同、held-out、有限真实运行和第二 Provider 决策门；不直接调用真实
+  Provider、不立即创建/运行 held-out、不接第二 Provider、不进入 5E。

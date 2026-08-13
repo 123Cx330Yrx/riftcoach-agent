@@ -805,3 +805,23 @@
   正文、异常、request ID 或密钥；它属于 5D-7 的实验前置身份，不替代 5E 的运行 Trace。
 - 本批不修改 Prompt/Context 行为、不运行真实 Provider、不创建 held-out、不接第二
   Provider。后续 Batch C 才使用该入口运行多案例工具、事实、引用和模型级注入评测。
+
+### 2026-08-13：5D-7 Batch C 可执行 development 发现
+
+- Batch A 的 recorded Candidate 能验证分层分类器，但不能证明 Agent 控制流；Batch C
+  使用 Scripted Provider 驱动生产 Catalog/Router/Context、AgentLoop、ToolRuntime、
+  local hybrid RAG、Evidence 与 ReviewHarness，外部 I/O 为 0。
+- 新 `offline_executable` 合同要求 Schema 1.2、零 external calls 和逐案例 provenance；
+  Dataset/Candidate schema mismatch 在评测前失败关闭。
+- 7 个场景的 fact/citation/injection 结果来自实际 Agent draft、Evidence Artifact 与
+  canary probe；安全扫描确认公开 Candidate/Result 未保存攻击原文、错误事实、Prompt、
+  报告、request ID、异常或 Key。
+- ReviewHarness 的引用 allowlist 真实拦截了 `[K999]`；fact 与 caught injection 场景由
+  Evaluation fail 后降级到确定性报告。
+- 当 Scripted Evaluator 对 RAG injection 错误返回 pass 时，Harness 确实发布了含 canary
+  的报告。分层领域评测把它标成 unsafe publication，说明 Harness 发布权是确定性的，
+  但安全性仍依赖 Evaluation 输入质量；这是 Batch D 的关键设计输入。
+- 7/7 task outcome 与 primary failure match 只证明已知 development oracle 和实验接线；
+  1/7 unsafe publication 是故意保留的 Bad Case，不评价真实模型抗注入能力。
+- 完整验证为 `455 passed, 103 subtests passed`，两套 RAG、compileall、Harness dry-run、
+  SDK/tracked-data、artifact sanitization、governance 和 diff check 全部通过。

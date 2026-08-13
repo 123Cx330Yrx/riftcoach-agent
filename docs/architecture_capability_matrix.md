@@ -28,7 +28,7 @@
 | A06 | 最小 Agent Loop | Assistant ToolCall、Tool Observation、预算和停止原因 | 阶段 5A | 阶段 5D 接入 Skill，5E 统一 Runtime | Fake Provider + 真实知识工具、重复调用和越权测试 | 已完成 |
 | A07 | Skill Contract | `recent-form-review` 与 `single-match-review` 均有 Manifest、SKILL.md、Pydantic I/O、工具白名单和预算 | 阶段 5B 基础 + 5C-5 前第二个真实合同 | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill；真实内部 Skill 出现后才设计调用模式 | 坏 Manifest、Schema、权限漂移、预算和发布边界测试 | 已完成 |
 | A08 | Skill Router | 5C-1 至 5C-6 与退出复核均完成；development 23/23、holdout 11/12；selected 决策锁定 Skill name/version；ADR-0010 暂缓 LLM fallback | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试、退出复核和 ADR | 已完成 |
-| A09 | Prompt/Context Engineering | Harness Prompt V0、SKILL.md 指令；5D-2 已实现 trust-typed Context Builder，5D-3 已实现逐轮 Context 门禁；5D-7 Batch B 已用组件/案例双层指纹冻结 Skill、Context、知识工具、Evaluation 与 demo 输入，并建立零调用 admission | 阶段 5D-5E | 5D-7 Batch C 补多案例 Prompt/注入实验，5E 加运行 Trace，阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、漂移拒绝、回归和消融测试 | 部分完成 |
+| A09 | Prompt/Context Engineering | Harness Prompt V0、SKILL.md 指令；5D-2 已实现 trust-typed Context Builder，5D-3 已实现逐轮 Context 门禁；5D-7 Batch B 已冻结双层语义身份，Batch C 又以用户/RAG canary 驱动 7 场零外部调用的真实本地控制流 | 阶段 5D-5E | 5D-7 Batch D 补 held-out/有限真实模型实验设计，5E 加运行 Trace，阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、漂移拒绝、用户/RAG 注入、回归和消融测试 | 部分完成 |
 | A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral 合同；Zhipu 真实 3-call structured/tool 协议通过，但真实领域运行未到 Evaluation，尚无领域结构化质量证据 | 阶段 5D | 5D-7 用多案例验证领域 Evaluation、失败归因和修复边界；第二候选需同任务决策 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移、Thinking 预算、调用预算和修复上限测试 | 部分完成 |
 | A11 | AgentRuntime V1 | 5D-1/2 已建立执行与 Context 边界，5D-3 已编译 Manifest 权限/预算并加入有界停止，5D-4 已产生可审计 draft/evidence，5D-5 已通过唯一 ReviewHarness 组合为 typed terminal output | 阶段 5D-5E | 5D-6a/6b/7 补结构化输出、真实 Provider 与领域评测；5E 统一 run/stream/event/trace/usage；阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 部分完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有，任务级选择未实现 | 阶段 5F 或真实业务触发点 | 按质量、能力、成本选择，不按厂商数量堆叠 | 同一评测集、故障降级、成本和延迟对照 | 部分完成 |
@@ -41,9 +41,9 @@
 
 | ID | 能力 | 当前基础 | V1 负责阶段 | 后续深化 | 验收证据 | 状态 |
 |---|---|---|---|---|---|---|
-| Q01 | 端到端 Evaluation | 报告事实评测、RAG 独立保留集、路由评测；5D-7 Batch A 新增分层合同与 10 案例离线基线，Batch B 强绑定 Prompt/Context 快照和 Dataset/Candidate 身份 | 阶段 5C 增加路由 Eval，5D 增加 Prompt Eval | 5D-7 Batch C 以后补模型级注入、held-out 和有限真实结果；阶段 8 固定产品回归集和消融 | 数字忠实度、引用、路由、工具选择、实验身份、失败归因与发布安全 | 部分完成 |
+| Q01 | 端到端 Evaluation | 报告事实评测、RAG holdout、路由评测；5D-7 Batch A/B 建立分层合同与实验身份，Batch C 新增 7 场 `offline_executable` development 基线并真实验证 Skill/Agent/Tool/RAG/Harness，保留 1 个 unsafe-publication Bad Case | 阶段 5C 增加路由 Eval，5D 增加 Prompt Eval | 5D-7 Batch D 以后补 held-out 和有限真实 Provider 结果；阶段 8 固定产品回归集和消融 | 数字忠实度、引用、路由、工具选择、实验身份、注入漏判、失败归因与发布安全 | 部分完成 |
 | Q02 | Trace 与 Observability | Harness Artifact、工具指标、Usage 基础；5D-1 统一安全 run ID 并绑定输入 kind/schema/digest | 阶段 5E | 阶段 8 增加生产日志、告警和前端轨迹 | run_id 串联 Prompt、模型、工具、证据、耗时和决策 | 部分完成 |
-| Q03 | Prompt/上下文注入防护 | 工具白名单、Schema、RAG 来源过滤；5D-2 固定 data-only sections，5D-3 约束完整 ToolCall/Tool result 累计预算，5D-4 只从实际成功 ToolExecutionRecord 构造证据并拒绝模型自称来源 | 阶段 5D 建立不可信输入边界 | 5D-7 做模型级攻击评测，阶段 6 覆盖会话，阶段 7 覆盖外部 MCP 内容 | 恶意用户输入、恶意文档、恶意工具结果和越权测试 | 部分完成 |
+| Q03 | Prompt/上下文注入防护 | 工具白名单、Schema、data-only sections、累积预算和实际 ToolExecutionRecord 证据；Batch C 已让 Scripted Provider 真实服从用户/RAG canary，并验证独立 probe、Harness 降级及一个 Evaluation 漏判后的 unsafe publication | 阶段 5D 建立不可信输入边界 | 5D-7 Batch D 裁决 injection Evaluation 合同和真实模型实验；阶段 6 覆盖会话，阶段 7 覆盖外部 MCP/Tool 内容 | 恶意用户输入、恶意文档、恶意工具结果、评测漏判和越权测试 | 部分完成 |
 | Q04 | 应用安全 | `.env` 隔离、日志脱敏、离线赛后合规边界 | 阶段 6 建立鉴权、限流、CORS 与用户隔离 | 阶段 8 部署威胁模型、安全扫描和响应流程 | 密钥扫描、权限、限流、数据越权和依赖审计 | 部分完成 |
 | Q05 | 数据生命周期与隐私 | 本地缓存不提交，Memory 尚未落库 | 阶段 6 | 阶段 8 加备份、恢复和公开隐私说明 | 原始比赛、Run、Memory 的保留、更正、导出和删除测试 | 需显式补齐 |
 | Q06 | 知识库更新与回滚 | 来源、版本、有效期和冲突策略已有 | 阶段 4 维护任务，公开部署前完成更新流程 | 阶段 8 自动化索引构建、版本切换和回滚 | 新旧版本、失败构建、污染文档和回滚测试 | 需显式补齐 |
@@ -183,5 +183,7 @@ A1/A2 都 passed 且 `admitted=true`。这准入最小生产 Adapter 协议，�
 近期复盘 Skill/Harness 控制器已把累计 7-call 与历史 3 calls 对齐；真实运行随后只使用
 一个领域 call，但没有统一响应进入 Agent，也没有工具证据或 Evaluation，Harness 安全
 降级。ADR-0012 因此准入最小 Adapter 协议、拒绝 GLM recent-form 领域能力并收尾
-5D-6b。唯一下一步为 5D-7：用真实 Bad Case 建立多案例 Prompt/Context、领域质量、
-注入、成本/延迟与错误归因评测；第二 Provider 仍需同任务数据和新 ADR。
+5D-6b。5D-7 Batch A/B 已建立分层合同与 Prompt/Context 身份；Batch C 又让 7 个
+development 场景在零外部调用下真实经过 Skill/Agent/Tool/RAG/Harness，覆盖工具、事实、
+引用、用户/RAG 注入和 Evaluation 漏判。下一步为 Batch D 入口设计，先裁决 held-out、
+有限真实运行和第二 Provider 决策门，不能把 Scripted Provider 结果当成真实模型质量。

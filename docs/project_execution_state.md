@@ -20,9 +20,9 @@ blocked_before: "5D-exit-review"
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6b 已完成；
   5D-6b 的最终结论是 Adapter 最小协议准入、GLM recent-form 领域能力不准入
-- 唯一下一步：继续 5D-7 Batch C 入口设计与离线 TDD，让可执行 development 候选先
-  通过 Batch B admission，再分层验证工具选择、事实、引用和模型级注入；不直接调用
-  真实 Provider，不创建或运行 held-out，也不立即接入第二 Provider
+- 唯一下一步：继续 5D-7 Batch D 入口设计，先复核 Batch C 暴露的注入漏判、离线
+  canary 与真实模型能力边界，再冻结 held-out/有限真实运行协议和第二 Provider 决策门；
+  本轮不直接调用真实 Provider、不立即创建或运行 held-out，也不接入第二 Provider
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；第二
   Provider 必须等待同任务评测设计和新 ADR，不能用发布热度替代准入证据
 
@@ -49,7 +49,7 @@ blocked_before: "5D-exit-review"
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（Batch A-B 已完成） | Batch A：ADR-0013、严格 Dataset/Candidate/Result 合同、10 个 development 离线案例与基线；Batch B：ADR-0014、组件/案例双层 SHA-256 快照、Domain E2E 1.1 强绑定和零外部调用 admission；尚无 held-out、模型级 Prompt 实验或真实 Provider 多案例质量结果 |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（Batch A-C 已完成） | Batch A：分层合同与 10 个记录型 development 控制样本；Batch B：组件/案例双层 SHA-256 快照和零调用 admission；Batch C：ADR-0015、7 个 `offline_executable` development 场景，真实经过 Skill/AgentLoop/ToolRuntime/local RAG/Harness，覆盖工具、事实、引用、用户/RAG 注入与 unsafe publication；仍无 held-out 或真实 Provider 多案例质量结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界
@@ -201,6 +201,23 @@ blocked_before: "5D-exit-review"
 - Domain E2E 1.1 基线与 admission 已从 CLI 临时输出逐字节复现；功能提交
   `e56b00091ef2ab299af692e902945b8342fbc99e` 已推送，GitHub Actions run
   `31690698734` 对该精确 SHA 全部通过。
+- ADR-0015 采用脚本 Provider 驱动真实本地控制流，而不是继续手填 Candidate 或立即
+  调用真实模型；新增 Schema 1.2 `offline_executable` Candidate，要求零外部调用且每个
+  案例都有安全 provenance SHA-256；
+- Batch C 的 7 个 development 场景均先通过 Batch B admission，再真实运行 Catalog/
+  Router/Boundary、ContextBuilder、AgentLoop、`knowledge.search`、ToolRuntime、本地混合
+  RAG、Evidence 构建和唯一 ReviewHarness；只有 Provider 响应为确定性脚本；
+- 可执行场景覆盖成功、缺工具、错误 90% 胜率、未知 `[K999]`、用户注入、RAG 注入和
+  Evaluation 漏判注入。最后一个场景实际被 Harness 发布，再由分层评测标记
+  `unsafe_publication`，因此 1/7 不安全发布率是保留的开发 Bad Case，不是通过率；
+- Candidate 中的 fact/citation/injection 结论从实际 draft、evidence Artifact 和 canary
+  probe 提取，公开 Candidate/Result 不保存 canary、错误事实、Prompt、报告、工具原文、
+  request ID、异常或 Key；CLI 重跑与冻结文件逐字节一致，外部调用为 0；
+- Batch C 聚焦/相邻测试为 `25 passed`；完整回归为
+  `455 passed, 103 subtests passed`。两套 RAG、compileall、Harness SDK/tracked-data、
+  artifact 脱敏、治理、diff check 和 Harness dry-run 均通过；
+- 这些结果证明离线实验接线和本地发布边界可复现，不证明任何真实 Provider 的领域
+  质量或通用抗注入能力；当前 Evaluation Schema 也没有专用 injection issue category。
 
 当前不能声称：
 
@@ -211,6 +228,7 @@ blocked_before: "5D-exit-review"
   Agent，也没有草稿、知识证据、Evaluation 或质量分；
 - 默认 ContextSizer 等于真实厂商 tokenizer 或真实 Token Usage；
 - trust/JSON 分层已经彻底解决 Prompt Injection；
+- Batch C 的脚本 Provider/canary 已证明真实 GLM、DeepSeek 或 Qwen 抗注入；
 - 已经实现 Tool Observation compaction，或协作式 deadline 能硬中断任意阻塞函数；
 - 路由对自然语言具有充分泛化能力；
 - 小型合成 holdout 已证明路由对自然语言充分泛化；
@@ -224,10 +242,10 @@ blocked_before: "5D-exit-review"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 Batch A-B 已建立分层领域评测、生命周期门禁、双层 Prompt/Context 身份和零调用 admission | 阶段 5、整个 5D、模型级 Prompt 实验、真实领域 Skill 或报告质量准入已完成 |
-| 项目理解 | 已区分 Provider 协议准入、领域控制流准入和多案例质量评测；理解最终文本不是完整 Agent 证据，并理解双层指纹只保证控制变量可复现，不评价 Prompt/模型好坏 | admission=true 等于真实模型准入、离线分类 10/10 等于真实质量 100%，或哈希快照已经彻底防住 Prompt Injection |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 Batch A-C 已建立分层评测、实验身份和 7 场真实本地控制流的 executable development 基线 | 阶段 5、整个 5D、真实模型 Prompt 实验、held-out、第二 Provider 或报告质量准入已完成 |
+| 项目理解 | 已区分记录型评测样本与可执行本地实验；理解 Scripted Provider 只固定模型响应，而 Skill/Agent/Tool/RAG/Harness 可真实运行，也理解 unsafe publication 用于暴露评测漏判 | 脚本 Provider 等于真实模型、离线 7/7 分类匹配等于真实质量 100%，或 canary 已证明通用抗注入 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5D-7 Batch B 功能提交 `e56b00091ef2ab299af692e902945b8342fbc99e` 已公开，GitHub Actions run `31690698734` 对精确 SHA 全部通过；正式网页仍未部署 | 公开实验身份层等于 Prompt/真实领域能力、最终厂商选型或 Web Agent 可用 |
+| GitHub/部署 | Batch C 本地功能与全门禁已完成，等待本批提交、推送和精确 SHA CI；正式网页仍未部署 | 本地门禁等于 GitHub 已同步，或离线 executable 基线等于真实领域能力、最终厂商选型或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -358,6 +376,13 @@ Skill、Context、知识工具及 Evaluation 合同。离线 admission 会在 Pr
 精确核对快照，当前外部调用为 0。它只证明实验条件可重复，不证明 Prompt、真实模型、
 未知注入或报告质量已经通过。
 
-唯一下一步是 5D-7 Batch C 入口设计与离线 TDD：所有可执行 development 候选先经过
-Batch B admission，再逐类验证工具选择、事实、引用和模型级注入；不直接运行真实
-Provider、不创建或运行 held-out、不接入第二 Provider，也不进入 5D exit review 或 5E。
+Batch C 已用 ADR-0015 建立七场 `offline_executable` development 基线。每场都先经过
+Batch B admission，再由 Scripted Provider 驱动真实 Skill/Agent/Tool/RAG/Harness；
+事实、引用和注入检查从实际运行产物提取。一个 Evaluation 漏判场景真实发布了含 RAG
+canary 的报告，并被分层评测标记为 unsafe publication，明确证明 Harness 的确定性发布
+决策仍依赖 Evaluation 输入质量。该结果只验证实验接线，不评价真实模型。
+
+唯一下一步是 5D-7 Batch D 入口设计：先基于 Batch C 证据裁决 injection evaluation
+合同、held-out 生命周期、有限真实调用与第二 Provider 决策门，再决定后续实现；本轮不
+直接调用真实 Provider、不立即创建/运行 held-out、不接入第二 Provider，也不进入
+5D exit review 或 5E。

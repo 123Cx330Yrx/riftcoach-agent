@@ -127,13 +127,17 @@ python scripts\query_rag.py "输局视野分和经济下降应该怎么复盘" -
 阶段 5A 建立了 Provider-neutral 的最小受限 Agent Loop：模型只能通过结构化
 `ToolCall` 请求白名单工具，Runtime 返回 `ToolObservation`，循环受迭代次数、
 工具次数和停止原因约束。它已用 Fake Provider 和真实 `knowledge.search` 工具验证，
-但尚未证明 GLM 或其他真实 Provider 已完成 Tool Calling。
+生产 Zhipu Adapter 的最小结构化输出与 Tool Calling 协议已经真实准入；但 GLM-5.2
+在一次 recent-form 领域切片中没有形成可交付给 Agent 的统一响应，因此真实领域能力
+仍未准入，不能把低层协议通过写成 Coach Agent 已上线。
 
 阶段 5B 建立 `manifest.yaml + SKILL.md + Pydantic I/O` Skill Contract；Catalog
 现在包含 `recent-form-review` 与 `single-match-review` 两个真实用户 Skill。单局
 合同复用 Player Summary v1.0，并要求目标 match ID 唯一；短局可以审查，Timeline
 缺失保持显式未知。阶段 5C-1 至 5C-4 已完成 Router 请求与决策合同、严格 Catalog、
-声明式确定性匹配，以及拒绝/排除否决/多候选歧义验收：
+声明式确定性匹配，以及拒绝/排除否决/多候选歧义验收。5C-5 已建立双 Skill
+development 与独立 holdout；5C-6 依据唯一设备语义 Bad Case 决定 V1 暂缓 LLM
+Router fallback：
 
 ```text
 用户表达 + 可用 Skill 路由元数据
@@ -143,12 +147,19 @@ python scripts\query_rag.py "输局视野分和经济下降应该怎么复盘" -
 ```
 
 Router 只选择工作流，不执行 Skill、Tool、Harness 或模型。两个真实候选已有近期、
-单局、混合范围歧义、裸 ID 拒绝和域外边界单测；其他重叠候选仍由合成测试验证。
-旧 15 条路由开发集基于单 Skill 校准，尚未重建为双 Skill development 与独立
-holdout，因此 5C-5 路由评测和 5C-6 模型兜底决策仍未验收。原理与边界见
+单局、混合范围歧义、裸 ID 拒绝和域外边界单测。当前开发集为 23/23；规则冻结后的
+独立 holdout 为 11/12，唯一失败已原样保留且没有反向调规则。
+
+5D 已把 Skill/Context、AgentLoop、ToolRuntime、本地 RAG 和唯一 ReviewHarness 组合为
+受限执行链。5D-7 Batch A/B 建立分层领域评测和 Prompt/Context 语义身份；Batch C 又用
+Scripted Provider 在零外部调用下执行 7 个 development 场景，真实验证工具、事实、
+引用、用户/RAG 注入与发布门禁。其中一个“评测器漏判注入”场景被实际发布，再由分层
+评测标为 `unsafe_publication`。这证明离线实验接线和故障识别，不证明任何真实模型的
+领域质量或通用抗注入能力。原理与边界见
 [Agent Loop v1](docs/agent_loop_v1.md)、[Skill Contract v1](docs/plans/2026-08-05-skill-contract-v1-design.md)
 、[单局 Skill Contract](docs/plans/2026-08-06-single-match-review-skill-design.md)
-和 [Router 拒绝与歧义验收](docs/plans/2026-08-06-router-rejection-ambiguity-review.md)。
+、[Router 拒绝与歧义验收](docs/plans/2026-08-06-router-rejection-ambiguity-review.md)
+和 [5D-7 Batch C 可执行评测设计](docs/plans/2026-08-13-domain-e2e-offline-executable-design.md)。
 
 ## 测试
 
