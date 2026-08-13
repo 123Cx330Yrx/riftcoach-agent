@@ -209,7 +209,7 @@ blocked_before: "5D-exit-review"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；真实结果准入 Adapter 最小协议、拒绝 GLM recent-form 领域能力，当前进入 5D-7 | 阶段 5、整个 5D、真实领域 Skill 或报告质量准入已完成 |
 | 项目理解 | 已区分 Provider 协议准入、领域控制流准入和多案例质量评测；理解计费请求不等于统一响应，也理解 fallback 是发布安全边界 | 单个真实失败已经证明 GLM 整体不可用、Prompt 必然错误或第二 Provider 必须立即接入 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5D-6b 控制器与 CI 证据已公开；真实领域失败结果与 ADR-0012 正在本批提交，正式网页仍未部署 | 公开失败证据就等于真实领域能力可用、报告质量准入、最终厂商选型或已有可运行 Web Agent |
+| GitHub/部署 | 5D-6b 真实失败证据与 ADR-0012 已在提交 `34ea5c3` 公开；GitHub Actions run `31659371226` 对精确 SHA `34ea5c32e5c124207fcba7b0521a4e5a62af6845` 全部通过；正式网页仍未部署 | 公开失败证据就等于真实领域能力可用、报告质量准入、最终厂商选型或已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

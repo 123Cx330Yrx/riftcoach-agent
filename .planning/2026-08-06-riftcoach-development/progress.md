@@ -680,5 +680,7 @@
   5D-7 可观测性 Bad Case，本批不改功能代码、不恢复临时原文、不重跑实验。
 - 新增 ADR-0012：Zhipu 最小 structured/tool 协议准入，GLM-5.2 recent-form 领域能力
   不准入，确定性 fallback 保留，第二 Provider 暂缓到同任务 5D-7 评测合同冻结后决定。
-- `5D-6b` 因准入门已作出可审计接受/拒绝结论而完成；唯一下一步推进到 `5D-7
-  Prompt/Context & Domain E2E Evaluation`，并不表示领域能力或整个 5D 已完成。
+- `5D-6b` 因准入门已作出可审计接受/拒绝结论而完成；唯一下一步推进到
+  `5D-7 Prompt/Context & Domain E2E Evaluation`，并不表示领域能力或整个 5D 已完成。
+- 真实失败结果与 ADR-0012 提交 `34ea5c3` 已推送；GitHub Actions run
+  `31659371226` 对精确 SHA `34ea5c32e5c124207fcba7b0521a4e5a62af6845` 全部通过。

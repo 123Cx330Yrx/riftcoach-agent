@@ -461,6 +461,9 @@
 - `CURRENT`：唯一下一步为 5D-7 Prompt/Context & Domain E2E Evaluation。先冻结
   案例、失败分类、可观测性和基线，再决定是否需要 Prompt 调整或第二 Provider；不得
   进入 5D exit review、5E、LangGraph、Agent SDK 或 Multi-Agent。
+- `PUBLIC-VERIFIED`：真实失败结果与 ADR-0012 提交 `34ea5c3` 已推送；GitHub
+  Actions run `31659371226` 对精确 SHA
+  `34ea5c32e5c124207fcba7b0521a4e5a62af6845` 全部通过。
 
 ## 当前不变的宏观路线
 
