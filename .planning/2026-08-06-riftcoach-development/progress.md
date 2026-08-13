@@ -633,3 +633,30 @@
   为 `tool_calls -> stop`，工具调用和成功执行均为 1。成本因无可靠单价快照保持 null。
 - 当前 5D-6b 尚未完成。唯一下一步改为 Recent-form Domain Slice 离线设计/TDD，先对齐
   原定累计 7-call 上限与已用 3 calls；本轮不直接执行领域 Skill、第二 Provider 或 5D-7。
+
+### 2026-08-13：5D-6b Recent-form Domain Slice 离线控制器
+
+- 用户要求继续并询问为何 5D-6b 持续较久；已解释该检查点分为低层 Provider 协议准入
+  和真实领域 Skill/Harness 准入，前者已真实通过，本批完成后者的离线安全控制器。
+- 新增领域设计与实施计划、`DomainSkillSliceRunner`、严格脱敏报告合同和显式真实调用
+  CLI；复读并哈希已准入的 3-call 协议结果，将领域调用固定为剩余最多 4 calls。
+- 同一个 observed budget Provider 同时注入 AgentLoop 与 Harness；正常路径精确为 Agent
+  2 calls + Evaluation 1 call，一次结构化 repair 可使用第 4 call，revision 后再评测在
+  第 5 次领域调用进入底层 Provider 前被拒绝。
+- 真实 `recent-form-review` 已在 Fake Provider 下完整经过 Catalog、Router、Boundary、
+  Context、AgentLoop、本地 `knowledge.search`、唯一 ReviewHarness 和 typed output；
+  准入 CLI 固定 SDK `max_retries=0`，Harness LLM Tool 为单次尝试、无缓存/无 fallback。
+- 代码复核后补强两条合同：`admitted=true` 必须让每次计费调用都有脱敏响应元数据；
+  CLI 在读取配置和创建客户端前拒绝覆盖已有领域结果，防止重复实验与证据覆盖。
+- 最终审计再补充脏工作树门禁：真实 CLI 必须在创建客户端前确认所有执行代码已提交，
+  避免结果中的旧 HEAD SHA 冒充包含未提交修改的实际代码。
+- 聚焦回归为 `23 passed`；相邻纵向比例回归为 `141 passed, 29 subtests passed`；全量
+  回归为 `430 passed, 103 subtests passed`。
+- RAG development 与 independent holdout 的 Recall/MRR/nDCG 均为 `1.0`，holdout
+  abstention 与 citation support 也为 `1.0`；compileall、Harness SDK boundary、tracked
+  secret/run-data、diff check 和 Harness dry-run 均通过。
+- 新增初学者复核文档，讲清 Provider Adapter、AgentLoop、ToolRuntime、Skill、Harness、
+  数据流/控制流、累计 3+4 call、pre-I/O budget、脱敏证据和面试表述边界。
+- 本批未读取 API Key、未创建真实客户端、未调用 GLM，且未生成
+  `zhipu_recent_form_slice.json`。唯一下一步为提交/推送/验证精确公开 CI；随后才按
+  RQ-027 执行一次有界真实领域切片，不进入第二 Provider 或 5D-7。

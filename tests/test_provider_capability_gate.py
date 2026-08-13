@@ -14,6 +14,7 @@ from app.evaluation.provider_capability_gate import (
     ExternalCallBudgetExceeded,
 )
 from app.evaluation.provider_adapter_protocol import AdapterProtocolSliceReport
+from app.evaluation.provider_domain_skill import DomainSkillSliceReport
 
 
 def passed_case(case_id: str) -> CapabilityProbeCaseResult:
@@ -170,11 +171,10 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
     for result_path in result_paths:
         content = result_path.read_text(encoding="utf-8")
         scope = json.loads(content).get("probe_scope", "p1_p5")
-        model = (
-            AdapterProtocolSliceReport
-            if scope == "adapter_protocol"
-            else CapabilityProbeReport
-        )
+        model = {
+            "adapter_protocol": AdapterProtocolSliceReport,
+            "recent_form_domain": DomainSkillSliceReport,
+        }.get(scope, CapabilityProbeReport)
         model.model_validate_json(content)
 
 

@@ -19,10 +19,11 @@ blocked_before: "5D-7"
 - 最后更新：2026-08-13
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6a 已完成；
-  5D-6b 已完成低层 P1-P5、生产 Adapter 离线映射和真实 Adapter Protocol Slice
-- 唯一下一步：进入 5D-6b Recent-form Domain Slice 的离线设计与 TDD，复用同一
-  `ZhipuProvider`、真实 Skill/Harness 组合，先冻结与已用 3-call 协议切片一致的累计
-  7-call 预算核算和脱敏结果合同；本步不执行真实领域调用、第二 Provider 或 5D-7
+  5D-6b 已完成低层 P1-P5、生产 Adapter 离线映射、真实 Adapter Protocol Slice 和
+  Recent-form Domain Slice 离线控制器
+- 唯一下一步：提交、推送并验证 5D-6b Recent-form Domain Slice 离线控制器精确 SHA
+  的公开 CI；通过后才按 RQ-027 执行一次累计 7-call、领域剩余最多 4-call 的真实 GLM
+  领域切片。本批不执行真实领域调用、第二 Provider 或 5D-7
 - 禁止越过：5D-6b 完成前不得实现第二 Provider、完成 Prompt E2E Evaluation、进入
   5D-7 或统一 AgentRuntime；离线 Adapter 映射不等于真实 Adapter 或领域 Skill 准入
 
@@ -48,7 +49,7 @@ blocked_before: "5D-7"
 | 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 已完成 | 共享 evidence converter、`SkillAgentDraftPreparer`、两个真实 Skill + Fake Provider + 真实 `knowledge.search`，成功/拒答/去重/冲突/失败与停止边界测试 |
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
-| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（P1-P5 与真实 3-call Adapter 协议切片已通过；真实领域 Skill 切片待设计/执行） | 最终微探针在公开 SHA `6a15a00` 上 5/5 通过；生产协议切片在公开 CI 成功 SHA `f1d171d` 上精确使用 3/3 calls：A1 严格 structured contract 与 A2 现有 AgentLoop + 固定只读 `knowledge.search` 均 passed，`admitted=true`；这准入最小 Adapter 协议，不等于领域 Skill、报告质量或最终模型选型 |
+| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（P1-P5 与真实 3-call Adapter 协议切片已通过；Recent-form Domain Slice 离线控制器已完成，真实领域运行待公开 CI 后执行） | 最终微探针在公开 SHA `6a15a00` 上 5/5 通过；生产协议切片在公开 CI 成功 SHA `f1d171d` 上精确使用 3/3 calls；领域控制器复用真实 Skill/RAG/AgentLoop/Harness，严格复读历史 3-call 证据并以共享预算限制剩余 4 calls，Fake Provider happy path 为 3 calls，一次 Evaluation repair 为第 4 call，后续再评测在出网前拒绝；这仍不等于真实领域 Skill、报告质量或最终模型选型 |
 | 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 未开始 | 尚无新数据集或结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
@@ -157,6 +158,19 @@ blocked_before: "5D-7"
 - 真实 A1 为 427/59 tokens、2344 ms；A2 为 562/36 tokens、5360 ms，finish sequence
   为 `tool_calls -> stop`，工具调用/执行均为 1；未取得可靠单价快照，因此成本保持 null，
   不伪造为 0。
+- `DomainSkillSliceRunner` 已离线组合真实 `recent-form-review` Catalog/Router/Boundary、
+  Context Builder、AgentLoop、本地 `knowledge.search`、唯一 ReviewHarness 和 typed output；
+  历史协议结果必须 `admitted=true`、精确 3 calls、Provider/model 一致，并记录文件 SHA-256；
+- Agent 与 Harness 共享 `ExternalCallBudget(max_calls=4)`；happy path 为 Agent 2 calls +
+  Evaluation 1 call，剩余 1 call 只允许 Evaluation 格式修复；revision 后再评测会在进入
+  底层 Provider 前失败关闭，准入专用 SDK/Tool 自动重试均为 0/单次尝试；
+- 真实领域 CLI 必须显式确认累计 `max_calls=7`，只允许批准结果目录，要求干净已提交的
+  工作树并拒绝覆盖既有领域证据；Harness 原文只写系统临时目录，公开报告不保存
+  Prompt、模型正文、Observation、原始 request ID、异常或 API Key；
+- 领域控制器聚焦回归为 `23 passed`，相邻纵向比例回归为
+  `141 passed, 29 subtests passed`，完整回归为 `430 passed, 103 subtests passed`；两套
+  RAG 门禁、compileall、Harness SDK/敏感文件边界和 dry-run 均通过。所有领域证据仍为
+  Fake Provider 离线证据，仓库中尚无真实领域结果文件。
 
 当前不能声称：
 
@@ -179,8 +193,8 @@ blocked_before: "5D-7"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6a；5D-6b 已完成 P1-P5 和真实 Adapter 最小协议切片，下一步为近期复盘领域切片离线设计/TDD | 阶段 5、整个 5D、领域 Skill 或报告质量准入已完成 |
-| 项目理解 | GLM-5.2 默认 Thinking 会挤占短控制输出预算；Provider Adapter 是厂商协议双向翻译边界，工具别名不能泄漏到 Manifest/Runtime | 微探针或 Fake SDK 映射就等于报告质量、最终模型选型或真实 Skill 准入 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6a；5D-6b 已完成 P1-P5、真实 Adapter 最小协议切片和领域准入离线控制器，下一步为提交/公开 CI 后一次受控真实领域运行 | 阶段 5、整个 5D、真实领域 Skill 或报告质量准入已完成 |
+| 项目理解 | 已区分 Provider 协议准入、领域控制流准入和多案例质量评测；共享 pre-I/O 预算必须同时覆盖 Agent 与 Harness，Skill/Agent 不拥有发布权 | Fake Provider 纵向切片就等于真实 GLM 领域准入、Prompt 质量或最终模型选型 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
 | GitHub/部署 | 5D-6b 协议控制器已进入 `main` 提交 `f1d171d`；GitHub Actions run `31625669630` 对精确 SHA `f1d171d5591a511f9d6a9788a1bc8068172b0d51` 全部通过；真实 3-call 脱敏结果进入本次证据提交，当前仍没有正式网页部署 | 最小协议切片、CI 和一次真实成功就等于完整 GLM Agent、领域质量准入、最终厂商选型或已有可运行 Web Agent |
 

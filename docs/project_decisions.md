@@ -9,7 +9,7 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 ## 能力基线
 
 动态进度和唯一下一步只看 `docs/project_execution_state.md`。截至
-2026-08-09，已经实现并有测试证据的本地基础包括：
+2026-08-13，已经实现并有测试证据的本地基础包括：
 
 - Riot ID、PUUID、最近对局与 Timeline 数据链路；
 - MatchAnalyzer 确定性指标；
@@ -36,12 +36,14 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
   顺序 Adapter、唯一 ReviewHarness 控制流，以及由终态 Artifact 构造的 typed Output；
 - 5D-6a Structured Output Contract：请求声明 Provider-neutral JSON Schema，严格
   Pydantic Evaluation 验证、最多一次同合同 repair，以及解析失败的 fail-closed 降级边界；
+- 5D-6b 的生产 Zhipu Adapter 与真实最小 structured/tool 协议准入，以及复用真实
+  recent-form Skill/RAG/AgentLoop/Harness、累计 3+4 call 预算的离线领域准入控制器；
 - 独立事实评测、受限修订、再评测与发布门控。
 
 当前仍未实现：
 
-- 真实 Provider Tool Calling 和经过领域评测的第二 Provider；
-- 真实 Provider 原生结构化输出映射、真实 Provider Tool Calling 和统一 AgentRuntime；
+- 真实 GLM recent-form 领域 Skill/Harness 准入和经过同任务评测的第二 Provider；
+- 统一 AgentRuntime；
 - FastAPI 会话入口；
 - 玩家长期 Memory；
 - 标准 MCP Client/Server；
@@ -111,6 +113,10 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   映射；3-call 协议控制器用一个预算 Provider 组合严格 structured request、现有
   AgentLoop 和固定只读知识工具；该切片随后在公开 CI 成功 SHA 上真实 3/3 通过，只
   准入最小 Adapter 协议，仍须领域 Skill/Harness 切片，不能写成 GLM Agent 已上线；
+- Recent-form Domain Slice 离线控制器已组合真实 Catalog/Router/Context、AgentLoop、
+  本地 RAG、唯一 ReviewHarness 和 typed output；它严格复读上一轮 3-call 结果，并让
+  Agent 与 Harness 共用剩余 4 calls。该证据仍来自 Fake Provider，真实领域运行只能在
+  控制器公开 CI 通过后执行一次；
 - GLM 是首个真实基准 Adapter，不是永久模型选择；DeepSeek、Qwen 等只在同任务同评测
   决策门打开后比较，不能因发布热度直接替换或一次接入多家；
 - 该方案由 ADR-0011 接受；当前仍处于 5D-6b，不等于整个 5D、LangGraph 或

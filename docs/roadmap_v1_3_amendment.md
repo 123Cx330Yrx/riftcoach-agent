@@ -174,7 +174,7 @@ OP.GG MCP
 5D-4 Agent Draft & Evidence   已完成；实际知识工具记录已转换为未发布草稿与可审计证据
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
-5D-6b Provider Gate           进行中；P1-P5 与真实 3-call Adapter 协议切片已通过，近期复盘领域切片待设计/执行
+5D-6b Provider Gate           进行中；P1-P5 与真实 3-call Adapter 协议切片已通过，近期复盘领域控制器离线完成、真实运行待公开 CI 后执行
 ```
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
@@ -211,7 +211,10 @@ ReviewHarness；`SkillReviewExecutor` 从 Manifest 映射质量门禁，terminal
 下 P1-P5 真实微探针、生产 Zhipu Adapter 离线双向映射，以及严格 structured request、
 现有 AgentLoop 和固定只读知识工具的精确 3-call 真实协议切片；A1/A2 均通过并
 `admitted=true`。尚未执行真实领域 Skill/Harness，Prompt E2E Evaluation 也未开始。
-唯一下一步仍在 5D-6b：先设计/TDD 化近期复盘领域切片及累计预算，尚未选择第二 Provider。
+近期复盘领域切片离线控制器现已完成：它严格复读并哈希已准入的 3-call 协议结果，
+让 AgentLoop 与唯一 ReviewHarness 共用剩余 4-call 的 pre-I/O 预算，并只输出脱敏 typed
+report。唯一下一步仍在 5D-6b：先提交并验证精确 SHA 的公开 CI，再按 RQ-027 执行
+一次受控真实领域运行；尚未选择第二 Provider，也未进入 5D-7。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动

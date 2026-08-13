@@ -718,3 +718,33 @@
 - This admits the production adapter's minimum protocol, not a domain Skill. The next design must
   reconcile the broader seven-call domain ceiling with the three calls already consumed rather
   than silently treating Task 5 and Task 6 as separate unlimited experiments.
+
+## 2026-08-13 5D-6b Recent-form Domain Slice offline controller
+
+- The approved seven-call experiment is cumulative evidence, not a fresh budget per script. The
+  admitted adapter result consumes three calls, so the domain controller has exactly four calls.
+- One observed budgeted Provider must be shared by AgentLoop and Harness `llm.chat`; separate
+  component budgets would permit the composed workflow to exceed the approved external I/O cap.
+- A normal domain path needs three model calls: Agent tool proposal, Agent final draft after local
+  observation, and strict Evaluation. The fourth call is reserved only for Evaluation format
+  repair; a revision then re-evaluation path is intentionally unable to complete under this gate.
+- The controller composes the real recent-form Catalog/Router/ExecutionBoundary/ContextBuilder,
+  local hybrid knowledge search, AgentLoop, existing ReviewHarness and typed terminal output. It
+  creates no second Agent loop, Harness or runtime.
+- Prior protocol evidence is revalidated as admitted/three-call/provider-model matched and hashed
+  byte-for-byte. The new report records both prior and current code/evidence identity so call
+  accounting cannot be reconstructed from an unverified constant.
+- The admission-only SDK has zero automatic retries; the Harness `llm.chat` ToolDefinition has one
+  attempt, no cache and no fallback. Provider retryable failures therefore do not silently create
+  additional billable calls.
+- Public output is a strict sanitized report. Harness artifacts live only in a system temporary
+  directory, and the CLI refuses to overwrite an existing domain result, preventing accidental
+  repeat experiments and evidence replacement.
+- The real CLI also requires a clean worktree before reporting `git rev-parse HEAD`; otherwise an
+  old commit SHA could falsely identify execution that actually included uncommitted code.
+- Focused tests are 23 passed; proportional cross-layer regression is 141 passed plus 29 subtests;
+  full regression is 430 passed plus 103 subtests. Both RAG gates, compileall, Harness SDK and
+  tracked-secret boundaries, and Harness dry-run pass. No real result file or GLM call was created.
+- Offline success proves the composition and failure boundaries, not real GLM domain admission or
+  report quality. Public CI for the exact controller SHA must pass before the one authorized real
+  domain slice; multi-case Prompt/Context quality remains 5D-7.

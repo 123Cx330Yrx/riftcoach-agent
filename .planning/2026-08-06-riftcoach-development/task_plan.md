@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.9 - 5D-6b（in progress: real adapter protocol slice passed; recent-form domain slice offline design/TDD next）
+Phase 6.9 - 5D-6b（in progress: recent-form domain controller verified offline; public CI then one bounded real domain run next）
 
 ## Phases
 
@@ -85,17 +85,18 @@ Phase 6.9 - 5D-6b（in progress: real adapter protocol slice passed; recent-form
 - `5D-6b` 进行中：disabled-thinking 下 P1-P5 低层协议 5/5 真实通过；生产
   `ZhipuProvider` 已用离线 TDD 映射四类消息、JSON mode、Function Calling、请求级
   工具别名与 fail-closed 响应边界；精确 3-call Adapter Protocol Slice 已经真实
-  3/3 passed 并 admitted，尚未执行领域 Skill/Harness 切片。
+  3/3 passed 并 admitted；Recent-form Domain Slice 离线控制器已用 Fake Provider
+  走通真实 Skill/RAG/AgentLoop/Harness，并用历史 3 + 领域最多 4 的共享预算约束，
+  尚未执行真实领域 Skill/Harness。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-进入 5D-6b Recent-form Domain Slice 的离线设计与 TDD：复用同一生产
-`ZhipuProvider`、真实 `recent-form-review` 与现有唯一 ReviewHarness，先冻结原设计
-累计 7-call 上限如何扣除已用 3-call 协议切片，并建立脱敏结果与失败停止合同。本步
-不执行真实领域调用、第二厂商或 5D-7。
+提交、推送并验证 5D-6b Recent-form Domain Slice 离线控制器精确 SHA 的公开 CI；
+通过后才按 RQ-027 执行一次累计 7-call、领域剩余最多 4-call 的真实 GLM 领域切片。
+不得在公开 CI 前调用真实模型，也不进入第二厂商或 5D-7。
 
 ## Decisions Made
 
@@ -151,6 +152,8 @@ Phase 6.9 - 5D-6b（in progress: real adapter protocol slice passed; recent-form
 | 5D-6b 使用请求级工具别名表 | 智谱函数名不允许点号，而 RiftCoach 内部使用 `knowledge.search`；Adapter 编解码隔离厂商约束，不污染 Manifest 与 ToolRuntime |
 | GLM 作为首个生产 Adapter，不是最终厂商锁定 | 先用一套真实实现证明 Provider-neutral 边界；DeepSeek/Qwen 等只在同任务同评测决策门打开后比较，不能把适配正确性与模型优劣混成一个变量 |
 | Adapter Protocol Slice 复用现有 AgentLoop 并在 Provider 边界计数 | 避免 raw 微探针绕过生产 Adapter，也避免另写两轮循环；结构化直调与 Agent 两轮共享精确 3-call 预算，第 4 次在出网前拒绝 |
+| Recent-form Domain Slice 复读历史证据并共享剩余预算 | 已用 3-call 协议结果必须严格复读并哈希；Agent 与 Harness 共用剩余 4-call 的 pre-I/O 预算，不能把累计 7 次重新解释为额外 7 次 |
+| 领域准入与 Prompt 质量分开 | 本切片只证明真实领域控制流可由 Provider 完成；多案例工具选择、事实、引用、注入、质量、延迟与成本属于 5D-7，不在单样例上临场调 Prompt |
 
 ## Errors Encountered
 
@@ -229,3 +232,5 @@ Phase 6.9 - 5D-6b（in progress: real adapter protocol slice passed; recent-form
 | 5D-6b Adapter protocol runner 从 `app.evaluation.__init__` 重导出导致全量测试循环导入 | 1 | 聚焦测试通过但全量收集揭示 `evaluation -> agent -> skills -> harness -> evaluation`；移除门面重导出，编排型 runner 只从具体模块导入，并把全量测试作为必过门禁 |
 | 5D-6b canonical 收口复读沿用不存在的旧文档名称和 PowerShell 通配写法 | 1 | 已读取的 execution state 有效，缺失路径无写入；用 `rg --files docs` 与 planning 文件清单定位 `requirements_change_log.md`、`roadmap.md`、`roadmap_v1_3_amendment.md`、`architecture_capability_matrix.md`，后续只访问真实路径 |
 | 5D-6b 活动计划 findings/progress 追加补丁错误假设两文件共享同一尾部上下文 | 1 | `apply_patch` 原子拒绝且没有半写入；分别读取真实尾部并拆成两个追加块，功能与 canonical 状态不受影响 |
+| 5D-6b 领域状态追加补丁错误假设路线历史尾句，工作树安全补丁又错误假设设计列表措辞 | 2 | 两次 `apply_patch` 均原子拒绝且无半写入；先读取各文件真实尾部/匹配行，再把代码测试、路线历史和教学文档拆开更新 |
+| 5D-6b 提交前安全扫描再次把复杂引号正则放入 PowerShell 字符串 | 1 | 只读批次在解析阶段失败，无暂存或文件修改；改为多个简单固定字符串扫描，禁止在 PowerShell 命令参数中内嵌混合单双引号密钥正则 |

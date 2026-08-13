@@ -406,6 +406,30 @@
   先解决原定累计 7-call 上限与已用 3 calls 的核算，再决定真实领域执行。不进入第二
   Provider 或 5D-7。
 
+### 2026-08-13：5D-6b Recent-form Domain Slice 离线控制器
+
+- `DESIGNED`：领域准入与协议准入、Prompt 质量评测分层；本切片只验证同一生产
+  Provider 能否进入真实 recent-form 控制流，不用单个样例选择模型或临场调整 Prompt。
+- `BUDGET`：严格复读并哈希已准入的 `zhipu_adapter_slice.json`，确认历史调用精确为
+  3、Provider/model 一致；AgentLoop 与 Harness 的 `llm.chat` 共用剩余
+  `ExternalCallBudget(max_calls=4)`，累计仍为 7，第 5 个领域调用在底层 Provider 前拒绝。
+- `IMPLEMENTED-OFFLINE`：匿名 fixture 经过真实 SkillCatalog、Deterministic Router、
+  ExecutionBoundary、ContextBuilder、AgentLoop、本地 `knowledge.search`、唯一
+  ReviewHarness 和 typed output；happy path 为 Agent 2 calls + Evaluation 1 call，
+  第 4 call 只允许一次 Evaluation 格式 repair。
+- `FAIL-CLOSED`：准入专用 SDK 自动重试为 0，Harness `llm.chat` 为单次尝试、无缓存、
+  无 fallback；需要 revision 后再评测会耗尽预算并失败关闭，不能作为领域准入成功。
+- `SANITIZED`：真实 CLI 要求显式确认与精确累计 `max_calls=7`，只允许批准结果目录并
+  要求干净已提交的工作树、拒绝覆盖既有结果；公开 typed report 不保存 Prompt、模型
+  正文、Tool Observation、原始 request ID、异常、临时 Artifact 或 API Key。
+- `VERIFIED-OFFLINE`：聚焦回归 `23 passed`；相邻纵向回归
+  `141 passed, 29 subtests passed`；全量回归 `430 passed, 103 subtests passed`；两套
+  RAG 门禁、compileall、Harness SDK/敏感文件边界和 dry-run 全部通过。仓库中没有真实
+  recent-form 结果文件，未调用 GLM。
+- `CURRENT`：5D-6b 仍进行中；唯一下一步是提交、推送并验证离线控制器精确 SHA 的
+  公开 CI，通过后才按 RQ-027 执行一次剩余最多 4-call 的真实领域切片。不得进入第二
+  Provider 或 5D-7。
+
 ## 当前不变的宏观路线
 
 ```text
