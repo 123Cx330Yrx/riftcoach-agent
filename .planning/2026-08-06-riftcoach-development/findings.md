@@ -748,3 +748,6 @@
 - Offline success proves the composition and failure boundaries, not real GLM domain admission or
   report quality. Public CI for the exact controller SHA must pass before the one authorized real
   domain slice; multi-case Prompt/Context quality remains 5D-7.
+- Controller commit `d51d8fa9da13ca16f47747260a1eca74c1ffdd76` passed GitHub Actions
+  run `31657764638`, including full pytest, both RAG gates, compileall, Harness SDK/tracked-data
+  boundaries and dry-run. CI had no local environment file and made no real Provider call.

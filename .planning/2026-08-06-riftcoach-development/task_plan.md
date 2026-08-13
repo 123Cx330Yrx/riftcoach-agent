@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.9 - 5D-6b（in progress: recent-form domain controller verified offline; public CI then one bounded real domain run next）
+Phase 6.9 - 5D-6b（in progress: recent-form controller public-CI verified; one bounded real domain run next）
 
 ## Phases
 
@@ -94,9 +94,9 @@ Phase 6.9 - 5D-6b（in progress: recent-form domain controller verified offline;
 
 ## Next Step
 
-提交、推送并验证 5D-6b Recent-form Domain Slice 离线控制器精确 SHA 的公开 CI；
-通过后才按 RQ-027 执行一次累计 7-call、领域剩余最多 4-call 的真实 GLM 领域切片。
-不得在公开 CI 前调用真实模型，也不进入第二厂商或 5D-7。
+按 RQ-027 执行一次 5D-6b Recent-form Domain Slice 真实 GLM 运行：必须使用公开 CI
+成功控制器、累计 7-call、领域剩余最多 4-call 的硬预算并原样保存脱敏结果。本离线批次
+停止在真实调用之前，不进入第二厂商或 5D-7。
 
 ## Decisions Made
 

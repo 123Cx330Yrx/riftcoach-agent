@@ -116,7 +116,8 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - Recent-form Domain Slice 离线控制器已组合真实 Catalog/Router/Context、AgentLoop、
   本地 RAG、唯一 ReviewHarness 和 typed output；它严格复读上一轮 3-call 结果，并让
   Agent 与 Harness 共用剩余 4 calls。该证据仍来自 Fake Provider，真实领域运行只能在
-  控制器公开 CI 通过后执行一次；
+  控制器公开 CI 通过后执行一次；控制器 SHA `d51d8fa` 的 run `31657764638` 已通过，
+  因此当前下一门禁是该单次受控真实运行；
 - GLM 是首个真实基准 Adapter，不是永久模型选择；DeepSeek、Qwen 等只在同任务同评测
   决策门打开后比较，不能因发布热度直接替换或一次接入多家；
 - 该方案由 ADR-0011 接受；当前仍处于 5D-6b，不等于整个 5D、LangGraph 或

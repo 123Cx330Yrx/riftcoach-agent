@@ -430,6 +430,18 @@
   公开 CI，通过后才按 RQ-027 执行一次剩余最多 4-call 的真实领域切片。不得进入第二
   Provider 或 5D-7。
 
+### 2026-08-13：5D-6b Recent-form Domain Slice 公开控制器
+
+- `PUBLIC-VERIFIED`：领域控制器提交
+  `d51d8fa9da13ca16f47747260a1eca74c1ffdd76` 已推送；GitHub Actions run
+  `31657764638` 对该精确 SHA 全部通过。
+- `CI-SCOPE`：公开门禁包含全量 pytest、RAG development/independent holdout、
+  compileall、Harness SDK boundary、tracked secret/run-data 和 Harness dry-run；CI 没有
+  本地 `.env`，未调用真实 Provider。
+- `CURRENT`：离线控制器现已公开可复现，5D-6b 仍进行中；唯一下一步为按 RQ-027
+  执行一次累计 7-call、领域剩余最多 4-call 的真实 GLM recent-form 切片并原样保存
+  脱敏结果。本离线批次不得直接继续该调用，也不得进入第二 Provider 或 5D-7。
+
 ## 当前不变的宏观路线
 
 ```text

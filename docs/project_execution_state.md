@@ -21,9 +21,9 @@ blocked_before: "5D-7"
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6a 已完成；
   5D-6b 已完成低层 P1-P5、生产 Adapter 离线映射、真实 Adapter Protocol Slice 和
   Recent-form Domain Slice 离线控制器
-- 唯一下一步：提交、推送并验证 5D-6b Recent-form Domain Slice 离线控制器精确 SHA
-  的公开 CI；通过后才按 RQ-027 执行一次累计 7-call、领域剩余最多 4-call 的真实 GLM
-  领域切片。本批不执行真实领域调用、第二 Provider 或 5D-7
+- 唯一下一步：按 RQ-027 执行一次 5D-6b Recent-form Domain Slice 真实 GLM 运行；
+  必须使用公开 CI 成功控制器、累计 7-call、领域剩余最多 4-call 的硬预算并原样保存
+  脱敏结果。本批不执行该真实调用、第二 Provider 或 5D-7
 - 禁止越过：5D-6b 完成前不得实现第二 Provider、完成 Prompt E2E Evaluation、进入
   5D-7 或统一 AgentRuntime；离线 Adapter 映射不等于真实 Adapter 或领域 Skill 准入
 
@@ -49,7 +49,7 @@ blocked_before: "5D-7"
 | 5D-4 Evidence-Aware Agent Draft Preparation | AgentLoop + knowledge.search 生成 draft 与 KnowledgeEvidence | 已完成 | 共享 evidence converter、`SkillAgentDraftPreparer`、两个真实 Skill + Fake Provider + 真实 `knowledge.search`，成功/拒答/去重/冲突/失败与停止边界测试 |
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
-| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（P1-P5 与真实 3-call Adapter 协议切片已通过；Recent-form Domain Slice 离线控制器已完成，真实领域运行待公开 CI 后执行） | 最终微探针在公开 SHA `6a15a00` 上 5/5 通过；生产协议切片在公开 CI 成功 SHA `f1d171d` 上精确使用 3/3 calls；领域控制器复用真实 Skill/RAG/AgentLoop/Harness，严格复读历史 3-call 证据并以共享预算限制剩余 4 calls，Fake Provider happy path 为 3 calls，一次 Evaluation repair 为第 4 call，后续再评测在出网前拒绝；这仍不等于真实领域 Skill、报告质量或最终模型选型 |
+| 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 进行中（P1-P5 与真实 3-call Adapter 协议切片已通过；Recent-form Domain Slice 离线控制器公开 CI 已通过，真实领域运行待执行） | 最终微探针在公开 SHA `6a15a00` 上 5/5 通过；生产协议切片在公开 CI 成功 SHA `f1d171d` 上精确使用 3/3 calls；领域控制器复用真实 Skill/RAG/AgentLoop/Harness，严格复读历史 3-call 证据并以共享预算限制剩余 4 calls，Fake Provider happy path 为 3 calls，一次 Evaluation repair 为第 4 call，后续再评测在出网前拒绝；这仍不等于真实领域 Skill、报告质量或最终模型选型 |
 | 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 未开始 | 尚无新数据集或结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
@@ -171,6 +171,9 @@ blocked_before: "5D-7"
   `141 passed, 29 subtests passed`，完整回归为 `430 passed, 103 subtests passed`；两套
   RAG 门禁、compileall、Harness SDK/敏感文件边界和 dry-run 均通过。所有领域证据仍为
   Fake Provider 离线证据，仓库中尚无真实领域结果文件。
+- 领域控制器提交 `d51d8fa9da13ca16f47747260a1eca74c1ffdd76` 已推送到
+  `origin/main`；GitHub Actions run `31657764638` 对该精确 SHA 的全测试、两套 RAG、
+  compileall、Harness SDK/敏感文件边界和 dry-run 全部通过，CI 未调用真实 Provider。
 
 当前不能声称：
 
@@ -196,7 +199,7 @@ blocked_before: "5D-7"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6a；5D-6b 已完成 P1-P5、真实 Adapter 最小协议切片和领域准入离线控制器，下一步为提交/公开 CI 后一次受控真实领域运行 | 阶段 5、整个 5D、真实领域 Skill 或报告质量准入已完成 |
 | 项目理解 | 已区分 Provider 协议准入、领域控制流准入和多案例质量评测；共享 pre-I/O 预算必须同时覆盖 Agent 与 Harness，Skill/Agent 不拥有发布权 | Fake Provider 纵向切片就等于真实 GLM 领域准入、Prompt 质量或最终模型选型 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5D-6b 协议控制器已进入 `main` 提交 `f1d171d`；GitHub Actions run `31625669630` 对精确 SHA `f1d171d5591a511f9d6a9788a1bc8068172b0d51` 全部通过；真实 3-call 脱敏结果进入本次证据提交，当前仍没有正式网页部署 | 最小协议切片、CI 和一次真实成功就等于完整 GLM Agent、领域质量准入、最终厂商选型或已有可运行 Web Agent |
+| GitHub/部署 | 5D-6b 领域控制器已进入 `main` 提交 `d51d8fa`；GitHub Actions run `31657764638` 对精确 SHA `d51d8fa9da13ca16f47747260a1eca74c1ffdd76` 全部通过；当前仍没有真实领域结果或正式网页部署 | 离线领域控制器与公开 CI 就等于真实 GLM 领域准入、报告质量准入、最终厂商选型或已有可运行 Web Agent |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

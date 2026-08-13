@@ -660,3 +660,9 @@
 - 本批未读取 API Key、未创建真实客户端、未调用 GLM，且未生成
   `zhipu_recent_form_slice.json`。唯一下一步为提交/推送/验证精确公开 CI；随后才按
   RQ-027 执行一次有界真实领域切片，不进入第二 Provider 或 5D-7。
+- 离线控制器提交 `d51d8fa9da13ca16f47747260a1eca74c1ffdd76` 已推送；GitHub
+  Actions run `31657764638` 对精确 SHA 的全测试、两套 RAG、compileall、Harness SDK/
+  敏感文件边界和 dry-run 全部通过，CI 未调用真实 Provider。
+- 按实施计划，本离线批次停止在真实调用之前。唯一下一步收紧为按 RQ-027 运行一次
+  累计 7-call、领域剩余最多 4-call 的真实 GLM recent-form 切片并原样保存脱敏结果；
+  不进入第二 Provider 或 5D-7。
