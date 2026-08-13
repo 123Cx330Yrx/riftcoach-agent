@@ -684,3 +684,28 @@
   `5D-7 Prompt/Context & Domain E2E Evaluation`，并不表示领域能力或整个 5D 已完成。
 - 真实失败结果与 ADR-0012 提交 `34ea5c3` 已推送；GitHub Actions run
   `31659371226` 对精确 SHA `34ea5c32e5c124207fcba7b0521a4e5a62af6845` 全部通过。
+
+### 2026-08-13：5D-7 Batch A 分层领域评测
+
+- 按 canonical 下一步进入 5D-7，没有重跑 5D-6b、调 Prompt、调用真实 Provider 或
+  接入第二 Provider；起始治理通过，HEAD/origin 均为 `88f4e19`，工作树干净。
+- 源码审计确认安全错误来源丢失发生在 draft-preparation 接缝：失败
+  `AgentRunResult.error_code` 被异常边界压缩，上层只看到笼统草稿准备失败。
+- 比较单样例调 Prompt、只用 Judge 看最终报告、分层领域评测三种方案；ADR-0013
+  采用第三种，并把 development/held-out 生命周期、四态 layer verdict、白名单失败码和
+  可空资源语义写入设计。
+- 新增严格 `DomainEvaluationDataset`、`DomainCandidate`、`DomainEvaluationResult`，
+  分层检查 Provider/Agent、Tool、Evidence、Evaluation、Terminal 与 Resources；Candidate
+  Schema 禁止 Prompt、模型正文、思维链、原始 request ID、异常或 Key。
+- development v1 有 10 个离线观测，包含 5D-6b 真实脱敏失败、发布安全与资源边界；
+  任务结果和主失败分类均为 10/10，故意不安全发布为 1/10，外部 Provider 调用为 0。该成绩只证明
+  评测器对已知观测的回归，不是模型质量。
+- TDD 红灯先命中缺少 `app.evaluation.domain_e2e`，实现后只剩冻结基线缺失；生成离线
+  基线后聚焦合同测试为 `11 passed`，相邻比例回归为 `47 passed, 4 subtests passed`，
+  compileall 和临时输出复跑通过。
+- 最终全量回归为 `441 passed, 103 subtests passed`；RAG development 与 independent
+  holdout 的 Recall/MRR/nDCG 均为 `1.0`，holdout abstention/citation support 均为
+  `1.0`；Harness SDK、tracked secret/run-data、dry-run、候选脱敏扫描、compileall、
+  governance 和 diff check 均通过。
+- 当前 5D-7 仍进行中。唯一下一步为 Batch B Prompt/Context 评测身份和可重复实验入口；
+  不调 Prompt、不运行真实 Provider、不创建 held-out、不接第二 Provider。

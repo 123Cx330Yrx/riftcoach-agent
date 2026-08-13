@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.10 - 5D-7（in progress: use the rejected real domain slice to design Prompt/Context and domain E2E evaluation）
+Phase 6.10 - 5D-7（in progress: Batch A layered evaluation baseline complete; Batch B Prompt/Context experiment identity next）
 
 ## Phases
 
@@ -88,17 +88,18 @@ Phase 6.10 - 5D-7（in progress: use the rejected real domain slice to design Pr
   3/3 passed 并 admitted；Recent-form Domain Slice 真实运行只执行一次，在一个领域
   call 后没有形成统一 `ChatResponse`、工具证据或 Evaluation，领域 `admitted=false`，
   Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider。
-- `5D-7` 进行中：先以该真实 Bad Case 冻结 Prompt/Context 与领域 E2E 评测问题、
-  数据合同和基线，不重跑 5D-6b，也不临场调 Prompt 追求通过。
+- `5D-7` 进行中：Batch A 已以真实 Bad Case 冻结分层 Dataset/Candidate/Result 合同、
+  development/held-out 生命周期和 10 案例离线基线；Batch B 将冻结 Prompt/Context
+  实验身份，不重跑 5D-6b，也不临场调 Prompt 追求通过。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-进入 5D-7 Prompt/Context & Domain E2E Evaluation：先根据 ADR-0012 的真实领域失败
-设计评测问题、案例分层、失败分类、可观测性合同和无真实调用的基线门禁；在同任务
-评测冻结前不接入第二 Provider，也不进入 5D exit review 或 5E。
+继续 5D-7 Batch B：冻结 Prompt/Context 评测身份和可重复实验入口，让每个后续候选
+绑定相同 Skill、Context 与 Evaluation 合同；本批不调 Prompt、不运行真实 Provider、
+不创建 held-out、不接第二 Provider，也不进入 5D exit review 或 5E。
 
 ## Decisions Made
 
@@ -157,6 +158,8 @@ Phase 6.10 - 5D-7（in progress: use the rejected real domain slice to design Pr
 | Recent-form Domain Slice 复读历史证据并共享剩余预算 | 已用 3-call 协议结果必须严格复读并哈希；Agent 与 Harness 共用剩余 4-call 的 pre-I/O 预算，不能把累计 7 次重新解释为额外 7 次 |
 | 领域准入与 Prompt 质量分开 | 本切片只证明真实领域控制流可由 Provider 完成；多案例工具选择、事实、引用、注入、质量、延迟与成本属于 5D-7，不在单样例上临场调 Prompt |
 | 5D-6b 按部分采用收尾 | 真实准入门的合法输出可以是拒绝；低层协议通过不能覆盖领域失败，领域失败也不能抹除协议证据。保留确定性 fallback，不重跑或调 Prompt 追绿，ADR-0012 将 Bad Case 交给 5D-7 |
+| 5D-7 采用分层领域评测 | 最终文本无法证明工具、证据与发布路径；ADR-0013 用 development/held-out 生命周期和 Provider/Agent、Tool、Evidence、Evaluation、Terminal、Resources 分层观测，为后续 Prompt/Provider 提供同一把尺子 |
+| 离线分类基线不等于模型质量 | 10 个可控观测用于验收评测器，故意保留 unsafe-publication 和资源超限负例；外部调用为 0，不能宣称 Prompt、真实 Provider 或注入防护已准入 |
 
 ## Errors Encountered
 
@@ -174,6 +177,10 @@ Phase 6.10 - 5D-7（in progress: use the rejected real domain slice to design Pr
 | 5D-6b 宽回归命令猜测了不存在的 `tests/test_provider_structured.py` | 1 | pytest 未收集任何测试；先列出真实测试路径，再改跑 `test_structured_output.py` 与实际评测测试，获得有效回归证据 |
 | 5D-6b 受控诊断提交前 cached diff 发现两份新设计文档 EOF 多余空行 | 1 | 检查阻止 commit；用小补丁删除尾部空白，并重新暂存后独立复跑 cached diff check |
 | P1 改为精确哨兵校验后，P4 失败案例的旧夹具仍返回泛化 `ok` | 1 | 严格边界正确让案例提前停在 P1；只把该夹具改为精确哨兵，保留 P4 才是目标失败点并重跑完整回归 |
+| 5D-7 入口审计猜测了不存在的 `scripts/evaluate_skill_router.py` | 1 | 只读并行命令提前停止且未改代码；先用 `rg --files` 定位为 `scripts/evaluate_skill_routing.py`，后续按真实路径读取 |
+| 5D-7 首次红灯测试使用当前 PATH 的 Hermes `python`，该环境没有 pytest | 1 | 未安装或修改全局环境；确认仓库 `.venv` 含 pytest 9.1.1，后续测试显式使用 `.venv\\Scripts\\python.exe` |
+| 5D-7 最终验证猜测 CI 文件为 `.github/workflows/ci.yml` | 1 | 只读并行命令提前停止且未改代码；用 `rg --files .github scripts` 定位真实文件为 `.github/workflows/tests.yml`，后续复用其精确门禁 |
+| 5D-7 暂存快照检查发现 ADR-0013 与领域评测 CLI 多余 EOF 空行 | 1 | cached diff check 阻止提交；删除两个多余空行并重新暂存，只有 cached check 成功后才提交 |
 | 5D-6b P1 诊断恢复时猜错 ADR-0011 文件名 | 1 | 只读命令未改文件；先用 `rg --files docs/adr` 列出真实路径，再读取 `0011-compose-skill-agent-loop-through-harness-preparation.md` |
 | 原始 5C-1 至 5C-6 未持久化，文档误写 5C 完成 | 1 | 恢复完整账本，建立根级约束和活动计划，并修正所有冲突状态 |
 | 旧规划目录无 active pointer 且停在 2026-08-01 | 1 | 新建持续开发计划并写入 `.planning/.active_plan` |

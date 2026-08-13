@@ -465,6 +465,28 @@
   Actions run `31659371226` 对精确 SHA
   `34ea5c32e5c124207fcba7b0521a4e5a62af6845` 全部通过。
 
+### 2026-08-13：5D-7 Batch A 分层评测合同与离线基线
+
+- `ACCEPTED`：ADR-0013 在“单样例调 Prompt”“只看最终文本的 Judge”和“分层领域
+  评测”之间选择第三种；Provider/Agent、Tool、Evidence、Evaluation、Terminal 与
+  Resources 分层观察，失败使用安全白名单枚举，未知值不转换成 0。
+- `IMPLEMENTED`：新增严格 Dataset、Candidate 与 Result Pydantic 合同，候选只允许
+  保存调用/响应计数、Agent/Tool/Evidence/终态、安全错误码和可空资源指标；Prompt、
+  模型正文、思维链、原始 request ID、异常和 Key 都不能进入候选 Schema。
+- `LIFECYCLE`：development 可以用于评测器开发但必须记录污染；held-out 必须
+  `calibration_excluded=true`、无开发污染，并在 CLI 显式确认规则冻结。Batch A 没有
+  创建或运行 held-out。
+- `OFFLINE-EVIDENCE`：10 个 development 观测包含成功控制、5D-6b 真实脱敏 Bad Case、
+  缺工具、工具执行失败、缺证据、坏引用、注入失败、质量门禁失败和故意不安全发布；
+  以及资源超限；任务结果与主失败分类均为 10/10，unsafe-publication 为 1/10，外部
+  Provider 调用为 0。
+- `LIMITATION`：10/10 是评测器对已知离线观测的分类回归，不是 Prompt、真实 Provider、
+  领域报告质量、泛化能力或模型级注入防护成绩；故意不安全发布也不是生产 Harness
+  的真实事故。
+- `CURRENT`：5D-7 保持进行中。唯一下一步为 Batch B：冻结 Prompt/Context 评测身份
+  和可重复实验入口；不调 Prompt、不运行真实 Provider、不接第二 Provider，不进入
+  5D exit review 或 5E。
+
 ## 当前不变的宏观路线
 
 ```text

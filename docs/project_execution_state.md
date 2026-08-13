@@ -20,9 +20,9 @@ blocked_before: "5D-exit-review"
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6b 已完成；
   5D-6b 的最终结论是 Adapter 最小协议准入、GLM recent-form 领域能力不准入
-- 唯一下一步：进入 5D-7 Prompt/Context & Domain E2E Evaluation，先以 ADR-0012
-  的真实领域 Bad Case 冻结评测问题、数据合同和基线，不重跑 5D-6b，不立即接入第二
-  Provider
+- 唯一下一步：继续 5D-7 Batch B，冻结 Prompt/Context 评测身份和可重复实验入口，
+  让后续候选明确绑定同一 Skill、Context 与 Evaluation 合同；不调 Prompt、不调用真实
+  Provider，也不立即接入第二 Provider
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；第二
   Provider 必须等待同任务评测设计和新 ADR，不能用发布热度替代准入证据
 
@@ -49,7 +49,7 @@ blocked_before: "5D-exit-review"
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测 GLM，并按同任务证据决定一个第二 Provider 候选 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（入口待设计） | 已有首个真实 Bad Case：请求已计费但无统一响应进入 Agent，错误被上层压缩；尚无 5D-7 数据集或基线结果 |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（Batch A 已完成） | ADR-0013、严格 Dataset/Candidate/Result 合同、10 个 development 离线案例与基线；任务结果和主失败分类均为 10/10，故意保留 1 个 unsafe-publication 和 1 个资源超限负例，外部调用为 0；尚无 held-out、Prompt 实验或真实 Provider 多案例质量结果 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界
@@ -206,8 +206,8 @@ blocked_before: "5D-exit-review"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；真实结果准入 Adapter 最小协议、拒绝 GLM recent-form 领域能力，当前进入 5D-7 | 阶段 5、整个 5D、真实领域 Skill 或报告质量准入已完成 |
-| 项目理解 | 已区分 Provider 协议准入、领域控制流准入和多案例质量评测；理解计费请求不等于统一响应，也理解 fallback 是发布安全边界 | 单个真实失败已经证明 GLM 整体不可用、Prompt 必然错误或第二 Provider 必须立即接入 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 Batch A 已建立分层领域评测合同、生命周期门禁和 10 案例离线 development 基线 | 阶段 5、整个 5D、Prompt/Context 实验、真实领域 Skill 或报告质量准入已完成 |
+| 项目理解 | 已区分 Provider 协议准入、领域控制流准入和多案例质量评测；理解最终文本不是完整 Agent 证据，也理解 fail/unknown/not-applicable、development/held-out 与故障场景正确降级的区别 | 离线分类 10/10 等于真实模型质量 100%、1/10 unsafe publication 是生产事故，或单个真实失败已经证明 GLM 整体不可用 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
 | GitHub/部署 | 5D-6b 真实失败证据与 ADR-0012 已在提交 `34ea5c3` 公开；GitHub Actions run `31659371226` 对精确 SHA `34ea5c32e5c124207fcba7b0521a4e5a62af6845` 全部通过；正式网页仍未部署 | 公开失败证据就等于真实领域能力可用、报告质量准入、最终厂商选型或已有可运行 Web Agent |
 
@@ -333,7 +333,13 @@ Adapter 协议切片通过；真实 recent-form 领域切片只尝试一次，�
 统一 `ChatResponse`，没有工具证据或 Evaluation，并安全降级。结论是最小协议能力
 准入、领域能力不准入，而不是 GLM 整体成功或整体失败。
 
-当前检查点为 `5D-7 Prompt/Context & Domain E2E Evaluation`。第一步先把上述真实
-Bad Case 变成可复现的失败分类、数据合同和评测基线，覆盖工具选择、事实/引用、注入、
-质量、延迟、成本与错误归因；不重跑 5D-6b，不立即接入第二 Provider，也不进入
+当前检查点为 `5D-7 Prompt/Context & Domain E2E Evaluation`。Batch A 已把上述真实
+Bad Case 纳入 development，并建立 Provider/Agent、Tool、Evidence、Evaluation、
+Terminal 与 Resources 的严格分层合同；离线基线 10 个案例的任务结果和主失败分类均为
+10/10，`unsafe_publication_rate=1/10` 来自故意构造的发布门禁负例，另有 1 个资源超限
+负例，外部调用为 0。该结果
+只证明评测器能够识别已知离线观测，不证明 Prompt、真实模型或未知注入已通过。
+
+唯一下一步是 5D-7 Batch B：冻结 Prompt/Context 的评测身份与可重复实验入口；不调
+Prompt、不运行真实 Provider、不创建 held-out、不接入第二 Provider，也不进入
 5D exit review 或 5E。

@@ -120,9 +120,16 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   ToolCall、证据、Evaluation 或质量分，Harness 安全降级；
 - ADR-0012 分层裁决：Zhipu 最小协议准入，GLM-5.2 recent-form 领域能力不准入；不
   重跑或临场调 Prompt，错误来源丢失与多案例领域质量进入 5D-7；
+- ADR-0013 决定 5D-7 使用分层领域评测：Dataset 冻结 Agent/Tool/Evidence/
+  Evaluation/Terminal/Resources 期望，Candidate 只保存脱敏观测；development 可用于
+  评测器开发，held-out 必须排除校准并显式确认规则冻结；未知延迟、Token 和成本保持
+  `null`，不能伪造为 0；
+- 5D-7 Batch A 的 10 案例离线基线只证明评测器能识别已知控制观测、故意构造的不安全
+  发布负例，不是 Prompt、真实 Provider、报告质量或注入防护的准入结果；
 - GLM 是首个真实基准 Adapter，不是永久模型选择；DeepSeek、Qwen 等只在同任务同评测
   决策门打开后比较，不能因发布热度直接替换或一次接入多家；
-- 该组合方案由 ADR-0011 接受，分层准入结论由 ADR-0012 接受；当前处于 5D-7，
+- 该组合方案由 ADR-0011 接受，分层准入结论由 ADR-0012 接受，领域评测方案由
+  ADR-0013 接受；当前处于 5D-7，
   不等于整个 5D、LangGraph 或
   Multi-Agent 已实现。
 

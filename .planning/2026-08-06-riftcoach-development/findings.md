@@ -771,3 +771,20 @@
 - ADR-0012 closes 5D-6b with partial adoption: admit the minimum Zhipu structured/tool protocol,
   reject GLM-5.2 recent-form domain capability, retain deterministic fallback, and defer any second
   Provider until a same-task 5D-7 evaluation contract exists.
+# 2026-08-13：5D-7 入口审计
+
+- 5D-6b 的真实领域失败暴露了一个精确的可观测性接缝：`AgentLoop` 以
+  `AgentRunResult(status=failed, stop_reason=provider_error, error_code=<safe code>)`
+  保留安全错误来源，但 `SkillAgentDraftPreparer` 随后只抛出
+  `AgentDraftPreparationError`；`_BoundAgentDraftPreparationStep` 只有在完整准备成功后
+  才保存 `agent_run`，并把该异常再次压缩为没有安全细节的
+  `SkillReviewExecutionError("agent draft preparation failed")`。因此领域 runner 最终只能
+  记录 `knowledge_round_trip_incomplete`，不能区分 Provider 响应规范化失败与后续工具链
+  缺失。
+- 5D-7 不能用重跑单个真实样例或调 Prompt 解决上述问题。先冻结分层评测合同：
+  Provider/Agent、Tool、Evidence、Evaluation、Terminal 分别观察，未知值保持未知，不能
+  伪造为 0 或通过；失败只保存白名单安全分类，不保存 Prompt、模型原文、request ID、
+  原始异常或密钥。
+- 评测方案比较结果：拒绝“复用单样例追绿”和“只用 Judge 看最终报告”；采用带
+  development/held-out 生命周期的分层领域评测。入口批次先用离线可控观测证明评测器
+  本身和失败分类，再考虑 Prompt 实验或第二 Provider。

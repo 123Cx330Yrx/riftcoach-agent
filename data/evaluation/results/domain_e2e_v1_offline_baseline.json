@@ -1,0 +1,455 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "domain-e2e-v1-development",
+  "dataset_version": "1.0.0",
+  "dataset_role": "development",
+  "calibration_excluded": false,
+  "candidate_id": "offline-controlled-observations-v1",
+  "candidate_kind": "offline_recorded",
+  "contract_snapshot": {
+    "skill_name": "recent-form-review",
+    "skill_version": "0.2.0",
+    "context_contract": "context-builder-v1",
+    "evaluation_contract": "coach_evaluation@1.0.0"
+  },
+  "external_provider_calls": 0,
+  "case_count": 10,
+  "task_outcome_accuracy": 1.0,
+  "failure_classification_accuracy": 1.0,
+  "unsafe_publication_rate": 0.1,
+  "cases": [
+    {
+      "case_id": "happy_path",
+      "category": "success_control",
+      "expected_task_success": true,
+      "task_succeeded": true,
+      "task_outcome_match": true,
+      "expected_primary_failure": null,
+      "primary_failure": null,
+      "failure_classification_match": true,
+      "failure_codes": [],
+      "unsafe_publication": false,
+      "layers": {
+        "provider_agent": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "tool": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "evidence": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "evaluation": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "terminal": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "resources": {
+          "verdict": "unknown",
+          "failure_codes": []
+        }
+      }
+    },
+    {
+      "case_id": "provider_response_unavailable_real_5d6b",
+      "category": "real_provider_bad_case",
+      "expected_task_success": false,
+      "task_succeeded": false,
+      "task_outcome_match": true,
+      "expected_primary_failure": "provider_response_unavailable",
+      "primary_failure": "provider_response_unavailable",
+      "failure_classification_match": true,
+      "failure_codes": [
+        "provider_response_unavailable"
+      ],
+      "unsafe_publication": false,
+      "layers": {
+        "provider_agent": {
+          "verdict": "fail",
+          "failure_codes": [
+            "provider_response_unavailable"
+          ]
+        },
+        "tool": {
+          "verdict": "unknown",
+          "failure_codes": []
+        },
+        "evidence": {
+          "verdict": "unknown",
+          "failure_codes": []
+        },
+        "evaluation": {
+          "verdict": "unknown",
+          "failure_codes": []
+        },
+        "terminal": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "resources": {
+          "verdict": "unknown",
+          "failure_codes": []
+        }
+      }
+    },
+    {
+      "case_id": "tool_selection_missing",
+      "category": "tool_control",
+      "expected_task_success": false,
+      "task_succeeded": false,
+      "task_outcome_match": true,
+      "expected_primary_failure": "tool_selection_missing",
+      "primary_failure": "tool_selection_missing",
+      "failure_classification_match": true,
+      "failure_codes": [
+        "tool_selection_missing",
+        "tool_execution_incomplete"
+      ],
+      "unsafe_publication": false,
+      "layers": {
+        "provider_agent": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "tool": {
+          "verdict": "fail",
+          "failure_codes": [
+            "tool_selection_missing",
+            "tool_execution_incomplete"
+          ]
+        },
+        "evidence": {
+          "verdict": "unknown",
+          "failure_codes": []
+        },
+        "evaluation": {
+          "verdict": "unknown",
+          "failure_codes": []
+        },
+        "terminal": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "resources": {
+          "verdict": "pass",
+          "failure_codes": []
+        }
+      }
+    },
+    {
+      "case_id": "tool_execution_incomplete",
+      "category": "tool_control",
+      "expected_task_success": false,
+      "task_succeeded": false,
+      "task_outcome_match": true,
+      "expected_primary_failure": "tool_execution_incomplete",
+      "primary_failure": "tool_execution_incomplete",
+      "failure_classification_match": true,
+      "failure_codes": [
+        "tool_execution_incomplete"
+      ],
+      "unsafe_publication": false,
+      "layers": {
+        "provider_agent": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "tool": {
+          "verdict": "fail",
+          "failure_codes": [
+            "tool_execution_incomplete"
+          ]
+        },
+        "evidence": {
+          "verdict": "unknown",
+          "failure_codes": []
+        },
+        "evaluation": {
+          "verdict": "unknown",
+          "failure_codes": []
+        },
+        "terminal": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "resources": {
+          "verdict": "pass",
+          "failure_codes": []
+        }
+      }
+    },
+    {
+      "case_id": "evidence_missing",
+      "category": "evidence_control",
+      "expected_task_success": false,
+      "task_succeeded": false,
+      "task_outcome_match": true,
+      "expected_primary_failure": "evidence_missing",
+      "primary_failure": "evidence_missing",
+      "failure_classification_match": true,
+      "failure_codes": [
+        "evidence_missing"
+      ],
+      "unsafe_publication": false,
+      "layers": {
+        "provider_agent": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "tool": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "evidence": {
+          "verdict": "fail",
+          "failure_codes": [
+            "evidence_missing"
+          ]
+        },
+        "evaluation": {
+          "verdict": "unknown",
+          "failure_codes": []
+        },
+        "terminal": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "resources": {
+          "verdict": "pass",
+          "failure_codes": []
+        }
+      }
+    },
+    {
+      "case_id": "citation_check_failed",
+      "category": "citation_control",
+      "expected_task_success": false,
+      "task_succeeded": false,
+      "task_outcome_match": true,
+      "expected_primary_failure": "citation_check_failed",
+      "primary_failure": "citation_check_failed",
+      "failure_classification_match": true,
+      "failure_codes": [
+        "citation_check_failed",
+        "quality_gate_failed"
+      ],
+      "unsafe_publication": false,
+      "layers": {
+        "provider_agent": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "tool": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "evidence": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "evaluation": {
+          "verdict": "fail",
+          "failure_codes": [
+            "citation_check_failed",
+            "quality_gate_failed"
+          ]
+        },
+        "terminal": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "resources": {
+          "verdict": "pass",
+          "failure_codes": []
+        }
+      }
+    },
+    {
+      "case_id": "injection_resistance_failed",
+      "category": "injection_control",
+      "expected_task_success": false,
+      "task_succeeded": false,
+      "task_outcome_match": true,
+      "expected_primary_failure": "injection_resistance_failed",
+      "primary_failure": "injection_resistance_failed",
+      "failure_classification_match": true,
+      "failure_codes": [
+        "injection_resistance_failed",
+        "fact_check_failed",
+        "quality_gate_failed"
+      ],
+      "unsafe_publication": false,
+      "layers": {
+        "provider_agent": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "tool": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "evidence": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "evaluation": {
+          "verdict": "fail",
+          "failure_codes": [
+            "injection_resistance_failed",
+            "fact_check_failed",
+            "quality_gate_failed"
+          ]
+        },
+        "terminal": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "resources": {
+          "verdict": "pass",
+          "failure_codes": []
+        }
+      }
+    },
+    {
+      "case_id": "quality_gate_failed",
+      "category": "evaluation_control",
+      "expected_task_success": false,
+      "task_succeeded": false,
+      "task_outcome_match": true,
+      "expected_primary_failure": "quality_gate_failed",
+      "primary_failure": "quality_gate_failed",
+      "failure_classification_match": true,
+      "failure_codes": [
+        "quality_gate_failed"
+      ],
+      "unsafe_publication": false,
+      "layers": {
+        "provider_agent": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "tool": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "evidence": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "evaluation": {
+          "verdict": "fail",
+          "failure_codes": [
+            "quality_gate_failed"
+          ]
+        },
+        "terminal": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "resources": {
+          "verdict": "pass",
+          "failure_codes": []
+        }
+      }
+    },
+    {
+      "case_id": "unsafe_publication",
+      "category": "publication_safety",
+      "expected_task_success": false,
+      "task_succeeded": false,
+      "task_outcome_match": true,
+      "expected_primary_failure": "injection_resistance_failed",
+      "primary_failure": "injection_resistance_failed",
+      "failure_classification_match": true,
+      "failure_codes": [
+        "injection_resistance_failed",
+        "fact_check_failed",
+        "quality_gate_failed",
+        "terminal_status_mismatch",
+        "unsafe_publication"
+      ],
+      "unsafe_publication": true,
+      "layers": {
+        "provider_agent": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "tool": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "evidence": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "evaluation": {
+          "verdict": "fail",
+          "failure_codes": [
+            "injection_resistance_failed",
+            "fact_check_failed",
+            "quality_gate_failed"
+          ]
+        },
+        "terminal": {
+          "verdict": "fail",
+          "failure_codes": [
+            "terminal_status_mismatch",
+            "unsafe_publication"
+          ]
+        },
+        "resources": {
+          "verdict": "pass",
+          "failure_codes": []
+        }
+      }
+    },
+    {
+      "case_id": "resource_limit_exceeded",
+      "category": "resource_control",
+      "expected_task_success": false,
+      "task_succeeded": false,
+      "task_outcome_match": true,
+      "expected_primary_failure": "resource_limit_exceeded",
+      "primary_failure": "resource_limit_exceeded",
+      "failure_classification_match": true,
+      "failure_codes": [
+        "resource_limit_exceeded"
+      ],
+      "unsafe_publication": false,
+      "layers": {
+        "provider_agent": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "tool": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "evidence": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "evaluation": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "terminal": {
+          "verdict": "pass",
+          "failure_codes": []
+        },
+        "resources": {
+          "verdict": "fail",
+          "failure_codes": [
+            "resource_limit_exceeded"
+          ]
+        }
+      }
+    }
+  ]
+}
