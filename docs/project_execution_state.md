@@ -198,8 +198,9 @@ blocked_before: "5D-exit-review"
 - Batch B 聚焦测试为 `20 passed`，相邻纵向回归为 `87 passed, 4 subtests passed`，
   完整回归为 `450 passed, 103 subtests passed`；两套 RAG、compileall、Harness SDK/
   tracked-data、dry-run、快照正文脱敏、治理和 diff check 均通过；
-- Domain E2E 1.1 基线与 admission 已从 CLI 临时输出逐字节复现，当前尚待提交、推送和
-  精确 SHA GitHub Actions 核验。
+- Domain E2E 1.1 基线与 admission 已从 CLI 临时输出逐字节复现；功能提交
+  `e56b00091ef2ab299af692e902945b8342fbc99e` 已推送，GitHub Actions run
+  `31690698734` 对该精确 SHA 全部通过。
 
 当前不能声称：
 
@@ -226,7 +227,7 @@ blocked_before: "5D-exit-review"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 Batch A-B 已建立分层领域评测、生命周期门禁、双层 Prompt/Context 身份和零调用 admission | 阶段 5、整个 5D、模型级 Prompt 实验、真实领域 Skill 或报告质量准入已完成 |
 | 项目理解 | 已区分 Provider 协议准入、领域控制流准入和多案例质量评测；理解最终文本不是完整 Agent 证据，并理解双层指纹只保证控制变量可复现，不评价 Prompt/模型好坏 | admission=true 等于真实模型准入、离线分类 10/10 等于真实质量 100%，或哈希快照已经彻底防住 Prompt Injection |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5D-7 Batch A 已在提交 `9f0d7d1` 公开并通过 run `31661582544`；Batch B 尚待本轮提交、推送和精确 SHA CI 核验；正式网页仍未部署 | 本地 Batch B 证据已经公开验证，或公开离线评测器等于 Prompt/真实领域能力、最终厂商选型或 Web Agent 可用 |
+| GitHub/部署 | 5D-7 Batch B 功能提交 `e56b00091ef2ab299af692e902945b8342fbc99e` 已公开，GitHub Actions run `31690698734` 对精确 SHA 全部通过；正式网页仍未部署 | 公开实验身份层等于 Prompt/真实领域能力、最终厂商选型或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

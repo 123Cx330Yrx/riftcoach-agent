@@ -742,3 +742,6 @@
 - 当前 5D-7 仍进行中；唯一下一步为 Batch C 入口设计与离线 TDD，以 Batch B admission
   作为所有可执行 development 候选的前置门，再验证工具、事实、引用和模型级注入。
   不直接运行真实 Provider、不创建/运行 held-out、不接第二 Provider、不进入 5E。
+- Batch B 功能提交 `e56b00091ef2ab299af692e902945b8342fbc99e` 已推送；GitHub
+  Actions run `31690698734` 对该精确 SHA 的全测试、两套 RAG、compileall、治理、
+  Harness SDK/tracked-data 和 dry-run 门禁全部通过，CI 未调用真实 Provider。
