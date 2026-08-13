@@ -763,3 +763,25 @@
   不立即创建/运行 held-out、不接第二 Provider、不进入 5D exit review 或 5E。
 - Batch C 功能提交 `06cf769be54c8062aeddcd8c36283306e63bfc9a` 已推送；GitHub
   Actions run `31705232946` 对精确 SHA 全部通过，CI 未调用真实 Provider。
+
+### 2026-08-13：5D-7 Batch D 入口设计
+
+- 按 canonical 唯一下一步恢复 AGENTS、执行状态、活动计划、需求账本、路线、修订和
+  能力矩阵；起始治理通过，HEAD/origin 均为 `2a83d6b`，工作树干净。
+- 源码审计确认 Batch C canary oracle 与生产 Evaluator 是两层：生产 1.0.0 没有注入
+  issue，Prompt 只含 fact pack/report，用户请求与实际知识证据没有提供给 Evaluator。
+- 比较生产关键词扫描、原地扩展 1.0.0、版本化安全评测 Profile 三种方案；采用第三种，
+  新增初学者设计与 ADR-0016，明确保留历史合同并后续实现 1.1.0。
+- 冻结 D1-D5 顺序：离线合同/阻断 TDD、新 snapshot/development、规则冻结后创建
+  held-out、第二 Provider 新 ADR、最后才做有硬预算的同任务真实比较。
+- 真实首轮上限被设计为每 Provider 3 场、每场最多 4 calls、领域最多 12 calls、
+  `max_revisions=0`、SDK retry 为 0；第二 Provider 另有最多 3-call Adapter 协议门。
+- 本入口批没有改生产 Schema/Prompt/Harness，没有创建或运行 held-out，没有读取 Key、
+  创建真实客户端或调用模型，也没有选择第二 Provider。
+- 唯一下一步更新为 5D-7 Batch D 的 D1 离线 TDD；设计通过不能写成注入问题已经修复。
+- 聚焦治理/历史兼容回归为 `16 passed`；完整回归为
+  `455 passed, 103 subtests passed`。RAG development 与 independent holdout 的
+  Recall/MRR/nDCG 均为 `1.0`，holdout abstention/citation support 均为 `1.0`；
+  compileall、治理、tracked secret/run-data、diff check 和 Harness dry-run 均通过。
+- 陈旧状态扫描发现路线历史中 Batch C 的“唯一下一步”仍标为 `CURRENT`；保留原始历史
+  内容，只把标签更正为 `AT-CHECKPOINT`，避免历史状态冒充当前 canonical 下一步。

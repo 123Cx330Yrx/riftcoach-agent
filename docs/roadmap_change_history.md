@@ -557,10 +557,30 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `VERIFIED-LOCAL`：聚焦/相邻回归 `25 passed`，完整回归
   `455 passed, 103 subtests passed`；两套 RAG、compileall、Harness SDK/tracked-data、
   artifact 脱敏、治理、diff check 和 Harness dry-run 通过。
-- `CURRENT`：5D-7 仍进行中。唯一下一步为 Batch D 入口设计，先裁决 injection
+- `AT-CHECKPOINT`：5D-7 当时仍进行中。唯一下一步为 Batch D 入口设计，先裁决 injection
   Evaluation 合同、held-out、有限真实运行和第二 Provider 决策门；不直接调用真实
   Provider、不立即创建/运行 held-out、不接第二 Provider、不进入 5E。
 - `PUBLIC-VERIFIED`：Batch C 功能提交
   `06cf769be54c8062aeddcd8c36283306e63bfc9a` 已推送；GitHub Actions run
   `31705232946` 对该精确 SHA 的全测试、两套 RAG、compileall、治理、Harness SDK/
   tracked-data 和 dry-run 门禁全部通过，CI 未调用真实 Provider。
+
+### 2026-08-13：5D-7 Batch D 注入评测与真实 Provider 门设计
+
+- `AUDITED`：`EvaluationResponseModel` 1.0.0 没有注入类别；当前
+  `ChatEvaluationAdapter` 只把 fact pack 与报告送入 Prompt，Evaluator 没看到用户原话、
+  实际 KnowledgeEvidence 或 Context 信任标签。只增加枚举无法提供判断证据。
+- `REJECTED`：不在生产代码中扫描已知 canary/关键词，因为这会硬编码 development
+  答案；也不原地修改 `coach_evaluation@1.0.0`，避免破坏 Batch A-C 历史身份。
+- `ACCEPTED`：ADR-0016 决定保留 1.0.0，后续以 1.1.0 接收最小 fact/report、data-only
+  用户请求与 bounded KnowledgeEvidence，并把 `prompt_injection` 作为不可修订的
+  blocking issue；canary 继续只作为实验 oracle。
+- `LIFECYCLE`：D1/D2 离线迁移与新 snapshot 冻结后才创建独立 held-out；创建不等于
+  运行，首次结果不得用于反向调当前规则。
+- `REAL-GATE`：真实首轮只含正常、用户注入、知识注入 3 场，每 Provider 每场最多
+  4 calls、领域总计最多 12 calls、`max_revisions=0`、SDK retry 为 0；第二 Provider
+  还需新 ADR 和最多 3-call Adapter 协议门。预算是上限，不是当前授权。
+- `BOUNDARY`：本入口批只完成设计与 ADR，没有修改生产 Schema/Prompt/Harness、创建
+  held-out、调用真实 Provider 或选择第二 Provider，也没有进入 5E。
+- `CURRENT`：唯一下一步仍在 5D-7 Batch D，为 D1 离线 TDD：实现兼容的 Evaluation
+  1.1 与 blocking policy，同时保护 1.0.0 和 Batch A-C 历史复现。

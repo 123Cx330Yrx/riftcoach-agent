@@ -161,6 +161,13 @@ Scripted Provider 在零外部调用下执行 7 个 development 场景，真实�
 、[Router 拒绝与歧义验收](docs/plans/2026-08-06-router-rejection-ambiguity-review.md)
 和 [5D-7 Batch C 可执行评测设计](docs/plans/2026-08-13-domain-e2e-offline-executable-design.md)。
 
+Batch D 入口审计进一步确认：当前事实 Evaluator 没有看到用户原话、实际 RAG 证据和
+信任标签，不能靠增加一个枚举或硬编码 canary 就声称解决 Prompt Injection。项目已用
+[ADR-0016](docs/adr/0016-version-injection-evaluation-before-real-provider-comparison.md)
+冻结兼容迁移：保留 `coach_evaluation@1.0.0` 历史复现，下一步离线实现 1.1.0 安全
+评测合同与不可修订的发布阻断；独立 held-out 和有限真实 Provider 比较必须等新合同与
+实验身份冻结后才能进入。该设计尚不是已完成的注入防护或真实模型准入。
+
 ## 测试
 
 ```powershell

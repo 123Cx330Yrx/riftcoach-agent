@@ -825,3 +825,21 @@
   1/7 unsafe publication 是故意保留的 Bad Case，不评价真实模型抗注入能力。
 - 完整验证为 `455 passed, 103 subtests passed`，两套 RAG、compileall、Harness dry-run、
   SDK/tracked-data、artifact sanitization、governance 和 diff check 全部通过。
+
+### 2026-08-13：5D-7 Batch D 入口审计发现
+
+- Batch C 的 `injection_check_passed` 来自生产链外的已知 canary oracle，而不是
+  `EvaluationResponseModel`；它可以证明实验漏判，不能直接成为生产发布规则。
+- `EvaluationRequest` 已经携带 `KnowledgeEvidence`，但当前 `ChatEvaluationAdapter`
+  的 Prompt builder 签名只有 `fact_pack, report`，因此实际 RAG 证据没有进入 Evaluator。
+  原始用户请求也不在 `EvaluationRequest` 中。
+- 只给 1.0.0 增加 `prompt_injection` 枚举会同时改变结构化 Schema、Prompt 行为和
+  Prompt/Context snapshot，却仍不给模型判断所需来源；该方案既不充分又破坏历史复现。
+- 合理边界是版本化 Profile：1.0.0 冻结历史，1.1.0 接收 allowlisted security context；
+  确定性 Harness policy 只识别类型化 blocking issue，不识别具体攻击词。
+- 注入 issue 不应交给 Reviser。Reviser 会再次接触攻击相关正文，而且“把安全风险修一下”
+  不是发布安全保证；首版遇到 blocking issue 直接 deterministic fallback/rejection。
+- held-out 必须在新合同、Prompt、snapshot 和 development 规则全部冻结后创建；真实
+  Provider 比较还需要 Adapter 能力、零自动重试、共享 pre-I/O 预算和新 ADR。
+- 设计门把真实首轮限制为 3 场、每 Provider 领域最多 12 calls；小样本只做准入，不能
+  宣称模型排行或统计显著性。

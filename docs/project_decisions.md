@@ -135,10 +135,17 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   `unsafe_publication`。这是必须保留的质量门 Bad Case，不是让测试追求全绿的理由；
 - `offline_executable` 每个案例必须有 provenance SHA-256，公开 Candidate/Result 只保存
   脱敏结构化观测。它证明本地控制流和实验接线，不证明 GLM/DeepSeek/Qwen 的模型能力；
+- ADR-0016 决定不原地改写 `coach_evaluation@1.0.0`，也不把已知 canary 硬编码为生产
+  关键词；D1 将以离线 TDD 新建 1.1.0 最小安全输入/输出合同，并让 Harness 对
+  `prompt_injection` blocking issue 直接降级或拒绝，不交给 Reviser；
+- held-out 只能在 D1/D2 合同、Prompt、snapshot 与规则冻结后创建，首次结果不得用于
+  反向调当前规则；真实首轮固定正常、用户注入、知识注入 3 场，每 Provider 领域最多
+  12 calls、`max_revisions=0`、SDK retry 为 0；第二 Provider 仍需单独新 ADR 和协议门；
 - GLM 是首个真实基准 Adapter，不是永久模型选择；DeepSeek、Qwen 等只在同任务同评测
   决策门打开后比较，不能因发布热度直接替换或一次接入多家；
 - 该组合方案由 ADR-0011 接受，分层准入结论由 ADR-0012 接受，领域评测方案由
-  ADR-0013 接受，实验身份由 ADR-0014 接受，离线可执行基线由 ADR-0015 接受；当前处于 5D-7，
+  ADR-0013 接受，实验身份由 ADR-0014 接受，离线可执行基线由 ADR-0015 接受，版本化
+  注入评测与真实实验门由 ADR-0016 接受；当前处于 5D-7，
   不等于整个 5D、LangGraph 或
   Multi-Agent 已实现。
 
