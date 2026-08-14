@@ -451,4 +451,6 @@ DeepSeek V4 Pro 协议门。A1 strict structured contract 与 A2 Agent tool roun
 `575e8f5423bde6b34a692c63f90764313ba820772ae974109a4328b3dba086e1`。
 该证据只准入最小 Adapter 协议，不准入领域报告质量或产品默认模型。5D-7 的唯一
 下一步是审计并设计冻结三场领域 held-out 的执行接缝；本批不调用 Provider，且不得
-进入 5D exit review 或 5E。
+进入 5D exit review 或 5E。协议结果归档提交
+`ba1379db6b573d07e6cbe3bd27b9561ea9ca9f6e` 已通过 GitHub Actions run
+`31779362817` 的精确 SHA 公开 CI。

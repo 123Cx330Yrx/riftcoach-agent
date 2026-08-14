@@ -925,3 +925,7 @@
   holdout 的 Recall/MRR/nDCG 均为 `1.0`，holdout abstention/citation support 均为
   `1.0`；compileall 和 Harness dry-run published。全部是本地验证，没有新增 Provider
   calls 或 held-out execution。
+- 协议证据归档提交 `ba1379db6b573d07e6cbe3bd27b9561ea9ca9f6e` 已推送；最初的
+  `gh run list` 与公开 REST 查询分别遇到 TLS 超时，未据此推断 CI 状态。改查精确
+  commit 的 check-runs API 后，确认 GitHub Actions run `31779362817` 的 `pytest`
+  completed/success。该恢复查询不调用 Provider，也不运行 held-out。
