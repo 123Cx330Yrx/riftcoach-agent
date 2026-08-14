@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D4 complete; D5 offline Provider experiment preparation next）
+Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D5 offline implementation complete; public exact-SHA/no-I/O preflight next）
 
 ## Phases
 
@@ -104,15 +104,19 @@ Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D4 complete; D5 offlin
   DeepSeek 官方 `deepseek-v4-pro` 作为唯一有界第二 Provider 候选；独立 Adapter、同任务
   3 场比较、安全失败分类、最多 15/12 calls、Token/停止规则不变，DeepSeek 金额停止线
   调整为 `$0.10`；D4 及本次更正的外部调用均为 0。
+- `5D-7` Batch D D5 已完成离线实现：独立 `DeepSeekProvider`、跨 draft/Harness 的
+  安全失败观察、实验级 call/Token/金额 ledger、Provider/global stop 与 no-I/O
+  preparation 均有 TDD 证据；完整回归为 `505 passed, 103 subtests passed`，真实
+  Provider calls 和 held-out executions 均为 0。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-继续 5D-7 Batch D 的 D5 离线 TDD 准备：实现独立 DeepSeek Adapter、安全错误归因、
-调用/Token/金额控制器和 no-I/O dry-run；本轮不调用真实 Provider、不运行 held-out，
-也不进入 5D exit review 或 5E。
+在 5D-7 内提交并推送 D5，核验 exact-SHA GitHub Actions 后在同一干净公开 SHA 上运行一次
+no-I/O preparation。随后才可另行授权最多 3 calls 的真实 DeepSeek Adapter 协议门；
+不直接运行 held-out，也不进入 5D exit review 或 5E。
 
 ## Decisions Made
 
@@ -185,6 +189,9 @@ Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D4 complete; D5 offlin
 | D4 先设计 Provider 采用门，再决定是否调用 | 5D-6b 暴露了统一响应/错误归因缺口；第二 Provider 不能在同任务合同、预算与失败分类未冻结前接入 |
 | 用 ADR-0018 将唯一候选更正为 DeepSeek V4 Pro | D5 同时验证协议和唯一候选的领域能力；Pro 与 Flash 共用本轮协议面但官方生产 Agent 基准更强，额外绝对费用仍受 16000-token、15-call 和 `$0.10` 小额停止线约束 |
 | 暂缓 Qwen3.8 Max 与 DeepSeek V4 Flash | Qwen 的 reasoning/计费入口仍增加首轮变量；Flash 保留为以后出现成本/时延 Bad Case 时的简单任务分层候选，本轮不同时测试两个 DeepSeek 模型 |
+| D5 用独立 DeepSeek Adapter 而非通用 OpenAI-compatible 基类 | 当前只有两个厂商实现，thinking、finish、usage 与错误语义仍不同；先用分别测试守住差异，出现经过测试的稳定重复后再提取 helper |
+| D5 离线测试不读取 API Key | Fake SDK 用可编程返回验证请求/响应映射、工具往返和失败分支；真实模型质量、在线可用性、延迟与实际费用必须留给公开 SHA 上的有界 API 门 |
+| 预算 ledger 组合在候选 Provider 外层 | D4 价格与调用上限是实验政策，不应污染通用 AgentLoop；I/O 前占用调用、响应后按 usage 结算，同时保持 5E Trace 职责未提前实现 |
 
 ## Errors Encountered
 

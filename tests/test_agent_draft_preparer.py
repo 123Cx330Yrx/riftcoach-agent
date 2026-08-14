@@ -10,6 +10,7 @@ from app.agent.context import ContextBuilderV1
 from app.agent.draft import (
     AgentDraftPreparationError,
     AgentDraftPreparationResult,
+    AgentFailureObservation,
     SkillAgentDraftPreparer,
 )
 from app.agent.loop import (
@@ -311,8 +312,14 @@ def test_non_completed_agent_runs_fail_with_safe_state(
     with pytest.raises(
         AgentDraftPreparationError,
         match=f"{status.value}.*{stop_reason.value}",
-    ):
+    ) as captured:
         SkillAgentDraftPreparer(loop).prepare(execution, context)
+
+    assert captured.value.failure == AgentFailureObservation(
+        status=status,
+        stop_reason=stop_reason,
+        error_code="safe_provider_code",
+    )
 
 
 def test_completed_run_without_final_text_fails_closed():

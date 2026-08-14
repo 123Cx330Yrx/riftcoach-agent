@@ -14,6 +14,7 @@ from app.agent.context import ContextBundle
 from app.agent.draft import (
     AgentDraftPreparationError,
     AgentDraftPreparationResult,
+    AgentFailureObservation,
 )
 from app.agent.loop import AgentRunResult
 from app.harness.models import (
@@ -59,6 +60,7 @@ class SkillReviewExecutionResult:
     output: BaseModel
     manifest: RunManifest
     agent_run: AgentRunResult | None
+    agent_failure: AgentFailureObservation | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.output, BaseModel):
@@ -72,6 +74,15 @@ class SkillReviewExecutionResult:
             AgentRunResult,
         ):
             raise TypeError("agent_run must be an AgentRunResult or None")
+        if self.agent_failure is not None and not isinstance(
+            self.agent_failure,
+            AgentFailureObservation,
+        ):
+            raise TypeError(
+                "agent_failure must be an AgentFailureObservation or None"
+            )
+        if self.agent_run is not None and self.agent_failure is not None:
+            raise ValueError("agent_run and agent_failure are mutually exclusive")
 
 
 class _BoundAgentDraftPreparationStep:
@@ -88,6 +99,7 @@ class _BoundAgentDraftPreparationStep:
         self._execution = execution
         self._context = context
         self.agent_run: AgentRunResult | None = None
+        self.agent_failure: AgentFailureObservation | None = None
 
     def prepare(
         self,
@@ -107,6 +119,7 @@ class _BoundAgentDraftPreparationStep:
                 self._context,
             )
         except AgentDraftPreparationError as exc:
+            self.agent_failure = exc.failure
             raise SkillReviewExecutionError(
                 "agent draft preparation failed"
             ) from exc
@@ -202,6 +215,7 @@ class SkillReviewExecutor:
             output=output,
             manifest=manifest,
             agent_run=bound_preparer.agent_run,
+            agent_failure=bound_preparer.agent_failure,
         )
 
     @staticmethod

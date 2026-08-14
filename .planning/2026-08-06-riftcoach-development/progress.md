@@ -852,3 +852,22 @@
 - 更正提交 `5513928e29ffab4525b356b80845d9be807647bb` 已推送；GitHub Actions run
   `31762059181` 对该精确 SHA completed/success，公开 CI 的完整 pytest、两套 RAG、
   compileall、治理、安全边界和 Harness dry-run 全部通过，未调用真实 Provider。
+
+### 2026-08-14：5D-7 Batch D D5 DeepSeek Provider 离线实现
+
+- 新增独立 `DeepSeekProvider` 与严格配置工厂，固定 `deepseek-v4-pro`、官方 base URL、
+  non-thinking、non-streaming 和零 SDK retry；Fake SDK 覆盖 text/tool/structured、四类
+  消息、别名、finish/usage 及脱敏错误，真实外部调用为 0。
+- 新增安全 `AgentFailureObservation` 并贯通 draft preparation/Skill executor；真实
+  AgentLoop 认证失败测试证明 Harness 返回确定性 degraded，同时保留安全来源码且不
+  暴露原始错误。
+- 新增候选实验 budget policy、resource ledger、Provider/global stop 与失败白名单。
+  DeepSeek 为 3 protocol + 12 domain calls、16000 observed tokens、1024 output/request、
+  `$0.10`；GLM domain 为 12 calls、12000 tokens、`¥0.50`。
+- 新增 no-I/O preparation CLI，严格核对干净 SHA、公开 CI、冻结 held-out 与
+  Prompt/Context snapshot；没有加载 `.env`、读取 Key、创建客户端或运行 held-out。
+- 聚焦与相邻回归通过；完整回归为 `505 passed, 103 subtests passed`。两套 RAG 门禁
+  满分，compileall、Harness dry-run、SDK/tracked-data 边界、governance 与 diff check
+  均通过。
+- 当前待完成提交、推送、exact-SHA GitHub Actions 与同 SHA no-I/O preflight；这些完成
+  后 D5 才形成公开离线证据，真实 DeepSeek 协议调用仍需下一轮单独门禁。

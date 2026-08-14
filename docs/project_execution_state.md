@@ -19,12 +19,11 @@ blocked_before: "5D-exit-review"
 - 最后更新：2026-08-14
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6b 已完成；
-  5D-7 Batch A-C 与 Batch D 的 D1-D4 已完成，held-out 只完成创建与生命周期校验，
-  ADR-0018 已取代 ADR-0017 的候选模型并选择 DeepSeek V4 Pro，尚未实现或调用第二
-  Provider
-- 唯一下一步：继续 5D-7 Batch D 的 D5 离线 TDD 准备；实现独立 DeepSeek Adapter、
-  安全错误归因、调用/Token/成本控制器和 no-I/O dry-run，本轮不调用真实 Provider、
-  不运行 held-out
+  5D-7 Batch A-C 与 Batch D 的 D1-D5 已完成离线实现，held-out 只完成创建与生命周期
+  校验；DeepSeek V4 Pro Adapter、失败归因和实验控制器尚未经过真实 Provider 调用
+- 唯一下一步：在 5D-7 内提交并公开验证 D5 精确 SHA，随后运行一次 no-I/O experiment preflight；
+  该门通过后才可另行执行最多 3 calls 的真实 DeepSeek Adapter 协议门，不直接运行
+  held-out
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；DeepSeek
   真实调用必须先完成 D5 离线 TDD、公开 exact-SHA CI 与协议门，不能用候选选择或发布
   热度替代准入证据
@@ -52,7 +51,7 @@ blocked_before: "5D-exit-review"
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测首个 Provider，并为第二 Provider 决策提供真实证据 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（Batch A-C 与 Batch D 的 D1-D4 已完成） | Batch A：分层合同与 10 个记录型 development 控制样本；Batch B：组件/案例双层 SHA-256 快照和零调用 admission；Batch C：ADR-0015、7 个 `offline_executable` development 场景及一个真实 unsafe publication；D1-D2：`coach_evaluation@1.1.0` 安全合同、不可修订 blocking policy、7 场 secure offline development 基线，task/failure accuracy 均 1.0、unsafe publication 0、external calls 0；D3：3 场独立 held-out 创建，`calibration_excluded=true`，尚未运行；D4：ADR-0018 取代 ADR-0017 的候选选择，改用 DeepSeek V4 Pro 并冻结能力、错误、调用/Token/金额和停止门；D5 尚未实现或调用 |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（Batch A-C 与 Batch D 的 D1-D5 已完成离线实现） | Batch A：分层合同与 10 个记录型 development 控制样本；Batch B：组件/案例双层 SHA-256 快照和零调用 admission；Batch C：ADR-0015、7 个 `offline_executable` development 场景及一个真实 unsafe publication；D1-D2：`coach_evaluation@1.1.0` 安全合同、不可修订 blocking policy、7 场 secure offline development 基线，task/failure accuracy 均 1.0、unsafe publication 0、external calls 0；D3：3 场独立 held-out 创建，`calibration_excluded=true`，尚未运行；D4：ADR-0018 取代 ADR-0017 的候选选择，改用 DeepSeek V4 Pro 并冻结能力、错误、调用/Token/金额和停止门；D5：独立 DeepSeek Adapter、跨 draft/Harness 的安全失败观察、15/12-call 与 Token/金额 ledger、零 Key/no-I/O preflight 均已离线 TDD，真实 calls 仍为 0 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界
@@ -239,6 +238,25 @@ blocked_before: "5D-exit-review"
 - D4 聚焦回归为 `68 passed, 15 subtests passed`，完整回归为
   `460 passed, 103 subtests passed`；两套 RAG、compileall、Harness SDK/敏感文件边界、
   Harness dry-run、文档密钥模式扫描、governance 和 diff check 均通过，外部调用为 0。
+- D5 新增独立 `DeepSeekProvider`，冻结 `https://api.deepseek.com`、
+  `deepseek-v4-pro`、non-thinking、non-streaming、JSON mode、请求级工具别名和严格
+  finish/usage/错误语义；它没有注册为产品默认 Provider，也没有复用 Zhipu Adapter
+  冒充厂商无关实现；
+- D5 让 `AgentRunStatus`、`AgentStopReason` 与安全 `error_code` 组成的不可变失败观察
+  穿过 draft preparation 接缝。真实 AgentLoop Provider failure 测试证明 Harness 仍只
+  返回确定性 `degraded`，同时上层能区分认证等安全来源，不保存 Prompt、模型正文或
+  原始异常；
+- 实验 ledger 在 I/O 前占用调用并检查 scope/cumulative call、每请求 output、累计
+  observed Token 与估算金额；SDK 失败不退还调用，usage 缺失不按 0 结算，任一
+  `unsafe_publication` 会触发全局停止。它是应用层实验门，不是厂商账户硬限额或 5E
+  统一 Trace；
+- D5 no-I/O preparation 只核对干净 Git SHA、公开 CI SHA、冻结 held-out 与
+  Prompt/Context snapshot；不加载 `.env`、不读取 Key、不创建 OpenAI client、不运行
+  held-out。Fake SDK 的 3-call 协议回归只证明 Adapter 映射和控制流，不证明 Pro 的
+  真实能力；
+- D5 聚焦/相邻回归已经通过，当前完整回归为 `505 passed, 103 subtests passed`；两套
+  RAG 门禁、compileall、Harness dry-run、SDK/tracked-data 边界、governance 与 diff
+  check 均通过。提交、公开 exact-SHA CI 和提交后 no-I/O preflight 尚待本轮收尾。
 
 当前不能声称：
 
@@ -250,7 +268,8 @@ blocked_before: "5D-exit-review"
 - 默认 ContextSizer 等于真实厂商 tokenizer 或真实 Token Usage；
 - trust/JSON 分层已经彻底解决 Prompt Injection；
 - Batch C 的脚本 Provider/canary 已证明真实 GLM、DeepSeek 或 Qwen 抗注入；
-- DeepSeek V4 Pro 已经接入、调用、通过协议/领域准入或普遍优于 Qwen/GLM；
+- DeepSeek V4 Pro 已经真实调用、通过协议/领域准入、成为产品默认模型或普遍优于
+  Qwen/GLM；当前只有独立 Adapter 与离线控制证据；
 - 已经实现 Tool Observation compaction，或协作式 deadline 能硬中断任意阻塞函数；
 - 路由对自然语言具有充分泛化能力；
 - 小型合成 holdout 已证明路由对自然语言充分泛化；
@@ -264,8 +283,8 @@ blocked_before: "5D-exit-review"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 Batch A-C 与 D1-D3 已形成安全离线基线/隔离 held-out，D4 已由 ADR-0018 更正唯一候选但尚未实现 D5 | 阶段 5、整个 5D、真实 Provider 领域质量、held-out 运行、第二 Provider 实现或报告质量准入已完成 |
-| 项目理解 | 已区分 Provider/Model/Multi-Agent、协议/领域/产品三层准入、同任务控制变量、调用/Token/金额预算与安全停止规则；理解唯一领域候选应按领域目标选择，Pro 仍只是候选，Qwen/Flash 暂缓不是质量否定 | 候选选择等于接入/模型排行，或 3 场 held-out 可以证明生产质量和通用抗注入 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 Batch A-C 与 D1-D3 已形成安全离线基线/隔离 held-out，D4 冻结唯一候选，D5 已离线实现独立 DeepSeek Adapter、失败归因和实验资源门 | 阶段 5、整个 5D、真实 DeepSeek 协议/领域质量、held-out 运行、生产默认切换或报告质量准入已完成 |
+| 项目理解 | 已区分 Fake SDK 离线协议验证与 API Key 支持的真实模型准入，也已区分 Provider/Model/Multi-Agent、协议/领域/产品三层门，以及调用/Token/金额预算与安全停止 | 离线测试能评价模型智力/在线可用性，候选实现等于模型排行，或 3 场 held-out 能证明通用生产质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
 | GitHub/部署 | D4 候选更正提交 `5513928e29ffab4525b356b80845d9be807647bb` 已公开；GitHub Actions run `31762059181` 对该精确 SHA 全部通过；正式网页仍未部署 | 公开候选采用门等于 DeepSeek 已接入、真实领域能力、最终厂商选型或 Web Agent 可用 |
 
@@ -413,11 +432,11 @@ external calls `0`。D3 已在合同、Prompt、snapshot 与规则冻结后创�
 held-out。上述结果不证明真实模型质量或通用抗注入能力。
 
 D4 已由 ADR-0018 更正并收尾：ADR-0017 的 Flash 选择保留为历史，唯一有界第二
-Provider 候选改为 DeepSeek V4 Pro；同任务比较、协议/领域分层准入、安全错误归因、
-调用/Token 上限和停止规则不变，DeepSeek 金额停止线调整为 `$0.10`。本批没有实现
-Adapter、读取密钥、调用 Provider 或运行 held-out；Qwen3.8 Max 与 V4 Flash 暂缓，
-不代表质量较差。
+Provider 候选改为 DeepSeek V4 Pro；同任务比较、协议/领域分层准入和成本/停止规则已经
+冻结。D5 已离线实现独立 Adapter、安全失败归因、预算 ledger 与 no-I/O preparation；
+Fake SDK 和 scripted response 下的协议与失败回归通过，外部调用为 0。Qwen3.8 Max 与
+V4 Flash 暂缓，不代表质量较差。
 
-唯一下一步是 5D-7 Batch D 的 D5 离线 TDD 准备：实现独立 DeepSeek Adapter、让安全
-Agent failure 分类穿过 draft preparation boundary，并实现预算/成本控制器与 no-I/O
-dry-run；本轮仍不调用真实 Provider、不运行 held-out，也不进入 5D exit review 或 5E。
+5D-7 的唯一下一步是先把 D5 提交、推送并验证 exact-SHA GitHub Actions，再在同一干净公开
+SHA 上运行一次 no-I/O preflight。只有该门通过，下一轮才可单独授权最多 3 calls 的
+真实 DeepSeek Adapter 协议门；不得直接运行 held-out、进入 5D exit review 或 5E。

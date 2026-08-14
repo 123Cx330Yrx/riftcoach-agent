@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 
 from app.harness.knowledge import (
@@ -22,10 +23,59 @@ from .loop import (
 
 
 _KNOWLEDGE_TOOL_NAME = "knowledge.search"
+_SAFE_ERROR_CODE = re.compile(r"^[a-z][a-z0-9_]{0,127}$")
 
 
 class AgentDraftPreparationError(RuntimeError):
     """Raised when an Agent run cannot safely become a Harness draft input."""
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        failure: AgentFailureObservation | None = None,
+    ) -> None:
+        if not isinstance(message, str) or not message.strip():
+            raise ValueError("message must not be empty")
+        if failure is not None and not isinstance(
+            failure,
+            AgentFailureObservation,
+        ):
+            raise TypeError("failure must be an AgentFailureObservation or None")
+        self.failure = failure
+        super().__init__(message)
+
+
+@dataclass(frozen=True)
+class AgentFailureObservation:
+    """Safe Agent terminal metadata without prompts or Provider payloads."""
+
+    status: AgentRunStatus
+    stop_reason: AgentStopReason
+    error_code: str | None = None
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.status, AgentRunStatus):
+            raise TypeError("status must be an AgentRunStatus")
+        if not isinstance(self.stop_reason, AgentStopReason):
+            raise TypeError("stop_reason must be an AgentStopReason")
+        if self.error_code is not None and not _SAFE_ERROR_CODE.fullmatch(
+            self.error_code
+        ):
+            raise ValueError("error_code must be a safe snake-case code")
+
+    @classmethod
+    def from_agent_run(
+        cls,
+        agent_run: AgentRunResult,
+    ) -> AgentFailureObservation:
+        if not isinstance(agent_run, AgentRunResult):
+            raise TypeError("agent_run must be an AgentRunResult")
+        return cls(
+            status=agent_run.status,
+            stop_reason=agent_run.stop_reason,
+            error_code=agent_run.error_code,
+        )
 
 
 @dataclass(frozen=True)
@@ -106,7 +156,8 @@ def _require_completed_final_response(agent_run: AgentRunResult) -> None:
             "agent run did not complete: "
             f"status={agent_run.status.value}; "
             f"stop_reason={agent_run.stop_reason.value}"
-            f"{safe_error}"
+            f"{safe_error}",
+            failure=AgentFailureObservation.from_agent_run(agent_run),
         )
     if (
         agent_run.final_response is None

@@ -8,6 +8,11 @@ from typing import Any
 from openai import OpenAI
 
 from .errors import ProviderConfigurationError
+from .deepseek import (
+    DEEPSEEK_BASE_URL,
+    DEEPSEEK_MODEL,
+    DeepSeekProvider,
+)
 from .protocol import LLMProvider
 from .registry import ProviderRegistry
 from .zhipu import ZhipuProvider
@@ -39,6 +44,46 @@ class ZhipuSettings:
             raise ProviderConfigurationError(
                 provider="zhipu",
                 code="invalid_default_timeout",
+            )
+
+
+@dataclass(frozen=True)
+class DeepSeekSettings:
+    api_key: str = field(repr=False)
+    base_url: str = DEEPSEEK_BASE_URL
+    model: str = DEEPSEEK_MODEL
+    default_timeout_s: float = 30.0
+    sdk_max_retries: int = 0
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.api_key, str) or not self.api_key.strip():
+            raise ProviderConfigurationError(
+                provider="deepseek",
+                code="missing_api_key",
+            )
+        if self.base_url != DEEPSEEK_BASE_URL:
+            raise ProviderConfigurationError(
+                provider="deepseek",
+                code="invalid_base_url",
+            )
+        if self.model != DEEPSEEK_MODEL:
+            raise ProviderConfigurationError(
+                provider="deepseek",
+                code="invalid_model",
+            )
+        if (
+            isinstance(self.default_timeout_s, bool)
+            or not isinstance(self.default_timeout_s, (int, float))
+            or self.default_timeout_s <= 0
+        ):
+            raise ProviderConfigurationError(
+                provider="deepseek",
+                code="invalid_default_timeout",
+            )
+        if self.sdk_max_retries != 0:
+            raise ProviderConfigurationError(
+                provider="deepseek",
+                code="invalid_sdk_retries",
             )
 
 
@@ -96,6 +141,29 @@ def load_provider_registry_settings(
     return ProviderRegistrySettings(default_provider_id=default_provider_id)
 
 
+def load_deepseek_settings(
+    environ: Mapping[str, str] | None = None,
+) -> DeepSeekSettings:
+    values = os.environ if environ is None else environ
+    timeout_text = values.get("DEEPSEEK_TIMEOUT_SECONDS", "30")
+    retries_text = values.get("DEEPSEEK_MAX_RETRIES", "0")
+    try:
+        timeout_s = float(timeout_text)
+        sdk_max_retries = int(retries_text)
+    except (TypeError, ValueError):
+        raise ProviderConfigurationError(
+            provider="deepseek",
+            code="invalid_numeric_configuration",
+        ) from None
+    return DeepSeekSettings(
+        api_key=values.get("DEEPSEEK_API_KEY", ""),
+        base_url=values.get("DEEPSEEK_BASE_URL", DEEPSEEK_BASE_URL),
+        model=values.get("DEEPSEEK_MODEL", DEEPSEEK_MODEL),
+        default_timeout_s=timeout_s,
+        sdk_max_retries=sdk_max_retries,
+    )
+
+
 def create_zhipu_provider(
     settings: ZhipuSettings,
     *,
@@ -107,6 +175,20 @@ def create_zhipu_provider(
         timeout=settings.default_timeout_s,
     )
     return ZhipuProvider(client=client, model=settings.model)
+
+
+def create_deepseek_provider(
+    settings: DeepSeekSettings,
+    *,
+    client_factory: Callable[..., Any] = OpenAI,
+) -> DeepSeekProvider:
+    client = client_factory(
+        api_key=settings.api_key,
+        base_url=settings.base_url,
+        timeout=settings.default_timeout_s,
+        max_retries=settings.sdk_max_retries,
+    )
+    return DeepSeekProvider(client=client, model=settings.model)
 
 
 def create_provider_registry(

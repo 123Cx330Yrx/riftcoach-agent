@@ -149,14 +149,15 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - ADR-0018 已取代 ADR-0017 的候选模型与金额停止线：D5 唯一有界候选改为 DeepSeek
   官方 `deepseek-v4-pro`，要求独立 Adapter、non-thinking、最多 3-call 协议门 +
   12-call 领域门、Token/金额停止线和安全错误归因；本决策不等于已实现、已调用、已准入
-  或已设为产品默认模型；
+  或已设为产品默认模型；D5 现已完成该 Adapter、失败归因与实验控制器的离线实现，
+  但该边界仍不改变，因为真实 calls 与 held-out executions 都是 0；
 - GLM 是首个真实基准 Adapter，不是永久模型选择；Qwen3.8 Max 因 reasoning/计费入口
   增加首轮变量而暂缓，DeepSeek V4 Flash 因本轮唯一候选还需代表复杂领域能力而暂缓；
   Flash 可在 5F 出现成本/时延 Bad Case 后通过新 ADR 重开；
 - 该组合方案由 ADR-0011 接受，分层准入结论由 ADR-0012 接受，领域评测方案由
   ADR-0013 接受，实验身份由 ADR-0014 接受，离线可执行基线由 ADR-0015 接受，版本化
   注入评测与真实实验门由 ADR-0016 接受，第二 Provider 门的原始历史由 ADR-0017
-  保留，当前候选与预算更正由 ADR-0018 接受；D1-D4 已完成，当前处于 5D-7，
+  保留，当前候选与预算更正由 ADR-0018 接受；D1-D5 已完成离线实现，当前处于 5D-7，
   不等于整个 5D、LangGraph 或
   Multi-Agent 已实现。
 
@@ -168,7 +169,8 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - OP.GG MCP：后续接入的动态版本 Meta；
 - Memory：玩家画像、历史训练目标和进度，不存放全部原始对局数据；
 - GLM：当前唯一真实模型基线，负责组织和解释证据，不负责创造比赛事实；
-- DeepSeek V4 Pro：D5 唯一有界第二 Provider 候选，尚未实现、调用或准入；
+- DeepSeek V4 Pro：D5 唯一有界第二 Provider 候选；独立 Adapter 已离线实现，但尚未
+  真实调用、协议/领域准入或设为默认模型；
 - Qwen3.8 Max、DeepSeek V4 Flash 等：本轮暂缓，尚未锁定为生产组合。
 
 ## 质量原则

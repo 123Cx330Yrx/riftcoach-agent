@@ -910,3 +910,18 @@
   一个精确模型。Flash 只保留为未来 5F 出现成本/时延 Bad Case 后的任务分层候选。
 - 本次只更正 ADR、设计与状态，不实现 Adapter、不读取 Key、不调用 Provider、不运行
   held-out；DeepSeek V4 Pro 仍只是候选，不是已准入或生产默认模型。
+
+### 2026-08-14：D5 DeepSeek Provider 离线实现发现
+
+- 不使用 API Key 仍可验证“RiftCoach 是否正确说 DeepSeek 方言”：Fake SDK 精确记录
+  payload 并脚本化返回 text/tool/structured/error，因而可检查 thinking、stream、JSON、
+  工具别名、finish、usage 和错误归一化；它不能证明模型智力、在线可用性、延迟或价格。
+- DeepSeek 与 Zhipu 虽同属 OpenAI-compatible Chat 接口，但 thinking、finish reason、
+  usage 和错误边界没有足够相同证据；独立 Adapter 比提前抽象通用基类更容易审计。
+- 5D-6b 的失败来源不是 AgentLoop 丢失，而是 draft preparation 将非 completed run 压成
+  异常后，上层只剩通用失败。只传递状态、停止原因和安全 snake-case error code 即可
+  补足归因，不需要保存 Provider 原文。
+- 预算门必须在委托底层 Provider 前计数；否则 SDK 超时/断连可以反复消耗真实请求却不
+  进入账本。响应后再使用统一 usage 结算，缺 usage 必须停止而不是按零成本处理。
+- no-I/O preparation 的职责是核对“代码、CI、冻结题目、Prompt/Context 是否同一份”，
+  不是运行考题。它有意不导入客户端构造、不读取环境 Key，也不执行 held-out。

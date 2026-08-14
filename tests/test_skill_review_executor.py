@@ -11,6 +11,7 @@ from app.agent.context import ContextBuilderV1
 from app.agent.draft import (
     AgentDraftPreparationError,
     AgentDraftPreparationResult,
+    AgentFailureObservation,
     SkillAgentDraftPreparer,
 )
 from app.agent.loop import AgentLoop, AgentRunResult, AgentRunStatus, AgentStopReason
@@ -46,6 +47,8 @@ from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.tools.adapters import build_knowledge_tools
 from app.tools.registry import ToolRegistry
 from app.tools.runtime import ToolRuntime
+from app.providers.capabilities import ProviderCapabilities
+from app.providers.errors import ProviderAuthenticationError
 from app.providers.models import ChatResponse, TokenUsage
 from tests.test_agent_draft_preparer import (
     KnowledgeSeekingProvider,
@@ -213,6 +216,30 @@ class FakeSkillAgentPreparer:
 class FailingSkillAgentPreparer:
     def prepare(self, execution, context):
         raise AgentDraftPreparationError("secret provider payload")
+
+
+class ObservedProviderFailurePreparer:
+    def prepare(self, execution, context):
+        raise AgentDraftPreparationError(
+            "secret provider payload",
+            failure=AgentFailureObservation(
+                status=AgentRunStatus.FAILED,
+                stop_reason=AgentStopReason.PROVIDER_ERROR,
+                error_code="authentication_failed",
+            ),
+        )
+
+
+class AuthenticationFailingProvider:
+    provider_name = "deepseek"
+    model_name = "deepseek-v4-pro"
+    capabilities = ProviderCapabilities(text_chat=True, tool_calling=True)
+
+    def chat(self, request):
+        raise ProviderAuthenticationError(
+            provider=self.provider_name,
+            code="authentication_failed",
+        )
 
 
 def run_harness(
@@ -467,6 +494,62 @@ def test_executor_routes_agent_preparation_failure_through_harness_fallback():
         assert result.agent_run is None
         assert evaluator.requests == []
         assert "secret provider payload" not in " ".join(result.output.warnings)
+
+
+def test_executor_preserves_safe_agent_failure_across_harness_boundary():
+    with tempfile.TemporaryDirectory() as directory:
+        execution = validated_recent("review_executor_observed_provider_failure")
+        context = ContextBuilderV1().build(execution)
+        executor = SkillReviewExecutor(
+            runs_root=Path(directory),
+            draft_preparer=ObservedProviderFailurePreparer(),
+            evaluator=SequenceEvaluator([]),
+            reviser=UnexpectedReviser(),
+        )
+
+        result = executor.execute(execution=execution, context=context)
+
+        assert result.output.status == "degraded"
+        assert result.agent_run is None
+        assert result.agent_failure == AgentFailureObservation(
+            status=AgentRunStatus.FAILED,
+            stop_reason=AgentStopReason.PROVIDER_ERROR,
+            error_code="authentication_failed",
+        )
+        assert "secret provider payload" not in repr(result.agent_failure)
+
+
+def test_real_agent_loop_provider_failure_degrades_and_preserves_safe_origin():
+    with tempfile.TemporaryDirectory() as directory:
+        execution = validated_recent("review_executor_real_provider_failure")
+        context = ContextBuilderV1().build(execution)
+        registry = ToolRegistry()
+        for definition in build_knowledge_tools(
+            LocalHybridKnowledgeProvider.from_directory(Path("data/rag_docs"))
+        ):
+            registry.register(definition)
+        loop = AgentLoop(
+            provider=AuthenticationFailingProvider(),
+            tool_registry=registry,
+            tool_runtime=ToolRuntime(registry),
+        )
+        executor = SkillReviewExecutor(
+            runs_root=Path(directory),
+            draft_preparer=SkillAgentDraftPreparer(loop),
+            evaluator=SequenceEvaluator([]),
+            reviser=UnexpectedReviser(),
+        )
+
+        result = executor.execute(execution=execution, context=context)
+
+        assert result.output.status == "degraded"
+        assert result.output.report == execution.typed_input.deterministic_report
+        assert result.agent_run is None
+        assert result.agent_failure == AgentFailureObservation(
+            status=AgentRunStatus.FAILED,
+            stop_reason=AgentStopReason.PROVIDER_ERROR,
+            error_code="authentication_failed",
+        )
 
 
 def test_executor_rejects_context_identity_drift_before_creating_run():

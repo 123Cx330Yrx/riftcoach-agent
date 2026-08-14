@@ -654,3 +654,23 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `PUBLIC-VERIFIED`：候选更正提交 `5513928e29ffab4525b356b80845d9be807647bb`
   已推送；GitHub Actions run `31762059181` 对该精确 SHA 全部门禁通过，CI 未调用真实
   Provider 或运行 held-out。
+
+### 2026-08-14：5D-7 Batch D D5 DeepSeek Provider 离线实现
+
+- `IMPLEMENTED-OFFLINE`：新增独立 `DeepSeekProvider`，冻结 V4 Pro、non-thinking、
+  non-streaming、JSON mode、工具别名、finish/usage 与脱敏错误语义；没有注册为产品
+  默认 Provider，也没有把 Zhipu Adapter 改 base URL 后复用。
+- `OBSERVABILITY`：安全 `AgentFailureObservation` 穿过 draft preparation 接缝；真实
+  AgentLoop Provider failure 的测试证明 Harness 仍安全降级，同时上层保留状态、停止
+  原因和白名单错误码，不暴露 Prompt、模型正文或原始异常。
+- `RESOURCE-GATE`：候选实验组合式 ledger 固定 DeepSeek 3+12 calls、16000 observed
+  tokens、每请求 1024 output 与 `$0.10` 停止线；GLM 领域为 12 calls/12000 tokens/
+  `¥0.50`。调用在 I/O 前占用，usage 缺失和任何越界均 fail closed，unsafe publication
+  触发全局停止。
+- `NO-I/O`：preparation CLI 只校验干净 Git SHA、公开 CI SHA、冻结 held-out 与
+  Prompt/Context 身份，不加载 `.env`、不读取 Key、不创建真实 client、不运行 held-out。
+- `EVIDENCE`：完整回归 `505 passed, 103 subtests passed`；两套 RAG 门禁、compileall、
+  Harness dry-run、SDK/tracked-data 边界、governance 与 diff check 均通过。Fake SDK
+  证据只证明 Adapter/控制器，不证明真实模型能力，外部 Provider calls 为 0。
+- `CURRENT`：先提交并核验 D5 exact-SHA 公开 CI，再在同一干净 SHA 运行 no-I/O
+  preflight；随后才可另行授权最多 3 calls 的真实 DeepSeek 协议门，不直接运行 held-out。
