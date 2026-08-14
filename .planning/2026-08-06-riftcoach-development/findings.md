@@ -940,3 +940,16 @@
   时，保持单模型是合法结果。
 - 该设计不等于 Multi-Agent、用户模型选择器或已实现自动路由；当前
   `DeepSeekProvider` 仍只允许 `deepseek-v4-pro`，5D-7 唯一下一步不变。
+
+### 2026-08-14：真实 DeepSeek 协议门执行接缝审计
+
+- D5 已有 `DeepSeekProvider`、`AdapterProtocolSliceRunner`、实验 resource ledger、
+  stop controller 和 no-I/O preparation，但脚本层没有把这些边界正式组合的真实
+  DeepSeek 执行入口；Zhipu 历史探针不能通过替换 base URL 复用。
+- 直接手写 SDK 请求会绕过生产 Adapter，直接复用协议 runner 又会漏掉累计 Token/费用
+  ledger 与 Provider stop；正确组合是实验预算 Provider 包住生产 Adapter，再交给协议
+  runner 的精确三次调用预算。
+- preflight 必须发生在读取 `.env`/Key 和创建 SDK client 之前；输出只能进入冻结的
+  provider capability result 目录且不得覆盖已有证据。
+- 该补口是当前 5D-7 真实协议门的一部分，不把 D5 改回未完成，也不改变 Pro-only、
+  held-out 未运行和 Flash 延后评估的决策。

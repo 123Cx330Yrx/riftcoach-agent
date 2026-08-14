@@ -445,6 +445,9 @@ V4 Flash 暂缓，不代表质量较差。ADR-0019 进一步确认 Flash 不进�
 5F；未来模型分层最早在 5P 后、默认于阶段 6 由真实产品成本/时延证据触发。
 
 D5 功能提交已经通过 exact-SHA GitHub Actions，同一干净公开 SHA 的 no-I/O preflight
-也已通过且确认外部调用为 0、held-out 未运行。5D-7 的唯一下一步是单独执行最多 3
-calls 的真实 DeepSeek V4 Pro Adapter 协议门；必须显式确认真实调用，失败即停止，
-不得直接运行 held-out、进入 5D exit review 或 5E。
+也已通过且确认外部调用为 0、held-out 未运行。后续审计发现 D5 各离线零件之间缺少
+正式 real-gate execution seam；该接缝现已用离线 TDD 补齐，把 preflight、Key 加载
+顺序、生产 Adapter、实验 budget/stop、3-call protocol runner 和不可覆盖的脱敏结果
+组合起来。当前真实调用仍为 0。5D-7 的唯一下一步是先让该接缝提交通过 exact-SHA
+GitHub Actions，再由同一干净 SHA 单独执行最多 3 calls 的真实 DeepSeek V4 Pro
+Adapter 协议门；失败即停止，不得直接运行 held-out、进入 5D exit review 或 5E。

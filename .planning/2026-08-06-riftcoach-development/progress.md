@@ -889,3 +889,21 @@
   independent holdout 的 Recall/MRR/nDCG 均为 `1.0`，holdout abstention/citation
   support 均为 `1.0`；compileall、governance 和 Harness dry-run published。全部检查
   使用本地数据与 dry-run，外部 Provider calls 和 held-out executions 仍为 `0`。
+
+### 2026-08-14：真实协议门执行接缝开始
+
+- 在读取 Key 或调用 Provider 前完成精确代码审计：D5 的离线零件均存在，但没有正式的
+  DeepSeek real-gate CLI 将 public-CI preflight、预算/停止器、生产 Adapter、3-call
+  protocol runner 和脱敏结果持久化组合起来。
+- 新增初学者设计 `docs/plans/2026-08-14-deepseek-real-protocol-gate-design.md`，冻结
+  先身份后 Key 的控制流、结果合同、测试证明和排除范围。
+- 当前外部 Provider calls 仍为 `0`，held-out 未运行；下一动作是离线 TDD 补齐执行接缝，
+  通过公开 exact-SHA CI 后才允许执行最多 3 calls 的真实 Pro 协议门。
+- 新增 `ProviderAdapterProtocolExperimentRecord`，把 no-I/O preparation、协议结果、
+  resource ledger 和 stop snapshot 绑定为同一不可变、extra-forbid 的脱敏证据；新增 CLI
+  强制显式确认、精确三次预算、结果目录边界和拒绝覆盖。
+- 新增 7 个接缝测试，证明 preflight 先于环境/Key、成功路径为 1+2 次调用、认证失败只
+  消耗一次并停止、身份漂移在 Provider 前失败、结果不含原始 Key/请求/工具/回答内容。
+- 聚焦及相邻回归为 `58 passed`；完整回归为 `512 passed, 103 subtests passed`。两套
+  RAG 门满分且 compileall 通过。真实 Provider calls 仍为 `0`，held-out 未运行；下一步
+  是提交、推送、验证 exact-SHA GitHub Actions，再由同一干净 SHA 执行真实协议门。

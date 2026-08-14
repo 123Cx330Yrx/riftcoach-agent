@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D5 offline/public verification complete; bounded real DeepSeek protocol gate next）
+Phase 6.11 - 5D-7（in progress: real DeepSeek protocol execution seam implemented and locally verified; exact-SHA public CI + gate next）
 
 ## Phases
 
@@ -114,8 +114,9 @@ Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D5 offline/public veri
 
 ## Next Step
 
-在 5D-7 内使用已经公开 CI 和 no-I/O preflight 验证的精确代码，单独执行最多 3 calls
-的真实 DeepSeek V4 Pro Adapter 协议门。必须显式确认真实调用、零 SDK retry，并由现有
+在 5D-7 内先提交并公开验证新完成的 real-gate execution seam；对该 exact SHA 的 GitHub
+Actions 成功后，在干净工作树重跑 no-I/O preflight，再单独执行最多 3 calls 的真实
+DeepSeek V4 Pro Adapter 协议门。必须显式确认真实调用、零 SDK retry，并由现有
 budget/stop controller fail closed；不直接运行 held-out，也不进入 5D exit review 或 5E。
 
 ## Decisions Made
@@ -193,6 +194,7 @@ budget/stop controller fail closed；不直接运行 held-out，也不进入 5D 
 | D5 用独立 DeepSeek Adapter 而非通用 OpenAI-compatible 基类 | 当前只有两个厂商实现，thinking、finish、usage 与错误语义仍不同；先用分别测试守住差异，出现经过测试的稳定重复后再提取 helper |
 | D5 离线测试不读取 API Key | Fake SDK 用可编程返回验证请求/响应映射、工具往返和失败分支；真实模型质量、在线可用性、延迟与实际费用必须留给公开 SHA 上的有界 API 门 |
 | 预算 ledger 组合在候选 Provider 外层 | D4 价格与调用上限是实验政策，不应污染通用 AgentLoop；I/O 前占用调用、响应后按 usage 结算，同时保持 5E Trace 职责未提前实现 |
+| 真实协议门使用正式执行接缝而非临时 SDK 脚本 | D5 的 Adapter、preflight、ledger 和 protocol runner 已分别存在，但没有入口保证它们按“先身份、后 Key、再 I/O、最后脱敏记录”的顺序组合；本批只补接缝，不改变实验或阶段 |
 
 ## Errors Encountered
 
@@ -275,6 +277,7 @@ budget/stop controller fail closed；不直接运行 held-out，也不进入 5D 
 | 5D-6b Real Adapter Protocol Slice 初始审计猜测 `app/agent/models.py` 存在 | 1 | 只读批次失败且没有文件修改；先用 `rg --files app/agent app/tools` 获取真实模块，确认 Agent 合同位于 `loop.py`，不再沿用猜测路径 |
 | 5D-6b 计划复读按日期猜测了不存在的 real-provider 文件名 | 1 | 代码与测试读取成功，只有文档读取失败且无写入；立即用 `rg --files docs/plans` 定位 canonical 名称，后续引用文件前先查清单 |
 | 5D-6b Adapter protocol runner 从 `app.evaluation.__init__` 重导出导致全量测试循环导入 | 1 | 聚焦测试通过但全量收集揭示 `evaluation -> agent -> skills -> harness -> evaluation`；移除门面重导出，编排型 runner 只从具体模块导入，并把全量测试作为必过门禁 |
+| 5D-7 真实门入口审计的组合读取命令因最终 `rg` 无匹配返回 1 | 1 | 前置文件读取和脚本清单有效、无文件修改；将“未找到 DeepSeek factory 的执行脚本”作为实际缺口继续精确审计，不把预期无匹配解释为业务失败 |
 | 5D-6b canonical 收口复读沿用不存在的旧文档名称和 PowerShell 通配写法 | 1 | 已读取的 execution state 有效，缺失路径无写入；用 `rg --files docs` 与 planning 文件清单定位 `requirements_change_log.md`、`roadmap.md`、`roadmap_v1_3_amendment.md`、`architecture_capability_matrix.md`，后续只访问真实路径 |
 | 5D-6b 活动计划 findings/progress 追加补丁错误假设两文件共享同一尾部上下文 | 1 | `apply_patch` 原子拒绝且没有半写入；分别读取真实尾部并拆成两个追加块，功能与 canonical 状态不受影响 |
 | 5D-6b 领域状态追加补丁错误假设路线历史尾句，工作树安全补丁又错误假设设计列表措辞 | 2 | 两次 `apply_patch` 均原子拒绝且无半写入；先读取各文件真实尾部/匹配行，再把代码测试、路线历史和教学文档拆开更新 |
