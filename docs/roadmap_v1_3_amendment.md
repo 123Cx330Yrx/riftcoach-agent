@@ -48,6 +48,12 @@ Provider 的触发条件是：
 系统按任务自动路由。Registry 目前只提供前两者所需的内部解析骨架，产品级选择
 和自动路由尚未实现；多模型也不等于 Multi-Agent。
 
+ADR-0019 又明确区分“模型分层”与“第三方 Runtime 采用”：当前 5D-7 只让
+`deepseek-v4-pro` 进入准入门；Flash/Pro 分层最早在 5P 后重开，默认等待阶段 6 的真实
+API 调用、Trace、成本或延迟 Bad Case，再比较 Pro-only、Flash-only 和 Flash 默认/
+Pro 有界升级。该横向 Provider 优化不属于 5F；5F 仍只比较自建 AgentRuntime 与 Pi /
+Claude Agent SDK。
+
 3G 声明 Streaming 能力，但完整流式实现可以随阶段 5 产品切片和阶段 6 SSE 消费者逐步补齐。
 
 ## 4. RAG 4M 质量门禁

@@ -841,8 +841,8 @@
 - 唯一候选更正为 `deepseek-v4-pro`。它与 Flash 共享当前所需 API 能力，不新增 SDK、
   Provider、Agent 或控制流；协议门和领域 held-out 必须使用同一精确 Pro 模型。
 - 调用与 Token 上限不变；按官方 2026-08-16 起 Pro 峰值价，把 DeepSeek 应用层金额
-  停止线从 `$0.05` 调整为 `$0.10`。Flash 留作 5F 以后按成本/时延证据评估，不在本门
-  同时执行。
+  停止线从 `$0.05` 调整为 `$0.10`。当时把 Flash 的后续成本/时延评估暂记为 5F 以后；
+  ADR-0019 随后把它修正为 5P 后、默认阶段 6 的横向 Provider 优化门，本门仍不同时执行。
 - 本次更正没有实现 D5 代码、读取 Key、调用真实 Provider 或运行 held-out；唯一下一步
   仍是 D5 离线 TDD。验证、提交、推送与 exact-SHA 公开 CI 结果待本批收尾补记。
 - 本地完整回归为 `460 passed, 103 subtests passed`；两套 RAG 门均为满分且独立 holdout
@@ -874,3 +874,18 @@
   preparation 随后通过，输出 `external_provider_calls=0`、`held_out_executed=false`。
 - D5 已形成公开离线证据。唯一下一步为最多 3 calls 的真实 DeepSeek V4 Pro Adapter
   协议门；该步骤需要真实 Key/显式调用确认，仍不得直接运行 held-out。
+
+### 2026-08-14：Flash/Pro 分层规划纠偏
+
+- 用户确认保持方案 2：当前 5D-7 继续只测试 DeepSeek V4 Pro，Flash 不进入本轮协议门
+  或首次 held-out；未来再评估 Flash 默认、Pro 复杂任务/质量升级。
+- 复核发现旧 ADR-0018、D4 设计、项目决策和能力矩阵曾把未来 Flash 评估放到 5F，
+  与 5F 的 Pi / Claude Agent SDK Runtime 采用职责冲突。
+- 新增初学者设计和 ADR-0019：模型分层改为 5P 后的横向 Provider 优化门，默认等待
+  阶段 6 真实成本/时延/Trace Bad Case；5F 保持第三方 Runtime 对照，不实现模型路由。
+- 同步 RQ-030、ADR-0018 交叉说明、D4 设计、v1.3、能力矩阵、项目决策、canonical
+  state 和活动计划；当前 checkpoint、Pro-only 配置、调用预算和唯一下一步均未改变。
+- 规划纠偏后的完整回归为 `505 passed, 103 subtests passed`；RAG development 与
+  independent holdout 的 Recall/MRR/nDCG 均为 `1.0`，holdout abstention/citation
+  support 均为 `1.0`；compileall、governance 和 Harness dry-run published。全部检查
+  使用本地数据与 dry-run，外部 Provider calls 和 held-out executions 仍为 `0`。

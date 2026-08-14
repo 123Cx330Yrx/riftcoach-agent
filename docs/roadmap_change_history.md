@@ -648,7 +648,8 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   零自动重试不变；按官方 Pro 峰值价，DeepSeek 应用层金额停止线由 `$0.05` 调整为
   `$0.10`，16000 tokens 极端全按输出价约 `$0.06336`。
 - `BOUNDARY`：协议门和领域门必须使用同一精确 Pro 模型；不同时测试 Flash，也不以
-  Flash 协议证据替代 Pro。Flash 只在以后 5F 出现成本/时延 Bad Case 时重开评估。
+  Flash 协议证据替代 Pro。当时把 Flash 的后续评估写在 5F；该未来归属已由下方
+  ADR-0019 条目修正为 5P 后、默认阶段 6 的横向 Provider 优化门。
 - `NO-I/O`：本次更正只改 ADR、设计与持久状态，没有实现 Adapter、读取密钥、调用模型、
   运行 held-out 或进入 5E。唯一下一步仍为 D5 离线 TDD。
 - `PUBLIC-VERIFIED`：候选更正提交 `5513928e29ffab4525b356b80845d9be807647bb`
@@ -679,3 +680,21 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   `external_provider_calls=0`、`held_out_executed=false`；没有读取 Key 或创建客户端。
 - `CURRENT`：唯一下一步为最多 3 calls 的真实 DeepSeek V4 Pro Adapter 协议门；必须
   显式确认真实调用并使用已冻结 budget/stop controller，失败即停止，不直接运行 held-out。
+
+### 2026-08-14：DeepSeek 模型分层移出 5F
+
+- `TRIGGER`：用户确认当前保持 Pro 单候选、未来再考虑 Flash 默认/Pro 升级，并指出
+  5F 原本已经固定为 Pi / Claude Agent SDK 采用实验。
+- `FIXED`：ADR-0018 与 D4 设计曾把未来 Flash 成本/时延评估写入 5F。该落点会同时改变
+  Agent Runtime 与模型策略，破坏实验归因；ADR-0019 修正未来归属，但不改变 ADR-0018
+  的当前 Pro 选择、预算和准入门。
+- `CURRENT`：5D-7 继续只让 `deepseek-v4-pro` 运行协议门与后续冻结 held-out；Flash
+  不加入当前 Adapter allowlist、不产生真实调用，也不触发自动路由。
+- `CONDITIONAL`：Flash/Pro 分层是 5P 后的横向 Provider 优化门，默认等待阶段 6 形成
+  真实 API、Trace、成本、p50/p95 延迟或容量 Bad Case；届时比较 Pro-only、Flash-only
+  与 Flash 默认/Pro 有界升级，并使用新鲜 development/held-out。
+- `CURRENT`：5F 仍只用真实切片比较自建 AgentRuntime 与 Pi / Claude Agent SDK，决定
+  采用、局部采用或拒绝；模型切换能力可以被观察，但 5F 不实现模型分层策略。
+- `BOUNDARY`：本次只同步需求、设计、ADR 和持久状态，不修改 Provider 代码、不运行
+  API/held-out、不进入 5E/5P/5F 或阶段 6。当前唯一下一步仍是最多 3-call 的真实 Pro
+  Adapter 协议门。

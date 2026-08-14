@@ -907,7 +907,8 @@
   `$3.96/M`。DeepSeek protocol + domain 的冻结总 Token 上限为 16000；即使极端按
   全输出价计算也约 `$0.06336`，因此 `$0.10` 停止线足够，成本差不足以抵消领域代表性。
 - 不同时测试 Flash 与 Pro，也不允许 Flash 通过协议、Pro 运行领域；准入证据必须绑定
-  一个精确模型。Flash 只保留为未来 5F 出现成本/时延 Bad Case 后的任务分层候选。
+  一个精确模型。当时把 Flash 的未来成本/时延分层暂记到 5F；ADR-0019 随后保留该候选
+  意图，但把归属修正为 5P 后、默认阶段 6 的横向 Provider 优化门。
 - 本次只更正 ADR、设计与状态，不实现 Adapter、不读取 Key、不调用 Provider、不运行
   held-out；DeepSeek V4 Pro 仍只是候选，不是已准入或生产默认模型。
 
@@ -925,3 +926,17 @@
   进入账本。响应后再使用统一 usage 结算，缺 usage 必须停止而不是按零成本处理。
 - no-I/O preparation 的职责是核对“代码、CI、冻结题目、Prompt/Context 是否同一份”，
   不是运行考题。它有意不导入客户端构造、不读取环境 Key，也不执行 held-out。
+
+### 2026-08-14：DeepSeek Flash/Pro 分层归属复核
+
+- 当前 Pro-only 5D-7 与未来模型分层是两个问题：前者判断一个精确候选能否通过协议和
+  领域准入，后者判断产品运行时是否值得用 Flash 降本并在复杂/低质量任务升级 Pro。
+- 5F 的固定变量是第三方 Agent Runtime（Pi / Claude Agent SDK）是否值得采用。若同时
+  在 5F 改模型策略，SDK 与模型变化会互相混杂，无法解释质量、延迟或成本变化来自哪里。
+- 当前没有产品流量、p95 延迟或单位成功报告成本，不能仅凭 Flash 更便宜就实现自动
+  分层。最早触发点是 5P 早期产品切片之后，默认等待阶段 6 的真实 API/Trace 数据。
+- 未来必须对照 Pro-only、Flash-only、Flash 默认 + Pro 有界升级；使用新鲜且有污染
+  记录的数据集，同一 Skill/Prompt/RAG/Harness 和安全门。没有质量非劣与成本/延迟收益
+  时，保持单模型是合法结果。
+- 该设计不等于 Multi-Agent、用户模型选择器或已实现自动路由；当前
+  `DeepSeekProvider` 仍只允许 `deepseek-v4-pro`，5D-7 唯一下一步不变。

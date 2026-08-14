@@ -235,6 +235,10 @@ blocked_before: "5D-exit-review"
   non-thinking、最多 3-call 协议 + 12-call 领域预算、每案例 4000 tokens、每请求最多
   1024 output tokens、GLM ¥0.50 与全局/单 Provider 停止规则不变；按 Pro 峰值价把
   DeepSeek 停止线更正为 `$0.10`。选择候选不等于已经实现、调用、准入或设为默认模型。
+- ADR-0019 保持当前 Pro-only 5D-7 准入门不变，并纠正未来 Flash 分层的归属：该工作
+  最早在 5P 后、默认等待阶段 6 的真实 API 调用、Trace、成本或延迟 Bad Case，以横向
+  Provider 优化门比较 Pro-only、Flash-only 和 Flash 默认/Pro 有界升级；5F 仍只负责
+  Pi / Claude Agent SDK Runtime 采用实验。当前不增加 Flash 配置、调用或自动路由。
 - D4 聚焦回归为 `68 passed, 15 subtests passed`，完整回归为
   `460 passed, 103 subtests passed`；两套 RAG、compileall、Harness SDK/敏感文件边界、
   Harness dry-run、文档密钥模式扫描、governance 和 diff check 均通过，外部调用为 0。
@@ -437,7 +441,8 @@ D4 已由 ADR-0018 更正并收尾：ADR-0017 的 Flash 选择保留为历史，
 Provider 候选改为 DeepSeek V4 Pro；同任务比较、协议/领域分层准入和成本/停止规则已经
 冻结。D5 已离线实现独立 Adapter、安全失败归因、预算 ledger 与 no-I/O preparation；
 Fake SDK 和 scripted response 下的协议与失败回归通过，外部调用为 0。Qwen3.8 Max 与
-V4 Flash 暂缓，不代表质量较差。
+V4 Flash 暂缓，不代表质量较差。ADR-0019 进一步确认 Flash 不进入当前 5D-7，也不占用
+5F；未来模型分层最早在 5P 后、默认于阶段 6 由真实产品成本/时延证据触发。
 
 D5 功能提交已经通过 exact-SHA GitHub Actions，同一干净公开 SHA 的 no-I/O preflight
 也已通过且确认外部调用为 0、held-out 未运行。5D-7 的唯一下一步是单独执行最多 3

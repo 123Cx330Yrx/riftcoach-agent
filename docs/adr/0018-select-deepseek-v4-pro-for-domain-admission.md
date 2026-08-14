@@ -2,7 +2,7 @@
 
 ## 状态
 
-已接受；取代 ADR-0017 的候选模型与金额停止线
+已接受；取代 ADR-0017 的候选模型与金额停止线；未来 Flash 归属由 ADR-0019 修正
 
 ## 日期
 
@@ -80,7 +80,8 @@ held-out 暴露面。当前没有证据需要两个 DeepSeek 模型同时进门�
 - 候选选择与 D5 的领域准入目标一致；
 - 不增加 SDK、Provider 数量或 Agent 控制流复杂度；
 - 协议与领域证据绑定同一精确模型；
-- 以后若需要 Flash，可在 5F 依据真实成本/时延 Bad Case 单独评估任务分层。
+- 以后若需要 Flash，按 ADR-0019 在 5P 后、默认于阶段 6 依据真实成本/时延 Bad Case
+  单独评估任务分层；该实验不属于 5F。
 
 ### 负面
 
@@ -107,6 +108,7 @@ held-out 暴露面。当前没有证据需要两个 DeepSeek 模型同时进门�
   <https://api-docs.deepseek.com/guides/thinking_mode/>
 - `docs/plans/2026-08-14-second-provider-adoption-gate-design.md`
 - `docs/adr/0017-select-deepseek-v4-flash-as-bounded-second-provider-candidate.md`
+- `docs/adr/0019-defer-deepseek-model-tiering-until-product-evidence.md`
 
-唯一下一步仍是 D5 离线 TDD：实现 `DeepSeekProvider` 的 Pro 配置、类型化安全失败归因、
-调用/Token/金额 ledger 和 no-I/O dry-run。本决定不自动授权真实调用或 held-out 运行。
+本 ADR 接受时的唯一下一步是 D5 离线 TDD；D5 现已完成离线实现。动态唯一下一步只看
+`docs/project_execution_state.md`，ADR-0019 不改变当前 Pro-only 准入顺序。

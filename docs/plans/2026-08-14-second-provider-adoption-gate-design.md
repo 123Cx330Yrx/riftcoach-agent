@@ -3,6 +3,10 @@
 > 2026-08-14 决策更正：ADR-0018 已取代 ADR-0017 的候选模型与金额停止线。
 > 本设计下文已按唯一候选 `deepseek-v4-pro` 和 DeepSeek `$0.10` 停止线同步；独立
 > Adapter、同任务比较、调用/Token 上限、停止规则及“候选不等于准入”边界不变。
+>
+> 2026-08-14 后续归属修正：ADR-0019 保持当前 Pro-only 门不变，并把未来 Flash/Pro
+> 分层从 5F 移出；该横向 Provider 优化最早在 5P 后、默认于阶段 6 依据真实产品证据
+> 重开。5F 继续只负责 Pi / Claude Agent SDK Runtime 采用实验。
 
 ## 1. 这一步到底在解决什么
 
@@ -116,7 +120,8 @@ Qwen3.8 Max 已是正式 `qwen3.8-max`，支持混合思考、Function Calling �
 
 `deepseek-v4-flash` 具备相同的首轮协议能力，速度更快、价格更低，适合只做 Adapter
 smoke test 或未来简单任务的成本/时延分层。但 D5 还包含唯一候选的领域 held-out，不能
-只按协议成本选模型。若 5F 出现明确的成本或时延 Bad Case，再通过新 ADR 评估 Flash。
+只按协议成本选模型。按 ADR-0019，若 5P 后、通常在阶段 6 出现明确的成本或时延 Bad
+Case，再通过独立横向 Provider 优化门评估 Flash；该工作不属于 5F。
 
 ## 5. 三层准入，不把一个绿灯夸成全部能力
 
