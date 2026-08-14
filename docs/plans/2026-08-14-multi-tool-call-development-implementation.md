@@ -54,4 +54,6 @@ Adapter 的多 ToolCall 传输兼容性，并用 AgentLoop 与真实本地 RAG/H
   ReviewHarness；
 - 聚焦回归 `53 passed`，完整回归 `551 passed, 103 subtests passed`；两套 RAG、
   compileall、Harness dry-run、安全/治理/diff 门均通过，外部 Provider 调用为 0；
-- 当前只完成本地实现，等待提交、推送和 exact-SHA 公开 CI。
+- 实现提交 `037a47fecf058b2430efeeb59858e24cdb3b28eb` 已推送，Actions run
+  `31817798170` 对精确 SHA 成功；当前只准入本地执行链兼容性，不准入真实 DeepSeek
+  领域质量。后续必须另行设计新鲜 Dataset/采用门。

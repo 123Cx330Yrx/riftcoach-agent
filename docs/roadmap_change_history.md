@@ -805,3 +805,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   该批只证明本地执行链兼容性，不改写真实 Pro 领域拒绝结论。
 - `CURRENT`：提交并推送后等待 exact-SHA GitHub Actions；通过后仍留在 5D-7，需另行
   设计/批准新鲜真实领域采用门，不能重跑 Dataset 1.1.0、直接进入 5D exit review 或 5E。
+
+### 2026-08-14：多 ToolCall 顺序消费公开验证完成
+
+- `PUBLIC-VERIFIED`：提交 `037a47fecf058b2430efeeb59858e24cdb3b28eb` 的 GitHub Actions
+  run `31817798170` 对精确 SHA 成功；完整 pytest、两套 RAG、compileall、Harness
+  boundary、tracked-data 和 dry-run 均通过，外部 Provider calls 为 0。
+- `SCOPE`：该提交只证明 Adapter/AgentLoop 多 ToolCall 顺序消费与本地纵向执行链，
+  不改变旧 Dataset 1.1.0 的真实 `admitted=false`，也不准入 DeepSeek 报告质量。
+- `CURRENT`：仍在 5D-7；下一步是零调用设计新的 Dataset/输入身份/预算/采用门，之后
+  如需真实验证必须再获得单独确认；不得重跑旧考卷、实现真正并发或进入 5D exit review/5E。

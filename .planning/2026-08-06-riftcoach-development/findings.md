@@ -1080,3 +1080,13 @@
   单元假绿。但 Fake SDK 仍不能证明真实模型质量、延迟、计费或抗未知注入。
 - 当前唯一开放动作是 exact-SHA 公开 CI。旧 Dataset 1.1.0 结果哈希和
   `admitted=false` 结论不可覆盖、不可重跑；真正并发仍无采用理由。
+
+### 2026-08-14：多 ToolCall 顺序消费公开验证发现
+
+- 提交 `037a47fecf058b2430efeeb59858e24cdb3b28eb` 的 Actions `31817798170` 已成功，
+  因此本地 TDD 不再只是工作树证据，而具备 exact-SHA 公开可复现证据。
+- 公开 CI 没有读取 `.env` 或调用 Provider；它不能将 Fake SDK 的报告文本提升为真实
+  DeepSeek 质量证据，也不能让已经消费的 1.1.0 held-out 重新变成可校准数据。
+- 如果继续验证真实 Pro，必须先建立新版本 Dataset 和独立输入计划，重新冻结组件/案例
+  identity、Evaluation/Prompt/Context 合同与资源预算，再由用户单独确认真实调用；当前
+  唯一下一步因此是零调用设计而不是立即发请求。

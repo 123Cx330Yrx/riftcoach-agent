@@ -1052,3 +1052,16 @@
   compileall、Harness dry-run、SDK/secret/run-data、governance 与 diff check 均通过，
   外部 Provider calls 为 0。当前只完成本地实现，唯一下一步为提交、推送和 exact-SHA
   公开 CI；不改变旧真实 held-out 的 `admitted=false`。
+
+### 2026-08-14：多 ToolCall 顺序消费公开验证
+
+- 实现提交 `037a47fecf058b2430efeeb59858e24cdb3b28eb` 已推送；GitHub Actions run
+  `31817798170` 对精确 SHA completed/success。公开门包含全量 `551 passed, 103 subtests
+  passed`、两套 RAG、compileall、Harness SDK/secret/run-data、dry-run、governance 和
+  diff check，外部 Provider calls 为 0。
+- 当前多 ToolCall 结论只到“Adapter/AgentLoop/本地 RAG/Evaluation/Harness 执行链兼容”，
+  不到“DeepSeek 领域准入”；旧真实 Dataset 1.1.0 的结果哈希与 `admitted=false` 永久
+  保持不变。
+- 唯一下一步改为零调用设计新鲜真实领域采用门，包含新 Dataset/输入身份、污染边界、
+  Prompt/Context 快照、资源预算、首错停止和单独确认条件；不重跑旧考卷，不实现真正
+  并发，不进入 5D exit review/5E。

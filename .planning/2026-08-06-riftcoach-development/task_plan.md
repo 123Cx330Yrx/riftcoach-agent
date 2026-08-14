@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.16 - 5D-7（in progress: multi-ToolCall implementation awaits exact-SHA public CI）
+Phase 6.17 - 5D-7（in progress: design a fresh real-domain adoption gate without I/O）
 
 ## Phases
 
@@ -128,15 +128,18 @@ Phase 6.16 - 5D-7（in progress: multi-ToolCall implementation awaits exact-SHA 
   批次且仍不声明并发；AgentLoop 对批次预算、越权和重复做零副作用原子预检，再按顺序
   执行。新 development 案例使用 Fake DeepSeek SDK，真实经过 AgentLoop、本地 RAG、
   Secure Evaluation 1.1 与 ReviewHarness 并发布；外部调用为 0，旧真实拒绝结论不变。
+- 该实现已提交为 `037a47fecf058b2430efeeb59858e24cdb3b28eb`，GitHub Actions run
+  `31817798170` 对精确 SHA completed/success；公开验证没有读取 Key 或调用 Provider。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-7 的多 ToolCall 顺序消费已完成本地 TDD。唯一下一步是提交、推送并验证该实现的
-exact-SHA GitHub Actions；不得读取 Key、重跑 Dataset 1.1.0、把 Fake SDK 证据写成
-DeepSeek 领域准入、实现真正并发或进入 5D exit review/5E。
+5D-7 的多 ToolCall 顺序消费已完成本地 TDD 与 exact-SHA 公开 CI。唯一下一步是零调用
+设计新的、未污染的真实领域采用门：需要新 Dataset/输入身份、规则与预算冻结后才可
+另行请求真实调用；不得重跑 Dataset 1.1.0、把 Fake SDK 证据写成 DeepSeek 领域准入、
+实现真正并发或进入 5D exit review/5E。
 
 ## Decisions Made
 
