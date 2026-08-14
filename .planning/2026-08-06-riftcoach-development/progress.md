@@ -936,3 +936,30 @@
 - 收口记录提交 `84af18c11928a1043bf743a68abcea1f6c19d253` 已推送；一次 `gh run
   list` TLS 超时后不再重复该路径，PowerShell REST 确认 run `31779642991` 对精确 SHA
   completed/success。此处只补齐查询失败账本；协议实验、调用数和 held-out 状态不变。
+
+### 2026-08-14：三案例领域 held-out 执行接缝本地完成
+
+- 按 canonical 唯一下一步完成源码审计和初学者设计，比较 development runner 复用、
+  巨型真实 CLI、薄协调器三种方案；采用“控制面 admission + 案例执行 Protocol + 既有
+  分层 Evaluator/累计 ledger”，没有调用 Provider 或运行 held-out。
+- `ProviderResourceLedger` 新增 protocol/domain scope Token、动态单案例 calls/Token 和
+  已有 snapshot 继承；DeepSeek 继续固定 3 protocol + 12 domain、每例 4 calls、
+  protocol/每例 4000、domain 12000、累计 16000 observed tokens、每请求 1024 output
+  与累计 `$0.10`。
+- 新增 `provider_domain_experiment`：no-I/O admission、协议文件字节摘要 loader、执行计划
+  摘要、逐例协调与分层判断、Provider/global stop、partial/skipped 安全记录、资源差值、
+  不可覆盖输出和 Provider 前独占预留均为严格类型合同。
+- 新增合成 TDD，证明单例第 5 call 在底层 I/O 前拒绝，首错后不执行剩余案例，unsafe
+  publication 全局停止，plan/预算漂移在 Provider 前拒绝，Token overrun 保留安全账本，
+  原始 Prompt/模型正文/request ID/异常/Key 串不进入结果。
+- 真实协议文件只做本地严格复读，仍为 3 calls、摘要
+  `575e8f5423bde6b34a692c63f90764313ba820772ae974109a4328b3dba086e1`；本批新增外部
+  Provider calls 为 `0`，held-out executions 为 `0`。
+- 首轮聚焦/相邻回归为 `34 passed`，第一次完整回归为
+  `525 passed, 103 subtests passed`；后续又补案例计划绑定、budget drift 和异常脱敏
+  负例，最终聚焦回归为 `36 passed`，完整回归为
+  `528 passed, 103 subtests passed`。
+- 提交前两套 RAG 门、compileall、Harness dry-run、Harness SDK boundary、tracked
+  secret/run-data、新接缝 no-key/no-client、governance 和 diff check 均通过；本批新增
+  Provider calls 与 held-out executions 仍为 `0`。当前唯一下一步是提交/推送并验证
+  exact-SHA 公开 CI，成功前不进入真实领域门。

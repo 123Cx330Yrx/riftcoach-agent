@@ -69,6 +69,8 @@ class ExperimentFailureCode(str, Enum):
     INJECTION_RESISTANCE_FAILED = "injection_resistance_failed"
     TERMINAL_STATUS_MISMATCH = "terminal_status_mismatch"
     UNSAFE_PUBLICATION = "unsafe_publication"
+    DOMAIN_CASE_OUTCOME_MISMATCH = "domain_case_outcome_mismatch"
+    DOMAIN_CASE_OBSERVATION_INVALID = "domain_case_observation_invalid"
 
     EXTERNAL_CALL_BUDGET_EXHAUSTED = "external_call_budget_exhausted"
     TOKEN_BUDGET_EXHAUSTED = "token_budget_exhausted"
@@ -96,6 +98,7 @@ class ProviderBudgetPolicy:
     input_cost_per_million: Decimal
     output_cost_per_million: Decimal
     max_estimated_cost: Decimal
+    scope_token_limits: Mapping[str, int] | None = None
     max_latency_ms: int | None = None
 
     def __post_init__(self) -> None:
@@ -128,6 +131,21 @@ class ProviderBudgetPolicy:
             raise ValueError("scope_call_limits must contain positive limits")
         if any(limit > self.max_calls for limit in scopes.values()):
             raise ValueError("scope call limit cannot exceed Provider max_calls")
+        scope_token_limits = (
+            {scope: self.max_observed_tokens for scope in scopes}
+            if self.scope_token_limits is None
+            else dict(self.scope_token_limits)
+        )
+        if set(scope_token_limits) != set(scopes) or any(
+            isinstance(limit, bool)
+            or not isinstance(limit, int)
+            or limit <= 0
+            or limit > self.max_observed_tokens
+            for limit in scope_token_limits.values()
+        ):
+            raise ValueError(
+                "scope_token_limits must match scopes and contain valid limits"
+            )
         for label, value in (
             ("input_cost_per_million", self.input_cost_per_million),
             ("output_cost_per_million", self.output_cost_per_million),
@@ -148,6 +166,11 @@ class ProviderBudgetPolicy:
             "scope_call_limits",
             MappingProxyType(scopes),
         )
+        object.__setattr__(
+            self,
+            "scope_token_limits",
+            MappingProxyType(scope_token_limits),
+        )
 
 
 def deepseek_experiment_policy() -> ProviderBudgetPolicy:
@@ -162,6 +185,7 @@ def deepseek_experiment_policy() -> ProviderBudgetPolicy:
         input_cost_per_million=Decimal("1.32"),
         output_cost_per_million=Decimal("3.96"),
         max_estimated_cost=Decimal("0.10"),
+        scope_token_limits={"adapter_protocol": 4000, "domain": 12_000},
     )
 
 
@@ -177,6 +201,7 @@ def zhipu_experiment_policy() -> ProviderBudgetPolicy:
         input_cost_per_million=Decimal("8"),
         output_cost_per_million=Decimal("28"),
         max_estimated_cost=Decimal("0.50"),
+        scope_token_limits={"domain": 12_000},
     )
 
 
@@ -188,6 +213,42 @@ class ScopeCallCount(BaseModel):
     max_calls: int = Field(gt=0)
 
 
+class ScopeTokenCount(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    scope: str
+    input_tokens: int = Field(ge=0)
+    output_tokens: int = Field(ge=0)
+    total_tokens: int = Field(ge=0)
+    max_observed_tokens: int = Field(gt=0)
+
+    @model_validator(mode="after")
+    def validate_total(self) -> "ScopeTokenCount":
+        if self.total_tokens != self.input_tokens + self.output_tokens:
+            raise ValueError("scope total_tokens must equal input plus output")
+        return self
+
+
+class CaseResourceCount(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    case_id: str
+    calls_used: int = Field(ge=0)
+    max_calls: int = Field(gt=0)
+    input_tokens: int = Field(ge=0)
+    output_tokens: int = Field(ge=0)
+    total_tokens: int = Field(ge=0)
+    max_observed_tokens: int = Field(gt=0)
+
+    @model_validator(mode="after")
+    def validate_total(self) -> "CaseResourceCount":
+        if not self.case_id.strip():
+            raise ValueError("case_id must not be blank")
+        if self.total_tokens != self.input_tokens + self.output_tokens:
+            raise ValueError("case total_tokens must equal input plus output")
+        return self
+
+
 class ResourceLedgerSnapshot(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -197,6 +258,8 @@ class ResourceLedgerSnapshot(BaseModel):
     calls_used: int = Field(ge=0)
     max_calls: int = Field(gt=0)
     scope_calls: tuple[ScopeCallCount, ...]
+    scope_tokens: tuple[ScopeTokenCount, ...] = ()
+    case_resources: tuple[CaseResourceCount, ...] = ()
     input_tokens: int = Field(ge=0)
     output_tokens: int = Field(ge=0)
     total_tokens: int = Field(ge=0)
@@ -210,6 +273,20 @@ class ResourceLedgerSnapshot(BaseModel):
     def validate_totals(self) -> ResourceLedgerSnapshot:
         if self.total_tokens != self.input_tokens + self.output_tokens:
             raise ValueError("total_tokens must equal input plus output")
+        if self.scope_tokens and (
+            sum(row.input_tokens for row in self.scope_tokens)
+            != self.input_tokens
+            or sum(row.output_tokens for row in self.scope_tokens)
+            != self.output_tokens
+        ):
+            raise ValueError("scope token totals must match the resource total")
+        for label, values in (
+            ("scope calls", tuple(row.scope for row in self.scope_calls)),
+            ("scope tokens", tuple(row.scope for row in self.scope_tokens)),
+            ("case resources", tuple(row.case_id for row in self.case_resources)),
+        ):
+            if len(set(values)) != len(values):
+                raise ValueError(f"{label} identities must be unique")
         return self
 
 
@@ -344,19 +421,69 @@ class ExperimentStopController:
 class ProviderResourceLedger:
     """Reserve before I/O, then settle from normalized Provider usage."""
 
-    def __init__(self, policy: ProviderBudgetPolicy) -> None:
+    def __init__(
+        self,
+        policy: ProviderBudgetPolicy,
+        *,
+        initial_snapshot: ResourceLedgerSnapshot | None = None,
+    ) -> None:
         if not isinstance(policy, ProviderBudgetPolicy):
             raise TypeError("policy must be a ProviderBudgetPolicy")
         self.policy = policy
         self._calls_used = 0
         self._scope_calls = {scope: 0 for scope in policy.scope_call_limits}
+        self._scope_input_tokens = {
+            scope: 0 for scope in policy.scope_call_limits
+        }
+        self._scope_output_tokens = {
+            scope: 0 for scope in policy.scope_call_limits
+        }
+        self._case_limits: dict[str, tuple[int, int]] = {}
+        self._case_calls: dict[str, int] = {}
+        self._case_input_tokens: dict[str, int] = {}
+        self._case_output_tokens: dict[str, int] = {}
         self._input_tokens = 0
         self._output_tokens = 0
         self._estimated_cost = Decimal("0")
         self._latency_ms = 0
         self._stop_code: ExperimentFailureCode | None = None
 
-    def reserve(self, request: ChatRequest, *, scope: str) -> ChatRequest:
+        if initial_snapshot is not None:
+            self._seed(initial_snapshot)
+
+    def register_case(
+        self,
+        case_id: str,
+        *,
+        max_calls: int,
+        max_observed_tokens: int,
+    ) -> None:
+        if not isinstance(case_id, str) or not case_id.strip():
+            raise ValueError("case_id must not be blank")
+        if case_id in self._case_limits:
+            raise ValueError("case resource boundary is already registered")
+        for label, value in (
+            ("max_calls", max_calls),
+            ("max_observed_tokens", max_observed_tokens),
+        ):
+            if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+                raise ValueError(f"{label} must be a positive integer")
+        if max_calls > self.policy.scope_call_limits["domain"]:
+            raise ValueError("case call limit exceeds the domain scope")
+        if max_observed_tokens > self.policy.scope_token_limits["domain"]:
+            raise ValueError("case token limit exceeds the domain scope")
+        self._case_limits[case_id] = (max_calls, max_observed_tokens)
+        self._case_calls[case_id] = 0
+        self._case_input_tokens[case_id] = 0
+        self._case_output_tokens[case_id] = 0
+
+    def reserve(
+        self,
+        request: ChatRequest,
+        *,
+        scope: str,
+        case_id: str | None = None,
+    ) -> ChatRequest:
         if scope not in self.policy.scope_call_limits:
             raise ValueError("scope is outside the Provider budget policy")
         if self._stop_code is not None:
@@ -379,6 +506,28 @@ class ProviderResourceLedger:
             > self.policy.max_observed_tokens
         ):
             self._block(ExperimentFailureCode.TOKEN_BUDGET_EXHAUSTED)
+        if (
+            self._scope_input_tokens[scope]
+            + self._scope_output_tokens[scope]
+            + max_tokens
+            > self.policy.scope_token_limits[scope]
+        ):
+            self._block(ExperimentFailureCode.TOKEN_BUDGET_EXHAUSTED)
+        if case_id is not None:
+            if scope != "domain" or case_id not in self._case_limits:
+                raise ValueError("case_id requires a registered domain boundary")
+            max_case_calls, max_case_tokens = self._case_limits[case_id]
+            if self._case_calls[case_id] >= max_case_calls:
+                self._block(
+                    ExperimentFailureCode.EXTERNAL_CALL_BUDGET_EXHAUSTED
+                )
+            if (
+                self._case_input_tokens[case_id]
+                + self._case_output_tokens[case_id]
+                + max_tokens
+                > max_case_tokens
+            ):
+                self._block(ExperimentFailureCode.TOKEN_BUDGET_EXHAUSTED)
         worst_output_cost = self._cost(output_tokens=max_tokens)
         if (
             self._estimated_cost + worst_output_cost
@@ -388,9 +537,18 @@ class ProviderResourceLedger:
 
         self._calls_used += 1
         self._scope_calls[scope] += 1
+        if case_id is not None:
+            self._case_calls[case_id] += 1
         return replace(request, max_tokens=max_tokens)
 
-    def settle(self, response: ChatResponse, *, latency_ms: int) -> None:
+    def settle(
+        self,
+        response: ChatResponse,
+        *,
+        latency_ms: int,
+        scope: str,
+        case_id: str | None = None,
+    ) -> None:
         if not isinstance(response, ChatResponse):
             self._block(ExperimentFailureCode.PROVIDER_RESPONSE_INVALID)
         if (
@@ -403,6 +561,11 @@ class ProviderResourceLedger:
 
         self._input_tokens += response.usage.input_tokens
         self._output_tokens += response.usage.output_tokens
+        self._scope_input_tokens[scope] += response.usage.input_tokens
+        self._scope_output_tokens[scope] += response.usage.output_tokens
+        if case_id is not None:
+            self._case_input_tokens[case_id] += response.usage.input_tokens
+            self._case_output_tokens[case_id] += response.usage.output_tokens
         self._estimated_cost += self._cost(
             input_tokens=response.usage.input_tokens,
             output_tokens=response.usage.output_tokens,
@@ -413,6 +576,20 @@ class ProviderResourceLedger:
             > self.policy.max_observed_tokens
         ):
             self._block(ExperimentFailureCode.TOKEN_BUDGET_EXHAUSTED)
+        if (
+            self._scope_input_tokens[scope]
+            + self._scope_output_tokens[scope]
+            > self.policy.scope_token_limits[scope]
+        ):
+            self._block(ExperimentFailureCode.TOKEN_BUDGET_EXHAUSTED)
+        if case_id is not None:
+            max_case_tokens = self._case_limits[case_id][1]
+            if (
+                self._case_input_tokens[case_id]
+                + self._case_output_tokens[case_id]
+                > max_case_tokens
+            ):
+                self._block(ExperimentFailureCode.TOKEN_BUDGET_EXHAUSTED)
         if self._estimated_cost > self.policy.max_estimated_cost:
             self._block(ExperimentFailureCode.COST_BUDGET_EXHAUSTED)
         if (
@@ -438,6 +615,34 @@ class ProviderResourceLedger:
                     self.policy.scope_call_limits.items()
                 )
             ),
+            scope_tokens=tuple(
+                ScopeTokenCount(
+                    scope=scope,
+                    input_tokens=self._scope_input_tokens[scope],
+                    output_tokens=self._scope_output_tokens[scope],
+                    total_tokens=(
+                        self._scope_input_tokens[scope]
+                        + self._scope_output_tokens[scope]
+                    ),
+                    max_observed_tokens=self.policy.scope_token_limits[scope],
+                )
+                for scope in sorted(self.policy.scope_token_limits)
+            ),
+            case_resources=tuple(
+                CaseResourceCount(
+                    case_id=case_id,
+                    calls_used=self._case_calls[case_id],
+                    max_calls=self._case_limits[case_id][0],
+                    input_tokens=self._case_input_tokens[case_id],
+                    output_tokens=self._case_output_tokens[case_id],
+                    total_tokens=(
+                        self._case_input_tokens[case_id]
+                        + self._case_output_tokens[case_id]
+                    ),
+                    max_observed_tokens=self._case_limits[case_id][1],
+                )
+                for case_id in self._case_limits
+            ),
             input_tokens=self._input_tokens,
             output_tokens=self._output_tokens,
             total_tokens=self._input_tokens + self._output_tokens,
@@ -447,6 +652,64 @@ class ProviderResourceLedger:
             latency_ms=self._latency_ms,
             stop_code=self._stop_code,
         )
+
+    def _seed(self, snapshot: ResourceLedgerSnapshot) -> None:
+        if not isinstance(snapshot, ResourceLedgerSnapshot):
+            raise TypeError("initial_snapshot must be a ResourceLedgerSnapshot")
+        expected_scope_calls = {
+            scope: limit for scope, limit in self.policy.scope_call_limits.items()
+        }
+        actual_scope_calls = {
+            row.scope: row.max_calls for row in snapshot.scope_calls
+        }
+        if (
+            snapshot.provider_id != self.policy.provider_id
+            or snapshot.model != self.policy.model
+            or snapshot.currency != self.policy.currency
+            or snapshot.max_calls != self.policy.max_calls
+            or snapshot.max_observed_tokens != self.policy.max_observed_tokens
+            or snapshot.max_estimated_cost != self.policy.max_estimated_cost
+            or actual_scope_calls != expected_scope_calls
+            or snapshot.stop_code is not None
+            or snapshot.case_resources
+        ):
+            raise ValueError("initial resource snapshot does not match policy")
+
+        self._calls_used = snapshot.calls_used
+        self._scope_calls = {
+            row.scope: row.calls_used for row in snapshot.scope_calls
+        }
+        self._input_tokens = snapshot.input_tokens
+        self._output_tokens = snapshot.output_tokens
+        self._estimated_cost = snapshot.estimated_cost
+        self._latency_ms = snapshot.latency_ms
+
+        if snapshot.scope_tokens:
+            actual_token_limits = {
+                row.scope: row.max_observed_tokens
+                for row in snapshot.scope_tokens
+            }
+            if actual_token_limits != dict(self.policy.scope_token_limits):
+                raise ValueError("initial scope token limits do not match policy")
+            self._scope_input_tokens = {
+                row.scope: row.input_tokens for row in snapshot.scope_tokens
+            }
+            self._scope_output_tokens = {
+                row.scope: row.output_tokens for row in snapshot.scope_tokens
+            }
+            return
+
+        active_scopes = [
+            scope for scope, calls in self._scope_calls.items() if calls > 0
+        ]
+        if snapshot.total_tokens and len(active_scopes) != 1:
+            raise ValueError(
+                "legacy resource snapshot cannot safely attribute scope tokens"
+            )
+        if active_scopes:
+            only_scope = active_scopes[0]
+            self._scope_input_tokens[only_scope] = snapshot.input_tokens
+            self._scope_output_tokens[only_scope] = snapshot.output_tokens
 
     def _cost(
         self,
@@ -481,6 +744,7 @@ class ExperimentBudgetedProvider:
         ledger: ProviderResourceLedger,
         controller: ExperimentStopController,
         scope: str,
+        case_id: str | None = None,
         clock: Callable[[], float] = time.monotonic,
     ) -> None:
         if provider.provider_name != ledger.policy.provider_id:
@@ -489,10 +753,13 @@ class ExperimentBudgetedProvider:
             raise ValueError("Provider model does not match budget policy")
         if scope not in ledger.policy.scope_call_limits:
             raise ValueError("scope is outside the Provider budget policy")
+        if case_id is not None and scope != "domain":
+            raise ValueError("case_id is only valid for the domain scope")
         self._provider = provider
         self._ledger = ledger
         self._controller = controller
         self._scope = scope
+        self._case_id = case_id
         self._clock = clock
         self.provider_name = provider.provider_name
         self.model_name = provider.model_name
@@ -501,11 +768,20 @@ class ExperimentBudgetedProvider:
     def chat(self, request: ChatRequest) -> ChatResponse:
         try:
             self._controller.require_permitted(self.provider_name)
-            prepared = self._ledger.reserve(request, scope=self._scope)
+            prepared = self._ledger.reserve(
+                request,
+                scope=self._scope,
+                case_id=self._case_id,
+            )
             started = self._clock()
             response = self._provider.chat(prepared)
             latency_ms = max(0, round((self._clock() - started) * 1000))
-            self._ledger.settle(response, latency_ms=latency_ms)
+            self._ledger.settle(
+                response,
+                latency_ms=latency_ms,
+                scope=self._scope,
+                case_id=self._case_id,
+            )
             return response
         except ProviderError as exc:
             self._controller.stop_provider(

@@ -111,16 +111,22 @@ Phase 6.11 - 5D-7（in progress: real DeepSeek V4 Pro adapter protocol admitted;
   exact-SHA CI `31767405927` 通过后只运行一次：DeepSeek V4 Pro structured 与 Agent
   tool round trip 均 passed，3/3 calls、1428 tokens、估算 `$0.00221496`，协议
   `admitted=true`；held-out executions 仍为 0。
+- `5D-7` 领域 held-out 执行接缝已完成本地设计/TDD：控制面 admission 不接收
+  Provider；已准入协议的 3 calls/Token/金额会继承到累计 ledger；scope 和单案例分别
+  固定 12/4 calls 与 12000/4000 observed tokens；逐例分层判分后首错停止，unsafe
+  publication 全局停止；输出可在 Provider 前独占预留且只保存白名单观测。合成
+  Provider/Executor 不是 held-out 运行或模型质量证据。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-在 5D-7 内审计现有 Domain E2E runner、DeepSeek Provider 与冻结三场 held-out 的执行
-接缝，先形成初学者设计和离线 TDD 计划，明确 12-call/Token/金额预算、结果脱敏、失败
-即停和不可重复运行边界。本下一步不调用 Provider、不运行 held-out，也不进入
-5D exit review 或 5E；只有接缝通过本地和 exact-SHA 公开 CI 后，才另行执行真实领域门。
+提交并推送 5D-7 的 DeepSeek 三场领域 held-out 执行接缝，验证精确 SHA 的公开
+GitHub Actions。该动作只公开本地设计、累计/单例预算、停止、脱敏和不可重复控制，
+不读取 Key、不创建 DeepSeek client、不运行 held-out，也不进入 5D exit review 或 5E。
+公开 CI 成功后，下一批才可冻结并装配真实案例执行计划与生产案例执行器，继续通过同一
+admission/输出预留门执行一次有界真实领域实验。
 
 ## Decisions Made
 

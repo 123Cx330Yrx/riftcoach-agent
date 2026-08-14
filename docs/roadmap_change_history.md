@@ -717,3 +717,23 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   运行，不准入报告质量、真实抗注入、产品默认模型或 Flash/Pro 路由。
 - `CURRENT`：5D-7 唯一下一步改为审计并设计冻结领域 held-out 执行接缝，先离线 TDD
   和 exact-SHA CI；本批不继续调用 Provider、不进入 5D exit review 或 5E。
+
+### 2026-08-14：5D-7 DeepSeek 领域 held-out 执行接缝
+
+- `DESIGNED`：新增初学者设计与 ADR-0020，拒绝复用带 development canary 的脚本 runner 和把全部
+  控制塞入真实 API CLI；采用 no-I/O admission、案例执行 Protocol、既有分层 Evaluator
+  与累计资源账本的薄协调器。
+- `CONTROL-PLANE`：admission 在类型层不接收 Provider，先绑定当前代码/公开 CI、冻结
+  Dataset/Snapshot、真实协议文件字节摘要和案例执行计划摘要；后续输出必须在 Provider
+  构造前独占预留。
+- `RESOURCE-GATES`：从真实协议已消耗的 3 calls/1428 tokens/费用继续累计；新增
+  protocol/domain scope 与单案例 Token/call 边界，保持每例 4 calls/4000 tokens、领域
+  12 calls/12000 tokens、累计 15 calls/16000 tokens/$0.10 和 1024 output/request。
+- `STOP-AND-SANITIZE`：每例安全观测立即交给现有分层 Evaluator；Provider/案例 mismatch
+  停止候选，unsafe publication 全局停止，剩余案例为 skipped。资源由 ledger 差值产生，
+  公开记录不保存 Prompt、攻击/模型/RAG/工具正文、request ID、异常或 Key。
+- `OFFLINE-EVIDENCE`：合成 Provider/Executor 覆盖协议账本继承、单例第 5 call pre-I/O
+  拒绝、Token overrun、首错停止、unsafe 全局停止、计划/预算漂移、原始异常脱敏和输出
+  不可覆盖；真实协议文件只复读未重跑，held-out executions 和新增 Provider calls 均为 0。
+- `CURRENT`：先提交/推送本接缝并验证 exact-SHA 公开 CI。CI 成功后才进入单独真实领域
+  门，冻结/装配真实案例执行计划与生产 Executor；仍不得进入 5D exit review 或 5E。

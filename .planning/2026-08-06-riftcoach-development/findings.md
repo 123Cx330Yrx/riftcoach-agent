@@ -968,3 +968,29 @@
   抗未知注入能力、生产默认模型或 Flash/Pro 路由。三场 held-out 仍未运行。
 - 用户暂停消息到达时真实门命令已经完成并写入不可覆盖结果；终止请求随后确认没有残留
   Python 进程。恢复时必须复读并归档该证据，严禁把中断误解为需要重跑。
+
+### 2026-08-14：DeepSeek 领域 held-out 执行接缝审计与离线实现
+
+- 现有 `OfflineDomainExecutionRunner` 绑定 development `_Scenario`、脚本 Provider 和已知
+  canary，适合验证本地控制流但不能复用为真实 held-out 执行器；复用会让执行路径接触
+  开发期 oracle。领域门应使用薄协调器、独立案例执行 Protocol 和既有分层 Evaluator。
+- 原实验 ledger 只记录累计 calls/tokens，无法证明 protocol 4000、domain 12000 和单例
+  4000 observed-token 三层边界，也不能从已消耗的真实协议账本继续。现在 snapshot 对旧
+  记录向后兼容：若旧证据只有一个活跃 scope，可安全归因其 Token；多活跃 scope 且缺少
+  scope Token 则拒绝猜测。
+- “preflight 先于 Key”必须成为 API 结构，不应只靠 CLI 书写顺序。新的
+  `prepare_deepseek_domain_heldout_run()` 完全不接收 Provider，先产出绑定代码/CI、
+  Dataset/Snapshot、协议文件摘要和案例计划摘要的 admission；运行函数只接受 admission。
+- 案例执行器不允许上报 calls、Token、金额或延迟。协调器把同一个受控 Provider 交给
+  Executor，并用累计账本前后差值生成 `DomainCandidateCase` 资源字段，避免执行器伪报。
+- 每案例完成后立即复用 `evaluate_domain_candidate()` 的同一分层语义。task outcome / 主
+  失败分类 mismatch 停止 DeepSeek；unsafe publication 触发 global stop；剩余案例明确
+  记为 skipped。Provider 或意外 Executor 异常只保存白名单 failure code，不保存异常正文。
+- D3 Dataset 冻结的是案例身份和判分 oracle，不应把真实攻击正文硬编码进通用协调器。
+  执行计划用 ID/version/SHA/case order 单独绑定，未来生产 Executor 必须声明完全相同的
+  plan identity；真实计划正文和 canary 不进入公开结果。
+- 实际协议结果在扩展后的向后兼容模型下仍严格解析为 admitted 3 calls，字节摘要仍为
+  `575e8f5423bde6b34a692c63f90764313ba820772ae974109a4328b3dba086e1`，没有重跑。
+- 合成 Provider/Executor 已覆盖协议账本继承、单例第 5 call pre-I/O 拒绝、scope Token
+  overrun、首错停止、unsafe 全局停止、plan/budget 漂移 pre-I/O 拒绝、原始异常脱敏和
+  输出独占预留。它只证明实验控制面，不证明 DeepSeek 的领域能力。

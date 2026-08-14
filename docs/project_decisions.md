@@ -43,7 +43,7 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 
 当前仍未实现：
 
-- 真实 GLM recent-form 领域 Skill/Harness 准入和经过同任务评测的第二 Provider；
+- 真实 GLM recent-form 领域 Skill/Harness 准入和通过冻结 held-out 的第二 Provider；
 - 统一 AgentRuntime；
 - FastAPI 会话入口；
 - 玩家长期 Memory；
@@ -151,6 +151,10 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   12-call 领域门、Token/金额停止线和安全错误归因；D5 已完成离线实现，随后真实最小
   structured/tool 协议只运行一次并以 3/3 calls 准入；该结论不等于领域 held-out、
   报告质量、抗未知注入或产品默认模型已准入；
+- DeepSeek 领域 held-out 执行接缝进一步把 no-I/O admission 与 Provider 数据面分开，
+  从真实协议账本继承 calls/Token/金额，增加 domain/单例资源门、逐例分层判断、首错
+  停止、unsafe 全局停止和 Provider 前结果预留；合成测试只准入该控制接缝，真实执行
+  计划、生产 Executor 和 held-out 结果仍待单独领域门；
 - GLM 是首个真实基准 Adapter，不是永久模型选择；Qwen3.8 Max 因 reasoning/计费入口
   增加首轮变量而暂缓，DeepSeek V4 Flash 因本轮唯一候选还需代表复杂领域能力而暂缓；
   ADR-0019 将 Flash/Pro 分层明确为 5P 后的横向 Provider 优化门，默认等待阶段 6 真实
@@ -159,7 +163,9 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   ADR-0013 接受，实验身份由 ADR-0014 接受，离线可执行基线由 ADR-0015 接受，版本化
   注入评测与真实实验门由 ADR-0016 接受，第二 Provider 门的原始历史由 ADR-0017
   保留，当前候选与预算更正由 ADR-0018 接受，未来模型分层归属由 ADR-0019 接受；
-  D1-D5 已完成离线实现且 DeepSeek 最小真实协议已准入，当前仍处于 5D-7，不等于
+  领域 held-out 的 no-I/O admission、薄协调器、累计/单例资源门和不可重复输出由
+  ADR-0020 接受；
+  D1-D5 与领域执行接缝已完成离线实现且 DeepSeek 最小真实协议已准入，当前仍处于 5D-7，不等于
   整个 5D、领域 held-out、LangGraph 或 Multi-Agent 已实现。
 
 ## 数据职责
@@ -171,7 +177,8 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - Memory：玩家画像、历史训练目标和进度，不存放全部原始对局数据；
 - GLM：当前唯一真实模型基线，负责组织和解释证据，不负责创造比赛事实；
 - DeepSeek V4 Pro：D5 唯一有界第二 Provider 候选；独立 Adapter 已实现且真实最小
-  structured/tool 协议已准入，但领域 held-out 未运行，也未设为默认模型；
+  structured/tool 协议已准入，领域控制接缝已离线完成，但真实执行计划/held-out 未运行，
+  也未设为默认模型；
 - DeepSeek V4 Flash：本轮不测试；最早在 5P 后、默认在阶段 6 以真实产品成本/时延
   Bad Case 触发 Pro-only、Flash-only 与 Flash 默认/Pro 有界升级对照；
 - Qwen3.8 Max 等：本轮暂缓，尚未锁定为生产组合。

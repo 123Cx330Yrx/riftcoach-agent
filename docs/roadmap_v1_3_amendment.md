@@ -246,7 +246,11 @@ Adapter、安全错误归因、实验 ledger/stop controller 与 no-I/O preparat
 协议和完整回归通过。real-gate execution seam 的 exact-SHA 公开 CI/no-I/O preflight
 通过后，DeepSeek V4 Pro 真实 structured 与 Agent tool round trip 只运行一次并以
 3/3 calls、1428 tokens、约 `$0.00221496` 准入；没有运行 held-out。唯一下一步仍在
-5D-7 内：审计并设计冻结三场领域 held-out 的执行接缝，先离线 TDD，不在同批调用。
+5D-7 内。领域执行接缝现已完成本地离线 TDD：no-I/O admission 绑定代码/CI、
+Dataset/Snapshot、真实协议字节摘要和案例计划摘要；累计 ledger 继承协议消耗，并约束
+domain/单例 calls 与 Token；逐例分层判断执行首错停止、unsafe 全局停止及脱敏不可覆盖
+记录。本批新增 Provider calls 与 held-out executions 均为 0，先完成提交/推送和
+exact-SHA 公开 CI，再进入单独真实领域门；不得因此提前进入 5D exit review 或 5E。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动

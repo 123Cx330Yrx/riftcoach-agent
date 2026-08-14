@@ -165,6 +165,120 @@ def test_deepseek_protocol_fourth_call_is_rejected_by_scope_budget():
     assert len(provider.requests) == 3
 
 
+def test_domain_case_fifth_call_is_rejected_before_provider():
+    policy = deepseek_experiment_policy()
+    provider = RecordingProvider(
+        provider_name="deepseek",
+        model_name=policy.model,
+        response=response(provider="deepseek", model=policy.model),
+    )
+    ledger = ProviderResourceLedger(policy)
+    ledger.register_case(
+        "heldout_case_1",
+        max_calls=4,
+        max_observed_tokens=4000,
+    )
+    controller = ExperimentStopController(allowed_provider_ids=("deepseek",))
+    wrapper = ExperimentBudgetedProvider(
+        provider=provider,
+        ledger=ledger,
+        controller=controller,
+        scope="domain",
+        case_id="heldout_case_1",
+    )
+
+    for _ in range(4):
+        wrapper.chat(request())
+    with pytest.raises(ProviderResponseError) as captured:
+        wrapper.chat(request())
+
+    assert captured.value.code == "external_call_budget_exhausted"
+    assert len(provider.requests) == 4
+    case = ledger.snapshot().case_resources[0]
+    assert case.case_id == "heldout_case_1"
+    assert case.calls_used == 4
+
+
+def test_domain_scope_token_limit_is_enforced_after_settlement():
+    policy = deepseek_experiment_policy()
+    wrapper, provider, ledger, controller = controlled_provider(
+        policy=policy,
+        result=response(
+            provider="deepseek",
+            model=policy.model,
+            input_tokens=12_000,
+            output_tokens=1,
+        ),
+    )
+
+    with pytest.raises(ProviderResponseError) as captured:
+        wrapper.chat(request())
+
+    assert captured.value.code == "token_budget_exhausted"
+    assert len(provider.requests) == 1
+    domain = next(
+        row for row in ledger.snapshot().scope_tokens if row.scope == "domain"
+    )
+    assert domain.total_tokens == 12_001
+    assert controller.snapshot().provider_stops[0].failure_code is (
+        ExperimentFailureCode.TOKEN_BUDGET_EXHAUSTED
+    )
+
+
+def test_resource_ledger_can_continue_from_admitted_protocol_snapshot():
+    policy = deepseek_experiment_policy()
+    provider = RecordingProvider(
+        provider_name="deepseek",
+        model_name=policy.model,
+        response=response(
+            provider="deepseek",
+            model=policy.model,
+            input_tokens=10,
+            output_tokens=5,
+        ),
+    )
+    controller = ExperimentStopController(allowed_provider_ids=("deepseek",))
+    protocol_ledger = ProviderResourceLedger(policy)
+    protocol = ExperimentBudgetedProvider(
+        provider=provider,
+        ledger=protocol_ledger,
+        controller=controller,
+        scope="adapter_protocol",
+    )
+    for _ in range(3):
+        protocol.chat(request())
+
+    continued = ProviderResourceLedger(
+        policy,
+        initial_snapshot=protocol_ledger.snapshot(),
+    )
+    continued.register_case(
+        "heldout_case_1",
+        max_calls=4,
+        max_observed_tokens=4000,
+    )
+    domain = ExperimentBudgetedProvider(
+        provider=provider,
+        ledger=continued,
+        controller=ExperimentStopController(
+            allowed_provider_ids=("deepseek",)
+        ),
+        scope="domain",
+        case_id="heldout_case_1",
+    )
+    domain.chat(request())
+
+    snapshot = continued.snapshot()
+    assert snapshot.calls_used == 4
+    assert snapshot.total_tokens == 60
+    assert {
+        row.scope: row.calls_used for row in snapshot.scope_calls
+    } == {"adapter_protocol": 3, "domain": 1}
+    assert {
+        row.scope: row.total_tokens for row in snapshot.scope_tokens
+    } == {"adapter_protocol": 45, "domain": 15}
+
+
 def test_missing_max_tokens_is_replaced_with_frozen_output_cap():
     policy = deepseek_experiment_policy()
     wrapper, provider, _, _ = controlled_provider(
