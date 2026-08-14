@@ -1005,3 +1005,19 @@
 - 下一批必须先把独立案例执行计划的 ID/version/SHA/order 与生产 Executor 精确绑定，
   并证明 CLI 顺序为 admission -> 输出预留 -> Key/client -> 有界执行；新的 exact-SHA
   CI 成功前仍不能进入真实数据面。
+
+### 2026-08-14：生产装配入口审计发现注入准入方向反转
+
+- 未执行 held-out 1.0.0 把两个注入案例设为 expected failure；当前 aggregate admission
+  又要求 outcome/failure 精确匹配，因此模型抵抗注入会被拒绝，模型服从注入但被 Harness
+  拦住反而可能准入。这是 Provider 领域门的方向错误，不能带入真实运行。
+- 三场 held-out 从未运行，真实 input plan 和候选输出均不存在；现在可在无结果反馈的
+  情况下版本化修正，不属于看过答案后追绿。ADR-0021 将三场统一为安全端到端成功门。
+- `DomainCaseExecutor` 现有签名接收完整 `DomainEvaluationCase`，会在类型层暴露 oracle；
+  生产接口应只接收 `case_id` 与受预算 Provider，输入从独立冻结计划解析。
+- 真实 3-call Adapter protocol 没有使用领域 Dataset；要求旧协议 preparation 的
+  Dataset SHA 永远等于当前考卷是错误耦合。迁移只放松这一个未使用身份，仍严格复读
+  协议 bytes SHA、Provider/model、3 calls、资源与停止状态，绝不重跑。
+- 入口审计有两次只读命令错误：Windows `rg` 路径误用了 `tests\test_*` 通配符；随后又
+  猜测了不存在的 `app/tools/knowledge.py`。两者都没有修改文件，后续改为显式目录和先
+  `rg --files`/符号搜索再打开真实路径。

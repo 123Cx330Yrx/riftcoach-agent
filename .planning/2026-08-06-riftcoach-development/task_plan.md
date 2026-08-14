@@ -260,6 +260,7 @@ DeepSeek client、不运行 held-out，也不进入 5D exit review 或 5E；真�
 | 5D-2 首个合同补丁假设 `app/agent/__init__.py` 的 docstring 文本，原子校验拒绝 | 1 | 确认没有创建半个 context 模块；读取真实小文件后将新增模块与导出补丁拆开 |
 | 恢复活动计划时把 `.active_plan` 值误当成仓库根相对路径，漏掉 `.planning/` | 1 | 命令只读且未改文件；改为显式从 `.planning` 拼接活动计划目录，并继续按恢复顺序读取 |
 | 读取执行边界测试时猜测不存在的 `tests/test_skill_execution.py` | 1 | 先用 `rg --files tests` 查到真实 `test_skill_execution_boundary.py` 后读取；未改测试或源码 |
+| 领域生产装配入口审计再次把 `tests\\test_*` 作为 Windows `rg` 路径，并猜测不存在的 `app/tools/knowledge.py` | 2 | 两次均为只读失败且未改代码；立即改用显式 `tests` 目录、`rg --files` 和符号搜索定位 `app/tools/adapters/knowledge.py`，不再猜路径 |
 | 5D-2 聚焦回归猜测不存在的 `tests/test_provider_models.py` | 1 | 该次 pytest 未收集任何测试；列出真实 Provider 测试后改跑 `test_provider_tool_calling_models.py` 与 `test_provider_contracts.py` |
 | 5D-4 共享证据转换首个补丁假设了 Harness `__init__` docstring | 1 | `apply_patch` 原子拒绝且没有产生部分源码修改；读取真实文件后把新增模块、Adapter 与导出拆成独立小补丁 |
 | 5D-4 直接回答 Fake Provider 只声明 text chat | 1 | 编译后的 Skill 请求仍携带白名单工具规范，能力协商正确拒绝；修正测试 Provider 声明 `tool_calling`，不放宽生产门禁 |
@@ -308,3 +309,4 @@ DeepSeek client、不运行 held-out，也不进入 5D exit review 或 5E；真�
 | D4 更正回归再次用桌面 Hermes Python 启动 pytest，环境缺少 pytest | 1 | 测试未启动且无文件变化；显式改用仓库 `.venv\Scripts\python.exe`，完整回归随后通过 |
 | D4 更正复核再次猜测 workflow 名为 `ci.yml` | 1 | 只读失败且无脚本执行；先列出 `.github/workflows`，按真实 `tests.yml` 复核全部门禁 |
 | DeepSeek 协议证据归档收尾的 GitHub CI 查询路径间歇性 TLS/HTTP timeout | 5+ | push 与 Actions run 创建均成功且无功能漂移；停止密集重复不稳定的 `gh`/jobs 查询，同类只读失败归入本行，固定用有界 PowerShell REST 核验最终精确 SHA，不把观测失败误报为测试失败 |
+| 生产装配设计提交前 diff check 发现三份新文档 EOF 多余空行 | 1 | 检查阻止提交；用小补丁移除多余行并重新运行 staged/working-tree diff check，不改变设计语义 |

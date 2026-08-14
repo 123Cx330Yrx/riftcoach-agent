@@ -966,3 +966,14 @@
   `31785253957` 对该精确 SHA completed/success。当前唯一下一步是冻结/装配真实案例
   执行计划与生产 Executor/CLI，先离线 TDD 和新的公开 CI，成功前不读取 Key、不运行
   held-out，也不进入 5D exit review 或 5E。
+
+### 2026-08-14：领域 held-out 生产装配设计
+
+- 恢复 canonical state、活动计划、需求账本、路线/修订、ADR-0020 与源码接缝，治理
+  通过，起始 HEAD/origin 均为 `d9ad6f2`，工作树干净。
+- 审计确认旧 `DomainSkillSliceRunner` 仍是单样例/旧评测切片，不能承担 Evaluation 1.1
+  的三场真实 held-out；development `OfflineDomainExecutionRunner` 又含已知 canary 和
+  scripted responses，也不能复用。
+- 发现 held-out 1.0.0 注入期望方向反转和 Executor oracle 暴露；新增生产装配设计、
+  实施计划与 ADR-0021。当前仍为设计/审计证据，尚未修改 Dataset/生产代码，外部调用与
+  held-out executions 均为 0。
