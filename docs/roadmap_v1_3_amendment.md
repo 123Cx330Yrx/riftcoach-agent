@@ -235,9 +235,9 @@ D3 已在规则冻结后创建 3 场独立 held-out，但没有运行。上述�
 ADR-0018 已更正并完成 D4：DeepSeek V4 Pro 是唯一有界第二 Provider 候选，调用/Token/
 金额、错误归因和停止规则已经冻结，DeepSeek 停止线为 `$0.10`。D5 已离线实现独立
 Adapter、安全错误归因、实验 ledger/stop controller 与 no-I/O preparation；Fake SDK
-协议和完整回归通过，但没有读取 Key、调用真实 Provider 或运行 held-out。唯一下一步仍
-在 5D-7 内：先完成 exact-SHA 公开 CI/no-I-O preflight，再单独决定最多 3-call 的真实
-Adapter 协议门。
+协议和完整回归通过，没有读取 Key、调用真实 Provider 或运行 held-out。D5 功能提交的
+exact-SHA 公开 CI 与同 SHA no-I/O preflight 已通过。唯一下一步仍在 5D-7 内：执行一次
+最多 3-call 的真实 DeepSeek V4 Pro Adapter 协议门，失败即停止且不直接运行 held-out。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动

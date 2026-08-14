@@ -672,5 +672,10 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `EVIDENCE`：完整回归 `505 passed, 103 subtests passed`；两套 RAG 门禁、compileall、
   Harness dry-run、SDK/tracked-data 边界、governance 与 diff check 均通过。Fake SDK
   证据只证明 Adapter/控制器，不证明真实模型能力，外部 Provider calls 为 0。
-- `CURRENT`：先提交并核验 D5 exact-SHA 公开 CI，再在同一干净 SHA 运行 no-I/O
-  preflight；随后才可另行授权最多 3 calls 的真实 DeepSeek 协议门，不直接运行 held-out。
+- `PUBLIC-VERIFIED`：D5 功能提交 `e68a8e4542ed72d31d5d46e569a11d9292048540`
+  已推送；GitHub Actions run `31764109304` 对该精确 SHA 的全测试、两套 RAG、compileall、
+  governance、安全边界与 Harness dry-run 全部通过。
+- `NO-I/O-VERIFIED`：同一干净公开 SHA 的 preparation 通过，明确输出
+  `external_provider_calls=0`、`held_out_executed=false`；没有读取 Key 或创建客户端。
+- `CURRENT`：唯一下一步为最多 3 calls 的真实 DeepSeek V4 Pro Adapter 协议门；必须
+  显式确认真实调用并使用已冻结 budget/stop controller，失败即停止，不直接运行 held-out。

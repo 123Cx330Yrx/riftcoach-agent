@@ -21,9 +21,9 @@ blocked_before: "5D-exit-review"
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6b 已完成；
   5D-7 Batch A-C 与 Batch D 的 D1-D5 已完成离线实现，held-out 只完成创建与生命周期
   校验；DeepSeek V4 Pro Adapter、失败归因和实验控制器尚未经过真实 Provider 调用
-- 唯一下一步：在 5D-7 内提交并公开验证 D5 精确 SHA，随后运行一次 no-I/O experiment preflight；
-  该门通过后才可另行执行最多 3 calls 的真实 DeepSeek Adapter 协议门，不直接运行
-  held-out
+- 唯一下一步：在 5D-7 内执行一次最多 3 calls 的真实 DeepSeek V4 Pro Adapter 协议门；
+  必须使用已公开验证的精确 SHA、显式真实调用确认和现有 budget/stop controller，协议
+  失败即停止，不直接运行 held-out
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；DeepSeek
   真实调用必须先完成 D5 离线 TDD、公开 exact-SHA CI 与协议门，不能用候选选择或发布
   热度替代准入证据
@@ -256,7 +256,9 @@ blocked_before: "5D-exit-review"
   真实能力；
 - D5 聚焦/相邻回归已经通过，当前完整回归为 `505 passed, 103 subtests passed`；两套
   RAG 门禁、compileall、Harness dry-run、SDK/tracked-data 边界、governance 与 diff
-  check 均通过。提交、公开 exact-SHA CI 和提交后 no-I/O preflight 尚待本轮收尾。
+  check 均通过。功能提交 `e68a8e4542ed72d31d5d46e569a11d9292048540` 的 GitHub
+  Actions run `31764109304` 全部通过；同一干净 SHA 的 no-I/O preflight 随后通过，
+  `external_provider_calls=0`、`held_out_executed=false`。
 
 当前不能声称：
 
@@ -286,7 +288,7 @@ blocked_before: "5D-exit-review"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 Batch A-C 与 D1-D3 已形成安全离线基线/隔离 held-out，D4 冻结唯一候选，D5 已离线实现独立 DeepSeek Adapter、失败归因和实验资源门 | 阶段 5、整个 5D、真实 DeepSeek 协议/领域质量、held-out 运行、生产默认切换或报告质量准入已完成 |
 | 项目理解 | 已区分 Fake SDK 离线协议验证与 API Key 支持的真实模型准入，也已区分 Provider/Model/Multi-Agent、协议/领域/产品三层门，以及调用/Token/金额预算与安全停止 | 离线测试能评价模型智力/在线可用性，候选实现等于模型排行，或 3 场 held-out 能证明通用生产质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | D4 候选更正提交 `5513928e29ffab4525b356b80845d9be807647bb` 已公开；GitHub Actions run `31762059181` 对该精确 SHA 全部通过；正式网页仍未部署 | 公开候选采用门等于 DeepSeek 已接入、真实领域能力、最终厂商选型或 Web Agent 可用 |
+| GitHub/部署 | D5 功能提交 `e68a8e4542ed72d31d5d46e569a11d9292048540` 已公开；GitHub Actions run `31764109304` 对该精确 SHA 全部通过，同 SHA no-I/O preflight 为零调用/未运行 held-out；正式网页仍未部署 | 公开离线 Adapter 与控制器等于 DeepSeek 已真实准入、最终厂商选型或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -437,6 +439,7 @@ Provider 候选改为 DeepSeek V4 Pro；同任务比较、协议/领域分层准
 Fake SDK 和 scripted response 下的协议与失败回归通过，外部调用为 0。Qwen3.8 Max 与
 V4 Flash 暂缓，不代表质量较差。
 
-5D-7 的唯一下一步是先把 D5 提交、推送并验证 exact-SHA GitHub Actions，再在同一干净公开
-SHA 上运行一次 no-I/O preflight。只有该门通过，下一轮才可单独授权最多 3 calls 的
-真实 DeepSeek Adapter 协议门；不得直接运行 held-out、进入 5D exit review 或 5E。
+D5 功能提交已经通过 exact-SHA GitHub Actions，同一干净公开 SHA 的 no-I/O preflight
+也已通过且确认外部调用为 0、held-out 未运行。5D-7 的唯一下一步是单独执行最多 3
+calls 的真实 DeepSeek V4 Pro Adapter 协议门；必须显式确认真实调用，失败即停止，
+不得直接运行 held-out、进入 5D exit review 或 5E。

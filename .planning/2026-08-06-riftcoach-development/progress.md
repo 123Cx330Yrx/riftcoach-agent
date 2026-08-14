@@ -869,5 +869,8 @@
 - 聚焦与相邻回归通过；完整回归为 `505 passed, 103 subtests passed`。两套 RAG 门禁
   满分，compileall、Harness dry-run、SDK/tracked-data 边界、governance 与 diff check
   均通过。
-- 当前待完成提交、推送、exact-SHA GitHub Actions 与同 SHA no-I/O preflight；这些完成
-  后 D5 才形成公开离线证据，真实 DeepSeek 协议调用仍需下一轮单独门禁。
+- D5 功能提交 `e68a8e4542ed72d31d5d46e569a11d9292048540` 已推送；GitHub
+  Actions run `31764109304` 对精确 SHA 全部通过。同一干净公开 SHA 的 no-I/O
+  preparation 随后通过，输出 `external_provider_calls=0`、`held_out_executed=false`。
+- D5 已形成公开离线证据。唯一下一步为最多 3 calls 的真实 DeepSeek V4 Pro Adapter
+  协议门；该步骤需要真实 Key/显式调用确认，仍不得直接运行 held-out。

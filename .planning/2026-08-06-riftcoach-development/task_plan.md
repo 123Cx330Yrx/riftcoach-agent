@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D5 offline implementation complete; public exact-SHA/no-I/O preflight next）
+Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D5 offline/public verification complete; bounded real DeepSeek protocol gate next）
 
 ## Phases
 
@@ -114,9 +114,9 @@ Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D5 offline implementat
 
 ## Next Step
 
-在 5D-7 内提交并推送 D5，核验 exact-SHA GitHub Actions 后在同一干净公开 SHA 上运行一次
-no-I/O preparation。随后才可另行授权最多 3 calls 的真实 DeepSeek Adapter 协议门；
-不直接运行 held-out，也不进入 5D exit review 或 5E。
+在 5D-7 内使用已经公开 CI 和 no-I/O preflight 验证的精确代码，单独执行最多 3 calls
+的真实 DeepSeek V4 Pro Adapter 协议门。必须显式确认真实调用、零 SDK retry，并由现有
+budget/stop controller fail closed；不直接运行 held-out，也不进入 5D exit review 或 5E。
 
 ## Decisions Made
 
