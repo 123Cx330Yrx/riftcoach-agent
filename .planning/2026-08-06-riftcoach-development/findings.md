@@ -994,3 +994,14 @@
 - 合成 Provider/Executor 已覆盖协议账本继承、单例第 5 call pre-I/O 拒绝、scope Token
   overrun、首错停止、unsafe 全局停止、plan/budget 漂移 pre-I/O 拒绝、原始异常脱敏和
   输出独占预留。它只证明实验控制面，不证明 DeepSeek 的领域能力。
+
+### 2026-08-14：领域 held-out 执行接缝公开验证
+
+- 接缝功能提交 `7986e1ade9ab165b4b2916a62b067587c5c3f027` 已推送，GitHub Actions
+  run `31785253957` 对该精确 SHA completed/success；公开 CI 重跑完整 pytest、两套
+  RAG、compileall、治理、安全边界和 Harness dry-run，没有 Provider 调用。
+- 这只把控制面从“本机可测”升级为“公开仓库可复现”，没有补出真实案例正文、生产
+  Executor 或 CLI，也没有把 3 场 held-out 标记为执行过。
+- 下一批必须先把独立案例执行计划的 ID/version/SHA/order 与生产 Executor 精确绑定，
+  并证明 CLI 顺序为 admission -> 输出预留 -> Key/client -> 有界执行；新的 exact-SHA
+  CI 成功前仍不能进入真实数据面。

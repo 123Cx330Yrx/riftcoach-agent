@@ -735,5 +735,9 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `OFFLINE-EVIDENCE`：合成 Provider/Executor 覆盖协议账本继承、单例第 5 call pre-I/O
   拒绝、Token overrun、首错停止、unsafe 全局停止、计划/预算漂移、原始异常脱敏和输出
   不可覆盖；真实协议文件只复读未重跑，held-out executions 和新增 Provider calls 均为 0。
-- `CURRENT`：先提交/推送本接缝并验证 exact-SHA 公开 CI。CI 成功后才进入单独真实领域
-  门，冻结/装配真实案例执行计划与生产 Executor；仍不得进入 5D exit review 或 5E。
+- `IMPLEMENTED`：接缝提交 `7986e1ade9ab165b4b2916a62b067587c5c3f027` 已通过
+  GitHub Actions run `31785253957` 的 exact-SHA 公开 CI；该 CI 没有调用 Provider 或
+  运行 held-out。
+- `CURRENT`：进入单独真实领域门的装配批，冻结案例执行计划并实现生产 Executor/CLI，
+  先离线 TDD 和新的 exact-SHA CI；成功前不得读取 Key、运行 held-out、进入 5D exit
+  review 或 5E。

@@ -21,9 +21,11 @@ blocked_before: "5D-exit-review"
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6b 已完成；
   5D-7 Batch A-C 与 Batch D 的 D1-D5 已完成，DeepSeek V4 Pro Adapter 真实
   structured/tool 协议 3/3 calls 已准入；三场领域 held-out 的控制面/预算/停止/脱敏
-  执行接缝已完成本地离线 TDD，但真实案例执行计划、生产案例执行器和 held-out 尚未运行
-- 唯一下一步：在 5D-7 内提交并推送 DeepSeek 三场领域 held-out 执行接缝，验证精确 SHA 的公开
-  GitHub Actions；公开 CI 成功前不得冻结/装配真实案例执行计划或发起 Provider 请求
+  执行接缝已完成本地离线 TDD 和 exact-SHA 公开 CI，但真实案例执行计划、生产案例
+  执行器和 held-out 尚未运行
+- 唯一下一步：在 5D-7 内冻结并装配真实案例执行计划与生产案例执行器/CLI，先完成
+  离线 TDD 和新的 exact-SHA 公开 CI；该 CI 成功前不得读取 Key、发起 Provider 请求或
+  运行三场领域 held-out
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；DeepSeek
   领域调用必须先完成执行接缝离线 TDD 与公开 exact-SHA CI，不能用已通过的低层协议、
   候选选择或发布热度替代领域质量证据
@@ -292,7 +294,7 @@ blocked_before: "5D-exit-review"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 已形成安全离线基线/隔离 held-out、DeepSeek 独立 Adapter、真实最小协议及领域 admission/累计账本/逐例停止/脱敏执行接缝 | 阶段 5、整个 5D、真实案例执行计划、DeepSeek 领域质量、held-out 运行、生产默认切换或报告质量准入已完成 |
 | 项目理解 | 已区分控制面 admission 与数据面 Provider 调用、Dataset oracle 与案例执行计划，也已区分 Provider/Model/Multi-Agent、协议/领域/产品三层门，以及累计/范围/单例调用与 Token 预算 | 离线合成 executor 能评价模型智力/在线可用性，执行接缝等于真实领域准入，或 3 场 held-out 能证明通用生产质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | real-gate seam 与协议归档均已公开，最新归档 CI run `31779642991` 成功；本轮领域执行接缝尚待提交、推送和 exact-SHA CI，正式网页仍未部署 | 本地测试等于公开可复现、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
+| GitHub/部署 | 领域执行接缝提交 `7986e1ade9ab165b4b2916a62b067587c5c3f027` 已公开，exact-SHA CI run `31785253957` 成功；正式网页仍未部署 | 执行接缝公开可复现等于真实案例计划/领域 held-out 已运行、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -467,4 +469,7 @@ DeepSeek V4 Pro 协议门。A1 strict structured contract 与 A2 Agent tool roun
 真实协议文件仍严格解析为 3 calls，SHA-256 仍为
 `575e8f5423bde6b34a692c63f90764313ba820772ae974109a4328b3dba086e1`。
 本批没有创建真实案例执行正文、读取 `.env`、创建 DeepSeek client、增加调用或运行
-held-out。当前先完成提交/推送和 exact-SHA 公开 CI，之后才进入单独的真实领域门。
+held-out。执行接缝提交 `7986e1ade9ab165b4b2916a62b067587c5c3f027` 已通过 GitHub
+Actions run `31785253957` 的 exact-SHA 公开 CI；下一批才在单独真实领域门内冻结并
+装配案例执行计划与生产 Executor/CLI，先离线 TDD 和公开验证，再决定是否发起一次
+有界 held-out，仍不得进入 5D exit review 或 5E。

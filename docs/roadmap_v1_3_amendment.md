@@ -249,8 +249,11 @@ Adapter、安全错误归因、实验 ledger/stop controller 与 no-I/O preparat
 5D-7 内。领域执行接缝现已完成本地离线 TDD：no-I/O admission 绑定代码/CI、
 Dataset/Snapshot、真实协议字节摘要和案例计划摘要；累计 ledger 继承协议消耗，并约束
 domain/单例 calls 与 Token；逐例分层判断执行首错停止、unsafe 全局停止及脱敏不可覆盖
-记录。本批新增 Provider calls 与 held-out executions 均为 0，先完成提交/推送和
-exact-SHA 公开 CI，再进入单独真实领域门；不得因此提前进入 5D exit review 或 5E。
+记录。本批新增 Provider calls 与 held-out executions 均为 0；接缝提交
+`7986e1ade9ab165b4b2916a62b067587c5c3f027` 已通过 GitHub Actions run
+`31785253957` 的 exact-SHA 公开 CI。下一批在单独真实领域门内冻结/装配案例计划与生产
+Executor/CLI，仍须先离线 TDD 和新的公开 CI；不得因此提前运行 held-out、进入 5D
+exit review 或 5E。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动

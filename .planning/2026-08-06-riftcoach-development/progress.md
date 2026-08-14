@@ -961,5 +961,8 @@
   `528 passed, 103 subtests passed`。
 - 提交前两套 RAG 门、compileall、Harness dry-run、Harness SDK boundary、tracked
   secret/run-data、新接缝 no-key/no-client、governance 和 diff check 均通过；本批新增
-  Provider calls 与 held-out executions 仍为 `0`。当前唯一下一步是提交/推送并验证
-  exact-SHA 公开 CI，成功前不进入真实领域门。
+  Provider calls 与 held-out executions 仍为 `0`。
+- 功能提交 `7986e1ade9ab165b4b2916a62b067587c5c3f027` 已推送；GitHub Actions run
+  `31785253957` 对该精确 SHA completed/success。当前唯一下一步是冻结/装配真实案例
+  执行计划与生产 Executor/CLI，先离线 TDD 和新的公开 CI，成功前不读取 Key、不运行
+  held-out，也不进入 5D exit review 或 5E。
