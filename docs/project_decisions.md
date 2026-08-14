@@ -167,7 +167,8 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   保留，当前候选与预算更正由 ADR-0018 接受，未来模型分层归属由 ADR-0019 接受；
   领域 held-out 的 no-I/O admission、薄协调器、累计/单例资源门和不可重复输出由
   ADR-0020 接受；未执行考卷的注入成功语义、独立输入计划与 oracle-blind 生产装配由
-  ADR-0021 接受；
+  ADR-0021 接受；真实领域 Bad Case 后，多 ToolCall 批次由 Adapter 严格解码、
+  AgentLoop 整批预检并顺序执行的 development 方案由 ADR-0022 接受；
   D1-D5 与领域执行接缝已完成离线实现且 DeepSeek 最小真实协议已准入，当前仍处于 5D-7，不等于
   整个 5D、领域 held-out、LangGraph 或 Multi-Agent 已实现。
 

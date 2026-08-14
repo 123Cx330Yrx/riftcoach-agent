@@ -777,3 +777,14 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `PUBLIC-VERIFIED`：归档提交 `26b668d0ce594e648a692cd2caf831c86125fede` 已通过
   GitHub Actions run `31810164628` 的 exact-SHA 公开 CI；唯一下一步转为零调用 Bad Case
   设计与 development 复现计划，不改变真实拒绝结论。
+
+### 2026-08-14：多 ToolCall 批次采用顺序消费
+
+- `OFFICIAL-EVIDENCE`：DeepSeek 官方 Chat Completion 合同说明 `tool_choice=auto` 可调用
+  一个或多个工具，响应为 `tool_calls[]`，且当前请求合同没有关闭多调用批次的参数。
+- `DECISION`：ADR-0022 选择由 Adapter 严格解码多个 ToolCall，AgentLoop 在任何工具执行
+  前完成整批预算/白名单/重复校验，再按模型返回顺序执行；不启用真正并发或并发 capability。
+- `NO-I/O`：本批只新增设计、ADR 与 implementation plan，没有读取 Key、调用 Provider、
+  修改 Prompt 或重跑已消费的 Dataset 1.1.0。
+- `CURRENT`：唯一下一步是离线 development TDD；离线通过不改变旧真实结果的
+  `admitted=false`，真实诊断和新鲜 held-out 需后续独立采用门。

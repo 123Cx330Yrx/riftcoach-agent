@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.14 - 5D-7（in progress: parallel ToolCall Bad Case design and development reproduction planning）
+Phase 6.15 - 5D-7（in progress: multi-ToolCall sequential-consumption offline TDD next）
 
 ## Phases
 
@@ -130,10 +130,10 @@ Phase 6.14 - 5D-7（in progress: parallel ToolCall Bad Case design and developme
 
 ## Next Step
 
-5D-7 真实拒绝结果已由提交 `26b668d0ce594e648a692cd2caf831c86125fede` 和 GitHub
-Actions run `31810164628` 完成 exact-SHA 公开归档。唯一下一步是零调用审计并设计
-`unsupported_parallel_tool_calls` development 复现与采用门，比较继续拒绝、顺序执行和
-受控并发；当前 Dataset 1.1.0 不得重跑，也不进入 5D exit review 或 5E。
+5D-7 已完成 `unsupported_parallel_tool_calls` 零调用审计与 ADR-0022 设计。唯一下一步是
+按 `docs/plans/2026-08-14-multi-tool-call-development-implementation.md` 做离线 TDD：让
+DeepSeek Adapter 严格解码多 ToolCall 批次，并由 AgentLoop 整批预检后按顺序执行；不得
+读取 Key、重跑 Dataset 1.1.0、实现真正并发或进入 5D exit review/5E。
 
 ## Decisions Made
 
@@ -213,6 +213,7 @@ Actions run `31810164628` 完成 exact-SHA 公开归档。唯一下一步是零�
 | 真实协议门使用正式执行接缝而非临时 SDK 脚本 | D5 的 Adapter、preflight、ledger 和 protocol runner 已分别存在，但没有入口保证它们按“先身份、后 Key、再 I/O、最后脱敏记录”的顺序组合；本批只补接缝，不改变实验或阶段 |
 | DeepSeek V4 Pro 最小 Adapter 协议准入 | exact-SHA `076a5e3` 上一次真实运行以 3/3 calls 完成严格 JSON 与一次知识工具往返，资源/停止/脱敏合同均通过；该结论不能覆盖尚未运行的三场领域 held-out |
 | DeepSeek V4 Pro 领域 held-out 不准入且不重跑当前考卷 | 首个正常案例暴露 `unsupported_parallel_tool_calls`，系统安全降级且没有发布错误内容；这是 Provider/Adapter 能力 Bad Case，不允许删除不可变结果或在已见考卷上临时放宽合同追绿 |
+| 多 ToolCall 批次由 AgentLoop 受控顺序消费 | DeepSeek 官方 `auto` 允许一个或多个工具且没有关闭批次的正式参数；Adapter 应翻译合法响应，AgentLoop 复用整批白名单/重复/预算预检，当前无证据承担真正并发复杂度 |
 
 ## Errors Encountered
 

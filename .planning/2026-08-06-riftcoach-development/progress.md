@@ -1027,3 +1027,13 @@
 - 归档提交 `26b668d0ce594e648a692cd2caf831c86125fede` 已推送；GitHub Actions
   run `31810164628` 对该精确 SHA completed/success，完整测试、两套 RAG 门、compileall、
   Harness SDK/secret/run-data 边界与 dry-run 全部通过。CI 没有真实 Provider 调用。
+
+### 2026-08-14：多 ToolCall 顺序消费设计
+
+- 对照真实失败、DeepSeek Adapter、AgentLoop 及官方 Chat Completion 合同，比较继续
+  拒绝、受控顺序执行和真正并发三种方案；官方合同允许 `auto` 返回一个或多个工具，
+  且没有正式关闭批次的请求参数。
+- 新增初学者设计、ADR-0022 和四任务实施计划，选择“Adapter 严格解码 + AgentLoop
+  整批原子预检 + 按返回顺序执行”；不宣称并发 capability，不新增框架。
+- 本批未修改 Provider/Agent 代码，没有读取 Key、调用真实 Provider 或重跑 held-out。
+  下一步仅是 Fake SDK + 本地 Tool/RAG/Harness 的 development TDD。

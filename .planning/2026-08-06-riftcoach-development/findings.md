@@ -1052,3 +1052,16 @@
 - 当前结果证明“单工具调用 Adapter 合同与真实模型行为不兼容”，尚不能评价报告质量或
   注入抵抗。不得重跑当前 held-out；后续若考虑并行 ToolCall，应先在 development 复现、
   比较拒绝/顺序执行/并发执行方案并建立新合同与新鲜评测。
+
+### 2026-08-14：多 ToolCall Bad Case 设计结论
+
+- DeepSeek 官方 Chat Completion 合同明确 `tool_choice=auto` 可调用一个或多个工具，响应
+  使用 `tool_calls[]`；当前公开请求字段没有 `parallel_tool_calls=false`。因此真实 Bad Case
+  是 RiftCoach Adapter 合同比厂商正式合同更窄，不是模型输出违反官方协议。
+- Provider Adapter 只负责严格解码，工具是否并发属于 Agent Runtime。现有 AgentLoop 已
+  在执行前检查整批数量、白名单和重复签名，并在全部通过后按返回顺序执行，适合以最小
+  改动兼容多 ToolCall 批次。
+- 真正并发没有当前延迟证据，且会增加共享状态、取消、超时、顺序和部分失败语义；
+  ADR-0022 选择顺序消费，不开启 `parallel_tool_calls` capability。
+- 当前真实 held-out 结论永久保持不准入。后续先做零调用 development TDD；任何真实
+  诊断和新鲜 held-out 都必须另过采用门，不能复用旧三题追绿。

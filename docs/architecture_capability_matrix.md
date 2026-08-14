@@ -22,10 +22,10 @@
 |---|---|---|---|---|---|---|
 | A01 | LoL 确定性事实 | Riot API、MatchAnalyzer、Schema v1 | 阶段 1 | 阶段 7 增加 Meta，但保持事实分层 | 指标单测、合成样例、Timeline 缺失与短局测试 | 已完成 |
 | A02 | 质量门控 Harness | 状态机、Artifact、评测、受限修订、降级 | 阶段 2 | 阶段 8 增加恢复与复杂运行治理 | 状态迁移、错误数字、修订越权、发布门禁测试 | 已完成 |
-| A03 | 模型 Provider 抽象 | 统一 ChatRequest/Response、Registry、能力协商；Zhipu Adapter 真实最小 structured/tool 协议已准入但领域未准入；独立 DeepSeek V4 Pro Adapter 已以 3/3 calls 通过真实最小协议，真实领域 held-out 首例暴露 `unsupported_parallel_tool_calls` 并 fail closed，领域未准入且未注册为默认 | 阶段 3 | 5D-7 先在 development 复现并决策并行 ToolCall 合同，当前 held-out 不重跑 | 同一领域案例、Tool Calling、结构化输出、错误合同、调用/Token/金额停止 | 部分完成 |
+| A03 | 模型 Provider 抽象 | 统一 ChatRequest/Response、Registry、能力协商；Zhipu Adapter 真实最小 structured/tool 协议已准入但领域未准入；独立 DeepSeek V4 Pro Adapter 已以 3/3 calls 通过真实最小协议，真实领域 held-out 首例暴露 `unsupported_parallel_tool_calls` 并 fail closed，领域未准入且未注册为默认 | 阶段 3 | ADR-0022 已选择多 ToolCall 批次严格解码、AgentLoop 整批预检并顺序执行，下一步离线 development TDD；当前 held-out 不重跑 | 同一领域案例、Tool Calling、结构化输出、错误合同、调用/Token/金额停止 | 部分完成 |
 | A04 | Tool Runtime | Schema、超时、重试、缓存、熔断、fallback、指标 | 阶段 3 | 阶段 7 适配标准 MCP 工具 | 故障注入、缓存、熔断、fallback 和越权测试 | 已完成 |
 | A05 | RAG 与证据 | 混合检索、父子块、引用、冲突、拒答、独立保留集 | 阶段 4 | 维护数据集；按规模证据决定是否升级存储 | Recall/MRR/nDCG、abstain、引用支持与冲突测试 | 已完成 |
-| A06 | 最小 Agent Loop | Assistant ToolCall、Tool Observation、预算和停止原因 | 阶段 5A | 阶段 5D 接入 Skill，5E 统一 Runtime | Fake Provider + 真实知识工具、重复调用和越权测试 | 已完成 |
+| A06 | 最小 Agent Loop | Assistant ToolCall、Tool Observation、预算和停止原因；已有整批数量/白名单/重复预检和顺序执行结构 | 阶段 5A | 5D-7 用多 ToolCall development TDD 固定整批原子预检；5E 统一 Runtime | Fake Provider + 真实知识工具、重复调用、越权和批次零副作用测试 | 已完成（批次合同待补证） |
 | A07 | Skill Contract | `recent-form-review` 与 `single-match-review` 均有 Manifest、SKILL.md、Pydantic I/O、工具白名单和预算 | 阶段 5B 基础 + 5C-5 前第二个真实合同 | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill；真实内部 Skill 出现后才设计调用模式 | 坏 Manifest、Schema、权限漂移、预算和发布边界测试 | 已完成 |
 | A08 | Skill Router | 5C-1 至 5C-6 与退出复核均完成；development 23/23、holdout 11/12；selected 决策锁定 Skill name/version；ADR-0010 暂缓 LLM fallback | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试、退出复核和 ADR | 已完成 |
 | A09 | Prompt/Context Engineering | Harness Prompt V0、SKILL.md 指令；5D-2 已实现 trust-typed Context Builder，5D-3 已实现逐轮 Context 门禁；5D-7 已冻结双层语义身份、Evaluation 1.1、安全 blocking policy、隔离 held-out 与独立输入计划；真实 held-out 在 Prompt/注入质量可评价前先被并行 ToolCall 能力边界阻断 | 阶段 5D-5E | 先处理 Provider/Adapter 能力 Bad Case，再用新鲜评测验证真实 Prompt/Context；5E 加 Trace，阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、漂移拒绝、用户/RAG 注入、回归和消融测试 | 部分完成 |
