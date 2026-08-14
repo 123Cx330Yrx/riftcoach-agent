@@ -631,3 +631,6 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   dry-run、文档密钥模式扫描、governance 和 diff check 通过，外部调用为 0。
 - `CURRENT`：唯一下一步为 5D-7 Batch D D5 的离线 TDD 准备；本轮仍不得自动调用真实
   Provider 或运行 held-out。
+- `PUBLIC-VERIFIED`：D4 提交 `02720631aa34aa8556ea445bbd1837c8b562715c` 已推送；
+  GitHub Actions run `31761121188` 对该精确 SHA 的完整 pytest、两套 RAG、compileall、
+  governance、Harness SDK/敏感文件边界和 dry-run 全部通过，CI 未调用真实 Provider。

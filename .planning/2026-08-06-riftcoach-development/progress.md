@@ -830,3 +830,6 @@
   完整回归为 `460 passed, 103 subtests passed`。RAG development/independent holdout
   的 Recall/MRR/nDCG、abstention/citation 门均通过；compileall、Harness SDK/敏感文件
   边界、Harness dry-run、文档密钥模式扫描、governance 和 diff check 通过。
+- D4 提交 `02720631aa34aa8556ea445bbd1837c8b562715c` 已推送；GitHub Actions run
+  `31761121188` 对该精确 SHA completed/success，CI 全部门禁通过且没有调用真实
+  Provider。公开进度线已按远端证据回写。

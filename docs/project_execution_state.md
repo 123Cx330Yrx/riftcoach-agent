@@ -266,7 +266,7 @@ blocked_before: "5D-exit-review"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 Batch A-C 与 D1-D3 已形成安全离线基线/隔离 held-out，D4 只新增候选采用门设计与 ADR-0017 | 阶段 5、整个 5D、真实 Provider 领域质量、held-out 运行、第二 Provider 实现或报告质量准入已完成 |
 | 项目理解 | 已区分 Provider/Model/Multi-Agent、协议/领域/产品三层准入、同任务控制变量、调用/Token/金额预算与安全停止规则；理解 DeepSeek 只是候选，Qwen 暂缓不是质量结论 | 候选选择等于接入/模型排行，或 3 场 held-out 可以证明生产质量和通用抗注入 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | D1-D3 提交 `e100e4d602891bb6cfb22f25101c53f4621408f8` 已公开；GitHub Actions run `31719575766` 对该精确 SHA 全部通过；正式网页仍未部署 | 公开 secure 基线或 held-out 文件等于真实领域能力、最终厂商选型或 Web Agent 可用 |
+| GitHub/部署 | D4 提交 `02720631aa34aa8556ea445bbd1837c8b562715c` 已公开；GitHub Actions run `31761121188` 对该精确 SHA 全部通过；正式网页仍未部署 | 公开候选采用门等于 DeepSeek 已接入、真实领域能力、最终厂商选型或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
