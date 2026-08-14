@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.12 - 5D-7（in progress: production held-out gate publicly verified; real three-case run requires explicit confirmation）
+Phase 6.13 - 5D-7（in progress: real held-out rejected on parallel tool-call boundary; immutable evidence archival）
 
 ## Phases
 
@@ -99,7 +99,7 @@ Phase 6.12 - 5D-7（in progress: production held-out gate publicly verified; rea
   `coach_evaluation@1.1.0` 安全评测输入/输出与不可修订 blocking policy；secure offline
   executable development 7 场的 task/failure accuracy 均为 `1.0`，unsafe publication 为
   `0.0`，external calls 为 `0`。D3 已创建 3 场独立 held-out，并通过防污染/显式确认门；
-  held-out 尚未运行，设计与结果边界不能混淆。
+  当时尚未运行；本计划后文已记录其后唯一一次真实执行和拒绝结果。
 - `5D-7` Batch D D4 已完成并更正候选：ADR-0018 取代 ADR-0017 的模型选择，改用
   DeepSeek 官方 `deepseek-v4-pro` 作为唯一有界第二 Provider 候选；独立 Adapter、同任务
   3 场比较、安全失败分类、最多 15/12 calls、Token/停止规则不变，DeepSeek 金额停止线
@@ -119,16 +119,21 @@ Phase 6.12 - 5D-7（in progress: production held-out gate publicly verified; rea
   Provider/Executor 不是 held-out 运行或模型质量证据。提交
   `7986e1ade9ab165b4b2916a62b067587c5c3f027` 的 GitHub Actions run `31785253957`
   completed/success。
+- `5D-7` 真实 DeepSeek V4 Pro 领域 held-out 已获显式确认并只执行一次：首个正常案例
+  消耗 1 个领域调用，Adapter 因响应含未准入的并行工具调用返回
+  `unsupported_parallel_tool_calls`；没有规范化响应、工具执行、知识证据或 Evaluation，
+  Harness 安全降级，后两场按首错停止跳过，领域 `admitted=false`。结果 SHA-256 为
+  `fbd1251af98daa9e767de56a35100025807ce96026d6b3b3497e33dd30ad989e`；不得重跑追绿。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-7 生产装配已由提交 `eb198354b3186f25b7d0455d7ed28725bc17e234` 和 GitHub
-Actions run `31799394506` 完成 exact-SHA 公开验证。唯一下一步是由用户再次显式确认后，
-从同一冻结输入计划运行一次真实 DeepSeek V4 Pro 三案例领域 held-out；未确认前不得读取
-Key、创建真实 DeepSeek client 或发起 Provider 请求，也不进入 5D exit review 或 5E。
+5D-7 唯一下一步是归档真实领域拒绝结果、增加固定 SHA/失败边界回归，提交、推送并验证
+exact-SHA GitHub Actions。当前 Dataset 1.1.0 已消费，不得删除结果、重复运行、临场调
+Prompt 或直接放宽 Adapter；并行工具 Bad Case 的后续处理必须另做 development 复现和
+采用决策，也不进入 5D exit review 或 5E。
 
 ## Decisions Made
 
@@ -207,6 +212,7 @@ Key、创建真实 DeepSeek client 或发起 Provider 请求，也不进入 5D e
 | 预算 ledger 组合在候选 Provider 外层 | D4 价格与调用上限是实验政策，不应污染通用 AgentLoop；I/O 前占用调用、响应后按 usage 结算，同时保持 5E Trace 职责未提前实现 |
 | 真实协议门使用正式执行接缝而非临时 SDK 脚本 | D5 的 Adapter、preflight、ledger 和 protocol runner 已分别存在，但没有入口保证它们按“先身份、后 Key、再 I/O、最后脱敏记录”的顺序组合；本批只补接缝，不改变实验或阶段 |
 | DeepSeek V4 Pro 最小 Adapter 协议准入 | exact-SHA `076a5e3` 上一次真实运行以 3/3 calls 完成严格 JSON 与一次知识工具往返，资源/停止/脱敏合同均通过；该结论不能覆盖尚未运行的三场领域 held-out |
+| DeepSeek V4 Pro 领域 held-out 不准入且不重跑当前考卷 | 首个正常案例暴露 `unsupported_parallel_tool_calls`，系统安全降级且没有发布错误内容；这是 Provider/Adapter 能力 Bad Case，不允许删除不可变结果或在已见考卷上临时放宽合同追绿 |
 
 ## Errors Encountered
 
@@ -313,3 +319,4 @@ Key、创建真实 DeepSeek client 或发起 Provider 请求，也不进入 5D e
 | 生产装配首次完整回归仍保留 held-out `1.0.0` 预检常量 | 1 | 543 tests/103 subtests 已通过、2 个 no-I/O 预检失败；按 ADR-0021 只把冻结常量更新为 `1.1.0`，相邻 25/25 随后通过 |
 | 生产装配安全扫描再次把 `docs\security*` 作为 Windows `rg` 路径 | 1 | `.gitignore` 已成功读取且暴露真正的 runs 目录边界，只有通配扫描失败；改用显式文件清单，并把真实门默认运行目录移入已忽略/受 CI 保护的 `data/runs/` |
 | 生产装配 CI 状态回写把唯一下一步只写成自然语言动作 | 1 | governance 在提交前拒绝，因为正文没有显式包含 canonical `5D-7`；补回检查点名并重新验证，没有改变执行状态或发起外部调用 |
+| 真实领域门恢复时猜测 ADR-0020 的简称文件名 | 1 | 只读命令报告文件不存在，其他检查无写入；立即用 `rg --files docs/adr` 定位真实文件 `0020-use-no-io-admission-and-thin-coordinator-for-domain-heldout.md`，未触发 Provider 调用 |

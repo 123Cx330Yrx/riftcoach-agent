@@ -180,8 +180,8 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - Memory：玩家画像、历史训练目标和进度，不存放全部原始对局数据；
 - GLM：当前唯一真实模型基线，负责组织和解释证据，不负责创造比赛事实；
 - DeepSeek V4 Pro：D5 唯一有界第二 Provider 候选；独立 Adapter 已实现且真实最小
-  structured/tool 协议已准入，领域控制接缝已完成离线 TDD 与 exact-SHA 公开 CI，但
-  真实执行计划/held-out 未运行，也未设为默认模型；
+  structured/tool 协议已准入；真实领域 held-out 随后只运行一次，并在首个正常案例因
+  `unsupported_parallel_tool_calls` fail closed，领域未准入且未设为默认模型；
 - DeepSeek V4 Flash：本轮不测试；最早在 5P 后、默认在阶段 6 以真实产品成本/时延
   Bad Case 触发 Pro-only、Flash-only 与 Flash 默认/Pro 有界升级对照；
 - Qwen3.8 Max 等：本轮暂缓，尚未锁定为生产组合。

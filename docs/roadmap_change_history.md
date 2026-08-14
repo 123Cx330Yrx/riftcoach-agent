@@ -757,3 +757,20 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   路径；它只证明生产装配，不是 DeepSeek 领域质量或真实 held-out 结果。
 - `CURRENT`：唯一下一步是提交、推送并验证本生产装配的 exact-SHA GitHub Actions；
   成功后真实三案例仍需下一次显式确认，不进入 5D exit review 或 5E。
+
+### 2026-08-14：DeepSeek V4 Pro 真实领域 held-out 不准入
+
+- `EXECUTED-ONCE`：用户显式确认后，在公开干净 SHA `205397f0bd87a53291b8a2c62487a8b6d966fdb1`
+  上通过 no-I/O preflight，并只执行一次 Dataset 1.1.0 真实领域门。
+- `BAD-CASE`：首个正常案例的第一次 Agent 请求消耗 1 call；模型响应触发生产 Adapter
+  `unsupported_parallel_tool_calls` 边界，没有统一 `ChatResponse`、工具执行、Evidence
+  或 Evaluation。Harness 安全降级，unsafe publication 为 0。
+- `STOPPED`：按首错停止，用户注入与知识注入案例均 skipped；最终 `admitted=false`，
+  不能声称已测试真实注入抵抗或报告质量。
+- `RESOURCES`：领域增量记录 1 call、0 observed tokens、`$0.00`；0 tokens 表示响应在
+  规范化前被拒绝、统一 usage 无法结算，不代表厂商一定没有计费。
+- `IMMUTABLE-EVIDENCE`：脱敏结果 SHA-256 为
+  `fbd1251af98daa9e767de56a35100025807ce96026d6b3b3497e33dd30ad989e`；当前 held-out
+  已消费，禁止删除、覆盖或重跑追绿。
+- `CURRENT`：先归档结果并完成公开 CI；之后仅在 development 中评估并行 ToolCall 的
+  拒绝、顺序执行与并发执行方案，冻结新合同和新鲜评测前不得再次调用领域 held-out。

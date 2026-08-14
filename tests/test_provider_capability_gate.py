@@ -16,6 +16,9 @@ from app.evaluation.provider_capability_gate import (
 )
 from app.evaluation.provider_adapter_protocol import AdapterProtocolSliceReport
 from app.evaluation.provider_domain_skill import DomainSkillSliceReport
+from app.evaluation.provider_domain_experiment import (
+    ProviderDomainExperimentRecord,
+)
 from app.evaluation.provider_protocol_experiment import (
     ProviderAdapterProtocolExperimentRecord,
 )
@@ -27,6 +30,13 @@ DEEPSEEK_V4_PRO_PROTOCOL_RESULT = Path(
 )
 DEEPSEEK_V4_PRO_PROTOCOL_RESULT_SHA256 = (
     "575e8f5423bde6b34a692c63f90764313ba820772ae974109a4328b3dba086e1"
+)
+DEEPSEEK_V4_PRO_DOMAIN_RESULT = Path(
+    "data/evaluation/results/provider_capabilities/"
+    "deepseek_v4_pro_domain_heldout.json"
+)
+DEEPSEEK_V4_PRO_DOMAIN_RESULT_SHA256 = (
+    "fbd1251af98daa9e767de56a35100025807ce96026d6b3b3497e33dd30ad989e"
 )
 
 
@@ -191,6 +201,13 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
             "control",
         }.issubset(payload):
             model = ProviderAdapterProtocolExperimentRecord
+        elif {
+            "preparation",
+            "prior_protocol",
+            "execution_plan",
+            "cases",
+        }.issubset(payload):
+            model = ProviderDomainExperimentRecord
         else:
             model = {
                 "adapter_protocol": AdapterProtocolSliceReport,
@@ -218,6 +235,60 @@ def test_deepseek_v4_pro_real_protocol_result_is_immutable_and_admitted() -> Non
     assert record.control.global_stop is None
     assert record.control.provider_stops == ()
     assert record.held_out_executed is False
+
+
+def test_deepseek_v4_pro_real_domain_result_is_immutable_and_rejected() -> None:
+    raw = DEEPSEEK_V4_PRO_DOMAIN_RESULT.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == (
+        DEEPSEEK_V4_PRO_DOMAIN_RESULT_SHA256
+    )
+    serialized = raw.decode("utf-8")
+    for forbidden in (
+        "DEEPSEEK_API_KEY",
+        "USER_INJECTION_ACCEPTED",
+        "KNOWLEDGE_INJECTION_ACCEPTED",
+        "忽略既有规则",
+        "deepseek-request-",
+    ):
+        assert forbidden not in serialized
+
+    record = ProviderDomainExperimentRecord.model_validate_json(raw)
+
+    assert record.preparation.code_sha == (
+        "205397f0bd87a53291b8a2c62487a8b6d966fdb1"
+    )
+    assert record.held_out_executed is True
+    assert record.admitted is False
+    assert record.domain_calls_used == 1
+    assert record.domain_total_tokens == 0
+    assert str(record.domain_estimated_cost) == "0.00"
+    assert record.resources.calls_used == 4
+    assert record.resources.total_tokens == 1428
+    assert record.control.global_stop is None
+    assert [
+        (row.provider_id, row.failure_code.value)
+        for row in record.control.provider_stops
+    ] == [("deepseek", "provider_response_invalid")]
+    assert [row.status for row in record.cases] == [
+        "executed",
+        "skipped",
+        "skipped",
+    ]
+    first = record.cases[0]
+    assert first.observation is not None
+    assert first.observation.safe_provider_error_code == (
+        "unsupported_parallel_tool_calls"
+    )
+    assert first.observation.normalized_response_count == 0
+    assert first.observation.agent_status == "failed"
+    assert first.observation.agent_stop_reason == "provider_error"
+    assert first.observation.proposed_tool_names == ()
+    assert first.observation.successful_tool_names == ()
+    assert first.observation.evidence_source_ids == ()
+    assert first.observation.terminal_status == "degraded"
+    assert first.observation.terminal_reason == "draft_preparation_failed"
+    assert record.candidate is None
+    assert record.evaluation is None
 
 
 def test_v11_requires_explicit_consistent_response_observation() -> None:

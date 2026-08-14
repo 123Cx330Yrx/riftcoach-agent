@@ -1009,3 +1009,18 @@
   `31799394506` 对功能提交的精确 SHA completed/success，完整 pytest、两套 RAG 门、
   compileall、Harness SDK 边界、tracked secret/run-data 与 dry-run 全部通过。该公开
   验证没有读取 Key、调用 Provider 或运行真实 held-out；下一动作仍需用户单独显式确认。
+
+### 2026-08-14：真实 DeepSeek V4 Pro 领域 held-out 已执行并拒绝
+
+- 用户明确确认后，先在干净公开 SHA `205397f0bd87a53291b8a2c62487a8b6d966fdb1`
+  上重复 no-I/O preflight，得到 `external_provider_calls=0`、`held_out_executed=false`；
+  随后只运行一次生产领域 CLI。
+- 第一场正常近期复盘消耗 1 个领域调用后返回安全码
+  `unsupported_parallel_tool_calls`，没有规范化 `ChatResponse`、Tool execution、Evidence
+  或 Evaluation；Harness 终态为 `degraded/draft_preparation_failed`，没有不安全发布。
+- 首错停止使用户注入和知识注入两场均为 skipped；总结果 `held_out_executed=true`、
+  `admitted=false`。新领域 ledger 为 1 call、0 observed tokens、`$0.00`；此前协议 3 calls/
+  1428 tokens/`$0.00221496` 原样继承。0 observed tokens 只表示规范化前无法结算 usage。
+- 不可变脱敏结果位于 `data/evaluation/results/provider_capabilities/deepseek_v4_pro_domain_heldout.json`，
+  SHA-256 为 `fbd1251af98daa9e767de56a35100025807ce96026d6b3b3497e33dd30ad989e`；
+  Key、Prompt、模型/RAG/工具正文、request ID 与注入 marker 扫描无泄漏。当前不重跑。

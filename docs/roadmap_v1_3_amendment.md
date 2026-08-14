@@ -38,7 +38,8 @@
 
 当前首个真实基线是 GLM。ADR-0018 已取代 ADR-0017 的模型选择，DeepSeek V4 Pro 是
 下一轮唯一有界候选；其独立 Adapter、失败归因和实验控制器已在 D5 离线实现，真实
-最小 structured/tool 协议已以 3/3 calls 准入，但领域 held-out 尚未运行，Qwen、Kimi
+最小 structured/tool 协议已以 3/3 calls 准入；真实领域 held-out 随后只执行一次并在
+首例因 `unsupported_parallel_tool_calls` 未准入，Qwen、Kimi
 等仍未锁定。选择第二
 Provider 的触发条件是：
 出现真实 Skill/Agent 任务后，候选与 GLM 通过
@@ -185,7 +186,7 @@ OP.GG MCP
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
-5D-7 Prompt/Context Eval      进行中；DeepSeek V4 Pro 真实最小协议已准入，三场领域 held-out 尚未运行
+5D-7 Prompt/Context Eval      进行中；最小协议已准入，真实领域 held-out 首例因并行 ToolCall 边界未准入
 ```
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
@@ -252,9 +253,10 @@ domain/单例 calls 与 Token；逐例分层判断执行首错停止、unsafe �
 记录。本批新增 Provider calls 与 held-out executions 均为 0；接缝提交
 `7986e1ade9ab165b4b2916a62b067587c5c3f027` 已通过 GitHub Actions run
 `31785253957` 的 exact-SHA 公开 CI。后续生产装配批已把未执行 held-out 版本化更正为
-1.1.0，并实现独立输入计划、oracle-blind 生产 Executor 与 Key-last CLI；当前等待该
-装配提交的新 exact-SHA 公开 CI。成功后真实三案例仍是下一次显式确认的单独有界动作，
-不得因此提前进入 5D exit review 或 5E。
+1.1.0，并实现独立输入计划、oracle-blind 生产 Executor 与 Key-last CLI；装配提交已通过
+exact-SHA 公开 CI。真实门获确认后只执行一次：首例因 `unsupported_parallel_tool_calls`
+未形成统一响应而安全降级，后两例 skipped，领域 `admitted=false`。当前考卷不得重跑，
+并行工具能力须先回到 development 做独立采用决策，不得提前进入 5D exit review 或 5E。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动

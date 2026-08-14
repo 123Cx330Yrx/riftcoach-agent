@@ -1038,3 +1038,17 @@
   Evaluation Adapter 对非法 JSON 做最多一次同 Schema 格式修复；二者控制不同风险。
 - Key-last 必须由入口顺序和测试证明：所有身份/文件/输出冲突在环境 loader 前失败，
   并在环境加载前独占创建输出哨兵。进程在此后失败会留下空哨兵，防止静默重复付费。
+
+### 2026-08-14：真实领域 held-out 首个 Bad Case
+
+- 真实 DeepSeek V4 Pro 领域门只执行一次，在第一个正常案例的第一次 Agent 调用后得到
+  `unsupported_parallel_tool_calls`。初始 Context 只含 system/user 消息，因此该安全码
+  表明生产 Adapter 拒绝了模型响应中的多个 ToolCall，而不是历史 assistant 消息编码失败。
+- Adapter 没有构造统一 `ChatResponse`，所以 Agent 观测为 failed/provider_error，工具、
+  Evidence 与 Evaluation 均未开始；ReviewHarness 按既有边界降级到确定性报告，没有
+  unsafe publication。后两例按首错停止跳过。
+- 实验 ledger 在 I/O 前计入 1 call；由于 Adapter 在规范化前拒绝响应，无法从统一合同
+  结算 usage/latency，因此公开领域增量为 0 tokens/$0.00，而不是断言厂商没有计费。
+- 当前结果证明“单工具调用 Adapter 合同与真实模型行为不兼容”，尚不能评价报告质量或
+  注入抵抗。不得重跑当前 held-out；后续若考虑并行 ToolCall，应先在 development 复现、
+  比较拒绝/顺序执行/并发执行方案并建立新合同与新鲜评测。

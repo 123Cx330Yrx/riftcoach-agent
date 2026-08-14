@@ -23,9 +23,10 @@ blocked_before: "5D-exit-review"
   structured/tool 协议 3/3 calls 已准入；三场领域 held-out 的控制面以及独立输入计划、
   oracle-blind 生产 Executor 和真实门 CLI 已完成离线 TDD，并由提交
   `eb198354b3186f25b7d0455d7ed28725bc17e234`、GitHub Actions run `31799394506`
-  完成 exact-SHA 公开验证；真实 DeepSeek 领域 held-out 尚未运行
-- 唯一下一步：5D-7 由用户再次显式确认后，从冻结输入计划运行一次真实 DeepSeek V4 Pro
-  三案例领域 held-out；未确认前不得读取 Key、发起 Provider 请求或运行 held-out
+  完成 exact-SHA 公开验证；真实 DeepSeek 领域 held-out 已执行一次并在首个正常案例因
+  `unsupported_parallel_tool_calls` 不准入，后两例按首错停止跳过
+- 唯一下一步：5D-7 归档本次不可变脱敏结果、补固定回归并完成 exact-SHA 公开 CI；
+  不得重跑当前 held-out、临场调 Prompt 或直接放宽并行工具合同
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；DeepSeek
   领域调用必须先完成执行接缝离线 TDD 与公开 exact-SHA CI，不能用已通过的低层协议、
   候选选择或发布热度替代领域质量证据
@@ -53,7 +54,7 @@ blocked_before: "5D-exit-review"
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测首个 Provider，并为第二 Provider 决策提供真实证据 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（生产领域门已完成 exact-SHA 公开 CI；真实 held-out 未运行） | Batch A：分层合同与 10 个记录型 development 控制样本；Batch B：组件/案例双层 SHA-256 快照和零调用 admission；Batch C：ADR-0015、7 个 `offline_executable` development 场景及一个真实 unsafe publication；D1-D2：`coach_evaluation@1.1.0` 安全合同、不可修订 blocking policy、7 场 secure offline development 基线，task/failure accuracy 均 1.0、unsafe publication 0、external calls 0；D3：3 场独立 held-out 创建，`calibration_excluded=true`，尚未真实运行；D4-D5：ADR-0018、独立 DeepSeek Adapter、失败观察、预算/停止门与 3-call 真实协议准入；领域控制接缝和生产装配现包含修正为安全成功语义的 Dataset 1.1.0、独立字节哈希输入计划、oracle-blind Executor、真实本地 Skill/RAG/Harness、`max_revisions=0`、精确协议字节门和 Provider 前输出预留，并由 `eb19835` / Actions `31799394506` 公开验证 |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（真实 DeepSeek held-out 已执行一次、未准入，正在归档） | Batch A：分层合同与 10 个记录型 development 控制样本；Batch B：组件/案例双层 SHA-256 快照和零调用 admission；Batch C：ADR-0015、7 个 `offline_executable` development 场景及一个真实 unsafe publication；D1-D2：`coach_evaluation@1.1.0` 安全合同、不可修订 blocking policy、7 场 secure offline development 基线，task/failure accuracy 均 1.0、unsafe publication 0、external calls 0；D3：3 场独立 held-out，`calibration_excluded=true`；D4-D5：ADR-0018、独立 DeepSeek Adapter、失败观察、预算/停止门与 3-call 真实协议准入；生产领域门在 `205397f` 上只执行一次，首个正常案例消耗 1 call 后由 Adapter 以 `unsupported_parallel_tool_calls` fail closed，normalized response/tool/evidence/Evaluation 均未形成，Harness `degraded`，后两场 skipped，`admitted=false`、unsafe publication 0 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界
@@ -277,7 +278,8 @@ blocked_before: "5D-exit-review"
 - trust/JSON 分层已经彻底解决 Prompt Injection；
 - Batch C 的脚本 Provider/canary 已证明真实 GLM、DeepSeek 或 Qwen 抗注入；
 - DeepSeek V4 Pro 已通过领域 Skill/Harness 准入、成为产品默认模型或普遍优于
-  Qwen/GLM；当前只准入最小 structured/tool Adapter 协议；
+  Qwen/GLM；真实领域 held-out 已运行但未准入，当前只准入最小 structured/tool
+  Adapter 协议；
 - 已经实现 Tool Observation compaction，或协作式 deadline 能硬中断任意阻塞函数；
 - 路由对自然语言具有充分泛化能力；
 - 小型合成 holdout 已证明路由对自然语言充分泛化；
@@ -472,5 +474,7 @@ DeepSeek V4 Pro 协议门。A1 strict structured contract 与 A2 Agent tool roun
 run `31785253957` 的 exact-SHA 公开 CI。后续生产装配批已在零外部调用下把 held-out
 修正为 1.1.0 安全成功门，冻结输入计划并接入生产 Executor/CLI；功能提交
 `eb198354b3186f25b7d0455d7ed28725bc17e234` 已通过 GitHub Actions run
-`31799394506` 的 exact-SHA 公开 CI。现在可以把一次真实领域 held-out 作为单独动作提交
-给用户显式确认，但仍不得直接进入 5D exit review 或 5E。
+`31799394506` 的 exact-SHA 公开 CI。用户确认后真实领域门只执行一次；首例返回
+`unsupported_parallel_tool_calls` 并由 Adapter fail closed，Harness 降级，后两例
+skipped，领域 `admitted=false`。当前结果不可重跑；并行 ToolCall Bad Case 需回到
+development 独立处理，仍不得直接进入 5D exit review 或 5E。
