@@ -108,7 +108,8 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - 结构化模型输出先服务机器消费的 EvaluationResult，Coach 报告仍为 Markdown；
 - 结构化请求必须经过 capability negotiation；5D-6b 的生产 Zhipu Adapter 已真实准入
   最小 JSON mode 与 Tool Calling 协议，但这不等于领域 Skill 已准入；
-- 真实第二 Provider 选择必须等待 5D-7 冻结同一领域任务、指标和失败分类，不提前锁定；
+- 第二 Provider 候选选择曾被要求等待 5D-7 冻结同一领域任务、指标和失败分类；该条件
+  在 D1-D3 后满足，D4 才由 ADR-0017 作出候选决策；
   早期 P1/P2 通过而 P3/P4 暴露默认 Thinking 和旧参数验收边界的结果已保留；
 - 最终 P1-P5 在显式 disabled-thinking 后 5/5 低层通过；生产 Adapter 已完成离线双向
   映射；3-call 协议控制器用一个预算 Provider 组合严格 structured request、现有
@@ -143,12 +144,17 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - held-out 只能在 D1/D2 合同、Prompt、snapshot 与规则冻结后创建，D3 已创建 3 场并标记
   `calibration_excluded=true`，但首次结果尚未运行且不得用于反向调当前规则；真实首轮
   固定正常、用户注入、知识注入 3 场，每 Provider 领域最多 12 calls、`max_revisions=0`、
-  SDK retry 为 0；第二 Provider 仍需 D4 新 ADR 和协议门；
-- GLM 是首个真实基准 Adapter，不是永久模型选择；DeepSeek、Qwen 等只在同任务同评测
-  决策门打开后比较，不能因发布热度直接替换或一次接入多家；
+  SDK retry 为 0；
+- ADR-0017 已选择 DeepSeek 官方 `deepseek-v4-flash` 为 D5 唯一有界候选，要求独立
+  Adapter、non-thinking、最多 3-call 协议门 + 12-call 领域门、Token/金额停止线和安全
+  错误归因；本决策不等于已实现、已调用、已准入或已设为产品默认模型；
+- GLM 是首个真实基准 Adapter，不是永久模型选择；Qwen3.8 Max 已按正式模型能力复核后
+  暂缓，DeepSeek V4 Pro 也因首轮协议收益相同但成本更高而暂缓，二者均可在新 Bad Case
+  和新 ADR 下重开；
 - 该组合方案由 ADR-0011 接受，分层准入结论由 ADR-0012 接受，领域评测方案由
   ADR-0013 接受，实验身份由 ADR-0014 接受，离线可执行基线由 ADR-0015 接受，版本化
-  注入评测与真实实验门由 ADR-0016 接受；D1-D3 已完成，当前处于 5D-7，
+  注入评测与真实实验门由 ADR-0016 接受，第二 Provider 候选与预算门由 ADR-0017
+  接受；D1-D4 已完成，当前处于 5D-7，
   不等于整个 5D、LangGraph 或
   Multi-Agent 已实现。
 
@@ -160,7 +166,8 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - OP.GG MCP：后续接入的动态版本 Meta；
 - Memory：玩家画像、历史训练目标和进度，不存放全部原始对局数据；
 - GLM：当前唯一真实模型基线，负责组织和解释证据，不负责创造比赛事实；
-- DeepSeek、Qwen 等：待同任务评测的 Provider 候选，尚未锁定为生产组合。
+- DeepSeek V4 Flash：D5 唯一有界第二 Provider 候选，尚未实现、调用或准入；
+- Qwen3.8 Max、DeepSeek V4 Pro 等：本轮暂缓，尚未锁定为生产组合。
 
 ## 质量原则
 

@@ -600,5 +600,34 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   `calibration_excluded=true`，通过无污染与显式确认生命周期测试；本批不运行 held-out。
 - `BOUNDARY`：D1-D3 不调用真实 Provider、不接入第二 Provider，不代表真实模型抗注入
   或领域质量已准入。
-- `CURRENT`：唯一下一步改为 D4 候选 Provider 采用门设计；先用新 ADR 固定同任务比较、
+- `AT-CHECKPOINT`：当时唯一下一步改为 D4 候选 Provider 采用门设计；先用新 ADR 固定同任务比较、
   能力/错误归因、调用/成本预算和停止规则，之后才考虑一次有界真实比较。
+- `PUBLIC-VERIFIED`：D1-D3 提交
+  `e100e4d602891bb6cfb22f25101c53f4621408f8` 已推送；GitHub Actions run
+  `31719575766` 对该精确 SHA 全部通过，CI 未调用真实 Provider 或运行 held-out。
+
+### 2026-08-14：5D-7 Batch D D4 第二 Provider 候选采用门
+
+- `AUDITED`：统一 `LLMProvider`、Chat 合同、能力协商和 Registry 已经厂商中立，但
+  thinking、工具名、reasoning、finish reason、usage 和错误映射仍属于独立 Adapter；
+  “OpenAI-compatible”不能证明只替换 base URL 即可安全复用。
+- `OFFICIAL-VERIFIED`：DeepSeek 官方 V4 Flash/Pro 均支持 non-thinking、JSON 与 Tool
+  Calls，并公开直接 API 价格；Qwen3.8 Max 已是正式混合思考模型，也支持结构化输出与
+  Function Calling，不能再按旧资料称为 preview。Qwen 本轮因 reasoning/计费入口增加
+  控制变量而暂缓，不是质量结论。
+- `ACCEPTED`：ADR-0017 选择 DeepSeek 官方 `deepseek-v4-flash` 为唯一有界第二
+  Provider 候选。DeepSeek V4 Pro 因首轮协议面相同但成本更高暂缓；不增加候选和通用
+  OpenAI-compatible Adapter 方案也被拒绝。
+- `GATES`：D5 必须先离线实现独立 Adapter、5D-6b 安全错误归因缺口、预算 ledger 和
+  no-I/O dry-run；随后 exact-SHA 公开 CI 成功，才可能执行最多 3-call 协议门和同一
+  3 场 held-out。DeepSeek 累计最多 15 calls，GLM 领域最多 12 calls，每案例 4000
+  total tokens、每请求最多 1024 output tokens，金额停止线分别为 $0.05 和 ¥0.50。
+- `STOP`：身份/快照漂移、预算控制失效、公开工件泄密或任一 unsafe publication 会
+  停止整个实验；协议、usage、预算或案例期望失败会停止该 Provider，不重跑或调 Prompt。
+- `BOUNDARY`：D4 只完成设计和采用决策，没有实现/注册 DeepSeek Adapter、读取密钥、
+  调用真实 Provider、运行 held-out、选择生产默认模型或进入 5E。
+- `VERIFIED-LOCAL`：聚焦回归 `68 passed, 15 subtests passed`，完整回归
+  `460 passed, 103 subtests passed`；两套 RAG、compileall、Harness SDK/敏感文件边界、
+  dry-run、文档密钥模式扫描、governance 和 diff check 通过，外部调用为 0。
+- `CURRENT`：唯一下一步为 5D-7 Batch D D5 的离线 TDD 准备；本轮仍不得自动调用真实
+  Provider 或运行 held-out。

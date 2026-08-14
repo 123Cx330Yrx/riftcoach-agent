@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D3 complete; D4 Provider gate design next）
+Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D4 complete; D5 offline Provider experiment preparation next）
 
 ## Phases
 
@@ -100,15 +100,18 @@ Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D3 complete; D4 Provid
   executable development 7 场的 task/failure accuracy 均为 `1.0`，unsafe publication 为
   `0.0`，external calls 为 `0`。D3 已创建 3 场独立 held-out，并通过防污染/显式确认门；
   held-out 尚未运行，设计与结果边界不能混淆。
+- `5D-7` Batch D D4 已完成：ADR-0017 选择 DeepSeek 官方 `deepseek-v4-flash` 为唯一
+  有界第二 Provider 候选，并冻结独立 Adapter、同任务 3 场比较、安全失败分类、最多
+  15/12 calls、Token/金额停止线和不安全发布全局停止规则；本批外部调用为 0。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-继续 5D-7 Batch D 的 D4 候选 Provider 采用门设计：先写新 ADR，固定同任务比较、能力
-前置条件、失败分类、调用/成本上限和停止规则；本轮不自动调用真实 Provider、不接入第二
-Provider、不运行 held-out，也不进入 5D exit review 或 5E。
+继续 5D-7 Batch D 的 D5 离线 TDD 准备：实现独立 DeepSeek Adapter、安全错误归因、
+调用/Token/金额控制器和 no-I/O dry-run；本轮不调用真实 Provider、不运行 held-out，
+也不进入 5D exit review 或 5E。
 
 ## Decisions Made
 
@@ -179,6 +182,8 @@ Provider、不运行 held-out，也不进入 5D exit review 或 5E。
 | D1-D2 采用安全评测 1.1 并保留 1.0.0 | 历史结果必须可复现；新版本需要接收用户请求与 bounded KnowledgeEvidence，并由 Harness 对 `prompt_injection` 直接阻断，不交给 Reviser |
 | D3 只创建 held-out，不在同一批运行 | 防止数据集创建与规则调节互相污染；首次运行必须在规则冻结后由显式确认触发 |
 | D4 先设计 Provider 采用门，再决定是否调用 | 5D-6b 暴露了统一响应/错误归因缺口；第二 Provider 不能在同任务合同、预算与失败分类未冻结前接入 |
+| 选择 DeepSeek V4 Flash 为唯一第二 Provider 候选 | 官方直接 API 支持 non-thinking、JSON 与工具调用，现有 SDK 可复用且价格透明；它只进入 D5 有界准入，不是质量排行或默认模型 |
+| 暂缓 Qwen3.8 Max 与 DeepSeek V4 Pro | Qwen 已是正式模型但 reasoning/计费入口会增加首轮变量，Pro 与 Flash 协议面相同但更贵；待新 Bad Case 再评估 |
 
 ## Errors Encountered
 

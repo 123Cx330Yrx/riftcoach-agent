@@ -862,3 +862,30 @@
   canary、Prompt、模型正文、Tool Observation、request ID、异常或密钥。
 - 5D-6b 的错误来源丢失仍未被本批“猜测修复”；它被保留为 D4 前的可观测性缺口。下一步
   先设计候选 Provider 采用门，再决定是否进行一次有界真实比较。
+
+### 2026-08-14：5D-7 Batch D D4 Provider 候选审计
+
+- 现有 `LLMProvider`、`ChatRequest/ChatResponse`、能力协商和显式 Registry 是厂商中立
+  接缝，但生产 Adapter 目前只有 Zhipu。`ZhipuProvider` 还包含关闭 thinking、工具名
+  别名、并行调用拒绝、finish reason 和错误映射等厂商语义；第二 Provider 不能只更换
+  `base_url`，也不应先造一个掩盖差异的“万能 OpenAI-compatible Adapter”。
+- DeepSeek 官方当前把 `deepseek-v4-flash` 与 `deepseek-v4-pro` 标为正式模型，均支持
+  OpenAI 格式、non-thinking/thinking、JSON output 与 Tool Calls；V4 Flash 的直接 API
+  单价和 2026-08-16 起的峰谷新价均可公开核验。它与现有 `openai>=2,<3` 依赖兼容，
+  且可以关闭 thinking，适合先隔离测试 Provider 适配与同任务控制流。
+- Qwen3.8 Max 已结束 preview 并成为正式 `qwen3.8-max`，支持混合思考、JSON 输出和
+  Function Calling，不能再依据过期检索摘要称为“仅思考 preview”。但官方还要求在
+  `preserve_thinking=true` 时完整回传 `reasoning_content`；当前 RiftCoach 的规范消息
+  没有该字段。其 Token Plan 个人版以动态 Credits 计费且明确禁止自定义应用后端 API，
+  标准按量价格本轮也未取得足以冻结的 qwen3.8-max 行，因此暂不作为首次候选，不代表
+  对模型质量作负面结论。
+- DeepSeek V4 Pro 与 Flash 共享首轮所需协议面，但价格更高；D4 的目标是先验证第二
+  Provider 可移植性，不是做模型排行榜。因此选 Flash 可减少成本与变量，Pro 留待以后
+  有明确质量 Bad Case 时再评估。
+- 已冻结的三个 held-out 案例各允许最多 4 次 Provider call 和 4000 total tokens；首次
+  比较必须继续沿用该合同、`max_revisions=0` 与 SDK retry=0。第二 Provider 在进入
+  held-out 前还需通过精确 3-call Adapter protocol，因此候选总上限为 15 calls；GLM
+  同任务上限为 12 calls。
+- D4 只决定候选和门禁，不检查密钥、不实现 Adapter、不运行 held-out、不产生外部调用。
+  下一步应先离线实现并测试 DeepSeek Adapter、预算/成本预检和比较控制器，再由公开 CI
+  验证精确 SHA；真实比较必须是之后独立、显式受限的执行批次。

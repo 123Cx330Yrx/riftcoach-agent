@@ -803,6 +803,30 @@
   Candidate/Result 已复核，完整回归为 `460 passed, 103 subtests passed`；两套 RAG、
   compileall、Harness SDK/tracked-data、dry-run、治理与 diff check 均通过。当前提交和
   GitHub Actions 精确 SHA 验证待本轮最后执行。
-- 当前 5D-7 仍进行中。唯一下一步改为 Batch D D4：先写候选 Provider 采用门 ADR，
+- 当时 5D-7 仍进行中，唯一下一步改为 Batch D D4：先写候选 Provider 采用门 ADR，
   冻结同任务比较、能力/错误归因、调用/成本预算和停止规则；不自动调用真实 Provider、
   不接入第二 Provider、不运行 held-out、不进入 5D exit review 或 5E。
+- D1-D3 提交 `e100e4d602891bb6cfb22f25101c53f4621408f8` 已推送；GitHub Actions
+  run `31719575766` 对该精确 SHA completed/success。下一轮 D4 恢复时发现 canonical
+  GitHub 进度线仍误留“尚未提交”，现已按远端 SHA 与 CI 证据补正。
+
+### 2026-08-14：5D-7 Batch D D4 第二 Provider 候选采用门
+
+- 按 canonical 唯一下一步完成 Provider seam 与官方资料复核，没有调用任何真实模型。
+  现有统一 Chat/Capability/Registry 可复用，但 Zhipu thinking、工具名、响应和错误映射
+  不能通过更换 base URL 直接冒充通用 Adapter。
+- 方案比较覆盖暂不增加第二 Provider、DeepSeek V4 Flash、Qwen3.8 Max 和 DeepSeek
+  V4 Pro。Qwen3.8 Max 已按正式模型状态复核，具备混合思考、结构化输出和 Function
+  Calling；本轮暂缓只因首轮控制变量和计费入口，不是质量结论。
+- 新增 D4 初学者设计文档与 ADR-0017，选择 DeepSeek 官方 `deepseek-v4-flash` 为
+  唯一有界候选。它只是进入 D5 离线 TDD 的候选，不等于 Adapter 已实现、真实请求已
+  发生、领域已准入或产品默认模型已切换。
+- 冻结三层准入、同一 Skill/Context/Evaluation/held-out、5D-6b 安全错误归因前置项、
+  27-call 全实验最坏上限、每案例 4000 total tokens、每请求 1024 output tokens、GLM
+  ¥0.50 / DeepSeek $0.05 金额停止线和全局/单 Provider 停止规则。
+- 当前唯一下一步改为 D5 离线 TDD：实现独立 DeepSeek Adapter、安全 failure
+  observation、预算/成本控制器和 no-I/O dry-run；本轮不调用 Provider 或 held-out。
+- D4 聚焦 Provider/领域评测/held-out 生命周期回归为 `68 passed, 15 subtests passed`；
+  完整回归为 `460 passed, 103 subtests passed`。RAG development/independent holdout
+  的 Recall/MRR/nDCG、abstention/citation 门均通过；compileall、Harness SDK/敏感文件
+  边界、Harness dry-run、文档密钥模式扫描、governance 和 diff check 通过。
