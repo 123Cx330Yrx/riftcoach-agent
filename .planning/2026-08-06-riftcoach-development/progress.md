@@ -933,3 +933,6 @@
   watch` 与 check-runs 查询又遇到两次 TLS 握手超时；改用 20 秒上限的 PowerShell
   REST 查询，确认 run `31779529184` 对该精确 SHA completed/success。失败均发生在
   CI 状态读取阶段，不是测试失败，也没有触发外部模型调用。
+- 收口记录提交 `84af18c11928a1043bf743a68abcea1f6c19d253` 已推送；一次 `gh run
+  list` TLS 超时后不再重复该路径，PowerShell REST 确认 run `31779642991` 对精确 SHA
+  completed/success。此处只补齐查询失败账本；协议实验、调用数和 held-out 状态不变。
