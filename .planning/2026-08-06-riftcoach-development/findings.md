@@ -889,3 +889,24 @@
 - D4 只决定候选和门禁，不检查密钥、不实现 Adapter、不运行 held-out、不产生外部调用。
   下一步应先离线实现并测试 DeepSeek Adapter、预算/成本预检和比较控制器，再由公开 CI
   验证精确 SHA；真实比较必须是之后独立、显式受限的执行批次。
+
+### 2026-08-14：D4 候选决策更正发现
+
+- 用户追问刚 GA 的 DeepSeek V4 Pro 后，重新核对评测目标发现 ADR-0017 混淆了两个
+  问题：Flash 足以低成本验证 Adapter 协议，但 D5 的唯一候选还要参加领域 held-out。
+  候选标准应优先匹配完整领域准入目标，而不是只优化协议探针成本。
+- DeepSeek 官方更新记录显示 V4 Pro 正式版于 2026-08-13 发布；V4 Flash 的正式 API
+  更新是 2026-07-31。官方 Agent 基准中 Pro 分别为 Terminal Bench 2.1 `87.9`、
+  NL2Repo `61.5`、Cybergym `83.3`、DeepSWE `62.7`、Toolathlon `74.1`、
+  AutomationBench `31.8`、DSBench-Hard `67.2`，均高于 Flash 的 `82.7`、`54.2`、
+  `76.7`、`54.4`、`70.3`、`25.1`、`59.6`。
+- 官方产品说明把 Pro 定位为复杂生产 Agent/编码能力更强的模型，把 Flash 定位为更快、
+  更低成本且在简单 Agent 任务接近 Pro。两者均提供 non-thinking、JSON、Tool Calls 和
+  1M 上下文，本轮从 Flash 改 Pro 不增加 Provider 数量或 Agent 架构复杂度。
+- 2026-08-16 起官方峰值价快照中，Pro 输入未命中缓存为 `$1.32/M`、输出为
+  `$3.96/M`。DeepSeek protocol + domain 的冻结总 Token 上限为 16000；即使极端按
+  全输出价计算也约 `$0.06336`，因此 `$0.10` 停止线足够，成本差不足以抵消领域代表性。
+- 不同时测试 Flash 与 Pro，也不允许 Flash 通过协议、Pro 运行领域；准入证据必须绑定
+  一个精确模型。Flash 只保留为未来 5F 出现成本/时延 Bad Case 后的任务分层候选。
+- 本次只更正 ADR、设计与状态，不实现 Adapter、不读取 Key、不调用 Provider、不运行
+  held-out；DeepSeek V4 Pro 仍只是候选，不是已准入或生产默认模型。

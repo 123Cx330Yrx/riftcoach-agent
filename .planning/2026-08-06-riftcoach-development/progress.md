@@ -833,3 +833,19 @@
 - D4 提交 `02720631aa34aa8556ea445bbd1837c8b562715c` 已推送；GitHub Actions run
   `31761121188` 对该精确 SHA completed/success，CI 全部门禁通过且没有调用真实
   Provider。公开进度线已按远端证据回写。
+
+### 2026-08-14：D4 唯一候选决策更正
+
+- 根据用户对 V4 Pro 正式版的复核要求，发现 ADR-0017 把“低成本协议可移植性”置于
+  “唯一候选领域准入”之前；保留原 ADR 历史并新增 ADR-0018 取代其模型选择。
+- 唯一候选更正为 `deepseek-v4-pro`。它与 Flash 共享当前所需 API 能力，不新增 SDK、
+  Provider、Agent 或控制流；协议门和领域 held-out 必须使用同一精确 Pro 模型。
+- 调用与 Token 上限不变；按官方 2026-08-16 起 Pro 峰值价，把 DeepSeek 应用层金额
+  停止线从 `$0.05` 调整为 `$0.10`。Flash 留作 5F 以后按成本/时延证据评估，不在本门
+  同时执行。
+- 本次更正没有实现 D5 代码、读取 Key、调用真实 Provider 或运行 held-out；唯一下一步
+  仍是 D5 离线 TDD。验证、提交、推送与 exact-SHA 公开 CI 结果待本批收尾补记。
+- 本地完整回归为 `460 passed, 103 subtests passed`；两套 RAG 门均为满分且独立 holdout
+  abstention/citation 为 `1.0`；compileall、Harness dry-run、SDK/tracked-data 边界、文档
+  密钥模式扫描、governance 和 diff check 均通过。全部检查使用本地数据或 Fake/dry-run，
+  外部 Provider calls 为 `0`。

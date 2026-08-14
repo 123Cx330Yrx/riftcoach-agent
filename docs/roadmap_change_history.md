@@ -634,3 +634,20 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `PUBLIC-VERIFIED`：D4 提交 `02720631aa34aa8556ea445bbd1837c8b562715c` 已推送；
   GitHub Actions run `31761121188` 对该精确 SHA 的完整 pytest、两套 RAG、compileall、
   governance、Harness SDK/敏感文件边界和 dry-run 全部通过，CI 未调用真实 Provider。
+
+### 2026-08-14：D4 唯一候选从 V4 Flash 更正为 V4 Pro
+
+- `TRIGGER`：用户追问新发布的 DeepSeek V4 Pro 后，复核发现原决定过度优化低成本协议
+  探针，而 D5 的唯一候选还承担完整领域 held-out 准入。
+- `OFFICIAL-VERIFIED`：DeepSeek V4 Pro 正式版于 2026-08-13 GA；官方生产 Agent 基准
+  全部高于 V4 Flash，且两者共享本轮所需 non-thinking、JSON、Tool Calls 与 1M 上下文。
+- `SUPERSEDED`：ADR-0017 保留为历史并标记被取代；ADR-0018 将唯一候选更正为
+  `deepseek-v4-pro`。这仍是一个 DeepSeek Provider、一个模型候选，不是 Multi-Agent、
+  自动模型路由或产品模型选择器。
+- `BUDGET`：15/12 calls、每案例 4000 total tokens、每请求最多 1024 output tokens 与
+  零自动重试不变；按官方 Pro 峰值价，DeepSeek 应用层金额停止线由 `$0.05` 调整为
+  `$0.10`，16000 tokens 极端全按输出价约 `$0.06336`。
+- `BOUNDARY`：协议门和领域门必须使用同一精确 Pro 模型；不同时测试 Flash，也不以
+  Flash 协议证据替代 Pro。Flash 只在以后 5F 出现成本/时延 Bad Case 时重开评估。
+- `NO-I/O`：本次更正只改 ADR、设计与持久状态，没有实现 Adapter、读取密钥、调用模型、
+  运行 held-out 或进入 5E。唯一下一步仍为 D5 离线 TDD。

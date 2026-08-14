@@ -100,9 +100,10 @@ Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D4 complete; D5 offlin
   executable development 7 场的 task/failure accuracy 均为 `1.0`，unsafe publication 为
   `0.0`，external calls 为 `0`。D3 已创建 3 场独立 held-out，并通过防污染/显式确认门；
   held-out 尚未运行，设计与结果边界不能混淆。
-- `5D-7` Batch D D4 已完成：ADR-0017 选择 DeepSeek 官方 `deepseek-v4-flash` 为唯一
-  有界第二 Provider 候选，并冻结独立 Adapter、同任务 3 场比较、安全失败分类、最多
-  15/12 calls、Token/金额停止线和不安全发布全局停止规则；本批外部调用为 0。
+- `5D-7` Batch D D4 已完成并更正候选：ADR-0018 取代 ADR-0017 的模型选择，改用
+  DeepSeek 官方 `deepseek-v4-pro` 作为唯一有界第二 Provider 候选；独立 Adapter、同任务
+  3 场比较、安全失败分类、最多 15/12 calls、Token/停止规则不变，DeepSeek 金额停止线
+  调整为 `$0.10`；D4 及本次更正的外部调用均为 0。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
@@ -182,8 +183,8 @@ Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D4 complete; D5 offlin
 | D1-D2 采用安全评测 1.1 并保留 1.0.0 | 历史结果必须可复现；新版本需要接收用户请求与 bounded KnowledgeEvidence，并由 Harness 对 `prompt_injection` 直接阻断，不交给 Reviser |
 | D3 只创建 held-out，不在同一批运行 | 防止数据集创建与规则调节互相污染；首次运行必须在规则冻结后由显式确认触发 |
 | D4 先设计 Provider 采用门，再决定是否调用 | 5D-6b 暴露了统一响应/错误归因缺口；第二 Provider 不能在同任务合同、预算与失败分类未冻结前接入 |
-| 选择 DeepSeek V4 Flash 为唯一第二 Provider 候选 | 官方直接 API 支持 non-thinking、JSON 与工具调用，现有 SDK 可复用且价格透明；它只进入 D5 有界准入，不是质量排行或默认模型 |
-| 暂缓 Qwen3.8 Max 与 DeepSeek V4 Pro | Qwen 已是正式模型但 reasoning/计费入口会增加首轮变量，Pro 与 Flash 协议面相同但更贵；待新 Bad Case 再评估 |
+| 用 ADR-0018 将唯一候选更正为 DeepSeek V4 Pro | D5 同时验证协议和唯一候选的领域能力；Pro 与 Flash 共用本轮协议面但官方生产 Agent 基准更强，额外绝对费用仍受 16000-token、15-call 和 `$0.10` 小额停止线约束 |
+| 暂缓 Qwen3.8 Max 与 DeepSeek V4 Flash | Qwen 的 reasoning/计费入口仍增加首轮变量；Flash 保留为以后出现成本/时延 Bad Case 时的简单任务分层候选，本轮不同时测试两个 DeepSeek 模型 |
 
 ## Errors Encountered
 
@@ -278,3 +279,5 @@ Phase 6.11 - 5D-7（in progress: Batch A-C and Batch D D1-D4 complete; D5 offlin
 | Batch C 状态写回三次假设 roadmap/planning 尾部上下文 | 3 | `apply_patch` 原子拒绝，无半写入；读取每个文件真实尾部后分别追加，并将矩阵/决策拆开更新 |
 | Batch D 入口审计把不存在的 `app/providers/chat_adapter.py` 加入只读 `rg` 路径 | 1 | 命令未改文件；用 `rg --files app` 定位实际 `ChatEvaluationAdapter` 在 `app/harness/adapters.py`，再完整读取真实接缝 |
 | D1 首次测试补丁把旧 Harness 断言插入新安全测试 | 1 | 聚焦测试及时发现断言位置错误；移动断言回原测试并单独验证 1.0.0/1.1.0 两条路径 |
+| D4 更正回归再次用桌面 Hermes Python 启动 pytest，环境缺少 pytest | 1 | 测试未启动且无文件变化；显式改用仓库 `.venv\Scripts\python.exe`，完整回归随后通过 |
+| D4 更正复核再次猜测 workflow 名为 `ci.yml` | 1 | 只读失败且无脚本执行；先列出 `.github/workflows`，按真实 `tests.yml` 复核全部门禁 |

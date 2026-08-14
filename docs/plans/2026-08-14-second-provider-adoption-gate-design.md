@@ -1,5 +1,9 @@
 # 5D-7 Batch D D4：第二 Provider 候选采用门设计
 
+> 2026-08-14 决策更正：ADR-0018 已取代 ADR-0017 的候选模型与金额停止线。
+> 本设计下文已按唯一候选 `deepseek-v4-pro` 和 DeepSeek `$0.10` 停止线同步；独立
+> Adapter、同任务比较、调用/Token 上限、停止规则及“候选不等于准入”边界不变。
+
 ## 1. 这一步到底在解决什么
 
 5D-6b 已经证明两件不同的事：
@@ -29,7 +33,7 @@ LLMProvider 统一合同
       |
       +-- ZhipuProvider ------> GLM-5.2 API
       |
-      `-- DeepSeekProvider ---> deepseek-v4-flash API（候选，尚未实现）
+      `-- DeepSeekProvider ---> deepseek-v4-pro API（候选，尚未实现）
 ```
 
 “兼容 OpenAI API”只表示请求外形相似，不表示 thinking、工具名、JSON、错误码和结束原因
@@ -37,7 +41,7 @@ LLMProvider 统一合同
 
 ### 2.2 Model
 
-Model 是 Provider 下的具体模型 ID，例如 `glm-5.2` 或 `deepseek-v4-flash`。本次是在
+Model 是 Provider 下的具体模型 ID，例如 `glm-5.2` 或 `deepseek-v4-pro`。本次是在
 Provider Registry 内为同一个评测任务显式选择模型，不是先做一个给网页用户随意切换模型
 的产品开关。
 
@@ -76,18 +80,20 @@ Provider 合同是否真的可移植，也无法区分 GLM 特有问题与 RiftC
 
 结论：不选。现在已有冻结合同、离线基线和独立 held-out，满足受控比较的前提。
 
-### 方案 B：DeepSeek V4 Flash 作为唯一候选
+### 方案 B：DeepSeek V4 Pro 作为唯一候选
 
 官方直接 API 当前提供：
 
-- 正式模型 ID `deepseek-v4-flash`；
+- 正式模型 ID `deepseek-v4-pro`；
 - OpenAI Chat Completions 格式；
 - 可显式关闭 thinking；
 - JSON output 与 Tool Calls；
 - 公开、可快照的按 Token 价格；
 - 与仓库现有 `openai>=2,<3` 依赖兼容。
 
-它可以在不引入新 SDK、不扩展 reasoning 消息合同的前提下测试 Provider 可移植性。
+它可以在不引入新 SDK、不扩展 reasoning 消息合同的前提下同时测试 Provider 可移植性，
+并让唯一候选代表 D5 真正要验收的复杂领域 Agent 能力。官方 2026-08-13 GA 资料显示，
+Pro 在多项生产 Agent 基准上高于 Flash。
 
 结论：选为 D5 唯一候选。候选不等于已接入、已准入或默认生产模型。
 
@@ -106,10 +112,11 @@ Qwen3.8 Max 已是正式 `qwen3.8-max`，支持混合思考、Function Calling �
 结论：不作为第一次候选。待标准后端 API 计费、reasoning 传递策略和独立 Bad Case 清晰
 后再开新 ADR，不作模型质量排名。
 
-### 同系列的 V4 Pro
+### 同系列的 V4 Flash
 
-`deepseek-v4-pro` 具备相同的首轮协议能力但价格更高。D4 要验证的是第二 Provider 接缝，
-不是追求最高模型分数。若 Flash 以后通过协议却出现明确的领域质量 Bad Case，再评估 Pro。
+`deepseek-v4-flash` 具备相同的首轮协议能力，速度更快、价格更低，适合只做 Adapter
+smoke test 或未来简单任务的成本/时延分层。但 D5 还包含唯一候选的领域 held-out，不能
+只按协议成本选模型。若 5F 出现明确的成本或时延 Bad Case，再通过新 ADR 评估 Flash。
 
 ## 5. 三层准入，不把一个绿灯夸成全部能力
 
@@ -163,7 +170,7 @@ DeepSeek Adapter protocol：最多 3 calls
 冻结身份复算 + held-out 显式确认
         |
         v
-GLM-5.2 / DeepSeek V4 Flash 分别运行同一案例
+GLM-5.2 / DeepSeek V4 Pro 分别运行同一案例
         |
         v
 Provider -> Agent -> knowledge.search -> Agent
@@ -301,13 +308,14 @@ Evaluation JSON repair。Coach report revision 为 0。
 设计日期的官方无缓存价格：
 
 - GLM-5.2：输入 ¥8 / 1M tokens，输出 ¥28 / 1M tokens；
-- DeepSeek V4 Flash：为覆盖 2026-08-16 起价格变化，预检采用公告中的峰值价，输入
-  $0.44 / 1M tokens、输出 $1.32 / 1M tokens，不使用缓存或低谷折扣。
+- DeepSeek V4 Pro：为覆盖 2026-08-16 起价格变化，预检采用公告中的峰值价，输入
+  $1.32 / 1M tokens、输出 $3.96 / 1M tokens，不使用缓存或低谷折扣。
 
 本轮金额停止线：
 
 - GLM 领域比较：估算累计不得超过 ¥0.50；
-- DeepSeek 协议 + 领域比较：估算累计不得超过 $0.05。
+- DeepSeek 协议 + 领域比较：估算累计不得超过 $0.10。即使把 16000-token 总上限极端地
+  全部按峰值输出价估算，约为 $0.06336，仍在该停止线内。
 
 在每次 I/O 前，根据请求预算预留最坏输出成本；每次响应后根据官方 usage 重新结算。若
 实际运行日前官方价格、模型 ID 或计费规则变化，必须先更新价格快照和 ADR 证据；若缺少
@@ -410,6 +418,10 @@ D5 离线测试必须证明：
 
 - DeepSeek Models & Pricing：
   <https://api-docs.deepseek.com/quick_start/pricing/>
+- DeepSeek Updates（V4 Pro GA 与 Agent 基准）：
+  <https://api-docs.deepseek.com/updates/>
+- DeepSeek V4 官方说明（Pro/Flash 定位）：
+  <https://api-docs.deepseek.com/news/news260424/>
 - DeepSeek Thinking Mode：
   <https://api-docs.deepseek.com/guides/thinking_mode/>
 - 智谱产品价格：<https://bigmodel.cn/pricing>
