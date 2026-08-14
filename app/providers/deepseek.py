@@ -201,11 +201,6 @@ class DeepSeekProvider:
             "content": message.content,
         }
         if message.role is MessageRole.ASSISTANT and message.tool_calls:
-            if len(message.tool_calls) > 1:
-                raise ProviderResponseError(
-                    provider="deepseek",
-                    code="unsupported_parallel_tool_calls",
-                )
             try:
                 encoded["tool_calls"] = [
                     {
@@ -261,11 +256,6 @@ class DeepSeekProvider:
                 provider=self.provider_name,
                 code="invalid_tool_call_response",
             ) from None
-        if len(values) > 1:
-            raise ProviderResponseError(
-                provider=self.provider_name,
-                code="unsupported_parallel_tool_calls",
-            )
 
         decoded: list[ToolCall] = []
         seen_ids: set[str] = set()

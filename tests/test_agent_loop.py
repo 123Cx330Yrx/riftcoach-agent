@@ -139,6 +139,16 @@ def tool_response(name: str = "system.echo", arguments=None) -> ChatResponse:
     )
 
 
+def tool_batch_response(*calls: ToolCall) -> ChatResponse:
+    return ChatResponse(
+        content=None,
+        model="fake-agent-model",
+        provider="fake-agent-provider",
+        tool_calls=calls,
+        usage=TokenUsage(input_tokens=5, output_tokens=4),
+    )
+
+
 def test_agent_loop_executes_tool_then_returns_final_response():
     provider = ScriptedProvider(
         responses=[
@@ -167,6 +177,219 @@ def test_agent_loop_executes_tool_then_returns_final_response():
     assert provider.requests[0].tools[0].name == "system.echo"
     assert provider.requests[1].messages[-1].role is MessageRole.TOOL
     assert '"echo":"hello"' in provider.requests[1].messages[-1].content
+
+
+def test_agent_loop_preflights_then_executes_tool_batch_in_response_order():
+    clock = FakeClock()
+    handler_order: list[str] = []
+    tool_remaining: list[float] = []
+
+    def handler(params, context):
+        handler_order.append(params["message"])
+        tool_remaining.append(context.remaining_s())
+        clock.advance(1)
+        return {"echo": params["message"]}
+
+    tool = ToolDefinition(
+        name="system.echo",
+        version="1.0.0",
+        description="Track sequential batch execution.",
+        handler=handler,
+        input_schema=ECHO_INPUT,
+        output_schema=ECHO_OUTPUT,
+        policy=ToolPolicy(timeout_s=30),
+    )
+    provider = ClockedProvider(
+        [
+            tool_batch_response(
+                ToolCall(
+                    id="model-call-a",
+                    name="system.echo",
+                    arguments={"message": "first"},
+                ),
+                ToolCall(
+                    id="model-call-b",
+                    name="system.echo",
+                    arguments={"message": "second"},
+                ),
+            ),
+            final_response("batch complete"),
+        ],
+        clock=clock,
+        advances=[2, 0],
+    )
+
+    result = build_loop(
+        provider,
+        clock=clock,
+        tool_definition=tool,
+    ).run(
+        AgentRunRequest(
+            messages=(ChatMessage(role=MessageRole.USER, content="执行两次"),),
+            allowed_tools=("system.echo",),
+            timeout_s=10,
+        )
+    )
+
+    assert result.status is AgentRunStatus.COMPLETED
+    assert result.stop_reason is AgentStopReason.FINAL_RESPONSE
+    assert result.iterations == 2
+    assert result.usage.total_tokens == 14
+    assert handler_order == ["first", "second"]
+    assert tool_remaining == pytest.approx([8, 7])
+    assert [request.timeout_s for request in provider.requests] == pytest.approx(
+        [10, 6]
+    )
+    assert [record.tool_call_id for record in result.tool_executions] == [
+        "model-call-a",
+        "model-call-b",
+    ]
+    follow_up_messages = provider.requests[1].messages
+    assert len(follow_up_messages[-3].tool_calls) == 2
+    assert [message.tool_call_id for message in follow_up_messages[-2:]] == [
+        "model-call-a",
+        "model-call-b",
+    ]
+
+
+def test_agent_loop_rejects_over_budget_batch_before_any_tool_execution():
+    handler_calls: list[str] = []
+
+    def handler(params, context):
+        handler_calls.append(params["message"])
+        return {"echo": params["message"]}
+
+    tool = ToolDefinition(
+        name="system.echo",
+        version="1.0.0",
+        description="Must not run for an over-budget batch.",
+        handler=handler,
+        input_schema=ECHO_INPUT,
+        output_schema=ECHO_OUTPUT,
+        policy=ToolPolicy(),
+    )
+    provider = ScriptedProvider(
+        [
+            tool_batch_response(
+                ToolCall(
+                    id="model-call-a",
+                    name="system.echo",
+                    arguments={"message": "first"},
+                ),
+                ToolCall(
+                    id="model-call-b",
+                    name="system.echo",
+                    arguments={"message": "second"},
+                ),
+            )
+        ]
+    )
+
+    result = build_loop(provider, tool_definition=tool).run(
+        AgentRunRequest(
+            messages=(ChatMessage(role=MessageRole.USER, content="执行两次"),),
+            allowed_tools=("system.echo",),
+            max_tool_calls=1,
+        )
+    )
+
+    assert result.status is AgentRunStatus.STOPPED
+    assert result.stop_reason is AgentStopReason.MAX_TOOL_CALLS
+    assert handler_calls == []
+    assert result.tool_executions == ()
+
+
+def test_agent_loop_rejects_unauthorized_batch_before_any_tool_execution():
+    handler_calls: list[str] = []
+
+    def handler(params, context):
+        handler_calls.append(params["message"])
+        return {"echo": params["message"]}
+
+    tool = ToolDefinition(
+        name="system.echo",
+        version="1.0.0",
+        description="Must not run before a later unauthorized call is found.",
+        handler=handler,
+        input_schema=ECHO_INPUT,
+        output_schema=ECHO_OUTPUT,
+        policy=ToolPolicy(),
+    )
+    provider = ScriptedProvider(
+        [
+            tool_batch_response(
+                ToolCall(
+                    id="model-call-a",
+                    name="system.echo",
+                    arguments={"message": "allowed"},
+                ),
+                ToolCall(
+                    id="model-call-b",
+                    name="system.secret",
+                    arguments={"message": "forbidden"},
+                ),
+            )
+        ]
+    )
+
+    result = build_loop(provider, tool_definition=tool).run(
+        AgentRunRequest(
+            messages=(ChatMessage(role=MessageRole.USER, content="执行批次"),),
+            allowed_tools=("system.echo",),
+        )
+    )
+
+    assert result.status is AgentRunStatus.FAILED
+    assert result.stop_reason is AgentStopReason.TOOL_NOT_ALLOWED
+    assert result.error_code == "tool_not_allowed"
+    assert handler_calls == []
+    assert result.tool_executions == ()
+
+
+def test_agent_loop_rejects_duplicate_batch_before_any_tool_execution():
+    handler_calls: list[str] = []
+
+    def handler(params, context):
+        handler_calls.append(params["message"])
+        return {"echo": params["message"]}
+
+    tool = ToolDefinition(
+        name="system.echo",
+        version="1.0.0",
+        description="Must not run before a later duplicate is found.",
+        handler=handler,
+        input_schema=ECHO_INPUT,
+        output_schema=ECHO_OUTPUT,
+        policy=ToolPolicy(),
+    )
+    provider = ScriptedProvider(
+        [
+            tool_batch_response(
+                ToolCall(
+                    id="model-call-a",
+                    name="system.echo",
+                    arguments={"message": "same"},
+                ),
+                ToolCall(
+                    id="model-call-b",
+                    name="system.echo",
+                    arguments={"message": "same"},
+                ),
+            )
+        ]
+    )
+
+    result = build_loop(provider, tool_definition=tool).run(
+        AgentRunRequest(
+            messages=(ChatMessage(role=MessageRole.USER, content="执行批次"),),
+            allowed_tools=("system.echo",),
+        )
+    )
+
+    assert result.status is AgentRunStatus.STOPPED
+    assert result.stop_reason is AgentStopReason.DUPLICATE_TOOL_CALL
+    assert handler_calls == []
+    assert result.tool_executions == ()
 
 
 def test_agent_loop_can_finish_without_tools():

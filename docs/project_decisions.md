@@ -168,7 +168,8 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   领域 held-out 的 no-I/O admission、薄协调器、累计/单例资源门和不可重复输出由
   ADR-0020 接受；未执行考卷的注入成功语义、独立输入计划与 oracle-blind 生产装配由
   ADR-0021 接受；真实领域 Bad Case 后，多 ToolCall 批次由 Adapter 严格解码、
-  AgentLoop 整批预检并顺序执行的 development 方案由 ADR-0022 接受；
+  AgentLoop 整批预检并顺序执行的 development 方案由 ADR-0022 接受，并已完成本地
+  Adapter/AgentLoop/真实 RAG-Evaluation-Harness 纵向 TDD；
   D1-D5 与领域执行接缝已完成离线实现且 DeepSeek 最小真实协议已准入，当前仍处于 5D-7，不等于
   整个 5D、领域 held-out、LangGraph 或 Multi-Agent 已实现。
 
@@ -182,7 +183,8 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - GLM：当前唯一真实模型基线，负责组织和解释证据，不负责创造比赛事实；
 - DeepSeek V4 Pro：D5 唯一有界第二 Provider 候选；独立 Adapter 已实现且真实最小
   structured/tool 协议已准入；真实领域 held-out 随后只运行一次，并在首个正常案例因
-  `unsupported_parallel_tool_calls` fail closed，领域未准入且未设为默认模型；
+  `unsupported_parallel_tool_calls` fail closed；该执行接缝已离线修复但没有新的真实模型
+  质量证据，领域仍未准入且未设为默认模型；
 - DeepSeek V4 Flash：本轮不测试；最早在 5P 后、默认在阶段 6 以真实产品成本/时延
   Bad Case 触发 Pro-only、Flash-only 与 Flash 默认/Pro 有界升级对照；
 - Qwen3.8 Max 等：本轮暂缓，尚未锁定为生产组合。

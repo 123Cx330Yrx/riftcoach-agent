@@ -1037,3 +1037,18 @@
   整批原子预检 + 按返回顺序执行”；不宣称并发 capability，不新增框架。
 - 本批未修改 Provider/Agent 代码，没有读取 Key、调用真实 Provider 或重跑 held-out。
   下一步仅是 Fake SDK + 本地 Tool/RAG/Harness 的 development TDD。
+
+### 2026-08-14：多 ToolCall 顺序消费本地 TDD
+
+- Provider Adapter 先以旧实现准确复现 `unsupported_parallel_tool_calls` 红灯，再仅移除
+  “调用数量必须为 1”的两处额外限制；唯一 ID、内部/厂商工具别名、严格 JSON object、
+  finish reason 与 `parallel_tool_calls=false` capability 边界均保留。
+- AgentLoop 新增批次合同测试：合法的两个调用按响应顺序执行并保留 call ID、Usage、
+  iteration 与递减 deadline；超预算、后续越权和同批重复均在任何工具执行前 fail closed。
+- 新建 development 输入计划，使用新的 case/run ID，不复用已消费 held-out 的 case ID、
+  注入 marker 或答案；Fake DeepSeek SDK 的两个 ToolCall 真实经过 AgentLoop、本地 hybrid
+  RAG、Evidence、Secure Evaluation 1.1 与 ReviewHarness 并发布。
+- 聚焦回归为 `53 passed`，全量回归为 `551 passed, 103 subtests passed`；两套 RAG、
+  compileall、Harness dry-run、SDK/secret/run-data、governance 与 diff check 均通过，
+  外部 Provider calls 为 0。当前只完成本地实现，唯一下一步为提交、推送和 exact-SHA
+  公开 CI；不改变旧真实 held-out 的 `admitted=false`。

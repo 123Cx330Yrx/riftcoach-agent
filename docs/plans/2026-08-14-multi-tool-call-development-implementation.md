@@ -42,3 +42,16 @@ Adapter 的多 ToolCall 传输兼容性，并用 AgentLoop 与真实本地 RAG/H
 - 不重跑 Dataset 1.1.0，不修改其不可变失败结论；
 - 不实现线程/async 并发、LangGraph、Pi/Claude SDK 或 5E Trace；
 - 不把离线 development 通过写成 DeepSeek 领域准入。
+
+## 本地执行结果
+
+- DeepSeek Adapter 的多 ToolCall 双向传输测试先准确复现
+  `unsupported_parallel_tool_calls` 红灯，随后只移除数量为 1 的额外限制；唯一 ID、工具
+  别名、严格 JSON object 和 finish reason 校验保持不变；
+- AgentLoop 以四类测试固定合法批次顺序执行，以及超预算、越权、重复批次的零工具执行；
+- 新 development 输入计划没有复用 held-out case ID 或注入 marker，使用 Fake DeepSeek
+  SDK 真实经过 Skill、AgentLoop、本地 RAG、Evidence、Secure Evaluation 1.1 和
+  ReviewHarness；
+- 聚焦回归 `53 passed`，完整回归 `551 passed, 103 subtests passed`；两套 RAG、
+  compileall、Harness dry-run、安全/治理/diff 门均通过，外部 Provider 调用为 0；
+- 当前只完成本地实现，等待提交、推送和 exact-SHA 公开 CI。

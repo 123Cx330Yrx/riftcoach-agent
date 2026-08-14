@@ -25,8 +25,9 @@ blocked_before: "5D-exit-review"
   `eb198354b3186f25b7d0455d7ed28725bc17e234`、GitHub Actions run `31799394506`
   完成 exact-SHA 公开验证；真实 DeepSeek 领域 held-out 已执行一次并在首个正常案例因
   `unsupported_parallel_tool_calls` 不准入，后两例按首错停止跳过；不可变结果归档提交
-  `26b668d0ce594e648a692cd2caf831c86125fede` 已通过 Actions run `31810164628`
-- 唯一下一步：5D-7 按 ADR-0022 和实施计划做多 ToolCall 批次顺序消费的离线 TDD；
+  `26b668d0ce594e648a692cd2caf831c86125fede` 已通过 Actions run `31810164628`；ADR-0022
+  的多 ToolCall 批次离线 TDD 已在本地完成，等待代码提交与 exact-SHA 公开 CI
+- 唯一下一步：5D-7 提交、推送并验证多 ToolCall 顺序消费实现的 exact-SHA 公开 CI；
   不读取 Key、不重跑当前 held-out、不实现真正并发或直接宣称 DeepSeek 领域准入
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；DeepSeek
   领域调用必须先完成执行接缝离线 TDD 与公开 exact-SHA CI，不能用已通过的低层协议、
@@ -55,7 +56,7 @@ blocked_before: "5D-exit-review"
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测首个 Provider，并为第二 Provider 决策提供真实证据 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（真实 DeepSeek held-out 未准入；ADR-0022 离线修复待实施） | Batch A：分层合同与 10 个记录型 development 控制样本；Batch B：组件/案例双层 SHA-256 快照和零调用 admission；Batch C：ADR-0015、7 个 `offline_executable` development 场景及一个真实 unsafe publication；D1-D2：`coach_evaluation@1.1.0` 安全合同、不可修订 blocking policy、7 场 secure offline development 基线，task/failure accuracy 均 1.0、unsafe publication 0、external calls 0；D3：3 场独立 held-out，`calibration_excluded=true`；D4-D5：ADR-0018、独立 DeepSeek Adapter、失败观察、预算/停止门与 3-call 真实协议准入；生产领域门在 `205397f` 上只执行一次，首例以 `unsupported_parallel_tool_calls` fail closed，结果由 `26b668d` / Actions `31810164628` 固定；ADR-0022 根据官方多工具合同选择 Adapter 严格解码、AgentLoop 整批预检后顺序执行，不重跑旧考卷 |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（真实 DeepSeek held-out 未准入；多 ToolCall 离线修复待公开验证） | Batch A：分层合同与 10 个记录型 development 控制样本；Batch B：组件/案例双层 SHA-256 快照和零调用 admission；Batch C：ADR-0015、7 个 `offline_executable` development 场景及一个真实 unsafe publication；D1-D2：`coach_evaluation@1.1.0` 安全合同、不可修订 blocking policy、7 场 secure offline development 基线，task/failure accuracy 均 1.0、unsafe publication 0、external calls 0；D3：3 场独立 held-out，`calibration_excluded=true`；D4-D5：ADR-0018、独立 DeepSeek Adapter、失败观察、预算/停止门与 3-call 真实协议准入；生产领域门在 `205397f` 上只执行一次，首例以 `unsupported_parallel_tool_calls` fail closed，结果由 `26b668d` / Actions `31810164628` 固定；ADR-0022 的本地 TDD 已证明 Adapter 多调用双向传输、AgentLoop 整批零副作用预检及 Fake SDK→真实 RAG/Evaluation/Harness 纵向链，不重跑旧考卷 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界
@@ -294,7 +295,7 @@ blocked_before: "5D-exit-review"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 已形成安全离线基线、DeepSeek 独立 Adapter/真实最小协议、领域控制接缝、独立输入计划、oracle-blind 生产 Executor 与真实门 CLI | 阶段 5、整个 5D、DeepSeek 领域质量、真实 held-out 运行、生产默认切换或报告质量准入已完成 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 已形成安全离线基线、DeepSeek 独立 Adapter/真实最小协议、领域控制接缝与真实门，并在 development 中补齐多 ToolCall 批次严格传输、整批预检和顺序执行 | 阶段 5、整个 5D、DeepSeek 领域质量、生产默认切换或报告质量准入已完成；离线 Fake SDK 通过也不改写旧真实 held-out 的拒绝结论 |
 | 项目理解 | 已区分控制面 admission 与数据面 Provider 调用、Dataset oracle 与案例执行计划，也已区分 Provider/Model/Multi-Agent、协议/领域/产品三层门，以及累计/范围/单例调用与 Token 预算 | 离线合成 executor 能评价模型智力/在线可用性，执行接缝等于真实领域准入，或 3 场 held-out 能证明通用生产质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
 | GitHub/部署 | 领域执行接缝提交 `7986e1ade9ab165b4b2916a62b067587c5c3f027` 已公开，exact-SHA CI run `31785253957` 成功；正式网页仍未部署 | 执行接缝公开可复现等于真实案例计划/领域 held-out 已运行、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
@@ -479,3 +480,11 @@ run `31785253957` 的 exact-SHA 公开 CI。后续生产装配批已在零外部
 `unsupported_parallel_tool_calls` 并由 Adapter fail closed，Harness 降级，后两例
 skipped，领域 `admitted=false`。当前结果不可重跑；并行 ToolCall Bad Case 需回到
 development 独立处理，仍不得直接进入 5D exit review 或 5E。
+
+ADR-0022 的本地 development TDD 随后移除了 DeepSeek Adapter 对调用数量为 1 的额外
+限制，但保留唯一 ID、已声明别名、严格 JSON object、finish reason 和 capability 校验。
+AgentLoop 用四类测试固定“整批预算/白名单/重复预检后才顺序执行”的零副作用语义；新的
+development 案例又通过 Fake DeepSeek SDK 真实串联本地 RAG、Evidence、Secure
+Evaluation 1.1 与 ReviewHarness 并安全发布。完整回归为 `551 passed, 103 subtests
+passed`，两套 RAG、compileall、Harness dry-run、安全边界和治理门通过，外部调用为 0。
+这些证据只证明执行链兼容性，等待 exact-SHA 公开 CI；不准入真实模型领域质量。

@@ -788,3 +788,20 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   修改 Prompt 或重跑已消费的 Dataset 1.1.0。
 - `CURRENT`：唯一下一步是离线 development TDD；离线通过不改变旧真实结果的
   `admitted=false`，真实诊断和新鲜 held-out 需后续独立采用门。
+
+### 2026-08-14：多 ToolCall 顺序消费 development TDD 完成
+
+- `RED-GREEN`：DeepSeek Adapter 测试先在旧实现上复现真实
+  `unsupported_parallel_tool_calls`，再在保留严格字段校验的前提下支持多 ToolCall 双向
+  编解码；`parallel_tool_calls` capability 仍为 `false`，没有新增未在官方合同中的请求字段。
+- `ATOMIC-PREFLIGHT`：AgentLoop 测试证明整批调用先检查剩余预算、白名单和重复签名，
+  任一失败时所有工具均不执行；全批通过后按返回顺序执行，并保留 call ID、Usage、迭代和
+  总 deadline 语义。
+- `VERTICAL-DEVELOPMENT`：新的 development case 由 Fake DeepSeek SDK 驱动，但真实组合
+  Skill/Context、AgentLoop、ToolRuntime、本地 hybrid RAG、Evidence、Secure Evaluation 1.1
+  与 ReviewHarness；最终发布通过，外部 Provider calls 为 0，未使用旧 held-out ID 或 marker。
+- `EVIDENCE`：聚焦 `53 passed`，全量 `551 passed, 103 subtests passed`；两套 RAG、
+  compileall、Harness dry-run、SDK/secret/run-data、governance 和 diff check 通过。
+  该批只证明本地执行链兼容性，不改写真实 Pro 领域拒绝结论。
+- `CURRENT`：提交并推送后等待 exact-SHA GitHub Actions；通过后仍留在 5D-7，需另行
+  设计/批准新鲜真实领域采用门，不能重跑 Dataset 1.1.0、直接进入 5D exit review 或 5E。

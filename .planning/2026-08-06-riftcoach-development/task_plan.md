@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.15 - 5D-7（in progress: multi-ToolCall sequential-consumption offline TDD next）
+Phase 6.16 - 5D-7（in progress: multi-ToolCall implementation awaits exact-SHA public CI）
 
 ## Phases
 
@@ -124,16 +124,19 @@ Phase 6.15 - 5D-7（in progress: multi-ToolCall sequential-consumption offline T
   `unsupported_parallel_tool_calls`；没有规范化响应、工具执行、知识证据或 Evaluation，
   Harness 安全降级，后两场按首错停止跳过，领域 `admitted=false`。结果 SHA-256 为
   `fbd1251af98daa9e767de56a35100025807ce96026d6b3b3497e33dd30ad989e`；不得重跑追绿。
+- `5D-7` ADR-0022 本地离线 TDD 已完成：DeepSeek Adapter 可严格双向传输多 ToolCall
+  批次且仍不声明并发；AgentLoop 对批次预算、越权和重复做零副作用原子预检，再按顺序
+  执行。新 development 案例使用 Fake DeepSeek SDK，真实经过 AgentLoop、本地 RAG、
+  Secure Evaluation 1.1 与 ReviewHarness 并发布；外部调用为 0，旧真实拒绝结论不变。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-7 已完成 `unsupported_parallel_tool_calls` 零调用审计与 ADR-0022 设计。唯一下一步是
-按 `docs/plans/2026-08-14-multi-tool-call-development-implementation.md` 做离线 TDD：让
-DeepSeek Adapter 严格解码多 ToolCall 批次，并由 AgentLoop 整批预检后按顺序执行；不得
-读取 Key、重跑 Dataset 1.1.0、实现真正并发或进入 5D exit review/5E。
+5D-7 的多 ToolCall 顺序消费已完成本地 TDD。唯一下一步是提交、推送并验证该实现的
+exact-SHA GitHub Actions；不得读取 Key、重跑 Dataset 1.1.0、把 Fake SDK 证据写成
+DeepSeek 领域准入、实现真正并发或进入 5D exit review/5E。
 
 ## Decisions Made
 

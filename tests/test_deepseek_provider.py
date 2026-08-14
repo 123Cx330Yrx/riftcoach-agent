@@ -263,14 +263,6 @@ def test_tool_alias_round_trip_and_all_message_roles():
             sdk_response(
                 content=None,
                 finish_reason="tool_calls",
-                tool_calls=[sdk_tool_call(), sdk_tool_call(call_id="call-2")],
-            ),
-            "unsupported_parallel_tool_calls",
-        ),
-        (
-            sdk_response(
-                content=None,
-                finish_reason="tool_calls",
                 tool_calls=[
                     sdk_tool_call(arguments='{"query":"a","query":"b","top_k":1}')
                 ],
@@ -310,6 +302,92 @@ def test_unknown_tool_alias_fails_closed():
 
     with pytest.raises(ProviderResponseError, match="invalid_tool_call_response"):
         provider.chat(request)
+
+
+def test_multi_tool_call_batch_round_trip_preserves_order_without_concurrency():
+    first_client = FakeClient(
+        sdk_response(
+            content=None,
+            finish_reason="tool_calls",
+            tool_calls=[
+                sdk_tool_call(
+                    call_id="call-a",
+                    arguments='{"query":"前15分钟死亡","top_k":1}',
+                ),
+                sdk_tool_call(
+                    call_id="call-b",
+                    arguments='{"query":"补刀趋势","top_k":2}',
+                ),
+            ],
+        )
+    )
+    provider = DeepSeekProvider(client=first_client, model=DEEPSEEK_MODEL)
+    request = ChatRequest(
+        messages=(ChatMessage(MessageRole.USER, "search twice"),),
+        tools=(knowledge_tool(),),
+        tool_choice=ToolChoiceMode.AUTO,
+        max_tokens=1024,
+    )
+
+    response = provider.chat(request)
+
+    assert response.tool_calls == (
+        ToolCall(
+            id="call-a",
+            name="knowledge.search",
+            arguments={"query": "前15分钟死亡", "top_k": 1},
+        ),
+        ToolCall(
+            id="call-b",
+            name="knowledge.search",
+            arguments={"query": "补刀趋势", "top_k": 2},
+        ),
+    )
+    assert provider.capabilities.parallel_tool_calls is False
+
+    second_client = FakeClient(sdk_response(content="final report"))
+    second_provider = DeepSeekProvider(
+        client=second_client,
+        model=DEEPSEEK_MODEL,
+    )
+    second_provider.chat(
+        ChatRequest(
+            messages=(
+                ChatMessage(MessageRole.USER, "search twice"),
+                ChatMessage(
+                    MessageRole.ASSISTANT,
+                    tool_calls=response.tool_calls,
+                ),
+                ChatMessage(
+                    MessageRole.TOOL,
+                    content='{"success":true}',
+                    tool_call_id="call-a",
+                    name="knowledge.search",
+                ),
+                ChatMessage(
+                    MessageRole.TOOL,
+                    content='{"success":true}',
+                    tool_call_id="call-b",
+                    name="knowledge.search",
+                ),
+            ),
+            tools=(knowledge_tool(),),
+            tool_choice=ToolChoiceMode.AUTO,
+            max_tokens=1024,
+        )
+    )
+    encoded = second_client.completions.calls[0]["messages"]
+    assert [
+        row["function"]["arguments"]
+        for row in encoded[1]["tool_calls"]
+    ] == [
+        '{"query":"前15分钟死亡","top_k":1}',
+        '{"query":"补刀趋势","top_k":2}',
+    ]
+    assert [row["tool_call_id"] for row in encoded[2:]] == [
+        "call-a",
+        "call-b",
+    ]
 
 
 def test_rejects_required_and_structured_tool_combination_before_sdk():

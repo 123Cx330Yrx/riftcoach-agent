@@ -1065,3 +1065,18 @@
   ADR-0022 选择顺序消费，不开启 `parallel_tool_calls` capability。
 - 当前真实 held-out 结论永久保持不准入。后续先做零调用 development TDD；任何真实
   诊断和新鲜 held-out 都必须另过采用门，不能复用旧三题追绿。
+
+### 2026-08-14：多 ToolCall 顺序消费本地验证发现
+
+- 旧 Adapter 的失败确实来自响应解码与历史 assistant 编码中的数量限制；先写的
+  development 测试在旧实现上准确得到 `unsupported_parallel_tool_calls`，没有绕过真实
+  接缝或把错误改名。
+- 删除数量限制后，其他 fail-closed 校验继续由现有 Adapter 测试覆盖；Adapter 只形成
+  Provider-neutral `ChatResponse`，不承担执行策略。
+- AgentLoop 原有代码已把批次预检和执行分成两遍；新增测试证明任一调用越权、重复或超出
+  剩余预算时 handler 调用数为零，并证明通过批次的 Tool Observation 顺序和 ID 配对稳定。
+- Fake DeepSeek SDK 的纵向 development 案例证明真实本地 RAG 产生 Evidence，Secure
+  Evaluation 1.1 产生可验证结果，ReviewHarness 才发布报告；因此这不是只测 Adapter 的
+  单元假绿。但 Fake SDK 仍不能证明真实模型质量、延迟、计费或抗未知注入。
+- 当前唯一开放动作是 exact-SHA 公开 CI。旧 Dataset 1.1.0 结果哈希和
+  `admitted=false` 结论不可覆盖、不可重跑；真正并发仍无采用理由。
