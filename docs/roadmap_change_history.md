@@ -651,3 +651,6 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   Flash 协议证据替代 Pro。Flash 只在以后 5F 出现成本/时延 Bad Case 时重开评估。
 - `NO-I/O`：本次更正只改 ADR、设计与持久状态，没有实现 Adapter、读取密钥、调用模型、
   运行 held-out 或进入 5E。唯一下一步仍为 D5 离线 TDD。
+- `PUBLIC-VERIFIED`：候选更正提交 `5513928e29ffab4525b356b80845d9be807647bb`
+  已推送；GitHub Actions run `31762059181` 对该精确 SHA 全部门禁通过，CI 未调用真实
+  Provider 或运行 held-out。

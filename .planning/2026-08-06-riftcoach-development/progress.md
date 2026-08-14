@@ -849,3 +849,6 @@
   abstention/citation 为 `1.0`；compileall、Harness dry-run、SDK/tracked-data 边界、文档
   密钥模式扫描、governance 和 diff check 均通过。全部检查使用本地数据或 Fake/dry-run，
   外部 Provider calls 为 `0`。
+- 更正提交 `5513928e29ffab4525b356b80845d9be807647bb` 已推送；GitHub Actions run
+  `31762059181` 对该精确 SHA completed/success，公开 CI 的完整 pytest、两套 RAG、
+  compileall、治理、安全边界和 Harness dry-run 全部通过，未调用真实 Provider。
