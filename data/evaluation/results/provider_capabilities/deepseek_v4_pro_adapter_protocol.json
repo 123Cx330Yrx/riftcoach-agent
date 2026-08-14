@@ -1,0 +1,130 @@
+{
+  "schema_version": "1.0",
+  "preparation": {
+    "schema_version": "1.0",
+    "provider_id": "deepseek",
+    "requested_model": "deepseek-v4-pro",
+    "base_url": "https://api.deepseek.com",
+    "sdk_max_retries": 0,
+    "stream": false,
+    "thinking": "disabled",
+    "code_sha": "076a5e3558cd68abb545cebdc2542c973b020768",
+    "public_ci_sha": "076a5e3558cd68abb545cebdc2542c973b020768",
+    "public_ci_success_confirmed": true,
+    "dataset_id": "domain-e2e-v1-1-secure-held-out",
+    "dataset_version": "1.0.0",
+    "dataset_sha256": "b7363d2210dfbd2d6dd9e81786a7417b0817bfcfe7c4329d6aa38935c77be57c",
+    "prompt_context_snapshot_id": "recent-form-prompt-context-v1-1",
+    "prompt_context_snapshot_sha256": "23e95a1b1ddaee408190d6a3842aefd329049fd7c4abade4578988c365e74561",
+    "evaluation_contract": "coach_evaluation@1.1.0",
+    "protocol_max_calls": 3,
+    "domain_max_calls": 12,
+    "cumulative_max_calls": 15,
+    "maximum_total_tokens": 16000,
+    "maximum_output_tokens_per_request": 1024,
+    "maximum_estimated_cost": "0.10",
+    "currency": "USD",
+    "external_provider_calls": 0,
+    "held_out_executed": false,
+    "local_preflight_passed": true
+  },
+  "protocol": {
+    "schema_version": "1.0",
+    "probe_scope": "adapter_protocol",
+    "provider_id": "deepseek",
+    "requested_model": "deepseek-v4-pro",
+    "code_sha": "076a5e3558cd68abb545cebdc2542c973b020768",
+    "documentation_snapshot_date": "2026-08-09",
+    "run_timestamp_utc": "2026-08-14T03:39:57.633656Z",
+    "max_calls": 3,
+    "calls_used": 3,
+    "admitted": true,
+    "cases": [
+      {
+        "case_id": "A1_structured_contract",
+        "status": "passed",
+        "error_code": null,
+        "external_calls": 1,
+        "latency_ms": 12062,
+        "input_tokens": 440,
+        "output_tokens": 45,
+        "response_count": 1,
+        "resolved_models": [
+          "deepseek-v4-pro"
+        ],
+        "finish_reasons": [
+          "stop"
+        ],
+        "request_id_sha256": [
+          "4888075d1807d178c1d733aa4beda70d2197cf87b48f2c0ae809eee8e8a35281"
+        ],
+        "output_sha256": "ade269563583f1d40cd3457818952935477eea7e30c83e1ce85cbc08201513f6",
+        "tool_call_count": 0,
+        "tool_execution_count": 0,
+        "tool_arguments_sha256": null,
+        "tool_result_sha256": null
+      },
+      {
+        "case_id": "A2_agent_tool_round_trip",
+        "status": "passed",
+        "error_code": null,
+        "external_calls": 2,
+        "latency_ms": 2828,
+        "input_tokens": 863,
+        "output_tokens": 80,
+        "response_count": 2,
+        "resolved_models": [
+          "deepseek-v4-pro",
+          "deepseek-v4-pro"
+        ],
+        "finish_reasons": [
+          "tool_calls",
+          "stop"
+        ],
+        "request_id_sha256": [
+          "bdbd7d24f37cda2cf6220d69b164fe1ebbe0e5c2b467b2c73f0d1dac857e833b",
+          "087a639956c3a64689235eb1b14e5317ed74bd2a7122c53ea7699f83258521b6"
+        ],
+        "output_sha256": "b8e1581bbee7a74eb6755501c2be669718a40bc99516143f04826cf751dd92e1",
+        "tool_call_count": 1,
+        "tool_execution_count": 1,
+        "tool_arguments_sha256": "f996d4d27f64c4a6b8ab88b9e333434b1f3321e71e8ffc116433e536d3ebd053",
+        "tool_result_sha256": "445f578a388b68049269b39d9842e769b2cb00952c3442b98de231f97b4588f2"
+      }
+    ],
+    "estimated_cost": null,
+    "cost_note": "No verified unit-price snapshot was applied."
+  },
+  "resources": {
+    "provider_id": "deepseek",
+    "model": "deepseek-v4-pro",
+    "currency": "USD",
+    "calls_used": 3,
+    "max_calls": 15,
+    "scope_calls": [
+      {
+        "scope": "adapter_protocol",
+        "calls_used": 3,
+        "max_calls": 3
+      },
+      {
+        "scope": "domain",
+        "calls_used": 0,
+        "max_calls": 12
+      }
+    ],
+    "input_tokens": 1303,
+    "output_tokens": 125,
+    "total_tokens": 1428,
+    "max_observed_tokens": 16000,
+    "estimated_cost": "0.00221496",
+    "max_estimated_cost": "0.10",
+    "latency_ms": 14844,
+    "stop_code": null
+  },
+  "control": {
+    "global_stop": null,
+    "provider_stops": []
+  },
+  "held_out_executed": false
+}

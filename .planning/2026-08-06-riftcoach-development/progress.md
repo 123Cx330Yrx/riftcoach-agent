@@ -907,3 +907,21 @@
 - 聚焦及相邻回归为 `58 passed`；完整回归为 `512 passed, 103 subtests passed`。两套
   RAG 门满分且 compileall 通过。真实 Provider calls 仍为 `0`，held-out 未运行；下一步
   是提交、推送、验证 exact-SHA GitHub Actions，再由同一干净 SHA 执行真实协议门。
+
+### 2026-08-14：真实 DeepSeek V4 Pro 协议门完成，进入证据归档
+
+- execution seam 提交 `076a5e3558cd68abb545cebdc2542c973b020768` 已推送；GitHub
+  Actions run `31767405927` 对该精确 SHA 全部门禁通过，同 SHA no-I/O preflight 通过。
+- 真实协议门只运行一次并完成 3/3 calls：A1 structured contract 与 A2 Agent tool
+  round trip 均 passed，`admitted=true`；总计 1428 tokens，估算 `$0.00221496`，无停止。
+- held-out executions 仍为 `0`，没有进入领域报告生成/评测，也没有注册产品默认
+  Provider。结果文件已经类型化复读并取得 SHA-256，当前工作只负责归档和同步状态。
+- 公开结果目录的旧合同遍历测试最初把新组合记录误当 P1 报告，保留红灯后已按结构键
+  分派到真实 `ProviderAdapterProtocolExperimentRecord`；新增固定文件 SHA、代码 SHA、
+  3-call、Token/费用、无停止与 held-out=false 断言，聚焦 `9 passed`。
+- canonical state、活动计划、路线修订、能力矩阵、项目决策和路线历史已同步为“最小协议
+  已准入、领域未准入”；新的唯一下一步是先审计/设计领域 held-out 执行接缝，本批不调用。
+- 归档后完整回归为 `513 passed, 103 subtests passed`；RAG development 与 independent
+  holdout 的 Recall/MRR/nDCG 均为 `1.0`，holdout abstention/citation support 均为
+  `1.0`；compileall 和 Harness dry-run published。全部是本地验证，没有新增 Provider
+  calls 或 held-out execution。

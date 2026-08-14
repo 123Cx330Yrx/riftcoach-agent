@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -15,6 +16,18 @@ from app.evaluation.provider_capability_gate import (
 )
 from app.evaluation.provider_adapter_protocol import AdapterProtocolSliceReport
 from app.evaluation.provider_domain_skill import DomainSkillSliceReport
+from app.evaluation.provider_protocol_experiment import (
+    ProviderAdapterProtocolExperimentRecord,
+)
+
+
+DEEPSEEK_V4_PRO_PROTOCOL_RESULT = Path(
+    "data/evaluation/results/provider_capabilities/"
+    "deepseek_v4_pro_adapter_protocol.json"
+)
+DEEPSEEK_V4_PRO_PROTOCOL_RESULT_SHA256 = (
+    "575e8f5423bde6b34a692c63f90764313ba820772ae974109a4328b3dba086e1"
+)
 
 
 def passed_case(case_id: str) -> CapabilityProbeCaseResult:
@@ -170,12 +183,41 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
     assert result_paths
     for result_path in result_paths:
         content = result_path.read_text(encoding="utf-8")
-        scope = json.loads(content).get("probe_scope", "p1_p5")
-        model = {
-            "adapter_protocol": AdapterProtocolSliceReport,
-            "recent_form_domain": DomainSkillSliceReport,
-        }.get(scope, CapabilityProbeReport)
+        payload = json.loads(content)
+        if {
+            "preparation",
+            "protocol",
+            "resources",
+            "control",
+        }.issubset(payload):
+            model = ProviderAdapterProtocolExperimentRecord
+        else:
+            model = {
+                "adapter_protocol": AdapterProtocolSliceReport,
+                "recent_form_domain": DomainSkillSliceReport,
+            }.get(payload.get("probe_scope", "p1_p5"), CapabilityProbeReport)
         model.model_validate_json(content)
+
+
+def test_deepseek_v4_pro_real_protocol_result_is_immutable_and_admitted() -> None:
+    raw = DEEPSEEK_V4_PRO_PROTOCOL_RESULT.read_bytes()
+    assert hashlib.sha256(raw).hexdigest() == (
+        DEEPSEEK_V4_PRO_PROTOCOL_RESULT_SHA256
+    )
+
+    record = ProviderAdapterProtocolExperimentRecord.model_validate_json(raw)
+
+    assert record.preparation.code_sha == (
+        "076a5e3558cd68abb545cebdc2542c973b020768"
+    )
+    assert record.protocol.admitted is True
+    assert record.protocol.calls_used == 3
+    assert [case.status for case in record.protocol.cases] == ["passed", "passed"]
+    assert record.resources.total_tokens == 1428
+    assert str(record.resources.estimated_cost) == "0.00221496"
+    assert record.control.global_stop is None
+    assert record.control.provider_stops == ()
+    assert record.held_out_executed is False
 
 
 def test_v11_requires_explicit_consistent_response_observation() -> None:

@@ -953,3 +953,18 @@
   provider capability result 目录且不得覆盖已有证据。
 - 该补口是当前 5D-7 真实协议门的一部分，不把 D5 改回未完成，也不改变 Pro-only、
   held-out 未运行和 Flash 延后评估的决策。
+
+### 2026-08-14：真实 DeepSeek V4 Pro Adapter 协议门结果
+
+- 结果文件已由 `ProviderAdapterProtocolExperimentRecord` 重新严格解析，绑定代码提交
+  `076a5e3558cd68abb545cebdc2542c973b020768`，文件 SHA-256 为
+  `575e8f5423bde6b34a692c63f90764313ba820772ae974109a4328b3dba086e1`。
+- A1 strict structured contract 使用 1 call 并通过；A2 Agent tool round trip 使用
+  2 calls 并通过，观察到一次 `knowledge.search` ToolCall、一次本地成功执行和最终
+  `stop`；协议总计 3/3 calls，`admitted=true`。
+- 资源账本记录 1303 input + 125 output = 1428 tokens，保守估算成本 `$0.00221496`，
+  未超过 `$0.10`；没有 Provider/global stop，SDK retry 为 0。
+- 该证据只准入 DeepSeek V4 Pro 的最小生产 Adapter 协议，不准入近期复盘领域质量、
+  抗未知注入能力、生产默认模型或 Flash/Pro 路由。三场 held-out 仍未运行。
+- 用户暂停消息到达时真实门命令已经完成并写入不可覆盖结果；终止请求随后确认没有残留
+  Python 进程。恢复时必须复读并归档该证据，严禁把中断误解为需要重跑。

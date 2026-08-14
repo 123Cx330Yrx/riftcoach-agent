@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.11 - 5D-7（in progress: real DeepSeek protocol execution seam implemented and locally verified; exact-SHA public CI + gate next）
+Phase 6.11 - 5D-7（in progress: real DeepSeek V4 Pro adapter protocol admitted; frozen domain held-out execution seam review next）
 
 ## Phases
 
@@ -107,17 +107,20 @@ Phase 6.11 - 5D-7（in progress: real DeepSeek protocol execution seam implement
 - `5D-7` Batch D D5 已完成离线实现：独立 `DeepSeekProvider`、跨 draft/Harness 的
   安全失败观察、实验级 call/Token/金额 ledger、Provider/global stop 与 no-I/O
   preparation 均有 TDD 证据；完整回归为 `505 passed, 103 subtests passed`，真实
-  Provider calls 和 held-out executions 均为 0。
+  Provider calls 和 held-out executions 当时均为 0。随后 real-gate execution seam 在
+  exact-SHA CI `31767405927` 通过后只运行一次：DeepSeek V4 Pro structured 与 Agent
+  tool round trip 均 passed，3/3 calls、1428 tokens、估算 `$0.00221496`，协议
+  `admitted=true`；held-out executions 仍为 0。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-在 5D-7 内先提交并公开验证新完成的 real-gate execution seam；对该 exact SHA 的 GitHub
-Actions 成功后，在干净工作树重跑 no-I/O preflight，再单独执行最多 3 calls 的真实
-DeepSeek V4 Pro Adapter 协议门。必须显式确认真实调用、零 SDK retry，并由现有
-budget/stop controller fail closed；不直接运行 held-out，也不进入 5D exit review 或 5E。
+在 5D-7 内审计现有 Domain E2E runner、DeepSeek Provider 与冻结三场 held-out 的执行
+接缝，先形成初学者设计和离线 TDD 计划，明确 12-call/Token/金额预算、结果脱敏、失败
+即停和不可重复运行边界。本下一步不调用 Provider、不运行 held-out，也不进入
+5D exit review 或 5E；只有接缝通过本地和 exact-SHA 公开 CI 后，才另行执行真实领域门。
 
 ## Decisions Made
 
@@ -195,6 +198,7 @@ budget/stop controller fail closed；不直接运行 held-out，也不进入 5D 
 | D5 离线测试不读取 API Key | Fake SDK 用可编程返回验证请求/响应映射、工具往返和失败分支；真实模型质量、在线可用性、延迟与实际费用必须留给公开 SHA 上的有界 API 门 |
 | 预算 ledger 组合在候选 Provider 外层 | D4 价格与调用上限是实验政策，不应污染通用 AgentLoop；I/O 前占用调用、响应后按 usage 结算，同时保持 5E Trace 职责未提前实现 |
 | 真实协议门使用正式执行接缝而非临时 SDK 脚本 | D5 的 Adapter、preflight、ledger 和 protocol runner 已分别存在，但没有入口保证它们按“先身份、后 Key、再 I/O、最后脱敏记录”的顺序组合；本批只补接缝，不改变实验或阶段 |
+| DeepSeek V4 Pro 最小 Adapter 协议准入 | exact-SHA `076a5e3` 上一次真实运行以 3/3 calls 完成严格 JSON 与一次知识工具往返，资源/停止/脱敏合同均通过；该结论不能覆盖尚未运行的三场领域 held-out |
 
 ## Errors Encountered
 
@@ -278,6 +282,8 @@ budget/stop controller fail closed；不直接运行 held-out，也不进入 5D 
 | 5D-6b 计划复读按日期猜测了不存在的 real-provider 文件名 | 1 | 代码与测试读取成功，只有文档读取失败且无写入；立即用 `rg --files docs/plans` 定位 canonical 名称，后续引用文件前先查清单 |
 | 5D-6b Adapter protocol runner 从 `app.evaluation.__init__` 重导出导致全量测试循环导入 | 1 | 聚焦测试通过但全量收集揭示 `evaluation -> agent -> skills -> harness -> evaluation`；移除门面重导出，编排型 runner 只从具体模块导入，并把全量测试作为必过门禁 |
 | 5D-7 真实门入口审计的组合读取命令因最终 `rg` 无匹配返回 1 | 1 | 前置文件读取和脚本清单有效、无文件修改；将“未找到 DeepSeek factory 的执行脚本”作为实际缺口继续精确审计，不把预期无匹配解释为业务失败 |
+| 新 DeepSeek 组合结果首次进入公开结果目录后，旧全目录合同测试把它误解析为 P1 报告 | 1 | 保留红灯；按结构键分派到 `ProviderAdapterProtocolExperimentRecord`，并新增固定文件 SHA/准入边界测试，聚焦回归 9/9 通过 |
+| 协议结果同步后的陈旧短语扫描再次让 `rg` 无匹配返回退出码 1 | 1 | 无文件修改且语义实际为通过；后续将该扫描改为显式捕获无匹配并输出 `NO_STALE_MATCHES`，不再把预期空结果当作命令错误 |
 | 5D-6b canonical 收口复读沿用不存在的旧文档名称和 PowerShell 通配写法 | 1 | 已读取的 execution state 有效，缺失路径无写入；用 `rg --files docs` 与 planning 文件清单定位 `requirements_change_log.md`、`roadmap.md`、`roadmap_v1_3_amendment.md`、`architecture_capability_matrix.md`，后续只访问真实路径 |
 | 5D-6b 活动计划 findings/progress 追加补丁错误假设两文件共享同一尾部上下文 | 1 | `apply_patch` 原子拒绝且没有半写入；分别读取真实尾部并拆成两个追加块，功能与 canonical 状态不受影响 |
 | 5D-6b 领域状态追加补丁错误假设路线历史尾句，工作树安全补丁又错误假设设计列表措辞 | 2 | 两次 `apply_patch` 均原子拒绝且无半写入；先读取各文件真实尾部/匹配行，再把代码测试、路线历史和教学文档拆开更新 |

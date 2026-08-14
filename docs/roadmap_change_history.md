@@ -698,3 +698,22 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `BOUNDARY`：本次只同步需求、设计、ADR 和持久状态，不修改 Provider 代码、不运行
   API/held-out、不进入 5E/5P/5F 或阶段 6。当前唯一下一步仍是最多 3-call 的真实 Pro
   Adapter 协议门。
+
+### 2026-08-14：DeepSeek V4 Pro 真实 Adapter 协议准入
+
+- `PUBLIC-VERIFIED`：real-gate execution seam 提交
+  `076a5e3558cd68abb545cebdc2542c973b020768` 已推送；GitHub Actions run
+  `31767405927` 对该精确 SHA 全部门禁通过，同 SHA no-I/O preflight 通过且为零调用。
+- `EXECUTED-ONCE`：随后只执行一次真实 DeepSeek V4 Pro 协议门；A1 strict structured
+  contract 使用 1 call，A2 Agent tool round trip 使用 2 calls，二者均 passed，
+  总计 3/3 calls 并 `admitted=true`。
+- `RESOURCES`：记录 1303 input、125 output、合计 1428 tokens，估算费用
+  `$0.00221496`，累计 Provider latency 14844 ms；未触发 Provider/global stop，SDK
+  retry 为 0。
+- `IMMUTABLE-EVIDENCE`：组合结果通过类型化复读，文件 SHA-256 为
+  `575e8f5423bde6b34a692c63f90764313ba820772ae974109a4328b3dba086e1`；公开内容不含
+  Key、Prompt、模型原文、工具原文或原始 request ID。
+- `BOUNDARY`：只准入最小生产 Adapter structured/tool 协议；三场领域 held-out 仍未
+  运行，不准入报告质量、真实抗注入、产品默认模型或 Flash/Pro 路由。
+- `CURRENT`：5D-7 唯一下一步改为审计并设计冻结领域 held-out 执行接缝，先离线 TDD
+  和 exact-SHA CI；本批不继续调用 Provider、不进入 5D exit review 或 5E。

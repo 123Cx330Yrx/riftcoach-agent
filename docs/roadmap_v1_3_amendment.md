@@ -37,8 +37,9 @@
 ## 3. 3G 多模型边界
 
 当前首个真实基线是 GLM。ADR-0018 已取代 ADR-0017 的模型选择，DeepSeek V4 Pro 是
-下一轮唯一有界候选；其独立 Adapter、失败归因和实验控制器已在 D5 离线实现，但尚未
-真实调用或准入，Qwen、Kimi 等仍未锁定。选择第二
+下一轮唯一有界候选；其独立 Adapter、失败归因和实验控制器已在 D5 离线实现，真实
+最小 structured/tool 协议已以 3/3 calls 准入，但领域 held-out 尚未运行，Qwen、Kimi
+等仍未锁定。选择第二
 Provider 的触发条件是：
 出现真实 Skill/Agent 任务后，候选与 GLM 通过
 同一套 Tool Calling、结构化输出、错误、质量、延迟和成本评测。第三家只用于验证
@@ -184,7 +185,7 @@ OP.GG MCP
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
-5D-7 Prompt/Context Eval      进行中；Batch A-C 与 Batch D D1-D5 已完成离线实现，真实 DeepSeek 协议/held-out 尚未运行
+5D-7 Prompt/Context Eval      进行中；DeepSeek V4 Pro 真实最小协议已准入，三场领域 held-out 尚未运行
 ```
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
@@ -242,9 +243,10 @@ D3 已在规则冻结后创建 3 场独立 held-out，但没有运行。上述�
 ADR-0018 已更正并完成 D4：DeepSeek V4 Pro 是唯一有界第二 Provider 候选，调用/Token/
 金额、错误归因和停止规则已经冻结，DeepSeek 停止线为 `$0.10`。D5 已离线实现独立
 Adapter、安全错误归因、实验 ledger/stop controller 与 no-I/O preparation；Fake SDK
-协议和完整回归通过，没有读取 Key、调用真实 Provider 或运行 held-out。D5 功能提交的
-exact-SHA 公开 CI 与同 SHA no-I/O preflight 已通过。唯一下一步仍在 5D-7 内：执行一次
-最多 3-call 的真实 DeepSeek V4 Pro Adapter 协议门，失败即停止且不直接运行 held-out。
+协议和完整回归通过。real-gate execution seam 的 exact-SHA 公开 CI/no-I/O preflight
+通过后，DeepSeek V4 Pro 真实 structured 与 Agent tool round trip 只运行一次并以
+3/3 calls、1428 tokens、约 `$0.00221496` 准入；没有运行 held-out。唯一下一步仍在
+5D-7 内：审计并设计冻结三场领域 held-out 的执行接缝，先离线 TDD，不在同批调用。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动

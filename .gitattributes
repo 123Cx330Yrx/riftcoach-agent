@@ -1,2 +1,5 @@
 # Preserve the byte-for-byte CRLF snapshot used by the historical hash test.
 /data/evaluation/results/history/skill_router_v1_single_skill_development_baseline_1_0_0.json binary
+
+# Keep the immutable real-provider evidence digest stable across platforms.
+/data/evaluation/results/provider_capabilities/deepseek_v4_pro_adapter_protocol.json text eol=lf
