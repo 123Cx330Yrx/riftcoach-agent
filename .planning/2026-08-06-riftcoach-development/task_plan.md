@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.13 - 5D-7（in progress: real held-out rejected on parallel tool-call boundary; immutable evidence archival）
+Phase 6.14 - 5D-7（in progress: parallel ToolCall Bad Case design and development reproduction planning）
 
 ## Phases
 
@@ -130,10 +130,10 @@ Phase 6.13 - 5D-7（in progress: real held-out rejected on parallel tool-call bo
 
 ## Next Step
 
-5D-7 唯一下一步是归档真实领域拒绝结果、增加固定 SHA/失败边界回归，提交、推送并验证
-exact-SHA GitHub Actions。当前 Dataset 1.1.0 已消费，不得删除结果、重复运行、临场调
-Prompt 或直接放宽 Adapter；并行工具 Bad Case 的后续处理必须另做 development 复现和
-采用决策，也不进入 5D exit review 或 5E。
+5D-7 真实拒绝结果已由提交 `26b668d0ce594e648a692cd2caf831c86125fede` 和 GitHub
+Actions run `31810164628` 完成 exact-SHA 公开归档。唯一下一步是零调用审计并设计
+`unsupported_parallel_tool_calls` development 复现与采用门，比较继续拒绝、顺序执行和
+受控并发；当前 Dataset 1.1.0 不得重跑，也不进入 5D exit review 或 5E。
 
 ## Decisions Made
 

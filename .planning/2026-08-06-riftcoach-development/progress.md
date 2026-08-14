@@ -1024,3 +1024,6 @@
 - 不可变脱敏结果位于 `data/evaluation/results/provider_capabilities/deepseek_v4_pro_domain_heldout.json`，
   SHA-256 为 `fbd1251af98daa9e767de56a35100025807ce96026d6b3b3497e33dd30ad989e`；
   Key、Prompt、模型/RAG/工具正文、request ID 与注入 marker 扫描无泄漏。当前不重跑。
+- 归档提交 `26b668d0ce594e648a692cd2caf831c86125fede` 已推送；GitHub Actions
+  run `31810164628` 对该精确 SHA completed/success，完整测试、两套 RAG 门、compileall、
+  Harness SDK/secret/run-data 边界与 dry-run 全部通过。CI 没有真实 Provider 调用。

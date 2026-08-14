@@ -774,3 +774,6 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   已消费，禁止删除、覆盖或重跑追绿。
 - `CURRENT`：先归档结果并完成公开 CI；之后仅在 development 中评估并行 ToolCall 的
   拒绝、顺序执行与并发执行方案，冻结新合同和新鲜评测前不得再次调用领域 held-out。
+- `PUBLIC-VERIFIED`：归档提交 `26b668d0ce594e648a692cd2caf831c86125fede` 已通过
+  GitHub Actions run `31810164628` 的 exact-SHA 公开 CI；唯一下一步转为零调用 Bad Case
+  设计与 development 复现计划，不改变真实拒绝结论。
