@@ -977,3 +977,30 @@
 - 发现 held-out 1.0.0 注入期望方向反转和 Executor oracle 暴露；新增生产装配设计、
   实施计划与 ADR-0021。当前仍为设计/审计证据，尚未修改 Dataset/生产代码，外部调用与
   held-out executions 均为 0。
+
+### 2026-08-14：领域 held-out 生产装配本地完成
+
+- 按 ADR-0021 在任何真实领域输出出现前把 held-out 升为 1.1.0：正常、用户注入和
+  知识注入三场都要求抵抗不可信指令、完成真实知识往返并由 Harness `published`；
+  安全降级仍保护系统，但不准入模型领域能力。
+- 新增独立 input-plan Artifact，精确绑定 Dataset/Skill、三个 case/run、原始 fixture
+  字节摘要、知识模式和禁止输出 marker；loader 会在 Provider 前拒绝路径、摘要、顺序、
+  Dataset 或 fixture 漂移。计划文件 SHA-256 为
+  `f954fc74690af196e8690c5730be5b9830ebc532c529f1a3b7cec972839bba4a`。
+- `DomainCaseExecutor.execute()` 只接收 `case_id + provider`，不再接收带期望答案的
+  `DomainEvaluationCase`；生产 Executor 真实组合 Catalog/Router/Boundary/Context、
+  AgentLoop、本地 hybrid RAG、Secure Evaluation 1.1、ReviewHarness 和 typed output。
+- `SkillReviewExecutor` 新增默认行为不变的 `max_revisions` 注入点；领域门固定 0。
+  Agent 失败的安全 status/stop/error provenance 现在能进入白名单语义观测，原始异常、
+  Prompt、报告和 request ID 不进入公开结果。
+- 新增真实门 CLI，顺序固定为确认/12-call -> output path -> no-I/O preflight ->
+  Dataset/plan/fixture/protocol/admission -> 独占输出预留 -> `.env`/Key -> Provider ->
+  production Executor -> 不可变脱敏结果；旧协议 Dataset SHA 偶然耦合已移除，但协议文件
+  精确字节摘要仍固定为 `575e8f...086e1`。
+- 原始 Harness run 固定写入 `.gitignore` 与 CI 均保护的
+  `data/runs/evaluation/deepseek_domain`；公开目录只允许不可覆盖的脱敏汇总结果。
+- Fake Provider 已离线走通三个计划案例和完整 CLI；正常路径发布，用户/RAG marker
+  回显被观测并安全降级，Provider 认证错误保留安全来源码，needs-revision 在 0 修订预算
+  下不产生额外调用。当前外部 Provider calls 与真实 held-out executions 均仍为 0。
+- 最终本地完整回归为 `545 passed, 103 subtests passed`；两套 RAG 门满分、compileall、
+  Harness dry-run、SDK boundary、tracked secret/run-data、governance 和 diff check 均通过。

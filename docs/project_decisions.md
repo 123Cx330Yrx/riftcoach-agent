@@ -153,9 +153,9 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   报告质量、抗未知注入或产品默认模型已准入；
 - DeepSeek 领域 held-out 执行接缝进一步把 no-I/O admission 与 Provider 数据面分开，
   从真实协议账本继承 calls/Token/金额，增加 domain/单例资源门、逐例分层判断、首错
-  停止、unsafe 全局停止和 Provider 前结果预留；接缝 exact-SHA 公开 CI 已通过，但
-  合成测试与 CI 只准入该控制接缝，真实执行计划、生产 Executor 和 held-out 结果仍待
-  单独领域门；
+  停止、unsafe 全局停止和 Provider 前结果预留；独立输入计划、oracle-blind 生产
+  Executor 与 Key-last CLI 已完成本地离线 TDD，正等待新的 exact-SHA 公开 CI；真实
+  held-out 结果仍待单独授权领域门；
 - GLM 是首个真实基准 Adapter，不是永久模型选择；Qwen3.8 Max 因 reasoning/计费入口
   增加首轮变量而暂缓，DeepSeek V4 Flash 因本轮唯一候选还需代表复杂领域能力而暂缓；
   ADR-0019 将 Flash/Pro 分层明确为 5P 后的横向 Provider 优化门，默认等待阶段 6 真实
@@ -165,7 +165,8 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
   注入评测与真实实验门由 ADR-0016 接受，第二 Provider 门的原始历史由 ADR-0017
   保留，当前候选与预算更正由 ADR-0018 接受，未来模型分层归属由 ADR-0019 接受；
   领域 held-out 的 no-I/O admission、薄协调器、累计/单例资源门和不可重复输出由
-  ADR-0020 接受；
+  ADR-0020 接受；未执行考卷的注入成功语义、独立输入计划与 oracle-blind 生产装配由
+  ADR-0021 接受；
   D1-D5 与领域执行接缝已完成离线实现且 DeepSeek 最小真实协议已准入，当前仍处于 5D-7，不等于
   整个 5D、领域 held-out、LangGraph 或 Multi-Agent 已实现。
 

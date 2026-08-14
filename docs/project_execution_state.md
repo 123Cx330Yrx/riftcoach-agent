@@ -20,12 +20,12 @@ blocked_before: "5D-exit-review"
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6b 已完成；
   5D-7 Batch A-C 与 Batch D 的 D1-D5 已完成，DeepSeek V4 Pro Adapter 真实
-  structured/tool 协议 3/3 calls 已准入；三场领域 held-out 的控制面/预算/停止/脱敏
-  执行接缝已完成本地离线 TDD 和 exact-SHA 公开 CI，但真实案例执行计划、生产案例
-  执行器和 held-out 尚未运行
-- 唯一下一步：在 5D-7 内冻结并装配真实案例执行计划与生产案例执行器/CLI，先完成
-  离线 TDD 和新的 exact-SHA 公开 CI；该 CI 成功前不得读取 Key、发起 Provider 请求或
-  运行三场领域 held-out
+  structured/tool 协议 3/3 calls 已准入；三场领域 held-out 的控制面以及独立输入计划、
+  oracle-blind 生产 Executor 和真实门 CLI 已完成本地离线 TDD，正在等待本提交的
+  exact-SHA 公开 CI；真实 DeepSeek 领域 held-out 尚未运行
+- 唯一下一步：完成本次 5D-7 生产装配提交、推送并验证 exact-SHA GitHub Actions；
+  公开 CI 成功后，真实三案例运行仍是下一次需要显式确认的单独有界动作，本批不得读取
+  Key、发起 Provider 请求或运行 held-out
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；DeepSeek
   领域调用必须先完成执行接缝离线 TDD 与公开 exact-SHA CI，不能用已通过的低层协议、
   候选选择或发布热度替代领域质量证据
@@ -53,7 +53,7 @@ blocked_before: "5D-exit-review"
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测首个 Provider，并为第二 Provider 决策提供真实证据 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（DeepSeek 最小真实协议已准入，领域 held-out 未运行） | Batch A：分层合同与 10 个记录型 development 控制样本；Batch B：组件/案例双层 SHA-256 快照和零调用 admission；Batch C：ADR-0015、7 个 `offline_executable` development 场景及一个真实 unsafe publication；D1-D2：`coach_evaluation@1.1.0` 安全合同、不可修订 blocking policy、7 场 secure offline development 基线，task/failure accuracy 均 1.0、unsafe publication 0、external calls 0；D3：3 场独立 held-out 创建，`calibration_excluded=true`，尚未运行；D4：ADR-0018 改用 DeepSeek V4 Pro 并冻结能力、错误、调用/Token/金额和停止门；D5：独立 Adapter、失败观察与实验控制离线 TDD；真实协议门在 exact-SHA `076a5e3` 上以 3/3 calls、1428 tokens、约 `$0.00221496` 通过并 `admitted=true`；领域接缝已用合成 executor 证明协议账本继承、每例 4-call/4000-token、领域 12-call/12000-token、首错停止、全局 unsafe stop、控制面先于 Provider、脱敏与不可覆盖，held-out executions 仍为 0 |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（生产领域门本地装配完成，等待 exact-SHA 公开 CI；真实 held-out 未运行） | Batch A：分层合同与 10 个记录型 development 控制样本；Batch B：组件/案例双层 SHA-256 快照和零调用 admission；Batch C：ADR-0015、7 个 `offline_executable` development 场景及一个真实 unsafe publication；D1-D2：`coach_evaluation@1.1.0` 安全合同、不可修订 blocking policy、7 场 secure offline development 基线，task/failure accuracy 均 1.0、unsafe publication 0、external calls 0；D3：3 场独立 held-out 创建，`calibration_excluded=true`，尚未真实运行；D4-D5：ADR-0018、独立 DeepSeek Adapter、失败观察、预算/停止门与 3-call 真实协议准入；领域控制接缝和生产装配现包含修正为安全成功语义的 Dataset 1.1.0、独立字节哈希输入计划、oracle-blind Executor、真实本地 Skill/RAG/Harness、`max_revisions=0`、精确协议字节门和 Provider 前输出预留，全部只由 Fake Provider 离线验证 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界
@@ -291,7 +291,7 @@ blocked_before: "5D-exit-review"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 已形成安全离线基线/隔离 held-out、DeepSeek 独立 Adapter、真实最小协议及领域 admission/累计账本/逐例停止/脱敏执行接缝 | 阶段 5、整个 5D、真实案例执行计划、DeepSeek 领域质量、held-out 运行、生产默认切换或报告质量准入已完成 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 已形成安全离线基线、DeepSeek 独立 Adapter/真实最小协议、领域控制接缝、独立输入计划、oracle-blind 生产 Executor 与真实门 CLI | 阶段 5、整个 5D、DeepSeek 领域质量、真实 held-out 运行、生产默认切换或报告质量准入已完成 |
 | 项目理解 | 已区分控制面 admission 与数据面 Provider 调用、Dataset oracle 与案例执行计划，也已区分 Provider/Model/Multi-Agent、协议/领域/产品三层门，以及累计/范围/单例调用与 Token 预算 | 离线合成 executor 能评价模型智力/在线可用性，执行接缝等于真实领域准入，或 3 场 held-out 能证明通用生产质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
 | GitHub/部署 | 领域执行接缝提交 `7986e1ade9ab165b4b2916a62b067587c5c3f027` 已公开，exact-SHA CI run `31785253957` 成功；正式网页仍未部署 | 执行接缝公开可复现等于真实案例计划/领域 held-out 已运行、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
@@ -468,8 +468,8 @@ DeepSeek V4 Pro 协议门。A1 strict structured contract 与 A2 Agent tool roun
 证明第 5 个单例调用在 I/O 前拒绝、首错后剩余 skipped、异常正文不落盘、结果不可覆盖；
 真实协议文件仍严格解析为 3 calls，SHA-256 仍为
 `575e8f5423bde6b34a692c63f90764313ba820772ae974109a4328b3dba086e1`。
-本批没有创建真实案例执行正文、读取 `.env`、创建 DeepSeek client、增加调用或运行
-held-out。执行接缝提交 `7986e1ade9ab165b4b2916a62b067587c5c3f027` 已通过 GitHub
-Actions run `31785253957` 的 exact-SHA 公开 CI；下一批才在单独真实领域门内冻结并
-装配案例执行计划与生产 Executor/CLI，先离线 TDD 和公开验证，再决定是否发起一次
-有界 held-out，仍不得进入 5D exit review 或 5E。
+执行接缝提交 `7986e1ade9ab165b4b2916a62b067587c5c3f027` 已通过 GitHub Actions
+run `31785253957` 的 exact-SHA 公开 CI。后续生产装配批已在零外部调用下把 held-out
+修正为 1.1.0 安全成功门，冻结输入计划并接入生产 Executor/CLI；当前只等待新提交的
+公开 CI。该 CI 成功后才可把一次真实领域 held-out 提交给用户显式确认，仍不得进入
+5D exit review 或 5E。

@@ -1021,3 +1021,20 @@
 - 入口审计有两次只读命令错误：Windows `rg` 路径误用了 `tests\test_*` 通配符；随后又
   猜测了不存在的 `app/tools/knowledge.py`。两者都没有修改文件，后续改为显式目录和先
   `rg --files`/符号搜索再打开真实路径。
+
+### 2026-08-14：生产装配实现结论
+
+- Dataset oracle 与案例输入是两种不同资产。协调器需要 oracle 判分，生产 Executor
+  只需要 case ID 并从独立输入计划取输入；将整个 `DomainEvaluationCase` 交给执行器会
+  让测试答案在类型层泄漏。
+- 协议证据只验证 Adapter structured/tool 合同，从未读取领域 Dataset；因此协议记录的
+  历史 Dataset SHA 不应阻止未执行考卷的版本更正。可迁移边界是保留精确协议 bytes、
+  Provider/model、3 calls、1428 tokens、停止状态和 Prompt/Evaluation snapshot，移除
+  唯一未使用的 Dataset equality。
+- 注入案例的系统安全和 Provider 领域准入不是同一判断：模型服从注入但 Evaluator/
+  Harness 阻断时，系统保持安全，Provider 仍应不准入；只有模型抵抗注入、事实/引用与
+  Evaluation 均通过并最终 published，才是本次领域成功。
+- `max_revisions=0` 不等于禁用结构化格式修复。前者禁止根据答案调整报告，后者仍允许
+  Evaluation Adapter 对非法 JSON 做最多一次同 Schema 格式修复；二者控制不同风险。
+- Key-last 必须由入口顺序和测试证明：所有身份/文件/输出冲突在环境 loader 前失败，
+  并在环境加载前独占创建输出哨兵。进程在此后失败会留下空哨兵，防止静默重复付费。

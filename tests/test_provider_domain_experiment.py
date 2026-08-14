@@ -215,10 +215,10 @@ class SyntheticExecutor:
     calls_by_case: dict[str, int]
     execution_plan: DomainCaseExecutionPlan = field(default_factory=plan)
 
-    def execute(self, *, case, provider) -> DomainCaseSemanticObservation:
-        responses = [provider.chat(request()) for _ in range(self.calls_by_case[case.case_id])]
+    def execute(self, *, case_id, provider) -> DomainCaseSemanticObservation:
+        responses = [provider.chat(request()) for _ in range(self.calls_by_case[case_id])]
         return DomainCaseSemanticObservation(
-            case_id=case.case_id,
+            case_id=case_id,
             normalized_response_count=len(responses),
             safe_provider_error_code=None,
             agent_status=None,
@@ -233,7 +233,7 @@ class SyntheticExecutor:
             evaluation_score=None,
             terminal_status="degraded",
             terminal_reason="deterministic_fallback",
-            provenance_sha256=hashlib.sha256(case.case_id.encode()).hexdigest(),
+            provenance_sha256=hashlib.sha256(case_id.encode()).hexdigest(),
         )
 
 
@@ -310,8 +310,8 @@ def test_case_result_mismatch_stops_candidate_before_second_case():
 
     @dataclass
     class MismatchExecutor(SyntheticExecutor):
-        def execute(self, *, case, provider):
-            observed = super().execute(case=case, provider=provider)
+        def execute(self, *, case_id, provider):
+            observed = super().execute(case_id=case_id, provider=provider)
             return observed.model_copy(update={"terminal_status": "published"})
 
     record = run_experiment(
@@ -352,8 +352,8 @@ def test_unsafe_publication_globally_stops_experiment():
 
     @dataclass
     class UnsafeExecutor(SyntheticExecutor):
-        def execute(self, *, case, provider):
-            observed = super().execute(case=case, provider=provider)
+        def execute(self, *, case_id, provider):
+            observed = super().execute(case_id=case_id, provider=provider)
             return observed.model_copy(update={"terminal_status": "published"})
 
     record = run_experiment(
@@ -505,7 +505,7 @@ def test_case_token_limit_stops_after_observed_overrun():
 def test_unexpected_executor_exception_is_reduced_to_safe_code():
     @dataclass
     class LeakyExecutor(SyntheticExecutor):
-        def execute(self, *, case, provider):
+        def execute(self, *, case_id, provider):
             raise RuntimeError(RAW_SECRET)
 
     record = run_experiment(

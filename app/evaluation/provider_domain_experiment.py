@@ -146,7 +146,7 @@ class DomainCaseExecutor(Protocol):
     def execute(
         self,
         *,
-        case: DomainEvaluationCase,
+        case_id: str,
         provider: LLMProvider,
     ) -> DomainCaseSemanticObservation:
         """Run one case and return only allowlisted semantic observations."""
@@ -471,7 +471,10 @@ def run_deepseek_domain_heldout_experiment(
             clock=clock,
         )
         try:
-            semantic = case_executor.execute(case=case, provider=controlled)
+            semantic = case_executor.execute(
+                case_id=case.case_id,
+                provider=controlled,
+            )
             if not isinstance(semantic, DomainCaseSemanticObservation):
                 raise TypeError("case executor returned an invalid observation")
             if semantic.case_id != case.case_id:
@@ -675,10 +678,8 @@ def _require_frozen_control_inputs(
         or protocol.requested_model != policy.model
         or protocol_record.preparation.provider_id != policy.provider_id
         or protocol_record.preparation.requested_model != policy.model
-        or protocol_record.preparation.dataset_id != dataset.dataset_id
-        or protocol_record.preparation.dataset_version != dataset.dataset_version
-        or protocol_record.preparation.dataset_sha256
-        != preparation.dataset_sha256
+        or protocol_record.preparation.prompt_context_snapshot_id
+        != preparation.prompt_context_snapshot_id
         or protocol_record.preparation.prompt_context_snapshot_sha256
         != preparation.prompt_context_snapshot_sha256
         or protocol_record.preparation.evaluation_contract

@@ -149,6 +149,7 @@ class SkillReviewExecutor:
         evaluator: EvaluatorStep,
         reviser: ReviserStep,
         output_builder: SkillTerminalOutputBuilder | None = None,
+        max_revisions: int | None = None,
     ) -> None:
         if not callable(getattr(draft_preparer, "prepare", None)):
             raise TypeError("draft_preparer must provide prepare()")
@@ -161,6 +162,13 @@ class SkillReviewExecutor:
         self._evaluator = evaluator
         self._reviser = reviser
         self._output_builder = output_builder or SkillTerminalOutputBuilder()
+        if max_revisions is not None and (
+            isinstance(max_revisions, bool)
+            or not isinstance(max_revisions, int)
+            or max_revisions < 0
+        ):
+            raise ValueError("max_revisions must be a non-negative integer")
+        self._max_revisions = max_revisions
 
     def execute(
         self,
@@ -183,7 +191,11 @@ class SkillReviewExecutor:
         )
         config = HarnessConfig(
             publish_score_threshold=quality_gate.minimum_score,
-            max_revisions=HarnessConfig().max_revisions,
+            max_revisions=(
+                HarnessConfig().max_revisions
+                if self._max_revisions is None
+                else self._max_revisions
+            ),
             allow_deterministic_fallback=(
                 quality_gate.allow_deterministic_fallback
             ),

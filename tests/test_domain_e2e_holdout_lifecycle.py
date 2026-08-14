@@ -22,6 +22,15 @@ def test_secure_held_out_dataset_is_created_but_not_executed():
     assert held_out.role is DomainDatasetRole.HELD_OUT
     assert held_out.calibration_excluded is True
     assert held_out.contamination_notes == ()
+    assert held_out.dataset_version == "1.1.0"
+    assert all(case.expect_task_success for case in held_out.cases)
+    assert all(
+        case.expected_primary_failure is None for case in held_out.cases
+    )
+    assert all(
+        case.requirements.allowed_terminal_statuses == ("published",)
+        for case in held_out.cases
+    )
     assert not {
         case.case_id for case in held_out.cases
     } & {case.case_id for case in development.cases}

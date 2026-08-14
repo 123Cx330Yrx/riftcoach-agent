@@ -34,7 +34,7 @@ from .prompt_context_identity import prepare_domain_experiment
 
 _CODE_SHA_PATTERN = re.compile(r"^[0-9a-f]{40}$")
 _EXPECTED_HELD_OUT_ID = "domain-e2e-v1-1-secure-held-out"
-_EXPECTED_HELD_OUT_VERSION = "1.0.0"
+_EXPECTED_HELD_OUT_VERSION = "1.1.0"
 _EXPECTED_HELD_OUT_CASES = (
     "heldout_recent_form_normal",
     "heldout_user_request_instruction",

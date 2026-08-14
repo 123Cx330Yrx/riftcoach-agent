@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.11 - 5D-7（in progress: real DeepSeek V4 Pro adapter protocol admitted; frozen domain held-out execution seam review next）
+Phase 6.12 - 5D-7（in progress: production held-out plan/Executor/CLI locally verified; exact-SHA public CI next）
 
 ## Phases
 
@@ -125,11 +125,9 @@ Phase 6.11 - 5D-7（in progress: real DeepSeek V4 Pro adapter protocol admitted;
 
 ## Next Step
 
-在 5D-7 内冻结并装配真实案例执行计划与生产案例执行器/CLI，复用已经公开验证的
-admission、预算、停止、脱敏和输出预留接缝；先用 Fake Provider 完成离线 TDD，再提交
-并验证新的 exact-SHA GitHub Actions。该公开 CI 成功前不读取 Key、不创建真实
-DeepSeek client、不运行 held-out，也不进入 5D exit review 或 5E；真实三案例运行仍是
-其后的单独有界动作。
+提交并推送 5D-7 生产装配，验证精确 SHA 的 GitHub Actions。公开 CI 成功前不读取
+Key、不创建真实 DeepSeek client、不运行 held-out，也不进入 5D exit review 或 5E；
+真实三案例运行仍是其后的单独有界动作，必须由用户再次显式确认。
 
 ## Decisions Made
 
@@ -310,3 +308,6 @@ DeepSeek client、不运行 held-out，也不进入 5D exit review 或 5E；真�
 | D4 更正复核再次猜测 workflow 名为 `ci.yml` | 1 | 只读失败且无脚本执行；先列出 `.github/workflows`，按真实 `tests.yml` 复核全部门禁 |
 | DeepSeek 协议证据归档收尾的 GitHub CI 查询路径间歇性 TLS/HTTP timeout | 5+ | push 与 Actions run 创建均成功且无功能漂移；停止密集重复不稳定的 `gh`/jobs 查询，同类只读失败归入本行，固定用有界 PowerShell REST 核验最终精确 SHA，不把观测失败误报为测试失败 |
 | 生产装配设计提交前 diff check 发现三份新文档 EOF 多余空行 | 1 | 检查阻止提交；用小补丁移除多余行并重新运行 staged/working-tree diff check，不改变设计语义 |
+| 生产装配聚焦回归首次使用 30 秒 shell timeout，测试尚未完成即被终止 | 1 | 没有断言失败或代码变化；同一组改用 60 秒上限重跑，24/24 通过 |
+| 生产装配首次完整回归仍保留 held-out `1.0.0` 预检常量 | 1 | 543 tests/103 subtests 已通过、2 个 no-I/O 预检失败；按 ADR-0021 只把冻结常量更新为 `1.1.0`，相邻 25/25 随后通过 |
+| 生产装配安全扫描再次把 `docs\security*` 作为 Windows `rg` 路径 | 1 | `.gitignore` 已成功读取且暴露真正的 runs 目录边界，只有通配扫描失败；改用显式文件清单，并把真实门默认运行目录移入已忽略/受 CI 保护的 `data/runs/` |

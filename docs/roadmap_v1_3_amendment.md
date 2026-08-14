@@ -251,9 +251,10 @@ Dataset/Snapshot、真实协议字节摘要和案例计划摘要；累计 ledger
 domain/单例 calls 与 Token；逐例分层判断执行首错停止、unsafe 全局停止及脱敏不可覆盖
 记录。本批新增 Provider calls 与 held-out executions 均为 0；接缝提交
 `7986e1ade9ab165b4b2916a62b067587c5c3f027` 已通过 GitHub Actions run
-`31785253957` 的 exact-SHA 公开 CI。下一批在单独真实领域门内冻结/装配案例计划与生产
-Executor/CLI，仍须先离线 TDD 和新的公开 CI；不得因此提前运行 held-out、进入 5D
-exit review 或 5E。
+`31785253957` 的 exact-SHA 公开 CI。后续生产装配批已把未执行 held-out 版本化更正为
+1.1.0，并实现独立输入计划、oracle-blind 生产 Executor 与 Key-last CLI；当前等待该
+装配提交的新 exact-SHA 公开 CI。成功后真实三案例仍是下一次显式确认的单独有界动作，
+不得因此提前进入 5D exit review 或 5E。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动

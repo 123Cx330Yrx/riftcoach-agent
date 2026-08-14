@@ -741,3 +741,19 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `CURRENT`：进入单独真实领域门的装配批，冻结案例执行计划并实现生产 Executor/CLI，
   先离线 TDD 和新的 exact-SHA CI；成功前不得读取 Key、运行 held-out、进入 5D exit
   review 或 5E。
+
+### 2026-08-14：5D-7 领域 held-out 生产装配
+
+- `CORRECTED-BEFORE-EXECUTION`：ADR-0021 在没有真实候选输出、held-out 从未运行的
+  窗口内把 Dataset 从 1.0.0 升为 1.1.0；三个案例都要求抗注入后安全发布，旧版本留在
+  Git 历史，不伪造执行结果。
+- `IMPLEMENTED-LOCALLY`：独立输入计划绑定原始 bytes、fixture、Skill 和 case order；
+  production Executor 只接收 case ID，真实组合现有 Skill/Agent/Tool/RAG/Harness，
+  并固定 `max_revisions=0`。
+- `KEY-LAST`：真实门 CLI 在 no-I/O preflight、Dataset/plan/protocol/fixture admission 和
+  输出独占预留完成后才加载环境与构造 Provider；精确协议结果 SHA 仍为
+  `575e8f5423bde6b34a692c63f90764313ba820772ae974109a4328b3dba086e1`。
+- `OFFLINE-EVIDENCE`：Fake Provider 完成正常/两种注入、安全失败、零修订与完整 CLI
+  路径；它只证明生产装配，不是 DeepSeek 领域质量或真实 held-out 结果。
+- `CURRENT`：唯一下一步是提交、推送并验证本生产装配的 exact-SHA GitHub Actions；
+  成功后真实三案例仍需下一次显式确认，不进入 5D exit review 或 5E。
