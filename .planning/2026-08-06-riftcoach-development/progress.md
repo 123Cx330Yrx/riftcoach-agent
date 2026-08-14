@@ -929,3 +929,7 @@
   `gh run list` 与公开 REST 查询分别遇到 TLS 超时，未据此推断 CI 状态。改查精确
   commit 的 check-runs API 后，确认 GitHub Actions run `31779362817` 的 `pytest`
   completed/success。该恢复查询不调用 Provider，也不运行 held-out。
+- CI 恢复记录提交 `e0f3edf3b5dc12557124252273e70b86d58d981a` 推送后，`gh run
+  watch` 与 check-runs 查询又遇到两次 TLS 握手超时；改用 20 秒上限的 PowerShell
+  REST 查询，确认 run `31779529184` 对该精确 SHA completed/success。失败均发生在
+  CI 状态读取阶段，不是测试失败，也没有触发外部模型调用。

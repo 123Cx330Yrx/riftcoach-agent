@@ -298,4 +298,4 @@ Phase 6.11 - 5D-7（in progress: real DeepSeek V4 Pro adapter protocol admitted;
 | D1 首次测试补丁把旧 Harness 断言插入新安全测试 | 1 | 聚焦测试及时发现断言位置错误；移动断言回原测试并单独验证 1.0.0/1.1.0 两条路径 |
 | D4 更正回归再次用桌面 Hermes Python 启动 pytest，环境缺少 pytest | 1 | 测试未启动且无文件变化；显式改用仓库 `.venv\Scripts\python.exe`，完整回归随后通过 |
 | D4 更正复核再次猜测 workflow 名为 `ci.yml` | 1 | 只读失败且无脚本执行；先列出 `.github/workflows`，按真实 `tests.yml` 复核全部门禁 |
-| DeepSeek 协议证据归档提交后的两条 GitHub CI 查询路径遇到 TLS 超时 | 2 | push 已成功且工作树干净；停止原样重试 `gh run list`/公开 REST，随后改查精确 commit 的 check-runs API，确认 run `31779362817` completed/success |
+| DeepSeek 协议证据归档收尾的 GitHub CI 查询路径遇到 TLS 超时 | 4 | 两轮 push 均成功且工作树无功能漂移；分别停止原样重试，第一轮改查精确 commit check-runs，第二轮改用有界 PowerShell REST，确认 runs `31779362817`、`31779529184` 均对各自精确 SHA completed/success |
