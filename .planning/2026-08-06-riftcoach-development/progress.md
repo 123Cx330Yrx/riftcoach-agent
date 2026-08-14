@@ -1004,3 +1004,8 @@
   下不产生额外调用。当前外部 Provider calls 与真实 held-out executions 均仍为 0。
 - 最终本地完整回归为 `545 passed, 103 subtests passed`；两套 RAG 门满分、compileall、
   Harness dry-run、SDK boundary、tracked secret/run-data、governance 和 diff check 均通过。
+- 设计提交 `750acbcdf85b454e83dc84502a6422cf36acff32` 与功能提交
+  `eb198354b3186f25b7d0455d7ed28725bc17e234` 已推送；GitHub Actions run
+  `31799394506` 对功能提交的精确 SHA completed/success，完整 pytest、两套 RAG 门、
+  compileall、Harness SDK 边界、tracked secret/run-data 与 dry-run 全部通过。该公开
+  验证没有读取 Key、调用 Provider 或运行真实 held-out；下一动作仍需用户单独显式确认。
