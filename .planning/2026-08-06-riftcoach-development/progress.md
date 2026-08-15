@@ -1087,3 +1087,5 @@
   `$0.10`、零重试/零修订和首错停止；这些只是未来上限，不授权真实调用。
 - 唯一下一步改为 Fresh-Gate 1 离线 TDD；正式新 held-out、Key、真实 Provider 和 5E
   仍被阻断。
+- 设计提交 `f9edb4b4d8a66e12946ffdb3da36881ea5e5e2fc` 已推送，GitHub Actions run
+  `31859717836` 对精确 SHA 全部成功；CI 外部 Provider calls 为 0。

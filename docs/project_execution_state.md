@@ -28,7 +28,8 @@ blocked_before: "5D-exit-review"
   `26b668d0ce594e648a692cd2caf831c86125fede` 已通过 Actions run `31810164628`；ADR-0022
   的多 ToolCall 批次离线 TDD 已由提交 `037a47fecf058b2430efeeb59858e24cdb3b28eb` 完成，
   Actions run `31817798170` 对精确 SHA 已成功；ADR-0024 已完成新鲜领域采用门的
-  零调用设计，决定复用现有控制面并重新冻结 fixture/Dataset/plan/Context 身份
+  零调用设计，决定复用现有控制面并重新冻结 fixture/Dataset/plan/Context 身份；设计
+  提交 `f9edb4b4d8a66e12946ffdb3da36881ea5e5e2fc` 已通过 Actions run `31859717836`
 - 唯一下一步：5D-7 Fresh-Gate 1 离线 TDD；只用合成 development 数据实现兼容合同、
   历史证据链、逐案例 Context commitment 与 no-I/O admission，不创建正式新 held-out、
   不读取 Key、不调用 Provider、不实现真正并发或直接宣称 DeepSeek 领域准入
@@ -301,7 +302,7 @@ blocked_before: "5D-exit-review"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 已形成安全离线基线、DeepSeek 独立 Adapter/真实最小协议、领域控制接缝与真实门，并在 development 中补齐多 ToolCall 批次严格传输、整批预检和顺序执行；新鲜采用门目前只有设计/ADR，没有合同代码或新 held-out | 阶段 5、整个 5D、DeepSeek 领域质量、生产默认切换或报告质量准入已完成；离线 Fake SDK 或设计通过也不改写旧真实 held-out 的拒绝结论 |
 | 项目理解 | 已区分控制面 admission 与数据面 Provider 调用、Dataset oracle 与案例执行计划，也已区分修复回归与新鲜采用测试、Provider/Model/Multi-Agent、协议/领域/产品三层门，以及历史/新范围/单例调用与 Token 预算 | 离线合成 executor 能评价模型智力/在线可用性，旧题改名能恢复新鲜性，执行接缝等于真实领域准入，或 3 场 held-out 能证明通用生产质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | GLM-5.3 隔离规划提交 `e380e812a0ea4abe2d46fa363be9aeaae065815f` 已公开，exact-SHA CI run `31859244059` 成功；多 ToolCall 修复仍由 `037a47f` / `31817798170` 证明；正式网页仍未部署 | 规划/执行接缝公开可复现等于新鲜领域门已实现或运行、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
+| GitHub/部署 | GLM-5.3 隔离规划 `e380e812` / `31859244059` 与新鲜领域门设计 `f9edb4b4` / `31859717836` 均已通过 exact-SHA CI；多 ToolCall 修复仍由 `037a47f` / `31817798170` 证明；正式网页仍未部署 | 规划/执行接缝公开可复现等于 Fresh-Gate 1 合同代码或新 held-out 已创建/运行、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -523,3 +524,7 @@ ADR-0024 选择复用已有 no-I/O admission、薄协调器、预算 Provider、
 最多 12 calls、4000/12000 observed tokens、每请求 1024 output、金额停止线 `$0.10`、
 零 SDK/Tool retry、`max_revisions=0` 和首错停止。该预算不是当前调用授权。本设计批没有
 读取 Key、调用 Provider、创建新 held-out、修改 Prompt/Evaluation/Harness 或进入 5E。
+
+设计提交 `f9edb4b4d8a66e12946ffdb3da36881ea5e5e2fc` 已推送；GitHub Actions run
+`31859717836` 对该精确 SHA 的治理、完整 pytest、两套 RAG、compileall、Harness
+boundary、tracked-data 和 dry-run 全部成功，CI 没有调用真实 Provider。

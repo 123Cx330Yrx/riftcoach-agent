@@ -134,7 +134,8 @@ Phase 6.18 - 5D-7（in progress: implement the fresh-gate contracts with offline
   production Executor、分层 Evaluator 与唯一 Harness，同时重新冻结匿名 fixture、
   Dataset、输入计划和三个实际案例的 Prompt/Context 摘要。旧协议/拒绝结果和修复 CI
   组成只读历史证据链；正式新 held-out 必须等兼容合同的 development TDD 与 exact-SHA
-  CI 完成后才创建。
+  CI 完成后才创建。设计提交 `f9edb4b4d8a66e12946ffdb3da36881ea5e5e2fc` 已通过
+  GitHub Actions run `31859717836`。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。

@@ -847,3 +847,6 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   上限不是当前授权。
 - `CURRENT`：仍在 5D-7；唯一下一步为 Fresh-Gate 1 离线 TDD，不创建正式新 held-out、
   不读取 Key、不调用 Provider、不修改 Prompt/Evaluation/Harness，也不进入 5E。
+- `PUBLIC-VERIFIED`：设计提交 `f9edb4b4d8a66e12946ffdb3da36881ea5e5e2fc` 已通过
+  GitHub Actions run `31859717836` 的 exact-SHA 全部门禁；该 CI 外部 Provider calls
+  为 0，不代表 Fresh-Gate 1 合同代码、新 held-out 或真实领域准入已完成。
