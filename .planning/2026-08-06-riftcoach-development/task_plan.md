@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.25 - 5D-7（in progress: real 8-call development Usage replay confirmed; Key-last runner locally tested, public CI required before I/O）
+Phase 6.25 - 5D-7（in progress: incomplete real calibration evidence is locally verified and awaiting public freeze）
 
 ## Phases
 
@@ -178,13 +178,13 @@ Phase 6.25 - 5D-7（in progress: real 8-call development Usage replay confirmed;
 
 ## Next Step
 
-5D-7 V3 资源校准离线基础设施已公开冻结，用户已按 RQ-033 明确确认一次真实 8-call
-development Usage replay。真实/Fake 分型结果、run admission、Key-last CLI、不可变结果、
-首错停止与完整 8/8 后的预算记录已完成本地 TDD。唯一下一步是在不读取 Key 的前提下
-完成剩余本地门禁，提交、推送并验证这条真实入口的 exact-SHA 公共 CI；随后只在同一
-干净 SHA 上先运行 no-I/O `--prepare-only`，再执行一次最多 8-call 真实回放。失败即停止
-且不可补跑；本批不创建/运行 V3 held-out，不修改 V2/Prompt/Context/Skill/Harness，不
-调用其他模型，也不进入 5D exit review/5E。
+5D-7 真实入口已由 `6aa8c43` / Actions `31868747216` 公开验证；同 SHA prepare-only 为
+零调用。RQ-033 的正式 replay 在第 1 次请求未形成规范化 `ChatResponse` 后首错停止，
+后 7 次没有发送；结果为 1 external call / 0 normalized responses，实际 Usage/费用
+unknown，不生成 V3 budget。唯一下一步是完成不可变结果、零调用保守裁决和相关回归的
+完整门禁、提交、推送与 exact-SHA 公共 CI。不得重跑本 calibration、创建 V3 held-out、
+调 Prompt/Context、调用其他模型或进入 5D exit review/5E；公开归档后才进入零调用的
+资源校准失败采用决策。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
 `.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门
@@ -385,6 +385,8 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 | 真实领域门恢复时猜测 ADR-0020 的简称文件名 | 1 | 只读命令报告文件不存在，其他检查无写入；立即用 `rg --files docs/adr` 定位真实文件 `0020-use-no-io-admission-and-thin-coordinator-for-domain-heldout.md`，未触发 Provider 调用 |
 | Fresh-Gate 4 相邻回归猜测不存在的 `tests/test_provider_adoption.py` | 1 | pytest 在收集前退出且没有运行测试或改文件；用 `rg --files tests` 定位真实文件为 `tests/test_provider_adoption_control.py`，随后实际相邻集合 93/93 通过 |
 | Fresh-Gate 4 复核再次猜测 workflow 为 `.github/workflows/ci.yml` | 1 | 只读失败且没有执行 CI 命令；立即用 `rg --files .github` 定位 `tests.yml`，随后按真实 workflow 门禁完成本地验证 |
+| 真实 calibration 归档收尾在 TEMP dry-run 前加入递归清理 | 1 | 终端安全策略在执行前拒绝整组命令，没有删除文件或调用 Provider；改用全新 TEMP 路径并完成全部只读/临时验证 |
+| 真实 calibration 安全扫描把 Windows 通配符直接传给 `rg` | 1 | 扫描在读取文件前失败，没有改文件或调用 Provider；改用两个显式 JSON 路径并单独执行 |
 
 ### 5D-7 V3 资源校准离线实现（2026-08-15）
 
@@ -407,7 +409,8 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 - [x] 增加 Key-last CLI、prepare-only、不可变结果和完整 8/8 后的预算记录；
 - [x] 聚焦 19、相邻 74、完整 606 tests 与 compileall 通过；
 - [x] 完成两套 RAG、Harness/security/governance/diff 等剩余本地门禁；
-- [ ] 提交、推送并验证真实入口的 exact-SHA public CI；
-- [ ] 在同一干净 SHA 上运行 prepare-only；
-- [ ] 执行一次最多 8-call 真实 replay，保存不可变结果并在完整时推导预算；
-- [ ] 更新持久状态、完整回归、提交结果并验证最终 exact-SHA public CI。
+- [x] 提交、推送并由 `6aa8c43` / Actions `31868747216` 验证真实入口；
+- [x] 在同一干净 SHA 上运行 prepare-only，确认 external calls 0 且无结果文件；
+- [x] 执行一次真实 replay；第 1 call 未形成规范化响应后首错停止，保存不可变结果且不生成预算；
+- [x] 更新持久状态并完成聚焦 34、完整 611 tests/103 subtests 与全部本地门禁；
+- [ ] 提交、推送不可变结果/裁决并验证最终 exact-SHA public CI。

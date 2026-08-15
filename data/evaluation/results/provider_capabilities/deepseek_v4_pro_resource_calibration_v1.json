@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "34af5c8c95c01f7463cadc4649d7a9b70b5d80794c769066786a7d8dba09a376",
+  "admission": {
+    "schema_version": "1.0",
+    "experiment_id": "34af5c8c95c01f7463cadc4649d7a9b70b5d80794c769066786a7d8dba09a376",
+    "no_io_admission": {
+      "schema_version": "1.0",
+      "provider_id": "deepseek",
+      "requested_model": "deepseek-v4-pro",
+      "code_sha": "6aa8c439a29adafebf1ffe1bb0eef0c1b921ca44",
+      "public_ci_sha": "6aa8c439a29adafebf1ffe1bb0eef0c1b921ca44",
+      "public_ci_success_confirmed": true,
+      "artifact_id": "deepseek-v4-pro-resource-calibration-development-v1",
+      "artifact_sha256": "4ef842353a51b4950f0c89db6bd152ac0e8f1a1d4fd18cb5838e9b0ce8aab064",
+      "request_set_sha256": "d5c199ccc0e56d660bc8e6ed6f06f00077c35e11ed868373291d8dfe52dc6d76",
+      "maximum_calls": 8,
+      "maximum_output_tokens_per_request": 64,
+      "maximum_observed_tokens": 64000,
+      "maximum_estimated_cost": "0.10",
+      "currency": "USD",
+      "sdk_max_retries": 0,
+      "external_provider_calls": 0,
+      "held_out_created": false,
+      "provider_construction_authorized": false,
+      "local_preflight_passed": true
+    },
+    "result_relative_path": "data/evaluation/results/provider_capabilities/deepseek_v4_pro_resource_calibration_v1.json",
+    "explicit_real_call_confirmed": true,
+    "maximum_calls": 8,
+    "provider_construction_authorized": true,
+    "external_provider_calls_before_run": 0,
+    "held_out_created": false,
+    "quality_admission_excluded": true
+  },
+  "status": "stopped",
+  "provider_id": "deepseek",
+  "requested_model": "deepseek-v4-pro",
+  "request_set_sha256": "d5c199ccc0e56d660bc8e6ed6f06f00077c35e11ed868373291d8dfe52dc6d76",
+  "expected_calls": 8,
+  "replay_calls_used": 1,
+  "responses_completed": 0,
+  "observations": [],
+  "ledger": {
+    "provider_id": "deepseek",
+    "model": "deepseek-v4-pro",
+    "currency": "USD",
+    "calls_used": 1,
+    "max_calls": 8,
+    "scope_calls": [
+      {
+        "scope": "calibration",
+        "calls_used": 1,
+        "max_calls": 8
+      }
+    ],
+    "scope_tokens": [
+      {
+        "scope": "calibration",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "max_observed_tokens": 64000
+      }
+    ],
+    "case_resources": [],
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "total_tokens": 0,
+    "max_observed_tokens": 64000,
+    "estimated_cost": "0",
+    "max_estimated_cost": "0.10",
+    "latency_ms": 0,
+    "stop_code": null
+  },
+  "failure_code": "provider_response_invalid",
+  "external_provider_calls": 1,
+  "v3_budget_derivation_ready": false,
+  "quality_admission_excluded": true,
+  "model_quality_evaluated": false,
+  "held_out_executed": false
+}

@@ -525,6 +525,77 @@ class V3ResourceBudgetRecord(BaseModel):
     decision: V3ResourceBudgetDecision
 
 
+class ResourceCalibrationAdjudication(BaseModel):
+    """Conservative interpretation of immutable real calibration evidence."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["1.0"] = "1.0"
+    calibration_experiment_id: Sha256Text
+    calibration_result_sha256: Sha256Text
+    code_sha: GitShaText
+    public_ci_sha: GitShaText
+    request_set_sha256: Sha256Text
+    status: Literal["complete", "incomplete"]
+    failure_code: ExperimentFailureCode | None = None
+    external_provider_calls_in_result: int = Field(ge=0, le=8)
+    normalized_responses: int = Field(ge=0, le=8)
+    unobserved_external_calls: int = Field(ge=0, le=8)
+    ledger_recorded_input_tokens: int = Field(ge=0)
+    ledger_recorded_output_tokens: int = Field(ge=0)
+    ledger_recorded_tokens: int = Field(ge=0)
+    ledger_recorded_cost: Decimal = Field(ge=0)
+    ledger_recorded_latency_ms: int = Field(ge=0)
+    usage_complete: bool
+    billable_input_tokens: int | None = Field(default=None, ge=0)
+    billable_output_tokens: int | None = Field(default=None, ge=0)
+    billable_cost: Decimal | None = Field(default=None, ge=0)
+    provider_error_detail_available: Literal[False]
+    provider_error_detail_code: Literal[None]
+    v3_budget_derivation_allowed: bool
+    v3_held_out_creation_allowed: Literal[False]
+    rerun_allowed: Literal[False]
+    model_quality_conclusion: Literal["unknown"]
+    external_provider_calls: Literal[0]
+    quality_admission_excluded: Literal[True]
+
+    @model_validator(mode="after")
+    def validate_conservative_adjudication(
+        self,
+    ) -> "ResourceCalibrationAdjudication":
+        if self.unobserved_external_calls != (
+            self.external_provider_calls_in_result - self.normalized_responses
+        ):
+            raise ValueError("unobserved call count does not match the result")
+        if self.ledger_recorded_tokens != (
+            self.ledger_recorded_input_tokens
+            + self.ledger_recorded_output_tokens
+        ):
+            raise ValueError("ledger token total does not match components")
+        billable = (
+            self.billable_input_tokens,
+            self.billable_output_tokens,
+            self.billable_cost,
+        )
+        complete = self.status == "complete"
+        if complete:
+            if (
+                self.failure_code is not None
+                or not self.usage_complete
+                or any(value is None for value in billable)
+                or not self.v3_budget_derivation_allowed
+            ):
+                raise ValueError("complete adjudication requires complete usage")
+        elif (
+            self.failure_code is None
+            or self.usage_complete
+            or any(value is not None for value in billable)
+            or self.v3_budget_derivation_allowed
+        ):
+            raise ValueError("incomplete adjudication must keep billing unknown")
+        return self
+
+
 class ImmutableResourceCalibrationOutput:
     """Reserve one real result path before Key loading or Provider creation."""
 
@@ -1136,6 +1207,53 @@ def build_v3_resource_budget_record(
     )
 
 
+def build_resource_calibration_adjudication(
+    *,
+    result: RealResourceCalibrationResult,
+    calibration_result_sha256: str,
+) -> ResourceCalibrationAdjudication:
+    """Interpret unnormalized calls as unknown billing, never as known zero."""
+
+    if not isinstance(result, RealResourceCalibrationResult):
+        raise TypeError("result must be a RealResourceCalibrationResult")
+    if not re.fullmatch(r"[0-9a-f]{64}", calibration_result_sha256):
+        raise ValueError("calibration_result_sha256 must be a SHA-256 digest")
+    complete = result.status == "completed"
+    ledger = result.ledger
+    no_io = result.admission.no_io_admission
+    return ResourceCalibrationAdjudication(
+        calibration_experiment_id=result.experiment_id,
+        calibration_result_sha256=calibration_result_sha256,
+        code_sha=no_io.code_sha,
+        public_ci_sha=no_io.public_ci_sha,
+        request_set_sha256=result.request_set_sha256,
+        status="complete" if complete else "incomplete",
+        failure_code=result.failure_code,
+        external_provider_calls_in_result=result.external_provider_calls,
+        normalized_responses=result.responses_completed,
+        unobserved_external_calls=(
+            result.external_provider_calls - result.responses_completed
+        ),
+        ledger_recorded_input_tokens=ledger.input_tokens,
+        ledger_recorded_output_tokens=ledger.output_tokens,
+        ledger_recorded_tokens=ledger.total_tokens,
+        ledger_recorded_cost=ledger.estimated_cost,
+        ledger_recorded_latency_ms=ledger.latency_ms,
+        usage_complete=complete,
+        billable_input_tokens=ledger.input_tokens if complete else None,
+        billable_output_tokens=ledger.output_tokens if complete else None,
+        billable_cost=ledger.estimated_cost if complete else None,
+        provider_error_detail_available=False,
+        provider_error_detail_code=None,
+        v3_budget_derivation_allowed=complete,
+        v3_held_out_creation_allowed=False,
+        rerun_allowed=False,
+        model_quality_conclusion="unknown",
+        external_provider_calls=0,
+        quality_admission_excluded=True,
+    )
+
+
 def _validate_resource_result_relative_path(value: str) -> str:
     if not isinstance(value, str) or "\\" in value:
         raise ValueError("result path must be a safe project-relative JSON path")
@@ -1386,12 +1504,14 @@ __all__ = [
     "FrozenCalibrationRequestSet",
     "ImmutableResourceCalibrationOutput",
     "RealResourceCalibrationResult",
+    "ResourceCalibrationAdjudication",
     "ResourceCalibrationAdmission",
     "ResourceCalibrationRequestSnapshot",
     "ResourceCalibrationRunAdmission",
     "ResourceCalibrationUsageObservation",
     "V3ResourceBudgetDecision",
     "V3ResourceBudgetRecord",
+    "build_resource_calibration_adjudication",
     "build_v3_resource_budget_record",
     "capture_resource_calibration_requests",
     "deepseek_resource_calibration_policy",

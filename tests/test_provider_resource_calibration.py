@@ -18,9 +18,11 @@ from app.evaluation.provider_resource_calibration import (
     CalibrationStage,
     ImmutableResourceCalibrationOutput,
     RealResourceCalibrationResult,
+    ResourceCalibrationAdjudication,
     ResourceCalibrationUsageObservation,
     ResourceCalibrationRequestSnapshot,
     build_v3_resource_budget_record,
+    build_resource_calibration_adjudication,
     capture_resource_calibration_requests,
     deepseek_resource_calibration_policy,
     derive_v3_resource_budget,
@@ -49,6 +51,19 @@ V2_PROTECTED = (
 REQUEST_SNAPSHOT = (
     ROOT
     / "data/evaluation/contracts/deepseek_v4_pro_resource_calibration_requests_v1.json"
+)
+REAL_RESULT = (
+    ROOT
+    / "data/evaluation/results/provider_capabilities/"
+    "deepseek_v4_pro_resource_calibration_v1.json"
+)
+REAL_ADJUDICATION = (
+    ROOT
+    / "data/evaluation/results/provider_capabilities/"
+    "deepseek_v4_pro_resource_calibration_v1_adjudication.json"
+)
+REAL_RESULT_SHA256 = (
+    "ba33e75af7f8755dc89904fb346f66962fb29e92d08173494053f17ad8e7088b"
 )
 
 
@@ -633,3 +648,68 @@ def test_immutable_real_result_and_budget_record_bind_exact_bytes(tmp_path: Path
             output,
             experiment_id=result.experiment_id,
         )
+
+
+def test_real_calibration_failure_is_immutable_safe_and_usage_unknown():
+    raw = REAL_RESULT.read_bytes()
+    result = RealResourceCalibrationResult.model_validate_json(raw)
+
+    assert hashlib.sha256(raw).hexdigest() == REAL_RESULT_SHA256
+    assert result.status == "stopped"
+    assert result.failure_code is ExperimentFailureCode.PROVIDER_RESPONSE_INVALID
+    assert result.external_provider_calls == 1
+    assert result.responses_completed == 0
+    assert result.ledger.total_tokens == 0
+    assert result.v3_budget_derivation_ready is False
+    assert result.model_quality_evaluated is False
+    assert result.held_out_executed is False
+    with pytest.raises(CalibrationIncompleteError):
+        derive_v3_resource_budget(result)
+
+    public_text = raw.decode("utf-8")
+    for profile in loaded_profiles().artifact.profiles:
+        assert profile.user_utterance not in public_text
+        assert profile.draft_text not in public_text
+        assert profile.invalid_evaluation_text not in public_text
+        for query in profile.tool_queries:
+            assert query not in public_text
+    assert "request_id" not in public_text
+
+
+def test_incomplete_real_calibration_adjudication_does_not_treat_zeros_as_free():
+    result = RealResourceCalibrationResult.model_validate_json(
+        REAL_RESULT.read_bytes()
+    )
+    adjudication = build_resource_calibration_adjudication(
+        result=result,
+        calibration_result_sha256=REAL_RESULT_SHA256,
+    )
+
+    assert isinstance(adjudication, ResourceCalibrationAdjudication)
+    assert adjudication.status == "incomplete"
+    assert adjudication.external_provider_calls_in_result == 1
+    assert adjudication.normalized_responses == 0
+    assert adjudication.unobserved_external_calls == 1
+    assert adjudication.ledger_recorded_tokens == 0
+    assert adjudication.billable_input_tokens is None
+    assert adjudication.billable_output_tokens is None
+    assert adjudication.billable_cost is None
+    assert adjudication.usage_complete is False
+    assert adjudication.v3_budget_derivation_allowed is False
+    assert adjudication.v3_held_out_creation_allowed is False
+    assert adjudication.rerun_allowed is False
+    assert adjudication.model_quality_conclusion == "unknown"
+    assert adjudication.provider_error_detail_available is False
+
+
+def test_frozen_real_adjudication_matches_pure_builder():
+    frozen = ResourceCalibrationAdjudication.model_validate_json(
+        REAL_ADJUDICATION.read_bytes()
+    )
+    result = RealResourceCalibrationResult.model_validate_json(
+        REAL_RESULT.read_bytes()
+    )
+    assert frozen == build_resource_calibration_adjudication(
+        result=result,
+        calibration_result_sha256=REAL_RESULT_SHA256,
+    )

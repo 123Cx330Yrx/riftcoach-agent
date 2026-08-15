@@ -75,13 +75,19 @@ blocked_before: "5D-exit-review"
   两套 RAG、compileall、Harness dry-run、SDK/tracked-data、治理与 diff 门禁均通过；实现
   提交 `2d676966915a7967b946880040b59c022283e683` 已通过 GitHub Actions run
   `31867655627` 的 exact-SHA 公开 CI，离线校准基础设施至此公开冻结；用户现已明确确认
-  一次真实 8-call development Usage replay；真实运行合同、Key-last CLI、不可变结果、
-  真实/Fake 证据隔离和完整结果的预算记录已本地 TDD，实现聚焦 19、相邻 74、完整
-  `606 passed, 103 subtests passed`，两套 RAG、compileall、Harness/security、dry-run、
-  治理与 diff 门禁均通过；本批至今 Key/Provider/外部调用仍为 0
-- 唯一下一步：仍在 5D-7，完成真实 replay 入口的剩余本地门禁、提交、推送和 exact-SHA
-  公共 CI；成功后只在同一干净 SHA 上先运行 no-I/O `--prepare-only`，再按 RQ-033 执行
-  一次最多 8-call 真实校准并首次写入不可变结果；不得在公开 CI 前读取 Key 或调用模型
+  一次真实 8-call development Usage replay；真实运行入口提交
+  `6aa8c439a29adafebf1ffe1bb0eef0c1b921ca44` 已通过 Actions run `31868747216`，同一
+  干净 SHA 的 prepare-only 为零调用；正式 replay 随后只发送第 1 个 baseline 请求，因
+  未形成规范化 `ChatResponse` 以 `provider_response_invalid` 首错停止，后 7 个请求未
+  发送。不可变结果 SHA-256 为 `ba33e75af7f8755dc89904fb346f66962fb29e92d08173494053f17ad8e7088b`：
+  1 external call、0 normalized responses；账本 0 tokens/`$0` 只代表未取得可结算 Usage，
+  实际计费 Token/费用均为 unknown。零调用裁决明确禁止预算推导、补跑和 V3 held-out，
+  模型质量仍为 unknown；裁决 SHA 为 `0ce09b52d982f8c03052f1d94fde1da5628af31dbd797ea770522ce092907446`
+ ；结果/裁决聚焦回归 34/34、完整回归 `611 passed, 103 subtests passed`，两套 RAG、
+  compileall、Harness SDK/tracked-data boundary、dry-run、治理和 diff check 已在本地通过
+- 唯一下一步：仍在 5D-7，只提交、推送真实失败结果/保守裁决并完成 exact-SHA 公共
+  CI；不得重跑 calibration、创建 V3 held-out、调 Prompt 或进入 5E；公开冻结后再做
+  零调用的资源校准失败采用决策
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；DeepSeek
   V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用已通过的低层
   协议、候选选择或发布热度替代领域质量证据
@@ -109,7 +115,7 @@ blocked_before: "5D-exit-review"
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测首个 Provider，并为第二 Provider 决策提供真实证据 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（V2 `admitted=false`；真实 8-call development Usage replay 已获确认，执行入口本地 TDD 完成） | ADR-0025/0026 与离线校准已由 `2d67696` / Actions `31867655627` 公开冻结；新增真实/Fake 分型结果、run admission、Key-last CLI、首错停止、不可变结果和预算记录，本地完整回归 606 tests 通过、外部调用仍为 0；下一步先公开验证入口，再在精确 SHA 上执行一次真实 replay |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（V2 `admitted=false`；真实 development calibration 不完整） | 入口 `6aa8c43` / Actions `31868747216` 公开通过；真实 replay 第 1 call 未形成规范化响应并首错停止，0/8 Usage、实际 Token/费用 unknown、V3 budget 不可推导、held-out 未创建；不可变结果/保守裁决已通过 34 项聚焦、611 项完整本地回归，待公开归档 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界
@@ -348,10 +354,10 @@ blocked_before: "5D-exit-review"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 的 V3 development 请求、Fake/no-I/O 校准已公开冻结；真实 replay 的 run admission、Key-last CLI、不可变结果与预算记录已本地实现并通过 606 tests，尚未公开验证或调用 Provider | 阶段 5、整个 5D、DeepSeek 领域质量、V3 资源合同、生产默认切换或报告质量准入已完成；本地真实入口等于真实 Usage 已采集，或可以修改预算后重跑 V2 |
-| 项目理解 | 已区分控制面 admission 与数据面 Provider 调用、Dataset oracle 与案例执行计划，也已区分修复回归与新鲜采用测试、Provider/Model/Multi-Agent、协议/领域/产品三层门；V2 又实际证明“调用数上限”和“Token 可达性”是两项不同约束；ADR-0026 进一步区分正常 3-call、可选第 4 次结构修复、development Usage 校准与 held-out 质量采用，Fake Usage/本地长度都不能冒充真实 Provider Usage | 离线合成 executor 能评价模型智力/在线可用性，25% 工程余量具有统计置信保证，安全 fallback 等于模型通过，V2 `admitted=false` 已证明 DeepSeek 报告质量差，或 3 场 held-out 能证明通用生产质量 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；V3 development 请求/Fake/no-I/O 和真实入口均已公开验证；一次真实 calibration 按首错停止形成 1 call/0 response 不完整结果，保守裁决与结果回归正在本地收尾 | 阶段 5、整个 5D、DeepSeek 领域质量、V3 资源合同、生产默认切换或报告质量准入已完成；账本零值等于厂商实际零计费，或可以补跑剩余 7 calls |
+| 项目理解 | 已区分控制面 admission、真实 Provider I/O、Usage 校准和 held-out 质量采用；本次又实际证明“外部调用已发生”不等于“规范化 Usage 已取得”，失败账本零值必须解释为 unknown billing 而非免费；宽泛错误分类也不能支持具体根因结论 | 离线合成 executor 能评价模型智力，25% 余量具有统计保证，`provider_response_invalid` 已证明具体 Adapter 根因或 DeepSeek 质量差，账本 0 tokens/`$0` 等于厂商实际零计费 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | GLM-5.3 隔离规划、新鲜门设计、多 ToolCall 修复、Fresh-Gate 1/3/4、V2 结果、预算裁决与 ADR-0026/离线校准均有 exact-SHA CI；真实 replay 入口仍待新提交的 exact-SHA CI；正式网页未部署 | 已公开的离线校准等于真实入口或真实 Usage 已公开、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
+| GitHub/部署 | V3 离线校准和真实入口均有 exact-SHA CI；真实失败结果/保守裁决尚待结果提交的公共 CI；正式网页未部署 | 已公开入口等于结果已归档，calibration 失败等于模型质量失败、最终厂商选型或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

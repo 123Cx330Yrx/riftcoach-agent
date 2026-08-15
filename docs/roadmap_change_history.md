@@ -1044,3 +1044,28 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   Key/Provider/外部调用仍为 0。
 - `CURRENT`：唯一下一步仍为 5D-7，先完成其余门禁并让真实入口通过新的 exact-SHA
   public CI；随后在同一干净 SHA 上 prepare-only，再只执行一次已确认的真实 replay。
+
+### 2026-08-15：真实 development Usage replay 首错停止
+
+- `PUBLIC-VERIFIED-ENTRY`：`6aa8c43` / Actions `31868747216` 已通过；同 SHA
+  prepare-only 为 external calls 0，正式结果路径仍不存在。
+- `REAL-RESULT`：正式 replay 第 1 个请求未形成规范化 `ChatResponse`，以
+  `provider_response_invalid` 停止；1 external call、0 normalized responses，后 7 calls
+  未发送，结果 SHA 为 `ba33e75a...e7088b`。
+- `UNKNOWN`：账本没有取得 Token/latency/cost；序列化零值不能解释为厂商实际零计费。
+  保守裁决把 billable Usage/费用标为 null，详细 Provider code unavailable，模型质量
+  unknown。
+- `STOP`：8/8 不完整，V3 budget 不可推导；budget 文件和 V3 held-out 不存在；结果不可
+  覆盖或补跑。
+- `CURRENT`：唯一下一步仍为 5D-7，只完成结果/裁决回归、持久化和 exact-SHA 公共归档；
+  之后进入零调用的资源校准失败采用决策，不进入 5E。
+
+### 2026-08-15：真实 calibration 不完整证据完成本地验证
+
+- `VERIFIED-LOCAL`：结果、裁决、CLI 与全局结果合同聚焦 34/34；完整回归
+  `611 passed, 103 subtests passed`，两套 RAG、compileall、Harness/security、dry-run、
+  governance 与 diff check 全部通过。
+- `BOUNDARY`：本批只解释既有不可变结果，外部调用为 0；账本零 Usage 不转写为实际
+  零计费，billable Usage/费用保持 unknown，budget/held-out/rerun 继续禁止。
+- `CURRENT`：唯一下一步仍为 5D-7，只提交、推送并完成该归档的 exact-SHA 公共 CI；
+  公共冻结后才进入零调用采用决策。

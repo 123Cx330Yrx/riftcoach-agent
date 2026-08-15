@@ -1286,3 +1286,29 @@
   boundary、dry-run、governance 和 diff check 已通过；本批至今真实 calls 0。
 - 唯一下一步为完成剩余本地门禁、提交/推送和 exact-SHA public CI；成功后在同一干净
   SHA 运行 prepare-only，再按既有确认执行一次真实回放。
+
+## 2026-08-15：5D-7 真实 development Usage replay 首错停止
+
+- 入口提交 `6aa8c439a29adafebf1ffe1bb0eef0c1b921ca44` 已通过 Actions
+  `31868747216`；同 SHA prepare-only 为零调用且没有创建结果。
+- 正式 replay 只发送第 1 个请求，随后以 `provider_response_invalid` 停止：1 external
+  call、0 normalized responses、后 7 calls 未发送；结果 SHA 为
+  `ba33e75af7f8755dc89904fb346f66962fb29e92d08173494053f17ad8e7088b`。
+- 实际 Token/费用 unknown，账本零值不解释为实际零；零调用 adjudication SHA 为
+  `0ce09b52d982f8c03052f1d94fde1da5628af31dbd797ea770522ce092907446`，明确
+  usage incomplete、budget/held-out 禁止、rerun false、quality unknown。
+- 预算文件和 V3 held-out 均不存在。当前唯一下一步为结果/裁决完整回归、持久化、提交、
+  推送和 exact-SHA public CI；不得补跑。
+
+## 2026-08-15：真实 calibration 失败证据完成本地归档验证
+
+- 新增纯离线 `ResourceCalibrationAdjudication` 与 CLI，把 1 次已发送但未规范化的调用
+  单独标为 unobserved，并把 billable input/output/cost 保持为 null；该步骤外部调用为 0。
+- 不可变真实结果 SHA 仍为 `ba33e75a...e7088b`，裁决 SHA 仍为
+  `0ce09b52...907446`；预算文件与 V3 held-out 仍不存在，rerun 明确为 false。
+- 结果/裁决/CLI/全局结果分发聚焦 `34 passed`；完整回归为
+  `611 passed, 103 subtests passed`。两套 RAG 指标均通过 1.0 门槛，compileall、Harness
+  SDK boundary、tracked secret/run-data boundary、dry-run、governance 和 diff check 通过。
+- 一次含 TEMP 递归清理的组合验证被安全策略在执行前拒绝；改用新 TEMP 目录后完整验证
+  通过，没有删除项目文件、读取 Key 或再次调用 Provider。
+- 当前唯一下一步仍在 5D-7：提交、推送并对结果归档提交执行 exact-SHA 公共 CI。

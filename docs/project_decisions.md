@@ -359,3 +359,17 @@ Provider/Key/网络调用和 V3 held-out 仍为 0；实现已由 `2d67696` / Act
 入口本地聚焦 19、相邻 74、完整 606 tests 已通过，外部调用仍为 0。必须先提交、推送并
 取得这条入口的 exact-SHA public CI，再在同一干净 SHA 上执行 prepare-only 和一次真实
 回放；校准完成不等于领域质量或产品默认模型准入。
+
+真实入口随后由 `6aa8c43` / Actions `31868747216` 公开验证；同 SHA prepare-only 没有
+读取 Key 或创建结果。正式 replay 第 1 个请求没有形成规范化 `ChatResponse`，只保存了
+宽泛的 `provider_response_invalid`，然后按首错停止跳过剩余 7 calls。该次请求可能计费，
+但 Token/费用均 unknown；资源账本零值不得表述为实际零成本。
+
+因此本次 calibration 裁决为 incomplete：不生成 V3 budget，不创建 held-out，不补跑，
+模型质量仍 unknown。独立零调用 adjudication 绑定结果 bytes，显式记录 billable Usage
+为 null、rerun false 和详细 Adapter code unavailable。公开归档完成后，下一步只能做
+零调用的候选关闭/新版本诊断采用决策，不能直接扩大预算或发起新请求。
+
+该结果与裁决现已通过 34 项聚焦测试、`611 passed, 103 subtests passed` 完整回归及
+两套 RAG、compileall、Harness/security、dry-run、governance 和 diff 本地门禁；这些
+验证没有再次调用 Provider。下一步仅为不可变证据的公开归档与 exact-SHA CI。

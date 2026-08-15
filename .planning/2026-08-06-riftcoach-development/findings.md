@@ -1266,3 +1266,25 @@
   调用 Provider。一次相邻回归先猜错不存在的 `tests/test_provider_adoption.py`，随后先用
   `rg --files` 定位为 `test_provider_adoption_control.py` 并取得 74/74；另一只读复核又沿用
   了不存在的历史辅助脚本名，已改为严格照 `.github/workflows/tests.yml` 执行门禁。
+
+### 2026-08-15：真实 development Usage replay 结果发现
+
+- 真实入口提交 `6aa8c43` 的 Actions `31868747216` 成功；同一干净 SHA prepare-only
+  重建并核对请求后返回 external calls 0，正式结果/预算路径仍不存在。
+- 正式 replay 第 1 个 baseline 请求实际发送，但 DeepSeek Adapter 没有返回统一
+  `ChatResponse`；安全分类只有 `provider_response_invalid`。首错停止使后 7 个请求完全
+  没有发送，结果不可覆盖或补跑。
+- 没有统一响应就没有 `TokenUsage` 或规范化 latency；账本里的 0 tokens/`$0` 是“没有
+  记录到 Usage”，不是厂商账单的已知零。保守裁决因此把 billable input/output/cost
+  全部保存为 null，并记录 1 个 unobserved external call。
+- 8/8 不完整意味着 ADR-0026 预算公式禁止运行，预算文件不存在，V3 held-out 未创建。
+  该结果没有执行报告、工具、RAG、Evaluation 或注入案例，模型领域质量仍为 unknown。
+- 结果只保存宽泛分类，没有保留 Adapter 的更细安全 `ProviderError.code`；无法区分截断、
+  tool-call 解码、model identity 等子原因，也不得恢复临时原文推断。这是后续零调用采用
+  决策必须考虑的 Observability Bad Case，不是本次重跑理由。
+- 公开归档需要把“账本记录为零”和“厂商实际计费为零”分成不同字段；只有完整 8/8
+  响应才能把账本 Usage 投影到 billable Usage，不完整结果必须保持 null/unknown。
+- 全局 Provider 结果扫描器不能把新增 JSON 按旧报告模型猜测解析；现在先按稳定结构键
+  分派真实 calibration、保守裁决和 V3 budget 三种合同，再交给严格 Pydantic 校验。
+- 纯离线裁决会绑定结果 bytes SHA、code/public-CI 与 request-set，但不恢复 Provider 原文，
+  也不会给下一次调用授权；这让“证据解释”与“重新实验”保持不同权限边界。

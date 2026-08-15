@@ -25,6 +25,11 @@ from app.evaluation.provider_domain_readmission import (
 from app.evaluation.provider_protocol_experiment import (
     ProviderAdapterProtocolExperimentRecord,
 )
+from app.evaluation.provider_resource_calibration import (
+    RealResourceCalibrationResult,
+    ResourceCalibrationAdjudication,
+    V3ResourceBudgetRecord,
+)
 
 
 DEEPSEEK_V4_PRO_PROTOCOL_RESULT = Path(
@@ -198,6 +203,25 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
         content = result_path.read_text(encoding="utf-8")
         payload = json.loads(content)
         if {
+            "calibration_experiment_id",
+            "calibration_result_sha256",
+            "usage_complete",
+        }.issubset(payload):
+            model = ResourceCalibrationAdjudication
+        elif {
+            "calibration_experiment_id",
+            "calibration_result_sha256",
+            "decision",
+        }.issubset(payload):
+            model = V3ResourceBudgetRecord
+        elif {
+            "experiment_id",
+            "admission",
+            "request_set_sha256",
+            "v3_budget_derivation_ready",
+        }.issubset(payload):
+            model = RealResourceCalibrationResult
+        elif {
             "admission",
             "domain_result",
             "explicit_real_call_confirmed",

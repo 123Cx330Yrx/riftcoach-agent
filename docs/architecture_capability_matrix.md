@@ -22,14 +22,14 @@
 |---|---|---|---|---|---|---|
 | A01 | LoL 确定性事实 | Riot API、MatchAnalyzer、Schema v1 | 阶段 1 | 阶段 7 增加 Meta，但保持事实分层 | 指标单测、合成样例、Timeline 缺失与短局测试 | 已完成 |
 | A02 | 质量门控 Harness | 状态机、Artifact、评测、受限修订、降级 | 阶段 2 | 阶段 8 增加恢复与复杂运行治理 | 状态迁移、错误数字、修订越权、发布门禁测试 | 已完成 |
-| A03 | 模型 Provider 抽象 | 统一 ChatRequest/Response、Registry、能力协商；Zhipu/DeepSeek 最小协议已有真实证据但领域未准入；V2 `admitted=false`；V3 development 请求/Fake/no-I/O 已公开冻结；真实 8-call replay 已确认，Key-last 入口本地 TDD 完成但尚未公开验证或调用 | 阶段 3 | 先验证入口 exact-SHA CI，再在同一干净 SHA 单次校准；旧/V2 held-out 均不重跑 | 同一领域案例、Tool Calling、结构化输出、错误合同、调用/Token/金额停止与可达性证明 | 部分完成 |
+| A03 | 模型 Provider 抽象 | 统一 ChatRequest/Response、Registry、能力协商；Zhipu/DeepSeek 最小协议有真实证据但领域未准入；V2 `admitted=false`；V3 真实 calibration 第 1 call 未形成规范化响应并首错停止，实际 Usage unknown | 阶段 3 | 归档不完整 calibration，零调用决定关闭还是另立新版本诊断；旧/V2/calibration 均不重跑 | 同一领域案例、Tool Calling、结构化输出、错误合同、调用/Token/金额停止与可达性证明 | 部分完成 |
 | A04 | Tool Runtime | Schema、超时、重试、缓存、熔断、fallback、指标 | 阶段 3 | 阶段 7 适配标准 MCP 工具 | 故障注入、缓存、熔断、fallback 和越权测试 | 已完成 |
 | A05 | RAG 与证据 | 混合检索、父子块、引用、冲突、拒答、独立保留集 | 阶段 4 | 维护数据集；按规模证据决定是否升级存储 | Recall/MRR/nDCG、abstain、引用支持与冲突测试 | 已完成 |
 | A06 | 最小 Agent Loop | Assistant ToolCall、Tool Observation、预算和停止原因；多 ToolCall development TDD 已固定整批数量/白名单/重复零副作用预检、顺序执行、ID/Usage/迭代/deadline 语义 | 阶段 5A | 5E 统一 Runtime；真正并发仅由新的延迟 Bad Case 决定 | Fake Provider + 真实知识工具、重复调用、越权、超预算和批次零副作用测试 | 已完成 |
 | A07 | Skill Contract | `recent-form-review` 与 `single-match-review` 均有 Manifest、SKILL.md、Pydantic I/O、工具白名单和预算 | 阶段 5B 基础 + 5C-5 前第二个真实合同 | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill；真实内部 Skill 出现后才设计调用模式 | 坏 Manifest、Schema、权限漂移、预算和发布边界测试 | 已完成 |
 | A08 | Skill Router | 5C-1 至 5C-6 与退出复核均完成；development 23/23、holdout 11/12；selected 决策锁定 Skill name/version；ADR-0010 暂缓 LLM fallback | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试、退出复核和 ADR | 已完成 |
 | A09 | Prompt/Context Engineering | Harness Prompt V0、SKILL.md 指令；5D-2 已实现 trust-typed Context Builder，5D-3 已实现逐轮 Context 门禁；5D-7 已冻结双层语义身份、Evaluation 1.1、安全 blocking policy、隔离 held-out 与独立输入计划；V2 首轮真实输入 3241 tokens；ADR-0026 将正常三阶段和可选 repair 的四阶段 development envelope 纳入校准设计 | 阶段 5D-5E | 先离线冻结 baseline/ceiling profile 和 envelope guard，再用真实 Usage 推导 V3；不把 tokenizer-free 长度或 25% 工程余量冒充统计保证；5E 加 Trace | Prompt 版本、上下文优先级、Token 预算、漂移拒绝、用户/RAG 注入、回归和消融测试 | 部分完成 |
-| A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral 合同；Zhipu 与 DeepSeek V4 Pro 均已真实通过最小协议；V2 第二轮前由不可达 Token 门停止；V3 development 已冻结 Evaluation + repair 请求，真实 replay 入口本地实现、Usage 尚未采集 | 阶段 5D | 真实入口先经 exact-SHA CI，再执行已确认的最多 8-call Usage replay；不重跑 V2 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移、Thinking 预算、调用预算、可达性和修复上限测试 | 部分完成 |
+| A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral 合同；Zhipu 与 DeepSeek V4 Pro 均已真实通过最小协议；V2 Token 门不可达；V3 calibration 首请求 Adapter 规范化失败，未取得四阶段 Usage | 阶段 5D | 结果公开冻结后零调用裁决；不根据宽泛错误猜测原因或重跑 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移、Thinking 预算、调用预算、可达性和修复上限测试 | 部分完成 |
 | A11 | AgentRuntime V1 | 5D-1/2 已建立执行与 Context 边界，5D-3 已编译 Manifest 权限/预算并加入有界停止，5D-4 已产生可审计 draft/evidence，5D-5 已通过唯一 ReviewHarness 组合为 typed terminal output | 阶段 5D-5E | 5D-6a/6b/7 补结构化输出、真实 Provider 与领域评测；5E 统一 run/stream/event/trace/usage；阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 部分完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有；DeepSeek V4 Pro 独立 Adapter 已通过真实最小协议，但仍只是 5D-7 单一实验候选，尚无领域/产品准入、任务级选择或自动降级 | 5D 完成单候选领域准入；模型分层为 5P 后横向采用门，默认等待阶段 6 真实业务证据 | 按 ADR-0019 比较 Pro-only、Flash-only 与 Flash 默认/Pro 有界升级；5F 只做 Pi/Claude Agent SDK Runtime 采用实验 | 新鲜同任务评测、故障降级、unsafe publication、成本和 p50/p95 延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
@@ -41,7 +41,7 @@
 
 | ID | 能力 | 当前基础 | V1 负责阶段 | 后续深化 | 验收证据 | 状态 |
 |---|---|---|---|---|---|---|
-| Q01 | 端到端 Evaluation | 报告事实评测、RAG/路由评测与 5D-7 分层领域合同已建立；V2 因资源合同不可达而未测出质量；V3 development 请求集/Fake/预算公式已公开冻结，真实 replay 结果又被合同明确排除在质量准入外 | 阶段 5C 增加路由 Eval，5D 增加 Prompt Eval | 先完成已确认的 Usage 校准与资源裁决；阶段 8 固定产品回归集和消融 | 数字忠实度、引用、路由、工具选择、实验身份、注入漏判、失败归因、预算可达性与发布安全 | 部分完成 |
+| Q01 | 端到端 Evaluation | 报告事实评测、RAG/路由评测与 5D-7 分层合同已建立；V2 未测出质量；V3 calibration 也在首个 transport/normalization 失败后停止，质量仍 unknown | 阶段 5C 增加路由 Eval，5D 增加 Prompt Eval | 公开归档 calibration；下一步只做零调用采用决策，阶段 8 固定产品回归集和消融 | 数字忠实度、引用、路由、工具选择、实验身份、注入漏判、失败归因、预算可达性与发布安全 | 部分完成 |
 | Q02 | Trace 与 Observability | Harness Artifact、工具指标、Usage 基础；5D-1 统一安全 run ID 并绑定输入 kind/schema/digest | 阶段 5E | 阶段 8 增加生产日志、告警和前端轨迹 | run_id 串联 Prompt、模型、工具、证据、耗时和决策 | 部分完成 |
 | Q03 | Prompt/上下文注入防护 | 工具白名单、Schema、data-only sections、累积预算和实际 ToolExecutionRecord 证据；Batch C 已验证一个 Evaluation 漏判后的 unsafe publication；D1-D2 已以 1.1.0 阻断安全 issue；V2 结果不泄漏 marker/Key，但两个真实注入案例因首错停止未执行 | 阶段 5D 建立不可信输入边界 | 先完成预算可达性裁决；只有新鲜门成立时再验证真实模型，阶段 6/7 扩展会话和 MCP 内容 | 恶意用户输入、恶意文档、恶意工具结果、评测漏判和越权测试 | 部分完成 |
 | Q04 | 应用安全 | `.env` 隔离、日志脱敏、离线赛后合规边界 | 阶段 6 建立鉴权、限流、CORS 与用户隔离 | 阶段 8 部署威胁模型、安全扫描和响应流程 | 密钥扫描、权限、限流、数据越权和依赖审计 | 部分完成 |

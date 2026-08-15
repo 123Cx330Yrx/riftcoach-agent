@@ -37,7 +37,7 @@
 | RQ-030 | 2026-08-14 | 生效 | 当前 5D-7 保持 DeepSeek V4 Pro 单候选；Flash/Pro 分层不放入 5F，最早在 5P 后、默认在阶段 6 有真实成本/时延证据后重开 | 5F 继续只负责 Pi / Claude Agent SDK Runtime 采用实验；未来以新鲜同任务评测比较 Pro-only、Flash-only 与 Flash 默认/Pro 有界升级，证据不足时保持单模型；ADR-0019 修正未来归属但不改变当前 Pro 协议门和 held-out 顺序 |
 | RQ-031 | 2026-08-15 | 生效 | GLM-5.3 已有官方模型文档，允许作为新的同厂商模型迁移候选，但不得直接替换 GLM-5.2 或影响正在进行的 DeepSeek 采用门 | 当前唯一下一步仍是 5D-7 的零调用新鲜领域采用门；其后才做隔离的 GLM-5.3 adoption gate。G53-0 先核对 Coding Plan/普通 API 可用性、正式模型 ID、endpoint 和 thinking 合同；G53-1 离线改造 Zhipu thinking profile（GLM-5.2 保留 disabled，GLM-5.3 使用 enabled + low）并覆盖 reasoning/structured/tool/多 ToolCall；G53-2 公开 CI；G53-3 最多 3-call 协议门；G53-4 新 Dataset/输入计划领域门。旧 GLM-5.2、DeepSeek Adapter、结果和 held-out 均只读隔离，不覆盖、不重跑；通过领域门前不改默认模型、不实现自动路由。 |
 | RQ-032 | 2026-08-15 | 生效 | 任何新的真实领域 Provider 门在读取 Key 或构造 Provider 前，必须证明资源合同能到达必需的 Agent 工具往返与独立 Evaluation；真实 Usage、tokenizer-free 长度投影和未知值必须分层表达 | V2 保持不可变 `admitted=false`；精确证据只支持 4464 的 next-call 最低上限，长度校准投影不得冒充官方 Token 或直接成为 V3 预算。V3 如继续，必须先用 development 校准并冻结新预算、新输入身份、新结果路径与公开 CI，再另行请求真实 I/O 确认。 |
-| RQ-033 | 2026-08-15 | 生效 | 用户明确确认执行一次真实 DeepSeek V4 Pro development Usage 校准，固定为 2 profiles × 4 stages、最多 8 calls、每请求 output 64、64000 observed tokens、`$0.10`、零重试和首错停止 | 先为真实回放入口做离线 TDD、完整门禁和新的 exact-SHA 公共 CI；只在同一干净已验证 SHA 上 Key-last 执行一次。校准输出不进入质量评测；失败结果也不可覆盖或补跑；不得借此创建/运行 V3 held-out、重跑 V2、切换其他模型或进入 5E。 |
+| RQ-033 | 2026-08-15 | 已执行（首错停止） | 用户明确确认执行一次真实 DeepSeek V4 Pro development Usage 校准，固定为 2 profiles × 4 stages、最多 8 calls、每请求 output 64、64000 observed tokens、`$0.10`、零重试和首错停止 | 真实入口先通过 `6aa8c43` / Actions `31868747216`，同 SHA prepare-only 为零调用；正式 replay 在第 1 次请求未形成规范化 `ChatResponse` 后以 `provider_response_invalid` 停止，后 7 次未发送。结果不可覆盖或补跑；实际 Usage/费用 unknown，不创建预算/V3 held-out，不据此判断模型质量。 |
 
 ## 新条目格式
 
