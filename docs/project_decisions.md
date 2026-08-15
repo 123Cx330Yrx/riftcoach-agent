@@ -260,7 +260,9 @@ Fresh-Gate 3 不新增第二套执行框架，只发布新的静态评测身份�
 - 本地聚焦回归为 `39 passed`，完整回归为 `574 passed, 103 subtests passed`，外部
   Provider calls 和 held-out executions 均为 0，真实结果文件不存在。
 
-当前只完成本地资产冻结。下一步必须先提交、推送并完成 exact-SHA 公开 CI；之后才进入
-Fresh-Gate 4 no-I/O preflight/真实运行确认，不能因资产存在而读取 Key 或宣称领域准入。
+资产提交 `1e44b130f4f054e06ab92fcc437dcd1fa74a13e8` 已通过 GitHub Actions run
+`31861960565` 的 exact-SHA 公开 CI。Fresh-Gate 3 已完成；下一步先实现 Fresh-Gate 4
+新资产 no-I/O admission/生产 CLI 接缝并再次公开验证，不能因资产存在而读取 Key 或
+宣称领域准入。
 设计与实施计划见 `docs/plans/2026-08-15-deepseek-fresh-domain-assets-design.md` 和
 `docs/plans/2026-08-15-deepseek-fresh-domain-assets-implementation.md`。

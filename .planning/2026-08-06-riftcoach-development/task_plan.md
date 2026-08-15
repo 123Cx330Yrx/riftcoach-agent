@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.21 - 5D-7（in progress: publish Fresh-Gate 3 asset freeze）
+Phase 6.22 - 5D-7（in progress: prepare Fresh-Gate 4 no-I/O run seam）
 
 ## Phases
 
@@ -148,16 +148,18 @@ Phase 6.21 - 5D-7（in progress: publish Fresh-Gate 3 asset freeze）
   fixture bytes、case ID、输入措辞、知识注入正文和 marker 均不复用。聚焦 `39 passed`，
   完整回归 `574 passed, 103 subtests passed`，两套 RAG、compileall、Harness/secret
   boundary、dry-run、governance 和 diff check 通过；Provider calls/held-out executions
-  均为 0，正式结果文件不存在。当前只欠提交、推送和 exact-SHA 公开 CI。
+  均为 0，正式结果文件不存在。资产提交 `1e44b130f4f054e06ab92fcc437dcd1fa74a13e8`
+  已通过 GitHub Actions run `31861960565` 的 exact-SHA 公开 CI，Fresh-Gate 3 已完成。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-7 Fresh-Gate 3 已本地完成。唯一下一步是提交、推送本批新资产并验证 exact-SHA
-GitHub Actions；公开 CI 成功前不进入 Fresh-Gate 4。当前不得读取 Key、调用 Provider、
-运行新 held-out、修改 Prompt/Evaluation/Harness、实现真正并发或进入 5D exit review/5E。
+5D-7 Fresh-Gate 3 已公开冻结。唯一下一步是 Fresh-Gate 4 入口批：将新 Dataset/plan/
+snapshot 绑定到 held-out no-I/O admission 与现有生产 CLI，先完成 Key-last、资源/停止、
+脱敏和不可覆盖的离线 TDD 与新的 exact-SHA CI。本入口批不得读取 Key、调用 Provider、
+运行 held-out、修改 Prompt/Evaluation/Harness、实现真正并发或进入 5D exit review/5E。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
 `.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门

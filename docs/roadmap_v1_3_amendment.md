@@ -186,7 +186,7 @@ OP.GG MCP
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
-5D-7 Prompt/Context Eval      进行中；Fresh-Gate 3 新资产已本地冻结，下一步提交并做 exact-SHA 公开 CI
+5D-7 Prompt/Context Eval      进行中；Fresh-Gate 3 已由 `1e44b13` / `31861960565` 公开冻结，下一步 Fresh-Gate 4 no-I/O 接缝
 ```
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
@@ -264,8 +264,9 @@ CI，且不能改变旧真实拒绝结果或提前进入 5D exit review/5E。该
 证据链和 no-I/O admission；该本地 TDD 现已以 V1.0 兼容读取、V1.1 三案例摘要、历史
 `3+1` 调用与禁止 Provider 构造合同完成，完整回归为 `568 passed, 103 subtests passed`；
 提交 `adba965` 已通过 Actions `31860874440`。新的匿名 fixture、Dataset、三案例 V1.1
-输入计划和实际 Context 摘要现已本地创建并通过离线回归，仍须再次 exact-SHA CI 冻结；
-公开成功前不得进入真实运行门。
+输入计划和实际 Context 摘要又由资产提交 `1e44b13` / Actions `31861960565` 完成
+exact-SHA 公开冻结。下一步先做 Fresh-Gate 4 的新资产
+no-I/O admission/生产 CLI 接缝与公开 CI，不直接读取 Key 或运行 held-out。
 旧 Dataset 1.1.0 不重跑；新鲜范围未来最多 12 calls 且仍需单独确认。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。

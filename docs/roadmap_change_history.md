@@ -899,3 +899,12 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   Harness SDK/tracked-data boundary、dry-run、governance 和 diff check 通过。
 - `NO-I/O`：Provider calls 和 held-out executions 均为 0，正式结果文件不存在；当前只欠
   commit/push/exact-SHA CI，公开成功前不得进入 Fresh-Gate 4 或读取 Key。
+
+### 2026-08-15：Fresh-Gate 3 exact-SHA 公开冻结完成
+
+- `PUBLIC-VERIFIED`：资产提交 `1e44b130f4f054e06ab92fcc437dcd1fa74a13e8`
+  已通过 GitHub Actions run `31861960565` 的 exact-SHA 全部门禁。
+- `SCOPE`：公开 CI 证明新匿名 fixture、三案例 held-out、V1.1 input plan 和三个实际
+  Context 摘要可重建；CI 没有 Key、Provider call、held-out execution 或真实结果。
+- `CURRENT`：唯一下一步为 Fresh-Gate 4 no-I/O 入口批，先把新资产绑定到既有 admission/
+  production CLI 并公开验证；真实运行仍需之后的单独确认，不进入 5D exit review/5E。

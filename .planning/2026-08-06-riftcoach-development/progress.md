@@ -1142,3 +1142,14 @@
   Provider calls、held-out executions 均为 0，真实结果文件不存在。
 - 当前唯一下一步为提交、推送并验证 Fresh-Gate 3 exact-SHA GitHub Actions；成功前不得
   进入 Fresh-Gate 4 或读取 Key。
+
+### 2026-08-15：Fresh-Gate 3 exact-SHA 公开冻结完成
+
+- 资产提交 `1e44b130f4f054e06ab92fcc437dcd1fa74a13e8` 已推送到 `origin/main`。
+- GitHub Actions run `31861960565` 对该精确 SHA completed/success；治理、完整 pytest、
+  两套 RAG、compileall、Harness SDK/tracked-data boundary 与 dry-run 全部通过。
+- CI 没有 `.env`/Key、Provider call、held-out execution 或真实结果；它证明新 Dataset、
+  V1.1 plan、匿名 fixture 和三案例 body-free Context identity 可公开复现，不证明模型
+  领域质量。
+- 唯一下一步为 Fresh-Gate 4 no-I/O 入口批：绑定新资产与现有生产执行接缝，先离线
+  TDD/公开 CI，不直接读取 Key 或运行 held-out。

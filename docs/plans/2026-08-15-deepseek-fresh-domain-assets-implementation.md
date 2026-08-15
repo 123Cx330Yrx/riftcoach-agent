@@ -129,9 +129,11 @@ git diff --check
 - No result file exists at `data/evaluation/results/provider_capabilities/deepseek_v4_pro_domain_adoption_v2.json`.
 - Local regression and exact-SHA public CI both pass.
 
-## Local execution result
+## Execution result
 
-- Status: local implementation complete; exact-SHA public CI pending
+- Status: complete
+- Asset freeze SHA: `1e44b130f4f054e06ab92fcc437dcd1fa74a13e8`
+- GitHub Actions: `31861960565` completed/success
 - Focused regression: `39 passed`
 - Full regression: `574 passed, 103 subtests passed`
 - RAG development/held-out gates: passed at their frozen 1.0 thresholds
