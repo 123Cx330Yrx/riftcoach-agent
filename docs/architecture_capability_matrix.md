@@ -41,7 +41,7 @@
 
 | ID | 能力 | 当前基础 | V1 负责阶段 | 后续深化 | 验收证据 | 状态 |
 |---|---|---|---|---|---|---|
-| Q01 | 端到端 Evaluation | 报告事实评测、RAG holdout、路由评测；5D-7 已建立分层合同/实验身份、secure offline development、生产 Executor/CLI 与资源/错误控制；V2 已真实单次运行，但首例第二轮前由 Token 门停止，后两例 skipped，未形成完整事实/引用/注入/Evaluation 判分 | 阶段 5C 增加路由 Eval，5D 增加 Prompt Eval | 先离线修复评测预算可达性证据，再决定是否建立全新门；阶段 8 固定产品回归集和消融 | 数字忠实度、引用、路由、工具选择、实验身份、注入漏判、失败归因与发布安全 | 部分完成 |
+| Q01 | 端到端 Evaluation | 报告事实评测、RAG holdout、路由评测；5D-7 已建立分层合同/实验身份、secure offline development、生产 Executor/CLI 与资源/错误控制；V2 已真实单次运行并由 `60b5c86` / Actions `31864370988` 公开归档，但首例第二轮前由 Token 门停止，后两例 skipped，未形成完整事实/引用/注入/Evaluation 判分 | 阶段 5C 增加路由 Eval，5D 增加 Prompt Eval | 先离线修复评测预算可达性证据，再决定是否建立全新门；阶段 8 固定产品回归集和消融 | 数字忠实度、引用、路由、工具选择、实验身份、注入漏判、失败归因与发布安全 | 部分完成 |
 | Q02 | Trace 与 Observability | Harness Artifact、工具指标、Usage 基础；5D-1 统一安全 run ID 并绑定输入 kind/schema/digest | 阶段 5E | 阶段 8 增加生产日志、告警和前端轨迹 | run_id 串联 Prompt、模型、工具、证据、耗时和决策 | 部分完成 |
 | Q03 | Prompt/上下文注入防护 | 工具白名单、Schema、data-only sections、累积预算和实际 ToolExecutionRecord 证据；Batch C 已验证一个 Evaluation 漏判后的 unsafe publication；D1-D2 已以 1.1.0 阻断安全 issue；V2 结果不泄漏 marker/Key，但两个真实注入案例因首错停止未执行 | 阶段 5D 建立不可信输入边界 | 先完成预算可达性裁决；只有新鲜门成立时再验证真实模型，阶段 6/7 扩展会话和 MCP 内容 | 恶意用户输入、恶意文档、恶意工具结果、评测漏判和越权测试 | 部分完成 |
 | Q04 | 应用安全 | `.env` 隔离、日志脱敏、离线赛后合规边界 | 阶段 6 建立鉴权、限流、CORS 与用户隔离 | 阶段 8 部署威胁模型、安全扫描和响应流程 | 密钥扫描、权限、限流、数据越权和依赖审计 | 部分完成 |

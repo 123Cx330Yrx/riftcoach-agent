@@ -162,6 +162,8 @@ Phase 6.23 - 5D-7（in progress: V2 real result frozen; await no-I/O budget-reac
   上只执行一次：首例 1 call/3440 observed tokens，下一调用因需预留 1024 output 而超过
   单例 4000-token 门，在 I/O 前停止；Harness 安全降级、后两例 skipped、
   `admitted=false`。结果 SHA 为 `877b623f...dc62a`，不得覆盖或重跑。
+- 结果归档提交 `60b5c86e1699a615a6bf87dcbb5be62506b2e2e0` 已推送，GitHub Actions
+  run `31864370988` 对精确 SHA completed/success；公开 CI 不含 Key 或 Provider I/O。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。

@@ -1196,3 +1196,12 @@
   check 通过。当前仍需提交、推送和公开 exact-SHA 归档。
 - 唯一下一步：完成本轮持久化、完整回归、提交/推送和 exact-SHA CI；之后进入 5D-7
   零调用预算可达性裁决，不重跑 V2。
+
+### 2026-08-15：V2 结果公开归档完成
+
+- 结果/测试/裁决提交 `60b5c86e1699a615a6bf87dcbb5be62506b2e2e0` 已推送到
+  `origin/main`；GitHub Actions run `31864370988` 对精确 SHA completed/success。
+- 公开 CI 重跑治理、581 tests/103 subtests、两套 RAG、compileall、Harness SDK/
+  tracked-data boundary 与 dry-run；CI 无 `.env`/Key，外部 Provider calls 为 0。
+- 本轮真实调用总数保持 1，V2 结果与 `admitted=false` 不变。唯一下一步正式切换为 5D-7
+  零调用 V2 结果裁决与预算可达性 TDD。

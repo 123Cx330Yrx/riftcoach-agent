@@ -121,3 +121,6 @@ V2 同时宣称“每例最多 4 calls”和“每例最多 4000 observed tokens
 - compileall、Harness SDK boundary、tracked secret/run-data boundary、Harness dry-run、
   governance 与 `git diff --check` 均通过；
 - 上述归档验证没有再次读取 Key 或调用 Provider。
+
+公开归档提交 `60b5c86e1699a615a6bf87dcbb5be62506b2e2e0` 已通过 GitHub Actions
+run `31864370988` 的 exact-SHA 全部门禁；公开 CI 没有 `.env`、Key 或 Provider I/O。

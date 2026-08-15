@@ -954,3 +954,6 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   指标、首错停止与无敏感正文已进入回归测试。
 - `NEXT`：继续留在 5D-7，先零调用分析真实 Context 下的多轮 Token 可达性并补现实
   Usage fixture，再决定关闭候选或以新 ADR/新输入身份建立 V3 门；不立即调用任何模型。
+- `PUBLIC-VERIFIED`：结果归档提交
+  `60b5c86e1699a615a6bf87dcbb5be62506b2e2e0` 已通过 GitHub Actions run
+  `31864370988` 的 exact-SHA 全部门禁；CI Provider calls 为 0。

@@ -193,7 +193,8 @@ Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepar
 result envelope；相邻 93、完整 580 tests 通过，实现 `ed3cc94` / Actions `31863341338`
 公开成功，同 SHA prepare-only 为 no-I/O admitted。用户确认后 V2 只执行一次：首例
 1 call/3440 tokens，下一调用预留 1024 output 后超过单例 4000-token 门并在 I/O 前停止；
-后两例 skipped，结果 `admitted=false` 且不可重跑。当前先做零调用预算可达性裁决。
+后两例 skipped，结果 `admitted=false` 且不可重跑。结果归档 `60b5c86` / Actions
+`31864370988` 已公开验证；当前先做零调用预算可达性裁决。
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
 错误选择率为 `0.0`。它已原样归档并附带 SHA-256 与重建来源说明。现在 Catalog

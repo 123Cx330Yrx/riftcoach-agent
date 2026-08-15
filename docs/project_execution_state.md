@@ -50,7 +50,9 @@ blocked_before: "5D-exit-review"
   规范化并使用 3241 input + 199 output tokens，下一调用因 `3440 + 1024 > 4000`
   在 I/O 前以 `token_budget_exhausted` 停止；Harness 降级、后两例 skipped、unsafe
   publication 为 false，最终 `admitted=false`。不可变结果 SHA-256 为
-  `877b623fa635e7126905c9bd077bfb17fda62d8e42670427f2200c12285dc62a`
+  `877b623fa635e7126905c9bd077bfb17fda62d8e42670427f2200c12285dc62a`；归档提交
+  `60b5c86e1699a615a6bf87dcbb5be62506b2e2e0` 已通过 GitHub Actions run
+  `31864370988` 的 exact-SHA 公开 CI
 - 唯一下一步：5D-7 V2 结果裁决与预算可达性离线 TDD；使用实际冻结 Context/请求
   envelope 证明至少一次知识工具往返与一次 Evaluation 所需的真实 Token 下界，并比较
   关闭 DeepSeek 领域候选或用新 ADR/新输入身份建立 V3 门；本步不读取 Key、不调用模型、
@@ -324,7 +326,7 @@ blocked_before: "5D-exit-review"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 已形成安全离线基线、DeepSeek 独立 Adapter/真实最小协议、领域控制接缝与真实门，并在 development 中补齐多 ToolCall 批次严格传输、整批预检和顺序执行；Fresh-Gate 1/3/4 已公开冻结；V2 真实结果已不可变归档并新增回归验证 | 阶段 5、整个 5D、DeepSeek 领域质量、生产默认切换或报告质量准入已完成；一次资源门失败已经评价了报告质量，或可以修改预算后重跑 V2 |
 | 项目理解 | 已区分控制面 admission 与数据面 Provider 调用、Dataset oracle 与案例执行计划，也已区分修复回归与新鲜采用测试、Provider/Model/Multi-Agent、协议/领域/产品三层门；V2 又实际证明“调用数上限”和“Token 可达性”是两项不同约束，Fake Usage 不能替代真实 Prompt 长度校准 | 离线合成 executor 能评价模型智力/在线可用性，安全 fallback 等于模型通过，V2 `admitted=false` 已证明 DeepSeek 报告质量差，或 3 场 held-out 能证明通用生产质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | GLM-5.3 隔离规划 `e380e812` / `31859244059`、新鲜门设计 `f9edb4b4` / `31859717836`、多 ToolCall 修复 `037a47f` / `31817798170`、Fresh-Gate 1 `adba965` / `31860874440`、Fresh-Gate 3 `1e44b13` / `31861960565` 与 Fresh-Gate 4 入口 `ed3cc94` / `31863341338` 已通过 exact-SHA CI；V2 结果尚待本轮提交/公开 CI，正式网页仍未部署 | 本地结果等于已公开归档、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
+| GitHub/部署 | GLM-5.3 隔离规划 `e380e812` / `31859244059`、新鲜门设计 `f9edb4b4` / `31859717836`、多 ToolCall 修复 `037a47f` / `31817798170`、Fresh-Gate 1 `adba965` / `31860874440`、Fresh-Gate 3 `1e44b13` / `31861960565`、Fresh-Gate 4 入口 `ed3cc94` / `31863341338` 与 V2 结果归档 `60b5c86` / `31864370988` 均已通过 exact-SHA CI；正式网页仍未部署 | 公开失败证据等于模型质量结论、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -657,6 +659,10 @@ Key 或执行 V2 held-out。
   运行确认、首错停止和脱敏边界已由 `47 passed` 聚焦回归固定；完整回归为
   `581 passed, 103 subtests passed`，两套 RAG、compileall、Harness SDK/tracked-data
   boundary、dry-run 与治理均通过；V2 不得覆盖或重跑。
+- 结果、回归和教学裁决已由提交
+  `60b5c86e1699a615a6bf87dcbb5be62506b2e2e0` 推送；GitHub Actions run
+  `31864370988` 对该精确 SHA completed/success。CI 无 `.env`/Key，也没有 Provider
+  调用。
 
 这次结果正确支持 `admitted=false`，并证明预算与安全控制生效；但由于事实、引用、注入
 和 Evaluation 链均未完成，不能归纳为 DeepSeek 报告质量失败。它同时暴露了实验设计

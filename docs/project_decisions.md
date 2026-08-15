@@ -301,3 +301,6 @@ DeepSeek 质量；公开 CI 和同 SHA prepare-only 完成前不能读取 Key，
 `877b623f...dc62a` 永久保留且不得重跑。下一步只做零调用的预算可达性裁决和现实 Usage
 TDD；如果仍要评估领域能力，必须经新 ADR、新输入身份和新结果路径建立后续门，不能
 直接调高 V2 预算追绿。
+
+该结果与回归已由提交 `60b5c86e1699a615a6bf87dcbb5be62506b2e2e0`、GitHub
+Actions run `31864370988` 完成 exact-SHA 公开验证；CI 没有 Key 或 Provider 调用。
