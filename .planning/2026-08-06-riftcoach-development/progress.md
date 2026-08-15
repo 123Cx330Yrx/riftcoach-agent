@@ -1114,3 +1114,13 @@
   文件的工作区写入，但其 Git object 已恢复为 HEAD 精确内容，未形成业务变更。
 - 当前新增 Provider calls 为 0、held-out executions 为 0、正式新 held-out 资产为 0。
   唯一下一步为 Fresh-Gate 2：提交、推送并验证 exact-SHA GitHub Actions。
+
+### 2026-08-15：Fresh-Gate 1 exact-SHA 公开验证完成
+
+- 实现提交 `adba965a7f7fb4293020502b4440e9880633e571` 已推送到 `origin/main`。
+- GitHub Actions run `31860874440` 对该精确 SHA completed/success；公开门包含治理、
+  `568 passed, 103 subtests passed`、两套 RAG、compileall、Harness SDK boundary、
+  tracked secret/run-data boundary 与 Harness dry-run。
+- CI 没有 `.env`/Key、Provider call、held-out execution 或新正式结果；Fresh-Gate 1
+  只证明兼容合同、历史链和 no-I/O admission 已公开冻结。
+- 唯一下一步为 Fresh-Gate 3 新资产创建/冻结批；该批仍不运行 held-out 或调用 Provider。

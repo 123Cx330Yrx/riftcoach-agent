@@ -156,3 +156,13 @@ git diff --check
 - All new tests use synthetic development data.
 - Provider calls and held-out executions are both zero.
 - Fresh-Gate 1 code and exact-SHA public CI are separately evidenced.
+
+## Execution result
+
+- Status: complete
+- Implementation SHA: `adba965a7f7fb4293020502b4440e9880633e571`
+- GitHub Actions: `31860874440` completed/success
+- Local/full CI regression: `568 passed, 103 subtests passed`
+- External Provider calls: `0`
+- Held-out executions: `0`
+- Formal new held-out assets created: `0`

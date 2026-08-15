@@ -871,3 +871,14 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `CURRENT`：Fresh-Gate 1 目前只有本地证据。唯一下一步为提交、推送和 exact-SHA
   GitHub Actions；公开 CI 成功前不创建正式新 held-out、不读取 Key、不调用 Provider、
   不进入 Fresh-Gate 3、5D exit review 或 5E。
+
+### 2026-08-15：DeepSeek Fresh-Gate 1 公开冻结完成
+
+- `PUBLIC-VERIFIED`：实现提交 `adba965a7f7fb4293020502b4440e9880633e571` 已通过
+  GitHub Actions run `31860874440` 的 exact-SHA 全部门禁。
+- `SCOPE`：公开 CI 证明 V1.0 兼容、V1.1 input-plan/三案例 Context、历史证据链和
+  development-only no-I/O admission 可复现；它没有创建/运行新 held-out，也没有评价
+  DeepSeek 报告质量、在线稳定性或注入抵抗。
+- `CURRENT`：唯一下一步为 Fresh-Gate 3，只创建全新匿名 fixture、正式三案例 held-out、
+  V1.1 input plan 与实际逐案例 Context snapshot，并再次公开冻结；真实运行仍需之后的
+  单独确认，不进入 5D exit review/5E。

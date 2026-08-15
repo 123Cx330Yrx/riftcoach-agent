@@ -242,5 +242,7 @@ Fresh-Gate 1 采用“兼容扩展 + 专用 development admission”，不建立
 - 当前只产生 `FreshDomainDevelopmentAdmission`，固定禁止 Provider 构造，不提前加入
   held-out/真实运行入口。
 
-该实现目前只有本地 TDD 证据；exact-SHA GitHub Actions 成功前不创建新考卷。完整实现
-计划见 `docs/plans/2026-08-15-deepseek-fresh-domain-gate-offline-implementation.md`。
+该实现已由提交 `adba965a7f7fb4293020502b4440e9880633e571` 与 GitHub Actions run
+`31860874440` 完成 exact-SHA 公开验证。下一步才允许单独创建新考卷资产，但创建不等于
+运行，且仍不得读取 Key。完整实现计划见
+`docs/plans/2026-08-15-deepseek-fresh-domain-gate-offline-implementation.md`。

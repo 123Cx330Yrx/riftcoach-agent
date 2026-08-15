@@ -186,7 +186,7 @@ OP.GG MCP
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
-5D-7 Prompt/Context Eval      进行中；Fresh-Gate 1 本地合同/no-I/O TDD 已通过，下一步 exact-SHA 公开 CI
+5D-7 Prompt/Context Eval      进行中；Fresh-Gate 1 已由 `adba965` / `31860874440` 公开验证，下一步冻结新资产
 ```
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
@@ -262,8 +262,9 @@ CI，且不能改变旧真实拒绝结果或提前进入 5D exit review/5E。该
 和 Actions `31817798170` 验证。ADR-0024 随后接受新鲜领域采用门设计：复用现有控制面，
  先用合成 development 数据实现兼容 input-plan、逐案例 Prompt/Context commitment、历史
 证据链和 no-I/O admission；该本地 TDD 现已以 V1.0 兼容读取、V1.1 三案例摘要、历史
-`3+1` 调用与禁止 Provider 构造合同完成，完整回归为 `568 passed, 103 subtests passed`。
-下一步先完成 exact-SHA CI，冻结后才创建新的匿名 fixture、Dataset 和三案例输入计划。
+`3+1` 调用与禁止 Provider 构造合同完成，完整回归为 `568 passed, 103 subtests passed`；
+提交 `adba965` 已通过 Actions `31860874440`。下一步创建新的匿名 fixture、Dataset、
+三案例输入计划和实际 Context 摘要，并再次 exact-SHA CI 冻结。
 旧 Dataset 1.1.0 不重跑；新鲜范围未来最多 12 calls 且仍需单独确认。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
