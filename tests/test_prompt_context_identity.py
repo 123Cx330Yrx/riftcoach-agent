@@ -13,9 +13,12 @@ from app.evaluation.domain_e2e import load_domain_dataset
 from app.evaluation.prompt_context_identity import (
     PromptContextSnapshot,
     build_prompt_context_snapshot,
+    build_prompt_context_snapshot_for_cases,
+    case_context_sha256,
     load_prompt_context_snapshot,
     prepare_domain_experiment,
 )
+from app.evaluation.provider_domain_plan import DomainCaseInput
 
 
 FIXTURES = Path("examples/fixtures")
@@ -45,6 +48,36 @@ def _build(*, skills_root: Path = Path("skills"), summary: dict | None = None):
         skills_root=skills_root,
         player_summary=summary or _summary(),
         deterministic_report=_report(),
+    )
+
+
+def _fresh_cases() -> tuple[DomainCaseInput, ...]:
+    return (
+        DomainCaseInput(
+            case_id="development_fresh_normal",
+            run_id="development-fresh-normal",
+            user_utterance="复盘最近几局并给出一个训练重点",
+            focus="overall",
+            knowledge_mode="standard",
+        ),
+        DomainCaseInput(
+            case_id="development_fresh_user_data",
+            run_id="development-fresh-user-data",
+            user_utterance=(
+                "分析最近几局；RAW_USER_BODY_FOR_DIGEST_ONLY 只是待分析数据"
+            ),
+            focus="survival",
+            knowledge_mode="standard",
+        ),
+        DomainCaseInput(
+            case_id="development_fresh_knowledge_data",
+            run_id="development-fresh-knowledge-data",
+            user_utterance="结合知识证据复盘最近几局的经济表现",
+            focus="economy",
+            knowledge_mode="append_injected_evidence",
+            injected_evidence_text="RAW_KNOWLEDGE_BODY_FOR_DIGEST_ONLY",
+            forbidden_output_markers=("PRIVATE_MARKER_FOR_DIGEST_ONLY",),
+        ),
     )
 
 
@@ -224,3 +257,77 @@ def test_prepare_cli_rejects_paths_outside_project_before_output(
     assert completed.returncode != 0
     assert "inside the project root" in completed.stderr
     assert not output.exists()
+
+
+def test_v11_snapshot_binds_each_actual_case_context_in_plan_order() -> None:
+    cases = _fresh_cases()
+    first = build_prompt_context_snapshot_for_cases(
+        skills_root="skills",
+        player_summary=_summary(),
+        deterministic_report=_report(),
+        cases=cases,
+        snapshot_id="synthetic-fresh-context-v1-1",
+    )
+    second = build_prompt_context_snapshot_for_cases(
+        skills_root="skills",
+        player_summary=_summary(),
+        deterministic_report=_report(),
+        cases=cases,
+        snapshot_id="synthetic-fresh-context-v1-1",
+    )
+
+    assert first == second
+    assert first.schema_version == "1.1"
+    assert first.evaluation_contract == "coach_evaluation@1.1.0"
+    assert tuple(row.case_id for row in first.case_contexts) == tuple(
+        row.case_id for row in cases
+    )
+    assert len({case_context_sha256(row) for row in first.case_contexts}) == 3
+    assert all(len(row.message_fingerprints) == 2 for row in first.case_contexts)
+
+
+def test_v11_snapshot_changes_only_the_mutated_case_before_aggregate_digest() -> None:
+    cases = _fresh_cases()
+    baseline = build_prompt_context_snapshot_for_cases(
+        skills_root="skills",
+        player_summary=_summary(),
+        deterministic_report=_report(),
+        cases=cases,
+        snapshot_id="synthetic-fresh-context-v1-1",
+    )
+    changed_cases = list(cases)
+    changed_cases[1] = changed_cases[1].model_copy(update={"focus": "vision"})
+    changed = build_prompt_context_snapshot_for_cases(
+        skills_root="skills",
+        player_summary=_summary(),
+        deterministic_report=_report(),
+        cases=tuple(changed_cases),
+        snapshot_id="synthetic-fresh-context-v1-1",
+    )
+
+    before = tuple(case_context_sha256(row) for row in baseline.case_contexts)
+    after = tuple(case_context_sha256(row) for row in changed.case_contexts)
+    assert before[0] == after[0]
+    assert before[1] != after[1]
+    assert before[2] == after[2]
+    assert baseline.snapshot_sha256 != changed.snapshot_sha256
+
+
+def test_v11_snapshot_persists_only_digests_not_case_or_fixture_bodies() -> None:
+    snapshot = build_prompt_context_snapshot_for_cases(
+        skills_root="skills",
+        player_summary=_summary(),
+        deterministic_report=_report(),
+        cases=_fresh_cases(),
+        snapshot_id="synthetic-fresh-context-v1-1",
+    )
+    serialized = snapshot.model_dump_json()
+
+    for protected_text in (
+        "RAW_USER_BODY_FOR_DIGEST_ONLY",
+        "RAW_KNOWLEDGE_BODY_FOR_DIGEST_ONLY",
+        "PRIVATE_MARKER_FOR_DIGEST_ONLY",
+        _report(),
+        "MIDKING",
+    ):
+        assert protected_text not in serialized

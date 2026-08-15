@@ -850,3 +850,24 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `PUBLIC-VERIFIED`：设计提交 `f9edb4b4d8a66e12946ffdb3da36881ea5e5e2fc` 已通过
   GitHub Actions run `31859717836` 的 exact-SHA 全部门禁；该 CI 外部 Provider calls
   为 0，不代表 Fresh-Gate 1 合同代码、新 held-out 或真实领域准入已完成。
+
+### 2026-08-15：DeepSeek Fresh-Gate 1 本地离线合同完成
+
+- `BACKWARD-COMPATIBLE`：input plan 与 Prompt/Context snapshot 均增加 V1.1 能力，
+  但旧 V1.0 文件和快照仍按原字段、原摘要与原字节复现；没有覆盖历史资产。
+- `CASE-IDENTITY`：三个合成 development case 各自通过真实 Router、ExecutionBoundary
+  与 ContextBuilder；V1.1 plan 按固定 case order 绑定每个 Context 摘要，公开合同不含
+  用户、fixture、注入、Prompt 或模型正文。
+- `HISTORY`：新历史链严格复读旧协议 SHA `575e8f...086e1`、旧拒绝结果 SHA
+  `fbd125...989e` 和多 ToolCall 修复 `037a47f` / Actions `31817798170`；历史调用为
+  `3 + 1 = 4`，旧协议 1428 tokens/`$0.00221496` 保持已知，旧失败调用的 Token/费用
+  保持 unknown。
+- `NO-I/O`：`FreshDomainDevelopmentAdmission` 仅接受 development Dataset，prepare
+  函数不接收 Provider/Key，输出固定 `provider_construction_authorized=false`、
+  `external_provider_calls=0`、`held_out_executed=false`。
+- `VERIFIED-LOCAL`：聚焦 33、相邻 51、完整 `568 passed, 103 subtests passed`；两套
+  RAG、compileall、Harness SDK/secret/run-data boundary 与 dry-run 均通过。外围计划
+  命令的三个名称/参数错误已按真实 CI workflow 更正并重跑，不冒充首次命令成功。
+- `CURRENT`：Fresh-Gate 1 目前只有本地证据。唯一下一步为提交、推送和 exact-SHA
+  GitHub Actions；公开 CI 成功前不创建正式新 held-out、不读取 Key、不调用 Provider、
+  不进入 Fresh-Gate 3、5D exit review 或 5E。

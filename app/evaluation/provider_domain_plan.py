@@ -95,12 +95,21 @@ class DomainCaseInput(BaseModel):
         return self
 
 
+class DomainCaseContextCommitment(BaseModel):
+    """Canonical Context identity for one case, never its raw content."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    case_id: NonBlankText
+    context_sha256: Sha256Text
+
+
 class DomainCaseInputPlanArtifact(BaseModel):
     """Sealed input plan whose exact file bytes identify the real run."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["1.0"] = "1.0"
+    schema_version: Literal["1.0", "1.1"] = "1.0"
     plan_id: SafeCodeText
     plan_version: NonBlankText
     dataset_id: NonBlankText
@@ -111,6 +120,9 @@ class DomainCaseInputPlanArtifact(BaseModel):
     deterministic_report: DomainFixtureCommitment
     sdk_max_retries: Literal[0]
     max_revisions: Literal[0]
+    prompt_context_snapshot_id: SafeCodeText | None = None
+    prompt_context_snapshot_sha256: Sha256Text | None = None
+    case_context_commitments: tuple[DomainCaseContextCommitment, ...] = ()
     case_count: int = Field(gt=0)
     cases: tuple[DomainCaseInput, ...]
 
@@ -124,6 +136,33 @@ class DomainCaseInputPlanArtifact(BaseModel):
             raise ValueError("input plan case IDs must be unique")
         if len(set(run_ids)) != len(run_ids):
             raise ValueError("input plan run IDs must be unique")
+        snapshot_identity = (
+            self.prompt_context_snapshot_id,
+            self.prompt_context_snapshot_sha256,
+        )
+        if self.schema_version == "1.0":
+            if any(value is not None for value in snapshot_identity) or (
+                self.case_context_commitments
+            ):
+                raise ValueError(
+                    "input plan schema 1.0 cannot carry fresh Context commitments"
+                )
+            return self
+        if any(value is None for value in snapshot_identity):
+            raise ValueError(
+                "input plan schema 1.1 requires the Prompt/Context snapshot identity"
+            )
+        committed_case_ids = tuple(
+            row.case_id for row in self.case_context_commitments
+        )
+        if not committed_case_ids:
+            raise ValueError(
+                "input plan schema 1.1 requires per-case Context commitments"
+            )
+        if committed_case_ids != case_ids:
+            raise ValueError(
+                "Context commitment case order must match input plan case order"
+            )
         return self
 
     def case(self, case_id: str) -> DomainCaseInput:
@@ -204,6 +243,7 @@ def _verify_fixture(
 
 
 __all__ = [
+    "DomainCaseContextCommitment",
     "DomainCaseInput",
     "DomainCaseInputPlanArtifact",
     "DomainFixtureCommitment",

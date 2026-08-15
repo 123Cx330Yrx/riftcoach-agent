@@ -229,3 +229,18 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 
 本设计不改变 Flash、GLM-5.3、5F 或 5P/阶段 6 的归属。详细设计见
 `docs/plans/2026-08-15-deepseek-fresh-domain-adoption-gate-design.md` 和 ADR-0024。
+
+### Fresh-Gate 1 实现裁决
+
+Fresh-Gate 1 采用“兼容扩展 + 专用 development admission”，不建立第二套 Runtime：
+
+- input plan 与 Prompt/Context snapshot 保留 V1.0 语义，新能力使用 V1.1；
+- 三个案例各自通过真实 Skill 路由和 ContextBuilder 后形成摘要，不能再用一个 demo
+  Context 代表整场实验；
+- 历史证据链固定旧协议/拒绝结果 bytes、`3+1` 调用、ADR-0022 修复提交与公开 CI；
+- 规范化前失败的旧领域 Token/费用写为 unknown，不根据统一记录中的零值推断未计费；
+- 当前只产生 `FreshDomainDevelopmentAdmission`，固定禁止 Provider 构造，不提前加入
+  held-out/真实运行入口。
+
+该实现目前只有本地 TDD 证据；exact-SHA GitHub Actions 成功前不创建新考卷。完整实现
+计划见 `docs/plans/2026-08-15-deepseek-fresh-domain-gate-offline-implementation.md`。

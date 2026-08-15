@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
-from typing import Annotated, Any, Literal
+from typing import TYPE_CHECKING, Annotated, Any, Literal
 
 from pydantic import (
     BaseModel,
@@ -38,6 +38,9 @@ from app.skills.routing_models import RouterRequest
 from app.tools.adapters.knowledge import build_knowledge_tools
 
 from .domain_e2e import DomainEvaluationDataset, load_domain_dataset
+
+if TYPE_CHECKING:
+    from .provider_domain_plan import DomainCaseInput
 
 
 NonBlankText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
@@ -116,7 +119,7 @@ class CaseContextFingerprint(_FrozenModel):
 
 
 class PromptContextSnapshot(_FrozenModel):
-    schema_version: Literal["1.0"] = "1.0"
+    schema_version: Literal["1.0", "1.1"] = "1.0"
     snapshot_id: SafeIdText
     skill_name: NonBlankText
     skill_version: NonBlankText
@@ -167,42 +170,139 @@ def build_prompt_context_snapshot(
     evaluation_contract_version: str = "1.0.0",
 ) -> PromptContextSnapshot:
     catalog = SkillCatalog.from_directory(skills_root)
+    skill = catalog.get("recent-form-review")
+    if skill is None:
+        raise ValueError("recent-form-review is missing from the Skill Catalog")
+    components = _component_fingerprints(
+        skill,
+        evaluation_contract_version=evaluation_contract_version,
+    )
+    case_context = _build_case_context(
+        catalog=catalog,
+        skill=skill,
+        player_summary=player_summary,
+        deterministic_report=deterministic_report,
+        case_id=_CASE_ID,
+        run_id=_RUN_ID,
+        user_utterance=_UTTERANCE,
+        focus=_FOCUS,
+    )
+    payload_without_digest = {
+        "schema_version": "1.0",
+        "snapshot_id": snapshot_id,
+        "skill_name": skill.manifest.name,
+        "skill_version": skill.manifest.version,
+        "context_contract": _CONTEXT_CONTRACT,
+        "evaluation_contract": f"coach_evaluation@{evaluation_contract_version}",
+        "components": [row.model_dump(mode="json") for row in components],
+        "case_contexts": [case_context.model_dump(mode="json")],
+    }
+    return PromptContextSnapshot(
+        **payload_without_digest,
+        snapshot_sha256=_digest_json(payload_without_digest),
+    )
+
+
+def build_prompt_context_snapshot_for_cases(
+    *,
+    skills_root: str | Path,
+    player_summary: dict[str, Any],
+    deterministic_report: str,
+    cases: tuple[DomainCaseInput, ...],
+    snapshot_id: str,
+    evaluation_contract_version: str = "1.1.0",
+) -> PromptContextSnapshot:
+    """Build a body-free identity for every actual case in one experiment."""
+
+    if not cases:
+        raise ValueError("multi-case Prompt/Context snapshot requires cases")
+    catalog = SkillCatalog.from_directory(skills_root)
+    skill = catalog.get("recent-form-review")
+    if skill is None:
+        raise ValueError("recent-form-review is missing from the Skill Catalog")
+    components = _component_fingerprints(
+        skill,
+        evaluation_contract_version=evaluation_contract_version,
+    )
+    case_contexts = tuple(
+        _build_case_context(
+            catalog=catalog,
+            skill=skill,
+            player_summary=player_summary,
+            deterministic_report=deterministic_report,
+            case_id=case.case_id,
+            run_id=case.run_id,
+            user_utterance=case.user_utterance,
+            focus=case.focus,
+        )
+        for case in cases
+    )
+    payload_without_digest = {
+        "schema_version": "1.1",
+        "snapshot_id": snapshot_id,
+        "skill_name": skill.manifest.name,
+        "skill_version": skill.manifest.version,
+        "context_contract": _CONTEXT_CONTRACT,
+        "evaluation_contract": f"coach_evaluation@{evaluation_contract_version}",
+        "components": [row.model_dump(mode="json") for row in components],
+        "case_contexts": [row.model_dump(mode="json") for row in case_contexts],
+    }
+    return PromptContextSnapshot(
+        **payload_without_digest,
+        snapshot_sha256=_digest_json(payload_without_digest),
+    )
+
+
+def case_context_sha256(value: CaseContextFingerprint) -> str:
+    if not isinstance(value, CaseContextFingerprint):
+        raise TypeError("value must be a CaseContextFingerprint")
+    return _digest_json(value.model_dump(mode="json"))
+
+
+def _build_case_context(
+    *,
+    catalog: SkillCatalog,
+    skill,
+    player_summary: dict[str, Any],
+    deterministic_report: str,
+    case_id: str,
+    run_id: str,
+    user_utterance: str,
+    focus: str,
+) -> CaseContextFingerprint:
     decision = DeterministicSkillRouter().route(
         RouterRequest(
-            utterance=_UTTERANCE,
+            utterance=user_utterance,
             available_skills=catalog.route_candidates,
         )
     )
-    skill = catalog.get("recent-form-review")
-    if skill is None or decision.selected_skill != skill.manifest.name:
-        raise ValueError("snapshot fixture did not select recent-form-review")
+    if decision.selected_skill != skill.manifest.name:
+        raise ValueError(
+            f"Prompt/Context case {case_id!r} did not select recent-form-review"
+        )
     payload = {
         "player_summary": player_summary,
         "deterministic_report": deterministic_report,
-        "focus": _FOCUS,
+        "focus": focus,
     }
     typed_input = skill.input_model.model_validate(payload)
     binding = SkillInputArtifactBinding.from_content(
-        run_id=_RUN_ID,
+        run_id=run_id,
         player_summary=typed_input.player_summary,
         deterministic_report=typed_input.deterministic_report,
     )
     execution = SkillExecutionBoundary(catalog).validate(
         SkillExecutionRequest(
-            run_id=_RUN_ID,
-            user_utterance=_UTTERANCE,
+            run_id=run_id,
+            user_utterance=user_utterance,
             router_decision=decision,
             input_payload=payload,
             input_artifacts=binding,
         )
     )
     context = ContextBuilderV1().build(execution)
-    components = _component_fingerprints(
-        skill,
-        evaluation_contract_version=evaluation_contract_version,
-    )
-    case_context = CaseContextFingerprint(
-        case_id=_CASE_ID,
+    return CaseContextFingerprint(
+        case_id=case_id,
         player_summary_sha256=binding.player_summary.sha256,
         deterministic_report_sha256=binding.deterministic_report.sha256,
         user_utterance_sha256=_digest_text(execution.user_utterance),
@@ -230,20 +330,6 @@ def build_prompt_context_snapshot(
         ),
         estimated_tokens=context.estimated_tokens,
         max_context_tokens=context.max_context_tokens,
-    )
-    payload_without_digest = {
-        "schema_version": "1.0",
-        "snapshot_id": snapshot_id,
-        "skill_name": skill.manifest.name,
-        "skill_version": skill.manifest.version,
-        "context_contract": _CONTEXT_CONTRACT,
-        "evaluation_contract": f"coach_evaluation@{evaluation_contract_version}",
-        "components": [row.model_dump(mode="json") for row in components],
-        "case_contexts": [case_context.model_dump(mode="json")],
-    }
-    return PromptContextSnapshot(
-        **payload_without_digest,
-        snapshot_sha256=_digest_json(payload_without_digest),
     )
 
 
@@ -500,6 +586,8 @@ __all__ = [
     "DomainExperimentAdmission",
     "PromptContextSnapshot",
     "build_prompt_context_snapshot",
+    "build_prompt_context_snapshot_for_cases",
+    "case_context_sha256",
     "load_prompt_context_snapshot",
     "prepare_domain_experiment",
 ]

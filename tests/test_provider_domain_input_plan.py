@@ -9,7 +9,10 @@ import pytest
 
 from app.evaluation.domain_e2e import load_domain_dataset
 from app.evaluation.provider_domain_experiment import DomainCaseExecutor
-from app.evaluation.provider_domain_plan import load_domain_case_input_plan
+from app.evaluation.provider_domain_plan import (
+    DomainCaseInputPlanArtifact,
+    load_domain_case_input_plan,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -104,3 +107,81 @@ def test_plan_rejects_unfrozen_case_modes_and_revision_budget(tmp_path):
             project_root=ROOT,
             dataset=dataset,
         )
+
+
+def test_v1_plan_remains_strictly_readable_without_fresh_context_fields():
+    artifact = DomainCaseInputPlanArtifact.model_validate_json(PLAN.read_bytes())
+
+    assert artifact.schema_version == "1.0"
+    assert artifact.prompt_context_snapshot_id is None
+    assert artifact.prompt_context_snapshot_sha256 is None
+    assert artifact.case_context_commitments == ()
+
+
+def _v11_plan_payload() -> dict:
+    payload = json.loads(PLAN.read_text(encoding="utf-8"))
+    payload.update(
+        schema_version="1.1",
+        plan_id="synthetic-fresh-domain-development",
+        plan_version="1.1.0-dev",
+        prompt_context_snapshot_id="synthetic-fresh-context-v1-1",
+        prompt_context_snapshot_sha256="a" * 64,
+        case_context_commitments=[
+            {"case_id": row["case_id"], "context_sha256": str(index) * 64}
+            for index, row in enumerate(payload["cases"], start=1)
+        ],
+    )
+    return payload
+
+
+def test_v11_plan_requires_ordered_context_commitments_for_every_case():
+    artifact = DomainCaseInputPlanArtifact.model_validate(_v11_plan_payload())
+
+    assert artifact.schema_version == "1.1"
+    assert artifact.prompt_context_snapshot_id == "synthetic-fresh-context-v1-1"
+    assert tuple(row.case_id for row in artifact.case_context_commitments) == tuple(
+        row.case_id for row in artifact.cases
+    )
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    [
+        (
+            lambda value: value.pop("prompt_context_snapshot_sha256"),
+            "snapshot identity",
+        ),
+        (
+            lambda value: value.update(case_context_commitments=[]),
+            "Context commitments",
+        ),
+        (
+            lambda value: value["case_context_commitments"].reverse(),
+            "case order",
+        ),
+        (
+            lambda value: value["case_context_commitments"].__setitem__(
+                1,
+                value["case_context_commitments"][0],
+            ),
+            "case order",
+        ),
+    ],
+)
+def test_v11_plan_rejects_missing_or_misaligned_context_commitments(
+    mutation,
+    message,
+):
+    payload = _v11_plan_payload()
+    mutation(payload)
+
+    with pytest.raises(ValueError, match=message):
+        DomainCaseInputPlanArtifact.model_validate(payload)
+
+
+def test_v10_plan_rejects_v11_only_context_fields():
+    payload = _v11_plan_payload()
+    payload["schema_version"] = "1.0"
+
+    with pytest.raises(ValueError, match="schema 1.0"):
+        DomainCaseInputPlanArtifact.model_validate(payload)

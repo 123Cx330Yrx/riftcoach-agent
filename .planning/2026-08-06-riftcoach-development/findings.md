@@ -1122,3 +1122,23 @@
   不能把历史消耗重置为 0，旧失败响应的 Token/费用继续保持 unknown。
 - ADR-0024 因此选择“复用控制面 + 新 fixture/Dataset/plan/Context + 只读历史证据链”；
   当前设计批外部调用为 0，也没有创建正式新 held-out。
+
+### 2026-08-15：Fresh-Gate 1 离线合同实现发现
+
+- 旧 input plan 只有 Dataset/fixture/case identity，不能证明三个实际案例分别看到了
+  哪个 Context。V1.1 通过 `case_id + context_sha256` 按顺序绑定每条案例，同时让 V1.0
+  明确拒绝新字段，避免旧 schema 被静默改义。
+- Prompt/Context 的组件摘要和案例摘要是两层不同证据：组件摘要说明 Skill、工具、
+  Evaluation/Prompt builder 没漂移；案例摘要说明实际 utterance、typed options、section
+  选择和最终 messages 没漂移。新 builder 复用真实 Router/Boundary/ContextBuilder，
+  没有另造模拟 Context 逻辑。
+- 旧拒绝结果的领域账本显示 0 normalized tokens/`$0.00`，但那是 Adapter 规范化前无法
+  结算统一 Usage；新历史合同必须把该失败调用的 Token/费用写为 unknown，而不能根据
+  序列化零值声称“未计费”。历史调用仍明确计为 1。
+- Fresh-Gate 1 只需要 development admission，不应提前加入真实 run 函数。把
+  `provider_construction_authorized` 固定为 false，并让 prepare 函数完全不接收 Provider
+  或 Key，比依赖调用方自觉不调用更安全。
+- 实施计划最初沿用了三条不存在/参数不匹配的外围验证命令；读取
+  `.github/workflows/tests.yml` 后已更正为当前真实 RAG 参数、内联安全边界和带 fixture
+  的 Harness dry-run。以后实施计划必须从 CI workflow 复制门禁入口，不能根据历史名称
+  猜测脚本存在。

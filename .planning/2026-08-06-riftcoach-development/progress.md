@@ -1089,3 +1089,28 @@
   仍被阻断。
 - 设计提交 `f9edb4b4d8a66e12946ffdb3da36881ea5e5e2fc` 已推送，GitHub Actions run
   `31859717836` 对精确 SHA 全部成功；CI 外部 Provider calls 为 0。
+
+### 2026-08-15：Fresh-Gate 1 本地离线 TDD 完成
+
+- 新增实施计划
+  `docs/plans/2026-08-15-deepseek-fresh-domain-gate-offline-implementation.md`，明确当前
+  只做 development 合同/no-I/O admission，不创建正式新 held-out 或调用 Provider。
+- `DomainCaseInputPlanArtifact` 兼容支持 V1.0/V1.1；新 `DomainCaseContextCommitment`
+  要求 V1.1 的 snapshot identity 和逐案例 Context 摘要严格按 case order 对齐，旧
+  V1.0 文件仍严格复读。
+- `PromptContextSnapshot` 兼容支持 V1.1；新 builder 让三个合成 development case
+  分别经过真实 Catalog、Router、ExecutionBoundary、ContextBuilder，并只输出安全摘要。
+- 新增 `provider_domain_readmission`：严格复读历史协议/拒绝结果 bytes，绑定
+  `037a47f` / Actions `31817798170`，明确历史 calls 为 4、旧协议为 1428 tokens/
+  `$0.00221496`、旧失败 usage/cost 为 unknown；
+  development admission 绑定当前 code/public CI、Dataset、plan、fixture、Skill/
+  Evaluation 和三个 Context 摘要，且固定禁止 Provider 构造。
+- TDD 聚焦 `33 passed`，领域相邻回归 `51 passed`，完整回归
+  `568 passed, 103 subtests passed`；RAG development/independent holdout 均满足 1.0
+  门槛，compileall、Harness SDK boundary、tracked secret/run-data boundary 与 Harness
+  dry-run 通过。
+- 实施计划最初三条外围命令与当前 CLI/workflow 不一致，红灯被保留并记录；命令已经按
+  `.github/workflows/tests.yml` 修正后全部重跑成功。错误命令曾触发旧 RAG baseline
+  文件的工作区写入，但其 Git object 已恢复为 HEAD 精确内容，未形成业务变更。
+- 当前新增 Provider calls 为 0、held-out executions 为 0、正式新 held-out 资产为 0。
+  唯一下一步为 Fresh-Gate 2：提交、推送并验证 exact-SHA GitHub Actions。

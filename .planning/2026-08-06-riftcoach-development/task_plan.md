@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.18 - 5D-7（in progress: implement the fresh-gate contracts with offline TDD）
+Phase 6.19 - 5D-7（in progress: publish Fresh-Gate 1 and verify exact-SHA CI）
 
 ## Phases
 
@@ -136,17 +136,22 @@ Phase 6.18 - 5D-7（in progress: implement the fresh-gate contracts with offline
   组成只读历史证据链；正式新 held-out 必须等兼容合同的 development TDD 与 exact-SHA
   CI 完成后才创建。设计提交 `f9edb4b4d8a66e12946ffdb3da36881ea5e5e2fc` 已通过
   GitHub Actions run `31859717836`。
+- `5D-7` Fresh-Gate 1 本地离线 TDD 已完成：旧 input-plan/Prompt-Context V1.0 保持兼容；
+  新 V1.1 plan 必须绑定三个逐案例 Context 摘要；历史 3 次协议 + 1 次失败领域调用、
+  ADR-0022 修复 commit/CI 与当前 code/public-CI 已进入 development-only no-I/O
+  admission。聚焦 33、相邻 51、完整 `568 passed, 103 subtests passed`，两套 RAG、
+  compileall、Harness/secret boundary 和 dry-run 通过；Provider calls/held-out executions
+  均为 0。该本地证据尚未通过新的 exact-SHA 公开 CI。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-7 新鲜领域采用门的零调用设计与 ADR-0024 已完成。唯一下一步是 Fresh-Gate 1
-离线 TDD：使用合成 development 数据实现向后兼容的 input-plan、逐案例
-Prompt/Context commitment、历史证据链和新实验记录合同，并验证 no-I/O admission。
-本批不得创建正式新 held-out、读取 Key、调用 Provider、修改 Prompt/Evaluation/Harness、
-实现真正并发或进入 5D exit review/5E。
+5D-7 Fresh-Gate 1 本地离线 TDD 已完成。唯一下一步是 Fresh-Gate 2：提交、推送并验证
+GitHub Actions 对 Fresh-Gate 1 精确 SHA 成功，然后把 run ID 写回持久状态。在该公开
+冻结完成前，不得创建正式新 held-out、读取 Key、调用 Provider、修改 Prompt/
+Evaluation/Harness、实现真正并发或进入 5D exit review/5E。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
 `.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门
