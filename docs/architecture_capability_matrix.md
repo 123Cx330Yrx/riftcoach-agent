@@ -22,14 +22,14 @@
 |---|---|---|---|---|---|---|
 | A01 | LoL 确定性事实 | Riot API、MatchAnalyzer、Schema v1 | 阶段 1 | 阶段 7 增加 Meta，但保持事实分层 | 指标单测、合成样例、Timeline 缺失与短局测试 | 已完成 |
 | A02 | 质量门控 Harness | 状态机、Artifact、评测、受限修订、降级 | 阶段 2 | 阶段 8 增加恢复与复杂运行治理 | 状态迁移、错误数字、修订越权、发布门禁测试 | 已完成 |
-| A03 | 模型 Provider 抽象 | 统一 ChatRequest/Response、Registry、能力协商；Zhipu Adapter 真实最小 structured/tool 协议已准入但领域未准入；独立 DeepSeek V4 Pro Adapter 已以 3/3 calls 通过真实最小协议，真实领域 held-out 首例暴露多 ToolCall 边界并 fail closed；ADR-0022 已由 `037a47f` / Actions `31817798170` 公开验证多调用严格双向传输，领域仍未准入且未注册为默认 | 阶段 3 | 零调用设计新鲜真实领域采用门；当前 held-out 不重跑，真实模型质量需新 Dataset/身份/预算和单独确认 | 同一领域案例、Tool Calling、结构化输出、错误合同、调用/Token/金额停止 | 部分完成 |
+| A03 | 模型 Provider 抽象 | 统一 ChatRequest/Response、Registry、能力协商；Zhipu Adapter 真实最小 structured/tool 协议已准入但领域未准入；独立 DeepSeek V4 Pro Adapter 已以 3/3 calls 通过真实最小协议，真实领域 held-out 首例暴露多 ToolCall 边界并 fail closed；ADR-0022 已由 `037a47f` / Actions `31817798170` 公开验证多调用严格双向传输，领域仍未准入且未注册为默认；ADR-0024 已完成新鲜领域门设计 | 阶段 3 | Fresh-Gate 1 先用 development 假数据完成兼容合同/历史证据链/no-I/O TDD；冻结后才创建新 Dataset/输入/Context，旧 held-out 不重跑，真实调用需单独确认 | 同一领域案例、Tool Calling、结构化输出、错误合同、调用/Token/金额停止 | 部分完成 |
 | A04 | Tool Runtime | Schema、超时、重试、缓存、熔断、fallback、指标 | 阶段 3 | 阶段 7 适配标准 MCP 工具 | 故障注入、缓存、熔断、fallback 和越权测试 | 已完成 |
 | A05 | RAG 与证据 | 混合检索、父子块、引用、冲突、拒答、独立保留集 | 阶段 4 | 维护数据集；按规模证据决定是否升级存储 | Recall/MRR/nDCG、abstain、引用支持与冲突测试 | 已完成 |
 | A06 | 最小 Agent Loop | Assistant ToolCall、Tool Observation、预算和停止原因；多 ToolCall development TDD 已固定整批数量/白名单/重复零副作用预检、顺序执行、ID/Usage/迭代/deadline 语义 | 阶段 5A | 5E 统一 Runtime；真正并发仅由新的延迟 Bad Case 决定 | Fake Provider + 真实知识工具、重复调用、越权、超预算和批次零副作用测试 | 已完成 |
 | A07 | Skill Contract | `recent-form-review` 与 `single-match-review` 均有 Manifest、SKILL.md、Pydantic I/O、工具白名单和预算 | 阶段 5B 基础 + 5C-5 前第二个真实合同 | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill；真实内部 Skill 出现后才设计调用模式 | 坏 Manifest、Schema、权限漂移、预算和发布边界测试 | 已完成 |
 | A08 | Skill Router | 5C-1 至 5C-6 与退出复核均完成；development 23/23、holdout 11/12；selected 决策锁定 Skill name/version；ADR-0010 暂缓 LLM fallback | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试、退出复核和 ADR | 已完成 |
-| A09 | Prompt/Context Engineering | Harness Prompt V0、SKILL.md 指令；5D-2 已实现 trust-typed Context Builder，5D-3 已实现逐轮 Context 门禁；5D-7 已冻结双层语义身份、Evaluation 1.1、安全 blocking policy、隔离 held-out 与独立输入计划；阻断真实 Prompt/注入评价的多 ToolCall 执行接缝已离线修复但未形成新鲜真实证据 | 阶段 5D-5E | exact-SHA 公开验证后，再用新鲜采用门决定真实 Prompt/Context 实验；5E 加 Trace，阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、漂移拒绝、用户/RAG 注入、回归和消融测试 | 部分完成 |
-| A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral 合同；Zhipu 与 DeepSeek V4 Pro 均已真实通过最小 3-call structured/tool 协议，DeepSeek 结果为 1428 tokens、无停止；真实领域首例在 Agent ToolCall 响应规范化阶段失败，因此 Evaluation 仍未运行 | 阶段 5D | 并行 ToolCall 合同解决并取得新鲜评测后再验证真实结构化 Evaluation，不以低层协议或合成 Executor 替代质量证据 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移、Thinking 预算、调用预算和修复上限测试 | 部分完成 |
+| A09 | Prompt/Context Engineering | Harness Prompt V0、SKILL.md 指令；5D-2 已实现 trust-typed Context Builder，5D-3 已实现逐轮 Context 门禁；5D-7 已冻结双层语义身份、Evaluation 1.1、安全 blocking policy、隔离 held-out 与独立输入计划；多 ToolCall 执行接缝已离线修复；ADR-0024 决定新门改为三个实际案例 Context 摘要而非只用 demo case | 阶段 5D-5E | 先以 development TDD 实现新 Context commitment，exact-SHA CI 冻结后才创建新 held-out；5E 加 Trace，阶段 6 加 Memory，阶段 7 加 Meta，阶段 8 做 Compaction | Prompt 版本、上下文优先级、Token 预算、漂移拒绝、用户/RAG 注入、回归和消融测试 | 部分完成 |
+| A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral 合同；Zhipu 与 DeepSeek V4 Pro 均已真实通过最小 3-call structured/tool 协议，DeepSeek 结果为 1428 tokens、无停止；真实领域首例在 Agent ToolCall 响应规范化阶段失败，因此 Evaluation 仍未运行；多 ToolCall 本地修复已公开验证 | 阶段 5D | 先完成 ADR-0024 的兼容合同/no-I/O TDD，再以新鲜 Dataset 验证真实结构化 Evaluation；不以旧题、低层协议或合成 Executor 替代质量证据 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移、Thinking 预算、调用预算和修复上限测试 | 部分完成 |
 | A11 | AgentRuntime V1 | 5D-1/2 已建立执行与 Context 边界，5D-3 已编译 Manifest 权限/预算并加入有界停止，5D-4 已产生可审计 draft/evidence，5D-5 已通过唯一 ReviewHarness 组合为 typed terminal output | 阶段 5D-5E | 5D-6a/6b/7 补结构化输出、真实 Provider 与领域评测；5E 统一 run/stream/event/trace/usage；阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage 和终止原因 | 部分完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有；DeepSeek V4 Pro 独立 Adapter 已通过真实最小协议，但仍只是 5D-7 单一实验候选，尚无领域/产品准入、任务级选择或自动降级 | 5D 完成单候选领域准入；模型分层为 5P 后横向采用门，默认等待阶段 6 真实业务证据 | 按 ADR-0019 比较 Pro-only、Flash-only 与 Flash 默认/Pro 有界升级；5F 只做 Pi/Claude Agent SDK Runtime 采用实验 | 新鲜同任务评测、故障降级、unsafe publication、成本和 p50/p95 延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
@@ -190,5 +190,7 @@ development 场景在零外部调用下真实经过 Skill/Agent/Tool/RAG/Harness
 唯一有界候选更正为 DeepSeek V4 Pro，并冻结成本/停止规则。D5 已完成离线 Adapter、
 错误归因、控制器和 no-I/O 入口；真实最小协议随后以 3/3 calls 准入。真实领域 held-out
 只执行一次并在首例因 `unsupported_parallel_tool_calls` 未准入；结果安全降级且当前
-考卷不可重跑。下一步必须先在 development 决策并行 ToolCall 能力，不能把低层协议
-结果当成真实模型报告质量。
+考卷不可重跑。ADR-0022 已以 development TDD 和公开 CI 采用严格解码、整批原子预检
+与顺序消费；ADR-0024 又完成新鲜领域采用门设计。下一步只用 development 假数据实现
+兼容合同、历史证据链和 no-I/O admission，冻结后才创建新考卷；不能把低层协议或离线
+修复当成真实模型报告质量。

@@ -210,3 +210,22 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 - GLM-5.3 迁移不等于自动模型路由或 Multi-Agent。
 
 详细设计见 `docs/plans/2026-08-15-glm53-provider-adoption-design.md` 和 ADR-0023。
+
+## DeepSeek 新鲜领域采用门（2026-08-15）
+
+旧 Dataset 1.1.0 已经产生一次真实拒绝结果，并直接触发多 ToolCall 兼容性修复。它可以
+继续验证已知 Bug 没有回归，但不能再承担未知领域准入。ADR-0024 决定：
+
+- 复用已有 no-I/O admission、薄协调器、预算 Provider、production Executor、分层
+  Evaluator 和唯一 ReviewHarness，不复制第二套 Agent 控制流；
+- 旧协议、Dataset、输入计划和拒绝结果全部按 bytes SHA 只读保存，不重跑或复制改名；
+- 先用合成 development 数据完成兼容合同和 exact-SHA CI，之后才创建新的匿名 fixture、
+  三案例 held-out、输入计划和逐案例 Prompt/Context 摘要；
+- 新门同时绑定历史真实证据、多 ToolCall 修复 CI、当前代码/CI 和所有新输入身份；
+- 未来新鲜范围最多 12 calls、每例 4 calls、12000/4000 tokens、每请求 1024 output、
+  `$0.10`、零重试/零修订和首错停止；真实运行仍需单独确认；
+- 三例必须全部安全发布，task/failure accuracy 均为 `1.0` 且 unsafe publication 为
+  `0.0`，才能准入 Pro 领域能力；通过也不自动设为默认模型。
+
+本设计不改变 Flash、GLM-5.3、5F 或 5P/阶段 6 的归属。详细设计见
+`docs/plans/2026-08-15-deepseek-fresh-domain-adoption-gate-design.md` 和 ADR-0024。

@@ -1105,3 +1105,20 @@
   修复自动复制给 Zhipu。
 - 当前下一步不变：先完成 5D-7 零调用新鲜领域采用门设计；迁移顺序、风险和隔离规则
   已写入 `docs/plans/2026-08-15-glm53-provider-adoption-design.md` 与 ADR-0023。
+
+### 2026-08-15：DeepSeek 新鲜领域采用门设计发现
+
+- 旧 Dataset 只改 ID/version 不能恢复新鲜性；案例正文、fixture、marker 和失败位置都已
+  进入开发过程，只能继续承担 regression/development 证据。
+- 现有 no-I/O admission、薄协调器、预算 Provider、production Executor、分层 Evaluator
+  与 ReviewHarness 已有 TDD/公开 CI，重写会复制控制面；应版本化复用并重建输入身份。
+- 新 held-out 不能在合同实现前创建。先用合成 development 数据完成兼容 schema、
+  历史证据链、逐案例 Context commitment 和 CLI 顺序 TDD，再经 exact-SHA CI 冻结代码，
+  之后才创建真正新题。
+- Prompt/Context 语义仍需新快照，因为旧快照只用一个 demo case；新快照应哈希三个实际
+  案例的 section/message，但不公开正文。多 ToolCall 实现由当前 code/public-CI SHA、
+  历史修复提交和行为测试绑定，不另造通用 Runtime Snapshot。
+- 新鲜门历史账本必须显式展示 3 次旧协议调用和 1 次旧领域失败调用；新范围最多 12 calls，
+  不能把历史消耗重置为 0，旧失败响应的 Token/费用继续保持 unknown。
+- ADR-0024 因此选择“复用控制面 + 新 fixture/Dataset/plan/Context + 只读历史证据链”；
+  当前设计批外部调用为 0，也没有创建正式新 held-out。

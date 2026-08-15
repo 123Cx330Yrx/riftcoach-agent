@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.17 - 5D-7（in progress: design a fresh real-domain adoption gate without I/O）
+Phase 6.18 - 5D-7（in progress: implement the fresh-gate contracts with offline TDD）
 
 ## Phases
 
@@ -130,15 +130,21 @@ Phase 6.17 - 5D-7（in progress: design a fresh real-domain adoption gate withou
   Secure Evaluation 1.1 与 ReviewHarness 并发布；外部调用为 0，旧真实拒绝结论不变。
 - 该实现已提交为 `037a47fecf058b2430efeeb59858e24cdb3b28eb`，GitHub Actions run
   `31817798170` 对精确 SHA completed/success；公开验证没有读取 Key 或调用 Provider。
+- `5D-7` Fresh-Gate 设计已完成：ADR-0024 选择复用现有 no-I/O admission、薄协调器、
+  production Executor、分层 Evaluator 与唯一 Harness，同时重新冻结匿名 fixture、
+  Dataset、输入计划和三个实际案例的 Prompt/Context 摘要。旧协议/拒绝结果和修复 CI
+  组成只读历史证据链；正式新 held-out 必须等兼容合同的 development TDD 与 exact-SHA
+  CI 完成后才创建。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-7 的多 ToolCall 顺序消费已完成本地 TDD 与 exact-SHA 公开 CI。唯一下一步是零调用
-设计新的、未污染的真实领域采用门：需要新 Dataset/输入身份、规则与预算冻结后才可
-另行请求真实调用；不得重跑 Dataset 1.1.0、把 Fake SDK 证据写成 DeepSeek 领域准入、
+5D-7 新鲜领域采用门的零调用设计与 ADR-0024 已完成。唯一下一步是 Fresh-Gate 1
+离线 TDD：使用合成 development 数据实现向后兼容的 input-plan、逐案例
+Prompt/Context commitment、历史证据链和新实验记录合同，并验证 no-I/O admission。
+本批不得创建正式新 held-out、读取 Key、调用 Provider、修改 Prompt/Evaluation/Harness、
 实现真正并发或进入 5D exit review/5E。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
@@ -227,6 +233,7 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 | DeepSeek V4 Pro 领域 held-out 不准入且不重跑当前考卷 | 首个正常案例暴露 `unsupported_parallel_tool_calls`，系统安全降级且没有发布错误内容；这是 Provider/Adapter 能力 Bad Case，不允许删除不可变结果或在已见考卷上临时放宽合同追绿 |
 | 多 ToolCall 批次由 AgentLoop 受控顺序消费 | DeepSeek 官方 `auto` 允许一个或多个工具且没有关闭批次的正式参数；Adapter 应翻译合法响应，AgentLoop 复用整批白名单/重复/预算预检，当前无证据承担真正并发复杂度 |
 | GLM-5.3 作为隔离的同厂商迁移候选 | 官方页面要求始终启用 thinking，当前 Zhipu Adapter 固定 disabled thinking，不能只改模型名；先完成当前 5D-7 唯一下一步，再按 ADR-0023 做独立 profile/协议/领域采用门，避免影响 DeepSeek |
+| 新鲜领域采用门复用控制面并重建实验身份 | 重写控制面会复制 Harness/Evaluator/预算，旧题改名又是假新鲜；ADR-0024 保留产品链路，先用 development TDD 冻结兼容合同，之后才创建新 fixture/Dataset/plan/Context，并把历史真实证据与当前 CI 串成不可改写链 |
 
 ## Errors Encountered
 

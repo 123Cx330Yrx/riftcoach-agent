@@ -1074,3 +1074,16 @@
   不立即切换默认模型、不影响 DeepSeek、不覆盖旧证据；未来按 G53-0 至 G53-4 的
   可用性审计、Zhipu profile 离线 TDD、公开 CI、3-call 协议门和新鲜领域门推进。
 - 本轮没有读取 Key、调用 Provider、修改 Zhipu/DeepSeek 代码或改变 5D-7 唯一下一步。
+
+### 2026-08-15：DeepSeek 新鲜领域采用门零调用设计
+
+- 审计 ADR-0013/14/15/16/20/21/22、Domain Dataset/Candidate/Result、输入计划、
+  no-I/O admission、薄协调器、production Executor、CLI 和旧真实结果；没有调用 Provider。
+- 比较整套重写、旧题改名和版本化复用三种方案；ADR-0024 接受版本化复用控制面并重新
+  冻结全部实验身份。
+- 新设计要求先用合成 development 数据完成兼容合同和公开 CI，再创建新的匿名 fixture、
+  三案例 held-out、输入计划和实际案例 Prompt/Context 摘要；旧 Dataset 1.1.0 不重跑。
+- 新门保留每例 4 calls、领域 12 calls、4000/12000 tokens、每请求 1024 output、
+  `$0.10`、零重试/零修订和首错停止；这些只是未来上限，不授权真实调用。
+- 唯一下一步改为 Fresh-Gate 1 离线 TDD；正式新 held-out、Key、真实 Provider 和 5E
+  仍被阻断。

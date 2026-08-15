@@ -829,3 +829,21 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   最多 3-call 协议门、G53-4 新鲜领域门推进。
 - `BOUNDARY`：本次只更新需求、设计、ADR、状态和计划文件；没有读取 Key、真实调用、
   Provider 代码改动、DeepSeek 结果改动或阶段推进。
+
+### 2026-08-15：DeepSeek 新鲜领域采用门设计
+
+- `PROBLEM`：旧 Dataset 1.1.0 已在首个真实失败后被开发过程看见；多 ToolCall 修复可以
+  用旧题做 regression，但复制/改名或重跑不能提供新鲜领域准入证据。
+- `DECISION`：ADR-0024 采用版本化复用现有 no-I/O admission、薄协调器、预算 Provider、
+  production Executor、分层 Evaluator 与唯一 Harness；拒绝整套重写和旧题改名。
+- `LIFECYCLE`：先只用合成 development 数据实现兼容 input-plan、逐案例
+  Prompt/Context commitment、历史证据链和实验记录合同；exact-SHA CI 冻结后，才单独
+  创建新的匿名 fixture、三案例 held-out 和输入计划，再次 CI 后才可能请求真实调用。
+- `EVIDENCE`：新门必须绑定旧协议 bytes SHA、旧拒绝结果 bytes SHA、多 ToolCall 修复
+  commit/CI、当前 code/public-CI SHA 和新 Dataset/fixture/plan/Context SHA；旧证据不可
+  覆盖或重跑。
+- `BUDGET`：历史 3 次协议 + 1 次失败领域调用单独保留；未来新鲜范围每例 4、领域 12
+  calls，4000/12000 tokens、1024 output/request、`$0.10`、零重试/零修订和首错停止。
+  上限不是当前授权。
+- `CURRENT`：仍在 5D-7；唯一下一步为 Fresh-Gate 1 离线 TDD，不创建正式新 held-out、
+  不读取 Key、不调用 Provider、不修改 Prompt/Evaluation/Harness，也不进入 5E。
