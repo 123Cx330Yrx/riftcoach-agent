@@ -16,7 +16,7 @@ blocked_before: "5D-exit-review"
 
 ## 状态元数据
 
-- 最后更新：2026-08-14
+- 最后更新：2026-08-15
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6b 已完成；
   5D-7 Batch A-C 与 Batch D 的 D1-D5 已完成，DeepSeek V4 Pro Adapter 真实
@@ -489,3 +489,18 @@ development 案例又通过 Fake DeepSeek SDK 真实串联本地 RAG、Evidence�
 Evaluation 1.1 与 ReviewHarness 并安全发布。完整回归为 `551 passed, 103 subtests
 passed`，两套 RAG、compileall、Harness dry-run、安全边界和治理门通过，外部调用为 0。
 这些证据只证明执行链兼容性，等待 exact-SHA 公开 CI；不准入真实模型领域质量。
+
+### 2026-08-15：GLM-5.3 模型迁移规划边界
+
+官方 GLM-5.3 文档已确认该模型存在；页面说明 Coding Plan 已开放，普通模型 API 将
+逐步上线，并明确 GLM-5.3 始终启用 thinking，不能继续发送当前 Zhipu Adapter 固定的
+`thinking.type=disabled`。因此 GLM-5.3 不是只改 `.env` 的透明升级。
+
+本次只记录 ADR-0023 和迁移设计，不读取 Key、不调用 Provider、不修改默认模型，也不
+改变 DeepSeek 当前实验。GLM-5.2 的历史结果保持只读；DeepSeek Adapter、DeepSeek
+协议/领域结果、预算和 Dataset 1.1.0 保持只读且不可重跑。
+
+GLM-5.3 的未来顺序固定为：当前 5D-7 新鲜领域采用门设计/离线 TDD/公开 CI 完成后，
+再做 G53-0 可用性与 endpoint 审计、G53-1 Zhipu thinking profile 离线 TDD、G53-2
+公开 CI、G53-3 最多 3-call 协议门、G53-4 新鲜领域采用门。GLM-5.3 通过新鲜领域门前
+不替换 GLM-5.2 默认值，不进入自动模型路由，不影响 DeepSeek。

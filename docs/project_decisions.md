@@ -194,3 +194,19 @@ Skill Router V1 继续使用确定性 Manifest 信号，不调用模型。holdou
 任何 LLM Coach 报告必须经过独立评测。评测失败时只允许根据结构化问题做受限修订；达到修订上限仍不通过时，拒绝发布 LLM 报告或降级到确定性报告。
 
 完整阶段路线见 `docs/roadmap.md`，正式架构决策见 `docs/adr/`。
+
+## GLM-5.3 迁移边界（2026-08-15）
+
+智谱官方 GLM-5.3 页面已发布，Coding Plan 已开放，普通模型 API 将逐步上线；GLM-5.3
+始终启用 thinking，不能沿用当前 Zhipu Adapter 的 disabled thinking。GLM-5.3 因此被
+记录为隔离的同厂商模型迁移候选，而不是 GLM-5.2 结果的替换或自动升级。
+
+- 当前 5D-7 的唯一下一步不变：先设计新的、未污染的真实领域采用门；
+- 当前不修改 `.env` 默认模型，不读取 Key，不调用 GLM-5.3；
+- G53-0 至 G53-4 必须依次完成可用性审计、Zhipu thinking profile 离线 TDD、公开 CI、
+  最多 3-call 协议门和新鲜领域门；
+- GLM-5.2 历史证据、DeepSeek Adapter/结果/预算/held-out 均保持只读，GLM-5.3 通过
+  领域门前不替换默认模型；
+- GLM-5.3 迁移不等于自动模型路由或 Multi-Agent。
+
+详细设计见 `docs/plans/2026-08-15-glm53-provider-adoption-design.md` 和 ADR-0023。

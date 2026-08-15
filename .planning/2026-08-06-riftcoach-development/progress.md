@@ -1065,3 +1065,12 @@
 - 唯一下一步改为零调用设计新鲜真实领域采用门，包含新 Dataset/输入身份、污染边界、
   Prompt/Context 快照、资源预算、首错停止和单独确认条件；不重跑旧考卷，不实现真正
   并发，不进入 5D exit review/5E。
+
+### 2026-08-15：GLM-5.3 迁移方案持久化
+
+- 读取官方 GLM-5.3 页面确认：Coding Plan 已开放，普通模型 API 将逐步上线；模型始终
+  启用 thinking，不能沿用 GLM-5.2 的 disabled thinking。
+- 新增 `docs/plans/2026-08-15-glm53-provider-adoption-design.md` 与 ADR-0023，决定
+  不立即切换默认模型、不影响 DeepSeek、不覆盖旧证据；未来按 G53-0 至 G53-4 的
+  可用性审计、Zhipu profile 离线 TDD、公开 CI、3-call 协议门和新鲜领域门推进。
+- 本轮没有读取 Key、调用 Provider、修改 Zhipu/DeepSeek 代码或改变 5D-7 唯一下一步。

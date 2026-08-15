@@ -815,3 +815,17 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   不改变旧 Dataset 1.1.0 的真实 `admitted=false`，也不准入 DeepSeek 报告质量。
 - `CURRENT`：仍在 5D-7；下一步是零调用设计新的 Dataset/输入身份/预算/采用门，之后
   如需真实验证必须再获得单独确认；不得重跑旧考卷、实现真正并发或进入 5D exit review/5E。
+
+### 2026-08-15：GLM-5.3 同厂商模型迁移边界
+
+- `OFFICIAL-EVIDENCE`：智谱官方 GLM-5.3 页面已发布；Coding Plan 已开放，普通模型 API
+  将逐步上线；GLM-5.3 始终启用 thinking，不能继续使用当前 Zhipu Adapter 的
+  `thinking.type=disabled`，首轮应按官方要求使用 `enabled` 与 `reasoning_effort=low`。
+- `DECISION`：新增 ADR-0023，将 GLM-5.3 作为隔离的同厂商模型迁移候选；不把 GLM-5.2
+  历史结果改名，不立即改默认模型，不把 DeepSeek 当前 5D-7 工作混入本候选，也不把
+  DeepSeek 的多 ToolCall 修复自动复制给 Zhipu。
+- `SEQUENCE`：当前唯一下一步仍为 5D-7 零调用新鲜领域采用门设计；其设计/离线 TDD/
+  exact-SHA CI 完成后，才按 G53-0 可用性审计、G53-1 Zhipu profile、G53-2 CI、G53-3
+  最多 3-call 协议门、G53-4 新鲜领域门推进。
+- `BOUNDARY`：本次只更新需求、设计、ADR、状态和计划文件；没有读取 Key、真实调用、
+  Provider 代码改动、DeepSeek 结果改动或阶段推进。

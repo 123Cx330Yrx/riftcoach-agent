@@ -35,6 +35,7 @@
 | RQ-028 | 2026-08-13 | 生效 | 保持稳扎稳打，但在不跨检查点和安全边界时可以一次完成更大的连贯能力切片 | 每轮优先交付可运行、可测试、可讲解的完整纵向切片，而不是人为拆成过小函数；扩大批次不得越过 canonical 唯一下一步、跳过 TDD/CI 或混入第二 Provider、领域 Skill 等未授权范围 |
 | RQ-029 | 2026-08-14 | 生效 | D5 唯一第二 Provider 候选应选 DeepSeek V4 Pro 正式版，而不是仅因便宜选择 Flash | ADR-0018 取代 ADR-0017 的候选模型与金额停止线；协议门和领域门均绑定 `deepseek-v4-pro`，DeepSeek 停止线为 `$0.10`；Flash 只保留为以后成本/时延分层候选，本次更正不授权真实调用或 held-out |
 | RQ-030 | 2026-08-14 | 生效 | 当前 5D-7 保持 DeepSeek V4 Pro 单候选；Flash/Pro 分层不放入 5F，最早在 5P 后、默认在阶段 6 有真实成本/时延证据后重开 | 5F 继续只负责 Pi / Claude Agent SDK Runtime 采用实验；未来以新鲜同任务评测比较 Pro-only、Flash-only 与 Flash 默认/Pro 有界升级，证据不足时保持单模型；ADR-0019 修正未来归属但不改变当前 Pro 协议门和 held-out 顺序 |
+| RQ-031 | 2026-08-15 | 生效 | GLM-5.3 已有官方模型文档，允许作为新的同厂商模型迁移候选，但不得直接替换 GLM-5.2 或影响正在进行的 DeepSeek 采用门 | 当前唯一下一步仍是 5D-7 的零调用新鲜领域采用门；其后才做隔离的 GLM-5.3 adoption gate。G53-0 先核对 Coding Plan/普通 API 可用性、正式模型 ID、endpoint 和 thinking 合同；G53-1 离线改造 Zhipu thinking profile（GLM-5.2 保留 disabled，GLM-5.3 使用 enabled + low）并覆盖 reasoning/structured/tool/多 ToolCall；G53-2 公开 CI；G53-3 最多 3-call 协议门；G53-4 新 Dataset/输入计划领域门。旧 GLM-5.2、DeepSeek Adapter、结果和 held-out 均只读隔离，不覆盖、不重跑；通过领域门前不改默认模型、不实现自动路由。 |
 
 ## 新条目格式
 

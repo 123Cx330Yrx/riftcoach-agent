@@ -1090,3 +1090,18 @@
 - 如果继续验证真实 Pro，必须先建立新版本 Dataset 和独立输入计划，重新冻结组件/案例
   identity、Evaluation/Prompt/Context 合同与资源预算，再由用户单独确认真实调用；当前
   唯一下一步因此是零调用设计而不是立即发请求。
+
+### 2026-08-15：GLM-5.3 官方迁移约束
+
+- 官方页面 `https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3` 已确认 GLM-5.3
+  文档存在；页面说明 Coding Plan 已开放，普通模型 API 将逐步上线。
+- GLM-5.3 始终启用 thinking，不能使用当前 Zhipu Adapter 固定的
+  `thinking.type=disabled`；官方迁移提示要求 `enabled`，并设置 `reasoning_effort`，
+  首轮应以 `low` 控制成本和延迟。
+- 当前 `app/providers/zhipu.py` 还会把非空 `reasoning_content` 判为非法，并在
+  多 ToolCall 处保留旧限制；因此 GLM-5.3 不是只修改 `LLM_MODEL` 的透明升级。
+- GLM-5.3 必须有独立 provider profile、离线 TDD、结果文件和新鲜领域采用门。GLM-5.2
+  证据、DeepSeek Adapter/结果/预算/held-out 均保持只读；不把 DeepSeek 的多 ToolCall
+  修复自动复制给 Zhipu。
+- 当前下一步不变：先完成 5D-7 零调用新鲜领域采用门设计；迁移顺序、风险和隔离规则
+  已写入 `docs/plans/2026-08-15-glm53-provider-adoption-design.md` 与 ADR-0023。

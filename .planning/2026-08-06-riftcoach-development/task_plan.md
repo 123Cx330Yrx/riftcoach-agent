@@ -141,6 +141,12 @@ Phase 6.17 - 5D-7（in progress: design a fresh real-domain adoption gate withou
 另行请求真实调用；不得重跑 Dataset 1.1.0、把 Fake SDK 证据写成 DeepSeek 领域准入、
 实现真正并发或进入 5D exit review/5E。
 
+GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
+`.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门
+完成设计、离线 TDD 和公开 CI 后，才按 ADR-0023 依次进行 G53-0 可用性审计、G53-1
+Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议门和 G53-4
+新鲜领域门。
+
 ## Decisions Made
 
 | Decision | Rationale |
@@ -220,6 +226,7 @@ Phase 6.17 - 5D-7（in progress: design a fresh real-domain adoption gate withou
 | DeepSeek V4 Pro 最小 Adapter 协议准入 | exact-SHA `076a5e3` 上一次真实运行以 3/3 calls 完成严格 JSON 与一次知识工具往返，资源/停止/脱敏合同均通过；该结论不能覆盖尚未运行的三场领域 held-out |
 | DeepSeek V4 Pro 领域 held-out 不准入且不重跑当前考卷 | 首个正常案例暴露 `unsupported_parallel_tool_calls`，系统安全降级且没有发布错误内容；这是 Provider/Adapter 能力 Bad Case，不允许删除不可变结果或在已见考卷上临时放宽合同追绿 |
 | 多 ToolCall 批次由 AgentLoop 受控顺序消费 | DeepSeek 官方 `auto` 允许一个或多个工具且没有关闭批次的正式参数；Adapter 应翻译合法响应，AgentLoop 复用整批白名单/重复/预算预检，当前无证据承担真正并发复杂度 |
+| GLM-5.3 作为隔离的同厂商迁移候选 | 官方页面要求始终启用 thinking，当前 Zhipu Adapter 固定 disabled thinking，不能只改模型名；先完成当前 5D-7 唯一下一步，再按 ADR-0023 做独立 profile/协议/领域采用门，避免影响 DeepSeek |
 
 ## Errors Encountered
 
