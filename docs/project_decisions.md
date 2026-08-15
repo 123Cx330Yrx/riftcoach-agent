@@ -377,3 +377,18 @@ Provider/Key/网络调用和 V3 held-out 仍为 0；实现已由 `2d67696` / Act
 归档提交 `421a24393cafdc79a02de4091f569cfb9aa5b721` 随后通过 GitHub Actions run
 `31869409106`。RQ-033 因而以“不完整证据已公开冻结”收口；下一检查点只允许零调用
 决策，不能把归档成功解释为 calibration、领域能力或模型质量成功。
+
+### DeepSeek calibration 失败采用裁决
+
+ADR-0027 关闭当前 DeepSeek V3 资源校准与领域采用尝试。关闭的理由不是模型质量差，
+而是当前不可变结果已经失去安全细分错误 provenance，继续建立真实诊断版本仍不能直接
+产生领域质量证据，边际价值不足以支持围绕同一候选继续追绿。
+
+DeepSeek Adapter 和真实 3/3 最小 structured/tool 协议证据继续保留；不生成 V3 budget、
+不创建 V3 held-out、不补跑 V1/V2/calibration，也不准入产品默认模型、自动路由或
+Flash/Pro 分层。模型领域质量保持 unknown。
+
+未来任何真实 Provider 门必须先在离线 TDD 中建立双层安全失败记录：跨厂商稳定
+`failure_code` 与 allowlisted 可空 `provider_error_code`；Prompt、response、reasoning、
+SDK 异常、URL/header 和原始 request ID 均不得落盘。本批外部调用为 0；下一检查点按
+ADR-0023 进入 G53-0 GLM-5.3 可用性与合同审计。

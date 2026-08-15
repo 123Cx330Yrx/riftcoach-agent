@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.25 - 5D-7（in progress: incomplete calibration is publicly frozen; zero-I/O failure-adoption decision is next）
+Phase 6.25 - 5D-7（in progress: DeepSeek V3 is closed by zero-I/O decision; G53-0 is next）
 
 ## Phases
 
@@ -178,13 +178,12 @@ Phase 6.25 - 5D-7（in progress: incomplete calibration is publicly frozen; zero
 
 ## Next Step
 
-5D-7 真实入口已由 `6aa8c43` / Actions `31868747216` 公开验证；同 SHA prepare-only 为
-零调用。RQ-033 的正式 replay 在第 1 次请求未形成规范化 `ChatResponse` 后首错停止，
-后 7 次没有发送；结果为 1 external call / 0 normalized responses，实际 Usage/费用
-unknown，不生成 V3 budget。不可变结果和保守裁决已由 `421a243` / Actions
-`31869409106` 完成 exact-SHA 公共归档。唯一下一步仍在 5D-7，只做零调用的资源校准
-失败采用决策；不得重跑 calibration、创建 V3 held-out、调 Prompt/Context、调用其他
-模型或进入 5D exit review/5E。
+5D-7 的 DeepSeek V3 calibration 已以 1 external call / 0 normalized responses 首错停止，
+不可变结果由 `421a243` / Actions `31869409106` 公开归档。ADR-0027 现关闭当前 V3，
+不生成 budget/held-out、不补跑，也不把结果解释为模型质量差；未来真实门必须先离线
+保留允许列表安全错误 provenance。唯一下一步仍在 5D-7，为既定 `G53-0`：只审计
+GLM-5.3 普通 API、model ID、endpoint、thinking 与 structured/tool 合同，不读取 Key、
+调用 Provider、修改默认模型或进入 5D exit review/5E。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
 `.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门
@@ -326,7 +325,7 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 | 治理负例把 `5D` 硬编码为陈旧检查点，状态合法推进到 5D 后不再失败 | 1 | 改用不可能与正式路线重合的 `stale-checkpoint`，让测试验证不一致语义而非某个阶段名 |
 | 5D-2 初始并行读取猜测 `app/agent/models.py` 存在，导致命令组返回非零 | 1 | 没有修改文件；停止猜测 Agent 路径，先用 `rg --files app` 列出真实模块再读取 |
 | 5D-2 首个合同补丁假设 `app/agent/__init__.py` 的 docstring 文本，原子校验拒绝 | 1 | 确认没有创建半个 context 模块；读取真实小文件后将新增模块与导出补丁拆开 |
-| 恢复活动计划时把 `.active_plan` 值误当成仓库根相对路径，漏掉 `.planning/` | 1 | 命令只读且未改文件；改为显式从 `.planning` 拼接活动计划目录，并继续按恢复顺序读取 |
+| 恢复活动计划时把 `.active_plan` 值误当成仓库根相对路径，漏掉 `.planning/` | 2 | 两次命令均只读且未改文件；以后固定先读值，再显式从 `.planning/<name>` 拼接活动计划目录，不从仓库根直接解析 |
 | 读取执行边界测试时猜测不存在的 `tests/test_skill_execution.py` | 1 | 先用 `rg --files tests` 查到真实 `test_skill_execution_boundary.py` 后读取；未改测试或源码 |
 | 领域生产装配入口审计再次把 `tests\\test_*` 作为 Windows `rg` 路径，并猜测不存在的 `app/tools/knowledge.py` | 2 | 两次均为只读失败且未改代码；立即改用显式 `tests` 目录、`rg --files` 和符号搜索定位 `app/tools/adapters/knowledge.py`，不再猜路径 |
 | 5D-2 聚焦回归猜测不存在的 `tests/test_provider_models.py` | 1 | 该次 pytest 未收集任何测试；列出真实 Provider 测试后改跑 `test_provider_tool_calling_models.py` 与 `test_provider_contracts.py` |
@@ -415,3 +414,13 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 - [x] 更新持久状态并完成聚焦 34、完整 611 tests/103 subtests 与全部本地门禁；
 - [x] 提交、推送不可变结果/裁决，并由 `421a243` / Actions `31869409106` 完成
   exact-SHA public CI。
+
+### 5D-7 DeepSeek calibration 失败采用决策（2026-08-15）
+
+- [x] 复读不可变结果、裁决、ADR-0025/0026 与 Adapter/分类器源码；
+- [x] 比较关闭、建立新诊断门和无限搁置三种方案；
+- [x] 接受 ADR-0027：关闭当前 V3，不作模型质量负面结论；
+- [x] 将允许列表安全 `provider_error_code` 设为未来真实 Provider 门前置条件；
+- [x] 保持本批 Key/Provider/external calls 为 0；
+- [x] 完成 51 项聚焦、611 tests/103 subtests、两套 RAG 与全部本地门禁；
+- [ ] 提交、推送并完成 exact-SHA public CI。

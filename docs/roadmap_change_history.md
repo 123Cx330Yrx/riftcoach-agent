@@ -1078,3 +1078,17 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `BOUNDARY`：公开 CI 无 Key/Provider I/O；该结果证明安全失败记录可复现，不证明 Usage
   校准或模型质量通过，也不授权补跑。
 - `CURRENT`：唯一下一步仍在 5D-7，只做零调用的资源校准失败采用决策；不进入 5E。
+
+### 2026-08-15：关闭当前 DeepSeek V3，采用安全错误 provenance 前置条件
+
+- `DECISION`：ADR-0027 比较继续诊断、无限搁置与关闭当前 V3，接受关闭；不生成
+  budget/held-out，不补跑旧结果，不作模型质量负面推断。
+- `PRESERVED`：DeepSeek Adapter 与 3/3 最小 structured/tool 协议证据保留；领域、产品
+  默认模型、自动路由和 Flash/Pro 分层仍未准入。
+- `ADOPTED-REQUIREMENT`：后续真实 Provider 门必须先离线保留稳定高层 failure code 与
+  allowlisted 可空细分错误码，且不得落盘原始响应、reasoning、异常或 request ID。
+- `NO-IO`：本决策 Key/Provider/external calls 为 0，不实现 5E Trace。
+- `VERIFIED-LOCAL`：51 项聚焦、完整 611 tests/103 subtests、两套 RAG 与全部本地门禁
+  通过；尚待本批 exact-SHA 公共 CI。
+- `CURRENT`：唯一下一步仍在 5D-7，按 ADR-0023 进入 G53-0 GLM-5.3 普通 API 与合同
+  可用性审计；不调用模型。

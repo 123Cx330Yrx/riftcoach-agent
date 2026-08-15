@@ -1323,3 +1323,19 @@
   1 external call、0 normalized responses，实际 Token/费用 unknown，不生成 V3 budget。
 - 唯一下一步仍在 5D-7：零调用比较关闭、另立安全可观测诊断版本或继续搁置，不进入
   5D exit review/5E。
+
+## 2026-08-15：DeepSeek calibration 失败采用决策
+
+- 完整复读 ADR-0025/0026、真实结果/裁决、校准 replay、错误分类器与 DeepSeek Adapter；
+  本批没有读取 Key、构造 Provider 或调用模型。
+- 新增初学者决策文档与 ADR-0027，比较继续诊断、无限搁置和关闭当前 V3 三种方案，
+  接受关闭当前 V3。
+- DeepSeek 的最小 structured/tool 协议准入继续保留，但领域质量、产品默认模型、自动
+  路由与 Flash/Pro 分层均不准入；模型质量保持 unknown。
+- 未来任何真实 Provider 门必须先离线实现稳定高层 failure code 与 allowlisted 安全
+  provider detail code；禁止响应、reasoning、异常或 request ID 原文落盘。
+- 本批 51 项聚焦、完整 `611 passed, 103 subtests passed`、两套 RAG、compileall、
+  Harness SDK/tracked-data boundary、dry-run、governance 和 diff check 均通过；没有读取
+  Key、构造 Provider 或发起外部调用。
+- 唯一下一步仍在 5D-7，切换为既定 G53-0 可用性/合同审计；本批只待提交、推送与
+  exact-SHA 公开 CI。

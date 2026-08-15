@@ -1291,3 +1291,16 @@
 - `.gitattributes` 必须显式固定真实结果和裁决为 LF；否则 Windows checkout 的换行转换
   可能让 Linux CI 看到不同 bytes。暂存区复算 SHA 与本地结果完全一致，随后 exact-SHA
   Actions `31869409106` 通过，证明公开证据身份稳定。
+
+### 2026-08-15：DeepSeek calibration 失败采用决策发现
+
+- DeepSeek Adapter 已经产生有限、安全、无正文的细分错误码；信息丢失发生在
+  `classify_provider_error()` 将大部分 `ProviderResponseError.code` 压成统一
+  `provider_response_invalid` 的实验分类层。
+- 当前结果没有保存当时的细分码，因而不能通过读源码反推实际根因；“可能是哪一种”仍然
+  不是证据，旧结果必须保持 unknown。
+- 立即建立新 DeepSeek 诊断门只能改善根因可见性，仍不能取得领域质量，而且会继续形成
+  围绕同一候选的版本循环；无限搁置又没有清晰终态。
+- ADR-0027 因此关闭当前 V3，保留低层协议事实，并把双层失败分类设为未来任何真实
+  Provider 门的前置条件：稳定高层 `failure_code` + allowlisted 可空细分码。
+- 这项要求属于最小实验 provenance，不提前实现 5E 的统一 Trace；本批外部调用为 0。
