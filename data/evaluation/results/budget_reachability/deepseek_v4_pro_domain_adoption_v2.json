@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "source_result_sha256": "877b623fa635e7126905c9bd077bfb17fda62d8e42670427f2200c12285dc62a",
+  "source_experiment_id": "57413697f671e9c8e673a5da95609a301ef36116f7332f4780759f84607d8250",
+  "provider_id": "deepseek",
+  "requested_model": "deepseek-v4-pro",
+  "case_id": "adoption_v2_form_baseline",
+  "required_stages": [
+    "agent_initial",
+    "agent_after_tool",
+    "evaluation"
+  ],
+  "observed_normalized_response_count": 1,
+  "observed_input_tokens": 3241,
+  "observed_output_tokens": 199,
+  "observed_total_tokens": 3440,
+  "case_token_limit": 4000,
+  "per_request_output_cap": 1024,
+  "next_call_reserved_total": 4464,
+  "exact_minimum_case_limit_for_next_call": 4464,
+  "case_limit_shortfall": 464,
+  "next_call_reachable": false,
+  "complete_path_reachable": false,
+  "complete_path_exact_token_requirement": null,
+  "length_projection": {
+    "method": "length_calibrated_not_provider_tokenizer",
+    "calibration_stage": "agent_initial",
+    "calibration_local_context_units": 6666,
+    "calibration_actual_input_tokens": 3241,
+    "stages": [
+      {
+        "stage": "agent_initial",
+        "local_context_units": 6666,
+        "projected_input_tokens": 3241
+      },
+      {
+        "stage": "agent_after_tool",
+        "local_context_units": 7774,
+        "projected_input_tokens": 3780
+      },
+      {
+        "stage": "evaluation",
+        "local_context_units": 6266,
+        "projected_input_tokens": 3047
+      }
+    ],
+    "projected_input_tokens_total": 10068,
+    "known_output_tokens": 199,
+    "projected_tokens_before_future_outputs": 10267,
+    "exact_provider_token_count": false
+  },
+  "recommended_v3_case_token_limit": null,
+  "decision": "new_budget_design_required_before_v3_io",
+  "external_provider_calls": 0
+}

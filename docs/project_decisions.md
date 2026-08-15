@@ -304,3 +304,16 @@ TDD；如果仍要评估领域能力，必须经新 ADR、新输入身份和新�
 
 该结果与回归已由提交 `60b5c86e1699a615a6bf87dcbb5be62506b2e2e0`、GitHub
 Actions run `31864370988` 完成 exact-SHA 公开验证；CI 没有 Key 或 Provider 调用。
+
+### V2 预算可达性裁决
+
+ADR-0025 将“安全上限”和“可行预算”拆开处理：
+
+- V2 真实 3440 observed tokens 加下一请求 1024 output 预留，精确证明 4000 单例上限
+  无法发出第二次调用；所需 next-call 最低上限为 4464，短缺 464；
+- 现有生产控制流用本地 Scripted Provider 形成初始 Agent、工具后 Agent、Evaluation
+  三种真实 request envelope，只持久化消息角色、数量和长度单位，不保存正文；
+- 以首轮真实 input 校准得到的 3241/3780/3047 只是风险投影，不是 DeepSeek 官方
+  tokenizer 结果；未来轮次 output 和完整精确需求保持 unknown；
+- 因此不关闭 DeepSeek 领域候选，也不直接授权 V3。先完成公开 CI，再用 development
+  校准新资源合同；任何 V3 必须使用新预算、新输入身份、新结果路径和独立真实确认。

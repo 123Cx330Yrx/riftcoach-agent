@@ -1205,3 +1205,20 @@
   tracked-data boundary 与 dry-run；CI 无 `.env`/Key，外部 Provider calls 为 0。
 - 本轮真实调用总数保持 1，V2 结果与 `admitted=false` 不变。唯一下一步正式切换为 5D-7
   零调用 V2 结果裁决与预算可达性 TDD。
+
+### 2026-08-15：V2 预算可达性离线裁决本地完成
+
+- 先以 ADR-0025 冻结“真实领域门前必须证明资源合同可达”，不修改、不覆盖或重跑 V2。
+- 新增 no-I/O 严格裁决器，精确复读结果 SHA `877b623f...dc62a`、首例 3241/199 Usage、
+  4000 单例上限和 1024 output 预留；自动证明第二调用至少需要 4464，上限短缺 464。
+- 现有 production Executor 由本地 Scripted Provider 走通初始 Agent、知识工具往返后
+  Agent 与 Evaluation，生成不含正文的三阶段 envelope，长度单位为 6666/7774/6266。
+- 用首轮真实 input 校准的投影为 3241/3780/3047，已知 output 加入后为 10267；合同将其
+  明确标记为非 Provider tokenizer，完整精确需求和 V3 推荐预算仍为 `null`。
+- 严格裁决 JSON SHA-256 为
+  `ca3df9953d84629fd473f53c5920b00ebc08e1f9c26f5e40df0d1aeee7c02d1b`；聚焦
+  `6 passed`，相邻 `30 passed`；完整回归 `587 passed, 103 subtests passed`，两套 RAG、
+  compileall、Harness SDK/tracked-data boundary、dry-run、governance 和 diff check 均通过；
+  本批 Provider/Key/网络调用为 0。
+- 唯一下一步为完整门禁、提交、推送和 exact-SHA 公开 CI；成功后才开始 V3 资源合同
+  development 校准设计，不直接运行 V3。

@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.23 - 5D-7（in progress: V2 real result frozen; await no-I/O budget-reachability adjudication）
+Phase 6.24 - 5D-7（in progress: V2 no-I/O budget adjudication complete locally; await public exact-SHA verification）
 
 ## Phases
 
@@ -164,17 +164,23 @@ Phase 6.23 - 5D-7（in progress: V2 real result frozen; await no-I/O budget-reac
   `admitted=false`。结果 SHA 为 `877b623f...dc62a`，不得覆盖或重跑。
 - 结果归档提交 `60b5c86e1699a615a6bf87dcbb5be62506b2e2e0` 已推送，GitHub Actions
   run `31864370988` 对精确 SHA completed/success；公开 CI 不含 Key 或 Provider I/O。
+- `5D-7` V2 预算可达性离线裁决已在本地完成：ADR-0025 要求未来真实领域门在 Key-last
+  之前证明资源合同可达。精确 V2 Usage 证明第二次调用至少需要单例 4464-token 上限，
+  当前 4000 必然不可达；现有生产控制流本地形成初始 Agent、工具后 Agent、Evaluation
+  三类 request envelope，长度单位为 6666/7774/6266，以首轮真实 3241 input 校准后的
+  input 投影为 3241/3780/3047。投影不冒充 Provider tokenizer，也不直接决定 V3 预算。
+  新实现、严格 JSON 裁决和 6 个聚焦测试均不接受 Provider/Key/网络输入，外部调用为 0。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-7 V2 真实门已单次运行并不可变归档。唯一下一步是零外部调用的 V2 结果裁决与预算
-可达性 TDD：用真实冻结 Context/请求长度证明至少一次知识工具往返与一次 Evaluation 的
-最小 Token 下界，补现实 Usage fixture，再比较关闭候选或通过新 ADR/新输入身份建立 V3
-门。不得修改预算后重跑 V2、读取 Key、调用其他模型、进入 5D exit review/5E，或把
-安全降级误写成模型质量证据。
+5D-7 V2 预算可达性离线裁决已本地完成。唯一下一步是提交、推送并核验本批 exact-SHA
+公开 CI；CI 仍不得读取 Key 或调用 Provider。公开成功后，才允许开始 V3 资源合同的
+development 校准设计：新预算、新输入身份和新结果路径必须另行冻结，且在可达性证据
+完成前不授权 V3 I/O。不得修改或重跑 V2、调用其他模型、进入 5D exit review/5E，或把
+长度校准投影写成 Provider 官方 Token 结论。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
 `.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门
@@ -285,6 +291,7 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 | 5D-7 最终验证猜测 CI 文件为 `.github/workflows/ci.yml` | 1 | 只读并行命令提前停止且未改代码；用 `rg --files .github scripts` 定位真实文件为 `.github/workflows/tests.yml`，后续复用其精确门禁 |
 | 5D-7 暂存快照检查发现 ADR-0013 与领域评测 CLI 多余 EOF 空行 | 1 | cached diff check 阻止提交；删除两个多余空行并重新暂存，只有 cached check 成功后才提交 |
 | 5D-7 GitHub Actions 的 `gh run watch` 遇到 unexpected EOF，随后两次短查询遇到 TLS handshake timeout | 3 | 停止重复 `gh` 路径；改用带 10 秒连接/20 秒总上限的公开 REST 查询，确认 run `31661582544` 对精确 SHA completed/success |
+| V2 预算裁决首次把严格结果放入 `provider_capabilities/` | 1 | 完整回归的版本化结果扫描器正确拒绝非能力报告；不放宽扫描器，把裁决移动到独立 `budget_reachability/` 结果域并复跑全量，587 tests 通过 |
 | 5D-7 Batch B 入口审计把 Windows 通配符直接作为 `rg` 路径参数 | 1 | 只读命令返回路径语法错误且未改文件；后续先用 `rg --files` 获取真实文件名再读取 |
 | 5D-6b P1 诊断恢复时猜错 ADR-0011 文件名 | 1 | 只读命令未改文件；先用 `rg --files docs/adr` 列出真实路径，再读取 `0011-compose-skill-agent-loop-through-harness-preparation.md` |
 | 原始 5C-1 至 5C-6 未持久化，文档误写 5C 完成 | 1 | 恢复完整账本，建立根级约束和活动计划，并修正所有冲突状态 |

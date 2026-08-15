@@ -957,3 +957,17 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `PUBLIC-VERIFIED`：结果归档提交
   `60b5c86e1699a615a6bf87dcbb5be62506b2e2e0` 已通过 GitHub Actions run
   `31864370988` 的 exact-SHA 全部门禁；CI Provider calls 为 0。
+
+### 2026-08-15：ADR-0025 与 V2 预算可达性离线裁决
+
+- `EXACT`：V2 首例 3440 observed tokens 加下一请求 1024 output 预留，精确最低门槛
+  为 4464；相对 4000 单例上限短缺 464，因此完整必经路径当前必然不可达。
+- `PROJECTED`：真实本地生产路径形成 3 个 body-free request envelope，稳定长度单位为
+  6666/7774/6266；以首轮真实 input 校准后的 input 投影为 3241/3780/3047。该投影
+  不是官方 tokenizer，未来两轮 output 仍 unknown。
+- `DECISION`：不重跑 V2，也不把结果写成模型质量失败；允许继续设计 V3 development
+  资源校准，但在新预算、新输入/结果身份和公开 CI 冻结前不授权 Provider I/O。
+- `NO-I/O`：裁决器不接受 Provider、Key 或网络客户端；严格结果 JSON 可离线逐字段重建，
+  本批外部调用为 0。
+- `CURRENT`：先完成本批完整门禁、提交、推送和 exact-SHA CI，再进入 V3 资源合同设计；
+  仍不得进入 5D exit review/5E。
