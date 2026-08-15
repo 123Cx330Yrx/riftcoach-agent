@@ -186,13 +186,14 @@ OP.GG MCP
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
-5D-7 Prompt/Context Eval      进行中；Fresh-Gate 4 入口本地完成，待 exact-SHA CI 与同 SHA prepare-only
+5D-7 Prompt/Context Eval      进行中；V2 已单次运行并因 Token 可达性 Bad Case 不准入，待离线裁决
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
 result envelope；相邻 93、完整 580 tests 通过，实现 `ed3cc94` / Actions `31863341338`
-公开成功，同 SHA prepare-only 为 no-I/O admitted。外部调用与真实 held-out execution 仍
-为 0；当前等待单独真实运行确认。
+公开成功，同 SHA prepare-only 为 no-I/O admitted。用户确认后 V2 只执行一次：首例
+1 call/3440 tokens，下一调用预留 1024 output 后超过单例 4000-token 门并在 I/O 前停止；
+后两例 skipped，结果 `admitted=false` 且不可重跑。当前先做零调用预算可达性裁决。
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
 错误选择率为 `0.0`。它已原样归档并附带 SHA-256 与重建来源说明。现在 Catalog
@@ -270,9 +271,9 @@ CI，且不能改变旧真实拒绝结果或提前进入 5D exit review/5E。该
 `3+1` 调用与禁止 Provider 构造合同完成，完整回归为 `568 passed, 103 subtests passed`；
 提交 `adba965` 已通过 Actions `31860874440`。新的匿名 fixture、Dataset、三案例 V1.1
 输入计划和实际 Context 摘要又由资产提交 `1e44b13` / Actions `31861960565` 完成
-exact-SHA 公开冻结。下一步先做 Fresh-Gate 4 的新资产
-no-I/O admission/生产 CLI 接缝与公开 CI，不直接读取 Key 或运行 held-out。
-旧 Dataset 1.1.0 不重跑；新鲜范围未来最多 12 calls 且仍需单独确认。
+exact-SHA 公开冻结。Fresh-Gate 4 入口又由 `ed3cc94` / Actions `31863341338` 公开验证，
+同 SHA prepare-only 通过；V2 随后只运行一次并因真实 Prompt 下的单例 Token 门不准入。
+旧 Dataset 1.1.0 与 V2 均不重跑；下一步仅做预算可达性离线裁决。
 原 `prep-1` 与 `prep-3` 均在写代码前取消；动态状态以
 `docs/project_execution_state.md` 为准。
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动

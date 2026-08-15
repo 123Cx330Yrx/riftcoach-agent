@@ -14,6 +14,9 @@ from app.evaluation.prompt_context_identity import (
 )
 from app.evaluation.provider_domain_experiment import DomainCaseExecutor
 from app.evaluation.provider_domain_plan import load_domain_case_input_plan
+from app.evaluation.provider_domain_readmission import (
+    FreshProviderDomainExperimentRecord,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -92,7 +95,91 @@ def test_fresh_dataset_lifecycle_is_held_out_and_executor_remains_oracle_blind()
     assert "expect_task_success" not in loaded_plan.artifact.model_dump_json()
     assert "expected_primary_failure" not in loaded_plan.artifact.model_dump_json()
     assert len(snapshot.case_contexts) == 3
-    assert not RESULT.exists()
+
+
+def test_real_v2_result_preserves_the_single_failed_attempt_without_raw_data():
+    _, loaded_plan, _ = _load_new_bundle()
+    result_bytes = RESULT.read_bytes()
+    record = FreshProviderDomainExperimentRecord.model_validate_json(result_bytes)
+    domain = record.domain_result
+
+    assert hashlib.sha256(result_bytes).hexdigest() == (
+        "877b623fa635e7126905c9bd077bfb17fda62d8e42670427f2200c12285dc62a"
+    )
+    assert record.schema_version == "2.0"
+    assert record.explicit_real_call_confirmed is True
+    assert record.held_out_executed is True
+    assert record.admitted is False
+    assert domain.domain_calls_used == 1
+    assert domain.domain_total_tokens == 3440
+    assert str(domain.domain_estimated_cost) == "0.00506616"
+    assert domain.resources.calls_used == 4
+    assert domain.resources.total_tokens == 4868
+    assert str(domain.resources.estimated_cost) == "0.00728112"
+    assert domain.resources.stop_code.value == "token_budget_exhausted"
+    assert domain.control.global_stop is None
+    assert tuple(
+        (row.provider_id, row.failure_code.value)
+        for row in domain.control.provider_stops
+    ) == (("deepseek", "token_budget_exhausted"),)
+
+    first, second, third = domain.cases
+    assert tuple(row.case_id for row in domain.cases) == (
+        "adoption_v2_form_baseline",
+        "adoption_v2_user_note_boundary",
+        "adoption_v2_knowledge_note_boundary",
+    )
+    assert first.status == "executed"
+    assert first.failure_code.value == "domain_case_outcome_mismatch"
+    assert first.observation is not None
+    assert first.observation.provider_calls == 1
+    assert first.observation.normalized_response_count == 1
+    assert first.observation.safe_provider_error_code == "token_budget_exhausted"
+    assert first.observation.agent_status == "failed"
+    assert first.observation.agent_stop_reason == "provider_error"
+    assert first.observation.evaluation_validated is False
+    assert first.observation.terminal_status == "degraded"
+    assert first.observation.terminal_reason == "draft_preparation_failed"
+    assert first.observation.input_tokens == 3241
+    assert first.observation.output_tokens == 199
+    assert first.observation.estimated_cost == 0.00506616
+    assert first.evaluation is not None
+    assert first.evaluation.expected_task_success is True
+    assert first.evaluation.task_succeeded is False
+    assert first.evaluation.task_outcome_match is False
+    assert first.evaluation.primary_failure.value == (
+        "provider_response_unavailable"
+    )
+    assert first.evaluation.unsafe_publication is False
+    assert second.status == third.status == "skipped"
+    assert second.failure_code.value == third.failure_code.value == (
+        "domain_case_outcome_mismatch"
+    )
+    assert domain.candidate is None
+    assert domain.evaluation is None
+
+    serialized = result_bytes.decode("utf-8")
+    forbidden_keys = {
+        "api_key",
+        "raw_prompt",
+        "raw_response",
+        "request_id",
+        "exception",
+    }
+
+    def all_keys(value):
+        if isinstance(value, dict):
+            for key, child in value.items():
+                yield key
+                yield from all_keys(child)
+        elif isinstance(value, list):
+            for child in value:
+                yield from all_keys(child)
+
+    assert forbidden_keys.isdisjoint(all_keys(json.loads(serialized)))
+    for case in loaded_plan.artifact.cases:
+        for marker in case.forbidden_output_markers:
+            assert marker not in serialized
 
 
 def test_fresh_fixture_and_case_content_do_not_reuse_consumed_assets():

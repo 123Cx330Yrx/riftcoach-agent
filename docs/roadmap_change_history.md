@@ -936,3 +936,21 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `CURRENT`：唯一下一步为真实运行确认门。必须再次展示并确认 Pro、12 calls、12000
   observed tokens、每例 4/4000、1024 output/request、`$0.10`、零重试/零修订和首错停止；
   未确认不得读取 Key，prepare-only 不等于领域准入。
+
+### 2026-08-15：V2 真实门单次执行与预算可达性 Bad Case
+
+- `AUTHORIZED`：用户明确确认运行真实 V2 三案例；执行前再次核对 HEAD/origin
+  `741e84140f816fb4b06b2812a8d07d3f32eaf4d0`、Actions `31863519248` success、干净
+  工作树、治理通过与结果不存在。
+- `OBSERVED`：首例第一次调用形成规范化响应，Usage 为 3241 input + 199 output；下一
+  调用因 `3440 + 1024 > 4000` 在 I/O 前以 `token_budget_exhausted` 停止。实际新鲜
+  消耗为 1 call/3440 tokens/`$0.00506616`/12125 ms。
+- `SAFE-TERMINAL`：Agent `failed/provider_error`，Harness
+  `degraded/draft_preparation_failed`，unsafe publication false；后两例按首错停止 skipped。
+- `DECISION`：V2 `admitted=false` 且不覆盖、不重跑；该结果证明预算控制与 fallback，
+  但没有完成事实、引用、注入或 Evaluation，因此不把它写成模型报告质量失败。
+- `EVIDENCE`：结果 SHA-256
+  `877b623fa635e7126905c9bd077bfb17fda62d8e42670427f2200c12285dc62a`；结果模型、固定
+  指标、首错停止与无敏感正文已进入回归测试。
+- `NEXT`：继续留在 5D-7，先零调用分析真实 Context 下的多轮 Token 可达性并补现实
+  Usage fixture，再决定关闭候选或以新 ADR/新输入身份建立 V3 门；不立即调用任何模型。

@@ -288,3 +288,16 @@ DeepSeek 质量；公开 CI 和同 SHA prepare-only 完成前不能读取 Key，
 该入口现已由提交 `ed3cc947bfdcf2eed22d57864ff852c5107f601a` 和 Actions run
 `31863341338` 公开验证；同 SHA prepare-only 也以零调用通过。裁决边界不变：这只让真实
 运行“具备被确认的资格”，不授权自动调用，也不等于 Provider 领域准入。
+
+### V2 真实执行裁决
+
+用户明确确认后，V2 在公开成功 SHA `741e84140f816fb4b06b2812a8d07d3f32eaf4d0`
+上只执行一次。首例第一次调用使用 3440 observed tokens；下一请求需预留 1024 output，
+因此超过单例 4000-token 门并在 I/O 前停止。Harness 只返回确定性 fallback，后两例按
+首错停止，最终 `admitted=false`。
+
+这次采用门不把失败简单归因于模型质量：真实 Prompt 长度证明原“4 calls/4000 tokens”
+资源合同不能保证必需的工具往返与 Evaluation 可达。V2 结果 SHA
+`877b623f...dc62a` 永久保留且不得重跑。下一步只做零调用的预算可达性裁决和现实 Usage
+TDD；如果仍要评估领域能力，必须经新 ADR、新输入身份和新结果路径建立后续门，不能
+直接调高 V2 预算追绿。

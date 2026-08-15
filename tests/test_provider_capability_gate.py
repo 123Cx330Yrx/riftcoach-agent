@@ -19,6 +19,9 @@ from app.evaluation.provider_domain_skill import DomainSkillSliceReport
 from app.evaluation.provider_domain_experiment import (
     ProviderDomainExperimentRecord,
 )
+from app.evaluation.provider_domain_readmission import (
+    FreshProviderDomainExperimentRecord,
+)
 from app.evaluation.provider_protocol_experiment import (
     ProviderAdapterProtocolExperimentRecord,
 )
@@ -195,6 +198,12 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
         content = result_path.read_text(encoding="utf-8")
         payload = json.loads(content)
         if {
+            "admission",
+            "domain_result",
+            "explicit_real_call_confirmed",
+        }.issubset(payload):
+            model = FreshProviderDomainExperimentRecord
+        elif {
             "preparation",
             "protocol",
             "resources",

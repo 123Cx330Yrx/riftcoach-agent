@@ -4,3 +4,4 @@
 # Keep the immutable real-provider evidence digest stable across platforms.
 /data/evaluation/results/provider_capabilities/deepseek_v4_pro_adapter_protocol.json text eol=lf
 /data/evaluation/results/provider_capabilities/deepseek_v4_pro_domain_heldout.json text eol=lf
+/data/evaluation/results/provider_capabilities/deepseek_v4_pro_domain_adoption_v2.json text eol=lf

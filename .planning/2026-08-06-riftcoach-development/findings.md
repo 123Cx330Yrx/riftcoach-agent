@@ -1181,3 +1181,21 @@
   `31863341338` exact-SHA 成功；同 SHA、干净工作树的真实 prepare-only 也通过，并明确
   报告 external calls 0 / held-out false。公开 CI 与 prepare-only 是运行前身份门，不是
   DeepSeek 领域能力证据。
+
+### 2026-08-15：V2 真实门预算可达性发现
+
+- 真实运行前 HEAD/origin 均为 `741e84140f816fb4b06b2812a8d07d3f32eaf4d0`，Actions
+  `31863519248` 成功、工作树干净、结果不存在、治理通过；用户明确确认后只执行一次。
+- 首例第一次规范化响应消耗 3241 input + 199 output = 3440 observed tokens；第二请求
+  需要预留 1024 output，因 `4464 > 4000` 在 I/O 前停止。不是 429、鉴权、网络、金额或
+  SDK retry 问题。
+- `AgentLoop` 只有首轮返回 ToolCall 才进入第二轮 Provider 调用，因此可以从控制流推断
+  首轮进入过工具分支；但失败传出的 `AgentFailureObservation` 丢弃部分 ToolCall/
+  ToolExecution 语义，公开结果无法证明工具是否成功。这是安全脱敏与可观测性之间的
+  真实缺口，后续需要在不保存正文的前提下补安全部分运行摘要。
+- V2 的 4-call 上限在 Fake Provider 下可达，但真实首轮 Context 已接近 4000-token 单例
+  上限；“调用数足够”不等于“Token 足够”。开发测试缺少真实长度 Usage fixture，导致
+  预算策略本身使必需的工具往返/Evaluation 不可达。
+- 结果仍是合法且不可变的 `admitted=false`：它证明资源控制和 Harness fallback 工作，
+  但没有测出完整报告、事实、引用或注入质量。不得据此宣称模型质量差，也不得调预算后
+  重跑同一 V2。

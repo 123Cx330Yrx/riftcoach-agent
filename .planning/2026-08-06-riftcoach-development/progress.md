@@ -1179,3 +1179,20 @@
   调用 Provider、创建结果或运行 held-out。
 - Fresh-Gate 4 入口批完成。唯一下一步为单独真实运行确认门；必须先展示模型和
   12-call/12000-token/`$0.10` 等上限，获得明确确认后才可加载 Key。
+
+### 2026-08-15：V2 三案例真实门已单次执行
+
+- 用户明确确认后，先复核公开成功 SHA `741e84140f816fb4b06b2812a8d07d3f32eaf4d0`、
+  Actions `31863519248`、干净工作树、结果不存在和治理通过，再首次运行真实 CLI。
+- 首例只产生 1 次外部调用与 1 个规范化响应；3241 input + 199 output = 3440 tokens，
+  下一请求因预留 1024 output 会超过单例 4000-token 门而在 I/O 前停止。
+- Harness 以确定性 fallback 降级，unsafe publication 为 false；后两例按首错停止未调用。
+  V2 最终 `held_out_executed=true`、`admitted=false`。
+- 新鲜领域使用 1 call/3440 tokens/`$0.00506616`/12125 ms；与既有协议合计的本记录为
+  4 calls/4868 tokens/`$0.00728112`。旧失败调用仍在历史链中另计且 Token/费用 unknown。
+- 不可变结果 SHA 为 `877b623fa635e7126905c9bd077bfb17fda62d8e42670427f2200c12285dc62a`；
+  聚焦结果/生命周期回归为 `47 passed`，完整回归为 `581 passed, 103 subtests passed`；
+  两套 RAG、compileall、Harness SDK/tracked-data boundary、dry-run、governance 和 diff
+  check 通过。当前仍需提交、推送和公开 exact-SHA 归档。
+- 唯一下一步：完成本轮持久化、完整回归、提交/推送和 exact-SHA CI；之后进入 5D-7
+  零调用预算可达性裁决，不重跑 V2。

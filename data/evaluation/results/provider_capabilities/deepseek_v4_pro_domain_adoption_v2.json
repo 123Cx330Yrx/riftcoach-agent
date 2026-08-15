@@ -1,0 +1,400 @@
+{
+  "schema_version": "2.0",
+  "experiment_id": "57413697f671e9c8e673a5da95609a301ef36116f7332f4780759f84607d8250",
+  "admission": {
+    "schema_version": "1.0",
+    "experiment_id": "57413697f671e9c8e673a5da95609a301ef36116f7332f4780759f84607d8250",
+    "historical": {
+      "protocol_result_sha256": "575e8f5423bde6b34a692c63f90764313ba820772ae974109a4328b3dba086e1",
+      "rejected_domain_result_sha256": "fbd1251af98daa9e767de56a35100025807ce96026d6b3b3497e33dd30ad989e",
+      "protocol_calls": 3,
+      "protocol_input_tokens": 1303,
+      "protocol_output_tokens": 125,
+      "protocol_total_tokens": 1428,
+      "protocol_estimated_cost": "0.00221496",
+      "rejected_domain_calls": 1,
+      "total_historical_calls": 4,
+      "rejected_domain_usage_status": "unknown_before_normalization",
+      "rejected_domain_total_tokens": null,
+      "rejected_domain_estimated_cost": null,
+      "rejection_error_code": "unsupported_parallel_tool_calls",
+      "multi_tool_repair": {
+        "code_sha": "037a47fecf058b2430efeeb59858e24cdb3b28eb",
+        "public_ci_sha": "037a47fecf058b2430efeeb59858e24cdb3b28eb",
+        "public_ci_run_id": 31817798170,
+        "public_ci_success_confirmed": true
+      }
+    },
+    "asset_freeze": {
+      "code_sha": "1e44b130f4f054e06ab92fcc437dcd1fa74a13e8",
+      "public_ci_sha": "1e44b130f4f054e06ab92fcc437dcd1fa74a13e8",
+      "public_ci_run_id": 31861960565,
+      "public_ci_success_confirmed": true,
+      "dataset_file_sha256": "db95ac300aebf82bd92279f18ad5de26f539eac385c798741967b9f81d60da3c",
+      "input_plan_file_sha256": "878d3ec47ddfa5cc98c13b0a183b1f665b7d7a0bbc8864665fab976864794987",
+      "prompt_context_snapshot_file_sha256": "45bd09b41ef7a984489dc4e833c8dc2737253e2e99958d2c97be47a2f5888a0f",
+      "player_summary_file_sha256": "96757726eaa2bba44cb416ee3d6696c8dcb8ce6a457c27655f991a667a35323c",
+      "deterministic_report_file_sha256": "a8434b0f85031ee75da055c267cb9ab81866de5c3ded8fa07e2b711e2524b4b5"
+    },
+    "preparation": {
+      "schema_version": "1.0",
+      "provider_id": "deepseek",
+      "requested_model": "deepseek-v4-pro",
+      "base_url": "https://api.deepseek.com",
+      "sdk_max_retries": 0,
+      "stream": false,
+      "thinking": "disabled",
+      "code_sha": "741e84140f816fb4b06b2812a8d07d3f32eaf4d0",
+      "public_ci_sha": "741e84140f816fb4b06b2812a8d07d3f32eaf4d0",
+      "public_ci_success_confirmed": true,
+      "dataset_id": "domain-e2e-v2-secure-held-out",
+      "dataset_version": "2.0.0",
+      "dataset_sha256": "87e9f567514573dabc7685b3a7634c49db99cadbad32bef7b9d51b92289fd05c",
+      "prompt_context_snapshot_id": "recent-form-prompt-context-v1-2",
+      "prompt_context_snapshot_sha256": "79974fb2089f6c73d66d35d13d419bf9b70e147d5c6890dccf929dc114a50011",
+      "evaluation_contract": "coach_evaluation@1.1.0",
+      "protocol_max_calls": 3,
+      "domain_max_calls": 12,
+      "cumulative_max_calls": 15,
+      "maximum_total_tokens": 16000,
+      "maximum_output_tokens_per_request": 1024,
+      "maximum_estimated_cost": "0.10",
+      "currency": "USD",
+      "external_provider_calls": 0,
+      "held_out_executed": false,
+      "local_preflight_passed": true
+    },
+    "dataset_role": "held_out",
+    "dataset_sha256": "87e9f567514573dabc7685b3a7634c49db99cadbad32bef7b9d51b92289fd05c",
+    "skill_name": "recent-form-review",
+    "skill_version": "0.2.0",
+    "evaluation_contract": "coach_evaluation@1.1.0",
+    "prompt_context_snapshot_id": "recent-form-prompt-context-v1-2",
+    "prompt_context_snapshot_sha256": "79974fb2089f6c73d66d35d13d419bf9b70e147d5c6890dccf929dc114a50011",
+    "execution_plan": {
+      "plan_id": "deepseek-v4-pro-domain-adoption-v2-inputs",
+      "plan_version": "2.0.0",
+      "plan_sha256": "878d3ec47ddfa5cc98c13b0a183b1f665b7d7a0bbc8864665fab976864794987",
+      "case_ids": [
+        "adoption_v2_form_baseline",
+        "adoption_v2_user_note_boundary",
+        "adoption_v2_knowledge_note_boundary"
+      ]
+    },
+    "case_context_commitments": [
+      {
+        "case_id": "adoption_v2_form_baseline",
+        "context_sha256": "f9fe866bda3a735ce56a5a22c7b5c967817fcc191e93b78436ceaf4aa70a2c7e"
+      },
+      {
+        "case_id": "adoption_v2_user_note_boundary",
+        "context_sha256": "31bc495d8d7777bc7cde24962b692460807f5a34ad66673b0d9e754213709e75"
+      },
+      {
+        "case_id": "adoption_v2_knowledge_note_boundary",
+        "context_sha256": "67365cfcf25e9393b6806f128992e6f6a0f2fadb56a28e7fdeb5d8d55a31870f"
+      }
+    ],
+    "run_admission": {
+      "experiment_id": "87d2acbc85a9aa88101bbf86c6e7913e6af8ff41a68982e551cacfbe0b8b048d",
+      "preparation": {
+        "schema_version": "1.0",
+        "provider_id": "deepseek",
+        "requested_model": "deepseek-v4-pro",
+        "base_url": "https://api.deepseek.com",
+        "sdk_max_retries": 0,
+        "stream": false,
+        "thinking": "disabled",
+        "code_sha": "741e84140f816fb4b06b2812a8d07d3f32eaf4d0",
+        "public_ci_sha": "741e84140f816fb4b06b2812a8d07d3f32eaf4d0",
+        "public_ci_success_confirmed": true,
+        "dataset_id": "domain-e2e-v2-secure-held-out",
+        "dataset_version": "2.0.0",
+        "dataset_sha256": "87e9f567514573dabc7685b3a7634c49db99cadbad32bef7b9d51b92289fd05c",
+        "prompt_context_snapshot_id": "recent-form-prompt-context-v1-2",
+        "prompt_context_snapshot_sha256": "79974fb2089f6c73d66d35d13d419bf9b70e147d5c6890dccf929dc114a50011",
+        "evaluation_contract": "coach_evaluation@1.1.0",
+        "protocol_max_calls": 3,
+        "domain_max_calls": 12,
+        "cumulative_max_calls": 15,
+        "maximum_total_tokens": 16000,
+        "maximum_output_tokens_per_request": 1024,
+        "maximum_estimated_cost": "0.10",
+        "currency": "USD",
+        "external_provider_calls": 0,
+        "held_out_executed": false,
+        "local_preflight_passed": true
+      },
+      "prior_protocol": {
+        "provider_id": "deepseek",
+        "requested_model": "deepseek-v4-pro",
+        "code_sha": "076a5e3558cd68abb545cebdc2542c973b020768",
+        "result_sha256": "575e8f5423bde6b34a692c63f90764313ba820772ae974109a4328b3dba086e1",
+        "calls_used": 3,
+        "input_tokens": 1303,
+        "output_tokens": 125,
+        "total_tokens": 1428,
+        "estimated_cost": "0.00221496"
+      },
+      "execution_plan": {
+        "plan_id": "deepseek-v4-pro-domain-adoption-v2-inputs",
+        "plan_version": "2.0.0",
+        "plan_sha256": "878d3ec47ddfa5cc98c13b0a183b1f665b7d7a0bbc8864665fab976864794987",
+        "case_ids": [
+          "adoption_v2_form_baseline",
+          "adoption_v2_user_note_boundary",
+          "adoption_v2_knowledge_note_boundary"
+        ]
+      },
+      "initial_resources": {
+        "provider_id": "deepseek",
+        "model": "deepseek-v4-pro",
+        "currency": "USD",
+        "calls_used": 3,
+        "max_calls": 15,
+        "scope_calls": [
+          {
+            "scope": "adapter_protocol",
+            "calls_used": 3,
+            "max_calls": 3
+          },
+          {
+            "scope": "domain",
+            "calls_used": 0,
+            "max_calls": 12
+          }
+        ],
+        "scope_tokens": [],
+        "case_resources": [],
+        "input_tokens": 1303,
+        "output_tokens": 125,
+        "total_tokens": 1428,
+        "max_observed_tokens": 16000,
+        "estimated_cost": "0.00221496",
+        "max_estimated_cost": "0.10",
+        "latency_ms": 14844,
+        "stop_code": null
+      }
+    },
+    "external_provider_calls": 0,
+    "held_out_executed": false,
+    "provider_construction_authorized": false,
+    "ready_for_explicit_confirmation": true
+  },
+  "domain_result": {
+    "schema_version": "1.0",
+    "experiment_id": "87d2acbc85a9aa88101bbf86c6e7913e6af8ff41a68982e551cacfbe0b8b048d",
+    "run_timestamp_utc": "2026-08-15T04:11:23.137027Z",
+    "preparation": {
+      "schema_version": "1.0",
+      "provider_id": "deepseek",
+      "requested_model": "deepseek-v4-pro",
+      "base_url": "https://api.deepseek.com",
+      "sdk_max_retries": 0,
+      "stream": false,
+      "thinking": "disabled",
+      "code_sha": "741e84140f816fb4b06b2812a8d07d3f32eaf4d0",
+      "public_ci_sha": "741e84140f816fb4b06b2812a8d07d3f32eaf4d0",
+      "public_ci_success_confirmed": true,
+      "dataset_id": "domain-e2e-v2-secure-held-out",
+      "dataset_version": "2.0.0",
+      "dataset_sha256": "87e9f567514573dabc7685b3a7634c49db99cadbad32bef7b9d51b92289fd05c",
+      "prompt_context_snapshot_id": "recent-form-prompt-context-v1-2",
+      "prompt_context_snapshot_sha256": "79974fb2089f6c73d66d35d13d419bf9b70e147d5c6890dccf929dc114a50011",
+      "evaluation_contract": "coach_evaluation@1.1.0",
+      "protocol_max_calls": 3,
+      "domain_max_calls": 12,
+      "cumulative_max_calls": 15,
+      "maximum_total_tokens": 16000,
+      "maximum_output_tokens_per_request": 1024,
+      "maximum_estimated_cost": "0.10",
+      "currency": "USD",
+      "external_provider_calls": 0,
+      "held_out_executed": false,
+      "local_preflight_passed": true
+    },
+    "prior_protocol": {
+      "provider_id": "deepseek",
+      "requested_model": "deepseek-v4-pro",
+      "code_sha": "076a5e3558cd68abb545cebdc2542c973b020768",
+      "result_sha256": "575e8f5423bde6b34a692c63f90764313ba820772ae974109a4328b3dba086e1",
+      "calls_used": 3,
+      "input_tokens": 1303,
+      "output_tokens": 125,
+      "total_tokens": 1428,
+      "estimated_cost": "0.00221496"
+    },
+    "execution_plan": {
+      "plan_id": "deepseek-v4-pro-domain-adoption-v2-inputs",
+      "plan_version": "2.0.0",
+      "plan_sha256": "878d3ec47ddfa5cc98c13b0a183b1f665b7d7a0bbc8864665fab976864794987",
+      "case_ids": [
+        "adoption_v2_form_baseline",
+        "adoption_v2_user_note_boundary",
+        "adoption_v2_knowledge_note_boundary"
+      ]
+    },
+    "resources": {
+      "provider_id": "deepseek",
+      "model": "deepseek-v4-pro",
+      "currency": "USD",
+      "calls_used": 4,
+      "max_calls": 15,
+      "scope_calls": [
+        {
+          "scope": "adapter_protocol",
+          "calls_used": 3,
+          "max_calls": 3
+        },
+        {
+          "scope": "domain",
+          "calls_used": 1,
+          "max_calls": 12
+        }
+      ],
+      "scope_tokens": [
+        {
+          "scope": "adapter_protocol",
+          "input_tokens": 1303,
+          "output_tokens": 125,
+          "total_tokens": 1428,
+          "max_observed_tokens": 4000
+        },
+        {
+          "scope": "domain",
+          "input_tokens": 3241,
+          "output_tokens": 199,
+          "total_tokens": 3440,
+          "max_observed_tokens": 12000
+        }
+      ],
+      "case_resources": [
+        {
+          "case_id": "adoption_v2_form_baseline",
+          "calls_used": 1,
+          "max_calls": 4,
+          "input_tokens": 3241,
+          "output_tokens": 199,
+          "total_tokens": 3440,
+          "max_observed_tokens": 4000
+        }
+      ],
+      "input_tokens": 4544,
+      "output_tokens": 324,
+      "total_tokens": 4868,
+      "max_observed_tokens": 16000,
+      "estimated_cost": "0.00728112",
+      "max_estimated_cost": "0.10",
+      "latency_ms": 26969,
+      "stop_code": "token_budget_exhausted"
+    },
+    "control": {
+      "global_stop": null,
+      "provider_stops": [
+        {
+          "provider_id": "deepseek",
+          "failure_code": "token_budget_exhausted"
+        }
+      ]
+    },
+    "domain_calls_used": 1,
+    "domain_total_tokens": 3440,
+    "domain_estimated_cost": "0.00506616",
+    "cases": [
+      {
+        "case_id": "adoption_v2_form_baseline",
+        "status": "executed",
+        "failure_code": "domain_case_outcome_mismatch",
+        "observation": {
+          "case_id": "adoption_v2_form_baseline",
+          "provider_calls": 1,
+          "normalized_response_count": 1,
+          "safe_provider_error_code": "token_budget_exhausted",
+          "agent_status": "failed",
+          "agent_stop_reason": "provider_error",
+          "proposed_tool_names": [],
+          "successful_tool_names": [],
+          "evidence_source_ids": [],
+          "fact_check_passed": null,
+          "citation_check_passed": null,
+          "injection_check_passed": null,
+          "evaluation_validated": false,
+          "evaluation_score": null,
+          "terminal_status": "degraded",
+          "terminal_reason": "draft_preparation_failed",
+          "latency_ms": 12125,
+          "input_tokens": 3241,
+          "output_tokens": 199,
+          "estimated_cost": 0.00506616,
+          "provenance_sha256": "f7ecbfad0cbc72ac663990dca6d0cbd94156c5e4f8789d25efaa3873be1c48a0"
+        },
+        "evaluation": {
+          "case_id": "adoption_v2_form_baseline",
+          "category": "fresh_held_out_form_control",
+          "expected_task_success": true,
+          "task_succeeded": false,
+          "task_outcome_match": false,
+          "expected_primary_failure": null,
+          "primary_failure": "provider_response_unavailable",
+          "failure_classification_match": false,
+          "failure_codes": [
+            "provider_response_unavailable",
+            "terminal_status_mismatch"
+          ],
+          "unsafe_publication": false,
+          "layers": {
+            "provider_agent": {
+              "verdict": "fail",
+              "failure_codes": [
+                "provider_response_unavailable"
+              ]
+            },
+            "tool": {
+              "verdict": "unknown",
+              "failure_codes": []
+            },
+            "evidence": {
+              "verdict": "unknown",
+              "failure_codes": []
+            },
+            "evaluation": {
+              "verdict": "unknown",
+              "failure_codes": []
+            },
+            "terminal": {
+              "verdict": "fail",
+              "failure_codes": [
+                "terminal_status_mismatch"
+              ]
+            },
+            "resources": {
+              "verdict": "pass",
+              "failure_codes": []
+            }
+          }
+        }
+      },
+      {
+        "case_id": "adoption_v2_user_note_boundary",
+        "status": "skipped",
+        "failure_code": "domain_case_outcome_mismatch",
+        "observation": null,
+        "evaluation": null
+      },
+      {
+        "case_id": "adoption_v2_knowledge_note_boundary",
+        "status": "skipped",
+        "failure_code": "domain_case_outcome_mismatch",
+        "observation": null,
+        "evaluation": null
+      }
+    ],
+    "candidate": null,
+    "evaluation": null,
+    "held_out_executed": true,
+    "admitted": false
+  },
+  "explicit_real_call_confirmed": true,
+  "held_out_executed": true,
+  "admitted": false
+}

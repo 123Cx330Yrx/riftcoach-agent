@@ -79,5 +79,12 @@ Update canonical state, active plan/findings/progress, roadmap history/amendment
 - Full regression: `580 passed, 103 subtests passed`
 - RAG development/held-out gates: passed at frozen 1.0 thresholds
 - Same-SHA prepare-only: no-I/O admitted, external Provider calls `0`, held-out executed `false`
-- Real V2 result created: `false`
-- Next gate: separate explicit confirmation before any Key load or real held-out execution
+- Real V2 result created: `true`
+- Real execution: one domain call, 3440 observed tokens, about `$0.00506616`;
+  the second call was blocked before I/O by the frozen 4000-token per-case
+  budget, so the first case degraded and the remaining cases were skipped
+- Result SHA-256:
+  `877b623fa635e7126905c9bd077bfb17fda62d8e42670427f2200c12285dc62a`
+- Admission: `false`; no automatic rerun is allowed
+- Next gate: no-I/O V2 result adjudication and realistic budget-reachability
+  TDD inside 5D-7

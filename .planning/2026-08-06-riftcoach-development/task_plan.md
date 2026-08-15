@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.22 - 5D-7（in progress: await explicit Fresh-Gate 4 real-run confirmation）
+Phase 6.23 - 5D-7（in progress: V2 real result frozen; await no-I/O budget-reachability adjudication）
 
 ## Phases
 
@@ -158,17 +158,21 @@ Phase 6.22 - 5D-7（in progress: await explicit Fresh-Gate 4 real-run confirmati
 - Fresh-Gate 4 实现提交 `ed3cc947bfdcf2eed22d57864ff852c5107f601a` 已通过 GitHub
   Actions run `31863341338`；同一干净 SHA 的真实 `--prepare-only` 已 no-I/O admitted，
   external calls 0、held-out 未执行且正式结果文件不存在。
+- 用户明确确认后，V2 在公开成功 SHA `741e84140f816fb4b06b2812a8d07d3f32eaf4d0`
+  上只执行一次：首例 1 call/3440 observed tokens，下一调用因需预留 1024 output 而超过
+  单例 4000-token 门，在 I/O 前停止；Harness 安全降级、后两例 skipped、
+  `admitted=false`。结果 SHA 为 `877b623f...dc62a`，不得覆盖或重跑。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-7 Fresh-Gate 4 入口已完成 exact-SHA CI 和同 SHA no-I/O prepare-only。唯一下一步是
-真实运行确认门：向用户展示 `deepseek-v4-pro`、新范围 12 calls/12000 tokens、每例
-4 calls/4000 tokens、1024 output/request、`$0.10`、零重试/零修订和首错停止；必须再次
-取得明确确认才可读取 Key 并首次执行 V2 held-out。不得自动运行、修改冻结规则、进入
-5D exit review/5E 或把 prepare-only 当成领域准入。
+5D-7 V2 真实门已单次运行并不可变归档。唯一下一步是零外部调用的 V2 结果裁决与预算
+可达性 TDD：用真实冻结 Context/请求长度证明至少一次知识工具往返与一次 Evaluation 的
+最小 Token 下界，补现实 Usage fixture，再比较关闭候选或通过新 ADR/新输入身份建立 V3
+门。不得修改预算后重跑 V2、读取 Key、调用其他模型、进入 5D exit review/5E，或把
+安全降级误写成模型质量证据。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
 `.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门

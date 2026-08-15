@@ -2,7 +2,7 @@
 
 ## 状态
 
-已接受；只授权后续离线合同 TDD，不授权创建正式新 held-out、读取 Key 或真实调用
+已接受并实施；V2 真实门只执行一次并以资源合同不准入
 
 ## 日期
 
@@ -97,3 +97,16 @@ ADR-0023 的独立可用性/profile/协议/领域门推进。
 - `docs/adr/0022-sequentially-consume-multi-tool-call-batches.md`
 - `data/evaluation/results/provider_capabilities/deepseek_v4_pro_adapter_protocol.json`
 - `data/evaluation/results/provider_capabilities/deepseek_v4_pro_domain_heldout.json`
+
+## 执行后记（2026-08-15）
+
+在提交 `741e84140f816fb4b06b2812a8d07d3f32eaf4d0` 的公开 CI 成功并再次获得用户
+明确确认后，V2 真实门只执行一次。首例第一次调用使用 3440 observed tokens；下一调用
+需要预留 1024 output tokens，超过冻结的单例 4000-token 上限，因此在 I/O 前以
+`token_budget_exhausted` 停止。Harness 安全降级，后两例 skipped，最终
+`admitted=false`。
+
+结果文件 SHA-256 为
+`877b623fa635e7126905c9bd077bfb17fda62d8e42670427f2200c12285dc62a`，不得覆盖或
+重跑。该结果证明安全控制面有效，但没有完成事实、引用、注入和 Evaluation 质量验证；
+后续先做零调用的预算可达性裁决，不直接创建或运行下一份考卷。
