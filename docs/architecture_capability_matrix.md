@@ -22,7 +22,7 @@
 |---|---|---|---|---|---|---|
 | A01 | LoL 确定性事实 | Riot API、MatchAnalyzer、Schema v1 | 阶段 1 | 阶段 7 增加 Meta，但保持事实分层 | 指标单测、合成样例、Timeline 缺失与短局测试 | 已完成 |
 | A02 | 质量门控 Harness | 状态机、Artifact、评测、受限修订、降级 | 阶段 2 | 阶段 8 增加恢复与复杂运行治理 | 状态迁移、错误数字、修订越权、发布门禁测试 | 已完成 |
-| A03 | 模型 Provider 抽象 | 统一 ChatRequest/Response、Registry、能力协商；Zhipu Adapter 真实最小 structured/tool 协议已准入但领域未准入；独立 DeepSeek V4 Pro Adapter 已以 3/3 calls 通过真实最小协议；ADR-0022 已公开验证多 ToolCall 传输；Fresh-Gate 1/3/4 已公开冻结；V2 真实门首例 1 call/3440 tokens 后由单例 Token 门停止，领域 `admitted=false`；ADR-0025 又以 no-I/O 严格裁决证明下一调用最低上限为 4464，模型质量仍 unknown | 阶段 3 | 先公开验证预算裁决，再用 development 校准 V3 资源合同；旧/V2 held-out 均不重跑 | 同一领域案例、Tool Calling、结构化输出、错误合同、调用/Token/金额停止与可达性证明 | 部分完成 |
+| A03 | 模型 Provider 抽象 | 统一 ChatRequest/Response、Registry、能力协商；Zhipu Adapter 真实最小 structured/tool 协议已准入但领域未准入；独立 DeepSeek V4 Pro Adapter 已以 3/3 calls 通过真实最小协议；ADR-0022 已公开验证多 ToolCall 传输；Fresh-Gate 1/3/4 已公开冻结；V2 领域 `admitted=false`；ADR-0025 又以 no-I/O 严格裁决证明下一调用最低上限为 4464，模型质量仍 unknown，`78400b9` / Actions `31865285994` 已公开验证 | 阶段 3 | 用 development 校准 V3 资源合同；旧/V2 held-out 均不重跑 | 同一领域案例、Tool Calling、结构化输出、错误合同、调用/Token/金额停止与可达性证明 | 部分完成 |
 | A04 | Tool Runtime | Schema、超时、重试、缓存、熔断、fallback、指标 | 阶段 3 | 阶段 7 适配标准 MCP 工具 | 故障注入、缓存、熔断、fallback 和越权测试 | 已完成 |
 | A05 | RAG 与证据 | 混合检索、父子块、引用、冲突、拒答、独立保留集 | 阶段 4 | 维护数据集；按规模证据决定是否升级存储 | Recall/MRR/nDCG、abstain、引用支持与冲突测试 | 已完成 |
 | A06 | 最小 Agent Loop | Assistant ToolCall、Tool Observation、预算和停止原因；多 ToolCall development TDD 已固定整批数量/白名单/重复零副作用预检、顺序执行、ID/Usage/迭代/deadline 语义 | 阶段 5A | 5E 统一 Runtime；真正并发仅由新的延迟 Bad Case 决定 | Fake Provider + 真实知识工具、重复调用、越权、超预算和批次零副作用测试 | 已完成 |

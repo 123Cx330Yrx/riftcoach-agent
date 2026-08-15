@@ -971,3 +971,11 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   本批外部调用为 0。
 - `CURRENT`：先完成本批完整门禁、提交、推送和 exact-SHA CI，再进入 V3 资源合同设计；
   仍不得进入 5D exit review/5E。
+
+### 2026-08-15：预算裁决 exact-SHA 公开验证完成
+
+- `PUBLIC-VERIFIED`：提交 `78400b9310e512668c81ca41cd65623a92a27226` 已通过
+  GitHub Actions run `31865285994` 的全部门禁。
+- `BOUNDARY`：公开 CI Provider calls 为 0；该证据关闭 V2 资源裁决，不授权 V3 I/O。
+- `CURRENT`：唯一下一步为 V3 development 资源校准设计，先冻结校准数据、Usage 观测、
+  预算推导与安全余量，再决定是否值得创建全新真实门。

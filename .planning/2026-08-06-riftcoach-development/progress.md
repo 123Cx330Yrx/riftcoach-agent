@@ -1222,3 +1222,13 @@
   本批 Provider/Key/网络调用为 0。
 - 唯一下一步为完整门禁、提交、推送和 exact-SHA 公开 CI；成功后才开始 V3 资源合同
   development 校准设计，不直接运行 V3。
+
+### 2026-08-15：V2 预算裁决公开验证完成
+
+- 实现提交 `78400b9310e512668c81ca41cd65623a92a27226` 已推送到 `origin/main`。
+- GitHub Actions run `31865285994` 对精确 SHA completed/success；治理、587 tests/103
+  subtests、两套 RAG、compileall、Harness SDK/tracked-data boundary 与 dry-run 全部通过。
+- 公开 CI 没有 `.env`/Key 或 Provider I/O。V2 仍为不可变 `admitted=false`，模型领域质量
+  仍是 unknown。
+- 唯一下一步为 5D-7 V3 资源合同 development 校准设计；不创建 Provider、读取 Key、
+  调用模型或创建/运行 V3 held-out。

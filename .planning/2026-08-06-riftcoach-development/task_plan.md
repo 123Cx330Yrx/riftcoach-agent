@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.24 - 5D-7（in progress: V2 no-I/O budget adjudication complete locally; await public exact-SHA verification）
+Phase 6.25 - 5D-7（in progress: V2 budget adjudication public-verified; next V3 development resource calibration design）
 
 ## Phases
 
@@ -170,17 +170,19 @@ Phase 6.24 - 5D-7（in progress: V2 no-I/O budget adjudication complete locally;
   三类 request envelope，长度单位为 6666/7774/6266，以首轮真实 3241 input 校准后的
   input 投影为 3241/3780/3047。投影不冒充 Provider tokenizer，也不直接决定 V3 预算。
   新实现、严格 JSON 裁决和 6 个聚焦测试均不接受 Provider/Key/网络输入，外部调用为 0。
+- 预算裁决提交 `78400b9310e512668c81ca41cd65623a92a27226` 已通过 GitHub Actions run
+  `31865285994` 的 exact-SHA 公开 CI；V2 裁决正式完成，旧结果仍为 `admitted=false`。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-7 V2 预算可达性离线裁决已本地完成。唯一下一步是提交、推送并核验本批 exact-SHA
-公开 CI；CI 仍不得读取 Key 或调用 Provider。公开成功后，才允许开始 V3 资源合同的
-development 校准设计：新预算、新输入身份和新结果路径必须另行冻结，且在可达性证据
-完成前不授权 V3 I/O。不得修改或重跑 V2、调用其他模型、进入 5D exit review/5E，或把
-长度校准投影写成 Provider 官方 Token 结论。
+5D-7 V2 预算可达性离线裁决已经 exact-SHA 公开验证。唯一下一步是 V3 资源合同的
+development 校准设计：定义未使用 held-out 答案的校准数据、三阶段 Usage 观测方法、
+单例/领域/金额上限推导规则和安全余量，比较关闭候选与建立新门的成本；本步仍不创建
+Provider、不读取 Key、不调用模型，也不创建或运行 V3 held-out。不得修改或重跑 V2、
+调用其他模型、进入 5D exit review/5E，或把长度校准投影写成 Provider 官方 Token 结论。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
 `.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门
