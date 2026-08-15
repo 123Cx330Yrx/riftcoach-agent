@@ -999,3 +999,14 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `CURRENT`：唯一下一步仍在 5D-7，只实现校准 development 资产/合同、四阶段 Fake
   Provider 路径、预算推导和 no-I/O admission，并完成完整门禁与 exact-SHA public CI；
   真实 development replay 仍需后续单独确认。
+
+### 2026-08-15：V3 资源校准设计 exact-SHA 公开冻结
+
+- `PUBLIC-VERIFIED`：设计提交
+  `351c0e64adf9d2ace42c557d40fac81a44ab539e` 已通过 GitHub Actions run
+  `31866084382` 的治理、完整 pytest、两套 RAG、compileall、Harness SDK/tracked-data
+  boundary 与 dry-run。
+- `BOUNDARY`：CI 不含 Key 或 Provider I/O；公开设计不等于校准实现、真实 Usage、V3
+  预算或领域准入。
+- `CURRENT`：唯一下一步为 V3 development 资源校准离线 TDD 与公开冻结；真实最多
+  8-call Usage replay 仍需其后单独明确确认。

@@ -1253,3 +1253,6 @@
   Harness SDK boundary、tracked secret/run-data boundary、Harness dry-run、governance 和
   diff check 全部通过。首次误用终端默认 Hermes Python 导致缺少 pytest，未改变环境或
   项目文件；切换到仓库 `.venv` 后全量通过。
+- 设计提交 `351c0e64adf9d2ace42c557d40fac81a44ab539e` 已推送；GitHub Actions run
+  `31866084382` 对该精确 SHA completed/success，公开 CI 无 Key/Provider I/O。ADR-0026
+  设计至此公开冻结；下一步仍只是离线实现/TDD 与新的 exact-SHA CI。

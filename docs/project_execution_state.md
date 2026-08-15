@@ -64,7 +64,9 @@ blocked_before: "5D-exit-review"
   replay 观测资源；V3 单例预算将按逐阶段最大真实 input、25% 工程余量和四次 1024
   output ceiling 推导，若含既有协议成本后超过 `$0.10` 则停止而不创建 held-out；本设计
   Provider/Key/网络调用为 0；本地完整回归为 `587 passed, 103 subtests passed`，两套
-  RAG、compileall、Harness/secret/tracked-data、dry-run、治理和 diff check 均通过
+  RAG、compileall、Harness/secret/tracked-data、dry-run、治理和 diff check 均通过；
+  设计提交 `351c0e64adf9d2ace42c557d40fac81a44ab539e` 已通过 GitHub Actions run
+  `31866084382` 的 exact-SHA 公开 CI
 - 唯一下一步：5D-7 V3 资源校准离线 TDD 与公开冻结；实现两个不复用 V2 内容的
   development profile、四阶段请求捕获、安全结果合同、8-call Fake Provider/首错停止、
   预算推导器和 no-I/O admission，并在同一连贯批次完成完整门禁、提交、推送与
@@ -339,7 +341,7 @@ blocked_before: "5D-exit-review"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 已形成安全离线基线、DeepSeek 独立 Adapter/真实最小协议、领域控制接缝与真实门，并在 development 中补齐多 ToolCall 批次严格传输、整批预检和顺序执行；Fresh-Gate 1/3/4 已公开冻结；V2 真实结果和 ADR-0025 可达性裁决已公开归档；ADR-0026 的 V3 资源校准目前只有设计，尚无校准实现或 Usage 结果 | 阶段 5、整个 5D、DeepSeek 领域质量、V3 资源合同、生产默认切换或报告质量准入已完成；一次资源门失败已经评价了报告质量，或可以修改预算后重跑 V2 |
 | 项目理解 | 已区分控制面 admission 与数据面 Provider 调用、Dataset oracle 与案例执行计划，也已区分修复回归与新鲜采用测试、Provider/Model/Multi-Agent、协议/领域/产品三层门；V2 又实际证明“调用数上限”和“Token 可达性”是两项不同约束；ADR-0026 进一步区分正常 3-call、可选第 4 次结构修复、development Usage 校准与 held-out 质量采用，Fake Usage/本地长度都不能冒充真实 Provider Usage | 离线合成 executor 能评价模型智力/在线可用性，25% 工程余量具有统计置信保证，安全 fallback 等于模型通过，V2 `admitted=false` 已证明 DeepSeek 报告质量差，或 3 场 held-out 能证明通用生产质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | GLM-5.3 隔离规划 `e380e812` / `31859244059`、新鲜门设计 `f9edb4b4` / `31859717836`、多 ToolCall 修复 `037a47f` / `31817798170`、Fresh-Gate 1 `adba965` / `31860874440`、Fresh-Gate 3 `1e44b13` / `31861960565`、Fresh-Gate 4 入口 `ed3cc94` / `31863341338`、V2 结果归档 `60b5c86` / `31864370988` 与预算裁决 `78400b9` / `31865285994` 均已通过 exact-SHA CI；ADR-0026 设计尚待本批提交/公开验证，正式网页仍未部署 | 本地设计已经公开、公开失败证据等于模型质量结论、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
+| GitHub/部署 | GLM-5.3 隔离规划 `e380e812` / `31859244059`、新鲜门设计 `f9edb4b4` / `31859717836`、多 ToolCall 修复 `037a47f` / `31817798170`、Fresh-Gate 1 `adba965` / `31860874440`、Fresh-Gate 3 `1e44b13` / `31861960565`、Fresh-Gate 4 入口 `ed3cc94` / `31863341338`、V2 结果 `60b5c86` / `31864370988`、预算裁决 `78400b9` / `31865285994` 与 ADR-0026 设计 `351c0e6` / `31866084382` 均已通过 exact-SHA CI；正式网页仍未部署 | 公开设计等于校准实现/Usage 结果，公开失败证据等于模型质量结论、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

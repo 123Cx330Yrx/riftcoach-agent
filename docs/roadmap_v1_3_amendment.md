@@ -205,6 +205,9 @@ ADR-0026 已进一步冻结校准方法：baseline/ceiling 两个公开 developm
 `$0.10`、现有 Agent deadline 不可达或 envelope 越界时停止，不创建 held-out。当前只
 进入离线 TDD/公开冻结，不构造 Provider、读取 Key 或调用模型。
 
+该设计已由提交 `351c0e64adf9d2ace42c557d40fac81a44ab539e` 和 GitHub Actions run
+`31866084382` 完成 exact-SHA 公开冻结；这不等于校准实现或真实 Usage 已完成。
+
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
 错误选择率为 `0.0`。它已原样归档并附带 SHA-256 与重建来源说明。现在 Catalog
 已有两个真实 Skill，旧结果因候选集合变化而有意过时；双 Skill development v2

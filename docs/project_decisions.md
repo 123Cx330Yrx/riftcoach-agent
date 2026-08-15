@@ -336,3 +336,6 @@ development E2E 同时承担资源和质量评测：
 
 当前只完成设计，没有校准实现、Provider/Key/网络调用或 V3 held-out。下一步为离线 TDD
 和公开冻结，真实 development replay 仍需单独明确确认。
+
+设计提交 `351c0e64adf9d2ace42c557d40fac81a44ab539e` 已通过 GitHub Actions run
+`31866084382` 的 exact-SHA 公开 CI；公开冻结没有扩大真实调用权限。
