@@ -1247,3 +1247,22 @@
   语义保持兼容。
 - 预算推导必须从完整 8/8 Usage 才能产生；Fake 示例只证明公式和门禁，不能替代未来
   DeepSeek tokenizer/latency 证据，也不允许创建 V3 held-out。
+
+### 2026-08-15：真实 development Usage replay 入口发现
+
+- 离线 `simulate_resource_calibration()` 的显式 Fake 标记是必要隔离门，不能为了真实调用
+  直接删除；真实路径需要不同的 run admission 和 result 类型，才能让
+  `external_provider_calls=0` 与真实计费次数无法混淆。
+- no-I/O admission 的 `provider_construction_authorized=false` 保持原义；新的 run
+  admission 只有在用户确认、精确 8-call、冻结 request-set 与受控结果路径一致时才显式
+  升级，并把 experiment ID 绑定到 no-I/O proof 和输出身份。
+- Key-last 不只是“晚一点读环境”：CLI 必须先检查输出冲突、重建并核对 8 个请求、绑定
+  code/public-CI、独占预留结果，之后才加载 `.env` 和构造 Provider。
+- 真实与 Fake 回放可以共用同一个 ledger/首错停止内核，但只能由外层不同合同赋予证据
+  语义；真实结果保存 calls/Usage/latency/finish/request-id digest，不保存任何 response。
+- 只有真实 8/8 完整结果才能建立预算记录；预算推导本身外部调用为 0，并绑定真实结果
+  bytes SHA。stopped 结果不创建预算文件，也不允许在同一结果身份下补跑。
+- 实施聚焦 19、相邻 74、完整 `606 passed, 103 subtests passed`；当前仍未读取 Key 或
+  调用 Provider。一次相邻回归先猜错不存在的 `tests/test_provider_adoption.py`，随后先用
+  `rg --files` 定位为 `test_provider_adoption_control.py` 并取得 74/74；另一只读复核又沿用
+  了不存在的历史辅助脚本名，已改为严格照 `.github/workflows/tests.yml` 执行门禁。

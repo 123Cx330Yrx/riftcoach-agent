@@ -1031,3 +1031,16 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   GitHub Actions run `31867655627` 的 exact-SHA CI；公开运行没有 Key/Provider I/O。
 - `CURRENT`：唯一下一步仍在 5D-7，只展示冻结上限并等待用户对真实 8-call DeepSeek
   V4 Pro development Usage replay 的单独明确确认；确认前不读取 Key或创建 V3 held-out。
+
+### 2026-08-15：真实 8-call development Usage replay 已确认，入口本地 TDD 完成
+
+- `USER-CONFIRMED`：用户明确确认 RQ-033 的 DeepSeek V4 Pro 2 profiles × 4 stages
+  真实校准；64 output/request、64000 observed tokens、`$0.10`、零重试和首错停止不变。
+- `IMPLEMENTED-LOCAL`：新增真实 run admission、真实/Fake 分型结果、共享预算 replay、
+  Key-last CLI、prepare-only、不可变结果和完整 8/8 后的预算记录；不修改 Prompt、RAG、
+  Harness、V2 或默认模型。
+- `VERIFIED-LOCAL`：聚焦 19、相邻 74、完整 `606 passed, 103 subtests passed`、两套
+  RAG、compileall、Harness/security、dry-run、governance 与 diff check 已通过；当前
+  Key/Provider/外部调用仍为 0。
+- `CURRENT`：唯一下一步仍为 5D-7，先完成其余门禁并让真实入口通过新的 exact-SHA
+  public CI；随后在同一干净 SHA 上 prepare-only，再只执行一次已确认的真实 replay。

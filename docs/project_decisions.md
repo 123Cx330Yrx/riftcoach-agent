@@ -342,3 +342,20 @@ Provider/Key/网络调用和 V3 held-out 仍为 0；实现已由 `2d67696` / Act
 
 设计提交 `351c0e64adf9d2ace42c557d40fac81a44ab539e` 已通过 GitHub Actions run
 `31866084382` 的 exact-SHA 公开 CI；公开冻结没有扩大真实调用权限。
+
+### 真实 development Usage replay 入口裁决
+
+用户已按 RQ-033 明确确认一次 DeepSeek V4 Pro 8-call development 校准。执行仍分两层：
+
+- 既有 no-I/O admission 保持 `provider_construction_authorized=false`，不因确认而改义；
+- 新 run admission 绑定同一冻结请求、code/public-CI、显式确认和受控结果路径后，才允许
+  CLI 在结果独占预留之后读取 Key、构造 Provider；
+- Fake simulation 与真实 result 使用不同合同，但共用 ledger/首错停止内核；真实记录
+  保存实际计费调用数，禁止把 Fake 的 `external_provider_calls=0` 冒充真实 Usage；
+- 真实响应正文、Prompt、reasoning、工具/RAG 内容、原始 request ID 和异常不落库；
+- 只有 8/8 完整 Usage 才生成绑定结果 bytes SHA 的预算记录；stopped 结果保持不可变且
+  不补跑，不创建预算或 V3 held-out。
+
+入口本地聚焦 19、相邻 74、完整 606 tests 已通过，外部调用仍为 0。必须先提交、推送并
+取得这条入口的 exact-SHA public CI，再在同一干净 SHA 上执行 prepare-only 和一次真实
+回放；校准完成不等于领域质量或产品默认模型准入。

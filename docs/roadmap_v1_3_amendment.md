@@ -186,7 +186,7 @@ OP.GG MCP
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
-5D-7 Prompt/Context Eval      进行中；V2 `admitted=false`，V3 development 资源校准离线基础设施已公开冻结，等待真实 replay 确认
+5D-7 Prompt/Context Eval      进行中；V2 `admitted=false`，真实 8-call development Usage replay 已确认，Key-last 入口本地 TDD 完成并等待公开 CI
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -198,8 +198,10 @@ result envelope；相邻 93、完整 580 tests 通过，实现 `ed3cc94` / Actio
 上限，并以三阶段真实本地 envelope 建立非 tokenizer 的长度校准投影；裁决实现
 `78400b9` / Actions `31865285994` 已公开验证；V3 development 资源校准的双 profile、
 四阶段 body-free request snapshot、Fake 8-call/首错停止、安全结果、预算推导和 no-I/O
-admission 已由 `2d67696` / Actions `31867655627` 公开验证，真实 Usage 仍为 unknown；
-下一步只展示固定上限并等待真实 development replay 的独立确认。
+admission 已由 `2d67696` / Actions `31867655627` 公开验证；用户随后明确确认真实
+8-call development replay，真实/Fake 分型结果、run admission、Key-last CLI、首错停止、
+不可变结果和完整 8/8 后的预算记录已本地通过 606 tests，当前外部调用仍为 0。下一步先
+公开验证真实入口，再只在同一干净 SHA 上执行一次；真实 Usage 在执行前仍为 unknown。
 
 ADR-0026 已进一步冻结校准方法：baseline/ceiling 两个公开 development profile 各形成
 初始 Agent、工具后 Agent、Evaluation 和 Evaluation repair 四阶段请求；未来真实校准

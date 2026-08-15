@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.25 - 5D-7（in progress: ADR-0026 design accepted; next V3 resource calibration offline TDD/public freeze）
+Phase 6.25 - 5D-7（in progress: real 8-call development Usage replay confirmed; Key-last runner locally tested, public CI required before I/O）
 
 ## Phases
 
@@ -178,14 +178,13 @@ Phase 6.25 - 5D-7（in progress: ADR-0026 design accepted; next V3 resource cali
 
 ## Next Step
 
-5D-7 V3 资源合同 development 校准设计已由 ADR-0026 冻结。唯一下一步是在一个连贯批次
-完成离线 TDD 与公开冻结：创建两个不复用 V2 内容的 development profile，经现有生产
-组装捕获初始 Agent、工具后 Agent、Evaluation 和 Evaluation repair 四阶段请求；实现只
-持久化安全元数据的校准合同、8-call Fake Provider/首错停止、25% input/latency 余量与
-四次 1024 output ceiling 的预算推导器，以及完全不接收 Provider/Key 的 no-I/O admission；
-随后完成完整门禁、提交、推送和 exact-SHA CI。本步仍不构造真实 Provider、不读取 Key、
-不调用模型，也不创建或运行 V3 held-out。不得修改或重跑 V2、调用其他模型、进入 5D
-exit review/5E，或把本地长度/校准余量描述为统计保证。
+5D-7 V3 资源校准离线基础设施已公开冻结，用户已按 RQ-033 明确确认一次真实 8-call
+development Usage replay。真实/Fake 分型结果、run admission、Key-last CLI、不可变结果、
+首错停止与完整 8/8 后的预算记录已完成本地 TDD。唯一下一步是在不读取 Key 的前提下
+完成剩余本地门禁，提交、推送并验证这条真实入口的 exact-SHA 公共 CI；随后只在同一
+干净 SHA 上先运行 no-I/O `--prepare-only`，再执行一次最多 8-call 真实回放。失败即停止
+且不可补跑；本批不创建/运行 V3 held-out，不修改 V2/Prompt/Context/Skill/Harness，不
+调用其他模型，也不进入 5D exit review/5E。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
 `.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门
@@ -398,4 +397,17 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 - [x] 实现不接收 Provider/Key/client 的 no-I/O admission；
 - [x] 完成 598 tests/103 subtests、两套 RAG、compileall、Harness/安全/治理本地门禁；
 - [x] 提交、推送并由 `2d67696` / Actions `31867655627` 完成 exact-SHA 公开验证；
-- [ ] 展示真实 development replay 上限并等待用户单独确认。
+- [x] 展示真实 development replay 上限并获得用户单独确认；
+
+### 5D-7 V3 development Usage 真实回放（2026-08-15）
+
+- [x] 写入真实回放实施计划，保持 5D-7、ADR-0026 与 RQ-033 边界；
+- [x] 增加 no-I/O proof 到一次真实 run admission 的显式升级；
+- [x] 分开 Fake simulation 与真实 result 类型，保留真实计费调用数；
+- [x] 增加 Key-last CLI、prepare-only、不可变结果和完整 8/8 后的预算记录；
+- [x] 聚焦 19、相邻 74、完整 606 tests 与 compileall 通过；
+- [x] 完成两套 RAG、Harness/security/governance/diff 等剩余本地门禁；
+- [ ] 提交、推送并验证真实入口的 exact-SHA public CI；
+- [ ] 在同一干净 SHA 上运行 prepare-only；
+- [ ] 执行一次最多 8-call 真实 replay，保存不可变结果并在完整时推导预算；
+- [ ] 更新持久状态、完整回归、提交结果并验证最终 exact-SHA public CI。

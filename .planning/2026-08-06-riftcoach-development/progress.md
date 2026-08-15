@@ -1270,3 +1270,19 @@
   `31867655627` 对该精确 SHA completed/success；公开 CI 没有 Key 或 Provider I/O。
 - 当前唯一下一步：展示 8-call/64-output/64000-token/`$0.10`/零重试/首错停止边界，等待
   用户对真实 DeepSeek V4 Pro development Usage replay 的单独明确确认。
+
+## 2026-08-15：5D-7 真实 development Usage replay 入口本地完成
+
+- 用户已明确确认 RQ-033 的一次真实 DeepSeek V4 Pro 8-call development Usage 校准；
+  当前先实现并验证入口，尚未读取 Key 或发起外部调用。
+- 新增真实回放实施计划、`ResourceCalibrationRunAdmission`、
+  `RealResourceCalibrationResult`、不可变输出 reservation、真实 replay 协调器、预算结果
+  记录和 `run_deepseek_resource_calibration.py` Key-last CLI。
+- prepare-only 会在 no-I/O admission 后返回；真实路径固定 output reservation -> env/Key
+  -> Provider -> 8-request replay -> result commit，Fake simulation 仍拒绝真实 Provider
+  surface。
+- 聚焦 `19 passed`、相邻 `74 passed`、完整
+  `606 passed, 103 subtests passed`；两套 RAG、compileall、Harness SDK/tracked-data
+  boundary、dry-run、governance 和 diff check 已通过；本批至今真实 calls 0。
+- 唯一下一步为完成剩余本地门禁、提交/推送和 exact-SHA public CI；成功后在同一干净
+  SHA 运行 prepare-only，再按既有确认执行一次真实回放。

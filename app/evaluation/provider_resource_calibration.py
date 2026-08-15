@@ -16,6 +16,8 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from decimal import Decimal, ROUND_CEILING
 from enum import Enum
@@ -318,6 +320,153 @@ class CalibrationSimulationResult(BaseModel):
         return self
 
 
+class ResourceCalibrationAdmission(BaseModel):
+    """No-I/O proof for a later, separately authorized calibration run."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["1.0"] = "1.0"
+    provider_id: Literal["deepseek"]
+    requested_model: Literal["deepseek-v4-pro"]
+    code_sha: GitShaText
+    public_ci_sha: GitShaText
+    public_ci_success_confirmed: Literal[True]
+    artifact_id: NonBlankText
+    artifact_sha256: Sha256Text
+    request_set_sha256: Sha256Text
+    maximum_calls: Literal[8]
+    maximum_output_tokens_per_request: Literal[64]
+    maximum_observed_tokens: Literal[64000]
+    maximum_estimated_cost: Decimal
+    currency: Literal["USD"]
+    sdk_max_retries: Literal[0]
+    external_provider_calls: Literal[0]
+    held_out_created: Literal[False]
+    provider_construction_authorized: Literal[False]
+    local_preflight_passed: Literal[True]
+
+    @model_validator(mode="after")
+    def validate_exact_ci_identity(self) -> "ResourceCalibrationAdmission":
+        if self.code_sha != self.public_ci_sha:
+            raise ValueError("no-I/O admission must bind exact public CI SHA")
+        return self
+
+
+class ResourceCalibrationRunAdmission(BaseModel):
+    """Explicit upgrade from no-I/O proof to one bounded real replay."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["1.0"] = "1.0"
+    experiment_id: Sha256Text
+    no_io_admission: ResourceCalibrationAdmission
+    result_relative_path: NonBlankText
+    explicit_real_call_confirmed: Literal[True]
+    maximum_calls: Literal[8]
+    provider_construction_authorized: Literal[True]
+    external_provider_calls_before_run: Literal[0]
+    held_out_created: Literal[False]
+    quality_admission_excluded: Literal[True]
+
+    @model_validator(mode="after")
+    def validate_run_identity(self) -> "ResourceCalibrationRunAdmission":
+        no_io = self.no_io_admission
+        normalized_path = _validate_resource_result_relative_path(
+            self.result_relative_path
+        )
+        if (
+            no_io.maximum_calls != self.maximum_calls
+            or no_io.provider_id != "deepseek"
+            or no_io.requested_model != "deepseek-v4-pro"
+            or no_io.provider_construction_authorized is not False
+        ):
+            raise ValueError("real replay admission does not match no-I/O proof")
+        if normalized_path != self.result_relative_path:
+            raise ValueError("real replay result path is not canonical")
+        expected_id = _resource_calibration_experiment_id(
+            admission=no_io,
+            result_relative_path=normalized_path,
+            maximum_calls=self.maximum_calls,
+        )
+        if self.experiment_id != expected_id:
+            raise ValueError("real replay experiment identity drifted")
+        return self
+
+
+class RealResourceCalibrationResult(BaseModel):
+    """Safe immutable result of the separately authorized real replay."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    schema_version: Literal["1.0"] = "1.0"
+    experiment_id: Sha256Text
+    admission: ResourceCalibrationRunAdmission
+    status: Literal["completed", "stopped"]
+    provider_id: Literal["deepseek"]
+    requested_model: Literal["deepseek-v4-pro"]
+    request_set_sha256: Sha256Text
+    expected_calls: Literal[8]
+    replay_calls_used: int = Field(ge=0, le=8)
+    responses_completed: int = Field(ge=0, le=8)
+    observations: tuple[ResourceCalibrationUsageObservation, ...]
+    ledger: ResourceLedgerSnapshot
+    failure_code: ExperimentFailureCode | None = None
+    external_provider_calls: int = Field(ge=0, le=8)
+    v3_budget_derivation_ready: bool
+    quality_admission_excluded: Literal[True]
+    model_quality_evaluated: Literal[False]
+    held_out_executed: Literal[False]
+
+    @model_validator(mode="after")
+    def validate_terminal_result(self) -> "RealResourceCalibrationResult":
+        if self.experiment_id != self.admission.experiment_id:
+            raise ValueError("real result does not match the admitted experiment")
+        if self.request_set_sha256 != (
+            self.admission.no_io_admission.request_set_sha256
+        ):
+            raise ValueError("real result request identity drifted")
+        if self.responses_completed != len(self.observations):
+            raise ValueError("responses_completed must match observations")
+        if (
+            self.replay_calls_used != self.ledger.calls_used
+            or self.external_provider_calls != self.replay_calls_used
+        ):
+            raise ValueError("real call count must match the resource ledger")
+        if (
+            self.ledger.provider_id != self.provider_id
+            or self.ledger.model != self.requested_model
+            or self.ledger.max_calls != self.expected_calls
+        ):
+            raise ValueError("real result ledger identity drifted")
+        expected_observations = tuple(
+            (profile_id, stage)
+            for profile_id in _EXPECTED_PROFILE_IDS
+            for stage in CALIBRATION_STAGES
+        )
+        actual_observations = tuple(
+            (row.profile_id, row.stage) for row in self.observations
+        )
+        if actual_observations != expected_observations[: len(self.observations)]:
+            raise ValueError("real result observations are not a frozen prefix")
+        if tuple(row.ordinal for row in self.observations) != tuple(
+            range(1, len(self.observations) + 1)
+        ):
+            raise ValueError("real result observation ordinals are not contiguous")
+        completed = self.status == "completed"
+        if completed:
+            if (
+                self.failure_code is not None
+                or self.replay_calls_used != self.expected_calls
+                or self.responses_completed != self.expected_calls
+            ):
+                raise ValueError("completed real replay requires clean 8/8 usage")
+        elif self.failure_code is None:
+            raise ValueError("stopped real replay requires a safe failure code")
+        if self.v3_budget_derivation_ready != completed:
+            raise ValueError("budget readiness must match replay completeness")
+        return self
+
+
 class V3StageResourceBudget(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -358,30 +507,73 @@ class V3ResourceBudgetDecision(BaseModel):
         return self
 
 
-class ResourceCalibrationAdmission(BaseModel):
-    """No-I/O proof for a later, separately authorized calibration run."""
+class V3ResourceBudgetRecord(BaseModel):
+    """Public proof that a budget was derived without another Provider call."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     schema_version: Literal["1.0"] = "1.0"
-    provider_id: Literal["deepseek"]
-    requested_model: Literal["deepseek-v4-pro"]
+    calibration_experiment_id: Sha256Text
+    calibration_result_sha256: Sha256Text
     code_sha: GitShaText
     public_ci_sha: GitShaText
-    public_ci_success_confirmed: Literal[True]
-    artifact_id: NonBlankText
-    artifact_sha256: Sha256Text
     request_set_sha256: Sha256Text
-    maximum_calls: Literal[8]
-    maximum_output_tokens_per_request: Literal[64]
-    maximum_observed_tokens: Literal[64000]
-    maximum_estimated_cost: Decimal
-    currency: Literal["USD"]
-    sdk_max_retries: Literal[0]
+    calibration_external_provider_calls: Literal[8]
     external_provider_calls: Literal[0]
     held_out_created: Literal[False]
-    provider_construction_authorized: Literal[False]
-    local_preflight_passed: Literal[True]
+    quality_admission_excluded: Literal[True]
+    decision: V3ResourceBudgetDecision
+
+
+class ImmutableResourceCalibrationOutput:
+    """Reserve one real result path before Key loading or Provider creation."""
+
+    def __init__(self, path: Path, experiment_id: str, stream) -> None:
+        self.path = path
+        self.experiment_id = experiment_id
+        self._stream = stream
+        self._committed = False
+
+    @classmethod
+    def reserve(
+        cls,
+        path: str | Path,
+        *,
+        experiment_id: str,
+    ) -> "ImmutableResourceCalibrationOutput":
+        if not re.fullmatch(r"[0-9a-f]{64}", experiment_id):
+            raise ValueError("experiment_id must be a SHA-256 digest")
+        output = Path(path)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        stream = output.open("x", encoding="utf-8", newline="\n")
+        return cls(output, experiment_id, stream)
+
+    def commit(self, result: RealResourceCalibrationResult) -> None:
+        if self._committed or self._stream.closed:
+            raise RuntimeError("resource calibration output is already finalized")
+        if not isinstance(result, RealResourceCalibrationResult):
+            raise TypeError("result must be a RealResourceCalibrationResult")
+        if result.experiment_id != self.experiment_id:
+            raise ValueError("result does not match the reserved experiment")
+        self._stream.write(result.model_dump_json(indent=2))
+        self._stream.write("\n")
+        self._stream.flush()
+        self._stream.close()
+        self._committed = True
+
+    def abandon(self) -> None:
+        """Retain the exclusive sentinel so a post-reservation crash cannot rerun."""
+
+        if not self._stream.closed:
+            self._stream.close()
+
+
+@dataclass(frozen=True)
+class _CalibrationReplayOutcome:
+    status: Literal["completed", "stopped"]
+    observations: tuple[ResourceCalibrationUsageObservation, ...]
+    ledger: ResourceLedgerSnapshot
+    failure_code: ExperimentFailureCode | None
 
 
 class CalibrationIncompleteError(ValueError):
@@ -596,6 +788,86 @@ def simulate_resource_calibration(
         raise TypeError("frozen must be a FrozenCalibrationRequestSet")
     if getattr(provider, "is_offline_calibration_fake", False) is not True:
         raise ValueError("offline simulation requires an explicit fake Provider")
+    outcome = _execute_resource_calibration_replay(
+        frozen,
+        provider=provider,
+        clock=clock,
+    )
+    return CalibrationSimulationResult(
+        status=outcome.status,
+        provider_id="deepseek",
+        requested_model="deepseek-v4-pro",
+        request_set_sha256=frozen.snapshot.request_set_sha256,
+        expected_calls=_CALIBRATION_MAX_CALLS,
+        replay_calls_used=outcome.ledger.calls_used,
+        responses_completed=len(outcome.observations),
+        observations=outcome.observations,
+        ledger=outcome.ledger,
+        failure_code=outcome.failure_code,
+        external_provider_calls=0,
+        quality_admission_excluded=True,
+    )
+
+
+def run_real_resource_calibration(
+    *,
+    admission: ResourceCalibrationRunAdmission,
+    frozen: FrozenCalibrationRequestSet,
+    provider: LLMProvider,
+    clock: Callable[[], float] = time.monotonic,
+) -> RealResourceCalibrationResult:
+    """Replay one admitted request set without retaining any response body."""
+
+    if not isinstance(admission, ResourceCalibrationRunAdmission):
+        raise TypeError("admission must be a ResourceCalibrationRunAdmission")
+    if not isinstance(frozen, FrozenCalibrationRequestSet):
+        raise TypeError("frozen must be a FrozenCalibrationRequestSet")
+    if (
+        admission.no_io_admission.request_set_sha256
+        != frozen.snapshot.request_set_sha256
+        or len(frozen.requests) != admission.maximum_calls
+    ):
+        raise ValueError("real replay request identity drifted")
+    if (
+        provider.provider_name != admission.no_io_admission.provider_id
+        or provider.model_name != admission.no_io_admission.requested_model
+    ):
+        raise ValueError("real Provider identity does not match admission")
+
+    outcome = _execute_resource_calibration_replay(
+        frozen,
+        provider=provider,
+        clock=clock,
+    )
+    return RealResourceCalibrationResult(
+        experiment_id=admission.experiment_id,
+        admission=admission,
+        status=outcome.status,
+        provider_id="deepseek",
+        requested_model="deepseek-v4-pro",
+        request_set_sha256=frozen.snapshot.request_set_sha256,
+        expected_calls=_CALIBRATION_MAX_CALLS,
+        replay_calls_used=outcome.ledger.calls_used,
+        responses_completed=len(outcome.observations),
+        observations=outcome.observations,
+        ledger=outcome.ledger,
+        failure_code=outcome.failure_code,
+        external_provider_calls=outcome.ledger.calls_used,
+        v3_budget_derivation_ready=outcome.status == "completed",
+        quality_admission_excluded=True,
+        model_quality_evaluated=False,
+        held_out_executed=False,
+    )
+
+
+def _execute_resource_calibration_replay(
+    frozen: FrozenCalibrationRequestSet,
+    *,
+    provider: LLMProvider,
+    clock: Callable[[], float],
+) -> _CalibrationReplayOutcome:
+    """Shared bounded replay engine; callers assign offline/real semantics."""
+
     policy = deepseek_resource_calibration_policy()
     ledger = ProviderResourceLedger(policy)
     controller = ExperimentStopController(allowed_provider_ids=(policy.provider_id,))
@@ -643,14 +915,8 @@ def simulate_resource_calibration(
         and len(observations) == _CALIBRATION_MAX_CALLS
         and snapshot.calls_used == _CALIBRATION_MAX_CALLS
     )
-    return CalibrationSimulationResult(
+    return _CalibrationReplayOutcome(
         status="completed" if completed else "stopped",
-        provider_id=policy.provider_id,
-        requested_model=policy.model,
-        request_set_sha256=frozen.snapshot.request_set_sha256,
-        expected_calls=_CALIBRATION_MAX_CALLS,
-        replay_calls_used=snapshot.calls_used,
-        responses_completed=len(observations),
         observations=tuple(observations),
         ledger=snapshot,
         failure_code=(
@@ -658,18 +924,19 @@ def simulate_resource_calibration(
             if completed
             else failure_code or ExperimentFailureCode.PROVIDER_RESPONSE_INVALID
         ),
-        external_provider_calls=0,
-        quality_admission_excluded=True,
     )
 
 
 def derive_v3_resource_budget(
-    result: CalibrationSimulationResult,
+    result: CalibrationSimulationResult | RealResourceCalibrationResult,
 ) -> V3ResourceBudgetDecision:
     """Apply ADR-0026's integer/Decimal-only, upward-rounded formula."""
 
-    if not isinstance(result, CalibrationSimulationResult):
-        raise TypeError("result must be a CalibrationSimulationResult")
+    if not isinstance(
+        result,
+        (CalibrationSimulationResult, RealResourceCalibrationResult),
+    ):
+        raise TypeError("result must be a calibration replay result")
     expected = tuple(
         (profile_id, stage)
         for profile_id in _EXPECTED_PROFILE_IDS
@@ -794,6 +1061,111 @@ def prepare_resource_calibration_admission(
         held_out_created=False,
         provider_construction_authorized=False,
         local_preflight_passed=True,
+    )
+
+
+def prepare_resource_calibration_run_admission(
+    *,
+    admission: ResourceCalibrationAdmission,
+    frozen_requests: FrozenCalibrationRequestSet,
+    explicit_real_call_confirmed: bool,
+    maximum_calls: int,
+    result_relative_path: str,
+) -> ResourceCalibrationRunAdmission:
+    """Authorize one real replay without accepting a Provider or API Key."""
+
+    if not isinstance(admission, ResourceCalibrationAdmission):
+        raise TypeError("admission must be a ResourceCalibrationAdmission")
+    if not isinstance(frozen_requests, FrozenCalibrationRequestSet):
+        raise TypeError("frozen_requests must be a FrozenCalibrationRequestSet")
+    if not explicit_real_call_confirmed:
+        raise RuntimeError("real calibration requires explicit confirmation")
+    if maximum_calls != _CALIBRATION_MAX_CALLS:
+        raise ValueError("real calibration requires exactly 8 calls")
+    if (
+        admission.maximum_calls != maximum_calls
+        or admission.request_set_sha256
+        != frozen_requests.snapshot.request_set_sha256
+        or len(frozen_requests.requests) != maximum_calls
+    ):
+        raise ValueError("real calibration request identity drifted")
+    normalized_path = _validate_resource_result_relative_path(
+        result_relative_path
+    )
+    return ResourceCalibrationRunAdmission(
+        experiment_id=_resource_calibration_experiment_id(
+            admission=admission,
+            result_relative_path=normalized_path,
+            maximum_calls=maximum_calls,
+        ),
+        no_io_admission=admission,
+        result_relative_path=normalized_path,
+        explicit_real_call_confirmed=True,
+        maximum_calls=_CALIBRATION_MAX_CALLS,
+        provider_construction_authorized=True,
+        external_provider_calls_before_run=0,
+        held_out_created=False,
+        quality_admission_excluded=True,
+    )
+
+
+def build_v3_resource_budget_record(
+    *,
+    result: RealResourceCalibrationResult,
+    calibration_result_sha256: str,
+) -> V3ResourceBudgetRecord:
+    """Bind ADR-0026's pure decision to exact immutable real-result bytes."""
+
+    if not isinstance(result, RealResourceCalibrationResult):
+        raise TypeError("result must be a RealResourceCalibrationResult")
+    if not re.fullmatch(r"[0-9a-f]{64}", calibration_result_sha256):
+        raise ValueError("calibration_result_sha256 must be a SHA-256 digest")
+    decision = derive_v3_resource_budget(result)
+    no_io = result.admission.no_io_admission
+    return V3ResourceBudgetRecord(
+        calibration_experiment_id=result.experiment_id,
+        calibration_result_sha256=calibration_result_sha256,
+        code_sha=no_io.code_sha,
+        public_ci_sha=no_io.public_ci_sha,
+        request_set_sha256=result.request_set_sha256,
+        calibration_external_provider_calls=8,
+        external_provider_calls=0,
+        held_out_created=False,
+        quality_admission_excluded=True,
+        decision=decision,
+    )
+
+
+def _validate_resource_result_relative_path(value: str) -> str:
+    if not isinstance(value, str) or "\\" in value:
+        raise ValueError("result path must be a safe project-relative JSON path")
+    result_path = PurePosixPath(value)
+    allowed_root = PurePosixPath(
+        "data/evaluation/results/provider_capabilities"
+    )
+    if (
+        result_path.is_absolute()
+        or ".." in result_path.parts
+        or result_path.suffix.lower() != ".json"
+        or not result_path.is_relative_to(allowed_root)
+    ):
+        raise ValueError("result path must be a safe project-relative JSON path")
+    return result_path.as_posix()
+
+
+def _resource_calibration_experiment_id(
+    *,
+    admission: ResourceCalibrationAdmission,
+    result_relative_path: str,
+    maximum_calls: int,
+) -> str:
+    return _digest_json(
+        {
+            "no_io_admission": admission.model_dump(mode="json"),
+            "result_relative_path": result_relative_path,
+            "explicit_real_call_confirmed": True,
+            "maximum_calls": maximum_calls,
+        }
     )
 
 
@@ -1012,14 +1384,21 @@ __all__ = [
     "CalibrationSimulationResult",
     "CalibrationStage",
     "FrozenCalibrationRequestSet",
+    "ImmutableResourceCalibrationOutput",
+    "RealResourceCalibrationResult",
     "ResourceCalibrationAdmission",
     "ResourceCalibrationRequestSnapshot",
+    "ResourceCalibrationRunAdmission",
     "ResourceCalibrationUsageObservation",
     "V3ResourceBudgetDecision",
+    "V3ResourceBudgetRecord",
+    "build_v3_resource_budget_record",
     "capture_resource_calibration_requests",
     "deepseek_resource_calibration_policy",
     "derive_v3_resource_budget",
     "load_resource_calibration_profiles",
     "prepare_resource_calibration_admission",
+    "prepare_resource_calibration_run_admission",
+    "run_real_resource_calibration",
     "simulate_resource_calibration",
 ]

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import inspect
 import tempfile
@@ -15,13 +16,18 @@ from app.evaluation.provider_resource_calibration import (
     CalibrationIncompleteError,
     CalibrationSimulationResult,
     CalibrationStage,
+    ImmutableResourceCalibrationOutput,
+    RealResourceCalibrationResult,
     ResourceCalibrationUsageObservation,
     ResourceCalibrationRequestSnapshot,
+    build_v3_resource_budget_record,
     capture_resource_calibration_requests,
     deepseek_resource_calibration_policy,
     derive_v3_resource_budget,
     load_resource_calibration_profiles,
     prepare_resource_calibration_admission,
+    prepare_resource_calibration_run_admission,
+    run_real_resource_calibration,
     simulate_resource_calibration,
 )
 from app.providers.capabilities import ProviderCapabilities
@@ -445,4 +451,185 @@ def test_no_io_admission_requires_exact_public_ci_sha():
             code_sha="b" * 40,
             public_ci_sha="c" * 40,
             public_ci_success_confirmed=True,
+        )
+
+
+def real_run_admission(frozen):
+    loaded = loaded_profiles()
+    no_io = prepare_resource_calibration_admission(
+        loaded=loaded,
+        frozen_requests=frozen,
+        code_sha="d" * 40,
+        public_ci_sha="d" * 40,
+        public_ci_success_confirmed=True,
+    )
+    return prepare_resource_calibration_run_admission(
+        admission=no_io,
+        frozen_requests=frozen,
+        explicit_real_call_confirmed=True,
+        maximum_calls=8,
+        result_relative_path=(
+            "data/evaluation/results/provider_capabilities/"
+            "deepseek_v4_pro_resource_calibration_v1.json"
+        ),
+    )
+
+
+def test_real_replay_is_separate_from_fake_and_produces_safe_usage_record():
+    loaded = loaded_profiles()
+    with tempfile.TemporaryDirectory() as directory:
+        frozen = capture_resource_calibration_requests(
+            loaded,
+            project_root=ROOT,
+            runs_root=directory,
+        )
+    provider = OfflineFakeCalibrationProvider(
+        usages=(
+            (1200, 10),
+            (1700, 12),
+            (1300, 10),
+            (700, 8),
+            (1800, 12),
+            (2200, 14),
+            (1600, 11),
+            (900, 9),
+        ),
+        is_offline_calibration_fake=False,
+    )
+
+    result = run_real_resource_calibration(
+        admission=real_run_admission(frozen),
+        frozen=frozen,
+        provider=provider,
+        clock=StepClock(),
+    )
+
+    assert isinstance(result, RealResourceCalibrationResult)
+    assert result.status == "completed"
+    assert result.external_provider_calls == 8
+    assert result.responses_completed == 8
+    assert result.v3_budget_derivation_ready is True
+    assert result.quality_admission_excluded is True
+    assert result.held_out_executed is False
+    assert all(request.max_tokens == 64 for request in provider.requests)
+    serialized = result.model_dump_json()
+    assert "offline calibration response" not in serialized
+    assert "raw-fake-request" not in serialized
+
+    decision = derive_v3_resource_budget(result)
+    assert decision.v3_gate_creation_allowed is True
+
+
+def test_real_replay_stops_once_and_preserves_billable_call_count():
+    loaded = loaded_profiles()
+    with tempfile.TemporaryDirectory() as directory:
+        frozen = capture_resource_calibration_requests(
+            loaded,
+            project_root=ROOT,
+            runs_root=directory,
+        )
+    provider = OfflineFakeCalibrationProvider(
+        usages=((100, 1),) * 8,
+        fail_at=3,
+        is_offline_calibration_fake=False,
+    )
+
+    result = run_real_resource_calibration(
+        admission=real_run_admission(frozen),
+        frozen=frozen,
+        provider=provider,
+        clock=StepClock(),
+    )
+
+    assert result.status == "stopped"
+    assert result.failure_code is ExperimentFailureCode.PROVIDER_TIMEOUT
+    assert result.external_provider_calls == 3
+    assert result.responses_completed == 2
+    assert result.v3_budget_derivation_ready is False
+    assert len(provider.requests) == 3
+    with pytest.raises(CalibrationIncompleteError):
+        derive_v3_resource_budget(result)
+
+
+def test_real_run_admission_requires_confirmation_and_exact_frozen_identity():
+    loaded = loaded_profiles()
+    with tempfile.TemporaryDirectory() as directory:
+        frozen = capture_resource_calibration_requests(
+            loaded,
+            project_root=ROOT,
+            runs_root=directory,
+        )
+    no_io = prepare_resource_calibration_admission(
+        loaded=loaded,
+        frozen_requests=frozen,
+        code_sha="e" * 40,
+        public_ci_sha="e" * 40,
+        public_ci_success_confirmed=True,
+    )
+
+    with pytest.raises(RuntimeError, match="explicit confirmation"):
+        prepare_resource_calibration_run_admission(
+            admission=no_io,
+            frozen_requests=frozen,
+            explicit_real_call_confirmed=False,
+            maximum_calls=8,
+            result_relative_path="data/evaluation/results/result.json",
+        )
+    with pytest.raises(ValueError, match="exactly 8 calls"):
+        prepare_resource_calibration_run_admission(
+            admission=no_io,
+            frozen_requests=frozen,
+            explicit_real_call_confirmed=True,
+            maximum_calls=7,
+            result_relative_path="data/evaluation/results/result.json",
+        )
+    with pytest.raises(ValueError, match="relative JSON"):
+        prepare_resource_calibration_run_admission(
+            admission=no_io,
+            frozen_requests=frozen,
+            explicit_real_call_confirmed=True,
+            maximum_calls=8,
+            result_relative_path="../result.json",
+        )
+
+
+def test_immutable_real_result_and_budget_record_bind_exact_bytes(tmp_path: Path):
+    loaded = loaded_profiles()
+    with tempfile.TemporaryDirectory() as directory:
+        frozen = capture_resource_calibration_requests(
+            loaded,
+            project_root=ROOT,
+            runs_root=directory,
+        )
+    provider = OfflineFakeCalibrationProvider(
+        usages=((100, 1),) * 8,
+        is_offline_calibration_fake=False,
+    )
+    result = run_real_resource_calibration(
+        admission=real_run_admission(frozen),
+        frozen=frozen,
+        provider=provider,
+        clock=StepClock(),
+    )
+    output = tmp_path / "real-result.json"
+    reservation = ImmutableResourceCalibrationOutput.reserve(
+        output,
+        experiment_id=result.experiment_id,
+    )
+    reservation.commit(result)
+    result_sha256 = hashlib.sha256(output.read_bytes()).hexdigest()
+    budget = build_v3_resource_budget_record(
+        result=result,
+        calibration_result_sha256=result_sha256,
+    )
+
+    assert budget.calibration_experiment_id == result.experiment_id
+    assert budget.calibration_result_sha256 == result_sha256
+    assert budget.calibration_external_provider_calls == 8
+    assert budget.external_provider_calls == 0
+    assert budget.held_out_created is False
+    with pytest.raises(FileExistsError):
+        ImmutableResourceCalibrationOutput.reserve(
+            output,
+            experiment_id=result.experiment_id,
         )
