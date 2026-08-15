@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 7 - 5E AgentRuntime V1（next: entry design; implementation not started）
+Phase 7 - 5E-1 Runtime Contract、Usage 与 Trace Store（entry design complete）
 
 ## Phases
 
@@ -184,20 +184,24 @@ Phase 7 - 5E AgentRuntime V1（next: entry design; implementation not started）
 ### Phase 7 - 5E AgentRuntime V1
 
 - Status: in_progress
-- 当前检查点已激活；入口设计和实现均尚未开始。
-- 先审计 5D 已有的 run_id、Agent/Tool/Harness 停止原因、Usage、Artifact 与终态合同；
-- 比较最小组合、自建薄 Runtime 与候选框架表面，先写设计再实现；
-- 冻结 `run/stream/event/trace/usage` 的统一语义，并保证 stream 与 run 得到同一终态；
-- ReviewHarness 继续是唯一发布权，Trace 只保存安全元数据和 Artifact 引用；
+- 入口设计与 ADR-0029 已完成：采用薄 Runtime + 可选观察端口，不采用外层事后回放或
+  事件溯源/DAG 重写；
+- 5E 内部固定为 5E-1 合同/Usage/Trace Store、5E-2 observable run、5E-3 live stream
+  parity、5E-4 evaluation/exit review；
+- 当前只进入 5E-1：严格模型、Recorder、不完整 Usage 和原子 Trace Store，尚不修改
+  AgentLoop/Harness observer，也不实现完整 `run/stream()`；
+- ReviewHarness 继续是唯一发布权，Runtime 状态与 publication 状态分开，Trace 只保存
+  安全元数据和 Artifact 引用；
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
   实验仍属于 5F，Prompt Program 属于 5P。
 
 ## Next Step
 
-`5E AgentRuntime V1` 入口设计：以初学者视角解释 Loop 与 Runtime 的区别，完整盘点
-现有分散运行信号，比较 2-3 种组合方案，再冻结最小 `run/stream/event/trace/usage`
-合同、失败语义、测试切片和明确排除项。此下一步不读取 Key、不调用 Provider、不测试
-Flash、不迁移 GLM-5.3、不修改默认模型，也不直接采用 LangGraph 或 Agent SDK。
+`5E-1 Runtime Contract、Usage 与 Trace Store`：用纯本地 TDD 实现严格
+`RuntimeRunRequest/Result`、类型化 Signal/Event、中央 Recorder、complete/partial/unknown
+Usage 与不可覆盖的原子最终 Trace Store。当前不接 AgentLoop/Harness observer，不实现
+完整 `run()/stream()`，不读取 Key、不调用 Provider、不测试 Flash、不迁移 GLM-5.3、
+不修改默认模型，也不采用 LangGraph 或 Agent SDK。
 
 ## Decisions Made
 
@@ -281,6 +285,10 @@ Flash、不迁移 GLM-5.3、不修改默认模型，也不直接采用 LangGraph
 | GLM-5.3 作为隔离的同厂商迁移候选 | 官方页面要求始终启用 thinking，当前 Zhipu Adapter 固定 disabled thinking，不能只改模型名；G53 继续按 ADR-0023 做独立 profile/协议/领域采用门，但 API 未上线时不阻塞已完成的 5D-7，也不影响 5D-exit-review |
 | 新鲜领域采用门复用控制面并重建实验身份 | 重写控制面会复制 Harness/Evaluator/预算，旧题改名又是假新鲜；ADR-0024 保留产品链路，先用 development TDD 冻结兼容合同，之后才创建新 fixture/Dataset/plan/Context，并把历史真实证据与当前 CI 串成不可改写链 |
 | V3 资源合同采用四阶段 development Usage replay | 直接调高 V2 会污染考卷，单次端到端运行又不保证进入 repair；ADR-0026 用 baseline/ceiling 两个公开 profile 经真实生产组装形成四类请求，最多 8 次独立 replay 只测 Usage，再按逐阶段最大 input、25% 工程余量和硬 output cap 推导新门 |
+| 5E 采用薄 Runtime + 可选观察端口 | 外层包装只能事后回放，事件溯源/DAG 又会复制 Harness 并提前进入 5F/8；ADR-0029 复用现有执行链，让中央 Recorder 统一安全事件、Usage 与 Trace |
+| Runtime 状态与 publication 状态分离 | Harness 前失败没有发布状态；Provider 失败后 Harness 仍可能安全降级。拆开两者才能准确表达终态而不篡改唯一发布权 |
+| V1 Usage 显式区分 complete/partial/unknown | 真实请求可能已发送却没有规范化 Usage；把默认零当成实际零会让 Token 和费用证据失真 |
+| V1 stream 是进程内状态事件流 | 5P 需要实时进度，但当前没有 cancel、durable replay 或 Token chunk Bad Case；这些继续留给 5P/6/8 |
 
 ## Errors Encountered
 
@@ -471,3 +479,17 @@ Flash、不迁移 GLM-5.3、不修改默认模型，也不直接采用 LangGraph
   Harness SDK/tracked-data boundary、dry-run、治理和 diff check；
 - [x] 退出审查提交 `2f4e4d40f00cf6a14b7c9c0f85e8d3cbdc8c2493` 已推送并通过
   Actions run `31877076222` 的 exact-SHA public CI。
+
+### 5E AgentRuntime V1 入口设计（2026-08-15）
+
+- [x] 审计 Boundary、Context、Agent/Provider/Tool、Harness 与 Artifact 的现有运行信号；
+- [x] 比较外层事后包装、薄 Runtime + observer、事件溯源/DAG/第三方框架三种方案；
+- [x] 以 ADR-0029 接受薄 Runtime，并保留 ReviewHarness 唯一发布权；
+- [x] 冻结 request/result、Signal/Event、Runtime/publication 双状态和安全失败分类；
+- [x] 冻结 complete/partial/unknown Usage 与版本化定价边界；
+- [x] 冻结进程内 live stream、原子最终 Trace 及不保存正文/秘密的安全边界；
+- [x] 拆分 5E-1 至 5E-4，保持 5P/5F/阶段 6/8 边界不变；
+- [x] 完成本入口设计批本地门禁：`616 passed, 103 subtests passed`、两套 RAG、compileall、
+  Harness SDK/tracked-data boundary、dry-run、治理和 diff check；
+- [ ] 提交推送并完成 exact-SHA public CI；
+- [ ] 进入 5E-1 前先讲解合同、Usage 和原子 Trace Store 的原理与 TDD 证明范围。

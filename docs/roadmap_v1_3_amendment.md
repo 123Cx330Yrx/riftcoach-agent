@@ -188,7 +188,11 @@ OP.GG MCP
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
 5D-7 Prompt/Context Eval      已完成；评测/安全门通过审查，当前无领域 Provider 准入；ADR-0028 保留质量 unknown，G53-0 deferred
 5D-exit-review                已完成；十项功能要求与 V1 NFR 通过，领域 Provider 未准入限制保留
-5E AgentRuntime V1            当前检查点；先做入口设计，尚未实现
+5E-entry-design               已完成；ADR-0029 采用薄 Runtime、可选观察端口与原子 Trace
+5E-1 Contract/Usage/Store     当前唯一下一步；严格合同、Recorder、未知 Usage 与原子存储
+5E-2 Observable run()         未开始；需 5E-1 通过
+5E-3 Live stream() parity     未开始；需 5E-2 通过
+5E-4 Evaluation/exit review  未开始；需 5E-3 通过
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

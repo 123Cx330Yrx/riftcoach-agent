@@ -433,3 +433,19 @@ Tool record、Usage 和 terminal Artifact 统一为 `run/stream/event/trace/usag
 `SkillReviewExecutor.max_revisions` 继续作为 Harness 运行政策参数，而非 Manifest Agent
 Loop budget；5E 必须记录实际 policy provenance。未来若要下沉为 Skill 合同，需要独立
 ADR 和迁移，不能在退出审查中静默改变。
+
+### 5E AgentRuntime V1 入口决策
+
+ADR-0029 接受“薄 Runtime + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”。
+外层仅包装 `SkillReviewExecutor` 会让 `stream()` 退化为事后回放；事件溯源、DAG 或立即
+采用 LangGraph/Pi/Claude Agent SDK 又会复制 ReviewHarness 并提前承担恢复和并发复杂度。
+
+Runtime V1 复用 `SkillExecutionRequest`、Boundary、ContextBuilder、AgentLoop、ToolRuntime
+和唯一 ReviewHarness。底层组件只发安全类型化 Signal，中央 Recorder 统一 sequence、
+时间和 Event schema。同步 `run()` 与流式 `stream()` 必须复用一个执行核心；V1 stream
+只是进程内运行状态事件流，不是模型逐 Token 输出，也不承诺 durable replay/cancel。
+
+Runtime 状态与 Harness publication 状态分开；Trace 只保存版本、policy provenance、
+安全事件、完整性明确的 Usage、终止原因和 Artifact 引用/哈希。已发送但未观察 Usage 的
+Provider call 必须记为 partial/unknown 和 null，不能折算为零。5E 依次执行 5E-1 至
+5E-4；当前唯一下一步为 5E-1 合同、Usage、Recorder 与 Trace Store 的纯本地 TDD。

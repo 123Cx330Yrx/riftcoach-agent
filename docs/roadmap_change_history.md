@@ -1142,3 +1142,22 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `PUBLIC-VERIFIED`：退出审查提交 `2f4e4d40f00cf6a14b7c9c0f85e8d3cbdc8c2493`
   已通过 GitHub Actions run `31877076222`；公共 CI 无 Key/Provider I/O。5D 正式闭环，
   下一检查点保持 5E 入口设计。
+
+### 2026-08-15：5E AgentRuntime V1 入口设计
+
+- `AUDIT`：现有 run_id、Agent stop、ToolResult、Harness transition/Artifact 和 Provider
+  Usage 可复用，但分散在多个合同；外层只包 `SkillReviewExecutor` 无法产生实时事件，
+  已发送却未规范化的 Provider 调用也不能用默认零表示 Usage。
+- `ALTERNATIVES`：比较外层事后回放、薄 Runtime + observer、事件溯源/DAG/第三方框架
+  三种方案；后两类重型能力没有当前 Bad Case，外层回放又不满足真实 stream。
+- `DECISION`：ADR-0029 接受薄 Runtime；复用 5D 控制链和唯一 Harness，底层发安全
+  Signal，中央 Recorder 生成有序 Event、完整性明确的 Usage 和原子最终 Trace。
+- `BOUNDARY`：V1 stream 是进程内状态事件，不是 Token chunk；durable replay、cancel、
+  resume、DAG、Multi-Agent 和跨进程恢复仍属于 5P/6/8；LangGraph/Pi/Claude Agent SDK
+  仍只在 5F 依据 Bad Case 比较。
+- `NO-IO`：入口批没有修改产品代码、读取 Key、构造 Provider、调用模型、切换默认模型
+  或运行 held-out。
+- `VERIFIED-LOCAL`：完整回归 `616 passed, 103 subtests passed`，两套 RAG、compileall、
+  Harness SDK/tracked-data boundary、dry-run、治理和 diff check 全部通过。
+- `CURRENT`：5E 内部固定为 5E-1 至 5E-4；唯一下一步为 `5E-1 Runtime Contract、
+  Usage 与 Trace Store` 的纯本地 TDD，不接 observer 或完整 `run/stream()`。

@@ -1350,3 +1350,20 @@
   provenance 纳入 Trace，未来若下沉到 Skill 再通过 ADR 迁移。
 - 核心执行与 Provider/实验两组跨层离线回归分别为 `173 passed, 34 subtests passed`
   和 `176 passed, 22 subtests passed`；没有读取 Key、构造真实 Provider 或发起外部调用。
+
+## 2026-08-15：5E AgentRuntime V1 入口设计发现
+
+- `SkillReviewExecutor.execute()` 对外是同步黑盒；只在最外层包装只能结束后重建事件，
+  不能形成真实 `stream()`，也会丢失草稿准备失败前的部分安全 provenance。
+- Agent stop、ToolResult、Harness transition/Artifact 已有足够稳定的事实源，不需要重写
+  执行链；在稳定接缝增加默认关闭 observer 是最小且可测试的方案。
+- 底层组件若直接构造全局 RuntimeEvent，会反向依赖 sequence、时钟和存储；更合适的
+  边界是底层只发类型化安全 Signal，中央 Recorder 生成 Event 和最终 Trace。
+- DeepSeek calibration 的真实 Bad Case 证明“已发送调用但没有规范化 Usage”必须表示为
+  unknown/null，而不是复用 `TokenUsage(0, 0)` 误报实际零消费。
+- ReviewHarness 的 publication 状态与 Runtime 自身状态不能合并：Harness 前失败没有发布
+  状态，Agent 失败又可能被 Harness 安全降级为已发布确定性报告。
+- Sea 的有序事件/Artifact 引用和 Saber 的事件观察思想可选择性吸收，但事件持久化、DAG、
+  租约、恢复和并发没有当前 V1 Bad Case；EchoMind 的聚合指标也不能替代单次 Trace。
+- 5E V1 采用进程内实时事件 + 原子最终 Trace 快照，不声称事件溯源、durable replay、
+  cancel 或 Token streaming；这些边界让 5F 能用同一业务合同客观比较第三方 Runtime。

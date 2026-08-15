@@ -128,7 +128,7 @@ Contract 已完成，5C-5 已建立数据生命周期、接受 development 并�
 这些不是遗漏，而是下一检查点 5D 的职责。完整结论见
 `docs/plans/2026-08-07-skill-router-v1-exit-review.md`。
 
-## 8. 当前检查点：阶段 5D 受限 Skill Agent Loop
+## 8. 已完成检查点：阶段 5D 受限 Skill Agent Loop
 
 `5D-entry-design` 已完成。ADR-0011 选择如下组合边界：
 
@@ -203,3 +203,20 @@ observed tokens；下一请求预留 1024 output 后会超过单例 4000-token �
 停止。Harness 安全降级、后两例 skipped、最终 `admitted=false`。结果不可重跑；当前
 5D-7 的缺口已经从“等待真实确认”变为“用真实 Context/Usage 证明多轮控制流预算可达，
 再决定关闭候选或建立全新 V3 门”。
+
+## 9. 当前检查点：阶段 5E AgentRuntime V1
+
+5E 入口设计与 ADR-0029 已完成，选择薄 Runtime + 可选观察端口：复用 5D 的 Boundary、
+Context、AgentLoop、ToolRuntime 与唯一 ReviewHarness，底层只发类型化安全 Signal，中央
+Recorder 统一 sequence、时钟、Event、Usage 和最终 Trace。外层事后包装因无法提供真实
+stream 被拒绝；事件溯源/DAG/第三方框架因会提前承担恢复和并发复杂度而留到后续证据门。
+
+V1 必须区分 Runtime 自身状态与 Harness publication 状态，并把已发送但未观察到
+Provider Usage 的调用写成 partial/unknown 和 null，而不是默认零。Trace 只保存版本、
+policy provenance、安全事件、终止原因及 Artifact 引用/哈希，不保存 Prompt、正文、
+Tool data、原始异常、request ID 或秘密。
+
+5E 固定为四个内部检查点：5E-1 合同/Usage/Trace Store、5E-2 observable `run()`、
+5E-3 live `stream()` parity、5E-4 evaluation/exit review。当前唯一下一步为 5E-1 的
+纯本地 TDD；尚未实现 Runtime 产品代码，也未调用真实 Provider。5P、5F、阶段 6/8 的
+API、SDK 对照、持久事件、cancel/resume、DAG、Memory 和 Multi-Agent 边界不变。

@@ -1419,3 +1419,21 @@
   SDK/tracked-data boundary 与 dry-run；没有 Key 或 Provider I/O。
 - 5D 至此正式闭环。阶段 5 仍在进行中，唯一下一检查点为 5E AgentRuntime V1 入口
   设计；当前无领域 Provider 准入和其他限制均未改变。
+
+## 2026-08-15：5E AgentRuntime V1 入口设计本地完成
+
+- 逐项审计 Boundary、Context、AgentLoop、Provider Usage、ToolResult、ReviewHarness、
+  Artifact Store 与 `SkillReviewExecutor` 的现有组合接缝。
+- 比较最外层事后包装、薄 Runtime + 可选 observer、事件溯源/DAG/第三方框架三种方案；
+  ADR-0029 接受第二种，保留 ReviewHarness 唯一发布权。
+- 初学者设计冻结 request/result、两层 Signal/Event、Runtime/publication 双状态、
+  completeness-aware Usage、安全 Trace、原子存储、失败分类、NFR 和测试矩阵。
+- 5E 固定为四个内部检查点：5E-1 合同/Usage/Store，5E-2 observable run，5E-3 live
+  stream parity，5E-4 evaluation/exit review；没有压缩或改变阶段 0-8。
+- 本入口批没有修改产品代码，没有读取 Key、构造 Provider、调用模型、运行 held-out、
+  调 Prompt、切换模型或采用 LangGraph/Pi/Claude Agent SDK。
+- 完整本地回归为 `616 passed, 103 subtests passed`；RAG development 与 independent
+  holdout 的 Recall/MRR/nDCG 均为 1.0，holdout abstention/citation support 为 1.0；
+  compileall、Harness SDK/tracked-data boundary、dry-run、governance 和 diff check 通过。
+- 当前唯一下一步为 `5E-1 Runtime Contract、Usage 与 Trace Store`；先做纯本地 TDD，
+  不接 AgentLoop/Harness observer，也不实现完整 `run/stream()`。
