@@ -1337,5 +1337,13 @@
 - 本批 51 项聚焦、完整 `611 passed, 103 subtests passed`、两套 RAG、compileall、
   Harness SDK/tracked-data boundary、dry-run、governance 和 diff check 均通过；没有读取
   Key、构造 Provider 或发起外部调用。
-- 唯一下一步仍在 5D-7，切换为既定 G53-0 可用性/合同审计；本批只待提交、推送与
-  exact-SHA 公开 CI。
+- 本地采用决策至此验收；随后的提交与 exact-SHA 公开回执见下一节。
+
+## 2026-08-15：DeepSeek V3 关闭决策已公开验证
+
+- 决策提交 `ea91e9697c820c0850db488a93263fc169719515` 已推送；GitHub Actions run
+  `31872476103` 对该精确 SHA completed/success。
+- 公共 CI 在无 Key 环境通过治理、611 tests/103 subtests、两套 RAG、compileall、
+  Harness SDK/tracked-data boundary 与 dry-run；外部 Provider calls 为 0。
+- 本检查点已闭环。唯一下一步仍在 5D-7：G53-0 GLM-5.3 普通 API 可用性与合同审计；
+  不读取 Key、不调用 Provider，也不进入 5E。

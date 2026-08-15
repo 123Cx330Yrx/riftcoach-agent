@@ -204,7 +204,9 @@ Actions `31868747216` 公开通过，同 SHA prepare-only 为零调用。正式 
 unknown，后 7 calls 未发送。预算与 V3 held-out 均未创建；结果/裁决已通过 34 项聚焦、
 611 项完整本地回归和全部本地门禁，并由 `421a243` / Actions `31869409106` 完成最终
 公共归档。ADR-0027 已零调用关闭当前 DeepSeek V3，不生成 budget/held-out、不补跑，
-并把允许列表安全错误 provenance 设为未来真实 Provider 门前置条件。下一步为 G53-0。
+并把允许列表安全错误 provenance 设为未来真实 Provider 门前置条件；决策提交
+`ea91e9697c820c0850db488a93263fc169719515` 已通过 Actions run `31872476103`。
+下一步为 G53-0。
 
 ADR-0026 已进一步冻结校准方法：baseline/ceiling 两个公开 development profile 各形成
 初始 Agent、工具后 Agent、Evaluation 和 Evaluation repair 四阶段请求；未来真实校准

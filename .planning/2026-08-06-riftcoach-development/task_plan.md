@@ -423,4 +423,5 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 - [x] 将允许列表安全 `provider_error_code` 设为未来真实 Provider 门前置条件；
 - [x] 保持本批 Key/Provider/external calls 为 0；
 - [x] 完成 51 项聚焦、611 tests/103 subtests、两套 RAG 与全部本地门禁；
-- [ ] 提交、推送并完成 exact-SHA public CI。
+- [x] 决策提交 `ea91e9697c820c0850db488a93263fc169719515` 已推送并通过
+  Actions run `31872476103` 的 exact-SHA public CI。

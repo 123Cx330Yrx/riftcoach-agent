@@ -1088,7 +1088,8 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `ADOPTED-REQUIREMENT`：后续真实 Provider 门必须先离线保留稳定高层 failure code 与
   allowlisted 可空细分错误码，且不得落盘原始响应、reasoning、异常或 request ID。
 - `NO-IO`：本决策 Key/Provider/external calls 为 0，不实现 5E Trace。
-- `VERIFIED-LOCAL`：51 项聚焦、完整 611 tests/103 subtests、两套 RAG 与全部本地门禁
-  通过；尚待本批 exact-SHA 公共 CI。
+- `VERIFIED`：51 项聚焦、完整 611 tests/103 subtests、两套 RAG 与全部本地门禁通过；
+  决策提交 `ea91e9697c820c0850db488a93263fc169719515` 已由 Actions run
+  `31872476103` 完成 exact-SHA 公共验证。
 - `CURRENT`：唯一下一步仍在 5D-7，按 ADR-0023 进入 G53-0 GLM-5.3 普通 API 与合同
   可用性审计；不调用模型。

@@ -392,3 +392,6 @@ Flash/Pro 分层。模型领域质量保持 unknown。
 `failure_code` 与 allowlisted 可空 `provider_error_code`；Prompt、response、reasoning、
 SDK 异常、URL/header 和原始 request ID 均不得落盘。本批外部调用为 0；下一检查点按
 ADR-0023 进入 G53-0 GLM-5.3 可用性与合同审计。
+
+该关闭决策提交 `ea91e9697c820c0850db488a93263fc169719515` 已通过 GitHub Actions
+run `31872476103` 的 exact-SHA 公共验证；CI 无 Key 或 Provider I/O。

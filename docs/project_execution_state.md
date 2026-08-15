@@ -90,7 +90,9 @@ blocked_before: "5D-exit-review"
   资源校准与领域采用尝试，保留低层协议准入但领域/产品质量继续 unknown；未来真实
   Provider 门必须先离线保留允许列表约束的安全细分错误 provenance；本决策已通过
   51 项聚焦、完整 `611 passed, 103 subtests passed`、两套 RAG 与全部本地门禁，
-  本批 Key/Provider/external calls 为 0，尚待 exact-SHA 公共 CI
+  本批 Key/Provider/external calls 为 0；决策提交
+  `ea91e9697c820c0850db488a93263fc169719515` 已通过 GitHub Actions run
+  `31872476103` 的 exact-SHA 公共 CI
 - 唯一下一步：仍在 5D-7，进入既定 `G53-0`，只审计 GLM-5.3 普通 API 可用性、正式
   model ID、endpoint、thinking 与 structured/tool 合同；不得读取 Key、调用 Provider、
   修改默认模型、补跑 DeepSeek 或进入 5E
@@ -363,7 +365,7 @@ blocked_before: "5D-exit-review"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；DeepSeek V3 development 请求/Fake/no-I/O、真实入口和不完整结果均已公开验证，当前采用尝试由 ADR-0027 关闭；现有 Adapter 仍只获得低层协议准入 | 阶段 5、整个 5D、DeepSeek 领域质量、V3 资源合同、生产默认切换或报告质量准入已完成；关闭当前实验等于删除 Provider 或证明模型差 |
 | 项目理解 | 已区分控制面 admission、真实 Provider I/O、Usage 校准和 held-out 质量采用；又区分跨厂商高层失败分类与 Adapter 安全细分错误 provenance，理解为什么不能保存原文也不能只留宽泛错误 | 离线合成 executor 能评价模型智力，25% 余量具有统计保证，`provider_response_invalid` 已证明具体 Adapter 根因或 DeepSeek 质量差，账本 0 tokens/`$0` 等于厂商实际零计费 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | V3 离线校准、真实入口、不完整结果与保守裁决均有 exact-SHA CI；ADR-0027 决策待本批公共 CI；正式网页未部署 | 公开实验基础设施等于领域质量、最终厂商选型、生产切换或 Web Agent 可用 |
+| GitHub/部署 | V3 离线校准、真实入口、不完整结果、保守裁决与 ADR-0027 关闭决策均有 exact-SHA CI；正式网页未部署 | 公开实验基础设施等于领域质量、最终厂商选型、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
