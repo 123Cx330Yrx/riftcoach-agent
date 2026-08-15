@@ -1027,5 +1027,7 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `BOUNDARY`：新增 11 tests 只证明离线控制与请求形状，不是 DeepSeek Usage 或质量证据；
   完整本地回归为 `598 passed, 103 subtests passed`，两套 RAG 和全部本地门禁通过；
   Provider/Key/外部调用/V3 held-out 均为 0。
-- `CURRENT`：唯一下一步仍在 5D-7，只做完整本地门禁、提交、推送和 exact-SHA CI；成功
-  后才可单独请求真实 8-call development 校准确认。
+- `PUBLIC-VERIFIED`：实现提交 `2d676966915a7967b946880040b59c022283e683` 已通过
+  GitHub Actions run `31867655627` 的 exact-SHA CI；公开运行没有 Key/Provider I/O。
+- `CURRENT`：唯一下一步仍在 5D-7，只展示冻结上限并等待用户对真实 8-call DeepSeek
+  V4 Pro development Usage replay 的单独明确确认；确认前不读取 Key或创建 V3 held-out。

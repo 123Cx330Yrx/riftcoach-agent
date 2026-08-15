@@ -1266,5 +1266,7 @@
 - 资源校准 11/11、资源账本/预算相邻集合 34/34；完整回归为 `598 passed, 103 subtests
   passed`；两套 RAG 全部门槛为 1.0，compileall、Harness dry-run、SDK/tracked-data、治理
   和 diff check 均通过；Provider/Key/网络调用和 V3 held-out execution 为 0。
-- 当前唯一下一步：运行完整门禁，提交、推送并验证 exact-SHA GitHub Actions；公开成功后
-  才能请求真实最多 8-call development Usage replay 的独立确认。
+- 实现提交 `2d676966915a7967b946880040b59c022283e683` 已推送，GitHub Actions run
+  `31867655627` 对该精确 SHA completed/success；公开 CI 没有 Key 或 Provider I/O。
+- 当前唯一下一步：展示 8-call/64-output/64000-token/`$0.10`/零重试/首错停止边界，等待
+  用户对真实 DeepSeek V4 Pro development Usage replay 的单独明确确认。

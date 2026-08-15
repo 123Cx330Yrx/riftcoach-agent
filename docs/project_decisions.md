@@ -337,8 +337,8 @@ development E2E 同时承担资源和质量评测：
 当前离线实现已完成：两个全新 development profile 会经现有 production Executor 形成
 8 个四阶段请求，公开 snapshot 不含正文；Fake replay、首错停止、安全结果、预算公式和
 no-I/O admission 已有测试。这里的 Fake Usage 不能成为真实预算或模型质量证据。
-Provider/Key/网络调用和 V3 held-out 仍为 0；下一步先完成 exact-SHA 公开 CI，真实
-development replay 仍需单独明确确认。
+Provider/Key/网络调用和 V3 held-out 仍为 0；实现已由 `2d67696` / Actions
+`31867655627` 公开验证。真实 development replay 仍需单独明确确认。
 
 设计提交 `351c0e64adf9d2ace42c557d40fac81a44ab539e` 已通过 GitHub Actions run
 `31866084382` 的 exact-SHA 公开 CI；公开冻结没有扩大真实调用权限。

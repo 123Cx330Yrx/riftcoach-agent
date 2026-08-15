@@ -397,5 +397,5 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 - [x] 实现 25% 余量、固定向上舍入、成本/30 秒 deadline 拒绝的纯预算推导；
 - [x] 实现不接收 Provider/Key/client 的 no-I/O admission；
 - [x] 完成 598 tests/103 subtests、两套 RAG、compileall、Harness/安全/治理本地门禁；
-- [ ] 提交、推送和验证 exact-SHA GitHub Actions；
-- [ ] 公开 CI 成功后再展示真实 development replay 上限并等待用户单独确认。
+- [x] 提交、推送并由 `2d67696` / Actions `31867655627` 完成 exact-SHA 公开验证；
+- [ ] 展示真实 development replay 上限并等待用户单独确认。
