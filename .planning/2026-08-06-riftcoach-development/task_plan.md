@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.22 - 5D-7（in progress: publish and verify Fresh-Gate 4 run seam）
+Phase 6.22 - 5D-7（in progress: await explicit Fresh-Gate 4 real-run confirmation）
 
 ## Phases
 
@@ -155,16 +155,20 @@ Phase 6.22 - 5D-7（in progress: publish and verify Fresh-Gate 4 run seam）
   Context；现有生产 CLI 已使用 V2 profile 并提供 `--prepare-only`。Fake Provider 的正常
   纵向装配、1-call 首错停止、脱敏和不可覆盖均通过；相邻 `93 passed`，完整
   `580 passed, 103 subtests passed`，外部调用和真实 held-out 执行均为 0。
+- Fresh-Gate 4 实现提交 `ed3cc947bfdcf2eed22d57864ff852c5107f601a` 已通过 GitHub
+  Actions run `31863341338`；同一干净 SHA 的真实 `--prepare-only` 已 no-I/O admitted，
+  external calls 0、held-out 未执行且正式结果文件不存在。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-7 Fresh-Gate 4 入口已完成本地离线 TDD。唯一下一步是提交、推送并验证该实现的
-exact-SHA GitHub Actions，成功后在同一干净 SHA 上执行一次 `--prepare-only`。这两步均
-不得读取 Key、调用 Provider、运行 held-out、修改 Prompt/Evaluation/Harness、实现真正
-并发或进入 5D exit review/5E；真实 12-call 运行需要其后的单独明确确认。
+5D-7 Fresh-Gate 4 入口已完成 exact-SHA CI 和同 SHA no-I/O prepare-only。唯一下一步是
+真实运行确认门：向用户展示 `deepseek-v4-pro`、新范围 12 calls/12000 tokens、每例
+4 calls/4000 tokens、1024 output/request、`$0.10`、零重试/零修订和首错停止；必须再次
+取得明确确认才可读取 Key 并首次执行 V2 held-out。不得自动运行、修改冻结规则、进入
+5D exit review/5E 或把 prepare-only 当成领域准入。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
 `.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门

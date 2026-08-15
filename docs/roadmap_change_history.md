@@ -926,3 +926,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   compileall、Harness SDK/tracked-data boundary、dry-run、governance 和 diff check 通过。
 - `CURRENT`：唯一下一步为提交/推送和 exact-SHA GitHub Actions，随后在同一干净 SHA 上
   执行一次 `--prepare-only`；两步均为零调用，真实 12-call 运行仍需单独明确确认。
+
+### 2026-08-15：Fresh-Gate 4 入口公开冻结完成
+
+- `PUBLIC-VERIFIED`：实现提交 `ed3cc947bfdcf2eed22d57864ff852c5107f601a` 已通过
+  GitHub Actions run `31863341338` 的 exact-SHA 全部门禁。
+- `PREPARE-ONLY`：随后在同一干净 SHA 执行真实 no-I/O preflight，输出
+  `no_io_admitted=true`、external calls 0、held-out false；正式结果文件不存在。
+- `CURRENT`：唯一下一步为真实运行确认门。必须再次展示并确认 Pro、12 calls、12000
+  observed tokens、每例 4/4000、1024 output/request、`$0.10`、零重试/零修订和首错停止；
+  未确认不得读取 Key，prepare-only 不等于领域准入。

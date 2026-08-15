@@ -284,3 +284,7 @@ Fresh-Gate 3 不新增第二套执行框架，只发布新的静态评测身份�
 当前只完成本地离线入口。Fake Provider 的正常/失败纵向测试证明控制面，不证明真实
 DeepSeek 质量；公开 CI 和同 SHA prepare-only 完成前不能读取 Key，完成后真实 12-call
 运行仍需单独明确确认。
+
+该入口现已由提交 `ed3cc947bfdcf2eed22d57864ff852c5107f601a` 和 Actions run
+`31863341338` 公开验证；同 SHA prepare-only 也以零调用通过。裁决边界不变：这只让真实
+运行“具备被确认的资格”，不授权自动调用，也不等于 Provider 领域准入。

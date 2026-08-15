@@ -189,10 +189,10 @@ OP.GG MCP
 5D-7 Prompt/Context Eval      进行中；Fresh-Gate 4 入口本地完成，待 exact-SHA CI 与同 SHA prepare-only
 ```
 
-Fresh-Gate 4 运行入口现已在本地完成版本化 readmission、V2 active CLI、prepare-only 和
-Fresh result envelope；相邻 93、完整 580 tests 通过，外部调用与真实 held-out execution
-仍为 0。当前只待该实现的 exact-SHA 公开 CI 和同 SHA no-I/O prepare-only，之后才可另行
-确认真实运行。
+Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
+result envelope；相邻 93、完整 580 tests 通过，实现 `ed3cc94` / Actions `31863341338`
+公开成功，同 SHA prepare-only 为 no-I/O admitted。外部调用与真实 held-out execution 仍
+为 0；当前等待单独真实运行确认。
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
 错误选择率为 `0.0`。它已原样归档并附带 SHA-256 与重建来源说明。现在 Catalog

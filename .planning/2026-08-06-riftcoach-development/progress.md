@@ -1169,3 +1169,13 @@
 - 没有读取 Key、调用外部 Provider、运行真实 V2 held-out 或创建正式结果。唯一下一步为
   commit/push/exact-SHA CI，随后在同一干净 SHA 上执行一次 no-I/O `--prepare-only`；真实
   运行仍需单独确认。
+
+### 2026-08-15：Fresh-Gate 4 入口公开冻结与 prepare-only 完成
+
+- 实现提交 `ed3cc947bfdcf2eed22d57864ff852c5107f601a` 已推送，GitHub Actions run
+  `31863341338` 对该精确 SHA completed/success。
+- 在同一干净 SHA 执行 `run_deepseek_domain_heldout.py --prepare-only`，输出
+  `no_io_admitted=true external_provider_calls=0 held_out_executed=false`；没有读取 Key、
+  调用 Provider、创建结果或运行 held-out。
+- Fresh-Gate 4 入口批完成。唯一下一步为单独真实运行确认门；必须先展示模型和
+  12-call/12000-token/`$0.10` 等上限，获得明确确认后才可加载 Key。

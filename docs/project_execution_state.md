@@ -42,10 +42,14 @@ blocked_before: "5D-exit-review"
   本地 TDD：新 readmission 同时绑定历史 `3+1` 调用证据、
   ADR-0022 修复 CI、Fresh-Gate 3 资产 CI、当前 code/public-CI、新 Dataset/plan/fixture 与
   三案例 Context；现有生产 CLI 已切换到 V2 profile 并增加 prepare-only，Fake Provider
-  纵向装配与首错停止通过，本地完整回归为 `580 passed, 103 subtests passed`
-- 唯一下一步：提交并推送 5D-7 Fresh-Gate 4 入口实现，验证 exact-SHA GitHub Actions；
-  公开成功后再用同一精确 SHA 执行一次 `--prepare-only`。这两步均不读取 Key、不调用
-  Provider、不运行新 held-out；真实 12-call 运行仍需其后的单独明确确认
+  纵向装配与首错停止通过，本地完整回归为 `580 passed, 103 subtests passed`；实现提交
+  `ed3cc947bfdcf2eed22d57864ff852c5107f601a` 已通过 GitHub Actions run `31863341338`，
+  同一干净 SHA 的真实 `--prepare-only` 输出 no-I/O admitted、external calls 0、held-out
+  未执行，正式结果文件仍不存在
+- 唯一下一步：5D-7 Fresh-Gate 4 真实运行确认门；先向用户展示精确模型
+  `deepseek-v4-pro`、新范围最多 12 calls/12000 observed tokens、每例 4 calls/4000 tokens、
+  每请求 1024 output tokens、`$0.10` 停止线、零重试/零修订和首错停止；只有再次获得
+  明确确认后才能读取 Key 并首次运行 V2 held-out
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；DeepSeek
   领域调用必须先完成执行接缝离线 TDD 与公开 exact-SHA CI，不能用已通过的低层协议、
   候选选择或发布热度替代领域质量证据
@@ -73,7 +77,7 @@ blocked_before: "5D-exit-review"
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测首个 Provider，并为第二 Provider 决策提供真实证据 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（Fresh-Gate 4 入口已本地完成，待公开 CI 与真实 prepare-only） | Batch A：分层合同与 10 个记录型 development 控制样本；Batch B：组件/案例双层 SHA-256 快照和零调用 admission；Batch C：ADR-0015、7 个 `offline_executable` development 场景及一个真实 unsafe publication；D1-D2：`coach_evaluation@1.1.0` 安全合同、不可修订 blocking policy、7 场 secure offline development 基线，task/failure accuracy 均 1.0、unsafe publication 0、external calls 0；D3：3 场独立 held-out，`calibration_excluded=true`；D4-D5：ADR-0018、独立 DeepSeek Adapter、失败观察、预算/停止门与 3-call 真实协议准入；生产领域门在 `205397f` 上只执行一次，首例以 `unsupported_parallel_tool_calls` fail closed，结果由 `26b668d` / Actions `31810164628` 固定；ADR-0022 已以 Fake SDK 纵向链证明修复兼容性；ADR-0024 冻结新鲜门生命周期；Fresh-Gate 1 由 `adba965` / Actions `31860874440` 公开验证；Fresh-Gate 3 新资产由 `1e44b13` / Actions `31861960565` 公开冻结；Fresh-Gate 4 本地接入 V2 readmission/envelope/prepare-only，真实新 held-out 尚未运行 |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（Fresh-Gate 4 入口已公开验证且 prepare-only 准入，等待单独真实确认） | Batch A：分层合同与 10 个记录型 development 控制样本；Batch B：组件/案例双层 SHA-256 快照和零调用 admission；Batch C：ADR-0015、7 个 `offline_executable` development 场景及一个真实 unsafe publication；D1-D2：`coach_evaluation@1.1.0` 安全合同、不可修订 blocking policy、7 场 secure offline development 基线，task/failure accuracy 均 1.0、unsafe publication 0、external calls 0；D3：3 场独立 held-out，`calibration_excluded=true`；D4-D5：ADR-0018、独立 DeepSeek Adapter、失败观察、预算/停止门与 3-call 真实协议准入；生产领域门在 `205397f` 上只执行一次，首例以 `unsupported_parallel_tool_calls` fail closed，结果由 `26b668d` / Actions `31810164628` 固定；ADR-0022 已以 Fake SDK 纵向链证明修复兼容性；ADR-0024 冻结新鲜门生命周期；Fresh-Gate 1 由 `adba965` / Actions `31860874440` 公开验证；Fresh-Gate 3 新资产由 `1e44b13` / Actions `31861960565` 公开冻结；Fresh-Gate 4 由 `ed3cc94` / Actions `31863341338` 公开验证并在同 SHA no-I/O admitted，真实新 held-out 尚未运行 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界
@@ -618,3 +622,9 @@ compileall、Harness SDK/tracked-data boundary、dry-run、governance 和 diff c
 真实结果文件不存在，API Key 未读取，外部 Provider calls 和真实 held-out executions 均为
 0。唯一下一步是提交/推送并验证本实现的 exact-SHA CI，随后在干净同 SHA 上执行一次
 真实 `--prepare-only`；真实模型运行仍需再单独确认。
+
+实现提交 `ed3cc947bfdcf2eed22d57864ff852c5107f601a` 已通过 GitHub Actions run
+`31863341338` 的 exact-SHA 全部门禁。随后在同一干净 SHA 执行真实 `--prepare-only`，
+输出为 `no_io_admitted=true external_provider_calls=0 held_out_executed=false`；命令未创建
+正式结果文件。Fresh-Gate 4 入口至此公开完成，下一步只进入真实运行确认门，不自动读取
+Key 或执行 V2 held-out。

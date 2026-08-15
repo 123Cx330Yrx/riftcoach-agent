@@ -69,3 +69,15 @@ Run focused tests, the full pytest suite, both RAG gates, compileall, Harness SD
 ### Task 5: Persist and publicly verify
 
 Update canonical state, active plan/findings/progress, roadmap history/amendment, capability matrix and project decisions with only observed evidence. Commit/push the implementation, verify exact-SHA GitHub Actions, then make and verify a state-only follow-up commit. The unique next action remains a separate real-call confirmation; do not load the Key in this plan.
+
+## Execution result
+
+- Status: complete
+- Implementation SHA: `ed3cc947bfdcf2eed22d57864ff852c5107f601a`
+- GitHub Actions: `31863341338` completed/success
+- Adjacent regression: `93 passed`
+- Full regression: `580 passed, 103 subtests passed`
+- RAG development/held-out gates: passed at frozen 1.0 thresholds
+- Same-SHA prepare-only: no-I/O admitted, external Provider calls `0`, held-out executed `false`
+- Real V2 result created: `false`
+- Next gate: separate explicit confirmation before any Key load or real held-out execution

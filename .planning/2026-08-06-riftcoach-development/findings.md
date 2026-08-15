@@ -1177,3 +1177,7 @@
 - 相邻回归 `93 passed`、完整回归 `580 passed, 103 subtests passed`；两套 RAG、compileall、
   Harness SDK/tracked-data boundary、dry-run、governance 和 diff check 通过，新真实结果文件
   仍不存在。
+- 实现提交 `ed3cc947bfdcf2eed22d57864ff852c5107f601a` 的 GitHub Actions run
+  `31863341338` exact-SHA 成功；同 SHA、干净工作树的真实 prepare-only 也通过，并明确
+  报告 external calls 0 / held-out false。公开 CI 与 prepare-only 是运行前身份门，不是
+  DeepSeek 领域能力证据。
