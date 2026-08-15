@@ -1213,3 +1213,23 @@
   为 3241/3780/3047。它足以暴露原 20/10 Fake Usage 的失真，但只是一阶投影。
 - 因此 ADR-0025 既不关闭 DeepSeek 候选，也不授权 V3 I/O：先保留模型能力 unknown，
   后续用未见 held-out 答案的 development 校准新资源合同，再创建全新身份。
+
+### 2026-08-15：V3 development 资源校准设计发现
+
+- 完整生产链的正常路径是 2 次 Agent + 1 次 Evaluation；`decode_structured_response()`
+  最多增加一次 Evaluation repair，因此资源合同要让 3-call 正常路径和 4th-call 合法恢复
+  都可达。`max_revisions=0` 不会关闭这次格式修复，但会阻止第 5 次报告修订调用。
+- 用公开 development plan、本地受控 Provider 和真实 production Executor 已走通四阶段；
+  body-free 长度单位为 5956/7064/5749/2510。它们只证明请求形状，不能当 DeepSeek
+  tokenizer 或 V3 推荐预算。
+- 直接运行一条 development E2E 会让可见阶段取决于模型随机行为；采用“本地生产组装
+  冻结请求，再独立 replay 收集 Usage”能把资源测量与质量评测分开。
+- ADR-0026 冻结 baseline/ceiling 两个公开 profile、每 profile 四阶段、未来最多 8-call、
+  校准 `max_tokens=64`、零重试和首错停止。校准输出永不参与 Prompt、RAG、Memory 或
+  模型质量结论。
+- V3 预算按逐阶段最大真实 input 的 1.25 倍向上取整，再加四次 1024 output ceiling；
+  25% 是预注册工程余量而非统计置信区间。推导成本含已知协议成本后超过 `$0.10`、Agent
+  两调用在现有 30 秒 deadline 下不可达或请求超过 ceiling envelope 时，都必须停止而
+  不是自动调预算。
+- 本设计没有 Provider/Key/网络调用，也没有创建 V3 held-out。下一批先做离线合同/TDD
+  和 exact-SHA CI，之后真实 development 校准仍需单独确认。

@@ -1232,3 +1232,24 @@
   仍是 unknown。
 - 唯一下一步为 5D-7 V3 资源合同 development 校准设计；不创建 Provider、读取 Key、
   调用模型或创建/运行 V3 held-out。
+
+### 2026-08-15：V3 development 资源校准设计完成
+
+- 精确审计 `SecureChatEvaluationAdapter`、严格 structured decoder、production Executor、
+  资源 ledger 与回归测试，确认正常路径 3 calls、Evaluation JSON 非法时最多使用第 4
+  call repair、报告修订仍为 0。
+- 用公开 development 输入和本地受控 Provider 走通真实生产四阶段，只输出消息角色、
+  数量和 5956/7064/5749/2510 本地长度单位；外部调用为 0。
+- 新增初学者设计与 ADR-0026，比较直接抬 V2、行为依赖的 development E2E、四阶段
+  request replay 和关闭候选，采用四阶段 replay。
+- 冻结未来校准上限为两个 development profile、每 profile 四请求、8 calls、校准输出
+  64、64000 observed tokens、`$0.10`、零重试和首错停止；真实运行仍需单独确认。
+- 冻结 V3 预算公式：逐阶段最大真实 input × 1.25 后向上取整，加四次 1024 output
+  ceiling；成本超过 `$0.10`、30 秒 Agent deadline 不可达或 envelope 越界均停止。
+- 本批没有创建校准实现/真实结果/V3 held-out，没有读取 Key、构造 Provider 或调用模型。
+  唯一下一步为离线 TDD、完整门禁和 exact-SHA 公开冻结。
+- 设计批完整回归为 `587 passed, 103 subtests passed`；RAG development 与 independent
+  holdout 的 Recall/MRR/nDCG 均为 1.0，holdout abstention/citation 也为 1.0；compileall、
+  Harness SDK boundary、tracked secret/run-data boundary、Harness dry-run、governance 和
+  diff check 全部通过。首次误用终端默认 Hermes Python 导致缺少 pytest，未改变环境或
+  项目文件；切换到仓库 `.venv` 后全量通过。

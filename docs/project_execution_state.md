@@ -58,10 +58,18 @@ blocked_before: "5D-exit-review"
   3241/3780/3047，但明确不是 Provider tokenizer 精确值；完整回归为
   `587 passed, 103 subtests passed`，两套 RAG 与全部本地门禁通过，本批外部调用为 0；
   裁决提交 `78400b9310e512668c81ca41cd65623a92a27226` 已通过 GitHub Actions run
-  `31865285994` 的 exact-SHA 公开 CI
-- 唯一下一步：5D-7 V3 资源合同 development 校准设计；冻结不使用 held-out 答案的
-  Usage 校准方法、预算推导规则与安全余量，本步不构造 Provider、不读取 Key、不调用
-  模型、不创建或运行 V3 held-out
+  `31865285994` 的 exact-SHA 公开 CI；ADR-0026 又完成 V3 资源校准设计：正常三调用和
+  可选第四次 Evaluation repair 已按真实生产控制流区分；后续只用两个公开 development
+  profile 形成四阶段请求，再以最多 8-call、校准输出 64、零重试、首错停止的独立 Usage
+  replay 观测资源；V3 单例预算将按逐阶段最大真实 input、25% 工程余量和四次 1024
+  output ceiling 推导，若含既有协议成本后超过 `$0.10` 则停止而不创建 held-out；本设计
+  Provider/Key/网络调用为 0；本地完整回归为 `587 passed, 103 subtests passed`，两套
+  RAG、compileall、Harness/secret/tracked-data、dry-run、治理和 diff check 均通过
+- 唯一下一步：5D-7 V3 资源校准离线 TDD 与公开冻结；实现两个不复用 V2 内容的
+  development profile、四阶段请求捕获、安全结果合同、8-call Fake Provider/首错停止、
+  预算推导器和 no-I/O admission，并在同一连贯批次完成完整门禁、提交、推送与
+  exact-SHA CI；本步仍不构造真实 Provider、不读取 Key、不调用模型、不创建或运行
+  V3 held-out
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；DeepSeek
   V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用已通过的低层
   协议、候选选择或发布热度替代领域质量证据
@@ -89,7 +97,7 @@ blocked_before: "5D-exit-review"
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测首个 Provider，并为第二 Provider 决策提供真实证据 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（V2 `admitted=false`；ADR-0025 预算裁决已公开验证，进入 V3 development 校准设计） | Batch A-C、D1-D5、生产门、ADR-0022 与 Fresh-Gate 1/3/4 均已有本地/公开证据；V2 在 `741e841` 上只执行一次，首例 1 call/3440 tokens 后下一调用被单例 4000-token 门在 I/O 前阻止，后两例 skipped，结果 SHA `877b623f...dc62a`；ADR-0025 以精确 4464 next-call 门槛和三阶段长度校准 fixture 证明 V2 资源合同不可达，但不虚构完整 Provider Token 或 V3 推荐预算；实现 `78400b9` / Actions `31865285994` 已公开验证，下一步只设计未见 held-out 答案的 V3 development 校准方法 |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（V2 `admitted=false`；ADR-0025 裁决已公开验证，ADR-0026 已冻结 V3 development 资源校准设计） | Batch A-C、D1-D5、生产门、ADR-0022 与 Fresh-Gate 1/3/4 均已有本地/公开证据；V2 在 `741e841` 上只执行一次，首例 1 call/3440 tokens 后下一调用被单例 4000-token 门在 I/O 前阻止，后两例 skipped，结果 SHA `877b623f...dc62a`；ADR-0025 以精确 4464 next-call 门槛证明 V2 资源合同不可达；ADR-0026 将两套 development profile、四阶段 Usage replay、25% input/latency 工程余量、四次 1024 output ceiling、8-call 校准上限和 `$0.10` 决策停止线冻结，设计批外部调用为 0；下一步只做离线 TDD 与公开冻结 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界
@@ -328,10 +336,10 @@ blocked_before: "5D-exit-review"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 已形成安全离线基线、DeepSeek 独立 Adapter/真实最小协议、领域控制接缝与真实门，并在 development 中补齐多 ToolCall 批次严格传输、整批预检和顺序执行；Fresh-Gate 1/3/4 已公开冻结；V2 真实结果已不可变归档并新增回归验证 | 阶段 5、整个 5D、DeepSeek 领域质量、生产默认切换或报告质量准入已完成；一次资源门失败已经评价了报告质量，或可以修改预算后重跑 V2 |
-| 项目理解 | 已区分控制面 admission 与数据面 Provider 调用、Dataset oracle 与案例执行计划，也已区分修复回归与新鲜采用测试、Provider/Model/Multi-Agent、协议/领域/产品三层门；V2 又实际证明“调用数上限”和“Token 可达性”是两项不同约束，Fake Usage 不能替代真实 Prompt 长度校准 | 离线合成 executor 能评价模型智力/在线可用性，安全 fallback 等于模型通过，V2 `admitted=false` 已证明 DeepSeek 报告质量差，或 3 场 held-out 能证明通用生产质量 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 已形成安全离线基线、DeepSeek 独立 Adapter/真实最小协议、领域控制接缝与真实门，并在 development 中补齐多 ToolCall 批次严格传输、整批预检和顺序执行；Fresh-Gate 1/3/4 已公开冻结；V2 真实结果和 ADR-0025 可达性裁决已公开归档；ADR-0026 的 V3 资源校准目前只有设计，尚无校准实现或 Usage 结果 | 阶段 5、整个 5D、DeepSeek 领域质量、V3 资源合同、生产默认切换或报告质量准入已完成；一次资源门失败已经评价了报告质量，或可以修改预算后重跑 V2 |
+| 项目理解 | 已区分控制面 admission 与数据面 Provider 调用、Dataset oracle 与案例执行计划，也已区分修复回归与新鲜采用测试、Provider/Model/Multi-Agent、协议/领域/产品三层门；V2 又实际证明“调用数上限”和“Token 可达性”是两项不同约束；ADR-0026 进一步区分正常 3-call、可选第 4 次结构修复、development Usage 校准与 held-out 质量采用，Fake Usage/本地长度都不能冒充真实 Provider Usage | 离线合成 executor 能评价模型智力/在线可用性，25% 工程余量具有统计置信保证，安全 fallback 等于模型通过，V2 `admitted=false` 已证明 DeepSeek 报告质量差，或 3 场 held-out 能证明通用生产质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | GLM-5.3 隔离规划 `e380e812` / `31859244059`、新鲜门设计 `f9edb4b4` / `31859717836`、多 ToolCall 修复 `037a47f` / `31817798170`、Fresh-Gate 1 `adba965` / `31860874440`、Fresh-Gate 3 `1e44b13` / `31861960565`、Fresh-Gate 4 入口 `ed3cc94` / `31863341338` 与 V2 结果归档 `60b5c86` / `31864370988` 均已通过 exact-SHA CI；正式网页仍未部署 | 公开失败证据等于模型质量结论、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
+| GitHub/部署 | GLM-5.3 隔离规划 `e380e812` / `31859244059`、新鲜门设计 `f9edb4b4` / `31859717836`、多 ToolCall 修复 `037a47f` / `31817798170`、Fresh-Gate 1 `adba965` / `31860874440`、Fresh-Gate 3 `1e44b13` / `31861960565`、Fresh-Gate 4 入口 `ed3cc94` / `31863341338`、V2 结果归档 `60b5c86` / `31864370988` 与预算裁决 `78400b9` / `31865285994` 均已通过 exact-SHA CI；ADR-0026 设计尚待本批提交/公开验证，正式网页仍未部署 | 本地设计已经公开、公开失败证据等于模型质量结论、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

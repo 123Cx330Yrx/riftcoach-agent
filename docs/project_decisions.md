@@ -317,3 +317,22 @@ ADR-0025 将“安全上限”和“可行预算”拆开处理：
   tokenizer 结果；未来轮次 output 和完整精确需求保持 unknown；
 - 因此不关闭 DeepSeek 领域候选，也不直接授权 V3。先完成公开 CI，再用 development
   校准新资源合同；任何 V3 必须使用新预算、新输入身份、新结果路径和独立真实确认。
+
+### V3 development 资源校准裁决
+
+ADR-0026 选择“生产形状请求 + 独立 Usage replay”，而不是直接调高 V2 或让一次随机
+development E2E 同时承担资源和质量评测：
+
+- baseline/ceiling 两个公开合成 profile 均用现有 production Executor 构造初始 Agent、
+  工具后 Agent、Evaluation 和 Evaluation repair 四阶段请求；
+- 未来真实校准最多 8 calls、校准 output 64、observed tokens 64000、`$0.10`、零重试、
+  首错停止，只保存安全 Usage/延迟/费用和 digest；
+- V3 单例预算只由逐阶段最大真实 input 的 25% 工程余量、四次 1024 output ceiling 和
+  固定向上舍入推导；25% 不是统计置信区间；
+- 推导成本含历史协议后超过 `$0.10`、Agent 两调用在现有 30 秒 deadline 下不可达、
+  calibration 不完整或请求超过 ceiling envelope 时停止，不创建 held-out；
+- 校准输出不能用于 Prompt/RAG/Memory 调节或领域准入。新 V3 held-out 只能在校准结果、
+  预算裁决和 exact-SHA CI 冻结后创建。
+
+当前只完成设计，没有校准实现、Provider/Key/网络调用或 V3 held-out。下一步为离线 TDD
+和公开冻结，真实 development replay 仍需单独明确确认。

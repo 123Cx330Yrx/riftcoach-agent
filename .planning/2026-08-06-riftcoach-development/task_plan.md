@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.25 - 5D-7（in progress: V2 budget adjudication public-verified; next V3 development resource calibration design）
+Phase 6.25 - 5D-7（in progress: ADR-0026 design accepted; next V3 resource calibration offline TDD/public freeze）
 
 ## Phases
 
@@ -178,11 +178,14 @@ Phase 6.25 - 5D-7（in progress: V2 budget adjudication public-verified; next V3
 
 ## Next Step
 
-5D-7 V2 预算可达性离线裁决已经 exact-SHA 公开验证。唯一下一步是 V3 资源合同的
-development 校准设计：定义未使用 held-out 答案的校准数据、三阶段 Usage 观测方法、
-单例/领域/金额上限推导规则和安全余量，比较关闭候选与建立新门的成本；本步仍不创建
-Provider、不读取 Key、不调用模型，也不创建或运行 V3 held-out。不得修改或重跑 V2、
-调用其他模型、进入 5D exit review/5E，或把长度校准投影写成 Provider 官方 Token 结论。
+5D-7 V3 资源合同 development 校准设计已由 ADR-0026 冻结。唯一下一步是在一个连贯批次
+完成离线 TDD 与公开冻结：创建两个不复用 V2 内容的 development profile，经现有生产
+组装捕获初始 Agent、工具后 Agent、Evaluation 和 Evaluation repair 四阶段请求；实现只
+持久化安全元数据的校准合同、8-call Fake Provider/首错停止、25% input/latency 余量与
+四次 1024 output ceiling 的预算推导器，以及完全不接收 Provider/Key 的 no-I/O admission；
+随后完成完整门禁、提交、推送和 exact-SHA CI。本步仍不构造真实 Provider、不读取 Key、
+不调用模型，也不创建或运行 V3 held-out。不得修改或重跑 V2、调用其他模型、进入 5D
+exit review/5E，或把本地长度/校准余量描述为统计保证。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
 `.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门
@@ -271,6 +274,7 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 | 多 ToolCall 批次由 AgentLoop 受控顺序消费 | DeepSeek 官方 `auto` 允许一个或多个工具且没有关闭批次的正式参数；Adapter 应翻译合法响应，AgentLoop 复用整批白名单/重复/预算预检，当前无证据承担真正并发复杂度 |
 | GLM-5.3 作为隔离的同厂商迁移候选 | 官方页面要求始终启用 thinking，当前 Zhipu Adapter 固定 disabled thinking，不能只改模型名；先完成当前 5D-7 唯一下一步，再按 ADR-0023 做独立 profile/协议/领域采用门，避免影响 DeepSeek |
 | 新鲜领域采用门复用控制面并重建实验身份 | 重写控制面会复制 Harness/Evaluator/预算，旧题改名又是假新鲜；ADR-0024 保留产品链路，先用 development TDD 冻结兼容合同，之后才创建新 fixture/Dataset/plan/Context，并把历史真实证据与当前 CI 串成不可改写链 |
+| V3 资源合同采用四阶段 development Usage replay | 直接调高 V2 会污染考卷，单次端到端运行又不保证进入 repair；ADR-0026 用 baseline/ceiling 两个公开 profile 经真实生产组装形成四类请求，最多 8 次独立 replay 只测 Usage，再按逐阶段最大 input、25% 工程余量和硬 output cap 推导新门 |
 
 ## Errors Encountered
 
@@ -304,6 +308,7 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 | 治理文件已有读取协议，但缺少机器可执行的一致性预检 | 1 | 在继续 5C-4 前增加仓库预检脚本、测试和 CI 门禁 |
 | 状态源使用 `5C-5-precondition`，活动计划 Current Phase 只写中文简称 | 1 | 在 Current Phase 保留同一机器键，预检随后通过 |
 | 治理负例测试硬编码旧检查点 `5C-4`，状态正常推进后失败 | 1 | 改为断言稳定的“Next Step 与 canonical checkpoint 不一致”语义 |
+| V3 资源校准设计全量回归首次使用终端默认 `python`，实际指向 Hermes venv 且没有 pytest | 1 | 未安装或修改全局环境；改用仓库 `.venv\Scripts\python.exe`，随后 587 tests/103 subtests 全部通过 |
 | 暂存区快照命令把计算路径和递归清理写在同一调用，被终端策略拒绝 | 1 | 改用仓库内固定临时目录，先验证快照，再校验绝对路径并分步清理 |
 | 假定 `docs/adr/README.md` 存在，实际仓库只有编号 ADR 文件 | 1 | 改读最新 ADR 实例；以后先用 `rg --files docs/adr` 确认文件 |
 | 推测 ADR-0003 文件名时使用了不存在的 `quality-gated-review-harness` | 1 | 先列出 `docs/adr`，按真实文件名 `quality-gated-agent-harness` 读取 |

@@ -979,3 +979,23 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `BOUNDARY`：公开 CI Provider calls 为 0；该证据关闭 V2 资源裁决，不授权 V3 I/O。
 - `CURRENT`：唯一下一步为 V3 development 资源校准设计，先冻结校准数据、Usage 观测、
   预算推导与安全余量，再决定是否值得创建全新真实门。
+
+### 2026-08-15：ADR-0026 冻结 V3 development 资源校准设计
+
+- `AUDITED`：生产正常路径为两次 Agent + 一次 Evaluation；结构化 Evaluation 非法时
+  最多增加一次同合同 repair，报告内容修订仍为 0，因此资源合同必须容纳 3-call 正常
+  路径和可选第 4 call。
+- `OFFLINE-EVIDENCE`：公开 development 输入经真实 production Executor 与本地受控
+  Provider 形成四阶段请求；body-free 本地长度为 5956/7064/5749/2510。该证据不是
+  Provider tokenizer 或模型质量证据，外部调用为 0。
+- `DECISION`：拒绝直接抬高 V2、只跑一次行为依赖的 development E2E 或立即关闭候选；
+  采用 baseline/ceiling 两个公开 development profile，经生产组装冻结四阶段请求，再
+  独立 replay 收集真实 Usage。
+- `RESOURCE-POLICY`：未来校准最多 8 calls、每请求校准 output 64、observed tokens
+  64000、金额 `$0.10`、零重试和首错停止；V3 预算按逐阶段最大 input 的 25% 工程余量、
+  四次 1024 output ceiling 和固定向上舍入推导。25% 不是统计置信保证。
+- `STOP`：推导成本含既有协议成本后超过 `$0.10`、现有 30 秒 Agent deadline 不可达、
+  校准不完整或未来请求超过 ceiling envelope 时，不创建 V3 held-out，不自动加预算。
+- `CURRENT`：唯一下一步仍在 5D-7，只实现校准 development 资产/合同、四阶段 Fake
+  Provider 路径、预算推导和 no-I/O admission，并完成完整门禁与 exact-SHA public CI；
+  真实 development replay 仍需后续单独确认。
