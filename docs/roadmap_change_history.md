@@ -1139,3 +1139,6 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   也没有提前采用 LangGraph、Pi 或 Claude Agent SDK。
 - `PRE-PUBLIC`：本地退出裁决仍需完整门禁、提交推送和 exact-SHA 公共 CI；完成前不能
   表述为公开验证完成。
+- `PUBLIC-VERIFIED`：退出审查提交 `2f4e4d40f00cf6a14b7c9c0f85e8d3cbdc8c2493`
+  已通过 GitHub Actions run `31877076222`；公共 CI 无 Key/Provider I/O。5D 正式闭环，
+  下一检查点保持 5E 入口设计。

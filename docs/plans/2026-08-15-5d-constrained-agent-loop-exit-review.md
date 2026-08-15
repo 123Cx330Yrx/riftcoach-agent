@@ -179,6 +179,10 @@ Trace，使“为什么本次允许几次修订”可观察。若以后要让 Sk
 Provider 代替，所以它证明控制链与数据链，不证明商业模型质量。退出提交还必须通过完整
 pytest、两套 RAG 门、compileall、安全边界、Harness dry-run、治理和 exact-SHA 公共 CI。
 
+退出审查提交 `2f4e4d40f00cf6a14b7c9c0f85e8d3cbdc8c2493` 随后通过 GitHub Actions
+run `31877076222`：公共 Linux 环境重新通过完整 pytest、两套 RAG 门、compileall、
+Harness SDK/tracked-data boundary、dry-run 和治理检查，且没有 Key 或 Provider I/O。
+
 ## 9. 仍然存在且必须诚实保留的限制
 
 - 没有真实 Provider 完成并通过完整的近期复盘领域链路；

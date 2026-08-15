@@ -217,7 +217,8 @@ held-out 生命周期、资源控制和安全失败归因已经构成完整采�
 追绿。G53 deferred 和 Flash/Pro 分层不再阻塞 5D-7；审查提交 `7c8f4e7` 已通过
 Actions run `31876536179` 的 exact-SHA 公共 CI。随后 5D 退出审查确认受限执行、
 Manifest 权限/预算、实际 Tool evidence、唯一 Harness、类型化终态与安全失败路径均满足
-V1，当前无领域 Provider 准入不阻塞厂商无关 Runtime；唯一下一检查点现为 5E 入口设计。
+V1，当前无领域 Provider 准入不阻塞厂商无关 Runtime；退出提交 `2f4e4d4` 已通过
+Actions run `31877076222`，唯一下一检查点现为 5E 入口设计。
 
 ADR-0026 已进一步冻结校准方法：baseline/ceiling 两个公开 development profile 各形成
 初始 Agent、工具后 Agent、Evaluation 和 Evaluation repair 四阶段请求；未来真实校准

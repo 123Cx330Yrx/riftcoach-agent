@@ -100,7 +100,9 @@ blocked_before: "5P"
   `31874240935` 的 exact-SHA 公共 CI；ADR-0028 与 5D-7 收尾审查现已区分“评测门完成”
   和“领域模型采用未准入”，接受 5D-7 完成并把 G53 保持为非阻塞 deferred 候选；
   审查提交 `7c8f4e7344ac3ecc0fa22885c7ebd2109a17d383` 已通过 GitHub Actions run
-  `31876536179` 的 exact-SHA 公共 CI
+  `31876536179` 的 exact-SHA 公共 CI；5D 退出审查提交
+  `2f4e4d40f00cf6a14b7c9c0f85e8d3cbdc8c2493` 已通过 GitHub Actions run
+  `31877076222` 的 exact-SHA 公共 CI
 - 唯一下一步：`5E AgentRuntime V1` 的入口设计；先审计现有 run_id、Agent/Tool/Harness
   终止信号、Usage 和 Artifact，比较最小 Runtime 组合方案，再冻结 `run/stream/event/trace`
   合同。不得直接写大而全 Runtime，不读取 Key、不调用 Provider、不切换模型
@@ -373,7 +375,7 @@ blocked_before: "5P"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A、5B、5C 和整个 5D；5E 尚未开始设计；当前无领域 Provider 准入 | 阶段 5、生产模型报告质量、统一 Runtime/Trace、V3 资源合同或生产默认模型已经完成 |
 | 项目理解 | 已区分 Agent Loop 与 AgentRuntime，并能解释 Manifest 权限、最小 Context、Tool evidence、Harness 唯一发布门，以及评测门完成不等于模型通过 | 离线合成 executor 能评价模型智力，5D 完成等于 GLM/DeepSeek 通过，或 5E 只是给现有函数改名 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5D-7 及之前证据已有 exact-SHA CI；5D 退出审查正在等待本轮提交的 exact-SHA CI；正式网页未部署 | 本地退出裁决等于已公开验证，或公开实验基础设施等于 Web Agent 可用 |
+| GitHub/部署 | 5D 退出审查提交 `2f4e4d4` 已通过 Actions `31877076222` 的 exact-SHA CI；正式网页未部署 | 公开控制链证据等于领域模型质量、最终厂商选型、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -753,5 +755,6 @@ ADR-0028 因此接受 5D-7 完成，同时保留当前无领域 Provider 准入�
 
 因此 5D 状态改为已完成，阶段 5 继续进行中，唯一下一检查点为 `5E AgentRuntime V1`
 入口设计。5E 将统一现有 run_id、事件、Trace、Usage 和安全终止原因；它不得自动调用
-Provider、切换模型、接入 LangGraph/Agent SDK 或提前进入 5P/5F。本地退出裁决仍需通过
-本轮完整门禁、提交推送和 exact-SHA 公共 CI 后，才能表述为公开验证完成。
+Provider、切换模型、接入 LangGraph/Agent SDK 或提前进入 5P/5F。退出审查提交
+`2f4e4d40f00cf6a14b7c9c0f85e8d3cbdc8c2493` 已通过 GitHub Actions run
+`31877076222` 的 exact-SHA 公共 CI；5D 的本地与公开退出证据均已闭环。

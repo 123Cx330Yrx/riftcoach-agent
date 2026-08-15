@@ -1410,3 +1410,12 @@
   holdout 的 Recall/MRR/nDCG 均为 1.0，holdout abstention/citation support 均为 1.0；
   compileall、Harness SDK/tracked-data boundary、dry-run、治理和 diff check 全部通过。
 - 当前只剩提交推送和 exact-SHA 公共 CI；在此之前不能称为公开验证完成。
+
+## 2026-08-15：5D 退出审查已公开验证
+
+- 退出审查提交 `2f4e4d40f00cf6a14b7c9c0f85e8d3cbdc8c2493` 已推送；GitHub Actions
+  run `31877076222` 对该精确 SHA completed/success。
+- 公共 Linux CI 通过治理、616 tests/103 subtests、两套 RAG、compileall、Harness
+  SDK/tracked-data boundary 与 dry-run；没有 Key 或 Provider I/O。
+- 5D 至此正式闭环。阶段 5 仍在进行中，唯一下一检查点为 5E AgentRuntime V1 入口
+  设计；当前无领域 Provider 准入和其他限制均未改变。

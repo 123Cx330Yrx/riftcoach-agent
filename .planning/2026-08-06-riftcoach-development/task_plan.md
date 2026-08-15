@@ -469,4 +469,5 @@ Flash、不迁移 GLM-5.3、不修改默认模型，也不直接采用 LangGraph
 - [x] 完成初学者退出审查文档，并把唯一下一检查点切换到 5E 入口设计；
 - [x] 完整本地门禁通过：`616 passed, 103 subtests passed`、两套 RAG 1.0、compileall、
   Harness SDK/tracked-data boundary、dry-run、治理和 diff check；
-- [ ] 提交推送并完成 exact-SHA public CI。
+- [x] 退出审查提交 `2f4e4d40f00cf6a14b7c9c0f85e8d3cbdc8c2493` 已推送并通过
+  Actions run `31877076222` 的 exact-SHA public CI。
