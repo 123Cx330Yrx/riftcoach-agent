@@ -1316,3 +1316,20 @@
 - ADR-0027 因此关闭当前 V3，保留低层协议事实，并把双层失败分类设为未来任何真实
   Provider 门的前置条件：稳定高层 `failure_code` + allowlisted 可空细分码。
 - 这项要求属于最小实验 provenance，不提前实现 5E 的统一 Trace；本批外部调用为 0。
+
+## 2026-08-15：5D-7 收尾审查发现
+
+- 原始 `2026-08-13-domain-e2e-evaluation-v1-design.md` 明确把 5D-7 最后一批定义为
+  `5D-7 review`，而不是要求某个 Provider 必须通过；评测基础设施与模型采用结果是两个
+  可独立裁决的对象。
+- 分层 Dataset/Candidate/Result、Prompt/Context 双层身份、Evaluation 1.1、held-out
+  生命周期、资源门和安全错误 provenance 已有代码、测试和不可变结果证据。
+- 旧 Evaluation 1.0 可执行 development 基线保留 1/7 unsafe publication；1.1 安全基线
+  在同类 7 场中为 0/7，且任务/失败分类准确率保持 1.0。这只证明已知开发攻击回归，
+  不能表述为普遍抗注入。
+- GLM-5.2 与 DeepSeek V4 Pro 都没有领域质量准入。协议层通过、Harness 安全降级和
+  模型领域质量是三件不同的事；当前质量必须保持 unknown。
+- 等待 GLM-5.3 会把内部阶段绑定外部发布时间；立即切 Flash 或追 Pro 又缺少新需求并
+  违反既有重开门。ADR-0028 因而接受 5D-7 完成，将 Provider 采用留给条件化新门。
+- 相关聚焦回归为 `130 passed, 4 subtests passed`，没有读取 Key、构造 Provider 或发起
+  外部调用。

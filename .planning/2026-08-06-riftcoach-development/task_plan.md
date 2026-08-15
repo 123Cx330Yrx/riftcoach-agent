@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.25 - 5D-7（in progress: DeepSeek V3 and provenance slice are closed; G53-0 deferred）
+Phase 6.26 - 5D-exit-review（next: 5D-7 completed without domain Provider admission）
 
 ## Phases
 
@@ -175,19 +175,16 @@ Phase 6.25 - 5D-7（in progress: DeepSeek V3 and provenance slice are closed; G5
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
+- `5D-7 review` 已按 ADR-0028 完成：评测合同、实验身份、注入阻断、held-out 生命周期、
+  资源/错误合同和真实负面结果足以完成评测门；当前没有领域 Provider 获得准入，质量
+  保持 unknown。G53 deferred 和 Flash 未测试不再阻塞 5D-7，但仍受各自重新采用门约束。
 
 ## Next Step
 
-5D-7 的 DeepSeek V3 calibration 已以 1 external call / 0 normalized responses 首错停止，
-不可变结果由 `421a243` / Actions `31869409106` 公开归档。ADR-0027 现关闭当前 V3，
-不生成 budget/held-out、不补跑，也不把结果解释为模型质量差；安全错误 provenance
-离线切片已经实现，当前只待本切片的完整本地/公开验证。
-
-GLM-5.3 普通 API 尚未正式可用，因此 G53-0 deferred；当前不切换 `.env` 默认模型、
-不测试 Flash、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。GLM-5.2 仅作为开发基线。
-待本切片公开验证完成且 GLM-5.3 API 可用，才按 ADR-0023 依次进行 G53-0 可用性审计、
-G53-1 Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议门和
-G53-4 新鲜领域门。
+`5D-exit-review`：对照 5D-entry-design、5D-1 至 5D-7 的原始合同、实现、测试、真实
+负面实验、限制与 5E 前置项，判断整个 5D 是否可以退出。该检查点只做审计和必要的最小
+修正，不读取 Key、不调用 Provider、不测试 Flash、不迁移 GLM-5.3、不修改默认模型，也
+不实现或提前进入 5E。
 
 ## Decisions Made
 
@@ -268,7 +265,7 @@ G53-4 新鲜领域门。
 | DeepSeek V4 Pro 最小 Adapter 协议准入 | exact-SHA `076a5e3` 上一次真实运行以 3/3 calls 完成严格 JSON 与一次知识工具往返，资源/停止/脱敏合同均通过；该结论不能覆盖尚未运行的三场领域 held-out |
 | DeepSeek V4 Pro 领域 held-out 不准入且不重跑当前考卷 | 首个正常案例暴露 `unsupported_parallel_tool_calls`，系统安全降级且没有发布错误内容；这是 Provider/Adapter 能力 Bad Case，不允许删除不可变结果或在已见考卷上临时放宽合同追绿 |
 | 多 ToolCall 批次由 AgentLoop 受控顺序消费 | DeepSeek 官方 `auto` 允许一个或多个工具且没有关闭批次的正式参数；Adapter 应翻译合法响应，AgentLoop 复用整批白名单/重复/预算预检，当前无证据承担真正并发复杂度 |
-| GLM-5.3 作为隔离的同厂商迁移候选 | 官方页面要求始终启用 thinking，当前 Zhipu Adapter 固定 disabled thinking，不能只改模型名；先完成当前 5D-7 唯一下一步，再按 ADR-0023 做独立 profile/协议/领域采用门，避免影响 DeepSeek |
+| GLM-5.3 作为隔离的同厂商迁移候选 | 官方页面要求始终启用 thinking，当前 Zhipu Adapter 固定 disabled thinking，不能只改模型名；G53 继续按 ADR-0023 做独立 profile/协议/领域采用门，但 API 未上线时不阻塞已完成的 5D-7，也不影响 5D-exit-review |
 | 新鲜领域采用门复用控制面并重建实验身份 | 重写控制面会复制 Harness/Evaluator/预算，旧题改名又是假新鲜；ADR-0024 保留产品链路，先用 development TDD 冻结兼容合同，之后才创建新 fixture/Dataset/plan/Context，并把历史真实证据与当前 CI 串成不可改写链 |
 | V3 资源合同采用四阶段 development Usage replay | 直接调高 V2 会污染考卷，单次端到端运行又不保证进入 repair；ADR-0026 用 baseline/ceiling 两个公开 profile 经真实生产组装形成四类请求，最多 8 次独立 replay 只测 Usage，再按逐阶段最大 input、25% 工程余量和硬 output cap 推导新门 |
 
@@ -434,3 +431,14 @@ G53-4 新鲜领域门。
 - [x] 完成完整回归 `616 passed, 103 subtests passed`、两套 RAG、compile/security/dry-run、治理和 diff 门禁；
 - [x] 提交 `0ad4f9766ab98455ce0726d18d5f5d1f02391c6a`、推送并通过 Actions run
   `31874240935` 的 exact-SHA public CI。
+
+### 5D-7 Prompt/Context 与领域评测收尾审查（2026-08-15）
+
+- [x] 对照原始 5D-7 设计逐项审查 Tool、Evidence、事实/引用、注入、终态和资源合同；
+- [x] 区分“评测门完成”与“领域 Provider 准入”，保留当前无模型准入和质量 unknown；
+- [x] 比较等待 GLM-5.3、立即切 Flash/追 Pro、诚实关闭评测门三种方案；
+- [x] 接受 ADR-0028：G53 deferred 不阻塞 5D-7，Flash/Pro 分层不自动重开；
+- [x] 5D-7 相关聚焦回归 `130 passed, 4 subtests passed`；
+- [x] 完成本地完整回归 `616 passed, 103 subtests passed`、两套 RAG、安全、治理和差异检查；
+- [ ] 提交、推送并完成 exact-SHA public CI；
+- [ ] 公开验证后进入唯一下一检查点 `5D-exit-review`，不得直接进入 5E。

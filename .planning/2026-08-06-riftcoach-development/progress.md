@@ -1345,7 +1345,7 @@
   `31872476103` 对该精确 SHA completed/success。
 - 公共 CI 在无 Key 环境通过治理、611 tests/103 subtests、两套 RAG、compileall、
   Harness SDK/tracked-data boundary 与 dry-run；外部 Provider calls 为 0。
-- 本检查点已闭环。唯一下一步仍在 5D-7：G53-0 GLM-5.3 普通 API 可用性与合同审计；
+- 本检查点当时已闭环；当时下一步仍在 5D-7：G53-0 GLM-5.3 普通 API 可用性与合同审计；
   不读取 Key、不调用 Provider，也不进入 5E。
 
 ## 2026-08-15：安全 Provider 错误 provenance 离线切片
@@ -1371,5 +1371,18 @@
   boundary 与 dry-run；CI 无 Key、无 Provider I/O。
 - 本切片闭环。当前仍在 5D-7，但没有新的模型测试授权：DeepSeek Pro 当前实验关闭，
   Flash 不测，GLM-5.3 G53-0 deferred；GLM-5.2 仅作开发基线。
-- 唯一下一步转为等待 GLM-5.3 普通 API 正式可用或新的明确 Pro/Flash 对照需求；在此
+- 当时下一步转为等待 GLM-5.3 普通 API 正式可用或新的明确 Pro/Flash 对照需求；在此
   之前不读取 Key、不调用 Provider、不进入 5E。
+
+## 2026-08-15：5D-7 收尾审查本地裁决
+
+- 完整复读原始 Domain E2E 与 Injection Gate 设计、ADR-0013/0016/0027、5C 退出审查
+  模板以及 5D-7 结果资产；没有调用真实 Provider。
+- 新增初学者收尾审查文档和 ADR-0028，逐项区分评测/安全门证据与真实模型领域采用。
+- 结论为 5D-7 可以完成，但当前没有领域 Provider 准入；GLM/DeepSeek 质量保持 unknown，
+  G53 deferred 和 Flash 未测试继续保留。
+- 相关 Domain/Prompt/Coach Evaluation/Provider 测试 `130 passed, 4 subtests passed`。
+- 完整本地回归 `616 passed, 103 subtests passed`；两套 RAG 1.0 门禁、compileall、
+  Harness SDK/tracked-data boundary、dry-run、governance 与 diff check 全部通过。
+- canonical checkpoint 已切换到 `5D-exit-review`；仍需提交推送和 exact-SHA GitHub
+  Actions，期间不进入 5E。

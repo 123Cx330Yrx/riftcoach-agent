@@ -1091,7 +1091,7 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `VERIFIED`：51 项聚焦、完整 611 tests/103 subtests、两套 RAG 与全部本地门禁通过；
   决策提交 `ea91e9697c820c0850db488a93263fc169719515` 已由 Actions run
   `31872476103` 完成 exact-SHA 公共验证。
-- `CURRENT`：唯一下一步仍在 5D-7，按 ADR-0023 进入 G53-0 GLM-5.3 普通 API 与合同
+- `THEN-CURRENT`：当时下一步仍在 5D-7，按 ADR-0023 进入 G53-0 GLM-5.3 普通 API 与合同
   可用性审计；不调用模型。
 
 ### 2026-08-15：GLM-5.3 deferred，先补 Provider 错误 provenance
@@ -1104,5 +1104,20 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `VERIFIED`：实现提交 `0ad4f9766ab98455ce0726d18d5f5d1f02391c6a` 已由 Actions run
   `31874240935` 完成 exact-SHA 公共验证；616 tests/103 subtests、两套 RAG 和安全门禁
   通过，CI 无 Key/Provider I/O。
-- `CURRENT`：本切片已闭环；等待 GLM-5.3 普通 API 上线或新的明确 Pro/Flash 对照需求，
+- `THEN-CURRENT`：本切片闭环后曾计划等待 GLM-5.3 普通 API 上线或新的明确 Pro/Flash 对照需求，
   不读取 Key、不调用 Provider。
+### 2026-08-15：5D-7 以“评测门完成、领域 Provider 未准入”收尾
+
+- `USER-CONFIRMED`：用户确认开始 5D-7 review，不让尚未上线的 GLM-5.3 普通 API 阻塞
+  项目，也不因此自动切换 Flash 或补跑 DeepSeek。
+- `REVIEW`：原始 5D-7 设计的退出对象是分层评测、Prompt/Context 身份、held-out
+  生命周期、注入阻断、资源/错误合同和采用决策能力，不要求某个 Provider 必须通过。
+- `DECISION`：ADR-0028 接受 5D-7 完成；当前 GLM/DeepSeek 领域质量仍未准入并保持
+  unknown。G53 deferred 和未来 Flash/Pro 分层继续受既有重开门约束。
+- `NO-IO`：本审查没有读取 Key、构造 Provider、调用模型、修改 Prompt 或默认模型。
+- `VERIFIED-FOCUSED`：相关 Domain E2E、Prompt/Context、Coach Evaluation、Provider
+  Domain/Adoption/Calibration 回归为 `130 passed, 4 subtests passed`。
+- `VERIFIED-LOCAL`：完整回归 `616 passed, 103 subtests passed`，两套 RAG、compileall、
+  Harness SDK/tracked-data boundary、dry-run、治理和差异检查通过。
+- `CURRENT`：唯一下一检查点改为 `5D-exit-review`；完整本地门禁和 exact-SHA 公共 CI
+  完成前，不得表述为公开收尾，也不得进入 5E。

@@ -186,7 +186,8 @@ OP.GG MCP
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
-5D-7 Prompt/Context Eval      进行中；ADR-0027 已关闭 DeepSeek V3，低层协议保留、领域质量 unknown；安全错误 provenance 已由 `0ad4f97` / Actions `31874240935` 公开验证；G53-0 deferred
+5D-7 Prompt/Context Eval      已完成；评测/安全门通过审查，当前无领域 Provider 准入；ADR-0028 保留质量 unknown，G53-0 deferred
+5D-exit-review                下一检查点；对照全部 5D 证据和 5E 前置项
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -208,6 +209,12 @@ unknown，后 7 calls 未发送。预算与 V3 held-out 均未创建；结果/�
 `ea91e9697c820c0850db488a93263fc169719515` 已通过 Actions run `31872476103`。
 安全错误 provenance 切片已完成本地/公开验证；GLM-5.3 G53-0 待普通 API 上线后再审计，
 或在出现明确 Pro/Flash 对照需求后另立实验。
+
+ADR-0028 随后完成 5D-7 收尾裁决：分层评测、Prompt/Context 身份、Evaluation 1.1、
+held-out 生命周期、资源控制和安全失败归因已经构成完整采用门；GLM-5.2/DeepSeek 的领域
+质量仍未准入并保持 unknown。模型 reject/unknown 是有效采用结论，不要求围绕旧考题
+追绿。G53 deferred 和 Flash/Pro 分层不再阻塞 5D-7；唯一下一检查点为
+`5D-exit-review`，不直接进入 5E。
 
 ADR-0026 已进一步冻结校准方法：baseline/ceiling 两个公开 development profile 各形成
 初始 Agent、工具后 Agent、Evaluation 和 Evaluation repair 四阶段请求；未来真实校准

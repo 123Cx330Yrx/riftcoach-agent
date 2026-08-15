@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5D"
-current_checkpoint: "5D-7"
+current_checkpoint: "5D-exit-review"
 status: in_progress
-blocked_before: "5D-exit-review"
+blocked_before: "5E"
 ---
 
 # RiftCoach 当前执行状态
@@ -18,7 +18,7 @@ blocked_before: "5D-exit-review"
 
 - 最后更新：2026-08-15
 - 主阶段：阶段 5，进行中
-- 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-6b 已完成；
+- 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-7 已完成；
   5D-7 Batch A-C 与 Batch D 的 D1-D5 已完成，DeepSeek V4 Pro Adapter 真实
   structured/tool 协议 3/3 calls 已准入；三场领域 held-out 的控制面以及独立输入计划、
   oracle-blind 生产 Executor 和真实门 CLI 已完成离线 TDD，并由提交
@@ -96,11 +96,12 @@ blocked_before: "5D-exit-review"
   `provider_error_code` 白名单传递和旧结果兼容合同，聚焦回归 89 passed；完整回归为
   `616 passed, 103 subtests passed`，两套 RAG 与全部本地门禁通过；实现提交
   `0ad4f9766ab98455ce0726d18d5f5d1f02391c6a` 已通过 GitHub Actions run
-  `31874240935` 的 exact-SHA 公共 CI
-- 唯一下一步：仍在 5D-7，但安全错误 provenance 切片已闭环；GLM-5.3 的 `G53-0`
-  因普通 API 尚未正式可用而 deferred。等待 API 上线或新的明确 Pro/Flash 对照需求；
-  不得读取 Key、调用 Provider、切换 Flash、修改默认模型、补跑 DeepSeek 或进入 5E
-- 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；DeepSeek
+  `31874240935` 的 exact-SHA 公共 CI；ADR-0028 与 5D-7 收尾审查现已区分“评测门完成”
+  和“领域模型采用未准入”，接受 5D-7 完成并把 G53 保持为非阻塞 deferred 候选
+- 唯一下一步：`5D-exit-review`；对照 5D-entry-design 与 5D-1 至 5D-7 的合同、证据、
+  限制和 5E 前置项。不得读取 Key、调用 Provider、切换 Flash、修改默认模型、补跑
+  DeepSeek 或提前进入 5E
+- 禁止越过：5D-exit-review 完成前不得进入 5E 或统一 AgentRuntime；DeepSeek
   V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用已通过的低层
   协议、候选选择或发布热度替代领域质量证据
 
@@ -127,8 +128,8 @@ blocked_before: "5D-exit-review"
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测首个 Provider，并为第二 Provider 决策提供真实证据 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（DeepSeek V3 已关闭；provenance 切片已公开验证；G53-0 deferred） | DeepSeek 不完整 calibration 由 `421a243` / Actions `31869409106` 公开归档；ADR-0027 的安全细分错误 provenance 已由 `0ad4f97` / Actions `31874240935` 完成离线白名单、控制器和 calibration 合同验证；GLM-5.3 API 未上线，当前不测 Flash；等待 API 或新的明确对照需求 |
-| 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 已完成（当前无领域 Provider 准入） | 分层评测、Prompt/Context 身份、Evaluation 1.1、held-out 生命周期、资源/错误合同和真实负面结果均已审查；ADR-0028 接受评测门完成，同时保留 GLM/DeepSeek 领域质量 unknown、G53 deferred 与 Flash 未测试边界 |
+| 5D-exit-review | 对照全部证据和 5E 前置项 | 下一检查点，未开始 | 仅审查 5D 整体是否满足退出条件；不得借此实现 5E |
 
 ## 当前真实能力边界
 
@@ -366,10 +367,10 @@ blocked_before: "5D-exit-review"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；DeepSeek V3 由 ADR-0027 关闭；安全错误 provenance 白名单离线切片已完成并公开验证 | 阶段 5、整个 5D、DeepSeek 领域质量、V3 资源合同、生产默认切换或报告质量准入已完成；关闭当前实验等于删除 Provider 或证明模型差 |
-| 项目理解 | 已区分控制面 admission、真实 Provider I/O、Usage 校准和 held-out 质量采用；又区分跨厂商高层失败分类与 Adapter 安全细分错误 provenance，理解为什么不能保存原文也不能只留宽泛错误 | 离线合成 executor 能评价模型智力，25% 余量具有统计保证，`provider_response_invalid` 已证明具体 Adapter 根因或 DeepSeek 质量差，账本 0 tokens/`$0` 等于厂商实际零计费 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-7；5D-exit-review 尚未开始；当前无领域 Provider 准入 | 阶段 5、整个 5D、生产模型报告质量、V3 资源合同、生产默认切换或 5E Trace 已完成；关闭当前实验等于删除 Provider 或证明模型差 |
+| 项目理解 | 已区分评测门完成与候选模型通过：admit/reject/unknown 都是有效采用结论；又区分协议能力、领域质量、资源可达性和安全发布 | 离线合成 executor 能评价模型智力，5D-7 完成等于 GLM/DeepSeek 通过，或等待新模型是评测基础设施的必要组成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | V3 离线校准、真实入口、不完整结果、保守裁决、ADR-0027 关闭决策与 provenance 切片均有 exact-SHA CI；正式网页未部署 | 公开实验基础设施等于领域质量、最终厂商选型、生产切换或 Web Agent 可用 |
+| GitHub/部署 | V3 离线校准、真实入口、不完整结果、保守裁决、ADR-0027 关闭决策与 provenance 切片均有 exact-SHA CI；5D-7 review 正在等待本提交的 exact-SHA CI；正式网页未部署 | 公开实验基础设施等于领域质量、最终厂商选型、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -424,6 +425,9 @@ ADR-0009。
 - 自动检查降低再次漂移的概率并让错误可见，但不能替代用户对阶段验收的确认。
 
 ## 下一检查点的范围
+
+当前唯一下一检查点是 `5D-exit-review`。本节后续先保留从 5C 到 5D-7 的历史范围账本；
+其中旧“下一步”只表示当时顺序，不覆盖本文顶部的 canonical checkpoint。
 
 `5C-5-prep-1 Skill Invocation Contract` 与 `5C-5-prep-3 report-fact-check Skill`
 已在功能代码开始前由 ADR-0009 取消，并保留在历史记录中。
@@ -710,5 +714,20 @@ Key 或执行 V2 held-out。
 这次结果正确支持 `admitted=false`，并证明预算与安全控制生效；但由于事实、引用、注入
 和 Evaluation 链均未完成，不能归纳为 DeepSeek 报告质量失败。它同时暴露了实验设计
 Bad Case：Fake Provider 的小 Usage 没有证明真实 Prompt 下“4 calls/4000 tokens”控制流
-可达。唯一下一步仍在 5D-7 内，先做零调用的结果裁决与真实长度预算可达性 TDD；不得
+可达。当时下一步仍在 5D-7 内，先做零调用的结果裁决与真实长度预算可达性 TDD；不得
 直接调高预算重跑 V2、调用其他模型或进入 5D exit review/5E。
+
+### 2026-08-15：5D-7 收尾审查
+
+原始 5D-7 设计将最终 review 定义为评测合同、Prompt/Context 身份、控制流、安全门、
+资源和采用决策的证据审查，而不是要求某个真实 Provider 必须通过。当前分层
+Dataset/Candidate/Result、development/held-out 生命周期、Evaluation 1.1、已知注入阻断、
+资源预算、双层安全错误 provenance 与不可变真实负面结果均已有证据。
+
+ADR-0028 因此接受 5D-7 完成，同时保留当前无领域 Provider 准入：GLM-5.2 仅为开发
+基线，DeepSeek 领域质量 unknown，GLM-5.3 G53 deferred，Flash 未测试。相关聚焦回归为
+`130 passed, 4 subtests passed`，完整本地回归为 `616 passed, 103 subtests passed`；
+两套 RAG 1.0 门禁、compileall、Harness SDK/tracked-data boundary、dry-run、治理和差异
+检查均通过，本审查外部调用为 0。下一检查点为
+`5D-exit-review`；它必须继续核对两个 Skill、真实模型/注入/性能限制和 5E 前置项，不能
+把 5D-7 完成解释为生产模型报告质量已经通过。

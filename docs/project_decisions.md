@@ -407,3 +407,13 @@ null，旧真实结果不改写。
 该离线切片提交 `0ad4f9766ab98455ce0726d18d5f5d1f02391c6a` 已通过 GitHub Actions
 run `31874240935` 的 exact-SHA 公共验证；616 tests/103 subtests 和全部 CI 门禁通过，
 无 Key 或 Provider I/O。
+### 5D-7 收尾与领域模型未准入边界
+
+ADR-0028 接受 5D-7 的评测与实验控制面已经完成，同时明确当前没有真实 Provider 获得
+领域质量准入。通过的能力包括分层 Dataset/Candidate/Result、Prompt/Context 身份、
+Evaluation 1.1 安全阻断、held-out 生命周期、资源门和安全错误 provenance；未通过的
+能力仍包括真实模型完整近期复盘、真实注入两例、稳定 Token/成本/延迟和产品默认模型。
+
+因此模型采用的 reject/unknown 不是阶段失败，也不能被改写为模型质量差。G53 保持
+deferred 但不再阻塞 5D-7；Flash/Pro 分层继续受 ADR-0019 约束。下一检查点只进行
+`5D-exit-review`，不读取 Key、不调用 Provider、不修改默认模型，也不提前实现 5E。

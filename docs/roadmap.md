@@ -143,9 +143,10 @@ GLM-5.2 和 GLM-5.3 共享 Zhipu Provider 接口，但不共享所有请求语�
 要求始终启用 thinking，因此模型升级必须先通过独立的 profile/Adapter 合同测试，
 再通过真实协议和领域采用门。模型切换不等于自动路由，也不等于 Multi-Agent。
 
-当前 5D-7 的 DeepSeek 采用门完成前，不修改默认 GLM、不混入 DeepSeek 结果。GLM-5.3
-未来按 ADR-0023 的 G53-0 至 G53-4 顺序隔离推进；通过新鲜领域门前，GLM-5.2 历史
-证据和确定性 fallback 保持有效。
+5D-7 已在没有领域 Provider 准入的情况下完成评测门审查；这不修改默认 GLM，也不把
+DeepSeek 结果混入产品能力。GLM-5.3 普通 API 可用后按 ADR-0023 的 G53-0 至 G53-4
+顺序隔离推进；通过新鲜领域门前，GLM-5.2 只作为开发基线，历史证据和确定性 fallback
+保持有效。
 
 ## 阶段 4：RAG v1
 
