@@ -152,8 +152,9 @@ Provider Domain、Adoption 和 Resource Calibration 测试：`130 passed, 4 subt
 holdout 的 Recall/MRR/nDCG 均为 1.0，holdout abstention/citation support 也为 1.0；
 compileall、Harness SDK/tracked-data 边界、dry-run、治理和差异检查通过。
 
-最终还必须通过 exact-SHA GitHub Actions。公开 CI 未完成前，本地审查不得被表述为
-公开完成。
+审查提交 `7c8f4e7344ac3ecc0fa22885c7ebd2109a17d383` 已通过 GitHub Actions run
+`31876536179` 的 exact-SHA 公共 CI；公共环境再次通过治理、完整 pytest、两套 RAG、
+compileall、Harness SDK/tracked-data 边界和 dry-run，且没有 Key 或 Provider I/O。
 
 ## 9. 退出判定
 
@@ -161,6 +162,6 @@ compileall、Harness SDK/tracked-data 边界、dry-run、治理和差异检查�
 重新采用边界均有可追溯证据。没有 Provider 获得领域质量准入，这一限制已明确保存，且
 不会通过修改旧考题或重复调用来掩盖。
 
-因此 5D-7 状态改为 **已完成（模型领域采用未准入）**；阶段 5 和 5D 仍为 **进行中**；
+因此 5D-7 状态改为 **已完成（模型领域采用未准入，已公开验证）**；阶段 5 和 5D 仍为 **进行中**；
 唯一下一检查点改为 **`5D-exit-review`**。该变更不授权读取 Key、调用 Provider、迁移
 GLM-5.3、测试 Flash、修改默认模型或进入 5E。

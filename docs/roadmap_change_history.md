@@ -1119,5 +1119,8 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   Domain/Adoption/Calibration 回归为 `130 passed, 4 subtests passed`。
 - `VERIFIED-LOCAL`：完整回归 `616 passed, 103 subtests passed`，两套 RAG、compileall、
   Harness SDK/tracked-data boundary、dry-run、治理和差异检查通过。
-- `CURRENT`：唯一下一检查点改为 `5D-exit-review`；完整本地门禁和 exact-SHA 公共 CI
+- `PRE-PUBLIC`：唯一下一检查点改为 `5D-exit-review`；完整本地门禁和 exact-SHA 公共 CI
   完成前，不得表述为公开收尾，也不得进入 5E。
+- `PUBLIC-VERIFIED`：审查提交 `7c8f4e7344ac3ecc0fa22885c7ebd2109a17d383` 已通过
+  Actions run `31876536179`；公共 CI 无 Key/Provider I/O。5D-7 正式闭环，下一检查点
+  保持 `5D-exit-review`。

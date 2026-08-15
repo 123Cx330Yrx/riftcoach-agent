@@ -1384,5 +1384,14 @@
 - 相关 Domain/Prompt/Coach Evaluation/Provider 测试 `130 passed, 4 subtests passed`。
 - 完整本地回归 `616 passed, 103 subtests passed`；两套 RAG 1.0 门禁、compileall、
   Harness SDK/tracked-data boundary、dry-run、governance 与 diff check 全部通过。
-- canonical checkpoint 已切换到 `5D-exit-review`；仍需提交推送和 exact-SHA GitHub
-  Actions，期间不进入 5E。
+- canonical checkpoint 当时已切换到 `5D-exit-review`；该本地批次尚待提交推送和
+  exact-SHA GitHub Actions，期间不进入 5E。
+
+## 2026-08-15：5D-7 收尾审查已公开验证
+
+- 审查提交 `7c8f4e7344ac3ecc0fa22885c7ebd2109a17d383` 已推送；GitHub Actions run
+  `31876536179` 对精确 SHA completed/success。
+- 公共 CI 通过治理、616 tests/103 subtests、两套 RAG、compileall、Harness SDK/
+  tracked-data boundary 与 dry-run；没有 Key 或 Provider I/O。
+- 5D-7 正式闭环，当前无领域 Provider 准入的限制保持不变；唯一下一检查点为
+  `5D-exit-review`，不直接进入 5E。

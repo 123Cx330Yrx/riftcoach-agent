@@ -440,5 +440,6 @@ Phase 6.26 - 5D-exit-review（next: 5D-7 completed without domain Provider admis
 - [x] 接受 ADR-0028：G53 deferred 不阻塞 5D-7，Flash/Pro 分层不自动重开；
 - [x] 5D-7 相关聚焦回归 `130 passed, 4 subtests passed`；
 - [x] 完成本地完整回归 `616 passed, 103 subtests passed`、两套 RAG、安全、治理和差异检查；
-- [ ] 提交、推送并完成 exact-SHA public CI；
-- [ ] 公开验证后进入唯一下一检查点 `5D-exit-review`，不得直接进入 5E。
+- [x] 审查提交 `7c8f4e7344ac3ecc0fa22885c7ebd2109a17d383` 已推送并通过 Actions
+  run `31876536179` 的 exact-SHA public CI；
+- [x] 公开验证后进入唯一下一检查点 `5D-exit-review`，不得直接进入 5E。

@@ -97,7 +97,9 @@ blocked_before: "5E"
   `616 passed, 103 subtests passed`，两套 RAG 与全部本地门禁通过；实现提交
   `0ad4f9766ab98455ce0726d18d5f5d1f02391c6a` 已通过 GitHub Actions run
   `31874240935` 的 exact-SHA 公共 CI；ADR-0028 与 5D-7 收尾审查现已区分“评测门完成”
-  和“领域模型采用未准入”，接受 5D-7 完成并把 G53 保持为非阻塞 deferred 候选
+  和“领域模型采用未准入”，接受 5D-7 完成并把 G53 保持为非阻塞 deferred 候选；
+  审查提交 `7c8f4e7344ac3ecc0fa22885c7ebd2109a17d383` 已通过 GitHub Actions run
+  `31876536179` 的 exact-SHA 公共 CI
 - 唯一下一步：`5D-exit-review`；对照 5D-entry-design 与 5D-1 至 5D-7 的合同、证据、
   限制和 5E 前置项。不得读取 Key、调用 Provider、切换 Flash、修改默认模型、补跑
   DeepSeek 或提前进入 5E
@@ -370,7 +372,7 @@ blocked_before: "5E"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-7；5D-exit-review 尚未开始；当前无领域 Provider 准入 | 阶段 5、整个 5D、生产模型报告质量、V3 资源合同、生产默认切换或 5E Trace 已完成；关闭当前实验等于删除 Provider 或证明模型差 |
 | 项目理解 | 已区分评测门完成与候选模型通过：admit/reject/unknown 都是有效采用结论；又区分协议能力、领域质量、资源可达性和安全发布 | 离线合成 executor 能评价模型智力，5D-7 完成等于 GLM/DeepSeek 通过，或等待新模型是评测基础设施的必要组成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | V3 离线校准、真实入口、不完整结果、保守裁决、ADR-0027 关闭决策与 provenance 切片均有 exact-SHA CI；5D-7 review 正在等待本提交的 exact-SHA CI；正式网页未部署 | 公开实验基础设施等于领域质量、最终厂商选型、生产切换或 Web Agent 可用 |
+| GitHub/部署 | V3 离线校准、真实入口、不完整结果、保守裁决、ADR-0027、provenance 切片与 5D-7 review 均有 exact-SHA CI；正式网页未部署 | 公开实验基础设施等于领域质量、最终厂商选型、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -731,3 +733,7 @@ ADR-0028 因此接受 5D-7 完成，同时保留当前无领域 Provider 准入�
 检查均通过，本审查外部调用为 0。下一检查点为
 `5D-exit-review`；它必须继续核对两个 Skill、真实模型/注入/性能限制和 5E 前置项，不能
 把 5D-7 完成解释为生产模型报告质量已经通过。
+
+审查提交 `7c8f4e7344ac3ecc0fa22885c7ebd2109a17d383` 随后通过 GitHub Actions run
+`31876536179` 的 exact-SHA 公共 CI。5D-7 至此正式闭环；该公共验证没有调用 Provider，
+也没有改变当前无领域 Provider 准入的结论。

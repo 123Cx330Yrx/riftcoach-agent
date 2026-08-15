@@ -214,7 +214,8 @@ ADR-0028 随后完成 5D-7 收尾裁决：分层评测、Prompt/Context 身份�
 held-out 生命周期、资源控制和安全失败归因已经构成完整采用门；GLM-5.2/DeepSeek 的领域
 质量仍未准入并保持 unknown。模型 reject/unknown 是有效采用结论，不要求围绕旧考题
 追绿。G53 deferred 和 Flash/Pro 分层不再阻塞 5D-7；唯一下一检查点为
-`5D-exit-review`，不直接进入 5E。
+`5D-exit-review`，不直接进入 5E。审查提交 `7c8f4e7` 已通过 Actions run
+`31876536179` 的 exact-SHA 公共 CI。
 
 ADR-0026 已进一步冻结校准方法：baseline/ceiling 两个公开 development profile 各形成
 初始 Agent、工具后 Agent、Evaluation 和 Evaluation repair 四阶段请求；未来真实校准
