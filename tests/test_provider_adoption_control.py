@@ -13,14 +13,19 @@ from app.evaluation.provider_adoption import (
     ExperimentStopController,
     ProviderBudgetPolicy,
     ProviderResourceLedger,
+    ProviderStopObservation,
     ResourceLedgerSnapshot,
     classify_agent_failure,
     classify_provider_error,
     deepseek_experiment_policy,
+    safe_provider_error_code,
     zhipu_experiment_policy,
 )
 from app.providers.capabilities import ProviderCapabilities
-from app.providers.errors import ProviderResponseError, ProviderUnavailableError
+from app.providers.errors import (
+    ProviderResponseError,
+    ProviderUnavailableError,
+)
 from app.providers.models import (
     ChatMessage,
     ChatRequest,
@@ -385,6 +390,33 @@ def test_sdk_failure_consumes_call_and_usage_failure_stops_provider():
     assert controller.snapshot().provider_stops[0].failure_code is (
         ExperimentFailureCode.PROVIDER_USAGE_UNAVAILABLE
     )
+    assert controller.snapshot().provider_stops[0].provider_error_code == (
+        "provider_usage_unavailable"
+    )
+
+
+def test_unknown_provider_error_detail_is_not_persisted():
+    error = ProviderResponseError(
+        provider="deepseek",
+        code="arbitrary_sdk_text",
+    )
+
+    assert safe_provider_error_code(error) is None
+    with pytest.raises(ValidationError, match="allowlisted"):
+        ProviderStopObservation(
+            provider_id="deepseek",
+            failure_code=ExperimentFailureCode.PROVIDER_RESPONSE_INVALID,
+            provider_error_code="arbitrary_sdk_text",
+        )
+
+
+def test_allowlisted_provider_error_detail_is_body_free():
+    error = ProviderResponseError(
+        provider="deepseek",
+        code="invalid_finish_reason",
+    )
+
+    assert safe_provider_error_code(error) == "invalid_finish_reason"
 
 
 def test_latency_overrun_is_classified_and_stops_provider():

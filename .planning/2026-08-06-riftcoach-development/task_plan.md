@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.25 - 5D-7（in progress: DeepSeek V3 is closed by zero-I/O decision; G53-0 is next）
+Phase 6.25 - 5D-7（in progress: DeepSeek V3 is closed; G53-0 deferred; safe error provenance slice is current）
 
 ## Phases
 
@@ -180,16 +180,14 @@ Phase 6.25 - 5D-7（in progress: DeepSeek V3 is closed by zero-I/O decision; G53
 
 5D-7 的 DeepSeek V3 calibration 已以 1 external call / 0 normalized responses 首错停止，
 不可变结果由 `421a243` / Actions `31869409106` 公开归档。ADR-0027 现关闭当前 V3，
-不生成 budget/held-out、不补跑，也不把结果解释为模型质量差；未来真实门必须先离线
-保留允许列表安全错误 provenance。唯一下一步仍在 5D-7，为既定 `G53-0`：只审计
-GLM-5.3 普通 API、model ID、endpoint、thinking 与 structured/tool 合同，不读取 Key、
-调用 Provider、修改默认模型或进入 5D exit review/5E。
+不生成 budget/held-out、不补跑，也不把结果解释为模型质量差；安全错误 provenance
+离线切片已经实现，当前只待本切片的完整本地/公开验证。
 
-GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
-`.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门
-完成设计、离线 TDD 和公开 CI 后，才按 ADR-0023 依次进行 G53-0 可用性审计、G53-1
-Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议门和 G53-4
-新鲜领域门。
+GLM-5.3 普通 API 尚未正式可用，因此 G53-0 deferred；当前不切换 `.env` 默认模型、
+不测试 Flash、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。GLM-5.2 仅作为开发基线。
+待本切片公开验证完成且 GLM-5.3 API 可用，才按 ADR-0023 依次进行 G53-0 可用性审计、
+G53-1 Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议门和
+G53-4 新鲜领域门。
 
 ## Decisions Made
 
@@ -425,3 +423,13 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 - [x] 完成 51 项聚焦、611 tests/103 subtests、两套 RAG 与全部本地门禁；
 - [x] 决策提交 `ea91e9697c820c0850db488a93263fc169719515` 已推送并通过
   Actions run `31872476103` 的 exact-SHA public CI。
+
+### 5D-7 安全 Provider 错误 provenance 离线切片（2026-08-15）
+
+- [x] 记录 GLM-5.3 普通 API 尚未上线，G53-0 deferred；不立即切 Flash，GLM-5.2 仅作开发基线；
+- [x] 建立 Provider-specific allowlist，未知细分错误自动变为 `null`；
+- [x] 将允许列表安全码接入 Provider stop snapshot 与资源 calibration result/adjudication；
+- [x] 保证旧真实 V3 JSON 能读取且不修改历史结果 bytes；
+- [x] 新增允许、拒绝、公开边界与兼容性聚焦测试，聚焦 Provider/Calibration/Domain 回归 89 passed；
+- [x] 完成完整回归 `616 passed, 103 subtests passed`、两套 RAG、compile/security/dry-run、治理和 diff 门禁；
+- [ ] 提交、推送并完成 exact-SHA public CI。

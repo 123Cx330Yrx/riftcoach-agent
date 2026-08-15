@@ -395,3 +395,11 @@ ADR-0023 进入 G53-0 GLM-5.3 可用性与合同审计。
 
 该关闭决策提交 `ea91e9697c820c0850db488a93263fc169719515` 已通过 GitHub Actions
 run `31872476103` 的 exact-SHA 公共验证；CI 无 Key 或 Provider I/O。
+
+### 5D-7：模型路线与安全错误 provenance 维护
+
+GLM-5.3 普通 API 尚未正式可用，G53-0 暂缓；DeepSeek Pro 当前领域尝试保持关闭，
+不因技术性失败立即切换 Flash。GLM-5.2 继续作为开发基线，但不被表述为已完成领域
+质量准入。按照 ADR-0027，先实现并测试 allowlisted `provider_error_code` 在 Provider
+Adapter、实验停止控制和 calibration adjudication 之间的安全传递；未知错误必须为
+null，旧真实结果不改写。

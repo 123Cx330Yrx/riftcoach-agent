@@ -41,6 +41,54 @@ _EXPECTED_HELD_OUT_CASES = (
     "heldout_retrieved_evidence_instruction",
 )
 
+# Only adapter-emitted, body-free constants may cross the public experiment
+# boundary.  An arbitrary SDK/error string must become ``None`` instead.
+_SAFE_PROVIDER_ERROR_CODES = MappingProxyType(
+    {
+        "deepseek": frozenset(
+            {
+                "authentication_failed",
+                "connection_failed",
+                "incomplete_chat_response",
+                "invalid_chat_response",
+                "invalid_finish_reason",
+                "invalid_tool_call_request",
+                "invalid_tool_call_response",
+                "invalid_tool_name",
+                "provider_usage_unavailable",
+                "rate_limited",
+                "request_rejected",
+                "resolved_model_mismatch",
+                "service_unavailable",
+                "timeout",
+                "tool_name_alias_conflict",
+                "unexpected_reasoning_content",
+                "unexpected_sdk_error",
+                "unknown_tool_name",
+            }
+        ),
+        "zhipu": frozenset(
+            {
+                "authentication_failed",
+                "connection_failed",
+                "invalid_chat_response",
+                "invalid_tool_call_request",
+                "invalid_tool_call_response",
+                "invalid_tool_name",
+                "rate_limited",
+                "request_rejected",
+                "service_unavailable",
+                "timeout",
+                "tool_name_alias_conflict",
+                "unexpected_reasoning_content",
+                "unexpected_sdk_error",
+                "unknown_tool_name",
+                "unsupported_parallel_tool_calls",
+            }
+        ),
+    }
+)
+
 
 class ExperimentFailureCode(str, Enum):
     EXPERIMENT_IDENTITY_MISMATCH = "experiment_identity_mismatch"
@@ -295,6 +343,16 @@ class ProviderStopObservation(BaseModel):
 
     provider_id: str
     failure_code: ExperimentFailureCode
+    provider_error_code: str | None = None
+
+    @model_validator(mode="after")
+    def validate_safe_detail(self) -> "ProviderStopObservation":
+        if self.provider_error_code is not None and not _is_safe_provider_error_code(
+            self.provider_id,
+            self.provider_error_code,
+        ):
+            raise ValueError("provider_error_code is not allowlisted")
+        return self
 
 
 class AgentFailureClassification(BaseModel):
@@ -368,11 +426,16 @@ class ExperimentStopController:
             raise ValueError("allowed Provider IDs must not be blank")
         self._allowed = frozenset(allowed_provider_ids)
         self._global_stop: ExperimentFailureCode | None = None
-        self._provider_stops: dict[str, ExperimentFailureCode] = {}
+        self._provider_stops: dict[
+            str, tuple[ExperimentFailureCode, str | None]
+        ] = {}
 
     def require_permitted(self, provider_id: str) -> None:
         self._require_known(provider_id)
-        code = self._global_stop or self._provider_stops.get(provider_id)
+        stop = self._global_stop
+        code = stop if stop is not None else (
+            self._provider_stops.get(provider_id, (None, None))[0]
+        )
         if code is not None:
             raise ProviderResponseError(
                 provider=provider_id,
@@ -383,9 +446,19 @@ class ExperimentStopController:
         self,
         provider_id: str,
         failure_code: ExperimentFailureCode,
+        *,
+        provider_error_code: str | None = None,
     ) -> None:
         self._require_known(provider_id)
-        self._provider_stops.setdefault(provider_id, failure_code)
+        if provider_error_code is not None and not _is_safe_provider_error_code(
+            provider_id,
+            provider_error_code,
+        ):
+            raise ValueError("provider_error_code is not allowlisted")
+        self._provider_stops.setdefault(
+            provider_id,
+            (failure_code, provider_error_code),
+        )
 
     def stop_global(self, failure_code: ExperimentFailureCode) -> None:
         if self._global_stop is None:
@@ -408,8 +481,11 @@ class ExperimentStopController:
                 ProviderStopObservation(
                     provider_id=provider_id,
                     failure_code=code,
+                    provider_error_code=provider_error_code,
                 )
-                for provider_id, code in sorted(self._provider_stops.items())
+                for provider_id, (code, provider_error_code) in sorted(
+                    self._provider_stops.items()
+                )
             ),
         )
 
@@ -791,6 +867,7 @@ class ExperimentBudgetedProvider:
             self._controller.stop_provider(
                 self.provider_name,
                 classify_provider_error(exc),
+                provider_error_code=safe_provider_error_code(exc),
             )
             raise
 
@@ -819,6 +896,29 @@ def classify_provider_error(error: ProviderError) -> ExperimentFailureCode:
             return ExperimentFailureCode.PROVIDER_REQUEST_REJECTED
         return ExperimentFailureCode.PROVIDER_RESPONSE_INVALID
     return ExperimentFailureCode.PROVIDER_ERROR_UNKNOWN
+
+
+def safe_provider_error_code(error: ProviderError) -> str | None:
+    """Return only a provider-specific, body-free error constant.
+
+    The adapter owns the allowlist.  This function deliberately returns
+    ``None`` for unknown providers or codes instead of forwarding arbitrary
+    SDK text into a public experiment result.
+    """
+
+    if not isinstance(error, ProviderError):
+        raise TypeError("error must be a ProviderError")
+    if _is_safe_provider_error_code(error.provider, error.code):
+        return error.code
+    return None
+
+
+def _is_safe_provider_error_code(provider_id: str, code: str) -> bool:
+    return (
+        isinstance(provider_id, str)
+        and isinstance(code, str)
+        and code in _SAFE_PROVIDER_ERROR_CODES.get(provider_id, frozenset())
+    )
 
 
 def classify_agent_failure(

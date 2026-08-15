@@ -37,7 +37,7 @@ from app.agent.context import DeterministicContextSizer
 from app.evaluation.coach_report import EvaluationResponseModelV11
 from app.lol.summary_schema import validate_summary_document
 from app.providers.capabilities import ProviderCapabilities
-from app.providers.errors import ProviderError
+from app.providers.errors import ProviderError, ProviderResponseError
 from app.providers.models import (
     ChatRequest,
     ChatResponse,
@@ -55,6 +55,7 @@ from .provider_adoption import (
     ProviderResourceLedger,
     ResourceLedgerSnapshot,
     classify_provider_error,
+    safe_provider_error_code,
 )
 from .provider_domain_experiment import DomainCaseExecutionPlan
 from .provider_domain_plan import (
@@ -72,6 +73,10 @@ NonBlankText = Annotated[
 ]
 Sha256Text = Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
 GitShaText = Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{40}$")]
+SafeProviderErrorCode = Annotated[
+    str,
+    StringConstraints(pattern=r"^[a-z][a-z0-9_]{0,127}$"),
+]
 
 
 class CalibrationStage(str, Enum):
@@ -299,6 +304,7 @@ class CalibrationSimulationResult(BaseModel):
     observations: tuple[ResourceCalibrationUsageObservation, ...]
     ledger: ResourceLedgerSnapshot
     failure_code: ExperimentFailureCode | None = None
+    provider_error_code: SafeProviderErrorCode | None = None
     external_provider_calls: Literal[0]
     quality_admission_excluded: Literal[True]
 
@@ -317,6 +323,12 @@ class CalibrationSimulationResult(BaseModel):
                 raise ValueError("completed simulation requires a full clean replay")
         elif self.failure_code is None:
             raise ValueError("stopped simulation requires a safe failure code")
+        if self.provider_error_code is not None and self.failure_code is None:
+            raise ValueError("provider error detail requires a failure code")
+        _require_safe_provider_detail(
+            provider_id=self.provider_id,
+            provider_error_code=self.provider_error_code,
+        )
         return self
 
 
@@ -411,6 +423,7 @@ class RealResourceCalibrationResult(BaseModel):
     observations: tuple[ResourceCalibrationUsageObservation, ...]
     ledger: ResourceLedgerSnapshot
     failure_code: ExperimentFailureCode | None = None
+    provider_error_code: SafeProviderErrorCode | None = None
     external_provider_calls: int = Field(ge=0, le=8)
     v3_budget_derivation_ready: bool
     quality_admission_excluded: Literal[True]
@@ -462,6 +475,12 @@ class RealResourceCalibrationResult(BaseModel):
                 raise ValueError("completed real replay requires clean 8/8 usage")
         elif self.failure_code is None:
             raise ValueError("stopped real replay requires a safe failure code")
+        if self.provider_error_code is not None and self.failure_code is None:
+            raise ValueError("provider error detail requires a failure code")
+        _require_safe_provider_detail(
+            provider_id=self.provider_id,
+            provider_error_code=self.provider_error_code,
+        )
         if self.v3_budget_derivation_ready != completed:
             raise ValueError("budget readiness must match replay completeness")
         return self
@@ -550,8 +569,8 @@ class ResourceCalibrationAdjudication(BaseModel):
     billable_input_tokens: int | None = Field(default=None, ge=0)
     billable_output_tokens: int | None = Field(default=None, ge=0)
     billable_cost: Decimal | None = Field(default=None, ge=0)
-    provider_error_detail_available: Literal[False]
-    provider_error_detail_code: Literal[None]
+    provider_error_detail_available: bool
+    provider_error_detail_code: SafeProviderErrorCode | None = None
     v3_budget_derivation_allowed: bool
     v3_held_out_creation_allowed: Literal[False]
     rerun_allowed: Literal[False]
@@ -593,6 +612,16 @@ class ResourceCalibrationAdjudication(BaseModel):
             or self.v3_budget_derivation_allowed
         ):
             raise ValueError("incomplete adjudication must keep billing unknown")
+        if self.provider_error_detail_available is not (
+            self.provider_error_detail_code is not None
+        ):
+            raise ValueError(
+                "provider error detail availability must match its safe code"
+            )
+        _require_safe_provider_detail(
+            provider_id="deepseek",
+            provider_error_code=self.provider_error_detail_code,
+        )
         return self
 
 
@@ -645,6 +674,7 @@ class _CalibrationReplayOutcome:
     observations: tuple[ResourceCalibrationUsageObservation, ...]
     ledger: ResourceLedgerSnapshot
     failure_code: ExperimentFailureCode | None
+    provider_error_code: str | None
 
 
 class CalibrationIncompleteError(ValueError):
@@ -875,6 +905,7 @@ def simulate_resource_calibration(
         observations=outcome.observations,
         ledger=outcome.ledger,
         failure_code=outcome.failure_code,
+        provider_error_code=outcome.provider_error_code,
         external_provider_calls=0,
         quality_admission_excluded=True,
     )
@@ -923,6 +954,7 @@ def run_real_resource_calibration(
         observations=outcome.observations,
         ledger=outcome.ledger,
         failure_code=outcome.failure_code,
+        provider_error_code=outcome.provider_error_code,
         external_provider_calls=outcome.ledger.calls_used,
         v3_budget_derivation_ready=outcome.status == "completed",
         quality_admission_excluded=True,
@@ -951,6 +983,7 @@ def _execute_resource_calibration_replay(
     )
     observations: list[ResourceCalibrationUsageObservation] = []
     failure_code: ExperimentFailureCode | None = None
+    provider_error_code: str | None = None
 
     for ordinal, frozen_request in enumerate(frozen.requests, start=1):
         before = ledger.snapshot()
@@ -958,6 +991,7 @@ def _execute_resource_calibration_replay(
             response = budgeted.chat(frozen_request.request)
         except ProviderError as exc:
             failure_code = classify_provider_error(exc)
+            provider_error_code = safe_provider_error_code(exc)
             break
         after = ledger.snapshot()
         observations.append(
@@ -995,6 +1029,7 @@ def _execute_resource_calibration_replay(
             if completed
             else failure_code or ExperimentFailureCode.PROVIDER_RESPONSE_INVALID
         ),
+        provider_error_code=provider_error_code,
     )
 
 
@@ -1243,8 +1278,8 @@ def build_resource_calibration_adjudication(
         billable_input_tokens=ledger.input_tokens if complete else None,
         billable_output_tokens=ledger.output_tokens if complete else None,
         billable_cost=ledger.estimated_cost if complete else None,
-        provider_error_detail_available=False,
-        provider_error_detail_code=None,
+        provider_error_detail_available=(result.provider_error_code is not None),
+        provider_error_detail_code=result.provider_error_code,
         v3_budget_derivation_allowed=complete,
         v3_held_out_creation_allowed=False,
         rerun_allowed=False,
@@ -1252,6 +1287,20 @@ def build_resource_calibration_adjudication(
         external_provider_calls=0,
         quality_admission_excluded=True,
     )
+
+
+def _require_safe_provider_detail(
+    *,
+    provider_id: str,
+    provider_error_code: str | None,
+) -> None:
+    if provider_error_code is None:
+        return
+    safe_code = safe_provider_error_code(
+        ProviderResponseError(provider=provider_id, code=provider_error_code)
+    )
+    if safe_code != provider_error_code:
+        raise ValueError("provider_error_code is not allowlisted")
 
 
 def _validate_resource_result_relative_path(value: str) -> str:

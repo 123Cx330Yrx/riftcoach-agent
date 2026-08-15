@@ -39,6 +39,7 @@
 | RQ-032 | 2026-08-15 | 资源合同原则生效；DeepSeek V3 由 RQ-034 关闭 | 任何新的真实领域 Provider 门在读取 Key 或构造 Provider 前，必须证明资源合同能到达必需的 Agent 工具往返与独立 Evaluation；真实 Usage、tokenizer-free 长度投影和未知值必须分层表达 | DeepSeek V2/V3 结果保持不可变，长度投影不得冒充官方 Token 或继续生成 V3 预算；该原则改由未来全新 Provider 实验继承，并与 RQ-034 的安全错误 provenance 前置条件同时满足。 |
 | RQ-033 | 2026-08-15 | 已执行（首错停止） | 用户明确确认执行一次真实 DeepSeek V4 Pro development Usage 校准，固定为 2 profiles × 4 stages、最多 8 calls、每请求 output 64、64000 observed tokens、`$0.10`、零重试和首错停止 | 真实入口先通过 `6aa8c43` / Actions `31868747216`，同 SHA prepare-only 为零调用；正式 replay 在第 1 次请求未形成规范化 `ChatResponse` 后以 `provider_response_invalid` 停止，后 7 次未发送。结果不可覆盖或补跑；实际 Usage/费用 unknown，不创建预算/V3 held-out，不据此判断模型质量。 |
 | RQ-034 | 2026-08-15 | 生效 | 当前 DeepSeek V3 资源校准与领域采用尝试关闭；保留低层协议事实，但不准入领域质量或产品默认模型 | 不生成 budget/held-out，不补跑 V1/V2/calibration；未来任何真实 Provider 门必须先离线实现跨厂商 `failure_code` 与允许列表安全 `provider_error_code` 双层 provenance，禁止原始响应/异常落盘。下一检查点按既定 ADR-0023 进入 G53-0 可用性与合同审计。 |
+| RQ-035 | 2026-08-15 | 生效 | GLM-5.3 普通 API 尚未正式可用；DeepSeek Pro 当前尝试保持关闭，不立即切换 Flash；GLM-5.2 继续作为开发基线 | 将 G53-0 标为 deferred，不读取 Key、不调用未上线模型；先完成 RQ-034 要求的安全错误 provenance 离线合同和公开验证。未来只有明确成本/延迟或同任务对照需求、且基础设施先修复后，才重新设计 Pro/Flash 对照实验。 |
 
 ## 新条目格式
 

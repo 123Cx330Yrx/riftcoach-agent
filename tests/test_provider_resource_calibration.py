@@ -33,7 +33,7 @@ from app.evaluation.provider_resource_calibration import (
     simulate_resource_calibration,
 )
 from app.providers.capabilities import ProviderCapabilities
-from app.providers.errors import ProviderTimeoutError
+from app.providers.errors import ProviderResponseError, ProviderTimeoutError
 from app.providers.models import ChatRequest, ChatResponse, TokenUsage
 
 
@@ -79,6 +79,7 @@ def loaded_profiles():
 class OfflineFakeCalibrationProvider:
     usages: tuple[tuple[int, int], ...]
     fail_at: int | None = None
+    fail_code: str | None = None
     is_offline_calibration_fake: bool = True
     provider_name: str = "deepseek"
     model_name: str = "deepseek-v4-pro"
@@ -94,10 +95,12 @@ class OfflineFakeCalibrationProvider:
         self.requests.append(request)
         ordinal = len(self.requests)
         if self.fail_at == ordinal:
-            raise ProviderTimeoutError(
-                provider=self.provider_name,
-                code="timeout",
-            )
+            if self.fail_code is not None:
+                raise ProviderResponseError(
+                    provider=self.provider_name,
+                    code=self.fail_code,
+                )
+            raise ProviderTimeoutError(provider=self.provider_name, code="timeout")
         input_tokens, output_tokens = self.usages[ordinal - 1]
         return ChatResponse(
             content="offline calibration response",
@@ -275,6 +278,56 @@ def test_fake_replay_stops_on_first_provider_error():
     assert len(provider.requests) == 3
 
 
+def test_fake_replay_preserves_allowlisted_provider_error_detail():
+    loaded = loaded_profiles()
+    with tempfile.TemporaryDirectory() as directory:
+        frozen = capture_resource_calibration_requests(
+            loaded,
+            project_root=ROOT,
+            runs_root=directory,
+        )
+    provider = OfflineFakeCalibrationProvider(
+        usages=((100, 1),) * 8,
+        fail_at=1,
+        fail_code="invalid_finish_reason",
+    )
+
+    result = simulate_resource_calibration(
+        frozen,
+        provider=provider,
+        clock=StepClock(),
+    )
+
+    assert result.failure_code is ExperimentFailureCode.PROVIDER_RESPONSE_INVALID
+    assert result.provider_error_code == "invalid_finish_reason"
+    assert "invalid_finish_reason" in result.model_dump_json()
+
+
+def test_fake_replay_drops_unallowlisted_provider_error_detail():
+    loaded = loaded_profiles()
+    with tempfile.TemporaryDirectory() as directory:
+        frozen = capture_resource_calibration_requests(
+            loaded,
+            project_root=ROOT,
+            runs_root=directory,
+        )
+    provider = OfflineFakeCalibrationProvider(
+        usages=((100, 1),) * 8,
+        fail_at=1,
+        fail_code="arbitrary_sdk_text",
+    )
+
+    result = simulate_resource_calibration(
+        frozen,
+        provider=provider,
+        clock=StepClock(),
+    )
+
+    assert result.failure_code is ExperimentFailureCode.PROVIDER_RESPONSE_INVALID
+    assert result.provider_error_code is None
+    assert "arbitrary_sdk_text" not in result.model_dump_json()
+
+
 def test_fake_replay_rejects_real_provider_surface_and_output_overrun():
     loaded = loaded_profiles()
     with tempfile.TemporaryDirectory() as directory:
@@ -304,6 +357,7 @@ def test_fake_replay_rejects_real_provider_surface_and_output_overrun():
     assert result.failure_code is ExperimentFailureCode.TOKEN_BUDGET_EXHAUSTED
     assert result.replay_calls_used == 1
     assert result.responses_completed == 0
+    assert result.provider_error_code is None
 
 
 def completed_result(
@@ -700,6 +754,24 @@ def test_incomplete_real_calibration_adjudication_does_not_treat_zeros_as_free()
     assert adjudication.rerun_allowed is False
     assert adjudication.model_quality_conclusion == "unknown"
     assert adjudication.provider_error_detail_available is False
+
+
+def test_new_safe_provider_detail_reaches_adjudication_without_raw_text():
+    payload = json.loads(REAL_RESULT.read_text(encoding="utf-8"))
+    payload["provider_error_code"] = "invalid_finish_reason"
+    result = RealResourceCalibrationResult.model_validate(payload)
+
+    adjudication = build_resource_calibration_adjudication(
+        result=result,
+        calibration_result_sha256=REAL_RESULT_SHA256,
+    )
+
+    assert adjudication.provider_error_detail_available is True
+    assert adjudication.provider_error_detail_code == "invalid_finish_reason"
+
+    payload["provider_error_code"] = "arbitrary_sdk_text"
+    with pytest.raises(ValueError, match="allowlisted"):
+        RealResourceCalibrationResult.model_validate(payload)
 
 
 def test_frozen_real_adjudication_matches_pure_builder():

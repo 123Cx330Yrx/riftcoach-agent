@@ -1347,3 +1347,18 @@
   Harness SDK/tracked-data boundary 与 dry-run；外部 Provider calls 为 0。
 - 本检查点已闭环。唯一下一步仍在 5D-7：G53-0 GLM-5.3 普通 API 可用性与合同审计；
   不读取 Key、不调用 Provider，也不进入 5E。
+
+## 2026-08-15：安全 Provider 错误 provenance 离线切片
+
+- 因 GLM-5.3 普通 API 尚未上线，G53-0 已维护为 deferred；没有读取 Key、调用模型或
+  切换 Flash。GLM-5.2 仅作为当前开发基线。
+- 按 ADR-0027 实现 Provider-specific safe-code allowlist：高层 `failure_code` 继续
+  用于跨厂商统计，允许列表内的 `provider_error_code` 只作为无正文诊断标签；未知值为
+  `null`。
+- Provider stop snapshot、资源 calibration simulation/real result 和 adjudication
+  已接入该合同；旧 V3 真实结果仍为 null 且 SHA 不变。
+- 聚焦回归为 `89 passed`；完整回归为 `616 passed, 103 subtests passed`，两套 RAG、
+  compile/security/dry-run、governance 和 diff check 均通过。
+- 本切片只待提交/推送和 exact-SHA public CI；仍未读取 Key、调用 Provider 或测试 Flash。
+- 当前唯一下一步仍在 5D-7：完成本切片的完整本地/公开验证；不得调用 Provider、补跑
+  DeepSeek、测试 Flash 或进入 5E。

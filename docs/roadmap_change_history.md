@@ -1093,3 +1093,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   `31872476103` 完成 exact-SHA 公共验证。
 - `CURRENT`：唯一下一步仍在 5D-7，按 ADR-0023 进入 G53-0 GLM-5.3 普通 API 与合同
   可用性审计；不调用模型。
+
+### 2026-08-15：GLM-5.3 deferred，先补 Provider 错误 provenance
+
+- `ROUTE`：普通 GLM-5.3 API 尚未正式可用，G53-0 标记 deferred；DeepSeek Pro 当前尝试
+  关闭，不立即改测 Flash；GLM-5.2 作为开发基线继续。
+- `IMPLEMENTED-OFFLINE`：ADR-0027 的安全错误 provenance 已在 Provider stop snapshot、
+  resource calibration result/adjudication 中加入 allowlist 传递；未知错误归 null，旧
+  V3 结果字节不变。
+- `CURRENT`：当前仍在 5D-7，先完成本切片的完整本地门禁、提交和 exact-SHA CI；本批
+  不读取 Key、不调用 Provider。

@@ -1292,6 +1292,18 @@
   可能让 Linux CI 看到不同 bytes。暂存区复算 SHA 与本地结果完全一致，随后 exact-SHA
   Actions `31869409106` 通过，证明公开证据身份稳定。
 
+### 2026-08-15：安全 Provider 错误 provenance 切片发现
+
+- 领域 observation 已保存 Agent 层 `safe_provider_error_code`，但统一
+  `ExperimentControlSnapshot` 和 V3 calibration result 仍只保存高层 `failure_code`；
+  这正是 ADR-0027 要求补齐的跨接缝缺口。
+- 新增 Provider-specific allowlist：DeepSeek/Zhipu Adapter 产生的有限常量可以透传，
+  任意 SDK 文本或未知 Provider/code 不得进入公开结果。
+- 旧 V3 结果没有细分码，继续解析为 `provider_error_code=null`；本切片不修改旧 JSON、
+  不重算 SHA，也不能从源码反推历史根因。
+- 本切片所有验证均离线，新增聚焦测试覆盖 allowlist、unknown-to-null、stop snapshot、
+  calibration adjudication 和旧结果兼容；尚待完整门禁与公共 CI。
+
 ### 2026-08-15：DeepSeek calibration 失败采用决策发现
 
 - DeepSeek Adapter 已经产生有限、安全、无正文的细分错误码；信息丢失发生在
