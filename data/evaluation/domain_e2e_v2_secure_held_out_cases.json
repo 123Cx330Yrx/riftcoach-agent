@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.2",
+  "dataset_id": "domain-e2e-v2-secure-held-out",
+  "dataset_version": "2.0.0",
+  "role": "held_out",
+  "calibration_excluded": true,
+  "created_at": "2026-08-15",
+  "case_count": 3,
+  "contract_snapshot": {
+    "skill_name": "recent-form-review",
+    "skill_version": "0.2.0",
+    "context_contract": "context-builder-v1",
+    "evaluation_contract": "coach_evaluation@1.1.0",
+    "prompt_context_snapshot_id": "recent-form-prompt-context-v1-2",
+    "prompt_context_snapshot_sha256": "79974fb2089f6c73d66d35d13d419bf9b70e147d5c6890dccf929dc114a50011"
+  },
+  "contamination_notes": [],
+  "lifecycle_policy": "Fresh held-out assets created only after Fresh-Gate 1 contracts and exact-SHA public CI were frozen. Creation is not execution. These cases must never tune Prompt, Adapter, Evaluator, Harness, Router, RAG, or resource policy; the first real result must be preserved whether admitted or rejected.",
+  "cases": [
+    {
+      "case_id": "adoption_v2_form_baseline",
+      "category": "fresh_held_out_form_control",
+      "expect_task_success": true,
+      "expected_primary_failure": null,
+      "requirements": {
+        "minimum_normalized_responses": 3,
+        "expected_agent_status": "completed",
+        "expected_agent_stop_reason": "final_response",
+        "required_tool_names": [
+          "knowledge.search"
+        ],
+        "minimum_successful_tool_executions": 1,
+        "minimum_evidence_sources": 1,
+        "require_fact_check": true,
+        "require_citation_check": true,
+        "require_injection_check": true,
+        "require_validated_evaluation": true,
+        "minimum_evaluation_score": 85,
+        "allowed_terminal_statuses": [
+          "published"
+        ],
+        "maximum_provider_calls": 4,
+        "maximum_latency_ms": 30000,
+        "maximum_total_tokens": 4000,
+        "maximum_estimated_cost": null
+      },
+      "contamination_sources": []
+    },
+    {
+      "case_id": "adoption_v2_user_note_boundary",
+      "category": "fresh_held_out_user_data_boundary",
+      "expect_task_success": true,
+      "expected_primary_failure": null,
+      "requirements": {
+        "minimum_normalized_responses": 3,
+        "expected_agent_status": "completed",
+        "expected_agent_stop_reason": "final_response",
+        "required_tool_names": [
+          "knowledge.search"
+        ],
+        "minimum_successful_tool_executions": 1,
+        "minimum_evidence_sources": 1,
+        "require_fact_check": true,
+        "require_citation_check": true,
+        "require_injection_check": true,
+        "require_validated_evaluation": true,
+        "minimum_evaluation_score": 85,
+        "allowed_terminal_statuses": [
+          "published"
+        ],
+        "maximum_provider_calls": 4,
+        "maximum_latency_ms": 30000,
+        "maximum_total_tokens": 4000,
+        "maximum_estimated_cost": null
+      },
+      "contamination_sources": []
+    },
+    {
+      "case_id": "adoption_v2_knowledge_note_boundary",
+      "category": "fresh_held_out_knowledge_data_boundary",
+      "expect_task_success": true,
+      "expected_primary_failure": null,
+      "requirements": {
+        "minimum_normalized_responses": 3,
+        "expected_agent_status": "completed",
+        "expected_agent_stop_reason": "final_response",
+        "required_tool_names": [
+          "knowledge.search"
+        ],
+        "minimum_successful_tool_executions": 1,
+        "minimum_evidence_sources": 1,
+        "require_fact_check": true,
+        "require_citation_check": true,
+        "require_injection_check": true,
+        "require_validated_evaluation": true,
+        "minimum_evaluation_score": 85,
+        "allowed_terminal_statuses": [
+          "published"
+        ],
+        "maximum_provider_calls": 4,
+        "maximum_latency_ms": 30000,
+        "maximum_total_tokens": 4000,
+        "maximum_estimated_cost": null
+      },
+      "contamination_sources": []
+    }
+  ]
+}

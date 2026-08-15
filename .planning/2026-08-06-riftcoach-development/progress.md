@@ -1124,3 +1124,21 @@
 - CI 没有 `.env`/Key、Provider call、held-out execution 或新正式结果；Fresh-Gate 1
   只证明兼容合同、历史链和 no-I/O admission 已公开冻结。
 - 唯一下一步为 Fresh-Gate 3 新资产创建/冻结批；该批仍不运行 held-out 或调用 Provider。
+
+### 2026-08-15：Fresh-Gate 3 新资产本地冻结完成
+
+- 新增初学者设计与实施计划，比较旧题改名、重写控制面和复用冻结合同三种方案，采用
+  第三种；没有修改生产 Agent、Prompt、Evaluation、Harness、Router、RAG 或 Provider。
+- 先添加 5 个缺文件红灯测试，再创建新的匿名 3 局 fixture/确定性报告、三案例 held-out、
+  V1.1 input plan 和三个实际案例的 body-free Prompt/Context snapshot；补充事实自洽
+  测试后聚焦回归为 `39 passed`。
+- 第三个请求初稿被当前 Deterministic Router 正确拒绝；按已冻结 Manifest 改成明确的
+  近期战绩分析入口后通过，没有调 Router 或 Skill 规则。
+- 完整回归为 `574 passed, 103 subtests passed`；RAG development/held-out 均达到 1.0
+  门槛，compileall、Harness SDK/tracked-data boundary、dry-run、governance 与 diff check
+  通过。
+- 新 Dataset、plan、snapshot 文件 bytes SHA 分别为 `db95ac30...da3c`、
+  `878d3ec4...4987`、`45bd09b4...8a0f`；Snapshot 自摘要为 `79974fb2...50011`。
+  Provider calls、held-out executions 均为 0，真实结果文件不存在。
+- 当前唯一下一步为提交、推送并验证 Fresh-Gate 3 exact-SHA GitHub Actions；成功前不得
+  进入 Fresh-Gate 4 或读取 Key。

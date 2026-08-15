@@ -1,0 +1,175 @@
+{
+  "schema_version": "1.0",
+  "metadata": {
+    "generated_at_utc": "2026-08-15T00:00:00+00:00",
+    "source": "synthetic_fixture",
+    "matches_requested": 3,
+    "matches_received": 3,
+    "matches_analyzed": 3
+  },
+  "player": {
+    "game_name": "LaneLabSample",
+    "tag_line": "SAFE",
+    "riot_id": "LaneLabSample#SAFE",
+    "puuid_prefix": "fresh-synthetic..."
+  },
+  "request": {
+    "count": 3,
+    "queue": 420,
+    "region": "asia"
+  },
+  "recent_summary": {
+    "games_analyzed": 3,
+    "wins": 2,
+    "losses": 1,
+    "win_rate": 66.7,
+    "main_role": "TOP",
+    "main_champions": [
+      "训练英雄甲",
+      "训练英雄乙"
+    ],
+    "averages": {
+      "kda": 3.31,
+      "cs_per_min": 7.6,
+      "gold_per_min": 407.0,
+      "damage_per_min": 568.0,
+      "vision_score": 17.3,
+      "kill_participation_percent": 48.7,
+      "damage_share_percent": 24.3,
+      "gold_share_percent": 21.3,
+      "deaths_before_15": 0.67
+    },
+    "win_loss_comparison": {
+      "wins": {
+        "cs_per_min": 8.0,
+        "gold_per_min": 425.0,
+        "damage_per_min": 600.0,
+        "vision_score": 19.0,
+        "deaths_before_15": 0.5
+      },
+      "losses": {
+        "cs_per_min": 6.8,
+        "gold_per_min": 371.0,
+        "damage_per_min": 504.0,
+        "vision_score": 14.0,
+        "deaths_before_15": 1.0
+      }
+    },
+    "champion_summary": [
+      {
+        "champion": "训练英雄甲",
+        "games": 2,
+        "wins": 1,
+        "win_rate": 50.0
+      },
+      {
+        "champion": "训练英雄乙",
+        "games": 1,
+        "wins": 1,
+        "win_rate": 100.0
+      }
+    ],
+    "role_summary": [
+      {
+        "role": "TOP",
+        "games": 3,
+        "wins": 2,
+        "win_rate": 66.7
+      }
+    ]
+  },
+  "matches": [
+    {
+      "match_id": "FRESH_SYNTHETIC_TOP_WIN_101",
+      "game_duration_seconds": 1920,
+      "champion_id": 910101,
+      "champion_name": "训练英雄甲",
+      "champion_name_en": "FreshSyntheticChampionA",
+      "role": "TOP",
+      "win": true,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "kills": 4,
+      "deaths": 2,
+      "assists": 5,
+      "cs_per_min": 8.2,
+      "gold_per_min": 432.0,
+      "damage_per_min": 615.0,
+      "vision_score": 21,
+      "kill_participation": 0.52,
+      "damage_share": 0.26,
+      "gold_share": 0.22,
+      "deaths_before_15": 0,
+      "death_times": [
+        "22:10",
+        "29:05"
+      ],
+      "items": [],
+      "item_names": [],
+      "item_purchases": []
+    },
+    {
+      "match_id": "FRESH_SYNTHETIC_TOP_WIN_102",
+      "game_duration_seconds": 2040,
+      "champion_id": 910102,
+      "champion_name": "训练英雄乙",
+      "champion_name_en": "FreshSyntheticChampionB",
+      "role": "TOP",
+      "win": true,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "kills": 3,
+      "deaths": 3,
+      "assists": 8,
+      "cs_per_min": 7.8,
+      "gold_per_min": 418.0,
+      "damage_per_min": 585.0,
+      "vision_score": 17,
+      "kill_participation": 0.5,
+      "damage_share": 0.25,
+      "gold_share": 0.215,
+      "deaths_before_15": 1,
+      "death_times": [
+        "13:40",
+        "26:30",
+        "31:05"
+      ],
+      "items": [],
+      "item_names": [],
+      "item_purchases": []
+    },
+    {
+      "match_id": "FRESH_SYNTHETIC_TOP_LOSS_103",
+      "game_duration_seconds": 1860,
+      "champion_id": 910101,
+      "champion_name": "训练英雄甲",
+      "champion_name_en": "FreshSyntheticChampionA",
+      "role": "TOP",
+      "win": false,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "kills": 1,
+      "deaths": 4,
+      "assists": 6,
+      "cs_per_min": 6.8,
+      "gold_per_min": 371.0,
+      "damage_per_min": 504.0,
+      "vision_score": 14,
+      "kill_participation": 0.44,
+      "damage_share": 0.22,
+      "gold_share": 0.205,
+      "deaths_before_15": 1,
+      "death_times": [
+        "09:50",
+        "18:20",
+        "24:45",
+        "29:10"
+      ],
+      "items": [],
+      "item_names": [],
+      "item_purchases": []
+    }
+  ],
+  "failed_matches": [],
+  "excluded_matches": []
+}

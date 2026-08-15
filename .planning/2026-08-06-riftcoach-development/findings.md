@@ -1142,3 +1142,20 @@
   `.github/workflows/tests.yml` 后已更正为当前真实 RAG 参数、内联安全边界和带 fixture
   的 Harness dry-run。以后实施计划必须从 CI workflow 复制门禁入口，不能根据历史名称
   猜测脚本存在。
+
+### 2026-08-15：Fresh-Gate 3 新资产冻结发现
+
+- 新 held-out 的新鲜性来自时间顺序和内容差异，不来自文件名。新 fixture bytes、case
+  ID、用户措辞、知识注入正文和两个 marker 均与已消费旧题不同；冻结后不得用于调节
+  Prompt、Adapter、Evaluator、Harness、Router 或 RAG。
+- 第三个初稿请求写成“最近几场”且缺少 Manifest 的第二组显式复盘目标词，真实
+  Deterministic Router 正确拒绝。没有修改 Router 迎合考题，而是把用户入口改成明确的
+  “分析近期战绩表现/训练重点”，随后三例都通过真实 Boundary/ContextBuilder。
+- Dataset oracle、Input Plan 输入和 body-free Snapshot 是三种不同资产。Executor 继续只
+  接收 `case_id + provider`；Snapshot 只保存 SHA/section/message 元数据，不含用户、
+  fixture、报告、注入或 marker 正文。
+- 新 fixture 不是只换名字：样本从 2 局中路改为 3 局上路，指标、对局行和报告全部更新；
+  新测试从 match 行重新计算胜率、CS/GPM/DPM/视野/前 15 分钟死亡，并核对报告表格。
+- 本地 `39 passed` 聚焦、`574 passed, 103 subtests passed` 全量、两套 RAG、compileall、
+  Harness/secret boundary、dry-run、governance 和 diff check 均通过。正式结果不存在，
+  Provider calls/held-out executions 为 0；当前仍需 exact-SHA 公开 CI。

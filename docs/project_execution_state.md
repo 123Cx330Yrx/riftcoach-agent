@@ -33,10 +33,13 @@ blocked_before: "5D-exit-review"
   Fresh-Gate 1 已完成本地离线 TDD，旧 V1.0 资产兼容、V1.1 input plan、三案例
   Prompt/Context commitment、历史 `3+1` 调用证据链与 development-only no-I/O
   admission 已实现；提交 `adba965a7f7fb4293020502b4440e9880633e571` 已通过 GitHub
-  Actions run `31860874440` 的 exact-SHA 公开 CI
-- 唯一下一步：5D-7 Fresh-Gate 3 入口批；只创建全新匿名 fixture、正式三案例 held-out、
-  V1.1 input plan 与实际逐案例 Prompt/Context 摘要，并做离线 TDD/公开 CI；本批仍不
-  读取 Key、不调用 Provider、不运行新 held-out、不实现真正并发或宣称领域准入
+  Actions run `31860874440` 的 exact-SHA 公开 CI；Fresh-Gate 3 已在本地创建全新匿名
+  3 局 fixture/确定性报告、正式三案例 held-out、V1.1 input plan 与三个实际案例的
+  body-free Prompt/Context snapshot；新旧 fixture/题目/marker/ID 均不复用，交叉身份和
+  fixture 数字自洽由离线测试固定，真实结果文件不存在
+- 唯一下一步：5D-7 Fresh-Gate 3 公开冻结；提交、推送当前新资产并验证 exact-SHA
+  GitHub Actions；公开 CI 成功前不得进入 Fresh-Gate 4，本批仍不读取 Key、不调用
+  Provider、不运行新 held-out、不实现真正并发或宣称领域准入
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；DeepSeek
   领域调用必须先完成执行接缝离线 TDD 与公开 exact-SHA CI，不能用已通过的低层协议、
   候选选择或发布热度替代领域质量证据
@@ -64,7 +67,7 @@ blocked_before: "5D-exit-review"
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测首个 Provider，并为第二 Provider 决策提供真实证据 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（Fresh-Gate 1 已公开验证；下一步 Fresh-Gate 3 新资产冻结） | Batch A：分层合同与 10 个记录型 development 控制样本；Batch B：组件/案例双层 SHA-256 快照和零调用 admission；Batch C：ADR-0015、7 个 `offline_executable` development 场景及一个真实 unsafe publication；D1-D2：`coach_evaluation@1.1.0` 安全合同、不可修订 blocking policy、7 场 secure offline development 基线，task/failure accuracy 均 1.0、unsafe publication 0、external calls 0；D3：3 场独立 held-out，`calibration_excluded=true`；D4-D5：ADR-0018、独立 DeepSeek Adapter、失败观察、预算/停止门与 3-call 真实协议准入；生产领域门在 `205397f` 上只执行一次，首例以 `unsupported_parallel_tool_calls` fail closed，结果由 `26b668d` / Actions `31810164628` 固定；ADR-0022 已以 Fake SDK 纵向链证明修复兼容性；ADR-0024 冻结新鲜门生命周期；Fresh-Gate 1 兼容 V1.1 plan、逐案例 Context、历史证据链和 development-only no-I/O admission 已由 `adba965` / Actions `31860874440` 公开验证，正式新 held-out 尚未创建 |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（Fresh-Gate 3 本地完成，等待公开冻结） | Batch A：分层合同与 10 个记录型 development 控制样本；Batch B：组件/案例双层 SHA-256 快照和零调用 admission；Batch C：ADR-0015、7 个 `offline_executable` development 场景及一个真实 unsafe publication；D1-D2：`coach_evaluation@1.1.0` 安全合同、不可修订 blocking policy、7 场 secure offline development 基线，task/failure accuracy 均 1.0、unsafe publication 0、external calls 0；D3：3 场独立 held-out，`calibration_excluded=true`；D4-D5：ADR-0018、独立 DeepSeek Adapter、失败观察、预算/停止门与 3-call 真实协议准入；生产领域门在 `205397f` 上只执行一次，首例以 `unsupported_parallel_tool_calls` fail closed，结果由 `26b668d` / Actions `31810164628` 固定；ADR-0022 已以 Fake SDK 纵向链证明修复兼容性；ADR-0024 冻结新鲜门生命周期；Fresh-Gate 1 由 `adba965` / Actions `31860874440` 公开验证；Fresh-Gate 3 新 Dataset/plan/fixture/snapshot 已通过本地 TDD，尚待 exact-SHA CI，未运行 held-out |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界
@@ -303,7 +306,7 @@ blocked_before: "5D-exit-review"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 已形成安全离线基线、DeepSeek 独立 Adapter/真实最小协议、领域控制接缝与真实门，并在 development 中补齐多 ToolCall 批次严格传输、整批预检和顺序执行；Fresh-Gate 1 已实现兼容合同、三案例 Context commitment、历史证据链与 development-only no-I/O admission，正式新 held-out 仍不存在 | 阶段 5、整个 5D、DeepSeek 领域质量、生产默认切换或报告质量准入已完成；离线合同/admission 通过也不改写旧真实 held-out 的拒绝结论 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-6b；5D-7 已形成安全离线基线、DeepSeek 独立 Adapter/真实最小协议、领域控制接缝与真实门，并在 development 中补齐多 ToolCall 批次严格传输、整批预检和顺序执行；Fresh-Gate 1 已公开冻结兼容合同，Fresh-Gate 3 已在本地冻结全新匿名 fixture、正式三案例 held-out、V1.1 plan 与逐案例 Context 摘要 | 阶段 5、整个 5D、DeepSeek 领域质量、生产默认切换或报告质量准入已完成；新考卷创建等于已运行，或离线合同/admission 通过能改写旧真实 held-out 的拒绝结论 |
 | 项目理解 | 已区分控制面 admission 与数据面 Provider 调用、Dataset oracle 与案例执行计划，也已区分修复回归与新鲜采用测试、Provider/Model/Multi-Agent、协议/领域/产品三层门，以及历史/新范围/单例调用与 Token 预算 | 离线合成 executor 能评价模型智力/在线可用性，旧题改名能恢复新鲜性，执行接缝等于真实领域准入，或 3 场 held-out 能证明通用生产质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
 | GitHub/部署 | GLM-5.3 隔离规划 `e380e812` / `31859244059`、新鲜门设计 `f9edb4b4` / `31859717836`、多 ToolCall 修复 `037a47f` / `31817798170` 与 Fresh-Gate 1 `adba965` / `31860874440` 均已通过 exact-SHA CI；正式网页仍未部署 | Fresh-Gate 1 公开冻结等于新 held-out 已创建/运行、最小 Adapter 协议等于领域/产品准入、最终厂商选型或 Web Agent 可用 |
@@ -559,3 +562,21 @@ tracked-data boundary 和 dry-run 已通过。期间实施计划最初写了三�
 `31860874440` 对精确 SHA 的治理、完整 pytest、两套 RAG、compileall、Harness SDK/
 tracked-data boundary 与 dry-run 全部成功，CI 未调用 Provider。下一步单独进入
 Fresh-Gate 3 创建/冻结全新资产，仍不运行 held-out。
+
+### 2026-08-15：DeepSeek Fresh-Gate 3 本地资产冻结
+
+新的 `domain-e2e-v2-secure-held-out` 在 Fresh-Gate 1/2 公开冻结后才创建，包含正常复盘、
+用户数据指令边界和知识数据指令边界三个案例。它与已消费旧题不复用 fixture bytes、
+case/run ID、用户措辞、知识注入正文或 marker；Dataset 为 `held_out` 且
+`calibration_excluded=true`，没有污染记录。
+
+新的 V1.1 input plan 只保存实际输入和 fixture/Context commitment，Dataset 单独保存
+oracle；production Executor 仍只接收 `case_id + provider`。三个实际案例均通过当前真实
+Catalog、Deterministic Router、SkillExecutionBoundary 和 ContextBuilderV1，生成
+`recent-form-prompt-context-v1-2` 的 body-free 摘要；Snapshot 自摘要为
+`79974fb2089f6c73d66d35d13d419bf9b70e147d5c6890dccf929dc114a50011`。
+
+本地聚焦回归 `39 passed`，完整回归 `574 passed, 103 subtests passed`；两套 RAG、
+compileall、Harness SDK/tracked-data boundary、dry-run、governance 和 diff check 已通过。
+正式结果文件不存在，新增 Provider calls 和 held-out executions 均为 0。当前只完成本地
+资产冻结，唯一下一步是提交、推送并验证 exact-SHA 公开 CI；成功前不进入 Fresh-Gate 4。

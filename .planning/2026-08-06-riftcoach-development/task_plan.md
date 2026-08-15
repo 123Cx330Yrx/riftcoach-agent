@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.20 - 5D-7（in progress: prepare Fresh-Gate 3 fresh held-out assets）
+Phase 6.21 - 5D-7（in progress: publish Fresh-Gate 3 asset freeze）
 
 ## Phases
 
@@ -143,17 +143,21 @@ Phase 6.20 - 5D-7（in progress: prepare Fresh-Gate 3 fresh held-out assets）
   compileall、Harness/secret boundary 和 dry-run 通过；Provider calls/held-out executions
   均为 0。实现提交 `adba965a7f7fb4293020502b4440e9880633e571` 已通过 GitHub
   Actions run `31860874440` 的 exact-SHA 公开 CI。
+- `5D-7` Fresh-Gate 3 已本地完成：新的匿名 3 局 fixture/确定性报告、三案例 held-out、
+  V1.1 input plan 与三个实际案例的 body-free Prompt/Context snapshot 已创建；新旧
+  fixture bytes、case ID、输入措辞、知识注入正文和 marker 均不复用。聚焦 `39 passed`，
+  完整回归 `574 passed, 103 subtests passed`，两套 RAG、compileall、Harness/secret
+  boundary、dry-run、governance 和 diff check 通过；Provider calls/held-out executions
+  均为 0，正式结果文件不存在。当前只欠提交、推送和 exact-SHA 公开 CI。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-7 Fresh-Gate 1 与 Fresh-Gate 2 已完成。唯一下一步是 Fresh-Gate 3 入口批：创建与
-旧 fixture/题目/marker 不同的匿名 synthetic fixture、正式三案例 held-out、V1.1 input
-plan 和三个实际案例的 body-free Prompt/Context snapshot，并以离线 TDD/新的 exact-SHA
-CI 冻结。本批不得读取 Key、调用 Provider、运行新 held-out、修改 Prompt/Evaluation/
-Harness、实现真正并发或进入 5D exit review/5E。
+5D-7 Fresh-Gate 3 已本地完成。唯一下一步是提交、推送本批新资产并验证 exact-SHA
+GitHub Actions；公开 CI 成功前不进入 Fresh-Gate 4。当前不得读取 Key、调用 Provider、
+运行新 held-out、修改 Prompt/Evaluation/Harness、实现真正并发或进入 5D exit review/5E。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
 `.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门

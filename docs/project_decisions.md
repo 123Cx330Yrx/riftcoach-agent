@@ -9,7 +9,7 @@ RiftCoach Agent 是一个面向英雄联盟公开账号的离线赛后复盘与�
 ## 能力基线
 
 动态进度和唯一下一步只看 `docs/project_execution_state.md`。截至
-2026-08-14，已经实现并有测试证据的本地基础包括：
+2026-08-15，已经实现并有测试证据的本地基础包括：
 
 - Riot ID、PUUID、最近对局与 Timeline 数据链路；
 - MatchAnalyzer 确定性指标；
@@ -246,3 +246,21 @@ Fresh-Gate 1 采用“兼容扩展 + 专用 development admission”，不建立
 `31860874440` 完成 exact-SHA 公开验证。下一步才允许单独创建新考卷资产，但创建不等于
 运行，且仍不得读取 Key。完整实现计划见
 `docs/plans/2026-08-15-deepseek-fresh-domain-gate-offline-implementation.md`。
+
+### Fresh-Gate 3 本地资产冻结裁决
+
+Fresh-Gate 3 不新增第二套执行框架，只发布新的静态评测身份：
+
+- 新匿名 3 局 player summary 和确定性报告与旧 fixture bytes、身份和指标均不同；
+- 三案例 held-out 的 case ID、用户请求、知识注入正文和 marker 均不复用旧题；
+- Dataset 只保存 oracle，V1.1 input plan 保存实际输入，production Executor 仍只接收
+  `case_id + provider`；
+- 三个案例分别通过真实 Catalog、Router、ExecutionBoundary 和 ContextBuilderV1，形成
+  不含正文的 `recent-form-prompt-context-v1-2` 摘要；
+- 本地聚焦回归为 `39 passed`，完整回归为 `574 passed, 103 subtests passed`，外部
+  Provider calls 和 held-out executions 均为 0，真实结果文件不存在。
+
+当前只完成本地资产冻结。下一步必须先提交、推送并完成 exact-SHA 公开 CI；之后才进入
+Fresh-Gate 4 no-I/O preflight/真实运行确认，不能因资产存在而读取 Key 或宣称领域准入。
+设计与实施计划见 `docs/plans/2026-08-15-deepseek-fresh-domain-assets-design.md` 和
+`docs/plans/2026-08-15-deepseek-fresh-domain-assets-implementation.md`。

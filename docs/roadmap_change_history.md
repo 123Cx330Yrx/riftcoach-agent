@@ -882,3 +882,20 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `CURRENT`：唯一下一步为 Fresh-Gate 3，只创建全新匿名 fixture、正式三案例 held-out、
   V1.1 input plan 与实际逐案例 Context snapshot，并再次公开冻结；真实运行仍需之后的
   单独确认，不进入 5D exit review/5E。
+
+### 2026-08-15：Fresh-Gate 3 新考卷资产本地冻结
+
+- `DESIGNED`：拒绝旧题改 ID 和重写控制面，采用既有 V1.1 plan/Prompt-Context 合同；
+  Dataset 保存 oracle、Input Plan 保存实际输入、Snapshot 保存 body-free 摘要。
+- `RED-TO-GREEN`：先以 5 个缺文件红灯证明正式资产不存在，再创建匿名 3 局 fixture/
+  确定性报告、三案例 held-out、V1.1 input plan 和 `recent-form-prompt-context-v1-2`；
+  聚焦回归最终为 `39 passed`。
+- `FRESHNESS`：新旧 fixture bytes、case ID、run ID、用户措辞、知识注入正文和 marker
+  均不复用；新 Dataset 是 `held_out`、`calibration_excluded=true`，且没有污染记录。
+- `IDENTITY`：三个案例真实经过 Catalog/Router/ExecutionBoundary/ContextBuilderV1，
+  Snapshot 可精确重建且不保存用户/报告/fixture/注入正文；plan 按案例顺序绑定 Context
+  摘要，Dataset 再绑定 Snapshot ID/SHA。
+- `VERIFIED-LOCAL`：完整回归 `574 passed, 103 subtests passed`；两套 RAG、compileall、
+  Harness SDK/tracked-data boundary、dry-run、governance 和 diff check 通过。
+- `NO-I/O`：Provider calls 和 held-out executions 均为 0，正式结果文件不存在；当前只欠
+  commit/push/exact-SHA CI，公开成功前不得进入 Fresh-Gate 4 或读取 Key。
