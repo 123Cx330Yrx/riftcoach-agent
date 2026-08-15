@@ -1233,3 +1233,17 @@
   不是自动调预算。
 - 本设计没有 Provider/Key/网络调用，也没有创建 V3 held-out。下一批先做离线合同/TDD
   和 exact-SHA CI，之后真实 development 校准仍需单独确认。
+
+### 2026-08-15：V3 资源校准离线实现发现
+
+- ceiling 的 10-match 初始 Context 为 12206 本地单位；三次 `knowledge.search` 各取一条
+  后第二次 Agent 请求为 15279，真实落在 Skill 16000 ceiling 内。最初每次 `top_k=2`
+  会触发 `context_budget_exceeded`，因此保持最大 3 ToolCall、将每次命中收紧为 1，
+  而不是放宽 Skill ceiling。
+- 三次知识查询经证据去重只形成 K1/K2；受控草稿最初引用 K3 被现有 citation gate 拒绝，
+  修正开发草稿只引用实际证据，不放宽引用规则。
+- 现有资源账本会限制请求声明的 output cap，但未拒绝 Provider 实际 Usage 超过单请求
+  cap；现已在结算并记账后以 `token_budget_exhausted` fail closed，旧 observed-overrun
+  语义保持兼容。
+- 预算推导必须从完整 8/8 Usage 才能产生；Fake 示例只证明公式和门禁，不能替代未来
+  DeepSeek tokenizer/latency 证据，也不允许创建 V3 held-out。

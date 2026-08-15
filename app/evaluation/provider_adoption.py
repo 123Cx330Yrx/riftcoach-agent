@@ -558,7 +558,6 @@ class ProviderResourceLedger:
             self._block(ExperimentFailureCode.PROVIDER_RESPONSE_INVALID)
         if isinstance(latency_ms, bool) or not isinstance(latency_ms, int) or latency_ms < 0:
             raise ValueError("latency_ms must be a non-negative integer")
-
         self._input_tokens += response.usage.input_tokens
         self._output_tokens += response.usage.output_tokens
         self._scope_input_tokens[scope] += response.usage.input_tokens
@@ -571,6 +570,11 @@ class ProviderResourceLedger:
             output_tokens=response.usage.output_tokens,
         )
         self._latency_ms += latency_ms
+        if (
+            response.usage.output_tokens
+            > self.policy.max_output_tokens_per_request
+        ):
+            self._block(ExperimentFailureCode.TOKEN_BUDGET_EXHAUSTED)
         if (
             self._input_tokens + self._output_tokens
             > self.policy.max_observed_tokens

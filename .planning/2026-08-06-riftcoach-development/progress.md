@@ -1256,3 +1256,15 @@
 - 设计提交 `351c0e64adf9d2ace42c557d40fac81a44ab539e` 已推送；GitHub Actions run
   `31866084382` 对该精确 SHA completed/success，公开 CI 无 Key/Provider I/O。ADR-0026
   设计至此公开冻结；下一步仍只是离线实现/TDD 与新的 exact-SHA CI。
+
+## 2026-08-15：5D-7 V3 资源校准离线实现
+
+- 新增 `provider_resource_calibration.py`，统一承载 development profile、body-free request
+  snapshot、显式 Fake replay、安全结果、预算推导和 no-I/O admission；没有新框架或依赖。
+- 新增两套独立合成 fixture、profile artifact 和 8-request public contract；V2 资产只读。
+- 新增 11 个聚焦测试，并把 Provider 实际 output 超 cap 的结算 Bad Case 加入共享资源账本。
+- 资源校准 11/11、资源账本/预算相邻集合 34/34；完整回归为 `598 passed, 103 subtests
+  passed`；两套 RAG 全部门槛为 1.0，compileall、Harness dry-run、SDK/tracked-data、治理
+  和 diff check 均通过；Provider/Key/网络调用和 V3 held-out execution 为 0。
+- 当前唯一下一步：运行完整门禁，提交、推送并验证 exact-SHA GitHub Actions；公开成功后
+  才能请求真实最多 8-call development Usage replay 的独立确认。

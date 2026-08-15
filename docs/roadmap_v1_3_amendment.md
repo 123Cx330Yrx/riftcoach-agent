@@ -186,7 +186,7 @@ OP.GG MCP
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
-5D-7 Prompt/Context Eval      进行中；V2 `admitted=false`，ADR-0025 裁决已公开验证，ADR-0026 已冻结 V3 development 资源校准设计
+5D-7 Prompt/Context Eval      进行中；V2 `admitted=false`，V3 development 资源校准离线实现已完成，待 exact-SHA 公开 CI
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -196,7 +196,9 @@ result envelope；相邻 93、完整 580 tests 通过，实现 `ed3cc94` / Actio
 后两例 skipped，结果 `admitted=false` 且不可重跑。结果归档 `60b5c86` / Actions
 `31864370988` 已公开验证。ADR-0025 随后精确证明第二次调用至少需要 4464-token 单例
 上限，并以三阶段真实本地 envelope 建立非 tokenizer 的长度校准投影；裁决实现
-`78400b9` / Actions `31865285994` 已公开验证，当前只设计 V3 development 资源校准。
+`78400b9` / Actions `31865285994` 已公开验证；V3 development 资源校准的双 profile、
+四阶段 body-free request snapshot、Fake 8-call/首错停止、安全结果、预算推导和 no-I/O
+admission 已本地实现，真实 Usage 仍为 unknown，待 exact-SHA 公开 CI 后再请求独立确认。
 
 ADR-0026 已进一步冻结校准方法：baseline/ceiling 两个公开 development profile 各形成
 初始 Agent、工具后 Agent、Evaluation 和 Evaluation repair 四阶段请求；未来真实校准

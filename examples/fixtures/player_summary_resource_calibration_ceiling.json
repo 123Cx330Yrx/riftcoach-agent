@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "metadata": {
+    "generated_at_utc": "2026-08-15T00:00:00+00:00",
+    "source": "synthetic_resource_calibration_development",
+    "matches_requested": 10,
+    "matches_received": 10,
+    "matches_analyzed": 10
+  },
+  "player": {
+    "game_name": "MacroWorkshop",
+    "tag_line": "BOUND",
+    "riot_id": "MacroWorkshop#BOUND",
+    "puuid_prefix": "calibration-ceil..."
+  },
+  "request": {"count": 10, "queue": 420, "region": "asia"},
+  "recent_summary": {
+    "games_analyzed": 10,
+    "wins": 5,
+    "losses": 5,
+    "win_rate": 50.0,
+    "main_role": "TOP",
+    "main_champions": ["边界样本甲", "边界样本乙", "边界样本丙"],
+    "averages": {"kda": 2.75, "cs_per_min": 7.65, "gold_per_min": 410.0, "damage_per_min": 605.0, "vision_score": 19.5, "kill_participation_percent": 52.0, "damage_share_percent": 25.0, "gold_share_percent": 21.5, "deaths_before_15": 0.9},
+    "win_loss_comparison": {
+      "wins": {"cs_per_min": 8.1, "gold_per_min": 432.0, "damage_per_min": 640.0, "vision_score": 21.0, "deaths_before_15": 0.4},
+      "losses": {"cs_per_min": 7.2, "gold_per_min": 388.0, "damage_per_min": 570.0, "vision_score": 18.0, "deaths_before_15": 1.4}
+    },
+    "champion_summary": [
+      {"champion": "边界样本甲", "games": 4, "wins": 2, "win_rate": 50.0},
+      {"champion": "边界样本乙", "games": 3, "wins": 2, "win_rate": 66.7},
+      {"champion": "边界样本丙", "games": 3, "wins": 1, "win_rate": 33.3}
+    ],
+    "role_summary": [{"role": "TOP", "games": 10, "wins": 5, "win_rate": 50.0}]
+  },
+  "matches": [
+    {"match_id":"CAL_CEIL_301","game_version":"development","queue_id":420,"game_duration_seconds":1800,"champion_id":930301,"champion_name":"边界样本甲","champion_name_en":"BoundaryA","role":"TOP","win":true,"timeline_status":"available","included_in_aggregate":true,"kills":5,"deaths":2,"assists":7,"kda":6.0,"cs_per_min":8.3,"gold_per_min":438,"damage_per_min":655,"vision_score":22,"kill_participation":0.57,"damage_share":0.27,"gold_share":0.22,"deaths_before_15":0,"death_times":["22:10"],"items":[],"item_names":[],"item_purchases":[]},
+    {"match_id":"CAL_CEIL_302","game_version":"development","queue_id":420,"game_duration_seconds":1860,"champion_id":930302,"champion_name":"边界样本乙","champion_name_en":"BoundaryB","role":"TOP","win":false,"timeline_status":"available","included_in_aggregate":true,"kills":2,"deaths":4,"assists":6,"kda":2.0,"cs_per_min":7.1,"gold_per_min":384,"damage_per_min":560,"vision_score":17,"kill_participation":0.49,"damage_share":0.23,"gold_share":0.20,"deaths_before_15":2,"death_times":["09:10","13:40","22:20","28:30"],"items":[],"item_names":[],"item_purchases":[]},
+    {"match_id":"CAL_CEIL_303","game_version":"development","queue_id":420,"game_duration_seconds":1920,"champion_id":930303,"champion_name":"边界样本丙","champion_name_en":"BoundaryC","role":"TOP","win":true,"timeline_status":"available","included_in_aggregate":true,"kills":4,"deaths":3,"assists":8,"kda":4.0,"cs_per_min":7.9,"gold_per_min":425,"damage_per_min":630,"vision_score":20,"kill_participation":0.55,"damage_share":0.26,"gold_share":0.22,"deaths_before_15":1,"death_times":["12:40","24:10","30:20"],"items":[],"item_names":[],"item_purchases":[]},
+    {"match_id":"CAL_CEIL_304","game_version":"development","queue_id":420,"game_duration_seconds":1740,"champion_id":930301,"champion_name":"边界样本甲","champion_name_en":"BoundaryA","role":"TOP","win":false,"timeline_status":"available","included_in_aggregate":true,"kills":1,"deaths":5,"assists":5,"kda":1.2,"cs_per_min":7.0,"gold_per_min":376,"damage_per_min":548,"vision_score":18,"kill_participation":0.46,"damage_share":0.22,"gold_share":0.20,"deaths_before_15":2,"death_times":["07:50","14:30","19:20","24:40","27:50"],"items":[],"item_names":[],"item_purchases":[]},
+    {"match_id":"CAL_CEIL_305","game_version":"development","queue_id":420,"game_duration_seconds":2040,"champion_id":930302,"champion_name":"边界样本乙","champion_name_en":"BoundaryB","role":"TOP","win":true,"timeline_status":"available","included_in_aggregate":true,"kills":6,"deaths":2,"assists":6,"kda":6.0,"cs_per_min":8.4,"gold_per_min":445,"damage_per_min":670,"vision_score":23,"kill_participation":0.58,"damage_share":0.28,"gold_share":0.23,"deaths_before_15":0,"death_times":["23:20","31:10"],"items":[],"item_names":[],"item_purchases":[]},
+    {"match_id":"CAL_CEIL_306","game_version":"development","queue_id":420,"game_duration_seconds":1980,"champion_id":930303,"champion_name":"边界样本丙","champion_name_en":"BoundaryC","role":"TOP","win":false,"timeline_status":"available","included_in_aggregate":true,"kills":3,"deaths":4,"assists":7,"kda":2.5,"cs_per_min":7.4,"gold_per_min":395,"damage_per_min":585,"vision_score":19,"kill_participation":0.51,"damage_share":0.24,"gold_share":0.21,"deaths_before_15":1,"death_times":["11:20","20:30","27:10","31:40"],"items":[],"item_names":[],"item_purchases":[]},
+    {"match_id":"CAL_CEIL_307","game_version":"development","queue_id":420,"game_duration_seconds":1830,"champion_id":930301,"champion_name":"边界样本甲","champion_name_en":"BoundaryA","role":"TOP","win":true,"timeline_status":"available","included_in_aggregate":true,"kills":4,"deaths":2,"assists":9,"kda":6.5,"cs_per_min":8.0,"gold_per_min":430,"damage_per_min":645,"vision_score":21,"kill_participation":0.60,"damage_share":0.27,"gold_share":0.22,"deaths_before_15":0,"death_times":["21:40","29:10"],"items":[],"item_names":[],"item_purchases":[]},
+    {"match_id":"CAL_CEIL_308","game_version":"development","queue_id":420,"game_duration_seconds":1770,"champion_id":930302,"champion_name":"边界样本乙","champion_name_en":"BoundaryB","role":"TOP","win":false,"timeline_status":"available","included_in_aggregate":true,"kills":2,"deaths":5,"assists":5,"kda":1.4,"cs_per_min":7.3,"gold_per_min":390,"damage_per_min":575,"vision_score":18,"kill_participation":0.48,"damage_share":0.23,"gold_share":0.20,"deaths_before_15":1,"death_times":["13:20","18:50","23:30","26:40","28:50"],"items":[],"item_names":[],"item_purchases":[]},
+    {"match_id":"CAL_CEIL_309","game_version":"development","queue_id":420,"game_duration_seconds":2100,"champion_id":930303,"champion_name":"边界样本丙","champion_name_en":"BoundaryC","role":"TOP","win":true,"timeline_status":"available","included_in_aggregate":true,"kills":5,"deaths":3,"assists":8,"kda":4.33,"cs_per_min":7.9,"gold_per_min":422,"damage_per_min":600,"vision_score":19,"kill_participation":0.54,"damage_share":0.25,"gold_share":0.215,"deaths_before_15":1,"death_times":["14:40","26:10","33:20"],"items":[],"item_names":[],"item_purchases":[]},
+    {"match_id":"CAL_CEIL_310","game_version":"development","queue_id":420,"game_duration_seconds":1890,"champion_id":930301,"champion_name":"边界样本甲","champion_name_en":"BoundaryA","role":"TOP","win":false,"timeline_status":"available","included_in_aggregate":true,"kills":3,"deaths":4,"assists":6,"kda":2.25,"cs_per_min":7.2,"gold_per_min":395,"damage_per_min":582,"vision_score":18,"kill_participation":0.50,"damage_share":0.24,"gold_share":0.21,"deaths_before_15":1,"death_times":["10:30","19:40","25:20","30:10"],"items":[],"item_names":[],"item_purchases":[]}
+  ],
+  "failed_matches": [],
+  "excluded_matches": []
+}

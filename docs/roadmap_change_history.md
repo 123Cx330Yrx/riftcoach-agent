@@ -1010,3 +1010,22 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   预算或领域准入。
 - `CURRENT`：唯一下一步为 V3 development 资源校准离线 TDD 与公开冻结；真实最多
   8-call Usage replay 仍需其后单独明确确认。
+
+### 2026-08-15：V3 资源校准离线实现完成，等待公开冻结
+
+- `IMPLEMENTED-LOCAL`：两个全新 development profile 与独立 fixture 已冻结，加载器会
+  在 Provider 前拒绝 V2 case/run/body/marker/digest 复用；ceiling 使用 10 条 match
+  投影和现有 Skill 最大 3 次 ToolCall。
+- `IMPLEMENTED-LOCAL`：现有 production Executor 确定性形成 baseline/ceiling 各四阶段
+  请求；公开合同只保存 digest、角色、消息数、本地长度和 tool/response-contract 身份，
+  完整 Prompt/知识/草稿/非法 Evaluation 只存在于内存。
+- `IMPLEMENTED-LOCAL`：离线 Fake replay 显式拒绝未标记 Provider，复用现有资源账本固定
+  8 calls、64 output/request、64000 observed tokens、`$0.10`、首错停止，并补上 Provider
+  实际 output Usage 违反单请求上限时的 fail-closed 结算门。
+- `IMPLEMENTED-LOCAL`：纯整数/Decimal 推导器实现逐阶段 max input ×1.25 与固定向上
+  舍入；7/8 不产生预算，成本超过 `$0.10` 或两次 Agent 带余量超过 30 秒均拒绝 V3。
+- `BOUNDARY`：新增 11 tests 只证明离线控制与请求形状，不是 DeepSeek Usage 或质量证据；
+  完整本地回归为 `598 passed, 103 subtests passed`，两套 RAG 和全部本地门禁通过；
+  Provider/Key/外部调用/V3 held-out 均为 0。
+- `CURRENT`：唯一下一步仍在 5D-7，只做完整本地门禁、提交、推送和 exact-SHA CI；成功
+  后才可单独请求真实 8-call development 校准确认。

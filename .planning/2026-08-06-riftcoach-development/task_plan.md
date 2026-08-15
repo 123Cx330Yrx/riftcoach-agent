@@ -386,3 +386,16 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 | 真实领域门恢复时猜测 ADR-0020 的简称文件名 | 1 | 只读命令报告文件不存在，其他检查无写入；立即用 `rg --files docs/adr` 定位真实文件 `0020-use-no-io-admission-and-thin-coordinator-for-domain-heldout.md`，未触发 Provider 调用 |
 | Fresh-Gate 4 相邻回归猜测不存在的 `tests/test_provider_adoption.py` | 1 | pytest 在收集前退出且没有运行测试或改文件；用 `rg --files tests` 定位真实文件为 `tests/test_provider_adoption_control.py`，随后实际相邻集合 93/93 通过 |
 | Fresh-Gate 4 复核再次猜测 workflow 为 `.github/workflows/ci.yml` | 1 | 只读失败且没有执行 CI 命令；立即用 `rg --files .github` 定位 `tests.yml`，随后按真实 workflow 门禁完成本地验证 |
+
+### 5D-7 V3 资源校准离线实现（2026-08-15）
+
+- [x] 写入 ADR-0026 对应的详细 implementation plan；
+- [x] 创建两套全新 development fixture/profile 并拒绝 V2 内容/digest 复用；
+- [x] 用现有 production Executor 捕获 baseline/ceiling 各四阶段请求；
+- [x] 冻结不含正文的 8-request public snapshot；
+- [x] 用显式 Fake Provider 验证 8-call、64-output、首错停止和资源账本；
+- [x] 实现 25% 余量、固定向上舍入、成本/30 秒 deadline 拒绝的纯预算推导；
+- [x] 实现不接收 Provider/Key/client 的 no-I/O admission；
+- [x] 完成 598 tests/103 subtests、两套 RAG、compileall、Harness/安全/治理本地门禁；
+- [ ] 提交、推送和验证 exact-SHA GitHub Actions；
+- [ ] 公开 CI 成功后再展示真实 development replay 上限并等待用户单独确认。

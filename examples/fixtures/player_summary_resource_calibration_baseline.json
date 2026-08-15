@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "metadata": {
+    "generated_at_utc": "2026-08-15T00:00:00+00:00",
+    "source": "synthetic_resource_calibration_development",
+    "matches_requested": 3,
+    "matches_received": 3,
+    "matches_analyzed": 3
+  },
+  "player": {
+    "game_name": "TempoGarden",
+    "tag_line": "DEV",
+    "riot_id": "TempoGarden#DEV",
+    "puuid_prefix": "calibration-base..."
+  },
+  "request": {"count": 3, "queue": 420, "region": "asia"},
+  "recent_summary": {
+    "games_analyzed": 3,
+    "wins": 1,
+    "losses": 2,
+    "win_rate": 33.3,
+    "main_role": "MIDDLE",
+    "main_champions": ["节奏样本甲", "节奏样本乙"],
+    "averages": {
+      "kda": 2.4,
+      "cs_per_min": 7.5,
+      "gold_per_min": 401.0,
+      "damage_per_min": 590.0,
+      "vision_score": 18.0,
+      "kill_participation_percent": 51.0,
+      "damage_share_percent": 24.0,
+      "gold_share_percent": 21.0,
+      "deaths_before_15": 1.0
+    },
+    "win_loss_comparison": {
+      "wins": {"cs_per_min": 8.2, "gold_per_min": 438.0, "damage_per_min": 650.0, "vision_score": 21.0, "deaths_before_15": 0.0},
+      "losses": {"cs_per_min": 7.15, "gold_per_min": 382.5, "damage_per_min": 560.0, "vision_score": 16.5, "deaths_before_15": 1.5}
+    },
+    "champion_summary": [
+      {"champion": "节奏样本甲", "games": 2, "wins": 1, "win_rate": 50.0},
+      {"champion": "节奏样本乙", "games": 1, "wins": 0, "win_rate": 0.0}
+    ],
+    "role_summary": [{"role": "MIDDLE", "games": 3, "wins": 1, "win_rate": 33.3}]
+  },
+  "matches": [
+    {"match_id": "CAL_BASE_201", "game_version": "development", "queue_id": 420, "game_duration_seconds": 1860, "champion_id": 920201, "champion_name": "节奏样本甲", "champion_name_en": "TempoSampleA", "role": "MIDDLE", "win": true, "timeline_status": "available", "included_in_aggregate": true, "kills": 5, "deaths": 2, "assists": 7, "kda": 6.0, "cs_per_min": 8.2, "gold_per_min": 438.0, "damage_per_min": 650.0, "vision_score": 21, "kill_participation": 0.56, "damage_share": 0.26, "gold_share": 0.22, "deaths_before_15": 0, "death_times": ["21:10"], "items": [], "item_names": [], "item_purchases": []},
+    {"match_id": "CAL_BASE_202", "game_version": "development", "queue_id": 420, "game_duration_seconds": 1920, "champion_id": 920202, "champion_name": "节奏样本乙", "champion_name_en": "TempoSampleB", "role": "MIDDLE", "win": false, "timeline_status": "available", "included_in_aggregate": true, "kills": 2, "deaths": 4, "assists": 6, "kda": 2.0, "cs_per_min": 7.3, "gold_per_min": 388.0, "damage_per_min": 570.0, "vision_score": 17, "kill_participation": 0.50, "damage_share": 0.24, "gold_share": 0.21, "deaths_before_15": 1, "death_times": ["12:10", "20:20", "26:40", "30:05"], "items": [], "item_names": [], "item_purchases": []},
+    {"match_id": "CAL_BASE_203", "game_version": "development", "queue_id": 420, "game_duration_seconds": 1800, "champion_id": 920201, "champion_name": "节奏样本甲", "champion_name_en": "TempoSampleA", "role": "MIDDLE", "win": false, "timeline_status": "available", "included_in_aggregate": true, "kills": 3, "deaths": 5, "assists": 5, "kda": 1.6, "cs_per_min": 7.0, "gold_per_min": 377.0, "damage_per_min": 550.0, "vision_score": 16, "kill_participation": 0.47, "damage_share": 0.22, "gold_share": 0.20, "deaths_before_15": 2, "death_times": ["08:40", "14:20", "19:30", "24:15", "28:50"], "items": [], "item_names": [], "item_purchases": []}
+  ],
+  "failed_matches": [],
+  "excluded_matches": []
+}
