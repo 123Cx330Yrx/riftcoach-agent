@@ -104,7 +104,9 @@ blocked_before: "5P"
   审查提交 `7c8f4e7344ac3ecc0fa22885c7ebd2109a17d383` 已通过 GitHub Actions run
   `31876536179` 的 exact-SHA 公共 CI；5D 退出审查提交
   `2f4e4d40f00cf6a14b7c9c0f85e8d3cbdc8c2493` 已通过 GitHub Actions run
-  `31877076222` 的 exact-SHA 公共 CI
+  `31877076222` 的 exact-SHA 公共 CI；5E 入口设计提交
+  `c91c2d75f85e1315e65e9768894982556053a7b0` 已通过 GitHub Actions run
+  `31878052835` 的 exact-SHA 公共 CI
 - 唯一下一步：`5E-1 Runtime Contract、Usage 与 Trace Store`；先用严格模型和纯本地
   TDD 固定 request/result/signal/event/usage/trace、序列与终态不变量、不完整 Usage 和
   原子存储。不得接入 AgentLoop/Harness observer、实现 `run/stream()`、读取 Key、调用
@@ -143,7 +145,7 @@ blocked_before: "5P"
 
 | 子阶段 | 职责 | 当前状态 | 完成/验收证据 |
 |---|---|---|---|
-| 5E-entry-design | 审计分散信号、比较组合方案、冻结 Runtime 边界与 NFR | 本地已完成（待公开验证） | 初学者设计、ADR-0029、四批实施顺序；616 tests/103 subtests、两套 RAG 和全部本地门禁通过；无产品代码或 Provider I/O |
+| 5E-entry-design | 审计分散信号、比较组合方案、冻结 Runtime 边界与 NFR | 已完成 | 初学者设计、ADR-0029、四批实施顺序；616 tests/103 subtests、两套 RAG 和全部本地门禁；`c91c2d7` / Actions `31878052835` 公开通过；无产品代码或 Provider I/O |
 | 5E-1 Runtime Contract、Usage 与 Trace Store | 严格合同、Recorder、未知 Usage 与原子最终 Trace | 当前唯一下一步 | 尚未实现 |
 | 5E-2 Observable `run()` Vertical Slice | observer 接缝与两个 Skill 的统一同步执行/Trace | 未开始 | 需 5E-1 通过 |
 | 5E-3 Live `stream()` & Parity | 同一执行核心的进程内实时事件和 run/stream 同终态 | 未开始 | 需 5E-2 通过 |

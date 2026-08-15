@@ -1161,3 +1161,7 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   Harness SDK/tracked-data boundary、dry-run、治理和 diff check 全部通过。
 - `CURRENT`：5E 内部固定为 5E-1 至 5E-4；唯一下一步为 `5E-1 Runtime Contract、
   Usage 与 Trace Store` 的纯本地 TDD，不接 observer 或完整 `run/stream()`。
+- `PUBLIC-VERIFIED`：入口设计提交
+  `c91c2d75f85e1315e65e9768894982556053a7b0` 已通过 GitHub Actions run
+  `31878052835`；公共 CI 无 Key/Provider I/O。5E-entry-design 正式闭环，下一检查点保持
+  5E-1。

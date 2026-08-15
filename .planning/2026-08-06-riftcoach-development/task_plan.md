@@ -491,5 +491,6 @@ Usage 与不可覆盖的原子最终 Trace Store。当前不接 AgentLoop/Harnes
 - [x] 拆分 5E-1 至 5E-4，保持 5P/5F/阶段 6/8 边界不变；
 - [x] 完成本入口设计批本地门禁：`616 passed, 103 subtests passed`、两套 RAG、compileall、
   Harness SDK/tracked-data boundary、dry-run、治理和 diff check；
-- [ ] 提交推送并完成 exact-SHA public CI；
+- [x] 设计提交 `c91c2d75f85e1315e65e9768894982556053a7b0` 已推送并通过 Actions
+  run `31878052835` 的 exact-SHA public CI；
 - [ ] 进入 5E-1 前先讲解合同、Usage 和原子 Trace Store 的原理与 TDD 证明范围。

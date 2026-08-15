@@ -1437,3 +1437,12 @@
   compileall、Harness SDK/tracked-data boundary、dry-run、governance 和 diff check 通过。
 - 当前唯一下一步为 `5E-1 Runtime Contract、Usage 与 Trace Store`；先做纯本地 TDD，
   不接 AgentLoop/Harness observer，也不实现完整 `run/stream()`。
+
+## 2026-08-15：5E 入口设计已公开验证
+
+- 设计提交 `c91c2d75f85e1315e65e9768894982556053a7b0` 已推送到 `origin/main`；
+  GitHub Actions run `31878052835` 对该精确 SHA completed/success。
+- 公共 Linux CI 通过治理、616 tests/103 subtests、两套 RAG、compileall、Harness SDK/
+  tracked-data boundary 与 dry-run；没有 Key 或 Provider I/O。
+- 5E-entry-design 至此闭环，但没有 Runtime 产品代码；唯一下一步保持 5E-1，不得跳到
+  observable run、stream、5P 或 5F。
