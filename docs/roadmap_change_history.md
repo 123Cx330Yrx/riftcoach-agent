@@ -1124,3 +1124,18 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `PUBLIC-VERIFIED`：审查提交 `7c8f4e7344ac3ecc0fa22885c7ebd2109a17d383` 已通过
   Actions run `31876536179`；公共 CI 无 Key/Provider I/O。5D-7 正式闭环，下一检查点
   保持 `5D-exit-review`。
+
+### 2026-08-15：5D 退出审查通过，转入 5E 入口设计
+
+- `REVIEW`：逐项核对 5D 入口设计十项功能要求、非功能要求、两个真实 Skill 的组合
+  控制链、Provider 负面实验、限制和 5E 前置项；未发现必须留在 5D 修复的结构性缺口。
+- `VERIFIED-FOCUSED`：核心执行跨层回归为 `173 passed, 34 subtests passed`；Provider/
+  实验控制跨层回归为 `176 passed, 22 subtests passed`。
+- `BOUNDARY`：当前无领域 Provider 准入、真实注入未执行、性能/Usage unknown、G53
+  deferred 和 Flash 未测试均继续保留；5D 完成不代表生产模型质量或阶段 5 完成。
+- `DECISION`：5D 状态改为已完成；阶段 5 保持进行中；唯一下一检查点改为
+  `5E AgentRuntime V1` 入口设计，先统一 run/stream/event/trace/usage 语义。
+- `NO-IO`：本审查没有读取 Key、构造 Provider、调用模型、修改 Prompt 或默认模型，
+  也没有提前采用 LangGraph、Pi 或 Claude Agent SDK。
+- `PRE-PUBLIC`：本地退出裁决仍需完整门禁、提交推送和 exact-SHA 公共 CI；完成前不能
+  表述为公开验证完成。

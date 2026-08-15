@@ -417,3 +417,19 @@ Evaluation 1.1 安全阻断、held-out 生命周期、资源门和安全错误 p
 因此模型采用的 reject/unknown 不是阶段失败，也不能被改写为模型质量差。G53 保持
 deferred 但不再阻塞 5D-7；Flash/Pro 分层继续受 ADR-0019 约束。下一检查点只进行
 `5D-exit-review`，不读取 Key、不调用 Provider、不修改默认模型，也不提前实现 5E。
+
+### 5D 退出审查与 5E 交接
+
+5D 退出审查接受整个 Python 受限 Agent Loop 完成。入口设计的十项功能要求均有实现和
+跨层测试证据：Router/Skill 身份与输入绑定、最小 Context、Manifest 权限与预算、实际
+ToolResult 证据、Agent 草稿、唯一 ReviewHarness、Artifact 驱动 typed output，以及
+非法结构化输出、越权、预算、上下文、Provider 和安全评测失败的 fail-closed 终态。
+
+当前没有真实 Provider 获得 RiftCoach 领域质量准入，这仍是明确限制，但不阻塞 5D：
+商业模型质量与受限执行控制面是两个独立验收对象，失败时 Harness 已证明不会把草稿
+直接发布。5E 将在不调用 Provider、不切换模型的前提下，把已有 run_id、停止原因、
+Tool record、Usage 和 terminal Artifact 统一为 `run/stream/event/trace/usage` 合同。
+
+`SkillReviewExecutor.max_revisions` 继续作为 Harness 运行政策参数，而非 Manifest Agent
+Loop budget；5E 必须记录实际 policy provenance。未来若要下沉为 Skill 合同，需要独立
+ADR 和迁移，不能在退出审查中静默改变。

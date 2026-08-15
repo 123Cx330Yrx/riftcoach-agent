@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.26 - 5D-exit-review（next: 5D-7 completed without domain Provider admission）
+Phase 7 - 5E AgentRuntime V1（next: entry design; implementation not started）
 
 ## Phases
 
@@ -65,7 +65,7 @@ Phase 6.26 - 5D-exit-review（next: 5D-7 completed without domain Provider admis
 
 ### Phase 6 - 5D Python 受限 Agent Loop
 
-- Status: in_progress
+- Status: complete
 - `5D-entry-design` 已完成：审计现有接缝、比较三种组合方案并接受 ADR-0011。
 - `5D-1` 已完成：统一 Skill I/O 文本、selected name/version、安全 run ID、Harness
   规范输入摘要和 Catalog-backed 执行前校验。
@@ -88,7 +88,7 @@ Phase 6.26 - 5D-exit-review（next: 5D-7 completed without domain Provider admis
   3/3 passed 并 admitted；Recent-form Domain Slice 真实运行只执行一次，在一个领域
   call 后没有形成统一 `ChatResponse`、工具证据或 Evaluation，领域 `admitted=false`，
   Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider。
-- `5D-7` 进行中：Batch A 已以真实 Bad Case 冻结分层 Dataset/Candidate/Result 合同、
+- `5D-7` 已完成：Batch A 已以真实 Bad Case 冻结分层 Dataset/Candidate/Result 合同、
   development/held-out 生命周期和 10 案例离线基线；Batch B 已以双层语义指纹冻结
   Skill、Context、知识工具、Evaluation 与 demo 案例身份，并建立零外部调用 admission。
 - `5D-7` Batch C 已完成：7 个 `offline_executable` development 场景先通过 Batch B
@@ -172,19 +172,32 @@ Phase 6.26 - 5D-exit-review（next: 5D-7 completed without domain Provider admis
   新实现、严格 JSON 裁决和 6 个聚焦测试均不接受 Provider/Key/网络输入，外部调用为 0。
 - 预算裁决提交 `78400b9310e512668c81ca41cd65623a92a27226` 已通过 GitHub Actions run
   `31865285994` 的 exact-SHA 公开 CI；V2 裁决正式完成，旧结果仍为 `admitted=false`。
-- 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
-  逐项推进，每次只授权一个检查点。
-- 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
+- 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
+  均已逐项验收；5D 整体完成但阶段 5 仍在进行中。
 - `5D-7 review` 已按 ADR-0028 完成：评测合同、实验身份、注入阻断、held-out 生命周期、
   资源/错误合同和真实负面结果足以完成评测门；当前没有领域 Provider 获得准入，质量
   保持 unknown。G53 deferred 和 Flash 未测试不再阻塞 5D-7，但仍受各自重新采用门约束。
+- `5D-exit-review` 已完成：入口设计十项功能要求与 5D V1 非功能边界均有实现和跨层
+  测试证据；没有发现必须留在 5D 修复的结构性代码缺口。当前无领域 Provider 准入、
+  真实注入未执行和性能/Usage unknown 均保留为限制，不阻塞厂商无关的 5E 入口设计。
+
+### Phase 7 - 5E AgentRuntime V1
+
+- Status: in_progress
+- 当前检查点已激活；入口设计和实现均尚未开始。
+- 先审计 5D 已有的 run_id、Agent/Tool/Harness 停止原因、Usage、Artifact 与终态合同；
+- 比较最小组合、自建薄 Runtime 与候选框架表面，先写设计再实现；
+- 冻结 `run/stream/event/trace/usage` 的统一语义，并保证 stream 与 run 得到同一终态；
+- ReviewHarness 继续是唯一发布权，Trace 只保存安全元数据和 Artifact 引用；
+- 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
+  实验仍属于 5F，Prompt Program 属于 5P。
 
 ## Next Step
 
-`5D-exit-review`：对照 5D-entry-design、5D-1 至 5D-7 的原始合同、实现、测试、真实
-负面实验、限制与 5E 前置项，判断整个 5D 是否可以退出。该检查点只做审计和必要的最小
-修正，不读取 Key、不调用 Provider、不测试 Flash、不迁移 GLM-5.3、不修改默认模型，也
-不实现或提前进入 5E。
+`5E AgentRuntime V1` 入口设计：以初学者视角解释 Loop 与 Runtime 的区别，完整盘点
+现有分散运行信号，比较 2-3 种组合方案，再冻结最小 `run/stream/event/trace/usage`
+合同、失败语义、测试切片和明确排除项。此下一步不读取 Key、不调用 Provider、不测试
+Flash、不迁移 GLM-5.3、不修改默认模型，也不直接采用 LangGraph 或 Agent SDK。
 
 ## Decisions Made
 
@@ -443,3 +456,17 @@ Phase 6.26 - 5D-exit-review（next: 5D-7 completed without domain Provider admis
 - [x] 审查提交 `7c8f4e7344ac3ecc0fa22885c7ebd2109a17d383` 已推送并通过 Actions
   run `31876536179` 的 exact-SHA public CI；
 - [x] 公开验证后进入唯一下一检查点 `5D-exit-review`，不得直接进入 5E。
+
+### 5D Python 受限 Agent Loop 退出审查（2026-08-15）
+
+- [x] 对照 5D 入口设计逐项核对十项功能要求和非功能要求；
+- [x] 验证两个真实 Skill 的受限执行、实际本地知识工具、唯一 Harness 和 typed terminal output；
+- [x] 运行核心执行跨层回归 `173 passed, 34 subtests passed`；
+- [x] 运行 Provider/领域采用与资源控制回归 `176 passed, 22 subtests passed`；
+- [x] 区分 Adapter 协议、模型领域质量与系统安全终态，保留当前无领域 Provider 准入；
+- [x] 审查 5E 前置，确认现有 run_id、停止原因、Usage、Tool record 与 Artifact 可被统一；
+- [x] 记录 `max_revisions` 为 Harness 运行政策并要求 5E 暴露其 provenance，不静默扩张 Manifest；
+- [x] 完成初学者退出审查文档，并把唯一下一检查点切换到 5E 入口设计；
+- [x] 完整本地门禁通过：`616 passed, 103 subtests passed`、两套 RAG 1.0、compileall、
+  Harness SDK/tracked-data boundary、dry-run、治理和 diff check；
+- [ ] 提交推送并完成 exact-SHA public CI。

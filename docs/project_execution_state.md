@@ -1,10 +1,10 @@
 ---
 state_schema: 1
 main_stage: 5
-substage_group: "5D"
-current_checkpoint: "5D-exit-review"
+substage_group: "5E"
+current_checkpoint: "5E"
 status: in_progress
-blocked_before: "5E"
+blocked_before: "5P"
 ---
 
 # RiftCoach 当前执行状态
@@ -18,7 +18,8 @@ blocked_before: "5E"
 
 - 最后更新：2026-08-15
 - 主阶段：阶段 5，进行中
-- 当前子阶段组：5D Python 受限 Agent Loop，entry design 与 5D-1 至 5D-7 已完成；
+- 当前子阶段组：5E AgentRuntime V1，尚未开始设计或实现。5D Python 受限 Agent Loop
+  已通过退出审查；以下保留其 entry design、5D-1 至 5D-7 的公开证据链：
   5D-7 Batch A-C 与 Batch D 的 D1-D5 已完成，DeepSeek V4 Pro Adapter 真实
   structured/tool 协议 3/3 calls 已准入；三场领域 held-out 的控制面以及独立输入计划、
   oracle-blind 生产 Executor 和真实门 CLI 已完成离线 TDD，并由提交
@@ -100,11 +101,11 @@ blocked_before: "5E"
   和“领域模型采用未准入”，接受 5D-7 完成并把 G53 保持为非阻塞 deferred 候选；
   审查提交 `7c8f4e7344ac3ecc0fa22885c7ebd2109a17d383` 已通过 GitHub Actions run
   `31876536179` 的 exact-SHA 公共 CI
-- 唯一下一步：`5D-exit-review`；对照 5D-entry-design 与 5D-1 至 5D-7 的合同、证据、
-  限制和 5E 前置项。不得读取 Key、调用 Provider、切换 Flash、修改默认模型、补跑
-  DeepSeek 或提前进入 5E
-- 禁止越过：5D-exit-review 完成前不得进入 5E 或统一 AgentRuntime；DeepSeek
-  V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用已通过的低层
+- 唯一下一步：`5E AgentRuntime V1` 的入口设计；先审计现有 run_id、Agent/Tool/Harness
+  终止信号、Usage 和 Artifact，比较最小 Runtime 组合方案，再冻结 `run/stream/event/trace`
+  合同。不得直接写大而全 Runtime，不读取 Key、不调用 Provider、不切换模型
+- 禁止越过：5E 完成前不得进入 5P Prompt Program V1 或 5F Runtime/SDK 采用实验；
+  DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
   协议、候选选择或发布热度替代领域质量证据
 
 ## 5C 原始子阶段账本
@@ -131,7 +132,7 @@ blocked_before: "5E"
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测首个 Provider，并为第二 Provider 决策提供真实证据 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
 | 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 已完成（当前无领域 Provider 准入） | 分层评测、Prompt/Context 身份、Evaluation 1.1、held-out 生命周期、资源/错误合同和真实负面结果均已审查；ADR-0028 接受评测门完成，同时保留 GLM/DeepSeek 领域质量 unknown、G53 deferred 与 Flash 未测试边界 |
-| 5D-exit-review | 对照全部证据和 5E 前置项 | 下一检查点，未开始 | 仅审查 5D 整体是否满足退出条件；不得借此实现 5E |
+| 5D-exit-review | 对照全部证据和 5E 前置项 | 已完成 | 十项功能要求与 NFR 均满足 5D V1；无领域 Provider 准入的限制保留；未提前实现 5E |
 
 ## 当前真实能力边界
 
@@ -369,10 +370,10 @@ blocked_before: "5E"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 完成 5A、5B、5C、5D entry design 与 5D-1 至 5D-7；5D-exit-review 尚未开始；当前无领域 Provider 准入 | 阶段 5、整个 5D、生产模型报告质量、V3 资源合同、生产默认切换或 5E Trace 已完成；关闭当前实验等于删除 Provider 或证明模型差 |
-| 项目理解 | 已区分评测门完成与候选模型通过：admit/reject/unknown 都是有效采用结论；又区分协议能力、领域质量、资源可达性和安全发布 | 离线合成 executor 能评价模型智力，5D-7 完成等于 GLM/DeepSeek 通过，或等待新模型是评测基础设施的必要组成 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A、5B、5C 和整个 5D；5E 尚未开始设计；当前无领域 Provider 准入 | 阶段 5、生产模型报告质量、统一 Runtime/Trace、V3 资源合同或生产默认模型已经完成 |
+| 项目理解 | 已区分 Agent Loop 与 AgentRuntime，并能解释 Manifest 权限、最小 Context、Tool evidence、Harness 唯一发布门，以及评测门完成不等于模型通过 | 离线合成 executor 能评价模型智力，5D 完成等于 GLM/DeepSeek 通过，或 5E 只是给现有函数改名 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | V3 离线校准、真实入口、不完整结果、保守裁决、ADR-0027、provenance 切片与 5D-7 review 均有 exact-SHA CI；正式网页未部署 | 公开实验基础设施等于领域质量、最终厂商选型、生产切换或 Web Agent 可用 |
+| GitHub/部署 | 5D-7 及之前证据已有 exact-SHA CI；5D 退出审查正在等待本轮提交的 exact-SHA CI；正式网页未部署 | 本地退出裁决等于已公开验证，或公开实验基础设施等于 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -428,7 +429,7 @@ ADR-0009。
 
 ## 下一检查点的范围
 
-当前唯一下一检查点是 `5D-exit-review`。本节后续先保留从 5C 到 5D-7 的历史范围账本；
+当前唯一下一检查点是 `5E AgentRuntime V1`。本节后续先保留从 5C 到 5D 的历史范围账本；
 其中旧“下一步”只表示当时顺序，不覆盖本文顶部的 canonical checkpoint。
 
 `5C-5-prep-1 Skill Invocation Contract` 与 `5C-5-prep-3 report-fact-check Skill`
@@ -737,3 +738,20 @@ ADR-0028 因此接受 5D-7 完成，同时保留当前无领域 Provider 准入�
 审查提交 `7c8f4e7344ac3ecc0fa22885c7ebd2109a17d383` 随后通过 GitHub Actions run
 `31876536179` 的 exact-SHA 公共 CI。5D-7 至此正式闭环；该公共验证没有调用 Provider，
 也没有改变当前无领域 Provider 准入的结论。
+
+### 2026-08-15：5D 退出审查
+
+退出审查逐项核对 5D 入口设计的十项功能要求、可靠性/安全性/预算/可测试性/框架中立
+等非功能要求，以及 5E 的输入前置。核心执行与 Provider/实验两组跨层离线回归分别为
+`173 passed, 34 subtests passed` 和 `176 passed, 22 subtests passed`。
+
+审查未发现必须留在 5D 修复的结构性代码缺口：两个真实 Skill 都能在 Fake Provider、
+实际本地 `knowledge.search`、AgentLoop、ToolRuntime 与唯一 ReviewHarness 的组合下形成
+类型化终态；非法输出、越权、预算、上下文、Provider 和安全评测失败均不能绕过发布门。
+真实 Provider 领域质量仍未准入并保持 unknown，这是一项明确产品限制，而不是 5D 控制
+架构的阻塞条件。
+
+因此 5D 状态改为已完成，阶段 5 继续进行中，唯一下一检查点为 `5E AgentRuntime V1`
+入口设计。5E 将统一现有 run_id、事件、Trace、Usage 和安全终止原因；它不得自动调用
+Provider、切换模型、接入 LangGraph/Agent SDK 或提前进入 5P/5F。本地退出裁决仍需通过
+本轮完整门禁、提交推送和 exact-SHA 公共 CI 后，才能表述为公开验证完成。

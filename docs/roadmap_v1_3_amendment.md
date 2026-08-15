@@ -187,7 +187,8 @@ OP.GG MCP
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
 5D-7 Prompt/Context Eval      已完成；评测/安全门通过审查，当前无领域 Provider 准入；ADR-0028 保留质量 unknown，G53-0 deferred
-5D-exit-review                下一检查点；对照全部 5D 证据和 5E 前置项
+5D-exit-review                已完成；十项功能要求与 V1 NFR 通过，领域 Provider 未准入限制保留
+5E AgentRuntime V1            当前检查点；先做入口设计，尚未实现
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -213,9 +214,10 @@ unknown，后 7 calls 未发送。预算与 V3 held-out 均未创建；结果/�
 ADR-0028 随后完成 5D-7 收尾裁决：分层评测、Prompt/Context 身份、Evaluation 1.1、
 held-out 生命周期、资源控制和安全失败归因已经构成完整采用门；GLM-5.2/DeepSeek 的领域
 质量仍未准入并保持 unknown。模型 reject/unknown 是有效采用结论，不要求围绕旧考题
-追绿。G53 deferred 和 Flash/Pro 分层不再阻塞 5D-7；唯一下一检查点为
-`5D-exit-review`，不直接进入 5E。审查提交 `7c8f4e7` 已通过 Actions run
-`31876536179` 的 exact-SHA 公共 CI。
+追绿。G53 deferred 和 Flash/Pro 分层不再阻塞 5D-7；审查提交 `7c8f4e7` 已通过
+Actions run `31876536179` 的 exact-SHA 公共 CI。随后 5D 退出审查确认受限执行、
+Manifest 权限/预算、实际 Tool evidence、唯一 Harness、类型化终态与安全失败路径均满足
+V1，当前无领域 Provider 准入不阻塞厂商无关 Runtime；唯一下一检查点现为 5E 入口设计。
 
 ADR-0026 已进一步冻结校准方法：baseline/ceiling 两个公开 development profile 各形成
 初始 Agent、工具后 Agent、Evaluation 和 Evaluation repair 四阶段请求；未来真实校准

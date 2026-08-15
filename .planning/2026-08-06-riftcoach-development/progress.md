@@ -1395,3 +1395,18 @@
   tracked-data boundary 与 dry-run；没有 Key 或 Provider I/O。
 - 5D-7 正式闭环，当前无领域 Provider 准入的限制保持不变；唯一下一检查点为
   `5D-exit-review`，不直接进入 5E。
+
+## 2026-08-15：5D 退出审查本地裁决
+
+- 新增 `docs/plans/2026-08-15-5d-constrained-agent-loop-exit-review.md`，以初学者视角
+  解释 Agent Loop 与 AgentRuntime 的边界、完整数据/控制流、十项要求、NFR 和限制。
+- 审查没有发现必须留在 5D 修复的结构性代码缺口；没有修改产品代码、Prompt、模型或
+  Provider，也没有读取 Key 或发起外部调用。
+- 核心执行跨层回归为 `173 passed, 34 subtests passed`；Provider/实验控制跨层回归为
+  `176 passed, 22 subtests passed`。
+- 5D 本地状态改为完成，阶段 5 仍进行中；唯一下一检查点改为 `5E AgentRuntime V1`
+  入口设计。当前无领域 Provider 准入、真实注入未执行和性能/Usage unknown 继续保留。
+- 完整本地回归为 `616 passed, 103 subtests passed`；RAG development 与 independent
+  holdout 的 Recall/MRR/nDCG 均为 1.0，holdout abstention/citation support 均为 1.0；
+  compileall、Harness SDK/tracked-data boundary、dry-run、治理和 diff check 全部通过。
+- 当前只剩提交推送和 exact-SHA 公共 CI；在此之前不能称为公开验证完成。

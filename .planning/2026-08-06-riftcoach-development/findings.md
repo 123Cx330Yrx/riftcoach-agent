@@ -1333,3 +1333,20 @@
   违反既有重开门。ADR-0028 因而接受 5D-7 完成，将 Provider 采用留给条件化新门。
 - 相关聚焦回归为 `130 passed, 4 subtests passed`，没有读取 Key、构造 Provider 或发起
   外部调用。
+
+## 2026-08-15：5D 退出审查发现
+
+- 5D 入口设计的十项功能要求均有实现与跨层测试证据；两个真实 Skill 在 Fake Provider、
+  实际本地 `knowledge.search`、AgentLoop、ToolRuntime 和唯一 ReviewHarness 的组合下能
+  形成类型化终态。
+- 真实 Provider 领域质量未准入不会破坏控制链：非法/不完整响应不能形成工具证据，
+  Agent 草稿不能直接发布，Harness 会降级或拒绝。因此“模型质量 unknown”是产品限制，
+  不是受限 Agent Loop 的结构性失败。
+- 5D 已有安全 run_id、Agent stop、Tool execution record、Harness terminal Artifact、
+  Usage 和安全错误码，但它们分散在不同合同中；这正是 5E 统一
+  `run/stream/event/trace/usage` 的真实需求，而不是先造框架再找用途。
+- `SkillReviewExecutor.max_revisions` 是现有 Harness 政策参数，不属于 Manifest 的 Agent
+  Loop budget，也未暴露给不可信用户。当前不改合同；5E 应把实际 runtime/Harness policy
+  provenance 纳入 Trace，未来若下沉到 Skill 再通过 ADR 迁移。
+- 核心执行与 Provider/实验两组跨层离线回归分别为 `173 passed, 34 subtests passed`
+  和 `176 passed, 22 subtests passed`；没有读取 Key、构造真实 Provider 或发起外部调用。
