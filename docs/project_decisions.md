@@ -403,3 +403,7 @@ GLM-5.3 普通 API 尚未正式可用，G53-0 暂缓；DeepSeek Pro 当前领域
 质量准入。按照 ADR-0027，先实现并测试 allowlisted `provider_error_code` 在 Provider
 Adapter、实验停止控制和 calibration adjudication 之间的安全传递；未知错误必须为
 null，旧真实结果不改写。
+
+该离线切片提交 `0ad4f9766ab98455ce0726d18d5f5d1f02391c6a` 已通过 GitHub Actions
+run `31874240935` 的 exact-SHA 公共验证；616 tests/103 subtests 和全部 CI 门禁通过，
+无 Key 或 Provider I/O。

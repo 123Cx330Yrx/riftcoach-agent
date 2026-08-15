@@ -1101,5 +1101,8 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `IMPLEMENTED-OFFLINE`：ADR-0027 的安全错误 provenance 已在 Provider stop snapshot、
   resource calibration result/adjudication 中加入 allowlist 传递；未知错误归 null，旧
   V3 结果字节不变。
-- `CURRENT`：当前仍在 5D-7，先完成本切片的完整本地门禁、提交和 exact-SHA CI；本批
+- `VERIFIED`：实现提交 `0ad4f9766ab98455ce0726d18d5f5d1f02391c6a` 已由 Actions run
+  `31874240935` 完成 exact-SHA 公共验证；616 tests/103 subtests、两套 RAG 和安全门禁
+  通过，CI 无 Key/Provider I/O。
+- `CURRENT`：本切片已闭环；等待 GLM-5.3 普通 API 上线或新的明确 Pro/Flash 对照需求，
   不读取 Key、不调用 Provider。

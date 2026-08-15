@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.25 - 5D-7（in progress: DeepSeek V3 is closed; G53-0 deferred; safe error provenance slice is current）
+Phase 6.25 - 5D-7（in progress: DeepSeek V3 and provenance slice are closed; G53-0 deferred）
 
 ## Phases
 
@@ -432,4 +432,5 @@ G53-4 新鲜领域门。
 - [x] 保证旧真实 V3 JSON 能读取且不修改历史结果 bytes；
 - [x] 新增允许、拒绝、公开边界与兼容性聚焦测试，聚焦 Provider/Calibration/Domain 回归 89 passed；
 - [x] 完成完整回归 `616 passed, 103 subtests passed`、两套 RAG、compile/security/dry-run、治理和 diff 门禁；
-- [ ] 提交、推送并完成 exact-SHA public CI。
+- [x] 提交 `0ad4f9766ab98455ce0726d18d5f5d1f02391c6a`、推送并通过 Actions run
+  `31874240935` 的 exact-SHA public CI。

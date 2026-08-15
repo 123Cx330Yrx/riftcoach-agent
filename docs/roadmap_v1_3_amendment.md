@@ -186,7 +186,7 @@ OP.GG MCP
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
-5D-7 Prompt/Context Eval      进行中；ADR-0027 已关闭 DeepSeek V3，低层协议保留、领域质量 unknown；安全错误 provenance 离线切片待公开验证；G53-0 deferred
+5D-7 Prompt/Context Eval      进行中；ADR-0027 已关闭 DeepSeek V3，低层协议保留、领域质量 unknown；安全错误 provenance 已由 `0ad4f97` / Actions `31874240935` 公开验证；G53-0 deferred
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -206,7 +206,8 @@ unknown，后 7 calls 未发送。预算与 V3 held-out 均未创建；结果/�
 公共归档。ADR-0027 已零调用关闭当前 DeepSeek V3，不生成 budget/held-out、不补跑，
 并把允许列表安全错误 provenance 设为未来真实 Provider 门前置条件；决策提交
 `ea91e9697c820c0850db488a93263fc169719515` 已通过 Actions run `31872476103`。
-下一步先完成安全错误 provenance 切片的本地/公开验证；GLM-5.3 G53-0 待普通 API 上线后再审计。
+安全错误 provenance 切片已完成本地/公开验证；GLM-5.3 G53-0 待普通 API 上线后再审计，
+或在出现明确 Pro/Flash 对照需求后另立实验。
 
 ADR-0026 已进一步冻结校准方法：baseline/ceiling 两个公开 development profile 各形成
 初始 Agent、工具后 Agent、Evaluation 和 Evaluation repair 四阶段请求；未来真实校准

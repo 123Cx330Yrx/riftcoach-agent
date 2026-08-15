@@ -1362,3 +1362,14 @@
 - 本切片只待提交/推送和 exact-SHA public CI；仍未读取 Key、调用 Provider 或测试 Flash。
 - 当前唯一下一步仍在 5D-7：完成本切片的完整本地/公开验证；不得调用 Provider、补跑
   DeepSeek、测试 Flash 或进入 5E。
+
+## 2026-08-15：安全 Provider 错误 provenance 切片已公开验证
+
+- 实现提交 `0ad4f9766ab98455ce0726d18d5f5d1f02391c6a` 已推送；GitHub Actions run
+  `31874240935` 对精确 SHA completed/success。
+- 公共 CI 通过治理、616 tests/103 subtests、两套 RAG、compile、Harness SDK/security
+  boundary 与 dry-run；CI 无 Key、无 Provider I/O。
+- 本切片闭环。当前仍在 5D-7，但没有新的模型测试授权：DeepSeek Pro 当前实验关闭，
+  Flash 不测，GLM-5.3 G53-0 deferred；GLM-5.2 仅作开发基线。
+- 唯一下一步转为等待 GLM-5.3 普通 API 正式可用或新的明确 Pro/Flash 对照需求；在此
+  之前不读取 Key、不调用 Provider、不进入 5E。
