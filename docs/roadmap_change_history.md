@@ -908,3 +908,21 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   Context 摘要可重建；CI 没有 Key、Provider call、held-out execution 或真实结果。
 - `CURRENT`：唯一下一步为 Fresh-Gate 4 no-I/O 入口批，先把新资产绑定到既有 admission/
   production CLI 并公开验证；真实运行仍需之后的单独确认，不进入 5D exit review/5E。
+
+### 2026-08-15：Fresh-Gate 4 运行入口本地完成
+
+- `DESIGNED`：拒绝原地替换旧常量和复制第二套 V2 协调器，采用 Fresh evidence/result
+  envelope 包裹现有 domain admission/result，继续复用预算 Provider、production Executor、
+  Evaluator 和唯一 Harness。
+- `READMISSION`：新 no-I/O admission 同时绑定历史协议/拒绝 bytes、ADR-0022 修复 CI、
+  Fresh-Gate 3 asset commit/CI、当前 code/public-CI、新 Dataset/plan/fixture 与三个 Context
+  commitment；旧协议 Context 与新领域 Context 的预期差异被显式分层，而不是放宽其他证据。
+- `KEY-LAST`：active CLI 使用 V2 profile 并增加 `--prepare-only`；真实模式顺序固定为 output
+  conflict → no-I/O admission → output reserve → env/Key → Provider → bounded execution。
+- `OFFLINE-EVIDENCE`：Fake Provider 正常路径用 9 次合成调用走通三案例生产链；受控鉴权
+  失败路径只调用 1 次并跳过后两例；输出脱敏且不可覆盖。它们不是外部 Provider 或真实
+  held-out 执行。
+- `VERIFIED-LOCAL`：相邻 `93 passed`，完整 `580 passed, 103 subtests passed`；两套 RAG、
+  compileall、Harness SDK/tracked-data boundary、dry-run、governance 和 diff check 通过。
+- `CURRENT`：唯一下一步为提交/推送和 exact-SHA GitHub Actions，随后在同一干净 SHA 上
+  执行一次 `--prepare-only`；两步均为零调用，真实 12-call 运行仍需单独明确确认。

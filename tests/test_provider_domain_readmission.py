@@ -14,13 +14,18 @@ from app.evaluation.domain_e2e import (
     DomainDatasetRole,
     DomainEvaluationCase,
     DomainEvaluationDataset,
+    load_domain_dataset,
 )
 from app.evaluation.prompt_context_identity import (
     build_prompt_context_snapshot_for_cases,
     case_context_sha256,
+    load_prompt_context_snapshot,
 )
 from app.evaluation.provider_adoption import ExperimentPreparationReport
-from app.evaluation.provider_domain_experiment import domain_dataset_sha256
+from app.evaluation.provider_domain_experiment import (
+    domain_dataset_sha256,
+    load_protocol_artifact,
+)
 from app.evaluation.provider_domain_plan import (
     DomainCaseContextCommitment,
     DomainCaseInput,
@@ -29,10 +34,17 @@ from app.evaluation.provider_domain_plan import (
     load_domain_case_input_plan,
 )
 from app.evaluation.provider_domain_readmission import (
+    FreshDomainAssetFreezeEvidence,
     FreshDomainDevelopmentAdmission,
+    FreshDomainHeldOutAdmission,
+    FreshProviderDomainExperimentRecord,
     MultiToolRepairEvidence,
+    build_fresh_domain_preparation,
+    finalize_fresh_domain_experiment,
+    load_fresh_domain_asset_freeze_evidence,
     load_historical_domain_evidence,
     prepare_fresh_domain_development_admission,
+    prepare_fresh_domain_heldout_admission,
 )
 
 
@@ -49,6 +61,14 @@ SUMMARY = ROOT / "examples/fixtures/player_summary_demo.json"
 REPORT = ROOT / "examples/fixtures/deterministic_report_demo.md"
 REPAIR_SHA = "037a47fecf058b2430efeeb59858e24cdb3b28eb"
 REPAIR_CI_RUN = 31817798170
+FRESH_DATASET = ROOT / "data/evaluation/domain_e2e_v2_secure_held_out_cases.json"
+FRESH_PLAN = ROOT / (
+    "data/evaluation/deepseek_v4_pro_domain_adoption_v2_input_plan.json"
+)
+FRESH_SNAPSHOT = ROOT / (
+    "data/evaluation/contracts/recent_form_prompt_context_v1_2.json"
+)
+FRESH_PROTOCOL = PROTOCOL_RESULT
 
 
 def repair_evidence(**updates) -> MultiToolRepairEvidence:
@@ -230,6 +250,54 @@ def history():
     )
 
 
+def fresh_heldout_bundle():
+    dataset = load_domain_dataset(FRESH_DATASET)
+    loaded_plan = load_domain_case_input_plan(
+        FRESH_PLAN,
+        project_root=ROOT,
+        dataset=dataset,
+    )
+    frozen_snapshot = load_prompt_context_snapshot(FRESH_SNAPSHOT)
+    current_snapshot = build_prompt_context_snapshot_for_cases(
+        skills_root=ROOT / "skills",
+        player_summary=json.loads(
+            loaded_plan.player_summary_path.read_text(encoding="utf-8")
+        ),
+        deterministic_report=loaded_plan.deterministic_report_path.read_text(
+            encoding="utf-8"
+        ),
+        cases=loaded_plan.artifact.cases,
+        snapshot_id=frozen_snapshot.snapshot_id,
+        evaluation_contract_version="1.1.0",
+    )
+    assets = load_fresh_domain_asset_freeze_evidence(
+        dataset_path=FRESH_DATASET,
+        input_plan_path=FRESH_PLAN,
+        snapshot_path=FRESH_SNAPSHOT,
+        loaded_input_plan=loaded_plan,
+    )
+    preparation = build_fresh_domain_preparation(
+        code_sha="a" * 40,
+        public_ci_sha="a" * 40,
+        confirm_public_ci_success=True,
+        dataset=dataset,
+        frozen_snapshot=frozen_snapshot,
+    )
+    protocol = load_protocol_artifact(FRESH_PROTOCOL)
+    admission = prepare_fresh_domain_heldout_admission(
+        historical=history(),
+        asset_freeze=assets,
+        preparation=preparation,
+        dataset=dataset,
+        loaded_input_plan=loaded_plan,
+        frozen_snapshot=frozen_snapshot,
+        current_snapshot=current_snapshot,
+        protocol_record=protocol.record,
+        protocol_result_sha256=protocol.result_sha256,
+    )
+    return dataset, loaded_plan, frozen_snapshot, assets, admission
+
+
 def test_historical_chain_strictly_reads_protocol_failure_and_fix_evidence():
     evidence = history()
 
@@ -391,3 +459,111 @@ def test_admission_contract_forbids_raw_or_secret_fields(tmp_path):
         "exception",
     ):
         assert protected.lower() not in serialized.lower()
+
+
+def test_fresh_heldout_admission_binds_history_assets_current_ci_and_context():
+    dataset, loaded_plan, snapshot, assets, admission = fresh_heldout_bundle()
+
+    assert isinstance(assets, FreshDomainAssetFreezeEvidence)
+    assert isinstance(admission, FreshDomainHeldOutAdmission)
+    assert admission.dataset_role == "held_out"
+    assert admission.dataset_sha256 == domain_dataset_sha256(dataset)
+    assert admission.execution_plan == loaded_plan.execution_plan
+    assert admission.prompt_context_snapshot_sha256 == snapshot.snapshot_sha256
+    assert admission.historical.total_historical_calls == 4
+    assert admission.asset_freeze.public_ci_run_id == 31861960565
+    assert admission.external_provider_calls == 0
+    assert admission.held_out_executed is False
+    assert admission.provider_construction_authorized is False
+    assert admission.ready_for_explicit_confirmation is True
+    assert admission.run_admission.preparation == admission.preparation
+    assert admission.run_admission.execution_plan == admission.execution_plan
+
+    parameters = inspect.signature(prepare_fresh_domain_heldout_admission).parameters
+    assert "provider" not in parameters
+    assert "api_key" not in parameters
+
+
+def test_fresh_asset_or_current_context_drift_fails_closed():
+    dataset, loaded_plan, snapshot, assets, _ = fresh_heldout_bundle()
+    protocol = load_protocol_artifact(FRESH_PROTOCOL)
+    preparation = build_fresh_domain_preparation(
+        code_sha="a" * 40,
+        public_ci_sha="a" * 40,
+        confirm_public_ci_success=True,
+        dataset=dataset,
+        frozen_snapshot=snapshot,
+    )
+    changed_cases = list(loaded_plan.artifact.cases)
+    changed_cases[0] = changed_cases[0].model_copy(update={"focus": "vision"})
+    changed_snapshot = build_prompt_context_snapshot_for_cases(
+        skills_root=ROOT / "skills",
+        player_summary=json.loads(
+            loaded_plan.player_summary_path.read_text(encoding="utf-8")
+        ),
+        deterministic_report=loaded_plan.deterministic_report_path.read_text(
+            encoding="utf-8"
+        ),
+        cases=tuple(changed_cases),
+        snapshot_id=snapshot.snapshot_id,
+        evaluation_contract_version="1.1.0",
+    )
+
+    with pytest.raises(ValueError, match="Prompt/Context snapshot mismatch"):
+        prepare_fresh_domain_heldout_admission(
+            historical=history(),
+            asset_freeze=assets,
+            preparation=preparation,
+            dataset=dataset,
+            loaded_input_plan=loaded_plan,
+            frozen_snapshot=snapshot,
+            current_snapshot=changed_snapshot,
+            protocol_record=protocol.record,
+            protocol_result_sha256=protocol.result_sha256,
+        )
+
+    with pytest.raises(ValueError, match="Fresh-Gate 3 asset freeze"):
+        FreshDomainAssetFreezeEvidence.model_validate(
+            {
+                **assets.model_dump(mode="json"),
+                "dataset_file_sha256": "f" * 64,
+            }
+        )
+
+
+def test_fresh_preparation_rejects_public_ci_or_dataset_role_drift():
+    dataset, _, snapshot, _, _ = fresh_heldout_bundle()
+
+    with pytest.raises(ValueError, match="current code/public CI"):
+        build_fresh_domain_preparation(
+            code_sha="a" * 40,
+            public_ci_sha="b" * 40,
+            confirm_public_ci_success=True,
+            dataset=dataset,
+            frozen_snapshot=snapshot,
+        )
+
+    development = dataset.model_copy(
+        update={"role": DomainDatasetRole.DEVELOPMENT, "calibration_excluded": False}
+    )
+    with pytest.raises(ValueError, match="held.out"):
+        build_fresh_domain_preparation(
+            code_sha="a" * 40,
+            public_ci_sha="a" * 40,
+            confirm_public_ci_success=True,
+            dataset=development,
+            frozen_snapshot=snapshot,
+        )
+
+
+def test_fresh_result_envelope_forbids_mismatched_or_raw_evidence():
+    _, _, _, _, admission = fresh_heldout_bundle()
+    assert "raw_prompt" not in FreshProviderDomainExperimentRecord.model_fields
+    assert "api_key" not in FreshProviderDomainExperimentRecord.model_fields
+
+    with pytest.raises(TypeError, match="domain_result"):
+        finalize_fresh_domain_experiment(
+            admission=admission,
+            domain_result=object(),
+            explicit_real_call_confirmed=True,
+        )

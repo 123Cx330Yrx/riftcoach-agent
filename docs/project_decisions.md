@@ -266,3 +266,21 @@ Fresh-Gate 3 不新增第二套执行框架，只发布新的静态评测身份�
 宣称领域准入。
 设计与实施计划见 `docs/plans/2026-08-15-deepseek-fresh-domain-assets-design.md` 和
 `docs/plans/2026-08-15-deepseek-fresh-domain-assets-implementation.md`。
+
+### Fresh-Gate 4 运行入口裁决
+
+新鲜真实门采用“Fresh envelope + 既有领域协调器”的版本化组合：
+
+- 不覆盖旧 CLI 证据，也不复制第二套 Agent/Executor/Harness；
+- `FreshDomainHeldOutAdmission` 显式绑定历史协议与拒绝结果、ADR-0022 修复 CI、
+  Fresh-Gate 3 资产 CI、当前 code/public-CI 和全部新输入身份；
+- 旧协议 Context 与新领域 Context 可以不同，但旧协议 result bytes、Provider/model、
+  准入状态、资源和 Evaluation identity 必须不漂移；
+- 新 result envelope 保存完整 Fresh admission 和原领域分层结果，旧 V1.0 result 继续
+  严格复读；
+- CLI 的 `--prepare-only` 必须在输出预留、环境加载和 Provider 构造前返回；真实模式仍
+  要求显式确认，并按 output reserve → env/Key → Provider 的 Key-last 顺序执行。
+
+当前只完成本地离线入口。Fake Provider 的正常/失败纵向测试证明控制面，不证明真实
+DeepSeek 质量；公开 CI 和同 SHA prepare-only 完成前不能读取 Key，完成后真实 12-call
+运行仍需单独明确确认。

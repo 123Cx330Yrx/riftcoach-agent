@@ -1153,3 +1153,19 @@
   领域质量。
 - 唯一下一步为 Fresh-Gate 4 no-I/O 入口批：绑定新资产与现有生产执行接缝，先离线
   TDD/公开 CI，不直接读取 Key 或运行 held-out。
+
+### 2026-08-15：Fresh-Gate 4 运行入口本地 TDD 完成
+
+- 新增初学者设计和实施计划；比较原地改旧常量、复制 V2 控制面和版本化复用，采用第三种。
+- `FreshDomainHeldOutAdmission` 已把历史协议/拒绝、ADR-0022 CI、Fresh-Gate 3 asset CI、
+  当前 code/public-CI、新 Dataset/plan/fixture 和三案例 Context 串成一个零调用身份；其
+  prepare 函数不接收 Provider/API Key。
+- 新 Fresh result envelope 显式保存 readmission 与原领域判决；旧结果模型和历史 JSON
+  仍可原样复读，现有独占输出 reservation 增加严格 Pydantic envelope 提交能力。
+- 生产 CLI active profile 已切到 V2，并加入 `--prepare-only`；测试证明 output conflict、
+  preflight、reserve、environment、Provider 顺序，正常装配与 1-call 首错停止均符合设计。
+- 相邻 `93 passed`，完整 `580 passed, 103 subtests passed`；RAG development/holdout、
+  compileall、Harness SDK/tracked-data boundary、dry-run、governance 与 diff check 全部通过。
+- 没有读取 Key、调用外部 Provider、运行真实 V2 held-out 或创建正式结果。唯一下一步为
+  commit/push/exact-SHA CI，随后在同一干净 SHA 上执行一次 no-I/O `--prepare-only`；真实
+  运行仍需单独确认。

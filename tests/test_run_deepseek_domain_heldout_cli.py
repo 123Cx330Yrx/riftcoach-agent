@@ -1,17 +1,13 @@
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 import pytest
 
-from app.evaluation.domain_e2e import load_domain_dataset
-from app.evaluation.provider_domain_experiment import (
-    domain_dataset_sha256,
-    load_protocol_artifact,
-)
 from app.providers.capabilities import ProviderCapabilities
+from app.providers.errors import ProviderAuthenticationError
 from app.providers.models import ChatRequest, ChatResponse, TokenUsage, ToolCall
 from scripts.run_deepseek_domain_heldout import (
     DeepSeekDomainCliOptions,
@@ -20,24 +16,36 @@ from scripts.run_deepseek_domain_heldout import (
 
 
 SOURCE_ROOT = Path(__file__).resolve().parents[1]
-DATASET_REL = Path("data/evaluation/domain_e2e_v1_1_secure_held_out_cases.json")
-PLAN_REL = Path("data/evaluation/deepseek_v4_pro_domain_heldout_input_plan.json")
+DATASET_REL = Path("data/evaluation/domain_e2e_v2_secure_held_out_cases.json")
+SNAPSHOT_REL = Path(
+    "data/evaluation/contracts/recent_form_prompt_context_v1_2.json"
+)
+PLAN_REL = Path(
+    "data/evaluation/deepseek_v4_pro_domain_adoption_v2_input_plan.json"
+)
 PROTOCOL_REL = Path(
     "data/evaluation/results/provider_capabilities/"
     "deepseek_v4_pro_adapter_protocol.json"
 )
+REJECTED_REL = Path(
+    "data/evaluation/results/provider_capabilities/"
+    "deepseek_v4_pro_domain_heldout.json"
+)
 OUTPUT_REL = Path(
-    "data/evaluation/results/provider_capabilities/test_domain_result.json"
+    "data/evaluation/results/provider_capabilities/"
+    "deepseek_v4_pro_domain_adoption_v2.json"
 )
 
 
 def _copy_inputs(root: Path) -> None:
     for relative in (
         DATASET_REL,
+        SNAPSHOT_REL,
         PLAN_REL,
         PROTOCOL_REL,
-        Path("examples/fixtures/player_summary_demo.json"),
-        Path("examples/fixtures/deterministic_report_demo.md"),
+        REJECTED_REL,
+        Path("examples/fixtures/player_summary_domain_adoption_v2.json"),
+        Path("examples/fixtures/deterministic_report_domain_adoption_v2.md"),
     ):
         destination = root / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -52,25 +60,16 @@ def _copy_inputs(root: Path) -> None:
             destination.write_bytes(source.read_bytes())
 
 
-def _preparation(root: Path):
-    dataset = load_domain_dataset(root / DATASET_REL)
-    protocol = load_protocol_artifact(root / PROTOCOL_REL).record
-    return protocol.preparation.model_copy(
-        update={
-            "dataset_version": dataset.dataset_version,
-            "dataset_sha256": domain_dataset_sha256(dataset),
-        }
-    )
-
-
 def _options() -> DeepSeekDomainCliOptions:
     return DeepSeekDomainCliOptions(
         confirm_real_call=True,
         confirm_public_ci_success=True,
         public_ci_sha="0" * 40,
         dataset=DATASET_REL,
+        snapshot=SNAPSHOT_REL,
         input_plan=PLAN_REL,
         protocol_result=PROTOCOL_REL,
+        rejected_domain_result=REJECTED_REL,
         output=OUTPUT_REL,
         runs_root=Path("data/evaluation/runs/test_domain"),
     )
@@ -118,10 +117,6 @@ def test_output_is_reserved_before_environment_and_provider_creation(tmp_path):
     _copy_inputs(tmp_path)
     calls: list[str] = []
 
-    def preflight(**kwargs):
-        calls.append("preflight")
-        return _preparation(tmp_path)
-
     def environment(root):
         calls.append("environment")
         assert (tmp_path / OUTPUT_REL).exists()
@@ -135,9 +130,9 @@ def test_output_is_reserved_before_environment_and_provider_creation(tmp_path):
         run_cli(
             _options(),
             repository_root=tmp_path,
-            preflight_runner=preflight,
             environment_loader=environment,
             provider_factory=provider_factory,
+            code_sha_reader=lambda root: calls.append("preflight") or "0" * 40,
         )
 
     assert calls == ["preflight", "environment", "provider"]
@@ -150,13 +145,13 @@ def test_protocol_byte_drift_fails_before_environment_or_reservation(tmp_path):
     protocol_path.write_bytes(protocol_path.read_bytes() + b"\n")
     calls: list[str] = []
 
-    with pytest.raises(ValueError, match="protocol result bytes"):
+    with pytest.raises(ValueError, match="historical protocol bytes"):
         run_cli(
             _options(),
             repository_root=tmp_path,
-            preflight_runner=lambda **kwargs: _preparation(tmp_path),
             environment_loader=lambda root: calls.append("environment"),
             provider_factory=lambda settings: calls.append("provider"),
+            code_sha_reader=lambda root: "0" * 40,
         )
 
     assert calls == []
@@ -216,24 +211,94 @@ class OfflineDeepSeekProvider:
         )
 
 
+@dataclass
+class AuthenticationFailingProvider(OfflineDeepSeekProvider):
+    def chat(self, request: ChatRequest) -> ChatResponse:
+        self.requests.append(request)
+        raise ProviderAuthenticationError(
+            provider=self.provider_name,
+            code="authentication_failed",
+        )
+
+
 def test_offline_provider_proves_complete_cli_assembly_without_a_real_key(tmp_path):
     _copy_inputs(tmp_path)
     provider = OfflineDeepSeekProvider()
     record = run_cli(
         _options(),
         repository_root=tmp_path,
-        preflight_runner=lambda **kwargs: _preparation(tmp_path),
         environment_loader=lambda root: {
             "DEEPSEEK_API_KEY": "test-only-secret",
         },
         provider_factory=lambda settings: provider,
+        code_sha_reader=lambda root: "0" * 40,
     )
 
     assert record.admitted is True
-    assert record.domain_calls_used == 9
+    assert record.domain_result.domain_calls_used == 9
     assert record.held_out_executed is True
     assert len(provider.requests) == 9
     serialized = (tmp_path / OUTPUT_REL).read_text(encoding="utf-8")
     assert "test-only-secret" not in serialized
-    assert "USER_INJECTION_ACCEPTED" not in serialized
-    assert "KNOWLEDGE_INJECTION_ACCEPTED" not in serialized
+    assert "SEASTAR_GOLD_742" not in serialized
+    assert "LANTERN_MOSS_913" not in serialized
+
+
+def test_prepare_only_never_loads_environment_provider_or_creates_output(tmp_path):
+    _copy_inputs(tmp_path)
+    calls: list[str] = []
+    options = replace(
+        _options(),
+        confirm_real_call=False,
+        prepare_only=True,
+    )
+
+    admission = run_cli(
+        options,
+        repository_root=tmp_path,
+        environment_loader=lambda root: calls.append("environment"),
+        provider_factory=lambda settings: calls.append("provider"),
+        code_sha_reader=lambda root: calls.append("code_sha") or "0" * 40,
+    )
+
+    assert admission.external_provider_calls == 0
+    assert admission.held_out_executed is False
+    assert admission.provider_construction_authorized is False
+    assert calls == ["code_sha"]
+    assert not (tmp_path / OUTPUT_REL).exists()
+
+
+def test_fresh_cli_preserves_first_error_stop_and_sanitized_immutable_result(
+    tmp_path,
+):
+    _copy_inputs(tmp_path)
+    provider = AuthenticationFailingProvider()
+
+    record = run_cli(
+        _options(),
+        repository_root=tmp_path,
+        environment_loader=lambda root: {
+            "DEEPSEEK_API_KEY": "never-persist-this-secret",
+        },
+        provider_factory=lambda settings: provider,
+        code_sha_reader=lambda root: "0" * 40,
+    )
+
+    assert len(provider.requests) == 1
+    assert record.admitted is False
+    assert record.domain_result.domain_calls_used == 1
+    assert tuple(row.status for row in record.domain_result.cases) == (
+        "executed",
+        "skipped",
+        "skipped",
+    )
+    serialized = (tmp_path / OUTPUT_REL).read_text(encoding="utf-8")
+    assert "never-persist-this-secret" not in serialized
+    assert "authentication_failed" in serialized
+
+    with pytest.raises(FileExistsError, match="immutable"):
+        run_cli(
+            _options(),
+            repository_root=tmp_path,
+            code_sha_reader=lambda root: "0" * 40,
+        )

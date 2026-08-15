@@ -51,7 +51,7 @@ def run_cli(
     root = repository_root.resolve()
     dataset = _inside_project(root, options.dataset, label="dataset")
     snapshot = _inside_project(root, options.snapshot, label="snapshot")
-    code_sha = (code_sha_reader or _read_clean_code_sha)(root)
+    code_sha = (code_sha_reader or read_clean_code_sha)(root)
     return prepare_second_provider_experiment(
         project_root=root,
         dataset_path=dataset,
@@ -74,7 +74,7 @@ def _inside_project(root: Path, value: Path, *, label: str) -> Path:
     return resolved
 
 
-def _read_clean_code_sha(repository_root: Path) -> str:
+def read_clean_code_sha(repository_root: Path) -> str:
     status = subprocess.run(
         ["git", "status", "--porcelain", "--untracked-files=normal"],
         cwd=repository_root,

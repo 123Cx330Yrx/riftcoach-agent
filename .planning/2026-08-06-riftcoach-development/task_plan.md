@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.22 - 5D-7（in progress: prepare Fresh-Gate 4 no-I/O run seam）
+Phase 6.22 - 5D-7（in progress: publish and verify Fresh-Gate 4 run seam）
 
 ## Phases
 
@@ -150,16 +150,21 @@ Phase 6.22 - 5D-7（in progress: prepare Fresh-Gate 4 no-I/O run seam）
   boundary、dry-run、governance 和 diff check 通过；Provider calls/held-out executions
   均为 0，正式结果文件不存在。资产提交 `1e44b130f4f054e06ab92fcc437dcd1fa74a13e8`
   已通过 GitHub Actions run `31861960565` 的 exact-SHA 公开 CI，Fresh-Gate 3 已完成。
+- `5D-7` Fresh-Gate 4 入口已本地完成：新增完整 readmission/evidence envelope，绑定历史
+  `3+1` 调用、修复 CI、资产 CI、当前 code/public-CI、新 Dataset/plan/fixture 与逐案例
+  Context；现有生产 CLI 已使用 V2 profile 并提供 `--prepare-only`。Fake Provider 的正常
+  纵向装配、1-call 首错停止、脱敏和不可覆盖均通过；相邻 `93 passed`，完整
+  `580 passed, 103 subtests passed`，外部调用和真实 held-out 执行均为 0。
 - 后续按 5D-1、5D-2、5D-3、5D-4、5D-5、5D-6a、5D-6b、5D-7 和 exit review
   逐项推进，每次只授权一个检查点。
 - 5D 及以后仍按 `docs/roadmap.md` 和后续批准的子阶段逐项展开，不得跨到 5E。
 
 ## Next Step
 
-5D-7 Fresh-Gate 3 已公开冻结。唯一下一步是 Fresh-Gate 4 入口批：将新 Dataset/plan/
-snapshot 绑定到 held-out no-I/O admission 与现有生产 CLI，先完成 Key-last、资源/停止、
-脱敏和不可覆盖的离线 TDD 与新的 exact-SHA CI。本入口批不得读取 Key、调用 Provider、
-运行 held-out、修改 Prompt/Evaluation/Harness、实现真正并发或进入 5D exit review/5E。
+5D-7 Fresh-Gate 4 入口已完成本地离线 TDD。唯一下一步是提交、推送并验证该实现的
+exact-SHA GitHub Actions，成功后在同一干净 SHA 上执行一次 `--prepare-only`。这两步均
+不得读取 Key、调用 Provider、运行 held-out、修改 Prompt/Evaluation/Harness、实现真正
+并发或进入 5D exit review/5E；真实 12-call 运行需要其后的单独明确确认。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
 `.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门
@@ -355,3 +360,5 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 | 生产装配安全扫描再次把 `docs\security*` 作为 Windows `rg` 路径 | 1 | `.gitignore` 已成功读取且暴露真正的 runs 目录边界，只有通配扫描失败；改用显式文件清单，并把真实门默认运行目录移入已忽略/受 CI 保护的 `data/runs/` |
 | 生产装配 CI 状态回写把唯一下一步只写成自然语言动作 | 1 | governance 在提交前拒绝，因为正文没有显式包含 canonical `5D-7`；补回检查点名并重新验证，没有改变执行状态或发起外部调用 |
 | 真实领域门恢复时猜测 ADR-0020 的简称文件名 | 1 | 只读命令报告文件不存在，其他检查无写入；立即用 `rg --files docs/adr` 定位真实文件 `0020-use-no-io-admission-and-thin-coordinator-for-domain-heldout.md`，未触发 Provider 调用 |
+| Fresh-Gate 4 相邻回归猜测不存在的 `tests/test_provider_adoption.py` | 1 | pytest 在收集前退出且没有运行测试或改文件；用 `rg --files tests` 定位真实文件为 `tests/test_provider_adoption_control.py`，随后实际相邻集合 93/93 通过 |
+| Fresh-Gate 4 复核再次猜测 workflow 为 `.github/workflows/ci.yml` | 1 | 只读失败且没有执行 CI 命令；立即用 `rg --files .github` 定位 `tests.yml`，随后按真实 workflow 门禁完成本地验证 |

@@ -344,6 +344,21 @@ class ImmutableDomainExperimentOutput:
         self._stream.close()
         self._committed = True
 
+    def commit_payload(self, record: BaseModel) -> None:
+        """Commit another strict experiment envelope with the reserved identity."""
+
+        if self._committed or self._stream.closed:
+            raise RuntimeError("domain experiment output is already finalized")
+        if not isinstance(record, BaseModel):
+            raise TypeError("record must be a Pydantic model")
+        if getattr(record, "experiment_id", None) != self.experiment_id:
+            raise ValueError("record does not match the reserved experiment")
+        self._stream.write(record.model_dump_json(indent=2))
+        self._stream.write("\n")
+        self._stream.flush()
+        self._stream.close()
+        self._committed = True
+
     def abandon(self) -> None:
         """Close but retain the exclusive sentinel so a crash cannot rerun."""
 
@@ -384,6 +399,39 @@ def prepare_deepseek_domain_heldout_run(
         protocol_result_sha256=protocol_result_sha256,
         dataset=dataset,
         execution_plan=execution_plan,
+    )
+    return DeepSeekDomainRunAdmission(
+        experiment_id=_experiment_id(preparation, prior, execution_plan),
+        preparation=preparation,
+        prior_protocol=prior,
+        execution_plan=execution_plan,
+        initial_resources=protocol_record.resources,
+    )
+
+
+def prepare_deepseek_fresh_domain_heldout_run(
+    *,
+    preparation: ExperimentPreparationReport,
+    protocol_record: ProviderAdapterProtocolExperimentRecord,
+    protocol_result_sha256: str,
+    dataset: DomainEvaluationDataset,
+    execution_plan: DomainCaseExecutionPlan,
+) -> DeepSeekDomainRunAdmission:
+    """Reuse admitted Adapter evidence for a new Context-bound domain gate.
+
+    The historical protocol still proves the same Provider/model/structured-tool
+    transport and resource evidence. Its old Prompt/Context identity is expected
+    to differ from the fresh domain Dataset, so the Fresh readmission layer must
+    bind that history and the new identities separately before calling here.
+    """
+
+    prior = _require_frozen_control_inputs(
+        preparation=preparation,
+        protocol_record=protocol_record,
+        protocol_result_sha256=protocol_result_sha256,
+        dataset=dataset,
+        execution_plan=execution_plan,
+        require_protocol_context_identity=False,
     )
     return DeepSeekDomainRunAdmission(
         experiment_id=_experiment_id(preparation, prior, execution_plan),
@@ -612,6 +660,7 @@ def _require_frozen_control_inputs(
     protocol_result_sha256: str,
     dataset: DomainEvaluationDataset,
     execution_plan: DomainCaseExecutionPlan,
+    require_protocol_context_identity: bool = True,
 ) -> PriorProtocolEvidence:
     policy = deepseek_experiment_policy()
     for value, expected, label in (
@@ -678,10 +727,6 @@ def _require_frozen_control_inputs(
         or protocol.requested_model != policy.model
         or protocol_record.preparation.provider_id != policy.provider_id
         or protocol_record.preparation.requested_model != policy.model
-        or protocol_record.preparation.prompt_context_snapshot_id
-        != preparation.prompt_context_snapshot_id
-        or protocol_record.preparation.prompt_context_snapshot_sha256
-        != preparation.prompt_context_snapshot_sha256
         or protocol_record.preparation.evaluation_contract
         != preparation.evaluation_contract
         or resources.stop_code is not None
@@ -694,6 +739,13 @@ def _require_frozen_control_inputs(
         or protocol_record.control.provider_stops
     ):
         raise ValueError("prior protocol evidence is not admitted for this run")
+    if require_protocol_context_identity and (
+        protocol_record.preparation.prompt_context_snapshot_id
+        != preparation.prompt_context_snapshot_id
+        or protocol_record.preparation.prompt_context_snapshot_sha256
+        != preparation.prompt_context_snapshot_sha256
+    ):
+        raise ValueError("prior protocol Context identity does not match this run")
 
     return PriorProtocolEvidence(
         provider_id=protocol.provider_id,
@@ -866,6 +918,7 @@ __all__ = [
     "domain_dataset_sha256",
     "load_protocol_artifact",
     "prepare_deepseek_domain_heldout_run",
+    "prepare_deepseek_fresh_domain_heldout_run",
     "run_deepseek_domain_heldout_experiment",
     "write_immutable_domain_experiment_record",
 ]

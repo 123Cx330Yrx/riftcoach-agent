@@ -1159,3 +1159,21 @@
 - 本地 `39 passed` 聚焦、`574 passed, 103 subtests passed` 全量、两套 RAG、compileall、
   Harness/secret boundary、dry-run、governance 和 diff check 均通过。正式结果不存在，
   Provider calls/held-out executions 为 0；当前仍需 exact-SHA 公开 CI。
+
+### 2026-08-15：Fresh-Gate 4 运行入口发现
+
+- 旧 Adapter 协议与新领域 Context 不应强制相同：前者证明同一 Provider/model 的
+  structured/tool transport，后者冻结新任务输入。新 readmission 必须允许这项预期差异，
+  但仍严格绑定旧协议 result bytes、准入状态、资源和 Evaluation identity。
+- 不能只把旧 CLI 的三个路径改成 V2。新结果还需要显式保存旧拒绝 SHA、修复 commit/CI、
+  Fresh-Gate 3 asset commit/CI 和当前 code/public-CI；因此采用外层 Fresh admission/result
+  envelope，内层继续复用旧领域协调器和 `ProviderDomainExperimentRecord@1.0`。
+- `--prepare-only` 的安全性来自依赖不可达，而不只是“约定不调用”：该分支在形成 no-I/O
+  admission 后直接返回，不预留输出、不加载 environment、不创建 Provider。未来真实运行
+  必须重复同一 admission，再按 output reserve → env/Key → Provider 的顺序继续。
+- Fake Provider 正常路径用 9 次合成调用通过三例，证明 production Executor、RAG、
+  Evaluation 1.1 与 Harness 装配可达；受控鉴权失败只调用 1 次且后两例 skipped，证明首错
+  停止。两者都不是外部调用或真实 held-out 质量证据。
+- 相邻回归 `93 passed`、完整回归 `580 passed, 103 subtests passed`；两套 RAG、compileall、
+  Harness SDK/tracked-data boundary、dry-run、governance 和 diff check 通过，新真实结果文件
+  仍不存在。

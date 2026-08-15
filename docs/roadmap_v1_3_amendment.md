@@ -186,8 +186,13 @@ OP.GG MCP
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
-5D-7 Prompt/Context Eval      进行中；Fresh-Gate 3 已由 `1e44b13` / `31861960565` 公开冻结，下一步 Fresh-Gate 4 no-I/O 接缝
+5D-7 Prompt/Context Eval      进行中；Fresh-Gate 4 入口本地完成，待 exact-SHA CI 与同 SHA prepare-only
 ```
+
+Fresh-Gate 4 运行入口现已在本地完成版本化 readmission、V2 active CLI、prepare-only 和
+Fresh result envelope；相邻 93、完整 580 tests 通过，外部调用与真实 held-out execution
+仍为 0。当前只待该实现的 exact-SHA 公开 CI 和同 SHA no-I/O prepare-only，之后才可另行
+确认真实运行。
 
 5C 路由旧开发集有 15 个参与校准的小型单 Skill 案例，历史精确匹配率为 `1.0`、
 错误选择率为 `0.0`。它已原样归档并附带 SHA-256 与重建来源说明。现在 Catalog
