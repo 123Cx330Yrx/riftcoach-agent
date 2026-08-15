@@ -1288,3 +1288,6 @@
   分派真实 calibration、保守裁决和 V3 budget 三种合同，再交给严格 Pydantic 校验。
 - 纯离线裁决会绑定结果 bytes SHA、code/public-CI 与 request-set，但不恢复 Provider 原文，
   也不会给下一次调用授权；这让“证据解释”与“重新实验”保持不同权限边界。
+- `.gitattributes` 必须显式固定真实结果和裁决为 LF；否则 Windows checkout 的换行转换
+  可能让 Linux CI 看到不同 bytes。暂存区复算 SHA 与本地结果完全一致，随后 exact-SHA
+  Actions `31869409106` 通过，证明公开证据身份稳定。

@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 6.25 - 5D-7（in progress: incomplete real calibration evidence is locally verified and awaiting public freeze）
+Phase 6.25 - 5D-7（in progress: incomplete calibration is publicly frozen; zero-I/O failure-adoption decision is next）
 
 ## Phases
 
@@ -181,10 +181,10 @@ Phase 6.25 - 5D-7（in progress: incomplete real calibration evidence is locally
 5D-7 真实入口已由 `6aa8c43` / Actions `31868747216` 公开验证；同 SHA prepare-only 为
 零调用。RQ-033 的正式 replay 在第 1 次请求未形成规范化 `ChatResponse` 后首错停止，
 后 7 次没有发送；结果为 1 external call / 0 normalized responses，实际 Usage/费用
-unknown，不生成 V3 budget。唯一下一步是完成不可变结果、零调用保守裁决和相关回归的
-完整门禁、提交、推送与 exact-SHA 公共 CI。不得重跑本 calibration、创建 V3 held-out、
-调 Prompt/Context、调用其他模型或进入 5D exit review/5E；公开归档后才进入零调用的
-资源校准失败采用决策。
+unknown，不生成 V3 budget。不可变结果和保守裁决已由 `421a243` / Actions
+`31869409106` 完成 exact-SHA 公共归档。唯一下一步仍在 5D-7，只做零调用的资源校准
+失败采用决策；不得重跑 calibration、创建 V3 held-out、调 Prompt/Context、调用其他
+模型或进入 5D exit review/5E。
 
 GLM-5.3 的官方迁移要求已记录为后续隔离候选，不改变上述唯一下一步。当前不切换
 `.env` 默认模型、不修改 DeepSeek 文件/结果、不重跑任何旧考卷。待当前新鲜领域采用门
@@ -413,4 +413,5 @@ Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议
 - [x] 在同一干净 SHA 上运行 prepare-only，确认 external calls 0 且无结果文件；
 - [x] 执行一次真实 replay；第 1 call 未形成规范化响应后首错停止，保存不可变结果且不生成预算；
 - [x] 更新持久状态并完成聚焦 34、完整 611 tests/103 subtests 与全部本地门禁；
-- [ ] 提交、推送不可变结果/裁决并验证最终 exact-SHA public CI。
+- [x] 提交、推送不可变结果/裁决，并由 `421a243` / Actions `31869409106` 完成
+  exact-SHA public CI。

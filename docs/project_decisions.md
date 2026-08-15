@@ -373,3 +373,7 @@ Provider/Key/网络调用和 V3 held-out 仍为 0；实现已由 `2d67696` / Act
 该结果与裁决现已通过 34 项聚焦测试、`611 passed, 103 subtests passed` 完整回归及
 两套 RAG、compileall、Harness/security、dry-run、governance 和 diff 本地门禁；这些
 验证没有再次调用 Provider。下一步仅为不可变证据的公开归档与 exact-SHA CI。
+
+归档提交 `421a24393cafdc79a02de4091f569cfb9aa5b721` 随后通过 GitHub Actions run
+`31869409106`。RQ-033 因而以“不完整证据已公开冻结”收口；下一检查点只允许零调用
+决策，不能把归档成功解释为 calibration、领域能力或模型质量成功。

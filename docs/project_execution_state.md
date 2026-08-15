@@ -82,12 +82,14 @@ blocked_before: "5D-exit-review"
   发送。不可变结果 SHA-256 为 `ba33e75af7f8755dc89904fb346f66962fb29e92d08173494053f17ad8e7088b`：
   1 external call、0 normalized responses；账本 0 tokens/`$0` 只代表未取得可结算 Usage，
   实际计费 Token/费用均为 unknown。零调用裁决明确禁止预算推导、补跑和 V3 held-out，
-  模型质量仍为 unknown；裁决 SHA 为 `0ce09b52d982f8c03052f1d94fde1da5628af31dbd797ea770522ce092907446`
- ；结果/裁决聚焦回归 34/34、完整回归 `611 passed, 103 subtests passed`，两套 RAG、
-  compileall、Harness SDK/tracked-data boundary、dry-run、治理和 diff check 已在本地通过
-- 唯一下一步：仍在 5D-7，只提交、推送真实失败结果/保守裁决并完成 exact-SHA 公共
-  CI；不得重跑 calibration、创建 V3 held-out、调 Prompt 或进入 5E；公开冻结后再做
-  零调用的资源校准失败采用决策
+  模型质量仍为 unknown；裁决 SHA 为 `0ce09b52d982f8c03052f1d94fde1da5628af31dbd797ea770522ce092907446`。
+  结果/裁决聚焦回归 34/34、完整回归 `611 passed, 103 subtests passed`，两套 RAG、
+  compileall、Harness SDK/tracked-data boundary、dry-run、治理和 diff check 已在本地通过；
+  归档提交 `421a24393cafdc79a02de4091f569cfb9aa5b721` 已通过 GitHub Actions run
+  `31869409106` 的 exact-SHA 公共 CI
+- 唯一下一步：仍在 5D-7，只做零调用的资源校准失败采用决策，比较关闭当前 V3
+  候选、另立带安全细分错误的新版本诊断门或保持搁置；不得重跑 calibration、创建 V3
+  held-out、调 Prompt、调用其他模型或进入 5E
 - 禁止越过：5D-7 完成前不得进入 5D exit review、5E 或统一 AgentRuntime；DeepSeek
   V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用已通过的低层
   协议、候选选择或发布热度替代领域质量证据
@@ -115,7 +117,7 @@ blocked_before: "5D-exit-review"
 | 5D-5 Harness Composition & Typed Terminal Output | 通过 DraftPreparationStep 接入单一发布门禁 | 已完成 | 统一 preparation 合同、旧顺序 Adapter、`SkillReviewExecutor`、Artifact 驱动 typed output、两个真实 Skill 的 Fake Provider + 真实 RAG + Harness 端到端测试 |
 | 5D-6a Structured Output Contract | Provider-neutral schema、Pydantic 校验和有限修复 | 已完成 | `StructuredResponseContract`、能力门禁、严格 Evaluation Pydantic 模型、一次 repair、fail-closed 与 Harness 降级测试 |
 | 5D-6b Real Provider Capability Gate | 实测首个 Provider，并为第二 Provider 决策提供真实证据 | 已完成（部分采用） | P1-P5 5/5、真实 Adapter 协议 3/3 calls 通过；真实 recent-form 领域运行只执行一次并在 1 个领域 call 后未形成统一 `ChatResponse`，无工具/证据/Evaluation，领域 `admitted=false`，Harness 安全降级；ADR-0012 准入最小协议、拒绝领域能力并暂缓第二 Provider |
-| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（V2 `admitted=false`；真实 development calibration 不完整） | 入口 `6aa8c43` / Actions `31868747216` 公开通过；真实 replay 第 1 call 未形成规范化响应并首错停止，0/8 Usage、实际 Token/费用 unknown、V3 budget 不可推导、held-out 未创建；不可变结果/保守裁决已通过 34 项聚焦、611 项完整本地回归，待公开归档 |
+| 5D-7 Prompt/Context & Domain E2E Evaluation | 工具选择、事实/引用、注入、质量/成本/延迟评测 | 进行中（V2 `admitted=false`；真实 development calibration 不完整） | 入口 `6aa8c43` / Actions `31868747216` 公开通过；真实 replay 第 1 call 未形成规范化响应并首错停止，0/8 Usage、实际 Token/费用 unknown、V3 budget 不可推导、held-out 未创建；不可变结果/保守裁决由 `421a243` / Actions `31869409106` exact-SHA 公开归档 |
 | 5D-exit-review | 对照全部证据和 5E 前置项 | 未开始 | 5D 各项完成前不得进入 |
 
 ## 当前真实能力边界

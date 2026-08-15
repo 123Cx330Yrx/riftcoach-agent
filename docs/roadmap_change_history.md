@@ -1069,3 +1069,12 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   零计费，billable Usage/费用保持 unknown，budget/held-out/rerun 继续禁止。
 - `CURRENT`：唯一下一步仍为 5D-7，只提交、推送并完成该归档的 exact-SHA 公共 CI；
   公共冻结后才进入零调用采用决策。
+
+### 2026-08-15：真实 calibration 不完整证据 exact-SHA 公开冻结
+
+- `PUBLIC-VERIFIED`：归档提交 `421a24393cafdc79a02de4091f569cfb9aa5b721` 已通过
+  GitHub Actions run `31869409106` 的治理、完整 pytest、两套 RAG、compileall、Harness
+  SDK/tracked-data boundary 与 dry-run。
+- `BOUNDARY`：公开 CI 无 Key/Provider I/O；该结果证明安全失败记录可复现，不证明 Usage
+  校准或模型质量通过，也不授权补跑。
+- `CURRENT`：唯一下一步仍在 5D-7，只做零调用的资源校准失败采用决策；不进入 5E。

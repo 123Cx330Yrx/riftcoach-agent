@@ -186,7 +186,7 @@ OP.GG MCP
 5D-5 Harness & Typed Output   已完成；统一 preparation 接缝、唯一质量门禁与 Artifact 驱动终态输出
 5D-6a Structured Output       已完成；请求合同、Pydantic 校验、一次修复与 fail-closed 边界已建立
 5D-6b Provider Gate           已完成（部分采用）；最小协议准入，GLM recent-form 领域能力不准入，fallback 真实生效
-5D-7 Prompt/Context Eval      进行中；V2 `admitted=false`，真实 development calibration 第 1 call 后首错停止，本地 611 tests 通过，结果待公共归档
+5D-7 Prompt/Context Eval      进行中；V2 `admitted=false`，真实 development calibration 第 1 call 后首错停止，`421a243` / Actions `31869409106` 已公开归档
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -202,7 +202,8 @@ admission 已由 `2d67696` / Actions `31867655627` 公开验证；真实入口�
 Actions `31868747216` 公开通过，同 SHA prepare-only 为零调用。正式 replay 第 1 个请求
 没有形成规范化响应并首错停止：1 external call、0 Usage observations，实际 Token/费用
 unknown，后 7 calls 未发送。预算与 V3 held-out 均未创建；结果/裁决已通过 34 项聚焦、
-611 项完整本地回归和全部本地门禁，仍待最终公共归档。
+611 项完整本地回归和全部本地门禁，并由 `421a243` / Actions `31869409106` 完成最终
+公共归档。下一步只做零调用的失败采用决策。
 
 ADR-0026 已进一步冻结校准方法：baseline/ceiling 两个公开 development profile 各形成
 初始 Agent、工具后 Agent、Evaluation 和 Evaluation repair 四阶段请求；未来真实校准

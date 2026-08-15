@@ -1312,3 +1312,14 @@
 - 一次含 TEMP 递归清理的组合验证被安全策略在执行前拒绝；改用新 TEMP 目录后完整验证
   通过，没有删除项目文件、读取 Key 或再次调用 Provider。
 - 当前唯一下一步仍在 5D-7：提交、推送并对结果归档提交执行 exact-SHA 公共 CI。
+
+## 2026-08-15：真实 calibration 不完整证据已公开冻结
+
+- 归档提交 `421a24393cafdc79a02de4091f569cfb9aa5b721` 已推送；GitHub Actions run
+  `31869409106` 对该精确 SHA completed/success。
+- 公共 CI 在干净 Linux 环境再次通过治理、611 tests/103 subtests、两套 RAG、compileall、
+  Harness SDK/tracked-data boundary 和 dry-run；CI 没有 Key 或 Provider I/O。
+- RQ-033 到此收口为“不完整 calibration 证据公开冻结”，而不是 Usage 校准成功：仍为
+  1 external call、0 normalized responses，实际 Token/费用 unknown，不生成 V3 budget。
+- 唯一下一步仍在 5D-7：零调用比较关闭、另立安全可观测诊断版本或继续搁置，不进入
+  5D exit review/5E。
