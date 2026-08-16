@@ -1582,3 +1582,22 @@
   tracked-data boundary 与 dry-run；没有 Key、真实 Provider I/O 或 held-out。
 - Task A 至此闭环。唯一下一步为用户确认后的 Task B Observed Provider + AgentLoop 观察；
   本轮停下教学验收，不自动进入 Task B。
+
+## 2026-08-16：5E-2 Task B 本地实现与门禁完成
+
+- 先新增 `ObservedLLMProvider` 失败测试并得到预期 `ModuleNotFoundError` 红灯；最小实现随后
+  记录 run-scoped 连续 ordinal、Agent/Evaluation/repair/Revision phase、Usage、有限
+  finish reason、稳定 `provider_failed` 和 allowlisted provider detail。
+- 将 Provider 安全细分错误允许列表下沉到共享低依赖模块，既有 adoption/calibration 调用
+  继续兼容；capability、非法 phase 和 started observer failure 均在 delegate 前停止。
+- 为 AgentLoop 新增 14 条首轮红灯，随后以 keyword-only default-None observer、整批预检后
+  Tool started/completed、安全 ToolResult envelope 和统一 Agent terminal 转绿；
+  `observer=None` 与旧结果及 Provider 请求逐字段一致。
+- 实现后补测 Harness 内部 `llm.chat` 路径，真实暴露 ToolRuntime 会吞掉 observation failure；
+  修正为在 retry、breaker、fallback 前穿透，started/completed 两个红灯均转绿。
+- 最终聚焦回归 `81 passed`；相邻实现前组为 `216 passed, 15 subtests passed`，完整最终回归
+  `721 passed, 110 subtests passed`。两套 RAG、compileall、Harness SDK boundary、tracked
+  secret/run-data、Harness dry-run、governance 和 `git diff --check` 通过。
+- 本批外部 Provider calls、Key reads 和 held-out executions 均为 0；没有接 Harness observer、
+  实现统一 `run()`/`stream()`、修改 Prompt/模型或进入 Task C/D。下一动作只做提交、推送和
+  exact-SHA 公共 CI。

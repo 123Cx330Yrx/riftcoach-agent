@@ -26,6 +26,14 @@ from app.providers.models import (
     ToolSpec,
 )
 from app.providers.protocol import LLMProvider
+from app.runtime.observer import RuntimeSignalObserver, observe_runtime_signal
+from app.runtime.signals import (
+    AgentRunTerminatedSignal,
+    RuntimeAgentStatus,
+    RuntimeAgentStopReason,
+    ToolCallCompletedSignal,
+    ToolCallStartedSignal,
+)
 from app.tools.models import ToolResult
 from app.tools.registry import ToolRegistry
 from app.tools.runtime import ToolRuntime
@@ -132,7 +140,22 @@ class AgentLoop:
         self._context_sizer = context_sizer or DeterministicContextSizer()
         self._clock = clock
 
-    def run(self, request: AgentRunRequest) -> AgentRunResult:
+    def run(
+        self,
+        request: AgentRunRequest,
+        *,
+        observer: RuntimeSignalObserver | None = None,
+    ) -> AgentRunResult:
+        result = self._run(request, observer=observer)
+        _observe_agent_terminal(observer, result)
+        return result
+
+    def _run(
+        self,
+        request: AgentRunRequest,
+        *,
+        observer: RuntimeSignalObserver | None,
+    ) -> AgentRunResult:
         try:
             definitions = {
                 name: self.tool_registry.get(name)
@@ -149,6 +172,7 @@ class AgentLoop:
         messages = list(request.messages)
         provider_responses: list[ChatResponse] = []
         tool_executions: list[ToolExecutionRecord] = []
+        tool_ordinal = 0
         seen_calls: set[tuple[str, str]] = set()
         total_usage = TokenUsage()
         tool_specs = tuple(_to_tool_spec(definition) for definition in definitions.values())
@@ -316,6 +340,15 @@ class AgentLoop:
                         usage=total_usage,
                         iterations=iteration,
                     )
+                definition = definitions[tool_call.name]
+                tool_ordinal += 1
+                _observe_tool_started(
+                    observer,
+                    tool_name=definition.name,
+                    tool_version=definition.version,
+                    ordinal=tool_ordinal,
+                    iteration=iteration,
+                )
                 result = self.tool_runtime.execute(
                     tool_call.name,
                     tool_call.arguments,
@@ -325,6 +358,11 @@ class AgentLoop:
                         "tool_call_id": tool_call.id,
                     },
                     timeout_cap_s=remaining_s,
+                )
+                _observe_tool_completed(
+                    observer,
+                    result=result,
+                    ordinal=tool_ordinal,
                 )
                 tool_executions.append(
                     ToolExecutionRecord(
@@ -437,3 +475,96 @@ def _tool_result_content(result: ToolResult) -> str:
         separators=(",", ":"),
         default=str,
     )
+
+
+_SAFE_TOOL_FAILURE_CODES = frozenset(
+    {
+        "circuit_open",
+        "fallback_failed",
+        "invalid_tool_input",
+        "invalid_tool_output",
+        "retry_budget_exhausted",
+        "tool_execution_failed",
+        "tool_not_found",
+    }
+)
+
+
+def _observe_tool_started(
+    observer: RuntimeSignalObserver | None,
+    *,
+    tool_name: str,
+    tool_version: str,
+    ordinal: int,
+    iteration: int,
+) -> None:
+    if observer is None:
+        return
+    observe_runtime_signal(
+        observer,
+        ToolCallStartedSignal(
+            tool_name=tool_name,
+            tool_version=tool_version,
+            ordinal=ordinal,
+            iteration=iteration,
+        ),
+    )
+
+
+def _observe_tool_completed(
+    observer: RuntimeSignalObserver | None,
+    *,
+    result: ToolResult,
+    ordinal: int,
+) -> None:
+    if observer is None:
+        return
+    failure_code = None
+    if not result.success:
+        raw_code = result.error.code if result.error is not None else None
+        failure_code = (
+            raw_code
+            if raw_code in _SAFE_TOOL_FAILURE_CODES
+            else "tool_failed"
+        )
+    observe_runtime_signal(
+        observer,
+        ToolCallCompletedSignal(
+            tool_name=result.tool_name,
+            tool_version=result.tool_version,
+            ordinal=ordinal,
+            success=result.success,
+            failure_code=failure_code,
+            attempts=result.attempts,
+            latency_ms=result.latency_ms,
+            cached=result.cached,
+            fallback_used=result.fallback_used,
+        ),
+    )
+
+
+def _observe_agent_terminal(
+    observer: RuntimeSignalObserver | None,
+    result: AgentRunResult,
+) -> None:
+    if observer is None:
+        return
+    observe_runtime_signal(
+        observer,
+        AgentRunTerminatedSignal(
+            status=RuntimeAgentStatus(result.status.value),
+            stop_reason=RuntimeAgentStopReason(result.stop_reason.value),
+            iterations=result.iterations,
+            error_code=_safe_agent_error_code(result),
+        ),
+    )
+
+
+def _safe_agent_error_code(result: AgentRunResult) -> str | None:
+    if result.status is not AgentRunStatus.FAILED:
+        return None
+    return {
+        AgentStopReason.PROVIDER_ERROR: "provider_failed",
+        AgentStopReason.TOOL_NOT_ALLOWED: "tool_not_allowed",
+        AgentStopReason.INVALID_TOOL_CONFIGURATION: "tool_not_found",
+    }[result.stop_reason]

@@ -504,3 +504,17 @@ candidate 是绑定单个 Recorder 的一次性对象，提交前不可见，abo
 `2e78c9606fe93b56657d4bb13c8efe0f1eed98fe` 又由 Actions run `31947625293` 完成
 exact-SHA 公共验证。`ObservedLLMProvider`、AgentLoop/Harness 接线和统一 `run()`仍分别
 属于后续 Task B-D，不因合同代码存在而提前完成。
+
+### 5E-2 Task B Provider 与 AgentLoop 观察决策
+
+Task B 采用 run-scoped `ObservedLLMProvider`，在 capability preflight 成功后、delegate
+调用前后发出 Provider started/completed/failed；Agent、Evaluation、Evaluation repair 与
+Revision 共用连续 ordinal。未知 finish reason 收敛为有限 `other`，失败只保存稳定
+`provider_failed` 和 Adapter 允许列表内的可空安全 detail。
+
+AgentLoop 只在整批工具数量、白名单和重复预检通过后记录业务 Tool，不全局观察
+ToolRuntime，因此 Harness 内部 `llm.chat` 不会冒充 Skill 工具。每个正常返回的 Agent
+结果恰好产生一个安全 terminal；observer 默认关闭时不构造 Signal，旧结果与调用保持
+不变。`RuntimeObservationError` 必须穿透 ToolRuntime retry、breaker 与 fallback，避免把
+观察故障误分类成业务依赖失败。本地 81 项聚焦和 721 项完整回归已通过；公共 CI 成功前
+Task B 仍未公开闭环，Task C/D 未开始。

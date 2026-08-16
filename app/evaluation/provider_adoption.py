@@ -16,6 +16,10 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from app.agent.draft import AgentFailureObservation
 from app.agent.loop import AgentStopReason
+from app.providers.error_safety import (
+    is_safe_provider_error_code as _is_safe_provider_error_code,
+    safe_provider_error_code,
+)
 from app.providers.errors import (
     ProviderAuthenticationError,
     ProviderCapabilityError,
@@ -40,56 +44,6 @@ _EXPECTED_HELD_OUT_CASES = (
     "heldout_user_request_instruction",
     "heldout_retrieved_evidence_instruction",
 )
-
-# Only adapter-emitted, body-free constants may cross the public experiment
-# boundary.  An arbitrary SDK/error string must become ``None`` instead.
-_SAFE_PROVIDER_ERROR_CODES = MappingProxyType(
-    {
-        "deepseek": frozenset(
-            {
-                "authentication_failed",
-                "connection_failed",
-                "incomplete_chat_response",
-                "invalid_chat_response",
-                "invalid_finish_reason",
-                "invalid_tool_call_request",
-                "invalid_tool_call_response",
-                "invalid_tool_name",
-                "provider_usage_unavailable",
-                "rate_limited",
-                "request_rejected",
-                "resolved_model_mismatch",
-                "service_unavailable",
-                "timeout",
-                "tool_name_alias_conflict",
-                "unexpected_reasoning_content",
-                "unexpected_sdk_error",
-                "unknown_tool_name",
-            }
-        ),
-        "zhipu": frozenset(
-            {
-                "authentication_failed",
-                "connection_failed",
-                "invalid_chat_response",
-                "invalid_tool_call_request",
-                "invalid_tool_call_response",
-                "invalid_tool_name",
-                "provider_usage_unavailable",
-                "rate_limited",
-                "request_rejected",
-                "service_unavailable",
-                "timeout",
-                "tool_name_alias_conflict",
-                "unexpected_reasoning_content",
-                "unexpected_sdk_error",
-                "unknown_tool_name",
-                "unsupported_parallel_tool_calls",
-            }
-        ),
-    }
-)
-
 
 class ExperimentFailureCode(str, Enum):
     EXPERIMENT_IDENTITY_MISMATCH = "experiment_identity_mismatch"
@@ -897,29 +851,6 @@ def classify_provider_error(error: ProviderError) -> ExperimentFailureCode:
             return ExperimentFailureCode.PROVIDER_REQUEST_REJECTED
         return ExperimentFailureCode.PROVIDER_RESPONSE_INVALID
     return ExperimentFailureCode.PROVIDER_ERROR_UNKNOWN
-
-
-def safe_provider_error_code(error: ProviderError) -> str | None:
-    """Return only a provider-specific, body-free error constant.
-
-    The adapter owns the allowlist.  This function deliberately returns
-    ``None`` for unknown providers or codes instead of forwarding arbitrary
-    SDK text into a public experiment result.
-    """
-
-    if not isinstance(error, ProviderError):
-        raise TypeError("error must be a ProviderError")
-    if _is_safe_provider_error_code(error.provider, error.code):
-        return error.code
-    return None
-
-
-def _is_safe_provider_error_code(provider_id: str, code: str) -> bool:
-    return (
-        isinstance(provider_id, str)
-        and isinstance(code, str)
-        and code in _SAFE_PROVIDER_ERROR_CODES.get(provider_id, frozenset())
-    )
 
 
 def classify_agent_failure(

@@ -6,6 +6,8 @@ import time
 import uuid
 from typing import Any, Callable, Mapping
 
+from app.runtime.observer import RuntimeObservationError
+
 from .cache import TTLCache, make_cache_key
 from .circuit_breaker import CircuitBreakerRegistry
 from .errors import (
@@ -174,6 +176,8 @@ class ToolRuntime:
             try:
                 data = definition.handler(params, context)
                 validate_tool_output(definition, data)
+            except RuntimeObservationError:
+                raise
             except ToolOutputValidationError as exc:
                 breaker.record_failure(count_toward_threshold=False)
                 return self._failure(
@@ -294,6 +298,8 @@ class ToolRuntime:
         try:
             data = definition.fallback(params, context, cause)
             validate_tool_output(definition, data)
+        except RuntimeObservationError:
+            raise
         except Exception:
             return self._failure(
                 tool_name=definition.name,

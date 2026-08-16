@@ -1232,3 +1232,23 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   GitHub Actions run `31947625293` 的 exact-SHA 全部门禁；CI 无 Key/Provider I/O。
 - `CURRENT`：Task A 已闭环；唯一下一步为用户确认后的 Task B run-scoped Observed
   Provider 与 AgentLoop 观察，不自动进入 Task C/D 或 5E-3。
+
+### 2026-08-16：5E-2 Task B Provider 与 AgentLoop 观察本地实现
+
+- `TDD`：Observed Provider 首个测试以缺模块红灯开始；AgentLoop 首批 14 个案例又以缺
+  keyword-only observer 红灯开始；ToolRuntime 对 observation failure 的两个实现后红灯
+  真实暴露 retry/fallback 误分类，均在最小修正后转绿。
+- `IMPLEMENTED-LOCAL`：新增 run-scoped `ObservedLLMProvider`，记录连续 Provider ordinal、
+  四类 phase、Usage、有限 finish reason、稳定 failure 与 allowlisted detail；capability 或
+  非法 phase 在 delegate I/O 前停止。
+- `IMPLEMENTED-LOCAL`：AgentLoop 只观察整批 preflight 后的业务 Tool 安全 envelope 和
+  每个返回结果的唯一 terminal；started/completed/terminal observer failure 均 fail-fast，
+  `observer=None` 与旧结果及 Provider 请求逐字段一致。
+- `SAFETY`：Provider 错误允许列表下沉为 Runtime/Evaluation 共用低依赖投影；ToolRuntime
+  在 retry、breaker、fallback 之前穿透 `RuntimeObservationError`，不保存 Prompt、response、
+  arguments、Tool data、call/request ID、异常文本或 upstream detail。
+- `VERIFIED-LOCAL`：聚焦 `81 passed`，完整 `721 passed, 110 subtests passed`；两套 RAG、
+  compileall、Harness SDK/tracked-data boundary、dry-run、governance 和 diff check 通过。
+- `BOUNDARY`：本批 Provider/Key/held-out I/O 为 0；Harness observer、Artifact 投影、统一
+  `run()` 与 `stream()` 未实现。唯一下一步仍是 Task B 的提交/推送与 exact-SHA 公共 CI，
+  成功前不进入 Task C。

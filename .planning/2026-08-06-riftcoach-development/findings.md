@@ -1563,3 +1563,27 @@
   `31947625293` 对 exact SHA 完整验证；公共 CI 无 Key、真实 Provider I/O 或 held-out。
 - Task A 只冻结合同、端口、Usage 和 terminal 地基。下一步 Task B 才让真实 Agent 执行点
   发出这些 Signal；因此公共 CI 不能解释为 observable `run()` 已完成。
+
+## 2026-08-16：5E-2 Task B 本地实现发现
+
+- `ObservedLLMProvider` 必须自己在 started 前复核 capability；只依赖 AgentLoop 预检会让
+  Harness `llm.chat` 的结构化请求在 delegate 内失败前已被错记为 attempted call。
+- Provider phase 只接受内部 `agent_loop_iteration` 或 `evaluate/evaluate_repair/revise`；
+  缺失、冲突、布尔/非正迭代和未知 Harness step 均在 Provider I/O 前以 observation failure
+  停止，不把完整 metadata 或正文写入 Signal。
+- Adapter-owned `provider_error_code` 允许列表原先位于 Evaluation 实验模块。Task B 将其
+  下沉到低依赖 `app.providers.error_safety`，Runtime 与旧实验共同调用同一投影；既有公开
+  函数导入和允许列表语义由回归保持不变。
+- AgentLoop 公共 `run()` 用 keyword-only、默认 `None` observer 包住内部 `_run()`；这样每个
+  正常返回的 `AgentRunResult` 统一发一个 terminal，而 observer 关闭时甚至不构造 Signal，
+  旧结果和 Provider 请求可逐字段相等。
+- 业务 Tool started 位于整批数量、白名单和重复预检之后；completed 只投影 ToolResult 的
+  name/version/success/attempts/latency/cache/fallback 与允许列表错误码，不投影 arguments、
+  data、call ID、错误文本或 upstream error。未知 Tool 错误码收敛为 `tool_failed`。
+- 实现后审查发现 `ToolRuntime` 会把 `RuntimeObservationError` 当普通 handler 失败并进入
+  retry/fallback。新增红灯后在 retry、breaker 和 fallback 前显式穿透：started 观察失败
+  对 Provider/Tool 为零副作用，completed 观察失败只保留已经发生的一次副作用且不继续。
+- Task B 当前聚焦回归为 `81 passed`，完整回归为 `721 passed, 110 subtests passed`；两套
+  RAG、compileall、Harness SDK/tracked-data boundary、dry-run、governance 和 diff check
+  已在本地通过。没有读取 Key、调用真实 Provider、运行 held-out、修改 Prompt/模型或进入
+  Harness observer/统一 `run()`；Task C/D 仍未开始。

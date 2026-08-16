@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 7 - 5E-2 Observable run() Vertical Slice（Task A 已公开完成，下一步 Task B）
+Phase 7 - 5E-2 Observable run() Vertical Slice（Task B 本地完成，待公开验证）
 
 ## Phases
 
@@ -191,8 +191,10 @@ Phase 7 - 5E-2 Observable run() Vertical Slice（Task A 已公开完成，下一
 - 5E-1 严格模型、Recorder、不完整 Usage 和原子 Trace Store 已完成并通过 exact-SHA CI；
 - 5E-2 入口审计/设计与 ADR-0030 已公开完成；Task A 合同 1.1、1.0 读取兼容、默认关闭
   observation port、missing Usage、lifecycle 与 prospective terminal 已通过
-  `2e78c96` / Actions `31947625293` 的 exact-SHA 公共验证；尚未接
-  AgentLoop/Harness observer、实现 run 或进入 stream；
+  `2e78c96` / Actions `31947625293` 的 exact-SHA 公共验证；Task B Observed Provider、
+  AgentLoop 业务 Tool/terminal 与 ToolRuntime observation fail-fast 已本地完成并通过
+  81 项聚焦、721 tests/110 subtests 全量回归，待提交和公共 CI；尚未接 Harness observer、
+  实现 run 或进入 stream；
 - ReviewHarness 继续是唯一发布权，Runtime 状态与 publication 状态分开，Trace 只保存
   安全元数据和 Artifact 引用；
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
@@ -200,11 +202,10 @@ Phase 7 - 5E-2 Observable run() Vertical Slice（Task A 已公开完成，下一
 
 ## Next Step
 
-`5E-2 Observable run() Vertical Slice / Task B`：用户确认继续后，先用失败测试实现
-run-scoped `ObservedLLMProvider` 与 AgentLoop 的 Provider phase、业务 Tool 和 Agent terminal
-观察，并证明 `observer=None` 保持旧行为。当前不接 Harness observer、不实现统一 `run()`
-或 `stream()`，不读取 Key、不调用真实 Provider、不测试 Flash、不迁移 GLM-5.3、不修改
-默认模型，也不采用 LangGraph 或 Agent SDK。
+`5E-2 Observable run() Vertical Slice / Task B`：本地 TDD 与门禁已完成，下一动作只做
+提交、推送和 exact-SHA 公共 CI。公共验证成功前不进入 Task C，不接 Harness observer、
+不实现统一 `run()` 或 `stream()`，不读取 Key、不调用真实 Provider、不测试 Flash、不迁移
+GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
 
 ## Decisions Made
 
@@ -292,6 +293,9 @@ run-scoped `ObservedLLMProvider` 与 AgentLoop 的 Provider phase、业务 Tool 
 | Runtime 状态与 publication 状态分离 | Harness 前失败没有发布状态；Provider 失败后 Harness 仍可能安全降级。拆开两者才能准确表达终态而不篡改唯一发布权 |
 | V1 Usage 显式区分 complete/partial/unknown | 真实请求可能已发送却没有规范化 Usage；把默认零当成实际零会让 Token 和费用证据失真 |
 | V1 stream 是进程内状态事件流 | 5P 需要实时进度，但当前没有 cancel、durable replay 或 Token chunk Bad Case；这些继续留给 5P/6/8 |
+| Task B 用 run-scoped Provider decorator 统一真实调用边界 | Agent 与 Harness 会共享同一 Provider；装饰器在 capability preflight 后记录连续 ordinal，既不修改厂商 Adapter，也不会漏掉后续 retry |
+| AgentLoop 只观察整批预检后的业务 Tool 与返回终态 | 避免把内部 `llm.chat` 算成 Skill 工具；started 前失败零副作用，completed 后失败停止后续工作，`observer=None` 保持旧行为 |
+| `RuntimeObservationError` 穿透 ToolRuntime retry/breaker/fallback | 观察系统失败不是业务依赖失败；若被普通 ToolRuntime 捕获，会制造重试、错误熔断或 deterministic fallback，污染 Trace 语义 |
 
 ## Errors Encountered
 
@@ -516,7 +520,8 @@ run-scoped `ObservedLLMProvider` 与 AgentLoop 的 Provider phase、业务 Tool 
 - [x] 审计 AgentLoop、ToolRuntime、SkillReviewExecutor、ReviewHarness 稳定接缝；
 - [x] 比较方案并写入入口设计与 ADR-0030，不以 5E-1 代码存在代替设计；
 - [x] Task A：合同 1.1、1.0 读取兼容、observation port 与 prospective terminal TDD；
-- [ ] Task B：共享 Observed Provider 与 AgentLoop 观察；
+- [ ] Task B：共享 Observed Provider 与 AgentLoop 观察（本地 TDD/门禁已完成，待提交与
+  exact-SHA 公共 CI）；
 - [ ] Task C：Harness/Executor 持久化后观察与 Artifact 投影；
 - [ ] Task D：两个真实 Skill 的统一同步 `run()` 纵向切片；
 - [ ] 完整门禁、持久状态、提交/推送与 exact-SHA CI；
