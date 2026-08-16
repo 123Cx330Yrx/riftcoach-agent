@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import queue
+import threading
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any, Callable, Iterator
 
 from app.agent.context import ContextBuilderV1
 from app.agent.draft import SkillAgentDraftPreparer
@@ -47,10 +49,12 @@ from app.tools.runtime import ToolRuntime
 
 from .models import (
     RuntimeArtifactReference,
+    RuntimeEvent,
     RuntimeIdentitySnapshot,
     RuntimePolicySnapshot,
     RuntimeRunRequest,
     RuntimeRunResult,
+    RuntimeStreamItem,
     RuntimeStatus,
 )
 
@@ -142,14 +146,64 @@ class RuntimeExecutionFactory:
         )
 
 
+RuntimeEventSink = Callable[[RuntimeEvent], None]
+
+
 class _RecorderObserver:
     """Adapt the Runtime recorder to the component observer port."""
 
-    def __init__(self, recorder: RuntimeRecorder) -> None:
+    def __init__(
+        self,
+        recorder: RuntimeRecorder,
+        event_sink: RuntimeEventSink | None = None,
+    ) -> None:
         self._recorder = recorder
+        self._event_sink = event_sink
 
     def observe(self, signal: RuntimeSignal) -> None:
-        self._recorder.emit(signal)
+        event = self._recorder.emit(signal)
+        if self._event_sink is not None:
+            self._event_sink(event)
+
+
+_STREAM_END = object()
+
+
+class _RuntimeStreamPublisher:
+    """Best-effort queue publisher isolated from the trusted Runtime path."""
+
+    def __init__(
+        self,
+        items: "queue.Queue[object]",
+        closed: threading.Event,
+    ) -> None:
+        self._items = items
+        self._closed = closed
+        self._failure: BaseException | None = None
+
+    @property
+    def failure(self) -> BaseException | None:
+        return self._failure
+
+    def publish_event(self, event: RuntimeEvent) -> None:
+        self._put(RuntimeStreamItem(kind="event", event=event))
+
+    def publish_result(self, result: RuntimeRunResult) -> None:
+        self._put(RuntimeStreamItem(kind="result", result=result))
+
+    def fail(self, error: BaseException) -> None:
+        self._failure = error
+
+    def finish(self) -> None:
+        self._put(_STREAM_END)
+
+    def _put(self, item: object) -> None:
+        while not self._closed.is_set():
+            try:
+                self._items.put(item, timeout=0.05)
+                return
+            except queue.Full:
+                continue
 
 
 class AgentRuntimeV1:
@@ -184,8 +238,69 @@ class AgentRuntimeV1:
         if not isinstance(request, RuntimeRunRequest):
             raise TypeError("request must be a RuntimeRunRequest")
 
+        return self._run_with_sink(request, event_sink=None)
+
+    def stream(
+        self,
+        request: RuntimeRunRequest,
+        *,
+        queue_size: int = 64,
+    ) -> Iterator[RuntimeStreamItem]:
+        """Yield live Runtime events followed by one final run result."""
+
+        if not isinstance(request, RuntimeRunRequest):
+            raise TypeError("request must be a RuntimeRunRequest")
+        if not 1 <= queue_size <= 1024:
+            raise ValueError("queue_size must be between 1 and 1024")
+
+        def iterate() -> Iterator[RuntimeStreamItem]:
+            items: "queue.Queue[object]" = queue.Queue(maxsize=queue_size)
+            closed = threading.Event()
+            publisher = _RuntimeStreamPublisher(items, closed)
+
+            def worker() -> None:
+                try:
+                    result = self._run_with_sink(
+                        request,
+                        event_sink=publisher.publish_event,
+                    )
+                    publisher.publish_result(result)
+                except BaseException as exc:
+                    publisher.fail(exc)
+                finally:
+                    publisher.finish()
+
+            thread = threading.Thread(
+                target=worker,
+                name=f"riftcoach-runtime-{request.run_id}",
+                daemon=True,
+            )
+            thread.start()
+            try:
+                while True:
+                    item = items.get()
+                    if item is _STREAM_END:
+                        if publisher.failure is not None:
+                            raise publisher.failure
+                        return
+                    if not isinstance(item, RuntimeStreamItem):
+                        raise RuntimeCompositionError(
+                            "runtime stream received an invalid item"
+                        )
+                    yield item
+            finally:
+                closed.set()
+
+        return iterate()
+
+    def _run_with_sink(
+        self,
+        request: RuntimeRunRequest,
+        *,
+        event_sink: RuntimeEventSink | None,
+    ) -> RuntimeRunResult:
         try:
-            return self._execute(request)
+            return self._execute(request, event_sink=event_sink)
         except (RuntimeObservationError, RuntimeRecorderError):
             return RuntimeRunResult(
                 run_id=request.run_id,
@@ -198,7 +313,12 @@ class AgentRuntimeV1:
                 trace_reference=None,
             )
 
-    def _execute(self, request: RuntimeRunRequest) -> RuntimeRunResult:
+    def _execute(
+        self,
+        request: RuntimeRunRequest,
+        *,
+        event_sink: RuntimeEventSink | None = None,
+    ) -> RuntimeRunResult:
         """Single synchronous execution core reserved for run/stream parity."""
 
         selected = request.execution_request.router_decision
@@ -213,7 +333,7 @@ class AgentRuntimeV1:
             run_id=request.run_id,
             event_budget=request.policy.event_budget,
         )
-        observer = _RecorderObserver(recorder)
+        observer = _RecorderObserver(recorder, event_sink)
         identity = self._identity(
             skill_name=selected.selected_skill,
             skill_version=selected.selected_skill_version,
@@ -238,6 +358,7 @@ class AgentRuntimeV1:
                 stage=RuntimeFailureStage.BOUNDARY,
                 code="runtime_policy_rejected",
                 artifacts=(),
+                event_sink=event_sink,
             )
 
         try:
@@ -265,6 +386,7 @@ class AgentRuntimeV1:
                 stage=RuntimeFailureStage.BOUNDARY,
                 code="execution_validation_failed",
                 artifacts=(),
+                event_sink=event_sink,
             )
 
         try:
@@ -291,6 +413,7 @@ class AgentRuntimeV1:
                 stage=RuntimeFailureStage.CONTEXT,
                 code="context_build_failed",
                 artifacts=(),
+                event_sink=event_sink,
             )
 
         try:
@@ -325,6 +448,7 @@ class AgentRuntimeV1:
                     stage=RuntimeFailureStage.HARNESS,
                     code="harness_execution_failed",
                     artifacts=(),
+                    event_sink=event_sink,
                 )
             return self._finish_failure_from_store(
                 recorder=recorder,
@@ -334,6 +458,7 @@ class AgentRuntimeV1:
                 run_id=request.run_id,
                 stage=RuntimeFailureStage.PUBLICATION,
                 code="typed_output_build_failed",
+                event_sink=event_sink,
             )
         except Exception:
             return self._finish_failure(
@@ -344,6 +469,7 @@ class AgentRuntimeV1:
                 stage=RuntimeFailureStage.HARNESS,
                 code="harness_execution_failed",
                 artifacts=(),
+                event_sink=event_sink,
             )
 
         try:
@@ -359,6 +485,7 @@ class AgentRuntimeV1:
                 run_id=request.run_id,
                 stage=RuntimeFailureStage.PUBLICATION,
                 code="artifact_integrity_failed",
+                event_sink=event_sink,
             )
 
         return self._finish_success(
@@ -368,6 +495,7 @@ class AgentRuntimeV1:
             policy=request.policy,
             output=execution_result.output,
             artifacts=artifacts,
+            event_sink=event_sink,
         )
 
     def _finish_success(
@@ -379,6 +507,7 @@ class AgentRuntimeV1:
         policy: RuntimePolicySnapshot,
         output: Any,
         artifacts: tuple[RuntimeArtifactReference, ...],
+        event_sink: RuntimeEventSink | None = None,
     ) -> RuntimeRunResult:
         publication = _publication_signal(recorder)
         if publication is None:
@@ -390,6 +519,7 @@ class AgentRuntimeV1:
                 stage=RuntimeFailureStage.HARNESS,
                 code="publication_missing",
                 artifacts=artifacts,
+                event_sink=event_sink,
             )
 
         candidate = recorder.prepare_terminal(
@@ -415,6 +545,7 @@ class AgentRuntimeV1:
                 publication_status=publication.publication_status,
                 stage=RuntimeFailureStage.OBSERVABILITY,
                 code="observation_failed",
+                event_sink=event_sink,
             )
 
         try:
@@ -426,9 +557,12 @@ class AgentRuntimeV1:
                 publication_status=publication.publication_status,
                 stage=RuntimeFailureStage.OBSERVABILITY,
                 code="trace_persistence_failed",
+                event_sink=event_sink,
             )
 
-        recorder.commit_terminal(candidate)
+        committed = recorder.commit_terminal(candidate)
+        if event_sink is not None:
+            event_sink(committed)
         return RuntimeRunResult(
             run_id=recorder.events[0].run_id,
             runtime_status=RuntimeStatus.COMPLETED,
@@ -448,6 +582,7 @@ class AgentRuntimeV1:
         run_id: str,
         stage: RuntimeFailureStage,
         code: str,
+        event_sink: RuntimeEventSink | None = None,
     ) -> RuntimeRunResult:
         try:
             artifacts = self._project_artifacts(run_id)
@@ -465,6 +600,7 @@ class AgentRuntimeV1:
             code=code,
             artifacts=artifacts,
             known_publication_status=known_publication,
+            event_sink=event_sink,
         )
 
     def _finish_failure(
@@ -478,6 +614,7 @@ class AgentRuntimeV1:
         code: str,
         artifacts: tuple[RuntimeArtifactReference, ...],
         known_publication_status: RuntimePublicationStatus | None = None,
+        event_sink: RuntimeEventSink | None = None,
     ) -> RuntimeRunResult:
         publication = _publication_signal(recorder)
         publication_status = (
@@ -509,6 +646,7 @@ class AgentRuntimeV1:
                 publication_status=publication_status,
                 stage=stage,
                 code=code,
+                event_sink=event_sink,
             )
 
         try:
@@ -520,9 +658,12 @@ class AgentRuntimeV1:
                 publication_status=publication_status,
                 stage=RuntimeFailureStage.OBSERVABILITY,
                 code="trace_persistence_failed",
+                event_sink=event_sink,
             )
 
-        recorder.commit_terminal(candidate)
+        committed = recorder.commit_terminal(candidate)
+        if event_sink is not None:
+            event_sink(committed)
         return RuntimeRunResult(
             run_id=recorder.events[0].run_id,
             runtime_status=RuntimeStatus.FAILED,
@@ -539,14 +680,17 @@ class AgentRuntimeV1:
         publication_status: RuntimePublicationStatus | None,
         stage: RuntimeFailureStage,
         code: str,
+        event_sink: RuntimeEventSink | None = None,
     ) -> RuntimeRunResult:
-        recorder.emit(
+        committed = recorder.emit(
             RunFailedSignal(
                 failure_stage=stage,
                 failure_code=code,
                 publication_status=publication_status,
             )
         )
+        if event_sink is not None:
+            event_sink(committed)
         return RuntimeRunResult(
             run_id=recorder.events[0].run_id,
             runtime_status=RuntimeStatus.FAILED,

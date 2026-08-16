@@ -1653,3 +1653,45 @@
   Trace 提交失败才是 `Runtime failed`。Runtime 状态与报告发布状态不能混为一谈。
 - Trace 只保存真实 Artifact 的 path/schema/producer/SHA，并逐文件复算摘要；报告正文与
   Prompt 不进入 Trace。rejected publication 不含 final report digest。
+
+## 2026-08-17：5E-3 Live `stream()` 入口审计
+
+- 当前 `AgentRuntimeV1.run()` 已把全部业务控制流集中在 `_execute(request)`；`run()` 只负责
+  类型检查、调用 `_execute()` 以及把可信 Recorder/观察失败映射为安全失败结果。该单一核心
+  是后续 `run()`/`stream()` parity 的正确复用点，不能复制第二套执行流程。
+- `_RecorderObserver.observe()` 目前只调用 `RuntimeRecorder.emit()`；Recorder 的事件只保留
+  在内存 `events`，没有事件订阅者、队列或对外回调。因此当前 `run()` 的事件是真实执行时刻
+  产生的，但外部调用方只能在返回后读取最终 Trace，不能实时消费。
+- 非终态事件由组件 observer 产生，终态事件有特殊的两阶段路径：`prepare_terminal()` 先生成
+  候选，Trace 通过 `RuntimeTraceStore.write_trace()` 后才 `commit_terminal()`。任何 stream
+  设计都必须在 commit 后再交付成功终态；不能在 prepare 阶段把 `run_completed` 发出去。
+- Trace 写失败和 Recorder/observer 失败会产生安全的内存 `run_failed`，但当前
+  `_commit_failed_without_trace()` 直接调用 Recorder，尚无统一事件交付接缝；5E-3 实现时须
+  确保这条失败终态也只交付一次，并与 `RuntimeRunResult` 的 failed 状态一致。
+- `RuntimeRecorder` 是单线程顺序状态机：它负责 sequence、UTC/monotonic 时间、调用配对、
+  lifecycle、event budget 和 Usage。stream 消费者不能直接修改 Recorder，也不能在消费者线程
+  中重建事件或重新读取 Trace。
+- `ReviewHarness`、`SkillReviewExecutor`、`AgentLoop` 的 observer 接缝均为同步调用；内部
+  observer 失败按 `RuntimeObservationError` fail-fast，不能被外部消费者失败污染。5E-3 必须
+  把“可信 Recorder 失败”和“非可信订阅者失败”分成两层错误边界。
+- 方案比较初步结论：直接 generator 会把深层同步回调改造成侵入式协程/生成器并难以隔离消费
+  者失败；外部消息队列会提前引入 durable/retry/offset/跨进程语义；最小可验证方案是进程内
+  worker + 有界 `queue.Queue`，由 Runtime 在同一 `_execute()` 中产生事件，stream 线程只负责
+  读取并交付。背压 V1 采用“队列满时阻塞执行、保持事件不丢失”的明确语义，不承诺取消/恢复。
+- 本轮只做入口审计和方案冻结，没有新增依赖、没有读取 Key、没有 Provider I/O、没有修改
+  Prompt/模型/RAG，也没有实现完整 `stream()`。
+
+## 2026-08-17：5E-3 第一批 stream TDD
+
+- 新增 `RuntimeStreamItem` 严格 item 合同：`kind=event` 只能携带一个 `RuntimeEvent`，
+  `kind=result` 只能携带一个既有 `RuntimeRunResult`；不新增第二套业务输出模型。
+- `AgentRuntimeV1._RecorderObserver` 现在在 Recorder 成功追加事件后调用可选 sink；
+  `run()` 传 `None`，旧调用路径不增加队列和线程。
+- `stream()` 使用每次运行独立的 daemon worker 和有界 queue；第一次 `next()` 前不启动
+  worker。worker 复用 `_run_with_sink()`，所以预期失败映射与 `run()` 相同。
+- terminal 交付已接入成功 Trace commit、失败 Trace commit 以及内存
+  `trace_persistence_failed` 路径；成功/失败 terminal event 都在 commit 后才进入 queue。
+- 第一批聚焦 `tests/test_agent_runtime_stream.py` 为 `5 passed`；第二批补充 parity、tiny queue
+  背压、订阅关闭、worker 异常、queue capacity、degraded/rejected/boundary 失败后为
+  `15 passed`；相邻 Runtime/Agent/Harness
+  合同与 Store 回归为 `70 passed`；compileall 通过。

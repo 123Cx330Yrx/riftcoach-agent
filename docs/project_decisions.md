@@ -570,5 +570,25 @@ degraded/rejected、修订 0/1、Agent/Evaluation Provider failure、prompt-inje
 Boundary/Context/typed-output/observation/Trace-store failure、精确事件交错、Usage 与 Artifact
 SHA。新增 18 项，完整回归 `747 passed, 110 subtests passed`，两套 RAG、compileall、
 Harness SDK/tracked-data boundary、dry-run、治理和 diff check 通过；本批 Key、真实 Provider
-与 held-out I/O 为 0。Task D 尚待实现提交、推送和 exact-SHA 公共 CI，不能提前声称
-5E-2 或 `stream()` 完成。
+与 held-out I/O 为 0。Task D 实现提交 `d49508e` 已由 GitHub Actions run `31959646589`
+exact-SHA 公共验证成功，5E-2 正式闭环；`stream()` 仍未实现，当前唯一下一检查点为
+5E-3 入口审计/设计。
+
+### 5E-3 `stream()` 入口审计与 Worker/Queue 设计决策
+
+5E-3 审计确认：`AgentRuntimeV1._execute()` 已是唯一同步控制核心，`RuntimeRecorder` 在
+真实 Agent、Tool、Harness 和终态控制流中追加安全事件，但当前没有对外交付层；最终 Trace
+仍是原子最终快照，不能被当作实时回放。
+
+本轮接受 ADR-0031：`run()` 与未来 `stream()` 共用
+`_execute(request, event_sink)`；`stream()` 为每次运行创建进程内 worker 与有界
+`queue.Queue`，普通事件在 Recorder 追加成功后投递，terminal 只在 prospective Trace 原子
+写入并 commit 后投递，随后投递一个既有 `RuntimeRunResult`。队列满时阻塞保持顺序/完整性；
+订阅者关闭只关闭 stream 交付，不取消业务执行，Runtime 继续形成最终 Trace。
+
+直接 generator 因深层同步接缝侵入和消费者失败耦合拒绝；外部消息队列因提前引入 durable
+event log、offset、跨进程恢复和运维复杂度拒绝。5E-3 实现仍需按设计文档完成 TDD、parity、
+背压、断开和终态失败测试；本轮没有 Provider/Key/模型/Prompt/RAG I/O。
+
+本地实现已通过 15 项 stream 聚焦测试和 `762 passed, 110 subtests passed` 完整回归；下一步
+只做提交、推送和 exact-SHA 公共 CI，公共验证成功前不关闭 5E-3。

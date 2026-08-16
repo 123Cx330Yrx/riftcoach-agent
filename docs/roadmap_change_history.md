@@ -1283,3 +1283,31 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   LangGraph/Agent SDK 或实现 stream。
 - `CURRENT`：5E-2 仍进行中；唯一下一动作是 Task D 实现提交、推送与 exact-SHA 公共 CI，
   成功前不得进入 5E-3。
+
+### 2026-08-17：5E-2 Task D exact-SHA 公共闭环，进入 5E-3
+
+- `PUBLIC-VERIFIED`：Task D 提交 `d49508ef46876da6653ddcbe63a3584bdcbba711` 已推送到
+  `origin/main`；GitHub Actions run `31959646589` 的完整 pytest、两套 RAG、compileall、
+  Harness SDK/tracked-data、dry-run 与治理全部成功。
+- `CLOSED`：5E-2 统一同步 `AgentRuntimeV1.run()` 正式完成；本地完整回归为
+  `747 passed, 110 subtests passed`，新增 18 项纵向测试，当前没有真实 Provider/Key/held-out
+  I/O。Task D 的 selected-only、共享 Provider、最坏 event budget、失败映射、Artifact SHA
+  与两阶段 terminal 证据已进入公开仓库。
+- `CURRENT`：根据 RQ-037，唯一下一检查点切换为 `5E-3 Live stream() & Parity` 入口审计/设计；
+  只研究进程内实时事件与 run/stream 终态一致性，不自动实现 SSE、Token streaming、取消/恢复、
+  API、Memory、真实 Provider、LangGraph 或 Agent SDK。
+
+### 2026-08-17：5E-3 入口审计与进程内 Worker/Queue 设计冻结
+
+- `AUDIT`：确认当前 `_execute()` 是唯一同步控制核心，Recorder 是可信实时事件事实源；
+  事件尚无 subscriber/queue，对外只能在结束后读取最终 Trace。
+- `DECISION`：接受 ADR-0031，采用进程内 worker + 有界 `queue.Queue` 作为 V1 stream
+  交付层；`run()`/`stream()` 共用 `_execute(request, event_sink)`，普通事件在 Recorder
+  追加后交付，terminal 在 Trace 原子写入并 commit 后交付，最后给出同一 `RuntimeRunResult`。
+- `BOUNDARY`：队列背压采用满时阻塞；订阅关闭不取消任务，后续 stream-only item 可以停止
+  投递；不引入外部消息队列、durable log、SSE、Token streaming、cancel/resume 或第三方 SDK。
+- `VERIFIED-LOCAL`：stream item、worker/queue、实时顺序、run/stream parity、背压、订阅关闭、
+  预期失败和 Trace 终态测试通过；聚焦 15、完整 `762 passed, 110 subtests passed`，compileall、
+  RAG、治理和 diff 门禁通过。
+- `CURRENT`：5E-3 仍进行中；下一动作是提交/推送实现并完成 exact-SHA 公共 CI，成功后才切换
+  到 5E-4，不进入 5P/5F，不读取 Key 或调用真实 Provider。

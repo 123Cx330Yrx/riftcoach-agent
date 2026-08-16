@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 from enum import Enum
 from pathlib import PurePosixPath
-from typing import Generic, Literal, TypeVar
+from typing import Any, Generic, Literal, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -763,4 +763,21 @@ class RuntimeRunResult(RuntimeContractModel, Generic[TOutput]):
                 )
         elif self.output is not None:
             raise ValueError("failed runtime result must not expose typed output")
+        return self
+
+
+class RuntimeStreamItem(RuntimeContractModel):
+    """One in-process stream item: either an event or the final run result."""
+
+    kind: Literal["event", "result"]
+    event: RuntimeEvent | None = None
+    result: RuntimeRunResult[Any] | None = None
+
+    @model_validator(mode="after")
+    def validate_payload(self) -> "RuntimeStreamItem":
+        if self.kind == "event":
+            if self.event is None or self.result is not None:
+                raise ValueError("event item requires only an event item")
+        elif self.result is None or self.event is not None:
+            raise ValueError("result item requires only a result item")
         return self

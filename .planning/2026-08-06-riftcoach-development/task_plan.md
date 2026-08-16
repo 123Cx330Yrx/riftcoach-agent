@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 7 - 5E-2 Observable run() Vertical Slice（Task D 本地完成，待提交与公共 CI）
+Phase 7 - 5E-3 Live stream() & Parity（5E-2 已公开完成，5E-4 仍在阶段 5E 内）
 
 ## Phases
 
@@ -181,9 +181,9 @@ Phase 7 - 5E-2 Observable run() Vertical Slice（Task D 本地完成，待提交
   测试证据；没有发现必须留在 5D 修复的结构性代码缺口。当前无领域 Provider 准入、
   真实注入未执行和性能/Usage unknown 均保留为限制，不阻塞厂商无关的 5E 入口设计。
 
-### Phase 7 - 5E AgentRuntime V1
+### Phase 7 - 5E AgentRuntime V1（父阶段追踪）
 
-- Status: in_progress
+- Status: tracking
 - 入口设计与 ADR-0029 已完成：采用薄 Runtime + 可选观察端口，不采用外层事后回放或
   事件溯源/DAG 重写；
 - 5E 内部固定为 5E-1 合同/Usage/Trace Store、5E-2 observable run、5E-3 live stream
@@ -202,10 +202,10 @@ Phase 7 - 5E-2 Observable run() Vertical Slice（Task D 本地完成，待提交
 
 ## Next Step
 
-`5E-2 Observable run() Vertical Slice / Task D`：统一同步 `AgentRuntimeV1.run()` 已完成本地
-实现和门禁；下一动作只做实现提交、推送与 exact-SHA 公共 CI。公共验证成功前不关闭
-5E-2、不进入 5E-3 `stream()`；不读取 Key、不调用真实 Provider、不测试 Flash、不迁移
-GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
+`5E-3 Live stream() & Parity / public verification`：本地实现和 `15 passed` 聚焦、
+`762 passed, 110 subtests passed` 完整回归、compileall、RAG、治理和 diff 门禁均已通过；
+下一动作只做实现提交、推送与 exact-SHA 公共 CI。公共验证成功后再把 canonical 下一步切换为
+5E-4；不读取 Key、不调用真实 Provider、不改默认模型。
 
 ## Decisions Made
 
@@ -527,8 +527,30 @@ GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
 - [x] Task D：两个真实 Skill 的统一同步 `run()` 纵向切片；新增 18 项测试，完整回归
   `747 passed, 110 subtests passed` 与全部本地门禁通过；
 - [x] 完整本地门禁与持久状态同步；
-- [ ] 实现提交、推送与 exact-SHA CI；
-- [ ] 5E-2 完成前不进入 5E-3 stream parity。
+- [x] 实现提交、推送与 exact-SHA CI：`d49508e` / Actions `31959646589`；
+- [x] 5E-2 正式闭环，未实现 `stream()`。
+
+### 5E-3 Live `stream()` & Parity 实现与验收（2026-08-17）
+
+- Status: in_progress
+- 5E-2 已由 `d49508e` / Actions `31959646589` exact-SHA 公共验证完成；本阶段先完成
+  `run()` 的事件交付接缝、同步/流式终态一致性、消费者失败隔离和背压边界审计，再进行 TDD；
+- 先解释为什么“实时事件”不等于 Token streaming，也不等于 durable event log；
+- 先比较最小进程内 worker/queue、直接 generator、外部消息队列三种方案，再写 ADR 和
+  失败测试；不实现真实 Provider、SSE、取消/恢复、API、Memory 或第三方 SDK。
+- 入口审计已完成：Recorder 是可信事实源；普通事件在追加后交付，terminal 必须在
+  Trace 原子写入并 commit 后交付；消费者失败与可信 Recorder 失败分层。
+- ADR-0031 已冻结：采用进程内 worker + 有界 `queue.Queue`，不采用直接 generator 或外部
+  消息队列；背压为满时阻塞，订阅关闭不取消业务执行。
+- stream item、worker/queue、实时顺序、run/stream parity、success/degraded/rejected/boundary
+  failure、背压、关闭和 unexpected worker error 测试均已通过；本地聚焦 `15 passed`，完整
+  回归 `762 passed, 110 subtests passed`。
+
+## Next Step
+
+`5E-3 Live stream() & Parity / public verification`：本地实现、聚焦 15 项和完整
+`762 passed, 110 subtests passed` 已通过；下一动作只做实现提交、推送与 exact-SHA 公共 CI，
+成功后才切换 5E-4，不读取 Key、不调用真实 Provider、不改默认模型。
 
 本批错误日志：
 
@@ -571,3 +593,6 @@ GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
 - Task D 审查时尝试调用未安装的 `ruff`，PowerShell 在执行前明确报 command not found；
   没有代码分析结果。改用 compileall、101 字符行扫描、聚焦/完整 pytest 和 `git diff --check`
   完成现有仓库比例验证，没有为本阶段临时增加依赖。
+- 5E-3 设计与状态同步第一次组合 `apply_patch` 假设 `project_decisions.md` 的尾句与实际
+  文本完全一致，补丁原子拒绝且无部分修改；先用 `rg` 定位真实上下文，再拆分状态、决策、
+  路线矩阵和计划补丁，随后治理检查通过。

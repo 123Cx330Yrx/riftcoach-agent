@@ -1670,3 +1670,63 @@
   RAG 数据或引入 LangGraph/Agent SDK。Task D 尚待提交、推送和 exact-SHA public CI。
 - 用户随后明确授权：Task D 公共闭环后无需再次等待“继续”，直接进入唯一下一检查点
   5E-3；本授权不扩展到 5E-4 或其他阶段，已记录为 RQ-037。
+
+## 2026-08-17：5E-3 入口审计与方案比较
+
+- 恢复时先发现 canonical 状态已是 `5E-3`，但状态文件还保留旧的 `5E-2 Task D` 唯一下一步，
+  活动计划同时有两个 `in_progress` phase；已用最小文档补丁修复。
+- `check_project_governance.py`、`tests/test_project_governance.py`（2 passed）和 `git diff --check`
+  已通过，随后才开始功能审计。
+- 审计 `AgentRuntimeV1._execute()`、`RuntimeRecorder`、observer 接缝、终态 prepare/commit、
+  RuntimeTraceStore、ReviewHarness 持久化观察和现有 Runtime 测试，确认事件产生点是真实执行时刻，
+  但当前没有外部事件交付层。
+- 方案初步冻结为“进程内 worker + 有界 queue”：复用唯一 `_execute()`；非终态事件在 Recorder
+  成功追加后交付，成功/失败终态只在 commit 后交付；消费者异常与可信 Recorder 异常隔离；队列满时
+  阻塞执行以保持事件完整。直接 generator 与外部消息队列分别因侵入性/过度持久化语义暂不采用。
+- 本轮仍未实现 `stream()`；没有读取 Key、调用任何 Provider、改变 Prompt/模型或进入 5E-4。
+
+## 2026-08-17：5E-3 第一批 stream TDD 实现
+
+- 先新增 5 项红灯测试，覆盖严格 stream item、懒启动、实时 Provider started、事件顺序和
+  Trace 写失败；首轮在收集阶段因 `RuntimeStreamItem` 尚不存在而红灯。
+- 最小实现新增 `RuntimeStreamItem`、`RuntimeEventSink`、`_RuntimeStreamPublisher` 和
+  `AgentRuntimeV1.stream()`；`run()` 与 worker 共用 `_run_with_sink()`/`_execute()`。
+- `_RecorderObserver` 在 Recorder append 成功后交付非终态事件；成功/失败终态的
+  `_finish_success`、`_finish_failure` 和内存失败路径均在 terminal commit 后交付。
+- 聚焦 `tests/test_agent_runtime_stream.py`：`5 passed`；Runtime/Agent/Harness 相邻合同、
+  Recorder、Store 和新 stream 回归：`70 passed`；compileall 通过。
+- 当前仍未完成 5E-3：尚需 run/stream parity 的事实对照、tiny queue 背压、消费者关闭隔离和
+  unexpected worker failure 语义测试；没有 Key、真实 Provider、Prompt/模型或第三方 SDK I/O。
+
+## 2026-08-17：5E-3 parity、背压与关闭边界
+
+- 新增 parity 测试：分别运行同步 `run()` 与异步交付的 `stream()`，对照 Trace 中的 signal
+  payload、顺序、terminal reason、publication 和 typed output；仅忽略预期不同的 run_id。
+- 新增 queue size 合同、`queue_size=1` 背压完整性、消费者关闭后继续完成业务并落盘 Trace、
+  以及 worker 未预期异常与 `run()` 同语义传播测试。
+- 聚焦 `tests/test_agent_runtime_stream.py` 目前 `15 passed`；实现未引入新依赖或真实 I/O。
+
+## 2026-08-17：5E-3 预期终态扩展
+
+- 追加 stream 的 Agent Provider failure、Evaluation Provider failure、rejected publication 和
+  Boundary version drift 案例；均保持与同步 Runtime 相同的 publication/terminal 语义，rejected
+  不暴露报告，Boundary 失败不调用 Provider。
+- stream 聚焦目前 `15 passed`；完整回归尚待最终收尾批次后重新执行。
+
+## 2026-08-17：5E-3 本地实现收尾
+
+- stream 聚焦最终为 `15 passed`；完整回归最终为 `762 passed, 110 subtests passed`。
+- compileall、治理检查、治理测试、RAG/stream 聚焦门禁和 `git diff --check` 均通过。
+- 当前本地实现已经覆盖 item 合同、懒启动、实时事件、run/stream parity、success/degraded/
+  rejected/boundary、tiny queue 背压、订阅关闭、Trace persistence failure 与 unexpected
+  worker error；下一步仅为提交、推送与 exact-SHA 公共 CI。
+
+## 2026-08-17：5E-2 Task D exact-SHA 公共闭环
+
+- 实现提交 `d49508ef46876da6653ddcbe63a3584bdcbba711` 已推送到 `origin/main`；GitHub
+  Actions run `31959646589` completed/success，pytest、两套 RAG、compileall、Harness
+  SDK/tracked-data boundary、dry-run 和治理全部成功。
+- 5E-2 正式完成：统一同步 `run()` 的 18 项新增测试与完整 `747 passed, 110 subtests passed`
+  证据已公开；无 Key、真实 Provider 或 held-out I/O。
+- 按 RQ-037，canonical 当前检查点已切换到 `5E-3 Live stream() & Parity` 入口审计/设计，
+  下一动作只审计 run/stream 同源事件、终态和消费者失败隔离，不实现完整 stream 或进入 5E-4。
