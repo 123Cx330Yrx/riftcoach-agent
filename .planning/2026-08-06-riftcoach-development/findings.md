@@ -1625,3 +1625,31 @@
   SDK/tracked-data boundary 与 dry-run；没有 Key、真实 Provider 或 held-out I/O。
 - Task C 至此正式闭环；Task D 是 5E-2 的唯一下一步，不能把 Task C 的观察接缝或 Artifact
   projection 解释成统一 `AgentRuntimeV1.run()` 已完成。
+
+## 2026-08-17：5E-2 Task D 恢复审查
+
+- 未提交的 `AgentRuntimeV1` 初稿已经能组合 Boundary、Context、共享
+  `ObservedLLMProvider`、真实本地 RAG、Harness、typed output 与最终 Trace；新增首轮
+  纵向测试为 `7 passed`，既有相邻回归为 `121 passed`。
+- 对照已接受的 5E-2 设计发现三个尚不能带入验收的缺口：
+  1. `RuntimeRunRequest` 还没有在合同层拒绝 rejected/ambiguous Router 结果；
+  2. `run()` 尚未抽出供 5E-3 复用的单一 `_execute()` 核心；
+  3. Trace 写入失败目前只返回 failed result，却没有按 ADR-0030 取消 prospective
+     terminal 后提交内存 `run_failed(trace_persistence_failed)`。
+- 当前成功路径使用同一个 run-scoped observed provider，实测 Provider phase 为
+  `agent, agent, evaluation`，连续 ordinal 和完整 Usage 可以由最终 Trace 重建；这仍是
+  Fake Provider 证据，不代表任何真实模型领域质量。
+
+## 2026-08-17：5E-2 Task D 本地验收发现
+
+- 成功路径真实事件交错为 Runtime 基础事件 → `created→facts_ready` → Agent Provider/
+  knowledge Tool → Agent terminal → Harness knowledge/draft/evaluation → publication → Runtime
+  terminal；不是任务结束后的日志重排。
+- 一次修订路径的共享 Provider phase/ordinal 为
+  `1 agent, 2 agent, 3 evaluation, 4 revision, 5 evaluation`，Evaluation Artifact attempt 为
+  `0, 1`；证明 Agent 与 Harness 使用同一 observed Provider，但不证明真实厂商行为。
+- Agent 或 Evaluation Provider 失败仍可由 Harness 产生 deterministic fallback，因此是
+  `Runtime completed + publication degraded`；Boundary/Context、typed output、observation 或
+  Trace 提交失败才是 `Runtime failed`。Runtime 状态与报告发布状态不能混为一谈。
+- Trace 只保存真实 Artifact 的 path/schema/producer/SHA，并逐文件复算摘要；报告正文与
+  Prompt 不进入 Trace。rejected publication 不含 final report digest。

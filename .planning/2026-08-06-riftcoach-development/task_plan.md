@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 7 - 5E-2 Observable run() Vertical Slice（Task C 已公开完成，下一步 Task D）
+Phase 7 - 5E-2 Observable run() Vertical Slice（Task D 本地完成，待提交与公共 CI）
 
 ## Phases
 
@@ -202,9 +202,9 @@ Phase 7 - 5E-2 Observable run() Vertical Slice（Task C 已公开完成，下一
 
 ## Next Step
 
-`5E-2 Observable run() Vertical Slice / Task C`：Task B 已通过 exact-SHA 公共 CI；下一动作
-只接入 Harness/Executor 持久化后的 transition、evaluation、publication 与 Artifact 投影。
-不实现统一 `run()` 或 `stream()`，不读取 Key、不调用真实 Provider、不测试 Flash、不迁移
+`5E-2 Observable run() Vertical Slice / Task D`：统一同步 `AgentRuntimeV1.run()` 已完成本地
+实现和门禁；下一动作只做实现提交、推送与 exact-SHA 公共 CI。公共验证成功前不关闭
+5E-2、不进入 5E-3 `stream()`；不读取 Key、不调用真实 Provider、不测试 Flash、不迁移
 GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
 
 ## Decisions Made
@@ -522,10 +522,12 @@ GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
 - [x] Task A：合同 1.1、1.0 读取兼容、observation port 与 prospective terminal TDD；
 - [x] Task B：共享 Observed Provider 与 AgentLoop 观察；`28bd910` / Actions `31952026988`
   exact-SHA 公共 CI 通过；
-- [x] Task C：Harness/Executor 持久化后观察与 Artifact 投影；本地 `8 passed` 新增测试、
-  `729 passed, 110 subtests passed` 完整回归和全部本地门禁通过；待提交、推送与 exact-SHA CI；
-- [ ] Task D：两个真实 Skill 的统一同步 `run()` 纵向切片；
-- [ ] 完整门禁、持久状态、提交/推送与 exact-SHA CI；
+- [x] Task C：Harness/Executor 持久化后观察与 Artifact 投影；`8b69c9b` / Actions
+  `31957712118` exact-SHA 公共 CI 通过；
+- [x] Task D：两个真实 Skill 的统一同步 `run()` 纵向切片；新增 18 项测试，完整回归
+  `747 passed, 110 subtests passed` 与全部本地门禁通过；
+- [x] 完整本地门禁与持久状态同步；
+- [ ] 实现提交、推送与 exact-SHA CI；
 - [ ] 5E-2 完成前不进入 5E-3 stream parity。
 
 本批错误日志：
@@ -563,3 +565,9 @@ GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
   命令只读失败且无文件变化，随后改用 `tests -g 'test_runtime*.py'` 并完成真实检索。
 - legacy 兼容绿灯第一次因 `RuntimeFinishReason` 漏导入而出现一个 `NameError`；这是实现
   接线错误，不是合同裁决，补显式导入后 22/22 合同测试通过。
+- Task D 首次全量回归误用了当前 Codex/Hermes 的系统 `python`，该解释器没有安装 pytest；
+  没有产生测试结果或文件变化。随后按仓库约定显式使用 `.venv\\Scripts\\python.exe`，
+  完整得到 `747 passed, 110 subtests passed`。
+- Task D 审查时尝试调用未安装的 `ruff`，PowerShell 在执行前明确报 command not found；
+  没有代码分析结果。改用 compileall、101 字符行扫描、聚焦/完整 pytest 和 `git diff --check`
+  完成现有仓库比例验证，没有为本阶段临时增加依赖。

@@ -1641,3 +1641,32 @@
 - Task C 正式闭环：Harness/Executor 持久化后观察、attempt 0/1、安全 Artifact 引用、稳定
   reason code 和 observation fail-fast 均有公开证据。唯一下一步切换为 Task D 统一同步
   `AgentRuntimeV1.run()` 纵向切片；不进入 5E-3、5P 或 5F。
+
+## 2026-08-17：5E-2 Task D 初版纵向切片
+
+- 恢复并审查未提交的 `app/runtime/runtime.py` 与 `SkillAgentDraftPreparer` observer 接线；
+  治理预检通过，工作树没有无关改动。
+- compileall 与 Task A-C/Agent/Harness 相邻回归 `121 passed`。
+- 新增 `tests/test_agent_runtime.py` 首轮 7 项：两个真实 Skill 统一入口、共享 Agent/Evaluation
+  Provider、真实本地 RAG、Agent/Evaluation Provider 失败安全降级、Context 前失败与 Trace
+  写入失败；当前 `7 passed`。
+- 该轮尚未验收；正在修复 selected-only request、单一 `_execute()` 核心、精确事件顺序、
+  event-budget 预检和 Trace 写失败后的内存失败终态。
+
+## 2026-08-17：5E-2 Task D 本地实现与门禁完成
+
+- 新增 `AgentRuntimeV1.run()` 与单一 `_execute()`，组合 Boundary、Context、run-scoped
+  observed Provider、真实本地 `knowledge.search`、AgentLoop、唯一 Harness、typed output、
+  Artifact projection、RuntimeRecorder 与 RuntimeTraceStore。
+- 请求合同只允许 selected Router 决策；Runtime 仍验证 Catalog 版本、输入和 Artifact。
+  `max_revisions` 真实传入 Harness，event budget 按三次 llm retry、Evaluation repair、
+  Revision 和完整 lifecycle 的 61-slot 最坏上界做 I/O 前预检。
+- Trace write 失败会取消完成候选并只提交内存 failed terminal；observation failure 不会被
+  误分类为 Agent/Context 失败，且从 terminal Manifest 保留已知 publication。
+- 新增 18 项纵向测试；聚焦/相邻最终为 `117 passed`，完整为
+  `747 passed, 110 subtests passed`。两套 RAG 1.0、compileall、Harness SDK/tracked-data
+  boundary、Harness dry-run、governance 与 diff check 通过。
+- 本批外部 Provider calls、Key reads 与 held-out executions 均为 0；没有修改 Prompt、模型、
+  RAG 数据或引入 LangGraph/Agent SDK。Task D 尚待提交、推送和 exact-SHA public CI。
+- 用户随后明确授权：Task D 公共闭环后无需再次等待“继续”，直接进入唯一下一检查点
+  5E-3；本授权不扩展到 5E-4 或其他阶段，已记录为 RQ-037。

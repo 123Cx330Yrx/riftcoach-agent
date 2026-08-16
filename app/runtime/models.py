@@ -13,6 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 from app.harness.run_ids import normalize_run_id
 from app.skills.execution import SkillExecutionRequest
+from app.skills.routing_models import RouteOutcome
 
 from .lifecycle import RuntimeHarnessLifecycleV11
 from .signals import (
@@ -413,6 +414,17 @@ class RuntimeEvent(RuntimeContractModel):
 class RuntimeRunRequest(RuntimeContractModel):
     execution_request: SkillExecutionRequest
     policy: RuntimePolicySnapshot
+
+    @model_validator(mode="after")
+    def require_selected_skill(self) -> "RuntimeRunRequest":
+        if (
+            self.execution_request.router_decision.outcome
+            is not RouteOutcome.SELECTED
+        ):
+            raise ValueError(
+                "RuntimeRunRequest requires a selected Router decision"
+            )
+        return self
 
     @property
     def run_id(self) -> str:

@@ -20,7 +20,10 @@ from .loop import (
     AgentRunStatus,
     AgentStopReason,
 )
-from app.runtime.observer import RuntimeObservationError
+from app.runtime.observer import (
+    RuntimeObservationError,
+    RuntimeSignalObserver,
+)
 
 
 _KNOWLEDGE_TOOL_NAME = "knowledge.search"
@@ -99,10 +102,16 @@ class AgentDraftPreparationResult:
 class SkillAgentDraftPreparer:
     """Compile and run one Skill without evaluating or publishing its draft."""
 
-    def __init__(self, agent_loop: AgentLoop) -> None:
+    def __init__(
+        self,
+        agent_loop: AgentLoop,
+        *,
+        observer: RuntimeSignalObserver | None = None,
+    ) -> None:
         if not callable(getattr(agent_loop, "run", None)):
             raise TypeError("agent_loop must provide run()")
         self._agent_loop = agent_loop
+        self._observer = observer
         self._compiler = AgentRunCompiler(agent_loop.tool_registry)
 
     def prepare(
@@ -118,7 +127,13 @@ class SkillAgentDraftPreparer:
             ) from exc
 
         try:
-            agent_run = self._agent_loop.run(request)
+            if self._observer is None:
+                agent_run = self._agent_loop.run(request)
+            else:
+                agent_run = self._agent_loop.run(
+                    request,
+                    observer=self._observer,
+                )
         except RuntimeObservationError:
             raise
         except Exception as exc:

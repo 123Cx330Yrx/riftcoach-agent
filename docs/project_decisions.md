@@ -542,3 +542,33 @@ publication 对 published/degraded 只保存经真实字节校验的 `final_repo
 Task C 本地聚焦 8 项、完整回归 `729 passed, 110 subtests passed` 和全部本地门禁通过；
 提交 `8b69c9b` 已由 GitHub Actions run `31957712118` 对 exact SHA 公共验证成功。Task C
 正式闭环，统一 `AgentRuntimeV1.run()` 仍留在下一步 Task D。
+
+### 5E-2 Task D 统一同步 Runtime 本地实现决策
+
+Task D 采用一个薄 `AgentRuntimeV1.run()` 入口和单一 `_execute()` 核心，继续复用既有
+Boundary、ContextBuilder、AgentLoop、ToolRuntime、SkillReviewExecutor、ReviewHarness 与
+两个文件 Store。`RuntimeExecutionFactory` 只做 run-scoped 依赖注入：Agent 只获得真实本地
+`knowledge.search`，Harness 的 `llm.chat` 与 Agent 共用同一个 `ObservedLLMProvider`，因此
+Agent、Evaluation 与 Revision 的 Provider ordinal 和 Usage 位于同一 Trace。
+
+`RuntimeRunRequest` 在合同层只接受 selected Router 决策；Runtime 仍重新校验 Catalog
+版本、typed input 与 Artifact commitment。Runtime policy 的 `max_revisions` 真实传入
+Harness；event budget 按 Agent Provider/业务 Tool、Evaluation + 一次 repair、Revision、
+`llm.chat` 最坏三次 retry、Harness transition、Publication 和 Runtime terminal 计算，当前
+两个 Skill 在 `max_revisions=1` 时要求最少 61 个 Event slot，并在任何 Provider/Tool I/O
+前拒绝不足预算。
+
+成功终态继续采用 prepare → prospective Trace → atomic write → commit。Trace 写失败会
+abort 候选 `run_completed`，随后只在内存提交
+`run_failed(observability, trace_persistence_failed)`；Recorder/observer 失败返回安全
+`observation_failed`、不暴露 output/Trace，并从已持久化 terminal Manifest 恢复已知
+publication truth。Artifact reference 再次校验真实文件 bytes/SHA，Trace 不保存报告、
+Prompt、Tool data、request/call ID 或异常正文。
+
+本地测试覆盖 recent-form 与 single-match 两个真实 Skill、真实本地 RAG、published/
+degraded/rejected、修订 0/1、Agent/Evaluation Provider failure、prompt-injection blocking、
+Boundary/Context/typed-output/observation/Trace-store failure、精确事件交错、Usage 与 Artifact
+SHA。新增 18 项，完整回归 `747 passed, 110 subtests passed`，两套 RAG、compileall、
+Harness SDK/tracked-data boundary、dry-run、治理和 diff check 通过；本批 Key、真实 Provider
+与 held-out I/O 为 0。Task D 尚待实现提交、推送和 exact-SHA 公共 CI，不能提前声称
+5E-2 或 `stream()` 完成。

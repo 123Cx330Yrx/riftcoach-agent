@@ -20,6 +20,9 @@ from ..models import (
 )
 
 
+LLM_CHAT_RETRY_MAX_ATTEMPTS = 3
+
+
 def build_llm_tools(provider: Any) -> tuple[ToolDefinition, ...]:
     def chat_handler(
         params: Mapping[str, Any],
@@ -175,7 +178,7 @@ def build_llm_tools(provider: Any) -> tuple[ToolDefinition, ...]:
             policy=ToolPolicy(
                 timeout_s=60.0,
                 retry=RetryPolicy(
-                    max_attempts=3,
+                    max_attempts=LLM_CHAT_RETRY_MAX_ATTEMPTS,
                     base_delay_s=0.5,
                     max_delay_s=2.0,
                 ),

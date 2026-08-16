@@ -1262,3 +1262,24 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `CURRENT`：Task B 正式闭环，Provider/Key/held-out I/O 仍为 0；唯一下一步切换为
   `5E-2 Task C` 的 Harness/Executor 持久化后 transition/evaluation/publication/Artifact
   observer TDD，不进入统一 `run()`/stream 或 5F。
+
+### 2026-08-17：5E-2 Task C 公共闭环与 Task D 本地实现
+
+- `PUBLIC-VERIFIED`：Task C 提交 `8b69c9b` 已由 GitHub Actions run `31957712118` 对
+  exact SHA 完成全部公共门禁；Harness/Executor 持久化后观察与安全 Artifact 投影正式闭环。
+- `IMPLEMENTED-LOCAL`：Task D 新增统一 `AgentRuntimeV1.run()` 与单一 `_execute()`；
+  RuntimeExecutionFactory 为 Agent 与 Harness 创建同一个 run-scoped observed Provider，
+  同时保持业务 Tool 与内部 `llm.chat` 计数边界。
+- `CONTRACT`：`RuntimeRunRequest` 只接受 selected Router 决策；Boundary 继续发现版本/输入/
+  Artifact 漂移；Runtime policy 的 `max_revisions` 真实传入 Harness。
+- `RESOURCE`：event budget 绑定实际 `llm.chat` 三次 retry、每轮 Evaluation + 一次 repair、
+  Revision 和全部 lifecycle Signal；当前 V1 一次修订的最坏上界为 61，副作用前不足即拒绝。
+- `TERMINAL`：Trace 写失败不提交 `run_completed`，只提交内存
+  `run_failed(trace_persistence_failed)`；observer/Recorder 故障安全映射为
+  `observation_failed`，若 terminal Manifest 已存在则保留 publication truth。
+- `VERIFIED-LOCAL`：新增 18 项 Task D 测试；完整回归 `747 passed, 110 subtests passed`，
+  两套 RAG、compileall、Harness SDK/tracked-data boundary、dry-run、治理与 diff check 通过。
+- `NO-IO`：本批没有读取 Key、调用真实 Provider、运行 held-out、修改 Prompt/模型、引入
+  LangGraph/Agent SDK 或实现 stream。
+- `CURRENT`：5E-2 仍进行中；唯一下一动作是 Task D 实现提交、推送与 exact-SHA 公共 CI，
+  成功前不得进入 5E-3。
