@@ -1587,3 +1587,11 @@
   RAG、compileall、Harness SDK/tracked-data boundary、dry-run、governance 和 diff check
   已在本地通过。没有读取 Key、调用真实 Provider、运行 held-out、修改 Prompt/模型或进入
   Harness observer/统一 `run()`；Task C/D 仍未开始。
+
+## 2026-08-16：5E-2 Task B 公共证据
+
+- 实现与状态提交 `28bd910525a7522be16bd69b6e945846839a4cd8` 已推送；GitHub Actions
+  `31952026988` 对 exact SHA 的完整 pytest、两套 RAG、compileall、SDK/tracked-data 边界、
+  Harness dry-run 与治理全部成功。
+- Task B 只公开证明 Provider/AgentLoop 观察合同和 observation fail-fast 的工程接线，
+  不证明 Harness observer、统一 `run()`、真实 Provider 领域质量、模型切换或 5E 完成。

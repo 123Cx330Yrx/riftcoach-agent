@@ -1601,3 +1601,13 @@
 - 本批外部 Provider calls、Key reads 和 held-out executions 均为 0；没有接 Harness observer、
   实现统一 `run()`/`stream()`、修改 Prompt/模型或进入 Task C/D。下一动作只做提交、推送和
   exact-SHA 公共 CI。
+
+## 2026-08-16：5E-2 Task B 已公开验证并交接 Task C
+
+- 实现与持久状态提交 `28bd910525a7522be16bd69b6e945846839a4cd8` 已推送到 `origin/main`。
+- GitHub Actions run `31952026988` 对精确 SHA completed/success；治理、`721 passed, 110
+  subtests passed`、两套 RAG、compileall、Harness SDK/tracked-data boundary 与 dry-run 全部通过。
+- Task B 正式闭环：共享 Observed Provider、AgentLoop 业务 Tool/terminal、ToolRuntime
+  observation fail-fast 和 observer=None 兼容均有公开证据；本批没有 Key、真实 Provider 或
+  held-out I/O。唯一下一步切换为 Task C Harness/Executor 持久化后观察，不进入 Task D、5E-3、
+  5P 或 5F。

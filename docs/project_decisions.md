@@ -516,5 +516,6 @@ AgentLoop 只在整批工具数量、白名单和重复预检通过后记录业�
 ToolRuntime，因此 Harness 内部 `llm.chat` 不会冒充 Skill 工具。每个正常返回的 Agent
 结果恰好产生一个安全 terminal；observer 默认关闭时不构造 Signal，旧结果与调用保持
 不变。`RuntimeObservationError` 必须穿透 ToolRuntime retry、breaker 与 fallback，避免把
-观察故障误分类成业务依赖失败。本地 81 项聚焦和 721 项完整回归已通过；公共 CI 成功前
-Task B 仍未公开闭环，Task C/D 未开始。
+观察故障误分类成业务依赖失败。本地 81 项聚焦和 721 项完整回归已通过；实现提交
+`28bd910525a7522be16bd69b6e945846839a4cd8` 已由 Actions `31952026988` exact-SHA 公开
+验证成功，Task B 正式闭环，Task C/D 未开始。

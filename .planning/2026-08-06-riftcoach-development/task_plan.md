@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 7 - 5E-2 Observable run() Vertical Slice（Task B 本地完成，待公开验证）
+Phase 7 - 5E-2 Observable run() Vertical Slice（Task B 已公开完成，下一步 Task C）
 
 ## Phases
 
@@ -193,8 +193,8 @@ Phase 7 - 5E-2 Observable run() Vertical Slice（Task B 本地完成，待公开
   observation port、missing Usage、lifecycle 与 prospective terminal 已通过
   `2e78c96` / Actions `31947625293` 的 exact-SHA 公共验证；Task B Observed Provider、
   AgentLoop 业务 Tool/terminal 与 ToolRuntime observation fail-fast 已本地完成并通过
-  81 项聚焦、721 tests/110 subtests 全量回归，待提交和公共 CI；尚未接 Harness observer、
-  实现 run 或进入 stream；
+  81 项聚焦、721 tests/110 subtests 全量回归，提交 `28bd910` / Actions `31952026988`
+  exact-SHA 公共验证成功；尚未接 Harness observer、实现 run 或进入 stream；
 - ReviewHarness 继续是唯一发布权，Runtime 状态与 publication 状态分开，Trace 只保存
   安全元数据和 Artifact 引用；
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
@@ -202,8 +202,8 @@ Phase 7 - 5E-2 Observable run() Vertical Slice（Task B 本地完成，待公开
 
 ## Next Step
 
-`5E-2 Observable run() Vertical Slice / Task B`：本地 TDD 与门禁已完成，下一动作只做
-提交、推送和 exact-SHA 公共 CI。公共验证成功前不进入 Task C，不接 Harness observer、
+`5E-2 Observable run() Vertical Slice / Task C`：Task B 已通过 exact-SHA 公共 CI；下一动作
+只接入 Harness/Executor 持久化后的 transition、evaluation、publication 与 Artifact 投影。
 不实现统一 `run()` 或 `stream()`，不读取 Key、不调用真实 Provider、不测试 Flash、不迁移
 GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
 
@@ -520,8 +520,8 @@ GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
 - [x] 审计 AgentLoop、ToolRuntime、SkillReviewExecutor、ReviewHarness 稳定接缝；
 - [x] 比较方案并写入入口设计与 ADR-0030，不以 5E-1 代码存在代替设计；
 - [x] Task A：合同 1.1、1.0 读取兼容、observation port 与 prospective terminal TDD；
-- [ ] Task B：共享 Observed Provider 与 AgentLoop 观察（本地 TDD/门禁已完成，待提交与
-  exact-SHA 公共 CI）；
+- [x] Task B：共享 Observed Provider 与 AgentLoop 观察；`28bd910` / Actions `31952026988`
+  exact-SHA 公共 CI 通过；
 - [ ] Task C：Harness/Executor 持久化后观察与 Artifact 投影；
 - [ ] Task D：两个真实 Skill 的统一同步 `run()` 纵向切片；
 - [ ] 完整门禁、持久状态、提交/推送与 exact-SHA CI；

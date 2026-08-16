@@ -1252,3 +1252,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `BOUNDARY`：本批 Provider/Key/held-out I/O 为 0；Harness observer、Artifact 投影、统一
   `run()` 与 `stream()` 未实现。唯一下一步仍是 Task B 的提交/推送与 exact-SHA 公共 CI，
   成功前不进入 Task C。
+
+### 2026-08-16：5E-2 Task B exact-SHA 公共验证完成
+
+- `PUBLIC-VERIFIED`：实现与持久状态提交 `28bd910525a7522be16bd69b6e945846839a4cd8` 已
+  推送到 `origin/main`；GitHub Actions run `31952026988` 对该精确 SHA 的治理、721 tests/
+  110 subtests、两套 RAG、compileall、Harness SDK boundary、tracked secret/run-data boundary
+  与 dry-run 全部成功。
+- `CURRENT`：Task B 正式闭环，Provider/Key/held-out I/O 仍为 0；唯一下一步切换为
+  `5E-2 Task C` 的 Harness/Executor 持久化后 transition/evaluation/publication/Artifact
+  observer TDD，不进入统一 `run()`/stream 或 5F。
