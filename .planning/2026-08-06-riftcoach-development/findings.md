@@ -1616,3 +1616,12 @@
 - 新增 Task C 聚焦测试 8 项；本地完整回归为 `729 passed, 110 subtests passed`。
   RAG development/holdout、compileall、tracked-data boundary、Harness dry-run、治理和
   diff check 通过；Provider/Key/held-out I/O 为 0。Task C 尚待提交、推送和 exact-SHA CI。
+
+## 2026-08-17：5E-2 Task C 公共证据
+
+- 提交 `8b69c9b` 已推送到 `origin/main`；GitHub Actions run `31957712118` 对 exact SHA
+  完成并成功。
+- 公共 CI 通过治理、`729 passed, 110 subtests passed`、两套 RAG、compileall、Harness
+  SDK/tracked-data boundary 与 dry-run；没有 Key、真实 Provider 或 held-out I/O。
+- Task C 至此正式闭环；Task D 是 5E-2 的唯一下一步，不能把 Task C 的观察接缝或 Artifact
+  projection 解释成统一 `AgentRuntimeV1.run()` 已完成。

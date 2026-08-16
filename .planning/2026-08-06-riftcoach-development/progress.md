@@ -1632,3 +1632,12 @@
   editable install 不受影响。
 - 本批没有读取 Key、调用 Provider、运行 held-out、修改 Prompt/模型、实现统一 `run()` 或
   `stream()`；Task C 待提交、推送和 exact-SHA public CI，Task D 未开始。
+
+## 2026-08-17：5E-2 Task C 已公开验证并交接 Task D
+
+- 提交 `8b69c9b` 已推送；GitHub Actions run `31957712118` 对 exact SHA completed/success。
+- 公共 CI 通过治理、`729 passed, 110 subtests passed`、两套 RAG、compileall、Harness
+  SDK/tracked-data boundary 与 dry-run；本批 Provider/Key/held-out I/O 为 0。
+- Task C 正式闭环：Harness/Executor 持久化后观察、attempt 0/1、安全 Artifact 引用、稳定
+  reason code 和 observation fail-fast 均有公开证据。唯一下一步切换为 Task D 统一同步
+  `AgentRuntimeV1.run()` 纵向切片；不进入 5E-3、5P 或 5F。

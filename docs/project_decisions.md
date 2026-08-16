@@ -538,3 +538,7 @@ publication 对 published/degraded 只保存经真实字节校验的 `final_repo
 前显式穿透；观察基础设施失败不能被误写成 `draft_preparation_failed`、普通 evaluation
 失败或 deterministic fallback。`observer=None` 保留旧行为，不额外执行观察期的 Artifact
 读取与投影。
+
+Task C 本地聚焦 8 项、完整回归 `729 passed, 110 subtests passed` 和全部本地门禁通过；
+提交 `8b69c9b` 已由 GitHub Actions run `31957712118` 对 exact SHA 公共验证成功。Task C
+正式闭环，统一 `AgentRuntimeV1.run()` 仍留在下一步 Task D。

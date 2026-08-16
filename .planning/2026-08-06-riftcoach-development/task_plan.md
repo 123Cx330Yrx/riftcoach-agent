@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 7 - 5E-2 Observable run() Vertical Slice（Task B 已公开完成，下一步 Task C）
+Phase 7 - 5E-2 Observable run() Vertical Slice（Task C 已公开完成，下一步 Task D）
 
 ## Phases
 
