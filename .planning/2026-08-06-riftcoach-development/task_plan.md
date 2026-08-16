@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 7 - 5E-1 Runtime Contract、Usage 与 Trace Store（本地完成，待公开验证）
+Phase 7 - 5E-2 Observable run() Vertical Slice（待入口审计与设计）
 
 ## Phases
 
@@ -188,8 +188,9 @@ Phase 7 - 5E-1 Runtime Contract、Usage 与 Trace Store（本地完成，待公�
   事件溯源/DAG 重写；
 - 5E 内部固定为 5E-1 合同/Usage/Trace Store、5E-2 observable run、5E-3 live stream
   parity、5E-4 evaluation/exit review；
-- 5E-1 严格模型、Recorder、不完整 Usage 和原子 Trace Store 已在本地完成；当前只做
-  提交、推送和 exact-SHA CI，尚不修改 AgentLoop/Harness observer 或实现 `run/stream()`；
+- 5E-1 严格模型、Recorder、不完整 Usage 和原子 Trace Store 已完成并通过 exact-SHA CI；
+- 当前进入 5E-2，先审计/设计默认关闭的 AgentLoop/Tool/Harness observer、失败映射和
+  同步 run 控制流；尚不实现 stream；
 - ReviewHarness 继续是唯一发布权，Runtime 状态与 publication 状态分开，Trace 只保存
   安全元数据和 Artifact 引用；
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
@@ -197,10 +198,10 @@ Phase 7 - 5E-1 Runtime Contract、Usage 与 Trace Store（本地完成，待公�
 
 ## Next Step
 
-`5E-1 Runtime Contract、Usage 与 Trace Store`：提交、推送当前本地实现并验证精确 SHA
-的公共 CI。成功前不切换 canonical checkpoint；仍不接 AgentLoop/Harness observer、
-不实现完整 `run()/stream()`，不读取 Key、不调用 Provider、不测试 Flash、不迁移
-GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
+`5E-2 Observable run() Vertical Slice`：先审计现有 AgentLoop、ToolRuntime、
+SkillReviewExecutor 与 ReviewHarness 的稳定接缝，比较 observer 和失败映射方案并形成
+初学者设计；设计冻结后才开始 TDD。当前不实现 `stream()`，不读取 Key、不调用 Provider、
+不测试 Flash、不迁移 GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
 
 ## Decisions Made
 
@@ -494,7 +495,7 @@ GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
   Harness SDK/tracked-data boundary、dry-run、治理和 diff check；
 - [x] 设计提交 `c91c2d75f85e1315e65e9768894982556053a7b0` 已推送并通过 Actions
   run `31878052835` 的 exact-SHA public CI；
-- [ ] 进入 5E-1 前先讲解合同、Usage 和原子 Trace Store 的原理与 TDD 证明范围。
+- [x] 进入 5E-1 前先讲解合同、Usage 和原子 Trace Store 的原理与 TDD 证明范围。
 
 ### 5E-1 Runtime Contract、Usage 与 Trace Store（2026-08-15）
 
@@ -504,7 +505,14 @@ GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
 - [x] 先写合同、Recorder/Usage、Store 失败测试并确认红灯；
 - [x] 实现低依赖 Signal、严格 Runtime 模型、Recorder/Usage 与 Trace Store；
 - [x] 完成聚焦、相邻、完整回归和全部本地门禁；
-- [ ] 同步状态，提交、推送并完成 exact-SHA public CI。
+- [x] 同步状态，提交、推送并完成 exact-SHA public CI。
+
+### 5E-2 Observable run() Vertical Slice（2026-08-16）
+
+- [ ] 初学者解释 observer、同步 Runtime、失败映射和 Trace 提交边界；
+- [ ] 审计 AgentLoop、ToolRuntime、SkillReviewExecutor、ReviewHarness 稳定接缝；
+- [ ] 比较方案并写入入口设计/ADR 影响，不以 5E-1 代码存在代替设计；
+- [ ] 设计确认后按 TDD 实现，不提前进入 5E-3 stream parity。
 
 本批错误日志：
 
@@ -532,4 +540,6 @@ GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
   命令其余结果有效，已改读真实工作流后逐项执行；
 - 最终全量 pytest 首次通过延迟 cell 返回时没有暴露可继续轮询的 PTY session，只有 39%
   进度且无 exit code，不能作为证据；已用显式保留 session_id 的新运行重新执行并完整得到
-  `655 passed, 103 subtests passed`。并行残留使该次耗时变长，但结果与测试内容未受影响。
+  `655 passed, 103 subtests passed`。并行残留使该次耗时变长，但结果与测试内容未受影响；
+- 首次尝试一次性回写全部 5E-1 public 状态时，一处跨行上下文与真实长段落不完全一致，
+  `apply_patch` 原子拒绝且没有部分修改；已拆成精确小补丁完成状态交接。

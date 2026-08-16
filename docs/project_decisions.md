@@ -448,7 +448,7 @@ Runtime V1 复用 `SkillExecutionRequest`、Boundary、ContextBuilder、AgentLoo
 Runtime 状态与 Harness publication 状态分开；Trace 只保存版本、policy provenance、
 安全事件、完整性明确的 Usage、终止原因和 Artifact 引用/哈希。已发送但未观察 Usage 的
 Provider call 必须记为 partial/unknown 和 null，不能折算为零。5E 依次执行 5E-1 至
-5E-4；当前唯一下一步为 5E-1 合同、Usage、Recorder 与 Trace Store 的纯本地 TDD。
+5E-4；当时唯一下一步为 5E-1 合同、Usage、Recorder 与 Trace Store 的纯本地 TDD。
 
 ### 5E-1 Runtime 合同与 Trace 存储实现决策
 
@@ -464,4 +464,6 @@ Profile 时才计算。
 
 最终 `runtime_trace.json` 使用共享安全 run ID、同目录临时文件、flush/fsync 与原子
 replace，首个成功文件不可覆盖，读取时先校验 SHA-256。它仍只是最终快照，不提供事件
-溯源、崩溃恢复或跨进程锁。当前本地门禁已通过；公共 CI 前不进入 5E-2。
+溯源、崩溃恢复或跨进程锁。实现提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
+已通过 GitHub Actions run `31942483874` 的 exact-SHA 公共 CI；5E-1 完成，下一步只进入
+5E-2 observer 与同步 run 的入口审计/设计。

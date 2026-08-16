@@ -1482,3 +1482,12 @@
   门禁通过。
 - 当前只剩提交、推送和 exact-SHA 公共 CI；CI 成功前 checkpoint 保持 5E-1，不进入
   5E-2，也不读取 Key 或调用 Provider。
+
+## 2026-08-16：5E-1 已公开验证并交接 5E-2
+
+- 5E-1 实现提交 `d891184e1bf82068188d2fb5715769bdaa3da022` 已推送到 `origin/main`；
+  GitHub Actions run `31942483874` 对精确 SHA completed/success。
+- 公共 Ubuntu/Python 3.11 CI 通过治理、655 tests/103 subtests、两套 RAG、compileall、
+  Harness SDK/tracked-data boundary 与 dry-run；没有 Key 或 Provider I/O。
+- 5E-1 至此正式闭环。唯一下一检查点为 5E-2 Observable run 入口审计/设计；Signal、
+  Recorder 和 Store 的存在不等于 observer 或统一 run 已实现。

@@ -1185,3 +1185,6 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `NO-IO`：未读取 Key、构造或调用 Provider、运行 held-out、修改 Prompt/模型或引入新依赖。
 - `CURRENT`：唯一下一步仍是 5E-1，只做提交、推送与 exact-SHA 公共 CI；成功前不得
   进入 5E-2 observable run。
+- `PUBLIC-VERIFIED`：实现提交 `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过
+  GitHub Actions run `31942483874` 的 exact-SHA 全部门禁；CI 无 Key 或 Provider I/O。
+  5E-1 正式完成，唯一下一步切换为 5E-2 的入口审计/设计，不能把合同存在当成 run 已实现。

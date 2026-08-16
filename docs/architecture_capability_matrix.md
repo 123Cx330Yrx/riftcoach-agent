@@ -217,7 +217,7 @@ policy provenance、安全事件、终止原因及 Artifact 引用/哈希，不�
 Tool data、原始异常、request ID 或秘密。
 
 5E 固定为四个内部检查点：5E-1 合同/Usage/Trace Store、5E-2 observable `run()`、
-5E-3 live `stream()` parity、5E-4 evaluation/exit review。5E-1 本地 TDD 与全部门禁
-已经通过，当前只待 exact-SHA 公共验证；尚未接 observer 或实现完整 Runtime，也未调用
-真实 Provider。公开成功后才进入 5E-2。5P、5F、阶段 6/8 的
+5E-3 live `stream()` parity、5E-4 evaluation/exit review。5E-1 已由 `d891184` / Actions
+`31942483874` 完成 exact-SHA 公开验证；当前进入 5E-2 的入口审计/设计，尚未接 observer
+或实现统一同步 Runtime，也未调用真实 Provider。5P、5F、阶段 6/8 的
 API、SDK 对照、持久事件、cancel/resume、DAG、Memory 和 Multi-Agent 边界不变。
