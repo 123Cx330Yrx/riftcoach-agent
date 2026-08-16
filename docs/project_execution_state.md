@@ -1,10 +1,10 @@
 ---
 state_schema: 1
 main_stage: 5
-substage_group: "5E"
-current_checkpoint: "5E-4"
+substage_group: "5P"
+current_checkpoint: "5P-entry-design"
 status: in_progress
-blocked_before: "5P"
+pause_reason: "RQ-039-awaiting-explicit-user-continue"
 ---
 
 # RiftCoach 当前执行状态
@@ -18,7 +18,8 @@ blocked_before: "5P"
 
 - 最后更新：2026-08-17
 - 主阶段：阶段 5，进行中
-- 当前子阶段组：5E AgentRuntime V1。入口设计与 ADR-0029 已完成，冻结为“薄 Runtime
+- 当前子阶段组：`5P-entry-design` 已完成状态交接，但按 RQ-039 暂停，尚未开始设计或
+  实现。上一子阶段组 5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
   和 GitHub Actions run `31942483874` 完成 exact-SHA 公开验证。5E-2 的入口源码审计、
@@ -29,7 +30,10 @@ blocked_before: "5P"
   observed Provider、唯一 Harness、typed output、完整 Usage 与安全最终 Trace；当前 5E-3
   已完成入口审计和进程内 worker/有界 queue 方案冻结；stream item、parity、背压、关闭隔离、
   预期失败和终态测试均已在本地通过，并由提交 `80b76a1` / GitHub Actions run `31960987333`
-  完成 exact-SHA 公共验证；5E-3 正式闭环，当前进入 5E-4 Runtime Evaluation & Exit Review。
+  完成 exact-SHA 公共验证；5E-3 正式闭环。5E-4 的退出矩阵与
+  `close-with-deferred-boundaries` 裁决由提交
+  `3d3656195a66adfd4595cffa145c978d24c33628` / GitHub Actions run `31962252231`
+  完成 exact-SHA 公共验证，因此 5E-4 与整个 5E 正式完成；这不表示生产就绪。
   Task A 的合同 1.1、合法 1.0
   读取、默认关闭 observation port、missing Usage fail-closed、Harness lifecycle 与
   prospective terminal 已完成并由提交 `2e78c9606fe93b56657d4bb13c8efe0f1eed98fe`、
@@ -51,7 +55,8 @@ blocked_before: "5P"
   `747 passed, 110 subtests passed`；两套 RAG、compileall、安全边界、Harness dry-run、
   治理和差异检查均通过，本批 Provider/Key/held-out I/O 为 0。实现提交 `d49508e` 已由
   GitHub Actions run `31959646589` 完成 exact-SHA 公共验证，5E-2 正式闭环；随后 5E-3
-  已由 `80b76a1` / Actions `31960987333` 完成 stream parity 与公开验证，当前进入 5E-4。
+  已由 `80b76a1` / Actions `31960987333` 完成 stream parity 与公开验证，5E-4 已由
+  `3d36561` / Actions `31962252231` 完成退出审查公共验证。
   设计提交
   `3c6f26a4802821548be8d61085552f5b9a790468` 已通过 GitHub Actions run
   `31944389807` 的 exact-SHA 公共验证。5D Python 受限 Agent Loop
@@ -143,11 +148,9 @@ blocked_before: "5P"
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：提交并公开验证 `5E-4` Runtime Evaluation & Exit Review；本地 exit matrix、
-  Runtime 聚焦 `128 passed`、完整 `762 passed, 110 subtests passed` 与全部门禁已通过，退出决策为
-  `close-with-deferred-boundaries`。exact-SHA CI 成功前不关闭 5E，也不进入 5P/5F，不读取 Key、
-  不调用真实 Provider、不切换模型。
-- 禁止越过：5E 完成前不得进入 5P Prompt Program V1 或 5F Runtime/SDK 采用实验；
+- 唯一下一步：`5P-entry-design`，按 RQ-039 等待用户再次明确“继续”；当前只完成 canonical
+  交接，未开展 5P 的需求审计、方案设计、代码、Provider I/O 或测试。
+- 禁止越过：收到新的明确继续指令前不得开始 5P，也不得进入 5F Runtime/SDK 采用实验；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
   协议、候选选择或发布热度替代领域质量证据
 
@@ -185,7 +188,7 @@ blocked_before: "5P"
 | 5E-1 Runtime Contract、Usage 与 Trace Store | 严格合同、Recorder、未知 Usage 与原子最终 Trace | 已完成 | 39 项聚焦、166 tests/55 subtests 相邻、655 tests/103 subtests 全量回归和全部门禁；`d891184` / Actions `31942483874` exact-SHA 公开通过；无 Provider I/O |
 | 5E-2 Observable `run()` Vertical Slice | observer 接缝与两个 Skill 的统一同步执行/Trace | 已完成 | Task D 实现提交 `d49508e` / Actions `31959646589` exact-SHA 公共 CI 成功；新增 18 项测试，完整回归 `747 passed, 110 subtests passed`，两套 RAG/compileall/安全/dry-run/治理/diff 门禁通过；本批无 Key/真实 Provider/held-out I/O |
 | 5E-3 Live `stream()` & Parity | 同一执行核心的进程内实时事件和 run/stream 同终态 | 已完成 | 提交 `80b76a1` / Actions `31960987333` exact-SHA 公共 CI 成功；stream 聚焦 15 项、完整回归 `762 passed, 110 subtests passed`，两套 RAG/compileall/治理/安全/dry-run/diff 门禁通过；无 Key/真实 Provider/held-out I/O |
-| 5E-4 Runtime Evaluation & Exit Review | 安全、失败、资源、纵向评测与 5E 退出审查 | 进行中（本地退出决策完成，待公共验证） | exit matrix、Runtime 聚焦 `128 passed`、完整 `762 passed, 110 subtests passed` 和全部本地门禁通过；决策为 `close-with-deferred-boundaries`，待 exact-SHA CI |
+| 5E-4 Runtime Evaluation & Exit Review | 安全、失败、资源、纵向评测与 5E 退出审查 | 已完成 | exit matrix、Runtime 聚焦 `128 passed`、完整 `762 passed, 110 subtests passed` 和全部本地门禁通过；`3d36561` / Actions `31962252231` exact-SHA 公共验证成功；决策为 `close-with-deferred-boundaries` |
 
 ## 当前真实能力边界
 
@@ -423,10 +426,10 @@ blocked_before: "5P"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A、5B、5C、整个 5D、5E-1、5E-2 与 5E-3；当前无领域 Provider 准入 | 阶段 5、生产模型报告质量、完整生产 AgentRuntime、V3 资源合同或生产默认模型已经完成 |
-| 项目理解 | 已区分 Agent Loop 与 AgentRuntime，能解释共享 Provider decorator、业务 Tool 定点观察、Event budget 最坏上界、Runtime/publication 双状态、observer fail-fast、Schema 1.0/1.1、Harness 唯一发布权、两阶段 Runtime terminal 与同步 run 事件交错 | Fake Provider + 真实本地 RAG 的统一 run 能评价模型智力，5D/5E-2 完成等于 GLM/DeepSeek 通过，或同步 run 已等于流式/可恢复生产 Runtime |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A、5B、5C、整个 5D 和整个 5E；5P 尚未开始；当前无领域 Provider 准入 | 阶段 5、生产模型报告质量、可恢复生产 Runtime、V3 资源合同或生产默认模型已经完成 |
+| 项目理解 | 已区分 Agent Loop 与 AgentRuntime，能解释共享 Provider decorator、业务 Tool 定点观察、Event budget 最坏上界、Runtime/publication 双状态、observer fail-fast、Schema 1.0/1.1、Harness 唯一发布权、两阶段 Runtime terminal、同步/流式同核与退出矩阵边界 | Fake Provider + 真实本地 RAG 的统一 run/stream 能评价模型智力，5E 完成等于 GLM/DeepSeek 通过，或进程内 stream 已等于 SSE/可恢复生产 Runtime |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5E-2 Task A-C/Task D 与 5E-3 已通过 Actions `31947625293`/`31952026988`/`31957712118`/`31959646589`/`31960987333` exact-SHA 公开验证；正式网页未部署 | 5E-3 公开通过等于领域模型质量、最终厂商选型、生产切换或 Web Agent 可用 |
+| GitHub/部署 | 5E-2 Task A-C/Task D、5E-3 与 5E-4 已通过 Actions `31947625293`/`31952026988`/`31957712118`/`31959646589`/`31960987333`/`31962252231` exact-SHA 公开验证；正式网页未部署 | 5E 公开完成等于领域模型质量、最终厂商选型、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -482,9 +485,11 @@ ADR-0009。
 
 ## 下一检查点的范围
 
-当前唯一下一检查点是 `5E-4 Runtime Evaluation & Exit Review` 的提交与 exact-SHA 公共验证。
-本地 exit matrix 和退出审查决定 `close-with-deferred-boundaries`，Runtime 聚焦 `128 passed`、
-完整 `762 passed, 110 subtests passed` 与全部本地门禁通过。5E-3
+当前唯一下一检查点是 `5P-entry-design`，但按 RQ-039 暂停并等待用户再次明确“继续”；
+这里只完成状态交接，没有开始 5P 设计。5E-4 的 exit matrix 和退出审查决定
+`close-with-deferred-boundaries`，Runtime 聚焦 `128 passed`、完整
+`762 passed, 110 subtests passed` 与全部本地门禁通过，并由 `3d36561` / Actions
+`31962252231` exact-SHA 公共验证成功。5E-3
 已由 `80b76a1` / Actions `31960987333` exact-SHA 公共 CI 正式闭环；其入口审计和 ADR-0031 已冻结：
 `run()` 与 `stream()` 共用唯一 `_execute(request, event_sink)`；采用进程内 worker + 有界
 `queue.Queue`，普通事件在 Recorder 追加后交付，terminal 只在 Trace 原子写入并 commit 后

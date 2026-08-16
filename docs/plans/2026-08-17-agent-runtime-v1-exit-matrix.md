@@ -1,4 +1,4 @@
-# 5E-4 Runtime V1 Exit Matrix（首轮审计结果）
+# 5E-4 Runtime V1 Exit Matrix（最终审计结果）
 
 > 这张表是 5E-4 的工作底稿，不是“全部完成”的宣传清单。`Public` 表示代码、测试和
 > 精确 SHA 的 GitHub Actions 都有证据；`Local` 表示只有本地证据；`Deferred` 表示明确
@@ -44,5 +44,7 @@
   偷偷实现。
 - 5E-4 已用 Runtime 聚焦 `128 passed`、完整 `762 passed, 110 subtests passed`、compileall、
   RAG、治理和差异检查复读本矩阵，没有发现当前 V1 必须补的结构性代码缺口。
-- 本地退出决策为 `close-with-deferred-boundaries`；只有本退出审查提交通过 exact-SHA 公共 CI 后，
-  才把 5E-4 标为 complete 并进入 `5P-entry-design`。
+- 最终退出决策为 `close-with-deferred-boundaries`；本退出审查提交
+  `3d3656195a66adfd4595cffa145c978d24c33628` 已由 GitHub Actions run `31962252231`
+  完成 exact-SHA 公共验证，因此 5E-4 与整个 5E 已完成。
+- canonical 只交接到 `5P-entry-design`；按 RQ-039 暂停，没有开始 5P 设计或实现。

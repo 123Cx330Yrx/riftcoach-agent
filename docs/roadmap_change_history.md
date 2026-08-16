@@ -1333,3 +1333,12 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   log、cancel/resume、Memory/MCP/Multi-Agent/SDK 与生产 SLO 保持 deferred/unknown。
 - `CURRENT`：5E-4 仍进行中；下一动作只做退出审查提交、推送和 exact-SHA 公共 CI，成功后
   才关闭 5E 并进入 `5P-entry-design`。
+
+### 2026-08-17：5E-4 exact-SHA 公共闭环与 RQ-039 暂停
+
+- `PUBLIC-VERIFIED`：退出审查提交 `3d3656195a66adfd4595cffa145c978d24c33628` 已由
+  GitHub Actions run `31962252231` 完成 exact-SHA 公共验证，全部公开门禁成功。
+- `CLOSED`：5E-4 与整个 5E AgentRuntime V1 按 `close-with-deferred-boundaries` 正式完成；
+  这不准入真实 Provider 领域质量，也不声称 API/SSE、持久恢复或生产 SLO 已完成。
+- `CURRENT-PAUSED`：canonical 交接到 `5P-entry-design`，但 RQ-039 覆盖 RQ-038 的自动继续；
+  当前没有开始 5P 设计、代码或 Provider I/O，等待用户再次明确“继续”。

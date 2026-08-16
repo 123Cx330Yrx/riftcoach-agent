@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 7 - 5E-4 Runtime Evaluation & Exit Review（5E-3 已公开完成）
+Phase 8 - `5P-entry-design` 交接（按 RQ-039 暂停，尚未开始设计）
 
 ## Phases
 
@@ -183,7 +183,7 @@ Phase 7 - 5E-4 Runtime Evaluation & Exit Review（5E-3 已公开完成）
 
 ### Phase 7 - 5E AgentRuntime V1（父阶段追踪）
 
-- Status: tracking
+- Status: complete
 - 入口设计与 ADR-0029 已完成：采用薄 Runtime + 可选观察端口，不采用外层事后回放或
   事件溯源/DAG 重写；
 - 5E 内部固定为 5E-1 合同/Usage/Trace Store、5E-2 observable run、5E-3 live stream
@@ -200,11 +200,17 @@ Phase 7 - 5E-4 Runtime Evaluation & Exit Review（5E-3 已公开完成）
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
   实验仍属于 5F，Prompt Program 属于 5P。
 
+### Phase 8 - 5P Entry Design 交接
+
+- Status: tracking
+- 5E-4 已由 `3d36561` / Actions `31962252231` exact-SHA 公共验证完成，整个 5E 正式闭环；
+- canonical 只交接到 `5P-entry-design`，按 RQ-039 等待用户明确“继续”；
+- 本轮没有开始 5P 的需求审计、设计、代码、Provider I/O 或测试。
+
 ## Next Step
 
-`5E-4 Runtime Evaluation & Exit Review / entry audit`：5E-3 已由 `80b76a1` / Actions
-`31960987333` exact-SHA 公共验证完成；下一动作是建立 5E-1 至 5E-3 的功能、失败、资源、
-Usage、Trace、安全、公开证据和教学理解验收矩阵，不读取 Key、不调用真实 Provider、不切换模型。
+`5P-entry-design / paused`：按 RQ-039 等待用户再次明确“继续”。当前只记录 5E 已公开闭环和
+5P 交接位置，不开展 5P 需求审计、方案比较、代码、Provider I/O 或测试。
 
 ## Decisions Made
 
@@ -548,7 +554,7 @@ Usage、Trace、安全、公开证据和教学理解验收矩阵，不读取 Key
 
 ### 5E-4 Runtime Evaluation & Exit Review（2026-08-17）
 
-- Status: in_progress
+- Status: complete
 - 先审计 5E-1 至 5E-3 的功能合同、失败语义、资源/Usage、Trace 隐私、stream parity、
   公开证据和教学边界；不把测试数量直接等同于生产可用。
 - 建立一张可追溯的 exit matrix：每项要求绑定源码、测试、结果、限制和是否允许关闭 5E；
@@ -556,14 +562,21 @@ Usage、Trace、安全、公开证据和教学理解验收矩阵，不读取 Key
 - 明确 5E 关闭后唯一下一阶段仍由 canonical 状态决定；本检查点不进入 5P、5F、阶段 6/8。
 - 首轮矩阵已完成，Runtime 相关聚焦集合 `128 passed`；当前没有必须立即补的结构性缺口，
   deferred/unknown 边界已单独列出。
-- 完整回归 `762 passed, 110 subtests passed` 与全部本地门禁通过；本地退出决策为
-  `close-with-deferred-boundaries`，待提交和 exact-SHA 公共 CI。
+- 完整回归 `762 passed, 110 subtests passed` 与全部本地门禁通过；退出决策为
+  `close-with-deferred-boundaries`；提交 `3d36561` 已由 Actions `31962252231` 完成
+  exact-SHA 公共验证，5E-4 与整个 5E 正式完成。
+
+### 5P-entry-design 交接（2026-08-17）
+
+- Status: in_progress
+- 该状态只表示 canonical 已准备好从这里恢复，不表示 5P 设计已经开始；
+- 按 RQ-039 暂停，等待用户再次明确“继续”；
+- 当前没有 5P 设计、代码、Provider I/O 或测试产物。
 
 ## Next Step
 
-`5E-4 Runtime Evaluation & Exit Review / public verification`：本地矩阵、最终退出审查、
-Runtime 聚焦 128、完整 `762 passed, 110 subtests passed` 与全部门禁已通过；下一动作只做
-提交、推送和 exact-SHA 公共 CI。成功后才关闭 5E 并进入 `5P-entry-design`。
+`5P-entry-design / paused`：按 RQ-039 等待用户再次明确“继续”；后续恢复时才进行初学者入口
+讲解、需求审计和方案比较。本轮到此结束，不进入 5P 实现或 5F。
 
 本批错误日志：
 

@@ -1749,6 +1749,15 @@
   `close-with-deferred-boundaries`，并以面试级表述解释 Runtime V1 已完成与未完成的边界。
 - 当前没有产品代码变更；下一步只提交/推送 5E-4 审查与状态并等待 exact-SHA 公共 CI。
 
+## 2026-08-17：5E-4 exact-SHA 公共闭环并暂停
+
+- 退出审查提交 `3d3656195a66adfd4595cffa145c978d24c33628` 已推送，GitHub Actions run
+  `31962252231` completed/success；公开门禁全部通过。
+- 5E-4 与整个 5E AgentRuntime V1 正式完成，最终结论为
+  `close-with-deferred-boundaries`，不宣称生产就绪或真实模型领域质量已准入。
+- canonical 已交接到 `5P-entry-design`，但按 RQ-039 暂停；本轮未开始 5P 设计、实现或
+  Provider I/O，等待用户下一次明确“继续”。
+
 ## 2026-08-17：5E-2 Task D exact-SHA 公共闭环
 
 - 实现提交 `d49508ef46876da6653ddcbe63a3584bdcbba711` 已推送到 `origin/main`；GitHub

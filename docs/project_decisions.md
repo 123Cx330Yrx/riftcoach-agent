@@ -612,3 +612,8 @@ Runtime 聚焦 `128 passed`，完整 `762 passed, 110 subtests passed`，compile
 差异检查通过，没有发现当前 V1 必须补的结构性代码缺口。退出决策为
 `close-with-deferred-boundaries`；真实模型质量、API/SSE、持久恢复、Memory/MCP、SDK 采用和
 生产 SLO 保持 deferred/unknown。该决策仍待 exact-SHA 公共 CI，成功前 5E-4 不关闭。
+
+退出审查提交 `3d3656195a66adfd4595cffa145c978d24c33628` 随后由 GitHub Actions run
+`31962252231` 完成 exact-SHA 公共验证。5E-4 与整个 5E 因此按
+`close-with-deferred-boundaries` 正式关闭。按 RQ-039，canonical 只交接到
+`5P-entry-design` 并暂停；本轮不开展 5P 设计或实现。

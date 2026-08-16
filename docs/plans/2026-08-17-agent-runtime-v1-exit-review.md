@@ -2,8 +2,9 @@
 
 ## 1. 结论
 
-5E 可以按 **`close-with-deferred-boundaries`** 关闭，但需要先让本退出审查提交通过
-exact-SHA GitHub Actions。
+5E 已按 **`close-with-deferred-boundaries`** 关闭。退出审查提交
+`3d3656195a66adfd4595cffa145c978d24c33628` 已由 GitHub Actions run `31962252231`
+完成 exact-SHA 公共验证。
 
 这里的“关闭”只表示 RiftCoach 已建立并验证一个厂商无关的 AgentRuntime V1：
 
@@ -63,7 +64,7 @@ selected Runtime request
 | 5E-2 Task C | `8b69c9b` / Actions `31957712118` |
 | 5E-2 Task D | `d49508e` / Actions `31959646589`；`747 passed, 110 subtests passed` |
 | 5E-3 | `80b76a1` / Actions `31960987333`；stream 聚焦 15，完整 `762 passed, 110 subtests passed` |
-| 5E-4 本地审查 | Runtime 聚焦 128；完整 `762 passed, 110 subtests passed`；compileall、RAG、治理、diff 通过 |
+| 5E-4 退出审查 | `3d36561` / Actions `31962252231`；Runtime 聚焦 128；完整 `762 passed, 110 subtests passed`；compileall、RAG、治理、diff 通过 |
 
 逐条映射见 `docs/plans/2026-08-17-agent-runtime-v1-exit-matrix.md`。
 
@@ -101,13 +102,13 @@ Memory、MCP 或第三方 SDK，会同时改变消费层、数据层和运行时
 
 ## 7. 唯一后续
 
-本退出审查提交通过 exact-SHA 公共 CI 后：
+本退出审查已经通过 exact-SHA 公共 CI，canonical 状态已完成以下交接：
 
 ```text
 5E-4 complete
 → 5P-entry-design
 ```
 
-根据 RQ-039，该箭头只表示 canonical 状态交接：完成 5E-4 公共闭环和最终状态回写后立即
-停止，不实际开展 5P 入口设计。不得跳到 5F、阶段 6，也不得在状态交接时读取 Key 或调用
-真实 Provider；后续等待用户再次明确“继续”。
+根据 RQ-039，该箭头只表示 canonical 状态交接：本轮在完成 5E-4 公共闭环和最终状态回写后
+立即停止，没有实际开展 5P 入口设计。不得跳到 5F、阶段 6，也不得在状态交接时读取 Key 或
+调用真实 Provider；后续等待用户再次明确“继续”。
