@@ -1188,3 +1188,22 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `PUBLIC-VERIFIED`：实现提交 `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过
   GitHub Actions run `31942483874` 的 exact-SHA 全部门禁；CI 无 Key 或 Provider I/O。
   5E-1 正式完成，唯一下一步切换为 5E-2 的入口审计/设计，不能把合同存在当成 run 已实现。
+
+### 2026-08-16：5E-2 Observable run 入口审计与合同深化设计
+
+- `AUDIT`：确认 AgentLoop 之外的 Evaluation、repair、Revision 均会通过内部
+  `llm.chat` 调用同一 Provider；只观察 AgentLoop 会漏记调用、Token 和成本。
+- `ALTERNATIVES`：比较组件分别估算 Provider、共享 observed Provider、全局 ToolRuntime
+  observer；采用共享 Provider + 定点 Agent/Harness observer，拒绝漏记和业务 Tool 重复计数。
+- `CONTRACT-GAPS`：确认真实零基 Evaluation attempt、冒号 section ID、可空 finish reason、
+  Agent terminal、Harness failure、Zhipu missing Usage 和 Harness 事件顺序均需显式修正。
+- `TERMINAL`：发现 emit completed 后再写 Trace 会在 Store 失败时产生双终态悖论；
+  ADR-0030 采用 prepare/prospective store/commit，两阶段提交成功 terminal。
+- `SCHEMA`：新写 Event/Trace 使用 1.1，读端保留合法 1.0，Runtime 产品版本仍为 V1；当前
+  没有已持久化 Runtime Trace 需要迁移。
+- `NO-IO`：本设计没有修改产品代码、读取 Key、构造/调用 Provider、运行 held-out、调整
+  Prompt/模型或引入依赖。
+- `VERIFIED-LOCAL`：聚焦 `122 passed, 37 subtests passed`，完整回归
+  `655 passed, 103 subtests passed`；两套 RAG、compileall、Harness SDK/tracked-data、
+  dry-run、治理和 diff check 通过。
+- `CURRENT`：5E-2 仍进行中；唯一下一动作是 Task A 的失败测试与最小实现，不进入 5E-3。

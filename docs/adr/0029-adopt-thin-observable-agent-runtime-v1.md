@@ -2,7 +2,7 @@
 
 ## 状态
 
-Accepted
+Accepted；5E-2 的观察合同与终态提交细节由 ADR-0030 深化
 
 ## 日期
 
@@ -84,6 +84,7 @@ Case 比较能力、侵入性、成本和可移植性。
 ## 参考
 
 - `docs/plans/2026-08-15-agent-runtime-v1-entry-design.md`
+- `docs/adr/0030-refine-runtime-observation-and-terminal-commit.md`
 - `docs/plans/2026-08-15-5d-constrained-agent-loop-exit-review.md`
 - `docs/roadmap_v1_3_amendment.md`
 - `docs/architecture_capability_matrix.md`

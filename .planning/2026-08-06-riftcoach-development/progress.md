@@ -1491,3 +1491,34 @@
   Harness SDK/tracked-data boundary 与 dry-run；没有 Key 或 Provider I/O。
 - 5E-1 至此正式闭环。唯一下一检查点为 5E-2 Observable run 入口审计/设计；Signal、
   Recorder 和 Store 的存在不等于 observer 或统一 run 已实现。
+
+## 2026-08-16：5E-2 入口审计开始
+
+- 按 canonical checkpoint 从 `b89ee033532525ed7addd4c6308fc4e4ef7bbae0` 恢复；开始时
+  HEAD/origin 一致且工作树干净。
+- 本轮使用 brainstorming、architecture-designer 与 planning-with-files：先比较 observer
+  和同步 run 组合方案、明确 NFR/失败边界并持久记录，再决定实现计划。
+- 当前只做 5E-2 入口审计/设计，不把 5E-1 Signal/Recorder/Store 的存在误写为 observable
+  run 已实现；不实现 stream、不读取 Key、不调用 Provider。
+
+## 2026-08-16：5E-2 入口设计与 ADR-0030 本地完成
+
+- 完整审计 AgentLoop、ToolRuntime、Provider adapter、Harness llm adapter、
+  SkillReviewExecutor、ReviewHarness、Runtime Recorder/Store 与相关测试；确认 Provider
+  观察必须覆盖 Agent + Evaluation + repair + Revision。
+- 新增初学者设计 `docs/plans/2026-08-16-agent-runtime-v1-observable-run-design.md`，比较三种
+  组合方案并冻结共享 Observed Provider、定点 Agent/Harness observer、完整数据/控制流、
+  失败映射、Artifact 投影、event budget 与 Task A-D TDD 顺序。
+- 新增 ADR-0030，显式记录 Event/Trace 1.1、合法 1.0 读取、Agent terminal、零基 Evaluation
+  attempt、section ID、可空 finish reason、missing Usage fail-closed 和两阶段 terminal commit；
+  ADR-0029 已标注由 ADR-0030 深化。
+- 本批没有修改产品代码、读取 Key、构造或调用 Provider、运行 held-out、调整 Prompt/模型
+  或引入依赖；`AgentRuntimeV1.run()` 仍未实现。
+- Canonical 唯一下一步切换为 5E-2 Task A 合同 1.1/observation port TDD；5E-2 本身仍进行中，
+  不进入 5E-3。
+- 设计相关 Runtime/Agent/Harness/Provider 聚焦回归为 `122 passed, 37 subtests passed`；完整
+  回归为 `655 passed, 103 subtests passed`。
+- RAG development 与 independent holdout 的 Recall/MRR/nDCG 均为 1.0，holdout abstention/
+  citation support 均为 1.0；compileall、Harness SDK boundary、tracked secret/run-data、
+  Harness dry-run、governance 和 `git diff --check` 通过。
+- 当前仍只完成本地设计闭环；提交、推送和 exact-SHA 公共 CI 尚未执行，不能称为公开冻结。

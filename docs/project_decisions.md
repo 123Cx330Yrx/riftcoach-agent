@@ -467,3 +467,21 @@ replace，首个成功文件不可覆盖，读取时先校验 SHA-256。它仍�
 溯源、崩溃恢复或跨进程锁。实现提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
 已通过 GitHub Actions run `31942483874` 的 exact-SHA 公共 CI；5E-1 完成，下一步只进入
 5E-2 observer 与同步 run 的入口审计/设计。
+
+### 5E-2 Observable run 入口设计决策
+
+ADR-0030 深化 ADR-0029：Provider 观察不能只放在 AgentLoop，因为 Harness 的 Evaluation、
+repair 和 Revision 都会经 `ToolRuntime("llm.chat")` 调用模型。每次 Runtime run 将共享一个
+`ObservedLLMProvider`，同时供 AgentLoop 与 Harness 使用；AgentLoop observer 只记录模型
+主动请求且通过整批预检的业务 Tool 和 Agent 终态，ReviewHarness 只记录已经成功持久化的
+transition、evaluation 和 publication。
+
+5E-1 的 Event/Trace 新写入 schema 将显式升为 1.1，读端保留合法 1.0；修正真实零基
+Evaluation attempt、冒号 section ID、可空 finish reason、Harness failure stage 和成功
+ChatResponse Usage 合同。Zhipu 缺失 Usage 不再归零，而与 DeepSeek 一样安全失败为
+`provider_usage_unavailable`。这只是一项离线合同修正，不改变历史模型实验结论。
+
+Runtime terminal 采用 prepare → prospective Trace → atomic store → commit。只有 Trace
+成功落盘后才公开 completed；Store 失败则返回 observability failure，保留已知 Harness
+publication，不暴露 output 或 Trace reference。入口设计本身不等于 `run()` 已实现；下一步
+只进入 5E-2 Task A 合同 1.1 与 observation port TDD。

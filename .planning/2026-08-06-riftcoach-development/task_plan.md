@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 7 - 5E-2 Observable run() Vertical Slice（待入口审计与设计）
+Phase 7 - 5E-2 Observable run() Vertical Slice（设计完成，待 Task A TDD）
 
 ## Phases
 
@@ -189,8 +189,8 @@ Phase 7 - 5E-2 Observable run() Vertical Slice（待入口审计与设计）
 - 5E 内部固定为 5E-1 合同/Usage/Trace Store、5E-2 observable run、5E-3 live stream
   parity、5E-4 evaluation/exit review；
 - 5E-1 严格模型、Recorder、不完整 Usage 和原子 Trace Store 已完成并通过 exact-SHA CI；
-- 当前进入 5E-2，先审计/设计默认关闭的 AgentLoop/Tool/Harness observer、失败映射和
-  同步 run 控制流；尚不实现 stream；
+- 5E-2 入口审计/设计与 ADR-0030 已本地完成；当前先做合同 1.1/observation port TDD，
+  尚未接 observer、实现 run 或进入 stream；
 - ReviewHarness 继续是唯一发布权，Runtime 状态与 publication 状态分开，Trace 只保存
   安全元数据和 Artifact 引用；
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
@@ -198,10 +198,11 @@ Phase 7 - 5E-2 Observable run() Vertical Slice（待入口审计与设计）
 
 ## Next Step
 
-`5E-2 Observable run() Vertical Slice`：先审计现有 AgentLoop、ToolRuntime、
-SkillReviewExecutor 与 ReviewHarness 的稳定接缝，比较 observer 和失败映射方案并形成
-初学者设计；设计冻结后才开始 TDD。当前不实现 `stream()`，不读取 Key、不调用 Provider、
-不测试 Flash、不迁移 GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
+`5E-2 Observable run() Vertical Slice / Task A`：先写失败测试固定 Event/Trace 1.1、合法
+1.0 读取、Agent terminal、真实零基 Evaluation attempt、安全 section ID/finish reason、
+missing Usage、observer failure 与 prospective terminal，再做最小实现。当前不实现
+`stream()`，不读取 Key、不调用 Provider、不测试 Flash、不迁移 GLM-5.3、不修改默认模型，
+也不采用 LangGraph 或 Agent SDK。
 
 ## Decisions Made
 
@@ -509,10 +510,15 @@ SkillReviewExecutor 与 ReviewHarness 的稳定接缝，比较 observer 和失�
 
 ### 5E-2 Observable run() Vertical Slice（2026-08-16）
 
-- [ ] 初学者解释 observer、同步 Runtime、失败映射和 Trace 提交边界；
-- [ ] 审计 AgentLoop、ToolRuntime、SkillReviewExecutor、ReviewHarness 稳定接缝；
-- [ ] 比较方案并写入入口设计/ADR 影响，不以 5E-1 代码存在代替设计；
-- [ ] 设计确认后按 TDD 实现，不提前进入 5E-3 stream parity。
+- [x] 初学者解释 observer、同步 Runtime、失败映射和 Trace 提交边界；
+- [x] 审计 AgentLoop、ToolRuntime、SkillReviewExecutor、ReviewHarness 稳定接缝；
+- [x] 比较方案并写入入口设计与 ADR-0030，不以 5E-1 代码存在代替设计；
+- [ ] Task A：合同 1.1、1.0 读取兼容、observation port 与 prospective terminal TDD；
+- [ ] Task B：共享 Observed Provider 与 AgentLoop 观察；
+- [ ] Task C：Harness/Executor 持久化后观察与 Artifact 投影；
+- [ ] Task D：两个真实 Skill 的统一同步 `run()` 纵向切片；
+- [ ] 完整门禁、持久状态、提交/推送与 exact-SHA CI；
+- [ ] 5E-2 完成前不进入 5E-3 stream parity。
 
 本批错误日志：
 
@@ -542,4 +548,6 @@ SkillReviewExecutor 与 ReviewHarness 的稳定接缝，比较 observer 和失�
   进度且无 exit code，不能作为证据；已用显式保留 session_id 的新运行重新执行并完整得到
   `655 passed, 103 subtests passed`。并行残留使该次耗时变长，但结果与测试内容未受影响；
 - 首次尝试一次性回写全部 5E-1 public 状态时，一处跨行上下文与真实长段落不完全一致，
-  `apply_patch` 原子拒绝且没有部分修改；已拆成精确小补丁完成状态交接。
+  `apply_patch` 原子拒绝且没有部分修改；已拆成精确小补丁完成状态交接；
+- 5E-2 符号清单命令在 Windows 直接传入 `app/runtime/*.py`，该 glob 未展开，Runtime 部分
+  报路径错误但其余模块结果有效；后续改用目录加 `-g '*.py'` 或真实文件列表，不重复该写法。

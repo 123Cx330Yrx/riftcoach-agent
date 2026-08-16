@@ -1408,3 +1408,111 @@
   会让调用方无法定位或复核产物，因此由 Trace 复读合同强制这一关联。
 - 本批 39 项聚焦、166 tests/55 subtests 相邻、655 tests/103 subtests 全量回归及全部门禁
   通过，外部 Provider I/O 为 0；下一步仅为公开验证。
+
+## 2026-08-16：5E-2 入口恢复约束
+
+- Canonical 状态、活动计划、RQ-001/002/003/006/009/011/012/014/017/019/028 与能力矩阵
+  一致：5E-2 只负责 observer 接缝和统一同步 run 的纵向切片，5E-3 才负责 stream parity。
+- ReviewHarness 必须继续是唯一发布权；Runtime 只能观察、组合和映射终态，不能复制评测、
+  修订或发布决策。
+- 5E-1 只提供安全语言、Recorder、Usage 与最终 Trace Store；它尚未证明底层信号来自实际
+  执行时刻，也没有证明两个真实 Skill 能通过同一 Runtime `run()` 得到 Trace 与 typed output。
+- 当前无领域 Provider 准入，因此 5E-2 应使用 Fake Provider + 真实本地 Tool/RAG/Harness
+  验证控制流；不得把本检查点变成新的模型评测或读取 Key。
+- 5P/5F/阶段 6/8 边界保持：Prompt Program、Pi/Claude SDK 对照、Session/Memory、durable
+  event log、cancel/resume、DAG、Multi-Agent 与前端均不进入本轮。
+
+## 2026-08-16：5E-2 接缝初步清单
+
+- 现有主组合入口是 `SkillReviewExecutor.execute()`；它在 Harness 前完成 Boundary、Context、
+  Compiler 绑定，并通过 `_BoundAgentDraftPreparationStep` 把 Agent draft/evidence 交给
+  `ReviewHarness.run()`，最后由 `SkillTerminalOutputBuilder` 从 terminal Manifest/Artifact
+  重建 typed output。
+- Agent 内部真实接点位于 `AgentLoop.run()` 的 Provider 调用前后和 ToolRuntime 返回后；
+  ToolRuntime 自身已有 attempts/latency/cache/fallback 安全 envelope，observer 不应复制
+  Tool 参数或结果正文。
+- Harness 的真实接点集中在 `ReviewHarness._transition()`、每次 Evaluator 返回并通过校验后、
+  `_finish_terminal()`/`_publish()`；直接从最终 Manifest 事后补写会丢失实时 provenance。
+- 5E-2 需要解决 `_BoundAgentDraftPreparationStep` 当前把 `AgentDraftPreparationError` 再包装后
+  丢失完整 `AgentRunResult` 的 Bad Case；更合适的是实时 Signal，而不是把异常对象落 Trace。
+
+### AgentLoop 具体接点发现
+
+- `AgentLoop.run(request)` 当前只有同步 request 参数；增加 keyword-only、默认 no-op observer
+  可保持所有旧调用方兼容，且 observer 不能进入 `AgentRunRequest.metadata`，避免被当作
+  Provider/Tool 数据传播。
+- `provider_call_started` 必须在 capability negotiation 成功后、`provider.chat()` 紧前发出；
+  若在 capability 检查前发出，会把未发生的外部调用错误计入 attempted Usage。
+- Provider completion 的 `ChatResponse` 已提供 finish reason/TokenUsage；observer 只投影这些
+  安全字段，不传 response content、tool arguments 或 SDK payload。
+- Tool started 应位于整批权限/预算/重复预检全部通过之后、每个 `ToolRuntime.execute()` 紧前；
+  completed 使用 `ToolResult` 的 name/version/success/attempts/latency/cache/fallback，不能传 data。
+- 当前事件族没有独立 Agent terminal Signal。这样 Provider/Tool 发生前的 context budget、timeout、
+  invalid tool configuration 等 Agent stop 只能最终折叠为 Harness `draft_preparation_failed`；需在
+  5E-2 方案比较中明确是接受该 V1 粒度，还是以显式合同修订增加安全 Agent terminal 观察。
+
+### Provider、Tool 与 Harness 合同对齐
+
+- `LLMProvider` 已公开 `provider_name` 与 `model_name`，AgentLoop 无需从响应正文或外部配置
+  猜 Provider identity；completion 还可核对 normalized response 的 provider/model 是否一致。
+- capability negotiation 抛出的 `ProviderCapabilityError` 是 `ProviderError` 子类但发生在 I/O 前。
+  它应形成 Agent 安全失败/停止观察，但不能形成 provider started/failed 对，因为那会把零调用
+  错记为一次 attempted call。
+- Tool Signal 最小接点应放在 AgentLoop 对整批 ToolCall 完成原子预检之后、每次
+  `ToolRuntime.execute()` 前后；不需要修改 ToolRuntime。这样一个 Agent 逻辑工具调用只记一对
+  started/completed，而内部 retry/cache/fallback 由 `ToolResult` envelope 汇总，不会重复计数。
+- `ReviewHarness._transition()` 在成功持久化 Manifest 后最适合发 `harness_transitioned`；source
+  必须从写入前 Manifest 取得，revision count/attempt 已由状态机更新。
+- `evaluation_completed` 应在 evaluator 返回且 `_validate_evaluation()` 通过后发出；blocking
+  categories 只保存 issue category allowlist/安全码，不保存 issue 原文。
+- `publication_decided` 应在 `_finish_terminal()` 成功写入 terminal Manifest 后发出，状态来自
+  Harness terminal truth；`_step_failure_reason()` 的 `:ExceptionClass` 不得进入 Runtime Trace，
+  只保留冒号前的稳定 reason code。
+- 组件 observer 异常不应被当成业务失败静默吞掉。5E-2 内部 observer 是 Recorder，异常需由
+  Runtime 显式映射为 observability failure；5E-3 的外部消费者隔离应由 Runtime event sink
+  处理，而不是让 Agent/Harness 猜 observer 类型。
+
+### Runtime 外层组合所需事实
+
+- `ContextBuilderV1.build()` 已接受可信 `max_context_tokens` 并与 Manifest ceiling 取最小值；
+  Runtime 可以直接传 `RuntimePolicySnapshot.max_context_tokens`，但不能改写 Skill 的工具、
+  iteration、tool-call 或 timeout budget，这些仍由 `AgentRunCompiler` 从 Manifest 产生。
+- Boundary、Context、Review Executor 分别有明确异常类型，足以在 Runtime 外层映射
+  boundary/context/publication failure；原始异常 message 和类名不应进入 Signal/Trace。
+- 两个真实 Skill 的 typed output 已统一包含 run_id/status/report/evaluation/evidence/warnings；
+  RuntimeRunResult 可以泛型承载，不需要复制近期/单局业务字段。
+- 5E-2 还必须明确 `RuntimeIdentitySnapshot` 的可信构造来源。Skill/version 可从 validated
+  execution 取得，Provider/model 可从 LLMProvider 取得；Context、Prompt profile 与 Harness
+  version 需要复用现有版本常量或由可信 composition root 显式注入，不能从用户 payload 推断。
+- `RuntimeTrace` 当前要求 publication event 的 artifact SHA 都能在 Trace artifact references
+  中找到，因此 Runtime 必须把 terminal Manifest records 投影为安全相对引用，而不是只保存
+  final report 或直接复制 Artifact 正文。
+
+## 2026-08-16：5E-2 入口审计最终裁决
+
+- 只在 AgentLoop 观察 Provider 不完整：Harness 的 Evaluation、repair、Revision 经
+  `ToolRuntime("llm.chat")` 再调用 Provider，且 Tool policy 可 retry。采用 run-scoped
+  `ObservedLLMProvider` 作为唯一 Provider 观察点，同一实例同时注入 Agent 与 Harness。
+- Tool 事件只表示 Agent 依据 Manifest 主动请求的业务 Tool；若全局观察 ToolRuntime，内部
+  `llm.chat` 会被重复算成业务 Tool。AgentLoop 应在整批预检后发 started，并从 `ToolResult`
+  投影 completed；正常失败为 `success=false + safe failure_code`。
+- 当前没有可复现的 ToolRuntime 契约外抛 Bad Case，因此不单独增加 `tool_call_failed`。
+  将来若出现，必须与 Tool Usage partial/unknown 一起设计，不能把未知 attempts 写成 0。
+- 需要新增 `agent_run_terminated`，否则 context budget、timeout、max iterations、越权和非法
+  Tool 配置会被 Harness 折叠成相同的 `draft_preparation_failed`。
+- Harness observer 的真实接点是持久化成功后的 `_transition()`、Evaluation Artifact 注册后、
+  terminal Manifest 写入后；state machine、Store 和 output builder 都不是业务观察点。
+- Observer/Recorder 错误需包装为 `RuntimeObservationError` 并穿透 Agent/Harness 的 broad
+  catch。5E-2 采用 fail-fast；5E-3 的外部 subscriber 隔离仍由 Runtime fan-out 处理。
+- Evaluation Signal 直接使用零基 `manifest.attempt_id`，与 `evaluation_attempt_0.json`
+  对齐；Context omission 使用独立冒号 section-ID 正则；missing finish reason 保留 null。
+- Zhipu 当前把 missing Usage 写成 `TokenUsage(0,0)`，与 completeness-aware Runtime 冲突；
+  5E-2 Task A 将使成功 ChatResponse 必须显式携带 Usage，并令 Zhipu missing/invalid Usage
+  fail closed 为 allowlisted `provider_usage_unavailable`。本裁决不需要真实 Provider I/O。
+- 当前 Recorder 存在 terminal/store 自指悖论。ADR-0030 决定用 prepare terminal candidate、
+  prospective Trace、原子写盘、commit exact event；Store 失败时取消 candidate，只形成进程内
+  observability failure，不递归重试同一 Store。
+- 新写 Event/Trace schema 为 1.1，读端保留合法 1.0 并核对 TraceReference 版本；Runtime
+  产品版本保持 1.0。当前没有持久化 Runtime Trace，因此无生产数据迁移。
+- Event budget 需在副作用前按可信 Agent/Harness/retry 预算验证，并为 Runtime terminal 保留
+  slot；不能让两个非终态事件吃满预算后再尝试记录失败。
