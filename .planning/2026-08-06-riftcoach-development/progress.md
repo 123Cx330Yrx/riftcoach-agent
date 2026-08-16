@@ -1573,3 +1573,12 @@
   Harness dry-run、governance 和 `git diff --check` 通过。
 - 当前只待提交、推送、exact-SHA 公共 CI 与 Task A 教学验收；Task B、统一 `run()`、
   `stream()`、Key/Provider I/O 和 held-out 均未开始。
+
+## 2026-08-16：5E-2 Task A 已公开验证
+
+- 实现提交 `2e78c9606fe93b56657d4bb13c8efe0f1eed98fe` 已推送；GitHub Actions run
+  `31947625293` 对精确 SHA completed/success。
+- 公共 Linux CI 通过治理、691 tests/110 subtests、两套 RAG、compileall、Harness SDK/
+  tracked-data boundary 与 dry-run；没有 Key、真实 Provider I/O 或 held-out。
+- Task A 至此闭环。唯一下一步为用户确认后的 Task B Observed Provider + AgentLoop 观察；
+  本轮停下教学验收，不自动进入 Task B。

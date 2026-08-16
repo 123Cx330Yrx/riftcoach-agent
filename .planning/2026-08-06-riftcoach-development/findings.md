@@ -1556,3 +1556,10 @@
   不证明 AgentLoop/Harness 已发信号或统一 `run()` 已存在。
 - 本地收尾全程没有读取 Key、构造/调用真实 Provider、运行 held-out、调整 Prompt/模型或
   进入 Task B。
+
+## 2026-08-16：5E-2 Task A 公共证据
+
+- 实现提交 `2e78c9606fe93b56657d4bb13c8efe0f1eed98fe` 已由 GitHub Actions run
+  `31947625293` 对 exact SHA 完整验证；公共 CI 无 Key、真实 Provider I/O 或 held-out。
+- Task A 只冻结合同、端口、Usage 和 terminal 地基。下一步 Task B 才让真实 Agent 执行点
+  发出这些 Signal；因此公共 CI 不能解释为 observable `run()` 已完成。

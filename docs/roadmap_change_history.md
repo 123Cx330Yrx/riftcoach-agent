@@ -1228,5 +1228,7 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   compileall、安全边界、Harness dry-run、governance 和 diff check 均通过。
 - `BOUNDARY`：本批没有接入 `ObservedLLMProvider`、AgentLoop/Harness observer 或实现统一
   `run()`；没有读取 Key、调用 Provider、运行 held-out、改 Prompt/模型或进入 5E-3。
-- `CURRENT`：唯一下一步仍在 5E-2 Task A，只完成提交、推送、exact-SHA 公共 CI 和教学
-  验收；公共成功前不进入 Task B。
+- `PUBLIC-VERIFIED`：实现提交 `2e78c9606fe93b56657d4bb13c8efe0f1eed98fe` 已通过
+  GitHub Actions run `31947625293` 的 exact-SHA 全部门禁；CI 无 Key/Provider I/O。
+- `CURRENT`：Task A 已闭环；唯一下一步为用户确认后的 Task B run-scoped Observed
+  Provider 与 AgentLoop 观察，不自动进入 Task C/D 或 5E-3。

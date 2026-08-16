@@ -500,6 +500,7 @@ candidate 是绑定单个 Recorder 的一次性对象，提交前不可见，abo
 已经持久化 terminal 状态，Runtime failure 必须保留该 publication truth，即使
 `publication_decided` 尚未来得及观察。
 
-该本地实现已通过 131 项聚焦、149 项相邻和 691 项完整测试及全部本地门禁；当前只待
-提交与 exact-SHA 公共 CI。`ObservedLLMProvider`、AgentLoop/Harness 接线和统一 `run()`
-仍分别属于后续 Task B-D，不因合同代码存在而提前完成。
+该实现已通过 131 项聚焦、149 项相邻和 691 项完整测试及全部本地门禁；提交
+`2e78c9606fe93b56657d4bb13c8efe0f1eed98fe` 又由 Actions run `31947625293` 完成
+exact-SHA 公共验证。`ObservedLLMProvider`、AgentLoop/Harness 接线和统一 `run()`仍分别
+属于后续 Task B-D，不因合同代码存在而提前完成。
