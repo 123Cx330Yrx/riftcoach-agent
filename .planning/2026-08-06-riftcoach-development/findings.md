@@ -1367,3 +1367,44 @@
   租约、恢复和并发没有当前 V1 Bad Case；EchoMind 的聚合指标也不能替代单次 Trace。
 - 5E V1 采用进程内实时事件 + 原子最终 Trace 快照，不声称事件溯源、durable replay、
   cancel 或 Token streaming；这些边界让 5F 能用同一业务合同客观比较第三方 Runtime。
+
+## 2026-08-15：5E-1 合同与存储源码审计发现
+
+- 仓库使用 Python 3.11、Pydantic 2.x；机器消费的新合同普遍采用
+  `ConfigDict(extra="forbid", frozen=True)`，5E-1 应保持同一严格风格。
+- Provider 的旧 `TokenUsage` 是 frozen dataclass 且默认 0/0，只适合已经规范化的单次
+  `ChatResponse`；Runtime Usage 不能修改它的历史语义，而应新增完整性明确的聚合合同。
+- `FileRunStore` 已提供临时文件、flush/fsync、`os.replace` 和 run 目录内路径校验；
+  `RuntimeTraceStore` 应复用这些成熟原则，但独立存在，以便 Harness 创建前失败也能落 Trace。
+- 5E-1 不需要新增第三方依赖，也不应顺手重构现有 Harness store 或 Provider models。
+- 共享 run ID 的实际权威位于 `app/harness/run_ids.py`，Runtime 请求与 Store 必须直接复用
+  `normalize_run_id()`，不能复制正则或只依赖目录 resolve。
+- `SkillExecutionRequest` 已是严格、冻结、绑定 Artifact commitment 的 Pydantic 输入；
+  `RuntimeRunRequest` 应包装该对象，不重新定义 utterance、Router 或 payload 字段。
+- 现有存储测试采用 `unittest` + `TemporaryDirectory`，覆盖不可变路径、篡改与失败后保留旧
+  文件；5E-1 测试应沿用这一风格并额外验证 Trace 的严格复读。
+- `app.harness.__init__` 会重导出 `ReviewHarness`，未来 Harness 若导入整个 Runtime package
+  容易形成循环依赖；5E-1 应让 `app/runtime/__init__.py` 保持轻量，并把 Signal 合同放在
+  不导入 Harness/Skill 的低依赖模块中。
+- Harness Evaluation verdict 实际为 `pass/needs_revision/fail`；运行信号可以定义对应的
+  Runtime 枚举，在 5E-2 接缝显式映射，避免底层 Signal 模块反向导入 Harness。
+- 当前两个真实 Skill 都是 4 iterations / 3 tool calls，但 Manifest 合同允许最高
+  20 iterations / 50 tool calls；默认 256-event 预算能覆盖最坏成对 Provider/Tool 信号、
+  Harness 状态和 Runtime 边界，并保留余量。该预算仍是可信 Runtime policy，不是用户输入。
+
+## 2026-08-15：5E-1 实现与验证发现
+
+- Artifact `schema_version` 沿用项目现有 `1.0` 数据合同，不能误用要求三段式的应用 semver；
+  Skill/Provider/Prompt/Harness policy 等软件版本仍使用三段式版本。
+- Trace 必须独立校验 Provider/Tool start-close 生命周期，不能假定所有 JSON 都由 Recorder
+  产生；否则手工构造或磁盘输入可以保存“没有 start 的 failure/completion”。
+- `ToolResult` 的缓存命中允许 `attempts=0`，latency 也是 float；Runtime Signal/Usage 必须
+  保真，而不能为了整数统计收窄既有 Tool 合同。
+- Provider 已发请求但没有规范化响应时，`provider_calls_attempted>0`、response 为 0、
+  Token/成本 total 为 null；observed lower bound 与精确 total 是两个不同字段。
+- Store 的原子最终快照能防止半写和顺序覆盖，但 ADR-0029 已明确不承诺跨进程竞争、
+  逐事件 durability 或进程崩溃恢复；这些不能从一次 `os.replace` 推导出来。
+- Publication event 的 Artifact digest 必须能在 Trace 的相对引用中找到；只记录裸 SHA
+  会让调用方无法定位或复核产物，因此由 Trace 复读合同强制这一关联。
+- 本批 39 项聚焦、166 tests/55 subtests 相邻、655 tests/103 subtests 全量回归及全部门禁
+  通过，外部 Provider I/O 为 0；下一步仅为公开验证。

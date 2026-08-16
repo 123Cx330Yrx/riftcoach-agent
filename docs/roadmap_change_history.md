@@ -1165,3 +1165,23 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   `c91c2d75f85e1315e65e9768894982556053a7b0` 已通过 GitHub Actions run
   `31878052835`；公共 CI 无 Key/Provider I/O。5E-entry-design 正式闭环，下一检查点保持
   5E-1。
+
+### 2026-08-15：5E-1 Runtime Contract、Usage 与 Trace Store 本地实现
+
+- `IMPLEMENTED`：新增低依赖强类型 Signal、严格 request/result/event/usage/trace 合同、
+  中央 Recorder 和不可覆盖的原子 `runtime_trace.json` Store；没有修改 AgentLoop、
+  ToolRuntime、ReviewHarness 或 Provider。
+- `INVARIANTS`：sequence/UTC/elapsed 由 Recorder 统一生成；Provider/Tool 调用必须按连续
+  ordinal start 后关闭；唯一 terminal 后不得追加；Trace 复读会独立重验调用生命周期、
+  Runtime/publication 双状态和 Usage 一致性。
+- `USAGE`：无 Provider 调用、全部响应、部分响应和无响应分别为 not_applicable、complete、
+  partial、unknown；partial/unknown 不伪造 Token 总数或成本，版本化 Decimal 定价只对
+  可完整计算的 Usage 生效。
+- `STORE`：最终 Trace 采用安全 run ID、同目录临时文件、flush/fsync、原子 replace、
+  首写不可覆盖与 SHA-256 回读完整性；它不是 durable event log 或 crash recovery。
+- `VERIFIED-LOCAL`：Runtime 聚焦 `39 passed`，Skill/Agent/Tool/Harness 相邻回归
+  `166 passed, 55 subtests passed`，完整回归 `655 passed, 103 subtests passed`；两套
+  RAG 1.0、compileall、Harness SDK/tracked-data boundary、dry-run 与治理均通过。
+- `NO-IO`：未读取 Key、构造或调用 Provider、运行 held-out、修改 Prompt/模型或引入新依赖。
+- `CURRENT`：唯一下一步仍是 5E-1，只做提交、推送与 exact-SHA 公共 CI；成功前不得
+  进入 5E-2 observable run。

@@ -449,3 +449,19 @@ Runtime 状态与 Harness publication 状态分开；Trace 只保存版本、pol
 安全事件、完整性明确的 Usage、终止原因和 Artifact 引用/哈希。已发送但未观察 Usage 的
 Provider call 必须记为 partial/unknown 和 null，不能折算为零。5E 依次执行 5E-1 至
 5E-4；当前唯一下一步为 5E-1 合同、Usage、Recorder 与 Trace Store 的纯本地 TDD。
+
+### 5E-1 Runtime 合同与 Trace 存储实现决策
+
+5E-1 使用严格冻结 Pydantic 合同和低依赖 Signal 模块；底层 Signal 只表达安全语义，
+Recorder 才添加 run ID、全局 sequence、UTC 时间和 monotonic elapsed。Trace 在加载时
+再次校验调用 start/close 配对、连续 ordinal、唯一终态和 Usage 一致性，不能只信任
+Recorder 内存状态。
+
+Runtime Usage 不修改旧 `TokenUsage(0, 0)` 的单响应语义，而是新增聚合完整性：无调用为
+not_applicable，全部响应可观察为 complete，部分可观察为 partial，全部未知为 unknown。
+partial/unknown 的精确总 Token 和成本均为 null；成本只有在完整性允许且注入版本化定价
+Profile 时才计算。
+
+最终 `runtime_trace.json` 使用共享安全 run ID、同目录临时文件、flush/fsync 与原子
+replace，首个成功文件不可覆盖，读取时先校验 SHA-256。它仍只是最终快照，不提供事件
+溯源、崩溃恢复或跨进程锁。当前本地门禁已通过；公共 CI 前不进入 5E-2。

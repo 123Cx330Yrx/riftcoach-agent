@@ -19,8 +19,9 @@ blocked_before: "5P"
 - 最后更新：2026-08-15
 - 主阶段：阶段 5，进行中
 - 当前子阶段组：5E AgentRuntime V1。入口设计与 ADR-0029 已完成，冻结为“薄 Runtime
-  + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；尚未实现 Runtime
-  产品代码。5D Python 受限 Agent Loop
+  + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
+  Recorder/Usage 与 Trace Store 已在本地完成并通过门禁，当前等待提交和 exact-SHA
+  公开验证。5D Python 受限 Agent Loop
   已通过退出审查；以下保留其 entry design、5D-1 至 5D-7 的公开证据链：
   5D-7 Batch A-C 与 Batch D 的 D1-D5 已完成，DeepSeek V4 Pro Adapter 真实
   structured/tool 协议 3/3 calls 已准入；三场领域 held-out 的控制面以及独立输入计划、
@@ -107,10 +108,9 @@ blocked_before: "5P"
   `31877076222` 的 exact-SHA 公共 CI；5E 入口设计提交
   `c91c2d75f85e1315e65e9768894982556053a7b0` 已通过 GitHub Actions run
   `31878052835` 的 exact-SHA 公共 CI
-- 唯一下一步：`5E-1 Runtime Contract、Usage 与 Trace Store`；先用严格模型和纯本地
-  TDD 固定 request/result/signal/event/usage/trace、序列与终态不变量、不完整 Usage 和
-  原子存储。不得接入 AgentLoop/Harness observer、实现 `run/stream()`、读取 Key、调用
-  Provider 或切换模型
+- 唯一下一步：`5E-1 Runtime Contract、Usage 与 Trace Store` 的提交、推送和 exact-SHA
+  公共 CI；成功前不得进入 5E-2。该动作不接入 AgentLoop/Harness observer、不实现
+  `run/stream()`、不读取 Key、不调用 Provider 或切换模型
 - 禁止越过：5E 完成前不得进入 5P Prompt Program V1 或 5F Runtime/SDK 采用实验；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
   协议、候选选择或发布热度替代领域质量证据
@@ -146,7 +146,7 @@ blocked_before: "5P"
 | 子阶段 | 职责 | 当前状态 | 完成/验收证据 |
 |---|---|---|---|
 | 5E-entry-design | 审计分散信号、比较组合方案、冻结 Runtime 边界与 NFR | 已完成 | 初学者设计、ADR-0029、四批实施顺序；616 tests/103 subtests、两套 RAG 和全部本地门禁；`c91c2d7` / Actions `31878052835` 公开通过；无产品代码或 Provider I/O |
-| 5E-1 Runtime Contract、Usage 与 Trace Store | 严格合同、Recorder、未知 Usage 与原子最终 Trace | 当前唯一下一步 | 尚未实现 |
+| 5E-1 Runtime Contract、Usage 与 Trace Store | 严格合同、Recorder、未知 Usage 与原子最终 Trace | 本地完成，待公开验证 | 39 项聚焦、166 tests/55 subtests 相邻回归、655 tests/103 subtests 全量回归；两套 RAG、compileall、安全边界、dry-run 与治理通过；无 Provider I/O |
 | 5E-2 Observable `run()` Vertical Slice | observer 接缝与两个 Skill 的统一同步执行/Trace | 未开始 | 需 5E-1 通过 |
 | 5E-3 Live `stream()` & Parity | 同一执行核心的进程内实时事件和 run/stream 同终态 | 未开始 | 需 5E-2 通过 |
 | 5E-4 Runtime Evaluation & Exit Review | 安全、失败、资源、纵向评测与 5E 退出审查 | 未开始 | 需 5E-3 通过 |
@@ -387,10 +387,10 @@ blocked_before: "5P"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A、5B、5C 和整个 5D；5E 尚未开始设计；当前无领域 Provider 准入 | 阶段 5、生产模型报告质量、统一 Runtime/Trace、V3 资源合同或生产默认模型已经完成 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A、5B、5C 和整个 5D；5E 入口与 5E-1 本地实现完成，尚未接 observer/run/stream；当前无领域 Provider 准入 | 阶段 5、生产模型报告质量、完整 AgentRuntime、V3 资源合同或生产默认模型已经完成 |
 | 项目理解 | 已区分 Agent Loop 与 AgentRuntime，并能解释 Manifest 权限、最小 Context、Tool evidence、Harness 唯一发布门，以及评测门完成不等于模型通过 | 离线合成 executor 能评价模型智力，5D 完成等于 GLM/DeepSeek 通过，或 5E 只是给现有函数改名 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5D 退出审查提交 `2f4e4d4` 已通过 Actions `31877076222` 的 exact-SHA CI；正式网页未部署 | 公开控制链证据等于领域模型质量、最终厂商选型、生产切换或 Web Agent 可用 |
+| GitHub/部署 | 5E 入口设计提交 `c91c2d7` 已通过 Actions `31878052835` 的 exact-SHA CI；5E-1 本地实现尚待公开验证，正式网页未部署 | 本地 Runtime 合同等于公开控制链、领域模型质量、最终厂商选型、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -446,9 +446,10 @@ ADR-0009。
 
 ## 下一检查点的范围
 
-当前唯一下一检查点是 `5E-1 Runtime Contract、Usage 与 Trace Store`。5E 入口设计已经
-用 ADR-0029 接受薄 Runtime 方案，并明确 5E-1 只做严格合同、Recorder、Usage 和原子
-Trace Store，不接 AgentLoop/Harness 或实现 `run/stream()`。本节后续保留从 5C 到 5D 的历史范围账本；
+当前唯一下一检查点仍是 `5E-1 Runtime Contract、Usage 与 Trace Store`，但本地 TDD 与
+门禁已经完成，只剩提交、推送和 exact-SHA 公共 CI。5E-1 已实现严格合同、Recorder、
+Usage 和原子 Trace Store，仍未接 AgentLoop/Harness observer 或实现 `run/stream()`；
+公共验证成功前不得切换到 5E-2。本节后续保留从 5C 到 5D 的历史范围账本；
 其中旧“下一步”只表示当时顺序，不覆盖本文顶部的 canonical checkpoint。
 
 `5C-5-prep-1 Skill Invocation Contract` 与 `5C-5-prep-3 report-fact-check Skill`

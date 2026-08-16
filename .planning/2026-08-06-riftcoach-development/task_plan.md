@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 7 - 5E-1 Runtime Contract、Usage 与 Trace Store（entry design complete）
+Phase 7 - 5E-1 Runtime Contract、Usage 与 Trace Store（本地完成，待公开验证）
 
 ## Phases
 
@@ -188,8 +188,8 @@ Phase 7 - 5E-1 Runtime Contract、Usage 与 Trace Store（entry design complete�
   事件溯源/DAG 重写；
 - 5E 内部固定为 5E-1 合同/Usage/Trace Store、5E-2 observable run、5E-3 live stream
   parity、5E-4 evaluation/exit review；
-- 当前只进入 5E-1：严格模型、Recorder、不完整 Usage 和原子 Trace Store，尚不修改
-  AgentLoop/Harness observer，也不实现完整 `run/stream()`；
+- 5E-1 严格模型、Recorder、不完整 Usage 和原子 Trace Store 已在本地完成；当前只做
+  提交、推送和 exact-SHA CI，尚不修改 AgentLoop/Harness observer 或实现 `run/stream()`；
 - ReviewHarness 继续是唯一发布权，Runtime 状态与 publication 状态分开，Trace 只保存
   安全元数据和 Artifact 引用；
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
@@ -197,11 +197,10 @@ Phase 7 - 5E-1 Runtime Contract、Usage 与 Trace Store（entry design complete�
 
 ## Next Step
 
-`5E-1 Runtime Contract、Usage 与 Trace Store`：用纯本地 TDD 实现严格
-`RuntimeRunRequest/Result`、类型化 Signal/Event、中央 Recorder、complete/partial/unknown
-Usage 与不可覆盖的原子最终 Trace Store。当前不接 AgentLoop/Harness observer，不实现
-完整 `run()/stream()`，不读取 Key、不调用 Provider、不测试 Flash、不迁移 GLM-5.3、
-不修改默认模型，也不采用 LangGraph 或 Agent SDK。
+`5E-1 Runtime Contract、Usage 与 Trace Store`：提交、推送当前本地实现并验证精确 SHA
+的公共 CI。成功前不切换 canonical checkpoint；仍不接 AgentLoop/Harness observer、
+不实现完整 `run()/stream()`，不读取 Key、不调用 Provider、不测试 Flash、不迁移
+GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
 
 ## Decisions Made
 
@@ -294,6 +293,8 @@ Usage 与不可覆盖的原子最终 Trace Store。当前不接 AgentLoop/Harnes
 
 | Error | Attempt | Resolution |
 |---|---:|---|
+| 5E-1 源码审计误写 `app/harness/run_id.py` | 1 | 只读命令报告文件不存在，其他读取继续完成；后续按实际模块 `app/harness/run_ids.py` 定位，不重复错误路径 |
+| 5E-1 审计在 Windows 直接把 `skills/*/manifest.yaml` 传给 `rg` | 1 | 前序文件均已读，只有该 glob 失败；后续用 `rg ... skills -g manifest.yaml`，不重复 Windows 路径通配写法 |
 | 授权后的 P1 diagnostic 首次启动被本地 `LLM_PROVIDER=glm` 与内部 ID `zhipu` 的配置门禁拒绝 | 1 | 在 client factory 前失败，真实调用数为 0；沿用首轮实验的子进程级规范化为 `zhipu`，不改 `.env`、不打印 Key，再执行唯一获授权请求 |
 | 干净环境验证把 TEMP 内旧 venv 的递归清理与安装串在同一 PowerShell 命令，被终端安全策略拒绝 | 1 | 命令未执行、无文件变化；改用带随机 ID 的全新 TEMP 目录且不做任何递归删除 |
 | Task 4 首次公开 CI 因无上界 `openai` 解析到 3.0.0、缺少 SDK 2.x 的 `httpx` 合同而收集失败 | 1 | 不用额外 `httpx` 掩盖大版本漂移；把当前已验证合同收紧为 `openai>=2,<3`，用全新临时环境重装、回归并重新验证 CI |
@@ -494,3 +495,41 @@ Usage 与不可覆盖的原子最终 Trace Store。当前不接 AgentLoop/Harnes
 - [x] 设计提交 `c91c2d75f85e1315e65e9768894982556053a7b0` 已推送并通过 Actions
   run `31878052835` 的 exact-SHA public CI；
 - [ ] 进入 5E-1 前先讲解合同、Usage 和原子 Trace Store 的原理与 TDD 证明范围。
+
+### 5E-1 Runtime Contract、Usage 与 Trace Store（2026-08-15）
+
+- [x] 初学者解释具体问题、Signal/Event、Usage unknown、数据流、测试与排除项；
+- [x] 审计 Pydantic、共享 run ID、SkillExecutionRequest、Harness Store 与预算上界；
+- [x] 写入可执行的 5E-1 TDD 实施计划；
+- [x] 先写合同、Recorder/Usage、Store 失败测试并确认红灯；
+- [x] 实现低依赖 Signal、严格 Runtime 模型、Recorder/Usage 与 Trace Store；
+- [x] 完成聚焦、相邻、完整回归和全部本地门禁；
+- [ ] 同步状态，提交、推送并完成 exact-SHA public CI。
+
+本批错误日志：
+
+- 只读审计时误猜 `app/harness/run_id.py`，实际共享实现为 `run_ids.py`，已改用真实路径；
+- Windows PowerShell 未展开 `skills/*/manifest.yaml`，已改用 `rg ... skills -g manifest.yaml`；
+- 第一次组合补丁含空的 Update hunk，`apply_patch` 原子拒绝、没有文件被部分修改；已拆成
+  有实际上下文的补丁继续；
+- 继续只读审计时误猜 `app/harness/artifacts.py`，实际 Artifact Store 位于
+  `app/harness/store.py`；已读取真实实现并保持复用其原子写入约定；
+- 查找 5E 设计时误猜简写文件名并在 Windows 给 `rg` 传了未展开通配符；命令只读失败，
+  已改为先列出真实文件名再定向读取；
+- 首轮绿灯为 `28 passed, 6 failed`：Artifact schema 被误按三段软件 semver 校验，且测试
+  fixture 的 RouterDecision 缺少已有合同要求的 evidence；已分别兼容既有 `1.0` Schema
+  版本并补真实路由证据，没有削弱产品合同；
+- 第二轮绿灯为 `33 passed, 1 failed`：Pydantic 在 Python dump 中按合同保留 tuple，负例
+  fixture 却直接 `.append()`；已先复制为 list，再构造 terminal 后事件的非法输入；
+- 实现后审查发现 ToolResult 允许缓存命中 `attempts=0` 且现有 latency 为 float，初版 Runtime
+  Signal 错误收窄为 attempts>=1/int；新增缓存路径测试，并新增 Usage 完整性与 Trace 调用配对
+  负例，先确认这些遗漏会红灯再修实现；
+- 审计 ToolResult 时再次在 Windows 向 `rg` 传未展开的 `tests/test_tool*`；同一组合命令仍返回
+  真实目标文件结果，后续统一改用目录加 `-g`，不依赖 shell glob；
+- 首次相邻回归误猜 `tests/test_agent_context.py` 等文件名，pytest 在收集前以 file not found
+  退出、没有测试结果；已改为先用 `rg --files tests` 获取真实测试文件名再运行；
+- 项目门禁审计误猜工作流名为 `.github/workflows/ci.yml`，实际为 `tests.yml`；只读组合
+  命令其余结果有效，已改读真实工作流后逐项执行；
+- 最终全量 pytest 首次通过延迟 cell 返回时没有暴露可继续轮询的 PTY session，只有 39%
+  进度且无 exit code，不能作为证据；已用显式保留 session_id 的新运行重新执行并完整得到
+  `655 passed, 103 subtests passed`。并行残留使该次耗时变长，但结果与测试内容未受影响。

@@ -1446,3 +1446,39 @@
   tracked-data boundary 与 dry-run；没有 Key 或 Provider I/O。
 - 5E-entry-design 至此闭环，但没有 Runtime 产品代码；唯一下一步保持 5E-1，不得跳到
   observable run、stream、5P 或 5F。
+
+## 2026-08-15：5E-1 TDD 红灯已建立
+
+- 新增 Runtime Contract、Recorder/Usage 与 Trace Store 三组聚焦测试；第一次测试收集
+  如预期以 3 个 `ModuleNotFoundError: app.runtime` 失败，证明测试先于产品实现生效。
+- 复核了共享 `run_id`、SkillExecutionRequest、Provider TokenUsage、Harness Artifact Store
+  与 Pydantic 严格模型约定；本切片将新增薄 Runtime 合同，不复制已有职责。
+- 修正 Trace Store 回读测试中的非确定性：保存首次构建的 Trace 后与该对象比较，避免
+  再次调用实时时钟构造不同时间戳而产生伪失败。
+- 当前进入绿灯实现；仍不接 AgentLoop/Harness observer、不调用 Provider、不实现完整
+  `run/stream()`，不提前进入 5E-2。
+
+## 2026-08-15：5E-1 首个聚焦绿灯
+
+- 新增 `app/runtime` 的低依赖 Signal、严格 request/result/event/usage/trace 模型、中央
+  Recorder 和原子不可变 Trace Store。
+- 首轮实现测试暴露两项合同对齐问题：Artifact Schema 版本并非软件 semver，测试用
+  RouterDecision 也必须携带现有路由证据；修复均保持现有产品合同而非放宽边界。
+- 另修复一个负例 fixture 对 tuple 直接 append 的测试错误；最终 Runtime 聚焦测试
+  `34 passed`。
+- 下一步为实现后审查、补足失败路径以及 Skill/Agent/Harness 相邻回归；尚未宣称 5E-1
+  完成，也尚未改动任何已有执行链 observer。
+
+## 2026-08-15：5E-1 本地实现与门禁完成
+
+- 实现强类型 Signal、Runtime request/result/event/usage/trace、中央 Recorder 与原子
+  不可变 Trace Store；没有修改 AgentLoop、ToolRuntime、Harness、Provider 或 Prompt。
+- 实现后补足缓存 Tool attempts/浮点 latency、Usage 完整性和 Trace 调用生命周期负例；
+  Runtime 聚焦测试最终为 `39 passed`。
+- Skill/Agent/Tool/Harness 相邻回归为 `166 passed, 55 subtests passed`；完整回归为
+  `655 passed, 103 subtests passed`。
+- development/independent holdout 两套 RAG Recall/MRR/nDCG 均为 1.0，holdout abstention/
+  citation support 均为 1.0；compileall、Harness SDK/tracked-data、dry-run、治理和 diff
+  门禁通过。
+- 当前只剩提交、推送和 exact-SHA 公共 CI；CI 成功前 checkpoint 保持 5E-1，不进入
+  5E-2，也不读取 Key 或调用 Provider。
