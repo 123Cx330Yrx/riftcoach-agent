@@ -1521,4 +1521,14 @@
 - RAG development 与 independent holdout 的 Recall/MRR/nDCG 均为 1.0，holdout abstention/
   citation support 均为 1.0；compileall、Harness SDK boundary、tracked secret/run-data、
   Harness dry-run、governance 和 `git diff --check` 通过。
-- 当前仍只完成本地设计闭环；提交、推送和 exact-SHA 公共 CI 尚未执行，不能称为公开冻结。
+- 在该本地验收点仍只完成设计闭环；当时提交、推送和 exact-SHA 公共 CI 尚未执行，
+  不能称为公开冻结。
+
+## 2026-08-16：5E-2 入口设计已公开验证
+
+- 设计提交 `3c6f26a4802821548be8d61085552f5b9a790468` 已推送到 `origin/main`；GitHub
+  Actions run `31944389807` 对该精确 SHA completed/success。
+- 公共 Ubuntu/Python 3.11 CI 通过治理、655 tests/103 subtests、两套 RAG、compileall、
+  Harness SDK/tracked-data boundary 与 dry-run；没有 Key 或 Provider I/O。
+- 这只公开冻结 5E-2 的接缝和合同深化设计，不代表 observer、`run()` 或 `stream()` 已实现。
+  唯一下一动作保持 Task A 合同 1.1/observation port TDD。

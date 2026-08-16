@@ -484,4 +484,6 @@ ChatResponse Usage 合同。Zhipu 缺失 Usage 不再归零，而与 DeepSeek �
 Runtime terminal 采用 prepare → prospective Trace → atomic store → commit。只有 Trace
 成功落盘后才公开 completed；Store 失败则返回 observability failure，保留已知 Harness
 publication，不暴露 output 或 Trace reference。入口设计本身不等于 `run()` 已实现；下一步
-只进入 5E-2 Task A 合同 1.1 与 observation port TDD。
+只进入 5E-2 Task A 合同 1.1 与 observation port TDD。设计提交
+`3c6f26a4802821548be8d61085552f5b9a790468` 已通过 Actions run `31944389807` 的
+exact-SHA 公共验证；CI 没有 Key 或 Provider I/O。

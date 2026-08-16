@@ -25,7 +25,9 @@ blocked_before: "5P"
   初学者设计与 ADR-0030 已在本地完成：采用 run-scoped `ObservedLLMProvider` 覆盖 Agent
   与 Harness 全部 Provider 边界，AgentLoop 只观察业务 Tool/Agent 终态，Harness 只观察
   持久化后的状态/评测/发布，并用两阶段 terminal commit 消除 Trace 写盘终态悖论；尚未
-  修改产品合同、接入 observer 或实现统一同步 `run()`。5D Python 受限 Agent Loop
+  修改产品合同、接入 observer 或实现统一同步 `run()`。设计提交
+  `3c6f26a4802821548be8d61085552f5b9a790468` 已通过 GitHub Actions run
+  `31944389807` 的 exact-SHA 公共验证。5D Python 受限 Agent Loop
   已通过退出审查；以下保留其 entry design、5D-1 至 5D-7 的公开证据链：
   5D-7 Batch A-C 与 Batch D 的 D1-D5 已完成，DeepSeek V4 Pro Adapter 真实
   structured/tool 协议 3/3 calls 已准入；三场领域 held-out 的控制面以及独立输入计划、
@@ -154,7 +156,7 @@ blocked_before: "5P"
 |---|---|---|---|
 | 5E-entry-design | 审计分散信号、比较组合方案、冻结 Runtime 边界与 NFR | 已完成 | 初学者设计、ADR-0029、四批实施顺序；616 tests/103 subtests、两套 RAG 和全部本地门禁；`c91c2d7` / Actions `31878052835` 公开通过；无产品代码或 Provider I/O |
 | 5E-1 Runtime Contract、Usage 与 Trace Store | 严格合同、Recorder、未知 Usage 与原子最终 Trace | 已完成 | 39 项聚焦、166 tests/55 subtests 相邻、655 tests/103 subtests 全量回归和全部门禁；`d891184` / Actions `31942483874` exact-SHA 公开通过；无 Provider I/O |
-| 5E-2 Observable `run()` Vertical Slice | observer 接缝与两个 Skill 的统一同步执行/Trace | 进行中 | 入口源码审计、初学者设计与 ADR-0030 已本地完成；122 tests/37 subtests 聚焦、655 tests/103 subtests 全量、两套 RAG/compile/security/dry-run/治理通过；当前进入 Task A 合同 1.1/observation port TDD，尚未接 observer 或实现 run |
+| 5E-2 Observable `run()` Vertical Slice | observer 接缝与两个 Skill 的统一同步执行/Trace | 进行中 | 入口源码审计、初学者设计与 ADR-0030 已由 `3c6f26a` / Actions `31944389807` 公开验证；122 tests/37 subtests 聚焦、655 tests/103 subtests 全量、两套 RAG/compile/security/dry-run/治理通过；当前进入 Task A 合同 1.1/observation port TDD，尚未接 observer 或实现 run |
 | 5E-3 Live `stream()` & Parity | 同一执行核心的进程内实时事件和 run/stream 同终态 | 未开始 | 需 5E-2 通过 |
 | 5E-4 Runtime Evaluation & Exit Review | 安全、失败、资源、纵向评测与 5E 退出审查 | 未开始 | 需 5E-3 通过 |
 
@@ -397,7 +399,7 @@ blocked_before: "5P"
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A、5B、5C、整个 5D 与 5E-1；5E-2 只完成本地设计，尚未接 observer/run/stream；当前无领域 Provider 准入 | 阶段 5、生产模型报告质量、完整 AgentRuntime、V3 资源合同或生产默认模型已经完成 |
 | 项目理解 | 已区分 Agent Loop 与 AgentRuntime，并能解释 Provider 不只在 Loop 调用、业务 Tool 与内部 llm.chat 的区别、Harness 唯一发布权以及两阶段 Runtime terminal | 离线合成 executor 能评价模型智力，5D 完成等于 GLM/DeepSeek 通过，或 5E 只是给现有函数改名 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5E-1 实现提交 `d891184` 已通过 Actions `31942483874` 的 exact-SHA CI；正式网页未部署 | 公开 Runtime 合同等于完整 run/stream、领域模型质量、最终厂商选型、生产切换或 Web Agent 可用 |
+| GitHub/部署 | 5E-2 设计提交 `3c6f26a` 已通过 Actions `31944389807` 的 exact-SHA CI；正式网页未部署 | 公开设计等于 observer/run/stream 已实现、领域模型质量、最终厂商选型、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

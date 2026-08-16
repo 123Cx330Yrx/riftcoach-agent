@@ -218,7 +218,8 @@ Tool data、原始异常、request ID 或秘密。
 
 5E 固定为四个内部检查点：5E-1 合同/Usage/Trace Store、5E-2 observable `run()`、
 5E-3 live `stream()` parity、5E-4 evaluation/exit review。5E-1 已由 `d891184` / Actions
-`31942483874` 完成 exact-SHA 公开验证；5E-2 入口审计与 ADR-0030 已在本地冻结共享
+`31942483874` 完成 exact-SHA 公开验证；5E-2 入口审计与 ADR-0030 已由 `3c6f26a` /
+Actions `31944389807` 公开冻结共享
 Observed Provider、定点 Agent/Harness observer、Event/Trace 1.1、missing Usage 和两阶段
 terminal commit。当前尚未修改产品合同、接 observer 或实现统一同步 Runtime；下一步为
 Task A TDD，也未调用真实 Provider。5P、5F、阶段 6/8 的

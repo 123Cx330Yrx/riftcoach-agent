@@ -1207,3 +1207,6 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   `655 passed, 103 subtests passed`；两套 RAG、compileall、Harness SDK/tracked-data、
   dry-run、治理和 diff check 通过。
 - `CURRENT`：5E-2 仍进行中；唯一下一动作是 Task A 的失败测试与最小实现，不进入 5E-3。
+- `PUBLIC-VERIFIED`：设计提交 `3c6f26a4802821548be8d61085552f5b9a790468` 已通过
+  GitHub Actions run `31944389807` 的 exact-SHA 全部门禁；CI 无 Key/Provider I/O。
+  5E-2 仍未完成，下一步保持 Task A。
