@@ -587,8 +587,28 @@ exact-SHA 公共验证成功，5E-2 正式闭环；`stream()` 仍未实现，当
 订阅者关闭只关闭 stream 交付，不取消业务执行，Runtime 继续形成最终 Trace。
 
 直接 generator 因深层同步接缝侵入和消费者失败耦合拒绝；外部消息队列因提前引入 durable
-event log、offset、跨进程恢复和运维复杂度拒绝。5E-3 实现仍需按设计文档完成 TDD、parity、
+event log、offset、跨进程恢复和运维复杂度拒绝。5E-3 实现阶段按设计文档完成了 TDD、parity、
 背压、断开和终态失败测试；本轮没有 Provider/Key/模型/Prompt/RAG I/O。
 
-本地实现已通过 15 项 stream 聚焦测试和 `762 passed, 110 subtests passed` 完整回归；下一步
-只做提交、推送和 exact-SHA 公共 CI，公共验证成功前不关闭 5E-3。
+本地实现已通过 15 项 stream 聚焦测试和 `762 passed, 110 subtests passed` 完整回归；提交
+`80b76a1` 已推送，GitHub Actions run `31960987333` 对 exact SHA 的完整 pytest、两套 RAG、
+compileall、治理、SDK boundary、secret/run-data boundary 和 Harness dry-run 全部成功，
+5E-3 正式闭环。
+
+### 5E-4 Runtime Evaluation & Exit Review 入口决策
+
+按 RQ-038 进入 5E-4。该子阶段不是继续添加框架，而是对 5E-1 至 5E-3 做一次可追溯的
+Runtime V1 退出审查：逐项复核合同、两个真实 Skill 的同步/流式纵向路径、success/degraded/
+rejected/boundary/observability failure、event budget、Usage completeness、Trace 隐私、
+Artifact SHA、背压/关闭和 exact-SHA 公共证据，并把“已实现”“已测试”“公开验证”“仍有限制”
+分开记录。
+
+5E-4 不读取 Key、不调用真实 Provider、不切换模型、不改 Prompt/RAG，不引入 LangGraph、
+Pi/Claude Agent SDK、API、SSE、Memory、MCP、durable event log、cancel/resume 或 Multi-Agent。
+只有退出矩阵和必要的最小修补全部通过，5E 才能关闭并进入 canonical 后续阶段。
+
+5E-4 本地最终审查已经完成：exit matrix 将所有承诺映射到源码、直接测试、公共证据和限制；
+Runtime 聚焦 `128 passed`，完整 `762 passed, 110 subtests passed`，compileall、RAG、治理和
+差异检查通过，没有发现当前 V1 必须补的结构性代码缺口。退出决策为
+`close-with-deferred-boundaries`；真实模型质量、API/SSE、持久恢复、Memory/MCP、SDK 采用和
+生产 SLO 保持 deferred/unknown。该决策仍待 exact-SHA 公共 CI，成功前 5E-4 不关闭。

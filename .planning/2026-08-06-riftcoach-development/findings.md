@@ -1695,3 +1695,31 @@
   背压、订阅关闭、worker 异常、queue capacity、degraded/rejected/boundary 失败后为
   `15 passed`；相邻 Runtime/Agent/Harness
   合同与 Store 回归为 `70 passed`；compileall 通过。
+
+## 2026-08-17：5E-3 公共闭环与 5E-4 入口
+
+- 提交 `80b76a1` 的 GitHub Actions run `31960987333` exact-SHA 公共 CI 成功，完整 pytest、
+  两套 RAG、compileall、治理、SDK/tracked-data boundary 和 Harness dry-run 均通过；5E-3
+  正式闭环。
+- canonical 已切换到 `5E-4`。5E-4 的职责是 Runtime V1 退出审查和 exit matrix，
+  不是继续堆功能；矩阵必须把承诺、源码、测试、公开证据、限制和退出结论逐项绑定。
+- 本轮仍不读取 Key、不调用真实 Provider、不切换模型、不修改 Prompt/RAG，不进入 5P/5F/API/
+  Memory/MCP/durable log/cancel-resume。
+
+## 2026-08-17：5E-4 首轮 exit matrix 审计
+
+- 按 `docs/plans/2026-08-17-agent-runtime-v1-exit-matrix.md` 建立逐项矩阵；每条承诺都区分
+  源码、直接测试、exact-SHA 公共证据、当前限制和退出影响。
+- Runtime 相关聚焦集合为 `128 passed`；没有发现当前 V1 合同必须立即补的结构性缺口。
+- 明确 deferred/unknown：真实厂商领域质量、API/SSE、durable event log、崩溃恢复、
+  cancel/resume、Memory、MCP、Multi-Agent、LangGraph/SDK 采用和生产 p50/p95/SLO。
+- 这只是入口审计和首轮矩阵，不是 5E 关闭结论；仍需完整回归和最终退出决策。
+
+## 2026-08-17：5E-4 本地退出结论
+
+- 完整回归 `762 passed, 110 subtests passed` 与全部本地门禁通过；没有发现当前 Runtime V1
+  必须补的结构性代码缺口。
+- 本地退出决策为 `close-with-deferred-boundaries`，不是“production-ready”：真实模型质量、
+  API/SSE、durable recovery、cancel/resume、Memory/MCP/Multi-Agent/SDK 和生产 SLO 继续按
+  既定阶段处理。
+- 5E-4 仍需 exact-SHA 公共 CI；通过前不切换到 `5P-entry-design`。

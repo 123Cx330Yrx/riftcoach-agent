@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 7 - 5E-3 Live stream() & Parity（5E-2 已公开完成，5E-4 仍在阶段 5E 内）
+Phase 7 - 5E-4 Runtime Evaluation & Exit Review（5E-3 已公开完成）
 
 ## Phases
 
@@ -202,10 +202,9 @@ Phase 7 - 5E-3 Live stream() & Parity（5E-2 已公开完成，5E-4 仍在阶段
 
 ## Next Step
 
-`5E-3 Live stream() & Parity / public verification`：本地实现和 `15 passed` 聚焦、
-`762 passed, 110 subtests passed` 完整回归、compileall、RAG、治理和 diff 门禁均已通过；
-下一动作只做实现提交、推送与 exact-SHA 公共 CI。公共验证成功后再把 canonical 下一步切换为
-5E-4；不读取 Key、不调用真实 Provider、不改默认模型。
+`5E-4 Runtime Evaluation & Exit Review / entry audit`：5E-3 已由 `80b76a1` / Actions
+`31960987333` exact-SHA 公共验证完成；下一动作是建立 5E-1 至 5E-3 的功能、失败、资源、
+Usage、Trace、安全、公开证据和教学理解验收矩阵，不读取 Key、不调用真实 Provider、不切换模型。
 
 ## Decisions Made
 
@@ -532,7 +531,7 @@ Phase 7 - 5E-3 Live stream() & Parity（5E-2 已公开完成，5E-4 仍在阶段
 
 ### 5E-3 Live `stream()` & Parity 实现与验收（2026-08-17）
 
-- Status: in_progress
+- Status: complete
 - 5E-2 已由 `d49508e` / Actions `31959646589` exact-SHA 公共验证完成；本阶段先完成
   `run()` 的事件交付接缝、同步/流式终态一致性、消费者失败隔离和背压边界审计，再进行 TDD；
 - 先解释为什么“实时事件”不等于 Token streaming，也不等于 durable event log；
@@ -545,12 +544,26 @@ Phase 7 - 5E-3 Live stream() & Parity（5E-2 已公开完成，5E-4 仍在阶段
 - stream item、worker/queue、实时顺序、run/stream parity、success/degraded/rejected/boundary
   failure、背压、关闭和 unexpected worker error 测试均已通过；本地聚焦 `15 passed`，完整
   回归 `762 passed, 110 subtests passed`。
+- 提交 `80b76a1` 已推送；GitHub Actions run `31960987333` exact-SHA 公共 CI 成功，5E-3 正式闭环。
+
+### 5E-4 Runtime Evaluation & Exit Review（2026-08-17）
+
+- Status: in_progress
+- 先审计 5E-1 至 5E-3 的功能合同、失败语义、资源/Usage、Trace 隐私、stream parity、
+  公开证据和教学边界；不把测试数量直接等同于生产可用。
+- 建立一张可追溯的 exit matrix：每项要求绑定源码、测试、结果、限制和是否允许关闭 5E；
+  发现缺口时只做当前阶段所需的最小修补，不引入新框架或真实 Provider。
+- 明确 5E 关闭后唯一下一阶段仍由 canonical 状态决定；本检查点不进入 5P、5F、阶段 6/8。
+- 首轮矩阵已完成，Runtime 相关聚焦集合 `128 passed`；当前没有必须立即补的结构性缺口，
+  deferred/unknown 边界已单独列出。
+- 完整回归 `762 passed, 110 subtests passed` 与全部本地门禁通过；本地退出决策为
+  `close-with-deferred-boundaries`，待提交和 exact-SHA 公共 CI。
 
 ## Next Step
 
-`5E-3 Live stream() & Parity / public verification`：本地实现、聚焦 15 项和完整
-`762 passed, 110 subtests passed` 已通过；下一动作只做实现提交、推送与 exact-SHA 公共 CI，
-成功后才切换 5E-4，不读取 Key、不调用真实 Provider、不改默认模型。
+`5E-4 Runtime Evaluation & Exit Review / public verification`：本地矩阵、最终退出审查、
+Runtime 聚焦 128、完整 `762 passed, 110 subtests passed` 与全部门禁已通过；下一动作只做
+提交、推送和 exact-SHA 公共 CI。成功后才关闭 5E 并进入 `5P-entry-design`。
 
 本批错误日志：
 

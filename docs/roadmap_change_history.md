@@ -1311,3 +1311,25 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   RAG、治理和 diff 门禁通过。
 - `CURRENT`：5E-3 仍进行中；下一动作是提交/推送实现并完成 exact-SHA 公共 CI，成功后才切换
   到 5E-4，不进入 5P/5F，不读取 Key 或调用真实 Provider。
+
+### 2026-08-17：5E-3 exact-SHA 公共闭环，进入 5E-4
+
+- `PUBLIC-VERIFIED`：提交 `80b76a1` 的 GitHub Actions run `31960987333` 完成完整 pytest、
+  两套 RAG、compileall、治理、SDK/tracked-data boundary 与 Harness dry-run；本地 stream
+  聚焦 15 项，完整回归 `762 passed, 110 subtests passed`。
+- `CLOSED`：5E-3 `Live stream() & Parity` 正式完成。`run()`/`stream()` 共用 `_execute()`，
+  进程内 worker/有界 queue、terminal commit 后交付、背压、关闭隔离和 parity 均有代码/测试/
+  公开证据；没有 Provider/Key/held-out I/O。
+- `CURRENT`：按 RQ-038，canonical 下一检查点切换为 `5E-4 Runtime Evaluation & Exit Review`
+  入口审计；不进入 5P/5F，不读取 Key，不调用真实 Provider。
+
+### 2026-08-17：5E-4 本地退出审查
+
+- `MATRIX`：建立 5E-1 至 5E-3 的 Contract/Functional/Failure/Stream/Resource/Security/
+  Delivery exit matrix，逐项绑定源码、测试、public CI、限制和退出影响。
+- `VERIFIED-LOCAL`：Runtime 聚焦 `128 passed`，完整 `762 passed, 110 subtests passed`，
+  compileall、两套 RAG、治理和 diff 门禁通过；没有当前 V1 必须补的结构性代码缺口。
+- `DECISION`：本地决定 `close-with-deferred-boundaries`；真实模型领域质量、API/SSE、durable
+  log、cancel/resume、Memory/MCP/Multi-Agent/SDK 与生产 SLO 保持 deferred/unknown。
+- `CURRENT`：5E-4 仍进行中；下一动作只做退出审查提交、推送和 exact-SHA 公共 CI，成功后
+  才关闭 5E 并进入 `5P-entry-design`。

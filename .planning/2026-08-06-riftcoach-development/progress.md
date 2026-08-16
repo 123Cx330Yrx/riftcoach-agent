@@ -1721,6 +1721,34 @@
   rejected/boundary、tiny queue 背压、订阅关闭、Trace persistence failure 与 unexpected
   worker error；下一步仅为提交、推送与 exact-SHA 公共 CI。
 
+## 2026-08-17：5E-3 公共闭环并进入 5E-4
+
+- 精确 SHA `80b76a182f38d31d862f32ffa1dc0f14ebd1c971` 的 GitHub Actions run `31960987333`
+  成功；所有公开门禁通过，5E-3 正式完成。
+- 持久状态、活动计划、项目决策、路线历史和能力矩阵已同步，canonical 下一检查点切换为
+  `5E-4 Runtime Evaluation & Exit Review`。
+- 新增 `docs/plans/2026-08-17-agent-runtime-v1-evaluation-exit-design.md`，冻结初始
+  exit matrix、纳入/排除范围和审查顺序；下一步先做 5E-4 入口审计，不直接引入新技术。
+
+## 2026-08-17：5E-4 首轮入口审计
+
+- 新增 `docs/plans/2026-08-17-agent-runtime-v1-exit-matrix.md`，将 5E-1 至 5E-3 的合同、
+  功能、失败、实时事件、资源、安全、交付和后续边界逐项绑定源码、测试、公开证据、限制与
+  退出影响。
+- 复核 Runtime 相关聚焦集合：`128 passed`；compileall、治理和 diff check 通过。
+- 首轮没有发现当前 V1 必须立即补的新功能缺口；真实厂商领域质量、API/SSE、durable log、
+  cancel/resume、Memory、MCP、Multi-Agent、生产 SLO 均正确标为 deferred/unknown，不把它们
+  偷渡进 5E。
+- 5E-4 尚未完成：还需将矩阵与完整回归、公开 CI、教学理解和最终退出决策逐项复读并公开验证。
+
+## 2026-08-17：5E-4 本地最终退出审查
+
+- 完整回归重新执行为 `762 passed, 110 subtests passed`；compileall、治理、RAG/stream 聚焦
+  29 项和 diff check 通过。
+- 新增 `docs/plans/2026-08-17-agent-runtime-v1-exit-review.md`；最终本地决策为
+  `close-with-deferred-boundaries`，并以面试级表述解释 Runtime V1 已完成与未完成的边界。
+- 当前没有产品代码变更；下一步只提交/推送 5E-4 审查与状态并等待 exact-SHA 公共 CI。
+
 ## 2026-08-17：5E-2 Task D exact-SHA 公共闭环
 
 - 实现提交 `d49508ef46876da6653ddcbe63a3584bdcbba711` 已推送到 `origin/main`；GitHub
