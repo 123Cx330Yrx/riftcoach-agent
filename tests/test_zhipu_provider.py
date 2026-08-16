@@ -151,10 +151,8 @@ class ZhipuProviderMappingTests(unittest.TestCase):
         self.assertNotIn("metadata", call)
         self.assertNotIn("secret", str(call))
 
-    def test_omits_optional_max_tokens_and_accepts_missing_usage(self) -> None:
-        raw = sdk_response()
-        raw.usage = None
-        client = FakeClient(raw)
+    def test_omits_optional_max_tokens_with_valid_usage(self) -> None:
+        client = FakeClient(sdk_response(prompt_tokens=0, completion_tokens=0))
         provider = ZhipuProvider(client=client, model="glm-test")
 
         response = provider.chat(
@@ -167,14 +165,45 @@ class ZhipuProviderMappingTests(unittest.TestCase):
         self.assertNotIn("max_tokens", client.completions.calls[0])
         self.assertEqual(0, response.usage.total_tokens)
 
+    def test_missing_or_malformed_usage_is_a_safe_response_error(self) -> None:
+        cases = (
+            None,
+            SimpleNamespace(completion_tokens=1),
+            SimpleNamespace(prompt_tokens=1),
+            SimpleNamespace(prompt_tokens=None, completion_tokens=1),
+            SimpleNamespace(prompt_tokens=True, completion_tokens=1),
+            SimpleNamespace(prompt_tokens="1", completion_tokens=1),
+            SimpleNamespace(prompt_tokens=-1, completion_tokens=1),
+        )
+
+        for usage in cases:
+            with self.subTest(usage=usage):
+                raw = sdk_response()
+                raw.usage = usage
+                provider = ZhipuProvider(client=FakeClient(raw), model="glm-test")
+
+                with self.assertRaises(ProviderResponseError) as captured:
+                    provider.chat(
+                        ChatRequest(
+                            messages=(ChatMessage(MessageRole.USER, "hello"),)
+                        )
+                    )
+
+                self.assertEqual(
+                    "provider_usage_unavailable",
+                    captured.exception.code,
+                )
+
     def test_empty_or_malformed_sdk_response_becomes_safe_response_error(self) -> None:
         malformed_responses = [
             SimpleNamespace(choices=[]),
             SimpleNamespace(
-                choices=[SimpleNamespace(message=SimpleNamespace(content=""))]
+                choices=[SimpleNamespace(message=SimpleNamespace(content=""))],
+                usage=SimpleNamespace(prompt_tokens=1, completion_tokens=1),
             ),
             SimpleNamespace(
-                choices=[SimpleNamespace(message=SimpleNamespace(content=None))]
+                choices=[SimpleNamespace(message=SimpleNamespace(content=None))],
+                usage=SimpleNamespace(prompt_tokens=1, completion_tokens=1),
             ),
         ]
 

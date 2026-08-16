@@ -5,6 +5,7 @@ from app.providers.models import (
     ChatRequest,
     ChatResponse,
     MessageRole,
+    TokenUsage,
     ToolCall,
     ToolChoiceMode,
     ToolSpec,
@@ -34,6 +35,7 @@ class ToolCallingMessageTests(unittest.TestCase):
             content="先看确定性数据。",
             model="glm-test",
             provider="zhipu",
+            usage=TokenUsage(input_tokens=0, output_tokens=0),
         )
 
         self.assertEqual("复盘最近十局。", message.content)
@@ -56,6 +58,7 @@ class ToolCallingMessageTests(unittest.TestCase):
             model="glm-test",
             provider="zhipu",
             finish_reason="tool_calls",
+            usage=TokenUsage(input_tokens=0, output_tokens=0),
         )
 
         self.assertEqual(call, message.tool_calls[0])

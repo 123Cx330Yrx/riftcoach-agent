@@ -130,13 +130,44 @@ class ProviderModelTests(unittest.TestCase):
         self.assertEqual(15, response.usage.total_tokens)
 
         for kwargs in (
-            {"content": "", "model": "glm", "provider": "zhipu"},
-            {"content": "ok", "model": "", "provider": "zhipu"},
-            {"content": "ok", "model": "glm", "provider": ""},
+            {
+                "content": "",
+                "model": "glm",
+                "provider": "zhipu",
+                "usage": TokenUsage(),
+            },
+            {
+                "content": "ok",
+                "model": "",
+                "provider": "zhipu",
+                "usage": TokenUsage(),
+            },
+            {
+                "content": "ok",
+                "model": "glm",
+                "provider": "",
+                "usage": TokenUsage(),
+            },
         ):
             with self.subTest(kwargs=kwargs):
                 with self.assertRaises(ValueError):
                     ChatResponse(**kwargs)
+
+    def test_chat_response_requires_explicit_observed_usage(self) -> None:
+        with self.assertRaises(TypeError):
+            ChatResponse(
+                content="ok",
+                model="glm-test",
+                provider="zhipu",
+            )
+
+        response = ChatResponse(
+            content="ok",
+            model="glm-test",
+            provider="zhipu",
+            usage=TokenUsage(input_tokens=0, output_tokens=0),
+        )
+        self.assertEqual(0, response.usage.total_tokens)
 
 
 class FakeProvider:
@@ -149,6 +180,7 @@ class FakeProvider:
             content=request.messages[-1].content,
             model="fake-model",
             provider=self.provider_name,
+            usage=TokenUsage(input_tokens=0, output_tokens=0),
         )
 
 

@@ -328,9 +328,18 @@ class ZhipuProvider:
     @staticmethod
     def _normalize_usage(raw_usage: Any) -> TokenUsage:
         if raw_usage is None:
-            return TokenUsage()
-        input_tokens = getattr(raw_usage, "prompt_tokens", 0) or 0
-        output_tokens = getattr(raw_usage, "completion_tokens", 0) or 0
+            raise ProviderResponseError(
+                provider="zhipu",
+                code="provider_usage_unavailable",
+            )
+        input_tokens = getattr(raw_usage, "prompt_tokens", None)
+        output_tokens = getattr(raw_usage, "completion_tokens", None)
+        for value in (input_tokens, output_tokens):
+            if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+                raise ProviderResponseError(
+                    provider="zhipu",
+                    code="provider_usage_unavailable",
+                )
         return TokenUsage(
             input_tokens=input_tokens,
             output_tokens=output_tokens,

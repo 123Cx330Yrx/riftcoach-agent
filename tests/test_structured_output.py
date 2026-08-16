@@ -4,7 +4,7 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 from app.providers.errors import ProviderResponseError
-from app.providers.models import ChatResponse
+from app.providers.models import ChatResponse, TokenUsage
 from app.providers.structured import (
     StructuredDecodeResult,
     contract_for_model,
@@ -33,6 +33,7 @@ def response(content: str, *, finish_reason: str = "stop") -> ChatResponse:
         model="fake-model",
         provider="fake-provider",
         finish_reason=finish_reason,
+        usage=TokenUsage(input_tokens=0, output_tokens=0),
     )
 
 

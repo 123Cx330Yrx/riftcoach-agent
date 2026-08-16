@@ -14,9 +14,13 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 from app.harness.run_ids import normalize_run_id
 from app.skills.execution import SkillExecutionRequest
 
+from .lifecycle import RuntimeHarnessLifecycleV11
 from .signals import (
+    AgentRunTerminatedSignal,
     ContextBuiltSignal,
+    EvaluationCompletedSignal,
     ExecutionValidatedSignal,
+    HarnessTransitionedSignal,
     ProviderCallCompletedSignal,
     ProviderCallFailedSignal,
     ProviderCallStartedSignal,
@@ -24,6 +28,9 @@ from .signals import (
     RunCompletedSignal,
     RunFailedSignal,
     RunStartedSignal,
+    RuntimeFailureStage,
+    RuntimeFinishReason,
+    RuntimeProviderPhase,
     RuntimePublicationStatus,
     RuntimeSignal,
     TERMINAL_SIGNAL_TYPES,
@@ -326,7 +333,7 @@ class RuntimeArtifactReference(RuntimeContractModel):
 
 
 class RuntimeEvent(RuntimeContractModel):
-    event_schema_version: Literal["1.0"] = "1.0"
+    event_schema_version: Literal["1.0", "1.1"] = "1.1"
     run_id: str
     sequence: int = Field(ge=1)
     occurred_at_utc: datetime
@@ -343,6 +350,65 @@ class RuntimeEvent(RuntimeContractModel):
     def validate_occurred_at(cls, value: datetime) -> datetime:
         return _validate_utc(value, field_name="occurred_at_utc")
 
+    @model_validator(mode="after")
+    def validate_signal_for_event_schema(self) -> "RuntimeEvent":
+        if self.event_schema_version == "1.1":
+            signal = self.signal
+            if isinstance(signal, ProviderCallCompletedSignal) and (
+                signal.finish_reason is not None
+                and not isinstance(signal.finish_reason, RuntimeFinishReason)
+            ):
+                raise ValueError(
+                    "event_schema_version 1.1 requires a bounded finish_reason"
+                )
+            if isinstance(signal, ToolCallCompletedSignal):
+                if signal.success and signal.failure_code is not None:
+                    raise ValueError(
+                        "successful tool completion requires null failure_code"
+                    )
+                if not signal.success and signal.failure_code is None:
+                    raise ValueError(
+                        "failed tool completion requires failure_code"
+                    )
+            if isinstance(signal, PublicationDecidedSignal):
+                if signal.publication_status is RuntimePublicationStatus.REJECTED:
+                    if signal.artifact_sha256s:
+                        raise ValueError(
+                            "rejected publication must not reference a report"
+                        )
+                elif len(signal.artifact_sha256s) != 1:
+                    raise ValueError(
+                        "published or degraded publication requires one report digest"
+                    )
+            return self
+        signal = self.signal
+        if isinstance(signal, AgentRunTerminatedSignal):
+            raise ValueError("event_schema_version 1.0 has no Agent terminal")
+        if isinstance(signal, ContextBuiltSignal) and any(
+            ":" in value for value in signal.omitted_item_ids
+        ):
+            raise ValueError("event_schema_version 1.0 has no section-ID hierarchy")
+        if isinstance(signal, ProviderCallStartedSignal) and (
+            signal.phase is not RuntimeProviderPhase.AGENT
+            or signal.iteration is None
+        ):
+            raise ValueError("event_schema_version 1.0 has no Provider phase")
+        if isinstance(signal, ProviderCallCompletedSignal) and (
+            signal.finish_reason is None
+        ):
+            raise ValueError("event_schema_version 1.0 requires finish_reason")
+        if isinstance(signal, EvaluationCompletedSignal) and signal.attempt == 0:
+            raise ValueError("event_schema_version 1.0 uses one-based Evaluation")
+        if isinstance(signal, ToolCallCompletedSignal) and (
+            signal.failure_code is not None
+        ):
+            raise ValueError("event_schema_version 1.0 has no Tool failure_code")
+        if isinstance(signal, RunFailedSignal) and (
+            signal.failure_stage is RuntimeFailureStage.HARNESS
+        ):
+            raise ValueError("event_schema_version 1.0 has no Harness failure stage")
+        return self
+
 
 class RuntimeRunRequest(RuntimeContractModel):
     execution_request: SkillExecutionRequest
@@ -355,7 +421,7 @@ class RuntimeRunRequest(RuntimeContractModel):
 
 class RuntimeTraceReference(RuntimeContractModel):
     run_id: str
-    trace_schema_version: Literal["1.0"] = "1.0"
+    trace_schema_version: Literal["1.0", "1.1"] = "1.1"
     relative_path: Literal["runtime_trace.json"] = "runtime_trace.json"
     sha256: str
 
@@ -371,9 +437,9 @@ class RuntimeTraceReference(RuntimeContractModel):
 
 
 class RuntimeTrace(RuntimeContractModel):
-    trace_schema_version: Literal["1.0"] = "1.0"
+    trace_schema_version: Literal["1.0", "1.1"] = "1.1"
     runtime_version: Literal["1.0"] = "1.0"
-    event_schema_version: Literal["1.0"] = "1.0"
+    event_schema_version: Literal["1.0", "1.1"] = "1.1"
     run_id: str
     identity: RuntimeIdentitySnapshot
     policy: RuntimePolicySnapshot
@@ -404,10 +470,19 @@ class RuntimeTrace(RuntimeContractModel):
 
     @model_validator(mode="after")
     def validate_trace_invariants(self) -> "RuntimeTrace":
+        if self.trace_schema_version != self.event_schema_version:
+            raise ValueError("Trace and Event schema versions must match")
         if len(self.events) > self.policy.event_budget:
             raise ValueError("events exceed the runtime event budget")
         if any(event.run_id != self.run_id for event in self.events):
             raise ValueError("every event run_id must match the trace run_id")
+        if any(
+            event.event_schema_version != self.event_schema_version
+            for event in self.events
+        ):
+            raise ValueError(
+                "every event_schema_version must match the Trace declaration"
+            )
 
         sequences = tuple(event.sequence for event in self.events)
         if sequences != tuple(range(1, len(self.events) + 1)):
@@ -464,8 +539,15 @@ class RuntimeTrace(RuntimeContractModel):
         tool_open: dict[int, tuple[str, str]] = {}
         next_provider_ordinal = 1
         next_tool_ordinal = 1
+        harness_lifecycle = RuntimeHarnessLifecycleV11()
         for index, event in enumerate(self.events):
             signal = event.signal
+            if self.event_schema_version == "1.1":
+                harness_lifecycle = harness_lifecycle.advance(
+                    signal,
+                    context_seen=context_seen,
+                    has_open_calls=bool(provider_open or tool_open),
+                )
             if isinstance(signal, RunStartedSignal):
                 if index != 0:
                     raise ValueError("run_started may only be the first event")
@@ -607,15 +689,29 @@ class RuntimeTrace(RuntimeContractModel):
         if len(set(artifact_paths)) != len(artifact_paths):
             raise ValueError("artifact relative paths must be unique")
         if publications:
-            known_artifact_digests = {
-                artifact.sha256 for artifact in self.artifacts
-            }
+            if self.event_schema_version == "1.1":
+                known_artifact_digests = {
+                    artifact.sha256
+                    for artifact in self.artifacts
+                    if artifact.kind == "final_report"
+                }
+            else:
+                known_artifact_digests = {
+                    artifact.sha256 for artifact in self.artifacts
+                }
             if not set(publications[0].artifact_sha256s).issubset(
                 known_artifact_digests
             ):
                 raise ValueError(
                     "publication artifact digest has no Trace reference"
                 )
+            if (
+                self.event_schema_version == "1.1"
+                and publications[0].publication_status
+                is RuntimePublicationStatus.REJECTED
+                and known_artifact_digests
+            ):
+                raise ValueError("rejected publication must not reference a report")
         return self
 
 

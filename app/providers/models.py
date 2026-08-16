@@ -242,9 +242,9 @@ class ChatResponse:
     content: str | None
     model: str
     provider: str
+    usage: TokenUsage
     tool_calls: tuple[ToolCall, ...] = ()
     finish_reason: str | None = None
-    usage: TokenUsage = field(default_factory=TokenUsage)
     request_id: str | None = None
 
     def __post_init__(self) -> None:

@@ -1532,3 +1532,44 @@
   Harness SDK/tracked-data boundary 与 dry-run；没有 Key 或 Provider I/O。
 - 这只公开冻结 5E-2 的接缝和合同深化设计，不代表 observer、`run()` 或 `stream()` 已实现。
   唯一下一动作保持 Task A 合同 1.1/observation port TDD。
+
+## 2026-08-16：5E-2 Task A 合同红灯已建立
+
+- 恢复 canonical 状态、活动计划、路线/能力矩阵、ADR-0029/0030、5E-2 设计与现有
+  Runtime/Provider 合同后，治理预检通过；开始时 HEAD/origin 均为 `b971b5c`，工作树干净。
+- 新增 Event/Trace 1.1、合法 1.0 读取、Agent terminal、Harness 生命周期、零基 Evaluation
+  attempt、section ID、finish reason、Tool failure code、observer port、terminal candidate、
+  terminal-slot 与 Trace reference 版本红灯；同时补充 ChatResponse Usage/Zhipu fail-closed 测试。
+- 首次聚焦运行按预期在收集阶段失败：缺少 `AgentRunTerminatedSignal` 与
+  `app.runtime.observer`。没有调用 Provider、读取 Key、运行 held-out 或修改历史结果。
+- 下一动作是实现 Task A 的最小产品合同，使上述聚焦测试进入更细粒度红绿循环；不接
+  AgentLoop/Harness observer，也不实现 `run()` 或进入 Task B。
+
+## 2026-08-16：5E-2 Task A 从中断点恢复
+
+- 重新按仓库强制顺序读取全部持久状态与 5E-2 设计，运行 session catchup 无未同步输出，
+  `scripts/check_project_governance.py` 通过。
+- 复核未提交工作树确认它全部属于当前 Task A；没有回滚或覆盖用户无关修改。
+- `app/runtime` compileall 通过；当前 Runtime contract/Recorder/Store/Provider 聚焦组为
+  `114 passed, 44 subtests passed`。
+- Task A 仍未完成：下一步先补齐 Store 失败、legacy 1.0、transition 同步、candidate
+  one-shot 和 final-report digest 五类负例，再运行相邻/全量门禁。
+- 本轮至今外部 Provider calls、Key reads 与 held-out executions 均为 0；不进入 Task B。
+
+## 2026-08-16：5E-2 Task A 本地实现与门禁完成
+
+- 补齐 Store 写失败后 abort candidate、Schema 1.0/1.1 版本边界、Runtime/Harness transition
+  图同步、candidate one-shot、`final_report` digest 和已知 Harness publication 保真负例；
+  所有新增点均先得到预期红灯，再做最小修正。
+- 实现 Event/Trace/Reference 默认 1.1 与显式 1.0 读取，默认关闭 observation port、Agent
+  terminal、零基 Evaluation、冒号 section ID、有限 finish reason、Tool failure code、
+  Harness failure stage、共享 lifecycle reducer和 prepare/build/commit/abort terminal。
+- `ChatResponse.usage` 改为显式必填；Zhipu missing/invalid Usage 以 allowlisted
+  `provider_usage_unavailable` fail closed，不再伪造 `TokenUsage(0, 0)`。
+- 聚焦回归 `131 passed, 44 subtests passed`；相邻 Agent/Harness/Tool/Provider 回归
+  `149 passed, 38 subtests passed`；完整回归 `691 passed, 110 subtests passed`。
+- RAG development 与 independent holdout 的 Recall/MRR/nDCG 均为 1.0，holdout abstention/
+  citation support 均为 1.0；compileall、Harness SDK boundary、tracked secret/run-data、
+  Harness dry-run、governance 和 `git diff --check` 通过。
+- 当前只待提交、推送、exact-SHA 公共 CI 与 Task A 教学验收；Task B、统一 `run()`、
+  `stream()`、Key/Provider I/O 和 held-out 均未开始。

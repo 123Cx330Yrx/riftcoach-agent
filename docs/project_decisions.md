@@ -487,3 +487,19 @@ publication，不暴露 output 或 Trace reference。入口设计本身不等于
 只进入 5E-2 Task A 合同 1.1 与 observation port TDD。设计提交
 `3c6f26a4802821548be8d61085552f5b9a790468` 已通过 Actions run `31944389807` 的
 exact-SHA 公共验证；CI 没有 Key 或 Provider I/O。
+
+### 5E-2 Task A 版本兼容与终态合同决策
+
+Task A 实现确认：Signal 层只负责跨版本共同的安全形状，Event 层依据
+`event_schema_version` 决定 1.0 兼容或 1.1 严格语义。这样旧 1.0 的安全厂商 finish
+reason、无 Tool failure code 和空 publication digest 仍可读取，而 Recorder 默认创建的
+1.1 Event 继续强制有限 finish reason、Tool 成败/错误码一致性和唯一报告摘要。
+
+Runtime 1.1 的 Harness lifecycle 由 Recorder 在线记录与 Trace 离线复读共享；terminal
+candidate 是绑定单个 Recorder 的一次性对象，提交前不可见，abort 后不能复用。若 Harness
+已经持久化 terminal 状态，Runtime failure 必须保留该 publication truth，即使
+`publication_decided` 尚未来得及观察。
+
+该本地实现已通过 131 项聚焦、149 项相邻和 691 项完整测试及全部本地门禁；当前只待
+提交与 exact-SHA 公共 CI。`ObservedLLMProvider`、AgentLoop/Harness 接线和统一 `run()`
+仍分别属于后续 Task B-D，不因合同代码存在而提前完成。

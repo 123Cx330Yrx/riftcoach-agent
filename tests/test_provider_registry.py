@@ -10,6 +10,7 @@ from app.providers.models import (
     ChatRequest,
     ChatResponse,
     MessageRole,
+    TokenUsage,
     ToolSpec,
 )
 from app.providers.registry import ProviderRegistry
@@ -32,6 +33,7 @@ class FakeProvider:
             content=request.messages[-1].content,
             model=self.model_name,
             provider=self.provider_name,
+            usage=TokenUsage(input_tokens=0, output_tokens=0),
         )
 
 

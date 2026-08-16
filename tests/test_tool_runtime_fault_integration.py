@@ -6,7 +6,7 @@ from app.providers.errors import (
     ProviderAuthenticationError,
     ProviderRateLimitError,
 )
-from app.providers.models import ChatResponse
+from app.providers.models import ChatResponse, TokenUsage
 from app.tools.adapters import build_llm_tools
 from app.tools.models import (
     CachePolicy,
@@ -35,6 +35,7 @@ class QueueProvider:
             content=outcome,
             model="fake-model",
             provider=self.provider_name,
+            usage=TokenUsage(input_tokens=0, output_tokens=0),
         )
 
 

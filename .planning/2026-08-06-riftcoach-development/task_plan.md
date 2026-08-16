@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 7 - 5E-2 Observable run() Vertical Slice（设计完成，待 Task A TDD）
+Phase 7 - 5E-2 Observable run() Vertical Slice（Task A 本地完成，待公开验证与教学验收）
 
 ## Phases
 
@@ -189,8 +189,9 @@ Phase 7 - 5E-2 Observable run() Vertical Slice（设计完成，待 Task A TDD�
 - 5E 内部固定为 5E-1 合同/Usage/Trace Store、5E-2 observable run、5E-3 live stream
   parity、5E-4 evaluation/exit review；
 - 5E-1 严格模型、Recorder、不完整 Usage 和原子 Trace Store 已完成并通过 exact-SHA CI；
-- 5E-2 入口审计/设计与 ADR-0030 已本地完成；当前先做合同 1.1/observation port TDD，
-  尚未接 observer、实现 run 或进入 stream；
+- 5E-2 入口审计/设计与 ADR-0030 已公开完成；Task A 合同 1.1、1.0 读取兼容、默认关闭
+  observation port、missing Usage、lifecycle 与 prospective terminal 已完成本地 TDD，
+  当前只待公开验证与教学验收；尚未接 AgentLoop/Harness observer、实现 run 或进入 stream；
 - ReviewHarness 继续是唯一发布权，Runtime 状态与 publication 状态分开，Trace 只保存
   安全元数据和 Artifact 引用；
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
@@ -198,11 +199,11 @@ Phase 7 - 5E-2 Observable run() Vertical Slice（设计完成，待 Task A TDD�
 
 ## Next Step
 
-`5E-2 Observable run() Vertical Slice / Task A`：先写失败测试固定 Event/Trace 1.1、合法
-1.0 读取、Agent terminal、真实零基 Evaluation attempt、安全 section ID/finish reason、
-missing Usage、observer failure 与 prospective terminal，再做最小实现。当前不实现
-`stream()`，不读取 Key、不调用 Provider、不测试 Flash、不迁移 GLM-5.3、不修改默认模型，
-也不采用 LangGraph 或 Agent SDK。
+`5E-2 Observable run() Vertical Slice / Task A`：完成当前本地实现的提交、推送、
+exact-SHA 公共 CI 和初学者教学验收；不在同一检查点进入 Task B。当前不实现
+`ObservedLLMProvider`、AgentLoop/Harness observer、统一 `run()` 或 `stream()`，不读取
+Key、不调用 Provider、不测试 Flash、不迁移 GLM-5.3、不修改默认模型，也不采用
+LangGraph 或 Agent SDK。
 
 ## Decisions Made
 
@@ -513,7 +514,8 @@ missing Usage、observer failure 与 prospective terminal，再做最小实现�
 - [x] 初学者解释 observer、同步 Runtime、失败映射和 Trace 提交边界；
 - [x] 审计 AgentLoop、ToolRuntime、SkillReviewExecutor、ReviewHarness 稳定接缝；
 - [x] 比较方案并写入入口设计与 ADR-0030，不以 5E-1 代码存在代替设计；
-- [ ] Task A：合同 1.1、1.0 读取兼容、observation port 与 prospective terminal TDD；
+- [ ] Task A：合同 1.1、1.0 读取兼容、observation port 与 prospective terminal TDD
+  （本地实现与门禁完成，待提交/推送/exact-SHA CI 和教学验收）；
 - [ ] Task B：共享 Observed Provider 与 AgentLoop 观察；
 - [ ] Task C：Harness/Executor 持久化后观察与 Artifact 投影；
 - [ ] Task D：两个真实 Skill 的统一同步 `run()` 纵向切片；
@@ -551,3 +553,7 @@ missing Usage、observer failure 与 prospective terminal，再做最小实现�
   `apply_patch` 原子拒绝且没有部分修改；已拆成精确小补丁完成状态交接；
 - 5E-2 符号清单命令在 Windows 直接传入 `app/runtime/*.py`，该 glob 未展开，Runtime 部分
   报路径错误但其余模块结果有效；后续改用目录加 `-g '*.py'` 或真实文件列表，不重复该写法。
+- Task A 恢复审查再次把 `tests/test_runtime*.py` 直接传给 Windows `rg`，glob 未展开；
+  命令只读失败且无文件变化，随后改用 `tests -g 'test_runtime*.py'` 并完成真实检索。
+- legacy 兼容绿灯第一次因 `RuntimeFinishReason` 漏导入而出现一个 `NameError`；这是实现
+  接线错误，不是合同裁决，补显式导入后 22/22 合同测试通过。

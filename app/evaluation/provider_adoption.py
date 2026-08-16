@@ -75,6 +75,7 @@ _SAFE_PROVIDER_ERROR_CODES = MappingProxyType(
                 "invalid_tool_call_request",
                 "invalid_tool_call_response",
                 "invalid_tool_name",
+                "provider_usage_unavailable",
                 "rate_limited",
                 "request_rejected",
                 "service_unavailable",

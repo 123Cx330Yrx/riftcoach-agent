@@ -26,7 +26,7 @@ from app.harness.steps import (
 )
 from app.harness.store import FileRunStore
 from app.providers.errors import ProviderResponseError
-from app.providers.models import ChatResponse
+from app.providers.models import ChatResponse, TokenUsage
 from app.rag.retriever import LocalKnowledgeRetriever
 from app.tools.adapters import build_knowledge_tools, build_llm_tools
 from app.tools.registry import ToolRegistry
@@ -53,6 +53,7 @@ class RecordingProvider:
             content=self.responses.pop(0),
             model="glm-test",
             provider=self.provider_name,
+            usage=TokenUsage(input_tokens=0, output_tokens=0),
         )
 
 

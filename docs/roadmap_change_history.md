@@ -1210,3 +1210,23 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `PUBLIC-VERIFIED`：设计提交 `3c6f26a4802821548be8d61085552f5b9a790468` 已通过
   GitHub Actions run `31944389807` 的 exact-SHA 全部门禁；CI 无 Key/Provider I/O。
   5E-2 仍未完成，下一步保持 Task A。
+
+### 2026-08-16：5E-2 Task A 合同与 observation port 本地实现
+
+- `IMPLEMENTED-LOCAL`：Event/Trace/Reference 默认写入 Schema 1.1，同时显式读取合法
+  Schema 1.0；版本相关严格规则位于 Event 边界，不会因嵌套 Signal 提前校验而误拒旧数据。
+- `IMPLEMENTED-LOCAL`：新增默认关闭的 observation port、Agent terminal、真实零基
+  Evaluation attempt、冒号 section ID、有限且可空 finish reason、Tool failure code、
+  Harness failure stage 与 Recorder/Trace 共用的 Harness lifecycle reducer。
+- `IMPLEMENTED-LOCAL`：Recorder 永久保留 terminal slot，并实现 prepare → prospective
+  Trace → commit/abort；Trace Store 失败后不会先公开 completed，已知 Harness publication
+  也不能在 Runtime failure 中丢成 null。
+- `USAGE`：成功 `ChatResponse` 必须显式携带 Usage；Zhipu missing/invalid Usage 安全失败为
+  allowlisted `provider_usage_unavailable`，不再伪造完整零 Token。
+- `VERIFIED-LOCAL`：聚焦 `131 passed, 44 subtests passed`，相邻
+  `149 passed, 38 subtests passed`，完整 `691 passed, 110 subtests passed`；两套 RAG、
+  compileall、安全边界、Harness dry-run、governance 和 diff check 均通过。
+- `BOUNDARY`：本批没有接入 `ObservedLLMProvider`、AgentLoop/Harness observer 或实现统一
+  `run()`；没有读取 Key、调用 Provider、运行 held-out、改 Prompt/模型或进入 5E-3。
+- `CURRENT`：唯一下一步仍在 5E-2 Task A，只完成提交、推送、exact-SHA 公共 CI 和教学
+  验收；公共成功前不进入 Task B。

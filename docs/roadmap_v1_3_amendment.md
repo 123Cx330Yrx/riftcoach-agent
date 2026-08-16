@@ -190,7 +190,7 @@ OP.GG MCP
 5D-exit-review                已完成；十项功能要求与 V1 NFR 通过，领域 Provider 未准入限制保留
 5E-entry-design               已完成；ADR-0029 采用薄 Runtime、可选观察端口与原子 Trace
 5E-1 Contract/Usage/Store     已完成；d891184 / Actions 31942483874 exact-SHA 公开通过
-5E-2 Observable run()         进行中；入口审计/ADR-0030 已由 3c6f26a / 31944389807 公开验证，下一步 Task A
+5E-2 Observable run()         进行中；Task A 合同/port/terminal 本地完成并通过 691 tests，待 exact-SHA CI 与教学验收；Task B-D 未开始
 5E-3 Live stream() parity     未开始；需 5E-2 通过
 5E-4 Evaluation/exit review  未开始；需 5E-3 通过
 ```

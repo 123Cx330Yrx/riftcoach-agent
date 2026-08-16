@@ -25,7 +25,11 @@ blocked_before: "5P"
   初学者设计与 ADR-0030 已在本地完成：采用 run-scoped `ObservedLLMProvider` 覆盖 Agent
   与 Harness 全部 Provider 边界，AgentLoop 只观察业务 Tool/Agent 终态，Harness 只观察
   持久化后的状态/评测/发布，并用两阶段 terminal commit 消除 Trace 写盘终态悖论；尚未
-  修改产品合同、接入 observer 或实现统一同步 `run()`。设计提交
+  接入 AgentLoop/Harness observer 或实现统一同步 `run()`。Task A 的合同 1.1、合法 1.0
+  读取、默认关闭 observation port、missing Usage fail-closed、Harness lifecycle 与
+  prospective terminal 已完成本地 TDD；聚焦回归为 `131 passed, 44 subtests passed`，
+  完整回归为 `691 passed, 110 subtests passed`，两套 RAG、compileall、安全边界、Harness
+  dry-run、治理与差异检查通过；当前只待 Task A 提交、推送与 exact-SHA 公共 CI。设计提交
   `3c6f26a4802821548be8d61085552f5b9a790468` 已通过 GitHub Actions run
   `31944389807` 的 exact-SHA 公共验证。5D Python 受限 Agent Loop
   已通过退出审查；以下保留其 entry design、5D-1 至 5D-7 的公开证据链：
@@ -116,10 +120,10 @@ blocked_before: "5P"
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`5E-2 Observable run() Vertical Slice` 的 Task A 合同 1.1 与 observation
-  port TDD；先以失败测试固定 schema 1.1/1.0 读取兼容、Agent terminal、真实 Harness
-  attempt/section ID、missing Usage、observer failure 和 prospective terminal，再做最小
-  实现。不得实现 stream、读取 Key、调用 Provider、切换模型或进入 5E-3
+- 唯一下一步：完成 `5E-2 Observable run() Vertical Slice` Task A 的提交、推送与
+  exact-SHA 公共 CI，随后停下做初学者教学验收；不得在同一检查点自动进入 Task B、
+  实现 `ObservedLLMProvider`、接 AgentLoop/Harness observer 或实现统一 `run()`，也不得
+  实现 stream、读取 Key、调用 Provider、切换模型或进入 5E-3
 - 禁止越过：5E 完成前不得进入 5P Prompt Program V1 或 5F Runtime/SDK 采用实验；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
   协议、候选选择或发布热度替代领域质量证据
@@ -156,7 +160,7 @@ blocked_before: "5P"
 |---|---|---|---|
 | 5E-entry-design | 审计分散信号、比较组合方案、冻结 Runtime 边界与 NFR | 已完成 | 初学者设计、ADR-0029、四批实施顺序；616 tests/103 subtests、两套 RAG 和全部本地门禁；`c91c2d7` / Actions `31878052835` 公开通过；无产品代码或 Provider I/O |
 | 5E-1 Runtime Contract、Usage 与 Trace Store | 严格合同、Recorder、未知 Usage 与原子最终 Trace | 已完成 | 39 项聚焦、166 tests/55 subtests 相邻、655 tests/103 subtests 全量回归和全部门禁；`d891184` / Actions `31942483874` exact-SHA 公开通过；无 Provider I/O |
-| 5E-2 Observable `run()` Vertical Slice | observer 接缝与两个 Skill 的统一同步执行/Trace | 进行中 | 入口源码审计、初学者设计与 ADR-0030 已由 `3c6f26a` / Actions `31944389807` 公开验证；122 tests/37 subtests 聚焦、655 tests/103 subtests 全量、两套 RAG/compile/security/dry-run/治理通过；当前进入 Task A 合同 1.1/observation port TDD，尚未接 observer 或实现 run |
+| 5E-2 Observable `run()` Vertical Slice | observer 接缝与两个 Skill 的统一同步执行/Trace | 进行中 | 入口设计由 `3c6f26a` / Actions `31944389807` 公开验证；Task A 合同 1.1、合法 1.0 读取、observation port、missing Usage、lifecycle 与 prospective terminal 已本地通过 131 tests/44 subtests 聚焦、691 tests/110 subtests 全量和全部门禁，待提交/公开 CI；尚未接 AgentLoop/Harness observer 或实现 run |
 | 5E-3 Live `stream()` & Parity | 同一执行核心的进程内实时事件和 run/stream 同终态 | 未开始 | 需 5E-2 通过 |
 | 5E-4 Runtime Evaluation & Exit Review | 安全、失败、资源、纵向评测与 5E 退出审查 | 未开始 | 需 5E-3 通过 |
 
@@ -396,10 +400,10 @@ blocked_before: "5P"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A、5B、5C、整个 5D 与 5E-1；5E-2 只完成本地设计，尚未接 observer/run/stream；当前无领域 Provider 准入 | 阶段 5、生产模型报告质量、完整 AgentRuntime、V3 资源合同或生产默认模型已经完成 |
-| 项目理解 | 已区分 Agent Loop 与 AgentRuntime，并能解释 Provider 不只在 Loop 调用、业务 Tool 与内部 llm.chat 的区别、Harness 唯一发布权以及两阶段 Runtime terminal | 离线合成 executor 能评价模型智力，5D 完成等于 GLM/DeepSeek 通过，或 5E 只是给现有函数改名 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A、5B、5C、整个 5D 与 5E-1；5E-2 Task A 合同/port/terminal 本地完成，Task B-D 与 run/stream 尚未实现；当前无领域 Provider 准入 | 阶段 5、生产模型报告质量、完整 AgentRuntime、V3 资源合同或生产默认模型已经完成 |
+| 项目理解 | 已区分 Agent Loop 与 AgentRuntime，能解释 Provider 不只在 Loop 调用、业务 Tool 与内部 llm.chat 的区别、Schema 1.0 可读/1.1 严格边界、Harness 唯一发布权以及两阶段 Runtime terminal | 离线合成 executor 能评价模型智力，5D 完成等于 GLM/DeepSeek 通过，或 5E 只是给现有函数改名 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5E-2 设计提交 `3c6f26a` 已通过 Actions `31944389807` 的 exact-SHA CI；正式网页未部署 | 公开设计等于 observer/run/stream 已实现、领域模型质量、最终厂商选型、生产切换或 Web Agent 可用 |
+| GitHub/部署 | 5E-2 设计提交 `3c6f26a` 已通过 Actions `31944389807` 的 exact-SHA CI；Task A 当前仅本地完成、尚待公共 CI；正式网页未部署 | 公开设计或本地 Task A 等于 observer 接线、run/stream、领域模型质量、最终厂商选型、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -457,10 +461,11 @@ ADR-0009。
 
 当前唯一下一检查点是 `5E-2 Observable run() Vertical Slice`。5E-1 已完成严格合同、
 Recorder、Usage 和原子 Trace Store，并通过 exact-SHA 公共 CI；5E-2 的 observer/Usage/
-失败映射/两阶段 terminal 设计已由 ADR-0030 在本地冻结。下一动作只进入 Task A：用 TDD
-深化 Event/Trace 1.1、保留 1.0 读取、建立 observation port，并修正 Zhipu missing Usage。
-本检查点不实现 stream，也不调用真实 Provider。本节后续保留从 5C 到 5D 的历史范围账本；
-其中旧“下一步”只表示当时顺序，不覆盖本文顶部的 canonical checkpoint。
+失败映射/两阶段 terminal 设计已由 ADR-0030 冻结。Task A 已在本地用 TDD 深化 Event/Trace
+1.1、保留合法 1.0 读取、建立默认关闭 observation port，并修正 Zhipu missing Usage；当前
+只完成其提交、推送、exact-SHA 公共 CI 与教学验收，不进入 Task B。本检查点不实现 stream，
+也不调用真实 Provider。本节后续保留从 5C 到 5D 的历史范围账本；其中旧“下一步”只表示
+当时顺序，不覆盖本文顶部的 canonical checkpoint。
 
 `5C-5-prep-1 Skill Invocation Contract` 与 `5C-5-prep-3 report-fact-check Skill`
 已在功能代码开始前由 ADR-0009 取消，并保留在历史记录中。

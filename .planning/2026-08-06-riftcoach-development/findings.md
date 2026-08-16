@@ -1516,3 +1516,43 @@
   产品版本保持 1.0。当前没有持久化 Runtime Trace，因此无生产数据迁移。
 - Event budget 需在副作用前按可信 Agent/Harness/retry 预算验证，并为 Runtime terminal 保留
   slot；不能让两个非终态事件吃满预算后再尝试记录失败。
+- Harness 生命周期规则应由 Runtime 1.1 内部冻结的纯 reducer 共享给 Recorder 在线检查与
+  Trace 离线复读，不能分别复制，也不能直接依赖未来可能变化的 Harness 状态图。
+- Harness 的 `llm.chat` 位于 ToolRuntime 宽泛异常捕获内；Task B/C 接入 Observed Provider
+  时必须让 `RuntimeObservationError` 在 retry、fallback 和 breaker 计数前穿透。该问题不属于
+  Task A 的合同/端口实现，当前只记录为后续接线验收项。
+- `ChatResponse` 的全部仓库调用均使用关键字参数，`usage` 移到默认字段前并改为必填没有
+  位置参数兼容风险；生产 Zhipu Adapter 缺失/非法 Usage 应与 DeepSeek 一样返回安全
+  `provider_usage_unavailable`。历史 `zhipu_probe.py` 不是 Runtime Provider 路径，本批不改其
+  历史实验语义。
+
+## 2026-08-16：5E-2 Task A 中断恢复审查
+
+- 按 `AGENTS.md` 完整恢复 canonical state、活动计划、需求/路线/能力矩阵、ADR-0029/
+  0030 与 5E-2 设计后，治理预检通过；当前仍只是 Task A，不进入 Task B。
+- 上轮未提交实现已经包含 Runtime 1.1 lifecycle reducer、默认关闭 observation port、
+  prospective terminal candidate、Trace/Reference 版本一致性和 Zhipu missing Usage
+  fail-closed；恢复后首次聚焦回归为 `114 passed, 44 subtests passed`。
+- 该绿灯尚不足以验收 Task A。实现审查仍需补五类直接证据：Trace Store 失败后的
+  candidate abort、1.0 Event 对 1.1-only 语义的拒绝、Runtime/Harness transition 图同步、
+  terminal candidate 重复 commit/abort、publication digest 必须指向 `final_report`。
+- 本轮恢复没有读取 Key、构造/调用 Provider、运行 held-out、修改 Prompt/模型或进入
+  `ObservedLLMProvider`/AgentLoop/Harness 接线。
+
+## 2026-08-16：5E-2 Task A 本地收尾发现
+
+- 旧 Schema 1.0 的合法形状比最初兼容测试更宽：Provider finish reason 可为任意安全
+  厂商码，Tool 失败没有 `failure_code`，published/degraded publication 的摘要列表可以
+  为空。若把 1.1 严格规则直接放在嵌套 Signal 上，父级 Event 尚未读取版本就会误拒旧数据。
+- 最小修正是让 Signal 保留跨版本可表达能力，把有限 finish reason、Tool 成败/错误码一致性
+  和 publication 摘要数量放到 `RuntimeEvent.event_schema_version` 边界。Recorder 默认写
+  1.1，因此新事件仍严格；合法 1.0 只在显式旧版本读取时兼容。
+- 两阶段 terminal 还必须保留已经落盘的 Harness 终态。若 Harness 已 transition 到
+  degraded/published/rejected，即使 Runtime 在 publication signal 前失败，`run_failed`
+  也不能把已知 publication 写成 null；新增红绿测试后由共享 lifecycle reducer 强制。
+- Task A 当前聚焦回归为 `131 passed, 44 subtests passed`，完整回归为
+  `691 passed, 110 subtests passed`；两套 RAG、compileall、Harness SDK/tracked-data
+  boundary、dry-run、governance 和 diff check 通过。它只证明合同/端口/终态地基，
+  不证明 AgentLoop/Harness 已发信号或统一 `run()` 已存在。
+- 本地收尾全程没有读取 Key、构造/调用真实 Provider、运行 held-out、调整 Prompt/模型或
+  进入 Task B。

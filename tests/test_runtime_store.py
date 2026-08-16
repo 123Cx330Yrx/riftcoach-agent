@@ -16,11 +16,20 @@ from app.runtime.models import (
 )
 from app.runtime.recorder import RuntimeRecorder
 from app.runtime.signals import (
+    AgentRunTerminatedSignal,
     ContextBuiltSignal,
+    EvaluationCompletedSignal,
     ExecutionValidatedSignal,
+    HarnessTransitionedSignal,
     PublicationDecidedSignal,
     RunCompletedSignal,
+    RunFailedSignal,
     RunStartedSignal,
+    RuntimeAgentStatus,
+    RuntimeAgentStopReason,
+    RuntimeEvaluationVerdict,
+    RuntimeFailureStage,
+    RuntimeHarnessStatus,
 )
 from app.runtime.store import RuntimeTraceIntegrityError, RuntimeTraceStore
 
@@ -47,6 +56,62 @@ def trace():
         ContextBuiltSignal(
             context_contract_version="1.0.0",
             estimated_context_units=8000,
+        )
+    )
+    recorder.emit(
+        HarnessTransitionedSignal(
+            from_status=RuntimeHarnessStatus.CREATED,
+            to_status=RuntimeHarnessStatus.FACTS_READY,
+            revision_count=0,
+        )
+    )
+    recorder.emit(
+        AgentRunTerminatedSignal(
+            status=RuntimeAgentStatus.COMPLETED,
+            stop_reason=RuntimeAgentStopReason.FINAL_RESPONSE,
+            iterations=1,
+        )
+    )
+    recorder.emit(
+        HarnessTransitionedSignal(
+            from_status=RuntimeHarnessStatus.FACTS_READY,
+            to_status=RuntimeHarnessStatus.KNOWLEDGE_READY,
+            revision_count=0,
+        )
+    )
+    recorder.emit(
+        HarnessTransitionedSignal(
+            from_status=RuntimeHarnessStatus.KNOWLEDGE_READY,
+            to_status=RuntimeHarnessStatus.DRAFT_READY,
+            revision_count=0,
+        )
+    )
+    recorder.emit(
+        HarnessTransitionedSignal(
+            from_status=RuntimeHarnessStatus.DRAFT_READY,
+            to_status=RuntimeHarnessStatus.EVALUATING,
+            revision_count=0,
+        )
+    )
+    recorder.emit(
+        EvaluationCompletedSignal(
+            attempt=0,
+            score=90,
+            verdict=RuntimeEvaluationVerdict.PASS,
+        )
+    )
+    recorder.emit(
+        HarnessTransitionedSignal(
+            from_status=RuntimeHarnessStatus.EVALUATING,
+            to_status=RuntimeHarnessStatus.PASSED,
+            revision_count=0,
+        )
+    )
+    recorder.emit(
+        HarnessTransitionedSignal(
+            from_status=RuntimeHarnessStatus.PASSED,
+            to_status=RuntimeHarnessStatus.PUBLISHED,
+            revision_count=0,
         )
     )
     recorder.emit(
@@ -122,7 +187,29 @@ def test_store_serializes_strict_json_with_a_trailing_newline():
         payload = store.trace_path.read_bytes()
 
         assert payload.endswith(b"\n")
-        assert json.loads(payload)["trace_schema_version"] == "1.0"
+        assert json.loads(payload)["trace_schema_version"] == "1.1"
+
+
+def test_store_reference_uses_actual_trace_schema_version():
+    with tempfile.TemporaryDirectory() as directory:
+        store = RuntimeTraceStore(directory, "runtime_store_demo")
+        current = trace()
+
+        reference = store.write_trace(current)
+
+        assert reference.trace_schema_version == current.trace_schema_version
+
+
+def test_read_rejects_reference_schema_mismatch_even_when_digest_matches():
+    with tempfile.TemporaryDirectory() as directory:
+        store = RuntimeTraceStore(directory, "runtime_store_demo")
+        reference = store.write_trace(trace())
+        wrong_version = reference.model_copy(
+            update={"trace_schema_version": "1.0"}
+        )
+
+        with pytest.raises(RuntimeTraceIntegrityError, match="schema version"):
+            store.read_trace(wrong_version)
 
 
 def test_store_rejects_duplicate_write_without_changing_original():
@@ -175,3 +262,49 @@ def test_failed_atomic_replace_cleans_temp_and_leaves_no_trace(monkeypatch):
 
         assert not store.trace_path.exists()
         assert list(store.run_directory.glob(".runtime_trace.*.tmp")) == []
+
+
+def test_store_failure_aborts_success_candidate_before_memory_failure_terminal(
+    monkeypatch,
+):
+    completed = trace()
+    recorder = RuntimeRecorder(run_id=completed.run_id)
+    for event in completed.events[:-1]:
+        recorder.emit(event.signal)
+    candidate = recorder.prepare_terminal(completed.events[-1].signal)
+    prospective = recorder.build_trace(
+        identity=completed.identity,
+        policy=completed.policy,
+        artifacts=completed.artifacts,
+        terminal_candidate=candidate,
+    )
+
+    with tempfile.TemporaryDirectory() as directory:
+        store = RuntimeTraceStore(directory, completed.run_id)
+
+        def fail_write(payload: bytes) -> None:
+            raise OSError("simulated trace persistence failure")
+
+        monkeypatch.setattr(store, "_atomic_write", fail_write)
+        with pytest.raises(OSError, match="simulated trace"):
+            store.write_trace(prospective)
+
+        recorder.abort_terminal(candidate)
+        recorder.emit(
+            RunFailedSignal(
+                failure_stage=RuntimeFailureStage.OBSERVABILITY,
+                failure_code="trace_persistence_failed",
+                publication_status=RuntimePublicationStatus.PUBLISHED,
+            )
+        )
+
+        assert not store.trace_path.exists()
+        assert not any(
+            isinstance(event.signal, RunCompletedSignal)
+            for event in recorder.events
+        )
+        assert isinstance(recorder.events[-1].signal, RunFailedSignal)
+        assert (
+            recorder.events[-1].signal.failure_code
+            == "trace_persistence_failed"
+        )

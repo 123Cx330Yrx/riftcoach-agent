@@ -111,6 +111,7 @@ def identity() -> RuntimeIdentitySnapshot:
 
 def event(sequence: int, signal, *, elapsed_ms: int) -> RuntimeEvent:
     return RuntimeEvent(
+        event_schema_version="1.0",
         run_id="runtime_contract_demo",
         sequence=sequence,
         occurred_at_utc=datetime(2026, 8, 15, tzinfo=UTC)
@@ -185,6 +186,8 @@ def valid_trace() -> RuntimeTrace:
         ),
     )
     return RuntimeTrace(
+        trace_schema_version="1.0",
+        event_schema_version="1.0",
         run_id="runtime_contract_demo",
         identity=identity(),
         policy=policy(),

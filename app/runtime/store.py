@@ -39,7 +39,11 @@ class RuntimeTraceStore:
         ).encode("utf-8") + b"\n"
         self._atomic_write(payload)
         digest = hashlib.sha256(payload).hexdigest()
-        return RuntimeTraceReference(run_id=self.run_id, sha256=digest)
+        return RuntimeTraceReference(
+            run_id=self.run_id,
+            trace_schema_version=trace.trace_schema_version,
+            sha256=digest,
+        )
 
     def read_trace(self, reference: RuntimeTraceReference) -> RuntimeTrace:
         if reference.run_id != self.run_id:
@@ -54,11 +58,16 @@ class RuntimeTraceStore:
                 "runtime trace digest does not match its reference"
             )
         try:
-            return RuntimeTrace.model_validate_json(payload)
+            trace = RuntimeTrace.model_validate_json(payload)
         except ValidationError as exc:
             raise RuntimeTraceIntegrityError(
                 "runtime trace no longer satisfies its schema"
             ) from exc
+        if reference.trace_schema_version != trace.trace_schema_version:
+            raise RuntimeTraceIntegrityError(
+                "runtime trace schema version does not match its reference"
+            )
+        return trace
 
     def _atomic_write(self, payload: bytes) -> None:
         self.run_directory.mkdir(parents=True, exist_ok=True)

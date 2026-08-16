@@ -419,6 +419,21 @@ def test_allowlisted_provider_error_detail_is_body_free():
     assert safe_provider_error_code(error) == "invalid_finish_reason"
 
 
+def test_zhipu_missing_usage_code_is_allowlisted_but_unknown_codes_are_not():
+    assert safe_provider_error_code(
+        ProviderResponseError(
+            provider="zhipu",
+            code="provider_usage_unavailable",
+        )
+    ) == "provider_usage_unavailable"
+    assert safe_provider_error_code(
+        ProviderResponseError(
+            provider="zhipu",
+            code="vendor_raw_error",
+        )
+    ) is None
+
+
 def test_latency_overrun_is_classified_and_stops_provider():
     times = iter((0.0, 1.5))
     policy = tiny_policy(max_latency_ms=1000)

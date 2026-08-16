@@ -10,7 +10,7 @@ from app.providers.errors import (
     ProviderConfigurationError,
     ProviderRegistryError,
 )
-from app.providers.models import ChatRequest, ChatResponse
+from app.providers.models import ChatRequest, ChatResponse, TokenUsage
 
 
 class FakeProvider:
@@ -23,6 +23,7 @@ class FakeProvider:
             content="ok",
             model=self.model_name,
             provider=self.provider_name,
+            usage=TokenUsage(input_tokens=0, output_tokens=0),
         )
 
 

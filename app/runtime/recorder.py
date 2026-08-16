@@ -4,11 +4,13 @@ from __future__ import annotations
 
 import time
 from collections.abc import Callable, Sequence
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from decimal import Decimal
 
 from app.harness.run_ids import normalize_run_id
 
+from .lifecycle import RuntimeHarnessLifecycleV11, RuntimeLifecycleError
 from .models import (
     CostObservation,
     RuntimeArtifactReference,
@@ -43,6 +45,18 @@ class RuntimeRecorderError(RuntimeError):
     """Raised when a signal would make the runtime history inconsistent."""
 
 
+@dataclass(frozen=True)
+class PreparedRuntimeTerminal:
+    """Opaque, one-use terminal event prepared for prospective persistence."""
+
+    event: RuntimeEvent
+    _owner: object = field(repr=False, compare=False)
+    _lifecycle_after: RuntimeHarnessLifecycleV11 = field(
+        repr=False,
+        compare=False,
+    )
+
+
 class RuntimeRecorder:
     def __init__(
         self,
@@ -67,6 +81,9 @@ class RuntimeRecorder:
         self._tool_open: dict[int, tuple[str, str]] = {}
         self._tool_calls_started = 0
         self._publication: PublicationDecidedSignal | None = None
+        self._harness_lifecycle = RuntimeHarnessLifecycleV11()
+        self._candidate_owner = object()
+        self._pending_terminal: PreparedRuntimeTerminal | None = None
 
     @property
     def events(self) -> tuple[RuntimeEvent, ...]:
@@ -166,10 +183,78 @@ class RuntimeRecorder:
         )
 
     def emit(self, signal: RuntimeSignal) -> RuntimeEvent:
-        if not isinstance(signal, RUNTIME_SIGNAL_TYPES):
-            raise RuntimeRecorderError("signal must use a typed runtime contract")
+        if isinstance(signal, TERMINAL_SIGNAL_TYPES):
+            return self.commit_terminal(self.prepare_terminal(signal))
+        if self._pending_terminal is not None:
+            raise RuntimeRecorderError(
+                "cannot emit while a terminal candidate is pending"
+            )
+        self._validate_common_signal(signal)
+        if len(self._events) >= self._event_budget - 1:
+            raise RuntimeRecorderError(
+                "runtime terminal slot is reserved by the event budget"
+            )
+        self._validate_signal(signal)
+        lifecycle_after = self._preview_lifecycle(signal)
+        event = self._make_event(signal)
+        self._events.append(event)
+        self._apply_signal(signal, lifecycle_after=lifecycle_after)
+        return event
+
+    def prepare_terminal(
+        self,
+        signal: RunCompletedSignal | RunFailedSignal,
+    ) -> PreparedRuntimeTerminal:
+        if self._pending_terminal is not None:
+            raise RuntimeRecorderError("a terminal candidate is already pending")
+        if not isinstance(signal, TERMINAL_SIGNAL_TYPES):
+            raise RuntimeRecorderError("terminal candidate requires a terminal signal")
+        self._validate_common_signal(signal)
         if len(self._events) >= self._event_budget:
             raise RuntimeRecorderError("runtime event budget exceeded")
+        self._validate_signal(signal)
+        lifecycle_after = self._preview_lifecycle(signal)
+        candidate = PreparedRuntimeTerminal(
+            event=self._make_event(signal),
+            _owner=self._candidate_owner,
+            _lifecycle_after=lifecycle_after,
+        )
+        self._pending_terminal = candidate
+        return candidate
+
+    def commit_terminal(
+        self,
+        candidate: PreparedRuntimeTerminal,
+    ) -> RuntimeEvent:
+        self._require_pending_candidate(candidate)
+        self._events.append(candidate.event)
+        self._apply_signal(
+            candidate.event.signal,
+            lifecycle_after=candidate._lifecycle_after,
+        )
+        self._pending_terminal = None
+        return candidate.event
+
+    def abort_terminal(self, candidate: PreparedRuntimeTerminal) -> None:
+        self._require_pending_candidate(candidate)
+        self._pending_terminal = None
+
+    def _require_pending_candidate(
+        self,
+        candidate: PreparedRuntimeTerminal,
+    ) -> None:
+        if (
+            not isinstance(candidate, PreparedRuntimeTerminal)
+            or candidate._owner is not self._candidate_owner
+            or self._pending_terminal is not candidate
+        ):
+            raise RuntimeRecorderError(
+                "terminal candidate does not belong to this pending Recorder state"
+            )
+
+    def _validate_common_signal(self, signal: RuntimeSignal) -> None:
+        if not isinstance(signal, RUNTIME_SIGNAL_TYPES):
+            raise RuntimeRecorderError("signal must use a typed runtime contract")
         if self._events and isinstance(
             self._events[-1].signal,
             TERMINAL_SIGNAL_TYPES,
@@ -180,8 +265,7 @@ class RuntimeRecorder:
         if self._events and isinstance(signal, RunStartedSignal):
             raise RuntimeRecorderError("run_started may only be the first event")
 
-        self._validate_signal(signal)
-
+    def _make_event(self, signal: RuntimeSignal) -> RuntimeEvent:
         now = self._utc_now()
         if now.tzinfo is None or now.utcoffset() is None:
             raise RuntimeRecorderError("utc clock must return an aware datetime")
@@ -199,16 +283,29 @@ class RuntimeRecorder:
             if elapsed_ms < self._events[-1].elapsed_ms:
                 raise RuntimeRecorderError("monotonic clock moved backwards")
 
-        event = RuntimeEvent(
+        return RuntimeEvent(
             run_id=self._run_id,
             sequence=len(self._events) + 1,
             occurred_at_utc=now,
             elapsed_ms=elapsed_ms,
             signal=signal,
         )
-        self._events.append(event)
-        self._apply_signal(signal)
-        return event
+
+    def _preview_lifecycle(
+        self,
+        signal: RuntimeSignal,
+    ) -> RuntimeHarnessLifecycleV11:
+        try:
+            return self._harness_lifecycle.advance(
+                signal,
+                context_seen=any(
+                    isinstance(event.signal, ContextBuiltSignal)
+                    for event in self._events
+                ),
+                has_open_calls=bool(self._provider_open or self._tool_open),
+            )
+        except RuntimeLifecycleError as exc:
+            raise RuntimeRecorderError(str(exc)) from exc
 
     def _validate_signal(self, signal: RuntimeSignal) -> None:
         if isinstance(signal, ExecutionValidatedSignal):
@@ -306,7 +403,12 @@ class RuntimeRecorder:
                     "failed run does not match known publication decision"
                 )
 
-    def _apply_signal(self, signal: RuntimeSignal) -> None:
+    def _apply_signal(
+        self,
+        signal: RuntimeSignal,
+        *,
+        lifecycle_after: RuntimeHarnessLifecycleV11,
+    ) -> None:
         if isinstance(signal, ProviderCallStartedSignal):
             self._provider_calls_started += 1
             self._provider_open[signal.ordinal] = (
@@ -328,6 +430,7 @@ class RuntimeRecorder:
             del self._tool_open[signal.ordinal]
         elif isinstance(signal, PublicationDecidedSignal):
             self._publication = signal
+        self._harness_lifecycle = lifecycle_after
 
     def build_trace(
         self,
@@ -335,12 +438,22 @@ class RuntimeRecorder:
         identity: RuntimeIdentitySnapshot,
         policy: RuntimePolicySnapshot,
         artifacts: Sequence[RuntimeArtifactReference] = (),
+        terminal_candidate: PreparedRuntimeTerminal | None = None,
     ) -> RuntimeTrace:
-        if not self._events or not isinstance(
-            self._events[-1].signal,
-            TERMINAL_SIGNAL_TYPES,
-        ):
-            raise RuntimeRecorderError("cannot build a trace before terminal")
+        if terminal_candidate is None:
+            if self._pending_terminal is not None:
+                raise RuntimeRecorderError(
+                    "pending terminal candidate must be supplied to build Trace"
+                )
+            if not self._events or not isinstance(
+                self._events[-1].signal,
+                TERMINAL_SIGNAL_TYPES,
+            ):
+                raise RuntimeRecorderError("cannot build a trace before terminal")
+            trace_events = self.events
+        else:
+            self._require_pending_candidate(terminal_candidate)
+            trace_events = self.events + (terminal_candidate.event,)
         if policy.event_budget != self._event_budget:
             raise RuntimeRecorderError(
                 "trace policy event budget does not match recorder budget"
@@ -355,7 +468,8 @@ class RuntimeRecorder:
         ):
             raise RuntimeRecorderError("trace identity or policy mismatch")
 
-        terminal = self._events[-1].signal
+        terminal_event = trace_events[-1]
+        terminal = terminal_event.signal
         if isinstance(terminal, RunCompletedSignal):
             runtime_status = RuntimeStatus.COMPLETED
             publication_status = terminal.publication_status
@@ -369,13 +483,13 @@ class RuntimeRecorder:
             run_id=self._run_id,
             identity=identity,
             policy=policy,
-            events=self.events,
+            events=trace_events,
             usage=self.usage,
             runtime_status=runtime_status,
             publication_status=publication_status,
             terminal_reason=terminal_reason,
             artifacts=tuple(artifacts),
-            started_at_utc=self._events[0].occurred_at_utc,
-            completed_at_utc=self._events[-1].occurred_at_utc,
-            elapsed_ms=self._events[-1].elapsed_ms,
+            started_at_utc=trace_events[0].occurred_at_utc,
+            completed_at_utc=terminal_event.occurred_at_utc,
+            elapsed_ms=terminal_event.elapsed_ms,
         )

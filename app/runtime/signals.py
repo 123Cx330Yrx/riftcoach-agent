@@ -6,10 +6,13 @@ import re
 from enum import Enum
 from typing import Annotated, Literal, Union
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 _SAFE_CODE_PATTERN = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)*$")
+_SAFE_SECTION_ID_PATTERN = re.compile(
+    r"^[a-z0-9]+(?:[._-][a-z0-9]+)*(?::[a-z0-9]+(?:[._-][a-z0-9]+)*)*$"
+)
 _SEMVER_PATTERN = re.compile(r"^\d+\.\d+\.\d+$")
 _SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 _SKILL_NAME_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
@@ -30,6 +33,7 @@ class RuntimeFailureStage(str, Enum):
     AGENT = "agent"
     TOOL = "tool"
     EVALUATION = "evaluation"
+    HARNESS = "harness"
     PUBLICATION = "publication"
     OBSERVABILITY = "observability"
 
@@ -53,6 +57,39 @@ class RuntimeEvaluationVerdict(str, Enum):
     PASS = "pass"
     NEEDS_REVISION = "needs_revision"
     FAIL = "fail"
+
+
+class RuntimeProviderPhase(str, Enum):
+    AGENT = "agent"
+    EVALUATION = "evaluation"
+    EVALUATION_REPAIR = "evaluation_repair"
+    REVISION = "revision"
+
+
+class RuntimeFinishReason(str, Enum):
+    STOP = "stop"
+    TOOL_CALLS = "tool_calls"
+    LENGTH = "length"
+    CONTENT_FILTER = "content_filter"
+    OTHER = "other"
+
+
+class RuntimeAgentStatus(str, Enum):
+    COMPLETED = "completed"
+    STOPPED = "stopped"
+    FAILED = "failed"
+
+
+class RuntimeAgentStopReason(str, Enum):
+    FINAL_RESPONSE = "final_response"
+    MAX_ITERATIONS = "max_iterations"
+    MAX_TOOL_CALLS = "max_tool_calls"
+    DUPLICATE_TOOL_CALL = "duplicate_tool_call"
+    TOOL_NOT_ALLOWED = "tool_not_allowed"
+    PROVIDER_ERROR = "provider_error"
+    INVALID_TOOL_CONFIGURATION = "invalid_tool_configuration"
+    CONTEXT_BUDGET_EXCEEDED = "context_budget_exceeded"
+    TIMEOUT = "timeout"
 
 
 class RuntimeSignalModel(BaseModel):
@@ -124,10 +161,9 @@ class ContextBuiltSignal(RuntimeSignalModel):
     @field_validator("omitted_item_ids")
     @classmethod
     def validate_omitted_items(cls, values: tuple[str, ...]) -> tuple[str, ...]:
-        normalized = tuple(
-            _validate_safe_code(value, field_name="omitted_item_ids")
-            for value in values
-        )
+        normalized = tuple(values)
+        if any(not _SAFE_SECTION_ID_PATTERN.fullmatch(value) for value in values):
+            raise ValueError("omitted_item_ids must use safe section identifiers")
         if len(set(normalized)) != len(normalized):
             raise ValueError("omitted_item_ids must be unique")
         return normalized
@@ -138,12 +174,22 @@ class ProviderCallStartedSignal(RuntimeSignalModel):
     provider_id: str
     model: str
     ordinal: int = Field(ge=1)
-    iteration: int = Field(ge=1)
+    phase: RuntimeProviderPhase = RuntimeProviderPhase.AGENT
+    iteration: int | None = Field(default=None, ge=1)
 
     @field_validator("provider_id", "model")
     @classmethod
     def validate_identity(cls, value: str, info) -> str:
         return _validate_safe_code(value, field_name=info.field_name)
+
+    @model_validator(mode="after")
+    def validate_phase_iteration(self) -> "ProviderCallStartedSignal":
+        if self.phase is RuntimeProviderPhase.AGENT:
+            if self.iteration is None:
+                raise ValueError("agent provider phase requires iteration")
+        elif self.iteration is not None:
+            raise ValueError("non-agent provider phase must not carry iteration")
+        return self
 
 
 class ProviderCallCompletedSignal(RuntimeSignalModel):
@@ -151,14 +197,33 @@ class ProviderCallCompletedSignal(RuntimeSignalModel):
     provider_id: str
     model: str
     ordinal: int = Field(ge=1)
-    finish_reason: str
+    # The Signal layer must be able to deserialize both Event schema 1.0 and
+    # 1.1 shapes.  Schema-specific bounds are enforced by RuntimeEvent, which
+    # has the version needed to decide whether an old safe vendor code is
+    # legal.  Known 1.1 values are normalized back to the enum.
+    finish_reason: RuntimeFinishReason | str | None
     input_tokens: int = Field(ge=0)
     output_tokens: int = Field(ge=0)
 
-    @field_validator("provider_id", "model", "finish_reason")
+    @field_validator("provider_id", "model")
     @classmethod
     def validate_codes(cls, value: str, info) -> str:
         return _validate_safe_code(value, field_name=info.field_name)
+
+    @field_validator("finish_reason")
+    @classmethod
+    def validate_finish_reason(
+        cls,
+        value: RuntimeFinishReason | str | None,
+    ) -> RuntimeFinishReason | str | None:
+        if value is None:
+            return None
+        raw_value = value.value if isinstance(value, RuntimeFinishReason) else value
+        safe_value = _validate_safe_code(raw_value, field_name="finish_reason")
+        try:
+            return RuntimeFinishReason(safe_value)
+        except ValueError:
+            return safe_value
 
 
 class ProviderCallFailedSignal(RuntimeSignalModel):
@@ -208,6 +273,7 @@ class ToolCallCompletedSignal(RuntimeSignalModel):
     tool_version: str
     ordinal: int = Field(ge=1)
     success: bool
+    failure_code: str | None = None
     attempts: int = Field(ge=0)
     latency_ms: float = Field(ge=0)
     cached: bool
@@ -225,12 +291,65 @@ class ToolCallCompletedSignal(RuntimeSignalModel):
     def validate_tool_version(cls, value: str) -> str:
         return _validate_semver(value, field_name="tool_version")
 
+    @field_validator("failure_code")
+    @classmethod
+    def validate_failure_code(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        return _validate_safe_code(value, field_name="failure_code")
+
     @field_validator("fallback_used")
     @classmethod
     def reject_cached_fallback(cls, value: bool, info) -> bool:
         if value and info.data.get("cached"):
             raise ValueError("tool result cannot be cached and fallback-generated")
         return value
+
+
+class AgentRunTerminatedSignal(RuntimeSignalModel):
+    kind: Literal["agent_run_terminated"] = "agent_run_terminated"
+    status: RuntimeAgentStatus
+    stop_reason: RuntimeAgentStopReason
+    iterations: int = Field(ge=0, le=20)
+    error_code: str | None = None
+
+    @field_validator("error_code")
+    @classmethod
+    def validate_error_code(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        return _validate_safe_code(value, field_name="error_code")
+
+    @model_validator(mode="after")
+    def validate_terminal_shape(self) -> "AgentRunTerminatedSignal":
+        stopped_reasons = {
+            RuntimeAgentStopReason.MAX_ITERATIONS,
+            RuntimeAgentStopReason.MAX_TOOL_CALLS,
+            RuntimeAgentStopReason.DUPLICATE_TOOL_CALL,
+            RuntimeAgentStopReason.CONTEXT_BUDGET_EXCEEDED,
+            RuntimeAgentStopReason.TIMEOUT,
+        }
+        failed_reasons = {
+            RuntimeAgentStopReason.TOOL_NOT_ALLOWED,
+            RuntimeAgentStopReason.PROVIDER_ERROR,
+            RuntimeAgentStopReason.INVALID_TOOL_CONFIGURATION,
+        }
+        if self.status is RuntimeAgentStatus.COMPLETED:
+            if self.stop_reason is not RuntimeAgentStopReason.FINAL_RESPONSE:
+                raise ValueError("completed Agent requires final_response")
+            if self.error_code is not None:
+                raise ValueError("completed Agent requires null error_code")
+        elif self.status is RuntimeAgentStatus.STOPPED:
+            if self.stop_reason not in stopped_reasons:
+                raise ValueError("stopped Agent has an invalid stop_reason")
+            if self.error_code is not None:
+                raise ValueError("stopped Agent requires null error_code")
+        else:
+            if self.stop_reason not in failed_reasons:
+                raise ValueError("failed Agent has an invalid stop_reason")
+            if self.error_code is None:
+                raise ValueError("failed Agent requires error_code")
+        return self
 
 
 class HarnessTransitionedSignal(RuntimeSignalModel):
@@ -242,7 +361,7 @@ class HarnessTransitionedSignal(RuntimeSignalModel):
 
 class EvaluationCompletedSignal(RuntimeSignalModel):
     kind: Literal["evaluation_completed"] = "evaluation_completed"
-    attempt: int = Field(ge=1)
+    attempt: int = Field(ge=0)
     score: int = Field(ge=0, le=100)
     verdict: RuntimeEvaluationVerdict
     blocking_categories: tuple[str, ...] = ()
@@ -312,6 +431,7 @@ RuntimeSignal = Annotated[
         ProviderCallFailedSignal,
         ToolCallStartedSignal,
         ToolCallCompletedSignal,
+        AgentRunTerminatedSignal,
         HarnessTransitionedSignal,
         EvaluationCompletedSignal,
         PublicationDecidedSignal,
@@ -331,6 +451,7 @@ RUNTIME_SIGNAL_TYPES = (
     ProviderCallFailedSignal,
     ToolCallStartedSignal,
     ToolCallCompletedSignal,
+    AgentRunTerminatedSignal,
     HarnessTransitionedSignal,
     EvaluationCompletedSignal,
     PublicationDecidedSignal,

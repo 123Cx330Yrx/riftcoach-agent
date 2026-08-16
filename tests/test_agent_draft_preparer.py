@@ -213,6 +213,7 @@ class KnowledgeSeekingProvider:
                 content="# Draft after a failed tool observation",
                 model=self.model_name,
                 provider=self.provider_name,
+                usage=TokenUsage(input_tokens=0, output_tokens=0),
             )
         actual_sources = [
             row["source_id"] for row in observation["data"]["chunks"]
@@ -251,6 +252,7 @@ def final_response(content: str = "# Draft") -> ChatResponse:
         content=content,
         model="fake-model",
         provider="fake-provider",
+        usage=TokenUsage(input_tokens=0, output_tokens=0),
     )
 
 
