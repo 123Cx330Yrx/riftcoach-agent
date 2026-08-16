@@ -1595,3 +1595,24 @@
   Harness dry-run 与治理全部成功。
 - Task B 只公开证明 Provider/AgentLoop 观察合同和 observation fail-fast 的工程接线，
   不证明 Harness observer、统一 `run()`、真实 Provider 领域质量、模型切换或 5E 完成。
+
+## 2026-08-17：5E-2 Task C 本地实现发现
+
+- `ReviewHarness` 新增可选 `RuntimeSignalObserver`，但继续保持唯一评测、修订和发布权；
+  observer 关闭时不额外读取/投影 Artifact，以保持旧 Harness/Executor 行为。
+- Harness transition 在 `write_manifest()` 成功并（开启 observer 时）重新读取 Manifest 后
+  才发出，初始 `created → facts_ready`、修订边和 terminal transition 均使用真实
+  `from_status`、`to_status` 与 `revision_count`。
+- Evaluation 先校验返回对象、写入并重新读取 `evaluation_attempt_<attempt>.json`，再发出
+  `evaluation_completed`；attempt 直接取零基 `manifest.attempt_id`。blocking projection
+  只允许当前真正阻断策略的 `prompt_injection`，不保存 quote/解释/修正文本。
+- terminal Manifest 写入成功后，开启 observer 的 Harness 会重新校验所有已登记 Artifact，
+  publication 对 published/degraded 只投影真实 `final_report` SHA-256，rejected 为空。
+  `app/runtime/artifacts.py` 提供 body-free `RuntimeArtifactReference` 投影，依赖
+  `FileRunStore.read_artifact()` 发现篡改并 fail closed。
+- `RuntimeObservationError` 在 Harness、`SkillReviewExecutor` 和
+  `SkillAgentDraftPreparer` 的 broad catch 前穿透；不会被转成普通业务失败或
+  deterministic fallback。
+- 新增 Task C 聚焦测试 8 项；本地完整回归为 `729 passed, 110 subtests passed`。
+  RAG development/holdout、compileall、tracked-data boundary、Harness dry-run、治理和
+  diff check 通过；Provider/Key/held-out I/O 为 0。Task C 尚待提交、推送和 exact-SHA CI。

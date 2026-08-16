@@ -20,6 +20,19 @@ from .steps import (
     ReviserStep,
 )
 from .store import FileRunStore
+from app.runtime.observer import (
+    RuntimeObservationError,
+    RuntimeSignalObserver,
+    observe_runtime_signal,
+)
+from app.runtime.signals import (
+    EvaluationCompletedSignal,
+    HarnessTransitionedSignal,
+    PublicationDecidedSignal,
+    RuntimeEvaluationVerdict,
+    RuntimeHarnessStatus,
+    RuntimePublicationStatus,
+)
 
 
 class ReviewHarness:
@@ -33,12 +46,14 @@ class ReviewHarness:
         evaluator: EvaluatorStep,
         reviser: ReviserStep,
         config: HarnessConfig | None = None,
+        observer: RuntimeSignalObserver | None = None,
     ) -> None:
         self.store = store
         self.draft_preparer = draft_preparer
         self.evaluator = evaluator
         self.reviser = reviser
         self.config = config or HarnessConfig()
+        self.observer = observer
 
     def run(
         self,
@@ -82,6 +97,8 @@ class ReviewHarness:
                 raise TypeError(
                     "Draft preparer must return DraftPreparationResult."
                 )
+        except RuntimeObservationError:
+            raise
         except Exception as exc:
             return self._finish_unsuccessful_run(
                 deterministic_content,
@@ -131,6 +148,8 @@ class ReviewHarness:
                     )
                 )
                 self._validate_evaluation(evaluation)
+            except RuntimeObservationError:
+                raise
             except Exception as exc:
                 return self._finish_unsuccessful_run(
                     deterministic_content,
@@ -139,13 +158,16 @@ class ReviewHarness:
 
             manifest = self.store.read_manifest()
             attempt_id = manifest.attempt_id
-            self.store.write_artifact(
+            evaluation_record = self.store.write_artifact(
                 kind=ArtifactKind.EVALUATION_RESULT,
                 relative_path=f"evaluations/evaluation_attempt_{attempt_id}.json",
                 content=self._evaluation_bytes(evaluation),
                 schema_version="1.0",
                 producer="evaluator",
             )
+            if self.observer is not None:
+                self.store.read_artifact(evaluation_record)
+                self._observe_evaluation(evaluation, attempt_id)
 
             if self._has_blocking_issue(evaluation):
                 return self._finish_unsuccessful_run(
@@ -186,6 +208,8 @@ class ReviewHarness:
                 if not isinstance(revised, CoachDraft):
                     raise TypeError("Reviser must return CoachDraft.")
                 self._validate_report_citations(revised.report, knowledge)
+            except RuntimeObservationError:
+                raise
             except Exception as exc:
                 return self._finish_unsuccessful_run(
                     deterministic_content,
@@ -206,10 +230,58 @@ class ReviewHarness:
             self._transition(RunStatus.RE_EVALUATING)
 
     def _transition(self, target: RunStatus) -> RunManifest:
-        manifest = self.store.read_manifest()
-        advance(manifest, target, attempt_id=manifest.attempt_id)
-        self.store.write_manifest(manifest)
-        return manifest
+        before = self.store.read_manifest()
+        before_status = before.status
+        advance(before, target, attempt_id=before.attempt_id)
+        self.store.write_manifest(before)
+        if self.observer is None:
+            return before
+        persisted = self.store.read_manifest()
+        self._observe_transition(
+            before_status=before_status,
+            persisted=persisted,
+        )
+        return persisted
+
+    def _observe_transition(
+        self,
+        *,
+        before_status: RunStatus,
+        persisted: RunManifest,
+    ) -> None:
+        observe_runtime_signal(
+            self.observer,
+            HarnessTransitionedSignal(
+                from_status=RuntimeHarnessStatus(before_status.value),
+                to_status=RuntimeHarnessStatus(persisted.status.value),
+                revision_count=persisted.revision_count,
+            ),
+        )
+
+    def _observe_evaluation(
+        self,
+        evaluation: EvaluationResult,
+        attempt_id: int,
+    ) -> None:
+        blocking_categories = tuple(
+            sorted(
+                {
+                    "prompt_injection"
+                    for issue in evaluation.issues
+                    if isinstance(issue, Mapping)
+                    and issue.get("category") == "prompt_injection"
+                }
+            )
+        )
+        observe_runtime_signal(
+            self.observer,
+            EvaluationCompletedSignal(
+                attempt=attempt_id,
+                score=evaluation.score,
+                verdict=RuntimeEvaluationVerdict(evaluation.verdict.value),
+                blocking_categories=blocking_categories,
+            ),
+        )
 
     def _passes_quality_gate(self, evaluation: EvaluationResult) -> bool:
         return (
@@ -287,19 +359,59 @@ class ReviewHarness:
         reason: str,
     ) -> RunManifest:
         manifest = self.store.read_manifest()
+        previous_status = manifest.status
+        reason_code = self._reason_code(reason)
         advance(
             manifest,
             target,
             attempt_id=manifest.attempt_id,
-            reason=reason,
+            reason=reason_code,
         )
         manifest.final_decision = decision
         self.store.write_manifest(manifest)
-        return manifest
+        if self.observer is None:
+            return manifest
+        persisted = self.store.read_manifest()
+        self._observe_transition(
+            before_status=previous_status,
+            persisted=persisted,
+        )
+        # Import lazily: app.runtime.models imports SkillExecutionRequest, while
+        # the Harness package is also imported by the Skill package.
+        from app.runtime.artifacts import project_artifact_references
+
+        references = project_artifact_references(
+            manifest=persisted,
+            store=self.store,
+        )
+        final_report_digests = tuple(
+            reference.sha256
+            for reference in references
+            if reference.kind == ArtifactKind.FINAL_REPORT.value
+        )
+        if target is RunStatus.REJECTED and final_report_digests:
+            raise ValueError("rejected publication cannot reference a final report")
+        if target is not RunStatus.REJECTED and len(final_report_digests) != 1:
+            raise ValueError("terminal publication requires one final report")
+        observe_runtime_signal(
+            self.observer,
+            PublicationDecidedSignal(
+                publication_status=RuntimePublicationStatus(target.value),
+                terminal_reason=reason_code,
+                artifact_sha256s=()
+                if target is RunStatus.REJECTED
+                else final_report_digests,
+            ),
+        )
+        return persisted
 
     @staticmethod
     def _step_failure_reason(step: str, error: Exception) -> str:
-        return f"{step}_failed:{type(error).__name__}"
+        return f"{step}_failed"
+
+    @staticmethod
+    def _reason_code(reason: str) -> str:
+        return reason.split(":", maxsplit=1)[0]
 
     @staticmethod
     def _json_bytes(payload: Mapping[str, Any]) -> bytes:

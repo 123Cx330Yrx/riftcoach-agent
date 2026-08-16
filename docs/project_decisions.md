@@ -519,3 +519,22 @@ ToolRuntime，因此 Harness 内部 `llm.chat` 不会冒充 Skill 工具。每�
 观察故障误分类成业务依赖失败。本地 81 项聚焦和 721 项完整回归已通过；实现提交
 `28bd910525a7522be16bd69b6e945846839a4cd8` 已由 Actions `31952026988` exact-SHA 公开
 验证成功，Task B 正式闭环，Task C/D 未开始。
+
+### 5E-2 Task C Harness/Executor 持久化后观察决策
+
+Task C 将观察端口接入 `ReviewHarness` 和 `SkillReviewExecutor`，但不改变 Harness 的
+评测、修订或发布权。Harness transition 只在目标 Manifest 成功写入并重新读取后观察；
+Evaluation 只在结构校验通过、Evaluation Artifact 注册成功且真实字节重新校验后观察；
+publication 只在 terminal Manifest 成功写入后观察。Evaluation attempt 直接使用 Manifest
+的零基值，因此第一次和修订后的 Artifact 分别对应
+`evaluation_attempt_0.json` 与 `evaluation_attempt_1.json`。
+
+Runtime signal 只投影安全元数据：评测最多保存 `prompt_injection` blocking category，
+publication 对 published/degraded 只保存经真实字节校验的 `final_report` SHA-256，rejected
+不保存报告摘要。新增的 Artifact projection helper 会逐条调用 `FileRunStore.read_artifact`
+并生成相对路径、Schema、SHA-256 和 producer 引用，绝不把 Artifact 正文复制进 Runtime。
+
+`RuntimeObservationError` 在 Harness、Executor 和 Agent draft preparation 的宽泛异常捕获
+前显式穿透；观察基础设施失败不能被误写成 `draft_preparation_failed`、普通 evaluation
+失败或 deterministic fallback。`observer=None` 保留旧行为，不额外执行观察期的 Artifact
+读取与投影。

@@ -33,6 +33,10 @@ from app.harness.steps import (
     ReviserStep,
 )
 from app.harness.store import ArtifactIntegrityError, FileRunStore
+from app.runtime.observer import (
+    RuntimeObservationError,
+    RuntimeSignalObserver,
+)
 
 from .execution import InputArtifactCommitment, ValidatedSkillExecution
 
@@ -123,6 +127,8 @@ class _BoundAgentDraftPreparationStep:
             raise SkillReviewExecutionError(
                 "agent draft preparation failed"
             ) from exc
+        except RuntimeObservationError:
+            raise
         except Exception as exc:
             raise SkillReviewExecutionError(
                 "agent draft preparer raised an unexpected error"
@@ -175,6 +181,7 @@ class SkillReviewExecutor:
         *,
         execution: ValidatedSkillExecution,
         context: ContextBundle,
+        observer: RuntimeSignalObserver | None = None,
     ) -> SkillReviewExecutionResult:
         self._validate_execution_context(execution, context)
         quality_gate = execution.skill.manifest.quality_gate
@@ -208,11 +215,14 @@ class SkillReviewExecutor:
                 evaluator=self._evaluator,
                 reviser=self._reviser,
                 config=config,
+                observer=observer,
             ).run(
                 player_summary=typed_input.player_summary,
                 deterministic_report=typed_input.deterministic_report,
                 user_utterance=execution.user_utterance,
             )
+        except RuntimeObservationError:
+            raise
         except Exception as exc:
             raise SkillReviewExecutionError(
                 "review Harness execution failed"

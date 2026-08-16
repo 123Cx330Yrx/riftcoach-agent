@@ -1611,3 +1611,24 @@
   observation fail-fast 和 observer=None 兼容均有公开证据；本批没有 Key、真实 Provider 或
   held-out I/O。唯一下一步切换为 Task C Harness/Executor 持久化后观察，不进入 Task D、5E-3、
   5P 或 5F。
+
+## 2026-08-17：5E-2 Task C 本地实现与门禁
+
+- 先新增 Harness/Executor observation、Artifact projection、attempt 0/1、blocking category、
+  rejected digest、Artifact integrity 和 RuntimeObservationError 穿透红灯；首轮缺少
+  `app.runtime.artifacts`，随后按最小合同实现。
+- `ReviewHarness` 接入可选 observer：transition 在持久化后观察，Evaluation Artifact
+  成功注册并重新读取后观察，terminal Manifest 持久化后观察 publication；published/degraded
+  关联 final report SHA，rejected 不关联报告。
+- `SkillReviewExecutor.execute()` 增加可选 observer 并传给 Harness；Bound preparation、
+  `SkillAgentDraftPreparer` 与 Executor 的 broad catch 都让 `RuntimeObservationError` 穿透。
+  `_step_failure_reason()` 统一使用稳定 reason code，不再把异常类名带入 Harness/Runtime
+  signal。
+- Task C 聚焦为 `8 passed`；Harness/Skill/Agent/Provider/Runtime 相邻回归为 `84 passed`，
+  Runtime contract/store 加 Task C 为 `77 passed`；完整回归为 `729 passed, 110 subtests passed`。
+- 两套 RAG、compileall、tracked secret/run-data boundary、Harness dry-run、governance 和
+  `git diff --check` 通过。第一次未设置项目根 `PYTHONPATH` 的系统 `pytest` 子进程出现既有
+  editable-package 导入环境错误；使用项目 Python 3.11 + 项目根路径后完整通过，CI 通过
+  editable install 不受影响。
+- 本批没有读取 Key、调用 Provider、运行 held-out、修改 Prompt/模型、实现统一 `run()` 或
+  `stream()`；Task C 待提交、推送和 exact-SHA public CI，Task D 未开始。

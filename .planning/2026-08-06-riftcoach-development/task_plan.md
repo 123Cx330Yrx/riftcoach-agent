@@ -522,7 +522,8 @@ GLM-5.3、不修改默认模型，也不采用 LangGraph 或 Agent SDK。
 - [x] Task A：合同 1.1、1.0 读取兼容、observation port 与 prospective terminal TDD；
 - [x] Task B：共享 Observed Provider 与 AgentLoop 观察；`28bd910` / Actions `31952026988`
   exact-SHA 公共 CI 通过；
-- [ ] Task C：Harness/Executor 持久化后观察与 Artifact 投影；
+- [x] Task C：Harness/Executor 持久化后观察与 Artifact 投影；本地 `8 passed` 新增测试、
+  `729 passed, 110 subtests passed` 完整回归和全部本地门禁通过；待提交、推送与 exact-SHA CI；
 - [ ] Task D：两个真实 Skill 的统一同步 `run()` 纵向切片；
 - [ ] 完整门禁、持久状态、提交/推送与 exact-SHA CI；
 - [ ] 5E-2 完成前不进入 5E-3 stream parity。

@@ -20,6 +20,7 @@ from .loop import (
     AgentRunStatus,
     AgentStopReason,
 )
+from app.runtime.observer import RuntimeObservationError
 
 
 _KNOWLEDGE_TOOL_NAME = "knowledge.search"
@@ -118,6 +119,8 @@ class SkillAgentDraftPreparer:
 
         try:
             agent_run = self._agent_loop.run(request)
+        except RuntimeObservationError:
+            raise
         except Exception as exc:
             raise AgentDraftPreparationError(
                 "agent loop raised an unexpected error"
