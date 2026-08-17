@@ -634,3 +634,7 @@ Revision 资产绑定。因此本次不把 5P 简化成“加 FastAPI”。
 - 文件型 receipt 只是 body-free 查询投影；无 SQL、事务、恢复、多 worker 或公网安全承诺；
 - 5P 固定为 5P-1 至 5P-6，entry design 通过公开验证后只进入 5P-1；本设计没有产品代码、
   FastAPI 依赖、Key、Riot/Provider/held-out I/O，当前仍无领域 Provider 准入。
+
+入口设计提交 `49841ec44832875e65b17770557415113e67b1db` 随后由 GitHub Actions run
+`31985199623` 完成 exact-SHA 公共验证。5P entry design 正式完成，canonical 只切换到
+`5P-1-product-contract-compiler` 准备状态；按 RQ-040 不在本轮自动实现。

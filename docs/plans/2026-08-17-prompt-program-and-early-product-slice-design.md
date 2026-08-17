@@ -7,6 +7,8 @@
 - 结论：接受“版本化 Prompt Program + 薄 FastAPI Adapter + Application Service”方案
 - 本批性质：架构、合同与实施顺序设计
 - 本批外部 I/O：0；不读取 API Key，不调用 Riot/LLM Provider，不运行 held-out
+- 公开证据：提交 `49841ec44832875e65b17770557415113e67b1db`；Actions run
+  `31985199623` completed/success
 
 本设计同时处理两个已经存在、不能互相替代的 5P 职责：
 

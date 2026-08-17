@@ -1806,3 +1806,16 @@
   `tmp/`，不会进入提交或产品状态。
 - 首次 cached diff check 在提交前发现 ADR-0032/0033 各有一个多余 EOF 空行；门禁正确阻止
   提交，现已删除并要求重新暂存后复核。
+
+## 2026-08-17：5P-entry-design exact-SHA 公共闭环
+
+- 设计提交 `49841ec44832875e65b17770557415113e67b1db` 已推送到 `origin/main`；
+- GitHub Actions run `31985199623` completed/success，完整 pytest、两套 RAG、compileall、
+  governance、SDK/tracked-data boundary 与 Harness dry-run 全部成功；CI 无 Key/外部调用；
+- canonical 现切换到 `5P-1-product-contract-compiler` 准备状态；按 RQ-040 本轮在状态收尾提交后
+  结束，不实现 5P-1、Prompt Program、FastAPI 或 5F。
+- 首次收尾治理检查暴露两个状态格式问题：治理状态枚举不支持 `ready`，且历史计划结构含多个
+  Next Step，第一节尚未同步新 checkpoint。门禁正确阻止提交；将改用 `in_progress` + 正文
+  “准备状态”，并统一所有 Next Step，不修改产品范围。
+- 修正后 canonical 使用受支持的 `in_progress`，活动计划只保留一个 Next Step 且含精确
+  `5P-1-product-contract-compiler`；governance、2 项治理测试和 diff check 重新通过。

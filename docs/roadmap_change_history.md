@@ -1360,3 +1360,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   5P-3 domain/application service、5P-4 receipt/query、5P-5 FastAPI、5P-6 exit review。
 - `NO-I/O`：entry design 没有安装依赖、实现产品代码、读取 Key、调用 Riot/Provider 或运行
   held-out；唯一下一动作是完成文档/治理验证、提交与 exact-SHA 公共 CI。
+
+### 2026-08-17：5P-entry-design exact-SHA 公共闭环
+
+- `PUBLIC-VERIFIED`：设计提交 `49841ec44832875e65b17770557415113e67b1db` 的 GitHub
+  Actions run `31985199623` completed/success；完整 pytest、两套 RAG、compileall、治理、
+  SDK/tracked-data boundary 与 Harness dry-run 全部通过，CI 无 Key/Provider I/O。
+- `CLOSED`：5P entry design 正式完成；ADR-0032/0033、5P-1 至 5P-6 顺序、端点/NFR/错误/
+  测试边界均公开冻结，但没有 Prompt Program/FastAPI 产品代码或真实模型质量证据。
+- `CURRENT`：canonical 切换到 `5P-1-product-contract-compiler` 准备状态；按 RQ-040 等待用户
+  再次明确继续，不自动实现 5P-1 或进入 5P-2/5F。

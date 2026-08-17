@@ -1930,3 +1930,9 @@
   0.0 阈值、governance/2 tests、compileall、secret/SDK boundary、Harness dry-run 和 diff check；
   本批外部调用为 0。Prompt fingerprint 与 file digest 的威胁模型已在设计中收窄，不能表述为
   形式化程序等价或抵御拥有本机写权限者对正文和全部元数据的联合篡改。
+- 设计 SHA `49841ec44832875e65b17770557415113e67b1db` 的 Actions run `31985199623`
+  completed/success；5P entry 设计、两份 ADR 和全部状态已获得 exact-SHA 公共证据。下一检查点
+  只能是 5P-1 typed product/compiler，当前仍没有 Prompt Program/FastAPI 产品代码或外部 I/O。
+- canonical 治理枚举只接受 `in_progress/paused/complete/blocked`；“ready”只能写在解释文本，不能
+  成为机器状态。活动计划历史结构还包含不止一个 Next Step heading，治理读取第一节，因此每次
+  checkpoint 切换必须搜索并统一全部同名动态节，不能只补尾部详细账本。

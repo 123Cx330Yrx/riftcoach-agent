@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 8 - `5P-entry-design` 设计与验证
+Phase 8 - `5P-1-product-contract-compiler` 准备状态
 
 ## Phases
 
@@ -210,11 +210,13 @@ Phase 8 - `5P-entry-design` 设计与验证
 - 5P 内部固定为 5P-1 产品合同/typed compiler、5P-2 Prompt Program/composition、
   5P-3 domain/application service、5P-4 receipt/query、5P-5 FastAPI、5P-6 exit review；
 - 本设计批不安装依赖、不实现产品代码、不读取 Key、不调用 Riot/Provider、不进入 5F。
+- entry design 提交 `49841ec` 已通过 Actions `31985199623` exact-SHA 公共 CI；
 
 ## Next Step
 
-`5P-entry-design / verification`：用户已解除 RQ-039 暂停；当前完成 Prompt Program/API
-范围审计、设计与 ADR 后，只同步持久状态、运行文档/治理门禁并提交公开验证，不进入实现。
+`5P-1-product-contract-compiler / ready`：entry design 已公开闭环；等待用户再次明确继续，
+随后只开展产品请求、typed Skill selection、Artifact binding 与 Manifest-derived policy 的
+初学者讲解和本地 TDD，不安装 FastAPI、不进入 5P-2。
 
 ## Decisions Made
 
@@ -315,6 +317,7 @@ Phase 8 - `5P-entry-design` 设计与验证
 
 | Error | Attempt | Resolution |
 |---|---:|---|
+| 5P entry 公共闭环后首次治理检查拒绝 `status: ready`，并发现活动计划有多个 Next Step 时第一节仍是旧 checkpoint | 1 | canonical 状态改回治理支持的 `in_progress`，保留正文“准备/未实现”；定位并统一所有 Next Step 为 `5P-1-product-contract-compiler` 后重跑，不放宽治理规则 |
 | 5P 设计首次 cached diff check 发现 ADR-0032/0033 多余 EOF 空行 | 1 | cached 门禁阻止提交；删除两份 ADR 尾部空白，重新暂存后独立复跑 cached diff check |
 | 5P 本地门禁临时文件清理被终端策略静态拒绝 | 2 | 首次组合命令和验证后的 literal Remove-Item 均在进程创建前被拒绝；目标已只读确认位于仓库 `tmp/` 且被 Git 忽略，停止重复删除并保留为本地临时产物 |
 | 5E-1 源码审计误写 `app/harness/run_id.py` | 1 | 只读命令报告文件不存在，其他读取继续完成；后续按实际模块 `app/harness/run_ids.py` 定位，不重复错误路径 |
@@ -579,18 +582,27 @@ Phase 8 - `5P-entry-design` 设计与验证
 
 ### 5P-entry-design（2026-08-17）
 
-- Status: in_progress
+- Status: complete
 - 用户已明确“继续下一步”，解除 RQ-039 的暂停；本检查点只授权设计，不授权实现或 5F；
 - 已审计 Runtime request/result、Artifact/Trace Store、Riot/DataDragon、Summary/Report CLI、
   Skill/Catalog/Boundary、Prompt/Context identity、Evaluation/Revision 与路线范围；
 - 已比较 handler 串脚本、暴露 Runtime 内部合同、薄 Adapter + Application Service 三种方案；
-- 已新增完整设计和 ADR-0032/0033；待持久状态同步、文档门禁、提交和 exact-SHA CI 后完成。
+- 已新增完整设计和 ADR-0032/0033；本地 762 tests/110 subtests、两套 RAG 与全部门禁通过；
+- 提交 `49841ec` 已通过 Actions `31985199623` exact-SHA 公共 CI，entry design 正式完成。
 
-## Next Step
+### 5P-1 Product Request & Typed Skill/Runtime Compiler
 
-`5P-entry-design / verification`：同步 RQ-040、canonical、路线/矩阵/决策，运行文档与治理门禁，
-提交并完成 exact-SHA 公共 CI；通过后唯一下一步为 `5P-1 Product Request & Typed
-Skill/Runtime Compiler`，本轮不直接实现。
+- Status: in_progress
+- 当前仅表示 canonical 准备从这里恢复，尚未开始实现；
+- 只建立严格产品请求、trusted typed selection、Artifact binding 与 Manifest-derived policy；
+- 不安装 FastAPI、不实现 Prompt Program/Application Service、不读取 Key、不调用 Riot/Provider；
+- 按 RQ-040 等待用户下一次明确“继续”。
+
+## 5P-1 恢复说明
+
+`5P-1-product-contract-compiler / ready`：entry design 已公开闭环；等待用户再次明确继续，
+随后只开展产品请求、typed Skill selection、Artifact binding 与 Manifest-derived policy 的
+初学者讲解和本地 TDD，不安装 FastAPI、不进入 5P-2。
 
 本批错误日志：
 

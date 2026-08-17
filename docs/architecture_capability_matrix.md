@@ -225,6 +225,7 @@ missing Usage、selected-only request、统一同步 `run()` 与两阶段 termin
 进程内 `stream()`、背压、关闭隔离和 run/stream parity；5E-4 的 exit matrix 与
 `close-with-deferred-boundaries` 退出结论已由 `3d36561` / Actions `31962252231` 完成
 exact-SHA 公共验证。整个 5E 正式完成。RQ-040 已恢复 `5P-entry-design`；ADR-0032/0033 已
-设计 Prompt Program V1 与薄产品 API/Application Service，但没有实现代码或 Provider I/O，
-仍待本轮验证/公开闭环。5F、阶段 6/8 的 SDK 对照、SQL/Session/Memory/SSE、持久事件、
+设计 Prompt Program V1 与薄产品 API/Application Service，并由 `49841ec` / Actions
+`31985199623` exact-SHA 公开验证；尚未实现代码或 Provider I/O。当前切到 5P-1 准备状态。
+5F、阶段 6/8 的 SDK 对照、SQL/Session/Memory/SSE、持久事件、
 cancel/resume、DAG 和 Multi-Agent 边界不变。

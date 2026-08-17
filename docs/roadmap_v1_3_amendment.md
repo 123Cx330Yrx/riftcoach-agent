@@ -207,7 +207,8 @@ OP.GG MCP
 5E-2 Observable run()         已完成；Task D `d49508e` / Actions `31959646589` exact-SHA 公共验证成功（747 tests/110 subtests）
 5E-3 Live stream() parity     已完成；`80b76a1` / Actions `31960987333` exact-SHA 公共 CI 成功（15 聚焦，762 全量）
 5E-4 Evaluation/exit review  已完成；`3d36561` / Actions `31962252231` exact-SHA 公共 CI 成功，决策为 close-with-deferred-boundaries
-5P-entry-design              进行中；RQ-040 已解除暂停，设计/ADR 已完成，等待验证与公开闭环
+5P-entry-design              已完成；`49841ec` / Actions `31985199623` exact-SHA 公共成功
+5P-1 Product/compiler       当前检查点，尚未实现；等待用户继续
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
