@@ -2,7 +2,7 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5P"
-current_checkpoint: "5P-4-file-backed-run-receipt-query"
+current_checkpoint: "5P-5-thin-fastapi-adapter-no-io-vertical-slice"
 status: in_progress
 pause_reason: null
 ---
@@ -28,7 +28,11 @@ pause_reason: null
   用户已按 RQ-043 恢复并完成 `5P-3-domain-application-service`；Summary/Report domain
   services、Application Service、安全错误映射和 secure product execution factory 已由提交
   `4bd5c83b8d588ab9b0e23dbc9e886100fae7c3f5` 与 Actions run `31998739178` 完成 exact-SHA
-  公共验证。canonical 只交接到 `5P-4-file-backed-run-receipt-query`，本轮不实现 5P-4 或 FastAPI。上一子阶段组
+  公共验证。用户又按 RQ-044 完成 `5P-4-file-backed-run-receipt-query`；immutable receipt/store、
+  strict Trace/manifest/final Artifact query 与 Application receipt 接缝已由提交
+  `932a863120a4561f58c477a69becbccd2ec9ff45` 和 Actions run `32002994441` 完成 exact-SHA
+  公共验证。canonical 只交接到 `5P-5-thin-fastapi-adapter-no-io-vertical-slice`，本轮不安装或
+  实现 FastAPI。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -158,9 +162,9 @@ pause_reason: null
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`5P-4-file-backed-run-receipt-query` 已本地实现并通过完整门禁；只提交、推送并
-  验证 exact-SHA 公共 CI，成功前不关闭 5P-4，不得自动进入 5P-5/FastAPI。
-- 范围约束：5P-3 不安装 FastAPI、不实现 receipt/query、不进入 5P-4 或 5F；
+- 唯一下一步：`5P-5-thin-fastapi-adapter-no-io-vertical-slice`，等待用户再次明确继续后，才安装
+  FastAPI/TestClient 并实现薄 HTTP Adapter 与 no-I/O 纵向切片；不得自动进入 5P-6/5F。
+- 范围约束：5P-4 没有安装 FastAPI、实现 HTTP/SQL/Memory/恢复或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
   协议、候选选择或发布热度替代领域质量证据
 
@@ -208,8 +212,8 @@ pause_reason: null
 | 5P-1 Product Request & Typed Skill/Runtime Compiler | 严格产品 DTO、trusted typed selection、Artifact binding、Manifest-derived policy | 已完成 | `57bd36a` / Actions `31987501935` exact-SHA 公共成功；796 tests/110 subtests；无外部 I/O |
 | 5P-2 Prompt Program V1 & Runtime Composition Root | Program manifest/catalog/drift gate 与 secure production composition | 已完成 | `0a9651f` / Actions `31988837293` exact-SHA 公共成功；完整回归 `805 passed, 110 subtests passed`；无外部 I/O |
 | 5P-3 Domain Pipeline Promotion & Application Service | 提升 Summary/Report 服务并组合产品用例/安全错误 | 已完成 | `4bd5c83` / Actions `31998739178` exact-SHA 公共成功；完整 `830 passed, 110 subtests passed`；无外部 I/O |
-| 5P-4 File-backed Run Receipt & Query Projection | body-free receipt、Trace/manifest/report 安全复读 | 本地完成，等待公开验证 | immutable receipt/store、strict query、Application receipt 接缝；聚焦 50、相邻 179、完整 860 tests/110 subtests 与全部本地门禁通过 |
-| 5P-5 Thin FastAPI Adapter & No-I/O Vertical Slice | 最小端点、依赖与 Fake Provider HTTP 纵向测试 | 已规划 | ADR-0033；尚无代码/依赖 |
+| 5P-4 File-backed Run Receipt & Query Projection | body-free receipt、Trace/manifest/report 安全复读 | 已完成 | `932a863` / Actions `32002994441` exact-SHA 公共成功；聚焦 50、相邻 179、完整 860 tests/110 subtests |
+| 5P-5 Thin FastAPI Adapter & No-I/O Vertical Slice | 最小端点、依赖与 Fake Provider HTTP 纵向测试 | 下一检查点，未开始 | ADR-0033；尚无 FastAPI 代码/依赖，等待用户明确继续 |
 | 5P-6 Product Slice Evaluation & Exit Review | 合同、安全、资源、公开证据与限制退出审查 | 已规划 | 尚未开始 |
 
 ## 当前真实能力边界
@@ -448,10 +452,10 @@ pause_reason: null
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A-5E、5P entry/5P-1/5P-2/5P-3；5P-4 已本地实现并等待公开 CI，当前无领域 Provider 准入 | 阶段 5、FastAPI 产品、生产模型质量或可恢复 Runtime 已完成 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A-5E 与 5P entry/5P-1 至 5P-4；5P-5 尚未开始，当前无领域 Provider 准入 | 阶段 5、FastAPI 产品、生产模型质量或可恢复 Runtime 已完成 |
 | 项目理解 | 已能解释 receipt、Runtime Trace、Harness manifest 与 final Artifact 的不同职责，以及为何查询必须交叉校验而不能按 run_id 直接读文件 | 本地文件完整性链等于数据库事务、恶意本机写者防护、崩溃恢复、HTTP 产品或生产安全 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5P-3 已由 `4bd5c83` / Actions `31998739178` exact-SHA 公开验证；5P-4 本地变更尚未提交/公开验证，正式 API/网页未部署 | 本地 receipt/query 等于 GitHub 已同步、FastAPI、领域模型质量、生产切换或 Web Agent 可用 |
+| GitHub/部署 | 5P-4 已由 `932a863` / Actions `32002994441` exact-SHA 公开验证；正式 API/网页未部署 | receipt/query 已公开等于 FastAPI、领域模型质量、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -524,8 +528,9 @@ application service、5P-4 receipt/query、5P-5 FastAPI/no-I/O vertical slice、
 entry design 没有安装 FastAPI、实现产品代码、读取 Key、调用 Riot/Provider 或运行 held-out。
 5P-2 已由 `0a9651f` / Actions `31988837293` 完成 exact-SHA 公共闭环；RQ-043 随后恢复并完成
 `5P-3-domain-application-service`，提交 `4bd5c83` / Actions `31998739178` 已公开通过。
-当前检查点为 5P-4 receipt/query，用户已按 RQ-044 明确授权；只实现文件回执、严格查询投影和
-Application Service receipt 接缝，不得自动实现 5P-5、5F 或阶段 6。
+5P-4 receipt/query 已由 `932a863` / Actions `32002994441` 完成 exact-SHA 公共闭环。当前唯一
+下一检查点为 5P-5 thin FastAPI/no-I/O vertical slice，等待用户明确继续；不得自动实现 5P-5、
+5P-6、5F 或阶段 6。
 
 本节后续保留从 5C 到 5D 的历史范围账本；其中旧“下一步”只表示当时顺序，不覆盖本文顶部的
 canonical checkpoint。

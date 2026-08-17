@@ -148,4 +148,6 @@ normalize run_id
   governance 与 diff check 通过；
 - Key/Riot/Provider/held-out I/O：0。
 
-当前仍待实现提交、推送和 exact-SHA 公共 CI，5P-4 尚未正式关闭。
+实现提交 `932a863120a4561f58c477a69becbccd2ec9ff45` 已由 GitHub Actions run
+`32002994441` 完成 exact-SHA 公共验证。5P-4 正式关闭，canonical 只交接到尚未开始的
+`5P-5-thin-fastapi-adapter-no-io-vertical-slice`。

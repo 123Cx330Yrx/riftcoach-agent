@@ -712,7 +712,7 @@ Riot/Provider 质量、HTTP、receipt、幂等、事务、并发或恢复；5P-3
 `31998739178` 完成 exact-SHA 公共验证，5P-3 正式关闭。canonical 只交接到
 `5P-4-file-backed-run-receipt-query`，本轮不实现 receipt/query 或 FastAPI。
 
-## 5P-4 File-backed Run Receipt/Query 本地裁决（2026-08-17）
+## 5P-4 File-backed Run Receipt/Query 裁决（2026-08-17）
 
 5P-4 不创建第二份报告数据库，而是在现有三个证据源上增加安全查询索引：receipt 保存
 Runtime terminal 的 body-free 摘要，Trace 保存运行身份/Usage/Artifact 引用，manifest 保存
@@ -729,5 +729,7 @@ publication terminal 分开核对，再要求 Trace/manifest 中唯一 final rep
 Application Service 新增必需的 `RunReceiptWriter` 端口；类型化 completed/failed Runtime result
 在对外返回或抛安全错误前写 receipt，错误 run_id、未类型化异常和前置上游失败不伪造 receipt。
 本地聚焦 50、相邻 `179 passed, 12 subtests passed`、完整 `860 passed, 110 subtests passed`，
-两套 RAG 与全部门禁通过，外部 I/O 为 0。当前仍待提交、推送和 exact-SHA 公共 CI；这不等于
-FastAPI、SQL 事务、崩溃恢复、本机恶意写防护或生产部署已经完成。
+两套 RAG 与全部门禁通过，外部 I/O 为 0。实现提交
+`932a863120a4561f58c477a69becbccd2ec9ff45` 已由 Actions run `32002994441` 完成 exact-SHA
+公共验证，5P-4 正式关闭并只交接到尚未开始的 5P-5。这不等于 FastAPI、SQL 事务、崩溃恢复、
+本机恶意写防护或生产部署已经完成。

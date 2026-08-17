@@ -1976,3 +1976,13 @@
   Harness SDK boundary、tracked secret/run-data、Harness dry-run、governance 和 diff check 通过。
 - 本批 Key/Riot/Provider/held-out I/O 为 0；5P-4 仍为 in_progress，只待提交、推送和 exact-SHA
   公共 CI，不进入 FastAPI/5P-5。
+
+## 2026-08-17：5P-4 exact-SHA 公共闭环
+
+- 实现提交 `932a863120a4561f58c477a69becbccd2ec9ff45` 已推送到 `origin/main`。
+- GitHub Actions run `32002994441` completed/success；完整 pytest、两套 RAG、compileall、
+  governance、SDK/tracked-data boundary 与 Harness dry-run 全部成功，CI 无 Key/外部调用。
+- 5P-4 正式完成：receipt、strict query、Trace/manifest/final Artifact 完整性链和 Application
+  receipt 接缝已有本地与公共证据；这不表示 FastAPI、SQL/恢复或真实模型质量完成。
+- canonical 只交接到 `5P-5-thin-fastapi-adapter-no-io-vertical-slice`，等待用户再次明确继续；
+  本轮不安装 FastAPI 或实现 5P-5。
