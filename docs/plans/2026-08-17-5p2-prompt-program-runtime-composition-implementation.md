@@ -150,4 +150,3 @@ Run focused Prompt Program tests, Runtime adjacent tests, full pytest, compileal
 **Step 3: Commit, push, exact-SHA CI**
 
 提交并验证公共 CI；成功后 canonical 唯一下一步切换为 `5P-3-domain-application-service`，不得自动进入 5P-4/5P-5/5F。
-
