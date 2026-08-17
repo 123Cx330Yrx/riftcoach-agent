@@ -902,3 +902,14 @@ live timing/stream。再加 94 packages、约 62 MB 安装树和本机约 0.4 �
 `929 passed, 1 warning, 110 subtests passed`，两套 RAG、Node tree、compileall、governance、
 Harness dry-run、安全边界和 diff check 均已通过；尚待提交、推送和 exact-SHA 公共 CI。成功前不把
 整个 5F 标为完成，也不进入 `6A-entry-design`。
+
+## 5F-5 exact-SHA 公共闭环与阶段 6 交接（2026-08-17）
+
+最终采用/退出提交 `f8dea663523bdc76fc8a40741d37f6e66dd25177` 已由 GitHub Actions run
+`32028206103` 完成 exact-SHA 公共验证；Node 24、`npm ci --ignore-scripts`、完整 pytest、两套
+RAG、compileall、governance、安全边界和 Harness dry-run 全部成功。
+
+5F-5 与整个阶段 5 正式关闭，裁决保持 `partial-adopt-evaluation-assets-only`。产品唯一 Runtime
+仍为 Python `AgentRuntimeV1`，Pi 只保留为冻结的 evaluation-only 资产。canonical 只交接到既有
+路线中的 `6A-entry-design` 准备状态，等待用户明确继续；本次没有实现阶段 6 的 SQL、Session、
+Memory、SSE、鉴权、前端、真实 Provider 或部署。

@@ -1656,3 +1656,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   exact Node tree、compileall、governance、Harness dry-run、安全边界和 diff check 通过，外部 I/O 为 0。
 - `CURRENT`：5F-5 仍 in progress，当前只待提交、推送与 exact-SHA 公共 CI；公共成功前不关闭
   5F，不交接 `6A-entry-design`。
+
+### 2026-08-17：5F-5 exact-SHA 公共闭环与 6A 交接
+
+- `VERIFIED-PUBLIC`：最终采用/退出提交 `f8dea663523bdc76fc8a40741d37f6e66dd25177` 已由 Actions run
+  `32028206103` 完成 exact-SHA 公共验证；Node/Python、完整 pytest、两套 RAG、compileall、治理、
+  安全边界和 Harness dry-run 全部成功。
+- `CLOSED`：5F-5 与整个阶段 5 正式完成；裁决保持 `partial-adopt-evaluation-assets-only`，即产品
+  拒绝 Pi、冻结保留 evaluation-only 资产与采用门方法。
+- `HANDOFF`：canonical 唯一下一检查点为 `6A-entry-design` 准备状态，等待用户明确继续；不自动
+  实现 SQL、Session、Memory、SSE、鉴权、前端、真实 Provider 或部署。

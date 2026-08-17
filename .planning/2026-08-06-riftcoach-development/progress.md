@@ -2235,3 +2235,12 @@
 - compileall、governance、Harness dry-run、SDK boundary、tracked secret/run-data boundary 和
   `git diff --check` 通过。
 - 5F-5 仍 in progress，当前只待差异审查、提交、推送和 exact-SHA 公共 CI；成功前不关闭 5F。
+
+## 2026-08-17：5F-5 exact-SHA 公共闭环与阶段 5 关闭
+
+- 最终采用/退出提交 `f8dea663523bdc76fc8a40741d37f6e66dd25177` 已推送；GitHub Actions run
+  `32028206103` completed/success，完整 pytest、两套 RAG、Node/npm、compileall、governance、
+  安全边界和 Harness dry-run 全部通过。
+- 5F-5 与阶段 5 正式完成；裁决保持 `partial-adopt-evaluation-assets-only`，产品拒绝 Pi，
+  evaluation-only 资产冻结保留。
+- canonical 只交接到 `6A-entry-design` 准备状态，等待用户再次明确继续；尚未设计或实现阶段 6。

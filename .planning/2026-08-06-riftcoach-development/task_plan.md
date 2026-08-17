@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 8 - `5F-5-adoption-decision-exit-review` is in progress after RQ-051 resumed the final
-adoption, executable-asset lifecycle, and 5F exit decision; conditional 5F-4 remains not entered
+Phase 9 - `6A-entry-design` is the only preparation checkpoint after 5F-5 and stage 5 completed
+publicly; it awaits explicit user confirmation and contains no stage 6 implementation yet
 
 ## Phases
 
@@ -203,7 +203,7 @@ adoption, executable-asset lifecycle, and 5F exit decision; conditional 5F-4 rem
 
 ### Phase 8 - 5F-5-adoption-decision-exit-review
 
-- Status: in_progress
+- Status: complete
 - RQ-051 已清除等待确认状态；当前只作 Pi 最终采用与 5F 退出裁决，不补做 5F-4。
 - 5P Prompt Program V1 与早期产品纵向切片已完成；5P-6 退出审查以
   `8c8acc6` / Actions `32010604551` 完成 exact-SHA 公共闭环。
@@ -243,11 +243,18 @@ adoption, executable-asset lifecycle, and 5F exit decision; conditional 5F-4 rem
   用户明确继续。
 - entry design 提交 `49841ec` 已通过 Actions `31985199623` exact-SHA 公共 CI；
 
+### Phase 9 - 6A-entry-design preparation
+
+- Status: in_progress
+- Pause: awaiting explicit user confirmation before starting `6A-entry-design`.
+- 5F-5 决策提交 `f8dea66` / Actions `32028206103` 已完成 exact-SHA 公共验证；阶段 5 正式关闭。
+- 当前只保存既有路线中的下一键，不展开阶段 6 原子拆分，不实现 SQL/Session/Memory/SSE。
+
 ## Next Step
 
-`5F-5-adoption-decision-exit-review`：RQ-051 已恢复本检查点；基于 5F-1 至 5F-3 和 5F-4
-未准入证据，分别裁决产品 Runtime、可执行实验资产和设计思想，完成 ADR、5F exit review、全部
-本地门禁与 exact-SHA 公共闭环。不读取 Key、不调用 Provider/Riot、不补做 5F-4。
+`6A-entry-design`：等待用户明确继续后，先审计 5P 同步文件切片与完整 FastAPI/SQL 任务模型的
+真实缺口，再冻结功能/NFR、数据生命周期、安全、教学与原子实施顺序。不自动实现阶段 6，也不把
+Pi、Claude Agent SDK、LangGraph、Multi-Agent、MCP 或模型分层带入 6A。
 
 ## 5P-6 Exit Review Checklist
 
@@ -305,8 +312,8 @@ adoption, executable-asset lifecycle, and 5F exit decision; conditional 5F-4 rem
 - [completed] 冻结产品职责、合同、安全、NFR、维护、教学和复现价值的最终比较矩阵
 - [completed] 用 ADR-0037 分别裁决产品 Runtime、隔离可执行资产与可吸收设计思想
 - [completed] 形成 5F 总退出审查并同步 canonical、路线、能力矩阵和项目决策
-- [in_progress] 本地门禁已通过；完成提交、推送和 exact-SHA 公共 CI
-- [pending] 公共成功后关闭 5F，只交接 `6A-entry-design`，不自动实施阶段 6
+- [completed] 本地门禁、提交、推送和 exact-SHA 公共 CI：`f8dea66` / Actions `32028206103`
+- [completed] 关闭 5F，只交接 `6A-entry-design`，未自动实施阶段 6
 
 ## Decisions Made
 

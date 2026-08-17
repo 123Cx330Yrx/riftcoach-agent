@@ -165,7 +165,7 @@ held-out I/O 为 0。
 | 维护/依赖/进程成本 | 已量化 | 94 packages / 约 62 MB / 约 0.4 秒进程 |
 | 最终采用与资产生命周期 | 满足 | ADR-0037 |
 | 产品主线是否清楚 | 满足 | Python Runtime 唯一默认，阶段 6 不使用 Pi |
-| 本地与 exact-SHA 公共门禁 | 本地满足，公共待提交 | 45 focused、929/110 全量与全部本地门禁通过；Actions 成功后才正式关闭 5F |
+| 本地与 exact-SHA 公共门禁 | 满足 | 45 focused、929/110 全量与全部本地门禁通过；`f8dea66` / Actions `32028206103` exact-SHA 公共成功 |
 
 ## 10. 对阶段 6 的交接
 
@@ -186,3 +186,9 @@ LangGraph、Multi-Agent、MCP 或模型分层带入 6A。
 > 拒绝产品采用。我们保留冻结、CI 可复现的评测资产，让这个负面结论可验证。
 
 不能说“项目基于 Pi”“实现双 Runtime”“Pi 模型效果更差”或“真实调用证明 Pi 不行”。
+
+## 12. exact-SHA 公共闭环
+
+最终采用/退出提交 `f8dea663523bdc76fc8a40741d37f6e66dd25177` 已由 GitHub Actions run
+`32028206103` 完成 exact-SHA 公共验证。5F-5 与整个阶段 5 正式关闭；canonical 只交接到
+`6A-entry-design` 准备状态，等待用户明确继续，不自动实施阶段 6。
