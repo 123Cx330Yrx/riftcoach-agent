@@ -829,3 +829,29 @@ Runtime Trace 与 ReviewHarness 发布权继续由 RiftCoach adapter/外层强�
 审计提交 `5901b090b4ee8bccfd0a71ddfa412dec98fba02f` 已由 Actions run `32016852979`
 完成 exact-SHA 公共验证，5F-1 正式关闭。canonical 只交接到 5F-2 准备状态；本次关闭没有
 安装 Pi、创建 sidecar/lockfile、实现 adapter、读取 Key 或调用 Provider。
+
+## 5F-2 sidecar 实验设计（2026-08-17）
+
+用户按 RQ-049 恢复 5F-2。ADR-0035 选择低层 Agent Core + 版本化限长 JSONL sidecar：Python
+父进程保留真实 ToolRuntime、总 deadline 和子进程生命周期；Node 每 run 创建一个 Pi Agent，只
+注入 Scripted StreamFn 和 `knowledge.search` proxy。产品迁入 Node 与完整 Pi Coding Agent RPC
+均因改变变量过多而拒绝。
+
+5F-2 只产生协议与控制流证据；ReviewHarness/Trace 合同对照属于 5F-3，采用裁决属于 5F-5。在
+设计冻结时尚未安装依赖、实现 adapter、读取 Key 或调用 Provider/Riot。
+
+## 5F-2 本地实现与退出裁决（2026-08-17）
+
+exact npm lockfile、官方 Pi Agent Core 0.84.2 sidecar、Python controller、版本化限长 JSONL、
+真实本地 `knowledge.search`、整批 Tool 预检、Usage 四态、credential-free child environment、
+deadline/terminate/kill 和 body-free event 已本地实现。Scripted StreamFn 是唯一 Provider 接缝，
+真实 Provider/Riot/Key 调用为 0。
+
+实现过程中修复了 strict Pydantic JSON 解码、stderr/EOF reader 竞态、最后迭代 Tool 零副作用、
+失败 Tool 预算计数和 Tool contract drift 的稳定失败边界。35 项 Pi 聚焦、99 项相邻与完整
+`919 passed, 1 warning, 110 subtests passed` 通过；两套 RAG、compileall、Harness/secret、
+dry-run、Node tree、治理和 diff 门禁通过。
+
+本地裁决为 `pass-with-boundaries`：只准许在 exact-SHA 公共 CI 成功后进入 5F-3 准备状态，不采用
+Pi、不接主 Runtime/Harness。当前安装树 94 packages / 62,364,713 bytes，每 run 新进程本机量级约
+0.4 秒；完整 Harness/Trace/structured-output parity、真实 Provider 和维护收益仍未证明。

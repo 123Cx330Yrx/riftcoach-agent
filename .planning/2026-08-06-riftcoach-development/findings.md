@@ -2190,3 +2190,68 @@
   exact-SHA 对齐且全部公共门禁成功；5F-1 的 source/license/contract 结论因此可正式关闭。
 - 公共 CI 验证的是 RiftCoach 文档/既有回归没有漂移，不是 Pi adapter 已工作；Pi 仍未安装，真正
   protocol parity 必须由 5F-2 的离线 scripted cases 单独证明。
+
+## 2026-08-17：5F-2 入口架构发现
+
+- 产品内直接嵌入 Pi 或调用完整 Coding Agent 都会把 Runtime 对照污染为语言/Session/工具/Harness
+  迁移；版本化 JSONL sidecar 是唯一能保持当前外层合同并量化跨语言成本的最小方案。
+- Tool 参数和结果只允许作为本地瞬时 IPC 数据传输给 Python ToolRuntime/Pi 下一轮；它们不能进入
+  safe event/result projection。最终 draft 正文与 body-free Trace 元数据必须继续区分。
+- 父进程必须使用总 deadline 和不合作子进程 terminate/kill；只靠 Pi AbortSignal 或 Node
+  Permission Model 不能证明进程或网络硬隔离。
+- 5F-2 的成功是 protocol/control-flow evidence，不是 Pi 模型质量、Harness parity 或采用结论。
+- 5F-2 启动状态首次治理检查失败，因为“唯一下一步”先写了实施计划路径，解析器将第一个反引号
+  值当作 human-readable checkpoint；已改为先写 canonical `5F-2-offline-protocol-adapter-spike`，
+  再引用计划路径，没有放宽治理规则。
+- 当前 `AgentLoop` 已具备整批 Tool 数量/allowlist/duplicate 预检、逐轮 Context ceiling、总 deadline
+  与顺序 ToolRuntime 执行；5F-2 不能另造更弱的安全规则，协议层必须保持这些可观察语义。
+- 当前 CI 只设置 Python；5F-2 若跟踪 Node lockfile 和真实 sidecar tests，必须显式设置满足 Pi engine
+  的 Node 24 并运行 `npm ci --ignore-scripts`，不能让开发机已安装的 `node_modules` 掩盖公共缺口。
+- 只读参考测试时误猜 `tests/test_provider_protocol_experiment.py`，实际相关文件为
+  `test_provider_adapter_protocol.py`、`test_deepseek_protocol_experiment.py` 和 CLI 测试；错误命令没有
+  修改文件，后续使用 `rg --files tests | rg protocol` 获取真实路径。
+- 现有 `RuntimeUsage` 把 `provider_responses_observed` 定义为具备可观察 Usage 的响应数：少于 attempt
+  且大于零为 partial，零为 unknown；5F-2 因此把 scripted `None` Usage 视为未形成可计量 response，
+  而不是把其 Token 记为零。
+- Batch A 已证明协议对象能拒绝多余字段、未知 Tool、非法失败码、超长/多行/未知 JSONL frame，并
+  能返回 draft 但禁止 event/result 保存 query 或 chunks；这还没有证明 Node/Pi 真实接线。
+- Batch B official-registry lockfile v3 精确锁定 Agent Core/AI 0.84.2，integrity 与 5F-1 审计值一致；
+  `npm ls --all` 通过。Agent Core 自身对 pi-ai/telemetry 使用 caret，但根 package 的两个直接依赖和
+  整棵传递树已由 lockfile 固定。
+- 首次 `npm ci --ignore-scripts` 安装 94 个包，耗时约 4844 ms，产生 11,355 个文件、62,364,713
+  bytes；这说明跨语言依赖成本不可忽略，必须进入最终 adoption 评价。
+- lockfile 标出 `@google/genai@1.52.0` 与 `protobufjs@7.6.5` 两个传递依赖有 install script；
+  `--ignore-scripts` 已阻止执行。npm 同时报告 `node-domexception@1.0.0` deprecated，但安装成功；
+  这些是供应链/维护成本证据，不等于当前漏洞结论。
+- 安装后的官方声明确认低层 `Agent` 直接接收 `streamFn`，并支持 `toolExecution="sequential"`；
+  因此无需 Pi Coding Agent/Harness 即可实现本实验。
+- Batch C 红灯第一轮因测试误导入未导出的 `PiSpikeStatus` 类型别名而在 collection 阶段停止；已
+  删除无用导入，第二轮红灯正确暴露尚未实现的 `PiSidecarController`。两次均无产品运行影响。
+
+## 2026-08-17：5F-2 Batch C 首次 sidecar 诊断
+
+- sidecar 的共同失败与 Permission Model 无关；在 `use_permission_model=True/False` 两种模式下，
+  最小 direct-final case 都在第一帧事件处以 `invalid_event` fail closed。
+- 根因是 Python controller 在 JSONL 解码后使用 `PiSafeEvent.model_validate(dict)`；严格 Pydantic
+  合同要求 `TokenObservation` 已经是 Enum 实例，而 JSON 传来的 `"unknown"`/`"complete"` 是
+  字符串。修复为 `model_validate_json` 只作用于 JSON→合同的边界，未放宽模型 strict 配置。
+- 修复后 child `run.result` 又暴露同类嵌套问题：严格对象校验拒绝 `response_usages` 中的 JSON
+  字典。controller 同样改用 `model_validate_json`，保持请求/结果模型本身 strict。
+- Pi sidecar 原本把脚本化 `provider_aborted` 映射为 `failed`；这与 RiftCoach 的停止语义不一致。
+  已将该 forced stop 映射为 `stopped`，并保留 `provider_error` 为 `failed`。
+- 修复后的协议+sidecar 聚焦回归为 `24 passed`；这证明 JSONL/Agent/Tool/Usage 控制流已经进入
+  可测试路径，不代表 ReviewHarness parity、真实 Provider 或模型质量。
+- stdout EOF 与 stderr reader 是两个线程，原先只采样一个队列项会在 EOF 先到时漏掉异常 stderr；
+  controller 现于进程退出后等待唯一的 bounded stderr payload，并把正文丢弃、只返回
+  `unexpected_stderr`。本地 6 次新进程直出测试在去除无意义固定等待后为 399.75-453.15 ms，
+  首次 408.54 ms、后五次中位数 413.71 ms；这是本机协议/进程开销，不是生产 p50/p95。
+- 第二次 `npm ci --ignore-scripts` 为约 6063 ms；安装树仍为 94 packages、11,355 files、
+  62,364,713 bytes，`npm ls --all` 成功。这些数值受机器/缓存影响，只作为跨语言成本量级。
+- 与当前 Python AgentLoop 对照时发现：在最后一个允许迭代中返回 ToolCall，Python 会先
+  `max_iterations` 停止且不执行 Tool；Pi sidecar 原先先执行 Tool 再于下一轮停止。adapter 已在整批
+  preflight 前置同一判断，并新增成功 Tool round-trip 与最终迭代零副作用的显式 parity 测试。
+- sidecar 原先只用成功 Tool 数量计算 `max_tool_calls`，失败 Tool 可能不占预算；现改用所有
+  `toolExecutions` 数量，失败尝试同样占用预算。新增测试证明首个失败后第二个 batch 在 Python Tool
+  I/O 前停止。
+- Tool contract 预检原在 controller 的统一错误边界之外，schema drift 会抛异常而不是形成稳定结果；
+  现已移入 fail-closed 边界，返回 body-free `tool_contract_mismatch`，Provider/Tool calls 均为 0。

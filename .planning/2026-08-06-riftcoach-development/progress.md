@@ -2094,3 +2094,66 @@
   安装、adapter、Key/Provider/Riot I/O 仍为 0。
 - canonical 已交接到 `5F-2-offline-protocol-adapter-spike` 准备状态，等待用户再次明确继续；
   当前没有安装依赖、创建 lockfile/sidecar 或实现协议。
+
+## 2026-08-17：开始 5F-2 Offline Protocol Adapter Spike
+
+- 用户再次明确继续；RQ-049 只授权 5F-2 离线协议实验，不授权 5F-3、真实 Provider 或主 Runtime
+  切换。起始 `HEAD == origin/main == 2244f06274572c6a66873fc74b56faa8003407fa`，工作树干净，
+  治理预检通过。
+- 比较直接迁移 Node、完整 Pi Coding Agent RPC 与低层 Agent Core JSONL sidecar 后，ADR-0035
+  选择第三种；Python 保留 ToolRuntime/deadline，Node 每 run 一个 Agent，只使用 Scripted StreamFn。
+- 新增 5F-2 实施计划，冻结 protocol/frame/Usage、供应链、sidecar、十类 scripted case 与同切片
+  退出顺序；该入口批当时尚未安装 Pi、写 adapter、读取 Key 或调用 Provider/Riot。
+
+## 2026-08-17：5F-2 Batch A 协议合同 TDD
+
+- 新增 `tests/test_pi_runtime_protocol.py`，首次运行按预期因 `app.evaluation.pi_runtime` 不存在而
+  collection 红灯；随后实现严格 Pydantic request/script/policy/result、安全 event/tool projection、
+  RuntimeUsage 映射和 256 KiB canonical JSONL framing。
+- 聚焦 13 项、与 RuntimeUsage/Recorder 相邻 50 项全部通过；compileall 和 diff check 通过。
+- complete/partial/unknown/not_applicable 继续使用现有 RuntimeUsage 不变量；未知 Usage 不会变成
+  complete zero，safe event extra fields 会被拒绝。
+- 本批仍未创建 package.json/lockfile、安装 Pi、启动 Node、读取 Key 或调用 Provider/Riot；下一步
+  进入 Batch B 供应链冻结。
+
+## 2026-08-17：5F-2 Batch B 本地供应链冻结（进行中）
+
+- 新增私有 `experiments/pi_runtime/package.json`、official-registry `.npmrc` 和 lockfile v3；直接
+  依赖精确固定 `pi-agent-core`/`pi-ai` 0.84.2，`.gitignore` 排除 `node_modules/`。
+- 本机 Node `v24.18.0` / npm `11.17.0` 先生成 lock，再用 `npm ci --ignore-scripts` 成功重建；
+  Agent/AI integrity 与 5F-1 审计一致，`npm ls --all` 通过。
+- 安装树为 94 packages、11,355 files、62,364,713 bytes，首次 ci 约 4844 ms；两个传递包声明
+  install script 但均被 ignore-scripts 阻止。当前仍未启动 Pi sidecar 或调用 Provider。
+
+## 2026-08-17：5F-2 Batch C sidecar 首轮修复（进行中）
+
+- 已实现并启动隔离 Node sidecar；首次 11 个 sidecar 测试全部失败，最小诊断确认不是
+  Permission Model，而是 controller 在严格对象模式下错误解析 JSON enum/nested payload。
+- 已修复两个 JSON 反序列化接缝：事件和 `run.result` 均使用 Pydantic JSON mode，再交给 strict
+  合同校验；并修正 `provider_aborted` 的 `stopped` 状态映射。
+- 当前聚焦回归 `tests/test_pi_runtime_protocol.py tests/test_pi_runtime_sidecar.py` 为 `24 passed`。
+  下一步仍在 Batch C/D：补充非法 JSON、错误 run_id、异常退出、stderr、超时和环境隔离测试，
+  然后再运行相邻/完整回归与治理门禁；尚未进入 5F-3、真实 Provider 或主 Runtime。
+
+## 2026-08-17：5F-2 Batch C/D 聚焦接线与安全边界完成
+
+- 已补充非法 JSON、错误 run_id、崩溃、stderr、deadline、credential/HOME 环境隔离与 Tool contract
+  drift 测试；controller 对 stderr reader 竞态、严格 JSON enum/nested payload 和 pre-spawn 配置错误
+  均 fail closed。
+- sidecar 已对齐当前 AgentLoop 的最后迭代零 Tool 副作用，并让失败 Tool 同样占用 max-tool-call
+  预算；成功 Tool round-trip 和 max-iteration 两个同输入对照测试通过。
+- 当前 Pi 聚焦为 `34 passed`，加 AgentLoop/ToolRuntime/RuntimeUsage/Recorder 相邻回归为
+  `96 passed`（该数值来自加入最后 2 个测试前的一轮，相邻回归将在收尾重新运行）。
+- 本地 `npm ci --ignore-scripts` 约 6063 ms，94 packages / 11,355 files / 62,364,713 bytes；
+  六次 fresh sidecar process 为 399.75-453.15 ms，后五次中位数 413.71 ms。CI 已增加 Node 24
+  setup 与隔离 npm ci；尚待完整本地门禁和 exact-SHA 公共验证。
+
+## 2026-08-17：5F-2 本地退出审查完成，等待公共 CI
+
+- 新增窄 parity 测试，真实比较当前 Python AgentLoop 与 Pi sidecar 的成功 Tool 顺序/终态及最后
+  迭代零副作用；没有把 5F-3 的完整 Harness/Trace 对照提前计入。
+- 最终 Pi 聚焦 `35 passed`、相邻 `99 passed`、完整
+  `919 passed, 1 warning, 110 subtests passed`；两套 RAG、compileall、Node syntax/tree、Harness
+  SDK/tracked-data boundary、dry-run、governance 和 diff check 均通过。
+- 新增 5F-2 退出审查；本地结论为 `pass-with-boundaries`。当前唯一下一步是提交、推送并等待
+  exact-SHA GitHub Actions；公共成功前不关闭 5F-2、不进入 5F-3。

@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 8 - `5F-2-offline-protocol-adapter-spike` is the next preparation checkpoint after completed
-and publicly verified `5F-1-pi-source-license-contract-audit`
+Phase 8 - `5F-2-offline-protocol-adapter-spike` is locally implemented with a
+`pass-with-boundaries` verdict and is awaiting implementation commit/public CI before handoff
 
 ## Phases
 
@@ -213,9 +213,13 @@ and publicly verified `5F-1-pi-source-license-contract-audit`
 - 本地裁决为“允许有条件进入 5F-2”：只允许低层 Agent Core、Scripted StreamFn、单一
   `knowledge.search`、sequential 和安全 JSONL sidecar；不允许 coding-agent 默认工具/Session/
   ResourceLoader，且必须补整批 Tool 预检、Usage completeness、deadline/kill 和 body-free event
-  projection。本阶段仍未安装 Pi 或实现 adapter。
+  projection。5F-1 审计当时未安装 Pi 或实现 adapter。
 - 5F-1 审计提交 `5901b09` 已由 Actions run `32016852979` 完成 exact-SHA 公共验证；5F-1
-  正式闭环，canonical 只交接到 5F-2 准备状态，等待用户再次明确继续。
+  正式闭环；用户已按 RQ-049 恢复 5F-2。
+- ADR-0035 与 5F-2 实施计划已冻结低层 Agent Core + 版本化限长 JSONL sidecar、Scripted
+  StreamFn、单一 Python `knowledge.search`、父进程 deadline/kill 和 body-free event 边界；
+  exact lockfile、Pi sidecar、Python controller、35 项聚焦协议/接线/窄 parity 测试与退出审查已
+  本地完成；裁决为 `pass-with-boundaries`，尚待提交和 exact-SHA 公共 CI。
 - `5P-entry-design` 与 5P-1 至 5P-6 已公开完成；
 - 5P-4 immutable receipt/store、strict query 与 Application receipt 接缝已由 `932a863` / Actions
   `32002994441` 完成 exact-SHA 公共验证；5P-5 薄 Adapter 与 no-I/O 纵向切片又由 `6d1e5b0` /
@@ -235,9 +239,9 @@ and publicly verified `5F-1-pi-source-license-contract-audit`
 
 ## Next Step
 
-`5F-2-offline-protocol-adapter-spike`：等待用户再次明确继续后，先冻结 Python↔Node JSONL 协议、
-exact dependency/lockfile、安全边界和十类 scripted 红灯，再安装隔离实验依赖并实现 no-I/O adapter；
-本交接不自动安装 Pi、实现 adapter、读取 Key、调用 Provider 或进入阶段 6。
+`5F-2-offline-protocol-adapter-spike`：提交/推送当前 no-I/O sidecar 实现与退出审查，等待 exact-SHA
+GitHub Actions；公共成功前不关闭 5F-2，不交接或实施 5F-3。不得读取 Key、调用 Provider/Riot、接主
+Runtime/Harness/FastAPI。
 
 ## 5P-6 Exit Review Checklist
 
@@ -273,6 +277,15 @@ exact dependency/lockfile、安全边界和十类 scripted 红灯，再安装隔
 - [completed] 运行完整 pytest、两套 RAG、compileall、governance、安全边界、dry-run 与 diff check
 - [completed] 提交/推送并完成 exact-SHA 公共验证：`5901b09` / Actions `32016852979`
 - [completed] 公共闭环后交接 5F-2，等待下一次明确继续
+
+## 5F-2 Offline Protocol Adapter Spike Checklist
+
+- [completed] RQ-049 恢复、教学说明、方案比较、ADR-0035 与实施计划
+- [completed] Batch A：严格 Python protocol/frame/Usage 红灯与最小实现；13 focused / 50 adjacent
+- [completed] Batch B：exact npm package/lockfile、`npm ci --ignore-scripts` 与供应链/成本记录
+- [completed] Batch C：Node Pi sidecar + Python controller + 真实本地 `knowledge.search`
+- [completed] Batch D：scripted 安全/预算/失败案例、Usage 四态与 body-free event
+- [in_progress] Batch E：窄同切片对照、本地完整门禁和退出裁决已完成；待提交/公共 CI 与 5F-3 交接
 
 ## Decisions Made
 

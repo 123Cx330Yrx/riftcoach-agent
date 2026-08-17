@@ -51,7 +51,14 @@ pause_reason: null
   `884 passed, 1 warning, 110 subtests passed` 与两套 RAG/compileall/governance/安全/dry-run/
   diff 门禁通过；提交 `5901b090b4ee8bccfd0a71ddfa412dec98fba02f` 已由 Actions run
   `32016852979` 完成 exact-SHA 公共验证，5F-1 正式关闭。canonical 只交接到
-  `5F-2-offline-protocol-adapter-spike` 准备状态，等待用户再次明确继续。上一子阶段组
+  `5F-2-offline-protocol-adapter-spike` 准备状态；用户现已按 RQ-049 明确恢复 5F-2。本轮先以
+  ADR-0035 和实施计划冻结版本化 JSONL sidecar、Scripted StreamFn、单一 Python
+  `knowledge.search`、进程/Usage/Trace 安全和 TDD 顺序；exact npm lockfile、官方 Pi 0.84.2
+  sidecar、Python controller、真实本地知识 Tool、Usage 四态、安全故障和两项窄 parity 已本地完成。
+  聚焦 `35 passed`、相邻 `99 passed`、完整 `919 passed, 1 warning, 110 subtests passed` 与两套
+  RAG/compileall/governance/安全/dry-run/diff 门禁通过；本地退出裁决为
+  `pass-with-boundaries`，当前只待实现提交、推送和 exact-SHA 公共 CI，成功前 5F-2 仍为
+  in progress。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -181,9 +188,9 @@ pause_reason: null
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：等待用户再次明确继续后进入 `5F-2-offline-protocol-adapter-spike`，先冻结
-  Python↔Node JSONL 协议、依赖/lockfile 与红灯 scripted cases，再安装隔离实验依赖并实现
-  no-I/O adapter。本交接不自动安装 Pi、不写 adapter、不读取 Key、不调用真实 Provider 或进入阶段 6。
+- 唯一下一步：提交/推送 `5F-2-offline-protocol-adapter-spike` 的 no-I/O 实现与退出审查，并等待
+  exact-SHA GitHub Actions；公共成功前不关闭 5F-2、不交接或实施 5F-3。本轮不读取 Key、不调用
+  真实 Provider/Riot、不接主 Runtime/Harness/FastAPI。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -243,7 +250,7 @@ pause_reason: null
 |---|---|---|---|
 | 5F-entry-design | 收缩 Pi-only 候选，冻结同切片对照、合同、安全、跨语言成本和 adopt/partial-adopt/reject 门槛 | 已完成 | ADR-0034 与 `docs/plans/2026-08-17-5f-pi-only-agent-runtime-adoption-design.md`；提交 `ce97975` / Actions `32013948784` exact-SHA 公共成功；无 Pi/Key/Provider I/O |
 | 5F-1-pi-source-license-contract-audit | 审计官方 Pi 源码/包版本、许可证、Runtime/Provider/Tool/event/state/abort/Usage 接缝 | 已完成 | 冻结 `earendil-works/pi v0.84.2` / `914cf147...`、MIT、Node `>=22.19.0`；完成合同/安全/依赖/sidecar 映射；裁决允许有条件进入 5F-2；`5901b09` / Actions `32016852979` exact-SHA 公共成功；Pi/Key/Provider I/O 为 0 |
-| 5F-2-offline-protocol-adapter-spike | 用同一 recent-form Context、Scripted StreamFn 和单一 `knowledge.search` 建立隔离 Python↔Node 协议对照 | 准备状态，等待用户明确继续 | 尚未安装 Pi 或实现 adapter；必须先冻结 JSONL/lockfile/安全与十类 scripted cases，不得读取 Key 或调用 Provider |
+| 5F-2-offline-protocol-adapter-spike | 用同一 recent-form Context、Scripted StreamFn 和单一 `knowledge.search` 建立隔离 Python↔Node 协议对照 | 进行中 | exact lock/sidecar/controller、真实本地知识 Tool、35 focused/99 adjacent/完整 919 tests 与本地退出审查已完成；`pass-with-boundaries`，待提交及 exact-SHA 公共 CI |
 
 ## 当前真实能力边界
 
@@ -481,10 +488,10 @@ pause_reason: null
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A-5E 与整个 5P，5F-entry-design 已完成；5F-1 只增加审计文档、未安装或接入 Pi；当前无领域 Provider 准入 | 阶段 5、生产模型质量、完整 API/前端或可恢复 Runtime 已完成 |
-| 项目理解 | 已能解释 Pi 低层 Agent 数据流及其与整批 Tool 预检、Usage completeness、Trace/Harness、Python↔Node sidecar 的差异；同时保留 5P 数据/控制流理解 | 审计通过等于 Pi 更优、已接入、真实模型质量或产品 Runtime 已切换 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A-5E 与整个 5P；5F-2 已本地实现隔离 Pi sidecar/controller 并 `pass-with-boundaries`，但未接主 Runtime/Harness；当前无领域 Provider 准入 | 阶段 5、Pi 已采用、生产模型质量、完整 API/前端或可恢复 Runtime 已完成 |
+| 项目理解 | 已能解释 Pi sidecar 的 JSONL、Agent loop、Tool 往返、整批预检、Usage 四态、进程失败与跨语言成本；同时清楚 5F-3 才检查完整 Harness/Trace parity | 协议 spike 通过等于 Pi 更优、已采用、真实模型质量或产品 Runtime 已切换 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi release/source/license/contract 审计已本地与公开闭环，Claude SDK 仅作书面排除分析 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5P-5/5P-6/5F-entry-design/5F-1 已分别由 `6d1e5b0/32005648179`、`8c8acc6/32010604551`、`ce97975/32013948784`、`5901b09/32016852979` exact-SHA 公开验证；正式 API/网页未部署 | 本地/CI FastAPI、源码审计或设计门通过等于领域模型质量、生产切换或 Web Agent 可用 |
+| GitHub/部署 | 5P-5/5P-6/5F-entry-design/5F-1 已分别由 `6d1e5b0/32005648179`、`8c8acc6/32010604551`、`ce97975/32013948784`、`5901b09/32016852979` exact-SHA 公开验证；5F-2 本地实现尚待公共 CI；正式 API/网页未部署 | 本地 Pi spike 或 CI FastAPI 等于领域模型质量、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

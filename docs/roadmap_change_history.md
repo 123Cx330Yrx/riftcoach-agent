@@ -1578,3 +1578,30 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `CLOSED`：5F-1 正式完成，裁决仍为“允许有条件进入 5F-2”，不等于采用、安装或接入 Pi。
 - `HANDOFF`：canonical 唯一下一检查点为 `5F-2-offline-protocol-adapter-spike` 准备状态，等待
   用户再次明确继续；不自动安装依赖、创建 sidecar/lockfile、读取 Key 或调用 Provider。
+
+### 2026-08-17：RQ-049 恢复 5F-2 与冻结 sidecar 设计
+
+- `RESUMED`：用户再次明确“继续”，只授权 canonical 的 5F-2 离线协议实验；不授权真实 Provider、
+  主 Runtime/Harness 接入或 5F-3。
+- `DECISION`：ADR-0035 选择低层 Pi Agent Core + 版本化限长 JSONL sidecar，拒绝产品编排迁入
+  Node 和完整 Pi Coding Agent RPC；Python 保留 ToolRuntime、deadline 和进程生命周期。
+- `NO-IO`：该设计批当时只新增设计/实施计划并准备协议红灯；尚未安装 Pi、创建 package/lockfile、读取 Key、
+  调用 Provider/Riot 或修改产品 Runtime。
+
+### 2026-08-17：5F-2 Offline Protocol Adapter Spike 本地退出审查
+
+- `IMPLEMENTED-NO-IO`：exact Pi 0.84.2 lock、Node sidecar、Python controller、版本化限长 JSONL、
+  一个真实本地 `knowledge.search` proxy、整批 Tool preflight、Usage 四态、进程 deadline/kill 与
+  body-free event 已实现；Scripted StreamFn 是唯一 Provider 接缝，外部 Provider/Riot calls 为 0。
+- `CORRECTED`：修复 strict JSON→Pydantic 解码、stderr/EOF reader 竞态、Pi abort 状态、最后迭代
+  Tool 零副作用、失败 Tool 预算计数和 pre-spawn Tool contract drift 稳定终态。
+- `COST`：本机 `npm ci --ignore-scripts` 约 6063 ms；94 packages / 11,355 files /
+  62,364,713 bytes；六次 fresh process 399.75-453.15 ms，后五次中位数 413.71 ms。仅为本机量级，
+  不是生产 p50/p95。
+- `VERIFIED-LOCAL`：Pi 聚焦 `35 passed`、相邻 `99 passed`、完整
+  `919 passed, 1 warning, 110 subtests passed`；两套 RAG、compileall、Node syntax/tree、Harness
+  SDK/tracked-data、dry-run、governance 和 diff check 通过。
+- `DECISION-LOCAL`：`pass-with-boundaries`；协议和控制流足以进入下一评估门，但不构成 Pi adopt、
+  主 Runtime/Harness 接入或模型质量证据。
+- `CURRENT`：5F-2 仍 in progress，只待实现/退出审查提交、推送和 exact-SHA 公共 CI；成功前不
+  关闭 5F-2，不交接或实施 5F-3。

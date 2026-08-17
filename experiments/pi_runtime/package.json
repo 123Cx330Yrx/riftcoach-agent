@@ -1,0 +1,15 @@
+{
+  "name": "riftcoach-pi-runtime-spike",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Isolated no-I/O Pi Agent Core protocol spike for RiftCoach.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "dependencies": {
+    "@earendil-works/pi-agent-core": "0.84.2",
+    "@earendil-works/pi-ai": "0.84.2"
+  }
+}

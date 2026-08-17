@@ -23,8 +23,19 @@ jobs:
           python-version: "3.11"
           cache: pip
 
+      - name: Set up Node for isolated Pi spike
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: experiments/pi_runtime/package-lock.json
+
       - name: Install project and test dependencies
         run: python -m pip install -e ".[dev]"
+
+      - name: Install isolated Pi spike dependencies without lifecycle scripts
+        working-directory: experiments/pi_runtime
+        run: npm ci --ignore-scripts
 
       - name: Check project governance continuity
         run: python scripts/check_project_governance.py
