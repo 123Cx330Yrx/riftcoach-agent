@@ -937,3 +937,19 @@ SQL 产品代码、Session、Memory、SSE、正式 Auth、前端、外部 Provid
 governance 与安全边界通过；设计提交 `c0b5af0eec1654c35afddb3c8a66b774a233a688` 又由 Actions run
 `32041343696` 完成 exact-SHA 公共验证。`6A-entry-design` 正式关闭，只交接
 `6A-1-postgresql-foundation` 准备状态。
+
+## 6A-1 PostgreSQL Foundation 本地实施裁决（2026-08-17）
+
+用户按 RQ-053 启动 6A-1。本批采用 SQLAlchemy 2.0、Alembic 1.x 与 psycopg 3，同步 Engine/Session
+保持与现有同步 Runtime/未来 polling Worker 一致。配置只接受 `postgresql+psycopg`，缺 URL、错误方言
+和非法 pool 参数安全失败；Engine 构造保持惰性，不在 import/config 测试中连接数据库。
+
+`review_tasks` initial migration 只建立 durable task 控制面：UUID task identity、唯一 run identity、
+owner/idempotency、规范化 JSONB 请求、四态与 lifecycle/timestamp CHECK、worker/terminal/publication 和
+body-free evidence references。Prompt、报告、Provider/Tool body 与异常栈不进入 row。Repository、claim、
+Worker 与 API 行为仍属于后续 6A 子阶段。
+
+本地配置/metadata/deployment 合同 `19 passed`；真实 PostgreSQL migration/constraint 三项因本机无
+Docker/测试 DB 明确 skipped。完整回归 `948 passed, 3 skipped, 1 warning, 110 subtests passed`，两套
+RAG、compileall、Harness dry-run、governance 与安全边界通过。Alembic offline PostgreSQL SQL 编译只
+证明 DDL 可生成，不替代真库执行；因此本地裁决为“实现完成、等待 public PostgreSQL CI”，6A-1 仍未关闭。

@@ -1800,3 +1800,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `NO-IMPLEMENTATION`：未安装 SQL 依赖、创建 migration、启动 PostgreSQL、实现 Repository/Worker/
   async API，外部 I/O 为 0。
 - `HANDOFF`：canonical 只交接 `6A-1-postgresql-foundation` 准备状态，等待用户明确继续。
+
+### 2026-08-17：RQ-053 恢复 6A-1 PostgreSQL Foundation
+
+- `RESUMED`：用户明确“开始”，只授权 canonical 的 `6A-1-postgresql-foundation`。
+- `SCOPE`：建立 SQLAlchemy 2/Alembic/psycopg 配置、task ORM row、initial migration、Compose 与真实
+  PostgreSQL CI；不实现 Repository、claim、Worker、异步 API、Session/Memory/SSE/前端。
+- `ENVIRONMENT`：本机无 Docker，迁移测试本地必须明确 skip；GitHub Actions PostgreSQL service 是
+  本批唯一可用的真实数据库阻塞证据，SQLite 不得替代。
+- `CURRENT`：先同步持久状态与红灯测试，再实现最小 Foundation；完成本地门、提交、推送与 exact-SHA
+  公共 CI 前，6A-1 保持 in progress。

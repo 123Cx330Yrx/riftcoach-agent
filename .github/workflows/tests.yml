@@ -97,3 +97,55 @@ jobs:
             --runs-root "${RUNNER_TEMP}/riftcoach-runs" \
             --run-id ci_harness_v1 \
             --dry-run
+
+  postgres-migrations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DATABASE_URL: postgresql+psycopg://riftcoach:ci-only@localhost:5432/riftcoach_test
+      RIFTCOACH_TEST_DATABASE_URL: postgresql+psycopg://riftcoach:ci-only@localhost:5432/riftcoach_test
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: riftcoach_test
+          POSTGRES_USER: riftcoach
+          POSTGRES_PASSWORD: ci-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U riftcoach -d riftcoach_test"
+          --health-interval 2s
+          --health-timeout 3s
+          --health-retries 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install project and test dependencies
+        run: python -m pip install -e ".[dev]"
+
+      - name: Check project governance continuity
+        run: python scripts/check_project_governance.py
+
+      - name: Verify reversible PostgreSQL migrations
+        run: |
+          python -m alembic upgrade head
+          python -m alembic downgrade base
+          python -m alembic upgrade head
+
+      - name: Run PostgreSQL foundation tests
+        run: python -m pytest tests/test_database_config.py tests/test_task_migrations_postgres.py -q
+
+      - name: Verify metadata matches the migration head
+        run: |
+          python -m alembic upgrade head
+          python -m alembic check

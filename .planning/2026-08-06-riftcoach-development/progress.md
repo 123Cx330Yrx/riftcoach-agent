@@ -2354,3 +2354,27 @@
   Harness dry-run 均获得公共验证；CI 未读取 Key、调用 Riot/Provider 或启动本轮未实现的产品 DB。
 - `6A-entry-design` 正式关闭；canonical 只交接 `6A-1-postgresql-foundation` 准备状态，等待用户再次
   明确继续。尚未安装 SQL 依赖、创建 migration、启动 PostgreSQL 或实现阶段 6 产品代码。
+
+## 2026-08-17：开始 6A-1 PostgreSQL Foundation
+
+- 用户明确“开始”；RQ-053 只授权 SQLAlchemy 2/Alembic/psycopg 配置、task ORM row、initial
+  migration、Compose PostgreSQL 与真实 PostgreSQL CI 门。
+- 已按 `AGENTS.md` 恢复 canonical/active plan/需求/路线/ADR/设计/实施计划；治理检查通过，HEAD 与
+  `origin/main` 均为 `493d183a1067e469a4f2e18225e8eaf352697e22`，工作树起始干净。
+- 已完成初学者入口教学；本机无 Docker，故本地真库测试将明确 skip，真实 migration 阻塞证据必须由
+  GitHub Actions PostgreSQL service 提供，不用 SQLite 或 Fake 冒充。
+- 当前下一步为 TDD 红灯配置/迁移合同；尚未安装 SQL 依赖、创建 migration 或实现 Repository/Worker/API。
+
+## 2026-08-17：6A-1 本地实现与门禁通过
+
+- 红灯先后为 `sqlalchemy` dependency 缺失与 `app.persistence` 模块缺失；随后只增加 SQLAlchemy 2、
+  Alembic、psycopg 3，并实现 fail-closed settings、lazy Engine/Session、metadata/ORM row 与 0001 migration。
+- 新增 PostgreSQL 17 Compose service 和独立 `postgres-migrations` Actions job；原 `pytest` job 保留。
+- Alembic offline PostgreSQL SQL 编译通过；期间发现并修复 CHECK constraint 双前缀命名，head/history 为
+  单一 `0001_review_tasks`。
+- 聚焦 `19 passed, 3 skipped`；三个 skip 只因本机无真实 PostgreSQL。完整回归
+  `948 passed, 3 skipped, 1 warning, 110 subtests passed`。
+- development/independent 两套 RAG 门均满阈值；compileall、Harness dry-run、governance、tracked
+  Secret/run-data、Harness SDK boundary 和 diff check 通过；未读取 Key 或调用 Riot/Provider。
+- 本地实现完成但 6A-1 仍为 in progress；下一步仅提交/推送并用 exact-SHA public CI 执行真库 upgrade/
+  downgrade/upgrade、JSONB/timestamptz/CHECK round-trip 和 Alembic metadata check。

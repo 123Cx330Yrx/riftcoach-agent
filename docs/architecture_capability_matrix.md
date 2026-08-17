@@ -33,7 +33,7 @@
 | A11 | AgentRuntime V1 | 5D 控制链及 5E-1 至 5E-4 均已公开完成；两个真实 Skill 共用同步 `run()`、进程内 `stream()`、typed output、完整 Trace/Usage、安全失败映射与 exit matrix；5F-1 至 5F-5 已完成 Pi 0.84.2 审计/隔离/Harness/采用对照，最终由 `f8dea66/32028206103` 公共裁决产品拒绝 Pi、冻结保留 evaluation-only 资产 | 阶段 5D-5E | 5F-4 因 Context/terminal/live timing 硬门失败未进入；产品继续 Python Runtime；阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage、终止原因、退出审查，以及 Pi batch/Usage/Trace/sidecar 差异矩阵与采用/归档门 | 已完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有；DeepSeek V4 Pro 只通过最小协议，当前 V3 领域候选已关闭；Flash 未测试；尚无领域/产品准入、任务级选择或自动降级 | 5D 完成候选采用决策；GLM-5.2 仅作开发基线；模型分层为 5P 后横向采用门，默认等待阶段 6 真实业务证据；5F Pi-only 不改变模型路由 | G53 deferred；未来仍按 ADR-0019 比较模型分层，5F 只做 Pi Runtime 采用实验 | 新鲜同任务评测、故障降级、unsafe publication、成本和 p50/p95 延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
-| A14 | API 与任务持久化 | 5P 已公开完成同步 product slice；ADR-0038/6A design/implementation plan 已由 `c0b5af0/32041343696` 公共冻结 PostgreSQL polling task、短事务、幂等/ownership、reconciliation、NFR/安全/真库测试和 6A-1..7；当前 6A-1 准备状态，尚无 SQL 产品实现 | 阶段 5P 提供本地同步切片，阶段 6 加 SQL | 阶段 8 扩展 lease、取消、恢复与迟到结果治理 | receipt/path/Schema/SHA/终态交叉校验；PostgreSQL migration、HTTP 幂等、并发 claim、鉴权、隔离和中断测试 | 部分完成 |
+| A14 | API 与任务持久化 | 5P 已公开完成同步 product slice；6A-1 已本地实现 PostgreSQL 配置、ORM metadata、可逆 migration、Compose/CI gate，当前等待 public 真库验证；Repository/Worker/API 行为仍未实现 | 阶段 5P 提供本地同步切片，阶段 6 加 SQL | 阶段 8 扩展 lease、取消、恢复与迟到结果治理 | receipt/path/Schema/SHA/终态交叉校验；PostgreSQL migration、HTTP 幂等、并发 claim、鉴权、隔离和中断测试 | 部分完成 |
 | A15 | 标准 MCP 与动态 Meta | 内部 Tool Runtime，不冒充 MCP | 阶段 7 | OP.GG、官方补丁等通过领域 Adapter 分层 | initialize、tools/list、tools/call、断线和版本边界测试 | 已规划 |
 | A16 | Multi-Agent 与 DAG | 当前不需要 | 阶段 8 Advanced | 仅在独立上下文、权限和并行收益成立时采用 | Bad Case、对照、消融、成本和 ADR | 按证据采用 |
 

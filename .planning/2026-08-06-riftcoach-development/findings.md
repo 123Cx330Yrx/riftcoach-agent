@@ -2423,3 +2423,28 @@
 - 正式 design 汇总所有逐节确认；implementation plan 给出每批 exact files、TDD、门禁和明确排除项。
 - 当前仍是本地文档/治理状态，未安装依赖、创建 migration、启动 PostgreSQL 或写产品代码；公共 CI
   成功前不能关闭 entry design。
+
+## 2026-08-17：6A-1 实施入口环境发现
+
+- 用户以“开始”明确授权 RQ-053；授权仅覆盖 PostgreSQL Foundation，不覆盖 Repository/claim/Worker/API。
+- 仓库解释器为 `.venv\\Scripts\\python.exe`（Python 3.11.9）；桌面默认 Python 不作为门禁入口。
+- 本机没有 `docker` 命令，当前不能提供本地真实 PostgreSQL migration 证据，也不在本批擅自安装
+  Docker Desktop。迁移测试本地必须以明确原因 skip，GitHub Actions PostgreSQL service 必须作为阻塞门。
+- `create_engine()` 是惰性的，6A-1 可在不连接数据库时测试 URL 方言、连接池配置、Engine 与 Session
+  factory；Alembic 必须引用应用 `Base.metadata`，PostgreSQL schema 使用 UUID/JSONB/带时区时间。
+- psycopg 3 的安装包名是 `psycopg`；开发/CI 基线采用自包含的 `psycopg[binary]`，SQLite 不进入依赖或
+  PostgreSQL 关键语义测试。
+
+## 2026-08-17：6A-1 本地实现发现
+
+- 第一轮 editable install 因终端遗留的不可用 `127.0.0.1:7890` 代理无法取得 build dependency；只在
+  pip 子进程清除代理后依赖成功安装。随后 `--no-build-isolation` 暴露 `.venv` 缺 `wheel`，安装构建工具
+  后 editable project 成功重装。产品代码与系统代理配置均未因两次失败而改变。
+- 实际解析版本为 SQLAlchemy 2.0.52、Alembic 1.19.1、psycopg/psycopg-binary 3.3.4，均落在冻结范围。
+- 首次 Alembic offline SQL 编译发现 migration 给 CHECK 传完整名时又被 metadata naming convention
+  加前缀，形成双 `ck_review_tasks_`。改为语义后缀后，SQL 生成冻结的单前缀名称；测试合同未放宽。
+- 本地可证明配置 fail-closed、URL 错误不泄密、Engine/Session 构造无 I/O、ORM metadata 与部署/CI
+  配置；不能证明 migration/JSONB/timestamptz/CHECK 真库执行，三个测试因此明确 skip。
+- 完整回归为 `948 passed, 3 skipped, 1 warning, 110 subtests passed`；两套 RAG 指标均达到冻结阈值，
+  compileall、Harness dry-run、governance、Secret/run-data 与 SDK boundary 通过。6A-1 必须等待 public
+  PostgreSQL service job 后才能关闭。

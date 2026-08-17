@@ -4,7 +4,7 @@ main_stage: 6
 substage_group: "6A"
 current_checkpoint: "6A-1-postgresql-foundation"
 status: in_progress
-pause_reason: "awaiting explicit user confirmation before starting 6A-1-postgresql-foundation"
+pause_reason: null
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: "awaiting explicit user confirmation before starting 6A-1-postgres
 ## 状态元数据
 
 - 最后更新：2026-08-17
-- 主阶段：阶段 6，入口准备状态（尚未开始实现）
+- 主阶段：阶段 6，`6A-1-postgresql-foundation` 实施中
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -97,8 +97,14 @@ pause_reason: "awaiting explicit user confirmation before starting 6A-1-postgres
   与实施计划现已创建。本地完整回归 `929 passed, 1 warning, 110 subtests passed`、两套 RAG、
   compileall、Harness dry-run、governance、Secret/run-data 与 SDK boundary 均通过；设计提交
   `c0b5af0eec1654c35afddb3c8a66b774a233a688` 已由 Actions run `32041343696` 完成 exact-SHA 公共
-  验证。`6A-entry-design` 正式关闭，canonical 只交接到 `6A-1-postgresql-foundation` 准备状态。
-  尚未实现 SQL、Session、Memory、SSE 或阶段 6 产品能力。上一子阶段组
+  验证。`6A-entry-design` 正式关闭；用户已按 RQ-053 授权
+  `6A-1-postgresql-foundation`，当前只实施 PostgreSQL 基础设施、初始 schema/migration 与真库 CI
+  门，不实现 Repository、Worker 或 API 行为。本机未安装 Docker，故本地真库测试必须明确 skip，
+  真实 PostgreSQL 阻塞证据由 GitHub Actions service 提供。当前本地已实现严格配置、惰性 Engine/
+  Session factory、task ORM metadata、可逆 initial migration、PostgreSQL Compose 与独立 CI job；
+  聚焦为 `19 passed, 3 skipped`，完整回归 `948 passed, 3 skipped, 1 warning, 110 subtests passed`，
+  两套 RAG、compileall、Harness dry-run、governance、Secret/run-data 与 SDK boundary 均通过。
+  三个 skip 全部是真实 PostgreSQL migration/constraint 测试；public CI 成功前不关闭 6A-1。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -228,10 +234,10 @@ pause_reason: "awaiting explicit user confirmation before starting 6A-1-postgres
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6A-1-postgresql-foundation` 准备状态；等待用户明确继续后，才按已确认计划先教学并
-  以红灯测试建立 SQLAlchemy 2/Alembic/psycopg/PostgreSQL 配置、initial migration 与真实 PostgreSQL
-  CI。本交接不自动安装依赖、启动数据库、实现 Repository/Worker/API、读取 Key、调用 Riot/Provider，
-  也不进入 Session、Memory、SSE、鉴权、前端或部署。
+- 唯一下一步：提交并推送 `6A-1-postgresql-foundation` 本地实现，等待 exact-SHA GitHub Actions 的
+  `pytest` 与 `postgres-migrations` 两个阻塞 job；真库 migration/constraint 测试成功后才允许关闭 6A-1。
+  本批不实现 Repository/Worker/API，不读取 Key、调用 Riot/Provider，也不进入 Session、Memory、SSE、
+  鉴权、前端或部署。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -532,8 +538,8 @@ pause_reason: "awaiting explicit user confirmation before starting 6A-1-postgres
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 的 5A-5F 已正式完成。产品继续唯一使用 Python Runtime；Pi sidecar/adapter 只存在于冻结 evaluation namespace。阶段 6 尚未写代码 | Pi 已进入产品、生产模型质量、完整 API/前端、SQL/Session/Memory 或可恢复 Runtime 已完成 |
-| 项目理解 | 已能解释 Pi sidecar、Tool/Usage/Harness/Trace 数据流，能区分成功路径兼容和完整 Runtime parity，并能说明产品拒绝与评测资产保留为何不矛盾；尚未开始 6A 教学 | `partial-adopt` 等于双 Runtime、SDK 已接产品、Scripted 测试代表真实模型质量，或阶段 6 已实现 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 的 5A-5F 已正式完成。6A-1 已本地建立 SQLAlchemy/Alembic/psycopg、task metadata/migration、Compose 与 CI gate，当前仍待真实 PostgreSQL 公共验证 | Pi 已进入产品、生产模型质量、Repository/Worker/API、SQL 事务/迁移真库语义、Session/Memory 或前端已完成 |
+| 项目理解 | 已完成 6A-1 入口教学，能区分 ORM、migration、PostgreSQL、惰性 Engine、本地 no-DB 测试与 CI 真库证据；Repository/Worker/API 仍未进入教学与实现 | 配置/metadata 绿灯等于真库 migration 通过，或 PostgreSQL Foundation 等于完整异步 Agent 产品已完成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
 | GitHub/部署 | 5F-5 决策提交 `f8dea66` / Actions `32028206103` 已 exact-SHA 公共成功；本次 canonical 交接仍待自身提交/CI。正式 API/网页未部署 | Pi CI、FastAPI TestClient 或阶段交接等于生产切换、真实模型质量或 Web Agent 可用 |
 

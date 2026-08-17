@@ -16,6 +16,9 @@ dependencies = [
     "requests",
     "python-dotenv",
     "fastapi>=0.115,<1",
+    "SQLAlchemy>=2.0,<3",
+    "alembic>=1.18,<2",
+    "psycopg[binary]>=3.3,<4",
 ]
 
 [project.optional-dependencies]

@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 9 - `6A-1-postgresql-foundation` preparation after `6A-entry-design` completed publicly at
-`c0b5af0eec1654c35afddb3c8a66b774a233a688` / Actions `32041343696`; no 6A-1 implementation yet
+Phase 9 - `6A-1-postgresql-foundation` implementation authorized by RQ-053 after `6A-entry-design`
+completed publicly at `c0b5af0eec1654c35afddb3c8a66b774a233a688` / Actions `32041343696`
 
 ## Phases
 
@@ -243,19 +243,28 @@ Phase 9 - `6A-1-postgresql-foundation` preparation after `6A-entry-design` compl
   用户明确继续。
 - entry design 提交 `49841ec` 已通过 Actions `31985199623` exact-SHA 公共 CI；
 
-### Phase 9 - 6A-1-postgresql-foundation preparation
+### Phase 9 - 6A-1-postgresql-foundation implementation
 
 - Status: in_progress
-- Pause: awaiting explicit user confirmation before starting 6A-1.
+- Authorization: RQ-053; implementation is active.
 - 5F-5 决策提交 `f8dea66` / Actions `32028206103` 已完成 exact-SHA 公共验证；阶段 5 正式关闭。
-- 6A-entry-design 已由 `c0b5af0` / Actions `32041343696` exact-SHA 公共完成；当前只保存 6A-1
-  准备键，不安装 SQL 依赖、不创建 migration、不启动 PostgreSQL、不实现 Repository/Worker/API。
+- 6A-entry-design 已由 `c0b5af0` / Actions `32041343696` exact-SHA 公共完成；当前只实施 6A-1
+  SQL 基础设施、migration、Compose 与真库 CI，不实现 Repository/Worker/API。
 
 ## Next Step
 
-`6A-1-postgresql-foundation`：等待用户明确继续后，按 ADR-0038 和 implementation plan 先解释
-PostgreSQL/ORM/migration 原理，再以红灯建立 SQLAlchemy 2/Alembic/psycopg 配置、initial migration、
-Docker/CI 真库门。本准备状态不安装依赖、启动 DB、实现 Repository/Worker/API 或调用外部服务。
+`6A-1-postgresql-foundation`：按 ADR-0038 和 implementation plan 先以红灯建立
+SQLAlchemy 2/Alembic/psycopg 配置、initial migration、Compose 与 GitHub Actions 真库门。本机无
+Docker，本地迁移测试须明确 skip，不能冒充 PostgreSQL 证据；不实现 Repository/Worker/API 或调用外部服务。
+
+## 6A-1 Checklist
+
+- [completed] 记录 RQ-053、清除等待确认状态并恢复治理
+- [completed] 先写配置与真实 PostgreSQL migration 红灯测试
+- [completed] 实现 settings、Engine/Session、metadata/ORM row 与 initial migration
+- [completed] 增加 Compose 和 blocking PostgreSQL CI job
+- [completed] 运行聚焦/完整/横向门禁并记录本地无 Docker 限制
+- [in_progress] 提交、推送并等待 exact-SHA 公共 CI 后关闭 6A-1
 
 ## 6A Entry Design Checklist
 
