@@ -1838,3 +1838,12 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   通过；两套 RAG、compileall、Harness、治理、安全和 YAML 门通过；真库 5 项仍待 public CI。
 - `BOUNDARY`：不实现 claim、Worker、Application/Artifact、HTTP、Session/Memory 或外部 I/O。
 - `CURRENT`：提交/推送并等待 exact-SHA PostgreSQL job；成功前 6A-2 保持 in progress。
+
+### 2026-08-18：6A-2 exact-SHA PostgreSQL 公共闭环
+
+- `VERIFIED-PUBLIC`：提交 `012b066da9e5a8ec569d5791cf9ac0fbf4b117d3` 已由 Actions run
+  `32046532695` 完成 exact-SHA 公共验证；`pytest` 与 `postgres-migrations` 均成功。
+- `REAL-REPOSITORY`：PostgreSQL 真实验证 replay/conflict、owner scope、capacity/terminal、rollback
+  与 concurrent same-key exactly-one-row 语义。
+- `CLOSED`：6A-2 Task Contract & Repository 正式完成；没有实现 claim、Worker、Application/API。
+- `HANDOFF`：canonical 只交接 `6A-3-atomic-claim-polling-worker` 准备状态，等待用户明确继续。

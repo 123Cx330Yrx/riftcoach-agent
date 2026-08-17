@@ -972,3 +972,7 @@ advisory lock；锁不跨越 Agent/Provider 执行，也不替代 6A-3 claim 或
 
 本地 domain/service 聚焦 `29 passed`，完整回归 `977 passed, 8 skipped, 1 warning, 110 subtests
 passed`；真库 5 项 Repository 测试尚待 public CI，因此 6A-2 尚未关闭。
+
+提交 `012b066da9e5a8ec569d5791cf9ac0fbf4b117d3` 随后由 GitHub Actions run `32046532695` 完成
+exact-SHA 公共验证；`pytest` 与 `postgres-migrations` 均成功，真实 PostgreSQL 通过全部 5 项
+Repository 测试。因此 6A-2 正式关闭，唯一交接为 6A-3 Atomic Claim/Worker 准备状态，不自动开始。

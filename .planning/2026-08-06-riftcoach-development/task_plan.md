@@ -7,9 +7,8 @@
 
 ## Current Phase
 
-Phase 10 - `6A-2-task-contract-repository` implementation authorized by RQ-054 after 6A-1
-completed publicly at `854e52d7d3f4efeb3bd94137b66013352d10c8a2` / Actions `32043214500`
-Local domain/service/Repository implementation and offline gates are complete; exact-SHA PostgreSQL CI is pending.
+Phase 11 - `6A-3-atomic-claim-polling-worker` preparation after 6A-2 completed publicly at
+`012b066da9e5a8ec569d5791cf9ac0fbf4b117d3` / Actions `32046532695`; no 6A-3 implementation yet
 
 ## Phases
 
@@ -254,9 +253,8 @@ Local domain/service/Repository implementation and offline gates are complete; e
 
 ## Next Step
 
-`6A-2-task-contract-repository`：按 RQ-054 与实施计划先以红灯冻结 task domain contract、canonical
-fingerprint、owner-scoped idempotency/capacity 和 PostgreSQL transaction/query，再实现最小 Repository；
-不自动进入 claim/Worker/API。
+`6A-3-atomic-claim-polling-worker`：等待用户明确继续后，先解释 `FOR UPDATE SKIP LOCKED`、ownership/CAS、
+polling backoff/jitter 与 graceful shutdown，再按实施计划 TDD；不自动进入 Application/Artifact 或 API。
 
 ## 6A-1 Checklist
 
@@ -267,12 +265,12 @@ fingerprint、owner-scoped idempotency/capacity 和 PostgreSQL transaction/query
 - [completed] 运行聚焦/完整/横向门禁并记录本地无 Docker 限制
 - [completed] 提交、推送并由 `854e52d` / Actions `32043214500` 完成 exact-SHA 公共 CI
 
-### Phase 10 - 6A-2-task-contract-repository implementation
+### Phase 10 - 6A-2-task-contract-repository
 
-- Status: in_progress
-- Authorization: RQ-054; implementation is active.
-- 6A-1 已由真实 PostgreSQL service 验证 migration/constraint/metadata drift；当前只实现 6A-2，不实现
-  claim、Worker 或 API。
+- Status: complete
+- Authorization: RQ-054; completed by `012b066` / Actions `32046532695`.
+- 6A-1 已由真实 PostgreSQL service 验证 migration/constraint/metadata drift；6A-2 task contract、
+  fingerprint、service 与 Repository 又由真实 PostgreSQL task job 验证；不实现 claim、Worker 或 API。
 
 ## 6A-2 Checklist
 
@@ -282,7 +280,13 @@ fingerprint、owner-scoped idempotency/capacity 和 PostgreSQL transaction/query
 - [completed] 写真实 PostgreSQL Repository/transaction 红灯并实现 create/query
 - [completed] 修正 6A-1 可逆 migration 测试职责错位并补回归
 - [completed] 运行聚焦、完整、两套 RAG 与全部横向门禁
-- [in_progress] 提交、推送并等待 exact-SHA PostgreSQL CI 后关闭 6A-2
+- [completed] 提交、推送并由 `012b066` / Actions `32046532695` 完成 exact-SHA PostgreSQL CI
+
+### Phase 11 - 6A-3-atomic-claim-polling-worker preparation
+
+- Status: in_progress
+- Pause: awaiting explicit user confirmation before starting 6A-3.
+- 6A-2 已公开验证真实 Repository 事务；当前只保存 6A-3 准备键，不实现 claim、Worker 或 shutdown loop。
 
 ## 6A Entry Design Checklist
 

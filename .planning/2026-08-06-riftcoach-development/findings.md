@@ -2458,6 +2458,15 @@
 - 该证据只证明 Foundation/schema，不证明 Repository transaction、idempotent create/query、claim、
   Worker 或异步 API；这些仍按 6A-2 及后续批次逐项实施。
 
+## 2026-08-18：6A-2 真实 PostgreSQL 公共证据
+
+- 实现提交 `012b066da9e5a8ec569d5791cf9ac0fbf4b117d3` 的 Actions run `32046532695` 已
+  completed/success；`pytest` 与 `postgres-migrations` 两个 job 均成功。
+- PostgreSQL job 真实通过 5 项 Repository 测试：replay 原始 task/run identity、冲突/owner 隔离、
+  active capacity 与 terminal 排除、PK rollback、以及两个并发同 key 调用只产生一行并正确 replay。
+- 这证明 6A-2 的 Repository 语义，不证明 `FOR UPDATE SKIP LOCKED` claim、Worker loop、Artifact/Runtime
+  执行、HTTP 202 或恢复能力；这些交接给 6A-3 及后续批次。
+
 ## 2026-08-18：6A-2 入口审计发现
 
 - 用户以“继续”授权 RQ-054；范围只到 task domain/service 与 PostgreSQL create/query Repository。

@@ -2419,3 +2419,12 @@
 - 未读取 Key、未调用 Riot/Provider、未启动本地数据库；真库 Repository 的 replay/conflict/capacity/
   rollback/owner/concurrent same-key 证据只由下一次 public PostgreSQL job提供。
 - 当前本地实现和门禁完成，下一步提交/推送并等待 exact-SHA CI；成功前不关闭 6A-2、不进入 6A-3。
+
+## 2026-08-18：6A-2 exact-SHA 公共闭环
+
+- 实现提交 `012b066da9e5a8ec569d5791cf9ac0fbf4b117d3` 已推送；Actions run `32046532695` 对同一 SHA
+  completed/success。
+- `pytest` 与 `postgres-migrations` 均成功；真实 PostgreSQL 通过 5 项 Repository 测试，外部
+  Riot/Provider/Key I/O 为 0。
+- 6A-2 正式关闭；canonical 只交接 `6A-3-atomic-claim-polling-worker` 准备状态，等待用户再次明确继续。
+  尚未实现 claim、Worker、Application/Artifact、异步 API、Session/Memory 或前端。
