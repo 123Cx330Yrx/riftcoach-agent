@@ -125,7 +125,15 @@ function emitFailure(stream, reason, errorCode) {
   });
 }
 
-function emitProviderEvent(type, ordinal, iteration, success, failureCode = null, usage = null) {
+function emitProviderEvent(
+  type,
+  ordinal,
+  iteration,
+  success,
+  failureCode = null,
+  usage = null,
+  finishReason = null,
+) {
   writeFrame("event", {
     event: {
       event_type: type,
@@ -134,6 +142,9 @@ function emitProviderEvent(type, ordinal, iteration, success, failureCode = null
       success,
       failure_code: failureCode,
       token_observation: usage ? "complete" : "unknown",
+      finish_reason: finishReason,
+      input_tokens: usage ? usage.input_tokens : null,
+      output_tokens: usage ? usage.output_tokens : null,
     },
   });
 }
@@ -187,10 +198,26 @@ function scriptedStreamFn(_model, context, options = {}) {
       providerAttempts += 1;
       const ordinal = providerAttempts;
       const step = request.script[scriptIndex++];
-      emitProviderEvent("provider_started", ordinal, ordinal, true, null, null);
+      emitProviderEvent(
+        "provider_started",
+        ordinal,
+        ordinal,
+        true,
+        null,
+        null,
+        null,
+      );
       if (!step) {
         responseUsages.push(null);
-        emitProviderEvent("provider_completed", ordinal, ordinal, false, "scripted_provider_error", null);
+        emitProviderEvent(
+          "provider_completed",
+          ordinal,
+          ordinal,
+          false,
+          "scripted_provider_error",
+          null,
+          null,
+        );
         forcedStop = ["provider_error", "scripted_provider_error"];
         emitFailure(stream, forcedStop[0], forcedStop[1]);
         return;
@@ -198,7 +225,15 @@ function scriptedStreamFn(_model, context, options = {}) {
       if (step.kind === "provider_error" || step.kind === "provider_abort") {
         responseUsages.push(null);
         const reason = step.kind === "provider_abort" ? "provider_aborted" : "provider_error";
-        emitProviderEvent("provider_completed", ordinal, ordinal, false, step.error_code, null);
+        emitProviderEvent(
+          "provider_completed",
+          ordinal,
+          ordinal,
+          false,
+          step.error_code,
+          null,
+          null,
+        );
         forcedStop = [reason, step.error_code];
         emitFailure(stream, forcedStop[0], forcedStop[1]);
         return;
@@ -207,7 +242,15 @@ function scriptedStreamFn(_model, context, options = {}) {
       responseUsages.push(step.usage ?? null);
       const preflightError = preflightToolBatch(step);
       if (preflightError) {
-        emitProviderEvent("provider_completed", ordinal, ordinal, true, preflightError[1], step.usage ?? null);
+        emitProviderEvent(
+          "provider_completed",
+          ordinal,
+          ordinal,
+          true,
+          preflightError[1],
+          step.usage ?? null,
+          step.tool_calls?.length ? "tool_calls" : "stop",
+        );
         forcedStop = preflightError;
         emitFailure(stream, forcedStop[0], forcedStop[1]);
         return;
@@ -215,7 +258,15 @@ function scriptedStreamFn(_model, context, options = {}) {
       for (const call of step.tool_calls ?? []) {
         seenToolCalls.add(stableStringify({ name: call.name, arguments: call.arguments }));
       }
-      emitProviderEvent("provider_completed", ordinal, ordinal, true, null, step.usage ?? null);
+      emitProviderEvent(
+        "provider_completed",
+        ordinal,
+        ordinal,
+        true,
+        null,
+        step.usage ?? null,
+        step.tool_calls?.length ? "tool_calls" : "stop",
+      );
       const content = [];
       if (step.content) content.push({ type: "text", text: step.content });
       for (const call of step.tool_calls ?? []) {

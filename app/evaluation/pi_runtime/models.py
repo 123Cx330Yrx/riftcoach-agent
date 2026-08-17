@@ -177,6 +177,42 @@ class PiSafeEvent(PiContractModel):
     tool_version: Literal["2.0.0"] | None = None
     failure_code: SafeCode | None = None
     token_observation: TokenObservation | None = None
+    finish_reason: Literal["stop", "tool_calls"] | None = None
+    input_tokens: int | None = Field(default=None, ge=0)
+    output_tokens: int | None = Field(default=None, ge=0)
+
+    @model_validator(mode="after")
+    def validate_provider_usage(self) -> "PiSafeEvent":
+        token_values = (self.input_tokens, self.output_tokens)
+        if self.event_type in {"provider_completed", "tool_completed"}:
+            if self.success is None:
+                raise ValueError("completed events require a success value")
+        if self.event_type != "provider_completed":
+            if self.finish_reason is not None or any(
+                value is not None for value in token_values
+            ):
+                raise ValueError(
+                    "only provider_completed events may carry response metadata"
+                )
+            return self
+        if self.success is True and self.finish_reason is None:
+            raise ValueError(
+                "successful provider event requires a finish_reason"
+            )
+        if self.success is not True and self.finish_reason is not None:
+            raise ValueError(
+                "failed provider event cannot carry a finish_reason"
+            )
+        if self.token_observation is TokenObservation.COMPLETE:
+            if any(value is None for value in token_values):
+                raise ValueError(
+                    "complete provider event requires both token values"
+                )
+        elif any(value is not None for value in token_values):
+            raise ValueError(
+                "non-complete provider event cannot carry token values"
+            )
+        return self
 
 
 PiSpikeStatus = Literal["completed", "stopped", "failed"]

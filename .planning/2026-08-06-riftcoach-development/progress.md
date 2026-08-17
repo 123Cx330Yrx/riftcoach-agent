@@ -2167,3 +2167,37 @@
   质量、Pi adopt、完整 Trace/Harness parity 和部署没有提升。
 - canonical 唯一下一检查点已交接为 `5F-3-contract-security-harness-evaluation` 准备状态，
   等待用户明确继续；未读取 Key、调用 Provider、修改主 Runtime 或自动开始 5F-3。
+## 2026-08-17：用户恢复 5F-3，完成入口恢复与方案冻结
+
+- 用户再次明确“继续”；按 RQ-050 只恢复 canonical 的
+  `5F-3-contract-security-harness-evaluation`，不授权 5F-4 或真实外部调用。
+- 恢复时 `HEAD == origin/main == 1454f59b0e07d96defedfc093807a8ef03391839`，工作树干净，
+  `scripts/check_project_governance.py` 通过；5F-2 实现与状态收尾公共 CI 均为 success。
+- 已修正 RQ-049 的陈旧“执行中”，清除 canonical 的等待确认 pause reason，并保留 5F-3 为唯一下一步。
+- 源码审计确认现有 `SkillReviewExecutor`/`ReviewHarness` 可作为唯一发布接缝，同时发现 Context
+  token-unit 与 sidecar char guard、扩展失败终态与现有 Runtime enum、聚合 Usage 与 per-call Trace
+  三类差异。ADR-0036 选择评测专用 adapter 和严格 projector：兼容路径走真实 Harness，不能无损
+  映射的路径显式 fail closed，不为实验成功而扩展生产合同。
+- 已建立 `docs/plans/2026-08-17-5f3-contract-security-harness-evaluation.md`；当前进入 Batch A
+  红灯测试。本批至此未读取 Key、调用 Provider/Riot、运行 held-out 或修改主 Runtime/FastAPI。
+## 2026-08-17：5F-3 本地实现与退出审查
+
+- 新增 evaluation-only `PiSkillDraftPreparer`：先复用现有 Compiler，再把 canonical system/user、
+  Manifest budgets 和唯一 `knowledge.search` 映射到 sidecar；没有接主 Runtime/composition。
+- controller 新增 process-local detailed Tool records；public result/event 继续不保存 query/chunks。
+  adapter 从实际成功 Tool data 构造 Evidence，并重建 Assistant/Tool transcript。
+- safe provider event 新增逐调用 token 和 finish reason；严格 projector 的成功信号已真实进入现有
+  Recorder，形成 Usage 一致、Artifact body-free 的 RuntimeTrace。
+- Pi draft 只有经过原 ReviewHarness 的 passing Evaluation 才由 `review_harness.publisher` 写 final；
+  坏 citation、失败 Tool、process failure、missing Usage 均安全降级。Pi 直接 final producer 为 0。
+- Context char/token 单位、extended terminal vocabulary 和 post-hoc event timing 三项 hard gap 未被
+  近似映射或通过扩大生产合同修补；本地退出裁决为
+  `harness-compatible-but-runtime-gate-failed`，不准入 5F-4 真实调用。
+- 聚焦 Pi/Harness/Trace `45 passed`，相邻 `196 passed`，完整
+  `929 passed, 1 warning, 110 subtests passed`；warning 为既有 FastAPI TestClient 迁移提示。
+- 当前唯一下一动作是完成剩余本地门禁、提交、推送和 exact-SHA 公共 CI；成功前 5F-3 仍为
+  in progress，不进入 5F-4/5F-5，不读取 Key 或调用 Provider/Riot。
+- 最终本地门禁全部通过：development/independent RAG 均为满阈值；compileall、Node syntax、
+  `npm ls --all`、Harness SDK boundary、tracked secret/run-data boundary、dry-run、governance 与
+  `git diff --check` 成功；安全加固后的最终完整回归仍为
+  `929 passed, 1 warning, 110 subtests passed`。当前只待提交、推送和 exact-SHA 公共 CI。

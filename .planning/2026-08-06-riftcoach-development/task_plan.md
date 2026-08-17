@@ -759,3 +759,25 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   先列真实文件名，并读取 `0031-adopt-in-process-stream-worker-and-parity-contract.md`。
 - 5P Prompt 符号搜索第一次因 PowerShell 引号截断正则并报 unclosed group；没有产生文件影响，
   随后改用多个 `rg -F -e` 固定字符串完成检索。
+## 2026-08-17：5F-3 Contract / Security / Harness Evaluation
+
+### 当前授权与边界
+
+- [completed] RQ-049 从“执行中”收口为 5F-2 exact-SHA 已执行；新增 RQ-050，清除等待确认状态。
+- [completed] 审计 ADR-0034/0035、5F-1/5F-2 证据与 Agent/Compiler/Harness/Runtime 接缝。
+- [completed] 用 ADR-0036 和实施计划冻结“评测专用 adapter + 严格 projector”，不接主 Runtime。
+- [completed] Batch A：detailed evidence、per-call Usage/finish reason 和安全投影已完成 TDD。
+- [completed] Batch B：Pi → existing SkillReviewExecutor/ReviewHarness → typed output 纵向案例通过。
+- [completed] Batch C：成功 Signal/Usage/Trace 可投影；Context/terminal/live timing hard gap 已固定。
+- [completed] Batch D：形成合同、安全、NFR、维护成本退出矩阵；本地裁决
+  `harness-compatible-but-runtime-gate-failed`，5F-4 不准入。
+- [completed] 两套 RAG、compileall、Node syntax/tree、Harness/secret/tracked-data、dry-run、governance、
+  diff 与最终完整 929/110 subtests 本地门禁通过。
+- [in_progress] 提交、推送和 exact-SHA 公共 CI；成功后只交接 5F-5，不自动执行。
+
+### 冻结的不变量
+
+- 外部 Provider、Riot、Key、held-out I/O 为 0；Scripted/Fake 证据不称为模型质量。
+- Pi 文本始终是 draft；只有 ReviewHarness 可以产生 final Artifact 和 publication decision。
+- 字符 Context guard 不冒充 token-unit ceiling；无法无损表示的 terminal 不做近似映射。
+- 新代码只进入 evaluation namespace 和测试，不修改默认 composition 或生产 Runtime 合同。

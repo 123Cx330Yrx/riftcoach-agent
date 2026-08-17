@@ -1615,3 +1615,17 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   证明隔离协议/控制流，不代表 Pi adopt、真实模型质量或主 Runtime/Harness 接入。
 - `HANDOFF`：canonical 唯一下一检查点为 `5F-3-contract-security-harness-evaluation` 准备状态，
   等待用户明确继续；不自动读取 Key、调用 Provider 或实现 5F-3。
+### 2026-08-17：RQ-050 恢复 5F-3 并完成本地退出评测
+
+- `RESUMED`：用户再次明确“继续”，只授权 5F-3 完整合同、安全、Harness/Trace 与维护成本评测；
+  未授权 5F-4 或真实外部调用。
+- `IMPLEMENTED-NO-IO`：evaluation-only Pi draft adapter 复用现有 Compiler/SkillReviewExecutor/
+  ReviewHarness；process-local Tool records 构造真实 Evidence，public result/event/Trace 继续 body-free。
+- `TRACE`：per-call Usage/finish reason 可进入现有 Recorder，成功纵向路径生成合法 RuntimeTrace；
+  missing Usage 不归零，坏 citation/Tool/process failure 不发布 Pi draft。
+- `HARD-GAPS`：Context token-unit 与 char guard 不等价；extended Pi terminal 无法进入现有 Agent
+  terminal；event 为 child 完成后批量投影，缺少 live timing/stream parity。
+- `VERIFIED-LOCAL`：Pi 聚焦 45、相邻 196、完整 `929 passed, 1 warning, 110 subtests passed`；
+  external Provider/Riot/Key/held-out I/O 为 0。
+- `DECISION-LOCAL`：`harness-compatible-but-runtime-gate-failed`。根据既定条件门，5F-4 不准入；
+  当前仍待完整门禁、提交、推送和 exact-SHA CI，公共成功前不关闭 5F-3 或进入 5F-5。

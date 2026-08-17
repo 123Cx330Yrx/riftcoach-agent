@@ -860,3 +860,21 @@ Pi、不接主 Runtime/Harness。当前安装树 94 packages / 62,364,713 bytes�
 exact-SHA 公共验证；5F-2 正式关闭，唯一下一检查点为
 `5F-3-contract-security-harness-evaluation` 准备状态，等待用户明确继续。该交接不授权自动实现
 5F-3、读取 Key、调用 Provider 或接入主 Runtime。
+## 5F-3 合同、安全与 Harness 本地裁决（2026-08-17）
+
+用户按 RQ-050 恢复 5F-3。ADR-0036 选择评测专用 Pi→Harness adapter 和严格 Runtime Signal
+projector，不把 Pi 接入主 `AgentRuntimeV1`、FastAPI 或默认 composition。
+
+真实 no-I/O 纵向证据证明：Pi draft/实际 Tool evidence 可以经过原 `SkillReviewExecutor` 和唯一
+`ReviewHarness`，passing 后形成 typed output 与 SHA 校验 Artifact；成功 per-call Usage/event 也能
+组成合法 body-free RuntimeTrace。坏 citation、失败 Tool、process failure 和 missing Usage 均不能
+发布 Pi draft。
+
+但 Context token-unit 与 sidecar char guard 不等价；Pi 的 provider_aborted/protocol/process 等
+terminal 无法无损进入现有 Runtime Agent terminal；事件只能在 child 完成后批量投影，缺少真实
+live timing/stream。再加 94 packages、约 62 MB 安装树和本机约 0.4 秒每 run 新进程，局部采用没有
+显示维护收益。
+
+本地裁决为 `harness-compatible-but-runtime-gate-failed`，不准入 5F-4 真实 Provider slice。该结果
+不评价模型质量，也不提前决定 5F-5 的 partial-adopt/reject；公共 CI 成功前 5F-3 仍未正式关闭。
+聚焦 45、相邻 196、完整 `929 passed, 1 warning, 110 subtests passed`，外部 I/O 为 0。

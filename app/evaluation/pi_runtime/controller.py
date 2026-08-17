@@ -10,11 +10,13 @@ import subprocess
 import threading
 import time
 from collections.abc import Mapping
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Literal
 
 from pydantic import Field, ValidationError
 
+from app.agent.loop import ToolExecutionRecord
 from app.tools.registry import ToolRegistry
 from app.tools.runtime import ToolRuntime
 
@@ -53,6 +55,43 @@ class PiSidecarError(RuntimeError):
     def __init__(self, code: str) -> None:
         super().__init__(code)
         self.code = code
+
+
+@dataclass(frozen=True)
+class PiSidecarExecution:
+    """One result plus ephemeral Tool bodies for the Harness evaluation seam."""
+
+    result: PiSpikeRunResult
+    tool_records: tuple[ToolExecutionRecord, ...]
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.result, PiSpikeRunResult):
+            raise TypeError("result must be a PiSpikeRunResult")
+        if not all(
+            isinstance(record, ToolExecutionRecord)
+            for record in self.tool_records
+        ):
+            raise TypeError("tool_records must contain ToolExecutionRecord values")
+        if len(self.tool_records) != len(self.result.tool_executions):
+            raise ValueError("detailed Tool records must match public projections")
+        for record, projection in zip(
+            self.tool_records,
+            self.result.tool_executions,
+        ):
+            tool_result = record.result
+            if (
+                record.tool_name != projection.tool_name
+                or tool_result.tool_name != projection.tool_name
+                or tool_result.tool_version != projection.tool_version
+                or tool_result.success is not projection.success
+                or tool_result.attempts != projection.attempts
+                or tool_result.latency_ms != projection.latency_ms
+                or tool_result.cached is not projection.cached
+                or tool_result.fallback_used is not projection.fallback_used
+            ):
+                raise ValueError(
+                    "detailed Tool records do not match public projections"
+                )
 
 
 class _PiChildResult(PiContractModel):
@@ -126,6 +165,24 @@ class PiSidecarController:
         self._clock = clock
 
     def run(self, request: PiSpikeRunRequest) -> PiSpikeRunResult:
+        return self._run(request, tool_record_sink=None)
+
+    def run_with_tool_records(
+        self,
+        request: PiSpikeRunRequest,
+    ) -> PiSidecarExecution:
+        """Run once and retain Tool bodies only in this process-local object."""
+
+        records: list[ToolExecutionRecord] = []
+        result = self._run(request, tool_record_sink=records)
+        return PiSidecarExecution(result=result, tool_records=tuple(records))
+
+    def _run(
+        self,
+        request: PiSpikeRunRequest,
+        *,
+        tool_record_sink: list[ToolExecutionRecord] | None,
+    ) -> PiSpikeRunResult:
         started = self._clock()
         deadline = started + request.policy.timeout_s
         events: list[PiSafeEvent] = []
@@ -170,7 +227,7 @@ class PiSidecarController:
                         provider_attempts = max(provider_attempts, event.ordinal)
                     continue
                 if frame_type == "tool.request":
-                    projection = self._handle_tool_request(
+                    projection, record = self._handle_tool_request(
                         process,
                         frame,
                         request,
@@ -178,6 +235,8 @@ class PiSidecarController:
                         timeout_cap_s=remaining,
                     )
                     local_tools.append(projection)
+                    if tool_record_sink is not None:
+                        tool_record_sink.append(record)
                     continue
                 if frame_type == "protocol.error":
                     raise PiSidecarError(str(frame.get("error_code", "protocol_error")))
@@ -341,11 +400,14 @@ class PiSidecarController:
         expected_ordinal: int,
         *,
         timeout_cap_s: float,
-    ) -> PiToolExecutionProjection:
+    ) -> tuple[PiToolExecutionProjection, ToolExecutionRecord]:
         if frame.get("name") != "knowledge.search":
             raise PiSidecarError("tool_not_allowed")
         if frame.get("ordinal") != expected_ordinal:
             raise PiSidecarError("tool_ordinal_mismatch")
+        request_id = frame.get("request_id")
+        if not isinstance(request_id, str) or not request_id.strip():
+            raise PiSidecarError("invalid_tool_call_id")
         arguments = frame.get("arguments")
         if not isinstance(arguments, Mapping):
             raise PiSidecarError("invalid_tool_input")
@@ -380,11 +442,17 @@ class PiSidecarController:
             cached=result.cached,
             fallback_used=result.fallback_used,
         )
+        record = ToolExecutionRecord(
+            tool_call_id=request_id,
+            tool_name=result.tool_name,
+            arguments=dict(arguments),
+            result=result,
+        )
         payload = {
             "protocol_version": PROTOCOL_VERSION,
             "type": "tool.response",
             "run_id": request.run_id,
-            "request_id": frame.get("request_id"),
+            "request_id": request_id,
             "ordinal": expected_ordinal,
             "result": {
                 "success": result.success,
@@ -399,7 +467,7 @@ class PiSidecarController:
             },
         }
         self._write(process, encode_frame(payload))
-        return projection
+        return projection, record
 
     def _decode_child_frame(
         self,

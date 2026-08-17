@@ -19,11 +19,14 @@ from .models import (
 )
 from .protocol import PiProtocolError, decode_frame, encode_frame
 from .controller import (
+    PiSidecarExecution,
     PiSidecarController,
     PiSidecarError,
     build_safe_environment,
     default_sidecar_path,
 )
+from .harness_adapter import PiSkillDraftPreparer
+from .signal_projector import PiRuntimeSignalProjector, PiTraceParityError
 
 __all__ = [
     "MAX_FRAME_BYTES",
@@ -33,6 +36,7 @@ __all__ = [
     "PiInputMessage",
     "PiProtocolError",
     "PiSidecarController",
+    "PiSidecarExecution",
     "PiSidecarError",
     "PiSafeEvent",
     "PiScriptedAssistantStep",
@@ -42,6 +46,9 @@ __all__ = [
     "PiSpikePolicy",
     "PiSpikeRunRequest",
     "PiSpikeRunResult",
+    "PiSkillDraftPreparer",
+    "PiRuntimeSignalProjector",
+    "PiTraceParityError",
     "PiToolExecutionProjection",
     "build_runtime_usage",
     "decode_frame",

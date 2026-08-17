@@ -4,7 +4,7 @@ main_stage: 5
 substage_group: "5F"
 current_checkpoint: "5F-3-contract-security-harness-evaluation"
 status: in_progress
-pause_reason: "awaiting explicit user confirmation"
+pause_reason: null
 ---
 
 # RiftCoach 当前执行状态
@@ -58,8 +58,17 @@ pause_reason: "awaiting explicit user confirmation"
   聚焦 `35 passed`、相邻 `99 passed`、完整 `919 passed, 1 warning, 110 subtests passed` 与两套
   RAG/compileall/governance/安全/dry-run/diff 门禁通过；本地退出裁决为
   `pass-with-boundaries`；实现提交 `f62f078faca0d93494478011d2fe18cdeb85970f` 与 Actions run
-  `32022258177` 已完成 exact-SHA 公共验证，5F-2 正式关闭。5F-3 只交接准备状态，等待用户
-  明确继续。上一子阶段组
+  `32022258177` 已完成 exact-SHA 公共验证，5F-2 正式关闭；状态收尾提交
+  `1454f59b0e07d96defedfc093807a8ef03391839` 与 Actions run `32022784855` 也已完成
+  exact-SHA 公共验证。用户现已按 RQ-050 明确恢复 5F-3，当前只评估完整合同、安全、
+  ReviewHarness 唯一发布权、Trace/Usage/Artifact 语义与跨语言维护成本。评测专用 adapter、
+  process-local Tool evidence、per-call Usage/finish reason 和严格 Signal projector 已本地完成；
+  Pi 草稿通过现有 Harness/typed output/Artifact，成功路径可组成合法 body-free Trace。45 项聚焦、
+  196 项相邻与完整 `929 passed, 1 warning, 110 subtests passed` 通过；Context token-unit/char、
+  extended terminal 与 live timing 三项 hard gap 仍存在。本地裁决为
+  `harness-compatible-but-runtime-gate-failed`，不准入 5F-4；两套 RAG、compileall、Node
+  syntax/tree、Harness/secret/tracked-data、dry-run、governance 与 diff 门禁也已通过，当前只待
+  提交/推送与 exact-SHA 公共 CI。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -189,9 +198,10 @@ pause_reason: "awaiting explicit user confirmation"
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`5F-3-contract-security-harness-evaluation` 准备状态；等待用户明确继续后，才审查
-  完整合同、安全、ReviewHarness/Trace parity 和跨语言维护成本。本轮不读取 Key、不调用真实
-  Provider/Riot、不接主 Runtime/Harness/FastAPI。
+- 唯一下一步：提交并推送 `5F-3-contract-security-harness-evaluation`，等待 exact-SHA 公共 CI；
+  公共成功前仍为 in progress。5F-3 本地 hard Runtime parity gate 已失败，
+  因此不进入 5F-4、不读取 Key、不调用真实 Provider/Riot、不接主 `AgentRuntimeV1`、FastAPI 或
+  默认 composition；公共闭环后才把 `5F-5-adoption-decision-exit-review` 交给用户再次确认。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -252,7 +262,9 @@ pause_reason: "awaiting explicit user confirmation"
 | 5F-entry-design | 收缩 Pi-only 候选，冻结同切片对照、合同、安全、跨语言成本和 adopt/partial-adopt/reject 门槛 | 已完成 | ADR-0034 与 `docs/plans/2026-08-17-5f-pi-only-agent-runtime-adoption-design.md`；提交 `ce97975` / Actions `32013948784` exact-SHA 公共成功；无 Pi/Key/Provider I/O |
 | 5F-1-pi-source-license-contract-audit | 审计官方 Pi 源码/包版本、许可证、Runtime/Provider/Tool/event/state/abort/Usage 接缝 | 已完成 | 冻结 `earendil-works/pi v0.84.2` / `914cf147...`、MIT、Node `>=22.19.0`；完成合同/安全/依赖/sidecar 映射；裁决允许有条件进入 5F-2；`5901b09` / Actions `32016852979` exact-SHA 公共成功；Pi/Key/Provider I/O 为 0 |
 | 5F-2-offline-protocol-adapter-spike | 用同一 recent-form Context、Scripted StreamFn 和单一 `knowledge.search` 建立隔离 Python↔Node 协议对照 | 已完成 | exact lock/sidecar/controller、真实本地知识 Tool、35 focused/99 adjacent/完整 919 tests 与本地退出审查；`pass-with-boundaries`；`f62f078` / Actions `32022258177` exact-SHA 公共成功；不代表 Pi adopt |
-| 5F-3-contract-security-harness-evaluation | 对比完整 Tool/Context/deadline/structured output/error/terminal 与 ReviewHarness/Trace parity | 准备状态 | 5F-2 已交接；等待用户明确继续，尚未读取 Key、调用 Provider 或修改主 Runtime |
+| 5F-3-contract-security-harness-evaluation | 对比完整 Tool/Context/deadline/structured output/error/terminal 与 ReviewHarness/Trace parity | 本地实现/退出审查完成，待公共验证 | 45 focused、196 adjacent、完整 929/110 subtests；Harness/成功 Trace 可适配，但 Context/extended terminal/live timing 硬门失败；裁决不准入 5F-4 |
+| 5F-4-bounded-real-slice | 前置硬门通过且再次授权后，才运行同模型/同 Context/同 Harness 的真实切片 | 未准入 | 5F-3 本地 hard Runtime parity gate failed；真实模型调用不能修复这些合同差异 |
+| 5F-5-adoption-decision-exit-review | 根据全部证据裁决 adopt/partial-adopt/reject 并关闭 5F | 等待 5F-3 公共闭环 | 不提前裁决；5F-3 exact-SHA 成功后才成为唯一下一检查点 |
 
 ## 当前真实能力边界
 

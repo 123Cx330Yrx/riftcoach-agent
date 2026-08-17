@@ -2255,3 +2255,28 @@
   I/O 前停止。
 - Tool contract 预检原在 controller 的统一错误边界之外，schema drift 会抛异常而不是形成稳定结果；
   现已移入 fail-closed 边界，返回 body-free `tool_contract_mismatch`，Provider/Tool calls 均为 0。
+## 2026-08-17：5F-3 Contract/Security/Harness 评测发现
+
+- 现有 `SkillReviewExecutor` 的窄 draft preparer seam 足以让 Pi 成功文本降格为 `CoachDraft`，无需
+  修改 ReviewHarness；实际纵向测试确认 final Artifact producer 仍只属于 Harness。
+- 5F-2 public result 为安全起见不保存 Tool body，但 Harness 构造 `KnowledgeEvidence` 必须使用实际
+  chunks。controller 因此新增单次进程内 `PiSidecarExecution.tool_records`；它与 body-free
+  projection 逐项核对，不写入 result/event/Trace。
+- RuntimeTrace 的 Usage 由 per-call Provider signals 推导，旧 Pi event 只有 aggregate completeness，
+  不能重建 Trace。safe event 增加数字型 input/output 和 finish reason 后，成功 Trace 的 Recorder
+  Usage 与 Pi RuntimeUsage 可以逐字段一致；missing Usage 仍显式 unknown/null，不能归零。
+- Context parity 不成立：Python 使用 `DeterministicContextSizer` token-unit，sidecar 使用 Pi state 的
+  JSON char length。现有 Compiler 先验门仍保留，但 Node guard 只能标记
+  `approximate_char_guard`；复制 sizer 会新增跨语言漂移维护面。
+- terminal parity 不完整：现有 Runtime Agent terminal 能表达 final/预算/timeout/provider_error，不能
+  表达 provider_aborted/protocol_error/process_error 等 Pi 结果。严格 projector 对这些返回
+  `unsupported_agent_terminal`，不近似映射。
+- safe event 目前在 child 完成后批量投影到 observer；顺序和 aggregate Trace 合法，但逐事件时间不是
+  原始发生时间，也没有 5E `stream()` 的实时交付语义。改成在线 bridge 将重新引入 fail-fast、背压、
+  cancel 和双终态问题。
+- 评测专用 adapter 还必须重建完整 Assistant/Tool transcript、拒绝失败知识 Tool、坏 citation 和
+  incomplete Usage；这进一步说明 Pi 不是替换一个 Python loop 类即可。
+- 45 项 Pi 聚焦、196 项相邻和完整 `929 passed, 1 warning, 110 subtests passed` 已本地通过；
+  Scripted/Fake/本地 RAG 是全部运行输入，外部 Provider/Riot/Key/held-out I/O 为 0。
+- 本地裁决为 `harness-compatible-but-runtime-gate-failed`：5F-4 无信息增益且不准入；需待公共 CI
+  后由 5F-5 决定保留设计思想还是删除隔离 adapter。
