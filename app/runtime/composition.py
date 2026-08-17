@@ -6,10 +6,50 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from app.evaluation.coach_report import (
+    EVALUATOR_SYSTEM_PROMPT,
+    REVISER_SYSTEM_PROMPT,
+    build_fact_pack,
+    build_revision_prompt,
+    validate_revised_report,
+)
+from app.harness.adapters import ChatCoachReviser, SecureChatEvaluationAdapter
 from app.prompt_program import PromptProgramCatalog, PromptProgramResolver
 from app.skills.catalog import SkillCatalog
 
-from .runtime import AgentRuntimeV1, RuntimeExecutionFactory
+from .runtime import (
+    AgentRuntimeV1,
+    RuntimeCompositionError,
+    RuntimeExecutionFactory,
+)
+
+
+def build_secure_product_execution_factory(
+    *,
+    knowledge_provider: Any,
+) -> RuntimeExecutionFactory:
+    """Bind the verified product Program to its actual Harness adapters.
+
+    Constructing this factory is local and side-effect free: provider calls
+    can only happen later when AgentRuntime executes a request.
+    """
+
+    if knowledge_provider is None:
+        raise RuntimeCompositionError("knowledge_provider is required")
+    return RuntimeExecutionFactory(
+        knowledge_provider=knowledge_provider,
+        evaluator_factory=lambda runtime: SecureChatEvaluationAdapter(
+            runtime=runtime,
+            system_prompt=EVALUATOR_SYSTEM_PROMPT,
+            fact_pack_builder=build_fact_pack,
+        ),
+        reviser_factory=lambda runtime: ChatCoachReviser(
+            runtime=runtime,
+            system_prompt=REVISER_SYSTEM_PROMPT,
+            prompt_builder=build_revision_prompt,
+            validator=validate_revised_report,
+        ),
+    )
 
 
 @dataclass(frozen=True)
@@ -53,10 +93,20 @@ class RuntimeCompositionRoot:
         *,
         runs_root: str | Path,
         provider: Any,
-        execution_factory: RuntimeExecutionFactory,
+        execution_factory: RuntimeExecutionFactory | None = None,
+        knowledge_provider: Any | None = None,
         context_builder: Any | None = None,
     ) -> AgentRuntimeV1:
-        """Build Runtime with the verified Program resolver wired in."""
+        """Build Runtime with verified Program and secure product defaults."""
+
+        if execution_factory is None:
+            execution_factory = build_secure_product_execution_factory(
+                knowledge_provider=knowledge_provider
+            )
+        elif knowledge_provider is not None:
+            raise RuntimeCompositionError(
+                "knowledge_provider cannot accompany an explicit execution_factory"
+            )
 
         return AgentRuntimeV1(
             runs_root=runs_root,
@@ -68,4 +118,7 @@ class RuntimeCompositionRoot:
         )
 
 
-__all__ = ["RuntimeCompositionRoot"]
+__all__ = [
+    "RuntimeCompositionRoot",
+    "build_secure_product_execution_factory",
+]

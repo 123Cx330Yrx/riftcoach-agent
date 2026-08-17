@@ -47,6 +47,7 @@
 | RQ-040 | 2026-08-17 | 生效，解除 RQ-039 的当前暂停 | 用户再次明确“继续下一步”，只恢复 canonical 的 `5P-entry-design` | 先完整审计并设计 5P Prompt Program V1 与早期产品切片；本轮不自动实现 FastAPI、不读取 Key、不调用 Riot/Provider、不进入 5F。设计、治理和 exact-SHA 公共验证完成后，唯一下一步为 5P-1 typed product/compiler。 |
 | RQ-041 | 2026-08-17 | 已执行 | 用户再次明确“继续”，只授权 canonical 的 `5P-1-product-contract-compiler` | 完成严格产品 DTO、typed Skill selection、Artifact binding 与 Manifest-derived Runtime policy 的教学、TDD 和公开验证；不实现 Prompt Program/FastAPI、不读取 Key、不调用 Riot/Provider。5P-1 闭环后只交接到 5P-2，等待下一次明确继续。 |
 | RQ-042 | 2026-08-17 | 已执行 | 用户再次明确“继续”，授权 canonical 的 `5P-2-prompt-program-runtime-composition` | 只实现版本化 Prompt Program、component fingerprint/drift gate、verified Runtime identity 与薄 composition root；不安装 FastAPI、不实现 Application Service、不读取 Key、不调用 Riot/Provider、不进入 5P-3 或 5F。完成本轮后必须同步持久状态并等待 exact-SHA 公共验证结果。 |
+| RQ-043 | 2026-08-17 | 生效 | 用户再次明确“继续下一步”，授权 canonical 的 `5P-3-domain-application-service` | 只提升 Summary/Report domain services、建立 RecentReviewApplicationService 与安全错误映射，并允许首个正式消费者对 5P-2 secure execution factory 做窄幅向后深化；不安装 FastAPI、不实现 receipt/query、不读取 Key、不调用 Riot/Provider、不进入 5P-4 或 5F。 |
 
 ## 新条目格式
 

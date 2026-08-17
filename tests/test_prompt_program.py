@@ -9,14 +9,47 @@ from pydantic import ValidationError
 from app.evaluation.prompt_context_identity import (
     build_component_fingerprints,
 )
+from app.evaluation.coach_report import (
+    EVALUATOR_SYSTEM_PROMPT,
+    REVISER_SYSTEM_PROMPT,
+    build_fact_pack,
+    build_revision_prompt,
+    validate_revised_report,
+)
+from app.harness.adapters import ChatCoachReviser, SecureChatEvaluationAdapter
+from app.providers.capabilities import ProviderCapabilities
+from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.prompt_program import (
     PromptProgramCatalog,
     PromptProgramCatalogError,
     PromptProgramManifest,
     PromptProgramResolver,
 )
-from app.runtime.composition import RuntimeCompositionRoot
+from app.runtime.composition import (
+    RuntimeCompositionRoot,
+    build_secure_product_execution_factory,
+)
+from app.runtime.observed_provider import ObservedLLMProvider
+from app.runtime.runtime import RuntimeCompositionError
 from app.skills.catalog import SkillCatalog
+
+
+class NoIoProvider:
+    provider_name = "no-io-provider"
+    model_name = "no-io-model"
+    capabilities = ProviderCapabilities(
+        text_chat=True,
+        tool_calling=True,
+        structured_output=True,
+    )
+
+    def chat(self, request):
+        raise AssertionError("factory construction must not call the Provider")
+
+
+class NoopObserver:
+    def observe(self, signal) -> None:
+        return None
 
 
 def _payload(*, evaluation_version: str = "1.1.0") -> dict:
@@ -124,6 +157,67 @@ def test_checked_in_program_and_composition_root_are_verified() -> None:
 
     assert verified.program_id == "recent-form-review-coach"
     assert root.skill_catalog.get("recent-form-review") is not None
+
+
+def test_secure_product_factory_builds_the_v11_evaluator_and_bounded_reviser(
+    tmp_path: Path,
+) -> None:
+    knowledge = LocalHybridKnowledgeProvider.from_directory(
+        Path("data/rag_docs")
+    )
+    factory = build_secure_product_execution_factory(
+        knowledge_provider=knowledge
+    )
+    observer = NoopObserver()
+    observed = ObservedLLMProvider(
+        delegate=NoIoProvider(),
+        observer=observer,
+    )
+
+    bundle = factory.build(provider=observed, observer=observer)
+
+    assert type(bundle.evaluator) is SecureChatEvaluationAdapter
+    assert bundle.evaluator.system_prompt == EVALUATOR_SYSTEM_PROMPT
+    assert bundle.evaluator.fact_pack_builder is build_fact_pack
+    assert type(bundle.reviser) is ChatCoachReviser
+    assert bundle.reviser.system_prompt == REVISER_SYSTEM_PROMPT
+    assert bundle.reviser.prompt_builder is build_revision_prompt
+    assert bundle.reviser.validator is validate_revised_report
+
+
+def test_product_composition_defaults_to_secure_factory_without_io(
+    tmp_path: Path,
+) -> None:
+    root = RuntimeCompositionRoot.from_directories(
+        skills_root="skills",
+        prompt_programs_root="prompt_programs",
+    )
+    knowledge = LocalHybridKnowledgeProvider.from_directory(
+        Path("data/rag_docs")
+    )
+
+    runtime = root.build_runtime(
+        runs_root=tmp_path,
+        provider=NoIoProvider(),
+        knowledge_provider=knowledge,
+    )
+    observer = NoopObserver()
+    bundle = runtime._execution_factory.build(
+        provider=ObservedLLMProvider(
+            delegate=NoIoProvider(),
+            observer=observer,
+        ),
+        observer=observer,
+    )
+
+    assert type(bundle.evaluator) is SecureChatEvaluationAdapter
+    assert type(bundle.reviser) is ChatCoachReviser
+
+    with pytest.raises(RuntimeCompositionError, match="knowledge_provider"):
+        root.build_runtime(
+            runs_root=tmp_path,
+            provider=NoIoProvider(),
+        )
 
 
 @pytest.mark.parametrize(

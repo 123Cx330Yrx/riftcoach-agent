@@ -685,3 +685,25 @@ governance 和 diff check 全部通过。本批 Key/Riot/Provider/held-out I/O �
 实现提交最终 exact SHA `0a9651f4e305616626c58ea28e2c300a491f2a3b` 已由 GitHub Actions
 run `31988837293` 完成公开验证；5P-2 正式关闭。canonical 只交接到
 `5P-3-domain-application-service` 准备状态，不自动实现 Application Service 或 FastAPI。
+
+## 5P-3 Domain/Application Service 本地裁决（2026-08-17）
+
+5P-3 采用模块化单体中的明确三层，而不是让未来 HTTP handler 串 CLI：`app.lol` 负责
+Summary 与确定性报告领域逻辑，`app.product` 负责一次近期复盘用例的顺序和安全错误，
+`app.runtime` 继续独占 Agent/Harness/Trace/发布。CLI 已改为复用 app-level domain functions，
+同一 fixture 的报告保持逐字节一致。
+
+Application Service 只在 Summary Schema 合法且至少一场比赛计入汇总后调用 compiler，因此
+上游、零比赛和 renderer 失败不会生成 run_id。Runtime 一旦被调用，结果还要交叉核对服务器
+run_id、publication、typed output status 和 Trace reference；失败或不一致只返回 body-free
+`review_runtime_failed`。上游异常统一映射 allowlisted code，只有受控 Retry-After、run_id 与
+terminal reason 可进入公开错误对象。
+
+5P-2 的 Prompt Program 漂移门证明了声明身份，但原 composition 允许任意 factory。本轮新增
+secure product 默认 factory，实际构造 `SecureChatEvaluationAdapter`、`ChatCoachReviser` 和
+revision validator；测试专用 factory 仍须显式注入。该深化补充首个消费者证据，不改写
+5P-2 已经公开的历史结论。
+
+本地证据为 Domain 7、Application 20、Prompt Program 10、相邻 263、完整
+`830 passed, 110 subtests passed`，两套 RAG 与全部门禁通过。本批外部 I/O 为 0，尚不证明真实
+Riot/Provider 质量、HTTP、receipt、幂等、事务、并发或恢复；5P-3 仍待 exact-SHA 公共 CI。

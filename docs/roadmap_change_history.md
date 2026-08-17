@@ -1423,3 +1423,18 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   drift gate 与 Runtime provenance，不证明 Prompt/模型质量或 API 产品已完成。
 - `CURRENT`：canonical 唯一下一检查点切换为 `5P-3-domain-application-service`；按 RQ-042
   范围闭环等待用户再次明确继续，不自动实现 5P-3/5P-4/5F。
+
+### 2026-08-17：5P-3 Domain/Application Service 本地实现
+
+- `SCOPE`：RQ-043 只授权提升 Summary/Report domain services、建立 Application Service/安全
+  错误映射，并允许 secure execution factory 的相邻深化；未安装 FastAPI、未实现 receipt/query。
+- `DOMAIN`：Summary 与确定性 Markdown 纯业务逻辑已提升到 `app.lol`；CLI 只保留参数、真实依赖、
+  文件与打印。短局、timeline unavailable 和报告字节兼容均有直接测试。
+- `APPLICATION`：严格顺序固定为 Summary → Schema/有效比赛 → deterministic report → compiler/
+  run_id → Runtime；上游/配置/Runtime 失败只投影固定错误码和受控元数据，不保存正文、URL、Key 或路径。
+- `COMPOSITION`：产品默认 factory 真实使用 Secure Evaluation 1.1、bounded reviser 与 validator；
+  显式测试 factory 保持可注入，Program identity 与实际执行组件已有类型证据。
+- `VERIFIED-LOCAL`：Domain 7、Application 20、Prompt Program 10、相邻纵向 263、完整
+  `830 passed, 110 subtests passed`；两套 RAG、compileall、治理、安全边界、dry-run 和 diff 通过。
+- `NO-IO`：Key/Riot/Provider/held-out I/O 为 0；Fake upstream/Runtime 只证明控制流，不证明模型质量。
+- `CURRENT`：5P-3 仍进行中，只待提交、推送与 exact-SHA 公共 CI；成功前不交接或实现 5P-4。

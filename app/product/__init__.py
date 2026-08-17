@@ -5,9 +5,21 @@ from .recent_review import (
     RecentReviewProductRequest,
     RecentReviewRuntimeRequestCompiler,
 )
+from .recent_review_service import (
+    RecentReviewApplicationError,
+    RecentReviewApplicationResult,
+    RecentReviewApplicationService,
+    RecentReviewRuntime,
+    RecentReviewSummaryBuilder,
+)
 
 __all__ = [
     "ProductRequestCompilationError",
+    "RecentReviewApplicationError",
+    "RecentReviewApplicationResult",
+    "RecentReviewApplicationService",
     "RecentReviewProductRequest",
+    "RecentReviewRuntime",
     "RecentReviewRuntimeRequestCompiler",
+    "RecentReviewSummaryBuilder",
 ]

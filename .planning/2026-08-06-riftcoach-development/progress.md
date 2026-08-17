@@ -1914,3 +1914,29 @@
   已获得本地和公开证据；这不提升真实 Provider 领域质量，也不表示 API 产品完成。
 - canonical 已只交接到 `5P-3-domain-application-service`，等待用户再次明确继续；本轮不实现
   Domain/Application Service、receipt/query、FastAPI 或 5F。
+
+## 2026-08-17：开始 5P-3 Domain/Application Service
+
+- 用户明确“继续下一步”，本轮只恢复 canonical `5P-3-domain-application-service`。
+- 按 `AGENTS.md` 恢复 canonical、活动计划、需求/路线/能力矩阵并运行治理预检；起始
+  `HEAD == origin/main == 866820e4d78a74f5e9a9f13aa515bfce3afc7f02`，工作树干净。
+- 已完成初学者问题/原理/范围/数据流/测试/限制讲解，并新增 TDD 实施计划
+  `docs/plans/2026-08-17-5p3-domain-application-service-implementation.md`。
+- 审计发现 5P-2 已验证 Program identity，但 product root 仍允许任意 execution factory；5P-3
+  作为首个正式消费者将用既有 Secure Evaluation 1.1 合同做窄幅向后深化并独立测试，不改写
+  5P-2 历史证据。
+- 当前尚未写 5P-3 产品代码或测试；Key/Riot/Provider/held-out I/O 为 0，不进入 5P-4/FastAPI。
+
+## 2026-08-17：5P-3 本地实现与门禁完成
+
+- 先建立 Domain Service 导入红灯，再提升 Summary Builder/Report Renderer 并让两个 CLI 复用；
+  Domain/Stage 1 聚焦 `7 passed`，报告输出逐字节一致。
+- Application Service 先以缺模块红灯冻结 published/degraded/rejected、顺序、上游错误、零比赛、
+  Schema/compiler/Prompt drift、Runtime failed/不一致和脱敏边界；实现后 `20 passed`。
+- secure execution factory 先以缺符号红灯冻结实际 Evaluator/Reviser 类型；实现后 Prompt Program
+  聚焦 `10 passed`，产品默认不再依赖任意外部 factory，显式测试 factory 兼容保留。
+- 5P 相邻纵向回归 `263 passed`；完整回归 `830 passed, 110 subtests passed`；两套 RAG、
+  compileall、治理测试、Harness SDK boundary、tracked secret/run-data、Harness dry-run、governance
+  和 diff check 均通过。
+- 本批没有安装 FastAPI、写 receipt/query、读取 Key、调用 Riot/Provider 或运行 held-out；当前
+  5P-3 仍为 in_progress，只待实现提交、推送与 exact-SHA 公共 CI。

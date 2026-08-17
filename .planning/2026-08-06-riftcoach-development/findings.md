@@ -1976,3 +1976,34 @@
   `PromptProgramResolver`。
 - `program_sha256` 绑定的是 manifest 元数据和组件摘要的规范 JSON；它能检测 manifest/组件摘要
   不一致，但不声称能抵御拥有本机写权限者同时改源码、manifest 和 digest 的联合篡改。
+
+## 2026-08-17：5P-3 入口发现
+
+- `scripts/build_player_summary.py` 已支持 client/ddragon 注入，但领域函数仍由 CLI 文件拥有；
+  `scripts/generate_markdown_report.py` 的 renderer 也是纯业务逻辑却位于脚本。未来 HTTP 若直接导入
+  两个脚本，会让 adapter 依赖 CLI 并复制异常/路径规则，因此应先提升到 `app.lol`。
+- Application Service 不等于 Agent Runtime：前者组织一次产品用例的上游数据、确定性报告、
+  compiler 和 Runtime 顺序；后者只管理已经验证的 Skill 执行、工具、Harness、Trace 与发布。
+- run_id 由 5P-1 compiler 在 Summary 和 deterministic report 成功后生成，因此账号/上游/零比赛
+  失败不能伪造一个 Runtime run；Runtime 一旦开始，失败才可携带安全 run_id/terminal reason。
+- Summary 内部 `failed_matches`/`timeline_error` 目前可含本地 `str(error)`，但 Application result/
+  error 绝不能透传这些字段；5P-3 只暴露 allowlisted code 和受控元数据。
+- 5P-2 `RuntimeCompositionRoot` 证明 Program manifest/当前组件一致，却接受任意调用者提供的
+  `RuntimeExecutionFactory`；这不足以单独证明执行路径实际采用 `SecureChatEvaluationAdapter`。
+  首个产品消费者应提供 secure factory 默认值并测试实际 evaluator/reviser 类型。
+
+## 2026-08-17：5P-3 本地实现发现
+
+- Summary/确定性 Report 原逻辑可逐字节提升到 `app.lol`，CLI 只保留参数、真实依赖、文件和
+  打印；短局排除、timeline unavailable 与旧报告字节均由直接测试固定，没有业务语义漂移。
+- Application Service 的唯一正确顺序是 Summary → Schema/有效比赛门 → deterministic report →
+  compiler/run_id → Runtime。这样账号、上游、坏 Schema 和零比赛失败都不会伪造 Runtime run。
+- 上游异常可能携带 URL、Key、响应正文和本机路径；应用错误只保存固定 code、可空安全 run_id、
+  allowlisted terminal reason 和 1-300 秒数字 Retry-After。畸形 match row 的 Python 异常也被
+  额外红灯证明并收敛为 `service_configuration_invalid`。
+- completed Runtime 结果仍需在应用边界交叉检查 run_id、publication、typed output status 与
+  Trace reference；failed/不一致结果只形成 `review_runtime_failed`，不返回草稿或原始异常。
+- secure product factory 真实构造 `SecureChatEvaluationAdapter`、`ChatCoachReviser` 与 revision
+  validator；这补上 5P-2 Program identity 与实际执行 factory 的相邻缺口，不改写 5P-2 历史证据。
+- 本地全量为 `830 passed, 110 subtests passed`；RAG/compileall/Harness/secret/dry-run/governance/
+  diff 门禁通过。全部使用 fixture/Fake，Key/Riot/Provider/held-out I/O 为 0，不能评价模型质量。

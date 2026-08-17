@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 8 - `5P-3-domain-application-service` 准备状态
+Phase 8 - `5P-3-domain-application-service` local implementation complete; public CI pending
 
 ## Phases
 
@@ -203,7 +203,7 @@ Phase 8 - `5P-3-domain-application-service` 准备状态
 ### Phase 8 - 5P Prompt Program V1 与早期产品纵向切片
 
 - Status: tracking
-- `5P-entry-design`、5P-1 与 5P-2 已公开完成；当前准备 5P-3 Domain/Application Service；
+- `5P-entry-design`、5P-1 与 5P-2 已公开完成；5P-3 已本地完成并等待 exact-SHA 公共 CI；
 - 入口审计确认 5P 同时承担 Prompt Program V1 与早期产品切片，不能缩成单纯 FastAPI；
 - ADR-0032 选择版本化 Prompt Program/Catalog 和 drift gate，复用既有 component fingerprint；
 - ADR-0033 选择薄 FastAPI Adapter + Application Service + 现有 AgentRuntime/Harness；
@@ -214,9 +214,9 @@ Phase 8 - `5P-3-domain-application-service` 准备状态
 
 ## Next Step
 
-`5P-3-domain-application-service / ready`：5P-2 已由 `0a9651f` / Actions `31988837293`
-完成 exact-SHA 公共验证；等待用户再次明确继续，随后只提升 Summary/Report domain service 并组合
-RecentReviewApplicationService，不安装 FastAPI、不进入 5P-4。
+`5P-3-domain-application-service / public verification`：提交并推送已通过本地完整门禁的
+Domain/Application Service 与 secure execution factory，实现 SHA 的 GitHub Actions 成功后
+才关闭 5P-3 并只交接到 5P-4；不安装 FastAPI、不实现 receipt/query、不进入 5P-4。
 
 ## Decisions Made
 
@@ -622,11 +622,13 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
 ### 5P-3 Domain Pipeline Promotion & Application Service
 
 - Status: in_progress
-- 当前仅表示 5P-2 已公开闭环、canonical 准备从这里恢复，尚未开始实现；
-- 只提升现有 Summary/Report 逻辑为 domain service，并组合 5P-1 compiler、5P-2 verified
-  composition 与 `AgentRuntimeV1.run()`；
+- 用户已明确继续；入口审计、教学说明、TDD、Domain/Application Service 和 secure product
+  execution factory 已本地完成；
+- Summary/Report 已提升为 app-level domain service；Application Service 严格组合 5P-1
+  compiler、5P-2 verified composition 与 `AgentRuntimeV1.run()`；
 - 不安装 FastAPI、不实现 receipt/query、不读取 Key、不调用 Riot/Provider、不进入 5P-4 或 5F；
-- 等待用户下一次明确“继续”。
+- 领域/应用/组合聚焦与相邻回归通过，完整回归 `830 passed, 110 subtests passed`，两套 RAG、
+  compileall、Harness/secret、dry-run、governance 和 diff 门禁通过；当前只待提交和 exact-SHA CI。
 
 本批错误日志：
 
