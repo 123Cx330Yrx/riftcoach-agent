@@ -809,3 +809,19 @@ Harness 指标、成本和 adopt/partial-adopt/reject 门槛；不安装 Pi、�
 `32013948784` 完成 exact-SHA 公共验证；入口设计正式关闭。canonical 只交接到
 `5F-1-pi-source-license-contract-audit` 准备状态，等待用户再次明确继续；本轮不自动安装 Pi、
 读取 Key、调用 Provider 或实现 adapter。
+
+## 5F-1 官方 Pi 审计裁决（2026-08-17）
+
+用户按 RQ-048 恢复 5F-1 后，官方身份已从历史 `badlogic/pi-mono` 迁移信息校正为
+`earendil-works/pi`，实验候选冻结在 release `v0.84.2` / commit
+`914cf1472e715297caa30db4b9535d534a9eb718`。`pi-agent-core` 与 `pi-ai` 均为 MIT、Node
+`>=22.19.0`；本机 Node 版本满足要求。许可证不阻断隔离实验。
+
+本地裁决为“允许有条件进入 5F-2”，不是采用 Pi。5F-2 只允许低层 `Agent`、Scripted StreamFn、
+一个 `knowledge.search` Tool、显式 sequential、版本化限长 JSONL 与 Python 父进程 deadline/kill；
+不得使用 Coding Agent 默认文件/命令工具、ResourceLoader、Extensions、Session/Auth/ModelRuntime。
+
+整批 Tool 原子预检、duplicate/调用/Context 预算、Usage completeness、安全 event projection、
+Runtime Trace 与 ReviewHarness 发布权继续由 RiftCoach adapter/外层强制。任一强制项无法保持，
+5F 应给出 `partial-adopt` 或 `reject`，不能扩大 Pi 权限补救。完整证据见
+`docs/plans/2026-08-17-5f1-pi-source-license-contract-audit.md`。

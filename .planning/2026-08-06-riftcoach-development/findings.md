@@ -2132,3 +2132,54 @@
   实验入口设计的公共闭环，不是 Pi 采用结论。
 - canonical 下一步为 `5F-1-pi-source-license-contract-audit`，等待用户明确继续；该步必须先审计
   官方 TypeScript 源码/包与许可证，再决定是否值得进行离线 adapter spike。
+
+## 2026-08-17：5F-1 官方 Pi 身份与低层合同初审
+
+- 用户再次明确“继续”，只授权 canonical 的 `5F-1-pi-source-license-contract-audit`；本轮仍不
+  安装 Node/Pi、不写 adapter、不读取 Key、不调用真实 Provider。
+- 旧入口材料中的 `https://github.com/badlogic/pi-mono` 当前会重定向到官方
+  `https://github.com/earendil-works/pi`。审计入口先记录当时 `main`
+  `c7c763f5c48736fa00cdcf0bcbfcae5cbc585e7c`，随后用 npm registry 的 `gitHead` 与 tag 复核，
+  最终候选身份冻结为 `v0.84.2` / `914cf1472e715297caa30db4b9535d534a9eb718`，而不是漂移的 `main`。
+- 冻结 release 的 `@earendil-works/pi-agent-core` 与 `@earendil-works/pi-ai` 均为 `0.84.2`；
+  package 与仓库许可证为 MIT，Node engine 为 `>=22.19.0`。旧 `@mariozechner/*` 包名只能作为
+  历史资料，不能写入新的实验合同。
+- 低层 Agent Core 与当前采用问题相关：`AgentContext` 明确携带 system prompt/messages/tools；
+  Tool 使用 TypeBox schema 并在执行前验证参数；事件覆盖 agent/turn/message/tool 生命周期；
+  AssistantMessage 和 Tool result 均有 Usage 接缝；`AbortSignal` 贯穿 Provider、hook 和 Tool。
+- Pi 的 Tool 列表可以作为 allowlist，未知 Tool 会转成 error result，`beforeToolCall` 还能 block；
+  但默认 tool batch 为 parallel，RiftCoach 首个 spike 必须显式选择 sequential，避免重现既有
+  parallel tool-call 语义差异。
+- 暂未发现 Agent Core 自带 RiftCoach 等价的总 Provider/Tool 调用次数、总 Token/Context ceiling、
+  单 run deadline 或质量发布门。`shouldStopAfterTurn` 与 `AbortSignal` 是可实现这些政策的接缝，
+  不是已经存在的产品策略；预算、deadline、Trace 和 ReviewHarness 仍必须由 RiftCoach adapter/
+  外层强制。
+- 官方 README 明确 Pi 默认继承启动进程权限且没有内建 filesystem/process/network/credential
+  权限系统。5F 不能引入 coding-agent 默认 tools/extensions；只允许低层 Agent Core + 一个显式
+  `knowledge.search` adapter，并由父进程/IPC 白名单守住权限边界。
+- Pi 默认 parallel 且按调用逐个准备/执行，不具备当前 RiftCoach 的“整批 Tool 数量/allowlist/
+  duplicate 零副作用预检”；仅设 sequential 或 `beforeToolCall` 仍不完全等价，5F-2 必须在整个
+  AssistantMessage 进入 Tool executor 前预检 ToolCall batch。
+- Pi 的 `Agent.handleRunFailure()` 会用合成 `EMPTY_USAGE` 构造 error/aborted assistant message；
+  这不能区分“未发请求”和“已发请求但 Usage 缺失”。5F-2 必须独立记录 attempt/response，并映射
+  RiftCoach 的 complete/partial/unknown，而不能把合成零当成 complete zero。
+- Pi Tool events 携带 raw arguments/result，不能原样进入 RiftCoach body-free Trace；事件只允许
+  投影 tool/provider identity、ordinal、allowlisted error、Usage completeness 与 terminal。
+- `pi-agent-core` 依赖 `pi-ai`，而 `pi-ai` 即使在 Scripted Provider 实验中也会带入 Anthropic、
+  OpenAI、Google、AWS 等 SDK 依赖。5F-2 必须用 release tag、official-registry integrity、exact
+  lockfile、`npm ci --ignore-scripts` 记录真实安装/冷启动成本；本机 npm 默认 registry 为
+  `npmmirror`，不能把镜像地址冒充官方包身份。
+- 本机 Node `v24.18.0` 的 `--permission` 可限制 write/child-process/worker/addon 等，但本机帮助
+  没有 `--allow-net`；不能用较新 Node 文档反推当前进程已硬断网。它只能作为 defense-in-depth，
+  no-I/O 还需依赖无 Key、Scripted StreamFn、不构造真实 Provider，并在需要硬隔离时使用 OS/容器。
+  Node 官方也明确 Permission Model 不是抵御恶意代码的沙箱。
+- 只读源码检索曾因 PowerShell 插值字符串中的 `$path:` 解析失败；已改用 `${path}`。第二次组合
+  检索输出过大并被截断，因此后续改为按合同主题和精确行窗分批读取，不把截断输出当完整证据。
+- 比较 release/main 文件摘要的首个 PowerShell pipeline 因 `foreach` 后直接管道出现空管道解析错误；
+  改为先累计 `$out` 再输出。审计本地源码的组合行窗函数又因单区间数组被 PowerShell 展平而对
+  `[Math]::Min` 传入错误类型；后续改用 `rg -C`/精确文件行窗，已取得所需合同证据。
+- 首次准备提交时，Codex 会话权限只允许写入 C 盘参考工作区，Git 因无法在 D 盘活动仓库创建
+  `.git/index.lock` 而停止；已确认没有残留 lock 或并发 Git 进程。用户恢复完整权限后再继续，
+  没有绕过仓库权限或复制工作树。
+- 权限恢复后的首次活动计划恢复把 `.active_plan` 的结尾换行直接拼入路径，导致三次只读
+  `Get-Content` 找不到文件；已改为先对 pointer 使用 `.Trim()`，随后成功读取真实活动计划。

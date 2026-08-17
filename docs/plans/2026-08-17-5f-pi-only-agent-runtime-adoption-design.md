@@ -189,3 +189,12 @@ tracked-data boundary 和 Harness dry-run 全部通过。本轮没有安装 Pi�
 
 因此 `5F-entry-design` 正式完成，唯一下一检查点交接为
 `5F-1-pi-source-license-contract-audit`，等待用户再次明确继续。
+
+## 12. 5F-1 本地审计结果
+
+用户已按 RQ-048 恢复 5F-1。官方 Pi 身份、MIT 许可证、Node requirement 与 Agent/Provider/
+Tool/event/state/abort/Usage 接缝已完成本地审计，详细证据见
+`docs/plans/2026-08-17-5f1-pi-source-license-contract-audit.md`。
+
+本地裁决为允许有条件进入 5F-2 的隔离 no-I/O spike；未安装 Pi、未写 adapter、未读取 Key、
+未调用 Provider，也没有改变主 Runtime。5F-1 仍待 exact-SHA 公共验证，成功前不交接 5F-2。

@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 8 - `5F-1-pi-source-license-contract-audit` is the next preparation checkpoint after completed
-Pi-only `5F-entry-design`
+Phase 8 - `5F-1-pi-source-license-contract-audit` is in progress; the local audit is complete and
+awaits exact-SHA public verification
 
 ## Phases
 
@@ -206,10 +206,14 @@ Pi-only `5F-entry-design`
 - Status: in_progress
 - 5P Prompt Program V1 与早期产品纵向切片已完成；5P-6 退出审查以
   `8c8acc6` / Actions `32010604551` 完成 exact-SHA 公共闭环。
-- `5F-entry-design` 已由 `ce97975` / Actions `32013948784` 完成 exact-SHA 公共闭环；canonical
-  只交接到 `5F-1-pi-source-license-contract-audit` 准备状态，等待用户明确继续。
-- 下一轮才审计官方 Pi 的源码/包版本、许可证、Agent Core、Provider、Tool、event/state、
-  abort/timeout 和 Usage 接缝；本计划不自动安装 Pi 或实现 adapter。
+- `5F-entry-design` 已由 `ce97975` / Actions `32013948784` 完成 exact-SHA 公共闭环；用户已按
+  RQ-048 恢复 `5F-1-pi-source-license-contract-audit`。
+- 本地审计已冻结官方 `earendil-works/pi` release `v0.84.2` / commit `914cf147...`、两个候选包、
+  MIT 许可证和 Node `>=22.19.0`，并完成 Agent/Provider/Tool/event/state/abort/Usage 映射。
+- 本地裁决为“允许有条件进入 5F-2”：只允许低层 Agent Core、Scripted StreamFn、单一
+  `knowledge.search`、sequential 和安全 JSONL sidecar；不允许 coding-agent 默认工具/Session/
+  ResourceLoader，且必须补整批 Tool 预检、Usage completeness、deadline/kill 和 body-free event
+  projection。本阶段仍未安装 Pi 或实现 adapter。
 - `5P-entry-design` 与 5P-1 至 5P-6 已公开完成；
 - 5P-4 immutable receipt/store、strict query 与 Application receipt 接缝已由 `932a863` / Actions
   `32002994441` 完成 exact-SHA 公共验证；5P-5 薄 Adapter 与 no-I/O 纵向切片又由 `6d1e5b0` /
@@ -229,8 +233,9 @@ Pi-only `5F-entry-design`
 
 ## Next Step
 
-`5F-1-pi-source-license-contract-audit`：等待用户再次明确继续后，进行官方 Pi source/license/
-contract audit；本轮不安装 Pi、不写 adapter、不读取 Key、不调用 Provider 或进入阶段 6。
+`5F-1-pi-source-license-contract-audit`：完成本地门禁、提交/推送并验证 exact-SHA 公共 CI；成功
+后只交接到 `5F-2-offline-protocol-adapter-spike` 准备状态，不自动安装 Pi、实现 adapter、读取 Key、
+调用 Provider 或进入阶段 6。
 
 ## 5P-6 Exit Review Checklist
 
@@ -255,6 +260,17 @@ contract audit；本轮不安装 Pi、不写 adapter、不读取 Key、不调用
 - [completed] 冻结合同、安全、Trace/Harness、跨语言成本和 adopt/partial-adopt/reject 指标
 - [completed] 提交、推送并验证 entry design 的 exact-SHA 公共 CI
 - [completed] 公共闭环后交接 `5F-1-pi-source-license-contract-audit`，不自动实施
+
+## 5F-1 Source / License / Contract Audit Checklist
+
+- [completed] 复核仓库迁移、官方 release/tag/npm `gitHead`、包版本、integrity 与 Node requirement
+- [completed] 审计 MIT license 和再分发义务
+- [completed] 映射 Agent/Provider/Tool/event/state/abort/timeout/Usage 与 RiftCoach 合同
+- [completed] 记录 parallel/batch preflight、Usage completeness、Trace body 与权限/依赖差异
+- [completed] 形成有条件进入 5F-2 的隔离 sidecar 边界和十类 scripted cases
+- [completed] 运行完整 pytest、两套 RAG、compileall、governance、安全边界、dry-run 与 diff check
+- [in_progress] 提交/推送并完成 exact-SHA 公共验证
+- [pending] 公共闭环后交接 5F-2，等待下一次明确继续
 
 ## Decisions Made
 

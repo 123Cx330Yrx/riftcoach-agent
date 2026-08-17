@@ -93,8 +93,15 @@ Pi 只有在以下条件全部满足后才有资格进入下一步的局部采�
 
 ## 参考
 
-- [Pi 官方仓库](https://github.com/badlogic/pi-mono)
-- [Pi Agent Core 文档](https://www.mintlify.com/badlogic/pi-mono/api/agent/core)
+- [Pi 官方仓库（现地址）](https://github.com/earendil-works/pi)
+- [Pi Agent Core v0.84.2](https://github.com/earendil-works/pi/tree/v0.84.2/packages/agent)
 - [Claude Agent SDK 官方概览](https://code.claude.com/docs/en/agent-sdk/overview)
 - `docs/plans/2026-08-17-5f-pi-only-agent-runtime-adoption-design.md`
+- `docs/plans/2026-08-17-5f1-pi-source-license-contract-audit.md`
 - ADR-0029、ADR-0030、ADR-0032、ADR-0033
+
+## 5F-1 审计补充
+
+历史仓库地址 `badlogic/pi-mono` 当前重定向至 `earendil-works/pi`。5F-1 已将实验候选冻结为
+release `v0.84.2` / commit `914cf1472e715297caa30db4b9535d534a9eb718`，本地裁决为允许有条件
+进入隔离、无 I/O 的 5F-2 protocol spike；这仍不代表采用 Pi。

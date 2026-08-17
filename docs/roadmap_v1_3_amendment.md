@@ -215,6 +215,7 @@ OP.GG MCP
 5P-5 Thin FastAPI           已完成；`6d1e5b0` / Actions `32005648179` exact-SHA 公共成功，24 API tests、完整 `884 passed, 110 subtests passed`
 5P-6 Product Slice Exit     已完成；`8c8acc6` / Actions `32010604551` exact-SHA 公共成功，裁决 `close-with-deferred-boundaries`
 5F-entry-design            已完成 Pi-only 采用入口设计；`ce97975` / Actions `32013948784` exact-SHA 公共成功；下一步 `5F-1-pi-source-license-contract-audit`
+5F-1 Source/License Audit  本地完成；冻结 `earendil-works/pi v0.84.2` / `914cf147...`、MIT/Node/合同差异；有条件允许 5F-2，待 exact-SHA 公共验证
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

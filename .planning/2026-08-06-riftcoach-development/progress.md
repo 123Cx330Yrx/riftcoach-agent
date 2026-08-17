@@ -2069,3 +2069,18 @@
   Runtime 没有任何提升。
 - canonical 只交接到 `5F-1-pi-source-license-contract-audit` 准备状态，等待用户再次明确继续；
   不自动开始源码审计、安装 Pi 或调用 Provider。
+
+## 2026-08-17：5F-1 官方 Pi Source / License / Contract Audit（本地）
+
+- 用户再次明确继续；已按 RQ-048 只读审计当前官方 `earendil-works/pi`，冻结 release
+  `v0.84.2` / commit `914cf1472e715297caa30db4b9535d534a9eb718`、Agent/AI package `0.84.2`、
+  official-registry integrity、MIT license 与 Node `>=22.19.0`。
+- 已将 Pi Agent/StreamFn/Tool/Event/State/Abort/Usage 与当前 AgentRunRequest、ToolRuntime、
+  RuntimeUsage/Trace、ReviewHarness 逐项映射。确认整批 Tool 原子预检、跨轮 duplicate、总预算、
+  Usage completeness、body-free Trace 和发布门不能由 Pi 自动替代。
+- 新增 `docs/plans/2026-08-17-5f1-pi-source-license-contract-audit.md`；本地结论是允许进入隔离、
+  no-I/O 的 5F-2 protocol spike，但不采用 Pi、不修改主 Runtime。
+- 完整回归 `884 passed, 1 warning, 110 subtests passed`；两套 RAG、compileall、governance、
+  Harness SDK/tracked-data boundary、dry-run 与 diff check 全部通过。
+- 本轮 Pi/Node package 安装、adapter、Key/Provider/Riot I/O 均为 0；下一步只做提交、推送和
+  exact-SHA 公共验证，成功后才交接 5F-2。

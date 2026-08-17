@@ -1549,3 +1549,23 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `CLOSED`：Pi-only 入口设计正式完成；这不等于 Pi 已安装、已接入、已采用或真实模型质量已验证。
 - `HANDOFF`：canonical 唯一下一检查点为 `5F-1-pi-source-license-contract-audit` 准备状态，
   等待用户再次明确继续；不自动实施源码审计、Pi adapter 或真实 Provider 调用。
+
+### 2026-08-17：RQ-048 恢复并完成 5F-1 本地审计
+
+- `RESUMED`：用户再次明确“继续”，只授权 canonical 的
+  `5F-1-pi-source-license-contract-audit`；没有安装 Pi、读取 Key、调用 Provider 或修改主 Runtime。
+- `IDENTITY`：历史 `badlogic/pi-mono` 当前重定向到 `earendil-works/pi`；实验候选冻结 release
+  `v0.84.2` / npm `gitHead` `914cf1472e715297caa30db4b9535d534a9eb718`、两个 `0.84.2` 包、
+  official-registry integrity、MIT 与 Node `>=22.19.0`。
+- `CONTRACT`：Pi 具备自定义 StreamFn、Tool schema、Agent lifecycle events、Usage 和 Abort 接缝；
+  但默认 parallel，且没有 RiftCoach 等价的整批 Tool 原子预检、跨轮 duplicate、总调用/Context/
+  deadline 策略、Usage completeness、body-free Trace 或 ReviewHarness 发布权。
+- `SECURITY`：只允许低层 Agent Core + Scripted StreamFn + 单一 `knowledge.search`；拒绝 Coding Agent
+  默认工具、ResourceLoader、Extension、Session/Auth/ModelRuntime。Node permission 只作 defense-
+  in-depth，当前 Node 24 不能据此宣称硬断网；父进程仍持有 deadline/kill 与协议白名单，硬网络
+  隔离如有需要必须由 OS/容器提供。
+- `VERIFIED-LOCAL`：完整 `884 passed, 1 warning, 110 subtests passed`；两套 RAG、compileall、
+  governance、Harness SDK/tracked-data boundary、dry-run 与 diff check 全部通过，Pi/Key/Provider
+  I/O 为 0。
+- `DECISION-LOCAL`：允许有条件进入 `5F-2-offline-protocol-adapter-spike`，不代表采用 Pi；5F-1
+  仍待本地门禁、提交、推送和 exact-SHA 公共 CI，成功前不交接 5F-2。
