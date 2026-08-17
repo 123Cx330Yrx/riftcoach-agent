@@ -179,3 +179,13 @@ RecentReviewApplicationService
 本设计完成并经 exact-SHA 公共 CI 后，canonical 只交接到
 `5F-1-pi-source-license-contract-audit`，等待下一次明确继续；本轮不安装 Pi、不写 adapter、
 不读取 Key、不调用 Provider。
+
+## 11. 入口设计公共闭环
+
+本入口设计提交 `ce979752808271696b1dfe499317ead66de6aacb` 已由 GitHub Actions run
+`32013948784` 完成 exact-SHA 公共验证；治理、完整 pytest、两套 RAG、compileall、SDK/
+tracked-data boundary 和 Harness dry-run 全部通过。本轮没有安装 Pi、读取 Key、调用 Provider
+或修改产品 Runtime。
+
+因此 `5F-entry-design` 正式完成，唯一下一检查点交接为
+`5F-1-pi-source-license-contract-audit`，等待用户再次明确继续。

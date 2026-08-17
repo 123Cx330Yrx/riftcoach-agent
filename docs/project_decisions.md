@@ -804,3 +804,8 @@ Runtime 变量。Pi 的官方核心为 TypeScript，跨语言或 sidecar 成本�
 Harness 指标、成本和 adopt/partial-adopt/reject 门槛；不安装 Pi、不修改主 Runtime、不读取 Key、
 不调用真实 Provider。详细设计见 `docs/plans/2026-08-17-5f-pi-only-agent-runtime-adoption-design.md`
 与 ADR-0034。
+
+5F-entry-design 提交 `ce979752808271696b1dfe499317ead66de6aacb` 已由 GitHub Actions run
+`32013948784` 完成 exact-SHA 公共验证；入口设计正式关闭。canonical 只交接到
+`5F-1-pi-source-license-contract-audit` 准备状态，等待用户再次明确继续；本轮不自动安装 Pi、
+读取 Key、调用 Provider 或实现 adapter。

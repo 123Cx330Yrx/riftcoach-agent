@@ -2060,3 +2060,12 @@
   切片的无 I/O 对照设计、跨语言/sidecar 成本、Trace/Harness/错误安全和采用/拒绝门槛。
 - 尚未写 Pi 适配代码、安装 Node/Pi、读取模型 Key、调用 Provider 或执行真实模型；下一步是形成
   ADR 与 5F entry design 文档，并通过治理和 exact-SHA 公共验证。
+
+## 2026-08-17：5F-entry-design exact-SHA 公共闭环与 5F-1 交接
+
+- ADR-0034 与 Pi-only entry design 提交 `ce979752808271696b1dfe499317ead66de6aacb` 已推送；
+  Actions run `32013948784` 对 exact SHA 全部门禁成功。
+- 5F-entry-design 正式完成；当前四条进度线保持分离，Pi 尚未安装/接入，真实模型质量与产品默认
+  Runtime 没有任何提升。
+- canonical 只交接到 `5F-1-pi-source-license-contract-audit` 准备状态，等待用户再次明确继续；
+  不自动开始源码审计、安装 Pi 或调用 Provider。

@@ -2122,3 +2122,13 @@
   为 ADR 中的书面排除项。
 - Pi 的主要风险是官方核心为 TypeScript，而 RiftCoach 主仓库为 Python；5F 必须把跨语言/sidecar
   成本作为一等评测指标，不得直接采用未审计的 Python 移植版。
+
+## 2026-08-17：5F-entry-design exact-SHA 公共闭环
+
+- Pi-only 入口设计提交 `ce979752808271696b1dfe499317ead66de6aacb` 已由 Actions run
+  `32013948784` 完成 exact-SHA 公共验证；治理、完整 pytest、两套 RAG、compileall、SDK/
+  tracked-data boundary 和 Harness dry-run 全部通过。
+- 5F-entry-design 正式完成，但没有安装 Pi、写 adapter、读取 Key 或调用 Provider；这只是采用
+  实验入口设计的公共闭环，不是 Pi 采用结论。
+- canonical 下一步为 `5F-1-pi-source-license-contract-audit`，等待用户明确继续；该步必须先审计
+  官方 TypeScript 源码/包与许可证，再决定是否值得进行离线 adapter spike。

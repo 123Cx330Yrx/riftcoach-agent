@@ -2,7 +2,7 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5F"
-current_checkpoint: "5F-entry-design"
+current_checkpoint: "5F-1-pi-source-license-contract-audit"
 status: in_progress
 pause_reason: null
 ---
@@ -43,8 +43,10 @@ pause_reason: null
   `884 passed, 1 warning, 110 subtests passed` 与全部本地门禁通过。退出审查提交
   `8c8acc6911209e645cfaee18bd40870f78d8704f` 已由 GitHub Actions run `32010604551` 完成
   exact-SHA 公共验证，5P-6 与整个 5P 正式关闭；canonical 已按 RQ-047 恢复
-  `5F-entry-design`，当前只设计 Pi-only Runtime 采用实验，不安装 Pi、不写 adapter、不读取
-  Key、不调用真实 Provider。上一子阶段组
+  `5F-entry-design` 已完成 Pi-only Runtime 采用实验入口设计；提交
+  `ce979752808271696b1dfe499317ead66de6aacb` 与 Actions run `32013948784` 已完成 exact-SHA
+  公共验证。本轮未安装 Pi、未写 adapter、未读取 Key、未调用真实 Provider；canonical 只交接到
+  `5F-1-pi-source-license-contract-audit` 准备状态，等待用户再次明确继续。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -174,9 +176,9 @@ pause_reason: null
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：完成 `5F-entry-design` 的 Pi-only 采用实验 ADR、同切片对照指标、失败门和实施
-  顺序，并通过 exact-SHA 公共 CI；本轮不安装 Pi、不切换 Runtime、不调用真实 Provider 或进入
-  阶段 6。
+- 唯一下一步：`5F-1-pi-source-license-contract-audit`，等待用户再次明确继续后审计官方 Pi
+  源码/包版本、许可证、Agent Core、Provider、Tool、event/state、abort/timeout 和 Usage 接缝；
+  本轮不安装 Pi、不写 adapter、不读取 Key、不调用真实 Provider 或进入阶段 6。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -229,6 +231,13 @@ pause_reason: null
 | 5P-4 File-backed Run Receipt & Query Projection | body-free receipt、Trace/manifest/report 安全复读 | 已完成 | `932a863` / Actions `32002994441` exact-SHA 公共成功；聚焦 50、相邻 179、完整 860 tests/110 subtests |
 | 5P-5 Thin FastAPI Adapter & No-I/O Vertical Slice | 最小端点、依赖与 Fake Provider HTTP 纵向测试 | 已完成 | 四个固定端点、显式 Port、strict DTO、错误映射与真实 Runtime/Harness/RAG no-I/O 切片；24 API tests，完整 884 tests/110 subtests；`6d1e5b0` / Actions `32005648179` exact-SHA 公共成功 |
 | 5P-6 Product Slice Evaluation & Exit Review | 合同、安全、资源、公开证据与限制退出审查 | 已完成 | 十项功能 exit matrix、初学者 exit review、聚焦 121、相邻 166、完整 884 tests/110 subtests 与全部门禁通过；`8c8acc6` / Actions `32010604551` exact-SHA 公共成功；裁决 `close-with-deferred-boundaries`，外部 I/O 为 0 |
+
+## 5F 原子子阶段账本
+
+| 子阶段 | 职责 | 当前状态 | 完成/下一步证据 |
+|---|---|---|---|
+| 5F-entry-design | 收缩 Pi-only 候选，冻结同切片对照、合同、安全、跨语言成本和 adopt/partial-adopt/reject 门槛 | 已完成 | ADR-0034 与 `docs/plans/2026-08-17-5f-pi-only-agent-runtime-adoption-design.md`；提交 `ce97975` / Actions `32013948784` exact-SHA 公共成功；无 Pi/Key/Provider I/O |
+| 5F-1-pi-source-license-contract-audit | 审计官方 Pi 源码/包版本、许可证、Runtime/Provider/Tool/event/state/abort/Usage 接缝 | 准备状态，等待用户明确继续 | 尚未开始；不使用非官方 Python port 冒充官方证据 |
 
 ## 当前真实能力边界
 
@@ -466,10 +475,10 @@ pause_reason: null
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A-5E 与整个 5P；当前无领域 Provider 准入，5F 尚未开始 | 阶段 5、生产模型质量、完整 API/前端或可恢复 Runtime 已完成 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A-5E 与整个 5P，5F-entry-design 已完成；当前无领域 Provider 准入，5F-1 尚未开始 | 阶段 5、生产模型质量、完整 API/前端或可恢复 Runtime 已完成 |
 | 项目理解 | 已能解释 5P 的数据流/控制流、HTTP Adapter、Application Service、Prompt Program、AgentRuntime/Harness 与 Query Service 的职责，以及测试证据边界 | 本地 TestClient/Fake Provider 纵向通过等于真实 Riot/模型质量、数据库事务、公网安全或生产部署 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi-only 采用门已进入设计，Claude SDK 仅作书面排除分析 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5P-4/5P-5/5P-6 已分别由 `932a863/32002994441`、`6d1e5b0/32005648179`、`8c8acc6/32010604551` exact-SHA 公开验证；正式 API/网页未部署 | 本地/CI FastAPI 切片通过等于领域模型质量、生产切换或 Web Agent 可用 |
+| GitHub/部署 | 5P-4/5P-5/5P-6/5F-entry-design 已分别由 `932a863/32002994441`、`6d1e5b0/32005648179`、`8c8acc6/32010604551`、`ce97975/32013948784` exact-SHA 公开验证；正式 API/网页未部署 | 本地/CI FastAPI 或设计门通过等于领域模型质量、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

@@ -7,7 +7,8 @@
 
 ## Current Phase
 
-Phase 8 - `5F-entry-design` is in progress（Pi-only）
+Phase 8 - `5F-1-pi-source-license-contract-audit` is the next preparation checkpoint after completed
+Pi-only `5F-entry-design`
 
 ## Phases
 
@@ -200,13 +201,15 @@ Phase 8 - `5F-entry-design` is in progress（Pi-only）
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
   实验仍属于 5F，Prompt Program 属于 5P。
 
-### Phase 8 - 5F-entry-design（5P 已完成后的准备检查点）
+### Phase 8 - 5F-1-pi-source-license-contract-audit（5F-entry-design 已完成后的准备检查点）
 
 - Status: in_progress
 - 5P Prompt Program V1 与早期产品纵向切片已完成；5P-6 退出审查以
   `8c8acc6` / Actions `32010604551` 完成 exact-SHA 公共闭环。
-- canonical 当前正在 `5F-entry-design`；本轮只审计自建 Runtime 与官方 Pi 的同切片对照、采用
-  指标、成本和停止条件，本计划不自动实施 Pi。
+- `5F-entry-design` 已由 `ce97975` / Actions `32013948784` 完成 exact-SHA 公共闭环；canonical
+  只交接到 `5F-1-pi-source-license-contract-audit` 准备状态，等待用户明确继续。
+- 下一轮才审计官方 Pi 的源码/包版本、许可证、Agent Core、Provider、Tool、event/state、
+  abort/timeout 和 Usage 接缝；本计划不自动安装 Pi 或实现 adapter。
 - `5P-entry-design` 与 5P-1 至 5P-6 已公开完成；
 - 5P-4 immutable receipt/store、strict query 与 Application receipt 接缝已由 `932a863` / Actions
   `32002994441` 完成 exact-SHA 公共验证；5P-5 薄 Adapter 与 no-I/O 纵向切片又由 `6d1e5b0` /
@@ -226,8 +229,8 @@ Phase 8 - `5F-entry-design` is in progress（Pi-only）
 
 ## Next Step
 
-`5F-entry-design`：完成 Pi-only 采用实验 ADR、同切片指标、失败门和实施顺序，随后提交、推送
-并验证 exact-SHA；本轮不安装 Pi、切换 Runtime、调用真实 Provider 或进入阶段 6。
+`5F-1-pi-source-license-contract-audit`：等待用户再次明确继续后，进行官方 Pi source/license/
+contract audit；本轮不安装 Pi、不写 adapter、不读取 Key、不调用 Provider 或进入阶段 6。
 
 ## 5P-6 Exit Review Checklist
 
@@ -250,8 +253,8 @@ Phase 8 - `5F-entry-design` is in progress（Pi-only）
 - [completed] 冻结 Pi-only 候选范围、Claude SDK 书面排除理由和技术采用 ADR
 - [completed] 设计同一 `recent-form-review` 切片的 no-I/O Pi protocol spike
 - [completed] 冻结合同、安全、Trace/Harness、跨语言成本和 adopt/partial-adopt/reject 指标
-- [in_progress] 提交、推送并验证 entry design 的 exact-SHA 公共 CI
-- [pending] 公共闭环后交接 `5F-1-pi-source-license-contract-audit`，不自动实施
+- [completed] 提交、推送并验证 entry design 的 exact-SHA 公共 CI
+- [completed] 公共闭环后交接 `5F-1-pi-source-license-contract-audit`，不自动实施
 
 ## Decisions Made
 

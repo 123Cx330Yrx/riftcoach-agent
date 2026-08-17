@@ -1540,3 +1540,12 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   不安装 Pi、不修改主 Runtime、不读取 Key、不调用 Provider。
 - `CURRENT`：canonical 仍为 `5F-entry-design`，当前正在完成 Pi-only ADR/设计文档；完成公共
   验证后才交接到 `5F-1-pi-source-license-contract-audit`，不自动实施下一子阶段。
+
+### 2026-08-17：5F-entry-design Pi-only 公共闭环与 5F-1 交接
+
+- `PUBLIC-VERIFIED`：提交 `ce979752808271696b1dfe499317ead66de6aacb` 的 Actions run
+  `32013948784` completed/success；治理、pytest、两套 RAG、compileall、SDK/tracked-data
+  boundary 与 Harness dry-run 全部通过。
+- `CLOSED`：Pi-only 入口设计正式完成；这不等于 Pi 已安装、已接入、已采用或真实模型质量已验证。
+- `HANDOFF`：canonical 唯一下一检查点为 `5F-1-pi-source-license-contract-audit` 准备状态，
+  等待用户再次明确继续；不自动实施源码审计、Pi adapter 或真实 Provider 调用。
