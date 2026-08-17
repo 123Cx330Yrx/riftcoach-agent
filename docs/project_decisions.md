@@ -911,5 +911,27 @@ RAG、compileall、governance、安全边界和 Harness dry-run 全部成功。
 
 5F-5 与整个阶段 5 正式关闭，裁决保持 `partial-adopt-evaluation-assets-only`。产品唯一 Runtime
 仍为 Python `AgentRuntimeV1`，Pi 只保留为冻结的 evaluation-only 资产。canonical 只交接到既有
-路线中的 `6A-entry-design` 准备状态，等待用户明确继续；本次没有实现阶段 6 的 SQL、Session、
-Memory、SSE、鉴权、前端、真实 Provider 或部署。
+路线中的 `6A-entry-design` 准备状态；该历史交接当时没有实现阶段 6 的 SQL、Session、Memory、SSE、
+鉴权、前端、真实 Provider 或部署。随后用户恢复 6A，当前已确认 PostgreSQL/polling worker、总体
+架构与 task schema/状态机，仍未实现产品代码。
+
+## 6A PostgreSQL 持久任务入口设计裁决（2026-08-17）
+
+用户逐节确认 ADR-0038：PostgreSQL 是唯一生产语义基线，使用同步 SQLAlchemy 2、Alembic 与
+psycopg；FastAPI 和独立 polling Worker 保持同仓库同部署，不引入 Redis/Celery/Kafka。任务在入队
+时预留 task_id/run_id，采用 owner-scoped idempotency 与 queued/running/succeeded/failed 不可逆
+状态机；执行/发布状态分离，长 Agent 运行不持有 SQL transaction。
+
+SQL 保存 durable task 控制面，Artifact/Trace 保存运行正文与证据。已有 immutable receipt 时允许
+reconciliation；无终态证据的 hard crash 不自动判死或重跑，需受限人工确认。lease/heartbeat/
+fencing/cancel/resume 留阶段 8。
+
+作品集 NFR、安全/数据生命周期和真 PostgreSQL 测试矩阵已冻结，6A 实施顺序为 6A-1 至 6A-7。
+详细设计与计划见：
+
+- `docs/plans/2026-08-17-6a-fastapi-postgresql-task-model-design.md`
+- `docs/plans/2026-08-17-6a-fastapi-postgresql-task-model-implementation.md`
+
+当前仅本地完成设计资产；SQL 产品代码、Session、Memory、SSE、正式 Auth、前端、外部 Provider/Riot
+I/O 和公网部署均未实现。本地完整回归 `929 passed, 1 warning, 110 subtests passed`，两套 RAG、
+compileall、Harness dry-run、governance 与安全边界通过；entry design 仍待提交与 exact-SHA 公共 CI。

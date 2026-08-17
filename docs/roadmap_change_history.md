@@ -1666,3 +1666,127 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   拒绝 Pi、冻结保留 evaluation-only 资产与采用门方法。
 - `HANDOFF`：canonical 唯一下一检查点为 `6A-entry-design` 准备状态，等待用户明确继续；不自动
   实现 SQL、Session、Memory、SSE、鉴权、前端、真实 Provider 或部署。
+
+### 2026-08-17：RQ-052 恢复 6A-entry-design 与首个设计确认门
+
+- `RESUMED`：用户再次明确“继续”，只授权 6A 完整 FastAPI/SQL 任务模型的入口设计；不授权直接
+  实现 SQL、Session、Memory、SSE、鉴权、前端、真实 Provider 或部署。
+- `AUDIT`：现有 5P 同步 file receipt 存在 Trace/receipt crash gap、无多 worker 原子 claim；正式
+  production app/lifespan/worker/SQL 尚不存在。EchoMind 可参考 lifespan/user-conversation 分层，但
+  其全局组件、宽泛 CORS、Redis/Chroma Memory 和非持久 background task 不原样迁移。
+- `DESIGN-GATE`：数据库生产目标和测试策略会改变事务、并发、迁移、CI 与部署成本；在冻结 ADR 前
+  先通过 brainstorming 单项确认，不在实现中默默决定。
+- `CURRENT`：canonical 仍为 `6A-entry-design`，当前暂停在 SQL approach 确认；尚无 6A 产品代码或
+  外部 I/O。
+
+### 2026-08-17：6A 数据库方案 A 获用户确认
+
+- `ACCEPTED`：PostgreSQL 是 6A 唯一生产语义基线；SQLAlchemy 2 负责映射，Alembic 负责迁移。
+- `TEST-BOUNDARY`：普通逻辑允许 Fake/单元测试；事务、迁移和并发任务领取必须在真实 PostgreSQL
+  Docker/CI 中验证，SQLite 通过不能替代 PostgreSQL 语义证据。
+- `SCOPE`：本决定没有授权安装依赖或实现 SQL；也没有预先选择同步执行、进程内后台任务或独立
+  polling worker。
+- `CURRENT`：canonical 仍为 `6A-entry-design`，下一单项确认门是任务执行架构。
+
+### 2026-08-17：6A 任务执行方案 3 获用户确认
+
+- `ACCEPTED`：FastAPI 与独立 PostgreSQL polling worker 保持同仓库同部署；API 创建 queued task
+  后返回 202，Worker 使用 PostgreSQL 事务原子领取并调用既有 Application Service。
+- `REJECTED-FOR-6A`：同步长请求不能解决 HTTP 阻塞/任务追踪；FastAPI 进程内 background task
+  不能提供重启持久性或可靠多 worker ownership；Redis/Celery/Kafka 当前没有必要。
+- `BOUNDARY`：该选择不等于微服务、完整消息队列或阶段 8 的 lease/retry/cancel/resume；复杂恢复
+  不在 6A 入口设计中提前实现。
+- `CURRENT`：canonical 仍为 `6A-entry-design`，开始逐节确认架构与数据流；尚无 6A 产品实现或
+  外部 I/O。
+
+### 2026-08-17：6A 架构与数据流章节获用户确认
+
+- `ACCEPTED`：保持模块化单体；FastAPI 和 polling Worker 是同仓库/同一产品部署的不同进程角色。
+- `TRANSACTION-BOUNDARY`：创建、claim 和终态投影分别使用短事务；Agent/Tool/RAG/Provider/Harness
+  执行不得占用数据库锁。
+- `DATA-BOUNDARY`：PostgreSQL 保存任务控制面和 Artifact 引用，报告/评测/Trace 正文继续在既有
+  Artifact/Trace 数据面；读取时必须按身份和摘要交叉验证。
+- `CURRENT`：下一逐节确认项为 task schema 与状态机；完整 ADR/设计和产品实现均未完成。
+
+### 2026-08-17：6A task schema 与状态机章节获用户确认
+
+- `ACCEPTED`：任务使用服务器生成的 `task_id`/`run_id` 双身份；run_id 入队时预留并绑定未来
+  Runtime/Artifact。
+- `STATE`：V1 只允许 `queued → running → succeeded|failed`；终态不可逆，中断以安全 failed reason
+  表达；自动重试、cancel/resume 和 lease 留后续阶段。
+- `CONTROL-DATA`：owner、幂等 Key/请求指纹、规范化小输入、Worker claim、终态投影和 Artifact 引用
+  属于 SQL 控制面；Prompt、Provider 原响应、报告正文和异常正文不落任务表。
+- `CURRENT`：下一逐节确认项为 SQL/Artifact、事务/幂等/ownership 与 crash reconciliation。
+
+### 2026-08-17：6A SQL/Artifact 核心确认与 hard-crash 边界修正
+
+- `ACCEPTED`：创建、claim、终态投影使用独立短事务；Runtime 在事务外；owner-scoped 幂等与 Artifact
+  identity/SHA 交叉验证成立。
+- `SAFE-RECONCILIATION`：已有匹配 immutable receipt 时可补齐 succeeded。
+- `REOPENED`：无 receipt 的 running task 在多 Worker 下不能只凭新 Worker 启动自动判死；没有
+  lease/heartbeat 或运维确认就缺少 owner 已死亡证据。
+- `CURRENT`：比较保守人工恢复、提前 lease/heartbeat 与单 Worker 限制；选定前不冻结失败边界。
+
+### 2026-08-17：6A hard-crash 方案 A 获用户确认
+
+- `ACCEPTED`：匹配 immutable receipt/identity/SHA 时可自动补齐 succeeded；graceful shutdown 由
+  owner Worker 条件失败；无终态证据的 hard crash 只标记 recovery-required，人工确认后受限更新。
+- `NO-AUTO-REPLAY`：6A 不自动重跑可能收费或产生副作用的 Runtime 任务。
+- `DEFERRED`：lease、heartbeat、fencing token、自动 reclaim 和迟到结果隔离保留阶段 8。
+- `CURRENT`：下一逐节确认项为完整失败语义与 HTTP 投影。
+
+### 2026-08-17：6A 失败语义与 HTTP 投影章节获用户确认
+
+- `ASYNC-HTTP`：POST 202 只承诺 durable enqueue；queued/running/succeeded/failed 通过 task resource
+  查询，upstream 异步失败不会伪装成同步 POST 成功报告。
+- `SEPARATION`：task succeeded 与 Harness published/degraded/rejected 正交，质量拒绝不是系统执行失败。
+- `SAFE-ERRORS`：validation、idempotency、DB、ownership/not-found、not-ready 与 integrity failure 分层，
+  worker/exception/Provider body 不进入公共响应。
+- `CURRENT`：下一逐节确认项为作品集规模性能、容量、可靠性、可观测性和成本 NFR。
+
+### 2026-08-17：6A 作品集规模 NFR 获用户确认
+
+- `SCALE`：单服务器 API+Worker+PostgreSQL 起步；Worker 默认单任务并发，可增加进程且由真库并发
+  claim 测试证明不会重复执行。
+- `TARGETS`：warm-DB 创建/查询服务端 p95 `<300ms`，有容量时 claim p95 `<2s`；owner 3/global 50
+  非终态背压；idle polling 退避+jitter。这些是待验证目标，不是现有测量结果。
+- `HONESTY`：liveness/readiness 分离；不承诺 99.9%、跨机容灾、自动 lease 恢复或 Artifact 备份。
+- `CURRENT`：下一逐节确认项为 owner trust、安全和 task/run 数据生命周期。
+
+### 2026-08-17：6A 安全与数据生命周期章节获用户确认
+
+- `ACCESS`：owner 只来自可信 ActorContext，全部 task/run/report 查询 owner-scoped；开发固定 owner
+  不构成公网 Auth，不存在/越权统一 404。
+- `FAIL-CLOSED`：CORS 默认关闭，Secret/env 隔离，参数化 SQL 和 body-free 日志；Auth/HTTPS/限流/
+  安全响应头在公开部署前是硬门。
+- `RETENTION`：原始缓存、terminal task/run 内容和运维日志默认 7/90/30 天；terminal 可 owner 删除，
+  active 删除不替代阶段 8 cancel；长期 Memory 不在 6A 建立。
+- `CURRENT`：下一逐节确认项为分层测试矩阵。
+
+### 2026-08-17：6A 分层测试矩阵获用户确认
+
+- `FAST-LAYER`：状态/指纹/owner/error 用纯逻辑与 Fake 测试。
+- `POSTGRES-BLOCKING`：SQLAlchemy/Alembic、约束/回滚、幂等、两 Worker 原子 claim、CAS/reconciliation
+  必须使用真实 PostgreSQL service/container；SQLite 绿灯不可替代。
+- `VERTICAL`：API/Worker 分层集成后，用现有 Application+本地 RAG+Fake Provider+Runtime/Harness+
+  Artifact 跑离线纵向；CI 不读取 Key、不调用 Riot/Provider。
+- `CURRENT`：下一且最后一个逐节确认项为 6A 原子实施顺序。
+
+### 2026-08-17：6A 原子顺序与 entry-design 资产获用户确认
+
+- `SEQUENCE`：用户确认 6A-1 PostgreSQL Foundation 至 6A-7 Packaging/Exit 七个原子实施批次；每批
+  单独教学、TDD、门禁、提交与 exact-SHA CI。
+- `DOCUMENTED`：ADR-0038、完整 design 和 implementation plan 已本地创建，覆盖全部逐节确认和边界。
+- `NO-IMPLEMENTATION`：当前未安装 SQL 依赖、创建 migration、启动 PostgreSQL、修改产品 API/Worker
+  或调用外部服务。
+- `CURRENT`：`6A-entry-design` 只待本地门、提交/推送和 exact-SHA 公共 CI；成功后交接 6A-1 准备
+  状态且不自动实施。
+
+### 2026-08-17：6A entry-design 本地门禁通过
+
+- `VERIFIED-LOCAL`：完整 `929 passed, 1 warning, 110 subtests passed`；两套 RAG、compileall、
+  Harness dry-run、governance、tracked Secret/run-data、SDK boundary 和 diff check 通过。
+- `COMMAND-CORRECTION`：默认桌面 Python 无 pytest 的首次命令未运行测试；随后明确使用仓库 `.venv`
+  完整通过，不能把首次解释器错误计为产品失败或绿灯。
+- `NO-I/O`：未安装 SQL 依赖、启动 PostgreSQL、读取 Key 或调用 Riot/Provider。
+- `CURRENT`：只待提交、推送与 exact-SHA 公共 CI；成功前 entry design 不关闭。

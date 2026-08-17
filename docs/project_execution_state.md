@@ -4,7 +4,7 @@ main_stage: 6
 substage_group: "6A"
 current_checkpoint: "6A-entry-design"
 status: in_progress
-pause_reason: "awaiting explicit user confirmation"
+pause_reason: "awaiting 6A entry-design commit, push, and exact-SHA public CI"
 ---
 
 # RiftCoach 当前执行状态
@@ -74,8 +74,30 @@ pause_reason: "awaiting explicit user confirmation"
   ADR-0037、exit matrix/review 已裁决 `partial-adopt-evaluation-assets-only`：产品拒绝 Pi，只冻结
   保留可执行评测资产与采用门方法。提交 `f8dea663523bdc76fc8a40741d37f6e66dd25177` 已由 Actions run
   `32028206103` 完成 exact-SHA 公共验证，5F 与整个阶段 5 正式关闭。canonical 只交接到
-  `6A-entry-design` 准备状态，等待用户明确继续；尚未实现 SQL、Session、Memory、SSE 或阶段 6
-  产品能力。上一子阶段组
+  `6A-entry-design`。用户已按 RQ-052 恢复该检查点；当前已审计 5P 的同步文件/crash gap、多 worker
+  限制和 EchoMind API/Memory 参考实现，并明确 PostgreSQL 是唯一生产语义基线：SQLAlchemy 2 映射、
+  Alembic 迁移，普通逻辑可用 Fake/单元测试，但事务、迁移和并发领取必须由真实 PostgreSQL Docker/CI
+  验证，SQLite 绿灯不能替代。用户随后选择同仓库、同部署的独立 PostgreSQL polling worker：API
+  持久化 queued task 并快速返回，Worker 通过 PostgreSQL 事务原子领取；不引入 Redis/Celery/Kafka。
+  架构与数据流章节已获用户确认：采用模块化单体、API/Worker 分工、短事务以及 SQL 控制面与
+  Artifact/Trace 数据面分离。task_id/run_id 双身份、任务控制字段、四态状态机和不可逆终态规则
+  也已获确认。SQL/Artifact 分工、创建/claim/终态短事务、幂等与 ownership 核心也已获确认；但在
+  失败边界复核中发现：多 Worker 下不能仅凭新 Worker 启动就把其他无 receipt 的 running task 自动
+  判死。用户已选择保守方案 A：有匹配 immutable receipt 时自动补齐成功；正常关闭由 owner Worker
+  安全失败；无终态证据的硬崩溃任务只标记 recovery-required，待受限人工确认后条件更新为失败。
+  其余失败语义与 HTTP 投影也已获确认：POST 202 只表示可靠入队，任务执行成功与 Harness 发布
+  状态分离，not-found/ownership、幂等冲突、DB 不可用、报告未就绪和完整性失败具有不同安全语义。
+  作品集规模 NFR 也已获确认：单服务器起步、默认单并发 Worker、真实 PostgreSQL 多 Worker 正确性、
+  有限 owner/global 背压、API/claim 延迟目标、退避轮询、分层健康检查以及不冒充 99.9%/容灾。
+  安全与数据生命周期章节也已获确认：owner_id 来自可信 ActorContext，查询 owner-scoped，开发固定
+  owner 不冒充公网鉴权；CORS/密钥/日志 fail-closed，数据按 7/90/30 天分层保留，terminal task 可删除，
+  active task 删除不冒充 cancel。分层测试矩阵也已获确认：纯逻辑/Fake、真实 PostgreSQL migration/
+  repository/concurrency、API/Worker、离线产品纵向、安全/生命周期与性能层各自有职责，PostgreSQL CI
+  是阻塞门且外部 Provider/Riot 调用为 0。七个 6A 原子实施批次也已获用户确认。ADR-0038、正式设计
+  与实施计划现已本地创建。本地完整回归 `929 passed, 1 warning, 110 subtests passed`、两套 RAG、
+  compileall、Harness dry-run、governance、Secret/run-data 与 SDK boundary 均通过；提交/推送/exact-SHA
+  公共 CI 成功前，`6A-entry-design` 仍未关闭。尚未实现 SQL、Session、Memory、SSE 或阶段 6 产品
+  能力。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -205,9 +227,11 @@ pause_reason: "awaiting explicit user confirmation"
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6A-entry-design` 准备状态；等待用户明确继续后，先审计 5P 同步文件切片与阶段 6
-  完整 FastAPI/SQL 任务模型之间的真实缺口，再冻结 6A 的功能、NFR、数据生命周期、安全、教学和
-  原子实施顺序。本交接不自动实现 SQL、Session、Memory、SSE、鉴权、前端、真实 Provider 或部署。
+- 唯一下一步：`6A-entry-design` 执行中；PostgreSQL/polling worker、task/事务/失败、NFR、安全/生命周期、
+  测试矩阵及 6A-1 至 6A-7 原子实施顺序均已用户确认。ADR-0038、完整 design 和 implementation plan
+  已本地创建且全部本地门禁通过；当前只执行提交、推送和 exact-SHA 公共 CI。成功后只交接
+  `6A-1-postgresql-foundation` 准备状态，不自动实施。本检查点不直接实现 SQL、Session、Memory、
+  SSE、鉴权、前端、真实 Provider 或部署。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层

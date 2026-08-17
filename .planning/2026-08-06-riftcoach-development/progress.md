@@ -2244,3 +2244,104 @@
 - 5F-5 与阶段 5 正式完成；裁决保持 `partial-adopt-evaluation-assets-only`，产品拒绝 Pi，
   evaluation-only 资产冻结保留。
 - canonical 只交接到 `6A-entry-design` 准备状态，等待用户再次明确继续；尚未设计或实现阶段 6。
+
+## 2026-08-17：开始 6A-entry-design
+
+- 用户再次明确“继续”；RQ-052 只授权完整 FastAPI/SQL 任务模型的入口设计，不直接实现阶段 6。
+- 已按 canonical 恢复、治理预检和源码审计确认：5P 是同步、文件型、显式依赖注入的本地切片；
+  SQL/task worker/production app/lifespan/鉴权/Session/Memory 均未实现。
+- 已只读复核 EchoMind `api/main.py`、`conversation_memory.py`、compose 和依赖：可参考 lifespan 与
+  user/conv 分层，但其全局组件、宽泛 CORS、Redis/Chroma 和非持久 background task 不直接迁移。
+- 当前按 brainstorming 设计门等待一个 SQL 生产/测试目标确认；尚未创建 6A ADR/最终设计、安装依赖、
+  修改产品代码、读取 Key 或调用 Riot/Provider。
+
+## 2026-08-17：6A 数据库方案 A 已确认
+
+- 用户明确选择 A：PostgreSQL 为唯一生产语义基线，采用 SQLAlchemy 2 + Alembic。
+- 快速普通逻辑测试可使用 Fake；事务、迁移和并发任务领取必须由真实 PostgreSQL Docker/CI 验证，
+  不使用 SQLite 绿灯替代 PostgreSQL 语义。
+- canonical 仍停留在 `6A-entry-design`；下一单项设计门改为任务执行架构。尚未安装依赖、修改产品
+  代码、启动数据库、读取 Key 或调用外部 Provider/Riot。
+
+## 2026-08-17：6A 任务执行方案 3 已确认
+
+- 用户确认独立 PostgreSQL polling worker；API 与 Worker 保持同仓库同部署，不引入额外消息队列。
+- FastAPI 的职责收缩为请求校验、任务创建和查询；Worker 事务领取 queued task 后复用既有
+  `RecentReviewApplicationService`，最终状态回写 SQL，大正文仍由 Artifact/Trace 持有。
+- canonical 仍为 `6A-entry-design`，下一步是向用户逐节讲解并确认“架构与数据流”；task schema、
+  状态机、事务细节和失败恢复尚未冻结。产品代码、依赖安装、数据库启动和外部 I/O 仍为 0。
+
+## 2026-08-17：6A 架构与数据流章节已确认
+
+- 用户确认模块化单体、API/Worker 分工、短事务以及 SQL 控制面/Artifact 数据面分离。
+- 现有 `RecentReviewApplicationService` 保持业务用例所有者；FastAPI 不接管 Agent 业务，Worker 只
+  负责持久任务生命周期和调用 Application Service。
+- canonical 下一设计节为 task schema 与状态机。仍未创建 ADR/最终设计、安装依赖、修改产品代码、
+  启动数据库或执行外部 I/O。
+
+## 2026-08-17：6A task schema 与状态机章节已确认
+
+- 用户确认 `task_id`/`run_id` 双身份、服务器预留 run、`queued → running → succeeded|failed` 四态
+  不可逆状态机，以及 owner/idempotency/terminal projection 等控制字段边界。
+- 这一步解决“重复提交”和“Artifact 无 SQL 归属”的设计问题，但没有实现自动恢复或公网鉴权。
+- canonical 下一设计节为 SQL/Artifact 分工、事务、幂等、ownership 与 crash reconciliation；代码、
+  依赖、数据库启动和外部 I/O 仍为 0。
+
+## 2026-08-17：6A SQL/Artifact 核心确认，hard-crash 边界重开
+
+- 用户确认 SQL 控制面/Artifact 数据面、三段短事务、幂等指纹、Worker ownership 与成功交叉校验。
+- 在进入失败章节时发现多 Worker 存活判定缺口；自动把无 receipt 的 running task 标记 failed 暂停，
+  先比较三个可验证方案，避免把阶段 8 lease 能力偷渡成已经解决。
+- canonical 仍为 `6A-entry-design`；代码、依赖、数据库和外部 I/O 保持 0。
+
+## 2026-08-17：6A hard-crash 方案 A 已确认
+
+- 用户确认“有确定终态证据才自动协调；无证据需人工确认且不自动重跑”。
+- 6A 不提前实现 lease/heartbeat/fencing；这一限制会进入 ADR、测试和运维说明。
+- canonical 下一节为完整失败分类与 HTTP 投影；产品代码、依赖、数据库和外部 I/O 仍为 0。
+
+## 2026-08-17：6A 失败语义与 HTTP 投影章节已确认
+
+- 用户确认 POST 202/GET task 语义、分层安全错误，以及 task succeeded 与 publication status 分离。
+- 现有同步 POST 将在后续实施中演进为异步 receipt 合同，但当前尚未修改 API 代码或 Schema。
+- canonical 下一节为作品集规模 NFR；产品代码、依赖、数据库和外部 I/O 仍为 0。
+
+## 2026-08-17：6A 作品集规模 NFR 已确认
+
+- 用户确认单服务器起步、默认 Worker 单并发、可增加 Worker、owner/global 背压、API/claim p95 目标、
+  退避轮询、liveness/readiness 分离和诚实可用性边界。
+- 这些均为待实现/待测的验收目标，不是已测性能或 SLA。
+- canonical 下一节为安全与数据生命周期；产品代码、依赖、数据库和外部 I/O 仍为 0。
+
+## 2026-08-17：6A 安全与数据生命周期章节已确认
+
+- 用户确认可信 ActorContext、owner-scoped 资源访问、默认关闭 CORS/公网能力、Secret/日志脱敏和
+  7/90/30 天保留策略；terminal 删除与 active cancel 保持分离。
+- 安全技能复核使 production fail-closed、越权 404 和公开部署硬门进入正式设计边界。
+- canonical 下一节为测试矩阵；产品代码、依赖、数据库和外部 I/O 仍为 0。
+
+## 2026-08-17：6A 分层测试矩阵已确认
+
+- 用户确认 Fake/纯逻辑、真实 PostgreSQL、API、Worker、离线产品纵向、安全/生命周期和性能分层；
+  PostgreSQL CI 为阻塞门，SQLite 不替代。
+- 这只是验收设计，当前没有新增测试、启动数据库或调用外部服务。
+- canonical 下一节为 6A 原子实施顺序；确认后才创建正式 ADR/设计/实施计划。
+
+## 2026-08-17：6A 全部设计章节已确认并落盘
+
+- 用户确认 6A-1 至 6A-7；已新增 ADR-0038、完整 design 与 implementation plan。
+- 计划保持一次一个 canonical 子阶段、先教学/TDD、每批 exact-SHA CI；不使用 subagent 或额外
+  worktree。
+- 当前尚未实现 6A 产品代码，也未安装 SQL 依赖或启动数据库；下一步只执行文档一致性/回归门、
+  提交、推送和公共 CI。
+
+## 2026-08-17：6A entry-design 本地门禁通过
+
+- ADR-0038、design、implementation plan 与 canonical 完成一致性检查；governance/diff check 通过。
+- 首次 `python -m pytest -q` 指向桌面代理 Python 且未安装 pytest，因此未进入测试；改用仓库
+  `.venv\\Scripts\\python.exe` 后完整回归为 `929 passed, 1 warning, 110 subtests passed`。这是命令
+  解释器修正，不是产品红灯。
+- development/independent RAG 两套门均为 Recall/MRR/nDCG 1.0，holdout abstention/citation 1.0；
+  compileall、Harness dry-run、tracked Secret/run-data 和 Harness SDK boundary 通过。
+- 本批未安装 SQL 依赖、启动 PostgreSQL、读取 Key 或调用 Riot/Provider；下一步只提交、推送并等待
+  exact-SHA 公共 CI。

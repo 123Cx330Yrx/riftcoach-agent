@@ -2293,3 +2293,133 @@
   若出现高危实际依赖、Node 不兼容、持续不稳定或显著成本，再用新 ADR 分离/归档，不能让产品迁就。
 - 最准确的裁决名是 `partial-adopt-evaluation-assets-only`：产品拒绝 Pi，冻结保留实验和采用门方法；
   它不表示双 Runtime、用户可选 Runtime、真实模型质量或生产部署。
+
+## 2026-08-17：6A FastAPI/SQL 入口初审发现
+
+- 5P 的 FastAPI 是显式注入 ports 的同步薄 Adapter，没有 module-level production app/lifespan、SQL、
+  worker、鉴权或公网配置；这使 import/OpenAPI no-I/O 很安全，但不能直接部署完整产品。
+- `RecentReviewApplicationService` 已提供可复用的 Summary → report → compiler → Runtime → receipt
+  顺序；6A 不应把业务重新搬进 handler，而应在它外面增加持久 task/application boundary。
+- 当前 file receipt 在 Trace 与 receipt 之间存在 crash gap，也不支持多 worker 原子 claim；SQL 的
+  首要用途是任务身份、ownership、状态和事务，不是保存全部 Prompt/报告正文。
+- EchoMind 使用 lifespan 初始化全局组件、Redis 工作记忆和 Chroma 情景/画像；没有 SQL task model，
+  `/chat` 内 `asyncio.create_task(update_profile)` 也没有 durable claim/recovery。其组件生命周期思想
+  可参考，但宽泛 CORS、全局可变对象和 Memory 存储方案不能原样迁移。
+- 6A 需要先确认 PostgreSQL/SQLite 的生产与测试定位；这一选择会影响事务、并发 claim、迁移、CI 和
+  部署成本，不能在实现中默默决定。
+
+## 2026-08-17：6A 数据库基线确认
+
+- 用户选择方案 A：PostgreSQL 是唯一生产语义基线，ORM/映射使用 SQLAlchemy 2，迁移使用 Alembic。
+- 普通领域和 Application 逻辑仍可通过 Fake/单元测试快速验证；但事务边界、Alembic migration、
+  唯一约束/幂等和多 worker 并发 claim 必须在真实 PostgreSQL Docker/CI 中验收。
+- SQLite 不进入生产路径，也不作为上述 PostgreSQL 语义的替代绿灯；这避免测试通过但部署后因锁、
+  隔离级别或 SQL 方言差异失效。
+- 该选择只冻结数据库目标与验证标准，尚未决定同步执行、进程内后台任务或独立 polling worker。
+
+## 2026-08-17：6A 任务执行方案 3 获确认
+
+- 用户选择同仓库、同部署的独立 PostgreSQL polling worker：FastAPI 只验证请求、持久化 queued task
+  并返回 202；Worker 使用数据库事务原子 claim，再调用既有 Application Service。
+- 该方案是模块化单体中的两个进程角色，不是拆微服务；PostgreSQL task table 同时承担 durable queue
+  与查询状态源，不增加 Redis、Celery、Kafka 或 RabbitMQ。
+- `FOR UPDATE SKIP LOCKED` 的意义是让多个 Worker 跳过已被其他事务锁定的 task，从而避免双重执行；
+  这项语义必须由真实 PostgreSQL 并发测试证明。
+- 6A 不提前承诺完整 lease、自动重试、cancel/resume 或迟到结果隔离；这些复杂恢复能力仍需后续单独
+  需求和采用门。当前只进入完整设计的逐节确认，尚未写产品实现。
+
+## 2026-08-17：6A 架构与数据流章节获确认
+
+- 用户确认模块化单体边界：API 和 Worker 是同一代码库/同一产品部署中的不同进程角色，不形成
+  独立业务微服务。
+- API 事务只创建任务；Worker claim 事务只改变 ownership/status；Agent/Tool/RAG/Provider/Harness
+  长操作在事务外运行；最终投影再用短事务回写，禁止长时间持有数据库行锁。
+- PostgreSQL 保存小型任务控制数据；现有 Artifact/Trace 继续保存报告、评测和运行正文。查询路径
+  必须通过 run_id/reference 交叉验证两层，而不是信任任一孤立记录。
+- 异步任务引入独立 `task_id`；为避免 Runtime Artifact 在中断后失去 SQL 归属，下一设计节需裁决
+  是否在创建任务时一并预留稳定 `run_id`，而不是延续当前编译中后置生成。
+
+## 2026-08-17：6A task schema 与状态机章节获确认
+
+- 任务表固定采用 `task_id`（排队任务）与 `run_id`（Runtime/Artifact 执行）双身份；二者均服务器
+  生成，`run_id` 在入队时预留并传入现有 compiler/Application Service。
+- V1 任务状态为 `queued → running → succeeded|failed`；终态不可逆，不在 6A 添加自动重试、取消、
+  恢复或 `running → queued`。中断用安全的 `failed/worker_interrupted` 终态表达。
+- 任务控制表需要 owner、类型/版本、规范化输入与指纹、幂等 Key、Worker ownership、时间戳、安全
+  terminal reason、publication projection 和 Artifact 引用；不保存 Prompt、原始 Provider 响应、
+  完整报告或异常正文。
+- `owner_id` 是可信上下文字段，不由用户正文直接指定；本地测试可用固定 owner，但不能把它宣称为
+  已完成的公网鉴权。
+
+## 2026-08-17：6A hard-crash 自动判死风险
+
+- 用户确认了 SQL/Artifact 分工、创建/claim/终态短事务、幂等、ownership 与读取时交叉校验核心。
+- 进一步失败复核发现上一节的“Worker 启动后，无 receipt 的 running task 自动标记 interrupted”在
+  多 Worker 下不安全：新 Worker 不能仅凭启动事件证明旧 owner Worker 已死亡。
+- receipt 已存在且 identity/SHA 完整时，reconciler 可以安全补齐 succeeded，因为有不可变终态证据；
+  无 receipt 时若没有 lease/heartbeat、进程注册或运维确认，只能知道“结果未知”，不能自动判死。
+- 当前需显式比较保守人工恢复、6A 提前引入 lease/heartbeat、部署期限制单 Worker 三种方案；该发现
+  不推翻 PostgreSQL polling worker，只约束 hard-crash 自动恢复声明。
+
+## 2026-08-17：6A hard-crash 方案 A 获确认
+
+- 用户选择保守人工恢复：只有匹配 immutable receipt/identity/SHA 的确定终态证据才允许自动补齐
+  succeeded；正常 shutdown 可由 owner Worker 条件更新为 `failed/worker_interrupted`。
+- 无 receipt 的硬崩溃任务保持 running，并投影 `recovery_required` 运维条件；受限管理命令在人工
+  确认 owner Worker 已死后，以 status/worker_id 条件更新为 failed。
+- V1 不自动重跑，不新增 lease、heartbeat、fencing token 或迟到结果隔离；这些仍属于阶段 8。
+- 该方案保持多 Worker claim 安全和真实限制可见，代价是极少数硬崩溃任务需要人工介入。
+
+## 2026-08-17：6A 失败语义与 HTTP 投影章节获确认
+
+- POST `/reviews/recent` 的 202 只表示任务已可靠持久化，不代表报告完成；task 查询对 queued/running/
+  succeeded/failed 均返回资源状态，异步执行失败不 retroactively 改写原 POST。
+- `task_status=succeeded` 表示 Runtime/Harness 形成合法可信终态；`publication_status` 仍可为 published、
+  degraded 或 rejected。系统执行失败和质量门拒绝发布必须分开。
+- validation、idempotency conflict、database unavailable、not-owned/not-found、report unavailable 与
+  Artifact integrity failure 使用不同 allowlisted HTTP/错误语义，且不泄露 worker/异常/Provider 正文。
+- owner 越权和不存在统一返回 404；hard-crash recovery_required 只进入管理投影，普通响应不暴露
+  worker_id。
+
+## 2026-08-17：6A 作品集规模 NFR 获确认
+
+- 初始产品部署目标为单服务器上的 API、Worker、PostgreSQL 组合；默认每 Worker 一次执行一个任务，
+  通过增加 Worker 进程扩展，但不承诺微服务或高可用。
+- 温热 DB 下创建/查询服务端 p95 目标 `<300ms`；容量可用时 queued→running p95 `<2s`。这些是后续
+  必须测量的目标，不是当前已有性能证据，且不包含 Agent/Riot/Provider 执行时长。
+- 背压默认每 owner 3 个、全局 50 个非终态 task，可配置；空闲 polling 使用退避+jitter，避免惊群。
+- liveness 只表明进程活着；readiness 必须核对 PostgreSQL 连接和 Alembic schema head。当前单 DB/
+  单主机是明确单点，不写 99.9%、跨机容灾或 Artifact 自动备份承诺。
+
+## 2026-08-17：6A 安全与数据生命周期章节获确认
+
+- `owner_id` 必须来自服务器可信 `ActorContext`，所有 task/run/report 查询 owner-scoped；不存在与
+  越权统一 404。固定 `local-owner` 只允许开发/测试，不冒充公网鉴权。
+- CORS 默认关闭，生产禁止 wildcard+credentials；SQLAlchemy 参数化查询；Key/DB password 只来自
+  Secret/env；日志 body-free，不记录 Riot ID、Prompt、报告、异常栈或 Provider 原响应。
+- 公开部署前真实 Auth、HTTPS、限流和安全响应头是硬门；6A 设计这些接口/边界但不宣称已实现。
+- 默认保留策略为 Riot 原始缓存 7 天、terminal task/run/Artifact/Trace 90 天、运维日志 30 天；
+  terminal owner delete 使内容立即不可访问并清理正文，active delete 不冒充 cancel。
+- 长期 Memory 不在 6A 创建；后续只保存用户确认的画像/目标/进度，不永久化全部原始对局或模型猜测。
+
+## 2026-08-17：6A 分层测试矩阵获确认
+
+- 纯逻辑/Fake 测状态、指纹、owner 与错误；真实 PostgreSQL 测 SQLAlchemy/Alembic、约束、事务和
+  `FOR UPDATE SKIP LOCKED`；SQLite 不得替代这些语义。
+- API 层用真库+Fake Application，Worker 层用真库+Fake Application/Artifact；离线纵向再复用现有
+  Application、真实本地 RAG、Fake Provider、Runtime/Harness/Artifact，外部网络为 0。
+- hard-crash 测试必须覆盖匹配 receipt 自动补齐、无 receipt 不自动重跑、人工 recovery CAS 和旧
+  Worker 终态拒绝；并发测试使用 barrier/独立 Session，不靠脆弱 sleep 猜时序。
+- 安全/生命周期和性能各有门禁；CI 使用 PostgreSQL service container，migration 和 concurrent claim
+  为阻塞项，Fake Provider 结果不推导模型质量。
+
+## 2026-08-17：6A 原子顺序与正式 entry-design 资产获确认
+
+- 用户确认 6A-1 PostgreSQL Foundation、6A-2 Task Contract/Repository、6A-3 Atomic Claim/Worker、
+  6A-4 Application/Artifact、6A-5 Async FastAPI、6A-6 Security/Lifecycle/NFR、6A-7 Packaging/Exit。
+- ADR-0038 接受同步 SQLAlchemy 2 + Alembic + psycopg、PostgreSQL-only 生产语义、polling worker、
+  conservative recovery 和阶段 8 deferred。同步 ORM 与当前同步 Runtime/Worker 一致，未来只有实测
+  DB bottleneck 才重开 async ORM。
+- 正式 design 汇总所有逐节确认；implementation plan 给出每批 exact files、TDD、门禁和明确排除项。
+- 当前仍是本地文档/治理状态，未安装依赖、创建 migration、启动 PostgreSQL 或写产品代码；公共 CI
+  成功前不能关闭 entry design。

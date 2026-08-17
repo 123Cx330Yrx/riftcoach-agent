@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 9 - `6A-entry-design` is the only preparation checkpoint after 5F-5 and stage 5 completed
-publicly; it awaits explicit user confirmation and contains no stage 6 implementation yet
+Phase 9 - `6A-entry-design` is in progress under RQ-052; every design section and the 6A-1..6A-7
+sequence are user-confirmed, with ADR/design/implementation assets local pending gates and public CI
 
 ## Phases
 
@@ -246,15 +246,35 @@ publicly; it awaits explicit user confirmation and contains no stage 6 implement
 ### Phase 9 - 6A-entry-design preparation
 
 - Status: in_progress
-- Pause: awaiting explicit user confirmation before starting `6A-entry-design`.
+- Pause: local gates passed; awaiting commit, push, and exact-SHA public CI for the entry design.
 - 5F-5 决策提交 `f8dea66` / Actions `32028206103` 已完成 exact-SHA 公共验证；阶段 5 正式关闭。
 - 当前只保存既有路线中的下一键，不展开阶段 6 原子拆分，不实现 SQL/Session/Memory/SSE。
 
 ## Next Step
 
-`6A-entry-design`：等待用户明确继续后，先审计 5P 同步文件切片与完整 FastAPI/SQL 任务模型的
-真实缺口，再冻结功能/NFR、数据生命周期、安全、教学与原子实施顺序。不自动实现阶段 6，也不把
-Pi、Claude Agent SDK、LangGraph、Multi-Agent、MCP 或模型分层带入 6A。
+`6A-entry-design`：RQ-052 已恢复；现状/EchoMind 参考源码初审、PostgreSQL 唯一生产语义基线、
+独立 PostgreSQL polling worker，以及模块化单体/API-Worker/短事务/控制面-数据面架构章节均已确认。
+当前已确认 task schema/状态机、SQL/Artifact/短事务/幂等/ownership、保守 hard-crash、失败/HTTP、
+作品集 NFR、安全/生命周期、分层测试矩阵和 6A-1 至 6A-7 原子顺序。ADR-0038、完整 design 与
+implementation plan 已本地创建；当前只执行门禁、提交、推送和 exact-SHA 公共 CI。成功后只交接
+6A-1 准备状态，不自动实施；不把 Pi、Claude Agent SDK、LangGraph、Multi-Agent、MCP 或模型分层
+带入 6A。
+
+## 6A Entry Design Checklist
+
+- [completed] 审计 5P FastAPI/Application/receipt/query 与文件 crash/multi-worker gap
+- [completed] 复核 EchoMind API/lifespan/Redis/Chroma Memory 源码，区分可吸收思想与不可照搬实现
+- [completed] 确认 PostgreSQL 是唯一生产语义基线；SQLAlchemy 2 + Alembic；关键语义由真实 PostgreSQL Docker/CI 验证
+- [completed] 比较三种任务执行方案并选择同仓库同部署的独立 PostgreSQL polling worker
+- [completed] 确认模块化单体、API/Worker 分工、短事务和 SQL 控制面/Artifact 数据面架构
+- [completed] 确认 task schema、task_id/run_id 双身份、四态状态机和不可逆终态规则
+- [completed] 确认保守 hard-crash reconciliation：有终态证据自动补齐，无证据需受限人工确认，不自动重跑
+- [completed] 确认请求/数据库/Worker/Runtime/Artifact 失败语义、HTTP 投影和执行/发布状态分离
+- [completed] 冻结作品集 NFR、安全、数据生命周期与 Fake/真实 PostgreSQL/API/Worker/纵向/安全性能测试矩阵
+- [completed] 冻结 6A-1 PostgreSQL Foundation 至 6A-7 Packaging/Exit 的原子实施顺序
+- [completed] 创建 ADR-0038、正式 design 和 implementation plan
+- [completed] 本地门禁：929 passed/110 subtests、两套 RAG、compileall、Harness dry-run、governance、安全与 diff
+- [in_progress] 提交、推送和 exact-SHA 公共 CI
 
 ## 5P-6 Exit Review Checklist
 
