@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 8 - `5P-1-product-contract-compiler` 本地完成，等待公共 CI
+Phase 8 - `5P-2-prompt-program-runtime-composition` 准备状态
 
 ## Phases
 
@@ -203,7 +203,7 @@ Phase 8 - `5P-1-product-contract-compiler` 本地完成，等待公共 CI
 ### Phase 8 - 5P Prompt Program V1 与早期产品纵向切片
 
 - Status: tracking
-- `5P-entry-design` 已公开完成；5P-1 已本地实现并通过全部门禁，等待 exact-SHA 公共 CI；
+- `5P-entry-design` 与 5P-1 已公开完成；当前准备 5P-2，尚未开始 Prompt Program 实现；
 - 入口审计确认 5P 同时承担 Prompt Program V1 与早期产品切片，不能缩成单纯 FastAPI；
 - ADR-0032 选择版本化 Prompt Program/Catalog 和 drift gate，复用既有 component fingerprint；
 - ADR-0033 选择薄 FastAPI Adapter + Application Service + 现有 AgentRuntime/Harness；
@@ -214,9 +214,9 @@ Phase 8 - `5P-1-product-contract-compiler` 本地完成，等待公共 CI
 
 ## Next Step
 
-`5P-1-product-contract-compiler / local_complete`：提交并推送严格产品 DTO、typed selection、
-Artifact binding 与 Manifest-derived policy 实现，验证 exact-SHA 公共 CI；成功后只交接
-5P-2，不安装 FastAPI、不实现 Prompt Program。
+`5P-2-prompt-program-runtime-composition / ready`：5P-1 已由 `57bd36a` / Actions
+`31987501935` 完成 exact-SHA 公共验证；等待用户再次明确继续，随后只实现 Prompt Program V1、
+drift gate 与 Runtime composition root，不安装 FastAPI、不进入 5P-3。
 
 ## Decisions Made
 
@@ -592,18 +592,28 @@ Artifact binding 与 Manifest-derived policy 实现，验证 exact-SHA 公共 CI
 
 ### 5P-1 Product Request & Typed Skill/Runtime Compiler
 
-- Status: in_progress
-- 用户已再次明确“继续”；本地实现、教学、TDD 与全部门禁完成，等待公开验证；
+- Status: complete
+- 用户授权范围已完成：严格产品 DTO、typed selection、Artifact binding、Manifest-derived policy、
+  教学、TDD、本地门禁和 exact-SHA 公共 CI 均通过；
 - 只建立严格产品请求、trusted typed selection、Artifact binding 与 Manifest-derived policy；
 - 不安装 FastAPI、不实现 Prompt Program/Application Service、不读取 Key、不调用 Riot/Provider；
 - TDD 实施计划：`docs/plans/2026-08-17-5p1-product-contract-compiler-implementation.md`；
-- 当前只提交、推送并验证 exact-SHA CI；成功前不得进入 5P-2。
+- 公开证据：提交 `57bd36adcd289b7cc51c1c430e04398daf0683f3`，Actions `31987501935`；
+- 5P-1 不包含 Prompt Program、FastAPI、Riot/Provider I/O；已停止在 5P-2。
 
-## 5P-1 恢复说明
+### 5P-2 Prompt Program V1 & Runtime Composition Root
 
-`5P-1-product-contract-compiler / local_complete`：32 项产品聚焦、63 项相邻、213 项跨层、
-完整 `796 passed, 110 subtests passed` 与两套 RAG/安全/编译/治理/dry-run 门禁通过；当前只做
-提交、推送与 exact-SHA 公共 CI，不安装 FastAPI、不进入 5P-2。
+- Status: in_progress
+- 当前仅表示 5P-1 已公开闭环、canonical 准备从这里恢复，尚未开始实现；
+- 只建立版本化 Prompt Program、组件 fingerprint/drift gate 与 secure Runtime composition；
+- 不安装 FastAPI、不读取 Key、不调用 Riot/Provider、不进入 5P-3 或 5F；
+- 等待用户下一次明确“继续”。
+
+## 5P-2 恢复说明
+
+`5P-2-prompt-program-runtime-composition / ready`：5P-1 已由 `57bd36a` / Actions
+`31987501935` 完成公开验证；等待用户再次明确继续，随后只做 Prompt Program V1 与 composition
+root，不安装 FastAPI、不进入 5P-3。
 
 本批错误日志：
 

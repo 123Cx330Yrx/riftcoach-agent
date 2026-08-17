@@ -1867,3 +1867,13 @@
   原子拒绝、没有部分修改；随后拆成精确小补丁完成 canonical/计划/路线/矩阵/决策同步。
 - 当前 canonical 仍保持 5P-1，状态为本地完成等待公共 CI；下一动作只提交、推送并验证 exact-SHA，
   不进入 5P-2。本批外部调用仍为 0。
+
+## 2026-08-17：5P-1 exact-SHA 公共闭环
+
+- 实现与状态提交 `57bd36adcd289b7cc51c1c430e04398daf0683f3` 已推送到 `origin/main`。
+- GitHub Actions run `31987501935` 对精确 SHA completed/success；完整 pytest、两套 RAG、
+  compileall、治理、SDK/tracked-data boundary 和 Harness dry-run 全部通过。
+- 5P-1 正式完成：本地代码、公开证据和当前 owner understanding 已同步；参考项目审计与部署/
+  作品集成熟度没有被错误提升，真实 Provider/Key/held-out I/O 仍为 0。
+- canonical 已只交接到 `5P-2-prompt-program-runtime-composition`，等待用户再次明确继续；本轮
+  不实现 Prompt Program、FastAPI 或 5F。

@@ -653,4 +653,8 @@ Runtime 前仍由 `SkillExecutionBoundary` 重算并检查 Catalog/version/conte
 
 本地产品/相邻/跨层/完整回归及两套 RAG、编译、安全、dry-run、治理门禁已通过；本批没有
 Key、Riot/Provider/held-out I/O。该结果不表示 Prompt Program、Application Service、FastAPI 或
-真实 Coach 质量完成；5P-1 仍等待 exact-SHA 公共 CI，成功前不进入 5P-2。
+真实 Coach 质量完成。
+
+提交 `57bd36adcd289b7cc51c1c430e04398daf0683f3` 的 Actions run `31987501935` 已完成 exact-SHA
+公共验证。5P-1 正式关闭，canonical 唯一下一检查点为 `5P-2-prompt-program-runtime-composition`，
+按 RQ-041 等待用户再次继续。

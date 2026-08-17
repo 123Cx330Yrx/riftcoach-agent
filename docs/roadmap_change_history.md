@@ -1388,3 +1388,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   dry-run 与治理门禁通过。
 - `NO-IO`：本批 Key/Riot/Provider/held-out I/O 为 0；Prompt Program、Application Service、
   receipt/query 和 FastAPI 未实现。当前仍需提交、推送与 exact-SHA 公共 CI，成功前不关闭 5P-1。
+
+### 2026-08-17：5P-1 exact-SHA 公共闭环与 5P-2 交接
+
+- `PUBLIC-VERIFIED`：提交 `57bd36adcd289b7cc51c1c430e04398daf0683f3` 的 Actions run
+  `31987501935` 通过完整 pytest、两套 RAG、compileall、治理、SDK/tracked-data boundary 与
+  Harness dry-run；CI 无 Key/Provider/held-out I/O。
+- `CLOSED`：5P-1 Product Request & Typed Skill/Runtime Compiler 正式完成；这只证明产品输入到
+  Runtime 请求的安全编译合同，不证明 Riot 数据链路、Prompt Program、FastAPI 或真实模型质量。
+- `CURRENT`：canonical 唯一下一检查点切换为 `5P-2-prompt-program-runtime-composition`；按
+  RQ-041 等待用户再次明确继续，不自动实现 5P-2/5P-3/5F。

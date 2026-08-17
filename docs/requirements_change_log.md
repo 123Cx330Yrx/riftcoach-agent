@@ -45,6 +45,7 @@
 | RQ-038 | 2026-08-17 | 本次顺序授权生效 | 用户进一步明确：进入后续唯一子阶段并完成时，同样可以直接继续下一个 canonical 检查点，无需重复询问 | 每次只自动推进一个已完成当前阶段后唯一明确的下一子阶段；仍须先更新持久状态、讲解原理、执行 TDD/门禁和公开验证，绝不跨越未完成的决策门或合并多个子阶段。 |
 | RQ-039 | 2026-08-17 | 当前暂停要求生效，覆盖 RQ-038 的自动继续 | 用户要求完成本轮 5E-4 验证与提交后结束 | 完成 5E-4 exact-SHA 公共闭环和必要状态回写后停止；只把 canonical 交接到 `5P-entry-design`，不开展 5P 设计、代码、Provider I/O 或后续子阶段，等待用户再次明确“继续”。 |
 | RQ-040 | 2026-08-17 | 生效，解除 RQ-039 的当前暂停 | 用户再次明确“继续下一步”，只恢复 canonical 的 `5P-entry-design` | 先完整审计并设计 5P Prompt Program V1 与早期产品切片；本轮不自动实现 FastAPI、不读取 Key、不调用 Riot/Provider、不进入 5F。设计、治理和 exact-SHA 公共验证完成后，唯一下一步为 5P-1 typed product/compiler。 |
+| RQ-041 | 2026-08-17 | 已执行 | 用户再次明确“继续”，只授权 canonical 的 `5P-1-product-contract-compiler` | 完成严格产品 DTO、typed Skill selection、Artifact binding 与 Manifest-derived Runtime policy 的教学、TDD 和公开验证；不实现 Prompt Program/FastAPI、不读取 Key、不调用 Riot/Provider。5P-1 闭环后只交接到 5P-2，等待下一次明确继续。 |
 
 ## 新条目格式
 
