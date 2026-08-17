@@ -1569,3 +1569,12 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   I/O 为 0。
 - `DECISION-LOCAL`：允许有条件进入 `5F-2-offline-protocol-adapter-spike`，不代表采用 Pi；5F-1
   仍待本地门禁、提交、推送和 exact-SHA 公共 CI，成功前不交接 5F-2。
+
+### 2026-08-17：5F-1 exact-SHA 公共闭环
+
+- `VERIFIED-PUBLIC`：提交 `5901b090b4ee8bccfd0a71ddfa412dec98fba02f` 已由 GitHub Actions
+  run `32016852979` 完成 exact-SHA 公共验证；pytest、两套 RAG、compileall、治理、安全边界与
+  Harness dry-run 全部成功。
+- `CLOSED`：5F-1 正式完成，裁决仍为“允许有条件进入 5F-2”，不等于采用、安装或接入 Pi。
+- `HANDOFF`：canonical 唯一下一检查点为 `5F-2-offline-protocol-adapter-spike` 准备状态，等待
+  用户再次明确继续；不自动安装依赖、创建 sidecar/lockfile、读取 Key 或调用 Provider。

@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 8 - `5F-1-pi-source-license-contract-audit` is in progress; the local audit is complete and
-awaits exact-SHA public verification
+Phase 8 - `5F-2-offline-protocol-adapter-spike` is the next preparation checkpoint after completed
+and publicly verified `5F-1-pi-source-license-contract-audit`
 
 ## Phases
 
@@ -201,7 +201,7 @@ awaits exact-SHA public verification
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
   实验仍属于 5F，Prompt Program 属于 5P。
 
-### Phase 8 - 5F-1-pi-source-license-contract-audit（5F-entry-design 已完成后的准备检查点）
+### Phase 8 - 5F-2-offline-protocol-adapter-spike（5F-1 已完成后的准备检查点）
 
 - Status: in_progress
 - 5P Prompt Program V1 与早期产品纵向切片已完成；5P-6 退出审查以
@@ -214,6 +214,8 @@ awaits exact-SHA public verification
   `knowledge.search`、sequential 和安全 JSONL sidecar；不允许 coding-agent 默认工具/Session/
   ResourceLoader，且必须补整批 Tool 预检、Usage completeness、deadline/kill 和 body-free event
   projection。本阶段仍未安装 Pi 或实现 adapter。
+- 5F-1 审计提交 `5901b09` 已由 Actions run `32016852979` 完成 exact-SHA 公共验证；5F-1
+  正式闭环，canonical 只交接到 5F-2 准备状态，等待用户再次明确继续。
 - `5P-entry-design` 与 5P-1 至 5P-6 已公开完成；
 - 5P-4 immutable receipt/store、strict query 与 Application receipt 接缝已由 `932a863` / Actions
   `32002994441` 完成 exact-SHA 公共验证；5P-5 薄 Adapter 与 no-I/O 纵向切片又由 `6d1e5b0` /
@@ -233,9 +235,9 @@ awaits exact-SHA public verification
 
 ## Next Step
 
-`5F-1-pi-source-license-contract-audit`：完成本地门禁、提交/推送并验证 exact-SHA 公共 CI；成功
-后只交接到 `5F-2-offline-protocol-adapter-spike` 准备状态，不自动安装 Pi、实现 adapter、读取 Key、
-调用 Provider 或进入阶段 6。
+`5F-2-offline-protocol-adapter-spike`：等待用户再次明确继续后，先冻结 Python↔Node JSONL 协议、
+exact dependency/lockfile、安全边界和十类 scripted 红灯，再安装隔离实验依赖并实现 no-I/O adapter；
+本交接不自动安装 Pi、实现 adapter、读取 Key、调用 Provider 或进入阶段 6。
 
 ## 5P-6 Exit Review Checklist
 
@@ -269,8 +271,8 @@ awaits exact-SHA public verification
 - [completed] 记录 parallel/batch preflight、Usage completeness、Trace body 与权限/依赖差异
 - [completed] 形成有条件进入 5F-2 的隔离 sidecar 边界和十类 scripted cases
 - [completed] 运行完整 pytest、两套 RAG、compileall、governance、安全边界、dry-run 与 diff check
-- [in_progress] 提交/推送并完成 exact-SHA 公共验证
-- [pending] 公共闭环后交接 5F-2，等待下一次明确继续
+- [completed] 提交/推送并完成 exact-SHA 公共验证：`5901b09` / Actions `32016852979`
+- [completed] 公共闭环后交接 5F-2，等待下一次明确继续
 
 ## Decisions Made
 

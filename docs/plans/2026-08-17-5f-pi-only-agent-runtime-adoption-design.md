@@ -197,4 +197,6 @@ Tool/event/state/abort/Usage 接缝已完成本地审计，详细证据见
 `docs/plans/2026-08-17-5f1-pi-source-license-contract-audit.md`。
 
 本地裁决为允许有条件进入 5F-2 的隔离 no-I/O spike；未安装 Pi、未写 adapter、未读取 Key、
-未调用 Provider，也没有改变主 Runtime。5F-1 仍待 exact-SHA 公共验证，成功前不交接 5F-2。
+未调用 Provider，也没有改变主 Runtime。审计提交
+`5901b090b4ee8bccfd0a71ddfa412dec98fba02f` 已由 Actions run `32016852979` 完成 exact-SHA
+公共验证，5F-1 正式关闭；canonical 只交接到 5F-2 准备状态，等待用户再次明确继续。

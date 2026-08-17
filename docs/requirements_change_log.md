@@ -52,7 +52,7 @@
 | RQ-045 | 2026-08-17 | 已执行 | 用户明确“继续5P-5”，授权 canonical 的 `5P-5-thin-fastapi-adapter-no-io-vertical-slice` | 只实现薄 FastAPI HTTP Adapter 与 Fake/fixture 本地无 I/O 纵向切片：POST recent、GET run、GET report、GET health、严格 OpenAPI/错误映射和 TestClient 门禁；不读取 Key、不调用 Riot/Provider，不实现 SQL/Session/Memory/SSE/后台任务/公网部署/5P-6/5F。 |
 | RQ-046 | 2026-08-17 | 已执行 | 用户再次明确“继续”，授权 canonical 的 `5P-6-product-slice-evaluation-exit-review` | 只审查 5P entry 与 5P-1 至 5P-5 的功能/NFR/安全/资源/公开证据，建立 exit matrix、必要的当前范围内最小修补和退出裁决；不读取 Key、不调用 Riot/Provider，不实现 5F、阶段 6、SQL/Session/Memory/SSE/鉴权/前端。 |
 | RQ-047 | 2026-08-17 | 已执行 | 用户确认继续并接受 `Pi-only`，把 5F 的第三方 Runtime 候选收缩为 Pi | 5F 只设计和实测官方 Pi Runtime；Claude Agent SDK 只保留书面替代/排除分析，不安装、不调用、不进入代码级对照；先做无 I/O 同切片协议实验，再由 ADR 决定 adopt、partial-adopt 或 reject；不改变默认 Runtime、不读取 Key、不调用真实 Provider。入口设计已由 `ce97975` / Actions `32013948784` 公共验证。 |
-| RQ-048 | 2026-08-17 | 执行中 | 用户再次明确“继续”，授权 canonical 的 `5F-1-pi-source-license-contract-audit` | 只读审计官方 Pi release/source/package identity、MIT license、Node/runtime requirements 以及 Agent/Provider/Tool/event/state/abort/timeout/Usage 接缝，形成是否允许 5F-2 的证据裁决；不安装 Pi、不写 adapter、不读取 Key、不调用 Provider、不改变主 Runtime。 |
+| RQ-048 | 2026-08-17 | 已执行 | 用户再次明确“继续”，授权 canonical 的 `5F-1-pi-source-license-contract-audit` | 只读审计官方 Pi release/source/package identity、MIT license、Node/runtime requirements 以及 Agent/Provider/Tool/event/state/abort/timeout/Usage 接缝，形成是否允许 5F-2 的证据裁决；未安装 Pi、写 adapter、读取 Key、调用 Provider 或改变主 Runtime。审计已由 `5901b09` / Actions `32016852979` 公共验证，canonical 只交接到 5F-2 准备状态。 |
 
 ## 新条目格式
 

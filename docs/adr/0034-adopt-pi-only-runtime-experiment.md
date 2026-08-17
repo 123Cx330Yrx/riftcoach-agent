@@ -105,3 +105,6 @@ Pi 只有在以下条件全部满足后才有资格进入下一步的局部采�
 历史仓库地址 `badlogic/pi-mono` 当前重定向至 `earendil-works/pi`。5F-1 已将实验候选冻结为
 release `v0.84.2` / commit `914cf1472e715297caa30db4b9535d534a9eb718`，本地裁决为允许有条件
 进入隔离、无 I/O 的 5F-2 protocol spike；这仍不代表采用 Pi。
+
+该审计已由提交 `5901b090b4ee8bccfd0a71ddfa412dec98fba02f` / Actions run
+`32016852979` 完成 exact-SHA 公共验证；5F-1 正式关闭，5F-2 仍需用户再次明确继续。

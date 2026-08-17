@@ -2183,3 +2183,10 @@
   没有绕过仓库权限或复制工作树。
 - 权限恢复后的首次活动计划恢复把 `.active_plan` 的结尾换行直接拼入路径，导致三次只读
   `Get-Content` 找不到文件；已改为先对 pointer 使用 `.Trim()`，随后成功读取真实活动计划。
+
+## 2026-08-17：5F-1 公共证据裁决
+
+- 审计提交 `5901b090b4ee8bccfd0a71ddfa412dec98fba02f` 与 Actions run `32016852979`
+  exact-SHA 对齐且全部公共门禁成功；5F-1 的 source/license/contract 结论因此可正式关闭。
+- 公共 CI 验证的是 RiftCoach 文档/既有回归没有漂移，不是 Pi adapter 已工作；Pi 仍未安装，真正
+  protocol parity 必须由 5F-2 的离线 scripted cases 单独证明。

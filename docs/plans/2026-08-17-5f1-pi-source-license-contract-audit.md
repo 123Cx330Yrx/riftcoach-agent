@@ -340,3 +340,12 @@ Tool 预检、Usage completeness、deadline、错误脱敏或 Harness 单一发�
 
 这些测试证明现有 RiftCoach 没有因审计/路线同步而回归；它们没有执行或测试 Pi，因为本轮没有
 安装 Pi。Pi 合同是否能落地只能由 5F-2 的离线 adapter tests 证明。
+
+## 16. exact-SHA 公共闭环
+
+审计提交 `5901b090b4ee8bccfd0a71ddfa412dec98fba02f` 已由 GitHub Actions run
+`32016852979` 完成精确 SHA 公共验证；pytest、两套 RAG、compileall、治理、Harness SDK/
+tracked-data boundary 与 dry-run 全部成功。
+
+因此 5F-1 正式完成，canonical 交接到 `5F-2-offline-protocol-adapter-spike` 准备状态，等待
+用户再次明确继续。这个公共闭环依然没有安装或运行 Pi，不能作为 adapter parity 或采用证据。

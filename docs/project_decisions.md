@@ -825,3 +825,7 @@ Harness 指标、成本和 adopt/partial-adopt/reject 门槛；不安装 Pi、�
 Runtime Trace 与 ReviewHarness 发布权继续由 RiftCoach adapter/外层强制。任一强制项无法保持，
 5F 应给出 `partial-adopt` 或 `reject`，不能扩大 Pi 权限补救。完整证据见
 `docs/plans/2026-08-17-5f1-pi-source-license-contract-audit.md`。
+
+审计提交 `5901b090b4ee8bccfd0a71ddfa412dec98fba02f` 已由 Actions run `32016852979`
+完成 exact-SHA 公共验证，5F-1 正式关闭。canonical 只交接到 5F-2 准备状态；本次关闭没有
+安装 Pi、创建 sidecar/lockfile、实现 adapter、读取 Key 或调用 Provider。

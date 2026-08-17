@@ -2084,3 +2084,13 @@
   Harness SDK/tracked-data boundary、dry-run 与 diff check 全部通过。
 - 本轮 Pi/Node package 安装、adapter、Key/Provider/Riot I/O 均为 0；下一步只做提交、推送和
   exact-SHA 公共验证，成功后才交接 5F-2。
+
+## 2026-08-17：5F-1 exact-SHA 公共闭环与 5F-2 交接
+
+- 审计提交 `5901b090b4ee8bccfd0a71ddfa412dec98fba02f` 已推送；GitHub Actions run
+  `32016852979` 对该精确 SHA 的 pytest、两套 RAG、compileall、治理、SDK/tracked-data
+  boundary 与 Harness dry-run 全部成功。
+- 5F-1 正式完成，结论保持“允许有条件进入离线 adapter spike”，不提升为 adopt；Pi/Node package
+  安装、adapter、Key/Provider/Riot I/O 仍为 0。
+- canonical 已交接到 `5F-2-offline-protocol-adapter-spike` 准备状态，等待用户再次明确继续；
+  当前没有安装依赖、创建 lockfile/sidecar 或实现协议。
