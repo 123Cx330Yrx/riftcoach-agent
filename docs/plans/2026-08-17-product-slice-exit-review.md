@@ -1,8 +1,8 @@
 # 5P Prompt Program 与早期产品纵向切片退出审查
 
-## 1. 本地结论
+## 1. 最终结论
 
-5P 的本地退出裁决是 **`close-with-deferred-boundaries`**：原设计的十项功能要求已形成一条
+5P 的最终退出裁决是 **`close-with-deferred-boundaries`**：原设计的十项功能要求已形成一条
 真实可运行、可测试、可复读的本地同步产品切片，没有发现必须留在 5P 修补的结构性代码缺口。
 
 这里的“可运行”有非常具体的含义：一个严格 HTTP 请求可以经过真实的产品编译、Prompt Program
@@ -11,7 +11,8 @@
 内部产品控制链不是手填结果，也不是 mock 掉所有层。
 
 这里的“关闭”不表示真实模型质量、生产 API、数据库、Session/Memory、鉴权、SSE、前端或公网
-部署已经完成。5P-6 的 exact-SHA 公共 CI 成功前，本结论仍是本地结论，canonical 保持 in progress。
+部署已经完成。退出审查提交 `8c8acc6911209e645cfaee18bd40870f78d8704f` 已由 GitHub Actions
+run `32010604551` 完成 exact-SHA 公共验证，因此 5P-6 与整个 5P 正式关闭。
 
 逐项证据见 `docs/plans/2026-08-17-product-slice-exit-matrix.md`。
 
@@ -220,10 +221,8 @@ receipt/query 后返回。只有外部 Riot/Provider 用 Fake/fixture，因而�
 本地审查没有发现 5P 结构性缺口，因此不新增产品代码。正确的关闭顺序是：
 
 ```text
-5P-6 local exit review
-→ commit / push
-→ exact-SHA GitHub Actions success
-→ final state reconciliation
+5P-6 exit review `8c8acc6`
+→ Actions `32010604551` success
 → 5P complete
 → 5F-entry-design（只交接，不自动实施）
 ```

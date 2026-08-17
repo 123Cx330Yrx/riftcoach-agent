@@ -777,3 +777,14 @@ FastAPI 0.141.1 TestClient 对 httpx 的上游迁移提示，不改变本轮合�
 `884 passed, 1 warning, 110 subtests passed`，两套 RAG 与全部门禁通过，外部 I/O 为 0。
 5P-6 在本退出审查提交获得 exact-SHA 公共 CI 前仍为 in progress；成功后才正式关闭 5P，并只
 交接到 `5F-entry-design`，不自动实施第三方 Runtime 对照。
+
+## 5P-6 exact-SHA 公共闭环与 5F 交接（2026-08-17）
+
+退出审查提交 `8c8acc6911209e645cfaee18bd40870f78d8704f` 已由 GitHub Actions run `32010604551`
+完成 exact-SHA 公共验证；pytest、RAG、compileall、治理、SDK/tracked-data boundary 与 Harness
+dry-run 全部成功。5P-6 与整个 5P 正式关闭，裁决保持 `close-with-deferred-boundaries`。
+
+canonical 只交接到 `5F-entry-design` 准备状态。5F 仍是一个独立的 Runtime 采用实验设计门：
+后续将用同一受限产品切片审计自建 Runtime 与 Pi/Claude Agent SDK 的语义覆盖、迁移成本、可观测性、
+失败安全、延迟/成本和停止条件；在用户再次明确继续前不接入 SDK、不切换 Runtime、不调用真实
+Provider，也不进入阶段 6。

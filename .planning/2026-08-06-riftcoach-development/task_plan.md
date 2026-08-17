@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 8 - `5P-6-product-slice-evaluation-exit-review` is in progress
+Phase 8 - `5F-entry-design` is the next preparation checkpoint after completed 5P
 
 ## Phases
 
@@ -200,29 +200,34 @@ Phase 8 - `5P-6-product-slice-evaluation-exit-review` is in progress
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
   实验仍属于 5F，Prompt Program 属于 5P。
 
-### Phase 8 - 5P Prompt Program V1 与早期产品纵向切片
+### Phase 8 - 5F-entry-design（5P 已完成后的准备检查点）
 
 - Status: in_progress
-- `5P-entry-design` 与 5P-1 至 5P-4 已公开完成；
+- 5P Prompt Program V1 与早期产品纵向切片已完成；5P-6 退出审查以
+  `8c8acc6` / Actions `32010604551` 完成 exact-SHA 公共闭环。
+- canonical 只停在 `5F-entry-design` 准备状态；等待用户明确继续后，才审计自建 Runtime 与
+  Pi / Claude Agent SDK 的同切片对照、采用指标、成本和停止条件。本计划不自动实施 SDK。
+- `5P-entry-design` 与 5P-1 至 5P-6 已公开完成；
 - 5P-4 immutable receipt/store、strict query 与 Application receipt 接缝已由 `932a863` / Actions
   `32002994441` 完成 exact-SHA 公共验证；5P-5 薄 Adapter 与 no-I/O 纵向切片又由 `6d1e5b0` /
   Actions `32005648179` 完成 exact-SHA 公共验证；
 - 5P-5 薄 FastAPI Adapter 与 no-I/O 纵向切片已由 `6d1e5b0` / Actions `32005648179` 完成
   exact-SHA 公共验证并正式关闭；
-- 5P-6 已完成本地十项功能 exit matrix、初学者 exit review 和比例/完整门禁；本地裁决为
-  `close-with-deferred-boundaries`，当前等待退出审查提交的 exact-SHA 公共闭环；
+- 5P-6 已完成十项功能 exit matrix、初学者 exit review 和比例/完整门禁；裁决为
+  `close-with-deferred-boundaries`，提交 `8c8acc6` / Actions `32010604551` exact-SHA 公共成功；
 - 入口审计确认 5P 同时承担 Prompt Program V1 与早期产品切片，不能缩成单纯 FastAPI；
 - ADR-0032 选择版本化 Prompt Program/Catalog 和 drift gate，复用既有 component fingerprint；
 - ADR-0033 选择薄 FastAPI Adapter + Application Service + 现有 AgentRuntime/Harness；
 - 5P 内部固定为 5P-1 产品合同/typed compiler、5P-2 Prompt Program/composition、
   5P-3 domain/application service、5P-4 receipt/query、5P-5 FastAPI、5P-6 exit review；
-- 本设计批不安装依赖、不实现产品代码、不读取 Key、不调用 Riot/Provider、不进入 5F。
+- 5P 产品切片本身不读取 Key、不调用 Riot/Provider、不进入阶段 6；5F 采用实验仍需单独设计和
+  用户明确继续。
 - entry design 提交 `49841ec` 已通过 Actions `31985199623` exact-SHA 公共 CI；
 
 ## Next Step
 
-`5P-6-product-slice-evaluation-exit-review`：提交、推送本地退出审查并验证 exact-SHA
-GitHub Actions；成功后再同步最终状态并只交接到 `5F-entry-design`，本轮不实施 5F 或阶段 6。
+`5F-entry-design`：等待用户再次明确继续后，先设计 Pi / Claude Agent SDK 的同切片采用实验；
+本轮不实施 SDK、切换 Runtime、调用真实 Provider 或进入阶段 6。
 
 ## 5P-6 Exit Review Checklist
 
@@ -230,7 +235,7 @@ GitHub Actions；成功后再同步最终状态并只交接到 `5F-entry-design`
 - [completed] 建立 5P-1 至 5P-5 源码/测试/public-CI exit matrix
 - [completed] 运行聚焦、相邻、完整回归与全部本地门禁
 - [completed] 形成退出结论、限制、教学/面试表述并同步本地持久状态
-- [in_progress] 提交、推送和 exact-SHA CI；只交接到 5F，不自动实现
+- [completed] 提交、推送和 exact-SHA CI；只交接到 5F，不自动实现
 
 ## 5P-5 Implementation Checklist
 

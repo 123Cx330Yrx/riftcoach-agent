@@ -2042,3 +2042,12 @@
   `121 passed, 1 warning`、相邻 `166 passed`、完整 `884 passed, 1 warning, 110 subtests passed`
   与两套 RAG/compileall/安全/治理/dry-run 门禁通过，外部 I/O 为 0。
 - 当前仍停在 5P-6，只待提交、推送和 exact-SHA 公共 CI；成功前不正式关闭 5P，不进入 5F。
+
+## 2026-08-17：5P-6 exact-SHA 公共闭环与 5F 交接
+
+- 退出审查提交 `8c8acc6911209e645cfaee18bd40870f78d8704f` 已推送；Actions run `32010604551`
+  对 exact SHA 全部门禁成功。
+- 5P-6 与整个 5P 正式完成，四条进度线已保持分离：本地产品代码/理解与公共证据闭环，真实
+  Provider 领域质量和正式部署仍未提升。
+- canonical 当前为 `5F-entry-design` 准备状态，等待用户再次明确继续；不自动实施 Pi/Claude
+  Agent SDK、模型切换、真实 Provider 或阶段 6。

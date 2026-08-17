@@ -1517,3 +1517,14 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   Provider、SQL/Memory/SSE/鉴权/前端/部署等保持 deferred/unknown。
 - `CURRENT`：5P-6 仍 in progress，只待退出审查提交、推送和 exact-SHA 公共 CI；成功前不正式
   关闭 5P，不交接或实施 5F。
+
+### 2026-08-17：5P-6 exact-SHA 公共闭环与 5F 交接
+
+- `PUBLIC-VERIFIED`：退出审查提交 `8c8acc6911209e645cfaee18bd40870f78d8704f` 的 Actions run
+  `32010604551` completed/success；pytest、两套 RAG、compileall、governance、SDK/tracked-data
+  boundary 与 Harness dry-run 全部通过。
+- `CLOSED`：5P-6 Product Slice Evaluation & Exit Review 与整个 5P 正式完成；最终裁决为
+  `close-with-deferred-boundaries`，真实 Provider 领域质量、生产 API/部署、安全和后续能力仍
+  按矩阵保持 deferred/unknown。
+- `HANDOFF`：canonical 唯一下一检查点为 `5F-entry-design` 准备状态；等待用户再次明确继续，
+  不自动实施 Pi/Claude Agent SDK、模型切换、真实 Provider 或阶段 6。

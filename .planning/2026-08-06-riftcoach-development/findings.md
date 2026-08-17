@@ -2081,6 +2081,16 @@
 - 本地 `close-with-deferred-boundaries` 只证明本地同步产品纵切面；真实 Riot、模型 Coach 质量、
   生产容量/成本和公网安全仍是 deferred/unknown，不能由 884 项回归反推。
 
+## 2026-08-17：5P-6 exact-SHA 公共闭环
+
+- 退出审查提交 `8c8acc6911209e645cfaee18bd40870f78d8704f` 已由 Actions run `32010604551`
+  完成 exact-SHA 公共验证；pytest、两套 RAG、compileall、治理、SDK/tracked-data boundary
+  与 Harness dry-run 全部通过。
+- 5P-6 与整个 5P 正式关闭，最终裁决为 `close-with-deferred-boundaries`；这只关闭本地产品
+  纵向切片的证据审查，不提升真实 Provider、生产部署或公网安全成熟度。
+- canonical 只交接到 `5F-entry-design` 准备状态；Pi/Claude Agent SDK 仍需用户再次明确后，
+  以同一产品切片做采用实验设计，不能在交接时自动接入。
+
 ## 2026-08-17：5P-4 本地实现发现
 
 - `api_run_receipt.json` 使用同目录临时文件 + flush/fsync + atomic create-if-absent hard link；这在

@@ -1,4 +1,4 @@
-# 5P-6 Product Slice Exit Matrix（本地退出审计）
+# 5P-6 Product Slice Exit Matrix（最终退出审计）
 
 > 这张矩阵逐项回答“5P 原来承诺了什么、代码在哪里、测试证明了什么、公共证据在哪里、
 > 仍有什么限制”。`Public` 表示对应实现已由精确提交 SHA 的 GitHub Actions 验证；
@@ -39,8 +39,8 @@
 | Q-04 | 资源有界 | 5P 总设计 §8/§16 | count 5—20；Manifest-derived context/iteration/tool/deadline policy；同步单次用例 | product bounds、policy projection、Runtime budget/deadline 回归 | 5P-1 + 既有 5D/5E Actions | 没有 HTTP 并发上限、限流、p50/p95 或 SLO | Public for local V1；生产容量 Deferred |
 | Q-05 | 文件结果不可覆盖并按真实 bytes 验证 | 5P 总设计 §13/§16 | immutable receipt、Trace/Artifact SHA-256 与严格复读 | store atomicity、duplicate write、tampering tests | `932a863` / `32002994441` | Trace 与 receipt 之间仍有 crash gap | Public；满足本地证据完整性，恢复 Deferred |
 | Q-06 | Prompt 变更可追踪且漂移即拒绝 | ADR-0032 | Program manifest/self digest/component fingerprints/verified identity | Prompt Program drift matrix | `0a9651f` / `31988837293` | 尚无 Prompt 效果消融或真实模型质量分 | Public provenance；质量 Unknown |
-| Q-07 | 本地回归与知识检索质量门可复现 | 5P 总设计 §17 | pytest、RAG development/independent holdout、compileall、governance、dry-run | 5P 聚焦 `121 passed, 1 warning`；Runtime/Harness 相邻 `166 passed`；完整 `884 passed, 1 warning, 110 subtests passed`；两套 RAG 指标均满足门槛 | 既有 5P-5 Actions；5P-6 exact-SHA 待本退出审查提交验证 | 唯一 warning 是 FastAPI TestClient 的上游 httpx 迁移提示；RAG gate 不是模型报告质量 | Local pass；待 5P-6 公共闭环 |
-| Q-08 | 公开开源证据与本地事实对应 | RQ-008/RQ-012/RQ-014 | 每个子阶段独立 commit + exact-SHA CI；状态分四条进度线 | Actions 状态与提交 SHA 复读 | entry `49841ec/31985199623`；5P-1 `57bd36a/31987501935`；5P-2 `0a9651f/31988837293`；5P-3 `4bd5c83/31998739178`；5P-4 `932a863/32002994441`；5P-5 `6d1e5b0/32005648179` | GitHub 公开通过不等于公网产品部署 | Public；5P-6 自身仍待 exact-SHA |
+| Q-07 | 本地回归与知识检索质量门可复现 | 5P 总设计 §17 | pytest、RAG development/independent holdout、compileall、governance、dry-run | 5P 聚焦 `121 passed, 1 warning`；Runtime/Harness 相邻 `166 passed`；完整 `884 passed, 1 warning, 110 subtests passed`；两套 RAG 指标均满足门槛 | `8c8acc6` / Actions `32010604551` | 唯一 warning 是 FastAPI TestClient 的上游 httpx 迁移提示；RAG gate 不是模型报告质量 | Public；5P-6 门禁闭环 |
+| Q-08 | 公开开源证据与本地事实对应 | RQ-008/RQ-012/RQ-014 | 每个子阶段独立 commit + exact-SHA CI；状态分四条进度线 | Actions 状态与提交 SHA 复读 | entry `49841ec/31985199623`；5P-1 `57bd36a/31987501935`；5P-2 `0a9651f/31988837293`；5P-3 `4bd5c83/31998739178`；5P-4 `932a863/32002994441`；5P-5 `6d1e5b0/32005648179`；5P-6 `8c8acc6/32010604551` | GitHub 公开通过不等于公网产品部署 | Public；5P 证据链闭环 |
 
 ## 4. 明确 deferred / unknown 的能力
 
@@ -57,7 +57,7 @@
 | D-09 | Pi / Claude Agent SDK 采用 | RQ-016；5P 总设计 §19 | 未开始 | 尚未做同切片对照 | 不适用 | 不知道收益能否覆盖迁移/依赖成本 | 5F 独立 entry design；5P 不替其下结论 |
 | D-10 | 生产成本、p50/p95、RPS、可用性 SLO | 5P 总设计 §16 | 未测量 | Fake/no-I/O 数字不得代替 | 不适用 | 没有真实业务流量 | 阶段 6/部署后观测 |
 
-## 5. 本地退出裁决
+## 5. 最终退出裁决
 
 - 十项功能要求均有实现、直接测试和既有 exact-SHA 公共证据；没有发现必须留在 5P
   修复的结构性产品代码缺口。
@@ -66,5 +66,6 @@
   `884 passed, 1 warning, 110 subtests passed`，两套 RAG、compileall、Harness boundary、
   tracked secret/run-data、dry-run 与 governance 均通过；真实 Key/Riot/Provider/held-out
   调用为 0。
-- 本地结论为 **`close-with-deferred-boundaries`**。在 5P-6 退出提交获得 exact-SHA 公共 CI
-  前，5P-6 仍保持 in progress；公共成功后才可正式关闭 5P 并只交接到 5F entry design。
+- 最终结论为 **`close-with-deferred-boundaries`**。退出审查提交
+  `8c8acc6911209e645cfaee18bd40870f78d8704f` 已由 GitHub Actions run `32010604551`
+  完成 exact-SHA 公共验证；5P-6 与整个 5P 正式关闭，只交接到 `5F-entry-design`。

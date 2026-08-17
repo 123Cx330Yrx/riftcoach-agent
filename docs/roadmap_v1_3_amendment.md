@@ -213,7 +213,7 @@ OP.GG MCP
 5P-3 Domain/Application     已完成；`4bd5c83` / Actions `31998739178` exact-SHA 公共成功
 5P-4 Receipt/Query          已完成；`932a863` / Actions `32002994441` exact-SHA 公共成功
 5P-5 Thin FastAPI           已完成；`6d1e5b0` / Actions `32005648179` exact-SHA 公共成功，24 API tests、完整 `884 passed, 110 subtests passed`
-5P-6 Product Slice Exit     本地审查完成；十项功能/NFR/deferred 矩阵与初学者 review 通过，等待 exact-SHA 公共闭环
+5P-6 Product Slice Exit     已完成；`8c8acc6` / Actions `32010604551` exact-SHA 公共成功，裁决 `close-with-deferred-boundaries`
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -343,9 +343,10 @@ exact-SHA 公开冻结。Fresh-Gate 4 入口又由 `ed3cc94` / Actions `31863341
 `932a863` / Actions `32002994441` 完成 exact-SHA 公共验证。该证据仍不代表真实 Riot/Provider
 质量、SQL/恢复或生产部署已经完成。5P-5 又完成薄 FastAPI Adapter、OpenAPI/错误映射与真实
 Runtime/Harness/RAG no-I/O TestClient 纵向切片，并由 `6d1e5b0` / Actions `32005648179` 完成
-exact-SHA 公共验证。5P-6 现已在本地完成十项功能、分层/NFR、安全/no-I/O 与 deferred 边界
-审查，裁决为 `close-with-deferred-boundaries`，只待本退出审查自身的 exact-SHA 公共闭环；
-这些证据仍不能被说成公网部署或真实模型质量。
+exact-SHA 公共验证。5P-6 又完成十项功能、分层/NFR、安全/no-I/O 与 deferred 边界审查，裁决为
+`close-with-deferred-boundaries`，并由 `8c8acc6` / Actions `32010604551` 完成 exact-SHA 公共
+闭环；这些证据仍不能被说成公网部署或真实模型质量。整个 5P 已完成，canonical 只交接到
+`5F-entry-design` 准备状态。
 
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动
 路由暂不作为连续任务；它们要等 Skill 和 Agent Loop 形成真实调用场景后，按同一

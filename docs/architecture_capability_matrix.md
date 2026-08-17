@@ -28,12 +28,12 @@
 | A06 | 最小 Agent Loop | Assistant ToolCall、Tool Observation、预算和停止原因；多 ToolCall development TDD 已固定整批数量/白名单/重复零副作用预检、顺序执行、ID/Usage/迭代/deadline 语义 | 阶段 5A | 5E 统一 Runtime；真正并发仅由新的延迟 Bad Case 决定 | Fake Provider + 真实知识工具、重复调用、越权、超预算和批次零副作用测试 | 已完成 |
 | A07 | Skill Contract | `recent-form-review` 与 `single-match-review` 均有 Manifest、SKILL.md、Pydantic I/O、工具白名单和预算 | 阶段 5B 基础 + 5C-5 前第二个真实合同 | 阶段 6 加入 Memory 输入，阶段 7 加入 Meta Skill；真实内部 Skill 出现后才设计调用模式 | 坏 Manifest、Schema、权限漂移、预算和发布边界测试 | 已完成 |
 | A08 | Skill Router | 5C-1 至 5C-6 与退出复核均完成；development 23/23、holdout 11/12；selected 决策锁定 Skill name/version；ADR-0010 暂缓 LLM fallback | 阶段 5C | 优先类型化入口/澄清；只有新鲜失败族与结构化输出、质量、成本、故障证据成立才重开模型实验 | 正例、负例、歧义、未支持、误路由、版本快照、拒绝测试、退出复核和 ADR | 已完成 |
-| A09 | Prompt/Context Engineering | Harness Prompt V0、SKILL.md 指令；5D 已完成 trust-typed Context/预算与 Evaluation 1.1；5E Trace 有 prompt profile 字段；5P 已用 verified Prompt Program identity、secure factory 和本地 exit matrix 绑定实际组件 | 5D-5P | 阶段 6-8 再加入 Memory、Meta、Compaction 与隔离上下文 | Prompt 版本、组件摘要、上下文优先级、Token 预算、漂移拒绝、实际 factory 类型、注入、回归和消融测试 | 部分完成 |
+| A09 | Prompt/Context Engineering | Harness Prompt V0、SKILL.md 指令；5D 已完成 trust-typed Context/预算与 Evaluation 1.1；5E Trace 有 prompt profile 字段；5P 已用 verified Prompt Program identity、secure factory 和 exit matrix 绑定实际组件 | 5D-5P | 阶段 6-8 再加入 Memory、Meta、Compaction 与隔离上下文 | Prompt 版本、组件摘要、上下文优先级、Token 预算、漂移拒绝、实际 factory 类型、注入、回归和消融测试 | 部分完成 |
 | A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral 合同；Zhipu 与 DeepSeek V4 Pro 均真实通过最小协议；DeepSeek V3 首请求规范化失败且当前候选已关闭；新实验结果可携带 allowlisted provider error detail | 阶段 5D | G53 按 thinking/structured/tool 新合同隔离审计（API 可用后）；宽泛错误不用于猜根因 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移、Thinking 预算、调用预算、可达性和修复上限测试 | 部分完成 |
 | A11 | AgentRuntime V1 | 5D 控制链及 5E-1 至 5E-4 均已公开完成；两个真实 Skill 共用同步 `run()`、进程内 `stream()`、typed output、完整 Trace/Usage、安全失败映射与 exit matrix | 阶段 5D-5E | 阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage、终止原因与退出审查 | 已完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有；DeepSeek V4 Pro 只通过最小协议，当前 V3 领域候选已关闭；Flash 未测试；尚无领域/产品准入、任务级选择或自动降级 | 5D 完成候选采用决策；GLM-5.2 仅作开发基线；模型分层为 5P 后横向采用门，默认等待阶段 6 真实业务证据 | G53 deferred；未来仍按 ADR-0019 比较模型分层，5F 只做 Runtime SDK 实验 | 新鲜同任务评测、故障降级、unsafe publication、成本和 p50/p95 延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
-| A14 | API 与任务持久化 | 5P-1 至 5P-5 已公开完成严格产品 compiler、Prompt Program、Application、receipt/query 与薄 FastAPI no-I/O 纵向切片；5P-6 本地 exit review 已通过、等待公共闭环；尚无真实外部 Provider/API 部署 | 阶段 5P 提供本地同步切片，阶段 6 加 SQL | 阶段 8 扩展恢复与运行治理 | receipt immutability、路径/Schema/SHA/终态交叉校验、Application 顺序/错误、四端点/OpenAPI/no-I/O；后续 HTTP 幂等、并发、鉴权、隔离和恢复测试 | 部分完成 |
+| A14 | API 与任务持久化 | 5P-1 至 5P-5 已公开完成严格产品 compiler、Prompt Program、Application、receipt/query 与薄 FastAPI no-I/O 纵向切片；5P-6 exit review 由 `8c8acc6/32010604551` 完成公共闭环；尚无真实外部 Provider/API 部署 | 阶段 5P 提供本地同步切片，阶段 6 加 SQL | 阶段 8 扩展恢复与运行治理 | receipt immutability、路径/Schema/SHA/终态交叉校验、Application 顺序/错误、四端点/OpenAPI/no-I/O；后续 HTTP 幂等、并发、鉴权、隔离和恢复测试 | 部分完成 |
 | A15 | 标准 MCP 与动态 Meta | 内部 Tool Runtime，不冒充 MCP | 阶段 7 | OP.GG、官方补丁等通过领域 Adapter 分层 | initialize、tools/list、tools/call、断线和版本边界测试 | 已规划 |
 | A16 | Multi-Agent 与 DAG | 当前不需要 | 阶段 8 Advanced | 仅在独立上下文、权限和并行收益成立时采用 | Bad Case、对照、消融、成本和 ADR | 按证据采用 |
 
@@ -234,6 +234,7 @@ Actions `31998739178` 完成 exact-SHA 公共验证；5P-4 receipt/query 又由 
 `32005648179` 完成 exact-SHA 公共验证，24 项 API 聚焦与 `884 passed, 110 subtests passed`
 已公开通过；Provider I/O 仍为 0，完整生产 API/部署仍属后续阶段。5P-6 已在本地用原设计十项
 功能、分层/NFR、安全/资源和 deferred/unknown matrix 复核全链，裁决为
-`close-with-deferred-boundaries`；退出审查自身仍待 exact-SHA 公共闭环，因此尚未正式交接 5F。
+`close-with-deferred-boundaries`；`8c8acc6` / Actions `32010604551` 已完成退出审查 exact-SHA
+公共闭环，整个 5P 正式完成并只交接到 `5F-entry-design` 准备状态。
 5F、阶段 6/8 的 SDK 对照、SQL/Session/Memory/SSE、持久事件、
 cancel/resume、DAG 和 Multi-Agent 边界不变。
