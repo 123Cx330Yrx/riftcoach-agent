@@ -1370,3 +1370,21 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   测试边界均公开冻结，但没有 Prompt Program/FastAPI 产品代码或真实模型质量证据。
 - `CURRENT`：canonical 切换到 `5P-1-product-contract-compiler` 准备状态；按 RQ-040 等待用户
   再次明确继续，不自动实现 5P-1 或进入 5P-2/5F。
+
+### 2026-08-17：5P-1 Product Contract Compiler 本地实现
+
+- `IMPLEMENTED-LOCAL`：新增 strict/frozen/extra-forbid recent 产品 DTO；客户端只控制 Riot ID、
+  count、queue 与 focus，不能提交 run ID、Skill、Provider、Prompt、policy、路径或 digest。
+- `TRUSTED-COMPILATION`：typed recent 入口从当前 Catalog 绑定
+  `recent-form-review@0.2.0`，只生成 `entrypoint:reviews.recent` 机器证据，不调用自然语言 Router；
+  服务器生成 run ID，并复用 Harness 规范字节编码形成 Summary/report Artifact binding。
+- `POLICY`：Skill Manifest 映射 iterations/tool calls/timeout/context/quality/fallback，服务器固定
+  Runtime policy version、event budget 与 V1 revision 上限；动态 Manifest 快照测试证明不是碰巧
+  硬编码当前数值。
+- `FAIL-CLOSED`：Catalog 缺失/输入合同漂移在 compiler 拒绝；payload/digest 或编译后 Skill version
+  漂移继续由既有 `SkillExecutionBoundary` 拒绝，没有建立第二套执行安全边界。
+- `VERIFIED-LOCAL`：产品聚焦 `32 passed`，相邻 `63 passed`，跨层 `213 passed`，完整回归
+  `796 passed, 110 subtests passed`；两套 RAG、compileall、Harness SDK/tracked-data boundary、
+  dry-run 与治理门禁通过。
+- `NO-IO`：本批 Key/Riot/Provider/held-out I/O 为 0；Prompt Program、Application Service、
+  receipt/query 和 FastAPI 未实现。当前仍需提交、推送与 exact-SHA 公共 CI，成功前不关闭 5P-1。

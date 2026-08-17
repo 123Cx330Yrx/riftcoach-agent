@@ -638,3 +638,19 @@ Revision 资产绑定。因此本次不把 5P 简化成“加 FastAPI”。
 入口设计提交 `49841ec44832875e65b17770557415113e67b1db` 随后由 GitHub Actions run
 `31985199623` 完成 exact-SHA 公共验证。5P entry design 正式完成，canonical 只切换到
 `5P-1-product-contract-compiler` 准备状态；按 RQ-040 不在本轮自动实现。
+
+## 5P-1 Product Contract Compiler 本地裁决（2026-08-17）
+
+5P-1 采用单一 `app.product` 编译边界，而不是让未来 HTTP handler 填写 Runtime 内部合同。
+产品 DTO 只允许 Riot ID、count、queue、focus；Riot ID 使用最后一个 `#` 拆分和宽松的本地
+传输安全上限，不冒充 Riot 账号规则的完整副本。
+
+typed recent 入口不会重新调用自然语言 Router：它从 strict Catalog 读取
+`recent-form-review` 当前 name/version，以 `entrypoint:reviews.recent` 形成合法 selected
+evidence。Skill Manifest 决定业务预算和质量门，服务器 V1 固定 policy version、event budget
+和 revision 上限；客户端不能覆盖。Summary/report 使用既有 Harness 编码与 SHA-256 绑定，
+Runtime 前仍由 `SkillExecutionBoundary` 重算并检查 Catalog/version/content 漂移。
+
+本地产品/相邻/跨层/完整回归及两套 RAG、编译、安全、dry-run、治理门禁已通过；本批没有
+Key、Riot/Provider/held-out I/O。该结果不表示 Prompt Program、Application Service、FastAPI 或
+真实 Coach 质量完成；5P-1 仍等待 exact-SHA 公共 CI，成功前不进入 5P-2。

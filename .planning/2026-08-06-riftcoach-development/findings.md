@@ -1936,3 +1936,25 @@
 - canonical 治理枚举只接受 `in_progress/paused/complete/blocked`；“ready”只能写在解释文本，不能
   成为机器状态。活动计划历史结构还包含不止一个 Next Step heading，治理读取第一节，因此每次
   checkpoint 切换必须搜索并统一全部同名动态节，不能只补尾部详细账本。
+
+## 2026-08-17：5P-1 产品合同与编译器接缝审计
+
+- 用户再次明确“继续”后，canonical 唯一授权为 `5P-1-product-contract-compiler`；恢复脚本无
+  未同步上下文，治理预检通过，起始 HEAD/origin 均为 `a2c3ba7` 且工作树干净。
+- 产品 DTO 只允许 Riot ID、count、queue、focus；Riot ID 的本地长度/控制字符约束只负责传输
+  安全和资源有界，不冒充 Riot 账号规则的完整副本。
+- typed recent endpoint 应直接从 Catalog 绑定 `recent-form-review` 当前版本，以
+  `entrypoint:reviews.recent` 作为机器证据；不得调用自然语言 Router 或制造中文关键词请求。
+- 当前 Runtime 已在执行时逐字段复核 Manifest budget/quality policy，但生产侧尚无同源 policy
+  compiler；5P-1 将 Manifest 六个业务字段与服务器固定的 policy version/event budget/revision
+  上限分层映射，客户端不能覆盖任一项。
+- `SkillInputArtifactBinding.from_content()` 已提供 Harness 同源 JSON/text 编码与 SHA-256；新编译器
+  应复用它，并继续让 `SkillExecutionBoundary` 发现内容、版本或 Catalog 漂移，不建立第二套摘要。
+- 最小实现放入新的 `app.product` 边界；Application Service、Prompt Program、FastAPI、Riot/
+  Provider I/O 和文件查询仍分别留在 5P-2 至 5P-5。
+- 产品请求中的 Riot ID/count/queue 是上游 Summary 收集参数；compiler 位于 Summary/报告形成后，
+  因此只有 focus 进入 `RecentFormReviewInput`。这不是丢字段：5P-3 Application Service 会消费
+  前三者，5P-1 只负责把已形成的事实产物编译进 Runtime。
+- 为避免“测试只碰巧等于当前 Manifest”，policy 测试会修改 Catalog 中的合法 budget/quality
+  快照并验证 Runtime policy 同步变化，同时确认 policy version/event budget/max revisions 保持
+  服务器固定；由此区分 Manifest-derived 与硬编码当前数值。

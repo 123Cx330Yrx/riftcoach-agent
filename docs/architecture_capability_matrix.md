@@ -33,7 +33,7 @@
 | A11 | AgentRuntime V1 | 5D 控制链及 5E-1 至 5E-4 均已公开完成；两个真实 Skill 共用同步 `run()`、进程内 `stream()`、typed output、完整 Trace/Usage、安全失败映射与 exit matrix | 阶段 5D-5E | 阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage、终止原因与退出审查 | 已完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有；DeepSeek V4 Pro 只通过最小协议，当前 V3 领域候选已关闭；Flash 未测试；尚无领域/产品准入、任务级选择或自动降级 | 5D 完成候选采用决策；GLM-5.2 仅作开发基线；模型分层为 5P 后横向采用门，默认等待阶段 6 真实业务证据 | G53 deferred；未来仍按 ADR-0019 比较模型分层，5F 只做 Runtime SDK 实验 | 新鲜同任务评测、故障降级、unsafe publication、成本和 p50/p95 延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
-| A14 | API 与任务持久化 | CLI 和文件型 Run Store；5P entry 已以 ADR-0033 设计薄 FastAPI/Application Service 与 body-free receipt/query，但尚无 API 代码 | 阶段 5P 提供本地同步切片，阶段 6 加 SQL | 阶段 8 扩展恢复与运行治理 | API 契约、路径/摘要完整性、错误映射；幂等、并发、鉴权、隔离和恢复后续测试 | 设计中 |
+| A14 | API 与任务持久化 | CLI 和文件型 Run Store；5P-1 已本地实现严格 recent 产品 DTO 与 trusted Runtime compiler，但 FastAPI/Application Service/receipt 尚无代码 | 阶段 5P 提供本地同步切片，阶段 6 加 SQL | 阶段 8 扩展恢复与运行治理 | API 契约、路径/摘要完整性、错误映射；幂等、并发、鉴权、隔离和恢复后续测试 | 部分完成 |
 | A15 | 标准 MCP 与动态 Meta | 内部 Tool Runtime，不冒充 MCP | 阶段 7 | OP.GG、官方补丁等通过领域 Adapter 分层 | initialize、tools/list、tools/call、断线和版本边界测试 | 已规划 |
 | A16 | Multi-Agent 与 DAG | 当前不需要 | 阶段 8 Advanced | 仅在独立上下文、权限和并行收益成立时采用 | Bad Case、对照、消融、成本和 ADR | 按证据采用 |
 
@@ -226,6 +226,7 @@ missing Usage、selected-only request、统一同步 `run()` 与两阶段 termin
 `close-with-deferred-boundaries` 退出结论已由 `3d36561` / Actions `31962252231` 完成
 exact-SHA 公共验证。整个 5E 正式完成。RQ-040 已恢复 `5P-entry-design`；ADR-0032/0033 已
 设计 Prompt Program V1 与薄产品 API/Application Service，并由 `49841ec` / Actions
-`31985199623` exact-SHA 公开验证；尚未实现代码或 Provider I/O。当前切到 5P-1 准备状态。
+`31985199623` exact-SHA 公开验证；5P-1 产品合同/compiler 已本地完成并通过完整门禁，等待
+exact-SHA 公共 CI。Prompt Program/FastAPI 尚未实现，Provider I/O 仍为 0。
 5F、阶段 6/8 的 SDK 对照、SQL/Session/Memory/SSE、持久事件、
 cancel/resume、DAG 和 Multi-Agent 边界不变。

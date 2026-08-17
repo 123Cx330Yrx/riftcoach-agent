@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 8 - `5P-1-product-contract-compiler` 准备状态
+Phase 8 - `5P-1-product-contract-compiler` 本地完成，等待公共 CI
 
 ## Phases
 
@@ -203,7 +203,7 @@ Phase 8 - `5P-1-product-contract-compiler` 准备状态
 ### Phase 8 - 5P Prompt Program V1 与早期产品纵向切片
 
 - Status: tracking
-- 用户已明确继续，RQ-039 的暂停条件已满足；`5P-entry-design` 正在收尾，未进入实现；
+- `5P-entry-design` 已公开完成；5P-1 已本地实现并通过全部门禁，等待 exact-SHA 公共 CI；
 - 入口审计确认 5P 同时承担 Prompt Program V1 与早期产品切片，不能缩成单纯 FastAPI；
 - ADR-0032 选择版本化 Prompt Program/Catalog 和 drift gate，复用既有 component fingerprint；
 - ADR-0033 选择薄 FastAPI Adapter + Application Service + 现有 AgentRuntime/Harness；
@@ -214,9 +214,9 @@ Phase 8 - `5P-1-product-contract-compiler` 准备状态
 
 ## Next Step
 
-`5P-1-product-contract-compiler / ready`：entry design 已公开闭环；等待用户再次明确继续，
-随后只开展产品请求、typed Skill selection、Artifact binding 与 Manifest-derived policy 的
-初学者讲解和本地 TDD，不安装 FastAPI、不进入 5P-2。
+`5P-1-product-contract-compiler / local_complete`：提交并推送严格产品 DTO、typed selection、
+Artifact binding 与 Manifest-derived policy 实现，验证 exact-SHA 公共 CI；成功后只交接
+5P-2，不安装 FastAPI、不实现 Prompt Program。
 
 ## Decisions Made
 
@@ -593,16 +593,17 @@ Phase 8 - `5P-1-product-contract-compiler` 准备状态
 ### 5P-1 Product Request & Typed Skill/Runtime Compiler
 
 - Status: in_progress
-- 当前仅表示 canonical 准备从这里恢复，尚未开始实现；
+- 用户已再次明确“继续”；本地实现、教学、TDD 与全部门禁完成，等待公开验证；
 - 只建立严格产品请求、trusted typed selection、Artifact binding 与 Manifest-derived policy；
 - 不安装 FastAPI、不实现 Prompt Program/Application Service、不读取 Key、不调用 Riot/Provider；
-- 按 RQ-040 等待用户下一次明确“继续”。
+- TDD 实施计划：`docs/plans/2026-08-17-5p1-product-contract-compiler-implementation.md`；
+- 当前只提交、推送并验证 exact-SHA CI；成功前不得进入 5P-2。
 
 ## 5P-1 恢复说明
 
-`5P-1-product-contract-compiler / ready`：entry design 已公开闭环；等待用户再次明确继续，
-随后只开展产品请求、typed Skill selection、Artifact binding 与 Manifest-derived policy 的
-初学者讲解和本地 TDD，不安装 FastAPI、不进入 5P-2。
+`5P-1-product-contract-compiler / local_complete`：32 项产品聚焦、63 项相邻、213 项跨层、
+完整 `796 passed, 110 subtests passed` 与两套 RAG/安全/编译/治理/dry-run 门禁通过；当前只做
+提交、推送与 exact-SHA 公共 CI，不安装 FastAPI、不进入 5P-2。
 
 本批错误日志：
 

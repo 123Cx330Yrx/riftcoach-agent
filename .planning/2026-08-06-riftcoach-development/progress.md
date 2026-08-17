@@ -1819,3 +1819,51 @@
   “准备状态”，并统一所有 Next Step，不修改产品范围。
 - 修正后 canonical 使用受支持的 `in_progress`，活动计划只保留一个 Next Step 且含精确
   `5P-1-product-contract-compiler`；governance、2 项治理测试和 diff check 重新通过。
+
+## 2026-08-17：开始 5P-1 Product Contract Compiler
+
+- 用户明确“继续”，本轮只恢复并开展 canonical `5P-1-product-contract-compiler`。
+- 按 `AGENTS.md` 顺序复读 canonical、活动计划、需求/路线/能力矩阵、5P 设计/ADR 和相关
+  Skill/Runtime 源码测试；session catchup 无未同步输出。
+- 治理预检通过；起始 `HEAD == origin/main == a2c3ba71cf07373cfbe0d2bd3252ada241e43e97`，
+  工作树干净。
+- 已完成初学者问题/原理/范围/数据流/测试/限制讲解，并新增 TDD 实施计划
+  `docs/plans/2026-08-17-5p1-product-contract-compiler-implementation.md`。
+- 当前尚未写产品代码或测试；Key reads、Riot/Provider calls、held-out executions 均为 0，
+  不进入 5P-2 或安装 FastAPI。
+
+## 2026-08-17：5P-1 首轮 TDD 红灯
+
+- 新增 `tests/test_recent_review_product_compiler.py`，一次覆盖产品 DTO、服务器字段隔离、Riot ID
+  边界、typed selection、Router 零调用、Manifest policy 投影、run ID、Artifact digest、
+  Catalog version drift 和既有 ExecutionBoundary 二次校验。
+- 首次聚焦运行在收集期按预期以 `ModuleNotFoundError: No module named 'app.product'` 红灯；这证明
+  测试没有误命中旧实现，下一步只新增最小 `app.product` 合同和编译器。
+- 红灯前后没有读取 Key、调用 Riot/Provider 或运行 held-out；没有进入 FastAPI/Prompt Program。
+
+## 2026-08-17：5P-1 最小实现与相邻回归
+
+- 新增 `app/product/recent_review.py` 与包导出：严格 frozen/strict/extra-forbid 产品 DTO、最后一个
+  `#` Riot ID 拆分、本地长度/控制字符边界、服务器 run ID、Catalog-backed typed selection、
+  Manifest-derived Runtime policy 和完整 `RuntimeRunRequest` 编译已实现。
+- typed selection 只使用 `entrypoint:reviews.recent` 机器证据；测试把
+  `DeterministicSkillRouter.route()` 替换成必失败函数，仍能完成编译，证明本路径没有重新猜路由。
+- Artifact 继续复用 `SkillInputArtifactBinding.from_content()`；编译结果能通过现有
+  `SkillExecutionBoundary`，篡改 payload/digest 或编译后 Catalog version drift 均被拒绝。
+- 首轮聚焦为 `32 passed`；加强 Manifest 动态映射和服务器字段负例后，产品/Boundary/Runtime
+  相邻为 `63 passed`；更广的 Skill/Router/Context/Compiler/Harness/Runtime 回归为
+  `213 passed`。
+- `app/product` compileall 通过；当前 Key reads、Riot/Provider calls、held-out executions 均为 0。
+  尚未进入完整项目门禁或 5P-2。
+
+## 2026-08-17：5P-1 完整本地门禁
+
+- 完整回归为 `796 passed, 110 subtests passed`。
+- RAG development 的 Recall/MRR/nDCG 为 `1.0`、no-answer FPR 为 `0.0`；独立 4M holdout
+  的 Recall/MRR/nDCG/abstention/citation support 均为 `1.0`，FPR 为 `0.0`。
+- `compileall app scripts tests`、2 项治理测试、Harness SDK boundary、tracked secret/run-data
+  boundary、Harness dry-run 和治理脚本通过。
+- 第一次跨多文件状态补丁把真实中文句首误写成 `current唯一`，`apply_patch` 在上下文校验时
+  原子拒绝、没有部分修改；随后拆成精确小补丁完成 canonical/计划/路线/矩阵/决策同步。
+- 当前 canonical 仍保持 5P-1，状态为本地完成等待公共 CI；下一动作只提交、推送并验证 exact-SHA，
+  不进入 5P-2。本批外部调用仍为 0。
