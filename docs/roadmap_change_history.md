@@ -1790,3 +1790,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   完整通过，不能把首次解释器错误计为产品失败或绿灯。
 - `NO-I/O`：未安装 SQL 依赖、启动 PostgreSQL、读取 Key 或调用 Riot/Provider。
 - `CURRENT`：只待提交、推送与 exact-SHA 公共 CI；成功前 entry design 不关闭。
+
+### 2026-08-17：6A-entry-design exact-SHA 公共闭环
+
+- `VERIFIED-PUBLIC`：提交 `c0b5af0eec1654c35afddb3c8a66b774a233a688` 已由 GitHub Actions run
+  `32041343696` 完成 exact-SHA 公共验证；完整 pytest、两套 RAG、compileall、治理、安全边界和
+  Harness dry-run 全部成功。
+- `CLOSED`：ADR-0038、design、implementation plan 与七批次顺序正式冻结，`6A-entry-design` 完成。
+- `NO-IMPLEMENTATION`：未安装 SQL 依赖、创建 migration、启动 PostgreSQL、实现 Repository/Worker/
+  async API，外部 I/O 为 0。
+- `HANDOFF`：canonical 只交接 `6A-1-postgresql-foundation` 准备状态，等待用户明确继续。

@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 6
 substage_group: "6A"
-current_checkpoint: "6A-entry-design"
+current_checkpoint: "6A-1-postgresql-foundation"
 status: in_progress
-pause_reason: "awaiting 6A entry-design commit, push, and exact-SHA public CI"
+pause_reason: "awaiting explicit user confirmation before starting 6A-1-postgresql-foundation"
 ---
 
 # RiftCoach 当前执行状态
@@ -94,10 +94,11 @@ pause_reason: "awaiting 6A entry-design commit, push, and exact-SHA public CI"
   active task 删除不冒充 cancel。分层测试矩阵也已获确认：纯逻辑/Fake、真实 PostgreSQL migration/
   repository/concurrency、API/Worker、离线产品纵向、安全/生命周期与性能层各自有职责，PostgreSQL CI
   是阻塞门且外部 Provider/Riot 调用为 0。七个 6A 原子实施批次也已获用户确认。ADR-0038、正式设计
-  与实施计划现已本地创建。本地完整回归 `929 passed, 1 warning, 110 subtests passed`、两套 RAG、
-  compileall、Harness dry-run、governance、Secret/run-data 与 SDK boundary 均通过；提交/推送/exact-SHA
-  公共 CI 成功前，`6A-entry-design` 仍未关闭。尚未实现 SQL、Session、Memory、SSE 或阶段 6 产品
-  能力。上一子阶段组
+  与实施计划现已创建。本地完整回归 `929 passed, 1 warning, 110 subtests passed`、两套 RAG、
+  compileall、Harness dry-run、governance、Secret/run-data 与 SDK boundary 均通过；设计提交
+  `c0b5af0eec1654c35afddb3c8a66b774a233a688` 已由 Actions run `32041343696` 完成 exact-SHA 公共
+  验证。`6A-entry-design` 正式关闭，canonical 只交接到 `6A-1-postgresql-foundation` 准备状态。
+  尚未实现 SQL、Session、Memory、SSE 或阶段 6 产品能力。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -227,11 +228,10 @@ pause_reason: "awaiting 6A entry-design commit, push, and exact-SHA public CI"
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6A-entry-design` 执行中；PostgreSQL/polling worker、task/事务/失败、NFR、安全/生命周期、
-  测试矩阵及 6A-1 至 6A-7 原子实施顺序均已用户确认。ADR-0038、完整 design 和 implementation plan
-  已本地创建且全部本地门禁通过；当前只执行提交、推送和 exact-SHA 公共 CI。成功后只交接
-  `6A-1-postgresql-foundation` 准备状态，不自动实施。本检查点不直接实现 SQL、Session、Memory、
-  SSE、鉴权、前端、真实 Provider 或部署。
+- 唯一下一步：`6A-1-postgresql-foundation` 准备状态；等待用户明确继续后，才按已确认计划先教学并
+  以红灯测试建立 SQLAlchemy 2/Alembic/psycopg/PostgreSQL 配置、initial migration 与真实 PostgreSQL
+  CI。本交接不自动安装依赖、启动数据库、实现 Repository/Worker/API、读取 Key、调用 Riot/Provider，
+  也不进入 Session、Memory、SSE、鉴权、前端或部署。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层

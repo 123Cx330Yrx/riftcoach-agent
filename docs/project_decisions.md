@@ -932,6 +932,8 @@ fencing/cancel/resume 留阶段 8。
 - `docs/plans/2026-08-17-6a-fastapi-postgresql-task-model-design.md`
 - `docs/plans/2026-08-17-6a-fastapi-postgresql-task-model-implementation.md`
 
-当前仅本地完成设计资产；SQL 产品代码、Session、Memory、SSE、正式 Auth、前端、外部 Provider/Riot
-I/O 和公网部署均未实现。本地完整回归 `929 passed, 1 warning, 110 subtests passed`，两套 RAG、
-compileall、Harness dry-run、governance 与安全边界通过；entry design 仍待提交与 exact-SHA 公共 CI。
+SQL 产品代码、Session、Memory、SSE、正式 Auth、前端、外部 Provider/Riot I/O 和公网部署均未实现。
+本地完整回归 `929 passed, 1 warning, 110 subtests passed`，两套 RAG、compileall、Harness dry-run、
+governance 与安全边界通过；设计提交 `c0b5af0eec1654c35afddb3c8a66b774a233a688` 又由 Actions run
+`32041343696` 完成 exact-SHA 公共验证。`6A-entry-design` 正式关闭，只交接
+`6A-1-postgresql-foundation` 准备状态。

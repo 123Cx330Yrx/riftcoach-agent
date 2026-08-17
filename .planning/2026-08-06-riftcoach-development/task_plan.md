@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 9 - `6A-entry-design` is in progress under RQ-052; every design section and the 6A-1..6A-7
-sequence are user-confirmed, with ADR/design/implementation assets local pending gates and public CI
+Phase 9 - `6A-1-postgresql-foundation` preparation after `6A-entry-design` completed publicly at
+`c0b5af0eec1654c35afddb3c8a66b774a233a688` / Actions `32041343696`; no 6A-1 implementation yet
 
 ## Phases
 
@@ -243,22 +243,19 @@ sequence are user-confirmed, with ADR/design/implementation assets local pending
   用户明确继续。
 - entry design 提交 `49841ec` 已通过 Actions `31985199623` exact-SHA 公共 CI；
 
-### Phase 9 - 6A-entry-design preparation
+### Phase 9 - 6A-1-postgresql-foundation preparation
 
 - Status: in_progress
-- Pause: local gates passed; awaiting commit, push, and exact-SHA public CI for the entry design.
+- Pause: awaiting explicit user confirmation before starting 6A-1.
 - 5F-5 决策提交 `f8dea66` / Actions `32028206103` 已完成 exact-SHA 公共验证；阶段 5 正式关闭。
-- 当前只保存既有路线中的下一键，不展开阶段 6 原子拆分，不实现 SQL/Session/Memory/SSE。
+- 6A-entry-design 已由 `c0b5af0` / Actions `32041343696` exact-SHA 公共完成；当前只保存 6A-1
+  准备键，不安装 SQL 依赖、不创建 migration、不启动 PostgreSQL、不实现 Repository/Worker/API。
 
 ## Next Step
 
-`6A-entry-design`：RQ-052 已恢复；现状/EchoMind 参考源码初审、PostgreSQL 唯一生产语义基线、
-独立 PostgreSQL polling worker，以及模块化单体/API-Worker/短事务/控制面-数据面架构章节均已确认。
-当前已确认 task schema/状态机、SQL/Artifact/短事务/幂等/ownership、保守 hard-crash、失败/HTTP、
-作品集 NFR、安全/生命周期、分层测试矩阵和 6A-1 至 6A-7 原子顺序。ADR-0038、完整 design 与
-implementation plan 已本地创建；当前只执行门禁、提交、推送和 exact-SHA 公共 CI。成功后只交接
-6A-1 准备状态，不自动实施；不把 Pi、Claude Agent SDK、LangGraph、Multi-Agent、MCP 或模型分层
-带入 6A。
+`6A-1-postgresql-foundation`：等待用户明确继续后，按 ADR-0038 和 implementation plan 先解释
+PostgreSQL/ORM/migration 原理，再以红灯建立 SQLAlchemy 2/Alembic/psycopg 配置、initial migration、
+Docker/CI 真库门。本准备状态不安装依赖、启动 DB、实现 Repository/Worker/API 或调用外部服务。
 
 ## 6A Entry Design Checklist
 
@@ -274,7 +271,8 @@ implementation plan 已本地创建；当前只执行门禁、提交、推送和
 - [completed] 冻结 6A-1 PostgreSQL Foundation 至 6A-7 Packaging/Exit 的原子实施顺序
 - [completed] 创建 ADR-0038、正式 design 和 implementation plan
 - [completed] 本地门禁：929 passed/110 subtests、两套 RAG、compileall、Harness dry-run、governance、安全与 diff
-- [in_progress] 提交、推送和 exact-SHA 公共 CI
+- [completed] 提交、推送和 exact-SHA 公共 CI：`c0b5af0` / Actions `32041343696`
+- [completed] 关闭 6A-entry-design，只交接 6A-1 准备状态，未自动实施
 
 ## 5P-6 Exit Review Checklist
 

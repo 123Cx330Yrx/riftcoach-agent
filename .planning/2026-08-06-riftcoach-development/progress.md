@@ -2345,3 +2345,12 @@
   compileall、Harness dry-run、tracked Secret/run-data 和 Harness SDK boundary 通过。
 - 本批未安装 SQL 依赖、启动 PostgreSQL、读取 Key 或调用 Riot/Provider；下一步只提交、推送并等待
   exact-SHA 公共 CI。
+
+## 2026-08-17：6A-entry-design exact-SHA 公共闭环
+
+- 设计提交 `c0b5af0eec1654c35afddb3c8a66b774a233a688` 已推送，GitHub Actions run
+  `32041343696` 对该精确 SHA completed/success。
+- ADR-0038、完整 design/implementation plan、治理、完整 pytest、两套 RAG、compileall、安全边界和
+  Harness dry-run 均获得公共验证；CI 未读取 Key、调用 Riot/Provider 或启动本轮未实现的产品 DB。
+- `6A-entry-design` 正式关闭；canonical 只交接 `6A-1-postgresql-foundation` 准备状态，等待用户再次
+  明确继续。尚未安装 SQL 依赖、创建 migration、启动 PostgreSQL 或实现阶段 6 产品代码。

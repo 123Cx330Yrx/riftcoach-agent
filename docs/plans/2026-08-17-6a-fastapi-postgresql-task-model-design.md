@@ -346,3 +346,13 @@ Compose API/Worker/PostgreSQL、CI、Linux smoke、完整回归、文档和 exit
 - governance、diff、compile/现有回归与安全门通过；
 - 提交推送后 exact-SHA GitHub Actions 成功；
 - 下一 checkpoint 只交接 `6A-1-postgresql-foundation` 准备状态，不自动实施。
+
+## 14. 入口设计公共闭环
+
+ADR-0038、本文、implementation plan 与 canonical 的设计提交
+`c0b5af0eec1654c35afddb3c8a66b774a233a688` 已由 GitHub Actions run `32041343696` 完成 exact-SHA
+公共验证。完整 pytest、两套 RAG、compileall、governance、安全边界与 Harness dry-run 均成功，CI
+没有读取 Key 或调用 Riot/Provider。
+
+因此 `6A-entry-design` 正式关闭，canonical 只交接到 `6A-1-postgresql-foundation` 准备状态并等待
+用户明确继续。本次公共闭环没有安装 SQL 依赖、创建 migration、启动 PostgreSQL 或实现 6A 产品代码。
