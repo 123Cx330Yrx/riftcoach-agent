@@ -1986,3 +1986,28 @@
   receipt 接缝已有本地与公共证据；这不表示 FastAPI、SQL/恢复或真实模型质量完成。
 - canonical 只交接到 `5P-5-thin-fastapi-adapter-no-io-vertical-slice`，等待用户再次明确继续；
   本轮不安装 FastAPI 或实现 5P-5。
+
+## 2026-08-17：开始 5P-5 Thin FastAPI Adapter
+
+- 用户明确“继续5P-5”，按 RQ-045 恢复唯一 canonical 检查点；先完成恢复顺序、治理检查和
+  初学者范围说明，未读取 Key、未调用 Riot/Provider、未运行 held-out。
+- 新增实施计划 `docs/plans/2026-08-17-5p5-thin-fastapi-adapter-implementation.md`，冻结
+  四个端点、显式依赖注入、错误映射、TestClient/no-I/O 和不进入 5P-6/5F 的边界。
+- 当前工作树尚未写 5P-5 产品代码；下一动作是新增红灯 API 合同测试。
+
+## 2026-08-17：5P-5 本地 TDD 与完整门禁
+
+- 首轮红灯在 `app.api` 缺失处停止；随后加入 `fastapi>=0.115,<1` 与 dev `httpx>=0.27,<1`，
+  `.venv` 实测 FastAPI 0.141.1 / Starlette 1.6.0 / httpx 0.28.1，`pip check` 无冲突。
+- 新增 `create_app(review_service, query_service)`、严格 HTTP DTO、四个固定端点、422 请求
+  收敛、Application/Query 安全状态映射、受控 Retry-After 和 Markdown report；handler 不导入
+  CLI、Provider、Harness、Runtime implementation 或 Skill Router。
+- API 聚焦 24 项通过；其中一个真实 no-I/O 纵向案例走过 TestClient、Application Service、
+  Catalog、Prompt Program、真实 Runtime/Harness/本地 RAG、Fake Provider、receipt/Trace/Artifact
+  与真实 RunQueryService，Fake Provider 3 个本地响应，Key/Riot/网络/held-out I/O 均为 0。
+- API/Application/receipt/query 相邻为 `71 passed`；最终完整回归为
+  `884 passed, 1 warning, 110 subtests passed`。唯一 warning 来自 FastAPI 0.141.1 当前
+  TestClient 对 httpx 的上游 deprecation 提示，不影响行为或依赖完整性，未通过屏蔽警告伪装。
+- 两套 RAG 质量门、compileall、Harness SDK boundary、tracked secret/run-data、Harness dry-run、
+  2 项治理测试、治理脚本和 diff check 均通过；当前只待状态收尾、提交、推送和 exact-SHA CI，
+  不进入 5P-6/5F。

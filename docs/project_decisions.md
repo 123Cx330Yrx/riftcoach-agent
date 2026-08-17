@@ -733,3 +733,21 @@ Application Service 新增必需的 `RunReceiptWriter` 端口；类型化 comple
 `932a863120a4561f58c477a69becbccd2ec9ff45` 已由 Actions run `32002994441` 完成 exact-SHA
 公共验证，5P-4 正式关闭并只交接到尚未开始的 5P-5。这不等于 FastAPI、SQL 事务、崩溃恢复、
 本机恶意写防护或生产部署已经完成。
+
+## 5P-5 Thin FastAPI Adapter 本地裁决（2026-08-17）
+
+用户按 RQ-045 明确恢复 5P-5。采用显式依赖注入的 `create_app(review_service, query_service)`，
+FastAPI 只负责 HTTP 请求/响应、OpenAPI、状态码和 allowlisted 错误；它不导入 CLI，不选择
+Skill，不拼 Prompt/Runtime policy，不调用 Provider/Harness，也不读取 API Key。固定端点只有
+`POST /reviews/recent`、`GET /runs/{run_id}`、`GET /runs/{run_id}/report` 和 `GET /health`；
+status、follow-up、SSE/事件流、单局入口和后台任务均不在本轮。
+
+本轮加入 `fastapi>=0.115,<1` 与 dev `httpx>=0.27,<1`。HTTP 错误只投影固定 code，可带安全
+run_id/terminal reason，429 的有限 Retry-After 只放入 header；查询完整性继续由
+`RunQueryService` 负责。真实本地纵向测试经过 Catalog、Prompt Program、AgentRuntime、真实
+本地 RAG、唯一 ReviewHarness、Fake Provider、receipt/Trace/Artifact 和 Query Service；外部
+Provider/Key/Riot/网络/held-out I/O 均为 0。
+
+本地 API 聚焦 24 项，完整回归 `884 passed, 1 warning, 110 subtests passed`；warning 是
+FastAPI 0.141.1 TestClient 对 httpx 的上游迁移提示，不改变本轮合同。5P-5 当前本地完成，
+尚待提交、推送与 exact-SHA 公共 CI；这不表示真实模型质量、SQL/恢复、鉴权、前端或公网部署完成。

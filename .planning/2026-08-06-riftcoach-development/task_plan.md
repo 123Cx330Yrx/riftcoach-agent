@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 8 - `5P-5-thin-fastapi-adapter-no-io-vertical-slice` is next and not started
+Phase 8 - `5P-5-thin-fastapi-adapter-no-io-vertical-slice` is in progress
 
 ## Phases
 
@@ -205,7 +205,8 @@ Phase 8 - `5P-5-thin-fastapi-adapter-no-io-vertical-slice` is next and not start
 - Status: in_progress
 - `5P-entry-design` 与 5P-1 至 5P-4 已公开完成；
 - 5P-4 immutable receipt/store、strict query 与 Application receipt 接缝已由 `932a863` / Actions
-  `32002994441` 完成 exact-SHA 公共验证；5P-5 尚未开始；
+  `32002994441` 完成 exact-SHA 公共验证；5P-5 薄 Adapter 与 no-I/O 纵向切片已本地完成，
+  尚待提交、推送和 exact-SHA 公共验证；
 - 入口审计确认 5P 同时承担 Prompt Program V1 与早期产品切片，不能缩成单纯 FastAPI；
 - ADR-0032 选择版本化 Prompt Program/Catalog 和 drift gate，复用既有 component fingerprint；
 - ADR-0033 选择薄 FastAPI Adapter + Application Service + 现有 AgentRuntime/Harness；
@@ -216,9 +217,16 @@ Phase 8 - `5P-5-thin-fastapi-adapter-no-io-vertical-slice` is next and not start
 
 ## Next Step
 
-`5P-5-thin-fastapi-adapter-no-io-vertical-slice`：等待用户再次明确继续后，才安装 FastAPI/
-TestClient 并实现薄 HTTP Adapter、严格 OpenAPI/错误映射和 Fake Provider 本地纵向切片；当前
-不实现 5P-5，不进入 5P-6 或 5F。
+`5P-5-thin-fastapi-adapter-no-io-vertical-slice`：提交、推送当前本地实现并验证 exact-SHA
+GitHub Actions；公共成功前不关闭 5P-5，不进入 5P-6 或 5F。
+
+## 5P-5 Implementation Checklist
+
+- [completed] 红灯冻结四个 HTTP 端点、OpenAPI、错误映射和 no-I/O 边界
+- [completed] 安装并声明 FastAPI/dev httpx 依赖
+- [completed] 实现显式依赖注入的薄 Adapter 与 allowlisted DTO
+- [completed] 完成 Fake/fixture 和真实 Runtime/Harness/RAG 本地纵向测试
+- [in_progress] 完成本地状态同步、提交/推送和 exact-SHA CI
 
 ## Decisions Made
 

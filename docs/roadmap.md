@@ -212,6 +212,8 @@ RAG 保存外部知识；Memory 保存玩家相关且可更新的长期状态；
 
 ### 实施内容
 
+- 5P 已先建立仅本地、同步、无鉴权的近期复盘 HTTP 切片；本阶段负责把它扩展为完整
+  FastAPI 产品入口，而不是把 5P 的 Fake/fixture 切片误称为生产 API；
 - FastAPI 对话和复盘入口；
 - `user_id`、`conversation_id` 和权限边界；
 - 会话工作记忆；

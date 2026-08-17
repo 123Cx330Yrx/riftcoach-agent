@@ -15,11 +15,13 @@ dependencies = [
     "PyYAML>=6,<7",
     "requests",
     "python-dotenv",
+    "fastapi>=0.115,<1",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8,<10",
+    "httpx>=0.27,<1",
 ]
 
 [tool.setuptools.packages.find]

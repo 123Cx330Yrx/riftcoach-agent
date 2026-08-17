@@ -57,7 +57,8 @@ class RuntimeCompositionRoot:
     """Create long-lived Catalog/Resolver dependencies in one place.
 
     This root deliberately does not construct FastAPI, read API keys, or make
-    network calls.  5P-3 will add the application service that uses this root.
+    network calls.  Product Application Services and HTTP adapters are
+    assembled one layer outward and receive the built Runtime explicitly.
     """
 
     skill_catalog: SkillCatalog

@@ -2029,6 +2029,40 @@
   必须在该投影前增加显式 receipt writer，让类型化 failed 结果也留下查询凭证。原始异常、错误
   run_id 或 Program 启动漂移不能据猜测伪造 Runtime receipt。
 
+## 2026-08-17：5P-5 开始审计发现
+
+- `fastapi` 当前尚未安装；`httpx 0.28.1` 已在环境中存在，但 dev 依赖仍未声明，因此先以
+  import 红灯冻结 API 合同，再增加显式依赖并验证兼容性。
+- 薄 Adapter 的唯一业务依赖应是 `RecentReviewApplicationService` 与 `RunQueryService`；
+  handler 不应导入 CLI、`RuntimeRunRequest`、Prompt、Provider、Harness 或 Skill Router。
+- `RecentReviewApplicationService` 已将应用错误压缩为 allowlisted code/run_id/reason/retry-after；
+  Adapter 只负责 HTTP 状态和受控 header，不重新解释上游异常。
+- `RunQueryService` 已提供 body-free `RunView`、Markdown report 和 `run_not_found` /
+  `report_not_available` / `run_integrity_failed`，因此 FastAPI 不应读取 receipt/Trace/Artifact
+  文件或复制完整性逻辑。
+- 5P-5 只能证明 HTTP 接线和本地安全合同；同步、文件型、无鉴权环境不能被称为公网生产部署。
+- 红灯聚焦运行按预期在 `app.api` 导入期失败（`ModuleNotFoundError`）；这不是旧实现通过，
+  而是新 Adapter 尚不存在的直接证据。系统解释器已有 FastAPI，但项目 `.venv` 尚未安装，
+  因此依赖声明与虚拟环境安装仍是本轮实现步骤。
+- Adapter 首轮聚焦收集暴露一个 Python 3.11 导入错误：`Protocol` 被误从 `collections.abc`
+  导入；已改为 `typing.Protocol`，属于局部接线修复，不改变 HTTP 合同或边界。
+- 第二轮聚焦暴露 FastAPI 路由注册错误：`Response | JSONResponse` 被错误推断为 Pydantic
+  response model；报告端点已明确 `response_model=None`，保留 Markdown/JSONResponse 的
+  HTTP 返回语义，不改变端点合同。
+- 第三轮聚焦只剩一个测试断言错误：`RecentFormReviewOutput` 的既有文本合同会规范化并去掉
+  报告末尾换行；测试已改为断言 HTTP JSON 中的规范化值，独立 Markdown 查询仍保留原始
+  `text/markdown` 正文合同。
+- 初版 no-I/O 测试禁止了全部 `os.getenv`，误伤 Pydantic 自身的插件环境读取；已收窄为只
+  禁止 Riot/Zhipu/DeepSeek/OpenAI/Anthropic Key 变量，并继续禁止任何 requests HTTP 调用。
+  这让测试证明产品秘密边界，而不是错误地要求第三方框架完全不读任何环境变量。
+- 最终 HTTP Adapter 通过显式 Port 注入保持薄边界；OpenAPI 只含四个冻结路径，业务错误只
+  映射 allowlisted code/run_id/terminal reason，429 的数值只进入受控 `Retry-After` header。
+- 真正的 no-I/O 纵向测试证明不是“Fake Service 自己返回成功”：请求实际触发 typed compiler、
+  verified Prompt Program、AgentRuntime、真实本地知识检索、Harness publication、Trace/Artifact/
+  receipt 写入和 Query 交叉校验；Fake Provider 只替代外部模型网络边界。
+- FastAPI 0.141.1 的 TestClient 当前给出 httpx 迁移 deprecation warning；`pip check` 和全部测试
+  均通过。本轮不为了消除非失败警告盲目加入 `httpx2` 或压低依赖版本，留待上游稳定迁移时维护。
+
 ## 2026-08-17：5P-4 本地实现发现
 
 - `api_run_receipt.json` 使用同目录临时文件 + flush/fsync + atomic create-if-absent hard link；这在

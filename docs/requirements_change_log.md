@@ -49,6 +49,7 @@
 | RQ-042 | 2026-08-17 | 已执行 | 用户再次明确“继续”，授权 canonical 的 `5P-2-prompt-program-runtime-composition` | 只实现版本化 Prompt Program、component fingerprint/drift gate、verified Runtime identity 与薄 composition root；不安装 FastAPI、不实现 Application Service、不读取 Key、不调用 Riot/Provider、不进入 5P-3 或 5F。完成本轮后必须同步持久状态并等待 exact-SHA 公共验证结果。 |
 | RQ-043 | 2026-08-17 | 生效 | 用户再次明确“继续下一步”，授权 canonical 的 `5P-3-domain-application-service` | 只提升 Summary/Report domain services、建立 RecentReviewApplicationService 与安全错误映射，并允许首个正式消费者对 5P-2 secure execution factory 做窄幅向后深化；不安装 FastAPI、不实现 receipt/query、不读取 Key、不调用 Riot/Provider、不进入 5P-4 或 5F。 |
 | RQ-044 | 2026-08-17 | 已执行 | 用户再次明确“继续”，授权 canonical 的 `5P-4-file-backed-run-receipt-query` | 只实现 body-free immutable receipt、文件 Store、严格 RunQueryService、Trace/manifest/final Artifact 交叉校验与 Application Service receipt 接缝；不安装 FastAPI、不实现 HTTP、SQL/Session/Memory、恢复扫描或 5F。完成本轮后只交接到 5P-5，等待下一次明确继续。 |
+| RQ-045 | 2026-08-17 | 生效 | 用户明确“继续5P-5”，授权 canonical 的 `5P-5-thin-fastapi-adapter-no-io-vertical-slice` | 只实现薄 FastAPI HTTP Adapter 与 Fake/fixture 本地无 I/O 纵向切片：POST recent、GET run、GET report、GET health、严格 OpenAPI/错误映射和 TestClient 门禁；不读取 Key、不调用 Riot/Provider，不实现 SQL/Session/Memory/SSE/后台任务/公网部署/5P-6/5F。 |
 
 ## 新条目格式
 

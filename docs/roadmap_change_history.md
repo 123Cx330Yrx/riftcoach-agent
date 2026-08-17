@@ -1477,3 +1477,16 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `CURRENT`：canonical 唯一下一检查点切换为
   `5P-5-thin-fastapi-adapter-no-io-vertical-slice`，等待用户再次明确继续；不自动安装 FastAPI、
   实现 HTTP、进入 5P-6 或 5F。
+
+### 2026-08-17：RQ-045 恢复并完成 5P-5 本地实现
+
+- `RESUMED`：用户明确“继续5P-5”，按 RQ-045 只恢复薄 FastAPI Adapter/no-I/O 纵向切片；
+  先以红灯测试冻结四个端点与安全错误合同，再加入 FastAPI/httpx 依赖。
+- `IMPLEMENTED-LOCAL`：`app/api/main.py` 采用显式 Application/Query Port；OpenAPI 只暴露
+  recent POST、run GET、report GET、health；不导入 CLI/Provider/Harness/Runtime implementation，
+  不读取 Key 或发网络请求。
+- `VERIFIED-LOCAL`：API 聚焦 24，完整 `884 passed, 1 warning, 110 subtests passed`；真实
+  no-I/O 纵向测试经过 Catalog、Prompt Program、AgentRuntime、RAG、Harness、Fake Provider、
+  receipt/Trace/Artifact 与 Query Service；两套 RAG、compileall、治理、安全边界、Harness dry-run
+  和 diff check 通过。warning 为 FastAPI TestClient 的上游 httpx 迁移提示。
+- `CURRENT`：5P-5 只待提交、推送和 exact-SHA 公共 CI；公共成功前不交接到 5P-6，不进入 5F/阶段 6。

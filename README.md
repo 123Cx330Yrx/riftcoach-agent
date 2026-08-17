@@ -50,6 +50,14 @@ python -m pip install -e ".[dev]"
 
 复制 `.env.example` 为 `.env`，填写本地 Riot API 与智谱 GLM 配置。不要提交 `.env`。
 
+### 5P-5 本地 HTTP 切片
+
+仓库现在包含一个显式依赖注入的薄 FastAPI Adapter：
+`app.api.main:create_app(review_service, query_service)`。它固定提供近期复盘 POST、run 查询、
+Markdown 报告和 health 四个端点，HTTP 层不直接选择 Skill、拼 Prompt 或调用 Provider。当前
+切片使用 fixture/Fake Provider 进行本地 TestClient 纵向验证，尚未提供真实外部 Provider 的默认
+公网启动器，也不代表鉴权、限流、SQL、恢复或生产部署已经完成。
+
 构建近期对局汇总：
 
 ```powershell
