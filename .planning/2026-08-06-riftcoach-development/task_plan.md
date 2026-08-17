@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 8 - `5P-4-file-backed-run-receipt-query` is next and not started
+Phase 8 - `5P-4-file-backed-run-receipt-query` is in progress
 
 ## Phases
 
@@ -203,7 +203,9 @@ Phase 8 - `5P-4-file-backed-run-receipt-query` is next and not started
 ### Phase 8 - 5P Prompt Program V1 与早期产品纵向切片
 
 - Status: in_progress
-- `5P-entry-design`、5P-1、5P-2 与 5P-3 已公开完成；5P-4 尚未开始；
+- `5P-entry-design`、5P-1、5P-2 与 5P-3 已公开完成；5P-4 已按 RQ-044 开始；
+- 5P-4 immutable receipt/store、strict query 与 Application receipt 接缝已本地完成；完整
+  `860 passed, 110 subtests passed` 及全部本地门禁通过，尚待 exact-SHA 公共 CI；
 - 入口审计确认 5P 同时承担 Prompt Program V1 与早期产品切片，不能缩成单纯 FastAPI；
 - ADR-0032 选择版本化 Prompt Program/Catalog 和 drift gate，复用既有 component fingerprint；
 - ADR-0033 选择薄 FastAPI Adapter + Application Service + 现有 AgentRuntime/Harness；
@@ -214,9 +216,8 @@ Phase 8 - `5P-4-file-backed-run-receipt-query` is next and not started
 
 ## Next Step
 
-`5P-4-file-backed-run-receipt-query`：等待用户再次明确继续后，才按 ADR-0033 设计并实现
-body-free receipt 与严格 Trace/manifest/final Artifact 查询投影；当前不实现 5P-4，不安装
-FastAPI、不进入 5P-5 或 5F。
+`5P-4-file-backed-run-receipt-query`：只提交、推送并验证当前 body-free receipt/query 实现的
+exact-SHA 公共 CI；成功前不关闭 5P-4，不安装 FastAPI、不进入 5P-5 或 5F。
 
 ## Decisions Made
 
@@ -630,7 +631,8 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
 - 领域/应用/组合聚焦与相邻回归通过，完整回归 `830 passed, 110 subtests passed`，两套 RAG、
   compileall、Harness/secret、dry-run、governance 和 diff 门禁通过；实现提交 `4bd5c83` 已由
   Actions `31998739178` exact-SHA 公共验证成功。
-- canonical 只交接到 `5P-4-file-backed-run-receipt-query`，等待用户再次明确继续；5P-4 未开始。
+- 5P-3 闭环时 canonical 只交接到 `5P-4-file-backed-run-receipt-query`；该历史暂停已由 RQ-044
+  解除，当前 5P-4 已本地实现并等待公共 CI。
 
 本批错误日志：
 

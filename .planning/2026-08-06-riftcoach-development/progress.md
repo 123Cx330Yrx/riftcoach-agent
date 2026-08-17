@@ -1949,3 +1949,30 @@
 - 5P-3 正式完成：Domain/Application Service、body-free 安全错误和 secure product factory
   已获得本地与公开证据；这不表示 receipt/query、FastAPI 或真实模型质量完成。
 - canonical 只交接到 `5P-4-file-backed-run-receipt-query`，等待用户再次明确继续；本轮不实现 5P-4。
+
+## 2026-08-17：开始 5P-4 File-backed Run Receipt & Query
+
+- 用户再次明确“继续”，RQ-044 只授权 canonical `5P-4-file-backed-run-receipt-query`；不授权
+  FastAPI/5P-5、SQL/Memory、恢复扫描、5F 或真实外部 I/O。
+- 按 `AGENTS.md` 恢复 canonical、活动计划、需求/路线/能力矩阵、ADR-0033 与 5P 总设计；治理
+  预检通过，起始 `HEAD == origin/main == 4389b3a0e6cd22447812dcc0f7887c0ee35125bf`，工作树干净。
+- 已完成 receipt/Trace/manifest/final Artifact 的初学者职责说明，并审计 Store、Runtime terminal、
+  Application Service 与现有测试接缝。
+- 新增 TDD 实施计划 `docs/plans/2026-08-17-5p4-file-backed-run-receipt-query-implementation.md`；
+  当前尚未写功能代码或测试，Key/Riot/Provider/held-out I/O 为 0。
+
+## 2026-08-17：5P-4 本地 TDD 与完整门禁
+
+- Batch A/B 首轮按预期因 `app.product.run_receipts` / `run_query` 不存在而 collection 红灯；最小
+  实现后 receipt/query `26 passed`。
+- Batch C 先因 Application Service 不接受 `receipt_writer` 形成 `23 failed` 红灯；接入显式
+  writer、先校验服务器 run_id、在 terminal projection 前写 completed/failed receipt 后转绿。
+- 新增 `ApiRunReceipt`、`FileRunReceiptStore`、`RunView`、`RunQueryService` 与 body-free
+  `RunQueryError`；Trace/manifest/final Artifact 状态、身份和真实字节均交叉校验。
+- receipt/query/Application 聚焦最终 `50 passed`；Store/Runtime 相邻 `103 passed, 12 subtests
+  passed`；5P/Runtime/Harness 比例回归 `179 passed, 12 subtests passed`；完整回归
+  `860 passed, 110 subtests passed`。
+- RAG development 与 independent holdout 全部门槛为 `1.0`（no-answer FPR `0.0`）；compileall、
+  Harness SDK boundary、tracked secret/run-data、Harness dry-run、governance 和 diff check 通过。
+- 本批 Key/Riot/Provider/held-out I/O 为 0；5P-4 仍为 in_progress，只待提交、推送和 exact-SHA
+  公共 CI，不进入 FastAPI/5P-5。

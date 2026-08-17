@@ -1448,3 +1448,21 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   product control flow、安全错误与 verified Runtime composition，不证明 HTTP 或真实模型质量。
 - `CURRENT`：canonical 唯一下一检查点切换为 `5P-4-file-backed-run-receipt-query`，等待用户
   再次明确继续；不自动实现 receipt/query、FastAPI 或 5F。
+
+### 2026-08-17：5P-4 File-backed Receipt/Query 本地实现
+
+- `SCOPE`：RQ-044 只授权 body-free receipt、文件 Store、strict Query 与 Application receipt
+  接缝；未安装 FastAPI，未进入 HTTP/SQL/Memory/恢复/5F。
+- `RECEIPT`：严格 immutable `ApiRunReceipt` 固定保存 Runtime/publication/terminal、可空 Trace
+  reference、UTC 时间和 report availability；同目录原子 create-if-absent Store 不允许覆盖。
+- `QUERY`：run_id → receipt → Trace SHA/Schema → manifest publication/final decision → 唯一 final
+  Artifact identity/真实字节 SHA/UTF-8 的证据链已实现；公开 View 不含 Provider、路径、Prompt、
+  Tool data、异常或正文。
+- `FAIL-CLOSED`：not found、report unavailable、integrity failure 只返回固定 code；rejected、重复
+  final、终态不一致、坏 Schema/digest/bytes 均不暴露报告。早期 failed run 只允许最小安全视图。
+- `APPLICATION`：类型化 completed/failed Runtime 结果在外部投影前写 receipt；wrong run_id、
+  未类型化异常与前置上游失败不伪造 receipt。
+- `VERIFIED-LOCAL`：聚焦 50、相邻 `179 passed, 12 subtests passed`、完整
+  `860 passed, 110 subtests passed`；两套 RAG、compileall、governance、安全边界、dry-run 和
+  diff check 通过，外部 I/O 为 0。
+- `CURRENT`：5P-4 仍进行中，只待提交、推送和 exact-SHA 公共 CI；成功前不交接 5P-5。

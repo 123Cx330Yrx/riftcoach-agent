@@ -2010,3 +2010,41 @@
 - 实现提交 `4bd5c83b8d588ab9b0e23dbc9e886100fae7c3f5` 已由 Actions run `31998739178`
   exact-SHA 公开验证成功；这些公共门禁同样无 Key/外部 I/O。5P-3 因而正式完成，5P-4
   receipt/query 仅成为下一检查点，尚未实现。
+
+## 2026-08-17：5P-4 入口审计发现
+
+- receipt、Trace、manifest 与 final Artifact 不是重复存储：receipt 是产品查询索引，Trace 是
+  Runtime 黑匣子，manifest 是 Harness Artifact 账本，final Artifact 才是报告正文。
+- `RuntimeRunResult` 的 completed 结果必有 Trace，failed 结果则允许 Trace 为 null；failed 也可能
+  保留 Harness publication。因此 Query 必须分开校验 Runtime terminal 与 publication terminal，
+  不能错误地要求 failed Runtime 的 overall terminal reason 等于 manifest 的发布 reason。
+- Harness terminal transition 保存 publication reason，Trace 的 `PublicationDecidedSignal` 保存同一
+  reason；Trace overall terminal reason在后置 Runtime failure 时可能是 `typed_output_build_failed`
+  等 Runtime code。正确交叉关系是 receipt overall ↔ Trace overall、manifest publication ↔ Trace
+  publication，而不是把两种 reason 混成一个字段。
+- Runtime 可能在 Harness manifest 建立前因 Boundary/Context 失败，但仍形成失败 Trace；严格查询
+  需要允许“failed + no publication + no report”的 manifest-missing 组合，同时拒绝 completed 缺
+  Trace、rejected 有报告和任何有报告却没有 Trace 的暴露。
+- Application Service 当前会在 `_project_result()` 遇到 failed Runtime 时立即抛安全错误；5P-4
+  必须在该投影前增加显式 receipt writer，让类型化 failed 结果也留下查询凭证。原始异常、错误
+  run_id 或 Program 启动漂移不能据猜测伪造 Runtime receipt。
+
+## 2026-08-17：5P-4 本地实现发现
+
+- `api_run_receipt.json` 使用同目录临时文件 + flush/fsync + atomic create-if-absent hard link；这在
+  Windows 本地测试真实通过，并同时满足“读者不见半文件”和“第二个写者不能覆盖”。它仍是单机
+  文件语义，不替代数据库事务或恶意本机写权限防护。
+- `RunQueryService` 不能把 manifest 的 publication reason 和 Runtime overall terminal reason
+  直接比较；当前实现改为 receipt ↔ Trace overall、manifest terminal transition ↔ Trace
+  `PublicationDecidedSignal`，因此能正确表达 Harness 已发布后发生的 Runtime 后置失败。
+- completed Runtime 强制有 Trace；早期 failed Runtime 可无 Trace/manifest，但只能返回 receipt
+  可证明的最小视图，identity/time/Usage 为 null，报告永远不可用。failed Trace 在 Harness 建立前
+  形成且 manifest 缺失也是合法的无报告查询场景。
+- available report 必须在 Trace 与 manifest 中各恰好有一份同 identity 引用，并通过真实字节
+  SHA-256、UTF-8 和非空检查；rejected、重复记录、终态不一致或任一字节篡改都 fail closed。
+- Application Service 现在要求显式 `RunReceiptWriter`；类型化 completed/failed result 在外部投影
+  前写 receipt，wrong run_id、未类型化 Runtime 异常和上游失败不写。真实 File Store 接缝与 Fake
+  writer 顺序均有测试。
+- 新增聚焦共 50 tests；5P/Runtime/Harness 相邻为 `179 passed, 12 subtests passed`，完整回归
+  `860 passed, 110 subtests passed`。两套 RAG、compileall、Harness dry-run、SDK/secret/run-data、
+  governance 和 diff 门禁通过；Key/Riot/Provider/held-out I/O 为 0。

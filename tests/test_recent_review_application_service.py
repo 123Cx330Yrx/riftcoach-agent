@@ -16,6 +16,7 @@ from app.product.recent_review_service import (
     RecentReviewApplicationError,
     RecentReviewApplicationService,
 )
+from app.product.run_receipts import FileRunReceiptStore
 from app.runtime.models import (
     RuntimeRunResult,
     RuntimeStatus,
@@ -128,6 +129,25 @@ class FakeRuntime:
         )
 
 
+class RecordingReceiptWriter:
+    def __init__(
+        self,
+        events: list[str],
+        *,
+        error: Exception | None = None,
+    ) -> None:
+        self._events = events
+        self._error = error
+        self.results = []
+
+    def write_result(self, result, *, created_at_utc=None):
+        self._events.append("receipt")
+        if self._error is not None:
+            raise self._error
+        self.results.append(result)
+        return object()
+
+
 def _service(
     *,
     summary_builder,
@@ -135,6 +155,7 @@ def _service(
     events: list[str],
     compiler: RecentReviewRuntimeRequestCompiler | None = None,
     renderer=None,
+    receipt_writer: RecordingReceiptWriter | None = None,
 ) -> RecentReviewApplicationService:
     return RecentReviewApplicationService(
         summary_builder=summary_builder,
@@ -145,6 +166,7 @@ def _service(
             run_id_factory=lambda: "application_run",
         ),
         runtime=runtime,
+        receipt_writer=receipt_writer or RecordingReceiptWriter(events),
     )
 
 
@@ -173,7 +195,7 @@ def test_service_runs_the_real_compiler_in_order_and_projects_terminal_result(
         RecentReviewProductRequest(riot_id="DemoPlayer#TEST")
     )
 
-    assert events == ["summary", "report", "runtime"]
+    assert events == ["summary", "report", "runtime", "receipt"]
     assert result.run_id == "application_run"
     assert result.runtime_status is RuntimeStatus.COMPLETED
     assert result.publication_status is publication_status
@@ -427,6 +449,101 @@ def test_runtime_failure_becomes_safe_review_error_with_trusted_run_id(
     assert "secret-key" not in str(caught.value)
 
 
+def test_typed_failed_runtime_is_receipted_before_safe_error() -> None:
+    events: list[str] = []
+    writer = RecordingReceiptWriter(events)
+    runtime = FakeRuntime(
+        events,
+        publication_status=RuntimePublicationStatus.DEGRADED,
+        runtime_status=RuntimeStatus.FAILED,
+        terminal_reason="harness_execution_failed",
+    )
+    service = _service(
+        summary_builder=FakeSummaryBuilder(_summary(), events),
+        runtime=runtime,
+        events=events,
+        receipt_writer=writer,
+    )
+
+    with pytest.raises(RecentReviewApplicationError) as caught:
+        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+
+    assert caught.value.code == "review_runtime_failed"
+    assert events == ["summary", "report", "runtime", "receipt"]
+    assert len(writer.results) == 1
+    assert writer.results[0].runtime_status is RuntimeStatus.FAILED
+
+
+def test_application_service_can_write_the_real_file_receipt_store(
+    tmp_path: Path,
+) -> None:
+    events: list[str] = []
+    receipt_store = FileRunReceiptStore(tmp_path)
+    service = _service(
+        summary_builder=FakeSummaryBuilder(_summary(), events),
+        runtime=FakeRuntime(
+            events,
+            publication_status=RuntimePublicationStatus.PUBLISHED,
+        ),
+        events=events,
+        receipt_writer=receipt_store,
+    )
+
+    result = service.review(
+        RecentReviewProductRequest(riot_id="DemoPlayer#TEST")
+    )
+
+    receipt = receipt_store.read_receipt(result.run_id)
+    assert receipt.run_id == result.run_id
+    assert receipt.runtime_status is RuntimeStatus.COMPLETED
+    assert receipt.publication_status is RuntimePublicationStatus.PUBLISHED
+    assert receipt.trace_reference == result.trace_reference
+    assert receipt.report_available is True
+
+
+def test_untyped_runtime_exception_does_not_invent_a_receipt() -> None:
+    events: list[str] = []
+    writer = RecordingReceiptWriter(events)
+    service = _service(
+        summary_builder=FakeSummaryBuilder(_summary(), events),
+        runtime=RaisingRuntime(RuntimeError("secret-key C:\\private")),
+        events=events,
+        receipt_writer=writer,
+    )
+
+    with pytest.raises(RecentReviewApplicationError):
+        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+
+    assert events == ["summary", "report"]
+    assert writer.results == []
+
+
+def test_receipt_failure_is_body_free_and_blocks_success_projection() -> None:
+    events: list[str] = []
+    writer = RecordingReceiptWriter(
+        events,
+        error=OSError("C:\\private\\receipt secret-key"),
+    )
+    service = _service(
+        summary_builder=FakeSummaryBuilder(_summary(), events),
+        runtime=FakeRuntime(
+            events,
+            publication_status=RuntimePublicationStatus.PUBLISHED,
+        ),
+        events=events,
+        receipt_writer=writer,
+    )
+
+    with pytest.raises(RecentReviewApplicationError) as caught:
+        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+
+    assert events == ["summary", "report", "runtime", "receipt"]
+    assert caught.value.code == "review_runtime_failed"
+    assert caught.value.run_id == "application_run"
+    assert caught.value.__context__ is None
+    assert "private" not in str(caught.value)
+
+
 def test_runtime_terminal_mismatch_and_untrusted_reason_are_not_projected() -> None:
     events: list[str] = []
     mismatch = FakeRuntime(
@@ -463,6 +580,7 @@ def test_runtime_terminal_mismatch_and_untrusted_reason_are_not_projected() -> N
 
 def test_runtime_result_cannot_switch_the_server_generated_run_id() -> None:
     events: list[str] = []
+    writer = RecordingReceiptWriter(events)
     service = _service(
         summary_builder=FakeSummaryBuilder(_summary(), events),
         runtime=FakeRuntime(
@@ -471,6 +589,7 @@ def test_runtime_result_cannot_switch_the_server_generated_run_id() -> None:
             returned_run_id="different_run",
         ),
         events=events,
+        receipt_writer=writer,
     )
 
     with pytest.raises(RecentReviewApplicationError) as caught:
@@ -478,3 +597,5 @@ def test_runtime_result_cannot_switch_the_server_generated_run_id() -> None:
 
     assert caught.value.code == "review_runtime_failed"
     assert caught.value.run_id == "application_run"
+    assert writer.results == []
+    assert events == ["summary", "report", "runtime"]

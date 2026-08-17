@@ -39,6 +39,7 @@ from .recent_review import (
     RecentReviewProductRequest,
     RecentReviewRuntimeRequestCompiler,
 )
+from .run_receipts import RunReceiptWriter
 
 
 RecentReviewErrorCode = Literal[
@@ -199,6 +200,7 @@ class RecentReviewApplicationService:
         summary_builder: RecentReviewSummaryBuilder,
         compiler: RecentReviewRuntimeRequestCompiler,
         runtime: RecentReviewRuntime,
+        receipt_writer: RunReceiptWriter,
         report_renderer: ReportRenderer = render_deterministic_report,
     ) -> None:
         if not callable(getattr(summary_builder, "build", None)):
@@ -207,11 +209,14 @@ class RecentReviewApplicationService:
             raise TypeError("compiler must expose compile()")
         if not callable(getattr(runtime, "run", None)):
             raise TypeError("runtime must expose run()")
+        if not callable(getattr(receipt_writer, "write_result", None)):
+            raise TypeError("receipt_writer must expose write_result()")
         if not callable(report_renderer):
             raise TypeError("report_renderer must be callable")
         self._summary_builder = summary_builder
         self._compiler = compiler
         self._runtime = runtime
+        self._receipt_writer = receipt_writer
         self._report_renderer = report_renderer
 
     def review(
@@ -230,7 +235,29 @@ class RecentReviewApplicationService:
             deterministic_report=deterministic_report,
         )
         runtime_result = self._run_runtime(runtime_request)
+        if runtime_result.run_id != runtime_request.run_id:
+            raise RecentReviewApplicationError(
+                "review_runtime_failed",
+                run_id=runtime_request.run_id,
+            )
+        self._write_receipt(runtime_request, runtime_result)
         return self._project_result(runtime_request, runtime_result)
+
+    def _write_receipt(
+        self,
+        request: RuntimeRunRequest,
+        result: RuntimeRunResult[Any],
+    ) -> None:
+        failure: RecentReviewApplicationError | None = None
+        try:
+            self._receipt_writer.write_result(result)
+        except Exception:
+            failure = RecentReviewApplicationError(
+                "review_runtime_failed",
+                run_id=request.run_id,
+            )
+        if failure is not None:
+            raise failure
 
     def _build_summary(self, request: RecentReviewProductRequest) -> dict:
         failure: RecentReviewApplicationError | None = None

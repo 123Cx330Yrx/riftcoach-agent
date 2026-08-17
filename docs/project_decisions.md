@@ -711,3 +711,23 @@ Riot/Provider 质量、HTTP、receipt、幂等、事务、并发或恢复；5P-3
 实现提交 `4bd5c83b8d588ab9b0e23dbc9e886100fae7c3f5` 随后由 GitHub Actions run
 `31998739178` 完成 exact-SHA 公共验证，5P-3 正式关闭。canonical 只交接到
 `5P-4-file-backed-run-receipt-query`，本轮不实现 receipt/query 或 FastAPI。
+
+## 5P-4 File-backed Run Receipt/Query 本地裁决（2026-08-17）
+
+5P-4 不创建第二份报告数据库，而是在现有三个证据源上增加安全查询索引：receipt 保存
+Runtime terminal 的 body-free 摘要，Trace 保存运行身份/Usage/Artifact 引用，manifest 保存
+Harness publication/Artifact 账本，final Artifact 保存唯一正文。查询必须把四者重新交叉校验，
+不能按 run_id 直接拼路径读 Markdown。
+
+采用严格 `ApiRunReceipt` 与原子 create-if-absent `FileRunReceiptStore`；completed 必须有 Trace，
+rejected/无 Trace 不得声明报告可用。`RunQueryService` 将 overall Runtime terminal 与 Harness
+publication terminal 分开核对，再要求 Trace/manifest 中唯一 final report identity 一致，并对
+真实字节重算 SHA-256、验证 UTF-8 与非空。公开错误只允许 `run_not_found`、
+`report_not_available`、`run_integrity_failed`，RunView 不暴露 Provider、路径、Prompt、Tool、
+异常或正文。
+
+Application Service 新增必需的 `RunReceiptWriter` 端口；类型化 completed/failed Runtime result
+在对外返回或抛安全错误前写 receipt，错误 run_id、未类型化异常和前置上游失败不伪造 receipt。
+本地聚焦 50、相邻 `179 passed, 12 subtests passed`、完整 `860 passed, 110 subtests passed`，
+两套 RAG 与全部门禁通过，外部 I/O 为 0。当前仍待提交、推送和 exact-SHA 公共 CI；这不等于
+FastAPI、SQL 事务、崩溃恢复、本机恶意写防护或生产部署已经完成。
