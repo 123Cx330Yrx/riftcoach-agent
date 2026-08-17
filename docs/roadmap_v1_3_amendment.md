@@ -212,7 +212,7 @@ OP.GG MCP
 5P-2 Prompt Program         已完成；`0a9651f` / Actions `31988837293` exact-SHA 公共成功
 5P-3 Domain/Application     已完成；`4bd5c83` / Actions `31998739178` exact-SHA 公共成功
 5P-4 Receipt/Query          已完成；`932a863` / Actions `32002994441` exact-SHA 公共成功
-5P-5 Thin FastAPI           本地完成；24 API tests、完整 `884 passed, 110 subtests passed`，待 exact-SHA 公共验证
+5P-5 Thin FastAPI           已完成；`6d1e5b0` / Actions `32005648179` exact-SHA 公共成功，24 API tests、完整 `884 passed, 110 subtests passed`
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

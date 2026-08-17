@@ -2011,3 +2011,14 @@
 - 两套 RAG 质量门、compileall、Harness SDK boundary、tracked secret/run-data、Harness dry-run、
   2 项治理测试、治理脚本和 diff check 均通过；当前只待状态收尾、提交、推送和 exact-SHA CI，
   不进入 5P-6/5F。
+
+## 2026-08-17：5P-5 exact-SHA 公共闭环
+
+- 提交 `6d1e5b0af186f523bee35c24c6873578a149b824` 已推送到 `origin/main`。
+- GitHub Actions run `32005648179`（pytest job `95314459966`）completed/success；公开门禁
+  全部通过，包含完整 pytest、两套 RAG、compileall、治理、Harness SDK boundary、tracked
+  secret/run-data 和 dry-run。
+- 5P-5 Thin FastAPI Adapter & No-I/O Vertical Slice 正式关闭：本地代码、owner understanding、
+  公开证据已同步；参考项目审计与真实 Provider/部署成熟度没有被错误提升。
+- canonical 只交接到 `5P-6-product-slice-evaluation-exit-review`，等待用户明确继续；本轮不实现
+  5P-6、5F、阶段 6 或任何真实 Provider I/O。

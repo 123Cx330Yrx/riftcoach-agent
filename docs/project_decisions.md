@@ -751,3 +751,8 @@ Provider/Key/Riot/网络/held-out I/O 均为 0。
 本地 API 聚焦 24 项，完整回归 `884 passed, 1 warning, 110 subtests passed`；warning 是
 FastAPI 0.141.1 TestClient 对 httpx 的上游迁移提示，不改变本轮合同。5P-5 当前本地完成，
 尚待提交、推送与 exact-SHA 公共 CI；这不表示真实模型质量、SQL/恢复、鉴权、前端或公网部署完成。
+
+提交 `6d1e5b0af186f523bee35c24c6873578a149b824` 随后由 GitHub Actions run `32005648179`
+完成 exact-SHA 公共验证，5P-5 正式关闭。canonical 只交接到
+`5P-6-product-slice-evaluation-exit-review`，等待用户明确继续；本轮不自动开展退出审查、5F
+或阶段 6。

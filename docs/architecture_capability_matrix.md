@@ -230,8 +230,8 @@ exact-SHA 公共验证。整个 5E 正式完成。RQ-040 已恢复 `5P-entry-des
 `31987501935` 完成 exact-SHA 公共验证；5P-2 Prompt Program/composition 又由 `0a9651f` / Actions
 `31988837293` 完成 exact-SHA 公共验证。5P-3 Domain/Application Service 又由 `4bd5c83` /
 Actions `31998739178` 完成 exact-SHA 公共验证；5P-4 receipt/query 又由 `932a863` / Actions
-`32002994441` 完成 exact-SHA 公共验证。5P-5 FastAPI 薄 Adapter 已本地实现，24 项 API
-聚焦与 `884 passed, 110 subtests passed` 已通过，当前只待 exact-SHA 公共 CI；Provider I/O
-仍为 0。
+`32002994441` 完成 exact-SHA 公共验证。5P-5 FastAPI 薄 Adapter 又由 `6d1e5b0` / Actions
+`32005648179` 完成 exact-SHA 公共验证，24 项 API 聚焦与 `884 passed, 110 subtests passed`
+已公开通过；Provider I/O 仍为 0，完整生产 API/部署仍属后续阶段。
 5F、阶段 6/8 的 SDK 对照、SQL/Session/Memory/SSE、持久事件、
 cancel/resume、DAG 和 Multi-Agent 边界不变。

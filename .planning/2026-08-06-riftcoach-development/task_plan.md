@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 8 - `5P-5-thin-fastapi-adapter-no-io-vertical-slice` is in progress
+Phase 8 - `5P-5-thin-fastapi-adapter-no-io-vertical-slice` is complete; `5P-6-product-slice-evaluation-exit-review` is next
 
 ## Phases
 
@@ -205,8 +205,10 @@ Phase 8 - `5P-5-thin-fastapi-adapter-no-io-vertical-slice` is in progress
 - Status: in_progress
 - `5P-entry-design` 与 5P-1 至 5P-4 已公开完成；
 - 5P-4 immutable receipt/store、strict query 与 Application receipt 接缝已由 `932a863` / Actions
-  `32002994441` 完成 exact-SHA 公共验证；5P-5 薄 Adapter 与 no-I/O 纵向切片已本地完成，
-  尚待提交、推送和 exact-SHA 公共验证；
+  `32002994441` 完成 exact-SHA 公共验证；5P-5 薄 Adapter 与 no-I/O 纵向切片又由 `6d1e5b0` /
+  Actions `32005648179` 完成 exact-SHA 公共验证；
+- 5P-5 薄 FastAPI Adapter 与 no-I/O 纵向切片已由 `6d1e5b0` / Actions `32005648179` 完成
+  exact-SHA 公共验证并正式关闭；
 - 入口审计确认 5P 同时承担 Prompt Program V1 与早期产品切片，不能缩成单纯 FastAPI；
 - ADR-0032 选择版本化 Prompt Program/Catalog 和 drift gate，复用既有 component fingerprint；
 - ADR-0033 选择薄 FastAPI Adapter + Application Service + 现有 AgentRuntime/Harness；
@@ -217,8 +219,8 @@ Phase 8 - `5P-5-thin-fastapi-adapter-no-io-vertical-slice` is in progress
 
 ## Next Step
 
-`5P-5-thin-fastapi-adapter-no-io-vertical-slice`：提交、推送当前本地实现并验证 exact-SHA
-GitHub Actions；公共成功前不关闭 5P-5，不进入 5P-6 或 5F。
+`5P-6-product-slice-evaluation-exit-review`：等待用户明确继续后，审查 5P-1 至 5P-5 的产品
+合同、HTTP/no-I/O 证据、限制和公开交付边界；本轮不实现 5P-6、5F 或阶段 6。
 
 ## 5P-5 Implementation Checklist
 
@@ -226,7 +228,7 @@ GitHub Actions；公共成功前不关闭 5P-5，不进入 5P-6 或 5F。
 - [completed] 安装并声明 FastAPI/dev httpx 依赖
 - [completed] 实现显式依赖注入的薄 Adapter 与 allowlisted DTO
 - [completed] 完成 Fake/fixture 和真实 Runtime/Harness/RAG 本地纵向测试
-- [in_progress] 完成本地状态同步、提交/推送和 exact-SHA CI
+- [completed] 完成本地状态同步、提交/推送和 exact-SHA CI
 
 ## Decisions Made
 

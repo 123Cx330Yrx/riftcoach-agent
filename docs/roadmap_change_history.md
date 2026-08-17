@@ -1490,3 +1490,14 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   receipt/Trace/Artifact 与 Query Service；两套 RAG、compileall、治理、安全边界、Harness dry-run
   和 diff check 通过。warning 为 FastAPI TestClient 的上游 httpx 迁移提示。
 - `CURRENT`：5P-5 只待提交、推送和 exact-SHA 公共 CI；公共成功前不交接到 5P-6，不进入 5F/阶段 6。
+
+### 2026-08-17：5P-5 exact-SHA 公共闭环
+
+- `PUBLIC-VERIFIED`：提交 `6d1e5b0af186f523bee35c24c6873578a149b824` 已推送；GitHub Actions
+  run `32005648179` completed/success，pytest、两套 RAG、compileall、治理、SDK boundary、
+  tracked secret/run-data 与 Harness dry-run 全部成功。
+- `CLOSED`：5P-5 Thin FastAPI Adapter & No-I/O Vertical Slice 正式完成；这只证明本地同步 HTTP
+  接线、错误合同、文件查询和 Fake Provider 纵向证据，不证明真实模型质量、鉴权、SQL/恢复、
+  公网部署或完整前端。
+- `CURRENT`：canonical 唯一下一检查点切换为 `5P-6-product-slice-evaluation-exit-review`，
+  等待用户明确继续；不自动实现 5P-6/5F/阶段 6。
