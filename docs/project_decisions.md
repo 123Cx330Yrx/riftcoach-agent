@@ -882,3 +882,23 @@ live timing/stream。再加 94 packages、约 62 MB 安装树和本机约 0.4 �
 实现/退出提交 `3d9a08159c5a6e08fca74257514975b4c0c6ec68` 已由 Actions run `32025522606`
 完成 exact-SHA 公共验证，5F-3 正式关闭。5F-4 按既定条件分支未进入；canonical 只交接到 5F-5
 准备状态，最终 partial-adopt/reject 仍等待单独裁决。
+
+## 5F-5 Pi 最终采用与资产生命周期本地裁决（2026-08-17）
+
+用户按 RQ-051 恢复 5F-5。ADR-0037、最终 exit matrix 与面向初学者的 5F 总退出审查已区分
+三个不同问题：产品 Runtime 是否使用 Pi、仓库是否保留可执行实验、哪些工程方法值得吸收。
+
+本地裁决为 `partial-adopt-evaluation-assets-only`：
+
+- 产品明确拒绝 Pi，Python `AgentRuntimeV1` 继续是唯一默认 Runtime；Pi 不进入 FastAPI、
+  Application Service、composition、生产依赖、部署或阶段 6；
+- `experiments/pi_runtime/`、`app/evaluation/pi_runtime/`、测试、exact lockfile 和当前 CI 复现能力
+  冻结保留，只作评测证据，不随业务功能追随扩展；
+- 吸收版本化严格协议、fail-closed projection、硬采用门和无信息增益停止方法，不迁移第二套 Runtime；
+- 高危实际依赖、Node 不兼容、持续 CI 不稳定/成本显著或大规模追随维护会触发新 ADR，优先归档实验，
+  不得反向放宽产品合同。
+
+当前 5F-5 仍在进行中：Pi 聚焦 `45 passed`，完整
+`929 passed, 1 warning, 110 subtests passed`，两套 RAG、Node tree、compileall、governance、
+Harness dry-run、安全边界和 diff check 均已通过；尚待提交、推送和 exact-SHA 公共 CI。成功前不把
+整个 5F 标为完成，也不进入 `6A-entry-design`。

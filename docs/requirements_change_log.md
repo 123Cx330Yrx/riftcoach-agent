@@ -55,6 +55,7 @@
 | RQ-048 | 2026-08-17 | 已执行 | 用户再次明确“继续”，授权 canonical 的 `5F-1-pi-source-license-contract-audit` | 只读审计官方 Pi release/source/package identity、MIT license、Node/runtime requirements 以及 Agent/Provider/Tool/event/state/abort/timeout/Usage 接缝，形成是否允许 5F-2 的证据裁决；未安装 Pi、写 adapter、读取 Key、调用 Provider 或改变主 Runtime。审计已由 `5901b09` / Actions `32016852979` 公共验证，canonical 只交接到 5F-2 准备状态。 |
 | RQ-049 | 2026-08-17 | 已执行 | 用户再次明确“继续”，授权 canonical 的 `5F-2-offline-protocol-adapter-spike` | 官方 Pi Agent Core 0.84.2 的隔离 no-I/O 协议实验已由 `f62f078` / Actions `32022258177` 完成 exact-SHA 公共验证；状态收尾又由 `1454f59` / Actions `32022784855` 公共验证。未读取 Key、调用 Provider/Riot、接入主 Runtime/Harness/FastAPI 或进入 5F-3。 |
 | RQ-050 | 2026-08-17 | 已执行 | 用户再次明确“继续”，授权 canonical 的 `5F-3-contract-security-harness-evaluation` | 评测专用 Pi→Harness adapter、strict Signal projector、完整 parity/安全/NFR/维护成本退出矩阵已由 `3d9a081` / Actions `32025522606` 完成 exact-SHA 公共验证；裁决 `harness-compatible-but-runtime-gate-failed`，Context/extended terminal/live timing 硬门失败，5F-4 未进入。未读取 Key、调用真实 Provider/Riot或接入主 Runtime/FastAPI/default composition；最终采用裁决仍属于 5F-5。 |
+| RQ-051 | 2026-08-17 | 执行中 | 用户再次明确“继续”，授权 canonical 的 `5F-5-adoption-decision-exit-review` | 只基于 5F-entry 至 5F-3 与 5F-4 未准入证据作最终采用/资产生命周期/退出裁决，允许在当前检查点内完成文档、回归、提交、推送和 exact-SHA CI；不补做 5F-4、不读取 Key、不调用 Provider/Riot、不接主 Runtime/FastAPI，也不自动实现阶段 6。 |
 
 ## 新条目格式
 

@@ -2213,3 +2213,25 @@
   不使用真实模型调用掩盖 Context/terminal/live timing 差异。
 - canonical 唯一下一检查点交接为 `5F-5-adoption-decision-exit-review` 准备状态，等待用户再次明确
   继续；本收尾不提前选择 partial-adopt/reject。
+
+## 2026-08-17：开始 5F-5 Adoption Decision / Exit Review
+
+- 用户再次明确“继续”；RQ-051 只恢复 5F-5 最终采用、实验资产生命周期和退出裁决，不补做 5F-4，
+  不读取 Key，不调用 Provider/Riot，不接主 Runtime/FastAPI，也不自动实施阶段 6。
+- 新增 5F-5 计划、ADR-0037、最终 adoption/exit matrix 与初学者总退出审查。
+- 本地裁决为 `partial-adopt-evaluation-assets-only`：产品拒绝 Pi；冻结保留 exact package/sidecar、
+  evaluation adapter、tests/lockfile/CI 复现和采用门方法。
+- 已同步 canonical、路线修订、能力矩阵、项目决策和发现；当前尚待比例/完整测试、全部门禁、提交、
+  推送和 exact-SHA 公共 CI。成功前 5F 仍未正式关闭，不交接 `6A-entry-design`。
+
+## 2026-08-17：5F-5 本地门禁完成
+
+- Pi protocol/sidecar/parity/Harness/Trace 聚焦 `45 passed`；完整回归
+  `929 passed, 1 warning, 110 subtests passed`，唯一 warning 为既有 FastAPI TestClient 迁移提示。
+- `npm ci --ignore-scripts` 从 exact lockfile 重建 94 packages，`npm ls --all` 与 Node syntax 通过；
+  未读取 Key、未调用 Provider/Riot/held-out。
+- development/independent RAG 门全部通过；Recall/MRR/nDCG/abstention/citation support 为 `1.0`，
+  no-answer FPR 为 `0.0`。
+- compileall、governance、Harness dry-run、SDK boundary、tracked secret/run-data boundary 和
+  `git diff --check` 通过。
+- 5F-5 仍 in progress，当前只待差异审查、提交、推送和 exact-SHA 公共 CI；成功前不关闭 5F。

@@ -2280,3 +2280,16 @@
   Scripted/Fake/本地 RAG 是全部运行输入，外部 Provider/Riot/Key/held-out I/O 为 0。
 - 本地裁决为 `harness-compatible-but-runtime-gate-failed`：5F-4 无信息增益且不准入；需待公共 CI
   后由 5F-5 决定保留设计思想还是删除隔离 adapter。
+
+## 2026-08-17：5F-5 最终采用与资产生命周期发现
+
+- `adopt` 已被 5F-3 的三项强制 Runtime gap 排除；真实模型调用不会改变 Context 单位、terminal
+  vocabulary 或 live event bridge，因此 5F-4 不应补做。
+- “产品是否采用 Pi”与“是否保留可执行负面实验”不是同一个问题。Pi 进入产品会增加 Node/IPC/部署
+  和语义复制成本；保留冻结测试资产则能让拒绝结论持续可验证。
+- 当前 `node_modules` 不跟踪且不进生产，exact lock + `npm ci --ignore-scripts` 能控制一部分研究
+  供应链风险；但 94 个包仍不是零成本，必须有归档触发条件。
+- 把 Pi 测试移出 CI 会降低持续复现性；当前约数秒安装成本尚可接受，所以本地裁决暂保默认 CI。
+  若出现高危实际依赖、Node 不兼容、持续不稳定或显著成本，再用新 ADR 分离/归档，不能让产品迁就。
+- 最准确的裁决名是 `partial-adopt-evaluation-assets-only`：产品拒绝 Pi，冻结保留实验和采用门方法；
+  它不表示双 Runtime、用户可选 Runtime、真实模型质量或生产部署。

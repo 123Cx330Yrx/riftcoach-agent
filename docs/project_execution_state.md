@@ -4,7 +4,6 @@ main_stage: 5
 substage_group: "5F"
 current_checkpoint: "5F-5-adoption-decision-exit-review"
 status: in_progress
-pause_reason: "awaiting explicit user confirmation"
 ---
 
 # RiftCoach 当前执行状态
@@ -71,7 +70,8 @@ pause_reason: "awaiting explicit user confirmation"
   提交/推送与 exact-SHA 公共 CI。实现/退出提交
   `3d9a08159c5a6e08fca74257514975b4c0c6ec68` 已由 Actions run `32025522606` 完成
   exact-SHA 公共验证，5F-3 正式关闭；5F-4 因既定前置硬门失败而未进入，不调用真实模型。
-  canonical 只交接到 `5F-5-adoption-decision-exit-review` 准备状态，等待用户明确继续。上一子阶段组
+  canonical 已按 RQ-051 恢复 `5F-5-adoption-decision-exit-review`，当前只作最终采用、实验资产
+  生命周期和 5F 退出裁决；不补做 5F-4，不读取 Key，不调用 Provider/Riot。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -201,9 +201,10 @@ pause_reason: "awaiting explicit user confirmation"
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`5F-5-adoption-decision-exit-review` 准备状态；等待用户明确继续后，才基于 5F-1
-  至 5F-3 和 5F-4 未准入证据作 `adopt / partial-adopt / reject` 最终裁决并关闭 5F。5F-5 不读取
-  Key、不调用真实 Provider/Riot、不补做 5F-4，也不会把 Scripted/Fake 结果称为模型质量。
+- 唯一下一步：`5F-5-adoption-decision-exit-review` 执行中；基于 5F-1 至 5F-3 和 5F-4 未准入
+  证据分别裁决产品 Runtime、隔离实验资产和设计思想的生命周期，完成 5F 退出审查、本地门禁与
+  exact-SHA 公共闭环。5F-5 不读取 Key、不调用真实 Provider/Riot、不补做 5F-4，也不会把
+  Scripted/Fake 结果称为模型质量。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -266,7 +267,7 @@ pause_reason: "awaiting explicit user confirmation"
 | 5F-2-offline-protocol-adapter-spike | 用同一 recent-form Context、Scripted StreamFn 和单一 `knowledge.search` 建立隔离 Python↔Node 协议对照 | 已完成 | exact lock/sidecar/controller、真实本地知识 Tool、35 focused/99 adjacent/完整 919 tests 与本地退出审查；`pass-with-boundaries`；`f62f078` / Actions `32022258177` exact-SHA 公共成功；不代表 Pi adopt |
 | 5F-3-contract-security-harness-evaluation | 对比完整 Tool/Context/deadline/structured output/error/terminal 与 ReviewHarness/Trace parity | 已完成 | 45 focused、196 adjacent、完整 929/110 subtests；Harness/成功 Trace 可适配，但 Context/extended terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功 |
 | 5F-4-bounded-real-slice | 前置硬门通过且再次授权后，才运行同模型/同 Context/同 Harness 的真实切片 | 未进入（前置门失败） | 5F-3 hard Runtime parity gate failed；真实模型调用不能修复这些合同差异，外部 calls 保持 0 |
-| 5F-5-adoption-decision-exit-review | 根据全部证据裁决 adopt/partial-adopt/reject 并关闭 5F | 准备状态 | 等待用户明确继续；不提前裁决、不回补 5F-4 |
+| 5F-5-adoption-decision-exit-review | 根据全部证据裁决 adopt/partial-adopt/reject 并关闭 5F | 进行中 | ADR-0037/exit matrix/review 已形成本地裁决 `partial-adopt-evaluation-assets-only`；45 focused、929/110 全量与全部本地门禁通过，当前待提交、推送和 exact-SHA 公共闭环 |
 
 ## 当前真实能力边界
 
@@ -504,10 +505,10 @@ pause_reason: "awaiting explicit user confirmation"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A-5E 与整个 5P；5F-2 已本地实现隔离 Pi sidecar/controller 并 `pass-with-boundaries`，但未接主 Runtime/Harness；当前无领域 Provider 准入 | 阶段 5、Pi 已采用、生产模型质量、完整 API/前端或可恢复 Runtime 已完成 |
-| 项目理解 | 已能解释 Pi sidecar 的 JSONL、Agent loop、Tool 往返、整批预检、Usage 四态、进程失败与跨语言成本；同时清楚 5F-3 才检查完整 Harness/Trace parity | 协议 spike 通过等于 Pi 更优、已采用、真实模型质量或产品 Runtime 已切换 |
-| 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi release/source/license/contract 审计已本地与公开闭环，Claude SDK 仅作书面排除分析 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5P-5/5P-6/5F-entry-design/5F-1/5F-2 已分别由 `6d1e5b0/32005648179`、`8c8acc6/32010604551`、`ce97975/32013948784`、`5901b09/32016852979`、`f62f078/32022258177` exact-SHA 公开验证；正式 API/网页未部署 | 本地 Pi spike 或 CI FastAPI 等于领域模型质量、生产切换或 Web Agent 可用 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A-5E 与整个 5P；5F-2/5F-3 已实现隔离 Pi sidecar、evaluation adapter 与严格 projector，但从未接主 Runtime/FastAPI；5F-5 已形成本地生命周期裁决 | 阶段 5 已公共关闭、Pi 已进入产品、生产模型质量、完整 API/前端或可恢复 Runtime 已完成 |
+| 项目理解 | 已能解释 Pi sidecar、Tool/Usage/Harness/Trace 数据流，能区分“成功路径兼容”和 Context/terminal/live timing 的完整 Runtime parity，并能说明产品拒绝与评测资产保留为何不矛盾 | `partial-adopt` 等于双 Runtime、SDK 已接产品、Scripted 测试代表真实模型质量 |
+| 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
+| GitHub/部署 | 5P-5/5P-6 与 5F-entry 至 5F-3 均有 exact-SHA 公共验证，最近为 `3d9a081/32025522606`；5F-5 本地裁决仍待新提交/公共 CI；正式 API/网页未部署 | 本地决策、Pi CI 或 FastAPI TestClient 等于生产切换、真实模型质量或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

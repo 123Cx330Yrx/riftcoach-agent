@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 8 - `5F-5-adoption-decision-exit-review` is the next preparation checkpoint after publicly
-verified 5F-3; conditional 5F-4 was not entered because its hard Runtime parity gate failed
+Phase 8 - `5F-5-adoption-decision-exit-review` is in progress after RQ-051 resumed the final
+adoption, executable-asset lifecycle, and 5F exit decision; conditional 5F-4 remains not entered
 
 ## Phases
 
@@ -201,10 +201,10 @@ verified 5F-3; conditional 5F-4 was not entered because its hard Runtime parity 
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
   实验仍属于 5F，Prompt Program 属于 5P。
 
-### Phase 8 - 5F-3-contract-security-harness-evaluation（5F-2 已完成后的准备检查点）
+### Phase 8 - 5F-5-adoption-decision-exit-review
 
 - Status: in_progress
-- Pause: awaiting explicit user confirmation before implementing 5F-3
+- RQ-051 已清除等待确认状态；当前只作 Pi 最终采用与 5F 退出裁决，不补做 5F-4。
 - 5P Prompt Program V1 与早期产品纵向切片已完成；5P-6 退出审查以
   `8c8acc6` / Actions `32010604551` 完成 exact-SHA 公共闭环。
 - `5F-entry-design` 已由 `ce97975` / Actions `32013948784` 完成 exact-SHA 公共闭环；用户已按
@@ -222,6 +222,10 @@ verified 5F-3; conditional 5F-4 was not entered because its hard Runtime parity 
   exact lockfile、Pi sidecar、Python controller、35 项聚焦协议/接线/窄 parity 测试与退出审查已
   本地完成；裁决为 `pass-with-boundaries`；`f62f078` / Actions `32022258177` exact-SHA 公共验证
   成功，5F-2 正式关闭，下一检查点为 5F-3。
+- 5F-3 已由 `3d9a081` / Actions `32025522606` 完成 exact-SHA 公共闭环；Harness/成功 Trace 可适配，
+  但 Context 单位、extended terminal 与 live timing 三项 hard gap 使 5F-4 未进入。
+- ADR-0037、最终 exit matrix/review 与本地门禁已完成；本地裁决为
+  `partial-adopt-evaluation-assets-only`：产品拒绝 Pi，只冻结保留评测资产与采用门方法。
 - `5P-entry-design` 与 5P-1 至 5P-6 已公开完成；
 - 5P-4 immutable receipt/store、strict query 与 Application receipt 接缝已由 `932a863` / Actions
   `32002994441` 完成 exact-SHA 公共验证；5P-5 薄 Adapter 与 no-I/O 纵向切片又由 `6d1e5b0` /
@@ -241,10 +245,9 @@ verified 5F-3; conditional 5F-4 was not entered because its hard Runtime parity 
 
 ## Next Step
 
-`5F-5-adoption-decision-exit-review`：5F-3 提交 `3d9a081` / Actions `32025522606` 已完成
-exact-SHA 公共验证并正式关闭；5F-4 因 Context/extended terminal/live timing 硬门失败未进入。
-等待用户明确继续后，才根据全部证据裁决 partial-adopt/reject 并关闭 5F；不读取 Key、不调用
-Provider/Riot、不补做 5F-4。
+`5F-5-adoption-decision-exit-review`：RQ-051 已恢复本检查点；基于 5F-1 至 5F-3 和 5F-4
+未准入证据，分别裁决产品 Runtime、可执行实验资产和设计思想，完成 ADR、5F exit review、全部
+本地门禁与 exact-SHA 公共闭环。不读取 Key、不调用 Provider/Riot、不补做 5F-4。
 
 ## 5P-6 Exit Review Checklist
 
@@ -292,10 +295,18 @@ Provider/Riot、不补做 5F-4。
 
 ## 5F-3 Contract / Security / Harness Evaluation Checklist
 
-- [pending] 复用 5F-2 同切片，对比完整 Tool/Context/deadline/structured output/error/terminal 合同
-- [pending] 验证 ReviewHarness 仍是唯一发布权，并核对 Trace/Usage/Artifact parity
-- [pending] 量化 sidecar/IPC/日志/调试/部署维护成本与安全差异
-- [pending] 完成本地门禁、提交、exact-SHA 公共 CI 和退出裁决后再决定是否交接 5F-4
+- [completed] 复用 5F-2 同切片，对比完整 Tool/Context/deadline/structured output/error/terminal 合同
+- [completed] 验证 ReviewHarness 仍是唯一发布权，并核对 Trace/Usage/Artifact parity
+- [completed] 量化 sidecar/IPC/日志/调试/部署维护成本与安全差异
+- [completed] 完成本地门禁、提交与 exact-SHA 公共 CI；硬门失败，5F-4 未进入
+
+## 5F-5 Adoption Decision / Exit Review Checklist
+
+- [completed] 冻结产品职责、合同、安全、NFR、维护、教学和复现价值的最终比较矩阵
+- [completed] 用 ADR-0037 分别裁决产品 Runtime、隔离可执行资产与可吸收设计思想
+- [completed] 形成 5F 总退出审查并同步 canonical、路线、能力矩阵和项目决策
+- [in_progress] 本地门禁已通过；完成提交、推送和 exact-SHA 公共 CI
+- [pending] 公共成功后关闭 5F，只交接 `6A-entry-design`，不自动实施阶段 6
 
 ## Decisions Made
 
@@ -309,6 +320,7 @@ Provider/Riot、不补做 5F-4。
 | 首批三 Skill 时序标为待裁决 | 历史承诺没有被撤销，但治理修复也不能直接替用户决定继续维持还是调整 |
 | 5C-4 只补合同不变量和边界测试 | 保留已正确的匹配算法，同时让排除信号在算法与决策合同两层都成为硬否决 |
 | 两个用户任务进入 Router，事实审查保留为 EvaluatorStep | Router 选择用户意图；Harness 的强制质量端口不是第三种用户任务 |
+| 5F 最终只保留 Pi evaluation assets，产品拒绝 Pi Runtime | 三项 hard parity gap 与跨语言成本使产品净收益为负；冻结可执行证据仍有复现、教学和作品集价值 |
 | 不实现 Skill Invocation Contract | 当前没有真实内部 Skill；为一个重复包装扩展 Manifest 会增加无消费者的抽象 |
 | 用 ADR-0009 取代 ADR-0008 原方案 | 保留决策历史，同时确保最终路线由源码证据而不是“三个 Skill”数字驱动 |
 | 单局 Skill 接收完整 Summary、确定性报告与唯一 target_match_id | 复用版本化事实契约，同时避免给 Agent Riot API 权限；5D 再抽取最小上下文 |

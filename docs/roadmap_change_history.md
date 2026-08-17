@@ -1639,3 +1639,20 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   没有信息增益，因此外部 calls 保持 0。
 - `HANDOFF`：canonical 唯一下一检查点为 `5F-5-adoption-decision-exit-review` 准备状态，等待用户
   明确继续；不自动作 partial-adopt/reject 决策。
+
+### 2026-08-17：RQ-051 恢复 5F-5 与本地最终采用裁决
+
+- `RESUMED`：用户再次明确“继续”，只授权 canonical 的
+  `5F-5-adoption-decision-exit-review`；不补做 5F-4、不读取 Key、不调用 Provider/Riot、不接主
+  Runtime/FastAPI，也不自动实施阶段 6。
+- `DECISION-LOCAL`：ADR-0037 裁决为 `partial-adopt-evaluation-assets-only`。产品 Runtime 拒绝 Pi，
+  Python `AgentRuntimeV1` 保持唯一默认；Pi package/sidecar/evaluation adapter/tests/lockfile/CI 仅作为
+  冻结、可复现的评测资产保留。
+- `METHOD`：吸收严格版本协议、fail-closed projection、硬采用门和无信息增益停止方法，不迁移
+  Pi Session/Provider/Coding tools，也不建立双 Runtime 开关。
+- `LIFECYCLE`：安全漏洞、Node 不兼容、持续 CI 不稳定/成本显著或大规模追随维护将触发新 ADR，
+  优先归档可执行实验；产品合同不得为了实验变绿而放宽。
+- `VERIFIED-LOCAL`：Pi 聚焦 45、完整 `929 passed, 1 warning, 110 subtests passed`；两套 RAG、
+  exact Node tree、compileall、governance、Harness dry-run、安全边界和 diff check 通过，外部 I/O 为 0。
+- `CURRENT`：5F-5 仍 in progress，当前只待提交、推送与 exact-SHA 公共 CI；公共成功前不关闭
+  5F，不交接 `6A-entry-design`。
