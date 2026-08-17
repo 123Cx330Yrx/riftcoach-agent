@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 8 - `5P-5-thin-fastapi-adapter-no-io-vertical-slice` is complete; `5P-6-product-slice-evaluation-exit-review` is next
+Phase 8 - `5P-6-product-slice-evaluation-exit-review` is in progress
 
 ## Phases
 
@@ -209,6 +209,8 @@ Phase 8 - `5P-5-thin-fastapi-adapter-no-io-vertical-slice` is complete; `5P-6-pr
   Actions `32005648179` 完成 exact-SHA 公共验证；
 - 5P-5 薄 FastAPI Adapter 与 no-I/O 纵向切片已由 `6d1e5b0` / Actions `32005648179` 完成
   exact-SHA 公共验证并正式关闭；
+- 5P-6 已完成本地十项功能 exit matrix、初学者 exit review 和比例/完整门禁；本地裁决为
+  `close-with-deferred-boundaries`，当前等待退出审查提交的 exact-SHA 公共闭环；
 - 入口审计确认 5P 同时承担 Prompt Program V1 与早期产品切片，不能缩成单纯 FastAPI；
 - ADR-0032 选择版本化 Prompt Program/Catalog 和 drift gate，复用既有 component fingerprint；
 - ADR-0033 选择薄 FastAPI Adapter + Application Service + 现有 AgentRuntime/Harness；
@@ -219,8 +221,16 @@ Phase 8 - `5P-5-thin-fastapi-adapter-no-io-vertical-slice` is complete; `5P-6-pr
 
 ## Next Step
 
-`5P-6-product-slice-evaluation-exit-review`：等待用户明确继续后，审查 5P-1 至 5P-5 的产品
-合同、HTTP/no-I/O 证据、限制和公开交付边界；本轮不实现 5P-6、5F 或阶段 6。
+`5P-6-product-slice-evaluation-exit-review`：提交、推送本地退出审查并验证 exact-SHA
+GitHub Actions；成功后再同步最终状态并只交接到 `5F-entry-design`，本轮不实施 5F 或阶段 6。
+
+## 5P-6 Exit Review Checklist
+
+- [completed] 冻结功能、NFR、安全、资源和明确排除项的退出标准
+- [completed] 建立 5P-1 至 5P-5 源码/测试/public-CI exit matrix
+- [completed] 运行聚焦、相邻、完整回归与全部本地门禁
+- [completed] 形成退出结论、限制、教学/面试表述并同步本地持久状态
+- [in_progress] 提交、推送和 exact-SHA CI；只交接到 5F，不自动实现
 
 ## 5P-5 Implementation Checklist
 

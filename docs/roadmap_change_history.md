@@ -1501,3 +1501,19 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   公网部署或完整前端。
 - `CURRENT`：canonical 唯一下一检查点切换为 `5P-6-product-slice-evaluation-exit-review`，
   等待用户明确继续；不自动实现 5P-6/5F/阶段 6。
+
+### 2026-08-17：RQ-046 恢复并完成 5P-6 本地退出审查
+
+- `RESUMED`：用户再次明确“继续”，只授权 canonical 的 5P-6 产品切片退出审查；没有读取 Key、
+  调用 Riot/Provider、运行 held-out 或进入 5F/阶段 6。
+- `MATRIX`：原设计十项功能要求、分层控制权、NFR/安全/no-I/O 与 deferred/unknown 能力均已
+  映射到源码、直接测试、既有 5P exact-SHA Actions、限制和退出影响。
+- `TEACHING`：退出 review 已解释数据流/控制流、各层存在原因、测试能证明和不能证明的内容、
+  为什么当前是 Agent 产品切片而不只是 RAG，以及参考项目/框架的采用门。
+- `VERIFIED-LOCAL`：5P 聚焦 `121 passed, 1 warning`、Runtime/Harness 相邻 `166 passed`、完整
+  `884 passed, 1 warning, 110 subtests passed`；两套 RAG、compileall、Harness boundary、
+  tracked secret/run-data、dry-run、governance 和 diff check 通过，外部 I/O 为 0。
+- `DECISION`：本地 `close-with-deferred-boundaries`；当前没有 5P 结构性代码缺口，真实 Riot/
+  Provider、SQL/Memory/SSE/鉴权/前端/部署等保持 deferred/unknown。
+- `CURRENT`：5P-6 仍 in progress，只待退出审查提交、推送和 exact-SHA 公共 CI；成功前不正式
+  关闭 5P，不交接或实施 5F。

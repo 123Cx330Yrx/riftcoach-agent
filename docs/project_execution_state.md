@@ -36,8 +36,12 @@ pause_reason: null
   no-I/O。`app/api/main.py` 与 `tests/test_fastapi_adapter.py` 已本地实现并通过 24 项 API
   聚焦；完整回归为 `884 passed, 1 warning, 110 subtests passed`。提交
   `6d1e5b0af186f523bee35c24c6873578a149b824` 与 Actions run `32005648179` 已完成 exact-SHA
-  公共验证，5P-5 正式关闭；唯一下一检查点交接为 `5P-6-product-slice-evaluation-exit-review`，
-  等待用户明确继续。上一子阶段组
+  公共验证，5P-5 正式关闭。用户已按 RQ-046 恢复
+  `5P-6-product-slice-evaluation-exit-review`；十项功能要求、分层/NFR、安全/no-I/O 与
+  deferred 边界已形成 exit matrix，面向初学者的退出审查已完成。本地结论为
+  `close-with-deferred-boundaries`，聚焦 `121 passed, 1 warning`、相邻 `166 passed`、完整
+  `884 passed, 1 warning, 110 subtests passed` 与全部本地门禁通过；当前只待提交、推送和
+  exact-SHA 公共 CI，成功前 5P-6 仍为 in progress。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -167,8 +171,9 @@ pause_reason: null
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`5P-6-product-slice-evaluation-exit-review`，等待用户明确继续后审查 5P 产品
-  切片的合同、证据、限制与公开交付边界；本轮不自动实现 5P-6、5F 或阶段 6。
+- 唯一下一步：提交、推送本次 `5P-6-product-slice-evaluation-exit-review` 退出审查并验证
+  exact-SHA GitHub Actions；公共成功后再正式关闭 5P 并只把 canonical 交接到
+  `5F-entry-design`，本轮不自动实施 5F 或阶段 6。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -220,7 +225,7 @@ pause_reason: null
 | 5P-3 Domain Pipeline Promotion & Application Service | 提升 Summary/Report 服务并组合产品用例/安全错误 | 已完成 | `4bd5c83` / Actions `31998739178` exact-SHA 公共成功；完整 `830 passed, 110 subtests passed`；无外部 I/O |
 | 5P-4 File-backed Run Receipt & Query Projection | body-free receipt、Trace/manifest/report 安全复读 | 已完成 | `932a863` / Actions `32002994441` exact-SHA 公共成功；聚焦 50、相邻 179、完整 860 tests/110 subtests |
 | 5P-5 Thin FastAPI Adapter & No-I/O Vertical Slice | 最小端点、依赖与 Fake Provider HTTP 纵向测试 | 已完成 | 四个固定端点、显式 Port、strict DTO、错误映射与真实 Runtime/Harness/RAG no-I/O 切片；24 API tests，完整 884 tests/110 subtests；`6d1e5b0` / Actions `32005648179` exact-SHA 公共成功 |
-| 5P-6 Product Slice Evaluation & Exit Review | 合同、安全、资源、公开证据与限制退出审查 | 已规划 | 尚未开始 |
+| 5P-6 Product Slice Evaluation & Exit Review | 合同、安全、资源、公开证据与限制退出审查 | 本地审查完成，等待公共验证 | 十项功能 exit matrix、初学者 exit review、聚焦 121、相邻 166、完整 884 tests/110 subtests 与全部门禁通过；本地裁决 `close-with-deferred-boundaries`，外部 I/O 为 0 |
 
 ## 当前真实能力边界
 
@@ -458,10 +463,10 @@ pause_reason: null
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A-5E 与 5P entry/5P-1 至 5P-5；当前无领域 Provider 准入 | 阶段 5、生产模型质量、完整 API/前端或可恢复 Runtime 已完成 |
-| 项目理解 | 已能解释 HTTP Adapter、Application Service、AgentRuntime/Harness 与 Query Service 的职责，以及为何 HTTP 不应重做 Prompt/Skill/Artifact 逻辑 | 本地 TestClient/Fake Provider 纵向通过等于真实 Riot/模型质量、数据库事务、公网安全或生产部署 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A-5E 与 5P entry/5P-1 至 5P-5，5P-6 本地退出审查通过、等待公共闭环；当前无领域 Provider 准入 | 阶段 5、生产模型质量、完整 API/前端或可恢复 Runtime 已完成 |
+| 项目理解 | 已能解释 5P 的数据流/控制流、HTTP Adapter、Application Service、Prompt Program、AgentRuntime/Harness 与 Query Service 的职责，以及测试证据边界 | 本地 TestClient/Fake Provider 纵向通过等于真实 Riot/模型质量、数据库事务、公网安全或生产部署 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5P-4 与 5P-5 已分别由 `932a863` / Actions `32002994441`、`6d1e5b0` / Actions `32005648179` exact-SHA 公开验证；正式 API/网页未部署 | 本地/CI FastAPI 切片通过等于领域模型质量、生产切换或 Web Agent 可用 |
+| GitHub/部署 | 5P-4 与 5P-5 已分别由 `932a863` / Actions `32002994441`、`6d1e5b0` / Actions `32005648179` exact-SHA 公开验证；5P-6 退出审查尚待公共 CI，正式 API/网页未部署 | 本地/CI FastAPI 切片通过等于领域模型质量、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -536,7 +541,9 @@ entry design 没有安装 FastAPI、实现产品代码、读取 Key、调用 Rio
 `5P-3-domain-application-service`，提交 `4bd5c83` / Actions `31998739178` 已公开通过。
 5P-4 receipt/query 已由 `932a863` / Actions `32002994441` 完成 exact-SHA 公共闭环。5P-5
 thin FastAPI/no-I/O vertical slice 又由 `6d1e5b0` / Actions `32005648179` 完成 exact-SHA
-公共闭环并正式关闭；当前唯一下一检查点为 5P-6，等待用户明确继续，不得自动进入 5F 或阶段 6。
+公共闭环并正式关闭；5P-6 现已完成本地 exit matrix/review 与全部门禁，本地裁决为
+`close-with-deferred-boundaries`。当前仍只等待本次退出审查的提交、推送和 exact-SHA 公共 CI；
+公共成功前不得正式关闭 5P 或自动进入 5F/阶段 6。
 
 本节后续保留从 5C 到 5D 的历史范围账本；其中旧“下一步”只表示当时顺序，不覆盖本文顶部的
 canonical checkpoint。

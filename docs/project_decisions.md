@@ -756,3 +756,24 @@ FastAPI 0.141.1 TestClient 对 httpx 的上游迁移提示，不改变本轮合�
 完成 exact-SHA 公共验证，5P-5 正式关闭。canonical 只交接到
 `5P-6-product-slice-evaluation-exit-review`，等待用户明确继续；本轮不自动开展退出审查、5F
 或阶段 6。
+
+## 5P-6 Product Slice 本地退出裁决（2026-08-17）
+
+用户按 RQ-046 恢复 5P-6。审查没有用“完整 pytest 很多”替代设计对账，而是把 5P 总设计的
+十项功能要求、五层控制权、NFR/安全/no-I/O 与 deferred/unknown 能力逐项映射到源码、直接测试
+和 5P-1 至 5P-5 的 exact-SHA Actions。
+
+审查确认 HTTP 只适配协议，Application Service 拥有一次产品用例顺序，Domain 只处理 LoL
+事实，typed compiler/Prompt Program 负责可信身份与 policy，AgentRuntime/Harness 负责执行和
+唯一发布，Query Service 重新核对 receipt/Trace/manifest/final Artifact。没有发现需要留在 5P
+修补的结构性产品代码缺口。
+
+本地裁决为 `close-with-deferred-boundaries`：当前只证明 Fake/fixture 驱动的本地同步产品纵切面，
+不证明真实 Riot/模型 Coach 质量、SQL/事务/恢复、Session/Memory、鉴权/限流/CORS、SSE、正式
+前端、公网部署或生产性能。EchoMind/Saber/Sea、LangGraph、MCP、Multi-Agent 与 Pi/Claude SDK
+仍受各自采用门约束，不因 5P 退出而自动接入。
+
+本地聚焦 `121 passed, 1 warning`、相邻 `166 passed`、完整
+`884 passed, 1 warning, 110 subtests passed`，两套 RAG 与全部门禁通过，外部 I/O 为 0。
+5P-6 在本退出审查提交获得 exact-SHA 公共 CI 前仍为 in progress；成功后才正式关闭 5P，并只
+交接到 `5F-entry-design`，不自动实施第三方 Runtime 对照。

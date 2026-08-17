@@ -2063,6 +2063,24 @@
 - FastAPI 0.141.1 的 TestClient 当前给出 httpx 迁移 deprecation warning；`pip check` 和全部测试
   均通过。本轮不为了消除非失败警告盲目加入 `httpx2` 或压低依赖版本，留待上游稳定迁移时维护。
 
+## 2026-08-17：5P-6 入口审计发现
+
+- 5P-6 是证据审查与退出门，不是再实现一个产品端点；主要事实源为 ADR-0032/0033、5P 总设计、
+  5P-1 至 5P-5 计划/源码/测试和 exact-SHA Actions。
+- 退出结论必须分别回答功能链、层次边界、失败/脱敏、资源/no-I/O、公开证据与 deferred 能力；
+  不能只列测试总数，也不能把 TestClient/Fake Provider 当成真实模型或公网部署。
+- 路线明确 5P-6 通过后才轮到 5F 第三方 Runtime 采用实验；5F 不等于多模型分层，后者仍默认
+  等待阶段 6 的真实产品成本/延迟证据。
+
+## 2026-08-17：5P-6 本地退出审计发现
+
+- 原设计十项功能要求都能映射到实际实现、直接负例测试与既有 exact-SHA Actions；HTTP 没有
+  绕过 Application/Runtime/Query，Prompt identity 对应真实组件，查询也不会只相信 receipt。
+- 当前没有必须留在 5P 修补的结构性产品代码缺口；继续加入真实 Provider、SQL、Memory、SSE、
+  鉴权或前端会改变退出范围并让失败归因混乱。
+- 本地 `close-with-deferred-boundaries` 只证明本地同步产品纵切面；真实 Riot、模型 Coach 质量、
+  生产容量/成本和公网安全仍是 deferred/unknown，不能由 884 项回归反推。
+
 ## 2026-08-17：5P-4 本地实现发现
 
 - `api_run_receipt.json` 使用同目录临时文件 + flush/fsync + atomic create-if-absent hard link；这在

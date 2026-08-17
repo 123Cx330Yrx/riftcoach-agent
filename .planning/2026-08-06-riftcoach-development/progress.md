@@ -2022,3 +2022,23 @@
   公开证据已同步；参考项目审计与真实 Provider/部署成熟度没有被错误提升。
 - canonical 只交接到 `5P-6-product-slice-evaluation-exit-review`，等待用户明确继续；本轮不实现
   5P-6、5F、阶段 6 或任何真实 Provider I/O。
+
+## 2026-08-17：开始 5P-6 Product Slice Exit Review
+
+- 用户再次明确“继续”，RQ-046 只授权 canonical `5P-6-product-slice-evaluation-exit-review`。
+- 已按 AGENTS 顺序恢复 canonical/活动计划/需求/路线/能力矩阵并通过治理预检；起始
+  `HEAD == origin/main == 1ba9355eabeab3d7b636eedbb9c80a4cf7864525`，工作树干净，最终
+  5P-5 Actions run `32005901066` completed/success。
+- 新增退出审查计划 `docs/plans/2026-08-17-5p6-product-slice-exit-review-plan.md`；当前尚未
+  编写 exit matrix 或修改产品代码，Key/Riot/Provider/held-out I/O 为 0。
+
+## 2026-08-17：5P-6 本地退出审查完成
+
+- 新增 `docs/plans/2026-08-17-product-slice-exit-matrix.md`，逐项覆盖原设计十项功能要求、
+  分层职责、NFR/安全/no-I/O 与 deferred/unknown 边界。
+- 新增 `docs/plans/2026-08-17-product-slice-exit-review.md`，面向初学者解释 5P 的数据流、
+  控制流、各层职责、测试证据、生产限制、参考项目/框架采用边界和面试表述。
+- 审查未发现 5P 结构性代码缺口；本地裁决为 `close-with-deferred-boundaries`。聚焦
+  `121 passed, 1 warning`、相邻 `166 passed`、完整 `884 passed, 1 warning, 110 subtests passed`
+  与两套 RAG/compileall/安全/治理/dry-run 门禁通过，外部 I/O 为 0。
+- 当前仍停在 5P-6，只待提交、推送和 exact-SHA 公共 CI；成功前不正式关闭 5P，不进入 5F。
