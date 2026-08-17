@@ -878,3 +878,7 @@ live timing/stream。再加 94 packages、约 62 MB 安装树和本机约 0.4 �
 本地裁决为 `harness-compatible-but-runtime-gate-failed`，不准入 5F-4 真实 Provider slice。该结果
 不评价模型质量，也不提前决定 5F-5 的 partial-adopt/reject；公共 CI 成功前 5F-3 仍未正式关闭。
 聚焦 45、相邻 196、完整 `929 passed, 1 warning, 110 subtests passed`，外部 I/O 为 0。
+
+实现/退出提交 `3d9a08159c5a6e08fca74257514975b4c0c6ec68` 已由 Actions run `32025522606`
+完成 exact-SHA 公共验证，5F-3 正式关闭。5F-4 按既定条件分支未进入；canonical 只交接到 5F-5
+准备状态，最终 partial-adopt/reject 仍等待单独裁决。

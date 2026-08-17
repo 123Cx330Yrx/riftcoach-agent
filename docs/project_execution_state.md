@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5F"
-current_checkpoint: "5F-3-contract-security-harness-evaluation"
+current_checkpoint: "5F-5-adoption-decision-exit-review"
 status: in_progress
-pause_reason: null
+pause_reason: "awaiting explicit user confirmation"
 ---
 
 # RiftCoach 当前执行状态
@@ -68,7 +68,10 @@ pause_reason: null
   extended terminal 与 live timing 三项 hard gap 仍存在。本地裁决为
   `harness-compatible-but-runtime-gate-failed`，不准入 5F-4；两套 RAG、compileall、Node
   syntax/tree、Harness/secret/tracked-data、dry-run、governance 与 diff 门禁也已通过，当前只待
-  提交/推送与 exact-SHA 公共 CI。上一子阶段组
+  提交/推送与 exact-SHA 公共 CI。实现/退出提交
+  `3d9a08159c5a6e08fca74257514975b4c0c6ec68` 已由 Actions run `32025522606` 完成
+  exact-SHA 公共验证，5F-3 正式关闭；5F-4 因既定前置硬门失败而未进入，不调用真实模型。
+  canonical 只交接到 `5F-5-adoption-decision-exit-review` 准备状态，等待用户明确继续。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -198,10 +201,9 @@ pause_reason: null
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：提交并推送 `5F-3-contract-security-harness-evaluation`，等待 exact-SHA 公共 CI；
-  公共成功前仍为 in progress。5F-3 本地 hard Runtime parity gate 已失败，
-  因此不进入 5F-4、不读取 Key、不调用真实 Provider/Riot、不接主 `AgentRuntimeV1`、FastAPI 或
-  默认 composition；公共闭环后才把 `5F-5-adoption-decision-exit-review` 交给用户再次确认。
+- 唯一下一步：`5F-5-adoption-decision-exit-review` 准备状态；等待用户明确继续后，才基于 5F-1
+  至 5F-3 和 5F-4 未准入证据作 `adopt / partial-adopt / reject` 最终裁决并关闭 5F。5F-5 不读取
+  Key、不调用真实 Provider/Riot、不补做 5F-4，也不会把 Scripted/Fake 结果称为模型质量。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -262,9 +264,9 @@ pause_reason: null
 | 5F-entry-design | 收缩 Pi-only 候选，冻结同切片对照、合同、安全、跨语言成本和 adopt/partial-adopt/reject 门槛 | 已完成 | ADR-0034 与 `docs/plans/2026-08-17-5f-pi-only-agent-runtime-adoption-design.md`；提交 `ce97975` / Actions `32013948784` exact-SHA 公共成功；无 Pi/Key/Provider I/O |
 | 5F-1-pi-source-license-contract-audit | 审计官方 Pi 源码/包版本、许可证、Runtime/Provider/Tool/event/state/abort/Usage 接缝 | 已完成 | 冻结 `earendil-works/pi v0.84.2` / `914cf147...`、MIT、Node `>=22.19.0`；完成合同/安全/依赖/sidecar 映射；裁决允许有条件进入 5F-2；`5901b09` / Actions `32016852979` exact-SHA 公共成功；Pi/Key/Provider I/O 为 0 |
 | 5F-2-offline-protocol-adapter-spike | 用同一 recent-form Context、Scripted StreamFn 和单一 `knowledge.search` 建立隔离 Python↔Node 协议对照 | 已完成 | exact lock/sidecar/controller、真实本地知识 Tool、35 focused/99 adjacent/完整 919 tests 与本地退出审查；`pass-with-boundaries`；`f62f078` / Actions `32022258177` exact-SHA 公共成功；不代表 Pi adopt |
-| 5F-3-contract-security-harness-evaluation | 对比完整 Tool/Context/deadline/structured output/error/terminal 与 ReviewHarness/Trace parity | 本地实现/退出审查完成，待公共验证 | 45 focused、196 adjacent、完整 929/110 subtests；Harness/成功 Trace 可适配，但 Context/extended terminal/live timing 硬门失败；裁决不准入 5F-4 |
-| 5F-4-bounded-real-slice | 前置硬门通过且再次授权后，才运行同模型/同 Context/同 Harness 的真实切片 | 未准入 | 5F-3 本地 hard Runtime parity gate failed；真实模型调用不能修复这些合同差异 |
-| 5F-5-adoption-decision-exit-review | 根据全部证据裁决 adopt/partial-adopt/reject 并关闭 5F | 等待 5F-3 公共闭环 | 不提前裁决；5F-3 exact-SHA 成功后才成为唯一下一检查点 |
+| 5F-3-contract-security-harness-evaluation | 对比完整 Tool/Context/deadline/structured output/error/terminal 与 ReviewHarness/Trace parity | 已完成 | 45 focused、196 adjacent、完整 929/110 subtests；Harness/成功 Trace 可适配，但 Context/extended terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功 |
+| 5F-4-bounded-real-slice | 前置硬门通过且再次授权后，才运行同模型/同 Context/同 Harness 的真实切片 | 未进入（前置门失败） | 5F-3 hard Runtime parity gate failed；真实模型调用不能修复这些合同差异，外部 calls 保持 0 |
+| 5F-5-adoption-decision-exit-review | 根据全部证据裁决 adopt/partial-adopt/reject 并关闭 5F | 准备状态 | 等待用户明确继续；不提前裁决、不回补 5F-4 |
 
 ## 当前真实能力边界
 

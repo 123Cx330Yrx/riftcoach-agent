@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 8 - `5F-3-contract-security-harness-evaluation` is the next preparation checkpoint after
-publicly verified `5F-2-offline-protocol-adapter-spike`
+Phase 8 - `5F-5-adoption-decision-exit-review` is the next preparation checkpoint after publicly
+verified 5F-3; conditional 5F-4 was not entered because its hard Runtime parity gate failed
 
 ## Phases
 
@@ -241,9 +241,10 @@ publicly verified `5F-2-offline-protocol-adapter-spike`
 
 ## Next Step
 
-`5F-3-contract-security-harness-evaluation`：5F-2 提交 `f62f078` / Actions `32022258177` 已完成
-exact-SHA 公共验证并正式关闭；等待用户明确继续后，才做完整合同、安全、ReviewHarness/Trace parity
-和跨语言维护成本评估。不得读取 Key、调用 Provider/Riot、接主 Runtime/Harness/FastAPI。
+`5F-5-adoption-decision-exit-review`：5F-3 提交 `3d9a081` / Actions `32025522606` 已完成
+exact-SHA 公共验证并正式关闭；5F-4 因 Context/extended terminal/live timing 硬门失败未进入。
+等待用户明确继续后，才根据全部证据裁决 partial-adopt/reject 并关闭 5F；不读取 Key、不调用
+Provider/Riot、不补做 5F-4。
 
 ## 5P-6 Exit Review Checklist
 
@@ -407,7 +408,7 @@ exact-SHA 公共验证并正式关闭；等待用户明确继续后，才做完�
 | Task 4 陈旧状态扫描把 `*` 直接放进 Windows `rg` 路径参数 | 1 | 命令在只读扫描阶段返回路径语法错误且未运行后续门禁；改为显式列出两个设计文件，不重复通配路径 |
 | 5D-6b 状态/决策同步补丁把 `截至` 误当独立一行 | 1 | `apply_patch` 原子拒绝且无部分修改；拆为 canonical state 与真实相邻日期文本两个补丁 |
 | canonical status 改为进行中时移除了治理要求的“唯一下一步”固定元数据行 | 1 | 保留 `status: in_progress`，恢复唯一一条“唯一下一步”并在该行注明当前只做实验设计 |
-| 提交前把多个 Git 检查用分号串行，cached diff 的 EOF 空行失败未阻止后续 commit | 1 | 立即删除多余 EOF 空行并补记错误；后续检查与 commit 分开调用，成功检查后才提交 |
+| 提交前把多个 Git 检查用分号串行，cached diff 的 EOF 空行失败未阻止后续 commit | 2 | 5F-3 再次复发：commit 在 push 前已产生；立即删除三份文档尾部空行并 `--amend`，未把坏 SHA 推到远端。以后 cached diff check 必须作为独立工具调用成功后，下一调用才允许 commit |
 | 5D-6b 实施计划 Next Step 只写实施文件与 Task，漏掉 canonical checkpoint 字面键 | 1 | 治理预检在功能代码前阻止；补回 `5D-6b` 后重跑，不改变阶段或任务范围 |
 | 5D-6b 宽回归命令猜测了不存在的 `tests/test_provider_structured.py` | 1 | pytest 未收集任何测试；先列出真实测试路径，再改跑 `test_structured_output.py` 与实际评测测试，获得有效回归证据 |
 | 5D-6b 受控诊断提交前 cached diff 发现两份新设计文档 EOF 多余空行 | 1 | 检查阻止 commit；用小补丁删除尾部空白，并重新暂存后独立复跑 cached diff check |
@@ -773,7 +774,8 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   `harness-compatible-but-runtime-gate-failed`，5F-4 不准入。
 - [completed] 两套 RAG、compileall、Node syntax/tree、Harness/secret/tracked-data、dry-run、governance、
   diff 与最终完整 929/110 subtests 本地门禁通过。
-- [in_progress] 提交、推送和 exact-SHA 公共 CI；成功后只交接 5F-5，不自动执行。
+- [completed] 实现/退出提交 `3d9a081` 已由 Actions run `32025522606` 完成 exact-SHA 公共 CI。
+- [completed] 5F-3 正式关闭；5F-4 因前置硬门失败未进入；只交接 5F-5 准备状态，不自动执行。
 
 ### 冻结的不变量
 

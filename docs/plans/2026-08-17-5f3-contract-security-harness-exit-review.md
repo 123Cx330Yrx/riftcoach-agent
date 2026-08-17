@@ -164,3 +164,12 @@ terminal vocabulary 或 live event bridge 问题，所以执行 5F-4 没有信�
 > 硬差异。再加上 94 个 npm 包、约 62 MB 依赖和每 run 约 0.4 秒进程开销，真实模型调用无法修复
 > 这些 Runtime 问题，因此我们在真实调用前停止。这展示的是技术采用门和负面实验能力，而不是为了
 > 简历硬塞 SDK。
+
+## 10. exact-SHA 公共闭环
+
+实现/退出提交 `3d9a08159c5a6e08fca74257514975b4c0c6ec68` 已由 GitHub Actions run
+`32025522606` 完成 exact-SHA 公共验证；Node 24、`npm ci --ignore-scripts`、完整 pytest、两套 RAG、
+compileall、治理、Harness/secret boundary 与 dry-run 全部成功。
+
+5F-3 正式关闭；5F-4 因前置 hard Runtime parity gate 失败而未进入。canonical 只交接到
+`5F-5-adoption-decision-exit-review` 准备状态，等待用户明确继续，不自动作最终采用裁决。

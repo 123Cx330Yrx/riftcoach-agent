@@ -217,7 +217,9 @@ OP.GG MCP
 5F-entry-design            已完成 Pi-only 采用入口设计；`ce97975` / Actions `32013948784` exact-SHA 公共成功；下一步 `5F-1-pi-source-license-contract-audit`
 5F-1 Source/License Audit  已完成；冻结 `earendil-works/pi v0.84.2` / `914cf147...`、MIT/Node/合同差异；有条件允许 5F-2；`5901b09` / Actions `32016852979` exact-SHA 公共成功
 5F-2 Offline Adapter Spike 已完成；exact lock/JSONL sidecar/Python controller、35 focused、99 adjacent、完整 919/110 subtests 与本地退出审查完成；`pass-with-boundaries`；`f62f078` / Actions `32022258177` exact-SHA 公共成功；下一检查点 5F-3
-5F-3 Contract/Harness Eval  本地实现/退出审查完成；45 focused、196 adjacent、完整 929/110 subtests；裁决 `harness-compatible-but-runtime-gate-failed`，Context/terminal/live timing 硬门失败，不准入 5F-4；待提交与 exact-SHA 公共验证
+5F-3 Contract/Harness Eval  已完成；45 focused、196 adjacent、完整 929/110 subtests；裁决 `harness-compatible-but-runtime-gate-failed`，Context/terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功
+5F-4 Bounded Real Slice    未进入；5F-3 前置硬门失败，真实模型调用无信息增益，external calls 0
+5F-5 Adoption/Exit         准备状态；等待用户明确继续后裁决 partial-adopt/reject 并关闭 5F
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

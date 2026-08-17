@@ -1629,3 +1629,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   external Provider/Riot/Key/held-out I/O 为 0。
 - `DECISION-LOCAL`：`harness-compatible-but-runtime-gate-failed`。根据既定条件门，5F-4 不准入；
   当前仍待完整门禁、提交、推送和 exact-SHA CI，公共成功前不关闭 5F-3 或进入 5F-5。
+### 2026-08-17：5F-3 exact-SHA 公共闭环，5F-4 未进入
+
+- `VERIFIED-PUBLIC`：实现/退出提交 `3d9a08159c5a6e08fca74257514975b4c0c6ec68` 已由 Actions run
+  `32025522606` 完成 exact-SHA 公共验证；Node/Python、pytest、RAG、治理、安全边界和 dry-run 全部成功。
+- `CLOSED`：5F-3 正式完成，裁决保持 `harness-compatible-but-runtime-gate-failed`；不表示真实模型
+  质量失败或 Pi 最终采用裁决已作出。
+- `BRANCH-NOT-ENTERED`：5F-4 的 Context/terminal/live timing 前置硬门未满足；真实 Provider slice
+  没有信息增益，因此外部 calls 保持 0。
+- `HANDOFF`：canonical 唯一下一检查点为 `5F-5-adoption-decision-exit-review` 准备状态，等待用户
+  明确继续；不自动作 partial-adopt/reject 决策。

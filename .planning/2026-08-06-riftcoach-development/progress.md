@@ -2201,3 +2201,15 @@
   `npm ls --all`、Harness SDK boundary、tracked secret/run-data boundary、dry-run、governance 与
   `git diff --check` 成功；安全加固后的最终完整回归仍为
   `929 passed, 1 warning, 110 subtests passed`。当前只待提交、推送和 exact-SHA 公共 CI。
+
+## 2026-08-17：5F-3 exact-SHA 公共闭环与 5F-5 交接
+
+- 实现/退出提交 `3d9a08159c5a6e08fca74257514975b4c0c6ec68` 已推送；GitHub Actions run
+  `32025522606` 对该精确 SHA 的 Node 24、`npm ci --ignore-scripts`、完整 pytest、两套 RAG、
+  compileall、治理、安全边界和 Harness dry-run 全部成功。
+- 5F-3 正式完成，裁决保持 `harness-compatible-but-runtime-gate-failed`；这不等于模型质量失败，
+  而是候选 Runtime 的强制合同门失败。
+- 5F-4 按入口设计的条件分支标为“未进入（前置门失败）”；真实 Provider/Riot/Key calls 保持 0，
+  不使用真实模型调用掩盖 Context/terminal/live timing 差异。
+- canonical 唯一下一检查点交接为 `5F-5-adoption-decision-exit-review` 准备状态，等待用户再次明确
+  继续；本收尾不提前选择 partial-adopt/reject。
