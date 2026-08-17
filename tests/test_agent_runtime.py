@@ -24,6 +24,8 @@ from app.runtime.models import (
     RuntimeStatus,
 )
 from app.runtime.runtime import AgentRuntimeV1, RuntimeExecutionFactory
+from app.runtime.identity import LegacyRuntimeIdentityResolver
+from app.runtime.composition import RuntimeCompositionRoot
 from app.runtime.observer import RuntimeObservationError
 from app.runtime.recorder import RuntimeRecorder, RuntimeRecorderError
 from app.runtime.signals import (
@@ -332,7 +334,38 @@ def _runtime(
         provider=provider,
         execution_factory=factory,
         context_builder=context_builder,
+        prompt_program_resolver=LegacyRuntimeIdentityResolver(),
     )
+
+
+def test_product_composition_uses_verified_prompt_program_identity(
+    tmp_path: Path,
+):
+    probe = FactoryProbe()
+    provider = RuntimeProvider()
+    factory = RuntimeExecutionFactory(
+        knowledge_provider=LocalHybridKnowledgeProvider.from_directory(
+            Path("data/rag_docs")
+        ),
+        evaluator_factory=probe.evaluator_factory,
+        reviser_factory=probe.reviser_factory,
+    )
+    composition = RuntimeCompositionRoot.from_directories(
+        skills_root="skills",
+        prompt_programs_root="prompt_programs",
+    )
+
+    runtime = composition.build_runtime(
+        runs_root=tmp_path,
+        provider=provider,
+        execution_factory=factory,
+    )
+    result = runtime.run(_request("product_prompt_program_identity"))
+    trace = _trace(tmp_path, result)
+
+    assert trace.identity.prompt_profile_id == "recent-form-review-coach"
+    assert trace.identity.prompt_profile_version == "1.0.0"
+    assert trace.identity.context_contract_version == "1.0.0"
 
 
 def _catalog_with_fallback(enabled: bool) -> SkillCatalog:

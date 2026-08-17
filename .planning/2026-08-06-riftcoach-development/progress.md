@@ -1883,3 +1883,23 @@
 - 最终只读复核发现 canonical 仍保留旧句“不得自动进入 5P-2”，与当前“5P-2 是唯一下一检查点、
   但等待用户明确继续”语义不一致；已改为等待用户授权后实现 5P-2，且不得自动进入 5P-3/FastAPI/5F。
 - 这是持久状态措辞修正，不改变 5P-1 代码、测试、提交或公开证据；修正后需再次通过治理和 exact-SHA CI。
+
+## 2026-08-17：5P-2 Prompt Program V1 与 Runtime composition 本地实现
+
+- 按 canonical 唯一检查点先写实施计划
+  `docs/plans/2026-08-17-5p2-prompt-program-runtime-composition-implementation.md`，
+  没有进入 5P-3、FastAPI 或 5F。
+- 暴露 `build_component_fingerprints()` 公共入口，继续复用既有
+  `PromptContextSnapshot` 的 canonical probe；没有创建第二套 Prompt 摘要算法。
+- 新增严格 frozen/extra-forbid `PromptProgramManifest`、`PromptProgramCatalog`、
+  `PromptProgramResolver` 和 checked-in `recent-form-review-coach@1.0.0` manifest。Manifest
+  只保存 program/Skill/Context/Evaluation 身份与组件 SHA-256，不保存 Prompt 正文；自身 digest、
+  secure Evaluation 1.1、Skill/version/context 匹配和当前组件重算均是 fail-closed 门禁。
+- 新增 `RuntimeCompositionRoot`，在组合时验证所有 Program，再把 resolver 注入 `AgentRuntimeV1`；
+  Runtime identity 不再硬编码 `<skill>-coach@1.0.0`。旧 direct Runtime 测试显式使用
+  `LegacyRuntimeIdentityResolver`，不能冒充产品 Program 验证。
+- 新增产品 composition 纵向测试；Prompt Program/Runtime/identity/产品编译相邻聚焦回归
+  `142 passed`，完整回归 `805 passed, 110 subtests passed`；compileall、RAG development/
+  independent holdout、Harness dry-run、secret/tracked-data、governance 与 diff check 均通过。
+- 本批 Key reads、Riot/Provider calls、held-out executions 均为 0；真实 Provider 领域质量仍
+  unknown；当前尚待最终状态/路线同步、提交、推送与 exact-SHA 公共 CI。

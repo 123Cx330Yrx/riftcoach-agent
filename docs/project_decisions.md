@@ -658,3 +658,26 @@ Key、Riot/Provider/held-out I/O。该结果不表示 Prompt Program、Applicati
 提交 `57bd36adcd289b7cc51c1c430e04398daf0683f3` 的 Actions run `31987501935` 已完成 exact-SHA
 公共验证。5P-1 正式关闭，canonical 唯一下一检查点为 `5P-2-prompt-program-runtime-composition`，
 按 RQ-041 等待用户再次继续。
+
+## 5P-2 Prompt Program V1 与 Runtime Composition 本地裁决（2026-08-17）
+
+用户按 RQ-042 明确继续后，本轮接受并实现 ADR-0032 的最小产品组合边界：
+
+- `PromptProgramManifest` 是 Skill、Context、knowledge tool、Evaluation 1.1 与 Revision 资产的
+  组合身份；它只存 program/contract 元数据和复用既有 `PromptContextSnapshot` probe 的组件摘要，
+  不存 Prompt 正文，也不把实验 case-context snapshot 冒充产品 Program；
+- `PromptProgramCatalog` 严格读取 JSON manifest，要求自身 SHA-256、唯一组件 ID、secure
+  `coach_evaluation@1.1.0` 和 `extra=forbid` 合同；任何坏包或不安全 Evaluation 版本立即拒绝；
+- `PromptProgramResolver` 在组合和 Runtime identity 解析时重新加载当前 Skill，并重算组件指纹；
+  Skill/version、Context contract、Evaluation contract 或任何组件摘要漂移均 fail closed；
+- `RuntimeCompositionRoot` 是产品启动装配边界，先 `verify_all()` 再允许 Runtime 构造；
+  `AgentRuntimeV1` 从 verified resolver 取得 `prompt_profile_id/version`，不再硬编码
+  `<skill>-coach@1.0.0`；
+- 旧 direct Runtime 单测显式注入 `LegacyRuntimeIdentityResolver`，这是兼容合同，不是产品准入或
+  Prompt Program 证据。
+
+本地证据：Prompt Program/Runtime/identity/产品编译相邻聚焦 `142 passed`，完整回归
+`805 passed, 110 subtests passed`；两套 RAG、compileall、Harness dry-run、secret/tracked-data、
+governance 和 diff check 全部通过。本批 Key/Riot/Provider/held-out I/O 为 0；这只证明组合与漂移
+控制，不证明真实模型 Coach 质量，也不提前完成 FastAPI/Application Service。最终状态仍需提交、
+推送和 exact-SHA 公共 CI 后关闭 5P-2。

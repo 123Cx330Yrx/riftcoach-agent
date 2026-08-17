@@ -1398,3 +1398,18 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   Runtime 请求的安全编译合同，不证明 Riot 数据链路、Prompt Program、FastAPI 或真实模型质量。
 - `CURRENT`：canonical 唯一下一检查点切换为 `5P-2-prompt-program-runtime-composition`；按
   RQ-041 等待用户再次明确继续，不自动实现 5P-2/5P-3/5F。
+
+### 2026-08-17：5P-2 Prompt Program V1 与 Runtime composition 本地实现
+
+- `SCOPE`：RQ-042 只授权 `5P-2-prompt-program-runtime-composition`；不安装 FastAPI、不实现
+  Application Service、不进入 5P-3/5F，不读取 Key、不调用 Riot/Provider/held-out。
+- `IMPLEMENTED`：新增严格 Prompt Program manifest/catalog/resolver，复用既有
+  `PromptContextSnapshot` component fingerprint；checked-in `recent-form-review-coach@1.0.0`
+  仅保存组合身份与 SHA-256，不保存 Prompt 正文。
+- `DRIFT-GATE`：组合根启动时 `verify_all()`，Runtime identity 每次从 verified resolver 获取；
+  Skill/version、Context、secure Evaluation 1.1 或组件摘要漂移均 fail closed。旧 direct Runtime
+  测试使用显式 legacy adapter，不能冒充产品 Program 验证。
+- `VERIFIED-LOCAL`：相邻聚焦 `142 passed`，完整 `805 passed, 110 subtests passed`；两套 RAG、
+  compileall、Harness dry-run、secret/tracked-data、governance 和 diff check 通过；本批外部 I/O 为 0。
+- `CURRENT`：5P-2 尚待提交、推送与 exact-SHA 公共 CI；成功后才交接到 5P-3 Domain Pipeline
+  Promotion & Application Service，不得提前实现后续端点或 5F。

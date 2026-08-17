@@ -1958,3 +1958,21 @@
 - 为避免“测试只碰巧等于当前 Manifest”，policy 测试会修改 Catalog 中的合法 budget/quality
   快照并验证 Runtime policy 同步变化，同时确认 policy version/event budget/max revisions 保持
   服务器固定；由此区分 Manifest-derived 与硬编码当前数值。
+
+## 2026-08-17：5P-2 关键发现
+
+- Prompt Program 不是一条 Prompt 文案，而是 ContextBuilder 信任/裁剪策略、Skill manifest 与
+  instructions、knowledge.search 合同、Evaluation 1.1 schema/system/user/repair、fact-pack
+  probe、Revision system/user/validator 的可执行组合身份。
+- `PromptContextSnapshot` 适合做 component probe，但包含实验 case-context 身份；产品 Program
+  必须只复用其中的 component fingerprint，不把案例快照或 Prompt 正文塞进产品 manifest。
+- Pydantic `strict=True` 下 JSON array 不会自动转 immutable tuple，因此 Program 模型在 transport
+  边界先把 list 规范化为 tuple，再对内保持 frozen/extra-forbid；这保留严格字段同时兼容 JSON。
+- 组合根是产品启动边界：加载 Skill/Program Catalog 后立即 `verify_all()`，任何组件漂移在 Runtime
+  或 Provider 构造前失败；Runtime 每次 identity resolve 仍复核 selected Skill/version，防止长期对象
+  期间发生目录漂移。
+- 旧 Runtime 测试并不代表产品 Program 已接入。为保持证据诚实，`AgentRuntimeV1` 的 resolver
+  参数必须显式提供；旧测试传入命名清楚的 `LegacyRuntimeIdentityResolver`，产品根传入真正的
+  `PromptProgramResolver`。
+- `program_sha256` 绑定的是 manifest 元数据和组件摘要的规范 JSON；它能检测 manifest/组件摘要
+  不一致，但不声称能抵御拥有本机写权限者同时改源码、manifest 和 digest 的联合篡改。

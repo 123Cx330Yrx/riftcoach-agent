@@ -57,10 +57,9 @@ from .models import (
     RuntimeStreamItem,
     RuntimeStatus,
 )
+from .identity import RuntimePromptIdentityResolver
 
 
-_CONTEXT_CONTRACT_VERSION = "1.0.0"
-_PROMPT_PROFILE_VERSION = "1.0.0"
 _HARNESS_VERSION = "1.0.0"
 
 
@@ -217,6 +216,7 @@ class AgentRuntimeV1:
         provider: LLMProvider,
         execution_factory: RuntimeExecutionFactory,
         context_builder: ContextBuilderV1 | None = None,
+        prompt_program_resolver: RuntimePromptIdentityResolver,
     ) -> None:
         if not isinstance(catalog, SkillCatalog):
             raise TypeError("catalog must be a SkillCatalog")
@@ -231,6 +231,11 @@ class AgentRuntimeV1:
         self._provider = provider
         self._execution_factory = execution_factory
         self._context_builder = context_builder or ContextBuilderV1()
+        if not callable(getattr(prompt_program_resolver, "resolve", None)):
+            raise TypeError(
+                "prompt_program_resolver must expose resolve(skill_name, skill_version)"
+            )
+        self._prompt_program_resolver = prompt_program_resolver
 
     def run(self, request: RuntimeRunRequest) -> RuntimeRunResult:
         """Execute one request; all terminal truth comes from the Harness/Trace."""
@@ -397,7 +402,7 @@ class AgentRuntimeV1:
             observe_runtime_signal(
                 observer,
                 ContextBuiltSignal(
-                    context_contract_version=_CONTEXT_CONTRACT_VERSION,
+                    context_contract_version=identity.context_contract_version,
                     estimated_context_units=context.estimated_tokens,
                     omitted_item_ids=context.omitted_section_ids,
                 ),
@@ -732,12 +737,23 @@ class AgentRuntimeV1:
         skill_name: str,
         skill_version: str,
     ) -> RuntimeIdentitySnapshot:
+        program = self._prompt_program_resolver.resolve(
+            skill_name,
+            skill_version,
+        )
+        if (
+            program.skill_name != skill_name
+            or program.skill_version != skill_version
+        ):
+            raise RuntimeCompositionError(
+                "Prompt Program resolver returned an inconsistent Skill identity"
+            )
         return RuntimeIdentitySnapshot(
             skill_name=skill_name,
             skill_version=skill_version,
-            context_contract_version=_CONTEXT_CONTRACT_VERSION,
-            prompt_profile_id=f"{skill_name}-coach",
-            prompt_profile_version=_PROMPT_PROFILE_VERSION,
+            context_contract_version=program.context_contract_version,
+            prompt_profile_id=program.program_id,
+            prompt_profile_version=program.program_version,
             provider_id=self._provider.provider_name,
             provider_model=self._provider.model_name,
             harness_version=_HARNESS_VERSION,

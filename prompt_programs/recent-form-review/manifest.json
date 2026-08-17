@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "program_id": "recent-form-review-coach",
+  "program_version": "1.0.0",
+  "skill_name": "recent-form-review",
+  "skill_version": "0.2.0",
+  "context_contract_id": "context-builder-v1",
+  "context_contract_version": "1.0.0",
+  "evaluation_contract_id": "coach_evaluation",
+  "evaluation_contract_version": "1.1.0",
+  "component_fingerprints": [
+    {
+      "component_id": "skill_manifest",
+      "source": "skills/recent-form-review/manifest",
+      "sha256": "14269a8b4a90dd0af6f4f3606f11a817342e75486ed675dddbd4cfac784807e1"
+    },
+    {
+      "component_id": "skill_instructions",
+      "source": "skills/recent-form-review/SKILL.md",
+      "sha256": "f3207adead537a2999749fd0f882e744ebf10cb93c878924cab7b763cb080c23"
+    },
+    {
+      "component_id": "context_contract",
+      "source": "app.agent.context:context-builder-v1",
+      "sha256": "f7083aafd7f515cd02a40c4d3c38480b10a0b4957e5dcdd29c2de8ced73aa2b9"
+    },
+    {
+      "component_id": "knowledge_tool_contract",
+      "source": "app.tools.adapters.knowledge:knowledge.search@2.0.0",
+      "sha256": "4d25336b47105a430a8f5a3eb0068c2fcb601ac0a769c9e73ec5c8a429770fdc"
+    },
+    {
+      "component_id": "evaluation_schema",
+      "source": "app.evaluation.coach_report:coach_evaluation@1.1.0",
+      "sha256": "ad2891b57f0117d55660234b6be557b9a08b051477830190e401e0771e6b17da"
+    },
+    {
+      "component_id": "evaluation_fact_pack_probe",
+      "source": "app.evaluation.coach_report:build_fact_pack",
+      "sha256": "3543f202fd5f835220d41f44689717a576aa2b678eef2478f7d32594dfbf3f47"
+    },
+    {
+      "component_id": "evaluator_system",
+      "source": "app.evaluation.coach_report:EVALUATOR_SYSTEM_PROMPT",
+      "sha256": "89fd896882cf7c843fa7d6eea12e19cbbf3a42872526cb4952366166632b48a2"
+    },
+    {
+      "component_id": "evaluation_prompt_probe",
+      "source": "app.evaluation.coach_report:build_secure_evaluation_prompt",
+      "sha256": "e933e06ec8e584b7cf2338692ebd805f08b58b354c296fc5c014c339c4547e5f"
+    },
+    {
+      "component_id": "evaluation_repair_probe",
+      "source": "app.evaluation.coach_report:build_evaluation_repair_prompt",
+      "sha256": "0918f5a05aaef7807a898b8effb870387df778481abafdffb9dd85b46f506d28"
+    },
+    {
+      "component_id": "reviser_system",
+      "source": "app.evaluation.coach_report:REVISER_SYSTEM_PROMPT",
+      "sha256": "c4cad848b17c8231b413e3ed0deb8be0eb0e0049323ac57701c542a15290c872"
+    },
+    {
+      "component_id": "revision_prompt_probe",
+      "source": "app.evaluation.coach_report:build_revision_prompt",
+      "sha256": "bc5ee0689d2a8ca36bc242c41cf224d0e540b64c820d1cd52ab7a4b6b7dc2703"
+    }
+  ],
+  "program_sha256": "4112aba444811be62a062d6eb446bfd919e9f944b276ae857c99adf830cac43c"
+}

@@ -566,6 +566,25 @@ def _component_fingerprints(
     )
 
 
+def build_component_fingerprints(
+    skill,
+    *,
+    evaluation_contract_version: str = "1.0.0",
+) -> tuple[ComponentFingerprint, ...]:
+    """Return the canonical fingerprints for a loaded Skill's prompt assets.
+
+    Prompt-context experiments and the product Prompt Program must identify
+    the same underlying assets.  Keep one implementation of the component
+    probes and expose this narrow wrapper instead of making product code call
+    the experiment helper's private name.
+    """
+
+    return _component_fingerprints(
+        skill,
+        evaluation_contract_version=evaluation_contract_version,
+    )
+
+
 def _digest_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
@@ -585,6 +604,7 @@ def _digest_json(value: Any) -> str:
 __all__ = [
     "DomainExperimentAdmission",
     "PromptContextSnapshot",
+    "build_component_fingerprints",
     "build_prompt_context_snapshot",
     "build_prompt_context_snapshot_for_cases",
     "case_context_sha256",
