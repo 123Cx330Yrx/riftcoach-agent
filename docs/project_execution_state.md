@@ -42,8 +42,9 @@ pause_reason: null
   `close-with-deferred-boundaries`，聚焦 `121 passed, 1 warning`、相邻 `166 passed`、完整
   `884 passed, 1 warning, 110 subtests passed` 与全部本地门禁通过。退出审查提交
   `8c8acc6911209e645cfaee18bd40870f78d8704f` 已由 GitHub Actions run `32010604551` 完成
-  exact-SHA 公共验证，5P-6 与整个 5P 正式关闭；canonical 只交接到 `5F-entry-design`
-  准备状态，等待用户再次明确继续。上一子阶段组
+  exact-SHA 公共验证，5P-6 与整个 5P 正式关闭；canonical 已按 RQ-047 恢复
+  `5F-entry-design`，当前只设计 Pi-only Runtime 采用实验，不安装 Pi、不写 adapter、不读取
+  Key、不调用真实 Provider。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -173,9 +174,9 @@ pause_reason: null
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`5F-entry-design`，等待用户再次明确继续后，审计当前自建 Runtime 与 Pi /
-  Claude Agent SDK 在同一受限产品切片上的采用实验边界、对照指标和停止条件；本轮不自动实施
-  SDK、切换 Runtime、调用真实 Provider 或进入阶段 6。
+- 唯一下一步：完成 `5F-entry-design` 的 Pi-only 采用实验 ADR、同切片对照指标、失败门和实施
+  顺序，并通过 exact-SHA 公共 CI；本轮不安装 Pi、不切换 Runtime、不调用真实 Provider 或进入
+  阶段 6。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -467,7 +468,7 @@ pause_reason: null
 |---|---|---|
 | 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A-5E 与整个 5P；当前无领域 Provider 准入，5F 尚未开始 | 阶段 5、生产模型质量、完整 API/前端或可恢复 Runtime 已完成 |
 | 项目理解 | 已能解释 5P 的数据流/控制流、HTTP Adapter、Application Service、Prompt Program、AgentRuntime/Harness 与 Query Service 的职责，以及测试证据边界 | 本地 TestClient/Fake Provider 纵向通过等于真实 Riot/模型质量、数据库事务、公网安全或生产部署 |
-| 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
+| 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi-only 采用门已进入设计，Claude SDK 仅作书面排除分析 | 已经接入或复用了这些项目 |
 | GitHub/部署 | 5P-4/5P-5/5P-6 已分别由 `932a863/32002994441`、`6d1e5b0/32005648179`、`8c8acc6/32010604551` exact-SHA 公开验证；正式 API/网页未部署 | 本地/CI FastAPI 切片通过等于领域模型质量、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界

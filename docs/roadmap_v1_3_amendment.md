@@ -53,8 +53,8 @@ Provider 的触发条件是：
 ADR-0019 又明确区分“模型分层”与“第三方 Runtime 采用”：当前 5D-7 只让
 `deepseek-v4-pro` 进入准入门；Flash/Pro 分层最早在 5P 后重开，默认等待阶段 6 的真实
 API 调用、Trace、成本或延迟 Bad Case，再比较 Pro-only、Flash-only 和 Flash 默认/
-Pro 有界升级。该横向 Provider 优化不属于 5F；5F 仍只比较自建 AgentRuntime 与 Pi /
-Claude Agent SDK。
+Pro 有界升级。该横向 Provider 优化不属于 5F；5F 经 RQ-047 收缩为只比较自建 AgentRuntime
+与 Pi，Claude Agent SDK 只保留书面排除分析。
 
 3G 声明 Streaming 能力，但完整流式实现可以随阶段 5 产品切片和阶段 6 SSE 消费者逐步补齐。
 

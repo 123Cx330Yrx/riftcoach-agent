@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 8 - `5F-entry-design` is the next preparation checkpoint after completed 5P
+Phase 8 - `5F-entry-design` is in progress（Pi-only）
 
 ## Phases
 
@@ -205,8 +205,8 @@ Phase 8 - `5F-entry-design` is the next preparation checkpoint after completed 5
 - Status: in_progress
 - 5P Prompt Program V1 与早期产品纵向切片已完成；5P-6 退出审查以
   `8c8acc6` / Actions `32010604551` 完成 exact-SHA 公共闭环。
-- canonical 只停在 `5F-entry-design` 准备状态；等待用户明确继续后，才审计自建 Runtime 与
-  Pi / Claude Agent SDK 的同切片对照、采用指标、成本和停止条件。本计划不自动实施 SDK。
+- canonical 当前正在 `5F-entry-design`；本轮只审计自建 Runtime 与官方 Pi 的同切片对照、采用
+  指标、成本和停止条件，本计划不自动实施 Pi。
 - `5P-entry-design` 与 5P-1 至 5P-6 已公开完成；
 - 5P-4 immutable receipt/store、strict query 与 Application receipt 接缝已由 `932a863` / Actions
   `32002994441` 完成 exact-SHA 公共验证；5P-5 薄 Adapter 与 no-I/O 纵向切片又由 `6d1e5b0` /
@@ -226,8 +226,8 @@ Phase 8 - `5F-entry-design` is the next preparation checkpoint after completed 5
 
 ## Next Step
 
-`5F-entry-design`：等待用户再次明确继续后，先设计 Pi / Claude Agent SDK 的同切片采用实验；
-本轮不实施 SDK、切换 Runtime、调用真实 Provider 或进入阶段 6。
+`5F-entry-design`：完成 Pi-only 采用实验 ADR、同切片指标、失败门和实施顺序，随后提交、推送
+并验证 exact-SHA；本轮不安装 Pi、切换 Runtime、调用真实 Provider 或进入阶段 6。
 
 ## 5P-6 Exit Review Checklist
 
@@ -244,6 +244,14 @@ Phase 8 - `5F-entry-design` is the next preparation checkpoint after completed 5
 - [completed] 实现显式依赖注入的薄 Adapter 与 allowlisted DTO
 - [completed] 完成 Fake/fixture 和真实 Runtime/Harness/RAG 本地纵向测试
 - [completed] 完成本地状态同步、提交/推送和 exact-SHA CI
+
+## 5F-entry-design Checklist（Pi-only）
+
+- [completed] 冻结 Pi-only 候选范围、Claude SDK 书面排除理由和技术采用 ADR
+- [completed] 设计同一 `recent-form-review` 切片的 no-I/O Pi protocol spike
+- [completed] 冻结合同、安全、Trace/Harness、跨语言成本和 adopt/partial-adopt/reject 指标
+- [in_progress] 提交、推送并验证 entry design 的 exact-SHA 公共 CI
+- [pending] 公共闭环后交接 `5F-1-pi-source-license-contract-audit`，不自动实施
 
 ## Decisions Made
 
@@ -316,7 +324,7 @@ Phase 8 - `5F-entry-design` is the next preparation checkpoint after completed 5
 | D4 先设计 Provider 采用门，再决定是否调用 | 5D-6b 暴露了统一响应/错误归因缺口；第二 Provider 不能在同任务合同、预算与失败分类未冻结前接入 |
 | 用 ADR-0018 将唯一候选更正为 DeepSeek V4 Pro | D5 同时验证协议和唯一候选的领域能力；Pro 与 Flash 共用本轮协议面但官方生产 Agent 基准更强，额外绝对费用仍受 16000-token、15-call 和 `$0.10` 小额停止线约束 |
 | 暂缓 Qwen3.8 Max 与 DeepSeek V4 Flash | Qwen 的 reasoning/计费入口仍增加首轮变量；Flash 保留为以后出现成本/时延 Bad Case 时的简单任务分层候选，本轮不同时测试两个 DeepSeek 模型 |
-| 用 ADR-0019 将模型分层移出 5F | 当前 5D-7 保持 Pro-only；Flash/Pro 对照最早在 5P 后、默认等阶段 6 真实成本/时延证据再重开。5F 只比较 Pi/Claude Agent SDK Runtime，避免同时改变编排框架和模型导致无法归因 |
+| 用 ADR-0019 将模型分层移出 5F | 当前 5D-7 保持 Pro-only；Flash/Pro 对照最早在 5P 后、默认等阶段 6 真实成本/时延证据再重开。5F 只比较 Pi Runtime，避免同时改变编排框架和模型导致无法归因 |
 | D5 用独立 DeepSeek Adapter 而非通用 OpenAI-compatible 基类 | 当前只有两个厂商实现，thinking、finish、usage 与错误语义仍不同；先用分别测试守住差异，出现经过测试的稳定重复后再提取 helper |
 | D5 离线测试不读取 API Key | Fake SDK 用可编程返回验证请求/响应映射、工具往返和失败分支；真实模型质量、在线可用性、延迟与实际费用必须留给公开 SHA 上的有界 API 门 |
 | 预算 ledger 组合在候选 Provider 外层 | D4 价格与调用上限是实验政策，不应污染通用 AgentLoop；I/O 前占用调用、响应后按 usage 结算，同时保持 5E Trace 职责未提前实现 |

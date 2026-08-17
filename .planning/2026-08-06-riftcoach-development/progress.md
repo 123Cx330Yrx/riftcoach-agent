@@ -2051,3 +2051,12 @@
   Provider 领域质量和正式部署仍未提升。
 - canonical 当前为 `5F-entry-design` 准备状态，等待用户再次明确继续；不自动实施 Pi/Claude
   Agent SDK、模型切换、真实 Provider 或阶段 6。
+
+## 2026-08-17：开始 5F-entry-design（Pi-only）
+
+- 用户明确确认 `Pi-only`：5F 不再实测 Claude Agent SDK；Claude 只作为书面替代方案和排除依据，
+  不安装、不调用、不改变主 Runtime。
+- 本轮范围固定为：Pi 官方实现/许可证/版本审计、当前 Runtime 合同映射、同一 recent-form-review
+  切片的无 I/O 对照设计、跨语言/sidecar 成本、Trace/Harness/错误安全和采用/拒绝门槛。
+- 尚未写 Pi 适配代码、安装 Node/Pi、读取模型 Key、调用 Provider 或执行真实模型；下一步是形成
+  ADR 与 5F entry design 文档，并通过治理和 exact-SHA 公共验证。

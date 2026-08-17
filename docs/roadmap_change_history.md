@@ -1528,3 +1528,15 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   按矩阵保持 deferred/unknown。
 - `HANDOFF`：canonical 唯一下一检查点为 `5F-entry-design` 准备状态；等待用户再次明确继续，
   不自动实施 Pi/Claude Agent SDK、模型切换、真实 Provider 或阶段 6。
+
+### 2026-08-17：RQ-047 Pi-only 5F 入口设计
+
+- `DECISION`：用户确认 5F 只实测 Pi；Claude Agent SDK 不进入代码级对照、依赖安装或真实调用，
+  只保留书面替代/排除分析。
+- `RATIONALE`：Pi 的轻量 Agent Runtime/多 Provider 方向更接近当前 AgentLoop 采用问题；Claude
+  SDK 会同时改变模型、工具、Session 和 Harness 语义，无法形成干净 Runtime 归因。
+- `BOUNDARY`：5F 入口设计只冻结官方 Pi source/license audit、同一 recent-form-review 的无 I/O
+  protocol spike、合同/安全/Trace/Harness/跨语言成本指标与 adopt/partial-adopt/reject 门槛；
+  不安装 Pi、不修改主 Runtime、不读取 Key、不调用 Provider。
+- `CURRENT`：canonical 仍为 `5F-entry-design`，当前正在完成 Pi-only ADR/设计文档；完成公共
+  验证后才交接到 `5F-1-pi-source-license-contract-audit`，不自动实施下一子阶段。

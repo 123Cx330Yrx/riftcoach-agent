@@ -2110,3 +2110,15 @@
 - 新增聚焦共 50 tests；5P/Runtime/Harness 相邻为 `179 passed, 12 subtests passed`，完整回归
   `860 passed, 110 subtests passed`。两套 RAG、compileall、Harness dry-run、SDK/secret/run-data、
   governance 和 diff 门禁通过；Key/Riot/Provider/held-out I/O 为 0。
+
+## 2026-08-17：5F Pi-only 采用范围确认
+
+- 用户已明确“继续”，确认把先前的 Pi/Claude Agent SDK 并列候选收缩为 `Pi-only` 采用实验；
+  本轮不安装、不调用、不把 Pi 接入主 Runtime。
+- 官方 Pi 资料显示其核心关注轻量 Agent Runtime、Tool Calling、消息/状态管理与多 Provider
+  LLM 抽象，概念上比 Claude Code 风格的完整 Agent SDK 更适合回答“是否替换/吸收当前 AgentLoop”。
+- 官方 Claude Agent SDK 提供 Claude Code 同源的内置工具、Hooks、Sessions、Subagents 和 MCP，
+  若现在对照会同时改变 Runtime、模型厂商和工具体系，不能形成干净的 Runtime 归因；因此只保留
+  为 ADR 中的书面排除项。
+- Pi 的主要风险是官方核心为 TypeScript，而 RiftCoach 主仓库为 Python；5F 必须把跨语言/sidecar
+  成本作为一等评测指标，不得直接采用未审计的 Python 移植版。

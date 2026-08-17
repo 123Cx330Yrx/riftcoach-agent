@@ -186,8 +186,9 @@ receipt/query 后返回。只有外部 Riot/Provider 用 Fake/fixture，因而�
   Agent 互相协作的证据。
 - **LangGraph** 适合显式状态图、分支、循环和持久恢复。当前自建 Runtime 已有严格执行/发布/Trace
   合同，5P 只需要产品消费层；迁移框架不能自动提升模型质量。
-- **Pi / Claude Agent SDK** 确实可能减少 loop/runtime 维护量，但是否会保留我们现有 Skill、Tool、
-  Harness、Trace 和安全错误语义还未知，所以它们在 5F 用同一切片做有界对照，而不是直接替换。
+- **Pi** 可能减少 loop/runtime 维护量，但是否能保留我们现有 Skill、Tool、Harness、Trace 和安全
+  错误语义还未知，因此 5F 只对 Pi 做同一切片的有界对照；Claude Agent SDK 因会同时改变模型、
+  工具和 Harness 语义，保留为书面排除项。
 
 原则不是“永远自研”，也不是“必须用主流框架”，而是：真实 Bad Case → 备选方案 → 同任务评测
 → ADR。只有证据显示外部 Runtime 明显更好，才采用或局部采用。
@@ -227,5 +228,5 @@ receipt/query 后返回。只有外部 Riot/Provider 用 Fake/fixture，因而�
 → 5F-entry-design（只交接，不自动实施）
 ```
 
-5F 将比较当前自建 Runtime 与 Pi / Claude Agent SDK 对同一受限产品切片的适配价值；它不是多模型
-路由、Memory、MCP、Multi-Agent 或阶段 6 的实现阶段。只有用户再次明确继续后才开始。
+5F 将只比较当前自建 Runtime 与 Pi 对同一受限产品切片的适配价值；它不是多模型路由、Memory、
+MCP、Multi-Agent 或阶段 6 的实现阶段。Pi-only 入口设计经用户确认后才开始，实验仍需独立门禁。

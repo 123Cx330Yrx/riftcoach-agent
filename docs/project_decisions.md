@@ -788,3 +788,19 @@ canonical 只交接到 `5F-entry-design` 准备状态。5F 仍是一个独立的
 后续将用同一受限产品切片审计自建 Runtime 与 Pi/Claude Agent SDK 的语义覆盖、迁移成本、可观测性、
 失败安全、延迟/成本和停止条件；在用户再次明确继续前不接入 SDK、不切换 Runtime、不调用真实
 Provider，也不进入阶段 6。
+
+## 5F Pi-only Runtime 采用实验入口裁决（2026-08-17）
+
+用户确认将 5F 的第三方 Runtime 候选从 Pi/Claude Agent SDK 并列收缩为 `Pi-only`。这不是宣布
+采用 Pi，而是冻结一个可归因的实验问题：在同一个 `recent-form-review` 切片、同一个 Tool、同一个
+ReviewHarness 和同一套 Trace/Usage 合同下，比较自建 Python AgentLoop 与官方 Pi Agent Core。
+
+Claude Agent SDK 只保留书面替代分析，不进入代码级对照。原因不是简单判断其能力不足，而是它会
+同时带来 Claude 模型、Claude Code 风格的工具/Session/权限/Harness 语义，无法在当前阶段隔离
+Runtime 变量。Pi 的官方核心为 TypeScript，跨语言或 sidecar 成本必须进入一等评测；不采用未经审计
+的 Python 移植版。
+
+5F 入口设计只冻结 ADR、官方源码/许可证审计、无 I/O scripted protocol spike、合同/安全/Trace/
+Harness 指标、成本和 adopt/partial-adopt/reject 门槛；不安装 Pi、不修改主 Runtime、不读取 Key、
+不调用真实 Provider。详细设计见 `docs/plans/2026-08-17-5f-pi-only-agent-runtime-adoption-design.md`
+与 ADR-0034。

@@ -34,7 +34,7 @@
 | RQ-027 | 2026-08-12 | 生效 | 用户授权 5D-6b 内后续有明确实验目的、脚本硬预算和脱敏边界的真实 Provider 测试不必逐次询问，并要求完整验证 | 只覆盖当前已批准检查点内的有界测试，不等于无限调用、盲目重试、扩大厂商数量或越过阶段；每次仍须先离线设计/TDD、设置调用上限、失败即停并记录成本与证据 |
 | RQ-028 | 2026-08-13 | 生效 | 保持稳扎稳打，但在不跨检查点和安全边界时可以一次完成更大的连贯能力切片 | 每轮优先交付可运行、可测试、可讲解的完整纵向切片，而不是人为拆成过小函数；扩大批次不得越过 canonical 唯一下一步、跳过 TDD/CI 或混入第二 Provider、领域 Skill 等未授权范围 |
 | RQ-029 | 2026-08-14 | 已执行，由 RQ-034 收口 | D5 唯一第二 Provider 候选应选 DeepSeek V4 Pro 正式版，而不是仅因便宜选择 Flash | ADR-0018 取代 ADR-0017 的候选模型与金额停止线；协议门和领域门均绑定 `deepseek-v4-pro`，DeepSeek 停止线为 `$0.10`；Flash 只保留为以后成本/时延分层候选，本次更正不授权真实调用或 held-out |
-| RQ-030 | 2026-08-14 | 模型分层归属生效；当前候选由 RQ-034 收口 | DeepSeek V4 Pro 曾作为 5D-7 单候选；当前 V3 已关闭，但 Flash/Pro 分层仍不放入 5F，最早在 5P 后、默认在阶段 6 有真实成本/时延证据后重开 | 5F 继续只负责 Pi / Claude Agent SDK Runtime 采用实验；未来以全新同任务评测比较 Pro-only、Flash-only 与 Flash 默认/Pro 有界升级，证据不足时保持单模型；ADR-0019 的未来归属继续有效，旧 Pro 协议与领域结果保持只读 |
+| RQ-030 | 2026-08-14 | 模型分层归属生效；5F 候选部分由 RQ-047 取代，当前模型候选由 RQ-034 收口 | DeepSeek V4 Pro 曾作为 5D-7 单候选；当前 V3 已关闭，但 Flash/Pro 分层仍不放入 5F，最早在 5P 后、默认在阶段 6 有真实成本/时延证据后重开 | 5F 的候选范围改由 RQ-047 收缩为 Pi-only；未来仍以全新同任务评测比较 Pro-only、Flash-only 与 Flash 默认/Pro 有界升级，证据不足时保持单模型；ADR-0019 的模型分层归属、旧 Pro 协议与领域结果保持只读 |
 | RQ-031 | 2026-08-15 | 迁移顺序生效；立即下一步由 RQ-035/RQ-036 取代 | GLM-5.3 已有官方模型文档，允许作为新的同厂商模型迁移候选，但不得直接替换 GLM-5.2 | API 可用后仍按 G53-0 可用性/合同审计、G53-1 Zhipu thinking profile 离线 TDD、G53-2 公开 CI、G53-3 最多 3-call 协议门、G53-4 新 Dataset/输入计划领域门推进；旧 GLM-5.2、DeepSeek Adapter、结果和 held-out 只读隔离，不覆盖、不重跑；通过领域门前不改默认模型、不实现自动路由。 |
 | RQ-032 | 2026-08-15 | 资源合同原则生效；DeepSeek V3 由 RQ-034 关闭 | 任何新的真实领域 Provider 门在读取 Key 或构造 Provider 前，必须证明资源合同能到达必需的 Agent 工具往返与独立 Evaluation；真实 Usage、tokenizer-free 长度投影和未知值必须分层表达 | DeepSeek V2/V3 结果保持不可变，长度投影不得冒充官方 Token 或继续生成 V3 预算；该原则改由未来全新 Provider 实验继承，并与 RQ-034 的安全错误 provenance 前置条件同时满足。 |
 | RQ-033 | 2026-08-15 | 已执行（首错停止） | 用户明确确认执行一次真实 DeepSeek V4 Pro development Usage 校准，固定为 2 profiles × 4 stages、最多 8 calls、每请求 output 64、64000 observed tokens、`$0.10`、零重试和首错停止 | 真实入口先通过 `6aa8c43` / Actions `31868747216`，同 SHA prepare-only 为零调用；正式 replay 在第 1 次请求未形成规范化 `ChatResponse` 后以 `provider_response_invalid` 停止，后 7 次未发送。结果不可覆盖或补跑；实际 Usage/费用 unknown，不创建预算/V3 held-out，不据此判断模型质量。 |
@@ -51,6 +51,7 @@
 | RQ-044 | 2026-08-17 | 已执行 | 用户再次明确“继续”，授权 canonical 的 `5P-4-file-backed-run-receipt-query` | 只实现 body-free immutable receipt、文件 Store、严格 RunQueryService、Trace/manifest/final Artifact 交叉校验与 Application Service receipt 接缝；不安装 FastAPI、不实现 HTTP、SQL/Session/Memory、恢复扫描或 5F。完成本轮后只交接到 5P-5，等待下一次明确继续。 |
 | RQ-045 | 2026-08-17 | 已执行 | 用户明确“继续5P-5”，授权 canonical 的 `5P-5-thin-fastapi-adapter-no-io-vertical-slice` | 只实现薄 FastAPI HTTP Adapter 与 Fake/fixture 本地无 I/O 纵向切片：POST recent、GET run、GET report、GET health、严格 OpenAPI/错误映射和 TestClient 门禁；不读取 Key、不调用 Riot/Provider，不实现 SQL/Session/Memory/SSE/后台任务/公网部署/5P-6/5F。 |
 | RQ-046 | 2026-08-17 | 已执行 | 用户再次明确“继续”，授权 canonical 的 `5P-6-product-slice-evaluation-exit-review` | 只审查 5P entry 与 5P-1 至 5P-5 的功能/NFR/安全/资源/公开证据，建立 exit matrix、必要的当前范围内最小修补和退出裁决；不读取 Key、不调用 Riot/Provider，不实现 5F、阶段 6、SQL/Session/Memory/SSE/鉴权/前端。 |
+| RQ-047 | 2026-08-17 | 生效 | 用户确认继续并接受 `Pi-only`，把 5F 的第三方 Runtime 候选收缩为 Pi | 5F 只设计和实测官方 Pi Runtime；Claude Agent SDK 只保留书面替代/排除分析，不安装、不调用、不进入代码级对照；先做无 I/O 同切片协议实验，再由 ADR 决定 adopt、partial-adopt 或 reject；不改变默认 Runtime、不读取 Key、不调用真实 Provider。 |
 
 ## 新条目格式
 

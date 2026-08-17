@@ -54,7 +54,7 @@
 | D-06 | SSE、后台任务、Token streaming、cancel/resume | 5P 总设计 §5 | 未实现 | deferred endpoints 404 | `6d1e5b0` / `32005648179` | POST 同步阻塞 | 阶段 6/8 |
 | D-07 | 正式前端与公网部署 | RQ-008；5P 总设计 §5 | 未实现 | 无部署证据 | 不适用 | 当前只有本地 TestClient/API 切片 | 后续横向交付门；不能称已上线 |
 | D-08 | 标准 MCP、Multi-Agent、LangGraph、DAG | 5P 总设计 §5/§19 | 未采用 | 没有 Bad Case 支持采用 | 不适用 | 参考项目只提供方案证据 | 5F/7/8 按各自采用门处理 |
-| D-09 | Pi / Claude Agent SDK 采用 | RQ-016；5P 总设计 §19 | 未开始 | 尚未做同切片对照 | 不适用 | 不知道收益能否覆盖迁移/依赖成本 | 5F 独立 entry design；5P 不替其下结论 |
+| D-09 | Pi Runtime 采用 | RQ-016/RQ-047；5P 总设计 §19 | 未开始 | 尚未做同切片对照 | 不适用 | 不知道收益能否覆盖跨语言迁移/依赖成本；Claude SDK 不进入代码级对照 | 5F Pi-only entry design；5P 不替其下结论 |
 | D-10 | 生产成本、p50/p95、RPS、可用性 SLO | 5P 总设计 §16 | 未测量 | Fake/no-I/O 数字不得代替 | 不适用 | 没有真实业务流量 | 阶段 6/部署后观测 |
 
 ## 5. 最终退出裁决
