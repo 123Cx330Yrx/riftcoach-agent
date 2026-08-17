@@ -4,7 +4,7 @@ main_stage: 6
 substage_group: "6A"
 current_checkpoint: "6A-2-task-contract-repository"
 status: in_progress
-pause_reason: "awaiting explicit user confirmation before starting 6A-2-task-contract-repository"
+pause_reason: null
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "awaiting explicit user confirmation before starting 6A-2-task-con
 
 ## 状态元数据
 
-- 最后更新：2026-08-17
-- 主阶段：阶段 6，`6A-1-postgresql-foundation` 已完成，`6A-2-task-contract-repository` 准备状态
+- 最后更新：2026-08-18
+- 主阶段：阶段 6，`6A-2-task-contract-repository` 实施中
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -102,11 +102,14 @@ pause_reason: "awaiting explicit user confirmation before starting 6A-2-task-con
   门，不实现 Repository、Worker 或 API 行为。本机未安装 Docker，故本地真库测试必须明确 skip，
   真实 PostgreSQL 阻塞证据由 GitHub Actions service 提供。当前本地已实现严格配置、惰性 Engine/
   Session factory、task ORM metadata、可逆 initial migration、PostgreSQL Compose 与独立 CI job；
-  聚焦为 `19 passed, 3 skipped`，完整回归 `948 passed, 3 skipped, 1 warning, 110 subtests passed`，
-  两套 RAG、compileall、Harness dry-run、governance、Secret/run-data 与 SDK boundary 均通过。
+  6A-2 又已本地实现 task contract、fingerprint、Fake service 与 PostgreSQL create/query Repository；
+  聚焦为 `29 passed`，完整回归为 `977 passed, 8 skipped, 1 warning, 110 subtests passed`，两套 RAG、
+  compileall、Harness dry-run、governance、Secret/run-data、SDK boundary 与 YAML checks 均通过。
   三个本地 skip 全部已由提交 `854e52d7d3f4efeb3bd94137b66013352d10c8a2` 的 GitHub Actions run
   `32043214500` 在真实 PostgreSQL 17 service 上补齐；`pytest` 与 `postgres-migrations` 两个 job 均
-  completed/success，6A-1 正式关闭。canonical 只交接到 6A-2 准备状态。上一子阶段组
+  completed/success，6A-1 正式关闭。用户已按 RQ-054 授权 6A-2；当前本地 task domain/port/service
+  与 PostgreSQL create/query Repository 已完成，5 项真库 Repository 测试尚待本轮 public CI；不实现
+  claim、Worker 或 API。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -236,10 +239,9 @@ pause_reason: "awaiting explicit user confirmation before starting 6A-2-task-con
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6A-2-task-contract-repository` 准备状态；等待用户明确继续后，才按已确认计划先教学并
-  以 TDD 建立 Provider-neutral task contract、fingerprint、owner-scoped idempotent create/query 与
-  PostgreSQL Repository。本交接不自动实现 claim/Worker/API，不读取 Key、调用 Riot/Provider，也不进入
-  Session、Memory、SSE、鉴权、前端或部署。
+- 唯一下一步：完成 `6A-2-task-contract-repository` 的红灯 domain/fingerprint/Fake service 合同与
+  PostgreSQL create/query/rollback/ownership 测试，再实现最小 Repository 并通过真库 CI。本批不实现
+  claim/Worker/API，不读取 Key、调用 Riot/Provider，也不进入 Session、Memory、SSE、鉴权、前端或部署。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -540,8 +542,8 @@ pause_reason: "awaiting explicit user confirmation before starting 6A-2-task-con
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 的 5A-5F 已正式完成。6A-1 的 SQLAlchemy/Alembic/psycopg、task metadata/migration、Compose 与真库 CI 已公开完成；6A-2 Repository 尚未开始 | Pi 已进入产品、生产模型质量、Repository/Worker/API、Session/Memory 或前端已完成 |
-| 项目理解 | 已完成 6A-1 入口教学，能区分 ORM、migration、PostgreSQL、惰性 Engine、本地 no-DB 测试与 CI 真库证据；Repository/Worker/API 仍未进入教学与实现 | 配置/metadata 绿灯等于真库 migration 通过，或 PostgreSQL Foundation 等于完整异步 Agent 产品已完成 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 的 5A-5F 已正式完成。6A-1 已公开完成；6A-2 task contract/fingerprint/service 与 Repository 已本地实现，真库证据待本轮 CI；claim/Worker/API 尚未实现 | Pi 已进入产品、生产模型质量、完整任务系统、Session/Memory 或前端已完成 |
+| 项目理解 | 已完成 6A-1 教学，并能解释 6A-2 的 fingerprint、幂等 replay/conflict、capacity、短事务和 owner-scoped query；claim/Worker/API 尚未进入教学 | 本地 Fake/metadata 绿灯等于真库 Repository 语义或完整异步 Agent 产品已完成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
 | GitHub/部署 | 6A-1 实现提交 `854e52d` / Actions `32043214500` 已 exact-SHA 公共成功，含真实 PostgreSQL 17 job；正式异步 API/网页仍未部署 | migration CI、FastAPI TestClient 或阶段交接等于生产切换、完整任务系统或 Web Agent 可用 |
 

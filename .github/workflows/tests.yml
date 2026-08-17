@@ -142,8 +142,13 @@ jobs:
           python -m alembic downgrade base
           python -m alembic upgrade head
 
-      - name: Run PostgreSQL foundation tests
-        run: python -m pytest tests/test_database_config.py tests/test_task_migrations_postgres.py -q
+      - name: Run PostgreSQL task tests
+        run: |
+          python -m pytest \
+            tests/test_database_config.py \
+            tests/test_task_migrations_postgres.py \
+            tests/test_task_repository_postgres.py \
+            -q
 
       - name: Verify metadata matches the migration head
         run: |

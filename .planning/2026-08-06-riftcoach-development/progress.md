@@ -2387,3 +2387,35 @@
   JSONB/timestamptz/status CHECK round-trip 与 metadata drift check，外部 Riot/Provider I/O 为 0。
 - 6A-1 正式关闭；canonical 只交接 `6A-2-task-contract-repository` 准备状态，等待用户再次明确继续。
   尚未实现 Repository/create/query、claim、Worker、异步 API、Session/Memory 或前端。
+
+## 2026-08-18：开始 6A-2 Task Contract & Repository
+
+- 用户再次明确“继续”；RQ-054 只授权 task models/ports/fingerprint/service、owner-scoped idempotent
+  create/query、容量与真实 PostgreSQL Repository，不授权 claim/Worker/API。
+- 已按 `AGENTS.md` 恢复 canonical/active plan/RQ/路线/ADR/设计/实施计划；治理通过，HEAD 与
+  `origin/main` 均为 `ca486a10e3837c509fbee66e9a4b4118f83a6cab`，工作树起始干净。
+- 已完成初学者入口教学和 brainstorming 设计复核；既定 Service/Repository 分层无未决用户选择。
+- 当前下一步为完成最终本地门审查、提交/推送并用 public PostgreSQL CI 验证 5 项 Repository 测试；本机
+  不连接数据库。
+
+## 2026-08-18：6A-2 domain/service/Repository 本地实现
+
+- 红灯先确认 `app.tasks` 与 `app.persistence.task_repository` 尚不存在；随后实现严格 TaskStatus、
+  ReviewTask/ReviewTaskView、capacity policy、canonical SHA-256 fingerprint、TaskRepository port 和
+  ReviewTaskService。
+- Fake service 聚焦回归为 `29 passed`，覆盖 created/replayed/conflict、owner/global capacity、terminal
+  不占容量、body-free projection、owner-scoped not-found、safe error 与 identity immutability。
+- PostgreSQL Repository 已实现短事务 advisory-lock create/replay/conflict/capacity、JSONB round-trip、
+  owner-scoped task/run query 和 rollback-safe error mapping；新增 5 项真实真库测试，本机因无 DB 明确 skip。
+- 6A-1 migration 测试职责已修正，`upgrade → downgrade → upgrade` 在同一测试函数内断言。
+- 当前尚未运行本轮完整回归、RAG/安全/治理最终门，也未提交/推送 6A-2；下一步运行全部本地门禁。
+
+## 2026-08-18：6A-2 本地门禁完成
+
+- 聚焦 task models/service 为 `29 passed`；完整回归为 `977 passed, 8 skipped, 1 warning, 110 subtests
+  passed`。8 个 skip 为本机无 PostgreSQL 的 3 个 migration + 5 个 Repository 测试。
+- 两套 RAG 门均达到 Recall/MRR/nDCG `1.0`，holdout abstention/citation `1.0`；compileall、Harness
+  dry-run、governance、tracked Secret/run-data、SDK boundary、Compose/workflow YAML 和 diff check 通过。
+- 未读取 Key、未调用 Riot/Provider、未启动本地数据库；真库 Repository 的 replay/conflict/capacity/
+  rollback/owner/concurrent same-key 证据只由下一次 public PostgreSQL job提供。
+- 当前本地实现和门禁完成，下一步提交/推送并等待 exact-SHA CI；成功前不关闭 6A-2、不进入 6A-3。

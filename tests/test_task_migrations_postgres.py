@@ -115,6 +115,13 @@ def test_initial_migration_downgrades_and_upgrades_cleanly(
     finally:
         engine.dispose()
 
+    command.upgrade(config, "head")
+    engine = sa.create_engine(postgres_migration_database)
+    try:
+        assert "review_tasks" in sa.inspect(engine).get_table_names()
+    finally:
+        engine.dispose()
+
 
 def test_initial_migration_enforces_status_and_round_trips_postgres_types(
     postgres_migration_database: str,
@@ -178,12 +185,5 @@ def test_initial_migration_enforces_status_and_round_trips_postgres_types(
                     ),
                     {"task_id": invalid_values["task_id"]},
                 )
-    finally:
-        engine.dispose()
-
-    command.upgrade(config, "head")
-    engine = sa.create_engine(postgres_migration_database)
-    try:
-        assert "review_tasks" in sa.inspect(engine).get_table_names()
     finally:
         engine.dispose()

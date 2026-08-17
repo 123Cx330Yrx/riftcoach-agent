@@ -58,6 +58,7 @@
 | RQ-051 | 2026-08-17 | 已执行 | 用户再次明确“继续”，授权 canonical 的 `5F-5-adoption-decision-exit-review` | ADR-0037/exit matrix/review 已裁决 `partial-adopt-evaluation-assets-only`：产品拒绝 Pi，冻结保留可执行评测资产与采用门方法；`f8dea66` / Actions `32028206103` 完成 exact-SHA 公共验证。5F 正式关闭，只交接 `6A-entry-design`，未补做 5F-4、读取 Key、调用 Provider/Riot、接主 Runtime/FastAPI 或实现阶段 6。 |
 | RQ-052 | 2026-08-17 | 已执行 | 用户再次明确“继续”，授权 canonical 的 `6A-entry-design`；随后选择数据库方案 A、任务执行方案 3、hard-crash 方案 A，并逐节确认全部设计与 6A-1 至 6A-7 顺序 | ADR-0038、正式 design/implementation plan、本地 `929 passed/110 subtests` 与全部门禁已由 `c0b5af0` / Actions `32041343696` exact-SHA 公共验证；entry design 正式关闭，只交接 6A-1 准备状态。本轮未实现 SQL/Session/Memory/SSE/Auth/前端、未启动 DB 或调用外部 I/O。 |
 | RQ-053 | 2026-08-17 | 已执行 | 用户明确“开始”，授权 canonical 的 `6A-1-postgresql-foundation` | SQLAlchemy 2/Alembic/psycopg 配置、task ORM row、initial migration、Compose 与真实 PostgreSQL CI 门已由 `854e52d` / Actions `32043214500` exact-SHA 公共验证；两个 job 均成功。未实现 Repository、claim、Worker、异步 API、Session/Memory/SSE/前端或外部 Riot/Provider I/O。 |
+| RQ-054 | 2026-08-18 | 执行中 | 用户再次明确“继续”，授权 canonical 的 `6A-2-task-contract-repository` | 只实现 Provider-neutral task contract、canonical fingerprint、owner-scoped idempotent create/query、容量语义与 PostgreSQL Repository；不实现 claim、Worker、Application/Artifact 集成、异步 API、Session/Memory/SSE/前端或外部 Riot/Provider I/O。 |
 
 ## 新条目格式
 

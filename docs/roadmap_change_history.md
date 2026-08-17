@@ -1819,3 +1819,22 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   round-trip 和 metadata drift check，补齐本地无 Docker 的三个 skip。
 - `CLOSED`：6A-1 PostgreSQL Foundation 正式完成；没有实现 Repository/claim/Worker/API。
 - `HANDOFF`：canonical 只交接 `6A-2-task-contract-repository` 准备状态，等待用户明确继续。
+
+### 2026-08-18：RQ-054 恢复 6A-2 Task Contract & Repository
+
+- `RESUMED`：用户再次明确“继续”，只授权 canonical 的 `6A-2-task-contract-repository`。
+- `SCOPE`：实现 task domain/port/fingerprint/service 与 PostgreSQL owner-scoped idempotent create/query、
+  capacity/rollback；不实现 claim、Worker、Application/Artifact、HTTP、Memory 或外部 I/O。
+- `ATOMICITY`：Service 负责业务政策，Repository 在单 transaction 内处理 replay/conflict/capacity/create；
+  不把 count 与 insert 暴露成可竞态的多步 Service 调用。
+- `CURRENT`：先完成红灯纯逻辑/Fake 合同，再写真实 PostgreSQL Repository 测试与实现；public CI 前
+  6A-2 保持 in progress。
+
+### 2026-08-18：6A-2 本地实现与门禁
+
+- `IMPLEMENTED-LOCAL`：严格 task models、canonical fingerprint、Fake service 与 PostgreSQL
+  create/query Repository 已完成；advisory lock 只覆盖 create 短事务。
+- `TESTED-LOCAL`：domain/service `29 passed`，完整 `977 passed, 8 skipped, 1 warning, 110 subtests`
+  通过；两套 RAG、compileall、Harness、治理、安全和 YAML 门通过；真库 5 项仍待 public CI。
+- `BOUNDARY`：不实现 claim、Worker、Application/Artifact、HTTP、Session/Memory 或外部 I/O。
+- `CURRENT`：提交/推送并等待 exact-SHA PostgreSQL job；成功前 6A-2 保持 in progress。

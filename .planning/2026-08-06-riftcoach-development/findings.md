@@ -2457,3 +2457,30 @@
   constraint round-trip 测试和 `alembic check`，因此补齐本地无 Docker 的三个 skip。
 - 该证据只证明 Foundation/schema，不证明 Repository transaction、idempotent create/query、claim、
   Worker 或异步 API；这些仍按 6A-2 及后续批次逐项实施。
+
+## 2026-08-18：6A-2 入口审计发现
+
+- 用户以“继续”授权 RQ-054；范围只到 task domain/service 与 PostgreSQL create/query Repository。
+- 已确认 `RecentReviewProductRequest` 是严格、冻结、已规范化的客户请求合同；6A-2 fingerprint 应直接对其
+  JSON-mode canonical projection 加 task kind/schema identity，不重新实现 Riot ID 规范化。
+- Service 必须拥有 idempotency/capacity 业务语义，Repository 必须在一个数据库 transaction 中原子执行
+  replay/conflict/capacity/create；把 count 与 insert 拆成两个公开调用会留下并发竞态。
+- 6A-1 migration test 中“downgrade and upgrade”函数只执行到 downgrade，而后一个类型/constraint test
+  末尾存在职责错位的额外 upgrade。Workflow 已独立证明可逆 migration，结论不受影响；6A-2 会以最小
+  测试修正让每个函数名与证据一致。
+
+## 2026-08-18：6A-2 本地实现发现
+
+- 纯逻辑合同先红后绿：task models、严格四态/时间/发布投影、body-free view、capacity policy、
+  canonical fingerprint、Fake Repository service 共 `29 passed`。
+- `PostgresTaskRepository` 采用固定 transaction-scoped advisory lock 串行化短 create transaction；先
+  replay/conflict，再 owner/global active count，最后插入并在 commit 后返回。这样不把 count 与 insert
+  拆成两个可竞态的 Service 调用，也不让 Agent/Provider 执行持有 DB 锁。
+- Repository 查询始终带 owner 条件；数据库/完整性错误只转换为 allowlisted safe code，Service 不传播
+  SQL、URL、约束正文或异常对象。
+- 真库测试覆盖 replay 原始 task/run identity、不同 owner 隔离、容量与 terminal 计数、PK rollback 和
+  同 key 并发单行语义；本机无 PostgreSQL 时 5 项明确 skip，必须由 CI 验证。
+- 为保持 Alembic 配置层轻量，`PostgresTaskRepository` 不从 `app.persistence` 聚合导出，只通过显式
+  `app.persistence.task_repository` 使用；避免 migration import 牵连 product/task service。
+- 本轮两次并行门编排的一行 JavaScript/PowerShell 引号错误只导致工具命令 syntax error，没有执行门或
+  修改文件；随后拆分命令重新运行，RAG/compileall/governance/YAML/Harness/安全门均获得真实结果。

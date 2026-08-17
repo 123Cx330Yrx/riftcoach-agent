@@ -958,3 +958,17 @@ RAG、compileall、Harness dry-run、governance 与安全边界通过。Alembic 
 `32043214500` 完成 exact-SHA 公共验证；原 `pytest` 与新增 `postgres-migrations` job 均成功。真实
 PostgreSQL 17 已验证可逆 migration、JSONB/timestamptz/CHECK round-trip 与 metadata 无漂移，故 6A-1
 正式关闭。唯一交接为 6A-2 Task Contract/Repository 准备状态，不自动开始实现。
+
+## 6A-2 Task Contract & Repository 本地实施裁决（2026-08-18）
+
+用户按 RQ-054 恢复 6A-2。本批固定 Provider-neutral `TaskStatus` 四态、严格 Product Request、
+canonical JSON/SHA-256 fingerprint、owner-scoped body-free view、owner/global active capacity 和
+idempotency replay/conflict 语义。Service 负责业务错误投影，Repository 负责 PostgreSQL 单事务原子
+create/replay/conflict/capacity/query；不实现 claim、Worker、Application/Artifact 或 HTTP。
+
+为避免并发 `COUNT → INSERT` 超额，Repository 在 create 短事务内使用固定 transaction-scoped PostgreSQL
+advisory lock；锁不跨越 Agent/Provider 执行，也不替代 6A-3 claim 或 6A-6 capacity 压测。数据库错误只
+输出 allowlisted safe code，公共 view 不含 owner、幂等 key、请求正文、worker 或证据正文。
+
+本地 domain/service 聚焦 `29 passed`，完整回归 `977 passed, 8 skipped, 1 warning, 110 subtests
+passed`；真库 5 项 Repository 测试尚待 public CI，因此 6A-2 尚未关闭。
