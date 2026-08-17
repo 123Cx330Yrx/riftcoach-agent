@@ -210,7 +210,7 @@ OP.GG MCP
 5P-entry-design              已完成；`49841ec` / Actions `31985199623` exact-SHA 公共成功
 5P-1 Product/compiler       已完成；`57bd36a` / Actions `31987501935` exact-SHA 公共成功
 5P-2 Prompt Program         已完成；`0a9651f` / Actions `31988837293` exact-SHA 公共成功
-5P-3 Domain/Application     本地完成；830 tests/110 subtests，等待 exact-SHA 公共 CI
+5P-3 Domain/Application     已完成；`4bd5c83` / Actions `31998739178` exact-SHA 公共成功
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -336,8 +336,8 @@ exact-SHA 公开冻结。Fresh-Gate 4 入口又由 `ed3cc94` / Actions `31863341
 `docs/project_execution_state.md` 为准。
 5P-3 已把 Summary/Report 纯业务逻辑提升到 `app.lol`，并建立严格
 `RecentReviewApplicationService`、body-free 安全错误映射与 secure product execution factory。
-该本地证据使用 Fake upstream/Runtime，不代表真实 Riot/Provider 质量、FastAPI、receipt/query
-或生产部署已经完成；公共 CI 成功前 5P-3 仍不关闭。
+该证据使用 Fake upstream/Runtime，不代表真实 Riot/Provider 质量、FastAPI、receipt/query
+或生产部署已经完成；canonical 仅交接到尚未开始的 5P-4。
 
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动
 路由暂不作为连续任务；它们要等 Skill 和 Agent Loop 形成真实调用场景后，按同一

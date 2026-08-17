@@ -1940,3 +1940,12 @@
   和 diff check 均通过。
 - 本批没有安装 FastAPI、写 receipt/query、读取 Key、调用 Riot/Provider 或运行 held-out；当前
   5P-3 仍为 in_progress，只待实现提交、推送与 exact-SHA 公共 CI。
+
+## 2026-08-17：5P-3 exact-SHA 公共闭环
+
+- 实现提交 `4bd5c83b8d588ab9b0e23dbc9e886100fae7c3f5` 已推送到 `origin/main`。
+- GitHub Actions run `31998739178` completed/success；完整 pytest、两套 RAG、compileall、
+  governance、SDK/tracked-data boundary 与 Harness dry-run 全部成功，CI 无 Key/外部调用。
+- 5P-3 正式完成：Domain/Application Service、body-free 安全错误和 secure product factory
+  已获得本地与公开证据；这不表示 receipt/query、FastAPI 或真实模型质量完成。
+- canonical 只交接到 `5P-4-file-backed-run-receipt-query`，等待用户再次明确继续；本轮不实现 5P-4。

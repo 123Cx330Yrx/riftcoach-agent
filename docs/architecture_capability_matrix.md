@@ -33,7 +33,7 @@
 | A11 | AgentRuntime V1 | 5D 控制链及 5E-1 至 5E-4 均已公开完成；两个真实 Skill 共用同步 `run()`、进程内 `stream()`、typed output、完整 Trace/Usage、安全失败映射与 exit matrix | 阶段 5D-5E | 阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage、终止原因与退出审查 | 已完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有；DeepSeek V4 Pro 只通过最小协议，当前 V3 领域候选已关闭；Flash 未测试；尚无领域/产品准入、任务级选择或自动降级 | 5D 完成候选采用决策；GLM-5.2 仅作开发基线；模型分层为 5P 后横向采用门，默认等待阶段 6 真实业务证据 | G53 deferred；未来仍按 ADR-0019 比较模型分层，5F 只做 Runtime SDK 实验 | 新鲜同任务评测、故障降级、unsafe publication、成本和 p50/p95 延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
-| A14 | API 与任务持久化 | CLI 和文件型 Run Store；5P-1 产品 DTO/compiler、5P-2 verified composition、5P-3 app-level Domain/Application Service 与安全错误映射已本地实现；receipt/FastAPI 尚无代码 | 阶段 5P 提供本地同步切片，阶段 6 加 SQL | 阶段 8 扩展恢复与运行治理 | Application 顺序/错误/终态合同；后续 API、路径/摘要、幂等、并发、鉴权、隔离和恢复测试 | 部分完成 |
+| A14 | API 与任务持久化 | CLI 和文件型 Run Store；5P-1 产品 DTO/compiler、5P-2 verified composition、5P-3 app-level Domain/Application Service 与安全错误映射已公开验证；receipt/FastAPI 尚无代码 | 阶段 5P 提供本地同步切片，阶段 6 加 SQL | 阶段 8 扩展恢复与运行治理 | Application 顺序/错误/终态合同；后续 API、路径/摘要、幂等、并发、鉴权、隔离和恢复测试 | 部分完成 |
 | A15 | 标准 MCP 与动态 Meta | 内部 Tool Runtime，不冒充 MCP | 阶段 7 | OP.GG、官方补丁等通过领域 Adapter 分层 | initialize、tools/list、tools/call、断线和版本边界测试 | 已规划 |
 | A16 | Multi-Agent 与 DAG | 当前不需要 | 阶段 8 Advanced | 仅在独立上下文、权限和并行收益成立时采用 | Bad Case、对照、消融、成本和 ADR | 按证据采用 |
 
@@ -228,7 +228,7 @@ exact-SHA 公共验证。整个 5E 正式完成。RQ-040 已恢复 `5P-entry-des
 设计 Prompt Program V1 与薄产品 API/Application Service，并由 `49841ec` / Actions
 `31985199623` exact-SHA 公开验证；5P-1 产品合同/compiler 已由 `57bd36a` / Actions
 `31987501935` 完成 exact-SHA 公共验证；5P-2 Prompt Program/composition 又由 `0a9651f` / Actions
-`31988837293` 完成 exact-SHA 公共验证。5P-3 Domain/Application Service 已本地完成并等待
-exact-SHA 公共 CI；receipt/FastAPI 尚未实现，Provider I/O 仍为 0。
+`31988837293` 完成 exact-SHA 公共验证。5P-3 Domain/Application Service 又由 `4bd5c83` /
+Actions `31998739178` 完成 exact-SHA 公共验证；5P-4 receipt 与 FastAPI 尚未实现，Provider I/O 仍为 0。
 5F、阶段 6/8 的 SDK 对照、SQL/Session/Memory/SSE、持久事件、
 cancel/resume、DAG 和 Multi-Agent 边界不变。

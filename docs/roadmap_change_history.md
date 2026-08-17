@@ -1438,3 +1438,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   `830 passed, 110 subtests passed`；两套 RAG、compileall、治理、安全边界、dry-run 和 diff 通过。
 - `NO-IO`：Key/Riot/Provider/held-out I/O 为 0；Fake upstream/Runtime 只证明控制流，不证明模型质量。
 - `CURRENT`：5P-3 仍进行中，只待提交、推送与 exact-SHA 公共 CI；成功前不交接或实现 5P-4。
+
+### 2026-08-17：5P-3 exact-SHA 公共闭环与 5P-4 交接
+
+- `PUBLIC-VERIFIED`：提交 `4bd5c83b8d588ab9b0e23dbc9e886100fae7c3f5` 的 Actions run
+  `31998739178` 通过完整 pytest、两套 RAG、compileall、governance、SDK/tracked-data boundary
+  与 Harness dry-run；CI 无 Key/Riot/Provider/held-out I/O。
+- `CLOSED`：5P-3 Domain Pipeline Promotion & Application Service 正式完成；这只证明本地
+  product control flow、安全错误与 verified Runtime composition，不证明 HTTP 或真实模型质量。
+- `CURRENT`：canonical 唯一下一检查点切换为 `5P-4-file-backed-run-receipt-query`，等待用户
+  再次明确继续；不自动实现 receipt/query、FastAPI 或 5F。

@@ -707,3 +707,7 @@ revision validator；测试专用 factory 仍须显式注入。该深化补充�
 本地证据为 Domain 7、Application 20、Prompt Program 10、相邻 263、完整
 `830 passed, 110 subtests passed`，两套 RAG 与全部门禁通过。本批外部 I/O 为 0，尚不证明真实
 Riot/Provider 质量、HTTP、receipt、幂等、事务、并发或恢复；5P-3 仍待 exact-SHA 公共 CI。
+
+实现提交 `4bd5c83b8d588ab9b0e23dbc9e886100fae7c3f5` 随后由 GitHub Actions run
+`31998739178` 完成 exact-SHA 公共验证，5P-3 正式关闭。canonical 只交接到
+`5P-4-file-backed-run-receipt-query`，本轮不实现 receipt/query 或 FastAPI。

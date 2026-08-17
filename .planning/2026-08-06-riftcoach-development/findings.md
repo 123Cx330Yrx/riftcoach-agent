@@ -2007,3 +2007,6 @@
   validator；这补上 5P-2 Program identity 与实际执行 factory 的相邻缺口，不改写 5P-2 历史证据。
 - 本地全量为 `830 passed, 110 subtests passed`；RAG/compileall/Harness/secret/dry-run/governance/
   diff 门禁通过。全部使用 fixture/Fake，Key/Riot/Provider/held-out I/O 为 0，不能评价模型质量。
+- 实现提交 `4bd5c83b8d588ab9b0e23dbc9e886100fae7c3f5` 已由 Actions run `31998739178`
+  exact-SHA 公开验证成功；这些公共门禁同样无 Key/外部 I/O。5P-3 因而正式完成，5P-4
+  receipt/query 仅成为下一检查点，尚未实现。
