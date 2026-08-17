@@ -855,3 +855,8 @@ dry-run、Node tree、治理和 diff 门禁通过。
 本地裁决为 `pass-with-boundaries`：只准许在 exact-SHA 公共 CI 成功后进入 5F-3 准备状态，不采用
 Pi、不接主 Runtime/Harness。当前安装树 94 packages / 62,364,713 bytes，每 run 新进程本机量级约
 0.4 秒；完整 Harness/Trace/structured-output parity、真实 Provider 和维护收益仍未证明。
+
+实现提交 `f62f078faca0d93494478011d2fe18cdeb85970f` 已由 GitHub Actions run `32022258177` 完成
+exact-SHA 公共验证；5F-2 正式关闭，唯一下一检查点为
+`5F-3-contract-security-harness-evaluation` 准备状态，等待用户明确继续。该交接不授权自动实现
+5F-3、读取 Key、调用 Provider 或接入主 Runtime。

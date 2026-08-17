@@ -2157,3 +2157,13 @@
   SDK/tracked-data boundary、dry-run、governance 和 diff check 均通过。
 - 新增 5F-2 退出审查；本地结论为 `pass-with-boundaries`。当前唯一下一步是提交、推送并等待
   exact-SHA GitHub Actions；公共成功前不关闭 5F-2、不进入 5F-3。
+
+## 2026-08-17：5F-2 exact-SHA 公共闭环与 5F-3 交接
+
+- 提交 `f62f078faca0d93494478011d2fe18cdeb85970f` 已推送；Actions run `32022258177` 对精确 SHA
+  的 Node 24 setup、`npm ci --ignore-scripts`、完整 pytest、两套 RAG、compileall、治理、
+  Harness/secret boundary 与 dry-run 全部成功。
+- 5F-2 正式关闭，四条进度线保持分离：本地协议实现/理解和公共证据提升，真实 Provider 领域
+  质量、Pi adopt、完整 Trace/Harness parity 和部署没有提升。
+- canonical 唯一下一检查点已交接为 `5F-3-contract-security-harness-evaluation` 准备状态，
+  等待用户明确继续；未读取 Key、调用 Provider、修改主 Runtime 或自动开始 5F-3。

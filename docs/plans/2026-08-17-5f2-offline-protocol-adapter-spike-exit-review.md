@@ -194,5 +194,8 @@ Pi Agent Core 已证明“能跑受限 loop”，但采用一个第三方 Runtim
 - [x] 越权、重复、预算、失败、进程、stderr、deadline 和环境边界
 - [x] 窄范围 Python/Pi call-order/terminal 对照
 - [x] 本地完整回归、RAG、compileall、Harness/secret/governance/diff 门禁
-- [ ] 实现提交、推送和 exact-SHA GitHub Actions
-- [ ] 公共成功后正式关闭 5F-2，并只交接 5F-3 准备状态
+- [x] 实现提交、推送和 exact-SHA GitHub Actions：`f62f078` / `32022258177`
+- [x] 公共成功后正式关闭 5F-2，并只交接 5F-3 准备状态
+
+5F-2 已由上述精确 SHA 的公共 CI 正式关闭。下一检查点为
+`5F-3-contract-security-harness-evaluation`，等待用户明确继续；本退出审查不授权其自动开始。

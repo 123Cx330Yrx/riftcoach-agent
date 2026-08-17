@@ -1605,3 +1605,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   主 Runtime/Harness 接入或模型质量证据。
 - `CURRENT`：5F-2 仍 in progress，只待实现/退出审查提交、推送和 exact-SHA 公共 CI；成功前不
   关闭 5F-2，不交接或实施 5F-3。
+
+### 2026-08-17：5F-2 exact-SHA 公共闭环与 5F-3 交接
+
+- `VERIFIED-PUBLIC`：实现提交 `f62f078faca0d93494478011d2fe18cdeb85970f` 的 Actions run
+  `32022258177` completed/success；Node 24、`npm ci --ignore-scripts`、完整 pytest、两套 RAG、
+  compileall、治理、Harness/secret boundary 和 dry-run 全部通过。
+- `CLOSED`：5F-2 Offline Protocol Adapter Spike 正式完成，裁决为 `pass-with-boundaries`；这只
+  证明隔离协议/控制流，不代表 Pi adopt、真实模型质量或主 Runtime/Harness 接入。
+- `HANDOFF`：canonical 唯一下一检查点为 `5F-3-contract-security-harness-evaluation` 准备状态，
+  等待用户明确继续；不自动读取 Key、调用 Provider 或实现 5F-3。

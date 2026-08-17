@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 8 - `5F-2-offline-protocol-adapter-spike` is locally implemented with a
-`pass-with-boundaries` verdict and is awaiting implementation commit/public CI before handoff
+Phase 8 - `5F-3-contract-security-harness-evaluation` is the next preparation checkpoint after
+publicly verified `5F-2-offline-protocol-adapter-spike`
 
 ## Phases
 
@@ -201,9 +201,10 @@ Phase 8 - `5F-2-offline-protocol-adapter-spike` is locally implemented with a
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
   实验仍属于 5F，Prompt Program 属于 5P。
 
-### Phase 8 - 5F-2-offline-protocol-adapter-spike（5F-1 已完成后的准备检查点）
+### Phase 8 - 5F-3-contract-security-harness-evaluation（5F-2 已完成后的准备检查点）
 
 - Status: in_progress
+- Pause: awaiting explicit user confirmation before implementing 5F-3
 - 5P Prompt Program V1 与早期产品纵向切片已完成；5P-6 退出审查以
   `8c8acc6` / Actions `32010604551` 完成 exact-SHA 公共闭环。
 - `5F-entry-design` 已由 `ce97975` / Actions `32013948784` 完成 exact-SHA 公共闭环；用户已按
@@ -219,7 +220,8 @@ Phase 8 - `5F-2-offline-protocol-adapter-spike` is locally implemented with a
 - ADR-0035 与 5F-2 实施计划已冻结低层 Agent Core + 版本化限长 JSONL sidecar、Scripted
   StreamFn、单一 Python `knowledge.search`、父进程 deadline/kill 和 body-free event 边界；
   exact lockfile、Pi sidecar、Python controller、35 项聚焦协议/接线/窄 parity 测试与退出审查已
-  本地完成；裁决为 `pass-with-boundaries`，尚待提交和 exact-SHA 公共 CI。
+  本地完成；裁决为 `pass-with-boundaries`；`f62f078` / Actions `32022258177` exact-SHA 公共验证
+  成功，5F-2 正式关闭，下一检查点为 5F-3。
 - `5P-entry-design` 与 5P-1 至 5P-6 已公开完成；
 - 5P-4 immutable receipt/store、strict query 与 Application receipt 接缝已由 `932a863` / Actions
   `32002994441` 完成 exact-SHA 公共验证；5P-5 薄 Adapter 与 no-I/O 纵向切片又由 `6d1e5b0` /
@@ -239,9 +241,9 @@ Phase 8 - `5F-2-offline-protocol-adapter-spike` is locally implemented with a
 
 ## Next Step
 
-`5F-2-offline-protocol-adapter-spike`：提交/推送当前 no-I/O sidecar 实现与退出审查，等待 exact-SHA
-GitHub Actions；公共成功前不关闭 5F-2，不交接或实施 5F-3。不得读取 Key、调用 Provider/Riot、接主
-Runtime/Harness/FastAPI。
+`5F-3-contract-security-harness-evaluation`：5F-2 提交 `f62f078` / Actions `32022258177` 已完成
+exact-SHA 公共验证并正式关闭；等待用户明确继续后，才做完整合同、安全、ReviewHarness/Trace parity
+和跨语言维护成本评估。不得读取 Key、调用 Provider/Riot、接主 Runtime/Harness/FastAPI。
 
 ## 5P-6 Exit Review Checklist
 
@@ -285,7 +287,14 @@ Runtime/Harness/FastAPI。
 - [completed] Batch B：exact npm package/lockfile、`npm ci --ignore-scripts` 与供应链/成本记录
 - [completed] Batch C：Node Pi sidecar + Python controller + 真实本地 `knowledge.search`
 - [completed] Batch D：scripted 安全/预算/失败案例、Usage 四态与 body-free event
-- [in_progress] Batch E：窄同切片对照、本地完整门禁和退出裁决已完成；待提交/公共 CI 与 5F-3 交接
+- [completed] Batch E：窄同切片对照、本地完整门禁和退出裁决、提交/公共 CI 已完成；只交接 5F-3 准备状态
+
+## 5F-3 Contract / Security / Harness Evaluation Checklist
+
+- [pending] 复用 5F-2 同切片，对比完整 Tool/Context/deadline/structured output/error/terminal 合同
+- [pending] 验证 ReviewHarness 仍是唯一发布权，并核对 Trace/Usage/Artifact parity
+- [pending] 量化 sidecar/IPC/日志/调试/部署维护成本与安全差异
+- [pending] 完成本地门禁、提交、exact-SHA 公共 CI 和退出裁决后再决定是否交接 5F-4
 
 ## Decisions Made
 

@@ -116,6 +116,6 @@ Pi next turn → safe event/result projection
 
 ## 7. 当前步骤
 
-Batch A-E 的本地实现、窄 parity、门禁与退出审查已完成，裁决为 `pass-with-boundaries`。当前只待
-实现/退出审查提交、推送和 exact-SHA 公共 CI；公共成功前不关闭 5F-2、不交接或实施 5F-3，也不
-把“能运行 Pi sidecar”表述为 Pi 已采用或真实模型质量已经验证。
+Batch A-E 的本地实现、窄 parity、门禁与退出审查已完成，裁决为 `pass-with-boundaries`。提交
+`f62f078` / Actions `32022258177` 已完成 exact-SHA 公共 CI，5F-2 正式关闭并只交接
+`5F-3-contract-security-harness-evaluation` 准备状态；这不表示 Pi 已采用或真实模型质量已经验证。
