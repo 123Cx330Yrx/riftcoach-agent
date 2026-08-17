@@ -154,7 +154,7 @@ pause_reason: "RQ-041-scope-complete-awaiting-next-continue"
   `31942483874` 的 exact-SHA 公共 CI
 - 唯一下一步：`5P-2-prompt-program-runtime-composition`，等待用户再次明确继续；只实现
   Prompt Program V1、drift gate 与 Runtime composition root，不安装 FastAPI或进入 5P-3。
-- 禁止越过：不得自动进入 5P-2 Prompt Program 实现、安装 FastAPI 或进入 5F；
+- 范围约束：5P-2 必须等用户明确继续后才实现；不得自动进入 5P-3、安装 FastAPI 或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
   协议、候选选择或发布热度替代领域质量证据
 

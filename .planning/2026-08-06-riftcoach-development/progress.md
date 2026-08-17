@@ -1877,3 +1877,9 @@
   作品集成熟度没有被错误提升，真实 Provider/Key/held-out I/O 仍为 0。
 - canonical 已只交接到 `5P-2-prompt-program-runtime-composition`，等待用户再次明确继续；本轮
   不实现 Prompt Program、FastAPI 或 5F。
+
+## 2026-08-17：5P-2 交接措辞修正
+
+- 最终只读复核发现 canonical 仍保留旧句“不得自动进入 5P-2”，与当前“5P-2 是唯一下一检查点、
+  但等待用户明确继续”语义不一致；已改为等待用户授权后实现 5P-2，且不得自动进入 5P-3/FastAPI/5F。
+- 这是持久状态措辞修正，不改变 5P-1 代码、测试、提交或公开证据；修正后需再次通过治理和 exact-SHA CI。
