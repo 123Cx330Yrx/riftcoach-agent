@@ -953,3 +953,8 @@ Worker 与 API 行为仍属于后续 6A 子阶段。
 Docker/测试 DB 明确 skipped。完整回归 `948 passed, 3 skipped, 1 warning, 110 subtests passed`，两套
 RAG、compileall、Harness dry-run、governance 与安全边界通过。Alembic offline PostgreSQL SQL 编译只
 证明 DDL 可生成，不替代真库执行；因此本地裁决为“实现完成、等待 public PostgreSQL CI”，6A-1 仍未关闭。
+
+实现提交 `854e52d7d3f4efeb3bd94137b66013352d10c8a2` 随后由 GitHub Actions run
+`32043214500` 完成 exact-SHA 公共验证；原 `pytest` 与新增 `postgres-migrations` job 均成功。真实
+PostgreSQL 17 已验证可逆 migration、JSONB/timestamptz/CHECK round-trip 与 metadata 无漂移，故 6A-1
+正式关闭。唯一交接为 6A-2 Task Contract/Repository 准备状态，不自动开始实现。

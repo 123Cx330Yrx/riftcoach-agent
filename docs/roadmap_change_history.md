@@ -1810,3 +1810,12 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   本批唯一可用的真实数据库阻塞证据，SQLite 不得替代。
 - `CURRENT`：先同步持久状态与红灯测试，再实现最小 Foundation；完成本地门、提交、推送与 exact-SHA
   公共 CI 前，6A-1 保持 in progress。
+
+### 2026-08-17：6A-1 exact-SHA PostgreSQL 公共闭环
+
+- `VERIFIED-PUBLIC`：实现提交 `854e52d7d3f4efeb3bd94137b66013352d10c8a2` 已由 Actions run
+  `32043214500` 完成 exact-SHA 公共验证；`pytest` 与 `postgres-migrations` 两个 job 均成功。
+- `REAL-POSTGRESQL`：PostgreSQL 17 service 执行可逆 Alembic migration、JSONB/timestamptz/CHECK
+  round-trip 和 metadata drift check，补齐本地无 Docker 的三个 skip。
+- `CLOSED`：6A-1 PostgreSQL Foundation 正式完成；没有实现 Repository/claim/Worker/API。
+- `HANDOFF`：canonical 只交接 `6A-2-task-contract-repository` 准备状态，等待用户明确继续。

@@ -2448,3 +2448,12 @@
 - 完整回归为 `948 passed, 3 skipped, 1 warning, 110 subtests passed`；两套 RAG 指标均达到冻结阈值，
   compileall、Harness dry-run、governance、Secret/run-data 与 SDK boundary 通过。6A-1 必须等待 public
   PostgreSQL service job 后才能关闭。
+
+## 2026-08-17：6A-1 真实 PostgreSQL 公共证据
+
+- 实现提交 `854e52d7d3f4efeb3bd94137b66013352d10c8a2` 的 Actions run `32043214500` 已
+  completed/success；原 `pytest` 与新增 `postgres-migrations` 两个独立 job 均成功。
+- 真库 job 使用 PostgreSQL 17 service，执行 Alembic upgrade/downgrade/upgrade、三个 migration/
+  constraint round-trip 测试和 `alembic check`，因此补齐本地无 Docker 的三个 skip。
+- 该证据只证明 Foundation/schema，不证明 Repository transaction、idempotent create/query、claim、
+  Worker 或异步 API；这些仍按 6A-2 及后续批次逐项实施。

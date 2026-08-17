@@ -220,7 +220,7 @@ OP.GG MCP
 5F-3 Contract/Harness Eval  已完成；45 focused、196 adjacent、完整 929/110 subtests；裁决 `harness-compatible-but-runtime-gate-failed`，Context/terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功
 5F-4 Bounded Real Slice    未进入；5F-3 前置硬门失败，真实模型调用无信息增益，external calls 0
 5F-5 Adoption/Exit         已完成；裁决 `partial-adopt-evaluation-assets-only`；`f8dea66` / Actions `32028206103` exact-SHA 公共成功；产品拒绝 Pi，冻结保留评测资产/CI 复现与采用门方法
-6A entry design            已完成；ADR/design/plan 由 `c0b5af0` / Actions `32041343696` 公共验证；6A-1 本地 Foundation 已实现并待 public PostgreSQL CI
+6A entry design            已完成；`c0b5af0` / Actions `32041343696`；6A-1 Foundation 又由 `854e52d` / Actions `32043214500` 真库公共完成；当前 6A-2 准备状态
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

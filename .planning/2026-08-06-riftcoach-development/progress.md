@@ -2378,3 +2378,12 @@
   Secret/run-data、Harness SDK boundary 和 diff check 通过；未读取 Key 或调用 Riot/Provider。
 - 本地实现完成但 6A-1 仍为 in progress；下一步仅提交/推送并用 exact-SHA public CI 执行真库 upgrade/
   downgrade/upgrade、JSONB/timestamptz/CHECK round-trip 和 Alembic metadata check。
+
+## 2026-08-17：6A-1 exact-SHA 公共闭环
+
+- 实现提交 `854e52d7d3f4efeb3bd94137b66013352d10c8a2` 已推送；Actions run `32043214500`
+  对同一 SHA completed/success。
+- `pytest` job 与 `postgres-migrations` job 均成功；后者在 PostgreSQL 17 上执行可逆 migration、
+  JSONB/timestamptz/status CHECK round-trip 与 metadata drift check，外部 Riot/Provider I/O 为 0。
+- 6A-1 正式关闭；canonical 只交接 `6A-2-task-contract-repository` 准备状态，等待用户再次明确继续。
+  尚未实现 Repository/create/query、claim、Worker、异步 API、Session/Memory 或前端。

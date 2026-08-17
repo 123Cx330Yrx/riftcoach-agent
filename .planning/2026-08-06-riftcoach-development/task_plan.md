@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 9 - `6A-1-postgresql-foundation` implementation authorized by RQ-053 after `6A-entry-design`
-completed publicly at `c0b5af0eec1654c35afddb3c8a66b774a233a688` / Actions `32041343696`
+Phase 10 - `6A-2-task-contract-repository` preparation after 6A-1 completed publicly at
+`854e52d7d3f4efeb3bd94137b66013352d10c8a2` / Actions `32043214500`; no 6A-2 implementation yet
 
 ## Phases
 
@@ -243,19 +243,18 @@ completed publicly at `c0b5af0eec1654c35afddb3c8a66b774a233a688` / Actions `3204
   用户明确继续。
 - entry design 提交 `49841ec` 已通过 Actions `31985199623` exact-SHA 公共 CI；
 
-### Phase 9 - 6A-1-postgresql-foundation implementation
+### Phase 9 - 6A-1-postgresql-foundation
 
-- Status: in_progress
-- Authorization: RQ-053; implementation is active.
+- Status: complete
+- Authorization: RQ-053; completed by `854e52d` / Actions `32043214500`.
 - 5F-5 决策提交 `f8dea66` / Actions `32028206103` 已完成 exact-SHA 公共验证；阶段 5 正式关闭。
-- 6A-entry-design 已由 `c0b5af0` / Actions `32041343696` exact-SHA 公共完成；当前只实施 6A-1
-  SQL 基础设施、migration、Compose 与真库 CI，不实现 Repository/Worker/API。
+- 6A-entry-design 已由 `c0b5af0` / Actions `32041343696` exact-SHA 公共完成；6A-1 的 SQL
+  基础设施、migration、Compose 与真库 CI 又由 `854e52d` / Actions `32043214500` 公共完成。
 
 ## Next Step
 
-`6A-1-postgresql-foundation`：按 ADR-0038 和 implementation plan 先以红灯建立
-SQLAlchemy 2/Alembic/psycopg 配置、initial migration、Compose 与 GitHub Actions 真库门。本机无
-Docker，本地迁移测试须明确 skip，不能冒充 PostgreSQL 证据；不实现 Repository/Worker/API 或调用外部服务。
+`6A-2-task-contract-repository`：等待用户明确继续后，先解释 task domain contract、canonical fingerprint、
+owner-scoped idempotency 与 transaction/repository 原理，再按实施计划 TDD；不自动进入 claim/Worker/API。
 
 ## 6A-1 Checklist
 
@@ -264,7 +263,14 @@ Docker，本地迁移测试须明确 skip，不能冒充 PostgreSQL 证据；不
 - [completed] 实现 settings、Engine/Session、metadata/ORM row 与 initial migration
 - [completed] 增加 Compose 和 blocking PostgreSQL CI job
 - [completed] 运行聚焦/完整/横向门禁并记录本地无 Docker 限制
-- [in_progress] 提交、推送并等待 exact-SHA 公共 CI 后关闭 6A-1
+- [completed] 提交、推送并由 `854e52d` / Actions `32043214500` 完成 exact-SHA 公共 CI
+
+### Phase 10 - 6A-2-task-contract-repository preparation
+
+- Status: in_progress
+- Pause: awaiting explicit user confirmation before starting 6A-2.
+- 6A-1 已由真实 PostgreSQL service 验证 migration/constraint/metadata drift；当前只保存 6A-2 准备键，
+  不实现 Repository、claim、Worker 或 API。
 
 ## 6A Entry Design Checklist
 
