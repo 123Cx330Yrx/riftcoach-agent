@@ -681,3 +681,7 @@ Key、Riot/Provider/held-out I/O。该结果不表示 Prompt Program、Applicati
 governance 和 diff check 全部通过。本批 Key/Riot/Provider/held-out I/O 为 0；这只证明组合与漂移
 控制，不证明真实模型 Coach 质量，也不提前完成 FastAPI/Application Service。最终状态仍需提交、
 推送和 exact-SHA 公共 CI 后关闭 5P-2。
+
+实现提交最终 exact SHA `0a9651f4e305616626c58ea28e2c300a491f2a3b` 已由 GitHub Actions
+run `31988837293` 完成公开验证；5P-2 正式关闭。canonical 只交接到
+`5P-3-domain-application-service` 准备状态，不自动实现 Application Service 或 FastAPI。

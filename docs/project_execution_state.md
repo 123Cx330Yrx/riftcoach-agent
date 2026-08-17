@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 5
 substage_group: "5P"
-current_checkpoint: "5P-2-prompt-program-runtime-composition"
+current_checkpoint: "5P-3-domain-application-service"
 status: in_progress
-pause_reason: null
+pause_reason: "RQ-042-scope-complete-awaiting-next-continue"
 ---
 
 # RiftCoach 当前执行状态
@@ -22,8 +22,10 @@ pause_reason: null
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
   Manifest-derived Runtime policy 已闭环。唯一下一检查点为
-  `5P-2-prompt-program-runtime-composition` 已进入实现；本批只覆盖 Prompt Program V1、drift gate
-  与 Runtime composition root，不安装 FastAPI、不进入 5P-3。上一子阶段组
+  `5P-2-prompt-program-runtime-composition` 已由提交
+  `0a9651f4e305616626c58ea28e2c300a491f2a3b` 与 Actions run `31988837293` 完成 exact-SHA
+  公共验证；Prompt Program V1、drift gate、verified Runtime identity 与 composition root 已闭环。
+  唯一下一检查点为 `5P-3-domain-application-service`，等待用户再次继续，不自动实现。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -153,9 +155,9 @@ pause_reason: null
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`5P-2-prompt-program-runtime-composition`，完成本轮 Prompt Program V1、drift gate
-  与 Runtime composition root 的最终门禁、提交和 exact-SHA 公共 CI。
-- 范围约束：5P-2 不安装 FastAPI、不实现 Application Service、不进入 5P-3 或 5F；
+- 唯一下一步：`5P-3-domain-application-service`，等待用户再次明确继续；只提升 Summary/Report
+  domain service 并建立 RecentReviewApplicationService，不安装 FastAPI或进入 5P-4。
+- 范围约束：5P-3 必须等用户明确继续后才实现；不得自动进入 5P-4、安装 FastAPI 或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
   协议、候选选择或发布热度替代领域质量证据
 
@@ -201,8 +203,8 @@ pause_reason: null
 |---|---|---|---|
 | 5P-entry-design | 同时设计 Prompt Program V1 与早期产品切片，冻结范围/NFR/顺序 | 已完成 | 设计文档、ADR-0032/0033；本地 762 tests/110 subtests、两套 RAG 与全部门禁；`49841ec` / Actions `31985199623` exact-SHA 公共成功；无产品代码/外部 I/O |
 | 5P-1 Product Request & Typed Skill/Runtime Compiler | 严格产品 DTO、trusted typed selection、Artifact binding、Manifest-derived policy | 已完成 | `57bd36a` / Actions `31987501935` exact-SHA 公共成功；796 tests/110 subtests；无外部 I/O |
-| 5P-2 Prompt Program V1 & Runtime Composition Root | Program manifest/catalog/drift gate 与 secure production composition | 实现中 | 已有实现与本地 TDD；完整回归 `805 passed, 110 subtests passed`；尚待状态收尾、提交/推送与 exact-SHA CI；不得安装 FastAPI或进入 5P-3 |
-| 5P-3 Domain Pipeline Promotion & Application Service | 提升 Summary/Report 服务并组合产品用例/安全错误 | 已规划 | ADR-0033；尚无代码 |
+| 5P-2 Prompt Program V1 & Runtime Composition Root | Program manifest/catalog/drift gate 与 secure production composition | 已完成 | `0a9651f` / Actions `31988837293` exact-SHA 公共成功；完整回归 `805 passed, 110 subtests passed`；无外部 I/O |
+| 5P-3 Domain Pipeline Promotion & Application Service | 提升 Summary/Report 服务并组合产品用例/安全错误 | 当前检查点，尚未实现 | 等待用户继续；不得安装 FastAPI或进入 5P-4 |
 | 5P-4 File-backed Run Receipt & Query Projection | body-free receipt、Trace/manifest/report 安全复读 | 已规划 | ADR-0033；尚无代码 |
 | 5P-5 Thin FastAPI Adapter & No-I/O Vertical Slice | 最小端点、依赖与 Fake Provider HTTP 纵向测试 | 已规划 | ADR-0033；尚无代码/依赖 |
 | 5P-6 Product Slice Evaluation & Exit Review | 合同、安全、资源、公开证据与限制退出审查 | 已规划 | 尚未开始 |
@@ -443,10 +445,10 @@ pause_reason: null
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A、5B、5C、5D、5E、5P entry design 与 5P-1；5P-2 已有 Prompt Program/catalog/resolver、产品 manifest、verified Runtime identity 与 composition root；当前无领域 Provider 准入 | 阶段 5、FastAPI 产品、Application Service、生产模型质量或可恢复 Runtime 已完成 |
-| 项目理解 | 已能解释产品 DTO 为什么不暴露 Runtime 内部字段、typed endpoint 为什么不重新猜路由、Manifest/server policy 如何分层、Artifact binding 为什么仍需 Boundary 二次校验 | 编译器测试等于 Riot/API 已运行，Prompt Program 已实现，或真实 Coach 质量已准入 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A、5B、5C、5D、5E、5P entry design、5P-1 与 5P-2；当前无领域 Provider 准入，5P-3 尚未实现 | 阶段 5、FastAPI 产品、Application Service、生产模型质量或可恢复 Runtime 已完成 |
+| 项目理解 | 已能解释 Prompt Program 与普通 Prompt 的区别、component fingerprint/drift gate、verified 与 legacy Runtime identity、composition root 以及威胁边界 | Program 指纹通过等于 Prompt 质量、真实 Provider 质量、API 产品或抵御本机联合篡改已完成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5P-1 已由 `57bd36a` / Actions `31987501935` exact-SHA 公开验证；正式 API/网页未部署 | 编译器公开等于 Prompt Program/FastAPI、领域模型质量、生产切换或 Web Agent 可用 |
+| GitHub/部署 | 5P-2 已由 `0a9651f` / Actions `31988837293` exact-SHA 公开验证；正式 API/网页未部署 | Prompt Program 公开等于 Application Service/FastAPI、领域模型质量、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -517,9 +519,8 @@ Skill、Summary、确定性报告、Artifact binding、policy）之间必须有 
 5P 已固定为 5P-1 产品合同/typed compiler、5P-2 Prompt Program/composition、5P-3 domain/
 application service、5P-4 receipt/query、5P-5 FastAPI/no-I/O vertical slice、5P-6 exit review。
 entry design 没有安装 FastAPI、实现产品代码、读取 Key、调用 Riot/Provider 或运行 held-out。
-5P-1 已由 `57bd36a` / Actions `31987501935` 完成 exact-SHA 公共闭环。当前唯一检查点为
-`5P-2-prompt-program-runtime-composition`，正在完成最终门禁与公开验证；不得直接进入 5P-3、5F
-或阶段 6。
+5P-2 已由 `0a9651f` / Actions `31988837293` 完成 exact-SHA 公共闭环。当前唯一下一检查点为
+`5P-3-domain-application-service`，等待用户再次明确继续；不得直接进入 5P-4、5F 或阶段 6。
 
 本节后续保留从 5C 到 5D 的历史范围账本；其中旧“下一步”只表示当时顺序，不覆盖本文顶部的
 canonical checkpoint。

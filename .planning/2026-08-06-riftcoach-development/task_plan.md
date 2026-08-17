@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 8 - `5P-2-prompt-program-runtime-composition` implementation in progress
+Phase 8 - `5P-3-domain-application-service` 准备状态
 
 ## Phases
 
@@ -203,7 +203,7 @@ Phase 8 - `5P-2-prompt-program-runtime-composition` implementation in progress
 ### Phase 8 - 5P Prompt Program V1 与早期产品纵向切片
 
 - Status: tracking
-- `5P-entry-design` 与 5P-1 已公开完成；当前正在实现 5P-2 Prompt Program 与 Runtime composition；
+- `5P-entry-design`、5P-1 与 5P-2 已公开完成；当前准备 5P-3 Domain/Application Service；
 - 入口审计确认 5P 同时承担 Prompt Program V1 与早期产品切片，不能缩成单纯 FastAPI；
 - ADR-0032 选择版本化 Prompt Program/Catalog 和 drift gate，复用既有 component fingerprint；
 - ADR-0033 选择薄 FastAPI Adapter + Application Service + 现有 AgentRuntime/Harness；
@@ -214,10 +214,9 @@ Phase 8 - `5P-2-prompt-program-runtime-composition` implementation in progress
 
 ## Next Step
 
-`5P-2-prompt-program-runtime-composition / implementation`：按
-`docs/plans/2026-08-17-5p2-prompt-program-runtime-composition-implementation.md`
-完成 Prompt Program V1、drift gate、verified Runtime identity 和 composition root；本轮不得安装
-FastAPI、实现 Application Service、进入 5P-3 或 5F。
+`5P-3-domain-application-service / ready`：5P-2 已由 `0a9651f` / Actions `31988837293`
+完成 exact-SHA 公共验证；等待用户再次明确继续，随后只提升 Summary/Report domain service 并组合
+RecentReviewApplicationService，不安装 FastAPI、不进入 5P-4。
 
 ## Decisions Made
 
@@ -604,20 +603,30 @@ FastAPI、实现 Application Service、进入 5P-3 或 5F。
 
 ### 5P-2 Prompt Program V1 & Runtime Composition Root
 
-- Status: in_progress
+- Status: complete
 - 用户已明确继续；按实施计划先以 TDD 建立严格 manifest/catalog/resolver，再接 Runtime identity；
 - 已实现：版本化 Prompt Program、组件 fingerprint/drift gate、secure Evaluation 1.1 限制、
   产品 manifest、verified Runtime identity 和薄 composition root；
 - 不安装 FastAPI、不读取 Key、不调用 Riot/Provider、不进入 5P-3 或 5F；
-- 当前仍需完成持久状态同步、最终本地门禁、提交/推送和 exact-SHA 公共 CI。
+- 本地完整回归 `805 passed, 110 subtests passed`；提交 `0a9651f` / Actions `31988837293`
+  已完成 exact-SHA 公共验证，5P-2 正式闭环。
 
 ## 5P-2 当前实施说明
 
-`5P-2-prompt-program-runtime-composition / implementation`：Prompt Program manifest 不保存
+`5P-2-prompt-program-runtime-composition / complete`：Prompt Program manifest 不保存
 Prompt 正文，只保存 program/Skill/Context/Evaluation 身份与现有 canonical component fingerprints。
 `PromptProgramResolver` 在 composition 创建和每次 Runtime identity 解析时重算指纹；Skill、Context、
 Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试通过显式
 `LegacyRuntimeIdentityResolver` 兼容，不等于产品路径已经绕过 drift gate。
+
+### 5P-3 Domain Pipeline Promotion & Application Service
+
+- Status: in_progress
+- 当前仅表示 5P-2 已公开闭环、canonical 准备从这里恢复，尚未开始实现；
+- 只提升现有 Summary/Report 逻辑为 domain service，并组合 5P-1 compiler、5P-2 verified
+  composition 与 `AgentRuntimeV1.run()`；
+- 不安装 FastAPI、不实现 receipt/query、不读取 Key、不调用 Riot/Provider、不进入 5P-4 或 5F；
+- 等待用户下一次明确“继续”。
 
 本批错误日志：
 

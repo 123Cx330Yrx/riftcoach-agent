@@ -1413,3 +1413,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   compileall、Harness dry-run、secret/tracked-data、governance 和 diff check 通过；本批外部 I/O 为 0。
 - `CURRENT`：5P-2 尚待提交、推送与 exact-SHA 公共 CI；成功后才交接到 5P-3 Domain Pipeline
   Promotion & Application Service，不得提前实现后续端点或 5F。
+
+### 2026-08-17：5P-2 exact-SHA 公共闭环与 5P-3 交接
+
+- `PUBLIC-VERIFIED`：提交 `0a9651f4e305616626c58ea28e2c300a491f2a3b` 的 Actions run
+  `31988837293` 通过完整 pytest、两套 RAG、compileall、governance、SDK/tracked-data boundary
+  与 Harness dry-run；CI 无 Key/Provider/held-out I/O。
+- `CLOSED`：5P-2 Prompt Program V1 & Runtime Composition Root 正式完成；只证明组合身份、
+  drift gate 与 Runtime provenance，不证明 Prompt/模型质量或 API 产品已完成。
+- `CURRENT`：canonical 唯一下一检查点切换为 `5P-3-domain-application-service`；按 RQ-042
+  范围闭环等待用户再次明确继续，不自动实现 5P-3/5P-4/5F。

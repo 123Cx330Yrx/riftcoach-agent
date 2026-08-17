@@ -1903,3 +1903,14 @@
   independent holdout、Harness dry-run、secret/tracked-data、governance 与 diff check 均通过。
 - 本批 Key reads、Riot/Provider calls、held-out executions 均为 0；真实 Provider 领域质量仍
   unknown；当前尚待最终状态/路线同步、提交、推送与 exact-SHA 公共 CI。
+
+## 2026-08-17：5P-2 exact-SHA 公共闭环
+
+- 实现与计划 EOF 修正提交最终形成 exact SHA
+  `0a9651f4e305616626c58ea28e2c300a491f2a3b` 并推送到 `origin/main`。
+- GitHub Actions run `31988837293` completed/success；完整 pytest、两套 RAG、compileall、
+  governance、SDK/tracked-data boundary 与 Harness dry-run 全部通过，CI 无 Key/外部调用。
+- 5P-2 正式完成：Prompt Program V1、drift gate、verified Runtime identity 与 composition root
+  已获得本地和公开证据；这不提升真实 Provider 领域质量，也不表示 API 产品完成。
+- canonical 已只交接到 `5P-3-domain-application-service`，等待用户再次明确继续；本轮不实现
+  Domain/Application Service、receipt/query、FastAPI 或 5F。
