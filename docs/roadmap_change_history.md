@@ -1342,3 +1342,21 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   这不准入真实 Provider 领域质量，也不声称 API/SSE、持久恢复或生产 SLO 已完成。
 - `CURRENT-PAUSED`：canonical 交接到 `5P-entry-design`，但 RQ-039 覆盖 RQ-038 的自动继续；
   当前没有开始 5P 设计、代码或 Provider I/O，等待用户再次明确“继续”。
+
+### 2026-08-17：RQ-040 恢复 5P-entry-design 并冻结内部顺序
+
+- `RESUMED`：用户再次明确“继续下一步”，RQ-040 满足并解除 RQ-039 的暂停条件；本轮只授权
+  `5P-entry-design`，不授权直接实现或进入 5F。
+- `AUDIT`：产品输入只有 Riot ID/少量选项，Runtime 输入却要求 selected Skill、Summary、
+  确定性报告、Artifact binding 和 policy；当前还没有生产 composition root、Runtime policy
+  compiler、app-level report renderer 或 API 查询投影。
+- `PROMPT-GAP`：5D 退出证据明确保留 `5P Prompt Program V1`；实际 Prompt 由 Skill、Context、
+  knowledge tool、Evaluation 1.1 与 Revision 共同组成，但 Runtime prompt profile 仍硬编码。
+- `ALTERNATIVES`：拒绝 handler 串 CLI 和原样暴露 RuntimeRunRequest；接受 ADR-0032/0033 的
+  版本化 Prompt Program + 薄 FastAPI/Application Service + 现有 AgentRuntime/Harness。
+- `SCOPE`：V1 只设计 recent POST、run/report GET、health；status 因同步重复不单列，follow-up、
+  单局、SQL、Session/Memory、SSE、鉴权、前端、MCP/SDK/Multi-Agent 均留在既定后续阶段。
+- `SEQUENCE`：5P 固定为 5P-1 typed product/compiler、5P-2 Prompt Program/composition、
+  5P-3 domain/application service、5P-4 receipt/query、5P-5 FastAPI、5P-6 exit review。
+- `NO-I/O`：entry design 没有安装依赖、实现产品代码、读取 Key、调用 Riot/Provider 或运行
+  held-out；唯一下一动作是完成文档/治理验证、提交与 exact-SHA 公共 CI。

@@ -1734,3 +1734,199 @@
   继续保持 deferred/unknown。
 - canonical 只交接到 `5P-entry-design`。按 RQ-039，本轮没有开始 5P 设计或代码，等待用户
   再次明确“继续”。
+
+## 2026-08-17：5P-entry-design 首轮范围恢复
+
+- 用户已用“继续下一步”解除 RQ-039 的暂停，当前只授权 `5P-entry-design`，尚未授权
+  FastAPI 实现或 5F。
+- 仓库当前没有 `app/api` 或 FastAPI 应用代码；`pyproject.toml` 也需要在后续依赖审计中
+  确认是否已有 FastAPI/Pydantic Web 依赖，不能把路线中的接口清单误当作现有实现。
+- v1.3 路线列出 recent、run/status/report 和 follow-up 五类端点，但较晚的专项发现又明确
+  5P 只承诺类型化近期复盘入口，单局/对话式澄清属于阶段 6。该差异是入口设计必须先裁决的
+  范围问题，不能直接按五个端点全部实现。
+- 5P 必须复用现有 `AgentRuntimeV1`、`RuntimeTraceStore` 与 Harness Artifact，不应创建第二套
+  运行状态或让 API 绕过唯一发布门；SQL、Session、Memory、鉴权、SSE 和完整前端继续属于
+  阶段 6/8。
+
+## 2026-08-17：5P Runtime/API 接缝初审
+
+- `pyproject.toml` 当前没有 FastAPI、Starlette 或 ASGI Server 依赖；5P 若采用 FastAPI，属于
+  需要 ADR 和独立依赖批次验证的新运行表面，不能假设已经安装。
+- `AgentRuntimeV1` 的输入不是 Riot ID，而是已经 selected、通过 Schema 约束并携带
+  `player_summary + deterministic_report` 的 `RuntimeRunRequest`；其构造还需要 Catalog、
+  Provider、Knowledge Provider、Evaluator/Reviser factory 和 runs root。API 前面仍缺一个
+  composition/application-service 边界，不能把 HTTP handler 写成新的业务编排器。
+- Runtime 已提供同步 `run()` 和进程内 iterator `stream()`；5P 可以先消费 `run()` 形成
+  类型化 HTTP 结果。直接把 iterator 暴露成 SSE 会提前承担断连、异步桥接、重放和生命周期
+  语义，仍应留在阶段 6。
+- Harness 与 Runtime 分别在同一 run namespace 下保存业务 Artifact 和最终
+  `runtime_trace.json`；API 读取端应通过现有严格 Store/模型复读，而不是直接 `open()` 任意
+  用户路径，也不能从 Trace 重建被明确排除的报告正文。
+- 5P 的真正首个设计问题不是“选哪个 Web 框架”，而是明确应用服务怎样把一个可信的近期复盘
+  请求转换为现有 RuntimeRequest，以及哪类结果可以安全映射为 HTTP response。
+
+## 2026-08-17：5P 产品请求到 Runtime 请求的断层
+
+- `build_player_summary()` 已把 RiotClient/DataDragon 作为参数注入，领域计算可复用；但产品入口
+  仍需为 Riot/API 限流、404、超时和部分比赛失败建立安全错误映射，不能把脚本打印或原始异常
+  直接变成 HTTP 正文。
+- 确定性报告的核心 `build_report()` 仍位于 `scripts/generate_markdown_report.py`。API 不应导入
+  CLI 脚本作为产品依赖；5P 实现阶段需要把纯报告渲染提升到 `app` 内的稳定服务，再让 CLI
+  兼容调用同一实现。
+- 当前真实 `AgentRuntimeV1` composition root 主要由测试中的 `_runtime()` 辅助函数展示；生产
+  CLI `run_review_harness.py` 仍是旧 Harness 入口。5P 需要新增一个明确的应用 composition root，
+  统一构造 Catalog、Knowledge Provider、LLM Provider、Evaluator/Reviser 与 Runtime，避免路由
+  函数自行拼装基础设施。
+- 类型化 `POST /reviews/recent` 已经可信地声明任务是近期复盘，不应再把用户的 Riot ID 或固定
+  句子送入自由文本 Router 猜测任务。入口设计需提供一个受信任的 typed Skill selection/compiler，
+  同时继续经过 Catalog 版本、Pydantic Input、Artifact binding 和 Runtime boundary 校验。
+- 推荐的最小产品流是同步 POST：HTTP Request → application service → Riot/DataDragon → Summary
+  → deterministic report → typed recent Skill request → AgentRuntimeV1.run() → terminal response。
+  这能产生真实 Runtime/Artifact 证据，但不承诺后台任务、SSE、恢复或多用户隔离。
+
+## 2026-08-17：5P 类型化选择与端点范围补充审计
+
+- 现有 `RouterDecision` 的终态只覆盖 matched/no-available/no-match/multiple-match 语义；
+  `POST /reviews/recent` 已由端点类型可信地确定任务，不应构造一条固定自然语言再让
+  `DeterministicRouter` 猜测。5P 设计需要定义受信任的 typed selection/compiler：从当前
+  Catalog 精确取得 `recent-form-review` name/version，构造带真实 evidence 的 selected
+  decision，并继续接受 Skill Input、Artifact binding 与 Runtime boundary 的全部校验。
+- 历史 v1.3 曾列出 recent、run、status、report、follow-up 五类端点；较晚专项约束又把单局、
+  对话和澄清推迟到阶段 6。当前最小边界应排除 `follow-ups`；5P 可评估保留同步 recent POST、
+  只读 run/report 查询与 health，`status` 是否单列必须以它相对 run 详情的独立价值裁决，不能
+  因旧清单存在就全部照搬。
+- Trace 按安全合同不保存报告正文，因此 `/runs/{run_id}/report` 必须只从 Harness final
+  Artifact 复读；`/runs/{run_id}` 只能通过受控 Store/严格模型返回允许字段，不能接受或拼接
+  用户提供的任意路径。
+- 5P 审计起点 HEAD 与 `origin/main` 同为 `5de949d0...`；除活动计划的 findings/progress 外
+  工作树无其他改动，治理预检再次通过。Runtime/Store/数据/报告/旧 Harness 的精确源码位置已
+  定位，下一批只读审计可以避免从 CLI 文件名推测边界。
+- `RuntimeRunResult` 是调用结束时的严格终态 envelope，但当前没有独立的 Result Store；落盘事实
+  是 Harness `manifest.json`、不可变 Artifact 与 `runtime_trace.json`。`RuntimeTraceStore.read_trace()`
+  还要求可信的 `RuntimeTraceReference`（含 SHA），不能仅凭 URL run_id 直接宽松解析文件。因此
+  5P 查询服务要么安全地从严格 manifest/trace bytes 重建引用并校验，要么补一个受控查询
+  repository；不能声称现有 Store 已直接提供 `get_run(run_id)`。
+- `FileRunStore` 已防绝对路径、目录穿越、跨 run Artifact、摘要篡改和覆盖写；5P 可以复用这些
+  不变量。报告查询必须先从 manifest 选择唯一允许的 final-report record，再调用
+  `read_artifact()` 校验真实 bytes，不能把 manifest 的路径直接返回给 handler 自行打开。
+- `RuntimeRunRequest` 强制 selected Router decision；完成态 `RuntimeRunResult` 必须同时具有
+  publication、typed output 和 Trace reference，失败态不得暴露 output。HTTP 映射应保留这个
+  fail-closed 语义，而不是在 Runtime failed 时退回未经门禁的草稿或报告正文。
+- Runtime 的成功/失败终态与 Harness publication 是两条维度：极少数可观测性或 typed-output
+  失败可能在 Harness 已持久化 publication 后让 Runtime 返回 failed。5P 查询合同应原样展示
+  `runtime_status`、`publication_status` 和安全 `terminal_reason`，不能把任意 published manifest
+  简化成“Runtime 成功”，也不能仅凭 HTTP 200/500 丢掉这一区别。
+- 现有 Runtime 的 typed output 来自 `SkillReviewExecutor`，Artifact 由 manifest 重新校验后投影；
+  `run()` 已是可复用的唯一同步执行核心。因此 Application Service 应只负责编译产品输入和组装
+  Runtime 依赖，不重写 Agent/Harness 生命周期、Artifact 投影或 publication 判断。
+- RiotClient 是有 15s request timeout 的薄 transport；重试/缓存/熔断和安全错误码实际存在于
+  `build_riot_tools()` 的 Tool Runtime adapter 中。但当前 `build_player_summary()` 直接调用
+  RiotClient，而不是经过这些 Tool。5P 设计必须诚实说明：若首批复用 summary builder，只能在
+  Application Service 顶层做安全异常映射，不能声称已经获得 Tool Runtime 的全部可靠性语义；
+  若把数据收集也迁入 Tool Runtime，则是更大的重构批次，需单独测试。
+- 当前 summary builder 对 timeline/detail 的局部失败会把 `str(error)` 写进 summary 的
+  `timeline_error`/`failed_matches.error`；CLI 可诊断设计不等于公网安全响应。5P API DTO 不得
+  透传这些字段，上游异常只映射 allowlisted 错误码；未来若公开 summary Artifact，还需单独做
+  脱敏/公共投影。
+- `DataDragonService` 初始化时会同步加载版本和多份静态数据，缓存未命中时进行最多 20s 的
+  HTTP 请求；把它按请求构造会增加阻塞和失败面。composition root 应将其作为长生命周期依赖
+  注入，并把冷启动/缓存失败映射为 upstream-unavailable，而不是由 handler 临时实例化。
+- 确定性 `build_report()` 是纯渲染逻辑，但仍位于 CLI 脚本且 main 会额外构造 terminology 与
+  DataDragon。实现批应先把纯渲染提升到 `app`，让 CLI/API 共用；本设计批只冻结此边界。
+- `scripts/run_review_harness.py` 不能充当 5P composition root：它仍组装旧
+  `SequentialDraftPreparer + ReviewHarness`，默认只创建 ZhipuProvider，并不构造
+  `AgentRuntimeV1`、Catalog、ContextBuilder 或 Runtime policy。5P 需要新的 app-level
+  composition module；CLI 可后续迁移复用，但 handler 不能导入这个脚本。
+- `.env.example` 仍声明单一默认 Zhipu/GLM-5.2 配置；本轮没有领域 Provider 准入。5P 的
+  composition 设计应支持注入 Fake Provider 做 API 测试，并把真实启动时的 Provider 配置失败
+  映射为服务不可用；不能因新增 HTTP 入口而把 GLM-5.2 宣称为生产默认质量已通过。
+- `SkillExecutionRequest` 仍要求非空 `user_utterance`，即使 typed endpoint 已可信确定任务。设计
+  应明确该字段只保存一条服务器生成、不可用于重新路由的审计描述（或在未来版本化合同中新增
+  typed task origin），不能把它解释成用户自由文本、更不能再次调用 Router。
+- Catalog 已提供严格、不可变、按 name 的 Skill 快照与 `get(name)`；typed selector 可以基于它
+  绑定当前 `recent-form-review` 版本。所有 input payload 与 Artifact digest 仍必须由
+  `SkillExecutionBoundary` 重算校验，所以受信任选择不会绕过执行安全边界。
+- 现有 `RouteEvidence.positive_signals` 是通用机器可读字符串，不要求它一定来自自然语言；因此
+  V1 无需为了 typed endpoint 新建第二套 selection 模型。compiler 可以产生明确的
+  `entrypoint:reviews.recent` 信号、`MATCHED_SKILL` reason 与 Catalog 当前版本，并在说明中标记
+  trusted typed entrypoint；禁止使用某句中文模板制造关键词命中，也不调用 Router。
+- typed selection 仍需测试 Catalog 缺失、Skill 版本漂移、证据/候选不一致和 input schema
+  不匹配；`RouterDecision` 自身已经强制 selected 只能有一个候选、一个对应正证据且不能带
+  negative signal，这些合同可直接复用。
+- `RecentFormReviewInput` 只需要完整 Summary、确定性报告和五选一 focus；产品请求因此可以保持
+  小而严格：Riot ID 拆分字段、count/queue/min-duration/focus，不暴露 Runtime policy、Prompt、
+  Skill version、run_id 或任意文件路径。Skill 预算/质量阈值应由服务器从 manifest 编译。
+- `RecentFormReviewOutput` 已有产品级 `status/report/evaluation_score/evidence_source_ids/warnings`，
+  且 rejected 禁止 report。同步 POST 可以在 Runtime completed 时返回这个 typed output；失败时
+  返回 body-free 的 run 状态与安全错误，而不是另造一份“看似成功”的报告 DTO。
+- 当前 recent Skill 固定 `knowledge.search`、4 iterations、3 tool calls、30s、16000 context、85
+  分和允许确定性 fallback；HTTP 层不应让客户端覆盖这些安全/质量策略。同步 POST 在最坏情况下
+  还叠加 Riot/DataDragon I/O，因此 5P 必须明确这是早期阻塞式切片，不承诺低延迟 SLO。
+- 全仓搜索确认 `RuntimePolicySnapshot` 目前只在测试/评测装配中手工构造，没有生产 policy
+  compiler。5P 的 typed request compiler 必须从已选 Skill manifest 同源投影 iterations、tools、
+  timeout、context、quality threshold 和 fallback，再加服务器固定的 runtime policy version、
+  event budget、max revisions；客户端不能提交 policy。
+- `AgentRuntimeV1` 构造只依赖 runs_root、Catalog、LLMProvider、RuntimeExecutionFactory 和可选
+  ContextBuilder，适合由单一 composition root 长生命周期创建。每个请求只编译新的
+  RuntimeRunRequest；不应每次重新加载 Skill/RAG/Provider，也不应让 HTTP handler知道
+  evaluator/reviser factories。
+- 路线证据存在两层而非简单冲突：主 roadmap 的完整 Web 纵向切片仍归阶段 6；v1.3 amendment
+  在阶段 5 加的是“不依赖临时数据库的早期 API 切片”。因此 5P 可以验证真实 HTTP→Runtime
+  接缝，但不能把它包装成完整会话产品，也不改变阶段 6 的 SQL/Session/Memory/SSE/前端职责。
+- v1.3 的旧五端点清单包含 follow-up，但 follow-up 天然需要会话语义、上一轮上下文和澄清；在
+  没有 Session/Memory 的 5P 中保留会造成伪会话或隐式文件状态。应由新 ADR 明确把它推迟到
+  阶段 6，而不是静默遗漏旧清单。
+- `GET /runs/{run_id}/status` 相对 `GET /runs/{run_id}` 在同步、无后台任务的 V1 没有独立状态轮询
+  价值；推荐不单列，避免两个相同事实的 API 合同。若后续引入后台任务/SSE，再按真实消费者
+  需求增加轻量 status endpoint。
+- RQ-026 已明确“优先类型化入口”，为 5P typed compiler 提供最新需求依据；RQ-039 只暂停到
+  用户再次明确继续，本轮必须新增 RQ-040 记录暂停已解除，但不能删除或倒写 RQ-039 历史。
+- RQ-017 本身只列 2/5B/5D/5E 与 6-8，但 ADR-0029 和 5D exit review 另有明确的
+  `5P Prompt Program V1` 归属；因此不能把 5P 缩成纯 HTTP。下一步要读取该历史裁决的精确
+  目标，再决定 5P 内部顺序：应先完成早期产品入口，让 Prompt Program 有真实产品消费者，
+  随后仍在 5P 内单独设计/验收，不能与 FastAPI 接缝一次混合实现，也不能推迟到 5F。
+- 本轮查 ADR-0031 时误猜了文件名 `0031-agent-runtime-live-stream-delivery.md`；真实文件应先从
+  列表读取后再打开。该只读错误没有文件影响，后续不重复猜路径。
+- 精确证据确认 `5P Prompt Program V1` 是 5D 退出时已冻结的后续能力名，不是本轮临时补项；
+  ADR-0029 也明确其顺序保持不变。因此 5P-entry-design 必须同时给出早期产品入口与 Prompt
+  Program 的内部子阶段顺序，不能设计完 API 就直接进入 5F。
+- 5E 已把 `prompt_profile_id/version` 写入 Runtime identity，但并未提供 Prompt 资产加载、版本
+  解析或产品级 program 编译。这意味着 Prompt Program V1 应深化现有 provenance，而不是重写
+  AgentRuntime：它的真实消费者会是 5P composition/runtime request，而发布权仍在 Harness。
+- 当前 Agent 的实际初始 Prompt 由 `ContextBuilderV1` 里的 `_INTERNAL_POLICY`、Skill
+  `SKILL.md` 指令、确定性事实、用户请求和知识证据共同渲染；Evaluation/Revision 又由独立
+  prompt builder/factory 组装。Runtime 却把 `prompt_profile_id/version` 写死为
+  `<skill>-coach@1.0.0`，尚未证明该 identity 与实际 Prompt 资产字节绑定。Prompt Program V1
+  应先解决“可加载、可版本化、可校验 provenance”，而不是单纯润色提示词。
+- 5P 内部顺序推荐先完成 application/compiler/composition 的无 HTTP 核心，再做 Prompt Program
+  V1 的合同化，之后接 FastAPI：这样真实 composition 是 Prompt Program 的消费者，HTTP 纵向
+  测试又能验证最终 identity；若先把 FastAPI 完成再补 Prompt，API 终态会先暴露虚假的硬编码
+  prompt provenance。
+- 本轮 Prompt 符号搜索的正则因 PowerShell 引号导致 `role=\"system\"` 被截断并报 unclosed
+  group；成功的 Context/Compiler 源码读取仍有效。后续改用多个 `-e` 固定字符串，不重复该正则。
+- 实际 Prompt 资产比一个 system prompt 更分散：Context internal policy、Skill instructions、
+  secure Evaluation 1.1 system/user/repair/schema、Revision system/user/validator 都参与最终控制流；
+  CLI 中还残留旧 Evaluation 1.0 和重复 system prompt 常量。Prompt Program V1 应为生产
+  composition 选择唯一安全组合并记录各资产 identity/digest，避免不同入口悄悄采用不同版本。
+- 5P production composition 应明确使用 `SecureChatEvaluationAdapter` 与 Evaluation 1.1，而不是
+  旧 `run_review_harness.py` 的 `ChatEvaluationAdapter` 1.0；这不是调 Prompt 文案，而是延续已
+  通过的 prompt-injection blocking policy。Reviser 仍只能处理可修订事实问题，不能修订
+  blocking injection issue。
+- `app.evaluation.prompt_context_identity` 已经有可复现的 component fingerprint：Skill
+  manifest/instructions、Context contract、knowledge tool、Evaluation schema/system/user/repair、
+  fact pack、Revision system/user 均能生成 SHA。Prompt Program V1 应提取/复用这套逻辑形成
+  产品 program manifest，而不是手写第二种摘要算法；实验 case-context snapshot 继续保留为
+  Dataset 身份，不直接充当产品 program。
+- 现阶段没有真实 API 延迟、并发或可用性数据，因此 NFR 不能编造 200ms/p95/99.9% 等生产目标。
+  5P 只承诺有界输入、同步阻塞、单进程文件存储、失败安全和可测试性；p50/p95、吞吐、SLO、
+  多 worker、一致性/恢复都必须以阶段 6/8 的真实消费者和测量再定。
+- 当前 stale 搜索区分了历史证据与动态状态：5E exit review、RQ-039、旧 progress/findings 必须
+  保留原文；需要更新的是 canonical、活动计划 Current Phase/Next Step、amendment 当前状态、
+  capability matrix 尾部和 project decisions 的新增裁决。不能用全局替换抹掉暂停曾经发生过。
+- 首轮状态同步后治理检查和 `git diff --check` 通过；stale 搜索剩余三处均是 5E 当时暂停的
+  历史 progress/change-history/exit-matrix，不是当前状态冲突，因此保留。新设计/ADR 尚为
+  untracked 文件，最终提交前必须用 `git status` 纳入，不能只看 `git diff --stat`。
+- 5P entry 本地门禁通过：完整 `762 passed, 110 subtests passed`、两套 RAG 满足全部 1.0/
+  0.0 阈值、governance/2 tests、compileall、secret/SDK boundary、Harness dry-run 和 diff check；
+  本批外部调用为 0。Prompt fingerprint 与 file digest 的威胁模型已在设计中收窄，不能表述为
+  形式化程序等价或抵御拥有本机写权限者对正文和全部元数据的联合篡改。

@@ -118,12 +118,26 @@ V3（按证据进入阶段 8）：
 ```text
 POST /reviews/recent
 GET /runs/{run_id}
-GET /runs/{run_id}/status
 GET /runs/{run_id}/report
-POST /runs/{run_id}/follow-ups
+GET /health
 ```
 
-该切片复用现有 Harness Artifact。阶段 6 再加入 SQL、用户隔离、Session、Memory、幂等、恢复、SSE 和完整前端。
+ADR-0032/0033 已在 5P entry design 中裁决旧清单：同步文件型 V1 不单列重复的 status；
+follow-up 需要 Session/Memory/澄清，推迟到阶段 6。该切片复用现有 Runtime Trace 与 Harness
+Artifact，但增加 body-free file receipt 作为查询投影，不冒充 SQL、任务恢复或事件日志。
+
+5P 同时承担早已保留的 Prompt Program V1，内部固定顺序为：
+
+```text
+5P-1 Product Request & Typed Skill/Runtime Compiler
+5P-2 Prompt Program V1 & Runtime Composition Root
+5P-3 Domain Pipeline Promotion & Application Service
+5P-4 File-backed Run Receipt & Query Projection
+5P-5 Thin FastAPI Adapter & No-I/O Vertical Slice
+5P-6 Product Slice Evaluation & Exit Review
+```
+
+阶段 6 再加入 SQL、用户隔离、Session、Memory、幂等、恢复、SSE 和完整前端。
 
 ## 8. OP.GG 与 Meta
 
@@ -193,7 +207,7 @@ OP.GG MCP
 5E-2 Observable run()         已完成；Task D `d49508e` / Actions `31959646589` exact-SHA 公共验证成功（747 tests/110 subtests）
 5E-3 Live stream() parity     已完成；`80b76a1` / Actions `31960987333` exact-SHA 公共 CI 成功（15 聚焦，762 全量）
 5E-4 Evaluation/exit review  已完成；`3d36561` / Actions `31962252231` exact-SHA 公共 CI 成功，决策为 close-with-deferred-boundaries
-5P-entry-design              已交接但按 RQ-039 暂停；尚未开始设计，等待用户明确继续
+5P-entry-design              进行中；RQ-040 已解除暂停，设计/ADR 已完成，等待验证与公开闭环
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

@@ -4,7 +4,6 @@ main_stage: 5
 substage_group: "5P"
 current_checkpoint: "5P-entry-design"
 status: in_progress
-pause_reason: "RQ-039-awaiting-explicit-user-continue"
 ---
 
 # RiftCoach 当前执行状态
@@ -18,8 +17,10 @@ pause_reason: "RQ-039-awaiting-explicit-user-continue"
 
 - 最后更新：2026-08-17
 - 主阶段：阶段 5，进行中
-- 当前子阶段组：`5P-entry-design` 已完成状态交接，但按 RQ-039 暂停，尚未开始设计或
-  实现。上一子阶段组 5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
+- 当前子阶段组：`5P-entry-design` 正在完成设计验证；RQ-040 已解除 RQ-039 暂停。源码审计
+  已确认 5P 同时包含 Prompt Program V1 与早期产品 API 切片；ADR-0032/0033 已分别冻结版本化
+  Prompt Program 和薄 FastAPI/Application Service 方向，本批尚未实现产品代码。上一子阶段组
+  5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
   和 GitHub Actions run `31942483874` 完成 exact-SHA 公开验证。5E-2 的入口源码审计、
@@ -148,9 +149,9 @@ pause_reason: "RQ-039-awaiting-explicit-user-continue"
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`5P-entry-design`，按 RQ-039 等待用户再次明确“继续”；当前只完成 canonical
-  交接，未开展 5P 的需求审计、方案设计、代码、Provider I/O 或测试。
-- 禁止越过：收到新的明确继续指令前不得开始 5P，也不得进入 5F Runtime/SDK 采用实验；
+- 唯一下一步：`5P-entry-design` 设计验证与 exact-SHA 公共闭环；通过后切换到
+  `5P-1 Product Request & Typed Skill/Runtime Compiler`，本轮不直接实现。
+- 禁止越过：设计公共闭环前不得开始 5P-1，也不得进入 5F Runtime/SDK 采用实验；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
   协议、候选选择或发布热度替代领域质量证据
 
@@ -426,10 +427,10 @@ pause_reason: "RQ-039-awaiting-explicit-user-continue"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A、5B、5C、整个 5D 和整个 5E；5P 尚未开始；当前无领域 Provider 准入 | 阶段 5、生产模型报告质量、可恢复生产 Runtime、V3 资源合同或生产默认模型已经完成 |
-| 项目理解 | 已区分 Agent Loop 与 AgentRuntime，能解释共享 Provider decorator、业务 Tool 定点观察、Event budget 最坏上界、Runtime/publication 双状态、observer fail-fast、Schema 1.0/1.1、Harness 唯一发布权、两阶段 Runtime terminal、同步/流式同核与退出矩阵边界 | Fake Provider + 真实本地 RAG 的统一 run/stream 能评价模型智力，5E 完成等于 GLM/DeepSeek 通过，或进程内 stream 已等于 SSE/可恢复生产 Runtime |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 已完成 5A、5B、5C、整个 5D 和整个 5E；5P 只有 entry design，尚无产品实现；当前无领域 Provider 准入 | 阶段 5、FastAPI 产品、生产模型报告质量、可恢复 Runtime 或生产默认模型已经完成 |
+| 项目理解 | 已区分产品 HTTP DTO、Application Service、Runtime request、Prompt Program、AgentRuntime 与 Harness；能解释 typed endpoint 不重新猜路由、Prompt identity 不能只是硬编码，以及同步文件型切片的边界 | 设计文档等于 API 已实现，Prompt Program 等于 Prompt 调优，或 Fake Provider HTTP 接线等于真实 Coach 质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计并建立选择性映射 | 已经接入或复用了这些项目 |
-| GitHub/部署 | 5E-2 Task A-C/Task D、5E-3 与 5E-4 已通过 Actions `31947625293`/`31952026988`/`31957712118`/`31959646589`/`31960987333`/`31962252231` exact-SHA 公开验证；正式网页未部署 | 5E 公开完成等于领域模型质量、最终厂商选型、生产切换或 Web Agent 可用 |
+| GitHub/部署 | 5E 已完成 exact-SHA 公开验证；5P entry design 尚待本轮提交/CI，正式 API/网页未部署 | 设计公开等于领域模型质量、生产切换或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -485,31 +486,25 @@ ADR-0009。
 
 ## 下一检查点的范围
 
-当前唯一下一检查点是 `5P-entry-design`，但按 RQ-039 暂停并等待用户再次明确“继续”；
-这里只完成状态交接，没有开始 5P 设计。5E-4 的 exit matrix 和退出审查决定
-`close-with-deferred-boundaries`，Runtime 聚焦 `128 passed`、完整
-`762 passed, 110 subtests passed` 与全部本地门禁通过，并由 `3d36561` / Actions
-`31962252231` exact-SHA 公共验证成功。5E-3
-已由 `80b76a1` / Actions `31960987333` exact-SHA 公共 CI 正式闭环；其入口审计和 ADR-0031 已冻结：
-`run()` 与 `stream()` 共用唯一 `_execute(request, event_sink)`；采用进程内 worker + 有界
-`queue.Queue`，普通事件在 Recorder 追加后交付，terminal 只在 Trace 原子写入并 commit 后
-交付，消费者关闭与可信 Recorder 失败隔离。5E-3 聚焦 `15 passed`、完整回归
-`762 passed, 110 subtests passed`，compileall、RAG、治理与差异检查通过；公共 CI 已成功。
-5E-1 已完成严格合同、
-Recorder、Usage 和原子 Trace Store，并通过 exact-SHA 公共 CI；5E-2 的 observer/Usage/
-失败映射/两阶段 terminal 设计已由 ADR-0030 冻结。Task A 已在本地用 TDD 深化 Event/Trace
-1.1、保留合法 1.0 读取、建立默认关闭 observation port，并修正 Zhipu missing Usage，且
-已完成 exact-SHA 公共 CI。Task B 的 Observed Provider、AgentLoop 业务 Tool/terminal 与
-ToolRuntime observation fail-fast 已由 `28bd910` / Actions `31952026988` 公开验证；Task C
-已由 `8b69c9b` / Actions `31957712118` 公开接入 Harness/Executor 持久化后观察、零基
-Evaluation、原因码收敛和 Artifact 引用校验。Task D 已由 `d49508e` / Actions `31959646589`
-公开实现 selected-only request、
-单一 `_execute()`、两个真实 Skill 的共享 Provider/真实本地 RAG/Harness 纵向切片、完整
-Usage、Artifact SHA、失败映射、最坏 event budget 和两阶段 terminal；`747 passed, 110
-subtests passed` 与全部本地门禁通过。根据 RQ-037/RQ-038，下一动作只做 5E-4 入口审计与
-验收矩阵，不实现真实 Provider 或 Token streaming；本节后续保留从
-5C 到 5D 的历史范围账本；其中旧“下一步”只表示当时顺序，不覆盖本文顶部的 canonical
-checkpoint。
+RQ-040 已解除 RQ-039 的暂停，当前唯一检查点是 `5P-entry-design` 的设计验证与公开闭环。
+本轮源码审计确认产品输入（Riot ID/少量选项）与 Runtime 输入（selected Skill、Summary、
+确定性报告、Artifact binding、policy）之间必须有 Application Service；同时 5D 退出证据明确
+把 Prompt Program V1 放在 5P，而 Runtime 的 prompt profile 仍是硬编码身份。
+
+因此 ADR-0032/0033 分别接受：
+
+1. 复用既有 component fingerprint 建立版本化 Prompt Program/Catalog/drift gate，让真实
+   Skill、Context、knowledge tool、Evaluation 1.1 与 Revision 组合绑定 prompt identity；
+2. 采用薄 FastAPI Adapter + `RecentReviewApplicationService` + 现有 `AgentRuntimeV1`，并以
+   body-free file receipt/query projection 复读 Trace/manifest/final Artifact。
+
+5P 固定为 5P-1 产品合同/typed compiler、5P-2 Prompt Program/composition、5P-3 domain/
+application service、5P-4 receipt/query、5P-5 FastAPI/no-I/O vertical slice、5P-6 exit review。
+本 entry design 批不安装 FastAPI、不实现代码、不读取 Key、不调用 Riot/Provider、不运行
+held-out。设计提交通过 exact-SHA CI 后，唯一下一步才是 5P-1；不得直接进入 5P-2、5F 或阶段 6。
+
+本节后续保留从 5C 到 5D 的历史范围账本；其中旧“下一步”只表示当时顺序，不覆盖本文顶部的
+canonical checkpoint。
 
 `5C-5-prep-1 Skill Invocation Contract` 与 `5C-5-prep-3 report-fact-check Skill`
 已在功能代码开始前由 ADR-0009 取消，并保留在历史记录中。

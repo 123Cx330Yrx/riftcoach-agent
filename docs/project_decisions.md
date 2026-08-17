@@ -617,3 +617,20 @@ Runtime 聚焦 `128 passed`，完整 `762 passed, 110 subtests passed`，compile
 `31962252231` 完成 exact-SHA 公共验证。5E-4 与整个 5E 因此按
 `close-with-deferred-boundaries` 正式关闭。按 RQ-039，canonical 只交接到
 `5P-entry-design` 并暂停；本轮不开展 5P 设计或实现。
+
+## 5P Prompt Program 与早期产品切片入口裁决（2026-08-17）
+
+用户随后以 RQ-040 明确恢复 `5P-entry-design`。源码审计确认产品 Riot ID 输入不能直接传给
+`AgentRuntimeV1`，而 production prompt identity 也尚未与真实 Context/Skill/Evaluation/
+Revision 资产绑定。因此本次不把 5P 简化成“加 FastAPI”。
+
+- ADR-0032 接受版本化 Prompt Program Manifest/Catalog/drift gate，复用现有
+  PromptContextSnapshot component fingerprint；production Runtime 从验证后的 program 取得
+  prompt profile identity；先只覆盖 recent-form 产品入口；
+- ADR-0033 接受薄 FastAPI Adapter + `RecentReviewApplicationService` + 现有 Runtime/Harness；
+  typed recent endpoint 不重新调用自由文本 Router，policy 由 Skill Manifest 同源投影；
+- V1 端点为 recent POST、run GET、report GET 和 health；旧 status 因同步重复而不实现，
+  follow-up 因需要 Session/Memory 推迟到阶段 6；
+- 文件型 receipt 只是 body-free 查询投影；无 SQL、事务、恢复、多 worker 或公网安全承诺；
+- 5P 固定为 5P-1 至 5P-6，entry design 通过公开验证后只进入 5P-1；本设计没有产品代码、
+  FastAPI 依赖、Key、Riot/Provider/held-out I/O，当前仍无领域 Provider 准入。

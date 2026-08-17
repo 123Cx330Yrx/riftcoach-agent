@@ -7,7 +7,7 @@
 
 ## Current Phase
 
-Phase 8 - `5P-entry-design` 交接（按 RQ-039 暂停，尚未开始设计）
+Phase 8 - `5P-entry-design` 设计与验证
 
 ## Phases
 
@@ -200,17 +200,21 @@ Phase 8 - `5P-entry-design` 交接（按 RQ-039 暂停，尚未开始设计）
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
   实验仍属于 5F，Prompt Program 属于 5P。
 
-### Phase 8 - 5P Entry Design 交接
+### Phase 8 - 5P Prompt Program V1 与早期产品纵向切片
 
 - Status: tracking
-- 5E-4 已由 `3d36561` / Actions `31962252231` exact-SHA 公共验证完成，整个 5E 正式闭环；
-- canonical 只交接到 `5P-entry-design`，按 RQ-039 等待用户明确“继续”；
-- 本轮没有开始 5P 的需求审计、设计、代码、Provider I/O 或测试。
+- 用户已明确继续，RQ-039 的暂停条件已满足；`5P-entry-design` 正在收尾，未进入实现；
+- 入口审计确认 5P 同时承担 Prompt Program V1 与早期产品切片，不能缩成单纯 FastAPI；
+- ADR-0032 选择版本化 Prompt Program/Catalog 和 drift gate，复用既有 component fingerprint；
+- ADR-0033 选择薄 FastAPI Adapter + Application Service + 现有 AgentRuntime/Harness；
+- 5P 内部固定为 5P-1 产品合同/typed compiler、5P-2 Prompt Program/composition、
+  5P-3 domain/application service、5P-4 receipt/query、5P-5 FastAPI、5P-6 exit review；
+- 本设计批不安装依赖、不实现产品代码、不读取 Key、不调用 Riot/Provider、不进入 5F。
 
 ## Next Step
 
-`5P-entry-design / paused`：按 RQ-039 等待用户再次明确“继续”。当前只记录 5E 已公开闭环和
-5P 交接位置，不开展 5P 需求审计、方案比较、代码、Provider I/O 或测试。
+`5P-entry-design / verification`：用户已解除 RQ-039 暂停；当前完成 Prompt Program/API
+范围审计、设计与 ADR 后，只同步持久状态、运行文档/治理门禁并提交公开验证，不进入实现。
 
 ## Decisions Made
 
@@ -301,11 +305,18 @@ Phase 8 - `5P-entry-design` 交接（按 RQ-039 暂停，尚未开始设计）
 | Task B 用 run-scoped Provider decorator 统一真实调用边界 | Agent 与 Harness 会共享同一 Provider；装饰器在 capability preflight 后记录连续 ordinal，既不修改厂商 Adapter，也不会漏掉后续 retry |
 | AgentLoop 只观察整批预检后的业务 Tool 与返回终态 | 避免把内部 `llm.chat` 算成 Skill 工具；started 前失败零副作用，completed 后失败停止后续工作，`observer=None` 保持旧行为 |
 | `RuntimeObservationError` 穿透 ToolRuntime retry/breaker/fallback | 观察系统失败不是业务依赖失败；若被普通 ToolRuntime 捕获，会制造重试、错误熔断或 deterministic fallback，污染 Trace 语义 |
+| 5P 先建立版本化 Prompt Program V1 | 当前 prompt identity 硬编码而真实行为跨 Skill/Context/Knowledge/Evaluation/Revision；ADR-0032 复用既有 component fingerprint 建立 drift gate，不复制 Prompt 控制流 |
+| 5P 产品入口采用薄 FastAPI + Application Service | handler 串脚本会复制编排，暴露 RuntimeRequest 又泄漏内部合同；ADR-0033 让产品输入经 typed compiler 进入唯一 Runtime/Harness |
+| typed recent endpoint 不重新运行自由文本 Router | 端点本身已是可信任务信号；用 Catalog 当前 name/version 和 `entrypoint:reviews.recent` evidence 保留执行边界，不伪造关键词用户句子 |
+| 5P V1 不实现 status/follow-up | 同步 run view 已覆盖 status；follow-up 需要阶段 6 的 Session/Memory/澄清，旧五端点清单不能压过较晚边界 |
+| 文件 receipt 只是 body-free 查询投影 | 它绑定 Runtime result/Trace reference 并支持 report 复读，但不冒充 SQL、事务、durable event log 或崩溃恢复 |
 
 ## Errors Encountered
 
 | Error | Attempt | Resolution |
 |---|---:|---|
+| 5P 设计首次 cached diff check 发现 ADR-0032/0033 多余 EOF 空行 | 1 | cached 门禁阻止提交；删除两份 ADR 尾部空白，重新暂存后独立复跑 cached diff check |
+| 5P 本地门禁临时文件清理被终端策略静态拒绝 | 2 | 首次组合命令和验证后的 literal Remove-Item 均在进程创建前被拒绝；目标已只读确认位于仓库 `tmp/` 且被 Git 忽略，停止重复删除并保留为本地临时产物 |
 | 5E-1 源码审计误写 `app/harness/run_id.py` | 1 | 只读命令报告文件不存在，其他读取继续完成；后续按实际模块 `app/harness/run_ids.py` 定位，不重复错误路径 |
 | 5E-1 审计在 Windows 直接把 `skills/*/manifest.yaml` 传给 `rg` | 1 | 前序文件均已读，只有该 glob 失败；后续用 `rg ... skills -g manifest.yaml`，不重复 Windows 路径通配写法 |
 | 授权后的 P1 diagnostic 首次启动被本地 `LLM_PROVIDER=glm` 与内部 ID `zhipu` 的配置门禁拒绝 | 1 | 在 client factory 前失败，真实调用数为 0；沿用首轮实验的子进程级规范化为 `zhipu`，不改 `.env`、不打印 Key，再执行唯一获授权请求 |
@@ -566,17 +577,20 @@ Phase 8 - `5P-entry-design` 交接（按 RQ-039 暂停，尚未开始设计）
   `close-with-deferred-boundaries`；提交 `3d36561` 已由 Actions `31962252231` 完成
   exact-SHA 公共验证，5E-4 与整个 5E 正式完成。
 
-### 5P-entry-design 交接（2026-08-17）
+### 5P-entry-design（2026-08-17）
 
 - Status: in_progress
-- 该状态只表示 canonical 已准备好从这里恢复，不表示 5P 设计已经开始；
-- 按 RQ-039 暂停，等待用户再次明确“继续”；
-- 当前没有 5P 设计、代码、Provider I/O 或测试产物。
+- 用户已明确“继续下一步”，解除 RQ-039 的暂停；本检查点只授权设计，不授权实现或 5F；
+- 已审计 Runtime request/result、Artifact/Trace Store、Riot/DataDragon、Summary/Report CLI、
+  Skill/Catalog/Boundary、Prompt/Context identity、Evaluation/Revision 与路线范围；
+- 已比较 handler 串脚本、暴露 Runtime 内部合同、薄 Adapter + Application Service 三种方案；
+- 已新增完整设计和 ADR-0032/0033；待持久状态同步、文档门禁、提交和 exact-SHA CI 后完成。
 
 ## Next Step
 
-`5P-entry-design / paused`：按 RQ-039 等待用户再次明确“继续”；后续恢复时才进行初学者入口
-讲解、需求审计和方案比较。本轮到此结束，不进入 5P 实现或 5F。
+`5P-entry-design / verification`：同步 RQ-040、canonical、路线/矩阵/决策，运行文档与治理门禁，
+提交并完成 exact-SHA 公共 CI；通过后唯一下一步为 `5P-1 Product Request & Typed
+Skill/Runtime Compiler`，本轮不直接实现。
 
 本批错误日志：
 
@@ -622,3 +636,7 @@ Phase 8 - `5P-entry-design` 交接（按 RQ-039 暂停，尚未开始设计）
 - 5E-3 设计与状态同步第一次组合 `apply_patch` 假设 `project_decisions.md` 的尾句与实际
   文本完全一致，补丁原子拒绝且无部分修改；先用 `rg` 定位真实上下文，再拆分状态、决策、
   路线矩阵和计划补丁，随后治理检查通过。
+- 5P 审计误猜 ADR-0031 文件名为 `0031-agent-runtime-live-stream-delivery.md`；只读失败后改为
+  先列真实文件名，并读取 `0031-adopt-in-process-stream-worker-and-parity-contract.md`。
+- 5P Prompt 符号搜索第一次因 PowerShell 引号截断正则并报 unclosed group；没有产生文件影响，
+  随后改用多个 `rg -F -e` 固定字符串完成检索。
