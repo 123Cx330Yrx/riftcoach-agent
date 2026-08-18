@@ -54,8 +54,9 @@ python -m pip install -e ".[dev]"
 
 仓库现在包含一个显式依赖注入的 FastAPI Adapter：`app.api.main:create_app(...)`，以及
 PostgreSQL durable task、owner-scoped 查询、POST 202 入队、独立 polling Worker 的控制面合同。
-HTTP 层不直接选择 Skill、拼 Prompt 或调用 Provider。6A-6 正在为这个基座补默认关闭 CORS、
-日志/Secret 脱敏、有限容量、terminal delete 的隐藏与补偿、retention 和安全指标。
+HTTP 层不直接选择 Skill、拼 Prompt 或调用 Provider。6A-6 已为这个基座补齐默认关闭 CORS、
+日志/Secret 脱敏、有限容量、terminal delete 的隐藏与补偿、retention 和安全指标；当前只交接
+6A-7 packaging/exit review。
 
 这些能力仍不等于正式公网鉴权/HTTPS、Session/Memory、SSE、自动 lease/reclaim 或完整 API+Worker
 部署；真实外部 Worker 组合留在 6A-7。CI 中的 PostgreSQL job 是 task 并发与生命周期语义的阻塞证据。

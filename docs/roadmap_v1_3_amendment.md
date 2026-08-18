@@ -220,7 +220,7 @@ OP.GG MCP
 5F-3 Contract/Harness Eval  已完成；45 focused、196 adjacent、完整 929/110 subtests；裁决 `harness-compatible-but-runtime-gate-failed`，Context/terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功
 5F-4 Bounded Real Slice    未进入；5F-3 前置硬门失败，真实模型调用无信息增益，external calls 0
 5F-5 Adoption/Exit         已完成；裁决 `partial-adopt-evaluation-assets-only`；`f8dea66` / Actions `32028206103` exact-SHA 公共成功；产品拒绝 Pi，冻结保留评测资产/CI 复现与采用门方法
-6A entry design            已完成；`c0b5af0` / Actions `32041343696`；6A-1 至 6A-4 真库公共完成；6A-5 Async FastAPI & Composition 已由 `2492951` / Actions `32106378542` exact-SHA 公共完成；6A-6 Security/Lifecycle/NFR 已按 RQ-058 进入本地实施，等待 exact-SHA PostgreSQL 公共验证
+6A entry design            已完成；`c0b5af0` / Actions `32041343696`；6A-1 至 6A-5 真库公共完成；6A-6 Security/Lifecycle/NFR 已由 `31d5e60` / Actions `32138025724` exact-SHA PostgreSQL/性能公共完成；当前交接 6A-7 Packaging/Exit Review 准备状态
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -367,3 +367,9 @@ owner/global 背压、7/90/30 天数据保留、terminal hidden-before-cleanup �
 冲突、结构化可观测性和性能样本。实施顺序固定为“教学 → 红灯 → 最小实现 → 本地门禁 → exact-SHA
 公共 PostgreSQL CI”；不进入 6A-7，不实现正式 Auth/HTTPS、Session/Memory、SSE、前端、
 lease/heartbeat/reclaim/cancel/resume 或真实 Provider/Riot I/O。
+
+实现与性能证据随后由 `fecbb11` 和 evidence-only 修补 `31d5e60` 完成；Actions run
+`32138025724` 的普通与 PostgreSQL job 均成功。真库 job 为 `51 passed`，并在
+`github-actions-postgresql-17-python-3.11` 记录 8 样本 create/query p95 `6.220ms` 与
+queued→claim p95 `23.359ms`。6A-6 正式关闭，只交接 6A-7 准备状态；这些数值不是 Agent
+模型质量或公网 SLA 证据。

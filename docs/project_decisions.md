@@ -1100,3 +1100,17 @@ Worker。新增 PostgreSQL lifecycle/capacity/performance 测试已加入阻塞 
 110 subtests passed`，RAG、compileall、Harness、秘密/SDK/YAML/diff/governance 门均通过；本轮没有
 读取 Key 或调用 Riot/Provider。下一动作是 exact-SHA 提交/推送并等待两个公共 job，成功后再做 6A-6
 收尾审查与 6A-7 交接。
+
+### 6A-6 exact-SHA 公共闭环
+
+首个实现 run `32137687527` 已全绿，但成功日志缺 actual p95/sample/environment，且 claim 样本只覆盖
+单次 SQL 调用。项目没有用“测试通过”掩盖证据缺口，而是以 evidence-only 提交 `31d5e60` 增加 warm-up、
+queued→claim 累计等待和安全日志输出。Actions run `32138025724` 随后两个 job 均成功：完整 pytest
+`1077 passed, 27 skipped, 1 warning, 110 subtests passed`，PostgreSQL job `51 passed, 1 warning`。
+
+在 `github-actions-postgresql-17-python-3.11` 环境中，8 个 warm create/query 样本 p95 为
+`6.220ms`（目标 `<300ms`），8 个 queued→claim 样本 p95 为 `23.359ms`（目标 `<2000ms`）。这些是
+作品集规模 task 控制面基线，不是公网 SLA、Agent/Provider 延迟或模型质量结论。
+
+因此 6A-6/RQ-058 正式关闭。canonical 只交接 `6A-7-packaging-exit-review` 准备状态；6A-7 仍需用户
+明确继续，且不得把 6A-6 解释成真实 Worker packaging、正式 Auth、Session/Memory、SSE、前端或公网部署。

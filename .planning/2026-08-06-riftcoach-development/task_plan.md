@@ -7,9 +7,8 @@
 
 ## Current Phase
 
-Phase 14 - `6A-6-security-lifecycle-nfr` implementation after 6A-5 completed publicly at
-`2492951c20dd6ca897d957d03752b6a2585ce469` / Actions `32106378542`; RQ-058 authorized
-implementation on 2026-08-18
+Phase 15 - `6A-7-packaging-exit-review` preparation after 6A-6 completed publicly at
+`31d5e6038943bd3eacbeb485300f63ad53e13bfd` / Actions `32138025724`
 
 ## Phases
 
@@ -254,9 +253,9 @@ implementation on 2026-08-18
 
 ## Next Step
 
-`6A-6-security-lifecycle-nfr`：本地实现与门禁完成；下一动作是检查 diff、提交/推送并等待 exact-SHA
-`pytest` 与 PostgreSQL CI，公共真库成功前不关闭 6A-6、不进入 6A-7，也不实现正式 Auth/HTTPS、
-Session/Memory、SSE、前端或 lease/reclaim。
+`6A-7-packaging-exit-review`：准备状态；6A-6 已由 `31d5e60` / Actions `32138025724` 完成 exact-SHA
+pytest/PostgreSQL/性能公共验证。等待用户明确继续后，才按实施计划做 API+Worker+PostgreSQL packaging、
+Linux smoke 与 6A exit matrix；当前不自动开始 6A-7。
 
 ## 6A-1 Checklist
 
@@ -334,7 +333,7 @@ Session/Memory、SSE、前端或 lease/reclaim。
 
 ### Phase 14 - 6A-6-security-lifecycle-nfr implementation
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-058; user explicitly said “继续下一步”.
 - 6A-5 的异步 task API 与 API process composition 已公开完成；本批只实现其上冻结的 CORS/log/Secret、
   retention/delete、backpressure、structured observability 与 performance baseline。
@@ -348,9 +347,16 @@ Session/Memory、SSE、前端或 lease/reclaim。
 - [completed] 实现默认关闭 CORS 与 production wildcard+credentials fail-closed
 - [completed] 实现 allowlisted structured logs/metrics，禁止 Riot ID、Prompt、report、Provider body、异常栈和 Secret
 - [completed] 实现 7/90/30 天 retention、terminal hidden-before-cleanup、幂等删除和安全补偿状态；active delete 返回 conflict
-- [ ] 在真实 PostgreSQL 下验证 owner/global capacity race、删除生命周期和 warm-DB/claim 性能样本
+- [completed] 在真实 PostgreSQL 下验证 owner/global capacity race、删除生命周期和 warm-DB/claim 性能样本
 - [completed] 运行聚焦、完整、两套 RAG、compileall、Harness/security/diff/governance 门禁
-- [ ] 提交、推送并等待 exact-SHA `pytest` 与 PostgreSQL CI；成功后才关闭 6A-6 并交接 6A-7
+- [completed] 提交 `31d5e60`、推送并由 Actions `32138025724` 完成 exact-SHA `pytest` 与 PostgreSQL CI，只交接 6A-7
+
+### Phase 15 - 6A-7-packaging-exit-review preparation
+
+- Status: in_progress
+- Pause: 6A-6 is complete; awaiting explicit user confirmation before 6A-7.
+- 6A-7 只负责可重建 API+Worker+PostgreSQL packaging、Linux smoke、6A exit matrix 与公开证据；
+  当前不自动实现真实外部 Worker 组合、Session/Memory、SSE、正式 Auth、前端或公网部署。
 
 ## 6A Entry Design Checklist
 

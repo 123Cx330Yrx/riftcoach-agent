@@ -2591,3 +2591,14 @@
   调用耗时。已把 create/query 增加 warm-up，把 claim 改为入队后累计等待，并让 PostgreSQL job 以
   `-s` 输出安全的 environment/metric/samples/p95/target。
 - 该修补只增强证据，不改变产品路径；下一动作是聚焦/治理检查、提交推送并等待新的 exact-SHA CI。
+
+## 2026-08-18：6A-6 exact-SHA 公共闭环
+
+- evidence-only 提交 `31d5e6038943bd3eacbeb485300f63ad53e13bfd` 已推送；Actions run
+  `32138025724` 的 `pytest` 与 `postgres-migrations` 均 completed/success。
+- 公共完整 pytest `1077 passed, 27 skipped, 1 warning, 110 subtests passed`；真实 PostgreSQL
+  `51 passed, 1 warning`，明确执行本轮 lifecycle/capacity/performance 测试。
+- 性能日志：`github-actions-postgresql-17-python-3.11`，create/query 8 样本 p95 `6.220ms`
+  （target 300ms），queued→claim 8 样本 p95 `23.359ms`（target 2000ms）。
+- 6A-6/RQ-058 正式关闭；四条进度线同步。下一检查点只交接
+  `6A-7-packaging-exit-review` 准备状态，等待用户明确继续，不自动实施。

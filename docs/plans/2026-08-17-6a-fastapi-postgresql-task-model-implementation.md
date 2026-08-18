@@ -308,7 +308,7 @@ JWT/OAuth、Session、Memory、SSE、正式前端和公网部署。
 
 ## 6A-6：Security, Lifecycle & NFR
 
-状态：RQ-058 已授权，当前实施中（2026-08-18）。
+状态：已由 `31d5e60` / Actions `32138025724` 完成 exact-SHA pytest、真实 PostgreSQL 与性能基线公共验证（2026-08-18）。
 
 ### 目标
 

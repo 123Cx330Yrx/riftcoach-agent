@@ -2625,3 +2625,6 @@
   `51 passed`，没有记录 actual p95/sample/environment；且最初 claim 样本只测单次 SQL 调用耗时，
   不足以完整表达 queued→running 等待。6A-6 因此保持 in progress，先增加 warm-up、累计队列等待样本
   和安全 CI 输出，再以新 exact-SHA 证据关闭。
+- 新 run `32138025724` 已补齐上述证据：8 样本 warm create/query p95 `6.220ms`，8 样本
+  queued→claim p95 `23.359ms`，环境与目标均记录在 PostgreSQL job；6A-6 可以关闭。该数据只表示
+  同机 CI PostgreSQL task 控制面基线，不能外推到公网网络、Provider 调用、Agent 质量或 99.9% SLA。

@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 6
 substage_group: "6A"
-current_checkpoint: "6A-6-security-lifecycle-nfr"
+current_checkpoint: "6A-7-packaging-exit-review"
 status: in_progress
-pause_reason: "RQ-058 local implementation complete; awaiting exact-SHA public PostgreSQL evidence before 6A-6 closure"
+pause_reason: "6A-6 complete; awaiting explicit user confirmation before 6A-7"
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: "RQ-058 local implementation complete; awaiting exact-SHA public P
 ## 状态元数据
 
 - 最后更新：2026-08-18
-- 主阶段：阶段 6，`6A-5-async-fastapi-composition` 已由提交 `2492951` / Actions `32106378542` 完成 exact-SHA pytest 与真实 PostgreSQL 公共验证；用户已按 RQ-058 授权 `6A-6-security-lifecycle-nfr` 实施，本轮只做 task 基座安全、生命周期、背压、可观测性与性能基线
+- 主阶段：阶段 6，`6A-6-security-lifecycle-nfr` 已由提交 `31d5e60` / Actions `32138025724` 完成 exact-SHA pytest、真实 PostgreSQL 与性能基线公共验证；当前只交接 `6A-7-packaging-exit-review` 准备状态
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "RQ-058 local implementation complete; awaiting exact-SHA public P
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6A-6-security-lifecycle-nfr` exact-SHA 公共验证/收尾；本地红灯、实现、聚焦/完整回归与横向门禁已通过，下一动作是检查 diff、提交/推送并等待 PostgreSQL CI；公共真库成功前不关闭 6A-6、不进入 6A-7，也不实现正式 Auth、HTTPS、Session、Memory、SSE、前端、lease/heartbeat/reclaim/cancel/resume 或公网部署。
+- 唯一下一步：`6A-7-packaging-exit-review` 准备状态；等待用户明确继续后，才按实施计划组合可重建 API+Worker+PostgreSQL package、Linux smoke 与 6A exit matrix。当前不自动开始 6A-7，也不实现正式 Auth、Session/Memory、SSE、前端、lease/reclaim/cancel/resume 或直接公网部署。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -551,10 +551,10 @@ pause_reason: "RQ-058 local implementation complete; awaiting exact-SHA public P
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5 已完成；6A-1 至 6A-5 已由真实 PostgreSQL CI 公开闭环，6A-6 已获授权并进入实施 | 生产模型质量、Worker 可部署消费、自动 crash recovery、Session/Memory、正式 Auth 或前端已完成 |
-| 项目理解 | 已讲解 6A-1 至 6A-5；本轮继续理解 CORS/脱敏、数据保留、跨存储删除、active/terminal 生命周期、背压与性能测量 | 理解和离线测试等于正式鉴权、容灾、SLA 或完整 Agent 产品完成 |
+| 本地代码 | 阶段 0-5 已完成；6A-1 至 6A-6 已由真实 PostgreSQL CI 公开闭环，当前交接 6A-7 准备状态 | 生产模型质量、Worker 可部署消费、自动 crash recovery、Session/Memory、正式 Auth 或前端已完成 |
+| 项目理解 | 已讲解 6A-1 至 6A-6，包括 CORS/脱敏、数据保留、跨存储删除、active/terminal 生命周期、背压与真实 p95 测量 | 理解和控制面真库测试等于正式鉴权、容灾、SLA 或完整 Agent 产品完成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | 6A-5 提交 `2492951` / Actions `32106378542` 的 `pytest` 与真实 PostgreSQL job 均成功；网页与 Worker packaging 仍未部署 | API 公共 CI 等于生产切换、正式 Web Agent、Session/Memory 或公网可用 |
+| GitHub/部署 | 6A-6 提交 `31d5e60` / Actions `32138025724` 的 `pytest` 与真实 PostgreSQL/性能 job 均成功；网页与 Worker packaging 仍未部署 | 公共 CI 等于生产切换、正式 Web Agent、Session/Memory 或公网可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -1028,3 +1028,16 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   `1077 passed, 27 skipped, 1 warning, 110 subtests passed`，真实 PostgreSQL 为 `51 passed`。但成功
   日志未记录 actual p95/sample/environment，claim 采样语义也偏向单次 SQL 调用；当前已做 evidence-only
   修补并等待新的 exact-SHA CI，因此仍不关闭 6A-6。
+
+## 2026-08-18：6A-6 exact-SHA 公共闭环与 6A-7 交接
+
+- 性能证据修补提交 `31d5e6038943bd3eacbeb485300f63ad53e13bfd` 已推送；Actions run
+  `32138025724` 的 `pytest` 与 `postgres-migrations` 均 completed/success。
+- 公共完整 pytest 为 `1077 passed, 27 skipped, 1 warning, 110 subtests passed`；真实 PostgreSQL 17
+  job 为 `51 passed, 1 warning`，明确执行 lifecycle/capacity/performance 文件。
+- PostgreSQL 17 / Python 3.11 环境记录了 8 个 warm create+query 样本，p95 `6.220ms`（目标
+  `<300ms`）；8 个 queued→claim 样本，p95 `23.359ms`（目标 `<2000ms`）。这些只证明 task
+  控制面基线，不代表 Agent/Provider 质量或公网 SLA。
+- 因此 6A-6/RQ-058 正式完成：默认 CORS、日志/Secret allowlist、背压、7/90/30 retention、terminal
+  hidden-before-cleanup 与补偿、active delete conflict、结构化 observability 和真实性能证据均闭环。
+- canonical 只交接 `6A-7-packaging-exit-review` 准备状态，等待用户明确继续；不得自动开始 6A-7。

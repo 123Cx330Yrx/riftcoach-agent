@@ -21,7 +21,7 @@
 | 3 | Provider 与 Tool Runtime | 外部模型和工具如何统一、可靠地调用 | EchoMind 迁移重构 | 已完成，进入维护 |
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
-| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | EchoMind 迁移重构 | 进行中；6A-1 至 6A-5 已真库公共完成，6A-6 Security/Lifecycle/NFR 已获授权实施 |
+| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | EchoMind 迁移重构 | 进行中；6A-1 至 6A-6 已真库公共完成，当前交接 6A-7 Packaging/Exit Review 准备状态 |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 未开始 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
@@ -214,9 +214,9 @@ RAG 保存外部知识；Memory 保存玩家相关且可更新的长期状态；
 
 - 5P 已先建立仅本地、同步、无鉴权的近期复盘 HTTP 切片；本阶段负责把它扩展为完整
   FastAPI 产品入口，而不是把 5P 的 Fake/fixture 切片误称为生产 API；
-- 6A-1 至 6A-5 已建立 PostgreSQL task、原子 claim、Application/Artifact 接线和异步 HTTP
-  composition；当前 6A-6 先补齐 task 基座的 CORS、日志/Secret 脱敏、背压、生命周期删除和
-  可测性能边界，再进入 6A-7 packaging；这不等于正式 Auth、Session/Memory 或公网部署已完成；
+- 6A-1 至 6A-6 已公开建立 PostgreSQL task、原子 claim、Application/Artifact 接线、异步 HTTP、
+  CORS/脱敏、背压、生命周期删除和真实性能边界；当前只交接 6A-7 packaging/exit review，
+  这不等于正式 Auth、Session/Memory 或公网部署已完成；
 - FastAPI 对话和复盘入口；
 - `user_id`、`conversation_id` 和权限边界；
 - 会话工作记忆；

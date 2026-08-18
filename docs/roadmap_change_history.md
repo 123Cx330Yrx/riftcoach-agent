@@ -1948,3 +1948,15 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `DEFERRED`：正式 Auth/HTTPS、Session/Memory、SSE、前端、lease/heartbeat/reclaim/cancel/resume、
   真实 Provider/Riot I/O 和 6A-7 packaging 均留在原定检查点；先红灯、再最小实现，真实 PostgreSQL
   并发/删除/性能由阻塞 exact-SHA CI 证明。
+
+### 2026-08-18：6A-6 exact-SHA 公共闭环与 6A-7 交接
+
+- `VERIFIED-PUBLIC`：实现 `fecbb11` 与性能证据修补 `31d5e60` 均已推送；Actions run
+  `32138025724` 的 `pytest` 和 `postgres-migrations` completed/success。
+- `EVIDENCE`：完整 pytest `1077 passed, 27 skipped, 1 warning, 110 subtests passed`；真实
+  PostgreSQL `51 passed`。PostgreSQL 17/Python 3.11 中 8 样本 create/query p95 `6.220ms`，
+  queued→claim p95 `23.359ms`，均低于冻结目标；该证据不外推为 SLA 或模型质量。
+- `CLOSED`：6A-6/RQ-058 正式完成；CORS/log/Secret、capacity、retention/delete、补偿、observability
+  与 task 控制面性能基线闭环。
+- `HANDOFF`：canonical 唯一下一检查点为 `6A-7-packaging-exit-review` 准备状态，等待用户明确继续；
+  不自动启动真实 Worker packaging 或实现正式 Auth/Session/Memory/SSE/前端/公网部署。
