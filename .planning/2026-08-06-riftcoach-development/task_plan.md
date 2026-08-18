@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 11 - `6A-3-atomic-claim-polling-worker` authorized by RQ-055 after 6A-2 completed publicly at
-`012b066da9e5a8ec569d5791cf9ac0fbf4b117d3` / Actions `32046532695`; TDD implementation in progress
+Phase 12 - `6A-4-application-artifact-integration` preparation after 6A-3 completed publicly at
+`55e369e9697b91c71fb4638ac9299ad2c5e57a36` / Actions `32097561436`; waiting for explicit authorization
 
 ## Phases
 
@@ -253,8 +253,8 @@ Phase 11 - `6A-3-atomic-claim-polling-worker` authorized by RQ-055 after 6A-2 co
 
 ## Next Step
 
-`6A-3-atomic-claim-polling-worker`：本地 polling/Worker Fake、claim/CAS 实现和横向门禁已完成；提交/推送
-并通过 exact-SHA PostgreSQL CI 后才关闭本子阶段，不自动进入 Application/Artifact 或 API。
+`6A-4-application-artifact-integration`：等待用户明确继续后，先按实施计划讲解并冻结 run_id 贯穿、
+receipt-proven terminal、conservative reconciliation 与人工 recovery CAS；不自动开始实现。
 
 ## 6A-1 Checklist
 
@@ -284,10 +284,11 @@ Phase 11 - `6A-3-atomic-claim-polling-worker` authorized by RQ-055 after 6A-2 co
 
 ### Phase 11 - 6A-3-atomic-claim-polling-worker
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-055.
-- 6A-2 已公开验证真实 Repository 事务；当前只实现 claim、Worker control flow 与 shutdown loop，
-  不接真实 Application/Artifact 或 API。
+- 6A-2 已公开验证真实 Repository 事务；6A-3 又由 `55e369e` / Actions `32097561436` 公共验证
+  claim、Worker control flow、shutdown loop 与真实 PostgreSQL concurrency；不接真实 Application/
+  Artifact 或 API。
 
 ## 6A-3 Checklist
 
@@ -295,7 +296,14 @@ Phase 11 - `6A-3-atomic-claim-polling-worker` authorized by RQ-055 after 6A-2 co
 - [completed] 审计相邻合同/schema，先写 polling/Worker Fake 与真实 PostgreSQL claim/CAS 红灯
 - [completed] 实现 polling policy、ReviewWorker、Repository claim/terminal CAS 与 fail-closed Worker CLI
 - [completed] 运行聚焦、完整、两套 RAG 与全部横向门禁
-- [pending] 提交、推送并等待 exact-SHA PostgreSQL CI；成功后才关闭 6A-3
+- [completed] 提交、推送并由 `55e369e` / Actions `32097561436` 完成 exact-SHA PostgreSQL CI
+
+### Phase 12 - 6A-4-application-artifact-integration preparation
+
+- Status: in_progress
+- Pause: awaiting explicit user confirmation before starting 6A-4.
+- 6A-3 已正式关闭；当前只保存 6A-4 准备键，不实现 run_id/Application/Artifact integration、
+  reconciliation 或人工 recovery。
 
 ## 6A Entry Design Checklist
 

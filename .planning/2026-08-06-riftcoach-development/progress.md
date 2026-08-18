@@ -2451,3 +2451,14 @@
   YAML 与 diff check 通过；未读取 Key、未调用 Riot/Provider、未启动本地 DB。
 - 当前本地裁决为“实现完成、等待 exact-SHA 公共 PostgreSQL CI”；下一步只提交/推送并等待阻塞真库
   job，成功后才关闭 6A-3 并交接 6A-4，不提前接 Application/Artifact 或 API。
+
+## 2026-08-18：6A-3 exact-SHA 公共闭环与 6A-4 交接
+
+- 提交 `55e369e9697b91c71fb4638ac9299ad2c5e57a36` 已推送；GitHub Actions run `32097561436` 的
+  `pytest` 与 `postgres-migrations` 两个 job 均 completed/success。
+- 真实 PostgreSQL 17 job 补齐 7 项本地 skip：deterministic order、锁住首行时 SKIP LOCKED 跳过、
+  单任务并发不双领、N 任务双 Worker drain、claim 短事务释放、错误 owner/迟到终态 CAS、失败终态
+  不可逆与 Worker 时钟领先时的 timestamp invariant。
+- 6A-3 正式关闭，RQ-055 标为已执行；四条进度线已同步。canonical 唯一下一检查点交接为
+  `6A-4-application-artifact-integration` 准备状态，等待用户明确继续；本轮未实现真实
+  Application/Artifact、reconciliation、异步 API、Session/Memory、SSE、鉴权或前端。

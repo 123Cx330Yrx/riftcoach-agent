@@ -995,3 +995,9 @@ fail-closed，不允许直接领取生产任务。
 完整回归为 `1008 passed, 15 skipped, 1 warning, 110 subtests passed`；两套 RAG、compileall、Harness
 dry-run、governance、秘密/SDK/YAML/diff 门均通过。当前裁决为“本地实现完成，等待 exact-SHA 公共
 PostgreSQL CI”；CI 成功前不关闭 6A-3，不进入 6A-4。
+
+提交 `55e369e9697b91c71fb4638ac9299ad2c5e57a36` 随后由 GitHub Actions run `32097561436` 完成
+exact-SHA 公共验证；`pytest` 与 `postgres-migrations` 均成功，真实 PostgreSQL 17 补齐 7 项 claim
+测试。因此 6A-3 正式关闭，canonical 只交接 `6A-4-application-artifact-integration` 准备状态，
+等待用户明确继续。6A-4 才会把预留 `run_id` 接入 Application/Runtime/Artifact，并处理 receipt-proven
+terminal/reconciliation；本轮没有提前实现这些能力。

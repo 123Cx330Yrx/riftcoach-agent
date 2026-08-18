@@ -1870,3 +1870,14 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   7 项真库 claim 测试待 CI。
 - `CURRENT`：本地实现完成但 6A-3 仍 in progress；下一步只提交/推送并等待 exact-SHA PostgreSQL
   job，成功前不关闭、不进入 6A-4。
+
+### 2026-08-18：6A-3 exact-SHA 公共闭环与 6A-4 交接
+
+- `VERIFIED-PUBLIC`：提交 `55e369e9697b91c71fb4638ac9299ad2c5e57a36` 的 Actions run `32097561436`
+  中 `pytest` 与 `postgres-migrations` 均 completed/success；真实 PostgreSQL 17 补齐 7 项 claim/
+  CAS/concurrency skip。
+- `CLOSED`：6A-3 Atomic Claim & Polling Worker 正式完成；证据只覆盖 durable claim、Worker 控制流、
+  ownership/CAS、backoff/jitter 和 graceful shutdown，不覆盖 Application/Artifact、HTTP 或 hard-crash
+  自动恢复。
+- `HANDOFF`：canonical 唯一下一检查点为 `6A-4-application-artifact-integration` 准备状态，等待
+  用户明确继续；不自动实现 run_id integration、reconciliation、异步 API、Session/Memory 或前端。

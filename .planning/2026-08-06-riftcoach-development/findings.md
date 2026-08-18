@@ -2517,3 +2517,12 @@
   等公共 CI 暴露。
 - terminal CAS 使用 PostgreSQL `GREATEST(now(), claimed_at)`，即使 Worker 时钟暂时领先数据库，也
   保证 `finished_at/updated_at >= claimed_at`；真库测试固定该 timestamp invariant。
+
+## 2026-08-18：6A-3 exact-SHA 公共证据
+
+- 提交 `55e369e9697b91c71fb4638ac9299ad2c5e57a36` 的 Actions run `32097561436` 已完成；`pytest` 和
+  `postgres-migrations` 均成功，真实 PostgreSQL 17 补齐本机 7 个 skip。该证据支持 6A-3 claim、
+  Worker ownership/CAS、退避控制和 graceful loop 的关闭，不外推为 Application/Artifact、HTTP 或
+  hard-crash 自动恢复已完成。
+- 公共 CI 没有读取 `.env`、调用 Riot/Provider 或执行真实 Agent；Fake Executor 仍只证明 Worker
+  控制流，不能证明模型质量。
