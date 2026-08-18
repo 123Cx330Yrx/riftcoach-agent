@@ -2583,3 +2583,13 @@
   退出和 6A-7 checklist 中显式验证，不能静默遗忘。
 - 本地 API 聚焦 `38 passed, 1 skipped`；完整 `1047 passed, 21 skipped, 1 warning, 110 subtests passed`。
   新增 PostgreSQL API 测试只在本机 skip，必须由 exact-SHA public PostgreSQL job 补齐。
+
+## 2026-08-18：6A-5 exact-SHA 公共证据
+
+- Actions `32106378542` 对提交 `2492951c20dd6ca897d957d03752b6a2585ce469` completed/success；普通
+  pytest 与真实 PostgreSQL 两个阻塞 job 均成功。
+- PostgreSQL job 日志明确执行 `tests/test_async_task_api_postgres.py`，总计 `41 passed`；因此 API
+  create/replay、owner 404、queued run/report 409 和 Alembic readiness 不再只是 Fake/本机 skip 证据。
+- 公共完整 pytest 与本地一致为 `1047 passed, 21 skipped, 1 warning, 110 subtests passed`；RAG、编译、
+  Harness、安全/治理和 migration metadata 也成功，外部 Riot/Provider I/O 为 0。
+- 6A-5 可以关闭，但 Worker CLI 的 fail-closed packaging 限制继续有效；下一检查点只是 6A-6 准备状态。

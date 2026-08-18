@@ -1925,3 +1925,15 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `SCOPE-ADJUDICATED`：6A-5 只关闭 API process composition；真实 Riot/Data Dragon/Provider Worker
   executable composition 属于 6A-7 packaging，当前 Worker CLI 继续 fail-closed，不冒充可部署消费链。
 - `AT-THE-TIME`：6A-5/RQ-057 保持执行中；下一步只提交、推送并等待 exact-SHA pytest/PostgreSQL CI。
+
+### 2026-08-18：6A-5 exact-SHA 公共闭环与 6A-6 交接
+
+- `VERIFIED-PUBLIC`：提交 `2492951c20dd6ca897d957d03752b6a2585ce469` 的 Actions run
+  `32106378542` 中 `pytest` 与 `postgres-migrations` 均 completed/success；完整 pytest 为
+  `1047 passed, 21 skipped, 1 warning, 110 subtests passed`，真实 PostgreSQL job 为 `41 passed`。
+- `EVIDENCE`：新增 async task API 真库测试已在 PostgreSQL 17 实际执行；RAG、compileall、Harness、
+  governance、Secret/SDK 与 migration head 门也通过，CI 无 Key/Riot/Provider I/O。
+- `CLOSED`：6A-5 正式完成；证据覆盖 POST 202、owner-scoped task/run/report、ActorContext、lifespan 与
+  live/ready，不外推为 Worker packaging、正式 Auth、Session/Memory、SSE、前端或公网部署完成。
+- `HANDOFF`：canonical 唯一下一检查点为 `6A-6-security-lifecycle-nfr` 准备状态，等待用户明确继续；
+  不自动实现 CORS/log/Secret、retention/delete、metrics 或 benchmark。

@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 13 - `6A-5-async-fastapi-composition` implementation authorized by RQ-057 after
-6A-4 completed publicly at `41ac9c1fab5f6aa3053ca78a2e8f314e95aa0f2c` / Actions `32102522662`
+Phase 14 - `6A-6-security-lifecycle-nfr` preparation after 6A-5 completed publicly at
+`2492951c20dd6ca897d957d03752b6a2585ce469` / Actions `32106378542`
 
 ## Phases
 
@@ -253,9 +253,9 @@ Phase 13 - `6A-5-async-fastapi-composition` implementation authorized by RQ-057 
 
 ## Next Step
 
-`6A-5-async-fastapi-composition`：已由 RQ-057 授权；先以红灯冻结 POST 202、task/run/report
-query、可信 ActorContext、lifespan 与 live/ready，再实现 production-like API composition 并由真实
-PostgreSQL CI 验证。本批不进入 6A-6。
+`6A-6-security-lifecycle-nfr`：准备状态；6A-5 已完成 exact-SHA pytest/PostgreSQL 公共验证。等待用户
+明确继续后，才按实施计划教学并冻结 CORS/log/Secret、retention/delete、metrics 与 benchmark；当前
+不自动开始 6A-6。
 
 ## 6A-1 Checklist
 
@@ -317,7 +317,7 @@ PostgreSQL CI 验证。本批不进入 6A-6。
 
 ### Phase 13 - 6A-5-async-fastapi-composition
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-057.
 - 6A-4 的真实 PostgreSQL 公共门已完成；本批实现异步 task HTTP、ActorContext、API composition/
   lifespan 与 live/ready，但不实现 Session、Memory、SSE、正式 Auth、前端、lease/retry 或公网部署。
@@ -329,7 +329,14 @@ PostgreSQL CI 验证。本批不进入 6A-6。
 - [completed] 实现 task API、owner-scoped run/report 与 production-like API composition
 - [completed] 增加真实 PostgreSQL API 测试并纳入阻塞 CI job
 - [completed] 运行聚焦、完整、两套 RAG 与全部横向门禁
-- [pending] 提交、推送并等待 exact-SHA `pytest` 与 PostgreSQL CI，成功后只交接 6A-6
+- [completed] 提交 `2492951`、推送并由 Actions `32106378542` 完成 exact-SHA `pytest` 与 PostgreSQL CI，只交接 6A-6
+
+### Phase 14 - 6A-6-security-lifecycle-nfr preparation
+
+- Status: in_progress
+- Pause: 6A-5 is complete; awaiting explicit user confirmation before 6A-6.
+- 6A-5 的异步 task API 与 API process composition 已公开完成；当前不实现 CORS/log/Secret、
+  retention/delete、metrics/benchmark，也不自动进入 6A-6。
 
 ## 6A Entry Design Checklist
 

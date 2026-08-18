@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 6
 substage_group: "6A"
-current_checkpoint: "6A-5-async-fastapi-composition"
+current_checkpoint: "6A-6-security-lifecycle-nfr"
 status: in_progress
-pause_reason: "6A-5 local implementation verified; awaiting exact-SHA public PostgreSQL CI"
+pause_reason: "6A-5 complete; awaiting explicit user confirmation before 6A-6"
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: "6A-5 local implementation verified; awaiting exact-SHA public Pos
 ## 状态元数据
 
 - 最后更新：2026-08-18
-- 主阶段：阶段 6，`6A-4-application-artifact-integration` 已公开完成；RQ-057 的 `6A-5-async-fastapi-composition` 已完成本地实现与门禁，当前等待 exact-SHA 公共 PostgreSQL API 验证
+- 主阶段：阶段 6，`6A-5-async-fastapi-composition` 已由提交 `2492951` / Actions `32106378542` 完成 exact-SHA pytest 与真实 PostgreSQL 公共验证；当前只交接 `6A-6-security-lifecycle-nfr` 准备状态
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,9 +250,9 @@ pause_reason: "6A-5 local implementation verified; awaiting exact-SHA public Pos
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6A-5-async-fastapi-composition` 本地实现已验证；只提交、推送并等待 exact-SHA
-  `pytest` 与真实 PostgreSQL API CI。公共门成功前不关闭 6A-5、不进入 6A-6，也不实现 Session、
-  Memory、SSE、正式鉴权、前端、lease/retry/reclaim 或公网部署。
+- 唯一下一步：`6A-6-security-lifecycle-nfr` 准备状态；等待用户明确继续后，才按实施计划处理
+  CORS/log/Secret、retention/delete、metrics 与 benchmark。当前不自动开始 6A-6，也不实现正式 Auth、
+  Session、Memory、SSE、前端、lease/retry/reclaim 或公网部署。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -553,10 +553,10 @@ pause_reason: "6A-5 local implementation verified; awaiting exact-SHA public Pos
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5 已完成；6A-1/2/3/4 已由真实 PostgreSQL CI 公开闭环，6A-5 已本地实现 POST 202、task/run/report、ActorContext、lifespan 与 DB/Alembic readiness，等待真库公共 API job | 生产模型质量、Worker 可部署消费、自动 crash recovery、Session/Memory、正式 Auth 或前端已完成 |
-| 项目理解 | 已讲解 6A-1 至 6A-5：PostgreSQL、幂等、SKIP LOCKED、CAS、SQL/Artifact crash window、receipt-proven reconciliation、HTTP durable task、owner trust boundary 与 liveness/readiness 分离 | 理解和离线测试等于自动 reclaim、生产容灾、正式鉴权或完整 Agent 产品完成 |
+| 本地代码 | 阶段 0-5 已完成；6A-1 至 6A-5 已由真实 PostgreSQL CI 公开闭环，当前交接 6A-6 准备状态 | 生产模型质量、Worker 可部署消费、自动 crash recovery、Session/Memory、正式 Auth 或前端已完成 |
+| 项目理解 | 已讲解 6A-1 至 6A-5：PostgreSQL、幂等、SKIP LOCKED、CAS、SQL/Artifact crash window、receipt-proven reconciliation、HTTP durable task、owner trust boundary 与 liveness/readiness 分离 | 理解和公开控制流测试等于自动 reclaim、生产容灾、正式鉴权或完整 Agent 产品完成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | 6A-4 提交 `41ac9c1` / Actions `32102522662` 已成功；6A-5 新增代码尚未提交/公开 CI，真实 PostgreSQL API job 已加入但尚未运行；网页/Worker packaging 仍未部署 | 本地 API 绿灯等于生产切换、正式 Web Agent、Session/Memory 或公网可用 |
+| GitHub/部署 | 6A-5 提交 `2492951` / Actions `32106378542` 的 `pytest` 与真实 PostgreSQL job 均成功；网页与 Worker packaging 仍未部署 | API 公共 CI 等于生产切换、正式 Web Agent、Session/Memory 或公网可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -995,3 +995,16 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   未读取 Key、未调用 Riot/Provider、未进入 6A-6。
 - 唯一下一动作：检查 diff 与持久状态后提交/推送，等待 exact-SHA `pytest` 与 PostgreSQL CI；CI 成功后
   才把 6A-5 标为 complete 并交接 6A-6。
+
+## 2026-08-18：6A-5 exact-SHA 公共闭环与 6A-6 交接
+
+- 实现提交 `2492951c20dd6ca897d957d03752b6a2585ce469` 已推送；GitHub Actions run
+  `32106378542` 的 `pytest` 与 `postgres-migrations` 均 completed/success。
+- 公共完整 pytest 为 `1047 passed, 21 skipped, 1 warning, 110 subtests passed`；PostgreSQL 17 job
+  明确包含 `tests/test_async_task_api_postgres.py` 并得到 `41 passed, 1 warning`，真实验证 API create/
+  replay、owner 隔离、queued run/report 409 与 current Alembic readiness。
+- 两套 RAG、compileall、Harness dry-run、governance、tracked Secret/run-data、SDK boundary 与 migration
+  metadata head 均通过；CI 无 `.env`/Key，也没有 Riot/Provider 调用。
+- 因此 6A-5 正式完成：HTTP 可以可靠入队并查询 task/run/report，API process lifecycle 与 health 已闭环。
+  这不表示 Worker external composition、正式 Auth、Session/Memory、SSE、前端或公网部署已经完成。
+- canonical 只交接 `6A-6-security-lifecycle-nfr` 准备状态，等待用户明确继续；不得自动开始 6A-6。

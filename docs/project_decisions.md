@@ -1059,3 +1059,9 @@ API 聚焦 `38 passed, 1 skipped`，完整本地回归
 范围复核同时更正 6A-4 的笼统交接表述：本批正式文件/HTTP目标关闭的是 API process composition；真实
 Riot/Data Dragon/Provider Worker executable composition 必须在 6A-7 `API+Worker+PostgreSQL` packaging
 中完成。当前 Worker CLI 继续 fail-closed，不能把“API 能可靠入队”描述成“部署后任务已会自动消费”。
+
+提交 `2492951c20dd6ca897d957d03752b6a2585ce469` 随后由 GitHub Actions run `32106378542`
+完成 exact-SHA 公共验证：普通 pytest 为 `1047 passed, 21 skipped, 1 warning, 110 subtests passed`，
+PostgreSQL 17 job 明确运行新增 API 真库测试并得到 `41 passed, 1 warning`。因此 6A-5 正式关闭，
+canonical 只交接 `6A-6-security-lifecycle-nfr` 准备状态；公共验证不改变 Worker packaging、正式 Auth、
+Session/Memory、SSE、前端和公网部署仍未完成的边界。

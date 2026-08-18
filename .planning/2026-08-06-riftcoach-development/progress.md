@@ -2545,3 +2545,14 @@
   可入队误报为已经具备可部署的自动消费进程。
 - 当前下一步只提交、推送并等待 exact-SHA `pytest` 与真实 PostgreSQL API CI；成功前 RQ-057/6A-5
   保持执行中，不进入 6A-6。
+
+## 2026-08-18：6A-5 exact-SHA 公共闭环与 6A-6 交接
+
+- 提交 `2492951c20dd6ca897d957d03752b6a2585ce469` 已推送；Actions run `32106378542` 的
+  `pytest` 与 `postgres-migrations` 两个 job 均 completed/success。
+- 公共 pytest 为 `1047 passed, 21 skipped, 1 warning, 110 subtests passed`；真实 PostgreSQL 17 job
+  为 `41 passed, 1 warning`，新增 API 真库测试已明确列入命令并实际执行。
+- 两套 RAG、compileall、Harness dry-run、governance、Secret/run-data、SDK boundary 与 migration head
+  均通过；CI 未读取 Key、未调用 Riot/Provider。
+- 6A-5/RQ-057 正式关闭；四条进度线已同步。canonical 只交接
+  `6A-6-security-lifecycle-nfr` 准备状态，等待用户明确继续，不自动开始 6A-6。
