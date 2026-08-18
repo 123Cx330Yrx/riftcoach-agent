@@ -1023,3 +1023,19 @@ requeue 或重跑。人工恢复必须二次确认同一 worker，并通过 runn
 PostgreSQL reconciliation/离线产品纵向测试因本机无 DB 明确 skipped。当前裁决为“本地实现完成，等待
 exact-SHA 公共 PostgreSQL CI”；成功前 6A-4 不关闭，不进入 6A-5。Worker 环境组合 CLI 继续
 fail-closed，留给 6A-5 production-like composition/lifecycle。
+
+## 6A-4 exact-SHA 公共闭环与 6A-5 交接（2026-08-18）
+
+提交 `41ac9c1fab5f6aa3053ca78a2e8f314e95aa0f2c` 已推送；GitHub Actions run `32102522662`
+的 `pytest` 与 `postgres-migrations` 两个 job 均 completed/success。公开完整 pytest 为
+`1033 passed, 20 skipped, 1 warning, 110 subtests passed`；PostgreSQL 17 job 明确执行
+`tests/test_database_config.py`、migration、repository、claim、`test_task_reconciliation_postgres.py`
+与 `test_task_product_vertical_postgres.py`，共 `40 passed`。
+
+这确认 6A-4 的生产语义不是只在 Fake 测试中成立：真实数据库验证了完整 receipt 对账成功、无 receipt
+保持 `running/recovery_required`、人工 recovery CAS 阻断迟到 Worker，以及 PostgreSQL + 现有
+Application/Runtime/RAG/Harness/Artifact 的离线纵向接线。CI 没有读取 Key 或调用 Riot/Provider。
+
+因此 6A-4 正式关闭，canonical 只交接 `6A-5-async-fastapi-composition` 准备状态。下一批才会
+讨论并实现异步 FastAPI 202 合同、ActorContext、lifespan、task/run/report query 与 health；当前
+不得把 6A-4 的公共闭环描述成完整 Web 产品、自动 crash recovery、Session/Memory 或公网部署。

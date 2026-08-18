@@ -2497,3 +2497,18 @@
   YAML 与 diff check 全部通过。本轮真实 Riot/Provider/Key I/O 为 0；Fake Provider 纵向只证明接线。
 - 当前下一步只提交、推送并等待 exact-SHA `pytest` 与 `postgres-migrations`；公开真库成功前 6A-4
   保持 in progress，不进入 6A-5。
+
+## 2026-08-18：6A-4 exact-SHA 公共闭环与 6A-5 交接
+
+- 提交 `41ac9c1fab5f6aa3053ca78a2e8f314e95aa0f2c` 已推送；Actions run `32102522662` 的 `pytest` 与
+  `postgres-migrations` 两个 job 均 completed/success。公开完整 pytest 为
+  `1033 passed, 20 skipped, 1 warning, 110 subtests passed`。
+- PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `40 passed`，其中本轮新增的 5 项 reconciliation/
+  产品纵向测试真实执行；migration upgrade/downgrade/upgrade 与 metadata check 也通过。
+- 6A-4 正式关闭：SQL 预留 run_id、真实 Task Executor、receipt/Trace/final Artifact 证据、保守
+  reconciliation、recovery-required 与人工 recovery CAS 已获得真实 PostgreSQL 公共证据。CI 无
+  `.env`/Key、Riot/Provider I/O；Fake Provider 纵向仍不代表模型质量。
+- 四条进度线已同步：本地代码与公开证据均到 6A-4；项目理解已覆盖 SQL/Artifact crash window 与
+  保守恢复；参考项目没有被整体接入；GitHub/部署有新的 exact-SHA CI 证据但异步 API/网页未部署。
+- canonical 唯一下一检查点改为 `6A-5-async-fastapi-composition` 准备状态；等待用户明确继续，
+  本轮不自动实现异步 FastAPI、ActorContext、lifespan、Session/Memory、SSE、Auth 或前端。

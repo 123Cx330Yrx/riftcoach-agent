@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 12 - `6A-4-application-artifact-integration` authorized by RQ-056 after 6A-3 completed publicly at
-`55e369e9697b91c71fb4638ac9299ad2c5e57a36` / Actions `32097561436`
+Phase 13 - `6A-5-async-fastapi-composition` preparation after 6A-4 completed publicly at
+`41ac9c1fab5f6aa3053ca78a2e8f314e95aa0f2c` / Actions `32102522662`
 
 ## Phases
 
@@ -253,8 +253,9 @@ Phase 12 - `6A-4-application-artifact-integration` authorized by RQ-056 after 6A
 
 ## Next Step
 
-`6A-4-application-artifact-integration`：按已确认实施计划先写红灯，再实现 run_id 贯穿、真实 Executor、
-receipt-proven terminal、conservative reconciliation 与人工 recovery CAS；不进入 6A-5。
+`6A-5-async-fastapi-composition`：准备状态；等待用户明确继续后，先按实施计划教学并冻结
+POST 202、task/run/report query、可信 ActorContext、lifespan 与 live/ready 的 HTTP/Application
+composition；当前不自动实现。
 
 ## 6A-1 Checklist
 
@@ -300,9 +301,9 @@ receipt-proven terminal、conservative reconciliation 与人工 recovery CAS；�
 
 ### Phase 12 - 6A-4-application-artifact-integration
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-056.
-- 6A-3 已正式关闭；当前只实现 run_id/Application/Artifact integration、receipt-proven
+- 6A-3 已正式关闭；6A-4 已实现 run_id/Application/Artifact integration、receipt-proven
   reconciliation 与人工 recovery，不进入 6A-5。
 
 ## 6A-4 Checklist
@@ -312,7 +313,14 @@ receipt-proven terminal、conservative reconciliation 与人工 recovery CAS；�
 - [completed] 实现 trusted run_id 贯穿、真实 Recent Review Executor 与 terminal evidence 校验
 - [completed] 实现 receipt-proven reconciliation、recovery-required 投影与人工 recovery CAS
 - [completed] 运行聚焦、完整、两套 RAG 与全部横向门禁
-- [in_progress] 提交、推送并等待 exact-SHA PostgreSQL CI，成功后只交接 6A-5 准备状态
+- [completed] 提交、推送并由 `41ac9c1` / Actions `32102522662` 完成 exact-SHA PostgreSQL CI，随后只交接 6A-5 准备状态
+
+### Phase 13 - 6A-5-async-fastapi-composition preparation
+
+- Status: in_progress
+- Pause: preparation; awaiting explicit user confirmation.
+- 6A-4 的真实 PostgreSQL 公共门已完成；当前不实现异步 FastAPI、ActorContext、lifespan、Session、
+  Memory、SSE、正式 Auth、前端或公网部署。
 
 ## 6A Entry Design Checklist
 

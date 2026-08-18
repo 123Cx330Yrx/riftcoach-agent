@@ -2547,3 +2547,18 @@
 - 新真库测试共 5 项：完整 receipt reconciliation、无 receipt 保持 running、人工恢复阻断迟到 Worker、
   无证据不变更，以及 PostgreSQL + Application + local RAG + Fake Provider + Runtime/Harness/Artifact 纵向。
   本机明确 skip，GitHub PostgreSQL 17 job 是阻塞证据。
+
+## 2026-08-18：6A-4 exact-SHA 公共证据
+
+- 提交 `41ac9c1fab5f6aa3053ca78a2e8f314e95aa0f2c` 的 Actions run `32102522662` 已完成；`pytest` 与
+  `postgres-migrations` 均 completed/success。公开完整 pytest 为 `1033 passed, 20 skipped, 1 warning,
+  110 subtests passed`。
+- PostgreSQL 17 job 明确执行 6 个数据库测试文件并得到 `40 passed`，其中新增
+  `tests/test_task_reconciliation_postgres.py` 与 `tests/test_task_product_vertical_postgres.py` 的 5 项
+  测试已在真实 PostgreSQL 中执行，不再是本机 skip。migration upgrade/downgrade/upgrade 与 metadata
+  check 同样通过。
+- 因此 6A-4 的 receipt-proven success、保守 recovery-required、worker-confirmed-dead CAS、迟到 Worker
+  拒绝和 SQL + Application/Runtime/Harness/Artifact 纵向接线获得公共真库证据。CI 没有读取 `.env`/Key，
+  没有 Riot/Provider I/O；Fake Provider 仍只代表离线控制流，不代表模型质量。
+- 6A-4 正式关闭；唯一交接为 `6A-5-async-fastapi-composition` 准备状态。6A-5 的异步 HTTP、ActorContext、
+  composition/lifespan 与 health 尚未开始，不能由本轮证据提前声称完成。

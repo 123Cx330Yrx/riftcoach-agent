@@ -1892,5 +1892,17 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `VERIFIED-LOCAL`：聚焦 `130 passed, 12 skipped`，完整
   `1033 passed, 20 skipped, 1 warning, 110 subtests passed`；两套 RAG、compileall、Harness dry-run、
   governance、秘密/SDK/YAML/diff 门通过。新增 5 项真库测试因本机无 PostgreSQL 明确 skip。
-- `CURRENT`：6A-4 保持 in progress；下一步只提交、推送并等待 exact-SHA PostgreSQL CI。成功前不关闭、
-  不交接 6A-5；本地离线 Fake Provider 纵向不证明真实模型质量。
+- `AT-THE-TIME`：当时 6A-4 保持 in progress；下一步是提交、推送并等待 exact-SHA PostgreSQL CI。
+  该临时状态已由下方公共闭环条目取代；本地离线 Fake Provider 纵向不证明真实模型质量。
+
+### 2026-08-18：6A-4 exact-SHA 公共闭环与 6A-5 交接
+
+- `VERIFIED-PUBLIC`：提交 `41ac9c1fab5f6aa3053ca78a2e8f314e95aa0f2c` 的 Actions run `32102522662`
+  中 `pytest` 与 `postgres-migrations` 均 completed/success；完整 pytest 为 `1033 passed, 20 skipped,
+  1 warning, 110 subtests passed`，真实 PostgreSQL job 为 `40 passed`。
+- `EVIDENCE`：新增 reconciliation 与 Application/Runtime/Harness/Artifact 纵向测试已在 PostgreSQL 17
+  service 中实际执行；migration 可逆性和 metadata head 也通过。CI 无 Key、Riot/Provider 调用。
+- `CLOSED`：6A-4 正式关闭，保守 `recovery_required`、人工 worker-matching CAS 与迟到结果拒绝边界保持；
+  不外推为自动 lease/reclaim、异步 API、Session/Memory 或公网部署完成。
+- `HANDOFF`：canonical 唯一下一检查点改为 `6A-5-async-fastapi-composition` 准备状态，等待用户明确
+  继续；不得自动开始实现。

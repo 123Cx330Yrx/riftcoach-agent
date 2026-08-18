@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 6
 substage_group: "6A"
-current_checkpoint: "6A-4-application-artifact-integration"
+current_checkpoint: "6A-5-async-fastapi-composition"
 status: in_progress
-pause_reason: "6A-4 local implementation passed; awaiting commit/push and exact-SHA PostgreSQL CI"
+pause_reason: "6A-5 preparation; awaiting explicit user confirmation before implementation"
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: "6A-4 local implementation passed; awaiting commit/push and exact-
 ## 状态元数据
 
 - 最后更新：2026-08-18
-- 主阶段：阶段 6，`6A-3` 已公开完成；`6A-4-application-artifact-integration` 本地实现与门禁完成，待 exact-SHA PostgreSQL CI
+- 主阶段：阶段 6，`6A-4-application-artifact-integration` 已完成本地与 exact-SHA PostgreSQL 公共门；当前只交接 `6A-5-async-fastapi-composition` 准备状态
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -116,9 +116,11 @@ pause_reason: "6A-4 local implementation passed; awaiting commit/push and exact-
   双 Worker 不重复、ownership/terminal CAS、短事务与 timestamp invariant。6A-3 正式关闭，只交接
   6A-4 准备状态；不接真实 Application/Artifact 或 API。用户随后按 RQ-056 恢复 6A-4；trusted run_id、
   真实 Recent Review Task Executor、严格 receipt/Trace/final Artifact terminal、receipt-proven
-  reconciliation、recovery-required 与人工 recovery CAS 已本地实现。聚焦 `130 passed, 12 skipped`，
-  完整 `1033 passed, 20 skipped, 1 warning, 110 subtests passed` 与全部横向门禁通过；新增 5 项真库
-  测试仍待 exact-SHA PostgreSQL CI，故 6A-4 尚未关闭。上一子阶段组
+  reconciliation、recovery-required 与人工 recovery CAS 已实现。提交
+  `41ac9c1fab5f6aa3053ca78a2e8f314e95aa0f2c` 的 Actions run `32102522662` 中 `pytest` 与
+  `postgres-migrations` 均 completed/success；完整 pytest 为 `1033 passed, 20 skipped, 1 warning,
+  110 subtests passed`，真实 PostgreSQL job 执行 6 个数据库测试文件并得 `40 passed`，其中包含本轮
+  5 项 reconciliation/产品纵向测试。6A-4 正式关闭，只交接 6A-5 准备状态。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -248,9 +250,9 @@ pause_reason: "6A-4 local implementation passed; awaiting commit/push and exact-
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：完成 `6A-4-application-artifact-integration` 的提交、推送，并等待 exact-SHA GitHub
-  Actions 的 `pytest` 与真实 PostgreSQL `postgres-migrations` 成功；成功前不得关闭或进入 6A-5。
-  本轮不实现异步 API、Session、Memory、SSE、鉴权、前端或部署。
+- 唯一下一步：`6A-5-async-fastapi-composition` 准备状态；等待用户明确继续后，才按实施计划实现
+  POST 202、task/run/report query、可信 ActorContext、lifespan 与 live/ready。当前不自动开始 6A-5，
+  也不实现 Session、Memory、SSE、正式鉴权、前端或公网部署。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -551,10 +553,10 @@ pause_reason: "6A-4 local implementation passed; awaiting commit/push and exact-
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5 已完成；6A-1/2/3 已公开，6A-4 trusted run_id/Executor/evidence/reconciliation/manual recovery 本地实现和门禁通过，5 项真库门待 CI | 生产模型质量、完整异步 API、自动 crash recovery、Session/Memory 或前端已完成 |
+| 本地代码 | 阶段 0-5 已完成；6A-1/2/3/4 已由真实 PostgreSQL CI 公开闭环，6A-4 含 trusted run_id/Executor/evidence/reconciliation/manual recovery | 生产模型质量、完整异步 API、自动 crash recovery、Session/Memory 或前端已完成 |
 | 项目理解 | 已讲解 6A-1 至 6A-4：PostgreSQL、幂等、SKIP LOCKED、CAS、SQL/Artifact 双存储 crash window、receipt-proven reconciliation 与无 lease 保守恢复 | 理解和离线测试等于自动 reclaim、生产容灾或完整 Agent 产品完成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | 最新公共闭环仍是 6A-3 `55e369e` / Actions `32097561436`；6A-4 尚未提交/公开，正式异步 API/网页未部署 | 本地 6A-4、Fake Provider 纵向或旧真库 CI 等于新的公共证据、生产切换或 Web Agent 可用 |
+| GitHub/部署 | 6A-4 提交 `41ac9c1` / Actions `32102522662` 的 `pytest` 与真实 PostgreSQL job 均成功；正式异步 API/网页仍未部署 | 6A-4 公共闭环等于生产切换、正式 Web Agent、Session/Memory 或公网可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -961,3 +963,21 @@ ADR-0028 因此接受 5D-7 完成，同时保留当前无领域 Provider 准入�
 Provider、切换模型、接入 LangGraph/Agent SDK 或提前进入 5P/5F。退出审查提交
 `2f4e4d40f00cf6a14b7c9c0f85e8d3cbdc8c2493` 已通过 GitHub Actions run
 `31877076222` 的 exact-SHA 公共 CI；5D 的本地与公开退出证据均已闭环。
+
+### 2026-08-18：6A-4 exact-SHA 公共闭环与 6A-5 交接
+
+提交 `41ac9c1fab5f6aa3053ca78a2e8f314e95aa0f2c` 已推送并由 GitHub Actions run
+`32102522662` 完成 exact-SHA 公共验证；`pytest` job 与 `postgres-migrations` job 均
+completed/success。公开 `pytest` 为 `1033 passed, 20 skipped, 1 warning, 110 subtests
+passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `40 passed`，包含本轮
+5 项 reconciliation/产品纵向测试。治理、两套 RAG、compileall、Harness dry-run、SDK/秘密
+边界和 migration head 检查均通过，CI 无 `.env`、Key、Riot/Provider 调用。
+
+因此 `6A-4-application-artifact-integration` 正式完成。它证明 SQL task 的 `run_id` 能安全
+贯穿现有 Application/Runtime/Artifact，完整 receipt/Trace/final Artifact 证据能形成 succeeded
+投影；没有终态证据时只报告 `recovery_required`，人工恢复通过 worker-matching CAS，不能自动
+判死、重跑或 reclaim。它不证明 lease/heartbeat、自动恢复、异步 HTTP、Session/Memory 或公网
+部署已经完成。
+
+canonical 唯一下一检查点改为 `6A-5-async-fastapi-composition` 准备状态，等待用户明确继续；
+不得在当前交接中自动实现 POST 202、ActorContext、lifespan、task query 或 health endpoint。
