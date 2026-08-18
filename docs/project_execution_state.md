@@ -1,10 +1,10 @@
 ---
 state_schema: 1
 main_stage: 6
-substage_group: "6A"
-current_checkpoint: "6A-7-packaging-exit-review"
+substage_group: "stage-6-session-memory"
+current_checkpoint: "stage-6-session-memory-entry-design"
 status: in_progress
-pause_reason: "RQ-059; d8c5063 isolated Alembic import-root drift; module-entry packaging fix in progress"
+pause_reason: "6A completed at adf53e5 / Actions 32146760003; next stage-6 checkpoint prepared and awaiting explicit user authorization"
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: "RQ-059; d8c5063 isolated Alembic import-root drift; module-entry 
 ## 状态元数据
 
 - 最后更新：2026-08-18
-- 主阶段：阶段 6，`6A-6-security-lifecycle-nfr` 已由提交 `31d5e60` / Actions `32138025724` 完成 exact-SHA pytest、真实 PostgreSQL 与性能基线公共验证；RQ-059 已授权，当前实施 `6A-7-packaging-exit-review`
+- 主阶段：阶段 6；6A 持久异步 API/task 基座已由 `adf53e5` / Actions `32146760003` 完成 pytest、真实 PostgreSQL 与 Linux packaging-smoke 公共闭环；下一检查点 `stage-6-session-memory-entry-design` 仅为准备状态，等待用户明确继续
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "RQ-059; d8c5063 isolated Alembic import-root drift; module-entry 
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：在 `6A-7-packaging-exit-review` 内，`d8c5063` / Actions `32146113582` 已用安全码和日志定位到 script-path 启动导致的 Alembic import-root 漂移；当前只提交 Compose module-entry 修复并重跑三个 exact-SHA job。全绿前不关闭 6A，也不进入后续功能。
+- 唯一下一步：`stage-6-session-memory-entry-design` 仅准备进入 Session/Memory 的需求与设计审计，等待用户明确授权；不得因 6A 公共成功自动实现 Memory、Auth、SSE、前端或后续阶段。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -551,10 +551,10 @@ pause_reason: "RQ-059; d8c5063 isolated Alembic import-root drift; module-entry 
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5 已完成；6A-1 至 6A-6 已由真实 PostgreSQL CI 公开闭环；6A-7 packaging/Worker composition/no-I/O smoke 与本地门已完成，等待本轮公共 CI | 生产模型质量、Linux package 已公开验证、自动 crash recovery、Session/Memory、正式 Auth 或前端已完成 |
-| 项目理解 | 已讲解 6A-1 至 6A-7：API/Worker/PostgreSQL 进程职责、配置 fail-closed、隔离 no-I/O Linux smoke 与 exit matrix 证据边界 | 理解和本地控制面测试等于正式鉴权、容灾、SLA 或完整 Agent 产品完成 |
+| 本地代码 | 阶段 0-5 与阶段 6 的 6A 已完成；API+PostgreSQL+独立 Worker package 具有本地与 Linux/真库公共证据；Session/Memory 尚未开始 | 生产模型质量、自动 crash recovery、Session/Memory、正式 Auth、SSE 或前端已完成 |
+| 项目理解 | 已讲解并验证 6A-1 至 6A-7：API/Worker/PostgreSQL、短事务、fail-closed composition、隔离 no-I/O smoke 与证据边界 | package/control-plane 证据等于正式鉴权、容灾、SLA、长期 Coach 或真实模型质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | `d8c5063` / Actions `32146113582` 再次 pytest/真库绿并把 Linux failure 定位为 smoke import-root；module-entry 修复待新 SHA，网页与公网仍未部署 | 找到根因等于 package 已闭环，或 CI 等于生产切换、Session/Memory/公网可用 |
+| GitHub/部署 | `adf53e5` / Actions `32146760003` 的 pytest、PostgreSQL、Linux packaging-smoke 三 job 全绿；非 root/image boundary 与 external calls 0 已公开验证；网页与公网仍未部署 | package CI 等于生产切换、正式 Auth/Session/Memory、备份、SLA 或公网可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -1062,8 +1062,8 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 本地聚焦 `48 passed, 1 warning`；完整 `1102 passed, 27 skipped, 1 warning, 110 subtests passed`；
   两套 RAG 满门槛、Harness dry-run `published`/0 revisions、compileall 与安全边界通过。27 个 skip 和
   Docker/Compose 运行不能在本机冒充成功，必须由 exact-SHA PostgreSQL/Linux CI 补齐。
-- 当前退出裁决保持 `keep-open-pending-exact-sha-linux-ci`；最终 YAML/diff/governance/security 快照已通过，
-  唯一下一动作是提交推送并等待 `pytest`、`postgres-migrations`、`packaging-smoke` 三个同 SHA job。
+- 在首个公共 run 前，本地退出裁决保持 `keep-open-pending-exact-sha-linux-ci`；当时最终
+  YAML/diff/governance/security 快照已通过，下一动作是提交推送并等待三个同 SHA job。
 
 ## 2026-08-18：首个 6A-7 公共 run 部分失败与受限诊断
 
@@ -1075,8 +1075,8 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 由于首版错误码把 DB/claim/CAS/query 多层压成同一值，当前未凭猜测改业务逻辑；已本地 TDD 增加
   body-free allowlisted 分层码，并在 failure 时只输出 bounded API/PostgreSQL logs。聚焦 `48 passed`、
   完整 `1102 passed, 27 skipped, 110 subtests passed`。
-- 6A 保持 `in_progress`；唯一下一动作是提交该诊断修补并等待新 exact-SHA 三 job，以真实 stage code
-  决定是否还需产品修复。
+- 在该诊断检查点，6A 正确保留 `in_progress`；当时下一动作是提交诊断修补并等待新 exact-SHA 三 job，
+  以真实 stage code 决定是否还需产品修复。
 
 ## 2026-08-18：第二个 6A-7 run 定位 Alembic import-root
 
@@ -1088,4 +1088,18 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   wheel 中的 `app`，其 `PROJECT_ROOT` 不含镜像的 Alembic 文件。真实 Worker 同样存在该启动风险。
 - 已用红灯合同要求两条 Compose 命令都使用 `python -m scripts.<module>`，随后最小修改 Worker/smoke
   command；聚焦 48 项与两个 module `--help` 入口通过。未放宽 readiness、复制 migration 或改 DB 语义。
-- 当前唯一下一动作是完成横向门、提交 module-entry 修复并等待新 exact-SHA 三 job。
+- 在该根因检查点，当时下一动作是完成横向门、提交 module-entry 修复并等待新 exact-SHA 三 job。
+
+## 2026-08-18：6A-7/6A exact-SHA 公共闭环
+
+- module-entry 修复提交 `adf53e56d1eb624746b493ad8b281598c9a0dd32` 的 Actions run
+  `32146760003` 三 job 全部 completed/success：pytest `1102 passed, 27 skipped, 1 warning,
+  110 subtests passed`；真实 PostgreSQL `51 passed, 1 warning`；packaging-smoke 完整成功。
+- Linux smoke 的安全输出为 `task_status=failed`、`external_riot_provider_calls=0`：它真实覆盖 HTTP 202、
+  PostgreSQL claim、安全 failure terminal 与 HTTP query；随后 image boundary 确认非 root，且镜像不含
+  `.env`、tests、cache/runs、reports、tmp。
+- 6A 退出裁决为 `close-with-deferred-boundaries`：持久异步 task API 基座与可重建 package 已完成；
+  Session/Memory、正式 Auth/HTTPS、SSE/前端、lease/reclaim/cancel/resume、备份/SLA 和真实模型领域质量
+  继续 deferred。
+- `6A-7-packaging-exit-review` 与整个 6A 正式完成。canonical 只交接
+  `stage-6-session-memory-entry-design` 准备状态，等待用户明确继续，不自动实施。

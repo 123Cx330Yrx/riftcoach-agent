@@ -2700,3 +2700,14 @@
 - 下一动作：完整/横向门、提交推送并等待新 exact-SHA 三 job；不进入 Session/Memory 或外部 I/O。
 - 首轮状态回写治理检查发现 canonical 的“唯一下一步”自然语言漏掉精确 checkpoint 字面键；门禁在提交前
   阻止。已补回 `6A-7-packaging-exit-review` 并保持 module-entry 修复范围不变，随后必须重跑治理。
+
+## 2026-08-18：6A-7 与 6A 公共闭环
+
+- module-entry 修复提交 `adf53e56d1eb624746b493ad8b281598c9a0dd32` 已推送；Actions
+  `32146760003` 的 pytest、postgres-migrations、packaging-smoke 三 job 全部成功。
+- 公共 pytest 为 `1102 passed, 27 skipped, 1 warning, 110 subtests passed`；RAG 两门满阈值、Harness
+  published；真实 PostgreSQL 为 `51 passed, 1 warning`。
+- Linux smoke 真实输出 `external_riot_provider_calls=0` 与安全 failed terminal；随后非 root/image
+  exclusion 检查成功。失败诊断 step 因 smoke 成功而正确跳过，teardown 成功。
+- exit matrix/review 改为 `close-with-deferred-boundaries`；RQ-059 与 Phase 15 完成。canonical 只交接
+  `stage-6-session-memory-entry-design` 准备状态，等待用户明确继续，不自动实现 Session/Memory。

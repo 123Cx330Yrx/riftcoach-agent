@@ -3,7 +3,7 @@
 ## 用途
 
 本矩阵逐条核对 ADR-0038 与 6A 正式设计。测试数量只能说明回归规模，不能替代“承诺—实现—证据—限制”
-映射。`公开证据待定` 的行在 exact-SHA Actions 成功前不能用于关闭 6A。
+映射。最终公共证据为 `adf53e5` / Actions `32146760003`。
 
 ## 退出矩阵
 
@@ -17,9 +17,9 @@
 | POST 202、task/run/report owner 查询、lifespan 与 live/ready | `app/api/main.py`、`actor.py`、`composition.py` | Fake/API 与真实 PostgreSQL API 测试 | `2492951` / Actions `32106378542` | production 缺 Auth Provider 时 fail closed | 已满足 |
 | 默认 CORS、body-free logs/errors、容量、7/90/30 retention 与安全删除 | API/Task security、retention、deletion、observability | 安全、生命周期、并发 capacity 与删除补偿测试 | `31d5e60` / Actions `32138025724` | 正式 Auth/HTTPS/备份尚未实现 | 已满足当前 6A 范围 |
 | warm create/query `<300ms`、queued→claim `<2s` 的作品集基线 | `tests/test_task_performance_postgres.py` | PostgreSQL 17/Python 3.11，8+8 样本 | `31d5e60` / Actions `32138025724` | 不是公网 SLA、Agent 延迟或模型质量 | 已满足当前 NFR |
-| 真实 Worker 在 claim 前完成 DB/Data Dragon/RAG/Prompt composition，并校验 Riot/Provider 配置与构造合同 | `app/workers/composition.py`、`scripts/run_review_worker.py --check` | `tests/test_worker_composition.py` 与相邻回归 | `b0f61ca` pytest/真库绿；runtime profile 尚未真实启动 | 当前只准入 Zhipu 产品基线；预检不冒充在线凭据或领域质量验证 | 本地通过，package 公共待定 |
-| 非 root Linux 镜像、migration/API/Worker Compose 与 no-I/O smoke | `Dockerfile`、`.dockerignore`、`compose.yaml`、`run_packaging_smoke.py` | packaging contract；隔离 project 的 `up --wait` + module one-off smoke | `d8c5063` / `32146113582` 定位 direct-script Alembic root 漂移；module fix 待 CI | 本机无 Docker；不放宽 migration readiness | 未满足，待新 Linux CI |
-| 完整回归、RAG、compileall、Harness/Secret/SDK/governance 与 diff 门 | workflow 与标准门命令 | 聚焦 `48 passed`；完整 `1102 passed, 27 skipped, 110 subtests passed`；两套 RAG 满门槛；Harness dry-run published | `b0f61ca` pytest `1100/27 skipped/110 subtests`、PostgreSQL `51 passed` 成功；新诊断 SHA 待定 | CI 不读取 Key、不调用 Riot/Provider | 本地通过，待新 exact-SHA CI |
+| 真实 Worker 在 claim 前完成 DB/Data Dragon/RAG/Prompt composition，并校验 Riot/Provider 配置与构造合同 | `app/workers/composition.py`、`scripts/run_review_worker.py --check` | `tests/test_worker_composition.py` 与相邻回归 | `adf53e5` / `32146760003` pytest 与 package command contract 成功 | 当前只准入 Zhipu 产品基线；未用真实 Key 启动 runtime profile，预检不冒充在线凭据/质量验证 | 已满足当前 6A 范围 |
+| 非 root Linux 镜像、migration/API/Worker Compose 与 no-I/O smoke | `Dockerfile`、`.dockerignore`、`compose.yaml`、`run_packaging_smoke.py` | packaging contract；隔离 project 的 `up --wait` + module one-off smoke | `adf53e5` / `32146760003` packaging-smoke success；external calls 0；image boundary success | smoke 故意验证安全 failed terminal，不证明 Coach 质量 | 已满足 |
+| 完整回归、RAG、compileall、Harness/Secret/SDK/governance 与 diff 门 | workflow 与标准门命令 | 聚焦 `48 passed`；完整 `1102 passed, 27 skipped, 110 subtests passed`；两套 RAG 满门槛；Harness dry-run published | `adf53e5` pytest `1102/27 skipped/110 subtests`、PostgreSQL `51 passed`、packaging success | CI 不读取 Key、不调用 Riot/Provider | 已满足 |
 
 ## 明确 deferred
 
@@ -32,5 +32,5 @@
 
 ## 当前退出裁决
 
-`keep-open-pending-exact-sha-linux-ci`。本地 composition、完整回归与横向门已经通过，但新增 Linux
-Docker/Compose job 尚未产生 exact-SHA 公共结果，因此 6A 仍是 `in_progress`。
+`close-with-deferred-boundaries`。ADR-0038/6A 当前承诺均已有源码、测试与 exact-SHA 公共证据；明确
+deferred 项不被伪装为已完成。6A 可以关闭，但整个阶段 6 仍需 Session/Memory。

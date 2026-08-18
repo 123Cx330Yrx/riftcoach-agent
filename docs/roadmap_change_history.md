@@ -1998,3 +1998,14 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   从 `/opt/riftcoach` 源码导入。Worker command 具有同一隐患。
 - `CURRENT`：只把两条 Compose command 改为 `python -m scripts...`，保持严格 Alembic readiness；新
   exact-SHA 三 job 全绿前 6A 继续 in progress。
+
+### 2026-08-18：6A-7 与整个 6A 公共闭环
+
+- `VERIFIED-PUBLIC`：`adf53e5` / Actions `32146760003` 的 pytest、postgres-migrations、
+  packaging-smoke 三 job completed/success；公开 pytest 1102/27 skipped/110 subtests，真库 51 passed。
+- `PACKAGE-EVIDENCE`：Linux smoke 输出 `external_riot_provider_calls=0`、task failed terminal；非 root 与
+  `.env`/tests/cache/runs/reports/tmp image exclusion 全部通过。
+- `CLOSED`：6A-7/RQ-059 与整个 6A 以 `close-with-deferred-boundaries` 完成；不外推 Session/Memory、
+  Auth/HTTPS、lease/reclaim、SSE/前端、备份/SLA 或模型质量。
+- `HANDOFF`：canonical 只切到 `stage-6-session-memory-entry-design` 准备状态，等待用户明确继续；不自动
+  实现，也不提前进入阶段 7/8。

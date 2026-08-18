@@ -2,9 +2,8 @@
 
 ## 结论先行
 
-当前本地裁决是 `ready-for-public-reverification`，不是 6A 已关闭。6A-1 至 6A-6 的公共证据仍然
-有效；6A-7 已补齐真实 Worker executable composition、非 root 镜像、Compose 依赖和 no-I/O Linux smoke，
-本轮完整本地门已经成功；只有 exact-SHA Actions 也成功后，才允许将 exit matrix 的待定项改为通过。
+最终裁决是 `close-with-deferred-boundaries`。6A-1 至 6A-6 的既有公共证据与 6A-7 的
+`adf53e5` / Actions `32146760003` 三 job 共同覆盖持久 task/API/package；这只关闭 6A，不关闭整个阶段 6。
 
 ## 这一步实际解决了什么
 
@@ -74,10 +73,6 @@ API 与数据库目标还被限制为 Compose/本机 host，test profile 不能�
 
 ## 下一动作与退出裁决
 
-首个 `b0f61ca` / Actions `32145005904` 的 pytest 与真实 PostgreSQL 成功，Linux image/migration/API
-ready 成功，但 one-off smoke 失败。当前只提交 allowlisted stage diagnostics 与 bounded logs 后重新等待
-三个 Actions job；全部成功前退出裁决保持 `keep-6a-open`。
-
-诊断提交 `d8c5063` / Actions `32146113582` 已把失败固定为 Alembic readiness import-root：API 对同一
-DB ready 且 POST 202，direct script 却从 wheel import app。Worker/smoke 现改为 `python -m scripts...`；
-该修复必须由新 Linux run 证明，不能因本地 module `--help` 通过就关闭 6A。
+首个 `b0f61ca` 和诊断 `d8c5063` 分别暴露宽错误码与 direct-script Alembic root 漂移；项目没有放宽
+readiness，而是用 module entry 修复。最终 `adf53e5` / Actions `32146760003` 的 pytest、真库和
+packaging-smoke 全绿，image boundary 也通过，因此 6A 正式关闭并只交接 Session/Memory entry 准备状态。

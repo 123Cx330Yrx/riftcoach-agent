@@ -1140,9 +1140,10 @@ production Worker composition、`--check/--once`、非 root image、Compose 与 
 API stack 先以 `up --wait` 完成 migration/readiness，再用 one-off smoke 取得自身退出码，避免一次性
 migration 正常退出触发整组提前终止。
 
-诊断修补后本地聚焦 `48 passed`、完整 `1102 passed, 27 skipped, 110 subtests passed`，RAG、Harness dry-run、
-compileall 与安全门通过。本机没有 Docker/PostgreSQL，故 27 个 skip 与 Linux smoke 不能冒充成功；
-退出裁决保持 `keep-open-pending-exact-sha-linux-ci`，只允许提交推送并等待三个同 SHA 阻塞 job。
+在最终公共 run 之前，诊断修补后的本地聚焦为 `48 passed`、完整
+`1102 passed, 27 skipped, 110 subtests passed`，RAG、Harness dry-run、compileall 与安全门通过；
+由于本机没有 Docker/PostgreSQL，当时裁决正确保持 `keep-open-pending-exact-sha-linux-ci`。该临时裁决
+随后由下方 `adf53e5` 的三 job 公共成功取代。
 
 首个 `b0f61ca` / Actions `32145005904` 已让 pytest 与 PostgreSQL job 成功，也证明 Linux image、migration、
 API readiness 可运行；one-off smoke 仍失败且旧错误码过宽。项目决定先补允许列表 stage diagnostics 和
@@ -1152,3 +1153,7 @@ API readiness 可运行；one-off smoke 仍失败且旧错误码过宽。项目�
 DB 返回 readiness 200 并接受 POST 202。源码路径对照确认 direct script 从 wheel 导入 app，使 Alembic
 root 落在 site-packages。采用 `python -m scripts...` 统一 Worker/smoke import root；不硬编码容器路径，
 也不删除 migration identity gate。
+
+`adf53e5` / Actions `32146760003` 最终三 job 全绿；Linux smoke 输出外部 Riot/Provider calls 0，并完成
+HTTP create、PostgreSQL claim、安全 failed terminal、HTTP query 与 image boundary。6A 以 deferred
+边界关闭；下一次只在用户授权后设计 Session/Memory，不把 package CI 误称为长期 Coach 或公网生产。

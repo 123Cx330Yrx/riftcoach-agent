@@ -2700,3 +2700,15 @@
   readiness failure；这正是 d8c5063 Linux 日志呈现的组合。
 - 正确修复是用 `python -m scripts...` 让 WORKDIR 保持 import root，对 Worker 与 smoke 一致生效；错误修法是
   删除 migration 检查、把 not-ready 当 ready，或在脚本里硬编码 `/opt/riftcoach`。
+
+## 2026-08-18：最终 Linux package 证据能证明什么
+
+- `adf53e5` / Actions `32146760003` 证明干净 Ubuntu Runner 能构建非 root image，按 health/dependency
+  执行 PostgreSQL → migration → API ready，并由独立 one-off 容器经 HTTP 创建 task、真实 claim、写入
+  `failed/worker_execution_failed`、再通过 HTTP 复读同一 task。
+- 输出中的 `external_riot_provider_calls=0` 是由 smoke 路径结构和结果字段共同支持的“本次调用数为零”，
+  不是生产 Worker 永远不访问外部服务；真实 Worker 仍会在处理玩家任务时访问 Riot/Data Dragon/Provider。
+- image boundary 证明运行用户非 root，且 `/opt/riftcoach` 不含 `.env`、tests、本地 cache/runs、reports、
+  tmp；它不证明运行时 Secret manager、备份、HTTPS、Auth 或漏洞管理已经完成。
+- 因此 6A 可关闭的是“持久异步 task API 基座 + 可重建控制面 package”。长期 Session/Memory 与个性化
+  Coach 是同一主阶段 6 的后续问题，不能由本次 smoke 前推完成。

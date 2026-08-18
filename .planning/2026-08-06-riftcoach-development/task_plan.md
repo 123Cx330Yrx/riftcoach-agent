@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 15 - `6A-7-packaging-exit-review` implementation authorized by RQ-059 after 6A-6
-completed publicly at `31d5e6038943bd3eacbeb485300f63ad53e13bfd` / Actions `32138025724`
+Phase 16 - `stage-6-session-memory-entry-design` preparation after 6A completed publicly at
+`adf53e56d1eb624746b493ad8b281598c9a0dd32` / Actions `32146760003`; awaiting user authorization
 
 ## Phases
 
@@ -253,9 +253,8 @@ completed publicly at `31d5e6038943bd3eacbeb485300f63ad53e13bfd` / Actions `3213
 
 ## Next Step
 
-`6A-7-packaging-exit-review`：`d8c5063` / Actions `32146113582` 已把失败定位为 smoke 容器的 Alembic
-readiness import-root 漂移；当前只把 Worker/smoke Compose 命令改为 `python -m scripts...` 并以红绿
-合同固定。提交推送后重跑三个阻塞 job；全绿前保持 in progress。
+`stage-6-session-memory-entry-design`：6A 已由 `adf53e5` / Actions `32146760003` 三 job 公共闭环；
+当前只准备下一阶段 6 的 Session/Memory 入口审计，等待用户明确继续，不自动实现或创建新技术栈。
 
 ## 6A-1 Checklist
 
@@ -353,7 +352,7 @@ readiness import-root 漂移；当前只把 Worker/smoke Compose 命令改为 `p
 
 ### Phase 15 - 6A-7-packaging-exit-review implementation
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-059; user explicitly resumed 6A-7.
 - 6A-7 只负责可重建 API+Worker+PostgreSQL packaging、Linux smoke、6A exit matrix 与公开证据；
   必须闭环此前 fail-closed 的真实 Worker executable composition，但 CI/smoke 不读取真实 Key 或调用
@@ -366,7 +365,14 @@ readiness import-root 漂移；当前只把 Worker/smoke Compose 命令改为 `p
 - [completed] 先写 packaging contract、Linux no-I/O smoke 与 exit matrix 红灯
 - [completed] 实现最小 Dockerfile/Compose/Worker composition/config/startup 文档
 - [completed] 运行聚焦、完整、RAG、compileall、Harness/security/YAML/diff/governance 本地门；本机无 Docker/PostgreSQL 的真实运行证据由阻塞 CI 补齐
-- [in_progress] 完成 exit matrix/review、最终 diff 快照、提交、推送并等待 exact-SHA 三 job；成功后才关闭 6A
+- [completed] 完成 exit matrix/review、提交推送；`adf53e5` / Actions `32146760003` 的 pytest、PostgreSQL、packaging-smoke 三 job 全绿并关闭 6A
+
+### Phase 16 - stage-6-session-memory-entry-design preparation
+
+- Status: in_progress
+- 6A 已公开完成；本 checkpoint 只表示下一次用户确认后先审计 Session/Memory 需求、EchoMind 可迁移边界、
+  数据模型与隐私/更正/删除规则，不表示已经开始实现。
+- 正式 Auth、SSE、前端、阶段 7 MCP 或阶段 8 Multi-Agent 不能借此提前进入。
 
 ## 6A Entry Design Checklist
 
@@ -660,6 +666,7 @@ readiness import-root 漂移；当前只把 Worker/smoke Compose 命令改为 `p
 | 6A-7 首次独立 cached diff check 发现 Dockerfile EOF 多余空行 | 1 | 检查在 commit 前阻止提交；用最小补丁删除空行、重新暂存，并独立重跑 cached diff check，不改变镜像语义 |
 | 6A-7 首个 Linux one-off smoke 只返回过宽 `packaging_smoke_worker_failed` | 1 | pytest/真库/build/migration/API ready 均已成功，不猜测业务根因；用红灯增加 allowlisted stage code 与 bounded service logs，再以新 exact-SHA CI 定位 |
 | module-entry 状态回写时 canonical“唯一下一步”漏写 checkpoint 字面键 | 1 | governance 在提交前阻止；把 `6A-7-packaging-exit-review` 补回同一行，不改变根因、修复范围或阶段状态 |
+| direct script 在 Linux image 中从 wheel 导入 app，导致 Alembic PROJECT_ROOT 漂移 | 1 | d8c5063 安全码与 bounded logs 定位；用 `python -m scripts...` 统一 import root，adf53e5 packaging-smoke 全绿且未放宽 readiness |
 
 ### 5D-7 V3 资源校准离线实现（2026-08-15）
 

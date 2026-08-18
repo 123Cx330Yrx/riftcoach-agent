@@ -55,13 +55,13 @@ python -m pip install -e ".[dev]"
 仓库现在包含一个显式依赖注入的 FastAPI Adapter：`app.api.main:create_app(...)`，以及
 PostgreSQL durable task、owner-scoped 查询、POST 202 入队、独立 polling Worker 的控制面合同。
 HTTP 层不直接选择 Skill、拼 Prompt 或调用 Provider。6A-6 已为这个基座补齐默认关闭 CORS、
-日志/Secret 脱敏、有限容量、terminal delete 的隐藏与补偿、retention 和安全指标。6A-7 现已在本地
-建立 API+Worker+PostgreSQL packaging、真实 Worker composition 和 no-I/O Linux smoke 合同；exact-SHA
-公共验证成功前仍不把 6A 标为完成。
+日志/Secret 脱敏、有限容量、terminal delete 的隐藏与补偿、retention 和安全指标。6A-7 又完成
+API+Worker+PostgreSQL packaging、真实 Worker composition 和 no-I/O Linux smoke；提交 `adf53e5` / Actions
+`32146760003` 的 pytest、真实 PostgreSQL 与 Linux packaging 三个 job 已完成 exact-SHA 公共验证。
 
 这些能力仍不等于正式公网鉴权/HTTPS、Session/Memory、SSE 或自动 lease/reclaim。真实外部 Worker
-组合已在 6A-7 本地实现，但 Docker/Compose 公共 CI 成功前不能称为已验证部署；PostgreSQL job 继续是
-task 并发与生命周期语义的阻塞证据。
+组合与 Docker/Compose 控制面已通过公共 CI，但仍不能称为正式公网部署；PostgreSQL job 继续是 task
+并发与生命周期语义的阻塞证据，Linux smoke 也不证明模型报告质量。
 
 ### 本地 Linux package 与进程职责
 
