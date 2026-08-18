@@ -2581,3 +2581,13 @@
   compileall、Harness dry-run、Secret/run-data、SDK boundary、workflow YAML、diff 和 governance 通过；
   本轮 Key/Riot/Provider I/O 为 0。
 - 当前只剩 exact-SHA 提交/推送与真实 PostgreSQL CI；公共成功前不关闭 6A-6。
+
+## 2026-08-18：首个 6A-6 公共 run 与性能证据修补
+
+- 实现提交 `fecbb11` 已推送；Actions run `32137687527` 的 `pytest` 与 `postgres-migrations` 均成功。
+  公共完整测试为 `1077 passed, 27 skipped, 1 warning, 110 subtests passed`，PostgreSQL job 为
+  `51 passed, 1 warning`，包含 lifecycle/capacity/performance 文件。
+- 收尾审查没有直接关闭 6A-6：成功日志未打印实际 p95、样本数/环境，且原 claim 样本更接近 SQL
+  调用耗时。已把 create/query 增加 warm-up，把 claim 改为入队后累计等待，并让 PostgreSQL job 以
+  `-s` 输出安全的 environment/metric/samples/p95/target。
+- 该修补只增强证据，不改变产品路径；下一动作是聚焦/治理检查、提交推送并等待新的 exact-SHA CI。

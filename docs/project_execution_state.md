@@ -1024,3 +1024,7 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   两套 RAG、compileall、Harness dry-run、秘密/SDK/YAML/diff 与 governance 门禁通过。本机无 PostgreSQL，
   真实容量 race、删除和性能样本尚未执行。
 - 下一动作是提交/推送并等待 exact-SHA `pytest` 与 PostgreSQL CI；CI 成功前不关闭 6A-6。
+- 首个实现提交 `fecbb11` / Actions `32137687527` 的两个 job 均成功；完整 pytest 为
+  `1077 passed, 27 skipped, 1 warning, 110 subtests passed`，真实 PostgreSQL 为 `51 passed`。但成功
+  日志未记录 actual p95/sample/environment，claim 采样语义也偏向单次 SQL 调用；当前已做 evidence-only
+  修补并等待新的 exact-SHA CI，因此仍不关闭 6A-6。

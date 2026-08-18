@@ -2621,3 +2621,7 @@
   create/query 与 claim control-plane latency 纳入目标，不把 Agent/Provider 时长混入 p95。
 - API capacity 配置沿用现有 Repository advisory-lock 语义，新增环境变量只改变 owner/global 上限，
   不改变幂等 replay 或 terminal 不占容量规则。
+- 首个 exact-SHA run `32137687527` 已证明全部测试与真实 PostgreSQL 语义通过，但成功日志只显示
+  `51 passed`，没有记录 actual p95/sample/environment；且最初 claim 样本只测单次 SQL 调用耗时，
+  不足以完整表达 queued→running 等待。6A-6 因此保持 in progress，先增加 warm-up、累计队列等待样本
+  和安全 CI 输出，再以新 exact-SHA 证据关闭。
