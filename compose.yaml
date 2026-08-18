@@ -76,7 +76,8 @@ services:
     profiles: ["runtime"]
     command:
       - python
-      - scripts/run_review_worker.py
+      - -m
+      - scripts.run_review_worker
       - --worker-id
       - ${RIFTCOACH_WORKER_ID:-worker-1}
     environment:
@@ -115,7 +116,8 @@ services:
     profiles: ["smoke"]
     command:
       - python
-      - scripts/run_packaging_smoke.py
+      - -m
+      - scripts.run_packaging_smoke
       - --worker-id
       - packaging-smoke-worker
     environment:

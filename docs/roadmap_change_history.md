@@ -1989,3 +1989,12 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `DIAGNOSTIC-GAP`：该安全码过宽，不能区分 DB、claim、terminal CAS 或 query；不根据猜测改变业务链。
 - `CURRENT`：只增加 body-free allowlisted stage code 与 bounded API/PostgreSQL tail logs，完成本地 TDD
   后提交新 SHA。6A 保持 in progress，正式 Auth/Session/Memory 等范围不变。
+
+### 2026-08-18：第二个 Linux run 定位 import-root 漂移
+
+- `DIAGNOSED`：`d8c5063` / Actions `32146113582` 的安全码为 `packaging_smoke_database_not_ready`；
+  API logs 同时为 readiness 200/POST 202，真库 job 成功，排除 DB/migration 本身失败。
+- `ROOT-CAUSE`：direct script 从 wheel 导入 app，Alembic PROJECT_ROOT 落在 site-packages；module entry
+  从 `/opt/riftcoach` 源码导入。Worker command 具有同一隐患。
+- `CURRENT`：只把两条 Compose command 改为 `python -m scripts...`，保持严格 Alembic readiness；新
+  exact-SHA 三 job 全绿前 6A 继续 in progress。

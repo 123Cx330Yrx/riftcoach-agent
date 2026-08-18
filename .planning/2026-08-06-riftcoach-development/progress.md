@@ -2685,3 +2685,18 @@
   `ps` 与 API/PostgreSQL tail logs。红灯 2 failed/6 passed，绿灯 14 passed；完整 1102/27 skipped。
 - 当前未修改 Agent、Repository、API 业务语义，也未调用 Riot/Provider。下一动作是完成本修补横向门、
   提交推送并用新 exact-SHA Linux smoke 取得真实失败层或全绿结果。
+
+## 2026-08-18：6A-7 第二个 run 根因与 module-entry 修复
+
+- `d8c5063` / Actions `32146113582` 的 pytest 与 PostgreSQL 再次成功；Linux one-off 精确返回
+  `packaging_smoke_database_not_ready`。bounded API logs 同时证明 readiness 200、POST 202，PostgreSQL
+  healthy，因而没有把根因误判为数据库宕机。
+- 源码/镜像路径审查确认 direct script 让 Python 从 wheel 导入 `app.api.composition`，其相对
+  `PROJECT_ROOT` 找不到 `/opt/riftcoach/alembic.ini`；API 模块入口从工作目录源码导入则正常。真实 Worker
+  的 direct script command 有相同隐患。
+- 先改 packaging contract 期待 `python -m scripts.run_review_worker` / `run_packaging_smoke`，取得 1 个
+  预期红灯；再只改 Compose command，48 项聚焦和两个模块 `--help` 均通过。readiness 仍严格比较 DB
+  revision 与代码 head。
+- 下一动作：完整/横向门、提交推送并等待新 exact-SHA 三 job；不进入 Session/Memory 或外部 I/O。
+- 首轮状态回写治理检查发现 canonical 的“唯一下一步”自然语言漏掉精确 checkpoint 字面键；门禁在提交前
+  阻止。已补回 `6A-7-packaging-exit-review` 并保持 module-entry 修复范围不变，随后必须重跑治理。

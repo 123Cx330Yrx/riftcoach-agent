@@ -73,8 +73,8 @@ def test_compose_separates_real_worker_from_no_io_smoke() -> None:
     worker_command = " ".join(services["worker"]["command"])
     smoke_command = " ".join(services["smoke"]["command"])
 
-    assert "scripts/run_review_worker.py" in worker_command
-    assert "scripts/run_packaging_smoke.py" in smoke_command
+    assert worker_command.startswith("python -m scripts.run_review_worker")
+    assert smoke_command.startswith("python -m scripts.run_packaging_smoke")
     assert services["worker"]["environment"]["RIOT_API_KEY"] is not None
     assert "RIOT_API_KEY" not in services["smoke"].get("environment", {})
     assert "LLM_API_KEY" not in services["smoke"].get("environment", {})

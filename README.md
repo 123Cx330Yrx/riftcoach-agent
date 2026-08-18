@@ -96,7 +96,7 @@ API、PostgreSQL、claim 和终态回写；不证明 Coach 报告质量。成功
 运行真实本地 Worker 前，先在 `.env` 填入 Riot 与当前 Zhipu 产品基线配置，再执行完整预检：
 
 ```powershell
-python scripts\run_review_worker.py --worker-id worker-1 --check
+python -m scripts.run_review_worker --worker-id worker-1 --check
 docker compose --profile runtime up --build
 ```
 

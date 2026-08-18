@@ -77,3 +77,7 @@ API 与数据库目标还被限制为 Compose/本机 host，test profile 不能�
 首个 `b0f61ca` / Actions `32145005904` 的 pytest 与真实 PostgreSQL 成功，Linux image/migration/API
 ready 成功，但 one-off smoke 失败。当前只提交 allowlisted stage diagnostics 与 bounded logs 后重新等待
 三个 Actions job；全部成功前退出裁决保持 `keep-6a-open`。
+
+诊断提交 `d8c5063` / Actions `32146113582` 已把失败固定为 Alembic readiness import-root：API 对同一
+DB ready 且 POST 202，direct script 却从 wheel import app。Worker/smoke 现改为 `python -m scripts...`；
+该修复必须由新 Linux run 证明，不能因本地 module `--help` 通过就关闭 6A。

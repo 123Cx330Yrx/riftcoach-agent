@@ -1147,3 +1147,8 @@ compileall 与安全门通过。本机没有 Docker/PostgreSQL，故 27 个 skip
 首个 `b0f61ca` / Actions `32145005904` 已让 pytest 与 PostgreSQL job 成功，也证明 Linux image、migration、
 API readiness 可运行；one-off smoke 仍失败且旧错误码过宽。项目决定先补允许列表 stage diagnostics 和
 有限 service logs，不输出原异常、不调用外部服务，也不凭猜测改 Repository/Worker 语义。
+
+`d8c5063` / Actions `32146113582` 随后给出 `packaging_smoke_database_not_ready`，但同一 API 已用相同
+DB 返回 readiness 200 并接受 POST 202。源码路径对照确认 direct script 从 wheel 导入 app，使 Alembic
+root 落在 site-packages。采用 `python -m scripts...` 统一 Worker/smoke import root；不硬编码容器路径，
+也不删除 migration identity gate。

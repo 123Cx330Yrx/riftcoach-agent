@@ -253,9 +253,9 @@ completed publicly at `31d5e6038943bd3eacbeb485300f63ad53e13bfd` / Actions `3213
 
 ## Next Step
 
-`6A-7-packaging-exit-review`：首个提交 `b0f61ca` 的 pytest/真实 PostgreSQL 成功，但 Linux smoke 在
-one-off 诊断进程中以过宽 `packaging_smoke_worker_failed` 失败。当前只完成 allowlisted 分层错误码、
-受限 service logs 与对应 TDD，提交推送后重跑同一套三个阻塞 job；全绿前保持 in progress。
+`6A-7-packaging-exit-review`：`d8c5063` / Actions `32146113582` 已把失败定位为 smoke 容器的 Alembic
+readiness import-root 漂移；当前只把 Worker/smoke Compose 命令改为 `python -m scripts...` 并以红绿
+合同固定。提交推送后重跑三个阻塞 job；全绿前保持 in progress。
 
 ## 6A-1 Checklist
 
@@ -659,6 +659,7 @@ one-off 诊断进程中以过宽 `packaging_smoke_worker_failed` 失败。当前
 | 真实 calibration 安全扫描把 Windows 通配符直接传给 `rg` | 1 | 扫描在读取文件前失败，没有改文件或调用 Provider；改用两个显式 JSON 路径并单独执行 |
 | 6A-7 首次独立 cached diff check 发现 Dockerfile EOF 多余空行 | 1 | 检查在 commit 前阻止提交；用最小补丁删除空行、重新暂存，并独立重跑 cached diff check，不改变镜像语义 |
 | 6A-7 首个 Linux one-off smoke 只返回过宽 `packaging_smoke_worker_failed` | 1 | pytest/真库/build/migration/API ready 均已成功，不猜测业务根因；用红灯增加 allowlisted stage code 与 bounded service logs，再以新 exact-SHA CI 定位 |
+| module-entry 状态回写时 canonical“唯一下一步”漏写 checkpoint 字面键 | 1 | governance 在提交前阻止；把 `6A-7-packaging-exit-review` 补回同一行，不改变根因、修复范围或阶段状态 |
 
 ### 5D-7 V3 资源校准离线实现（2026-08-15）
 

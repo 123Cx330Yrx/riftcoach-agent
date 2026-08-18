@@ -220,7 +220,7 @@ OP.GG MCP
 5F-3 Contract/Harness Eval  已完成；45 focused、196 adjacent、完整 929/110 subtests；裁决 `harness-compatible-but-runtime-gate-failed`，Context/terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功
 5F-4 Bounded Real Slice    未进入；5F-3 前置硬门失败，真实模型调用无信息增益，external calls 0
 5F-5 Adoption/Exit         已完成；裁决 `partial-adopt-evaluation-assets-only`；`f8dea66` / Actions `32028206103` exact-SHA 公共成功；产品拒绝 Pi，冻结保留评测资产/CI 复现与采用门方法
-6A entry design            已完成；`c0b5af0` / Actions `32041343696`；6A-1 至 6A-6 真库公共完成；6A-7 `b0f61ca` 的 pytest/真库成功、Linux one-off smoke 失败，受限诊断修补中
+6A entry design            已完成；`c0b5af0` / Actions `32041343696`；6A-1 至 6A-6 真库公共完成；6A-7 `d8c5063` 已定位 Alembic import-root 漂移，module-entry 修复待 CI
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -390,3 +390,7 @@ dry-run、compileall 与安全门通过。本机无 Docker/PostgreSQL 的运行�
 首个提交 `b0f61ca` / Actions `32145005904` 的 pytest 与真实 PostgreSQL job 已成功，Linux job 也已完成
 image build、migration 和 API readiness，但 one-off smoke 只返回过宽 worker failure。当前只增加 body-free
 stage code 与 bounded service logs；不能把部分成功改写成 6A 已完成。
+
+诊断提交 `d8c5063` / Actions `32146113582` 将失败定位为 `packaging_smoke_database_not_ready`，而同一
+API readiness 200/POST 202、真库 job 成功。根因是 direct script 从 wheel 导入 app 后 Alembic
+PROJECT_ROOT 漂移；当前只把 Worker/smoke 改为 `python -m scripts...`，不放宽 migration readiness。

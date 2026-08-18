@@ -2689,3 +2689,14 @@
   新合同保留 body-free，只增加固定 allowlisted stage code，不打印 URL、SQL、异常或请求正文。
 - workflow 在失败时新增的 diagnostics 只运行 `compose ps` 与 API/PostgreSQL 最后 100 行；不执行
   `compose config`（会展开环境）或输出容器 env，避免为排错泄漏数据库口令。
+
+## 2026-08-18：为什么 API ready 而 smoke DB preflight 不 ready
+
+- Docker 镜像同时有 `/opt/riftcoach/app` 源码和 site-packages wheel。`python -m uvicorn ...` 从
+  WORKDIR 导入前者；`python scripts/run_packaging_smoke.py` 的 `sys.path[0]` 却是 `/opt/riftcoach/scripts`，
+  会从 wheel 导入后者。
+- `PostgresReadinessProbe` 不只执行 `SELECT 1`，还通过 `app.api.composition.PROJECT_ROOT/alembic.ini`
+  读取代码 migration head。wheel import 下 PROJECT_ROOT 落在 site-packages，DB 明明在线仍会安全返回
+  readiness failure；这正是 d8c5063 Linux 日志呈现的组合。
+- 正确修复是用 `python -m scripts...` 让 WORKDIR 保持 import root，对 Worker 与 smoke 一致生效；错误修法是
+  删除 migration 检查、把 not-ready 当 ready，或在脚本里硬编码 `/opt/riftcoach`。
