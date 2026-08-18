@@ -1,12 +1,22 @@
 from __future__ import annotations
 
 import argparse
+import os
 import signal
 import sys
-from collections.abc import Sequence
+from collections.abc import Callable, Mapping, Sequence
 from threading import Event
 
+from dotenv import load_dotenv
+
+from app.workers.composition import (
+    ReviewWorkerProcess,
+    WorkerCompositionError,
+    build_review_worker_process,
+    load_worker_composition_settings,
+)
 from app.workers.review_worker import ReviewWorker
+from app.workers.review_worker import ReviewWorkerError
 
 
 def run_until_stopped(worker: ReviewWorker) -> None:
@@ -32,17 +42,55 @@ def build_parser() -> argparse.ArgumentParser:
         required=True,
         help="Bounded deployment-unique worker identifier.",
     )
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--check",
+        action="store_true",
+        help="Validate the full composition and exit before polling.",
+    )
+    mode.add_argument(
+        "--once",
+        action="store_true",
+        help="Run exactly one claim iteration, then exit.",
+    )
     return parser
 
 
-def main(argv: Sequence[str] | None = None) -> int:
-    build_parser().parse_args(argv)
-    # 6A-4 provides the tested Application/Artifact executor boundary, but the
-    # environment-backed DB/Riot/Provider composition and process lifecycle
-    # remain a 6A-5 responsibility.  Claiming rows before that composition is
-    # available would destroy work, so this executable stays fail-closed.
-    print("review_worker_executor_not_configured", file=sys.stderr)
-    return 2
+ProcessFactory = Callable[..., ReviewWorkerProcess]
+
+
+def main(
+    argv: Sequence[str] | None = None,
+    *,
+    environment: Mapping[str, str] | None = None,
+    process_factory: ProcessFactory = build_review_worker_process,
+) -> int:
+    args = build_parser().parse_args(argv)
+    if environment is None:
+        load_dotenv()
+        source: Mapping[str, str] = dict(os.environ)
+    else:
+        source = environment
+
+    try:
+        settings = load_worker_composition_settings(source)
+        with process_factory(settings, worker_id=args.worker_id) as process:
+            if args.check:
+                return 0
+            if args.once:
+                process.worker.run_once()
+                return 0
+            run_until_stopped(process.worker)
+            return 0
+    except WorkerCompositionError as error:
+        print(error.code, file=sys.stderr)
+        return 2
+    except ReviewWorkerError as error:
+        print(error.code, file=sys.stderr)
+        return 1
+    except Exception:
+        print("review_worker_failed", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":

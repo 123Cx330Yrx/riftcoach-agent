@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_DB: riftcoach
       POSTGRES_USER: riftcoach
-      POSTGRES_PASSWORD: riftcoach-local
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-riftcoach-local}
     ports:
       - "5432:5432"
     healthcheck:
@@ -15,5 +15,120 @@ services:
     volumes:
       - riftcoach-postgres-data:/var/lib/postgresql/data
 
+  migrate:
+    image: riftcoach-agent:local
+    build:
+      context: .
+    command: ["python", "-m", "alembic", "upgrade", "head"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://riftcoach:${POSTGRES_PASSWORD:-riftcoach-local}@postgres:5432/riftcoach
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    image: riftcoach-agent:local
+    build:
+      context: .
+    command:
+      - python
+      - -m
+      - uvicorn
+      - app.api.composition:create_composed_app
+      - --factory
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg://riftcoach:${POSTGRES_PASSWORD:-riftcoach-local}@postgres:5432/riftcoach
+      RIFTCOACH_API_PROFILE: ${RIFTCOACH_API_PROFILE:-local}
+      RIFTCOACH_LOCAL_OWNER_ID: ${RIFTCOACH_LOCAL_OWNER_ID:-local-demo-owner}
+      RIFTCOACH_RUNS_ROOT: /var/lib/riftcoach/runs
+      RIFTCOACH_CORS_ORIGINS: ${RIFTCOACH_CORS_ORIGINS:-}
+      RIFTCOACH_CORS_ALLOW_CREDENTIALS: ${RIFTCOACH_CORS_ALLOW_CREDENTIALS:-false}
+      RIFTCOACH_TASK_OWNER_ACTIVE_LIMIT: ${RIFTCOACH_TASK_OWNER_ACTIVE_LIMIT:-3}
+      RIFTCOACH_TASK_GLOBAL_ACTIVE_LIMIT: ${RIFTCOACH_TASK_GLOBAL_ACTIVE_LIMIT:-50}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import urllib.request;
+          urllib.request.urlopen('http://127.0.0.1:8000/health/ready', timeout=2)
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    ports:
+      - "8000:8000"
+    volumes:
+      - riftcoach-runs:/var/lib/riftcoach/runs
+
+  worker:
+    image: riftcoach-agent:local
+    build:
+      context: .
+    profiles: ["runtime"]
+    command:
+      - python
+      - scripts/run_review_worker.py
+      - --worker-id
+      - ${RIFTCOACH_WORKER_ID:-worker-1}
+    environment:
+      DATABASE_URL: postgresql+psycopg://riftcoach:${POSTGRES_PASSWORD:-riftcoach-local}@postgres:5432/riftcoach
+      RIOT_API_KEY: ${RIOT_API_KEY:-}
+      RIOT_REGION: ${RIOT_REGION:-asia}
+      LLM_PROVIDER: ${LLM_PROVIDER:-zhipu}
+      LLM_DEFAULT_PROVIDER: ${LLM_DEFAULT_PROVIDER:-zhipu}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://open.bigmodel.cn/api/paas/v4/}
+      LLM_MODEL: ${LLM_MODEL:-glm-5.2}
+      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-30}
+      RIFTCOACH_RUNS_ROOT: /var/lib/riftcoach/runs
+      RIFTCOACH_KNOWLEDGE_ROOT: /opt/riftcoach/data/rag_docs
+      RIFTCOACH_SKILLS_ROOT: /opt/riftcoach/skills
+      RIFTCOACH_PROMPT_PROGRAMS_ROOT: /opt/riftcoach/prompt_programs
+      RIFTCOACH_DDRAGON_CACHE_ROOT: /var/lib/riftcoach/ddragon
+      RIFTCOACH_DDRAGON_LANGUAGE: ${RIFTCOACH_DDRAGON_LANGUAGE:-zh_CN}
+      RIFTCOACH_MIN_GAME_DURATION_SECONDS: ${RIFTCOACH_MIN_GAME_DURATION_SECONDS:-300}
+      RIFTCOACH_WORKER_INITIAL_DELAY_SECONDS: ${RIFTCOACH_WORKER_INITIAL_DELAY_SECONDS:-0.1}
+      RIFTCOACH_WORKER_MAXIMUM_DELAY_SECONDS: ${RIFTCOACH_WORKER_MAXIMUM_DELAY_SECONDS:-2}
+      RIFTCOACH_WORKER_BACKOFF_MULTIPLIER: ${RIFTCOACH_WORKER_BACKOFF_MULTIPLIER:-2}
+      RIFTCOACH_WORKER_JITTER_RATIO: ${RIFTCOACH_WORKER_JITTER_RATIO:-0.2}
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: "no"
+    volumes:
+      - riftcoach-runs:/var/lib/riftcoach/runs
+      - riftcoach-ddragon:/var/lib/riftcoach/ddragon
+
+  smoke:
+    image: riftcoach-agent:local
+    build:
+      context: .
+    profiles: ["smoke"]
+    command:
+      - python
+      - scripts/run_packaging_smoke.py
+      - --worker-id
+      - packaging-smoke-worker
+    environment:
+      DATABASE_URL: postgresql+psycopg://riftcoach:${POSTGRES_PASSWORD:-riftcoach-local}@postgres:5432/riftcoach
+      RIFTCOACH_PACKAGING_SMOKE: "true"
+      RIFTCOACH_API_PROFILE: test
+      RIFTCOACH_SMOKE_BASE_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: "no"
+
 volumes:
   riftcoach-postgres-data:
+  riftcoach-runs:
+  riftcoach-ddragon:

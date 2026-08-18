@@ -2628,3 +2628,53 @@
 - 新 run `32138025724` 已补齐上述证据：8 样本 warm create/query p95 `6.220ms`，8 样本
   queued→claim p95 `23.359ms`，环境与目标均记录在 PostgreSQL job；6A-6 可以关闭。该数据只表示
   同机 CI PostgreSQL task 控制面基线，不能外推到公网网络、Provider 调用、Agent 质量或 99.9% SLA。
+
+## 2026-08-18：6A-7 授权恢复与 packaging 原理
+
+- 用户以“继续吧”明确授权 RQ-059；范围只到可重建 API+Worker+PostgreSQL package、真实 Worker
+  executable composition、Linux no-I/O smoke 与 6A exit matrix/review。
+- packaging 不增加 Coach 推理能力；它固定镜像、进程角色、依赖顺序、配置校验、启动/关闭和重建证据。
+  API、Worker、PostgreSQL 是同一模块化单体的三个进程职责，不是 Multi-Agent 或微服务。
+- 真实 Worker 必须先构造并验证 DB、Riot、Provider、RAG、Artifact、Application 全部依赖，再进入
+  polling/claim；缺配置时 claim 前 fail closed，避免制造无证据 running task。
+- Linux smoke 只证明干净 Linux 中 migration、API liveness/readiness、POST 202 与 Fake/no-I/O Worker
+  消费链可重建，不证明真实 Key、Riot/Provider 质量、公网 Auth/HTTPS、备份或 SLA。
+- exit matrix 必须把每条 ADR-0038/6A 承诺映射到源码、测试、公开 CI、限制与 deferred；测试总数不能
+  替代逐项退出审查。正式 Auth/Session/Memory/SSE/前端和阶段 8 恢复能力仍不在本批。
+
+## 2026-08-18：6A-7 composition/package 缺口审计
+
+- 当前没有 `Dockerfile`/`.dockerignore`；`compose.yaml` 只有 PostgreSQL。Python 依赖也没有 Uvicorn，
+  因而已存在的 `create_composed_app()` ASGI factory 尚无可声明的 Linux server 启动命令。
+- `scripts/run_review_worker.py` 仍固定输出 `review_worker_executor_not_configured` 并返回 2；它没有读取
+  配置或 claim，这个历史 fail-closed 正是 6A-7 必须闭环的执行缺口。
+- 可复用零件完整：Database settings/Engine/Session/Repository、RiotClient、DataDragonService、
+  RiotPlayerSummaryBuilder、LocalHybridKnowledgeProvider、RuntimeCompositionRoot、Zhipu Provider/Registry、
+  RecentReviewApplicationService、FileRunReceiptStore、terminal evidence verifier 与 ReviewWorker。
+- 生产 composition 将只组装上述稳定接缝，不复制 Agent/Harness。全部设置先解析；DB/Alembic readiness、
+  本地 RAG/Skill/Prompt drift、Data Dragon 和 Provider 构造完成后才返回可 polling Worker；失败时销毁
+  Engine 并只暴露 allowlisted code。
+- Linux smoke 采用独立、显式启用的 no-I/O 诊断进程：HTTP POST 202 → PostgreSQL claim → 故意不访问
+  Riot/Provider 的 Executor → 安全 failed terminal → HTTP task poll。它证明 package/control plane，
+  不冒充 Agent 成功；6A-4 现有离线成功纵向继续证明 Application/Runtime/Harness/Artifact 接线。
+- 本机仍无 Docker CLI，Docker build/Compose Linux smoke 只能由新增阻塞 GitHub Actions job 提供公共
+  证据；本地先用文件/Compose合同、纯逻辑和现有 PostgreSQL skip 机制验证。
+
+## 2026-08-18：6A-7 人工 package 审查发现
+
+- Docker 官方 `compose up` 合同明确：`--exit-code-from` 会隐含 `--abort-on-container-exit`，而本项目
+  migration 是预期成功退出的一次性服务。为避免它被当成“任一容器退出”而提前停止整组 smoke，CI 改为
+  先 `up --detach --wait api`，再 `run --rm --no-deps smoke`，由 one-off 进程直接返回诊断退出码。
+- no-I/O Worker 使用真实 `claim_next()`，若与普通本地 Compose 共用 project/volume，可能先领到已有 queued
+  task。smoke 因此固定独立 `COMPOSE_PROJECT_NAME=riftcoach-packaging-smoke`，README 也要求同一 project
+  name；这是数据隔离要求，不只是容器命名美化。仅靠脚本环境自称 `test` 也不足以阻止误用，因此 API 与
+  PostgreSQL host 进一步限制为 Compose service/localhost/loopback，远端目标在任何 HTTP/DB I/O 前拒绝。
+- `worker_id` 原先到 `ReviewWorker` 最后构造时才验证，可能在无效配置下先建 Engine/访问 Data Dragon。
+  现在 composition 在任何 Engine/网络动作前用既有 `WorkerId` 合同验证并映射为
+  `worker_configuration_invalid`，新增测试阻止回归。
+- Worker preflight 对 Riot/Provider 证明的是 Secret/region/model/base URL/capability 等配置与构造合同，
+  不额外付费调用模型，也不证明凭据在线有效或领域质量准入；文档已收紧表述。Data Dragon 构造会读取缓存
+  或网络，仍在 claim 前完成。
+- 额外的大小写不敏感 `sk-*` 形态扫描误命中实施文件名中的 `task-model-implementation` 和一个专门验证
+  脱敏的 fake test token；既定 tracked `.env`/runs/cache 门通过。该宽扫描不是泄漏证据，不能为了追求
+  “零命中”删除安全负例测试。

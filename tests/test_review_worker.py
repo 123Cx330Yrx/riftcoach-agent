@@ -387,5 +387,5 @@ def test_already_stopped_worker_never_claims() -> None:
     assert repository.claim_calls == []
 
 
-def test_cli_fails_closed_until_environment_composition_is_wired() -> None:
-    assert worker_cli_main(["--worker-id", "worker-1"]) == 2
+def test_cli_fails_closed_before_claim_when_environment_is_missing() -> None:
+    assert worker_cli_main(["--worker-id", "worker-1"], environment={}) == 2

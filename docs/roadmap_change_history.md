@@ -1960,3 +1960,24 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   与 task 控制面性能基线闭环。
 - `HANDOFF`：canonical 唯一下一检查点为 `6A-7-packaging-exit-review` 准备状态，等待用户明确继续；
   不自动启动真实 Worker packaging 或实现正式 Auth/Session/Memory/SSE/前端/公网部署。
+
+### 2026-08-18：RQ-059 恢复 6A-7 Packaging & Exit Review
+
+- `RESUMED`：用户明确“继续吧”，解除 6A-7 等待确认；本轮仍只推进 canonical 的单一检查点。
+- `SCOPE`：闭环可重建 API+Worker+PostgreSQL package、真实 Worker executable composition、配置与启动
+  命令、Linux no-I/O smoke，以及把 ADR-0038/6A 设计逐项映射到实现/测试/公开证据/deferred 的 exit
+  matrix/review。
+- `FAIL-CLOSED`：真实 Worker 必须在 claim 前完成数据库、Riot、Provider 和产品组合校验；smoke/CI
+  使用 Fake/no-I/O 路径，不读取 Key 或调用 Riot/Provider。
+- `DEFERRED`：正式 Auth/HTTPS、Session/Memory、SSE、前端、lease/heartbeat/reclaim/cancel/resume、
+  直接公网部署、LangGraph/Multi-Agent/MCP/新 SDK 均不在本批；exact-SHA CI 成功前不关闭 6A。
+
+### 2026-08-18：6A-7 本地实现与退出门完成
+
+- `LOCAL-VERIFIED`：Worker composition、非 root image、Compose、隔离 no-I/O smoke、CI 与 exit assets
+  已实现；聚焦 `46 passed`，完整 `1100 passed, 27 skipped, 110 subtests passed`，RAG/Harness/compileall/
+  safety 本地门通过。
+- `REVIEW-FIX`：无效 worker_id 改为 Engine/网络前拒绝；smoke 改用独立 Compose project/data volumes，
+  `up --wait api` 与 one-off `run --no-deps smoke` 分段，避免 migration 正常退出提前终止以及误领普通任务。
+- `CURRENT`：6A/RQ-059 仍 in progress；最终本地门已通过，唯一下一动作是提交推送并等待 exact-SHA
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job。公共成功前不关闭或进入 Session/Memory。

@@ -28,6 +28,15 @@ RiftCoach 仍处于早期开发阶段。安全修复只应用于默认分支的�
   Provider 响应、异常堆栈、数据库 URL 或 Secret。
 - terminal task 删除先隐藏用户可见资源，再清理 SQL/Artifact/Trace；清理失败只能产生内部补偿标记，
   不得让已删除资源重新可见。active task 的 delete 与 cancel 分离，active delete 必须冲突返回。
+- 运行镜像使用非 root 用户，构建上下文排除 `.env`、本地 cache/run、测试、报告、临时文件和实验资产；
+  Riot/Provider/数据库 Secret 只能在运行时注入，不得烘焙进镜像。
+- production Worker 在 claim 前验证数据库/Alembic、Data Dragon、本地 RAG、Prompt Program，以及
+  Riot/Provider 的配置与构造合同；配置或依赖不完整时必须安全退出，不能先领取任务再发现不可执行。
+  该预检不额外调用模型，也不冒充在线凭据或领域质量验证。
+- `RIFTCOACH_PACKAGING_SMOKE=true` 只允许 local/test profile；该诊断路径没有 Riot/LLM Secret 字段，
+  且只接受 Compose/本机 API 与 PostgreSQL host，不得作为 production Worker 或远端诊断器使用。
+- Compose 中的默认数据库口令和 fixed local owner 只用于本机 smoke/演示，不是公网安全配置。公开部署前仍
+  必须增加正式 Auth、HTTPS、限流、安全响应头、独立 Secret 管理和备份策略。
 
 ## Scope
 

@@ -2602,3 +2602,73 @@
   （target 300ms），queued→claim 8 样本 p95 `23.359ms`（target 2000ms）。
 - 6A-6/RQ-058 正式关闭；四条进度线同步。下一检查点只交接
   `6A-7-packaging-exit-review` 准备状态，等待用户明确继续，不自动实施。
+
+## 2026-08-18：开始 6A-7 Packaging & Exit Review
+
+- 用户明确“继续吧”；RQ-059 只授权可重建 API+Worker+PostgreSQL packaging、真实 Worker executable
+  composition、Linux no-I/O smoke 与逐项 6A exit matrix/review。
+- 已按 `AGENTS.md` 恢复 canonical、活动计划、需求/路线/能力矩阵、ADR-0038、6A design/implementation
+  plan；session catchup 无未同步输出，治理检查通过，工作树起始干净，HEAD/origin 均为
+  `155d5c2f296c1697bf1af66b92ca54198160fbf2`。
+- 已完成初学者入口教学，区分 packaging 与业务逻辑、API/Worker/PostgreSQL 三进程职责、claim 前
+  fail-closed、Linux smoke 证据边界和 exit matrix 的逐项审查职责。
+- 第一次大范围持久状态补丁因能力矩阵末尾换行上下文不匹配被 `apply_patch` 原子拒绝，无部分修改；
+  随后拆成小补丁完成同步。下一步重跑治理并审计现有 composition/package 缺口，再写红灯合同。
+
+## 2026-08-18：6A-7 packaging 缺口审计完成
+
+- 确认缺少 Dockerfile/.dockerignore/Uvicorn、Compose migration/API/Worker 与真实 Worker composition；
+  当前 Worker CLI 仍固定安全退出，API 已有可供 ASGI `--factory` 启动的 composition。
+- 确认生产 Worker 可直接复用现有 Riot/Data Dragon/RAG/Prompt Program/Provider/Runtime/Application/
+  receipt/evidence/Repository 接缝，无需增加框架或复制 Harness。
+- 选择生产 Worker 与 no-I/O Linux smoke 分离：生产路径完整校验后才 claim；smoke 以显式诊断模式验证
+  POST/claim/safe failed terminal/query，不构造 Riot/Provider，不冒充 Coach 质量。
+- 本机 `docker` 命令仍不存在；本地不能提供镜像/Compose 运行证据，必须由 exact-SHA Linux CI 补齐。
+  下一步写 packaging/worker/smoke 红灯合同并确认它们因缺实现失败。
+
+## 2026-08-18：6A-7 packaging 红灯确认
+
+- 新增 `tests/test_packaging_contract.py`、`tests/test_worker_composition.py` 与
+  `tests/test_packaging_smoke.py`，冻结镜像/忽略边界、Compose 依赖、Uvicorn、Linux CI、exit assets、
+  Worker settings/readiness/Secret 和显式 no-I/O smoke gate。
+- 聚焦红灯在 collection 阶段以两个预期缺口失败：`app.workers.composition` 与
+  `scripts.run_packaging_smoke` 不存在；退出码 1。Dockerfile/.dockerignore/Compose/CI/docs 仍未实现。
+- 下一步先实现 production Worker composition/CLI 和 no-I/O smoke，再实现 Docker/Compose/CI；不会为
+  追绿放宽 claim-before-readiness、Secret 或 production smoke 禁止边界。
+
+## 2026-08-18：6A-7 composition/package 本地实现与相邻验证
+
+- 新增 production `app/workers/composition.py`：完整设置/Secret 隐藏、PostgreSQL/Alembic readiness、
+  Riot/Data Dragon/RAG/Prompt Program/Provider/Runtime/Application/receipt/evidence/Worker 一次装配；失败销毁
+  Engine 并只返回 allowlisted code。Worker CLI 新增 `--check`/`--once`，不再固定拒绝。
+- `RiotClient` 在 API Key/region 都显式注入时不再隐式读取 `.env`；旧脚本未显式传参时仍兼容 dotenv。
+- 新增 gated local/test `run_packaging_smoke.py`，真实 HTTP create/query + PostgreSQL claim + 安全 failed
+  terminal，设置合同没有 Riot/LLM Secret 字段，输出明确为 `external_riot_provider_calls=0`。
+- 新增非 root Dockerfile、严格 .dockerignore、migration/API/real-worker/smoke Compose、Uvicorn 依赖、
+  blocking `packaging-smoke` Actions job，以及 README/SECURITY/exit matrix/review。
+- packaging/Worker/API 聚焦 `43 passed, 1 warning`；相邻 task/API/runtime/provider 回归
+  `235 passed, 1 skipped, 1 warning`；compileall、Compose/workflow YAML 解析与 diff check 通过。
+- editable install 取得 Uvicorn 0.52.3；真实本地 ASGI factory 启动后 `/health/live` 为 200，缺 DB 配置的
+  `/health/ready` 为安全 503 `service_configuration_invalid`。PTY 中受到环境内无关 localhost upgrade 探测，
+  Uvicorn 因未安装 WebSocket extra 输出 warning/WinError 10054；项目无 WebSocket/SSE，本次目标端点正常，
+  Ctrl-C 后进程完整 shutdown。该噪声不是 Docker/Linux 或产品 WebSocket 证据。
+
+## 2026-08-18：6A-7 人工审查修补与最终本地门
+
+- 人工审查没有直接沿用首版 Compose 命令：根据 Docker 官方合同，`--exit-code-from` 隐含
+  `--abort-on-container-exit`，可能与预期退出的 migration 冲突；同时默认 project/volume 会让诊断 Worker
+  有机会接触普通本地 queued task。已改为隔离 project，并分成 API stack `up --wait` 与 one-off smoke。
+- 新增无效 worker_id 的 pre-I/O 配置测试与实现；移除 `app/workers/__init__.py` 尾部无效字符串。修补后
+  packaging/Worker/API 聚焦为 `46 passed, 1 warning`。
+- smoke 设置又增加远端 API/PostgreSQL host 拒绝合同，阻止伪装 test profile 后误用诊断器；完整回归为
+  `1100 passed, 27 skipped, 1 warning, 110 subtests passed`；两套 RAG 均为
+  Recall/MRR/nDCG 1.0，holdout abstention/citation 1.0；Harness dry-run `published`、0 revisions；
+  compileall 通过。27 个 skip 仍因本机无 PostgreSQL，不能替代公共真库证据。
+- 既定 Harness SDK boundary 与 tracked `.env`/`data/cache`/`data/runs` 门通过。额外的泛化 token-shape
+  扫描因文件名子串和安全负例 fake token 误报，已分类而未删除测试。
+- 最终 packaging contract、compileall、Compose/workflow YAML、pip check、Harness SDK、tracked data、
+  `git diff --check` 与 governance 快照均通过。当前退出裁决保持
+  `keep-open-pending-exact-sha-linux-ci`；下一动作只做提交推送并等待 exact-SHA `pytest`、
+  `postgres-migrations`、`packaging-smoke` 三个 job。
+- 首次独立 cached diff check 在 commit 前发现 Dockerfile EOF 多余空行；已用最小补丁删除并重新暂存。
+  这是格式门命中，不是 image 合同或测试失败；必须在新的 cached diff check 成功后才允许 commit。

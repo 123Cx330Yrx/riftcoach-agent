@@ -13,10 +13,16 @@ class RiotClient:
     """
 
     def __init__(self, api_key: str | None = None, region: str | None = None):
-        load_dotenv()
+        # Legacy scripts may still rely on local .env discovery. Deployment
+        # composition passes both values explicitly and must not perform an
+        # implicit dotenv read after its configuration has been validated.
+        if api_key is None or region is None:
+            load_dotenv()
 
-        self.api_key = api_key or os.getenv("RIOT_API_KEY")
-        self.region = region or os.getenv("RIOT_REGION", "asia")
+        self.api_key = api_key if api_key is not None else os.getenv("RIOT_API_KEY")
+        self.region = (
+            region if region is not None else os.getenv("RIOT_REGION", "asia")
+        )
 
         if not self.api_key:
             raise RuntimeError("RIOT_API_KEY is missing. Please set it in .env.")

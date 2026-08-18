@@ -4,7 +4,7 @@ main_stage: 6
 substage_group: "6A"
 current_checkpoint: "6A-7-packaging-exit-review"
 status: in_progress
-pause_reason: "6A-6 complete; awaiting explicit user confirmation before 6A-7"
+pause_reason: "RQ-059 authorized; 6A-7 locally verified and awaiting exact-SHA public CI"
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: "6A-6 complete; awaiting explicit user confirmation before 6A-7"
 ## 状态元数据
 
 - 最后更新：2026-08-18
-- 主阶段：阶段 6，`6A-6-security-lifecycle-nfr` 已由提交 `31d5e60` / Actions `32138025724` 完成 exact-SHA pytest、真实 PostgreSQL 与性能基线公共验证；当前只交接 `6A-7-packaging-exit-review` 准备状态
+- 主阶段：阶段 6，`6A-6-security-lifecycle-nfr` 已由提交 `31d5e60` / Actions `32138025724` 完成 exact-SHA pytest、真实 PostgreSQL 与性能基线公共验证；RQ-059 已授权，当前实施 `6A-7-packaging-exit-review`
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "6A-6 complete; awaiting explicit user confirmation before 6A-7"
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6A-7-packaging-exit-review` 准备状态；等待用户明确继续后，才按实施计划组合可重建 API+Worker+PostgreSQL package、Linux smoke 与 6A exit matrix。当前不自动开始 6A-7，也不实现正式 Auth、Session/Memory、SSE、前端、lease/reclaim/cancel/resume 或直接公网部署。
+- 唯一下一步：`6A-7-packaging-exit-review` 本地实现、审查与最终门禁已完成；只做提交推送并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三个阻塞 job。公共成功前不关闭 6A；当前不实现正式 Auth、Session/Memory、SSE、前端、lease/reclaim/cancel/resume 或直接公网部署。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -551,10 +551,10 @@ pause_reason: "6A-6 complete; awaiting explicit user confirmation before 6A-7"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5 已完成；6A-1 至 6A-6 已由真实 PostgreSQL CI 公开闭环，当前交接 6A-7 准备状态 | 生产模型质量、Worker 可部署消费、自动 crash recovery、Session/Memory、正式 Auth 或前端已完成 |
-| 项目理解 | 已讲解 6A-1 至 6A-6，包括 CORS/脱敏、数据保留、跨存储删除、active/terminal 生命周期、背压与真实 p95 测量 | 理解和控制面真库测试等于正式鉴权、容灾、SLA 或完整 Agent 产品完成 |
+| 本地代码 | 阶段 0-5 已完成；6A-1 至 6A-6 已由真实 PostgreSQL CI 公开闭环；6A-7 packaging/Worker composition/no-I/O smoke 与本地门已完成，等待本轮公共 CI | 生产模型质量、Linux package 已公开验证、自动 crash recovery、Session/Memory、正式 Auth 或前端已完成 |
+| 项目理解 | 已讲解 6A-1 至 6A-7：API/Worker/PostgreSQL 进程职责、配置 fail-closed、隔离 no-I/O Linux smoke 与 exit matrix 证据边界 | 理解和本地控制面测试等于正式鉴权、容灾、SLA 或完整 Agent 产品完成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | 6A-6 提交 `31d5e60` / Actions `32138025724` 的 `pytest` 与真实 PostgreSQL/性能 job 均成功；网页与 Worker packaging 仍未部署 | 公共 CI 等于生产切换、正式 Web Agent、Session/Memory 或公网可用 |
+| GitHub/部署 | 6A-6 提交 `31d5e60` / Actions `32138025724` 已成功；6A-7 本地 package 已就绪但尚未提交，三个 exact-SHA job 仍无结果，网页与公网仍未部署 | 本地 Docker 合同等于 Linux smoke 已通过，或公共 CI 等于生产切换、Session/Memory/公网可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -1041,3 +1041,26 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 因此 6A-6/RQ-058 正式完成：默认 CORS、日志/Secret allowlist、背压、7/90/30 retention、terminal
   hidden-before-cleanup 与补偿、active delete conflict、结构化 observability 和真实性能证据均闭环。
 - canonical 只交接 `6A-7-packaging-exit-review` 准备状态，等待用户明确继续；不得自动开始 6A-7。
+
+## 2026-08-18：6A-7 Packaging & Exit Review 开始
+
+- RQ-059 已记录；用户明确“继续吧”，解除 `6A-7-packaging-exit-review` 的等待确认。
+- 本轮只建立可重建 API+Worker+PostgreSQL package、配置/启动命令、Linux no-I/O smoke，以及逐条绑定
+  ADR-0038/6A 设计承诺的 exit matrix/review。先写红灯合同，再做最小实现。
+- 真实 Worker composition 必须在读取或 claim 前完整校验数据库、Riot、Provider 与产品依赖；配置缺失
+  安全失败。CI/smoke 不读取真实 Key、不调用 Riot、Data Dragon 或 Provider。
+- 本轮不实现正式 Auth/HTTPS、Session/Memory、SSE、前端、lease/heartbeat/reclaim/cancel/resume、
+  直接公网部署、LangGraph、Multi-Agent、MCP 或新 SDK。exact-SHA 公共 CI 成功前不关闭 6A。
+
+## 2026-08-18：6A-7 本地实现与退出门完成
+
+- production Worker composition、CLI `--check/--once`、非 root Dockerfile、严格 `.dockerignore`、
+  migration/API/runtime-worker/no-I/O-smoke Compose、Linux blocking job 与启动/安全说明已实现。
+- 人工审查补强了两个边界：无效 `worker_id` 在 Engine/网络构造前拒绝；smoke 使用隔离 Compose
+  project/data volumes，并以 `up --wait api` 后 one-off `run --no-deps smoke` 执行，避免正常 migration
+  退出提前终止以及诊断 Worker 误领普通本地任务。
+- 本地聚焦 `46 passed, 1 warning`；完整 `1100 passed, 27 skipped, 1 warning, 110 subtests passed`；
+  两套 RAG 满门槛、Harness dry-run `published`/0 revisions、compileall 与安全边界通过。27 个 skip 和
+  Docker/Compose 运行不能在本机冒充成功，必须由 exact-SHA PostgreSQL/Linux CI 补齐。
+- 当前退出裁决保持 `keep-open-pending-exact-sha-linux-ci`；最终 YAML/diff/governance/security 快照已通过，
+  唯一下一动作是提交推送并等待 `pytest`、`postgres-migrations`、`packaging-smoke` 三个同 SHA job。

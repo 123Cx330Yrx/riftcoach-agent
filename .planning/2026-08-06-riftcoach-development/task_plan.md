@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 15 - `6A-7-packaging-exit-review` preparation after 6A-6 completed publicly at
-`31d5e6038943bd3eacbeb485300f63ad53e13bfd` / Actions `32138025724`
+Phase 15 - `6A-7-packaging-exit-review` implementation authorized by RQ-059 after 6A-6
+completed publicly at `31d5e6038943bd3eacbeb485300f63ad53e13bfd` / Actions `32138025724`
 
 ## Phases
 
@@ -253,9 +253,9 @@ Phase 15 - `6A-7-packaging-exit-review` preparation after 6A-6 completed publicl
 
 ## Next Step
 
-`6A-7-packaging-exit-review`：准备状态；6A-6 已由 `31d5e60` / Actions `32138025724` 完成 exact-SHA
-pytest/PostgreSQL/性能公共验证。等待用户明确继续后，才按实施计划做 API+Worker+PostgreSQL packaging、
-Linux smoke 与 6A exit matrix；当前不自动开始 6A-7。
+`6A-7-packaging-exit-review`：本地实现、人工审查、完整回归与最终横向门已完成；下一动作只做
+提交推送并等待同一 SHA 的 `pytest`、`postgres-migrations` 和
+`packaging-smoke` 三个阻塞 job。exact-SHA 公共 CI 成功前保持 in progress，不交接后续阶段 6 检查点。
 
 ## 6A-1 Checklist
 
@@ -351,12 +351,22 @@ Linux smoke 与 6A exit matrix；当前不自动开始 6A-7。
 - [completed] 运行聚焦、完整、两套 RAG、compileall、Harness/security/diff/governance 门禁
 - [completed] 提交 `31d5e60`、推送并由 Actions `32138025724` 完成 exact-SHA `pytest` 与 PostgreSQL CI，只交接 6A-7
 
-### Phase 15 - 6A-7-packaging-exit-review preparation
+### Phase 15 - 6A-7-packaging-exit-review implementation
 
 - Status: in_progress
-- Pause: 6A-6 is complete; awaiting explicit user confirmation before 6A-7.
+- Authorization: RQ-059; user explicitly resumed 6A-7.
 - 6A-7 只负责可重建 API+Worker+PostgreSQL packaging、Linux smoke、6A exit matrix 与公开证据；
-  当前不自动实现真实外部 Worker 组合、Session/Memory、SSE、正式 Auth、前端或公网部署。
+  必须闭环此前 fail-closed 的真实 Worker executable composition，但 CI/smoke 不读取真实 Key 或调用
+  Riot/Provider；Session/Memory、SSE、正式 Auth、前端或公网部署仍不在本轮。
+
+## 6A-7 Checklist
+
+- [completed] 记录 RQ-059、清除等待确认状态并恢复治理
+- [completed] 审计 API/Worker/PostgreSQL 现有 composition 与 packaging 缺口
+- [completed] 先写 packaging contract、Linux no-I/O smoke 与 exit matrix 红灯
+- [completed] 实现最小 Dockerfile/Compose/Worker composition/config/startup 文档
+- [completed] 运行聚焦、完整、RAG、compileall、Harness/security/YAML/diff/governance 本地门；本机无 Docker/PostgreSQL 的真实运行证据由阻塞 CI 补齐
+- [in_progress] 完成 exit matrix/review、最终 diff 快照、提交、推送并等待 exact-SHA 三 job；成功后才关闭 6A
 
 ## 6A Entry Design Checklist
 
@@ -647,6 +657,7 @@ Linux smoke 与 6A exit matrix；当前不自动开始 6A-7。
 | Fresh-Gate 4 复核再次猜测 workflow 为 `.github/workflows/ci.yml` | 1 | 只读失败且没有执行 CI 命令；立即用 `rg --files .github` 定位 `tests.yml`，随后按真实 workflow 门禁完成本地验证 |
 | 真实 calibration 归档收尾在 TEMP dry-run 前加入递归清理 | 1 | 终端安全策略在执行前拒绝整组命令，没有删除文件或调用 Provider；改用全新 TEMP 路径并完成全部只读/临时验证 |
 | 真实 calibration 安全扫描把 Windows 通配符直接传给 `rg` | 1 | 扫描在读取文件前失败，没有改文件或调用 Provider；改用两个显式 JSON 路径并单独执行 |
+| 6A-7 首次独立 cached diff check 发现 Dockerfile EOF 多余空行 | 1 | 检查在 commit 前阻止提交；用最小补丁删除空行、重新暂存，并独立重跑 cached diff check，不改变镜像语义 |
 
 ### 5D-7 V3 资源校准离线实现（2026-08-15）
 
@@ -906,6 +917,11 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   字段，Worker 正确把执行映射为 failed；修正 fixture 后测试通过，没有放宽生产合同。
 - 6A-6 首次 PowerShell 行长扫描使用了带冒号的插值变量表达式，Shell 在执行前报变量解析错误；
   没有文件影响，改用 format 字符串重新运行并通过。
+- 6A-7 首次跨 roadmap/amendment/capability/history/decisions 的持久状态补丁假设能力矩阵末尾换行与
+  实际文本完全一致，`apply_patch` 原子拒绝且没有部分修改；已先读取真实尾部，再拆成小补丁同步。
+- 6A-7 本地 Uvicorn foreground 验证期间，桌面环境对临时端口发出多次无关 root/WebSocket upgrade 探测，
+  plain Uvicorn 输出 unsupported-upgrade 与 Windows connection-reset noise；目标 live/ready 实测正确，
+  项目当前不实现 WebSocket/SSE，使用 Ctrl-C 正常完成 application shutdown，未据噪声增加无关依赖。
 ## 2026-08-17：5F-3 Contract / Security / Harness Evaluation
 
 ### 当前授权与边界

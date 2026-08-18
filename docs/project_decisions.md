@@ -1114,3 +1114,32 @@ queued→claim 累计等待和安全日志输出。Actions run `32138025724` 随
 
 因此 6A-6/RQ-058 正式关闭。canonical 只交接 `6A-7-packaging-exit-review` 准备状态；6A-7 仍需用户
 明确继续，且不得把 6A-6 解释成真实 Worker packaging、正式 Auth、Session/Memory、SSE、前端或公网部署。
+
+## 6A-7 Packaging & Exit Review 实施授权（2026-08-18）
+
+用户按 RQ-059 恢复 6A-7。本批不是增加 Coach 业务能力，而是把已验证的 FastAPI、PostgreSQL、
+polling Worker 和既有 Application/Runtime/Harness/Artifact 组合成可在本地/CI 重建的 Linux 运行包。
+
+### 冻结边界
+
+- Compose 顺序为 PostgreSQL health → 一次性 migration → API/Worker；API 与 Worker 是同仓库模块化单体的
+  不同进程角色，不引入 Redis/Celery/Kafka；
+- 此前 fail-closed 的 Worker CLI 只在数据库/Data Dragon/RAG/Prompt/Artifact 依赖以及 Riot/Provider
+  配置与构造合同成功后才能进入 polling；缺配置必须在 claim 前退出，构造 preflight 不冒充在线凭据
+  或领域质量验证；
+- packaging/Linux smoke/exit matrix 先以红灯合同固定。CI smoke 使用 Fake/no-I/O composition，不读取
+  真实 Key、不调用 Riot、Data Dragon 或 Provider；
+- exit matrix 必须逐项绑定源码、测试、公开 CI、限制与 deferred，不能用测试总数代替承诺核对；
+- 本批不实现正式 Auth/HTTPS、Session/Memory、SSE、前端、lease/heartbeat/reclaim/cancel/resume、直接
+  公网部署、LangGraph、Multi-Agent、MCP 或新 SDK。exact-SHA 公共 CI 成功前不关闭 6A。
+
+### 本地实现与退出裁决
+
+production Worker composition、`--check/--once`、非 root image、Compose 与 no-I/O smoke 已实现。
+人工审查进一步要求 worker_id 在 Engine/网络前校验，并让 smoke 使用独立 Compose project/data volumes；
+API stack 先以 `up --wait` 完成 migration/readiness，再用 one-off smoke 取得自身退出码，避免一次性
+migration 正常退出触发整组提前终止。
+
+本地聚焦 `46 passed`、完整 `1100 passed, 27 skipped, 110 subtests passed`，RAG、Harness dry-run、
+compileall 与安全门通过。本机没有 Docker/PostgreSQL，故 27 个 skip 与 Linux smoke 不能冒充成功；
+退出裁决保持 `keep-open-pending-exact-sha-linux-ci`，只允许提交推送并等待三个同 SHA 阻塞 job。

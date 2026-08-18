@@ -55,11 +55,56 @@ python -m pip install -e ".[dev]"
 仓库现在包含一个显式依赖注入的 FastAPI Adapter：`app.api.main:create_app(...)`，以及
 PostgreSQL durable task、owner-scoped 查询、POST 202 入队、独立 polling Worker 的控制面合同。
 HTTP 层不直接选择 Skill、拼 Prompt 或调用 Provider。6A-6 已为这个基座补齐默认关闭 CORS、
-日志/Secret 脱敏、有限容量、terminal delete 的隐藏与补偿、retention 和安全指标；当前只交接
-6A-7 packaging/exit review。
+日志/Secret 脱敏、有限容量、terminal delete 的隐藏与补偿、retention 和安全指标。6A-7 现已在本地
+建立 API+Worker+PostgreSQL packaging、真实 Worker composition 和 no-I/O Linux smoke 合同；exact-SHA
+公共验证成功前仍不把 6A 标为完成。
 
-这些能力仍不等于正式公网鉴权/HTTPS、Session/Memory、SSE、自动 lease/reclaim 或完整 API+Worker
-部署；真实外部 Worker 组合留在 6A-7。CI 中的 PostgreSQL job 是 task 并发与生命周期语义的阻塞证据。
+这些能力仍不等于正式公网鉴权/HTTPS、Session/Memory、SSE 或自动 lease/reclaim。真实外部 Worker
+组合已在 6A-7 本地实现，但 Docker/Compose 公共 CI 成功前不能称为已验证部署；PostgreSQL job 继续是
+task 并发与生命周期语义的阻塞证据。
+
+### 本地 Linux package 与进程职责
+
+`Dockerfile` 只包含运行所需的 Python 应用、migration、Skill、Prompt Program、RAG 文档和两个启动脚本，
+使用非 root 用户运行；`.env`、本地 cache/run、测试、报告和实验资产不会进入镜像。Compose 的启动依赖是：
+
+```text
+PostgreSQL healthy
+→ migrate 一次性升级到 Alembic head
+→ FastAPI ready
+→ production Worker 或 no-I/O smoke
+```
+
+先运行不需要 Riot/模型 Key 的 Linux 控制面 smoke：
+
+```powershell
+docker compose --project-name riftcoach-packaging-smoke `
+  --profile smoke up --build --detach --wait --wait-timeout 120 api
+docker compose --project-name riftcoach-packaging-smoke `
+  --profile smoke run --rm --no-deps smoke
+docker compose --project-name riftcoach-packaging-smoke `
+  --profile smoke down -v --remove-orphans
+```
+
+这个 smoke 会通过 HTTP 创建一条合成 task，由独立诊断 Worker 真实 claim，并故意在不访问 Riot/Provider
+的前提下写入安全的 `failed/worker_execution_failed`，再通过 HTTP 查询确认。它证明 package、migration、
+API、PostgreSQL、claim 和终态回写；不证明 Coach 报告质量。成功的 Application/Runtime/Harness/Artifact
+链由离线产品纵向测试单独证明。固定的 Compose project name 会把 smoke 的网络和数据卷与普通本地运行
+隔离；脚本本身也只接受 Compose/本机 API 与 PostgreSQL host。不要省略 project name，否则诊断 Worker
+可能接触同一 Compose project 中已有的 queued task。
+
+运行真实本地 Worker 前，先在 `.env` 填入 Riot 与当前 Zhipu 产品基线配置，再执行完整预检：
+
+```powershell
+python scripts\run_review_worker.py --worker-id worker-1 --check
+docker compose --profile runtime up --build
+```
+
+`--check` 会验证数据库连接与 Alembic head、Data Dragon、本地 RAG、Skill/Prompt drift、Riot/Provider
+配置与构造合同、Artifact 目录，然后在 claim 前退出；它不会额外付费调用模型，也不把“构造成功”冒充
+Riot/Provider 凭据或领域质量已经在线验证。缺任一配置只返回 allowlisted 安全码，不会把 queued task
+提前变成 running。
+当前 Compose 使用显式 local fixed owner，仅供本机演示；它不是公网 Auth。不要把端口 8000 直接暴露到公网。
 
 构建近期对局汇总：
 
@@ -186,7 +231,8 @@ python -m pytest -q
 ```
 
 Pull Request 和推送到默认分支时，GitHub Actions 会在 Python 3.11 环境重复执行同一测试命令。
-CI 还会检查项目治理状态连续性，并执行阶段 4M 的独立 RAG 保留集门禁。
+CI 还会检查项目治理状态连续性、阶段 4M 独立 RAG 保留集、真实 PostgreSQL 事务/并发，以及不读取
+Riot/Provider Key 的 Linux Docker/Compose package smoke。
 
 ## 架构路线
 

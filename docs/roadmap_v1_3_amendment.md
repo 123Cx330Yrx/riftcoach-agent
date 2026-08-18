@@ -220,7 +220,7 @@ OP.GG MCP
 5F-3 Contract/Harness Eval  已完成；45 focused、196 adjacent、完整 929/110 subtests；裁决 `harness-compatible-but-runtime-gate-failed`，Context/terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功
 5F-4 Bounded Real Slice    未进入；5F-3 前置硬门失败，真实模型调用无信息增益，external calls 0
 5F-5 Adoption/Exit         已完成；裁决 `partial-adopt-evaluation-assets-only`；`f8dea66` / Actions `32028206103` exact-SHA 公共成功；产品拒绝 Pi，冻结保留评测资产/CI 复现与采用门方法
-6A entry design            已完成；`c0b5af0` / Actions `32041343696`；6A-1 至 6A-5 真库公共完成；6A-6 Security/Lifecycle/NFR 已由 `31d5e60` / Actions `32138025724` exact-SHA PostgreSQL/性能公共完成；当前交接 6A-7 Packaging/Exit Review 准备状态
+6A entry design            已完成；`c0b5af0` / Actions `32041343696`；6A-1 至 6A-6 真库公共完成；6A-7 Packaging/Exit 已本地验证，等待 exact-SHA pytest/PostgreSQL/Linux smoke
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -373,3 +373,16 @@ lease/heartbeat/reclaim/cancel/resume 或真实 Provider/Riot I/O。
 `github-actions-postgresql-17-python-3.11` 记录 8 样本 create/query p95 `6.220ms` 与
 queued→claim p95 `23.359ms`。6A-6 正式关闭，只交接 6A-7 准备状态；这些数值不是 Agent
 模型质量或公网 SLA 证据。
+
+## 2026-08-18：6A-7 Packaging/Exit 实施授权
+
+RQ-059 解除 6A-7 等待确认。本批闭环可重建 API+Worker+PostgreSQL package、此前仍 fail-closed 的
+真实 Worker executable composition、配置/启动命令、Linux no-I/O smoke 与逐项 exit matrix/review。
+smoke/CI 不读取真实 Key 或调用 Riot/Provider；配置不完整时 Worker 必须在 claim 前 fail closed。
+正式 Auth/HTTPS、Session/Memory、SSE、前端、lease/reclaim/cancel/resume、直接公网部署和新框架仍按
+既定后续检查点处理。exact-SHA 公共 CI 成功前 6A 保持进行中。
+
+本地实现与门禁现已完成：production Worker composition、隔离 no-I/O smoke、非 root image/Compose/CI
+合同已形成；聚焦 `46 passed`、完整 `1100 passed, 27 skipped, 110 subtests passed`，两套 RAG、Harness
+dry-run、compileall 与安全门通过。本机无 Docker/PostgreSQL 的运行证据仍为空，因此退出裁决保持
+`keep-open-pending-exact-sha-linux-ci`。

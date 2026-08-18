@@ -160,3 +160,40 @@ jobs:
         run: |
           python -m alembic upgrade head
           python -m alembic check
+
+  packaging-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      COMPOSE_PROJECT_NAME: riftcoach-packaging-smoke
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Validate the Compose model
+        run: docker compose --profile smoke config --quiet
+
+      - name: Build and start the isolated API stack
+        run: >-
+          docker compose --profile smoke up --build --detach --wait
+          --wait-timeout 120 api
+
+      - name: Run the no-I/O Linux package smoke
+        run: docker compose --profile smoke run --rm --no-deps smoke
+
+      - name: Inspect runtime image boundary
+        run: |
+          docker run --rm --entrypoint sh riftcoach-agent:local -c '
+            test "$(id -u)" != "0"
+            test ! -e /opt/riftcoach/.env
+            test ! -d /opt/riftcoach/tests
+            test ! -d /opt/riftcoach/data/cache
+            test ! -d /opt/riftcoach/data/runs
+            test ! -d /opt/riftcoach/reports
+            test ! -d /opt/riftcoach/tmp
+          '
+
+      - name: Tear down package smoke resources
+        if: always()
+        run: docker compose --profile smoke down -v --remove-orphans
