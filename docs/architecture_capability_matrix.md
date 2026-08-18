@@ -33,7 +33,7 @@
 | A11 | AgentRuntime V1 | 5D 控制链及 5E-1 至 5E-4 均已公开完成；两个真实 Skill 共用同步 `run()`、进程内 `stream()`、typed output、完整 Trace/Usage、安全失败映射与 exit matrix；5F-1 至 5F-5 已完成 Pi 0.84.2 审计/隔离/Harness/采用对照，最终由 `f8dea66/32028206103` 公共裁决产品拒绝 Pi、冻结保留 evaluation-only 资产 | 阶段 5D-5E | 5F-4 因 Context/terminal/live timing 硬门失败未进入；产品继续 Python Runtime；阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage、终止原因、退出审查，以及 Pi batch/Usage/Trace/sidecar 差异矩阵与采用/归档门 | 已完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有；DeepSeek V4 Pro 只通过最小协议，当前 V3 领域候选已关闭；Flash 未测试；尚无领域/产品准入、任务级选择或自动降级 | 5D 完成候选采用决策；GLM-5.2 仅作开发基线；模型分层为 5P 后横向采用门，默认等待阶段 6 真实业务证据；5F Pi-only 不改变模型路由 | G53 deferred；未来仍按 ADR-0019 比较模型分层，5F 只做 Pi Runtime 采用实验 | 新鲜同任务评测、故障降级、unsafe publication、成本和 p50/p95 延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
-| A14 | API 与任务持久化 | 5P 已公开完成同步 product slice；6A-1/6A-2/6A-3 已由 `854e52d/32043214500`、`012b066/32046532695`、`55e369e/32097561436` 真库公共验证；claim/Worker 已完成，Application/Artifact 与异步 API 尚未实现 | 阶段 5P 提供本地同步切片，阶段 6 加 SQL | 阶段 8 扩展 lease、取消、恢复与迟到结果治理 | receipt/path/Schema/SHA/终态交叉校验；PostgreSQL migration、HTTP 幂等、并发 claim、鉴权、隔离和中断测试 | 部分完成 |
+| A14 | API 与任务持久化 | 5P 同步切片与 6A-1/2/3 已公开；6A-4 已本地实现 trusted run_id、真实 Task Executor、严格 evidence/CAS、reconciliation 与人工恢复，新增真库门待 exact-SHA CI；异步 API 尚未实现 | 阶段 5P 提供本地同步切片，阶段 6 加 SQL | 阶段 8 扩展 lease、取消、恢复与迟到结果治理 | receipt/path/Schema/SHA/终态交叉校验；PostgreSQL migration、HTTP 幂等、并发 claim、鉴权、隔离和中断测试 | 部分完成 |
 | A15 | 标准 MCP 与动态 Meta | 内部 Tool Runtime，不冒充 MCP | 阶段 7 | OP.GG、官方补丁等通过领域 Adapter 分层 | initialize、tools/list、tools/call、断线和版本边界测试 | 已规划 |
 | A16 | Multi-Agent 与 DAG | 当前不需要 | 阶段 8 Advanced | 仅在独立上下文、权限和并行收益成立时采用 | Bad Case、对照、消融、成本和 ADR | 按证据采用 |
 
@@ -48,7 +48,7 @@
 | Q05 | 数据生命周期与隐私 | 本地缓存不提交；6A 已设计原始缓存/task-run/log 7/90/30 天默认保留与 terminal owner 删除，尚未实现，Memory 尚未落库 | 阶段 6 实现 task/run 与 Memory 的保留、导出、更正、删除 | 阶段 8 加备份、恢复和公开隐私说明 | 原始比赛、Run、Memory 的保留、更正、导出、删除失败补偿测试 | 需显式补齐 |
 | Q06 | 知识库更新与回滚 | 来源、版本、有效期和冲突策略已有 | 阶段 4 维护任务，公开部署前完成更新流程 | 阶段 8 自动化索引构建、版本切换和回滚 | 新旧版本、失败构建、污染文档和回滚测试 | 需显式补齐 |
 | Q07 | 性能、Token 与成本 | 既有 Runtime 预算/实验账本保留；6A 设计已冻结待测作品集目标：warm-DB create/query p95 `<300ms`、有容量 claim p95 `<2s`、owner 3/global 50 非终态背压，但尚无产品测量 | 阶段 5E 定义运行预算，阶段 6 定义并实测 API SLO | G53 使用独立预算；阶段 6/8 增加真实 p50/p95、队列等待与产品成本趋势 | p50/p95、Token、工具次数、模型成本、背压、预算可达性和超预算停止 | 部分完成 |
-| Q08 | 可靠性与故障恢复 | Harness 降级、Tool 重试/熔断、Artifact 哈希；6A-1/2/3 已公开验证 PostgreSQL durable task、幂等、原子 claim、ownership/CAS、退避和 graceful shutdown；hard-crash/Artifact reconciliation 仍未实现 | 阶段 6 增加持久状态、幂等、短事务与有证据 reconciliation | 阶段 8 增加取消、lease/heartbeat/fencing、检查点、自动恢复和备份 | DB/Artifact 故障、并发 claim、进程中断、重复请求、人工恢复和迟到结果测试 | 部分完成 |
+| Q08 | 可靠性与故障恢复 | Harness/Tool/Artifact 基础与 6A-1/2/3 已公开；6A-4 已本地实现 receipt-proven success reconciliation、无证据 recovery-required、人工恢复 CAS 与迟到结果拒绝，真库门待 CI；自动 reclaim 仍未实现 | 阶段 6 增加持久状态、幂等、短事务与有证据 reconciliation | 阶段 8 增加取消、lease/heartbeat/fencing、检查点、自动恢复和备份 | DB/Artifact 故障、并发 claim、进程中断、重复请求、人工恢复和迟到结果测试 | 部分完成 |
 | Q09 | 开源、部署与合规 | MIT、CI、README、SECURITY、匿名化样例 | 横向交付检查点 | 阶段 8 完成产品部署与作品集证据 | Linux/Docker 冒烟、密钥扫描、许可证和公开边界检查 | 部分完成 |
 | Q10 | 前端可解释性与可访问性 | 尚无正式产品前端 | 阶段 6 首个 Web 切片 | 阶段 8 展示证据、工具、评测、历史和状态 | 桌面/移动截图、键盘操作、错误态和数据边界展示 | 已规划 |
 

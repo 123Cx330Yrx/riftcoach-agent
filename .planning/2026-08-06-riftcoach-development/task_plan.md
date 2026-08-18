@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 12 - `6A-4-application-artifact-integration` preparation after 6A-3 completed publicly at
-`55e369e9697b91c71fb4638ac9299ad2c5e57a36` / Actions `32097561436`; waiting for explicit authorization
+Phase 12 - `6A-4-application-artifact-integration` authorized by RQ-056 after 6A-3 completed publicly at
+`55e369e9697b91c71fb4638ac9299ad2c5e57a36` / Actions `32097561436`
 
 ## Phases
 
@@ -253,8 +253,8 @@ Phase 12 - `6A-4-application-artifact-integration` preparation after 6A-3 comple
 
 ## Next Step
 
-`6A-4-application-artifact-integration`：等待用户明确继续后，先按实施计划讲解并冻结 run_id 贯穿、
-receipt-proven terminal、conservative reconciliation 与人工 recovery CAS；不自动开始实现。
+`6A-4-application-artifact-integration`：按已确认实施计划先写红灯，再实现 run_id 贯穿、真实 Executor、
+receipt-proven terminal、conservative reconciliation 与人工 recovery CAS；不进入 6A-5。
 
 ## 6A-1 Checklist
 
@@ -298,12 +298,21 @@ receipt-proven terminal、conservative reconciliation 与人工 recovery CAS；�
 - [completed] 运行聚焦、完整、两套 RAG 与全部横向门禁
 - [completed] 提交、推送并由 `55e369e` / Actions `32097561436` 完成 exact-SHA PostgreSQL CI
 
-### Phase 12 - 6A-4-application-artifact-integration preparation
+### Phase 12 - 6A-4-application-artifact-integration
 
 - Status: in_progress
-- Pause: awaiting explicit user confirmation before starting 6A-4.
-- 6A-3 已正式关闭；当前只保存 6A-4 准备键，不实现 run_id/Application/Artifact integration、
-  reconciliation 或人工 recovery。
+- Authorization: RQ-056.
+- 6A-3 已正式关闭；当前只实现 run_id/Application/Artifact integration、receipt-proven
+  reconciliation 与人工 recovery，不进入 6A-5。
+
+## 6A-4 Checklist
+
+- [completed] 记录 RQ-056、清除等待确认状态并完成初学者入口教学
+- [completed] 审计相邻 Application/Runtime/receipt/task/Worker 合同并先写红灯
+- [completed] 实现 trusted run_id 贯穿、真实 Recent Review Executor 与 terminal evidence 校验
+- [completed] 实现 receipt-proven reconciliation、recovery-required 投影与人工 recovery CAS
+- [completed] 运行聚焦、完整、两套 RAG 与全部横向门禁
+- [in_progress] 提交、推送并等待 exact-SHA PostgreSQL CI，成功后只交接 6A-5 准备状态
 
 ## 6A Entry Design Checklist
 

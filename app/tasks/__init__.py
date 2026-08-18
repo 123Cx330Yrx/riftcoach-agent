@@ -10,6 +10,23 @@ from app.tasks.models import (
     TaskTerminal,
 )
 from app.tasks.service import ReviewTaskService, TaskServiceError
+from app.tasks.recent_review_executor import (
+    RecentReviewTaskExecutionError,
+    RecentReviewTaskExecutionErrorCode,
+    RecentReviewTaskExecutor,
+)
+from app.tasks.reconciliation import (
+    ManualRecoveryResult,
+    ManualRecoveryStatus,
+    ManualReviewTaskRecovery,
+    RecentReviewTerminalEvidenceVerifier,
+    ReconciliationStatus,
+    ReviewTaskReconciler,
+    TaskReconciliationResult,
+    TaskReconciliationError,
+    TaskReconciliationErrorCode,
+    TaskTerminalEvidenceError,
+)
 
 __all__ = [
     "CreateReviewTaskCommand",
@@ -21,4 +38,17 @@ __all__ = [
     "TaskServiceError",
     "TaskStatus",
     "TaskTerminal",
+    "RecentReviewTaskExecutionError",
+    "RecentReviewTaskExecutionErrorCode",
+    "RecentReviewTaskExecutor",
+    "ManualRecoveryResult",
+    "ManualRecoveryStatus",
+    "ManualReviewTaskRecovery",
+    "RecentReviewTerminalEvidenceVerifier",
+    "ReconciliationStatus",
+    "ReviewTaskReconciler",
+    "TaskReconciliationResult",
+    "TaskReconciliationError",
+    "TaskReconciliationErrorCode",
+    "TaskTerminalEvidenceError",
 ]

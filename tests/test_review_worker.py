@@ -14,6 +14,8 @@ from app.tasks.models import (
     TaskStatus,
     TaskTerminal,
 )
+from app.product.run_receipts import RunReceiptReference
+from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
 from app.workers.polling import PollingPolicy
 from app.workers.review_worker import (
     ReviewTaskExecutor,
@@ -59,20 +61,55 @@ def running_task(number: int, *, worker_id: str = "worker-1") -> ReviewTask:
     )
 
 
-def successful_terminal() -> TaskTerminal:
+def successful_terminal(
+    *,
+    run_id: str = "review_worker_1",
+) -> TaskTerminal:
     return TaskTerminal(
+        run_id=run_id,
         terminal_reason="quality_gate_passed",
         publication_status=TaskPublicationStatus.PUBLISHED,
         report_available=True,
+        trace_reference=RuntimeTraceReference(
+            run_id=run_id,
+            sha256="a" * 64,
+        ),
+        receipt_reference=RunReceiptReference(
+            run_id=run_id,
+            sha256="b" * 64,
+        ),
+        artifact_reference=RuntimeArtifactReference(
+            kind="final_report",
+            schema_version="1.0",
+            relative_path="output/final_report.md",
+            sha256="c" * 64,
+            producer="review_harness.publisher",
+        ),
     )
 
 
 def test_task_terminal_is_strict_and_rejected_report_is_impossible() -> None:
     with pytest.raises(ValidationError):
         TaskTerminal(
+            run_id="review_worker_rejected",
             terminal_reason="quality_gate_passed",
             publication_status=TaskPublicationStatus.REJECTED,
             report_available=True,
+            trace_reference=RuntimeTraceReference(
+                run_id="review_worker_rejected",
+                sha256="a" * 64,
+            ),
+            receipt_reference=RunReceiptReference(
+                run_id="review_worker_rejected",
+                sha256="b" * 64,
+            ),
+            artifact_reference=RuntimeArtifactReference(
+                kind="final_report",
+                schema_version="1.0",
+                relative_path="output/final_report.md",
+                sha256="c" * 64,
+                producer="review_harness.publisher",
+            ),
         )
     with pytest.raises(ValidationError):
         TaskTerminal.model_validate(
@@ -235,6 +272,22 @@ def test_invalid_executor_terminal_is_failed_without_automatic_retry() -> None:
     assert len(repository.claim_calls) == 1
 
 
+def test_executor_terminal_for_a_different_run_fails_closed() -> None:
+    task = running_task(1)
+    repository = FakeRepository([task])
+    executor = FakeExecutor(
+        terminal=successful_terminal(run_id="review_different_run")
+    )
+
+    result = worker(repository, executor).run_once()
+
+    assert result.status is WorkerIterationStatus.FAILED
+    assert repository.succeed_calls == []
+    assert repository.fail_calls == [
+        (task.task_id, "worker-1", "worker_execution_failed")
+    ]
+
+
 @pytest.mark.parametrize("terminal_method", ("succeed", "fail"))
 def test_stale_or_wrong_owner_terminal_cas_is_reported_without_retry(
     terminal_method: str,
@@ -334,5 +387,5 @@ def test_already_stopped_worker_never_claims() -> None:
     assert repository.claim_calls == []
 
 
-def test_cli_fails_closed_until_application_executor_is_wired() -> None:
+def test_cli_fails_closed_until_environment_composition_is_wired() -> None:
     assert worker_cli_main(["--worker-id", "worker-1"]) == 2

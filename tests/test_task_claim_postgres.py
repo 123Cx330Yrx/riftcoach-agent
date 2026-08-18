@@ -27,6 +27,8 @@ from app.tasks.models import (
     TaskStatus,
     TaskTerminal,
 )
+from app.product.run_receipts import RunReceiptReference
+from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -98,11 +100,30 @@ def create_tasks(
         )
 
 
-def successful_terminal() -> TaskTerminal:
+def successful_terminal(
+    *,
+    run_id: str = "review_claim_1",
+) -> TaskTerminal:
     return TaskTerminal(
+        run_id=run_id,
         terminal_reason="quality_gate_passed",
         publication_status=TaskPublicationStatus.PUBLISHED,
         report_available=True,
+        trace_reference=RuntimeTraceReference(
+            run_id=run_id,
+            sha256="a" * 64,
+        ),
+        receipt_reference=RunReceiptReference(
+            run_id=run_id,
+            sha256="b" * 64,
+        ),
+        artifact_reference=RuntimeArtifactReference(
+            kind="final_report",
+            schema_version="1.0",
+            relative_path="output/final_report.md",
+            sha256="c" * 64,
+            producer="review_harness.publisher",
+        ),
     )
 
 
@@ -301,6 +322,11 @@ def test_terminal_success_cas_rejects_wrong_or_stale_worker_without_mutation() -
 
         assert not repository.succeed(
             task_id=task.task_id,
+            worker_id="worker-1",
+            terminal=successful_terminal(run_id="review_other_run"),
+        )
+        assert not repository.succeed(
+            task_id=task.task_id,
             worker_id="worker-2",
             terminal=successful_terminal(),
         )
@@ -342,6 +368,12 @@ def test_terminal_success_cas_rejects_wrong_or_stale_worker_without_mutation() -
         assert terminal.terminal_reason == "quality_gate_passed"
         assert terminal.publication_status is TaskPublicationStatus.PUBLISHED
         assert terminal.report_available is True
+        assert terminal.trace_reference is not None
+        assert terminal.trace_reference.run_id == task.run_id
+        assert terminal.receipt_reference is not None
+        assert terminal.receipt_reference.run_id == task.run_id
+        assert terminal.artifact_reference is not None
+        assert terminal.artifact_reference.kind == "final_report"
 
 
 def test_terminal_failure_cas_is_owner_scoped_and_irreversible() -> None:

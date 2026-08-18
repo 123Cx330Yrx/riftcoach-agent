@@ -2462,3 +2462,38 @@
 - 6A-3 正式关闭，RQ-055 标为已执行；四条进度线已同步。canonical 唯一下一检查点交接为
   `6A-4-application-artifact-integration` 准备状态，等待用户明确继续；本轮未实现真实
   Application/Artifact、reconciliation、异步 API、Session/Memory、SSE、鉴权或前端。
+
+## 2026-08-18：开始 6A-4 Application & Artifact Integration
+
+- 用户再次明确“继续”；RQ-056 只授权 SQL 预留 `run_id` 贯穿 Application/Runtime/receipt、真实
+  Recent Review Task Executor、receipt-proven terminal coordination、保守 reconciliation 与受限人工
+  recovery CAS。
+- 已按 `AGENTS.md` 恢复 canonical、活动计划、需求/路线/能力矩阵、ADR-0038 与 6A design/implementation
+  plan；治理通过，工作树起始干净，HEAD 与 `origin/main` 均为
+  `79c5f396a71b02c33de326187971b2f721a8bc65`。
+- 已完成初学者入口教学，明确 SQL/文件无法共享事务、crash window、跨存储 `run_id`、receipt-proven
+  reconciliation 以及无 lease 时禁止自动判死/重跑的原因。
+- 当前下一步为审计相邻合同并先写 run_id/Executor/reconciliation/manual recovery 红灯；尚未修改
+  FastAPI、读取 Key、调用 Riot/Provider，且不会进入 6A-5。
+
+## 2026-08-18：6A-4 本地实现与门禁完成
+
+- `RecentReviewRuntimeRequestCompiler.compile()` 与 `RecentReviewApplicationService.review()` 已增加
+  keyword-only trusted `run_id`；SQL 预留值会贯穿 input binding、Runtime result、Trace 与 immutable
+  receipt，且不会再调用随机 run factory。Application 会核对 receipt writer 返回的完整终态身份。
+- `TaskTerminal` 现在要求同一 run 的 Trace/receipt 引用，published/degraded 还必须带 final Artifact；
+  Repository success CAS 同时匹配 task/status/worker/run 并持久化 body-free references/SHA。先验证
+  completed ApplicationResult、再写 completed receipt，消除了非法 completed receipt 被对账成成功的窗口。
+- 新 `RecentReviewTaskExecutor` 会复核 task payload fingerprint，调用现有 Application/Runtime/Harness，
+  再由 `RecentReviewTerminalEvidenceVerifier` 复读 receipt、Trace、manifest、final Artifact 与精确 receipt
+  bytes SHA；published/degraded/rejected 都形成 task succeeded，Application/证据失败交回 Worker failed。
+- `ReviewTaskReconciler` 只用完整 immutable receipt 补齐 succeeded；missing/invalid/non-completed receipt
+  只返回 `recovery_required`，绝不 fail/requeue/replay。`ManualReviewTaskRecovery` 与恢复 CLI 必须二次匹配
+  worker ID，再用 running+worker CAS 写 `worker_confirmed_dead`；旧 Worker 的迟到 success 被终态 CAS 拒绝。
+- 聚焦相关回归 `130 passed, 12 skipped`；完整回归
+  `1033 passed, 20 skipped, 1 warning, 110 subtests passed`。20 个本地 skip 为既有 15 个 PostgreSQL 项
+  加本轮 5 个 reconciliation/真实离线产品纵向真库项；本机无数据库，必须由 GitHub Actions 补齐。
+- 两套 RAG 均达到冻结阈值；compileall、Harness dry-run、governance、tracked Secret/run-data、SDK boundary、
+  YAML 与 diff check 全部通过。本轮真实 Riot/Provider/Key I/O 为 0；Fake Provider 纵向只证明接线。
+- 当前下一步只提交、推送并等待 exact-SHA `pytest` 与 `postgres-migrations`；公开真库成功前 6A-4
+  保持 in progress，不进入 6A-5。

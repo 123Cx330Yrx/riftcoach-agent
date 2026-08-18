@@ -18,6 +18,8 @@ from pydantic import (
 
 from app.harness.run_ids import normalize_run_id
 from app.product.recent_review import RecentReviewProductRequest
+from app.product.run_receipts import RunReceiptReference
+from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
 
 
 _OWNER_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._:@|+-]{0,127}$"
@@ -80,17 +82,37 @@ class TaskPublicationStatus(StrEnum):
 
 
 class TaskTerminal(TaskContractModel):
+    run_id: str
     terminal_reason: SafeTaskCode
     publication_status: TaskPublicationStatus
     report_available: bool
+    trace_reference: RuntimeTraceReference
+    receipt_reference: RunReceiptReference
+    artifact_reference: RuntimeArtifactReference | None = None
+
+    @field_validator("run_id")
+    @classmethod
+    def validate_run_id(cls, value: str) -> str:
+        return normalize_run_id(value)
 
     @model_validator(mode="after")
     def validate_publication_projection(self) -> Self:
+        if self.trace_reference.run_id != self.run_id:
+            raise ValueError("trace_reference run_id must match terminal run_id")
+        if self.receipt_reference.run_id != self.run_id:
+            raise ValueError("receipt_reference run_id must match terminal run_id")
+        if self.publication_status is TaskPublicationStatus.REJECTED:
+            if self.report_available or self.artifact_reference is not None:
+                raise ValueError("rejected publication cannot expose a report")
+        elif not self.report_available or self.artifact_reference is None:
+            raise ValueError(
+                "published or degraded terminal requires final report evidence"
+            )
         if (
-            self.publication_status is TaskPublicationStatus.REJECTED
-            and self.report_available
+            self.artifact_reference is not None
+            and self.artifact_reference.kind != "final_report"
         ):
-            raise ValueError("rejected publication cannot expose a report")
+            raise ValueError("artifact_reference must identify the final report")
         return self
 
 
@@ -169,9 +191,9 @@ class ReviewTask(TaskContractModel):
     terminal_reason: SafeTaskCode | None
     publication_status: TaskPublicationStatus | None
     report_available: bool
-    trace_reference: dict[str, JsonValue] | None
-    receipt_reference: dict[str, JsonValue] | None
-    artifact_reference: dict[str, JsonValue] | None
+    trace_reference: RuntimeTraceReference | None
+    receipt_reference: RunReceiptReference | None
+    artifact_reference: RuntimeArtifactReference | None
 
     @field_validator("run_id")
     @classmethod
@@ -219,7 +241,14 @@ class ReviewTask(TaskContractModel):
                     self.terminal_reason,
                     self.publication_status,
                 )
-            ) or self.report_available:
+            ) or self.report_available or any(
+                value is not None
+                for value in (
+                    self.trace_reference,
+                    self.receipt_reference,
+                    self.artifact_reference,
+                )
+            ):
                 raise ValueError("running task cannot contain terminal projection")
         else:
             if (
@@ -232,13 +261,30 @@ class ReviewTask(TaskContractModel):
             if self.status is TaskStatus.SUCCEEDED:
                 if self.publication_status is None:
                     raise ValueError("succeeded task requires publication_status")
-                if (
-                    self.publication_status is TaskPublicationStatus.REJECTED
-                    and self.report_available
-                ):
-                    raise ValueError("rejected publication cannot expose a report")
-            elif self.publication_status is not None or self.report_available:
-                raise ValueError("failed task cannot contain publication projection")
+                TaskTerminal(
+                    run_id=self.run_id,
+                    terminal_reason=self.terminal_reason,
+                    publication_status=self.publication_status,
+                    report_available=self.report_available,
+                    trace_reference=self.trace_reference,
+                    receipt_reference=self.receipt_reference,
+                    artifact_reference=self.artifact_reference,
+                )
+            elif (
+                self.publication_status is not None
+                or self.report_available
+                or any(
+                    value is not None
+                    for value in (
+                        self.trace_reference,
+                        self.receipt_reference,
+                        self.artifact_reference,
+                    )
+                )
+            ):
+                raise ValueError(
+                    "failed task cannot contain publication or evidence projection"
+                )
         return self
 
     def _require_empty_execution_state(self, state: str) -> None:
@@ -251,7 +297,14 @@ class ReviewTask(TaskContractModel):
                 self.terminal_reason,
                 self.publication_status,
             )
-        ) or self.report_available:
+        ) or self.report_available or any(
+            value is not None
+            for value in (
+                self.trace_reference,
+                self.receipt_reference,
+                self.artifact_reference,
+            )
+        ):
             raise ValueError(f"{state} task cannot contain execution state")
 
 

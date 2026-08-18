@@ -7,8 +7,9 @@ import os
 import re
 import tempfile
 from datetime import datetime, timedelta, timezone
+from hashlib import sha256
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any, Literal, Protocol
 
 from pydantic import BaseModel, ConfigDict, ValidationError, field_validator, model_validator
 
@@ -26,6 +27,29 @@ _SAFE_CODE_PATTERN = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)*$")
 
 class RunReceiptIntegrityError(RuntimeError):
     """Raised when stored receipt bytes do not satisfy the frozen contract."""
+
+
+class RunReceiptReference(BaseModel):
+    """Body-free identity of the exact immutable receipt bytes."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+
+    schema_version: Literal["1.0"] = "1.0"
+    run_id: str
+    relative_path: Literal["api_run_receipt.json"] = "api_run_receipt.json"
+    sha256: str
+
+    @field_validator("run_id")
+    @classmethod
+    def validate_run_id(cls, value: str) -> str:
+        return normalize_run_id(value)
+
+    @field_validator("sha256")
+    @classmethod
+    def validate_digest(cls, value: str) -> str:
+        if not re.fullmatch(r"[0-9a-f]{64}", value):
+            raise ValueError("sha256 must be a lowercase SHA-256 digest")
+        return value
 
 
 class ApiRunReceipt(BaseModel):
@@ -171,6 +195,13 @@ class FileRunReceiptStore:
         self._atomic_write_once(target, payload)
 
     def read_receipt(self, run_id: str) -> ApiRunReceipt:
+        receipt, _ = self.read_receipt_with_reference(run_id)
+        return receipt
+
+    def read_receipt_with_reference(
+        self,
+        run_id: str,
+    ) -> tuple[ApiRunReceipt, RunReceiptReference]:
         normalized = normalize_run_id(run_id)
         target = self._receipt_path(normalized)
         payload = target.read_bytes()
@@ -184,7 +215,10 @@ class FileRunReceiptStore:
             raise RunReceiptIntegrityError(
                 "stored run receipt belongs to a different run"
             )
-        return receipt
+        return receipt, RunReceiptReference(
+            run_id=normalized,
+            sha256=sha256(payload).hexdigest(),
+        )
 
     def _receipt_path(self, run_id: str) -> Path:
         normalized = normalize_run_id(run_id)
@@ -223,6 +257,7 @@ class FileRunReceiptStore:
 __all__ = [
     "ApiRunReceipt",
     "FileRunReceiptStore",
+    "RunReceiptReference",
     "RunReceiptIntegrityError",
     "RunReceiptWriter",
 ]

@@ -13,7 +13,12 @@ from .recent_review_service import (
     RecentReviewSummaryBuilder,
 )
 from .run_query import RunQueryError, RunQueryService, RunView
-from .run_receipts import ApiRunReceipt, FileRunReceiptStore, RunReceiptWriter
+from .run_receipts import (
+    ApiRunReceipt,
+    FileRunReceiptStore,
+    RunReceiptReference,
+    RunReceiptWriter,
+)
 
 __all__ = [
     "ProductRequestCompilationError",
@@ -28,6 +33,7 @@ __all__ = [
     "RecentReviewSummaryBuilder",
     "RunQueryError",
     "RunQueryService",
+    "RunReceiptReference",
     "RunReceiptWriter",
     "RunView",
 ]

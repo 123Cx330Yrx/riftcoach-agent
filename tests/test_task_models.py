@@ -15,8 +15,11 @@ from app.tasks.models import (
     TaskCreateResult,
     TaskPublicationStatus,
     TaskStatus,
+    TaskTerminal,
 )
 from app.product.recent_review import RecentReviewProductRequest
+from app.product.run_receipts import RunReceiptReference
+from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
 
 
 TASK_ID = UUID("11111111-1111-4111-8111-111111111111")
@@ -53,6 +56,26 @@ def queued_task(**changes: object) -> ReviewTask:
     }
     values.update(changes)
     return ReviewTask(**values)  # type: ignore[arg-type]
+
+
+def terminal_evidence(run_id: str = "review_task_models") -> dict[str, object]:
+    return {
+        "trace_reference": RuntimeTraceReference(
+            run_id=run_id,
+            sha256="a" * 64,
+        ),
+        "receipt_reference": RunReceiptReference(
+            run_id=run_id,
+            sha256="b" * 64,
+        ),
+        "artifact_reference": RuntimeArtifactReference(
+            kind="final_report",
+            schema_version="1.0",
+            relative_path="output/final_report.md",
+            sha256="c" * 64,
+            producer="review_harness.publisher",
+        ),
+    }
 
 
 def test_task_status_contract_is_exactly_the_frozen_four_states() -> None:
@@ -161,6 +184,7 @@ def test_running_and_terminal_state_invariants_are_explicit() -> None:
         terminal_reason="review_completed",
         publication_status=TaskPublicationStatus.PUBLISHED,
         report_available=True,
+        **terminal_evidence(),
     )
     assert succeeded.publication_status is TaskPublicationStatus.PUBLISHED
 
@@ -215,6 +239,44 @@ def test_capacity_policy_is_bounded_and_global_cannot_be_below_owner() -> None:
         TaskCapacityPolicy(owner_active_limit=0)
     with pytest.raises(ValidationError, match="global_active_limit"):
         TaskCapacityPolicy(owner_active_limit=4, global_active_limit=3)
+
+
+def test_success_terminal_requires_cross_store_evidence_for_the_same_run() -> None:
+    terminal = TaskTerminal(
+        run_id="review_task_models",
+        terminal_reason="quality_gate_passed",
+        publication_status=TaskPublicationStatus.PUBLISHED,
+        report_available=True,
+        **terminal_evidence(),
+    )
+
+    assert terminal.trace_reference.run_id == terminal.run_id
+    assert terminal.receipt_reference.run_id == terminal.run_id
+    assert terminal.artifact_reference is not None
+
+    with pytest.raises(ValidationError, match="receipt_reference"):
+        TaskTerminal(
+            run_id="review_task_models",
+            terminal_reason="quality_gate_passed",
+            publication_status=TaskPublicationStatus.PUBLISHED,
+            report_available=True,
+            trace_reference=terminal.trace_reference,
+            receipt_reference=None,
+            artifact_reference=terminal.artifact_reference,
+        )
+
+    with pytest.raises(ValidationError, match="run_id"):
+        TaskTerminal(
+            run_id="review_task_models",
+            terminal_reason="quality_gate_passed",
+            publication_status=TaskPublicationStatus.PUBLISHED,
+            report_available=True,
+            trace_reference=terminal.trace_reference.model_copy(
+                update={"run_id": "review_other"}
+            ),
+            receipt_reference=terminal.receipt_reference,
+            artifact_reference=terminal.artifact_reference,
+        )
 
 
 def test_create_result_distinguishes_created_from_replayed_without_body() -> None:

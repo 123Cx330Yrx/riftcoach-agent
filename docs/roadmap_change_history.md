@@ -1881,3 +1881,16 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   自动恢复。
 - `HANDOFF`：canonical 唯一下一检查点为 `6A-4-application-artifact-integration` 准备状态，等待
   用户明确继续；不自动实现 run_id integration、reconciliation、异步 API、Session/Memory 或前端。
+
+### 2026-08-18：RQ-056 恢复 6A-4 与本地实现门禁完成
+
+- `RESUMED`：用户再次明确“继续”，只授权 `6A-4-application-artifact-integration`；不进入 6A-5
+  异步 FastAPI、lease/heartbeat/retry、Session/Memory/SSE/前端或外部真实 I/O。
+- `IMPLEMENTED-LOCAL`：trusted run_id 已贯穿 compiler/Application/Runtime/receipt；真实 Recent Review
+  Task Executor、严格 TaskTerminal evidence、task/status/worker/run CAS、receipt-proven reconciliation、
+  recovery-required 投影和人工 worker-confirmed-dead CAS 已实现。
+- `VERIFIED-LOCAL`：聚焦 `130 passed, 12 skipped`，完整
+  `1033 passed, 20 skipped, 1 warning, 110 subtests passed`；两套 RAG、compileall、Harness dry-run、
+  governance、秘密/SDK/YAML/diff 门通过。新增 5 项真库测试因本机无 PostgreSQL 明确 skip。
+- `CURRENT`：6A-4 保持 in progress；下一步只提交、推送并等待 exact-SHA PostgreSQL CI。成功前不关闭、
+  不交接 6A-5；本地离线 Fake Provider 纵向不证明真实模型质量。

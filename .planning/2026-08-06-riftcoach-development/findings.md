@@ -2510,8 +2510,9 @@
 - 真实 PostgreSQL 测试使用独立 Session、barrier、有限 future timeout；额外锁住第一 queued row，
   确定性验证另一 Worker 会跳过它领取第二行，而不是依赖长 sleep 猜时序。由于本机无 Docker，7 项
   真库测试必须由 PostgreSQL 17 CI 补齐。
-- Worker CLI 当前故意 fail-closed：6A-4 尚未提供真实 Application/Artifact Executor，直接启动会
-  返回 `review_worker_executor_not_configured`，不会误领 queued task。这不是生产 Worker 完成声明。
+- 6A-3 收尾时 Worker CLI 故意 fail-closed：当时 6A-4 尚未提供真实 Application/Artifact Executor，
+  直接启动会返回 `review_worker_executor_not_configured`，不会误领 queued task。这不是生产 Worker
+  完成声明；6A-4 后的最新边界见本文件后续发现。
 - 人工差异审查发现首版补丁曾把 helper 插入 `_record_to_task()` 中间；语法/纯 Fake 门仍会通过，但真库
   row mapping 会返回 `None`。修正函数边界后新增无需数据库的 mapping 回归，使这类结构错误不再只能
   等公共 CI 暴露。
@@ -2526,3 +2527,23 @@
   hard-crash 自动恢复已完成。
 - 公共 CI 没有读取 `.env`、调用 Riot/Provider 或执行真实 Agent；Fake Executor 仍只证明 Worker
   控制流，不能证明模型质量。
+
+## 2026-08-18：6A-4 本地实现发现
+
+- 5P compiler 原先总生成新 run ID；6A-4 增加 keyword-only trusted run_id，同时保留旧同步调用的默认
+  factory。显式值非法时不能回退生成，避免 SQL task 与 Runtime/Artifact 分裂。
+- Application 原先忽略 receipt writer 的返回值，且 completed Runtime 会先写 receipt、后验证 typed
+  ApplicationResult。差异审查确认后改为 completed 先验证合法投影再写 receipt；typed failed Runtime 仍先
+  写 failed receipt 供审计，但 verifier 永远不会把 failed receipt 对账为 success。
+- receipt reference 是对 `api_run_receipt.json` 精确 bytes 的 SHA-256，而不是 receipt JSON 字段的摘要；
+  verifier 在完整 query 后再次复读同一 receipt/reference，阻断验证期间字节替换的 TOCTOU 假证据。
+- SQL 成功投影现在保存严格 Trace/receipt/final Artifact 模型；Repository CAS 额外匹配 run_id。Artifact
+  本身没有 run_id 字段，但它必须来自同 run Trace，RunQueryService 已交叉验证 Trace/manifest/path/SHA。
+- hard crash 没有 lease/heartbeat，故 `recovery_required` 只是运维投影，不是第五种 task 状态。missing、
+  invalid 或 failed receipt 均不自动判死/重跑；只有 completed publication receipt 可自动 success。
+- 6A-4 已提供真实 `RecentReviewTaskExecutor` 组合边界；`scripts/run_review_worker.py` 仍故意 fail-closed，
+  因环境/Provider/Riot/DB 的 production-like composition 与进程 lifecycle 属于 6A-5，而不是让本批脚本
+  import 时读取 Key 或误领任务。
+- 新真库测试共 5 项：完整 receipt reconciliation、无 receipt 保持 running、人工恢复阻断迟到 Worker、
+  无证据不变更，以及 PostgreSQL + Application + local RAG + Fake Provider + Runtime/Harness/Artifact 纵向。
+  本机明确 skip，GitHub PostgreSQL 17 job 是阻塞证据。

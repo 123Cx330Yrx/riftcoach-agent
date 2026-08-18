@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+from hashlib import sha256
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -11,6 +12,7 @@ from pydantic import ValidationError
 from app.product.run_receipts import (
     ApiRunReceipt,
     FileRunReceiptStore,
+    RunReceiptReference,
     RunReceiptIntegrityError,
 )
 from app.runtime.models import (
@@ -177,6 +179,28 @@ def test_file_receipt_store_round_trips_strict_json_once(tmp_path: Path) -> None
     with pytest.raises(FileExistsError, match="immutable"):
         store.write_result(_result(), created_at_utc=NOW)
     assert receipt_path.read_bytes() == original
+
+
+def test_file_receipt_store_returns_an_exact_body_free_receipt_reference(
+    tmp_path: Path,
+) -> None:
+    store = FileRunReceiptStore(tmp_path)
+    written = store.write_result(_result(), created_at_utc=NOW)
+
+    receipt, reference = store.read_receipt_with_reference(written.run_id)
+    payload = (tmp_path / written.run_id / "api_run_receipt.json").read_bytes()
+
+    assert receipt == written
+    assert reference == RunReceiptReference(
+        run_id=written.run_id,
+        sha256=sha256(payload).hexdigest(),
+    )
+    assert set(reference.model_dump()) == {
+        "schema_version",
+        "run_id",
+        "relative_path",
+        "sha256",
+    }
 
 
 def test_file_receipt_store_rejects_unsafe_run_ids(tmp_path: Path) -> None:

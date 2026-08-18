@@ -39,7 +39,7 @@ from .recent_review import (
     RecentReviewProductRequest,
     RecentReviewRuntimeRequestCompiler,
 )
-from .run_receipts import RunReceiptWriter
+from .run_receipts import ApiRunReceipt, RunReceiptWriter
 
 
 RecentReviewErrorCode = Literal[
@@ -222,9 +222,18 @@ class RecentReviewApplicationService:
     def review(
         self,
         request: RecentReviewProductRequest,
+        *,
+        run_id: str | None = None,
     ) -> RecentReviewApplicationResult:
         if not isinstance(request, RecentReviewProductRequest):
             raise TypeError("request must be a RecentReviewProductRequest")
+        if run_id is not None:
+            try:
+                run_id = normalize_run_id(run_id)
+            except (TypeError, ValueError):
+                raise RecentReviewApplicationError(
+                    "service_configuration_invalid"
+                ) from None
 
         summary = self._build_summary(request)
         self._validate_summary(summary)
@@ -233,6 +242,7 @@ class RecentReviewApplicationService:
             request,
             summary=summary,
             deterministic_report=deterministic_report,
+            run_id=run_id,
         )
         runtime_result = self._run_runtime(runtime_request)
         if runtime_result.run_id != runtime_request.run_id:
@@ -240,24 +250,57 @@ class RecentReviewApplicationService:
                 "review_runtime_failed",
                 run_id=runtime_request.run_id,
             )
+        if runtime_result.runtime_status is RuntimeStatus.FAILED:
+            # A typed failed Runtime receipt remains useful evidence, but it
+            # can never be reconciled to task success.
+            self._write_receipt(runtime_request, runtime_result)
+            return self._project_result(runtime_request, runtime_result)
+
+        application_result = self._project_result(
+            runtime_request,
+            runtime_result,
+        )
         self._write_receipt(runtime_request, runtime_result)
-        return self._project_result(runtime_request, runtime_result)
+        return application_result
 
     def _write_receipt(
         self,
         request: RuntimeRunRequest,
         result: RuntimeRunResult[Any],
-    ) -> None:
+    ) -> ApiRunReceipt:
         failure: RecentReviewApplicationError | None = None
+        receipt: Any = None
         try:
-            self._receipt_writer.write_result(result)
+            receipt = self._receipt_writer.write_result(result)
         except Exception:
+            failure = RecentReviewApplicationError(
+                "review_runtime_failed",
+                run_id=request.run_id,
+            )
+        if failure is None and (
+            not isinstance(receipt, ApiRunReceipt)
+            or receipt.run_id != request.run_id
+            or receipt.runtime_status is not result.runtime_status
+            or receipt.publication_status is not result.publication_status
+            or receipt.terminal_reason != result.terminal_reason
+            or receipt.trace_reference != result.trace_reference
+            or receipt.report_available
+            != (
+                result.trace_reference is not None
+                and result.publication_status
+                in {
+                    RuntimePublicationStatus.PUBLISHED,
+                    RuntimePublicationStatus.DEGRADED,
+                }
+            )
+        ):
             failure = RecentReviewApplicationError(
                 "review_runtime_failed",
                 run_id=request.run_id,
             )
         if failure is not None:
             raise failure
+        return receipt
 
     def _build_summary(self, request: RecentReviewProductRequest) -> dict:
         failure: RecentReviewApplicationError | None = None
@@ -350,6 +393,7 @@ class RecentReviewApplicationService:
         *,
         summary: dict,
         deterministic_report: str,
+        run_id: str | None,
     ) -> RuntimeRunRequest:
         failure: RecentReviewApplicationError | None = None
         compiled: Any = None
@@ -358,6 +402,7 @@ class RecentReviewApplicationService:
                 request,
                 player_summary=copy.deepcopy(summary),
                 deterministic_report=deterministic_report,
+                run_id=run_id,
             )
         except (ProductRequestCompilationError, TypeError, ValueError):
             failure = RecentReviewApplicationError(

@@ -37,10 +37,10 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None) -> int:
     build_parser().parse_args(argv)
-    # 6A-3 deliberately has only a Fake Executor contract. Claiming production
-    # rows without the 6A-4 Application/Artifact executor would destroy work,
-    # so the executable entry point remains fail-closed until that composition
-    # is implemented.
+    # 6A-4 provides the tested Application/Artifact executor boundary, but the
+    # environment-backed DB/Riot/Provider composition and process lifecycle
+    # remain a 6A-5 responsibility.  Claiming rows before that composition is
+    # available would destroy work, so this executable stays fail-closed.
     print("review_worker_executor_not_configured", file=sys.stderr)
     return 2
 

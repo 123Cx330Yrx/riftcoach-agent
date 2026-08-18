@@ -351,6 +351,42 @@ def test_compiler_rejects_an_invalid_server_run_id():
         _compile(run_id="../client-controlled")
 
 
+def test_compiler_uses_a_trusted_preallocated_run_id_without_calling_factory():
+    compiler = RecentReviewRuntimeRequestCompiler(
+        SkillCatalog.from_directory("skills"),
+        run_id_factory=lambda: (_ for _ in ()).throw(
+            AssertionError("trusted run_id must bypass generation")
+        ),
+    )
+
+    compiled = compiler.compile(
+        RecentReviewProductRequest(riot_id="DemoPlayer#TEST"),
+        player_summary=valid_summary(),
+        deterministic_report="# Facts",
+        run_id="review_sql_preallocated",
+    )
+
+    assert compiled.run_id == "review_sql_preallocated"
+    assert compiled.execution_request.input_artifacts.run_id == compiled.run_id
+
+
+def test_compiler_rejects_an_invalid_trusted_run_id_before_generation():
+    compiler = RecentReviewRuntimeRequestCompiler(
+        SkillCatalog.from_directory("skills"),
+        run_id_factory=lambda: (_ for _ in ()).throw(
+            AssertionError("invalid trusted run_id must not fall back to generation")
+        ),
+    )
+
+    with pytest.raises(ProductRequestCompilationError, match="trusted run_id"):
+        compiler.compile(
+            RecentReviewProductRequest(riot_id="DemoPlayer#TEST"),
+            player_summary=valid_summary(),
+            deterministic_report="# Facts",
+            run_id="../sql-run",
+        )
+
+
 def test_default_compiler_run_id_is_server_generated_and_portable():
     compiled = RecentReviewRuntimeRequestCompiler(
         SkillCatalog.from_directory("skills")

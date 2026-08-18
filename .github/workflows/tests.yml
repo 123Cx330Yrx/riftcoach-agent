@@ -149,6 +149,8 @@ jobs:
             tests/test_task_migrations_postgres.py \
             tests/test_task_repository_postgres.py \
             tests/test_task_claim_postgres.py \
+            tests/test_task_reconciliation_postgres.py \
+            tests/test_task_product_vertical_postgres.py \
             -q
 
       - name: Verify metadata matches the migration head

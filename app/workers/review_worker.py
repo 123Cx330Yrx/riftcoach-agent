@@ -136,7 +136,10 @@ class ReviewWorker:
             terminal = self._executor.execute(claimed)
         except Exception:
             return self._commit_failure(claimed)
-        if not isinstance(terminal, TaskTerminal):
+        if (
+            not isinstance(terminal, TaskTerminal)
+            or terminal.run_id != claimed.run_id
+        ):
             return self._commit_failure(claimed)
 
         try:

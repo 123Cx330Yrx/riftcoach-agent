@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -17,6 +18,7 @@ from app.product.recent_review_service import (
     RecentReviewApplicationService,
 )
 from app.product.run_receipts import FileRunReceiptStore
+from app.product.run_receipts import ApiRunReceipt
 from app.runtime.models import (
     RuntimeRunResult,
     RuntimeStatus,
@@ -145,7 +147,7 @@ class RecordingReceiptWriter:
         if self._error is not None:
             raise self._error
         self.results.append(result)
-        return object()
+        return ApiRunReceipt.from_runtime_result(result)
 
 
 def _service(
@@ -203,6 +205,70 @@ def test_service_runs_the_real_compiler_in_order_and_projects_terminal_result(
     assert result.trace_reference.run_id == result.run_id
     assert result.model_config["frozen"] is True
     assert result.model_config["extra"] == "forbid"
+
+
+def test_service_threads_a_trusted_sql_run_id_through_runtime_and_receipt() -> None:
+    events: list[str] = []
+    writer = RecordingReceiptWriter(events)
+    service = _service(
+        summary_builder=FakeSummaryBuilder(_summary(), events),
+        runtime=FakeRuntime(
+            events,
+            publication_status=RuntimePublicationStatus.PUBLISHED,
+        ),
+        events=events,
+        compiler=RecentReviewRuntimeRequestCompiler(
+            SkillCatalog.from_directory("skills"),
+            run_id_factory=lambda: (_ for _ in ()).throw(
+                AssertionError("SQL run_id must bypass generation")
+            ),
+        ),
+        receipt_writer=writer,
+    )
+
+    result = service.review(
+        RecentReviewProductRequest(riot_id="DemoPlayer#TEST"),
+        run_id="review_sql_application",
+    )
+
+    assert result.run_id == "review_sql_application"
+    assert writer.results[0].run_id == result.run_id
+    assert events == ["summary", "report", "runtime", "receipt"]
+
+
+class MismatchedReceiptWriter:
+    def write_result(self, result, *, created_at_utc=None):
+        return ApiRunReceipt(
+            run_id="different_receipt_run",
+            runtime_status=result.runtime_status,
+            publication_status=result.publication_status,
+            terminal_reason=result.terminal_reason,
+            trace_reference=RuntimeTraceReference(
+                run_id="different_receipt_run",
+                sha256=result.trace_reference.sha256,
+            ),
+            created_at_utc=datetime.now(timezone.utc),
+            report_available=True,
+        )
+
+
+def test_service_rejects_a_receipt_writer_identity_mismatch() -> None:
+    events: list[str] = []
+    service = _service(
+        summary_builder=FakeSummaryBuilder(_summary(), events),
+        runtime=FakeRuntime(
+            events,
+            publication_status=RuntimePublicationStatus.PUBLISHED,
+        ),
+        events=events,
+        receipt_writer=MismatchedReceiptWriter(),
+    )
+
+    with pytest.raises(RecentReviewApplicationError) as caught:
+        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+
+    assert caught.value.code == "review_runtime_failed"
+    assert caught.value.run_id == "application_run"
 
 
 class RaisingSummaryBuilder:
@@ -546,6 +612,7 @@ def test_receipt_failure_is_body_free_and_blocks_success_projection() -> None:
 
 def test_runtime_terminal_mismatch_and_untrusted_reason_are_not_projected() -> None:
     events: list[str] = []
+    writer = RecordingReceiptWriter(events)
     mismatch = FakeRuntime(
         events,
         publication_status=RuntimePublicationStatus.PUBLISHED,
@@ -555,11 +622,14 @@ def test_runtime_terminal_mismatch_and_untrusted_reason_are_not_projected() -> N
         summary_builder=FakeSummaryBuilder(_summary(), events),
         runtime=mismatch,
         events=events,
+        receipt_writer=writer,
     )
     with pytest.raises(RecentReviewApplicationError) as mismatch_error:
         service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
     assert mismatch_error.value.code == "review_runtime_failed"
     assert mismatch_error.value.terminal_reason is None
+    assert writer.results == []
+    assert events == ["summary", "report", "runtime"]
 
     events.clear()
     unknown = FakeRuntime(
@@ -572,6 +642,7 @@ def test_runtime_terminal_mismatch_and_untrusted_reason_are_not_projected() -> N
         summary_builder=FakeSummaryBuilder(_summary(), events),
         runtime=unknown,
         events=events,
+        receipt_writer=RecordingReceiptWriter(events),
     )
     with pytest.raises(RecentReviewApplicationError) as unknown_error:
         service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))

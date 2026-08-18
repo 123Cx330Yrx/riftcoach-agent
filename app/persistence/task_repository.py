@@ -152,11 +152,23 @@ class PostgresTaskRepository:
         return self._terminal_cas(
             task_id=task_id,
             worker_id=normalized_worker_id,
+            expected_run_id=terminal.run_id,
             values={
                 "status": TaskStatus.SUCCEEDED.value,
                 "terminal_reason": terminal.terminal_reason,
                 "publication_status": terminal.publication_status.value,
                 "report_available": terminal.report_available,
+                "trace_reference": terminal.trace_reference.model_dump(
+                    mode="json"
+                ),
+                "receipt_reference": terminal.receipt_reference.model_dump(
+                    mode="json"
+                ),
+                "artifact_reference": (
+                    None
+                    if terminal.artifact_reference is None
+                    else terminal.artifact_reference.model_dump(mode="json")
+                ),
             },
         )
 
@@ -174,11 +186,15 @@ class PostgresTaskRepository:
         return self._terminal_cas(
             task_id=task_id,
             worker_id=normalized_worker_id,
+            expected_run_id=None,
             values={
                 "status": TaskStatus.FAILED.value,
                 "terminal_reason": normalized_reason,
                 "publication_status": None,
                 "report_available": False,
+                "trace_reference": None,
+                "receipt_reference": None,
+                "artifact_reference": None,
             },
         )
 
@@ -279,6 +295,7 @@ class PostgresTaskRepository:
         *,
         task_id: UUID,
         worker_id: str,
+        expected_run_id: str | None,
         values: dict[str, object],
     ) -> bool:
         try:
@@ -288,13 +305,18 @@ class PostgresTaskRepository:
                         sa.func.now(),
                         ReviewTaskRecord.claimed_at,
                     )
+                    conditions = [
+                        ReviewTaskRecord.task_id == task_id,
+                        ReviewTaskRecord.status == TaskStatus.RUNNING.value,
+                        ReviewTaskRecord.worker_id == worker_id,
+                    ]
+                    if expected_run_id is not None:
+                        conditions.append(
+                            ReviewTaskRecord.run_id == expected_run_id
+                        )
                     result = session.execute(
                         sa.update(ReviewTaskRecord)
-                        .where(
-                            ReviewTaskRecord.task_id == task_id,
-                            ReviewTaskRecord.status == TaskStatus.RUNNING.value,
-                            ReviewTaskRecord.worker_id == worker_id,
-                        )
+                        .where(*conditions)
                         .values(
                             **values,
                             updated_at=terminal_time,

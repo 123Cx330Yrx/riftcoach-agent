@@ -60,6 +60,7 @@
 | RQ-053 | 2026-08-17 | 已执行 | 用户明确“开始”，授权 canonical 的 `6A-1-postgresql-foundation` | SQLAlchemy 2/Alembic/psycopg 配置、task ORM row、initial migration、Compose 与真实 PostgreSQL CI 门已由 `854e52d` / Actions `32043214500` exact-SHA 公共验证；两个 job 均成功。未实现 Repository、claim、Worker、异步 API、Session/Memory/SSE/前端或外部 Riot/Provider I/O。 |
 | RQ-054 | 2026-08-18 | 已执行 | 用户再次明确“继续”，授权 canonical 的 `6A-2-task-contract-repository` | Provider-neutral task contract、canonical fingerprint、owner-scoped idempotent create/query、容量语义与 PostgreSQL Repository 已由 `012b066` / Actions `32046532695` exact-SHA 公共验证；`pytest` 与真实 PostgreSQL task job 均成功。未实现 claim、Worker、Application/Artifact 集成、异步 API、Session/Memory/SSE/前端或外部 Riot/Provider I/O。 |
 | RQ-055 | 2026-08-18 | 已执行 | 用户再次明确“继续下一轮”，授权 canonical 的 `6A-3-atomic-claim-polling-worker` | PostgreSQL `FOR UPDATE SKIP LOCKED` 原子 claim、deterministic order、worker ownership/terminal CAS、polling backoff/jitter、graceful shutdown 与 Fake Executor Worker 控制流已由 `55e369e` / Actions `32097561436` exact-SHA 公共验证；真实 PostgreSQL job 成功。未接真实 Application/Artifact、FastAPI、lease/heartbeat/retry/cancel、Session/Memory、Riot 或 Provider。 |
+| RQ-056 | 2026-08-18 | 执行中 | 用户再次明确“继续”，授权 canonical 的 `6A-4-application-artifact-integration` | 本轮只实现 SQL 预留 `run_id` 贯穿 Application/Runtime/receipt、真实 Recent Review Task Executor、receipt-proven terminal coordination、保守 reconciliation 与受限人工 recovery CAS；不实现 6A-5 异步 FastAPI、lease/heartbeat/retry/reclaim、Session/Memory/SSE/前端，也不调用真实 Riot/Provider。 |
 
 ## 新条目格式
 

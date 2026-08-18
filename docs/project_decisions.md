@@ -1001,3 +1001,25 @@ exact-SHA 公共验证；`pytest` 与 `postgres-migrations` 均成功，真实 P
 测试。因此 6A-3 正式关闭，canonical 只交接 `6A-4-application-artifact-integration` 准备状态，
 等待用户明确继续。6A-4 才会把预留 `run_id` 接入 Application/Runtime/Artifact，并处理 receipt-proven
 terminal/reconciliation；本轮没有提前实现这些能力。
+
+## 6A-4 Application & Artifact Integration 本地实施裁决（2026-08-18）
+
+用户按 RQ-056 恢复 6A-4。SQL 预留 `run_id` 现通过 trusted keyword-only 接缝贯穿 Product compiler、
+Application、Runtime input/result、Trace、Artifact 与 immutable receipt；显式 run ID 不会回退随机生成，
+任何 task/result/receipt/reference 身份漂移都会 fail closed。
+
+Task success 不再只含 publication 三字段，而必须携带严格 Trace/receipt/final Artifact body-free reference
+与 SHA；Repository CAS 同时匹配 task、running、worker 与 run。Application completed 终态必须先形成合法
+typed result 才写 completed receipt，避免非法 receipt 被 reconciler 误收。published、degraded、rejected
+都是合法运行完成并映射 SQL succeeded，系统未形成合法终态才映射 failed。
+
+reconciler 只将完整、不可变、跨 receipt/Trace/manifest/Artifact/SHA 验证通过的 completed receipt 补齐为
+succeeded。无 receipt、坏 receipt 或 failed receipt 都只形成 `recovery_required` 运维投影，不自动 fail、
+requeue 或重跑。人工恢复必须二次确认同一 worker，并通过 running+worker CAS 写
+`worker_confirmed_dead`；终态后旧 Worker 无法覆盖。
+
+本地聚焦 `130 passed, 12 skipped`，完整
+`1033 passed, 20 skipped, 1 warning, 110 subtests passed`，两套 RAG 和全部横向门禁通过；新增 5 个
+PostgreSQL reconciliation/离线产品纵向测试因本机无 DB 明确 skipped。当前裁决为“本地实现完成，等待
+exact-SHA 公共 PostgreSQL CI”；成功前 6A-4 不关闭，不进入 6A-5。Worker 环境组合 CLI 继续
+fail-closed，留给 6A-5 production-like composition/lifecycle。

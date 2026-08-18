@@ -166,6 +166,7 @@ class RecentReviewRuntimeRequestCompiler:
         *,
         player_summary: Mapping[str, Any],
         deterministic_report: str,
+        run_id: str | None = None,
     ) -> RuntimeRunRequest:
         """Compile after request count/queue/riot_id drove summary collection."""
 
@@ -177,20 +178,28 @@ class RecentReviewRuntimeRequestCompiler:
         )
         input_payload = typed_input.model_dump(mode="python")
 
-        try:
-            run_id = normalize_run_id(self._run_id_factory())
-        except (TypeError, ValueError) as exc:
-            raise ProductRequestCompilationError(
-                "server run_id generation returned an invalid value"
-            ) from exc
+        if run_id is None:
+            try:
+                normalized_run_id = normalize_run_id(self._run_id_factory())
+            except (TypeError, ValueError) as exc:
+                raise ProductRequestCompilationError(
+                    "server run_id generation returned an invalid value"
+                ) from exc
+        else:
+            try:
+                normalized_run_id = normalize_run_id(run_id)
+            except (TypeError, ValueError) as exc:
+                raise ProductRequestCompilationError(
+                    "trusted run_id is invalid"
+                ) from exc
 
         binding = SkillInputArtifactBinding.from_content(
-            run_id=run_id,
+            run_id=normalized_run_id,
             player_summary=typed_input.player_summary,
             deterministic_report=typed_input.deterministic_report,
         )
         execution_request = SkillExecutionRequest(
-            run_id=run_id,
+            run_id=normalized_run_id,
             user_utterance=(
                 "typed-entrypoint reviews.recent "
                 f"focus={request.focus}"
