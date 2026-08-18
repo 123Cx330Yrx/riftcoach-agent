@@ -11,6 +11,7 @@ import os
 from collections.abc import Callable, Mapping
 from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from uuid import UUID
@@ -31,6 +32,7 @@ from app.api.actor import (
 from app.api.main import (
     ReadinessPort,
     RunQueryPort,
+    TaskDeletionPort,
     TaskServicePort,
     create_app,
 )
@@ -42,9 +44,16 @@ from app.product.run_query import RunQueryError, RunQueryService, RunView
 from app.tasks.models import (
     CreateReviewTaskCommand,
     ReviewTaskView,
+    TaskCapacityPolicy,
     TaskCreateResult,
 )
 from app.tasks.service import ReviewTaskService, TaskServiceError
+from app.tasks.deletion import (
+    FileRunDataCleaner,
+    TaskDeletionError,
+    TaskDeletionService,
+)
+from app.tasks.observability import TaskObservability
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -56,6 +65,12 @@ class ApiCompositionSettings:
     profile: ActorProfile
     runs_root: Path
     local_owner_id: str | None = field(repr=False)
+    cors_origins: tuple[str, ...] = ()
+    cors_allow_credentials: bool = False
+    task_capacity: TaskCapacityPolicy = field(
+        default_factory=TaskCapacityPolicy,
+        repr=False,
+    )
 
 
 def load_api_composition_settings(
@@ -81,11 +96,70 @@ def load_api_composition_settings(
     else:
         local_owner_id = None
 
+    raw_origins = environment.get("RIFTCOACH_CORS_ORIGINS", "")
+    if not isinstance(raw_origins, str):
+        raise ValueError("RIFTCOACH_CORS_ORIGINS must be a string")
+    cors_origins = tuple(
+        origin.strip()
+        for origin in raw_origins.split(",")
+        if origin.strip()
+    )
+    raw_credentials = environment.get(
+        "RIFTCOACH_CORS_ALLOW_CREDENTIALS",
+        "false",
+    )
+    if not isinstance(raw_credentials, str) or raw_credentials.strip().lower() not in {
+        "true",
+        "false",
+    }:
+        raise ValueError(
+            "RIFTCOACH_CORS_ALLOW_CREDENTIALS must be true or false"
+        )
+    cors_allow_credentials = raw_credentials.strip().lower() == "true"
+    if profile == "production" and "*" in cors_origins and cors_allow_credentials:
+        raise ValueError(
+            "production wildcard CORS origins cannot use credentials"
+        )
+
+    task_capacity = TaskCapacityPolicy(
+        owner_active_limit=_read_positive_int(
+            environment,
+            "RIFTCOACH_TASK_OWNER_ACTIVE_LIMIT",
+            default=3,
+        ),
+        global_active_limit=_read_positive_int(
+            environment,
+            "RIFTCOACH_TASK_GLOBAL_ACTIVE_LIMIT",
+            default=50,
+        ),
+    )
+
     return ApiCompositionSettings(
         profile=profile,  # type: ignore[arg-type]
         runs_root=runs_root,
         local_owner_id=local_owner_id,
+        cors_origins=cors_origins,
+        cors_allow_credentials=cors_allow_credentials,
+        task_capacity=task_capacity,
     )
+
+
+def _read_positive_int(
+    environment: Mapping[str, str],
+    name: str,
+    *,
+    default: int,
+) -> int:
+    raw = environment.get(name)
+    if raw is None or raw.strip() == "":
+        return default
+    try:
+        value = int(raw)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"{name} must be a positive integer") from exc
+    if value <= 0:
+        raise ValueError(f"{name} must be a positive integer")
+    return value
 
 
 class PostgresReadinessProbe:
@@ -174,6 +248,19 @@ class _RunQueryProxy:
         return self._query().get_report(run_id)
 
 
+class _TaskDeletionProxy:
+    def __init__(self) -> None:
+        self._target: TaskDeletionPort | None = None
+
+    def bind(self, target: TaskDeletionPort | None) -> None:
+        self._target = target
+
+    def delete(self, *, owner_id: str, task_id: UUID):
+        if self._target is None:
+            raise TaskDeletionError("task_persistence_failed")
+        return self._target.delete(owner_id=owner_id, task_id=task_id)
+
+
 class _ActorProviderProxy:
     def __init__(self) -> None:
         self._target: ActorContextProvider = UnavailableActorContextProvider()
@@ -219,23 +306,39 @@ def create_composed_app(
     if actor_provider is not None and not callable(actor_provider):
         raise TypeError("actor_provider must be callable")
 
+    source = os.environ if environment is None else environment
+    # Configuration parsing has no network/database side effects and is needed
+    # to install the static CORS policy before the app can serve a request.
+    api_settings = load_api_composition_settings(source)
     task_proxy = _TaskServiceProxy()
     query_proxy = _RunQueryProxy()
+    deletion_proxy = _TaskDeletionProxy()
     actor_proxy = _ActorProviderProxy()
     readiness_proxy = _ReadinessProxy()
+    observability = TaskObservability(logger_name="riftcoach.api")
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         engine: Any | None = None
         app.state.database_engine = None
         try:
-            source = os.environ if environment is None else environment
             database_settings = load_database_settings(source)
-            api_settings = load_api_composition_settings(source)
             engine = build_engine(database_settings)
             session_factory = build_session_factory(engine)
             repository = PostgresTaskRepository(session_factory)
-            task_proxy.bind(ReviewTaskService(repository=repository))
+            task_proxy.bind(
+                ReviewTaskService(
+                    repository=repository,
+                    capacity=api_settings.task_capacity,
+                )
+            )
+            deletion_proxy.bind(TaskDeletionService(
+                repository=repository,
+                cleaner=FileRunDataCleaner(
+                    api_settings.runs_root,
+                    clock=lambda: datetime.now(timezone.utc),
+                ),
+            ))
             query_proxy.bind(RunQueryService(api_settings.runs_root))
 
             selected_actor = actor_provider
@@ -265,6 +368,7 @@ def create_composed_app(
             actor_proxy.bind(None)
             task_proxy.bind(None)
             query_proxy.bind(None)
+            deletion_proxy.bind(None)
         try:
             yield
         finally:
@@ -282,6 +386,10 @@ def create_composed_app(
         actor_provider=actor_proxy,
         readiness_probe=readiness_proxy,
         lifespan=lifespan,
+        deletion_service=deletion_proxy,
+        cors_origins=api_settings.cors_origins,
+        cors_allow_credentials=api_settings.cors_allow_credentials,
+        observability=observability,
     )
     app.state.database_engine = None
     return app

@@ -1065,3 +1065,38 @@ Riot/Data Dragon/Provider Worker executable composition 必须在 6A-7 `API+Work
 PostgreSQL 17 job 明确运行新增 API 真库测试并得到 `41 passed, 1 warning`。因此 6A-5 正式关闭，
 canonical 只交接 `6A-6-security-lifecycle-nfr` 准备状态；公共验证不改变 Worker packaging、正式 Auth、
 Session/Memory、SSE、前端和公网部署仍未完成的边界。
+
+## 6A-6 Security, Lifecycle & NFR 实施授权（2026-08-18）
+
+用户按 RQ-058 明确“继续下一步”，因此 `6A-6-security-lifecycle-nfr` 从准备状态进入实施。这里的
+“安全/生命周期/NFR”不是一次泛化的安全大改，而是给已经完成的 PostgreSQL task/API 基座补上可验证
+的运行边界：默认关闭 CORS、日志与 Secret 脱敏、owner/global 背压、分层 retention、terminal
+delete 和结构化 observability/performance evidence。
+
+### 本批设计不变量
+
+- CORS 默认没有允许来源；production 的 wildcard + credentials 配置必须在启动/配置解析时拒绝；
+- 日志和 metrics 只允许低敏元数据（task/run/status/phase/latency/counter 等），不允许 Riot ID、
+  Prompt、报告正文、Provider body、异常堆栈、数据库 URL 或任何 Secret；公共错误保持 body-free；
+- Riot 原始 cache、terminal task/run/Artifact/Trace、安全运维日志默认分别保留 7/90/30 天；测试使用
+  注入时钟验证边界，不等待真实时间；
+- terminal delete 先让资源对用户不可见，再清理 SQL 与 Artifact/Trace；删除必须幂等；部分文件清理
+  失败记录安全补偿状态，但不能重新让资源对用户可见；active task delete 返回 conflict，不能冒充 cancel；
+- owner/global capacity 在真实 PostgreSQL 并发下仍必须正确，容量错误不能返回成功 receipt；性能报告必须
+  记录样本数、环境和分位数，不能把 Fake Provider 或 CI 抖动当作模型质量；
+- 本批不实现正式 Auth/HTTPS、Session/Memory、SSE、前端、lease/heartbeat/reclaim/cancel/resume，
+  不读取 API Key、不调用 Riot/Provider、不进入 6A-7。
+
+实施计划为 `docs/plans/2026-08-17-6a-fastapi-postgresql-task-model-implementation.md` 的 6A-6 节。
+严格顺序为教学、红灯测试、最小实现、聚焦/完整门禁、提交推送和 exact-SHA PostgreSQL CI；公共 CI 成功
+前不关闭本批。
+
+### 本地实现交接（尚未关闭）
+
+本地已实现 `app/tasks/retention.py`、`app/tasks/deletion.py`、`app/tasks/observability.py` 和
+`scripts/purge_expired_task_data.py`，并把 CORS/capacity/deletion/metrics 接到 API composition 与
+Worker。新增 PostgreSQL lifecycle/capacity/performance 测试已加入阻塞 workflow；本机无 PostgreSQL，
+因此真实数据库证据仍为空。聚焦 `30 passed, 6 skipped`、完整 `1077 passed, 27 skipped, 1 warning,
+110 subtests passed`，RAG、compileall、Harness、秘密/SDK/YAML/diff/governance 门均通过；本轮没有
+读取 Key 或调用 Riot/Provider。下一动作是 exact-SHA 提交/推送并等待两个公共 job，成功后再做 6A-6
+收尾审查与 6A-7 交接。

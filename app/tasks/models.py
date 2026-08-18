@@ -129,6 +129,66 @@ class TaskRepositoryCreateDisposition(StrEnum):
     GLOBAL_CAPACITY_EXCEEDED = "global_capacity_exceeded"
 
 
+class TaskRepositoryDeleteDisposition(StrEnum):
+    """Database-side result before any file cleanup is attempted."""
+
+    DELETED = "deleted"
+    ACTIVE_CONFLICT = "active_conflict"
+    NOT_FOUND = "not_found"
+
+
+class TaskRepositoryDeleteResult(TaskContractModel):
+    disposition: TaskRepositoryDeleteDisposition
+    run_id: str | None = None
+
+    @field_validator("run_id")
+    @classmethod
+    def validate_run_id(cls, value: str | None) -> str | None:
+        return None if value is None else normalize_run_id(value)
+
+    @model_validator(mode="after")
+    def validate_shape(self) -> Self:
+        if self.disposition is TaskRepositoryDeleteDisposition.NOT_FOUND:
+            if self.run_id is not None:
+                raise ValueError("not-found deletion cannot expose a run_id")
+        elif self.run_id is None:
+            raise ValueError("known deletion result requires a run_id")
+        return self
+
+
+class TaskDeleteDisposition(StrEnum):
+    """Safe product projection after SQL hiding and file cleanup attempt."""
+
+    DELETED = "deleted"
+    ALREADY_HIDDEN = "already_hidden"
+    CLEANUP_PENDING = "cleanup_pending"
+    ACTIVE_CONFLICT = "active_conflict"
+
+
+class TaskDeletionResult(TaskContractModel):
+    disposition: TaskDeleteDisposition
+    task_id: UUID
+    run_id: str | None = None
+
+    @field_validator("run_id")
+    @classmethod
+    def validate_run_id(cls, value: str | None) -> str | None:
+        return None if value is None else normalize_run_id(value)
+
+    @model_validator(mode="after")
+    def validate_shape(self) -> Self:
+        if self.disposition is TaskDeleteDisposition.ALREADY_HIDDEN:
+            if self.run_id is not None:
+                raise ValueError("already-hidden deletion cannot expose a run_id")
+        elif self.run_id is None:
+            raise ValueError("known deletion result requires a run_id")
+        return self
+
+    @property
+    def cleanup_pending(self) -> bool:
+        return self.disposition is TaskDeleteDisposition.CLEANUP_PENDING
+
+
 class CreateReviewTaskCommand(TaskContractModel):
     owner_id: OwnerId
     idempotency_key: IdempotencyKey
@@ -377,7 +437,11 @@ __all__ = [
     "TaskCapacityPolicy",
     "TaskCreateDisposition",
     "TaskCreateResult",
+    "TaskDeleteDisposition",
+    "TaskDeletionResult",
     "TaskPublicationStatus",
+    "TaskRepositoryDeleteDisposition",
+    "TaskRepositoryDeleteResult",
     "TaskRepositoryCreateDisposition",
     "TaskRepositoryCreateResult",
     "TaskStatus",

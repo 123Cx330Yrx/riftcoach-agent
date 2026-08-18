@@ -9,6 +9,7 @@ from app.tasks.models import (
     ReviewTask,
     TaskCapacityPolicy,
     TaskRepositoryCreateResult,
+    TaskRepositoryDeleteResult,
     TaskTerminal,
 )
 
@@ -61,6 +62,13 @@ class TaskRepository(Protocol):
         worker_id: str,
         reason: str,
     ) -> bool: ...
+
+    def delete_terminal(
+        self,
+        *,
+        owner_id: str,
+        task_id: UUID,
+    ) -> TaskRepositoryDeleteResult: ...
 
 
 __all__ = ["TaskRepository", "TaskRepositoryError"]

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import random
+import time
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -13,6 +14,7 @@ from pydantic import TypeAdapter, ValidationError
 from app.tasks.models import ReviewTask, TaskStatus, TaskTerminal, WorkerId
 from app.tasks.ports import TaskRepository
 from app.workers.polling import PollingPolicy
+from app.tasks.observability import TaskObservability
 
 
 Clock = Callable[[], datetime]
@@ -82,6 +84,7 @@ class ReviewWorker:
         clock: Clock | None = None,
         polling_policy: PollingPolicy | None = None,
         random_source: RandomSource | None = None,
+        observability: TaskObservability | None = None,
     ) -> None:
         for method_name in ("claim_next", "succeed", "fail"):
             if not callable(getattr(repository, method_name, None)):
@@ -104,6 +107,11 @@ class ReviewWorker:
             raise TypeError("polling_policy must be a PollingPolicy")
         if random_source is not None and not callable(random_source):
             raise TypeError("random_source must be callable")
+        if observability is not None and not isinstance(
+            observability,
+            TaskObservability,
+        ):
+            raise TypeError("observability must be a TaskObservability")
 
         self._repository = repository
         self._executor = executor
@@ -111,16 +119,20 @@ class ReviewWorker:
         self._clock = clock or (lambda: datetime.now(timezone.utc))
         self._polling_policy = polling_policy or PollingPolicy()
         self._random_source = random_source or random.random
+        self._observability = observability
 
     def run_once(self) -> WorkerIterationResult:
+        claim_started = time.perf_counter()
         try:
             claimed = self._repository.claim_next(
                 worker_id=self._worker_id,
                 now=self._clock(),
             )
         except Exception:
+            self._observe("worker.claim_failed", {"outcome": "failed"})
             raise ReviewWorkerError("task_claim_failed") from None
         if claimed is None:
+            self._observe("worker.idle", {"status": "idle"})
             return WorkerIterationResult(
                 status=WorkerIterationStatus.IDLE,
                 task_id=None,
@@ -130,16 +142,43 @@ class ReviewWorker:
             or claimed.status is not TaskStatus.RUNNING
             or claimed.worker_id != self._worker_id
         ):
+            self._observe("worker.claim_invalid", {"outcome": "failed"})
             raise ReviewWorkerError("task_claim_invalid")
+
+        self._observe(
+            "worker.claimed",
+            {
+                "task_id": str(claimed.task_id),
+                "run_id": claimed.run_id,
+                "worker_id": self._worker_id,
+                "queue_delay_ms": max(
+                    0.0,
+                    (claimed.claimed_at - claimed.created_at).total_seconds() * 1000,
+                ),
+            },
+        )
+        if self._observability is not None:
+            self._observability.observe_latency(
+                "worker.claim",
+                max(0.0, (time.perf_counter() - claim_started) * 1000),
+            )
 
         try:
             terminal = self._executor.execute(claimed)
         except Exception:
+            self._observe(
+                "worker.execution_failed",
+                {"task_id": str(claimed.task_id), "run_id": claimed.run_id},
+            )
             return self._commit_failure(claimed)
         if (
             not isinstance(terminal, TaskTerminal)
             or terminal.run_id != claimed.run_id
         ):
+            self._observe(
+                "worker.terminal_invalid",
+                {"task_id": str(claimed.task_id), "run_id": claimed.run_id},
+            )
             return self._commit_failure(claimed)
 
         try:
@@ -149,7 +188,19 @@ class ReviewWorker:
                 terminal=terminal,
             )
         except Exception:
+            self._observe(
+                "worker.terminal_update_failed",
+                {"task_id": str(claimed.task_id), "run_id": claimed.run_id},
+            )
             raise ReviewWorkerError("task_terminal_update_failed") from None
+        self._observe(
+            "worker.terminal_committed",
+            {
+                "task_id": str(claimed.task_id),
+                "run_id": claimed.run_id,
+                "outcome": "succeeded" if accepted else "ownership_lost",
+            },
+        )
         return WorkerIterationResult(
             status=(
                 WorkerIterationStatus.SUCCEEDED
@@ -191,7 +242,19 @@ class ReviewWorker:
                 reason="worker_execution_failed",
             )
         except Exception:
+            self._observe(
+                "worker.failure_update_failed",
+                {"task_id": str(claimed.task_id), "run_id": claimed.run_id},
+            )
             raise ReviewWorkerError("task_terminal_update_failed") from None
+        self._observe(
+            "worker.failed",
+            {
+                "task_id": str(claimed.task_id),
+                "run_id": claimed.run_id,
+                "outcome": "failed" if accepted else "ownership_lost",
+            },
+        )
         return WorkerIterationResult(
             status=(
                 WorkerIterationStatus.FAILED
@@ -207,6 +270,14 @@ class ReviewWorker:
             return bool(stop_signal.is_set())
         except Exception:
             raise ReviewWorkerError("polling_control_failed") from None
+
+    def _observe(
+        self,
+        name: str,
+        metadata: dict[str, object],
+    ) -> None:
+        if self._observability is not None:
+            self._observability.emit(name, metadata)
 
 
 __all__ = [

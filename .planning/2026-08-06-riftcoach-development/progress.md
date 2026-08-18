@@ -2556,3 +2556,28 @@
   均通过；CI 未读取 Key、未调用 Riot/Provider。
 - 6A-5/RQ-057 正式关闭；四条进度线已同步。canonical 只交接
   `6A-6-security-lifecycle-nfr` 准备状态，等待用户明确继续，不自动开始 6A-6。
+
+## 2026-08-18：6A-6 授权与状态同步
+
+- 用户明确“继续下一步”，按 `AGENTS.md` 解释为只授权 canonical 的
+  `6A-6-security-lifecycle-nfr`，不授权 6A-7 或跨阶段功能；新增 RQ-058。
+- 已在 requirements/state/roadmap/amendment/capability/project decisions 与本计划同步：状态由
+  “等待确认”改为“实施中”，唯一下一步保持 6A-6，历史交接记录保留且不改写。
+- 本轮尚未修改产品代码、读取 Key、启动 PostgreSQL 或调用外部 Provider；下一动作是先面向初学者
+  解释并写 CORS、日志脱敏、retention/delete、backpressure、observability 与 performance 的红灯测试。
+
+## 2026-08-18：6A-6 本地实现与横向门禁完成
+
+- 先用红灯确认四个新模块不存在；随后实现 `RetentionPolicy/Service`（注入时钟、7/90/30 天边界）、
+  `TaskObservability`（allowlisted body-free events/counters/percentile）、`FileRunDataCleaner` 与
+  `TaskDeletionService`（SQL hidden-before-cleanup、幂等、补偿 marker、active conflict）。
+- PostgreSQL Repository 新增 owner-scoped terminal delete 与 bounded expired-terminal purge；API 增加
+  默认关闭/显式 CORS、production wildcard+credentials fail-closed、capacity env 配置和 DELETE 投影；
+  Worker 增加安全 claim/terminal latency/status 观察，不记录 request body 或异常正文。
+- 新增 `scripts/purge_expired_task_data.py` 与五个测试文件；PostgreSQL lifecycle/capacity/performance
+  测试已加入阻塞 workflow，本机无 PostgreSQL 时明确 skip。
+- 聚焦 6A-6 回归为 `30 passed, 6 skipped`；完整回归为
+  `1077 passed, 27 skipped, 1 warning, 110 subtests passed`。RAG development/holdout 均满阈值，
+  compileall、Harness dry-run、Secret/run-data、SDK boundary、workflow YAML、diff 和 governance 通过；
+  本轮 Key/Riot/Provider I/O 为 0。
+- 当前只剩 exact-SHA 提交/推送与真实 PostgreSQL CI；公共成功前不关闭 6A-6。

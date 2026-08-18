@@ -220,7 +220,7 @@ OP.GG MCP
 5F-3 Contract/Harness Eval  已完成；45 focused、196 adjacent、完整 929/110 subtests；裁决 `harness-compatible-but-runtime-gate-failed`，Context/terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功
 5F-4 Bounded Real Slice    未进入；5F-3 前置硬门失败，真实模型调用无信息增益，external calls 0
 5F-5 Adoption/Exit         已完成；裁决 `partial-adopt-evaluation-assets-only`；`f8dea66` / Actions `32028206103` exact-SHA 公共成功；产品拒绝 Pi，冻结保留评测资产/CI 复现与采用门方法
-6A entry design            已完成；`c0b5af0` / Actions `32041343696`；6A-1 至 6A-4 真库公共完成；6A-5 Async FastAPI & Composition 已由 `2492951` / Actions `32106378542` exact-SHA 公共完成；当前交接 6A-6 Security/Lifecycle/NFR 准备状态
+6A entry design            已完成；`c0b5af0` / Actions `32041343696`；6A-1 至 6A-4 真库公共完成；6A-5 Async FastAPI & Composition 已由 `2492951` / Actions `32106378542` exact-SHA 公共完成；6A-6 Security/Lifecycle/NFR 已按 RQ-058 进入本地实施，等待 exact-SHA PostgreSQL 公共验证
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -358,3 +358,12 @@ exact-SHA 公共验证。5P-6 又完成十项功能、分层/NFR、安全/no-I/O
 `3G-4` 真实第二 Provider、`3G-5` 多 Provider Tool Calling 和 `3G-6` 任务级自动
 路由暂不作为连续任务；它们要等 Skill 和 Agent Loop 形成真实调用场景后，按同一
 套契约和领域评测重新触发。
+
+## 2026-08-18：6A-6 安全/生命周期/NFR 实施交接
+
+用户按 RQ-058 明确继续，解除 `6A-6-security-lifecycle-nfr` 的准备状态。6A-1 至 6A-5 的
+PostgreSQL 与异步 API 公共证据保持不变，本批只补 task 基座的默认关闭 CORS、日志/Secret 脱敏、
+owner/global 背压、7/90/30 天数据保留、terminal hidden-before-cleanup 删除、active delete
+冲突、结构化可观测性和性能样本。实施顺序固定为“教学 → 红灯 → 最小实现 → 本地门禁 → exact-SHA
+公共 PostgreSQL CI”；不进入 6A-7，不实现正式 Auth/HTTPS、Session/Memory、SSE、前端、
+lease/heartbeat/reclaim/cancel/resume 或真实 Provider/Riot I/O。

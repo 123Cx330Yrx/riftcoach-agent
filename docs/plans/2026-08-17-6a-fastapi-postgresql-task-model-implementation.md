@@ -308,6 +308,8 @@ JWT/OAuth、Session、Memory、SSE、正式前端和公网部署。
 
 ## 6A-6：Security, Lifecycle & NFR
 
+状态：RQ-058 已授权，当前实施中（2026-08-18）。
+
 ### 目标
 
 实现本阶段已经冻结且属于 task 基座的安全/生命周期/NFR：默认 CORS、脱敏、背压、retention/delete、

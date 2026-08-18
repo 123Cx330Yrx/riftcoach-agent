@@ -1937,3 +1937,14 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   live/ready，不外推为 Worker packaging、正式 Auth、Session/Memory、SSE、前端或公网部署完成。
 - `HANDOFF`：canonical 唯一下一检查点为 `6A-6-security-lifecycle-nfr` 准备状态，等待用户明确继续；
   不自动实现 CORS/log/Secret、retention/delete、metrics 或 benchmark。
+
+### 2026-08-18：RQ-058 恢复 6A-6 Security/Lifecycle/NFR
+
+- `RESUMED`：用户明确“继续下一步”，解除 6A-6 的等待确认；这是当前唯一获授权的执行变化，不改变
+  阶段 0—8、6A-1 至 6A-7 顺序，也不提前进入 6A-7。
+- `SCOPE`：只把既有设计中的 task 基座安全与运行边界落成代码/测试：默认关闭 CORS、日志/Secret
+  脱敏、owner/global 背压、7/90/30 天 retention、terminal hidden-before-cleanup 与安全补偿、
+  active delete conflict、allowlisted observability 和性能样本。
+- `DEFERRED`：正式 Auth/HTTPS、Session/Memory、SSE、前端、lease/heartbeat/reclaim/cancel/resume、
+  真实 Provider/Riot I/O 和 6A-7 packaging 均留在原定检查点；先红灯、再最小实现，真实 PostgreSQL
+  并发/删除/性能由阻塞 exact-SHA CI 证明。

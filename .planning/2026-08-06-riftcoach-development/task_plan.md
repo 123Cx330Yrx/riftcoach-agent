@@ -7,8 +7,9 @@
 
 ## Current Phase
 
-Phase 14 - `6A-6-security-lifecycle-nfr` preparation after 6A-5 completed publicly at
-`2492951c20dd6ca897d957d03752b6a2585ce469` / Actions `32106378542`
+Phase 14 - `6A-6-security-lifecycle-nfr` implementation after 6A-5 completed publicly at
+`2492951c20dd6ca897d957d03752b6a2585ce469` / Actions `32106378542`; RQ-058 authorized
+implementation on 2026-08-18
 
 ## Phases
 
@@ -253,9 +254,9 @@ Phase 14 - `6A-6-security-lifecycle-nfr` preparation after 6A-5 completed public
 
 ## Next Step
 
-`6A-6-security-lifecycle-nfr`：准备状态；6A-5 已完成 exact-SHA pytest/PostgreSQL 公共验证。等待用户
-明确继续后，才按实施计划教学并冻结 CORS/log/Secret、retention/delete、metrics 与 benchmark；当前
-不自动开始 6A-6。
+`6A-6-security-lifecycle-nfr`：本地实现与门禁完成；下一动作是检查 diff、提交/推送并等待 exact-SHA
+`pytest` 与 PostgreSQL CI，公共真库成功前不关闭 6A-6、不进入 6A-7，也不实现正式 Auth/HTTPS、
+Session/Memory、SSE、前端或 lease/reclaim。
 
 ## 6A-1 Checklist
 
@@ -331,12 +332,25 @@ Phase 14 - `6A-6-security-lifecycle-nfr` preparation after 6A-5 completed public
 - [completed] 运行聚焦、完整、两套 RAG 与全部横向门禁
 - [completed] 提交 `2492951`、推送并由 Actions `32106378542` 完成 exact-SHA `pytest` 与 PostgreSQL CI，只交接 6A-6
 
-### Phase 14 - 6A-6-security-lifecycle-nfr preparation
+### Phase 14 - 6A-6-security-lifecycle-nfr implementation
 
 - Status: in_progress
-- Pause: 6A-5 is complete; awaiting explicit user confirmation before 6A-6.
-- 6A-5 的异步 task API 与 API process composition 已公开完成；当前不实现 CORS/log/Secret、
-  retention/delete、metrics/benchmark，也不自动进入 6A-6。
+- Authorization: RQ-058; user explicitly said “继续下一步”.
+- 6A-5 的异步 task API 与 API process composition 已公开完成；本批只实现其上冻结的 CORS/log/Secret、
+  retention/delete、backpressure、structured observability 与 performance baseline。
+- 先写红灯测试，再实现最小功能；本机无 PostgreSQL 时明确 skip，真实并发/删除/性能证据必须由阻塞 CI 提供。
+
+## 6A-6 Checklist
+
+- [completed] 记录 RQ-058，更新 canonical、路线/能力矩阵和决策记录，并通过治理检查
+- [completed] 讲解 CORS、脱敏、容量/背压、retention/delete、metrics 与 benchmark 的问题、原理、数据流和边界
+- [completed] 先写 CORS、日志脱敏、retention/delete、backpressure、observability、PostgreSQL performance 红灯测试
+- [completed] 实现默认关闭 CORS 与 production wildcard+credentials fail-closed
+- [completed] 实现 allowlisted structured logs/metrics，禁止 Riot ID、Prompt、report、Provider body、异常栈和 Secret
+- [completed] 实现 7/90/30 天 retention、terminal hidden-before-cleanup、幂等删除和安全补偿状态；active delete 返回 conflict
+- [ ] 在真实 PostgreSQL 下验证 owner/global capacity race、删除生命周期和 warm-DB/claim 性能样本
+- [completed] 运行聚焦、完整、两套 RAG、compileall、Harness/security/diff/governance 门禁
+- [ ] 提交、推送并等待 exact-SHA `pytest` 与 PostgreSQL CI；成功后才关闭 6A-6 并交接 6A-7
 
 ## 6A Entry Design Checklist
 
@@ -878,6 +892,14 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   先列真实文件名，并读取 `0031-adopt-in-process-stream-worker-and-parity-contract.md`。
 - 5P Prompt 符号搜索第一次因 PowerShell 引号截断正则并报 unclosed group；没有产生文件影响，
   随后改用多个 `rg -F -e` 固定字符串完成检索。
+- 6A-6 红灯首次收集因 retention/observability/deletion 模块尚不存在而在 pytest collection 阶段
+  产生 4 个 ImportError；这是预期的 TDD 红灯，随后按计划创建三个模块并重新运行聚焦测试。
+- 6A-6 composition 初版把 deletion service 直接赋给 lifespan 内局部变量，导致 app 创建时仍是
+  `None`；审查发现后改为绑定式 `_TaskDeletionProxy`，并在无 DB/配置失败时 fail closed。
+- 6A-6 observability worker 测试首轮 fixture 向 `RuntimeArtifactReference` 传入不存在的 `run_id`
+  字段，Worker 正确把执行映射为 failed；修正 fixture 后测试通过，没有放宽生产合同。
+- 6A-6 首次 PowerShell 行长扫描使用了带冒号的插值变量表达式，Shell 在执行前报变量解析错误；
+  没有文件影响，改用 format 字符串重新运行并通过。
 ## 2026-08-17：5F-3 Contract / Security / Harness Evaluation
 
 ### 当前授权与边界

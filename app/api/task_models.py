@@ -16,7 +16,9 @@ ApiErrorCode: TypeAlias = Literal[
     "request_invalid",
     "idempotency_conflict",
     "task_capacity_exceeded",
+    "task_delete_conflict",
     "service_unavailable",
+    "cleanup_pending",
     "task_not_found",
     "run_not_found",
     "run_not_ready",
@@ -50,6 +52,14 @@ class CreateReviewTaskResponse(ApiModel):
     run_id: str
     status: TaskStatus
     links: TaskLinks
+
+
+class DeleteTaskResponse(ApiModel):
+    schema_version: ApiSchemaVersion = "1.0"
+    task_id: UUID
+    run_id: str | None = None
+    status: Literal["hidden"] = "hidden"
+    cleanup_pending: bool = False
 
 
 class ErrorResponse(ApiModel):
@@ -107,6 +117,7 @@ class ReadinessResponse(ApiModel):
 __all__ = [
     "ApiErrorCode",
     "CreateReviewTaskResponse",
+    "DeleteTaskResponse",
     "ErrorResponse",
     "LivenessResponse",
     "ReadinessCode",

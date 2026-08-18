@@ -19,6 +19,8 @@ from app.tasks.models import (
     TaskPublicationStatus,
     TaskRepositoryCreateDisposition,
     TaskRepositoryCreateResult,
+    TaskRepositoryDeleteDisposition,
+    TaskRepositoryDeleteResult,
     TaskStatus,
     TaskTerminal,
     WorkerId,
@@ -197,6 +199,102 @@ class PostgresTaskRepository:
                 "artifact_reference": None,
             },
         )
+
+    def delete_terminal(
+        self,
+        *,
+        owner_id: str,
+        task_id: UUID,
+    ) -> TaskRepositoryDeleteResult:
+        """Hide a terminal task in one short owner-scoped transaction.
+
+        File/Trace cleanup is deliberately performed by the caller only after
+        this transaction commits.  Removing the SQL row first is the safety
+        boundary that prevents a failed file cleanup from making the result
+        visible again.
+        """
+
+        if not isinstance(owner_id, str) or not owner_id:
+            raise TypeError("owner_id must be a non-empty string")
+        if not isinstance(task_id, UUID):
+            raise TypeError("task_id must be a UUID")
+        try:
+            with self._session_factory() as session:
+                with session.begin():
+                    record = session.scalar(
+                        sa.select(ReviewTaskRecord)
+                        .where(
+                            ReviewTaskRecord.owner_id == owner_id,
+                            ReviewTaskRecord.task_id == task_id,
+                        )
+                        .with_for_update()
+                    )
+                    if record is None:
+                        return TaskRepositoryDeleteResult(
+                            disposition=TaskRepositoryDeleteDisposition.NOT_FOUND,
+                        )
+                    if record.status in _ACTIVE_STATUSES:
+                        return TaskRepositoryDeleteResult(
+                            disposition=TaskRepositoryDeleteDisposition.ACTIVE_CONFLICT,
+                            run_id=record.run_id,
+                        )
+                    run_id = record.run_id
+                    session.delete(record)
+                    session.flush()
+                return TaskRepositoryDeleteResult(
+                    disposition=TaskRepositoryDeleteDisposition.DELETED,
+                    run_id=run_id,
+                )
+        except TaskRepositoryError:
+            raise
+        except SQLAlchemyError:
+            raise TaskRepositoryError("task_repository_unavailable") from None
+        except (TypeError, ValueError, ValidationError):
+            raise TaskRepositoryError("task_repository_integrity_failed") from None
+
+    def delete_expired_terminal(
+        self,
+        *,
+        before: datetime,
+        limit: int = 100,
+    ) -> tuple[str, ...]:
+        """Hide a bounded batch of old terminal rows in one short transaction."""
+
+        normalized_before = _as_utc(before)
+        if isinstance(limit, bool) or not isinstance(limit, int) or limit <= 0:
+            raise ValueError("limit must be a positive integer")
+        try:
+            with self._session_factory() as session:
+                with session.begin():
+                    records = list(
+                        session.scalars(
+                            sa.select(ReviewTaskRecord)
+                            .where(
+                                ReviewTaskRecord.status.in_(
+                                    (
+                                        TaskStatus.SUCCEEDED.value,
+                                        TaskStatus.FAILED.value,
+                                    )
+                                ),
+                                ReviewTaskRecord.finished_at.is_not(None),
+                                ReviewTaskRecord.finished_at < normalized_before,
+                            )
+                            .order_by(ReviewTaskRecord.finished_at.asc())
+                            .limit(limit)
+                            .with_for_update(skip_locked=True)
+                        )
+                    )
+                    run_ids = tuple(record.run_id for record in records)
+                    for record in records:
+                        session.delete(record)
+                    session.flush()
+                return run_ids
+        except TaskRepositoryError:
+            raise
+        except SQLAlchemyError:
+            raise TaskRepositoryError("task_repository_unavailable") from None
+        except (TypeError, ValueError, ValidationError):
+            raise TaskRepositoryError("task_repository_integrity_failed") from None
 
     def _create_or_replay_locked(
         self,

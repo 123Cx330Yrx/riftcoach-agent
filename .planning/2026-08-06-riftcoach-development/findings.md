@@ -2593,3 +2593,31 @@
 - 公共完整 pytest 与本地一致为 `1047 passed, 21 skipped, 1 warning, 110 subtests passed`；RAG、编译、
   Harness、安全/治理和 migration metadata 也成功，外部 Riot/Provider I/O 为 0。
 - 6A-5 可以关闭，但 Worker CLI 的 fail-closed packaging 限制继续有效；下一检查点只是 6A-6 准备状态。
+
+## 2026-08-18：6A-6 授权恢复核对
+
+- canonical 状态在本轮开始时仍停在 `6A-6-security-lifecycle-nfr`，旧 `pause_reason` 是等待用户确认；
+  用户最新“继续下一步”满足进入该精确子阶段的授权，不允许据此跳到 6A-7。
+- 6A-6 的冻结目标来自 `docs/plans/2026-08-17-6a-fastapi-postgresql-task-model-implementation.md`
+  与 6A design：CORS、日志/Secret 脱敏、背压、retention/delete、结构化 metrics 和 benchmark。
+  正式 Auth/HTTPS、Memory、SSE、前端、lease/reclaim/cancel/resume 与真实外部 I/O 明确排除。
+- 关键安全语义：terminal delete 必须先隐藏用户可见资源再清理跨存储数据；清理失败只能留下安全补偿
+  状态，不能使资源重新可见；active task delete 不是 cancel，必须返回 conflict。
+- 生命周期默认值为 Riot 原始 cache 7 天、terminal task/run/Artifact/Trace 90 天、安全运维日志 30 天；
+  retention 测试要用 injected clock，避免等待真实时间并避免把系统时钟漂移当成逻辑证据。
+- 性能目标是作品集级基线而非 SLA：warm-DB create/query server p95 `<300ms`、容量可用 claim delay
+  p95 `<2s`；必须记录样本数和运行环境，不能把 Fake Provider 或 CI 抖动解释成模型质量。
+
+## 2026-08-18：6A-6 本地实现发现
+
+- CORS middleware 必须在 `create_app()` 组合时安装，而 DB/Session/Repository 仍只能在 lifespan 创建；
+  因此 composition 只提前解析无 I/O 的 API 安全配置，并用绑定式 deletion proxy 跨 lifespan 传递真实服务。
+- 删除的安全顺序不是“先删文件再删 SQL”：PostgreSQL `delete_terminal()` 在 owner-scoped 短事务中
+  锁行并只删除 terminal row；事务提交后才清理 run 目录。清理失败写入只包含 run_id/时间/重试标志的
+  内部补偿 marker，SQL 已隐藏所以 marker 不会让用户重新看到内容。
+- `TaskObservability` 对 event metadata 做字段和安全值双重 allowlist；即使调用者把 Prompt、报告、
+  URL 或 Secret 作为未知字段传入，也会被丢弃，不把异常字符串交给 logger。
+- 性能 percentile 采用确定性的 nearest-rank 并返回 `sample_count`/`target_name`；测试只把数据库
+  create/query 与 claim control-plane latency 纳入目标，不把 Agent/Provider 时长混入 p95。
+- API capacity 配置沿用现有 Repository advisory-lock 语义，新增环境变量只改变 owner/global 上限，
+  不改变幂等 replay 或 terminal 不占容量规则。

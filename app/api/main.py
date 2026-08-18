@@ -7,7 +7,8 @@ components. POST only commits a queued task and returns ``202 Accepted``.
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
+import time
 from typing import Protocol
 from uuid import UUID
 
@@ -15,6 +16,7 @@ from fastapi import Depends, FastAPI, Header, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, Response
 from pydantic import ValidationError
+from starlette.middleware.cors import CORSMiddleware
 from starlette.types import Lifespan
 
 from app.api.actor import (
@@ -25,6 +27,7 @@ from app.api.actor import (
 from app.api.task_models import (
     ApiErrorCode,
     CreateReviewTaskResponse,
+    DeleteTaskResponse,
     ErrorResponse,
     LivenessResponse,
     ReadinessResponse,
@@ -37,9 +40,13 @@ from app.tasks.models import (
     CreateReviewTaskCommand,
     ReviewTaskView,
     TaskCreateResult,
+    TaskDeleteDisposition,
+    TaskDeletionResult,
     TaskStatus,
 )
 from app.tasks.service import TaskServiceError
+from app.tasks.deletion import TaskDeletionError
+from app.tasks.observability import TaskObservability
 
 
 class TaskServicePort(Protocol):
@@ -65,10 +72,15 @@ class ReadinessPort(Protocol):
     def check(self) -> ReadinessResult: ...
 
 
+class TaskDeletionPort(Protocol):
+    def delete(self, *, owner_id: str, task_id: UUID) -> TaskDeletionResult: ...
+
+
 _CREATE_TASK_STATUS: Mapping[str, tuple[int, ApiErrorCode]] = {
     "idempotency_conflict": (409, "idempotency_conflict"),
     "owner_capacity_exceeded": (503, "task_capacity_exceeded"),
     "global_capacity_exceeded": (503, "task_capacity_exceeded"),
+    "task_delete_conflict": (409, "task_delete_conflict"),
     "task_persistence_failed": (503, "service_unavailable"),
     "task_identity_invalid": (503, "service_unavailable"),
 }
@@ -105,6 +117,10 @@ def create_app(
     actor_provider: ActorContextProvider,
     readiness_probe: ReadinessPort,
     lifespan: Lifespan[FastAPI] | None = None,
+    deletion_service: TaskDeletionPort | None = None,
+    cors_origins: Sequence[str] = (),
+    cors_allow_credentials: bool = False,
+    observability: TaskObservability | None = None,
 ) -> FastAPI:
     """Create API V2 from explicit ports without doing deployment I/O."""
 
@@ -118,6 +134,22 @@ def create_app(
         raise TypeError("actor_provider must be callable")
     if not callable(getattr(readiness_probe, "check", None)):
         raise TypeError("readiness_probe must expose check()")
+    if deletion_service is not None and not callable(
+        getattr(deletion_service, "delete", None)
+    ):
+        raise TypeError("deletion_service must expose delete()")
+    if observability is not None and not isinstance(
+        observability,
+        TaskObservability,
+    ):
+        raise TypeError("observability must be a TaskObservability")
+    if not isinstance(cors_allow_credentials, bool):
+        raise TypeError("cors_allow_credentials must be a bool")
+    normalized_origins = tuple(cors_origins)
+    if any(not isinstance(origin, str) or not origin.strip() for origin in normalized_origins):
+        raise ValueError("cors_origins must contain non-blank strings")
+    if "*" in normalized_origins and cors_allow_credentials:
+        raise ValueError("wildcard CORS origins cannot use credentials")
 
     app = FastAPI(
         title="RiftCoach Agent API",
@@ -126,6 +158,13 @@ def create_app(
             "Durable asynchronous task API for the recent-review product slice."
         ),
         lifespan=lifespan,
+    )
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=list(normalized_origins),
+        allow_credentials=cors_allow_credentials,
+        allow_methods=["GET", "POST", "DELETE"],
+        allow_headers=["Content-Type", "Idempotency-Key"],
     )
 
     def trusted_actor() -> ActorContext:
@@ -171,6 +210,7 @@ def create_app(
         ),
         actor: ActorContext = Depends(trusted_actor),
     ) -> CreateReviewTaskResponse | JSONResponse:
+        started = time.perf_counter()
         try:
             command = CreateReviewTaskCommand(
                 owner_id=actor.owner_id,
@@ -181,6 +221,17 @@ def create_app(
             if not isinstance(result, TaskCreateResult):
                 raise TypeError("task service returned an invalid result")
             task = result.task
+            if observability is not None:
+                observability.emit(
+                    "api.task_created",
+                    {
+                        "task_id": str(task.task_id),
+                        "run_id": task.run_id,
+                        "status": 202,
+                        "disposition": result.disposition.value,
+                        "latency_ms": max(0.0, (time.perf_counter() - started) * 1000),
+                    },
+                )
             return CreateReviewTaskResponse(
                 disposition=result.disposition,
                 task_id=task.task_id,
@@ -197,9 +248,106 @@ def create_app(
                 error.code,
                 (503, "service_unavailable"),
             )
-            return _error_response(code, status_code=status_code)
+            response = _error_response(code, status_code=status_code)
+            if observability is not None:
+                observability.emit(
+                    "api.task_create_rejected",
+                    {
+                        "status": status_code,
+                        "reason": error.code,
+                        "latency_ms": max(0.0, (time.perf_counter() - started) * 1000),
+                    },
+                )
+            return response
         except ValidationError:
             return _error_response("request_invalid", status_code=422)
+        except Exception:
+            if observability is not None:
+                observability.emit(
+                    "api.task_create_failed",
+                    {
+                        "status": 503,
+                        "reason": "service_unavailable",
+                        "latency_ms": max(0.0, (time.perf_counter() - started) * 1000),
+                    },
+                )
+            return _error_response("service_unavailable", status_code=503)
+
+    @app.delete(
+        "/tasks/{task_id}",
+        response_model=DeleteTaskResponse,
+        responses={
+            404: {"model": ErrorResponse},
+            409: {"model": ErrorResponse},
+            202: {"model": DeleteTaskResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def delete_task(
+        task_id: str,
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> DeleteTaskResponse | JSONResponse:
+        if deletion_service is None:
+            return _error_response("service_unavailable", status_code=503)
+        try:
+            parsed_task_id = UUID(task_id)
+        except (AttributeError, TypeError, ValueError):
+            return _error_response("task_not_found", status_code=404)
+        try:
+            result = deletion_service.delete(
+                owner_id=actor.owner_id,
+                task_id=parsed_task_id,
+            )
+            if not isinstance(result, TaskDeletionResult):
+                raise TypeError("deletion service returned an invalid result")
+            if result.disposition is TaskDeleteDisposition.ACTIVE_CONFLICT:
+                if observability is not None:
+                    observability.emit(
+                        "api.task_delete_rejected",
+                        {
+                            "task_id": str(result.task_id),
+                            "run_id": result.run_id or "",
+                            "status": 409,
+                            "reason": "active_conflict",
+                        },
+                    )
+                return _error_response(
+                    "task_delete_conflict",
+                    status_code=409,
+                )
+            status_code = (
+                202
+                if result.disposition is TaskDeleteDisposition.CLEANUP_PENDING
+                else 200
+            )
+            response = DeleteTaskResponse(
+                task_id=result.task_id,
+                run_id=result.run_id,
+                cleanup_pending=result.cleanup_pending,
+            )
+            if observability is not None:
+                observability.emit(
+                    "api.task_deleted",
+                    {
+                        "task_id": str(result.task_id),
+                        "run_id": result.run_id or "",
+                        "status": status_code,
+                        "disposition": result.disposition.value,
+                        "cleanup_pending": result.cleanup_pending,
+                    },
+                )
+            if status_code == 202:
+                return JSONResponse(
+                    status_code=status_code,
+                    content=response.model_dump(mode="json"),
+                )
+            return response
+        except TaskDeletionError as error:
+            if error.code == "task_not_found":
+                return _error_response("task_not_found", status_code=404)
+            if error.code == "task_delete_conflict":
+                return _error_response("task_delete_conflict", status_code=409)
+            return _error_response("service_unavailable", status_code=503)
         except Exception:
             return _error_response("service_unavailable", status_code=503)
 
@@ -363,6 +511,7 @@ def create_app(
 __all__ = [
     "ReadinessPort",
     "RunQueryPort",
+    "TaskDeletionPort",
     "TaskServicePort",
     "create_app",
 ]

@@ -4,7 +4,7 @@ main_stage: 6
 substage_group: "6A"
 current_checkpoint: "6A-6-security-lifecycle-nfr"
 status: in_progress
-pause_reason: "6A-5 complete; awaiting explicit user confirmation before 6A-6"
+pause_reason: "RQ-058 local implementation complete; awaiting exact-SHA public PostgreSQL evidence before 6A-6 closure"
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: "6A-5 complete; awaiting explicit user confirmation before 6A-6"
 ## 状态元数据
 
 - 最后更新：2026-08-18
-- 主阶段：阶段 6，`6A-5-async-fastapi-composition` 已由提交 `2492951` / Actions `32106378542` 完成 exact-SHA pytest 与真实 PostgreSQL 公共验证；当前只交接 `6A-6-security-lifecycle-nfr` 准备状态
+- 主阶段：阶段 6，`6A-5-async-fastapi-composition` 已由提交 `2492951` / Actions `32106378542` 完成 exact-SHA pytest 与真实 PostgreSQL 公共验证；用户已按 RQ-058 授权 `6A-6-security-lifecycle-nfr` 实施，本轮只做 task 基座安全、生命周期、背压、可观测性与性能基线
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,9 +250,7 @@ pause_reason: "6A-5 complete; awaiting explicit user confirmation before 6A-6"
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6A-6-security-lifecycle-nfr` 准备状态；等待用户明确继续后，才按实施计划处理
-  CORS/log/Secret、retention/delete、metrics 与 benchmark。当前不自动开始 6A-6，也不实现正式 Auth、
-  Session、Memory、SSE、前端、lease/retry/reclaim 或公网部署。
+- 唯一下一步：`6A-6-security-lifecycle-nfr` exact-SHA 公共验证/收尾；本地红灯、实现、聚焦/完整回归与横向门禁已通过，下一动作是检查 diff、提交/推送并等待 PostgreSQL CI；公共真库成功前不关闭 6A-6、不进入 6A-7，也不实现正式 Auth、HTTPS、Session、Memory、SSE、前端、lease/heartbeat/reclaim/cancel/resume 或公网部署。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -553,8 +551,8 @@ pause_reason: "6A-5 complete; awaiting explicit user confirmation before 6A-6"
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5 已完成；6A-1 至 6A-5 已由真实 PostgreSQL CI 公开闭环，当前交接 6A-6 准备状态 | 生产模型质量、Worker 可部署消费、自动 crash recovery、Session/Memory、正式 Auth 或前端已完成 |
-| 项目理解 | 已讲解 6A-1 至 6A-5：PostgreSQL、幂等、SKIP LOCKED、CAS、SQL/Artifact crash window、receipt-proven reconciliation、HTTP durable task、owner trust boundary 与 liveness/readiness 分离 | 理解和公开控制流测试等于自动 reclaim、生产容灾、正式鉴权或完整 Agent 产品完成 |
+| 本地代码 | 阶段 0-5 已完成；6A-1 至 6A-5 已由真实 PostgreSQL CI 公开闭环，6A-6 已获授权并进入实施 | 生产模型质量、Worker 可部署消费、自动 crash recovery、Session/Memory、正式 Auth 或前端已完成 |
+| 项目理解 | 已讲解 6A-1 至 6A-5；本轮继续理解 CORS/脱敏、数据保留、跨存储删除、active/terminal 生命周期、背压与性能测量 | 理解和离线测试等于正式鉴权、容灾、SLA 或完整 Agent 产品完成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
 | GitHub/部署 | 6A-5 提交 `2492951` / Actions `32106378542` 的 `pytest` 与真实 PostgreSQL job 均成功；网页与 Worker packaging 仍未部署 | API 公共 CI 等于生产切换、正式 Web Agent、Session/Memory 或公网可用 |
 
@@ -1008,3 +1006,21 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 因此 6A-5 正式完成：HTTP 可以可靠入队并查询 task/run/report，API process lifecycle 与 health 已闭环。
   这不表示 Worker external composition、正式 Auth、Session/Memory、SSE、前端或公网部署已经完成。
 - canonical 只交接 `6A-6-security-lifecycle-nfr` 准备状态，等待用户明确继续；不得自动开始 6A-6。
+
+## 2026-08-18：6A-6 Security/Lifecycle/NFR 开始
+
+- RQ-058 已记录；用户明确“继续下一步”，解除 6A-6 等待确认，本轮状态改为实施中。
+- 目标是把已冻结的 task 基座边界变成可运行、可测试的最小实现：默认关闭 CORS，日志与 Secret
+  脱敏，owner/global 背压，7/90/30 天 retention，terminal delete 的立即隐藏与幂等补偿，active
+  delete conflict，allowlisted metrics/log metadata，以及 warm-DB create/query 与 claim 延迟基线。
+- 先写红灯测试，再写实现；Retention 使用 injected clock，跨 SQL/Artifact 删除使用安全的
+  hidden-before-cleanup 语义。真实 PostgreSQL 并发、删除与性能证据由阻塞 CI 提供，本机无 DB 时明确 skip。
+- 本轮不读取 `.env`/API Key，不调用 Riot、Data Dragon、GLM、DeepSeek 或其他 Provider，不实现正式
+  Auth/HTTPS、Session/Memory、SSE、前端、lease/heartbeat/reclaim/cancel/resume，也不进入 6A-7。
+- 本地实现已完成：新增 retention/deletion/observability 合同与 purge CLI；API 接入 CORS、容量配置、
+  DELETE hidden-before-cleanup 投影；Repository 增加 terminal/expired 删除短事务；Worker 接入安全
+  claim/terminal 指标；新增纯逻辑与 PostgreSQL 生命周期/性能测试。
+- 本地聚焦 `30 passed, 6 skipped`；完整回归 `1077 passed, 27 skipped, 1 warning, 110 subtests passed`；
+  两套 RAG、compileall、Harness dry-run、秘密/SDK/YAML/diff 与 governance 门禁通过。本机无 PostgreSQL，
+  真实容量 race、删除和性能样本尚未执行。
+- 下一动作是提交/推送并等待 exact-SHA `pytest` 与 PostgreSQL CI；CI 成功前不关闭 6A-6。
