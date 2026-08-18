@@ -94,6 +94,7 @@ def test_ci_contains_a_blocking_linux_packaging_smoke_without_secrets() -> None:
     assert "--detach --wait" in steps
     assert "run --rm --no-deps smoke" in steps
     assert "--abort-on-container-exit" not in steps
+    assert "logs --no-color --tail 100 api postgres" in steps
     assert "RIOT_API_KEY" not in str(job.get("env", {}))
     assert "LLM_API_KEY" not in str(job.get("env", {}))
     assert "docker image" in steps or "docker run" in steps

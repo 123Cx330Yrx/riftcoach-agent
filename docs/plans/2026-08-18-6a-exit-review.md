@@ -2,7 +2,7 @@
 
 ## 结论先行
 
-当前本地裁决是 `ready-for-public-verification`，不是 6A 已关闭。6A-1 至 6A-6 的公共证据仍然
+当前本地裁决是 `ready-for-public-reverification`，不是 6A 已关闭。6A-1 至 6A-6 的公共证据仍然
 有效；6A-7 已补齐真实 Worker executable composition、非 root 镜像、Compose 依赖和 no-I/O Linux smoke，
 本轮完整本地门已经成功；只有 exact-SHA Actions 也成功后，才允许将 exit matrix 的待定项改为通过。
 
@@ -42,8 +42,8 @@ Application/Runtime/Harness/Artifact 链已经由 6A-4 的 PostgreSQL 离线纵�
 
 ## 当前本地证据
 
-- packaging/Worker/API 聚焦：`46 passed, 1 warning`；
-- 完整回归：`1100 passed, 27 skipped, 1 warning, 110 subtests passed`；本机无 PostgreSQL 的 27 个
+- packaging/Worker/API 聚焦：`48 passed, 1 warning`；
+- 完整回归：`1102 passed, 27 skipped, 1 warning, 110 subtests passed`；本机无 PostgreSQL 的 27 个
   skip 必须由阻塞真库 CI 补齐；
 - RAG development/independent holdout 均为 Recall/MRR/nDCG 1.0，holdout abstention/citation 1.0；
 - Harness dry-run 为 `published`、0 revisions；compileall、Compose/workflow YAML 解析与
@@ -74,5 +74,6 @@ API 与数据库目标还被限制为 Compose/本机 host，test profile 不能�
 
 ## 下一动作与退出裁决
 
-提交推送后等待同一 SHA 的 pytest、真实 PostgreSQL 与 packaging-smoke 三个 Actions job。全部成功前
-退出裁决保持 `keep-6a-open`。
+首个 `b0f61ca` / Actions `32145005904` 的 pytest 与真实 PostgreSQL 成功，Linux image/migration/API
+ready 成功，但 one-off smoke 失败。当前只提交 allowlisted stage diagnostics 与 bounded logs 后重新等待
+三个 Actions job；全部成功前退出裁决保持 `keep-6a-open`。

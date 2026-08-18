@@ -182,6 +182,12 @@ jobs:
       - name: Run the no-I/O Linux package smoke
         run: docker compose --profile smoke run --rm --no-deps smoke
 
+      - name: Print bounded service diagnostics after smoke failure
+        if: failure()
+        run: |
+          docker compose --profile smoke ps --all
+          docker compose --profile smoke logs --no-color --tail 100 api postgres
+
       - name: Inspect runtime image boundary
         run: |
           docker run --rm --entrypoint sh riftcoach-agent:local -c '

@@ -2659,9 +2659,9 @@
   `--abort-on-container-exit`，可能与预期退出的 migration 冲突；同时默认 project/volume 会让诊断 Worker
   有机会接触普通本地 queued task。已改为隔离 project，并分成 API stack `up --wait` 与 one-off smoke。
 - 新增无效 worker_id 的 pre-I/O 配置测试与实现；移除 `app/workers/__init__.py` 尾部无效字符串。修补后
-  packaging/Worker/API 聚焦为 `46 passed, 1 warning`。
+  packaging/Worker/API 聚焦为 `48 passed, 1 warning`。
 - smoke 设置又增加远端 API/PostgreSQL host 拒绝合同，阻止伪装 test profile 后误用诊断器；完整回归为
-  `1100 passed, 27 skipped, 1 warning, 110 subtests passed`；两套 RAG 均为
+  `1102 passed, 27 skipped, 1 warning, 110 subtests passed`；两套 RAG 均为
   Recall/MRR/nDCG 1.0，holdout abstention/citation 1.0；Harness dry-run `published`、0 revisions；
   compileall 通过。27 个 skip 仍因本机无 PostgreSQL，不能替代公共真库证据。
 - 既定 Harness SDK boundary 与 tracked `.env`/`data/cache`/`data/runs` 门通过。额外的泛化 token-shape
@@ -2672,3 +2672,16 @@
   `postgres-migrations`、`packaging-smoke` 三个 job。
 - 首次独立 cached diff check 在 commit 前发现 Dockerfile EOF 多余空行；已用最小补丁删除并重新暂存。
   这是格式门命中，不是 image 合同或测试失败；必须在新的 cached diff check 成功后才允许 commit。
+
+## 2026-08-18：6A-7 首个 exact-SHA run 与诊断修补
+
+- 实现提交 `b0f61ca` 已推送；Actions `32145005904` 中 pytest（公开 `1100 passed, 27 skipped,
+  110 subtests passed`）和 PostgreSQL（`51 passed`）成功；packaging 的 Compose config、image build、
+  migration 与 API ready 也成功。
+- one-off smoke 唯一失败输出为过宽 `packaging_smoke_worker_failed`；image boundary 随后正确跳过，teardown
+  成功。没有把另外两个绿 job 或前半段 build 误报为 package 全绿。
+- 已先写两个红灯：DB preflight 与 claim failure 都被旧实现压成 worker_failed；随后增加 allowlisted
+  database/claim/claim-invalid/terminal-update/iteration/query 分层码，并给 workflow 增加失败时 bounded
+  `ps` 与 API/PostgreSQL tail logs。红灯 2 failed/6 passed，绿灯 14 passed；完整 1102/27 skipped。
+- 当前未修改 Agent、Repository、API 业务语义，也未调用 Riot/Provider。下一动作是完成本修补横向门、
+  提交推送并用新 exact-SHA Linux smoke 取得真实失败层或全绿结果。

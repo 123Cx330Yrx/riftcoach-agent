@@ -11,6 +11,7 @@ from scripts.run_packaging_smoke import (
 )
 from app.api.task_models import ReadinessResult
 from app.workers.review_worker import (
+    ReviewWorkerError,
     WorkerIterationResult,
     WorkerIterationStatus,
 )
@@ -169,3 +170,113 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     assert result.task_status == "failed"
     assert result.external_riot_provider_calls == 0
     assert events == ["engine.dispose"]
+
+
+def test_packaging_smoke_reports_database_preflight_failure_without_detail(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    task_id = "90000000-0000-4000-8000-000000000001"
+
+    class Response:
+        def __init__(self, status_code: int, body: dict) -> None:
+            self.status_code = status_code
+            self._body = body
+
+        def json(self) -> dict:
+            return dict(self._body)
+
+    class Http:
+        def get(self, _url: str, **_kwargs):
+            return Response(200, {"status": "ready"})
+
+        def post(self, _url: str, **_kwargs):
+            return Response(
+                202,
+                {"task_id": task_id, "run_id": "packaging_smoke_run"},
+            )
+
+    monkeypatch.setattr(
+        "scripts.run_packaging_smoke.build_engine",
+        lambda _settings: (_ for _ in ()).throw(
+            RuntimeError("postgresql://secret@private.example/riftcoach")
+        ),
+    )
+
+    with pytest.raises(PackagingSmokeError) as exc_info:
+        execute_packaging_smoke(
+            load_packaging_smoke_settings(valid_environment(tmp_path)),
+            worker_id="smoke-worker",
+            http=Http(),
+        )
+
+    assert exc_info.value.code == "packaging_smoke_database_not_ready"
+    assert "private.example" not in str(exc_info.value)
+    assert "secret" not in str(exc_info.value)
+
+
+def test_packaging_smoke_preserves_allowlisted_worker_failure_stage(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    task_id = "90000000-0000-4000-8000-000000000001"
+
+    class Response:
+        def __init__(self, status_code: int, body: dict) -> None:
+            self.status_code = status_code
+            self._body = body
+
+        def json(self) -> dict:
+            return dict(self._body)
+
+    class Http:
+        def get(self, _url: str, **_kwargs):
+            return Response(200, {"status": "ready"})
+
+        def post(self, _url: str, **_kwargs):
+            return Response(
+                202,
+                {"task_id": task_id, "run_id": "packaging_smoke_run"},
+            )
+
+    class Engine:
+        def dispose(self) -> None:
+            pass
+
+    class Probe:
+        def __init__(self, _engine: object) -> None:
+            pass
+
+        def check(self) -> ReadinessResult:
+            return ReadinessResult.ready()
+
+    class Worker:
+        def __init__(self, **_kwargs) -> None:
+            pass
+
+        def run_once(self) -> WorkerIterationResult:
+            raise ReviewWorkerError("task_claim_failed")
+
+    monkeypatch.setattr(
+        "scripts.run_packaging_smoke.build_engine",
+        lambda _settings: Engine(),
+    )
+    monkeypatch.setattr("scripts.run_packaging_smoke.PostgresReadinessProbe", Probe)
+    monkeypatch.setattr(
+        "scripts.run_packaging_smoke.build_session_factory",
+        lambda _engine: lambda: None,
+    )
+    monkeypatch.setattr(
+        "scripts.run_packaging_smoke.PostgresTaskRepository",
+        lambda _factory: object(),
+    )
+    monkeypatch.setattr("scripts.run_packaging_smoke.ReviewWorker", Worker)
+
+    with pytest.raises(PackagingSmokeError) as exc_info:
+        execute_packaging_smoke(
+            load_packaging_smoke_settings(valid_environment(tmp_path)),
+            worker_id="smoke-worker",
+            http=Http(),
+        )
+
+    assert exc_info.value.code == "packaging_smoke_claim_failed"

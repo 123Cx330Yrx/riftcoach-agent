@@ -2678,3 +2678,14 @@
 - 额外的大小写不敏感 `sk-*` 形态扫描误命中实施文件名中的 `task-model-implementation` 和一个专门验证
   脱敏的 fake test token；既定 tracked `.env`/runs/cache 门通过。该宽扫描不是泄漏证据，不能为了追求
   “零命中”删除安全负例测试。
+
+## 2026-08-18：首个 Linux smoke 的证据边界
+
+- `b0f61ca` / Actions `32145005904` 证明 Dockerfile 可在 Ubuntu 构建、migration 可完成、API readiness
+  可达，且隔离 project/volume 生效；pytest 与真实 PostgreSQL 也独立成功。它没有证明 one-off Worker
+  链，因为该步以 `packaging_smoke_worker_failed` 退出，image boundary 也未执行。
+- 首版 smoke 对外没有泄漏异常正文，但把 HTTP transport、DB preflight、claim、terminal CAS 和 query
+  的意外异常最终都压成一个 worker code，导致公共证据只能定位到宽层。安全脱敏和可诊断性必须同时满足：
+  新合同保留 body-free，只增加固定 allowlisted stage code，不打印 URL、SQL、异常或请求正文。
+- workflow 在失败时新增的 diagnostics 只运行 `compose ps` 与 API/PostgreSQL 最后 100 行；不执行
+  `compose config`（会展开环境）或输出容器 env，避免为排错泄漏数据库口令。

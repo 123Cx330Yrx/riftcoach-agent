@@ -1140,6 +1140,10 @@ production Worker composition、`--check/--once`、非 root image、Compose 与 
 API stack 先以 `up --wait` 完成 migration/readiness，再用 one-off smoke 取得自身退出码，避免一次性
 migration 正常退出触发整组提前终止。
 
-本地聚焦 `46 passed`、完整 `1100 passed, 27 skipped, 110 subtests passed`，RAG、Harness dry-run、
+诊断修补后本地聚焦 `48 passed`、完整 `1102 passed, 27 skipped, 110 subtests passed`，RAG、Harness dry-run、
 compileall 与安全门通过。本机没有 Docker/PostgreSQL，故 27 个 skip 与 Linux smoke 不能冒充成功；
 退出裁决保持 `keep-open-pending-exact-sha-linux-ci`，只允许提交推送并等待三个同 SHA 阻塞 job。
+
+首个 `b0f61ca` / Actions `32145005904` 已让 pytest 与 PostgreSQL job 成功，也证明 Linux image、migration、
+API readiness 可运行；one-off smoke 仍失败且旧错误码过宽。项目决定先补允许列表 stage diagnostics 和
+有限 service logs，不输出原异常、不调用外部服务，也不凭猜测改 Repository/Worker 语义。

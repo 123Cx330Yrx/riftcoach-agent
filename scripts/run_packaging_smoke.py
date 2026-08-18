@@ -28,7 +28,11 @@ from app.persistence.config import DatabaseSettings, load_database_settings
 from app.persistence.database import build_engine, build_session_factory
 from app.persistence.task_repository import PostgresTaskRepository
 from app.tasks.models import ReviewTask, TaskTerminal
-from app.workers.review_worker import ReviewWorker, WorkerIterationStatus
+from app.workers.review_worker import (
+    ReviewWorker,
+    ReviewWorkerError,
+    WorkerIterationStatus,
+)
 
 
 PackagingSmokeErrorCode: TypeAlias = Literal[
@@ -37,6 +41,12 @@ PackagingSmokeErrorCode: TypeAlias = Literal[
     "packaging_smoke_configuration_invalid",
     "packaging_smoke_api_not_ready",
     "packaging_smoke_task_create_failed",
+    "packaging_smoke_database_not_ready",
+    "packaging_smoke_claim_failed",
+    "packaging_smoke_claim_invalid",
+    "packaging_smoke_terminal_update_failed",
+    "packaging_smoke_iteration_invalid",
+    "packaging_smoke_task_query_failed",
     "packaging_smoke_worker_failed",
     "packaging_smoke_terminal_invalid",
 ]
@@ -47,6 +57,12 @@ _ERROR_CODES = frozenset(
         "packaging_smoke_configuration_invalid",
         "packaging_smoke_api_not_ready",
         "packaging_smoke_task_create_failed",
+        "packaging_smoke_database_not_ready",
+        "packaging_smoke_claim_failed",
+        "packaging_smoke_claim_invalid",
+        "packaging_smoke_terminal_update_failed",
+        "packaging_smoke_iteration_invalid",
+        "packaging_smoke_task_query_failed",
         "packaging_smoke_worker_failed",
         "packaging_smoke_terminal_invalid",
     }
@@ -149,24 +165,32 @@ def execute_packaging_smoke(
     owns_http = http is None
     engine: Any | None = None
     try:
-        ready = session.get(
-            f"{settings.base_url}/health/ready",
-            timeout=settings.timeout_s,
-        )
+        try:
+            ready = session.get(
+                f"{settings.base_url}/health/ready",
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError("packaging_smoke_api_not_ready") from None
         if ready.status_code != 200 or _json_object(ready).get("status") != "ready":
             raise PackagingSmokeError("packaging_smoke_api_not_ready")
 
-        created = session.post(
-            f"{settings.base_url}/reviews/recent",
-            headers={"Idempotency-Key": f"packaging-smoke-{uuid4().hex}"},
-            json={
-                "riot_id": "SyntheticSmoke#TEST",
-                "count": 5,
-                "queue": 420,
-                "focus": "overall",
-            },
-            timeout=settings.timeout_s,
-        )
+        try:
+            created = session.post(
+                f"{settings.base_url}/reviews/recent",
+                headers={"Idempotency-Key": f"packaging-smoke-{uuid4().hex}"},
+                json={
+                    "riot_id": "SyntheticSmoke#TEST",
+                    "count": 5,
+                    "queue": 420,
+                    "focus": "overall",
+                },
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_task_create_failed"
+            ) from None
         created_body = _json_object(created)
         if created.status_code != 202:
             raise PackagingSmokeError("packaging_smoke_task_create_failed")
@@ -178,25 +202,52 @@ def execute_packaging_smoke(
                 "packaging_smoke_task_create_failed"
             ) from None
 
-        engine = build_engine(settings.database)
-        if not PostgresReadinessProbe(engine).check().is_ready:
-            raise PackagingSmokeError("packaging_smoke_worker_failed")
-        repository = PostgresTaskRepository(build_session_factory(engine))
-        iteration = ReviewWorker(
-            repository=repository,
-            executor=_NoExternalIoExecutor(),
-            worker_id=worker_id,
-        ).run_once()
+        try:
+            engine = build_engine(settings.database)
+            if not PostgresReadinessProbe(engine).check().is_ready:
+                raise PackagingSmokeError("packaging_smoke_database_not_ready")
+            repository = PostgresTaskRepository(build_session_factory(engine))
+        except PackagingSmokeError:
+            raise
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_database_not_ready"
+            ) from None
+
+        try:
+            iteration = ReviewWorker(
+                repository=repository,
+                executor=_NoExternalIoExecutor(),
+                worker_id=worker_id,
+            ).run_once()
+        except ReviewWorkerError as error:
+            worker_codes = {
+                "task_claim_failed": "packaging_smoke_claim_failed",
+                "task_claim_invalid": "packaging_smoke_claim_invalid",
+                "task_terminal_update_failed": (
+                    "packaging_smoke_terminal_update_failed"
+                ),
+            }
+            raise PackagingSmokeError(
+                worker_codes.get(error.code, "packaging_smoke_worker_failed")
+            ) from None
+        except Exception:
+            raise PackagingSmokeError("packaging_smoke_worker_failed") from None
         if (
             iteration.status is not WorkerIterationStatus.FAILED
             or iteration.task_id != task_id
         ):
-            raise PackagingSmokeError("packaging_smoke_worker_failed")
+            raise PackagingSmokeError("packaging_smoke_iteration_invalid")
 
-        terminal = session.get(
-            f"{settings.base_url}/tasks/{task_id}",
-            timeout=settings.timeout_s,
-        )
+        try:
+            terminal = session.get(
+                f"{settings.base_url}/tasks/{task_id}",
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_task_query_failed"
+            ) from None
         terminal_body = _json_object(terminal)
         if (
             terminal.status_code != 200

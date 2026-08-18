@@ -17,9 +17,9 @@
 | POST 202、task/run/report owner 查询、lifespan 与 live/ready | `app/api/main.py`、`actor.py`、`composition.py` | Fake/API 与真实 PostgreSQL API 测试 | `2492951` / Actions `32106378542` | production 缺 Auth Provider 时 fail closed | 已满足 |
 | 默认 CORS、body-free logs/errors、容量、7/90/30 retention 与安全删除 | API/Task security、retention、deletion、observability | 安全、生命周期、并发 capacity 与删除补偿测试 | `31d5e60` / Actions `32138025724` | 正式 Auth/HTTPS/备份尚未实现 | 已满足当前 6A 范围 |
 | warm create/query `<300ms`、queued→claim `<2s` 的作品集基线 | `tests/test_task_performance_postgres.py` | PostgreSQL 17/Python 3.11，8+8 样本 | `31d5e60` / Actions `32138025724` | 不是公网 SLA、Agent 延迟或模型质量 | 已满足当前 NFR |
-| 真实 Worker 在 claim 前完成 DB/Data Dragon/RAG/Prompt composition，并校验 Riot/Provider 配置与构造合同 | `app/workers/composition.py`、`scripts/run_review_worker.py --check` | `tests/test_worker_composition.py` 与相邻回归 | 公开证据待定 | 当前只准入 Zhipu 产品基线；预检不冒充在线凭据或领域质量验证 | 本地通过，待 exact-SHA CI |
-| 非 root Linux 镜像、migration/API/Worker Compose 与 no-I/O smoke | `Dockerfile`、`.dockerignore`、`compose.yaml`、`run_packaging_smoke.py` | packaging contract；隔离 project 的 `up --wait` + one-off smoke job | 公开证据待定 | 本机无 Docker；smoke 故意验证安全 failed terminal | 待 Linux CI |
-| 完整回归、RAG、compileall、Harness/Secret/SDK/governance 与 diff 门 | workflow 与标准门命令 | 聚焦 `46 passed`；完整 `1100 passed, 27 skipped, 110 subtests passed`；两套 RAG 满门槛；Harness dry-run published | 公开证据待定 | 27 个本地 skip 由 PostgreSQL CI 补齐；CI 不读取 Key、不调用 Riot/Provider | 本地通过，待 exact-SHA CI |
+| 真实 Worker 在 claim 前完成 DB/Data Dragon/RAG/Prompt composition，并校验 Riot/Provider 配置与构造合同 | `app/workers/composition.py`、`scripts/run_review_worker.py --check` | `tests/test_worker_composition.py` 与相邻回归 | `b0f61ca` pytest/真库绿；runtime profile 尚未真实启动 | 当前只准入 Zhipu 产品基线；预检不冒充在线凭据或领域质量验证 | 本地通过，package 公共待定 |
+| 非 root Linux 镜像、migration/API/Worker Compose 与 no-I/O smoke | `Dockerfile`、`.dockerignore`、`compose.yaml`、`run_packaging_smoke.py` | packaging contract；隔离 project 的 `up --wait` + one-off smoke job | `b0f61ca` / `32145005904` build/migrate/API ready 成功，one-off smoke 失败 | 本机无 Docker；旧错误码过宽，正补 allowlisted stage diagnostics | 未满足，待新 Linux CI |
+| 完整回归、RAG、compileall、Harness/Secret/SDK/governance 与 diff 门 | workflow 与标准门命令 | 聚焦 `48 passed`；完整 `1102 passed, 27 skipped, 110 subtests passed`；两套 RAG 满门槛；Harness dry-run published | `b0f61ca` pytest `1100/27 skipped/110 subtests`、PostgreSQL `51 passed` 成功；新诊断 SHA 待定 | CI 不读取 Key、不调用 Riot/Provider | 本地通过，待新 exact-SHA CI |
 
 ## 明确 deferred
 

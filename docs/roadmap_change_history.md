@@ -1975,9 +1975,17 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 ### 2026-08-18：6A-7 本地实现与退出门完成
 
 - `LOCAL-VERIFIED`：Worker composition、非 root image、Compose、隔离 no-I/O smoke、CI 与 exit assets
-  已实现；聚焦 `46 passed`，完整 `1100 passed, 27 skipped, 110 subtests passed`，RAG/Harness/compileall/
+  已实现；诊断修补后聚焦 `48 passed`，完整 `1102 passed, 27 skipped, 110 subtests passed`，RAG/Harness/compileall/
   safety 本地门通过。
 - `REVIEW-FIX`：无效 worker_id 改为 Engine/网络前拒绝；smoke 改用独立 Compose project/data volumes，
   `up --wait api` 与 one-off `run --no-deps smoke` 分段，避免 migration 正常退出提前终止以及误领普通任务。
 - `CURRENT`：6A/RQ-059 仍 in progress；最终本地门已通过，唯一下一动作是提交推送并等待 exact-SHA
   `pytest`、`postgres-migrations`、`packaging-smoke` 三 job。公共成功前不关闭或进入 Session/Memory。
+
+### 2026-08-18：6A-7 首个公共 run 部分失败
+
+- `PARTIAL-PUBLIC`：`b0f61ca` / Actions `32145005904` 的 pytest 与 postgres-migrations 成功；packaging
+  已成功 config/build/migration/API ready，但 one-off smoke 以 `packaging_smoke_worker_failed` 失败。
+- `DIAGNOSTIC-GAP`：该安全码过宽，不能区分 DB、claim、terminal CAS 或 query；不根据猜测改变业务链。
+- `CURRENT`：只增加 body-free allowlisted stage code 与 bounded API/PostgreSQL tail logs，完成本地 TDD
+  后提交新 SHA。6A 保持 in progress，正式 Auth/Session/Memory 等范围不变。
