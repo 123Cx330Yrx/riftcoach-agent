@@ -12,7 +12,7 @@ from app.persistence.database import Base
 
 
 class ReviewTaskRecord(Base):
-    """SQL row only; task behavior belongs to the later Repository substage."""
+    """SQLAlchemy control-plane row; lifecycle behavior stays in the repository."""
 
     __tablename__ = "review_tasks"
 

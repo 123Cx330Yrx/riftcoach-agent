@@ -1847,3 +1847,26 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   与 concurrent same-key exactly-one-row 语义。
 - `CLOSED`：6A-2 Task Contract & Repository 正式完成；没有实现 claim、Worker、Application/API。
 - `HANDOFF`：canonical 只交接 `6A-3-atomic-claim-polling-worker` 准备状态，等待用户明确继续。
+
+### 2026-08-18：RQ-055 恢复 6A-3 Atomic Claim & Polling Worker
+
+- `RESUMED`：用户再次明确“继续下一轮”，只授权 canonical 的
+  `6A-3-atomic-claim-polling-worker`。
+- `SCOPE`：实现 `FOR UPDATE SKIP LOCKED` deterministic claim、worker ownership/terminal CAS、
+  idle backoff/jitter、graceful shutdown 与 Fake Executor Worker 控制流；Agent 执行期间不得持有
+  transaction/row lock。
+- `DEFERRED`：真实 Application/Artifact/reconciliation、FastAPI、lease/heartbeat/fencing、自动
+  retry/reclaim、cancel/resume、Session/Memory 与外部 Riot/Provider I/O 均不在本轮。
+- `CURRENT`：先写 Fake polling/Worker 与真实 PostgreSQL claim/CAS 红灯，再做最小实现；public
+  PostgreSQL CI 前 6A-3 保持 in progress。
+
+### 2026-08-18：6A-3 本地实现与横向门禁完成
+
+- `IMPLEMENTED-LOCAL`：未修改已公开 migration；新增 `TaskTerminal`、Repository
+  `FOR UPDATE SKIP LOCKED` deterministic claim、ownership/terminal CAS、PollingPolicy、Fake Executor
+  Worker loop、backoff/jitter、graceful drain 与 fail-closed CLI。
+- `VERIFIED-LOCAL`：聚焦 `30 passed, 7 skipped`，完整 `1008 passed, 15 skipped, 1 warning, 110 subtests`
+；两套 RAG、compileall、Harness dry-run、治理、秘密/SDK/YAML/diff 门全部通过；本机无 PostgreSQL，
+  7 项真库 claim 测试待 CI。
+- `CURRENT`：本地实现完成但 6A-3 仍 in progress；下一步只提交/推送并等待 exact-SHA PostgreSQL
+  job，成功前不关闭、不进入 6A-4。

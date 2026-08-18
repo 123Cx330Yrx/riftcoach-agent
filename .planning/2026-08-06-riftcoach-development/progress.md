@@ -2428,3 +2428,26 @@
   Riot/Provider/Key I/O 为 0。
 - 6A-2 正式关闭；canonical 只交接 `6A-3-atomic-claim-polling-worker` 准备状态，等待用户再次明确继续。
   尚未实现 claim、Worker、Application/Artifact、异步 API、Session/Memory 或前端。
+
+## 2026-08-18：开始 6A-3 Atomic Claim & Polling Worker
+
+- 用户再次明确“继续下一轮”；RQ-055 只授权 PostgreSQL 原子 claim、worker ownership/terminal CAS、
+  polling backoff/jitter、graceful shutdown 与 Fake Executor 控制流。
+- 已按 `AGENTS.md` 恢复 canonical/active plan/RQ/路线/ADR/设计/实施计划；治理通过，HEAD 与
+  `origin/main` 均为 `69731871fa54c904d5c291a3d60d050ea703b023`，工作树起始干净。
+- 已完成初学者入口教学，明确短 claim transaction、事务外执行、CAS 与 hard-crash deferred 边界。
+- 当前下一步为审计 task port/repository/schema 并先写 Fake polling/Worker 与真库 claim/CAS 红灯；
+  尚未接真实 Application/Artifact、修改 FastAPI、读取 Key 或调用 Riot/Provider。
+
+## 2026-08-18：6A-3 本地实现与门禁完成
+
+- 红灯先固定 `PollingPolicy`、Fake Worker 控制流、终态 CAS 和 PostgreSQL `SKIP LOCKED` 并发合同；
+  随后实现 `TaskTerminal`、Repository claim/succeed/fail、`PollingPolicy`、`ReviewWorker` 与
+  fail-closed Worker CLI。已公开 migration 未修改。
+- 聚焦回归为 `30 passed, 7 skipped`；完整回归为 `1008 passed, 15 skipped, 1 warning, 110 subtests
+  passed`。skip 仅来自本机无 PostgreSQL；新增真库测试覆盖锁住首行时跳过、单任务不双领、N 任务双 Worker
+  drain、确定性顺序、短事务释放、错误 owner CAS 和终态不可逆。
+- 两套 RAG 均达到冻结阈值；compileall、Harness dry-run、governance、秘密/运行数据边界、SDK 边界、
+  YAML 与 diff check 通过；未读取 Key、未调用 Riot/Provider、未启动本地 DB。
+- 当前本地裁决为“实现完成、等待 exact-SHA 公共 PostgreSQL CI”；下一步只提交/推送并等待阻塞真库
+  job，成功后才关闭 6A-3 并交接 6A-4，不提前接 Application/Artifact 或 API。

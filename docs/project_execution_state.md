@@ -4,7 +4,7 @@ main_stage: 6
 substage_group: "6A"
 current_checkpoint: "6A-3-atomic-claim-polling-worker"
 status: in_progress
-pause_reason: "awaiting explicit user confirmation before starting 6A-3-atomic-claim-polling-worker"
+pause_reason: null
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: "awaiting explicit user confirmation before starting 6A-3-atomic-c
 ## 状态元数据
 
 - 最后更新：2026-08-18
-- 主阶段：阶段 6，`6A-2-task-contract-repository` 已完成，`6A-3-atomic-claim-polling-worker` 准备状态
+- 主阶段：阶段 6，`6A-2-task-contract-repository` 已完成，`6A-3-atomic-claim-polling-worker` 执行中
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -110,7 +110,9 @@ pause_reason: "awaiting explicit user confirmation before starting 6A-3-atomic-c
   completed/success，6A-1 正式关闭。用户已按 RQ-054 授权并完成 6A-2；提交
   `012b066da9e5a8ec569d5791cf9ac0fbf4b117d3` 的 Actions run `32046532695` 中 `pytest` 与
   `postgres-migrations` 均 completed/success，真实 PostgreSQL 已验证 5 项 Repository 测试。6A-2
-  正式关闭，canonical 只交接到 6A-3 准备状态；不实现 claim、Worker 或 API。上一子阶段组
+  正式关闭。用户现已按 RQ-055 授权 6A-3；当前范围只实现原子 claim、ownership/terminal CAS、
+  polling backoff/jitter、graceful shutdown 与 Fake Executor Worker 控制流，不接真实 Application/
+  Artifact 或 API。上一子阶段组
   5E AgentRuntime V1 已完整闭环：入口设计与 ADR-0029 冻结为“薄 Runtime
   + 可选观察端口 + completeness-aware Usage + 原子最终 Trace”；5E-1 的严格合同、
   Recorder/Usage 与 Trace Store 已由提交 `d891184e1bf82068188d2fb5715769bdaa3da022`
@@ -240,10 +242,9 @@ pause_reason: "awaiting explicit user confirmation before starting 6A-3-atomic-c
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6A-3-atomic-claim-polling-worker` 准备状态；等待用户明确继续后，才按已确认计划先
-  教学并以 TDD 建立 `FOR UPDATE SKIP LOCKED` 原子 claim、worker ownership/CAS、polling backoff/jitter
-  与 graceful shutdown。本交接不自动实现 Application/Artifact、异步 API、Session、Memory、SSE、鉴权、
-  前端或部署。
+- 唯一下一步：`6A-3-atomic-claim-polling-worker` 已完成本地 TDD/实现与横向门禁；现在只提交、推送并
+  等待 exact-SHA PostgreSQL CI 验证 claim/CAS/concurrency。公共成功前不关闭 6A-3，不实现
+  Application/Artifact、异步 API、Session、Memory、SSE、鉴权、前端或部署。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -544,10 +545,10 @@ pause_reason: "awaiting explicit user confirmation before starting 6A-3-atomic-c
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 的 5A-5F 已正式完成。6A-1/6A-2 已由真实 CI 公开完成；6A-3 claim/Worker 尚未实现 | Pi 已进入产品、生产模型质量、完整异步任务系统、Session/Memory 或前端已完成 |
-| 项目理解 | 已完成 6A-1/6A-2 教学，能解释 ORM/migration、fingerprint、幂等 replay/conflict、capacity、短事务和 owner-scoped query；6A-3 尚未开始教学 | Repository 通过等于 Worker 原子 claim、恢复能力或完整异步 Agent 产品已完成 |
+| 本地代码 | 阶段 0-4 已形成 V1；阶段 5 的 5A-5F 已正式完成。6A-1/6A-2 已由真实 CI 公开完成；6A-3 claim/Worker 已本地实现，待公共 PostgreSQL CI | Pi 已进入产品、生产模型质量、完整异步任务系统、Session/Memory 或前端已完成 |
+| 项目理解 | 已完成 6A-1/6A-2 教学；6A-3 已讲解普通 SELECT 重复领取、SKIP LOCKED、ownership/CAS、退避/jitter 和 graceful/hard crash 边界 | 已理解原理等于 claim/Worker 真库实现、恢复能力或完整异步 Agent 产品已完成 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | 6A-2 实现提交 `012b066` / Actions `32046532695` 已 exact-SHA 公共成功，含真实 PostgreSQL task job；正式异步 API/网页仍未部署 | migration/Repository CI、FastAPI TestClient 或阶段交接等于生产切换、完整任务系统或 Web Agent 可用 |
+| GitHub/部署 | 6A-2 实现提交 `012b066` / Actions `32046532695` 已 exact-SHA 公共成功；6A-3 尚未提交/公共验证，正式异步 API/网页仍未部署 | migration/Repository CI、Fake Worker 或阶段交接等于生产切换、完整任务系统或 Web Agent 可用 |
 
 ## 已裁决的首批 Skill 与事实审查边界
 

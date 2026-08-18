@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 11 - `6A-3-atomic-claim-polling-worker` preparation after 6A-2 completed publicly at
-`012b066da9e5a8ec569d5791cf9ac0fbf4b117d3` / Actions `32046532695`; no 6A-3 implementation yet
+Phase 11 - `6A-3-atomic-claim-polling-worker` authorized by RQ-055 after 6A-2 completed publicly at
+`012b066da9e5a8ec569d5791cf9ac0fbf4b117d3` / Actions `32046532695`; TDD implementation in progress
 
 ## Phases
 
@@ -253,8 +253,8 @@ Phase 11 - `6A-3-atomic-claim-polling-worker` preparation after 6A-2 completed p
 
 ## Next Step
 
-`6A-3-atomic-claim-polling-worker`：等待用户明确继续后，先解释 `FOR UPDATE SKIP LOCKED`、ownership/CAS、
-polling backoff/jitter 与 graceful shutdown，再按实施计划 TDD；不自动进入 Application/Artifact 或 API。
+`6A-3-atomic-claim-polling-worker`：本地 polling/Worker Fake、claim/CAS 实现和横向门禁已完成；提交/推送
+并通过 exact-SHA PostgreSQL CI 后才关闭本子阶段，不自动进入 Application/Artifact 或 API。
 
 ## 6A-1 Checklist
 
@@ -282,11 +282,20 @@ polling backoff/jitter 与 graceful shutdown，再按实施计划 TDD；不自�
 - [completed] 运行聚焦、完整、两套 RAG 与全部横向门禁
 - [completed] 提交、推送并由 `012b066` / Actions `32046532695` 完成 exact-SHA PostgreSQL CI
 
-### Phase 11 - 6A-3-atomic-claim-polling-worker preparation
+### Phase 11 - 6A-3-atomic-claim-polling-worker
 
 - Status: in_progress
-- Pause: awaiting explicit user confirmation before starting 6A-3.
-- 6A-2 已公开验证真实 Repository 事务；当前只保存 6A-3 准备键，不实现 claim、Worker 或 shutdown loop。
+- Authorization: RQ-055.
+- 6A-2 已公开验证真实 Repository 事务；当前只实现 claim、Worker control flow 与 shutdown loop，
+  不接真实 Application/Artifact 或 API。
+
+## 6A-3 Checklist
+
+- [completed] 记录 RQ-055、清除等待确认状态并完成初学者入口教学
+- [completed] 审计相邻合同/schema，先写 polling/Worker Fake 与真实 PostgreSQL claim/CAS 红灯
+- [completed] 实现 polling policy、ReviewWorker、Repository claim/terminal CAS 与 fail-closed Worker CLI
+- [completed] 运行聚焦、完整、两套 RAG 与全部横向门禁
+- [pending] 提交、推送并等待 exact-SHA PostgreSQL CI；成功后才关闭 6A-3
 
 ## 6A Entry Design Checklist
 

@@ -22,6 +22,7 @@ from app.product.recent_review import RecentReviewProductRequest
 
 _OWNER_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._:@|+-]{0,127}$"
 _IDEMPOTENCY_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+_WORKER_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
 _SAFE_COMPONENT_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 _SAFE_CODE_PATTERN = re.compile(r"^[a-z0-9]+(?:[._-][a-z0-9]+)*$")
 
@@ -35,6 +36,22 @@ IdempotencyKey = Annotated[
         min_length=1,
         max_length=128,
         pattern=_IDEMPOTENCY_PATTERN,
+    ),
+]
+WorkerId = Annotated[
+    str,
+    StringConstraints(
+        min_length=1,
+        max_length=128,
+        pattern=_WORKER_PATTERN,
+    ),
+]
+SafeTaskCode = Annotated[
+    str,
+    StringConstraints(
+        min_length=1,
+        max_length=64,
+        pattern=r"^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
     ),
 ]
 Fingerprint = Annotated[
@@ -60,6 +77,21 @@ class TaskPublicationStatus(StrEnum):
     PUBLISHED = "published"
     DEGRADED = "degraded"
     REJECTED = "rejected"
+
+
+class TaskTerminal(TaskContractModel):
+    terminal_reason: SafeTaskCode
+    publication_status: TaskPublicationStatus
+    report_available: bool
+
+    @model_validator(mode="after")
+    def validate_publication_projection(self) -> Self:
+        if (
+            self.publication_status is TaskPublicationStatus.REJECTED
+            and self.report_available
+        ):
+            raise ValueError("rejected publication cannot expose a report")
+        return self
 
 
 class TaskCreateDisposition(StrEnum):
@@ -128,13 +160,13 @@ class ReviewTask(TaskContractModel):
     request_payload: dict[str, JsonValue]
 
     status: TaskStatus
-    worker_id: str | None
+    worker_id: WorkerId | None
     created_at: datetime
     updated_at: datetime
     claimed_at: datetime | None
     finished_at: datetime | None
 
-    terminal_reason: str | None
+    terminal_reason: SafeTaskCode | None
     publication_status: TaskPublicationStatus | None
     report_available: bool
     trace_reference: dict[str, JsonValue] | None
@@ -288,6 +320,7 @@ __all__ = [
     "PendingReviewTask",
     "ReviewTask",
     "ReviewTaskView",
+    "SafeTaskCode",
     "TaskCapacityPolicy",
     "TaskCreateDisposition",
     "TaskCreateResult",
@@ -295,4 +328,6 @@ __all__ = [
     "TaskRepositoryCreateDisposition",
     "TaskRepositoryCreateResult",
     "TaskStatus",
+    "TaskTerminal",
+    "WorkerId",
 ]

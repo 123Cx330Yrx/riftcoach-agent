@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Protocol
 from uuid import UUID
 
@@ -8,6 +9,7 @@ from app.tasks.models import (
     ReviewTask,
     TaskCapacityPolicy,
     TaskRepositoryCreateResult,
+    TaskTerminal,
 )
 
 
@@ -36,6 +38,29 @@ class TaskRepository(Protocol):
         owner_id: str,
         run_id: str,
     ) -> ReviewTask | None: ...
+
+    def claim_next(
+        self,
+        *,
+        worker_id: str,
+        now: datetime,
+    ) -> ReviewTask | None: ...
+
+    def succeed(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        terminal: TaskTerminal,
+    ) -> bool: ...
+
+    def fail(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        reason: str,
+    ) -> bool: ...
 
 
 __all__ = ["TaskRepository", "TaskRepositoryError"]

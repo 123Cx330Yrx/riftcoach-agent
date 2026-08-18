@@ -976,3 +976,22 @@ passed`；真库 5 项 Repository 测试尚待 public CI，因此 6A-2 尚未关
 提交 `012b066da9e5a8ec569d5791cf9ac0fbf4b117d3` 随后由 GitHub Actions run `32046532695` 完成
 exact-SHA 公共验证；`pytest` 与 `postgres-migrations` 均成功，真实 PostgreSQL 通过全部 5 项
 Repository 测试。因此 6A-2 正式关闭，唯一交接为 6A-3 Atomic Claim/Worker 准备状态，不自动开始。
+
+## 6A-3 Atomic Claim & Polling Worker 本地实施裁决（2026-08-18）
+
+用户按 RQ-055 再次明确“继续下一轮”，本批只实现 durable task 的搬运控制流，不接真实
+`RecentReviewApplicationService`、Artifact/Trace reconciliation、FastAPI、Session/Memory 或外部
+Provider/Riot。Repository 新增短事务 `FOR UPDATE SKIP LOCKED` claim，并按
+`created_at ASC, task_id ASC` 保持确定性顺序；claim 返回前提交 `queued → running`，所以 Worker
+在事务外执行，不持有数据库行锁。
+
+Worker 的终态通过 `task_id + status=running + worker_id` 条件更新实现 CAS。Executor 异常只投影固定
+安全原因 `worker_execution_failed`；影响行数为 0 时返回 `ownership_lost`，不自动重试或覆盖迟到结果。
+空队列使用有上限的指数退避和受控 jitter，停止信号会结束空闲轮询并在同步执行完成后再领取新任务。
+由于 6A-4 尚未接入真实 Application/Artifact Executor，`scripts/run_review_worker.py` 当前故意
+fail-closed，不允许直接领取生产任务。
+
+本地聚焦回归为 `30 passed, 7 skipped`（7 项真实 PostgreSQL claim 测试因本机无 DB 明确 skip），
+完整回归为 `1008 passed, 15 skipped, 1 warning, 110 subtests passed`；两套 RAG、compileall、Harness
+dry-run、governance、秘密/SDK/YAML/diff 门均通过。当前裁决为“本地实现完成，等待 exact-SHA 公共
+PostgreSQL CI”；CI 成功前不关闭 6A-3，不进入 6A-4。

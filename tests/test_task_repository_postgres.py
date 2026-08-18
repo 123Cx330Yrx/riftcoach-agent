@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.persistence.database import build_engine, build_session_factory
 from app.persistence.config import DatabaseSettings
 from app.persistence.task_record import ReviewTaskRecord
-from app.persistence.task_repository import PostgresTaskRepository
+from app.persistence.task_repository import PostgresTaskRepository, _record_to_task
 from app.tasks.models import (
     PendingReviewTask,
     TaskCapacityPolicy,
@@ -86,6 +86,44 @@ def pending(
         },
         created_at=NOW + timedelta(seconds=number),
     )
+
+
+def test_record_mapping_returns_strict_task_without_database() -> None:
+    source_payload = {
+        "riot_id": "DemoPlayer#TEST",
+        "count": 10,
+        "queue": 420,
+        "focus": "overall",
+    }
+    record = ReviewTaskRecord(
+        task_id=UUID("20000000-0000-4000-8000-000000000001"),
+        run_id="review_repository_mapping",
+        task_kind="recent_review",
+        schema_version="1.0",
+        owner_id="owner-1",
+        idempotency_key="request-1",
+        request_fingerprint="1" * 64,
+        request_payload=source_payload,
+        status=TaskStatus.QUEUED.value,
+        worker_id=None,
+        created_at=NOW,
+        updated_at=NOW,
+        claimed_at=None,
+        finished_at=None,
+        terminal_reason=None,
+        publication_status=None,
+        report_available=False,
+        trace_reference=None,
+        receipt_reference=None,
+        artifact_reference=None,
+    )
+
+    task = _record_to_task(record)
+
+    assert task.task_id == record.task_id
+    assert task.status is TaskStatus.QUEUED
+    assert task.request_payload == source_payload
+    assert task.request_payload is not source_payload
 
 
 def test_repository_creates_and_replays_original_identity_atomically() -> None:

@@ -2493,3 +2493,27 @@
   `app.persistence.task_repository` 使用；避免 migration import 牵连 product/task service。
 - 本轮两次并行门编排的一行 JavaScript/PowerShell 引号错误只导致工具命令 syntax error，没有执行门或
   修改文件；随后拆分命令重新运行，RAG/compileall/governance/YAML/Harness/安全门均获得真实结果。
+
+## 2026-08-18：6A-3 本地实现发现
+
+- 既有 `review_tasks` migration 已包含 `worker_id`、`claimed_at`、终态字段和 claim index；本批没有
+  修改已公开 migration，避免产生无必要的 schema drift。
+- 新增 `TaskTerminal` 作为 Worker→Repository 的最小成功终态合同；它只允许安全 reason、合法
+  publication status 和 report projection，拒绝 `rejected + report_available=true`。Artifact/Trace
+  references 仍留给 6A-4，避免本批提前模拟内容数据面。
+- `claim_next()` 在一个 Session transaction 内完成 deterministic `SELECT ... FOR UPDATE SKIP LOCKED`、
+  ownership 写入和 commit；返回 `ReviewTask` 后 Session 已结束。`succeed()`/`fail()` 使用同一
+  `task_id + running + worker_id` CAS 条件，更新行数不是 1 时不改变状态。
+- Worker 的 control loop 与真正的产品 Executor 分开：纯 Fake Executor 测成功、异常、安全失败、
+  ownership lost、idle backoff、成功后 backoff reset 和 graceful drain。Executor 异常不会自动重试；
+  Repository 基础设施异常会以 allowlisted `ReviewWorkerError` 停止 loop。
+- 真实 PostgreSQL 测试使用独立 Session、barrier、有限 future timeout；额外锁住第一 queued row，
+  确定性验证另一 Worker 会跳过它领取第二行，而不是依赖长 sleep 猜时序。由于本机无 Docker，7 项
+  真库测试必须由 PostgreSQL 17 CI 补齐。
+- Worker CLI 当前故意 fail-closed：6A-4 尚未提供真实 Application/Artifact Executor，直接启动会
+  返回 `review_worker_executor_not_configured`，不会误领 queued task。这不是生产 Worker 完成声明。
+- 人工差异审查发现首版补丁曾把 helper 插入 `_record_to_task()` 中间；语法/纯 Fake 门仍会通过，但真库
+  row mapping 会返回 `None`。修正函数边界后新增无需数据库的 mapping 回归，使这类结构错误不再只能
+  等公共 CI 暴露。
+- terminal CAS 使用 PostgreSQL `GREATEST(now(), claimed_at)`，即使 Worker 时钟暂时领先数据库，也
+  保证 `finished_at/updated_at >= claimed_at`；真库测试固定该 timestamp invariant。
