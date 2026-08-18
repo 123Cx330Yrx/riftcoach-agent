@@ -33,7 +33,7 @@
 | A11 | AgentRuntime V1 | 5D 控制链及 5E-1 至 5E-4 均已公开完成；两个真实 Skill 共用同步 `run()`、进程内 `stream()`、typed output、完整 Trace/Usage、安全失败映射与 exit matrix；5F-1 至 5F-5 已完成 Pi 0.84.2 审计/隔离/Harness/采用对照，最终由 `f8dea66/32028206103` 公共裁决产品拒绝 Pi、冻结保留 evaluation-only 资产 | 阶段 5D-5E | 5F-4 因 Context/terminal/live timing 硬门失败未进入；产品继续 Python Runtime；阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage、终止原因、退出审查，以及 Pi batch/Usage/Trace/sidecar 差异矩阵与采用/归档门 | 已完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有；DeepSeek V4 Pro 只通过最小协议，当前 V3 领域候选已关闭；Flash 未测试；尚无领域/产品准入、任务级选择或自动降级 | 5D 完成候选采用决策；GLM-5.2 仅作开发基线；模型分层为 5P 后横向采用门，默认等待阶段 6 真实业务证据；5F Pi-only 不改变模型路由 | G53 deferred；未来仍按 ADR-0019 比较模型分层，5F 只做 Pi Runtime 采用实验 | 新鲜同任务评测、故障降级、unsafe publication、成本和 p50/p95 延迟对照 | 部分完成 |
 | A13 | Session 与长期 Memory | 尚未实现 | 阶段 6 | 玩家画像、复盘情景和训练进度分层 | 用户隔离、写入条件、更正、过期和删除测试 | 已规划 |
-| A14 | API 与任务持久化 | 5P 同步切片与 6A-1/2/3/4 已公开；6A-4 的 trusted run_id、真实 Task Executor、严格 evidence/CAS、reconciliation 与人工恢复由 `41ac9c1/32102522662` 真库公共验证；异步 API 尚未实现 | 阶段 5P 提供本地同步切片，阶段 6 加 SQL 与异步组合 | 阶段 8 扩展 lease、取消、恢复与迟到结果治理 | receipt/path/Schema/SHA/终态交叉校验；PostgreSQL migration、HTTP 幂等、并发 claim、鉴权、隔离和中断测试 | 部分完成 |
+| A14 | API 与任务持久化 | 5P 同步切片与 6A-1/2/3/4 已公开；6A-5 的 POST 202、owner-scoped task/run/report、lifespan composition 和 DB/Alembic readiness 已本地验证，新增真库 API 测试等待 exact-SHA CI；Worker executable packaging 尚未完成 | 阶段 5P 提供本地同步切片，阶段 6 加 SQL 与异步组合 | 阶段 8 扩展 lease、取消、恢复与迟到结果治理 | receipt/path/Schema/SHA/终态交叉校验；PostgreSQL migration、HTTP 幂等、并发 claim、鉴权、隔离和中断测试 | 部分完成 |
 | A15 | 标准 MCP 与动态 Meta | 内部 Tool Runtime，不冒充 MCP | 阶段 7 | OP.GG、官方补丁等通过领域 Adapter 分层 | initialize、tools/list、tools/call、断线和版本边界测试 | 已规划 |
 | A16 | Multi-Agent 与 DAG | 当前不需要 | 阶段 8 Advanced | 仅在独立上下文、权限和并行收益成立时采用 | Bad Case、对照、消融、成本和 ADR | 按证据采用 |
 
@@ -44,7 +44,7 @@
 | Q01 | 端到端 Evaluation | 报告事实评测、RAG/路由评测与 5D-7 分层合同已建立；DeepSeek V2/V3 均未测出质量，当前候选已关闭且质量 unknown | 阶段 5C 增加路由 Eval，5D 增加 Prompt Eval | G53-0 后按可用性决定；阶段 8 固定产品回归集和消融 | 数字忠实度、引用、路由、工具选择、实验身份、注入漏判、失败归因、预算可达性与发布安全 | 部分完成 |
 | Q02 | Trace 与 Observability | 5E-1 至 5E-4 已公开；Runtime 时序、Artifact SHA、双终态、两阶段 Trace 提交、实时事件交付、消费者隔离、parity 与 exit matrix 均有证据 | 阶段 5E | 阶段 6/8 增加持久任务、生产指标与恢复；G53 沿用安全错误合同 | run_id 串联版本、模型、工具、证据、耗时和决策 | 已完成 |
 | Q03 | Prompt/上下文注入防护 | 工具白名单、Schema、data-only sections、累积预算和实际 ToolExecutionRecord 证据；旧基线保留 Evaluation 漏判后的 unsafe publication，1.1 已阻断已知安全 issue；两个真实注入案例因首错停止未执行 | 阶段 5D 建立不可信输入边界 | 已知 development 门完成；真实模型验证留给新鲜 Provider 门，阶段 6/7 扩展会话和 MCP 内容 | 恶意用户输入、恶意文档、恶意工具结果、评测漏判和越权测试 | 部分完成 |
-| Q04 | 应用安全 | `.env` 隔离、日志脱敏、离线赛后合规；6A 已设计可信 ActorContext、owner-scoped 查询、默认关闭 CORS/公网能力和公开部署 Auth/HTTPS/限流硬门，尚未实现 | 阶段 6 建立鉴权、限流、CORS 与用户隔离 | 阶段 8 部署威胁模型、安全扫描和响应流程 | 密钥扫描、权限、限流、数据越权、CORS 和依赖审计 | 部分完成 |
+| Q04 | 应用安全 | `.env` 隔离、日志脱敏、离线赛后合规；6A-5 已本地实现 trusted ActorContext、owner-scoped 查询、越权 404 与 production 缺 Auth fail-closed；正式 Auth、CORS/限流/HTTPS 仍未实现 | 阶段 6 建立鉴权、限流、CORS 与用户隔离 | 阶段 8 部署威胁模型、安全扫描和响应流程 | 密钥扫描、权限、限流、数据越权、CORS 和依赖审计 | 部分完成 |
 | Q05 | 数据生命周期与隐私 | 本地缓存不提交；6A 已设计原始缓存/task-run/log 7/90/30 天默认保留与 terminal owner 删除，尚未实现，Memory 尚未落库 | 阶段 6 实现 task/run 与 Memory 的保留、导出、更正、删除 | 阶段 8 加备份、恢复和公开隐私说明 | 原始比赛、Run、Memory 的保留、更正、导出、删除失败补偿测试 | 需显式补齐 |
 | Q06 | 知识库更新与回滚 | 来源、版本、有效期和冲突策略已有 | 阶段 4 维护任务，公开部署前完成更新流程 | 阶段 8 自动化索引构建、版本切换和回滚 | 新旧版本、失败构建、污染文档和回滚测试 | 需显式补齐 |
 | Q07 | 性能、Token 与成本 | 既有 Runtime 预算/实验账本保留；6A 设计已冻结待测作品集目标：warm-DB create/query p95 `<300ms`、有容量 claim p95 `<2s`、owner 3/global 50 非终态背压，但尚无产品测量 | 阶段 5E 定义运行预算，阶段 6 定义并实测 API SLO | G53 使用独立预算；阶段 6/8 增加真实 p50/p95、队列等待与产品成本趋势 | p50/p95、Token、工具次数、模型成本、背压、预算可达性和超预算停止 | 部分完成 |

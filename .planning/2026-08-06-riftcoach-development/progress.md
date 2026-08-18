@@ -2512,3 +2512,36 @@
   保守恢复；参考项目没有被整体接入；GitHub/部署有新的 exact-SHA CI 证据但异步 API/网页未部署。
 - canonical 唯一下一检查点改为 `6A-5-async-fastapi-composition` 准备状态；等待用户明确继续，
   本轮不自动实现异步 FastAPI、ActorContext、lifespan、Session/Memory、SSE、Auth 或前端。
+
+## 2026-08-18：开始 6A-5 Async FastAPI & Composition
+
+- 用户再次明确“继续吧”；RQ-057 只授权 POST 202 task receipt、owner-scoped task/run/report、可信
+  ActorContext、FastAPI lifespan、PostgreSQL/Alembic readiness 与 production-like API composition。
+- 已按 `AGENTS.md` 恢复 canonical、活动计划、需求/路线、ADR-0038、6A design/implementation plan 和
+  相邻 API/Task/Repository/RunQuery 代码；治理检查通过，工作树起始干净。
+- 已完成初学者入口教学：这里的异步是“HTTP 持久入队后立即返回，独立 Worker 后续执行”的产品语义，
+  不是把同步 SQLAlchemy 机械改成 async ORM。owner 只能来自服务器 ActorContext。
+- 当前下一步为先写 HTTP、ActorContext、readiness 与 lifespan 红灯；本批不实现 Session/Memory、SSE、
+  JWT/OAuth、前端、lease/retry/reclaim、真实 Riot/Provider I/O 或 6A-6。
+
+## 2026-08-18：6A-5 本地实现与门禁完成
+
+- FastAPI V2 已把同步 201 报告响应演进为 POST 202 task receipt；同 key replay 仍返回原 task/run，缺失或
+  非法 key 为 422，不同 fingerprint 为 409，数据库/容量/身份不可用安全投影为 503。POST 不执行 Agent。
+- 新 ActorContext 只由服务器 dependency 提供；固定 owner 仅允许显式 local/test profile，production
+  未注入 Auth Provider 时 liveness 可用、readiness 为 `actor_context_unavailable`、产品请求 fail closed。
+- GET task/run/report 先 owner-scoped 查询 SQL task；非法/不存在/越权统一隐藏，queued/running 返回 409，
+  succeeded 才读取严格 receipt/Trace/Artifact，SQL 承诺成功但文件证据缺失会升级为 integrity 500。
+- composition import/OpenAPI 零环境/Key/网络/DB I/O；FastAPI lifespan 才惰性创建进程级 Engine、Session
+  factory、Repository/Task Service/RunQuery，并在 shutdown dispose。liveness 不依赖 DB；readiness 执行
+  `SELECT 1` 并要求数据库 Alembic revision 精确等于代码 head。
+- 聚焦 API 回归 `38 passed, 1 skipped`；完整回归
+  `1047 passed, 21 skipped, 1 warning, 110 subtests passed`。新增 1 个 skip 为本机无 PostgreSQL 的 API
+  create/replay/owner/query/readiness 真库测试，已加入 `postgres-migrations` 阻塞 job。
+- 两套 RAG 门均满阈值；compileall、Harness dry-run、governance、tracked Secret/run-data、SDK boundary、
+  workflow YAML 与 diff check 均通过。本轮未读取 Key、未调用 Riot/Provider，也未启动本地 PostgreSQL。
+- 范围复核裁决：6A-5 正式清单只覆盖 API composition；真实 Riot/Data Dragon/Provider Worker 可执行组合
+  必须在 6A-7 的 API+Worker+PostgreSQL packaging 中闭环。当前 Worker CLI 继续 fail-closed，不能把 API
+  可入队误报为已经具备可部署的自动消费进程。
+- 当前下一步只提交、推送并等待 exact-SHA `pytest` 与真实 PostgreSQL API CI；成功前 RQ-057/6A-5
+  保持执行中，不进入 6A-6。

@@ -2562,3 +2562,24 @@
   没有 Riot/Provider I/O；Fake Provider 仍只代表离线控制流，不代表模型质量。
 - 6A-4 正式关闭；唯一交接为 `6A-5-async-fastapi-composition` 准备状态。6A-5 的异步 HTTP、ActorContext、
   composition/lifespan 与 health 尚未开始，不能由本轮证据提前声称完成。
+
+## 2026-08-18：6A-5 Async FastAPI & Composition 本地发现
+
+- 产品“异步”由 durable task 边界实现，不要求 async ORM：POST 只做同步 SQLAlchemy 短事务并返回 202，
+  长 Agent 执行属于独立 Worker。当前没有同步 DB 成为 p95 瓶颈的 Bad Case，不引入 async Session。
+- FastAPI 工厂内部路由若同时使用 postponed annotations 与指向局部 dependency 的 `Annotated`，当前
+  FastAPI/Pydantic 组合会产生未解析 ForwardRef 并把请求误投影为 422；改用默认值式 `Depends`/`Header`
+  后 OpenAPI 与依赖解析稳定。这是框架接缝问题，不是业务异步语义问题。
+- lifespan 的 setup exception 必须在 yield 前收敛；不能用同一个 try/except 包住 yield，否则应用运行期
+  异常可能被误当 setup failure 并导致 asynccontextmanager 二次 yield。当前实现把 setup 与运行/cleanup
+  分开，Engine 在所有已创建路径最终 dispose。
+- SQL task 是 HTTP ownership/状态事实源，Artifact/Trace 仍是 run 内容事实源：queued/running 不访问文件；
+  succeeded 后文件缺失不降格成 404，而是 `run_integrity_failed` 500，避免掩盖跨存储不一致。
+- production 缺 Auth Provider 采用“进程活着但产品未就绪”的 fail-closed 语义；local/test 固定 owner 必须
+  显式 profile + owner 配置，不能由 JSON 或任意 header 注入。
+- 6A-4 findings 曾把 environment-backed DB/Riot/Provider composition 笼统归到 6A-5；与用户确认的
+  6A-5 正式文件/HTTP目标及 6A-7 `API+Worker+PostgreSQL` packaging 对照后，当前裁决为：6A-5 关闭 API
+  composition/lifespan，真实外部 Worker 启动组合留 6A-7 并保持 CLI fail-closed。该限制必须在 6A-5
+  退出和 6A-7 checklist 中显式验证，不能静默遗忘。
+- 本地 API 聚焦 `38 passed, 1 skipped`；完整 `1047 passed, 21 skipped, 1 warning, 110 subtests passed`。
+  新增 PostgreSQL API 测试只在本机 skip，必须由 exact-SHA public PostgreSQL job 补齐。

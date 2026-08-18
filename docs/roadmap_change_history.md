@@ -1906,3 +1906,22 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   不外推为自动 lease/reclaim、异步 API、Session/Memory 或公网部署完成。
 - `HANDOFF`：canonical 唯一下一检查点改为 `6A-5-async-fastapi-composition` 准备状态，等待用户明确
   继续；不得自动开始实现。
+
+### 2026-08-18：RQ-057 恢复 6A-5 Async FastAPI & Composition
+
+- `RESUMED`：用户再次明确“继续吧”，只授权 `6A-5-async-fastapi-composition`；先以 TDD 冻结
+  POST 202、task/run/report query、可信 ActorContext、lifespan 与 live/ready，再实现 API composition。
+- `BOUNDARY`：本批不进入 6A-6，不实现 JWT/OAuth、Session/Memory、SSE、前端、lease/retry/reclaim，
+  也不读取 Riot/Provider Key 或调用外部服务；同步 SQLAlchemy 保持，除非出现可复现性能 Bad Case。
+- `AT-THE-TIME`：canonical 与活动计划已清除等待确认状态；产品代码尚未修改，下一步先运行红灯测试。
+
+### 2026-08-18：6A-5 本地实现与门禁完成
+
+- `IMPLEMENTED-LOCAL`：FastAPI V2 POST 202/task query、trusted ActorContext、owner-scoped run/report、
+  lifespan API composition 与 DB/Alembic readiness 已实现；同步 SQLAlchemy 保持，POST 不执行 Agent。
+- `VERIFIED-LOCAL`：API 聚焦 `38 passed, 1 skipped`，完整
+  `1047 passed, 21 skipped, 1 warning, 110 subtests passed`；两套 RAG、compileall、Harness dry-run、
+  governance、Secret/SDK/YAML/diff 门通过。新增真库 API 测试因本机无 PostgreSQL 明确 skip。
+- `SCOPE-ADJUDICATED`：6A-5 只关闭 API process composition；真实 Riot/Data Dragon/Provider Worker
+  executable composition 属于 6A-7 packaging，当前 Worker CLI 继续 fail-closed，不冒充可部署消费链。
+- `AT-THE-TIME`：6A-5/RQ-057 保持执行中；下一步只提交、推送并等待 exact-SHA pytest/PostgreSQL CI。

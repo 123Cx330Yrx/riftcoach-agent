@@ -7,8 +7,8 @@
 
 ## Current Phase
 
-Phase 13 - `6A-5-async-fastapi-composition` preparation after 6A-4 completed publicly at
-`41ac9c1fab5f6aa3053ca78a2e8f314e95aa0f2c` / Actions `32102522662`
+Phase 13 - `6A-5-async-fastapi-composition` implementation authorized by RQ-057 after
+6A-4 completed publicly at `41ac9c1fab5f6aa3053ca78a2e8f314e95aa0f2c` / Actions `32102522662`
 
 ## Phases
 
@@ -253,9 +253,9 @@ Phase 13 - `6A-5-async-fastapi-composition` preparation after 6A-4 completed pub
 
 ## Next Step
 
-`6A-5-async-fastapi-composition`：准备状态；等待用户明确继续后，先按实施计划教学并冻结
-POST 202、task/run/report query、可信 ActorContext、lifespan 与 live/ready 的 HTTP/Application
-composition；当前不自动实现。
+`6A-5-async-fastapi-composition`：已由 RQ-057 授权；先以红灯冻结 POST 202、task/run/report
+query、可信 ActorContext、lifespan 与 live/ready，再实现 production-like API composition 并由真实
+PostgreSQL CI 验证。本批不进入 6A-6。
 
 ## 6A-1 Checklist
 
@@ -315,12 +315,21 @@ composition；当前不自动实现。
 - [completed] 运行聚焦、完整、两套 RAG 与全部横向门禁
 - [completed] 提交、推送并由 `41ac9c1` / Actions `32102522662` 完成 exact-SHA PostgreSQL CI，随后只交接 6A-5 准备状态
 
-### Phase 13 - 6A-5-async-fastapi-composition preparation
+### Phase 13 - 6A-5-async-fastapi-composition
 
 - Status: in_progress
-- Pause: preparation; awaiting explicit user confirmation.
-- 6A-4 的真实 PostgreSQL 公共门已完成；当前不实现异步 FastAPI、ActorContext、lifespan、Session、
-  Memory、SSE、正式 Auth、前端或公网部署。
+- Authorization: RQ-057.
+- 6A-4 的真实 PostgreSQL 公共门已完成；本批实现异步 task HTTP、ActorContext、API composition/
+  lifespan 与 live/ready，但不实现 Session、Memory、SSE、正式 Auth、前端、lease/retry 或公网部署。
+
+## 6A-5 Checklist
+
+- [completed] 记录 RQ-057、清除等待确认状态并完成初学者入口教学
+- [completed] 先写 HTTP、ActorContext、readiness 与 lifespan 红灯测试
+- [completed] 实现 task API、owner-scoped run/report 与 production-like API composition
+- [completed] 增加真实 PostgreSQL API 测试并纳入阻塞 CI job
+- [completed] 运行聚焦、完整、两套 RAG 与全部横向门禁
+- [pending] 提交、推送并等待 exact-SHA `pytest` 与 PostgreSQL CI，成功后只交接 6A-6
 
 ## 6A Entry Design Checklist
 

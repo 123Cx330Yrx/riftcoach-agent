@@ -1,34 +1,58 @@
-"""Thin FastAPI adapter for the first recent-review product slice.
+"""Thin FastAPI adapter for the durable asynchronous review-task API.
 
-This module owns HTTP concerns only.  It deliberately receives already-built
-application/query services instead of constructing Riot clients, Providers,
-Prompt Programs, or Runtime/Harness objects during import or app creation.
+The adapter owns HTTP validation, trusted actor projection and safe status
+mapping. It never constructs or runs Riot, Provider, Agent, Harness or Worker
+components. POST only commits a queued task and returns ``202 Accepted``.
 """
 
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, Literal, Protocol, TypeAlias
+from typing import Protocol
+from uuid import UUID
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Header, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, Response
-from pydantic import BaseModel, ConfigDict
+from pydantic import ValidationError
+from starlette.types import Lifespan
 
-from app.product.recent_review import RecentReviewProductRequest
-from app.product.recent_review_service import (
-    RecentReviewApplicationError,
-    RecentReviewApplicationResult,
+from app.api.actor import (
+    ActorContext,
+    ActorContextProvider,
+    ActorContextUnavailable,
 )
-from app.product.run_query import RunQueryError, RunView
-from app.skills.recent_form_review import RecentFormReviewOutput
+from app.api.task_models import (
+    ApiErrorCode,
+    CreateReviewTaskResponse,
+    ErrorResponse,
+    LivenessResponse,
+    ReadinessResponse,
+    ReadinessResult,
+    TaskLinks,
+)
+from app.product.recent_review import RecentReviewProductRequest
+from app.product.run_query import RunView
+from app.tasks.models import (
+    CreateReviewTaskCommand,
+    ReviewTaskView,
+    TaskCreateResult,
+    TaskStatus,
+)
+from app.tasks.service import TaskServiceError
 
 
-class ReviewServicePort(Protocol):
-    def review(
+class TaskServicePort(Protocol):
+    def create(self, command: CreateReviewTaskCommand) -> TaskCreateResult: ...
+
+    def get_task(self, *, owner_id: str, task_id: UUID) -> ReviewTaskView: ...
+
+    def get_task_by_run_id(
         self,
-        request: RecentReviewProductRequest,
-    ) -> RecentReviewApplicationResult: ...
+        *,
+        owner_id: str,
+        run_id: str,
+    ) -> ReviewTaskView: ...
 
 
 class RunQueryPort(Protocol):
@@ -37,186 +61,193 @@ class RunQueryPort(Protocol):
     def get_report(self, run_id: str) -> str: ...
 
 
-class ApiLinks(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
-
-    run: str
-    report: str
+class ReadinessPort(Protocol):
+    def check(self) -> ReadinessResult: ...
 
 
-class RecentReviewHttpResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
-
-    schema_version: Literal["1.0"] = "1.0"
-    run_id: str
-    runtime_status: Literal["completed"]
-    publication_status: Literal["published", "degraded", "rejected"]
-    terminal_reason: str
-    output: RecentFormReviewOutput
-    links: ApiLinks
-
-
-ApiErrorCode: TypeAlias = Literal[
-    "request_invalid",
-    "player_not_found",
-    "insufficient_match_data",
-    "riot_authentication_failed",
-    "riot_rate_limited",
-    "upstream_timeout",
-    "upstream_unavailable",
-    "service_configuration_invalid",
-    "review_runtime_failed",
-    "run_not_found",
-    "report_not_available",
-    "run_integrity_failed",
-]
-
-
-class ErrorResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
-
-    code: ApiErrorCode
-    run_id: str | None = None
-    terminal_reason: str | None = None
-
-
-class HealthResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
-
-    status: Literal["ok"] = "ok"
-    api_version: Literal["1.0"] = "1.0"
-    schema_version: Literal["1.0"] = "1.0"
-
-
-_APPLICATION_STATUS: Mapping[str, int] = {
-    "player_not_found": 404,
-    "insufficient_match_data": 422,
-    "riot_authentication_failed": 503,
-    "riot_rate_limited": 503,
-    "upstream_timeout": 504,
-    "upstream_unavailable": 503,
-    "service_configuration_invalid": 503,
-    "review_runtime_failed": 500,
+_CREATE_TASK_STATUS: Mapping[str, tuple[int, ApiErrorCode]] = {
+    "idempotency_conflict": (409, "idempotency_conflict"),
+    "owner_capacity_exceeded": (503, "task_capacity_exceeded"),
+    "global_capacity_exceeded": (503, "task_capacity_exceeded"),
+    "task_persistence_failed": (503, "service_unavailable"),
+    "task_identity_invalid": (503, "service_unavailable"),
 }
-_QUERY_STATUS: Mapping[str, int] = {
-    "run_not_found": 404,
-    "report_not_available": 409,
-    "run_integrity_failed": 500,
-}
+_IDEMPOTENCY_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
 
 
 def _error_response(
-    payload: Mapping[str, Any],
+    code: ApiErrorCode,
     *,
     status_code: int,
-    retry_after_seconds: int | None = None,
+    run_id: str | None = None,
 ) -> JSONResponse:
-    """Return only the allowlisted public error fields."""
-
-    body = ErrorResponse(
-        code=payload.get("code"),
-        run_id=payload.get("run_id"),
-        terminal_reason=payload.get("terminal_reason"),
-    ).model_dump(mode="json", exclude_none=True)
-    headers: dict[str, str] = {}
-    if retry_after_seconds is not None:
-        headers["Retry-After"] = str(retry_after_seconds)
-    return JSONResponse(status_code=status_code, content=body, headers=headers)
-
-
-def _application_error_response(error: RecentReviewApplicationError) -> JSONResponse:
-    status_code = _APPLICATION_STATUS.get(error.code, 500)
-    public = error.to_public_dict()
-    retry_after = public.get("retry_after_seconds")
-    return _error_response(
-        public,
-        status_code=status_code,
-        retry_after_seconds=(
-            retry_after if isinstance(retry_after, int) else None
-        ),
+    body = ErrorResponse(code=code, run_id=run_id).model_dump(
+        mode="json",
+        exclude_none=True,
     )
+    return JSONResponse(status_code=status_code, content=body)
 
 
-def _query_error_response(error: RunQueryError) -> JSONResponse:
-    return _error_response(
-        error.to_public_dict(),
-        status_code=_QUERY_STATUS.get(error.code, 500),
-    )
+def _task_lookup_error(
+    error: TaskServiceError,
+    *,
+    not_found_code: ApiErrorCode,
+) -> JSONResponse:
+    if error.code == "task_not_found":
+        return _error_response(not_found_code, status_code=404)
+    return _error_response("service_unavailable", status_code=503)
 
 
 def create_app(
     *,
-    review_service: ReviewServicePort,
+    task_service: TaskServicePort,
     query_service: RunQueryPort,
+    actor_provider: ActorContextProvider,
+    readiness_probe: ReadinessPort,
+    lifespan: Lifespan[FastAPI] | None = None,
 ) -> FastAPI:
-    """Create the local V1 API from explicit application/query ports.
+    """Create API V2 from explicit ports without doing deployment I/O."""
 
-    No dependency construction occurs here.  This is intentional: importing
-    the module and generating OpenAPI must not read a Key or make network I/O.
-    """
-
-    if not callable(getattr(review_service, "review", None)):
-        raise TypeError("review_service must expose review()")
-    if not callable(getattr(query_service, "get_run", None)):
-        raise TypeError("query_service must expose get_run()")
-    if not callable(getattr(query_service, "get_report", None)):
-        raise TypeError("query_service must expose get_report()")
+    for method_name in ("create", "get_task", "get_task_by_run_id"):
+        if not callable(getattr(task_service, method_name, None)):
+            raise TypeError(f"task_service must expose {method_name}()")
+    for method_name in ("get_run", "get_report"):
+        if not callable(getattr(query_service, method_name, None)):
+            raise TypeError(f"query_service must expose {method_name}()")
+    if not callable(actor_provider):
+        raise TypeError("actor_provider must be callable")
+    if not callable(getattr(readiness_probe, "check", None)):
+        raise TypeError("readiness_probe must expose check()")
 
     app = FastAPI(
         title="RiftCoach Agent API",
-        version="1.0",
-        description="Local thin HTTP adapter for the recent-review product slice.",
+        version="2.0",
+        description=(
+            "Durable asynchronous task API for the recent-review product slice."
+        ),
+        lifespan=lifespan,
     )
+
+    def trusted_actor() -> ActorContext:
+        context = actor_provider()
+        if not isinstance(context, ActorContext):
+            raise ActorContextUnavailable()
+        return context
 
     @app.exception_handler(RequestValidationError)
     async def request_validation_handler(
         request: Request,
         exc: RequestValidationError,
     ) -> JSONResponse:
-        # Request details may contain untrusted Riot ID text.  The public
-        # contract intentionally exposes only the stable error code.
+        # Details may contain Riot ID or other attacker-controlled text.
         del request, exc
-        return _error_response({"code": "request_invalid"}, status_code=422)
+        return _error_response("request_invalid", status_code=422)
+
+    @app.exception_handler(ActorContextUnavailable)
+    async def actor_unavailable_handler(
+        request: Request,
+        exc: ActorContextUnavailable,
+    ) -> JSONResponse:
+        del request, exc
+        return _error_response("service_unavailable", status_code=503)
 
     @app.post(
         "/reviews/recent",
-        status_code=201,
-        response_model=RecentReviewHttpResponse,
+        status_code=202,
+        response_model=CreateReviewTaskResponse,
         responses={
+            409: {"model": ErrorResponse},
             422: {"model": ErrorResponse},
-            404: {"model": ErrorResponse},
-            500: {"model": ErrorResponse},
             503: {"model": ErrorResponse},
-            504: {"model": ErrorResponse},
         },
     )
     def post_recent_review(
         product_request: RecentReviewProductRequest,
-    ) -> RecentReviewHttpResponse | JSONResponse:
+        idempotency_key: str = Header(
+            alias="Idempotency-Key",
+            min_length=1,
+            max_length=128,
+            pattern=_IDEMPOTENCY_PATTERN,
+        ),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> CreateReviewTaskResponse | JSONResponse:
         try:
-            result = review_service.review(product_request)
-            if not isinstance(result, RecentReviewApplicationResult):
-                raise RuntimeError("application service returned an invalid result")
-            return RecentReviewHttpResponse(
-                run_id=result.run_id,
-                runtime_status=result.runtime_status.value,
-                publication_status=result.publication_status.value,
-                terminal_reason=result.terminal_reason,
-                output=result.output,
-                links=ApiLinks(
-                    run=f"/runs/{result.run_id}",
-                    report=f"/runs/{result.run_id}/report",
+            command = CreateReviewTaskCommand(
+                owner_id=actor.owner_id,
+                idempotency_key=idempotency_key,
+                request=product_request,
+            )
+            result = task_service.create(command)
+            if not isinstance(result, TaskCreateResult):
+                raise TypeError("task service returned an invalid result")
+            task = result.task
+            return CreateReviewTaskResponse(
+                disposition=result.disposition,
+                task_id=task.task_id,
+                run_id=task.run_id,
+                status=task.status,
+                links=TaskLinks(
+                    task=f"/tasks/{task.task_id}",
+                    run=f"/runs/{task.run_id}",
+                    report=f"/runs/{task.run_id}/report",
                 ),
             )
-        except RecentReviewApplicationError as error:
-            return _application_error_response(error)
-        except Exception:
-            # Never serialize an internal exception, URL, path or Provider
-            # response.  The service has already lost the unsafe details.
-            return _error_response(
-                {"code": "review_runtime_failed"},
-                status_code=500,
+        except TaskServiceError as error:
+            status_code, code = _CREATE_TASK_STATUS.get(
+                error.code,
+                (503, "service_unavailable"),
             )
+            return _error_response(code, status_code=status_code)
+        except ValidationError:
+            return _error_response("request_invalid", status_code=422)
+        except Exception:
+            return _error_response("service_unavailable", status_code=503)
+
+    @app.get(
+        "/tasks/{task_id}",
+        response_model=ReviewTaskView,
+        responses={
+            404: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def get_task(
+        task_id: str,
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> ReviewTaskView | JSONResponse:
+        try:
+            parsed_task_id = UUID(task_id)
+        except (AttributeError, TypeError, ValueError):
+            return _error_response("task_not_found", status_code=404)
+        try:
+            result = task_service.get_task(
+                owner_id=actor.owner_id,
+                task_id=parsed_task_id,
+            )
+            if not isinstance(result, ReviewTaskView):
+                raise TypeError("task service returned an invalid task view")
+            return result
+        except TaskServiceError as error:
+            return _task_lookup_error(error, not_found_code="task_not_found")
+        except Exception:
+            return _error_response("service_unavailable", status_code=503)
+
+    def owned_run_task(
+        actor: ActorContext,
+        run_id: str,
+    ) -> ReviewTaskView | JSONResponse:
+        try:
+            result = task_service.get_task_by_run_id(
+                owner_id=actor.owner_id,
+                run_id=run_id,
+            )
+            if not isinstance(result, ReviewTaskView) or result.run_id != run_id:
+                raise TypeError("task service returned an invalid run identity")
+            return result
+        except TaskServiceError as error:
+            return _task_lookup_error(error, not_found_code="run_not_found")
+        except Exception:
+            return _error_response("service_unavailable", status_code=503)
 
     @app.get(
         "/runs/{run_id}",
@@ -225,17 +256,38 @@ def create_app(
             404: {"model": ErrorResponse},
             409: {"model": ErrorResponse},
             500: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
         },
     )
-    def get_run(run_id: str) -> RunView | JSONResponse:
+    def get_run(
+        run_id: str,
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> RunView | JSONResponse:
+        task = owned_run_task(actor, run_id)
+        if isinstance(task, JSONResponse):
+            return task
+        if task.status in {TaskStatus.QUEUED, TaskStatus.RUNNING}:
+            return _error_response(
+                "run_not_ready",
+                status_code=409,
+                run_id=task.run_id,
+            )
+        if task.status is TaskStatus.FAILED:
+            return _error_response(
+                "run_not_available",
+                status_code=409,
+                run_id=task.run_id,
+            )
         try:
-            return query_service.get_run(run_id)
-        except RunQueryError as error:
-            return _query_error_response(error)
+            result = query_service.get_run(task.run_id)
+            if not isinstance(result, RunView) or result.run_id != task.run_id:
+                raise ValueError("run query returned an invalid identity")
+            return result
         except Exception:
             return _error_response(
-                {"code": "run_integrity_failed"},
+                "run_integrity_failed",
                 status_code=500,
+                run_id=task.run_id,
             )
 
     @app.get(
@@ -246,36 +298,71 @@ def create_app(
             404: {"model": ErrorResponse},
             409: {"model": ErrorResponse},
             500: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
         },
     )
-    def get_report(run_id: str) -> Response:
+    def get_report(
+        run_id: str,
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> Response:
+        task = owned_run_task(actor, run_id)
+        if isinstance(task, JSONResponse):
+            return task
+        if task.status in {TaskStatus.QUEUED, TaskStatus.RUNNING}:
+            return _error_response(
+                "run_not_ready",
+                status_code=409,
+                run_id=task.run_id,
+            )
+        if task.status is TaskStatus.FAILED or not task.report_available:
+            return _error_response(
+                "report_not_available",
+                status_code=409,
+                run_id=task.run_id,
+            )
         try:
-            report = query_service.get_report(run_id)
-            if not isinstance(report, str) or not report:
-                raise ValueError("query service returned invalid report")
+            report = query_service.get_report(task.run_id)
+            if not isinstance(report, str) or not report.strip():
+                raise ValueError("report query returned an invalid body")
             return Response(content=report, media_type="text/markdown")
-        except RunQueryError as error:
-            return _query_error_response(error)
         except Exception:
             return _error_response(
-                {"code": "run_integrity_failed"},
+                "run_integrity_failed",
                 status_code=500,
+                run_id=task.run_id,
             )
 
-    @app.get("/health", response_model=HealthResponse)
-    def health() -> HealthResponse:
-        return HealthResponse()
+    @app.get("/health/live", response_model=LivenessResponse)
+    def liveness() -> LivenessResponse:
+        return LivenessResponse()
+
+    @app.get(
+        "/health/ready",
+        response_model=ReadinessResponse,
+        response_model_exclude_none=True,
+        responses={503: {"model": ReadinessResponse}},
+    )
+    def readiness() -> ReadinessResponse | JSONResponse:
+        try:
+            result = readiness_probe.check()
+            if not isinstance(result, ReadinessResult):
+                raise TypeError("readiness probe returned an invalid result")
+        except Exception:
+            result = ReadinessResult.not_ready("readiness_check_failed")
+        response = ReadinessResponse.from_result(result)
+        if result.is_ready:
+            return response
+        return JSONResponse(
+            status_code=503,
+            content=response.model_dump(mode="json", exclude_none=True),
+        )
 
     return app
 
 
 __all__ = [
-    "ApiLinks",
-    "ApiErrorCode",
-    "ErrorResponse",
-    "HealthResponse",
-    "RecentReviewHttpResponse",
+    "ReadinessPort",
     "RunQueryPort",
-    "ReviewServicePort",
+    "TaskServicePort",
     "create_app",
 ]

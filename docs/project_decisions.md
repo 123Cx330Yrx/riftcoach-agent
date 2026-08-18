@@ -1039,3 +1039,23 @@ Application/Runtime/RAG/Harness/Artifact 的离线纵向接线。CI 没有读取
 因此 6A-4 正式关闭，canonical 只交接 `6A-5-async-fastapi-composition` 准备状态。下一批才会
 讨论并实现异步 FastAPI 202 合同、ActorContext、lifespan、task/run/report query 与 health；当前
 不得把 6A-4 的公共闭环描述成完整 Web 产品、自动 crash recovery、Session/Memory 或公网部署。
+
+## 6A-5 Async FastAPI & Composition 本地实施裁决（2026-08-18）
+
+用户按 RQ-057 恢复 6A-5。HTTP 合同已版本化为 V2：POST 只在 PostgreSQL 短事务提交 queued task 并
+返回 202 task/run/links，不再同步执行 Agent 或返回报告正文；幂等 replay、请求冲突、不可用和容量错误
+均有独立安全投影。task/run/report 查询先通过 trusted ActorContext 做 owner-scoped SQL lookup，只有
+succeeded task 才读取严格 receipt/Trace/Artifact；queued/running 为 409，SQL 与文件证据不一致为 500。
+
+固定 owner 只允许显式 local/test profile；production 无 Auth Provider 时 liveness 仍可用于进程管理，
+但 readiness 与产品请求 fail closed。composition import/OpenAPI 零 I/O，lifespan 才创建并关闭 Engine/
+Session factory；readiness 同时检查 `SELECT 1` 和 Alembic current/head，未采用 async ORM，因为没有同步
+数据库成为瓶颈的实测证据。
+
+API 聚焦 `38 passed, 1 skipped`，完整本地回归
+`1047 passed, 21 skipped, 1 warning, 110 subtests passed`，两套 RAG 与全部横向门禁通过。新增真库 API
+测试已加入 PostgreSQL 阻塞 job，本机无 DB 因而明确 skip；成功前 6A-5 保持执行中。
+
+范围复核同时更正 6A-4 的笼统交接表述：本批正式文件/HTTP目标关闭的是 API process composition；真实
+Riot/Data Dragon/Provider Worker executable composition 必须在 6A-7 `API+Worker+PostgreSQL` packaging
+中完成。当前 Worker CLI 继续 fail-closed，不能把“API 能可靠入队”描述成“部署后任务已会自动消费”。
