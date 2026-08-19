@@ -1286,3 +1286,12 @@ terminal，不在 API/数据库事务内执行 Account-V1，也不提前写 6B-2
 教学、TDD、本地门禁、提交/推送与 exact-SHA 三 job；公共全绿后只把 6B-2 标为
 prepared/waiting authorization 并停止。此裁决只改变自动推进边界，不删除、合并或重排 6B-2 至 6B-9，
 也不放宽外部 I/O、Auth/RSO、SSE/前端、MCP、Multi-Agent 或新技术采用门。
+
+### 6B-1 最终公共裁决
+
+实现与两轮定点 migration 修补最终收敛在 `ed8fa58ff3f9ef6c84e1a028ac0e1724b087a26b`；Actions
+`32229024069` 的 pytest、真实 PostgreSQL 与 Linux packaging-smoke 三 job 均成功。接受 6B-1 为完成，
+包括 stable PUUID subject、subject-local alias、owner-local typed relationship、private Link Task、短事务
+Repository、idempotency/capacity、SKIP LOCKED、ON CONFLICT、role-conflict atomic failure、CAS/rollback
+与 confirmed display snapshot。该裁决不接受 Resolver/Worker/API、Conversation/Memory 或正式 Auth 已完成；
+按 RQ-065 只准备 6B-2 并停止。

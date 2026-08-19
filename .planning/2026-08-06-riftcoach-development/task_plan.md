@@ -7,9 +7,8 @@
 
 ## Current Phase
 
-Phase 17 - `6B-1-player-identity-link-foundation`; entry design closed publicly at `bc11afe` /
-Actions `32222531783`. RQ-065 limits this turn to 6B-1's independent exact-SHA closure; stop with
-6B-2 prepared/waiting authorization after that closure.
+Phase 18 - `6B-2-async-player-link-worker-api`; prepared/waiting authorization. 6B-1 closed at
+`ed8fa58` / Actions `32229024069`; RQ-065 requires stopping before any 6B-2 implementation.
 
 ## Phases
 
@@ -255,9 +254,8 @@ Actions `32222531783`. RQ-065 limits this turn to 6B-1's independent exact-SHA c
 
 ## Next Step
 
-`6B-1-player-identity-link-foundation`：先以红灯冻结 strict Player/Relationship/Link Task domain 合同，
-再实现四张 Player identity/link 表、Alembic 0002、Service/Repository 和 Fake/真实 PostgreSQL 证据。
-本批不实现 Riot resolver、PlayerLinkWorker/API、Conversation/Memory，不读取 Key 或调用外部服务。
+`6B-2-async-player-link-worker-api`：prepared/waiting authorization。下一轮获明确授权后才讲解并实现
+Account resolver、PlayerLinkWorker、POST/GET API 与 no-I/O package 纵向；当前停止，不写 6B-2 代码。
 
 ## 6A-1 Checklist
 
@@ -403,7 +401,7 @@ Actions `32222531783`. RQ-065 limits this turn to 6B-1's independent exact-SHA c
 
 ### Phase 17 - 6B-1-player-identity-link-foundation
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-064 启动本批，RQ-065 进一步收紧为本轮只闭环 6B-1；全绿后停止，不自动进入 6B-2。
 - Outcome: strict Player/Relationship/Link Task contracts、四张 PostgreSQL 表、可逆 Alembic 0002、
   transaction-safe Repository/Service 与 Fake/真实 PostgreSQL 证据。
@@ -418,7 +416,14 @@ Actions `32222531783`. RQ-065 limits this turn to 6B-1's independent exact-SHA c
 - [completed] 先写真实 PostgreSQL migration/metadata 红灯，再实现 ORM 与可逆 0002
 - [completed] 先写真库 create/query/claim/resolve/CAS/concurrency/rollback 红灯，再实现 Repository
 - [completed] 运行聚焦/相邻/完整/RAG/compile/Harness/security/governance/diff 门并同步持久状态
-- [in_progress] 独立提交/推送 6B-1，取得 exact-SHA pytest/PostgreSQL/package 三 job；随后停止并把 6B-2 交接为 prepared/waiting authorization
+- [completed] 独立提交/推送 6B-1；最终 `ed8fa58` / Actions `32229024069` 的 pytest/PostgreSQL/package 三 job 全绿，已按 RQ-065 停止
+
+### Phase 18 - 6B-2-async-player-link-worker-api
+
+- Status: in_progress
+- Authorization: waiting；RQ-065 明确要求 6B-1 后停止，下一轮再次授权前不得实施。
+- Prepared outcome: narrow Account resolver、专用 PlayerLinkWorker、owner-scoped POST/GET Link API 与
+  Fake Resolver Linux no-I/O smoke；Conversation/Memory 仍留 6B-3。
 
 ## 6A Entry Design Checklist
 
@@ -604,6 +609,7 @@ Actions `32222531783`. RQ-065 limits this turn to 6B-1's independent exact-SHA c
 | 6B-1 首次 100 字符行扫描发现 `PlayerLinkTask` 两个 confirmed display 字段为 103/105 字符 | 1 | 只做等价多行格式化，未改变 Schema；随后重新执行行长、compile 与测试门 |
 | 恢复已登录 GitHub 仓库标签页时首次 `goto` 在 10 秒导航等待上超时 | 1 | 只读检查确认 URL 已实际恢复为仓库首页；未重复导航、未重跑 job 或改变 GitHub 状态 |
 | 第二个公共 run 状态回写的首个组合 `apply_patch` 在 canonical/history 文件边界处含无效 hunk | 1 | 工具原子拒绝且无文件被部分修改；拆为活动计划三文件与 canonical/history 两个精确补丁完成同步 |
+| 6B-1 closure 后首次把 Phase 18 标为 pending，governance 要求活动计划必须恰有一个 in_progress phase | 1 | 将 6B-2 标为治理指针上的 in_progress，同时保留 prepared/waiting authorization 和“不得实施”边界；不把状态键外推为代码已开工 |
 | 并行路线审计子任务被平台以 `prompt_cache_retention is not supported on this model` 在模型开始前拒绝 | 1 | 该子任务无命令、无文件修改、无项目 Provider/Key 调用；复用同一子任务发起受限重试并取得完整只读审计结果，主任务未受影响 |
 | planning-with-files `session-catchup.py` 对本仓库无输出，被初步解释为无遗漏 | 1 | 人工审计确认脚本只检查根目录三文件，未解析 `.planning/.active_plan`；改用活动计划、Git/JSONL 手工恢复，补记 `d1cc2ed/32147545753` 与 RQ-060，不再把无输出当充分证据 |
 | 统计 AGI-Saber Memory 文件的 `functions.exec` JavaScript 模板含 PowerShell反引号，脚本在命令执行前语法失败 | 1 | 改用 PowerShell `-f` 格式化且不含反引号，成功取得文件行数；没有文件或项目状态变化 |

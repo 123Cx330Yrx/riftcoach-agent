@@ -2121,3 +2121,15 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   table 前缀并截断为 hash 名；稳定 schema 名称断言正确阻止接受。
 - `REPAIR-LOCAL`：新增 offline SQL 红灯并把 0002 全部 CHECK 名标记为已格式化；聚焦 17/13 skipped、
   完整 1119/40 skipped/110 subtests 通过。下一动作是全门与第三个 exact-SHA run。
+
+### 2026-08-19：6B-1 exact-SHA 公共闭环与 RQ-065 停止
+
+- `VERIFIED-PUBLIC`：最终提交 `ed8fa58ff3f9ef6c84e1a028ac0e1724b087a26b` 对应 Actions
+  `32229024069` completed/success；pytest、postgres-migrations、packaging-smoke 三 job 全部成功。
+- `CLOSED`：6B-1 Player Identity & Link Persistence Foundation 正式完成；本地完整为
+  `1119 passed, 40 skipped, 1 warning, 110 subtests passed`，真库补齐 migration/constraint/Repository/
+  concurrency 证据，本批外部 Riot/Provider/Key I/O 为 0。
+- `BOUNDARY`：未实现 Resolver、PlayerLinkWorker/CLI、HTTP API、Conversation/Memory、Auth/RSO、SSE/
+  前端或真实 Riot 调用；不得从 identity foundation 外推这些能力。
+- `HANDOFF`：按 RQ-065 停止，canonical 只把 `6B-2-async-player-link-worker-api` 标为
+  prepared/waiting authorization，下一轮用户明确继续前不得实施。

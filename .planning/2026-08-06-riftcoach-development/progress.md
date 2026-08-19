@@ -2864,3 +2864,13 @@
   无数据库红灯，随后对 0002 全部 22 个显式 CHECK 名使用 `op.f(...)`，避免只修当前首个断言后再逐个失败。
 - 新 offline test 与双前缀扫描通过；6B-1 聚焦现为 `17 passed, 13 skipped`，完整为
   `1119 passed, 40 skipped, 1 warning, 110 subtests passed`。下一动作重跑横向门并推送第三个精确 SHA。
+
+## 2026-08-19：6B-1 公共闭环并停止
+
+- 全 CHECK 命名修补提交 `ed8fa58ff3f9ef6c84e1a028ac0e1724b087a26b` 已推送；Actions
+  `32229024069` 总状态 completed/success，pytest、postgres-migrations、packaging-smoke 三 job 均成功。
+- 这补齐本机 40 个 PostgreSQL/Docker skip，6B-1 正式完成；三次 run 保留了“失败→红灯→最小修补→新
+  exact-SHA”的证据链，没有重跑旧 SHA 或放宽 schema 断言。
+- RQ-065 已满足：本轮不进入 6B-2。canonical/活动计划现只把
+  `6B-2-async-player-link-worker-api` 置为 prepared/waiting authorization。
+- 下一动作仅是提交/推送本状态交接并验证其自身 exact-SHA 三 job；成功后结束本轮。
