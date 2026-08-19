@@ -1,10 +1,10 @@
 """Linux/Compose control-plane smoke with zero Riot or Provider calls.
 
-The smoke creates one synthetic task through HTTP, claims it through the real
-PostgreSQL repository in a separate process, and deliberately exercises the
-safe Worker failure terminal.  Successful Agent/Harness execution is proven by
-the existing offline vertical tests; duplicating a fake Coach here would blur
-those evidence boundaries.
+The smoke covers two independent asynchronous paths against real PostgreSQL:
+one Review Task deliberately reaches its safe failed terminal without external
+I/O, while one Player Link uses an in-process Fake Account Resolver and reaches
+succeeded.  Successful Agent/Harness execution remains covered by the existing
+offline vertical tests rather than a fake Coach in this package check.
 """
 
 from __future__ import annotations
@@ -26,7 +26,14 @@ from sqlalchemy.engine import make_url
 from app.api.composition import PostgresReadinessProbe
 from app.persistence.config import DatabaseSettings, load_database_settings
 from app.persistence.database import build_engine, build_session_factory
+from app.persistence.player_repository import PostgresPlayerRepository
 from app.persistence.task_repository import PostgresTaskRepository
+from app.players.link_worker import (
+    PlayerLinkWorker,
+    PlayerLinkWorkerError,
+    PlayerLinkWorkerIterationStatus,
+)
+from app.players.models import ResolvedRiotAccount, RoutingRegion
 from app.tasks.models import ReviewTask, TaskTerminal
 from app.workers.review_worker import (
     ReviewWorker,
@@ -49,6 +56,12 @@ PackagingSmokeErrorCode: TypeAlias = Literal[
     "packaging_smoke_task_query_failed",
     "packaging_smoke_worker_failed",
     "packaging_smoke_terminal_invalid",
+    "packaging_smoke_link_create_failed",
+    "packaging_smoke_link_claim_failed",
+    "packaging_smoke_link_terminal_update_failed",
+    "packaging_smoke_link_iteration_invalid",
+    "packaging_smoke_link_query_failed",
+    "packaging_smoke_link_terminal_invalid",
 ]
 _ERROR_CODES = frozenset(
     {
@@ -65,9 +78,16 @@ _ERROR_CODES = frozenset(
         "packaging_smoke_task_query_failed",
         "packaging_smoke_worker_failed",
         "packaging_smoke_terminal_invalid",
+        "packaging_smoke_link_create_failed",
+        "packaging_smoke_link_claim_failed",
+        "packaging_smoke_link_terminal_update_failed",
+        "packaging_smoke_link_iteration_invalid",
+        "packaging_smoke_link_query_failed",
+        "packaging_smoke_link_terminal_invalid",
     }
 )
 _LOCAL_SMOKE_API_HOSTS = frozenset({"api", "localhost", "127.0.0.1", "::1"})
+_LINK_SMOKE_WORKER_ID = "packaging-link-smoke-worker"
 _LOCAL_SMOKE_DATABASE_HOSTS = frozenset(
     {"postgres", "localhost", "127.0.0.1", "::1"}
 )
@@ -94,6 +114,8 @@ class PackagingSmokeResult:
     task_id: UUID
     run_id: str
     task_status: Literal["failed"]
+    link_task_id: UUID
+    link_status: Literal["succeeded"]
     external_riot_provider_calls: Literal[0]
 
 
@@ -102,6 +124,23 @@ class _NoExternalIoExecutor:
         # ReviewWorker converts this into its allowlisted safe failure reason.
         # No request body, secret or exception text reaches SQL/log/API.
         raise RuntimeError("packaging smoke intentionally performs no external I/O")
+
+
+class _FakeAccountResolver:
+    def resolve(
+        self,
+        *,
+        routing_region: RoutingRegion,
+        game_name: str,
+        tag_line: str,
+    ) -> ResolvedRiotAccount:
+        del game_name, tag_line
+        return ResolvedRiotAccount(
+            routing_region=routing_region,
+            puuid="packaging_smoke_fixture_puuid",
+            game_name="Packaging Smoke Fixture",
+            tag_line="TEST",
+        )
 
 
 def load_packaging_smoke_settings(
@@ -206,7 +245,9 @@ def execute_packaging_smoke(
             engine = build_engine(settings.database)
             if not PostgresReadinessProbe(engine).check().is_ready:
                 raise PackagingSmokeError("packaging_smoke_database_not_ready")
-            repository = PostgresTaskRepository(build_session_factory(engine))
+            session_factory = build_session_factory(engine)
+            repository = PostgresTaskRepository(session_factory)
+            player_repository = PostgresPlayerRepository(session_factory)
         except PackagingSmokeError:
             raise
         except Exception:
@@ -257,11 +298,96 @@ def execute_packaging_smoke(
         ):
             raise PackagingSmokeError("packaging_smoke_terminal_invalid")
 
+        try:
+            created_link = session.post(
+                f"{settings.base_url}/player-links",
+                headers={
+                    "Idempotency-Key": f"packaging-link-smoke-{uuid4().hex}"
+                },
+                json={
+                    "riot_id": "SyntheticLinkSmoke#TEST",
+                    "routing_region": "asia",
+                    "relationship_role": "self",
+                },
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_link_create_failed"
+            ) from None
+        created_link_body = _json_object(created_link)
+        if created_link.status_code != 202:
+            raise PackagingSmokeError("packaging_smoke_link_create_failed")
+        try:
+            link_task_id = UUID(str(created_link_body["link_task_id"]))
+        except (KeyError, TypeError, ValueError):
+            raise PackagingSmokeError(
+                "packaging_smoke_link_create_failed"
+            ) from None
+
+        try:
+            link_iteration = PlayerLinkWorker(
+                repository=player_repository,
+                resolver=_FakeAccountResolver(),
+                worker_id=_LINK_SMOKE_WORKER_ID,
+            ).run_once()
+        except PlayerLinkWorkerError as error:
+            link_worker_codes = {
+                "link_claim_failed": "packaging_smoke_link_claim_failed",
+                "link_terminal_update_failed": (
+                    "packaging_smoke_link_terminal_update_failed"
+                ),
+            }
+            raise PackagingSmokeError(
+                link_worker_codes.get(
+                    error.code,
+                    "packaging_smoke_link_iteration_invalid",
+                )
+            ) from None
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_link_iteration_invalid"
+            ) from None
+        if (
+            link_iteration.status
+            is not PlayerLinkWorkerIterationStatus.SUCCEEDED
+            or link_iteration.link_task_id != link_task_id
+        ):
+            raise PackagingSmokeError(
+                "packaging_smoke_link_iteration_invalid"
+            )
+
+        try:
+            terminal_link = session.get(
+                f"{settings.base_url}/player-links/{link_task_id}",
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_link_query_failed"
+            ) from None
+        terminal_link_body = _json_object(terminal_link)
+        if (
+            terminal_link.status_code != 200
+            or terminal_link_body.get("status") != "succeeded"
+            or terminal_link_body.get("link_task_id") != str(link_task_id)
+            or not terminal_link_body.get("player_subject_id")
+            or not terminal_link_body.get("relationship_id")
+            or terminal_link_body.get("confirmed_riot_id")
+            != "Packaging Smoke Fixture#TEST"
+            or terminal_link_body.get("failure") is not None
+        ):
+            raise PackagingSmokeError(
+                "packaging_smoke_link_terminal_invalid"
+            )
+
         return PackagingSmokeResult(
             schema_version="1.0",
             task_id=task_id,
             run_id=run_id,
             task_status="failed",
+            link_task_id=link_task_id,
+            link_status="succeeded",
             external_riot_provider_calls=0,
         )
     except PackagingSmokeError:
@@ -311,6 +437,8 @@ def main(
                 "task_id": str(result.task_id),
                 "run_id": result.run_id,
                 "task_status": result.task_status,
+                "link_task_id": str(result.link_task_id),
+                "link_status": result.link_status,
                 "external_riot_provider_calls": result.external_riot_provider_calls,
             },
             sort_keys=True,

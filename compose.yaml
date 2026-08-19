@@ -50,6 +50,8 @@ services:
       RIFTCOACH_CORS_ALLOW_CREDENTIALS: ${RIFTCOACH_CORS_ALLOW_CREDENTIALS:-false}
       RIFTCOACH_TASK_OWNER_ACTIVE_LIMIT: ${RIFTCOACH_TASK_OWNER_ACTIVE_LIMIT:-3}
       RIFTCOACH_TASK_GLOBAL_ACTIVE_LIMIT: ${RIFTCOACH_TASK_GLOBAL_ACTIVE_LIMIT:-50}
+      RIFTCOACH_PLAYER_LINK_OWNER_ACTIVE_LIMIT: ${RIFTCOACH_PLAYER_LINK_OWNER_ACTIVE_LIMIT:-3}
+      RIFTCOACH_PLAYER_LINK_GLOBAL_ACTIVE_LIMIT: ${RIFTCOACH_PLAYER_LINK_GLOBAL_ACTIVE_LIMIT:-50}
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -108,6 +110,31 @@ services:
     volumes:
       - riftcoach-runs:/var/lib/riftcoach/runs
       - riftcoach-ddragon:/var/lib/riftcoach/ddragon
+
+  player-link-worker:
+    image: riftcoach-agent:local
+    build:
+      context: .
+    profiles: ["runtime"]
+    command:
+      - python
+      - -m
+      - scripts.run_player_link_worker
+      - --worker-id
+      - ${RIFTCOACH_PLAYER_LINK_WORKER_ID:-player-link-worker-1}
+    environment:
+      DATABASE_URL: postgresql+psycopg://riftcoach:${POSTGRES_PASSWORD:-riftcoach-local}@postgres:5432/riftcoach
+      RIOT_API_KEY: ${RIOT_API_KEY:-}
+      RIFTCOACH_RIOT_ALLOWED_ROUTING_REGIONS: ${RIFTCOACH_RIOT_ALLOWED_ROUTING_REGIONS:-americas,asia,europe,sea}
+      RIFTCOACH_RIOT_ACCOUNT_TIMEOUT_SECONDS: ${RIFTCOACH_RIOT_ACCOUNT_TIMEOUT_SECONDS:-15}
+      RIFTCOACH_PLAYER_LINK_WORKER_INITIAL_DELAY_SECONDS: ${RIFTCOACH_PLAYER_LINK_WORKER_INITIAL_DELAY_SECONDS:-0.1}
+      RIFTCOACH_PLAYER_LINK_WORKER_MAXIMUM_DELAY_SECONDS: ${RIFTCOACH_PLAYER_LINK_WORKER_MAXIMUM_DELAY_SECONDS:-2}
+      RIFTCOACH_PLAYER_LINK_WORKER_BACKOFF_MULTIPLIER: ${RIFTCOACH_PLAYER_LINK_WORKER_BACKOFF_MULTIPLIER:-2}
+      RIFTCOACH_PLAYER_LINK_WORKER_JITTER_RATIO: ${RIFTCOACH_PLAYER_LINK_WORKER_JITTER_RATIO:-0.2}
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: "no"
 
   smoke:
     image: riftcoach-agent:local

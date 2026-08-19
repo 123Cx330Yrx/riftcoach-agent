@@ -2874,3 +2874,43 @@
 - RQ-065 已满足：本轮不进入 6B-2。canonical/活动计划现只把
   `6B-2-async-player-link-worker-api` 置为 prepared/waiting authorization。
 - 下一动作仅是提交/推送本状态交接并验证其自身 exact-SHA 三 job；成功后结束本轮。
+
+## 2026-08-19：RQ-066 恢复 6B-2
+
+- 用户在 6B-1 收尾后的新一轮明确“继续开工”，并在桌面权限重置后恢复 `D:\riftcoach-agent` 写权限；
+  这授权 `6B-2-async-player-link-worker-api`，不授权 6B-3。
+- 已按 AGENTS 顺序恢复 canonical/活动计划/RQ/路线/ADR/design/implementation plan，治理通过，起始
+  `HEAD == origin/main == 270d08b` 且工作树干净；6B-1 基线 `17 passed, 13 skipped`。
+- 已讲清 API 短事务、Worker 事务外 Account-V1、Resolver 安全错误边界与 Repository 短事务的数据流；
+  计划审查无架构阻塞，当前进入 Task 1 Resolver 红灯。
+- 本批禁用子代理以规避重复的 Codex `prompt_cache_retention` 平台兼容故障；该故障不来自 RiftCoach
+  配置或代码。开发/测试/CI 继续保持真实 Riot/Provider/Key I/O 为 0。
+
+## 2026-08-19：6B-2 Tasks 1–4 本地实现与门禁
+
+- 反向审查确认工作树中的 Resolver、PlayerLinkWorker、Link API、composition/CLI 和 packaging smoke 均
+  对应 ADR-0039/6B-2 实施计划，没有把 Conversation/Memory 或 Review Task subject binding 偷带进来。
+- 先以红灯固定三个边界修补：smoke 不得把外部 `worker_id` 拼接成可能超长的 Link worker ID；Worker routing
+  policy 必须完整覆盖 API 接受的 `americas/asia/europe/sea`；Link Worker 的最小 `StopSignal` 不依赖
+  Review Worker 内部协议。修补后新增/相邻回归通过。
+- 6B-2 聚焦/相邻测试：`149 passed, 2 skipped, 1 warning`。
+- 完整 pytest：`1216 passed, 42 skipped, 1 warning, 110 subtests passed`（约 44.87s）。本机 skip 仅是无
+  PostgreSQL/Docker，不能替代公共真库/package 证据。
+- 横向门禁：RAG development Recall/MRR/nDCG `1.0`、no-answer FPR `0.0`；独立 holdout Recall/MRR/nDCG/
+  abstention/citation 全 `1.0`；Harness dry-run `published`、0 revisions；compileall、YAML、governance、
+  SDK boundary、tracked Secret/run-data 与 diff check 均通过。
+- 本批未读取真实 `.env`/Key，Fake client/resolver 和离线 smoke 的外部 Riot/Provider calls 为 `0`；真实
+  PostgreSQL API/迁移/Compose 证据仍待同一提交的阻塞 GitHub Actions。
+- 当前将 Task 1–4 标为 completed、Task 5 标为 in_progress/local-complete-pending-public-CI；下一动作是
+  更新持久状态后独立提交/推送，等待 exact-SHA 三 job，全绿前不关闭 6B-2。
+
+## 2026-08-20：桌面中断后的 6B-2 Task 5 恢复与最终本地复核
+
+- 再次严格按 `AGENTS.md` 恢复 canonical、活动计划、RQ/历史/路线/修订/能力矩阵与 ADR/design/implementation；
+  `HEAD == origin/main == 270d08b`，未提交 6B-2 工作完整保留，治理预检通过，没有 6B-3 代码。
+- 提交前逐文件审查只发现 `tests/test_player_link_api.py` 的参数表有 6 行超过 120 字符；已做等价换行，
+  不改变 API、Worker、Resolver、Repository、smoke 或安全语义。
+- 最终聚焦复跑为 `111 passed, 2 skipped, 1 warning`；完整复跑仍为
+  `1216 passed, 42 skipped, 1 warning, 110 subtests passed`。42 个 skip 仍仅因本机无 PostgreSQL/Docker。
+- 两套 RAG 指标仍全部达门，Harness dry-run 为 `published`/0 revisions；compileall、YAML 和 governance
+  复跑通过。下一动作保持不变：完成安全/diff/cached-diff 门后提交推送，等待 exact-SHA 三 job。

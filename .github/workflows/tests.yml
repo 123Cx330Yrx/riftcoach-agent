@@ -152,6 +152,7 @@ jobs:
             tests/test_task_reconciliation_postgres.py \
             tests/test_task_product_vertical_postgres.py \
             tests/test_async_task_api_postgres.py \
+            tests/test_player_link_api_postgres.py \
             tests/test_task_lifecycle_postgres.py \
             tests/test_task_performance_postgres.py \
             tests/test_player_identity_migrations_postgres.py \

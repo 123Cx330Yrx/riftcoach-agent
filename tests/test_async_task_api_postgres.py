@@ -17,6 +17,7 @@ from app.api.main import create_app
 from app.persistence.task_repository import PostgresTaskRepository
 from app.product.run_query import RunQueryService
 from app.tasks.service import ReviewTaskService
+from tests.player_link_api_stubs import UnusedPlayerLinkService
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,6 +46,7 @@ def migrated_api(tmp_path: Path) -> Iterator[tuple[TestClient, TestClient]]:
         return TestClient(
             create_app(
                 task_service=ReviewTaskService(repository=repository),
+                player_link_service=UnusedPlayerLinkService(),
                 query_service=RunQueryService(tmp_path),
                 actor_provider=StaticActorContextProvider(
                     owner_id=owner_id,
@@ -84,4 +86,3 @@ def test_postgres_api_create_replay_owner_scope_and_not_ready_run(
     assert owner.get(f"/runs/{run_id}").status_code == 409
     assert owner.get(f"/runs/{run_id}/report").status_code == 409
     assert owner.get("/health/ready").json()["status"] == "ready"
-

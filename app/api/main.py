@@ -1,4 +1,4 @@
-"""Thin FastAPI adapter for the durable asynchronous review-task API.
+"""Thin FastAPI adapter for the durable asynchronous review/link API.
 
 The adapter owns HTTP validation, trusted actor projection and safe status
 mapping. It never constructs or runs Riot, Provider, Agent, Harness or Worker
@@ -7,8 +7,8 @@ components. POST only commits a queued task and returns ``202 Accepted``.
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
 import time
+from collections.abc import Mapping, Sequence
 from typing import Protocol
 from uuid import UUID
 
@@ -24,6 +24,11 @@ from app.api.actor import (
     ActorContextProvider,
     ActorContextUnavailable,
 )
+from app.api.player_models import (
+    CreatePlayerLinkRequest,
+    CreatePlayerLinkResponse,
+    PlayerLinkResponse,
+)
 from app.api.task_models import (
     ApiErrorCode,
     CreateReviewTaskResponse,
@@ -34,6 +39,14 @@ from app.api.task_models import (
     ReadinessResult,
     TaskLinks,
 )
+from app.players.models import (
+    CreatePlayerLinkCommand,
+    PlayerLinkCreateResult,
+    PlayerLinkTaskView,
+    RelationshipRole,
+    RoutingRegion,
+)
+from app.players.service import PlayerLinkServiceError
 from app.product.recent_review import RecentReviewProductRequest
 from app.product.run_query import RunView
 from app.tasks.models import (
@@ -62,6 +75,17 @@ class TaskServicePort(Protocol):
     ) -> ReviewTaskView: ...
 
 
+class PlayerLinkServicePort(Protocol):
+    def create(self, command: CreatePlayerLinkCommand) -> PlayerLinkCreateResult: ...
+
+    def get_link(
+        self,
+        *,
+        owner_id: str,
+        link_task_id: UUID,
+    ) -> PlayerLinkTaskView: ...
+
+
 class RunQueryPort(Protocol):
     def get_run(self, run_id: str) -> RunView: ...
 
@@ -83,6 +107,13 @@ _CREATE_TASK_STATUS: Mapping[str, tuple[int, ApiErrorCode]] = {
     "task_delete_conflict": (409, "task_delete_conflict"),
     "task_persistence_failed": (503, "service_unavailable"),
     "task_identity_invalid": (503, "service_unavailable"),
+}
+_CREATE_PLAYER_LINK_STATUS: Mapping[str, tuple[int, ApiErrorCode]] = {
+    "idempotency_conflict": (409, "idempotency_conflict"),
+    "owner_capacity_exceeded": (503, "player_link_capacity_exceeded"),
+    "global_capacity_exceeded": (503, "player_link_capacity_exceeded"),
+    "link_persistence_failed": (503, "service_unavailable"),
+    "link_identity_invalid": (503, "service_unavailable"),
 }
 _IDEMPOTENCY_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
 
@@ -113,6 +144,7 @@ def _task_lookup_error(
 def create_app(
     *,
     task_service: TaskServicePort,
+    player_link_service: PlayerLinkServicePort,
     query_service: RunQueryPort,
     actor_provider: ActorContextProvider,
     readiness_probe: ReadinessPort,
@@ -127,6 +159,9 @@ def create_app(
     for method_name in ("create", "get_task", "get_task_by_run_id"):
         if not callable(getattr(task_service, method_name, None)):
             raise TypeError(f"task_service must expose {method_name}()")
+    for method_name in ("create", "get_link"):
+        if not callable(getattr(player_link_service, method_name, None)):
+            raise TypeError(f"player_link_service must expose {method_name}()")
     for method_name in ("get_run", "get_report"):
         if not callable(getattr(query_service, method_name, None)):
             raise TypeError(f"query_service must expose {method_name}()")
@@ -155,7 +190,7 @@ def create_app(
         title="RiftCoach Agent API",
         version="2.0",
         description=(
-            "Durable asynchronous task API for the recent-review product slice."
+            "Durable asynchronous API for recent reviews and Riot player links."
         ),
         lifespan=lifespan,
     )
@@ -189,6 +224,106 @@ def create_app(
     ) -> JSONResponse:
         del request, exc
         return _error_response("service_unavailable", status_code=503)
+
+    @app.post(
+        "/player-links",
+        status_code=202,
+        response_model=CreatePlayerLinkResponse,
+        responses={
+            409: {"model": ErrorResponse},
+            422: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def post_player_link(
+        link_request: CreatePlayerLinkRequest,
+        idempotency_key: str = Header(
+            alias="Idempotency-Key",
+            min_length=1,
+            max_length=128,
+            pattern=_IDEMPOTENCY_PATTERN,
+        ),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> CreatePlayerLinkResponse | JSONResponse:
+        started = time.perf_counter()
+        try:
+            command = CreatePlayerLinkCommand(
+                owner_id=actor.owner_id,
+                idempotency_key=idempotency_key,
+                riot_id=link_request.riot_id,
+                routing_region=RoutingRegion(link_request.routing_region),
+                relationship_role=RelationshipRole(
+                    link_request.relationship_role
+                ),
+            )
+            result = player_link_service.create(command)
+            if not isinstance(result, PlayerLinkCreateResult):
+                raise TypeError("player link service returned an invalid result")
+            task = result.task
+            response = CreatePlayerLinkResponse(
+                disposition=result.disposition,
+                link_task_id=task.link_task_id,
+                status=task.status,
+                link=f"/player-links/{task.link_task_id}",
+            )
+            if observability is not None:
+                observability.emit(
+                    "api.player_link_created",
+                    {
+                        "task_id": str(task.link_task_id),
+                        "status": 202,
+                        "disposition": result.disposition.value,
+                        "latency_ms": max(
+                            0.0,
+                            (time.perf_counter() - started) * 1000,
+                        ),
+                    },
+                )
+            return response
+        except PlayerLinkServiceError as error:
+            status_code, code = _CREATE_PLAYER_LINK_STATUS.get(
+                error.code,
+                (503, "service_unavailable"),
+            )
+            return _error_response(code, status_code=status_code)
+        except ValidationError:
+            return _error_response("request_invalid", status_code=422)
+        except Exception:
+            return _error_response("service_unavailable", status_code=503)
+
+    @app.get(
+        "/player-links/{link_task_id}",
+        response_model=PlayerLinkResponse,
+        responses={
+            404: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def get_player_link(
+        link_task_id: str,
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> PlayerLinkResponse | JSONResponse:
+        try:
+            parsed_link_task_id = UUID(link_task_id)
+        except (AttributeError, TypeError, ValueError):
+            return _error_response("player_link_not_found", status_code=404)
+        try:
+            view = player_link_service.get_link(
+                owner_id=actor.owner_id,
+                link_task_id=parsed_link_task_id,
+            )
+            if (
+                not isinstance(view, PlayerLinkTaskView)
+                or view.link_task_id != parsed_link_task_id
+            ):
+                raise TypeError("player link service returned an invalid view")
+            return PlayerLinkResponse.from_view(view)
+        except PlayerLinkServiceError as error:
+            if error.code == "link_not_found":
+                return _error_response("player_link_not_found", status_code=404)
+            return _error_response("service_unavailable", status_code=503)
+        except Exception:
+            return _error_response("service_unavailable", status_code=503)
 
     @app.post(
         "/reviews/recent",
@@ -510,6 +645,7 @@ def create_app(
 
 __all__ = [
     "ReadinessPort",
+    "PlayerLinkServicePort",
     "RunQueryPort",
     "TaskDeletionPort",
     "TaskServicePort",

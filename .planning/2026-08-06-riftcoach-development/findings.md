@@ -2857,3 +2857,30 @@
   截断并加 hash。UQ/FK convention 不使用 `constraint_name` token，行为不能想当然类推。
 - 单修日志中第一个 role-verification CHECK 会留下其他 21 个潜在同类错误；正确修复是审计 0002 全部
   CheckConstraint，并用 offline SQL regression 断言既有完整名存在且双前缀不存在。
+
+## 2026-08-19：6B-2 入口源码审计发现
+
+- 现有 `RiotClient` 是薄 `requests.Session` 传输，显式 `api_key + region` 构造时不会读取 dotenv；
+  Resolver 可以用注入 client factory 复用它，不需要新 HTTP SDK，也不能进入 API composition。
+- `ReviewWorker` 的 claim-commit→事务外 execute→terminal CAS、PollingPolicy 与 StopSignal 模式可复用
+  思想，但 Link 的 account/failure/role-conflict terminal 不同；当前新建窄 PlayerLinkWorker 比提前泛化
+  通用 Worker 更小、更可审计。
+- 6B-1 Repository 已把网络边界固定为严格 `ResolvedRiotAccount` 参数，因此 Resolver/Worker 无需也不得
+  把 callback 传入事务；API composition 只需共享 Session factory 构造 Player Repository/Service。
+- 本轮主线程再次出现 Codex `prompt_cache_retention` 参数兼容错误；本地 `config.toml` 未设置该字段，
+  全局状态中的命中只是用户粘贴的错误文本。该平台问题不产生项目命令或文件修改，6B-2 禁用子代理。
+
+## 2026-08-19：6B-2 本地完成审查发现与修补
+
+- 当前 API 的四个 routing enum 与 Worker policy 若允许任意子集，会出现请求成功入队但 Worker policy 在
+  claim 后拒绝的隐性失败。由于本批没有 API policy 配置端点，采用最小一致性修补：配置必须精确覆盖
+  `americas,asia,europe,sea`；未来若需要区域限制，必须同时设计 API/Worker 共享 policy 版本，不在这里
+  静默放宽。
+- packaging smoke 原先使用 `f"{worker_id}-link"` 构造第二 worker ID；合法的最大长度 Review worker ID
+  会因此生成非法 Link ID。smoke 现在使用独立固定的 `packaging-link-smoke-worker`，不改变生产部署 ID。
+- `PlayerLinkWorker` 只需要 `is_set()/wait()` 两个方法；将该小 Protocol 放在 Link Worker 模块，解除对
+  `ReviewWorker` 内部协议的类型依赖，同时不抽象两个具有不同终态语义的 Worker。
+- 聚焦回归基线在修补前为 `109 passed, 2 skipped`（Resolver/Worker/API/package 集合）；修补后扩大为
+  `149 passed, 2 skipped, 1 warning`，完整为 `1216 passed, 42 skipped, 1 warning, 110 subtests`。
+- RAG、Harness、compileall、YAML、治理、SDK boundary、tracked data 与 diff 门均通过；本机 42 个 skip
+  仍明确归因于没有 PostgreSQL/Docker。没有读取 Key、真实 Riot/Provider 调用或生成可公开的私人运行数据。

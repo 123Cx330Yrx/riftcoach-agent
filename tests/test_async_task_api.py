@@ -26,6 +26,7 @@ from app.tasks.models import (
     TaskStatus,
 )
 from app.tasks.service import TaskServiceError
+from tests.player_link_api_stubs import UnusedPlayerLinkService
 
 
 NOW = datetime(2026, 8, 18, 8, 0, 0, tzinfo=timezone.utc)
@@ -146,6 +147,7 @@ def client(
     return TestClient(
         create_app(
             task_service=task_service or FakeTaskService(),
+            player_link_service=UnusedPlayerLinkService(),
             query_service=query_service or FakeRunQuery(),
             actor_provider=actor_provider
             or StaticActorContextProvider(owner_id="owner-1", profile="test"),
@@ -170,6 +172,8 @@ def test_openapi_versions_the_async_contract_and_exact_paths() -> None:
     assert document["info"]["version"] == "2.0"
     assert set(document["paths"]) == {
         "/reviews/recent",
+        "/player-links",
+        "/player-links/{link_task_id}",
         "/tasks/{task_id}",
         "/runs/{run_id}",
         "/runs/{run_id}/report",

@@ -2133,3 +2133,25 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   前端或真实 Riot 调用；不得从 identity foundation 外推这些能力。
 - `HANDOFF`：按 RQ-065 停止，canonical 只把 `6B-2-async-player-link-worker-api` 标为
   prepared/waiting authorization，下一轮用户明确继续前不得实施。
+
+### 2026-08-19：RQ-066 恢复 6B-2
+
+- `RESUMED`：用户在 6B-1 独立公共闭环后的新一轮明确“继续开工”，只授权
+  `6B-2-async-player-link-worker-api`；RQ-065 的暂停门已履行，不再阻塞本批。
+- `SCOPE`：实现窄 Account Resolver、PlayerLinkWorker、owner-scoped POST/GET Link API、API/Worker
+  composition/CLI 与 Fake Resolver Linux no-I/O smoke；不实现 6B-3 Conversation/Memory。
+- `BOUNDARY`：API 无 Riot 依赖，Account-V1 在 claim commit 后、数据库事务外；开发/测试/CI 不读取
+  真实 Key、不调用 Riot/Provider，也不引入 retry/reclaim、Auth/RSO、SSE/前端或新框架。
+- `CURRENT`：先以 Task 1 红灯冻结 Resolver 严格响应和 allowlisted failure mapping；6B-2 exact-SHA
+  三 job 全绿前不关闭，闭环后只准备 6B-3 并停止。
+
+### 2026-08-19：6B-2 Tasks 1–4 本地完成，公共验证待执行
+
+- `LOCAL-CLOSED-TASKS`：窄 Account Resolver、专用 PlayerLinkWorker、owner-scoped POST/GET Link API、
+  composition/CLI 与 Fake Resolver Linux smoke 均已实现；本地聚焦/相邻为 `149 passed, 2 skipped`，
+  完整为 `1216 passed, 42 skipped, 1 warning, 110 subtests passed`。
+- `BOUNDARY-REPAIR`：routing policy 要求完整覆盖 API 的四个官方 regional values；smoke 使用固定安全
+  Link worker ID；Link Worker 自带最小 StopSignal Protocol。三项修补均有红灯/绿灯证据，不改变产品范围。
+- `PUBLIC-PENDING`：RAG、Harness、compileall、YAML、治理、SDK/Secret/run-data 与 diff 门已通过；本机无
+  PostgreSQL/Docker，真实 migration、API PostgreSQL 集成和 Linux package smoke 必须由同一 exact-SHA CI
+  补齐。6B-2 仍为 `in_progress`，Task 5 是提交/推送/等待三 job，不能提前关闭或实施 6B-3。

@@ -11,6 +11,7 @@ from fastapi.testclient import TestClient
 from app.api.actor import StaticActorContextProvider
 from app.api.main import create_app
 from app.api.task_models import ReadinessResult
+from tests.player_link_api_stubs import UnusedPlayerLinkService
 from app.product.run_query import RunView
 from app.runtime.models import RuntimeStatus
 from app.tasks.models import (
@@ -82,6 +83,7 @@ def app_and_service() -> tuple[TestClient, FakeTaskService]:
     service = FakeTaskService()
     app = create_app(
         task_service=service,
+        player_link_service=UnusedPlayerLinkService(),
         query_service=ForbiddenRunQuery(),
         actor_provider=StaticActorContextProvider(
             owner_id="adapter-owner",
@@ -143,6 +145,8 @@ def test_app_factory_and_openapi_do_not_read_keys_or_open_io(monkeypatch) -> Non
     assert document["info"]["version"] == "2.0"
     assert set(document["paths"]) == {
         "/reviews/recent",
+        "/player-links",
+        "/player-links/{link_task_id}",
         "/tasks/{task_id}",
         "/runs/{run_id}",
         "/runs/{run_id}/report",

@@ -70,6 +70,7 @@
 | RQ-063 | 2026-08-19 | 设计决策生效；当时未授权实现，后续范围见 RQ-064 | 用户确认 V1 conversation 采用方案 A：创建时固定一个玩家，不同 PUUID 必须新建 conversation，显式中途切换留待真实需求 | Conversation 必须属于 trusted owner 并在创建时引用该 owner 的一个有效 player subject/relationship，生命周期内 subject 不可变且无切换 endpoint；相同 PUUID 的 Riot ID 改名可继续，不同 PUUID 返回安全 mismatch 并要求新建 conversation。消息、Context、复盘 task/run 和 Memory Candidate 均继承服务器保存的 owner/conversation/subject，客户端正文、自由文本或模型不得覆盖。未来实现应用层校验与 PostgreSQL owner-scoped composite FK/约束，并测试跨 owner、跨 subject、迟到 task 和改名/重指向；本确认当时不授权代码，后续 RQ-064 仍只自动实施至 6B-2，Conversation 实现 6B-3 不在自动范围。 |
 | RQ-064 | 2026-08-19 | entry design 已执行；自动继续 6B-2 的部分被 RQ-065 收紧 | 用户明确授权本轮由 Codex 在既有边界内选择最佳剩余设计方案，无需逐项等待审批；完整说明决策后开始正式执行，第一步完成验证和推送后自动继续第二步 | 原自动执行链为 `entry design → 6B-1 → 6B-2`；entry design 已由 `bc11afe` / Actions `32222531783` 三 job exact-SHA 公共完成。当时 6B-1 仍获授权，但其公共闭环后自动进入 6B-2 的部分已由较晚的 RQ-065 取消；6B-1 现已按 RQ-065 闭环。其余技术与安全边界继续生效。 |
 | RQ-065 | 2026-08-19 | 已执行 | 用户把本轮目标明确收紧为“完成 6B-1 就截止，下一轮再继续” | `6B-1-player-identity-link-foundation` 已由最终提交 `ed8fa58` / Actions `32229024069` 的 pytest、真实 PostgreSQL 与 Linux package 三 job exact-SHA 公共闭环；当前已停止，并把 `6B-2-async-player-link-worker-api` 标为 prepared/waiting authorization。本轮未实现 6B-2。 |
+| RQ-066 | 2026-08-19 | 正在执行；仅 6B-2 | 用户在 6B-1 独立公共闭环后的新一轮明确“继续开工”，授权 canonical 的 `6B-2-async-player-link-worker-api` | 只实现窄 Riot Account Resolver、专用 PlayerLinkWorker、owner-scoped POST/GET Link API、composition/CLI 与 Fake Resolver Linux no-I/O smoke；开发、测试和 CI 不读取真实 Key、不调用 Riot/Provider。exact-SHA 三 job 全绿后只准备 6B-3 并停止，不实现 Conversation/Memory。 |
 
 ## 新条目格式
 

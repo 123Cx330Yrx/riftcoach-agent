@@ -30,6 +30,7 @@ from app.api.actor import (
     UnavailableActorContextProvider,
 )
 from app.api.main import (
+    PlayerLinkServicePort,
     ReadinessPort,
     RunQueryPort,
     TaskDeletionPort,
@@ -39,7 +40,15 @@ from app.api.main import (
 from app.api.task_models import ReadinessCode, ReadinessResult
 from app.persistence.config import load_database_settings
 from app.persistence.database import build_engine, build_session_factory
+from app.persistence.player_repository import PostgresPlayerRepository
 from app.persistence.task_repository import PostgresTaskRepository
+from app.players.models import (
+    CreatePlayerLinkCommand,
+    PlayerLinkCapacityPolicy,
+    PlayerLinkCreateResult,
+    PlayerLinkTaskView,
+)
+from app.players.service import PlayerLinkService, PlayerLinkServiceError
 from app.product.run_query import RunQueryError, RunQueryService, RunView
 from app.tasks.models import (
     CreateReviewTaskCommand,
@@ -69,6 +78,10 @@ class ApiCompositionSettings:
     cors_allow_credentials: bool = False
     task_capacity: TaskCapacityPolicy = field(
         default_factory=TaskCapacityPolicy,
+        repr=False,
+    )
+    player_link_capacity: PlayerLinkCapacityPolicy = field(
+        default_factory=PlayerLinkCapacityPolicy,
         repr=False,
     )
 
@@ -133,6 +146,18 @@ def load_api_composition_settings(
             default=50,
         ),
     )
+    player_link_capacity = PlayerLinkCapacityPolicy(
+        owner_active_limit=_read_positive_int(
+            environment,
+            "RIFTCOACH_PLAYER_LINK_OWNER_ACTIVE_LIMIT",
+            default=3,
+        ),
+        global_active_limit=_read_positive_int(
+            environment,
+            "RIFTCOACH_PLAYER_LINK_GLOBAL_ACTIVE_LIMIT",
+            default=50,
+        ),
+    )
 
     return ApiCompositionSettings(
         profile=profile,  # type: ignore[arg-type]
@@ -141,6 +166,7 @@ def load_api_composition_settings(
         cors_origins=cors_origins,
         cors_allow_credentials=cors_allow_credentials,
         task_capacity=task_capacity,
+        player_link_capacity=player_link_capacity,
     )
 
 
@@ -248,6 +274,33 @@ class _RunQueryProxy:
         return self._query().get_report(run_id)
 
 
+class _PlayerLinkServiceProxy:
+    def __init__(self) -> None:
+        self._target: PlayerLinkServicePort | None = None
+
+    def bind(self, target: PlayerLinkServicePort | None) -> None:
+        self._target = target
+
+    def _service(self) -> PlayerLinkServicePort:
+        if self._target is None:
+            raise PlayerLinkServiceError("link_persistence_failed")
+        return self._target
+
+    def create(self, command: CreatePlayerLinkCommand) -> PlayerLinkCreateResult:
+        return self._service().create(command)
+
+    def get_link(
+        self,
+        *,
+        owner_id: str,
+        link_task_id: UUID,
+    ) -> PlayerLinkTaskView:
+        return self._service().get_link(
+            owner_id=owner_id,
+            link_task_id=link_task_id,
+        )
+
+
 class _TaskDeletionProxy:
     def __init__(self) -> None:
         self._target: TaskDeletionPort | None = None
@@ -311,6 +364,7 @@ def create_composed_app(
     # to install the static CORS policy before the app can serve a request.
     api_settings = load_api_composition_settings(source)
     task_proxy = _TaskServiceProxy()
+    player_link_proxy = _PlayerLinkServiceProxy()
     query_proxy = _RunQueryProxy()
     deletion_proxy = _TaskDeletionProxy()
     actor_proxy = _ActorProviderProxy()
@@ -326,10 +380,17 @@ def create_composed_app(
             engine = build_engine(database_settings)
             session_factory = build_session_factory(engine)
             repository = PostgresTaskRepository(session_factory)
+            player_repository = PostgresPlayerRepository(session_factory)
             task_proxy.bind(
                 ReviewTaskService(
                     repository=repository,
                     capacity=api_settings.task_capacity,
+                )
+            )
+            player_link_proxy.bind(
+                PlayerLinkService(
+                    repository=player_repository,
+                    capacity=api_settings.player_link_capacity,
                 )
             )
             deletion_proxy.bind(TaskDeletionService(
@@ -367,12 +428,14 @@ def create_composed_app(
             )
             actor_proxy.bind(None)
             task_proxy.bind(None)
+            player_link_proxy.bind(None)
             query_proxy.bind(None)
             deletion_proxy.bind(None)
         try:
             yield
         finally:
             task_proxy.bind(None)
+            player_link_proxy.bind(None)
             query_proxy.bind(None)
             actor_proxy.bind(None)
             readiness_proxy.bind(None)
@@ -382,6 +445,7 @@ def create_composed_app(
 
     app = create_app(
         task_service=task_proxy,
+        player_link_service=player_link_proxy,
         query_service=query_proxy,
         actor_provider=actor_proxy,
         readiness_probe=readiness_proxy,

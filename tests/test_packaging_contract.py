@@ -49,7 +49,14 @@ def test_python_package_declares_the_asgi_server_used_by_the_image() -> None:
 
 def test_compose_orders_postgres_migration_api_worker_and_smoke() -> None:
     services = _compose()["services"]
-    assert {"postgres", "migrate", "api", "worker", "smoke"} <= set(services)
+    assert {
+        "postgres",
+        "migrate",
+        "api",
+        "worker",
+        "player-link-worker",
+        "smoke",
+    } <= set(services)
 
     assert services["postgres"]["healthcheck"]
     assert services["migrate"]["depends_on"]["postgres"]["condition"] == (
@@ -61,21 +68,31 @@ def test_compose_orders_postgres_migration_api_worker_and_smoke() -> None:
     assert services["worker"]["depends_on"]["api"]["condition"] == (
         "service_healthy"
     )
+    assert services["player-link-worker"]["depends_on"]["api"][
+        "condition"
+    ] == "service_healthy"
     assert services["smoke"]["depends_on"]["api"]["condition"] == (
         "service_healthy"
     )
     assert "runtime" in services["worker"]["profiles"]
+    assert "runtime" in services["player-link-worker"]["profiles"]
     assert "smoke" in services["smoke"]["profiles"]
 
 
 def test_compose_separates_real_worker_from_no_io_smoke() -> None:
     services = _compose()["services"]
     worker_command = " ".join(services["worker"]["command"])
+    link_worker_command = " ".join(services["player-link-worker"]["command"])
     smoke_command = " ".join(services["smoke"]["command"])
 
     assert worker_command.startswith("python -m scripts.run_review_worker")
+    assert link_worker_command.startswith(
+        "python -m scripts.run_player_link_worker"
+    )
     assert smoke_command.startswith("python -m scripts.run_packaging_smoke")
     assert services["worker"]["environment"]["RIOT_API_KEY"] is not None
+    assert services["player-link-worker"]["environment"]["RIOT_API_KEY"] is not None
+    assert "LLM_API_KEY" not in services["player-link-worker"]["environment"]
     assert "RIOT_API_KEY" not in services["smoke"].get("environment", {})
     assert "LLM_API_KEY" not in services["smoke"].get("environment", {})
     assert services["api"]["volumes"] == services["worker"]["volumes"][:1]

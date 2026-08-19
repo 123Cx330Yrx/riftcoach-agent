@@ -1295,3 +1295,23 @@ prepared/waiting authorization 并停止。此裁决只改变自动推进边界�
 Repository、idempotency/capacity、SKIP LOCKED、ON CONFLICT、role-conflict atomic failure、CAS/rollback
 与 confirmed display snapshot。该裁决不接受 Resolver/Worker/API、Conversation/Memory 或正式 Auth 已完成；
 按 RQ-065 只准备 6B-2 并停止。
+
+### RQ-066：6B-2 实施授权
+
+用户在上述停止点后的新一轮明确“继续开工”，因此只恢复
+`6B-2-async-player-link-worker-api`。既有 ADR-0039 方案不变：API 只做 owner-scoped 短事务入队/查询，
+专用 Worker 在 claim commit 后、数据库事务外调用窄 Account Resolver，Repository 再以短事务落身份关系
+或安全终态。开发、测试与 CI 使用 Fake client/resolver，真实 Riot/Provider/Key I/O 为 0。6B-2 公共
+闭环后只准备 6B-3，不实现 Conversation/Memory。
+
+### 6B-2 本地实现收尾决策（等待 exact-SHA）
+
+Task 1–4 已按 ADR-0039 实现并通过本地测试：严格 Account Resolver、事务外 PlayerLinkWorker、
+owner-scoped Link API、独立 worker composition/CLI 与 Fake Resolver package smoke。反向审查后保留三项
+边界修补：routing policy 必须完整覆盖 API 的四个 regional values；package smoke 使用独立固定 Link
+worker ID；Link Worker 自带最小 StopSignal Protocol，不依赖 Review Worker 内部类型。
+
+本地完整回归为 `1216 passed, 42 skipped, 1 warning, 110 subtests passed`，RAG 两套门、Harness dry-run、
+compileall、YAML、governance、SDK/Secret/run-data 与 diff 门通过。42 个 skip 是本机没有 PostgreSQL/Docker
+的限制；真实 migration/API/package 证据必须由同一提交的 GitHub Actions 提供。当前不把本地完成写成
+6B-2 已关闭，Task 5 只负责提交、推送和 exact-SHA 三 job；全绿后只准备 6B-3，不实现 Conversation/Memory。

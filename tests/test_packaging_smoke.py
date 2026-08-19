@@ -15,6 +15,10 @@ from app.workers.review_worker import (
     WorkerIterationResult,
     WorkerIterationStatus,
 )
+from app.players.link_worker import (
+    PlayerLinkWorkerIterationResult,
+    PlayerLinkWorkerIterationStatus,
+)
 
 
 def valid_environment(tmp_path: Path) -> dict[str, str]:
@@ -93,6 +97,7 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     task_id = "90000000-0000-4000-8000-000000000001"
+    link_task_id = "90000000-0000-4000-8000-000000000002"
     run_id = "packaging_smoke_run"
     events: list[str] = []
 
@@ -108,6 +113,22 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         def get(self, url: str, **_kwargs):
             if url.endswith("/health/ready"):
                 return Response(200, {"status": "ready"})
+            if "/player-links/" in url:
+                return Response(
+                    200,
+                    {
+                        "link_task_id": link_task_id,
+                        "status": "succeeded",
+                        "player_subject_id": (
+                            "90000000-0000-4000-8000-000000000003"
+                        ),
+                        "relationship_id": (
+                            "90000000-0000-4000-8000-000000000004"
+                        ),
+                        "confirmed_riot_id": "Packaging Smoke Fixture#TEST",
+                        "failure": None,
+                    },
+                )
             assert url.endswith(task_id)
             return Response(
                 200,
@@ -119,7 +140,9 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                 },
             )
 
-        def post(self, _url: str, **_kwargs):
+        def post(self, url: str, **_kwargs):
+            if url.endswith("/player-links"):
+                return Response(202, {"link_task_id": link_task_id})
             return Response(202, {"task_id": task_id, "run_id": run_id})
 
     class Engine:
@@ -143,6 +166,17 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                 task_id=__import__("uuid").UUID(task_id),
             )
 
+    class LinkWorker:
+        def __init__(self, **kwargs) -> None:
+            assert type(kwargs["resolver"]).__name__ == "_FakeAccountResolver"
+            assert kwargs["worker_id"] == "packaging-link-smoke-worker"
+
+        def run_once(self) -> PlayerLinkWorkerIterationResult:
+            return PlayerLinkWorkerIterationResult(
+                status=PlayerLinkWorkerIterationStatus.SUCCEEDED,
+                link_task_id=__import__("uuid").UUID(link_task_id),
+            )
+
     monkeypatch.setattr(
         "scripts.run_packaging_smoke.build_engine",
         lambda _settings: Engine(),
@@ -159,7 +193,12 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         "scripts.run_packaging_smoke.PostgresTaskRepository",
         lambda _factory: object(),
     )
+    monkeypatch.setattr(
+        "scripts.run_packaging_smoke.PostgresPlayerRepository",
+        lambda _factory: object(),
+    )
     monkeypatch.setattr("scripts.run_packaging_smoke.ReviewWorker", Worker)
+    monkeypatch.setattr("scripts.run_packaging_smoke.PlayerLinkWorker", LinkWorker)
 
     result = execute_packaging_smoke(
         load_packaging_smoke_settings(valid_environment(tmp_path)),
@@ -168,6 +207,8 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     )
 
     assert result.task_status == "failed"
+    assert result.link_status == "succeeded"
+    assert str(result.link_task_id) == link_task_id
     assert result.external_riot_provider_calls == 0
     assert events == ["engine.dispose"]
 

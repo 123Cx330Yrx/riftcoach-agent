@@ -30,8 +30,8 @@ pytest, Docker Compose, GitHub Actions, existing AgentRuntimeV1/ReviewHarness.
 7. Existing Review Task 1.0 remains readable; no historical row is silently backfilled from mutable Riot ID.
 8. Every batch follows red → minimal green → focused/adjacent/full gates → state sync → independent commit/push →
    exact-SHA CI. CI failure keeps the batch open.
-9. RQ-065 ends the current automatic chain after 6B-1 exact-SHA CI. Prepare 6B-2 but do not implement it
-   without a later authorization; two batches can never share one commit.
+9. RQ-065 ended the earlier automatic chain after 6B-1 exact-SHA CI. RQ-066 now authorizes only 6B-2;
+   two batches can never share one commit, and 6B-3 still requires a later authorization.
 10. Formal Auth/RSO/HTTPS, SSE/frontend, RLS, Redis/vector index, MCP, Multi-Agent, LangGraph and new SDKs remain out.
 
 ## 6B-1: Player Identity & Link Persistence Foundation
@@ -275,6 +275,11 @@ Failure exposes an allowlisted reason/retryable flag, never upstream body or exc
 
 ### Task 1: Implement and test the narrow Account resolver
 
+**Current execution note (2026-08-19):** Tasks 1–4 are implemented locally and their focused,
+adjacent, full and horizontal no-I/O checks pass. Task 5 remains open until the implementation is
+committed, pushed and the exact-SHA PostgreSQL/Linux jobs are green; local PostgreSQL skips are not
+substituted for that evidence.
+
 1. Write failing `tests/test_riot_account_resolver.py` using an injected Fake Riot client/factory.
 2. Cover:
    - explicit routing passed to client factory;
@@ -326,8 +331,7 @@ full gates as 6B-1. Commit only 6B-2, push and require exact-SHA all-green jobs.
 external network calls.
 
 Only after public closure may canonical mark 6B-3 as prepared/waiting authorization; it must not implement 6B-3.
-This remains the future 6B-2 closure procedure. RQ-065 defers it to a later authorized turn rather than deleting
-or merging the planned batch.
+RQ-066 authorizes this 6B-2 execution and leaves that closure boundary unchanged.
 
 ### Not in 6B-2
 

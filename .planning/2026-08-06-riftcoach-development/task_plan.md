@@ -7,8 +7,9 @@
 
 ## Current Phase
 
-Phase 18 - `6B-2-async-player-link-worker-api`; prepared/waiting authorization. 6B-1 closed at
-`ed8fa58` / Actions `32229024069`; RQ-065 requires stopping before any 6B-2 implementation.
+Phase 18 - `6B-2-async-player-link-worker-api`; authorized by RQ-066. 6B-1 closed at
+`ed8fa58` / Actions `32229024069`; Tasks 1–4 are locally complete and Task 5 is
+pending the exact-SHA public CI closure.
 
 ## Phases
 
@@ -254,8 +255,9 @@ Phase 18 - `6B-2-async-player-link-worker-api`; prepared/waiting authorization. 
 
 ## Next Step
 
-`6B-2-async-player-link-worker-api`：prepared/waiting authorization。下一轮获明确授权后才讲解并实现
-Account resolver、PlayerLinkWorker、POST/GET API 与 no-I/O package 纵向；当前停止，不写 6B-2 代码。
+`6B-2-async-player-link-worker-api` Task 5：先提交并推送已通过本地门禁的 Tasks 1–4，等待同一
+exact-SHA 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job；全绿后只准备
+`6B-3-conversation-message-foundation` 并停止，不实现 Conversation/Memory。
 
 ## 6A-1 Checklist
 
@@ -421,9 +423,16 @@ Account resolver、PlayerLinkWorker、POST/GET API 与 no-I/O package 纵向；�
 ### Phase 18 - 6B-2-async-player-link-worker-api
 
 - Status: in_progress
-- Authorization: waiting；RQ-065 明确要求 6B-1 后停止，下一轮再次授权前不得实施。
+- Authorization: RQ-066；用户在 6B-1 公共闭环后的新一轮明确“继续开工”，只授权本批。
 - Prepared outcome: narrow Account resolver、专用 PlayerLinkWorker、owner-scoped POST/GET Link API 与
   Fake Resolver Linux no-I/O smoke；Conversation/Memory 仍留 6B-3。
+
+- [completed] Task 1：RiotAccountResolver strict response/error contract 与 Fake-client TDD
+- [completed] Task 2：PlayerLinkWorker claim→resolve/fail、polling、graceful stop 与 body-free observability
+- [completed] Task 3：owner-scoped POST/GET Link API、OpenAPI、Fake 与真实 PostgreSQL 集成
+- [completed] Task 4：API/Worker composition、CLI、Compose 与 Linux Fake Resolver no-I/O smoke
+- [in_progress] Task 5：聚焦/相邻/完整/横向门禁、状态同步、独立提交推送与 exact-SHA 三 job
+- [pending] 6B-2 公共闭环后只准备 6B-3 并停止，不实现 Conversation/Memory
 
 ## 6A Entry Design Checklist
 

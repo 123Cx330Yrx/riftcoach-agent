@@ -782,8 +782,8 @@ conversation turn、Message terminal 写入和跨 Skill 回归；不默认新增
 关闭 Session/Memory V1 时仍保留正式 Auth/RSO、SSE/前端和阶段 7/8 deferred。
 
 RQ-064 原允许 entry design exact-SHA 公共闭环后直接进入 6B-1，并在 6B-1 公共闭环后直接进入 6B-2；
-较晚的 RQ-065 将本轮收紧为只完成 6B-1。6B-1 exact-SHA 全绿后必须停止，只把 6B-2 交接为
-prepared/waiting authorization。它不允许在一个提交中混合两个批次，也不允许 CI 未成功就前移 canonical。
+较晚的 RQ-065 将当轮收紧为只完成 6B-1，并已在 6B-1 exact-SHA 全绿后停止。RQ-066 现于独立新一轮
+只授权 6B-2；它不允许在一个提交中混合两个批次、CI 未成功就前移 canonical，或自动实现 6B-3。
 
 ## 19. 入口设计退出条件
 

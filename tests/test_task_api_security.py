@@ -14,6 +14,7 @@ from app.runtime.models import RuntimeStatus
 from app.tasks.models import TaskCreateDisposition, TaskCreateResult, TaskStatus
 from app.tasks.models import TaskDeleteDisposition, TaskDeletionResult
 from uuid import UUID
+from tests.player_link_api_stubs import UnusedPlayerLinkService
 
 
 def _fake_task_service():
@@ -99,11 +100,15 @@ def test_capacity_configuration_is_bounded_and_reaches_composition_settings() ->
             "RIFTCOACH_LOCAL_OWNER_ID": "owner-1",
             "RIFTCOACH_TASK_OWNER_ACTIVE_LIMIT": "4",
             "RIFTCOACH_TASK_GLOBAL_ACTIVE_LIMIT": "20",
+            "RIFTCOACH_PLAYER_LINK_OWNER_ACTIVE_LIMIT": "2",
+            "RIFTCOACH_PLAYER_LINK_GLOBAL_ACTIVE_LIMIT": "10",
         }
     )
 
     assert settings.task_capacity.owner_active_limit == 4
     assert settings.task_capacity.global_active_limit == 20
+    assert settings.player_link_capacity.owner_active_limit == 2
+    assert settings.player_link_capacity.global_active_limit == 10
 
     with pytest.raises(ValueError, match="positive integer"):
         load_api_composition_settings(
@@ -114,10 +119,20 @@ def test_capacity_configuration_is_bounded_and_reaches_composition_settings() ->
             }
         )
 
+    with pytest.raises(ValueError, match="positive integer"):
+        load_api_composition_settings(
+            {
+                "RIFTCOACH_API_PROFILE": "test",
+                "RIFTCOACH_LOCAL_OWNER_ID": "owner-1",
+                "RIFTCOACH_PLAYER_LINK_OWNER_ACTIVE_LIMIT": "0",
+            }
+        )
+
 
 def test_cors_is_closed_by_default_and_explicit_origins_are_reflected() -> None:
     app = create_app(
         task_service=_fake_task_service(),
+        player_link_service=UnusedPlayerLinkService(),
         query_service=_Query(),
         actor_provider=StaticActorContextProvider(
             owner_id="owner-1", profile="test"
@@ -130,6 +145,7 @@ def test_cors_is_closed_by_default_and_explicit_origins_are_reflected() -> None:
 
     configured = create_app(
         task_service=_fake_task_service(),
+        player_link_service=UnusedPlayerLinkService(),
         query_service=_Query(),
         actor_provider=StaticActorContextProvider(
             owner_id="owner-1", profile="test"
@@ -151,6 +167,7 @@ def test_cors_is_closed_by_default_and_explicit_origins_are_reflected() -> None:
 def test_public_error_projection_does_not_echo_exception_body() -> None:
     app = create_app(
         task_service=_fake_task_service(),
+        player_link_service=UnusedPlayerLinkService(),
         query_service=_Query(),
         actor_provider=StaticActorContextProvider(
             owner_id="owner-1", profile="test"
@@ -168,6 +185,7 @@ def test_public_error_projection_does_not_echo_exception_body() -> None:
 def test_delete_endpoint_projects_active_conflict_without_canceling() -> None:
     app = create_app(
         task_service=_fake_task_service(),
+        player_link_service=UnusedPlayerLinkService(),
         query_service=_Query(),
         actor_provider=StaticActorContextProvider(
             owner_id="owner-1", profile="test"
@@ -199,6 +217,7 @@ def test_delete_endpoint_distinguishes_hidden_and_cleanup_pending(
 ) -> None:
     app = create_app(
         task_service=_fake_task_service(),
+        player_link_service=UnusedPlayerLinkService(),
         query_service=_Query(),
         actor_provider=StaticActorContextProvider(
             owner_id="owner-1", profile="test"
