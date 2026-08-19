@@ -86,6 +86,10 @@ dimension; do not create duplicate documents merely to increase file count.
 Conversation-only teaching, a test count, or code existence is not durable
 coverage. A checkpoint may be listed as `planned` while work is in progress,
 but it must become `complete` before the canonical state advances beyond it.
+The coverage ledger's group IDs also have a fixed canonical order enforced by
+the governance script; do not reorder or renumber groups to bypass a prior
+incomplete checkpoint. An intentional new checkpoint must update the order
+contract, ledger, tests, and roadmap together.
 
 ## 5. Technology Adoption Gate
 

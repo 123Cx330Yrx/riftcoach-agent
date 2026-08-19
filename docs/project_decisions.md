@@ -1356,3 +1356,23 @@ Q11 “所有者学习与工程证据连续性”从本地完成升级为公共�
 部署和无真实 Provider 质量准入边界。canonical 现在进入 `6B-3-conversation-message-foundation`：
 先进行初学者设计复核和红灯合同，再实现最小 Conversation/Message foundation；Agent、Review Task、Memory、
 SSE、前端和新框架仍在本批之外。
+
+### 6B-3 Conversation / Message 设计冻结（2026-08-20）
+
+6B-3 的实现前审计没有改变阶段路线，但把原总设计中的几个隐含点明确化：
+
+- 复合 FK 只证明 relationship identity，创建必须按 relationship→conversation 锁顺序在同一短事务
+  检查 `status=active`；读取和追加同时过滤 hidden relationship；
+- Conversation 创建沿用现有 POST 控制面的 owner-scoped `Idempotency-Key + fingerprint`，避免网络重试
+  创建重复房间；
+- Message schema 保留 `user|assistant`，但 6B-3 公共 Service/API 只允许 user，可信 assistant terminal
+  延后到 6B-8；system/tool/provider/reasoning 不属于公共 Message；
+- 序号从 1 开始，锁 Conversation 行并在同一事务插入/递增，`UNIQUE(conversation_id, sequence_no)`
+  做数据库第二道防线；
+- `active → archived|hidden`，archived 可读不可写，hidden 对 owner 404-equivalent，V1 无 unarchive/unhide；
+- 0003 migration 首次引入 immutable binding/message trigger，必须用真实 PostgreSQL direct SQL、回滚和并发
+  测试证明；SQLite/Fake 只能证明纯逻辑或 HTTP 投影。
+
+正式合同与取舍见 [ADR-0040](adr/0040-conversation-message-foundation-contract.md) 和
+[6B-3 设计稿](plans/2026-08-20-conversation-message-foundation-design.md)。当前这只是设计证据，
+不表示产品代码已实现或 Agent/Memory 已接入。

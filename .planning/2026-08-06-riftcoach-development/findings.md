@@ -2928,3 +2928,25 @@
 
 - `63435d9` / Actions `32308631289` 三 job 全绿，文档/工程证据批正式公共完成；Q11 从本地 pending 升级为完成。
 - RQ-067 的条件授权已兑现，canonical 进入 6B-3 初学者设计复核与 TDD；仍保持 Conversation/Message/Memory 尚未实现的边界。
+
+## 2026-08-20：6B-3 设计审计发现
+
+- 现有 `owner_player_relationships` 的复合唯一键可以作为 Conversation 的复合 FK parent，但 FK
+  不能检查跨表 `status='active'`；创建必须锁 relationship 行后检查 active，读取/追加还要过滤 hidden relationship。
+- 现有 POST 控制面都使用 Idempotency-Key；若 Conversation 不继承该合同，HTTP 超时重试会产生重复
+  Coach 房间。因此 6B-3 增加 owner-scoped key + request fingerprint，并定义 created/replayed/conflict。
+- 设计稿原先同时写了 `user|assistant` 和“6B-3 不运行 Agent”，存在公共写入边界歧义。冻结为 schema
+  保留 assistant、公共 Service/API 只允许 user；未来 terminal assistant 另在 6B-8 接入。
+- `MAX(sequence_no)+1` 在并发下不安全；固定首条为 1、锁 Conversation、同事务递增
+  `next_message_sequence`，并用 unique(conversation_id, sequence_no) 做第二道防线。回滚同时回滚计数器和消息。
+- 当前项目没有既有 PostgreSQL trigger，0003 将首次引入 immutable binding/message trigger；必须有 direct
+  SQL、upgrade/downgrade 和真实 PostgreSQL 17 证据，ORM metadata/alembic check 不能单独证明。
+- source task/run 引用不设阻塞性强 FK，因为 Task/Run 生命周期独立；公共 user API 不接这些字段，未来
+  assistant terminal 才能设置 body-free 引用。
+
+## 2026-08-20：backfill 治理复核
+
+- README 的 Player Link 启动说明已正确区分只启动 Link Worker 与完整 LLM runtime，旧 finding 不再成立。
+- 记录中的 `2026-08-20` 与当前仓库日期一致，不回写为错误的未来日期。
+- 原 coverage 检查只验证 YAML 列表位置和递增 sequence；通过重排并同步重编号仍可能绕过。已增加固定
+  `LEARNING_COVERAGE_CANONICAL_ORDER`、受检的 coverage 人类镜像和两项回归测试，验证治理聚焦 `12 passed`。

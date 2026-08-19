@@ -1,4 +1,25 @@
 schema: 1
+# Human-readable mirror of the immutable order enforced by
+# scripts/check_project_governance.py.  Add a new group only with a reviewed
+# update to both this list and the governance constant.
+canonical_order:
+  - stage-0-baseline-and-reference-evidence
+  - stage-1-domain-core-v1
+  - stage-2-harness-v1
+  - stage-3-provider-tool-runtime
+  - stage-4-rag-v1
+  - stage-5a-minimal-agent-loop
+  - stage-5b-skill-contract-v1
+  - stage-5c-skill-router-v1
+  - stage-5d-constrained-agent-loop
+  - stage-5e-agent-runtime-v1
+  - stage-5p-product-slice
+  - stage-5f-pi-adoption-experiment
+  - stage-6a-postgresql-task-product
+  - stage-6-session-memory-entry-design
+  - 6b-1-player-identity-link-foundation
+  - 6b-2-async-player-link-worker-api
+  - 6b-3-conversation-message-foundation
 groups:
   - id: stage-0-baseline-and-reference-evidence
     sequence: 10
@@ -255,7 +276,14 @@ groups:
       - 6B-3-conversation-message-foundation
     status: planned
     evidence:
-      problem_and_principle: [docs/plans/2026-08-19-stage6-session-memory-design.md]
-      design_and_implementation: [docs/plans/2026-08-19-stage6-session-memory-implementation.md]
-      data_and_control_flow: [docs/plans/2026-08-19-stage6-session-memory-design.md]
-      failure_security_boundary: [docs/plans/2026-08-19-stage6-session-memory-design.md]
+      problem_and_principle:
+        - docs/plans/2026-08-19-stage6-session-memory-design.md
+        - docs/plans/2026-08-20-conversation-message-foundation-design.md
+      design_and_implementation:
+        - docs/adr/0040-conversation-message-foundation-contract.md
+        - docs/plans/2026-08-20-conversation-message-foundation-design.md
+      data_and_control_flow:
+        - docs/plans/2026-08-20-conversation-message-foundation-design.md
+      failure_security_boundary:
+        - docs/adr/0040-conversation-message-foundation-contract.md
+        - docs/plans/2026-08-20-conversation-message-foundation-design.md

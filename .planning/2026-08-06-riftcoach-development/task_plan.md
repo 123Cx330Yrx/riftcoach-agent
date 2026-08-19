@@ -255,9 +255,9 @@ Phase 19 - `6B-3-conversation-message-foundation`; RQ-067 documentation gate clo
 
 ## Next Step
 
-`6B-3-conversation-message-foundation` 已按 RQ-067 进入。先做初学者教学、复核 immutable
-owner/relationship/subject binding 与消息顺序设计，再写红灯；当前不接 Agent、Review Task 或
-Memory，不提前进入 6B-4。
+`6B-3-conversation-message-foundation` 的初学者教学、ADR-0040、专用设计与本地门禁已完成。
+现在独立提交/推送设计批并等待 exact-SHA 三 job；公共全绿后直接进入 pure model/Service/API 红灯，
+当前不接 Agent、Review Task 或 Memory，不提前进入 6B-4。
 
 ## 6A-1 Checklist
 
@@ -447,7 +447,11 @@ Memory，不提前进入 6B-4。
 - [completed] 更新 README、学习索引、AGENTS 教学成品规则、coverage schema 与治理红灯；同步 canonical/RQ/路线/能力矩阵/决策历史
 - [completed] 运行文档/治理/比例回归/安全/diff 门；本地完整 `1224 passed, 42 skipped, 1 warning, 110 subtests passed`，两套 RAG、Harness、compileall、secret/tracked-data 与 SDK boundary 均通过
 - [completed] 独立提交/推送文档批 `63435d9`，并完成 exact-SHA Actions `32308631289` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job
-- [in_progress] 进入 6B-3：向初学者讲 Conversation/Message 问题与原理，复核 ADR-0039/总设计，冻结红灯合同；当前不接 Agent、Review Task 或 Memory
+- [completed] 进入 6B-3 的只读接缝审计：确认 Base/ORM metadata、复合 parent identity、API proxy/lifespan、锁顺序和 PostgreSQL CI 入口
+- [completed] 创建 ADR-0040 与 6B-3 专用设计稿，冻结 active relationship 行锁、Conversation 幂等、user-only 公共 Message、1-based 行锁序号、archived/hidden 和 trigger 合同
+- [completed] 加强 coverage 治理：固定 canonical group ID 顺序、校验 YAML 镜像，并增加“重排同时重编号/镜像漂移”红灯测试；治理聚焦现为 `12 passed`
+- [completed] 设计批本地门禁：完整 `1226 passed, 42 skipped, 1 warning, 110 subtests passed`；RAG 两套、Harness dry-run、compileall、SDK/Secret/tracked-data、YAML、governance 与 diff 均通过
+- [in_progress] 设计批独立提交/推送并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；公共全绿后无缝进入纯模型/Service/API 红灯
 - [pending] 6B-3 最小实现、实现后 walkthrough/coverage 更新、本地门禁、独立提交/推送与 exact-SHA 公共 CI
 
 ## 6A Entry Design Checklist
@@ -626,6 +630,8 @@ Memory，不提前进入 6B-4。
 
 | Error | Attempt | Resolution |
 |---|---:|---|
+| 6B-3 设计批首次 cached diff 发现 ADR-0040 末尾多一个空白行 | 1 | cached 门阻止提交；只删除 ADR 尾部空白并重新暂存，未改变设计语义 |
+| 6B-3 设计门把 TEMP 递归清理与验证组合，随后两次精确 TEMP cleanup 都被终端策略在进程创建前拒绝 | 3 | 四项验证改为无清理的独立安全命令并全部通过；确认产物只在用户 TEMP、不在仓库或 Git，停止重复删除；该错误未修改项目、读取 Key 或产生外部 I/O |
 | 三个 6B-1 并行子任务在模型开始前被平台以 `prompt_cache_retention is not supported on this model` 拒绝；一次指定 `gpt-5.3-codex` 又被当前 ChatGPT 账户判定不支持 | 4 | 先检查共享工作树确认已存在的 domain/schema 产物未丢失；停止重复派发，主线程接管 Repository、审查与验证。该错误没有运行项目命令、调用 Key/Riot/Provider 或产生测试结论 |
 | 6B-1 首次 Alembic offline SQL 编译发现 alias unique 与 relationship composite FK 名称超过 PostgreSQL 63 字符 identifier 上限 | 1 | 同步缩短 ORM、migration、Repository `ON CONFLICT` 与测试中的两个名称；全 metadata identifier 扫描通过，offline `upgrade head --sql` 生成 11930 bytes SQL |
 | 6B-1 首个公共 run `32227457202` 的 PostgreSQL migration 与 packaging API stack 同时在 migration 阶段失败 | 1 | 审计发现 revision `0002_player_identity_and_link_tasks` 长 35，超过 Alembic 默认 `version_num VARCHAR(32)`；先加无 DB 红灯得到 `35 <= 32` 失败，再缩短为 `0002_player_identity_link`。不修改 Repository 合同 |

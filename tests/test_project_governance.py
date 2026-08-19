@@ -49,6 +49,10 @@ def _copy_governance_tree(tmp_path: Path) -> None:
                         "evidence": {},
                     },
                 ],
+                "canonical_order": [
+                    "completed-baseline",
+                    "current-checkpoint",
+                ],
             },
         )
 
@@ -198,6 +202,37 @@ def test_project_governance_rejects_reordered_learning_coverage(tmp_path):
     errors = check_project_governance(tmp_path)
 
     assert any("sequence must be strictly increasing" in error for error in errors)
+
+
+def test_project_governance_rejects_reordered_and_renumbered_learning_coverage(
+    tmp_path,
+):
+    _copy_governance_tree(tmp_path)
+    coverage = _read_learning_coverage(tmp_path)
+    coverage["groups"][0], coverage["groups"][1] = (
+        coverage["groups"][1],
+        coverage["groups"][0],
+    )
+    # A sequence-only guard cannot detect this mutation; the canonical ID
+    # order must remain the authority.
+    coverage["groups"][0]["sequence"] = 10
+    coverage["groups"][1]["sequence"] = 20
+    _write_learning_coverage(tmp_path, coverage)
+
+    errors = check_project_governance(tmp_path)
+
+    assert any("canonical order" in error for error in errors)
+
+
+def test_project_governance_rejects_a_stale_declared_canonical_order(tmp_path):
+    _copy_governance_tree(tmp_path)
+    coverage = _read_learning_coverage(tmp_path)
+    coverage["canonical_order"] = list(reversed(coverage["canonical_order"]))
+    _write_learning_coverage(tmp_path, coverage)
+
+    errors = check_project_governance(tmp_path)
+
+    assert any("canonical_order" in error for error in errors)
 
 
 def test_project_governance_requires_learning_coverage_sequence(tmp_path):

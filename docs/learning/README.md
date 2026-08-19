@@ -66,7 +66,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | Session/Memory 入口设计 | 完整 | [Session/Memory V1 设计](../plans/2026-08-19-stage6-session-memory-design.md) | Session、消息、玩家身份、长期 Memory 与 RAG 为何不能混为一谈 |
 | 6B-1：玩家身份持久化 | 完整 | [6B-1 walkthrough](6b-1-player-identity-link-persistence-walkthrough.md) | PUUID、Alias、Owner Relationship、Link Task 及真库迁移事故 |
 | 6B-2：异步玩家绑定 | 完整 | [6B-2 walkthrough](6b-2-async-player-link-worker-api-walkthrough.md) | POST/poll、Worker、事务外 Account-V1、短事务终态和隐私投影 |
-| 6B-3：Conversation / Message | 计划中 | [总设计](../plans/2026-08-19-stage6-session-memory-design.md) | 当前只有设计，产品实现、测试和实现后复盘尚未完成 |
+| 6B-3：Conversation / Message | 计划中 | [6B-3 专用设计](../plans/2026-08-20-conversation-message-foundation-design.md) / [ADR-0040](../adr/0040-conversation-message-foundation-contract.md) | 当前只有设计，产品实现、测试和实现后复盘尚未完成 |
 
 “完整”表示仓库中已经具备八类持久证据，并不表示项目已生产就绪，也不表示项目所有者已经学会。
 个人理解进度需要通过实际复述、读码、运行和问答单独确认。
@@ -99,6 +99,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 
 - `coverage.yaml` schema 与状态是否合法；
 - coverage `sequence` 是否唯一并严格递增，防止靠移动列表项绕过前序门；
+- coverage group ID 及 YAML 中的人类可读镜像是否符合脚本内固定的 canonical order，防止同时重排并重编号绕过前序门；
 - canonical 当前 checkpoint 是否被登记；
 - 当前 checkpoint 之前的覆盖组是否全部完成；
 - complete 组是否具备八个维度；

@@ -413,3 +413,10 @@ Actions `32222531783` 三 job 已成功；6B-1 又由 `ed8fa58` / Actions `32229
 6B-2 已由 `0c13a58` / Actions `32301852042` 三 job 公共完成。RQ-067 文档/工程证据批随后由
 `63435d9` / Actions `32308631289` 三 job 公共闭环，现已进入 6B-3 初学者设计/TDD；Conversation/Memory
 与公网部署仍未实现。
+
+### 2026-08-20：6B-3 设计冻结
+
+ADR-0040 将 6B-3 的隐含合同正式化：active relationship 必须在创建事务中锁定检查；Conversation
+创建继承 owner-scoped 幂等键；Message schema 保留 user/assistant 但公共入口只允许 user；序号从 1
+开始由行锁递增；archived/hidden 分开；PostgreSQL trigger 防止绑定字段 direct SQL rebind。此处仍是
+设计证据，不把 Conversation/Message 代码、Agent 接入或 Memory 误标为已完成。

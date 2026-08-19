@@ -2957,3 +2957,31 @@
 - 文档批提交 `63435d90f5153309fce98b92a2ff58425d54a684` 已推送；Actions `32308631289` 精确对应同一 SHA，`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 success。
 - RQ-067 前置门关闭，Q11 公共证据成立；这只验证文档/治理/现有回归/真库 migration 与 package 边界，不表示 6B-3 Conversation/Message/Memory 已完成。
 - canonical/活动计划现正式进入 `6B-3-conversation-message-foundation` 的初学者设计复核与 TDD；下一动作是讲固定 owner/relationship/subject、消息角色/长度、并发序号和生命周期，再写红灯合同。
+
+## 2026-08-20：6B-3 接缝审计与设计冻结
+
+- 只读审计确认 6B-3 可以复用现有 SQLAlchemy Base、Player relationship 复合 identity、短事务
+  Repository、FastAPI Port/proxy/lifespan 与 PostgreSQL blocking CI；不需要引入 EchoMind、Saber、
+  LangGraph、Redis、向量库或新 SDK。
+- 冻结六个实现前不能含糊的点：复合 FK 不证明 relationship active；Conversation POST 需要
+  owner-scoped Idempotency-Key；公共 Message 只能写 user；序号从 1 开始由 Conversation 行锁分配；
+  archived 与 hidden 分离；绑定字段必须由 PostgreSQL trigger 防 direct SQL rebind。
+- 新增 ADR-0040 与 `docs/plans/2026-08-20-conversation-message-foundation-design.md`，包含初学者
+  原理、FR/NFR、schema、数据/控制流、API/error、安全、测试矩阵、退出条件和面试边界；没有创建产品
+  schema/migration/code，也没有外部 I/O。
+- 复核 backfill 审计发现 README 前置条件已在 `63435d9` 修正，日期记录与当前仓库日期一致；真正的
+  governance 顺序弱点是“重排并同时重编号”。已加固定 canonical coverage order 与对应红灯，治理
+  聚焦 `12 passed`，主治理仍通过。
+- 下一动作是纯模型/Service/API 红灯合同；PostgreSQL migration/Repository/并发测试仍必须在后续红灯
+  批和真实 CI 中验证，不能把设计稿当成实现证据。
+
+## 2026-08-20：6B-3 设计批本地门禁
+
+- 治理聚焦 `12 passed`，完整 pytest `1226 passed, 42 skipped, 1 warning, 110 subtests passed`；42 个
+  skip 仍只因本机无 PostgreSQL/Docker，不能冒充真库证据。
+- RAG development/independent holdout 均满既有阈值；Harness dry-run 为 `published`/0 revisions；
+  compileall、SDK boundary、tracked Secret/run-data、YAML、治理和 diff 门均通过。
+- 首次把并行验证与 TEMP 递归清理放在同一工具批，终端策略在进程创建前拒绝整个批；随后把四项验证
+  拆开并成功运行。两次对已验证 TEMP 目标的递归清理仍被策略在进程创建前拒绝，未改仓库且临时产物
+  只位于用户 TEMP；停止重复删除，不把清理噪声当测试失败。
+- 下一动作是独立暂存/cached diff、提交、推送和 exact-SHA 三 job；全绿后直接进入红灯合同。

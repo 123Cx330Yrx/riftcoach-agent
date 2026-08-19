@@ -269,3 +269,13 @@ module execution。新 exact-SHA Linux job 成功前，A14/Q09 仍不能升级�
 修复提交 `adf53e5` / Actions `32146760003` 已让 pytest、PostgreSQL 与 packaging-smoke 全绿；A14 的
 阶段 6 V1 task/API/package 落点完成。Q09 仍为部分完成，因为正式公网 Auth/HTTPS、备份、前端和运维
 不属于 6A，也尚无部署证据。
+
+### 2026-08-20：6B-3 设计能力状态
+
+- `Conversation identity binding`：设计已冻结，产品实现未开始；固定 owner/relationship/subject/role，
+  active 检查与复合 FK/trigger 方案已记录。
+- `Ordered Message control plane`：设计已冻结，产品实现未开始；公共 user append、1-based row-lock
+  sequence、archive/hidden 和有界查询已定义。
+- `Conversation/Message PostgreSQL evidence`：未开始；migration、trigger、回滚和并发 exact-SHA
+  证据仍是 6B-3 退出条件。
+- `Agent/Review/Memory integration`：明确 deferred 到后续 6B 批次，不能把本设计稿写成已接入。

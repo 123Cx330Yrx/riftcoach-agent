@@ -19,6 +19,31 @@ LEARNING_COVERAGE_DIMENSIONS = (
     "interview_wording",
 )
 
+# The coverage ledger is an execution gate, not an unordered catalog.  Keep
+# the canonical order here so a future edit cannot reorder groups (and simply
+# renumber ``sequence``) to make an incomplete predecessor look complete.
+# When a new checkpoint is intentionally added, update this tuple and the
+# ledger in the same reviewed change.
+LEARNING_COVERAGE_CANONICAL_ORDER = (
+    "stage-0-baseline-and-reference-evidence",
+    "stage-1-domain-core-v1",
+    "stage-2-harness-v1",
+    "stage-3-provider-tool-runtime",
+    "stage-4-rag-v1",
+    "stage-5a-minimal-agent-loop",
+    "stage-5b-skill-contract-v1",
+    "stage-5c-skill-router-v1",
+    "stage-5d-constrained-agent-loop",
+    "stage-5e-agent-runtime-v1",
+    "stage-5p-product-slice",
+    "stage-5f-pi-adoption-experiment",
+    "stage-6a-postgresql-task-product",
+    "stage-6-session-memory-entry-design",
+    "6b-1-player-identity-link-foundation",
+    "6b-2-async-player-link-worker-api",
+    "6b-3-conversation-message-foundation",
+)
+
 
 def _read_utf8(path: Path, errors: list[str]) -> str:
     try:
@@ -267,6 +292,12 @@ def _check_learning_coverage(
         errors.append("learning coverage must contain a non-empty groups list")
         return
 
+    declared_order = coverage.get("canonical_order")
+    if declared_order != list(LEARNING_COVERAGE_CANONICAL_ORDER):
+        errors.append(
+            "learning coverage canonical_order must match the governance contract"
+        )
+
     group_ids: set[str] = set()
     cover_owners: dict[str, str] = {}
     current_group_indexes: list[int] = []
@@ -380,6 +411,17 @@ def _check_learning_coverage(
         for current, following in zip(valid_sequences, valid_sequences[1:])
     ):
         errors.append("learning coverage sequence must be strictly increasing")
+
+    actual_order = [
+        group.get("id")
+        for group in groups
+        if isinstance(group, dict) and isinstance(group.get("id"), str)
+    ]
+    if actual_order != list(LEARNING_COVERAGE_CANONICAL_ORDER):
+        errors.append(
+            "learning coverage groups must follow the canonical order; "
+            "update the governance constant and ledger together for an intentional change"
+        )
 
     if checkpoint is None:
         return

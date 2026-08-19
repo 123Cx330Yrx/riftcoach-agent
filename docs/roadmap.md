@@ -345,3 +345,10 @@ MCP 负责跨系统标准互操作，内部 Tool Runtime 负责本应用可靠�
 [`coverage.yaml`](learning/coverage.yaml) 逐覆盖组登记问题/原理、设计/实现、代码地图、数据/控制流、
 验证、运行、失败/安全/边界与面试表述八个维度。聊天里讲过、测试总数或代码存在不能代替该证据；
 当前 checkpoint 可以暂列 `planned`，但 canonical 继续向后推进前必须改为 `complete`，并通过治理门。
+
+### 6B-3 当前设计门
+
+6B-3 的 Conversation/Message 设计已由 ADR-0040 和专用设计稿冻结，正式实现仍须按“纯模型/Service/API
+红灯 → PostgreSQL migration/Repository/并发红灯 → 最小实现 → 实现后八维复盘 → exact-SHA CI”推进。
+Conversation 创建固定 owner/relationship/subject，公共 Message 首批只写 user；这一步不提前接 Agent、
+Review Task、Memory、Auth/RSO、SSE、前端或新框架。

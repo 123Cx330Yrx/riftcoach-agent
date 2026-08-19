@@ -82,7 +82,7 @@ Riot/Provider Key，也没有执行参考项目代码。
 Agent Loop + Skill Contract             34 passed
 Provider/Tool Runtime                   101 passed, 68 subtests passed
 领域核心 + RAG 代表性集合               37 passed
-治理覆盖门                              10 passed
+治理覆盖门                              12 passed
 ```
 
 ### 完整回归
@@ -114,7 +114,8 @@ RAG 数字只说明当前 8 条 development 和 7 条独立 holdout 门可复现
 
 `coverage.yaml` 每个 group 必须声明：
 
-- `sequence`：唯一、非负且严格递增，不能靠重排列表绕过前序门；
+- `sequence`：唯一、非负且严格递增；
+- canonical group ID order：由治理脚本固定，不能靠重排并同步重编号绕过前序门；
 - `covers`：一个 checkpoint 只能由一个 group 负责；
 - `status`：`complete` 或 `planned`；当前在做的工作可以 planned，但不能被当成完成；
 - `evidence`：complete group 的八个维度都必须有仓库内存在、非空 Markdown 证据。
@@ -168,3 +169,9 @@ ADR-0039、总设计和阶段 6 实施计划。
 `pytest`、`postgres-migrations`、`packaging-smoke` 三个 job 均成功。RQ-067 前置门关闭，下一检查点
 正式是 6B-3 初学者设计复核与 TDD。这里的公共成功仍只覆盖文档/治理和既有工程边界，不把 6B-3
 产品功能或真实模型质量写成已完成。
+
+### 10.1 后续治理加固
+
+6B-3 设计前的只读复核发现，仅检查 YAML 列表位置和递增 sequence 仍允许“重排并重新编号”的
+理论绕过。已增加 `LEARNING_COVERAGE_CANONICAL_ORDER`、coverage YAML 的人类可读镜像和负例测试；
+治理聚焦由 10 项增为 12 项，主文档门的公共结果不变，且该加固不把 6B-3 代码误标为完成。

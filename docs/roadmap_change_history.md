@@ -2191,3 +2191,14 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `HANDOFF`：canonical 正式进入 `6B-3-conversation-message-foundation` 的初学者设计复核与 TDD；
   下一批先冻结 Conversation/Message 合同和红灯测试，仍不接 Agent、Review Task、Memory、Auth/RSO、
   SSE、前端或新框架。
+
+### 2026-08-20：6B-3 设计审计与治理顺序加固
+
+- `DESIGN-AUDIT`：复核现有 ORM/Repository/API/lifespan 后确认不需要引入 EchoMind、Saber、LangGraph、
+  Redis、向量库或新 SDK；可沿用 PostgreSQL 唯一真源与短事务边界。
+- `ADR-0040`：冻结 active relationship 行锁检查、owner-scoped Conversation 幂等、公共 user-only
+  Message、1-based row-lock sequence、archived/hidden 生命周期、source 引用弱绑定和 immutable trigger。
+- `GOVERNANCE-HARDENING`：coverage 顺序不再只依赖 YAML 列表和 sequence；固定 canonical group ID order，
+  增加重排并重编号负例，防止学习证据门被静默绕过。
+- `HANDOFF`：当前仍处于 6B-3 红灯合同，设计文档不等于实现；下一动作是 pure model/Service/API TDD，
+  随后才进入真实 PostgreSQL migration/Repository/并发验证。

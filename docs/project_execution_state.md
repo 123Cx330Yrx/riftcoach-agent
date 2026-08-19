@@ -250,9 +250,10 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6B-3-conversation-message-foundation` 初学者设计复核与 TDD：先讲 Conversation、Message、
-  fixed owner/relationship/subject binding、顺序号和生命周期，再冻结红灯合同；当前只实现 6B-3 的
-  Conversation/Message foundation，不接 Agent、Review Task、Memory、Auth/RSO、SSE、前端或新框架。
+- 唯一下一步：`6B-3-conversation-message-foundation` 设计批公共验证：6B-3 的初学者设计复核、
+  ADR-0040、专用设计稿和 coverage 顺序加固已完成本地门禁；当前先独立提交/推送并等待 exact-SHA
+  三 job。公共全绿后立即进入纯模型/Service/API 红灯，再写 migration/Repository/PostgreSQL 并发红灯；
+  不接 Agent、Review Task、Memory、Auth/RSO、SSE、前端或新框架。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1296,3 +1297,18 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 这次公共验证补齐了文档批的治理、完整回归、真实 PostgreSQL migration/metadata 复核和 Linux package 边界；它不把本地 42 个 PostgreSQL/Docker skip 改写为本地真库证据，也不表示 6B-3 功能已完成。
 - RQ-067 前置门正式关闭，`docs/learning/coverage.yaml` 的 Q11/complete 证据获得公共 CI 支持；canonical 现在正式进入 `6B-3-conversation-message-foundation` 的初学者设计复核与 TDD。
 - 当前仍没有 Conversation/Message/Memory 产品代码；下一批先讲并冻结 6B-3 的 owner/relationship/subject 绑定、消息角色/长度、并发序号、归档/隐藏和 owner-scoped 查询合同，再写红灯测试。
+
+## 2026-08-20：6B-3 设计冻结与红灯交接
+
+- 6B-3 接缝审计确认可复用现有 SQLAlchemy Base、Player relationship 复合 identity、短事务
+  Repository、FastAPI Port/proxy/lifespan 与 PostgreSQL CI；没有采用参考项目或新框架。
+- ADR-0040 与 `docs/plans/2026-08-20-conversation-message-foundation-design.md` 已冻结：active
+  relationship 必须在同一短事务锁定检查；Conversation 创建采用 owner-scoped Idempotency-Key；
+  公共 API 只允许 user Message；序号从 1 开始由 Conversation 行锁分配；archived/hidden 语义分离；
+  binding trigger 防 direct SQL rebind；source task/run 不设阻塞性强 FK。
+- 为防止持久覆盖账本被“重排并重编号”绕过，治理脚本增加固定 canonical group order，coverage YAML
+  增加并校验人类可读镜像，回归测试当前为 `12 passed`；README 前置条件和日期审计无须额外修补。
+- 当前代码事实仍是“没有 Conversation/Message schema、migration、Repository、API 或产品测试”；
+  设计文件不算实现证据。本地完整回归为 `1226 passed, 42 skipped, 1 warning, 110 subtests passed`；
+  RAG development/holdout、Harness dry-run、compileall、SDK/Secret/tracked-data、YAML、governance 与 diff
+  门均通过。下一动作是设计批独立提交/推送和 exact-SHA 三 job；全绿后才进入红灯与最小实现。
