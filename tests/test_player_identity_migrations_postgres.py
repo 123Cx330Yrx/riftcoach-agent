@@ -9,6 +9,7 @@ import pytest
 import sqlalchemy as sa
 from alembic import command
 from alembic.config import Config
+from alembic.script import ScriptDirectory
 
 from app.persistence.database import Base
 from app.persistence.player_records import (
@@ -21,6 +22,15 @@ from app.persistence.player_records import (
 
 ROOT = Path(__file__).resolve().parents[1]
 TEST_DATABASE_ENV = "RIFTCOACH_TEST_DATABASE_URL"
+
+
+def test_player_identity_revision_fits_alembic_version_column() -> None:
+    config = Config(str(ROOT / "alembic.ini"))
+    config.set_main_option("script_location", str(ROOT / "migrations"))
+    head = ScriptDirectory.from_config(config).get_current_head()
+
+    assert head is not None
+    assert len(head) <= 32
 
 
 @pytest.fixture()

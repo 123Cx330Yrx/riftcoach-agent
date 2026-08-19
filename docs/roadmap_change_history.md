@@ -2103,3 +2103,12 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   独立提交/推送与 exact-SHA 三 job；公共全绿后停止。
 - `HANDOFF-AFTER-CLOSE`：6B-2 只能进入 prepared/waiting authorization，不得在本轮实现 Resolver、
   PlayerLinkWorker、HTTP API、真实 Riot I/O 或 package 接线。
+
+### 2026-08-19：6B-1 首个公共 run 暴露 Alembic revision 长度缺口
+
+- `PUBLIC-FAILED`：实现提交 `656117a` / Actions `32227457202` 总状态 failure；postgres-migrations 停在
+  reversible migration，packaging-smoke 停在包含 migration 的 API stack，故 6B-1 保持 open。
+- `ROOT-CAUSE`：0002 revision ID 长 35，超过 Alembic 默认 `alembic_version.version_num VARCHAR(32)`；
+  无数据库红灯已复现 `35 <= 32` 失败。
+- `REPAIR-LOCAL`：revision 缩短为 `0002_player_identity_link`，聚焦 16/13 skipped、完整
+  1118/40 skipped/110 subtests 通过；下一动作是修补提交与新的 exact-SHA 三 job，而不是重跑旧 SHA。

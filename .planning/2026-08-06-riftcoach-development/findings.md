@@ -2848,3 +2848,7 @@
 - 本机没有 PostgreSQL 时，domain/metadata/mapping 可以绿，但 migration/CHECK/FK/ON CONFLICT/SKIP LOCKED/
   并发与 rollback 必须明确 skip，并由 exact-SHA PostgreSQL 17 job 补齐；SQLite 不具备等价证据。
 - RQ-065 只收紧本轮自动推进，不改变九个 6B 批次设计：6B-2 仍是下一批，但必须在下一轮重新授权。
+- Alembic 默认 version table 的 `version_num` 是 `VARCHAR(32)`；revision 标识符与 migration 文件名不是
+  同一约束。文件名可以保持可读，`revision` 必须独立控制在 32 字符内，并应有不依赖数据库的回归测试。
+- PostgreSQL migration job 与 package stack 同时在 migration 前置阶段失败，是共享基础设施根因信号；
+  在这种情况下不应先改两个 job 或 Repository，而应先审计二者共同的 Alembic 路径。

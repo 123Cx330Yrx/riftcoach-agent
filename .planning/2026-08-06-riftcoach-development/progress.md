@@ -2838,3 +2838,17 @@
   initial governance/diff 通过。本批外部 Riot/Provider/Key 调用为 0。
 - 下一动作：重跑状态同步后的 governance/stale/line/diff 门，暂存后独立 cached diff check，再提交、推送并
   等待 exact-SHA 三 job；全绿后关闭 6B-1 并按 RQ-065 停止。
+
+## 2026-08-19：6B-1 首个公共 run 失败与 Alembic revision 修补
+
+- 实现提交 `656117abb049f7ef653f6febd44df9d630daed2d` 已推送；Actions `32227457202` 总状态 failure。
+  普通 pytest 无错误 annotation；`postgres-migrations` 在 reversible migration step 失败，
+  `packaging-smoke` 在启动包含 migration 的 API stack 失败，不能关闭 6B-1。
+- 首轮 push 的 OpenSSL+SOCKS 路径持续 TLS EOF；只读检查确认 HTTP mixed proxy 可用后，改用单次
+  Schannel+HTTP/1.1 代理成功推送，未更改全局配置。
+- 共同失败点审计发现 Alembic revision `0002_player_identity_and_link_tasks` 为 35 字符，而默认
+  `alembic_version.version_num` 只有 32。先新增无数据库合同测试并得到明确红灯 `assert 35 <= 32`，再把
+  revision 缩短为 `0002_player_identity_link`；migration 文件名和 down_revision 顺序无需改变。
+- 修补后 6B-1 聚焦为 `16 passed, 13 skipped`，完整为
+  `1118 passed, 40 skipped, 1 warning, 110 subtests passed`。下一动作是重跑横向门、独立修补提交并等待
+  新 exact-SHA 三 job；旧失败 run 只作失败证据，不重跑或冒充成功。

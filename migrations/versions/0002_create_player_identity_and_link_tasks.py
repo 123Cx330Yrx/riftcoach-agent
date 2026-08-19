@@ -1,6 +1,6 @@
 """Create player identity and link task persistence tables.
 
-Revision ID: 0002_player_identity_and_link_tasks
+Revision ID: 0002_player_identity_link
 Revises: 0001_review_tasks
 Create Date: 2026-08-19
 """
@@ -12,7 +12,7 @@ from alembic import op
 from sqlalchemy.dialects import postgresql
 
 
-revision: str = "0002_player_identity_and_link_tasks"
+revision: str = "0002_player_identity_link"
 down_revision: str | None = "0001_review_tasks"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
