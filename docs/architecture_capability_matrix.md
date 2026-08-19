@@ -51,7 +51,7 @@
 | Q08 | 可靠性与故障恢复 | Harness/Tool/Artifact 基础与 6A-1 至 6A-6 已公开；receipt-proven reconciliation、recovery-required、人工 CAS、迟到拒绝、删除补偿与 capacity race 已由真实 PostgreSQL CI 验证；自动 reclaim 仍未实现 | 阶段 6 增加持久状态、幂等、短事务、有证据 reconciliation 与安全生命周期 | 阶段 8 增加取消、lease/heartbeat/fencing、检查点、自动恢复和备份 | DB/Artifact 故障、并发 claim、进程中断、重复请求、人工恢复、删除补偿和迟到结果测试 | 部分完成 |
 | Q09 | 开源、部署与合规 | MIT、CI、README、SECURITY、匿名化样例；6A 非 root image/Compose/no-I/O smoke 已公共验证 | 横向交付检查点 | 阶段 8 完成正式 Auth/HTTPS/备份/前端部署与作品集证据 | Linux/Docker 冒烟、密钥扫描、许可证和公开边界检查 | 部分完成 |
 | Q10 | 前端可解释性与可访问性 | 尚无正式产品前端；阶段 6 只提供 owner-scoped API/Session 合同 | 阶段 8 首个正式 Web 纵向切片 | 阶段 8 同期深化证据、工具、评测、历史、SSE 和状态展示 | 桌面/移动截图、键盘操作、错误态和数据边界展示 | 已规划 |
-| Q11 | 所有者学习与工程证据连续性 | RQ-067 已从阶段 0 重审真实缺口，并建立 `docs/learning/README.md`、八维 `coverage.yaml`、实现后 walkthrough/review、README 入口与治理红灯；成熟阶段直接复用既有设计/退出复核；本轮退出复核见 `docs/plans/2026-08-20-learning-engineering-documentation-backfill-exit-review.md` | 所有阶段的横向关闭合同，不新增主阶段 | 每个新 checkpoint 开始时可为 planned，关闭前补齐问题/原理、设计/实现、代码地图、数据/控制流、验证、运行、失败/安全/边界和面试表述 | coverage schema/path/sequence/当前 checkpoint/前序 complete 测试，聚焦与全量回归，独立提交和 exact-SHA CI | 本地完成，待本批公共验证 |
+| Q11 | 所有者学习与工程证据连续性 | RQ-067 已从阶段 0 重审真实缺口，并建立 `docs/learning/README.md`、八维 `coverage.yaml`、实现后 walkthrough/review、README 入口与治理红灯；成熟阶段直接复用既有设计/退出复核；本轮退出复核见 `docs/plans/2026-08-20-learning-engineering-documentation-backfill-exit-review.md` | 所有阶段的横向关闭合同，不新增主阶段 | 每个新 checkpoint 开始时可为 planned，关闭前补齐问题/原理、设计/实现、代码地图、数据/控制流、验证、运行、失败/安全/边界和面试表述 | coverage schema/path/sequence/当前 checkpoint/前序 complete 测试，聚焦与全量回归，独立提交和 exact-SHA CI `63435d9/32308631289` | 已完成（文档门公共闭环） |
 
 ## 4. 明确补齐项
 

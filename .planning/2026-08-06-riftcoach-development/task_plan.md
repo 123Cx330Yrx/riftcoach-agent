@@ -7,9 +7,9 @@
 
 ## Current Phase
 
-Phase 19 - `6B-3-conversation-message-foundation`; authorized by RQ-067 only after the
-learning/engineering documentation backfill closes publicly. 6B-2 closed at `0c13a58` /
-Actions `32301852042`; no Conversation/Message code may be created during the backfill.
+Phase 19 - `6B-3-conversation-message-foundation`; RQ-067 documentation gate closed at
+`63435d9` / Actions `32308631289`. 6B-2 closed at `0c13a58` / Actions `32301852042`;
+6B-3 now begins with teaching/design review and red tests.
 
 ## Phases
 
@@ -255,9 +255,9 @@ Actions `32301852042`; no Conversation/Message code may be created during the ba
 
 ## Next Step
 
-等待用户在新一轮明确授权 `6B-3-conversation-message-foundation`。获授权后先做初学者教学、
-复核 immutable owner/relationship/subject binding 与消息顺序设计，再写红灯；当前不创建
-Conversation、Message 或 Memory 代码。
+`6B-3-conversation-message-foundation` 已按 RQ-067 进入。先做初学者教学、复核 immutable
+owner/relationship/subject binding 与消息顺序设计，再写红灯；当前不接 Agent、Review Task 或
+Memory，不提前进入 6B-4。
 
 ## 6A-1 Checklist
 
@@ -438,7 +438,7 @@ Conversation、Message 或 Memory 代码。
 ### Phase 19 - 6B-3-conversation-message-foundation
 
 - Status: in_progress
-- Authorization: RQ-067 已给出条件授权；必须先完成并公共验证历史教学/工程说明补齐，之后无需再次确认即可进入 6B-3。
+- Authorization: RQ-067 文档前置门已由 `63435d9` / Actions `32308631289` 公共闭环；本批正式进入 6B-3，按教学→设计复核→红灯→最小实现推进。
 - Prepared outcome: immutable owner/relationship/subject Conversation、ordered user/assistant Message
   persistence/API 与真实 PostgreSQL constraint/concurrency 证据；不接 Agent、Review Task 或 Memory。
 - [completed] 审计阶段 0 至 6B-2 的持久教学/工程说明覆盖，确认最早真实缺口在阶段 0，并记录阶段 1/4/5A/5B/6B-1/6B-2 的不同补强级别
@@ -446,8 +446,9 @@ Conversation、Message 或 Memory 代码。
 - [completed] 补实际代码地图、数据/控制流、事务/失败/安全边界、证据矩阵、运行示例与面试表述
 - [completed] 更新 README、学习索引、AGENTS 教学成品规则、coverage schema 与治理红灯；同步 canonical/RQ/路线/能力矩阵/决策历史
 - [completed] 运行文档/治理/比例回归/安全/diff 门；本地完整 `1224 passed, 42 skipped, 1 warning, 110 subtests passed`，两套 RAG、Harness、compileall、secret/tracked-data 与 SDK boundary 均通过
-- [in_progress] 独立提交推送并等待 exact-SHA 公共 CI
-- [pending] 公共闭环后确认补齐，再直接进入 6B-3 初学者设计复核与 TDD；此前不创建 Conversation/Message 产品代码
+- [completed] 独立提交/推送文档批 `63435d9`，并完成 exact-SHA Actions `32308631289` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job
+- [in_progress] 进入 6B-3：向初学者讲 Conversation/Message 问题与原理，复核 ADR-0039/总设计，冻结红灯合同；当前不接 Agent、Review Task 或 Memory
+- [pending] 6B-3 最小实现、实现后 walkthrough/coverage 更新、本地门禁、独立提交/推送与 exact-SHA 公共 CI
 
 ## 6A Entry Design Checklist
 

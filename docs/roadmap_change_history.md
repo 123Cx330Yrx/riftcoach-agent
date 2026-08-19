@@ -2181,3 +2181,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `CONDITIONAL-AUTH`：RQ-067 仍不改变阶段 0—8 或 6B-1 至 6B-9 顺序；6B-3 已获条件授权，但在本批
   独立提交、推送和 exact-SHA 公共 CI 全绿前不得创建 Conversation/Message/Memory 产品代码。公共闭环
   后无需再次确认，直接进入 6B-3 初学者设计复核与 TDD。
+
+### 2026-08-20：RQ-067 公共闭环并进入 6B-3
+
+- `VERIFIED-PUBLIC`：文档/工程证据提交 `63435d90f5153309fce98b92a2ff58425d54a684` 对应 Actions
+  `32308631289`；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 completed/success。
+- `CLOSED`：RQ-067 文档前置门正式关闭。公共 run 验证了治理、完整回归、真实 PostgreSQL migration/
+  metadata 与 Linux package 边界；不把它外推为模型质量、正式部署或 6B-3 功能完成。
+- `HANDOFF`：canonical 正式进入 `6B-3-conversation-message-foundation` 的初学者设计复核与 TDD；
+  下一批先冻结 Conversation/Message 合同和红灯测试，仍不接 Agent、Review Task、Memory、Auth/RSO、
+  SSE、前端或新框架。

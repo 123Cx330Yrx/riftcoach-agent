@@ -2923,3 +2923,8 @@
 - 完整回归为 `1224 passed, 42 skipped, 1 warning, 110 subtests passed`；治理覆盖门为 `10 passed`，Agent Loop/Skill 为 `34 passed`，Provider/Tool 为 `101 passed, 68 subtests`。
 - RAG development 八题和 independent holdout 七题均通过既有阈值；Harness dry-run 为 `published`/0 revisions；所有本批临时输出已清理，未产生 tracked run data。
 - 本地结论只能是 `pass-local-pending-public-ci`：本机 PostgreSQL/Docker 缺失造成的 42 skip 不能替代公共真库/package 证据；文档公共完成仍需独立提交 exact-SHA 三 job。
+
+## 2026-08-20：公共闭环结果
+
+- `63435d9` / Actions `32308631289` 三 job 全绿，文档/工程证据批正式公共完成；Q11 从本地 pending 升级为完成。
+- RQ-067 的条件授权已兑现，canonical 进入 6B-3 初学者设计复核与 TDD；仍保持 Conversation/Message/Memory 尚未实现的边界。

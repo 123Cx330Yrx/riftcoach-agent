@@ -2951,3 +2951,9 @@
 - 治理聚焦最终为 `10 passed`；Agent Loop/Skill `34 passed`，Provider/Tool `101 passed, 68 subtests`，领域/RAG 代表性集合 `37 passed`。
 - 完整 pytest 为 `1224 passed, 42 skipped, 1 warning, 110 subtests passed`；RAG development/holdout、Harness dry-run、compileall、secret/tracked-data、SDK boundary、Markdown/YAML/link/diff 与治理均通过。
 - 本地退出裁决为 `pass-local-pending-public-ci`；42 skip 仍只表示本机无 PostgreSQL/Docker。下一动作是独立提交、推送并等待 exact-SHA 三 job，全绿前不进入 6B-3。
+
+## 2026-08-20：RQ-067 文档门公共闭环并进入 6B-3
+
+- 文档批提交 `63435d90f5153309fce98b92a2ff58425d54a684` 已推送；Actions `32308631289` 精确对应同一 SHA，`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 success。
+- RQ-067 前置门关闭，Q11 公共证据成立；这只验证文档/治理/现有回归/真库 migration 与 package 边界，不表示 6B-3 Conversation/Message/Memory 已完成。
+- canonical/活动计划现正式进入 `6B-3-conversation-message-foundation` 的初学者设计复核与 TDD；下一动作是讲固定 owner/relationship/subject、消息角色/长度、并发序号和生命周期，再写红灯合同。

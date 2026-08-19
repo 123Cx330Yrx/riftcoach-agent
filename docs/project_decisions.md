@@ -1344,3 +1344,15 @@ implementation review；不为每个历史原子检查点机械复制文件。`d
 不改变阶段 0—8 或 6B-1 至 6B-9 顺序。RQ-067 已构成 6B-3 的条件实施授权：文档批独立提交、推送并通过
 exact-SHA 公共 CI 后，无需再次确认进入 6B-3 初学者设计复核与 TDD；在公共闭环前 canonical 仍保持
 `6B-3-conversation-message-foundation`，产品代码门关闭。
+
+### RQ-067 公共验证与 6B-3 交接
+
+文档/工程证据提交 `63435d90f5153309fce98b92a2ff58425d54a684` 已由 GitHub Actions run `32308631289`
+精确验证；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部成功。RQ-067 的前置门因此关闭，
+Q11 “所有者学习与工程证据连续性”从本地完成升级为公共完成。
+
+这次公共闭环只证明文档、治理、现有代码回归、真实 PostgreSQL migration/metadata 和 Linux package 边界；
+不证明 Conversation/Message/Memory 已实现，也不改变此前的外服账号未验证认领、无正式 Auth/RSO、无公网
+部署和无真实 Provider 质量准入边界。canonical 现在进入 `6B-3-conversation-message-foundation`：
+先进行初学者设计复核和红灯合同，再实现最小 Conversation/Message foundation；Agent、Review Task、Memory、
+SSE、前端和新框架仍在本批之外。

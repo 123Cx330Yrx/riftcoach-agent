@@ -160,3 +160,11 @@ RAG 数字只说明当前 8 条 development 和 7 条独立 holdout 门可复现
 
 6B-3 仍不接 Agent、Review Task、Memory 写入、Auth/RSO、SSE、前端或新的 LangGraph/SDK；这些边界继承
 ADR-0039、总设计和阶段 6 实施计划。
+
+## 10. 公共闭环更新
+
+本复核初版的 `pass-local-pending-public-ci` 已由提交
+`63435d90f5153309fce98b92a2ff58425d54a684` 的 GitHub Actions run `32308631289` 兑现为公共完成；
+`pytest`、`postgres-migrations`、`packaging-smoke` 三个 job 均成功。RQ-067 前置门关闭，下一检查点
+正式是 6B-3 初学者设计复核与 TDD。这里的公共成功仍只覆盖文档/治理和既有工程边界，不把 6B-3
+产品功能或真实模型质量写成已完成。

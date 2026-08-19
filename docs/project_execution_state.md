@@ -4,7 +4,7 @@ main_stage: 6
 substage_group: "stage-6-session-memory"
 current_checkpoint: "6B-3-conversation-message-foundation"
 status: in_progress
-pause_reason: "RQ-067 authorizes 6B-3 only after the learning/engineering documentation backfill closes publicly; no Conversation/Message product code before that gate"
+pause_reason: ""
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: "RQ-067 authorizes 6B-3 only after the learning/engineering docume
 ## 状态元数据
 
 - 最后更新：2026-08-20
-- 主阶段：阶段 6；6A 持久异步 API/task 基座与 Session/Memory entry design 已公共完成；6B-1 又由提交 `ed8fa58ff3f9ef6c84e1a028ac0e1724b087a26b` 与 Actions `32229024069` 的三个 job 公共闭环；6B-2 已由提交 `0c13a583ea51a7c18301fc29bf5c2931790d6693` 与 Actions `32301852042` 的 `pytest`、`postgres-migrations`、`packaging-smoke` exact-SHA 公共闭环；RQ-067 已条件授权 6B-3，但当前仍受历史教学/工程证据补齐的独立提交与 exact-SHA 公共闭环门阻塞
+- 主阶段：阶段 6；6A 持久异步 API/task 基座与 Session/Memory entry design 已公共完成；6B-1 又由提交 `ed8fa58ff3f9ef6c84e1a028ac0e1724b087a26b` 与 Actions `32229024069` 的三个 job 公共闭环；6B-2 已由提交 `0c13a583ea51a7c18301fc29bf5c2931790d6693` 与 Actions `32301852042` 的 `pytest`、`postgres-migrations`、`packaging-smoke` exact-SHA 公共闭环；RQ-067 文档/工程证据批已由 `63435d90f5153309fce98b92a2ff58425d54a684` / Actions `32308631289` 三 job 公共闭环，现正式进入 6B-3 初学者设计复核与 TDD
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,11 +250,9 @@ pause_reason: "RQ-067 authorizes 6B-3 only after the learning/engineering docume
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6B-3-conversation-message-foundation` 受 RQ-067 文档前置门阻塞；阶段 0 至 6B-2 的
-  覆盖审计、缺口材料、README/学习索引和防复发治理门已经本地落盘，当前只完成比例/完整回归、状态同步、
-  独立提交、推送和 exact-SHA 公共 CI。全绿后无需再次确认即可进入
-  `6B-3-conversation-message-foundation` 的初学者设计复核与 TDD。当前不创建 Conversation/Message/
-  Memory 产品代码，不进入真实 Riot/Provider、Auth/RSO、SSE/前端或后续阶段。
+- 唯一下一步：`6B-3-conversation-message-foundation` 初学者设计复核与 TDD：先讲 Conversation、Message、
+  fixed owner/relationship/subject binding、顺序号和生命周期，再冻结红灯合同；当前只实现 6B-3 的
+  Conversation/Message foundation，不接 Agent、Review Task、Memory、Auth/RSO、SSE、前端或新框架。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -556,9 +554,9 @@ pause_reason: "RQ-067 authorizes 6B-3 only after the learning/engineering docume
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
 | 本地代码 | 阶段 0-5、阶段 6 的 6A、Session/Memory entry design、6B-1 identity persistence 与 6B-2 Resolver/Worker/API/package 纵向均已完成；6B-3 尚未实现 | Player Link 等于 Conversation/Memory、生产模型质量、自动恢复、正式 Auth、SSE 或前端已完成 |
-| 项目理解 | RQ-067 已从阶段 0 重审并本地补齐真实缺口；`docs/learning/README.md` 现统一索引八维证据，阶段 0/1/4/5B/6B-1/6B-2 有独立实现复盘，阶段 3/5A/5C 等由原位补强或成熟退出复核覆盖；本批仍待 exact-SHA 公共闭环 | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
+| 项目理解 | RQ-067 已从阶段 0 重审并由 `63435d9/32308631289` 公共闭环；`docs/learning/README.md` 现统一索引八维证据，阶段 0/1/4/5B/6B-1/6B-2 有独立实现复盘，阶段 3/5A/5C 等由原位补强或成熟退出复核覆盖；当前开始 6B-3 概念教学 | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | 6A `adf53e5/32146760003`、设计批 `bc11afe/32222531783`、6B-1 `ed8fa58/32229024069` 与 6B-2 `0c13a58/32301852042` 均三 job 全绿；RQ-067 文档/治理批尚未提交和公共验证；网页与公网仍未部署 | 本地文档完整或 package/link CI 等于本批已公开、生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
+| GitHub/部署 | 6A `adf53e5/32146760003`、设计批 `bc11afe/32222531783`、6B-1 `ed8fa58/32229024069`、6B-2 `0c13a58/32301852042` 与 RQ-067 文档批 `63435d9/32308631289` 均三 job 全绿；网页与公网仍未部署 | package/link/docs CI 等于生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -1291,3 +1289,10 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 本地聚焦：治理 `10 passed`；Agent Loop/Skill `34 passed`；Provider/Tool `101 passed, 68 subtests`；领域/RAG 代表性集合 `37 passed`。
 - 完整回归：`1224 passed, 42 skipped, 1 warning, 110 subtests passed`。两套 RAG、Harness dry-run、compileall、secret/tracked-data、SDK boundary、Markdown/YAML/link 与 diff 门均通过。
 - 本地裁决：`pass-local-pending-public-ci`。42 个 skip 仍仅因本机无 PostgreSQL/Docker；尚未提交/推送本批，不能把文档闭环写成公共完成。
+
+## 2026-08-20：RQ-067 文档门公共闭环，进入 6B-3
+
+- 文档/工程证据提交 `63435d90f5153309fce98b92a2ff58425d54a684` 已推送；GitHub Actions run `32308631289` 精确对应该 SHA，`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 `completed/success`。
+- 这次公共验证补齐了文档批的治理、完整回归、真实 PostgreSQL migration/metadata 复核和 Linux package 边界；它不把本地 42 个 PostgreSQL/Docker skip 改写为本地真库证据，也不表示 6B-3 功能已完成。
+- RQ-067 前置门正式关闭，`docs/learning/coverage.yaml` 的 Q11/complete 证据获得公共 CI 支持；canonical 现在正式进入 `6B-3-conversation-message-foundation` 的初学者设计复核与 TDD。
+- 当前仍没有 Conversation/Message/Memory 产品代码；下一批先讲并冻结 6B-3 的 owner/relationship/subject 绑定、消息角色/长度、并发序号、归档/隐藏和 owner-scoped 查询合同，再写红灯测试。
