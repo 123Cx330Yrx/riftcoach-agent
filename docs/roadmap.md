@@ -219,7 +219,7 @@ RAG 保存外部知识；Memory 保存玩家相关且可更新的长期状态；
   修复并验证 direct-script/wheel 的 Alembic import-root，6A 正式完成；状态收尾 `d1cc2ed` /
   Actions `32147545753` 也已三 job 全绿；RQ-064 已本地冻结异步 Player Link、typed Memory/Candidate gate
   和 6B-1 至 6B-9 顺序；设计提交 `bc11afe` / Actions `32222531783` 三 job 已公共成功，当前只实施
-  6B-1，完成后才自动进入 6B-2；这不等于正式 Auth、
+  6B-1；RQ-065 已把本轮收紧为 6B-1 公共闭环后停止，6B-2 留待下一轮授权；这不等于正式 Auth、
   Session/Memory 或公网部署已完成；
 - FastAPI 对话和复盘入口；
 - `user_id`、`conversation_id` 和权限边界；

@@ -1279,3 +1279,10 @@ Multi-Agent 与自动恢复仍不进入本批。
 RQ-064 现只启动 6B-1：复用现有 SQLAlchemy Base/Alembic/PostgreSQL 基座，建立独立 Player Link domain、
 四张表、可逆 migration 与事务 Repository。它不复用带 publication/Trace/Artifact 语义的 Review Task
 terminal，不在 API/数据库事务内执行 Account-V1，也不提前写 6B-2 Worker/API 或 6B-3 Conversation。
+
+### RQ-065：6B-1 后停止的执行裁决
+
+用户把本轮范围收紧为只完成 `6B-1-player-identity-link-foundation`。因此 6B-1 仍按既定合同完成独立
+教学、TDD、本地门禁、提交/推送与 exact-SHA 三 job；公共全绿后只把 6B-2 标为
+prepared/waiting authorization 并停止。此裁决只改变自动推进边界，不删除、合并或重排 6B-2 至 6B-9，
+也不放宽外部 I/O、Auth/RSO、SSE/前端、MCP、Multi-Agent 或新技术采用门。

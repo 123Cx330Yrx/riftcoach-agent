@@ -1,9 +1,9 @@
 # Stage 6 Session/Memory V1 Implementation Plan
 
 > **For Codex:** Execute this plan one canonical batch at a time. Use TDD, the repository `AGENTS.md`,
-> real PostgreSQL blocking evidence, independent commits, pushes, and exact-SHA CI. RQ-064 permits
-> automatically entering 6B-1 after the design closes and 6B-2 after 6B-1 closes. After 6B-2
-> closes publicly, prepare 6B-3 and stop for authorization.
+> real PostgreSQL blocking evidence, independent commits, pushes, and exact-SHA CI. RQ-064 originally
+> allowed entering 6B-2 after 6B-1 closes; RQ-065 supersedes that execution scope. Close 6B-1,
+> prepare 6B-2, and stop for a later authorization.
 
 **Goal:** Build a durable, owner-isolated Coach Session/Memory system that starts from stable Riot PUUID
 identity, prevents model inference from directly mutating long-term state, and composes bounded Memory into
@@ -30,8 +30,8 @@ pytest, Docker Compose, GitHub Actions, existing AgentRuntimeV1/ReviewHarness.
 7. Existing Review Task 1.0 remains readable; no historical row is silently backfilled from mutable Riot ID.
 8. Every batch follows red → minimal green → focused/adjacent/full gates → state sync → independent commit/push →
    exact-SHA CI. CI failure keeps the batch open.
-9. RQ-064 does not allow two batches in one commit. Its automatic chain ends after 6B-2 exact-SHA CI;
-   6B-3 may only be prepared, not implemented, without a later authorization.
+9. RQ-065 ends the current automatic chain after 6B-1 exact-SHA CI. Prepare 6B-2 but do not implement it
+   without a later authorization; two batches can never share one commit.
 10. Formal Auth/RSO/HTTPS, SSE/frontend, RLS, Redis/vector index, MCP, Multi-Agent, LangGraph and new SDKs remain out.
 
 ## 6B-1: Player Identity & Link Persistence Foundation
@@ -209,7 +209,8 @@ git diff --check
 ```
 
 Update canonical to 6B-1 local-complete/pending public CI, commit only this batch, push, and wait for exact-SHA
-`pytest`, `postgres-migrations`, and `packaging-smoke`. Only all-green closes 6B-1 and allows automatic 6B-2 entry.
+`pytest`, `postgres-migrations`, and `packaging-smoke`. Only all-green closes 6B-1; RQ-065 then requires a stop
+with 6B-2 prepared/waiting authorization.
 
 ### Not in 6B-1
 
@@ -325,8 +326,8 @@ full gates as 6B-1. Commit only 6B-2, push and require exact-SHA all-green jobs.
 external network calls.
 
 Only after public closure may canonical mark 6B-3 as prepared/waiting authorization; it must not implement 6B-3.
-RQ-064's explicit objective is satisfied at that point: design, Step 1 and Step 2 have each been independently
-implemented, verified and pushed.
+This remains the future 6B-2 closure procedure. RQ-065 defers it to a later authorized turn rather than deleting
+or merging the planned batch.
 
 ### Not in 6B-2
 

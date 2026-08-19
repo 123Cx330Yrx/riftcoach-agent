@@ -408,6 +408,6 @@ PROJECT_ROOT 漂移；当前只把 Worker/smoke 改为 `python -m scripts...`，
 module-entry 修复 `adf53e5` / Actions `32146760003` 随后三 job 全绿：pytest 1102、PostgreSQL 51、
 packaging-smoke 成功且 image boundary 通过；状态收尾 `d1cc2ed` / Actions `32147545753` 也已三 job
 成功。6A 以 `close-with-deferred-boundaries` 关闭；RQ-064 已将
-`stage-6-session-memory-entry-design` 冻结为 ADR-0039/正式设计/实施计划，并只授权公共闭环后依次
-实施 6B-1 与 6B-2；设计提交 `bc11afe` / Actions `32222531783` 三 job 已成功，当前进入 6B-1，尚未
-创建其 schema/migration，也没有公网部署。
+`stage-6-session-memory-entry-design` 冻结为 ADR-0039/正式设计/实施计划；设计提交 `bc11afe` /
+Actions `32222531783` 三 job 已成功。RQ-065 当前只授权闭环 6B-1，完成后停止并把 6B-2 留待下一轮；
+当前尚无公网部署。

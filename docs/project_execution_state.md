@@ -4,7 +4,7 @@ main_stage: 6
 substage_group: "stage-6-session-memory"
 current_checkpoint: "6B-1-player-identity-link-foundation"
 status: in_progress
-pause_reason: "entry design closed at bc11afe / Actions 32222531783; RQ-064 authorizes 6B-1 implementation, which must close independently before 6B-2"
+pause_reason: "entry design closed at bc11afe / Actions 32222531783; RQ-065 limits this turn to independent 6B-1 closure and requires a stop before 6B-2"
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: "entry design closed at bc11afe / Actions 32222531783; RQ-064 auth
 ## 状态元数据
 
 - 最后更新：2026-08-19
-- 主阶段：阶段 6；6A 持久异步 API/task 基座已公共完成；Session/Memory entry design 已由提交 `bc11afe9f2f85a39f05b7f3d6135b14821ebb17d` 与 Actions `32222531783` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job exact-SHA 公共闭环；RQ-064 当前授权 6B-1，6B-1 独立公共完成后才自动进入 6B-2
+- 主阶段：阶段 6；6A 持久异步 API/task 基座已公共完成；Session/Memory entry design 已由提交 `bc11afe9f2f85a39f05b7f3d6135b14821ebb17d` 与 Actions `32222531783` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job exact-SHA 公共闭环；RQ-065 当前只授权完成 6B-1，独立公共闭环后必须停止，6B-2 留待下一轮再次授权
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -553,10 +553,10 @@ pause_reason: "entry design closed at bc11afe / Actions 32222531783; RQ-064 auth
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5 与阶段 6 的 6A 已完成；Session/Memory entry design 已由 `bc11afe` / Actions `32222531783` 三 job 公共闭环；6B-1 尚未开始写产品代码 | 设计/计划或身份地基等于完整 Session/Memory、生产模型质量、自动恢复、正式 Auth、SSE 或前端已完成 |
-| 项目理解 | 已讲解并验证 6A-1 至 6A-7；阶段 6 已冻结 PostgreSQL 单一真源、异步 player-link、稳定 PUUID subject、owner-local relationship、不可变 conversation、typed Memory/Candidate write gate、生命周期/Context/测试矩阵 | 本地设计等于已实现，或 package/control-plane 等于正式鉴权、RSO、容灾、SLA、长期 Coach 或真实模型质量 |
+| 本地代码 | 阶段 0-5 与阶段 6 的 6A 已完成；Session/Memory entry design 已由 `bc11afe` / Actions `32222531783` 三 job 公共闭环；6B-1 domain、四表 0002 与事务 Repository 已本地实现并通过完整回归，正等待独立公共 CI | 本地身份地基等于 Resolver/Worker/API、Conversation/Memory、生产模型质量、自动恢复、正式 Auth、SSE 或前端已完成 |
+| 项目理解 | 已讲解并验证 6A-1 至 6A-7；阶段 6 已冻结总体设计，并已讲清 6B-1 的稳定 PUUID、可变 alias、owner-local relationship、短事务、幂等/锁/CAS/回滚与三层测试职责；最终公共结果仍待本轮收尾复盘 | 本地设计或测试数字等于用户已掌握全部实现细节，或 identity control-plane 等于长期 Coach/真实模型质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | 6A 的 `adf53e5` / Actions `32146760003` 与设计批 `bc11afe` / Actions `32222531783` 均三 job 全绿；网页与公网仍未部署 | package/design CI 等于生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
+| GitHub/部署 | 6A 的 `adf53e5` / Actions `32146760003` 与设计批 `bc11afe` / Actions `32222531783` 均三 job 全绿；6B-1 仍仅本地、尚未提交/推送/exact-SHA CI；网页与公网仍未部署 | 旧公共 CI 或本地绿灯等于 6B-1 已公共完成、生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -1182,3 +1182,22 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   表、Repository、Worker、Conversation 或 Memory 已实现。
 - 按 RQ-064，canonical 进入 `6B-1-player-identity-link-foundation`；本批先做严格 domain 合同与持久身份
   地基，不实现 6B-2 的 Resolver/Worker/API，也不读取 Key 或调用外部服务。
+
+## 2026-08-19：RQ-065 与 6B-1 本地实现门
+
+- 用户用 RQ-065 将本轮停止点收紧为 6B-1 公共闭环；6B-2 不再自动实施，完成后只准备并等待下一轮授权。
+- 已建立 strict Player/Relationship/Link Task domain、Riot ID normalization/fingerprint、public body-free View、
+  allowlisted failure、Service/Port、四张 PostgreSQL ORM 表、可逆 Alembic 0002 与事务 Repository。
+- Repository 覆盖 owner-scoped create/replay/conflict/capacity、deterministic `FOR UPDATE SKIP LOCKED` claim、
+  stale-worker CAS、PUUID/alias/relationship `ON CONFLICT` 收敛、同 PUUID 并发和整事务回滚；角色冲突在
+  `resolve_link()` 同一事务写 `failed/relationship_role_conflict`，不写 alias、不修改 relationship。
+- pure domain 红灯曾为 `ModuleNotFoundError: app.players`；Repository 红灯曾为
+  `ModuleNotFoundError: app.persistence.player_repository`。当前 6B-1 聚焦为 `15 passed, 13 skipped`，相邻为
+  `35 passed, 28 skipped`，完整为 `1117 passed, 40 skipped, 1 warning, 110 subtests passed`。skip 全因本机
+  无 PostgreSQL，不能冒充真库成功。
+- 两套 RAG 均满阈值，Harness dry-run `published`/0 revisions；compileall、SDK boundary、tracked Secret/
+  run-data、YAML、governance、diff 与 Alembic offline SQL 编译通过。离线编译曾抓到两个超过 PostgreSQL
+  63 字符的 constraint 名并已同步修复；本批外部 Riot/Provider/Key I/O 为 0。
+- 当前仍是 `6B-1-player-identity-link-foundation / in_progress`：唯一下一动作是完成最终治理/暂存差异门、
+  独立提交推送并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`。三个 job 全绿前不得
+  关闭 6B-1；全绿后按 RQ-065 停在 6B-2 prepared/waiting authorization。

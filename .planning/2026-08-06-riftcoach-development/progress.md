@@ -2816,3 +2816,25 @@
   与三个 job。entry design 正式关闭。
 - canonical/活动计划进入 `6B-1-player-identity-link-foundation`；下一动作先完成初学者教学和 pure domain
   红灯测试，Resolver/Worker/API、Conversation/Memory 与外部 I/O 均保持范围外。
+
+## 2026-08-19：6B-1 本地实现、RQ-065 收口与门禁
+
+- 用户确认权限后恢复到 `42d46bd`，HEAD 与 origin/main 一致；已有 domain/schema 未提交产物完整保留。
+- 用户随后以 RQ-065 将本轮目标收紧为只完成 6B-1；已同步 requirement、canonical、活动计划、路线、
+  amendment、capability、ADR/design/implementation 与 decisions/history，6B-2 不再自动实施。
+- 三个并行子任务均在执行项目命令前遇到平台 `prompt_cache_retention` 兼容错误；另一次指定
+  `gpt-5.3-codex` 被当前账户拒绝。检查共享工作树后由主线程接管，没有重复覆盖已有文件。
+- pure domain 的历史红灯为 `ModuleNotFoundError: app.players`；Repository 新红灯为
+  `ModuleNotFoundError: app.persistence.player_repository`。现已实现 Player models/fingerprint/Service/Port、
+  四表 ORM/Alembic 0002、`PostgresPlayerRepository` 与阻塞真库测试清单。
+- Repository 行为包括 idempotent create/replay、owner/global capacity、owner-scoped GET、deterministic
+  SKIP LOCKED claim、双 Worker 不重复、subject/alias/relationship upsert、same-PUUID convergence、
+  role conflict 同事务失败、stale worker CAS、confirmed Riot ID snapshot、SQL rollback 和 UTC 单调时间。
+- 首次 Alembic offline SQL 编译发现两个 constraint 名超过 PostgreSQL 63 字符；已同步缩短 ORM、migration、
+  Repository ON CONFLICT 和测试名称。全 metadata identifier 扫描与 11930-byte offline SQL 生成通过。
+- 本地聚焦 `15 passed, 13 skipped`、相邻 `35 passed, 28 skipped`、完整
+  `1117 passed, 40 skipped, 1 warning, 110 subtests passed`。40 skip 是本机无 PostgreSQL 的明确边界。
+- 两套 RAG 满阈值，Harness dry-run `published`/0 revisions；compileall、SDK boundary、tracked data、YAML、
+  initial governance/diff 通过。本批外部 Riot/Provider/Key 调用为 0。
+- 下一动作：重跑状态同步后的 governance/stale/line/diff 门，暂存后独立 cached diff check，再提交、推送并
+  等待 exact-SHA 三 job；全绿后关闭 6B-1 并按 RQ-065 停止。

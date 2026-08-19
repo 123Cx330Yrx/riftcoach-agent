@@ -2830,3 +2830,21 @@
 - lookup 后/resolve 事务前 crash 只证明没有身份副作用，不等于 V1 已有自动恢复；原 running task 仍需
   recovery-required/显式处置，自动 lease/reclaim 留阶段 8。
 - ADR-0039、正式设计和实施计划核心分层一致；当前只是本地设计产物，尚无公共 CI 或产品 migration。
+
+## 2026-08-19：6B-1 实现审计发现
+
+- PostgreSQL identifier 最长 63 字符；SQLAlchemy metadata 能构造超长名称，但 PostgreSQL dialect 在 DDL
+  编译时才拒绝。因此 migration 批除 metadata assertions 外还应保留 offline SQL/真库 upgrade 证据。
+- Link success 必须保存 Riot 响应确认后的 `confirmed_game_name/tag_line`，不能只回显请求 Riot ID；否则
+  Account-V1 规范化/改名后，成功 View 无法说明实际链接到的显示身份。PUUID 仍只存私有 subject 表。
+- Link Task 到 relationship 使用 owner/relationship/subject/role 复合 FK；这让一个合法 relationship_id
+  也不能被另一 owner、subject 或 role 错绑。target 端需要对应 composite unique，不能只依赖 PK。
+- Alias 唯一性是 subject-local `(subject, routing, normalized_riot_id_hash)`，不是全局 Riot ID→subject；
+  Riot ID 历史上可能重指向，Conversation 稳定身份只认 PUUID subject。
+- `resolve_link()` 的网络边界通过参数类型而不是 callback 保证：Repository 只接收已解析
+  `ResolvedRiotAccount`，所以 Account-V1 无法在 SQL transaction/row lock 内执行。
+- role conflict 必须在同一个 resolve transaction 把 running task 变成 failed；抛异常后让 Worker 再调用
+  `fail_link()` 会留下“关系冲突已知但 task 永久 running”的 crash window。
+- 本机没有 PostgreSQL 时，domain/metadata/mapping 可以绿，但 migration/CHECK/FK/ON CONFLICT/SKIP LOCKED/
+  并发与 rollback 必须明确 skip，并由 exact-SHA PostgreSQL 17 job 补齐；SQLite 不具备等价证据。
+- RQ-065 只收紧本轮自动推进，不改变九个 6B 批次设计：6B-2 仍是下一批，但必须在下一轮重新授权。

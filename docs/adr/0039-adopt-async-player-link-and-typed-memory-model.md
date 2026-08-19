@@ -3,7 +3,7 @@
 - 状态：Accepted
 - 日期：2026-08-19
 - 范围：`stage-6-session-memory-entry-design`
-- 需求：RQ-060 至 RQ-064
+- 需求：RQ-060 至 RQ-065
 
 ## 背景
 
@@ -235,8 +235,9 @@ Prompt、Provider 原始响应、Tool body 或内部异常。
 ```
 
 每批独立教学、TDD、真实 PostgreSQL 阻塞证据、本地门禁、提交、推送与 exact-SHA CI。RQ-064
-只允许 entry design 公共闭环后自动进入 6B-1、6B-1 公共闭环后自动进入 6B-2；6B-2 全绿后只把
-6B-3 交接为 prepared/waiting authorization，不实施，也不允许合并跳过。
+原本允许 entry design 公共闭环后自动进入 6B-1、6B-1 公共闭环后自动进入 6B-2；较晚的 RQ-065
+把当前执行范围收紧为只闭环 6B-1，随后停止并把 6B-2 交接为 prepared/waiting authorization。
+这不改变 6B-1 至 6B-9 的架构顺序，也不允许合并跳过批次。
 
 ## 后果
 
@@ -313,7 +314,7 @@ Repository。Auth 落地后再评估，不把未配置正确的 RLS 当安全标
 ## 参考
 
 - ADR-0038
-- RQ-060 至 RQ-064
+- RQ-060 至 RQ-065
 - `app/api/main.py`
 - `app/tasks/models.py`
 - `app/tasks/recent_review_executor.py`

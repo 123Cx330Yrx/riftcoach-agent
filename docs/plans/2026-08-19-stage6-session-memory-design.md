@@ -781,16 +781,16 @@ conversation turn、Message terminal 写入和跨 Skill 回归；不默认新增
 实现三种删除范围、retention/purge/补偿、owner export、性能/安全/隔离纵向、package 与完整 exit matrix；
 关闭 Session/Memory V1 时仍保留正式 Auth/RSO、SSE/前端和阶段 7/8 deferred。
 
-RQ-064 允许 entry design exact-SHA 公共闭环后直接进入 6B-1，并在 6B-1 公共闭环后直接进入 6B-2。
-6B-2 exact-SHA 全绿后只把 6B-3 交接为 prepared/waiting authorization，不实施。它不允许在一个提交中
-混合两个批次，也不允许 CI 未成功就前移 canonical。
+RQ-064 原允许 entry design exact-SHA 公共闭环后直接进入 6B-1，并在 6B-1 公共闭环后直接进入 6B-2；
+较晚的 RQ-065 将本轮收紧为只完成 6B-1。6B-1 exact-SHA 全绿后必须停止，只把 6B-2 交接为
+prepared/waiting authorization。它不允许在一个提交中混合两个批次，也不允许 CI 未成功就前移 canonical。
 
 ## 19. 入口设计退出条件
 
 `stage-6-session-memory-entry-design` 只有同时满足以下证据才关闭：
 
 - ADR-0039、本文与 implementation plan 一致；
-- RQ-060 至 RQ-064、canonical、roadmap、amendment、capability matrix、project decisions 无冲突；
+- RQ-060 至 RQ-065、canonical、roadmap、amendment、capability matrix、project decisions 无冲突；
 - governance、diff、compile/比例回归、安全/Secret 边界通过；
 - 提交推送后 exact-SHA GitHub Actions 三 job 成功；
 - canonical 只切到 `6B-1-player-identity-link-foundation`；

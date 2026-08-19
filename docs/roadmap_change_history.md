@@ -2094,3 +2094,12 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   identity 表、Repository、Worker、Conversation 或 Memory 已实现。
 - `HANDOFF`：按 RQ-064 进入 `6B-1-player-identity-link-foundation`，先做 strict domain contracts、
   四表 0002 与事务 Repository；Resolver/Worker/API 留 6B-2，外部 Riot/Provider I/O 保持 0。
+
+### 2026-08-19：RQ-065 将本轮停止点收紧到 6B-1
+
+- `SCOPE-CORRECTION`：用户明确“完成 6B-1 就先截止，下一轮再继续”，取消 RQ-064 中本轮自动进入
+  6B-2 的部分；6B-1 当前授权和全部既有架构/安全边界不变。
+- `CURRENT`：本轮只允许完成 Player Identity/Link domain、四表 0002、事务 Repository、比例门禁、
+  独立提交/推送与 exact-SHA 三 job；公共全绿后停止。
+- `HANDOFF-AFTER-CLOSE`：6B-2 只能进入 prepared/waiting authorization，不得在本轮实现 Resolver、
+  PlayerLinkWorker、HTTP API、真实 Riot I/O 或 package 接线。
