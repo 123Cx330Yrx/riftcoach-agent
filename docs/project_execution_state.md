@@ -1192,14 +1192,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   stale-worker CAS、PUUID/alias/relationship `ON CONFLICT` 收敛、同 PUUID 并发和整事务回滚；角色冲突在
   `resolve_link()` 同一事务写 `failed/relationship_role_conflict`，不写 alias、不修改 relationship。
 - pure domain 红灯曾为 `ModuleNotFoundError: app.players`；Repository 红灯曾为
-  `ModuleNotFoundError: app.persistence.player_repository`。当前 6B-1 聚焦为 `16 passed, 13 skipped`，相邻为
-  `35 passed, 28 skipped`，完整为 `1118 passed, 40 skipped, 1 warning, 110 subtests passed`。skip 全因本机
+  `ModuleNotFoundError: app.persistence.player_repository`。当前 6B-1 聚焦为 `17 passed, 13 skipped`，相邻为
+  `35 passed, 28 skipped`，完整为 `1119 passed, 40 skipped, 1 warning, 110 subtests passed`。skip 全因本机
   无 PostgreSQL，不能冒充真库成功。
 - 两套 RAG 均满阈值，Harness dry-run `published`/0 revisions；compileall、SDK boundary、tracked Secret/
   run-data、YAML、governance、diff 与 Alembic offline SQL 编译通过。离线编译曾抓到两个超过 PostgreSQL
   63 字符的 constraint 名并已同步修复；本批外部 Riot/Provider/Key I/O 为 0。
 - 实现提交 `656117a` 的首个公共 run `32227457202` 未通过：PostgreSQL 与 packaging 共同暴露 35 字符
   Alembic revision 无法写入默认 32 字符 version column；该缺口已由新增红灯固定并缩短 revision 修补。
+- revision 修补 `b8fa2e3` / Actions `32227937252` 已使 pytest、packaging 和 reversible migration 通过；
+  真库 67 项仅剩一个 CHECK 名断言失败。日志证明完整 CHECK 名被 naming convention 二次前缀后截断；现已
+  用 offline SQL 红灯和全部 CHECK `op.f(...)` 修补，不放宽稳定 schema 名称合同。
 - 当前仍是 `6B-1-player-identity-link-foundation / in_progress`：唯一下一动作是完成修补后的横向/暂存差异门、
   独立提交推送并等待新的 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`。三个 job 全绿前不得
   关闭 6B-1；全绿后按 RQ-065 停在 6B-2 prepared/waiting authorization。

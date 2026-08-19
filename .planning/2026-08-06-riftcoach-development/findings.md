@@ -2852,3 +2852,8 @@
   同一约束。文件名可以保持可读，`revision` 必须独立控制在 32 字符内，并应有不依赖数据库的回归测试。
 - PostgreSQL migration job 与 package stack 同时在 migration 前置阶段失败，是共享基础设施根因信号；
   在这种情况下不应先改两个 job 或 Repository，而应先审计二者共同的 Alembic 路径。
+- 使用含 `ck_%(table_name)s_%(constraint_name)s` 的 naming convention 时，migration 若传入已带完整前缀的
+  CHECK 名，必须用 `op.f(full_name)` 标记为已格式化；否则会再次套 convention，超长后由 SQLAlchemy/Postgres
+  截断并加 hash。UQ/FK convention 不使用 `constraint_name` token，行为不能想当然类推。
+- 单修日志中第一个 role-verification CHECK 会留下其他 21 个潜在同类错误；正确修复是审计 0002 全部
+  CheckConstraint，并用 offline SQL regression 断言既有完整名存在且双前缀不存在。

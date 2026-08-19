@@ -2112,3 +2112,12 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   无数据库红灯已复现 `35 <= 32` 失败。
 - `REPAIR-LOCAL`：revision 缩短为 `0002_player_identity_link`，聚焦 16/13 skipped、完整
   1118/40 skipped/110 subtests 通过；下一动作是修补提交与新的 exact-SHA 三 job，而不是重跑旧 SHA。
+
+### 2026-08-19：6B-1 第二个 run 暴露 CHECK naming-convention 二次格式化
+
+- `PARTIAL-PUBLIC`：`b8fa2e3` / Actions `32227937252` 中 pytest、packaging-smoke 与 reversible migration
+  成功；PostgreSQL test step 为 `66 passed, 1 failed`，6B-1 仍保持 open。
+- `ROOT-CAUSE`：0002 的显式完整 CHECK 名未用 `op.f()`，含 `constraint_name` token 的 convention 再加一层
+  table 前缀并截断为 hash 名；稳定 schema 名称断言正确阻止接受。
+- `REPAIR-LOCAL`：新增 offline SQL 红灯并把 0002 全部 CHECK 名标记为已格式化；聚焦 17/13 skipped、
+  完整 1119/40 skipped/110 subtests 通过。下一动作是全门与第三个 exact-SHA run。

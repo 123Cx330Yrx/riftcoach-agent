@@ -2852,3 +2852,15 @@
 - 修补后 6B-1 聚焦为 `16 passed, 13 skipped`，完整为
   `1118 passed, 40 skipped, 1 warning, 110 subtests passed`。下一动作是重跑横向门、独立修补提交并等待
   新 exact-SHA 三 job；旧失败 run 只作失败证据，不重跑或冒充成功。
+
+## 2026-08-19：6B-1 第二个公共 run 与 CHECK 命名修补
+
+- revision 修补提交 `b8fa2e36a32ac941e7d1f08eb254c744c5a88b71` 已推送；Actions `32227937252`
+  中 pytest 与 packaging-smoke 成功，reversible migration 也成功，只有 PostgreSQL test step 失败。
+- 通过已登录 GitHub 的只读 job 日志取得精确结果：`66 passed, 1 failed`；唯一失败是
+  `test_player_identity_migration_creates_postgresql_schema`，数据库把 role-verification CHECK 名变成带 hash
+  的截断名，未匹配冻结的稳定名称。
+- offline SQL 复现 migration 把完整 `ck_owner_player_relationships_*` 再套一层 naming convention；先加
+  无数据库红灯，随后对 0002 全部 22 个显式 CHECK 名使用 `op.f(...)`，避免只修当前首个断言后再逐个失败。
+- 新 offline test 与双前缀扫描通过；6B-1 聚焦现为 `17 passed, 13 skipped`，完整为
+  `1119 passed, 40 skipped, 1 warning, 110 subtests passed`。下一动作重跑横向门并推送第三个精确 SHA。

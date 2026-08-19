@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import io
 import os
 import uuid
 from collections.abc import Iterator
@@ -31,6 +32,29 @@ def test_player_identity_revision_fits_alembic_version_column() -> None:
 
     assert head is not None
     assert len(head) <= 32
+
+
+def test_player_identity_offline_migration_uses_stable_check_names(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv(
+        "DATABASE_URL",
+        "postgresql+psycopg://riftcoach:offline@localhost:5432/riftcoach",
+    )
+    output = io.StringIO()
+    config = Config(str(ROOT / "alembic.ini"), output_buffer=output)
+    config.set_main_option("script_location", str(ROOT / "migrations"))
+
+    command.upgrade(config, "head", sql=True)
+    sql = output.getvalue()
+
+    assert (
+        "CONSTRAINT ck_owner_player_relationships_role_verification_allowed"
+        in sql
+    )
+    assert "CONSTRAINT ck_player_link_tasks_lifecycle_shape" in sql
+    assert "ck_owner_player_relationships_ck_owner_player" not in sql
+    assert "ck_player_link_tasks_ck_player_link_tasks" not in sql
 
 
 @pytest.fixture()

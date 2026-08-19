@@ -599,8 +599,11 @@ Actions `32222531783`. RQ-065 limits this turn to 6B-1's independent exact-SHA c
 | 三个 6B-1 并行子任务在模型开始前被平台以 `prompt_cache_retention is not supported on this model` 拒绝；一次指定 `gpt-5.3-codex` 又被当前 ChatGPT 账户判定不支持 | 4 | 先检查共享工作树确认已存在的 domain/schema 产物未丢失；停止重复派发，主线程接管 Repository、审查与验证。该错误没有运行项目命令、调用 Key/Riot/Provider 或产生测试结论 |
 | 6B-1 首次 Alembic offline SQL 编译发现 alias unique 与 relationship composite FK 名称超过 PostgreSQL 63 字符 identifier 上限 | 1 | 同步缩短 ORM、migration、Repository `ON CONFLICT` 与测试中的两个名称；全 metadata identifier 扫描通过，offline `upgrade head --sql` 生成 11930 bytes SQL |
 | 6B-1 首个公共 run `32227457202` 的 PostgreSQL migration 与 packaging API stack 同时在 migration 阶段失败 | 1 | 审计发现 revision `0002_player_identity_and_link_tasks` 长 35，超过 Alembic 默认 `version_num VARCHAR(32)`；先加无 DB 红灯得到 `35 <= 32` 失败，再缩短为 `0002_player_identity_link`。不修改 Repository 合同 |
+| 6B-1 第二个公共 run `32227937252` 中 pytest/packaging 成功，但 PostgreSQL 67 项仅 schema 名称断言 1 项失败 | 1 | 通过已登录 GitHub 只读日志确认 migration CHECK 名被 naming convention 二次加前缀并截断；先加 offline SQL 红灯，再对 0002 的全部 CHECK 使用 `op.f(...)`，保留稳定完整名称而不放宽断言 |
 | 6B-1 首次 push 经 OpenSSL+SOCKS 7897 返回 TLS unexpected EOF，read-only `ls-remote` 同路径也失败 | 3 | curl 证明 mixed port 存活后改用单命令 Schannel+HTTP proxy+HTTP/1.1；`ls-remote` 成功后 push `656117a` 成功。未修改全局 Git/系统代理 |
 | 6B-1 首次 100 字符行扫描发现 `PlayerLinkTask` 两个 confirmed display 字段为 103/105 字符 | 1 | 只做等价多行格式化，未改变 Schema；随后重新执行行长、compile 与测试门 |
+| 恢复已登录 GitHub 仓库标签页时首次 `goto` 在 10 秒导航等待上超时 | 1 | 只读检查确认 URL 已实际恢复为仓库首页；未重复导航、未重跑 job 或改变 GitHub 状态 |
+| 第二个公共 run 状态回写的首个组合 `apply_patch` 在 canonical/history 文件边界处含无效 hunk | 1 | 工具原子拒绝且无文件被部分修改；拆为活动计划三文件与 canonical/history 两个精确补丁完成同步 |
 | 并行路线审计子任务被平台以 `prompt_cache_retention is not supported on this model` 在模型开始前拒绝 | 1 | 该子任务无命令、无文件修改、无项目 Provider/Key 调用；复用同一子任务发起受限重试并取得完整只读审计结果，主任务未受影响 |
 | planning-with-files `session-catchup.py` 对本仓库无输出，被初步解释为无遗漏 | 1 | 人工审计确认脚本只检查根目录三文件，未解析 `.planning/.active_plan`；改用活动计划、Git/JSONL 手工恢复，补记 `d1cc2ed/32147545753` 与 RQ-060，不再把无输出当充分证据 |
 | 统计 AGI-Saber Memory 文件的 `functions.exec` JavaScript 模板含 PowerShell反引号，脚本在命令执行前语法失败 | 1 | 改用 PowerShell `-f` 格式化且不含反引号，成功取得文件行数；没有文件或项目状态变化 |
