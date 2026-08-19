@@ -2167,3 +2167,17 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   外推真实 Riot、账号所有权、Conversation/Memory、Auth/RSO、retry/reclaim、SSE/前端或 Provider 质量。
 - `HANDOFF`：canonical 只切到 `6B-3-conversation-message-foundation` prepared/waiting authorization；
   本轮停止，不创建 Conversation、Message 或 Memory 代码。
+
+### 2026-08-20：RQ-067 历史教学/工程证据补齐门
+
+- `AUDIT`：重新按统一八维标准审计阶段 0 至 6B-2 后确认，最早真实持久说明缺口在阶段 0，而不是
+  6B；阶段 1、4、5A、5B、6B-1、6B-2 也分别存在领域 walkthrough、实现后复盘、代码地图、证据矩阵、
+  运行示例或面试边界缺口。阶段 2、5C、5D、5E、5P、5F、6A 与 Session/Memory entry design 由成熟
+  设计/实施/退出材料组合覆盖。
+- `BACKFILL-DESIGN`：采用覆盖矩阵驱动的混合方案，建立 `docs/learning/README.md` 与带严格递增
+  sequence 的 `docs/learning/coverage.yaml`；成熟材料复用，真实缺口才新增文档，不按文件数制造重复。
+- `GOVERNANCE`：治理脚本和红灯测试现在检查当前 checkpoint、前序 complete、八个证据维度、仓库内
+  Markdown 路径、唯一递增 sequence 与 planned/complete 状态，防止以后再次只靠聊天记忆推进。
+- `CONDITIONAL-AUTH`：RQ-067 仍不改变阶段 0—8 或 6B-1 至 6B-9 顺序；6B-3 已获条件授权，但在本批
+  独立提交、推送和 exact-SHA 公共 CI 全绿前不得创建 Conversation/Message/Memory 产品代码。公共闭环
+  后无需再次确认，直接进入 6B-3 初学者设计复核与 TDD。

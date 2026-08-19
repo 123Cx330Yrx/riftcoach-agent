@@ -2927,3 +2927,27 @@
 - Linux smoke 输出 `task_status=failed`、`link_status=succeeded`、`external_riot_provider_calls=0`，并通过
   非 root 与 image exclusion。6B-2 正式关闭；Phase 19/6B-3 只置为 prepared/waiting authorization，
   当前停止且没有 Conversation/Message/Memory 代码。
+
+## 2026-08-20：RQ-067 教学/工程说明补齐与 6B-3 条件授权
+
+- 用户要求重新从阶段 0 起确认最早持久说明缺口，并从真实缺口开始补齐；范围不只包含初学者文档，
+  还包括设计/实现复盘、代码地图、数据/控制流、证据矩阵、运行示例、失败/安全边界、面试表述、README、
+  学习索引和防复发治理门。
+- 采用覆盖矩阵驱动的混合方案：充分材料直接链接复用，缺口才新增成品，避免按文件数量制造重复内容。
+- RQ-067 已追加；Phase 19 保持唯一 in-progress 指针，但 6B-3 产品代码受文档公共闭环前置门阻塞。
+  补齐经治理、回归、独立提交/推送与 exact-SHA CI 确认后，无需用户再次回复即可进入 6B-3。
+- 当前只读审计进行中；尚未创建 Conversation/Message schema、migration、Repository、API 或测试代码。
+
+## 2026-08-20：RQ-067 本地材料与治理门完成，等待公共闭环
+
+- 从阶段 0 到 6B-2 的覆盖审计已完成：最早真实缺口在阶段 0；阶段 1、4、5A、5B、6B-1、6B-2 需要新增或扩充，阶段 2、5C、5D、5E、5P、5F、6A 与 Session/Memory entry design 复用成熟材料。
+- 新增 `docs/learning/README.md`、`coverage.yaml`、阶段 0/1/4/5B/6B-1/6B-2 walkthrough；扩充 `agent_loop_v1.md`、`provider_tool_runtime_usage.md`，为 5C 短设计补统一退出复核链接。
+- README、AGENTS、roadmap、amendment、capability matrix、project decisions/history 与 canonical 已纳入持久学习合同；coverage 防复发治理采用 TDD，当前治理聚焦为 `9 passed`。
+- 当前工作树仍没有 6B-3 Conversation/Message/Memory 产品代码；下一动作是完成剩余路线/决策历史同步、比例/完整门禁与独立公共 CI。全绿后按 RQ-067 自动进入 6B-3 初学者设计复核与 TDD。
+
+## 2026-08-20：RQ-067 本地完整门禁与退出复核
+
+- 新增 `docs/plans/2026-08-20-learning-engineering-documentation-backfill-exit-review.md`，固定最早缺口裁决、覆盖动作、八维合同、本地证据、限制和 6B-3 交接。
+- 治理聚焦最终为 `10 passed`；Agent Loop/Skill `34 passed`，Provider/Tool `101 passed, 68 subtests`，领域/RAG 代表性集合 `37 passed`。
+- 完整 pytest 为 `1224 passed, 42 skipped, 1 warning, 110 subtests passed`；RAG development/holdout、Harness dry-run、compileall、secret/tracked-data、SDK boundary、Markdown/YAML/link/diff 与治理均通过。
+- 本地退出裁决为 `pass-local-pending-public-ci`；42 skip 仍只表示本机无 PostgreSQL/Docker。下一动作是独立提交、推送并等待 exact-SHA 三 job，全绿前不进入 6B-3。

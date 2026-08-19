@@ -7,9 +7,9 @@
 
 ## Current Phase
 
-Phase 19 - `6B-3-conversation-message-foundation`; prepared/waiting authorization.
-6B-2 closed at `0c13a58` / Actions `32301852042`; RQ-066 requires stopping before
-Conversation/Message/Memory implementation.
+Phase 19 - `6B-3-conversation-message-foundation`; authorized by RQ-067 only after the
+learning/engineering documentation backfill closes publicly. 6B-2 closed at `0c13a58` /
+Actions `32301852042`; no Conversation/Message code may be created during the backfill.
 
 ## Phases
 
@@ -438,10 +438,16 @@ Conversation、Message 或 Memory 代码。
 ### Phase 19 - 6B-3-conversation-message-foundation
 
 - Status: in_progress
-- Authorization: prepared/waiting authorization；治理指针保持唯一 in-progress phase，但 RQ-066 不授权实现。
+- Authorization: RQ-067 已给出条件授权；必须先完成并公共验证历史教学/工程说明补齐，之后无需再次确认即可进入 6B-3。
 - Prepared outcome: immutable owner/relationship/subject Conversation、ordered user/assistant Message
   persistence/API 与真实 PostgreSQL constraint/concurrency 证据；不接 Agent、Review Task 或 Memory。
-- [in_progress] 等待用户明确继续；授权前不创建 schema、migration、Repository、API 或测试代码
+- [completed] 审计阶段 0 至 6B-2 的持久教学/工程说明覆盖，确认最早真实缺口在阶段 0，并记录阶段 1/4/5A/5B/6B-1/6B-2 的不同补强级别
+- [completed] 采用覆盖矩阵驱动的混合补齐：复用充分材料，只对真实缺口新增 learner walkthrough / implementation review
+- [completed] 补实际代码地图、数据/控制流、事务/失败/安全边界、证据矩阵、运行示例与面试表述
+- [completed] 更新 README、学习索引、AGENTS 教学成品规则、coverage schema 与治理红灯；同步 canonical/RQ/路线/能力矩阵/决策历史
+- [completed] 运行文档/治理/比例回归/安全/diff 门；本地完整 `1224 passed, 42 skipped, 1 warning, 110 subtests passed`，两套 RAG、Harness、compileall、secret/tracked-data 与 SDK boundary 均通过
+- [in_progress] 独立提交推送并等待 exact-SHA 公共 CI
+- [pending] 公共闭环后确认补齐，再直接进入 6B-3 初学者设计复核与 TDD；此前不创建 Conversation/Message 产品代码
 
 ## 6A Entry Design Checklist
 

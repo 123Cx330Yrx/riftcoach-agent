@@ -21,7 +21,7 @@
 | 3 | Provider 与 Tool Runtime | 外部模型和工具如何统一、可靠地调用 | EchoMind 迁移重构 | 已完成，进入维护 |
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
-| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1 已由 `ed8fa58/32229024069` 公共完成，6B-2 又由 `0c13a58/32301852042` 三 job 公共完成；当前停止在 6B-3 prepared/waiting authorization |
+| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1 已由 `ed8fa58/32229024069` 公共完成，6B-2 又由 `0c13a58/32301852042` 三 job 公共完成；RQ-067 已条件授权 6B-3，但进入产品代码前须先把阶段 0 至 6B-2 的持久教学/工程证据补齐并完成 exact-SHA 公共闭环 |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 未开始 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
@@ -221,7 +221,8 @@ RAG 保存外部知识；Memory 保存玩家相关且可更新的长期状态；
   和 6B-1 至 6B-9 顺序；设计提交 `bc11afe` / Actions `32222531783` 三 job 已公共成功，6B-1 又由
   `ed8fa58` / Actions `32229024069` 三 job 公共闭环；RQ-066 随后只授权 6B-2，其 Resolver、Worker、
   owner-scoped Link API 与 Linux no-I/O package 已由 `0c13a58` / Actions `32301852042` 三 job 公共闭环；
-  当前只准备 6B-3 并等待新授权，这不等于 Conversation/Memory、正式 Auth 或公网部署已完成；
+  RQ-067 已把 6B-3 改为条件授权：先完成历史教学/工程证据补齐、治理、提交与 exact-SHA 公共闭环，
+  之后才可进入 Conversation/Message TDD；这不等于 Conversation/Memory、正式 Auth 或公网部署已完成；
 - FastAPI 对话和复盘入口；
 - `user_id`、`conversation_id` 和权限边界；
 - 外服 Riot 账号关系：官方 routing 没有中国大陆 CN；公开查询只形成以 PUUID 为稳定身份的
@@ -339,3 +340,8 @@ MCP 负责跨系统标准互操作，内部 Tool Runtime 负责本应用可靠�
 7. 面试时如何准确描述，哪些表述属于夸大。
 
 代码由 Codex 协助实现，但每一个阶段必须保留面向学习者的设计说明、运行示例、测试证据和 ADR，使项目既能运行，也能被项目所有者真正讲清楚。
+
+持久教学/工程证据统一从 [`docs/learning/README.md`](learning/README.md) 进入，并由
+[`coverage.yaml`](learning/coverage.yaml) 逐覆盖组登记问题/原理、设计/实现、代码地图、数据/控制流、
+验证、运行、失败/安全/边界与面试表述八个维度。聊天里讲过、测试总数或代码存在不能代替该证据；
+当前 checkpoint 可以暂列 `planned`，但 canonical 继续向后推进前必须改为 `complete`，并通过治理门。

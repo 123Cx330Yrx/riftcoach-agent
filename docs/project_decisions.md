@@ -1327,3 +1327,20 @@ Linux smoke 同时得到 Review Task 的安全 `failed` 与 Fake Resolver Player
 `external_riot_provider_calls=0`。该证据不准入真实 Riot Key、账号所有权、Provider 质量、自动 retry/reclaim、
 Conversation/Memory 或正式 Auth。按 RQ-066，下一检查点只置为
 `6B-3-conversation-message-foundation` prepared/waiting authorization，本轮停止。
+
+### RQ-067：用覆盖矩阵补齐持久教学与工程证据
+
+本次重新审计没有把“已经在聊天里讲过”或“代码/测试存在”当成项目所有者已经掌握。最早真实缺口在
+阶段 0：此前有 ADR 和高层吸收矩阵，但缺少参考快照身份、源码模块、测试事实、文档/实现偏差、采纳/拒绝
+映射和面试边界组成的可复核证据链。阶段 1、4、5A、5B、6B-1、6B-2 也有不同程度的实现后教学缺口。
+
+采用覆盖矩阵驱动的混合方案：成熟的设计/实施/退出材料直接复用，真实缺口新增 walkthrough 或
+implementation review；不为每个历史原子检查点机械复制文件。`docs/learning/coverage.yaml` 对每个组记录
+严格递增 sequence、覆盖 checkpoint、complete/planned 状态及八类证据：问题/原理、设计/实现、代码地图、
+数据/控制流、验证、运行、失败/安全/边界和面试表述。治理脚本以红灯测试固定当前 checkpoint、前序 complete、
+路径在仓库内且为非空 Markdown，防止后续推进再次依赖长对话记忆。
+
+本批只补说明、索引、README 和治理，不创建 Conversation/Message/Memory 产品代码，不调用 Riot/Provider，
+不改变阶段 0—8 或 6B-1 至 6B-9 顺序。RQ-067 已构成 6B-3 的条件实施授权：文档批独立提交、推送并通过
+exact-SHA 公共 CI 后，无需再次确认进入 6B-3 初学者设计复核与 TDD；在公共闭环前 canonical 仍保持
+`6B-3-conversation-message-foundation`，产品代码门关闭。

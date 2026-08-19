@@ -19,7 +19,9 @@ order:
 6. `docs/roadmap_v1_3_amendment.md` and
    `docs/architecture_capability_matrix.md` - detailed sequencing and
    horizontal capability checks;
-7. relevant ADRs, design documents, implementation files, and tests for the
+7. `docs/learning/README.md` and `docs/learning/coverage.yaml` - persistent
+   owner-learning and engineering-evidence coverage for completed work;
+8. relevant ADRs, design documents, implementation files, and tests for the
    exact substage being handled.
 
 After recovering this context, run `python scripts/check_project_governance.py`.
@@ -75,6 +77,16 @@ Codex may implement the code, but must not replace understanding with an
 unexplained automation result. Do not overclaim from small development sets,
 synthetic candidates, dry runs, or unverified external project documentation.
 
+Every completed product substage must also leave durable learning and
+engineering evidence for the eight dimensions in
+`docs/learning/coverage.yaml`: problem/principle, design/implementation, code
+map, data/control flow, verification, runbook, failure/security/boundary, and
+interview wording. Reuse a mature design or exit review when it truly covers a
+dimension; do not create duplicate documents merely to increase file count.
+Conversation-only teaching, a test count, or code existence is not durable
+coverage. A checkpoint may be listed as `planned` while work is in progress,
+but it must become `complete` before the canonical state advances beyond it.
+
 ## 5. Technology Adoption Gate
 
 - EchoMind, AGI-Saber, Sea/OpenResearch, Pi, Claude Agent SDK, LangGraph, and
@@ -101,7 +113,9 @@ After every accepted substage or material requirement change:
 5. run focused tests, the proportional regression suite, compile checks, and
    `git diff --check`;
 6. search for stale phrases that contradict the canonical state.
-7. run `python scripts/check_project_governance.py` and do not accept the
+7. update `docs/learning/coverage.yaml` and its indexed learning/review
+   material when a product checkpoint is completed;
+8. run `python scripts/check_project_governance.py` and do not accept the
    substage while it reports an inconsistency.
 
 Maintain four separate progress lines in the canonical state: local code,

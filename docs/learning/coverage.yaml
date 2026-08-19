@@ -1,0 +1,261 @@
+schema: 1
+groups:
+  - id: stage-0-baseline-and-reference-evidence
+    sequence: 10
+    covers:
+      - stage-0-baseline-and-reference-evidence
+    status: complete
+    evidence:
+      problem_and_principle: [docs/learning/stage-0-baseline-and-reference-evidence.md]
+      design_and_implementation: [docs/learning/stage-0-baseline-and-reference-evidence.md]
+      code_map: [docs/learning/stage-0-baseline-and-reference-evidence.md]
+      data_and_control_flow: [docs/learning/stage-0-baseline-and-reference-evidence.md]
+      verification: [docs/learning/stage-0-baseline-and-reference-evidence.md]
+      runbook: [docs/learning/stage-0-baseline-and-reference-evidence.md]
+      failure_security_boundary: [docs/learning/stage-0-baseline-and-reference-evidence.md]
+      interview_wording: [docs/learning/stage-0-baseline-and-reference-evidence.md]
+
+  - id: stage-1-domain-core-v1
+    sequence: 20
+    covers:
+      - stage-1-domain-core-v1
+    status: complete
+    evidence:
+      problem_and_principle: [docs/learning/stage-1-domain-core-v1-walkthrough.md]
+      design_and_implementation: [docs/learning/stage-1-domain-core-v1-walkthrough.md]
+      code_map: [docs/learning/stage-1-domain-core-v1-walkthrough.md]
+      data_and_control_flow: [docs/learning/stage-1-domain-core-v1-walkthrough.md]
+      verification: [docs/learning/stage-1-domain-core-v1-walkthrough.md]
+      runbook: [docs/learning/stage-1-domain-core-v1-walkthrough.md]
+      failure_security_boundary: [docs/learning/stage-1-domain-core-v1-walkthrough.md]
+      interview_wording: [docs/learning/stage-1-domain-core-v1-walkthrough.md]
+
+  - id: stage-2-harness-v1
+    sequence: 30
+    covers:
+      - stage-2-harness-v1
+    status: complete
+    evidence:
+      problem_and_principle: [docs/harness_v1_usage.md]
+      design_and_implementation: [docs/plans/2026-07-22-harness-v1-design.md, docs/plans/2026-07-22-harness-v1-implementation.md]
+      code_map: [docs/plans/2026-07-22-harness-v1-implementation.md]
+      data_and_control_flow: [docs/harness_v1_usage.md]
+      verification: [docs/harness_v1_usage.md]
+      runbook: [docs/harness_v1_usage.md]
+      failure_security_boundary: [docs/harness_v1_usage.md]
+      interview_wording: [docs/harness_v1_usage.md]
+
+  - id: stage-3-provider-tool-runtime
+    sequence: 40
+    covers:
+      - stage-3-provider-tool-runtime
+      - 3G-1-provider-tool-calling-contract
+      - 3G-2-provider-capability-negotiation
+      - 3G-3-provider-registry
+    status: complete
+    evidence:
+      problem_and_principle: [docs/provider_tool_runtime_usage.md]
+      design_and_implementation: [docs/provider_tool_runtime_usage.md, docs/plans/2026-07-23-provider-tool-runtime-design.md]
+      code_map: [docs/provider_tool_runtime_usage.md]
+      data_and_control_flow: [docs/provider_tool_runtime_usage.md, docs/provider_tool_calling_protocol.md]
+      verification: [docs/provider_tool_runtime_usage.md]
+      runbook: [docs/provider_tool_runtime_usage.md]
+      failure_security_boundary: [docs/provider_tool_runtime_usage.md, docs/provider_capability_negotiation.md]
+      interview_wording: [docs/provider_tool_runtime_usage.md]
+
+  - id: stage-4-rag-v1
+    sequence: 50
+    covers:
+      - stage-4-rag-v1
+      - stage-4m-independent-rag-gate
+    status: complete
+    evidence:
+      problem_and_principle: [docs/learning/stage-4-rag-v1-implementation-review.md, docs/rag_v1_baseline.md]
+      design_and_implementation: [docs/learning/stage-4-rag-v1-implementation-review.md]
+      code_map: [docs/learning/stage-4-rag-v1-implementation-review.md]
+      data_and_control_flow: [docs/learning/stage-4-rag-v1-implementation-review.md]
+      verification: [docs/learning/stage-4-rag-v1-implementation-review.md, docs/plans/2026-08-04-rag-4m-independent-gate.md]
+      runbook: [docs/learning/stage-4-rag-v1-implementation-review.md]
+      failure_security_boundary: [docs/learning/stage-4-rag-v1-implementation-review.md]
+      interview_wording: [docs/learning/stage-4-rag-v1-implementation-review.md]
+
+  - id: stage-5a-minimal-agent-loop
+    sequence: 60
+    covers:
+      - 5A-minimal-agent-loop
+    status: complete
+    evidence:
+      problem_and_principle: [docs/agent_loop_v1.md]
+      design_and_implementation: [docs/agent_loop_v1.md]
+      code_map: [docs/agent_loop_v1.md]
+      data_and_control_flow: [docs/agent_loop_v1.md]
+      verification: [docs/agent_loop_v1.md]
+      runbook: [docs/agent_loop_v1.md]
+      failure_security_boundary: [docs/agent_loop_v1.md]
+      interview_wording: [docs/agent_loop_v1.md]
+
+  - id: stage-5b-skill-contract-v1
+    sequence: 70
+    covers:
+      - 5B-skill-contract-v1
+    status: complete
+    evidence:
+      problem_and_principle: [docs/learning/stage-5b-skill-contract-v1-implementation-review.md]
+      design_and_implementation: [docs/learning/stage-5b-skill-contract-v1-implementation-review.md]
+      code_map: [docs/learning/stage-5b-skill-contract-v1-implementation-review.md]
+      data_and_control_flow: [docs/learning/stage-5b-skill-contract-v1-implementation-review.md]
+      verification: [docs/learning/stage-5b-skill-contract-v1-implementation-review.md]
+      runbook: [docs/learning/stage-5b-skill-contract-v1-implementation-review.md]
+      failure_security_boundary: [docs/learning/stage-5b-skill-contract-v1-implementation-review.md]
+      interview_wording: [docs/learning/stage-5b-skill-contract-v1-implementation-review.md]
+
+  - id: stage-5c-skill-router-v1
+    sequence: 80
+    covers:
+      - 5C-1-router-contract
+      - 5C-2-skill-catalog
+      - 5C-3-deterministic-router
+      - 5C-4-rejection-ambiguity
+      - 5C-5-router-evaluation
+      - 5C-6-model-fallback-decision
+    status: complete
+    evidence:
+      problem_and_principle: [docs/plans/2026-08-07-skill-router-v1-exit-review.md]
+      design_and_implementation: [docs/plans/2026-08-07-skill-router-v1-exit-review.md]
+      code_map: [docs/plans/2026-08-07-skill-router-v1-exit-review.md]
+      data_and_control_flow: [docs/plans/2026-08-07-skill-router-v1-exit-review.md]
+      verification: [docs/plans/2026-08-07-skill-router-v1-exit-review.md]
+      runbook: [docs/plans/2026-08-07-skill-router-v1-exit-review.md]
+      failure_security_boundary: [docs/plans/2026-08-07-skill-router-v1-exit-review.md]
+      interview_wording: [docs/plans/2026-08-07-skill-router-v1-exit-review.md]
+
+  - id: stage-5d-constrained-agent-loop
+    sequence: 90
+    covers:
+      - 5D-constrained-agent-loop
+    status: complete
+    evidence:
+      problem_and_principle: [docs/plans/2026-08-15-5d-constrained-agent-loop-exit-review.md]
+      design_and_implementation: [docs/plans/2026-08-15-5d-constrained-agent-loop-exit-review.md]
+      code_map: [docs/plans/2026-08-15-5d-constrained-agent-loop-exit-review.md]
+      data_and_control_flow: [docs/plans/2026-08-15-5d-constrained-agent-loop-exit-review.md]
+      verification: [docs/plans/2026-08-15-5d-constrained-agent-loop-exit-review.md]
+      runbook: [docs/plans/2026-08-15-5d-constrained-agent-loop-exit-review.md]
+      failure_security_boundary: [docs/plans/2026-08-15-5d-constrained-agent-loop-exit-review.md]
+      interview_wording: [docs/plans/2026-08-15-5d-constrained-agent-loop-exit-review.md]
+
+  - id: stage-5e-agent-runtime-v1
+    sequence: 100
+    covers:
+      - 5E-agent-runtime-v1
+    status: complete
+    evidence:
+      problem_and_principle: [docs/plans/2026-08-17-agent-runtime-v1-exit-review.md]
+      design_and_implementation: [docs/plans/2026-08-15-agent-runtime-v1-entry-design.md, docs/plans/2026-08-17-agent-runtime-v1-exit-review.md]
+      code_map: [docs/plans/2026-08-17-agent-runtime-v1-exit-matrix.md]
+      data_and_control_flow: [docs/plans/2026-08-17-agent-runtime-v1-exit-review.md]
+      verification: [docs/plans/2026-08-17-agent-runtime-v1-exit-matrix.md]
+      runbook: [docs/plans/2026-08-17-agent-runtime-v1-exit-review.md]
+      failure_security_boundary: [docs/plans/2026-08-17-agent-runtime-v1-exit-review.md]
+      interview_wording: [docs/plans/2026-08-17-agent-runtime-v1-exit-review.md]
+
+  - id: stage-5p-product-slice
+    sequence: 110
+    covers:
+      - 5P-product-slice
+    status: complete
+    evidence:
+      problem_and_principle: [docs/plans/2026-08-17-product-slice-exit-review.md]
+      design_and_implementation: [docs/plans/2026-08-17-product-slice-exit-review.md]
+      code_map: [docs/plans/2026-08-17-product-slice-exit-matrix.md]
+      data_and_control_flow: [docs/plans/2026-08-17-product-slice-exit-review.md]
+      verification: [docs/plans/2026-08-17-product-slice-exit-matrix.md]
+      runbook: [README.md]
+      failure_security_boundary: [docs/plans/2026-08-17-product-slice-exit-review.md]
+      interview_wording: [docs/plans/2026-08-17-product-slice-exit-review.md]
+
+  - id: stage-5f-pi-adoption-experiment
+    sequence: 120
+    covers:
+      - 5F-pi-adoption-experiment
+    status: complete
+    evidence:
+      problem_and_principle: [docs/plans/2026-08-17-5f-pi-adoption-exit-review.md]
+      design_and_implementation: [docs/plans/2026-08-17-5f-pi-adoption-exit-review.md]
+      code_map: [docs/plans/2026-08-17-5f-pi-adoption-exit-matrix.md]
+      data_and_control_flow: [docs/plans/2026-08-17-5f-pi-adoption-exit-review.md]
+      verification: [docs/plans/2026-08-17-5f-pi-adoption-exit-matrix.md]
+      runbook: [docs/plans/2026-08-17-5f2-offline-protocol-adapter-spike-exit-review.md]
+      failure_security_boundary: [docs/plans/2026-08-17-5f-pi-adoption-exit-review.md]
+      interview_wording: [docs/plans/2026-08-17-5f-pi-adoption-exit-review.md]
+
+  - id: stage-6a-postgresql-task-product
+    sequence: 130
+    covers:
+      - 6A-postgresql-task-product
+    status: complete
+    evidence:
+      problem_and_principle: [docs/plans/2026-08-17-6a-fastapi-postgresql-task-model-design.md]
+      design_and_implementation: [docs/plans/2026-08-17-6a-fastapi-postgresql-task-model-implementation.md]
+      code_map: [docs/plans/2026-08-18-6a-exit-matrix.md]
+      data_and_control_flow: [docs/plans/2026-08-17-6a-fastapi-postgresql-task-model-design.md]
+      verification: [docs/plans/2026-08-18-6a-exit-matrix.md, docs/plans/2026-08-18-6a-exit-review.md]
+      runbook: [README.md]
+      failure_security_boundary: [docs/plans/2026-08-18-6a-exit-review.md]
+      interview_wording: [docs/plans/2026-08-18-6a-exit-review.md]
+
+  - id: stage-6-session-memory-entry-design
+    sequence: 140
+    covers:
+      - stage-6-session-memory-entry-design
+    status: complete
+    evidence:
+      problem_and_principle: [docs/plans/2026-08-19-stage6-session-memory-design.md]
+      design_and_implementation: [docs/adr/0039-adopt-async-player-link-and-typed-memory-model.md, docs/plans/2026-08-19-stage6-session-memory-implementation.md]
+      code_map: [docs/plans/2026-08-19-stage6-session-memory-design.md]
+      data_and_control_flow: [docs/plans/2026-08-19-stage6-session-memory-design.md]
+      verification: [docs/plans/2026-08-19-stage6-session-memory-implementation.md]
+      runbook: [docs/plans/2026-08-19-stage6-session-memory-implementation.md]
+      failure_security_boundary: [docs/plans/2026-08-19-stage6-session-memory-design.md]
+      interview_wording: [docs/plans/2026-08-19-stage6-session-memory-design.md]
+
+  - id: 6b-1-player-identity-link-foundation
+    sequence: 150
+    covers:
+      - 6B-1-player-identity-link-foundation
+    status: complete
+    evidence:
+      problem_and_principle: [docs/learning/6b-1-player-identity-link-persistence-walkthrough.md]
+      design_and_implementation: [docs/learning/6b-1-player-identity-link-persistence-walkthrough.md]
+      code_map: [docs/learning/6b-1-player-identity-link-persistence-walkthrough.md]
+      data_and_control_flow: [docs/learning/6b-1-player-identity-link-persistence-walkthrough.md]
+      verification: [docs/learning/6b-1-player-identity-link-persistence-walkthrough.md]
+      runbook: [docs/learning/6b-1-player-identity-link-persistence-walkthrough.md]
+      failure_security_boundary: [docs/learning/6b-1-player-identity-link-persistence-walkthrough.md]
+      interview_wording: [docs/learning/6b-1-player-identity-link-persistence-walkthrough.md]
+
+  - id: 6b-2-async-player-link-worker-api
+    sequence: 160
+    covers:
+      - 6B-2-async-player-link-worker-api
+    status: complete
+    evidence:
+      problem_and_principle: [docs/learning/6b-2-async-player-link-worker-api-walkthrough.md]
+      design_and_implementation: [docs/learning/6b-2-async-player-link-worker-api-walkthrough.md]
+      code_map: [docs/learning/6b-2-async-player-link-worker-api-walkthrough.md]
+      data_and_control_flow: [docs/learning/6b-2-async-player-link-worker-api-walkthrough.md]
+      verification: [docs/learning/6b-2-async-player-link-worker-api-walkthrough.md]
+      runbook: [docs/learning/6b-2-async-player-link-worker-api-walkthrough.md]
+      failure_security_boundary: [docs/learning/6b-2-async-player-link-worker-api-walkthrough.md]
+      interview_wording: [docs/learning/6b-2-async-player-link-worker-api-walkthrough.md]
+
+  - id: 6b-3-conversation-message-foundation
+    sequence: 170
+    covers:
+      - 6B-3-conversation-message-foundation
+    status: planned
+    evidence:
+      problem_and_principle: [docs/plans/2026-08-19-stage6-session-memory-design.md]
+      design_and_implementation: [docs/plans/2026-08-19-stage6-session-memory-implementation.md]
+      data_and_control_flow: [docs/plans/2026-08-19-stage6-session-memory-design.md]
+      failure_security_boundary: [docs/plans/2026-08-19-stage6-session-memory-design.md]

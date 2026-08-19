@@ -4,7 +4,7 @@ main_stage: 6
 substage_group: "stage-6-session-memory"
 current_checkpoint: "6B-3-conversation-message-foundation"
 status: in_progress
-pause_reason: "6B-2 closed at 0c13a58 / Actions 32301852042; RQ-066 requires stopping with 6B-3 prepared and waiting for a new authorization"
+pause_reason: "RQ-067 authorizes 6B-3 only after the learning/engineering documentation backfill closes publicly; no Conversation/Message product code before that gate"
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: "6B-2 closed at 0c13a58 / Actions 32301852042; RQ-066 requires sto
 ## 状态元数据
 
 - 最后更新：2026-08-20
-- 主阶段：阶段 6；6A 持久异步 API/task 基座与 Session/Memory entry design 已公共完成；6B-1 又由提交 `ed8fa58ff3f9ef6c84e1a028ac0e1724b087a26b` 与 Actions `32229024069` 的三个 job 公共闭环；6B-2 已由提交 `0c13a583ea51a7c18301fc29bf5c2931790d6693` 与 Actions `32301852042` 的 `pytest`、`postgres-migrations`、`packaging-smoke` exact-SHA 公共闭环；按 RQ-066 当前停止在 6B-3 prepared/waiting authorization
+- 主阶段：阶段 6；6A 持久异步 API/task 基座与 Session/Memory entry design 已公共完成；6B-1 又由提交 `ed8fa58ff3f9ef6c84e1a028ac0e1724b087a26b` 与 Actions `32229024069` 的三个 job 公共闭环；6B-2 已由提交 `0c13a583ea51a7c18301fc29bf5c2931790d6693` 与 Actions `32301852042` 的 `pytest`、`postgres-migrations`、`packaging-smoke` exact-SHA 公共闭环；RQ-067 已条件授权 6B-3，但当前仍受历史教学/工程证据补齐的独立提交与 exact-SHA 公共闭环门阻塞
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,9 +250,11 @@ pause_reason: "6B-2 closed at 0c13a58 / Actions 32301852042; RQ-066 requires sto
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6B-3-conversation-message-foundation` 已 prepared/waiting authorization；等待用户在
-  新一轮明确继续后，先做初学者教学与既有设计复核，再按红灯测试开始 Conversation/Message foundation。
-  当前不创建 Conversation/Message/Memory，不进入真实 Riot/Provider、Auth/RSO、SSE/前端或后续阶段。
+- 唯一下一步：`6B-3-conversation-message-foundation` 受 RQ-067 文档前置门阻塞；阶段 0 至 6B-2 的
+  覆盖审计、缺口材料、README/学习索引和防复发治理门已经本地落盘，当前只完成比例/完整回归、状态同步、
+  独立提交、推送和 exact-SHA 公共 CI。全绿后无需再次确认即可进入
+  `6B-3-conversation-message-foundation` 的初学者设计复核与 TDD。当前不创建 Conversation/Message/
+  Memory 产品代码，不进入真实 Riot/Provider、Auth/RSO、SSE/前端或后续阶段。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -554,9 +556,9 @@ pause_reason: "6B-2 closed at 0c13a58 / Actions 32301852042; RQ-066 requires sto
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
 | 本地代码 | 阶段 0-5、阶段 6 的 6A、Session/Memory entry design、6B-1 identity persistence 与 6B-2 Resolver/Worker/API/package 纵向均已完成；6B-3 尚未实现 | Player Link 等于 Conversation/Memory、生产模型质量、自动恢复、正式 Auth、SSE 或前端已完成 |
-| 项目理解 | 已讲解并验证 6A-1 至 6A-7、6B-1 与 6B-2 的 API 短事务、事务外 Account-V1、Resolver 安全映射、Worker claim/terminal CAS 与三层测试职责；仍需通过后续复盘和 6B-3 实施继续深化 | 代码或测试数字等于用户已经掌握全部实现细节，或 identity/link control-plane 等于长期 Coach/真实模型质量 |
+| 项目理解 | RQ-067 已从阶段 0 重审并本地补齐真实缺口；`docs/learning/README.md` 现统一索引八维证据，阶段 0/1/4/5B/6B-1/6B-2 有独立实现复盘，阶段 3/5A/5C 等由原位补强或成熟退出复核覆盖；本批仍待 exact-SHA 公共闭环 | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | 6A `adf53e5/32146760003`、设计批 `bc11afe/32222531783`、6B-1 `ed8fa58/32229024069` 与 6B-2 `0c13a58/32301852042` 均三 job 全绿；网页与公网仍未部署 | package/link CI 等于生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
+| GitHub/部署 | 6A `adf53e5/32146760003`、设计批 `bc11afe/32222531783`、6B-1 `ed8fa58/32229024069` 与 6B-2 `0c13a58/32301852042` 均三 job 全绿；RQ-067 文档/治理批尚未提交和公共验证；网页与公网仍未部署 | 本地文档完整或 package/link CI 等于本批已公开、生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -1269,3 +1271,23 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   Task subject binding、自动 retry/reclaim、verified-self/Auth/RSO、SSE/前端或真实 Riot/Provider 调用。
 - RQ-066 的授权目标已经满足。canonical 现只把 `6B-3-conversation-message-foundation` 标为
   prepared/waiting authorization；本轮停止，不创建 Conversation、Message 或 Memory 代码。
+
+## 2026-08-20：RQ-067 持久教学/工程说明补齐前置门
+
+- 用户要求重新确认缺口是否确实从 6B 才开始，并从阶段 0 起以统一标准审计；不能用文件数量、聊天长度、
+  canonical 或 progress 中“已讲过”的一句话替代可独立复习的成品。
+- 补齐范围包含全部已识别材料，而非仅初学者文章：设计/实现复盘、实际代码地图、数据流与控制流、事务/
+  失败/安全边界、需求→源码→测试→CI→限制证据矩阵、运行示例、面试安全表述、README/学习索引，及
+  AGENTS/治理防复发门。
+- 采用覆盖矩阵驱动的混合方案：充分材料链接复用，真实缺口新增 walkthrough/implementation review；
+  不按文件数量重复已有内容，也不以一篇笼统总览掩盖原子子阶段缺口。
+- 当前仍以 `6B-3-conversation-message-foundation` 作为唯一产品检查点，但它受本横向文档门阻塞；补齐批
+  独立通过治理、比例回归、提交/推送和 exact-SHA 公共 CI 后，RQ-067 允许无需再次确认直接进入 6B-3。
+  文档门闭环前不创建 Conversation/Message schema、migration、Repository、API 或产品测试。
+
+## RQ-067 本地退出复核（公共验证前）
+
+- 新增整体退出复核 `docs/plans/2026-08-20-learning-engineering-documentation-backfill-exit-review.md`；覆盖账本登记 17 组，当前 6B-3 为 `planned`，所有前序组为 `complete`。
+- 本地聚焦：治理 `10 passed`；Agent Loop/Skill `34 passed`；Provider/Tool `101 passed, 68 subtests`；领域/RAG 代表性集合 `37 passed`。
+- 完整回归：`1224 passed, 42 skipped, 1 warning, 110 subtests passed`。两套 RAG、Harness dry-run、compileall、secret/tracked-data、SDK boundary、Markdown/YAML/link 与 diff 门均通过。
+- 本地裁决：`pass-local-pending-public-ci`。42 个 skip 仍仅因本机无 PostgreSQL/Docker；尚未提交/推送本批，不能把文档闭环写成公共完成。

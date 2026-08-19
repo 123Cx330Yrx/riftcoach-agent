@@ -4,7 +4,14 @@ RiftCoach 是一个基于 Riot 公开赛后数据的英雄联盟复盘与训练�
 
 ## 当前定位
 
-当前版本包含 RiftCoach 独立领域核心、质量门控 Harness、可靠 Tool Runtime、RAG v1、最小 Agent Loop 与 Skill Router 基础。项目没有直接合并 EchoMind 或 AGI-Saber，也尚未实现完整的会话式 Agent 平台。
+当前版本包含 RiftCoach 独立领域核心、质量门控 Harness、可靠 Tool Runtime、RAG v1、受限
+AgentRuntime、PostgreSQL 异步任务基座，以及玩家身份绑定的持久化、Worker 和 HTTP 纵向切片。项目没有
+直接合并 EchoMind 或 AGI-Saber，也尚未实现 Conversation/Message、长期 Memory 或完整的会话式 Agent
+平台。
+
+如果你想理解这些能力怎样一步步搭建、对应哪些源码/测试、面试时怎样准确表述，请从
+[学习与工程证据索引](docs/learning/README.md) 开始。项目执行位置仍以
+[当前执行状态](docs/project_execution_state.md) 为唯一事实源。
 
 当前数据分工：
 
@@ -62,6 +69,52 @@ API+Worker+PostgreSQL packaging、真实 Worker composition 和 no-I/O Linux smo
 这些能力仍不等于正式公网鉴权/HTTPS、Session/Memory、SSE 或自动 lease/reclaim。真实外部 Worker
 组合与 Docker/Compose 控制面已通过公共 CI，但仍不能称为正式公网部署；PostgreSQL job 继续是 task
 并发与生命周期语义的阻塞证据，Linux smoke 也不证明模型报告质量。
+
+### 当前 Player Link 纵向切片（6B-1 / 6B-2）
+
+仓库还包含 `POST /player-links` 与 `GET /player-links/{link_task_id}`。POST 只把外服 Riot ID、routing
+region 和关系角色作为持久化 intent 入队并快速返回；独立 Player Link Worker 才会在数据库事务外调用
+Account-V1，随后用一个 PostgreSQL 短事务收敛稳定 PUUID subject、当前 Riot ID alias、owner
+relationship 和 Link terminal。API 响应不会返回完整 PUUID，查询始终受 trusted owner 作用域限制。
+
+先做不调用 Riot API 的 composition 检查：
+
+```powershell
+python -m scripts.run_player_link_worker --worker-id player-link-worker-1 --check
+```
+
+只学习 Player Link 时，填入本地 `RIOT_API_KEY` 后可显式只启动 API 与 Link Worker，避免同时启动需要
+模型 Provider 配置的 review Worker：
+
+```powershell
+docker compose --profile runtime up --build api player-link-worker
+```
+
+若改用 `docker compose --profile runtime up --build` 启动完整 runtime profile，还必须同时配置当前
+LLM Provider/Model/Key；后文的完整 review Worker preflight 仍然适用。服务 ready 后，可在本机固定开发
+owner 下创建绑定 intent：
+
+```powershell
+$body = @{
+  riot_id = "<GAME_NAME>#<TAG_LINE>"
+  routing_region = "asia"
+  relationship_role = "self"
+} | ConvertTo-Json
+
+$link = Invoke-RestMethod `
+  -Method Post `
+  -Uri http://localhost:8000/player-links `
+  -ContentType application/json `
+  -Body $body
+
+Invoke-RestMethod `
+  -Method Get `
+  -Uri ("http://localhost:8000" + $link.link)
+```
+
+这里只能证明 Riot ID 能解析为一个外服 PUUID；`relationship_role=self` 是 owner 的声明，不是 Riot
+账号控制权证明。当前没有正式 Auth/RSO，因此不能创建 `rso_verified`，也不能把本地 fixed owner
+配置冒充公网多用户鉴权。绑定成功后 Conversation 仍不可创建，因为 6B-3 尚未实现。
 
 ### 本地 Linux package 与进程职责
 

@@ -130,3 +130,146 @@ TOOL: {"success": true, "data": {"echo": "hello"}}
 - 循环会在最终文本、预算耗尽、重复调用或错误时明确停止。
 
 5B 已在此基础上定义 Skill Contract：Skill 决定某类任务允许使用哪些工具、采用多少预算、需要什么输入输出，以及怎样判断成功。下一步 5C 才会根据用户请求选择 Skill。
+
+## 9. 把概念落到真实源码
+
+前面的循环图解释“发生了什么”，这一节解释“代码分别在哪里做”。先看 5A
+建立时最核心的四个对象：
+
+| 对象 | 源码位置 | 在一次运行中的职责 |
+|---|---|---|
+| `AgentRunRequest` | `app/agent/loop.py` | 保存初始消息、允许工具、最大迭代数、最大工具调用数、超时和运行元数据；对象不可变，调用方不能在循环途中偷偷扩大权限 |
+| `AgentLoop` | `app/agent/loop.py` | 取得工具定义，构造 `ChatRequest`，调用 Provider，判断是最终文本还是 ToolCall，并决定继续或停止 |
+| `ToolExecutionRecord` | `app/agent/loop.py` | 把模型给出的 call ID、工具名、参数和 `ToolRuntime` 的稳定结果包成一条可审计记录 |
+| `AgentRunResult` | `app/agent/loop.py` | 统一返回状态、停止原因、完整消息、Provider 响应、工具记录、Usage 和最终响应；调用方不必从异常或日志里猜结局 |
+
+真正的协作关系是：
+
+```text
+调用方
+  │ 构造 AgentRunRequest
+  ▼
+AgentLoop
+  ├─ ToolRegistry.get()：把 allowed_tools 解析为真实工具定义
+  ├─ require_provider_capabilities()：有工具时要求 Provider 支持 Tool Calling
+  ├─ LLMProvider.chat()：只让模型提出文本或结构化 ToolCall
+  ├─ ToolRuntime.execute()：程序校验并执行模型请求
+  ├─ ToolExecutionRecord：保存每次实际执行的稳定结果
+  └─ AgentRunResult：形成 completed / stopped / failed 终态
+```
+
+这张图里最重要的权限边界是：`AgentLoop` 只把 `AgentRunRequest.allowed_tools`
+列出的 `ToolSpec` 给 Provider；模型返回的工具名还要再次对照这份白名单。通过后也
+不是模型直接运行 Python，而是交给阶段 3 已有的 `ToolRuntime` 做输入 Schema、超时、
+重试、熔断、fallback 和输出 Schema 处理。
+
+一次成功的工具往返会使消息历史按下面的顺序增长：
+
+```text
+初始 USER 消息
+→ Provider 返回带 ToolCall 的 ASSISTANT 消息
+→ ToolRuntime 返回结果
+→ AgentLoop 把稳定 JSON 包装成 TOOL 消息
+→ 下一轮 Provider 同时看到原请求、ToolCall 和 Tool Observation
+→ Provider 返回最终 ASSISTANT 文本
+```
+
+`_canonical_json()` 会用稳定键序列化参数，因此同名、同参数的重复调用即使字典
+键顺序不同也会得到同一签名；`_tool_result_content()` 只把稳定的工具结果信封写入
+`TOOL` 消息。这里实现的是有限循环和明确终态，不是让模型拥有无限自治权。
+
+## 10. 5A 原始验收矩阵
+
+5A 在提交 `f9f002e` 中建立时，`tests/test_agent_loop.py` 有六类核心行为；
+`tests/test_agent_loop_riftcoach_integration.py` 再增加一条领域纵向。它们分别证明：
+
+| 要求 | 原始测试 | 观察到的行为 | 没有证明什么 |
+|---|---|---|---|
+| 工具往返后返回最终文本 | `test_agent_loop_executes_tool_then_returns_final_response` | 两次 Provider 请求之间插入一条 `TOOL` 消息；结果含一条工具记录；两次 Usage 被累计 | 不证明真实模型会正确决定何时调工具 |
+| 不需要工具时直接完成 | `test_agent_loop_can_finish_without_tools` | 首轮文本响应形成 `completed/final_response`，工具记录为空 | 不证明回答内容正确 |
+| 越权工具零执行 | `test_agent_loop_rejects_tool_outside_allowlist` | 模型请求 `system.secret` 时得到 `failed/tool_not_allowed`，`tool_executions` 为空 | 不等于完整应用鉴权或沙箱 |
+| 能力不支持时调用前失败 | `test_agent_loop_rejects_text_only_provider_before_calling_it` | 只支持文本的 Provider 在 `chat()` 之前被能力协商拒绝 | 不证明任何真实 Provider 已支持 Tool Calling |
+| 达到迭代预算时停止 | `test_agent_loop_stops_at_iteration_budget_before_unbounded_execution` | 当本轮已到上限时不执行新 ToolCall，返回 `stopped/max_iterations` | 不等于跨运行的 Token/金额预算 |
+| 相同 ToolCall 不重复执行 | `test_agent_loop_stops_repeated_identical_tool_calls` | 第一次执行被记录，第二次同名同参数调用触发 `duplicate_tool_call` | 只阻止相同签名，不理解业务层“语义重复” |
+| RiftCoach 领域工具可接入 | `test_agent_loop_calls_real_riftcoach_knowledge_tool` | Fake Provider 请求真实 `knowledge.search`；RAG 返回 `04_data_boundaries.md` 来源；Observation 再回填给 Provider | Fake Provider 不是模型质量证据，RAG 单例也不是检索泛化证明 |
+
+把同一证据按工程链再压缩一次，便于代码审查和面试复习：
+
+| 要求 | 权威源码 | 测试证据 | CI/限制证据 |
+|---|---|---|---|
+| 受限且不可变的运行输入 | `app/agent/loop.py` 的 `AgentRunRequest` | 请求校验及迭代/工具预算测试 | `f9f002e` 进入 Actions `31063937488` 成功快照；预算只属于一次内存运行 |
+| 模型提议、代码执行 | `AgentLoop.run()`、`ToolRegistry`、`ToolRuntime` | 成功工具往返、越权零执行、能力调用前拒绝 | Fake Provider 隔离了循环正确性，不能证明真实模型决策质量 |
+| 可审计的 Observation 与终态 | `ToolExecutionRecord`、`AgentRunResult` | Usage 累计、TOOL 消息回填、直接完成和明确停止原因 | 5A 没有 Harness 发布权、持久 Trace 或 Session |
+| 首个 RiftCoach 工具纵向 | `build_knowledge_tools()` 与本地 RAG Adapter | `test_agent_loop_calls_real_riftcoach_knowledge_tool` | 真实本地检索 + Fake Provider；外部 Provider/Riot 调用为 0 |
+
+RQ-067 补齐时在当前 `HEAD` 重新运行两个文件，得到 `16 passed`。当前数量多于
+原始七项，是因为后续阶段在同一稳定接缝上加入了批量 ToolCall 的数量/白名单/
+重复签名整批预检、Context 预算和总 deadline 等回归。提交 `f9f002e` 与 5B/5C/4M 同期进入公开快照后，
+GitHub Actions run `31063937488` 全绿；该公共 CI 证明同一仓库快照可重复测试，
+不把 Fake Provider 变成真实 Provider 证据。
+
+### 可亲自观察的命令
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest `
+  tests\test_agent_loop.py `
+  tests\test_agent_loop_riftcoach_integration.py -q
+```
+
+重点不是背住 `passed` 数字，而是打开集成测试观察两个请求：第一次请求暴露
+`knowledge.search`，第二次请求的末尾角色是 `TOOL`，并且工具 call ID 与模型请求
+对应。这正是 Agent Loop 区别于“一次普通聊天调用”的地方。
+
+## 11. 后续阶段怎样深化 5A，而不是推翻 5A
+
+5A 是最小循环地基。后来代码仍使用同一个 `AgentLoop`，但责任逐层加固：
+
+| 后续检查点 | 在 5A 之上增加什么 | 为什么仍不属于原始 5A |
+|---|---|---|
+| 5B/5C | Skill 合同、Catalog 和 Router 决定任务类型、工具白名单和预算 | 5A 只消费显式 `AgentRunRequest`，不理解用户意图或 Skill |
+| 5D-1/2 | 把 selected Skill、输入 Artifact 和信任分层 Context 绑定起来 | 5A 不负责选择哪些业务事实进入 Prompt |
+| 5D-3 | Manifest-only compiler、完整消息 Context 门和 Provider/Tool 共用总 deadline | 这是把业务合同安全编译成 5A 请求，不是另建循环 |
+| 5D-4/5 | 把实际工具记录转换为 Evidence，并把模型文本作为草稿交给唯一 Harness | 5A 的 `final_response` 不是发布许可 |
+| 5E | 可选 Observer、统一 Event/Usage/Trace、`run()`/`stream()` parity | 5A 没有持久 Trace、实时消费或完整 Runtime 表面 |
+| 5F | 用同一合同审计 Pi；最终拒绝其产品 Runtime，只保留评测资产 | 第三方 SDK 必须适配既有边界，不能取代 ToolRuntime/Harness |
+
+当前 `app/agent/loop.py` 因这些后续增量已经包含 `max_context_tokens`、递减总
+deadline、批量 ToolCall 先做数量/白名单/重复签名整批预检再顺序执行，以及可选 Runtime Observer。阅读当前
+文件时要区分“5A 首次证明的最小循环”和“后续阶段沿同一合同深化的能力”，不能把
+今天的全部代码倒算成 5A 当时一次完成。
+
+相关深化教材：
+
+- `docs/plans/2026-08-07-constrained-skill-agent-loop-design.md`：5D 总体组合；
+- `docs/plans/2026-08-07-skill-run-compiler-budget-design.md`：Context 与总预算；
+- `docs/plans/2026-08-08-skill-harness-composition-design.md`：草稿如何进入 Harness；
+- `docs/plans/2026-08-17-agent-runtime-v1-exit-review.md`：5E Runtime 最终边界。
+
+## 12. 失败与安全边界再归纳
+
+`completed`、`stopped` 和 `failed` 不是好坏分数：
+
+- `completed` 表示循环获得最终文本，不表示文本已经通过事实评测；
+- `stopped` 表示预算、重复调用、Context 或 deadline 等代码边界主动结束运行；
+- `failed` 表示 Provider、工具配置或越权等运行条件不成立。
+
+5A 没有发布报告的权限。模型文本在后来的 5D 才被明确降格为 `CoachDraft`，再由
+`ReviewHarness` 决定发布、降级或拒绝。5A 也没有 Session、Memory、持久任务、
+正式 Auth、MCP、Multi-Agent、DAG 恢复或公网部署。
+
+## 13. 面试时怎样讲这段演进
+
+可以说：
+
+> 我先实现了 Provider-neutral 的同步有界 Agent Loop。模型只能提出结构化 ToolCall，
+> 代码用白名单和能力协商预检，再由 ToolRuntime 执行并把 Observation 回填；循环用
+> 最大迭代、工具调用和重复签名形成明确终态。随后我没有重写循环，而是通过 Skill
+> compiler、Context 预算、Harness 和 Runtime observer 逐层深化它。
+
+不可以说：
+
+- 5A 当时已经完成真实 GLM 领域 Tool Calling；
+- 得到最终文本就等于报告通过质量门并可发布；
+- 有循环和工具就等于 LangGraph、Multi-Agent 或完整 Agent Runtime；
+- 当前 `AgentLoop` 中后加的 Context、deadline、Observer 全是 5A 一次实现的；
+- `16 passed` 或公共 CI 全绿证明模型回答质量或线上可靠性。

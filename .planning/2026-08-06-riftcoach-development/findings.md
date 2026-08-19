@@ -2895,3 +2895,31 @@
   凭据、限流或网络成功。
 - 公开 pytest 与本地最终结果一致：`1216 passed, 42 skipped, 1 warning, 110 subtests passed`；RAG 与
   Harness 横向门也保持通过。因而 6B-2 可关闭，但 Conversation/Message/Memory 仍没有任何实现证据。
+
+## 2026-08-20：持久教学/工程说明缺口审计启动
+
+- 用户指出最近独立文档颗粒度下降，并进一步要求确认缺口是否真的从 6B 才开始；不能沿用上一轮初判，
+  必须从阶段 0 起按统一标准重新审计。
+- “已有文档”不自动等于“教学/工程说明完整”。本轮使用七项核心覆盖：问题与原理、实际代码地图、
+  数据/控制流、测试/公共证据、事务/失败/安全边界、运行示例、面试安全表述；聊天、canonical 和
+  progress 中一句“已讲过”只能作为过程记录，不能单独验收持久学习资产。
+- 三种补齐方式中选择覆盖矩阵驱动的混合方案：拒绝为全部历史子阶段机械复制几十篇文档，也拒绝只写
+  一篇笼统总览；先复用已经充分的 learner artifact，只对真实缺口新增 walkthrough/implementation review。
+- 已确认 6B 总体 ADR/design/implementation plan 很完整，但 6B-1/6B-2 缺实际落地后的独立代码地图、
+  证据矩阵、运行示例和面试表述；README 也尚未介绍 Player Link 当前能力。更早阶段仍在审计，当前不能
+  宣称最早缺口就是 6B。
+- 用户补充要求不是只补初学者文章，还要补齐上一轮列出的全部设计、实现、证据、边界、公共说明和防复发
+  治理材料；RQ-067 将其设为 6B-3 实施前置门。补齐 exact-SHA 公共闭环后可直接进入 6B-3，无需再确认。
+
+## 2026-08-20：RQ-067 覆盖账本与防复发门实现
+
+- 覆盖账本采用显式八维 evidence：问题/原理、设计/实现、代码地图、数据/控制流、验证、运行、失败/安全/边界、面试表述；成熟退出复核可以承担多个维度，不按历史原子检查点机械复制文档。
+- `docs/learning/coverage.yaml` 为每组增加唯一、严格递增的 `sequence`。治理脚本不再只相信 YAML 列表位置；重排覆盖组、遗漏当前 checkpoint、前序 planned、complete 维度为空、证据在仓库外/不存在/非 Markdown 均有红灯测试。
+- 本地已新增阶段 0/1/4、5B、6B-1、6B-2 独立材料，扩充阶段 3/5A、补 5C 入口链接，建立统一 README；尚未创建 6B-3 产品代码。
+- README Player Link 运行说明已区分“只启动 API + Link Worker”和“完整 runtime 还需 LLM Provider 配置”，不再让示例暗示仅 Riot Key 就能启动完整 review Worker。
+
+## 2026-08-20：本地退出复核结果
+
+- 完整回归为 `1224 passed, 42 skipped, 1 warning, 110 subtests passed`；治理覆盖门为 `10 passed`，Agent Loop/Skill 为 `34 passed`，Provider/Tool 为 `101 passed, 68 subtests`。
+- RAG development 八题和 independent holdout 七题均通过既有阈值；Harness dry-run 为 `published`/0 revisions；所有本批临时输出已清理，未产生 tracked run data。
+- 本地结论只能是 `pass-local-pending-public-ci`：本机 PostgreSQL/Docker 缺失造成的 42 skip 不能替代公共真库/package 证据；文档公共完成仍需独立提交 exact-SHA 三 job。

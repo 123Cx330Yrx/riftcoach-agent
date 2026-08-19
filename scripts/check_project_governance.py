@@ -8,6 +8,16 @@ import yaml
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+LEARNING_COVERAGE_DIMENSIONS = (
+    "problem_and_principle",
+    "design_and_implementation",
+    "code_map",
+    "data_and_control_flow",
+    "verification",
+    "runbook",
+    "failure_security_boundary",
+    "interview_wording",
+)
 
 
 def _read_utf8(path: Path, errors: list[str]) -> str:
@@ -172,11 +182,231 @@ def _check_working_agreement(root: Path, errors: list[str]) -> None:
         ".planning/.active_plan",
         "docs/requirements_change_log.md",
         "docs/roadmap_change_history.md",
+        "docs/learning/README.md",
+        "docs/learning/coverage.yaml",
         "scripts/check_project_governance.py",
     )
     for reference in required_references:
         if reference not in text:
             errors.append(f"AGENTS.md does not require {reference}")
+
+
+def _check_learning_evidence_path(
+    root: Path,
+    group_id: str,
+    dimension: str,
+    value: object,
+    checked_paths: set[str],
+    errors: list[str],
+) -> None:
+    if not isinstance(value, str) or not value.strip():
+        errors.append(
+            f"learning coverage group {group_id!r} dimension {dimension!r} "
+            "contains a non-string or empty evidence path"
+        )
+        return
+
+    if value in checked_paths:
+        return
+    checked_paths.add(value)
+
+    relative_path = Path(value)
+    if relative_path.is_absolute():
+        errors.append(
+            f"learning evidence path is outside the repository: {value!r}"
+        )
+        return
+
+    evidence_path = (root / relative_path).resolve()
+    try:
+        evidence_path.relative_to(root)
+    except ValueError:
+        errors.append(
+            f"learning evidence path is outside the repository: {value!r}"
+        )
+        return
+
+    if evidence_path.suffix.lower() != ".md":
+        errors.append(
+            f"learning evidence path must reference Markdown: {value!r}"
+        )
+        return
+    if not evidence_path.is_file():
+        errors.append(f"learning evidence file does not exist: {value!r}")
+        return
+    _read_utf8(evidence_path, errors)
+
+
+def _check_learning_coverage(
+    root: Path,
+    checkpoint: str | None,
+    errors: list[str],
+) -> None:
+    path = root / "docs" / "learning" / "coverage.yaml"
+    if not path.is_file():
+        errors.append(f"missing learning coverage file: {path}")
+        return
+
+    text = _read_utf8(path, errors)
+    if not text:
+        return
+    try:
+        coverage = yaml.safe_load(text)
+    except yaml.YAMLError as exc:
+        errors.append(f"invalid learning coverage YAML in {path}: {exc}")
+        return
+
+    if not isinstance(coverage, dict):
+        errors.append("learning coverage must be a YAML object")
+        return
+    if coverage.get("schema") != 1:
+        errors.append("unsupported learning coverage schema")
+
+    groups = coverage.get("groups")
+    if not isinstance(groups, list) or not groups:
+        errors.append("learning coverage must contain a non-empty groups list")
+        return
+
+    group_ids: set[str] = set()
+    cover_owners: dict[str, str] = {}
+    current_group_indexes: list[int] = []
+    statuses: list[str | None] = []
+    sequences: list[int | None] = []
+    checked_evidence_paths: set[str] = set()
+
+    for index, group in enumerate(groups):
+        if not isinstance(group, dict):
+            errors.append(f"learning coverage group at index {index} must be an object")
+            statuses.append(None)
+            sequences.append(None)
+            continue
+
+        group_id = group.get("id")
+        if not isinstance(group_id, str) or not group_id.strip():
+            errors.append(f"learning coverage group at index {index} has no valid id")
+            group_id = f"index-{index}"
+        elif group_id in group_ids:
+            errors.append(f"duplicate learning coverage group id: {group_id!r}")
+        group_ids.add(group_id)
+
+        sequence = group.get("sequence")
+        if type(sequence) is not int or sequence < 0:
+            errors.append(
+                f"learning coverage group {group_id!r} must have a non-negative "
+                "integer sequence"
+            )
+            sequences.append(None)
+        else:
+            sequences.append(sequence)
+
+        status = group.get("status")
+        if status not in {"complete", "planned"}:
+            errors.append(
+                f"learning coverage group {group_id!r} has unsupported status: "
+                f"{status!r}"
+            )
+            statuses.append(None)
+        else:
+            statuses.append(status)
+
+        covers = group.get("covers")
+        if not isinstance(covers, list) or not covers:
+            errors.append(
+                f"learning coverage group {group_id!r} must cover at least one checkpoint"
+            )
+            covers = []
+        for covered_checkpoint in covers:
+            if not isinstance(covered_checkpoint, str) or not covered_checkpoint.strip():
+                errors.append(
+                    f"learning coverage group {group_id!r} contains an invalid checkpoint"
+                )
+                continue
+            previous_owner = cover_owners.get(covered_checkpoint)
+            if previous_owner is not None:
+                errors.append(
+                    f"learning checkpoint {covered_checkpoint!r} is covered by both "
+                    f"{previous_owner!r} and {group_id!r}"
+                )
+            else:
+                cover_owners[covered_checkpoint] = group_id
+            if checkpoint is not None and covered_checkpoint == checkpoint:
+                current_group_indexes.append(index)
+
+        evidence = group.get("evidence", {})
+        if not isinstance(evidence, dict):
+            errors.append(
+                f"learning coverage group {group_id!r} evidence must be an object"
+            )
+            evidence = {}
+
+        for dimension in LEARNING_COVERAGE_DIMENSIONS:
+            paths = evidence.get(dimension)
+            if status == "complete" and (not isinstance(paths, list) or not paths):
+                errors.append(
+                    f"complete coverage group {group_id!r} must provide "
+                    f"dimension {dimension!r}"
+                )
+                continue
+            if paths is None:
+                continue
+            if not isinstance(paths, list):
+                errors.append(
+                    f"learning coverage group {group_id!r} dimension "
+                    f"{dimension!r} must be a list"
+                )
+                continue
+            for evidence_value in paths:
+                _check_learning_evidence_path(
+                    root,
+                    group_id,
+                    dimension,
+                    evidence_value,
+                    checked_evidence_paths,
+                    errors,
+                )
+
+        unknown_dimensions = set(evidence) - set(LEARNING_COVERAGE_DIMENSIONS)
+        for dimension in sorted(unknown_dimensions):
+            errors.append(
+                f"learning coverage group {group_id!r} has unknown evidence "
+                f"dimension {dimension!r}"
+            )
+
+    valid_sequences = [value for value in sequences if value is not None]
+    if len(valid_sequences) != len(set(valid_sequences)):
+        errors.append("learning coverage sequence values must be unique")
+    if len(valid_sequences) == len(sequences) and any(
+        current >= following
+        for current, following in zip(valid_sequences, valid_sequences[1:])
+    ):
+        errors.append("learning coverage sequence must be strictly increasing")
+
+    if checkpoint is None:
+        return
+    if not current_group_indexes:
+        errors.append(
+            f"current checkpoint {checkpoint!r} is missing from learning coverage"
+        )
+        return
+    if len(current_group_indexes) > 1:
+        errors.append(
+            f"current checkpoint {checkpoint!r} appears in multiple coverage groups"
+        )
+        return
+
+    current_index = current_group_indexes[0]
+    for index, status in enumerate(statuses[:current_index]):
+        if status != "complete":
+            group = groups[index]
+            group_id = (
+                group.get("id", f"index-{index}")
+                if isinstance(group, dict)
+                else f"index-{index}"
+            )
+            errors.append(
+                f"learning coverage group {group_id!r} precedes current checkpoint "
+                f"{checkpoint!r} but is not complete"
+            )
 
 
 def check_project_governance(root: Path) -> list[str]:
@@ -235,6 +465,12 @@ def check_project_governance(root: Path) -> list[str]:
                 f"checkpoint {checkpoint!r}"
             )
         _check_active_plan(root, checkpoint, errors)
+
+    _check_learning_coverage(
+        root,
+        checkpoint if isinstance(checkpoint, str) else None,
+        errors,
+    )
 
     _check_requirements(root, errors)
     if isinstance(main_stage, int):
