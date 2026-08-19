@@ -2884,3 +2884,14 @@
   `149 passed, 2 skipped, 1 warning`，完整为 `1216 passed, 42 skipped, 1 warning, 110 subtests`。
 - RAG、Harness、compileall、YAML、治理、SDK boundary、tracked data 与 diff 门均通过；本机 42 个 skip
   仍明确归因于没有 PostgreSQL/Docker。没有读取 Key、真实 Riot/Provider 调用或生成可公开的私人运行数据。
+
+## 2026-08-20：6B-2 公共证据与边界发现
+
+- `0c13a58` / Actions `32301852042` 的三个独立 job 全绿，证明本机条件 skip 与 Linux package 空白均已由
+  同一 SHA 补齐，而不是由本地 Fake 测试替代：真实 PostgreSQL job 为 `70 passed`，migration 可逆且
+  ORM metadata 与 head 一致。
+- package smoke 同一进程链真实产生 Review Task 安全 `failed` 与 Fake Resolver Player Link `succeeded`，
+  并输出 `external_riot_provider_calls=0`；这证明两个异步控制面能共存，不证明生产 Resolver 的 Riot
+  凭据、限流或网络成功。
+- 公开 pytest 与本地最终结果一致：`1216 passed, 42 skipped, 1 warning, 110 subtests passed`；RAG 与
+  Harness 横向门也保持通过。因而 6B-2 可关闭，但 Conversation/Message/Memory 仍没有任何实现证据。

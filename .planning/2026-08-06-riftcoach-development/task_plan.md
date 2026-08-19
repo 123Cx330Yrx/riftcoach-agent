@@ -7,9 +7,9 @@
 
 ## Current Phase
 
-Phase 18 - `6B-2-async-player-link-worker-api`; authorized by RQ-066. 6B-1 closed at
-`ed8fa58` / Actions `32229024069`; Tasks 1–4 are locally complete and Task 5 is
-pending the exact-SHA public CI closure.
+Phase 19 - `6B-3-conversation-message-foundation`; prepared/waiting authorization.
+6B-2 closed at `0c13a58` / Actions `32301852042`; RQ-066 requires stopping before
+Conversation/Message/Memory implementation.
 
 ## Phases
 
@@ -255,9 +255,9 @@ pending the exact-SHA public CI closure.
 
 ## Next Step
 
-`6B-2-async-player-link-worker-api` Task 5：先提交并推送已通过本地门禁的 Tasks 1–4，等待同一
-exact-SHA 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job；全绿后只准备
-`6B-3-conversation-message-foundation` 并停止，不实现 Conversation/Memory。
+等待用户在新一轮明确授权 `6B-3-conversation-message-foundation`。获授权后先做初学者教学、
+复核 immutable owner/relationship/subject binding 与消息顺序设计，再写红灯；当前不创建
+Conversation、Message 或 Memory 代码。
 
 ## 6A-1 Checklist
 
@@ -422,7 +422,7 @@ exact-SHA 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job；全
 
 ### Phase 18 - 6B-2-async-player-link-worker-api
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-066；用户在 6B-1 公共闭环后的新一轮明确“继续开工”，只授权本批。
 - Prepared outcome: narrow Account resolver、专用 PlayerLinkWorker、owner-scoped POST/GET Link API 与
   Fake Resolver Linux no-I/O smoke；Conversation/Memory 仍留 6B-3。
@@ -431,8 +431,17 @@ exact-SHA 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job；全
 - [completed] Task 2：PlayerLinkWorker claim→resolve/fail、polling、graceful stop 与 body-free observability
 - [completed] Task 3：owner-scoped POST/GET Link API、OpenAPI、Fake 与真实 PostgreSQL 集成
 - [completed] Task 4：API/Worker composition、CLI、Compose 与 Linux Fake Resolver no-I/O smoke
-- [in_progress] Task 5：聚焦/相邻/完整/横向门禁、状态同步、独立提交推送与 exact-SHA 三 job
-- [pending] 6B-2 公共闭环后只准备 6B-3 并停止，不实现 Conversation/Memory
+- [completed] Task 5：聚焦/相邻/完整/横向门禁、状态同步、独立提交推送与 exact-SHA 三 job；
+  `0c13a58` / Actions `32301852042` 的 pytest/PostgreSQL/package 三 job 全绿
+- [completed] 6B-2 公共闭环后只准备 6B-3 并停止，不实现 Conversation/Memory
+
+### Phase 19 - 6B-3-conversation-message-foundation
+
+- Status: in_progress
+- Authorization: prepared/waiting authorization；治理指针保持唯一 in-progress phase，但 RQ-066 不授权实现。
+- Prepared outcome: immutable owner/relationship/subject Conversation、ordered user/assistant Message
+  persistence/API 与真实 PostgreSQL constraint/concurrency 证据；不接 Agent、Review Task 或 Memory。
+- [in_progress] 等待用户明确继续；授权前不创建 schema、migration、Repository、API 或测试代码
 
 ## 6A Entry Design Checklist
 
@@ -739,6 +748,7 @@ exact-SHA 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job；全
 | 6A-7 首个 Linux one-off smoke 只返回过宽 `packaging_smoke_worker_failed` | 1 | pytest/真库/build/migration/API ready 均已成功，不猜测业务根因；用红灯增加 allowlisted stage code 与 bounded service logs，再以新 exact-SHA CI 定位 |
 | module-entry 状态回写时 canonical“唯一下一步”漏写 checkpoint 字面键 | 1 | governance 在提交前阻止；把 `6A-7-packaging-exit-review` 补回同一行，不改变根因、修复范围或阶段状态 |
 | direct script 在 Linux image 中从 wheel 导入 app，导致 Alembic PROJECT_ROOT 漂移 | 1 | d8c5063 安全码与 bounded logs 定位；用 `python -m scripts...` 统一 import root，adf53e5 packaging-smoke 全绿且未放宽 readiness |
+| 6B-2 首次 cached diff check 发现 Link Worker 测试 EOF 多余空行 | 1 | cached 门在 commit 前阻止；只删除尾部空行并重新暂存，cached diff/governance 通过后才提交，不改变行为 |
 
 ### 5D-7 V3 资源校准离线实现（2026-08-15）
 

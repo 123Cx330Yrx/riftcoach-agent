@@ -2914,3 +2914,16 @@
   `1216 passed, 42 skipped, 1 warning, 110 subtests passed`。42 个 skip 仍仅因本机无 PostgreSQL/Docker。
 - 两套 RAG 指标仍全部达门，Harness dry-run 为 `published`/0 revisions；compileall、YAML 和 governance
   复跑通过。下一动作保持不变：完成安全/diff/cached-diff 门后提交推送，等待 exact-SHA 三 job。
+
+## 2026-08-20：6B-2 提交、推送与公共闭环
+
+- cached diff 首次阻止提交，因为 `tests/test_player_link_worker.py` 文件末尾多一个空白行；只删除该空行，
+  重新暂存后 cached diff 与 governance 通过，未改变功能。
+- 独立实现提交 `0c13a583ea51a7c18301fc29bf5c2931790d6693` 已推送到 `main`；一次性使用本机已监听
+  的 7897 HTTP proxy + Schannel/HTTP 1.1，未修改 Git 全局配置。
+- Actions run `32301852042` 精确对应该 SHA；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job
+  均 completed/success。公开 pytest 为 `1216 passed, 42 skipped, 1 warning, 110 subtests passed`，真实
+  PostgreSQL 为 `70 passed, 1 warning`。
+- Linux smoke 输出 `task_status=failed`、`link_status=succeeded`、`external_riot_provider_calls=0`，并通过
+  非 root 与 image exclusion。6B-2 正式关闭；Phase 19/6B-3 只置为 prepared/waiting authorization，
+  当前停止且没有 Conversation/Message/Memory 代码。

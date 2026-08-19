@@ -275,10 +275,10 @@ Failure exposes an allowlisted reason/retryable flag, never upstream body or exc
 
 ### Task 1: Implement and test the narrow Account resolver
 
-**Current execution note (2026-08-19):** Tasks 1–4 are implemented locally and their focused,
-adjacent, full and horizontal no-I/O checks pass. Task 5 remains open until the implementation is
-committed, pushed and the exact-SHA PostgreSQL/Linux jobs are green; local PostgreSQL skips are not
-substituted for that evidence.
+**Current execution note (2026-08-20):** Tasks 1–5 are complete. Commit `0c13a58` and Actions
+`32301852042` passed exact-SHA `pytest`, real PostgreSQL and Linux package jobs; package smoke recorded
+`link_status=succeeded` with `external_riot_provider_calls=0`. Canonical now stops at 6B-3
+prepared/waiting authorization, without Conversation/Message/Memory implementation.
 
 1. Write failing `tests/test_riot_account_resolver.py` using an injected Fake Riot client/factory.
 2. Cover:
@@ -332,6 +332,10 @@ external network calls.
 
 Only after public closure may canonical mark 6B-3 as prepared/waiting authorization; it must not implement 6B-3.
 RQ-066 authorizes this 6B-2 execution and leaves that closure boundary unchanged.
+
+Closure evidence: `0c13a583ea51a7c18301fc29bf5c2931790d6693` / Actions `32301852042`; all three jobs
+completed/success, public pytest was `1216 passed, 42 skipped, 1 warning, 110 subtests passed`, real
+PostgreSQL was `70 passed, 1 warning`, and Linux smoke reached Link success with zero external calls.
 
 ### Not in 6B-2
 

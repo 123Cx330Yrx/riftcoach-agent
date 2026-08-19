@@ -2155,3 +2155,15 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
 - `PUBLIC-PENDING`：RAG、Harness、compileall、YAML、治理、SDK/Secret/run-data 与 diff 门已通过；本机无
   PostgreSQL/Docker，真实 migration、API PostgreSQL 集成和 Linux package smoke 必须由同一 exact-SHA CI
   补齐。6B-2 仍为 `in_progress`，Task 5 是提交/推送/等待三 job，不能提前关闭或实施 6B-3。
+
+### 2026-08-20：6B-2 exact-SHA 公共闭环与 6B-3 交接
+
+- `VERIFIED-PUBLIC`：`0c13a583ea51a7c18301fc29bf5c2931790d6693` / Actions `32301852042`
+  completed/success；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿。
+- `EVIDENCE`：公共 pytest `1216 passed, 42 skipped, 1 warning, 110 subtests passed`；真实 PostgreSQL
+  `70 passed, 1 warning` 且 migration/metadata head 一致；Linux smoke 输出 Review Task `failed`、Player
+  Link `succeeded`、`external_riot_provider_calls=0`，随后非 root/image exclusion 通过。
+- `CLOSED`：6B-2/RQ-066 正式完成；Resolver/Worker/API/composition/CLI/no-I/O package 已闭环。该证据不
+  外推真实 Riot、账号所有权、Conversation/Memory、Auth/RSO、retry/reclaim、SSE/前端或 Provider 质量。
+- `HANDOFF`：canonical 只切到 `6B-3-conversation-message-foundation` prepared/waiting authorization；
+  本轮停止，不创建 Conversation、Message 或 Memory 代码。

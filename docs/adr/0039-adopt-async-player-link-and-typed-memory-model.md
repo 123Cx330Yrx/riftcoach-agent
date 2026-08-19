@@ -3,7 +3,7 @@
 - 状态：Accepted
 - 日期：2026-08-19
 - 范围：`stage-6-session-memory-entry-design`
-- 需求：RQ-060 至 RQ-065
+- 需求：RQ-060 至 RQ-066
 
 ## 背景
 

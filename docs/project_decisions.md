@@ -1315,3 +1315,15 @@ worker ID；Link Worker 自带最小 StopSignal Protocol，不依赖 Review Work
 compileall、YAML、governance、SDK/Secret/run-data 与 diff 门通过。42 个 skip 是本机没有 PostgreSQL/Docker
 的限制；真实 migration/API/package 证据必须由同一提交的 GitHub Actions 提供。当前不把本地完成写成
 6B-2 已关闭，Task 5 只负责提交、推送和 exact-SHA 三 job；全绿后只准备 6B-3，不实现 Conversation/Memory。
+
+### 6B-2 最终公共裁决
+
+实现提交 `0c13a583ea51a7c18301fc29bf5c2931790d6693` 对应 Actions run `32301852042`；
+`pytest`、真实 `postgres-migrations` 与 Linux `packaging-smoke` 三 job 全部 completed/success。
+接受 6B-2 为完成：API 短事务只写 Link intent，专用 Worker 在 claim commit 后通过事务外窄 Resolver
+解析 Account-V1，Repository 再以短事务写身份关系或安全终态；API composition 不构造 Riot Client。
+
+Linux smoke 同时得到 Review Task 的安全 `failed` 与 Fake Resolver Player Link 的 `succeeded`，并记录
+`external_riot_provider_calls=0`。该证据不准入真实 Riot Key、账号所有权、Provider 质量、自动 retry/reclaim、
+Conversation/Memory 或正式 Auth。按 RQ-066，下一检查点只置为
+`6B-3-conversation-message-foundation` prepared/waiting authorization，本轮停止。

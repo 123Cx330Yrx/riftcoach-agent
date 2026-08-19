@@ -230,7 +230,7 @@ OP.GG MCP
 5F-3 Contract/Harness Eval  已完成；45 focused、196 adjacent、完整 929/110 subtests；裁决 `harness-compatible-but-runtime-gate-failed`，Context/terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功
 5F-4 Bounded Real Slice    未进入；5F-3 前置硬门失败，真实模型调用无信息增益，external calls 0
 5F-5 Adoption/Exit         已完成；裁决 `partial-adopt-evaluation-assets-only`；`f8dea66` / Actions `32028206103` exact-SHA 公共成功；产品拒绝 Pi，冻结保留评测资产/CI 复现与采用门方法
-6A entry design            已完成；6A-1 至 6A-7 已由 `adf53e5` / Actions `32146760003` 的 pytest、真库与 Linux packaging 三 job 公共闭环；Session/Memory entry design 又由 `bc11afe` / Actions `32222531783` 三 job 公共闭环；6B-1 已由 `ed8fa58` / Actions `32229024069` 三 job 公共闭环；6B-2 Tasks 1–4 本地完成，Task 5 等待 exact-SHA
+6A entry design            已完成；6A-1 至 6A-7 已由 `adf53e5` / Actions `32146760003` 的 pytest、真库与 Linux packaging 三 job 公共闭环；Session/Memory entry design 又由 `bc11afe` / Actions `32222531783` 三 job 公共闭环；6B-1 已由 `ed8fa58` / Actions `32229024069` 三 job 公共闭环；6B-2 又由 `0c13a58` / Actions `32301852042` 三 job 公共闭环；当前停止在 6B-3 prepared/waiting authorization
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -409,5 +409,6 @@ module-entry 修复 `adf53e5` / Actions `32146760003` 随后三 job 全绿：pyt
 packaging-smoke 成功且 image boundary 通过；状态收尾 `d1cc2ed` / Actions `32147545753` 也已三 job
 成功。6A 以 `close-with-deferred-boundaries` 关闭；RQ-064 已将
 `stage-6-session-memory-entry-design` 冻结为 ADR-0039/正式设计/实施计划；设计提交 `bc11afe` /
-Actions `32222531783` 三 job 已成功；6B-1 又由 `ed8fa58` / Actions `32229024069` 三 job 公共完成。
-RQ-065 已按要求停止；随后 RQ-066 在新一轮只授权 6B-2，当前从 Resolver TDD 开始；尚无公网部署。
+Actions `32222531783` 三 job 已成功；6B-1 又由 `ed8fa58` / Actions `32229024069` 三 job 公共完成；
+6B-2 已由 `0c13a58` / Actions `32301852042` 三 job 公共完成。RQ-066 当前要求停止在 6B-3
+prepared/waiting authorization；Conversation/Memory 与公网部署仍未实现。

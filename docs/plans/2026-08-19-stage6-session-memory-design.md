@@ -746,7 +746,8 @@ Alembic 0002、Repository、Service 与 Fake/真实 PostgreSQL 测试。外部 R
 ### 6B-2 Async Player Link Worker/API Vertical Slice
 
 实现窄 `RiotAccountResolver` port/adapter、PlayerLinkWorker、POST/GET Link API、composition/CLI、Fake
-Resolver 纵向与 Linux no-I/O smoke。CI 外部 Riot calls 为 0。
+Resolver 纵向与 Linux no-I/O smoke。该批已由 `0c13a58` / Actions `32301852042` 三 job exact-SHA
+公共闭环；package smoke 的外部 Riot/Provider calls 为 0。Conversation 仍未实现。
 
 ### 6B-3 Conversation & Message Foundation
 
@@ -783,7 +784,8 @@ conversation turn、Message terminal 写入和跨 Skill 回归；不默认新增
 
 RQ-064 原允许 entry design exact-SHA 公共闭环后直接进入 6B-1，并在 6B-1 公共闭环后直接进入 6B-2；
 较晚的 RQ-065 将当轮收紧为只完成 6B-1，并已在 6B-1 exact-SHA 全绿后停止。RQ-066 现于独立新一轮
-只授权 6B-2；它不允许在一个提交中混合两个批次、CI 未成功就前移 canonical，或自动实现 6B-3。
+只授权 6B-2；该批现已由 `0c13a58` / Actions `32301852042` 公共闭环，并按授权停止在 6B-3
+prepared/waiting authorization。它不允许自动实现 6B-3。
 
 ## 19. 入口设计退出条件
 

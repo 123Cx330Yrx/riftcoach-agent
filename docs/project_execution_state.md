@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 6
 substage_group: "stage-6-session-memory"
-current_checkpoint: "6B-2-async-player-link-worker-api"
+current_checkpoint: "6B-3-conversation-message-foundation"
 status: in_progress
-pause_reason: "RQ-066 authorizes 6B-2 only; Tasks 1-4 are locally complete, Task 5 awaits exact-SHA closure, then stop at 6B-3 preparation"
+pause_reason: "6B-2 closed at 0c13a58 / Actions 32301852042; RQ-066 requires stopping with 6B-3 prepared and waiting for a new authorization"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "RQ-066 authorizes 6B-2 only; Tasks 1-4 are locally complete, Task
 
 ## 状态元数据
 
-- 最后更新：2026-08-19
-- 主阶段：阶段 6；6A 持久异步 API/task 基座与 Session/Memory entry design 已公共完成；6B-1 又由提交 `ed8fa58ff3f9ef6c84e1a028ac0e1724b087a26b` 与 Actions `32229024069` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job exact-SHA 公共闭环；RQ-066 已授权 6B-2，Tasks 1–4 已本地完成，Task 5 等待 exact-SHA 公共闭环
+- 最后更新：2026-08-20
+- 主阶段：阶段 6；6A 持久异步 API/task 基座与 Session/Memory entry design 已公共完成；6B-1 又由提交 `ed8fa58ff3f9ef6c84e1a028ac0e1724b087a26b` 与 Actions `32229024069` 的三个 job 公共闭环；6B-2 已由提交 `0c13a583ea51a7c18301fc29bf5c2931790d6693` 与 Actions `32301852042` 的 `pytest`、`postgres-migrations`、`packaging-smoke` exact-SHA 公共闭环；按 RQ-066 当前停止在 6B-3 prepared/waiting authorization
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,10 +250,9 @@ pause_reason: "RQ-066 authorizes 6B-2 only; Tasks 1-4 are locally complete, Task
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6B-2-async-player-link-worker-api` Task 5；提交并推送 Tasks 1–4 的本地完成实现，
-  等待同一 exact-SHA 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job。全绿后只准备
-  `6B-3-conversation-message-foundation` 并停止，不进入 Conversation/Memory 实现、真实 Riot/Provider、
-  Auth/RSO、SSE/前端或后续阶段。
+- 唯一下一步：`6B-3-conversation-message-foundation` 已 prepared/waiting authorization；等待用户在
+  新一轮明确继续后，先做初学者教学与既有设计复核，再按红灯测试开始 Conversation/Message foundation。
+  当前不创建 Conversation/Message/Memory，不进入真实 Riot/Provider、Auth/RSO、SSE/前端或后续阶段。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -554,10 +553,10 @@ pause_reason: "RQ-066 authorizes 6B-2 only; Tasks 1-4 are locally complete, Task
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5、阶段 6 的 6A、Session/Memory entry design 与 6B-1 Player Identity/Link persistence 均已完成；6B-2 尚未实现 | 身份持久化地基等于 Resolver/Worker/API、Conversation/Memory、生产模型质量、自动恢复、正式 Auth、SSE 或前端已完成 |
-| 项目理解 | 已讲解并验证 6A-1 至 6A-7；阶段 6 已冻结总体设计，并已讲清 6B-1 的稳定 PUUID、可变 alias、owner-local relationship、短事务、幂等/锁/CAS/回滚与三层测试职责；最终公共结果仍待本轮收尾复盘 | 本地设计或测试数字等于用户已掌握全部实现细节，或 identity control-plane 等于长期 Coach/真实模型质量 |
+| 本地代码 | 阶段 0-5、阶段 6 的 6A、Session/Memory entry design、6B-1 identity persistence 与 6B-2 Resolver/Worker/API/package 纵向均已完成；6B-3 尚未实现 | Player Link 等于 Conversation/Memory、生产模型质量、自动恢复、正式 Auth、SSE 或前端已完成 |
+| 项目理解 | 已讲解并验证 6A-1 至 6A-7、6B-1 与 6B-2 的 API 短事务、事务外 Account-V1、Resolver 安全映射、Worker claim/terminal CAS 与三层测试职责；仍需通过后续复盘和 6B-3 实施继续深化 | 代码或测试数字等于用户已经掌握全部实现细节，或 identity/link control-plane 等于长期 Coach/真实模型质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | 6A `adf53e5/32146760003`、设计批 `bc11afe/32222531783` 与 6B-1 `ed8fa58/32229024069` 均三 job 全绿；网页与公网仍未部署 | package/identity CI 等于生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
+| GitHub/部署 | 6A `adf53e5/32146760003`、设计批 `bc11afe/32222531783`、6B-1 `ed8fa58/32229024069` 与 6B-2 `0c13a58/32301852042` 均三 job 全绿；网页与公网仍未部署 | package/link CI 等于生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -1253,3 +1252,20 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 当前唯一下一动作是提交/推送本批并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；
   在三 job 全绿前保持 `6B-2 / in_progress`，不得把 6B-2 标为 complete。公共闭环后只把 6B-3 标为
   prepared/waiting authorization，不实施 Conversation/Memory。
+
+## 2026-08-20：6B-2 exact-SHA 公共闭环并按 RQ-066 停止
+
+- 实现提交 `0c13a583ea51a7c18301fc29bf5c2931790d6693` 已推送；Actions run `32301852042`
+  精确对应该 SHA，workflow 与 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均
+  completed/success。
+- 公共 `pytest` 为 `1216 passed, 42 skipped, 1 warning, 110 subtests passed`；两套 RAG 指标满门槛，
+  Harness dry-run 为 `published`/0 revisions。真实 PostgreSQL 17 job 为 `70 passed, 1 warning`，并通过
+  可逆 migration 与 metadata-head 一致性。
+- Linux package smoke 真实输出 `task_status=failed`、`link_status=succeeded`、
+  `external_riot_provider_calls=0`；这证明 Review Task 安全失败路径与 Fake Resolver Player Link 成功路径
+  可在可重建 package 中共同运行，不证明真实 Riot Key、账号归属或 Provider 质量。
+- 6B-2 正式完成：窄 Account Resolver、专用 PlayerLinkWorker、owner-scoped Link API、composition/CLI、
+  PostgreSQL API integration 与 Linux no-I/O smoke 已闭环。未实现 Conversation/Message/Memory、Review
+  Task subject binding、自动 retry/reclaim、verified-self/Auth/RSO、SSE/前端或真实 Riot/Provider 调用。
+- RQ-066 的授权目标已经满足。canonical 现只把 `6B-3-conversation-message-foundation` 标为
+  prepared/waiting authorization；本轮停止，不创建 Conversation、Message 或 Memory 代码。

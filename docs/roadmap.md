@@ -21,7 +21,7 @@
 | 3 | Provider 与 Tool Runtime | 外部模型和工具如何统一、可靠地调用 | EchoMind 迁移重构 | 已完成，进入维护 |
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
-| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1 Player Identity/Link persistence 已由 `ed8fa58` / Actions `32229024069` 三 job 公共完成；6B-2 Tasks 1–4 已本地完成，Task 5 等待 exact-SHA 公共闭环 |
+| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1 已由 `ed8fa58/32229024069` 公共完成，6B-2 又由 `0c13a58/32301852042` 三 job 公共完成；当前停止在 6B-3 prepared/waiting authorization |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 未开始 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
@@ -219,9 +219,9 @@ RAG 保存外部知识；Memory 保存玩家相关且可更新的长期状态；
   修复并验证 direct-script/wheel 的 Alembic import-root，6A 正式完成；状态收尾 `d1cc2ed` /
   Actions `32147545753` 也已三 job 全绿；RQ-064 已本地冻结异步 Player Link、typed Memory/Candidate gate
   和 6B-1 至 6B-9 顺序；设计提交 `bc11afe` / Actions `32222531783` 三 job 已公共成功，6B-1 又由
-  `ed8fa58` / Actions `32229024069` 三 job 公共闭环；RQ-065 已按要求停止，随后 RQ-066 在新一轮只授权
-  6B-2，当前 Tasks 1–4 本地完成、Task 5 等待 exact-SHA；这不等于正式 Auth、
-  Session/Memory 或公网部署已完成；
+  `ed8fa58` / Actions `32229024069` 三 job 公共闭环；RQ-066 随后只授权 6B-2，其 Resolver、Worker、
+  owner-scoped Link API 与 Linux no-I/O package 已由 `0c13a58` / Actions `32301852042` 三 job 公共闭环；
+  当前只准备 6B-3 并等待新授权，这不等于 Conversation/Memory、正式 Auth 或公网部署已完成；
 - FastAPI 对话和复盘入口；
 - `user_id`、`conversation_id` 和权限边界；
 - 外服 Riot 账号关系：官方 routing 没有中国大陆 CN；公开查询只形成以 PUUID 为稳定身份的
