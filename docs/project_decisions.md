@@ -1267,4 +1267,15 @@ Multi-Agent 与自动恢复仍不进入本批。
 正式文件为 ADR-0039、`docs/plans/2026-08-19-stage6-session-memory-design.md` 和
 `docs/plans/2026-08-19-stage6-session-memory-implementation.md`。全路线拆为 6B-1 至 6B-9，但 RQ-064 的
 自动执行范围只到 6B-2：设计、6B-1、6B-2 各自独立验证/提交/推送/exact-SHA CI；6B-2 全绿后只准备
-6B-3 并等待新授权。当前这些设计文件仅在本地，尚未公共验证，也尚未创建产品 schema/migration。
+6B-3 并等待新授权。下方公共闭环发生前，这些设计文件仅在本地且尚未创建产品 schema/migration；该临时
+状态已由后续 `bc11afe` 公共证据取代。
+
+### Entry design 公共证据与 6B-1 决策状态
+
+设计提交 `bc11afe9f2f85a39f05b7f3d6135b14821ebb17d` 已由 GitHub Actions run `32222531783`
+完成 exact-SHA 公共验证，`pytest`、真实 PostgreSQL migration job 与 Linux packaging-smoke 三 job 均成功。
+因此 ADR-0039 与两份计划从“本地冻结”升级为公开可复现设计证据；这仍不等于任何 Player/Memory 表已存在。
+
+RQ-064 现只启动 6B-1：复用现有 SQLAlchemy Base/Alembic/PostgreSQL 基座，建立独立 Player Link domain、
+四张表、可逆 migration 与事务 Repository。它不复用带 publication/Trace/Artifact 语义的 Review Task
+terminal，不在 API/数据库事务内执行 Account-V1，也不提前写 6B-2 Worker/API 或 6B-3 Conversation。

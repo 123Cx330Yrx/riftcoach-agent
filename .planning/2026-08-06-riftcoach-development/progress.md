@@ -2804,3 +2804,15 @@
   完成，但尾部报 `exit` 不可执行；随后改为显式检查 `$LASTEXITCODE`，结果为无过宽 RQ-064 自动范围短语。
 - 下一动作只提交/推送设计批并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；全绿前
   canonical 保持 entry design in progress。
+
+## 2026-08-19：Entry design 公共闭环并进入 6B-1
+
+- 设计提交 `bc11afe9f2f85a39f05b7f3d6135b14821ebb17d` 已推送；Actions run `32222531783` 总状态
+  success，公开页面列出的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均成功。
+- 首次 push 因环境变量仍指向失效 `127.0.0.1:7890` 失败；发现 Clash Verge mixed port 在 7897。
+  Git 默认 Schannel 经该端口写请求仍握手失败，最终只在单次子进程用 OpenSSL + SOCKS5 成功推送，未改
+  系统或 Git 全局配置。GitHub CLI keyring token 已过期，但公开只读 Actions 查询仍可用。
+- `gh run view/api` 经代理两次返回 EOF；没有凭模糊状态判断，改用公开 Actions 页面核对精确 SHA、总状态
+  与三个 job。entry design 正式关闭。
+- canonical/活动计划进入 `6B-1-player-identity-link-foundation`；下一动作先完成初学者教学和 pure domain
+  红灯测试，Resolver/Worker/API、Conversation/Memory 与外部 I/O 均保持范围外。

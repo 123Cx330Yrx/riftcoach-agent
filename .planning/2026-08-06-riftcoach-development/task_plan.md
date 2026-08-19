@@ -7,9 +7,9 @@
 
 ## Current Phase
 
-Phase 16 - `stage-6-session-memory-entry-design`; ADR-0039/design/implementation plan exist locally and
-are undergoing consistency/local/public gates. RQ-064 then authorizes only 6B-1 and 6B-2 as separate
-automatic batches; product implementation has not started yet.
+Phase 17 - `6B-1-player-identity-link-foundation`; entry design closed publicly at `bc11afe` /
+Actions `32222531783`. RQ-064 now authorizes only the 6B-1 implementation batch; 6B-2 waits for
+6B-1's independent exact-SHA closure.
 
 ## Phases
 
@@ -255,10 +255,9 @@ automatic batches; product implementation has not started yet.
 
 ## Next Step
 
-`stage-6-session-memory-entry-design`：完成 ADR-0039、正式设计与实施计划的持久状态同步和本地门禁，
-独立提交、推送并取得 exact-SHA 公共 CI。全绿后按 RQ-064 自动进入 6B-1，再在 6B-1 全绿后进入 6B-2；
-6B-2 全绿后只准备 6B-3 并停止实施。设计批仍不创建 schema/migration，也不包含真实 Riot/Provider I/O、
-正式 Auth/RSO、SSE/前端或后续主阶段。
+`6B-1-player-identity-link-foundation`：先以红灯冻结 strict Player/Relationship/Link Task domain 合同，
+再实现四张 Player identity/link 表、Alembic 0002、Service/Repository 和 Fake/真实 PostgreSQL 证据。
+本批不实现 Riot resolver、PlayerLinkWorker/API、Conversation/Memory，不读取 Key 或调用外部服务。
 
 ## 6A-1 Checklist
 
@@ -373,7 +372,7 @@ automatic batches; product implementation has not started yet.
 
 ### Phase 16 - stage-6-session-memory-entry-design
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-060 启动设计；RQ-064 取代设计后的再次授权暂停门，允许按冻结计划逐批连续实施。
 - 6A 已公开完成；本 checkpoint 只审计 Session/Memory 需求、现有 owner/task/run/API、参考实现可迁移边界、
   数据模型与写入/隐私/更正/导出/过期/删除规则，并分节取得设计确认，不表示已经开始产品实现。
@@ -399,8 +398,27 @@ automatic batches; product implementation has not started yet.
   模型，以及 provenance/confidence/write gate
 - [completed] 冻结隔离、冲突/更正、查看/导出、过期/删除、失败补偿、隐私、安全、NFR 和 Context 装配边界
 - [completed] 冻结 Fake/真实 PostgreSQL/API/隔离/安全/Context 测试矩阵和 6B-1 至 6B-9 原子顺序
-- [in_progress] 已创建 ADR-0039/design/implementation plan并完成一致性修正及全部本地门禁；当前只待
-  独立提交/推送与 exact-SHA 三 job。公共全绿后按 RQ-064 自动做 6B-1/6B-2；6B-2 后停止在 6B-3 准备态
+- [completed] 已创建 ADR-0039/design/implementation plan并完成一致性修正及全部本地门禁；设计提交
+  `bc11afe` / Actions `32222531783` 的 exact-SHA 三 job 全绿，entry design 正式关闭
+
+### Phase 17 - 6B-1-player-identity-link-foundation
+
+- Status: in_progress
+- Authorization: RQ-064；只有本批独立 exact-SHA 公共闭环后才自动进入 6B-2。
+- Outcome: strict Player/Relationship/Link Task contracts、四张 PostgreSQL 表、可逆 Alembic 0002、
+  transaction-safe Repository/Service 与 Fake/真实 PostgreSQL 证据。
+- Boundary: 不实现 Riot Account resolver、PlayerLinkWorker/HTTP API、Conversation/Memory、Auth/RSO，
+  不读取 Key 或调用 Riot/Provider。
+
+## 6B-1 Checklist
+
+- [in_progress] 面向初学者完成问题/原理/范围/数据流/测试/限制教学，并先写 pure domain 红灯
+- [pending] 实现 strict player/link models、normalization、public View 与 allowlisted error contract
+- [pending] 以红灯冻结 fingerprint、Fake service、idempotency/capacity 与独立 repository port
+- [pending] 先写真实 PostgreSQL migration/metadata 红灯，再实现 ORM 与可逆 0002
+- [pending] 先写真库 create/query/claim/resolve/CAS/concurrency/rollback 红灯，再实现 Repository
+- [pending] 运行聚焦/相邻/完整/RAG/compile/Harness/security/governance/diff 门并同步持久状态
+- [pending] 独立提交/推送 6B-1，取得 exact-SHA pytest/PostgreSQL/package 三 job 后才进入 6B-2
 
 ## 6A Entry Design Checklist
 

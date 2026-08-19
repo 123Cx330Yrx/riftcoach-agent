@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 6
 substage_group: "stage-6-session-memory"
-current_checkpoint: "stage-6-session-memory-entry-design"
+current_checkpoint: "6B-1-player-identity-link-foundation"
 status: in_progress
-pause_reason: "RQ-064 authorizes only entry-design closure, then 6B-1 and 6B-2 as separate public batches; the design artifacts exist locally but are not closed until exact-SHA CI succeeds"
+pause_reason: "entry design closed at bc11afe / Actions 32222531783; RQ-064 authorizes 6B-1 implementation, which must close independently before 6B-2"
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: "RQ-064 authorizes only entry-design closure, then 6B-1 and 6B-2 a
 ## 状态元数据
 
 - 最后更新：2026-08-19
-- 主阶段：阶段 6；6A 持久异步 API/task 基座已由 `adf53e5` / Actions `32146760003` 完成 pytest、真实 PostgreSQL 与 Linux packaging-smoke 公共闭环，状态收尾 `d1cc2ed` / Actions `32147545753` 也已三 job 全绿；RQ-060 启动 Session/Memory 入口设计，RQ-064 只授权 entry design、6B-1、6B-2 三个独立公共批次依次实施；ADR-0039 与两份计划已本地创建，尚未提交/公共验证
+- 主阶段：阶段 6；6A 持久异步 API/task 基座已公共完成；Session/Memory entry design 已由提交 `bc11afe9f2f85a39f05b7f3d6135b14821ebb17d` 与 Actions `32222531783` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job exact-SHA 公共闭环；RQ-064 当前授权 6B-1，6B-1 独立公共完成后才自动进入 6B-2
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,9 +250,9 @@ pause_reason: "RQ-064 authorizes only entry-design closure, then 6B-1 and 6B-2 a
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`stage-6-session-memory-entry-design` 完成 ADR-0039、正式设计和实施计划的一致性/本地门禁，
-  独立提交、推送并取得 exact-SHA 公共 CI；全绿后才进入 6B-1，6B-1 全绿后才自动进入 6B-2。6B-2
-  全绿后只准备 6B-3 并停止实施。不得因此越过授权范围或调用真实 Riot/Provider。
+- 唯一下一步：`6B-1-player-identity-link-foundation` 按正式实施计划先教学并以红灯冻结 strict Player/
+  Relationship/Link Task 合同，再实现四表 Alembic 0002、Service/Repository 与 Fake/真实 PostgreSQL 证据；
+  本批不实现 Riot resolver、Worker/API、Conversation/Memory，也不调用真实 Riot/Provider。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -553,10 +553,10 @@ pause_reason: "RQ-064 authorizes only entry-design closure, then 6B-1 and 6B-2 a
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5 与阶段 6 的 6A 已完成；API+PostgreSQL+独立 Worker package 具有本地与 Linux/真库公共证据；ADR-0039/Session-Memory 设计与九批实施计划已本地形成，但 migration/schema/产品代码尚未开始且设计尚无公共 CI | 生产模型质量、自动 crash recovery、Session/Memory、正式 Auth、SSE 或前端已完成 |
+| 本地代码 | 阶段 0-5 与阶段 6 的 6A 已完成；Session/Memory entry design 已由 `bc11afe` / Actions `32222531783` 三 job 公共闭环；6B-1 尚未开始写产品代码 | 设计/计划或身份地基等于完整 Session/Memory、生产模型质量、自动恢复、正式 Auth、SSE 或前端已完成 |
 | 项目理解 | 已讲解并验证 6A-1 至 6A-7；阶段 6 已冻结 PostgreSQL 单一真源、异步 player-link、稳定 PUUID subject、owner-local relationship、不可变 conversation、typed Memory/Candidate write gate、生命周期/Context/测试矩阵 | 本地设计等于已实现，或 package/control-plane 等于正式鉴权、RSO、容灾、SLA、长期 Coach 或真实模型质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | `adf53e5` / Actions `32146760003` 的 pytest、PostgreSQL、Linux packaging-smoke 三 job 全绿；非 root/image boundary 与 external calls 0 已公开验证；网页与公网仍未部署 | package CI 等于生产切换、正式 Auth/Session/Memory、备份、SLA 或公网可用 |
+| GitHub/部署 | 6A 的 `adf53e5` / Actions `32146760003` 与设计批 `bc11afe` / Actions `32222531783` 均三 job 全绿；网页与公网仍未部署 | package/design CI 等于生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -1170,3 +1170,15 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   均满阈值，Harness dry-run `published`/0 revisions，compileall、SDK/Secret/run-data、YAML、governance 与
   diff 门均通过。27 个 skip 不冒充真实 PostgreSQL/Docker 成功；下一动作是设计批独立提交/推送和
   exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 公共闭环，全绿前不进入 6B-1。
+
+## 2026-08-19：Session/Memory entry design exact-SHA 公共闭环
+
+- 设计提交 `bc11afe9f2f85a39f05b7f3d6135b14821ebb17d` 已推送；GitHub Actions run
+  `32222531783` 总状态 success，精确对应的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job
+  均成功，公开页面显示 workflow 总耗时 1m07s。
+- 入口设计退出条件全部满足：RQ/ADR/design/implementation/canonical 一致，本地 1102 tests/两套 RAG/
+  Harness/安全门通过，真库与 Linux package 又由同 SHA 补齐；设计批外部 Riot/Provider 调用为 0。
+- `stage-6-session-memory-entry-design` 正式关闭，但这只证明设计可审计且旧系统未回归，不表示四张 Player
+  表、Repository、Worker、Conversation 或 Memory 已实现。
+- 按 RQ-064，canonical 进入 `6B-1-player-identity-link-foundation`；本批先做严格 domain 合同与持久身份
+  地基，不实现 6B-2 的 Resolver/Worker/API，也不读取 Key 或调用外部服务。

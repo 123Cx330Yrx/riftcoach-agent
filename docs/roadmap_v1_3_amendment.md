@@ -230,7 +230,7 @@ OP.GG MCP
 5F-3 Contract/Harness Eval  已完成；45 focused、196 adjacent、完整 929/110 subtests；裁决 `harness-compatible-but-runtime-gate-failed`，Context/terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功
 5F-4 Bounded Real Slice    未进入；5F-3 前置硬门失败，真实模型调用无信息增益，external calls 0
 5F-5 Adoption/Exit         已完成；裁决 `partial-adopt-evaluation-assets-only`；`f8dea66` / Actions `32028206103` exact-SHA 公共成功；产品拒绝 Pi，冻结保留评测资产/CI 复现与采用门方法
-6A entry design            已完成；6A-1 至 6A-7 已由 `adf53e5` / Actions `32146760003` 的 pytest、真库与 Linux packaging 三 job 公共闭环，`d1cc2ed` / Actions `32147545753` 完成状态收尾；RQ-064 已本地冻结 Session/Memory 设计，尚待设计批公共 CI，产品实现未开始
+6A entry design            已完成；6A-1 至 6A-7 已由 `adf53e5` / Actions `32146760003` 的 pytest、真库与 Linux packaging 三 job 公共闭环；Session/Memory entry design 又由 `bc11afe` / Actions `32222531783` 三 job 公共闭环，当前进入 6B-1
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -408,5 +408,6 @@ PROJECT_ROOT 漂移；当前只把 Worker/smoke 改为 `python -m scripts...`，
 module-entry 修复 `adf53e5` / Actions `32146760003` 随后三 job 全绿：pytest 1102、PostgreSQL 51、
 packaging-smoke 成功且 image boundary 通过；状态收尾 `d1cc2ed` / Actions `32147545753` 也已三 job
 成功。6A 以 `close-with-deferred-boundaries` 关闭；RQ-064 已将
-`stage-6-session-memory-entry-design` 本地冻结为 ADR-0039/正式设计/实施计划，并只授权公共闭环后依次
-实施 6B-1 与 6B-2；当前尚未通过设计批公共 CI，也未创建 Session/Memory 产品 schema 或公网部署。
+`stage-6-session-memory-entry-design` 冻结为 ADR-0039/正式设计/实施计划，并只授权公共闭环后依次
+实施 6B-1 与 6B-2；设计提交 `bc11afe` / Actions `32222531783` 三 job 已成功，当前进入 6B-1，尚未
+创建其 schema/migration，也没有公网部署。

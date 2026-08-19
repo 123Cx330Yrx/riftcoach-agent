@@ -2084,3 +2084,13 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   `player_link_tasks` 明确私有持久化 bounded `game_name/tag_line`，hash 不能替代 Resolver 输入。
 - `CURRENT`：设计内容已本地冻结但尚未提交/推送/exact-SHA CI，产品 migration/schema 尚未开始；先完成
   一致性、本地门禁与设计批公共闭环，再依有限授权进入 6B-1。
+
+### 2026-08-19：Session/Memory entry design 公共闭环与 6B-1 交接
+
+- `VERIFIED-PUBLIC`：设计提交 `bc11afe9f2f85a39f05b7f3d6135b14821ebb17d` 对应 Actions
+  `32222531783`，workflow 总状态 success；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job
+  均成功，精确 SHA 与提交一致。
+- `CLOSED`：entry design 正式关闭；它证明 ADR/design/plan/治理一致和现有产品无回归，不证明 Player
+  identity 表、Repository、Worker、Conversation 或 Memory 已实现。
+- `HANDOFF`：按 RQ-064 进入 `6B-1-player-identity-link-foundation`，先做 strict domain contracts、
+  四表 0002 与事务 Repository；Resolver/Worker/API 留 6B-2，外部 Riot/Provider I/O 保持 0。
