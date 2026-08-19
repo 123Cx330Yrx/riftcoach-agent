@@ -4,7 +4,7 @@ main_stage: 6
 substage_group: "stage-6-session-memory"
 current_checkpoint: "stage-6-session-memory-entry-design"
 status: in_progress
-pause_reason: "6A completed at adf53e5 / Actions 32146760003; next stage-6 checkpoint prepared and awaiting explicit user authorization"
+pause_reason: "RQ-064 authorizes only entry-design closure, then 6B-1 and 6B-2 as separate public batches; the design artifacts exist locally but are not closed until exact-SHA CI succeeds"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "6A completed at adf53e5 / Actions 32146760003; next stage-6 check
 
 ## 状态元数据
 
-- 最后更新：2026-08-18
-- 主阶段：阶段 6；6A 持久异步 API/task 基座已由 `adf53e5` / Actions `32146760003` 完成 pytest、真实 PostgreSQL 与 Linux packaging-smoke 公共闭环；下一检查点 `stage-6-session-memory-entry-design` 仅为准备状态，等待用户明确继续
+- 最后更新：2026-08-19
+- 主阶段：阶段 6；6A 持久异步 API/task 基座已由 `adf53e5` / Actions `32146760003` 完成 pytest、真实 PostgreSQL 与 Linux packaging-smoke 公共闭环，状态收尾 `d1cc2ed` / Actions `32147545753` 也已三 job 全绿；RQ-060 启动 Session/Memory 入口设计，RQ-064 只授权 entry design、6B-1、6B-2 三个独立公共批次依次实施；ADR-0039 与两份计划已本地创建，尚未提交/公共验证
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,9 @@ pause_reason: "6A completed at adf53e5 / Actions 32146760003; next stage-6 check
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`stage-6-session-memory-entry-design` 仅准备进入 Session/Memory 的需求与设计审计，等待用户明确授权；不得因 6A 公共成功自动实现 Memory、Auth、SSE、前端或后续阶段。
+- 唯一下一步：`stage-6-session-memory-entry-design` 完成 ADR-0039、正式设计和实施计划的一致性/本地门禁，
+  独立提交、推送并取得 exact-SHA 公共 CI；全绿后才进入 6B-1，6B-1 全绿后才自动进入 6B-2。6B-2
+  全绿后只准备 6B-3 并停止实施。不得因此越过授权范围或调用真实 Riot/Provider。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -551,10 +553,17 @@ pause_reason: "6A completed at adf53e5 / Actions 32146760003; next stage-6 check
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5 与阶段 6 的 6A 已完成；API+PostgreSQL+独立 Worker package 具有本地与 Linux/真库公共证据；Session/Memory 尚未开始 | 生产模型质量、自动 crash recovery、Session/Memory、正式 Auth、SSE 或前端已完成 |
-| 项目理解 | 已讲解并验证 6A-1 至 6A-7：API/Worker/PostgreSQL、短事务、fail-closed composition、隔离 no-I/O smoke 与证据边界 | package/control-plane 证据等于正式鉴权、容灾、SLA、长期 Coach 或真实模型质量 |
+| 本地代码 | 阶段 0-5 与阶段 6 的 6A 已完成；API+PostgreSQL+独立 Worker package 具有本地与 Linux/真库公共证据；ADR-0039/Session-Memory 设计与九批实施计划已本地形成，但 migration/schema/产品代码尚未开始且设计尚无公共 CI | 生产模型质量、自动 crash recovery、Session/Memory、正式 Auth、SSE 或前端已完成 |
+| 项目理解 | 已讲解并验证 6A-1 至 6A-7；阶段 6 已冻结 PostgreSQL 单一真源、异步 player-link、稳定 PUUID subject、owner-local relationship、不可变 conversation、typed Memory/Candidate write gate、生命周期/Context/测试矩阵 | 本地设计等于已实现，或 package/control-plane 等于正式鉴权、RSO、容灾、SLA、长期 Coach 或真实模型质量 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
 | GitHub/部署 | `adf53e5` / Actions `32146760003` 的 pytest、PostgreSQL、Linux packaging-smoke 三 job 全绿；非 root/image boundary 与 external calls 0 已公开验证；网页与公网仍未部署 | package CI 等于生产切换、正式 Auth/Session/Memory、备份、SLA 或公网可用 |
+
+当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
+引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
+只能标记为 `claimed_self`，不得表述为已验证授权。owner-global 偏好按 owner 隔离，玩家相关的私人
+Session/Memory 再按 owner-local player subject 隔离。RQ-062 已确认 MVP 同时提供受限
+`public_observed`：它只承载公开比赛分析与 owner-local 观察备注/趋势，不冒充被观察者本人的偏好或训练
+完成度；任一关系都不增加 Riot 数据权限或跨 owner 合并私人 Memory。
 
 ## 已裁决的首批 Skill 与事实审查边界
 
@@ -1103,3 +1112,61 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   继续 deferred。
 - `6A-7-packaging-exit-review` 与整个 6A 正式完成。canonical 只交接
   `stage-6-session-memory-entry-design` 准备状态，等待用户明确继续，不自动实施。
+
+## 2026-08-19：Session/Memory 入口设计获授权
+
+- 6A 状态收尾提交 `d1cc2ed4e021a2fa14ed477d17f00e18578eebb2` 已推送；Actions
+  `32147545753` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均成功。这补齐状态提交
+  自身的公共证据，不改变 `adf53e5` 作为 6A module-entry/package 实现证据的角色。
+- 用户“继下一步”构成 RQ-060，解除 `stage-6-session-memory-entry-design` 的等待授权状态。
+- 本检查点只审计现有 owner/task/run/API、EchoMind/Saber 可迁移思想与缺陷，并逐节确认概念边界、
+  数据模型、写入/更正/导出/过期/删除、隔离、隐私/NFR/测试和后续原子实施顺序。
+- 当前没有 Session/Memory 产品代码；不复制 EchoMind Redis/Chroma，不把 RAG 或原始比赛事实当 Memory，
+  不自动引入向量库/LangGraph，也不提前进入 Auth/SSE/前端、阶段 7 或阶段 8。
+
+## 2026-08-19：RQ-061 外服账号认领边界
+
+- Riot 官方 LoL routing values 当前没有中国大陆 CN；`ASIA` 是包含 KR/JP 等平台的区域路由，不等于
+  中国大陆服务器支持，`zh_CN` Data Dragon 本地化也不是服务器路由。
+- Riot ID→PUUID 只解析可查询账号主体，不证明应用 owner 控制账号。当前只能形成未验证 self claim。
+- future verified 必须同时经过正式 RiftCoach Auth、安全绑定到该 owner 的 RSO OAuth/OIDC callback，
+  并让 `/accounts/me` PUUID 与 subject 精确匹配；当前没有这条产品路径。
+- 该条记录当时仍待 `public_observed` 裁决；后续 RQ-062 已确认采用。本次修正没有创建表、接口或
+  RSO/Auth 代码。
+
+## 2026-08-19：RQ-062 外服玩家关系策略确认
+
+- MVP 同时支持 `self + unverified_claim → claimed_self` 与
+  `observed + not_applicable → public_observed`；role 与 verification 不混成单一含糊枚举。
+- claimed-self 可形成 owner-player 训练目标/计划/进度但必须显示未验证；public-observed 只允许公开分析、
+  owner-local 观察备注/趋势和第三人称语义，不生成被观察者的私人偏好或训练完成度。
+- future `self + rso_verified → verified_self` 当前无创建路径；任一关系不增加 Riot 权限，不跨 owner
+  合并私人数据。
+- 下一步仍在同一 entry-design 内，只确认 conversation 固定/切换与 task 继承；没有实现产品代码。
+
+## 2026-08-19：RQ-063 Conversation 固定玩家确认
+
+- Conversation 创建时属于 trusted owner 并固定引用该 owner 的一个 player subject；V1 不提供中途切换，
+  不同 PUUID 必须新建 conversation，相同 PUUID 的 Riot ID 改名可继续。
+- 消息、Context、task/run 和 Memory Candidate 继承服务器保存的 owner/conversation/subject；client body、
+  自由文本或模型均不能覆盖，未来以应用校验和 PostgreSQL owner-scoped composite constraints 双层强制。
+- 当前异步入队只有 Riot ID，Worker 内才解析 PUUID；下一设计门先裁决 subject/link/conversation bootstrap
+  顺序。没有创建 schema、migration、Repository、API 或外部调用。
+
+## 2026-08-19：RQ-064 与 Session/Memory 设计本地冻结
+
+- RQ-064 取代 RQ-060 当时的“设计后另行授权”暂停门，但自动范围严格止于三个独立批次：entry design、
+  6B-1、6B-2；6B-2 exact-SHA 全绿后只把 6B-3 置为 prepared/waiting authorization。
+- 三案裁决采用独立异步 Player Link：API 先持久化 bounded Riot ID link intent，专用 Worker 在事务外调用
+  Account-V1，随后以一个 PostgreSQL 短事务收敛 subject、alias、owner relationship 和 link terminal；
+  link 成功后才能创建 Conversation。首个 Review 内 bootstrap 与 API 同步 lookup 被拒绝。
+- Memory 采用“关系型身份/状态骨架 + 分类型长期记录 + 严格 JSONB 叶子 + Candidate write gate”；模型或
+  自然语言提取不能直接永久写入，PostgreSQL 是唯一真源，Redis/向量索引仍需真实 Bad Case 才评估。
+- ADR-0039、`docs/plans/2026-08-19-stage6-session-memory-design.md` 与
+  `docs/plans/2026-08-19-stage6-session-memory-implementation.md` 已在本地创建，并按 6B-1 至 6B-9 冻结
+  全阶段顺序；本次自动实施仍只覆盖 6B-1/6B-2。
+- 当前只完成本地设计内容，尚未提交、推送或取得 exact-SHA CI，也没有创建 migration/schema、读取 Key、
+  调用 Riot/Provider。本地完整回归为 `1102 passed, 27 skipped, 1 warning, 110 subtests passed`；两套 RAG
+  均满阈值，Harness dry-run `published`/0 revisions，compileall、SDK/Secret/run-data、YAML、governance 与
+  diff 门均通过。27 个 skip 不冒充真实 PostgreSQL/Docker 成功；下一动作是设计批独立提交/推送和
+  exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 公共闭环，全绿前不进入 6B-1。

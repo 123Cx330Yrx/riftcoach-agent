@@ -2712,3 +2712,121 @@
   tmp；它不证明运行时 Secret manager、备份、HTTPS、Auth 或漏洞管理已经完成。
 - 因此 6A 可关闭的是“持久异步 task API 基座 + 可重建控制面 package”。长期 Session/Memory 与个性化
   Coach 是同一主阶段 6 的后续问题，不能由本次 smoke 前推完成。
+
+## 2026-08-19：Session/Memory 入口恢复与概念边界
+
+- 状态收尾提交 `d1cc2ed` 自身的 Actions `32147545753` 也已让 pytest、PostgreSQL、packaging-smoke
+  三 job 成功；活动文件此前漏记。用户“继下一步”构成 RQ-060，入口设计已获授权，但产品实现未获授权。
+- `session-catchup.py` 只寻找仓库根目录 `task_plan.md/findings.md/progress.md`，不会自动解析本仓库
+  `.planning/.active_plan`；本次静默是假阴性风险，不能再单凭无输出宣称无遗漏。人工 JSONL/Git 审计确认
+  工作树干净、没有半写产品代码，遗漏仅为上述公共状态与授权记录。
+- 6A `review_tasks` 保存的是 task/run 状态、claim ownership、终态与 Artifact 引用；它回答“工作做到哪”，
+  不保存一段对话包含哪些消息、玩家长期目标是什么，因此 task persistence 不等于 Session/Memory。
+- 本阶段必须继续分开六类数据：当前对话 Session/消息、可丢弃的工作上下文、玩家确认画像、历史复盘/训练
+  情景、原始 match facts/Artifact、RAG 外部知识。只有前四类中的合格子集可能属于 Session/Memory。
+
+## 2026-08-19：EchoMind 与 AGI-Saber Memory 源码初审
+
+- EchoMind 的 `user_id + conv_id`、工作/情景/画像三分法和读取后装配 Context 的主链值得吸收；但其同步
+  Redis client 位于 async API、请求体自带 user/conv、Chroma profile `limit=1` 无可靠排序/合并、24h TTL、
+  `asyncio.create_task(update_profile)` 无 durable claim/恢复，以及模型推断自动长期写入均不满足 RiftCoach。
+- EchoMind 没有用户可查看/更正/导出/删除合同，也没有写入 provenance/confidence/confirmation；Redis、
+  Chroma 与 LLM 写入之间无事务或补偿。复制技术栈会放大缺陷，不能等同于“迁移 EchoMind”。
+- AGI-Saber 的 typed category/tags、active/superseded/quarantine、filter recall、dedup/merge/expiry 和安全检查
+  提供更丰富的设计参考；但它会从 assistant 回复或规则/LLM 自动写 preference/LTM，后台线程无 durable
+  queue/flush，跨 PG/图/内存错误多为 warning，Graph/Neo4j/Milvus 对当前作品集规模过重。
+- 当前没有语义召回 Bad Case，故 PostgreSQL 结构化真源应进入备选比较；Redis/向量/图只能作为出现真实
+  性能或检索缺口后的派生索引候选，不能在 entry design 前预设采用。
+- 现有 HTTP 已证明 owner 不能来自请求 body/header，task/run/report 先做 trusted ActorContext ownership
+  查询，另一 owner 对同一 task/run 得到 404；这些测试是未来 Session/Memory ownership 的可复用安全基线，
+  但当前没有 `conversation_id`、消息、画像或训练进度表，不能把 owner-scoped task 查询外推成会话隔离。
+
+## 2026-08-19：第一节概念与数据流获确认
+
+- 用户确认六类职责边界：Task/Run 管执行状态，Session 管对话身份，消息派生有界工作上下文，长期 Memory
+  管跨会话玩家状态，原始比赛事实/Artifact 管已发生事实，RAG 管共享外部知识。
+- 用户确认长期写入不应由模型直写；正常方向是报告/对话后先产生 Memory Candidate，再经过来源、类型、
+  置信度、冲突和用户确认等写入门，最后才进入 active/pending/rejected/superseded 状态。
+- 下一设计问题是存储与写入架构，不重新讨论已确认的职责边界；任何存储选择都必须保持上述分层。
+
+## 2026-08-19：第二节 PostgreSQL 单一真源获确认
+
+- 用户采用推荐方案 A：Session、消息、Memory Candidate、长期 Memory、训练计划与进度以 PostgreSQL
+  为权威真源；工作上下文初版由有界查询/投影构建，不单独依赖 Redis。
+- EchoMind 式 Redis + Chroma 拆分和 PostgreSQL + Redis + 向量索引首日混合均不进入 V1。原因不是这些
+  技术无价值，而是当前没有延迟或语义召回 Bad Case 足以支付双写、删除传播和额外运维成本。
+- Redis 后续只能作为可丢失、可重建缓存；向量能力只能作为 PostgreSQL 权威记录的派生索引。任何索引
+  丢失后必须可从真源重建，索引命中不能绕过 ownership、状态和 write gate。
+- 关系模型仍必须解决两层主体：应用 owner 与被分析 Riot 玩家不是天然同一对象；否则同一 owner 分析
+  多个公开账号时，玩家画像、复盘情景和训练进度会交叉污染。
+
+## 2026-08-19：外服账号认领不等于账号归属验证
+
+- 用户明确提醒当前产品无法使用中国大陆国服 API，只能分析 Riot 官方 API 路由覆盖的外服账号。Riot
+  官方 LoL 文档当前列出的 platform routing values 为 BR1/EUN1/EUW1/JP1/KR/LA1/LA2/NA1/OC1/TR1/
+  RU/PH2/SG2/TH2/TW2/VN2，regional routing values 为 AMERICAS/ASIA/EUROPE/SEA，没有中国大陆 CN
+  路由。证据：[Riot LoL Developer Docs](https://developer.riotgames.com/docs/lol)。
+- Account-V1 `/riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}` 可以把 Riot ID 解析为 PUUID，
+  但该查询没有当前 RiftCoach 用户的授权证明，只能说明账号存在且可通过公开 API 查询。
+- Riot 官方用于识别“哪个 Riot 账号完成登录授权”的机制是 RSO 和
+  `/riot/account/v1/accounts/me`；RSO client 只向已有获批 Production-level application/API key 的应用
+  开放。证据：[Riot RSO FAQ](https://developer.riotgames.com/docs/faqs)。
+- 因而 V1 的“这是我的账号”只能保存为未验证 `claimed_self`，不能命名为 `verified_self`，不能解锁
+  非公开数据，也不能把同一 PUUID 下另一个 RiftCoach owner 的私人目标、备注或 Memory 合并过来。
+- 当前身份设计应比较“只允许 claimed-self”与“同时支持 claimed-self/public-observed”两案；后一案更
+  能覆盖职业选手或朋友等公开账号分析，但具体裁决仍待用户确认。未来 RSO 只能把匹配 PUUID 的关系升级
+  为 verified，不能无审计地合并既有 owner-local Memory。
+- 更精确地说，RSO 本身仍不足以把关系升级：必须先有正式 RiftCoach owner Auth，再用 state/nonce 等
+  安全机制把 OAuth/OIDC callback 绑定到该 owner，并要求 `/accounts/me` 的完整 PUUID 与当前 subject 精确
+  匹配。当前 Auth/RSO 都未实现，因此 verified 创建路径必须不存在。
+- 推荐的数据模型把两个维度分开：`relationship_role=self|observed` 表示用途，
+  `verification_status=unverified_claim|not_applicable|rso_verified` 表示证据。用户界面的 `claimed_self` 是
+  `self + unverified_claim` 的投影，未来 `verified_self` 是 `self + rso_verified` 的投影；这仍是待确认设计，
+  不是当前产品代码或已创建的 enum。
+- `player_subject` 应以完整 PUUID 作为稳定外部身份，Riot ID 只作可变显示别名。相同 PUUID 改名不新建
+  Memory；相同显示 Riot ID 日后解析为不同 PUUID 时不得静默重绑。完整 PUUID 不进入公共响应、日志或
+  Prompt。当前 `Summary` 只输出 PUUID 前缀，符合展示最小化，但尚无持久 subject 表。
+- 隔离还需区分 `owner_global` 偏好（如语言/报告详细度）和 `owner_player` 状态（目标、计划、复盘情景、
+  进度）。同一 PUUID 被两个 owner 使用时，最多共享公开上游事实缓存，不能共享关系状态或私人 Memory。
+- 当前 `RIOT_REGION` 只做字符串形状校验；未来实现必须改成官方 regional routing allowlist，并在任何
+  网络 I/O 前拒绝 `cn` 等无效值。`zh_CN` 只是 Data Dragon 中文本地化代码，不是中国大陆服务器路由。
+
+## 2026-08-19：第三节外服玩家关系策略获确认
+
+- 用户明确“确认吧”，接受同时提供 `claimed_self` 与受限 `public_observed` 的推荐方案；该确认记录为
+  RQ-062，只冻结设计，不授权 schema、migration、Repository、API、Auth 或 RSO 实现。
+- 两维模型正式成为当前设计：`relationship_role=self|observed` 与
+  `verification_status=unverified_claim|not_applicable|rso_verified`。前两个当前组合分别投影为
+  `claimed_self` 和 `public_observed`；`rso_verified` 是 future-only，当前任何写入均应 fail closed。
+- `claimed_self` 可承载 owner 为该玩家主体输入的训练目标、计划与进度，但 UI/API 必须保留未验证标记；
+  `public_observed` 只承载公开比赛分析、owner-local 观察备注/趋势，报告使用观察语义，不推断被观察者的
+  私人偏好，也不声称对方完成了训练。
+- 任一关系都不增加 Riot API 权限，也不允许相同 PUUID 下跨 owner 合并关系、Session 或私人 Memory。
+- 本确认没有涵盖 conversation 中途切换语义。下一设计问题必须独立比较“会话固定一个 subject”与
+  “显式可切换 + CAS/event/context reset”；自由文本、模型或最新 Riot ID 静默切换必须排除。
+
+## 2026-08-19：Conversation 单一玩家绑定获确认
+
+- 用户确认方案 A：conversation 创建时固定一个 owner-local player subject，V1 生命周期内不可切换；分析
+  不同 PUUID 必须新建 conversation。该确认记录为 RQ-063，只冻结设计，不授权实现。
+- 同一 PUUID 的 Riot ID 改名不是切换；同一显示 Riot ID 解析成不同 PUUID 必须返回安全 mismatch，不能
+  更新旧 subject。自由文本、模型、客户端 payload 或最新请求都不能改变绑定。
+- 消息、工作 Context、task/run、Memory Candidate 必须从服务器端 conversation 继承同一
+  `owner_id + conversation_id + player_subject_id`。未来 PostgreSQL 设计应用 owner-scoped composite
+  FK/unique/check 约束，应用层仍做友好错误；任一层不能只按 PUUID 查询私人数据。
+- 当前代码暴露一个必须先解决的 bootstrap 接缝：`CreateReviewTaskCommand`/`PendingReviewTask` 入队时只有
+  owner + Riot ID request，Worker claim 后 `RecentReviewApplicationService._build_summary()` 才经 Riot
+  API 获得完整 PUUID。因而不能在 HTTP 入队时假装已有稳定 subject/conversation。
+- 下一设计门应比较：(A) 独立异步 player-link task 先解析 PUUID，再创建 conversation/review；(B) 首个
+  review task 在 Worker 解析 PUUID 后原子引导 relation/conversation；(C) API 同步调用 Account-V1。
+  任何方案都不得创建以可变 Riot ID 作为稳定身份的 provisional subject。
+
+## 2026-08-19：RQ-064 设计审计后的两项关键修正
+
+- 自动推进授权只能按用户最后一句精确解释为 entry design→6B-1→6B-2；此前“每批继续下一批”的宽泛文字
+  会误授权 6B-3 至 6B-9，已统一收紧。6B-2 公共全绿后只准备 6B-3 并等待新授权。
+- `player_link_tasks` 不能只存 Riot ID hash：Worker 必须读取 bounded normalized `game_name/tag_line` 才能
+  调 Account-V1。它们是私有 SQL 输入，可参与 fingerprint/claim，但不进入公共 View、日志、Trace 或 Prompt。
+- lookup 后/resolve 事务前 crash 只证明没有身份副作用，不等于 V1 已有自动恢复；原 running task 仍需
+  recovery-required/显式处置，自动 lease/reclaim 留阶段 8。
+- ADR-0039、正式设计和实施计划核心分层一致；当前只是本地设计产物，尚无公共 CI 或产品 migration。

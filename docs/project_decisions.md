@@ -1157,3 +1157,114 @@ root 落在 site-packages。采用 `python -m scripts...` 统一 Worker/smoke im
 `adf53e5` / Actions `32146760003` 最终三 job 全绿；Linux smoke 输出外部 Riot/Provider calls 0，并完成
 HTTP create、PostgreSQL claim、安全 failed terminal、HTTP query 与 image boundary。6A 以 deferred
 边界关闭；下一次只在用户授权后设计 Session/Memory，不把 package CI 误称为长期 Coach 或公网生产。
+
+## Session/Memory 入口设计边界（2026-08-19）
+
+状态收尾 `d1cc2ed` / Actions `32147545753` 的三 job 也已成功；用户随后以 RQ-060 授权
+`stage-6-session-memory-entry-design`。本次先做教学、现状/参考源码审计、方案比较和逐节设计确认，
+不是直接把 EchoMind 的 MemoryManager 或 AGI-Saber 的 MemoryStack 接入产品。
+
+当前决策边界：
+
+- 6A 的 PostgreSQL task 是运行控制面，不是对话 Session 或长期玩家 Memory；
+- 原始比赛事实仍由领域结构化数据负责，RAG 仍存外部知识，二者不能被塞入 Memory 冒充统一存储；
+- EchoMind 提供 `user_id + conv_id`、工作/情景/画像分层的参考思想，但 Redis/Chroma、自动画像写入、
+  非持久 fire-and-forget 和弱 ownership 不能照搬；
+- AGI-Saber 的分类、superseded/quarantine、召回过滤和 consolidation 可作为设计证据，但图数据库、
+  自动从 assistant 回复提取偏好、无持久后台线程和跨存储弱事务也不直接采用；
+- 长期写入必须在设计中明确来源、置信度、用户确认/确定性事实门、更正、冲突、导出、过期和删除；
+- 本入口设计本身不实现产品代码；后续 RQ-064 只授权 entry design→6B-1→6B-2 三个独立公共批次，
+  6B-2 后停止在 6B-3 准备态；同时不预先引入 Redis、Chroma、向量库、LangGraph 或其他新基础设施。
+
+### 已确认的第一节：职责与主链
+
+用户已确认 Task/Run、Session、消息派生工作上下文、长期玩家 Memory、原始比赛事实/Artifact 和 RAG
+六类数据必须保持独立。未来模型或规则只能产生 Memory Candidate，长期状态必须经过来源、类型、置信度、
+冲突与确认写入门；不能让一次 assistant 推断直接污染后续会话。
+
+### 已确认的第二节：PostgreSQL 单一真源
+
+用户确认 Session/Memory V1 继续使用现有 PostgreSQL/SQLAlchemy/Alembic 基座作为唯一权威存储。工作
+上下文由消息与 Memory 的有界查询投影形成；Redis 只在真实性能 Bad Case 后作为可重建缓存，语义索引只在
+结构化召回不足的评测证据出现后增加。EchoMind 式 Redis/Chroma 双真源和首日全量混合架构均不采用。
+
+### 第三节的已冻结事实：外服账号认领不是归属验证
+
+Riot 官方 LoL routing values 当前不含中国大陆 CN，RiftCoach V1 只能分析官方 API 可路由的外服账号。
+Account-V1 的 Riot ID→PUUID 只能证明账号存在，不能证明当前应用 owner 控制该账号。登录 Riot 账号证据
+需要获批 Production-level application/API key 与 RSO client 后使用 `/riot/account/v1/accounts/me`；要把
+它绑定为当前 RiftCoach owner 的已验证关系，还必须有正式产品 Auth、安全 OAuth/OIDC callback 绑定和
+精确 PUUID match。
+
+因此，当前产品即使让用户选择“这是我的账号”，也只能建立未验证 `claimed_self` 关系：界面不得显示
+“已验证本人”，不能解锁非公开数据，不能把相同 PUUID 下其他 RiftCoach owner 的目标、备注、训练计划或
+Memory 合并进来。语言/展示等 owner-global 偏好只按 `owner_id` 保存；玩家相关状态再绑定
+`owner_id × player_subject_id`。PUUID 是稳定的被分析主体身份，Riot ID 是可变显示别名，二者都不是
+应用用户身份。
+
+RQ-062 已确认 MVP 同时提供未验证 `claimed_self` 和受限 `public_observed`。前者可以承载 owner 为该
+player subject 设置的训练目标、计划和进度，但必须显示未验证；后者用于职业选手、朋友等公开账号分析，
+只允许公开比赛事实、owner-local 观察备注/趋势和第三人称语义，不生成被观察者的私人偏好或第一人称训练
+完成度。两者都不增加 Riot 数据权限，也不跨 owner 合并私人状态。
+
+底层模型不把三个界面标签硬塞进一个 enum，而是拆为两个维度：
+
+```text
+relationship_role = self | observed
+verification_status = unverified_claim | not_applicable | rso_verified
+```
+
+`self + unverified_claim` 投影为 `claimed_self`，`observed + not_applicable` 投影为
+`public_observed`，未来 `self + rso_verified` 才投影为 `verified_self`。当前 verified 写路径必须不存在。
+同一 PUUID 改 Riot ID 只更新可审计别名，不新建 subject/Memory；同一显示 Riot ID 解析为不同 PUUID 时
+不得静默重绑。
+
+本确认不授权 Auth/RSO 或 Session/Memory 代码实现。Conversation 切换机制随后由 RQ-063 单独裁决。
+
+### 已确认的第三节续：Conversation 生命周期固定一个玩家
+
+RQ-063 接受最小、安全的 V1：conversation 创建时属于 trusted owner，并固定引用该 owner 的一个
+player subject/relationship；生命周期内没有切换 endpoint。相同 PUUID 的 Riot ID 改名可以继续，不同
+PUUID 返回安全 mismatch 并要求新建 conversation。自由文本、模型、客户端 body 或最新 Riot ID 不能修改
+绑定。
+
+消息、工作 Context、review task/run 与 Memory Candidate 都必须从服务器 conversation 继承相同的
+`owner_id + conversation_id + player_subject_id`。未来实现使用应用层身份校验和 PostgreSQL owner-scoped
+composite foreign key/unique/check 约束双层防线；迟到 task 也只能写回自己冻结的 tuple，不能按当前 UI
+选中的玩家重新解释。
+
+源码审计同时发现一个尚未裁决的创建顺序：当前 HTTP task 入队时只有 owner + Riot ID，Worker claim 后
+`RecentReviewApplicationService` 才调用 Riot API 并获得完整 PUUID。因此下一节必须比较独立异步
+player-link task、首个 review task bootstrap 与 API 同步 lookup；禁止先用可变 Riot ID 创建 provisional
+subject 再静默替换。RQ-063 本身没有授权任何产品代码。
+
+### RQ-064 最终入口设计裁决
+
+三案比较后采用独立异步 Player Link：
+
+```text
+POST /player-links
+→ PostgreSQL link intent
+→ PlayerLinkWorker 在事务外调用 Account-V1
+→ 一个短事务写 subject + alias + owner relationship + link terminal
+→ link 成功后才创建 Conversation
+```
+
+不把它塞入 Review Task，因为账号解析没有 publication/Trace/final Artifact 成功语义；不在 API 内同步调用
+Riot，因为 API 不应读取 Riot Key、持有长事务或承受上游长尾；不以 Riot ID 建 provisional subject，因为
+Riot ID 可改名、重指向。queued task 必须私有持久化严格规范化、bounded 的 `game_name/tag_line`，hash 只能
+用于指纹/检索，不能替代 Worker 所需输入。
+
+Memory 采用关系型身份/状态骨架、分类型长期记录与有界严格 JSONB 叶子。所有长期改变先形成带来源、目标
+作用域、producer/version、confidence 与 gate policy 的 Memory Candidate；自然语言或模型推断一律 pending，
+confidence 不能越过权限，Training Plan 必须确认，确定性 Progress 必须有完整 Artifact。accepted Candidate
+与目标记录同事务物化，并用 `source_candidate_id` 唯一和 supersede/version chain 防止重复或原地覆盖。
+
+Context V1 只做 owner/conversation/subject scoped 的确定性有界选择，Message/Memory 永远是 data-only；
+PostgreSQL 是唯一真源。Redis、向量检索、RLS、LangGraph、新 SDK、正式 Auth/RSO/HTTPS、SSE/前端、MCP、
+Multi-Agent 与自动恢复仍不进入本批。
+
+正式文件为 ADR-0039、`docs/plans/2026-08-19-stage6-session-memory-design.md` 和
+`docs/plans/2026-08-19-stage6-session-memory-implementation.md`。全路线拆为 6B-1 至 6B-9，但 RQ-064 的
+自动执行范围只到 6B-2：设计、6B-1、6B-2 各自独立验证/提交/推送/exact-SHA CI；6B-2 全绿后只准备
+6B-3 并等待新授权。当前这些设计文件仅在本地，尚未公共验证，也尚未创建产品 schema/migration。

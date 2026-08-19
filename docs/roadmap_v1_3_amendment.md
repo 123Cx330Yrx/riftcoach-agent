@@ -99,12 +99,20 @@ V1（阶段 5）：
 V2（阶段 6）：
 
 - `continue_session()`；
-- `cancel()`；
-- `resume()`；
-- 持久状态与 Context Compaction。
+- 持久 Session/Memory 与 owner/conversation 隔离；
+- owner-local player subject 与外服账号关系隔离；官方 routing 无中国大陆 CN，Riot ID→PUUID 不是
+  归属证明，`claimed_self` 在正式产品 Auth、安全 RSO callback 与精确 PUUID match 前始终未验证；
+- MVP 关系同时允许未验证 self claim 与受限 public observation；用途与验证状态分开，verified 写路径
+  在未来正式 Auth/RSO 门前不存在；
+- conversation 创建时固定一个 owner-local player subject，消息/Context/task/run/Candidate 继承该绑定，
+  不同 PUUID 新建 conversation；
+- 有界历史选择、摘要和 Context 装配合同。
 
 V3（按证据进入阶段 8）：
 
+- `cancel()`；
+- `resume()`；
+- Runtime Context Compaction、Checkpoint 与恢复；
 - Fork；
 - Steering；
 - Background Task；
@@ -137,7 +145,9 @@ Artifact，但增加 body-free file receipt 作为查询投影，不冒充 SQL�
 5P-6 Product Slice Evaluation & Exit Review
 ```
 
-阶段 6 再加入 SQL、用户隔离、Session、Memory、幂等、恢复、SSE 和完整前端。
+阶段 6 再加入 SQL、用户隔离、Session、Memory、幂等和 owner-scoped 对话/复盘入口；高级
+cancel/resume/恢复与 Runtime Compaction、SSE 和完整前端仍属于阶段 8。RQ-060 的入口设计又进一步
+限定：正式 Auth/HTTPS、SSE/前端不在当前 checkpoint 内，不能借 Session/Memory 设计提前实现。
 
 ## 8. OP.GG 与 Meta
 
@@ -220,7 +230,7 @@ OP.GG MCP
 5F-3 Contract/Harness Eval  已完成；45 focused、196 adjacent、完整 929/110 subtests；裁决 `harness-compatible-but-runtime-gate-failed`，Context/terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功
 5F-4 Bounded Real Slice    未进入；5F-3 前置硬门失败，真实模型调用无信息增益，external calls 0
 5F-5 Adoption/Exit         已完成；裁决 `partial-adopt-evaluation-assets-only`；`f8dea66` / Actions `32028206103` exact-SHA 公共成功；产品拒绝 Pi，冻结保留评测资产/CI 复现与采用门方法
-6A entry design            已完成；6A-1 至 6A-7 已由 `adf53e5` / Actions `32146760003` 的 pytest、真库与 Linux packaging 三 job 公共闭环；下一步 Session/Memory entry design 待确认
+6A entry design            已完成；6A-1 至 6A-7 已由 `adf53e5` / Actions `32146760003` 的 pytest、真库与 Linux packaging 三 job 公共闭环，`d1cc2ed` / Actions `32147545753` 完成状态收尾；RQ-064 已本地冻结 Session/Memory 设计，尚待设计批公共 CI，产品实现未开始
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -396,5 +406,7 @@ API readiness 200/POST 202、真库 job 成功。根因是 direct script 从 whe
 PROJECT_ROOT 漂移；当前只把 Worker/smoke 改为 `python -m scripts...`，不放宽 migration readiness。
 
 module-entry 修复 `adf53e5` / Actions `32146760003` 随后三 job 全绿：pytest 1102、PostgreSQL 51、
-packaging-smoke 成功且 image boundary 通过。6A 以 `close-with-deferred-boundaries` 关闭，只交接
-`stage-6-session-memory-entry-design` 准备状态；这不表示 Session/Memory 或公网部署已完成。
+packaging-smoke 成功且 image boundary 通过；状态收尾 `d1cc2ed` / Actions `32147545753` 也已三 job
+成功。6A 以 `close-with-deferred-boundaries` 关闭；RQ-064 已将
+`stage-6-session-memory-entry-design` 本地冻结为 ADR-0039/正式设计/实施计划，并只授权公共闭环后依次
+实施 6B-1 与 6B-2；当前尚未通过设计批公共 CI，也未创建 Session/Memory 产品 schema 或公网部署。

@@ -2711,3 +2711,96 @@
   exclusion 检查成功。失败诊断 step 因 smoke 成功而正确跳过，teardown 成功。
 - exit matrix/review 改为 `close-with-deferred-boundaries`；RQ-059 与 Phase 15 完成。canonical 只交接
   `stage-6-session-memory-entry-design` 准备状态，等待用户明确继续，不自动实现 Session/Memory。
+
+## 2026-08-19：RQ-060 恢复与 Session/Memory 入口设计启动
+
+- 按 `AGENTS.md` 顺序恢复 canonical、活动计划、需求/历史/路线/修订/能力矩阵，并运行治理；初始工作树
+  干净，`HEAD == origin/main == d1cc2ed`。
+- 发现官方 session catch-up 不解析活动计划目录后，改为人工审计 Codex JSONL、Git 与计划尾部；确认无
+  半写代码，但补出 `d1cc2ed` / Actions `32147545753` 三 job 成功和用户 RQ-060 授权两项未同步事实。
+- 已只读审计现有 ActorContext、owner-scoped task/run、PostgreSQL task schema，以及 EchoMind
+  `conversation_memory.py`/API 和 AGI-Saber Memory/Writer 关键源码；没有读取 Key、调用 Riot/Provider、
+  安装依赖或实现产品 Session/Memory。
+- 已同步 canonical、活动计划、RQ 日志、主路线/修订/能力矩阵、变更历史和项目决策，并为 Phase 16 增加
+  原子 checklist。治理与陈旧文本检查随后已通过；下一动作是向用户进行第一节概念与数据流教学。
+- `git diff --check` 与治理检查已通过；陈旧扫描命中的“等待授权”均位于 RQ-059/6A 历史段，后续
+  RQ-060/current 段已明确覆盖。现有两 owner PostgreSQL/API 测试也已复核，确认可复用 ownership 基线。
+
+## 2026-08-19：Session/Memory 设计第一节确认
+
+- 已向用户讲解并区分 Task/Run、Session、消息/工作上下文、长期 Memory、原始事实/Artifact 与 RAG，
+  同时展示 trusted owner → Session → Context Builder → Runtime/Harness → Memory Candidate → write gate 主链。
+- 用户明确“确认”。Phase 16 的概念教学项改为 completed，三方案比较项改为 in_progress。
+- 下一动作只比较存储/写入架构并取得一个方向确认；不创建 ADR、不实现 schema/repository/API 或新依赖。
+
+## 2026-08-19：Session/Memory 设计第二节确认
+
+- 已比较 PostgreSQL 单一真源、EchoMind 式 Redis/Chroma 拆分、PostgreSQL+Redis+向量首日混合三案，
+  并讲清真源、缓存和派生索引的差异。
+- 用户明确“采用吧”，确认方案 A。三方案比较项改为 completed，数据模型/write gate 项进入 in_progress。
+- 下一动作只确认 owner/conversation/player-subject 身份作用域与关系模型；不创建表、migration 或 Repository。
+
+## 2026-08-19：外服账号归属边界修正
+
+- 用户指出当前只能调用 Riot 官方外服 API，不能查询中国大陆国服；已记录 RQ-061。
+- 复核官方 LoL routing/RSO 文档后确认：Riot ID→PUUID 只证明账号存在，不能证明当前 owner 控制该账号；
+  RSO `/accounts/me` 可形成登录 Riot 账号证据，且需要获批 Production-level application/API key 与 RSO
+  client；要升级当前 owner-player 关系还必须有正式产品 Auth、安全 callback 绑定和精确 PUUID 匹配。
+- 当时只把 `claimed_self` 视为用户声明，私人训练数据按 owner-local player subject 隔离；是否同时提供
+  `public_observed` 关系及其受限长期能力仍待本节确认。该临时状态已由下方 RQ-062 确认条目取代。
+- 本轮仍没有创建 Session/Memory schema、migration、Repository 或 API；没有读取 Key、调用 Riot/Provider。
+  下一动作是向用户讲清认领后的允许/禁止/切换/同账号多 owner 边界并取得一个关系策略裁决。
+
+## 2026-08-19：外服玩家关系策略确认
+
+- 用户明确“确认吧”；RQ-062 已追加，RQ-061 保留当时 pending 历史并标注后续由 RQ-062 确认。
+- 当前设计接受 `claimed_self` 与受限 `public_observed`，并采用 role/verification 两维模型；
+  `verified_self` 当前不可创建，只保留未来正式 Auth + 安全 RSO callback + PUUID match 升级门。
+- canonical、活动计划、路线、修订、能力矩阵、变更历史和项目决策已同步本确认；没有产品代码或外部 I/O。
+- 下一动作只讲解并确认 conversation 固定/切换语义及 task 继承关系，不进入 Session/Memory 字段、写入门
+  或产品实现。
+
+## 2026-08-19：Conversation 固定玩家方案确认
+
+- 用户明确“确认”；RQ-063 已追加。V1 conversation 创建时绑定 trusted owner 的一个 player subject，
+  生命周期不可切换；不同 PUUID 新建 conversation，相同 PUUID 改名可继续。
+- 消息/Context/task/run/Memory Candidate 的 owner/conversation/subject 继承、client/model 不可覆盖、
+  composite FK/迟到 task/跨 owner 测试已进入设计不变量；没有实现代码。
+- 源码复核发现入队时尚无 PUUID，Worker 内才解析；下一动作改为比较异步 link task、首个 review bootstrap
+  与 API 同步 lookup，先冻结稳定 subject 的创建顺序，再进入 Memory 字段/write gate。
+
+## 2026-08-19：RQ-064 连续设计与实施授权
+
+- 用户明确授权本轮不再逐节等待方案审批，由 Codex 在已确认边界内选择最佳剩余设计，并在完整说明后
+  直接实施第一步、验证/推送后自动继续第二步；持久化裁决将其精确限定为 entry design→6B-1→6B-2，
+  三批均独立完成教学、TDD、本地门禁、提交、推送和 exact-SHA 公共 CI，6B-2 后停止在 6B-3 准备态。
+- 该授权已追加为 RQ-064，并同步 canonical 与活动计划；治理检查通过。它取代 RQ-060 的“设计后另行
+  授权”暂停门，但不授权真实 Riot/Provider 调用、正式 Auth/RSO/HTTPS、SSE/前端、阶段 7/8 或新技术栈。
+- 三案源码审计选择独立异步 `player-link`：API 只持久化 link intent，专用 Worker 在事务外调用
+  Account-V1，随后在一个 PostgreSQL 短事务中收敛 subject、alias、owner relationship 和 link terminal；
+  link 成功后才允许创建 conversation。首个 review bootstrap 与 API 同步 lookup 均被拒绝。
+- Memory 模型选择“关系型身份/状态骨架 + 分类型长期记录 + 严格 JSONB 叶子 + 统一 Candidate write gate”；
+  拒绝大画像 JSON、万能 memories 表、EchoMind 式双真源和模型直接永久写入。
+- ADR-0039、完整 Session/Memory 设计和 6B-1 至 6B-9 实施计划已本地创建；设计批本身没有创建
+  migration/schema，也未调用外部服务。
+- 后续只读一致性审计发现并修正两项关键问题：自动范围收紧为 entry design→6B-1→6B-2，6B-2 后停止；
+  `player_link_tasks` 必须私有持久化 Worker 所需的 bounded normalized `game_name/tag_line`，不能只存 hash。
+- canonical、RQ、活动计划、roadmap/amendment/capability/project decisions/history 正在同步为“设计已本地
+  冻结但尚未公共验证”。下一动作是运行设计批比例门禁、独立提交/推送并等待 exact-SHA 三 job；全绿前
+  不进入 6B-1。
+
+## 2026-08-19：Session/Memory 设计批本地门禁通过
+
+- 完整 pytest：`1102 passed, 27 skipped, 1 warning, 110 subtests passed`；本机无 PostgreSQL/Docker 的
+  既有 skip 不能冒充真库/Linux 成功，仍由 exact-SHA CI 补齐。
+- RAG development 与独立 holdout 均为 Recall/MRR/nDCG 1.0、无答案误召回 0；holdout abstention/citation
+  也为 1.0。Harness 正确命令 dry-run 得到 `published`、0 revisions。
+- compileall、governance、SDK boundary、tracked Secret/run-data、YAML 与 `git diff --check` 全部通过；
+  本批没有创建 migration/schema，没有读取 Key或调用 Riot/Provider。
+- 首次 Harness 外围验证误写为不存在的 `scripts/run_harness.py`，命令以 file-not-found 退出且没有文件
+  副作用；随后先从 `.github/workflows/tests.yml` 读取真实入口，使用 `scripts/run_review_harness.py` 成功。
+  该错误不作为测试失败掩盖，也不重复猜文件名。
+- 首次陈旧短语扫描在 PowerShell 末尾误用了 Bash 风格 `|| exit 0`，扫描主体与前面的 governance/diff 已
+  完成，但尾部报 `exit` 不可执行；随后改为显式检查 `$LASTEXITCODE`，结果为无过宽 RQ-064 自动范围短语。
+- 下一动作只提交/推送设计批并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；全绿前
+  canonical 保持 entry design in progress。

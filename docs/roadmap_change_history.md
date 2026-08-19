@@ -2009,3 +2009,78 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   Auth/HTTPS、lease/reclaim、SSE/前端、备份/SLA 或模型质量。
 - `HANDOFF`：canonical 只切到 `stage-6-session-memory-entry-design` 准备状态，等待用户明确继续；不自动
   实现，也不提前进入阶段 7/8。
+
+### 2026-08-19：RQ-060 授权 Session/Memory 入口设计
+
+- `STATE-CLOSE-VERIFIED`：6A 状态收尾 `d1cc2ed` / Actions `32147545753` 的 pytest、
+  postgres-migrations、packaging-smoke 三 job completed/success；这补齐状态提交自身的公开证据。
+- `AUTHORIZED`：用户“继下一步”只授权 canonical 的 `stage-6-session-memory-entry-design`。
+- `CURRENT`：先区分 task、Session、工作记忆、长期 Memory、原始事实与 RAG，审计现有
+  owner/task/run/API 和 EchoMind/Saber，再比较方案并逐节冻结数据/写入/生命周期/隔离/NFR/测试设计。
+- `BOUNDARY`：产品 Memory 代码、新存储依赖、正式 Auth/HTTPS、SSE/前端、MCP、Multi-Agent、
+  cancel/resume/恢复和外部 Riot/Provider I/O 均未获本检查点授权。
+- `DESIGN-CONFIRMED-1`：用户确认 Task/Session/工作上下文/长期 Memory/原始事实/RAG 六类职责与
+  Candidate→write gate 主链。
+- `DESIGN-CONFIRMED-2`：用户确认 PostgreSQL 是 Session/Memory V1 唯一真源；Redis/向量能力只作为
+  真实 Bad Case 触发的可重建派生优化，不首日引入。
+
+### 2026-08-19：RQ-061 校正外服账号认领与验证边界
+
+- `CONSTRAINT`：当前 Riot 官方 LoL routing values 不含中国大陆国服；RiftCoach V1 只能处理官方 API
+  可查询的外服账号。
+- `IDENTITY-EVIDENCE`：Riot ID→PUUID 是公开账号解析，不是 owner 的账号归属证明；RSO `/accounts/me`
+  可以提供登录 Riot 账号证据；升级 owner-player 关系还必须有正式产品 Auth、安全 callback 绑定和精确
+  PUUID match，而当前项目没有这些能力。
+- `CURRENT`：外服账号“属于我”只能作为未验证 `claimed_self`；不得显示 verified、不得解锁非公开数据，
+  同一 PUUID 在不同 owner 下的私人 Memory 继续隔离。
+- `AT-THE-TIME-PENDING`：当时是否并列支持 `public_observed` 及其允许的观察性历史能力仍留给 RQ-060
+  身份节确认；下方 RQ-062 随后完成裁决。该临时状态没有触发代码、Auth/RSO 或阶段顺序变化。
+
+### 2026-08-19：RQ-062 确认 MVP 外服玩家关系策略
+
+- `CONFIRMED`：用户接受 MVP 同时提供未验证 `claimed_self` 与受限 `public_observed`；关系用途和验证
+  证据拆为 `relationship_role` / `verification_status` 两个维度。
+- `SELF-BOUNDARY`：claimed-self 可保存 owner-player 目标、计划与进度，但必须显式未验证，不增加 Riot
+  API 权限。
+- `OBSERVED-BOUNDARY`：public-observed 只允许公开比赛分析、owner-local 观察备注/趋势和第三人称语义，
+  不生成被观察者本人的私人偏好或第一人称训练完成度。
+- `FUTURE-ONLY`：verified-self 当前没有创建路径；未来必须经过正式产品 Auth、安全 RSO callback 与
+  `/accounts/me` PUUID 精确匹配。任一关系都不允许跨 owner 合并私人 Memory。
+- `NO-IMPLEMENTATION`：本确认不授权 schema/migration/Repository/API/Auth/RSO 代码。当前下一设计门是
+  conversation 绑定、显式切换与 task 继承语义。
+
+### 2026-08-19：RQ-063 确认 Conversation 固定玩家
+
+- `CONFIRMED`：V1 conversation 创建时固定 trusted owner 的一个 player subject，生命周期不提供切换；
+  不同 PUUID 新建 conversation，相同 PUUID 的 Riot ID 改名不算切换。
+- `INHERITANCE`：消息、Context、review task/run 与 Memory Candidate 必须继承服务器保存的
+  owner/conversation/subject；客户端、自由文本和模型都不能覆盖，未来由应用校验 + PostgreSQL
+  owner-scoped composite constraints 双层保证。
+- `AUDIT-GAP`：当前 task 在 HTTP 入队时只有 owner + Riot ID，完整 PUUID 由 Worker 内 Application 调用
+  Riot API 后才得到；不能在入队点伪造已知 subject。
+- `CURRENT`：下一步在同一 entry-design 内比较独立异步 link task、首个 review task bootstrap 和 API
+  同步 lookup；未授权产品代码或外部调用。
+
+### 2026-08-19：校正 v1.3 Amendment 的阶段 6/8 陈旧职责
+
+- `RECONCILIATION`：旧 v1.3 增量文本曾把 cancel/resume/恢复、Runtime Compaction、SSE 和完整前端笼统
+  留在阶段 6；较晚获用户逐节确认的 RQ-052/ADR-0038、主路线和 6A exit 已明确把这些高级运行时/产品化
+  能力保留在阶段 8。
+- `SYNC`：本次只让 amendment 与较晚已批准事实一致：阶段 6 V2 负责 Session/Memory、owner/conversation
+  隔离和有界 Context；阶段 8 V3 负责 cancel/resume/checkpoint/recovery/compaction/SSE/完整前端。
+- `IMPACT`：不新增、删除、重排或重命名任何主阶段，不改变 6A 已完成证据；只是移除陈旧文本对阶段 6
+  exit criteria 的错误膨胀，并保留阶段 8 的既定验收责任。
+
+### 2026-08-19：RQ-064 冻结 Session/Memory 总设计与有限自动实施范围
+
+- `AUTHORIZED-SCOPE`：用户允许 Codex 选择剩余设计并在讲清后实施第一步、验证/推送后自动继续第二步；
+  固化为 entry design→6B-1→6B-2 三个独立公共批次。6B-2 全绿后只准备 6B-3，不自动实施。
+- `BOOTSTRAP-DECISION`：采用独立 PostgreSQL Player Link Task + 专用 Worker；Account-V1 在事务外执行，
+  subject/alias/owner relationship/link terminal 在一个短事务收敛，成功后才可创建 Conversation。拒绝
+  Review Task 内 bootstrap、API 同步 lookup 和 Riot ID provisional subject。
+- `MEMORY-DECISION`：采用 PostgreSQL 单一真源、分类型关系表、有界严格 JSONB 叶子、统一 Candidate
+  write gate 和 supersede/version chain；模型/自然语言提取不能直接写 active Memory。
+- `LOCAL-ARTIFACTS`：ADR-0039、Session/Memory 正式设计和 6B-1 至 6B-9 实施计划已本地创建；
+  `player_link_tasks` 明确私有持久化 bounded `game_name/tag_line`，hash 不能替代 Resolver 输入。
+- `CURRENT`：设计内容已本地冻结但尚未提交/推送/exact-SHA CI，产品 migration/schema 尚未开始；先完成
+  一致性、本地门禁与设计批公共闭环，再依有限授权进入 6B-1。

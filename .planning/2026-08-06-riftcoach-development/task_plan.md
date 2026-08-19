@@ -7,8 +7,9 @@
 
 ## Current Phase
 
-Phase 16 - `stage-6-session-memory-entry-design` preparation after 6A completed publicly at
-`adf53e56d1eb624746b493ad8b281598c9a0dd32` / Actions `32146760003`; awaiting user authorization
+Phase 16 - `stage-6-session-memory-entry-design`; ADR-0039/design/implementation plan exist locally and
+are undergoing consistency/local/public gates. RQ-064 then authorizes only 6B-1 and 6B-2 as separate
+automatic batches; product implementation has not started yet.
 
 ## Phases
 
@@ -195,7 +196,8 @@ Phase 16 - `stage-6-session-memory-entry-design` preparation after 6A completed 
   `2e78c96` / Actions `31947625293` 的 exact-SHA 公共验证；Task B Observed Provider、
   AgentLoop 业务 Tool/terminal 与 ToolRuntime observation fail-fast 已本地完成并通过
   81 项聚焦、721 tests/110 subtests 全量回归，提交 `28bd910` / Actions `31952026988`
-  exact-SHA 公共验证成功；尚未接 Harness observer、实现 run 或进入 stream；
+  exact-SHA 公共验证成功；该句记录的是 Task B 当时边界，后续 5E-2/5E-3 已完成 Harness observer、
+  统一 run 与进程内 stream，并由本计划后续证据闭环；
 - ReviewHarness 继续是唯一发布权，Runtime 状态与 publication 状态分开，Trace 只保存
   安全元数据和 Artifact 引用；
 - 不调用真实 Provider、不切换默认模型、不引入 LangGraph/Pi/Claude Agent SDK；这些采用
@@ -253,8 +255,10 @@ Phase 16 - `stage-6-session-memory-entry-design` preparation after 6A completed 
 
 ## Next Step
 
-`stage-6-session-memory-entry-design`：6A 已由 `adf53e5` / Actions `32146760003` 三 job 公共闭环；
-当前只准备下一阶段 6 的 Session/Memory 入口审计，等待用户明确继续，不自动实现或创建新技术栈。
+`stage-6-session-memory-entry-design`：完成 ADR-0039、正式设计与实施计划的持久状态同步和本地门禁，
+独立提交、推送并取得 exact-SHA 公共 CI。全绿后按 RQ-064 自动进入 6B-1，再在 6B-1 全绿后进入 6B-2；
+6B-2 全绿后只准备 6B-3 并停止实施。设计批仍不创建 schema/migration，也不包含真实 Riot/Provider I/O、
+正式 Auth/RSO、SSE/前端或后续主阶段。
 
 ## 6A-1 Checklist
 
@@ -367,12 +371,36 @@ Phase 16 - `stage-6-session-memory-entry-design` preparation after 6A completed 
 - [completed] 运行聚焦、完整、RAG、compileall、Harness/security/YAML/diff/governance 本地门；本机无 Docker/PostgreSQL 的真实运行证据由阻塞 CI 补齐
 - [completed] 完成 exit matrix/review、提交推送；`adf53e5` / Actions `32146760003` 的 pytest、PostgreSQL、packaging-smoke 三 job 全绿并关闭 6A
 
-### Phase 16 - stage-6-session-memory-entry-design preparation
+### Phase 16 - stage-6-session-memory-entry-design
 
 - Status: in_progress
-- 6A 已公开完成；本 checkpoint 只表示下一次用户确认后先审计 Session/Memory 需求、EchoMind 可迁移边界、
-  数据模型与隐私/更正/删除规则，不表示已经开始实现。
+- Authorization: RQ-060 启动设计；RQ-064 取代设计后的再次授权暂停门，允许按冻结计划逐批连续实施。
+- 6A 已公开完成；本 checkpoint 只审计 Session/Memory 需求、现有 owner/task/run/API、参考实现可迁移边界、
+  数据模型与写入/隐私/更正/导出/过期/删除规则，并分节取得设计确认，不表示已经开始产品实现。
 - 正式 Auth、SSE、前端、阶段 7 MCP 或阶段 8 Multi-Agent 不能借此提前进入。
+
+## Session/Memory Entry Design Checklist
+
+- [completed] 恢复 canonical/活动计划/路线/执行日志，确认工作树干净、治理通过，并补记
+  `d1cc2ed` / Actions `32147545753` 三 job 公共成功
+- [completed] 记录 RQ-060，解除等待授权状态；把 Session/Memory 产品实现、新依赖及后续阶段保持在范围外
+- [completed] 面向初学者讲清 task、Session、工作记忆、长期 Memory、原始比赛事实与 RAG 的职责和数据流；用户已确认第一节
+- [completed] 审计现有 owner/task/run/API 与 EchoMind、AGI-Saber 的可迁移思想、缺陷和不采用项
+- [completed] 比较 PostgreSQL 单一真源、EchoMind 式拆分和首日混合三种方案；用户确认 PostgreSQL 单一真源，Redis/向量索引仅由后续 Bad Case 触发
+- [completed] 冻结 owner/player-subject 外服关系：MVP 同时支持 `claimed_self` 与受限
+  `public_observed`，关系角色与验证状态分维度建模；future-only verified 必须经过正式 Auth + RSO +
+  PUUID match，当前无创建路径
+- [completed] 冻结 conversation ownership、单一 player-subject 绑定、Riot ID 改名/PUUID mismatch 与
+  无中途切换规则；不同 subject 必须新建 conversation，消息/Context/task/run/Candidate 均继承 trusted
+  owner/conversation/subject
+- [completed] 冻结在当前 Worker 才解析 PUUID 的前提下，player-subject/relationship 的异步 bootstrap、
+  idempotency、失败与 conversation 创建顺序
+- [completed] 冻结 Session、消息、owner-global 偏好、owner-player 画像、复盘情景、训练计划/进度的数据
+  模型，以及 provenance/confidence/write gate
+- [completed] 冻结隔离、冲突/更正、查看/导出、过期/删除、失败补偿、隐私、安全、NFR 和 Context 装配边界
+- [completed] 冻结 Fake/真实 PostgreSQL/API/隔离/安全/Context 测试矩阵和 6B-1 至 6B-9 原子顺序
+- [in_progress] 已创建 ADR-0039/design/implementation plan并完成一致性修正及全部本地门禁；当前只待
+  独立提交/推送与 exact-SHA 三 job。公共全绿后按 RQ-064 自动做 6B-1/6B-2；6B-2 后停止在 6B-3 准备态
 
 ## 6A Entry Design Checklist
 
@@ -550,6 +578,9 @@ Phase 16 - `stage-6-session-memory-entry-design` preparation after 6A completed 
 
 | Error | Attempt | Resolution |
 |---|---:|---|
+| 并行路线审计子任务被平台以 `prompt_cache_retention is not supported on this model` 在模型开始前拒绝 | 1 | 该子任务无命令、无文件修改、无项目 Provider/Key 调用；复用同一子任务发起受限重试并取得完整只读审计结果，主任务未受影响 |
+| planning-with-files `session-catchup.py` 对本仓库无输出，被初步解释为无遗漏 | 1 | 人工审计确认脚本只检查根目录三文件，未解析 `.planning/.active_plan`；改用活动计划、Git/JSONL 手工恢复，补记 `d1cc2ed/32147545753` 与 RQ-060，不再把无输出当充分证据 |
+| 统计 AGI-Saber Memory 文件的 `functions.exec` JavaScript 模板含 PowerShell反引号，脚本在命令执行前语法失败 | 1 | 改用 PowerShell `-f` 格式化且不含反引号，成功取得文件行数；没有文件或项目状态变化 |
 | 5P entry 公共闭环后首次治理检查拒绝 `status: ready`，并发现活动计划有多个 Next Step 时第一节仍是旧 checkpoint | 1 | canonical 状态改回治理支持的 `in_progress`，保留正文“准备/未实现”；定位并统一所有 Next Step 为 `5P-1-product-contract-compiler` 后重跑，不放宽治理规则 |
 | 5P 设计首次 cached diff check 发现 ADR-0032/0033 多余 EOF 空行 | 1 | cached 门禁阻止提交；删除两份 ADR 尾部空白，重新暂存后独立复跑 cached diff check |
 | 5P 本地门禁临时文件清理被终端策略静态拒绝 | 2 | 首次组合命令和验证后的 literal Remove-Item 均在进程创建前被拒绝；目标已只读确认位于仓库 `tmp/` 且被 Git 忽略，停止重复删除并保留为本地临时产物 |

@@ -21,7 +21,7 @@
 | 3 | Provider 与 Tool Runtime | 外部模型和工具如何统一、可靠地调用 | EchoMind 迁移重构 | 已完成，进入维护 |
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
-| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | EchoMind 迁移重构 | 进行中；6A 持久 task/API/package 已由 `adf53e5` / Actions `32146760003` 公共完成；Session/Memory entry 待确认 |
+| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6A 持久 task/API/package 已公共完成；RQ-064 已本地冻结 ADR-0039 与设计/实施计划，尚待设计批 exact-SHA CI，产品 schema/migration 未开始 |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 未开始 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
@@ -216,10 +216,19 @@ RAG 保存外部知识；Memory 保存玩家相关且可更新的长期状态；
   FastAPI 产品入口，而不是把 5P 的 Fake/fixture 切片误称为生产 API；
 - 6A-1 至 6A-7 已公开建立 PostgreSQL task、原子 claim、Application/Artifact 接线、异步 HTTP、
   CORS/脱敏、背压、生命周期删除、真实性能边界和 Linux package；`adf53e5` / Actions `32146760003`
-  修复并验证 direct-script/wheel 的 Alembic import-root，6A 正式完成；下一 checkpoint 只准备
-  Session/Memory entry design，这不等于正式 Auth、Session/Memory 或公网部署已完成；
+  修复并验证 direct-script/wheel 的 Alembic import-root，6A 正式完成；状态收尾 `d1cc2ed` /
+  Actions `32147545753` 也已三 job 全绿；RQ-064 已本地冻结异步 Player Link、typed Memory/Candidate gate
+  和 6B-1 至 6B-9 顺序，当前先完成设计批公共闭环，再只自动实施 6B-1/6B-2；这不等于正式 Auth、
+  Session/Memory 或公网部署已完成；
 - FastAPI 对话和复盘入口；
 - `user_id`、`conversation_id` 和权限边界；
+- 外服 Riot 账号关系：官方 routing 没有中国大陆 CN；公开查询只形成以 PUUID 为稳定身份的
+  `player_subject` 引用，Riot ID 只是可变显示别名；用户自我认领在正式产品 Auth、安全 RSO callback
+  与精确 PUUID match 前保持未验证，不能把 Riot ID→PUUID 冒充为账号归属证明；
+- MVP 同时支持未验证 self claim 与受限 public observation：前者可建立 owner-player 训练目标/计划/进度，
+  后者只保存公开比赛分析和 owner-local 观察备注/趋势；两者均不增加 Riot 数据权限；
+- Conversation 创建时固定 trusted owner 的一个 player subject，V1 不在同一会话中切换；消息、Context、
+  task/run 和 Memory Candidate 继承该绑定，不同 PUUID 必须新建 conversation；
 - 会话工作记忆；
 - 玩家画像、复盘情景、训练计划与训练进度；
 - 记忆写入条件、合并、过期、更正和删除；
@@ -236,6 +245,12 @@ RAG 保存外部知识；Memory 保存玩家相关且可更新的长期状态；
 - 两个用户和两个会话的数据严格隔离；
 - 用户可以查看、更正和删除记忆；
 - Coach 能基于历史训练目标比较进展，但不会把猜测永久化。
+- 同一 PUUID 在不同 owner 下不得共享关系状态、私人 Session 或 Memory；Riot ID 改名不应新建玩家档案，
+  同一显示 Riot ID 若解析为不同 PUUID 则不得静默重绑。
+- public-observed 报告不得冒充被观察者本人偏好或第一人称训练完成度；verified-self 在正式 Auth + RSO +
+  PUUID match 实现前必须不可创建。
+- 客户端或模型不能覆盖 conversation subject；相同 PUUID 改名可继续，不同 PUUID 和跨 owner 必须由应用
+  与 PostgreSQL 约束拒绝。
 
 ## 阶段 7：标准 MCP 与动态 Meta
 
