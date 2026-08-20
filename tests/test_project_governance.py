@@ -117,7 +117,7 @@ def test_project_governance_requires_current_checkpoint_coverage(tmp_path):
         group["covers"] = [
             value
             for value in group["covers"]
-            if value != "6B-4-conversation-bound-recent-review-identity"
+                if value != "6B-5-memory-candidate-write-gate"
         ]
     _write_learning_coverage(tmp_path, coverage)
 

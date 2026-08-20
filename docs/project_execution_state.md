@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 6
 substage_group: "stage-6-session-memory"
-current_checkpoint: "6B-4-conversation-bound-recent-review-identity"
-status: in_progress
-pause_reason: ""
+current_checkpoint: "6B-5-memory-candidate-write-gate"
+status: pending
+pause_reason: "waiting for explicit user authorization"
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: ""
 ## 状态元数据
 
 - 最后更新：2026-08-20
-- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1、6B-2、RQ-067 文档门与 6B-3 Conversation/Message foundation 均已完成 exact-SHA 公共闭环。用户已按 RQ-068 授权 `6B-4-conversation-bound-recent-review-identity`；schema 2.0、Conversation-bound endpoint、PostgreSQL trusted tuple、trusted-PUUID Summary/Executor、composition/package 与八维 walkthrough 已本地实现并通过完整门禁，当前等待提交/推送和 exact-SHA 三 job 公共补证。6B-4 尚未关闭，6B-5 未进入
+- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1、6B-2、RQ-067 文档门、6B-3 Conversation/Message foundation 与 6B-4 Conversation-bound Review Identity 均已完成 exact-SHA 公共闭环。6B-4 实现提交 `d63f9085f66e49557b4674d0698495dcb7335c82` 对应 Actions run `32347834279`，`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿。下一检查点 `6B-5-memory-candidate-write-gate` 仅为 prepared/waiting authorization，尚未实施
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,10 +250,9 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6B-4-conversation-bound-recent-review-identity` 本地实现和门禁已完成；现在只做
-  独立 cached diff、提交、推送并等待同一 SHA 的 `pytest`、`postgres-migrations`、
-  `packaging-smoke`。三 job 全绿前保持 in-progress/coverage planned；6B-5、assistant Message、
-  Memory、Auth/RSO、SSE、前端与新框架不在本轮。
+- 唯一下一步：`6B-5-memory-candidate-write-gate` 仅为 prepared/waiting authorization；开始任何设计复核、
+  migration、Repository、API 或测试前，必须等待用户在独立下一轮明确授权。当前不实施 6B-5，assistant
+  terminal、具体长期 Memory、Auth/RSO、SSE、前端与新框架也未进入。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -554,10 +553,10 @@ pause_reason: ""
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5、阶段 6 的 6A、Session/Memory entry design、6B-1/6B-2/6B-3 均已完成；6B-3 的公共 PostgreSQL/package 证据由 `7e4f233/32329686381` 补齐 | 本地代码等于 Agent/Review/Memory、生产模型质量、正式 Auth、SSE/前端已完成 |
-| 项目理解 | RQ-067 已从阶段 0 重审并公共闭环；6B-3 又新增完整 implementation walkthrough，覆盖问题、实现、代码地图、数据流、验证、运行、安全边界和面试表述 | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
+| 本地代码 | 阶段 0-5、阶段 6 的 6A、Session/Memory entry design、6B-1/6B-2/6B-3/6B-4 均已完成；6B-4 的公共 PostgreSQL/package 证据由 `d63f908/32347834279` 补齐 | 本地代码等于 assistant terminal、Memory、生产模型质量、正式 Auth、SSE/前端已完成 |
+| 项目理解 | RQ-067 已从阶段 0 重审并公共闭环；6B-3 与 6B-4 均有完整 implementation walkthrough，覆盖问题、实现、代码地图、数据流、验证、运行、安全边界和面试表述 | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | 6A、Session/Memory design、6B-1、6B-2、RQ-067、6B-3 设计批与 6B-3 实现均已有 exact-SHA 三 job；网页与公网仍未部署 | 既有 CI 等于生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
+| GitHub/部署 | 6A、Session/Memory design、6B-1、6B-2、RQ-067、6B-3 与 6B-4 均已有 exact-SHA 三 job；网页与公网仍未部署 | 既有 CI 等于生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -1397,3 +1396,20 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - `docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md` 已覆盖八维 evidence，
   但 coverage 在 exact-SHA 三 job 全绿前保持 `planned`。唯一下一动作是 cached diff、提交、推送与公共
   CI；6B-5 未授权且未实施。
+
+## 2026-08-20：6B-4 exact-SHA 公共闭环与 6B-5 交接
+
+- 实现提交 `d63f9085f66e49557b4674d0698495dcb7335c82` 已推送；Actions run `32347834279`
+  精确对应该 SHA，workflow 与 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均
+  `completed/success`。
+- 公共 `pytest` 为 `1333 passed, 78 skipped, 1 warning, 110 subtests passed`；真实 PostgreSQL 17
+  job 为 `113 passed, 1 warning`，并通过 0004 upgrade/downgrade、完整 migration 链与
+  `alembic check` metadata-head 一致性。
+- Linux package smoke 真实执行 Link→Conversation→Message→schema 2.0 Review Task→同一 ReviewWorker，
+  Review 安全终态为 `failed`、Conversation 保持 `active`、`external_riot_provider_calls=0`。这证明安装后
+  控制流和安全失败边界，不证明真实 Riot/Provider 成功或模型质量。
+- 6B-4 正式关闭，`docs/learning/coverage.yaml` 已置为 `complete`。本机没有 PostgreSQL/Docker 的 78 个
+  skip 仍如实保留，公共 CI 只是补齐真库/Linux 证据，没有把它们改写成本地成功。
+- 下一检查点是 `6B-5-memory-candidate-write-gate`，仅 prepared/waiting authorization；尚未创建 Candidate
+  migration/model/Repository/write gate，也未实现 assistant terminal、具体长期 Memory、Auth/RSO、SSE、
+  前端或新框架。

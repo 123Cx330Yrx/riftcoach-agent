@@ -21,6 +21,7 @@ canonical_order:
   - 6b-2-async-player-link-worker-api
   - 6b-3-conversation-message-foundation
   - 6b-4-conversation-bound-recent-review-identity
+  - 6b-5-memory-candidate-write-gate
 groups:
   - id: stage-0-baseline-and-reference-evidence
     sequence: 10
@@ -305,7 +306,7 @@ groups:
     sequence: 180
     covers:
       - 6B-4-conversation-bound-recent-review-identity
-    status: planned
+    status: complete
     evidence:
       problem_and_principle:
         - docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md
@@ -327,3 +328,10 @@ groups:
         - docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md
       interview_wording:
         - docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md
+
+  - id: 6b-5-memory-candidate-write-gate
+    sequence: 190
+    covers:
+      - 6B-5-memory-candidate-write-gate
+    status: planned
+    evidence: {}

@@ -3101,3 +3101,16 @@
 - canonical、roadmap、capability matrix、decisions、history、learning index 与 active plan 已同步为“本地完成、
   待公共闭环”。唯一下一动作是最终静态审查、独立暂存/cached diff、提交推送并等待 exact-SHA 三 job；
   6B-5 未进入。
+
+## 2026-08-20：6B-4 实现提交、公共闭环与状态收尾
+
+- 暂存范围复核为 47 个 6B-4 文件、无未跟踪/未暂存混入项；治理与 cached diff check 通过。实现提交
+  `d63f9085f66e49557b4674d0698495dcb7335c82` 已推送到 `main`。
+- Actions run `32347834279` 精确对应实现 SHA；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job
+  均 completed/success。公开 pytest 为 `1333 passed, 78 skipped, 1 warning, 110 subtests passed`，真库为
+  `113 passed, 1 warning`，Linux package smoke 的外部调用为 0。
+- 状态收尾把 6B-4 coverage 改为 complete，并登记 6B-5 planned；canonical/active plan 只交接到
+  `6B-5-memory-candidate-write-gate` prepared/waiting authorization，不实施 6B-5。
+- 首次收尾完整回归为 `1 failed, 1332 passed, 78 skipped`，唯一失败是治理测试仍硬编码 6B-4 为当前
+  checkpoint；只更新该测试夹具为 6B-5 后，治理聚焦 `12 passed`，完整回归恢复为
+  `1333 passed, 78 skipped, 1 warning, 110 subtests passed`，没有放宽 coverage 或阶段顺序约束。

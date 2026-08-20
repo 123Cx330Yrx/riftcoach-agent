@@ -2258,3 +2258,15 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   真库文件已加入阻塞 job，package 已覆盖 v2 Task 经同一 Worker 到 safe failed terminal，外部调用为 0。
 - `PENDING`：walkthrough/八维 evidence 已登记但 coverage 保持 planned；只待 cached diff、提交、推送与
   exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`。全绿前不关闭 6B-4、不进入 6B-5。
+
+### 2026-08-20：6B-4 exact-SHA 公共闭环与 6B-5 交接
+
+- `PUBLIC-CI`：实现提交 `d63f9085f66e49557b4674d0698495dcb7335c82` 对应 Actions run
+  `32347834279`；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 completed/success。
+- `EVIDENCE`：公开完整回归为 `1333 passed, 78 skipped, 1 warning, 110 subtests passed`；真实
+  PostgreSQL 为 `113 passed, 1 warning`，0004 upgrade/downgrade、完整迁移链、`alembic check` 和 Linux
+  package smoke 通过。package 中 v2 Review 安全失败，`external_riot_provider_calls=0`。
+- `CLOSED`：6B-4 Conversation-bound Review Identity 与八维 coverage 正式关闭；本地无
+  PostgreSQL/Docker 的 skip 仍保持原义，不冒充本地真库成功。
+- `HANDOFF`：唯一下一检查点为 `6B-5-memory-candidate-write-gate`，仅 prepared/waiting authorization；
+  不创建 Candidate/Memory/assistant terminal 代码，不进入 Auth/RSO、SSE、前端或新框架。

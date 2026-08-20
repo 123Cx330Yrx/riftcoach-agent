@@ -1,6 +1,6 @@
 # 6B-4 Conversation-bound Recent Review Identity 实现后复盘
 
-> 状态：本地实现完成，等待完整门禁与 exact-SHA 公共 PostgreSQL/Linux package 证据。
+> 状态：实现完成并由 `d63f908` / Actions `32347834279` 完成 exact-SHA 公共 PostgreSQL/Linux package 闭环。
 > 本文解释的是 6B-4 的真实实现，不表示 6B-5 assistant Message 或长期 Memory 已完成。
 
 ## 1. 这一批解决的具体问题
@@ -193,8 +193,11 @@ Message，所以这不等于向归档 Conversation 追加内容。
 | composition/package | `test_api_composition.py`、`test_packaging_smoke.py` | composed app 真能转发；同一 Worker 处理 v2；external calls=0 | 成功 Coach 报告 |
 | blocking CI | `.github/workflows/tests.yml` | PostgreSQL 17 migration/repository 与 Linux image smoke 成为阻塞门 | 多区域生产 SLA |
 
-本地没有 PostgreSQL/Docker，所以真库项显示 skip 是诚实的环境边界。只有同一提交的公共
-`postgres-migrations` 和 `packaging-smoke` 成功后，才能把那些语义写成公共完成证据。
+本地没有 PostgreSQL/Docker，所以真库项显示 skip 是诚实的环境边界。同一实现提交 `d63f908` 的公共
+Actions `32347834279` 已使 `postgres-migrations` 和 `packaging-smoke` 成功：真实 PostgreSQL 套件为
+`113 passed, 1 warning`，完整迁移链/0004 downgrade 与 `alembic check` 通过；Linux smoke 又验证了
+schema 2.0 Task 经同一 Worker 到安全失败终态且 `external_riot_provider_calls=0`。这些是公共完成证据，
+仍不证明真实 Riot/Provider 或 Coach 报告质量。
 
 ## 9. 安全运行方法
 
@@ -242,7 +245,7 @@ body、异常正文或 Secret。
 ## 11. 当前明确没有实现什么
 
 - 不证明外服 Riot ID 属于当前用户；当前 `self` 仍是 unverified claim；
-- 不自动把报告写成 assistant Message；那是 6B-5 的独立一致性问题；
+- 不自动把报告写成 assistant Message；该 terminal 写入属于后续 6B-8 的独立一致性问题；
 - 不生成 Memory Candidate，也没有长期训练 Memory；
 - 没有正式 Auth/RSO、SSE、前端或公网访问控制；
 - 没有新增 LangGraph、Multi-Agent、Redis、向量 Memory 或 Agent SDK；

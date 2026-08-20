@@ -7,10 +7,10 @@
 
 ## Current Phase
 
-Phase 20 - `6B-4-conversation-bound-recent-review-identity` is in progress under
-RQ-068. Phase 19 closed at `7e4f233` / Actions `32329686381`; RQ-067 closed at
-`63435d9` / Actions `32308631289`, and 6B-2 closed at `0c13a58` / Actions
-`32301852042`. This phase must stop before 6B-5.
+Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
+`d63f908` / Actions `32347834279`. Phase 21 -
+`6B-5-memory-candidate-write-gate` is prepared but waiting for explicit user
+authorization; no 6B-5 implementation has started.
 
 ## Phases
 
@@ -256,11 +256,9 @@ RQ-068. Phase 19 closed at `7e4f233` / Actions `32329686381`; RQ-067 closed at
 
 ## Next Step
 
-`6B-3-conversation-message-foundation` 已由 `7e4f233` / Actions `32329686381` 完成 exact-SHA
-三 job 公共闭环。RQ-068 已授权 `6B-4-conversation-bound-recent-review-identity`；ADR-0041、
-专用设计与实施计划已经冻结；pure domain/API、0004/ORM、Repository 原子绑定与 trusted-PUUID
-Executor 已本地完成。唯一下一动作是完成 composed API、package smoke 和 blocking PostgreSQL CI，
-再进入 6B-4 教学/状态与完整门禁；本轮不得进入 6B-5。
+`6B-4-conversation-bound-recent-review-identity` 已由 `d63f908` / Actions `32347834279` 完成
+exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环。唯一下一检查点为
+`6B-5-memory-candidate-write-gate`，当前仅 prepared/waiting authorization；不创建 6B-5 产品代码。
 
 ## 6A-1 Checklist
 
@@ -463,7 +461,7 @@ Executor 已本地完成。唯一下一动作是完成 composed API、package sm
 
 ### Phase 20 - 6B-4-conversation-bound-recent-review-identity handoff
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-068; implement only 6B-4 and stop before 6B-5.
 - [completed] 严格恢复 AGENTS/canonical/活动计划/RQ/路线/能力/coverage，治理预检通过，起始工作树干净且 `HEAD == origin/main == 4fb66a8`。
 - [completed] 面向初学者讲清问题、服务器派生身份原则、范围、数据/控制流、测试策略、限制与面试边界；比较三种方案并选择 nullable v2 columns + atomic server-derived binding。
@@ -473,9 +471,17 @@ Executor 已本地完成。唯一下一动作是完成 composed API、package sm
 - [completed] PostgreSQL 0004/Repository 红灯与最小实现：单事务 active tuple 锁定、v2 mapping/private target、alias rename、late claim、capacity/rollback 与双向 lifecycle 锁顺序合同已建立；本机真库项因无 PostgreSQL 明确 skip，待阻塞 CI 补证。
 - [completed] `build_by_puuid()`、`review_by_puuid()` 与 v2 Executor 红灯/最小实现；51 项聚焦证明 v2 不调用 Account-V1、alias 只影响显示、篡改在 Application 前拒绝，legacy 1.0 保持兼容。
 - [completed] composed API、existing Worker、package no-I/O 纵向与 blocking PostgreSQL CI：proxy 已转发 v2 创建；同一 Worker 处理两个 schema；smoke 覆盖 Link→Conversation→v2 Task→safe terminal；两个新真库文件已加入 job，本地 114 passed/11 PostgreSQL skips。
-- [in_progress] walkthrough/八维 evidence、路线/canonical 与全部本地门禁已完成；当前只待最终 cached diff、提交/推送和 exact-SHA 三 job，公共成功后关闭 6B-4。
-- [pending] 独立提交、推送并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；全绿后关闭 6B-4并只准备 6B-5。
+- [completed] walkthrough/八维 evidence、路线/canonical 与全部本地门禁完成；coverage 在公共门前保持 planned。
+- [completed] 实现提交 `d63f9085f66e49557b4674d0698495dcb7335c82` 已推送，Actions `32347834279` 的 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；6B-4 与 coverage 正式关闭。
 - [deferred] 不实现 6B-5、assistant Message、Memory Candidate/长期 Memory、正式 Auth/RSO、SSE、前端、LangGraph、Multi-Agent 或新 SDK；测试/CI 外部 Riot/Provider calls 为 0。
+
+### Phase 21 - 6B-5-memory-candidate-write-gate handoff
+
+- Status: in_progress
+- Authorization: waiting for an explicit user instruction in a later turn.
+- Prepared outcome: Candidate source/target/provenance/gate contracts 与 exactly-once acceptance 接缝；具体长期 Memory 表不在本批。
+- [pending] 开始前按教学合同复核问题、原理、范围、数据/控制流、测试和边界，并冻结 6B-5 专用 ADR/实施计划。
+- [deferred] 未获授权前不创建 migration/model/Repository/API/test，不顺带实现 6B-6 长期 Memory、6B-8 assistant terminal 或其他后续能力。
 
 ## 6A Entry Design Checklist
 

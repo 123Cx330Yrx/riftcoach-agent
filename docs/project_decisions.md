@@ -1421,3 +1421,15 @@ composition 与 package smoke 已在本地完成；walkthrough 已将问题/原�
 SDK/tracked-data、YAML、pip、governance 与 diff 门通过。78 个 skip 是本机没有 PostgreSQL/Docker，不能
 替代复合 FK、trigger、锁顺序和 Linux package 证据；因此 6B-4 仍为 in-progress，coverage 仍为 planned，
 只有 exact-SHA 三 job 全绿后才能关闭。本轮仍不进入 6B-5。
+
+### 6B-4 exact-SHA 公共闭环与 6B-5 停止点（2026-08-20）
+
+实现提交 `d63f9085f66e49557b4674d0698495dcb7335c82` 对应 GitHub Actions run `32347834279`；
+`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。公开完整回归为
+`1333 passed, 78 skipped, 1 warning, 110 subtests passed`，真实 PostgreSQL 为 `113 passed, 1 warning`，
+并通过 0004 可逆迁移与 metadata-head 一致性。Linux package smoke 证明 schema 2.0 Task 可由同一 Worker
+进入安全失败终态且外部 Riot/Provider 调用为 0；它不证明真实 Coach 报告成功或模型质量。
+
+因此 6B-4 与八维 coverage 正式关闭。下一检查点固定为 `6B-5-memory-candidate-write-gate`，但只处于
+prepared/waiting authorization：尚未创建 Candidate migration/model/Repository/API，也未进入具体长期
+Memory、assistant terminal、Auth/RSO、SSE、前端或新框架。

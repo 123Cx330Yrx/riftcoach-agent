@@ -43,6 +43,7 @@ LEARNING_COVERAGE_CANONICAL_ORDER = (
     "6b-2-async-player-link-worker-api",
     "6b-3-conversation-message-foundation",
     "6b-4-conversation-bound-recent-review-identity",
+    "6b-5-memory-candidate-write-gate",
 )
 
 

@@ -3058,3 +3058,13 @@
   PostgreSQL/API/Worker 控制流和 external calls=0，不伪造 Agent/Harness 成功或模型质量。
 - 两个新真库文件即使会被完整 pytest 收集，也必须显式加入 `postgres-migrations` job，才能让最关键的
   migration/FK/trigger/事务锁语义成为阻塞公共证据。
+
+## 2026-08-20：6B-4 exact-SHA 公共证据裁决
+
+- `d63f9085f66e49557b4674d0698495dcb7335c82` / Actions `32347834279` 的三个阻塞 job 全绿，补齐本机
+  无 PostgreSQL/Docker 时无法取得的复合 FK、trigger、锁、迁移与 Linux package 证据。
+- PostgreSQL job 为 `113 passed, 1 warning`；0004 upgrade/downgrade、完整 migration 链和
+  `alembic check` 均通过。公开普通回归为 `1333 passed, 78 skipped, 1 warning, 110 subtests passed`。
+- package smoke 中 schema 2.0 Review Task 经同一 Worker 得到 allowlisted `failed` 终态，Conversation
+  仍 active，外部调用为 0。这是安全失败和安装后组合证据，不是 Agent/Provider 质量证据。
+- 6B-4 可以关闭；6B-5 只准备并等待用户授权，不能因为总设计已存在就视为已开始。
