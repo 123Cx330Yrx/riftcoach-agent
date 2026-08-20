@@ -184,6 +184,8 @@ def test_openapi_versions_the_async_contract_and_exact_paths() -> None:
             "/memory/preferences",
             "/memory/players/{relationship_id}/profile",
             "/memory/players/{relationship_id}/reviews",
+            "/memory/players/{relationship_id}/training-plan",
+            "/memory/players/{relationship_id}/training-progress",
         "/reviews/recent",
         "/player-links",
         "/player-links/{link_task_id}",

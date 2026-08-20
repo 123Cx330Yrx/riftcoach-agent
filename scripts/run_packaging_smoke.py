@@ -140,7 +140,7 @@ class PackagingSmokeSettings:
 
 @dataclass(frozen=True, slots=True)
 class PackagingSmokeResult:
-    schema_version: Literal["1.3"]
+    schema_version: Literal["1.4"]
     task_id: UUID
     run_id: str
     task_status: Literal["failed"]
@@ -154,6 +154,10 @@ class PackagingSmokeResult:
     memory_candidate_status: Literal["accepted"]
     memory_preference_version: Literal[1]
     memory_preference_value: Literal["zh-CN"]
+    training_candidate_id: UUID
+    training_candidate_status: Literal["accepted"]
+    training_plan_id: UUID
+    training_plan_version: Literal[1]
     conversation_review_task_id: UUID
     conversation_review_run_id: str
     conversation_review_status: Literal["failed"]
@@ -594,6 +598,80 @@ def execute_packaging_smoke(
             raise PackagingSmokeError(
                 "packaging_smoke_memory_preference_query_failed"
             )
+
+        try:
+            created_training_candidate = session.post(
+                f"{settings.base_url}/conversations/{conversation_id}/memory-candidates",
+                headers={"Idempotency-Key": f"packaging-training-{uuid4().hex}"},
+                json={
+                    "target_scope": "owner_player",
+                    "candidate_kind": "training_plan",
+                    "memory_key": "active_plan",
+                    "operation": "set",
+                    "proposal_payload": {
+                        "value": {
+                            "action": "activate",
+                            "title": "Packaging smoke plan",
+                            "objective": "Prove installed Plan materialization",
+                            "metrics": [
+                                {
+                                    "metric_key": "deaths_before_15",
+                                    "direction": "decrease",
+                                    "unit": "count",
+                                }
+                            ],
+                        }
+                    },
+                },
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError("packaging_smoke_training_candidate_create_failed") from None
+        training_candidate_body = _json_object(created_training_candidate)
+        if (
+            created_training_candidate.status_code != 201
+            or training_candidate_body.get("status") != "pending"
+            or training_candidate_body.get("requires_confirmation") is not True
+        ):
+            raise PackagingSmokeError("packaging_smoke_training_candidate_create_failed")
+        try:
+            training_candidate_id = UUID(str(training_candidate_body["candidate_id"]))
+            accepted_training_candidate = session.post(
+                f"{settings.base_url}/memory-candidates/{training_candidate_id}/accept",
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError("packaging_smoke_training_candidate_accept_failed") from None
+        accepted_training_body = _json_object(accepted_training_candidate)
+        if (
+            accepted_training_candidate.status_code != 200
+            or accepted_training_body.get("status") != "accepted"
+            or accepted_training_body.get("candidate_kind") != "training_plan"
+        ):
+            raise PackagingSmokeError("packaging_smoke_training_candidate_accept_failed")
+        try:
+            training_plan = session.get(
+                f"{settings.base_url}/memory/players/{relationship_id}/training-plan",
+                params={"include_history": False, "limit": 10},
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError("packaging_smoke_training_plan_query_failed") from None
+        training_plan_body = _json_object(training_plan)
+        plans = training_plan_body.get("plans")
+        if (
+            training_plan.status_code != 200
+            or not isinstance(plans, list)
+            or len(plans) != 1
+            or plans[0].get("status") != "active"
+            or plans[0].get("version") != 1
+            or any(private in plans[0] for private in ("player_subject_id", "source_candidate_id", "puuid"))
+        ):
+            raise PackagingSmokeError("packaging_smoke_training_plan_query_failed")
+        try:
+            training_plan_id = UUID(str(plans[0]["plan_id"]))
+        except (KeyError, TypeError, ValueError):
+            raise PackagingSmokeError("packaging_smoke_training_plan_query_failed") from None
         try:
             message_id = UUID(str(appended_message_body["message_id"]))
         except (KeyError, TypeError, ValueError):
@@ -764,7 +842,7 @@ def execute_packaging_smoke(
             )
 
         return PackagingSmokeResult(
-            schema_version="1.3",
+            schema_version="1.4",
             task_id=task_id,
             run_id=run_id,
             task_status="failed",
@@ -778,6 +856,10 @@ def execute_packaging_smoke(
             memory_candidate_status="accepted",
             memory_preference_version=1,
             memory_preference_value="zh-CN",
+            training_candidate_id=training_candidate_id,
+            training_candidate_status="accepted",
+            training_plan_id=training_plan_id,
+            training_plan_version=1,
             conversation_review_task_id=conversation_review_task_id,
             conversation_review_run_id=conversation_review_run_id,
             conversation_review_status="failed",
@@ -840,6 +922,10 @@ def main(
                 "memory_candidate_status": result.memory_candidate_status,
                 "memory_preference_version": result.memory_preference_version,
                 "memory_preference_value": result.memory_preference_value,
+                "training_candidate_id": str(result.training_candidate_id),
+                "training_candidate_status": result.training_candidate_status,
+                "training_plan_id": str(result.training_plan_id),
+                "training_plan_version": result.training_plan_version,
                 "conversation_review_task_id": str(
                     result.conversation_review_task_id
                 ),

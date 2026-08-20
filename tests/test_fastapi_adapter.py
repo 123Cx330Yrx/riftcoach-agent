@@ -157,6 +157,8 @@ def test_app_factory_and_openapi_do_not_read_keys_or_open_io(monkeypatch) -> Non
             "/memory/preferences",
             "/memory/players/{relationship_id}/profile",
             "/memory/players/{relationship_id}/reviews",
+            "/memory/players/{relationship_id}/training-plan",
+            "/memory/players/{relationship_id}/training-progress",
         "/reviews/recent",
         "/player-links",
         "/player-links/{link_task_id}",

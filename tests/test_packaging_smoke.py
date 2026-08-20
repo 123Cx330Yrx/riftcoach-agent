@@ -103,6 +103,8 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     conversation_id = "90000000-0000-4000-8000-000000000005"
     message_id = "90000000-0000-4000-8000-000000000006"
     memory_candidate_id = "90000000-0000-4000-8000-000000000008"
+    training_candidate_id = "90000000-0000-4000-8000-000000000010"
+    training_plan_id = "90000000-0000-4000-8000-000000000011"
     message_digest = hashlib.sha256(
         b"Packaging smoke user message"
     ).hexdigest()
@@ -171,18 +173,37 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                         ],
                     },
                 )
-            if "/memory-candidates/" in url:
+            if url.endswith("/training-plan"):
                 return Response(
                     200,
                     {
                         "schema_version": "1.0",
-                        "candidate_id": memory_candidate_id,
+                        "plans": [
+                            {
+                                "plan_id": training_plan_id,
+                                "relationship_id": "90000000-0000-4000-8000-000000000004",
+                                "version": 1,
+                                "status": "active",
+                                "payload": {"title": "Packaging smoke plan"},
+                                "created_at": "2026-08-20T00:01:00Z",
+                                "updated_at": "2026-08-20T00:01:00Z",
+                            }
+                        ],
+                    },
+                )
+            if "/memory-candidates/" in url:
+                is_training = training_candidate_id in url
+                return Response(
+                    200,
+                    {
+                        "schema_version": "1.0",
+                        "candidate_id": training_candidate_id if is_training else memory_candidate_id,
                         "conversation_id": conversation_id,
-                        "target_scope": "owner_global",
-                        "candidate_kind": "owner_preference",
-                        "memory_key": "report_language",
+                        "target_scope": "owner_player" if is_training else "owner_global",
+                        "candidate_kind": "training_plan" if is_training else "owner_preference",
+                        "memory_key": "active_plan" if is_training else "report_language",
                         "operation": "set",
-                        "requires_confirmation": False,
+                        "requires_confirmation": is_training,
                         "status": "accepted",
                         "gate_policy_version": "memory-gate-v1",
                         "created_at": "2026-08-20T00:00:00Z",
@@ -281,17 +302,18 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                     },
                 )
             if url.endswith(f"/conversations/{conversation_id}/memory-candidates"):
+                is_training = kwargs.get("json", {}).get("candidate_kind") == "training_plan"
                 return Response(
                     201,
                     {
                         "schema_version": "1.0",
-                        "candidate_id": memory_candidate_id,
+                        "candidate_id": training_candidate_id if is_training else memory_candidate_id,
                         "conversation_id": conversation_id,
-                        "target_scope": "owner_global",
-                        "candidate_kind": "owner_preference",
-                        "memory_key": "report_language",
+                        "target_scope": "owner_player" if is_training else "owner_global",
+                        "candidate_kind": "training_plan" if is_training else "owner_preference",
+                        "memory_key": "active_plan" if is_training else "report_language",
                         "operation": "set",
-                        "requires_confirmation": False,
+                        "requires_confirmation": is_training,
                         "status": "pending",
                         "gate_policy_version": "memory-gate-v1",
                         "created_at": "2026-08-20T00:00:00Z",
@@ -312,6 +334,26 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                         "memory_key": "report_language",
                         "operation": "set",
                         "requires_confirmation": False,
+                        "status": "accepted",
+                        "gate_policy_version": "memory-gate-v1",
+                        "created_at": "2026-08-20T00:00:00Z",
+                        "expires_at": "2026-09-19T00:00:00Z",
+                        "decided_at": "2026-08-20T00:01:00Z",
+                        "decision_reason_code": "user_confirmed",
+                    },
+                )
+            if url.endswith(f"/memory-candidates/{training_candidate_id}/accept"):
+                return Response(
+                    200,
+                    {
+                        "schema_version": "1.0",
+                        "candidate_id": training_candidate_id,
+                        "conversation_id": conversation_id,
+                        "target_scope": "owner_player",
+                        "candidate_kind": "training_plan",
+                        "memory_key": "active_plan",
+                        "operation": "set",
+                        "requires_confirmation": True,
                         "status": "accepted",
                         "gate_policy_version": "memory-gate-v1",
                         "created_at": "2026-08-20T00:00:00Z",
@@ -402,7 +444,7 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         http=Http(),
     )
 
-    assert result.schema_version == "1.3"
+    assert result.schema_version == "1.4"
     assert result.task_status == "failed"
     assert result.link_status == "succeeded"
     assert str(result.link_task_id) == link_task_id
@@ -414,6 +456,10 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     assert result.memory_candidate_status == "accepted"
     assert result.memory_preference_version == 1
     assert result.memory_preference_value == "zh-CN"
+    assert str(result.training_candidate_id) == training_candidate_id
+    assert result.training_candidate_status == "accepted"
+    assert str(result.training_plan_id) == training_plan_id
+    assert result.training_plan_version == 1
     assert str(result.conversation_review_task_id) == conversation_task_id
     assert result.conversation_review_run_id == conversation_run_id
     assert result.conversation_review_status == "failed"

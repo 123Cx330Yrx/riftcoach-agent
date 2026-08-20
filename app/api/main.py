@@ -63,6 +63,12 @@ from app.api.typed_memory_models import (
     TypedMemoryErrorResponse,
     TypedMemoryPageResponse,
 )
+from app.api.training_models import (
+    TrainingApiErrorCode,
+    TrainingErrorResponse,
+    TrainingPlanPageResponse,
+    TrainingProgressPageResponse,
+)
 from app.conversations.models import (
     AppendUserMessageCommand,
     ConversationCreateResult,
@@ -86,6 +92,9 @@ from app.memory.service import MemoryCandidateServiceError
 from app.memory.typed_models import TypedMemoryPage
 from app.memory.typed_ports import TypedMemoryQueryServicePort
 from app.memory.typed_service import TypedMemoryQueryServiceError
+from app.memory.training_models import TrainingPlanPage, TrainingProgressPage
+from app.memory.training_query_ports import TrainingQueryServicePort
+from app.memory.training_service import TrainingQueryServiceError
 from app.players.models import (
     CreatePlayerLinkCommand,
     PlayerLinkCreateResult,
@@ -207,6 +216,11 @@ _TYPED_MEMORY_ERROR_STATUS: Mapping[
     "memory_scope_not_found": (404, "memory_scope_not_found"),
     "service_unavailable": (503, "service_unavailable"),
 }
+_TRAINING_ERROR_STATUS: Mapping[str, tuple[int, TrainingApiErrorCode]] = {
+    "training_scope_not_found": (404, "training_scope_not_found"),
+    "training_plan_not_found": (404, "training_plan_not_found"),
+    "service_unavailable": (503, "service_unavailable"),
+}
 _IDEMPOTENCY_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
 
 
@@ -305,6 +319,21 @@ def _typed_memory_service_error(error: TypedMemoryQueryServiceError) -> JSONResp
     return _typed_memory_error_response(code, status_code=status_code)
 
 
+def _training_error_response(code: TrainingApiErrorCode, *, status_code: int) -> JSONResponse:
+    return JSONResponse(
+        status_code=status_code,
+        content=TrainingErrorResponse(code=code).model_dump(mode="json"),
+    )
+
+
+def _training_service_error(error: TrainingQueryServiceError) -> JSONResponse:
+    status_code, code = _TRAINING_ERROR_STATUS.get(
+        error.code,
+        (503, "service_unavailable"),
+    )
+    return _training_error_response(code, status_code=status_code)
+
+
 def create_app(
     *,
     task_service: TaskServicePort,
@@ -320,6 +349,7 @@ def create_app(
     conversation_service: ConversationServicePort | None = None,
     memory_candidate_service: MemoryCandidateServicePort | None = None,
     typed_memory_query_service: TypedMemoryQueryServicePort | None = None,
+    training_query_service: TrainingQueryServicePort | None = None,
 ) -> FastAPI:
     """Create API V2 from explicit ports without doing deployment I/O."""
 
@@ -364,6 +394,12 @@ def create_app(
             if not callable(getattr(typed_memory_query_service, method_name, None)):
                 raise TypeError(
                     f"typed_memory_query_service must expose {method_name}()"
+                )
+    if training_query_service is not None:
+        for method_name in ("plans", "progress"):
+            if not callable(getattr(training_query_service, method_name, None)):
+                raise TypeError(
+                    f"training_query_service must expose {method_name}()"
                 )
     if observability is not None and not isinstance(
         observability,
@@ -937,6 +973,45 @@ def create_app(
         except Exception:
             return _typed_memory_error_response("service_unavailable", status_code=503)
 
+    def _training_query(
+        *,
+        operation: str,
+        actor: ActorContext,
+        relationship_id: UUID,
+        metric_key: str | None,
+        include_history: bool,
+        limit: int,
+    ) -> TrainingPlanPageResponse | TrainingProgressPageResponse | JSONResponse:
+        if training_query_service is None:
+            return _training_error_response("service_unavailable", status_code=503)
+        try:
+            if operation == "plans":
+                page = training_query_service.plans(
+                    owner_id=actor.owner_id,
+                    relationship_id=relationship_id,
+                    include_history=include_history,
+                    limit=limit,
+                )
+                if not isinstance(page, TrainingPlanPage):
+                    raise TypeError("training service returned invalid Plan page")
+                return TrainingPlanPageResponse.from_page(page)
+            if operation == "progress":
+                page = training_query_service.progress(
+                    owner_id=actor.owner_id,
+                    relationship_id=relationship_id,
+                    metric_key=metric_key,
+                    include_history=include_history,
+                    limit=limit,
+                )
+                if not isinstance(page, TrainingProgressPage):
+                    raise TypeError("training service returned invalid Progress page")
+                return TrainingProgressPageResponse.from_page(page)
+            raise TypeError("unsupported training query")
+        except TrainingQueryServiceError as error:
+            return _training_service_error(error)
+        except Exception:
+            return _training_error_response("service_unavailable", status_code=503)
+
     @app.get(
         "/memory/preferences",
         response_model=TypedMemoryPageResponse,
@@ -995,6 +1070,47 @@ def create_app(
             operation="reviews",
             actor=actor,
             relationship_id=relationship_id,
+            include_history=include_history,
+            limit=limit,
+        )
+
+    @app.get(
+        "/memory/players/{relationship_id}/training-plan",
+        response_model=TrainingPlanPageResponse,
+        responses={404: {"model": TrainingErrorResponse}, 503: {"model": TrainingErrorResponse}},
+    )
+    def get_training_plan(
+        relationship_id: UUID,
+        include_history: bool = Query(default=False),
+        limit: int = Query(default=50, ge=1, le=100),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> TrainingPlanPageResponse | JSONResponse:
+        return _training_query(
+            operation="plans",
+            actor=actor,
+            relationship_id=relationship_id,
+            metric_key=None,
+            include_history=include_history,
+            limit=limit,
+        )
+
+    @app.get(
+        "/memory/players/{relationship_id}/training-progress",
+        response_model=TrainingProgressPageResponse,
+        responses={404: {"model": TrainingErrorResponse}, 503: {"model": TrainingErrorResponse}},
+    )
+    def get_training_progress(
+        relationship_id: UUID,
+        metric_key: str | None = Query(default=None, pattern=r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$"),
+        include_history: bool = Query(default=False),
+        limit: int = Query(default=50, ge=1, le=100),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> TrainingProgressPageResponse | JSONResponse:
+        return _training_query(
+            operation="progress",
+            actor=actor,
+            relationship_id=relationship_id,
+            metric_key=metric_key,
             include_history=include_history,
             limit=limit,
         )

@@ -1528,3 +1528,25 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   Plan/Progress 产品能力已经实现。
 - 唯一下一动作：设计批独立提交/推送并等待 exact-SHA 三 job；全绿后当前 checkpoint 保持 6B-7，内部
   动作切换为 Task 1 pure contract 红灯，不进入 6B-8。
+
+## 2026-08-21：6B-7 设计 exact-SHA 公共闭环，进入 pure TDD
+
+- 设计提交 `d678a7a93e7b5f04d5733b9c0abae4a26dc4dd1b` / Actions `32394585411` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。
+- 该公共证据只关闭 6B-7 设计门，不表示 Plan/Progress 已实现。唯一下一动作是实施计划 Task 1：先写
+  strict Plan/Progress payload、self-only shape、纠错与 deterministic trend 的 pure 红灯；不进入 6B-8。
+
+## 2026-08-21：6B-7 本地实现完成，等待 exact-SHA 公共门
+
+- Candidate-backed self-only Plan、一个 active partial unique、0007、同事务 lifecycle、完整 final Artifact
+  Progress gate、不可变 correction event、deterministic trend、owner-scoped Service/API 和 production
+  composition 已在工作树完成；不含 6B-8 Context 或 6B-9 lifecycle/export。
+- 聚焦/相邻 `103 passed, 6 skipped, 1 warning`；完整 `1445 passed, 106 skipped, 1 warning,
+  110 subtests passed`。新增 6 skip 均为本机无 PostgreSQL；真库 migration/FK/trigger/Artifact/concurrency/
+  rollback 只能由公共 `postgres-migrations` 补证。
+- package smoke 已扩为 schema 1.4 的 Candidate pending→user accepted→active Plan query，外部 Riot/Provider
+  调用为 0；Progress 不借 package 的故意 failed Review 伪造成功 Artifact，真库测试单独构造严格 terminal fixture。
+- walkthrough 已补八维 evidence 路径，coverage 在公共三 job 全绿前继续 `planned`。两套 RAG、Harness
+  dry-run、compileall、SDK/Secret/tracked-data、YAML、governance 与 diff 门通过。
+- 唯一下一动作：独立提交/推送 6B-7 实现并等待 exact-SHA `pytest`、`postgres-migrations`、
+  `packaging-smoke`；全绿后才将 coverage 置 complete 并进入 6B-8。

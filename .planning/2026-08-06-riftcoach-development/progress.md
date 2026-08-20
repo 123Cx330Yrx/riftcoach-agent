@@ -3241,3 +3241,25 @@
   门通过。首次 Harness 命令漏传两个必需 fixture，仅在 argparse 阶段退出；按 runbook 重跑成功且无外部 I/O。
 - 当前本地裁决为 `pass-local-pending-public-ci`。下一动作：审查 cached diff，独立提交/推送设计批并等待
   exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；三 job 全绿后才写 Task 1 红灯。
+
+## 2026-08-21：6B-7 设计批 exact-SHA 公共闭环
+
+- 设计提交 `d678a7a93e7b5f04d5733b9c0abae4a26dc4dd1b` 已推送；Actions run `32394585411`
+  精确对应该 SHA，`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿。
+- 该 run 证明 ADR/design/plan/治理与既有真实 PostgreSQL/Linux 边界兼容，不证明 Plan/Progress 产品
+  代码存在。canonical 保持 `6B-7 / in_progress`，内部下一动作切到 Task 1 pure contract 红灯。
+
+## 2026-08-21：6B-7 本地实现与完整门禁完成
+
+- pure Plan/Progress/trend、两个 materializer、五类 production registry、两张 ORM 表、0007 migration/
+  trigger、同事务 writer、final Artifact gate、owner-scoped query/Service、两个 GET 与 lifespan 已实现。
+- Linux package smoke schema 1.4 真实规划为 Link→Conversation→Preference→Training Plan accept/query，
+  `external_riot_provider_calls=0`；Progress 的 succeeded final Artifact gate 由真实 PostgreSQL job 证明，
+  不用 package 的故意 failed Review 冒充成功 Artifact。
+- 聚焦/相邻最终为 `103 passed, 6 skipped, 1 warning`；完整本地回归为
+  `1445 passed, 106 skipped, 1 warning, 110 subtests passed`。新增 6 个 skip 全部是本机无 PostgreSQL，
+  不能视为 migration/trigger/transaction 成功。
+- 两套 RAG 满冻结阈值，Harness dry-run `published`/0 revisions；compileall、SDK boundary、tracked
+  Secret/run-data、YAML、governance 与 diff 门通过。coverage 八维路径已齐但保持 planned。
+- 唯一下一动作：最终 diff/cached review，独立提交/推送并等待 exact-SHA 三 job；全绿后才关闭 6B-7
+  并按 RQ-071 进入 6B-8。

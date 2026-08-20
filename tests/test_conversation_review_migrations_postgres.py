@@ -28,7 +28,7 @@ def config() -> Config:
 
 def test_review_identity_revision_and_orm_metadata_are_frozen() -> None:
     head = ScriptDirectory.from_config(config()).get_current_head()
-    assert head == "0006_typed_memory_targets"
+    assert head == "0007_training_plan_progress"
     assert len(head) <= 32
 
     table = ReviewTaskRecord.__table__

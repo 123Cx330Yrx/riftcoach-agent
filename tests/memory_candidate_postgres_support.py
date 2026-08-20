@@ -133,12 +133,18 @@ def pending_candidate(
     memory_key: str = "report_language",
     operation: MemoryOperation = MemoryOperation.SET,
     provenance_kind: ProvenanceKind = ProvenanceKind.USER_STRUCTURED_INPUT,
+    source_task_id: UUID | None = None,
+    source_run_id: str | None = None,
+    source_artifact_sha256: str | None = None,
 ) -> PendingMemoryCandidate:
     return PendingMemoryCandidate(
         candidate_id=UUID(f"84000000-0000-4000-8000-{number:012d}"),
         owner_id=owner_id,
         conversation_id=conversation_id,
         idempotency_key=key or f"candidate-{number}",
+        source_task_id=source_task_id,
+        source_run_id=source_run_id,
+        source_artifact_sha256=source_artifact_sha256,
         target_scope=target_scope,
         candidate_kind=candidate_kind,
         memory_key=memory_key,

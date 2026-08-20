@@ -41,6 +41,8 @@ from app.memory.ports import (
     MemoryCandidateRepositoryError,
 )
 from app.memory.typed_models import TypedMemoryContractError
+from app.memory.training_materializers import TrainingMaterializerError
+from app.memory.training_models import TrainingContractError
 from app.persistence.conversation_records import ConversationMessageRecord, ConversationRecord
 from app.persistence.memory_records import MemoryCandidateRecord
 from app.persistence.player_records import OwnerPlayerRelationshipRecord
@@ -406,7 +408,7 @@ class PostgresMemoryCandidateRepository:
             return CandidateMutationResult(
                 disposition=CandidateMutationDisposition.VERSION_CONFLICT
             )
-        except TypedMemoryContractError:
+        except (TypedMemoryContractError, TrainingContractError, TrainingMaterializerError):
             return CandidateMutationResult(
                 disposition=CandidateMutationDisposition.TARGET_INVALID
             )

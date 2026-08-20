@@ -2367,3 +2367,18 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   active Plan、完整 final Artifact 支撑的 Progress、追加式纠错与非因果确定性趋势。
 - `BOUNDARY`：当前仍没有 6B-7 产品 schema/Repository/API/tests；设计批公共闭环前不写实现，6B-7 正式
   公共闭环前不进入 6B-8，6B-8 闭环前不进入 6B-9。
+
+### 2026-08-21：6B-7 设计 exact-SHA 公共闭环
+
+- `PUBLIC-CI`：`d678a7a93e7b5f04d5733b9c0abae4a26dc4dd1b` / Actions `32394585411` 的
+  pytest、PostgreSQL migration/control-plane 与 Linux package 三 job 全绿。
+- `HANDOFF`：仍在 6B-7 内进入 pure model/trend 红灯；设计绿灯不计作产品实现，不进入 6B-8。
+
+### 2026-08-21：6B-7 本地实现完成，等待公共验证
+
+- `IMPLEMENTED`：pure contract/materializer/registry、0007、Plan/Progress writer、final Artifact gate、
+  query/trend、两个 GET、lifespan 与 package Plan 纵向均已本地建立。
+- `LOCAL-EVIDENCE`：聚焦 `103 passed, 6 skipped`；完整 `1445 passed, 106 skipped, 1 warning,
+  110 subtests passed`，两套 RAG/Harness/compile/security/governance/diff 全绿。
+- `BOUNDARY`：106 skip 仍表示本机无 PostgreSQL/Docker；公共三 job 全绿前 6B-7/coverage 不关闭，
+  不进入 6B-8。

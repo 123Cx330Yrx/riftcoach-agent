@@ -58,10 +58,14 @@ from app.memory.service import MemoryCandidateService, MemoryCandidateServiceErr
 from app.memory.typed_models import TypedMemoryPage
 from app.memory.typed_ports import TypedMemoryQueryServicePort
 from app.memory.typed_service import TypedMemoryQueryService, TypedMemoryQueryServiceError
+from app.memory.training_models import TrainingPlanPage, TrainingProgressPage
+from app.memory.training_query_ports import TrainingQueryServicePort
+from app.memory.training_service import TrainingQueryService, TrainingQueryServiceError
 from app.persistence.config import load_database_settings
 from app.persistence.conversation_repository import PostgresConversationRepository
 from app.persistence.memory_repository import PostgresMemoryCandidateRepository
 from app.persistence.typed_memory_query_repository import PostgresTypedMemoryQueryRepository
+from app.persistence.training_query_repository import PostgresTrainingQueryRepository
 from app.persistence.database import build_engine, build_session_factory
 from app.persistence.player_repository import PostgresPlayerRepository
 from app.persistence.task_repository import PostgresTaskRepository
@@ -502,6 +506,25 @@ class _TypedMemoryQueryServiceProxy:
         )
 
 
+class _TrainingQueryServiceProxy:
+    def __init__(self) -> None:
+        self._target: TrainingQueryServicePort | None = None
+
+    def bind(self, target: TrainingQueryServicePort | None) -> None:
+        self._target = target
+
+    def _service(self) -> TrainingQueryServicePort:
+        if self._target is None:
+            raise TrainingQueryServiceError("service_unavailable")
+        return self._target
+
+    def plans(self, **kwargs) -> TrainingPlanPage:
+        return self._service().plans(**kwargs)
+
+    def progress(self, **kwargs) -> TrainingProgressPage:
+        return self._service().progress(**kwargs)
+
+
 class _TaskDeletionProxy:
     def __init__(self) -> None:
         self._target: TaskDeletionPort | None = None
@@ -569,6 +592,7 @@ def create_composed_app(
     conversation_proxy = _ConversationServiceProxy()
     memory_candidate_proxy = _MemoryCandidateServiceProxy()
     typed_memory_query_proxy = _TypedMemoryQueryServiceProxy()
+    training_query_proxy = _TrainingQueryServiceProxy()
     query_proxy = _RunQueryProxy()
     deletion_proxy = _TaskDeletionProxy()
     actor_proxy = _ActorProviderProxy()
@@ -594,6 +618,9 @@ def create_composed_app(
             typed_memory_query_repository = PostgresTypedMemoryQueryRepository(
                 session_factory
             )
+            training_query_repository = PostgresTrainingQueryRepository(
+                session_factory
+            )
             task_proxy.bind(
                 ReviewTaskService(
                     repository=repository,
@@ -617,6 +644,9 @@ def create_composed_app(
             )
             typed_memory_query_proxy.bind(
                 TypedMemoryQueryService(repository=typed_memory_query_repository)
+            )
+            training_query_proxy.bind(
+                TrainingQueryService(repository=training_query_repository)
             )
             deletion_proxy.bind(TaskDeletionService(
                 repository=repository,
@@ -657,6 +687,7 @@ def create_composed_app(
             conversation_proxy.bind(None)
             memory_candidate_proxy.bind(None)
             typed_memory_query_proxy.bind(None)
+            training_query_proxy.bind(None)
             query_proxy.bind(None)
             deletion_proxy.bind(None)
         try:
@@ -667,6 +698,7 @@ def create_composed_app(
             conversation_proxy.bind(None)
             memory_candidate_proxy.bind(None)
             typed_memory_query_proxy.bind(None)
+            training_query_proxy.bind(None)
             query_proxy.bind(None)
             deletion_proxy.bind(None)
             actor_proxy.bind(None)
@@ -689,6 +721,7 @@ def create_composed_app(
         conversation_service=conversation_proxy,
         memory_candidate_service=memory_candidate_proxy,
         typed_memory_query_service=typed_memory_query_proxy,
+        training_query_service=training_query_proxy,
     )
     app.state.database_engine = None
     return app

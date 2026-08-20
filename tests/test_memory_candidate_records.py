@@ -55,7 +55,7 @@ def test_memory_candidate_metadata_contract() -> None:
 
 def test_memory_candidate_revision_is_short_and_offline_sql_has_trigger(monkeypatch) -> None:
     head = ScriptDirectory.from_config(_config()).get_current_head()
-    assert head == "0006_typed_memory_targets"
+    assert head == "0007_training_plan_progress"
     assert len(head) <= 32
 
     output = io.StringIO()

@@ -518,8 +518,14 @@ coverage 已 complete。RQ-071 已授权连续完成 `6B-7→6B-8→6B-9`；当�
   Artifact-grounded allowlisted Progress 与不做因果/心理推断的确定性趋势比较。
 - [completed] 初学者教学、6B-6 typed materializer/version 与 Task final Artifact 接缝复核。
 - [completed] 冻结 ADR-0044、专用设计与 TDD 实施计划；产品代码尚未开始。
-- [in_progress] 运行设计批本地门禁并独立提交/推送，等待 exact-SHA 三 job。
-- [pending] 设计公共闭环后按 Task 1 先写 pure Plan/Progress/trend 红灯。
+- [completed] 设计提交 `d678a7a` / Actions `32394585411` 的 exact-SHA 三 job 全绿。
+- [completed] Task 1：strict Plan/Progress payload、self-only shape、纠错与 deterministic trend pure 红灯→绿灯。
+- [completed] Task 2：两个 materializer、同 Session/no-commit 合同与 production 五类 registry。
+- [completed] Task 3：两张 ORM 表、可逆 0007、复合 FK/CHECK/partial unique/trigger；本机真库明确 skip。
+- [completed] Task 4：同事务 Plan lifecycle、Artifact gate、Progress correction 与 PostgreSQL 测试合同。
+- [completed] Task 5：owner-scoped query、确定性趋势、两个 GET 与 production lifespan composition。
+- [completed] Task 6：Linux smoke 增加 Candidate→active Plan query，八维 walkthrough/coverage 路径和本地门禁。
+- [in_progress] 独立提交/推送实现并等待 exact-SHA 三 job；全绿前 coverage 保持 planned，不进入 6B-8。
 - [deferred] 6B-7 公共闭环前不进入 6B-8/6B-9。
 
 ## 6A Entry Design Checklist
