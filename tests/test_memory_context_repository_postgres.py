@@ -122,7 +122,7 @@ def test_self_context_selects_bounded_active_records_in_stable_order() -> None:
             conversation_id=conversation,
             kind=CandidateKind.PLAYER_PROFILE,
             key="main_role",
-            payload={"value": "MID"},
+            payload={"value": "MIDDLE"},
             scope=TargetScope.OWNER_PLAYER,
         )
         _materialize(

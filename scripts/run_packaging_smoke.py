@@ -856,16 +856,50 @@ def execute_packaging_smoke(
             )
 
         try:
+            get_persisted_task = getattr(repository, "get_by_task_id", None)
+            persisted_review_task = (
+                None
+                if not callable(get_persisted_task)
+                else get_persisted_task(
+                    owner_id="packaging-smoke-owner",
+                    task_id=conversation_review_task_id,
+                )
+            )
+            if persisted_review_task is not None:
+                if (
+                    persisted_review_task.conversation_binding is None
+                    or persisted_review_task.run_id != conversation_review_run_id
+                ):
+                    raise MemoryContextRepositoryError("memory_context_unavailable")
+                task_binding = persisted_review_task.conversation_binding
+            else:
+                task_binding = None
             context_snapshot = PostgresMemoryContextRepository(
                 session_factory
             ).load(
                 MemoryContextBinding(
                     run_id=conversation_review_run_id,
                     owner_id="packaging-smoke-owner",
-                    conversation_id=conversation_id,
-                    relationship_id=relationship_id,
-                    player_subject_id=player_subject_id,
-                    relationship_role=RelationshipRole.SELF,
+                    conversation_id=(
+                        conversation_id
+                        if task_binding is None
+                        else task_binding.conversation_id
+                    ),
+                    relationship_id=(
+                        relationship_id
+                        if task_binding is None
+                        else task_binding.relationship_id
+                    ),
+                    player_subject_id=(
+                        player_subject_id
+                        if task_binding is None
+                        else task_binding.player_subject_id
+                    ),
+                    relationship_role=(
+                        RelationshipRole.SELF
+                        if task_binding is None
+                        else task_binding.relationship_role
+                    ),
                 )
             )
         except MemoryContextRepositoryError as error:
