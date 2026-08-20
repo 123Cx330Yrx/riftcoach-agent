@@ -114,6 +114,7 @@ def seed_relationship(
                 last_resolved_at=BASE,
             )
         )
+        session.flush()
         session.add(
             OwnerPlayerRelationshipRecord(
                 relationship_id=relationship_id,

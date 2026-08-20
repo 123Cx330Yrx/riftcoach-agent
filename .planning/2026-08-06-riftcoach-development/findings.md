@@ -2980,3 +2980,13 @@
 - 审查修复的两个 P2 是 archive/hide 422 的公开错误 DTO 与有效 command 后 UUID/clock 故障的 503 投影；
   并发测试改成 blocker transaction + SQLAlchemy event 的确定性锁顺序，覆盖 lifecycle-first 与 append-first。
 - 当前只剩独立提交/推送和同 SHA 三个公共 job；全绿前不改变 coverage `planned`，不关闭 6B-3，也不进入 6B-4。
+
+## 2026-08-20：6B-3 首次公共 PostgreSQL 门失败
+
+- `0ca7fde` 的 `pytest` 与 `packaging-smoke` 公共 job 成功；`postgres-migrations` 失败于 18 个
+  Conversation Repository/concurrency 测试。
+- 根因是测试 fixture 在一次 ORM flush 中同时加入 `PlayerSubjectRecord` 与
+  `OwnerPlayerRelationshipRecord`，但两者没有 ORM relationship 声明，真实 PostgreSQL 可能先插入
+  子表并触发 FK violation；本机 PostgreSQL 缺失使该问题只表现为 skip。
+- 最小修复是在测试 fixture 插入 relationship 前显式 `session.flush()`，保留生产复合 FK 与约束，不放宽
+  schema、跳过测试或修改事务语义。失败 SHA 保留为审计证据，不重跑追绿。

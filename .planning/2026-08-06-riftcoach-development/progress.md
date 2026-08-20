@@ -3010,3 +3010,12 @@
 - 6B-3 聚焦 `85 passed, 25 skipped`；完整 `1295 passed, 67 skipped, 1 warning, 110 subtests passed`。
 - 两套 RAG、Harness dry-run（published/0 revisions）、compileall、SDK boundary、tracked Secret/run-data、YAML、治理和 diff 门均通过；本机无 Docker，Compose/真库留给公共 CI。
 - 现在唯一下一动作是独立暂存、cached diff、提交/推送并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；全绿后才用独立状态批关闭 6B-3，并只交接 6B-4 prepared/waiting authorization。
+
+## 2026-08-20：6B-3 首次公共门失败与最小修复
+
+- 实现提交 `0ca7fde` 已推送；Actions `32329394058` 中 `pytest`、`packaging-smoke` 成功，
+  `postgres-migrations` 失败。
+- 真实日志显示全部失败集中在 PostgreSQL fixture 的父表未先 flush，触发
+  `owner_player_relationships → player_subjects` FK violation；不是 Conversation Repository 业务断言失败。
+- 已加入测试 fixture 的显式 parent flush；下一步只复跑本地相关测试、cached diff、提交新修复 SHA，再等待新的
+  exact-SHA 三 job。6B-3 仍保持 `in_progress`，coverage 仍为 `planned`。
