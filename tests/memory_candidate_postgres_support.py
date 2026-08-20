@@ -7,6 +7,7 @@ from pathlib import Path
 from uuid import UUID
 
 import pytest
+import sqlalchemy as sa
 from alembic import command
 from alembic.config import Config
 from sqlalchemy.orm import Session, sessionmaker
@@ -51,6 +52,8 @@ def migrated_memory_repository():
     try:
         yield PostgresMemoryCandidateRepository(factory), factory, engine
     finally:
+        with engine.begin() as connection:
+            connection.execute(sa.text("DROP TABLE IF EXISTS test_memory_targets"))
         engine.dispose()
         command.downgrade(config, "base")
         if previous is None:
