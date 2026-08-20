@@ -67,6 +67,16 @@ class ReviewTaskRecord(Base):
             "idempotency_key",
             name="uq_review_tasks_owner_id_idempotency_key",
         ),
+        sa.UniqueConstraint(
+            "task_id",
+            "run_id",
+            "conversation_id",
+            "owner_id",
+            "relationship_id",
+            "player_subject_id",
+            "relationship_role",
+            name="uq_review_tasks_memory_source_identity",
+        ),
         sa.CheckConstraint(
             "status IN ('queued', 'running', 'succeeded', 'failed')",
             name="status_allowed",

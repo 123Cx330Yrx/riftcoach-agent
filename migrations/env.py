@@ -12,6 +12,7 @@ from app.persistence import (  # noqa: F401
 )
 from app.persistence import player_records as _player_records  # noqa: F401
 from app.persistence import task_record as _task_record  # noqa: F401
+from app.persistence import memory_records as _memory_records  # noqa: F401
 
 
 config = context.config

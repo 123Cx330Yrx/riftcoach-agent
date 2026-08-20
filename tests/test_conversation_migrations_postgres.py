@@ -222,7 +222,8 @@ def test_conversation_migration_creates_tables_constraints_and_triggers(
         } <= conversation_index_names
 
         assert message_unique_names == {
-            "uq_conversation_messages_conversation_sequence"
+            "uq_conversation_messages_conversation_sequence",
+            "uq_conversation_messages_source_identity",
         }
         assert {
             "ck_conversation_messages_content_bounded",

@@ -3114,3 +3114,22 @@
 - 首次收尾完整回归为 `1 failed, 1332 passed, 78 skipped`，唯一失败是治理测试仍硬编码 6B-4 为当前
   checkpoint；只更新该测试夹具为 6B-5 后，治理聚焦 `12 passed`，完整回归恢复为
   `1333 passed, 78 skipped, 1 warning, 110 subtests passed`，没有放宽 coverage 或阶段顺序约束。
+
+## 2026-08-20：RQ-069 开始 6B-5 Memory Candidate & Write Gate
+
+- 按 AGENTS 顺序恢复 canonical/活动计划/RQ/路线/能力/learning coverage，治理预检通过；起始
+  `HEAD == origin/main == 405e10941830e28be2a9086390f161c66fecc359` 且工作树干净。
+- 已完成初学者入口教学、6B-3/6B-4 持久接缝审计和四方案比较；选择事务内 typed materializer，生产在
+  6B-6 前 fail closed，不用 receipt 或万能表冒充长期 Memory。
+- 已登记 RQ-069、ADR-0042、专用设计与原子实施计划，并同步 canonical/roadmap/capability/learning。
+- 当前仍没有 6B-5 产品 migration/model/Repository/API/test；下一动作是 Candidate pure-contract 红灯。
+
+## 2026-08-20：6B-5 本地纵向切片完成，等待公共验证
+
+- TDD 已完成 Candidate models/Gate、Service/Port、ORM/0005、PostgreSQL Repository、materializer seam、API、
+  composition、package smoke 与 blocking CI 清单；实现不含具体长期 Memory target。
+- 本地 6B-5 聚焦为 `50 passed, 10 skipped, 1 warning`；10 skip 仅为无 PostgreSQL/Docker 的真实锁/FK/
+  trigger/事务/并发证据。此前完整回归出现 2 个旧 OpenAPI exact-path 断言，已按新增 Candidate routes 修正。
+- walkthrough 八维材料已加入，coverage 继续 planned；RAG、Harness、compileall、secret/SDK/YAML/governance/
+  diff 仍需最终完整复跑。
+- 唯一下一动作保持为完整本地门禁→cached diff→提交/推送→exact-SHA 三 job；全绿前不关闭 6B-5、不进入 6B-6。

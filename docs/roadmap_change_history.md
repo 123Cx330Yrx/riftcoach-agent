@@ -2270,3 +2270,13 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   PostgreSQL/Docker 的 skip 仍保持原义，不冒充本地真库成功。
 - `HANDOFF`：唯一下一检查点为 `6B-5-memory-candidate-write-gate`，仅 prepared/waiting authorization；
   不创建 Candidate/Memory/assistant terminal 代码，不进入 Auth/RSO、SSE、前端或新框架。
+
+### 2026-08-20：RQ-069 授权 6B-5 并冻结 materialization 方向
+
+- `AUTHORIZED`：用户明确“继续 6B-5”；只授权 `6B-5-memory-candidate-write-gate`，不进入 6B-6。
+- `PROBLEM`：6B-5 尚无具体长期 Memory 表，不能把 Candidate accepted 或 receipt 冒充真实物化。
+- `DECISION`：ADR-0042 采用事务内 typed materializer；同一 Session 写 target 后才更新 Candidate terminal。
+  生产 composition 在 6B-6 注册真实 materializer 前为空 registry/fail closed。
+- `BOUNDARY`：本批实现 Candidate/gate/migration/Repository/API/真库与 package 证据；不创建具体长期
+  Memory、assistant terminal、Context、Auth/RSO、SSE、前端、LangGraph、Multi-Agent 或新 SDK，不调用
+  Riot/Provider，不读取 Key。

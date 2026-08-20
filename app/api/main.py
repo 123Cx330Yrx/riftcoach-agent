@@ -41,6 +41,12 @@ from app.api.player_models import (
     CreatePlayerLinkResponse,
     PlayerLinkResponse,
 )
+from app.api.memory_models import (
+    CreateMemoryCandidateRequest,
+    MemoryCandidateApiErrorCode,
+    MemoryCandidateErrorResponse,
+    MemoryCandidateResponse,
+)
 from app.api.task_models import (
     ApiErrorCode,
     CreateConversationReviewTaskResponse,
@@ -62,6 +68,16 @@ from app.conversations.models import (
 )
 from app.conversations.ports import ConversationServicePort
 from app.conversations.service import ConversationServiceError
+from app.memory.models import (
+    CandidateKind,
+    CreateMemoryCandidateCommand,
+    MemoryCandidateView,
+    MemoryOperation,
+    ProvenanceKind,
+    TargetScope,
+)
+from app.memory.ports import MemoryCandidateServicePort
+from app.memory.service import MemoryCandidateServiceError
 from app.players.models import (
     CreatePlayerLinkCommand,
     PlayerLinkCreateResult,
@@ -160,6 +176,20 @@ _CONVERSATION_ERROR_STATUS: Mapping[
     "conversation_archived": (409, "conversation_archived"),
     "service_unavailable": (503, "service_unavailable"),
 }
+_MEMORY_CANDIDATE_ERROR_STATUS: Mapping[
+    str,
+    tuple[int, MemoryCandidateApiErrorCode],
+] = {
+    "request_invalid": (422, "request_invalid"),
+    "conversation_not_found": (404, "conversation_not_found"),
+    "candidate_not_found": (404, "candidate_not_found"),
+    "candidate_idempotency_conflict": (409, "candidate_idempotency_conflict"),
+    "candidate_gate_rejected": (422, "candidate_gate_rejected"),
+    "candidate_terminal_conflict": (409, "candidate_terminal_conflict"),
+    "candidate_expired": (409, "candidate_expired"),
+    "memory_target_unavailable": (409, "memory_target_unavailable"),
+    "service_unavailable": (503, "service_unavailable"),
+}
 _IDEMPOTENCY_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
 
 
@@ -212,6 +242,35 @@ def _parse_conversation_id(value: str) -> UUID | None:
         return None
 
 
+def _memory_candidate_error_response(
+    code: MemoryCandidateApiErrorCode,
+    *,
+    status_code: int,
+    reason: str | None = None,
+) -> JSONResponse:
+    body = MemoryCandidateErrorResponse(code=code, reason=reason).model_dump(
+        mode="json",
+        exclude_none=True,
+    )
+    return JSONResponse(status_code=status_code, content=body)
+
+
+def _memory_candidate_service_error(error: MemoryCandidateServiceError) -> JSONResponse:
+    status_code, code = _MEMORY_CANDIDATE_ERROR_STATUS.get(
+        error.code,
+        (503, "service_unavailable"),
+    )
+    reason = error.reason_code if code == "candidate_gate_rejected" else None
+    return _memory_candidate_error_response(code, status_code=status_code, reason=reason)
+
+
+def _parse_candidate_id(value: str) -> UUID | None:
+    try:
+        return UUID(value)
+    except (AttributeError, TypeError, ValueError):
+        return None
+
+
 def create_app(
     *,
     task_service: TaskServicePort,
@@ -225,6 +284,7 @@ def create_app(
     cors_allow_credentials: bool = False,
     observability: TaskObservability | None = None,
     conversation_service: ConversationServicePort | None = None,
+    memory_candidate_service: MemoryCandidateServicePort | None = None,
 ) -> FastAPI:
     """Create API V2 from explicit ports without doing deployment I/O."""
 
@@ -258,6 +318,12 @@ def create_app(
                 raise TypeError(
                     f"conversation_service must expose {method_name}()"
                 )
+    if memory_candidate_service is not None:
+        for method_name in ("create", "get", "accept", "reject"):
+            if not callable(getattr(memory_candidate_service, method_name, None)):
+                raise TypeError(
+                    f"memory_candidate_service must expose {method_name}()"
+                )
     if observability is not None and not isinstance(
         observability,
         TaskObservability,
@@ -276,7 +342,7 @@ def create_app(
         version="2.0",
         description=(
             "Durable API for recent reviews, Riot player links and "
-            "owner-scoped conversations."
+            "owner-scoped conversations and Memory Candidates."
         ),
         lifespan=lifespan,
     )
@@ -618,6 +684,176 @@ def create_app(
                 "service_unavailable",
                 status_code=503,
             )
+
+    @app.post(
+        "/conversations/{conversation_id}/memory-candidates",
+        status_code=201,
+        response_model=MemoryCandidateResponse,
+        responses={
+            404: {"model": MemoryCandidateErrorResponse},
+            409: {"model": MemoryCandidateErrorResponse},
+            422: {"model": MemoryCandidateErrorResponse},
+            503: {"model": MemoryCandidateErrorResponse},
+        },
+    )
+    def post_memory_candidate(
+        conversation_id: str,
+        candidate_request: CreateMemoryCandidateRequest,
+        idempotency_key: str = Header(
+            alias="Idempotency-Key",
+            min_length=1,
+            max_length=128,
+            pattern=_IDEMPOTENCY_PATTERN,
+        ),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> MemoryCandidateResponse | JSONResponse:
+        parsed_conversation_id = _parse_conversation_id(conversation_id)
+        if parsed_conversation_id is None:
+            return _memory_candidate_error_response(
+                "conversation_not_found", status_code=404
+            )
+        if memory_candidate_service is None:
+            return _memory_candidate_error_response(
+                "service_unavailable", status_code=503
+            )
+        try:
+            command = CreateMemoryCandidateCommand(
+                owner_id=actor.owner_id,
+                conversation_id=parsed_conversation_id,
+                idempotency_key=idempotency_key,
+                target_scope=TargetScope(candidate_request.target_scope),
+                candidate_kind=CandidateKind(candidate_request.candidate_kind),
+                memory_key=candidate_request.memory_key,
+                operation=MemoryOperation(candidate_request.operation),
+                proposal_payload=candidate_request.proposal_payload,
+                provenance_kind=ProvenanceKind.USER_STRUCTURED_INPUT,
+                producer_id="riftcoach-public-api",
+                producer_version="1.0.0",
+                proposal_confidence=None,
+            )
+            view = memory_candidate_service.create(command)
+            if (
+                not isinstance(view, MemoryCandidateView)
+                or view.conversation_id != parsed_conversation_id
+            ):
+                raise TypeError("memory candidate service returned invalid view")
+            return MemoryCandidateResponse.from_view(view)
+        except MemoryCandidateServiceError as error:
+            return _memory_candidate_service_error(error)
+        except ValidationError:
+            return _memory_candidate_error_response("request_invalid", status_code=422)
+        except Exception:
+            return _memory_candidate_error_response(
+                "service_unavailable", status_code=503
+            )
+
+    @app.get(
+        "/memory-candidates/{candidate_id}",
+        response_model=MemoryCandidateResponse,
+        responses={
+            404: {"model": MemoryCandidateErrorResponse},
+            503: {"model": MemoryCandidateErrorResponse},
+        },
+    )
+    def get_memory_candidate(
+        candidate_id: str,
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> MemoryCandidateResponse | JSONResponse:
+        parsed_candidate_id = _parse_candidate_id(candidate_id)
+        if parsed_candidate_id is None:
+            return _memory_candidate_error_response("candidate_not_found", status_code=404)
+        if memory_candidate_service is None:
+            return _memory_candidate_error_response("service_unavailable", status_code=503)
+        try:
+            view = memory_candidate_service.get(
+                owner_id=actor.owner_id,
+                candidate_id=parsed_candidate_id,
+            )
+            if not isinstance(view, MemoryCandidateView) or view.candidate_id != parsed_candidate_id:
+                raise TypeError("memory candidate service returned invalid view")
+            return MemoryCandidateResponse.from_view(view)
+        except MemoryCandidateServiceError as error:
+            return _memory_candidate_service_error(error)
+        except Exception:
+            return _memory_candidate_error_response("service_unavailable", status_code=503)
+
+    @app.post(
+        "/memory-candidates/{candidate_id}/accept",
+        response_model=MemoryCandidateResponse,
+        responses={
+            404: {"model": MemoryCandidateErrorResponse},
+            409: {"model": MemoryCandidateErrorResponse},
+            422: {"model": MemoryCandidateErrorResponse},
+            503: {"model": MemoryCandidateErrorResponse},
+        },
+    )
+    def accept_memory_candidate(
+        candidate_id: str,
+        _empty: None = Depends(require_empty_body),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> MemoryCandidateResponse | JSONResponse:
+        del _empty
+        return _decide_memory_candidate(
+            candidate_id=candidate_id,
+            actor=actor,
+            operation="accept",
+        )
+
+    @app.post(
+        "/memory-candidates/{candidate_id}/reject",
+        response_model=MemoryCandidateResponse,
+        responses={
+            404: {"model": MemoryCandidateErrorResponse},
+            409: {"model": MemoryCandidateErrorResponse},
+            422: {"model": MemoryCandidateErrorResponse},
+            503: {"model": MemoryCandidateErrorResponse},
+        },
+    )
+    def reject_memory_candidate(
+        candidate_id: str,
+        _empty: None = Depends(require_empty_body),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> MemoryCandidateResponse | JSONResponse:
+        del _empty
+        return _decide_memory_candidate(
+            candidate_id=candidate_id,
+            actor=actor,
+            operation="reject",
+        )
+
+    def _decide_memory_candidate(
+        *,
+        candidate_id: str,
+        actor: ActorContext,
+        operation: str,
+    ) -> MemoryCandidateResponse | JSONResponse:
+        parsed_candidate_id = _parse_candidate_id(candidate_id)
+        if parsed_candidate_id is None:
+            return _memory_candidate_error_response("candidate_not_found", status_code=404)
+        if memory_candidate_service is None:
+            return _memory_candidate_error_response("service_unavailable", status_code=503)
+        try:
+            if operation == "accept":
+                view = memory_candidate_service.accept(
+                    owner_id=actor.owner_id,
+                    candidate_id=parsed_candidate_id,
+                    actor_id=actor.owner_id,
+                )
+            elif operation == "reject":
+                view = memory_candidate_service.reject(
+                    owner_id=actor.owner_id,
+                    candidate_id=parsed_candidate_id,
+                    actor_id=actor.owner_id,
+                )
+            else:
+                raise TypeError("unsupported memory candidate decision")
+            if not isinstance(view, MemoryCandidateView) or view.candidate_id != parsed_candidate_id:
+                raise TypeError("memory candidate service returned invalid decision view")
+            return MemoryCandidateResponse.from_view(view)
+        except MemoryCandidateServiceError as error:
+            return _memory_candidate_service_error(error)
+        except Exception:
+            return _memory_candidate_error_response("service_unavailable", status_code=503)
 
     @app.post(
         "/player-links",

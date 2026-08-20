@@ -1433,3 +1433,15 @@ SDK/tracked-data、YAML、pip、governance 与 diff 门通过。78 个 skip 是�
 因此 6B-4 与八维 coverage 正式关闭。下一检查点固定为 `6B-5-memory-candidate-write-gate`，但只处于
 prepared/waiting authorization：尚未创建 Candidate migration/model/Repository/API，也未进入具体长期
 Memory、assistant terminal、Auth/RSO、SSE、前端或新框架。
+
+### RQ-069：6B-5 采用事务内 typed materializer 接缝（2026-08-20）
+
+用户已明确授权 6B-5。经比较万能 JSONB Memory 表、accepted receipt、额外 approved 中间态和事务内
+typed materializer 后，ADR-0042 选择最后一种：Candidate 只能从服务器 Conversation 派生完整 identity；
+模型/自然语言 confidence 再高也只能 pending；接受时，Repository 在同一 PostgreSQL Session/事务中调用
+已注册的本地 typed materializer，目标写入成功后才把 Candidate 改为 accepted。正式 composition 在
+6B-6 具体 target/materializer 存在前保持空 registry 并 fail closed。
+
+6B-5 会用测试专用 typed target 证明事务提交、回滚、并发和重放，但不会把该测试表或 Candidate target
+reference 称为长期 Memory。Preference/Profile/Review Memory/Plan/Progress、assistant terminal、Memory
+Context、正式 Auth/RSO、SSE、前端和新框架仍在本批之外。

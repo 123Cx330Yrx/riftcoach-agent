@@ -195,6 +195,12 @@ class ConversationMessageRecord(Base):
             "sequence_no",
             name="uq_conversation_messages_conversation_sequence",
         ),
+        sa.UniqueConstraint(
+            "message_id",
+            "conversation_id",
+            "owner_id",
+            name="uq_conversation_messages_source_identity",
+        ),
         sa.ForeignKeyConstraint(
             [
                 "conversation_id",

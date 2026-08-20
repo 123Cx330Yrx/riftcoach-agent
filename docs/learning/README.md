@@ -68,7 +68,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | 6B-2：异步玩家绑定 | 完整 | [6B-2 walkthrough](6b-2-async-player-link-worker-api-walkthrough.md) | POST/poll、Worker、事务外 Account-V1、短事务终态和隐私投影 |
 | 6B-3：Conversation / Message | 完整/公共闭环 | [6B-3 walkthrough](6b-3-conversation-message-foundation-walkthrough.md) / [专用设计](../plans/2026-08-20-conversation-message-foundation-design.md) / [ADR-0040](../adr/0040-conversation-message-foundation-contract.md) | 固定玩家身份、owner 幂等、连续消息序号、归档/隐藏、真库锁与 trigger；实现 SHA `7e4f233` / Actions `32329686381` 已完成 `pytest`、`postgres-migrations`、`packaging-smoke` 公共闭环。限制：公共 API 仍只写 user，assistant terminal、Agent/Review/Memory/Auth/SSE/前端留在后续阶段 |
 | 6B-4：Conversation-bound Review Identity | 完整/公共闭环 | [6B-4 walkthrough](6b-4-conversation-bound-recent-review-identity-walkthrough.md) / [专用设计](../plans/2026-08-20-conversation-bound-recent-review-design.md) / [ADR-0041](../adr/0041-conversation-bound-review-task-identity.md) | schema 2.0 Task 原子绑定服务器 Conversation tuple，并通过可信 PUUID 复用既有 Runtime/Harness；实现 SHA `d63f908` / Actions `32347834279` 已完成真库锁/FK/trigger 与 Linux package 三 job 公共闭环 |
-| 6B-5：Memory Candidate & Write Gate | 未开始/待授权 | [Session/Memory 总设计](../plans/2026-08-19-stage6-session-memory-design.md) / [总实施计划](../plans/2026-08-19-stage6-session-memory-implementation.md) | 只准备 Candidate provenance、deterministic/user gate 与 exactly-once materialization 接缝；尚无 migration/model/Repository/API 或具体长期 Memory 表 |
+| 6B-5：Memory Candidate & Write Gate | 进行中/设计冻结 | [专用设计](../plans/2026-08-20-memory-candidate-write-gate-design.md) / [ADR-0042](../adr/0042-use-transactional-typed-materializer-for-memory-candidates.md) / [实施计划](../plans/2026-08-20-memory-candidate-write-gate-implementation.md) | RQ-069 已授权 Candidate provenance、deterministic/user gate 与事务内 typed materializer 接缝；产品 migration/model/Repository/API 与具体长期 Memory 表尚未完成 |
 
 “完整”表示仓库中已经具备八类持久证据，并不表示项目已生产就绪，也不表示项目所有者已经学会。
 个人理解进度需要通过实际复述、读码、运行和问答单独确认。
@@ -130,7 +130,7 @@ canonical 推进到 6B-4。这能防止“代码写完就一路往后走，教�
 - 不代表当前有正式公网 Auth、RSO 账号验证、HTTPS、SSE、前端或生产级运维；
 - 不代表 RAG 开发集满分等于未知问题上的泛化满分；
 - 不代表 GLM、DeepSeek 或其他 Provider 已通过全部领域质量准入；
-- 6B-4 已获得公共真库/package 闭环，但这不代表 Memory Candidate、具体长期 Memory 或 assistant terminal
-  已经实现；6B-5 当前只准备并等待明确授权。
+- 6B-4 已获得公共真库/package 闭环；6B-5 现已授权并处于设计/TDD，但这仍不代表具体长期 Memory 或
+  assistant terminal 已经实现。
 
 这些边界既是工程事实，也是项目在面试中保持可信度的重要部分。

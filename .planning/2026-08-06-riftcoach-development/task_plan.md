@@ -9,8 +9,9 @@
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
-`6B-5-memory-candidate-write-gate` is prepared but waiting for explicit user
-authorization; no 6B-5 implementation has started.
+`6B-5-memory-candidate-write-gate` is authorized by RQ-069 and in progress.
+The current task is the dedicated ADR/design/implementation-plan gate; no
+product implementation may precede that design freeze.
 
 ## Phases
 
@@ -257,8 +258,9 @@ authorization; no 6B-5 implementation has started.
 ## Next Step
 
 `6B-4-conversation-bound-recent-review-identity` 已由 `d63f908` / Actions `32347834279` 完成
-exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环。唯一下一检查点为
-`6B-5-memory-candidate-write-gate`，当前仅 prepared/waiting authorization；不创建 6B-5 产品代码。
+exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环。RQ-069 已授权
+`6B-5-memory-candidate-write-gate`；唯一当前动作是冻结专用 ADR/design/implementation plan，随后才写
+Candidate pure-contract 红灯。6B-6 具体长期 Memory 仍未授权。
 
 ## 6A-1 Checklist
 
@@ -478,10 +480,15 @@ exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭
 ### Phase 21 - 6B-5-memory-candidate-write-gate handoff
 
 - Status: in_progress
-- Authorization: waiting for an explicit user instruction in a later turn.
+- Authorization: RQ-069; implement only 6B-5 and stop before 6B-6.
 - Prepared outcome: Candidate source/target/provenance/gate contracts 与 exactly-once acceptance 接缝；具体长期 Memory 表不在本批。
-- [pending] 开始前按教学合同复核问题、原理、范围、数据/控制流、测试和边界，并冻结 6B-5 专用 ADR/实施计划。
-- [deferred] 未获授权前不创建 migration/model/Repository/API/test，不顺带实现 6B-6 长期 Memory、6B-8 assistant terminal 或其他后续能力。
+- [completed] 按教学合同复核问题、原理、范围、数据/控制流、测试和边界；比较 receipt、万能表与事务内 typed materializer，并冻结 ADR-0042、专用 design/implementation plan。
+- [completed] Candidate pure contract 与 deterministic gate TDD；本地聚焦 17 passed。
+- [completed] 0005 migration/ORM 与 owner-scoped Repository TDD；本地聚焦真库套件明确 skip，offline SQL/metadata 通过。
+- [completed] reject/expire/user acceptance、事务回滚和 exactly-once materializer TDD；测试 target 的 PostgreSQL 证据待 blocking CI。
+- [completed] 薄 API、composition、package no-I/O 纵向；本地 API/package 聚焦通过，生产 empty registry 对 accept fail closed。
+- [in_progress] 八维 walkthrough 已补齐；正在完成全门禁、blocking PostgreSQL CI、提交/推送和 exact-SHA 公共闭环。
+- [deferred] 不顺带实现 6B-6 长期 Memory、6B-8 assistant terminal 或其他后续能力。
 
 ## 6A Entry Design Checklist
 

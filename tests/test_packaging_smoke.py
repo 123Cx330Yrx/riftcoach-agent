@@ -102,6 +102,7 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     link_task_id = "90000000-0000-4000-8000-000000000002"
     conversation_id = "90000000-0000-4000-8000-000000000005"
     message_id = "90000000-0000-4000-8000-000000000006"
+    memory_candidate_id = "90000000-0000-4000-8000-000000000008"
     message_digest = hashlib.sha256(
         b"Packaging smoke user message"
     ).hexdigest()
@@ -145,6 +146,26 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                         "after_sequence": 0,
                         "has_more": False,
                         "next_after_sequence": None,
+                    },
+                )
+            if "/memory-candidates/" in url:
+                return Response(
+                    200,
+                    {
+                        "schema_version": "1.0",
+                        "candidate_id": memory_candidate_id,
+                        "conversation_id": conversation_id,
+                        "target_scope": "owner_global",
+                        "candidate_kind": "owner_preference",
+                        "memory_key": "report_language",
+                        "operation": "set",
+                        "requires_confirmation": False,
+                        "status": "rejected",
+                        "gate_policy_version": "memory-gate-v1",
+                        "created_at": "2026-08-20T00:00:00Z",
+                        "expires_at": "2026-09-19T00:00:00Z",
+                        "decided_at": "2026-08-20T00:01:00Z",
+                        "decision_reason_code": "user_rejected",
                     },
                 )
             if url.endswith(f"/conversations/{conversation_id}"):
@@ -236,6 +257,46 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                         "created_at": "2026-08-20T00:00:00Z",
                     },
                 )
+            if url.endswith(f"/conversations/{conversation_id}/memory-candidates"):
+                return Response(
+                    201,
+                    {
+                        "schema_version": "1.0",
+                        "candidate_id": memory_candidate_id,
+                        "conversation_id": conversation_id,
+                        "target_scope": "owner_global",
+                        "candidate_kind": "owner_preference",
+                        "memory_key": "report_language",
+                        "operation": "set",
+                        "requires_confirmation": False,
+                        "status": "pending",
+                        "gate_policy_version": "memory-gate-v1",
+                        "created_at": "2026-08-20T00:00:00Z",
+                        "expires_at": "2026-09-19T00:00:00Z",
+                        "decided_at": None,
+                        "decision_reason_code": None,
+                    },
+                )
+            if url.endswith(f"/memory-candidates/{memory_candidate_id}/reject"):
+                return Response(
+                    200,
+                    {
+                        "schema_version": "1.0",
+                        "candidate_id": memory_candidate_id,
+                        "conversation_id": conversation_id,
+                        "target_scope": "owner_global",
+                        "candidate_kind": "owner_preference",
+                        "memory_key": "report_language",
+                        "operation": "set",
+                        "requires_confirmation": False,
+                        "status": "rejected",
+                        "gate_policy_version": "memory-gate-v1",
+                        "created_at": "2026-08-20T00:00:00Z",
+                        "expires_at": "2026-09-19T00:00:00Z",
+                        "decided_at": "2026-08-20T00:01:00Z",
+                        "decision_reason_code": "user_rejected",
+                    },
+                )
             if url.endswith(
                 f"/conversations/{conversation_id}/reviews/recent"
             ):
@@ -318,7 +379,7 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         http=Http(),
     )
 
-    assert result.schema_version == "1.1"
+    assert result.schema_version == "1.2"
     assert result.task_status == "failed"
     assert result.link_status == "succeeded"
     assert str(result.link_task_id) == link_task_id
@@ -326,6 +387,8 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     assert str(result.conversation_id) == conversation_id
     assert str(result.message_id) == message_id
     assert result.message_sequence_no == 1
+    assert str(result.memory_candidate_id) == memory_candidate_id
+    assert result.memory_candidate_status == "rejected"
     assert str(result.conversation_review_task_id) == conversation_task_id
     assert result.conversation_review_run_id == conversation_run_id
     assert result.conversation_review_status == "failed"

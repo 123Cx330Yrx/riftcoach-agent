@@ -51,8 +51,12 @@ from app.conversations.service import (
     ConversationService,
     ConversationServiceError,
 )
+from app.memory.models import CreateMemoryCandidateCommand, MemoryCandidateView
+from app.memory.ports import MemoryCandidateServicePort
+from app.memory.service import MemoryCandidateService, MemoryCandidateServiceError
 from app.persistence.config import load_database_settings
 from app.persistence.conversation_repository import PostgresConversationRepository
+from app.persistence.memory_repository import PostgresMemoryCandidateRepository
 from app.persistence.database import build_engine, build_session_factory
 from app.persistence.player_repository import PostgresPlayerRepository
 from app.persistence.task_repository import PostgresTaskRepository
@@ -392,6 +396,51 @@ class _ConversationServiceProxy:
         )
 
 
+class _MemoryCandidateServiceProxy:
+    def __init__(self) -> None:
+        self._target: MemoryCandidateServicePort | None = None
+
+    def bind(self, target: MemoryCandidateServicePort | None) -> None:
+        self._target = target
+
+    def _service(self) -> MemoryCandidateServicePort:
+        if self._target is None:
+            raise MemoryCandidateServiceError("service_unavailable")
+        return self._target
+
+    def create(self, command: CreateMemoryCandidateCommand) -> MemoryCandidateView:
+        return self._service().create(command)
+
+    def get(self, *, owner_id: str, candidate_id: UUID) -> MemoryCandidateView:
+        return self._service().get(owner_id=owner_id, candidate_id=candidate_id)
+
+    def reject(
+        self,
+        *,
+        owner_id: str,
+        candidate_id: UUID,
+        actor_id: str,
+    ) -> MemoryCandidateView:
+        return self._service().reject(
+            owner_id=owner_id,
+            candidate_id=candidate_id,
+            actor_id=actor_id,
+        )
+
+    def accept(
+        self,
+        *,
+        owner_id: str,
+        candidate_id: UUID,
+        actor_id: str,
+    ) -> MemoryCandidateView:
+        return self._service().accept(
+            owner_id=owner_id,
+            candidate_id=candidate_id,
+            actor_id=actor_id,
+        )
+
+
 class _TaskDeletionProxy:
     def __init__(self) -> None:
         self._target: TaskDeletionPort | None = None
@@ -457,6 +506,7 @@ def create_composed_app(
     task_proxy = _TaskServiceProxy()
     player_link_proxy = _PlayerLinkServiceProxy()
     conversation_proxy = _ConversationServiceProxy()
+    memory_candidate_proxy = _MemoryCandidateServiceProxy()
     query_proxy = _RunQueryProxy()
     deletion_proxy = _TaskDeletionProxy()
     actor_proxy = _ActorProviderProxy()
@@ -476,6 +526,9 @@ def create_composed_app(
             conversation_repository = PostgresConversationRepository(
                 session_factory
             )
+            memory_candidate_repository = PostgresMemoryCandidateRepository(
+                session_factory
+            )
             task_proxy.bind(
                 ReviewTaskService(
                     repository=repository,
@@ -490,6 +543,12 @@ def create_composed_app(
             )
             conversation_proxy.bind(
                 ConversationService(repository=conversation_repository)
+            )
+            memory_candidate_proxy.bind(
+                MemoryCandidateService(
+                    repository=memory_candidate_repository,
+                    materializers={},
+                )
             )
             deletion_proxy.bind(TaskDeletionService(
                 repository=repository,
@@ -528,6 +587,7 @@ def create_composed_app(
             task_proxy.bind(None)
             player_link_proxy.bind(None)
             conversation_proxy.bind(None)
+            memory_candidate_proxy.bind(None)
             query_proxy.bind(None)
             deletion_proxy.bind(None)
         try:
@@ -536,6 +596,7 @@ def create_composed_app(
             task_proxy.bind(None)
             player_link_proxy.bind(None)
             conversation_proxy.bind(None)
+            memory_candidate_proxy.bind(None)
             query_proxy.bind(None)
             deletion_proxy.bind(None)
             actor_proxy.bind(None)
@@ -556,6 +617,7 @@ def create_composed_app(
         cors_allow_credentials=api_settings.cors_allow_credentials,
         observability=observability,
         conversation_service=conversation_proxy,
+        memory_candidate_service=memory_candidate_proxy,
     )
     app.state.database_engine = None
     return app

@@ -162,6 +162,10 @@ jobs:
             tests/test_conversation_concurrency_postgres.py \
             tests/test_conversation_review_migrations_postgres.py \
             tests/test_conversation_review_repository_postgres.py \
+            tests/test_memory_candidate_records.py \
+            tests/test_memory_candidate_migrations_postgres.py \
+            tests/test_memory_candidate_repository_postgres.py \
+            tests/test_memory_candidate_materialization_postgres.py \
             -q -s
 
       - name: Verify metadata matches the migration head

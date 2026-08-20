@@ -3,8 +3,8 @@ state_schema: 1
 main_stage: 6
 substage_group: "stage-6-session-memory"
 current_checkpoint: "6B-5-memory-candidate-write-gate"
-status: pending
-pause_reason: "waiting for explicit user authorization"
+status: in_progress
+pause_reason: null
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "waiting for explicit user authorization"
 
 ## 状态元数据
 
-- 最后更新：2026-08-20
-- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1、6B-2、RQ-067 文档门、6B-3 Conversation/Message foundation 与 6B-4 Conversation-bound Review Identity 均已完成 exact-SHA 公共闭环。6B-4 实现提交 `d63f9085f66e49557b4674d0698495dcb7335c82` 对应 Actions run `32347834279`，`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿。下一检查点 `6B-5-memory-candidate-write-gate` 仅为 prepared/waiting authorization，尚未实施
+- 最后更新：2026-08-20（RQ-069 已授权 6B-5）
+- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1、6B-2、RQ-067 文档门、6B-3 Conversation/Message foundation 与 6B-4 Conversation-bound Review Identity 均已完成 exact-SHA 公共闭环。6B-4 实现提交 `d63f9085f66e49557b4674d0698495dcb7335c82` 对应 Actions run `32347834279`，`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿。用户按 RQ-069 授权的 6B-5 已完成本地实现与门禁，当前等待同一 SHA 的公共 `pytest`、真实 PostgreSQL 和 package CI；coverage 仍 planned，不进入 6B-6
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -1413,3 +1413,27 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 下一检查点是 `6B-5-memory-candidate-write-gate`，仅 prepared/waiting authorization；尚未创建 Candidate
   migration/model/Repository/write gate，也未实现 assistant terminal、具体长期 Memory、Auth/RSO、SSE、
   前端或新框架。
+
+## 2026-08-20：RQ-069 授权 6B-5，进入设计/TDD
+
+- 用户明确“继续 6B-5”；canonical 现为 `6B-5-memory-candidate-write-gate / in_progress`，不进入 6B-6。
+- ADR-0042 选择事务内 typed materializer：Candidate 与 target 必须同事务提交；没有真实 target 时生产
+  fail closed。测试专用 target 只证明协议，不冒充具体长期 Memory。
+- Candidate identity 从服务器 Conversation 派生；模型/自然语言 confidence 再高也只能 pending；observed
+  只能提出受限 review observation。公开 DTO 不泄露 payload、完整 provenance、PUUID 或 Message body。
+- 当前已完成治理/专用设计/实施计划，产品代码尚未开始。下一动作是 pure model/gate 红灯；本批外部
+  Riot/Provider/Key I/O 固定为 0。
+
+## 2026-08-20：6B-5 本地实现完成，等待 exact-SHA 公共门
+
+- Candidate pure contract/Gate、Service/Port、0005 ORM/migration、owner-scoped Repository、reject/expire/
+  accept、restricted materializer session、薄 API/composition 与 no-I/O package smoke 已实现；不创建具体
+  Preference/Profile/Review Memory/Plan/Progress 表。
+- 新增 `docs/learning/6b-5-memory-candidate-write-gate-walkthrough.md`，覆盖八维学习/工程证据；coverage
+  仍保持 `planned`，直到同一实现 SHA 的公共三 job 全绿。
+- 本地聚焦 `50 passed, 10 skipped, 1 warning`；完整回归待本轮最终复跑。RAG、Harness dry-run、compileall、
+  SDK/secret/tracked-data、YAML、governance 与 diff 门需一并复核。
+- 10 个 skip 全因本机无 PostgreSQL/Docker；公共 `postgres-migrations` 新增 0005/FK/trigger/Repository/
+  materializer 测试，package smoke 新增 Candidate pending→reject。没有读取 Key、调用 Riot/Provider。
+- 唯一下一动作：完成完整本地门禁和 cached diff，提交/推送后等待 exact-SHA `pytest`、`postgres-migrations`、
+  `packaging-smoke`；公共全绿后再状态收尾 6B-5 并只交接 6B-6 prepared/waiting authorization。

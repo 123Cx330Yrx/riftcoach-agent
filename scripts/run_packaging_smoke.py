@@ -3,7 +3,8 @@
 The smoke covers the durable control plane against real PostgreSQL: one legacy
 Review Task deliberately reaches its safe failed terminal without external
 I/O; one Player Link uses an in-process Fake Account Resolver and reaches
-succeeded; that relationship creates a Conversation and one user Message; a
+succeeded; that relationship creates a Conversation, one user Message and one
+body-safe Memory Candidate that is rejected without a materializer; a
 schema 2.0 Conversation-bound Review Task then passes through the same Worker
 and reaches the same safe terminal.  Successful Agent/Harness execution remains
 covered by the existing offline vertical tests rather than a fake Coach here.
@@ -71,6 +72,8 @@ PackagingSmokeErrorCode: TypeAlias = Literal[
     "packaging_smoke_message_append_failed",
     "packaging_smoke_message_query_failed",
     "packaging_smoke_message_invalid",
+    "packaging_smoke_memory_candidate_create_failed",
+    "packaging_smoke_memory_candidate_reject_failed",
     "packaging_smoke_conversation_review_create_failed",
     "packaging_smoke_conversation_review_iteration_invalid",
     "packaging_smoke_conversation_review_query_failed",
@@ -103,6 +106,8 @@ _ERROR_CODES = frozenset(
         "packaging_smoke_message_append_failed",
         "packaging_smoke_message_query_failed",
         "packaging_smoke_message_invalid",
+        "packaging_smoke_memory_candidate_create_failed",
+        "packaging_smoke_memory_candidate_reject_failed",
         "packaging_smoke_conversation_review_create_failed",
         "packaging_smoke_conversation_review_iteration_invalid",
         "packaging_smoke_conversation_review_query_failed",
@@ -133,7 +138,7 @@ class PackagingSmokeSettings:
 
 @dataclass(frozen=True, slots=True)
 class PackagingSmokeResult:
-    schema_version: Literal["1.1"]
+    schema_version: Literal["1.2"]
     task_id: UUID
     run_id: str
     task_status: Literal["failed"]
@@ -143,6 +148,8 @@ class PackagingSmokeResult:
     conversation_status: Literal["active"]
     message_id: UUID
     message_sequence_no: Literal[1]
+    memory_candidate_id: UUID
+    memory_candidate_status: Literal["rejected"]
     conversation_review_task_id: UUID
     conversation_review_run_id: str
     conversation_review_status: Literal["failed"]
@@ -478,6 +485,82 @@ def execute_packaging_smoke(
             or appended_message_body.get("content_sha256") != expected_digest
         ):
             raise PackagingSmokeError("packaging_smoke_message_invalid")
+
+        try:
+            created_memory_candidate = session.post(
+                (
+                    f"{settings.base_url}/conversations/{conversation_id}"
+                    "/memory-candidates"
+                ),
+                headers={
+                    "Idempotency-Key": (
+                        f"packaging-memory-candidate-{uuid4().hex}"
+                    )
+                },
+                json={
+                    "target_scope": "owner_global",
+                    "candidate_kind": "owner_preference",
+                    "memory_key": "report_language",
+                    "operation": "set",
+                    "proposal_payload": {"value": "zh-CN"},
+                },
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_memory_candidate_create_failed"
+            ) from None
+        memory_candidate_body = _json_object(created_memory_candidate)
+        if (
+            created_memory_candidate.status_code != 201
+            or memory_candidate_body.get("conversation_id") != str(conversation_id)
+            or memory_candidate_body.get("status") != "pending"
+            or any(
+                private in memory_candidate_body
+                for private in (
+                    "proposal_payload",
+                    "proposal_confidence",
+                    "producer_id",
+                    "player_subject_id",
+                    "relationship_id",
+                    "source_message_id",
+                )
+            )
+        ):
+            raise PackagingSmokeError(
+                "packaging_smoke_memory_candidate_create_failed"
+            )
+        try:
+            memory_candidate_id = UUID(str(memory_candidate_body["candidate_id"]))
+        except (KeyError, TypeError, ValueError):
+            raise PackagingSmokeError(
+                "packaging_smoke_memory_candidate_create_failed"
+            ) from None
+
+        try:
+            rejected_memory_candidate = session.post(
+                (
+                    f"{settings.base_url}/memory-candidates/"
+                    f"{memory_candidate_id}/reject"
+                ),
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_memory_candidate_reject_failed"
+            ) from None
+        rejected_memory_candidate_body = _json_object(rejected_memory_candidate)
+        if (
+            rejected_memory_candidate.status_code != 200
+            or rejected_memory_candidate_body.get("candidate_id")
+            != str(memory_candidate_id)
+            or rejected_memory_candidate_body.get("status") != "rejected"
+            or rejected_memory_candidate_body.get("decision_reason_code")
+            != "user_rejected"
+        ):
+            raise PackagingSmokeError(
+                "packaging_smoke_memory_candidate_reject_failed"
+            )
         try:
             message_id = UUID(str(appended_message_body["message_id"]))
         except (KeyError, TypeError, ValueError):
@@ -648,7 +731,7 @@ def execute_packaging_smoke(
             )
 
         return PackagingSmokeResult(
-            schema_version="1.1",
+            schema_version="1.2",
             task_id=task_id,
             run_id=run_id,
             task_status="failed",
@@ -658,6 +741,8 @@ def execute_packaging_smoke(
             conversation_status="active",
             message_id=message_id,
             message_sequence_no=1,
+            memory_candidate_id=memory_candidate_id,
+            memory_candidate_status="rejected",
             conversation_review_task_id=conversation_review_task_id,
             conversation_review_run_id=conversation_review_run_id,
             conversation_review_status="failed",
@@ -716,6 +801,8 @@ def main(
                 "conversation_status": result.conversation_status,
                 "message_id": str(result.message_id),
                 "message_sequence_no": result.message_sequence_no,
+                "memory_candidate_id": str(result.memory_candidate_id),
+                "memory_candidate_status": result.memory_candidate_status,
                 "conversation_review_task_id": str(
                     result.conversation_review_task_id
                 ),

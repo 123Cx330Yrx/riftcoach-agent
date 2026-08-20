@@ -126,6 +126,9 @@ def test_ci_blocks_on_conversation_review_migration_and_repository_contracts() -
 
     assert "tests/test_conversation_review_migrations_postgres.py" in steps
     assert "tests/test_conversation_review_repository_postgres.py" in steps
+    assert "tests/test_memory_candidate_migrations_postgres.py" in steps
+    assert "tests/test_memory_candidate_repository_postgres.py" in steps
+    assert "tests/test_memory_candidate_materialization_postgres.py" in steps
 
 
 def test_exit_review_assets_name_evidence_and_deferred_boundaries() -> None:

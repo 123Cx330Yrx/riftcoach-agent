@@ -3068,3 +3068,28 @@
 - package smoke 中 schema 2.0 Review Task 经同一 Worker 得到 allowlisted `failed` 终态，Conversation
   仍 active，外部调用为 0。这是安全失败和安装后组合证据，不是 Agent/Provider 质量证据。
 - 6B-4 可以关闭；6B-5 只准备并等待用户授权，不能因为总设计已存在就视为已开始。
+
+## 2026-08-20：RQ-069 与 6B-5 materialization 裁决
+
+- 用户已明确授权 6B-5；起始 `HEAD == origin/main == 405e109`、工作树干净，治理预检通过。
+- 6B-5 的关键矛盾是“需要证明 exactly-once acceptance，但本批不创建具体长期 Memory 表”。万能 JSONB
+  表会破坏 typed 权限/生命周期，单独 receipt 不能证明 Memory 存在，新增 approved 中间态又会擅改已冻结
+  状态机。
+- 选择事务内 typed materializer：Repository 锁 Candidate，在同一 Session 调用已注册的本地持久化策略；
+  target 成功后才写 accepted。6B-5 用测试专用 target 证明事务，生产 registry 在 6B-6 前为空并 fail closed。
+- Candidate 必须从服务器 Conversation 派生 owner/relationship/subject/role；客户端、模型、正文无字段覆盖。
+  observed 只允许受限第三人称 review observation；confidence 不提供写权限。
+
+## 2026-08-20：6B-5 本地实现与测试证据
+
+- Pure/Gate/Service/API/package 聚焦全部通过；全量回归首次只剩旧 OpenAPI exact-path 断言，补入 4 条
+  Candidate 路由后恢复通过。
+- 0005 migration 为 Candidate 增加 Conversation/source message/source v2 task composite FK、status/CHECK、
+  owner/key 唯一、source identity unique、expiry/pending/history index 和 immutable trigger；0005 同步更新
+  现有 Conversation Message/Review Task source unique 合同。
+- Repository 采用 relationship→Conversation→Candidate 锁顺序；accept 缺少 materializer 返回
+  `target_unavailable` 且无写入；materializer 仅收到 restricted Session view；测试 target 证明 target+accepted
+  同事务、异常 rollback、并发第二请求 replay。
+- public API 只接受 user structured provenance，并固定 producer；DTO 不返回 proposal payload、confidence、
+  producer、subject/relationship/source body。package smoke 证明 Candidate pending→reject，外部 calls=0。
+- 本机无 PostgreSQL/Docker，真库测试明确 skip；不能把本地 50 passed 或测试 target 写成公共 exactly-once。
