@@ -3,10 +3,14 @@ from __future__ import annotations
 import hashlib
 from dataclasses import dataclass, field, replace
 from pathlib import Path
+from uuid import UUID
 
 import pytest
 from pydantic import ValidationError
 
+from app.agent.context import ContextBuilderV1
+from app.memory.context_models import MemoryContextBinding
+from app.players.models import RelationshipRole
 from app.harness.steps import (
     CoachDraft,
     EvaluationRequest,
@@ -211,6 +215,25 @@ class RaisingContextBuilder:
         raise ValueError("private context details")
 
 
+class RecordingMemoryContextBuilder:
+    def __init__(self) -> None:
+        self.bindings = []
+        self.delegate = ContextBuilderV1()
+
+    def build(
+        self,
+        execution,
+        *,
+        max_context_tokens=None,
+        memory_context_binding=None,
+    ):
+        self.bindings.append(memory_context_binding)
+        return self.delegate.build(
+            execution,
+            max_context_tokens=max_context_tokens,
+        )
+
+
 def _policy(
     *,
     event_budget: int = 256,
@@ -366,6 +389,31 @@ def test_product_composition_uses_verified_prompt_program_identity(
     assert trace.identity.prompt_profile_id == "recent-form-review-coach"
     assert trace.identity.prompt_profile_version == "1.0.0"
     assert trace.identity.context_contract_version == "1.0.0"
+
+
+def test_runtime_passes_private_memory_binding_only_to_context_builder(tmp_path):
+    run_id = "runtime_memory_binding"
+    context_binding = MemoryContextBinding(
+        run_id=run_id,
+        owner_id="owner-runtime",
+        conversation_id=UUID("43000000-0000-0000-0000-000000000001"),
+        relationship_id=UUID("43000000-0000-0000-0000-000000000002"),
+        player_subject_id=UUID("43000000-0000-0000-0000-000000000003"),
+        relationship_role=RelationshipRole.SELF,
+    )
+    request = _request(run_id).model_copy(
+        update={"memory_context_binding": context_binding}
+    )
+    builder = RecordingMemoryContextBuilder()
+
+    result = _runtime(
+        tmp_path,
+        RuntimeProvider(),
+        context_builder=builder,
+    ).run(request)
+
+    assert result.runtime_status is RuntimeStatus.COMPLETED
+    assert builder.bindings == [context_binding]
 
 
 def _catalog_with_fallback(enabled: bool) -> SkillCatalog:

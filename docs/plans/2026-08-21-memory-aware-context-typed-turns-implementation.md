@@ -63,7 +63,8 @@ run data plane；SQL terminal writer 重新验证 Task/final Artifact 后追加 
 
 1. Worker composition 注入真实 selector/manifest store/terminal writer；构造 no-I/O，API 不读取 Key/正文。
 2. package smoke schema 1.5 用 Fake Riot/Provider 走 Conversation message→schema 2.0 Review→Memory Context
-   manifest→terminal assistant message；外部调用仍为 0。
+   manifest；Review 故意安全失败，因此只证明合法 selector、body-free manifest 和零 terminal Assistant，
+   外部调用仍为 0。成功 terminal Assistant 与 typed Candidate 由真实 PostgreSQL writer 测试单独证明。
 3. 新增 `docs/learning/6b-8-memory-aware-context-typed-turns-walkthrough.md`，补八维 evidence；公共 CI 前
    coverage 保持 planned。
 4. 跑聚焦、相邻、完整 pytest、RAG development/holdout、Harness dry-run、compileall、SDK/Secret/tracked

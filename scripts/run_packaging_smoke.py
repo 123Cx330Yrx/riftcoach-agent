@@ -28,6 +28,9 @@ import requests
 from sqlalchemy.engine import make_url
 
 from app.api.composition import PostgresReadinessProbe
+from app.memory.context_models import MemoryContextBinding, MemoryContextRecordKind, MemoryContextSnapshot
+from app.persistence.memory_context_repository import PostgresMemoryContextRepository
+from app.players.models import RelationshipRole
 from app.persistence.config import DatabaseSettings, load_database_settings
 from app.persistence.database import build_engine, build_session_factory
 from app.persistence.player_repository import PostgresPlayerRepository
@@ -140,7 +143,7 @@ class PackagingSmokeSettings:
 
 @dataclass(frozen=True, slots=True)
 class PackagingSmokeResult:
-    schema_version: Literal["1.4"]
+    schema_version: Literal["1.5"]
     task_id: UUID
     run_id: str
     task_status: Literal["failed"]
@@ -161,6 +164,9 @@ class PackagingSmokeResult:
     conversation_review_task_id: UUID
     conversation_review_run_id: str
     conversation_review_status: Literal["failed"]
+    memory_context_record_count: Literal[3]
+    memory_context_kinds: tuple[str, ...]
+    terminal_assistant_message_count: Literal[0]
     external_riot_provider_calls: Literal[0]
 
 
@@ -428,6 +434,7 @@ def execute_packaging_smoke(
 
         try:
             relationship_id = UUID(str(terminal_link_body["relationship_id"]))
+            player_subject_id = UUID(str(terminal_link_body["player_subject_id"]))
         except (KeyError, TypeError, ValueError):
             raise PackagingSmokeError(
                 "packaging_smoke_link_terminal_invalid"
@@ -841,8 +848,47 @@ def execute_packaging_smoke(
                 "packaging_smoke_conversation_review_terminal_invalid"
             )
 
+        try:
+            context_snapshot = PostgresMemoryContextRepository(
+                session_factory
+            ).load(
+                MemoryContextBinding(
+                    run_id=conversation_review_run_id,
+                    owner_id="packaging-smoke-owner",
+                    conversation_id=conversation_id,
+                    relationship_id=relationship_id,
+                    player_subject_id=player_subject_id,
+                    relationship_role=RelationshipRole.SELF,
+                )
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_review_terminal_invalid"
+            ) from None
+        if not isinstance(context_snapshot, MemoryContextSnapshot):
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_review_terminal_invalid"
+            )
+        memory_context_kinds = tuple(
+            row.kind.value for row in context_snapshot.records
+        )
+        terminal_assistant_message_count = sum(
+            row.kind is MemoryContextRecordKind.MESSAGE
+            and json.loads(row.content).get("role") == "assistant"
+            for row in context_snapshot.records
+        )
+        if (
+            len(context_snapshot.records) != 3
+            or set(memory_context_kinds)
+            != {"message", "owner_preference", "training_plan"}
+            or terminal_assistant_message_count != 0
+        ):
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_review_terminal_invalid"
+            )
+
         return PackagingSmokeResult(
-            schema_version="1.4",
+            schema_version="1.5",
             task_id=task_id,
             run_id=run_id,
             task_status="failed",
@@ -863,6 +909,9 @@ def execute_packaging_smoke(
             conversation_review_task_id=conversation_review_task_id,
             conversation_review_run_id=conversation_review_run_id,
             conversation_review_status="failed",
+            memory_context_record_count=3,
+            memory_context_kinds=memory_context_kinds,
+            terminal_assistant_message_count=0,
             external_riot_provider_calls=0,
         )
     except PackagingSmokeError:

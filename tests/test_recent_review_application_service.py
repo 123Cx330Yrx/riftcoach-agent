@@ -4,11 +4,14 @@ import copy
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from uuid import UUID
 
 import pytest
 from requests import Response
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 
+from app.memory.context_models import MemoryContextBinding
+from app.players.models import RelationshipRole
 from app.product import (
     ConversationRecentReviewRequest,
     RecentReviewProductRequest,
@@ -112,9 +115,11 @@ class FakeRuntime:
             RuntimePublicationStatus.REJECTED: "quality_gate_rejected",
         }[publication_status]
         self._returned_run_id = returned_run_id
+        self.requests = []
 
     def run(self, request) -> RuntimeRunResult[RecentFormReviewOutput]:
         self._events.append("runtime")
+        self.requests.append(request)
         run_id = self._returned_run_id or request.run_id
         if self._runtime_status is RuntimeStatus.FAILED:
             return RuntimeRunResult[RecentFormReviewOutput](
@@ -259,12 +264,13 @@ def test_service_threads_a_trusted_sql_run_id_through_runtime_and_receipt() -> N
 def test_service_reuses_runtime_harness_after_trusted_puuid_summary() -> None:
     events: list[str] = []
     writer = RecordingReceiptWriter(events)
+    runtime = FakeRuntime(
+        events,
+        publication_status=RuntimePublicationStatus.PUBLISHED,
+    )
     service = _service(
         summary_builder=FakeSummaryBuilder(_summary(), events),
-        runtime=FakeRuntime(
-            events,
-            publication_status=RuntimePublicationStatus.PUBLISHED,
-        ),
+        runtime=runtime,
         events=events,
         receipt_writer=writer,
     )
@@ -275,10 +281,20 @@ def test_service_reuses_runtime_harness_after_trusted_puuid_summary() -> None:
         game_name="Renamed Player",
         tag_line="KR2",
         run_id="review_conversation_application",
+        memory_context_binding=MemoryContextBinding(
+            run_id="review_conversation_application",
+            owner_id="owner-application",
+            conversation_id=UUID("42000000-0000-0000-0000-000000000001"),
+            relationship_id=UUID("42000000-0000-0000-0000-000000000002"),
+            player_subject_id=UUID("42000000-0000-0000-0000-000000000003"),
+            relationship_role=RelationshipRole.SELF,
+        ),
     )
 
     assert result.run_id == "review_conversation_application"
     assert writer.results[0].run_id == result.run_id
+    assert runtime.requests[0].memory_context_binding is not None
+    assert runtime.requests[0].memory_context_binding.owner_id == "owner-application"
     assert events == ["summary_by_puuid", "report", "runtime", "receipt"]
 
 

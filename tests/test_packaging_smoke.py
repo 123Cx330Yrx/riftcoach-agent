@@ -435,6 +435,55 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         "scripts.run_packaging_smoke.PostgresPlayerRepository",
         lambda _factory: object(),
     )
+    class ContextRepository:
+        def __init__(self, _factory) -> None:
+            pass
+
+        def load(self, binding):
+            from app.memory.context_models import MemoryContextRecord, MemoryContextRecordKind, MemoryContextSnapshot
+            from app.players.models import RelationshipRole
+            from uuid import UUID
+
+            return MemoryContextSnapshot(
+                binding=binding,
+                records=(
+                    MemoryContextRecord(
+                        kind=MemoryContextRecordKind.OWNER_PREFERENCE,
+                        record_id=UUID("95000000-0000-4000-8000-000000000001"),
+                        version=1,
+                        content_sha256="a" * 64,
+                        content='{"memory_key":"report_language","payload":{"value":"zh-CN"}}',
+                        priority=650,
+                        stable_order="owner_preference:report_language:0000000001",
+                        relationship_role=None,
+                    ),
+                    MemoryContextRecord(
+                        kind=MemoryContextRecordKind.TRAINING_PLAN,
+                        record_id=UUID("95000000-0000-4000-8000-000000000002"),
+                        version=1,
+                        content_sha256="b" * 64,
+                        content='{"title":"plan"}',
+                        priority=620,
+                        stable_order="training_plan:0000000001:fixture",
+                        relationship_role=RelationshipRole.SELF,
+                    ),
+                    MemoryContextRecord(
+                        kind=MemoryContextRecordKind.MESSAGE,
+                        record_id=UUID(message_id),
+                        version=1,
+                        content_sha256="c" * 64,
+                        content='{"role":"user","content":"review"}',
+                        priority=300,
+                        stable_order="message:0000000001",
+                        relationship_role=RelationshipRole.SELF,
+                    ),
+                ),
+            )
+
+    monkeypatch.setattr(
+        "scripts.run_packaging_smoke.PostgresMemoryContextRepository",
+        ContextRepository,
+    )
     monkeypatch.setattr("scripts.run_packaging_smoke.ReviewWorker", Worker)
     monkeypatch.setattr("scripts.run_packaging_smoke.PlayerLinkWorker", LinkWorker)
 
@@ -444,7 +493,7 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         http=Http(),
     )
 
-    assert result.schema_version == "1.4"
+    assert result.schema_version == "1.5"
     assert result.task_status == "failed"
     assert result.link_status == "succeeded"
     assert str(result.link_task_id) == link_task_id
@@ -463,6 +512,13 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     assert str(result.conversation_review_task_id) == conversation_task_id
     assert result.conversation_review_run_id == conversation_run_id
     assert result.conversation_review_status == "failed"
+    assert result.memory_context_record_count == 3
+    assert set(result.memory_context_kinds) == {
+        "message",
+        "owner_preference",
+        "training_plan",
+    }
+    assert result.terminal_assistant_message_count == 0
     assert result.external_riot_provider_calls == 0
     assert events == ["engine.dispose"]
 

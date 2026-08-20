@@ -280,6 +280,13 @@ class ConversationMessageRecord(Base):
             "ix_conversation_messages_source_run_id",
             "source_run_id",
         ),
+        sa.Index(
+            "uq_conversation_messages_assistant_source_run",
+            "conversation_id",
+            "source_run_id",
+            unique=True,
+            postgresql_where=sa.text("role = 'assistant'"),
+        ),
     )
 
 

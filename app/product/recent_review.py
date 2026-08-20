@@ -12,6 +12,7 @@ from uuid import uuid4
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from app.harness.run_ids import normalize_run_id
+from app.memory.context_models import MemoryContextBinding
 from app.runtime.models import RuntimePolicySnapshot, RuntimeRunRequest
 from app.skills.catalog import SkillCatalog
 from app.skills.execution import (
@@ -183,6 +184,7 @@ class RecentReviewRuntimeRequestCompiler:
         player_summary: Mapping[str, Any],
         deterministic_report: str,
         run_id: str | None = None,
+        memory_context_binding: MemoryContextBinding | None = None,
     ) -> RuntimeRunRequest:
         """Compile after request count/queue/riot_id drove summary collection."""
 
@@ -208,6 +210,13 @@ class RecentReviewRuntimeRequestCompiler:
                 raise ProductRequestCompilationError(
                     "trusted run_id is invalid"
                 ) from exc
+        if (
+            memory_context_binding is not None
+            and memory_context_binding.run_id != normalized_run_id
+        ):
+            raise ProductRequestCompilationError(
+                "Memory Context binding run_id does not match the trusted run"
+            )
 
         binding = SkillInputArtifactBinding.from_content(
             run_id=normalized_run_id,
@@ -227,6 +236,7 @@ class RecentReviewRuntimeRequestCompiler:
         return RuntimeRunRequest(
             execution_request=execution_request,
             policy=_compile_runtime_policy(skill),
+            memory_context_binding=memory_context_binding,
         )
 
 

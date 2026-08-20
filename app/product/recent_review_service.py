@@ -21,6 +21,7 @@ from requests.exceptions import (
 )
 
 from app.harness.run_ids import normalize_run_id
+from app.memory.context_models import MemoryContextBinding
 from app.lol.report_renderer import render_deterministic_report
 from app.lol.summary_schema import SummaryValidationError, validate_summary_document
 from app.prompt_program import PromptProgramCatalogError, PromptProgramContractError
@@ -255,6 +256,7 @@ class RecentReviewApplicationService:
         game_name: str,
         tag_line: str,
         run_id: str | None = None,
+        memory_context_binding: MemoryContextBinding | None = None,
     ) -> RecentReviewApplicationResult:
         if not isinstance(request, ConversationRecentReviewRequest):
             raise TypeError("request must be a ConversationRecentReviewRequest")
@@ -269,6 +271,7 @@ class RecentReviewApplicationService:
             request,
             summary=summary,
             run_id=run_id,
+            memory_context_binding=memory_context_binding,
         )
 
     def _review_from_summary(
@@ -277,6 +280,7 @@ class RecentReviewApplicationService:
         *,
         summary: dict,
         run_id: str | None,
+        memory_context_binding: MemoryContextBinding | None = None,
     ) -> RecentReviewApplicationResult:
         self._validate_summary(summary)
         deterministic_report = self._render_report(summary)
@@ -285,6 +289,7 @@ class RecentReviewApplicationService:
             summary=summary,
             deterministic_report=deterministic_report,
             run_id=run_id,
+            memory_context_binding=memory_context_binding,
         )
         runtime_result = self._run_runtime(runtime_request)
         if runtime_result.run_id != runtime_request.run_id:
@@ -489,6 +494,7 @@ class RecentReviewApplicationService:
         summary: dict,
         deterministic_report: str,
         run_id: str | None,
+        memory_context_binding: MemoryContextBinding | None,
     ) -> RuntimeRunRequest:
         failure: RecentReviewApplicationError | None = None
         compiled: Any = None
@@ -498,6 +504,7 @@ class RecentReviewApplicationService:
                 player_summary=copy.deepcopy(summary),
                 deterministic_report=deterministic_report,
                 run_id=run_id,
+                memory_context_binding=memory_context_binding,
             )
         except (ProductRequestCompilationError, TypeError, ValueError):
             failure = RecentReviewApplicationError(

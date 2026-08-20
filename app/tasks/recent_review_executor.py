@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
-from typing import Literal, Protocol, TypeAlias
+from datetime import datetime, timezone
+from typing import Callable, Literal, Protocol, TypeAlias
 
+from app.conversations.turns import TerminalAssistantTurn
+from app.memory.context_models import MemoryContextBinding
 from app.product.recent_review import (
     ConversationRecentReviewRequest,
     RecentReviewProductRequest,
@@ -23,6 +26,7 @@ from app.tasks.models import (
     TaskStatus,
     TaskTerminal,
 )
+from app.runtime.signals import RuntimePublicationStatus
 
 from .reconciliation import TerminalEvidenceVerifier
 
@@ -79,7 +83,12 @@ class RecentReviewApplicationPort(Protocol):
         game_name: str,
         tag_line: str,
         run_id: str,
+        memory_context_binding: MemoryContextBinding | None = None,
     ) -> RecentReviewApplicationResult: ...
+
+
+class RecentReviewTaskExecutionResult(TaskTerminal):
+    terminal_turn: TerminalAssistantTurn | None = None
 
 
 class RecentReviewTaskExecutor:
@@ -90,6 +99,7 @@ class RecentReviewTaskExecutor:
         *,
         application_service: RecentReviewApplicationPort,
         evidence_verifier: TerminalEvidenceVerifier,
+        clock: Callable[[], datetime] | None = None,
     ) -> None:
         if not callable(getattr(application_service, "review", None)):
             raise TypeError("application_service must expose review()")
@@ -97,8 +107,11 @@ class RecentReviewTaskExecutor:
             raise TypeError("evidence_verifier must expose terminal_for()")
         self._application = application_service
         self._evidence = evidence_verifier
+        if clock is not None and not callable(clock):
+            raise TypeError("clock must be callable")
+        self._clock = clock or (lambda: datetime.now(timezone.utc))
 
-    def execute(self, task: ReviewTask) -> TaskTerminal:
+    def execute(self, task: ReviewTask) -> RecentReviewTaskExecutionResult:
         if not isinstance(task, ReviewTask):
             raise TypeError("task must be a ReviewTask")
         if task.status is not TaskStatus.RUNNING or task.worker_id is None:
@@ -135,7 +148,36 @@ class RecentReviewTaskExecutor:
             or terminal.trace_reference != result.trace_reference
         ):
             raise RecentReviewTaskExecutionError("terminal_identity_mismatch")
-        return terminal
+        terminal_turn = None
+        if (
+            task.schema_version == "2.0"
+            and task.conversation_binding is not None
+            and result.output.report is not None
+            and terminal.artifact_reference is not None
+        ):
+            binding = task.conversation_binding
+            terminal_turn = TerminalAssistantTurn(
+                source_task_id=task.task_id,
+                binding=MemoryContextBinding(
+                    run_id=task.run_id,
+                    owner_id=task.owner_id,
+                    conversation_id=binding.conversation_id,
+                    relationship_id=binding.relationship_id,
+                    player_subject_id=binding.player_subject_id,
+                    relationship_role=binding.relationship_role,
+                ),
+                publication_status=RuntimePublicationStatus(
+                    terminal.publication_status.value
+                ),
+                artifact_reference=terminal.artifact_reference,
+                assistant_content=result.output.report,
+                candidate_proposals=(),
+                created_at=self._clock(),
+            )
+        return RecentReviewTaskExecutionResult(
+            **terminal.model_dump(mode="python"),
+            terminal_turn=terminal_turn,
+        )
 
     def _execute_legacy(
         self,
@@ -190,12 +232,21 @@ class RecentReviewTaskExecutor:
         if not callable(review_by_puuid):
             raise RecentReviewTaskExecutionError("application_failed")
         try:
+            memory_context_binding = MemoryContextBinding(
+                run_id=task.run_id,
+                owner_id=task.owner_id,
+                conversation_id=binding.conversation_id,
+                relationship_id=binding.relationship_id,
+                player_subject_id=binding.player_subject_id,
+                relationship_role=binding.relationship_role,
+            )
             return review_by_puuid(
                 request,
                 puuid=target.puuid,
                 game_name=target.game_name,
                 tag_line=target.tag_line,
                 run_id=task.run_id,
+                memory_context_binding=memory_context_binding,
             )
         except RecentReviewApplicationError:
             raise RecentReviewTaskExecutionError("application_failed") from None
@@ -207,5 +258,6 @@ __all__ = [
     "RecentReviewApplicationPort",
     "RecentReviewTaskExecutionError",
     "RecentReviewTaskExecutionErrorCode",
+    "RecentReviewTaskExecutionResult",
     "RecentReviewTaskExecutor",
 ]

@@ -299,6 +299,7 @@ class ContextBuilderV1:
         *,
         knowledge: KnowledgeEvidence | None = None,
         max_context_tokens: int | None = None,
+        additional_data_sections: tuple[ContextSection, ...] = (),
     ) -> "ContextBundle":
         if not isinstance(execution, ValidatedSkillExecution):
             raise ContextBuildError(
@@ -313,6 +314,23 @@ class ContextBuilderV1:
         ):
             raise ContextBuildError(
                 "max_context_tokens must be a positive integer or None"
+            )
+        if not isinstance(additional_data_sections, tuple) or any(
+            not isinstance(section, ContextSection)
+            for section in additional_data_sections
+        ):
+            raise ContextBuildError(
+                "additional_data_sections must contain ContextSection values"
+            )
+        if any(
+            section.trust is not ContextTrust.DETERMINISTIC_FACTS
+            or section.instructional
+            or section.required
+            or not section.section_id.startswith("memory:")
+            for section in additional_data_sections
+        ):
+            raise ContextBuildError(
+                "additional context must be optional memory data-only sections"
             )
 
         typed_input = execution.typed_input
@@ -334,6 +352,7 @@ class ContextBuilderV1:
 
         if knowledge is not None:
             sections = _insert_knowledge_sections(sections, knowledge)
+        sections = (*sections, *additional_data_sections)
 
         manifest_ceiling = execution.skill.manifest.budgets.max_context_tokens
         effective_limit = min(

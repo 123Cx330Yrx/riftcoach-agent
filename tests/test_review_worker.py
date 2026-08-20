@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from threading import Event
 from typing import cast
+from types import SimpleNamespace
 from uuid import UUID
 
 import pytest
@@ -14,6 +15,8 @@ from app.tasks.models import (
     TaskStatus,
     TaskTerminal,
 )
+from app.tasks.recent_review_executor import RecentReviewTaskExecutionResult
+from tests.test_terminal_conversation_turns import turn as terminal_turn
 from app.product.run_receipts import RunReceiptReference
 from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
 from app.workers.polling import PollingPolicy
@@ -201,6 +204,7 @@ def worker(
     executor: FakeExecutor | None = None,
     *,
     policy: PollingPolicy | None = None,
+    terminal_turn_writer=None,
 ) -> ReviewWorker:
     return ReviewWorker(
         repository=cast(object, repository),
@@ -209,7 +213,17 @@ def worker(
         clock=lambda: NOW,
         polling_policy=policy or PollingPolicy(jitter_ratio=0.0),
         random_source=lambda: 0.5,
+        terminal_turn_writer=terminal_turn_writer,
     )
+
+
+class FakeTerminalTurnWriter:
+    def __init__(self) -> None:
+        self.turns = []
+
+    def write(self, value):
+        self.turns.append(value)
+        return SimpleNamespace(message_id=value.source_task_id)
 
 
 def test_run_once_is_idle_without_calling_executor_or_terminal_cas() -> None:
@@ -238,6 +252,47 @@ def test_run_once_executes_claimed_task_and_commits_success_with_owner() -> None
     assert executor.tasks == [task]
     assert repository.succeed_calls == [(task.task_id, "worker-1", terminal)]
     assert repository.fail_calls == []
+
+
+def test_run_once_projects_terminal_turn_only_after_successful_task_cas() -> None:
+    task = running_task(1)
+    base = successful_terminal()
+    projected = RecentReviewTaskExecutionResult(
+        **base.model_dump(mode="python"),
+        terminal_turn=terminal_turn(),
+    )
+    repository = FakeRepository([task])
+    sink = FakeTerminalTurnWriter()
+
+    result = worker(
+        repository,
+        FakeExecutor(terminal=projected),
+        terminal_turn_writer=sink,
+    ).run_once()
+
+    assert result.status is WorkerIterationStatus.SUCCEEDED
+    assert sink.turns == [projected.terminal_turn]
+
+
+def test_ownership_loss_never_projects_terminal_turn() -> None:
+    task = running_task(1)
+    base = successful_terminal()
+    projected = RecentReviewTaskExecutionResult(
+        **base.model_dump(mode="python"),
+        terminal_turn=terminal_turn(),
+    )
+    repository = FakeRepository([task])
+    repository.succeed_result = False
+    sink = FakeTerminalTurnWriter()
+
+    result = worker(
+        repository,
+        FakeExecutor(terminal=projected),
+        terminal_turn_writer=sink,
+    ).run_once()
+
+    assert result.status is WorkerIterationStatus.OWNERSHIP_LOST
+    assert sink.turns == []
 
 
 def test_executor_exception_marks_task_failed_once_without_leaking_detail() -> None:

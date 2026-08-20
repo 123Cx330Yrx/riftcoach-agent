@@ -17,13 +17,18 @@ from typing import Any, Literal, TypeAlias
 
 from pydantic import TypeAdapter, ValidationError
 
+from app.agent.context import ContextBuilderV1
+from app.agent.memory_context import MemoryAwareContextBuilder
 from app.api.composition import PostgresReadinessProbe
 from app.lol.data_dragon import DataDragonService
 from app.lol.player_summary import RiotPlayerSummaryBuilder
 from app.lol.riot_client import RiotClient
 from app.persistence.config import DatabaseSettings, load_database_settings
 from app.persistence.database import build_engine, build_session_factory
+from app.persistence.memory_context_repository import PostgresMemoryContextRepository
 from app.persistence.task_repository import PostgresTaskRepository
+from app.persistence.terminal_turn_writer import PostgresTerminalTurnWriter
+from app.memory.context_manifest_store import FileMemoryContextManifestStore
 from app.product.recent_review import RecentReviewRuntimeRequestCompiler
 from app.product.recent_review_service import RecentReviewApplicationService
 from app.product.run_receipts import FileRunReceiptStore
@@ -266,6 +271,13 @@ def build_review_worker_process(
             runs_root=settings.runs_root,
             provider=registry.resolve(),
             knowledge_provider=knowledge,
+            context_builder=MemoryAwareContextBuilder(
+                delegate=ContextBuilderV1(),
+                repository=PostgresMemoryContextRepository(session_factory),
+                manifest_store=FileMemoryContextManifestStore(
+                    settings.runs_root
+                ),
+            ),
         )
         application = RecentReviewApplicationService(
             summary_builder=summary_builder,
@@ -287,6 +299,7 @@ def build_review_worker_process(
             worker_id=normalized_worker_id,
             polling_policy=settings.polling_policy,
             observability=TaskObservability(logger_name="riftcoach.worker"),
+            terminal_turn_writer=PostgresTerminalTurnWriter(session_factory),
         )
         return ReviewWorkerProcess(worker=worker, _engine=engine)
     except WorkerCompositionError:

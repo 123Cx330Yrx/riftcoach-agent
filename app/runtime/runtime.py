@@ -395,9 +395,16 @@ class AgentRuntimeV1:
             )
 
         try:
+            context_kwargs = {
+                "max_context_tokens": request.policy.max_context_tokens,
+            }
+            if request.memory_context_binding is not None:
+                context_kwargs["memory_context_binding"] = (
+                    request.memory_context_binding
+                )
             context = self._context_builder.build(
                 execution,
-                max_context_tokens=request.policy.max_context_tokens,
+                **context_kwargs,
             )
             observe_runtime_signal(
                 observer,

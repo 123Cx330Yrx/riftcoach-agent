@@ -6,6 +6,7 @@ from uuid import UUID
 
 import pytest
 
+from app.memory.context_models import MemoryContextBinding
 from app.product.recent_review_service import RecentReviewApplicationResult
 from app.product.recent_review import (
     ConversationRecentReviewRequest,
@@ -165,6 +166,7 @@ class FakeApplication:
         self.result = result
         self.calls: list[tuple[object, str]] = []
         self.puuid_calls: list[tuple[object, str, str, str, str]] = []
+        self.memory_context_bindings: list[object] = []
 
     def review(self, request, *, run_id: str):
         self.calls.append((request, run_id))
@@ -178,10 +180,12 @@ class FakeApplication:
         game_name: str,
         tag_line: str,
         run_id: str,
+        memory_context_binding=None,
     ):
         self.puuid_calls.append(
             (request, puuid, game_name, tag_line, run_id)
         )
+        self.memory_context_bindings.append(memory_context_binding)
         return self.result
 
 
@@ -288,6 +292,8 @@ def test_executor_passes_sql_run_id_and_returns_verified_terminal():
     assert output.run_id == task.run_id
     assert app.calls[0][1] == task.run_id
     assert verifier.calls == [task]
+    assert app.memory_context_bindings == []
+    assert output.terminal_turn is None
 
 
 def test_executor_rejects_fingerprint_mismatch_before_application():
@@ -328,6 +334,19 @@ def test_executor_v2_uses_private_puuid_target_and_existing_terminal_gate():
         )
     ]
     assert verifier.calls == [task]
+    assert app.memory_context_bindings == [
+        MemoryContextBinding(
+            run_id=task.run_id,
+            owner_id=task.owner_id,
+            conversation_id=task.conversation_binding.conversation_id,
+            relationship_id=task.conversation_binding.relationship_id,
+            player_subject_id=task.conversation_binding.player_subject_id,
+            relationship_role=task.conversation_binding.relationship_role,
+        )
+    ]
+    assert output.terminal_turn is not None
+    assert output.terminal_turn.source_task_id == task.task_id
+    assert output.terminal_turn.assistant_content == "# report"
 
 
 @pytest.mark.parametrize(

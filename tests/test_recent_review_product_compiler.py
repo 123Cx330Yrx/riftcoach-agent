@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 from dataclasses import replace
+from uuid import UUID
 
 import pytest
 from pydantic import ValidationError
 
 from app.harness.run_ids import normalize_run_id
+from app.memory.context_models import MemoryContextBinding
+from app.players.models import RelationshipRole
 from app.runtime.models import RuntimePolicySnapshot, RuntimeRunRequest
 from app.skills.catalog import SkillCatalog
 from app.skills.execution import (
@@ -248,6 +251,39 @@ def test_compiler_derives_runtime_policy_from_manifest_and_fixed_v1_policy():
         max_revisions=1,
         allow_deterministic_fallback=False,
     )
+
+
+def test_compiler_preserves_trusted_memory_context_binding_and_rejects_drift():
+    context_binding = MemoryContextBinding(
+        run_id="review_product_compile",
+        owner_id="owner-compiler",
+        conversation_id=UUID("41000000-0000-0000-0000-000000000001"),
+        relationship_id=UUID("41000000-0000-0000-0000-000000000002"),
+        player_subject_id=UUID("41000000-0000-0000-0000-000000000003"),
+        relationship_role=RelationshipRole.SELF,
+    )
+    compiler = RecentReviewRuntimeRequestCompiler(
+        SkillCatalog.from_directory("skills"),
+        run_id_factory=lambda: "review_product_compile",
+    )
+
+    compiled = compiler.compile(
+        RecentReviewProductRequest(riot_id="DemoPlayer#TEST"),
+        player_summary=valid_summary(),
+        deterministic_report="# facts",
+        memory_context_binding=context_binding,
+    )
+    assert compiled.memory_context_binding == context_binding
+
+    with pytest.raises(ProductRequestCompilationError, match="run_id"):
+        compiler.compile(
+            RecentReviewProductRequest(riot_id="DemoPlayer#TEST"),
+            player_summary=valid_summary(),
+            deterministic_report="# facts",
+            memory_context_binding=context_binding.model_copy(
+                update={"run_id": "different_run"}
+            ),
+        )
 
 
 def test_compiler_builds_canonical_skill_input_binding_and_runtime_request():

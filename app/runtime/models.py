@@ -12,6 +12,7 @@ from typing import Any, Generic, Literal, TypeVar
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from app.harness.run_ids import normalize_run_id
+from app.memory.context_models import MemoryContextBinding
 from app.skills.execution import SkillExecutionRequest
 from app.skills.routing_models import RouteOutcome
 
@@ -414,6 +415,7 @@ class RuntimeEvent(RuntimeContractModel):
 class RuntimeRunRequest(RuntimeContractModel):
     execution_request: SkillExecutionRequest
     policy: RuntimePolicySnapshot
+    memory_context_binding: MemoryContextBinding | None = None
 
     @model_validator(mode="after")
     def require_selected_skill(self) -> "RuntimeRunRequest":
@@ -423,6 +425,14 @@ class RuntimeRunRequest(RuntimeContractModel):
         ):
             raise ValueError(
                 "RuntimeRunRequest requires a selected Router decision"
+            )
+        if (
+            self.memory_context_binding is not None
+            and self.memory_context_binding.run_id
+            != self.execution_request.run_id
+        ):
+            raise ValueError(
+                "memory_context_binding run_id must match execution run_id"
             )
         return self
 

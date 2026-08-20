@@ -40,6 +40,10 @@ class ReviewTaskExecutor(Protocol):
     def execute(self, task: ReviewTask) -> TaskTerminal: ...
 
 
+class TerminalTurnWriter(Protocol):
+    def write(self, turn: object) -> object: ...
+
+
 class StopSignal(Protocol):
     def is_set(self) -> bool: ...
 
@@ -85,6 +89,7 @@ class ReviewWorker:
         polling_policy: PollingPolicy | None = None,
         random_source: RandomSource | None = None,
         observability: TaskObservability | None = None,
+        terminal_turn_writer: TerminalTurnWriter | None = None,
     ) -> None:
         for method_name in ("claim_next", "succeed", "fail"):
             if not callable(getattr(repository, method_name, None)):
@@ -120,6 +125,11 @@ class ReviewWorker:
         self._polling_policy = polling_policy or PollingPolicy()
         self._random_source = random_source or random.random
         self._observability = observability
+        if terminal_turn_writer is not None and not callable(
+            getattr(terminal_turn_writer, "write", None)
+        ):
+            raise TypeError("terminal_turn_writer must expose write()")
+        self._terminal_turn_writer = terminal_turn_writer
 
     def run_once(self) -> WorkerIterationResult:
         claim_started = time.perf_counter()
@@ -201,6 +211,26 @@ class ReviewWorker:
                 "outcome": "succeeded" if accepted else "ownership_lost",
             },
         )
+        terminal_turn = getattr(terminal, "terminal_turn", None)
+        if (
+            accepted
+            and terminal_turn is not None
+            and self._terminal_turn_writer is not None
+        ):
+            try:
+                projection = self._terminal_turn_writer.write(terminal_turn)
+            except Exception:
+                self._observe(
+                    "worker.terminal_projection_failed",
+                    {"task_id": str(claimed.task_id), "run_id": claimed.run_id},
+                )
+                raise ReviewWorkerError("task_terminal_update_failed") from None
+            if getattr(projection, "message_id", None) is None:
+                self._observe(
+                    "worker.terminal_projection_failed",
+                    {"task_id": str(claimed.task_id), "run_id": claimed.run_id},
+                )
+                raise ReviewWorkerError("task_terminal_update_failed")
         return WorkerIterationResult(
             status=(
                 WorkerIterationStatus.SUCCEEDED
