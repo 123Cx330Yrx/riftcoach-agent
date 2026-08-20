@@ -30,6 +30,7 @@ from sqlalchemy.engine import make_url
 from app.api.composition import PostgresReadinessProbe
 from app.memory.context_models import MemoryContextBinding, MemoryContextRecordKind, MemoryContextSnapshot
 from app.persistence.memory_context_repository import PostgresMemoryContextRepository
+from app.persistence.memory_context_repository import MemoryContextRepositoryError
 from app.players.models import RelationshipRole
 from app.persistence.config import DatabaseSettings, load_database_settings
 from app.persistence.database import build_engine, build_session_factory
@@ -82,6 +83,9 @@ PackagingSmokeErrorCode: TypeAlias = Literal[
     "packaging_smoke_conversation_review_iteration_invalid",
     "packaging_smoke_conversation_review_query_failed",
     "packaging_smoke_conversation_review_terminal_invalid",
+    "packaging_smoke_memory_context_unavailable",
+    "packaging_smoke_memory_context_repository_unavailable",
+    "packaging_smoke_memory_context_integrity_failed",
 ]
 _ERROR_CODES = frozenset(
     {
@@ -117,6 +121,9 @@ _ERROR_CODES = frozenset(
         "packaging_smoke_conversation_review_iteration_invalid",
         "packaging_smoke_conversation_review_query_failed",
         "packaging_smoke_conversation_review_terminal_invalid",
+        "packaging_smoke_memory_context_unavailable",
+        "packaging_smoke_memory_context_repository_unavailable",
+        "packaging_smoke_memory_context_integrity_failed",
     }
 )
 _LOCAL_SMOKE_API_HOSTS = frozenset({"api", "localhost", "127.0.0.1", "::1"})
@@ -861,6 +868,17 @@ def execute_packaging_smoke(
                     relationship_role=RelationshipRole.SELF,
                 )
             )
+        except MemoryContextRepositoryError as error:
+            context_codes = {
+                "memory_context_unavailable": "packaging_smoke_memory_context_unavailable",
+                "memory_context_repository_unavailable": "packaging_smoke_memory_context_repository_unavailable",
+                "memory_context_integrity_failed": "packaging_smoke_memory_context_integrity_failed",
+            }
+            raise PackagingSmokeError(
+                context_codes.get(
+                    str(error), "packaging_smoke_conversation_review_terminal_invalid"
+                )
+            ) from None
         except Exception:
             raise PackagingSmokeError(
                 "packaging_smoke_conversation_review_terminal_invalid"
