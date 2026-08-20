@@ -117,7 +117,7 @@ def test_project_governance_requires_current_checkpoint_coverage(tmp_path):
         group["covers"] = [
             value
             for value in group["covers"]
-                    if value != "6B-7-training-plan-progress"
+            if value != "6B-8-memory-aware-context-typed-turns"
         ]
     _write_learning_coverage(tmp_path, coverage)
 

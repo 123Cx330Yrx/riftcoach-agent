@@ -1512,3 +1512,16 @@ observed `public_trend` 测试夹具错误使用被既定 Gate 禁止的 `user_s
 `142 passed, 1 warning`，Linux package smoke 完成 Candidate accepted→Preference v1 query 且
 `external_riot_provider_calls=0`。据此 6B-6/coverage 正式完成。下一检查点
 `6B-7-training-plan-progress` 仅 prepared/waiting authorization；尚无 Plan/Progress 产品代码。
+
+### 6B-7 公共闭环与 6B-8 Context/turn 架构（2026-08-21）
+
+6B-7 实现 `f6d89225ac5dbd568b6fad7c3c09b7c497c50762` 已由 Actions `32397290175` 的
+`pytest`、`postgres-migrations`、`packaging-smoke` exact-SHA 三 job 全绿验证，coverage 置 complete。
+RQ-071 因而自动授权进入 `6B-8-memory-aware-context-typed-turns`，仍不允许越级到 6B-9。
+
+ADR-0045 决定：Conversation-bound schema 2.0 Task 的服务器 binding 是 Context 唯一身份；采用
+run-scoped `MemoryAwareContextBuilder` 装饰现有 Builder，而不是原地把 DB 语义塞入 Builder 或在 Runtime
+外拼 Prompt。合法 Message/Memory 全部是 data-only whole sections，同一 Skill ceiling 不可提高；私有
+manifest 只保存 body-free ID/version/digest/count/omission。Assistant 只有在 SQL Task succeeded、
+publication published/degraded 与 final Artifact digest 精确匹配后才能追加。当前 output 没有 typed
+proposal，不能从报告自然语言猜 Candidate；只建立显式 proposal seam 并继续经过 Candidate gate。

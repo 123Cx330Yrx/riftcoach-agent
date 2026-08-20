@@ -3263,3 +3263,22 @@
   Secret/run-data、YAML、governance 与 diff 门通过。coverage 八维路径已齐但保持 planned。
 - 唯一下一动作：最终 diff/cached review，独立提交/推送并等待 exact-SHA 三 job；全绿后才关闭 6B-7
   并按 RQ-071 进入 6B-8。
+
+## 2026-08-21：6B-7 公共闭环并启动 6B-8 设计批
+
+- `f6d89225ac5dbd568b6fad7c3c09b7c497c50762` / Actions `32397290175` 已核验 exact-SHA；三 job
+  completed/success。公共 pytest `1445 passed, 106 skipped, 1 warning, 110 subtests passed`，真库
+  `151 passed, 1 warning`，`alembic check` 无新 upgrade，Linux package schema 1.4/外部调用 0。
+- 6B-7 coverage 置 complete；canonical 按 RQ-071 切到 `6B-8-memory-aware-context-typed-turns / in_progress`。
+- 完成 ContextBuilder/Runtime/Application/Task/Conversation/typed Memory 接缝审计与三方案比较；采用
+  run-scoped decorator、server-derived binding、legal snapshot、body-free manifest 与 terminal writer。
+- 新增 ADR-0045、专用 design/implementation plan；当前没有 6B-8 产品代码。下一动作是设计批本地门禁、
+  独立提交/推送和 exact-SHA 三 job，全绿后开始 pure contract 红灯。
+
+## 2026-08-21：6B-8 设计批本地门禁完成
+
+- 完整 pytest `1445 passed, 106 skipped, 1 warning, 110 subtests passed`；本机真库/Docker skip 如实保留。
+- 两套 RAG 满冻结阈值，Harness dry-run published/0 revisions；compileall、governance、SDK boundary、
+  tracked Secret/run-data、YAML、pip 与 diff check 全绿。
+- 设计批当前为 `pass-local-pending-public-ci`；下一动作是 cached diff/独立提交/推送并等待 exact-SHA 三 job，
+  不提前写 6B-8 产品代码。

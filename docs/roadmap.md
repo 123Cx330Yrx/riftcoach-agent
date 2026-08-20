@@ -21,7 +21,7 @@
 | 3 | Provider 与 Tool Runtime | 外部模型和工具如何统一、可靠地调用 | EchoMind 迁移重构 | 已完成，进入维护 |
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
-| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1 至 6B-6 与 RQ-067 前置门已完成 exact-SHA 公共闭环；RQ-071 已授权顺序推进，当前 6B-7 Training Plan/Progress 设计/TDD 进行中 |
+| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1 至 6B-7 与 RQ-067 前置门已完成 exact-SHA 公共闭环；RQ-071 已授权顺序推进，当前 6B-8 Memory-aware Context/typed turns 设计/TDD 进行中 |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 未开始 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
@@ -227,7 +227,8 @@ RAG 保存外部知识；Memory 保存玩家相关且可更新的长期状态；
   Actions `32347834279` 完成 exact-SHA PostgreSQL/Linux package 公共闭环；RQ-069 的 6B-5 Candidate gate
   与事务内 typed materializer 接缝又由 `dd7c9c8` / Actions `32376405150` 完成真库/Linux 公共闭环；
   6B-6 typed target 又由 `5531c81` / Actions `32387026797` 完成 pytest、真实 PostgreSQL 和 Linux
-  package 公共闭环；当前只准备 6B-7 Training Plan/Progress；这不等于完整长期 Memory、正式 Auth 或公网部署已完成；
+  package 公共闭环；6B-7 Training Plan/Progress 又由 `f6d8922` / Actions `32397290175` 完成真库/Linux
+  package 公共闭环；当前进入 6B-8 Memory-aware Context/typed turns；这不等于正式 Auth、生命周期或公网部署已完成；
 - FastAPI 对话和复盘入口；
 - `user_id`、`conversation_id` 和权限边界；
 - 外服 Riot 账号关系：官方 routing 没有中国大陆 CN；公开查询只形成以 PUUID 为稳定身份的
@@ -396,6 +397,20 @@ append 的单 active 最新版本语义、事务内真实 materializer、owner-s
 完整回归为 `1402 passed, 100 skipped, 1 warning, 110 subtests passed`。首个 `da87cde` / Actions
 `32386630063` 保留 provenance 夹具失败；不放宽生产 Gate 的最小修复 `5531c81` / Actions
 `32387026797` 已让 pytest、真实 PostgreSQL migration/concurrency 和 Linux package accept→query 三 job
-全绿，真库为 `142 passed, 1 warning`。6B-6 已关闭，6B-7 只准备并等待授权。Training Plan/Progress、
-Memory-aware Context、assistant terminal、
+全绿，真库为 `142 passed, 1 warning`。6B-6 已关闭；6B-7 后续由 `f6d8922` / Actions `32397290175`
+完成 Training Plan/Progress 公共闭环。Memory-aware Context、assistant terminal、
 Auth/RSO、SSE、前端、Redis/Chroma/向量库、LangGraph、Multi-Agent、新 SDK 与真实 Riot/Provider 调用不在本批。
+
+### 6B-7 Training Plan / Progress（RQ-071，已公共闭环）
+
+self-only Candidate-backed Plan、每 relationship 一个 active、0007、final-Artifact Progress、追加式纠错和
+确定性非因果趋势已由 `f6d89225ac5dbd568b6fad7c3c09b7c497c50762` / Actions `32397290175` 的
+pytest、真实 PostgreSQL 与 Linux package 三 job 全绿验证。公共 pytest `1445 passed, 106 skipped`，
+真库 `151 passed`，package schema 1.4 且外部调用为 0。当前按 RQ-071 进入 6B-8；6B-9 尚未进入。
+
+### 6B-8 Memory-aware Context / Typed Turns（RQ-071，设计中）
+
+ADR-0045 与专用设计/实施计划选择 run-scoped decorator：服务器 Task binding 驱动 owner-scoped selector，
+合法 Message/Memory 只作为 data-only whole sections 进入既有 ContextBuilder/Runtime/Harness，同一 ceiling
+不可抬高；私有 manifest 只保存 ID/version/digest/count/reason。Assistant 只在 succeeded Task、published/
+degraded publication 与 final Artifact digest 全部匹配后持久化。当前尚无 6B-8 产品代码或 migration。

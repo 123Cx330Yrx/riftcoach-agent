@@ -13,8 +13,9 @@ Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `32376405150`. Phase 22 - `6B-6-preferences-profile-review-memory` is complete at
 `5531c81` / Actions `32387026797`. RQ-071 authorizes the strict sequential chain
 `6B-7 → 6B-8 → 6B-9` without per-step approval. Phase 23 -
-`6B-7-training-plan-progress` is in progress at its design/TDD gate; no 6B-8/6B-9
-work may begin before 6B-7 exact-SHA public closure.
+`6B-7-training-plan-progress` is complete at `f6d8922` / Actions `32397290175`.
+Phase 24 - `6B-8-memory-aware-context-typed-turns` is in progress at its
+design/TDD gate; no 6B-9 work may begin before 6B-8 exact-SHA public closure.
 
 ## Phases
 
@@ -262,8 +263,9 @@ work may begin before 6B-7 exact-SHA public closure.
 
 `6B-6-preferences-profile-review-memory` 已由实现/最小测试修复 `5531c81` 与 Actions
 `32387026797` 完成 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环，
-coverage 已 complete。RQ-071 已授权连续完成 `6B-7→6B-8→6B-9`；当前唯一动作是
-`6B-7-training-plan-progress` 的专用设计公开验证，随后按 TDD 实现。6B-7 正式闭环前不得进入 6B-8。
+coverage 已 complete。6B-7 又由 `f6d8922` / Actions `32397290175` 完成 exact-SHA 三 job 公共闭环。
+RQ-071 已授权连续完成 `6B-7→6B-8→6B-9`；当前唯一动作是
+`6B-8-memory-aware-context-typed-turns` 的专用设计公开验证，随后按 TDD 实现。6B-8 正式闭环前不得进入 6B-9。
 
 ## 6A-1 Checklist
 
@@ -512,7 +514,7 @@ coverage 已 complete。RQ-071 已授权连续完成 `6B-7→6B-8→6B-9`；当�
 
 ### Phase 23 - 6B-7-training-plan-progress handoff
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-071；当前处于教学/ADR/design/implementation plan 冻结和设计批验证。
 - Prepared outcome: user-confirmed self-only Training Plan、每个 relationship 一个 active Plan、
   Artifact-grounded allowlisted Progress 与不做因果/心理推断的确定性趋势比较。
@@ -525,8 +527,21 @@ coverage 已 complete。RQ-071 已授权连续完成 `6B-7→6B-8→6B-9`；当�
 - [completed] Task 4：同事务 Plan lifecycle、Artifact gate、Progress correction 与 PostgreSQL 测试合同。
 - [completed] Task 5：owner-scoped query、确定性趋势、两个 GET 与 production lifespan composition。
 - [completed] Task 6：Linux smoke 增加 Candidate→active Plan query，八维 walkthrough/coverage 路径和本地门禁。
-- [in_progress] 独立提交/推送实现并等待 exact-SHA 三 job；全绿前 coverage 保持 planned，不进入 6B-8。
-- [deferred] 6B-7 公共闭环前不进入 6B-8/6B-9。
+- [completed] 实现提交 `f6d8922` / Actions `32397290175` 的 exact-SHA 三 job 全绿；coverage complete。
+
+### Phase 24 - 6B-8-memory-aware-context-typed-turns
+
+- Status: in_progress
+- Authorization: RQ-071；6B-7 exact-SHA 公共闭环后自动进入，不需要逐项批准。
+- Prepared outcome: bounded legal Message/Memory selector、private body-free manifest、existing ContextBuilder/
+  Runtime/Harness data-only composition，以及只在可信终态后持久化的 typed Assistant turn/Candidate seam。
+- [completed] 初学者教学与 ContextBuilder/Runtime/Application/Task/Conversation/Memory 接缝审计。
+- [completed] 比较原地扩展 Builder、run-scoped decorator、在 Runtime 外拼 Prompt 三方案；选择 decorator。
+- [completed] 冻结 ADR-0045、专用设计和原子 TDD 实施计划；产品代码尚未开始。
+- [completed] 设计批本地门禁：完整 1445 passed/106 skipped、两套 RAG、Harness dry-run、compileall、
+  governance、SDK/Secret/YAML/pip/diff 全绿。
+- [in_progress] 独立提交/推送设计批并等待 exact-SHA 三 job；全绿后从 Task 1 pure contracts 红灯开始。
+- [deferred] 6B-8 公共闭环前不进入 6B-9 lifecycle/export。
 
 ## 6A Entry Design Checklist
 

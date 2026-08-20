@@ -2382,3 +2382,16 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   110 subtests passed`，两套 RAG/Harness/compile/security/governance/diff 全绿。
 - `BOUNDARY`：106 skip 仍表示本机无 PostgreSQL/Docker；公共三 job 全绿前 6B-7/coverage 不关闭，
   不进入 6B-8。
+
+### 2026-08-21：6B-7 exact-SHA 公共闭环与 6B-8 设计冻结
+
+- `PUBLIC-CI`：`f6d89225ac5dbd568b6fad7c3c09b7c497c50762` / Actions `32397290175` 的
+  pytest、PostgreSQL migration/control-plane 与 Linux package 三 job 全绿；公共 pytest 1445 passed，
+  真库 151 passed，package schema 1.4 且外部调用 0。
+- `CLOSED`：6B-7 与八维 coverage 正式关闭；Plan/Progress 的 public exact-SHA 证据不外推为 Context 或
+  lifecycle 已完成。
+- `DESIGN`：RQ-071 自动交接 6B-8。ADR-0045 选择 run-scoped Context decorator、owner-scoped legal
+  selector、body-free manifest 与 terminal-only Assistant writer；不修改 Prompt Program output schema，
+  不从 report 文本猜 Candidate。
+- `BOUNDARY`：当前只有 6B-8 ADR/design/implementation plan，没有产品 migration/selector/Runtime/turn
+  writer；设计批 exact-SHA 公共闭环前不写实现，6B-8 正式闭环前不进入 6B-9。

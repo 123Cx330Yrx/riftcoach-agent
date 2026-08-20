@@ -70,7 +70,8 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | 6B-4：Conversation-bound Review Identity | 完整/公共闭环 | [6B-4 walkthrough](6b-4-conversation-bound-recent-review-identity-walkthrough.md) / [专用设计](../plans/2026-08-20-conversation-bound-recent-review-design.md) / [ADR-0041](../adr/0041-conversation-bound-review-task-identity.md) | schema 2.0 Task 原子绑定服务器 Conversation tuple，并通过可信 PUUID 复用既有 Runtime/Harness；实现 SHA `d63f908` / Actions `32347834279` 已完成真库锁/FK/trigger 与 Linux package 三 job 公共闭环 |
 | 6B-5：Memory Candidate & Write Gate | 完整/公共闭环 | [walkthrough](6b-5-memory-candidate-write-gate-walkthrough.md) / [专用设计](../plans/2026-08-20-memory-candidate-write-gate-design.md) / [ADR-0042](../adr/0042-use-transactional-typed-materializer-for-memory-candidates.md) | Candidate gate、0005/Repository/API 与事务内 typed materializer 接缝已由 `dd7c9c8` / Actions `32376405150` 完成真库/Linux 三 job 公共闭环；6B-6 已在其上注册真实 target |
 | 6B-6：Preferences / Profile / Review Memory | 完整/公共闭环 | [walkthrough](6b-6-preferences-profile-review-memory-walkthrough.md) / [ADR-0043](../adr/0043-adopt-typed-preference-profile-review-memory-targets.md) / [6B-6 设计](../plans/2026-08-20-memory-types-design.md) | 三类 typed target、版本冲突、self/observed 权限、真实 materializer 与 owner-scoped 查询已由 `5531c81` / Actions `32387026797` 完成 pytest、真实 PostgreSQL 和 Linux package 三 job 公共闭环 |
-| 6B-7：Training Plan / Progress | 本地实现/等待公共闭环 | [walkthrough](6b-7-training-plan-progress-walkthrough.md) / [专用设计](../plans/2026-08-21-training-plan-progress-design.md) / [ADR-0044](../adr/0044-adopt-candidate-backed-training-plan-progress-events.md) | self-only Plan、单 active、0007、final-Artifact Progress、追加式纠错、确定性趋势与两个 GET 已本地实现；真库/Linux exact-SHA 全绿前仍不标完整 |
+| 6B-7：Training Plan / Progress | 完整/公共闭环 | [walkthrough](6b-7-training-plan-progress-walkthrough.md) / [专用设计](../plans/2026-08-21-training-plan-progress-design.md) / [ADR-0044](../adr/0044-adopt-candidate-backed-training-plan-progress-events.md) | self-only Plan、单 active、0007、final-Artifact Progress、追加式纠错与确定性趋势已由 `f6d8922` / Actions `32397290175` 完成真库/Linux 三 job 公共闭环 |
+| 6B-8：Memory-aware Context / Typed Turns | 设计中 | [专用设计](../plans/2026-08-21-memory-aware-context-typed-turns-design.md) / [ADR-0045](../adr/0045-adopt-run-scoped-memory-context-and-terminal-turn-writer.md) | bounded legal selector、body-free manifest、同 ceiling data-only Context 与 terminal-only Assistant/Candidate 写入边界；当前尚无产品实现 |
 
 “完整”表示仓库中已经具备八类持久证据，并不表示项目已生产就绪，也不表示项目所有者已经学会。
 个人理解进度需要通过实际复述、读码、运行和问答单独确认。
@@ -132,7 +133,7 @@ canonical 推进到 6B-4。这能防止“代码写完就一路往后走，教�
 - 不代表当前有正式公网 Auth、RSO 账号验证、HTTPS、SSE、前端或生产级运维；
 - 不代表 RAG 开发集满分等于未知问题上的泛化满分；
 - 不代表 GLM、DeepSeek 或其他 Provider 已通过全部领域质量准入；
-- 6B-6 typed Memory 已完成公共 PostgreSQL/package 闭环；Training Plan/Progress、Memory-aware Context、
-  assistant terminal 与 lifecycle 仍未实现。
+- 6B-7 Training Plan/Progress 已完成公共 PostgreSQL/package 闭环；Memory-aware Context、assistant terminal
+  与 lifecycle/export 仍未实现。
 
 这些边界既是工程事实，也是项目在面试中保持可信度的重要部分。

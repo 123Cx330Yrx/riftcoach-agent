@@ -3178,6 +3178,19 @@
   deterministic-run-fact；6B-6 registry/writer 提供同 Session materializer 模式，无需新框架。
 - 现有 Candidate source 检查只证明 task/run/Conversation identity，尚未证明 task succeeded、publication、
   report availability 与 final Artifact digest；6B-7 writer 必须在同一事务补上完整 Artifact gate。
+
+## 2026-08-21：6B-8 Context 与 terminal turn 接缝裁决
+
+- `ContextBuilderV1.build()` 只有 execution/knowledge/ceiling；Runtime request 也没有 Conversation identity。
+  直接在 Runtime 外拼 ChatMessage 会绕过 canonical rendering、trust label 和预算，因此不可采用。
+- `app/runtime/composition.py` 已允许注入 context builder，最小路线是 server-derived optional binding +
+  run-scoped decorator；legacy request 保持 null/default Builder parity，不需要第二套 Runtime。
+- Conversation schema 已允许 assistant 并强制 `source_run_id`，但公开 Repository/Service 只写 user；需增加
+  internal terminal writer，并以 Task succeeded/publication/report/final Artifact/binding 重新验证后才写。
+- `RecentFormReviewOutput` 当前没有 typed Memory proposal。为避免 Prompt Program identity 漂移和自然语言
+  猜测，生产 6B-8 只持久化 terminal assistant；Candidate seam 只接受显式 typed proposal，默认空。
+- Context manifest 适合作为 run data-plane body-free JSON：记录 ID/version/digest/count/omission，不保存正文；
+  selector PostgreSQL 短事务在 Provider 前结束，manifest 写失败应在 Context 阶段 fail closed。
 - pending Candidate 作为 Plan draft，可避免新增绕过 Candidate 的 draft CRUD；accepted Plan 才物化为 active。
 - Progress 必须保留多次正常测量；只有纠错事件 supersede 指定旧 event，不能把“只保留最新 active key”的
   6B-6 Review Memory 版本模型错误套到时间序列。

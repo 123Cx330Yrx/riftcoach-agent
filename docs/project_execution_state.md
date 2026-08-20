@@ -2,7 +2,7 @@
 state_schema: 1
 main_stage: 6
 substage_group: "stage-6-session-memory"
-current_checkpoint: "6B-7-training-plan-progress"
+current_checkpoint: "6B-8-memory-aware-context-typed-turns"
 status: in_progress
 pause_reason: ""
 ---
@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-21（RQ-071 已授权连续完成 6B-7→6B-8→6B-9；当前只进入 6B-7 设计/TDD）
-- 主阶段：阶段 6；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-6 均已完成 exact-SHA 公共闭环。6B-6 最小修复 `5531c81ec7117f5c454d320e406153086baae3ea` 已由 Actions `32387026797` 三 job 全绿验证。RQ-071 已授权严格按 `6B-7→6B-8→6B-9` 连续推进；当前唯一检查点为 `6B-7-training-plan-progress / in_progress`，只完成教学、接缝复核与 ADR/design/implementation 冻结，产品代码尚未开始
+- 最后更新：2026-08-21（6B-7 已由 `f6d8922` / Actions `32397290175` 完成 exact-SHA 公共闭环；RQ-071 自动交接 6B-8）
+- 主阶段：阶段 6；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-7 均已完成 exact-SHA 公共闭环。6B-7 实现 `f6d89225ac5dbd568b6fad7c3c09b7c497c50762` 已由 Actions `32397290175` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿验证。当前唯一检查点为 `6B-8-memory-aware-context-typed-turns / in_progress`，只进入教学、接缝复核与 ADR/design/implementation 冻结，6B-8 产品代码尚未开始
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,8 +250,8 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6B-7-training-plan-progress` 仅 prepared/waiting authorization；等待用户下一次明确
-  “继续”后，才进入初学者教学、接缝复核、专用设计与 TDD，不提前创建产品代码。
+- 唯一下一步：`6B-8-memory-aware-context-typed-turns` 已按 RQ-071 进入设计/TDD；先完成专用设计批的
+  本地门禁、独立提交和 exact-SHA 公共 CI，再写 selector/context/terminal-turn 产品代码，不进入 6B-9。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1550,3 +1550,29 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   dry-run、compileall、SDK/Secret/tracked-data、YAML、governance 与 diff 门通过。
 - 唯一下一动作：独立提交/推送 6B-7 实现并等待 exact-SHA `pytest`、`postgres-migrations`、
   `packaging-smoke`；全绿后才将 coverage 置 complete 并进入 6B-8。
+
+## 2026-08-21：6B-7 exact-SHA 公共闭环并进入 6B-8 设计门
+
+- 6B-7 实现提交 `f6d89225ac5dbd568b6fad7c3c09b7c497c50762` 已推送；Actions run
+  `32397290175` 精确对应该 SHA，`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均
+  completed/success。公共 pytest 为 `1445 passed, 106 skipped, 1 warning, 110 subtests passed`；真实
+  PostgreSQL 为 `151 passed, 1 warning`，0007 可逆且 `alembic check` 无新操作；Linux package schema
+  1.4 完成 Candidate→active Plan query，`external_riot_provider_calls=0`。
+- 6B-7 coverage 已置 complete。RQ-071 允许自动进入
+  `6B-8-memory-aware-context-typed-turns / in_progress`，但不合并 checkpoint，也不进入 6B-9。
+- 6B-8 接缝审计比较三种方案后，选择 run-scoped Memory-aware Context decorator：服务器派生 binding，
+  PostgreSQL selector 只返回 legal active records，既有 ContextBuilder/ceiling 负责整记录预算，私有 manifest
+  只保存 body-free identity/digest；terminal turn writer 只在 Task/Artifact/publication 全部验证后追加 Assistant。
+- 当前只冻结 ADR-0045、专用设计和实施计划；没有 6B-8 migration/selector/context/turn-writer 产品代码。
+  唯一下一动作是设计批本地门禁、独立提交/推送与 exact-SHA 三 job；全绿后从 pure contracts 红灯开始。
+
+## 2026-08-21：6B-8 设计批本地门禁完成，等待公共验证
+
+- 完整本地 pytest 为 `1445 passed, 106 skipped, 1 warning, 110 subtests passed`；106 skip 仍全部来自本机
+  无 PostgreSQL/Docker，本设计没有新增真库成功声明。
+- RAG development/independent holdout 的 Recall/MRR/nDCG 均为 1.0、FPR 0.0，holdout abstention/citation
+  均为 1.0；Harness dry-run `published`/0 revisions；compileall、SDK boundary、tracked Secret/run-data、
+  YAML、pip、governance 与 diff 门通过。
+- 当前裁决 `pass-local-pending-public-ci`。这只证明 ADR/design/plan 与既有基线兼容，不证明 selector、
+  manifest、Runtime binding 或 terminal Assistant 已实现。唯一下一动作是独立提交/推送设计批并等待
+  exact-SHA 三 job；全绿后当前 checkpoint 保持 6B-8，内部进入 Task 1 pure contract 红灯。
