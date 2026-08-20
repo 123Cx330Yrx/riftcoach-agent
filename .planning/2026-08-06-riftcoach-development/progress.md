@@ -3133,3 +3133,16 @@
 - walkthrough 八维材料已加入，coverage 继续 planned；RAG、Harness、compileall、secret/SDK/YAML/governance/
   diff 仍需最终完整复跑。
 - 唯一下一动作保持为完整本地门禁→cached diff→提交/推送→exact-SHA 三 job；全绿前不关闭 6B-5、不进入 6B-6。
+
+## 2026-08-20：6B-5 提交、公共修复与状态收尾
+
+- 实现提交 `7156cb52e1ab2a976828b5a0a164c163943b56f3` 已推送；本地完整回归为
+  `1358 passed, 88 skipped, 1 warning, 110 subtests passed`，两套 RAG、Harness、compileall、治理、
+  SDK/secret/YAML/diff 门通过。
+- Actions `32372854457` 的 pytest/package 成功，PostgreSQL 只因测试 target 未在 downgrade 前删除而
+  teardown 失败；最小测试清理提交 `dd7c9c8f43bac19756272aaf9555f0519e22341c` 已推送。
+- Actions `32376405150` 对修复 SHA 的三 job 全绿：公开 pytest `1358 passed, 88 skipped, 1 warning,
+  110 subtests passed`；真实 PostgreSQL `126 passed, 1 warning`；package Candidate 为 rejected，
+  `external_riot_provider_calls=0`。
+- coverage 现置为 complete；canonical/active plan 只交接 `6B-6-preferences-profile-review-memory`
+  prepared/waiting authorization。本轮不实施 6B-6。

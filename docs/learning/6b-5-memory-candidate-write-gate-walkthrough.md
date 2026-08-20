@@ -164,3 +164,15 @@ python -m alembic upgrade head
 > Review Memory 表实现前 fail closed；那些业务表属于后续 6B-6/6B-7。
 
 不要说“已经有完整长期记忆”或“receipt 就是 Memory”。
+
+## 10. exact-SHA 公共闭环
+
+实现提交 `7156cb5` 的首个公共 run 暴露了一个测试生命周期缺口：测试专用 target 表仍引用 Candidate 表，
+fixture 却先执行 migration downgrade。生产断言已经通过，失败发生在 teardown。最小修复 `dd7c9c8` 让
+fixture 先删除测试表，再回滚 migration；没有使用 `CASCADE` 掩盖依赖，也没有放宽生产 FK。
+
+Actions run `32376405150` 对修复 SHA 的三项结果为：完整 pytest
+`1358 passed, 88 skipped, 1 warning, 110 subtests passed`；真实 PostgreSQL
+`126 passed, 1 warning`；Linux package smoke 的 Candidate 为 `rejected` 且
+`external_riot_provider_calls=0`。因此 6B-5 的八维证据可以关闭，但结论仍严格止于 Candidate write gate；
+Preference/Profile/Review Memory 属于等待授权的 6B-6。

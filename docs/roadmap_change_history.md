@@ -2280,3 +2280,17 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `BOUNDARY`：本批实现 Candidate/gate/migration/Repository/API/真库与 package 证据；不创建具体长期
   Memory、assistant terminal、Context、Auth/RSO、SSE、前端、LangGraph、Multi-Agent 或新 SDK，不调用
   Riot/Provider，不读取 Key。
+
+### 2026-08-20：6B-5 首次公共 teardown 失败与最小修复
+
+- `FAILED-EVIDENCE`：实现 `7156cb5` / Actions `32372854457` 的 `pytest` 与 `packaging-smoke` 成功；
+  PostgreSQL 三个 materializer 测试的业务断言完成后，测试专用 `test_memory_targets` 仍引用
+  `memory_candidates`，导致 fixture 的 Alembic downgrade 在 teardown 失败。
+- `FIX`：`dd7c9c8` 只在共享真库 fixture 中先 `DROP TABLE IF EXISTS test_memory_targets`，再 dispose/downgrade；
+  没有修改生产 migration、使用 `CASCADE`、放宽 FK 或改变 Candidate/materializer 语义。
+- `PUBLIC-CI`：Actions `32376405150` 精确对应修复 SHA，三个 job 均 completed/success；普通回归
+  `1358 passed, 88 skipped, 1 warning, 110 subtests passed`，真实 PostgreSQL `126 passed, 1 warning`，
+  metadata head 无漂移，Linux package Candidate rejected 且外部调用为 0。
+- `CLOSED`：6B-5 与八维 coverage 正式完成；测试 target 仍不是生产 Memory。
+- `HANDOFF`：唯一下一检查点为 `6B-6-preferences-profile-review-memory`，仅 prepared/waiting authorization；
+  不自动实施具体长期 Memory 或任何更后能力。

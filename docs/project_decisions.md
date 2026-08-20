@@ -1445,3 +1445,16 @@ typed materializer 后，ADR-0042 选择最后一种：Candidate 只能从服务
 6B-5 会用测试专用 typed target 证明事务提交、回滚、并发和重放，但不会把该测试表或 Candidate target
 reference 称为长期 Memory。Preference/Profile/Review Memory/Plan/Progress、assistant terminal、Memory
 Context、正式 Auth/RSO、SSE、前端和新框架仍在本批之外。
+
+### 6B-5 exact-SHA 公共闭环与 6B-6 停止点（2026-08-20）
+
+实现 `7156cb5` 的首次公共 run 正确暴露测试临时表 teardown 顺序缺口；生产 Candidate、migration、FK 与
+materializer 合同未失败，也未被放宽。最小测试清理 `dd7c9c8` 先删除 `test_memory_targets`，再执行
+Alembic downgrade。Actions run `32376405150` 的 `pytest`、`postgres-migrations`、`packaging-smoke`
+三 job 全绿：普通回归 `1358 passed, 88 skipped, 1 warning, 110 subtests passed`，真实 PostgreSQL
+`126 passed, 1 warning`，package Candidate 为 `rejected` 且外部调用为 0。
+
+因此 6B-5 与八维 coverage 正式关闭。该结论只覆盖 Candidate control plane、deterministic gate、0005、
+owner-scoped Repository/API 和事务内 typed materializer seam；生产 registry 在 6B-6 注册真实 target 前
+继续 fail closed。下一检查点 `6B-6-preferences-profile-review-memory` 只 prepared/waiting authorization，
+本轮不创建具体长期 Memory 表或进入 assistant terminal/Context/Auth/SSE/前端/新框架。

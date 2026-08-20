@@ -21,7 +21,7 @@
 | 3 | Provider 与 Tool Runtime | 外部模型和工具如何统一、可靠地调用 | EchoMind 迁移重构 | 已完成，进入维护 |
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
-| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1 至 6B-4 与 RQ-067 前置门已完成 exact-SHA 公共闭环；RQ-069 已授权 6B-5 Memory Candidate & Write Gate 并进入专用设计/TDD，具体长期 Memory 仍未实现 |
+| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1 至 6B-5 与 RQ-067 前置门已完成 exact-SHA 公共闭环；6B-6 Preferences/Profile/Review Memory 等待授权，具体长期 Memory 仍未实现 |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 未开始 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
@@ -224,8 +224,9 @@ RAG 保存外部知识；Memory 保存玩家相关且可更新的长期状态；
   RQ-067 已完成历史教学/工程证据补齐、治理、提交与 exact-SHA 公共闭环；Conversation/Message
   foundation 又由 `7e4f233` / Actions `32329686381` 完成真实 PostgreSQL concurrency/trigger 与 Linux
   package 公共闭环；RQ-068 授权的 6B-4 Conversation-bound Review Identity 已由 `d63f908` /
-  Actions `32347834279` 完成 exact-SHA PostgreSQL/Linux package 公共闭环；RQ-069 已授权 6B-5，当前只实现
-  Candidate gate 与事务内 typed materializer 接缝，6B-6 具体长期 Memory 未进入；
+  Actions `32347834279` 完成 exact-SHA PostgreSQL/Linux package 公共闭环；RQ-069 的 6B-5 Candidate gate
+  与事务内 typed materializer 接缝又由 `dd7c9c8` / Actions `32376405150` 完成真库/Linux 公共闭环；
+  6B-6 具体长期 Memory 仅 prepared/waiting authorization；
   这不等于长期 Memory、正式 Auth 或公网部署已完成；
 - FastAPI 对话和复盘入口；
 - `user_id`、`conversation_id` 和权限边界；
@@ -370,12 +371,16 @@ PostgreSQL/Docker；实现 SHA `d63f908` 对应 Actions `32347834279` 的 `pytes
 package smoke 的外部调用为 0。6B-4 与 coverage 已关闭；6B-5 Memory Candidate & Write Gate 只登记为
 prepared/waiting authorization，尚未实施。
 
-### 6B-5 Memory Candidate & Write Gate（RQ-069，进行中）
+### 6B-5 Memory Candidate & Write Gate（RQ-069，已完成）
 
 用户已明确授权 6B-5。当前已完成专用 ADR-0042、设计与实施计划，并按 TDD 建立 Candidate pure contract、
 deterministic gate、0005 ORM/migration、owner-scoped Repository、薄 API/composition 与 no-I/O package
 smoke。本批选择事务内 typed materializer 接缝：没有 6B-6 的具体 typed target 时，生产 accept fail closed，
 Candidate 保持 pending；测试专用 target 只用于证明同事务 commit/rollback、并发和 replay，不冒充长期 Memory。
-下一步是完成本地全门禁、真实 PostgreSQL blocking CI 和 exact-SHA 公共闭环。Preference/Profile/Review Memory、
-Training Plan/Progress、assistant terminal、Memory Context、Auth/RSO、SSE、前端、LangGraph、Multi-Agent 和
-新 SDK 均仍 deferred。
+
+实现 `7156cb5` 的首次公共真库 teardown 缺口由最小测试清理 `dd7c9c8` 修复；Actions `32376405150` 的
+`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，公共完整回归为
+`1358 passed, 88 skipped, 1 warning, 110 subtests passed`，真实 PostgreSQL 为 `126 passed, 1 warning`。
+6B-5 与 coverage 已关闭。下一检查点为 `6B-6-preferences-profile-review-memory`，仅
+prepared/waiting authorization；Training Plan/Progress、assistant terminal、Memory Context、Auth/RSO、SSE、
+前端、LangGraph、Multi-Agent 和新 SDK 均仍 deferred。

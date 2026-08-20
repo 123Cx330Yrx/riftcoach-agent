@@ -22,6 +22,7 @@ canonical_order:
   - 6b-3-conversation-message-foundation
   - 6b-4-conversation-bound-recent-review-identity
   - 6b-5-memory-candidate-write-gate
+  - 6b-6-preferences-profile-review-memory
 groups:
   - id: stage-0-baseline-and-reference-evidence
     sequence: 10
@@ -333,7 +334,7 @@ groups:
     sequence: 190
     covers:
       - 6B-5-memory-candidate-write-gate
-    status: planned
+    status: complete
     evidence:
       problem_and_principle:
         - docs/plans/2026-08-20-memory-candidate-write-gate-design.md
@@ -355,3 +356,10 @@ groups:
       interview_wording:
         - docs/plans/2026-08-20-memory-candidate-write-gate-design.md
         - docs/learning/6b-5-memory-candidate-write-gate-walkthrough.md
+
+  - id: 6b-6-preferences-profile-review-memory
+    sequence: 200
+    covers:
+      - 6B-6-preferences-profile-review-memory
+    status: planned
+    evidence: {}

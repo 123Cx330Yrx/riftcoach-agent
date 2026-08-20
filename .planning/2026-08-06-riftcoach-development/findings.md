@@ -3093,3 +3093,14 @@
 - public API 只接受 user structured provenance，并固定 producer；DTO 不返回 proposal payload、confidence、
   producer、subject/relationship/source body。package smoke 证明 Candidate pending→reject，外部 calls=0。
 - 本机无 PostgreSQL/Docker，真库测试明确 skip；不能把本地 50 passed 或测试 target 写成公共 exactly-once。
+
+## 2026-08-20：6B-5 公共 PostgreSQL 证据裁决
+
+- 首个实现 run 的三个失败均是同一个 teardown 缺口，不是三种业务失败：测试专用 target 表的 FK 仍依赖
+  Candidate 表，fixture 在删除测试表前先 downgrade。失败日志保留，避免把测试清理误写成生产缺陷。
+- 最小修复没有使用 `CASCADE`，而是显式按 ownership 释放测试创建的表；这保持 migration 对未知依赖
+  fail closed，同时让每个测试真正从干净 schema 开始。
+- `dd7c9c8` / Actions `32376405150` 的 PostgreSQL `126 passed` 同时补齐 migration、FK/trigger、owner、
+  terminal、materializer 原子回滚/重放/并发和 metadata-head 证据。普通 pytest 与 package 也全绿。
+- 6B-5 可关闭，但只能声称“长期写入控制面和 typed materializer seam 已完成”；具体 Preference/Profile/
+  Review Memory 仍属于 6B-6，当前未授权。
