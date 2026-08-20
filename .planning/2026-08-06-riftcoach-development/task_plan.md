@@ -7,9 +7,10 @@
 
 ## Current Phase
 
-Phase 19 - `6B-3-conversation-message-foundation`; RQ-067 documentation gate closed at
-`63435d9` / Actions `32308631289`. 6B-2 closed at `0c13a58` / Actions `32301852042`;
-6B-3 now begins with teaching/design review and red tests.
+Phase 19 - `6B-3-conversation-message-foundation` is closed at `7e4f233` /
+Actions `32329686381`; the active plan now records the 6B-3 → 6B-4 handoff only.
+RQ-067 documentation gate closed at `63435d9` / Actions `32308631289`, and 6B-2
+closed at `0c13a58` / Actions `32301852042`. Next checkpoint is 6B-4, prepared/waiting authorization.
 
 ## Phases
 
@@ -255,10 +256,9 @@ Phase 19 - `6B-3-conversation-message-foundation`; RQ-067 documentation gate clo
 
 ## Next Step
 
-`6B-3-conversation-message-foundation` 的初学者教学、ADR-0040、专用设计和治理加固已由
-`b6a7112` / Actions `32313707301` exact-SHA 三 job 公共完成。现在进入 pure model/Service/API
-红灯，再实现 migration/Repository/PostgreSQL 并发与 API composition；当前不接 Agent、Review Task
-或 Memory，不提前进入 6B-4。
+`6B-3-conversation-message-foundation` 的实现、walkthrough、ADR-0040、专用设计和治理已由
+`7e4f233` / Actions `32329686381` 完成 exact-SHA 三 job 公共闭环。6B-3 已关闭；下一检查点为
+`6B-4-conversation-bound-recent-review-identity`，当前只准备并等待新的明确授权，不实施 6B-4。
 
 ## 6A-1 Checklist
 
@@ -438,7 +438,7 @@ Phase 19 - `6B-3-conversation-message-foundation`; RQ-067 documentation gate clo
 
 ### Phase 19 - 6B-3-conversation-message-foundation
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-067 文档前置门已由 `63435d9` / Actions `32308631289` 公共闭环；本批正式进入 6B-3，按教学→设计复核→红灯→最小实现推进。
 - Prepared outcome: immutable owner/relationship/subject Conversation、ordered user/assistant Message
   persistence/API 与真实 PostgreSQL constraint/concurrency 证据；不接 Agent、Review Task 或 Memory。
@@ -455,7 +455,16 @@ Phase 19 - `6B-3-conversation-message-foundation`; RQ-067 documentation gate clo
 - [completed] 设计批独立提交 `b6a7112`、推送并由 Actions `32313707301` 的 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共验证
 - [completed] pure model/Service/API 红灯 → migration/Repository/PostgreSQL 并发红灯 → 最小实现；当前不接 Agent、Review Task 或 Memory
 - [completed] 6B-3 最小实现、实现后 walkthrough/coverage 更新、本地门禁；本地完整 `1295 passed, 67 skipped, 1 warning, 110 subtests passed`，横向 RAG/Harness/compile/security/governance/diff 门通过
-- [in_progress] 独立提交/推送与 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 公共 CI；全绿后才关闭 6B-3 并只交接 6B-4 prepared/waiting authorization
+- [completed] 实现提交 `7e4f23361ec331e53c5190f6a5f7f3532f533081`、推送并完成 Actions `32329686381` 的 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 公共 CI；PostgreSQL fixture 父行 flush 修复保留失败→修复证据链
+- [completed] 独立状态/coverage 收尾：6B-3 置为 complete，覆盖账本与学习索引升级为完整/公共闭环
+- [prepared/waiting authorization] 下一检查点 `6B-4-conversation-bound-recent-review-identity`；不实施 6B-4
+
+### Phase 20 - 6B-4-conversation-bound-recent-review-identity handoff
+
+- Status: in_progress
+- Authorization: none yet; this is a state-only prepared/waiting authorization handoff, not product implementation.
+- [prepared/waiting authorization] 记录 6B-4 的唯一下一检查点；等待新的明确授权后再按教学、设计、TDD 和公共门推进。
+- [deferred] 不创建 6B-4 schema/code/tests，不接 Review Task、Memory、Agent、Auth/RSO、SSE、前端或新框架。
 
 ## 6A Entry Design Checklist
 

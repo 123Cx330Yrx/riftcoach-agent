@@ -1,8 +1,8 @@
 # 6B-3 Conversation / Message Foundation：从设计到实现
 
-> 当前证据状态：本地实现与本地门禁已建立，等待实现提交的 exact-SHA PostgreSQL 17 与
-> Linux package 公共 CI。公共三 job 全绿前，6B-3 仍是 `in_progress`，本文不把本地代码
-> 冒充为已经公开完成。
+> 当前证据状态：实现提交 `7e4f233` / Actions `32329686381` 的 exact-SHA PostgreSQL 17、
+> Linux package 与完整 pytest 公共 CI 已全绿，6B-3 已关闭。本文仍明确区分本机无 Docker 的
+> local skip 与公共真库证据，并不把 6B-4 或后续 Agent/Memory 能力写成已完成。
 
 ## 0. 先说结论：这一批到底搭起了什么
 
@@ -369,9 +369,9 @@ Linux smoke 的链路是：
 ### 5.3 当前证据边界
 
 - 本机没有 PostgreSQL/Docker，因此 PostgreSQL tests 会明确 skip；这不是失败，也不是通过。
-- 本地完整测试、RAG、Harness、compile/security/YAML/governance/diff 结果在实现提交前会重新生成并记录。
-- 只有实现 exact SHA 的 `pytest`、`postgres-migrations`、`packaging-smoke` 全绿，才能关闭 6B-3。
-- coverage 在公共闭环前保持 `planned`，避免“文档写完了”被误解成真库已证明。
+- 本地完整测试、RAG、Harness、compile/security/YAML/governance/diff 结果已在实现提交前重新生成并记录。
+- 实现 exact SHA `7e4f233` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 已全绿，6B-3 已关闭。
+- coverage 已在公共闭环后置为 `complete`；本机 PostgreSQL/Docker 缺失导致的 skip 仍不能被描述为本地真库通过。
 
 ---
 

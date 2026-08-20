@@ -32,7 +32,7 @@
 | A10 | 结构化模型输出 | 5D-6a 已建立 Provider-neutral 合同；Zhipu 与 DeepSeek V4 Pro 均真实通过最小协议；DeepSeek V3 首请求规范化失败且当前候选已关闭；新实验结果可携带 allowlisted provider error detail | 阶段 5D | G53 按 thinking/structured/tool 新合同隔离审计（API 可用后）；宽泛错误不用于猜根因 | 合法、缺字段、额外字段、截断、非 JSON、Schema 漂移、Thinking 预算、调用预算、可达性和修复上限测试 | 部分完成 |
 | A11 | AgentRuntime V1 | 5D 控制链及 5E-1 至 5E-4 均已公开完成；两个真实 Skill 共用同步 `run()`、进程内 `stream()`、typed output、完整 Trace/Usage、安全失败映射与 exit matrix；5F-1 至 5F-5 已完成 Pi 0.84.2 审计/隔离/Harness/采用对照，最终由 `f8dea66/32028206103` 公共裁决产品拒绝 Pi、冻结保留 evaluation-only 资产 | 阶段 5D-5E | 5F-4 因 Context/terminal/live timing 硬门失败未进入；产品继续 Python Runtime；阶段 6 持久 Session，阶段 8 取消、快照和恢复 | 统一 run/stream、事件、Trace、Usage、终止原因、退出审查，以及 Pi batch/Usage/Trace/sidecar 差异矩阵与采用/归档门 | 已完成 |
 | A12 | 多模型选择与降级 | Provider Registry 已有；DeepSeek V4 Pro 只通过最小协议，当前 V3 领域候选已关闭；Flash 未测试；尚无领域/产品准入、任务级选择或自动降级 | 5D 完成候选采用决策；GLM-5.2 仅作开发基线；模型分层为 5P 后横向采用门，默认等待阶段 6 真实业务证据；5F Pi-only 不改变模型路由 | G53 deferred；未来仍按 ADR-0019 比较模型分层，5F 只做 Pi Runtime 采用实验 | 新鲜同任务评测、故障降级、unsafe publication、成本和 p50/p95 延迟对照 | 部分完成 |
-| A13 | Session 与长期 Memory | RQ-060 至 RQ-067 已冻结 PostgreSQL 单一真源、claimed/observed 关系、固定 subject Conversation、独立异步 Player Link、typed Memory/Candidate gate；entry design、6B-1、6B-2 与历史教学/工程证据门均已公共闭环；6B-3 Conversation/Message foundation 已本地实现 | 阶段 6 | 6B-3 仍待实现 exact-SHA PostgreSQL concurrency/trigger/package 公共门；Memory Candidate/长期 Memory 在 6B-5 以后；Redis/语义索引只由真实 Bad Case 触发，verified 仅在正式 Auth + 安全 RSO callback + `/accounts/me` PUUID 精确匹配后另行采用 | 无 CN 路由前置拒绝、claimed/observed 权限差异、verified 当前不可创建、两用户/两会话/同 PUUID 隔离、conversation subject 不可变、task 继承、迟到结果、Riot ID 改名/PUUID 重指向、bootstrap 幂等/失败、写入条件与来源、查看/导出、更正、冲突、过期、删除和补偿测试 | 进行中（6B-3 本地实现，公共真库/package 待闭环） |
+| A13 | Session 与长期 Memory | RQ-060 至 RQ-067 已冻结 PostgreSQL 单一真源、claimed/observed 关系、固定 subject Conversation、独立异步 Player Link、typed Memory/Candidate gate；entry design、6B-1、6B-2、6B-3 与历史教学/工程证据门均已公共闭环 | 阶段 6 | 6B-4 绑定 Recent Review Identity；Memory Candidate/长期 Memory 在 6B-5 以后；Redis/语义索引只由真实 Bad Case 触发，verified 仅在正式 Auth + 安全 RSO callback + `/accounts/me` PUUID 精确匹配后另行采用 | 无 CN 路由前置拒绝、claimed/observed 权限差异、verified 当前不可创建、两用户/两会话/同 PUUID 隔离、conversation subject 不可变、task 继承、迟到结果、Riot ID 改名/PUUID 重指向、bootstrap 幂等/失败、写入条件与来源、查看/导出、更正、冲突、过期、删除和补偿测试 | 进行中（6B-3 已公共闭环；6B-4/长期 Memory 未实施） |
 | A14 | API 与任务持久化 | 5P 与 6A 已公开完成：`adf53e5` / Actions `32146760003` 的 pytest、真库、Linux package 三 job 全绿 | 阶段 5P 提供本地同步切片，阶段 6 加 SQL、异步组合、安全与生命周期 | 阶段 8 扩展 lease、取消、恢复与迟到结果治理 | receipt/path/Schema/SHA/终态交叉校验；PostgreSQL migration、HTTP 幂等、并发 claim、owner 隔离、CORS、删除、性能与 Linux composition smoke | V1 已完成，阶段 8 深化 |
 | A15 | 标准 MCP 与动态 Meta | 内部 Tool Runtime，不冒充 MCP | 阶段 7 | OP.GG、官方补丁等通过领域 Adapter 分层 | initialize、tools/list、tools/call、断线和版本边界测试 | 已规划 |
 | A16 | Multi-Agent 与 DAG | 当前不需要 | 阶段 8 Advanced | 仅在独立上下文、权限和并行收益成立时采用 | Bad Case、对照、消融、成本和 ADR | 按证据采用 |
@@ -270,12 +270,12 @@ module execution。新 exact-SHA Linux job 成功前，A14/Q09 仍不能升级�
 阶段 6 V1 task/API/package 落点完成。Q09 仍为部分完成，因为正式公网 Auth/HTTPS、备份、前端和运维
 不属于 6A，也尚无部署证据。
 
-### 2026-08-20：6B-3 本地实现能力状态
+### 2026-08-20：6B-3 实现公共能力状态
 
 - `Conversation identity binding`：本地 domain/Service/Repository/HTTP 已实现固定
   owner/relationship/subject/role，active 行锁、scoped idempotency 与复合 FK/trigger 已接线。
 - `Ordered Message control plane`：本地实现公共 user append、1-based row-lock sequence、archive/hidden、
   有界查询与 assistant provenance schema；公共 assistant terminal 仍未开放。
 - `Conversation/Message PostgreSQL evidence`：migration、trigger、回滚和双 writer/生命周期确定性并发测试
-  已写入阻塞 job；本机无 PostgreSQL/Docker，必须等待实现 exact-SHA 公共执行，当前不能写成 complete。
+  已写入阻塞 job；`7e4f233` / Actions `32329686381` 的真实 PostgreSQL job 已通过（`100 passed`）。
 - `Agent/Review/Memory integration`：明确 deferred 到后续 6B 批次，不能把本设计稿写成已接入。

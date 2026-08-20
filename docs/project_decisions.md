@@ -1378,14 +1378,18 @@ SSE、前端和新框架仍在本批之外。
 domain、Service、0003 migration、Repository、HTTP/composition/package 与分层测试；本地实现仍待
 同一提交的 PostgreSQL/package exact-SHA 公共门。它不表示 Agent/Memory 已接入。
 
-### 6B-3 本地实现审查与收尾状态（2026-08-20）
+### 6B-3 实现 exact-SHA 公共闭环与收尾状态（2026-08-20）
 
 实现批通过 6B-3 聚焦 `85 passed, 25 skipped` 与完整 `1295 passed, 67 skipped, 1 warning,
 110 subtests passed`。本地 RAG development/independent holdout、Harness dry-run、compileall、
 Provider boundary、tracked secret/run-data、YAML、治理与 `git diff --check` 均通过；本机没有 Docker，
-因此 Compose 与真实 PostgreSQL 仍只由阻塞 GitHub Actions 证明。审查修复了 archive/hide OpenAPI
-422 投影和有效 command 后服务故障的 503 投影，并把生命周期/append 测试改为确定性锁顺序。
+因此 Compose 与真实 PostgreSQL 由提交 `7e4f23361ec331e53c5190f6a5f7f3532f533081` 的 Actions run
+`32329686381` 补证。该公共 run 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均成功，
+真实 PostgreSQL 运行 `100 passed, 1 warning`，并通过 migration upgrade/downgrade、`alembic check` 和
+Linux package smoke。审查修复了 archive/hide OpenAPI 422 投影和有效 command 后服务故障的 503 投影，
+并把生命周期/append 测试改为确定性锁顺序。
 
 这批仍保持以下边界：公共 API 只能追加 user Message；assistant 必须有未来可信 `source_run_id`
-terminal 证明；不接 Agent、Review Task 2.0、Memory、Auth、SSE、前端或新框架。coverage 在
-exact-SHA 三 job 全绿前保持 `planned`，不能把本地绿灯写成 6B-3 已关闭。
+terminal 证明；不接 Agent、Review Task 2.0、Memory、Auth、SSE、前端或新框架。6B-3 现已正式关闭，
+coverage 置为 `complete`；下一检查点为 `6B-4-conversation-bound-recent-review-identity`，仅
+prepared/waiting authorization，不实施 6B-4。

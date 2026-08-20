@@ -66,7 +66,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | Session/Memory 入口设计 | 完整 | [Session/Memory V1 设计](../plans/2026-08-19-stage6-session-memory-design.md) | Session、消息、玩家身份、长期 Memory 与 RAG 为何不能混为一谈 |
 | 6B-1：玩家身份持久化 | 完整 | [6B-1 walkthrough](6b-1-player-identity-link-persistence-walkthrough.md) | PUUID、Alias、Owner Relationship、Link Task 及真库迁移事故 |
 | 6B-2：异步玩家绑定 | 完整 | [6B-2 walkthrough](6b-2-async-player-link-worker-api-walkthrough.md) | POST/poll、Worker、事务外 Account-V1、短事务终态和隐私投影 |
-| 6B-3：Conversation / Message | 本地实现，待公共闭环 | [6B-3 walkthrough](6b-3-conversation-message-foundation-walkthrough.md) / [专用设计](../plans/2026-08-20-conversation-message-foundation-design.md) / [ADR-0040](../adr/0040-conversation-message-foundation-contract.md) | 固定玩家身份、owner 幂等、连续消息序号、归档/隐藏、真库锁与 trigger；coverage 在 exact-SHA 三 job 全绿前保持 `planned` |
+| 6B-3：Conversation / Message | 完整/公共闭环 | [6B-3 walkthrough](6b-3-conversation-message-foundation-walkthrough.md) / [专用设计](../plans/2026-08-20-conversation-message-foundation-design.md) / [ADR-0040](../adr/0040-conversation-message-foundation-contract.md) | 固定玩家身份、owner 幂等、连续消息序号、归档/隐藏、真库锁与 trigger；实现 SHA `7e4f233` / Actions `32329686381` 已完成 `pytest`、`postgres-migrations`、`packaging-smoke` 公共闭环。限制：公共 API 仍只写 user，assistant terminal、Agent/Review/Memory/Auth/SSE/前端留在后续阶段 |
 
 “完整”表示仓库中已经具备八类持久证据，并不表示项目已生产就绪，也不表示项目所有者已经学会。
 个人理解进度需要通过实际复述、读码、运行和问答单独确认。

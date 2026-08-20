@@ -2219,3 +2219,15 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 治理和 diff 门通过。由于本机无 Docker/PostgreSQL，真实 migration/trigger/事务/并发/package 仍必须由
 实现提交的 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 公共 job 证明；全绿前不关闭
 6B-3、不修改 coverage 为 complete、不进入 6B-4。
+
+### 2026-08-20：6B-3 实现 exact-SHA 公共闭环与 6B-4 交接
+
+- `PUBLIC-CI`：实现修复提交 `7e4f23361ec331e53c5190f6a5f7f3532f533081` 对应 Actions run `32329686381`；
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部成功。首个实现 SHA `0ca7fde` 的
+  PostgreSQL fixture FK 顺序失败已保留，修复只增加父行显式 flush，不改变生产约束或事务语义。
+- `EVIDENCE`：公共 PostgreSQL 运行 `100 passed, 1 warning`；公开 pytest、migration upgrade/downgrade、
+  `alembic check`、Linux package smoke 和边界门均通过。本机无 Docker 的 skip 仍未被改写为本地真库证据。
+- `CLOSED`：6B-3 Conversation/Message foundation 正式关闭，`coverage.yaml` 与学习索引升级为完整/公共闭环。
+- `HANDOFF`：唯一下一检查点为 `6B-4-conversation-bound-recent-review-identity`，当前仅
+  prepared/waiting authorization；不实现 6B-4，不把 Agent、Review Task、Memory、Auth/RSO、SSE、前端或
+  新框架写成已完成。

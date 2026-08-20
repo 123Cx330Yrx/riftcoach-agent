@@ -1,6 +1,6 @@
 # ADR-0040：采用固定身份的 Conversation/Message 基础合同
 
-- 状态：Accepted（本地实现已完成，待实现提交的 PostgreSQL exact-SHA CI 验证）
+- 状态：Accepted（实现提交 `7e4f233` / Actions `32329686381` exact-SHA 公共 CI 已闭环）
 - 日期：2026-08-20
 - 范围：阶段 6B-3 `conversation-message-foundation`
 - 相关：ADR-0039、`2026-08-19-stage6-session-memory-design.md`

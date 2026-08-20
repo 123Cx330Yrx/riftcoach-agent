@@ -1,8 +1,8 @@
 # 6B-3 Conversation / Message Foundation 设计与教学稿
 
-> 状态：设计已冻结且本地实现已完成；本文件保留设计角色，实现证据见
-> [`6B-3 walkthrough`](../learning/6b-3-conversation-message-foundation-walkthrough.md)。实现提交的
-> exact-SHA 三 job 全绿前，6B-3 仍不能关闭。
+> 状态：设计已冻结且实现已完成公共闭环；本文件保留设计角色，实现证据见
+> [`6B-3 walkthrough`](../learning/6b-3-conversation-message-foundation-walkthrough.md)。实现提交
+> `7e4f233` / Actions `32329686381` 的 exact-SHA 三 job 已全绿。6B-4 尚未实施。
 >
 > 对应 ADR：[`ADR-0040`](../adr/0040-conversation-message-foundation-contract.md)
 
@@ -300,7 +300,8 @@ tests/test_conversation_concurrency_postgres.py
 - 所有上述 FR/NFR 有代码、测试和 CI 对应证据；
 - `coverage.yaml` 的 6B-3 八维证据全部非空；
 - 新增实现后 walkthrough，包含一次真实失败/修复记录；
-- canonical 只在 exact-SHA 三 job 全绿后改为 complete，并交接 6B-4。
+- 上述条件已由 `7e4f233` / Actions `32329686381` 满足；canonical 已将 6B-3 置为 complete，
+  仅交接 `6B-4-conversation-bound-recent-review-identity` 的 prepared/waiting authorization。
 
 ### 可以准确说
 

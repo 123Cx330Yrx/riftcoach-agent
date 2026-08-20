@@ -2990,3 +2990,18 @@
   子表并触发 FK violation；本机 PostgreSQL 缺失使该问题只表现为 skip。
 - 最小修复是在测试 fixture 插入 relationship 前显式 `session.flush()`，保留生产复合 FK 与约束，不放宽
   schema、跳过测试或修改事务语义。失败 SHA 保留为审计证据，不重跑追绿。
+
+## 2026-08-20：6B-3 公共闭环后的最终事实
+
+- 修复提交 `7e4f23361ec331e53c5190f6a5f7f3532f533081` 的 Actions run `32329686381` 三 job 全绿；失败的
+  `0ca7fde` 只保留为 PostgreSQL 顺序问题的审计证据。
+- 真实公共 PostgreSQL job `100 passed, 1 warning`，并补齐 migration upgrade/downgrade、`alembic check`、
+  trigger/FK/事务/并发和 Linux package smoke 证据；本机 67 个 skip 仍是无 Docker/PostgreSQL 的环境事实。
+- 6B-3 的产品闭环只包括 Conversation/Message 控制面。assistant terminal、Agent、Review Task 2.0、Memory、
+  Auth/RSO、SSE、前端和新框架仍是后续边界；6B-4 只登记为 prepared/waiting authorization。
+
+## 2026-08-20：收尾验证环境记录
+
+- 首次收尾命令误用系统 Python；该解释器没有 `pytest`，命令在测试收集前以 `ModuleNotFoundError` 退出，
+  没有代码副作用。随后改用仓库 `.venv\Scripts\python.exe`，聚焦与完整回归均通过；以后仓库测试统一显式
+  使用虚拟环境解释器。

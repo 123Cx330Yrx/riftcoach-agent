@@ -3019,3 +3019,18 @@
   `owner_player_relationships → player_subjects` FK violation；不是 Conversation Repository 业务断言失败。
 - 已加入测试 fixture 的显式 parent flush；下一步只复跑本地相关测试、cached diff、提交新修复 SHA，再等待新的
   exact-SHA 三 job。6B-3 仍保持 `in_progress`，coverage 仍为 `planned`。
+
+## 2026-08-20：6B-3 实现公共闭环与状态收尾
+
+- 恢复后确认实现修复已在 `7e4f23361ec331e53c5190f6a5f7f3532f533081`，工作树干净且 `HEAD == origin/main`；
+  没有重复实现或回滚。
+- Actions run `32329686381` 精确对应该 SHA，`pytest`、`postgres-migrations`、`packaging-smoke` 三 job
+  均 `completed/success`；公开 pytest 为 `1295 passed, 67 skipped, 1 warning, 110 subtests passed`，
+  PostgreSQL 为 `100 passed, 1 warning`，package smoke 与 migration upgrade/downgrade 通过。
+- 独立收尾批将 canonical 状态置为 `complete`、coverage 6B-3 置为 `complete`，并把唯一下一检查点写为
+  `6B-4-conversation-bound-recent-review-identity` 的 prepared/waiting authorization；本轮不实施 6B-4。
+- 收尾验证中系统 Python 因没有 `pytest` 首次退出；改用 `.venv\Scripts\python.exe` 后，6B-3 聚焦为
+  `71 passed, 25 skipped, 1 warning`，完整回归为 `1295 passed, 67 skipped, 1 warning, 110 subtests passed`。
+- 状态收尾横向门再次通过：RAG development 与 independent holdout 的既定指标均为 `1.0`（FPR `0.0`），
+  Harness dry-run 为 `published`/0 revisions，compileall、coverage YAML、governance 与 `git diff --check`
+  通过；本批只修改持久状态/教学材料，没有 6B-4 产品文件或外部 Riot/Provider/Key I/O。

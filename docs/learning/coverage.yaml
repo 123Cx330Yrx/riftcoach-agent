@@ -274,7 +274,7 @@ groups:
     sequence: 170
     covers:
       - 6B-3-conversation-message-foundation
-    status: planned
+    status: complete
     evidence:
       problem_and_principle:
         - docs/plans/2026-08-19-stage6-session-memory-design.md

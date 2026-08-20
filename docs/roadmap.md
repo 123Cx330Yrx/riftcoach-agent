@@ -21,7 +21,7 @@
 | 3 | Provider 与 Tool Runtime | 外部模型和工具如何统一、可靠地调用 | EchoMind 迁移重构 | 已完成，进入维护 |
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
-| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1、6B-2 与 RQ-067 前置门已公共完成；6B-3 Conversation/Message foundation 已本地实现并完成八维复盘，正等待实现 exact-SHA PostgreSQL/package 公共闭环 |
+| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1、6B-2、RQ-067 前置门与 6B-3 Conversation/Message foundation 已完成 exact-SHA 公共闭环（`7e4f233` / Actions `32329686381`）；下一检查点为 6B-4，长期 Memory 仍未实现 |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 未开始 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
@@ -351,7 +351,7 @@ MCP 负责跨系统标准互操作，内部 Tool Runtime 负责本应用可靠�
 
 6B-3 的 Conversation/Message 设计已由 ADR-0040 和专用设计稿冻结；pure model/Service/API、0003
 migration/Repository、并发测试、六个 HTTP endpoint、composition/package smoke 与实现后八维复盘均已
-在本地建立。当前 coverage 继续保持 `planned`，只因实现提交尚未取得 exact-SHA `pytest`、
-`postgres-migrations`、`packaging-smoke` 三 job 公共证据。Conversation 创建固定
-owner/relationship/subject，公共 Message 首批只写 user；这一步没有提前接 Agent、Review Task、Memory、
-Auth/RSO、SSE、前端或新框架。
+在本地建立。实现提交 `7e4f233` / Actions `32329686381` 的 exact-SHA `pytest`、
+`postgres-migrations`、`packaging-smoke` 三 job 已公共闭环，coverage 已置为 `complete`。
+Conversation 创建固定 owner/relationship/subject，公共 Message 首批只写 user；这一步没有提前接 Agent、
+Review Task、Memory、Auth/RSO、SSE、前端或新框架。下一检查点为 6B-4。
