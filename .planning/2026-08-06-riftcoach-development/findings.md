@@ -3154,3 +3154,11 @@
 - insert trigger 已校验 pending Candidate 和 supersedes chain，但原真库测试只覆盖 kind mismatch/payload
   mutation；新增 terminal Candidate source 与跳号 version chain 两类 direct-SQL 负例，交由公共 PostgreSQL
   job 补证。它们不把本机 skip 冒充通过。
+
+## 2026-08-20：6B-6 首个实现公共门发现
+
+- Actions `32386630063` 的 PostgreSQL 唯一失败不是 target persistence 错误，而是测试案例 provenance 与
+  6B-5 Gate 不一致：observed `public_trend` 不能使用 `user_structured_input`。这次失败反而证明 Gate 在
+  server-derived observed identity 下没有被 materializer 绕过。
+- 修复应调整测试输入为 `deterministic_run_fact`，不能为了让测试变绿而放宽 `evaluate_candidate_gate()`；
+  其余真库合同当次为 141 passed，失败 SHA 必须保留。

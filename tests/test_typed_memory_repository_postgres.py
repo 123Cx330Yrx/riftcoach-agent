@@ -12,6 +12,7 @@ from app.memory.models import (
     CandidateStatus,
     DecisionActorKind,
     MemoryOperation,
+    ProvenanceKind,
     RelationshipRole,
     TargetScope,
 )
@@ -56,6 +57,7 @@ def create(
     key: str = "report_language",
     operation: MemoryOperation = MemoryOperation.SET,
     role: RelationshipRole = RelationshipRole.SELF,
+    provenance_kind: ProvenanceKind = ProvenanceKind.USER_STRUCTURED_INPUT,
 ):
     _subject, _relationship, conversation_id = seed_conversation(
         factory,
@@ -76,6 +78,7 @@ def create(
             candidate_kind=kind,
             memory_key=key,
             operation=operation,
+            provenance_kind=provenance_kind,
         ),
         identity=identity,
         requires_confirmation=False,
@@ -124,6 +127,7 @@ def test_three_materializers_commit_real_typed_targets_with_candidate_terminal()
             key="public_trend",
             operation=MemoryOperation.APPEND,
             role=RelationshipRole.OBSERVED,
+            provenance_kind=ProvenanceKind.DETERMINISTIC_RUN_FACT,
         )
         materializers = registry()
         results = [

@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-20（RQ-070 / 6B-6 本地实现与提交前复核完成，等待实现 SHA 公共闭环）
-- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1 至 6B-5 与 RQ-067 文档门均已完成 exact-SHA 公共闭环。6B-5 实现提交 `7156cb52e1ab2a976828b5a0a164c163943b56f3` 经最小真库测试清理提交 `dd7c9c8f43bac19756272aaf9555f0519e22341c` 修正公共 teardown；Actions run `32376405150` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，coverage 已 complete。RQ-070 授权的 6B-6 已完成本地 typed target 纵向、提交前静态修复与完整门禁；唯一下一动作是实现提交/推送并等待同一 SHA 三 job，公共全绿前 coverage 仍为 planned，不能进入 6B-7
+- 最后更新：2026-08-20（RQ-070 / 6B-6 首个实现 SHA 保留真库夹具失败，正在做最小修复）
+- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1 至 6B-5 与 RQ-067 文档门均已完成 exact-SHA 公共闭环。6B-5 实现提交 `7156cb52e1ab2a976828b5a0a164c163943b56f3` 经最小真库测试清理提交 `dd7c9c8f43bac19756272aaf9555f0519e22341c` 修正公共 teardown；Actions run `32376405150` 的三 job 全绿。RQ-070 授权的 6B-6 已完成本地 typed target 纵向；首个实现 `da87cde` / Actions `32386630063` 的 pytest/package 成功，PostgreSQL 因 observed public-trend 测试 provenance 违反既定 Gate 而 141/1。唯一下一动作是提交不放宽生产 Gate 的最小测试修复并等待新 SHA 三 job；全绿前 coverage 仍为 planned，不能进入 6B-7
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -1486,5 +1486,9 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   dry-run 为 `published`/0 revisions，compileall、YAML、治理、SDK/Secret/tracked-data 与 diff 门通过。
 - `docs/learning/6b-6-preferences-profile-review-memory-walkthrough.md` 已覆盖八维 evidence，coverage 仍为
   `planned`。外部 Riot/Provider/Key I/O 为 0；6B-7 及后续能力未进入。
-- 唯一下一动作：完整本地门禁→cached diff→实现提交/推送→等待 exact-SHA `pytest`、
+- 首个实现提交 `da87cdeefc6b104b8f9faf3546091ec8b80c1bfb` 的 Actions run `32386630063` 中，普通
+  `pytest` 与 `packaging-smoke` 成功；PostgreSQL 为 `141 passed, 1 failed`。唯一失败是测试夹具让
+  observed `public_trend` 使用被 6B-5 Gate 禁止的 `user_structured_input` provenance，Repository 正确
+  返回 `SOURCE_INVALID`；生产 Gate/migration/materializer 未放宽，失败 SHA 保留为审计证据。
+- 唯一下一动作：提交最小测试 provenance 修复、推送并等待新 SHA 的 exact-SHA `pytest`、
   `postgres-migrations`、`packaging-smoke`。三 job 全绿后才允许状态收尾和 6B-7 交接。

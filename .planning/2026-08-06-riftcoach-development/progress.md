@@ -3199,3 +3199,13 @@
   Harness dry-run `published`/0 revisions，compileall、YAML、治理、SDK/Secret/tracked-data 与 diff 门均通过。
 - 下一动作是完整回归与横向门禁、最终 diff/cached review、提交推送和 exact-SHA 三 job；公共全绿前
   canonical 保持 `6B-6 / in_progress`，不得进入 6B-7。
+
+## 2026-08-20：6B-6 首个实现 SHA 的真库测试夹具失败
+
+- 实现提交 `da87cdeefc6b104b8f9faf3546091ec8b80c1bfb` 已推送；Actions run `32386630063` 的普通
+  pytest 与 Linux package smoke 成功，PostgreSQL job 为 `141 passed, 1 failed`。
+- 唯一失败发生在创建 observed `public_trend` Candidate：测试 helper 沿用默认
+  `user_structured_input`，而 6B-5 Gate 既定合同只允许该 observed Review 来自确定性事实或已发布观察，
+  因此 Repository 正确返回 `SOURCE_INVALID`。
+- 最小修复只把该测试案例 provenance 显式改为 `deterministic_run_fact`；不放宽 Gate、schema、trigger、
+  materializer 或生产事务。下一动作是聚焦验证、提交新 SHA 并等待新的三 job。

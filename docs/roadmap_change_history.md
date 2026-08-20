@@ -2338,3 +2338,12 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   Harness dry-run、compileall、YAML、governance、SDK/Secret/tracked-data 与 diff 门通过。
 - `CURRENT`：6B-6 保持 in progress/coverage planned；下一动作只有实现提交、推送和 exact-SHA 三 job，
   公共全绿前不进入 6B-7。
+
+### 2026-08-20：6B-6 首个实现公共门保留测试夹具失败
+
+- `FAILED-EVIDENCE`：`da87cde` / Actions `32386630063` 的 pytest 与 packaging-smoke 成功；PostgreSQL
+  为 `141 passed, 1 failed`。
+- `ROOT-CAUSE`：observed `public_trend` 测试夹具沿用 `user_structured_input`，违反 6B-5 已冻结的 Gate；
+  Repository 正确返回 `SOURCE_INVALID`，不是 migration/materializer/事务放宽或失效。
+- `MINIMAL-FIX`：只把该案例来源改为 `deterministic_run_fact`，保留生产 Gate 与失败 SHA；新 exact-SHA
+  三 job 全绿前 6B-6 继续 open、coverage 继续 planned。
