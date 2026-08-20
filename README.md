@@ -66,7 +66,7 @@ HTTP 层不直接选择 Skill、拼 Prompt 或调用 Provider。6A-6 已为这�
 API+Worker+PostgreSQL packaging、真实 Worker composition 和 no-I/O Linux smoke；提交 `adf53e5` / Actions
 `32146760003` 的 pytest、真实 PostgreSQL 与 Linux packaging 三个 job 已完成 exact-SHA 公共验证。
 
-这些能力仍不等于正式公网鉴权/HTTPS、Session/Memory、SSE 或自动 lease/reclaim。真实外部 Worker
+这些能力仍不等于正式公网鉴权/HTTPS、完整 Session/Memory、SSE 或自动 lease/reclaim。真实外部 Worker
 组合与 Docker/Compose 控制面已通过公共 CI，但仍不能称为正式公网部署；PostgreSQL job 继续是 task
 并发与生命周期语义的阻塞证据，Linux smoke 也不证明模型报告质量。
 
@@ -143,8 +143,26 @@ Invoke-RestMethod `
   -Body (@{ content = "请复盘我最近的状态" } | ConvertTo-Json)
 ```
 
-这只证明 Conversation/Message 控制面，不会触发 Agent、Review 或长期 Memory。assistant terminal、
-Conversation-bound Review 和 Memory Candidate 分别属于后续 6B 批次。
+Conversation/Message foundation 本身不会因追加消息自动触发 Agent。后续 6B-4 至 6B-6 已在独立接口上
+完成 Conversation-bound Review identity、Memory Candidate 写入门和 typed Preference/Profile/Review
+Memory；assistant terminal、Training Plan/Progress 与 Memory-aware Context 仍属于后续 6B 批次。
+
+### 当前 typed Memory 纵向切片（6B-3 至 6B-6）
+
+长期写入采用两层模型：Candidate 保存来源、权限、确认和审计；通过 accept 后，typed materializer 才在
+同一 PostgreSQL 事务中写入 Preference、Player Profile 或 Review Memory，并用 expected-version、
+supersede chain、advisory lock、partial unique 和 trigger 防止静默覆盖。只读查询入口为：
+
+```text
+GET /memory/preferences
+GET /memory/players/{relationship_id}/profile
+GET /memory/players/{relationship_id}/reviews
+```
+
+实现/最小测试修复 `5531c81` / Actions `32387026797` 已通过公共 pytest、PostgreSQL 17 和 Linux
+package smoke；package 流程真实执行 Candidate accepted→Preference v1 query，外部 Riot/Provider 调用为 0。
+这不等于账号所有权已验证，也不等于 Training Plan/Progress、Memory Context、导出/删除生命周期或公网
+鉴权已经完成。
 
 ### 本地 Linux package 与进程职责
 

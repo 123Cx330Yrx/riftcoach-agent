@@ -1500,3 +1500,15 @@ Candidate accepted。typed payload 和 version conflict 分别映射安全 422/4
 Harness dry-run、compileall、YAML、治理、SDK/Secret/tracked-data 与 diff 门通过。实现后 walkthrough 和
 八维 evidence 已建立，但 coverage 继续 planned。只有实现 SHA 的 `pytest`、
 `postgres-migrations`、`packaging-smoke` 三 job 全绿后才能关闭 6B-6；当前不进入 6B-7。
+
+### 6B-6 exact-SHA 公共闭环与 6B-7 停止点（2026-08-20）
+
+首个实现 `da87cde` / Actions `32386630063` 的 pytest/package 成功，PostgreSQL 唯一失败是
+observed `public_trend` 测试夹具错误使用被既定 Gate 禁止的 `user_structured_input`；失败 SHA 保留，
+没有放宽生产权限。最小测试修复 `5531c81ec7117f5c454d320e406153086baae3ea` 改为合法
+`deterministic_run_fact`，Actions `32387026797` 的三 job 全绿。
+
+公共 pytest 为 `1402 passed, 100 skipped, 1 warning, 110 subtests passed`，真实 PostgreSQL 为
+`142 passed, 1 warning`，Linux package smoke 完成 Candidate accepted→Preference v1 query 且
+`external_riot_provider_calls=0`。据此 6B-6/coverage 正式完成。下一检查点
+`6B-7-training-plan-progress` 仅 prepared/waiting authorization；尚无 Plan/Progress 产品代码。

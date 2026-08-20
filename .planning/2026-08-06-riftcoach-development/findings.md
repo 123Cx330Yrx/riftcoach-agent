@@ -3162,3 +3162,12 @@
   server-derived observed identity 下没有被 materializer 绕过。
 - 修复应调整测试输入为 `deterministic_run_fact`，不能为了让测试变绿而放宽 `evaluate_candidate_gate()`；
   其余真库合同当次为 141 passed，失败 SHA 必须保留。
+
+## 2026-08-20：6B-6 公共闭环发现
+
+- 最小测试修复后的 PostgreSQL `142 passed` 证明 observed trend 在合法 deterministic provenance 下可完成
+  Candidate→typed target→accepted，同时非法来源仍由已有 Gate 测试拒绝；修复没有改变生产权限。
+- package schema 1.3 的 accept→Preference query 是安装后真实纵向证据，但外部调用固定为 0；它不能外推
+  Riot/Provider 质量、账号所有权验证或公网部署成熟度。
+- 6B-6 关闭只完成 Preference/Profile/Review Memory；Training Plan/Progress 必须作为 6B-7 新检查点单独
+  教学、设计、TDD 和公共验证，不能因共享 materializer 思想而自动算完成。

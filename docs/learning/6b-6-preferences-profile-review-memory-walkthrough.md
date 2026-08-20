@@ -1,8 +1,8 @@
 # 6B-6 Preferences / Profile / Review Memory 实现后复盘
 
-> 当前证据状态：本地实现与比例回归已完成，仍等待实现提交的 exact-SHA
-> `pytest`、`postgres-migrations`、`packaging-smoke` 三个公共 job。公共门全绿前，
-> 本文不能被引用为“6B-6 已正式完成”。
+> 当前证据状态：实现/最小测试修复提交 `5531c81ec7117f5c454d320e406153086baae3ea`
+> 已由 GitHub Actions run `32387026797` 的 `pytest`、`postgres-migrations`、
+> `packaging-smoke` 三个公共 job exact-SHA 验证；6B-6 已正式完成。
 
 ## 1. 这一批解决了什么问题
 
@@ -237,4 +237,7 @@ GET /memory/players/{relationship_id}/reviews?include_history=false&limit=50
 - `docs/plans/2026-08-20-memory-types-design.md`；
 - `docs/plans/2026-08-20-memory-types-implementation.md`；
 - 6B-6 源码和测试；
-- 实现提交的 exact-SHA GitHub Actions（三 job 全绿后回填）。
+- 实现/最小测试修复提交 `5531c81ec7117f5c454d320e406153086baae3ea`；
+- GitHub Actions run `32387026797`：公共 pytest `1402 passed, 100 skipped, 1 warning,
+  110 subtests passed`，真实 PostgreSQL `142 passed, 1 warning`，Linux package smoke
+  Candidate accepted→Preference v1 query 且 `external_riot_provider_calls=0`。

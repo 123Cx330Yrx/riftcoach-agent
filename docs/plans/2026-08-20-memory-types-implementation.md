@@ -77,7 +77,9 @@
 | 安全 | 无 PUUID/body/provenance/异常泄露；外部 I/O 为 0 |
 | 教学 | 八维 evidence 和可准确面试表述 |
 
-## 当前停止点
+## 完成证据与停止点
 
-本文件完成只代表设计与实施顺序冻结。直到实现、测试、提交和 exact-SHA 三 job 全绿，
-canonical 仍为 `6B-6 / in_progress`，coverage 仍为 `planned`，不得进入 6B-7。
+实现/最小测试修复提交 `5531c81ec7117f5c454d320e406153086baae3ea` 已由 Actions run
+`32387026797` 的 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿验证；
+6B-6 coverage 已 complete。canonical 只交接到 `6B-7-training-plan-progress` 的
+prepared/waiting authorization，本文件不授权或实现 6B-7。

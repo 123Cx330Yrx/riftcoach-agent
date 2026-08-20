@@ -45,6 +45,7 @@ LEARNING_COVERAGE_CANONICAL_ORDER = (
     "6b-4-conversation-bound-recent-review-identity",
     "6b-5-memory-candidate-write-gate",
     "6b-6-preferences-profile-review-memory",
+    "6b-7-training-plan-progress",
 )
 
 

@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 6
 substage_group: "stage-6-session-memory"
-current_checkpoint: "6B-6-preferences-profile-review-memory"
-status: in_progress
-pause_reason: ""
+current_checkpoint: "6B-7-training-plan-progress"
+status: pending
+pause_reason: "waiting for explicit user authorization"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-20（RQ-070 / 6B-6 首个实现 SHA 保留真库夹具失败，正在做最小修复）
-- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1 至 6B-5 与 RQ-067 文档门均已完成 exact-SHA 公共闭环。6B-5 实现提交 `7156cb52e1ab2a976828b5a0a164c163943b56f3` 经最小真库测试清理提交 `dd7c9c8f43bac19756272aaf9555f0519e22341c` 修正公共 teardown；Actions run `32376405150` 的三 job 全绿。RQ-070 授权的 6B-6 已完成本地 typed target 纵向；首个实现 `da87cde` / Actions `32386630063` 的 pytest/package 成功，PostgreSQL 因 observed public-trend 测试 provenance 违反既定 Gate 而 141/1。唯一下一动作是提交不放宽生产 Gate 的最小测试修复并等待新 SHA 三 job；全绿前 coverage 仍为 planned，不能进入 6B-7
+- 最后更新：2026-08-20（6B-6 exact-SHA 公共闭环；6B-7 prepared/waiting authorization）
+- 主阶段：阶段 6；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-6 均已完成 exact-SHA 公共闭环。6B-6 首个实现 `da87cde` / Actions `32386630063` 保留 observed public-trend 测试 provenance 失败；不放宽生产 Gate 的最小修复 `5531c81ec7117f5c454d320e406153086baae3ea` 已由 Actions `32387026797` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿验证。6B-6 coverage 已 complete；唯一下一检查点为 `6B-7-training-plan-progress`，当前仅 prepared/waiting authorization，尚未实施
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,8 +250,8 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6B-6-preferences-profile-review-memory` 本地实现已进入公共验证前收尾；完成完整门禁、
-  cached diff、提交/推送并等待 exact-SHA 三 job。公共全绿前 coverage 保持 planned，6B-7 不进入。
+- 唯一下一步：`6B-7-training-plan-progress` 仅 prepared/waiting authorization；等待用户下一次明确
+  “继续”后，才进入初学者教学、接缝复核、专用设计与 TDD，不提前创建产品代码。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1492,3 +1492,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   返回 `SOURCE_INVALID`；生产 Gate/migration/materializer 未放宽，失败 SHA 保留为审计证据。
 - 唯一下一动作：提交最小测试 provenance 修复、推送并等待新 SHA 的 exact-SHA `pytest`、
   `postgres-migrations`、`packaging-smoke`。三 job 全绿后才允许状态收尾和 6B-7 交接。
+
+## 2026-08-20：6B-6 exact-SHA 公共闭环与 6B-7 交接
+
+- 最小测试 provenance 修复提交 `5531c81ec7117f5c454d320e406153086baae3ea` 已推送；Actions run
+  `32387026797` 精确对应该 SHA，`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均
+  completed/success。
+- 公共 pytest 为 `1402 passed, 100 skipped, 1 warning, 110 subtests passed`；真实 PostgreSQL 17
+  为 `142 passed, 1 warning`，0006 upgrade/downgrade、FK/CHECK、source/supersedes trigger、partial
+  unique、advisory lock、并发 expected-version、事务回滚和 `alembic check` metadata-head 均通过。
+- Linux package smoke 真实执行 Candidate pending→accepted→Preference v1 active query；schema 1.3，
+  value `zh-CN`，`external_riot_provider_calls=0`。这不证明真实 Riot/Provider、正式 Auth/RSO 或容量 SLA。
+- 6B-6 与八维 coverage 正式关闭。当前只把 `6B-7-training-plan-progress` 标为
+  prepared/waiting authorization；没有创建 Training Plan/Progress 产品代码，也未进入 6B-8/6B-9、
+  SSE/前端、Redis/向量库、LangGraph、Multi-Agent、新 SDK 或真实外部调用。

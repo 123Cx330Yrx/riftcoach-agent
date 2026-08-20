@@ -10,10 +10,9 @@
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
 `6B-5-memory-candidate-write-gate` is complete at `dd7c9c8` / Actions
-`32376405150`. Phase 22 - `6B-6-preferences-profile-review-memory` is in progress
-under RQ-070. The design batch is frozen in ADR-0043 and the dedicated 6B-6
-design/implementation plans. The local typed-target vertical slice is implemented;
-Task 7 is performing final review, regression, and exact-SHA public closure.
+`32376405150`. Phase 22 - `6B-6-preferences-profile-review-memory` is complete at
+`5531c81` / Actions `32387026797`. Phase 23 - `6B-7-training-plan-progress` is
+prepared and waiting for explicit user authorization; no 6B-7 product code exists.
 
 ## Phases
 
@@ -259,11 +258,10 @@ Task 7 is performing final review, regression, and exact-SHA public closure.
 
 ## Next Step
 
-`6B-5-memory-candidate-write-gate` 已由实现 `7156cb5`、最小真库测试清理 `dd7c9c8` 与 Actions
-`32376405150` 完成 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环。
-`6B-6-preferences-profile-review-memory` 的 Task 1—6 已在本地实现；唯一下一动作是 Task 7 的最终
-代码复核、完整本地门禁、实现提交/推送与 exact-SHA 三 job。公共全绿前 coverage 保持 planned，
-不得进入 6B-7。
+`6B-6-preferences-profile-review-memory` 已由实现/最小测试修复 `5531c81` 与 Actions
+`32387026797` 完成 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环，
+coverage 已 complete。唯一下一检查点是 `6B-7-training-plan-progress`，当前仅
+prepared/waiting authorization；未获用户下一次明确“继续”前不实施。
 
 ## 6A-1 Checklist
 
@@ -496,7 +494,7 @@ Task 7 is performing final review, regression, and exact-SHA public closure.
 
 ### Phase 22 - 6B-6-preferences-profile-review-memory handoff
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-070; user said “那继续”, which authorizes only this checkpoint.
 - Prepared outcome: typed owner Preference、Player Profile 与 Review Memory，注册真实 materializer，并保持 self/observed 权限与 supersede/conflict 边界。
 - [completed] 按教学合同重新审计 6B-5 接缝；已冻结 ADR-0043、专用设计和原子实施计划。
@@ -507,8 +505,17 @@ Task 7 is performing final review, regression, and exact-SHA public closure.
 - [completed] Task 4：PostgreSQL writer、advisory lock、supersede/version conflict/exactly-once；真库首写/并发/rollback 合同已加入阻塞 CI。
 - [completed] Task 5：生产 composition 注册三个真实 materializer，registry 构造 no-I/O 且不可变。
 - [completed] Task 6：owner-scoped active/history query API；更正继续走 Candidate，不提供 target PATCH。
-- [in_progress] Task 7：八维 walkthrough 已建立、coverage 保持 planned；执行完整门禁、提交/推送/exact-SHA 三 job，公共全绿后关闭 coverage 并只交接 6B-7。
+- [completed] Task 7：本地完整 `1402 passed, 100 skipped, 1 warning, 110 subtests passed`；首个 `da87cde` / Actions `32386630063` 保留测试 provenance 失败，最小修复 `5531c81` / Actions `32387026797` 的 pytest/PostgreSQL/package 三 job 全绿；coverage 已 complete，只交接 6B-7。
 - [deferred] 不提前进入 Training Plan/Progress、assistant terminal、Memory-aware Context、Auth/RSO、SSE、前端或新框架。
+
+### Phase 23 - 6B-7-training-plan-progress handoff
+
+- Status: in_progress
+- Execution state: prepared; waiting for explicit user authorization before implementation.
+- Prepared outcome: user-confirmed self-only Training Plan、每个 relationship 一个 active Plan、
+  Artifact-grounded allowlisted Progress 与不做因果/心理推断的确定性趋势比较。
+- [pending] 进入前先做初学者教学、复核 6B-6 typed materializer/version 接缝并冻结专用 ADR/设计/TDD。
+- [deferred] 当前不创建 Plan/Progress schema、migration、Repository、API 或产品测试；不进入 6B-8/6B-9。
 
 ## 6A Entry Design Checklist
 

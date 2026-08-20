@@ -2347,3 +2347,14 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   Repository 正确返回 `SOURCE_INVALID`，不是 migration/materializer/事务放宽或失效。
 - `MINIMAL-FIX`：只把该案例来源改为 `deterministic_run_fact`，保留生产 Gate 与失败 SHA；新 exact-SHA
   三 job 全绿前 6B-6 继续 open、coverage 继续 planned。
+
+### 2026-08-20：6B-6 exact-SHA 公共闭环与 6B-7 交接
+
+- `PUBLIC-CI`：最小测试修复 `5531c81ec7117f5c454d320e406153086baae3ea` 对应 Actions
+  `32387026797`；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 completed/success。
+- `EVIDENCE`：公共 pytest `1402 passed, 100 skipped, 1 warning, 110 subtests passed`；真实 PostgreSQL
+  `142 passed, 1 warning`，0006 可逆迁移、trigger/index/FK、版本并发、事务回滚与 metadata-head 通过；
+  Linux package 为 Candidate accepted→Preference v1 query，外部调用 0。
+- `CLOSED`：6B-6 与八维 coverage 正式关闭；失败 `da87cde/32386630063` 继续保留，不改写为成功。
+- `HANDOFF`：唯一下一检查点为 `6B-7-training-plan-progress` prepared/waiting authorization；没有实施
+  Plan/Progress、6B-8/6B-9 或其他 deferred 能力。

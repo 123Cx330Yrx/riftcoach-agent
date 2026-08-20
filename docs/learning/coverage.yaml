@@ -23,6 +23,7 @@ canonical_order:
   - 6b-4-conversation-bound-recent-review-identity
   - 6b-5-memory-candidate-write-gate
   - 6b-6-preferences-profile-review-memory
+  - 6b-7-training-plan-progress
 groups:
   - id: stage-0-baseline-and-reference-evidence
     sequence: 10
@@ -361,7 +362,7 @@ groups:
     sequence: 200
     covers:
       - 6B-6-preferences-profile-review-memory
-    status: planned
+    status: complete
     evidence:
       problem_and_principle:
         - docs/plans/2026-08-20-memory-types-design.md
@@ -385,3 +386,24 @@ groups:
         - docs/learning/6b-6-preferences-profile-review-memory-walkthrough.md
       interview_wording:
         - docs/learning/6b-6-preferences-profile-review-memory-walkthrough.md
+
+  - id: 6b-7-training-plan-progress
+    sequence: 210
+    covers:
+      - 6B-7-training-plan-progress
+    status: planned
+    evidence:
+      problem_and_principle:
+        - docs/plans/2026-08-19-stage6-session-memory-design.md
+      design_and_implementation:
+        - docs/plans/2026-08-19-stage6-session-memory-implementation.md
+      code_map: []
+      data_and_control_flow:
+        - docs/plans/2026-08-19-stage6-session-memory-design.md
+      verification:
+        - docs/plans/2026-08-19-stage6-session-memory-implementation.md
+      runbook: []
+      failure_security_boundary:
+        - docs/plans/2026-08-19-stage6-session-memory-design.md
+      interview_wording:
+        - docs/plans/2026-08-19-stage6-session-memory-design.md

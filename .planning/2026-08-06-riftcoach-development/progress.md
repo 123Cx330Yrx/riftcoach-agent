@@ -3209,3 +3209,13 @@
   因此 Repository 正确返回 `SOURCE_INVALID`。
 - 最小修复只把该测试案例 provenance 显式改为 `deterministic_run_fact`；不放宽 Gate、schema、trigger、
   materializer 或生产事务。下一动作是聚焦验证、提交新 SHA 并等待新的三 job。
+
+## 2026-08-20：6B-6 最小修复公共闭环与状态交接
+
+- 修复提交 `5531c81ec7117f5c454d320e406153086baae3ea` 已推送；Actions run `32387026797`
+  精确对应该 SHA，pytest、postgres-migrations、packaging-smoke 三 job 全绿。
+- 公共 pytest 为 `1402 passed, 100 skipped, 1 warning, 110 subtests passed`；PostgreSQL 17 为
+  `142 passed, 1 warning`，可逆 migration、0006 约束/trigger、并发/回滚和 metadata-head 一致性通过。
+- Linux package smoke 为 schema 1.3，Candidate accepted、Preference v1=`zh-CN`，
+  `external_riot_provider_calls=0`。6B-6 coverage 已置 complete。
+- canonical 只交接 `6B-7-training-plan-progress` prepared/waiting authorization；本轮没有实施 6B-7。
