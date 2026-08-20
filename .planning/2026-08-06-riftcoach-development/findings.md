@@ -3196,3 +3196,18 @@
   6B-6 Review Memory 版本模型错误套到时间序列。
 - 趋势由 Plan direction/tolerance 和有限数值纯函数决定，只输出 improving/declining/stable/insufficient，
   不推断原因、心理或习惯。
+
+## 2026-08-21：6B-8 公共门与 6B-9 lifecycle 接缝发现
+
+- package smoke 必须让 API ActorContext owner 与 direct Repository/selector owner 来自同一隔离配置；只给 smoke
+  容器设 owner 仍会与 API 的默认 owner 漂移。workflow job env 统一两侧才是正确证据。
+- Profile fixture 的 `MID` 不是允许值；合法枚举是 `MIDDLE`。真实 PostgreSQL 失败证明 typed materializer 没有
+  接受近似/别名，修复应改 fixture 而非放宽合同。
+- Conversation/Message 与 Relationship 已有 hidden state，但 Candidate/typed target/Plan/Progress 没有；仅靠
+  central tombstone join 会让 active partial unique 仍占位，删除后无法重建同 key active record。因此 0009 需要
+  业务表 `hidden_at`，并同步 unique predicate 和所有 read/write source filters。
+- FK 使 cascade hard delete 不适合：Task 独立引用 Conversation，target 引 Candidate，Progress 引 Plan/Task。
+  正确顺序是先统一隐藏，再按 Progress→Plan→typed target→Candidate→Message 物理 purge；Conversation/
+  Relationship/Player Subject 可以因审计/Task 引用保留 body-free hidden row。
+- `relationship_private_data` 只删除 player-scoped 私有数据；owner-global Preference 不能因一个玩家关系退出而丢失。
+  `conversation_and_derived_memory` 则按明确 provenance 删除该 Conversation 派生的 owner-global record。

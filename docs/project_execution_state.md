@@ -2,7 +2,7 @@
 state_schema: 1
 main_stage: 6
 substage_group: "stage-6-session-memory"
-current_checkpoint: "6B-8-memory-aware-context-typed-turns"
+current_checkpoint: "6B-9-lifecycle-export-exit-review"
 status: in_progress
 pause_reason: ""
 ---
@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-21（6B-7 已由 `f6d8922` / Actions `32397290175` 完成 exact-SHA 公共闭环；RQ-071 自动交接 6B-8）
-- 主阶段：阶段 6；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-7 均已完成 exact-SHA 公共闭环。6B-7 实现 `f6d89225ac5dbd568b6fad7c3c09b7c497c50762` 已由 Actions `32397290175` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿验证。当前唯一检查点为 `6B-8-memory-aware-context-typed-turns / in_progress`，只进入教学、接缝复核与 ADR/design/implementation 冻结，6B-8 产品代码尚未开始
+- 最后更新：2026-08-21（6B-8 已由 `aacc11a` / Actions `32403187972` 完成 exact-SHA 公共闭环；RQ-071 自动交接 6B-9）
+- 主阶段：阶段 6；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-8 均已完成 exact-SHA 公共闭环。6B-8 最终实现 `aacc11a1993e9d7d660f9d8d15b761dc641954b1` 已由 Actions `32403187972` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿验证。当前唯一检查点为 `6B-9-lifecycle-export-exit-review / in_progress`，先完成教学、ADR/design/implementation 冻结与独立公开设计门，再按 TDD 实现
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,8 +250,8 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6B-8-memory-aware-context-typed-turns` 已按 RQ-071 进入设计/TDD；先完成专用设计批的
-  本地门禁、独立提交和 exact-SHA 公共 CI，再写 selector/context/terminal-turn 产品代码，不进入 6B-9。
+- 唯一下一步：`6B-9-lifecycle-export-exit-review` 已按 RQ-071 进入设计/TDD；先完成专用设计批的
+  本地门禁、独立提交和 exact-SHA 公共 CI，再按计划写 lifecycle/export 产品代码。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1576,3 +1576,38 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 当前裁决 `pass-local-pending-public-ci`。这只证明 ADR/design/plan 与既有基线兼容，不证明 selector、
   manifest、Runtime binding 或 terminal Assistant 已实现。唯一下一动作是独立提交/推送设计批并等待
   exact-SHA 三 job；全绿后当前 checkpoint 保持 6B-8，内部进入 Task 1 pure contract 红灯。
+
+## 2026-08-21：6B-8 实现、失败证据与 exact-SHA 公共闭环
+
+- 初始实现 `65e69c8` 的普通/真库 job 在 governance 发现 walkthrough 漏提交，package 又暴露 Context smoke
+  binding 失败；后续 `e4a7840` 的真实 PostgreSQL 发现 Profile fixture 使用非法 `MID`，正确合同为 `MIDDLE`。
+  失败 SHA 均保留，没有放宽 schema、Gate、selector 或 owner scope。
+- `f5130ca` 修正 fixture 并让 smoke 从服务器持久 Task binding 派生 Context；真库 157 项已绿。随后发现 Compose
+  API/smoke owner 配置不一致，经 `c12f4db` 统一隔离 owner 后三 job 首次全绿。
+- 最终 evidence 输出提交 `aacc11a1993e9d7d660f9d8d15b761dc641954b1` / Actions `32403187972` 也三 job
+  completed/success。公共 pytest `1465 passed, 112 skipped, 1 warning, 110 subtests passed`；真实 PostgreSQL
+  `157 passed, 1 warning`；package schema 1.5 输出 Message+Preference+Plan 三类 Context、terminal Assistant 0、
+  `external_riot_provider_calls=0`。故意 failed Review 不冒充成功模型回复。
+- 6B-8 coverage 已 complete。当前按 RQ-071 进入 `6B-9-lifecycle-export-exit-review / in_progress`。
+
+## 2026-08-21：6B-9 教学、接缝审计与设计冻结
+
+- 对比“各 Repository 分散删除”“中央 lifecycle service + hidden_at + marker”“数据库 cascade hard delete”，
+  ADR-0046 选择中央编排：同一 SQL 短事务先隐藏并创建 body-free marker，事务外文件清理，失败保持可幂等补偿。
+- 三 scope 冻结为 `conversation_only`、`conversation_and_derived_memory`、`relationship_private_data`；Task/Run/
+  Artifact 和全局 Player Subject 仍是独立生命周期。owner-global Preference 不因单 relationship 删除而消失。
+- owner export 为有界 schema 1.0 snapshot；保留 decision/supersede/provenance 与 body-free Artifact refs，排除
+  PUUID、Key、Prompt、Provider/Tool body 和内部异常。retention/purge 使用 injected clock、bounded batch 和
+  Progress→Plan→typed target→Candidate→Message 的 FK-aware 顺序。
+- 当前只有 ADR/design/implementation plan 与 coverage planned；0009、Repository/Service/API/package 产品代码
+  尚未开始。唯一下一动作是设计批完整本地门禁、独立提交/推送和 exact-SHA 三 job。
+
+## 2026-08-21：6B-9 设计批本地门禁完成
+
+- 首次完整回归发现治理负例测试硬编码旧 6B-8 checkpoint；改为从 canonical front matter 动态读取后，治理
+  聚焦 `12 passed`，未放宽 coverage/order 规则。
+- 最终完整本地回归 `1464 passed, 113 skipped, 1 warning, 110 subtests passed`；113 skip 仍来自本机无
+  PostgreSQL/Docker 与 Windows symlink，不冒充真库/Linux 证据。
+- 两套 RAG 满冻结阈值，Harness dry-run `published`/0 revisions；compileall、pip、governance、SDK/Secret/
+  tracked-data 与 diff 门通过。当前裁决 `pass-local-pending-public-ci`。
+- 唯一下一动作：独立提交/推送设计批并等待 exact-SHA 三 job；公共全绿后才开始 Task 1 pure contracts 红灯。

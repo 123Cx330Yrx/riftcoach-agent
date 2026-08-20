@@ -14,8 +14,9 @@ Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `5531c81` / Actions `32387026797`. RQ-071 authorizes the strict sequential chain
 `6B-7 → 6B-8 → 6B-9` without per-step approval. Phase 23 -
 `6B-7-training-plan-progress` is complete at `f6d8922` / Actions `32397290175`.
-Phase 24 - `6B-8-memory-aware-context-typed-turns` is in progress at its
-design/TDD gate; no 6B-9 work may begin before 6B-8 exact-SHA public closure.
+Phase 24 - `6B-8-memory-aware-context-typed-turns` is complete at `aacc11a` /
+Actions `32403187972`. Phase 25 - `6B-9-lifecycle-export-exit-review` is in
+progress at its design/TDD gate.
 
 ## Phases
 
@@ -264,8 +265,9 @@ design/TDD gate; no 6B-9 work may begin before 6B-8 exact-SHA public closure.
 `6B-6-preferences-profile-review-memory` 已由实现/最小测试修复 `5531c81` 与 Actions
 `32387026797` 完成 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环，
 coverage 已 complete。6B-7 又由 `f6d8922` / Actions `32397290175` 完成 exact-SHA 三 job 公共闭环。
-RQ-071 已授权连续完成 `6B-7→6B-8→6B-9`；当前唯一动作是
-`6B-8-memory-aware-context-typed-turns` 的专用设计公开验证，随后按 TDD 实现。6B-8 正式闭环前不得进入 6B-9。
+RQ-071 已授权连续完成 `6B-7→6B-8→6B-9`；6B-8 已由 `aacc11a` / Actions `32403187972`
+完成 exact-SHA 三 job。当前唯一动作是 `6B-9-lifecycle-export-exit-review` 的专用设计公开验证，随后按
+TDD 实现 owner export、三种删除、retention/purge/补偿与完整 exit matrix。
 
 ## 6A-1 Checklist
 
@@ -531,7 +533,7 @@ RQ-071 已授权连续完成 `6B-7→6B-8→6B-9`；当前唯一动作是
 
 ### Phase 24 - 6B-8-memory-aware-context-typed-turns
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-071；6B-7 exact-SHA 公共闭环后自动进入，不需要逐项批准。
 - Prepared outcome: bounded legal Message/Memory selector、private body-free manifest、existing ContextBuilder/
   Runtime/Harness data-only composition，以及只在可信终态后持久化的 typed Assistant turn/Candidate seam。
@@ -540,8 +542,21 @@ RQ-071 已授权连续完成 `6B-7→6B-8→6B-9`；当前唯一动作是
 - [completed] 冻结 ADR-0045、专用设计和原子 TDD 实施计划；产品代码尚未开始。
 - [completed] 设计批本地门禁：完整 1445 passed/106 skipped、两套 RAG、Harness dry-run、compileall、
   governance、SDK/Secret/YAML/pip/diff 全绿。
-- [in_progress] 独立提交/推送设计批并等待 exact-SHA 三 job；全绿后从 Task 1 pure contracts 红灯开始。
-- [deferred] 6B-8 公共闭环前不进入 6B-9 lifecycle/export。
+- [completed] 设计 `9ba2303/32398923809` 与最终实现 `aacc11a/32403187972` 均完成 exact-SHA 三 job。
+- [completed] 6B-8 coverage complete，并按 RQ-071 交接 6B-9 lifecycle/export。
+
+### Phase 25 - 6B-9-lifecycle-export-exit-review
+
+- Status: in_progress
+- [x] 6B-8 最终 `aacc11a` / Actions `32403187972` exact-SHA 三 job 公共闭环；
+- [x] 初学者教学、现有 6A deletion/retention 与 6B 数据 FK 接缝审计；
+- [x] 比较分散 Repository、中央 lifecycle service、FK cascade hard delete 三种方案；
+- [x] 冻结 ADR-0046、专用 design 与 implementation plan；
+- [x] 设计批本地门禁：1464/113 skips、两套 RAG、Harness、compileall、pip、governance/diff；
+- [ ] 设计批独立提交/推送与 exact-SHA 三 job；
+- [ ] pure contracts 红灯、0009/Repository/Service/API/package TDD；
+- [ ] 八维 walkthrough、Session/Memory V1 exit matrix、完整本地门禁；
+- [ ] 独立实现提交、推送与 exact-SHA 三 job，随后正式关闭 6B-9。
 
 ## 6A Entry Design Checklist
 

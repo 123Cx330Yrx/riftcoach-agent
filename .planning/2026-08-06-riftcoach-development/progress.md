@@ -3282,3 +3282,21 @@
   tracked Secret/run-data、YAML、pip 与 diff check 全绿。
 - 设计批当前为 `pass-local-pending-public-ci`；下一动作是 cached diff/独立提交/推送并等待 exact-SHA 三 job，
   不提前写 6B-8 产品代码。
+
+## 2026-08-21：6B-8 exact-SHA 公共闭环与 6B-9 设计启动
+
+- 6B-8 最终 SHA `aacc11a1993e9d7d660f9d8d15b761dc641954b1` / Actions `32403187972` 三 job 全绿；
+  pytest `1465 passed, 112 skipped, 1 warning, 110 subtests passed`，真实 PostgreSQL `157 passed, 1 warning`，
+  Linux package schema 1.5/context records 3/assistant 0/external calls 0。
+- 首轮漏提交 walkthrough、非法 `MID` fixture、Task binding 与 Compose API/smoke owner 不一致均由公开门发现；
+  失败 SHA 保留，只做最小修复，未放宽生产 owner/role/schema/selector。
+- coverage 已置 complete，canonical 切到 `6B-9-lifecycle-export-exit-review / in_progress`。
+- 已完成 6A deletion/retention 与 6B FK/query 接缝审计，新增 ADR-0046、专用 design/implementation plan；当前无
+  0009 或 lifecycle/export 产品代码。下一动作是设计批本地门禁和独立 exact-SHA 公共验证。
+
+## 2026-08-21：6B-9 设计批本地门禁完成
+
+- 治理负例从硬编码旧 checkpoint 改为读取 canonical，12 项治理聚焦通过；完整本地 pytest
+  `1464 passed, 113 skipped, 1 warning, 110 subtests passed`。
+- 两套 RAG、Harness dry-run、compileall、pip、governance、SDK/Secret/tracked-data 与 diff 门全绿。
+- 当前 `pass-local-pending-public-ci`；下一动作是设计批独立提交/推送和 exact-SHA 三 job，不提前写 0009。

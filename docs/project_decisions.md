@@ -1525,3 +1525,14 @@ run-scoped `MemoryAwareContextBuilder` 装饰现有 Builder，而不是原地把
 manifest 只保存 body-free ID/version/digest/count/omission。Assistant 只有在 SQL Task succeeded、
 publication published/degraded 与 final Artifact digest 精确匹配后才能追加。当前 output 没有 typed
 proposal，不能从报告自然语言猜 Candidate；只建立显式 proposal seam 并继续经过 Candidate gate。
+
+### 6B-8 公共闭环与 6B-9 lifecycle/export 架构（2026-08-21）
+
+`aacc11a` / Actions `32403187972` 已完成 6B-8 最终 exact-SHA 三 job；selector、body-free manifest、Runtime
+binding、0008 terminal writer 和 package schema 1.5 均有公共证据。RQ-071 自动交接 6B-9。
+
+ADR-0046 决定采用 centralized owner lifecycle service：PostgreSQL 同事务先隐藏选中数据并创建 body-free
+deletion marker，事务外清理失败只留下 pending compensation，不重新暴露正文。三 scope 固定为
+conversation-only、conversation+derived-memory、relationship-private-data；Task/Run/Artifact 与全局 Player
+Subject 保持独立生命周期。导出是 owner-scoped bounded snapshot，retention/purge 使用 injected clock 与
+FK-aware bounded batch。不采用分散 Repository delete 或 FK cascade hard delete。

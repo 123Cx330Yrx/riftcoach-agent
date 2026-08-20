@@ -47,6 +47,7 @@ LEARNING_COVERAGE_CANONICAL_ORDER = (
     "6b-6-preferences-profile-review-memory",
     "6b-7-training-plan-progress",
     "6b-8-memory-aware-context-typed-turns",
+    "6b-9-lifecycle-export-exit-review",
 )
 
 

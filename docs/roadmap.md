@@ -21,7 +21,7 @@
 | 3 | Provider 与 Tool Runtime | 外部模型和工具如何统一、可靠地调用 | EchoMind 迁移重构 | 已完成，进入维护 |
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
-| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1 至 6B-7 与 RQ-067 前置门已完成 exact-SHA 公共闭环；RQ-071 已授权顺序推进，当前 6B-8 Memory-aware Context/typed turns 设计/TDD 进行中 |
+| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1 至 6B-8 与 RQ-067 前置门已完成 exact-SHA 公共闭环；RQ-071 已授权顺序推进，当前 6B-9 lifecycle/export/exit review 设计/TDD 进行中 |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 未开始 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
@@ -408,9 +408,16 @@ self-only Candidate-backed Plan、每 relationship 一个 active、0007、final-
 pytest、真实 PostgreSQL 与 Linux package 三 job 全绿验证。公共 pytest `1445 passed, 106 skipped`，
 真库 `151 passed`，package schema 1.4 且外部调用为 0。当前按 RQ-071 进入 6B-8；6B-9 尚未进入。
 
-### 6B-8 Memory-aware Context / Typed Turns（RQ-071，设计中）
+### 6B-8 Memory-aware Context / Typed Turns（RQ-071，已公共闭环）
 
 ADR-0045 与专用设计/实施计划选择 run-scoped decorator：服务器 Task binding 驱动 owner-scoped selector，
 合法 Message/Memory 只作为 data-only whole sections 进入既有 ContextBuilder/Runtime/Harness，同一 ceiling
 不可抬高；私有 manifest 只保存 ID/version/digest/count/reason。Assistant 只在 succeeded Task、published/
-degraded publication 与 final Artifact digest 全部匹配后持久化。当前尚无 6B-8 产品代码或 migration。
+degraded publication 与 final Artifact digest 全部匹配后持久化。最终 `aacc11a` / Actions `32403187972`
+的 pytest、真实 PostgreSQL 与 Linux package 三 job 已全绿，当前进入 6B-9。
+
+### 6B-9 Lifecycle / Export / Exit Review（RQ-071，设计中）
+
+ADR-0046 与专用设计/实施计划选择 centralized owner lifecycle service、各私有业务表 `hidden_at`、body-free
+deletion marker、owner-scoped bounded export 与 FK-aware purge。三 scope 为 conversation-only、conversation+
+derived Memory、relationship private data；Task/Artifact 与全局 Player Subject 保持独立生命周期。产品实现尚未开始。

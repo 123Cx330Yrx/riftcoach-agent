@@ -112,12 +112,18 @@ def test_project_governance_requires_learning_coverage_file(tmp_path):
 
 def test_project_governance_requires_current_checkpoint_coverage(tmp_path):
     _copy_governance_tree(tmp_path)
+    state_text = (
+        tmp_path / "docs" / "project_execution_state.md"
+    ).read_text(encoding="utf-8")
+    checkpoint = state_text.split('current_checkpoint: "', maxsplit=1)[1].split(
+        '"', maxsplit=1
+    )[0]
     coverage = _read_learning_coverage(tmp_path)
     for group in coverage["groups"]:
         group["covers"] = [
             value
             for value in group["covers"]
-            if value != "6B-8-memory-aware-context-typed-turns"
+            if value != checkpoint
         ]
     _write_learning_coverage(tmp_path, coverage)
 
