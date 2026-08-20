@@ -187,6 +187,7 @@ jobs:
     timeout-minutes: 15
     env:
       COMPOSE_PROJECT_NAME: riftcoach-packaging-smoke
+      RIFTCOACH_LOCAL_OWNER_ID: packaging-smoke-owner
 
     steps:
       - name: Check out repository
