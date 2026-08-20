@@ -3167,5 +3167,35 @@
   与既有基线兼容，不证明 6B-6 target 业务代码已实现。
 - 设计批关闭后，canonical/active plan 唯一 in-progress 任务切换为 Task 1 pure typed contract；外部
   Riot/Provider/Key I/O 仍为 0。
-- 下一动作是 Task 1 的 pure typed payload/version contract 红灯；coverage 继续 planned，canonical 仍为
-  `6B-6 / in_progress`。
+
+## 2026-08-20：6B-6 Task 1 pure typed contract 完成
+
+- 新增 `app/memory/typed_models.py`：严格 `value + expected_version` envelope、三类 target/key allowlist、
+  self/observed 权限、payload schema/长度/控制字符/finite number 与规范化输出；该模块无 SQL/文件/网络依赖。
+- 首轮聚焦红灯为 3 failed/8 passed：strict Enum 不接受字符串输入、未知 preference key 原因码过宽；只增加
+  显式 allowlist Enum 规范化并拆分未知 key 原因码后为 11 passed。
+- 与既有 Candidate model/gate/service/records 相邻回归为 30 passed，compileall/diff check 通过；没有 migration、
+  Repository、materializer、API 或外部调用。
+- 下一动作切换为 Task 2 materializer pure contract/Fake writer 边界。
+
+## 2026-08-20：6B-6 本地纵向切片完成，进入公共验证前审查
+
+- Task 2 完成三个 materializer + 同一事务 writer port；错误 kind 零调用、无 commit/rollback 依赖和异常传播
+  聚焦通过。Task 3 完成三张 ORM 表、0006 可逆 migration、partial unique、复合 FK 与 insert/update trigger；
+  离线 SQL 可生成，真库仍待 CI。
+- Task 4 完成 PostgreSQL advisory lock、active row lock、expected-version、supersede/insert、source replay；
+  typed payload/version 冲突映射为 422/409 且 Candidate 保持 pending。真库首写、历史、并发 stale writer、
+  rollback 与 direct SQL trigger 合同已加入阻塞 job。
+- Task 5 将完整不可变 materializer registry 接入 production lifespan；Task 6 完成 owner-scoped
+  Preference/Profile/Review active/history GET，Profile 对 observed/cross-owner 安全 not-found，无 target PATCH。
+- package smoke 升级为 Candidate pending→accept→Preference active query，结果 schema 1.3；仍强制
+  `external_riot_provider_calls=0`。旧 migration-head 与 OpenAPI exact-path 测试已同步到 0006/三个新 GET。
+- 当前聚焦/相邻为 `128 passed, 19 skipped, 1 warning`；19 skip 全因本机无 PostgreSQL/Docker，不能视为
+  真库/package 成功。walkthrough 和八维 evidence 已建立，coverage 保持 planned。
+- 提交前复核修正 typed error disposition 曾误放在 Candidate create 异常块的问题，并新增 metrics/page
+  两项纯合同与 terminal-source/supersedes-chain 两项真库合同；最终完整本地回归为
+  `1402 passed, 100 skipped, 1 warning, 110 subtests passed`。相对 6B-5 公共基线新增 12 个本地 skip，
+  均为 0006/typed target 真库测试。RAG development/independent holdout 指标满门槛，
+  Harness dry-run `published`/0 revisions，compileall、YAML、治理、SDK/Secret/tracked-data 与 diff 门均通过。
+- 下一动作是完整回归与横向门禁、最终 diff/cached review、提交推送和 exact-SHA 三 job；公共全绿前
+  canonical 保持 `6B-6 / in_progress`，不得进入 6B-7。

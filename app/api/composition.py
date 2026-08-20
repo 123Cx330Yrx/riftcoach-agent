@@ -52,11 +52,16 @@ from app.conversations.service import (
     ConversationServiceError,
 )
 from app.memory.models import CreateMemoryCandidateCommand, MemoryCandidateView
+from app.memory.composition import build_typed_memory_materializers
 from app.memory.ports import MemoryCandidateServicePort
 from app.memory.service import MemoryCandidateService, MemoryCandidateServiceError
+from app.memory.typed_models import TypedMemoryPage
+from app.memory.typed_ports import TypedMemoryQueryServicePort
+from app.memory.typed_service import TypedMemoryQueryService, TypedMemoryQueryServiceError
 from app.persistence.config import load_database_settings
 from app.persistence.conversation_repository import PostgresConversationRepository
 from app.persistence.memory_repository import PostgresMemoryCandidateRepository
+from app.persistence.typed_memory_query_repository import PostgresTypedMemoryQueryRepository
 from app.persistence.database import build_engine, build_session_factory
 from app.persistence.player_repository import PostgresPlayerRepository
 from app.persistence.task_repository import PostgresTaskRepository
@@ -441,6 +446,62 @@ class _MemoryCandidateServiceProxy:
         )
 
 
+class _TypedMemoryQueryServiceProxy:
+    def __init__(self) -> None:
+        self._target: TypedMemoryQueryServicePort | None = None
+
+    def bind(self, target: TypedMemoryQueryServicePort | None) -> None:
+        self._target = target
+
+    def _service(self) -> TypedMemoryQueryServicePort:
+        if self._target is None:
+            raise TypedMemoryQueryServiceError("service_unavailable")
+        return self._target
+
+    def preferences(
+        self,
+        *,
+        owner_id: str,
+        include_history: bool,
+        limit: int,
+    ) -> TypedMemoryPage:
+        return self._service().preferences(
+            owner_id=owner_id,
+            include_history=include_history,
+            limit=limit,
+        )
+
+    def profile(
+        self,
+        *,
+        owner_id: str,
+        relationship_id: UUID,
+        include_history: bool,
+        limit: int,
+    ) -> TypedMemoryPage:
+        return self._service().profile(
+            owner_id=owner_id,
+            relationship_id=relationship_id,
+            include_history=include_history,
+            limit=limit,
+        )
+
+    def reviews(
+        self,
+        *,
+        owner_id: str,
+        relationship_id: UUID,
+        include_history: bool,
+        limit: int,
+    ) -> TypedMemoryPage:
+        return self._service().reviews(
+            owner_id=owner_id,
+            relationship_id=relationship_id,
+            include_history=include_history,
+            limit=limit,
+        )
+
+
 class _TaskDeletionProxy:
     def __init__(self) -> None:
         self._target: TaskDeletionPort | None = None
@@ -507,6 +568,7 @@ def create_composed_app(
     player_link_proxy = _PlayerLinkServiceProxy()
     conversation_proxy = _ConversationServiceProxy()
     memory_candidate_proxy = _MemoryCandidateServiceProxy()
+    typed_memory_query_proxy = _TypedMemoryQueryServiceProxy()
     query_proxy = _RunQueryProxy()
     deletion_proxy = _TaskDeletionProxy()
     actor_proxy = _ActorProviderProxy()
@@ -529,6 +591,9 @@ def create_composed_app(
             memory_candidate_repository = PostgresMemoryCandidateRepository(
                 session_factory
             )
+            typed_memory_query_repository = PostgresTypedMemoryQueryRepository(
+                session_factory
+            )
             task_proxy.bind(
                 ReviewTaskService(
                     repository=repository,
@@ -547,8 +612,11 @@ def create_composed_app(
             memory_candidate_proxy.bind(
                 MemoryCandidateService(
                     repository=memory_candidate_repository,
-                    materializers={},
+                    materializers=build_typed_memory_materializers(),
                 )
+            )
+            typed_memory_query_proxy.bind(
+                TypedMemoryQueryService(repository=typed_memory_query_repository)
             )
             deletion_proxy.bind(TaskDeletionService(
                 repository=repository,
@@ -588,6 +656,7 @@ def create_composed_app(
             player_link_proxy.bind(None)
             conversation_proxy.bind(None)
             memory_candidate_proxy.bind(None)
+            typed_memory_query_proxy.bind(None)
             query_proxy.bind(None)
             deletion_proxy.bind(None)
         try:
@@ -597,6 +666,7 @@ def create_composed_app(
             player_link_proxy.bind(None)
             conversation_proxy.bind(None)
             memory_candidate_proxy.bind(None)
+            typed_memory_query_proxy.bind(None)
             query_proxy.bind(None)
             deletion_proxy.bind(None)
             actor_proxy.bind(None)
@@ -618,6 +688,7 @@ def create_composed_app(
         observability=observability,
         conversation_service=conversation_proxy,
         memory_candidate_service=memory_candidate_proxy,
+        typed_memory_query_service=typed_memory_query_proxy,
     )
     app.state.database_engine = None
     return app

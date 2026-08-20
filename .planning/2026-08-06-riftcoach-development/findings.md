@@ -3121,3 +3121,36 @@
   PostgreSQL transaction advisory lock；Fake/SQLite 不能证明这些数据库语义。
 - 6B-6 更正不增加绕过 Candidate 的 PATCH；客户端先读取版本，再创建带 expected_version 的新 Candidate，
   由同一 gate/materializer 链完成审计和冲突返回。
+
+## 2026-08-20：Task 1 合同发现
+
+- 项目全局 Pydantic strict model 会拒绝普通字符串直接解析 StrEnum；公开 JSON 又天然是字符串，因此需要在
+  allowlist 边界显式转换为 Enum，再交给 strict payload model，不能简单关闭 strict。
+- 先做 shape policy 再做 payload schema 能产生稳定安全原因码；未知 key 应与允许 key 的错误 operation 分开，
+  否则客户端无法区分“功能不支持”和“调用方式错误”。
+- `expected_version` 是写控制字段，不进入 normalized target payload；bool 在 Python 中是 int 子类，必须显式
+  拒绝，避免 `true` 被误解释为 version 1。
+
+## 2026-08-20：6B-6 实现发现
+
+- 只有 active row lock 无法串行“当前还没有行”的首次写入；scope/key 的 transaction advisory lock 与
+  partial unique index 必须同时存在，前者提供确定顺序，后者兜住应用错误。
+- target insert trigger 必须在 Candidate 仍为 pending 时验证 source kind/scope/key/operation/identity；外层
+  Repository 随后才把 Candidate 改 accepted，这个顺序正好与同事务 materializer 合同一致。
+- Owner Preference target 保存 Candidate 的 Conversation identity 作为 provenance/FK，但查询业务作用域只按
+  owner+key；从不同 Conversation 更新偏好仍进入同一版本链。
+- active/history API 如果开放直接 PATCH，会绕过 Candidate 来源/确认/版本审计；6B-6 因此只提供 GET，更正
+  通过新 Candidate 的 expected_version 完成。
+- public typed response 可以返回已批准 normalized payload，但不返回 PUUID、source Candidate、提案原文、
+  producer/confidence、Prompt 或 SQL；这与 Candidate body-safe DTO 的边界不同但不冲突。
+
+## 2026-08-20：6B-6 提交前复核发现
+
+- typed payload/version 异常最初被误放在 Candidate create 的异常块；真实异常发生于 accept 内的
+  materializer/write 路径，因此会被过宽映射为 Repository 503。最小修复把两项 disposition 转换移入
+  `accept_candidate()`，让 payload invalid 保持 422、stale version 保持 409，事务回滚后 Candidate 仍 pending。
+- 最后加入的 Review Summary metrics 和 100 条 page 上限需要直接合同测试；finite value、20 metrics 上限与
+  101 条 page 拒绝现已固定，不能只依赖间接 API limit。
+- insert trigger 已校验 pending Candidate 和 supersedes chain，但原真库测试只覆盖 kind mismatch/payload
+  mutation；新增 terminal Candidate source 与跳号 version chain 两类 direct-SQL 负例，交由公共 PostgreSQL
+  job 补证。它们不把本机 skip 冒充通过。

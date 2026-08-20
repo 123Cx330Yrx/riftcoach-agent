@@ -35,6 +35,8 @@ MemoryCandidateServiceErrorCode: TypeAlias = Literal[
     "candidate_terminal_conflict",
     "candidate_expired",
     "memory_target_unavailable",
+    "memory_payload_invalid",
+    "memory_version_conflict",
     "service_unavailable",
 ]
 _ERROR_CODES = frozenset(
@@ -47,6 +49,8 @@ _ERROR_CODES = frozenset(
         "candidate_terminal_conflict",
         "candidate_expired",
         "memory_target_unavailable",
+        "memory_payload_invalid",
+        "memory_version_conflict",
         "service_unavailable",
     }
 )
@@ -235,6 +239,10 @@ class MemoryCandidateService:
             raise MemoryCandidateServiceError("candidate_not_found")
         if result.disposition is CandidateMutationDisposition.TARGET_UNAVAILABLE:
             raise MemoryCandidateServiceError("memory_target_unavailable")
+        if result.disposition is CandidateMutationDisposition.TARGET_INVALID:
+            raise MemoryCandidateServiceError("memory_payload_invalid")
+        if result.disposition is CandidateMutationDisposition.VERSION_CONFLICT:
+            raise MemoryCandidateServiceError("memory_version_conflict")
         if result.disposition is CandidateMutationDisposition.TERMINAL_CONFLICT:
             raise MemoryCandidateServiceError("candidate_terminal_conflict")
         if result.disposition is CandidateMutationDisposition.EXPIRED:

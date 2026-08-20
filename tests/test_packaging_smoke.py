@@ -148,6 +148,29 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                         "next_after_sequence": None,
                     },
                 )
+            if url.endswith("/memory/preferences"):
+                return Response(
+                    200,
+                    {
+                        "schema_version": "1.0",
+                        "records": [
+                            {
+                                "schema_version": "1.0",
+                                "record_id": "90000000-0000-4000-8000-000000000009",
+                                "target_kind": "owner_preference",
+                                "relationship_id": None,
+                                "relationship_role": None,
+                                "memory_key": "report_language",
+                                "version": 1,
+                                "status": "active",
+                                "payload": {"value": "zh-CN"},
+                                "supersedes_record_id": None,
+                                "created_at": "2026-08-20T00:01:00Z",
+                                "updated_at": "2026-08-20T00:01:00Z",
+                            }
+                        ],
+                    },
+                )
             if "/memory-candidates/" in url:
                 return Response(
                     200,
@@ -160,12 +183,12 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                         "memory_key": "report_language",
                         "operation": "set",
                         "requires_confirmation": False,
-                        "status": "rejected",
+                        "status": "accepted",
                         "gate_policy_version": "memory-gate-v1",
                         "created_at": "2026-08-20T00:00:00Z",
                         "expires_at": "2026-09-19T00:00:00Z",
                         "decided_at": "2026-08-20T00:01:00Z",
-                        "decision_reason_code": "user_rejected",
+                        "decision_reason_code": "user_confirmed",
                     },
                 )
             if url.endswith(f"/conversations/{conversation_id}"):
@@ -277,7 +300,7 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                         "decision_reason_code": None,
                     },
                 )
-            if url.endswith(f"/memory-candidates/{memory_candidate_id}/reject"):
+            if url.endswith(f"/memory-candidates/{memory_candidate_id}/accept"):
                 return Response(
                     200,
                     {
@@ -289,12 +312,12 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                         "memory_key": "report_language",
                         "operation": "set",
                         "requires_confirmation": False,
-                        "status": "rejected",
+                        "status": "accepted",
                         "gate_policy_version": "memory-gate-v1",
                         "created_at": "2026-08-20T00:00:00Z",
                         "expires_at": "2026-09-19T00:00:00Z",
                         "decided_at": "2026-08-20T00:01:00Z",
-                        "decision_reason_code": "user_rejected",
+                        "decision_reason_code": "user_confirmed",
                     },
                 )
             if url.endswith(
@@ -379,7 +402,7 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         http=Http(),
     )
 
-    assert result.schema_version == "1.2"
+    assert result.schema_version == "1.3"
     assert result.task_status == "failed"
     assert result.link_status == "succeeded"
     assert str(result.link_task_id) == link_task_id
@@ -388,7 +411,9 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     assert str(result.message_id) == message_id
     assert result.message_sequence_no == 1
     assert str(result.memory_candidate_id) == memory_candidate_id
-    assert result.memory_candidate_status == "rejected"
+    assert result.memory_candidate_status == "accepted"
+    assert result.memory_preference_version == 1
+    assert result.memory_preference_value == "zh-CN"
     assert str(result.conversation_review_task_id) == conversation_task_id
     assert result.conversation_review_run_id == conversation_run_id
     assert result.conversation_review_status == "failed"

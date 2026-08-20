@@ -20,6 +20,8 @@ MemoryCandidateApiErrorCode: TypeAlias = Literal[
     "candidate_terminal_conflict",
     "candidate_expired",
     "memory_target_unavailable",
+    "memory_payload_invalid",
+    "memory_version_conflict",
     "service_unavailable",
 ]
 

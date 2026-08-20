@@ -40,10 +40,12 @@ from app.memory.ports import (
     MaterializerRegistry,
     MemoryCandidateRepositoryError,
 )
+from app.memory.typed_models import TypedMemoryContractError
 from app.persistence.conversation_records import ConversationMessageRecord, ConversationRecord
 from app.persistence.memory_records import MemoryCandidateRecord
 from app.persistence.player_records import OwnerPlayerRelationshipRecord
 from app.persistence.task_record import ReviewTaskRecord
+from app.persistence.typed_memory_writer import MemoryTargetVersionConflict
 
 
 SessionFactory = Callable[[], Session]
@@ -400,6 +402,14 @@ class PostgresMemoryCandidateRepository:
                     disposition=CandidateMutationDisposition.ACCEPTED,
                     candidate=accepted,
                 )
+        except MemoryTargetVersionConflict:
+            return CandidateMutationResult(
+                disposition=CandidateMutationDisposition.VERSION_CONFLICT
+            )
+        except TypedMemoryContractError:
+            return CandidateMutationResult(
+                disposition=CandidateMutationDisposition.TARGET_INVALID
+            )
         except MemoryCandidateRepositoryError:
             raise
         except IntegrityError:

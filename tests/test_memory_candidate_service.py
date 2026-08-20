@@ -251,6 +251,22 @@ def test_accept_fails_closed_when_no_typed_materializer_is_registered() -> None:
     assert repository.candidates[0].status is CandidateStatus.PENDING
 
 
+@pytest.mark.parametrize(
+    ("disposition", "error_code"),
+    [
+        (CandidateMutationDisposition.TARGET_INVALID, "memory_payload_invalid"),
+        (CandidateMutationDisposition.VERSION_CONFLICT, "memory_version_conflict"),
+    ],
+)
+def test_typed_target_failures_map_to_safe_service_errors(disposition, error_code) -> None:
+    repository = FakeRepository()
+    repository.next_result = CandidateMutationResult(disposition=disposition)
+    service = make_service(repository)
+    with pytest.raises(MemoryCandidateServiceError) as error:
+        service.accept(owner_id=OWNER, candidate_id=CANDIDATE_ID, actor_id=OWNER)
+    assert error.value.code == error_code
+
+
 def test_repository_failure_is_not_leaked_as_raw_exception() -> None:
     repository = FakeRepository()
     repository.failure = RuntimeError("database password leaked")

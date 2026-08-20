@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-20（RQ-070 / 6B-6 设计批已通过公共 CI，Task 1 开始）
-- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1 至 6B-5 与 RQ-067 文档门均已完成 exact-SHA 公共闭环。6B-5 实现提交 `7156cb52e1ab2a976828b5a0a164c163943b56f3` 经最小测试清理提交 `dd7c9c8f43bac19756272aaf9555f0519e22341c` 修正公共真库 teardown；Actions run `32376405150` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，coverage 已 complete。RQ-070 已授权 6B-6，ADR-0043 和专用计划已冻结，下一动作是 Task 1 pure typed contract 红灯
+- 最后更新：2026-08-20（RQ-070 / 6B-6 本地实现与提交前复核完成，等待实现 SHA 公共闭环）
+- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1 至 6B-5 与 RQ-067 文档门均已完成 exact-SHA 公共闭环。6B-5 实现提交 `7156cb52e1ab2a976828b5a0a164c163943b56f3` 经最小真库测试清理提交 `dd7c9c8f43bac19756272aaf9555f0519e22341c` 修正公共 teardown；Actions run `32376405150` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，coverage 已 complete。RQ-070 授权的 6B-6 已完成本地 typed target 纵向、提交前静态修复与完整门禁；唯一下一动作是实现提交/推送并等待同一 SHA 三 job，公共全绿前 coverage 仍为 planned，不能进入 6B-7
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,9 +250,8 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6B-6-preferences-profile-review-memory` 设计批已获 RQ-070 授权并在进行中；先执行
-  ADR-0043/6B-6 专用计划的 Task 1 pure typed payload/version contract，再进入 migration、Repository、
-  materializer 与查询 API。assistant terminal、Memory-aware Context、Auth/RSO、SSE、前端与新框架仍未进入。
+- 唯一下一步：`6B-6-preferences-profile-review-memory` 本地实现已进入公共验证前收尾；完成完整门禁、
+  cached diff、提交/推送并等待 exact-SHA 三 job。公共全绿前 coverage 保持 planned，6B-7 不进入。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1471,3 +1470,21 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   LangGraph、Multi-Agent、新 SDK 或真实 Riot/Provider 调用。
 - 设计批公共闭环后，下一动作是按实施计划 Task 1 先写 typed payload/version pure contract 红灯测试；coverage 继续
   `planned`，直到实现、本地门禁和 exact-SHA 三 job 公共闭环。
+
+## 2026-08-20：6B-6 本地实现完成，等待 exact-SHA 公共门
+
+- Pure typed envelope/key/role policy、三个 materializer、三张 ORM 表、0006 migration/trigger、PostgreSQL
+  version writer、生产 registry、owner-scoped query Service/API 和 package smoke schema 1.3 已在工作树完成。
+- Candidate accept 现在可在同一事务中执行 advisory lock、expected-version、supersede/insert，再写 accepted；
+  typed payload/version 失败安全返回并保持 pending。更正仍走 Candidate，没有开放 target PATCH。
+- 首轮聚焦/相邻测试为 `128 passed, 19 skipped, 1 warning`；提交前复核又新增 metrics/page 两项纯合同和
+  terminal-source/supersedes-chain 两项真库合同，并修正 accept 事务的 typed error disposition 接线。真实
+  migration/FK/trigger/partial unique/advisory lock/并发/rollback 与 Linux package accept→query 必须由公共
+  job 补证，当前不能声称 6B-6 已完成。
+- 最终完整本地回归为 `1402 passed, 100 skipped, 1 warning, 110 subtests passed`；100 个 skip 全因本机没有
+  PostgreSQL/Docker。两套 RAG 指标满门槛，Harness
+  dry-run 为 `published`/0 revisions，compileall、YAML、治理、SDK/Secret/tracked-data 与 diff 门通过。
+- `docs/learning/6b-6-preferences-profile-review-memory-walkthrough.md` 已覆盖八维 evidence，coverage 仍为
+  `planned`。外部 Riot/Provider/Key I/O 为 0；6B-7 及后续能力未进入。
+- 唯一下一动作：完整本地门禁→cached diff→实现提交/推送→等待 exact-SHA `pytest`、
+  `postgres-migrations`、`packaging-smoke`。三 job 全绿后才允许状态收尾和 6B-7 交接。

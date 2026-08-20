@@ -12,7 +12,8 @@ Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `6B-5-memory-candidate-write-gate` is complete at `dd7c9c8` / Actions
 `32376405150`. Phase 22 - `6B-6-preferences-profile-review-memory` is in progress
 under RQ-070. The design batch is frozen in ADR-0043 and the dedicated 6B-6
-design/implementation plans; no product implementation has started yet.
+design/implementation plans. The local typed-target vertical slice is implemented;
+Task 7 is performing final review, regression, and exact-SHA public closure.
 
 ## Phases
 
@@ -260,8 +261,9 @@ design/implementation plans; no product implementation has started yet.
 
 `6B-5-memory-candidate-write-gate` 已由实现 `7156cb5`、最小真库测试清理 `dd7c9c8` 与 Actions
 `32376405150` 完成 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环。
-唯一下一动作是 `6B-6-preferences-profile-review-memory` 的 Task 1：先写 typed payload/version pure
-contract 红灯；设计批已获授权，但尚未创建具体长期 Memory 产品代码。
+`6B-6-preferences-profile-review-memory` 的 Task 1—6 已在本地实现；唯一下一动作是 Task 7 的最终
+代码复核、完整本地门禁、实现提交/推送与 exact-SHA 三 job。公共全绿前 coverage 保持 planned，
+不得进入 6B-7。
 
 ## 6A-1 Checklist
 
@@ -499,13 +501,13 @@ contract 红灯；设计批已获授权，但尚未创建具体长期 Memory 产
 - Prepared outcome: typed owner Preference、Player Profile 与 Review Memory，注册真实 materializer，并保持 self/observed 权限与 supersede/conflict 边界。
 - [completed] 按教学合同重新审计 6B-5 接缝；已冻结 ADR-0043、专用设计和原子实施计划。
 - [completed] 设计提交 `e44d48f` / Actions `32381553145` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job exact-SHA 全绿；设计批正式关闭。
-- [in_progress] Task 1：typed payload/version envelope、scope/role/key policy pure contract 红灯与最小实现。
-- [pending] Task 2：三个 materializer pure contract 与 Fake Session rollback/conflict 证据。
-- [pending] Task 3：三张 typed target ORM、Alembic migration、FK/CHECK/partial unique/immutable trigger。
-- [pending] Task 4：PostgreSQL typed Repository、advisory lock、supersede/version conflict/exactly-once。
-- [pending] Task 5：生产 composition 注册三个真实 materializer，移除空 registry 的默认路径。
-- [pending] Task 6：owner-scoped active/history query API；更正继续走 Candidate，不提供 target PATCH。
-- [pending] Task 7：八维 walkthrough、完整门禁、提交/推送/exact-SHA 三 job，关闭 coverage 后只交接 6B-7。
+- [completed] Task 1：typed payload/version envelope、scope/role/key policy pure contract；首轮 3 个失败经显式 Enum 规范化/未知 key 原因码修复后，聚焦 11 passed、相邻 30 passed。
+- [completed] Task 2：三个 materializer pure contract 与 Fake Session/writer 边界证据；聚焦 19 passed。
+- [completed] Task 3：三张 typed target ORM、0006 migration、FK/CHECK/partial unique/immutable/source/supersedes trigger；本机真库测试明确 skip。
+- [completed] Task 4：PostgreSQL writer、advisory lock、supersede/version conflict/exactly-once；真库首写/并发/rollback 合同已加入阻塞 CI。
+- [completed] Task 5：生产 composition 注册三个真实 materializer，registry 构造 no-I/O 且不可变。
+- [completed] Task 6：owner-scoped active/history query API；更正继续走 Candidate，不提供 target PATCH。
+- [in_progress] Task 7：八维 walkthrough 已建立、coverage 保持 planned；执行完整门禁、提交/推送/exact-SHA 三 job，公共全绿后关闭 coverage 并只交接 6B-7。
 - [deferred] 不提前进入 Training Plan/Progress、assistant terminal、Memory-aware Context、Auth/RSO、SSE、前端或新框架。
 
 ## 6A Entry Design Checklist

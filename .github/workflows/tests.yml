@@ -166,6 +166,9 @@ jobs:
             tests/test_memory_candidate_migrations_postgres.py \
             tests/test_memory_candidate_repository_postgres.py \
             tests/test_memory_candidate_materialization_postgres.py \
+            tests/test_typed_memory_records.py \
+            tests/test_typed_memory_migrations_postgres.py \
+            tests/test_typed_memory_repository_postgres.py \
             -q -s
 
       - name: Verify metadata matches the migration head

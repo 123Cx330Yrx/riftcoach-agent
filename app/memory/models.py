@@ -332,6 +332,8 @@ class CandidateMutationDisposition(StrEnum):
     NOT_FOUND = "not_found"
     TERMINAL_CONFLICT = "terminal_conflict"
     TARGET_UNAVAILABLE = "target_unavailable"
+    TARGET_INVALID = "target_invalid"
+    VERSION_CONFLICT = "version_conflict"
 
 
 class CandidateMutationResult(CandidateDomainModel):
@@ -344,6 +346,8 @@ class CandidateMutationResult(CandidateDomainModel):
             CandidateMutationDisposition.NOT_FOUND,
             CandidateMutationDisposition.TERMINAL_CONFLICT,
             CandidateMutationDisposition.TARGET_UNAVAILABLE,
+            CandidateMutationDisposition.TARGET_INVALID,
+            CandidateMutationDisposition.VERSION_CONFLICT,
         }
         if needs_candidate != (self.candidate is not None):
             raise ValueError("candidate mutation result has invalid projection")

@@ -362,4 +362,26 @@ groups:
     covers:
       - 6B-6-preferences-profile-review-memory
     status: planned
-    evidence: {}
+    evidence:
+      problem_and_principle:
+        - docs/plans/2026-08-20-memory-types-design.md
+        - docs/learning/6b-6-preferences-profile-review-memory-walkthrough.md
+      design_and_implementation:
+        - docs/adr/0043-adopt-typed-preference-profile-review-memory-targets.md
+        - docs/plans/2026-08-20-memory-types-implementation.md
+        - docs/learning/6b-6-preferences-profile-review-memory-walkthrough.md
+      code_map:
+        - docs/learning/6b-6-preferences-profile-review-memory-walkthrough.md
+      data_and_control_flow:
+        - docs/plans/2026-08-20-memory-types-design.md
+        - docs/learning/6b-6-preferences-profile-review-memory-walkthrough.md
+      verification:
+        - docs/plans/2026-08-20-memory-types-implementation.md
+        - docs/learning/6b-6-preferences-profile-review-memory-walkthrough.md
+      runbook:
+        - docs/learning/6b-6-preferences-profile-review-memory-walkthrough.md
+      failure_security_boundary:
+        - docs/adr/0043-adopt-typed-preference-profile-review-memory-targets.md
+        - docs/learning/6b-6-preferences-profile-review-memory-walkthrough.md
+      interview_wording:
+        - docs/learning/6b-6-preferences-profile-review-memory-walkthrough.md

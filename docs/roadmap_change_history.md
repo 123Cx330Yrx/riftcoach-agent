@@ -2316,3 +2316,25 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `EVIDENCE`：公共 run 验证 ADR/计划/治理与既有 PostgreSQL/package 基线兼容；它不把设计稿写成已存在的
   Preference/Profile/Review Memory，也不改变本机无 PostgreSQL/Docker 的 skip 含义。
 - `HANDOFF`：设计批关闭，继续同一 6B-6 的 Task 1 pure typed payload/version contract；不进入 6B-7。
+
+### 2026-08-20：6B-6 本地实现完成，等待公共验证
+
+- `IMPLEMENTED-LOCAL`：strict envelope/key/role policy、三个 materializer、三张 ORM 表/0006、advisory
+  lock/expected-version writer、production registry、owner-scoped active/history GET 与 package smoke 1.3 已建立。
+- `TRANSACTION`：target supersede/insert 与 Candidate accepted 继续由 6B-5 同一事务管理；payload/version
+  冲突保持 Candidate pending，未知 SQL 回滚并安全映射。
+- `EVIDENCE-LOCAL`：当前比例回归 `128 passed, 19 skipped, 1 warning`；walkthrough 与八维路径已建立，
+  coverage 仍 planned。19 skip 来自无 PostgreSQL/Docker，不是通过证据。
+- `PENDING-PUBLIC`：完整门禁后提交实现 SHA，等待 `pytest`、`postgres-migrations`、`packaging-smoke`；
+  全绿前不关闭 6B-6、不进入 6B-7，也不宣称正式 Auth/RSO、Plan/Progress、Context 或 lifecycle 已实现。
+
+### 2026-08-20：6B-6 提交前复核与最终本地门禁
+
+- `REVIEW-FIX`：发现 typed payload/version 异常 disposition 被误置于 Candidate create 异常块；已最小移入
+  `accept_candidate()`，恢复 422 payload invalid、409 version conflict 与 Candidate pending/rollback 语义。
+- `EVIDENCE-HARDENING`：为 Review Summary metrics、100 条 page 上限、terminal Candidate source 和跳号
+  supersedes chain 增加直接合同；后两项本机因无 PostgreSQL 明确 skip，仍只由公共真库 job 补证。
+- `VERIFIED-LOCAL`：最终完整回归 `1402 passed, 100 skipped, 1 warning, 110 subtests passed`；两套 RAG、
+  Harness dry-run、compileall、YAML、governance、SDK/Secret/tracked-data 与 diff 门通过。
+- `CURRENT`：6B-6 保持 in progress/coverage planned；下一动作只有实现提交、推送和 exact-SHA 三 job，
+  公共全绿前不进入 6B-7。

@@ -4,6 +4,7 @@ import os
 from datetime import datetime, timedelta, timezone
 from uuid import UUID
 
+import pytest
 from fastapi.testclient import TestClient
 
 from app.api.actor import StaticActorContextProvider
@@ -204,6 +205,25 @@ def test_missing_materializer_maps_to_safe_409() -> None:
     response = client(service).post(f"/memory-candidates/{CANDIDATE_ID}/accept")
     assert response.status_code == 409
     assert response.json() == {"code": "memory_target_unavailable"}
+
+
+@pytest.mark.parametrize(
+    ("service_code", "status_code", "api_code"),
+    [
+        ("memory_payload_invalid", 422, "memory_payload_invalid"),
+        ("memory_version_conflict", 409, "memory_version_conflict"),
+    ],
+)
+def test_typed_target_failures_have_safe_http_mapping(
+    service_code,
+    status_code,
+    api_code,
+) -> None:
+    service = FakeMemoryCandidateService()
+    service.error = MemoryCandidateServiceError(service_code)
+    response = client(service).post(f"/memory-candidates/{CANDIDATE_ID}/accept")
+    assert response.status_code == status_code
+    assert response.json() == {"code": api_code}
 
 
 def test_routes_are_openapi_visible_and_optional_service_fails_closed(monkeypatch) -> None:

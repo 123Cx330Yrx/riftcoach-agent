@@ -73,7 +73,8 @@ PackagingSmokeErrorCode: TypeAlias = Literal[
     "packaging_smoke_message_query_failed",
     "packaging_smoke_message_invalid",
     "packaging_smoke_memory_candidate_create_failed",
-    "packaging_smoke_memory_candidate_reject_failed",
+    "packaging_smoke_memory_candidate_accept_failed",
+    "packaging_smoke_memory_preference_query_failed",
     "packaging_smoke_conversation_review_create_failed",
     "packaging_smoke_conversation_review_iteration_invalid",
     "packaging_smoke_conversation_review_query_failed",
@@ -107,7 +108,8 @@ _ERROR_CODES = frozenset(
         "packaging_smoke_message_query_failed",
         "packaging_smoke_message_invalid",
         "packaging_smoke_memory_candidate_create_failed",
-        "packaging_smoke_memory_candidate_reject_failed",
+        "packaging_smoke_memory_candidate_accept_failed",
+        "packaging_smoke_memory_preference_query_failed",
         "packaging_smoke_conversation_review_create_failed",
         "packaging_smoke_conversation_review_iteration_invalid",
         "packaging_smoke_conversation_review_query_failed",
@@ -138,7 +140,7 @@ class PackagingSmokeSettings:
 
 @dataclass(frozen=True, slots=True)
 class PackagingSmokeResult:
-    schema_version: Literal["1.2"]
+    schema_version: Literal["1.3"]
     task_id: UUID
     run_id: str
     task_status: Literal["failed"]
@@ -149,7 +151,9 @@ class PackagingSmokeResult:
     message_id: UUID
     message_sequence_no: Literal[1]
     memory_candidate_id: UUID
-    memory_candidate_status: Literal["rejected"]
+    memory_candidate_status: Literal["accepted"]
+    memory_preference_version: Literal[1]
+    memory_preference_value: Literal["zh-CN"]
     conversation_review_task_id: UUID
     conversation_review_run_id: str
     conversation_review_status: Literal["failed"]
@@ -538,28 +542,57 @@ def execute_packaging_smoke(
             ) from None
 
         try:
-            rejected_memory_candidate = session.post(
+            accepted_memory_candidate = session.post(
                 (
                     f"{settings.base_url}/memory-candidates/"
-                    f"{memory_candidate_id}/reject"
+                    f"{memory_candidate_id}/accept"
                 ),
                 timeout=settings.timeout_s,
             )
         except Exception:
             raise PackagingSmokeError(
-                "packaging_smoke_memory_candidate_reject_failed"
+                "packaging_smoke_memory_candidate_accept_failed"
             ) from None
-        rejected_memory_candidate_body = _json_object(rejected_memory_candidate)
+        accepted_memory_candidate_body = _json_object(accepted_memory_candidate)
         if (
-            rejected_memory_candidate.status_code != 200
-            or rejected_memory_candidate_body.get("candidate_id")
+            accepted_memory_candidate.status_code != 200
+            or accepted_memory_candidate_body.get("candidate_id")
             != str(memory_candidate_id)
-            or rejected_memory_candidate_body.get("status") != "rejected"
-            or rejected_memory_candidate_body.get("decision_reason_code")
-            != "user_rejected"
+            or accepted_memory_candidate_body.get("status") != "accepted"
+            or accepted_memory_candidate_body.get("decision_reason_code")
+            != "user_confirmed"
         ):
             raise PackagingSmokeError(
-                "packaging_smoke_memory_candidate_reject_failed"
+                "packaging_smoke_memory_candidate_accept_failed"
+            )
+        try:
+            memory_preferences = session.get(
+                f"{settings.base_url}/memory/preferences",
+                params={"include_history": False, "limit": 10},
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_memory_preference_query_failed"
+            ) from None
+        memory_preferences_body = _json_object(memory_preferences)
+        records = memory_preferences_body.get("records")
+        if (
+            memory_preferences.status_code != 200
+            or not isinstance(records, list)
+            or len(records) != 1
+            or records[0].get("target_kind") != "owner_preference"
+            or records[0].get("memory_key") != "report_language"
+            or records[0].get("version") != 1
+            or records[0].get("status") != "active"
+            or records[0].get("payload") != {"value": "zh-CN"}
+            or any(
+                private in records[0]
+                for private in ("player_subject_id", "puuid", "source_candidate_id")
+            )
+        ):
+            raise PackagingSmokeError(
+                "packaging_smoke_memory_preference_query_failed"
             )
         try:
             message_id = UUID(str(appended_message_body["message_id"]))
@@ -731,7 +764,7 @@ def execute_packaging_smoke(
             )
 
         return PackagingSmokeResult(
-            schema_version="1.2",
+            schema_version="1.3",
             task_id=task_id,
             run_id=run_id,
             task_status="failed",
@@ -742,7 +775,9 @@ def execute_packaging_smoke(
             message_id=message_id,
             message_sequence_no=1,
             memory_candidate_id=memory_candidate_id,
-            memory_candidate_status="rejected",
+            memory_candidate_status="accepted",
+            memory_preference_version=1,
+            memory_preference_value="zh-CN",
             conversation_review_task_id=conversation_review_task_id,
             conversation_review_run_id=conversation_review_run_id,
             conversation_review_status="failed",
@@ -803,6 +838,8 @@ def main(
                 "message_sequence_no": result.message_sequence_no,
                 "memory_candidate_id": str(result.memory_candidate_id),
                 "memory_candidate_status": result.memory_candidate_status,
+                "memory_preference_version": result.memory_preference_version,
+                "memory_preference_value": result.memory_preference_value,
                 "conversation_review_task_id": str(
                     result.conversation_review_task_id
                 ),

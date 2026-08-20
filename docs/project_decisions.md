@@ -1483,3 +1483,20 @@ Candidate。正式文件为 [ADR-0043](adr/0043-adopt-typed-preference-profile-r
 `docs/plans/2026-08-20-memory-types-implementation.md`。本设计批没有创建产品代码或外部调用；
 Training Plan/Progress、Memory Context、assistant terminal、Auth/RSO、SSE、前端、Redis/Chroma、
 LangGraph、Multi-Agent、新 SDK 与真实 Riot/Provider 继续 deferred。
+
+### 6B-6 本地实现裁决（公共验证前）
+
+实现保持 ADR-0043 的分表与 Candidate-only correction 决策：pure typed contract、三个 materializer、
+三张 ORM 表/0006 migration、PostgreSQL version writer、生产 registry、owner-scoped query Service/API 和
+package smoke 1.3 已建立。没有退回万能 JSONB 表，没有开放 target PATCH，也没有把 observed 升级为 Profile。
+
+Candidate accept 的真实控制流是同事务 advisory lock→active row lock→expected-version→supersede/insert→
+Candidate accepted。typed payload 和 version conflict 分别映射安全 422/409，Candidate 保持 pending；SQL/
+未知错误映射 503 并 rollback。查询只返回 approved normalized payload、owner-local relationship 和版本，
+不返回 PUUID、source Candidate/provenance、Prompt 或底层异常。
+
+首轮聚焦/相邻为 `128 passed, 19 skipped, 1 warning`；提交前复核新增两项纯合同和两项真库合同后，完整回归为
+`1402 passed, 100 skipped, 1 warning, 110 subtests passed`；本地 skip 来自无 PostgreSQL/Docker。两套 RAG、
+Harness dry-run、compileall、YAML、治理、SDK/Secret/tracked-data 与 diff 门通过。实现后 walkthrough 和
+八维 evidence 已建立，但 coverage 继续 planned。只有实现 SHA 的 `pytest`、
+`postgres-migrations`、`packaging-smoke` 三 job 全绿后才能关闭 6B-6；当前不进入 6B-7。

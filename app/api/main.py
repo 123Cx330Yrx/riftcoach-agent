@@ -58,6 +58,11 @@ from app.api.task_models import (
     ReadinessResult,
     TaskLinks,
 )
+from app.api.typed_memory_models import (
+    TypedMemoryApiErrorCode,
+    TypedMemoryErrorResponse,
+    TypedMemoryPageResponse,
+)
 from app.conversations.models import (
     AppendUserMessageCommand,
     ConversationCreateResult,
@@ -78,6 +83,9 @@ from app.memory.models import (
 )
 from app.memory.ports import MemoryCandidateServicePort
 from app.memory.service import MemoryCandidateServiceError
+from app.memory.typed_models import TypedMemoryPage
+from app.memory.typed_ports import TypedMemoryQueryServicePort
+from app.memory.typed_service import TypedMemoryQueryServiceError
 from app.players.models import (
     CreatePlayerLinkCommand,
     PlayerLinkCreateResult,
@@ -188,6 +196,15 @@ _MEMORY_CANDIDATE_ERROR_STATUS: Mapping[
     "candidate_terminal_conflict": (409, "candidate_terminal_conflict"),
     "candidate_expired": (409, "candidate_expired"),
     "memory_target_unavailable": (409, "memory_target_unavailable"),
+    "memory_payload_invalid": (422, "memory_payload_invalid"),
+    "memory_version_conflict": (409, "memory_version_conflict"),
+    "service_unavailable": (503, "service_unavailable"),
+}
+_TYPED_MEMORY_ERROR_STATUS: Mapping[
+    str,
+    tuple[int, TypedMemoryApiErrorCode],
+] = {
+    "memory_scope_not_found": (404, "memory_scope_not_found"),
     "service_unavailable": (503, "service_unavailable"),
 }
 _IDEMPOTENCY_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
@@ -271,6 +288,23 @@ def _parse_candidate_id(value: str) -> UUID | None:
         return None
 
 
+def _typed_memory_error_response(
+    code: TypedMemoryApiErrorCode,
+    *,
+    status_code: int,
+) -> JSONResponse:
+    body = TypedMemoryErrorResponse(code=code).model_dump(mode="json")
+    return JSONResponse(status_code=status_code, content=body)
+
+
+def _typed_memory_service_error(error: TypedMemoryQueryServiceError) -> JSONResponse:
+    status_code, code = _TYPED_MEMORY_ERROR_STATUS.get(
+        error.code,
+        (503, "service_unavailable"),
+    )
+    return _typed_memory_error_response(code, status_code=status_code)
+
+
 def create_app(
     *,
     task_service: TaskServicePort,
@@ -285,6 +319,7 @@ def create_app(
     observability: TaskObservability | None = None,
     conversation_service: ConversationServicePort | None = None,
     memory_candidate_service: MemoryCandidateServicePort | None = None,
+    typed_memory_query_service: TypedMemoryQueryServicePort | None = None,
 ) -> FastAPI:
     """Create API V2 from explicit ports without doing deployment I/O."""
 
@@ -323,6 +358,12 @@ def create_app(
             if not callable(getattr(memory_candidate_service, method_name, None)):
                 raise TypeError(
                     f"memory_candidate_service must expose {method_name}()"
+                )
+    if typed_memory_query_service is not None:
+        for method_name in ("preferences", "profile", "reviews"):
+            if not callable(getattr(typed_memory_query_service, method_name, None)):
+                raise TypeError(
+                    f"typed_memory_query_service must expose {method_name}()"
                 )
     if observability is not None and not isinstance(
         observability,
@@ -854,6 +895,109 @@ def create_app(
             return _memory_candidate_service_error(error)
         except Exception:
             return _memory_candidate_error_response("service_unavailable", status_code=503)
+
+    def _typed_memory_query(
+        *,
+        operation: str,
+        actor: ActorContext,
+        relationship_id: UUID | None,
+        include_history: bool,
+        limit: int,
+    ) -> TypedMemoryPageResponse | JSONResponse:
+        if typed_memory_query_service is None:
+            return _typed_memory_error_response("service_unavailable", status_code=503)
+        try:
+            if operation == "preferences":
+                page = typed_memory_query_service.preferences(
+                    owner_id=actor.owner_id,
+                    include_history=include_history,
+                    limit=limit,
+                )
+            elif operation == "profile" and relationship_id is not None:
+                page = typed_memory_query_service.profile(
+                    owner_id=actor.owner_id,
+                    relationship_id=relationship_id,
+                    include_history=include_history,
+                    limit=limit,
+                )
+            elif operation == "reviews" and relationship_id is not None:
+                page = typed_memory_query_service.reviews(
+                    owner_id=actor.owner_id,
+                    relationship_id=relationship_id,
+                    include_history=include_history,
+                    limit=limit,
+                )
+            else:
+                raise TypeError("unsupported typed memory query")
+            if not isinstance(page, TypedMemoryPage):
+                raise TypeError("typed memory service returned invalid page")
+            return TypedMemoryPageResponse.from_page(page)
+        except TypedMemoryQueryServiceError as error:
+            return _typed_memory_service_error(error)
+        except Exception:
+            return _typed_memory_error_response("service_unavailable", status_code=503)
+
+    @app.get(
+        "/memory/preferences",
+        response_model=TypedMemoryPageResponse,
+        responses={503: {"model": TypedMemoryErrorResponse}},
+    )
+    def get_memory_preferences(
+        include_history: bool = Query(default=False),
+        limit: int = Query(default=50, ge=1, le=100),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> TypedMemoryPageResponse | JSONResponse:
+        return _typed_memory_query(
+            operation="preferences",
+            actor=actor,
+            relationship_id=None,
+            include_history=include_history,
+            limit=limit,
+        )
+
+    @app.get(
+        "/memory/players/{relationship_id}/profile",
+        response_model=TypedMemoryPageResponse,
+        responses={
+            404: {"model": TypedMemoryErrorResponse},
+            503: {"model": TypedMemoryErrorResponse},
+        },
+    )
+    def get_player_profile_memory(
+        relationship_id: UUID,
+        include_history: bool = Query(default=False),
+        limit: int = Query(default=50, ge=1, le=100),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> TypedMemoryPageResponse | JSONResponse:
+        return _typed_memory_query(
+            operation="profile",
+            actor=actor,
+            relationship_id=relationship_id,
+            include_history=include_history,
+            limit=limit,
+        )
+
+    @app.get(
+        "/memory/players/{relationship_id}/reviews",
+        response_model=TypedMemoryPageResponse,
+        responses={
+            404: {"model": TypedMemoryErrorResponse},
+            503: {"model": TypedMemoryErrorResponse},
+        },
+    )
+    def get_player_review_memory(
+        relationship_id: UUID,
+        include_history: bool = Query(default=False),
+        limit: int = Query(default=50, ge=1, le=100),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> TypedMemoryPageResponse | JSONResponse:
+        return _typed_memory_query(
+            operation="reviews",
+            actor=actor,
+            relationship_id=relationship_id,
+            include_history=include_history,
+            limit=limit,
+        )
 
     @app.post(
         "/player-links",
