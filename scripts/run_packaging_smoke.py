@@ -1032,6 +1032,11 @@ def main(
                 ),
                 "conversation_review_run_id": result.conversation_review_run_id,
                 "conversation_review_status": result.conversation_review_status,
+                "memory_context_record_count": result.memory_context_record_count,
+                "memory_context_kinds": list(result.memory_context_kinds),
+                "terminal_assistant_message_count": (
+                    result.terminal_assistant_message_count
+                ),
                 "external_riot_provider_calls": result.external_riot_provider_calls,
             },
             sort_keys=True,
