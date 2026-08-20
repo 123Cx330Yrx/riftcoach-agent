@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-20（RQ-070 / 6B-6 设计批已冻结）
+- 最后更新：2026-08-20（RQ-070 / 6B-6 设计批已通过公共 CI，Task 1 开始）
 - 主阶段：阶段 6；6A、Session/Memory entry design、6B-1 至 6B-5 与 RQ-067 文档门均已完成 exact-SHA 公共闭环。6B-5 实现提交 `7156cb52e1ab2a976828b5a0a164c163943b56f3` 经最小测试清理提交 `dd7c9c8f43bac19756272aaf9555f0519e22341c` 修正公共真库 teardown；Actions run `32376405150` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，coverage 已 complete。RQ-070 已授权 6B-6，ADR-0043 和专用计划已冻结，下一动作是 Task 1 pure typed contract 红灯
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -1463,8 +1463,11 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   `docs/plans/2026-08-20-memory-types-implementation.md`，冻结三张 typed target 表、scope/role/key
   allowlist、严格 `value + expected_version` envelope、版本 supersede、Review append 的单 active 最新
   版本语义、PostgreSQL advisory lock/partial unique、查询 API 和错误映射。
+- 设计提交 `e44d48f0531f0ee1786cba9b38c8fc8b2589af00` 已由 Actions run `32381553145` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job exact-SHA 公共验证；设计批正式关闭，
+  该 run 不证明 6B-6 业务 target 已实现。
 - 当前尚未创建 6B-6 migration/model/Repository/materializer/API 产品代码；本轮仍然不进入 Training
   Plan/Progress、Memory-aware Context、assistant terminal、Auth/RSO、SSE、前端、Redis/Chroma/向量库、
   LangGraph、Multi-Agent、新 SDK 或真实 Riot/Provider 调用。
-- 设计批下一动作：按实施计划 Task 1 先写 typed payload/version pure contract 红灯测试；coverage 继续
+- 设计批公共闭环后，下一动作是按实施计划 Task 1 先写 typed payload/version pure contract 红灯测试；coverage 继续
   `planned`，直到实现、本地门禁和 exact-SHA 三 job 公共闭环。

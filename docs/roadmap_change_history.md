@@ -2308,3 +2308,11 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `BOUNDARY`：设计批尚未创建 migration/model/Repository/API；Training Plan/Progress、Memory Context、
   assistant terminal、Auth/RSO、SSE、前端、Redis/Chroma/向量库、LangGraph、Multi-Agent、新 SDK 与真实
   Riot/Provider 调用继续 deferred。
+
+### 2026-08-20：6B-6 设计批 exact-SHA 公共闭环
+
+- `PUBLIC-CI`：设计提交 `e44d48f0531f0ee1786cba9b38c8fc8b2589af00` 对应 Actions `32381553145`；
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部成功。
+- `EVIDENCE`：公共 run 验证 ADR/计划/治理与既有 PostgreSQL/package 基线兼容；它不把设计稿写成已存在的
+  Preference/Profile/Review Memory，也不改变本机无 PostgreSQL/Docker 的 skip 含义。
+- `HANDOFF`：设计批关闭，继续同一 6B-6 的 Task 1 pure typed payload/version contract；不进入 6B-7。

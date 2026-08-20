@@ -498,7 +498,8 @@ contract 红灯；设计批已获授权，但尚未创建具体长期 Memory 产
 - Authorization: RQ-070; user said “那继续”, which authorizes only this checkpoint.
 - Prepared outcome: typed owner Preference、Player Profile 与 Review Memory，注册真实 materializer，并保持 self/observed 权限与 supersede/conflict 边界。
 - [completed] 按教学合同重新审计 6B-5 接缝；已冻结 ADR-0043、专用设计和原子实施计划。
-- [pending] Task 1：typed payload/version envelope、scope/role/key policy pure contract 红灯与最小实现。
+- [completed] 设计提交 `e44d48f` / Actions `32381553145` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job exact-SHA 全绿；设计批正式关闭。
+- [in_progress] Task 1：typed payload/version envelope、scope/role/key policy pure contract 红灯与最小实现。
 - [pending] Task 2：三个 materializer pure contract 与 Fake Session rollback/conflict 证据。
 - [pending] Task 3：三张 typed target ORM、Alembic migration、FK/CHECK/partial unique/immutable trigger。
 - [pending] Task 4：PostgreSQL typed Repository、advisory lock、supersede/version conflict/exactly-once。

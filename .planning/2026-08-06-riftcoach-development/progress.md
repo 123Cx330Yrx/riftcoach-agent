@@ -3162,5 +3162,10 @@
   元数据格式后，治理测试 `12 passed`、治理脚本、compileall 与 diff check 通过。
 - 完整本地回归为 `1358 passed, 88 skipped, 1 warning, 110 subtests passed`；88 个 skip 仍是本机无
   PostgreSQL/Docker，不能外推为 6B-6 真库证据。
+- 设计提交 `e44d48f0531f0ee1786cba9b38c8fc8b2589af00` 已推送；Actions run `32381553145` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job exact-SHA 全绿。该公共 run 只证明设计/治理
+  与既有基线兼容，不证明 6B-6 target 业务代码已实现。
+- 设计批关闭后，canonical/active plan 唯一 in-progress 任务切换为 Task 1 pure typed contract；外部
+  Riot/Provider/Key I/O 仍为 0。
 - 下一动作是 Task 1 的 pure typed payload/version contract 红灯；coverage 继续 planned，canonical 仍为
   `6B-6 / in_progress`。
