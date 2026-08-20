@@ -3104,3 +3104,20 @@
   terminal、materializer 原子回滚/重放/并发和 metadata-head 证据。普通 pytest 与 package 也全绿。
 - 6B-5 可关闭，但只能声称“长期写入控制面和 typed materializer seam 已完成”；具体 Preference/Profile/
   Review Memory 仍属于 6B-6，当前未授权。
+
+## 2026-08-20：6B-6 设计冻结发现
+
+- 6B-5 的 `MaterializedMemoryReference` 只是 Candidate 的审计引用；只有 6B-6 三张真实 target 表存在时，
+  `accepted` 才能代表具体长期记忆已物化。
+- Owner Preference 必须按 `owner_id + memory_key` 做全局作用域；Candidate 仍保留 Conversation provenance，
+  但不能把某次 Conversation 的 player subject 误当成 Preference 业务作用域。
+- Player Profile 必须绑定 owner/relationship/subject，数据库和 materializer 都只允许 `self`；
+  `public_observed` 不能因 candidate kind 名称而升级权限。
+- Review Memory 的 `append` 语义若直接允许多个 active 行，会让 Context 选择和并发更难解释；6B-6 V1 采用
+  “新版本成为 active、旧版本 superseded、历史可查”的 append，未来多 active 事件流需新 ADR。
+- 由于 0005 Candidate 已公共闭环，本批不增加通用 Candidate 列；typed materializer 解析严格
+  `value + expected_version` envelope，将 expected version 保持在提案层，目标只存规范化 value。
+- 目标表需要 partial unique active index、source candidate UNIQUE、复合 FK、immutable trigger 和
+  PostgreSQL transaction advisory lock；Fake/SQLite 不能证明这些数据库语义。
+- 6B-6 更正不增加绕过 Candidate 的 PATCH；客户端先读取版本，再创建带 expected_version 的新 Candidate，
+  由同一 gate/materializer 链完成审计和冲突返回。

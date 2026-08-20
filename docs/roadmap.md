@@ -21,7 +21,7 @@
 | 3 | Provider 与 Tool Runtime | 外部模型和工具如何统一、可靠地调用 | EchoMind 迁移重构 | 已完成，进入维护 |
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
-| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1 至 6B-5 与 RQ-067 前置门已完成 exact-SHA 公共闭环；6B-6 Preferences/Profile/Review Memory 等待授权，具体长期 Memory 仍未实现 |
+| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1 至 6B-5 与 RQ-067 前置门已完成 exact-SHA 公共闭环；6B-6 已获 RQ-070 授权并处于设计批，具体长期 Memory 仍未实现 |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 未开始 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
@@ -384,3 +384,14 @@ Candidate 保持 pending；测试专用 target 只用于证明同事务 commit/r
 6B-5 与 coverage 已关闭。下一检查点为 `6B-6-preferences-profile-review-memory`，仅
 prepared/waiting authorization；Training Plan/Progress、assistant terminal、Memory Context、Auth/RSO、SSE、
 前端、LangGraph、Multi-Agent 和新 SDK 均仍 deferred。
+
+### 6B-6 Preferences / Profile / Review Memory（RQ-070，设计批进行中）
+
+用户最新“那继续”已授权唯一下一检查点 6B-6。当前先完成设计冻结：三张 typed target 表、严格
+`value + expected_version` envelope、self/observed 权限、active/superseded/retired 版本链、Review
+append 的单 active 最新版本语义、事务内真实 materializer、owner-scoped active/history 查询。
+设计文件为 ADR-0043 与 `docs/plans/2026-08-20-memory-types-{design,implementation}.md`。
+
+接下来按 TDD 实现 pure contract、ORM/migration、Repository 并发/冲突、composition 注册和查询 API，
+通过 exact-SHA 三 job 后才关闭 6B-6。Training Plan/Progress、Memory-aware Context、assistant terminal、
+Auth/RSO、SSE、前端、Redis/Chroma/向量库、LangGraph、Multi-Agent、新 SDK 与真实 Riot/Provider 调用不在本批。

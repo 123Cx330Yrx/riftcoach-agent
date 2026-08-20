@@ -3,8 +3,8 @@ state_schema: 1
 main_stage: 6
 substage_group: "stage-6-session-memory"
 current_checkpoint: "6B-6-preferences-profile-review-memory"
-status: pending
-pause_reason: "waiting for explicit user authorization"
+status: in_progress
+pause_reason: ""
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "waiting for explicit user authorization"
 
 ## 状态元数据
 
-- 最后更新：2026-08-20（RQ-069 / 6B-5 已完成）
-- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1 至 6B-5 与 RQ-067 文档门均已完成 exact-SHA 公共闭环。6B-5 实现提交 `7156cb52e1ab2a976828b5a0a164c163943b56f3` 经最小测试清理提交 `dd7c9c8f43bac19756272aaf9555f0519e22341c` 修正公共真库 teardown；Actions run `32376405150` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，coverage 已 complete。唯一下一检查点为 6B-6，等待明确授权
+- 最后更新：2026-08-20（RQ-070 / 6B-6 设计批已冻结）
+- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1 至 6B-5 与 RQ-067 文档门均已完成 exact-SHA 公共闭环。6B-5 实现提交 `7156cb52e1ab2a976828b5a0a164c163943b56f3` 经最小测试清理提交 `dd7c9c8f43bac19756272aaf9555f0519e22341c` 修正公共真库 teardown；Actions run `32376405150` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，coverage 已 complete。RQ-070 已授权 6B-6，ADR-0043 和专用计划已冻结，下一动作是 Task 1 pure typed contract 红灯
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,9 +250,9 @@ pause_reason: "waiting for explicit user authorization"
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6B-6-preferences-profile-review-memory` 仅为 prepared/waiting authorization；开始任何
-  typed Memory 设计复核、migration、Repository、API 或测试前，必须等待用户在独立下一轮明确授权。
-  当前不实施 6B-6，assistant terminal、Memory-aware Context、Auth/RSO、SSE、前端与新框架也未进入。
+- 唯一下一步：`6B-6-preferences-profile-review-memory` 设计批已获 RQ-070 授权并在进行中；先执行
+  ADR-0043/6B-6 专用计划的 Task 1 pure typed payload/version contract，再进入 migration、Repository、
+  materializer 与查询 API。assistant terminal、Memory-aware Context、Auth/RSO、SSE、前端与新框架仍未进入。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1454,5 +1454,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 6B-5 与八维 coverage 正式关闭。它只完成 Candidate 控制面、deterministic gate 和 transactional typed
   materializer 接缝，不等于 Preference/Profile/Review Memory 已存在；生产 registry 在 6B-6 前仍为空并
   fail closed。
-- 唯一下一检查点为 `6B-6-preferences-profile-review-memory`，仅 prepared/waiting authorization；本轮停止，
-  不创建具体长期 Memory 表，不接 assistant terminal、Memory-aware Context、Auth/RSO、SSE、前端或新框架。
+- 用户最新“那继续”按 AGENTS 规则只授权唯一下一检查点 `6B-6-preferences-profile-review-memory`。
+
+## 2026-08-20：RQ-070 授权 6B-6，完成设计批冻结
+
+- canonical 已从 `pending/waiting authorization` 恢复为 `in_progress`；当前只处理 6B-6，不能跳到 6B-7。
+- 设计批新增 ADR-0043、`docs/plans/2026-08-20-memory-types-design.md` 与
+  `docs/plans/2026-08-20-memory-types-implementation.md`，冻结三张 typed target 表、scope/role/key
+  allowlist、严格 `value + expected_version` envelope、版本 supersede、Review append 的单 active 最新
+  版本语义、PostgreSQL advisory lock/partial unique、查询 API 和错误映射。
+- 当前尚未创建 6B-6 migration/model/Repository/materializer/API 产品代码；本轮仍然不进入 Training
+  Plan/Progress、Memory-aware Context、assistant terminal、Auth/RSO、SSE、前端、Redis/Chroma/向量库、
+  LangGraph、Multi-Agent、新 SDK 或真实 Riot/Provider 调用。
+- 设计批下一动作：按实施计划 Task 1 先写 typed payload/version pure contract 红灯测试；coverage 继续
+  `planned`，直到实现、本地门禁和 exact-SHA 三 job 公共闭环。

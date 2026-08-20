@@ -3146,3 +3146,21 @@
   `external_riot_provider_calls=0`。
 - coverage 现置为 complete；canonical/active plan 只交接 `6B-6-preferences-profile-review-memory`
   prepared/waiting authorization。本轮不实施 6B-6。
+
+## 2026-08-20：RQ-070 授权并完成 6B-6 设计批
+
+- 用户最新“那继续”只授权 canonical 的 `6B-6-preferences-profile-review-memory`；已按恢复顺序重新读取
+  canonical、活动计划、RQ/路线/能力矩阵、learning coverage、ADR-0039/0042 与 6B-5 接缝源码，并通过治理预检。
+- 初学者教学先区分 Preference、Player Profile、Review Memory 与 Candidate：本批建立真正长期 target，
+  不做 RAG、Context、Plan/Progress 或 assistant terminal。
+- 冻结 ADR-0043、`docs/plans/2026-08-20-memory-types-design.md` 和
+  `docs/plans/2026-08-20-memory-types-implementation.md`：三张 typed 表、严格 envelope、self/observed
+  规则、版本 supersede、Review append 单 active 语义、advisory lock、查询 API 与公共 CI 门。
+- 本轮只修改设计/治理/持久计划文件，没有创建 6B-6 migration/model/Repository/materializer/API 产品代码，
+  外部 Riot/Provider/Key I/O 为 0。
+- 设计批治理首跑发现唯一下一步缺少固定机器前缀，聚焦测试为 `1 failed, 11 passed`；只修复 canonical
+  元数据格式后，治理测试 `12 passed`、治理脚本、compileall 与 diff check 通过。
+- 完整本地回归为 `1358 passed, 88 skipped, 1 warning, 110 subtests passed`；88 个 skip 仍是本机无
+  PostgreSQL/Docker，不能外推为 6B-6 真库证据。
+- 下一动作是 Task 1 的 pure typed payload/version contract 红灯；coverage 继续 planned，canonical 仍为
+  `6B-6 / in_progress`。

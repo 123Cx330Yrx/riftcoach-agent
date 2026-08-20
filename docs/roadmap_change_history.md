@@ -2294,3 +2294,17 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `CLOSED`：6B-5 与八维 coverage 正式完成；测试 target 仍不是生产 Memory。
 - `HANDOFF`：唯一下一检查点为 `6B-6-preferences-profile-review-memory`，仅 prepared/waiting authorization；
   不自动实施具体长期 Memory 或任何更后能力。
+
+### 2026-08-20：RQ-070 授权 6B-6 并冻结 typed target 设计
+
+- `AUTHORIZED`：用户最新“那继续”只恢复 canonical 的
+  `6B-6-preferences-profile-review-memory`；不自动进入 6B-7。
+- `ADR-0043`：选择三张 typed target 表而非万能 JSONB Memory 表；Preference owner-global，Profile
+  self-only，Review Memory self/observed 受限。
+- `VERSIONING`：Candidate payload 使用严格 `value + expected_version` envelope；新版本 supersede 旧
+  active，Review append 在 V1 中保留历史但同 key 只有一个 active 最新版本。
+- `TRANSACTION`：真实 materializer 继续复用 6B-5 同一 Session；PostgreSQL advisory lock、active row lock、
+  partial unique 与 source candidate UNIQUE 共同证明冲突/幂等边界。
+- `BOUNDARY`：设计批尚未创建 migration/model/Repository/API；Training Plan/Progress、Memory Context、
+  assistant terminal、Auth/RSO、SSE、前端、Redis/Chroma/向量库、LangGraph、Multi-Agent、新 SDK 与真实
+  Riot/Provider 调用继续 deferred。

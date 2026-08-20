@@ -1458,3 +1458,28 @@ Alembic downgrade。Actions run `32376405150` 的 `pytest`、`postgres-migration
 owner-scoped Repository/API 和事务内 typed materializer seam；生产 registry 在 6B-6 注册真实 target 前
 继续 fail closed。下一检查点 `6B-6-preferences-profile-review-memory` 只 prepared/waiting authorization，
 本轮不创建具体长期 Memory 表或进入 assistant terminal/Context/Auth/SSE/前端/新框架。
+
+### RQ-070：6B-6 三类 typed 长期 Memory 设计冻结（2026-08-20）
+
+用户最新“那继续”授权唯一下一检查点 6B-6。经初学者教学和 6B-5 接缝复核，本批采用三张独立 typed
+目标表：`memory_preferences`、`player_profiles`、`review_memories`。它们共享 Python 辅助逻辑，但不使用
+万能 `memories(kind, payload)` 表；owner/relationship/role/status/version/source candidate/唯一性由
+关系型列和 PostgreSQL 约束负责，JSONB 只保存经过严格 Pydantic 校验的有界叶子值。
+
+Preference 是 owner-global（V1 `report_language`）；Profile 是 owner-player 且只允许 `self`（V1
+`main_role`/`champion_pool`）；Review Memory 是 owner-player，self/observed 均可，但 observed 只能写
+`observation_note`/`public_trend` 的第三人称 `append`。Riot ID 仍只是 alias，`claimed_self` 仍不等于
+正式账号所有权验证。
+
+为了不修改已经公共闭环的 0005 Candidate 状态机，typed materializer 解析版本化
+`{"value": ..., "expected_version": ...}` envelope。新记录从 version 1 开始；有 active 记录时必须
+精确匹配 expected version，旧记录只转 `superseded`/`retired`，不原地覆盖。每个 scope/key 只有一个
+active，materializer 使用同一事务的 PostgreSQL advisory lock + active row lock；target 写入、旧版本
+supersede 和 Candidate accepted 一次提交，任何失败都 rollback 并保留 pending。
+
+本批将提供 owner-scoped active/history 查询，不提供绕过 Candidate 的 target PATCH；更正必须创建新的
+Candidate。正式文件为 [ADR-0043](adr/0043-adopt-typed-preference-profile-review-memory-targets.md)、
+`docs/plans/2026-08-20-memory-types-design.md` 与
+`docs/plans/2026-08-20-memory-types-implementation.md`。本设计批没有创建产品代码或外部调用；
+Training Plan/Progress、Memory Context、assistant terminal、Auth/RSO、SSE、前端、Redis/Chroma、
+LangGraph、Multi-Agent、新 SDK 与真实 Riot/Provider 继续 deferred。
