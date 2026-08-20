@@ -1,6 +1,8 @@
 # 6B-3 Conversation / Message Foundation 设计与教学稿
 
-> 状态：设计已冻结，下一步是红灯合同；本文件不是“已实现”证明。
+> 状态：设计已冻结且本地实现已完成；本文件保留设计角色，实现证据见
+> [`6B-3 walkthrough`](../learning/6b-3-conversation-message-foundation-walkthrough.md)。实现提交的
+> exact-SHA 三 job 全绿前，6B-3 仍不能关闭。
 >
 > 对应 ADR：[`ADR-0040`](../adr/0040-conversation-message-foundation-contract.md)
 

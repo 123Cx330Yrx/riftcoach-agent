@@ -5,9 +5,9 @@ RiftCoach 是一个基于 Riot 公开赛后数据的英雄联盟复盘与训练�
 ## 当前定位
 
 当前版本包含 RiftCoach 独立领域核心、质量门控 Harness、可靠 Tool Runtime、RAG v1、受限
-AgentRuntime、PostgreSQL 异步任务基座，以及玩家身份绑定的持久化、Worker 和 HTTP 纵向切片。项目没有
-直接合并 EchoMind 或 AGI-Saber，也尚未实现 Conversation/Message、长期 Memory 或完整的会话式 Agent
-平台。
+AgentRuntime、PostgreSQL 异步任务基座、玩家身份绑定，以及 owner-scoped Conversation/Message
+foundation。项目没有直接合并 EchoMind 或 AGI-Saber；Conversation/Message 当前仍待实现提交的
+PostgreSQL/package 公共闭环，长期 Memory 和完整会话式 Agent 平台尚未实现。
 
 如果你想理解这些能力怎样一步步搭建、对应哪些源码/测试、面试时怎样准确表述，请从
 [学习与工程证据索引](docs/learning/README.md) 开始。项目执行位置仍以
@@ -114,7 +114,37 @@ Invoke-RestMethod `
 
 这里只能证明 Riot ID 能解析为一个外服 PUUID；`relationship_role=self` 是 owner 的声明，不是 Riot
 账号控制权证明。当前没有正式 Auth/RSO，因此不能创建 `rso_verified`，也不能把本地 fixed owner
-配置冒充公网多用户鉴权。绑定成功后 Conversation 仍不可创建，因为 6B-3 尚未实现。
+配置冒充公网多用户鉴权。
+
+当 Link 查询已经是 `succeeded` 时，可以用返回的 `relationship_id` 创建固定玩家主体的 Conversation，
+再追加第一条 user Message。公共请求没有 owner、PUUID、subject、role 或 source 字段：
+
+```powershell
+$linkState = Invoke-RestMethod `
+  -Method Get `
+  -Uri ("http://localhost:8000" + $link.link)
+
+$conversationBody = @{
+  relationship_id = $linkState.relationship_id
+} | ConvertTo-Json
+
+$conversation = Invoke-RestMethod `
+  -Method Post `
+  -Uri http://localhost:8000/conversations `
+  -Headers @{ "Idempotency-Key" = "local-conversation-1" } `
+  -ContentType application/json `
+  -Body $conversationBody
+
+Invoke-RestMethod `
+  -Method Post `
+  -Uri ("http://localhost:8000/conversations/{0}/messages" -f `
+    $conversation.conversation_id) `
+  -ContentType application/json `
+  -Body (@{ content = "请复盘我最近的状态" } | ConvertTo-Json)
+```
+
+这只证明 Conversation/Message 控制面，不会触发 Agent、Review 或长期 Memory。assistant terminal、
+Conversation-bound Review 和 Memory Candidate 分别属于后续 6B 批次。
 
 ### 本地 Linux package 与进程职责
 
@@ -140,11 +170,12 @@ docker compose --project-name riftcoach-packaging-smoke `
 ```
 
 这个 smoke 会通过 HTTP 创建一条合成 task，由独立诊断 Worker 真实 claim，并故意在不访问 Riot/Provider
-的前提下写入安全的 `failed/worker_execution_failed`，再通过 HTTP 查询确认。它证明 package、migration、
-API、PostgreSQL、claim 和终态回写；不证明 Coach 报告质量。成功的 Application/Runtime/Harness/Artifact
-链由离线产品纵向测试单独证明。固定的 Compose project name 会把 smoke 的网络和数据卷与普通本地运行
-隔离；脚本本身也只接受 Compose/本机 API 与 PostgreSQL host。不要省略 project name，否则诊断 Worker
-可能接触同一 Compose project 中已有的 queued task。
+的前提下写入安全的 `failed/worker_execution_failed`；随后以 Fake Account Resolver 完成 Player Link，
+再用该 relationship 创建 Conversation、追加并复读第 1 条 user Message。它证明 package、migration、API、
+PostgreSQL、claim、终态回写和 Conversation/Message 接线；不证明 Coach 报告质量或真实 Riot/Provider。
+成功的 Application/Runtime/Harness/Artifact 链由离线产品纵向测试单独证明。固定的 Compose project name
+会把 smoke 的网络和数据卷与普通本地运行隔离；脚本本身也只接受 Compose/本机 API 与 PostgreSQL host。
+不要省略 project name，否则诊断 Worker 可能接触同一 Compose project 中已有的 queued task。
 
 运行真实本地 Worker 前，先在 `.env` 填入 Riot 与当前 Zhipu 产品基线配置，再执行完整预检：
 

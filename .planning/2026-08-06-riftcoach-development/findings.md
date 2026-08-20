@@ -2950,3 +2950,33 @@
 - 记录中的 `2026-08-20` 与当前仓库日期一致，不回写为错误的未来日期。
 - 原 coverage 检查只验证 YAML 列表位置和递增 sequence；通过重排并同步重编号仍可能绕过。已增加固定
   `LEARNING_COVERAGE_CANONICAL_ORDER`、受检的 coverage 人类镜像和两项回归测试，验证治理聚焦 `12 passed`。
+
+## 2026-08-20：6B-3 设计公共证据
+
+- `b6a7112` / Actions `32313707301` 三 job 全绿，证明设计与治理加固没有破坏现有 Linux、PostgreSQL、
+  RAG、Harness 或 package 边界；它仍是 design evidence，不是 Conversation/Message implementation evidence。
+- 6B-3 现可按 ADR-0040 进入 TDD；若红灯暴露设计矛盾，必须先更新 ADR/计划，不能静默让代码定义需求。
+
+## 2026-08-20：6B-3 实现恢复审查与补强门
+
+- 当前工作树已有 Conversation/Message domain、Service、PostgreSQL ORM/migration/Repository、六个 HTTP
+  端点、composition、Linux package smoke 与分层测试，但尚未提交或取得实现 SHA 的公共 PostgreSQL/package
+  证据；canonical 继续保持 `6B-3 / in_progress`。
+- 只读 persistence 审查未发现 P0/P1；发现原 archive/append 与 hide/append 只用 Barrier 同时起跑，未确定
+  两种锁顺序，可能让错误实现碰巧通过。提交前必须用可控事务锁与事件分别证明 append-first 和 lifecycle-first。
+- `list_messages()` 当前为保证“可见性检查与分页读取”线性一致，会锁 relationship 与 Conversation；语义正确但
+  普通读取会与 append/archive/hide 串行。6B-3 先明确记录这一作品集规模取舍，不在无真实性能 Bad Case 时引入
+  更复杂的单查询投影。
+- Conversation trigger 保护 binding 与生命周期不可逆，Message trigger 保护 append-only 字段；连续序号由
+  Repository 的同事务行锁、计数器更新与唯一约束保证，不能误称为 trigger 保证。
+- 既有 import/OpenAPI no-I/O 测试受 Python 模块缓存影响；已新增独立干净 Python 子进程门，在 import 前阻断
+  Secret env、数据库 Engine 与 HTTP I/O，再构造 OpenAPI。聚焦 composition 回归为 `10 passed, 1 warning`。
+## 2026-08-20：6B-3 本地实现收尾审查
+
+- 6B-3 聚焦集合为 `85 passed, 25 skipped`；完整回归为 `1295 passed, 67 skipped, 1 warning,
+  110 subtests passed`。本机 skip 仍全部来自缺少 PostgreSQL/Docker，不能冒充公共真库或 package 证据。
+- RAG development/independent holdout、Harness dry-run、compileall、Provider boundary、tracked
+  secret/run-data、YAML、治理和 `git diff --check` 均通过；Docker Compose 本机不可执行，保留为 CI 阻塞门。
+- 审查修复的两个 P2 是 archive/hide 422 的公开错误 DTO 与有效 command 后 UUID/clock 故障的 503 投影；
+  并发测试改成 blocker transaction + SQLAlchemy event 的确定性锁顺序，覆盖 lifecycle-first 与 append-first。
+- 当前只剩独立提交/推送和同 SHA 三个公共 job；全绿前不改变 coverage `planned`，不关闭 6B-3，也不进入 6B-4。

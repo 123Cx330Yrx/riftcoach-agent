@@ -2985,3 +2985,28 @@
   拆开并成功运行。两次对已验证 TEMP 目标的递归清理仍被策略在进程创建前拒绝，未改仓库且临时产物
   只位于用户 TEMP；停止重复删除，不把清理噪声当测试失败。
 - 下一动作是独立暂存/cached diff、提交、推送和 exact-SHA 三 job；全绿后直接进入红灯合同。
+
+## 2026-08-20：6B-3 设计批公共闭环并进入 TDD
+
+- 提交 `b6a7112d9c3fa8744b9713737bbbf54fe5011084` 已推送；Actions `32313707301` 总结论
+  success，三个 job `pytest`、`postgres-migrations`、`packaging-smoke` 均 completed/success。
+- 公共 run 同时执行 governance、完整 pytest、两套 RAG、compile、SDK/secret 边界、Harness dry-run、
+  真实 PostgreSQL migration/test/metadata 和 Linux no-I/O image smoke；仍不代表 6B-3 产品实现。
+- 当前工作树在状态回写前为 clean；下一动作无缝进入 pure model/Service/API 红灯，再实现数据库与 API。
+
+## 2026-08-20：6B-3 未提交实现恢复与最终证据补强
+
+- 按 AGENTS 顺序恢复 canonical、活动计划、RQ、路线、capability 与 learning coverage；治理预检通过。
+- 确认 `HEAD == origin/main == b6a7112d9c3fa8744b9713737bbbf54fe5011084`，完整 6B-3 实现仍在未提交工作树，
+  没有回滚或覆盖。
+- 收到 persistence 只读审查：无 P0/P1；确定一个提交前 P2——原生命周期/append 并发测试没有控制谁先拿锁；
+  另记录读取串行取舍和 trigger/Repository 责任边界。
+- 新增干净子进程 import/OpenAPI no-I/O 测试，避免模块缓存把首次 import 证据变成假绿；聚焦
+  `tests/test_api_composition.py` 为 `10 passed, 1 warning`。
+- 下一动作：补 archive/hide 与 append 的双向确定性锁顺序测试，随后完成 walkthrough 与全部状态材料。
+## 2026-08-20：6B-3 本地实现收尾，公共验证前
+
+- 已从中断点恢复，确认 `HEAD == origin/main == b6a7112d9c3fa8744b9713737bbbf54fe5011084`，未提交实现仍完整，未回滚或越级。
+- 6B-3 聚焦 `85 passed, 25 skipped`；完整 `1295 passed, 67 skipped, 1 warning, 110 subtests passed`。
+- 两套 RAG、Harness dry-run（published/0 revisions）、compileall、SDK boundary、tracked Secret/run-data、YAML、治理和 diff 门均通过；本机无 Docker，Compose/真库留给公共 CI。
+- 现在唯一下一动作是独立暂存、cached diff、提交/推送并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；全绿后才用独立状态批关闭 6B-3，并只交接 6B-4 prepared/waiting authorization。

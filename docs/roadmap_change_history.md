@@ -2202,3 +2202,20 @@ EchoMind、AGI-Saber 和 Sea/OpenResearch 继续作为选择性来源：EchoMind
   增加重排并重编号负例，防止学习证据门被静默绕过。
 - `HANDOFF`：当前仍处于 6B-3 红灯合同，设计文档不等于实现；下一动作是 pure model/Service/API TDD，
   随后才进入真实 PostgreSQL migration/Repository/并发验证。
+
+### 2026-08-20：6B-3 设计批 exact-SHA 公共闭环
+
+- `VERIFIED-PUBLIC`：设计/治理提交 `b6a7112d9c3fa8744b9713737bbbf54fe5011084` 对应 Actions
+  `32313707301`；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部成功。
+- `BOUNDARY`：该 run 验证设计、治理、既有真库和 package 回归，不把 Conversation/Message、Agent、
+  Review Task 或 Memory 写成已实现。
+- `HANDOFF`：同一 canonical checkpoint 内进入 pure model/Service/API 红灯，再实现 PostgreSQL 和 API。
+### 2026-08-20：6B-3 本地实现收尾，等待公共门
+
+6B-3 已从设计/红灯阶段进入本地实现完成状态：Conversation/Message domain、Service、0003
+migration、Repository、六个 HTTP endpoint、composition/package 纵向与分层测试已建立；walkthrough
+覆盖八类学习/工程证据。实现批的聚焦为 `85 passed, 25 skipped`，完整回归为
+`1295 passed, 67 skipped, 1 warning, 110 subtests passed`，RAG、Harness、compile、secret、YAML、
+治理和 diff 门通过。由于本机无 Docker/PostgreSQL，真实 migration/trigger/事务/并发/package 仍必须由
+实现提交的 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 公共 job 证明；全绿前不关闭
+6B-3、不修改 coverage 为 complete、不进入 6B-4。

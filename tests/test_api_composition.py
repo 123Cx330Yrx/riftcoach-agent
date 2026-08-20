@@ -2,6 +2,9 @@ from __future__ import annotations
 
 import importlib
 import os
+import subprocess
+import sys
+import textwrap
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
@@ -78,7 +81,70 @@ def test_composition_import_factory_and_openapi_are_key_and_io_free(
     app = module.create_composed_app(environment=VALID_ENV)
 
     assert app.version == "2.0"
+    assert "/conversations" in app.openapi()["paths"]
     assert "/reviews/recent" in app.openapi()["paths"]
+
+
+def test_clean_process_composition_import_and_openapi_are_io_free() -> None:
+    project_root = Path(__file__).resolve().parents[1]
+    probe = textwrap.dedent(
+        """
+        import os
+
+        original_getenv = os.getenv
+
+        def guarded_getenv(key, default=None):
+            if key in {
+                "RIOT_API_KEY",
+                "ZHIPU_API_KEY",
+                "DEEPSEEK_API_KEY",
+                "DATABASE_URL",
+            }:
+                raise AssertionError("clean import read a deployment secret")
+            return original_getenv(key, default)
+
+        def forbidden_io(*_args, **_kwargs):
+            raise AssertionError("clean import attempted external I/O")
+
+        os.getenv = guarded_getenv
+
+        import psycopg
+        import requests.sessions
+        import sqlalchemy
+
+        psycopg.connect = forbidden_io
+        requests.sessions.Session.request = forbidden_io
+        sqlalchemy.create_engine = forbidden_io
+
+        from app.api.composition import create_composed_app
+
+        app = create_composed_app(
+            environment={
+                "DATABASE_URL": (
+                    "postgresql+psycopg://riftcoach:local-secret@localhost:5432/"
+                    "riftcoach"
+                ),
+                "RIFTCOACH_API_PROFILE": "test",
+                "RIFTCOACH_LOCAL_OWNER_ID": "test-owner",
+                "RIFTCOACH_RUNS_ROOT": "data/runs",
+            }
+        )
+        paths = app.openapi()["paths"]
+        assert "/conversations" in paths
+        assert "/reviews/recent" in paths
+        """
+    )
+
+    completed = subprocess.run(
+        [sys.executable, "-c", probe],
+        cwd=project_root,
+        capture_output=True,
+        text=True,
+        timeout=20,
+        check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr
 
 
 def test_lifespan_builds_process_resources_once_and_disposes_engine(
@@ -114,6 +180,55 @@ def test_lifespan_builds_process_resources_once_and_disposes_engine(
         assert app.state.database_engine is engine
         assert engine.dispose_calls == 0
 
+    assert engine.dispose_calls == 1
+    assert app.state.database_engine is None
+
+
+def test_conversation_composition_failure_is_fail_closed_and_disposes_engine(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    engine = FakeEngine()
+    environment = {**VALID_ENV, "RIFTCOACH_RUNS_ROOT": str(tmp_path)}
+    monkeypatch.setattr(
+        "app.api.composition.build_engine",
+        lambda _settings: engine,
+    )
+    monkeypatch.setattr(
+        "app.api.composition.build_session_factory",
+        lambda _engine: (lambda: None),
+    )
+    monkeypatch.setattr(
+        "app.api.composition.PostgresConversationRepository",
+        lambda _factory: (_ for _ in ()).throw(
+            RuntimeError("postgresql://secret@private.example/riftcoach")
+        ),
+    )
+
+    app = create_composed_app(environment=environment)
+    with TestClient(app) as http:
+        live = http.get("/health/live")
+        ready = http.get("/health/ready")
+        conversation = http.post(
+            "/conversations",
+            headers={"Idempotency-Key": "request-1"},
+            json={
+                "relationship_id": "50000000-0000-4000-8000-000000000020"
+            },
+        )
+
+    assert live.status_code == 200
+    assert ready.status_code == 503
+    assert ready.json() == {
+        "schema_version": "1.0",
+        "api_version": "2.0",
+        "status": "not_ready",
+        "code": "service_configuration_invalid",
+    }
+    assert conversation.status_code == 503
+    assert conversation.json() == {"code": "service_unavailable"}
+    assert "secret" not in conversation.text
+    assert "private.example" not in conversation.text
     assert engine.dispose_calls == 1
     assert app.state.database_engine is None
 

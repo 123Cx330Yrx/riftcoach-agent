@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 
 import pytest
@@ -98,8 +99,14 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
 ) -> None:
     task_id = "90000000-0000-4000-8000-000000000001"
     link_task_id = "90000000-0000-4000-8000-000000000002"
+    conversation_id = "90000000-0000-4000-8000-000000000005"
+    message_id = "90000000-0000-4000-8000-000000000006"
+    message_digest = hashlib.sha256(
+        b"Packaging smoke user message"
+    ).hexdigest()
     run_id = "packaging_smoke_run"
     events: list[str] = []
+    requests_seen: list[tuple[str, str, dict[str, object]]] = []
 
     class Response:
         def __init__(self, status_code: int, body: dict) -> None:
@@ -110,9 +117,50 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
             return dict(self._body)
 
     class Http:
-        def get(self, url: str, **_kwargs):
+        def get(self, url: str, **kwargs):
+            requests_seen.append(("GET", url, kwargs))
             if url.endswith("/health/ready"):
                 return Response(200, {"status": "ready"})
+            if url.endswith(f"/conversations/{conversation_id}/messages"):
+                return Response(
+                    200,
+                    {
+                        "schema_version": "1.0",
+                        "conversation_id": conversation_id,
+                        "items": [
+                            {
+                                "schema_version": "1.0",
+                                "message_id": message_id,
+                                "conversation_id": conversation_id,
+                                "sequence_no": 1,
+                                "role": "user",
+                                "content": "Packaging smoke user message",
+                                "content_sha256": message_digest,
+                                "created_at": "2026-08-20T00:00:00Z",
+                            }
+                        ],
+                        "limit": 10,
+                        "after_sequence": 0,
+                        "has_more": False,
+                        "next_after_sequence": None,
+                    },
+                )
+            if url.endswith(f"/conversations/{conversation_id}"):
+                return Response(
+                    200,
+                    {
+                        "schema_version": "1.0",
+                        "conversation_id": conversation_id,
+                        "relationship_id": (
+                            "90000000-0000-4000-8000-000000000004"
+                        ),
+                        "relationship_role": "self",
+                        "status": "active",
+                        "created_at": "2026-08-20T00:00:00Z",
+                        "updated_at": "2026-08-20T00:00:00Z",
+                        "last_message_at": "2026-08-20T00:00:00Z",
+                    },
+                )
             if "/player-links/" in url:
                 return Response(
                     200,
@@ -140,9 +188,41 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                 },
             )
 
-        def post(self, url: str, **_kwargs):
+        def post(self, url: str, **kwargs):
+            requests_seen.append(("POST", url, kwargs))
             if url.endswith("/player-links"):
                 return Response(202, {"link_task_id": link_task_id})
+            if url.endswith("/conversations"):
+                return Response(
+                    201,
+                    {
+                        "schema_version": "1.0",
+                        "disposition": "created",
+                        "conversation_id": conversation_id,
+                        "relationship_id": (
+                            "90000000-0000-4000-8000-000000000004"
+                        ),
+                        "relationship_role": "self",
+                        "status": "active",
+                        "created_at": "2026-08-20T00:00:00Z",
+                        "updated_at": "2026-08-20T00:00:00Z",
+                        "last_message_at": None,
+                    },
+                )
+            if url.endswith(f"/conversations/{conversation_id}/messages"):
+                return Response(
+                    201,
+                    {
+                        "schema_version": "1.0",
+                        "message_id": message_id,
+                        "conversation_id": conversation_id,
+                        "sequence_no": 1,
+                        "role": "user",
+                        "content": "Packaging smoke user message",
+                        "content_sha256": message_digest,
+                        "created_at": "2026-08-20T00:00:00Z",
+                    },
+                )
             return Response(202, {"task_id": task_id, "run_id": run_id})
 
     class Engine:
@@ -209,8 +289,64 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     assert result.task_status == "failed"
     assert result.link_status == "succeeded"
     assert str(result.link_task_id) == link_task_id
+    assert result.conversation_status == "active"
+    assert str(result.conversation_id) == conversation_id
+    assert str(result.message_id) == message_id
+    assert result.message_sequence_no == 1
     assert result.external_riot_provider_calls == 0
     assert events == ["engine.dispose"]
+
+    conversation_post = next(
+        item
+        for item in requests_seen
+        if item[0] == "POST" and item[1].endswith("/conversations")
+    )
+    assert conversation_post[2]["json"] == {
+        "relationship_id": "90000000-0000-4000-8000-000000000004"
+    }
+    conversation_headers = conversation_post[2]["headers"]
+    assert isinstance(conversation_headers, dict)
+    assert set(conversation_headers) == {"Idempotency-Key"}
+    assert 1 <= len(conversation_headers["Idempotency-Key"]) <= 128
+
+    message_post = next(
+        item
+        for item in requests_seen
+        if item[0] == "POST" and item[1].endswith("/messages")
+    )
+    assert message_post[2]["json"] == {
+        "content": "Packaging smoke user message"
+    }
+    message_get = next(
+        item
+        for item in requests_seen
+        if item[0] == "GET" and item[1].endswith("/messages")
+    )
+    assert message_get[2]["params"] == {
+        "limit": 10,
+        "after_sequence": 0,
+    }
+
+
+@pytest.mark.parametrize(
+    "code",
+    (
+        "packaging_smoke_conversation_create_failed",
+        "packaging_smoke_conversation_query_failed",
+        "packaging_smoke_conversation_invalid",
+        "packaging_smoke_message_append_failed",
+        "packaging_smoke_message_query_failed",
+        "packaging_smoke_message_invalid",
+    ),
+)
+def test_conversation_packaging_failure_codes_are_allowlisted_and_body_free(
+    code: str,
+) -> None:
+    error = PackagingSmokeError(code)  # type: ignore[arg-type]
+
+    assert str(error) == code
+    assert "Packaging smoke user message" not in repr(error)
+    assert "secret" not in repr(error)
 
 
 def test_packaging_smoke_reports_database_preflight_failure_without_detail(

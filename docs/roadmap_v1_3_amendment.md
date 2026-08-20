@@ -230,7 +230,7 @@ OP.GG MCP
 5F-3 Contract/Harness Eval  已完成；45 focused、196 adjacent、完整 929/110 subtests；裁决 `harness-compatible-but-runtime-gate-failed`，Context/terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功
 5F-4 Bounded Real Slice    未进入；5F-3 前置硬门失败，真实模型调用无信息增益，external calls 0
 5F-5 Adoption/Exit         已完成；裁决 `partial-adopt-evaluation-assets-only`；`f8dea66` / Actions `32028206103` exact-SHA 公共成功；产品拒绝 Pi，冻结保留评测资产/CI 复现与采用门方法
-6A entry design            已完成；6A-1 至 6A-7 已由 `adf53e5` / Actions `32146760003` 的 pytest、真库与 Linux packaging 三 job 公共闭环；Session/Memory entry design 又由 `bc11afe` / Actions `32222531783` 三 job 公共闭环；6B-1 已由 `ed8fa58` / Actions `32229024069` 三 job 公共闭环；6B-2 又由 `0c13a58` / Actions `32301852042` 三 job 公共闭环；RQ-067 文档门已由 `63435d9` / Actions `32308631289` 三 job 公共闭环，现进入 6B-3 Conversation/Message foundation
+6A entry design            已完成；6A-1 至 6A-7 已由 `adf53e5` / Actions `32146760003` 的 pytest、真库与 Linux packaging 三 job 公共闭环；Session/Memory entry design、6B-1、6B-2 与 RQ-067 文档门均已公共闭环；6B-3 Conversation/Message foundation 已本地实现与复盘，等待实现 exact-SHA 三 job
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -411,12 +411,14 @@ packaging-smoke 成功且 image boundary 通过；状态收尾 `d1cc2ed` / Actio
 `stage-6-session-memory-entry-design` 冻结为 ADR-0039/正式设计/实施计划；设计提交 `bc11afe` /
 Actions `32222531783` 三 job 已成功；6B-1 又由 `ed8fa58` / Actions `32229024069` 三 job 公共完成；
 6B-2 已由 `0c13a58` / Actions `32301852042` 三 job 公共完成。RQ-067 文档/工程证据批随后由
-`63435d9` / Actions `32308631289` 三 job 公共闭环，现已进入 6B-3 初学者设计/TDD；Conversation/Memory
-与公网部署仍未实现。
+`63435d9` / Actions `32308631289` 三 job 公共闭环。6B-3 Conversation/Message foundation 随后已本地
+实现并补齐 walkthrough，但实现提交的真实 PostgreSQL/package 公共门尚未运行；长期 Memory 与公网部署
+仍未实现。
 
 ### 2026-08-20：6B-3 设计冻结
 
 ADR-0040 将 6B-3 的隐含合同正式化：active relationship 必须在创建事务中锁定检查；Conversation
 创建继承 owner-scoped 幂等键；Message schema 保留 user/assistant 但公共入口只允许 user；序号从 1
-开始由行锁递增；archived/hidden 分开；PostgreSQL trigger 防止绑定字段 direct SQL rebind。此处仍是
-设计证据，不把 Conversation/Message 代码、Agent 接入或 Memory 误标为已完成。
+开始由行锁递增；archived/hidden 分开；PostgreSQL trigger 防止绑定字段 direct SQL rebind。当前本地
+实现已经落到 domain、Service、0003、Repository、HTTP/composition/package 和分层测试；公共 CI 全绿前
+仍不把它标为 complete，也不把 Agent 接入或 Memory 误标为已完成。

@@ -1,8 +1,10 @@
-"""Thin FastAPI adapter for the durable asynchronous review/link API.
+"""Thin FastAPI adapter for durable review, player-link and conversation APIs.
 
 The adapter owns HTTP validation, trusted actor projection and safe status
 mapping. It never constructs or runs Riot, Provider, Agent, Harness or Worker
-components. POST only commits a queued task and returns ``202 Accepted``.
+components. Review/player-link POST routes only persist queued intent and return
+``202 Accepted``; Conversation POST routes perform bounded synchronous
+PostgreSQL control-plane mutations without external I/O.
 """
 
 from __future__ import annotations
@@ -12,7 +14,7 @@ from collections.abc import Mapping, Sequence
 from typing import Protocol
 from uuid import UUID
 
-from fastapi import Depends, FastAPI, Header, Request
+from fastapi import Depends, FastAPI, Header, Query, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, Response
 from pydantic import ValidationError
@@ -23,6 +25,16 @@ from app.api.actor import (
     ActorContext,
     ActorContextProvider,
     ActorContextUnavailable,
+)
+from app.api.conversation_models import (
+    AppendUserMessageRequest,
+    ConversationApiErrorCode,
+    ConversationErrorResponse,
+    ConversationMessagePageResponse,
+    ConversationMessageResponse,
+    ConversationResponse,
+    CreateConversationRequest,
+    CreateConversationResponse,
 )
 from app.api.player_models import (
     CreatePlayerLinkRequest,
@@ -39,6 +51,16 @@ from app.api.task_models import (
     ReadinessResult,
     TaskLinks,
 )
+from app.conversations.models import (
+    AppendUserMessageCommand,
+    ConversationCreateResult,
+    ConversationMessagePage,
+    ConversationMessageView,
+    ConversationView,
+    CreateConversationCommand,
+)
+from app.conversations.ports import ConversationServicePort
+from app.conversations.service import ConversationServiceError
 from app.players.models import (
     CreatePlayerLinkCommand,
     PlayerLinkCreateResult,
@@ -115,6 +137,19 @@ _CREATE_PLAYER_LINK_STATUS: Mapping[str, tuple[int, ApiErrorCode]] = {
     "link_persistence_failed": (503, "service_unavailable"),
     "link_identity_invalid": (503, "service_unavailable"),
 }
+_CONVERSATION_ERROR_STATUS: Mapping[
+    str,
+    tuple[int, ConversationApiErrorCode],
+] = {
+    "request_invalid": (422, "request_invalid"),
+    "conversation_not_found": (404, "conversation_not_found"),
+    "conversation_idempotency_conflict": (
+        409,
+        "conversation_idempotency_conflict",
+    ),
+    "conversation_archived": (409, "conversation_archived"),
+    "service_unavailable": (503, "service_unavailable"),
+}
 _IDEMPOTENCY_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
 
 
@@ -141,6 +176,32 @@ def _task_lookup_error(
     return _error_response("service_unavailable", status_code=503)
 
 
+def _conversation_error_response(
+    code: ConversationApiErrorCode,
+    *,
+    status_code: int,
+) -> JSONResponse:
+    body = ConversationErrorResponse(code=code).model_dump(mode="json")
+    return JSONResponse(status_code=status_code, content=body)
+
+
+def _conversation_service_error(
+    error: ConversationServiceError,
+) -> JSONResponse:
+    status_code, code = _CONVERSATION_ERROR_STATUS.get(
+        error.code,
+        (503, "service_unavailable"),
+    )
+    return _conversation_error_response(code, status_code=status_code)
+
+
+def _parse_conversation_id(value: str) -> UUID | None:
+    try:
+        return UUID(value)
+    except (AttributeError, TypeError, ValueError):
+        return None
+
+
 def create_app(
     *,
     task_service: TaskServicePort,
@@ -153,6 +214,7 @@ def create_app(
     cors_origins: Sequence[str] = (),
     cors_allow_credentials: bool = False,
     observability: TaskObservability | None = None,
+    conversation_service: ConversationServicePort | None = None,
 ) -> FastAPI:
     """Create API V2 from explicit ports without doing deployment I/O."""
 
@@ -173,6 +235,19 @@ def create_app(
         getattr(deletion_service, "delete", None)
     ):
         raise TypeError("deletion_service must expose delete()")
+    if conversation_service is not None:
+        for method_name in (
+            "create",
+            "get_conversation",
+            "append_user_message",
+            "list_messages",
+            "archive_conversation",
+            "hide_conversation",
+        ):
+            if not callable(getattr(conversation_service, method_name, None)):
+                raise TypeError(
+                    f"conversation_service must expose {method_name}()"
+                )
     if observability is not None and not isinstance(
         observability,
         TaskObservability,
@@ -190,7 +265,8 @@ def create_app(
         title="RiftCoach Agent API",
         version="2.0",
         description=(
-            "Durable asynchronous API for recent reviews and Riot player links."
+            "Durable API for recent reviews, Riot player links and "
+            "owner-scoped conversations."
         ),
         lifespan=lifespan,
     )
@@ -208,6 +284,13 @@ def create_app(
             raise ActorContextUnavailable()
         return context
 
+    async def require_empty_body(request: Request) -> None:
+        if await request.body():
+            # Archive/hide have no public command fields.  Rejecting a body
+            # prevents clients from believing owner, subject or role input
+            # influenced the lifecycle operation.
+            raise RequestValidationError([])
+
     @app.exception_handler(RequestValidationError)
     async def request_validation_handler(
         request: Request,
@@ -224,6 +307,307 @@ def create_app(
     ) -> JSONResponse:
         del request, exc
         return _error_response("service_unavailable", status_code=503)
+
+    @app.post(
+        "/conversations",
+        status_code=201,
+        response_model=CreateConversationResponse,
+        responses={
+            200: {"model": CreateConversationResponse},
+            404: {"model": ConversationErrorResponse},
+            409: {"model": ConversationErrorResponse},
+            422: {"model": ConversationErrorResponse},
+            503: {"model": ConversationErrorResponse},
+        },
+    )
+    def post_conversation(
+        conversation_request: CreateConversationRequest,
+        idempotency_key: str = Header(
+            alias="Idempotency-Key",
+            min_length=1,
+            max_length=128,
+            pattern=_IDEMPOTENCY_PATTERN,
+        ),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> CreateConversationResponse | JSONResponse:
+        if conversation_service is None:
+            return _conversation_error_response(
+                "service_unavailable",
+                status_code=503,
+            )
+        try:
+            command = CreateConversationCommand(
+                owner_id=actor.owner_id,
+                idempotency_key=idempotency_key,
+                relationship_id=conversation_request.relationship_id,
+            )
+        except ValidationError:
+            return _conversation_error_response(
+                "request_invalid",
+                status_code=422,
+            )
+        try:
+            result = conversation_service.create(command)
+            if not isinstance(result, ConversationCreateResult):
+                raise TypeError("conversation service returned an invalid result")
+            if result.conversation.relationship_id != command.relationship_id:
+                raise TypeError("conversation service returned a mismatched relationship")
+            response = CreateConversationResponse.from_result(result)
+            if result.disposition.value == "replayed":
+                return JSONResponse(
+                    status_code=200,
+                    content=response.model_dump(mode="json"),
+                )
+            return response
+        except ConversationServiceError as error:
+            return _conversation_service_error(error)
+        except Exception:
+            return _conversation_error_response(
+                "service_unavailable",
+                status_code=503,
+            )
+
+    @app.get(
+        "/conversations/{conversation_id}",
+        response_model=ConversationResponse,
+        responses={
+            404: {"model": ConversationErrorResponse},
+            503: {"model": ConversationErrorResponse},
+        },
+    )
+    def get_conversation(
+        conversation_id: str,
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> ConversationResponse | JSONResponse:
+        parsed_conversation_id = _parse_conversation_id(conversation_id)
+        if parsed_conversation_id is None:
+            return _conversation_error_response(
+                "conversation_not_found",
+                status_code=404,
+            )
+        if conversation_service is None:
+            return _conversation_error_response(
+                "service_unavailable",
+                status_code=503,
+            )
+        try:
+            view = conversation_service.get_conversation(
+                owner_id=actor.owner_id,
+                conversation_id=parsed_conversation_id,
+            )
+            if (
+                not isinstance(view, ConversationView)
+                or view.conversation_id != parsed_conversation_id
+            ):
+                raise TypeError("conversation service returned an invalid view")
+            return ConversationResponse.from_view(view)
+        except ConversationServiceError as error:
+            return _conversation_service_error(error)
+        except Exception:
+            return _conversation_error_response(
+                "service_unavailable",
+                status_code=503,
+            )
+
+    @app.post(
+        "/conversations/{conversation_id}/messages",
+        status_code=201,
+        response_model=ConversationMessageResponse,
+        responses={
+            404: {"model": ConversationErrorResponse},
+            409: {"model": ConversationErrorResponse},
+            422: {"model": ConversationErrorResponse},
+            503: {"model": ConversationErrorResponse},
+        },
+    )
+    def post_conversation_message(
+        conversation_id: str,
+        message_request: AppendUserMessageRequest,
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> ConversationMessageResponse | JSONResponse:
+        parsed_conversation_id = _parse_conversation_id(conversation_id)
+        if parsed_conversation_id is None:
+            return _conversation_error_response(
+                "conversation_not_found",
+                status_code=404,
+            )
+        if conversation_service is None:
+            return _conversation_error_response(
+                "service_unavailable",
+                status_code=503,
+            )
+        try:
+            command = AppendUserMessageCommand(
+                owner_id=actor.owner_id,
+                conversation_id=parsed_conversation_id,
+                content=message_request.content,
+            )
+        except ValidationError:
+            return _conversation_error_response(
+                "request_invalid",
+                status_code=422,
+            )
+        try:
+            view = conversation_service.append_user_message(command)
+            if (
+                not isinstance(view, ConversationMessageView)
+                or view.conversation_id != parsed_conversation_id
+            ):
+                raise TypeError("conversation service returned an invalid message")
+            return ConversationMessageResponse.from_view(view)
+        except ConversationServiceError as error:
+            return _conversation_service_error(error)
+        except Exception:
+            return _conversation_error_response(
+                "service_unavailable",
+                status_code=503,
+            )
+
+    @app.get(
+        "/conversations/{conversation_id}/messages",
+        response_model=ConversationMessagePageResponse,
+        responses={
+            404: {"model": ConversationErrorResponse},
+            422: {"model": ConversationErrorResponse},
+            503: {"model": ConversationErrorResponse},
+        },
+    )
+    def get_conversation_messages(
+        conversation_id: str,
+        limit: int = Query(default=50, ge=1, le=100),
+        after_sequence: int = Query(default=0, ge=0),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> ConversationMessagePageResponse | JSONResponse:
+        parsed_conversation_id = _parse_conversation_id(conversation_id)
+        if parsed_conversation_id is None:
+            return _conversation_error_response(
+                "conversation_not_found",
+                status_code=404,
+            )
+        if conversation_service is None:
+            return _conversation_error_response(
+                "service_unavailable",
+                status_code=503,
+            )
+        try:
+            page = conversation_service.list_messages(
+                owner_id=actor.owner_id,
+                conversation_id=parsed_conversation_id,
+                limit=limit,
+                after_sequence=after_sequence,
+            )
+            if (
+                not isinstance(page, ConversationMessagePage)
+                or page.limit != limit
+                or page.after_sequence != after_sequence
+                or any(
+                    item.conversation_id != parsed_conversation_id
+                    for item in page.items
+                )
+            ):
+                raise TypeError("conversation service returned an invalid page")
+            return ConversationMessagePageResponse.from_page(
+                conversation_id=parsed_conversation_id,
+                page=page,
+            )
+        except ConversationServiceError as error:
+            return _conversation_service_error(error)
+        except Exception:
+            return _conversation_error_response(
+                "service_unavailable",
+                status_code=503,
+            )
+
+    @app.post(
+        "/conversations/{conversation_id}/archive",
+        response_model=ConversationResponse,
+        responses={
+            404: {"model": ConversationErrorResponse},
+            422: {"model": ConversationErrorResponse},
+            503: {"model": ConversationErrorResponse},
+        },
+    )
+    def archive_conversation(
+        conversation_id: str,
+        _empty_body: None = Depends(require_empty_body),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> ConversationResponse | JSONResponse:
+        parsed_conversation_id = _parse_conversation_id(conversation_id)
+        if parsed_conversation_id is None:
+            return _conversation_error_response(
+                "conversation_not_found",
+                status_code=404,
+            )
+        if conversation_service is None:
+            return _conversation_error_response(
+                "service_unavailable",
+                status_code=503,
+            )
+        try:
+            view = conversation_service.archive_conversation(
+                owner_id=actor.owner_id,
+                conversation_id=parsed_conversation_id,
+            )
+            if (
+                not isinstance(view, ConversationView)
+                or view.conversation_id != parsed_conversation_id
+                or view.status.value != "archived"
+            ):
+                raise TypeError("conversation service returned an invalid archive")
+            return ConversationResponse.from_view(view)
+        except ConversationServiceError as error:
+            return _conversation_service_error(error)
+        except Exception:
+            return _conversation_error_response(
+                "service_unavailable",
+                status_code=503,
+            )
+
+    @app.post(
+        "/conversations/{conversation_id}/hide",
+        status_code=204,
+        response_model=None,
+        responses={
+            404: {"model": ConversationErrorResponse},
+            422: {"model": ConversationErrorResponse},
+            503: {"model": ConversationErrorResponse},
+        },
+    )
+    def hide_conversation(
+        conversation_id: str,
+        _empty_body: None = Depends(require_empty_body),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> Response:
+        parsed_conversation_id = _parse_conversation_id(conversation_id)
+        if parsed_conversation_id is None:
+            return _conversation_error_response(
+                "conversation_not_found",
+                status_code=404,
+            )
+        if conversation_service is None:
+            return _conversation_error_response(
+                "service_unavailable",
+                status_code=503,
+            )
+        try:
+            view = conversation_service.hide_conversation(
+                owner_id=actor.owner_id,
+                conversation_id=parsed_conversation_id,
+            )
+            if (
+                not isinstance(view, ConversationView)
+                or view.conversation_id != parsed_conversation_id
+                or view.status.value != "hidden"
+            ):
+                raise TypeError("conversation service returned an invalid hide")
+            return Response(status_code=204)
+        except ConversationServiceError as error:
+            return _conversation_service_error(error)
+        except Exception:
+            return _conversation_error_response(
+                "service_unavailable",
+                status_code=503,
+            )
 
     @app.post(
         "/player-links",
@@ -644,6 +1028,7 @@ def create_app(
 
 
 __all__ = [
+    "ConversationServicePort",
     "ReadinessPort",
     "PlayerLinkServicePort",
     "RunQueryPort",

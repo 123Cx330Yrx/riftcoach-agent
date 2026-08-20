@@ -142,7 +142,7 @@ jobs:
           python -m alembic downgrade base
           python -m alembic upgrade head
 
-      - name: Run PostgreSQL task tests
+      - name: Run PostgreSQL control-plane tests
         run: |
           python -m pytest \
             tests/test_database_config.py \
@@ -157,6 +157,9 @@ jobs:
             tests/test_task_performance_postgres.py \
             tests/test_player_identity_migrations_postgres.py \
             tests/test_player_repository_postgres.py \
+            tests/test_conversation_migrations_postgres.py \
+            tests/test_conversation_repository_postgres.py \
+            tests/test_conversation_concurrency_postgres.py \
             -q -s
 
       - name: Verify metadata matches the migration head

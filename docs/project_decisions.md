@@ -1374,5 +1374,18 @@ SSE、前端和新框架仍在本批之外。
   测试证明；SQLite/Fake 只能证明纯逻辑或 HTTP 投影。
 
 正式合同与取舍见 [ADR-0040](adr/0040-conversation-message-foundation-contract.md) 和
-[6B-3 设计稿](plans/2026-08-20-conversation-message-foundation-design.md)。当前这只是设计证据，
-不表示产品代码已实现或 Agent/Memory 已接入。
+[6B-3 设计稿](plans/2026-08-20-conversation-message-foundation-design.md)。当前工作树已经具备
+domain、Service、0003 migration、Repository、HTTP/composition/package 与分层测试；本地实现仍待
+同一提交的 PostgreSQL/package exact-SHA 公共门。它不表示 Agent/Memory 已接入。
+
+### 6B-3 本地实现审查与收尾状态（2026-08-20）
+
+实现批通过 6B-3 聚焦 `85 passed, 25 skipped` 与完整 `1295 passed, 67 skipped, 1 warning,
+110 subtests passed`。本地 RAG development/independent holdout、Harness dry-run、compileall、
+Provider boundary、tracked secret/run-data、YAML、治理与 `git diff --check` 均通过；本机没有 Docker，
+因此 Compose 与真实 PostgreSQL 仍只由阻塞 GitHub Actions 证明。审查修复了 archive/hide OpenAPI
+422 投影和有效 command 后服务故障的 503 投影，并把生命周期/append 测试改为确定性锁顺序。
+
+这批仍保持以下边界：公共 API 只能追加 user Message；assistant 必须有未来可信 `source_run_id`
+terminal 证明；不接 Agent、Review Task 2.0、Memory、Auth、SSE、前端或新框架。coverage 在
+exact-SHA 三 job 全绿前保持 `planned`，不能把本地绿灯写成 6B-3 已关闭。

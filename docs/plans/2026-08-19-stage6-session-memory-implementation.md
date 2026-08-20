@@ -373,6 +373,57 @@ the Actor; no Agent/Review/Memory execution occurs yet.
 - system/tool/provider bodies cannot be stored through public Service;
 - no external I/O.
 
+### 6B-3 execution batches
+
+The dedicated contract is ADR-0040 and
+`docs/plans/2026-08-20-conversation-message-foundation-design.md`.  Execute the
+following in order; a green later layer cannot replace an earlier red/green
+proof.
+
+1. **Pure domain red/green**
+   - freeze strict create/append/list commands, Conversation/Message values,
+     fingerprint/digest, safe error codes and public redacted views;
+   - reject blank/oversized/control/surrogate content and any public non-user
+     role;
+   - prove create replay/conflict, owner-scoped lookup, archive/hide and bounded
+     paging with a Fake Repository.
+2. **PostgreSQL schema red/green**
+   - add `conversations` and `conversation_messages`, composite FK/CHECK/UNIQUE/
+     indexes and reversible immutable/lifecycle triggers in migration 0003;
+   - import the ORM records in `migrations/env.py` and prove metadata/head parity;
+   - direct SQL must fail on rebind, unarchive/unhide and immutable Message edits.
+3. **Repository transaction red/green**
+   - lock the owner relationship and require active before create;
+   - allocate 1-based Message sequence under a Conversation row lock in the same
+     transaction as insert and timestamp update;
+   - filter hidden Conversation/relationship in every owner read/write and keep
+     archive readable but append-blocked.
+4. **Real PostgreSQL concurrency red/green**
+   - same-key creation converges; same-key/different fingerprint conflicts;
+   - two append writers receive unique ordered sequence values;
+   - create-versus-relationship-hide and append-versus-archive serialize to one
+     valid final state; rollback leaves no partial Message/counter change.
+5. **Thin API red/green**
+   - register create/get/append/list/archive/hide routes with strict DTO and
+     trusted ActorContext owner;
+   - preserve old `create_app()` callers through a default-unavailable optional
+     Conversation port while deployment composition binds the real Service;
+   - keep import/OpenAPI free of DB/Key/Riot/Provider I/O and never log Message
+     content.
+6. **Composition/package/CI integration**
+   - bind `PostgresConversationRepository` in the existing FastAPI lifespan;
+   - extend the Fake/no-I/O Linux smoke through Link success → Conversation
+     create → user append/query without Agent/Review/Memory execution;
+   - add the new PostgreSQL files to the blocking workflow job.
+7. **Exit and durable learning evidence**
+   - run focused, adjacent, complete, RAG/Harness/compile/security/governance/
+     diff gates;
+   - add a 6B-3 implementation walkthrough with code map, actual flow, failure
+     evidence, runbook and interview boundaries; mark coverage complete only
+     after implementation evidence exists;
+   - commit/push only this batch and require exact-SHA `pytest`,
+     `postgres-migrations`, and `packaging-smoke` success before entering 6B-4.
+
 ## 6B-4: Conversation-bound Recent Review Identity
 
 ### Outcome

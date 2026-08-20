@@ -66,7 +66,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | Session/Memory 入口设计 | 完整 | [Session/Memory V1 设计](../plans/2026-08-19-stage6-session-memory-design.md) | Session、消息、玩家身份、长期 Memory 与 RAG 为何不能混为一谈 |
 | 6B-1：玩家身份持久化 | 完整 | [6B-1 walkthrough](6b-1-player-identity-link-persistence-walkthrough.md) | PUUID、Alias、Owner Relationship、Link Task 及真库迁移事故 |
 | 6B-2：异步玩家绑定 | 完整 | [6B-2 walkthrough](6b-2-async-player-link-worker-api-walkthrough.md) | POST/poll、Worker、事务外 Account-V1、短事务终态和隐私投影 |
-| 6B-3：Conversation / Message | 计划中 | [6B-3 专用设计](../plans/2026-08-20-conversation-message-foundation-design.md) / [ADR-0040](../adr/0040-conversation-message-foundation-contract.md) | 当前只有设计，产品实现、测试和实现后复盘尚未完成 |
+| 6B-3：Conversation / Message | 本地实现，待公共闭环 | [6B-3 walkthrough](6b-3-conversation-message-foundation-walkthrough.md) / [专用设计](../plans/2026-08-20-conversation-message-foundation-design.md) / [ADR-0040](../adr/0040-conversation-message-foundation-contract.md) | 固定玩家身份、owner 幂等、连续消息序号、归档/隐藏、真库锁与 trigger；coverage 在 exact-SHA 三 job 全绿前保持 `planned` |
 
 “完整”表示仓库中已经具备八类持久证据，并不表示项目已生产就绪，也不表示项目所有者已经学会。
 个人理解进度需要通过实际复述、读码、运行和问答单独确认。
@@ -128,6 +128,7 @@ canonical 推进到 6B-4。这能防止“代码写完就一路往后走，教�
 - 不代表当前有正式公网 Auth、RSO 账号验证、HTTPS、SSE、前端或生产级运维；
 - 不代表 RAG 开发集满分等于未知问题上的泛化满分；
 - 不代表 GLM、DeepSeek 或其他 Provider 已通过全部领域质量准入；
-- 不代表计划中的 Conversation/Message/Memory 已经实现。
+- 不代表 6B-3 本地 Conversation/Message foundation 已经获得公共真库/package 闭环，也不代表长期
+  Memory、Conversation-bound Review 或 assistant terminal 已经实现。
 
 这些边界既是工程事实，也是项目在面试中保持可信度的重要部分。

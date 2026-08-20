@@ -171,6 +171,11 @@ def test_openapi_versions_the_async_contract_and_exact_paths() -> None:
 
     assert document["info"]["version"] == "2.0"
     assert set(document["paths"]) == {
+        "/conversations",
+        "/conversations/{conversation_id}",
+        "/conversations/{conversation_id}/messages",
+        "/conversations/{conversation_id}/archive",
+        "/conversations/{conversation_id}/hide",
         "/reviews/recent",
         "/player-links",
         "/player-links/{link_task_id}",

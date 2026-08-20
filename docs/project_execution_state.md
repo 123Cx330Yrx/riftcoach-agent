@@ -17,7 +17,7 @@ pause_reason: ""
 ## 状态元数据
 
 - 最后更新：2026-08-20
-- 主阶段：阶段 6；6A 持久异步 API/task 基座与 Session/Memory entry design 已公共完成；6B-1 又由提交 `ed8fa58ff3f9ef6c84e1a028ac0e1724b087a26b` 与 Actions `32229024069` 的三个 job 公共闭环；6B-2 已由提交 `0c13a583ea51a7c18301fc29bf5c2931790d6693` 与 Actions `32301852042` 的 `pytest`、`postgres-migrations`、`packaging-smoke` exact-SHA 公共闭环；RQ-067 文档/工程证据批已由 `63435d90f5153309fce98b92a2ff58425d54a684` / Actions `32308631289` 三 job 公共闭环，现正式进入 6B-3 初学者设计复核与 TDD
+- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1、6B-2 与 RQ-067 文档门均已公共闭环；6B-3 Conversation/Message foundation 的 domain、Service、0003、Repository、HTTP/composition/package、分层测试与八维 walkthrough 已在本地建立，当前仍待最终门禁、实现提交和 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 公共闭环
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,10 +250,10 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6B-3-conversation-message-foundation` 设计批公共验证：6B-3 的初学者设计复核、
-  ADR-0040、专用设计稿和 coverage 顺序加固已完成本地门禁；当前先独立提交/推送并等待 exact-SHA
-  三 job。公共全绿后立即进入纯模型/Service/API 红灯，再写 migration/Repository/PostgreSQL 并发红灯；
-  不接 Agent、Review Task、Memory、Auth/RSO、SSE、前端或新框架。
+- 唯一下一步：完成 `6B-3-conversation-message-foundation` 的确定性并发补强、最终差异审查、持久材料与
+  全部本地门禁；随后只提交/推送本实现批并等待 exact-SHA `pytest`、`postgres-migrations`、
+  `packaging-smoke`。公共三 job 全绿前 coverage 保持 `planned`、canonical 保持 `in_progress`；不接
+  Agent、Review Task、Memory、Auth/RSO、SSE、前端或新框架，也不进入 6B-4。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -554,10 +554,10 @@ pause_reason: ""
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5、阶段 6 的 6A、Session/Memory entry design、6B-1 identity persistence 与 6B-2 Resolver/Worker/API/package 纵向均已完成；6B-3 尚未实现 | Player Link 等于 Conversation/Memory、生产模型质量、自动恢复、正式 Auth、SSE 或前端已完成 |
-| 项目理解 | RQ-067 已从阶段 0 重审并由 `63435d9/32308631289` 公共闭环；`docs/learning/README.md` 现统一索引八维证据，阶段 0/1/4/5B/6B-1/6B-2 有独立实现复盘，阶段 3/5A/5C 等由原位补强或成熟退出复核覆盖；当前开始 6B-3 概念教学 | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
+| 本地代码 | 阶段 0-5、阶段 6 的 6A、Session/Memory entry design、6B-1/6B-2 均已完成；6B-3 Conversation/Message foundation 已本地实现，正在收尾并等待公共真库/package 证据 | 本地代码等于 6B-3 已公共关闭，或等于 Agent/Review/Memory、生产模型质量、正式 Auth、SSE/前端已完成 |
+| 项目理解 | RQ-067 已从阶段 0 重审并公共闭环；6B-3 又新增完整 implementation walkthrough，覆盖问题、实现、代码地图、数据流、验证、运行、安全边界和面试表述 | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | 6A `adf53e5/32146760003`、设计批 `bc11afe/32222531783`、6B-1 `ed8fa58/32229024069`、6B-2 `0c13a58/32301852042` 与 RQ-067 文档批 `63435d9/32308631289` 均三 job 全绿；网页与公网仍未部署 | package/link/docs CI 等于生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
+| GitHub/部署 | 6A、Session/Memory design、6B-1、6B-2、RQ-067 与 6B-3 设计批均已有 exact-SHA 三 job；6B-3 实现尚未提交/公开验证，网页与公网仍未部署 | 既有设计/package CI 等于本实现已通过真库，或等于生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -1312,3 +1312,45 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   设计文件不算实现证据。本地完整回归为 `1226 passed, 42 skipped, 1 warning, 110 subtests passed`；
   RAG development/holdout、Harness dry-run、compileall、SDK/Secret/tracked-data、YAML、governance 与 diff
   门均通过。下一动作是设计批独立提交/推送和 exact-SHA 三 job；全绿后才进入红灯与最小实现。
+
+## 2026-08-20：6B-3 设计批公共闭环，进入红灯合同
+
+- 设计/治理提交 `b6a7112d9c3fa8744b9713737bbbf54fe5011084` 已推送；Actions run
+  `32313707301` 精确对应同一 SHA，`pytest`、`postgres-migrations`、`packaging-smoke` 三 job
+  均 completed/success。
+- 这次公共证据证明 ADR/design/governance 与既有真库/package 边界兼容，不证明 Conversation/Message
+  产品代码已经存在，也不证明 Agent、Review 或 Memory 接入。
+- canonical 保持同一 6B-3 checkpoint，但内部从“设计门”转入“红灯→最小实现”；第一批先冻结 pure
+  model/Service/API 合同，随后才实现 PostgreSQL schema/Repository/并发与 API composition。
+
+## 2026-08-20：6B-3 本地实现、审查修复与公共验证前状态
+
+- Conversation/Message strict domain、Port/Service、SQLAlchemy metadata、可逆 Alembic 0003、事务
+  Repository、六个 HTTP endpoint、lifespan composition、Linux no-I/O package 纵向与 pure/API/真库/
+  并发测试已在工作树建立；没有接 Agent、Review Task 2.0、Memory、Auth、SSE、前端或新框架。
+- scoped advisory lock 只串行同 `owner_id + idempotency_key`；Service 又防御 CREATED 投影伪造服务器
+  conversation ID/active 初态；assistant 数据合同必须有 `source_run_id`，公共 API 仍只能写 user。
+- 最终只读审查未发现 P0/P1，修复两项 P2：archive/hide 的 OpenAPI 422 现在与实际
+  `ConversationErrorResponse` 一致；有效 command 之后的 UUID factory/clock 故障按服务器 503，而非误报
+  客户端 422。对应红灯为 `5 failed, 35 passed`，最小修复后为 `40 passed`。
+- 原 lifecycle/append Barrier 测试被确定性调度取代：blocker 先锁 Conversation，事件确认第一操作已持
+  relationship、第二操作已尝试相同 relationship 锁，再释放 blocker；archive/hide 各自证明 append-first
+  与 lifecycle-first。该真库测试本机因无 PostgreSQL 明确 skip，只能由阻塞 CI 补证。
+- 新增干净 Python 子进程 import/OpenAPI no-I/O 测试；`docs/learning/6b-3-conversation-message-foundation-
+  walkthrough.md` 已补齐八维材料，coverage evidence 路径已完整但在公共三 job 全绿前保持 `planned`。
+- 当前仍未提交/推送实现批，也没有该实现 exact-SHA 的 PostgreSQL/package 公共证据。唯一下一动作是完成
+  全部本地门禁与最终 diff，随后提交/推送并等待三个同 SHA job；全绿后再用独立状态批关闭 6B-3，只把
+  6B-4 标为 prepared/waiting authorization，不实施 6B-4。
+
+## 2026-08-20：6B-3 本地实现收尾与公共验证前复核
+
+- 已完成 6B-3 实现批的聚焦与完整复核：聚焦 `85 passed, 25 skipped`；完整
+  `1295 passed, 67 skipped, 1 warning, 110 subtests passed`。本机 skip 全部是没有 PostgreSQL/Docker，
+  仍不替代公共真库/package 证据。
+- RAG development/independent holdout、Harness dry-run（published/0 revisions）、compileall、
+  Provider boundary、tracked Secret/run-data、YAML、治理与 `git diff --check` 均通过；Docker Compose
+  本机不可执行，保持为 `packaging-smoke` 公共门。
+- 本地状态仍为 `in_progress`：实现、测试、walkthrough 和八维证据路径已建立，但实现提交尚未取得
+  exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job。coverage 继续保持 `planned`。
+- 唯一下一动作：独立暂存/cached diff、提交、推送并等待同一 SHA 三 job；全绿后再单独提交状态收尾，
+  将 6B-3 置为 complete、coverage 置为 complete，并只把 6B-4 标为 prepared/waiting authorization。

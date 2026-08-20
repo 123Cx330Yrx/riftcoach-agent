@@ -255,9 +255,10 @@ Phase 19 - `6B-3-conversation-message-foundation`; RQ-067 documentation gate clo
 
 ## Next Step
 
-`6B-3-conversation-message-foundation` 的初学者教学、ADR-0040、专用设计与本地门禁已完成。
-现在独立提交/推送设计批并等待 exact-SHA 三 job；公共全绿后直接进入 pure model/Service/API 红灯，
-当前不接 Agent、Review Task 或 Memory，不提前进入 6B-4。
+`6B-3-conversation-message-foundation` 的初学者教学、ADR-0040、专用设计和治理加固已由
+`b6a7112` / Actions `32313707301` exact-SHA 三 job 公共完成。现在进入 pure model/Service/API
+红灯，再实现 migration/Repository/PostgreSQL 并发与 API composition；当前不接 Agent、Review Task
+或 Memory，不提前进入 6B-4。
 
 ## 6A-1 Checklist
 
@@ -451,8 +452,10 @@ Phase 19 - `6B-3-conversation-message-foundation`; RQ-067 documentation gate clo
 - [completed] 创建 ADR-0040 与 6B-3 专用设计稿，冻结 active relationship 行锁、Conversation 幂等、user-only 公共 Message、1-based 行锁序号、archived/hidden 和 trigger 合同
 - [completed] 加强 coverage 治理：固定 canonical group ID 顺序、校验 YAML 镜像，并增加“重排同时重编号/镜像漂移”红灯测试；治理聚焦现为 `12 passed`
 - [completed] 设计批本地门禁：完整 `1226 passed, 42 skipped, 1 warning, 110 subtests passed`；RAG 两套、Harness dry-run、compileall、SDK/Secret/tracked-data、YAML、governance 与 diff 均通过
-- [in_progress] 设计批独立提交/推送并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；公共全绿后无缝进入纯模型/Service/API 红灯
-- [pending] 6B-3 最小实现、实现后 walkthrough/coverage 更新、本地门禁、独立提交/推送与 exact-SHA 公共 CI
+- [completed] 设计批独立提交 `b6a7112`、推送并由 Actions `32313707301` 的 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共验证
+- [completed] pure model/Service/API 红灯 → migration/Repository/PostgreSQL 并发红灯 → 最小实现；当前不接 Agent、Review Task 或 Memory
+- [completed] 6B-3 最小实现、实现后 walkthrough/coverage 更新、本地门禁；本地完整 `1295 passed, 67 skipped, 1 warning, 110 subtests passed`，横向 RAG/Harness/compile/security/governance/diff 门通过
+- [in_progress] 独立提交/推送与 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 公共 CI；全绿后才关闭 6B-3 并只交接 6B-4 prepared/waiting authorization
 
 ## 6A Entry Design Checklist
 
@@ -630,6 +633,8 @@ Phase 19 - `6B-3-conversation-message-foundation`; RQ-067 documentation gate clo
 
 | Error | Attempt | Resolution |
 |---|---:|---|
+| 6B-3 恢复审计在 Windows 把 `tests\test_conversation_*` 直接作为 `rg` 路径 | 1 | 该命令只读失败、没有修改文件；改用真实 `tests` 目录加 `-g 'test_conversation_*.py'`，后续不再依赖 Windows shell glob 展开 |
+| 6B-3 composition 失败测试首次漏写 readiness 的 `schema_version`/`api_version` | 1 | 生产响应合同未变；修正测试对完整安全响应的期望后通过，不放宽 readiness DTO |
 | 6B-3 设计批首次 cached diff 发现 ADR-0040 末尾多一个空白行 | 1 | cached 门阻止提交；只删除 ADR 尾部空白并重新暂存，未改变设计语义 |
 | 6B-3 设计门把 TEMP 递归清理与验证组合，随后两次精确 TEMP cleanup 都被终端策略在进程创建前拒绝 | 3 | 四项验证改为无清理的独立安全命令并全部通过；确认产物只在用户 TEMP、不在仓库或 Git，停止重复删除；该错误未修改项目、读取 Key 或产生外部 I/O |
 | 三个 6B-1 并行子任务在模型开始前被平台以 `prompt_cache_retention is not supported on this model` 拒绝；一次指定 `gpt-5.3-codex` 又被当前 ChatGPT 账户判定不支持 | 4 | 先检查共享工作树确认已存在的 domain/schema 产物未丢失；停止重复派发，主线程接管 Repository、审查与验证。该错误没有运行项目命令、调用 Key/Riot/Provider 或产生测试结论 |

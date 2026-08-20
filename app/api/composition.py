@@ -38,7 +38,21 @@ from app.api.main import (
     create_app,
 )
 from app.api.task_models import ReadinessCode, ReadinessResult
+from app.conversations.models import (
+    AppendUserMessageCommand,
+    ConversationCreateResult,
+    ConversationMessagePage,
+    ConversationMessageView,
+    ConversationView,
+    CreateConversationCommand,
+)
+from app.conversations.ports import ConversationServicePort
+from app.conversations.service import (
+    ConversationService,
+    ConversationServiceError,
+)
 from app.persistence.config import load_database_settings
+from app.persistence.conversation_repository import PostgresConversationRepository
 from app.persistence.database import build_engine, build_session_factory
 from app.persistence.player_repository import PostgresPlayerRepository
 from app.persistence.task_repository import PostgresTaskRepository
@@ -301,6 +315,76 @@ class _PlayerLinkServiceProxy:
         )
 
 
+class _ConversationServiceProxy:
+    def __init__(self) -> None:
+        self._target: ConversationServicePort | None = None
+
+    def bind(self, target: ConversationServicePort | None) -> None:
+        self._target = target
+
+    def _service(self) -> ConversationServicePort:
+        if self._target is None:
+            raise ConversationServiceError("service_unavailable")
+        return self._target
+
+    def create(self, command: CreateConversationCommand) -> ConversationCreateResult:
+        return self._service().create(command)
+
+    def get_conversation(
+        self,
+        *,
+        owner_id: str,
+        conversation_id: UUID,
+    ) -> ConversationView:
+        return self._service().get_conversation(
+            owner_id=owner_id,
+            conversation_id=conversation_id,
+        )
+
+    def append_user_message(
+        self,
+        command: AppendUserMessageCommand,
+    ) -> ConversationMessageView:
+        return self._service().append_user_message(command)
+
+    def list_messages(
+        self,
+        *,
+        owner_id: str,
+        conversation_id: UUID,
+        limit: int = 50,
+        after_sequence: int = 0,
+    ) -> ConversationMessagePage:
+        return self._service().list_messages(
+            owner_id=owner_id,
+            conversation_id=conversation_id,
+            limit=limit,
+            after_sequence=after_sequence,
+        )
+
+    def archive_conversation(
+        self,
+        *,
+        owner_id: str,
+        conversation_id: UUID,
+    ) -> ConversationView:
+        return self._service().archive_conversation(
+            owner_id=owner_id,
+            conversation_id=conversation_id,
+        )
+
+    def hide_conversation(
+        self,
+        *,
+        owner_id: str,
+        conversation_id: UUID,
+    ) -> ConversationView:
+        return self._service().hide_conversation(
+            owner_id=owner_id,
+            conversation_id=conversation_id,
+        )
+
+
 class _TaskDeletionProxy:
     def __init__(self) -> None:
         self._target: TaskDeletionPort | None = None
@@ -365,6 +449,7 @@ def create_composed_app(
     api_settings = load_api_composition_settings(source)
     task_proxy = _TaskServiceProxy()
     player_link_proxy = _PlayerLinkServiceProxy()
+    conversation_proxy = _ConversationServiceProxy()
     query_proxy = _RunQueryProxy()
     deletion_proxy = _TaskDeletionProxy()
     actor_proxy = _ActorProviderProxy()
@@ -381,6 +466,9 @@ def create_composed_app(
             session_factory = build_session_factory(engine)
             repository = PostgresTaskRepository(session_factory)
             player_repository = PostgresPlayerRepository(session_factory)
+            conversation_repository = PostgresConversationRepository(
+                session_factory
+            )
             task_proxy.bind(
                 ReviewTaskService(
                     repository=repository,
@@ -392,6 +480,9 @@ def create_composed_app(
                     repository=player_repository,
                     capacity=api_settings.player_link_capacity,
                 )
+            )
+            conversation_proxy.bind(
+                ConversationService(repository=conversation_repository)
             )
             deletion_proxy.bind(TaskDeletionService(
                 repository=repository,
@@ -429,6 +520,7 @@ def create_composed_app(
             actor_proxy.bind(None)
             task_proxy.bind(None)
             player_link_proxy.bind(None)
+            conversation_proxy.bind(None)
             query_proxy.bind(None)
             deletion_proxy.bind(None)
         try:
@@ -436,7 +528,9 @@ def create_composed_app(
         finally:
             task_proxy.bind(None)
             player_link_proxy.bind(None)
+            conversation_proxy.bind(None)
             query_proxy.bind(None)
+            deletion_proxy.bind(None)
             actor_proxy.bind(None)
             readiness_proxy.bind(None)
             if engine is not None:
@@ -454,6 +548,7 @@ def create_composed_app(
         cors_origins=api_settings.cors_origins,
         cors_allow_credentials=api_settings.cors_allow_credentials,
         observability=observability,
+        conversation_service=conversation_proxy,
     )
     app.state.database_engine = None
     return app

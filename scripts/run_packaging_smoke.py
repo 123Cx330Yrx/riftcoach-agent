@@ -1,15 +1,18 @@
 """Linux/Compose control-plane smoke with zero Riot or Provider calls.
 
-The smoke covers two independent asynchronous paths against real PostgreSQL:
-one Review Task deliberately reaches its safe failed terminal without external
-I/O, while one Player Link uses an in-process Fake Account Resolver and reaches
-succeeded.  Successful Agent/Harness execution remains covered by the existing
-offline vertical tests rather than a fake Coach in this package check.
+The smoke covers the durable control plane against real PostgreSQL: one Review
+Task deliberately reaches its safe failed terminal without external I/O; one
+Player Link uses an in-process Fake Account Resolver and reaches succeeded;
+that relationship then creates a Conversation and persists/queries one user
+Message through HTTP.  Successful Agent/Harness execution remains covered by
+the existing offline vertical tests rather than a fake Coach in this package
+check.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import os
@@ -62,6 +65,12 @@ PackagingSmokeErrorCode: TypeAlias = Literal[
     "packaging_smoke_link_iteration_invalid",
     "packaging_smoke_link_query_failed",
     "packaging_smoke_link_terminal_invalid",
+    "packaging_smoke_conversation_create_failed",
+    "packaging_smoke_conversation_query_failed",
+    "packaging_smoke_conversation_invalid",
+    "packaging_smoke_message_append_failed",
+    "packaging_smoke_message_query_failed",
+    "packaging_smoke_message_invalid",
 ]
 _ERROR_CODES = frozenset(
     {
@@ -84,6 +93,12 @@ _ERROR_CODES = frozenset(
         "packaging_smoke_link_iteration_invalid",
         "packaging_smoke_link_query_failed",
         "packaging_smoke_link_terminal_invalid",
+        "packaging_smoke_conversation_create_failed",
+        "packaging_smoke_conversation_query_failed",
+        "packaging_smoke_conversation_invalid",
+        "packaging_smoke_message_append_failed",
+        "packaging_smoke_message_query_failed",
+        "packaging_smoke_message_invalid",
     }
 )
 _LOCAL_SMOKE_API_HOSTS = frozenset({"api", "localhost", "127.0.0.1", "::1"})
@@ -116,6 +131,10 @@ class PackagingSmokeResult:
     task_status: Literal["failed"]
     link_task_id: UUID
     link_status: Literal["succeeded"]
+    conversation_id: UUID
+    conversation_status: Literal["active"]
+    message_id: UUID
+    message_sequence_no: Literal[1]
     external_riot_provider_calls: Literal[0]
 
 
@@ -381,6 +400,129 @@ def execute_packaging_smoke(
                 "packaging_smoke_link_terminal_invalid"
             )
 
+        try:
+            relationship_id = UUID(str(terminal_link_body["relationship_id"]))
+        except (KeyError, TypeError, ValueError):
+            raise PackagingSmokeError(
+                "packaging_smoke_link_terminal_invalid"
+            ) from None
+
+        try:
+            created_conversation = session.post(
+                f"{settings.base_url}/conversations",
+                headers={
+                    "Idempotency-Key": (
+                        f"packaging-conversation-smoke-{uuid4().hex}"
+                    )
+                },
+                json={"relationship_id": str(relationship_id)},
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_create_failed"
+            ) from None
+        created_conversation_body = _json_object(created_conversation)
+        if (
+            created_conversation.status_code != 201
+            or created_conversation_body.get("disposition") != "created"
+            or created_conversation_body.get("status") != "active"
+            or created_conversation_body.get("relationship_id")
+            != str(relationship_id)
+        ):
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_create_failed"
+            )
+        try:
+            conversation_id = UUID(
+                str(created_conversation_body["conversation_id"])
+            )
+        except (KeyError, TypeError, ValueError):
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_create_failed"
+            ) from None
+
+        message_content = "Packaging smoke user message"
+        expected_digest = hashlib.sha256(
+            message_content.encode("utf-8")
+        ).hexdigest()
+        try:
+            appended_message = session.post(
+                f"{settings.base_url}/conversations/{conversation_id}/messages",
+                json={"content": message_content},
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_message_append_failed"
+            ) from None
+        appended_message_body = _json_object(appended_message)
+        if (
+            appended_message.status_code != 201
+            or appended_message_body.get("conversation_id")
+            != str(conversation_id)
+            or appended_message_body.get("sequence_no") != 1
+            or appended_message_body.get("role") != "user"
+            or appended_message_body.get("content") != message_content
+            or appended_message_body.get("content_sha256") != expected_digest
+        ):
+            raise PackagingSmokeError("packaging_smoke_message_invalid")
+        try:
+            message_id = UUID(str(appended_message_body["message_id"]))
+        except (KeyError, TypeError, ValueError):
+            raise PackagingSmokeError(
+                "packaging_smoke_message_invalid"
+            ) from None
+
+        try:
+            conversation = session.get(
+                f"{settings.base_url}/conversations/{conversation_id}",
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_query_failed"
+            ) from None
+        conversation_body = _json_object(conversation)
+        if (
+            conversation.status_code != 200
+            or conversation_body.get("conversation_id") != str(conversation_id)
+            or conversation_body.get("relationship_id") != str(relationship_id)
+            or conversation_body.get("status") != "active"
+            or not conversation_body.get("last_message_at")
+        ):
+            raise PackagingSmokeError("packaging_smoke_conversation_invalid")
+
+        try:
+            message_page = session.get(
+                f"{settings.base_url}/conversations/{conversation_id}/messages",
+                params={"limit": 10, "after_sequence": 0},
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_message_query_failed"
+            ) from None
+        message_page_body = _json_object(message_page)
+        items = message_page_body.get("items")
+        if (
+            message_page.status_code != 200
+            or message_page_body.get("conversation_id") != str(conversation_id)
+            or message_page_body.get("limit") != 10
+            or message_page_body.get("after_sequence") != 0
+            or message_page_body.get("has_more") is not False
+            or message_page_body.get("next_after_sequence") is not None
+            or not isinstance(items, list)
+            or len(items) != 1
+            or not isinstance(items[0], dict)
+            or items[0].get("message_id") != str(message_id)
+            or items[0].get("sequence_no") != 1
+            or items[0].get("role") != "user"
+            or items[0].get("content") != message_content
+            or items[0].get("content_sha256") != expected_digest
+        ):
+            raise PackagingSmokeError("packaging_smoke_message_invalid")
+
         return PackagingSmokeResult(
             schema_version="1.0",
             task_id=task_id,
@@ -388,6 +530,10 @@ def execute_packaging_smoke(
             task_status="failed",
             link_task_id=link_task_id,
             link_status="succeeded",
+            conversation_id=conversation_id,
+            conversation_status="active",
+            message_id=message_id,
+            message_sequence_no=1,
             external_riot_provider_calls=0,
         )
     except PackagingSmokeError:
@@ -439,6 +585,10 @@ def main(
                 "task_status": result.task_status,
                 "link_task_id": str(result.link_task_id),
                 "link_status": result.link_status,
+                "conversation_id": str(result.conversation_id),
+                "conversation_status": result.conversation_status,
+                "message_id": str(result.message_id),
+                "message_sequence_no": result.message_sequence_no,
                 "external_riot_provider_calls": result.external_riot_provider_calls,
             },
             sort_keys=True,

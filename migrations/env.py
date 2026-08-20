@@ -7,6 +7,9 @@ from sqlalchemy import engine_from_config, pool
 
 from app.persistence.config import load_database_settings
 from app.persistence.database import Base
+from app.persistence import (  # noqa: F401
+    conversation_records as _conversation_records,
+)
 from app.persistence import player_records as _player_records  # noqa: F401
 from app.persistence import task_record as _task_record  # noqa: F401
 
