@@ -3219,3 +3219,25 @@
 - Linux package smoke 为 schema 1.3，Candidate accepted、Preference v1=`zh-CN`，
   `external_riot_provider_calls=0`。6B-6 coverage 已置 complete。
 - canonical 只交接 `6B-7-training-plan-progress` prepared/waiting authorization；本轮没有实施 6B-7。
+
+## 2026-08-21：RQ-071 恢复并启动 6B-7 设计批
+
+- 完成 AGENTS canonical 恢复链与 `python scripts/check_project_governance.py`，起始工作树干净，
+  `HEAD == origin/main == 8fa3ac94fbcb8fa2dba0f8328124b5d4cf2b463d`。
+- 用户授权连续完成 `6B-7→6B-8→6B-9`，已追加 RQ-071；不再逐步询问，但每个 checkpoint 仍须独立
+  教学、设计、TDD、八维证据、本地门禁、提交/推送和 exact-SHA 三 job。
+- 已完成 6B-7 初学者教学与 Candidate/gate/materializer/Task Artifact 接缝审计，新增 ADR-0044、专用
+  设计和实施计划。当前没有 Plan/Progress 产品代码或测试，也没有进入 6B-8/6B-9。
+- 下一动作：运行设计批本地门禁、独立提交/推送并等待 exact-SHA 公共 CI；全绿后从 pure contract 红灯开始。
+
+## 2026-08-21：6B-7 设计批本地门禁完成
+
+- 治理首跑因活动计划 Next Step 缺少完整机器 checkpoint 字符串得到 `1 failed, 11 passed`；只修正
+  Next Step 固定格式后为 `12 passed`，治理脚本通过，未放宽规则。
+- 完整本地回归 `1402 passed, 100 skipped, 1 warning, 110 subtests passed`；100 skip 仍全部来自本机
+  无 PostgreSQL/Docker，设计文档不增加真库成功声明。
+- RAG development/independent holdout 指标均满足全部冻结阈值，Harness 标准 fixture dry-run 为
+  `published`/0 revisions；compileall、SDK boundary、tracked Secret/run-data、YAML、governance 和 diff
+  门通过。首次 Harness 命令漏传两个必需 fixture，仅在 argparse 阶段退出；按 runbook 重跑成功且无外部 I/O。
+- 当前本地裁决为 `pass-local-pending-public-ci`。下一动作：审查 cached diff，独立提交/推送设计批并等待
+  exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；三 job 全绿后才写 Task 1 红灯。

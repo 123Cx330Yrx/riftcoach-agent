@@ -397,6 +397,9 @@ groups:
         - docs/plans/2026-08-19-stage6-session-memory-design.md
       design_and_implementation:
         - docs/plans/2026-08-19-stage6-session-memory-implementation.md
+        - docs/adr/0044-adopt-candidate-backed-training-plan-progress-events.md
+        - docs/plans/2026-08-21-training-plan-progress-design.md
+        - docs/plans/2026-08-21-training-plan-progress-implementation.md
       code_map: []
       data_and_control_flow:
         - docs/plans/2026-08-19-stage6-session-memory-design.md

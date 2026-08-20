@@ -3171,3 +3171,15 @@
   Riot/Provider 质量、账号所有权验证或公网部署成熟度。
 - 6B-6 关闭只完成 Preference/Profile/Review Memory；Training Plan/Progress 必须作为 6B-7 新检查点单独
   教学、设计、TDD 和公共验证，不能因共享 materializer 思想而自动算完成。
+
+## 2026-08-21：6B-7 接缝审计与设计裁决
+
+- 6B-5 gate 已为 `training_plan` 冻结 structured-input + user confirmation，为 `training_progress` 冻结
+  deterministic-run-fact；6B-6 registry/writer 提供同 Session materializer 模式，无需新框架。
+- 现有 Candidate source 检查只证明 task/run/Conversation identity，尚未证明 task succeeded、publication、
+  report availability 与 final Artifact digest；6B-7 writer 必须在同一事务补上完整 Artifact gate。
+- pending Candidate 作为 Plan draft，可避免新增绕过 Candidate 的 draft CRUD；accepted Plan 才物化为 active。
+- Progress 必须保留多次正常测量；只有纠错事件 supersede 指定旧 event，不能把“只保留最新 active key”的
+  6B-6 Review Memory 版本模型错误套到时间序列。
+- 趋势由 Plan direction/tolerance 和有限数值纯函数决定，只输出 improving/declining/stable/insufficient，
+  不推断原因、心理或习惯。

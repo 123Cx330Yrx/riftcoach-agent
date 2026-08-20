@@ -2358,3 +2358,12 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `CLOSED`：6B-6 与八维 coverage 正式关闭；失败 `da87cde/32386630063` 继续保留，不改写为成功。
 - `HANDOFF`：唯一下一检查点为 `6B-7-training-plan-progress` prepared/waiting authorization；没有实施
   Plan/Progress、6B-8/6B-9 或其他 deferred 能力。
+
+### 2026-08-21：RQ-071 授权 6B-7→6B-8→6B-9，进入 6B-7 设计门
+
+- `AUTHORIZATION`：用户明确要求本轮连续完成三个 canonical checkpoint，不再逐步等待批准；顺序门、
+  TDD、八维证据、独立提交和 exact-SHA 公共 CI 仍逐项成立。
+- `DESIGN`：ADR-0044 与专用 design/implementation plan 冻结 Candidate-backed self-only Plan、每关系一个
+  active Plan、完整 final Artifact 支撑的 Progress、追加式纠错与非因果确定性趋势。
+- `BOUNDARY`：当前仍没有 6B-7 产品 schema/Repository/API/tests；设计批公共闭环前不写实现，6B-7 正式
+  公共闭环前不进入 6B-8，6B-8 闭环前不进入 6B-9。

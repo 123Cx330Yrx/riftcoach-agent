@@ -11,8 +11,10 @@ Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
 `6B-5-memory-candidate-write-gate` is complete at `dd7c9c8` / Actions
 `32376405150`. Phase 22 - `6B-6-preferences-profile-review-memory` is complete at
-`5531c81` / Actions `32387026797`. Phase 23 - `6B-7-training-plan-progress` is
-prepared and waiting for explicit user authorization; no 6B-7 product code exists.
+`5531c81` / Actions `32387026797`. RQ-071 authorizes the strict sequential chain
+`6B-7 → 6B-8 → 6B-9` without per-step approval. Phase 23 -
+`6B-7-training-plan-progress` is in progress at its design/TDD gate; no 6B-8/6B-9
+work may begin before 6B-7 exact-SHA public closure.
 
 ## Phases
 
@@ -260,8 +262,8 @@ prepared and waiting for explicit user authorization; no 6B-7 product code exist
 
 `6B-6-preferences-profile-review-memory` 已由实现/最小测试修复 `5531c81` 与 Actions
 `32387026797` 完成 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环，
-coverage 已 complete。唯一下一检查点是 `6B-7-training-plan-progress`，当前仅
-prepared/waiting authorization；未获用户下一次明确“继续”前不实施。
+coverage 已 complete。RQ-071 已授权连续完成 `6B-7→6B-8→6B-9`；当前唯一动作是
+`6B-7-training-plan-progress` 的专用设计公开验证，随后按 TDD 实现。6B-7 正式闭环前不得进入 6B-8。
 
 ## 6A-1 Checklist
 
@@ -511,11 +513,14 @@ prepared/waiting authorization；未获用户下一次明确“继续”前不�
 ### Phase 23 - 6B-7-training-plan-progress handoff
 
 - Status: in_progress
-- Execution state: prepared; waiting for explicit user authorization before implementation.
+- Authorization: RQ-071；当前处于教学/ADR/design/implementation plan 冻结和设计批验证。
 - Prepared outcome: user-confirmed self-only Training Plan、每个 relationship 一个 active Plan、
   Artifact-grounded allowlisted Progress 与不做因果/心理推断的确定性趋势比较。
-- [pending] 进入前先做初学者教学、复核 6B-6 typed materializer/version 接缝并冻结专用 ADR/设计/TDD。
-- [deferred] 当前不创建 Plan/Progress schema、migration、Repository、API 或产品测试；不进入 6B-8/6B-9。
+- [completed] 初学者教学、6B-6 typed materializer/version 与 Task final Artifact 接缝复核。
+- [completed] 冻结 ADR-0044、专用设计与 TDD 实施计划；产品代码尚未开始。
+- [in_progress] 运行设计批本地门禁并独立提交/推送，等待 exact-SHA 三 job。
+- [pending] 设计公共闭环后按 Task 1 先写 pure Plan/Progress/trend 红灯。
+- [deferred] 6B-7 公共闭环前不进入 6B-8/6B-9。
 
 ## 6A Entry Design Checklist
 

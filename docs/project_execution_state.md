@@ -3,8 +3,8 @@ state_schema: 1
 main_stage: 6
 substage_group: "stage-6-session-memory"
 current_checkpoint: "6B-7-training-plan-progress"
-status: pending
-pause_reason: "waiting for explicit user authorization"
+status: in_progress
+pause_reason: ""
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "waiting for explicit user authorization"
 
 ## 状态元数据
 
-- 最后更新：2026-08-20（6B-6 exact-SHA 公共闭环；6B-7 prepared/waiting authorization）
-- 主阶段：阶段 6；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-6 均已完成 exact-SHA 公共闭环。6B-6 首个实现 `da87cde` / Actions `32386630063` 保留 observed public-trend 测试 provenance 失败；不放宽生产 Gate 的最小修复 `5531c81ec7117f5c454d320e406153086baae3ea` 已由 Actions `32387026797` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿验证。6B-6 coverage 已 complete；唯一下一检查点为 `6B-7-training-plan-progress`，当前仅 prepared/waiting authorization，尚未实施
+- 最后更新：2026-08-21（RQ-071 已授权连续完成 6B-7→6B-8→6B-9；当前只进入 6B-7 设计/TDD）
+- 主阶段：阶段 6；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-6 均已完成 exact-SHA 公共闭环。6B-6 最小修复 `5531c81ec7117f5c454d320e406153086baae3ea` 已由 Actions `32387026797` 三 job 全绿验证。RQ-071 已授权严格按 `6B-7→6B-8→6B-9` 连续推进；当前唯一检查点为 `6B-7-training-plan-progress / in_progress`，只完成教学、接缝复核与 ADR/design/implementation 冻结，产品代码尚未开始
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -1506,3 +1506,25 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 6B-6 与八维 coverage 正式关闭。当前只把 `6B-7-training-plan-progress` 标为
   prepared/waiting authorization；没有创建 Training Plan/Progress 产品代码，也未进入 6B-8/6B-9、
   SSE/前端、Redis/向量库、LangGraph、Multi-Agent、新 SDK 或真实外部调用。
+
+## 2026-08-21：RQ-071 授权连续完成 6B-7/8/9，当前进入 6B-7
+
+- 用户明确要求本轮连续完成 `6B-7→6B-8→6B-9`，无需逐步骤批准；RQ-071 已持久化。该授权不合并
+  checkpoint，前一项仍须 exact-SHA 三 job 公共闭环后才能进入下一项。
+- 6B-7 初学者教学和接缝审计已完成。ADR-0044 与专用 design/implementation plan 冻结：pending Candidate
+  作为唯一 Plan draft；用户 accept 才物化 self-only active Plan；Progress 必须绑定 succeeded、published/
+  degraded、report-available 的 final Artifact；纠错追加 superseding event；趋势只做确定性数值比较。
+- 当前没有新增 Plan/Progress schema、migration、Repository、API 或产品测试；coverage 继续 `planned`，
+  6B-8 Memory-aware Context 与 6B-9 lifecycle/export 仍未进入。
+- 唯一下一动作：完成 6B-7 设计批本地门禁、独立提交/推送和 exact-SHA 三 job；全绿后按实施计划 Task 1
+  写 pure Plan/Progress/trend 红灯。
+
+## 2026-08-21：6B-7 设计批本地验证完成，等待公共门
+
+- 完整本地 pytest 为 `1402 passed, 100 skipped, 1 warning, 110 subtests passed`；本机 PostgreSQL/Docker
+  skip 如实保留。治理聚焦最终 `12 passed`，governance、两套 RAG、Harness dry-run、compileall、SDK/
+  Secret/tracked-data、YAML 与 diff 门均通过。
+- 当前裁决 `pass-local-pending-public-ci`。这只证明 ADR/design/plan 与既有回归兼容，不证明 Training
+  Plan/Progress 产品能力已经实现。
+- 唯一下一动作：设计批独立提交/推送并等待 exact-SHA 三 job；全绿后当前 checkpoint 保持 6B-7，内部
+  动作切换为 Task 1 pure contract 红灯，不进入 6B-8。
