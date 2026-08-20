@@ -160,6 +160,8 @@ jobs:
             tests/test_conversation_migrations_postgres.py \
             tests/test_conversation_repository_postgres.py \
             tests/test_conversation_concurrency_postgres.py \
+            tests/test_conversation_review_migrations_postgres.py \
+            tests/test_conversation_review_repository_postgres.py \
             -q -s
 
       - name: Verify metadata matches the migration head

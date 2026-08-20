@@ -21,7 +21,7 @@
 | 3 | Provider 与 Tool Runtime | 外部模型和工具如何统一、可靠地调用 | EchoMind 迁移重构 | 已完成，进入维护 |
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
-| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1、6B-2、RQ-067 前置门与 6B-3 Conversation/Message foundation 已完成 exact-SHA 公共闭环（`7e4f233` / Actions `32329686381`）；下一检查点为 6B-4，长期 Memory 仍未实现 |
+| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1、6B-2、RQ-067 前置门与 6B-3 已完成 exact-SHA 公共闭环；6B-4 Conversation-bound Review Identity 已本地实现并等待公共三 job，长期 Memory 仍未实现 |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 未开始 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
@@ -222,8 +222,10 @@ RAG 保存外部知识；Memory 保存玩家相关且可更新的长期状态；
   `ed8fa58` / Actions `32229024069` 三 job 公共闭环；RQ-066 随后只授权 6B-2，其 Resolver、Worker、
   owner-scoped Link API 与 Linux no-I/O package 已由 `0c13a58` / Actions `32301852042` 三 job 公共闭环；
   RQ-067 已完成历史教学/工程证据补齐、治理、提交与 exact-SHA 公共闭环；Conversation/Message
-  foundation 当前已本地实现，真实 PostgreSQL concurrency/trigger 与 Linux package 仍等待实现 SHA 的
-  公共闭环；这不等于长期 Memory、正式 Auth 或公网部署已完成；
+  foundation 又由 `7e4f233` / Actions `32329686381` 完成真实 PostgreSQL concurrency/trigger 与 Linux
+  package 公共闭环；RQ-068 授权的 6B-4 Conversation-bound Review Identity 已本地实现并通过完整门禁，
+  但仍等待 exact-SHA PostgreSQL/Linux package 公共闭环；
+  这不等于长期 Memory、正式 Auth 或公网部署已完成；
 - FastAPI 对话和复盘入口；
 - `user_id`、`conversation_id` 和权限边界；
 - 外服 Riot 账号关系：官方 routing 没有中国大陆 CN；公开查询只形成以 PUUID 为稳定身份的
@@ -355,3 +357,12 @@ migration/Repository、并发测试、六个 HTTP endpoint、composition/package
 `postgres-migrations`、`packaging-smoke` 三 job 已公共闭环，coverage 已置为 `complete`。
 Conversation 创建固定 owner/relationship/subject，公共 Message 首批只写 user；这一步没有提前接 Agent、
 Review Task、Memory、Auth/RSO、SSE、前端或新框架。下一检查点为 6B-4。
+
+### 6B-4 当前实现门
+
+6B-4 已在本地实现既有 `review_tasks` 的 schema 2.0 Conversation identity、服务器单事务派生 tuple、
+trusted-PUUID Summary/Application、1.0/2.0 Executor、Conversation-bound HTTP/composition 与 no-I/O
+package 纵向；实现后 walkthrough 已登记八维 evidence。本地完整回归为
+`1333 passed, 78 skipped, 1 warning, 110 subtests passed`，横向门禁通过。78 个 skip 只反映本机无
+PostgreSQL/Docker；在同一实现 SHA 的 `pytest`、`postgres-migrations`、`packaging-smoke` 全绿前，
+6B-4 仍是 in-progress、coverage 仍为 planned，且不得进入 6B-5。

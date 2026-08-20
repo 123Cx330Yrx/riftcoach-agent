@@ -65,6 +65,7 @@ from app.players.models import (
 from app.players.service import PlayerLinkService, PlayerLinkServiceError
 from app.product.run_query import RunQueryError, RunQueryService, RunView
 from app.tasks.models import (
+    CreateConversationReviewTaskCommand,
     CreateReviewTaskCommand,
     ReviewTaskView,
     TaskCapacityPolicy,
@@ -258,6 +259,12 @@ class _TaskServiceProxy:
 
     def create(self, command: CreateReviewTaskCommand) -> TaskCreateResult:
         return self._service().create(command)
+
+    def create_conversation_review(
+        self,
+        command: CreateConversationReviewTaskCommand,
+    ) -> TaskCreateResult:
+        return self._service().create_conversation_review(command)
 
     def get_task(self, *, owner_id: str, task_id: UUID) -> ReviewTaskView:
         return self._service().get_task(owner_id=owner_id, task_id=task_id)

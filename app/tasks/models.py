@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import unicodedata
 from datetime import datetime, timezone
 from enum import StrEnum
 from typing import Annotated, Literal, Self
@@ -17,7 +18,11 @@ from pydantic import (
 )
 
 from app.harness.run_ids import normalize_run_id
-from app.product.recent_review import RecentReviewProductRequest
+from app.players.models import Puuid, RelationshipRole, RoutingRegion
+from app.product.recent_review import (
+    ConversationRecentReviewRequest,
+    RecentReviewProductRequest,
+)
 from app.product.run_receipts import RunReceiptReference
 from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
 
@@ -61,7 +66,7 @@ Fingerprint = Annotated[
     StringConstraints(min_length=64, max_length=64, pattern=r"^[0-9a-f]{64}$"),
 ]
 TaskKind = Literal["recent_review"]
-TaskSchemaVersion = Literal["1.0"]
+TaskSchemaVersion = Literal["1.0", "2.0"]
 
 
 class TaskContractModel(BaseModel):
@@ -127,6 +132,7 @@ class TaskRepositoryCreateDisposition(StrEnum):
     IDEMPOTENCY_CONFLICT = "idempotency_conflict"
     OWNER_CAPACITY_EXCEEDED = "owner_capacity_exceeded"
     GLOBAL_CAPACITY_EXCEEDED = "global_capacity_exceeded"
+    CONVERSATION_UNAVAILABLE = "conversation_unavailable"
 
 
 class TaskRepositoryDeleteDisposition(StrEnum):
@@ -195,6 +201,40 @@ class CreateReviewTaskCommand(TaskContractModel):
     request: RecentReviewProductRequest
 
 
+class ConversationReviewTaskBinding(TaskContractModel):
+    conversation_id: UUID
+    relationship_id: UUID
+    player_subject_id: UUID
+    relationship_role: RelationshipRole
+
+
+class ConversationReviewExecutionTarget(TaskContractModel):
+    """Private trusted lookup data; never part of the public Task view."""
+
+    puuid: Puuid
+    routing_region: RoutingRegion
+    game_name: str = Field(min_length=1, max_length=64)
+    tag_line: str = Field(min_length=1, max_length=32)
+
+    @field_validator("game_name", "tag_line")
+    @classmethod
+    def validate_display_component(cls, value: str) -> str:
+        normalized = unicodedata.normalize("NFC", value.strip())
+        if not normalized or any(
+            unicodedata.category(character).startswith("C")
+            for character in normalized
+        ):
+            raise ValueError("display identity must be bounded visible text")
+        return normalized
+
+
+class CreateConversationReviewTaskCommand(TaskContractModel):
+    owner_id: OwnerId
+    idempotency_key: IdempotencyKey
+    conversation_id: UUID
+    request: ConversationRecentReviewRequest
+
+
 class TaskCapacityPolicy(TaskContractModel):
     owner_active_limit: int = Field(default=3, ge=1, le=10_000)
     global_active_limit: int = Field(default=50, ge=1, le=100_000)
@@ -231,6 +271,28 @@ class PendingReviewTask(TaskContractModel):
         return _as_utc(value)
 
 
+class PendingConversationReviewTask(TaskContractModel):
+    task_id: UUID
+    run_id: str
+    task_kind: TaskKind = "recent_review"
+    schema_version: Literal["2.0"] = "2.0"
+    owner_id: OwnerId
+    idempotency_key: IdempotencyKey
+    conversation_id: UUID
+    request_payload: dict[str, JsonValue]
+    created_at: datetime
+
+    @field_validator("run_id")
+    @classmethod
+    def validate_run_id(cls, value: str) -> str:
+        return normalize_run_id(value)
+
+    @field_validator("created_at")
+    @classmethod
+    def normalize_created_at(cls, value: datetime) -> datetime:
+        return _as_utc(value)
+
+
 class ReviewTask(TaskContractModel):
     task_id: UUID
     run_id: str
@@ -240,6 +302,12 @@ class ReviewTask(TaskContractModel):
     idempotency_key: IdempotencyKey
     request_fingerprint: Fingerprint
     request_payload: dict[str, JsonValue]
+    conversation_binding: ConversationReviewTaskBinding | None = None
+    execution_target: ConversationReviewExecutionTarget | None = Field(
+        default=None,
+        exclude=True,
+        repr=False,
+    )
 
     status: TaskStatus
     worker_id: WorkerId | None
@@ -281,6 +349,20 @@ class ReviewTask(TaskContractModel):
 
     @model_validator(mode="after")
     def validate_lifecycle(self) -> Self:
+        if self.schema_version == "1.0":
+            if (
+                self.conversation_binding is not None
+                or self.execution_target is not None
+            ):
+                raise ValueError("schema 1.0 task cannot contain conversation identity")
+        elif (
+            self.conversation_binding is None
+            or self.execution_target is None
+        ):
+            raise ValueError(
+                "schema 2.0 task requires binding and private execution target"
+            )
+
         if self.updated_at < self.created_at:
             raise ValueError("updated_at must not precede created_at")
         if self.claimed_at is not None and self.claimed_at < self.created_at:
@@ -427,10 +509,14 @@ def _as_utc(value: datetime) -> datetime:
 
 
 __all__ = [
+    "ConversationReviewExecutionTarget",
+    "ConversationReviewTaskBinding",
+    "CreateConversationReviewTaskCommand",
     "CreateReviewTaskCommand",
     "IdempotencyKey",
     "OwnerId",
     "PendingReviewTask",
+    "PendingConversationReviewTask",
     "ReviewTask",
     "ReviewTaskView",
     "SafeTaskCode",

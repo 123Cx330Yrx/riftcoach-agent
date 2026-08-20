@@ -20,6 +20,7 @@ canonical_order:
   - 6b-1-player-identity-link-foundation
   - 6b-2-async-player-link-worker-api
   - 6b-3-conversation-message-foundation
+  - 6b-4-conversation-bound-recent-review-identity
 groups:
   - id: stage-0-baseline-and-reference-evidence
     sequence: 10
@@ -299,3 +300,30 @@ groups:
         - docs/learning/6b-3-conversation-message-foundation-walkthrough.md
       interview_wording:
         - docs/learning/6b-3-conversation-message-foundation-walkthrough.md
+
+  - id: 6b-4-conversation-bound-recent-review-identity
+    sequence: 180
+    covers:
+      - 6B-4-conversation-bound-recent-review-identity
+    status: planned
+    evidence:
+      problem_and_principle:
+        - docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md
+      design_and_implementation:
+        - docs/adr/0041-conversation-bound-review-task-identity.md
+        - docs/plans/2026-08-20-conversation-bound-recent-review-design.md
+        - docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md
+      code_map:
+        - docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md
+      data_and_control_flow:
+        - docs/plans/2026-08-20-conversation-bound-recent-review-design.md
+        - docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md
+      verification:
+        - docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md
+      runbook:
+        - docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md
+      failure_security_boundary:
+        - docs/adr/0041-conversation-bound-review-task-identity.md
+        - docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md
+      interview_wording:
+        - docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md

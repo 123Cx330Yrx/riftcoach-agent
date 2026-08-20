@@ -176,6 +176,7 @@ def test_openapi_versions_the_async_contract_and_exact_paths() -> None:
         "/conversations/{conversation_id}/messages",
         "/conversations/{conversation_id}/archive",
         "/conversations/{conversation_id}/hide",
+        "/conversations/{conversation_id}/reviews/recent",
         "/reviews/recent",
         "/player-links",
         "/player-links/{link_task_id}",

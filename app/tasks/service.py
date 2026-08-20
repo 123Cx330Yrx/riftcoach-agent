@@ -10,9 +10,11 @@ from pydantic import TypeAdapter, ValidationError
 from app.harness.run_ids import normalize_run_id
 from app.tasks.fingerprint import compute_task_request_fingerprint
 from app.tasks.models import (
+    CreateConversationReviewTaskCommand,
     CreateReviewTaskCommand,
     OwnerId,
     PendingReviewTask,
+    PendingConversationReviewTask,
     ReviewTask,
     ReviewTaskView,
     TaskCapacityPolicy,
@@ -30,6 +32,7 @@ TaskServiceErrorCode: TypeAlias = Literal[
     "task_not_found",
     "task_persistence_failed",
     "task_identity_invalid",
+    "conversation_not_found",
 ]
 _TASK_SERVICE_ERROR_CODES = frozenset(
     {
@@ -39,6 +42,7 @@ _TASK_SERVICE_ERROR_CODES = frozenset(
         "task_not_found",
         "task_persistence_failed",
         "task_identity_invalid",
+        "conversation_not_found",
     }
 )
 TaskIdFactory = Callable[[], UUID]
@@ -140,6 +144,73 @@ class ReviewTaskService:
             raise TaskServiceError(code)
 
         assert repository_result.task is not None
+        return TaskCreateResult(
+            disposition=disposition,
+            task=ReviewTaskView.from_task(repository_result.task),
+        )
+
+    def create_conversation_review(
+        self,
+        command: CreateConversationReviewTaskCommand,
+    ) -> TaskCreateResult:
+        if not isinstance(command, CreateConversationReviewTaskCommand):
+            raise TypeError(
+                "command must be a CreateConversationReviewTaskCommand"
+            )
+        try:
+            pending = PendingConversationReviewTask(
+                task_id=self._task_id_factory(),
+                run_id=normalize_run_id(self._run_id_factory()),
+                owner_id=command.owner_id,
+                idempotency_key=command.idempotency_key,
+                conversation_id=command.conversation_id,
+                request_payload=command.request.model_dump(mode="json"),
+                created_at=self._clock(),
+            )
+        except (StopIteration, TypeError, ValueError, ValidationError):
+            raise TaskServiceError("task_identity_invalid") from None
+
+        create = getattr(
+            self._repository,
+            "create_conversation_bound_or_replay",
+            None,
+        )
+        if not callable(create):
+            raise TaskServiceError("task_persistence_failed")
+        try:
+            repository_result = create(pending, capacity=self._capacity)
+        except Exception:
+            raise TaskServiceError("task_persistence_failed") from None
+
+        if repository_result.disposition is TaskRepositoryCreateDisposition.CREATED:
+            disposition = TaskCreateDisposition.CREATED
+        elif repository_result.disposition is TaskRepositoryCreateDisposition.REPLAYED:
+            disposition = TaskCreateDisposition.REPLAYED
+        else:
+            code_by_disposition: dict[
+                TaskRepositoryCreateDisposition,
+                TaskServiceErrorCode,
+            ] = {
+                TaskRepositoryCreateDisposition.CONVERSATION_UNAVAILABLE: (
+                    "conversation_not_found"
+                ),
+                TaskRepositoryCreateDisposition.IDEMPOTENCY_CONFLICT: (
+                    "idempotency_conflict"
+                ),
+                TaskRepositoryCreateDisposition.OWNER_CAPACITY_EXCEEDED: (
+                    "owner_capacity_exceeded"
+                ),
+                TaskRepositoryCreateDisposition.GLOBAL_CAPACITY_EXCEEDED: (
+                    "global_capacity_exceeded"
+                ),
+            }
+            code = code_by_disposition.get(repository_result.disposition)
+            if code is None:
+                raise TaskServiceError("task_persistence_failed")
+            raise TaskServiceError(code)
+
+        if repository_result.task is None:
+            raise TaskServiceError("task_persistence_failed")
         return TaskCreateResult(
             disposition=disposition,
             task=ReviewTaskView.from_task(repository_result.task),

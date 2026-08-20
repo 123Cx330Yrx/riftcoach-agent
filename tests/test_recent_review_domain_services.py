@@ -6,6 +6,7 @@ from pathlib import Path
 from app.lol.player_summary import (
     RiotPlayerSummaryBuilder,
     build_player_summary,
+    build_player_summary_by_puuid,
 )
 from app.lol.report_renderer import render_deterministic_report
 from scripts.build_player_summary import build_player_summary as cli_summary_builder
@@ -32,6 +33,37 @@ def test_summary_builder_keeps_stage_one_short_match_semantics() -> None:
     assert summary["recent_summary"]["games_analyzed"] == 1
     assert len(summary["excluded_matches"]) == 1
     assert summary["matches"][1]["timeline_status"] == "unavailable"
+
+
+class NoAccountLookupClient(FakeClient):
+    def __init__(self) -> None:
+        self.account_calls = 0
+
+    def get_account_by_riot_id(self, game_name: str, tag_line: str) -> dict:
+        self.account_calls += 1
+        raise AssertionError("trusted PUUID path must not call Account-V1")
+
+
+def test_trusted_puuid_builder_skips_account_lookup_and_keeps_display_alias() -> None:
+    client = NoAccountLookupClient()
+    summary = RiotPlayerSummaryBuilder(
+        client=client,
+        ddragon=FakeDataDragon(),
+        min_duration_seconds=300,
+    ).build_by_puuid(
+        puuid="target-puuid",
+        game_name="Renamed Player",
+        tag_line="KR2",
+        count=10,
+        queue=420,
+    )
+
+    assert client.account_calls == 0
+    assert summary["player"]["puuid_prefix"] == "target-puuid..."
+    assert summary["player"]["game_name"] == "Renamed Player"
+    assert summary["player"]["tag_line"] == "KR2"
+    assert summary["recent_summary"]["games_analyzed"] == 1
+    assert build_player_summary_by_puuid is not build_player_summary
 
 
 def test_report_cli_and_app_renderer_are_byte_identical() -> None:

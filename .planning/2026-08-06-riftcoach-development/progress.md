@@ -3034,3 +3034,70 @@
 - 状态收尾横向门再次通过：RAG development 与 independent holdout 的既定指标均为 `1.0`（FPR `0.0`），
   Harness dry-run 为 `published`/0 revisions，compileall、coverage YAML、governance 与 `git diff --check`
   通过；本批只修改持久状态/教学材料，没有 6B-4 产品文件或外部 Riot/Provider/Key I/O。
+
+## 2026-08-20：RQ-068 开始 6B-4 Conversation-bound Review Identity
+
+- 用户明确授权 6B-4；按 AGENTS 恢复 canonical、活动计划、RQ/历史/路线/修订/能力/learning coverage，
+  读取 ADR-0039 与 Session/Memory 总设计/实施计划，治理预检通过。
+- 起始 `HEAD == origin/main == 4fb66a88f5e5bc761e4604a359ae7e130a130cfd` 且工作树干净；6B-3 已由
+  `7e4f233` / Actions `32329686381` 三 job 公共闭环，没有需要恢复的未提交 6B-4 代码。
+- 已完成初学者教学与三方案比较，推荐 nullable schema 2.0 identity columns + atomic server-derived
+  Conversation binding；旧 1.0 保持 read/execute compatibility，不把 identity 只藏在 JSON payload。
+- 当前先同步 RQ-068、canonical、Phase 20、planned coverage、治理固定顺序与陈旧状态；治理再次全绿后
+  再建立 ADR-0041/专用设计/任务计划和红灯合同。尚未修改产品 schema/code/tests，外部 I/O 为 0。
+
+## 2026-08-20：6B-4 设计冻结，进入 pure domain/API 红灯
+
+- 完成 Task/Conversation/Player Subject/Alias/Summary/Application/API/Worker/migration/package 接缝审计；
+  确认原子身份绑定必须落在 `PostgresTaskRepository` 单事务，不能拆成 Service 两次调用。
+- 新增 ADR-0041、`2026-08-20-conversation-bound-recent-review-design.md` 和对应 implementation plan，
+  冻结 nullable schema 2.0 columns、复合 FK、identity fingerprint、private PUUID target、legacy 1.0 分支。
+- 活动计划把治理同步与设计任务置为 completed，唯一 in-progress 任务切到 pure domain/API 红灯；
+  尚未修改产品代码、migration 或测试，Riot/Provider/Key I/O 为 0。
+
+## 2026-08-20：6B-4 中断恢复至 Repository 红灯
+
+- 恢复确认 `HEAD == origin/main == 4fb66a88f5e5bc761e4604a359ae7e130a130cfd`，既有未提交 6B-4 工作树完整保留；治理和 `git diff --check` 通过，没有 6B-5 文件或外部调用。
+- pure domain/API 已完成 25 项聚焦与 42 项相邻绿灯；0004/ORM migration 已完成 offline SQL 与 21 项聚焦（本机真库 2 项明确 skip），但尚无当前提交的真实 PostgreSQL CI 证据。
+- 已写 `tests/test_conversation_review_repository_postgres.py`，当前从该红灯继续实现 Repository 的单事务 server-derived binding、v2 private target mapping、alias rename 与 late claim；不重复前两批实现。
+
+- Repository 测试本机实际结果为 `4 skipped`（未配置真库），没有冒充红灯或绿灯；随后完成 legacy helper、Player/Conversation record 与 alias 排序接缝审计，准备进入最小 Repository 实现。
+- Repository 最小实现现已加入：单事务 active tuple 锁定、identity-aware fingerprint、schema 2.0 insert、session-aware target mapping，以及 create/get/claim/replay 的统一 v2 投影；本地兼容/聚焦为 `28 passed, 11 skipped, 1 warning`，compileall 与 diff check 通过。下一步补 capacity/rollback/create-vs-lifecycle 真库合同，不在缺少并发证据时提前关闭 Task 3。
+- Task 4 红灯已实际观察：聚焦测试收集分别因缺少 `build_player_summary_by_puuid` 与 `app.product` 尚未导出 `ConversationRecentReviewRequest` 失败；这证明可信 PUUID Summary/Application 接缝尚未被旧代码误判为已存在。下一步只实现共享后半段与 1.0/2.0 Executor 分支。
+
+## 2026-08-20：6B-4 Task 3/4 恢复裁决与 Task 5 接续
+
+- 严格恢复后确认 `HEAD == origin/main == 4fb66a88f5e5bc761e4604a359ae7e130a130cfd`，未提交
+  6B-4 工作树完整保留，治理与 `git diff --check` 通过，没有进入 6B-5。
+- Repository 已实现单事务 server-derived binding、v2 私有 target 装配及 legacy 映射；本机真库套件
+  结果为 `1 passed, 14 skipped`，skip 全因没有 PostgreSQL，必须由阻塞 CI 补证。
+- trusted-PUUID Summary/Application/Executor 已完成，聚焦 `51 passed`；v2 Account-V1 调用为 0，
+  alias 只影响显示，binding/target/fingerprint 篡改在 Application 前拒绝，legacy 1.0 保持兼容。
+- Task 5 审计发现 composed `_TaskServiceProxy` 尚未转发 `create_conversation_review()`；package smoke 也只到
+  Link→Conversation→Message，PostgreSQL job 尚未列入两个 6B-4 真库测试文件。下一动作先写 composition/
+  package 红灯，再做最小接线，不创建第二套 Worker。
+
+## 2026-08-20：6B-4 Task 5 本地完成
+
+- composition 红灯实际得到 503，因为 `_TaskServiceProxy` 缺少 v2 转发；加入类型化方法后 composed/API
+  聚焦 `24 passed`，证明 lifespan 绑定的真实 Service 可以收到 trusted Actor/path/body command。
+- package 红灯实际暴露缺少 v2 结果字段和四个 allowlisted failure code；最小实现将 smoke result 升为
+  1.1，并覆盖 Link→Conversation→Message→schema 2.0 Task→同一 Worker→safe failed terminal；package
+  套件 `18 passed`，外部调用字段保持 0。
+- CI 合同红灯证明两个新 PostgreSQL 文件尚未进入 job；现已加入 `postgres-migrations` 阻塞列表。
+- Task 5 聚焦/相邻合计 `114 passed, 11 skipped, 1 warning`；11 个 skip 全因本机无 PostgreSQL，
+  compileall 与 diff check 通过。下一动作进入 Task 6 walkthrough、八维 coverage、完整门禁和公共闭环。
+
+## 2026-08-20：6B-4 Task 6 本地门禁完成，等待提交
+
+- 新增 `docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md`，按八维合同讲清
+  server-derived identity、schema 方案、代码地图、创建/执行流、证据矩阵、runbook、安全和面试边界；
+  coverage 路径已完整但在公共三 job 全绿前保持 `planned`。
+- 完整 pytest 为 `1333 passed, 78 skipped, 1 warning, 110 subtests passed`；78 个 skip 仍全部是本机无
+  PostgreSQL/Docker，不能写成真库/package 成功。
+- RAG development 与 independent holdout Recall/MRR/nDCG 均 `1.0`、FPR `0.0`，holdout abstention/
+  citation `1.0`；Harness dry-run `published`/0 revisions；compileall、SDK boundary、tracked data、YAML、
+  pip、governance 与 diff 门通过。
+- canonical、roadmap、capability matrix、decisions、history、learning index 与 active plan 已同步为“本地完成、
+  待公共闭环”。唯一下一动作是最终静态审查、独立暂存/cached diff、提交推送并等待 exact-SHA 三 job；
+  6B-5 未进入。

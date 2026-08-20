@@ -5,6 +5,7 @@ from typing import Protocol
 from uuid import UUID
 
 from app.tasks.models import (
+    PendingConversationReviewTask,
     PendingReviewTask,
     ReviewTask,
     TaskCapacityPolicy,
@@ -22,6 +23,13 @@ class TaskRepository(Protocol):
     def create_or_replay(
         self,
         pending: PendingReviewTask,
+        *,
+        capacity: TaskCapacityPolicy,
+    ) -> TaskRepositoryCreateResult: ...
+
+    def create_conversation_bound_or_replay(
+        self,
+        pending: PendingConversationReviewTask,
         *,
         capacity: TaskCapacityPolicy,
     ) -> TaskRepositoryCreateResult: ...

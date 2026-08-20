@@ -3005,3 +3005,56 @@
 - 首次收尾命令误用系统 Python；该解释器没有 `pytest`，命令在测试收集前以 `ModuleNotFoundError` 退出，
   没有代码副作用。随后改用仓库 `.venv\Scripts\python.exe`，聚焦与完整回归均通过；以后仓库测试统一显式
   使用虚拟环境解释器。
+
+## 2026-08-20：RQ-068 与 6B-4 入口裁决
+
+- 用户明确“继续 6B-4”；起始 `HEAD == origin/main == 4fb66a8`、工作树干净，AGENTS 恢复顺序与治理
+  预检通过。授权只覆盖 `6B-4-conversation-bound-recent-review-identity`，不进入 6B-5。
+- 当前断点不是 Agent/Memory 缺失，而是 6B-3 Conversation identity 与既有 6A Review Task/Worker 尚未
+  相连：旧 schema 1.0 仍从客户端 Riot ID 入队，Worker 后续 Account-V1 解析，不能证明复盘任务继承固定
+  Conversation subject。
+- 比较三种方案后选择在既有 `review_tasks` 增加 nullable legacy-compatible schema 2.0 identity columns，
+  由单一 PostgreSQL 短事务锁定 active Conversation 并派生 tuple。只把 `conversation_id` 放进 JSON 缺少
+  数据库 identity 约束；新建第二套 task 表会复制 claim/Worker/终态/恢复基础设施。
+- schema 1.0 row 的新增身份列保持 null 且旧端点/执行可读兼容；schema 2.0 要求完整 trusted tuple。新的
+  body 只能有 `count/queue/focus`，客户端、模型、UI 当前选择和可变 alias 都不能覆盖 identity/PUUID。
+- v2 Executor 应走 trusted PUUID Summary path，不再调用 Account-V1；别名只作显示。测试/CI 继续使用
+  Fake Riot/Fake Provider，真实外部调用为 0。
+- 恢复时发现 `docs/roadmap.md` 与 `docs/learning/README.md` 各有一处 6B-3 公共闭环前的陈旧表述；已随
+  状态迁移修正，不改历史证据。
+
+## 2026-08-20：6B-4 专用设计冻结后的精确接缝结论
+
+- 不能由 Service 先读 Conversation、再调用现有 `create_or_replay()`；两个事务之间会留下
+  archive/hide 竞态。schema 2.0 必须由 Repository 新增原子 create 方法，在 relationship→Conversation
+  一致锁顺序下派生 tuple、计算 identity-aware fingerprint 并插入 Task。
+- schema 2.0 fingerprint 必须覆盖 owner/conversation/relationship/subject/role，不能只覆盖公共
+  count/queue/focus；否则同 owner/key 跨 Conversation 会错误 replay。
+- 现有 `ReviewTask` 可以增加私有 execution target，由 Repository 通过 subject/alias 装配；公共 View
+  只投影 `conversation_id`。保留 `_record_to_task(record)` 的 legacy 1.0 helper 可避免已有直接测试失效。
+- Summary/Application 不需要复制 Runtime/Harness 后半段：新增 `build_by_puuid()` 与
+  `review_by_puuid()`，Executor 按 1.0/2.0 分支，之后共用 compiler/runtime/receipt/evidence。
+- schema 2.0 已排队 Task 在 Conversation 后来 archive/hide 后仍应按冻结 subject 执行；6B-4 不写
+  assistant Message/Memory，因此“完成原 Task”不等于“向已隐藏 Conversation 写终态”。
+- 已冻结 ADR-0041、专用教学设计与六任务实施计划；未引入新依赖或外部 I/O。
+
+## 2026-08-20：6B-4 Repository 恢复审计
+
+- 本机未配置 `RIFTCOACH_TEST_DATABASE_URL`，所以新增 Repository 真库测试按合同得到 `4 skipped`；这不是绿灯，也不能在本地直接观察缺方法红灯，当前实现语义仍必须由阻塞 PostgreSQL CI 补证。
+- 现有 `task_repository.py` 的 create/get/claim/replay 全部直接调用模块级 `_record_to_task()`；要支持 schema 2.0，必须新增 session-aware `_map_record()` 装配 subject/最新 alias，同时保留模块级 helper 对 legacy 1.0 无数据库测试的兼容。
+- `PlayerSubjectRecord` 已提供稳定 PUUID/current routing，`PlayerAliasRecord` 已提供带 `last_seen_at` 的可变显示 alias；最新 alias 应使用 `last_seen_at DESC, player_alias_id ASC` 确定性选择，Conversation archive 后 claim 只按冻结 subject 装配 target，不重新要求 Conversation active。
+- 6B-3 已有可复用的确定性并发证明模式：先由独立连接锁 Conversation 行，让第一操作取得 relationship lock 后阻塞，再观察第二操作尝试同一 relationship lock；释放 blocker 后即可分别证明 create-first 允许建 Task、lifecycle-first 让新 Task 安全拒绝，而不是用不稳定 Barrier 猜调度顺序。
+- Summary 现有 `build_player_summary()` 把 Account-V1 解析和 Match-V5 汇总写在同一函数；可信 PUUID 路径应抽取共享的“已知 account/PUUID 后半段”，让 legacy `build()` 仍先 Account-V1，而 `build_by_puuid()` 只构造显示 account 后直接复用 Match-V5/aggregate 逻辑。
+- Application Service 的 validate/render/compile/runtime/receipt 后半段已经集中在 `review()`；6B-4 应新增一个小的 `review_by_puuid()` 入口并复用私有 `_review_from_summary()`，而不是复制 Harness 控制流。Executor 则必须先按 schema 1.0/2.0 校验不同 request/fingerprint，再汇入同一 terminal evidence 校验。
+
+## 2026-08-20：6B-4 部署组合接缝结论
+
+- 新 route 只存在于 `create_app()` 不等于 composed 部署可用；lifespan 使用的 `_TaskServiceProxy` 必须显式
+  实现同一 `TaskServicePort.create_conversation_review()`。真实 composed TestClient 红灯先返回 503，证明
+  该缺口不是纸面推断。
+- 不需要第二套 Worker：Repository claim 已能投影 1.0/2.0，升级后的 Executor 已按 schema 分支，所以
+  package 只需第二次调用现有 ReviewWorker，并验证 v2 Task 进入安全终态。
+- package smoke 的可执行结果增加字段后属于新 envelope，故内部版本由 1.0 升到 1.1；它仍只证明
+  PostgreSQL/API/Worker 控制流和 external calls=0，不伪造 Agent/Harness 成功或模型质量。
+- 两个新真库文件即使会被完整 pytest 收集，也必须显式加入 `postgres-migrations` job，才能让最关键的
+  migration/FK/trigger/事务锁语义成为阻塞公共证据。

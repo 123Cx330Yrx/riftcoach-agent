@@ -2231,3 +2231,30 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `HANDOFF`：唯一下一检查点为 `6B-4-conversation-bound-recent-review-identity`，当前仅
   prepared/waiting authorization；不实现 6B-4，不把 Agent、Review Task、Memory、Auth/RSO、SSE、前端或
   新框架写成已完成。
+
+### 2026-08-20：RQ-068 恢复 6B-4 Conversation-bound Review Identity
+
+- `AUTHORIZED`：用户明确“继续 6B-4”，只授权
+  `6B-4-conversation-bound-recent-review-identity`；6B-5 未获授权。
+- `DECISION`：复用既有 `review_tasks`，增加 nullable schema 2.0 identity columns；创建时在单一短事务
+  锁定 active Conversation，由服务器派生 owner/conversation/relationship/subject tuple。拒绝只把身份藏在
+  JSON，也拒绝复制第二套 task/Worker/terminal 基础设施。
+- `COMPATIBILITY`：legacy schema 1.0 新列保持 null，旧 endpoint/query/execution 继续兼容但不创建
+  Conversation/Memory；不根据可变 Riot ID 回填历史 subject。
+- `EXECUTION`：v2 使用 trusted PUUID Summary path，不再调用 Account-V1；alias rename 不改变 subject，
+  late task 只绑定创建时 Conversation。测试/CI 使用 Fake Riot/Provider，外部 calls 为 0。
+- `BOUNDARY`：assistant Message、Memory Candidate/长期 Memory、正式 Auth/RSO、SSE、前端、LangGraph、
+  Multi-Agent 与新 SDK 均不在 6B-4。
+
+### 2026-08-20：6B-4 本地实现完成，等待 exact-SHA 公共门
+
+- `IMPLEMENTED-LOCAL`：schema 2.0 contract/fingerprint、0004/ORM、单事务 Conversation binding、私有
+  PUUID target、trusted-PUUID Summary/Application、1.0/2.0 Executor、Conversation-bound API/composition
+  与 no-I/O package smoke 已建立；没有复制 Worker/Runtime/Harness。
+- `EVIDENCE-LOCAL`：聚焦 `114 passed, 11 skipped, 1 warning`；完整
+  `1333 passed, 78 skipped, 1 warning, 110 subtests passed`。两套 RAG、Harness dry-run、compileall、
+  SDK/tracked-data、YAML、pip、governance 与 diff 门通过。
+- `LIMIT`：本机无 PostgreSQL/Docker，78 个 skip 不证明复合 FK、trigger、事务锁或 Linux image；两个新
+  真库文件已加入阻塞 job，package 已覆盖 v2 Task 经同一 Worker 到 safe failed terminal，外部调用为 0。
+- `PENDING`：walkthrough/八维 evidence 已登记但 coverage 保持 planned；只待 cached diff、提交、推送与
+  exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`。全绿前不关闭 6B-4、不进入 6B-5。

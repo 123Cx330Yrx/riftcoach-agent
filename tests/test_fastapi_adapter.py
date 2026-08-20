@@ -149,6 +149,7 @@ def test_app_factory_and_openapi_do_not_read_keys_or_open_io(monkeypatch) -> Non
         "/conversations/{conversation_id}/messages",
         "/conversations/{conversation_id}/archive",
         "/conversations/{conversation_id}/hide",
+        "/conversations/{conversation_id}/reviews/recent",
         "/reviews/recent",
         "/player-links",
         "/player-links/{link_task_id}",

@@ -35,6 +35,7 @@ from app.runtime.signals import RuntimePublicationStatus
 from app.skills.recent_form_review import RecentFormReviewOutput
 
 from .recent_review import (
+    ConversationRecentReviewRequest,
     ProductRequestCompilationError,
     RecentReviewProductRequest,
     RecentReviewRuntimeRequestCompiler,
@@ -88,6 +89,16 @@ class RecentReviewSummaryBuilder(Protocol):
     def build(
         self,
         *,
+        game_name: str,
+        tag_line: str,
+        count: int,
+        queue: int | None,
+    ) -> dict: ...
+
+    def build_by_puuid(
+        self,
+        *,
+        puuid: str,
         game_name: str,
         tag_line: str,
         count: int,
@@ -227,15 +238,46 @@ class RecentReviewApplicationService:
     ) -> RecentReviewApplicationResult:
         if not isinstance(request, RecentReviewProductRequest):
             raise TypeError("request must be a RecentReviewProductRequest")
-        if run_id is not None:
-            try:
-                run_id = normalize_run_id(run_id)
-            except (TypeError, ValueError):
-                raise RecentReviewApplicationError(
-                    "service_configuration_invalid"
-                ) from None
+        run_id = self._normalize_optional_run_id(run_id)
 
         summary = self._build_summary(request)
+        return self._review_from_summary(
+            request,
+            summary=summary,
+            run_id=run_id,
+        )
+
+    def review_by_puuid(
+        self,
+        request: ConversationRecentReviewRequest,
+        *,
+        puuid: str,
+        game_name: str,
+        tag_line: str,
+        run_id: str | None = None,
+    ) -> RecentReviewApplicationResult:
+        if not isinstance(request, ConversationRecentReviewRequest):
+            raise TypeError("request must be a ConversationRecentReviewRequest")
+        run_id = self._normalize_optional_run_id(run_id)
+        summary = self._build_summary_by_puuid(
+            request,
+            puuid=puuid,
+            game_name=game_name,
+            tag_line=tag_line,
+        )
+        return self._review_from_summary(
+            request,
+            summary=summary,
+            run_id=run_id,
+        )
+
+    def _review_from_summary(
+        self,
+        request: RecentReviewProductRequest | ConversationRecentReviewRequest,
+        *,
+        summary: dict,
+        run_id: str | None,
+    ) -> RecentReviewApplicationResult:
         self._validate_summary(summary)
         deterministic_report = self._render_report(summary)
         runtime_request = self._compile_request(
@@ -262,6 +304,17 @@ class RecentReviewApplicationService:
         )
         self._write_receipt(runtime_request, runtime_result)
         return application_result
+
+    @staticmethod
+    def _normalize_optional_run_id(run_id: str | None) -> str | None:
+        if run_id is None:
+            return None
+        try:
+            return normalize_run_id(run_id)
+        except (TypeError, ValueError):
+            raise RecentReviewApplicationError(
+                "service_configuration_invalid"
+            ) from None
 
     def _write_receipt(
         self,
@@ -330,6 +383,48 @@ class RecentReviewApplicationService:
             )
         return copy.deepcopy(summary)
 
+    def _build_summary_by_puuid(
+        self,
+        request: ConversationRecentReviewRequest,
+        *,
+        puuid: str,
+        game_name: str,
+        tag_line: str,
+    ) -> dict:
+        failure: RecentReviewApplicationError | None = None
+        summary: Any = None
+        try:
+            build_by_puuid = getattr(self._summary_builder, "build_by_puuid")
+            if not callable(build_by_puuid):
+                raise TypeError("summary builder has no trusted PUUID path")
+            summary = build_by_puuid(
+                puuid=puuid,
+                game_name=game_name,
+                tag_line=tag_line,
+                count=request.count,
+                queue=request.queue,
+            )
+        except HTTPError as error:
+            failure = _map_http_error(error)
+        except Timeout:
+            failure = RecentReviewApplicationError("upstream_timeout")
+        except (ConnectionError, RequestException):
+            failure = RecentReviewApplicationError("upstream_unavailable")
+        except (AttributeError, TypeError, ValueError):
+            failure = RecentReviewApplicationError(
+                "service_configuration_invalid"
+            )
+        except Exception:
+            failure = RecentReviewApplicationError("upstream_unavailable")
+
+        if failure is not None:
+            raise failure
+        if not isinstance(summary, dict):
+            raise RecentReviewApplicationError(
+                "service_configuration_invalid"
+            )
+        return copy.deepcopy(summary)
+
     @staticmethod
     def _validate_summary(summary: dict) -> None:
         failure: RecentReviewApplicationError | None = None
@@ -389,7 +484,7 @@ class RecentReviewApplicationService:
 
     def _compile_request(
         self,
-        request: RecentReviewProductRequest,
+        request: RecentReviewProductRequest | ConversationRecentReviewRequest,
         *,
         summary: dict,
         deterministic_report: str,

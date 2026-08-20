@@ -7,10 +7,14 @@ from uuid import UUID
 import pytest
 
 from app.product.recent_review_service import RecentReviewApplicationResult
-from app.product.recent_review import RecentReviewRuntimeRequestCompiler
+from app.product.recent_review import (
+    ConversationRecentReviewRequest,
+    RecentReviewRuntimeRequestCompiler,
+)
 from app.product.recent_review_service import RecentReviewApplicationService
 from app.product.run_receipts import FileRunReceiptStore
 from app.product.run_receipts import RunReceiptReference
+from app.players.models import RelationshipRole, RoutingRegion
 from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.runtime.composition import RuntimeCompositionRoot
 from app.runtime.runtime import RuntimeExecutionFactory
@@ -19,6 +23,8 @@ from app.runtime.signals import RuntimePublicationStatus
 from app.runtime.models import RuntimeStatus
 from app.skills.recent_form_review import RecentFormReviewOutput
 from app.tasks.models import (
+    ConversationReviewExecutionTarget,
+    ConversationReviewTaskBinding,
     ReviewTask,
     TaskPublicationStatus,
     TaskStatus,
@@ -158,9 +164,24 @@ class FakeApplication:
     def __init__(self, result: RecentReviewApplicationResult):
         self.result = result
         self.calls: list[tuple[object, str]] = []
+        self.puuid_calls: list[tuple[object, str, str, str, str]] = []
 
     def review(self, request, *, run_id: str):
         self.calls.append((request, run_id))
+        return self.result
+
+    def review_by_puuid(
+        self,
+        request,
+        *,
+        puuid: str,
+        game_name: str,
+        tag_line: str,
+        run_id: str,
+    ):
+        self.puuid_calls.append(
+            (request, puuid, game_name, tag_line, run_id)
+        )
         return self.result
 
 
@@ -202,6 +223,56 @@ def _fingerprint_for(task: ReviewTask) -> str:
     )
 
 
+def running_conversation_task() -> ReviewTask:
+    from app.tasks.fingerprint import (
+        compute_conversation_review_task_fingerprint,
+    )
+
+    binding = ConversationReviewTaskBinding(
+        conversation_id=UUID("51000000-0000-4000-8000-000000000001"),
+        relationship_id=UUID("52000000-0000-4000-8000-000000000001"),
+        player_subject_id=UUID("53000000-0000-4000-8000-000000000001"),
+        relationship_role=RelationshipRole.SELF,
+    )
+    target = ConversationReviewExecutionTarget(
+        puuid="trusted-puuid",
+        routing_region=RoutingRegion.ASIA,
+        game_name="Renamed Player",
+        tag_line="KR2",
+    )
+    request = ConversationRecentReviewRequest()
+    payload = request.model_dump(mode="json")
+    created = NOW + timedelta(seconds=20)
+    return ReviewTask(
+        task_id=UUID("54000000-0000-4000-8000-000000000001"),
+        run_id="review_conversation_executor",
+        task_kind="recent_review",
+        schema_version="2.0",
+        owner_id="owner-1",
+        idempotency_key="conversation-request-1",
+        request_fingerprint=compute_conversation_review_task_fingerprint(
+            owner_id="owner-1",
+            binding=binding,
+            request_payload=payload,
+        ),
+        request_payload=payload,
+        conversation_binding=binding,
+        execution_target=target,
+        status=TaskStatus.RUNNING,
+        worker_id="worker-1",
+        created_at=created,
+        updated_at=created + timedelta(seconds=1),
+        claimed_at=created + timedelta(seconds=1),
+        finished_at=None,
+        terminal_reason=None,
+        publication_status=None,
+        report_available=False,
+        trace_reference=None,
+        receipt_reference=None,
+        artifact_reference=None,
+    )
+
+
 def test_executor_passes_sql_run_id_and_returns_verified_terminal():
     task = running_task()
     task = task.model_copy(update={"request_fingerprint": _fingerprint_for(task)})
@@ -232,6 +303,58 @@ def test_executor_rejects_fingerprint_mismatch_before_application():
 
     assert caught.value.code == "task_fingerprint_mismatch"
     assert app.calls == []
+    assert verifier.calls == []
+
+
+def test_executor_v2_uses_private_puuid_target_and_existing_terminal_gate():
+    task = running_conversation_task()
+    app = FakeApplication(application_result(run_id=task.run_id))
+    verifier = FakeVerifier(terminal(run_id=task.run_id))
+
+    output = RecentReviewTaskExecutor(
+        application_service=app,
+        evidence_verifier=verifier,
+    ).execute(task)
+
+    assert output.run_id == task.run_id
+    assert app.calls == []
+    assert app.puuid_calls == [
+        (
+            ConversationRecentReviewRequest(),
+            "trusted-puuid",
+            "Renamed Player",
+            "KR2",
+            task.run_id,
+        )
+    ]
+    assert verifier.calls == [task]
+
+
+@pytest.mark.parametrize(
+    "update",
+    (
+        {"execution_target": None},
+        {"request_fingerprint": "f" * 64},
+    ),
+    ids=("target-missing", "fingerprint-mismatch"),
+)
+def test_executor_v2_rejects_tampered_identity_before_application(update):
+    task = running_conversation_task().model_copy(update=update)
+    app = FakeApplication(application_result(run_id=task.run_id))
+    verifier = FakeVerifier(terminal(run_id=task.run_id))
+
+    with pytest.raises(RecentReviewTaskExecutionError) as caught:
+        RecentReviewTaskExecutor(
+            application_service=app,
+            evidence_verifier=verifier,
+        ).execute(task)
+
+    assert caught.value.code in {
+        "task_contract_invalid",
+        "task_fingerprint_mismatch",
+    }
+    assert app.calls == []
+    assert app.puuid_calls == []
     assert verifier.calls == []
 
 

@@ -10,6 +10,7 @@ from requests import Response
 from requests.exceptions import ConnectionError, HTTPError, Timeout
 
 from app.product import (
+    ConversationRecentReviewRequest,
     RecentReviewProductRequest,
     RecentReviewRuntimeRequestCompiler,
 )
@@ -55,6 +56,25 @@ class FakeSummaryBuilder:
         assert (game_name, tag_line, count, queue) == (
             "DemoPlayer",
             "TEST",
+            10,
+            420,
+        )
+        return copy.deepcopy(self._summary)
+
+    def build_by_puuid(
+        self,
+        *,
+        puuid: str,
+        game_name: str,
+        tag_line: str,
+        count: int,
+        queue: int | None,
+    ) -> dict:
+        self._events.append("summary_by_puuid")
+        assert (puuid, game_name, tag_line, count, queue) == (
+            "trusted-puuid",
+            "Renamed Player",
+            "KR2",
             10,
             420,
         )
@@ -234,6 +254,32 @@ def test_service_threads_a_trusted_sql_run_id_through_runtime_and_receipt() -> N
     assert result.run_id == "review_sql_application"
     assert writer.results[0].run_id == result.run_id
     assert events == ["summary", "report", "runtime", "receipt"]
+
+
+def test_service_reuses_runtime_harness_after_trusted_puuid_summary() -> None:
+    events: list[str] = []
+    writer = RecordingReceiptWriter(events)
+    service = _service(
+        summary_builder=FakeSummaryBuilder(_summary(), events),
+        runtime=FakeRuntime(
+            events,
+            publication_status=RuntimePublicationStatus.PUBLISHED,
+        ),
+        events=events,
+        receipt_writer=writer,
+    )
+
+    result = service.review_by_puuid(
+        ConversationRecentReviewRequest(),
+        puuid="trusted-puuid",
+        game_name="Renamed Player",
+        tag_line="KR2",
+        run_id="review_conversation_application",
+    )
+
+    assert result.run_id == "review_conversation_application"
+    assert writer.results[0].run_id == result.run_id
+    assert events == ["summary_by_puuid", "report", "runtime", "receipt"]
 
 
 class MismatchedReceiptWriter:

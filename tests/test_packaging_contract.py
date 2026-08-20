@@ -117,6 +117,17 @@ def test_ci_contains_a_blocking_linux_packaging_smoke_without_secrets() -> None:
     assert "docker image" in steps or "docker run" in steps
 
 
+def test_ci_blocks_on_conversation_review_migration_and_repository_contracts() -> None:
+    workflow = yaml.safe_load(
+        (ROOT / ".github/workflows/tests.yml").read_text(encoding="utf-8")
+    )
+    job = workflow["jobs"]["postgres-migrations"]
+    steps = "\n".join(str(step) for step in job["steps"])
+
+    assert "tests/test_conversation_review_migrations_postgres.py" in steps
+    assert "tests/test_conversation_review_repository_postgres.py" in steps
+
+
 def test_exit_review_assets_name_evidence_and_deferred_boundaries() -> None:
     matrix = ROOT / "docs/plans/2026-08-18-6a-exit-matrix.md"
     review = ROOT / "docs/plans/2026-08-18-6a-exit-review.md"

@@ -114,6 +114,61 @@ def build_player_summary(
 ) -> dict:
     account = client.get_account_by_riot_id(game_name, tag_line)
     puuid = account["puuid"]
+    return _build_player_summary_for_account(
+        client=client,
+        ddragon=ddragon,
+        account=account,
+        puuid=puuid,
+        count=count,
+        queue=queue,
+        min_duration_seconds=min_duration_seconds,
+    )
+
+
+def build_player_summary_by_puuid(
+    *,
+    client: RiotMatchClient,
+    ddragon: MatchStaticDataService,
+    puuid: str,
+    game_name: str,
+    tag_line: str,
+    count: int,
+    queue: int | None,
+    min_duration_seconds: int,
+) -> dict:
+    """Build from a server-trusted subject without Account-V1 lookup."""
+
+    if not all(
+        isinstance(value, str) and value.strip()
+        for value in (puuid, game_name, tag_line)
+    ):
+        raise ValueError("trusted player identity must contain visible text")
+    account = {
+        "gameName": game_name,
+        "tagLine": tag_line,
+        "puuid": puuid,
+    }
+    return _build_player_summary_for_account(
+        client=client,
+        ddragon=ddragon,
+        account=account,
+        puuid=puuid,
+        count=count,
+        queue=queue,
+        min_duration_seconds=min_duration_seconds,
+    )
+
+
+def _build_player_summary_for_account(
+    *,
+    client: RiotMatchClient,
+    ddragon: MatchStaticDataService,
+    account: dict,
+    puuid: str,
+    count: int,
+    queue: int | None,
+    min_duration_seconds: int,
+) -> dict:
     match_ids = client.get_recent_match_ids(
         puuid=puuid,
         count=count,
@@ -224,12 +279,33 @@ class RiotPlayerSummaryBuilder:
             min_duration_seconds=self._min_duration_seconds,
         )
 
+    def build_by_puuid(
+        self,
+        *,
+        puuid: str,
+        game_name: str,
+        tag_line: str,
+        count: int,
+        queue: int | None,
+    ) -> dict:
+        return build_player_summary_by_puuid(
+            client=self._client,
+            ddragon=self._ddragon,
+            puuid=puuid,
+            game_name=game_name,
+            tag_line=tag_line,
+            count=count,
+            queue=queue,
+            min_duration_seconds=self._min_duration_seconds,
+        )
+
 
 __all__ = [
     "MatchStaticDataService",
     "RiotMatchClient",
     "RiotPlayerSummaryBuilder",
     "build_player_summary",
+    "build_player_summary_by_puuid",
     "process_match",
     "timeline_fallback",
 ]

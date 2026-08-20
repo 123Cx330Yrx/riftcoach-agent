@@ -1,12 +1,12 @@
 """Linux/Compose control-plane smoke with zero Riot or Provider calls.
 
-The smoke covers the durable control plane against real PostgreSQL: one Review
-Task deliberately reaches its safe failed terminal without external I/O; one
-Player Link uses an in-process Fake Account Resolver and reaches succeeded;
-that relationship then creates a Conversation and persists/queries one user
-Message through HTTP.  Successful Agent/Harness execution remains covered by
-the existing offline vertical tests rather than a fake Coach in this package
-check.
+The smoke covers the durable control plane against real PostgreSQL: one legacy
+Review Task deliberately reaches its safe failed terminal without external
+I/O; one Player Link uses an in-process Fake Account Resolver and reaches
+succeeded; that relationship creates a Conversation and one user Message; a
+schema 2.0 Conversation-bound Review Task then passes through the same Worker
+and reaches the same safe terminal.  Successful Agent/Harness execution remains
+covered by the existing offline vertical tests rather than a fake Coach here.
 """
 
 from __future__ import annotations
@@ -71,6 +71,10 @@ PackagingSmokeErrorCode: TypeAlias = Literal[
     "packaging_smoke_message_append_failed",
     "packaging_smoke_message_query_failed",
     "packaging_smoke_message_invalid",
+    "packaging_smoke_conversation_review_create_failed",
+    "packaging_smoke_conversation_review_iteration_invalid",
+    "packaging_smoke_conversation_review_query_failed",
+    "packaging_smoke_conversation_review_terminal_invalid",
 ]
 _ERROR_CODES = frozenset(
     {
@@ -99,6 +103,10 @@ _ERROR_CODES = frozenset(
         "packaging_smoke_message_append_failed",
         "packaging_smoke_message_query_failed",
         "packaging_smoke_message_invalid",
+        "packaging_smoke_conversation_review_create_failed",
+        "packaging_smoke_conversation_review_iteration_invalid",
+        "packaging_smoke_conversation_review_query_failed",
+        "packaging_smoke_conversation_review_terminal_invalid",
     }
 )
 _LOCAL_SMOKE_API_HOSTS = frozenset({"api", "localhost", "127.0.0.1", "::1"})
@@ -125,7 +133,7 @@ class PackagingSmokeSettings:
 
 @dataclass(frozen=True, slots=True)
 class PackagingSmokeResult:
-    schema_version: Literal["1.0"]
+    schema_version: Literal["1.1"]
     task_id: UUID
     run_id: str
     task_status: Literal["failed"]
@@ -135,6 +143,9 @@ class PackagingSmokeResult:
     conversation_status: Literal["active"]
     message_id: UUID
     message_sequence_no: Literal[1]
+    conversation_review_task_id: UUID
+    conversation_review_run_id: str
+    conversation_review_status: Literal["failed"]
     external_riot_provider_calls: Literal[0]
 
 
@@ -523,8 +534,121 @@ def execute_packaging_smoke(
         ):
             raise PackagingSmokeError("packaging_smoke_message_invalid")
 
+        try:
+            created_conversation_review = session.post(
+                (
+                    f"{settings.base_url}/conversations/{conversation_id}"
+                    "/reviews/recent"
+                ),
+                headers={
+                    "Idempotency-Key": (
+                        f"packaging-conversation-review-smoke-{uuid4().hex}"
+                    )
+                },
+                json={"count": 5, "queue": 420, "focus": "overall"},
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_review_create_failed"
+            ) from None
+        conversation_review_body = _json_object(created_conversation_review)
+        if (
+            created_conversation_review.status_code != 202
+            or conversation_review_body.get("schema_version") != "2.0"
+            or conversation_review_body.get("conversation_id")
+            != str(conversation_id)
+            or conversation_review_body.get("status") != "queued"
+            or any(
+                forbidden in conversation_review_body
+                for forbidden in (
+                    "puuid",
+                    "player_subject_id",
+                    "relationship_id",
+                    "relationship_role",
+                )
+            )
+        ):
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_review_create_failed"
+            )
+        try:
+            conversation_review_task_id = UUID(
+                str(conversation_review_body["task_id"])
+            )
+            conversation_review_run_id = str(
+                conversation_review_body["run_id"]
+            )
+        except (KeyError, TypeError, ValueError):
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_review_create_failed"
+            ) from None
+
+        try:
+            conversation_review_iteration = ReviewWorker(
+                repository=repository,
+                executor=_NoExternalIoExecutor(),
+                worker_id=worker_id,
+            ).run_once()
+        except ReviewWorkerError as error:
+            conversation_worker_codes = {
+                "task_claim_failed": (
+                    "packaging_smoke_conversation_review_iteration_invalid"
+                ),
+                "task_claim_invalid": (
+                    "packaging_smoke_conversation_review_iteration_invalid"
+                ),
+                "task_terminal_update_failed": (
+                    "packaging_smoke_conversation_review_iteration_invalid"
+                ),
+            }
+            raise PackagingSmokeError(
+                conversation_worker_codes.get(
+                    error.code,
+                    "packaging_smoke_conversation_review_iteration_invalid",
+                )
+            ) from None
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_review_iteration_invalid"
+            ) from None
+        if (
+            conversation_review_iteration.status
+            is not WorkerIterationStatus.FAILED
+            or conversation_review_iteration.task_id
+            != conversation_review_task_id
+        ):
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_review_iteration_invalid"
+            )
+
+        try:
+            conversation_review_terminal = session.get(
+                f"{settings.base_url}/tasks/{conversation_review_task_id}",
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_review_query_failed"
+            ) from None
+        conversation_review_terminal_body = _json_object(
+            conversation_review_terminal
+        )
+        if (
+            conversation_review_terminal.status_code != 200
+            or conversation_review_terminal_body.get("schema_version") != "2.0"
+            or conversation_review_terminal_body.get("status") != "failed"
+            or conversation_review_terminal_body.get("terminal_reason")
+            != "worker_execution_failed"
+            or conversation_review_terminal_body.get("run_id")
+            != conversation_review_run_id
+        ):
+            raise PackagingSmokeError(
+                "packaging_smoke_conversation_review_terminal_invalid"
+            )
+
         return PackagingSmokeResult(
-            schema_version="1.0",
+            schema_version="1.1",
             task_id=task_id,
             run_id=run_id,
             task_status="failed",
@@ -534,6 +658,9 @@ def execute_packaging_smoke(
             conversation_status="active",
             message_id=message_id,
             message_sequence_no=1,
+            conversation_review_task_id=conversation_review_task_id,
+            conversation_review_run_id=conversation_review_run_id,
+            conversation_review_status="failed",
             external_riot_provider_calls=0,
         )
     except PackagingSmokeError:
@@ -589,6 +716,11 @@ def main(
                 "conversation_status": result.conversation_status,
                 "message_id": str(result.message_id),
                 "message_sequence_no": result.message_sequence_no,
+                "conversation_review_task_id": str(
+                    result.conversation_review_task_id
+                ),
+                "conversation_review_run_id": result.conversation_review_run_id,
+                "conversation_review_status": result.conversation_review_status,
                 "external_riot_provider_calls": result.external_riot_provider_calls,
             },
             sort_keys=True,

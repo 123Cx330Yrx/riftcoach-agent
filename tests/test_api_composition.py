@@ -6,8 +6,10 @@ import subprocess
 import sys
 import textwrap
 from contextlib import contextmanager
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from uuid import UUID
 
 import pytest
 from fastapi.testclient import TestClient
@@ -17,6 +19,13 @@ from app.api.composition import (
     create_composed_app,
 )
 from app.api.actor import StaticActorContextProvider
+from app.tasks.models import (
+    CreateConversationReviewTaskCommand,
+    ReviewTaskView,
+    TaskCreateDisposition,
+    TaskCreateResult,
+    TaskStatus,
+)
 
 
 VALID_ENV = {
@@ -182,6 +191,70 @@ def test_lifespan_builds_process_resources_once_and_disposes_engine(
 
     assert engine.dispose_calls == 1
     assert app.state.database_engine is None
+
+
+def test_composed_app_forwards_conversation_review_to_bound_task_service(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    engine = FakeEngine()
+    environment = {**VALID_ENV, "RIFTCOACH_RUNS_ROOT": str(tmp_path)}
+    commands: list[CreateConversationReviewTaskCommand] = []
+    now = datetime(2026, 8, 20, 9, 0, 0, tzinfo=timezone.utc)
+    task_id = UUID("83000000-0000-4000-8000-000000000031")
+    conversation_id = UUID("83000000-0000-4000-8000-000000000032")
+
+    class BoundTaskService:
+        def create_conversation_review(
+            self,
+            command: CreateConversationReviewTaskCommand,
+        ) -> TaskCreateResult:
+            commands.append(command)
+            return TaskCreateResult(
+                disposition=TaskCreateDisposition.CREATED,
+                task=ReviewTaskView(
+                    schema_version="2.0",
+                    task_id=task_id,
+                    run_id="composed_conversation_review_1",
+                    status=TaskStatus.QUEUED,
+                    created_at=now,
+                    updated_at=now,
+                    claimed_at=None,
+                    finished_at=None,
+                    terminal_reason=None,
+                    publication_status=None,
+                    report_available=False,
+                ),
+            )
+
+    monkeypatch.setattr(
+        "app.api.composition.build_engine",
+        lambda _settings: engine,
+    )
+    monkeypatch.setattr(
+        "app.api.composition.build_session_factory",
+        lambda _engine: (lambda: None),
+    )
+    monkeypatch.setattr(
+        "app.api.composition.ReviewTaskService",
+        lambda **_kwargs: BoundTaskService(),
+    )
+
+    app = create_composed_app(environment=environment)
+    with TestClient(app) as http:
+        response = http.post(
+            f"/conversations/{conversation_id}/reviews/recent",
+            headers={"Idempotency-Key": "composed-review-1"},
+            json={"count": 5, "queue": 420, "focus": "survival"},
+        )
+
+    assert response.status_code == 202
+    assert response.json()["conversation_id"] == str(conversation_id)
+    assert response.json()["task_id"] == str(task_id)
+    assert len(commands) == 1
+    assert commands[0].owner_id == "test-owner"
+    assert commands[0].conversation_id == conversation_id
+    assert engine.dispose_calls == 1
 
 
 def test_conversation_composition_failure_is_fail_closed_and_disposes_engine(

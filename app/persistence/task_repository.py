@@ -10,8 +10,19 @@ from pydantic import TypeAdapter, ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from app.persistence.conversation_records import ConversationRecord
+from app.persistence.player_records import (
+    OwnerPlayerRelationshipRecord,
+    PlayerAliasRecord,
+    PlayerSubjectRecord,
+)
 from app.persistence.task_record import ReviewTaskRecord
+from app.players.models import RelationshipRole, RoutingRegion
+from app.tasks.fingerprint import compute_conversation_review_task_fingerprint
 from app.tasks.models import (
+    ConversationReviewExecutionTarget,
+    ConversationReviewTaskBinding,
+    PendingConversationReviewTask,
     PendingReviewTask,
     ReviewTask,
     SafeTaskCode,
@@ -64,6 +75,39 @@ class PostgresTaskRepository:
                         {"task_create_lock_id": _TASK_CREATE_ADVISORY_LOCK_ID},
                     )
                     result = self._create_or_replay_locked(
+                        session,
+                        pending=pending,
+                        capacity=capacity,
+                    )
+                return result
+        except TaskRepositoryError:
+            raise
+        except SQLAlchemyError:
+            raise TaskRepositoryError("task_repository_unavailable") from None
+        except (TypeError, ValueError, ValidationError):
+            raise TaskRepositoryError("task_repository_integrity_failed") from None
+
+    def create_conversation_bound_or_replay(
+        self,
+        pending: PendingConversationReviewTask,
+        *,
+        capacity: TaskCapacityPolicy,
+    ) -> TaskRepositoryCreateResult:
+        if not isinstance(pending, PendingConversationReviewTask):
+            raise TypeError("pending must be a PendingConversationReviewTask")
+        if not isinstance(capacity, TaskCapacityPolicy):
+            raise TypeError("capacity must be a TaskCapacityPolicy")
+
+        try:
+            with self._session_factory() as session:
+                with session.begin():
+                    session.execute(
+                        sa.text(
+                            "SELECT pg_advisory_xact_lock(:task_create_lock_id)"
+                        ),
+                        {"task_create_lock_id": _TASK_CREATE_ADVISORY_LOCK_ID},
+                    )
+                    result = self._create_conversation_bound_or_replay_locked(
                         session,
                         pending=pending,
                         capacity=capacity,
@@ -130,7 +174,7 @@ class PostgresTaskRepository:
                     record.claimed_at = normalized_now
                     record.updated_at = normalized_now
                     session.flush()
-                    claimed = _record_to_task(record)
+                    claimed = self._map_record(session, record)
                 return claimed
         except TaskRepositoryError:
             raise
@@ -313,7 +357,7 @@ class PostgresTaskRepository:
             if existing.request_fingerprint == pending.request_fingerprint:
                 return TaskRepositoryCreateResult(
                     disposition=TaskRepositoryCreateDisposition.REPLAYED,
-                    task=_record_to_task(existing),
+                    task=self._map_record(session, existing),
                 )
             return TaskRepositoryCreateResult(
                 disposition=TaskRepositoryCreateDisposition.IDEMPOTENCY_CONFLICT,
@@ -372,7 +416,166 @@ class PostgresTaskRepository:
         session.flush()
         return TaskRepositoryCreateResult(
             disposition=TaskRepositoryCreateDisposition.CREATED,
-            task=_record_to_task(record),
+            task=self._map_record(session, record),
+        )
+
+    def _create_conversation_bound_or_replay_locked(
+        self,
+        session: Session,
+        *,
+        pending: PendingConversationReviewTask,
+        capacity: TaskCapacityPolicy,
+    ) -> TaskRepositoryCreateResult:
+        identity = session.execute(
+            sa.select(
+                ConversationRecord.relationship_id,
+                ConversationRecord.player_subject_id,
+                ConversationRecord.relationship_role,
+            ).where(
+                ConversationRecord.owner_id == pending.owner_id,
+                ConversationRecord.conversation_id == pending.conversation_id,
+                ConversationRecord.status == "active",
+            )
+        ).one_or_none()
+        if identity is None:
+            return TaskRepositoryCreateResult(
+                disposition=(
+                    TaskRepositoryCreateDisposition.CONVERSATION_UNAVAILABLE
+                )
+            )
+
+        relationship = session.scalar(
+            sa.select(OwnerPlayerRelationshipRecord)
+            .where(
+                OwnerPlayerRelationshipRecord.owner_id == pending.owner_id,
+                OwnerPlayerRelationshipRecord.relationship_id
+                == identity.relationship_id,
+                OwnerPlayerRelationshipRecord.player_subject_id
+                == identity.player_subject_id,
+                OwnerPlayerRelationshipRecord.relationship_role
+                == identity.relationship_role,
+            )
+            .with_for_update()
+        )
+        if relationship is None or relationship.status != "active":
+            return TaskRepositoryCreateResult(
+                disposition=(
+                    TaskRepositoryCreateDisposition.CONVERSATION_UNAVAILABLE
+                )
+            )
+
+        conversation = session.scalar(
+            sa.select(ConversationRecord)
+            .where(
+                ConversationRecord.owner_id == pending.owner_id,
+                ConversationRecord.conversation_id == pending.conversation_id,
+                ConversationRecord.relationship_id
+                == relationship.relationship_id,
+                ConversationRecord.player_subject_id
+                == relationship.player_subject_id,
+                ConversationRecord.relationship_role
+                == relationship.relationship_role,
+                ConversationRecord.status == "active",
+            )
+            .with_for_update()
+        )
+        if conversation is None:
+            return TaskRepositoryCreateResult(
+                disposition=(
+                    TaskRepositoryCreateDisposition.CONVERSATION_UNAVAILABLE
+                )
+            )
+
+        binding = ConversationReviewTaskBinding(
+            conversation_id=conversation.conversation_id,
+            relationship_id=conversation.relationship_id,
+            player_subject_id=conversation.player_subject_id,
+            relationship_role=RelationshipRole(conversation.relationship_role),
+        )
+        request_fingerprint = compute_conversation_review_task_fingerprint(
+            owner_id=pending.owner_id,
+            binding=binding,
+            request_payload=pending.request_payload,
+        )
+
+        existing = session.scalar(
+            sa.select(ReviewTaskRecord).where(
+                ReviewTaskRecord.owner_id == pending.owner_id,
+                ReviewTaskRecord.idempotency_key == pending.idempotency_key,
+            )
+        )
+        if existing is not None:
+            if existing.request_fingerprint == request_fingerprint:
+                return TaskRepositoryCreateResult(
+                    disposition=TaskRepositoryCreateDisposition.REPLAYED,
+                    task=self._map_record(session, existing),
+                )
+            return TaskRepositoryCreateResult(
+                disposition=TaskRepositoryCreateDisposition.IDEMPOTENCY_CONFLICT,
+            )
+
+        owner_active = session.scalar(
+            sa.select(sa.func.count())
+            .select_from(ReviewTaskRecord)
+            .where(
+                ReviewTaskRecord.owner_id == pending.owner_id,
+                ReviewTaskRecord.status.in_(_ACTIVE_STATUSES),
+            )
+        )
+        if owner_active is None:
+            raise TaskRepositoryError("task_repository_integrity_failed")
+        if owner_active >= capacity.owner_active_limit:
+            return TaskRepositoryCreateResult(
+                disposition=(
+                    TaskRepositoryCreateDisposition.OWNER_CAPACITY_EXCEEDED
+                )
+            )
+
+        global_active = session.scalar(
+            sa.select(sa.func.count())
+            .select_from(ReviewTaskRecord)
+            .where(ReviewTaskRecord.status.in_(_ACTIVE_STATUSES))
+        )
+        if global_active is None:
+            raise TaskRepositoryError("task_repository_integrity_failed")
+        if global_active >= capacity.global_active_limit:
+            return TaskRepositoryCreateResult(
+                disposition=(
+                    TaskRepositoryCreateDisposition.GLOBAL_CAPACITY_EXCEEDED
+                )
+            )
+
+        record = ReviewTaskRecord(
+            task_id=pending.task_id,
+            run_id=pending.run_id,
+            task_kind=pending.task_kind,
+            schema_version=pending.schema_version,
+            owner_id=pending.owner_id,
+            idempotency_key=pending.idempotency_key,
+            request_fingerprint=request_fingerprint,
+            request_payload=copy.deepcopy(pending.request_payload),
+            conversation_id=binding.conversation_id,
+            relationship_id=binding.relationship_id,
+            player_subject_id=binding.player_subject_id,
+            relationship_role=binding.relationship_role.value,
+            status=TaskStatus.QUEUED.value,
+            worker_id=None,
+            created_at=pending.created_at,
+            updated_at=pending.created_at,
+            claimed_at=None,
+            finished_at=None,
+            terminal_reason=None,
+            publication_status=None,
+            report_available=False,
+            trace_reference=None,
+            receipt_reference=None,
+            artifact_reference=None,
+        )
+        session.add(record)
+        session.flush()
+        return TaskRepositoryCreateResult(
+            disposition=TaskRepositoryCreateDisposition.CREATED,
+            task=self._map_record(session, record),
         )
 
     def _get_one(self, statement: sa.Select[tuple[ReviewTaskRecord]]) -> ReviewTask | None:
@@ -380,13 +583,55 @@ class PostgresTaskRepository:
             with self._session_factory() as session:
                 with session.begin():
                     record = session.scalar(statement)
-                    return None if record is None else _record_to_task(record)
+                    return None if record is None else self._map_record(
+                        session,
+                        record,
+                    )
         except TaskRepositoryError:
             raise
         except SQLAlchemyError:
             raise TaskRepositoryError("task_repository_unavailable") from None
         except (TypeError, ValueError, ValidationError):
             raise TaskRepositoryError("task_repository_integrity_failed") from None
+
+    @staticmethod
+    def _map_record(session: Session, record: ReviewTaskRecord) -> ReviewTask:
+        execution_target = None
+        if record.schema_version == "2.0":
+            if record.player_subject_id is None:
+                raise TaskRepositoryError("task_repository_integrity_failed")
+            subject = session.scalar(
+                sa.select(PlayerSubjectRecord).where(
+                    PlayerSubjectRecord.player_subject_id
+                    == record.player_subject_id,
+                    PlayerSubjectRecord.game == "lol",
+                )
+            )
+            if subject is None:
+                raise TaskRepositoryError("task_repository_integrity_failed")
+            alias = session.scalar(
+                sa.select(PlayerAliasRecord)
+                .where(
+                    PlayerAliasRecord.player_subject_id
+                    == record.player_subject_id,
+                    PlayerAliasRecord.routing_region
+                    == subject.current_routing_region,
+                )
+                .order_by(
+                    PlayerAliasRecord.last_seen_at.desc(),
+                    PlayerAliasRecord.player_alias_id.asc(),
+                )
+                .limit(1)
+            )
+            if alias is None:
+                raise TaskRepositoryError("task_repository_integrity_failed")
+            execution_target = ConversationReviewExecutionTarget(
+                puuid=subject.puuid,
+                routing_region=RoutingRegion(subject.current_routing_region),
+                game_name=alias.game_name,
+                tag_line=alias.tag_line,
+            )
+        return _record_to_task(record, execution_target=execution_target)
 
     def _terminal_cas(
         self,
@@ -436,12 +681,32 @@ class PostgresTaskRepository:
             raise TaskRepositoryError("task_repository_integrity_failed") from None
 
 
-def _record_to_task(record: ReviewTaskRecord) -> ReviewTask:
+def _record_to_task(
+    record: ReviewTaskRecord,
+    *,
+    execution_target: ConversationReviewExecutionTarget | None = None,
+) -> ReviewTask:
     publication_status = (
         None
         if record.publication_status is None
         else TaskPublicationStatus(record.publication_status)
     )
+    identity_values = (
+        record.conversation_id,
+        record.relationship_id,
+        record.player_subject_id,
+        record.relationship_role,
+    )
+    conversation_binding = None
+    if any(value is not None for value in identity_values):
+        if any(value is None for value in identity_values):
+            raise ValueError("conversation identity must be all present or all absent")
+        conversation_binding = ConversationReviewTaskBinding(
+            conversation_id=record.conversation_id,
+            relationship_id=record.relationship_id,
+            player_subject_id=record.player_subject_id,
+            relationship_role=RelationshipRole(record.relationship_role),
+        )
     return ReviewTask(
         task_id=record.task_id,
         run_id=record.run_id,
@@ -451,6 +716,8 @@ def _record_to_task(record: ReviewTaskRecord) -> ReviewTask:
         idempotency_key=record.idempotency_key,
         request_fingerprint=record.request_fingerprint,
         request_payload=copy.deepcopy(record.request_payload),
+        conversation_binding=conversation_binding,
+        execution_target=execution_target,
         status=TaskStatus(record.status),
         worker_id=record.worker_id,
         created_at=record.created_at,

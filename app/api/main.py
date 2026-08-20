@@ -43,6 +43,7 @@ from app.api.player_models import (
 )
 from app.api.task_models import (
     ApiErrorCode,
+    CreateConversationReviewTaskResponse,
     CreateReviewTaskResponse,
     DeleteTaskResponse,
     ErrorResponse,
@@ -69,9 +70,13 @@ from app.players.models import (
     RoutingRegion,
 )
 from app.players.service import PlayerLinkServiceError
-from app.product.recent_review import RecentReviewProductRequest
+from app.product.recent_review import (
+    ConversationRecentReviewRequest,
+    RecentReviewProductRequest,
+)
 from app.product.run_query import RunView
 from app.tasks.models import (
+    CreateConversationReviewTaskCommand,
     CreateReviewTaskCommand,
     ReviewTaskView,
     TaskCreateResult,
@@ -86,6 +91,11 @@ from app.tasks.observability import TaskObservability
 
 class TaskServicePort(Protocol):
     def create(self, command: CreateReviewTaskCommand) -> TaskCreateResult: ...
+
+    def create_conversation_review(
+        self,
+        command: CreateConversationReviewTaskCommand,
+    ) -> TaskCreateResult: ...
 
     def get_task(self, *, owner_id: str, task_id: UUID) -> ReviewTaskView: ...
 
@@ -706,6 +716,79 @@ def create_app(
             if error.code == "link_not_found":
                 return _error_response("player_link_not_found", status_code=404)
             return _error_response("service_unavailable", status_code=503)
+        except Exception:
+            return _error_response("service_unavailable", status_code=503)
+
+    @app.post(
+        "/conversations/{conversation_id}/reviews/recent",
+        status_code=202,
+        response_model=CreateConversationReviewTaskResponse,
+        responses={
+            404: {"model": ErrorResponse},
+            409: {"model": ErrorResponse},
+            422: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def post_conversation_recent_review(
+        conversation_id: str,
+        product_request: ConversationRecentReviewRequest,
+        idempotency_key: str = Header(
+            alias="Idempotency-Key",
+            min_length=1,
+            max_length=128,
+            pattern=_IDEMPOTENCY_PATTERN,
+        ),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> CreateConversationReviewTaskResponse | JSONResponse:
+        try:
+            parsed_conversation_id = UUID(conversation_id)
+        except (AttributeError, TypeError, ValueError):
+            return _error_response("conversation_not_found", status_code=404)
+
+        create = getattr(task_service, "create_conversation_review", None)
+        if not callable(create):
+            return _error_response("service_unavailable", status_code=503)
+        try:
+            result = create(
+                CreateConversationReviewTaskCommand(
+                    owner_id=actor.owner_id,
+                    idempotency_key=idempotency_key,
+                    conversation_id=parsed_conversation_id,
+                    request=product_request,
+                )
+            )
+            if (
+                not isinstance(result, TaskCreateResult)
+                or result.task.schema_version != "2.0"
+            ):
+                raise TypeError("task service returned an invalid v2 result")
+            task = result.task
+            return CreateConversationReviewTaskResponse(
+                disposition=result.disposition,
+                conversation_id=parsed_conversation_id,
+                task_id=task.task_id,
+                run_id=task.run_id,
+                status=task.status,
+                links=TaskLinks(
+                    task=f"/tasks/{task.task_id}",
+                    run=f"/runs/{task.run_id}",
+                    report=f"/runs/{task.run_id}/report",
+                ),
+            )
+        except TaskServiceError as error:
+            if error.code == "conversation_not_found":
+                return _error_response(
+                    "conversation_not_found",
+                    status_code=404,
+                )
+            status_code, code = _CREATE_TASK_STATUS.get(
+                error.code,
+                (503, "service_unavailable"),
+            )
+            return _error_response(code, status_code=status_code)
+        except ValidationError:
+            return _error_response("request_invalid", status_code=422)
         except Exception:
             return _error_response("service_unavailable", status_code=503)
 

@@ -1393,3 +1393,31 @@ Linux package smoke。审查修复了 archive/hide OpenAPI 422 投影和有效 c
 terminal 证明；不接 Agent、Review Task 2.0、Memory、Auth、SSE、前端或新框架。6B-3 现已正式关闭，
 coverage 置为 `complete`；下一检查点为 `6B-4-conversation-bound-recent-review-identity`，仅
 prepared/waiting authorization，不实施 6B-4。
+
+### RQ-068：6B-4 采用原表 nullable schema 2.0 identity columns
+
+用户明确授权 `6B-4-conversation-bound-recent-review-identity`。本轮保留 6A 已成熟的 Review Task、
+claim、Worker、terminal/reconciliation 和 lifecycle 基座，不新建第二套 Conversation Task 系统。
+
+Review Task schema 2.0 在既有 `review_tasks` 上增加 nullable、legacy-compatible 的 Conversation identity
+列。创建路径必须在一个 PostgreSQL 短事务中锁定 owner 可见且 active 的 Conversation，服务器派生并冻结
+owner/conversation/relationship/player-subject tuple；客户端 body、模型、自由文本、可变 Riot ID 和 UI
+后来选择都不能覆盖。schema 1.0 历史 row 的新列保持 null，旧 endpoint 与执行兼容，但不生成 Conversation
+或 Memory，也不根据旧 Riot ID 静默回填 subject。
+
+v2 执行通过稳定 subject 的 trusted PUUID 直接进入 Summary/Match-V5，不再次调用 Account-V1；alias 只作
+显示。选择该方案是因为“只把 conversation_id 放 JSON”缺少数据库级 identity 约束，而新建第二套 task
+表会复制可靠运行基础设施。此裁决不授权 6B-5、assistant Message、Memory、正式 Auth/RSO、SSE、前端、
+LangGraph、Multi-Agent 或新 SDK；测试与 CI 外部 Riot/Provider 调用保持 0。
+
+### 6B-4 本地实现裁决（公共验证前）
+
+实现保持 ADR-0041 的原方案，没有因编码便利改为 JSON-only identity 或第二套 Worker。schema 2.0 的
+pure/API、0004/ORM、Repository atomic binding、trusted-PUUID Summary/Application、1.0/2.0 Executor、
+composition 与 package smoke 已在本地完成；walkthrough 已将问题/原理、代码地图、控制流、验证、运行、
+安全边界和面试表述全部登记。
+
+本地完整回归为 `1333 passed, 78 skipped, 1 warning, 110 subtests passed`，RAG、Harness、compileall、
+SDK/tracked-data、YAML、pip、governance 与 diff 门通过。78 个 skip 是本机没有 PostgreSQL/Docker，不能
+替代复合 FK、trigger、锁顺序和 Linux package 证据；因此 6B-4 仍为 in-progress，coverage 仍为 planned，
+只有 exact-SHA 三 job 全绿后才能关闭。本轮仍不进入 6B-5。

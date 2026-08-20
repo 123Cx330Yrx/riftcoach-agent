@@ -7,10 +7,10 @@
 
 ## Current Phase
 
-Phase 19 - `6B-3-conversation-message-foundation` is closed at `7e4f233` /
-Actions `32329686381`; the active plan now records the 6B-3 → 6B-4 handoff only.
-RQ-067 documentation gate closed at `63435d9` / Actions `32308631289`, and 6B-2
-closed at `0c13a58` / Actions `32301852042`. Next checkpoint is 6B-4, prepared/waiting authorization.
+Phase 20 - `6B-4-conversation-bound-recent-review-identity` is in progress under
+RQ-068. Phase 19 closed at `7e4f233` / Actions `32329686381`; RQ-067 closed at
+`63435d9` / Actions `32308631289`, and 6B-2 closed at `0c13a58` / Actions
+`32301852042`. This phase must stop before 6B-5.
 
 ## Phases
 
@@ -256,9 +256,11 @@ closed at `0c13a58` / Actions `32301852042`. Next checkpoint is 6B-4, prepared/w
 
 ## Next Step
 
-`6B-3-conversation-message-foundation` 的实现、walkthrough、ADR-0040、专用设计和治理已由
-`7e4f233` / Actions `32329686381` 完成 exact-SHA 三 job 公共闭环。6B-3 已关闭；下一检查点为
-`6B-4-conversation-bound-recent-review-identity`，当前只准备并等待新的明确授权，不实施 6B-4。
+`6B-3-conversation-message-foundation` 已由 `7e4f233` / Actions `32329686381` 完成 exact-SHA
+三 job 公共闭环。RQ-068 已授权 `6B-4-conversation-bound-recent-review-identity`；ADR-0041、
+专用设计与实施计划已经冻结；pure domain/API、0004/ORM、Repository 原子绑定与 trusted-PUUID
+Executor 已本地完成。唯一下一动作是完成 composed API、package smoke 和 blocking PostgreSQL CI，
+再进入 6B-4 教学/状态与完整门禁；本轮不得进入 6B-5。
 
 ## 6A-1 Checklist
 
@@ -457,14 +459,23 @@ closed at `0c13a58` / Actions `32301852042`. Next checkpoint is 6B-4, prepared/w
 - [completed] 6B-3 最小实现、实现后 walkthrough/coverage 更新、本地门禁；本地完整 `1295 passed, 67 skipped, 1 warning, 110 subtests passed`，横向 RAG/Harness/compile/security/governance/diff 门通过
 - [completed] 实现提交 `7e4f23361ec331e53c5190f6a5f7f3532f533081`、推送并完成 Actions `32329686381` 的 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 公共 CI；PostgreSQL fixture 父行 flush 修复保留失败→修复证据链
 - [completed] 独立状态/coverage 收尾：6B-3 置为 complete，覆盖账本与学习索引升级为完整/公共闭环
-- [prepared/waiting authorization] 下一检查点 `6B-4-conversation-bound-recent-review-identity`；不实施 6B-4
+- [completed] 交接到 `6B-4-conversation-bound-recent-review-identity`；后续 RQ-068 已在独立新轮授权
 
 ### Phase 20 - 6B-4-conversation-bound-recent-review-identity handoff
 
 - Status: in_progress
-- Authorization: none yet; this is a state-only prepared/waiting authorization handoff, not product implementation.
-- [prepared/waiting authorization] 记录 6B-4 的唯一下一检查点；等待新的明确授权后再按教学、设计、TDD 和公共门推进。
-- [deferred] 不创建 6B-4 schema/code/tests，不接 Review Task、Memory、Agent、Auth/RSO、SSE、前端或新框架。
+- Authorization: RQ-068; implement only 6B-4 and stop before 6B-5.
+- [completed] 严格恢复 AGENTS/canonical/活动计划/RQ/路线/能力/coverage，治理预检通过，起始工作树干净且 `HEAD == origin/main == 4fb66a8`。
+- [completed] 面向初学者讲清问题、服务器派生身份原则、范围、数据/控制流、测试策略、限制与面试边界；比较三种方案并选择 nullable v2 columns + atomic server-derived binding。
+- [completed] 同步 RQ-068、canonical/路线/能力/决策历史、6B-4 planned coverage 与治理固定顺序；修正两处已被 6B-3 公共证据取代的陈旧表述。
+- [completed] 完成 ADR-0041、6B-4 专用设计与逐任务实施计划；精确审计 Task/Conversation/Summary/API/Worker 接缝。
+- [completed] pure domain/API 红灯与最小实现：schema 2.0、body 仅 count/queue/focus、客户端不能伪造 identity/PUUID、legacy 1.0 兼容。
+- [completed] PostgreSQL 0004/Repository 红灯与最小实现：单事务 active tuple 锁定、v2 mapping/private target、alias rename、late claim、capacity/rollback 与双向 lifecycle 锁顺序合同已建立；本机真库项因无 PostgreSQL 明确 skip，待阻塞 CI 补证。
+- [completed] `build_by_puuid()`、`review_by_puuid()` 与 v2 Executor 红灯/最小实现；51 项聚焦证明 v2 不调用 Account-V1、alias 只影响显示、篡改在 Application 前拒绝，legacy 1.0 保持兼容。
+- [completed] composed API、existing Worker、package no-I/O 纵向与 blocking PostgreSQL CI：proxy 已转发 v2 创建；同一 Worker 处理两个 schema；smoke 覆盖 Link→Conversation→v2 Task→safe terminal；两个新真库文件已加入 job，本地 114 passed/11 PostgreSQL skips。
+- [in_progress] walkthrough/八维 evidence、路线/canonical 与全部本地门禁已完成；当前只待最终 cached diff、提交/推送和 exact-SHA 三 job，公共成功后关闭 6B-4。
+- [pending] 独立提交、推送并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；全绿后关闭 6B-4并只准备 6B-5。
+- [deferred] 不实现 6B-5、assistant Message、Memory Candidate/长期 Memory、正式 Auth/RSO、SSE、前端、LangGraph、Multi-Agent 或新 SDK；测试/CI 外部 Riot/Provider calls 为 0。
 
 ## 6A Entry Design Checklist
 
@@ -642,6 +653,12 @@ closed at `0c13a58` / Actions `32301852042`. Next checkpoint is 6B-4, prepared/w
 
 | Error | Attempt | Resolution |
 |---|---:|---|
+| 6B-4 Summary schema 审计的首个 `rg` 正则转义不完整 | 1 | 只读搜索报 unclosed group，但随后同一命令的精确行读取已取得 `player.puuid_prefix` 合同；停止重复该正则，按真实 schema 修正测试 |
+| 6B-4 alias 查询审计再次把 Windows `*repository.py` glob 直接传给 `rg` | 1 | 只读搜索部分成功后该路径参数报错；改为实际目录 `app/persistence` 加 `-g '*repository.py'`，未改源码 |
+| 6B-4 Repository 接缝恢复时猜测单数 `conversation_record.py` / `player_record.py` | 1 | 只读命令中两个路径不存在且未改文件；用 `rg --files app/persistence` 定位实际复数文件，后续按真实路径读取 |
+| 6B-4 恢复状态补丁连续两次组合了错误的同文件 operation 或陈旧上下文 | 2 | 两次 `apply_patch` 均原子拒绝且未部分修改；读取真实行后拆成独立精确补丁，不改变产品代码或阶段范围 |
+| 6B-4 Task 5 findings 补丁使用了不存在的旧表格行作为上下文 | 1 | `apply_patch` 原子拒绝且未改文件；读取 findings 尾部后改为追加独立小节并记录真实组合结论 |
+| 6B-4 设计冻结后的首个组合 plan/findings/progress 补丁使用了不存在的 findings 标题 | 1 | `apply_patch` 原子拒绝且未部分修改；读取三个文件真实尾部后拆分精确补丁，不改变产品设计 |
 | 6B-3 恢复审计在 Windows 把 `tests\test_conversation_*` 直接作为 `rg` 路径 | 1 | 该命令只读失败、没有修改文件；改用真实 `tests` 目录加 `-g 'test_conversation_*.py'`，后续不再依赖 Windows shell glob 展开 |
 | 6B-3 composition 失败测试首次漏写 readiness 的 `schema_version`/`api_version` | 1 | 生产响应合同未变；修正测试对完整安全响应的期望后通过，不放宽 readiness DTO |
 | 6B-3 设计批首次 cached diff 发现 ADR-0040 末尾多一个空白行 | 1 | cached 门阻止提交；只删除 ADR 尾部空白并重新暂存，未改变设计语义 |

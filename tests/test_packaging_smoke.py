@@ -98,6 +98,7 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     task_id = "90000000-0000-4000-8000-000000000001"
+    conversation_task_id = "90000000-0000-4000-8000-000000000007"
     link_task_id = "90000000-0000-4000-8000-000000000002"
     conversation_id = "90000000-0000-4000-8000-000000000005"
     message_id = "90000000-0000-4000-8000-000000000006"
@@ -105,6 +106,7 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         b"Packaging smoke user message"
     ).hexdigest()
     run_id = "packaging_smoke_run"
+    conversation_run_id = "packaging_conversation_review_run"
     events: list[str] = []
     requests_seen: list[tuple[str, str, dict[str, object]]] = []
 
@@ -177,6 +179,17 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                         "failure": None,
                     },
                 )
+            if url.endswith(conversation_task_id):
+                return Response(
+                    200,
+                    {
+                        "schema_version": "2.0",
+                        "task_id": conversation_task_id,
+                        "run_id": conversation_run_id,
+                        "status": "failed",
+                        "terminal_reason": "worker_execution_failed",
+                    },
+                )
             assert url.endswith(task_id)
             return Response(
                 200,
@@ -223,6 +236,19 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                         "created_at": "2026-08-20T00:00:00Z",
                     },
                 )
+            if url.endswith(
+                f"/conversations/{conversation_id}/reviews/recent"
+            ):
+                return Response(
+                    202,
+                    {
+                        "schema_version": "2.0",
+                        "conversation_id": conversation_id,
+                        "task_id": conversation_task_id,
+                        "run_id": conversation_run_id,
+                        "status": "queued",
+                    },
+                )
             return Response(202, {"task_id": task_id, "run_id": run_id})
 
     class Engine:
@@ -237,13 +263,19 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
             return ReadinessResult.ready()
 
     class Worker:
+        calls = 0
+
         def __init__(self, **kwargs) -> None:
             assert type(kwargs["executor"]).__name__ == "_NoExternalIoExecutor"
 
         def run_once(self) -> WorkerIterationResult:
+            type(self).calls += 1
+            claimed_task_id = (
+                task_id if type(self).calls == 1 else conversation_task_id
+            )
             return WorkerIterationResult(
                 status=WorkerIterationStatus.FAILED,
-                task_id=__import__("uuid").UUID(task_id),
+                task_id=__import__("uuid").UUID(claimed_task_id),
             )
 
     class LinkWorker:
@@ -286,6 +318,7 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         http=Http(),
     )
 
+    assert result.schema_version == "1.1"
     assert result.task_status == "failed"
     assert result.link_status == "succeeded"
     assert str(result.link_task_id) == link_task_id
@@ -293,6 +326,9 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     assert str(result.conversation_id) == conversation_id
     assert str(result.message_id) == message_id
     assert result.message_sequence_no == 1
+    assert str(result.conversation_review_task_id) == conversation_task_id
+    assert result.conversation_review_run_id == conversation_run_id
+    assert result.conversation_review_status == "failed"
     assert result.external_riot_provider_calls == 0
     assert events == ["engine.dispose"]
 
@@ -326,6 +362,20 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         "limit": 10,
         "after_sequence": 0,
     }
+    conversation_review_post = next(
+        item
+        for item in requests_seen
+        if item[0] == "POST"
+        and item[1].endswith(
+            f"/conversations/{conversation_id}/reviews/recent"
+        )
+    )
+    assert conversation_review_post[2]["json"] == {
+        "count": 5,
+        "queue": 420,
+        "focus": "overall",
+    }
+    assert set(conversation_review_post[2]["headers"]) == {"Idempotency-Key"}
 
 
 @pytest.mark.parametrize(
@@ -337,6 +387,10 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         "packaging_smoke_message_append_failed",
         "packaging_smoke_message_query_failed",
         "packaging_smoke_message_invalid",
+        "packaging_smoke_conversation_review_create_failed",
+        "packaging_smoke_conversation_review_iteration_invalid",
+        "packaging_smoke_conversation_review_query_failed",
+        "packaging_smoke_conversation_review_terminal_invalid",
     ),
 )
 def test_conversation_packaging_failure_codes_are_allowlisted_and_body_free(

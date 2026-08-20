@@ -44,7 +44,7 @@ def _copy_governance_tree(tmp_path: Path) -> None:
                     {
                         "id": "current-checkpoint",
                         "sequence": 20,
-                        "covers": ["6B-3-conversation-message-foundation"],
+                        "covers": ["6B-4-conversation-bound-recent-review-identity"],
                         "status": "planned",
                         "evidence": {},
                     },
@@ -117,7 +117,7 @@ def test_project_governance_requires_current_checkpoint_coverage(tmp_path):
         group["covers"] = [
             value
             for value in group["covers"]
-            if value != "6B-3-conversation-message-foundation"
+            if value != "6B-4-conversation-bound-recent-review-identity"
         ]
     _write_learning_coverage(tmp_path, coverage)
 
@@ -180,7 +180,7 @@ def test_project_governance_rejects_incomplete_group_before_current_checkpoint(
     current_group_index = next(
         index
         for index, group in enumerate(coverage["groups"])
-        if "6B-3-conversation-message-foundation" in group["covers"]
+        if "6B-4-conversation-bound-recent-review-identity" in group["covers"]
     )
     coverage["groups"][current_group_index - 1]["status"] = "planned"
     _write_learning_coverage(tmp_path, coverage)

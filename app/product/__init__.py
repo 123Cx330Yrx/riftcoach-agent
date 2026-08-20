@@ -1,6 +1,7 @@
 """Product-facing contracts and trusted request compilers."""
 
 from .recent_review import (
+    ConversationRecentReviewRequest,
     ProductRequestCompilationError,
     RecentReviewProductRequest,
     RecentReviewRuntimeRequestCompiler,
@@ -22,6 +23,7 @@ from .run_receipts import (
 
 __all__ = [
     "ProductRequestCompilationError",
+    "ConversationRecentReviewRequest",
     "ApiRunReceipt",
     "FileRunReceiptStore",
     "RecentReviewApplicationError",

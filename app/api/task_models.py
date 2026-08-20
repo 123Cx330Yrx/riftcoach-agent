@@ -26,6 +26,7 @@ ApiErrorCode: TypeAlias = Literal[
     "run_not_ready",
     "run_not_available",
     "report_not_available",
+    "conversation_not_found",
     "run_integrity_failed",
 ]
 ReadinessCode: TypeAlias = Literal[
@@ -50,6 +51,16 @@ class TaskLinks(ApiModel):
 class CreateReviewTaskResponse(ApiModel):
     schema_version: ApiSchemaVersion = "1.0"
     disposition: TaskCreateDisposition
+    task_id: UUID
+    run_id: str
+    status: TaskStatus
+    links: TaskLinks
+
+
+class CreateConversationReviewTaskResponse(ApiModel):
+    schema_version: Literal["2.0"] = "2.0"
+    disposition: TaskCreateDisposition
+    conversation_id: UUID
     task_id: UUID
     run_id: str
     status: TaskStatus
@@ -118,6 +129,7 @@ class ReadinessResponse(ApiModel):
 
 __all__ = [
     "ApiErrorCode",
+    "CreateConversationReviewTaskResponse",
     "CreateReviewTaskResponse",
     "DeleteTaskResponse",
     "ErrorResponse",

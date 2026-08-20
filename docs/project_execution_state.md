@@ -2,10 +2,9 @@
 state_schema: 1
 main_stage: 6
 substage_group: "stage-6-session-memory"
-current_checkpoint: "6B-3-conversation-message-foundation"
-status: complete
-next_checkpoint: "6B-4-conversation-bound-recent-review-identity"
-pause_reason: "6B-3 已完成并公共闭环；6B-4 仅准备就绪，等待新的明确授权"
+current_checkpoint: "6B-4-conversation-bound-recent-review-identity"
+status: in_progress
+pause_reason: ""
 ---
 
 # RiftCoach 当前执行状态
@@ -18,7 +17,7 @@ pause_reason: "6B-3 已完成并公共闭环；6B-4 仅准备就绪，等待新�
 ## 状态元数据
 
 - 最后更新：2026-08-20
-- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1、6B-2、RQ-067 文档门与 6B-3 Conversation/Message foundation 均已完成 exact-SHA 公共闭环。6B-3 实现提交为 `7e4f23361ec331e53c5190f6a5f7f3532f533081`，Actions run 为 `32329686381`；6B-4 仅登记为 prepared/waiting authorization，尚未实现
+- 主阶段：阶段 6；6A、Session/Memory entry design、6B-1、6B-2、RQ-067 文档门与 6B-3 Conversation/Message foundation 均已完成 exact-SHA 公共闭环。用户已按 RQ-068 授权 `6B-4-conversation-bound-recent-review-identity`；schema 2.0、Conversation-bound endpoint、PostgreSQL trusted tuple、trusted-PUUID Summary/Executor、composition/package 与八维 walkthrough 已本地实现并通过完整门禁，当前等待提交/推送和 exact-SHA 三 job 公共补证。6B-4 尚未关闭，6B-5 未进入
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -251,11 +250,10 @@ pause_reason: "6B-3 已完成并公共闭环；6B-4 仅准备就绪，等待新�
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6B-3-conversation-message-foundation` 已由实现提交
-  `7e4f23361ec331e53c5190f6a5f7f3532f533081` 与 Actions run `32329686381` 完成 exact-SHA
-  `pytest`、`postgres-migrations`、`packaging-smoke` 公共闭环；下一检查点为
-  `6B-4-conversation-bound-recent-review-identity`，当前只准备并等待新的明确授权，不实施 6B-4。
-  6B-3 不接 Agent、Review Task、Memory、Auth/RSO、SSE、前端或新框架。
+- 唯一下一步：`6B-4-conversation-bound-recent-review-identity` 本地实现和门禁已完成；现在只做
+  独立 cached diff、提交、推送并等待同一 SHA 的 `pytest`、`postgres-migrations`、
+  `packaging-smoke`。三 job 全绿前保持 in-progress/coverage planned；6B-5、assistant Message、
+  Memory、Auth/RSO、SSE、前端与新框架不在本轮。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1371,3 +1369,31 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   Auth/RSO、SSE、前端或新框架。
 - 6B-3 现正式关闭，`docs/learning/coverage.yaml` 置为 `complete`，学习索引改为完整/公共闭环；下一检查点
   是 `6B-4-conversation-bound-recent-review-identity`，仅 prepared/waiting authorization，不实施 6B-4。
+
+## 2026-08-20：RQ-068 授权并进入 6B-4
+
+- 用户明确“继续 6B-4”；canonical 由已完成的 6B-3 交接到
+  `6B-4-conversation-bound-recent-review-identity / in_progress`，不进入 6B-5。
+- 本批采用既有 `review_tasks` 上的 nullable schema 2.0 identity columns，由服务器在 PostgreSQL 短事务中
+  锁定 active Conversation 并派生 owner/conversation/relationship/subject tuple；旧 schema 1.0 row 保持
+  新列为 null 且继续可读/可执行，不根据旧 Riot ID 回填身份。
+- 新 endpoint body 只允许 count/queue/focus；v2 Worker 通过稳定 subject 的 trusted PUUID 直接构建
+  Summary，不再次调用 Account-V1。测试/CI 保持 Fake/no-I/O。
+- 当前只完成教学、方案裁决和状态/coverage 治理迁移；产品 migration、Repository、API、Executor 与纵向
+  测试尚未实现。6B-5、assistant Message、Memory、Auth/RSO、SSE、前端和新框架继续 deferred。
+
+## 2026-08-20：6B-4 本地实现与完整门禁，等待公共闭环
+
+- Review Task schema 2.0 pure contract、identity-aware fingerprint、Conversation-bound 202 route、0004/ORM、
+  PostgreSQL 单事务 server-derived binding、私有 PUUID target、trusted-PUUID Summary/Application、1.0/2.0
+  Executor 和 composed API 已在未提交工作树完成；旧 1.0 查询/执行/删除保持兼容。
+- package smoke 已升级为 Link→Conversation→Message→schema 2.0 Task→同一 ReviewWorker→safe failed
+  terminal，结果明确 `external_riot_provider_calls=0`；两个新真库测试文件已加入阻塞 PostgreSQL job。
+- 6B-4 聚焦为 `114 passed, 11 skipped, 1 warning`；完整回归为
+  `1333 passed, 78 skipped, 1 warning, 110 subtests passed`。本机 skip 全部来自无 PostgreSQL/Docker，
+  不能冒充真库锁、FK、trigger 或 Linux package 成功。
+- RAG development/independent holdout 指标均满既定阈值，Harness dry-run 为 `published`/0 revisions；
+  compileall、SDK boundary、tracked Secret/run-data、YAML、pip、governance 与 diff 门通过。
+- `docs/learning/6b-4-conversation-bound-recent-review-identity-walkthrough.md` 已覆盖八维 evidence，
+  但 coverage 在 exact-SHA 三 job 全绿前保持 `planned`。唯一下一动作是 cached diff、提交、推送与公共
+  CI；6B-5 未授权且未实施。

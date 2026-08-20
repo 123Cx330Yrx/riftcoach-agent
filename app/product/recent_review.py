@@ -92,6 +92,22 @@ class RecentReviewProductRequest(BaseModel):
         return self.riot_id.rpartition("#")[2]
 
 
+class ConversationRecentReviewRequest(BaseModel):
+    """Client-controlled parameters after identity comes from Conversation."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+
+    count: int = Field(default=10, ge=5, le=20)
+    queue: Literal[420] | None = 420
+    focus: Literal[
+        "overall",
+        "laning",
+        "survival",
+        "economy",
+        "vision",
+    ] = "overall"
+
+
 RunIdFactory = Callable[[], str]
 
 
@@ -162,7 +178,7 @@ class RecentReviewRuntimeRequestCompiler:
 
     def compile(
         self,
-        request: RecentReviewProductRequest,
+        request: RecentReviewProductRequest | ConversationRecentReviewRequest,
         *,
         player_summary: Mapping[str, Any],
         deterministic_report: str,
@@ -215,6 +231,7 @@ class RecentReviewRuntimeRequestCompiler:
 
 
 __all__ = [
+    "ConversationRecentReviewRequest",
     "ProductRequestCompilationError",
     "RecentReviewProductRequest",
     "RecentReviewRuntimeRequestCompiler",

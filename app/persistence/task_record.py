@@ -25,6 +25,10 @@ class ReviewTaskRecord(Base):
     idempotency_key: Mapped[str] = mapped_column(sa.String(128), nullable=False)
     request_fingerprint: Mapped[str] = mapped_column(sa.String(64), nullable=False)
     request_payload: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    conversation_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
+    relationship_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
+    player_subject_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
+    relationship_role: Mapped[str | None] = mapped_column(sa.String(16))
 
     status: Mapped[str] = mapped_column(
         sa.String(16),
@@ -77,6 +81,40 @@ class ReviewTaskRecord(Base):
             name="request_fingerprint_format",
         ),
         sa.CheckConstraint(
+            "schema_version IN ('1.0', '2.0')",
+            name="schema_version_allowed",
+        ),
+        sa.CheckConstraint(
+            "((schema_version = '1.0' AND conversation_id IS NULL "
+            "AND relationship_id IS NULL AND player_subject_id IS NULL "
+            "AND relationship_role IS NULL) OR "
+            "(schema_version = '2.0' AND conversation_id IS NOT NULL "
+            "AND relationship_id IS NOT NULL AND player_subject_id IS NOT NULL "
+            "AND relationship_role IS NOT NULL))",
+            name="schema_identity_shape",
+        ),
+        sa.CheckConstraint(
+            "relationship_role IS NULL OR relationship_role IN ('self', 'observed')",
+            name="conversation_role_allowed",
+        ),
+        sa.ForeignKeyConstraint(
+            [
+                "conversation_id",
+                "owner_id",
+                "relationship_id",
+                "player_subject_id",
+                "relationship_role",
+            ],
+            [
+                "conversations.conversation_id",
+                "conversations.owner_id",
+                "conversations.relationship_id",
+                "conversations.player_subject_id",
+                "conversations.relationship_role",
+            ],
+            name="fk_review_tasks_conversation_identity",
+        ),
+        sa.CheckConstraint(
             "(status = 'queued' AND worker_id IS NULL AND claimed_at IS NULL "
             "AND finished_at IS NULL AND terminal_reason IS NULL) OR "
             "(status = 'running' AND worker_id IS NOT NULL AND claimed_at IS NOT NULL "
@@ -99,4 +137,7 @@ class ReviewTaskRecord(Base):
             "owner_id",
             created_at.desc(),
         ),
+        sa.Index("ix_review_tasks_conversation_id", "conversation_id"),
+        sa.Index("ix_review_tasks_relationship_id", "relationship_id"),
+        sa.Index("ix_review_tasks_player_subject_id", "player_subject_id"),
     )
