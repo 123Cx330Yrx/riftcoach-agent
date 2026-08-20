@@ -1,7 +1,5 @@
 from datetime import timedelta
 
-import sqlalchemy as sa
-
 from app.conversations.models import PendingUserMessage, compute_message_content_sha256
 from app.lifecycle.models import (
     OwnerDataDeleteCommand,
@@ -84,14 +82,6 @@ def test_delete_idempotency_and_scope_conflict_are_owner_scoped() -> None:
         first = repository.hide_owner_data(command)
         replay = repository.hide_owner_data(command)
         assert replay.marker_id == first.marker_id
-
-        with factory() as session:
-            session.execute(
-                sa.update(ConversationRecord)
-                .where(ConversationRecord.conversation_id == conversation)
-                .values(status="active", hidden_at=None)
-            )
-            session.commit()
 
         conflict = _command(
             OwnerDataDeleteScope.CONVERSATION_AND_DERIVED_MEMORY,
