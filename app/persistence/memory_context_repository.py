@@ -161,6 +161,7 @@ def _preference_records(
         .where(
             MemoryPreferenceRecord.owner_id == binding.owner_id,
             MemoryPreferenceRecord.status == "active",
+            MemoryPreferenceRecord.hidden_at.is_(None),
         )
         .order_by(
             MemoryPreferenceRecord.memory_key.asc(),
@@ -193,6 +194,7 @@ def _profile_records(
             PlayerProfileRecord.player_subject_id == binding.player_subject_id,
             PlayerProfileRecord.relationship_role == "self",
             PlayerProfileRecord.status == "active",
+            PlayerProfileRecord.hidden_at.is_(None),
         )
         .order_by(
             PlayerProfileRecord.memory_key.asc(),
@@ -224,6 +226,7 @@ def _review_records(
             ReviewMemoryRecord.relationship_role
             == binding.relationship_role.value,
             ReviewMemoryRecord.status == "active",
+            ReviewMemoryRecord.hidden_at.is_(None),
         )
         .order_by(
             ReviewMemoryRecord.memory_key.asc(),
@@ -255,6 +258,7 @@ def _plan_records(
             TrainingPlanRecord.player_subject_id == binding.player_subject_id,
             TrainingPlanRecord.relationship_role == "self",
             TrainingPlanRecord.status == "active",
+            TrainingPlanRecord.hidden_at.is_(None),
         )
     )
     if row is None:
@@ -286,6 +290,7 @@ def _progress_records(
             TrainingPlanRecord.player_subject_id == binding.player_subject_id,
             TrainingPlanRecord.relationship_role == "self",
             TrainingPlanRecord.status == "active",
+            TrainingPlanRecord.hidden_at.is_(None),
         )
     )
     if plan_id is None:
@@ -296,6 +301,7 @@ def _progress_records(
             TrainingProgressRecord.owner_id == binding.owner_id,
             TrainingProgressRecord.plan_id == plan_id,
             TrainingProgressRecord.status == "active",
+            TrainingProgressRecord.hidden_at.is_(None),
         )
         .order_by(
             TrainingProgressRecord.metric_key.asc(),

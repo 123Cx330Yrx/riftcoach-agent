@@ -30,6 +30,7 @@ from app.api.actor import (
     UnavailableActorContextProvider,
 )
 from app.api.main import (
+    OwnerDataLifecyclePort,
     PlayerLinkServicePort,
     ReadinessPort,
     RunQueryPort,
@@ -61,11 +62,18 @@ from app.memory.typed_service import TypedMemoryQueryService, TypedMemoryQuerySe
 from app.memory.training_models import TrainingPlanPage, TrainingProgressPage
 from app.memory.training_query_ports import TrainingQueryServicePort
 from app.memory.training_service import TrainingQueryService, TrainingQueryServiceError
+from app.lifecycle.models import OwnerDataDeleteCommand, OwnerDataDeletionMarker, OwnerDataExport
+from app.lifecycle.service import (
+    NoopOwnerDataCleaner,
+    OwnerDataLifecycleError,
+    OwnerDataLifecycleService,
+)
 from app.persistence.config import load_database_settings
 from app.persistence.conversation_repository import PostgresConversationRepository
 from app.persistence.memory_repository import PostgresMemoryCandidateRepository
 from app.persistence.typed_memory_query_repository import PostgresTypedMemoryQueryRepository
 from app.persistence.training_query_repository import PostgresTrainingQueryRepository
+from app.persistence.owner_data_lifecycle_repository import PostgresOwnerDataLifecycleRepository
 from app.persistence.database import build_engine, build_session_factory
 from app.persistence.player_repository import PostgresPlayerRepository
 from app.persistence.task_repository import PostgresTaskRepository
@@ -525,6 +533,28 @@ class _TrainingQueryServiceProxy:
         return self._service().progress(**kwargs)
 
 
+class _OwnerDataLifecycleServiceProxy:
+    def __init__(self) -> None:
+        self._target: OwnerDataLifecyclePort | None = None
+
+    def bind(self, target: OwnerDataLifecyclePort | None) -> None:
+        self._target = target
+
+    def _service(self) -> OwnerDataLifecyclePort:
+        if self._target is None:
+            raise OwnerDataLifecycleError("lifecycle_unavailable")
+        return self._target
+
+    def export(self, *, owner_id: str) -> OwnerDataExport:
+        return self._service().export(owner_id=owner_id)
+
+    def delete(self, command: OwnerDataDeleteCommand) -> OwnerDataDeletionMarker:
+        return self._service().delete(command)
+
+    def retry(self, *, owner_id: str, marker_id: UUID) -> OwnerDataDeletionMarker:
+        return self._service().retry(owner_id=owner_id, marker_id=marker_id)
+
+
 class _TaskDeletionProxy:
     def __init__(self) -> None:
         self._target: TaskDeletionPort | None = None
@@ -593,6 +623,7 @@ def create_composed_app(
     memory_candidate_proxy = _MemoryCandidateServiceProxy()
     typed_memory_query_proxy = _TypedMemoryQueryServiceProxy()
     training_query_proxy = _TrainingQueryServiceProxy()
+    owner_data_lifecycle_proxy = _OwnerDataLifecycleServiceProxy()
     query_proxy = _RunQueryProxy()
     deletion_proxy = _TaskDeletionProxy()
     actor_proxy = _ActorProviderProxy()
@@ -621,6 +652,9 @@ def create_composed_app(
             training_query_repository = PostgresTrainingQueryRepository(
                 session_factory
             )
+            owner_data_lifecycle_repository = PostgresOwnerDataLifecycleRepository(
+                session_factory
+            )
             task_proxy.bind(
                 ReviewTaskService(
                     repository=repository,
@@ -647,6 +681,12 @@ def create_composed_app(
             )
             training_query_proxy.bind(
                 TrainingQueryService(repository=training_query_repository)
+            )
+            owner_data_lifecycle_proxy.bind(
+                OwnerDataLifecycleService(
+                    repository=owner_data_lifecycle_repository,
+                    cleaner=NoopOwnerDataCleaner(),
+                )
             )
             deletion_proxy.bind(TaskDeletionService(
                 repository=repository,
@@ -688,6 +728,7 @@ def create_composed_app(
             memory_candidate_proxy.bind(None)
             typed_memory_query_proxy.bind(None)
             training_query_proxy.bind(None)
+            owner_data_lifecycle_proxy.bind(None)
             query_proxy.bind(None)
             deletion_proxy.bind(None)
         try:
@@ -699,6 +740,7 @@ def create_composed_app(
             memory_candidate_proxy.bind(None)
             typed_memory_query_proxy.bind(None)
             training_query_proxy.bind(None)
+            owner_data_lifecycle_proxy.bind(None)
             query_proxy.bind(None)
             deletion_proxy.bind(None)
             actor_proxy.bind(None)
@@ -722,6 +764,7 @@ def create_composed_app(
         memory_candidate_service=memory_candidate_proxy,
         typed_memory_query_service=typed_memory_query_proxy,
         training_query_service=training_query_proxy,
+        owner_data_lifecycle_service=owner_data_lifecycle_proxy,
     )
     app.state.database_engine = None
     return app

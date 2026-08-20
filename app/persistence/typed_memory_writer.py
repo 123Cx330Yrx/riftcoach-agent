@@ -62,7 +62,8 @@ class PostgresTypedMemoryTargetWriter(TypedMemoryTargetWriter):
         record_type = _record_type(parsed.target_kind)
         existing = session.scalar(
             sa.select(record_type).where(
-                record_type.source_candidate_id == candidate.candidate_id
+                record_type.source_candidate_id == candidate.candidate_id,
+                record_type.hidden_at.is_(None),
             )
         )
         if existing is not None:
@@ -80,6 +81,13 @@ class PostgresTypedMemoryTargetWriter(TypedMemoryTargetWriter):
             current.status = "superseded"
             current.updated_at = now
             session.flush()
+        else:
+            latest_version = session.scalar(
+                sa.select(sa.func.max(record_type.version)).where(
+                    *_scope_filters(candidate=candidate, parsed=parsed)
+                )
+            )
+            next_version = 1 if latest_version is None else latest_version + 1
 
         record_id = self._record_id_factory()
         if not isinstance(record_id, UUID):
@@ -109,10 +117,21 @@ class PostgresTypedMemoryTargetWriter(TypedMemoryTargetWriter):
 
 def _active_statement(*, candidate: MemoryCandidate, parsed: ParsedTypedMemoryWrite):
     record_type = _record_type(parsed.target_kind)
+    filters = _scope_filters(candidate=candidate, parsed=parsed)
+    filters.extend(
+        [
+            record_type.status == "active",
+            record_type.hidden_at.is_(None),
+        ]
+    )
+    return sa.select(record_type).where(*filters).with_for_update()
+
+
+def _scope_filters(*, candidate: MemoryCandidate, parsed: ParsedTypedMemoryWrite):
+    record_type = _record_type(parsed.target_kind)
     filters = [
         record_type.owner_id == candidate.owner_id,
         record_type.memory_key == candidate.memory_key,
-        record_type.status == "active",
     ]
     if parsed.target_kind is not MemoryTargetKind.OWNER_PREFERENCE:
         filters.extend(
@@ -123,7 +142,7 @@ def _active_statement(*, candidate: MemoryCandidate, parsed: ParsedTypedMemoryWr
         )
     if parsed.target_kind is MemoryTargetKind.REVIEW_MEMORY:
         filters.append(record_type.relationship_role == candidate.relationship_role.value)
-    return sa.select(record_type).where(*filters).with_for_update()
+    return filters
 
 
 def _validate_expected_version(*, current: object | None, parsed: ParsedTypedMemoryWrite) -> None:

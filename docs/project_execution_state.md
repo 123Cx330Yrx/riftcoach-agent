@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-21（6B-8 已由 `aacc11a` / Actions `32403187972` 完成 exact-SHA 公共闭环；RQ-071 自动交接 6B-9）
-- 主阶段：阶段 6；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-8 均已完成 exact-SHA 公共闭环。6B-8 最终实现 `aacc11a1993e9d7d660f9d8d15b761dc641954b1` 已由 Actions `32403187972` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿验证。当前唯一检查点为 `6B-9-lifecycle-export-exit-review / in_progress`，先完成教学、ADR/design/implementation 冻结与独立公开设计门，再按 TDD 实现
+- 最后更新：2026-08-21（6B-9 产品实现与八维 walkthrough 已完成本地验证，等待 exact-SHA 公共三 job）
+- 主阶段：阶段 6；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-8 均已完成 exact-SHA 公共闭环。当前唯一检查点为 `6B-9-lifecycle-export-exit-review / in_progress`；owner export、三 scope hidden-before-cleanup、marker/retry、retention/purge、薄 API/composition 与 package schema 1.6 已实现。coverage 在实现提交的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿前保持 planned，阶段 6 不提前关闭
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -1611,3 +1611,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 两套 RAG 满冻结阈值，Harness dry-run `published`/0 revisions；compileall、pip、governance、SDK/Secret/
   tracked-data 与 diff 门通过。当前裁决 `pass-local-pending-public-ci`。
 - 唯一下一动作：独立提交/推送设计批并等待 exact-SHA 三 job；公共全绿后才开始 Task 1 pure contracts 红灯。
+
+## 2026-08-21：6B-9 本地实现与退出复核完成，等待公共门
+
+- strict lifecycle contracts、0009 hidden columns/active unique/marker、owner-scoped export、三 scope visibility、
+  cleanup compensation、retention/purge、薄 API/composition 与 package schema 1.6 已实现。
+- 实现审查发现并修正 0009 CHECK 名的 naming-convention 双前缀风险；offline PostgreSQL SQL 已证明 0009
+  使用真实 `ck_<table>_*` 名。隐藏 active target 后新链使用历史最大 version + 1，但不引用隐藏 predecessor。
+- 首次完整回归仅有两个 OpenAPI exact-path 基线未登记三条新 endpoint；同步合同后最终完整回归为
+  `1489 passed, 117 skipped, 1 warning, 110 subtests passed`。新增
+  walkthrough/exit matrix 已覆盖八维 evidence，coverage 在公共三 job 全绿前保持 `planned`。
+- 本机 PostgreSQL 测试仍明确 skip；真库 upgrade/downgrade、Repository scope/idempotency 与 Linux package
+  export→conversation-only delete 必须由实现 SHA 的公共 job 补证。外部 Riot/Provider/Key I/O 为 0。
+- 唯一下一动作：完成最终本地门禁、提交/推送实现 SHA 并等待 exact-SHA 三 job；全绿后才能把 coverage
+  置 complete、正式关闭 6B-9/Session-Memory V1，并交接阶段 7 的 canonical 准备态。

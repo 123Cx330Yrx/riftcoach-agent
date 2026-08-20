@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import time
 from collections.abc import Mapping, Sequence
+from datetime import datetime, timezone
 from typing import Protocol
 from uuid import UUID
 
@@ -69,6 +70,13 @@ from app.api.training_models import (
     TrainingPlanPageResponse,
     TrainingProgressPageResponse,
 )
+from app.api.lifecycle_models import (
+    LifecycleApiErrorCode,
+    LifecycleErrorResponse,
+    OwnerDataDeleteRequest,
+    OwnerDataDeletionResponse,
+    OwnerDataExportResponse,
+)
 from app.conversations.models import (
     AppendUserMessageCommand,
     ConversationCreateResult,
@@ -95,6 +103,14 @@ from app.memory.typed_service import TypedMemoryQueryServiceError
 from app.memory.training_models import TrainingPlanPage, TrainingProgressPage
 from app.memory.training_query_ports import TrainingQueryServicePort
 from app.memory.training_service import TrainingQueryServiceError
+from app.lifecycle.models import (
+    OwnerDataDeleteCommand,
+    OwnerDataDeleteScope,
+    OwnerDataDeletionMarker,
+    OwnerDataDeletionStatus,
+    OwnerDataExport,
+)
+from app.lifecycle.service import OwnerDataLifecycleError
 from app.players.models import (
     CreatePlayerLinkCommand,
     PlayerLinkCreateResult,
@@ -165,6 +181,14 @@ class TaskDeletionPort(Protocol):
     def delete(self, *, owner_id: str, task_id: UUID) -> TaskDeletionResult: ...
 
 
+class OwnerDataLifecyclePort(Protocol):
+    def export(self, *, owner_id: str) -> OwnerDataExport: ...
+
+    def delete(self, command: OwnerDataDeleteCommand) -> OwnerDataDeletionMarker: ...
+
+    def retry(self, *, owner_id: str, marker_id: UUID) -> OwnerDataDeletionMarker: ...
+
+
 _CREATE_TASK_STATUS: Mapping[str, tuple[int, ApiErrorCode]] = {
     "idempotency_conflict": (409, "idempotency_conflict"),
     "owner_capacity_exceeded": (503, "task_capacity_exceeded"),
@@ -220,6 +244,13 @@ _TRAINING_ERROR_STATUS: Mapping[str, tuple[int, TrainingApiErrorCode]] = {
     "training_scope_not_found": (404, "training_scope_not_found"),
     "training_plan_not_found": (404, "training_plan_not_found"),
     "service_unavailable": (503, "service_unavailable"),
+}
+_LIFECYCLE_ERROR_STATUS: Mapping[str, tuple[int, LifecycleApiErrorCode]] = {
+    "deletion_not_found": (404, "deletion_not_found"),
+    "idempotency_conflict": (409, "idempotency_conflict"),
+    "export_too_large": (409, "export_too_large"),
+    "lifecycle_unavailable": (503, "lifecycle_unavailable"),
+    "lifecycle_integrity_failed": (503, "lifecycle_integrity_failed"),
 }
 _IDEMPOTENCY_PATTERN = r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
 
@@ -334,6 +365,25 @@ def _training_service_error(error: TrainingQueryServiceError) -> JSONResponse:
     return _training_error_response(code, status_code=status_code)
 
 
+def _lifecycle_error_response(
+    code: LifecycleApiErrorCode,
+    *,
+    status_code: int,
+) -> JSONResponse:
+    return JSONResponse(
+        status_code=status_code,
+        content=LifecycleErrorResponse(code=code).model_dump(mode="json"),
+    )
+
+
+def _lifecycle_service_error(error: OwnerDataLifecycleError) -> JSONResponse:
+    status_code, code = _LIFECYCLE_ERROR_STATUS.get(
+        error.code,
+        (503, "lifecycle_unavailable"),
+    )
+    return _lifecycle_error_response(code, status_code=status_code)
+
+
 def create_app(
     *,
     task_service: TaskServicePort,
@@ -350,6 +400,7 @@ def create_app(
     memory_candidate_service: MemoryCandidateServicePort | None = None,
     typed_memory_query_service: TypedMemoryQueryServicePort | None = None,
     training_query_service: TrainingQueryServicePort | None = None,
+    owner_data_lifecycle_service: OwnerDataLifecyclePort | None = None,
 ) -> FastAPI:
     """Create API V2 from explicit ports without doing deployment I/O."""
 
@@ -400,6 +451,12 @@ def create_app(
             if not callable(getattr(training_query_service, method_name, None)):
                 raise TypeError(
                     f"training_query_service must expose {method_name}()"
+                )
+    if owner_data_lifecycle_service is not None:
+        for method_name in ("export", "delete", "retry"):
+            if not callable(getattr(owner_data_lifecycle_service, method_name, None)):
+                raise TypeError(
+                    f"owner_data_lifecycle_service must expose {method_name}()"
                 )
     if observability is not None and not isinstance(
         observability,
@@ -1114,6 +1171,130 @@ def create_app(
             include_history=include_history,
             limit=limit,
         )
+
+    @app.get(
+        "/owner-data/export",
+        response_model=OwnerDataExportResponse,
+        responses={
+            409: {"model": LifecycleErrorResponse},
+            503: {"model": LifecycleErrorResponse},
+        },
+    )
+    def get_owner_data_export(
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> OwnerDataExportResponse | JSONResponse:
+        if owner_data_lifecycle_service is None:
+            return _lifecycle_error_response(
+                "lifecycle_unavailable", status_code=503
+            )
+        try:
+            export = owner_data_lifecycle_service.export(owner_id=actor.owner_id)
+            if not isinstance(export, OwnerDataExport) or export.owner_id != actor.owner_id:
+                raise TypeError("lifecycle service returned invalid export")
+            return OwnerDataExportResponse.from_export(export)
+        except OwnerDataLifecycleError as error:
+            return _lifecycle_service_error(error)
+        except Exception:
+            return _lifecycle_error_response(
+                "lifecycle_unavailable", status_code=503
+            )
+
+    @app.post(
+        "/owner-data/deletions",
+        response_model=OwnerDataDeletionResponse,
+        responses={
+            202: {"model": OwnerDataDeletionResponse},
+            404: {"model": LifecycleErrorResponse},
+            409: {"model": LifecycleErrorResponse},
+            422: {"model": ErrorResponse},
+            503: {"model": LifecycleErrorResponse},
+        },
+    )
+    def post_owner_data_deletion(
+        delete_request: OwnerDataDeleteRequest,
+        idempotency_key: str = Header(
+            alias="Idempotency-Key",
+            min_length=1,
+            max_length=128,
+            pattern=_IDEMPOTENCY_PATTERN,
+        ),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> OwnerDataDeletionResponse | JSONResponse:
+        if owner_data_lifecycle_service is None:
+            return _lifecycle_error_response(
+                "lifecycle_unavailable", status_code=503
+            )
+        try:
+            command = OwnerDataDeleteCommand(
+                owner_id=actor.owner_id,
+                idempotency_key=idempotency_key,
+                scope=OwnerDataDeleteScope(delete_request.scope),
+                conversation_id=delete_request.conversation_id,
+                relationship_id=delete_request.relationship_id,
+                requested_at=datetime.now(timezone.utc),
+            )
+            marker = owner_data_lifecycle_service.delete(command)
+            if not isinstance(marker, OwnerDataDeletionMarker):
+                raise TypeError("lifecycle service returned invalid marker")
+            response = OwnerDataDeletionResponse.from_marker(marker)
+            if marker.status is OwnerDataDeletionStatus.CLEANUP_PENDING:
+                return JSONResponse(
+                    status_code=202,
+                    content=response.model_dump(mode="json"),
+                )
+            return response
+        except OwnerDataLifecycleError as error:
+            return _lifecycle_service_error(error)
+        except ValidationError:
+            return _error_response("request_invalid", status_code=422)
+        except Exception:
+            return _lifecycle_error_response(
+                "lifecycle_unavailable", status_code=503
+            )
+
+    @app.post(
+        "/owner-data/deletions/{marker_id}/retry",
+        response_model=OwnerDataDeletionResponse,
+        responses={
+            202: {"model": OwnerDataDeletionResponse},
+            404: {"model": LifecycleErrorResponse},
+            503: {"model": LifecycleErrorResponse},
+        },
+    )
+    def retry_owner_data_deletion(
+        marker_id: str,
+        _empty_body: None = Depends(require_empty_body),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> OwnerDataDeletionResponse | JSONResponse:
+        del _empty_body
+        if owner_data_lifecycle_service is None:
+            return _lifecycle_error_response(
+                "lifecycle_unavailable", status_code=503
+            )
+        try:
+            parsed_marker_id = UUID(marker_id)
+        except (AttributeError, TypeError, ValueError):
+            return _lifecycle_error_response("deletion_not_found", status_code=404)
+        try:
+            marker = owner_data_lifecycle_service.retry(
+                owner_id=actor.owner_id,
+                marker_id=parsed_marker_id,
+            )
+            if not isinstance(marker, OwnerDataDeletionMarker):
+                raise TypeError("lifecycle service returned invalid marker")
+            response = OwnerDataDeletionResponse.from_marker(marker)
+            if marker.status is OwnerDataDeletionStatus.CLEANUP_PENDING:
+                return JSONResponse(
+                    status_code=202,
+                    content=response.model_dump(mode="json"),
+                )
+            return response
+        except OwnerDataLifecycleError as error:
+            return _lifecycle_service_error(error)
+        except Exception:
+            return _lifecycle_error_response(
+                "lifecycle_unavailable", status_code=503
+            )
 
     @app.post(
         "/player-links",

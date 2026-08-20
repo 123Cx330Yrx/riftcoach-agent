@@ -72,13 +72,20 @@ class PostgresTrainingTargetWriter(TrainingTargetWriter):
                     TrainingPlanRecord.owner_id == candidate.owner_id,
                     TrainingPlanRecord.relationship_id == candidate.relationship_id,
                     TrainingPlanRecord.status == "active",
+                    TrainingPlanRecord.hidden_at.is_(None),
                 )
                 .with_for_update()
             )
             if current is None:
                 if parsed.expected_version is not None:
                     raise MemoryTargetVersionConflict()
-                version = 1
+                latest_version = session.scalar(
+                    sa.select(sa.func.max(TrainingPlanRecord.version)).where(
+                        TrainingPlanRecord.owner_id == candidate.owner_id,
+                        TrainingPlanRecord.relationship_id == candidate.relationship_id,
+                    )
+                )
+                version = 1 if latest_version is None else latest_version + 1
                 supersedes = None
             else:
                 if parsed.expected_version != current.version:
@@ -122,6 +129,7 @@ class PostgresTrainingTargetWriter(TrainingTargetWriter):
                 TrainingPlanRecord.player_subject_id == candidate.player_subject_id,
                 TrainingPlanRecord.relationship_role == "self",
                 TrainingPlanRecord.status == "active",
+                TrainingPlanRecord.hidden_at.is_(None),
             )
             .with_for_update()
         )
@@ -161,6 +169,7 @@ class PostgresTrainingTargetWriter(TrainingTargetWriter):
                 TrainingPlanRecord.player_subject_id == candidate.player_subject_id,
                 TrainingPlanRecord.relationship_role == "self",
                 TrainingPlanRecord.status == "active",
+                TrainingPlanRecord.hidden_at.is_(None),
             )
             .with_for_update()
         )
@@ -179,6 +188,7 @@ class PostgresTrainingTargetWriter(TrainingTargetWriter):
                     TrainingProgressRecord.plan_id == parsed.plan_id,
                     TrainingProgressRecord.metric_key == parsed.metric_key,
                     TrainingProgressRecord.status == "active",
+                    TrainingProgressRecord.hidden_at.is_(None),
                 )
                 .with_for_update()
             )

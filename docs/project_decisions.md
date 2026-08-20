@@ -1536,3 +1536,11 @@ deletion marker，事务外清理失败只留下 pending compensation，不重�
 conversation-only、conversation+derived-memory、relationship-private-data；Task/Run/Artifact 与全局 Player
 Subject 保持独立生命周期。导出是 owner-scoped bounded snapshot，retention/purge 使用 injected clock 与
 FK-aware bounded batch。不采用分散 Repository delete 或 FK cascade hard delete。
+
+### 6B-9 本地实现与退出裁决（2026-08-21）
+
+ADR-0046 已落实为 strict lifecycle contracts、0009、集中式 owner Repository/Service、薄 API/composition 和
+package schema 1.6。实现审查补充一项 lifecycle reset 规则：隐藏 active target 后，新链取历史最大 version+1，
+但 `supersedes` 保持 null，不把隐藏记录重新连入公开历史。0009 所有已展开 CHECK 名使用 `op.f()`，避免 naming
+convention 双前缀。当前退出裁决为 `pass-local-pending-public-ci`；只有实现 SHA 的 pytest、真实 PostgreSQL 和
+Linux package 三 job 全绿后，才关闭 6B-9 与 Session/Memory V1。

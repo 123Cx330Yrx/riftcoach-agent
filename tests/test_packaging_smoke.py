@@ -122,11 +122,24 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
             return dict(self._body)
 
     class Http:
+        deleted = False
+
         def get(self, url: str, **kwargs):
             requests_seen.append(("GET", url, kwargs))
             if url.endswith("/health/ready"):
                 return Response(200, {"status": "ready"})
+            if url.endswith("/owner-data/export"):
+                records = [
+                    {"record_kind": "relationship", "record_id": "90000000-0000-4000-8000-000000000004", "status": "active", "data": {}},
+                    {"record_kind": "conversation", "record_id": conversation_id, "conversation_id": conversation_id, "status": "active", "data": {}},
+                    {"record_kind": "message", "record_id": message_id, "conversation_id": conversation_id, "status": "visible", "data": {"content": "Packaging smoke user message"}},
+                    {"record_kind": "owner_preference", "record_id": "90000000-0000-4000-8000-000000000009", "status": "active", "data": {}},
+                    {"record_kind": "training_plan", "record_id": training_plan_id, "status": "active", "data": {}},
+                ]
+                return Response(200, {"schema_version": "1.0", "owner_id": "packaging-smoke-owner", "generated_at": "2026-08-20T00:00:00Z", "policy_version": "owner-export-v1", "sections": [{"name": "all", "records": records}], "total_record_count": len(records)})
             if url.endswith(f"/conversations/{conversation_id}/messages"):
+                if type(self).deleted:
+                    return Response(404, {"code": "conversation_not_found"})
                 return Response(
                     200,
                     {
@@ -213,6 +226,8 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                     },
                 )
             if url.endswith(f"/conversations/{conversation_id}"):
+                if type(self).deleted:
+                    return Response(404, {"code": "conversation_not_found"})
                 return Response(
                     200,
                     {
@@ -268,6 +283,9 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
 
         def post(self, url: str, **kwargs):
             requests_seen.append(("POST", url, kwargs))
+            if url.endswith("/owner-data/deletions"):
+                type(self).deleted = True
+                return Response(200, {"schema_version": "1.0", "marker_id": "90000000-0000-4000-8000-000000000020", "owner_id": "packaging-smoke-owner", "idempotency_key": "packaging-delete", "scope": "conversation_only", "conversation_id": conversation_id, "relationship_id": None, "affected": {"conversations": 1, "messages": 1}, "status": "complete", "safe_reason": None, "created_at": "2026-08-20T00:00:00Z", "updated_at": "2026-08-20T00:00:00Z", "completed_at": "2026-08-20T00:00:00Z"})
             if url.endswith("/player-links"):
                 return Response(202, {"link_task_id": link_task_id})
             if url.endswith("/conversations"):
@@ -493,11 +511,17 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         http=Http(),
     )
 
-    assert result.schema_version == "1.5"
+    assert result.schema_version == "1.6"
     assert result.task_status == "failed"
     assert result.link_status == "succeeded"
     assert str(result.link_task_id) == link_task_id
     assert result.conversation_status == "active"
+    assert result.owner_export_schema_version == "1.0"
+    assert result.deletion_status == "complete"
+    assert result.post_delete_conversation_status == "not_found"
+    assert result.post_delete_message_status == "not_found"
+    assert result.preference_survives_delete == 1
+    assert result.plan_survives_delete == 1
     assert str(result.conversation_id) == conversation_id
     assert str(result.message_id) == message_id
     assert result.message_sequence_no == 1
@@ -581,6 +605,10 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         "packaging_smoke_conversation_review_iteration_invalid",
         "packaging_smoke_conversation_review_query_failed",
         "packaging_smoke_conversation_review_terminal_invalid",
+        "packaging_smoke_owner_export_failed",
+        "packaging_smoke_owner_export_invalid",
+        "packaging_smoke_owner_delete_failed",
+        "packaging_smoke_owner_delete_visibility_failed",
     ),
 )
 def test_conversation_packaging_failure_codes_are_allowlisted_and_body_free(

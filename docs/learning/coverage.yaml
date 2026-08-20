@@ -461,20 +461,24 @@ groups:
       problem_and_principle:
         - docs/plans/2026-08-19-stage6-session-memory-design.md
         - docs/plans/2026-08-21-lifecycle-export-exit-review-design.md
+        - docs/learning/6b-9-lifecycle-export-exit-review-walkthrough.md
       design_and_implementation:
         - docs/adr/0046-adopt-centralized-owner-data-lifecycle-service.md
         - docs/plans/2026-08-21-lifecycle-export-exit-review-design.md
         - docs/plans/2026-08-21-lifecycle-export-exit-review-implementation.md
       code_map:
-        - docs/plans/2026-08-21-lifecycle-export-exit-review-implementation.md
+        - docs/learning/6b-9-lifecycle-export-exit-review-walkthrough.md
       data_and_control_flow:
         - docs/plans/2026-08-21-lifecycle-export-exit-review-design.md
+        - docs/learning/6b-9-lifecycle-export-exit-review-walkthrough.md
       verification:
         - docs/plans/2026-08-21-lifecycle-export-exit-review-implementation.md
+        - docs/learning/6b-9-lifecycle-export-exit-review-walkthrough.md
       runbook:
-        - docs/plans/2026-08-21-lifecycle-export-exit-review-implementation.md
+        - docs/learning/6b-9-lifecycle-export-exit-review-walkthrough.md
       failure_security_boundary:
         - docs/adr/0046-adopt-centralized-owner-data-lifecycle-service.md
         - docs/plans/2026-08-21-lifecycle-export-exit-review-design.md
+        - docs/learning/6b-9-lifecycle-export-exit-review-walkthrough.md
       interview_wording:
-        - docs/plans/2026-08-21-lifecycle-export-exit-review-design.md
+        - docs/learning/6b-9-lifecycle-export-exit-review-walkthrough.md

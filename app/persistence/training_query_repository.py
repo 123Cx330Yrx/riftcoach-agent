@@ -51,6 +51,7 @@ class PostgresTrainingQueryRepository:
                     statement = sa.select(TrainingPlanRecord).where(
                         TrainingPlanRecord.owner_id == owner,
                         TrainingPlanRecord.relationship_id == relationship_id,
+                        TrainingPlanRecord.hidden_at.is_(None),
                     )
                     if not include_history:
                         statement = statement.where(TrainingPlanRecord.status == "active")
@@ -89,6 +90,7 @@ class PostgresTrainingQueryRepository:
                             TrainingPlanRecord.owner_id == owner,
                             TrainingPlanRecord.relationship_id == relationship_id,
                             TrainingPlanRecord.status == "active",
+                            TrainingPlanRecord.hidden_at.is_(None),
                         )
                     )
                     if plan is None:
@@ -97,6 +99,7 @@ class PostgresTrainingQueryRepository:
                         TrainingProgressRecord.owner_id == owner,
                         TrainingProgressRecord.relationship_id == relationship_id,
                         TrainingProgressRecord.plan_id == plan.plan_id,
+                        TrainingProgressRecord.hidden_at.is_(None),
                     )
                     if metric_key is not None:
                         statement = statement.where(TrainingProgressRecord.metric_key == metric_key)

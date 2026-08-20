@@ -34,6 +34,7 @@ class TrainingPlanRecord(Base):
     updated_at: Mapped[datetime] = mapped_column(
         sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()
     )
+    hidden_at: Mapped[datetime | None] = mapped_column(sa.DateTime(timezone=True))
 
     __table_args__ = (
         sa.UniqueConstraint(
@@ -116,8 +117,7 @@ class TrainingPlanRecord(Base):
             name="payload_storage_bound",
         ),
         sa.CheckConstraint(
-            "(version = 1 AND supersedes_plan_id IS NULL) OR "
-            "(version > 1 AND supersedes_plan_id IS NOT NULL)",
+            "version >= 1 AND (supersedes_plan_id IS NULL OR version > 1)",
             name="supersedes_shape",
         ),
         sa.CheckConstraint(
@@ -125,7 +125,11 @@ class TrainingPlanRecord(Base):
             "(status <> 'active' AND status_candidate_id IS NOT NULL)",
             name="status_candidate_shape",
         ),
-        sa.CheckConstraint("updated_at >= created_at", name="timestamp_order"),
+        sa.CheckConstraint(
+            "updated_at >= created_at AND "
+            "(hidden_at IS NULL OR hidden_at >= created_at)",
+            name="timestamp_order",
+        ),
         sa.Index(
             "ix_training_plans_owner_history",
             "owner_id",
@@ -137,7 +141,7 @@ class TrainingPlanRecord(Base):
             "owner_id",
             "relationship_id",
             unique=True,
-            postgresql_where=sa.text("status = 'active'"),
+            postgresql_where=sa.text("status = 'active' AND hidden_at IS NULL"),
         ),
     )
 
@@ -168,6 +172,7 @@ class TrainingProgressRecord(Base):
     updated_at: Mapped[datetime] = mapped_column(
         sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()
     )
+    hidden_at: Mapped[datetime | None] = mapped_column(sa.DateTime(timezone=True))
 
     __table_args__ = (
         sa.UniqueConstraint(
@@ -255,7 +260,8 @@ class TrainingProgressRecord(Base):
             name="artifact_digest_format",
         ),
         sa.CheckConstraint(
-            "updated_at >= created_at",
+            "updated_at >= created_at AND "
+            "(hidden_at IS NULL OR hidden_at >= created_at)",
             name="timestamp_order",
         ),
         sa.Index(

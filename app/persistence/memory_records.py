@@ -59,6 +59,7 @@ class MemoryCandidateRecord(Base):
         sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()
     )
     expires_at: Mapped[datetime] = mapped_column(sa.DateTime(timezone=True), nullable=False)
+    hidden_at: Mapped[datetime | None] = mapped_column(sa.DateTime(timezone=True))
 
     __table_args__ = (
         sa.UniqueConstraint(
@@ -150,7 +151,9 @@ class MemoryCandidateRecord(Base):
             name="status_shape",
         ),
         sa.CheckConstraint(
-            "updated_at >= created_at AND expires_at > created_at AND (decided_at IS NULL OR decided_at >= created_at)",
+            "updated_at >= created_at AND expires_at > created_at AND "
+            "(decided_at IS NULL OR decided_at >= created_at) AND "
+            "(hidden_at IS NULL OR hidden_at >= created_at)",
             name="timestamp_order",
         ),
         sa.ForeignKeyConstraint(

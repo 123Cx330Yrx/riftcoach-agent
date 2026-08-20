@@ -86,6 +86,10 @@ PackagingSmokeErrorCode: TypeAlias = Literal[
     "packaging_smoke_memory_context_unavailable",
     "packaging_smoke_memory_context_repository_unavailable",
     "packaging_smoke_memory_context_integrity_failed",
+    "packaging_smoke_owner_export_failed",
+    "packaging_smoke_owner_export_invalid",
+    "packaging_smoke_owner_delete_failed",
+    "packaging_smoke_owner_delete_visibility_failed",
 ]
 _ERROR_CODES = frozenset(
     {
@@ -124,6 +128,10 @@ _ERROR_CODES = frozenset(
         "packaging_smoke_memory_context_unavailable",
         "packaging_smoke_memory_context_repository_unavailable",
         "packaging_smoke_memory_context_integrity_failed",
+        "packaging_smoke_owner_export_failed",
+        "packaging_smoke_owner_export_invalid",
+        "packaging_smoke_owner_delete_failed",
+        "packaging_smoke_owner_delete_visibility_failed",
     }
 )
 _LOCAL_SMOKE_API_HOSTS = frozenset({"api", "localhost", "127.0.0.1", "::1"})
@@ -150,7 +158,7 @@ class PackagingSmokeSettings:
 
 @dataclass(frozen=True, slots=True)
 class PackagingSmokeResult:
-    schema_version: Literal["1.5"]
+    schema_version: Literal["1.6"]
     task_id: UUID
     run_id: str
     task_status: Literal["failed"]
@@ -174,6 +182,15 @@ class PackagingSmokeResult:
     memory_context_record_count: Literal[3]
     memory_context_kinds: tuple[str, ...]
     terminal_assistant_message_count: Literal[0]
+    owner_export_schema_version: Literal["1.0"]
+    owner_export_record_count: int
+    owner_export_record_kinds: tuple[str, ...]
+    deletion_scope: Literal["conversation_only"]
+    deletion_status: Literal["complete"]
+    post_delete_conversation_status: Literal["not_found"]
+    post_delete_message_status: Literal["not_found"]
+    preference_survives_delete: Literal[1]
+    plan_survives_delete: Literal[1]
     external_riot_provider_calls: Literal[0]
 
 
@@ -939,8 +956,99 @@ def execute_packaging_smoke(
                 "packaging_smoke_conversation_review_terminal_invalid"
             )
 
+        try:
+            owner_export = session.get(
+                f"{settings.base_url}/owner-data/export",
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError("packaging_smoke_owner_export_failed") from None
+        owner_export_body = _json_object(owner_export)
+        export_sections = owner_export_body.get("sections")
+        export_records = (
+            [record for section in export_sections for record in section.get("records", [])]
+            if isinstance(export_sections, list)
+            and all(isinstance(section, dict) for section in export_sections)
+            else []
+        )
+        export_kinds = tuple(
+            sorted(
+                str(record.get("record_kind"))
+                for record in export_records
+                if isinstance(record, dict) and record.get("record_kind")
+            )
+        )
+        if (
+            owner_export.status_code != 200
+            or owner_export_body.get("schema_version") != "1.0"
+            or owner_export_body.get("owner_id") != "packaging-smoke-owner"
+            or not isinstance(export_sections, list)
+            or owner_export_body.get("total_record_count") != len(export_records)
+            or not {"conversation", "message", "owner_preference", "training_plan"}.issubset(set(export_kinds))
+            or any(
+                forbidden in repr(owner_export_body).casefold()
+                for forbidden in ("puuid", "api_key", "provider_body", "tool_body", "traceback")
+            )
+        ):
+            raise PackagingSmokeError("packaging_smoke_owner_export_invalid")
+
+        try:
+            deleted = session.post(
+                f"{settings.base_url}/owner-data/deletions",
+                headers={"Idempotency-Key": f"packaging-delete-{uuid4().hex}"},
+                json={
+                    "scope": "conversation_only",
+                    "conversation_id": str(conversation_id),
+                },
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError("packaging_smoke_owner_delete_failed") from None
+        deleted_body = _json_object(deleted)
+        if (
+            deleted.status_code not in (200, 202)
+            or deleted_body.get("scope") != "conversation_only"
+            or deleted_body.get("status") != "complete"
+            or deleted_body.get("conversation_id") != str(conversation_id)
+        ):
+            raise PackagingSmokeError("packaging_smoke_owner_delete_failed")
+
+        try:
+            hidden_conversation = session.get(
+                f"{settings.base_url}/conversations/{conversation_id}",
+                timeout=settings.timeout_s,
+            )
+            hidden_messages = session.get(
+                f"{settings.base_url}/conversations/{conversation_id}/messages",
+                params={"limit": 10, "after_sequence": 0},
+                timeout=settings.timeout_s,
+            )
+            surviving_preferences = session.get(
+                f"{settings.base_url}/memory/preferences",
+                params={"include_history": False, "limit": 10},
+                timeout=settings.timeout_s,
+            )
+            surviving_plan = session.get(
+                f"{settings.base_url}/memory/players/{relationship_id}/training-plan",
+                params={"include_history": False, "limit": 10},
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError("packaging_smoke_owner_delete_visibility_failed") from None
+        surviving_preferences_body = _json_object(surviving_preferences)
+        surviving_plan_body = _json_object(surviving_plan)
+        if (
+            hidden_conversation.status_code != 404
+            or hidden_messages.status_code != 404
+            or surviving_preferences.status_code != 200
+            or len(surviving_preferences_body.get("records", [])) != 1
+            or surviving_plan.status_code != 200
+            or len(surviving_plan_body.get("plans", [])) != 1
+        ):
+            raise PackagingSmokeError("packaging_smoke_owner_delete_visibility_failed")
+
         return PackagingSmokeResult(
-            schema_version="1.5",
+            schema_version="1.6",
             task_id=task_id,
             run_id=run_id,
             task_status="failed",
@@ -964,6 +1072,15 @@ def execute_packaging_smoke(
             memory_context_record_count=3,
             memory_context_kinds=memory_context_kinds,
             terminal_assistant_message_count=0,
+            owner_export_schema_version="1.0",
+            owner_export_record_count=len(export_records),
+            owner_export_record_kinds=export_kinds,
+            deletion_scope="conversation_only",
+            deletion_status="complete",
+            post_delete_conversation_status="not_found",
+            post_delete_message_status="not_found",
+            preference_survives_delete=1,
+            plan_survives_delete=1,
             external_riot_provider_calls=0,
         )
     except PackagingSmokeError:

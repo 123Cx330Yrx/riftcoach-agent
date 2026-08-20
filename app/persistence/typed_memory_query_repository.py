@@ -46,7 +46,8 @@ class PostgresTypedMemoryQueryRepository:
         owner = _validate_owner(owner_id)
         bounded_limit = _validate_limit(limit)
         statement = sa.select(MemoryPreferenceRecord).where(
-            MemoryPreferenceRecord.owner_id == owner
+            MemoryPreferenceRecord.owner_id == owner,
+            MemoryPreferenceRecord.hidden_at.is_(None),
         )
         if not include_history:
             statement = statement.where(MemoryPreferenceRecord.status == "active")
@@ -114,6 +115,7 @@ class PostgresTypedMemoryQueryRepository:
                             OwnerPlayerRelationshipRecord.owner_id == owner,
                             OwnerPlayerRelationshipRecord.relationship_id == relationship_id,
                             OwnerPlayerRelationshipRecord.status == "active",
+                            OwnerPlayerRelationshipRecord.hidden_at.is_(None),
                         )
                     )
                     if relationship is None:
@@ -128,6 +130,7 @@ class PostgresTypedMemoryQueryRepository:
                         record_type.relationship_id == relationship_id,
                         record_type.player_subject_id == relationship.player_subject_id,
                         record_type.relationship_role == relationship.relationship_role,
+                        record_type.hidden_at.is_(None),
                     )
                     if not include_history:
                         statement = statement.where(record_type.status == "active")

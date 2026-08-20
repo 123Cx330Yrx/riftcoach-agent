@@ -175,6 +175,9 @@ jobs:
             tests/test_memory_context_repository_postgres.py \
             tests/test_terminal_turn_migrations_postgres.py \
             tests/test_terminal_turn_writer_postgres.py \
+            tests/test_owner_data_lifecycle_records.py \
+            tests/test_owner_data_lifecycle_migrations_postgres.py \
+            tests/test_owner_data_lifecycle_repository_postgres.py \
             -q -s
 
       - name: Verify metadata matches the migration head

@@ -100,10 +100,10 @@ def writer() -> PostgresTypedMemoryTargetWriter:
 
 def test_first_write_creates_version_one_without_supersedes() -> None:
     item = candidate()
-    session = FakeMaterializationSession([None, None, None])
+    session = FakeMaterializationSession([None, None, None, None])
     target_id = writer().write(session, candidate=item, parsed=parsed(item))
     assert target_id == NEW_ID
-    assert len(session.scalar_calls) == 3
+    assert len(session.scalar_calls) == 4
     assert session.flush_count == 1
     record = session.added[0]
     assert record.version == 1
@@ -111,6 +111,17 @@ def test_first_write_creates_version_one_without_supersedes() -> None:
     assert record.supersedes_record_id is None
     assert record.source_candidate_id == item.candidate_id
     assert record.payload == {"value": "zh-CN"}
+
+
+def test_hidden_history_starts_a_new_chain_without_reusing_version() -> None:
+    item = candidate(number=9)
+    session = FakeMaterializationSession([None, None, None, 3])
+
+    writer().write(session, candidate=item, parsed=parsed(item))
+
+    record = session.added[0]
+    assert record.version == 4
+    assert record.supersedes_record_id is None
 
 
 def test_update_supersedes_current_and_creates_next_version() -> None:
@@ -166,7 +177,7 @@ def test_writer_rejects_naive_clock_and_non_uuid_factory() -> None:
             record_id_factory=lambda: NEW_ID,
             clock=lambda: datetime(2026, 8, 20, 17, 0),
         ).write(
-            FakeMaterializationSession([None, None, None]),
+            FakeMaterializationSession([None, None, None, None]),
             candidate=item,
             parsed=parsed(item),
         )
@@ -175,7 +186,7 @@ def test_writer_rejects_naive_clock_and_non_uuid_factory() -> None:
             record_id_factory=lambda: "bad-id",
             clock=lambda: NOW,
         ).write(
-            FakeMaterializationSession([None, None, None]),
+            FakeMaterializationSession([None, None, None, None]),
             candidate=item,
             parsed=parsed(item),
         )

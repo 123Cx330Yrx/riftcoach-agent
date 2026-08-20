@@ -3211,3 +3211,16 @@
   Relationship/Player Subject 可以因审计/Task 引用保留 body-free hidden row。
 - `relationship_private_data` 只删除 player-scoped 私有数据；owner-global Preference 不能因一个玩家关系退出而丢失。
   `conversation_and_derived_memory` 则按明确 provenance 删除该 Conversation 派生的 owner-global record。
+
+## 2026-08-21：6B-9 实现审查发现
+
+- Alembic 使用 `ck_%(table_name)s_%(constraint_name)s` 时，把已展开的 `ck_table_name` 直接传给
+  `drop_constraint/create_check_constraint` 会再次套 convention；0009 必须用 `op.f()`，offline SQL 门能在
+  无 PostgreSQL 本机提前发现双前缀。
+- `conversation_only` 必须区分“历史可读”与“继续写入”：已确认 Candidate/长期 target 仍可查，但 Candidate
+  accept 继续锁 source Conversation，hidden 后安全拒绝，避免删除后通过旧来源追加写。
+- active partial unique 排除 hidden 还不够；版本 unique 仍存在。新链必须取历史最大 version + 1，同时让
+  supersedes 为 null，明确表示 lifecycle reset 而不是把已删除记录重新连回公开历史。
+- idempotency 并发 winner 写 marker 后，loser 的 unique race 应重新读取同 tuple 并 replay；只有 key 对应不同
+  scope/target 才是 conflict。
+- purge 遇 FK 阻塞应报告本批被阻塞 ID 数量，不应只按“一个表失败”计 1，也不能临时关闭 FK/cascade。

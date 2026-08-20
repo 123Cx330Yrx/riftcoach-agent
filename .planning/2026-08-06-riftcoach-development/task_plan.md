@@ -1161,3 +1161,14 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
 - Pi 文本始终是 draft；只有 ReviewHarness 可以产生 final Artifact 和 publication decision。
 - 字符 Context guard 不冒充 token-unit ceiling；无法无损表示的 terminal 不做近似映射。
 - 新代码只进入 evaluation namespace 和测试，不修改默认 composition 或生产 Runtime 合同。
+
+## 2026-08-21：6B-9 Lifecycle / Export / Exit Review
+
+- [completed] Task 1：strict export/delete/marker/retention/purge pure contracts 与红绿 TDD。
+- [completed] Task 2：0009 hidden columns、active partial unique、marker ORM/migration 与 offline SQL 审计。
+- [completed] Task 3：owner-scoped bounded export，保留 provenance/history、排除 PUUID/Key/内部 body。
+- [completed] Task 4：三 scope 短事务 visibility、query/writer hidden filter、idempotency replay/conflict。
+- [completed] Task 5：cleanup compensation、injected-clock retention 与 FK-aware bounded purge。
+- [completed] Task 6：薄 API/composition 与 Linux package schema 1.6 纵向。
+- [completed] Task 7：八维 walkthrough、6B-1→9 exit matrix 与本地比例回归。
+- [in_progress] 实现提交、推送与 exact-SHA pytest/PostgreSQL/package 三 job；公共全绿前 coverage planned。

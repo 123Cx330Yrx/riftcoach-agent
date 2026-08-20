@@ -3300,3 +3300,13 @@
   `1464 passed, 113 skipped, 1 warning, 110 subtests passed`。
 - 两套 RAG、Harness dry-run、compileall、pip、governance、SDK/Secret/tracked-data 与 diff 门全绿。
 - 当前 `pass-local-pending-public-ci`；下一动作是设计批独立提交/推送和 exact-SHA 三 job，不提前写 0009。
+
+## 2026-08-21：6B-9 本地实现与退出矩阵
+
+- `app/lifecycle`、0009、集中式 PostgreSQL Repository、薄 API/composition 与 package 1.6 已完成。
+- package 先导出 Conversation/Message/Preference/Plan，再做 `conversation_only`；预期 Message/Conversation
+  不可见而 Preference/Plan 保留，外部调用为 0。
+- 0009 offline SQL 审计捕获并修复 CHECK naming convention 双前缀；所有已展开 CHECK 名都用 `op.f()`。
+- 首轮完整回归 `1488 passed, 117 skipped, 1 warning, 110 subtests`，唯一失败是第二处 OpenAPI path
+  allowlist 未加入新 endpoint；同步后最终完整回归 `1489 passed, 117 skipped, 1 warning, 110 subtests`。
+- walkthrough 已覆盖八维与 Session/Memory V1 exit matrix；公共 exact-SHA 三 job 前不关闭 coverage/阶段 6。

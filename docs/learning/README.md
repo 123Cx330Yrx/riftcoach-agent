@@ -72,7 +72,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | 6B-6：Preferences / Profile / Review Memory | 完整/公共闭环 | [walkthrough](6b-6-preferences-profile-review-memory-walkthrough.md) / [ADR-0043](../adr/0043-adopt-typed-preference-profile-review-memory-targets.md) / [6B-6 设计](../plans/2026-08-20-memory-types-design.md) | 三类 typed target、版本冲突、self/observed 权限、真实 materializer 与 owner-scoped 查询已由 `5531c81` / Actions `32387026797` 完成 pytest、真实 PostgreSQL 和 Linux package 三 job 公共闭环 |
 | 6B-7：Training Plan / Progress | 完整/公共闭环 | [walkthrough](6b-7-training-plan-progress-walkthrough.md) / [专用设计](../plans/2026-08-21-training-plan-progress-design.md) / [ADR-0044](../adr/0044-adopt-candidate-backed-training-plan-progress-events.md) | self-only Plan、单 active、0007、final-Artifact Progress、追加式纠错与确定性趋势已由 `f6d8922` / Actions `32397290175` 完成真库/Linux 三 job 公共闭环 |
 | 6B-8：Memory-aware Context / Typed Turns | 完整/公共闭环 | [walkthrough](6b-8-memory-aware-context-typed-turns-walkthrough.md) / [专用设计](../plans/2026-08-21-memory-aware-context-typed-turns-design.md) / [ADR-0045](../adr/0045-adopt-run-scoped-memory-context-and-terminal-turn-writer.md) | bounded legal selector、body-free manifest、同 ceiling data-only Context 与 terminal-only Assistant/Candidate 写入边界已由 `aacc11a` / Actions `32403187972` 完成真库/Linux 三 job公共闭环 |
-| 6B-9：Lifecycle / Export / Exit Review | 设计中 | [专用设计](../plans/2026-08-21-lifecycle-export-exit-review-design.md) / [ADR-0046](../adr/0046-adopt-centralized-owner-data-lifecycle-service.md) | owner export、三种删除范围、hidden-before-cleanup、retention/purge/补偿与 Session/Memory V1 exit matrix；产品实现尚未开始 |
+| 6B-9：Lifecycle / Export / Exit Review | 本地实现完成，等待公共闭环 | [walkthrough](6b-9-lifecycle-export-exit-review-walkthrough.md) / [专用设计](../plans/2026-08-21-lifecycle-export-exit-review-design.md) / [ADR-0046](../adr/0046-adopt-centralized-owner-data-lifecycle-service.md) | owner export、三种删除范围、hidden-before-cleanup、retention/purge/补偿与 Session/Memory V1 exit matrix 已实现；coverage 在实现 SHA 的 pytest、真库和 Linux package 三 job 全绿前保持 planned |
 
 “完整”表示仓库中已经具备八类持久证据，并不表示项目已生产就绪，也不表示项目所有者已经学会。
 个人理解进度需要通过实际复述、读码、运行和问答单独确认。
@@ -134,7 +134,7 @@ canonical 推进到 6B-4。这能防止“代码写完就一路往后走，教�
 - 不代表当前有正式公网 Auth、RSO 账号验证、HTTPS、SSE、前端或生产级运维；
 - 不代表 RAG 开发集满分等于未知问题上的泛化满分；
 - 不代表 GLM、DeepSeek 或其他 Provider 已通过全部领域质量准入；
-- 6B-8 Memory-aware Context/assistant terminal 已完成公共 PostgreSQL/package 闭环；lifecycle/export 正在
-  6B-9 设计/TDD，尚未完成。
+- 6B-8 Memory-aware Context/assistant terminal 已完成公共 PostgreSQL/package 闭环；6B-9 lifecycle/export
+  已完成本地实现，仍等待 exact-SHA PostgreSQL/package 公共闭环，不能提前声称阶段 6 已关闭。
 
 这些边界既是工程事实，也是项目在面试中保持可信度的重要部分。

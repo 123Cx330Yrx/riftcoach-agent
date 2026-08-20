@@ -35,12 +35,13 @@ def _common_constraints() -> tuple[sa.CheckConstraint, ...]:
             name="payload_storage_bound",
         ),
         sa.CheckConstraint(
-            "(version = 1 AND supersedes_record_id IS NULL) OR "
-            "(version > 1 AND supersedes_record_id IS NOT NULL)",
+            "version >= 1 AND "
+            "(supersedes_record_id IS NULL OR version > 1)",
             name="supersedes_shape",
         ),
         sa.CheckConstraint(
-            "updated_at >= created_at",
+            "updated_at >= created_at AND "
+            "(hidden_at IS NULL OR hidden_at >= created_at)",
             name="timestamp_order",
         ),
     )
@@ -72,6 +73,7 @@ class MemoryPreferenceRecord(Base):
     updated_at: Mapped[datetime] = mapped_column(
         sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()
     )
+    hidden_at: Mapped[datetime | None] = mapped_column(sa.DateTime(timezone=True))
 
     __table_args__ = (
         sa.UniqueConstraint("source_candidate_id", name="uq_memory_preferences_source_candidate"),
@@ -109,7 +111,7 @@ class MemoryPreferenceRecord(Base):
             "owner_id",
             "memory_key",
             unique=True,
-            postgresql_where=sa.text("status = 'active'"),
+            postgresql_where=sa.text("status = 'active' AND hidden_at IS NULL"),
         ),
     )
 
@@ -137,6 +139,7 @@ class PlayerProfileRecord(Base):
     updated_at: Mapped[datetime] = mapped_column(
         sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()
     )
+    hidden_at: Mapped[datetime | None] = mapped_column(sa.DateTime(timezone=True))
 
     __table_args__ = (
         sa.UniqueConstraint("source_candidate_id", name="uq_player_profiles_source_candidate"),
@@ -202,7 +205,7 @@ class PlayerProfileRecord(Base):
             "player_subject_id",
             "memory_key",
             unique=True,
-            postgresql_where=sa.text("status = 'active'"),
+            postgresql_where=sa.text("status = 'active' AND hidden_at IS NULL"),
         ),
     )
 
@@ -230,6 +233,7 @@ class ReviewMemoryRecord(Base):
     updated_at: Mapped[datetime] = mapped_column(
         sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()
     )
+    hidden_at: Mapped[datetime | None] = mapped_column(sa.DateTime(timezone=True))
 
     __table_args__ = (
         sa.UniqueConstraint("source_candidate_id", name="uq_review_memories_source_candidate"),
@@ -302,7 +306,7 @@ class ReviewMemoryRecord(Base):
             "relationship_role",
             "memory_key",
             unique=True,
-            postgresql_where=sa.text("status = 'active'"),
+            postgresql_where=sa.text("status = 'active' AND hidden_at IS NULL"),
         ),
     )
 

@@ -165,6 +165,7 @@ class PostgresMemoryCandidateRepository:
                         sa.select(MemoryCandidateRecord).where(
                             MemoryCandidateRecord.owner_id == pending.owner_id,
                             MemoryCandidateRecord.idempotency_key == pending.idempotency_key,
+                            MemoryCandidateRecord.hidden_at.is_(None),
                         )
                     )
                     if existing is not None:
@@ -553,16 +554,6 @@ def _select_visible_candidate(
     return session.scalar(
         sa.select(MemoryCandidateRecord)
         .join(
-            ConversationRecord,
-            sa.and_(
-                ConversationRecord.conversation_id == MemoryCandidateRecord.conversation_id,
-                ConversationRecord.owner_id == MemoryCandidateRecord.owner_id,
-                ConversationRecord.relationship_id == MemoryCandidateRecord.relationship_id,
-                ConversationRecord.player_subject_id == MemoryCandidateRecord.player_subject_id,
-                ConversationRecord.relationship_role == MemoryCandidateRecord.relationship_role,
-            ),
-        )
-        .join(
             OwnerPlayerRelationshipRecord,
             sa.and_(
                 OwnerPlayerRelationshipRecord.owner_id == MemoryCandidateRecord.owner_id,
@@ -574,8 +565,9 @@ def _select_visible_candidate(
         .where(
             MemoryCandidateRecord.owner_id == owner_id,
             MemoryCandidateRecord.candidate_id == candidate_id,
-            ConversationRecord.status != ConversationStatus.HIDDEN.value,
+            MemoryCandidateRecord.hidden_at.is_(None),
             OwnerPlayerRelationshipRecord.status == "active",
+            OwnerPlayerRelationshipRecord.hidden_at.is_(None),
         )
     )
 
@@ -596,6 +588,7 @@ def _lock_visible_candidate(
         ).where(
             MemoryCandidateRecord.owner_id == owner_id,
             MemoryCandidateRecord.candidate_id == candidate_id,
+            MemoryCandidateRecord.hidden_at.is_(None),
         )
     ).one_or_none()
     if identity is None:
@@ -621,6 +614,7 @@ def _lock_visible_candidate(
             MemoryCandidateRecord.relationship_id == locked.relationship_id,
             MemoryCandidateRecord.player_subject_id == locked.player_subject_id,
             MemoryCandidateRecord.relationship_role == locked.relationship_role.value,
+            MemoryCandidateRecord.hidden_at.is_(None),
         )
         .with_for_update()
     )
