@@ -3319,3 +3319,10 @@
   initialize 是唯一重新绑定 server identity 的路径。disconnect 本身则保持 `mcp_transport_disconnected`。
 - `McpContractError` 现在暴露 allowlisted `code/retryable/request_id` 属性，使 ToolRuntime 能按
   现有 `_safe_error` 合同处理 transport timeout；异常文本仍来自固定安全消息。
+
+## 2026-08-21：7-2 公共闭环裁决
+
+- `f121666/32441793585` 的三个 job 全绿；公共 `pytest`、真实 PostgreSQL migration/control-plane 和
+  Linux no-I/O package smoke 均成功。该证据按环境记录，不把本机 117 skip 改写成真库成功。
+- 7-2 只关闭本地 fixture/in-memory/隔离 stdio transport/session/discovery；OP.GG endpoint、协议、许可、
+  freshness、限流与真实互操作仍缺证据，7-3 必须先做 admission audit。

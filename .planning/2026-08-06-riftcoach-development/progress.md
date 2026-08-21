@@ -3397,3 +3397,11 @@
   exact-SHA 三 job 前保持 `planned`。当前本地实现仍不接 SDK、普通 HTTP、OP.GG、Meta、Server、Key 或外部 I/O。
 - 下一动作：完整本地门禁与最终 diff 审查，独立实现提交/推送并等待 exact-SHA 三 job；公共全绿后才关闭 7-2，
   再只登记 7-3 prepared/waiting authorization。
+
+## 2026-08-21：7-2 exact-SHA 公共闭环与 7-3 交接
+
+- 实现 SHA `f12166665d437a9479afff508709435a23096dd2` / Actions `32441793585` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；公共 run 完成 exact-SHA 验证。
+- 7-2 coverage 已置 complete，canonical 切换为 `7-3-opgg-meta-adapter / prepared/waiting authorization`。
+- 公共证据仍只证明本地 transport/session/discovery 与既有真库/Linux package 基线兼容；不证明 OP.GG、
+  MetaEvidence、RiftCoach MCP Server、真实外部互操作或公网部署。

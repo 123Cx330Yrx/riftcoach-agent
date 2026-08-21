@@ -45,9 +45,9 @@ or external I/O was added.
 
 ## 7-2: Transport and discovery
 
-**Status (2026-08-21):** local implementation complete; pending final exact-SHA
-public CI. No SDK, external endpoint, Key, OP.GG, MetaEvidence or MCP Server was
-added.
+**Status (2026-08-21):** complete at `f12166665d437a9479afff508709435a23096dd2` /
+Actions `32441793585`; all three exact-SHA public jobs succeeded. No SDK,
+external endpoint, Key, OP.GG, MetaEvidence or MCP Server was added.
 
 ### Task 2: Fixture session and transport boundary
 
@@ -57,7 +57,7 @@ added.
 2. [completed] 实现 transport-neutral session、deadline、disconnect、server restart 和 capability checks；
 3. [completed] 先接 in-memory fixture，再隔离 stdio/subprocess；HTTP/streamable HTTP 因无标准/部署证据不加入；
 4. [completed] 将已发现 descriptor 转成 `ToolDefinition`，调用交给 `ToolRuntime`，验证 retry/breaker 不在 Adapter 重复；
-5. [ ] 完成本地全部门禁、独立提交和 exact-SHA 三 job 后再登记 commit/关闭 7-2。
+5. [completed] 本地全部门禁、独立提交和 exact-SHA 三 job；`f121666` / Actions `32441793585` 关闭 7-2。
 
 ## 7-3: OP.GG Meta Adapter
 

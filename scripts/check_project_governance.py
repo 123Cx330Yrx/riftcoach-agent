@@ -51,6 +51,7 @@ LEARNING_COVERAGE_CANONICAL_ORDER = (
     "stage-7-standard-mcp-dynamic-meta-entry-design",
     "7-1-mcp-client-contract",
     "7-2-mcp-transport-and-discovery",
+    "7-3-opgg-meta-adapter",
 )
 
 

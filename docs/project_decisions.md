@@ -1616,3 +1616,7 @@ OP.GG/Riot/Provider、不读取 Key、不实现 MetaEvidence、RiftCoach MCP Ser
 本地 TDD 已证实 11 项 transport/session/discovery 测试通过；完整回归与横向门禁通过，但在 exact-SHA
 公共 CI 前仍保持 7-2 open、coverage planned。该本地证据只证明 fixture/in-memory/隔离 stdio 合同，
 不把 subprocess fixture 说成真实 MCP 互操作。
+
+`f121666` / Actions `32441793585` 的 exact-SHA 三 job 随后全绿；7-2 coverage 置 complete，
+canonical 只交接 `7-3-opgg-meta-adapter` prepared/waiting authorization。该公共 run 证明本地
+transport/session/discovery 与既有 PostgreSQL/Linux package 基线兼容，不改变 OP.GG 尚未准入的裁决。

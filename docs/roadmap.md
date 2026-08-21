@@ -281,10 +281,9 @@ Stage 7 的内部检查点顺序固定为：入口设计 → `7-1-mcp-client-con
 每一项都必须独立教学、TDD、八维证据、本地门禁、提交和 exact-SHA 公共 CI；
 真实外部 Server/Client 只在最后退出门执行。
 
-当前状态：入口设计与 7-1 pure contract 已公共闭环；RQ-074 已授权
-`7-2-mcp-transport-and-discovery`。本检查点只推进本地 fixture/in-memory 与隔离 stdio
-session/discovery、deadline/disconnect/restart/capability 和 ToolRuntime 映射；OP.GG、Meta、
-RiftCoach Server、普通 HTTP 与真实外部互操作仍保持后续边界。
+当前状态：入口设计、7-1 pure contract 与 7-2 transport/discovery 已公共闭环；当前唯一检查点为
+`7-3-opgg-meta-adapter` prepared/waiting authorization。OP.GG、MetaEvidence、RiftCoach Server、
+普通 HTTP 与真实外部互操作仍保持后续边界。
 
 ### 完成标准
 

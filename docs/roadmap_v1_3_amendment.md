@@ -236,6 +236,10 @@ OP.GG MCP
 `37f16bc` / Actions `32439753589` exact-SHA 公共闭环。RQ-074 已授权 7-2：当前只做
 fixture/in-memory 与隔离 stdio transport/session/discovery；OP.GG、MetaEvidence、Server、普通 HTTP
 与真实外部互操作继续留在后续检查点。
+
+7-2 已由 `f121666` / Actions `32441793585` 完成 exact-SHA 三 job 公共闭环；当前只交接
+`7-3-opgg-meta-adapter` prepared/waiting authorization，OP.GG 仍未完成 endpoint/protocol/license/
+freshness/真实互操作准入。
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

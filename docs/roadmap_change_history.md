@@ -2476,3 +2476,12 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   执行交给 ToolRuntime；不复制 retry/cache/breaker/fallback。
 - `NO-IO`：不安装 MCP SDK、不接 OP.GG/Riot/Provider、不读 Key、不实现 MetaEvidence、RiftCoach MCP Server，
   不实现普通 HTTP/Streamable HTTP，也不把 fixture/subprocess 视为真实外部互操作。
+
+### 2026-08-21：7-2 exact-SHA 公共闭环与 7-3 交接
+
+- `PUBLIC-CI`：实现 `f12166665d437a9479afff508709435a23096dd2` / Actions `32441793585` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。
+- `CLOSED`：7-2 coverage 与八维 walkthrough 正式 complete；证据只证明本地 in-memory/隔离 stdio
+  transport/session/discovery，不证明 OP.GG、MetaEvidence、RiftCoach Server 或真实互操作。
+- `HANDOFF`：唯一下一检查点为 `7-3-opgg-meta-adapter` prepared/waiting authorization；授权前不做
+  OP.GG 准入、MetaEvidence、Key 读取、普通 HTTP 或外部调用。
