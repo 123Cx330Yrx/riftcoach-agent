@@ -2559,3 +2559,17 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   Riot/LLM/Key I/O 为 0。
 - `PENDING-EXIT`：当前只提交 evidence、自动验证与退出材料；该 SHA 的三 job 和随后独立 state SHA 的三 job
   均全绿前，不关闭 7-5/coverage/Stage 7，也不进入 Stage 8 产品开发。
+
+### 2026-08-21：7-5 evidence 公共闭环、Stage 7 关闭与 Stage 8 交接
+
+- `EVIDENCE-PUBLIC`：不可覆盖 evidence `fac6fe0beaec174c26960a259c361141b6e6ef2e` / Actions
+  `32484257736` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `COUNTS`：公共 pytest `1578 passed, 116 skipped, 1 warning, 127 subtests passed`；真库
+  `164 passed, 1 warning`，0001→0009 migration 可逆且 metadata=head；Linux package schema 1.6，
+  `external_riot_provider_calls=0`。
+- `CLOSED`：7-5 八维 coverage complete；实现、唯一一次 clean-SHA 双向真实门与 evidence 均有独立
+  exact-SHA 证据，7-5 和 Stage 7 正式关闭。OP.GG partial provenance 与全部产品边界继续保留。
+- `ORDER-CONTRACT`：原治理顺序止于 7-5；按固定 Stage 8 路线标题和既有 entry-design 命名规则，显式新增
+  `stage-8-multi-agent-reliable-runtime-productization-entry-design` 到治理常量与 coverage ledger。
+- `HANDOFF`：Stage 8 checkpoint 仅 prepared/waiting authorization；RQ-079 不授权 Stage 8，不开始
+  8-Core/8-Advanced 教学、设计、Multi-Agent/DAG、恢复、SSE/前端或部署实现。

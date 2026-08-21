@@ -24,9 +24,12 @@ Actions `32436092074`. Phase 27 - `7-1-mcp-client-contract` is complete at
 Phase 29 - `7-3-opgg-meta-adapter` is complete at `64311a1` / Actions
 `32455219404`. Phase 30 - `7-4-riftcoach-mcp-server` is complete at `431c584` /
 Actions `32480827952`. RQ-079 authorizes Phase 31 -
-`7-5-mcp-interoperability-exit-review`, the sole current checkpoint; official
-external Client/Server identity, stdio/Streamable HTTP proof and exit evidence
-are in design/TDD and Stage 8 remains out of scope.
+`7-5-mcp-interoperability-exit-review`, now complete through implementation
+`a88fbc4` / Actions `32483521108` and evidence `fac6fe0` / Actions
+`32484257736`. Phase 32 -
+`stage-8-multi-agent-reliable-runtime-productization-entry-design` is prepared
+and awaiting explicit user authorization; no Stage 8 design or implementation
+has started.
 
 ## Phases
 
@@ -281,8 +284,10 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环，coverage complete。
 `7-4-riftcoach-mcp-server` 已由 `431c584` / Actions `32480827952` 完成 exact-SHA
 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环，coverage complete。
-当前唯一动作是等待用户明确授权 `7-5-mcp-interoperability-exit-review`；授权前不设计或执行真实
-外部 Client→RiftCoach Server 互操作，也不关闭 Stage 7。
+`7-5-mcp-interoperability-exit-review` 已由实现 `a88fbc4/32483521108`、不可覆盖双向 evidence 与
+证据提交 `fac6fe0/32484257736` 完成 exact-SHA 公共闭环，coverage complete，Stage 7 关闭。当前唯一动作是
+`stage-8-multi-agent-reliable-runtime-productization-entry-design` prepared/waiting authorization；等待用户
+明确授权后才开展 Stage 8 教学、现状审计与入口设计，不提前实施 8-Core 或 8-Advanced。
 
 ## 6A-1 Checklist
 
@@ -638,12 +643,12 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 
 ### Phase 31 - 7-5-mcp-interoperability-exit-review
 
-- Status: in_progress
-- State: RQ-079 已授权；7-4 已公共闭环。采用隔离锁版的官方 TypeScript MCP SDK Client 通过标准 stdio
+- Status: complete
+- State: RQ-079 已执行；7-4 已公共闭环。采用隔离锁版的官方 TypeScript MCP SDK Client 通过标准 stdio
   调用真实 RiftCoach Server Session，同时复用产品 OP.GG Client 通过官方 Streamable HTTP 做一次有界调用；
   两侧只持久化 identity/digest/count/time-window，不保存 session、arguments/result body 或玩家身份。
-- Next: 完成 ADR/设计、红灯与最小实现；通过离线门和实现 exact-SHA CI 后，在干净实现 SHA 上执行一次
-  双向真实门，持久化 exit matrix，再完成最终 exact-SHA 公共闭环。阶段 7 关闭前不进入阶段 8。
+- Exit: 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 均已通过；
+  7-5 coverage complete，Stage 7 正式关闭。
 - [completed-local] ADR-0050、官方 SDK/stdio 方案、red→green 协商/transport/evidence TDD。
 - [completed-local] 外部 SDK Client 跨进程 initialize/notification/list/一次 call，body-free digest/count trace。
 - [completed-local] 聚焦 10、相邻 74/17 subtests、完整 1576/117 skips/127 subtests 与全部横向门。
@@ -651,7 +656,17 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
   的 exact-SHA pytest/PostgreSQL/package 三 job 全绿。
 - [completed-real] 同一 clean implementation SHA 上 SDK→RiftCoach + RiftCoach→OP.GG 双向通过；
   `stage7_interoperability_exit_v1.json` 不可覆盖且 body-free。
-- [pending-exit] evidence/state exact-SHA CI、coverage complete 与 Stage 7 关闭。
+- [completed-exit] evidence `fac6fe0beaec174c26960a259c361141b6e6ef2e` / Actions `32484257736`
+  exact-SHA 三 job 全绿；coverage complete，Stage 7 关闭。
+
+### Phase 32 - stage-8-multi-agent-reliable-runtime-productization-entry-design
+
+- Status: in_progress
+- State: prepared/waiting authorization；RQ-079 不授权 Stage 8。
+- [ ] 用户明确授权后，先按教学合同审计 8-Core 必做产品/部署/合规/Eval/作品集缺口与
+  8-Advanced 的 Bad Case/采用实验边界；
+- [ ] 比较入口分解方案并冻结 ADR、entry design、canonical 子检查点与逐项 exact-SHA 退出门；
+- [ ] 在 entry design 公共闭环前不实现 Multi-Agent、DAG、cancel/resume、恢复、SSE/前端或生产部署。
 
 ## 6A Entry Design Checklist
 

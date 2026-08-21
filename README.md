@@ -8,8 +8,10 @@ RiftCoach 是一个基于 Riot 公开赛后数据的英雄联盟复盘与训练�
 AgentRuntime、PostgreSQL 异步任务基座、玩家身份绑定，以及 owner-scoped Conversation/Message
 foundation、typed Memory、Training Plan/Progress、Memory-aware Context/terminal turns 和 owner lifecycle/
 export。阶段 6 Session/Memory V1 已由 `cbc7cbd` / Actions `32408101770` 完成最终 exact-SHA 公共闭环。
-项目没有直接合并 EchoMind 或 AGI-Saber；正式 Auth/RSO、SSE/前端、阶段 7 标准 MCP 与阶段 8
-恢复/Multi-Agent 仍未实现。
+Stage 7 标准 MCP 与动态 Meta V1 已由 `fac6fe0` / Actions `32484257736` 完成最终公共闭环：RiftCoach
+既能通过标准 MCP 调用受限 OP.GG lane-meta，也能被官方 MCP SDK 经 stdio 调用。项目没有直接合并
+EchoMind 或 AGI-Saber；正式 Auth/RSO、SSE/前端、Riot+OP.GG 精确版本融合与阶段 8 恢复/Multi-Agent
+仍未实现。
 
 如果你想理解这些能力怎样一步步搭建、对应哪些源码/测试、面试时怎样准确表述，请从
 [学习与工程证据索引](docs/learning/README.md) 开始。项目执行位置仍以
@@ -20,6 +22,7 @@ export。阶段 6 Session/Memory V1 已由 `cbc7cbd` / Actions `32408101770` 完
 - Riot API：账号、对局详情与时间线事实；
 - MatchAnalyzer：补刀、经济、伤害、视野、参团率与死亡时间等确定性指标；
 - Data Dragon：英雄、装备、符文和召唤师技能的官方静态中文映射；
+- OP.GG MCP：受限 lane-meta 当前快照，固定 partial provenance，不覆盖 Riot 官方事实；
 - 本地 RAG v1：混合召回、来源过滤、引用证据、拒答和独立保留集门禁；
 - 智谱 GLM：依据事实与检索证据生成教练式中文报告；
 - 独立评测：检查数字忠实度、证据边界与过度推断，并支持受限修订和再评测。
@@ -45,7 +48,9 @@ Riot ID
 
 RiftCoach 只分析已经结束的公开赛后数据，不提供实时对局辅助，不读取客户端内存，不追踪隐藏敌方信息，也不自动操作游戏。
 
-动态版本 Meta（英雄胜率、登场率、禁用率、主流出装和符文等）尚未接入。后续计划通过标准 MCP 客户端获取，并与 Riot API 的玩家事实严格分层。
+动态 Meta 已通过标准 MCP 接入受限 OP.GG lane-meta 当前快照，并以 partial provenance 与 Riot 玩家事实
+严格分层。精确 patch/source freshness、全部 OP.GG 工具，以及 Riot 官方版本/静态/patch 与 OP.GG 的
+多源 join 尚未实现。
 
 ## 本地开发
 

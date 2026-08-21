@@ -32,6 +32,7 @@ canonical_order:
   - 7-3-opgg-meta-adapter
   - 7-4-riftcoach-mcp-server
   - 7-5-mcp-interoperability-exit-review
+  - stage-8-multi-agent-reliable-runtime-productization-entry-design
 groups:
   - id: stage-0-baseline-and-reference-evidence
     sequence: 10
@@ -638,7 +639,7 @@ groups:
     sequence: 290
     covers:
       - 7-5-mcp-interoperability-exit-review
-    status: planned
+    status: complete
     evidence:
       problem_and_principle:
         - docs/plans/2026-08-21-stage7-standard-mcp-dynamic-meta-design.md
@@ -664,3 +665,15 @@ groups:
         - docs/learning/7-5-mcp-interoperability-exit-review-walkthrough.md
       interview_wording:
         - docs/learning/7-5-mcp-interoperability-exit-review-walkthrough.md
+
+  - id: stage-8-multi-agent-reliable-runtime-productization-entry-design
+    sequence: 300
+    covers:
+      - stage-8-multi-agent-reliable-runtime-productization-entry-design
+    status: planned
+    evidence:
+      problem_and_principle:
+        - docs/roadmap.md
+        - docs/roadmap_v1_3_amendment.md
+      failure_security_boundary:
+        - docs/architecture_capability_matrix.md

@@ -54,6 +54,7 @@ LEARNING_COVERAGE_CANONICAL_ORDER = (
     "7-3-opgg-meta-adapter",
     "7-4-riftcoach-mcp-server",
     "7-5-mcp-interoperability-exit-review",
+    "stage-8-multi-agent-reliable-runtime-productization-entry-design",
 )
 
 

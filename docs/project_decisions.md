@@ -1683,5 +1683,15 @@ pytest、PostgreSQL migration/control-plane 与 Linux package 三 job 公共闭�
 同一 clean SHA 随后唯一执行一次双向门。官方 SDK→RiftCoach stdio 与 RiftCoach→OP.GG Streamable HTTP
 均完成 initialize、initialized notification、tools/list 和一次 tools/call；OP.GG 保持 partial provenance，
 不补写 patch、source time 或 freshness。不可覆盖 body-free evidence 绑定 implementation SHA，只保存身份、
-时间窗、digest/count 与限制，Riot/LLM/Key I/O 为 0。当前只待 evidence/state 各自的 exact-SHA 三 job；
-两者完成前 7-5 coverage 与 Stage 7 仍 open，Stage 8 未进入。
+时间窗、digest/count 与限制，Riot/LLM/Key I/O 为 0。
+
+不可覆盖 evidence 提交 `fac6fe0beaec174c26960a259c361141b6e6ef2e` / Actions `32484257736`
+的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。公共 pytest
+`1578 passed, 116 skipped, 1 warning, 127 subtests passed`，真实 PostgreSQL
+`164 passed, 1 warning` 且 migration/head 一致，Linux package schema 1.6/外部调用 0。7-5 coverage
+已 complete，7-5 与 Stage 7 正式关闭。
+
+此前治理常量和 ledger 只定义到 7-5，没有现成 Stage 8 机器名。本次不从对话猜子阶段，而是按九阶段路线
+标题和既有 entry-design 命名规则显式登记
+`stage-8-multi-agent-reliable-runtime-productization-entry-design`，同步治理常量、coverage、活动计划与路线。
+它仅为 prepared/waiting authorization；RQ-079 不授权 8-Core/8-Advanced 教学、设计或实现。

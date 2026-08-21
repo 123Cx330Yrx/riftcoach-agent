@@ -22,8 +22,8 @@
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
-| 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 进行中；7-1…7-4 已公共闭环；7-5 实现 `a88fbc4/32483521108` 与 clean-SHA 双向真实门已通过，待证据/状态 exact-SHA 闭环 |
-| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
+| 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 已完成；7-5 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 完成最终公共闭环 |
+| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；仅 entry design prepared/waiting authorization，尚未开始设计或实现 |
 
 ## 横向能力总账
 
@@ -289,7 +289,8 @@ lane-meta Adapter、data-only Context 和一次真实 body-free 单向产品 smo
 fixture TDD 与 exact-SHA 三 job 公共闭环。唯一下一检查点 `7-5-mcp-interoperability-exit-review`
 已由 RQ-079 授权：锁版官方 TypeScript MCP SDK Client 经标准 stdio 调用 RiftCoach Server，另一方向
 复用产品 OP.GG Streamable HTTP Client。实现 `a88fbc4` / Actions `32483521108` 三 job 与同一 clean SHA
-的双向真实门均已通过并生成 body-free evidence；证据/状态 exact-SHA 公共闭环前仍不关闭 Stage 7。
+的双向真实门均已通过并生成 body-free evidence；证据提交 `fac6fe0` / Actions `32484257736` 又完成
+exact-SHA 三 job，7-5 coverage 与 Stage 7 已正式关闭。
 
 ### 完成标准
 
@@ -298,6 +299,9 @@ fixture TDD 与 exact-SHA 三 job 公共闭环。唯一下一检查点 `7-5-mcp-
 - 不把普通 HTTP POST 适配器称为 MCP。
 
 ## 阶段 8：Multi-Agent、可靠运行时与产品化
+
+当前只准备 `stage-8-multi-agent-reliable-runtime-productization-entry-design`，等待用户明确授权。
+该准备态不表示已经选择 Multi-Agent/DAG，也不表示 cancel/resume、恢复、SSE/前端或生产部署已开始。
 
 ### 原理
 

@@ -232,19 +232,18 @@ OP.GG MCP
 5F-3 Contract/Harness Eval  已完成；45 focused、196 adjacent、完整 929/110 subtests；裁决 `harness-compatible-but-runtime-gate-failed`，Context/terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功
 5F-4 Bounded Real Slice    未进入；5F-3 前置硬门失败，真实模型调用无信息增益，external calls 0
 5F-5 Adoption/Exit         已完成；裁决 `partial-adopt-evaluation-assets-only`；`f8dea66` / Actions `32028206103` exact-SHA 公共成功；产品拒绝 Pi，冻结保留评测资产/CI 复现与采用门方法
-6A entry design            已完成；6A-1 至 6A-7 已由 `adf53e5` / Actions `32146760003` 的 pytest、真库与 Linux packaging 三 job 公共闭环；Session/Memory entry design、6B-1 至 6B-9 与 RQ-067 文档门均已公共闭环；6B-9 最终 `cbc7cbd` / Actions `32408101770` 三 job 全绿并关闭阶段 6，阶段 7 entry design 仅准备/等待授权
+6A entry design            已完成；6A-1 至 6A-7 已由 `adf53e5` / Actions `32146760003` 的 pytest、真库与 Linux packaging 三 job 公共闭环；Session/Memory entry design、6B-1 至 6B-9 与 RQ-067 文档门均已公共闭环；6B-9 最终 `cbc7cbd` / Actions `32408101770` 三 job 全绿并关闭阶段 6
 
 阶段 7 入口设计与 7-1 pure contract 已由 `e50a546` / Actions `32436092074`、
-`37f16bc` / Actions `32439753589` exact-SHA 公共闭环。RQ-074 已授权 7-2：当前只做
-fixture/in-memory 与隔离 stdio transport/session/discovery；OP.GG、MetaEvidence、Server、普通 HTTP
-与真实外部互操作继续留在后续检查点。
-
-7-2 已由 `f121666` / Actions `32441793585` 完成 exact-SHA 三 job 公共闭环。7-3 又以
+`37f16bc` / Actions `32439753589` exact-SHA 公共闭环；7-2 又由 `f121666` / Actions
+`32441793585` 完成 transport/session/discovery 三 job 公共闭环。7-3 以
 ADR-0048 裁决 OP.GG `admitted_with_restrictions`，并由 `64311a1` / Actions `32455219404`
 完成官方 Streamable HTTP、partial MetaEvidence、严格 lane-meta Adapter、data-only Context 与一次
 真实 body-free 单向产品 smoke 的 exact-SHA 三 job 公共闭环。RQ-078 授权的 7-4 RiftCoach Server
 又由 `431c584` / Actions `32480827952` 完成 strict Server/Facade、四个只读工具与 exact-SHA 三 job
-公共闭环。7-5 双向互操作退出审查只登记为 prepared/waiting authorization，尚未进入。
+公共闭环。7-5 实现 `a88fbc4` / Actions `32483521108`、clean-SHA 官方 SDK→RiftCoach stdio 与
+RiftCoach→OP.GG Streamable HTTP 双向门，以及不可覆盖 evidence `fac6fe0` / Actions `32484257736`
+均已通过；Stage 7 正式关闭。Stage 8 entry design 当前仅 prepared/waiting authorization。
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

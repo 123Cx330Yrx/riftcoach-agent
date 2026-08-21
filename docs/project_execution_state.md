@@ -1,10 +1,10 @@
 ---
 state_schema: 1
-main_stage: 7
-substage_group: "stage-7-standard-mcp-dynamic-meta"
-current_checkpoint: "7-5-mcp-interoperability-exit-review"
+main_stage: 8
+substage_group: "stage-8-multi-agent-reliable-runtime-productization"
+current_checkpoint: "stage-8-multi-agent-reliable-runtime-productization-entry-design"
 status: in_progress
-pause_reason: ""
+pause_reason: "Stage 7 closed through fac6fe0 / Actions 32484257736; Stage 8 entry design is prepared and awaiting explicit user authorization"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-21（7-5 实现 exact-SHA 与 clean-SHA 双向真实门通过；证据公共闭环中）
-- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。Stage 7 入口设计 `e50a546/32436092074`、7-1 `37f16bc/32439753589`、7-2 `f121666/32441793585`、7-3 `64311a1/32455219404` 与 7-4 `431c584/32480827952` 已关闭。7-5 实现 `a88fbc4/32483521108` 三 job 已全绿；同一 clean SHA 的官方 SDK→RiftCoach stdio 与 RiftCoach→OP.GG Streamable HTTP 双向门已通过并生成 body-free evidence。当前等待证据提交的 exact-SHA 公共门，尚未关闭 Stage 7
+- 最后更新：2026-08-21（7-5 与 Stage 7 已完成实现、双向真实 evidence 和 exact-SHA 公共闭环；Stage 8 仅交接准备态）
+- 主阶段：阶段 8；Stage 7 入口设计与 7-1…7-4 已依次公共闭环，7-5 实现 `a88fbc4/32483521108`、clean-SHA 官方 SDK→RiftCoach stdio + RiftCoach→OP.GG Streamable HTTP 双向门，以及 evidence `fac6fe0/32484257736` 均已通过。7-5 coverage complete，Stage 7 正式关闭。当前唯一检查点为 `stage-8-multi-agent-reliable-runtime-productization-entry-design`，仅 prepared/waiting authorization；尚未开始 Stage 8 教学、设计或实现
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：继续 `7-5-mcp-interoperability-exit-review`，提交不可覆盖 `stage7_interoperability_exit_v1.json`、持久退出矩阵与自动验证，等待该 exact SHA 的三 job；全绿后再用独立状态提交将 7-5/coverage/Stage 7 置 complete 并只交接 Stage 8 prepared，不提前实施 Stage 8。
+- 唯一下一步：`stage-8-multi-agent-reliable-runtime-productization-entry-design` 仅 prepared/waiting authorization；等待用户明确授权后，才开始 8-Core/8-Advanced 的初学者教学、现有能力与 Bad Case 审计及入口设计，不提前实现 Multi-Agent、DAG、cancel/resume、恢复、SSE/前端或生产部署。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -551,10 +551,10 @@ pause_reason: ""
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-6 与 Stage 7 入口、7-1、7-2、7-3、7-4 已关闭；7-4 已实现 strict Server Session、owner-scoped read-only Facade、四个固定工具、安全 DTO 与 in-process Client/Server fixture | 本地 fixture/公共单元门等于公网 transport、真实外部 Client、7-5 双向互操作或整个阶段 7 已完成 |
-| 项目理解 | Stage 7 入口/7-1/7-2/7-3/7-4 已公共闭环；ADR-0049、7-4 专用设计与 walkthrough 已持久解释 Server/Facade 分层、owner 注入、verified projection、body-free failure 和诚实 evaluation 边界 | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
-| 参考资料 | 官方仓库/endpoint/协议/许可已审计，真实 handshake/list/call 和当前 30-tool/18-LoL 目录已验证；patch/freshness/rate-limit/底层数据条款仍未知 | partial admission 等于上游完全可信、稳定、新鲜或商业再分发条款已解决 |
-| GitHub/部署 | 入口设计、7-1、7-2、7-3、7-4 的 exact-SHA 三 job 已绿；公网部署与 7-5 真实外部 Client 证明未开始 | 公共 CI 内的 in-process Server fixture 等于 7-5 双向互操作、正式 Auth/RSO、SLA 或公网可用 |
+| 本地代码 | 阶段 0-7 已关闭；Stage 7 已实现标准 Client/transport、OP.GG lane-meta partial MetaEvidence、受限 RiftCoach Server 与官方 Client/Server 双向互操作 | Stage 7 完成等于 Riot+OP.GG join、全 OP.GG 工具、公网 RiftCoach Server、正式 Auth/TLS 或 Stage 8 已实现 |
+| 项目理解 | Stage 7 入口、7-1…7-5 均有八维持久材料；7-5 walkthrough 已解释协议协商、双 transport、body-free evidence、真实门与范围限制 | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
+| 参考资料 | OP.GG 官方仓库/endpoint/协议/许可与官方 MCP SDK 已审计并真实互操作；当前 OP.GG patch/freshness/rate-limit/底层数据条款仍 unknown | partial provenance 等于上游完全可信、稳定、新鲜或商业再分发条款已解决 |
+| GitHub/部署 | Stage 7 各检查点均有 exact-SHA 三 job；7-5 最终 evidence 为 `fac6fe0/32484257736`，公网部署仍未开始 | exact-SHA CI 与本地 stdio/远端 OP.GG 互操作等于正式 Auth/RSO、SLA、公网 RiftCoach Server 或 Stage 8 产品化完成 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -1835,3 +1835,24 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 7-4 walkthrough/八维 coverage 已置 complete。该证据关闭受限 transport-neutral Server/Facade，
   不证明正式 Auth/RSO、TLS/限流、公网 transport、Riot+OP.GG join 或 7-5 双向互操作。
 - canonical 只交接 `7-5-mcp-interoperability-exit-review` prepared/waiting authorization；授权前停止。
+
+## 2026-08-21：7-5 exact-SHA 公共闭环、Stage 7 关闭与 Stage 8 准备态
+
+- 实现 `a88fbc457850dd77265900e6800079ac2a8fb0e4` / Actions `32483521108` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；公共 pytest
+  `1577 passed, 116 skipped, 1 warning, 127 subtests passed`，真库 `164 passed, 1 warning`，
+  Linux package schema 1.6/外部 Riot Provider 调用 0。
+- 同一 clean implementation SHA 在 `2026-08-21T12:49:20Z–12:49:25Z` 唯一执行一次双向门：官方
+  `@modelcontextprotocol/sdk@1.30.0` Client→RiftCoach stdio 与 RiftCoach Client→OP.GG Streamable HTTP
+  均完成 initialize、initialized notification、tools/list 和一次 tools/call。OP.GG 继续为 partial
+  provenance，不伪造 patch、source time 或 freshness；Riot/LLM/Key I/O 为 0。
+- 不可覆盖 evidence 提交 `fac6fe0beaec174c26960a259c361141b6e6ef2e` / Actions `32484257736`
+  精确对应该 SHA，三 job completed/success。公共 pytest
+  `1578 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+  `164 passed, 1 warning`，migration 可逆且 metadata=head；Linux package schema 1.6、外部调用 0。
+- 7-5 八维 coverage 已 complete，7-5 与 Stage 7 正式关闭。治理顺序原先终止于 7-5；本次按固定九阶段
+  路线和既有 entry-design 命名规则，显式追加
+  `stage-8-multi-agent-reliable-runtime-productization-entry-design` 到治理常量与 coverage ledger，
+  作为唯一 prepared/waiting authorization 检查点，不把交接解释为 Stage 8 已开始实施。
+- Stage 8 仍按 `8-Core` 必做交付线与 `8-Advanced` 至少一个证据驱动采用实验双轨；用户明确授权前，
+  不开展教学/设计，不实现 Multi-Agent、DAG、cancel/resume、恢复、SSE/前端或生产部署。

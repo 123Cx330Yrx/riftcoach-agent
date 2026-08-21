@@ -65,8 +65,8 @@ external endpoint, Key, OP.GG, MetaEvidence or MCP Server was added.
 official Streamable HTTP, admitted-subset discovery, strict lane-meta normalization,
 partial MetaEvidence, data-only Context and one body-free real product smoke are complete.
 Full local gates and exact-SHA public CI are complete; coverage is complete. RQ-078's 7-4
-implementation is also complete at `431c584` / Actions `32480827952`; 7-5 is prepared and
-awaiting explicit authorization.
+implementation is also complete at `431c584` / Actions `32480827952`; 7-5 subsequently
+closed at evidence `fac6fe0` / Actions `32484257736`.
 
 ### Task 3: Candidate audit and normalization
 
@@ -101,11 +101,11 @@ bidirectional interoperability.
 
 ## 7-5: Interoperability exit review
 
-**Status (2026-08-21):** in progress under RQ-079 / ADR-0050. Implementation
+**Status (2026-08-21):** complete under RQ-079 / ADR-0050. Implementation
 `a88fbc457850dd77265900e6800079ac2a8fb0e4` / Actions `32483521108` passed all
 three exact-SHA jobs. The same clean SHA passed official SDK→RiftCoach stdio and
-RiftCoach→OP.GG Streamable HTTP once; body-free evidence is created. Evidence/state
-exact-SHA public closure remains pending.
+RiftCoach→OP.GG Streamable HTTP once; body-free evidence commit `fac6fe0` / Actions
+`32484257736` also passed all three exact-SHA jobs. Coverage and Stage 7 are closed.
 
 ### Task 5: Real external proof and exit matrix
 
@@ -125,8 +125,8 @@ exact-SHA public closure remains pending.
 4. [completed-public] 实现 `a88fbc4` / Actions `32483521108` exact-SHA 三 job 全绿；
 5. [completed-real] 在 clean implementation SHA 上执行一次双向门：SDK→RiftCoach + RiftCoach→OP.GG，
    保存不可覆盖 body-free evidence；
-6. [pending-exit] 复核 disconnect/timeout/schema/security/owner-scope、八维 coverage、最终 exact-SHA CI；
-   只有两侧与 exit matrix 全部通过才关闭 Stage 7，否则保留 partial/deferred 证据。
+6. [completed-exit] disconnect/timeout/schema/security/owner-scope、八维 coverage 与 evidence
+   `fac6fe0/32484257736` exact-SHA 三 job 全绿；Stage 7 已关闭，partial/deferred 边界继续保留。
 
 ## Verification gates for every task
 

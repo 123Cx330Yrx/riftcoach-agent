@@ -3524,3 +3524,16 @@
 - 证据批提交前聚焦 interoperability/governance 为 `23 passed`；compileall、6 YAML、body-free 持久
   evidence validator、治理脚本与 `git diff --check` 全绿。首次治理红灯只因人类可读下一步漏写 canonical
   checkpoint 名，已补为同一 `7-5-mcp-interoperability-exit-review`；本批未重跑 OP.GG 门或发生新外部 I/O。
+
+## 2026-08-21：7-5 evidence exact-SHA 公共闭环与 Stage 7 关闭
+
+- `fac6fe0beaec174c26960a259c361141b6e6ef2e` / Actions `32484257736` 三 job completed/success；
+  公共 pytest `1578 passed, 116 skipped, 1 warning, 127 subtests passed`，真库 `164 passed, 1 warning`，
+  package schema 1.6/外部调用 0。
+- 7-5 coverage 已置 complete，Stage 7 关闭；canonical order/ledger 增加
+  `stage-8-multi-agent-reliable-runtime-productization-entry-design` planned。
+- 当前只完成独立状态收尾并等待该状态 SHA 的 exact-SHA 三 job；Stage 8 仍 prepared/waiting authorization，
+  没有运行 OP.GG/Riot/Provider、读取 Key 或实现任何 Stage 8 产品代码。
+- 状态批最终本地回归 `1577 passed, 117 skipped, 1 warning, 127 subtests passed`；聚焦 governance/
+  interoperability `23 passed`，compileall、6 YAML、governance 与 diff check 全绿。117 skip 继续只表示
+  本机 PostgreSQL/Docker/Linux 环境限制，真实真库/package 证据由公共 job 提供。

@@ -3481,3 +3481,14 @@
   保持 unknown；Riot/LLM/Key I/O 为 0。
 - 双向 evidence 绑定 product SHA `a88fbc4`，只含 identity、time window、catalog/schema/result/trace digest、
   count 与限制，目标文件拒绝覆盖。当前下一动作是证据/自动验证提交和 exact-SHA 公共门，Stage 7 尚未关闭。
+
+## 2026-08-21：7-5 evidence 公共闭环与 Stage 8 canonical 命名
+
+- evidence `fac6fe0beaec174c26960a259c361141b6e6ef2e` / Actions `32484257736` 三 job 全绿：
+  公共 pytest 1578/116 skips/127 subtests，真库 164 且 migration/head 一致，package schema 1.6/外部调用 0。
+- Stage 7 的实现/双向真实门/evidence 退出矩阵全部成立；7-5 coverage 与 Stage 7 可以正式关闭。
+- 治理常量和 coverage 原先只到 7-5，仓库没有预存 Stage 8 checkpoint 名。为避免从聊天猜测，按固定
+  路线标题“Multi-Agent、可靠运行时与产品化”和已有 stage-entry convention 登记
+  `stage-8-multi-agent-reliable-runtime-productization-entry-design`，同时修改治理常量、ledger、路线和活动计划。
+- 该登记只表示 prepared/waiting authorization；Stage 8 的 8-Core/8-Advanced 分解仍须入口设计，不提前
+  选择 Multi-Agent/DAG，也不开始 cancel/resume、恢复、SSE/前端或部署。

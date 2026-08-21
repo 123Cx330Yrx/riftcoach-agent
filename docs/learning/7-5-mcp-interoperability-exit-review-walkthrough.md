@@ -98,8 +98,10 @@ RiftCoach→OP.GG 同样各执行一次 initialize/notification/list/call，确�
 全部 pass，Riot/LLM/Key I/O 为 0；OP.GG patch/source time/freshness 继续为 unknown，provenance 继续
 为 partial。不可覆盖证据绑定上述 product SHA，且不含 owner、query、session、arguments 或正文。
 
-以上已经证明实现公共门与 clean-SHA 真实双向门，不替代尚待执行的 evidence/state 两次独立 exact-SHA
-三 job。两次公共结果均全绿前，7-5 coverage 与 Stage 7 仍保持 open。
+不可覆盖 evidence 提交 `fac6fe0beaec174c26960a259c361141b6e6ef2e` / Actions `32484257736`
+随后完成 exact-SHA 三 job：公共 pytest `1578 passed, 116 skipped, 1 warning, 127 subtests passed`，
+真实 PostgreSQL `164 passed, 1 warning` 且 migration/head 一致，Linux package schema 1.6/外部调用 0。
+因此八维 coverage、7-5 与 Stage 7 正式关闭；Stage 8 只交接 entry-design 准备态，没有开始实现。
 
 ## 6. 安全运行手册
 
