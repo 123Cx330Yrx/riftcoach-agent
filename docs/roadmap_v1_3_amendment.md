@@ -230,7 +230,7 @@ OP.GG MCP
 5F-3 Contract/Harness Eval  已完成；45 focused、196 adjacent、完整 929/110 subtests；裁决 `harness-compatible-but-runtime-gate-failed`，Context/terminal/live timing 硬门失败；`3d9a081` / Actions `32025522606` exact-SHA 公共成功
 5F-4 Bounded Real Slice    未进入；5F-3 前置硬门失败，真实模型调用无信息增益，external calls 0
 5F-5 Adoption/Exit         已完成；裁决 `partial-adopt-evaluation-assets-only`；`f8dea66` / Actions `32028206103` exact-SHA 公共成功；产品拒绝 Pi，冻结保留评测资产/CI 复现与采用门方法
-6A entry design            已完成；6A-1 至 6A-7 已由 `adf53e5` / Actions `32146760003` 的 pytest、真库与 Linux packaging 三 job 公共闭环；Session/Memory entry design、6B-1 至 6B-8 与 RQ-067 文档门均已公共闭环；6B-9 lifecycle/export/exit review 已完成本地实现与八维 walkthrough，等待实现 SHA 的 pytest/真库/package 三 job 后关闭阶段 6
+6A entry design            已完成；6A-1 至 6A-7 已由 `adf53e5` / Actions `32146760003` 的 pytest、真库与 Linux packaging 三 job 公共闭环；Session/Memory entry design、6B-1 至 6B-9 与 RQ-067 文档门均已公共闭环；6B-9 最终 `cbc7cbd` / Actions `32408101770` 三 job 全绿并关闭阶段 6，阶段 7 entry design 仅准备/等待授权
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

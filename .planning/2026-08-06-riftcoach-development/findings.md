@@ -3224,3 +3224,17 @@
 - idempotency 并发 winner 写 marker 后，loser 的 unique race 应重新读取同 tuple 并 replay；只有 key 对应不同
   scope/target 才是 conflict。
 - purge 遇 FK 阻塞应报告本批被阻塞 ID 数量，不应只按“一个表失败”计 1，也不能临时关闭 FK/cascade。
+
+## 2026-08-21：6B-9 公共门与阶段 7 checkpoint 裁决
+
+- 首个实现 SHA 的唯一真库失败不是产品缺陷：测试在 hidden 后执行 `status=active, hidden_at=NULL`，
+  正确触发 `conversation_lifecycle_irreversible`。幂等/scope conflict 不需要重置 Conversation；删除该夹具
+  比放宽 trigger 更符合产品合同。
+- 修复 SHA 的公共普通回归为 `1490 passed/116 skipped`，与实现前本地 `1489/117` 不同；原因是该真库
+  测试不再在非法 reset 处失败/跳过。两组计数必须分别按环境和 SHA 记录。
+- package console 的 JSON 只打印 schema 1.6 与既有摘要字段，但同 SHA 的 executable 在成功返回前已严格
+  断言 export schema/record kinds、conversation-only delete、Preference/Plan 存续；证据应表述为“job 成功
+  执行这些断言”，不能声称所有 lifecycle 字段都出现在 console JSON。
+- 路线已固定阶段 7 名称但未预建 checkpoint label。按既有 entry-design 命名规则新增
+  `stage-7-standard-mcp-dynamic-meta-entry-design` 与 planned coverage/order contract，只作 prepared handoff；
+  RQ-071 不授权阶段 7，因此不创建 ADR、代码或真实 MCP/Meta I/O。

@@ -2395,3 +2395,22 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   不从 report 文本猜 Candidate。
 - `BOUNDARY`：当前只有 6B-8 ADR/design/implementation plan，没有产品 migration/selector/Runtime/turn
   writer；设计批 exact-SHA 公共闭环前不写实现，6B-8 正式闭环前不进入 6B-9。
+
+### 2026-08-21：6B-9 exact-SHA 公共闭环、阶段 6 关闭与阶段 7 交接
+
+- `6B-8-BASE`：6B-8 最终 evidence 提交 `aacc11a1993e9d7d660f9d8d15b761dc641954b1` /
+  Actions `32403187972` 三 job全绿；公共 pytest `1465 passed, 112 skipped`、真库 `157 passed`，
+  package schema 1.5 输出三类 Context、terminal Assistant 0、外部调用 0，随后才进入 6B-9。
+- `DESIGN-PUBLIC`：`4bdb1bb9e720bd853c677ce2f650476f19ab6e41` / Actions `32404203265`
+  的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，只关闭设计门。
+- `FAILED-EVIDENCE`：实现 `2e37bd4e156d750634d67d64c07ddb4784f048f4` / Actions `32407862496`
+  的普通/package job 成功，真库为 `163 passed, 1 failed`；唯一失败是测试非法 unhide Conversation，
+  PostgreSQL 正确拒绝 `conversation_lifecycle_irreversible`，未放宽产品合同。
+- `PUBLIC-CI`：最小测试修复 `cbc7cbdcd3841a6ed20cd61a61f1cb5890787d38` / Actions
+  `32408101770` 三 job completed/success。公共 pytest `1490 passed, 116 skipped, 1 warning,
+  110 subtests passed`；真实 PostgreSQL `164 passed, 1 warning`，0009 可逆且 metadata=head；Linux
+  package schema 1.6 成功断言 export→conversation-only delete、Preference/Plan 存续和外部调用 0。
+- `CLOSED`：6B-9、coverage、Session/Memory V1 与阶段 6 正式关闭；本地 `1489 passed/117 skipped`
+  与公共 `1490/116` 分开记录，不把本机无 PostgreSQL/Docker 的 skip 冒充成功。
+- `HANDOFF`：唯一下一检查点为 `stage-7-standard-mcp-dynamic-meta-entry-design`，仅 prepared/waiting
+  authorization。RQ-071 不授权阶段 7；不开始 MCP/Meta 设计、实现或真实互操作。

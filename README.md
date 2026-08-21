@@ -6,8 +6,10 @@ RiftCoach 是一个基于 Riot 公开赛后数据的英雄联盟复盘与训练�
 
 当前版本包含 RiftCoach 独立领域核心、质量门控 Harness、可靠 Tool Runtime、RAG v1、受限
 AgentRuntime、PostgreSQL 异步任务基座、玩家身份绑定，以及 owner-scoped Conversation/Message
-foundation。项目没有直接合并 EchoMind 或 AGI-Saber；Conversation/Message 当前仍待实现提交的
-PostgreSQL/package 公共闭环，长期 Memory 和完整会话式 Agent 平台尚未实现。
+foundation、typed Memory、Training Plan/Progress、Memory-aware Context/terminal turns 和 owner lifecycle/
+export。阶段 6 Session/Memory V1 已由 `cbc7cbd` / Actions `32408101770` 完成最终 exact-SHA 公共闭环。
+项目没有直接合并 EchoMind 或 AGI-Saber；正式 Auth/RSO、SSE/前端、阶段 7 标准 MCP 与阶段 8
+恢复/Multi-Agent 仍未实现。
 
 如果你想理解这些能力怎样一步步搭建、对应哪些源码/测试、面试时怎样准确表述，请从
 [学习与工程证据索引](docs/learning/README.md) 开始。项目执行位置仍以
@@ -66,7 +68,8 @@ HTTP 层不直接选择 Skill、拼 Prompt 或调用 Provider。6A-6 已为这�
 API+Worker+PostgreSQL packaging、真实 Worker composition 和 no-I/O Linux smoke；提交 `adf53e5` / Actions
 `32146760003` 的 pytest、真实 PostgreSQL 与 Linux packaging 三个 job 已完成 exact-SHA 公共验证。
 
-这些能力仍不等于正式公网鉴权/HTTPS、完整 Session/Memory、SSE 或自动 lease/reclaim。真实外部 Worker
+这些能力仍不等于正式公网鉴权/HTTPS、SSE 或自动 lease/reclaim。Session/Memory V1 已在后续 6B 闭环，
+但真实外部 Worker
 组合与 Docker/Compose 控制面已通过公共 CI，但仍不能称为正式公网部署；PostgreSQL job 继续是 task
 并发与生命周期语义的阻塞证据，Linux smoke 也不证明模型报告质量。
 
@@ -143,11 +146,13 @@ Invoke-RestMethod `
   -Body (@{ content = "请复盘我最近的状态" } | ConvertTo-Json)
 ```
 
-Conversation/Message foundation 本身不会因追加消息自动触发 Agent。后续 6B-4 至 6B-6 已在独立接口上
+Conversation/Message foundation 本身不会因追加消息自动触发 Agent。后续 6B-4 至 6B-9 已在独立接口上
 完成 Conversation-bound Review identity、Memory Candidate 写入门和 typed Preference/Profile/Review
-Memory；assistant terminal、Training Plan/Progress 与 Memory-aware Context 仍属于后续 6B 批次。
+Memory、Training Plan/Progress、Memory-aware Context、terminal Assistant 与 lifecycle/export。terminal
+Assistant 仍只在可信 succeeded Task、publication 与 final Artifact 全部匹配时由内部 writer 追加，不能由
+客户端直接伪造。
 
-### 当前 typed Memory 纵向切片（6B-3 至 6B-6）
+### 当前 Session / typed Memory 纵向切片（6B-3 至 6B-9）
 
 长期写入采用两层模型：Candidate 保存来源、权限、确认和审计；通过 accept 后，typed materializer 才在
 同一 PostgreSQL 事务中写入 Preference、Player Profile 或 Review Memory，并用 expected-version、
@@ -157,12 +162,19 @@ supersede chain、advisory lock、partial unique 和 trigger 防止静默覆盖�
 GET /memory/preferences
 GET /memory/players/{relationship_id}/profile
 GET /memory/players/{relationship_id}/reviews
+GET /memory/players/{relationship_id}/training-plan
+GET /memory/players/{relationship_id}/training-progress
+GET /owner-data/export
+POST /owner-data/deletions
+POST /owner-data/deletions/{marker_id}/retry
 ```
 
-实现/最小测试修复 `5531c81` / Actions `32387026797` 已通过公共 pytest、PostgreSQL 17 和 Linux
-package smoke；package 流程真实执行 Candidate accepted→Preference v1 query，外部 Riot/Provider 调用为 0。
-这不等于账号所有权已验证，也不等于 Training Plan/Progress、Memory Context、导出/删除生命周期或公网
-鉴权已经完成。
+6B-6 typed Memory 由 `5531c81` / Actions `32387026797` 公共闭环；6B-7 Plan/Progress 为
+`f6d8922/32397290175`，6B-8 Context/terminal turns 为 `aacc11a/32403187972`。6B-9 最终
+`cbc7cbd/32408101770` 的公共 pytest 为 `1490 passed, 116 skipped, 1 warning, 110 subtests passed`，
+真实 PostgreSQL 为 `164 passed, 1 warning`；Linux package schema 1.6 执行 bounded export、
+conversation-only delete 和 Preference/Plan 存续断言，外部 Riot/Provider 调用为 0。这仍不等于账号所有权
+已验证、备份副本已擦除、公网鉴权/部署或真实模型质量已经完成。
 
 ### 本地 Linux package 与进程职责
 

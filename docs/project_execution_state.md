@@ -1,10 +1,10 @@
 ---
 state_schema: 1
-main_stage: 6
-substage_group: "stage-6-session-memory"
-current_checkpoint: "6B-9-lifecycle-export-exit-review"
+main_stage: 7
+substage_group: "stage-7-standard-mcp-dynamic-meta"
+current_checkpoint: "stage-7-standard-mcp-dynamic-meta-entry-design"
 status: in_progress
-pause_reason: ""
+pause_reason: "Stage 6 closed at cbc7cbd / Actions 32408101770; stage 7 entry design is prepared and awaiting explicit user authorization"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-21（6B-9 产品实现与八维 walkthrough 已完成本地验证，等待 exact-SHA 公共三 job）
-- 主阶段：阶段 6；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-8 均已完成 exact-SHA 公共闭环。当前唯一检查点为 `6B-9-lifecycle-export-exit-review / in_progress`；owner export、三 scope hidden-before-cleanup、marker/retry、retention/purge、薄 API/composition 与 package schema 1.6 已实现。coverage 在实现提交的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿前保持 planned，阶段 6 不提前关闭
+- 最后更新：2026-08-21（6B-9 与整个 Session/Memory V1 已完成 exact-SHA 公共闭环；阶段 7 仅交接准备态）
+- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。6B-9 最终修复提交 `cbc7cbdcd3841a6ed20cd61a61f1cb5890787d38` / Actions `32408101770` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success，coverage 已 complete，阶段 6 正式关闭。当前唯一检查点为 `stage-7-standard-mcp-dynamic-meta-entry-design`，仅 prepared/waiting authorization；尚未开始 MCP/Meta 设计或实现
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,8 +250,7 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`6B-9-lifecycle-export-exit-review` 已按 RQ-071 进入设计/TDD；先完成专用设计批的
-  本地门禁、独立提交和 exact-SHA 公共 CI，再按计划写 lifecycle/export 产品代码。
+- 唯一下一步：`stage-7-standard-mcp-dynamic-meta-entry-design` 仅 prepared/waiting authorization；等待用户明确授权后，才开始标准 MCP 与动态 Meta 的初学者教学、现有接缝审计和 entry design，不提前实现 MCP Client/Server 或外部互操作。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -552,10 +551,10 @@ pause_reason: ""
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5、阶段 6 的 6A、Session/Memory entry design、6B-1 至 6B-5 均已完成；6B-5 的公共 PostgreSQL/package 证据由 `dd7c9c8/32376405150` 补齐 | 本地代码等于具体长期 Memory、assistant terminal、生产模型质量、正式 Auth、SSE/前端已完成 |
-| 项目理解 | RQ-067 已从阶段 0 重审并公共闭环；6B-3 至 6B-5 均有完整 implementation walkthrough，覆盖问题、实现、代码地图、数据流、验证、运行、安全边界和面试表述 | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
+| 本地代码 | 阶段 0-5 与阶段 6 的 6A、Session/Memory entry design、6B-1 至 6B-9 均已实现并关闭；6B-9 最终代码为 `cbc7cbd` | 本地代码等于生产模型质量、正式 Auth/RSO、SSE/前端、阶段 7 MCP、阶段 8 恢复/Multi-Agent 已完成 |
+| 项目理解 | RQ-067 已从阶段 0 重审并公共闭环；6B-1 至 6B-9 均有八维持久材料，6B-9 walkthrough 同时给出 Session/Memory V1 exit matrix | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
 | 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | 6A、Session/Memory design、6B-1 至 6B-5 与 RQ-067 均已有 exact-SHA 三 job；网页与公网仍未部署 | 既有 CI 等于生产切换、正式 Auth/完整 Session/Memory、备份、SLA 或公网可用 |
+| GitHub/部署 | 6A、Session/Memory design、6B-1 至 6B-9 与 RQ-067 均已有 exact-SHA 三 job；6B-9 为 `cbc7cbd/32408101770`，网页与公网仍未部署 | 既有 CI 等于生产切换、正式 Auth/RSO、备份副本擦除、SLA 或公网可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -1625,3 +1624,22 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   export→conversation-only delete 必须由实现 SHA 的公共 job 补证。外部 Riot/Provider/Key I/O 为 0。
 - 唯一下一动作：完成最终本地门禁、提交/推送实现 SHA 并等待 exact-SHA 三 job；全绿后才能把 coverage
   置 complete、正式关闭 6B-9/Session-Memory V1，并交接阶段 7 的 canonical 准备态。
+
+## 2026-08-21：6B-9 exact-SHA 公共闭环、阶段 6 关闭与阶段 7 准备态
+
+- 设计提交 `4bdb1bb9e720bd853c677ce2f650476f19ab6e41` / Actions `32404203265` 已完成
+  exact-SHA 三 job，只证明设计门兼容。
+- 实现提交 `2e37bd4e156d750634d67d64c07ddb4784f048f4` / Actions `32407862496` 的
+  `pytest`、`packaging-smoke` 成功，真实 PostgreSQL 为 `163 passed, 1 failed`；唯一失败是测试夹具非法
+  把 hidden Conversation 改回 active/null hidden，数据库正确拒绝 `conversation_lifecycle_irreversible`。
+  产品 trigger/Repository/scope 未放宽。
+- 最小测试修复 `cbc7cbdcd3841a6ed20cd61a61f1cb5890787d38` 删除非法 reset；Actions
+  `32408101770` 精确对应该 SHA，`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部
+  completed/success。公共 pytest `1490 passed, 116 skipped, 1 warning, 110 subtests passed`；真实
+  PostgreSQL `164 passed, 1 warning`，0009 upgrade/downgrade 和 `alembic check` metadata-head 通过。
+- Linux package schema 1.6 在成功退出前断言有界 owner export、conversation-only delete 后 Conversation/
+  Message 不可见、Preference/Plan 存续；console 输出 `external_riot_provider_calls=0`。这不证明真实
+  Riot/Provider、正式 Auth/RSO、备份副本擦除、公网部署或容量 SLA。
+- 6B-9 coverage 已 complete，6B-9、Session/Memory V1 与阶段 6 正式关闭。当前只交接
+  `stage-7-standard-mcp-dynamic-meta-entry-design` prepared/waiting authorization；尚未开始标准 MCP/Meta
+  教学、设计、实现或真实互操作。

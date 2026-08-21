@@ -3310,3 +3310,16 @@
 - 首轮完整回归 `1488 passed, 117 skipped, 1 warning, 110 subtests`，唯一失败是第二处 OpenAPI path
   allowlist 未加入新 endpoint；同步后最终完整回归 `1489 passed, 117 skipped, 1 warning, 110 subtests`。
 - walkthrough 已覆盖八维与 Session/Memory V1 exit matrix；公共 exact-SHA 三 job 前不关闭 coverage/阶段 6。
+
+## 2026-08-21：6B-9 exact-SHA 公共闭环与阶段 6 收尾
+
+- 设计 SHA `4bdb1bb9e720bd853c677ce2f650476f19ab6e41` / Actions `32404203265` 已先独立
+  完成三 job 公共门。
+- 实现 `2e37bd4e156d750634d67d64c07ddb4784f048f4` / Actions `32407862496` 的 pytest/package
+  成功，真库 `163 passed, 1 failed`；失败夹具非法逆转 hidden Conversation，数据库正确拒绝。
+- 最小测试修复 `cbc7cbdcd3841a6ed20cd61a61f1cb5890787d38` / Actions `32408101770` 的三 job
+  completed/success。公共 pytest `1490 passed, 116 skipped, 1 warning, 110 subtests passed`；真库
+  `164 passed, 1 warning`，0009 可逆、metadata=head；Linux package schema 1.6 完成 export/delete/survival
+  断言，输出 `external_riot_provider_calls=0`。
+- 6B-9 coverage 已 complete；Session/Memory V1 与阶段 6 正式关闭。canonical 只交接
+  `stage-7-standard-mcp-dynamic-meta-entry-design` prepared/waiting authorization，不开始阶段 7 工作。

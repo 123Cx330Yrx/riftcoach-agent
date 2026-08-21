@@ -26,6 +26,7 @@ canonical_order:
   - 6b-7-training-plan-progress
   - 6b-8-memory-aware-context-typed-turns
   - 6b-9-lifecycle-export-exit-review
+  - stage-7-standard-mcp-dynamic-meta-entry-design
 groups:
   - id: stage-0-baseline-and-reference-evidence
     sequence: 10
@@ -456,7 +457,7 @@ groups:
     sequence: 230
     covers:
       - 6B-9-lifecycle-export-exit-review
-    status: planned
+    status: complete
     evidence:
       problem_and_principle:
         - docs/plans/2026-08-19-stage6-session-memory-design.md
@@ -482,3 +483,15 @@ groups:
         - docs/learning/6b-9-lifecycle-export-exit-review-walkthrough.md
       interview_wording:
         - docs/learning/6b-9-lifecycle-export-exit-review-walkthrough.md
+
+  - id: stage-7-standard-mcp-dynamic-meta-entry-design
+    sequence: 240
+    covers:
+      - stage-7-standard-mcp-dynamic-meta-entry-design
+    status: planned
+    evidence:
+      problem_and_principle:
+        - docs/roadmap.md
+        - docs/adr/0005-standard-mcp-only.md
+      failure_security_boundary:
+        - docs/architecture_capability_matrix.md

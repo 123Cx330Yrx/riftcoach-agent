@@ -1544,3 +1544,21 @@ package schema 1.6。实现审查补充一项 lifecycle reset 规则：隐藏 ac
 但 `supersedes` 保持 null，不把隐藏记录重新连入公开历史。0009 所有已展开 CHECK 名使用 `op.f()`，避免 naming
 convention 双前缀。当前退出裁决为 `pass-local-pending-public-ci`；只有实现 SHA 的 pytest、真实 PostgreSQL 和
 Linux package 三 job 全绿后，才关闭 6B-9 与 Session/Memory V1。
+
+### 6B-9 exact-SHA 公共闭环与阶段 7 停止点（2026-08-21）
+
+设计提交 `4bdb1bb9e720bd853c677ce2f650476f19ab6e41` / Actions `32404203265` 先完成三 job
+公共设计门。实现提交 `2e37bd4e156d750634d67d64c07ddb4784f048f4` / Actions `32407862496`
+的 `pytest` 与 `packaging-smoke` 成功；真实 PostgreSQL 唯一失败是测试夹具在 hidden 后把 Conversation
+恢复为 active/null hidden，0009 的 irreversible trigger 正确拒绝 `conversation_lifecycle_irreversible`。
+生产 trigger、Repository、scope 或隐藏语义均未放宽。
+
+最小修复 `cbc7cbdcd3841a6ed20cd61a61f1cb5890787d38` 只删除非法 reset；Actions `32408101770`
+精确对应该 SHA，三 job 全部 completed/success。公共 pytest 为 `1490 passed, 116 skipped, 1 warning,
+110 subtests passed`；真实 PostgreSQL 为 `164 passed, 1 warning`，0009 upgrade/downgrade 与
+`alembic check` metadata-head 一致性通过；Linux package schema 1.6 成功断言 owner export、
+conversation-only delete 后 Conversation/Message 不可见、Preference/Plan 继续可见，输出外部调用 0。
+
+因此 6B-9、八维 coverage、Session/Memory V1 与阶段 6 正式关闭。唯一下一检查点命名为
+`stage-7-standard-mcp-dynamic-meta-entry-design`，当前仅 prepared/waiting authorization；RQ-071 没有
+授权阶段 7，尚未开始 MCP Client/Server、Meta Adapter、OP.GG 接入或真实互操作。

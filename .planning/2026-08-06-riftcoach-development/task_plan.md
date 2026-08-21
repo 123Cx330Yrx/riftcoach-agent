@@ -15,8 +15,10 @@ Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `6B-7 → 6B-8 → 6B-9` without per-step approval. Phase 23 -
 `6B-7-training-plan-progress` is complete at `f6d8922` / Actions `32397290175`.
 Phase 24 - `6B-8-memory-aware-context-typed-turns` is complete at `aacc11a` /
-Actions `32403187972`. Phase 25 - `6B-9-lifecycle-export-exit-review` is in
-progress at its design/TDD gate.
+Actions `32403187972`. Phase 25 - `6B-9-lifecycle-export-exit-review` is complete
+at `cbc7cbd` / Actions `32408101770`. Phase 26 -
+`stage-7-standard-mcp-dynamic-meta-entry-design` is prepared and awaiting
+explicit user authorization; no stage 7 design or implementation has started.
 
 ## Phases
 
@@ -265,9 +267,10 @@ progress at its design/TDD gate.
 `6B-6-preferences-profile-review-memory` 已由实现/最小测试修复 `5531c81` 与 Actions
 `32387026797` 完成 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环，
 coverage 已 complete。6B-7 又由 `f6d8922` / Actions `32397290175` 完成 exact-SHA 三 job 公共闭环。
-RQ-071 已授权连续完成 `6B-7→6B-8→6B-9`；6B-8 已由 `aacc11a` / Actions `32403187972`
-完成 exact-SHA 三 job。当前唯一动作是 `6B-9-lifecycle-export-exit-review` 的专用设计公开验证，随后按
-TDD 实现 owner export、三种删除、retention/purge/补偿与完整 exit matrix。
+RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a` / Actions
+`32403187972` 完成，6B-9 由最小测试修复 `cbc7cbd` / Actions `32408101770` 完成 exact-SHA 三 job。
+当前唯一动作是 `stage-7-standard-mcp-dynamic-meta-entry-design` 的准备态交接；等待用户明确授权，
+不开始 MCP/Meta 设计、产品代码或外部互操作。
 
 ## 6A-1 Checklist
 
@@ -547,16 +550,25 @@ TDD 实现 owner export、三种删除、retention/purge/补偿与完整 exit ma
 
 ### Phase 25 - 6B-9-lifecycle-export-exit-review
 
-- Status: in_progress
+- Status: complete
 - [x] 6B-8 最终 `aacc11a` / Actions `32403187972` exact-SHA 三 job 公共闭环；
 - [x] 初学者教学、现有 6A deletion/retention 与 6B 数据 FK 接缝审计；
 - [x] 比较分散 Repository、中央 lifecycle service、FK cascade hard delete 三种方案；
 - [x] 冻结 ADR-0046、专用 design 与 implementation plan；
 - [x] 设计批本地门禁：1464/113 skips、两套 RAG、Harness、compileall、pip、governance/diff；
-- [ ] 设计批独立提交/推送与 exact-SHA 三 job；
-- [ ] pure contracts 红灯、0009/Repository/Service/API/package TDD；
-- [ ] 八维 walkthrough、Session/Memory V1 exit matrix、完整本地门禁；
-- [ ] 独立实现提交、推送与 exact-SHA 三 job，随后正式关闭 6B-9。
+- [x] 设计提交 `4bdb1bb` / Actions `32404203265` exact-SHA 三 job；
+- [x] pure contracts 红灯、0009/Repository/Service/API/package TDD；
+- [x] 八维 walkthrough、Session/Memory V1 exit matrix、完整本地门禁；
+- [x] 实现 `2e37bd4` / Actions `32407862496` 保留非法 lifecycle reset 夹具失败；
+- [x] 最小测试修复 `cbc7cbd` / Actions `32408101770` 三 job 全绿，6B-9/Session-Memory V1 正式关闭。
+
+### Phase 26 - stage-7-standard-mcp-dynamic-meta-entry-design
+
+- Status: in_progress
+- State: prepared/waiting authorization；RQ-071 不授权阶段 7。
+- [ ] 用户明确授权后，先按教学合同审计标准 MCP Client/Server、内部 Tool Runtime、OP.GG/官方 Meta 来源与协议/许可接缝；
+- [ ] 比较方案并冻结 ADR、entry design、原子实施顺序和真实互操作门；
+- [ ] 在 entry design exact-SHA 公共闭环前不实现 MCP Client/Server、Meta Adapter 或真实外部调用。
 
 ## 6A Entry Design Checklist
 
@@ -1171,4 +1183,4 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
 - [completed] Task 5：cleanup compensation、injected-clock retention 与 FK-aware bounded purge。
 - [completed] Task 6：薄 API/composition 与 Linux package schema 1.6 纵向。
 - [completed] Task 7：八维 walkthrough、6B-1→9 exit matrix 与本地比例回归。
-- [in_progress] 实现提交、推送与 exact-SHA pytest/PostgreSQL/package 三 job；公共全绿前 coverage planned。
+- [completed] 设计 `4bdb1bb/32404203265` 与最终修复 `cbc7cbd/32408101770` 均完成 exact-SHA 三 job；coverage complete，阶段 6 关闭。

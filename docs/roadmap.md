@@ -21,8 +21,8 @@
 | 3 | Provider 与 Tool Runtime | 外部模型和工具如何统一、可靠地调用 | EchoMind 迁移重构 | 已完成，进入维护 |
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
-| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 进行中；6B-1 至 6B-8 与 RQ-067 前置门已完成 exact-SHA 公共闭环；6B-9 lifecycle/export/exit review 已本地实现，等待实现 SHA 三 job 公共闭环 |
-| 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 未开始 |
+| 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
+| 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 进行中；仅 `stage-7-standard-mcp-dynamic-meta-entry-design` prepared/waiting authorization，尚未开始设计或实现 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
 ## 横向能力总账
@@ -416,9 +416,13 @@ ADR-0045 与专用设计/实施计划选择 run-scoped decorator：服务器 Tas
 degraded publication 与 final Artifact digest 全部匹配后持久化。最终 `aacc11a` / Actions `32403187972`
 的 pytest、真实 PostgreSQL 与 Linux package 三 job 已全绿，当前进入 6B-9。
 
-### 6B-9 Lifecycle / Export / Exit Review（RQ-071，本地实现完成，等待公共门）
+### 6B-9 Lifecycle / Export / Exit Review（RQ-071，已公共闭环）
 
 ADR-0046 与专用设计/实施计划选择 centralized owner lifecycle service、各私有业务表 `hidden_at`、body-free
 deletion marker、owner-scoped bounded export 与 FK-aware purge。三 scope 为 conversation-only、conversation+
-derived Memory、relationship private data；Task/Artifact 与全局 Player Subject 保持独立生命周期。0009、Repository/
-Service/API/composition、package schema 1.6 与八维 exit walkthrough 已本地实现；公共 exact-SHA 三 job 全绿前不关闭。
+derived Memory、relationship private data；Task/Artifact 与全局 Player Subject 保持独立生命周期。设计门
+`4bdb1bb` / Actions `32404203265` 已先独立全绿；实现 `2e37bd4` 的真库唯一失败证明 irreversible trigger
+正确拒绝非法 unhide 测试夹具，最小测试修复 `cbc7cbdcd3841a6ed20cd61a61f1cb5890787d38` / Actions
+`32408101770` 的三 job 全绿。公共 pytest `1490 passed, 116 skipped, 1 warning, 110 subtests passed`，
+真实 PostgreSQL `164 passed, 1 warning`，Linux package schema 1.6 验证有界 export、conversation-only
+隐藏、Preference/Plan 存续与外部调用 0。6B-9、八维 coverage、Session/Memory V1 和阶段 6 正式关闭。
