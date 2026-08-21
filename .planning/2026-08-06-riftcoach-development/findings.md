@@ -3238,3 +3238,18 @@
 - 路线已固定阶段 7 名称但未预建 checkpoint label。按既有 entry-design 命名规则新增
   `stage-7-standard-mcp-dynamic-meta-entry-design` 与 planned coverage/order contract，只作 prepared handoff；
   RQ-071 不授权阶段 7，因此不创建 ADR、代码或真实 MCP/Meta I/O。
+
+## 2026-08-21：Stage 7 入口设计审计与裁决（RQ-072）
+
+- 用户“那开始 stage7”只恢复 canonical 的入口设计检查点；`pause_reason` 已清空，但不等于授权直接实现
+  MCP Client/Server 或执行真实 OP.GG I/O。
+- `ToolDefinition`/`ToolRegistry`/`ToolRuntime` 已提供稳定的内部工具合同与 timeout/retry/cache/breaker/
+  fallback/metrics；缺少 initialize、capability、tools/list、tools/call、session/transport，因此必须增加
+  协议 Adapter，不能把内部 Runtime 或普通 HTTP 命名为 MCP。
+- Application Service、Context/Memory、Harness/Runtime 接缝允许“Adapter → ToolRuntime → MetaEvidence →
+  data-only Context/Skill/Harness”和“外部 Client → RiftCoach Server → owner-scoped Facade”两条边界；外部
+  Meta 不得直接写 Memory、覆盖 owner/player 或改变发布门。
+- OP.GG 尚未有仓库准入证据证明标准 endpoint/server、protocol/version、transport、schema、许可、patch/
+  freshness、限流和真实互操作；当前只能是 candidate/deferred，若合同不满足必须另立 ADR 选替代方案。
+- 推荐 Adapter-first 而非业务直 HTTP 或 SDK 渗透；后续固定 pure contract → transport/discovery → OP.GG
+  Meta Adapter → RiftCoach Server → real interoperability exit review。

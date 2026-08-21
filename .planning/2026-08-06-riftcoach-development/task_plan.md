@@ -17,8 +17,9 @@ Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 Phase 24 - `6B-8-memory-aware-context-typed-turns` is complete at `aacc11a` /
 Actions `32403187972`. Phase 25 - `6B-9-lifecycle-export-exit-review` is complete
 at `cbc7cbd` / Actions `32408101770`. Phase 26 -
-`stage-7-standard-mcp-dynamic-meta-entry-design` is prepared and awaiting
-explicit user authorization; no stage 7 design or implementation has started.
+`stage-7-standard-mcp-dynamic-meta-entry-design` is in progress under RQ-072;
+entry design is being frozen and no stage 7 product implementation or external
+I/O has started.
 
 ## Phases
 
@@ -269,8 +270,8 @@ explicit user authorization; no stage 7 design or implementation has started.
 coverage 已 complete。6B-7 又由 `f6d8922` / Actions `32397290175` 完成 exact-SHA 三 job 公共闭环。
 RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a` / Actions
 `32403187972` 完成，6B-9 由最小测试修复 `cbc7cbd` / Actions `32408101770` 完成 exact-SHA 三 job。
-当前唯一动作是 `stage-7-standard-mcp-dynamic-meta-entry-design` 的准备态交接；等待用户明确授权，
-不开始 MCP/Meta 设计、产品代码或外部互操作。
+当前唯一动作是 `stage-7-standard-mcp-dynamic-meta-entry-design` 的教学、接缝审计、方案比较和设计门；
+不开始 MCP/Meta 产品代码或外部互操作。
 
 ## 6A-1 Checklist
 
@@ -565,10 +566,11 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 ### Phase 26 - stage-7-standard-mcp-dynamic-meta-entry-design
 
 - Status: in_progress
-- State: prepared/waiting authorization；RQ-071 不授权阶段 7。
-- [ ] 用户明确授权后，先按教学合同审计标准 MCP Client/Server、内部 Tool Runtime、OP.GG/官方 Meta 来源与协议/许可接缝；
-- [ ] 比较方案并冻结 ADR、entry design、原子实施顺序和真实互操作门；
-- [ ] 在 entry design exact-SHA 公共闭环前不实现 MCP Client/Server、Meta Adapter 或真实外部调用。
+- Authorization: RQ-072；用户已明确开始 Stage 7。
+- State: entry design in progress；当前无 MCP/Meta 产品代码、SDK、Key 或外部 I/O。
+- [completed] 按教学合同审计标准 MCP Client/Server、内部 Tool Runtime、Application/Context/Harness 接缝与 OP.GG 条件准入边界；
+- [completed] 比较 direct HTTP、SDK 渗透和 Adapter-first，冻结 ADR-0047、entry design、实施顺序和真实互操作门；
+- [ ] 完成本地门禁、独立提交/推送和 exact-SHA 公共 CI；公共闭环后才进入 `7-1-mcp-client-contract` pure TDD。
 
 ## 6A Entry Design Checklist
 

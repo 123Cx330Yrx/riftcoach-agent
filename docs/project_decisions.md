@@ -1562,3 +1562,18 @@ conversation-only delete 后 Conversation/Message 不可见、Preference/Plan �
 因此 6B-9、八维 coverage、Session/Memory V1 与阶段 6 正式关闭。唯一下一检查点命名为
 `stage-7-standard-mcp-dynamic-meta-entry-design`，当前仅 prepared/waiting authorization；RQ-071 没有
 授权阶段 7，尚未开始 MCP Client/Server、Meta Adapter、OP.GG 接入或真实互操作。
+
+### Stage 7 入口设计（2026-08-21，RQ-072）
+
+用户授权开始 `stage-7-standard-mcp-dynamic-meta-entry-design`。ADR-0047 选择
+Adapter-first：标准 MCP Adapter 负责 initialize、capability、tools/list、tools/call、
+session/transport 和协议错误，先转换为既有 `ToolDefinition` 再交给 `ToolRuntime`；
+Meta Adapter 将外部结果规范化为带 source、patch、digest、fetched_at、freshness 的
+data-only `MetaEvidence`。对外 RiftCoach MCP Server 只通过 owner-scoped Application
+Facade 暴露近期汇总、单局分析、知识搜索和报告评测只读工具。
+
+OP.GG 目前只是首选候选，尚未有仓库证据证明其标准 MCP endpoint、protocol/version、
+transport、schema、许可、freshness、限流或真实互操作。缺一项就保持 candidate/deferred，
+不得把普通 HTTP POST 改名为 MCP，也不得静默替换来源。入口设计不安装 SDK、不调用 OP.GG、
+不实现 Client/Server；后续顺序固定为 pure contract → transport/discovery → OP.GG Meta
+Adapter → RiftCoach Server → real interoperability exit review。

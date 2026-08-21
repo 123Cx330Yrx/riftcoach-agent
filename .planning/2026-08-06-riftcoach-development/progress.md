@@ -3323,3 +3323,14 @@
   断言，输出 `external_riot_provider_calls=0`。
 - 6B-9 coverage 已 complete；Session/Memory V1 与阶段 6 正式关闭。canonical 只交接
   `stage-7-standard-mcp-dynamic-meta-entry-design` prepared/waiting authorization，不开始阶段 7 工作。
+
+## 2026-08-21：RQ-072 开始 Stage 7 入口设计
+
+- canonical 已恢复为 `stage-7-standard-mcp-dynamic-meta-entry-design / in_progress`，等待授权原因已清除；
+  当前仅做教学、接缝审计、方案比较和设计资产，不实现产品 MCP/Meta、不安装 SDK、不读取 Key、不执行外部 I/O。
+- 已新增 ADR-0047、Stage 7 entry design、implementation plan 与八维学习材料；冻结 Adapter-first、
+  `MetaEvidence`、OP.GG 条件准入、RiftCoach 受限 Server 和 7-1…7-5 原子顺序。
+- coverage 保持 `planned`，因为没有 MCP 产品代码、OP.GG 准入证据或真实外部 Server/Client 互操作；既有
+  ToolRuntime/Application/Context/Harness 测试仍是兼容性基线。
+- 当前唯一下一动作：完成治理、完整回归、横向安全/数据门和 exact-SHA 三 job 设计闭环；公共全绿后才进入
+  `7-1-mcp-client-contract` pure TDD。

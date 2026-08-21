@@ -73,7 +73,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | 6B-7：Training Plan / Progress | 完整/公共闭环 | [walkthrough](6b-7-training-plan-progress-walkthrough.md) / [专用设计](../plans/2026-08-21-training-plan-progress-design.md) / [ADR-0044](../adr/0044-adopt-candidate-backed-training-plan-progress-events.md) | self-only Plan、单 active、0007、final-Artifact Progress、追加式纠错与确定性趋势已由 `f6d8922` / Actions `32397290175` 完成真库/Linux 三 job 公共闭环 |
 | 6B-8：Memory-aware Context / Typed Turns | 完整/公共闭环 | [walkthrough](6b-8-memory-aware-context-typed-turns-walkthrough.md) / [专用设计](../plans/2026-08-21-memory-aware-context-typed-turns-design.md) / [ADR-0045](../adr/0045-adopt-run-scoped-memory-context-and-terminal-turn-writer.md) | bounded legal selector、body-free manifest、同 ceiling data-only Context 与 terminal-only Assistant/Candidate 写入边界已由 `aacc11a` / Actions `32403187972` 完成真库/Linux 三 job公共闭环 |
 | 6B-9：Lifecycle / Export / Exit Review | 完整/公共闭环 | [walkthrough](6b-9-lifecycle-export-exit-review-walkthrough.md) / [专用设计](../plans/2026-08-21-lifecycle-export-exit-review-design.md) / [ADR-0046](../adr/0046-adopt-centralized-owner-data-lifecycle-service.md) | owner export、三种删除范围、hidden-before-cleanup、retention/purge/补偿与 Session/Memory V1 exit matrix 已由 `cbc7cbd` / Actions `32408101770` 完成 pytest、真实 PostgreSQL 与 Linux package 三 job 公共闭环 |
-| 阶段 7：标准 MCP 与动态 Meta entry design | 准备态/等待授权 | [阶段 7 路线](../roadmap.md) / [MCP 命名边界](../adr/0005-standard-mcp-only.md) | 当前只有路线与边界；尚未开始 entry design、标准 MCP Client/Server、OP.GG Meta Adapter 或真实互操作，不能把内部 Tool Runtime 称为 MCP |
+| 阶段 7：标准 MCP 与动态 Meta entry design | 进行中 | [入口设计学习材料](stage-7-standard-mcp-dynamic-meta-entry-design.md) / [ADR-0047](../adr/0047-adopt-standard-mcp-boundary-and-opgg-meta-adapter.md) / [设计](../plans/2026-08-21-stage7-standard-mcp-dynamic-meta-design.md) | 已冻结 Adapter-first、MetaEvidence、OP.GG 条件准入和 7-1…7-5 顺序；尚未安装 SDK、实现 MCP Client/Server、调用 OP.GG 或完成真实互操作 |
 
 “完整”表示仓库中已经具备八类持久证据，并不表示项目已生产就绪，也不表示项目所有者已经学会。
 个人理解进度需要通过实际复述、读码、运行和问答单独确认。
@@ -136,6 +136,6 @@ canonical 推进到 6B-4。这能防止“代码写完就一路往后走，教�
 - 不代表 RAG 开发集满分等于未知问题上的泛化满分；
 - 不代表 GLM、DeepSeek 或其他 Provider 已通过全部领域质量准入；
 - 6B-9 与 Session/Memory V1 已完成公共 PostgreSQL/package 闭环；这仍不表示正式 Auth/RSO、备份副本擦除、
-  公网部署或阶段 7 标准 MCP 已完成。阶段 7 当前只处于 entry design 准备态并等待授权。
+  公网部署或阶段 7 标准 MCP 已完成。阶段 7 当前处于入口设计进行中；OP.GG 仍是未经准入审计的候选。
 
 这些边界既是工程事实，也是项目在面试中保持可信度的重要部分。

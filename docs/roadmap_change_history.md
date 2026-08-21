@@ -2414,3 +2414,18 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   与公共 `1490/116` 分开记录，不把本机无 PostgreSQL/Docker 的 skip 冒充成功。
 - `HANDOFF`：唯一下一检查点为 `stage-7-standard-mcp-dynamic-meta-entry-design`，仅 prepared/waiting
   authorization。RQ-071 不授权阶段 7；不开始 MCP/Meta 设计、实现或真实互操作。
+
+### 2026-08-21：RQ-072 授权 Stage 7 入口设计
+
+- `AUTHORIZED`：用户明确“那开始 stage7”，恢复 canonical 的
+  `stage-7-standard-mcp-dynamic-meta-entry-design`；本轮只做入口设计，不把授权外推为产品实现或真实 I/O。
+- `AUDIT`：现有 `ToolDefinition`/`ToolRuntime` 是内部可靠工具执行层，缺少标准 MCP initialize、capability、
+  tools/list、tools/call、session/transport；Application/Context/Harness 接缝支持 Adapter-first 组合。
+- `DECISION`：ADR-0047 选择 MCP Protocol Adapter → existing ToolRuntime，动态 Meta 经 Meta Adapter 规范化为
+  source/patch/digest/freshness/data-only `MetaEvidence`；对外 Server 只经 owner-scoped Application Facade。
+- `OPGG-GATE`：OP.GG 仅为首选候选，尚未证实标准 Server/endpoint、protocol/version、transport、schema、许可、
+  freshness、限流或真实互操作；不满足合同时必须另立 ADR，不能把普通 HTTP POST 称为 MCP或静默替换来源。
+- `SEQUENCE`：后续固定为 `7-1-mcp-client-contract` → `7-2-mcp-transport-and-discovery` →
+  `7-3-opgg-meta-adapter` → `7-4-riftcoach-mcp-server` → `7-5-mcp-interoperability-exit-review`。
+- `BOUNDARY`：入口设计阶段不安装 SDK、不实现 MCP Client/Server、不读取 Key、不调用 OP.GG/Riot/Provider；
+  当前 coverage 仍 planned，待设计 exact-SHA 公共闭环后才进入 pure TDD。
