@@ -18,9 +18,11 @@ Phase 24 - `6B-8-memory-aware-context-typed-turns` is complete at `aacc11a` /
 Actions `32403187972`. Phase 25 - `6B-9-lifecycle-export-exit-review` is complete
 at `cbc7cbd` / Actions `32408101770`. Phase 26 -
 `stage-7-standard-mcp-dynamic-meta-entry-design` is complete at `e50a546` /
-Actions `32436092074`. Phase 27 - `7-1-mcp-client-contract` is authorized by
-RQ-073 and in progress at the pure contract TDD boundary; no transport, Meta,
-MCP Server, SDK, Key access, or external I/O has started.
+Actions `32436092074`. Phase 27 - `7-1-mcp-client-contract` is complete at
+`37f16bc` / Actions `32439753589`. Phase 28 -
+`7-2-mcp-transport-and-discovery` is prepared and awaiting explicit
+authorization; no transport, Meta, MCP Server, SDK, Key access, or external I/O
+has started.
 
 ## Phases
 
@@ -271,8 +273,8 @@ MCP Server, SDK, Key access, or external I/O has started.
 coverage 已 complete。6B-7 又由 `f6d8922` / Actions `32397290175` 完成 exact-SHA 三 job 公共闭环。
 RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a` / Actions
 `32403187972` 完成，6B-9 由最小测试修复 `cbc7cbd` / Actions `32408101770` 完成 exact-SHA 三 job。
-当前唯一动作是按 RQ-073 完成 `7-1-mcp-client-contract` 的教学、pure TDD、八维证据、本地门禁和
-exact-SHA 公共闭环；7-1 正式关闭前不进入 transport/discovery、Meta、MCP Server 或外部互操作。
+当前唯一动作是等待 `7-2-mcp-transport-and-discovery` 的明确授权；授权前不实现 stdio/HTTP、
+session/discovery refresh、Meta、MCP Server 或外部互操作。
 
 ## 6A-1 Checklist
 
@@ -575,15 +577,22 @@ exact-SHA 公共闭环；7-1 正式关闭前不进入 transport/discovery、Meta
 
 ### Phase 27 - 7-1-mcp-client-contract
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-073；入口设计已由 `e50a546` / Actions `32436092074` exact-SHA 三 job 全绿关闭。
 - [completed] 恢复 canonical、审计现有 Tool/Provider strict contract 风格并完成治理预检；
 - [completed] 写 initialize/capability/tools/list/tools/call/error/schema/size boundary 的 pure red tests；
 - [completed] 最小实现 pure models、version/capability/allowlist/schema snapshot 与 body-free error projection；
 - [completed] 聚焦/相邻/完整回归、compile/RAG/Harness/security/YAML/governance/diff 本地门；
-- [in_progress] 八维 walkthrough 已建立、coverage 保持 planned；独立提交/推送并等待 exact-SHA 三 job；
-- [ ] 只有公共闭环后才把 7-2 登记为 prepared/waiting authorization；本检查点不接 transport、OP.GG、
+- [completed] 八维 walkthrough 与 coverage complete；`37f16bc` / Actions `32439753589` exact-SHA 三 job 全绿；
+- [completed] 只把 7-2 登记为 prepared/waiting authorization；本检查点未接 transport、OP.GG、
   MetaEvidence 或 RiftCoach MCP Server。
+
+### Phase 28 - 7-2-mcp-transport-and-discovery
+
+- Status: in_progress
+- State: prepared/waiting authorization；7-1 已由 `37f16bc` / Actions `32439753589` 公共闭环。
+- [ ] 用户明确授权后才做 fixture/in-memory/stdio transport、session/discovery/error 的教学与 TDD；
+- [ ] 授权前不写 7-2 产品代码，不调用 OP.GG，不进入 MetaEvidence、RiftCoach MCP Server 或真实互操作。
 
 ## 6A Entry Design Checklist
 

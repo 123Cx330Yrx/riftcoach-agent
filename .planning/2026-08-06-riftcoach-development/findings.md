@@ -3287,3 +3287,11 @@
   （含 protocol/server/tool identities）和 tool schema digest。任何 catalog refresh 都要求重新构造 call。
 - pure Mapping 无法证明原始 HTTP/frame bytes；当前 canonical byte 限制只保护解析后的内存合同。raw frame/body、
   pagination aggregation、disconnect/restart/deadline 必须在 7-2 transport tests 单独证明。
+
+## 2026-08-21：7-1 公共闭环裁决
+
+- `37f16bc/32439753589` 三 job 全绿；公共 pytest 1510/116 skips 与本地 1509/117 的差异来自 Linux/Windows
+  环境，必须分别记录，不能把公共较少 skip 改写成本机真库成功。
+- PostgreSQL job 的 164 passed 和 package 1.6 是既有阶段 6 回归兼容证据；7-1 本身没有 migration/SQL/package
+  业务变化，不能把这些 job 表述为 MCP transport 或外部互操作。
+- 7-2 将负责 raw transport/session/discovery refresh，但当前仅 prepared；7-1 public success 不授权提前实现。

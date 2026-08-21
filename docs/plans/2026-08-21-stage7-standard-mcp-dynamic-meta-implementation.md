@@ -29,9 +29,9 @@
 
 ## 7-1: MCP Client contract（后续 checkpoint）
 
-**Local status (2026-08-21):** implementation and all local gates complete; coverage remains
-`planned` pending the implementation commit's exact-SHA public `pytest`, `postgres-migrations`,
-and `packaging-smoke` jobs. No SDK, transport, Key, or external I/O was added.
+**Status (2026-08-21):** complete at `37f16bc` / Actions `32439753589`; all three
+exact-SHA public jobs succeeded and coverage is complete. No SDK, transport, Key,
+or external I/O was added.
 
 ### Task 1: Pure models and envelope tests
 
@@ -41,9 +41,11 @@ and `packaging-smoke` jobs. No SDK, transport, Key, or external I/O was added.
 2. [completed] 运行 `.venv\Scripts\python.exe -m pytest tests/test_mcp_contracts.py -q`，在缺少 `app.mcp` 时确认 collection red；
 3. [completed] 实现版本 allowlist、唯一 tool name、immutable schema/catalog digest、参数/结果大小上限和 body-free error projection；
 4. [completed] 增加 malformed/oversized/schema-drift/allowlist、standard annotations、strict bool/int 与 repr body-safety cases；
-5. [in progress] 独立提交 `feat: add pure standard mcp contracts`，等待 exact-SHA 公共三 job 后关闭 7-1。
+5. [completed] `feat: add pure standard mcp contracts` 为 `37f16bc`；Actions `32439753589` 三 job 全绿，7-1 关闭。
 
 ## 7-2: Transport and discovery
+
+**Status:** prepared/waiting authorization. Task 2 has not started.
 
 ### Task 2: Fixture session and transport boundary
 

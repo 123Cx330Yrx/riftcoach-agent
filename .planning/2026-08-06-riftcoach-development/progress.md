@@ -3368,3 +3368,11 @@
   和 diff check 通过。
 - `docs/learning/7-1-mcp-client-contract-walkthrough.md` 已覆盖八维 evidence；coverage 仍 `planned`，因为实现
   exact-SHA 三 job 尚未运行。唯一下一动作是 cached diff→独立提交/推送→等待公共三 job；不进入 7-2。
+
+## 2026-08-21：7-1 exact-SHA 公共闭环
+
+- 实现 SHA `37f16bc54de1d6e41c3ae65ddc9d9c5e11efa4cb` / Actions `32439753589` 三 job
+  completed/success；pytest `1510 passed, 116 skipped, 1 warning, 127 subtests passed`，真库
+  `164 passed, 1 warning`，package schema 1.6 且外部 Riot/Provider 调用 0。
+- coverage 已置 complete，RQ-073/roadmap/history/decisions/capability/learning/canonical 已同步关闭 7-1。
+- 唯一下一检查点为 `7-2-mcp-transport-and-discovery` prepared/waiting authorization；当前停止，不写 7-2。

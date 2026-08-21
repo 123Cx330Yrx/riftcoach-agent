@@ -2458,3 +2458,12 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `BOUNDARY`：实现仍 pure no-I/O；没有 SDK、transport、OP.GG/Meta、RiftCoach MCP Server、Key 或真实互操作。
 - `PENDING`：walkthrough 已覆盖八维但 coverage 继续 planned；只待独立提交/推送与 exact-SHA 三 job，
   公共全绿前不关闭 7-1、不登记 7-2 为当前 checkpoint。
+
+### 2026-08-21：7-1 exact-SHA 公共闭环与 7-2 停止点
+
+- `PUBLIC-CI`：`37f16bc54de1d6e41c3ae65ddc9d9c5e11efa4cb` / Actions `32439753589` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。
+- `EVIDENCE`：公共 pytest `1510 passed/116 skipped/127 subtests`，真库 `164 passed`、migration metadata=head；
+  Linux package schema 1.6 且 `external_riot_provider_calls=0`。本地 1509/117 与公共 1510/116 分开记录。
+- `CLOSED`：7-1 与八维 coverage 正式关闭；只证明 pure protocol contracts，不证明 transport/OP.GG/Server。
+- `HANDOFF`：唯一下一检查点为 `7-2-mcp-transport-and-discovery` prepared/waiting authorization；当前停止。

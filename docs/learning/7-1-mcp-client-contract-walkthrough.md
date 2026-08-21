@@ -164,7 +164,9 @@ structured content、arguments、description 或 server instructions。
 
 本地聚焦为 `20 passed, 17 subtests passed`，相邻为 `55 passed, 62 subtests passed`，完整回归为
 `1509 passed, 117 skipped, 1 warning, 127 subtests passed`。两套 RAG、Harness、compile、pip、YAML、治理、
-SDK/Secret/tracked-data 与 diff 门也通过。公共 exact-SHA 三 job 未全绿前，coverage 保持 `planned`，7-1 不关闭。
+SDK/Secret/tracked-data 与 diff 门也通过。实现 `37f16bc` / Actions `32439753589` 的三个公共 job 全绿；
+公共 pytest `1510 passed/116 skipped/127 subtests`、真实 PostgreSQL `164 passed`、package schema 1.6 且外部
+调用 0。coverage 已 complete；这些证据仍不外推为 transport 或真实 MCP 互操作。
 
 ## 8. 安全运行与排障
 

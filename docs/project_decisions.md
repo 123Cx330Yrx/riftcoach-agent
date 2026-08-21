@@ -1599,3 +1599,7 @@ MetaEvidence、RiftCoach MCP Server 或真实互操作。
 tool schema；standard annotations 严格接收，arguments/result 使用独立 canonical byte 上限。远端 description、
 instructions、arguments、content 和 structured content 不进入默认 repr。完整本地回归为 1509 passed/117
 skipped，全部横向门通过；公共 exact-SHA 前 coverage 保持 planned，7-1 不关闭。
+
+`37f16bc` / Actions `32439753589` 随后完成三个 exact-SHA 公共 job；公开 pytest 1510/116 skips、真实
+PostgreSQL 164 passed、package schema 1.6/external calls 0。7-1 因而关闭，coverage complete；下一检查点只
+准备 `7-2-mcp-transport-and-discovery`，未获授权前不写 transport/session/discovery 代码。
