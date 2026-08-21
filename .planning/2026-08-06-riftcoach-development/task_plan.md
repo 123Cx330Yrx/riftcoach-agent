@@ -647,8 +647,10 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 - [completed-local] ADR-0050、官方 SDK/stdio 方案、red→green 协商/transport/evidence TDD。
 - [completed-local] 外部 SDK Client 跨进程 initialize/notification/list/一次 call，body-free digest/count trace。
 - [completed-local] 聚焦 10、相邻 74/17 subtests、完整 1576/117 skips/127 subtests 与全部横向门。
-- [pending-public] 独立实现提交/推送和 exact-SHA pytest/PostgreSQL/package 三 job。
-- [pending-real] clean implementation SHA 上一次 SDK→RiftCoach + RiftCoach→OP.GG，持久化不可覆盖 evidence。
+- [completed-public] 实现 `a88fbc457850dd77265900e6800079ac2a8fb0e4` / Actions `32483521108`
+  的 exact-SHA pytest/PostgreSQL/package 三 job 全绿。
+- [completed-real] 同一 clean implementation SHA 上 SDK→RiftCoach + RiftCoach→OP.GG 双向通过；
+  `stage7_interoperability_exit_v1.json` 不可覆盖且 body-free。
 - [pending-exit] evidence/state exact-SHA CI、coverage complete 与 Stage 7 关闭。
 
 ## 6A Entry Design Checklist

@@ -3467,3 +3467,17 @@
   已拆成独立命令并以 Node syntax、6 YAML、exact forbidden-key scan 真正通过；后续不把组合输出当证据。
 - 本机 117 skip 仍是 PostgreSQL/Docker/Linux 环境限制；真实 OP.GG 7-5 调用尚未执行。下一动作是实现提交与
   exact-SHA 三 job，全绿后才允许 clean-SHA 双向门。
+
+## 2026-08-21：7-5 实现公共门与 clean-SHA 双向真实证据
+
+- 实现 `a88fbc457850dd77265900e6800079ac2a8fb0e4` / Actions `32483521108` 三 job 全绿：公共 pytest
+  `1577 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL `164 passed, 1 warning`、
+  migration metadata=head；Linux package schema 1.6/外部 Riot Provider 调用 0。
+- 工作树、HEAD、origin/main 精确一致后，exit runner 在 2026-08-21T12:49:20Z–12:49:25Z 仅执行一次。
+  官方 SDK→RiftCoach 完成 1 initialize/notification/list/call，4-tool catalog；Client 提议 2025-11-25，
+  Server 协商 2025-06-18。摘要不含 actor/query/attribution/session/body。
+- RiftCoach→OP.GG 完成 1 initialize/notification/list/call；Server `OP.GG MCP Server/1.0.0`、protocol
+  2025-06-18、1 admitted tool、3 normalized facts。evidence 仍为 partial，patch/source time/freshness
+  保持 unknown；Riot/LLM/Key I/O 为 0。
+- 双向 evidence 绑定 product SHA `a88fbc4`，只含 identity、time window、catalog/schema/result/trace digest、
+  count 与限制，目标文件拒绝覆盖。当前下一动作是证据/自动验证提交和 exact-SHA 公共门，Stage 7 尚未关闭。

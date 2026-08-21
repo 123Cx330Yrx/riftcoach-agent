@@ -84,11 +84,22 @@ Node trace wrapper不保存 JSON-RPC id、arguments 或 response，只把事件�
 script；使用官方 npm registry 的 audit 为 0 vulnerability。
 
 两套 RAG 满冻结阈值，Harness dry-run 为 `published`/0 revisions；compileall、pip、Node syntax、npm ci/audit、
-6 YAML、governance、tracked Secret/run-data、body-free evidence 和 diff 门均通过。这些本地结果证明跨语言
-no-I/O 互操作与安全合同，不替代最终真实 OP.GG 调用、真实
-PostgreSQL 或 Linux package。最终关闭时还必须在干净 implementation SHA 上生成不可覆盖双向 evidence，
-并让实现/证据/状态提交分别取得 exact-SHA 三 job 公共结果。本节会在闭环时追加 SHA、Actions run、
-完整 pytest/PostgreSQL/package 数字和最终 exit matrix。
+6 YAML、governance、tracked Secret/run-data、body-free evidence 和 diff 门均通过。实现
+`a88fbc457850dd77265900e6800079ac2a8fb0e4` / Actions `32483521108` 随后完成 exact-SHA 三 job：公共
+pytest `1577 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+`164 passed, 1 warning`，0001→0009 migration 可逆且 metadata=head；Linux package schema 1.6，
+外部 Riot/Provider 调用为 0。
+
+工作树、HEAD 与 `origin/main` 精确一致后，双向 runner 在 `2026-08-21T12:49:20Z–12:49:25Z`
+唯一执行一次。官方 Client→RiftCoach 完成 initialize、initialized notification、tools/list 与一次
+knowledge tools/call，目录为 4 个工具，proposal/negotiated protocol 分别为 `2025-11-25`/`2025-06-18`；
+RiftCoach→OP.GG 同样各执行一次 initialize/notification/list/call，确认 Server
+`OP.GG MCP Server/1.0.0`、protocol `2025-06-18`、1 个获准工具与 3 条规范化事实。最终 exit matrix 七项
+全部 pass，Riot/LLM/Key I/O 为 0；OP.GG patch/source time/freshness 继续为 unknown，provenance 继续
+为 partial。不可覆盖证据绑定上述 product SHA，且不含 owner、query、session、arguments 或正文。
+
+以上已经证明实现公共门与 clean-SHA 真实双向门，不替代尚待执行的 evidence/state 两次独立 exact-SHA
+三 job。两次公共结果均全绿前，7-5 coverage 与 Stage 7 仍保持 open。
 
 ## 6. 安全运行手册
 

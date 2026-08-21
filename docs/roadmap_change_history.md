@@ -2545,3 +2545,17 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   clean-SHA 双向 runner 已建立；官方 SDK initialize/notification/list/一次 knowledge call 本地通过。
 - `PENDING`：尚未提交实现、取得 exact-SHA CI 或执行本检查点的 clean-SHA OP.GG 真实门；coverage planned，
   Stage 7 未关闭。
+
+### 2026-08-21：7-5 实现公共门与 clean-SHA 双向真实门通过
+
+- `PUBLIC-CI`：实现 `a88fbc457850dd77265900e6800079ac2a8fb0e4` / Actions `32483521108`
+  的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success；公共 pytest
+  `1577 passed, 116 skipped, 1 warning, 127 subtests passed`，真库 `164 passed, 1 warning` 且
+  metadata=head，Linux package schema 1.6/外部 Riot Provider 调用 0。
+- `REAL-EXIT`：仅在 HEAD/工作树/origin 精确一致的上述 implementation SHA 上执行一次双向门；官方
+  SDK→RiftCoach stdio 与 RiftCoach→OP.GG Streamable HTTP 均完成 initialize/notification/list/一次 call。
+- `EVIDENCE`：`stage7_interoperability_exit_v1.json` 不可覆盖、body-free、绑定 product SHA；两侧目录、
+  schema/result/trace 只保留 digest/count。OP.GG 仍为 partial provenance，patch/source time/freshness unknown；
+  Riot/LLM/Key I/O 为 0。
+- `PENDING-EXIT`：当前只提交 evidence、自动验证与退出材料；该 SHA 的三 job 和随后独立 state SHA 的三 job
+  均全绿前，不关闭 7-5/coverage/Stage 7，也不进入 Stage 8 产品开发。

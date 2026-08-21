@@ -35,6 +35,14 @@ SDK_INTEGRITY = (
     "sha512-xKd8OIzlqNzcqcNumGAa6g+PW2kjD5vrpcKOnfldAUPP3j7lnqMPwlTXQm8gF+"
     "UwH72z0lqaRbjr9hqGz0eITA=="
 )
+PERSISTED_EXIT_EVIDENCE = (
+    ROOT
+    / "data"
+    / "evaluation"
+    / "results"
+    / "mcp"
+    / "stage7_interoperability_exit_v1.json"
+)
 
 
 class InteropFacade:
@@ -311,3 +319,28 @@ def test_exit_evidence_contract_is_body_free_and_requires_both_directions():
     partial["riftcoach_to_external_server"]["result"] = "failed"
     with pytest.raises(ValueError, match="both directions"):
         validate_exit_evidence(partial)
+
+
+def test_persisted_clean_sha_bidirectional_exit_evidence_is_valid():
+    payload = json.loads(PERSISTED_EXIT_EVIDENCE.read_text(encoding="utf-8"))
+
+    validate_exit_evidence(payload)
+
+    assert payload["product_sha"] == "a88fbc457850dd77265900e6800079ac2a8fb0e4"
+    external_client = payload["external_client_to_riftcoach"]
+    assert external_client["client"]["package"] == "@modelcontextprotocol/sdk"
+    assert external_client["client"]["version"] == "1.30.0"
+    assert external_client["client"]["offered_protocol_version"] == "2025-11-25"
+    assert external_client["server"]["protocol_version"] == "2025-06-18"
+    assert external_client["catalog"]["tool_count"] == 4
+    opgg = payload["riftcoach_to_external_server"]
+    assert opgg["protocol"] == {
+        "server_name": "OP.GG MCP Server",
+        "server_version": "1.0.0",
+        "tools_capability": True,
+        "version": "2025-06-18",
+    }
+    assert opgg["evidence"]["provenance"] == "partial"
+    assert opgg["evidence"]["upstream_patch"] is None
+    assert opgg["evidence"]["source_generated_at"] is None
+    assert opgg["evidence"]["fact_count"] == 3

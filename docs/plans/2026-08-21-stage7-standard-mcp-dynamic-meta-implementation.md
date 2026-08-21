@@ -101,10 +101,11 @@ bidirectional interoperability.
 
 ## 7-5: Interoperability exit review
 
-**Status (2026-08-21):** in progress under RQ-079 / ADR-0050. The isolated official
-`@modelcontextprotocol/sdk@1.30.0` Client, bounded Python stdio Server adapter,
-clean-SHA exit runner and no-I/O TDD are implemented locally. Real OP.GG exit evidence,
-full gates and exact-SHA public closure remain pending.
+**Status (2026-08-21):** in progress under RQ-079 / ADR-0050. Implementation
+`a88fbc457850dd77265900e6800079ac2a8fb0e4` / Actions `32483521108` passed all
+three exact-SHA jobs. The same clean SHA passed official SDK→RiftCoach stdio and
+RiftCoach→OP.GG Streamable HTTP once; body-free evidence is created. Evidence/state
+exact-SHA public closure remains pending.
 
 ### Task 5: Real external proof and exit matrix
 
@@ -121,8 +122,8 @@ full gates and exact-SHA public closure remain pending.
    version 混淆，并实现有界 newline JSON-RPC Server adapter；
 3. [completed-local] 官方 SDK 已在本地跨进程完成 initialize/notification/list/一次 knowledge-search call；
    SDK 只在隔离目录和 lockfile，不进入产品 runtime dependency；
-4. [pending-public] 完整本地门后提交实现并等待 exact-SHA 三 job；
-5. [pending-real] 在 clean implementation SHA 上执行一次双向门：SDK→RiftCoach + RiftCoach→OP.GG，
+4. [completed-public] 实现 `a88fbc4` / Actions `32483521108` exact-SHA 三 job 全绿；
+5. [completed-real] 在 clean implementation SHA 上执行一次双向门：SDK→RiftCoach + RiftCoach→OP.GG，
    保存不可覆盖 body-free evidence；
 6. [pending-exit] 复核 disconnect/timeout/schema/security/owner-scope、八维 coverage、最终 exact-SHA CI；
    只有两侧与 exit matrix 全部通过才关闭 Stage 7，否则保留 partial/deferred 证据。

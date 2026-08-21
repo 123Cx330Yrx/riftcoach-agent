@@ -78,7 +78,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | 7-2：MCP transport / discovery | 完整/公共闭环 | [walkthrough](7-2-mcp-transport-and-discovery-walkthrough.md) / [实施计划](../plans/2026-08-21-stage7-standard-mcp-dynamic-meta-implementation.md) / [ADR-0047](../adr/0047-adopt-standard-mcp-boundary-and-opgg-meta-adapter.md) | 有界 in-memory/stdio session、deadline、disconnect/restart、cursor discovery 和 ToolRuntime 映射已由 `f121666` / Actions `32441793585` 三 job 公共闭环；不证明 OP.GG、Meta、Server 或真实互操作 |
 | 7-3：OP.GG Meta Adapter | 完整/公共闭环 | [walkthrough](7-3-opgg-meta-adapter-walkthrough.md) / [ADR-0048](../adr/0048-admit-opgg-with-partial-provenance-and-selected-catalog.md) / [专用设计](../plans/2026-08-21-opgg-meta-adapter-design.md) | 官方 Streamable HTTP、admitted-subset discovery、严格 lane-meta parser、partial MetaEvidence、data-only Context 与真实 body-free 单向产品 smoke 已由 `64311a1` / Actions `32455219404` 三 job 公共闭环；其他 OP.GG 工具、Riot+OP.GG join、Server/双向互操作未实现 |
 | 7-4：RiftCoach MCP Server | 完整/公共闭环 | [ADR-0049](../adr/0049-adopt-restricted-riftcoach-mcp-server-facade.md) / [设计](../plans/2026-08-21-riftcoach-mcp-server-design.md) / [walkthrough](7-4-riftcoach-mcp-server-walkthrough.md) | strict Session、owner-scoped Facade、verified recent DTO、single-review digest、knowledge attribution 与 evaluation status 已由 `431c584` / Actions `32480827952` 三 job 公共闭环；不含公网 transport/7-5 互操作 |
-| 7-5：双向 MCP 互操作与退出审查 | 进行中/本地实现 | [ADR-0050](../adr/0050-adopt-pinned-official-mcp-client-over-stdio-for-interoperability.md) / [专用设计](../plans/2026-08-21-stage7-mcp-interoperability-exit-review.md) / [walkthrough](7-5-mcp-interoperability-exit-review-walkthrough.md) | 官方 SDK 1.30.0 Client→RiftCoach stdio Server 已本地跨进程通过，并修复版本协商；尚待实现 exact-SHA CI、clean-SHA OP.GG 双向证据与最终 Stage 7 退出闭环 |
+| 7-5：双向 MCP 互操作与退出审查 | 进行中/双向门已通过 | [ADR-0050](../adr/0050-adopt-pinned-official-mcp-client-over-stdio-for-interoperability.md) / [专用设计](../plans/2026-08-21-stage7-mcp-interoperability-exit-review.md) / [walkthrough](7-5-mcp-interoperability-exit-review-walkthrough.md) | 实现 `a88fbc4` / Actions `32483521108` 三 job 全绿；同一 clean SHA 已由官方 SDK 1.30.0 Client 调用 RiftCoach stdio Server，且 RiftCoach Client 调用 OP.GG Streamable HTTP，并生成不可覆盖 body-free evidence；待证据/状态 exact-SHA 公共闭环后关闭 Stage 7 |
 
 “完整”表示仓库中已经具备八类持久证据，并不表示项目已生产就绪，也不表示项目所有者已经学会。
 个人理解进度需要通过实际复述、读码、运行和问答单独确认。
@@ -141,8 +141,9 @@ canonical 推进到 6B-4。这能防止“代码写完就一路往后走，教�
 - 不代表 RAG 开发集满分等于未知问题上的泛化满分；
 - 不代表 GLM、DeepSeek 或其他 Provider 已通过全部领域质量准入；
 - 6B-9 与 Session/Memory V1 已完成公共 PostgreSQL/package 闭环；这仍不表示正式 Auth/RSO、备份副本擦除、
-  公网部署或整个阶段 7 已完成。Stage 7 入口、7-1、7-2、7-3 已公共闭环；7-3 只证明 OP.GG lane-meta
-  单向产品链和 partial provenance；7-4 Server 已完成 exact-SHA 公共闭环，RQ-079 已启动 7-5 且官方
-  SDK stdio 方向本地通过，但 clean-SHA OP.GG 双向证据、公共 CI 与 Stage 7 退出尚未完成。
+  公网部署或 Stage 8 已进入。Stage 7 入口与 7-1…7-4 已公共闭环；7-5 的实现 exact-SHA 公共门和
+  clean-SHA 双向真实门均已通过，但 evidence/state 两次独立 exact-SHA 公共闭环尚未完成，因此 Stage 7
+  仍保持 open。OP.GG 仍只证明 lane-meta partial provenance，不证明全工具、精确 patch/freshness 或
+  Riot+OP.GG 数据融合。
 
 这些边界既是工程事实，也是项目在面试中保持可信度的重要部分。

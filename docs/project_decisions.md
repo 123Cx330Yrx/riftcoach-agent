@@ -1673,5 +1673,15 @@ MIT/ISC/BSD-2/BSD-3，无 install script，官方 registry audit 当前为 0 vul
 `2025-06-18`/`2025-11-25` proposal allowlist，但总是响应并绑定自身实现 `2025-06-18`；未知版本继续
 fail closed。外部 Client 本地已完成 initialize、initialized notification、四工具 list 和一次
 owner-scoped knowledge call，trace/catalog/result 只保留 digest/count。另一方向仍复用 7-3 OP.GG
-Streamable HTTP 产品链；必须等实现 exact-SHA CI 后在 clean SHA 上调用一次并生成不可覆盖双向证据。
-当前裁决仍是 local implementation pending public/real exit gate，Stage 7 未关闭。
+Streamable HTTP 产品链。
+
+实现 `a88fbc457850dd77265900e6800079ac2a8fb0e4` / Actions `32483521108` 已完成 exact-SHA
+pytest、PostgreSQL migration/control-plane 与 Linux package 三 job 公共闭环。公共 pytest 为
+`1577 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL 为 `164 passed, 1 warning`
+且 metadata=head；package schema 1.6、外部 Riot/Provider 调用 0。
+
+同一 clean SHA 随后唯一执行一次双向门。官方 SDK→RiftCoach stdio 与 RiftCoach→OP.GG Streamable HTTP
+均完成 initialize、initialized notification、tools/list 和一次 tools/call；OP.GG 保持 partial provenance，
+不补写 patch、source time 或 freshness。不可覆盖 body-free evidence 绑定 implementation SHA，只保存身份、
+时间窗、digest/count 与限制，Riot/LLM/Key I/O 为 0。当前只待 evidence/state 各自的 exact-SHA 三 job；
+两者完成前 7-5 coverage 与 Stage 7 仍 open，Stage 8 未进入。

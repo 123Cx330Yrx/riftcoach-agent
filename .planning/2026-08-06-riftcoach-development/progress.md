@@ -3511,3 +3511,16 @@
   npm ci/audit、6 YAML、governance、tracked Secret/run-data、body-free evidence 与 diff check 全绿。
 - coverage 保持 planned；当前没有新 OP.GG/Riot/Provider/Key 调用。唯一下一动作是 cached diff review、
   独立实现提交/推送与该 exact SHA 的三 job；公共全绿后在 clean SHA 上执行一次双向真实门。
+
+## 2026-08-21：7-5 实现 exact-SHA 与真实双向门通过
+
+- `a88fbc457850dd77265900e6800079ac2a8fb0e4` / Actions `32483521108` 的 pytest、
+  postgres-migrations、packaging-smoke 全部 completed/success；公共 pytest 1577/116 skips，真库 164，
+  package schema 1.6/外部调用 0。
+- 同一 clean SHA 的官方 SDK→RiftCoach stdio 与 RiftCoach→OP.GG Streamable HTTP 均通过；两侧各 1 次
+  tools/call、Riot/Provider/Key 为 0。OP.GG 仍为 partial provenance，不伪造 patch/freshness。
+- 已生成 `data/evaluation/results/mcp/stage7_interoperability_exit_v1.json`，body-free、SHA-bound、不可覆盖。
+  当前只提交证据/自动验证/退出材料；coverage 与 Stage 7 在证据 SHA 公共三 job 前继续 open。
+- 证据批提交前聚焦 interoperability/governance 为 `23 passed`；compileall、6 YAML、body-free 持久
+  evidence validator、治理脚本与 `git diff --check` 全绿。首次治理红灯只因人类可读下一步漏写 canonical
+  checkpoint 名，已补为同一 `7-5-mcp-interoperability-exit-review`；本批未重跑 OP.GG 门或发生新外部 I/O。

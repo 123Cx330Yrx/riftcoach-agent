@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-21（RQ-079 已授权 7-5；互操作设计与 TDD 执行中）
-- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。Stage 7 入口设计 `e50a546/32436092074`、7-1 `37f16bc/32439753589`、7-2 `f121666/32441793585`、7-3 `64311a1/32455219404` 与 7-4 `431c584/32480827952` 已关闭。RQ-079 已授权当前唯一检查点 `7-5-mcp-interoperability-exit-review`；正在冻结官方外部 Client、stdio Server、OP.GG 外部 Server 与 body-free 双向证据合同，尚未关闭 Stage 7
+- 最后更新：2026-08-21（7-5 实现 exact-SHA 与 clean-SHA 双向真实门通过；证据公共闭环中）
+- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。Stage 7 入口设计 `e50a546/32436092074`、7-1 `37f16bc/32439753589`、7-2 `f121666/32441793585`、7-3 `64311a1/32455219404` 与 7-4 `431c584/32480827952` 已关闭。7-5 实现 `a88fbc4/32483521108` 三 job 已全绿；同一 clean SHA 的官方 SDK→RiftCoach stdio 与 RiftCoach→OP.GG Streamable HTTP 双向门已通过并生成 body-free evidence。当前等待证据提交的 exact-SHA 公共门，尚未关闭 Stage 7
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：按 RQ-079 完成 `7-5-mcp-interoperability-exit-review` 的设计/TDD、官方外部 Client→RiftCoach stdio Server 与 RiftCoach Client→OP.GG Streamable HTTP 双向真实证明、八维证据、本地门禁、独立提交和 exact-SHA 公共 CI；全部通过前不关闭阶段 7，也不进入阶段 8。
+- 唯一下一步：继续 `7-5-mcp-interoperability-exit-review`，提交不可覆盖 `stage7_interoperability_exit_v1.json`、持久退出矩阵与自动验证，等待该 exact SHA 的三 job；全绿后再用独立状态提交将 7-5/coverage/Stage 7 置 complete 并只交接 Stage 8 prepared，不提前实施 Stage 8。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层

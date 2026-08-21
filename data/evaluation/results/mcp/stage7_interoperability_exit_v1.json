@@ -1,0 +1,163 @@
+{
+  "body_free": true,
+  "exit_matrix": [
+    {
+      "id": "official_external_client_identity",
+      "status": "pass"
+    },
+    {
+      "id": "client_to_riftcoach_initialize_list_call",
+      "status": "pass"
+    },
+    {
+      "id": "riftcoach_owner_and_body_safety",
+      "status": "pass"
+    },
+    {
+      "id": "official_external_server_identity",
+      "status": "pass"
+    },
+    {
+      "id": "riftcoach_to_opgg_initialize_list_call",
+      "status": "pass"
+    },
+    {
+      "id": "opgg_partial_provenance_honesty",
+      "status": "pass"
+    },
+    {
+      "id": "body_free_immutable_evidence",
+      "status": "pass"
+    }
+  ],
+  "external_client_to_riftcoach": {
+    "body_free": true,
+    "call": {
+      "attribution_count": 1,
+      "is_error": false,
+      "result_digest": "76cc2dd880741f3c45da4d1f255f645a92ffdc89b665544d1ad581c2e9329694",
+      "tool": "riftcoach.knowledge_search"
+    },
+    "catalog": {
+      "digest": "c89c8e8d20cf8be4321f67ce7404954acfae3e5afde9b2e01fc47adbdb59cc4d",
+      "selected_tool": "riftcoach.knowledge_search",
+      "selected_tool_schema_digest": "bfaf162da00add8dea096fa4c17c62556f761b0efe82a97805907e64291465b4",
+      "tool_count": 4
+    },
+    "client": {
+      "implementation_name": "riftcoach-stage7-external-client",
+      "integrity": "sha512-xKd8OIzlqNzcqcNumGAa6g+PW2kjD5vrpcKOnfldAUPP3j7lnqMPwlTXQm8gF+UwH72z0lqaRbjr9hqGz0eITA==",
+      "license": "MIT",
+      "offered_protocol_version": "2025-11-25",
+      "package": "@modelcontextprotocol/sdk",
+      "transport": "stdio",
+      "version": "1.30.0"
+    },
+    "external_io": {
+      "key_reads": 0,
+      "llm_provider_calls": 0,
+      "opgg_tools_call_calls": 0,
+      "riftcoach_tools_call_calls": 1,
+      "riot_calls": 0
+    },
+    "limitations": [
+      "no_public_network_deployment",
+      "no_production_auth_or_actor_bootstrap",
+      "no_database_or_provider_io"
+    ],
+    "observed_window_utc": {
+      "ended_at": "2026-08-21T12:49:22.700Z",
+      "started_at": "2026-08-21T12:49:20.812Z"
+    },
+    "result": "passed",
+    "schema_version": "1.0",
+    "server": {
+      "name": "RiftCoach MCP Server",
+      "protocol_version": "2025-06-18",
+      "version": "1.0.0"
+    },
+    "tools_call_calls": 1,
+    "trace": {
+      "digest": "5d4043fe9ae55da0084ac60e778b0bbe966960de5e0a3bc9846881fe4776d7a4",
+      "initialize_calls": 1,
+      "initialized_notifications": 1,
+      "response_count": 3,
+      "tools_call_calls": 1,
+      "tools_list_calls": 1
+    },
+    "trace_digest": "5d4043fe9ae55da0084ac60e778b0bbe966960de5e0a3bc9846881fe4776d7a4"
+  },
+  "external_io": {
+    "key_reads": 0,
+    "llm_provider_calls": 0,
+    "opgg_tools_call_calls": 1,
+    "riftcoach_tools_call_calls": 1,
+    "riot_calls": 0
+  },
+  "limitations": [
+    "no_public_riftcoach_server_deployment",
+    "no_production_auth_tls_or_actor_bootstrap",
+    "opgg_upstream_patch_and_freshness_unknown",
+    "no_riot_opgg_join",
+    "single_observation_window_not_an_slo"
+  ],
+  "observed_window_utc": {
+    "ended_at": "2026-08-21T12:49:25Z",
+    "started_at": "2026-08-21T12:49:20Z"
+  },
+  "product_sha": "a88fbc457850dd77265900e6800079ac2a8fb0e4",
+  "result": "passed",
+  "riftcoach_to_external_server": {
+    "body_free": true,
+    "catalog": {
+      "admitted_tool_count": 1,
+      "digest": "381f3f77bc7aa583ccbeb62f13058292e17cbe25d654ca07912d5427b2381bba",
+      "selected_tool": "lol_list_lane_meta_champions",
+      "selected_tool_output_schema_present": false,
+      "selected_tool_schema_digest": "780986a49a045678367d8df876fd205a57477646d65d76c4f5773fcc87bd1990"
+    },
+    "context": {
+      "instructional": false,
+      "message_role": "user",
+      "required": false,
+      "section_id": "meta:opgg:e48c2492c6fde375",
+      "trust": "external_meta_evidence"
+    },
+    "endpoint": "https://mcp-api.op.gg/mcp",
+    "evidence": {
+      "allowed_uses": [
+        "current_snapshot_recommendation"
+      ],
+      "digest": "e48c2492c6fde375c86fdf7021d5d7f66f87a16983c807a864b993c1ce34a6b7",
+      "expires_at": "2026-08-21T13:04:25.639872+00:00",
+      "fact_count": 3,
+      "position": "top",
+      "provenance": "partial",
+      "retrieved_at": "2026-08-21T12:49:25.639872+00:00",
+      "source_generated_at": null,
+      "upstream_patch": null
+    },
+    "initialize_calls": 1,
+    "initialized_notifications": 1,
+    "limitations": [
+      "upstream_patch_unknown",
+      "source_generated_at_unknown",
+      "upstream_freshness_unknown",
+      "exact_patch_attribution_forbidden",
+      "historical_patch_comparison_forbidden"
+    ],
+    "protocol": {
+      "server_name": "OP.GG MCP Server",
+      "server_version": "1.0.0",
+      "tools_capability": true,
+      "version": "2025-06-18"
+    },
+    "result": "passed",
+    "schema_version": "1.0",
+    "tools_call_calls": 1,
+    "tools_list_calls": 1,
+    "trace_digest": "dc9ad59625b487addc7152299f4bb00b86cfbefa8938a5a8206baf40eb8a3453",
+    "transport": "streamable_http"
+  },
+  "schema_version": "1.0"
+}
