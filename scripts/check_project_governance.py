@@ -49,6 +49,7 @@ LEARNING_COVERAGE_CANONICAL_ORDER = (
     "6b-8-memory-aware-context-typed-turns",
     "6b-9-lifecycle-export-exit-review",
     "stage-7-standard-mcp-dynamic-meta-entry-design",
+    "7-1-mcp-client-contract",
 )
 
 

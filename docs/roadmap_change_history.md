@@ -2429,3 +2429,12 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   `7-3-opgg-meta-adapter` → `7-4-riftcoach-mcp-server` → `7-5-mcp-interoperability-exit-review`。
 - `BOUNDARY`：入口设计阶段不安装 SDK、不实现 MCP Client/Server、不读取 Key、不调用 OP.GG/Riot/Provider；
   当前 coverage 仍 planned，待设计 exact-SHA 公共闭环后才进入 pure TDD。
+
+### 2026-08-21：Stage 7 入口设计 exact-SHA 公共闭环与 7-1 交接
+
+- `PUBLIC-CI`：设计提交 `e50a54618157c84a545ad5786e6c820502f967ee` / Actions `32436092074` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `CLOSED`：ADR-0047、entry design、implementation plan、学习材料与八维 coverage 正式关闭；公共证据
+  不外推 MCP 产品代码、OP.GG 准入或真实外部互操作。
+- `HANDOFF`：新增治理顺序 `7-1-mcp-client-contract`，canonical 标为 prepared/waiting authorization；
+  未获下一授权前不写 pure contract、transport、Meta Adapter 或 RiftCoach Server。

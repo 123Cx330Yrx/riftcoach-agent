@@ -3334,3 +3334,12 @@
   ToolRuntime/Application/Context/Harness 测试仍是兼容性基线。
 - 当前唯一下一动作：完成治理、完整回归、横向安全/数据门和 exact-SHA 三 job 设计闭环；公共全绿后才进入
   `7-1-mcp-client-contract` pure TDD。
+
+## 2026-08-21：Stage 7 入口设计 exact-SHA 公共闭环
+
+- 设计提交 `e50a54618157c84a545ad5786e6c820502f967ee` / Actions `32436092074` 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke` 三 job 全绿；入口设计正式关闭。
+- 公共 pytest 与本地完整基线分别为 `1489 passed, 117 skipped, 1 warning, 110 subtests passed`；本机
+  skip 不外推为真实 PostgreSQL/部署证据。入口设计仍无 SDK、MCP 产品代码、Key 或外部调用。
+- coverage 八维已置 complete；canonical 交接 `7-1-mcp-client-contract` prepared/waiting authorization，
+  新增 sequence 250 与治理 canonical order。授权前不开始 pure TDD。

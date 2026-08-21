@@ -1577,3 +1577,11 @@ transport、schema、许可、freshness、限流或真实互操作。缺一项�
 不得把普通 HTTP POST 改名为 MCP，也不得静默替换来源。入口设计不安装 SDK、不调用 OP.GG、
 不实现 Client/Server；后续顺序固定为 pure contract → transport/discovery → OP.GG Meta
 Adapter → RiftCoach Server → real interoperability exit review。
+
+### Stage 7 入口设计公共闭环（2026-08-21）
+
+`e50a546` / Actions `32436092074` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job
+已精确对应该设计 SHA 并全部成功。ADR-0047、design、implementation plan、学习材料与八维 coverage
+正式闭环；这只证明设计与既有基线兼容，不证明 MCP 产品互操作或 OP.GG 已准入。canonical 交接到
+`7-1-mcp-client-contract`，等待用户明确授权；授权前不实现 pure MCP contract、transport、MetaEvidence
+或 RiftCoach MCP Server。

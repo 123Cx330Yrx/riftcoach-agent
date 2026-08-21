@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 7
 substage_group: "stage-7-standard-mcp-dynamic-meta"
-current_checkpoint: "stage-7-standard-mcp-dynamic-meta-entry-design"
+current_checkpoint: "7-1-mcp-client-contract"
 status: in_progress
-pause_reason: ""
+pause_reason: "Stage 7 entry design closed at e50a546 / Actions 32436092074; 7-1 is prepared and awaiting explicit authorization"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-21（RQ-072 已授权 Stage 7 入口设计；尚未实现产品 MCP/Meta）
-- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。6B-9 最终修复提交 `cbc7cbdcd3841a6ed20cd61a61f1cb5890787d38` / Actions `32408101770` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success，coverage 已 complete，阶段 6 正式关闭。当前唯一检查点为 `stage-7-standard-mcp-dynamic-meta-entry-design`，RQ-072 已授权并进行中；当前只做教学、接缝审计、方案比较与设计冻结，尚未实现 MCP Client/Server、Meta Adapter 或真实外部 I/O
+- 最后更新：2026-08-21（Stage 7 入口设计 exact-SHA 公共闭环；7-1 等待授权）
+- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。6B-9 最终修复提交 `cbc7cbdcd3841a6ed20cd61a61f1cb5890787d38` / Actions `32408101770` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success，coverage 已 complete，阶段 6 正式关闭。Stage 7 入口设计提交 `e50a54618157c84a545ad5786e6c820502f967ee` / Actions `32436092074` 三 job 全绿并正式关闭；当前唯一检查点为 `7-1-mcp-client-contract`，仅 prepared/waiting authorization，尚未实现任何 MCP 产品代码或真实外部 I/O
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：完成 `stage-7-standard-mcp-dynamic-meta-entry-design` 的初学者教学、现有 Tool Runtime/Application/Context/Harness 接缝审计、OP.GG 条件准入清单、ADR/design/implementation plan 与本地/公共设计门；不提前实现 MCP Client/Server 或外部互操作。
+- 唯一下一步：用户明确授权后，先为 `7-1-mcp-client-contract` 讲解并以 pure TDD 冻结 initialize、capability、tools/list、tools/call、schema、错误和大小边界；授权前不实现 MCP Client/Server、Meta Adapter 或外部互操作。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1660,3 +1660,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   资料只完成路线/现有接缝审计，OP.GG 官方准入尚未完成；GitHub/部署仍只有设计门证据，尚无 Stage 7 真实互操作。
 - 当前本地裁决：`entry-design-in-progress-no-external-io`。唯一下一动作是完成设计文档/coverage/治理与
   完整本地门禁，独立提交并等待 exact-SHA 三 job；公共全绿后才进入 `7-1-mcp-client-contract` 的 pure TDD。
+
+## 2026-08-21：Stage 7 入口设计 exact-SHA 公共闭环与 7-1 交接
+
+- 设计提交 `e50a54618157c84a545ad5786e6c820502f967ee` / Actions `32436092074` 精确对应，
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 completed/success；本地完整回归为
+  `1489 passed, 117 skipped, 1 warning, 110 subtests passed`，117 skip 仍来自本机环境限制。
+- ADR-0047、Stage 7 entry design、implementation plan、学习材料与八维 coverage 已正式闭环；该证据只证明
+  边界/设计与既有基线兼容，不证明 MCP 产品代码、OP.GG 准入或真实外部互操作。
+- 入口设计保持 no-I/O：未安装 MCP SDK、未实现 Client/Server、未读取 Key、未调用 OP.GG/Riot/Provider；
+  OP.GG 仍是未经 endpoint/protocol/许可/freshness/互操作审计的 candidate/deferred。
+- canonical 已交接到 `7-1-mcp-client-contract`，状态为 prepared/waiting authorization；其前置 coverage
+  已 complete，新增 7-1 planned/order contract。授权前不得写 pure MCP contract 产品代码或接入 transport。
+- 四条进度线：本地代码仍无 Stage 7 产品实现；项目理解有入口设计持久材料但 7-1 尚未教学；参考资料只完成
+  现有接缝和 OP.GG 准入清单，未完成官方准入；GitHub/部署只有入口设计 exact-SHA 证据，尚无真实互操作。

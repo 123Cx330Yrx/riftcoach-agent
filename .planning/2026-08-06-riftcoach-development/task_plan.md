@@ -17,9 +17,10 @@ Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 Phase 24 - `6B-8-memory-aware-context-typed-turns` is complete at `aacc11a` /
 Actions `32403187972`. Phase 25 - `6B-9-lifecycle-export-exit-review` is complete
 at `cbc7cbd` / Actions `32408101770`. Phase 26 -
-`stage-7-standard-mcp-dynamic-meta-entry-design` is in progress under RQ-072;
-entry design is being frozen and no stage 7 product implementation or external
-I/O has started.
+`stage-7-standard-mcp-dynamic-meta-entry-design` is complete at `e50a546` /
+Actions `32436092074`. Phase 27 - `7-1-mcp-client-contract` is prepared and
+awaiting explicit authorization; no MCP product implementation or external I/O
+has started.
 
 ## Phases
 
@@ -270,8 +271,7 @@ I/O has started.
 coverage 已 complete。6B-7 又由 `f6d8922` / Actions `32397290175` 完成 exact-SHA 三 job 公共闭环。
 RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a` / Actions
 `32403187972` 完成，6B-9 由最小测试修复 `cbc7cbd` / Actions `32408101770` 完成 exact-SHA 三 job。
-当前唯一动作是 `stage-7-standard-mcp-dynamic-meta-entry-design` 的教学、接缝审计、方案比较和设计门；
-不开始 MCP/Meta 产品代码或外部互操作。
+当前唯一动作是等待 `7-1-mcp-client-contract` 的明确授权；授权前不开始 MCP/Meta 产品代码或外部互操作。
 
 ## 6A-1 Checklist
 
@@ -565,12 +565,19 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 
 ### Phase 26 - stage-7-standard-mcp-dynamic-meta-entry-design
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-072；用户已明确开始 Stage 7。
-- State: entry design in progress；当前无 MCP/Meta 产品代码、SDK、Key 或外部 I/O。
+- State: entry design closed by `e50a546` / Actions `32436092074`；当前无 MCP/Meta 产品代码、SDK、Key 或外部 I/O。
 - [completed] 按教学合同审计标准 MCP Client/Server、内部 Tool Runtime、Application/Context/Harness 接缝与 OP.GG 条件准入边界；
 - [completed] 比较 direct HTTP、SDK 渗透和 Adapter-first，冻结 ADR-0047、entry design、实施顺序和真实互操作门；
-- [ ] 完成本地门禁、独立提交/推送和 exact-SHA 公共 CI；公共闭环后才进入 `7-1-mcp-client-contract` pure TDD。
+- [completed] 本地门禁、独立提交/推送和 exact-SHA 公共 CI；入口设计 coverage 已 complete。
+
+### Phase 27 - 7-1-mcp-client-contract
+
+- Status: in_progress
+- State: prepared/waiting authorization；入口设计已由 `e50a546` / Actions `32436092074` exact-SHA 三 job 全绿关闭。
+- [ ] 用户明确授权后，先写 initialize/capability/tools/list/tools/call/error/schema boundary 的 pure red tests；
+- [ ] 在该检查点公共闭环前不接 transport、OP.GG、MetaEvidence 或 RiftCoach MCP Server。
 
 ## 6A Entry Design Checklist
 

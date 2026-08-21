@@ -3253,3 +3253,12 @@
   freshness、限流和真实互操作；当前只能是 candidate/deferred，若合同不满足必须另立 ADR 选替代方案。
 - 推荐 Adapter-first 而非业务直 HTTP 或 SDK 渗透；后续固定 pure contract → transport/discovery → OP.GG
   Meta Adapter → RiftCoach Server → real interoperability exit review。
+
+## 2026-08-21：Stage 7 入口设计公共闭环与交接
+
+- `e50a546` / Actions `32436092074` 的三个公共 job 全绿，证明入口设计资产、治理和既有产品基线兼容；
+  不证明 MCP Client/Server、OP.GG 准入或真实外部互操作。
+- 入口设计 coverage 已完整登记八维材料并置 `complete`；按固定顺序新增
+  `7-1-mcp-client-contract` planned coverage/order contract。
+- canonical 下一检查点为 `7-1-mcp-client-contract` prepared/waiting authorization；授权前只保持文档，
+  不写 pure MCP contract、transport、MetaEvidence 或 Server 产品代码。

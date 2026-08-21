@@ -27,6 +27,7 @@ canonical_order:
   - 6b-8-memory-aware-context-typed-turns
   - 6b-9-lifecycle-export-exit-review
   - stage-7-standard-mcp-dynamic-meta-entry-design
+  - 7-1-mcp-client-contract
 groups:
   - id: stage-0-baseline-and-reference-evidence
     sequence: 10
@@ -488,7 +489,7 @@ groups:
     sequence: 240
     covers:
       - stage-7-standard-mcp-dynamic-meta-entry-design
-    status: planned
+    status: complete
     evidence:
       problem_and_principle:
         - docs/roadmap.md
@@ -513,3 +514,17 @@ groups:
         - docs/learning/stage-7-standard-mcp-dynamic-meta-entry-design.md
       interview_wording:
         - docs/learning/stage-7-standard-mcp-dynamic-meta-entry-design.md
+
+  - id: 7-1-mcp-client-contract
+    sequence: 250
+    covers:
+      - 7-1-mcp-client-contract
+    status: planned
+    evidence:
+      problem_and_principle:
+        - docs/plans/2026-08-21-stage7-standard-mcp-dynamic-meta-design.md
+      design_and_implementation:
+        - docs/adr/0047-adopt-standard-mcp-boundary-and-opgg-meta-adapter.md
+        - docs/plans/2026-08-21-stage7-standard-mcp-dynamic-meta-implementation.md
+      failure_security_boundary:
+        - docs/adr/0047-adopt-standard-mcp-boundary-and-opgg-meta-adapter.md

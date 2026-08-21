@@ -22,7 +22,7 @@
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
-| 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 进行中；`stage-7-standard-mcp-dynamic-meta-entry-design` 已获 RQ-072 授权，当前只做入口设计，尚未实现或执行外部 I/O |
+| 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 进行中；入口设计已由 `e50a546` / Actions `32436092074` 公共闭环，当前交接 `7-1-mcp-client-contract` prepared/waiting authorization |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
 ## 横向能力总账
@@ -274,6 +274,12 @@ MCP 负责跨系统标准互操作，内部 Tool Runtime 负责本应用可靠�
 - 玩家事实、静态映射、RAG 知识和动态 Meta 分层；
 - RiftCoach MCP Server：对外暴露近期汇总、单局分析、知识搜索和报告评测；
 - 协议互操作与断线/超时测试。
+
+Stage 7 的内部检查点顺序固定为：入口设计 → `7-1-mcp-client-contract` →
+`7-2-mcp-transport-and-discovery` → `7-3-opgg-meta-adapter` →
+`7-4-riftcoach-mcp-server` → `7-5-mcp-interoperability-exit-review`。
+每一项都必须独立教学、TDD、八维证据、本地门禁、提交和 exact-SHA 公共 CI；
+真实外部 Server/Client 只在最后退出门执行。
 
 ### 完成标准
 
