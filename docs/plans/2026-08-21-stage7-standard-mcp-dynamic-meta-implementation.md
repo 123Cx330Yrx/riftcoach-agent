@@ -29,15 +29,19 @@
 
 ## 7-1: MCP Client contract（后续 checkpoint）
 
+**Local status (2026-08-21):** implementation and all local gates complete; coverage remains
+`planned` pending the implementation commit's exact-SHA public `pytest`, `postgres-migrations`,
+and `packaging-smoke` jobs. No SDK, transport, Key, or external I/O was added.
+
 ### Task 1: Pure models and envelope tests
 
-**Create:** `app/mcp/models.py`, `app/mcp/errors.py`, `tests/test_mcp_contracts.py`
+**Create:** `app/mcp/__init__.py`, `app/mcp/models.py`, `app/mcp/errors.py`, `tests/test_mcp_contracts.py`
 
-1. 先写 `initialize`、capability、tool descriptor、call/result/error 的严格红灯；
-2. 运行 `.venv\Scripts\python.exe -m pytest tests/test_mcp_contracts.py -q`，确认缺少模型时失败；
-3. 实现版本 allowlist、唯一 tool name、大小上限、body-free error projection；
-4. 重跑聚焦测试并增加 malformed/oversized/schema-drift/allowlist cases；
-5. commit `feat: add pure standard mcp contracts`。
+1. [completed] 先写 `initialize`、capability、tool descriptor、call/result/error 的严格红灯；
+2. [completed] 运行 `.venv\Scripts\python.exe -m pytest tests/test_mcp_contracts.py -q`，在缺少 `app.mcp` 时确认 collection red；
+3. [completed] 实现版本 allowlist、唯一 tool name、immutable schema/catalog digest、参数/结果大小上限和 body-free error projection；
+4. [completed] 增加 malformed/oversized/schema-drift/allowlist、standard annotations、strict bool/int 与 repr body-safety cases；
+5. [in progress] 独立提交 `feat: add pure standard mcp contracts`，等待 exact-SHA 公共三 job 后关闭 7-1。
 
 ## 7-2: Transport and discovery
 

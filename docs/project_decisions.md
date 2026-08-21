@@ -1585,3 +1585,17 @@ Adapter → RiftCoach Server → real interoperability exit review。
 正式闭环；这只证明设计与既有基线兼容，不证明 MCP 产品互操作或 OP.GG 已准入。canonical 交接到
 `7-1-mcp-client-contract`，等待用户明确授权；授权前不实现 pure MCP contract、transport、MetaEvidence
 或 RiftCoach MCP Server。
+
+### 7-1 MCP Client pure contract（2026-08-21，RQ-073）
+
+用户“继续下一步”只授权 7-1。协议 envelope 与 transport 坚持分层：pure contract 负责 JSON-RPC/MCP
+method、protocol version allowlist、capability、tool catalog/schema snapshot、call allowlist/arguments 和
+有限 result/error；7-2 才负责 stdio/HTTP/session/deadline/disconnect。目录 schema digest 变化时旧 call
+必须 fail closed。远端 JSON-RPC message/data、`isError` content 和 raw body 不进入内部错误，只投影有限
+code/retryable/request-id/remote integer code。本批不安装 SDK、不调用 OP.GG/Riot/Provider、不实现
+MetaEvidence、RiftCoach MCP Server 或真实互操作。
+
+本地实现遵循该裁决：目录和 schema 递归冻结并生成 SHA-256，call 同时绑定 catalog/server identity 与具体
+tool schema；standard annotations 严格接收，arguments/result 使用独立 canonical byte 上限。远端 description、
+instructions、arguments、content 和 structured content 不进入默认 repr。完整本地回归为 1509 passed/117
+skipped，全部横向门通过；公共 exact-SHA 前 coverage 保持 planned，7-1 不关闭。

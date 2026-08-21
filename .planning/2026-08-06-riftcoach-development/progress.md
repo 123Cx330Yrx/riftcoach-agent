@@ -3343,3 +3343,28 @@
   skip 不外推为真实 PostgreSQL/部署证据。入口设计仍无 SDK、MCP 产品代码、Key 或外部调用。
 - coverage 八维已置 complete；canonical 交接 `7-1-mcp-client-contract` prepared/waiting authorization，
   新增 sequence 250 与治理 canonical order。授权前不开始 pure TDD。
+
+## 2026-08-21：RQ-073 授权并开始 7-1 pure TDD
+
+- 用户“继续下一步”已记录为 RQ-073；canonical 清除 pause reason，唯一 checkpoint 保持
+  `7-1-mcp-client-contract / in_progress`。
+- 已按恢复顺序复核 requirements、roadmap/history/amendment、capability、learning ledger、ADR-0005/0047、
+  Stage 7 design/implementation plan 与现有 Tool/Provider strict contract 接缝；治理预检通过，起始工作树 clean，
+  `HEAD=origin/main=28ef28103475d9d33df153c77b09ca51c0f0de85`。
+- 初学者边界已固定：envelope 判断消息是否合法，transport 决定消息如何到达；7-1 只做前者。控制流为
+  initialize/version → tools capability → bounded list snapshot → allowlist/schema checked call → safe result/error。
+- 当前唯一动作是创建 `tests/test_mcp_contracts.py` 并确认 ImportError 红灯，然后最小实现 `app/mcp` pure models/errors；
+  不安装 SDK、不读 Key、不调用外部服务、不进入 7-2。
+
+## 2026-08-21：7-1 本地实现完成，等待 exact-SHA 公共门
+
+- 红灯在 `ModuleNotFoundError: app.mcp` 处确认；`app/mcp/{models,errors,__init__}.py` 与
+  `tests/test_mcp_contracts.py` 随后以小步绿灯实现。审查又补标准 annotations、argument bytes、catalog/server
+  drift 与 repr body safety，没有引入 SDK/transport/external I/O。
+- 最终聚焦 `20 passed, 17 subtests passed`；相邻 Tool/Provider contracts `55 passed, 62 subtests passed`；
+  完整回归 `1509 passed, 117 skipped, 1 warning, 127 subtests passed`。
+- RAG development/independent holdout 的 Recall/MRR/nDCG 均 1.0、FPR 0.0，holdout abstention/citation 均 1.0；
+  Harness dry-run published/0 revisions；compileall、pip、YAML、governance、SDK boundary、tracked Secret/run-data
+  和 diff check 通过。
+- `docs/learning/7-1-mcp-client-contract-walkthrough.md` 已覆盖八维 evidence；coverage 仍 `planned`，因为实现
+  exact-SHA 三 job 尚未运行。唯一下一动作是 cached diff→独立提交/推送→等待公共三 job；不进入 7-2。

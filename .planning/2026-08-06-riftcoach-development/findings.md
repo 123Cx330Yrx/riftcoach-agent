@@ -3262,3 +3262,28 @@
   `7-1-mcp-client-contract` planned coverage/order contract。
 - canonical 下一检查点为 `7-1-mcp-client-contract` prepared/waiting authorization；授权前只保持文档，
   不写 pure MCP contract、transport、MetaEvidence 或 Server 产品代码。
+
+## 2026-08-21：7-1 pure contract 接缝审计（RQ-073）
+
+- 协议 envelope 与 transport 是两个独立失败域：前者验证 JSON-RPC/MCP method、版本、capability、schema
+  和有限结果；后者才处理 stdio/HTTP、断线、deadline、restart 与 session 生命周期。本轮只实现前者。
+- 现有 `ToolDefinition`/`schema.py` 已使用 Draft 2020-12 JSON Schema，Provider contracts 已示范 immutable
+  schema snapshot、strict bool/int 与安全错误；7-1 可复用这些原则，但不能把 MCP 外部工具名强行当作
+  内部 dotted-lowercase ToolDefinition，也不能提前复制 ToolRuntime retry/cache/breaker。
+- `tools/list` 必须生成有界、唯一名称且 immutable 的 schema snapshot/digest；`tools/call` 同时检查发现目录、
+  业务 allowlist、arguments schema 与 snapshot digest。目录变化时旧调用 fail closed，而不是按新 schema 猜测。
+- JSON-RPC `error.message/data` 与 `tools/call isError` 内容都可能含 secret、Prompt 或上游 body；内部错误对象只保留
+  allowlisted code、retryable、request id 和合法整数 remote code，不接受 raw body/message/data 字段。
+- 7-1 测试/实现保持 pure no-I/O；没有 SDK、transport、OP.GG、MetaEvidence、Server 或真实互操作证据。
+
+## 2026-08-21：7-1 实现审查发现
+
+- 初版 focused green 后补齐标准 `Tool.annotations` 严格形状，同时让 description/title/annotations、arguments、
+  result content、structured content 和 server instructions 从 repr 隐藏；必要业务数据仍可显式读取，但默认日志
+  不会因打印 dataclass 泄露外部正文。
+- 只限制 catalog/result 不够：arguments 即使满足 JSON Schema 也可能过大，因此 `McpContractLimits` 增加
+  `max_argument_bytes` 并在生成 wire request 前检查 canonical JSON bytes。
+- 只比较单 tool schema digest 会允许另一个 Server 的同形工具替换；最终 drift gate 同时绑定 catalog digest
+  （含 protocol/server/tool identities）和 tool schema digest。任何 catalog refresh 都要求重新构造 call。
+- pure Mapping 无法证明原始 HTTP/frame bytes；当前 canonical byte 限制只保护解析后的内存合同。raw frame/body、
+  pagination aggregation、disconnect/restart/deadline 必须在 7-2 transport tests 单独证明。

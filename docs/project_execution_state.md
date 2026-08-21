@@ -4,7 +4,7 @@ main_stage: 7
 substage_group: "stage-7-standard-mcp-dynamic-meta"
 current_checkpoint: "7-1-mcp-client-contract"
 status: in_progress
-pause_reason: "Stage 7 entry design closed at e50a546 / Actions 32436092074; 7-1 is prepared and awaiting explicit authorization"
+pause_reason: ""
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "Stage 7 entry design closed at e50a546 / Actions 32436092074; 7-1
 
 ## 状态元数据
 
-- 最后更新：2026-08-21（Stage 7 入口设计 exact-SHA 公共闭环；7-1 等待授权）
-- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。6B-9 最终修复提交 `cbc7cbdcd3841a6ed20cd61a61f1cb5890787d38` / Actions `32408101770` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success，coverage 已 complete，阶段 6 正式关闭。Stage 7 入口设计提交 `e50a54618157c84a545ad5786e6c820502f967ee` / Actions `32436092074` 三 job 全绿并正式关闭；当前唯一检查点为 `7-1-mcp-client-contract`，仅 prepared/waiting authorization，尚未实现任何 MCP 产品代码或真实外部 I/O
+- 最后更新：2026-08-21（7-1 pure contract 本地实现与门禁完成，等待 exact-SHA 公共 CI）
+- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。6B-9 最终修复提交 `cbc7cbdcd3841a6ed20cd61a61f1cb5890787d38` / Actions `32408101770` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success，coverage 已 complete，阶段 6 正式关闭。Stage 7 入口设计提交 `e50a54618157c84a545ad5786e6c820502f967ee` / Actions `32436092074` 三 job 全绿并正式关闭；RQ-073 授权的 `7-1-mcp-client-contract` 已完成 pure models/errors/tests 与八维 walkthrough，本地完整门禁全绿，但实现提交及其 exact-SHA 公共 CI 尚不存在，coverage 继续 planned；transport、OP.GG/Meta、RiftCoach MCP Server 和真实外部 I/O 均未开始
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "Stage 7 entry design closed at e50a546 / Actions 32436092074; 7-1
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：用户明确授权后，先为 `7-1-mcp-client-contract` 讲解并以 pure TDD 冻结 initialize、capability、tools/list、tools/call、schema、错误和大小边界；授权前不实现 MCP Client/Server、Meta Adapter 或外部互操作。
+- 唯一下一步：最终审查并独立提交/推送 `7-1-mcp-client-contract` 实现，等待该 exact SHA 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job；全绿前不关闭 coverage、不交接 7-2，也不实现 transport、Meta Adapter、RiftCoach MCP Server 或外部互操作。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -551,10 +551,10 @@ pause_reason: "Stage 7 entry design closed at e50a546 / Actions 32436092074; 7-1
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5 与阶段 6 的 6A、Session/Memory entry design、6B-1 至 6B-9 均已实现并关闭；6B-9 最终代码为 `cbc7cbd` | 本地代码等于生产模型质量、正式 Auth/RSO、SSE/前端、阶段 7 MCP、阶段 8 恢复/Multi-Agent 已完成 |
-| 项目理解 | RQ-067 已从阶段 0 重审并公共闭环；6B-1 至 6B-9 均有八维持久材料，6B-9 walkthrough 同时给出 Session/Memory V1 exit matrix | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
-| 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 已做源码/文档审计；Pi 0.84.2 source/license/contract 与可执行对照已完成，Claude SDK 仅作书面排除分析 | 已整体接入或复用这些参考项目，或 Pi 结论可外推到未来版本/所有框架 |
-| GitHub/部署 | 6A、Session/Memory design、6B-1 至 6B-9 与 RQ-067 均已有 exact-SHA 三 job；6B-9 为 `cbc7cbd/32408101770`，网页与公网仍未部署 | 既有 CI 等于生产切换、正式 Auth/RSO、备份副本擦除、SLA 或公网可用 |
+| 本地代码 | 阶段 0-5 与阶段 6 已实现并关闭；Stage 7 入口设计已闭环，7-1 pure initialize/catalog/call/result/error contract 已本地实现并通过完整门禁 | 7-1 pure contract 等于 transport、OP.GG、MCP Server、真实互操作或整个阶段 7 已完成 |
+| 项目理解 | RQ-067 与阶段 6 八维材料已公共闭环；Stage 7 入口与 7-1 walkthrough 已持久解释 envelope/transport、snapshot/drift 和 body-free error | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
+| 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 与 Pi 已按历史门审计；Stage 7 已完成现有代码接缝和 OP.GG 条件准入清单，但 OP.GG 官方标准 MCP 证据仍缺失 | OP.GG 已准入、普通 HTTP 是 MCP，或参考项目已整体接入 |
+| GitHub/部署 | 入口设计 `e50a546/32436092074` 已 exact-SHA 三 job；7-1 只有本地门禁，尚无实现提交或公共证据，网页与公网仍未部署 | 本地绿灯、设计 CI 或旧 CI 等于 MCP 产品互操作、正式 Auth/RSO、SLA 或公网可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -1674,3 +1674,29 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   已 complete，新增 7-1 planned/order contract。授权前不得写 pure MCP contract 产品代码或接入 transport。
 - 四条进度线：本地代码仍无 Stage 7 产品实现；项目理解有入口设计持久材料但 7-1 尚未教学；参考资料只完成
   现有接缝和 OP.GG 准入清单，未完成官方准入；GitHub/部署只有入口设计 exact-SHA 证据，尚无真实互操作。
+
+## 2026-08-21：RQ-073 授权 7-1 MCP Client pure contract
+
+- 用户明确“继续下一步”，授权 canonical 的 `7-1-mcp-client-contract`；等待授权原因已清空，checkpoint
+  保持 `in_progress`。该授权不外推到 7-2 transport/discovery 或任何外部 I/O。
+- 初学者控制流固定为 `initialize → capability gate → tools/list snapshot → allowlisted tools/call`：
+  envelope 只描述消息是否合法，transport 才负责消息如何到达；两者必须分开测试和演进。
+- 当前实施范围只含严格 pure models/errors：protocol version allowlist、tools capability、唯一有界目录、
+  JSON Schema/arguments、schema drift、malformed/oversized result，以及不保存 remote message/data/body 的安全错误投影。
+- 不安装 MCP SDK，不实现 stdio/HTTP/session transport，不调用 OP.GG/Riot/Provider，不读取 Key，不创建
+  MetaEvidence 或 RiftCoach MCP Server，也不把 fixture/pure test 称为真实互操作。
+- 唯一下一动作是先写 `tests/test_mcp_contracts.py` 红灯，再以 `app/mcp/models.py`、`app/mcp/errors.py`
+  做最小实现；完成 walkthrough、全部本地门禁与实现 SHA 的 exact-SHA 三 job 前不关闭 7-1。
+
+## 2026-08-21：7-1 本地实现与完整门禁完成
+
+- `app/mcp` 已实现 transport-neutral initialize/list/call/result/error contracts：strict JSON-RPC、version
+  allowlist、tools capability、immutable bounded schema/catalog、discovery+allowlist+arguments、server/catalog/schema
+  drift 和 body-free JSON-RPC/`isError` 投影；没有 SDK、socket、subprocess、HTTP 或外部调用。
+- 红灯先在 `ModuleNotFoundError: app.mcp` 处确认；最小实现与审查增强后，聚焦为
+  `20 passed, 17 subtests passed`，相邻 Tool/Provider contracts 为 `55 passed, 62 subtests passed`。
+- 完整本地回归为 `1509 passed, 117 skipped, 1 warning, 127 subtests passed`；117 skip 仍来自既有本机
+  PostgreSQL/Docker/Linux 限制。两套 RAG 满阈值，Harness dry-run `published/0 revisions`；compileall、pip、
+  YAML、governance、SDK/Secret/tracked-data 与 diff 门全部通过。
+- walkthrough 已覆盖八维 evidence，但 `coverage.yaml` 继续 `planned`。唯一下一动作是最终 cached diff 审查、
+  独立提交/推送并等待 exact-SHA 三 job；全绿前 7-1 保持 open，不进入 7-2。

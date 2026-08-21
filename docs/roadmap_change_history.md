@@ -2438,3 +2438,23 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   不外推 MCP 产品代码、OP.GG 准入或真实外部互操作。
 - `HANDOFF`：新增治理顺序 `7-1-mcp-client-contract`，canonical 标为 prepared/waiting authorization；
   未获下一授权前不写 pure contract、transport、Meta Adapter 或 RiftCoach Server。
+
+### 2026-08-21：RQ-073 授权 7-1 MCP Client pure contract
+
+- `AUTHORIZED`：用户明确“继续下一步”，只授权 canonical 的 `7-1-mcp-client-contract`；7-2 及以后未授权。
+- `CONTROL-FLOW`：本批冻结 `initialize → tools capability → tools/list snapshot → allowlisted tools/call`；
+  envelope/model 与 transport/session 分开，7-1 不实现 stdio、HTTP、断线或外部发现。
+- `TDD-BOUNDARY`：先覆盖 protocol version allowlist、严格 JSON-RPC/额外字段、唯一有界 tool catalog、
+  Draft 2020-12 arguments/result schema、schema drift、malformed/oversized result 和 body-free remote error。
+- `NO-IO`：不安装 SDK、不读取 Key、不调用 OP.GG/Riot/Provider、不创建 MetaEvidence 或 RiftCoach MCP Server；
+  pure/fixture 证据不能称为真实互操作，7-1 exact-SHA 公共闭环前不交接 7-2。
+
+### 2026-08-21：7-1 本地实现与门禁完成
+
+- `IMPLEMENTED-LOCAL`：strict initialize/version/capability、bounded immutable catalog/schema digest、
+  discovered+allowlisted call、argument/output validation、catalog/schema drift 与 body-free remote error 已建立。
+- `EVIDENCE-LOCAL`：聚焦 `20 passed/17 subtests`，相邻 `55/62 subtests`，完整
+  `1509 passed, 117 skipped, 1 warning, 127 subtests passed`；RAG/Harness/compile/pip/YAML/governance/security/diff 全绿。
+- `BOUNDARY`：实现仍 pure no-I/O；没有 SDK、transport、OP.GG/Meta、RiftCoach MCP Server、Key 或真实互操作。
+- `PENDING`：walkthrough 已覆盖八维但 coverage 继续 planned；只待独立提交/推送与 exact-SHA 三 job，
+  公共全绿前不关闭 7-1、不登记 7-2 为当前 checkpoint。
