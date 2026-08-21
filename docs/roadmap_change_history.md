@@ -2521,3 +2521,15 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   YAML、SDK/Secret/tracked-data、body-free evidence、governance 与 diff 门全绿。
 - `PENDING`：coverage 保持 planned；唯一下一动作是独立提交/推送并等待该 exact SHA 的三 job。公共全绿前
   不关闭 7-4，不进入 7-5。
+
+### 2026-08-21：7-4 exact-SHA 公共闭环与 7-5 交接
+
+- `PUBLIC-CI`：实现 `431c584c6f07731233e6e32fd6f98505a661f910` / Actions `32480827952` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。
+- `EVIDENCE`：公共 pytest `1567 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+  `164 passed, 1 warning`，0001→0009 可逆且 metadata=head；Linux package schema 1.6，
+  `external_riot_provider_calls=0`。
+- `CLOSED`：7-4 与八维 coverage 正式关闭；这些证据不证明公网 Server、正式 Auth/TLS/限流、
+  Riot+OP.GG join 或真实外部 Client 双向互操作。
+- `HANDOFF`：唯一下一检查点为 `7-5-mcp-interoperability-exit-review` prepared/waiting authorization；
+  授权前停止。

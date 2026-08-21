@@ -1655,3 +1655,9 @@ Query Facade、verified recent aggregate、single-review digest、knowledge attr
 均有聚焦/相邻/完整回归证据。单局报告正文因当前持久合同缺少结构化 published-result Artifact 而不从 Markdown
 反推；评测也保持 `score_available=false`，不把 published 虚构为 evaluator score。coverage 在实现 SHA 的
 exact-SHA 三 job 前保持 planned；7-5 仍未进入。
+
+实现 `431c584c6f07731233e6e32fd6f98505a661f910` / Actions `32480827952` 随后完成 exact-SHA
+`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环。公共 pytest 为 `1567 passed,
+116 skipped, 1 warning, 127 subtests passed`，真实 PostgreSQL 为 `164 passed, 1 warning` 且 metadata-head
+无漂移，Linux package schema 1.6/外部调用 0。7-4 coverage 已 complete；canonical 只交接
+`7-5-mcp-interoperability-exit-review` prepared/waiting authorization，不把 fixture/CI 冒充真实外部双向互操作。

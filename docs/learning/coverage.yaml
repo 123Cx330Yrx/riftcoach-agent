@@ -31,6 +31,7 @@ canonical_order:
   - 7-2-mcp-transport-and-discovery
   - 7-3-opgg-meta-adapter
   - 7-4-riftcoach-mcp-server
+  - 7-5-mcp-interoperability-exit-review
 groups:
   - id: stage-0-baseline-and-reference-evidence
     sequence: 10
@@ -609,7 +610,7 @@ groups:
     sequence: 280
     covers:
       - 7-4-riftcoach-mcp-server
-    status: planned
+    status: complete
     evidence:
       problem_and_principle:
         - docs/adr/0049-adopt-restricted-riftcoach-mcp-server-facade.md
@@ -632,3 +633,17 @@ groups:
         - docs/learning/7-4-riftcoach-mcp-server-walkthrough.md
       interview_wording:
         - docs/learning/7-4-riftcoach-mcp-server-walkthrough.md
+
+  - id: 7-5-mcp-interoperability-exit-review
+    sequence: 290
+    covers:
+      - 7-5-mcp-interoperability-exit-review
+    status: planned
+    evidence:
+      problem_and_principle:
+        - docs/plans/2026-08-21-stage7-standard-mcp-dynamic-meta-design.md
+        - docs/adr/0047-adopt-standard-mcp-boundary-and-opgg-meta-adapter.md
+      design_and_implementation:
+        - docs/plans/2026-08-21-stage7-standard-mcp-dynamic-meta-implementation.md
+      failure_security_boundary:
+        - docs/adr/0047-adopt-standard-mcp-boundary-and-opgg-meta-adapter.md

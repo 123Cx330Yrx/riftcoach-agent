@@ -3481,3 +3481,12 @@
   boundary、tracked Secret/run-data、body-free MCP evidence、governance 与 diff check 全绿。
 - walkthrough 已覆盖八维，coverage 保持 planned。唯一下一动作是最终 diff/cached review、独立提交/推送和
   exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；三 job 全绿前不关闭 7-4、不进入 7-5。
+
+## 2026-08-21：7-4 exact-SHA 公共闭环与 7-5 准备态
+
+- 实现提交 `431c584c6f07731233e6e32fd6f98505a661f910` 已推送；Actions run `32480827952`
+  精确对应该 SHA，三个 job 全部 completed/success。
+- 公共 pytest `1567 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+  `164 passed, 1 warning`、migration metadata=head；Linux package schema 1.6 且外部调用 0。
+- 7-4 coverage 已 complete。canonical 交接 `7-5-mcp-interoperability-exit-review`
+  prepared/waiting authorization；当前不实施真实外部 Client、双向互操作或 Stage 7 exit review。

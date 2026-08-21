@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 7
 substage_group: "stage-7-standard-mcp-dynamic-meta"
-current_checkpoint: "7-4-riftcoach-mcp-server"
+current_checkpoint: "7-5-mcp-interoperability-exit-review"
 status: in_progress
-pause_reason: null
+pause_reason: "7-4 closed at 431c584 / Actions 32480827952; 7-5 is prepared and awaiting explicit authorization"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: null
 
 ## 状态元数据
 
-- 最后更新：2026-08-21（7-4 Server/Facade 本地实现与全部门禁完成，待独立提交和 exact-SHA 公共 CI）
-- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。Stage 7 入口设计 `e50a546/32436092074`、7-1 `37f16bc/32439753589`、7-2 `f121666/32441793585` 与 7-3 `64311a1/32455219404` 已关闭。当前唯一检查点 `7-4-riftcoach-mcp-server` 已完成 strict Server Session、owner-scoped read-only Facade、四工具目录和本地门禁；实现 SHA 的公共三 job 尚未运行，coverage 保持 planned，7-5 未进入
+- 最后更新：2026-08-21（7-4 exact-SHA 公共闭环；7-5 prepared/waiting authorization）
+- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。Stage 7 入口设计 `e50a546/32436092074`、7-1 `37f16bc/32439753589`、7-2 `f121666/32441793585`、7-3 `64311a1/32455219404` 与 7-4 `431c584/32480827952` 已关闭。当前唯一检查点为 `7-5-mcp-interoperability-exit-review` prepared/waiting authorization；尚未执行真实外部 Client→RiftCoach Server 互操作或 Stage 7 退出审查
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: null
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：完成 `7-4-riftcoach-mcp-server` 的最终 diff/cached 审查，独立提交/推送并等待该 exact SHA 的 `pytest`、`postgres-migrations`、`packaging-smoke`；公共全绿前不关闭 coverage，不进入 7-5。
+- 唯一下一步：等待用户明确授权 `7-5-mcp-interoperability-exit-review`；授权前不设计或执行真实外部 Client→RiftCoach Server 互操作、不创建退出证据，也不关闭阶段 7。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -551,10 +551,10 @@ pause_reason: null
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-6 与 Stage 7 入口、7-1、7-2、7-3 已关闭；7-4 已本地实现 strict Server Session、owner-scoped read-only Facade、四个固定工具、安全 DTO 与 in-process Client/Server fixture | 本地 fixture 等于公网 transport、真实外部 Client、7-5 双向互操作或整个阶段 7 已完成 |
-| 项目理解 | Stage 7 入口/7-1/7-2/7-3 已公共闭环；ADR-0049、7-4 专用设计与 walkthrough 已持久解释 Server/Facade 分层、owner 注入、verified projection、body-free failure 和诚实 evaluation 边界 | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
+| 本地代码 | 阶段 0-6 与 Stage 7 入口、7-1、7-2、7-3、7-4 已关闭；7-4 已实现 strict Server Session、owner-scoped read-only Facade、四个固定工具、安全 DTO 与 in-process Client/Server fixture | 本地 fixture/公共单元门等于公网 transport、真实外部 Client、7-5 双向互操作或整个阶段 7 已完成 |
+| 项目理解 | Stage 7 入口/7-1/7-2/7-3/7-4 已公共闭环；ADR-0049、7-4 专用设计与 walkthrough 已持久解释 Server/Facade 分层、owner 注入、verified projection、body-free failure 和诚实 evaluation 边界 | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
 | 参考资料 | 官方仓库/endpoint/协议/许可已审计，真实 handshake/list/call 和当前 30-tool/18-LoL 目录已验证；patch/freshness/rate-limit/底层数据条款仍未知 | partial admission 等于上游完全可信、稳定、新鲜或商业再分发条款已解决 |
-| GitHub/部署 | 入口设计、7-1、7-2、7-3 的 exact-SHA 三 job 已绿；7-4 只有本地实现和门禁，尚无实现 SHA 公共 CI；公网部署未开始 | 本地 Server fixture 等于 7-5 双向互操作、正式 Auth/RSO、SLA 或公网可用 |
+| GitHub/部署 | 入口设计、7-1、7-2、7-3、7-4 的 exact-SHA 三 job 已绿；公网部署与 7-5 真实外部 Client 证明未开始 | 公共 CI 内的 in-process Server fixture 等于 7-5 双向互操作、正式 Auth/RSO、SLA 或公网可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -1823,3 +1823,15 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   coverage 在实现 SHA 的公共三 job 全绿前保持 `planned`。
 - 唯一下一动作：最终 diff/cached 审查、独立提交/推送并等待 exact-SHA `pytest`、
   `postgres-migrations`、`packaging-smoke`；公共全绿前不关闭 7-4，不进入 7-5。
+
+## 2026-08-21：7-4 exact-SHA 公共闭环与 7-5 交接
+
+- 实现提交 `431c584c6f07731233e6e32fd6f98505a661f910` 对应 Actions run `32480827952`；
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 completed/success。
+- 公共 pytest 为 `1567 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL 17
+  为 `164 passed, 1 warning`，0001→0009 upgrade/downgrade 与 `alembic check` metadata-head 无漂移。
+- Linux package schema 1.6 成功且 `external_riot_provider_calls=0`。该 package 仍是既有 no-I/O 产品纵向，
+  不冒充公网 MCP Server 或外部 Client 互操作证明。
+- 7-4 walkthrough/八维 coverage 已置 complete。该证据关闭受限 transport-neutral Server/Facade，
+  不证明正式 Auth/RSO、TLS/限流、公网 transport、Riot+OP.GG join 或 7-5 双向互操作。
+- canonical 只交接 `7-5-mcp-interoperability-exit-review` prepared/waiting authorization；授权前停止。

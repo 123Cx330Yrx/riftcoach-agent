@@ -243,8 +243,8 @@ fixture/in-memory 与隔离 stdio transport/session/discovery；OP.GG、MetaEvid
 ADR-0048 裁决 OP.GG `admitted_with_restrictions`，并由 `64311a1` / Actions `32455219404`
 完成官方 Streamable HTTP、partial MetaEvidence、严格 lane-meta Adapter、data-only Context 与一次
 真实 body-free 单向产品 smoke 的 exact-SHA 三 job 公共闭环。RQ-078 授权的 7-4 RiftCoach Server
-已完成 strict Server/Facade、四个只读工具与全部本地门禁，当前等待独立实现 SHA 的公共三 job；
-7-5 双向互操作未进入。
+又由 `431c584` / Actions `32480827952` 完成 strict Server/Facade、四个只读工具与 exact-SHA 三 job
+公共闭环。7-5 双向互操作退出审查只登记为 prepared/waiting authorization，尚未进入。
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

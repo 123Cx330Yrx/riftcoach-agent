@@ -3427,3 +3427,12 @@
   相邻 `109 passed, 17 subtests passed`，完整 `1566 passed, 117 skipped, 1 warning, 127 subtests passed`。
 - 两套 RAG 全部冻结指标为 1.0/FPR 0.0，Harness `published`/0 revisions；compileall、pip、6 YAML、SDK、
   tracked-data、body-free evidence、governance 与 diff 门全绿。本机 skip 不替代真库/Linux package 公共证据。
+
+## 2026-08-21：7-4 exact-SHA 公共证据与边界
+
+- `431c584c6f07731233e6e32fd6f98505a661f910` / Actions `32480827952` 的三个阻塞 job 全绿；
+  exact SHA 与本地审查内容一致。
+- 公共 pytest `1567 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+  `164 passed, 1 warning` 且 `alembic check` 无新 upgrade；Linux package schema 1.6/外部调用 0。
+- package smoke 仍走既有 no-I/O 产品纵向，没有调用或部署 RiftCoach MCP Server；因此它不能替代 7-5
+  真实外部 Client 证明。7-4 可以关闭，7-5 只 prepared/waiting authorization。

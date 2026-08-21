@@ -64,9 +64,9 @@ external endpoint, Key, OP.GG, MetaEvidence or MCP Server was added.
 **Status (2026-08-21):** complete at `64311a1` / Actions `32455219404` under RQ-075/076;
 official Streamable HTTP, admitted-subset discovery, strict lane-meta normalization,
 partial MetaEvidence, data-only Context and one body-free real product smoke are complete.
-Full local gates and exact-SHA public CI are complete; coverage is complete. RQ-078 has
-authorized 7-4, whose local implementation and gates are complete pending exact-SHA public
-CI; 7-5 is not entered.
+Full local gates and exact-SHA public CI are complete; coverage is complete. RQ-078's 7-4
+implementation is also complete at `431c584` / Actions `32480827952`; 7-5 is prepared and
+awaiting explicit authorization.
 
 ### Task 3: Candidate audit and normalization
 
@@ -82,11 +82,11 @@ CI; 7-5 is not entered.
 
 ## 7-4: RiftCoach MCP Server
 
-**Status (2026-08-21):** local implementation and all local gates are complete under
-RQ-078; the independent implementation commit and exact-SHA public CI are pending.
-This checkpoint implements a transport-neutral, read-only Server Session and a
-restricted owner-scoped Application Facade. It does not claim public HTTP deployment
-or 7-5 bidirectional interoperability.
+**Status (2026-08-21):** complete at `431c584c6f07731233e6e32fd6f98505a661f910` /
+Actions `32480827952`; all three exact-SHA public jobs succeeded and coverage is complete.
+This checkpoint implements a transport-neutral, read-only Server Session and a restricted
+owner-scoped Application Facade. It does not claim public HTTP deployment or 7-5
+bidirectional interoperability.
 
 ### Task 4: Read-only server facade
 
@@ -96,7 +96,8 @@ or 7-5 bidirectional interoperability.
 2. [completed-local] 通过 `app/product/run_query.py` 与 service port 组合，不直连 Repository；
 3. [completed-local] 加 ActorContext owner scope、strict DTO/error allowlist、body-free response、schema/version tests；
 4. [completed-local] 拒绝任意 URL/SQL/file、PUUID/Key/Prompt/Provider body、Memory 写入和未发布 Artifact；
-5. [in_progress] 八维学习证据与本地门禁已完成；独立提交和 exact-SHA 三 job 尚待完成，随后才交接 7-5。
+5. [completed-public] 八维学习证据、本地门禁、实现提交 `431c584` 与 Actions `32480827952`
+   exact-SHA 三 job 已完成；coverage complete，只交接 7-5 prepared/waiting authorization。
 
 ## 7-5: Interoperability exit review
 

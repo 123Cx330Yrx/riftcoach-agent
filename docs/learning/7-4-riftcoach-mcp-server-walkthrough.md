@@ -71,8 +71,10 @@ identity → 文件 SHA 校验 → Summary Schema 1.0 → bounded DTO。任何�
 TDD 先在缺少 `app.mcp.server` 的 collection error 和缺少 Product Query 方法的六个
 `AttributeError` 上确认红灯。当前聚焦 `33 passed`，MCP/Product 相邻集合
 `109 passed, 17 subtests passed`；完整本地回归为
-`1566 passed, 117 skipped, 1 warning, 127 subtests passed`，横向本地门禁全绿。实现 SHA 的
-exact-SHA 公共三 job 尚待运行，所以 coverage 仍保持 `planned`。
+`1566 passed, 117 skipped, 1 warning, 127 subtests passed`，横向本地门禁全绿。实现
+`431c584` / Actions `32480827952` 的 exact-SHA 三 job 随后全部成功：公共 pytest
+`1567 passed, 116 skipped, 1 warning, 127 subtests passed`，真实 PostgreSQL `164 passed`，
+Linux package schema 1.6/外部调用 0；coverage 已置 `complete`。
 
 ## 6. 运行手册
 
