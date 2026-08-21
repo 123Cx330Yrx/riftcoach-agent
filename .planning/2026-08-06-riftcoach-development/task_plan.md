@@ -23,8 +23,10 @@ Actions `32436092074`. Phase 27 - `7-1-mcp-client-contract` is complete at
 `7-2-mcp-transport-and-discovery` is complete at `f121666` / Actions `32441793585`.
 Phase 29 - `7-3-opgg-meta-adapter` is complete at `64311a1` / Actions
 `32455219404`. Phase 30 - `7-4-riftcoach-mcp-server` is complete at `431c584` /
-Actions `32480827952`. Phase 31 - `7-5-mcp-interoperability-exit-review` is the
-sole current checkpoint, prepared and awaiting explicit authorization.
+Actions `32480827952`. RQ-079 authorizes Phase 31 -
+`7-5-mcp-interoperability-exit-review`, the sole current checkpoint; official
+external Client/Server identity, stdio/Streamable HTTP proof and exit evidence
+are in design/TDD and Stage 8 remains out of scope.
 
 ## Phases
 
@@ -637,9 +639,17 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 ### Phase 31 - 7-5-mcp-interoperability-exit-review
 
 - Status: in_progress
-- State: 7-4 已公共闭环；尚未冻结或执行真实外部 Client→RiftCoach Server 身份、transport、时间窗口和
-  body-free immutable evidence，也未形成 Stage 7 exit matrix；当前 prepared/waiting authorization。
-- Next: 等待用户明确授权；授权前不开始 7-5 设计、外部调用或退出裁决。
+- State: RQ-079 已授权；7-4 已公共闭环。采用隔离锁版的官方 TypeScript MCP SDK Client 通过标准 stdio
+  调用真实 RiftCoach Server Session，同时复用产品 OP.GG Client 通过官方 Streamable HTTP 做一次有界调用；
+  两侧只持久化 identity/digest/count/time-window，不保存 session、arguments/result body 或玩家身份。
+- Next: 完成 ADR/设计、红灯与最小实现；通过离线门和实现 exact-SHA CI 后，在干净实现 SHA 上执行一次
+  双向真实门，持久化 exit matrix，再完成最终 exact-SHA 公共闭环。阶段 7 关闭前不进入阶段 8。
+- [completed-local] ADR-0050、官方 SDK/stdio 方案、red→green 协商/transport/evidence TDD。
+- [completed-local] 外部 SDK Client 跨进程 initialize/notification/list/一次 call，body-free digest/count trace。
+- [completed-local] 聚焦 10、相邻 74/17 subtests、完整 1576/117 skips/127 subtests 与全部横向门。
+- [pending-public] 独立实现提交/推送和 exact-SHA pytest/PostgreSQL/package 三 job。
+- [pending-real] clean implementation SHA 上一次 SDK→RiftCoach + RiftCoach→OP.GG，持久化不可覆盖 evidence。
+- [pending-exit] evidence/state exact-SHA CI、coverage complete 与 Stage 7 关闭。
 
 ## 6A Entry Design Checklist
 

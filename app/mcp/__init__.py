@@ -49,6 +49,7 @@ from .server import (
     RiftCoachMcpServer,
     build_riftcoach_mcp_server,
 )
+from .stdio import DEFAULT_MAX_STDIO_FRAME_BYTES, serve_stdio
 
 __all__ = [
     "JSONRPC_VERSION",
@@ -78,6 +79,8 @@ __all__ = [
     "McpTransportFrameError",
     "McpTransportTimeout",
     "McpHttpResponse",
+    "DEFAULT_MAX_STDIO_FRAME_BYTES",
+    "serve_stdio",
     "InMemoryMcpTransport",
     "StdioMcpTransport",
     "StreamableHttpMcpTransport",

@@ -39,6 +39,9 @@ from app.mcp.errors import (
 
 
 MCP_SERVER_PROTOCOL_VERSION = "2025-06-18"
+MCP_SERVER_ACCEPTED_CLIENT_PROPOSALS = frozenset(
+    {MCP_SERVER_PROTOCOL_VERSION, "2025-11-25"}
+)
 MCP_SERVER_IMPLEMENTATION = McpImplementation(
     name="RiftCoach MCP Server",
     version="1.0.0",
@@ -904,16 +907,20 @@ class McpServerSession:
             )
         except (TypeError, KeyError, ValueError):
             return _rpc_error(request_id, -32602, "Invalid MCP initialize parameters.")
-        if request.protocol_version != MCP_SERVER_PROTOCOL_VERSION:
+        if request.protocol_version not in MCP_SERVER_ACCEPTED_CLIENT_PROPOSALS:
             return _rpc_error(request_id, -32602, "Unsupported MCP protocol version.")
         self._initialized = True
         self._client_ready = False
-        self._protocol_version = request.protocol_version
+        # MCP negotiation lets a server return another version it supports.
+        # The client must disconnect if it cannot support this response.  Bind
+        # all later session behavior to the version RiftCoach actually speaks,
+        # not to the client's initial proposal.
+        self._protocol_version = MCP_SERVER_PROTOCOL_VERSION
         return {
             "jsonrpc": JSONRPC_VERSION,
             "id": request_id,
             "result": {
-                "protocolVersion": request.protocol_version,
+                "protocolVersion": MCP_SERVER_PROTOCOL_VERSION,
                 "capabilities": {"tools": {"listChanged": False}},
                 "serverInfo": MCP_SERVER_IMPLEMENTATION.to_wire(),
                 "instructions": "RiftCoach exposes bounded read-only owner-scoped tools.",

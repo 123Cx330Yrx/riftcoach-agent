@@ -2533,3 +2533,15 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   Riot+OP.GG join 或真实外部 Client 双向互操作。
 - `HANDOFF`：唯一下一检查点为 `7-5-mcp-interoperability-exit-review` prepared/waiting authorization；
   授权前停止。
+
+### 2026-08-21：RQ-079 授权与 7-5 官方 Client 方案
+
+- `AUTHORIZED`：用户明确“那继续7-5”，清除 pause；唯一 checkpoint 保持 7-5，不进入 Stage 8。
+- `DECISION`：ADR-0050 选择 `@modelcontextprotocol/sdk@1.30.0`/MIT/固定 integrity 作为独立外部 Client，
+  经标准 stdio 启动 Python RiftCoach Server；SDK/lockfile 隔离在 evaluation 目录，不进入产品 runtime。
+- `REAL-BAD-CASE`：官方 SDK 首先提出 `2025-11-25`，7-4 Server 原先只接受请求值恰为 `2025-06-18`；
+  红灯后改为冻结 proposal allowlist，响应/session 仍绑定 Server 实际实现的 `2025-06-18`。
+- `IMPLEMENTED-LOCAL`：有界 stdio framing、no-I/O restricted runner、body-free trace/evidence validator 与
+  clean-SHA 双向 runner 已建立；官方 SDK initialize/notification/list/一次 knowledge call 本地通过。
+- `PENDING`：尚未提交实现、取得 exact-SHA CI 或执行本检查点的 clean-SHA OP.GG 真实门；coverage planned，
+  Stage 7 未关闭。

@@ -1661,3 +1661,17 @@ exact-SHA 三 job 前保持 planned；7-5 仍未进入。
 116 skipped, 1 warning, 127 subtests passed`，真实 PostgreSQL 为 `164 passed, 1 warning` 且 metadata-head
 无漂移，Linux package schema 1.6/外部调用 0。7-4 coverage 已 complete；canonical 只交接
 `7-5-mcp-interoperability-exit-review` prepared/waiting authorization，不把 fixture/CI 冒充真实外部双向互操作。
+
+### 7-5 官方外部 Client 与 stdio 退出证明（2026-08-21，RQ-079）
+
+RQ-079 已授权唯一检查点。ADR-0050 拒绝继续用仓库自己的 Python Client 冒充独立互操作，也不为本门
+临时扩张公网 HTTP/Auth/TLS；采用锁版官方 `@modelcontextprotocol/sdk@1.30.0` Client，经标准 stdio
+跨进程调用真实 `McpServerSession`。SDK 及 94-package lock graph 隔离在 evaluation 目录，许可证集合为
+MIT/ISC/BSD-2/BSD-3，无 install script，官方 registry audit 当前为 0 vulnerability。
+
+真实 SDK 揭示 Client proposal/Server negotiated version 的兼容缺口。Server 现在只接受
+`2025-06-18`/`2025-11-25` proposal allowlist，但总是响应并绑定自身实现 `2025-06-18`；未知版本继续
+fail closed。外部 Client 本地已完成 initialize、initialized notification、四工具 list 和一次
+owner-scoped knowledge call，trace/catalog/result 只保留 digest/count。另一方向仍复用 7-3 OP.GG
+Streamable HTTP 产品链；必须等实现 exact-SHA CI 后在 clean SHA 上调用一次并生成不可覆盖双向证据。
+当前裁决仍是 local implementation pending public/real exit gate，Stage 7 未关闭。

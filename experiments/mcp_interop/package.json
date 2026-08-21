@@ -1,0 +1,14 @@
+{
+  "name": "riftcoach-mcp-interoperability-exit",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Isolated official MCP SDK client for the RiftCoach Stage 7 exit proof.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0"
+  }
+}

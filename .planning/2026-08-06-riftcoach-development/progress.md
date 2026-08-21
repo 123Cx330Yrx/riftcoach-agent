@@ -3490,3 +3490,24 @@
   `164 passed, 1 warning`、migration metadata=head；Linux package schema 1.6 且外部调用 0。
 - 7-4 coverage 已 complete。canonical 交接 `7-5-mcp-interoperability-exit-review`
   prepared/waiting authorization；当前不实施真实外部 Client、双向互操作或 Stage 7 exit review。
+
+## 2026-08-21：RQ-079 授权并启动 7-5
+
+- 用户明确“那继续7-5”；canonical pause 已清除，唯一 checkpoint 保持
+  `7-5-mcp-interoperability-exit-review / in_progress`，不进入 Stage 8。
+- governance 起点通过，工作树起始 clean，`HEAD=origin/main=4fc062656094e34de4946c698929229850499788`。
+- 已审计官方 MCP SDK `1.30.0`/MIT/Node>=18 与 newline-delimited stdio wire；设计选择隔离 Node Client
+  → Python RiftCoach stdio Server，并保留 RiftCoach Client → OP.GG Streamable HTTP 的真实另一方向。
+- 下一动作是完成 ADR/专用设计与测试红灯；外部调用必须等离线实现和门禁稳定后再执行，且只允许一次
+  有界 body-free 证明。
+
+## 2026-08-21：7-5 本地实现与全部离线门完成
+
+- ADR-0050、专用设计、八维 walkthrough、官方 SDK 1.30.0 lock、stdio Server、no-I/O restricted runner、
+  external Client 与 clean-SHA exit/evidence validator 已完成；不增加 Python 产品或 Docker runtime 依赖。
+- TDD 红灯与协议协商 Bad Case 已留痕；最终聚焦 `10 passed`，相邻
+  `74 passed, 17 subtests passed`，完整 `1576 passed, 117 skipped, 1 warning, 127 subtests passed`。
+- RAG development/holdout 全指标 1.0/FPR 0，Harness `published`/0 revisions；compileall、pip、Node syntax、
+  npm ci/audit、6 YAML、governance、tracked Secret/run-data、body-free evidence 与 diff check 全绿。
+- coverage 保持 planned；当前没有新 OP.GG/Riot/Provider/Key 调用。唯一下一动作是 cached diff review、
+  独立实现提交/推送与该 exact SHA 的三 job；公共全绿后在 clean SHA 上执行一次双向真实门。

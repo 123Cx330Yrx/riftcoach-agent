@@ -22,7 +22,7 @@
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
-| 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 进行中；入口设计、7-1、7-2、7-3、7-4 已公共闭环；7-5 双向互操作退出审查 prepared/waiting authorization |
+| 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 进行中；入口设计、7-1、7-2、7-3、7-4 已公共闭环；RQ-079 已授权 7-5，官方 SDK stdio/clean-SHA 双向退出门本地实现中 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
 ## 横向能力总账
@@ -287,7 +287,9 @@ Server 被 RiftCoach 调用 + 外部 Client 调用 RiftCoach Server”的双向�
 lane-meta Adapter、data-only Context 和一次真实 body-free 单向产品 smoke。当前唯一检查点
 `7-4-riftcoach-mcp-server` 已由 `431c584` / Actions `32480827952` 完成 strict Server/Facade、
 fixture TDD 与 exact-SHA 三 job 公共闭环。唯一下一检查点 `7-5-mcp-interoperability-exit-review`
-prepared/waiting authorization；双向互操作与 Stage 7 退出裁决尚未开始。
+已由 RQ-079 授权并进入设计/TDD：采用锁版官方 TypeScript MCP SDK Client 经标准 stdio 调用
+RiftCoach Server，另一方向复用产品 OP.GG Streamable HTTP Client；当前尚未生成 clean-SHA 双向真实
+证据或关闭 Stage 7。
 
 ### 完成标准
 

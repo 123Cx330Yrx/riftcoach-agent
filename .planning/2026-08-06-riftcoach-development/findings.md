@@ -3436,3 +3436,34 @@
   `164 passed, 1 warning` 且 `alembic check` 无新 upgrade；Linux package schema 1.6/外部调用 0。
 - package smoke 仍走既有 no-I/O 产品纵向，没有调用或部署 RiftCoach MCP Server；因此它不能替代 7-5
   真实外部 Client 证明。7-4 可以关闭，7-5 只 prepared/waiting authorization。
+
+## 2026-08-21：RQ-079 与 7-5 互操作方案审计
+
+- 官方 `@modelcontextprotocol/sdk` 当前固定候选为 `1.30.0`：npm package 与源码仓库身份一致，MIT，
+  Node `>=18`；SDK 支持 `2025-06-18`，但初始化会首先提出最新 `2025-11-25`。RiftCoach 现有 Server
+  只接受请求值恰好为 `2025-06-18`，这是真实外部 Client 才暴露的协商缺口，须先写红灯后按标准返回
+  Server 支持的 `2025-06-18`，由 Client 决定是否接受。
+- SDK stdio wire 是每行一个 JSON-RPC message；最小跨语言边界可用独立 Node Client 启动 Python runner，
+  不需要为了退出证明新增公网端口、Auth 或 TLS。SDK/lockfile 保持在隔离 evaluation 目录，不进入 Python
+  产品依赖；runner 使用 test actor 与 no-I/O restricted facade，只证明协议/权限投影，不冒充生产数据部署。
+- 外部 Server 方向继续使用已产品化的 OP.GG Streamable HTTP lane-meta 链；RQ-079 只允许一次有界、零重试、
+  body-free 重建。两侧证据均不得保存 session ID、raw content/result、arguments、PUUID、Key、路径或异常正文。
+
+## 2026-08-21：7-5 TDD、SDK 交叉验证与本地门
+
+- 首个红灯为缺少 `app.mcp.stdio` 的 collection error。官方 SDK 随后真实揭示协议 proposal gap：SDK 1.30.0
+  提出 `2025-11-25`，Server 旧逻辑以严格相等拒绝；最小修复只准入冻结 proposal allowlist，响应/session
+  仍绑定 `2025-06-18`，`2020-01-01` 既有负例继续 fail closed。
+- `serve_stdio` 覆盖 newline framing、notification silence、duplicate key/invalid UTF-8/JSON/non-object、request/
+  response size 和 EOF close。官方 SDK subprocess 实测固定 1 initialize/notification/list/call、3 responses，
+  四工具目录与 knowledge result schema 通过；summary 只有 package/protocol/digest/count/limitations。
+- lock graph 固定 public npm URLs、94 packages、MIT/ISC/BSD-2/BSD-3、无 install script；官方 registry audit
+  为 0 vulnerability。该依赖只在 `experiments/mcp_interop` 和 pytest CI，不进入 Python/Docker runtime。
+- 聚焦 `10 passed`，相邻 MCP/Meta `74 passed, 17 subtests passed`；完整
+  `1576 passed, 117 skipped, 1 warning, 127 subtests passed`。两套 RAG 满阈值，Harness dry-run
+  `published`/0 revisions；compileall、pip、Node、npm、YAML、governance、tracked-data、evidence 与 diff 门通过。
+- 快速门首轮有三条无效组合命令：Node 在子目录重复路径、YAML `-c` 引号错误、证据 regex 把安全的
+  `raw_body_persisted=false`/说明文字当泄漏；Node 组合还被后续 npm 成功掩盖 exit code。三者均无文件影响，
+  已拆成独立命令并以 Node syntax、6 YAML、exact forbidden-key scan 真正通过；后续不把组合输出当证据。
+- 本机 117 skip 仍是 PostgreSQL/Docker/Linux 环境限制；真实 OP.GG 7-5 调用尚未执行。下一动作是实现提交与
+  exact-SHA 三 job，全绿后才允许 clean-SHA 双向门。

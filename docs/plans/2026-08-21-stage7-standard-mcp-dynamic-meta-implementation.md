@@ -101,15 +101,31 @@ bidirectional interoperability.
 
 ## 7-5: Interoperability exit review
 
+**Status (2026-08-21):** in progress under RQ-079 / ADR-0050. The isolated official
+`@modelcontextprotocol/sdk@1.30.0` Client, bounded Python stdio Server adapter,
+clean-SHA exit runner and no-I/O TDD are implemented locally. Real OP.GG exit evidence,
+full gates and exact-SHA public closure remain pending.
+
 ### Task 5: Real external proof and exit matrix
 
-**Files:** `docs/plans/2026-08-21-stage7-mcp-interoperability-exit-review.md`, `docs/learning/stage-7-standard-mcp-dynamic-meta-walkthrough.md`, `tests/test_mcp_interoperability_exit.py`
+**Files:** `app/mcp/stdio.py`, `scripts/run_riftcoach_mcp_stdio_server.py`,
+`scripts/run_mcp_interoperability_exit.py`, `experiments/mcp_interop/*`,
+`docs/adr/0050-adopt-pinned-official-mcp-client-over-stdio-for-interoperability.md`,
+`docs/plans/2026-08-21-stage7-mcp-interoperability-exit-review.md`,
+`docs/learning/7-5-mcp-interoperability-exit-review-walkthrough.md`,
+`tests/test_mcp_interoperability_exit.py`
 
-1. 固定外部 Server/Client identity、protocol version、transport、trace digest、许可和时间窗口；
-2. 在 Key-last/no-secret body 规则下执行一次真实 `initialize/tools/list/tools/call`，失败即停且不重试未知错误；
-3. 由真实外部 Client 调用 RiftCoach Server，保存 body-free immutable evidence；
-4. 复核 disconnect/timeout/schema/security/owner-scope、八维 coverage、本地门禁和 exact-SHA CI；
-5. 只有两侧真实互操作和 exit matrix 全部通过才关闭 Stage 7，否则以 deferred/partial decision 收尾并保留失败证据。
+1. [completed-local] 固定 OP.GG Server 与官方 SDK Client 1.30.0 identity、integrity、MIT、protocol、
+   Streamable HTTP/stdio 和 body-free trace；
+2. [completed-local] 先写 negotiation/stdio/SDK/evidence 红灯，修复 Client proposal 与 Server response
+   version 混淆，并实现有界 newline JSON-RPC Server adapter；
+3. [completed-local] 官方 SDK 已在本地跨进程完成 initialize/notification/list/一次 knowledge-search call；
+   SDK 只在隔离目录和 lockfile，不进入产品 runtime dependency；
+4. [pending-public] 完整本地门后提交实现并等待 exact-SHA 三 job；
+5. [pending-real] 在 clean implementation SHA 上执行一次双向门：SDK→RiftCoach + RiftCoach→OP.GG，
+   保存不可覆盖 body-free evidence；
+6. [pending-exit] 复核 disconnect/timeout/schema/security/owner-scope、八维 coverage、最终 exact-SHA CI；
+   只有两侧与 exit matrix 全部通过才关闭 Stage 7，否则保留 partial/deferred 证据。
 
 ## Verification gates for every task
 

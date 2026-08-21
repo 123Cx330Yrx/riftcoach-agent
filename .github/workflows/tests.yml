@@ -23,18 +23,24 @@ jobs:
           python-version: "3.11"
           cache: pip
 
-      - name: Set up Node for isolated Pi spike
+      - name: Set up Node for isolated evaluation dependencies
         uses: actions/setup-node@v6
         with:
           node-version: "24"
           cache: npm
-          cache-dependency-path: experiments/pi_runtime/package-lock.json
+          cache-dependency-path: |
+            experiments/pi_runtime/package-lock.json
+            experiments/mcp_interop/package-lock.json
 
       - name: Install project and test dependencies
         run: python -m pip install -e ".[dev]"
 
       - name: Install isolated Pi spike dependencies without lifecycle scripts
         working-directory: experiments/pi_runtime
+        run: npm ci --ignore-scripts
+
+      - name: Install isolated MCP interoperability dependencies without lifecycle scripts
+        working-directory: experiments/mcp_interop
         run: npm ci --ignore-scripts
 
       - name: Check project governance continuity
