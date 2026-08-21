@@ -52,6 +52,7 @@ LEARNING_COVERAGE_CANONICAL_ORDER = (
     "7-1-mcp-client-contract",
     "7-2-mcp-transport-and-discovery",
     "7-3-opgg-meta-adapter",
+    "7-4-riftcoach-mcp-server",
 )
 
 

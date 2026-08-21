@@ -21,9 +21,9 @@ at `cbc7cbd` / Actions `32408101770`. Phase 26 -
 Actions `32436092074`. Phase 27 - `7-1-mcp-client-contract` is complete at
 `37f16bc` / Actions `32439753589`. Phase 28 -
 `7-2-mcp-transport-and-discovery` is complete at `f121666` / Actions `32441793585`.
-Phase 29 - `7-3-opgg-meta-adapter` is authorized by RQ-075 and in progress;
-the product implementation and body-free real smoke are locally complete, and
-only the independent commit plus exact-SHA public CI remain before closure.
+Phase 29 - `7-3-opgg-meta-adapter` is complete at `64311a1` / Actions
+`32455219404`. Phase 30 - `7-4-riftcoach-mcp-server` is the sole current
+checkpoint, authorized by RQ-078; Server TDD and implementation are in progress.
 
 ## Phases
 
@@ -274,9 +274,10 @@ only the independent commit plus exact-SHA public CI remain before closure.
 coverage 已 complete。6B-7 又由 `f6d8922` / Actions `32397290175` 完成 exact-SHA 三 job 公共闭环。
 RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a` / Actions
 `32403187972` 完成，6B-9 由最小测试修复 `cbc7cbd` / Actions `32408101770` 完成 exact-SHA 三 job。
-当前唯一动作是完成 `7-3-opgg-meta-adapter` 的最终 diff/cached 审查、独立提交/推送与
-exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；三 job 全绿前 coverage
-保持 planned，不进入 7-4/7-5。
+`7-3-opgg-meta-adapter` 已由 `64311a1` / Actions `32455219404` 完成 exact-SHA
+`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环，coverage complete。
+用户已按 RQ-078 授权 `7-4-riftcoach-mcp-server`；当前唯一动作是完成 Server 教学、
+协议/Facade TDD、八维证据、本地门禁和 exact-SHA 公共闭环，不进入 `7-5-mcp-interoperability-exit-review`。
 
 ## 6A-1 Checklist
 
@@ -601,7 +602,7 @@ exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；三 job 全绿�
 
 ### Phase 29 - 7-3-opgg-meta-adapter
 
-- Status: in_progress
+- Status: complete
 - Authorization: RQ-075；用户已在确认官方候选仓库后明确继续当前唯一检查点。
 - State: RQ-076 将候选裁决修正为 admitted-with-restrictions；7-2 已由 `f121666` / Actions `32441793585` exact-SHA 三 job 全绿。
 - [completed] 审计 OP.GG endpoint/protocol/transport/tool schema/license/freshness/rate-limit/deployment，冻结 body-free admission fixture；
@@ -611,8 +612,24 @@ exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；三 job 全绿�
 - [completed-local] 八维 walkthrough 与全部本地门禁；提交前复核又以红灯锁定 negotiated
   protocol header、严格数值 scalar、真正的 admitted-subset parsing 和 complete-provenance 必填身份，
   完整回归 `1545 passed, 117 skipped, 1 warning, 127 subtests passed`；coverage 在公共 CI 前保持 planned；
-- [in_progress] 独立提交/推送与 exact-SHA 三 job；
-- [ ] 只交接 7-4 prepared/waiting authorization，不提前实现 Server 或双向互操作退出门。
+- [completed] 独立提交 `64311a1` / Actions `32455219404` exact-SHA 三 job 全绿；
+- [completed] coverage complete，只交接 7-4 prepared/waiting authorization，不提前实现 Server 或双向互操作退出门。
+
+### Phase 30 - 7-4-riftcoach-mcp-server
+
+- Status: in_progress
+- Authorization: RQ-078；7-3 已由 `64311a1` / Actions `32455219404` exact-SHA 公共闭环，用户已授权 7-4。
+- State: local implementation and all local gates complete；coverage 在实现 SHA 公共三 job 前保持 planned，
+  不提供公网 transport，不进入 7-5。
+- [completed] 审计既有 Application Facade/ActorContext/DTO/Harness 发布边界，冻结只读工具和拒绝字段。
+- [completed] external-client fixture 红灯、strict server envelope/session、四工具 schema 与 Facade 映射。
+- [completed] Product Query 增加 verified recent summary 与 single-match published digest；交叉验证
+  receipt/Trace/manifest/input commitment/Artifact SHA，拒绝 Skill 漂移和未发布 run。
+- [completed] owner isolation、开放 I/O/身份字段、body-free error/result、result byte、restart 与 attribution 测试。
+- [completed-local] 八维 walkthrough、聚焦 `33 passed`、相邻 `109 passed, 17 subtests passed`、完整
+  `1566 passed, 117 skipped, 1 warning, 127 subtests passed`，两套 RAG/Harness/compile/pip/YAML/
+  SDK/tracked-data/body-free/governance/diff 门全绿。
+- [in_progress] 最终 cached diff、独立提交/推送并等待 exact-SHA 三 job；公共全绿后才关闭 7-4、交接 7-5。
 
 ## 6A Entry Design Checklist
 

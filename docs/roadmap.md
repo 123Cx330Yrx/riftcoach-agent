@@ -22,7 +22,7 @@
 | 4 | RAG v1 | 检索知识如何可引用、可评测、可替换 | 当前轻量 RAG + Saber 检索思想 | 已完成，进入维护 |
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
-| 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 进行中；入口设计、7-1、7-2 已公共闭环；7-3 已本地真实接入 OP.GG lane-meta，待完整门与 exact-SHA 公共 CI；7-4 Server/7-5 双向退出门未进入 |
+| 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 进行中；入口设计、7-1、7-2、7-3 已公共闭环；7-4 Server 本地实现/门禁完成，待 exact-SHA 公共 CI；7-5 未进入 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 未开始 |
 
 ## 横向能力总账
@@ -282,10 +282,11 @@ Stage 7 的内部检查点顺序固定为：入口设计 → `7-1-mcp-client-con
 允许对获准 OP.GG Server 做一次有界、body-free 的单向产品 smoke；7-5 才执行“外部
 Server 被 RiftCoach 调用 + 外部 Client 调用 RiftCoach Server”的双向互操作退出证明。
 
-当前状态：入口设计、7-1 pure contract 与 7-2 transport/discovery 已公共闭环；当前唯一检查点
-`7-3-opgg-meta-adapter` 已获授权并在本地实现官方 Streamable HTTP、partial MetaEvidence、严格
-lane-meta Adapter、data-only Context 和一次真实 body-free 产品 smoke。完整本地门与实现 SHA 的
-exact-SHA 公共 CI 尚未完成，故 7-3 仍 open；RiftCoach Server 与双向互操作仍属于 7-4/7-5。
+当前状态：入口设计、7-1 pure contract、7-2 transport/discovery 与 7-3 OP.GG Meta Adapter 已公共闭环；
+7-3 的 `64311a1` / Actions `32455219404` 证明官方 Streamable HTTP、partial MetaEvidence、严格
+lane-meta Adapter、data-only Context 和一次真实 body-free 单向产品 smoke。当前唯一检查点
+`7-4-riftcoach-mcp-server` 已按 RQ-078 完成 strict Server/Facade、本地 fixture TDD 与全部本地门禁，
+当前只待独立实现提交和 exact-SHA 三 job；双向互操作仍属于 7-5，尚未进入。
 
 ### 完成标准
 

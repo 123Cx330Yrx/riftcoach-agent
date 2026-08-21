@@ -40,14 +40,93 @@ from app.runtime.models import RuntimeStatus
 
 NOW = datetime(2026, 8, 17, 9, 0, tzinfo=timezone.utc)
 REPORT = "# Verified coach report\n\nOnly these bytes may be returned.\n"
+PLAYER_SUMMARY = {
+    "schema_version": "1.0",
+    "metadata": {
+        "generated_at_utc": "2026-08-21T00:00:00+00:00",
+        "source": "synthetic_fixture",
+        "matches_requested": 2,
+        "matches_received": 2,
+        "matches_analyzed": 2,
+    },
+    "player": {
+        "game_name": "PrivateName",
+        "tag_line": "PRIVATE",
+        "riot_id": "PrivateName#PRIVATE",
+        "puuid_prefix": "private-puuid...",
+    },
+    "request": {"count": 2, "queue": 420, "region": "asia"},
+    "recent_summary": {
+        "games_analyzed": 2,
+        "wins": 1,
+        "losses": 1,
+        "win_rate": 50.0,
+        "main_role": "MIDDLE",
+        "main_champions": ["ChampionA", "ChampionB"],
+        "averages": {
+            "kda": 3.0,
+            "cs_per_min": 8.5,
+            "gold_per_min": 430.0,
+            "damage_per_min": 700.0,
+            "vision_score": 20.0,
+            "kill_participation_percent": 50.0,
+            "damage_share_percent": 25.0,
+            "gold_share_percent": 22.0,
+            "deaths_before_15": 0.5,
+        },
+        "win_loss_comparison": {
+            "wins": {
+                "cs_per_min": 9.0,
+                "gold_per_min": 460.0,
+                "damage_per_min": 760.0,
+                "vision_score": 24.0,
+                "deaths_before_15": 0.0,
+            },
+            "losses": {
+                "cs_per_min": 8.0,
+                "gold_per_min": 400.0,
+                "damage_per_min": 640.0,
+                "vision_score": 16.0,
+                "deaths_before_15": 1.0,
+            },
+        },
+    },
+    "matches": [
+        {
+            "match_id": "PRIVATE_MATCH_1",
+            "game_duration_seconds": 1800,
+            "champion_id": 1,
+            "champion_name": "ChampionA",
+            "role": "MIDDLE",
+            "win": True,
+            "timeline_status": "available",
+            "included_in_aggregate": True,
+        },
+        {
+            "match_id": "PRIVATE_MATCH_2",
+            "game_duration_seconds": 1800,
+            "champion_id": 2,
+            "champion_name": "ChampionB",
+            "role": "MIDDLE",
+            "win": False,
+            "timeline_status": "available",
+            "included_in_aggregate": True,
+        },
+    ],
+    "failed_matches": [],
+    "excluded_matches": [],
+}
 
 
-def _identity() -> RuntimeIdentitySnapshot:
+def _identity(
+    skill_name: str = "recent-form-review",
+) -> RuntimeIdentitySnapshot:
+    skill_version = "0.1.0" if skill_name == "single-match-review" else "0.2.0"
     return RuntimeIdentitySnapshot(
-        skill_name="recent-form-review",
-        skill_version="0.2.0",
+        skill_name=skill_name,
+        skill_version=skill_version,
         context_contract_version="1.0.0",
-        prompt_profile_id="recent-form-review-coach",
+        prompt_profile_id=f"{skill_name}-coach",
         prompt_profile_version="1.0.0",
         provider_id="private-provider",
         provider_model="private-model",
@@ -73,9 +152,28 @@ def _manifest(
     root: Path,
     run_id: str,
     publication: RuntimePublicationStatus,
-) -> tuple[FileRunStore, dict | None]:
+    *,
+    player_summary: dict | None = None,
+) -> tuple[FileRunStore, dict | None, dict | None]:
     store = FileRunStore(root, run_id)
     store.create_run(RunManifest.new(run_id, HarnessConfig()))
+    player_record = None
+    if player_summary is not None:
+        player_record = store.write_artifact(
+            kind=ArtifactKind.PLAYER_SUMMARY,
+            relative_path="inputs/player_summary.json",
+            content=(
+                json.dumps(
+                    player_summary,
+                    ensure_ascii=False,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+                + b"\n"
+            ),
+            schema_version="1.0",
+            producer="review_harness.input",
+        )
     final_record = None
     if publication is not RuntimePublicationStatus.REJECTED:
         final_record = store.write_artifact(
@@ -111,7 +209,7 @@ def _manifest(
         advance(manifest, RunStatus.REJECTED, reason=reason)
         manifest.final_decision = "rejected"
     store.write_manifest(manifest)
-    return store, final_record
+    return store, final_record, player_record
 
 
 def _trace_reference(
@@ -119,18 +217,27 @@ def _trace_reference(
     run_id: str,
     publication: RuntimePublicationStatus,
     final_record: dict | None,
+    *,
+    player_record: dict | None = None,
+    skill_name: str = "recent-form-review",
+    validated_player_digest: str | None = None,
 ):
     recorder = RuntimeRecorder(run_id=run_id)
     recorder.emit(
         RunStartedSignal(
-            skill_name="recent-form-review",
-            skill_version="0.2.0",
+            skill_name=skill_name,
+            skill_version=(
+                "0.1.0" if skill_name == "single-match-review" else "0.2.0"
+            ),
             runtime_policy_version="1.0.0",
         )
     )
-    recorder.emit(
-        ExecutionValidatedSignal(input_artifact_sha256s=("a" * 64, "b" * 64))
+    input_digests = (
+        (validated_player_digest or player_record["sha256"], "b" * 64)
+        if player_record is not None
+        else ("a" * 64, "b" * 64)
     )
+    recorder.emit(ExecutionValidatedSignal(input_artifact_sha256s=input_digests))
     recorder.emit(
         ContextBuiltSignal(
             context_contract_version="1.0.0",
@@ -220,19 +327,21 @@ def _trace_reference(
             terminal_reason=reason,
         )
     )
-    artifacts = ()
-    if final_record is not None:
-        artifacts = (
-            RuntimeArtifactReference(
-                kind=final_record["kind"],
-                schema_version=final_record["schema_version"],
-                relative_path=final_record["path"],
-                sha256=final_record["sha256"],
-                producer=final_record["producer"],
-            ),
+    artifact_records = tuple(
+        record for record in (player_record, final_record) if record is not None
+    )
+    artifacts = tuple(
+        RuntimeArtifactReference(
+            kind=record["kind"],
+            schema_version=record["schema_version"],
+            relative_path=record["path"],
+            sha256=record["sha256"],
+            producer=record["producer"],
         )
+        for record in artifact_records
+    )
     trace = recorder.build_trace(
-        identity=_identity(),
+        identity=_identity(skill_name),
         policy=_policy(),
         artifacts=artifacts,
     )
@@ -244,9 +353,25 @@ def _create_terminal_run(
     *,
     run_id: str = "query_demo",
     publication: RuntimePublicationStatus = RuntimePublicationStatus.PUBLISHED,
+    player_summary: dict | None = None,
+    skill_name: str = "recent-form-review",
+    validated_player_digest: str | None = None,
 ) -> tuple[FileRunStore, ApiRunReceipt]:
-    store, final_record = _manifest(root, run_id, publication)
-    reference = _trace_reference(root, run_id, publication, final_record)
+    store, final_record, player_record = _manifest(
+        root,
+        run_id,
+        publication,
+        player_summary=player_summary,
+    )
+    reference = _trace_reference(
+        root,
+        run_id,
+        publication,
+        final_record,
+        player_record=player_record,
+        skill_name=skill_name,
+        validated_player_digest=validated_player_digest,
+    )
     reason = {
         RuntimePublicationStatus.PUBLISHED: "quality_gate_passed",
         RuntimePublicationStatus.DEGRADED: "deterministic_fallback",
@@ -295,6 +420,153 @@ def test_query_returns_allowlisted_run_view_and_verified_report(tmp_path: Path) 
     assert "private-provider" not in serialized
     assert "private-model" not in serialized
     assert "final_report.md" not in serialized
+
+
+def test_query_projects_verified_recent_summary_without_private_identity(
+    tmp_path: Path,
+) -> None:
+    _, receipt = _create_terminal_run(
+        tmp_path,
+        player_summary=PLAYER_SUMMARY,
+    )
+
+    view = RunQueryService(tmp_path).get_recent_summary(receipt.run_id)
+
+    assert view.run_id == receipt.run_id
+    assert view.skill_name == "recent-form-review"
+    assert view.publication_status is RuntimePublicationStatus.PUBLISHED
+    assert view.games_analyzed == 2
+    assert view.wins == 1
+    assert view.losses == 1
+    assert view.win_rate == 50.0
+    assert view.main_role == "MIDDLE"
+    assert view.main_champions == ("ChampionA", "ChampionB")
+    assert view.averages.kda == 3.0
+    assert view.win_loss_comparison.wins.cs_per_min == 9.0
+    serialized = view.model_dump_json()
+    for forbidden in (
+        "PrivateName",
+        "PRIVATE",
+        "private-puuid",
+        "PRIVATE_MATCH",
+        "player",
+        "relative_path",
+        "final_report",
+    ):
+        assert forbidden not in serialized
+
+
+def test_query_projects_single_match_publication_identity_without_report_body(
+    tmp_path: Path,
+) -> None:
+    _, receipt = _create_terminal_run(
+        tmp_path,
+        skill_name="single-match-review",
+    )
+
+    view = RunQueryService(tmp_path).get_single_match_review(receipt.run_id)
+
+    assert view.run_id == receipt.run_id
+    assert view.skill_name == "single-match-review"
+    assert view.skill_version == "0.1.0"
+    assert view.publication_status is RuntimePublicationStatus.PUBLISHED
+    assert view.review_available is True
+    assert len(view.review_sha256) == 64
+    serialized = view.model_dump_json()
+    assert REPORT.strip() not in serialized
+    assert "final_report.md" not in serialized
+
+
+@pytest.mark.parametrize(
+    ("method_name", "skill_name"),
+    (
+        ("get_recent_summary", "single-match-review"),
+        ("get_single_match_review", "recent-form-review"),
+    ),
+)
+def test_safe_business_projection_rejects_skill_identity_mismatch(
+    tmp_path: Path,
+    method_name: str,
+    skill_name: str,
+) -> None:
+    _, receipt = _create_terminal_run(
+        tmp_path,
+        player_summary=PLAYER_SUMMARY,
+        skill_name=skill_name,
+    )
+
+    with pytest.raises(RunQueryError) as caught:
+        getattr(RunQueryService(tmp_path), method_name)(receipt.run_id)
+    assert caught.value.code == "run_integrity_failed"
+
+
+def test_recent_summary_requires_publication_and_verified_player_artifact(
+    tmp_path: Path,
+) -> None:
+    _, rejected = _create_terminal_run(
+        tmp_path,
+        run_id="query_rejected_summary",
+        publication=RuntimePublicationStatus.REJECTED,
+        player_summary=PLAYER_SUMMARY,
+    )
+    service = RunQueryService(tmp_path)
+    with pytest.raises(RunQueryError) as unavailable:
+        service.get_recent_summary(rejected.run_id)
+    assert unavailable.value.code == "report_not_available"
+
+    store, published = _create_terminal_run(
+        tmp_path,
+        run_id="query_tampered_summary",
+        player_summary=PLAYER_SUMMARY,
+    )
+    (store.run_directory / "inputs" / "player_summary.json").write_text(
+        '{"schema_version":"1.0","player":{"puuid":"leaked"}}',
+        encoding="utf-8",
+    )
+    with pytest.raises(RunQueryError) as tampered:
+        service.get_recent_summary(published.run_id)
+    assert tampered.value.code == "run_integrity_failed"
+
+
+def test_degraded_recent_summary_remains_explicit_and_available(tmp_path: Path) -> None:
+    _, receipt = _create_terminal_run(
+        tmp_path,
+        publication=RuntimePublicationStatus.DEGRADED,
+        player_summary=PLAYER_SUMMARY,
+    )
+
+    view = RunQueryService(tmp_path).get_recent_summary(receipt.run_id)
+
+    assert view.publication_status is RuntimePublicationStatus.DEGRADED
+    assert view.terminal_reason == "deterministic_fallback"
+
+
+@pytest.mark.parametrize("tamper", ("manifest_identity", "input_commitment"))
+def test_recent_summary_rejects_manifest_trace_or_input_binding_drift(
+    tmp_path: Path,
+    tamper: str,
+) -> None:
+    store, receipt = _create_terminal_run(
+        tmp_path,
+        player_summary=PLAYER_SUMMARY,
+        validated_player_digest=("c" * 64 if tamper == "input_commitment" else None),
+    )
+    if tamper == "manifest_identity":
+        payload = json.loads(store.manifest_path.read_bytes())
+        summary_record = next(
+            record
+            for record in payload["artifacts"]
+            if record["kind"] == ArtifactKind.PLAYER_SUMMARY.value
+        )
+        summary_record["producer"] = "untrusted.writer"
+        store.manifest_path.write_text(
+            json.dumps(payload, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+
+    with pytest.raises(RunQueryError) as caught:
+        RunQueryService(tmp_path).get_recent_summary(receipt.run_id)
+    assert caught.value.code == "run_integrity_failed"
 
 
 def test_rejected_run_never_exposes_a_report(tmp_path: Path) -> None:

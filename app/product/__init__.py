@@ -13,7 +13,16 @@ from .recent_review_service import (
     RecentReviewRuntime,
     RecentReviewSummaryBuilder,
 )
-from .run_query import RunQueryError, RunQueryService, RunView
+from .run_query import (
+    RecentAveragesView,
+    RecentComparisonRowView,
+    RecentSummaryView,
+    RecentWinLossComparisonView,
+    RunQueryError,
+    RunQueryService,
+    RunView,
+    SingleMatchReviewView,
+)
 from .run_receipts import (
     ApiRunReceipt,
     FileRunReceiptStore,
@@ -33,9 +42,14 @@ __all__ = [
     "RecentReviewRuntime",
     "RecentReviewRuntimeRequestCompiler",
     "RecentReviewSummaryBuilder",
+    "RecentAveragesView",
+    "RecentComparisonRowView",
+    "RecentSummaryView",
+    "RecentWinLossComparisonView",
     "RunQueryError",
     "RunQueryService",
     "RunReceiptReference",
     "RunReceiptWriter",
     "RunView",
+    "SingleMatchReviewView",
 ]

@@ -37,6 +37,18 @@ from .transport import (
     StdioMcpTransport,
     StreamableHttpMcpTransport,
 )
+from .server import (
+    MCP_SERVER_IMPLEMENTATION,
+    MCP_SERVER_PROTOCOL_VERSION,
+    MCP_SERVER_TOOL_NAMES,
+    McpApplicationFacade,
+    McpFacadeError,
+    McpServerSession,
+    McpServerTransport,
+    QueryMcpApplicationFacade,
+    RiftCoachMcpServer,
+    build_riftcoach_mcp_server,
+)
 
 __all__ = [
     "JSONRPC_VERSION",
@@ -69,6 +81,16 @@ __all__ = [
     "InMemoryMcpTransport",
     "StdioMcpTransport",
     "StreamableHttpMcpTransport",
+    "MCP_SERVER_IMPLEMENTATION",
+    "MCP_SERVER_PROTOCOL_VERSION",
+    "MCP_SERVER_TOOL_NAMES",
+    "McpApplicationFacade",
+    "McpFacadeError",
+    "McpServerSession",
+    "McpServerTransport",
+    "QueryMcpApplicationFacade",
+    "RiftCoachMcpServer",
+    "build_riftcoach_mcp_server",
     "McpClient",
     "McpClientSession",
 ]

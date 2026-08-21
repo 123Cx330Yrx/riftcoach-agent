@@ -61,10 +61,12 @@ external endpoint, Key, OP.GG, MetaEvidence or MCP Server was added.
 
 ## 7-3: OP.GG Meta Adapter
 
-**Status (2026-08-21):** authorized and implemented locally under RQ-075/076;
+**Status (2026-08-21):** complete at `64311a1` / Actions `32455219404` under RQ-075/076;
 official Streamable HTTP, admitted-subset discovery, strict lane-meta normalization,
 partial MetaEvidence, data-only Context and one body-free real product smoke are complete.
-Full local gates and exact-SHA public CI remain pending, so coverage stays planned.
+Full local gates and exact-SHA public CI are complete; coverage is complete. RQ-078 has
+authorized 7-4, whose local implementation and gates are complete pending exact-SHA public
+CI; 7-5 is not entered.
 
 ### Task 3: Candidate audit and normalization
 
@@ -76,19 +78,25 @@ Full local gates and exact-SHA public CI remain pending, so coverage stays plann
 2. [completed] 先写 Streamable HTTP/session 与 MetaEvidence/normalization 红灯，再完成最小实现；
 3. [completed] 实现 admitted-subset 目录、allowlisted AST、typed facts、digest/local expiry 和 body-free error；
 4. [completed] 集成 optional data-only Context，保持 Prompt Program V1 基础 fingerprint 不变，并证明不写 Memory/Candidate/Plan/Progress；
-5. [completed-local] 一次真实产品 smoke 成功；待完整本地门、提交 `feat: integrate opgg lane meta over mcp` 与 exact-SHA 三 job。
+5. [completed-public] 一次真实产品 smoke 成功；提交 `64311a1` / Actions `32455219404` 的 exact-SHA 三 job 全绿，7-3 关闭。
 
 ## 7-4: RiftCoach MCP Server
+
+**Status (2026-08-21):** local implementation and all local gates are complete under
+RQ-078; the independent implementation commit and exact-SHA public CI are pending.
+This checkpoint implements a transport-neutral, read-only Server Session and a
+restricted owner-scoped Application Facade. It does not claim public HTTP deployment
+or 7-5 bidirectional interoperability.
 
 ### Task 4: Read-only server facade
 
 **Create:** `app/mcp/server.py`, `tests/test_mcp_server.py`
 
-1. 对近期汇总、单局分析、知识搜索、报告评测写外部 client fixture 红灯；
-2. 通过 `app/api/composition.py`/`app/product/*` 的 Application Service 组合，不直连 Repository；
-3. 加 ActorContext owner scope、DTO/error allowlist、body-free response、schema/version tests；
-4. 拒绝任意 URL/SQL/file、PUUID/Key/Prompt/Provider body、Memory 写入和未发布 Artifact；
-5. commit `feat: expose restricted riftcoach mcp server tools`。
+1. [completed-local] 对近期汇总、单局分析、知识搜索、报告评测写 external-client fixture 红灯；
+2. [completed-local] 通过 `app/product/run_query.py` 与 service port 组合，不直连 Repository；
+3. [completed-local] 加 ActorContext owner scope、strict DTO/error allowlist、body-free response、schema/version tests；
+4. [completed-local] 拒绝任意 URL/SQL/file、PUUID/Key/Prompt/Provider body、Memory 写入和未发布 Artifact；
+5. [in_progress] 八维学习证据与本地门禁已完成；独立提交和 exact-SHA 三 job 尚待完成，随后才交接 7-5。
 
 ## 7-5: Interoperability exit review
 

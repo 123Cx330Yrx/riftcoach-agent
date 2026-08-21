@@ -1638,3 +1638,20 @@ RQ-077 进一步固定 Riot 官方账号/排位/比赛、Data Dragon 版本静�
 聚合 Meta 的分层组合边界；7-3 不实现两源 join，缺 patch 的 OP.GG 不继承 Riot patch 身份。当前只有
 lane-meta 单向产品链和 body-free smoke；RiftCoach MCP Server、外部 Client 调用与双向退出门仍属于
 7-4/7-5。完整本地门和实现 SHA 的 exact-SHA 三 job 前，7-3/coverage 继续 open。
+
+`64311a1` / Actions `32455219404` 随后完成 7-3 exact-SHA 三 job 公共闭环：公共 pytest `1546/116`
+（Linux/Windows skip 按环境分开）、真实 PostgreSQL `164 passed`、migration/head 无漂移，Linux package
+schema 1.6 成功且外部 Riot/Provider 调用为 0。7-3 coverage 已 complete；该证据只关闭 OP.GG lane-meta
+单向产品链，不扩大为全工具、精确 patch/freshness、Riot+OP.GG join、RiftCoach Server 或双向互操作。
+canonical 只交接 `7-4-riftcoach-mcp-server` prepared/waiting authorization。
+
+RQ-078 已授权 `7-4-riftcoach-mcp-server`。本检查点采用 strict Server Session → owner-scoped
+Application Facade，只暴露四个只读受限工具；协议响应只含 allowlisted DTO/structuredContent，失败只返回
+body-free MCP error。它不接受 owner_id/PUUID/Key/Prompt/Provider body，不直连 Repository，不实现公网
+transport、真实外部 Client 或 7-5 双向互操作。
+
+7-4 已完成本地 TDD 与全部门禁：Server 独立 Session、固定四工具目录、服务端 ActorContext owner 注入、
+Query Facade、verified recent aggregate、single-review digest、knowledge attribution 和诚实 evaluation status
+均有聚焦/相邻/完整回归证据。单局报告正文因当前持久合同缺少结构化 published-result Artifact 而不从 Markdown
+反推；评测也保持 `score_available=false`，不把 published 虚构为 evaluator score。coverage 在实现 SHA 的
+exact-SHA 三 job 前保持 planned；7-5 仍未进入。

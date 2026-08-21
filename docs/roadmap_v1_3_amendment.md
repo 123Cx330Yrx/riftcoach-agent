@@ -239,10 +239,12 @@ OP.GG MCP
 fixture/in-memory 与隔离 stdio transport/session/discovery；OP.GG、MetaEvidence、Server、普通 HTTP
 与真实外部互操作继续留在后续检查点。
 
-7-2 已由 `f121666` / Actions `32441793585` 完成 exact-SHA 三 job 公共闭环。7-3 已获授权并以
-ADR-0048 裁决 OP.GG `admitted_with_restrictions`；官方 Streamable HTTP、partial MetaEvidence、严格
-lane-meta Adapter、data-only Context 与一次真实 body-free 产品 smoke 已本地完成，exact-SHA 三 job
-前仍保持 open。RiftCoach Server 与双向互操作未进入。
+7-2 已由 `f121666` / Actions `32441793585` 完成 exact-SHA 三 job 公共闭环。7-3 又以
+ADR-0048 裁决 OP.GG `admitted_with_restrictions`，并由 `64311a1` / Actions `32455219404`
+完成官方 Streamable HTTP、partial MetaEvidence、严格 lane-meta Adapter、data-only Context 与一次
+真实 body-free 单向产品 smoke 的 exact-SHA 三 job 公共闭环。RQ-078 授权的 7-4 RiftCoach Server
+已完成 strict Server/Facade、四个只读工具与全部本地门禁，当前等待独立实现 SHA 的公共三 job；
+7-5 双向互操作未进入。
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

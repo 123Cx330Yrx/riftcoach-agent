@@ -65,7 +65,9 @@ OP.GG MCP text
 - `data/evaluation/results/mcp/opgg_meta_product_smoke_v1.json`：真实产品链成功摘要。
 
 小集合测试证明合同，不证明 OP.GG 永久稳定、所有工具均已产品化或建议质量已经通过领域评测。
-公共 exact-SHA 三 job 全绿前，7-3 coverage 继续是 `planned`。
+提交 `64311a1` 的 exact-SHA `pytest`、真实 PostgreSQL 与 Linux package 三 job 已全绿；公共
+pytest `1546 passed, 116 skipped`、真库 `164 passed`，7-3 coverage 已置 `complete`。这些证据仍
+不外推为全工具、精确 patch/freshness、Riot+OP.GG join、RiftCoach Server 或双向互操作。
 
 ## 6. 运行手册
 

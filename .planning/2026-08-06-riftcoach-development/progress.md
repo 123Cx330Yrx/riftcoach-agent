@@ -3459,3 +3459,25 @@
   dry-run `published`/0 revisions，compileall、pip、全部 YAML、SDK boundary、tracked Secret/run-data、
   body-free evidence 与 governance 再次通过。
 - coverage 继续 planned；唯一下一动作仍是独立 cached diff、提交/推送与实现 exact-SHA 三 job，不进入 7-4/7-5。
+
+## 2026-08-21：RQ-078 授权并启动 7-4 Server
+
+- 7-3 `64311a1` / Actions `32455219404` 已完成 exact-SHA 三 job；用户“继续完完整整开发”授权当前
+  唯一 checkpoint `7-4-riftcoach-mcp-server`，pause_reason 已清除。
+- 已完成 Server 初学者边界与 Application/ActorContext/DTO/Harness 接缝审计；冻结 strict
+  protocol/session → owner-scoped read-only Facade，四个工具和拒绝字段；不进入 7-5。
+- 当前下一动作：先写 `tests/test_mcp_server.py` external-client fixture 红灯，再实现
+  `app/mcp/server.py` 与最小 composition seam。
+
+## 2026-08-21：7-4 本地实现与全部门禁完成
+
+- 新增 transport-neutral Server Session、in-process transport、固定四工具 catalog、owner-scoped Query
+  Facade 和最小 service-port composition；不监听网络、不直连 Repository、不读取 Key。
+- Product Query 新增 verified recent aggregate DTO 与 single-match published digest；Skill/publication、
+  receipt/Trace/manifest/input digest/Artifact file 任一漂移均 body-free fail closed。
+- 聚焦 `33 passed`；相邻 MCP/Product `109 passed, 17 subtests passed`；完整回归
+  `1566 passed, 117 skipped, 1 warning, 127 subtests passed`。117 skip 仍是本机 PostgreSQL/Docker/Linux 限制。
+- RAG development/holdout 满阈值，Harness dry-run `published`/0 revisions；compileall、pip、6 YAML、SDK
+  boundary、tracked Secret/run-data、body-free MCP evidence、governance 与 diff check 全绿。
+- walkthrough 已覆盖八维，coverage 保持 planned。唯一下一动作是最终 diff/cached review、独立提交/推送和
+  exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；三 job 全绿前不关闭 7-4、不进入 7-5。

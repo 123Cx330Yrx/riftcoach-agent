@@ -3396,3 +3396,34 @@
 - 补强后 MCP/Meta/Context 相关集合 `94 passed, 17 subtests passed`，完整回归
   `1545 passed, 117 skipped, 1 warning, 127 subtests passed`；两套 RAG、Harness、compileall、pip、全部 YAML、
   SDK/Secret/tracked-data、body-free evidence 与 governance 均再次通过。本轮没有新增 OP.GG/Riot/Provider/Key I/O。
+
+## 2026-08-21：7-4 Server 接缝审计（RQ-078）
+
+- 现有 FastAPI routes 已将 trusted `ActorContext` 注入 owner-scoped service；MCP Server 不应复用 HTTP
+  body/owner 字段，也不应直接调用 Repository。最小接缝是独立的 `McpApplicationFacade` protocol，内部
+  接收 ActorContext，外部只投影 allowlisted DTO。
+- Server 复用 7-1 的 strict envelope/schema/result models；新增 Server Session 只负责请求方法、版本/能力、
+  cursor、session lifecycle 和固定 error projection，不复制 ToolRuntime 的 retry/cache/breaker/fallback。
+- 四个路线能力固定为 read-only `riftcoach.recent_summary`、`riftcoach.single_match_review`、
+  `riftcoach.knowledge_search`、`riftcoach.report_evaluation`。前两个/后一个只接受可信 run identity，
+  结果不含报告正文、Prompt、Provider/Tool body、PUUID 或内部异常；knowledge search 只经注入的
+  provider/facade，不能由客户端指定 URL/路径。
+- 7-4 本地 fixture 可以证明外部 client 与 Server envelope 的互相解析和 owner isolation；它不证明
+  Streamable HTTP 部署或真实外部 Client，这些保持 7-5。
+- Query seam 当前只能验证 Harness publication/evaluation 终态，不能恢复独立 evaluator score；第四个工具
+  因此明确返回 `score_available=false`，不能因 published 自造 fact-check 分数。
+
+## 2026-08-21：7-4 安全业务投影与本地退出发现
+
+- 初版 `recent_summary`/`single_match_review` 只投影 run/publication 状态；协议虽正确，但不足以证明路线中的
+  近期汇总。修正后 `RunQueryService` 交叉验证 receipt、Trace、manifest、Execution input commitment 与
+  `PLAYER_SUMMARY` SHA，再输出无玩家身份/match rows 的真实 aggregate DTO。
+- 单局 Skill 的 typed `target_match_id` 当前未作为独立 published Artifact 持久化；从 Markdown 反向解析会
+  伪造结构化合同。V1 因此只返回正确 `single-match-review` Skill 的发布终态和 final report digest，明确
+  不返回 narrative/target/score；未来若需要内容，先新增可审计 published-result Artifact。
+- owner gate 在任何 Query 前执行；RunQuery 的 `run_not_found/report_not_available/integrity_failed` 分别映射为
+  `not_found/not_published/integrity_failed`。Server 只复制 allowlisted DTO，Facade 额外字段被丢弃。
+- TDD 红灯先后为缺少 `app.mcp.server` 和缺少两个安全 Query 方法的 `AttributeError`；最终聚焦 `33 passed`，
+  相邻 `109 passed, 17 subtests passed`，完整 `1566 passed, 117 skipped, 1 warning, 127 subtests passed`。
+- 两套 RAG 全部冻结指标为 1.0/FPR 0.0，Harness `published`/0 revisions；compileall、pip、6 YAML、SDK、
+  tracked-data、body-free evidence、governance 与 diff 门全绿。本机 skip 不替代真库/Linux package 公共证据。

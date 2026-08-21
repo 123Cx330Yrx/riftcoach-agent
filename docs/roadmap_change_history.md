@@ -2498,3 +2498,26 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   OP.GG 聚合 Meta 分层；7-3 不实现两源 join，缺 patch 的 OP.GG 不冒充精确版本。
 - `PENDING`：7-3 coverage 仍 planned；完整本地门、独立提交与实现 SHA 的 exact-SHA 三 job 前不关闭，
   不进入 7-4 Server 或 7-5 双向互操作。
+
+### 2026-08-21：RQ-078 授权 7-4 RiftCoach MCP Server
+
+- `AUTHORIZED`：用户在 7-3 exact-SHA 公共闭环后明确继续完整开发，恢复唯一 canonical 检查点
+  `7-4-riftcoach-mcp-server`。
+- `SCOPE`：Server 采用 strict protocol/session → owner-scoped Application Facade；工具目录固定为
+  近期汇总、单局分析、知识搜索、报告评测四个只读入口，owner 身份由可信 ActorContext 注入。
+- `DENY`：不接受 owner_id/PUUID/Key/Prompt/Provider body，不暴露 Repository、文件、SQL、任意 URL、
+  未发布 Artifact 或 Memory 写入；公网 transport、真实外部 Client 与 7-5 双向互操作仍未进入。
+- `NEXT`：先以 external-client fixture 写 Server envelope/session、工具 schema、owner scope、错误和
+  bounded DTO 红灯，再实现最小 Facade/Server 并完成本地与 exact-SHA 公共门。
+
+### 2026-08-21：7-4 本地实现与全部门禁完成
+
+- `IMPLEMENTED-LOCAL`：strict initialize/initialized/list/call、独立 Session、restart generation、固定四工具
+  catalog、owner-scoped Query Facade 与 in-process external-client fixture 已完成。
+- `BUSINESS-TRUTH`：近期汇总从 verified `PLAYER_SUMMARY` 投影，单局只公开发布 digest，知识搜索只公开
+  attribution，评测不虚构 score；owner_id/PUUID/Key/Prompt/URL/SQL/path/open I/O 字段均拒绝。
+- `VERIFIED-LOCAL`：聚焦 33、相邻 `109 passed, 17 subtests passed`、完整
+  `1566 passed, 117 skipped, 1 warning, 127 subtests passed`；两套 RAG、Harness dry-run、compileall、pip、
+  YAML、SDK/Secret/tracked-data、body-free evidence、governance 与 diff 门全绿。
+- `PENDING`：coverage 保持 planned；唯一下一动作是独立提交/推送并等待该 exact SHA 的三 job。公共全绿前
+  不关闭 7-4，不进入 7-5。
