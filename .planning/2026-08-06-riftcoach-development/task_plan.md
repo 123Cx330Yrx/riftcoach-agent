@@ -21,8 +21,9 @@ at `cbc7cbd` / Actions `32408101770`. Phase 26 -
 Actions `32436092074`. Phase 27 - `7-1-mcp-client-contract` is complete at
 `37f16bc` / Actions `32439753589`. Phase 28 -
 `7-2-mcp-transport-and-discovery` is complete at `f121666` / Actions `32441793585`.
-Phase 29 - `7-3-opgg-meta-adapter` is prepared and awaiting explicit authorization;
-no Meta, MCP Server, SDK, Key access, or external I/O has started.
+Phase 29 - `7-3-opgg-meta-adapter` is authorized by RQ-075 and in progress;
+the product implementation and body-free real smoke are locally complete, and
+only the independent commit plus exact-SHA public CI remain before closure.
 
 ## Phases
 
@@ -273,8 +274,9 @@ no Meta, MCP Server, SDK, Key access, or external I/O has started.
 coverage 已 complete。6B-7 又由 `f6d8922` / Actions `32397290175` 完成 exact-SHA 三 job 公共闭环。
 RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a` / Actions
 `32403187972` 完成，6B-9 由最小测试修复 `cbc7cbd` / Actions `32408101770` 完成 exact-SHA 三 job。
-当前唯一动作是等待 `7-3-opgg-meta-adapter` 的明确授权；授权前只保持候选来源审计，
-不实现 MetaEvidence、OP.GG 调用、Key 读取、普通 HTTP 或外部互操作。
+当前唯一动作是完成 `7-3-opgg-meta-adapter` 的最终 diff/cached 审查、独立提交/推送与
+exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；三 job 全绿前 coverage
+保持 planned，不进入 7-4/7-5。
 
 ## 6A-1 Checklist
 
@@ -600,9 +602,17 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 ### Phase 29 - 7-3-opgg-meta-adapter
 
 - Status: in_progress
-- State: prepared/waiting authorization；7-2 已由 `f121666` / Actions `32441793585` exact-SHA 三 job 全绿。
-- [ ] 等待用户明确授权后再做 OP.GG endpoint/protocol/license/freshness admission audit；
-- [ ] 授权前不实现 MetaEvidence、OP.GG adapter、Key 读取、Provider/Riot I/O 或普通 HTTP。
+- Authorization: RQ-075；用户已在确认官方候选仓库后明确继续当前唯一检查点。
+- State: RQ-076 将候选裁决修正为 admitted-with-restrictions；7-2 已由 `f121666` / Actions `32441793585` exact-SHA 三 job 全绿。
+- [completed] 审计 OP.GG endpoint/protocol/transport/tool schema/license/freshness/rate-limit/deployment，冻结 body-free admission fixture；
+- [completed] 写 Streamable HTTP/session 与 partial-provenance MetaEvidence、schema/digest/injection/size 的红灯并完成最小实现；
+- [completed] 接入既有 Context data-only/trust boundary，并证明不写 Memory/Candidate/Plan/Progress；
+- [completed] 真实产品代码 lane-meta smoke 成功，持久结果只含 body-free protocol/catalog/evidence/context 摘要；
+- [completed-local] 八维 walkthrough 与全部本地门禁；提交前复核又以红灯锁定 negotiated
+  protocol header、严格数值 scalar、真正的 admitted-subset parsing 和 complete-provenance 必填身份，
+  完整回归 `1545 passed, 117 skipped, 1 warning, 127 subtests passed`；coverage 在公共 CI 前保持 planned；
+- [in_progress] 独立提交/推送与 exact-SHA 三 job；
+- [ ] 只交接 7-4 prepared/waiting authorization，不提前实现 Server 或双向互操作退出门。
 
 ## 6A Entry Design Checklist
 

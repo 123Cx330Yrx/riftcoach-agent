@@ -33,6 +33,7 @@ class ContextTrust(str, Enum):
     DETERMINISTIC_FACTS = "deterministic_facts"
     USER_REQUEST = "user_request"
     KNOWLEDGE_EVIDENCE = "knowledge_evidence"
+    EXTERNAL_META_EVIDENCE = "external_meta_evidence"
 
     @property
     def instructional(self) -> bool:
@@ -283,6 +284,7 @@ def context_contract_descriptor() -> dict[str, Any]:
                 "message_role": trust.message_role.value,
             }
             for trust in ContextTrust
+            if trust is not ContextTrust.EXTERNAL_META_EVIDENCE
         },
     }
 
@@ -323,14 +325,22 @@ class ContextBuilderV1:
                 "additional_data_sections must contain ContextSection values"
             )
         if any(
-            section.trust is not ContextTrust.DETERMINISTIC_FACTS
-            or section.instructional
+            section.instructional
             or section.required
-            or not section.section_id.startswith("memory:")
+            or not (
+                (
+                    section.trust is ContextTrust.DETERMINISTIC_FACTS
+                    and section.section_id.startswith("memory:")
+                )
+                or (
+                    section.trust is ContextTrust.EXTERNAL_META_EVIDENCE
+                    and section.section_id.startswith("meta:")
+                )
+            )
             for section in additional_data_sections
         ):
             raise ContextBuildError(
-                "additional context must be optional memory data-only sections"
+                "additional context must be optional memory or Meta data-only sections"
             )
 
         typed_input = execution.typed_input

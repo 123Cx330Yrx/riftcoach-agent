@@ -134,6 +134,28 @@ def test_discovery_aggregates_bounded_cursor_pages_into_one_snapshot():
     ]
 
 
+def test_discovery_strictly_validates_only_the_admitted_tool_subset():
+    fixture = load_fixture()
+    unadmitted = json.loads(json.dumps(fixture["tools"][0]))
+    unadmitted["name"] = "unadmitted.non_object_output"
+    unadmitted["outputSchema"] = {"type": "array", "items": {"type": "string"}}
+    fixture["tools"].append(unadmitted)
+    fixture["tools"].append(
+        {"name": "unadmitted.incomplete", "unexpected": {"shape": True}}
+    )
+    fixture["tools"].append(["not", "a", "descriptor"])
+    client = make_client(
+        InMemoryMcpTransport(fixture_handler(fixture, [])),
+        allowed_tools={"fixture.echo"},
+    )
+
+    client.initialize(timeout_s=1)
+    catalog = client.discover(timeout_s=1)
+
+    assert [tool.name for tool in catalog.tools] == ["fixture.echo"]
+    assert catalog.get("unadmitted.non_object_output") is None
+
+
 def test_tool_definition_rejects_mcp_name_not_accepted_by_internal_runtime():
     fixture = load_fixture()
     fixture["tools"][0]["name"] = "Fixture.echo"

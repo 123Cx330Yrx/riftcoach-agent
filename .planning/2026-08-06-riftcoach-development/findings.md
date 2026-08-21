@@ -3326,3 +3326,73 @@
   Linux no-I/O package smoke 均成功。该证据按环境记录，不把本机 117 skip 改写成真库成功。
 - 7-2 只关闭本地 fixture/in-memory/隔离 stdio transport/session/discovery；OP.GG endpoint、协议、许可、
   freshness、限流与真实互操作仍缺证据，7-3 必须先做 admission audit。
+
+## 2026-08-21：RQ-075 与 7-3 起始边界
+
+- `opgginc/opgg-mcp` README、package 与源码已确认它是指向 `https://mcp-api.op.gg/mcp` 的官方
+  OP.GG MCP 项目；仓库内 Node 入口是 Streamable HTTP → stdio proxy，不是数据后端完整源码。
+- RQ-075 只授权 7-3。候选必须继续用 endpoint 协议响应、真实工具 schema、patch/freshness 和部署/限流
+  证据复核；官方组织名与 README 单独不足以证明 Meta Provider 准入。
+- 若准入通过，采用 strict per-tool anti-corruption adapter；若缺关键合同则按 ADR-0047 fail closed，
+  不以普通 HTTP、推测字段或动态任意 JSON 规避门槛。
+
+## 2026-08-21：RQ-076 对二元拒绝的纠正
+
+- 用户正确指出：标准 MCP handshake/list/call 已真实成功，“没有上游 patch/TTL/outputSchema”证明的是
+  provenance 等级有限，而不是 transport 或工具价值不存在。早先把两者合并为完全 deferred 过度保守。
+- 新设计采用 partial provenance：本地 receipt time/TTL 可证明取回时间和缓存期限，但不能证明源数据生成
+  时间；`upstream_patch/source_freshness` 必须为 unknown。应用只允许当前快照建议，不允许精确 patch/
+  历史比较声明。
+- 文本结果不能直接注入或 `eval`；必须锁定 remote schema digest、固定 desired fields、限制大小/数量，
+  只遍历 allowlisted AST grammar。任何漂移、额外节点、非法数值或注入均 fail closed。
+
+## 2026-08-21：7-3 真实目录 Bad Case 与产品 smoke
+
+- 初次产品 smoke 在 tools/list 安全失败：当前 30-tool 全目录中两个未获准 Valorant 工具声明数组根
+  outputSchema，而 7-1 parser 只接受对象根。OP.GG 可达、目标 LoL 工具也没有 outputSchema；失败发生在
+  目录全量预解析，不是 lane-meta call 或 endpoint 故障。
+- 采用最小权限修复：完整 response 仍先受 bytes/tool-count 上限约束，随后只对业务 allowlist descriptor
+  建立严格不可变 catalog/schema snapshot。未获准工具不注册、不调用，也不再以异构 schema 阻断获准工具；
+  新回归固定该 Bad Case。
+- 第二次真实产品 smoke 从 Streamable HTTP initialize/notification/list 经本地 dotted ToolDefinition、
+  ToolRuntime、allowlisted AST、typed MetaEvidence 到 data-only Context 全链成功；只调用 lane-meta 一次。
+  `opgg_meta_product_smoke_v1.json` 保存 protocol/catalog/evidence digest、fact count 和限制，不保存 session、
+  remote text 或英雄事实正文。
+- 截至成功 smoke，本检查点合计 initialize 4、notification 4、tools/list 6、tools/call 2、DELETE attempt 4；
+  其中包含初始 admission、一次失败前置 smoke、一次仅名称/schema 顶层形状的脱敏诊断和一次成功产品 smoke。
+  Riot/LLM Provider calls 与 Key reads 仍为 0；这些单向调用不能冒充 7-5 双向互操作。
+- RQ-077 又固定 Riot 官方事实并非只有 Match：账号/排位/比赛、Data Dragon 版本化静态定义与官方 patch/update
+  应和 OP.GG 聚合 Meta 分层组合。7-3 不实现 join；缺 patch 的 OP.GG 不能继承同日 Riot patch 身份。
+- 首轮完整回归的 26 项失败全部由基础 Context descriptor 指纹漂移触发：把 optional Meta extension 加进
+  既有 Prompt Program V1 会正确阻断 composition，并连带使不可重跑的历史 held-out/资源校准身份失败。
+  最小修复不是重写这些资产，而是让 external-meta 保持显式 extension；基础 descriptor/policy/fingerprint
+  原样不变，未来生产注入必须发布新的 Meta-enabled Program identity。
+
+## 2026-08-21：7-3 最终一致性与安全审查
+
+- roadmap 总览、learning 索引、project decisions 与 ADR-0047 仍有入口设计时期的二元准入/7-2 当前句；
+  已统一为“7-3 单向真实 OP.GG smoke + partial provenance，7-5 才是双向退出证明”，没有扩大到 7-4。
+- `data/evaluation/results/mcp` 只有 admission 与 product-smoke 两个 JSON；定向扫描确认无 session id、raw
+  response/result/content、PUUID、Key、Authorization、英雄事实正文或 class-like 远端文本。
+- 最终聚焦/相邻为 `95 passed, 1 skipped, 17 subtests passed`；完整回归为
+  `1542 passed, 117 skipped, 1 warning, 127 subtests passed`。唯一聚焦 skip 与其余本机 skip 继续表示
+  无 PostgreSQL/Docker/Linux 对应环境，不能冒充真库/package 证据。
+- RAG development/independent holdout 的 Recall/MRR/nDCG 均 1.0、FPR 0.0，holdout abstention/citation
+  均 1.0；Harness dry-run published/0 revisions；compileall、SDK boundary、tracked Secret/run-data、pip、
+  YAML、governance、持久 evidence 脱敏和 diff 门均通过。
+
+## 2026-08-21：7-3 恢复后的提交前合同补强
+
+- Streamable HTTP 初版把 initialize 请求中的 client-offered version 写入后续 protocol header；当 Server 在
+  Client allowlist 内选择另一个版本时会形成 header/已解析 session 不一致。新增红灯后改由 Client 在
+  `McpInitializeResult` 严格验证成功后显式绑定 server-negotiated version，transport 不再窥探 MCP method。
+- 初版 lane-meta parser 会用 `float(...)` 接受字符串 rate；这弱于“固定 typed scalar”合同。新增数值字符串
+  负例并要求 rate AST Constant 原生为 int/float，bool/string/其他类型全部 fail closed。
+- admitted-subset 初版虽跳过未获准工具的 outputSchema，却仍在 allowlist 前执行 descriptor exact-fields，
+  未获准的缺字段/额外字段/非 mapping 条目仍可阻断 LoL 工具。新 Bad Case 先红灯，再改为“全响应 JSON bytes/
+  tool-count 资源门 + 只按名称筛选执行权限 + 仅对获准 descriptor 严格解析”；无权限条目仍不能注册或调用。
+- `MetaProvenance.COMPLETE` 初版没有反向要求 patch/source-generated identity，未来调用者可能仅凭枚举值高估
+  证据等级。新增构造红灯后，complete 必须同时携带 patch 与 source time；partial 的 null/单用途合同保持不变。
+- 补强后 MCP/Meta/Context 相关集合 `94 passed, 17 subtests passed`，完整回归
+  `1545 passed, 117 skipped, 1 warning, 127 subtests passed`；两套 RAG、Harness、compileall、pip、全部 YAML、
+  SDK/Secret/tracked-data、body-free evidence 与 governance 均再次通过。本轮没有新增 OP.GG/Riot/Provider/Key I/O。

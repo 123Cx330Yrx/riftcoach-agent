@@ -155,9 +155,11 @@ cancel/resume/恢复与 Runtime Compaction、SSE 和完整前端仍属于阶段 
 
 ```text
 OP.GG MCP
+→ Standard MCP Client / Streamable HTTP
+→ ToolDefinition / ToolRuntime
 → OPGGMetaAdapter
-→ MetaProvider / MetaEvidence
-→ ToolRuntime
+→ MetaEvidence
+→ data-only Context
 → Skill / Agent
 → Quality Harness
 ```
@@ -237,9 +239,10 @@ OP.GG MCP
 fixture/in-memory 与隔离 stdio transport/session/discovery；OP.GG、MetaEvidence、Server、普通 HTTP
 与真实外部互操作继续留在后续检查点。
 
-7-2 已由 `f121666` / Actions `32441793585` 完成 exact-SHA 三 job 公共闭环；当前只交接
-`7-3-opgg-meta-adapter` prepared/waiting authorization，OP.GG 仍未完成 endpoint/protocol/license/
-freshness/真实互操作准入。
+7-2 已由 `f121666` / Actions `32441793585` 完成 exact-SHA 三 job 公共闭环。7-3 已获授权并以
+ADR-0048 裁决 OP.GG `admitted_with_restrictions`；官方 Streamable HTTP、partial MetaEvidence、严格
+lane-meta Adapter、data-only Context 与一次真实 body-free 产品 smoke 已本地完成，exact-SHA 三 job
+前仍保持 open。RiftCoach Server 与双向互操作未进入。
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

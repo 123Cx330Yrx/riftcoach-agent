@@ -1620,3 +1620,21 @@ OP.GG/Riot/Provider、不读取 Key、不实现 MetaEvidence、RiftCoach MCP Ser
 `f121666` / Actions `32441793585` 的 exact-SHA 三 job 随后全绿；7-2 coverage 置 complete，
 canonical 只交接 `7-3-opgg-meta-adapter` prepared/waiting authorization。该公共 run 证明本地
 transport/session/discovery 与既有 PostgreSQL/Linux package 基线兼容，不改变 OP.GG 尚未准入的裁决。
+
+### 7-3 OP.GG Meta Adapter 分级准入与本地实现（2026-08-21，RQ-075/076/077）
+
+官方 `opgginc/opgg-mcp`、`https://mcp-api.op.gg/mcp` 已真实完成 protocol `2025-06-18`
+initialize、initialized notification、tools/list 和一次只读 lane-meta tools/call。RQ-076 纠正了
+“缺完整 patch/TTL/outputSchema 就整体不接”的二元解释；ADR-0048 采用
+`admitted_with_restrictions`：连接能力真实准入，provenance 固定为 partial，只允许当前快照建议，
+禁止精确 patch、历史 patch 比较和上游新鲜度声明。
+
+产品实现增加 HTTPS-only/no-redirect Streamable HTTP、获准目录子集、固定远端到本地工具映射、
+无 `eval` 的 allowlisted AST lane-meta parser、typed/digest-bound `MetaEvidence`、15 分钟本地使用期限
+和 optional user-role data-only Context。真实目录中未获准 Valorant 数组根 outputSchema 的 Bad Case
+由“全响应资源门 + admitted subset 严格解析”解决；未获准工具不注册、不调用。
+
+RQ-077 进一步固定 Riot 官方账号/排位/比赛、Data Dragon 版本静态数据、官方 patch/update 与 OP.GG
+聚合 Meta 的分层组合边界；7-3 不实现两源 join，缺 patch 的 OP.GG 不继承 Riot patch 身份。当前只有
+lane-meta 单向产品链和 body-free smoke；RiftCoach MCP Server、外部 Client 调用与双向退出门仍属于
+7-4/7-5。完整本地门和实现 SHA 的 exact-SHA 三 job 前，7-3/coverage 继续 open。

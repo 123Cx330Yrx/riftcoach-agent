@@ -1,4 +1,4 @@
-"""Pure standard MCP contracts; transport and external I/O live later."""
+"""Standard MCP contracts, sessions, and bounded transport adapters."""
 
 from .errors import (
     McpCapabilityError,
@@ -30,7 +30,13 @@ from .models import (
     McpToolsCapability,
 )
 from .client import McpClient, McpClientSession
-from .transport import InMemoryMcpTransport, McpTransport, StdioMcpTransport
+from .transport import (
+    InMemoryMcpTransport,
+    McpHttpResponse,
+    McpTransport,
+    StdioMcpTransport,
+    StreamableHttpMcpTransport,
+)
 
 __all__ = [
     "JSONRPC_VERSION",
@@ -59,8 +65,10 @@ __all__ = [
     "McpTransportError",
     "McpTransportFrameError",
     "McpTransportTimeout",
+    "McpHttpResponse",
     "InMemoryMcpTransport",
     "StdioMcpTransport",
+    "StreamableHttpMcpTransport",
     "McpClient",
     "McpClientSession",
 ]

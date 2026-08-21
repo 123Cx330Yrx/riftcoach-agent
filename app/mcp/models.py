@@ -652,11 +652,18 @@ class McpToolCatalog:
         initialization: McpInitializeResult,
         expected_request_id: str | int,
         limits: McpContractLimits,
+        allowed_tools: Set[str] | None = None,
     ) -> "McpToolCatalog":
         if not isinstance(initialization, McpInitializeResult):
             raise TypeError("initialization must be McpInitializeResult.")
         if not isinstance(limits, McpContractLimits):
             raise TypeError("limits must be McpContractLimits.")
+        if allowed_tools is not None and (
+            isinstance(allowed_tools, (str, bytes))
+            or not isinstance(allowed_tools, Set)
+            or not all(isinstance(item, str) for item in allowed_tools)
+        ):
+            raise TypeError("allowed_tools must be a set of strings or None.")
         initialization.require_tools()
         result = _parse_response_envelope(
             wire,
@@ -694,6 +701,12 @@ class McpToolCatalog:
         descriptors: list[McpToolDescriptor] = []
         seen_names: set[str] = set()
         for raw in tools_raw:
+            if allowed_tools is not None:
+                if not isinstance(raw, Mapping):
+                    continue
+                candidate_name = raw.get("name")
+                if candidate_name not in allowed_tools:
+                    continue
             descriptor_raw = _mapping_or_error(
                 raw,
                 error_type=McpToolCatalogError,

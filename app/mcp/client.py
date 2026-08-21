@@ -239,6 +239,22 @@ class McpClientSession:
             expected_request_id=request.request_id,
             supported_protocol_versions=self.supported_protocol_versions,
         )
+        bind_protocol_version = getattr(
+            self.transport,
+            "bind_protocol_version",
+            None,
+        )
+        if callable(bind_protocol_version):
+            bind_protocol_version(result.protocol_version)
+        notify = getattr(self.transport, "notify", None)
+        if callable(notify):
+            notify(
+                {
+                    "jsonrpc": "2.0",
+                    "method": "notifications/initialized",
+                },
+                deadline_monotonic=deadline,
+            )
         self._bound_generation = self.transport.generation
         self._initialization = result
         return result
@@ -267,6 +283,7 @@ class McpClientSession:
                 initialization=self._initialization,
                 expected_request_id=request_id,
                 limits=self.limits,
+                allowed_tools=self.allowed_tools,
             )
             pages.append(page)
             if page.next_cursor is None:
@@ -360,6 +377,8 @@ class McpClientSession:
         self,
         tool_name: str,
         *,
+        local_name: str | None = None,
+        description: str | None = None,
         policy: ToolPolicy | None = None,
         version: str = "1.0.0",
     ) -> ToolDefinition:
@@ -375,7 +394,11 @@ class McpClientSession:
                     retryable=False,
                 )
             )
-        if not re.fullmatch(r"[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)+", tool_name):
+        definition_name = tool_name if local_name is None else local_name
+        if not isinstance(definition_name, str) or not re.fullmatch(
+            r"[a-z][a-z0-9_]*(?:\.[a-z][a-z0-9_]*)+",
+            definition_name,
+        ):
             raise McpToolCallError(
                 McpErrorInfo(
                     code="mcp_tool_not_allowed",
@@ -386,6 +409,15 @@ class McpClientSession:
             "type": "object",
             "additionalProperties": True,
         }
+        annotations = descriptor.annotations or {}
+        idempotent = annotations.get("idempotentHint", True)
+        if not isinstance(idempotent, bool):
+            raise McpToolCallError(
+                McpErrorInfo(
+                    code="mcp_tool_not_allowed",
+                    retryable=False,
+                )
+            )
 
         def handler(params: Mapping[str, Any], context: Any) -> Mapping[str, Any]:
             remaining = context.remaining_s()
@@ -406,13 +438,19 @@ class McpClientSession:
             return {"content": _thaw(result.content)}
 
         return ToolDefinition(
-            name=tool_name,
+            name=definition_name,
             version=version,
-            description=descriptor.description or f"Discovered MCP tool {tool_name}.",
+            description=(
+                description
+                if description is not None
+                else descriptor.description
+                or f"Discovered MCP tool {tool_name}."
+            ),
             handler=handler,
             input_schema=_thaw(descriptor.input_schema),
             output_schema=_thaw(output_schema),
             policy=policy or ToolPolicy(),
+            idempotent=idempotent,
         )
 
     def register_discovered_tools(

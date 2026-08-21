@@ -61,15 +61,22 @@ external endpoint, Key, OP.GG, MetaEvidence or MCP Server was added.
 
 ## 7-3: OP.GG Meta Adapter
 
+**Status (2026-08-21):** authorized and implemented locally under RQ-075/076;
+official Streamable HTTP, admitted-subset discovery, strict lane-meta normalization,
+partial MetaEvidence, data-only Context and one body-free real product smoke are complete.
+Full local gates and exact-SHA public CI remain pending, so coverage stays planned.
+
 ### Task 3: Candidate audit and normalization
 
-**Create:** `app/meta/models.py`, `app/meta/opgg.py`, `tests/test_meta_evidence.py`, `tests/fixtures/meta/opgg_*.json`
+**Create/Modify:** `app/mcp/{transport,client,models,errors}.py`, `app/meta/*`,
+`app/agent/context.py`, `scripts/run_opgg_meta_smoke.py`, `tests/test_mcp_streamable_http.py`,
+`tests/test_opgg_meta_{adapter,admission,smoke}.py`, `data/evaluation/results/mcp/*`
 
-1. 先把已审计的 OP.GG tool schema/许可/freshness 证据登记为 admission fixture；若审计不通过，停止并写替代 ADR；
-2. 写 MetaEvidence normalization 红灯：missing patch, stale, schema drift, digest mismatch, injection text, oversized facts；
-3. 实现 allowlisted facts、digest/freshness、source/tool identity 和安全错误；
-4. 集成 Context data-only/trust boundary，证明不写 Memory/Candidate/Plan/Progress；
-5. commit `feat: normalize dynamic meta into bounded evidence`。
+1. [completed] 审计并冻结官方 repository/endpoint/protocol/license/catalog/tool trace；ADR-0048 裁决 `admitted_with_restrictions`；
+2. [completed] 先写 Streamable HTTP/session 与 MetaEvidence/normalization 红灯，再完成最小实现；
+3. [completed] 实现 admitted-subset 目录、allowlisted AST、typed facts、digest/local expiry 和 body-free error；
+4. [completed] 集成 optional data-only Context，保持 Prompt Program V1 基础 fingerprint 不变，并证明不写 Memory/Candidate/Plan/Progress；
+5. [completed-local] 一次真实产品 smoke 成功；待完整本地门、提交 `feat: integrate opgg lane meta over mcp` 与 exact-SHA 三 job。
 
 ## 7-4: RiftCoach MCP Server
 

@@ -4,7 +4,7 @@ main_stage: 7
 substage_group: "stage-7-standard-mcp-dynamic-meta"
 current_checkpoint: "7-3-opgg-meta-adapter"
 status: in_progress
-pause_reason: "7-2 closed at f121666 / Actions 32441793585; 7-3 is prepared and awaiting explicit authorization"
+pause_reason: null
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "7-2 closed at f121666 / Actions 32441793585; 7-3 is prepared and 
 
 ## 状态元数据
 
-- 最后更新：2026-08-21（7-2 exact-SHA 公共闭环；7-3 prepared/waiting authorization）
-- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。Stage 7 入口设计 `e50a546/32436092074` 与 7-1 `37f16bc/32439753589` 已关闭；7-2 实现 `f12166665d437a9479afff508709435a23096dd2` / Actions `32441793585` 三 job 全绿，coverage 已 complete。当前唯一检查点为 `7-3-opgg-meta-adapter` prepared/waiting authorization；尚未实现 OP.GG/Meta、RiftCoach MCP Server 或真实外部 I/O
+- 最后更新：2026-08-21（7-3 本地产品链、真实 body-free smoke 与全部本地门完成，待提交/公共 CI）
+- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。Stage 7 入口设计 `e50a546/32436092074`、7-1 `37f16bc/32439753589` 与 7-2 `f121666/32441793585` 已关闭。RQ-075/076 已授权并修正当前唯一检查点 `7-3-opgg-meta-adapter`：官方 Streamable HTTP、admitted-subset discovery、strict lane-meta Adapter、partial MetaEvidence、data-only Context 和一次真实 body-free 产品 smoke 已在工作树完成；完整本地门、独立实现提交与 exact-SHA 三 job 尚未完成，故 coverage 仍 planned，7-4/7-5 未进入
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "7-2 closed at f121666 / Actions 32441793585; 7-3 is prepared and 
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`7-3-opgg-meta-adapter` prepared/waiting authorization；授权前只做候选来源审计，不实现 MetaEvidence、OP.GG 调用、Key 读取或外部 I/O。
+- 唯一下一步：完成 `7-3-opgg-meta-adapter` 的最终本地门、独立实现提交/推送与 exact-SHA 三 job；公共全绿前不关闭 coverage，不进入 7-4/7-5。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -551,10 +551,10 @@ pause_reason: "7-2 closed at f121666 / Actions 32441793585; 7-3 is prepared and 
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-5 与阶段 6 已实现并关闭；Stage 7 入口设计、7-1 pure contract 与 7-2 fixture/in-memory/stdio transport/session/discovery 已实现并关闭 | 7-2 本地 fixture 合同等于 OP.GG、MCP Server、真实互操作或整个阶段 7 已完成 |
-| 项目理解 | RQ-067 与阶段 6 八维材料已公共闭环；Stage 7 入口、7-1 与 7-2 walkthrough 已持久解释 envelope/transport、snapshot/drift、generation 和 body-free error | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
-| 参考资料 | EchoMind、AGI-Saber、Sea/OpenResearch 与 Pi 已按历史门审计；Stage 7 已完成现有代码接缝和 OP.GG 条件准入清单，但 OP.GG 官方标准 MCP 证据仍缺失 | OP.GG 已准入、普通 HTTP 是 MCP，或参考项目已整体接入 |
-| GitHub/部署 | 入口设计 `e50a546/32436092074`、7-1 `37f16bc/32439753589` 与 7-2 `f121666/32441793585` 均 exact-SHA 三 job 全绿；7-3/真实互操作与公网部署未开始 | fixture/stdio CI 等于 MCP 产品互操作、正式 Auth/RSO、SLA 或公网可用 |
+| 本地代码 | 阶段 0-6 已关闭；Stage 7 入口、7-1、7-2 已关闭；7-3 已本地实现官方 Streamable HTTP、获准目录子集、lane-meta Adapter、partial MetaEvidence/Context 与真实 body-free smoke | 一条 lane-meta 纵向等于 OP.GG 全工具、Riot+OP.GG join、RiftCoach Server、双向互操作或整个阶段 7 已完成 |
+| 项目理解 | Stage 7 入口/7-1/7-2 已公共闭环；ADR-0048、7-3 专用设计与 walkthrough 已持久解释分级 provenance、反腐层、AST grammar、Riot/OP.GG 分层和真实 Bad Case | 持久材料存在等于用户已经读完、运行过或能在面试中独立解释；owner mastery 仍需后续复述/问答/读码验证 |
+| 参考资料 | 官方仓库/endpoint/协议/许可已审计，真实 handshake/list/call 和当前 30-tool/18-LoL 目录已验证；patch/freshness/rate-limit/底层数据条款仍未知 | partial admission 等于上游完全可信、稳定、新鲜或商业再分发条款已解决 |
+| GitHub/部署 | 入口设计、7-1、7-2 的 exact-SHA 三 job 已绿；7-3 只有本地工作树与单向真实 body-free smoke，尚无实现 SHA 公共 CI；公网部署未开始 | 本地外部调用等于 7-5 双向互操作、正式 Auth/RSO、SLA 或公网可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -1736,3 +1736,60 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   transport/session/discovery，不证明 OP.GG、MetaEvidence、RiftCoach MCP Server 或真实互操作。
 - canonical 唯一下一检查点切换为 `7-3-opgg-meta-adapter` prepared/waiting authorization；授权前
   不执行 OP.GG 候选准入、MetaEvidence、Key 读取或外部调用。
+
+## 2026-08-21：RQ-075 授权 7-3 OP.GG Meta Adapter
+
+- 用户在确认官方候选仓库 `opgginc/opgg-mcp` 后明确要求继续正常下一步；该消息授权 canonical 的
+  `7-3-opgg-meta-adapter`，不外推到 7-4 RiftCoach MCP Server 或 7-5 双向互操作退出门。
+- 当前先核验官方 endpoint、协议/transport、工具 schema、许可、freshness、限流和部署边界；只有准入
+  证据足够时才按 TDD 实现 bounded/data-only `MetaEvidence` 与 OP.GG 领域 Adapter。
+- 本检查点不读取 Key，不调用 Riot/LLM Provider，不写 Memory/Candidate/Plan/Progress；有限外部探针只作
+  候选准入，不冒充 7-5 exact-SHA 真实双向互操作证据。
+- 唯一下一动作：完成候选准入审计并形成可版本化 fixture/裁决；若通过则写 pure normalization 红灯，
+  若关键合同缺失则按 ADR-0047 fail closed 并记录 deferred/替代决策。
+
+## 2026-08-21：RQ-076 修正 OP.GG 准入语义
+
+- 用户明确指出“缺完整 provenance 就完全不接”会错误拒绝有价值的标准 MCP 能力。该纠正取代本轮早先
+  `adapter_implementation_allowed=false` 的二元解释，但不删除真实缺口。
+- 新裁决为 `admitted-with-restrictions`：实际 handshake/list/call 已证明官方 Streamable HTTP MCP 可达；
+  7-3 继续实现真实 transport 与固定 lane-meta Adapter。因为 LoL 工具没有 outputSchema/structuredContent，
+  只允许锁定 schema/字段并以无 `eval` 的 bounded grammar 解析。
+- 本地 `retrieved_at/expires_at` 只证明“何时取回/本地缓存何时过期”，不能冒充上游数据生成时间；
+  `upstream_patch` 与 `source_freshness` 明确为 unknown。允许 current snapshot recommendation，禁止精确
+  patch 归因、跨 patch 历史比较和上游新鲜度声明。
+- 唯一下一动作：先写 Streamable HTTP/session 与 partial-provenance MetaEvidence 红灯，再做最小实现；
+  不进入 7-4，不读取 Key，不调用 Riot/LLM Provider，不写长期 Memory。
+
+## 2026-08-21：7-3 本地产品实现与真实 smoke
+
+- HTTPS-only/no-redirect Streamable HTTP、opaque session、initialized notification、bounded JSON/SSE、
+  fixed local description/alias、admitted-subset catalog snapshot 与 ToolRuntime 单一可靠性所有权已实现。
+- OP.GG lane-meta 文本经固定字段和 allowlisted AST grammar 变成 typed facts；partial MetaEvidence 记录
+  digest/retrieved/expires/unknown patch/source time，只允许 current snapshot recommendation。Context 新增
+  optional/non-instructional/user-role `external_meta_evidence`；不写 Memory/Candidate/Plan/Progress。
+- 首次真实产品 smoke 在 tools/list 暴露 30-tool 目录中两个未获准 Valorant 数组 outputSchema；最小修复
+  保留全响应 bytes/count 资源门，只严格解析业务 allowlist。相邻回归当前 `83 passed, 17 subtests passed`。
+- 第二次产品 smoke 从官方 endpoint 到 Meta Context 全链成功并持久化 body-free 结果；只记录 protocol/
+  catalog/evidence/context identity、fact count 与限制，不保存 session/raw text/事实正文。累计外部账本见专用设计；
+  Riot/LLM Provider calls 与 Key reads 为 0。
+- RQ-077 已持久化 Riot 官方账号/比赛/版本静态/patch update 与 OP.GG 聚合 Meta 的分层融合边界；本批不做
+  两源 join，缺 patch 的 OP.GG 不继承 Riot patch 身份。
+- ADR-0048、7-3 专用设计、walkthrough 与八维路径已建立，但 coverage 继续 `planned`。唯一下一动作是完整
+  本地回归/全部治理门与 cached diff；通过后独立提交/推送并等待 exact-SHA 三 job。公共全绿前不关闭 7-3，
+  不进入 7-4/7-5。
+
+## 2026-08-21：7-3 最终本地门完成
+
+- 最终聚焦/相邻为 `95 passed, 1 skipped, 17 subtests passed`；恢复后的提交前审查又补 negotiated
+  protocol header、strict numeric scalar、真正的 admitted-subset parsing 与 complete-provenance identity 红灯，
+  相关集合 `94 passed, 17 subtests passed`；完整 pytest 更新为
+  `1545 passed, 117 skipped, 1 warning, 127 subtests passed`。117 skip 仍来自本机 PostgreSQL/Docker/
+  Linux 环境限制，不视为真库或 package 成功。
+- RAG development/independent holdout 的 Recall/MRR/nDCG 均 1.0、FPR 0.0，holdout abstention/citation
+  均 1.0；Harness dry-run `published`/0 revisions；compileall、SDK boundary、tracked Secret/run-data、pip、
+  YAML、governance、body-free evidence scan 与 diff check 全部通过。
+- roadmap 总览、learning 索引、ADR-0047、Stage 7 设计/实施计划与 project decisions 的当前状态已同步；
+  7-3 只证明单向 OP.GG lane-meta 产品链，不证明 7-4 Server 或 7-5 双向互操作。
+- coverage 继续 `planned`。唯一下一动作是最终 cached diff、独立提交/推送并等待实现 SHA 的 exact-SHA
+  `pytest`、`postgres-migrations`、`packaging-smoke`；三 job 全绿前不关闭 7-3、不进入 7-4/7-5。

@@ -1,0 +1,147 @@
+{
+  "schema_version": "1.0",
+  "observed_window_utc": {
+    "started_at": "2026-08-21T05:19:29Z",
+    "ended_at": "2026-08-21T05:21:36Z"
+  },
+  "candidate": {
+    "repository": "https://github.com/opgginc/opgg-mcp",
+    "repository_head": "039904bf655927402c28717c12bb51fe949e2d61",
+    "endpoint": "https://mcp-api.op.gg/mcp",
+    "repository_license": "MIT"
+  },
+  "initialize": {
+    "http_status": 200,
+    "content_type": "application/json",
+    "protocol_version": "2025-06-18",
+    "server_name": "OP.GG MCP Server",
+    "server_version": "1.0.0",
+    "tools_capability": true,
+    "session_header_present": true
+  },
+  "catalog": {
+    "lol_tool_count": 18,
+    "all_lol_tools_have_output_schema": false
+  },
+  "selected_tool": {
+    "name": "lol_list_lane_meta_champions",
+    "argument_names": [
+      "lang",
+      "position",
+      "desired_output_fields"
+    ],
+    "required_arguments": [
+      "desired_output_fields"
+    ],
+    "requested_output_fields": [
+      "data.positions.top[].{champion,tier,rank,rank_prev,rank_prev_patch,win_rate,pick_rate,ban_rate}",
+      "lang",
+      "position_filter"
+    ],
+    "annotations": {
+      "read_only": true,
+      "destructive": false,
+      "idempotent": true,
+      "open_world": false
+    },
+    "output_schema_present": false,
+    "observed_result": {
+      "content_types": [
+        "text"
+      ],
+      "structured_content_present": false,
+      "current_patch_present": false,
+      "source_generated_at_present": false,
+      "expires_at_or_ttl_present": false,
+      "raw_body_persisted": false
+    }
+  },
+  "gates": [
+    {
+      "id": "official_repository_identity",
+      "status": "pass",
+      "evidence": "opgginc repository, op.gg endpoint, and OP.GG copyright align"
+    },
+    {
+      "id": "streamable_http_transport",
+      "status": "pass",
+      "evidence": "official README and live endpoint agree"
+    },
+    {
+      "id": "standard_mcp_initialize",
+      "status": "pass",
+      "evidence": "JSON-RPC initialize negotiated protocol 2025-06-18"
+    },
+    {
+      "id": "tools_discovery",
+      "status": "pass",
+      "evidence": "tools/list returned an MCP tool catalog"
+    },
+    {
+      "id": "selected_read_only_tool_call",
+      "status": "pass",
+      "evidence": "one bounded idempotent lane-meta tools/call succeeded"
+    },
+    {
+      "id": "selected_tool_output_schema",
+      "status": "fail",
+      "evidence": "no LoL tool advertised outputSchema"
+    },
+    {
+      "id": "structured_result",
+      "status": "fail",
+      "evidence": "selected tool returned text content without structuredContent"
+    },
+    {
+      "id": "current_patch_identity",
+      "status": "fail",
+      "evidence": "selected catalog and result did not identify the current patch"
+    },
+    {
+      "id": "source_freshness",
+      "status": "fail",
+      "evidence": "selected result had no source generation time, expiry, or TTL"
+    },
+    {
+      "id": "rate_limit_contract",
+      "status": "fail",
+      "evidence": "official repository did not publish a stable quota or retry contract"
+    },
+    {
+      "id": "underlying_data_terms",
+      "status": "fail",
+      "evidence": "repository MIT license covers proxy code but no separate data-service reuse terms were found"
+    },
+    {
+      "id": "client_session_termination",
+      "status": "limitation",
+      "evidence": "DELETE returned HTTP 405; server-side session expiry is not documented"
+    }
+  ],
+  "decision": {
+    "status": "admitted_with_restrictions",
+    "reason": "opgg_mcp_reachable_partial_provenance",
+    "adapter_implementation_allowed": true,
+    "meta_facts_may_enter_context": true,
+    "next_checkpoint_blocked": false,
+    "allowed_use": [
+      "current_snapshot_recommendation"
+    ],
+    "forbidden_use": [
+      "exact_patch_attribution",
+      "historical_patch_comparison",
+      "upstream_freshness_claim"
+    ]
+  },
+  "external_io": {
+    "initialize_calls": 1,
+    "initialized_notifications": 1,
+    "tools_list_calls": 3,
+    "tools_call_calls": 1,
+    "session_delete_attempts": 1,
+    "session_delete_http_status": 405,
+    "riot_calls": 0,
+    "llm_provider_calls": 0,
+    "key_reads": 0
+  }
+}

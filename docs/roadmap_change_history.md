@@ -2485,3 +2485,16 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   transport/session/discovery，不证明 OP.GG、MetaEvidence、RiftCoach Server 或真实互操作。
 - `HANDOFF`：唯一下一检查点为 `7-3-opgg-meta-adapter` prepared/waiting authorization；授权前不做
   OP.GG 准入、MetaEvidence、Key 读取、普通 HTTP 或外部调用。
+
+### 2026-08-21：RQ-075/076/077 与 7-3 本地真实接入
+
+- `ADMISSION`：官方 endpoint 已真实完成标准 MCP handshake/list/call；缺 outputSchema/patch/source time/TTL
+  被 ADR-0048 解释为 partial provenance 限制，不再被错误解释成整体拒绝。
+- `BAD-CASE`：首个产品 smoke 发现当前 30-tool 目录的两个未获准 Valorant 数组 outputSchema 会阻断获准
+  LoL 工具；修复为完整 response 总量门后只严格解析 admitted subset，未获准工具仍不可注册/调用。
+- `IMPLEMENTED-LOCAL`：Streamable HTTP/session、远端→本地 ToolDefinition、ToolRuntime、allowlisted AST、
+  typed/digested/expiring MetaEvidence 与 optional data-only Context 已建立；真实 body-free smoke 成功。
+- `RIOT-BOUNDARY`：RQ-077 固定 Riot 官方账号/排位/比赛、Data Dragon 版本静态数据和 patch/update 与
+  OP.GG 聚合 Meta 分层；7-3 不实现两源 join，缺 patch 的 OP.GG 不冒充精确版本。
+- `PENDING`：7-3 coverage 仍 planned；完整本地门、独立提交与实现 SHA 的 exact-SHA 三 job 前不关闭，
+  不进入 7-4 Server 或 7-5 双向互操作。

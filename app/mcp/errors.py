@@ -30,6 +30,10 @@ _SAFE_MESSAGES = {
     "mcp_transport_frame_invalid": "MCP transport frame is invalid.",
     "mcp_transport_frame_too_large": "MCP transport frame exceeds configured limits.",
     "mcp_transport_write_failed": "MCP transport write failed.",
+    "mcp_transport_http_status": "MCP HTTP peer returned an unsupported status.",
+    "mcp_transport_content_type_invalid": "MCP HTTP response content type is invalid.",
+    "mcp_transport_session_invalid": "MCP HTTP session identity is invalid.",
+    "mcp_transport_notification_failed": "MCP initialized notification failed.",
 }
 
 

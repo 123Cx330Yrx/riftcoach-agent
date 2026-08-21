@@ -94,8 +94,9 @@ Entry design 只建立审计清单，不宣称 OP.GG 已满足：
 - 认证、限流、错误、可靠性和可观测性；
 - 可在脱敏环境复现、并由真实外部 Client 调用的互操作证据。
 
-缺任何一项时，状态是 `candidate/deferred`，不是“已接入”。普通 OP.GG HTTP endpoint
-必须另有 ADR 才能作为非 MCP Meta Provider 讨论，并且不能满足 Stage 7 MCP 完成标准。
+RQ-076/ADR-0048 后，本清单按两层裁决：标准 endpoint/protocol/list/call 与获准工具合同
+是连接硬门；patch/freshness/限流/底层数据条款缺口将 provenance 降为 partial，并限制
+可支持的声明，不再自动整体 deferred。普通 OP.GG HTTP endpoint 仍不能满足 MCP 硬门。
 
 ## RiftCoach MCP Server 范围
 

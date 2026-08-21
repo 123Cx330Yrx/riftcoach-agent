@@ -3405,3 +3405,57 @@
 - 7-2 coverage 已置 complete，canonical 切换为 `7-3-opgg-meta-adapter / prepared/waiting authorization`。
 - 公共证据仍只证明本地 transport/session/discovery 与既有真库/Linux package 基线兼容；不证明 OP.GG、
   MetaEvidence、RiftCoach MCP Server、真实外部互操作或公网部署。
+
+## 2026-08-21：RQ-075 授权 7-3 并开始候选准入审计
+
+- 用户确认官方候选仓库后明确继续；canonical 已清除 waiting 状态，唯一 checkpoint 保持
+  `7-3-opgg-meta-adapter / in_progress`。
+- 治理预检通过，起点工作树 clean，`HEAD=origin/main=9bab4d7b3053c772ad52ac1a08d6cc4d947cf641`。
+- 本批先审计官方 endpoint/protocol/transport/schema/license/freshness/rate-limit/deployment；准入通过后才写
+  MetaEvidence 红灯。有限候选探针不算 7-5 双向互操作，Key/Riot/LLM Provider 和 Memory 写入保持 0。
+
+## 2026-08-21：RQ-076 修正为真实接入与分级 provenance
+
+- 真实探针已通过 initialize `2025-06-18`、tools/list 和一次只读幂等 lane-meta tools/call；这证明 OP.GG
+  标准 MCP 可达，不应因 provenance 不完整直接拒绝集成。
+- 当前 18 个 LoL 工具均无 outputSchema；目标工具返回 text、无 structuredContent/current patch/source
+  generated_at/TTL，DELETE 为 405。修正后的实现锁定 schema/字段并用安全 grammar 解析，以本地 retrieval
+  TTL 标记缓存时效，同时把上游 patch/freshness 保持 unknown。
+- admission fixture 已改为 `admitted_with_restrictions`；允许 current snapshot recommendation，禁止精确
+  patch/历史比较/上游 freshness 声明。下一动作是 Streamable HTTP 与 MetaEvidence TDD。
+
+## 2026-08-21：7-3 本地产品链与真实 body-free smoke
+
+- 新增 HTTPS-only Streamable HTTP transport、initialized notification、session/JSON/SSE/大小/安全错误；
+  OP.GG 远端 underscore 名映射到固定本地 `opgg.lane_meta_champions`，可靠性仍由 ToolRuntime 所有。
+- 新增 partial `MetaEvidence`、typed lane facts、15 分钟本地 expiry、用途门和无 eval 的 allowlisted AST parser；
+  注入、非法 rate/重复 rank、schema drift、超限和过期均 fail closed。
+- Context 新增 `external_meta_evidence`，只接受 optional `meta:` user-role data section，不写 Memory/Candidate/
+  Plan/Progress，也不覆盖 Riot 官方事实。RQ-077 已将 Riot 版本/静态/patch 与 OP.GG 分层融合边界持久化。
+- 首次真实产品 smoke 暴露未获准 Valorant 数组 outputSchema 阻断全目录的问题；修复为“总量资源门 + admitted
+  subset 严格解析”。聚焦/相邻当前为 `83 passed, 17 subtests passed`。
+- 成功真实 smoke 只调用 lane-meta 一次并写入 body-free result；Riot/Provider/Key 为 0。ADR-0048、专用设计
+  与八维 walkthrough 已建立；coverage 在完整本地门和 exact-SHA 三 job 前继续 `planned`。
+
+## 2026-08-21：7-3 最终本地门完成，等待 exact-SHA 公共 CI
+
+- 聚焦/相邻最终 `95 passed, 1 skipped, 17 subtests passed`；完整 pytest
+  `1542 passed, 117 skipped, 1 warning, 127 subtests passed`。skip 均保持本机环境限制原义。
+- 两套 RAG 指标满冻结阈值；Harness dry-run `published`/0 revisions；compileall、SDK boundary、tracked
+  Secret/run-data、pip、6 个 YAML、governance、body-free evidence scan 与 diff check 全绿。
+- 已修正 roadmap/learning/ADR/decisions 的当前状态旧句，明确 7-3 的真实单向 OP.GG 调用不等于 7-5
+  双向互操作；coverage 继续 planned。
+- 唯一下一动作：最终 cached diff，独立提交/推送并等待 exact-SHA 三 job；公共全绿前不关闭 7-3，
+  不进入 7-4/7-5。
+
+## 2026-08-21：7-3 恢复后的最终审查补强
+
+- 从未提交工作树恢复后先重跑 governance，并审查 transport/session、selected catalog、strict parser、
+  MetaEvidence、Context 和持久 smoke 接缝；没有重复真实外部调用。
+- 四个提交前 edge case 均先以红灯确认：server-negotiated protocol header、拒绝字符串 rate、未获准畸形
+  descriptor 不阻断获准工具、complete provenance 必须有 patch/source time；相关集合
+  `94 passed, 17 subtests passed`。
+- 最终完整 pytest 为 `1545 passed, 117 skipped, 1 warning, 127 subtests passed`；两套 RAG 满阈值，Harness
+  dry-run `published`/0 revisions，compileall、pip、全部 YAML、SDK boundary、tracked Secret/run-data、
+  body-free evidence 与 governance 再次通过。
+- coverage 继续 planned；唯一下一动作仍是独立 cached diff、提交/推送与实现 exact-SHA 三 job，不进入 7-4/7-5。
