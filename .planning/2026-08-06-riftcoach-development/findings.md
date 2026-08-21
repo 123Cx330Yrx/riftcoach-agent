@@ -3295,3 +3295,27 @@
 - PostgreSQL job 的 164 passed 和 package 1.6 是既有阶段 6 回归兼容证据；7-1 本身没有 migration/SQL/package
   业务变化，不能把这些 job 表述为 MCP transport 或外部互操作。
 - 7-2 将负责 raw transport/session/discovery refresh，但当前仅 prepared；7-1 public success 不授权提前实现。
+
+## 2026-08-21：7-2 transport/discovery 接缝审计（RQ-074）
+
+- 7-1 的 `McpInitializeResult`、`McpToolCatalog`、`McpToolCallRequest/Result` 已足够作为
+  transport-neutral parser；7-2 不应重新解析 JSON-RPC 或复制 schema/allowlist 逻辑。
+- session 必须把初始化后的 protocol/server identity、tools capability、catalog digest 和
+  transport generation 绑定在一起；generation 变化后旧 call 必须失效并要求重新 initialize。
+- stdio 只采用受限 JSONL framing：单帧有界、串行 request/response、stderr 不进入业务结果；
+  EOF、写失败、畸形 frame 和 deadline 都映射为 body-free MCP transport error。
+- discovered descriptor 映射内部 `ToolDefinition` 时使用显式 adapter handler；handler 单次调用
+  `McpClientSession.call`，重试、cache、breaker、fallback 仍只由 `ToolRuntime` 执行。
+- 当前没有 MCP HTTP/Streamable HTTP 的标准版本与部署证据；本批只做 in-memory 与隔离 stdio，
+  不把普通 HTTP 或 subprocess fixture 宣称为真实外部互操作。
+
+## 2026-08-21：7-2 本地实现发现
+
+- 分页 tools/list 的总 deadline 必须跨所有 cursor page 复用；每页重新开始 timeout 会让远端用大量
+  cursor 消耗未受控时间。合并后的 catalog 重新按 protocol/server/schema identity 计算 digest。
+- Stdio reader 使用单请求串行锁和 daemon readline worker；超时必须终止隔离进程，否则 reader 会在
+  EOF 前继续占用 pipe。stderr 丢弃，不把 subprocess 诊断当作业务结果。
+- Session generation 变化时先清空 initialization/catalog，再返回 `mcp_session_restarted`；重新
+  initialize 是唯一重新绑定 server identity 的路径。disconnect 本身则保持 `mcp_transport_disconnected`。
+- `McpContractError` 现在暴露 allowlisted `code/retryable/request_id` 属性，使 ToolRuntime 能按
+  现有 `_safe_error` 合同处理 transport timeout；异常文本仍来自固定安全消息。

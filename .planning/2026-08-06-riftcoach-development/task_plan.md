@@ -20,9 +20,8 @@ at `cbc7cbd` / Actions `32408101770`. Phase 26 -
 `stage-7-standard-mcp-dynamic-meta-entry-design` is complete at `e50a546` /
 Actions `32436092074`. Phase 27 - `7-1-mcp-client-contract` is complete at
 `37f16bc` / Actions `32439753589`. Phase 28 -
-`7-2-mcp-transport-and-discovery` is prepared and awaiting explicit
-authorization; no transport, Meta, MCP Server, SDK, Key access, or external I/O
-has started.
+`7-2-mcp-transport-and-discovery` is authorized by RQ-074 and is now in TDD;
+no Meta, MCP Server, SDK, Key access, or external I/O has started.
 
 ## Phases
 
@@ -273,8 +272,8 @@ has started.
 coverage 已 complete。6B-7 又由 `f6d8922` / Actions `32397290175` 完成 exact-SHA 三 job 公共闭环。
 RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a` / Actions
 `32403187972` 完成，6B-9 由最小测试修复 `cbc7cbd` / Actions `32408101770` 完成 exact-SHA 三 job。
-当前唯一动作是等待 `7-2-mcp-transport-and-discovery` 的明确授权；授权前不实现 stdio/HTTP、
-session/discovery refresh、Meta、MCP Server 或外部互操作。
+当前唯一动作是完成 `7-2-mcp-transport-and-discovery`：先写 fixture/in-memory
+transport/session 红灯，再实现隔离 stdio discovery；不实现普通 HTTP、Meta、MCP Server 或外部互操作。
 
 ## 6A-1 Checklist
 
@@ -590,9 +589,12 @@ session/discovery refresh、Meta、MCP Server 或外部互操作。
 ### Phase 28 - 7-2-mcp-transport-and-discovery
 
 - Status: in_progress
-- State: prepared/waiting authorization；7-1 已由 `37f16bc` / Actions `32439753589` 公共闭环。
-- [ ] 用户明确授权后才做 fixture/in-memory/stdio transport、session/discovery/error 的教学与 TDD；
-- [ ] 授权前不写 7-2 产品代码，不调用 OP.GG，不进入 MetaEvidence、RiftCoach MCP Server 或真实互操作。
+- Authorization: RQ-074；7-1 已由 `37f16bc` / Actions `32439753589` 公共闭环。
+- [completed] 先写 fixture/in-memory/stdio transport、session/discovery/error 红灯并记录代码接缝；
+- [completed] 实现 transport-neutral session、deadline/disconnect/restart/capability gate 与动态 discovery；
+- [completed] 将 descriptor 映射为既有 `ToolDefinition`，调用只交给 `ToolRuntime`，不复制可靠性策略；
+- [ ] 完成聚焦/相邻/完整门禁、八维 walkthrough、独立提交与 exact-SHA 三 job；
+- [ ] 仅登记 `7-3-opgg-meta-adapter` prepared/waiting authorization，不实现其代码。
 
 ## 6A Entry Design Checklist
 

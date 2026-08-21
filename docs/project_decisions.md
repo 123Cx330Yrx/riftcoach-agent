@@ -1603,3 +1603,16 @@ skipped，全部横向门通过；公共 exact-SHA 前 coverage 保持 planned�
 `37f16bc` / Actions `32439753589` 随后完成三个 exact-SHA 公共 job；公开 pytest 1510/116 skips、真实
 PostgreSQL 164 passed、package schema 1.6/external calls 0。7-1 因而关闭，coverage complete；下一检查点只
 准备 `7-2-mcp-transport-and-discovery`，未获授权前不写 transport/session/discovery 代码。
+
+### 7-2 MCP transport 与动态 discovery（2026-08-21，RQ-074）
+
+用户明确“继续7-2”，授权在 7-1 pure contract 之上实施本地 transport/session/discovery。Adapter 复用
+`McpInitializeResult`、`McpToolCatalog` 与 `McpToolCall*` parser；session 绑定初始化 identity、tools
+capability、catalog digest 与 transport generation，generation 变化即 fail closed 并要求重新 initialize。
+先采用有界 JSONL stdio 与 in-memory fixture；HTTP/Streamable HTTP 没有标准/部署证据，暂不实现。发现的
+descriptor 只映射为 `ToolDefinition` handler，可靠性仍由 `ToolRuntime` 唯一负责。本批不安装 SDK、不接
+OP.GG/Riot/Provider、不读取 Key、不实现 MetaEvidence、RiftCoach MCP Server 或真实互操作。
+
+本地 TDD 已证实 11 项 transport/session/discovery 测试通过；完整回归与横向门禁通过，但在 exact-SHA
+公共 CI 前仍保持 7-2 open、coverage planned。该本地证据只证明 fixture/in-memory/隔离 stdio 合同，
+不把 subprocess fixture 说成真实 MCP 互操作。

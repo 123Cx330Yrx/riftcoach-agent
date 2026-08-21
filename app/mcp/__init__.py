@@ -8,9 +8,13 @@ from .errors import (
     McpProtocolVersionError,
     McpRemoteError,
     McpResultError,
+    McpSessionError,
     McpSchemaDriftError,
     McpToolCatalogError,
     McpToolCallError,
+    McpTransportError,
+    McpTransportFrameError,
+    McpTransportTimeout,
 )
 from .models import (
     JSONRPC_VERSION,
@@ -25,6 +29,8 @@ from .models import (
     McpToolDescriptor,
     McpToolsCapability,
 )
+from .client import McpClient, McpClientSession
+from .transport import InMemoryMcpTransport, McpTransport, StdioMcpTransport
 
 __all__ = [
     "JSONRPC_VERSION",
@@ -40,6 +46,7 @@ __all__ = [
     "McpProtocolVersionError",
     "McpRemoteError",
     "McpResultError",
+    "McpSessionError",
     "McpSchemaDriftError",
     "McpToolCallError",
     "McpToolCallRequest",
@@ -48,4 +55,12 @@ __all__ = [
     "McpToolCatalogError",
     "McpToolDescriptor",
     "McpToolsCapability",
+    "McpTransport",
+    "McpTransportError",
+    "McpTransportFrameError",
+    "McpTransportTimeout",
+    "InMemoryMcpTransport",
+    "StdioMcpTransport",
+    "McpClient",
+    "McpClientSession",
 ]

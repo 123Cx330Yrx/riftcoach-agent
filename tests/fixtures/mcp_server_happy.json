@@ -1,0 +1,52 @@
+{
+  "protocolVersion": "2025-06-18",
+  "serverInfo": {
+    "name": "fixture-mcp-server",
+    "version": "1.0.0"
+  },
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    }
+  },
+  "tools": [
+    {
+      "name": "fixture.echo",
+      "description": "Return a bounded echo fixture.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["message"],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "echo": {
+            "type": "string"
+          }
+        },
+        "required": ["echo"],
+        "additionalProperties": false
+      }
+    }
+  ],
+  "callResults": {
+    "fixture.echo": {
+      "content": [
+        {
+          "type": "text",
+          "text": "fixture result"
+        }
+      ],
+      "structuredContent": {
+        "echo": "hello"
+      }
+    }
+  }
+}

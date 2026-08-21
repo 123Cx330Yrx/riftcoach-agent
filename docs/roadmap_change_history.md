@@ -2467,3 +2467,12 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   Linux package schema 1.6 且 `external_riot_provider_calls=0`。本地 1509/117 与公共 1510/116 分开记录。
 - `CLOSED`：7-1 与八维 coverage 正式关闭；只证明 pure protocol contracts，不证明 transport/OP.GG/Server。
 - `HANDOFF`：唯一下一检查点为 `7-2-mcp-transport-and-discovery` prepared/waiting authorization；当前停止。
+
+### 2026-08-21：RQ-074 授权 7-2 transport/discovery
+
+- `AUTHORIZED`：用户明确“继续7-2”，恢复 canonical 的 `7-2-mcp-transport-and-discovery`；等待原因清除。
+- `SCOPE`：先以 fixture/in-memory 和隔离 stdio/subprocess 证明 initialize/tools/list/tools/call 的
+  transport/session/deadline/disconnect/restart/capability 合同，并将 descriptor 适配为既有 ToolDefinition，
+  执行交给 ToolRuntime；不复制 retry/cache/breaker/fallback。
+- `NO-IO`：不安装 MCP SDK、不接 OP.GG/Riot/Provider、不读 Key、不实现 MetaEvidence、RiftCoach MCP Server，
+  不实现普通 HTTP/Streamable HTTP，也不把 fixture/subprocess 视为真实外部互操作。

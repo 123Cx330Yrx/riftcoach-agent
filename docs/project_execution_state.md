@@ -4,7 +4,7 @@ main_stage: 7
 substage_group: "stage-7-standard-mcp-dynamic-meta"
 current_checkpoint: "7-2-mcp-transport-and-discovery"
 status: in_progress
-pause_reason: "7-1 closed at 37f16bc / Actions 32439753589; 7-2 is prepared and awaiting explicit authorization"
+pause_reason: ""
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "7-1 closed at 37f16bc / Actions 32439753589; 7-2 is prepared and 
 
 ## 状态元数据
 
-- 最后更新：2026-08-21（7-1 exact-SHA 公共闭环；7-2 prepared/waiting authorization）
-- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。Stage 7 入口设计 `e50a546/32436092074` 已关闭；RQ-073 的 `7-1-mcp-client-contract` 实现提交 `37f16bc54de1d6e41c3ae65ddc9d9c5e11efa4cb` / Actions `32439753589` 三 job 全绿，coverage 已 complete。当前唯一检查点为 `7-2-mcp-transport-and-discovery` prepared/waiting authorization；尚未实现 transport/session/动态 discovery、OP.GG/Meta、RiftCoach MCP Server 或真实外部 I/O
+- 最后更新：2026-08-21（RQ-074 授权 7-2；transport/discovery TDD 进行中）
+- 主阶段：阶段 7；6A、Session/Memory entry design、RQ-067 文档门与 6B-1 至 6B-9 均已完成 exact-SHA 公共闭环。Stage 7 入口设计 `e50a546/32436092074` 已关闭；RQ-073 的 `7-1-mcp-client-contract` 实现提交 `37f16bc54de1d6e41c3ae65ddc9d9c5e11efa4cb` / Actions `32439753589` 三 job 全绿，coverage 已 complete。RQ-074 已授权当前唯一检查点 `7-2-mcp-transport-and-discovery`，正在实施 transport/session/动态 discovery；尚未实现 OP.GG/Meta、RiftCoach MCP Server 或真实外部 I/O
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "7-1 closed at 37f16bc / Actions 32439753589; 7-2 is prepared and 
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：等待用户明确授权 `7-2-mcp-transport-and-discovery`；授权前不实现 stdio/HTTP transport、session/discovery refresh、Meta Adapter、RiftCoach MCP Server 或外部互操作。
+- 唯一下一步：`7-2-mcp-transport-and-discovery` 先写 `tests/test_mcp_transport.py` 红灯，再实现 in-memory 与隔离 stdio session/discovery；本批不实现普通 HTTP、OP.GG、Meta Adapter、RiftCoach MCP Server 或外部互操作。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1711,3 +1711,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 7-1 walkthrough/八维 coverage 已置 complete。证据只关闭 pure contract，不证明 transport、OP.GG、
   MetaEvidence、RiftCoach MCP Server 或真实外部互操作。
 - 唯一下一检查点为 `7-2-mcp-transport-and-discovery` prepared/waiting authorization；当前停止，不写 7-2 代码。
+
+## 2026-08-21：RQ-074 授权与 7-2 本地实现
+
+- 用户明确“继续7-2”，等待原因清除；canonical 仍为
+  `7-2-mcp-transport-and-discovery / in_progress`。
+- 已先确认 `ModuleNotFoundError: app.mcp.client` 红灯，随后实现 transport-neutral
+  `McpClientSession`、in-memory fixture、隔离 JSONL stdio、总 deadline、capability/discovery、
+  disconnect/restart generation 和 `ToolDefinition` adapter；没有 SDK、普通 HTTP、OP.GG、Key 或外部 I/O。
+- 7-2 聚焦 `11 passed`；7-1/7-2/ToolRuntime 相邻集合 `43 passed, 17 subtests passed`；完整本地回归
+  `1520 passed, 117 skipped, 1 warning, 127 subtests passed`。RAG 两套门、Harness dry-run、compileall、
+  governance、SDK/Secret/tracked-data/YAML/diff 门均通过；Docker 不可用，package smoke 仍待公共 CI。
+- 八维 walkthrough 已写入 `docs/learning/7-2-mcp-transport-and-discovery-walkthrough.md`，coverage
+  在 exact-SHA 公共三 job 前保持 `planned`。唯一下一步是最终 diff 审查、独立实现提交/推送与 exact-SHA
+  三 job；全绿后才关闭 7-2，并只登记 `7-3-opgg-meta-adapter` prepared/waiting authorization。

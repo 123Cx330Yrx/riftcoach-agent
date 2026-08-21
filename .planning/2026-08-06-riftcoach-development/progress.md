@@ -3376,3 +3376,24 @@
   `164 passed, 1 warning`，package schema 1.6 且外部 Riot/Provider 调用 0。
 - coverage 已置 complete，RQ-073/roadmap/history/decisions/capability/learning/canonical 已同步关闭 7-1。
 - 唯一下一检查点为 `7-2-mcp-transport-and-discovery` prepared/waiting authorization；当前停止，不写 7-2。
+
+## 2026-08-21：RQ-074 授权 7-2 transport/discovery
+
+- 用户明确“继续7-2”，等待原因清除；canonical 唯一检查点保持
+  `7-2-mcp-transport-and-discovery / in_progress`。
+- 已复核 7-1 pure models/errors、ToolDefinition/ToolRegistry/ToolRuntime 接缝，并运行治理预检通过；
+  先写 `tests/test_mcp_transport.py` 红灯，再实现 in-memory 与隔离 stdio session/discovery。
+- 本批边界冻结为 no SDK/no Key/no OP.GG/Riot/Provider/no MetaEvidence/no MCP Server/no ordinary HTTP；
+  fixture/subprocess 仅证明本地 transport 合同。
+
+## 2026-08-21：7-2 本地 TDD 实现完成
+
+- 首轮红灯为 `ModuleNotFoundError: app.mcp.client`；随后新增 `McpClientSession`、
+  `InMemoryMcpTransport`、有界 JSONL `StdioMcpTransport` 与 allowlisted transport/session errors。
+- 7-2 聚焦 `11 passed`；7-1 合同、7-2 与 ToolRuntime 相邻集合为 `43 passed, 17 subtests passed`。
+- 已覆盖 initialize/list/call trace、capability gate、cursor 分页、schema refresh、disconnect/restart、
+  总 deadline、stdio malformed/timeout 和 Runtime retry 单一所有权；适配器不复制 retry/cache/breaker/fallback。
+- 八维 walkthrough 已写入 `docs/learning/7-2-mcp-transport-and-discovery-walkthrough.md`，coverage 在
+  exact-SHA 三 job 前保持 `planned`。当前本地实现仍不接 SDK、普通 HTTP、OP.GG、Meta、Server、Key 或外部 I/O。
+- 下一动作：完整本地门禁与最终 diff 审查，独立实现提交/推送并等待 exact-SHA 三 job；公共全绿后才关闭 7-2，
+  再只登记 7-3 prepared/waiting authorization。

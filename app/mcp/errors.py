@@ -22,6 +22,14 @@ _SAFE_MESSAGES = {
     "mcp_result_too_large": "MCP tool result exceeds configured limits.",
     "mcp_tool_error": "MCP tool reported a safe execution failure.",
     "mcp_remote_error": "MCP peer returned a JSON-RPC error.",
+    "mcp_session_not_initialized": "MCP session has not been initialized.",
+    "mcp_session_not_discovered": "MCP session has not discovered tools.",
+    "mcp_session_restarted": "MCP server restarted and the session snapshot is stale.",
+    "mcp_transport_disconnected": "MCP transport is disconnected.",
+    "mcp_transport_timeout": "MCP transport deadline expired.",
+    "mcp_transport_frame_invalid": "MCP transport frame is invalid.",
+    "mcp_transport_frame_too_large": "MCP transport frame exceeds configured limits.",
+    "mcp_transport_write_failed": "MCP transport write failed.",
 }
 
 
@@ -72,6 +80,9 @@ class McpContractError(RuntimeError):
             raise TypeError("info must be McpErrorInfo.")
         super().__init__(info.message)
         self.info = info
+        self.code = info.code
+        self.retryable = info.retryable
+        self.request_id = info.request_id
 
 
 class McpEnvelopeError(McpContractError):
@@ -104,3 +115,43 @@ class McpResultError(McpContractError):
 
 class McpRemoteError(McpContractError):
     """A remote JSON-RPC error projected without message, data, or body."""
+
+
+class McpTransportError(McpContractError):
+    """A transport failed without exposing raw frame, process, or peer details."""
+
+    default_code = "mcp_transport_disconnected"
+    default_retryable = True
+
+    def __init__(
+        self,
+        info_or_detail: McpErrorInfo | str,
+        *,
+        request_id: str | int | None = None,
+    ) -> None:
+        if isinstance(info_or_detail, McpErrorInfo):
+            info = info_or_detail
+        else:
+            info = McpErrorInfo(
+                code=self.default_code,
+                retryable=self.default_retryable,
+                request_id=request_id,
+            )
+        super().__init__(info)
+
+
+class McpTransportTimeout(McpTransportError):
+    """A transport request exceeded its caller-owned deadline."""
+
+    default_code = "mcp_transport_timeout"
+
+
+class McpTransportFrameError(McpTransportError):
+    """A transport frame was malformed or exceeded its byte limit."""
+
+    default_code = "mcp_transport_frame_invalid"
+    default_retryable = False
+
+
+class McpSessionError(McpContractError):
+    """The client session state does not permit the requested operation."""

@@ -231,6 +231,11 @@ OP.GG MCP
 5F-4 Bounded Real Slice    未进入；5F-3 前置硬门失败，真实模型调用无信息增益，external calls 0
 5F-5 Adoption/Exit         已完成；裁决 `partial-adopt-evaluation-assets-only`；`f8dea66` / Actions `32028206103` exact-SHA 公共成功；产品拒绝 Pi，冻结保留评测资产/CI 复现与采用门方法
 6A entry design            已完成；6A-1 至 6A-7 已由 `adf53e5` / Actions `32146760003` 的 pytest、真库与 Linux packaging 三 job 公共闭环；Session/Memory entry design、6B-1 至 6B-9 与 RQ-067 文档门均已公共闭环；6B-9 最终 `cbc7cbd` / Actions `32408101770` 三 job 全绿并关闭阶段 6，阶段 7 entry design 仅准备/等待授权
+
+阶段 7 入口设计与 7-1 pure contract 已由 `e50a546` / Actions `32436092074`、
+`37f16bc` / Actions `32439753589` exact-SHA 公共闭环。RQ-074 已授权 7-2：当前只做
+fixture/in-memory 与隔离 stdio transport/session/discovery；OP.GG、MetaEvidence、Server、普通 HTTP
+与真实外部互操作继续留在后续检查点。
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
