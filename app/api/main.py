@@ -1723,10 +1723,17 @@ def create_app(
             )
             if not isinstance(page, TaskEventPage):
                 raise TypeError("task service returned an invalid event page")
-            return TaskEventPageResponse.from_page(
+            response = TaskEventPageResponse.from_page(
                 task_id=parsed_task_id,
                 page=page,
             )
+            print(
+                "task_event_route_projection_result "
+                f"type={type(response).__name__} "
+                f"event_count={len(response.events)}",
+                flush=True,
+            )
+            return response
         except TaskServiceError as error:
             print(
                 "task_event_route_service_error "
