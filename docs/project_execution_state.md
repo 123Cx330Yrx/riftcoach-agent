@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "stage-8-multi-agent-reliable-runtime-productization-entry-design"
 status: in_progress
-pause_reason: "Stage 7 closed through fac6fe0 / Actions 32484257736; Stage 8 entry design is prepared and awaiting explicit user authorization"
+pause_reason: "RQ-080 authorized Stage 8 entry design; design and governance closure are in progress, with Stage 8 product implementation deferred"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "Stage 7 closed through fac6fe0 / Actions 32484257736; Stage 8 ent
 
 ## 状态元数据
 
-- 最后更新：2026-08-21（7-5 与 Stage 7 已完成实现、双向真实 evidence 和 exact-SHA 公共闭环；Stage 8 仅交接准备态）
-- 主阶段：阶段 8；Stage 7 入口设计与 7-1…7-4 已依次公共闭环，7-5 实现 `a88fbc4/32483521108`、clean-SHA 官方 SDK→RiftCoach stdio + RiftCoach→OP.GG Streamable HTTP 双向门，以及 evidence `fac6fe0/32484257736` 均已通过。7-5 coverage complete，Stage 7 正式关闭。当前唯一检查点为 `stage-8-multi-agent-reliable-runtime-productization-entry-design`，仅 prepared/waiting authorization；尚未开始 Stage 8 教学、设计或实现
+- 最后更新：2026-08-22（7-5 与 Stage 7 已完成实现、双向真实 evidence 和 exact-SHA 公共闭环；Stage 8 entry design 已获授权并在本地收尾）
+- 主阶段：阶段 8；Stage 7 入口设计与 7-1…7-4 已依次公共闭环，7-5 实现 `a88fbc4/32483521108`、clean-SHA 官方 SDK→RiftCoach stdio + RiftCoach→OP.GG Streamable HTTP 双向门，以及 evidence `fac6fe0/32484257736` 均已通过。7-5 coverage complete，Stage 7 正式关闭。当前唯一检查点为 `stage-8-multi-agent-reliable-runtime-productization-entry-design`，已由 RQ-080 授权并进入教学/设计/治理收尾；Stage 8 产品实现仍 deferred
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "Stage 7 closed through fac6fe0 / Actions 32484257736; Stage 8 ent
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`stage-8-multi-agent-reliable-runtime-productization-entry-design` 仅 prepared/waiting authorization；等待用户明确授权后，才开始 8-Core/8-Advanced 的初学者教学、现有能力与 Bad Case 审计及入口设计，不提前实现 Multi-Agent、DAG、cancel/resume、恢复、SSE/前端或生产部署。
+- 唯一下一步：`stage-8-multi-agent-reliable-runtime-productization-entry-design` 已由 RQ-080 授权；当前完成 8-Core/8-Advanced 的初学者教学、现有能力与 Bad Case 审计及入口设计，不提前实现 Multi-Agent、DAG、cancel/resume、恢复、SSE/前端、正式 Auth、付费资源或生产部署。入口设计公共闭环后唯一下一步为 `8A-advanced-adoption-gate`。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1856,3 +1856,19 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   作为唯一 prepared/waiting authorization 检查点，不把交接解释为 Stage 8 已开始实施。
 - Stage 8 仍按 `8-Core` 必做交付线与 `8-Advanced` 至少一个证据驱动采用实验双轨；用户明确授权前，
   不开展教学/设计，不实现 Multi-Agent、DAG、cancel/resume、恢复、SSE/前端或生产部署。
+
+## 2026-08-22：RQ-080 授权并启动 Stage 8 entry design
+
+- 用户明确“那开始吧”，授权当前唯一检查点
+  `stage-8-multi-agent-reliable-runtime-productization-entry-design`；本批不外推为 8A–8F 产品实现授权。
+- 已完成初学者教学、现有 task/Runtime/Harness/Memory/MCP/Riot/Data Dragon/OP.GG/API 接缝审计；确认当前没有正式
+  React/Next/Vite 前端脚手架，现有 Timeline、Run Query、Training Plan/Progress、Evidence 和 partial Meta 接缝可复用。
+- ADR-0051 采用“可靠 Runtime Core + 证据驱动 Advanced”双轨，冻结
+  `entry design → 8A → 8B → 8C → 8D → 8E → 8F`；Multi-Agent/DAG 仅在 Bad Case、对照、消融、成本和安全证据通过后采用，reject 也是合法结论。
+- 8D 冻结 Riot 官方账号/比赛/Timeline、Data Dragon 静态、官方 patch/update 与 OP.GG partial Meta 的分层
+  `EvidenceBundle`；缺 patch 的 OP.GG 不继承 Riot patch，不能声称 upstream freshness。
+- 8E 冻结五个前端模块：电影感 Riot ID 入口、近期复盘工作台、Rift Timeline、Evidence/Agent Trace 抽屉、
+  Training Plan/Progress；采用自主 React 设计系统，MotionSites 公开目录/预览和用户离线表只作为逐项资源审计输入。
+- 本批入口设计没有读取 Key、调用 Riot/OP.GG/Provider/LLM、购买付费资源、修改产品 API/Runtime/DB 或创建前端代码。
+- 当前本地裁决：`entry-design-in-progress-no-product-io`。唯一下一动作是完成本地门禁、独立提交/推送和
+  entry design exact-SHA 公共三 job；公共全绿后置 `coverage=complete` 并交接 `8A-advanced-adoption-gate`。

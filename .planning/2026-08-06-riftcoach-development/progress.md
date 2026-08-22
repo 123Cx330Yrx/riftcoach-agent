@@ -3537,3 +3537,16 @@
 - 状态批最终本地回归 `1577 passed, 117 skipped, 1 warning, 127 subtests passed`；聚焦 governance/
   interoperability `23 passed`，compileall、6 YAML、governance 与 diff check 全绿。117 skip 继续只表示
   本机 PostgreSQL/Docker/Linux 环境限制，真实真库/package 证据由公共 job 提供。
+
+## 2026-08-22：Stage 8 entry design 本地收尾准备
+
+- 恢复顺序复核确认 canonical 唯一检查点为
+  `stage-8-multi-agent-reliable-runtime-productization-entry-design`，RQ-080 已授权；没有开始 8A–8F
+  产品实现。
+- 已完成 Stage 8 初学者教学、Runtime/Task/Harness/Memory/MCP/Riot/Data Dragon/OP.GG 接缝审计，冻结
+  8A–8F、8-Core/8-Advanced 双轨、证据驱动 Multi-Agent 采用门、Riot+OP.GG EvidenceBundle 分层，及
+  五模块 React 前端蓝图与 MotionSites/离线 Excel 逐项资源采用门。
+- 修正当前状态、路线、路线修订、项目决策和 coverage 的旧“尚未开始设计/仅准备态”镜像；entry-design
+  coverage 仍保持 `planned`，但八个维度已绑定有效 ADR/计划/教学 Markdown，等待公共闭环后再改 `complete`。
+- 当前下一动作：运行完整本地门禁，复核 diff，独立提交/推送 entry design，并等待该 SHA 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` exact-SHA 公共 CI。

@@ -119,6 +119,13 @@ V3（按证据进入阶段 8）：
 - Subagent；
 - 跨进程事件和 Checkpoint 分支。
 
+Stage 8 entry design 已把 V3 能力放入可靠 Runtime Core，并增加一条不依赖 V3 的产品化线：
+`8A` 先审计高级候选，`8B` 用同一 Harness 做单流程/并行对照，`8C` 才实施 durable event、
+lease/fencing、cancel、checkpoint、recovery 与迟到隔离；`8D` 实施 Riot 官方事实、Data Dragon
+静态、官方 patch/update 与 OP.GG partial Meta 的 typed fusion；`8E` 实施 Web/SSE/Auth/HTTPS/
+备份与部署；`8F` 做最终 Eval 和作品集退出。DAG、Subagent、Agentic Retrieval 和第三方 Runtime
+仍是条件性候选，不因名称进入 Core。
+
 ## 7. 产品切片
 
 阶段 5 在本地 AgentRuntime 可运行后，增加不依赖临时数据库的早期 API 切片：
@@ -171,6 +178,22 @@ OP.GG MCP
 `8-Core` 是必须完成的产品、部署、合规、Eval 和作品集交付线。
 
 `8-Advanced` 至少完成一个高级能力采用实验，包含 Bad Case、实现、对照、消融、成本和 ADR。实验可以得出采用、局部采用或拒绝采用；不预先强制 Multi-Agent、DAG、Agentic Retrieval 或微调上线。
+
+入口设计冻结的机器检查点为：
+
+```text
+stage-8 entry design
+→ 8A advanced-adoption-gate
+→ 8B conditional-multi-agent-experiment
+→ 8C reliable-runtime-core
+→ 8D riot-opgg-evidence-fusion-core
+→ 8E productization
+→ 8F final-evaluation-and-portfolio
+```
+
+8-Core 的前端采用自主 React 设计系统与精选外部资源；MotionSites 只作为公开可检索的视觉/
+Prompt 候选源，付费 Prompt/资产必须逐项核验许可、性能、移动端和 reduced-motion 替代后才能
+获取。用户提供的离线候选表属于研究输入，不是运行时依赖或路线权威。
 
 ## 10. 当前执行状态
 
@@ -243,7 +266,7 @@ ADR-0048 裁决 OP.GG `admitted_with_restrictions`，并由 `64311a1` / Actions 
 又由 `431c584` / Actions `32480827952` 完成 strict Server/Facade、四个只读工具与 exact-SHA 三 job
 公共闭环。7-5 实现 `a88fbc4` / Actions `32483521108`、clean-SHA 官方 SDK→RiftCoach stdio 与
 RiftCoach→OP.GG Streamable HTTP 双向门，以及不可覆盖 evidence `fac6fe0` / Actions `32484257736`
-均已通过；Stage 7 正式关闭。Stage 8 entry design 当前仅 prepared/waiting authorization。
+均已通过；Stage 7 正式关闭。Stage 8 entry design 已由 RQ-080 授权并在本地收尾，公共闭环前仍不推进 8A–8F 产品实现。
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

@@ -55,6 +55,12 @@ LEARNING_COVERAGE_CANONICAL_ORDER = (
     "7-4-riftcoach-mcp-server",
     "7-5-mcp-interoperability-exit-review",
     "stage-8-multi-agent-reliable-runtime-productization-entry-design",
+    "8a-advanced-adoption-gate",
+    "8b-conditional-multi-agent-experiment",
+    "8c-reliable-runtime-core",
+    "8d-riot-opgg-evidence-fusion-core",
+    "8e-productization",
+    "8f-final-evaluation-and-portfolio",
 )
 
 

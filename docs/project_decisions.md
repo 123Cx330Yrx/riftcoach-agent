@@ -1691,7 +1691,30 @@ pytest、PostgreSQL migration/control-plane 与 Linux package 三 job 公共闭�
 `164 passed, 1 warning` 且 migration/head 一致，Linux package schema 1.6/外部调用 0。7-5 coverage
 已 complete，7-5 与 Stage 7 正式关闭。
 
+### Stage 8 入口设计（2026-08-22，RQ-080）
+
+用户明确授权开始 Stage 8 的唯一 canonical 检查点
+`stage-8-multi-agent-reliable-runtime-productization-entry-design`。本轮只做入口设计，不把授权外推
+为 Multi-Agent、DAG、cancel/resume、恢复、SSE、正式 Auth、前端、付费资源购买或公网部署。
+
+ADR-0051 采用证据门控的双轨顺序：
+
+```text
+entry design → 8A gate → 8B advanced experiment → 8C reliable runtime
+→ 8D Riot+OP.GG evidence fusion → 8E productization → 8F final eval/portfolio
+```
+
+8-Core 必须交付可靠 Runtime、typed EvidenceBundle、正式 Web 产品、安全/备份和完整回归；
+8-Advanced 至少完成一个带 Bad Case、对照、消融、成本和 ADR 的高级实验，允许 reject 收尾。
+8B 通过前不默认实现 DAG 或 Multi-Agent；8D 中 Riot 官方比赛/版本/Data Dragon 事实优先，OP.GG
+保持 partial provenance，不能借用 Riot patch 或伪造 freshness。
+
+前端采用自主 React 设计系统与精选外部资源。MotionSites 只作为公开目录/预览/Prompt 候选源，
+每个候选必须经过 URL、许可、技术栈、性能、移动端、reduced-motion、键盘和撤出方案审查；用户提供
+的离线 Excel 是研究输入，不是产品依赖，也不能替代官网当前目录核验。
+
 此前治理常量和 ledger 只定义到 7-5，没有现成 Stage 8 机器名。本次不从对话猜子阶段，而是按九阶段路线
 标题和既有 entry-design 命名规则显式登记
 `stage-8-multi-agent-reliable-runtime-productization-entry-design`，同步治理常量、coverage、活动计划与路线。
-它仅为 prepared/waiting authorization；RQ-079 不授权 8-Core/8-Advanced 教学、设计或实现。
+该句记录的是 7-5 关闭时的 prepared/waiting authorization 交接；随后 RQ-080 已明确授权 entry design。
+当前仍不把该授权外推为 8A–8F 的 Multi-Agent、DAG、可靠恢复、SSE、正式 Auth、前端或部署实现授权。

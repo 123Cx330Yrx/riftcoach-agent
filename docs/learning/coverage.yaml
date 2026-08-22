@@ -33,6 +33,12 @@ canonical_order:
   - 7-4-riftcoach-mcp-server
   - 7-5-mcp-interoperability-exit-review
   - stage-8-multi-agent-reliable-runtime-productization-entry-design
+  - 8a-advanced-adoption-gate
+  - 8b-conditional-multi-agent-experiment
+  - 8c-reliable-runtime-core
+  - 8d-riot-opgg-evidence-fusion-core
+  - 8e-productization
+  - 8f-final-evaluation-and-portfolio
 groups:
   - id: stage-0-baseline-and-reference-evidence
     sequence: 10
@@ -675,5 +681,62 @@ groups:
       problem_and_principle:
         - docs/roadmap.md
         - docs/roadmap_v1_3_amendment.md
+        - docs/adr/0051-adopt-stage8-evidence-gated-runtime-fusion-and-productization.md
+        - docs/learning/stage-8-multi-agent-reliable-runtime-productization-entry-design-walkthrough.md
+      design_and_implementation:
+        - docs/plans/2026-08-22-stage8-multi-agent-reliable-runtime-productization-entry-design.md
+        - docs/plans/2026-08-22-stage8-multi-agent-reliable-runtime-productization-implementation.md
+        - docs/adr/0051-adopt-stage8-evidence-gated-runtime-fusion-and-productization.md
+        - docs/learning/stage-8-multi-agent-reliable-runtime-productization-entry-design-walkthrough.md
+      code_map:
+        - docs/learning/stage-8-multi-agent-reliable-runtime-productization-entry-design-walkthrough.md
+      data_and_control_flow:
+        - docs/plans/2026-08-22-stage8-multi-agent-reliable-runtime-productization-entry-design.md
+        - docs/learning/stage-8-multi-agent-reliable-runtime-productization-entry-design-walkthrough.md
+      verification:
+        - docs/plans/2026-08-22-stage8-multi-agent-reliable-runtime-productization-entry-design.md
+        - docs/learning/stage-8-multi-agent-reliable-runtime-productization-entry-design-walkthrough.md
+      runbook:
+        - docs/learning/stage-8-multi-agent-reliable-runtime-productization-entry-design-walkthrough.md
       failure_security_boundary:
         - docs/architecture_capability_matrix.md
+        - docs/adr/0051-adopt-stage8-evidence-gated-runtime-fusion-and-productization.md
+        - docs/learning/stage-8-multi-agent-reliable-runtime-productization-entry-design-walkthrough.md
+      interview_wording:
+        - docs/learning/stage-8-multi-agent-reliable-runtime-productization-entry-design-walkthrough.md
+
+  - id: 8a-advanced-adoption-gate
+    sequence: 310
+    covers:
+      - 8a-advanced-adoption-gate
+    status: planned
+
+  - id: 8b-conditional-multi-agent-experiment
+    sequence: 320
+    covers:
+      - 8b-conditional-multi-agent-experiment
+    status: planned
+
+  - id: 8c-reliable-runtime-core
+    sequence: 330
+    covers:
+      - 8c-reliable-runtime-core
+    status: planned
+
+  - id: 8d-riot-opgg-evidence-fusion-core
+    sequence: 340
+    covers:
+      - 8d-riot-opgg-evidence-fusion-core
+    status: planned
+
+  - id: 8e-productization
+    sequence: 350
+    covers:
+      - 8e-productization
+    status: planned
+
+  - id: 8f-final-evaluation-and-portfolio
+    sequence: 360
+    covers:
+      - 8f-final-evaluation-and-portfolio
+    status: planned

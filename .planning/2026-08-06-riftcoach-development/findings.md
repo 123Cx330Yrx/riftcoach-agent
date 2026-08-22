@@ -3492,3 +3492,18 @@
   `stage-8-multi-agent-reliable-runtime-productization-entry-design`，同时修改治理常量、ledger、路线和活动计划。
 - 该登记只表示 prepared/waiting authorization；Stage 8 的 8-Core/8-Advanced 分解仍须入口设计，不提前
   选择 Multi-Agent/DAG，也不开始 cancel/resume、恢复、SSE/前端或部署。
+
+## 2026-08-22：Stage 8 entry design 恢复与本地收尾发现
+
+- 当前仓库证据与用户授权一致：Stage 7 已由 `fac6fe0` / Actions `32484257736` 正式关闭；唯一活动
+  检查点是 `stage-8-multi-agent-reliable-runtime-productization-entry-design`，状态 `in_progress`。
+- Stage 8 不是“默认上 Multi-Agent”。8A/8B 必须先记录 Bad Case、同切片对照、消融、成本、失败隔离
+  与安全证据；没有独立上下文/权限/并行收益时，单流程 Runtime 或 `reject` 都是正确结果。
+- Riot 官方账号/排位/比赛/Timeline、Data Dragon 静态和 patch/update 是事实层；OP.GG 只提供获准工具的
+  当前聚合 Meta，缺 patch 时保持 `partial/current_snapshot`，绝不继承 Riot patch 或声称 upstream freshness。
+- 前端五个模块必须把真实状态做成可解释展示：电影感 Riot ID 入口、近期复盘工作台、Rift Timeline、
+  Evidence/Agent Trace 抽屉、Training Plan/Progress。视觉可采用自主 React 设计系统与逐项审查的外部
+  效果，但 MotionSites 官网/用户 Excel 都只能是候选研究输入，不是产品运行时依赖。
+- entry design 的八维证据已全部映射到有效持久 Markdown；本地门禁和 exact-SHA 公共 CI 是唯一剩余
+  关闭条件。入口设计闭环前不得写 Multi-Agent、DAG、cancel/resume、recovery、SSE、正式 Auth、前端
+  或真实外部调用代码。

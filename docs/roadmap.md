@@ -23,7 +23,7 @@
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 已完成；7-5 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 完成最终公共闭环 |
-| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；仅 entry design prepared/waiting authorization，尚未开始设计或实现 |
+| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design 已获 RQ-080 授权并在本地收尾，8A–8F 产品实现尚未开始 |
 
 ## 横向能力总账
 
@@ -300,8 +300,8 @@ exact-SHA 三 job，7-5 coverage 与 Stage 7 已正式关闭。
 
 ## 阶段 8：Multi-Agent、可靠运行时与产品化
 
-当前只准备 `stage-8-multi-agent-reliable-runtime-productization-entry-design`，等待用户明确授权。
-该准备态不表示已经选择 Multi-Agent/DAG，也不表示 cancel/resume、恢复、SSE/前端或生产部署已开始。
+Stage 8 entry design 已获用户明确授权并进入设计。
+该状态不表示已经选择 Multi-Agent/DAG，也不表示 cancel/resume、恢复、SSE、正式 Auth、前端或生产部署已开始。
 
 ### 原理
 
@@ -309,13 +309,23 @@ exact-SHA 三 job，7-5 coverage 与 Stage 7 已正式关闭。
 
 ### 实施内容
 
-- Knowledge、Meta、Coach、Review 四个独立职责；
-- 独立 Prompt、上下文和工具权限；
-- Artifact 契约驱动的 DAG；
-- 有收益时并行 Knowledge/Meta，生成与审查保持依赖顺序；
-- 取消、超时、检查点、恢复、租约和迟到结果隔离；
-- LoL 专用前端、SSE/事件流、Trace、成本与延迟监控；
-- 完整回归评测、部署、安全和作品集材料。
+Stage 8 入口设计冻结为以下双轨顺序：
+
+```text
+entry design
+  → 8A advanced-adoption-gate
+  → 8B conditional-multi-agent-experiment
+  → 8C reliable-runtime-core
+  → 8D riot-opgg-evidence-fusion-core
+  → 8E productization
+  → 8F final-evaluation-and-portfolio
+```
+
+- `8-Core`：可靠运行时、Riot + OP.GG typed evidence fusion、正式 Web 产品、安全/隐私/备份、完整回归与作品集交付；
+- `8-Advanced`：至少一个有 Bad Case、对照、消融、成本和 ADR 的高级能力采用实验；
+- Knowledge、Meta、Coach、Review 只有在 8A/8B 证明独立上下文、权限和失败边界有收益时才拆成多 Agent；
+- Artifact 契约、DAG、并行、取消、超时、检查点、恢复、租约和迟到结果隔离按对应 checkpoint 逐项实施，DAG 不预先强制；
+- LoL 专用前端、SSE/事件流、Trace、成本与延迟监控、部署、安全和作品集材料由 8E/8F 完成。
 
 ### 从 Saber 与 Sea 吸收什么
 

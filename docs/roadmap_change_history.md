@@ -2573,3 +2573,20 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   `stage-8-multi-agent-reliable-runtime-productization-entry-design` 到治理常量与 coverage ledger。
 - `HANDOFF`：Stage 8 checkpoint 仅 prepared/waiting authorization；RQ-079 不授权 Stage 8，不开始
   8-Core/8-Advanced 教学、设计、Multi-Agent/DAG、恢复、SSE/前端或部署实现。
+
+### 2026-08-22：RQ-080 授权并完成 Stage 8 entry design 本地收尾
+
+- `AUTHORIZED`：用户明确“那开始吧”，授权唯一 canonical 检查点
+  `stage-8-multi-agent-reliable-runtime-productization-entry-design`；这次授权只覆盖入口设计，
+  不自动打开 8A–8F 产品实现。
+- `DECISION`：ADR-0051 冻结 `entry design → 8A → 8B → 8C → 8D → 8E → 8F`。8-Core 必须交付
+  可靠 Runtime、Riot+OP.GG typed EvidenceBundle、正式 Web 产品、安全/备份与完整评测；8-Advanced
+  至少做一个有 Bad Case、对照、消融、成本和 ADR 的实验，`reject` 是合法出口。
+- `BOUNDARY`：Multi-Agent/DAG 只有在 8A/8B 证明独立上下文、权限、失败隔离和可测收益后才采用；
+  OP.GG 保持 partial provenance，不能继承 Riot patch 或伪造 upstream freshness；MotionSites 与用户
+  Excel 只作为逐项资源审计输入，不成为运行时依赖。
+- `LOCAL-EVIDENCE`：已完成初学者教学、现有 Runtime/Task/Harness/Memory/MCP/Riot/Data Dragon/OP.GG
+  接缝审计、前端五模块蓝图、采用门、实施计划、八维 coverage 映射和治理同步；本批无产品代码、无
+  Key/Provider/Riot/OP.GG 调用、无付费资源购买。
+- `NEXT`：入口设计只剩本地门禁、独立提交/推送和 exact-SHA 公共三 job。公共全绿后将 entry-design
+  coverage 置为 `complete`，并把唯一下一检查点交接为 `8A-advanced-adoption-gate`。
