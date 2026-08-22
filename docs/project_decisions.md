@@ -1770,3 +1770,10 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   failure isolation 1.0 与普通并行相同；普通并行自身为 22.88%、Token 1.05、无额外 calls。
 - 产品决策是 reject role-isolated Multi-Agent；保留 strict runner/lifecycle/result validator 作为评测资产，
   bounded parallel 作为 8D 优先方案输入。该决定不等于 8D 已实现，也不改变 8C 可靠 Runtime Core 顺序。
+
+## 2026-08-22：8B 关闭，8C 等待授权
+
+- `783a329` / Actions `32572610725` 对 result/ADR/evidence 的 exact-SHA 三 job 全绿；8B coverage complete。
+- 当前唯一下一检查点为 `8c-reliable-runtime-core` prepared/waiting authorization。8C 只在用户授权后开始
+  lease/fencing、cancel、checkpoint、recovery 和 late-result isolation 的教学/设计/TDD；不把 8B reject
+  或普通并行设计输入解释成 8C 已实现。

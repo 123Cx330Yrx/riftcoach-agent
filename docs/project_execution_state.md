@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
-current_checkpoint: "8b-conditional-multi-agent-experiment"
+current_checkpoint: "8c-reliable-runtime-core"
 status: in_progress
-pause_reason: "8B holdout executed once with reject_multi_agent; immutable result, ADR-0053, and evidence tests await exact-SHA public CI before state-only closure"
+pause_reason: "8B closed through 783a329 / Actions 32572610725; 8C is prepared and awaiting explicit authorization"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "8B holdout executed once with reject_multi_agent; immutable resul
 
 ## 状态元数据
 
-- 最后更新：2026-08-22（8B 实现 CI 与唯一 holdout 已完成，等待 result/ADR/evidence 公共闭环）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design 与 8A 均已关闭。当前唯一检查点为 `8b-conditional-multi-agent-experiment / in_progress`；实现 `180bc8b` / Actions `32572085065` 三 job 已成功，同一 clean SHA 的 holdout 已唯一执行一次并裁决 `reject_multi_agent`。当前只等待 result/ADR/evidence exact-SHA CI 与独立状态收尾，未实现任何 Stage 8 Core 产品能力
+- 最后更新：2026-08-22（8B result/ADR/evidence 已由 `783a329` / Actions `32572610725` 公共闭环）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A 与 8B 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject，bounded parallel 仅作为 8D 设计输入；当前唯一检查点为 `8c-reliable-runtime-core / prepared/waiting authorization`，未实现任何 Stage 8 Core 产品能力
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "8B holdout executed once with reject_multi_agent; immutable resul
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：继续完成 `8b-conditional-multi-agent-experiment` 的不可覆盖 holdout result、ADR-0053、结果回归与八维复盘提交，并等待该 exact SHA 的三个公共 job；全绿后才以独立状态提交将 8B/coverage 置 complete、只交接 `8c-reliable-runtime-core` prepared/waiting authorization。不得再次执行 holdout，也不进入 8C–8F 实现。
+- 唯一下一步：`8c-reliable-runtime-core`；当前仅 prepared/waiting authorization。8B 的 holdout 不得再次执行，8C 需用户明确授权后才开始教学/设计/TDD；在此之前不实现 lease/recovery/cancel/checkpoint、DAG、SSE、前端或 8D–8F。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1940,3 +1940,12 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   Harness、compileall、pip、39 YAML、安全/治理/body-free/diff 门全绿，测试只复读结果。
 - 唯一下一动作：当前 checkpoint 仍为 `8b-conditional-multi-agent-experiment`；独立提交/推送 result、
   ADR-0053、结果回归和 walkthrough，并等待该 exact SHA 三 job。全绿后再做 coverage/canonical 状态收尾。
+
+## 2026-08-22：8B 关闭与 8C 交接
+
+- result/ADR/evidence 提交 `783a329537682b5413d74af4cc3e1ac818f75da2` / Actions `32572610725` 三 job
+  completed/success；公共 pytest `1626 passed, 116 skipped, 1 warning, 127 subtests passed`，真库
+  `164 passed, 1 warning`，Linux package schema 1.6/外部调用 0。
+- 8B coverage 已补齐八维并置 `complete`。ADR-0053 的产品裁决为 reject role-isolated Multi-Agent；bounded
+  parallel 仅作为 8D 设计输入，不能解释为 8D 已实现。
+- canonical 只交接 `8c-reliable-runtime-core` prepared/waiting authorization；8C 尚未实现，不能自动开始。

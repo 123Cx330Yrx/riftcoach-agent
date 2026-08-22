@@ -3566,3 +3566,12 @@
   是评测资产，不是生产采用。bounded parallel 只作为 8D 优先设计输入，8B 不提前改产品 Runtime。
 - 结果绑定 code/public-CI SHA `180bc8b...0ce7`，文件 SHA `944258...445e8`，body-free scan/strict loader
   通过，holdout executions=1；任何删除、覆盖或重跑都会破坏证据链。
+
+## 2026-08-22：8B 关闭与下一检查点
+
+- result/ADR/evidence exact-SHA `783a329/32572610725` 公共三 job 全绿后，8B 的 reject 结论具备完整公开证据；
+  不能因为普通并行有 modeled latency 收益就把它提前接入 8B 产品。
+- 8B 的 `bounded-parallel-evidence-v1` 是 8D 的候选输入，8D 仍需独立考虑 Riot+OP.GG typed fusion、取消、
+  deadline、预算、merge 和证据 provenance；Multi-Agent reject 不自动决定 8D 设计。
+- 当前唯一下一检查点是 `8c-reliable-runtime-core` prepared/waiting authorization；8C 才处理 durable event、
+  lease/fencing、cancel/checkpoint/recovery/late-result，不能被 8B runner 代替。

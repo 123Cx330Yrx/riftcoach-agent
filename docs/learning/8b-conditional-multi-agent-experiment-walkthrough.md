@@ -1,7 +1,7 @@
 # 8B Conditional Multi-Agent Experiment walkthrough
 
-> 当前状态：唯一 holdout 已执行并形成 reject 裁决，结果/evidence 提交等待 exact-SHA 公共 CI。coverage 在
-> 该公共证据完成前保持 `planned`；本结果不得覆盖或重跑。
+> 当前状态：完整/公共闭环。唯一 holdout 已执行并形成 reject 裁决，result/ADR/evidence 已由
+> `783a329` / Actions `32572610725` exact-SHA 公共成功；本结果不得覆盖或重跑。
 
 ## 1. 问题与原理
 
@@ -98,7 +98,9 @@ exact-SHA 公共闭环：pytest `1623 passed, 116 skipped, 1 warning, 127 subtes
 并行的隔离增益，最终 `reject_multi_agent`。experiment ID 为
 `0be05e49b89ea644696c878cd81141e389c6e834c4c22651248a0898f5750494`，结果 SHA-256 为
 `94425872102032bd59d188766b46b8f9e7700b04dee6a397832e88f24ae445e8`。结果 validator/body-free scan 通过；
-结果归档的 exact-SHA 公共 CI 尚待后续记录。
+结果归档提交 `783a329537682b5413d74af4cc3e1ac818f75da2` / Actions `32572610725` 随后完成
+exact-SHA 公共闭环：pytest `1626 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+`164 passed, 1 warning` 且 migration/head 一致；Linux package schema 1.6、外部调用 0。8B coverage complete。
 
 归档提交前新增 3 个冻结结果回归，聚焦总数变为 `25 passed`；完整本地 pytest 为
 `1625 passed, 117 skipped, 1 warning, 127 subtests passed`。两套 RAG、Harness、compileall、pip、39 YAML、

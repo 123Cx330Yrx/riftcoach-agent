@@ -487,3 +487,10 @@ Agent 已接入或 Memory 已完成。
   普通并行为 22.88%、Token 1.05、无额外 calls，失败隔离同为 1.0。
 - ADR-0053 拒绝产品 Multi-Agent，证明 V3 Advanced 的 `reject` 出口真实可用；普通并行仅交给 8D 重新按
   Core 边界实施。DAG/第三方 Runtime/Agentic Retrieval 不因此自动恢复。
+
+### 2026-08-22：8B 关闭条件与 8C 交接
+
+- result/ADR/evidence `783a329/32572610725` exact-SHA 三 job 全绿后，8B 八维 coverage 置 complete。
+- 8B 的 reject 结论保持：Multi-Agent 不进入产品；普通并行不在 8B 越级实现，待 8D 重新设计。
+- 可靠 Runtime Core（lease/fencing、cancel、checkpoint、recovery、late-result isolation）成为唯一下一
+  检查点 `8c-reliable-runtime-core`，当前 prepared/waiting authorization。

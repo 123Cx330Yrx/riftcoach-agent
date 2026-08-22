@@ -30,9 +30,9 @@ Actions `32480827952`. RQ-079 authorizes Phase 31 -
 `stage-8-multi-agent-reliable-runtime-productization-entry-design`, now complete
 at `3431e8b` / Actions `32564500421`. Phase 33 -
 `8a-advanced-adoption-gate` is complete at `12ad835` / Actions `32567642315`.
-RQ-082 authorizes Phase 34 - `8b-conditional-multi-agent-experiment`, now in
-progress. Design/TDD and no-I/O development implementation precede the one
-permitted holdout execution; no Stage 8 Core product implementation has started.
+Phase 34 - `8b-conditional-multi-agent-experiment` is complete at `783a329` /
+Actions `32572610725`. Phase 35 - `8c-reliable-runtime-core` is prepared and
+awaiting explicit authorization; no Stage 8 Core product implementation has started.
 
 ## Phases
 
@@ -290,10 +290,11 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 `7-5-mcp-interoperability-exit-review` 已由实现 `a88fbc4/32483521108`、不可覆盖双向 evidence 与
 证据提交 `fac6fe0/32484257736` 完成 exact-SHA 公共闭环，coverage complete，Stage 7 关闭。
 `stage-8-multi-agent-reliable-runtime-productization-entry-design` 已由 `3431e8b` / Actions
-`32564500421` 完成 exact-SHA 公共闭环，coverage complete。唯一下一步为
-`8a-advanced-adoption-gate` 已由 `12ad835` / Actions `32567642315` 完成 exact-SHA 公共闭环，
-coverage complete。`8b-conditional-multi-agent-experiment` 仅 prepared/waiting authorization；
-RQ-081 不授权 8B，授权前不实现或运行实验、不执行 holdout、不提前进入 8C–8F。
+`32564500421` 完成 exact-SHA 公共闭环，coverage complete；`8a-advanced-adoption-gate` 又由
+`12ad835` / Actions `32567642315` 完成。`8b-conditional-multi-agent-experiment` 的 implementation
+`180bc8b/32572085065` 与 result/ADR/evidence `783a329/32572610725` 均 exact-SHA 公共闭环，
+coverage complete。唯一下一步为 `8c-reliable-runtime-core` prepared/waiting authorization；
+授权前不实现 durable Runtime Core，也不进入 8D–8F。
 
 ## 6A-1 Checklist
 
@@ -697,14 +698,22 @@ RQ-081 不授权 8B，授权前不实现或运行实验、不执行 holdout、�
 
 ### Phase 34 - 8b-conditional-multi-agent-experiment
 
-- Status: in_progress
-- State: RQ-082 authorized；当前处于设计/TDD 与 holdout 前实现阶段。
+- Status: complete
+- State: RQ-082 closed；`783a329` / Actions `32572610725` exact-SHA 三 job completed/success。
 - [completed] 冻结初学者教学、三路公平身份、分阶段公共门和一次性 holdout 生命周期；
 - [completed] 先写失败测试，再实现 evaluation-only 串行/普通并行/角色隔离 runner、真实 Harness 接线和 body-free metrics；
 - [completed] no-I/O development/preflight、完整本地门、实现 `180bc8b` / Actions `32572085065` 三 job 已完成；
 - [completed] 同一 clean/public-success SHA 的 development 与不可覆盖 holdout 各执行一次；
-- [in_progress] ADR-0053/result tests/八维 evidence 已本地完成；等待独立归档提交与 exact-SHA 三 job，再做状态收尾；
+- [completed] ADR-0053、不可覆盖 result、结果 tests、八维 evidence、独立归档提交和 exact-SHA 三 job；
+- [decision] `role-isolated-multi-agent-v1` 产品 reject；`bounded-parallel-evidence-v1` 只作为 8D 设计输入；
 - [boundary] 不调用真实 Riot/OP.GG/Provider、不读取 Key、不安装 DAG/第三方 Runtime、不修改产品 Runtime、不进入 8C–8F。
+
+### Phase 35 - 8c-reliable-runtime-core
+
+- Status: in_progress
+- State: prepared/waiting explicit user authorization；8B 已完成，8C 尚未实现。
+- [ ] 授权后才进行 lease/fencing、cancel、checkpoint、recovery、late-result 隔离的教学、设计和 TDD；
+- [ ] 未授权前不实现 durable event、recovery worker、SSE、DAG、前端或 8D–8F。
 
 ## 6A Entry Design Checklist
 

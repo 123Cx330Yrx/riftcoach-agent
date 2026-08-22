@@ -488,3 +488,11 @@ derived Memory、relationship private data；Task/Artifact 与全局 Player Subj
 - ADR-0053 因未达 20% 且没有相对普通并行的隔离增益，拒绝产品采用 Multi-Agent；保留评测资产，普通并行
   只作为 8D 优先设计输入。结果 SHA `944258...445e8`，不得覆盖或重跑。
 - 当前仍是 8B in_progress：result/ADR/evidence 提交的 exact-SHA 三 job 和独立状态收尾尚未完成；8C 未进入。
+
+## 2026-08-22：8B 关闭并交接 8C
+
+- result/ADR/evidence `783a329` / Actions `32572610725` 三 job 全绿；公共 pytest `1626 passed, 116 skipped`，
+  真库 `164 passed`，Linux package schema 1.6/外部调用 0；8B coverage 已置 complete。
+- ADR-0053 正式拒绝产品 Multi-Agent；普通并行只保留为 8D Evidence fusion 的设计输入，不是 8D 实现。
+- canonical 唯一交接为 `8c-reliable-runtime-core` prepared/waiting authorization；lease/recovery/cancel/checkpoint、
+  DAG、SSE、前端和 8D–8F 均未开始。

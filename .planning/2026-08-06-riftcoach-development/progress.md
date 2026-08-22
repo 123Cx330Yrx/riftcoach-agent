@@ -3664,3 +3664,12 @@
   compileall、pip、39 YAML、SDK/Secret/tracked-data、result body-free、governance 与 diff check 全绿。
 - 正式结果仍是同一个 20107-byte 不可覆盖文件，SHA `944258...445e8`；测试只复读，没有再次执行 holdout。
 - 唯一下一动作是独立 result/ADR/evidence cached diff、提交/推送和 exact-SHA 三 job；coverage 保持 planned。
+
+## 2026-08-22：8B exact-SHA evidence 公共闭环与 8C 交接
+
+- result/ADR/evidence 提交 `783a329537682b5413d74af4cc3e1ac818f75da2` / Actions `32572610725` 三 job
+  completed/success；公共 pytest `1626 passed, 116 skipped, 1 warning, 127 subtests passed`，真实
+  PostgreSQL `164 passed, 1 warning`，Linux package schema 1.6/外部调用 0。
+- 8B 八维 coverage 置 `complete`，ADR-0053 的 `reject-role-isolated-multi-agent / prefer-bounded-parallel-evidence-design`
+  成为最终产品裁决；8B 不修改产品 Runtime。
+- canonical 已只交接 `8c-reliable-runtime-core` prepared/waiting authorization；8C 未获授权、未实现、未开始。

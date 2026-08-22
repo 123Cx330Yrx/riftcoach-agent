@@ -737,7 +737,7 @@ groups:
     sequence: 320
     covers:
       - 8b-conditional-multi-agent-experiment
-    status: planned
+    status: complete
     evidence:
       problem_and_principle:
         - docs/plans/2026-08-22-8b-conditional-multi-agent-experiment-design.md

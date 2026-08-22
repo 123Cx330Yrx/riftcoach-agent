@@ -2660,3 +2660,12 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `DECISION`：candidate holdout latency 18.95%<20%，普通并行 22.88%；二者 isolation 均 1.0。ADR-0053
   拒绝产品 Multi-Agent、保留评测资产，bounded parallel 作为 8D 优先设计输入而非 8B 产品改动。
 - `PENDING`：result/ADR/tests/walkthrough 尚待独立 evidence SHA 三 job；coverage planned，8C 未进入。
+
+### 2026-08-22：8B evidence 公共闭环与 8C 交接
+
+- `PUBLIC-CI`：`783a329537682b5413d74af4cc3e1ac818f75da2` / Actions `32572610725` 三 job
+  completed/success；pytest `1626 passed, 116 skipped, 1 warning, 127 subtests passed`，真库 `164 passed`，
+  package schema 1.6/外部调用 0。
+- `CLOSED`：result SHA `944258...445e8`、ADR-0053、结果回归和八维 walkthrough 均有持久证据；8B coverage
+  complete。Multi-Agent 产品 reject，bounded parallel 只作为 8D 输入。
+- `HANDOFF`：唯一下一检查点为 `8c-reliable-runtime-core` prepared/waiting authorization；不自动实现 8C。
