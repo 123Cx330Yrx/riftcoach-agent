@@ -25,6 +25,7 @@ from urllib.parse import urlsplit
 from uuid import UUID, uuid4
 
 import requests
+from sqlalchemy import select
 from sqlalchemy.engine import make_url
 
 from app.api.composition import PostgresReadinessProbe
@@ -36,6 +37,8 @@ from app.persistence.config import DatabaseSettings, load_database_settings
 from app.persistence.database import build_engine, build_session_factory
 from app.persistence.player_repository import PostgresPlayerRepository
 from app.persistence.task_repository import PostgresTaskRepository
+from app.persistence.task_event_record import ReviewTaskEventRecord
+from app.persistence.task_repository import _event_record_to_model
 from app.players.link_worker import (
     PlayerLinkWorker,
     PlayerLinkWorkerError,
@@ -397,6 +400,46 @@ def execute_packaging_smoke(
                 f"keys={sorted(task_events_body)}",
                 file=sys.stderr,
             )
+            try:
+                repository.read_events(
+                    owner_id="packaging-smoke-owner",
+                    task_id=task_id,
+                    after_cursor=0,
+                    limit=100,
+                )
+            except Exception as error:
+                print(
+                    "packaging_smoke_task_event_repository_invalid "
+                    f"type={type(error).__name__} code={str(error)}",
+                    file=sys.stderr,
+                )
+            try:
+                with session_factory() as debug_session:
+                    raw_events = tuple(
+                        debug_session.scalars(
+                            select(ReviewTaskEventRecord)
+                            .where(ReviewTaskEventRecord.task_id == task_id)
+                            .order_by(ReviewTaskEventRecord.event_cursor.asc())
+                        )
+                    )
+                for raw_event in raw_events:
+                    try:
+                        _event_record_to_model(raw_event)
+                    except Exception as error:
+                        print(
+                            "packaging_smoke_task_event_decode_invalid "
+                            f"cursor={raw_event.event_cursor} "
+                            f"kind={raw_event.event_kind} "
+                            f"checkpoint_type={type(raw_event.checkpoint_reference).__name__} "
+                            f"type={type(error).__name__} code={str(error)}",
+                            file=sys.stderr,
+                        )
+            except Exception as error:
+                print(
+                    "packaging_smoke_task_event_raw_invalid "
+                    f"type={type(error).__name__} code={str(error)}",
+                    file=sys.stderr,
+                )
             raise PackagingSmokeError("packaging_smoke_task_event_query_failed")
         event_kinds = tuple(
             item.get("event_kind")
