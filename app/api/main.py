@@ -1730,13 +1730,15 @@ def create_app(
         except TaskServiceError as error:
             print(
                 "task_event_route_service_error "
-                f"code={error.code}"
+                f"code={error.code}",
+                flush=True,
             )
             return _task_lookup_error(error, not_found_code="task_not_found")
         except Exception as error:
             print(
                 "task_event_route_projection_invalid "
-                f"type={type(error).__name__} code={str(error)}"
+                f"type={type(error).__name__} code=projection_invalid",
+                flush=True,
             )
             return _error_response("service_unavailable", status_code=503)
 
