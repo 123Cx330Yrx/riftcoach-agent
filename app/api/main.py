@@ -1689,7 +1689,11 @@ def create_app(
             return CancelTaskResponse.from_result(result)
         except TaskServiceError as error:
             return _task_lookup_error(error, not_found_code="task_not_found")
-        except Exception:
+        except Exception as error:
+            print(
+                "task_event_route_projection_invalid "
+                f"type={type(error).__name__} code={str(error)}"
+            )
             return _error_response("service_unavailable", status_code=503)
 
     @app.get(
