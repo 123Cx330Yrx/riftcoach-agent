@@ -3629,3 +3629,4 @@
 
 - `424ba43` 的 migration 与 PostgreSQL job 已全绿，package smoke 报 `packaging_smoke_task_event_query_failed`；task JSONB parser 已通过 claim/requeue，event row 仍可能把 `None` 绑定为 JSON `null`。
 - event ORM 现使用 `JSONB(none_as_null=True)`，保持 task/event 两个 control-plane projection 的空值语义一致；下一次公共 package job 是最终证据。
+- 为定位仍未解释的 event query failure，smoke 仅增加 status/code/JSON-key diagnostics，明确不打印正文或敏感字段。

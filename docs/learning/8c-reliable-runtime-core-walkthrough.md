@@ -189,6 +189,9 @@ psycopg `Jsonb` wrapper，仍以严格 JSON Schema 解析，不把任意 Python 
 task row 与 event row 的可空 checkpoint 也统一使用 SQL `NULL` 映射；这样 created/claimed/failed 等无 checkpoint
 事件不会在数据库中留下 JSON `null` 伪对象，replay 只面对明确的空值或严格 checkpoint object。
 
+package smoke 的失败诊断只允许 status、allowlisted error code 和 JSON 顶层 key，不打印 event body、owner、
+checkpoint、request payload 或内部异常；它用于定位部署接缝，不改变 API 的 body-free 错误合同。
+
 ### 5.3 公共关闭门
 
 8C 只有在同一 implementation/evidence SHA 的以下三 job 全部成功后才能关闭：

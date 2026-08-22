@@ -3735,3 +3735,4 @@
 
 - 最新公共 SHA 的 pytest 与 PostgreSQL job 已全绿，package smoke 只剩 event replay query；event checkpoint 的 JSONB `None` 映射已与 task row 统一为 SQL `NULL`。
 - 本轮为无 schema 变更的最小 ORM 修复，待提交/推送后重跑 exact-SHA 三 job。
+- 为避免继续猜测，package smoke 增加 status/code/JSON-key-only 的 body-free diagnostics；下一次公共日志用于区分 API error 与 response shape。

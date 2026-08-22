@@ -1826,3 +1826,4 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 
 - task 与 event 的可空 checkpoint 都必须把 Python `None` 映射为 SQL `NULL`；否则无 checkpoint event 在 psycopg JSONB 边界可能变成 JSON `null` wrapper，破坏 body-free replay 读取。
 - 采用 `ReviewTaskEventRecord.checkpoint_reference = JSONB(none_as_null=True)`；不放宽 event parser、不改变 migration schema、不暴露 checkpoint body。
+- package smoke 在 event response 失败时只打印 status/code/JSON key 的 body-free diagnostics，便于区分 API service error 与 response-shape error。

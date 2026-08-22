@@ -390,6 +390,13 @@ def execute_packaging_smoke(
         task_events_body = _json_object(task_events)
         event_items = task_events_body.get("events")
         if task_events.status_code != 200 or not isinstance(event_items, list):
+            print(
+                "packaging_smoke_task_event_response_invalid "
+                f"status={task_events.status_code} "
+                f"code={task_events_body.get('code')} "
+                f"keys={sorted(task_events_body)}",
+                file=sys.stderr,
+            )
             raise PackagingSmokeError("packaging_smoke_task_event_query_failed")
         event_kinds = tuple(
             item.get("event_kind")
