@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8b-conditional-multi-agent-experiment"
 status: in_progress
-pause_reason: "8A closed through 12ad835 / Actions 32567642315; 8B is prepared and awaiting explicit user authorization"
+pause_reason: "8B local implementation gates passed; implementation commit and exact-SHA public CI must succeed before clean-SHA development admission and the one permitted holdout"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "8A closed through 12ad835 / Actions 32567642315; 8B is prepared a
 
 ## 状态元数据
 
-- 最后更新：2026-08-22（8A 已由 `12ad835` / Actions `32567642315` 完成 exact-SHA 公共闭环）
-- 主阶段：阶段 8；Stage 7 与 Stage 8 entry design 均已关闭。8A strict adoption gate 已由 `12ad83532d99990f5523d6ecc6def0b8a325d7d0` / Actions `32567642315` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环，coverage complete。当前唯一检查点为 `8b-conditional-multi-agent-experiment`，仅 prepared/waiting authorization；尚未实现或运行三路实验、holdout 或任何 Stage 8 Core 产品能力
+- 最后更新：2026-08-22（8B holdout 前本地实现与完整门禁已通过，等待实现提交/public CI）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design 与 8A 均已关闭。当前唯一检查点为 `8b-conditional-multi-agent-experiment / in_progress`；三路实验必须在同一 fixture/Coach/Harness/Context/预算身份下运行，先通过实现 SHA 的 exact-SHA 公共 CI，再在该干净 SHA 上唯一执行一次 calibration-excluded holdout。当前尚未运行 holdout，也未实现任何 Stage 8 Core 产品能力
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "8A closed through 12ad835 / Actions 32567642315; 8B is prepared a
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8b-conditional-multi-agent-experiment` 仅 prepared/waiting authorization。用户明确授权后，才按 ADR-0052 在同一 frozen slice 上实现串行 baseline、普通受限并行 comparator 与角色隔离 Multi-Agent candidate，运行 development 后再执行一次不可覆盖 holdout；当前不实现或运行 8B，不进入 8C–8F。
+- 唯一下一步：`8b-conditional-multi-agent-experiment` 已由 RQ-082 授权。先冻结专用设计/实施计划并按 TDD 实现三路 evaluation-only runner、严格结果 validator、不可覆盖输出和 no-I/O preflight；实现提交取得 exact-SHA 三 job 公共成功后，才在同一干净 SHA 上运行 development 并唯一执行一次 holdout。结果归档与 adopt/partial/reject ADR 公共闭环前不进入 8C–8F。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1909,3 +1909,18 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 8A coverage complete；其 `candidate` 结果不等于 Multi-Agent 已采用，holdout 仍未执行。
 - canonical 唯一交接 `8b-conditional-multi-agent-experiment` prepared/waiting authorization；RQ-081 不授权
   8B。当前只完成独立状态收尾提交与 exact-SHA 三 job，授权前不写 8B 实验代码。
+
+## 2026-08-22：8B holdout 前本地实现与完整门禁
+
+- RQ-082 授权后已完成专用设计/实施计划、evaluation-only 三路 runner、typed/digest-bound Artifact、
+  exact role/tool/Context、真实 `ReviewHarness`、strict semantic result validator、clean-SHA admission 与
+  exclusive development/holdout output；产品 Runtime、Harness 与 MCP/Meta composition 未修改。
+- TDD 从 2 个 collection error 到 14 passed；原子跨角色 tool preflight、expected holdout identity、CLI、
+  duplicate/tamper/result recomputation 补强后聚焦 `22 passed`。正式 holdout path 只用重标记 development
+  副本验证，三个 calibration-excluded rows 未执行。
+- 相邻回归 `168 passed, 12 subtests passed`；完整 pytest `1622 passed, 117 skipped, 1 warning,
+  127 subtests passed`。117 skip 仍是本机无 PostgreSQL/Docker/Linux 条件，不能冒充公共真库/package。
+- 两套 RAG 满冻结阈值；Harness dry-run `published`/0 revisions；compileall、pip、39 YAML、SDK boundary、
+  tracked Secret/run-data、governance 与 diff 门通过。external I/O 与正式 holdout executions 均为 0。
+- 唯一下一动作：完整/cached diff 终审，独立提交/推送实现并等待 exact-SHA `pytest`、
+  `postgres-migrations`、`packaging-smoke`。三 job 全绿前不得运行 clean-SHA development/holdout。

@@ -468,3 +468,13 @@ derived Memory、relationship private data；Task/Artifact 与全局 Player Subj
 - 8A strict adoption gate、ADR、计划与八维证据已由 `12ad835` / Actions `32567642315` 三 job
   exact-SHA 公共闭环，coverage complete。当前只交接 8B prepared/waiting authorization；此状态不表示
   8B 已实现或运行。
+
+## 2026-08-22：RQ-082 授权与 8B holdout 前实现
+
+- 8B 已选择隔离的 evaluation-only 实验包：本地 Scripted/Fake 角色和两个 fixture 工具，三路统一经过
+  真实 `ReviewHarness`；不修改产品 Runtime，不接真实 Provider/MCP endpoint。
+- 串行、普通并行、角色隔离只改变 acquisition/Context；输入、Coach/Evaluator、Harness、latency/Usage
+  模型和阈值不变。普通并行同样执行 exact branch tool gate，不能故意做弱 comparator。
+- 聚焦 `22 passed`、相邻 `168 passed, 12 subtests passed`；正式 holdout 仍为 0 次。实现 SHA 先取得
+  exact-SHA 公共三 job 后，才在 clean SHA 运行 development admission 和一次不可覆盖 holdout。
+- 最终 Multi-Agent adopt/partial/reject 未知；8C–8F 未进入，DAG/第三方 Runtime/Agentic Retrieval 继续 deferred。

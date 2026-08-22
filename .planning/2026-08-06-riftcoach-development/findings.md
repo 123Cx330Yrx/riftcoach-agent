@@ -3540,3 +3540,17 @@
   继续 deferred，lease/recovery 继续属于 8C Core。
 - holdout executions 仍为 0，8B 的 20% latency/1.5x Token/+2 calls 没有被实测。canonical 前移到 8B
   prepared 不构成执行授权。
+
+## 2026-08-22：8B 接缝审计与设计发现
+
+- `ReviewHarness` 已经提供不可覆盖 artifact path、实际 bytes SHA 复核、唯一 publication decision 和安全
+  deterministic fallback；8B 应注入 `DraftPreparationStep`，不能复制或弱化第二套 Harness。
+- 现有 Harness 只原生持久化 `KnowledgeEvidence`，不应为了 evaluation experiment 修改产品 Artifact enum。
+  8B 在隔离 evaluation namespace 内维护 Knowledge/Meta 的 typed materialized body 与 body-free digest reference，
+  Coach 消费前复算 digest；Harness 仍接收其既有 `DraftPreparationResult`。
+- 实际墙钟会被线程和机器噪声主导；8A case 已冻结 latency units，因此门禁使用确定性 critical-path 模型，
+  同时真实执行最多双 worker 的并行控制流。Token/Provider calls 使用 Scripted Usage，不能冒充 tokenizer/费用。
+- ordinary parallel 也必须做 branch exact-tool 和 typed Adapter 检查，不能故意削弱 comparator 来制造
+  Multi-Agent 价值；如果 holdout 没有相对普通并行的增量收益，最终 reject 是正确工程结论。
+- 正式 holdout 在实现 SHA 三 job 公共成功前禁止执行；development result 进入 ignored `tmp/` 并作为同 SHA
+  holdout admission，正式结果用 exclusive create，crash sentinel 也会消费唯一执行机会。

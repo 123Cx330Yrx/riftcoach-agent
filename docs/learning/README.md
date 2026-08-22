@@ -81,6 +81,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | 7-5：双向 MCP 互操作与退出审查 | 完整/公共闭环 | [ADR-0050](../adr/0050-adopt-pinned-official-mcp-client-over-stdio-for-interoperability.md) / [专用设计](../plans/2026-08-21-stage7-mcp-interoperability-exit-review.md) / [walkthrough](7-5-mcp-interoperability-exit-review-walkthrough.md) | 实现 `a88fbc4` / Actions `32483521108` 三 job 全绿；同一 clean SHA 已由官方 SDK 1.30.0 Client 调用 RiftCoach stdio Server，且 RiftCoach Client 调用 OP.GG Streamable HTTP；不可覆盖 evidence `fac6fe0` / Actions `32484257736` 最终三 job 全绿并关闭 Stage 7 |
 | 阶段 8：Multi-Agent、可靠运行时与产品化 entry design | 完整/公共闭环 | [入口设计学习材料](stage-8-multi-agent-reliable-runtime-productization-entry-design-walkthrough.md) / [ADR-0051](../adr/0051-adopt-stage8-evidence-gated-runtime-fusion-and-productization.md) / [入口设计](../plans/2026-08-22-stage8-multi-agent-reliable-runtime-productization-entry-design.md) | `3431e8b` / Actions `32564500421` 已冻结 8A–8F、8-Core/8-Advanced、Riot+OP.GG EvidenceBundle、前端和 MotionSites 采用门；这仍不表示 Stage 8 产品能力已实现 |
 | 8A：Advanced Adoption Gate | 完整/公共闭环 | [walkthrough](8a-advanced-adoption-gate-walkthrough.md) / [ADR-0052](../adr/0052-admit-role-isolated-multi-agent-to-bounded-stage8-experiment.md) / [设计](../plans/2026-08-22-8a-advanced-adoption-gate-design.md) | strict gate、串行 baseline、受限并行 comparator、角色隔离 Multi-Agent candidate 与 deferred 裁决已由 `12ad835` / Actions `32567642315` 三 job 公共闭环；这不表示 8B 已实现或 Multi-Agent 已采用 |
+| 8B：Conditional Multi-Agent Experiment | 进行中/holdout 前 | [walkthrough](8b-conditional-multi-agent-experiment-walkthrough.md) / [设计](../plans/2026-08-22-8b-conditional-multi-agent-experiment-design.md) / [实施计划](../plans/2026-08-22-8b-conditional-multi-agent-experiment-implementation.md) | RQ-082 已授权；evaluation-only 三路 runner、真实 Harness、strict result/lifecycle 与 synthetic holdout-path tests 已本地实现，正式 holdout 仍为 0 次。只有实现 SHA exact-SHA 公共成功后才运行 development admission 与唯一 holdout；当前不能说 Multi-Agent 已采用 |
 
 “完整”表示仓库中已经具备八类持久证据，并不表示项目已生产就绪，也不表示项目所有者已经学会。
 个人理解进度需要通过实际复述、读码、运行和问答单独确认。
@@ -145,6 +146,7 @@ canonical 推进到 6B-4。这能防止“代码写完就一路往后走，教�
 - 6B-9 与 Session/Memory V1 已完成公共 PostgreSQL/package 闭环；这仍不表示正式 Auth/RSO、备份副本擦除、
   公网部署或 Stage 8 已实现。Stage 7 入口与 7-1…7-5 已公共闭环；实现、clean-SHA 双向真实门和
   evidence exact-SHA 均有独立证据。OP.GG 仍只证明 lane-meta partial provenance，不证明全工具、精确
-  patch/freshness 或 Riot+OP.GG 数据融合；Stage 8 entry design 已公共闭环，当前只交接 8A 准备态，8A–8F、前端和 EvidenceBundle 仍只有设计证据，尚未有 Stage 8 产品实现。
+  patch/freshness 或 Riot+OP.GG 数据融合；Stage 8 entry design 与 8A 已公共闭环，8B 处于 no-I/O
+  implementation/holdout 前状态。正式 8B 结果、8C–8F、前端和 EvidenceBundle 产品实现仍不存在。
 
 这些边界既是工程事实，也是项目在面试中保持可信度的重要部分。

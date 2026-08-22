@@ -1750,3 +1750,14 @@ implementation `12ad83532d99990f5523d6ecc6def0b8a325d7d0` / Actions `32567642315
 exact-SHA 三 job：公共 pytest `1601 passed, 116 skipped, 1 warning, 127 subtests passed`，真库
 `164 passed, 1 warning` 且 migration/head 一致，Linux package schema 1.6/外部调用 0。8A 与八维
 coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepared/waiting authorization。
+
+## 2026-08-22：8B 采用 evaluation-only 三路 runner，生产 Multi-Agent 仍待结果
+
+- RQ-082 只授权 `8b-conditional-multi-agent-experiment`；先实现/验证实验控制面，再由唯一 holdout 决定
+  Multi-Agent adopt/partial/reject，不能把 8A candidate 或本地 development TDD 当采用结论。
+- 方案采用 Scripted/Fake Knowledge/Meta/Coach roles、fixture tools、typed/digest-bound Artifact 和真实
+  `ReviewHarness`；产品 `AgentRuntimeV1`、Harness、MCP/Meta composition 不改。
+- 普通受限并行是强制 comparator，也做 exact tool/typed evidence gate；角色隔离不能靠削弱 comparator
+  制造收益。DAG/第三方 Runtime、Agentic Retrieval、真实模型/OP.GG I/O 继续排除。
+- 实现 SHA 必须先 exact-SHA 三 job 公共成功；随后 clean SHA development admission 和 holdout result 均
+  immutable/SHA-bound/body-free。当前 holdout 0 次，最终 ADR 尚未创建。

@@ -2635,3 +2635,16 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   普通并行、DAG、holdout、真实 Provider 或任何 Stage 8 Core 产品能力已实现/运行。
 - `HANDOFF`：唯一下一检查点为 `8b-conditional-multi-agent-experiment` prepared/waiting authorization；
   RQ-081 不授权 8B，授权前停止。
+
+### 2026-08-22：RQ-082 授权并完成 8B holdout 前本地实现
+
+- `AUTHORIZED`：用户明确“继续推进”，授权唯一检查点 `8b-conditional-multi-agent-experiment`；无需逐小步
+  重复审批，但不外推到 8C–8F。
+- `DESIGN`：采用 evaluation-only Scripted/Fake role runner + fixture tools + 真实 `ReviewHarness`；拒绝在
+  架构比较中混入真实模型、OP.GG 网络、产品 Runtime 改造或第三方 DAG。
+- `TDD`：首次为 2 个 module-not-found collection errors；最小实现后 14 passed。补 expected experiment ID、
+  semantic result recomputation、CLI 与原子整批 tool preflight 后聚焦 22 passed；相邻 168/12 subtests。
+- `LIFECYCLE`：implementation exact-SHA 公共成功前不执行 holdout；clean SHA development result 位于 ignored
+  `tmp/`，正式 result 在 case 前 exclusive reserve，crash sentinel 也禁止重跑。
+- `BOUNDARY`：截至本记录正式 holdout/external I/O 均为 0，采用结论未知；当前下一动作是完整本地门、实现
+  提交与 exact-SHA 三 job，不进入 8C。

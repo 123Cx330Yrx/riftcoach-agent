@@ -738,6 +738,28 @@ groups:
     covers:
       - 8b-conditional-multi-agent-experiment
     status: planned
+    evidence:
+      problem_and_principle:
+        - docs/plans/2026-08-22-8b-conditional-multi-agent-experiment-design.md
+        - docs/learning/8b-conditional-multi-agent-experiment-walkthrough.md
+      design_and_implementation:
+        - docs/plans/2026-08-22-8b-conditional-multi-agent-experiment-design.md
+        - docs/plans/2026-08-22-8b-conditional-multi-agent-experiment-implementation.md
+        - docs/learning/8b-conditional-multi-agent-experiment-walkthrough.md
+      code_map:
+        - docs/learning/8b-conditional-multi-agent-experiment-walkthrough.md
+      data_and_control_flow:
+        - docs/plans/2026-08-22-8b-conditional-multi-agent-experiment-design.md
+        - docs/learning/8b-conditional-multi-agent-experiment-walkthrough.md
+      verification:
+        - docs/learning/8b-conditional-multi-agent-experiment-walkthrough.md
+      runbook:
+        - docs/learning/8b-conditional-multi-agent-experiment-walkthrough.md
+      failure_security_boundary:
+        - docs/adr/0052-admit-role-isolated-multi-agent-to-bounded-stage8-experiment.md
+        - docs/learning/8b-conditional-multi-agent-experiment-walkthrough.md
+      interview_wording:
+        - docs/learning/8b-conditional-multi-agent-experiment-walkthrough.md
 
   - id: 8c-reliable-runtime-core
     sequence: 330

@@ -3604,3 +3604,40 @@
 - state-only 收尾本地完整回归 `1600 passed, 117 skipped, 1 warning, 127 subtests passed`，治理聚焦
   `35 passed`；治理首次准确拦住陈旧 Next Step 和 0 个 in_progress phase，修正机器状态后全绿，
   Phase 34 正文仍明确 waiting authorization/未实现。
+
+## 2026-08-22：RQ-082 授权 8B 并冻结设计
+
+- 用户明确“继续推进”，授权唯一 checkpoint `8b-conditional-multi-agent-experiment`，不要求逐小步重复审批；
+  canonical 清除 waiting authorization，保持 `in_progress`。
+- 专用设计选择 evaluation-only Scripted/Fake 角色 + fixture 工具 + 真实 `ReviewHarness`；拒绝真实 Provider/MCP
+  和产品 Runtime 改造，避免把模型/网络变量混入架构比较。
+- 三路固定为 serial baseline、bounded-parallel comparator、role-isolated Multi-Agent candidate；只有 evidence
+  acquisition/Context isolation 可变，Coach/Harness/fixture/阈值/Usage 模型保持一致。
+- 一次性生命周期固定为：TDD/development/preflight → implementation exact-SHA 公共 CI → clean SHA development
+  admission → 唯一 holdout → result/ADR/evidence 提交与第二次 exact-SHA 公共 CI。
+- 当前 holdout executions 和 external I/O 仍为 0；下一动作是按实施计划先写 runner/lifecycle 红灯。
+
+## 2026-08-22：8B runner/lifecycle 本地 TDD 通过
+
+- 首次聚焦测试因 `app.evaluation.stage8_experiment` 不存在形成 2 个 collection error；最小实现后
+  `14 passed`，没有把先写代码冒充 TDD。
+- isolated evaluation package 已实现三路 acquisition、typed/digest-bound references、Scripted Usage、
+  同一 Coach/Evaluator/zero-revision Config 与真实 `ReviewHarness`；产品 Runtime/Harness 未修改。
+- lifecycle/CLI 现在绑定 clean code SHA = confirmed public-CI SHA；development result、holdout admission、
+  预期 experiment ID 和正式 output 均不可覆盖。结果复读重算 identity、exact role、Artifact binding、
+  Token/calls、metrics/verdict，并拒绝 duplicate JSON key。
+- synthetic holdout-path 只用重标记 development 副本，发现并修复了跨角色 tool probe 时串行路径先产生
+  Knowledge Artifact 的原子性缺口；现在所有路径均先整批预检，零工具副作用失败。正式 holdout 仍为 0 次。
+- 最终聚焦 `22 passed`；8A/Harness/Context/AgentLoop/OP.GG Meta/Runtime 相邻集合
+  `168 passed, 12 subtests passed`。下一动作是完整本地门禁、最终 diff 审查和实现提交/public CI。
+
+## 2026-08-22：8B 实现完整本地门禁通过
+
+- 完整 pytest `1622 passed, 117 skipped, 1 warning, 127 subtests passed`；skip 只保留既有本机环境限制，
+  PostgreSQL/Docker/Linux 证据仍必须由公共阻塞 job 提供。
+- RAG development/independent holdout 的 Recall/MRR/nDCG 均 1.0、FPR 0.0，holdout abstention/citation
+  均 1.0；Harness dry-run `published`/0 revisions。
+- compileall、pip check、39 YAML、Harness SDK boundary、tracked Secret/run-data、governance 与 diff check
+  全绿。测试生成物均在 ignored `tmp/`/pytest temp；正式 8B holdout result 不存在。
+- coverage 保持 planned；当前只允许实现 diff/cached diff、提交/推送与 exact-SHA 三 job。公共全绿前
+  development admission 和 holdout 均不得执行。

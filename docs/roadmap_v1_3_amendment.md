@@ -471,3 +471,11 @@ Agent 已接入或 Memory 已完成。
   不作为 8B Multi-Agent 采用理由。
 - 离线 gate TDD 与持久证据已由 `12ad835` / Actions `32567642315` exact-SHA 三 job公共闭环；
   holdout 未运行、外部调用为 0。8B 的收益/成本数字仍是未来停止线，不是当前实测；8B 只 prepared。
+
+### 2026-08-22：8B evaluation-only 实现边界
+
+- RQ-082 已授权 8B；实现隔离在 `app/evaluation/stage8_experiment/`，不接入产品 Runtime/composition。
+- 三路均使用 frozen case/input/tool identity、Scripted Usage 与同一真实 Harness；普通并行和角色隔离都做
+  atomic exact-tool preflight，角色隔离额外证明独立 Context digest 和 Coach 零工具。
+- development/holdout result 会复算 identity、role、Artifact binding、metrics 与 verdict；正式 holdout 只能在
+  实现 SHA 公共全绿后执行一次。当前只完成本地 holdout 前 TDD，结果和采用裁决尚不存在。

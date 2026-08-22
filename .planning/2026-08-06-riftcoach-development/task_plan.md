@@ -30,8 +30,9 @@ Actions `32480827952`. RQ-079 authorizes Phase 31 -
 `stage-8-multi-agent-reliable-runtime-productization-entry-design`, now complete
 at `3431e8b` / Actions `32564500421`. Phase 33 -
 `8a-advanced-adoption-gate` is complete at `12ad835` / Actions `32567642315`.
-Phase 34 - `8b-conditional-multi-agent-experiment` is prepared and awaiting
-explicit authorization; no 8B experiment or Stage 8 Core product implementation has started.
+RQ-082 authorizes Phase 34 - `8b-conditional-multi-agent-experiment`, now in
+progress. Design/TDD and no-I/O development implementation precede the one
+permitted holdout execution; no Stage 8 Core product implementation has started.
 
 ## Phases
 
@@ -697,9 +698,13 @@ RQ-081 不授权 8B，授权前不实现或运行实验、不执行 holdout、�
 ### Phase 34 - 8b-conditional-multi-agent-experiment
 
 - Status: in_progress
-- State: waiting explicit user authorization；RQ-081 不授权 8B。
-- [ ] 授权后才按 ADR-0052 实现同一切片的串行/普通并行/角色隔离三路实验与一次不可覆盖 holdout；
-- [ ] 未授权前不实现 Multi-Agent/并行 runner，不运行 holdout，不调用真实 Riot/OP.GG/Provider 或读取 Key。
+- State: RQ-082 authorized；当前处于设计/TDD 与 holdout 前实现阶段。
+- [completed] 冻结初学者教学、三路公平身份、分阶段公共门和一次性 holdout 生命周期；
+- [completed] 先写失败测试，再实现 evaluation-only 串行/普通并行/角色隔离 runner、真实 Harness 接线和 body-free metrics；
+- [in_progress] no-I/O development/preflight 与完整本地门禁已完成；等待独立实现提交与 exact-SHA 三 job；
+- [ ] 在同一干净公共成功 SHA 上运行 development，并唯一执行一次不可覆盖 holdout；
+- [ ] 按结果形成 adopt/partial/reject ADR、八维 evidence、独立归档/状态提交与 exact-SHA 三 job；
+- [boundary] 不调用真实 Riot/OP.GG/Provider、不读取 Key、不安装 DAG/第三方 Runtime、不修改产品 Runtime、不进入 8C–8F。
 
 ## 6A Entry Design Checklist
 
