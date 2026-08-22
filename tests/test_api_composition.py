@@ -26,6 +26,13 @@ from app.tasks.models import (
     TaskCreateResult,
     TaskStatus,
 )
+from app.tasks.reliable_runtime import (
+    TaskCancelDisposition,
+    TaskCancelResult,
+    TaskEventPage,
+    TaskLifecycleEvent,
+    TaskLifecycleEventKind,
+)
 
 
 VALID_ENV = {
@@ -254,6 +261,87 @@ def test_composed_app_forwards_conversation_review_to_bound_task_service(
     assert len(commands) == 1
     assert commands[0].owner_id == "test-owner"
     assert commands[0].conversation_id == conversation_id
+    assert engine.dispose_calls == 1
+
+
+def test_composed_app_forwards_reliable_task_control_routes(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    engine = FakeEngine()
+    environment = {**VALID_ENV, "RIFTCOACH_RUNS_ROOT": str(tmp_path)}
+    task_id = UUID("83000000-0000-4000-8000-000000000041")
+    run_id = "composed_reliable_task_1"
+    now = datetime(2026, 8, 20, 9, 0, 0, tzinfo=timezone.utc)
+    cancel_calls: list[tuple[str, UUID, str]] = []
+    event_calls: list[tuple[str, UUID, int, int]] = []
+
+    class BoundTaskService:
+        def create(self, _command):
+            raise AssertionError("test does not create tasks")
+
+        def create_conversation_review(self, _command):
+            raise AssertionError("test does not create conversation reviews")
+
+        def get_task(self, *, owner_id, task_id):
+            raise AssertionError("test does not query task projections")
+
+        def get_task_by_run_id(self, *, owner_id, run_id):
+            raise AssertionError("test does not query run projections")
+
+        def request_cancel(self, *, owner_id, task_id, request_id):
+            cancel_calls.append((owner_id, task_id, request_id))
+            return TaskCancelResult(
+                task_id=task_id,
+                disposition=TaskCancelDisposition.REQUESTED,
+                status=TaskStatus.RUNNING,
+            )
+
+        def read_events(self, *, owner_id, task_id, after_cursor, limit):
+            event_calls.append((owner_id, task_id, after_cursor, limit))
+            lifecycle_event = TaskLifecycleEvent.create(
+                event_cursor=1,
+                task_sequence=1,
+                task_id=task_id,
+                run_id=run_id,
+                owner_id=owner_id,
+                event_kind=TaskLifecycleEventKind.CREATED,
+                status_after=TaskStatus.QUEUED,
+                lease_generation=0,
+                operation_identity="created",
+                occurred_at=now,
+            )
+            return TaskEventPage(
+                after_cursor=after_cursor,
+                next_cursor=1,
+                limit=limit,
+                has_more=False,
+                events=(lifecycle_event,),
+            )
+
+    monkeypatch.setattr("app.api.composition.build_engine", lambda _settings: engine)
+    monkeypatch.setattr(
+        "app.api.composition.build_session_factory",
+        lambda _engine: (lambda: None),
+    )
+    monkeypatch.setattr(
+        "app.api.composition.ReviewTaskService",
+        lambda **_kwargs: BoundTaskService(),
+    )
+
+    app = create_composed_app(environment=environment)
+    with TestClient(app) as http:
+        cancel = http.post(
+            f"/tasks/{task_id}/cancel",
+            headers={"Idempotency-Key": "composed-cancel-1"},
+        )
+        events = http.get(f"/tasks/{task_id}/events")
+
+    assert cancel.status_code == 200
+    assert events.status_code == 200
+    assert events.json()["events"][0]["event_kind"] == "created"
+    assert cancel_calls == [("test-owner", task_id, "composed-cancel-1")]
+    assert event_calls == [("test-owner", task_id, 0, 50)]
     assert engine.dispose_calls == 1
 
 

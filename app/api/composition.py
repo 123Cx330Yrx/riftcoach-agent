@@ -93,6 +93,7 @@ from app.tasks.models import (
     TaskCreateResult,
 )
 from app.tasks.service import ReviewTaskService, TaskServiceError
+from app.tasks.reliable_runtime import TaskCancelResult, TaskEventPage
 from app.tasks.deletion import (
     FileRunDataCleaner,
     TaskDeletionError,
@@ -294,6 +295,34 @@ class _TaskServiceProxy:
         return self._service().get_task_by_run_id(
             owner_id=owner_id,
             run_id=run_id,
+        )
+
+    def request_cancel(
+        self,
+        *,
+        owner_id: str,
+        task_id: UUID,
+        request_id: str,
+    ) -> TaskCancelResult:
+        return self._service().request_cancel(
+            owner_id=owner_id,
+            task_id=task_id,
+            request_id=request_id,
+        )
+
+    def read_events(
+        self,
+        *,
+        owner_id: str,
+        task_id: UUID,
+        after_cursor: int = 0,
+        limit: int = 50,
+    ) -> TaskEventPage:
+        return self._service().read_events(
+            owner_id=owner_id,
+            task_id=task_id,
+            after_cursor=after_cursor,
+            limit=limit,
         )
 
 
