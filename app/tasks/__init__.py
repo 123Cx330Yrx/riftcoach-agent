@@ -27,6 +27,7 @@ from app.tasks.recent_review_executor import (
     RecentReviewTaskExecutor,
 )
 from app.tasks.reconciliation import (
+    ExpiredReviewTaskRecovery,
     ManualRecoveryResult,
     ManualRecoveryStatus,
     ManualReviewTaskRecovery,
@@ -37,6 +38,22 @@ from app.tasks.reconciliation import (
     TaskReconciliationError,
     TaskReconciliationErrorCode,
     TaskTerminalEvidenceError,
+)
+from app.tasks.reliable_runtime import (
+    TaskCancelDisposition,
+    TaskCancelResult,
+    TaskCheckpointPhase,
+    TaskCheckpointReference,
+    TaskEventPage,
+    TaskHeartbeatDisposition,
+    TaskHeartbeatResult,
+    TaskLease,
+    TaskLeasePolicy,
+    TaskLifecycleEvent,
+    TaskLifecycleEventKind,
+    TaskRecoveryResult,
+    TaskRecoveryStatus,
+    project_task_lifecycle,
 )
 
 __all__ = [
@@ -63,6 +80,7 @@ __all__ = [
     "RecentReviewTaskExecutionError",
     "RecentReviewTaskExecutionErrorCode",
     "RecentReviewTaskExecutor",
+    "ExpiredReviewTaskRecovery",
     "ManualRecoveryResult",
     "ManualRecoveryStatus",
     "ManualReviewTaskRecovery",
@@ -73,4 +91,18 @@ __all__ = [
     "TaskReconciliationError",
     "TaskReconciliationErrorCode",
     "TaskTerminalEvidenceError",
+    "TaskCancelDisposition",
+    "TaskCancelResult",
+    "TaskCheckpointPhase",
+    "TaskCheckpointReference",
+    "TaskEventPage",
+    "TaskHeartbeatDisposition",
+    "TaskHeartbeatResult",
+    "TaskLease",
+    "TaskLeasePolicy",
+    "TaskLifecycleEvent",
+    "TaskLifecycleEventKind",
+    "TaskRecoveryResult",
+    "TaskRecoveryStatus",
+    "project_task_lifecycle",
 ]

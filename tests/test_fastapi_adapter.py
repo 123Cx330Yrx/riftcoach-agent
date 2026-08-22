@@ -166,6 +166,8 @@ def test_app_factory_and_openapi_do_not_read_keys_or_open_io(monkeypatch) -> Non
         "/player-links",
         "/player-links/{link_task_id}",
         "/tasks/{task_id}",
+        "/tasks/{task_id}/cancel",
+        "/tasks/{task_id}/events",
         "/runs/{run_id}",
         "/runs/{run_id}/report",
         "/health/live",

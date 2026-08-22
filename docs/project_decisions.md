@@ -1789,5 +1789,17 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   heartbeat/checkpoint/terminal 使用同一 fencing identity。
 - cancel 是 owner-scoped 持久请求。自动 recovery 只接受 strict Receipt/Trace/Artifact terminal proof 或最新
   `claimed_safe` checkpoint；已开始未知副作用而没有终态证据时进入 `recovery_required`，不盲目重跑。
-- 当前只完成教学、ADR、专用设计与实施计划；0010 migration、Repository、Worker、Recovery 和 API 产品代码
-  尚未开始，coverage 继续 planned。
+- 该段记录设计批完成时的历史事实；随后 0010 migration、Repository、Worker、Recovery 和 API 产品代码已
+  在工作树本地完成，coverage 仍在公共 implementation 门前保持 planned。
+## 2026-08-22：8C 本地 implementation/evidence 收尾裁决
+
+- ADR-0054 的 PostgreSQL 增量路线已实际落地：task row 是当前 projection，`review_task_events` 是
+  append-only body-free lifecycle；Runtime Trace/Harness/Artifact 仍是各自事实源，不复制正文。
+- terminal ownership 由 worker + generation + private token + live expiry + status/cancel 共同 fencing；
+  Worker success/failure 被最后一瞬 cancel 抢先时再尝试 fenced cancel，new generation 则收敛 ownership lost。
+- expired recovery 只接受 strict Receipt 或 `claimed_safe`；missing/drifted/unsafe evidence 进入
+  `recovery_required`，不以重跑追求自动恢复率。
+- 公共 event DTO 删除内部 operation identity；Linux package smoke 增加 owner-scoped event page 复读，
+  不抬高 schema、不引入 SSE。完整本地 pytest `1670 passed, 133 skipped`，公共真库/Linux 尚待证明。
+- 当前仍为 `8c-reliable-runtime-core / in_progress`、coverage planned；8D 只有在 implementation/evidence
+  exact-SHA 三 job 全绿并完成独立状态收尾后才可 prepared，不能提前实现。

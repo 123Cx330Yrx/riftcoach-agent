@@ -2679,3 +2679,15 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `BOUNDARY`：8B holdout 不覆盖、不重跑；不接产品 Multi-Agent、DAG/第三方 Runtime、Redis/Celery/Kafka、
   SSE/前端、8D fusion 或真实 Provider/Riot/OP.GG I/O。
 - `NEXT`：先完成教学、现有代码接缝审计、替代方案比较、ADR/专用设计与实施计划，再进入 pure contract 红灯。
+
+### 2026-08-22：8C 本地实现与 evidence 路径完成
+
+- `LOCAL-IMPLEMENTATION`：Task 1–6 已完成 strict contracts/projector、0010/ORM、Repository event/lease/
+  fencing/cancel/replay、lease-aware Worker、proof-based recovery 与 owner-scoped HTTP；不引入第二控制面。
+- `TDD`：既有红灯覆盖合同、status 宽度、event identity、Worker terminal/cancel 与 recovery 竞态；最终
+  public operation identity/package replay 两项补强先 `2 failed` 后 `29 passed`。
+- `LOCAL-REGRESSION`：最新完整 pytest `1670 passed, 133 skipped, 1 warning, 127 subtests passed`；133 skip
+  不冒充真实 PostgreSQL/Docker/Linux 成功。
+- `EVIDENCE`：8C walkthrough 与 coverage 八维路径已齐，coverage 仍 `planned`。
+- `NEXT`：完成全部横向门、独立 implementation/evidence SHA 与 exact-SHA 三 job；公共全绿前不关闭 8C、
+  不进入 8D。

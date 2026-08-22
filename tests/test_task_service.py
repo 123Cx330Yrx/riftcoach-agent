@@ -22,6 +22,13 @@ from app.tasks.models import (
 )
 from app.tasks.ports import TaskRepository, TaskRepositoryError
 from app.tasks.service import ReviewTaskService, TaskServiceError
+from app.tasks.reliable_runtime import (
+    TaskCancelDisposition,
+    TaskCancelResult,
+    TaskEventPage,
+    TaskLifecycleEvent,
+    TaskLifecycleEventKind,
+)
 
 
 NOW = datetime(2026, 8, 18, 2, 0, 0, tzinfo=timezone.utc)
@@ -78,6 +85,8 @@ class FakeTaskRepository(TaskRepository):
     def __init__(self) -> None:
         self.tasks: list[ReviewTask] = []
         self.failure: Exception | None = None
+        self.cancel_calls = []
+        self.event_calls = []
 
     def create_or_replay(
         self,
@@ -150,6 +159,52 @@ class FakeTaskRepository(TaskRepository):
                 if task.owner_id == owner_id and task.run_id == run_id
             ),
             None,
+        )
+
+    def request_cancel(
+        self,
+        *,
+        owner_id,
+        task_id,
+        request_id,
+        reason,
+        now,
+    ):
+        self.cancel_calls.append(
+            (owner_id, task_id, request_id, reason, now)
+        )
+        task = self.get_by_task_id(owner_id=owner_id, task_id=task_id)
+        if task is None:
+            return None
+        return TaskCancelResult(
+            task_id=task_id,
+            disposition=TaskCancelDisposition.CANCELLED,
+            status=TaskStatus.CANCELLED,
+        )
+
+    def read_events(self, *, owner_id, task_id, after_cursor, limit):
+        self.event_calls.append((owner_id, task_id, after_cursor, limit))
+        task = self.get_by_task_id(owner_id=owner_id, task_id=task_id)
+        if task is None:
+            return None
+        item = TaskLifecycleEvent.create(
+            event_cursor=1,
+            task_sequence=1,
+            task_id=task.task_id,
+            run_id=task.run_id,
+            owner_id=task.owner_id,
+            event_kind=TaskLifecycleEventKind.CREATED,
+            status_after=TaskStatus.QUEUED,
+            lease_generation=0,
+            operation_identity="created",
+            occurred_at=task.created_at,
+        )
+        return TaskEventPage(
+            after_cursor=after_cursor,
+            next_cursor=1,
+            limit=limit,
+            has_more=False,
+            events=(item,),
         )
 
 
@@ -357,3 +412,42 @@ def test_repository_failures_are_mapped_without_database_details() -> None:
     assert exc_info.value.code == "task_persistence_failed"
     assert str(exc_info.value) == "task_persistence_failed"
     assert "database-secret-detail" not in repr(exc_info.value)
+
+
+def test_cancel_and_event_queries_remain_owner_scoped_and_body_free() -> None:
+    repository = FakeTaskRepository()
+    task_service = service(repository)
+    created = task_service.create(command())
+
+    cancelled = task_service.request_cancel(
+        owner_id="owner-1",
+        task_id=created.task.task_id,
+        request_id="cancel-request-1",
+    )
+    page = task_service.read_events(
+        owner_id="owner-1",
+        task_id=created.task.task_id,
+        after_cursor=0,
+        limit=50,
+    )
+
+    assert cancelled.disposition is TaskCancelDisposition.CANCELLED
+    assert page.events[0].event_kind is TaskLifecycleEventKind.CREATED
+    assert repository.cancel_calls[0][2:4] == (
+        "cancel-request-1",
+        "user_requested",
+    )
+    for operation in (
+        lambda: task_service.request_cancel(
+            owner_id="owner-2",
+            task_id=created.task.task_id,
+            request_id="cancel-request-2",
+        ),
+        lambda: task_service.read_events(
+            owner_id="owner-2",
+            task_id=created.task.task_id,
+        ),
+    ):
+        with pytest.raises(TaskServiceError) as exc_info:
+            operation()
+        assert exc_info.value.code == "task_not_found"

@@ -59,6 +59,7 @@ def test_initial_migration_creates_postgresql_task_schema(
         assert isinstance(columns["trace_reference"]["type"], JSONB)
         assert isinstance(columns["receipt_reference"]["type"], JSONB)
         assert isinstance(columns["artifact_reference"]["type"], JSONB)
+        assert columns["status"]["type"].length == 24
         for timestamp_name in (
             "created_at",
             "updated_at",
@@ -89,7 +90,9 @@ def test_initial_migration_creates_postgresql_task_schema(
             "ck_review_tasks_status_allowed",
             "ck_review_tasks_publication_status_allowed",
             "ck_review_tasks_request_fingerprint_format",
-            "ck_review_tasks_lifecycle_shape",
+            "ck_review_tasks_reliable_lifecycle_shape",
+            "ck_review_tasks_cancel_request_shape",
+            "ck_review_tasks_lease_token_format",
             "ck_review_tasks_timestamp_order",
         } <= check_names
         assert {

@@ -32,7 +32,8 @@ at `3431e8b` / Actions `32564500421`. Phase 33 -
 `8a-advanced-adoption-gate` is complete at `12ad835` / Actions `32567642315`.
 Phase 34 - `8b-conditional-multi-agent-experiment` is complete at `783a329` /
 Actions `32572610725`. RQ-083 authorizes Phase 35 - `8c-reliable-runtime-core`;
-teaching, seam audit and design are in progress, while product implementation has not started.
+Task 1–6 and the eight-dimension evidence are complete locally; exact-SHA PostgreSQL/Linux
+public closure is still pending.
 
 ## Phases
 
@@ -293,8 +294,9 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 `32564500421` 完成 exact-SHA 公共闭环，coverage complete；`8a-advanced-adoption-gate` 又由
 `12ad835` / Actions `32567642315` 完成。`8b-conditional-multi-agent-experiment` 的 implementation
 `180bc8b/32572085065` 与 result/ADR/evidence `783a329/32572610725` 均 exact-SHA 公共闭环，
-coverage complete。RQ-083 已授权唯一下一步 `8c-reliable-runtime-core`；当前先完成教学、
-接缝审计、ADR/设计与实施计划，再按 TDD 实现，不进入 8D–8F。
+coverage complete。RQ-083 已授权唯一下一步 `8c-reliable-runtime-core`；0010、durable event/replay、
+lease/fencing、cancel、checkpoint/recovery、Worker/API/package 纵向与八维材料已本地完成。当前只运行
+最终本地门、独立 implementation/evidence 提交和 exact-SHA 三 job；公共闭环前不进入 8D–8F。
 
 ## 6A-1 Checklist
 
@@ -711,10 +713,12 @@ coverage complete。RQ-083 已授权唯一下一步 `8c-reliable-runtime-core`�
 ### Phase 35 - 8c-reliable-runtime-core
 
 - Status: in_progress
-- State: RQ-083 authorized；8B 已完成，8C 教学、接缝审计与设计进行中，产品实现尚未开始。
-- [in_progress] 完成 durable event/replay、lease/fencing、cancel、checkpoint、recovery、late-result 隔离的教学、方案比较、ADR 与专用设计；
-- [ ] 按实施计划从 pure contracts 红灯开始，逐层完成 PostgreSQL/Worker/Runtime/Harness 纵向 TDD；
-- [ ] 完成八维 evidence、本地比例门禁、独立提交/推送与 exact-SHA 三 job；
+- State: RQ-083 authorized；8B 已完成，8C Task 1–6 与八维材料本地完成，公共 implementation 门待执行。
+- [completed] durable event/replay、lease/fencing、cancel、checkpoint、recovery、late-result 隔离的教学、方案比较、ADR 与专用设计已由 `3ac12a3/32575190136` 公共闭环；
+- [completed-local] pure contracts、0010/ORM、Repository、lease-aware Worker、proof-based recovery、cancel/event API 与 package replay 纵向已按红绿 TDD 完成；
+- [completed-local] walkthrough 与 coverage 八维路径已补齐；完整 pytest `1670 passed, 133 skipped, 1 warning, 127 subtests passed`；
+- [in_progress] 完成两套 RAG、Harness、compileall/pip/YAML、安全/治理/diff 门，独立提交/推送并等待 exact-SHA 三 job；
+- [ ] 公共全绿后 coverage complete，只交接 `8d-riot-opgg-evidence-fusion-core` prepared/waiting authorization；
 - [boundary] 不覆盖或重跑 8B holdout，不实现 Multi-Agent、DAG、第三方 Runtime、SSE、前端或 8D–8F。
 
 ## 6A Entry Design Checklist

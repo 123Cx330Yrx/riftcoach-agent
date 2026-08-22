@@ -766,6 +766,28 @@ groups:
     covers:
       - 8c-reliable-runtime-core
     status: planned
+    evidence:
+      problem_and_principle:
+        - docs/adr/0054-adopt-postgresql-leased-fenced-task-control-plane.md
+        - docs/learning/8c-reliable-runtime-core-walkthrough.md
+      design_and_implementation:
+        - docs/plans/2026-08-22-8c-reliable-runtime-core-design.md
+        - docs/plans/2026-08-22-8c-reliable-runtime-core-implementation.md
+        - docs/learning/8c-reliable-runtime-core-walkthrough.md
+      code_map:
+        - docs/learning/8c-reliable-runtime-core-walkthrough.md
+      data_and_control_flow:
+        - docs/plans/2026-08-22-8c-reliable-runtime-core-design.md
+        - docs/learning/8c-reliable-runtime-core-walkthrough.md
+      verification:
+        - docs/learning/8c-reliable-runtime-core-walkthrough.md
+      runbook:
+        - docs/learning/8c-reliable-runtime-core-walkthrough.md
+      failure_security_boundary:
+        - docs/adr/0054-adopt-postgresql-leased-fenced-task-control-plane.md
+        - docs/learning/8c-reliable-runtime-core-walkthrough.md
+      interview_wording:
+        - docs/learning/8c-reliable-runtime-core-walkthrough.md
 
   - id: 8d-riot-opgg-evidence-fusion-core
     sequence: 340

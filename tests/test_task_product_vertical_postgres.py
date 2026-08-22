@@ -106,7 +106,7 @@ def test_claimed_task_runs_real_offline_application_runtime_harness_and_persists
             capacity=TaskCapacityPolicy(owner_active_limit=3, global_active_limit=5),
         )
         claimed = repository.claim_next(worker_id="worker-vertical", now=NOW)
-        assert claimed is not None
+        assert claimed is not None and claimed.lease is not None
 
         provider = RuntimeProvider()
         probe = FactoryProbe()
@@ -146,6 +146,9 @@ def test_claimed_task_runs_real_offline_application_runtime_harness_and_persists
         assert repository.succeed(
             task_id=claimed.task_id,
             worker_id="worker-vertical",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=NOW + timedelta(seconds=1),
             terminal=terminal,
         )
 

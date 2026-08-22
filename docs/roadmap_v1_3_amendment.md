@@ -266,7 +266,9 @@ ADR-0048 裁决 OP.GG `admitted_with_restrictions`，并由 `64311a1` / Actions 
 又由 `431c584` / Actions `32480827952` 完成 strict Server/Facade、四个只读工具与 exact-SHA 三 job
 公共闭环。7-5 实现 `a88fbc4` / Actions `32483521108`、clean-SHA 官方 SDK→RiftCoach stdio 与
 RiftCoach→OP.GG Streamable HTTP 双向门，以及不可覆盖 evidence `fac6fe0` / Actions `32484257736`
-均已通过；Stage 7 正式关闭。Stage 8 entry design 已由 `3431e8b` / Actions `32564500421` 公共闭环；当前只交接 `8a-advanced-adoption-gate` prepared/waiting authorization，尚未推进 8A–8F 产品实现。
+均已通过；Stage 7 正式关闭。Stage 8 entry design、8A 与 8B 已依次公共闭环，ADR-0053 reject 产品
+Multi-Agent；RQ-083 授权的 8C 已本地完成 durable event、lease/fencing、cancel、checkpoint/recovery、
+Worker/API/package 纵向与八维材料，仍等待 implementation exact-SHA 三 job，不进入 8D–8F。
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -493,7 +495,7 @@ Agent 已接入或 Memory 已完成。
 - result/ADR/evidence `783a329/32572610725` exact-SHA 三 job 全绿后，8B 八维 coverage 置 complete。
 - 8B 的 reject 结论保持：Multi-Agent 不进入产品；普通并行不在 8B 越级实现，待 8D 重新设计。
 - 可靠 Runtime Core（lease/fencing、cancel、checkpoint、recovery、late-result isolation）成为唯一下一
-  检查点 `8c-reliable-runtime-core`；RQ-083 已授权，当前进入 ADR-0054、专用设计和 TDD 计划，产品实现尚未开始。
+  检查点 `8c-reliable-runtime-core`；该段记录 8C 设计入口时的状态，随后本地实现已完成，公共门仍待验证。
 
 ## 2026-08-22：8C 可靠控制面设计裁决
 
@@ -504,3 +506,10 @@ Agent 已接入或 Memory 已完成。
   `recovery_required`。
 - 单 Worker/单 Runtime 与 Harness 唯一发布权保持兼容；DAG/第三方 Runtime、Redis/Celery/Kafka、SSE/前端、
   8D fusion 与真实外部 I/O 均不进入 8C。
+
+### 2026-08-22：8C 本地实现收尾
+
+- 0010 migration、durable event/replay、lease/fencing、cancel、checkpoint、proof-based recovery、Worker/API
+  与 package event query 已在工作树完成；八维 walkthrough 已进入 coverage ledger，coverage 仍 planned。
+- 最新完整本地 pytest `1670 passed, 133 skipped`；真实 PostgreSQL 17、Linux package 和 exact-SHA 三 job
+  仍是关闭门，公共成功前不进入 8D。

@@ -23,7 +23,7 @@
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 已完成；7-5 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 完成最终公共闭环 |
-| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A 与 8B 已公共闭环，ADR-0053 reject 产品 Multi-Agent；RQ-083 已授权 8C，当前进行可靠 Runtime Core 设计，产品实现尚未开始 |
+| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A 与 8B 已公共闭环，ADR-0053 reject 产品 Multi-Agent；8C Reliable Runtime Core 已本地实现，等待 implementation exact-SHA 公共闭环 |
 
 ## 横向能力总账
 
@@ -301,8 +301,9 @@ exact-SHA 三 job，7-5 coverage 与 Stage 7 已正式关闭。
 ## 阶段 8：Multi-Agent、可靠运行时与产品化
 
 Stage 8 entry design、8A 与 8B 已完成 exact-SHA 公共闭环；8B 唯一 holdout 由 ADR-0053 拒绝产品
-Multi-Agent。RQ-083 已授权 `8c-reliable-runtime-core`，当前进行 PostgreSQL durable task event、lease/
-fencing、cancel、checkpoint 与 receipt-proven recovery 的设计，产品代码尚未开始。该状态不表示 DAG、
+Multi-Agent。RQ-083 授权的 `8c-reliable-runtime-core` 已本地完成 PostgreSQL durable task event、lease/
+fencing、cancel、checkpoint、receipt-proven recovery、Worker/API/package 纵向与八维材料；coverage 仍
+planned，真实 0010/concurrency/Linux package 等待 implementation exact-SHA 公共三 job。该状态不表示 DAG、
 SSE、正式 Auth、前端、8D fusion 或生产部署已开始。
 
 ### 原理
@@ -508,4 +509,5 @@ derived Memory、relationship private data；Task/Artifact 与全局 Player Subj
   rejection；现有 Runtime Trace 与 Harness 保持各自事实源。
 - 完整事件溯源/DAG Runtime 重写和 Redis/Celery 外部队列因缺少 Bad Case 被拒绝/deferred；8B holdout 不覆盖、
   不重跑，8D Riot+OP.GG fusion、SSE/前端和真实外部 I/O 不进入本检查点。
-- 当前只有教学、ADR、设计和实施计划，尚未创建 0010 migration 或写 8C 产品测试/代码。
+- 该段记录设计入口时的历史事实；随后 0010、Repository/Worker/recovery/API 与八维材料已本地完成，
+  当前仍等待 implementation exact-SHA 公共闭环，不进入 8D。

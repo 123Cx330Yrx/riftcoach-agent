@@ -20,6 +20,7 @@ from app.tasks.models import (
 from app.product.recent_review import RecentReviewProductRequest
 from app.product.run_receipts import RunReceiptReference
 from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
+from app.tasks.reliable_runtime import TaskLease
 
 
 TASK_ID = UUID("11111111-1111-4111-8111-111111111111")
@@ -78,12 +79,14 @@ def terminal_evidence(run_id: str = "review_task_models") -> dict[str, object]:
     }
 
 
-def test_task_status_contract_is_exactly_the_frozen_four_states() -> None:
+def test_task_status_contract_includes_reliable_recovery_and_cancel_states() -> None:
     assert tuple(status.value for status in TaskStatus) == (
         "queued",
         "running",
+        "recovery_required",
         "succeeded",
         "failed",
+        "cancelled",
     )
 
 
@@ -172,6 +175,15 @@ def test_running_and_terminal_state_invariants_are_explicit() -> None:
         worker_id="worker-1",
         updated_at=claimed,
         claimed_at=claimed,
+        lease_generation=1,
+        lease=TaskLease(
+            worker_id="worker-1",
+            generation=1,
+            token="d" * 64,
+            acquired_at=claimed,
+            heartbeat_at=claimed,
+            expires_at=finished,
+        ),
     )
     assert running.status is TaskStatus.RUNNING
 
@@ -228,6 +240,33 @@ def test_task_rejects_invalid_lifecycle_or_publication_shapes(
 ) -> None:
     with pytest.raises(ValidationError):
         queued_task(**changes)
+
+
+def test_cancel_request_shape_matches_the_only_legal_lifecycle_states() -> None:
+    cancel = {
+        "cancel_request_id": "cancel-request-1",
+        "cancel_requested_at": NOW,
+        "cancel_reason": "user_requested",
+    }
+
+    with pytest.raises(ValidationError, match="cancel"):
+        queued_task(**cancel)
+    with pytest.raises(ValidationError, match="cancel"):
+        queued_task(
+            status=TaskStatus.CANCELLED,
+            updated_at=NOW,
+            finished_at=NOW,
+            terminal_reason="user_requested",
+        )
+
+    cancelled = queued_task(
+        status=TaskStatus.CANCELLED,
+        updated_at=NOW,
+        finished_at=NOW,
+        terminal_reason="user_requested",
+        **cancel,
+    )
+    assert cancelled.cancel_request_id == "cancel-request-1"
 
 
 def test_capacity_policy_is_bounded_and_global_cannot_be_below_owner() -> None:

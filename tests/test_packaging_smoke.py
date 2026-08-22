@@ -204,6 +204,27 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                         ],
                     },
                 )
+            if url.endswith(f"/tasks/{task_id}/events"):
+                return Response(
+                    200,
+                    {
+                        "schema_version": "1.0",
+                        "task_id": task_id,
+                        "after_cursor": 0,
+                        "next_cursor": 6,
+                        "limit": 100,
+                        "has_more": False,
+                        "events": [
+                            {"event_kind": "created", "status_after": "queued"},
+                            {"event_kind": "claimed", "status_after": "running"},
+                            {
+                                "event_kind": "execution_started",
+                                "status_after": "running",
+                            },
+                            {"event_kind": "failed", "status_after": "failed"},
+                        ],
+                    },
+                )
             if "/memory-candidates/" in url:
                 is_training = training_candidate_id in url
                 return Response(
@@ -546,6 +567,17 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     assert result.external_riot_provider_calls == 0
     assert events == ["engine.dispose"]
 
+    task_event_get = next(
+        item
+        for item in requests_seen
+        if item[0] == "GET"
+        and item[1].endswith(f"/tasks/{task_id}/events")
+    )
+    assert task_event_get[2]["params"] == {
+        "after_cursor": 0,
+        "limit": 100,
+    }
+
     conversation_post = next(
         item
         for item in requests_seen
@@ -595,6 +627,8 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
 @pytest.mark.parametrize(
     "code",
     (
+        "packaging_smoke_task_event_query_failed",
+        "packaging_smoke_task_event_invalid",
         "packaging_smoke_conversation_create_failed",
         "packaging_smoke_conversation_query_failed",
         "packaging_smoke_conversation_invalid",

@@ -160,12 +160,17 @@ def test_review_task_metadata_has_foundation_identity_and_postgres_types() -> No
         "ck_review_tasks_status_allowed",
         "ck_review_tasks_publication_status_allowed",
         "ck_review_tasks_request_fingerprint_format",
-        "ck_review_tasks_lifecycle_shape",
+        "ck_review_tasks_reliable_counters_non_negative",
+        "ck_review_tasks_lease_token_format",
+        "ck_review_tasks_cancel_request_shape",
+        "ck_review_tasks_checkpoint_shape",
+        "ck_review_tasks_reliable_lifecycle_shape",
         "ck_review_tasks_timestamp_order",
     } <= constraint_names
     assert {
         "ix_review_tasks_claim",
         "ix_review_tasks_owner_history",
+        "ix_review_tasks_expired_lease",
     } <= index_names
 
 

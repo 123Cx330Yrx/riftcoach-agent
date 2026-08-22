@@ -85,14 +85,39 @@ def test_percentile_rejects_empty_or_invalid_inputs() -> None:
 
 
 def test_worker_observability_records_only_safe_terminal_metadata() -> None:
-    from datetime import datetime, timezone
+    from datetime import datetime, timedelta, timezone
     from uuid import UUID
 
     from app.tasks.models import ReviewTask, TaskTerminal
+    from app.tasks.reliable_runtime import (
+        TaskCheckpointPhase,
+        TaskCheckpointReference,
+        TaskHeartbeatDisposition,
+        TaskHeartbeatResult,
+        TaskLease,
+    )
     from app.workers.review_worker import ReviewWorker
 
     class Repository:
-        def claim_next(self, *, worker_id, now):
+        def claim_next(self, *, worker_id, now, lease_seconds=120):
+            del lease_seconds
+            lease = TaskLease(
+                worker_id=worker_id,
+                generation=1,
+                token="1" * 64,
+                acquired_at=now,
+                heartbeat_at=now,
+                expires_at=now + timedelta(minutes=2),
+            )
+            checkpoint = TaskCheckpointReference(
+                checkpoint_id="claimed-observed",
+                run_id="review_observed_worker",
+                checkpoint_sequence=1,
+                lease_generation=1,
+                phase=TaskCheckpointPhase.CLAIMED_SAFE,
+                safe_to_replay=True,
+                created_at=now,
+            )
             return ReviewTask(
                 task_id=UUID("50000000-0000-4000-8000-000000000001"),
                 run_id="review_observed_worker",
@@ -108,6 +133,10 @@ def test_worker_observability_records_only_safe_terminal_metadata() -> None:
                 updated_at=now,
                 claimed_at=now,
                 finished_at=None,
+                lease_generation=1,
+                lease=lease,
+                checkpoint_sequence=1,
+                checkpoint_reference=checkpoint,
                 terminal_reason=None,
                 publication_status=None,
                 report_available=False,
@@ -116,10 +145,23 @@ def test_worker_observability_records_only_safe_terminal_metadata() -> None:
                 artifact_reference=None,
             )
 
-        def succeed(self, *, task_id, worker_id, terminal):
+        def succeed(self, **_kwargs):
             return True
 
-        def fail(self, *, task_id, worker_id, reason):
+        def fail(self, **_kwargs):
+            return True
+
+        def save_checkpoint(self, **_kwargs):
+            return True
+
+        def heartbeat(self, *, task_id, now, **_kwargs):
+            return TaskHeartbeatResult(
+                task_id=task_id,
+                disposition=TaskHeartbeatDisposition.ACTIVE,
+                lease_expires_at=now + timedelta(minutes=2),
+            )
+
+        def cancel_running(self, **_kwargs):
             return True
 
     class Executor:

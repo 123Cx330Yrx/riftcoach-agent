@@ -20,6 +20,13 @@ from tests.test_terminal_conversation_turns import turn as terminal_turn
 from app.product.run_receipts import RunReceiptReference
 from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
 from app.workers.polling import PollingPolicy
+from app.tasks.reliable_runtime import (
+    TaskCheckpointPhase,
+    TaskCheckpointReference,
+    TaskHeartbeatDisposition,
+    TaskHeartbeatResult,
+    TaskLease,
+)
 from app.workers.review_worker import (
     ReviewTaskExecutor,
     ReviewWorker,
@@ -35,6 +42,23 @@ NOW = datetime(2026, 8, 18, 5, 0, 0, tzinfo=timezone.utc)
 def running_task(number: int, *, worker_id: str = "worker-1") -> ReviewTask:
     created = NOW + timedelta(seconds=number)
     claimed = created + timedelta(seconds=1)
+    lease = TaskLease(
+        worker_id=worker_id,
+        generation=1,
+        token=f"{number:064x}",
+        acquired_at=claimed,
+        heartbeat_at=claimed,
+        expires_at=claimed + timedelta(minutes=2),
+    )
+    checkpoint = TaskCheckpointReference(
+        checkpoint_id=f"claimed-{number}",
+        run_id=f"review_worker_{number}",
+        checkpoint_sequence=1,
+        lease_generation=1,
+        phase=TaskCheckpointPhase.CLAIMED_SAFE,
+        safe_to_replay=True,
+        created_at=claimed,
+    )
     return ReviewTask(
         task_id=UUID(f"30000000-0000-4000-8000-{number:012d}"),
         run_id=f"review_worker_{number}",
@@ -55,6 +79,10 @@ def running_task(number: int, *, worker_id: str = "worker-1") -> ReviewTask:
         updated_at=claimed,
         claimed_at=claimed,
         finished_at=None,
+        lease_generation=1,
+        lease=lease,
+        checkpoint_sequence=1,
+        checkpoint_reference=checkpoint,
         terminal_reason=None,
         publication_status=None,
         report_available=False,
@@ -132,10 +160,19 @@ class FakeRepository:
         self.fail_calls: list[tuple[UUID, str, str]] = []
         self.succeed_result = True
         self.fail_result = True
+        self.cancel_result = False
+        self.cancel_calls: list[dict[str, object]] = []
         self.claim_error: Exception | None = None
         self.terminal_error: Exception | None = None
 
-    def claim_next(self, *, worker_id: str, now: datetime) -> ReviewTask | None:
+    def claim_next(
+        self,
+        *,
+        worker_id: str,
+        now: datetime,
+        lease_seconds: int = 120,
+    ) -> ReviewTask | None:
+        del lease_seconds
         self.claim_calls.append((worker_id, now))
         if self.claim_error is not None:
             raise self.claim_error
@@ -146,18 +183,46 @@ class FakeRepository:
         *,
         task_id: UUID,
         worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
         terminal: TaskTerminal,
     ) -> bool:
+        del lease_generation, lease_token, now
         self.succeed_calls.append((task_id, worker_id, terminal))
         if self.terminal_error is not None:
             raise self.terminal_error
         return self.succeed_result
 
-    def fail(self, *, task_id: UUID, worker_id: str, reason: str) -> bool:
+    def fail(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
+        reason: str,
+    ) -> bool:
+        del lease_generation, lease_token, now
         self.fail_calls.append((task_id, worker_id, reason))
         if self.terminal_error is not None:
             raise self.terminal_error
         return self.fail_result
+
+    def save_checkpoint(self, **_kwargs) -> bool:
+        return True
+
+    def heartbeat(self, *, task_id: UUID, now: datetime, **_kwargs):
+        return TaskHeartbeatResult(
+            task_id=task_id,
+            disposition=TaskHeartbeatDisposition.ACTIVE,
+            lease_expires_at=now + timedelta(minutes=2),
+        )
+
+    def cancel_running(self, **kwargs) -> bool:
+        self.cancel_calls.append(kwargs)
+        return self.cancel_result
 
 
 class FakeExecutor:

@@ -23,6 +23,11 @@ from app.tasks.models import (
     TaskRepositoryCreateDisposition,
 )
 from app.tasks.ports import TaskRepository
+from app.tasks.reliable_runtime import (
+    OperationIdentity,
+    TaskCancelResult,
+    TaskEventPage,
+)
 
 
 TaskServiceErrorCode: TypeAlias = Literal[
@@ -49,6 +54,7 @@ TaskIdFactory = Callable[[], UUID]
 RunIdFactory = Callable[[], str]
 Clock = Callable[[], datetime]
 _OWNER_ID_ADAPTER = TypeAdapter(OwnerId)
+_OPERATION_ID_ADAPTER = TypeAdapter(OperationIdentity)
 
 
 class TaskServiceError(RuntimeError):
@@ -243,6 +249,73 @@ class ReviewTaskService:
         except Exception:
             raise TaskServiceError("task_persistence_failed") from None
         return self._project_lookup(task)
+
+    def request_cancel(
+        self,
+        *,
+        owner_id: str,
+        task_id: UUID,
+        request_id: str,
+    ) -> TaskCancelResult:
+        _validate_owner_scope(owner_id)
+        if not isinstance(task_id, UUID):
+            raise TaskServiceError("task_not_found")
+        try:
+            normalized_request_id = _OPERATION_ID_ADAPTER.validate_python(
+                request_id,
+                strict=True,
+            )
+        except (TypeError, ValueError, ValidationError):
+            raise TaskServiceError("task_identity_invalid") from None
+        request_cancel = getattr(self._repository, "request_cancel", None)
+        if not callable(request_cancel):
+            raise TaskServiceError("task_persistence_failed")
+        try:
+            result = request_cancel(
+                owner_id=owner_id,
+                task_id=task_id,
+                request_id=normalized_request_id,
+                reason="user_requested",
+                now=self._clock(),
+            )
+        except Exception:
+            raise TaskServiceError("task_persistence_failed") from None
+        if result is None:
+            raise TaskServiceError("task_not_found")
+        if not isinstance(result, TaskCancelResult) or result.task_id != task_id:
+            raise TaskServiceError("task_persistence_failed")
+        return result
+
+    def read_events(
+        self,
+        *,
+        owner_id: str,
+        task_id: UUID,
+        after_cursor: int = 0,
+        limit: int = 50,
+    ) -> TaskEventPage:
+        _validate_owner_scope(owner_id)
+        if not isinstance(task_id, UUID):
+            raise TaskServiceError("task_not_found")
+        read_events = getattr(self._repository, "read_events", None)
+        if not callable(read_events):
+            raise TaskServiceError("task_persistence_failed")
+        try:
+            result = read_events(
+                owner_id=owner_id,
+                task_id=task_id,
+                after_cursor=after_cursor,
+                limit=limit,
+            )
+        except Exception:
+            raise TaskServiceError("task_persistence_failed") from None
+        if result is None:
+            raise TaskServiceError("task_not_found")
+        if not isinstance(result, TaskEventPage) or any(
+            event.task_id != task_id for event in result.events
+        ):
+            raise TaskServiceError("task_persistence_failed")
+        return result
 
     @staticmethod
     def _project_lookup(task: ReviewTask | None) -> ReviewTaskView:

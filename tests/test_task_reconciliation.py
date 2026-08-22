@@ -44,6 +44,11 @@ from app.tasks.reconciliation import (
     TaskReconciliationError,
     TaskTerminalEvidenceError,
 )
+from app.tasks.reliable_runtime import (
+    TaskCheckpointPhase,
+    TaskCheckpointReference,
+    TaskLease,
+)
 from tests.test_run_query_service import _create_terminal_run
 from tests.test_agent_draft_preparer import demo_summary
 from tests.test_agent_runtime import FactoryProbe, RuntimeProvider
@@ -59,6 +64,16 @@ def running_task(
     payload: dict | None = None,
 ) -> ReviewTask:
     created = NOW + timedelta(seconds=number)
+    claimed = created + timedelta(seconds=1)
+    checkpoint = TaskCheckpointReference(
+        checkpoint_id="claimed-1",
+        run_id=run_id,
+        checkpoint_sequence=1,
+        lease_generation=1,
+        phase=TaskCheckpointPhase.CLAIMED_SAFE,
+        safe_to_replay=True,
+        created_at=claimed,
+    )
     return ReviewTask(
         task_id=UUID(f"50000000-0000-4000-8000-{number:012d}"),
         run_id=run_id,
@@ -77,15 +92,41 @@ def running_task(
         status=TaskStatus.RUNNING,
         worker_id="worker-1",
         created_at=created,
-        updated_at=created + timedelta(seconds=1),
-        claimed_at=created + timedelta(seconds=1),
+        updated_at=claimed,
+        claimed_at=claimed,
         finished_at=None,
+        lease_generation=1,
+        lease=TaskLease(
+            worker_id="worker-1",
+            generation=1,
+            token="e" * 64,
+            acquired_at=claimed,
+            heartbeat_at=claimed,
+            expires_at=claimed + timedelta(seconds=120),
+        ),
+        checkpoint_sequence=1,
+        checkpoint_reference=checkpoint,
         terminal_reason=None,
         publication_status=None,
         report_available=False,
         trace_reference=None,
         receipt_reference=None,
         artifact_reference=None,
+    )
+
+
+def recovery_required_task() -> ReviewTask:
+    task = running_task()
+    return ReviewTask.model_validate(
+        {
+            **task.model_dump(mode="python"),
+            "status": TaskStatus.RECOVERY_REQUIRED,
+            "lease": None,
+            "checkpoint_reference": task.checkpoint_reference,
+            "updated_at": NOW + timedelta(minutes=5),
+            "recovery_required_at": NOW + timedelta(minutes=5),
+            "recovery_reason": "unsafe_checkpoint",
+        }
     )
 
 
@@ -205,15 +246,36 @@ class FakeRepository:
     def __init__(self, *, succeed_result: bool = True, fail_result: bool = True):
         self.succeed_result = succeed_result
         self.fail_result = fail_result
-        self.succeed_calls: list[tuple[UUID, str, TaskTerminal]] = []
-        self.fail_calls: list[tuple[UUID, str, str]] = []
+        self.succeed_calls: list[tuple[UUID, str, int, TaskTerminal]] = []
+        self.fail_calls: list[tuple[UUID, str, int, str]] = []
 
-    def succeed(self, *, task_id, worker_id, terminal):
-        self.succeed_calls.append((task_id, worker_id, terminal))
+    def reconcile_expired_success(
+        self,
+        *,
+        task_id,
+        worker_id,
+        lease_generation,
+        lease_token,
+        now,
+        terminal,
+    ):
+        del lease_token, now
+        self.succeed_calls.append(
+            (task_id, worker_id, lease_generation, terminal)
+        )
         return self.succeed_result
 
-    def fail(self, *, task_id, worker_id, reason):
-        self.fail_calls.append((task_id, worker_id, reason))
+    def fail_recovery_required(
+        self,
+        *,
+        task_id,
+        worker_id,
+        lease_generation,
+        now,
+        reason,
+    ):
+        del now
+        self.fail_calls.append((task_id, worker_id, lease_generation, reason))
         return self.fail_result
 
 
@@ -247,6 +309,16 @@ def running_conversation_task() -> ReviewTask:
     request = ConversationRecentReviewRequest()
     payload = request.model_dump(mode="json")
     created = NOW + timedelta(seconds=20)
+    claimed = created + timedelta(seconds=1)
+    checkpoint = TaskCheckpointReference(
+        checkpoint_id="claimed-1",
+        run_id="review_conversation_executor",
+        checkpoint_sequence=1,
+        lease_generation=1,
+        phase=TaskCheckpointPhase.CLAIMED_SAFE,
+        safe_to_replay=True,
+        created_at=claimed,
+    )
     return ReviewTask(
         task_id=UUID("54000000-0000-4000-8000-000000000001"),
         run_id="review_conversation_executor",
@@ -265,9 +337,20 @@ def running_conversation_task() -> ReviewTask:
         status=TaskStatus.RUNNING,
         worker_id="worker-1",
         created_at=created,
-        updated_at=created + timedelta(seconds=1),
-        claimed_at=created + timedelta(seconds=1),
+        updated_at=claimed,
+        claimed_at=claimed,
         finished_at=None,
+        lease_generation=1,
+        lease=TaskLease(
+            worker_id="worker-1",
+            generation=1,
+            token="e" * 64,
+            acquired_at=claimed,
+            heartbeat_at=claimed,
+            expires_at=claimed + timedelta(seconds=120),
+        ),
+        checkpoint_sequence=1,
+        checkpoint_reference=checkpoint,
         terminal_reason=None,
         publication_status=None,
         report_available=False,
@@ -495,7 +578,7 @@ def test_reconciler_only_projects_a_complete_receipt_and_never_reruns():
     result = ReviewTaskReconciler(
         repository=repository,
         verifier=verifier,
-    ).reconcile(task)
+    ).reconcile(task, now=NOW + timedelta(minutes=10))
 
     assert result.status is ReconciliationStatus.RECONCILED
     assert result.reason == "reconciled"
@@ -510,7 +593,7 @@ def test_reconciler_projects_recovery_required_when_receipt_is_missing():
     result = ReviewTaskReconciler(
         repository=repository,
         verifier=verifier,
-    ).reconcile(task)
+    ).reconcile(task, now=NOW + timedelta(minutes=10))
 
     assert result.status is ReconciliationStatus.RECOVERY_REQUIRED
     assert result.reason == "receipt_missing"
@@ -526,7 +609,7 @@ def test_reconciler_maps_unexpected_evidence_failure_to_a_body_free_error():
         ReviewTaskReconciler(
             repository=repository,
             verifier=verifier,
-        ).reconcile(task)
+        ).reconcile(task, now=NOW + timedelta(minutes=10))
 
     assert caught.value.code == "terminal_evidence_read_failed"
     assert "private" not in str(caught.value)
@@ -540,7 +623,7 @@ def test_reconciler_does_not_overwrite_a_lost_owner():
     result = ReviewTaskReconciler(
         repository=repository,
         verifier=FakeVerifier(terminal(run_id=task.run_id)),
-    ).reconcile(task)
+    ).reconcile(task, now=NOW + timedelta(minutes=10))
 
     assert result.status is ReconciliationStatus.OWNERSHIP_LOST
     assert result.reason == "task_ownership_lost"
@@ -553,7 +636,7 @@ def test_reconciler_rejects_evidence_for_a_different_run_before_sql_cas():
     result = ReviewTaskReconciler(
         repository=repository,
         verifier=FakeVerifier(terminal(run_id="review_other_run")),
-    ).reconcile(task)
+    ).reconcile(task, now=NOW + timedelta(minutes=10))
 
     assert result.status is ReconciliationStatus.RECOVERY_REQUIRED
     assert result.reason == "terminal_evidence_invalid"
@@ -561,14 +644,18 @@ def test_reconciler_rejects_evidence_for_a_different_run_before_sql_cas():
 
 
 def test_manual_recovery_requires_exact_worker_confirmation_and_uses_cas():
-    task = running_task()
+    task = recovery_required_task()
     repository = FakeRepository()
-    recovery = ManualReviewTaskRecovery(repository)
+    recovery = ManualReviewTaskRecovery(
+        repository,
+        clock=lambda: NOW + timedelta(minutes=10),
+    )
 
     with pytest.raises(ValueError, match="confirmation"):
         recovery.recover(
             task_id=task.task_id,
             worker_id="worker-1",
+            lease_generation=1,
             confirmation_worker_id="worker-2",
         )
     assert repository.fail_calls == []
@@ -576,11 +663,12 @@ def test_manual_recovery_requires_exact_worker_confirmation_and_uses_cas():
     result = recovery.recover(
         task_id=task.task_id,
         worker_id="worker-1",
+        lease_generation=1,
         confirmation_worker_id="worker-1",
     )
     assert result.status is ManualRecoveryStatus.RECOVERED
     assert repository.fail_calls == [
-        (task.task_id, "worker-1", "worker_confirmed_dead")
+        (task.task_id, "worker-1", 1, "worker_confirmed_dead")
     ]
 
 

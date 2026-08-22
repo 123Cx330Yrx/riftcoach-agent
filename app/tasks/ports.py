@@ -13,6 +13,12 @@ from app.tasks.models import (
     TaskRepositoryDeleteResult,
     TaskTerminal,
 )
+from app.tasks.reliable_runtime import (
+    TaskCancelResult,
+    TaskCheckpointPhase,
+    TaskEventPage,
+    TaskHeartbeatResult,
+)
 
 
 class TaskRepositoryError(RuntimeError):
@@ -53,13 +59,129 @@ class TaskRepository(Protocol):
         *,
         worker_id: str,
         now: datetime,
+        lease_seconds: int = 120,
     ) -> ReviewTask | None: ...
+
+    def heartbeat(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
+        lease_seconds: int,
+    ) -> TaskHeartbeatResult: ...
+
+    def save_checkpoint(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        checkpoint_id: str,
+        phase: TaskCheckpointPhase,
+        now: datetime,
+    ) -> bool: ...
+
+    def request_cancel(
+        self,
+        *,
+        owner_id: str,
+        task_id: UUID,
+        request_id: str,
+        reason: str,
+        now: datetime,
+    ) -> TaskCancelResult | None: ...
+
+    def cancel_running(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
+    ) -> bool: ...
+
+    def read_events(
+        self,
+        *,
+        owner_id: str,
+        task_id: UUID,
+        after_cursor: int = 0,
+        limit: int = 50,
+    ) -> TaskEventPage | None: ...
+
+    def list_expired_recovery_candidates(
+        self,
+        *,
+        now: datetime,
+        limit: int,
+    ) -> tuple[ReviewTask, ...]: ...
+
+    def cancel_expired(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
+    ) -> bool: ...
+
+    def reconcile_expired_success(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
+        terminal: TaskTerminal,
+    ) -> bool: ...
+
+    def requeue_expired(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
+        max_recoveries: int,
+    ) -> bool: ...
+
+    def mark_recovery_required(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
+        reason: str,
+    ) -> bool: ...
+
+    def fail_recovery_required(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        now: datetime,
+        reason: str,
+    ) -> bool: ...
 
     def succeed(
         self,
         *,
         task_id: UUID,
         worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
         terminal: TaskTerminal,
     ) -> bool: ...
 
@@ -68,6 +190,9 @@ class TaskRepository(Protocol):
         *,
         task_id: UUID,
         worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
         reason: str,
     ) -> bool: ...
 

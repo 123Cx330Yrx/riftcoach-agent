@@ -86,3 +86,41 @@ def test_postgres_api_create_replay_owner_scope_and_not_ready_run(
     assert owner.get(f"/runs/{run_id}").status_code == 409
     assert owner.get(f"/runs/{run_id}/report").status_code == 409
     assert owner.get("/health/ready").json()["status"] == "ready"
+
+
+def test_postgres_cancel_and_event_cursor_are_owner_scoped(
+    migrated_api: tuple[TestClient, TestClient],
+) -> None:
+    owner, other_owner = migrated_api
+    created = owner.post(
+        "/reviews/recent",
+        headers={"Idempotency-Key": "postgres-cancel-1"},
+        json={"riot_id": "DemoPlayer#TEST", "focus": "overall"},
+    )
+    task_id = created.json()["task_id"]
+
+    before = owner.get(f"/tasks/{task_id}/events?limit=1")
+    cancelled = owner.post(
+        f"/tasks/{task_id}/cancel",
+        headers={"Idempotency-Key": "cancel-postgres-1"},
+    )
+    replayed = owner.post(
+        f"/tasks/{task_id}/cancel",
+        headers={"Idempotency-Key": "cancel-postgres-1"},
+    )
+    after = owner.get(
+        f"/tasks/{task_id}/events?after_cursor="
+        f"{before.json()['next_cursor']}&limit=10"
+    )
+
+    assert before.status_code == cancelled.status_code == replayed.status_code == 200
+    assert before.json()["events"][0]["event_kind"] == "created"
+    assert cancelled.json()["disposition"] == "cancelled"
+    assert replayed.json()["disposition"] == "already_terminal"
+    assert after.json()["events"][0]["event_kind"] == "cancelled"
+    assert owner.get(f"/tasks/{task_id}").json()["status"] == "cancelled"
+    assert other_owner.post(
+        f"/tasks/{task_id}/cancel",
+        headers={"Idempotency-Key": "other-owner-cancel"},
+    ).status_code == 404
+    assert other_owner.get(f"/tasks/{task_id}/events").status_code == 404

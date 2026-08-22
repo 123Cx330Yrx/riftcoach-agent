@@ -83,6 +83,8 @@ def test_worker_settings_hide_secrets_and_resolve_runtime_assets(
     assert settings.riot_region == "asia"
     assert settings.knowledge_root == (ROOT / "data/rag_docs").resolve()
     assert settings.polling_policy.maximum_delay_s == 2
+    assert settings.lease_policy.lease_seconds == 120
+    assert settings.lease_policy.heartbeat_seconds == 30
     assert "riot-secret" not in repr(settings)
     assert "llm-secret" not in repr(settings)
     assert "database-secret" not in repr(settings)
@@ -175,6 +177,30 @@ def test_successful_composition_finishes_all_preflight_before_returning_worker(
 
         def fail(self, **_kwargs):
             return True
+
+        def heartbeat(self, **_kwargs):
+            raise AssertionError("composition must not heartbeat a task")
+
+        def save_checkpoint(self, **_kwargs):
+            raise AssertionError("composition must not checkpoint a task")
+
+        def cancel_running(self, **_kwargs):
+            raise AssertionError("composition must not cancel a task")
+
+        def list_expired_recovery_candidates(self, **_kwargs):
+            return ()
+
+        def cancel_expired(self, **_kwargs):
+            return False
+
+        def reconcile_expired_success(self, **_kwargs):
+            return False
+
+        def requeue_expired(self, **_kwargs):
+            return False
+
+        def mark_recovery_required(self, **_kwargs):
+            return False
 
     class Runtime:
         def run(self, _request):

@@ -50,6 +50,7 @@ from app.api.memory_models import (
 )
 from app.api.task_models import (
     ApiErrorCode,
+    CancelTaskResponse,
     CreateConversationReviewTaskResponse,
     CreateReviewTaskResponse,
     DeleteTaskResponse,
@@ -58,6 +59,7 @@ from app.api.task_models import (
     ReadinessResponse,
     ReadinessResult,
     TaskLinks,
+    TaskEventPageResponse,
 )
 from app.api.typed_memory_models import (
     TypedMemoryApiErrorCode,
@@ -134,6 +136,7 @@ from app.tasks.models import (
     TaskStatus,
 )
 from app.tasks.service import TaskServiceError
+from app.tasks.reliable_runtime import TaskCancelResult, TaskEventPage
 from app.tasks.deletion import TaskDeletionError
 from app.tasks.observability import TaskObservability
 
@@ -154,6 +157,23 @@ class TaskServicePort(Protocol):
         owner_id: str,
         run_id: str,
     ) -> ReviewTaskView: ...
+
+    def request_cancel(
+        self,
+        *,
+        owner_id: str,
+        task_id: UUID,
+        request_id: str,
+    ) -> TaskCancelResult: ...
+
+    def read_events(
+        self,
+        *,
+        owner_id: str,
+        task_id: UUID,
+        after_cursor: int = 0,
+        limit: int = 50,
+    ) -> TaskEventPage: ...
 
 
 class PlayerLinkServicePort(Protocol):
@@ -1630,6 +1650,88 @@ def create_app(
         except Exception:
             return _error_response("service_unavailable", status_code=503)
 
+    @app.post(
+        "/tasks/{task_id}/cancel",
+        response_model=CancelTaskResponse,
+        responses={
+            404: {"model": ErrorResponse},
+            422: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def cancel_task(
+        task_id: str,
+        idempotency_key: str = Header(
+            alias="Idempotency-Key",
+            min_length=1,
+            max_length=128,
+            pattern=_IDEMPOTENCY_PATTERN,
+        ),
+        actor: ActorContext = Depends(trusted_actor),
+        _empty_body: None = Depends(require_empty_body),
+    ) -> CancelTaskResponse | JSONResponse:
+        del _empty_body
+        try:
+            parsed_task_id = UUID(task_id)
+        except (AttributeError, TypeError, ValueError):
+            return _error_response("task_not_found", status_code=404)
+        cancel = getattr(task_service, "request_cancel", None)
+        if not callable(cancel):
+            return _error_response("service_unavailable", status_code=503)
+        try:
+            result = cancel(
+                owner_id=actor.owner_id,
+                task_id=parsed_task_id,
+                request_id=idempotency_key,
+            )
+            if not isinstance(result, TaskCancelResult):
+                raise TypeError("task service returned an invalid cancel result")
+            return CancelTaskResponse.from_result(result)
+        except TaskServiceError as error:
+            return _task_lookup_error(error, not_found_code="task_not_found")
+        except Exception:
+            return _error_response("service_unavailable", status_code=503)
+
+    @app.get(
+        "/tasks/{task_id}/events",
+        response_model=TaskEventPageResponse,
+        responses={
+            404: {"model": ErrorResponse},
+            422: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def get_task_events(
+        task_id: str,
+        after_cursor: int = Query(default=0, ge=0),
+        limit: int = Query(default=50, ge=1, le=100),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> TaskEventPageResponse | JSONResponse:
+        try:
+            parsed_task_id = UUID(task_id)
+        except (AttributeError, TypeError, ValueError):
+            return _error_response("task_not_found", status_code=404)
+        read_events = getattr(task_service, "read_events", None)
+        if not callable(read_events):
+            return _error_response("service_unavailable", status_code=503)
+        try:
+            page = read_events(
+                owner_id=actor.owner_id,
+                task_id=parsed_task_id,
+                after_cursor=after_cursor,
+                limit=limit,
+            )
+            if not isinstance(page, TaskEventPage):
+                raise TypeError("task service returned an invalid event page")
+            return TaskEventPageResponse.from_page(
+                task_id=parsed_task_id,
+                page=page,
+            )
+        except TaskServiceError as error:
+            return _task_lookup_error(error, not_found_code="task_not_found")
+        except Exception:
+            return _error_response("service_unavailable", status_code=503)
+
     @app.get(
         "/tasks/{task_id}",
         response_model=ReviewTaskView,
@@ -1693,13 +1795,17 @@ def create_app(
         task = owned_run_task(actor, run_id)
         if isinstance(task, JSONResponse):
             return task
-        if task.status in {TaskStatus.QUEUED, TaskStatus.RUNNING}:
+        if task.status in {
+            TaskStatus.QUEUED,
+            TaskStatus.RUNNING,
+            TaskStatus.RECOVERY_REQUIRED,
+        }:
             return _error_response(
                 "run_not_ready",
                 status_code=409,
                 run_id=task.run_id,
             )
-        if task.status is TaskStatus.FAILED:
+        if task.status in {TaskStatus.FAILED, TaskStatus.CANCELLED}:
             return _error_response(
                 "run_not_available",
                 status_code=409,
@@ -1735,13 +1841,20 @@ def create_app(
         task = owned_run_task(actor, run_id)
         if isinstance(task, JSONResponse):
             return task
-        if task.status in {TaskStatus.QUEUED, TaskStatus.RUNNING}:
+        if task.status in {
+            TaskStatus.QUEUED,
+            TaskStatus.RUNNING,
+            TaskStatus.RECOVERY_REQUIRED,
+        }:
             return _error_response(
                 "run_not_ready",
                 status_code=409,
                 run_id=task.run_id,
             )
-        if task.status is TaskStatus.FAILED or not task.report_available:
+        if task.status in {
+            TaskStatus.FAILED,
+            TaskStatus.CANCELLED,
+        } or not task.report_available:
             return _error_response(
                 "report_not_available",
                 status_code=409,

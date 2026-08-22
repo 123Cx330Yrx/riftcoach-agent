@@ -177,10 +177,13 @@ def test_terminal_delete_hides_sql_row_before_cleaning_run_data(tmp_path: Path) 
         ).task
         assert created is not None
         claimed = repository.claim_next(worker_id="worker-1", now=NOW + timedelta(seconds=1))
-        assert claimed is not None
+        assert claimed is not None and claimed.lease is not None
         assert repository.fail(
             task_id=created.task_id,
             worker_id="worker-1",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=NOW + timedelta(seconds=2),
             reason="worker_execution_failed",
         )
         run_dir = tmp_path / created.run_id
@@ -225,10 +228,13 @@ def test_postgres_expired_terminal_rows_are_hidden_in_a_bounded_batch() -> None:
         ).task
         assert created is not None
         claimed = repository.claim_next(worker_id="worker-1", now=NOW + timedelta(seconds=1))
-        assert claimed is not None
+        assert claimed is not None and claimed.lease is not None
         assert repository.fail(
             task_id=created.task_id,
             worker_id="worker-1",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=NOW + timedelta(seconds=2),
             reason="worker_execution_failed",
         )
 

@@ -4,7 +4,7 @@ import re
 import unicodedata
 from datetime import datetime, timezone
 from enum import StrEnum
-from typing import Annotated, Literal, Self
+from typing import Annotated, Any, Literal, Self
 from uuid import UUID
 
 from pydantic import (
@@ -76,8 +76,18 @@ class TaskContractModel(BaseModel):
 class TaskStatus(StrEnum):
     QUEUED = "queued"
     RUNNING = "running"
+    RECOVERY_REQUIRED = "recovery_required"
     SUCCEEDED = "succeeded"
     FAILED = "failed"
+    CANCELLED = "cancelled"
+
+    @property
+    def is_terminal(self) -> bool:
+        return self in {
+            TaskStatus.SUCCEEDED,
+            TaskStatus.FAILED,
+            TaskStatus.CANCELLED,
+        }
 
 
 class TaskPublicationStatus(StrEnum):
@@ -316,6 +326,17 @@ class ReviewTask(TaskContractModel):
     claimed_at: datetime | None
     finished_at: datetime | None
 
+    lease_generation: int = Field(default=0, ge=0)
+    lease: Any | None = Field(default=None, exclude=True, repr=False)
+    cancel_request_id: IdempotencyKey | None = None
+    cancel_requested_at: datetime | None = None
+    cancel_reason: SafeTaskCode | None = None
+    checkpoint_sequence: int = Field(default=0, ge=0)
+    checkpoint_reference: Any | None = None
+    recovery_count: int = Field(default=0, ge=0)
+    recovery_required_at: datetime | None = None
+    recovery_reason: SafeTaskCode | None = None
+
     terminal_reason: SafeTaskCode | None
     publication_status: TaskPublicationStatus | None
     report_available: bool
@@ -342,13 +363,53 @@ class ReviewTask(TaskContractModel):
             raise ValueError("terminal_reason must be a safe code")
         return value
 
-    @field_validator("created_at", "updated_at", "claimed_at", "finished_at")
+    @field_validator(
+        "created_at",
+        "updated_at",
+        "claimed_at",
+        "finished_at",
+        "cancel_requested_at",
+        "recovery_required_at",
+    )
     @classmethod
     def normalize_datetime(cls, value: datetime | None) -> datetime | None:
         return None if value is None else _as_utc(value)
 
     @model_validator(mode="after")
     def validate_lifecycle(self) -> Self:
+        from app.tasks.reliable_runtime import TaskCheckpointReference, TaskLease
+
+        if self.lease is not None and not isinstance(self.lease, TaskLease):
+            raise ValueError("lease must be a TaskLease")
+        if self.checkpoint_reference is not None and not isinstance(
+            self.checkpoint_reference,
+            TaskCheckpointReference,
+        ):
+            raise ValueError(
+                "checkpoint_reference must be a TaskCheckpointReference"
+            )
+        if (self.cancel_request_id is None) != (
+            self.cancel_requested_at is None
+        ) or (self.cancel_request_id is None) != (self.cancel_reason is None):
+            raise ValueError("cancel request identity must be all present or absent")
+        has_cancel_request = self.cancel_request_id is not None
+        if self.status is TaskStatus.CANCELLED:
+            if not has_cancel_request:
+                raise ValueError("cancelled task requires a cancel request")
+        elif self.status is not TaskStatus.RUNNING and has_cancel_request:
+            raise ValueError(
+                "cancel request is only legal for running or cancelled tasks"
+            )
+        if self.checkpoint_reference is not None:
+            if (
+                self.checkpoint_reference.run_id != self.run_id
+                or self.checkpoint_reference.checkpoint_sequence
+                != self.checkpoint_sequence
+                or self.checkpoint_reference.lease_generation
+                != self.lease_generation
+            ):
+                raise ValueError("checkpoint identity must match its task")
+
         if self.schema_version == "1.0":
             if (
                 self.conversation_binding is not None
@@ -368,12 +429,24 @@ class ReviewTask(TaskContractModel):
         if self.claimed_at is not None and self.claimed_at < self.created_at:
             raise ValueError("claimed_at must not precede created_at")
         if self.finished_at is not None:
-            if self.claimed_at is None or self.finished_at < self.claimed_at:
+            if self.claimed_at is None:
+                if self.status is not TaskStatus.CANCELLED:
+                    raise ValueError("finished_at requires claimed_at")
+            elif self.finished_at < self.claimed_at:
                 raise ValueError("finished_at must not precede claimed_at")
 
         if self.status is TaskStatus.QUEUED:
+            if self.lease is not None:
+                raise ValueError("queued task cannot contain a lease")
             self._require_empty_execution_state("queued")
         elif self.status is TaskStatus.RUNNING:
+            if self.lease is None:
+                raise ValueError("running task requires a lease")
+            if (
+                self.lease.worker_id != self.worker_id
+                or self.lease.generation != self.lease_generation
+            ):
+                raise ValueError("running task lease identity mismatch")
             if self.worker_id is None or self.claimed_at is None:
                 raise ValueError("running task requires worker_id and claimed_at")
             if any(
@@ -392,14 +465,44 @@ class ReviewTask(TaskContractModel):
                 )
             ):
                 raise ValueError("running task cannot contain terminal projection")
+        elif self.status is TaskStatus.RECOVERY_REQUIRED:
+            if self.lease is not None:
+                raise ValueError("recovery-required task cannot contain a lease")
+            if self.worker_id is None or self.claimed_at is None:
+                raise ValueError(
+                    "recovery-required task requires execution identity"
+                )
+            if any(
+                value is not None
+                for value in (
+                    self.finished_at,
+                    self.terminal_reason,
+                    self.publication_status,
+                    self.trace_reference,
+                    self.receipt_reference,
+                    self.artifact_reference,
+                )
+            ) or self.report_available:
+                raise ValueError(
+                    "recovery-required task cannot contain terminal projection"
+                )
+            if self.recovery_required_at is None or self.recovery_reason is None:
+                raise ValueError(
+                    "recovery-required task requires a recovery reason"
+                )
         else:
-            if (
-                self.worker_id is None
-                or self.claimed_at is None
-                or self.finished_at is None
-                or self.terminal_reason is None
+            if self.lease is not None:
+                raise ValueError("terminal task cannot contain a live lease")
+            if self.finished_at is None or self.terminal_reason is None:
+                raise ValueError("terminal task requires terminal identity")
+            if self.status is not TaskStatus.CANCELLED and (
+                self.worker_id is None or self.claimed_at is None
             ):
-                raise ValueError("terminal task requires complete execution identity")
+                raise ValueError("terminal task requires execution identity")
+            if (self.worker_id is None) != (self.claimed_at is None):
+                raise ValueError(
+                    "terminal worker and claim identity must be both present or absent"
+                )
             if self.status is TaskStatus.SUCCEEDED:
                 if self.publication_status is None:
                     raise ValueError("succeeded task requires publication_status")

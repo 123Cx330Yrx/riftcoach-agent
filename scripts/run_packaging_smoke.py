@@ -62,6 +62,8 @@ PackagingSmokeErrorCode: TypeAlias = Literal[
     "packaging_smoke_terminal_update_failed",
     "packaging_smoke_iteration_invalid",
     "packaging_smoke_task_query_failed",
+    "packaging_smoke_task_event_query_failed",
+    "packaging_smoke_task_event_invalid",
     "packaging_smoke_worker_failed",
     "packaging_smoke_terminal_invalid",
     "packaging_smoke_link_create_failed",
@@ -104,6 +106,8 @@ _ERROR_CODES = frozenset(
         "packaging_smoke_terminal_update_failed",
         "packaging_smoke_iteration_invalid",
         "packaging_smoke_task_query_failed",
+        "packaging_smoke_task_event_query_failed",
+        "packaging_smoke_task_event_invalid",
         "packaging_smoke_worker_failed",
         "packaging_smoke_terminal_invalid",
         "packaging_smoke_link_create_failed",
@@ -372,6 +376,53 @@ def execute_packaging_smoke(
             or terminal_body.get("run_id") != run_id
         ):
             raise PackagingSmokeError("packaging_smoke_terminal_invalid")
+
+        try:
+            task_events = session.get(
+                f"{settings.base_url}/tasks/{task_id}/events",
+                params={"after_cursor": 0, "limit": 100},
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_task_event_query_failed"
+            ) from None
+        task_events_body = _json_object(task_events)
+        event_items = task_events_body.get("events")
+        if task_events.status_code != 200 or not isinstance(event_items, list):
+            raise PackagingSmokeError("packaging_smoke_task_event_query_failed")
+        event_kinds = tuple(
+            item.get("event_kind")
+            for item in event_items
+            if isinstance(item, dict)
+        )
+        forbidden_event_fields = {
+            "owner_id",
+            "worker_id",
+            "checkpoint_reference",
+            "lease_token",
+            "operation_identity",
+            "request_payload",
+            "puuid",
+        }
+        if (
+            len(event_kinds) != len(event_items)
+            or task_events_body.get("task_id") != str(task_id)
+            or task_events_body.get("after_cursor") != 0
+            or task_events_body.get("limit") != 100
+            or task_events_body.get("has_more") is not False
+            or not event_kinds
+            or event_kinds[0] != "created"
+            or "claimed" not in event_kinds
+            or "execution_started" not in event_kinds
+            or event_kinds[-1] != "failed"
+            or any(
+                forbidden_event_fields.intersection(item)
+                for item in event_items
+                if isinstance(item, dict)
+            )
+        ):
+            raise PackagingSmokeError("packaging_smoke_task_event_invalid")
 
         try:
             created_link = session.post(

@@ -3592,3 +3592,16 @@
   不能宣称强制中断。自动 recovery 也只覆盖 `claimed_safe` 或 strict terminal Receipt，未知副作用 fail closed。
 - 设计批完整/横向门未发现与现有 1625-test 基线冲突；真实 lease/fencing 并发仍必须等 0010 TDD 和公共
   PostgreSQL 17 job，设计绿灯本身不证明 8C 产品能力。
+
+## 2026-08-22：8C 实现审查发现
+
+- generation + private token + live expiry + status/cancel 共同组成 terminal fencing；只检查 worker_id 会在
+  同名 Worker 重启时接受旧结果。token 必须留在私有 lease 对象与 Repository seam，不进入公共 replay。
+- task event 与当前 row projection 必须同事务写；事件重试若 operation identity 相同但 envelope 不同，
+  必须回滚整个 mutation。global cursor 不进入 SHA，才能在数据库分配 cursor 后保持内容 identity 稳定。
+- Worker 的最后一次 heartbeat 与 terminal CAS 之间仍可能到达 cancel，因此 success/fail 返回 false 后要再做
+  fenced cancel；若失败来自 recovery/new generation，该 cancel 也会失败并正确收敛为 ownership_lost。
+- package 原先真实写入事件但未查询 replay；新增一次 owner-scoped event page 验证即可覆盖安装后纵向，
+  无需提高 package schema 或引入 SSE。公共 DTO 也无需暴露内部 operation identity。
+- Windows 最新完整回归 `1670 passed, 133 skipped` 不能替代真实 0010、concurrency 或 Linux image；这些仍是
+  implementation exact-SHA 三 job 的阻塞关闭证据。

@@ -125,7 +125,7 @@ def test_complete_receipt_reconciles_running_task_to_succeeded(tmp_path: Path):
         result = ReviewTaskReconciler(
             repository=repository,
             verifier=RecentReviewTerminalEvidenceVerifier(tmp_path),
-        ).reconcile(claimed)
+        ).reconcile(claimed, now=claimed.lease.expires_at)
 
         assert result.status is ReconciliationStatus.RECONCILED
         stored = repository.get_by_task_id(
@@ -150,7 +150,7 @@ def test_missing_receipt_is_recovery_required_and_not_automatically_failed(
         result = ReviewTaskReconciler(
             repository=repository,
             verifier=RecentReviewTerminalEvidenceVerifier(tmp_path),
-        ).reconcile(claimed)
+        ).reconcile(claimed, now=claimed.lease.expires_at)
 
         assert result.status is ReconciliationStatus.RECOVERY_REQUIRED
         assert result.reason == "receipt_missing"
@@ -166,11 +166,24 @@ def test_manual_recovery_cas_blocks_late_worker_terminal_update():
     with migrated_repository() as (repository, _factory):
         task = pending(3, run_id="review_reconcile_manual")
         claimed = create_and_claim(repository, task)
-        recovery = ManualReviewTaskRecovery(repository)
+        assert claimed.lease is not None
+        assert repository.mark_recovery_required(
+            task_id=claimed.task_id,
+            worker_id="worker-1",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=claimed.lease.expires_at,
+            reason="unsafe_checkpoint",
+        )
+        recovery = ManualReviewTaskRecovery(
+            repository,
+            clock=lambda: claimed.lease.expires_at + timedelta(seconds=1),
+        )
 
         result = recovery.recover(
             task_id=claimed.task_id,
             worker_id="worker-1",
+            lease_generation=claimed.lease.generation,
             confirmation_worker_id="worker-1",
         )
         assert result.status is ManualRecoveryStatus.RECOVERED
@@ -199,6 +212,9 @@ def test_manual_recovery_cas_blocks_late_worker_terminal_update():
         assert not repository.succeed(
             task_id=claimed.task_id,
             worker_id="worker-1",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=claimed.lease.expires_at + timedelta(seconds=2),
             terminal=late_terminal,
         )
         stored = repository.get_by_task_id(
@@ -221,5 +237,5 @@ def test_reconciliation_does_not_change_a_task_without_valid_evidence(
         result = ReviewTaskReconciler(
             repository=repository,
             verifier=RecentReviewTerminalEvidenceVerifier(tmp_path),
-        ).reconcile(claimed)
+        ).reconcile(claimed, now=claimed.lease.expires_at)
         assert result.status is ReconciliationStatus.RECOVERY_REQUIRED

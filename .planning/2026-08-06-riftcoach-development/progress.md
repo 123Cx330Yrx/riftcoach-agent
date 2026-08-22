@@ -3692,3 +3692,22 @@
   Harness dry-run `published`/0 revisions。compileall、pip、6 YAML、SDK/Secret/tracked-data、governance 与 diff 门通过。
 - 首次 YAML 扫描因 PowerShell 引号截断 Python `-c` 表达式产生 `IndentationError`，没有文件变化；修正为单引号
   外壳后 `yaml_ok=6`。当前唯一下一动作是独立设计提交/推送与 exact-SHA 三 job；公共全绿前不写 0010 或产品红灯。
+
+## 2026-08-22：8C 设计 exact-SHA 公共闭环，进入 pure TDD
+
+- 设计提交 `3ac12a35f75db8dc28021614a0a9828607ff7a59` / Actions `32575190136` 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。
+- 该公共证据只证明 ADR-0054、专用设计、实施计划与现有基线兼容，不证明 event/lease/fencing/cancel/
+  checkpoint/recovery 已实现。当前下一动作是 Task 1 pure contracts/projector 红灯；暂不创建 0010 migration。
+
+## 2026-08-22：8C Task 1–6 本地实现与 evidence 收尾
+
+- 已实现 strict reliable contracts/projector、0010/ORM、Repository event/lease/fencing/cancel/replay、
+  lease-aware Worker、Receipt/checkpoint-proven recovery 和 owner-scoped cancel/event API；公共 event DTO
+  不暴露 operation identity，package smoke 显式查询 body-free event replay。
+- 红灯证据包括缺模块/Recovery/API、event 时间篡改、`recovery_required` status 宽度、Worker cancel-terminal
+  竞态和 queued cancel lifecycle；最后的 API/privacy + package replay 补强先为 `2 failed`，后为 `29 passed`。
+- 最新完整本地 pytest `1670 passed, 133 skipped, 1 warning, 127 subtests passed`；skip 只说明本机无
+  PostgreSQL/Docker/Linux 条件，真库和 package 仍需 public CI。
+- 八维 walkthrough 与 coverage 路径已补齐，coverage 继续 `planned`。下一动作是全部横向门、cached diff、
+  独立 implementation/evidence 提交和 exact-SHA 三 job；不进入 8D。

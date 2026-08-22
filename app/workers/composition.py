@@ -44,8 +44,12 @@ from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.runtime.composition import RuntimeCompositionRoot
 from app.tasks.observability import TaskObservability
 from app.tasks.models import WorkerId
+from app.tasks.reliable_runtime import TaskLeasePolicy
 from app.tasks.recent_review_executor import RecentReviewTaskExecutor
-from app.tasks.reconciliation import RecentReviewTerminalEvidenceVerifier
+from app.tasks.reconciliation import (
+    ExpiredReviewTaskRecovery,
+    RecentReviewTerminalEvidenceVerifier,
+)
 from app.workers.polling import PollingPolicy
 from app.workers.review_worker import ReviewWorker
 
@@ -92,6 +96,7 @@ class WorkerCompositionSettings:
     ddragon_language: str
     min_duration_seconds: int
     polling_policy: PollingPolicy
+    lease_policy: TaskLeasePolicy
 
 
 @dataclass(slots=True)
@@ -168,6 +173,36 @@ def load_worker_composition_settings(
                 allow_zero=True,
             ),
         )
+        lease_policy = TaskLeasePolicy(
+            lease_seconds=_read_int(
+                environment,
+                "RIFTCOACH_WORKER_LEASE_SECONDS",
+                default=120,
+                minimum=15,
+                maximum=3600,
+            ),
+            heartbeat_seconds=_read_int(
+                environment,
+                "RIFTCOACH_WORKER_HEARTBEAT_SECONDS",
+                default=30,
+                minimum=1,
+                maximum=1200,
+            ),
+            recovery_batch_size=_read_int(
+                environment,
+                "RIFTCOACH_WORKER_RECOVERY_BATCH_SIZE",
+                default=25,
+                minimum=1,
+                maximum=100,
+            ),
+            max_recoveries=_read_int(
+                environment,
+                "RIFTCOACH_WORKER_MAX_RECOVERIES",
+                default=3,
+                minimum=0,
+                maximum=25,
+            ),
+        )
         return WorkerCompositionSettings(
             database=database,
             zhipu=zhipu,
@@ -202,6 +237,7 @@ def load_worker_composition_settings(
             ddragon_language=language,
             min_duration_seconds=min_duration,
             polling_policy=polling_policy,
+            lease_policy=lease_policy,
         )
     except WorkerCompositionError:
         raise
@@ -287,11 +323,12 @@ def build_review_worker_process(
             runtime=runtime,
             receipt_writer=FileRunReceiptStore(settings.runs_root),
         )
+        evidence_verifier = RecentReviewTerminalEvidenceVerifier(
+            settings.runs_root
+        )
         executor = RecentReviewTaskExecutor(
             application_service=application,
-            evidence_verifier=RecentReviewTerminalEvidenceVerifier(
-                settings.runs_root
-            ),
+            evidence_verifier=evidence_verifier,
         )
         worker = ReviewWorker(
             repository=repository,
@@ -300,6 +337,12 @@ def build_review_worker_process(
             polling_policy=settings.polling_policy,
             observability=TaskObservability(logger_name="riftcoach.worker"),
             terminal_turn_writer=PostgresTerminalTurnWriter(session_factory),
+            lease_policy=settings.lease_policy,
+            recovery=ExpiredReviewTaskRecovery(
+                repository=repository,
+                verifier=evidence_verifier,
+                policy=settings.lease_policy,
+            ),
         )
         return ReviewWorkerProcess(worker=worker, _engine=engine)
     except WorkerCompositionError:

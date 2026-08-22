@@ -2,12 +2,20 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Literal, Self, TypeAlias
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, model_validator
 
 from app.tasks.models import TaskCreateDisposition, TaskStatus
+from app.tasks.reliable_runtime import (
+    TaskCancelDisposition,
+    TaskCancelResult,
+    TaskEventPage,
+    TaskLifecycleEvent,
+    TaskLifecycleEventKind,
+)
 
 
 ApiVersion = Literal["2.0"]
@@ -75,6 +83,82 @@ class DeleteTaskResponse(ApiModel):
     cleanup_pending: bool = False
 
 
+class CancelTaskResponse(ApiModel):
+    schema_version: ApiSchemaVersion = "1.0"
+    task_id: UUID
+    disposition: TaskCancelDisposition
+    status: TaskStatus
+
+    @classmethod
+    def from_result(cls, result: TaskCancelResult) -> "CancelTaskResponse":
+        if not isinstance(result, TaskCancelResult):
+            raise TypeError("result must be a TaskCancelResult")
+        return cls(
+            task_id=result.task_id,
+            disposition=result.disposition,
+            status=result.status,
+        )
+
+
+class TaskEventResponse(ApiModel):
+    event_schema_version: Literal["1.0"] = "1.0"
+    event_cursor: int
+    event_identity: str
+    task_id: UUID
+    run_id: str
+    task_sequence: int
+    event_kind: TaskLifecycleEventKind
+    status_after: TaskStatus
+    lease_generation: int
+    reason: str | None = None
+    occurred_at: datetime
+
+    @classmethod
+    def from_event(cls, event: TaskLifecycleEvent) -> "TaskEventResponse":
+        if not isinstance(event, TaskLifecycleEvent):
+            raise TypeError("event must be a TaskLifecycleEvent")
+        return cls(
+            event_cursor=event.event_cursor,
+            event_identity=event.event_identity,
+            task_id=event.task_id,
+            run_id=event.run_id,
+            task_sequence=event.task_sequence,
+            event_kind=event.event_kind,
+            status_after=event.status_after,
+            lease_generation=event.lease_generation,
+            reason=event.reason,
+            occurred_at=event.occurred_at,
+        )
+
+
+class TaskEventPageResponse(ApiModel):
+    schema_version: ApiSchemaVersion = "1.0"
+    task_id: UUID
+    after_cursor: int
+    next_cursor: int
+    limit: int
+    has_more: bool
+    events: tuple[TaskEventResponse, ...]
+
+    @classmethod
+    def from_page(
+        cls,
+        *,
+        task_id: UUID,
+        page: TaskEventPage,
+    ) -> "TaskEventPageResponse":
+        if not isinstance(page, TaskEventPage):
+            raise TypeError("page must be a TaskEventPage")
+        return cls(
+            task_id=task_id,
+            after_cursor=page.after_cursor,
+            next_cursor=page.next_cursor,
+            limit=page.limit,
+            has_more=page.has_more,
+            events=tuple(TaskEventResponse.from_event(item) for item in page.events),
+        )
+
+
 class ErrorResponse(ApiModel):
     code: ApiErrorCode
     run_id: str | None = None
@@ -129,6 +213,7 @@ class ReadinessResponse(ApiModel):
 
 __all__ = [
     "ApiErrorCode",
+    "CancelTaskResponse",
     "CreateConversationReviewTaskResponse",
     "CreateReviewTaskResponse",
     "DeleteTaskResponse",
@@ -138,4 +223,6 @@ __all__ = [
     "ReadinessResponse",
     "ReadinessResult",
     "TaskLinks",
+    "TaskEventPageResponse",
+    "TaskEventResponse",
 ]

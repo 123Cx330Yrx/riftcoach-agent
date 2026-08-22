@@ -318,21 +318,30 @@ def test_terminal_success_cas_rejects_wrong_or_stale_worker_without_mutation() -
             worker_id="worker-1",
             now=BASE + timedelta(minutes=1),
         )
-        assert claimed is not None
+        assert claimed is not None and claimed.lease is not None
 
         assert not repository.succeed(
             task_id=task.task_id,
             worker_id="worker-1",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=BASE + timedelta(minutes=1, seconds=1),
             terminal=successful_terminal(run_id="review_other_run"),
         )
         assert not repository.succeed(
             task_id=task.task_id,
             worker_id="worker-2",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=BASE + timedelta(minutes=1, seconds=1),
             terminal=successful_terminal(),
         )
         assert not repository.fail(
             task_id=task.task_id,
             worker_id="worker-2",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=BASE + timedelta(minutes=1, seconds=1),
             reason="worker_execution_failed",
         )
         running = repository.get_by_task_id(
@@ -345,16 +354,25 @@ def test_terminal_success_cas_rejects_wrong_or_stale_worker_without_mutation() -
         assert repository.succeed(
             task_id=task.task_id,
             worker_id="worker-1",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=BASE + timedelta(minutes=1, seconds=2),
             terminal=successful_terminal(),
         )
         assert not repository.succeed(
             task_id=task.task_id,
             worker_id="worker-1",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=BASE + timedelta(minutes=1, seconds=3),
             terminal=successful_terminal(),
         )
         assert not repository.fail(
             task_id=task.task_id,
             worker_id="worker-1",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=BASE + timedelta(minutes=1, seconds=3),
             reason="worker_execution_failed",
         )
 
@@ -380,19 +398,26 @@ def test_terminal_failure_cas_is_owner_scoped_and_irreversible() -> None:
     with migrated_repository() as (repository, factory):
         task = pending(1)
         create_tasks(repository, task)
-        assert repository.claim_next(
+        claimed = repository.claim_next(
             worker_id="worker-1",
             now=BASE + timedelta(minutes=1),
-        ) is not None
+        )
+        assert claimed is not None and claimed.lease is not None
 
         assert repository.fail(
             task_id=task.task_id,
             worker_id="worker-1",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=BASE + timedelta(minutes=1, seconds=1),
             reason="worker_execution_failed",
         )
         assert not repository.succeed(
             task_id=task.task_id,
             worker_id="worker-1",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=BASE + timedelta(minutes=1, seconds=2),
             terminal=successful_terminal(),
         )
 
@@ -417,11 +442,14 @@ def test_terminal_timestamp_remains_monotonic_when_worker_clock_is_ahead() -> No
             worker_id="worker-1",
             now=future_claim,
         )
-        assert claimed is not None
+        assert claimed is not None and claimed.lease is not None
 
         assert repository.succeed(
             task_id=task.task_id,
             worker_id="worker-1",
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.private_token,
+            now=future_claim + timedelta(seconds=1),
             terminal=successful_terminal(),
         )
         terminal = repository.get_by_task_id(
