@@ -414,7 +414,7 @@ def _drop_reliable_task_constraints() -> None:
         "ck_review_tasks_status_allowed",
     ):
         op.drop_constraint(
-            constraint_name,
+            op.f(constraint_name),
             "review_tasks",
             type_="check",
         )

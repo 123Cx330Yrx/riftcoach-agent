@@ -1803,3 +1803,9 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   不抬高 schema、不引入 SSE。完整本地 pytest `1670 passed, 133 skipped`，公共真库/Linux 尚待证明。
 - 当前仍为 `8c-reliable-runtime-core / in_progress`、coverage planned；8D 只有在 implementation/evidence
   exact-SHA 三 job 全绿并完成独立状态收尾后才可 prepared，不能提前实现。
+
+## 2026-08-23：8C 公共 CI 修复裁决
+
+- 公共 run `32579514636` 的 migration downgrade 与 package queued-insert 失败均属于 PostgreSQL 边界实现错误，不改变 ADR-0054 的架构或安全语义。
+- 采用最小修复：Alembic downgrade 对 naming-convention 约束名统一使用 `op.f()`；queued task 的可空 checkpoint 使用 `JSONB(none_as_null=True)`，不放宽 `ck_review_tasks_checkpoint_shape`。
+- 修复新增离线与真实真库回归，coverage 继续 `planned`；在 repair implementation SHA 的三 job 全绿前，不关闭 8C、不进入 8D。

@@ -716,8 +716,9 @@ lease/fencing、cancel、checkpoint/recovery、Worker/API/package 纵向与八�
 - State: RQ-083 authorized；8B 已完成，8C Task 1–6 与八维材料本地完成，公共 implementation 门待执行。
 - [completed] durable event/replay、lease/fencing、cancel、checkpoint、recovery、late-result 隔离的教学、方案比较、ADR 与专用设计已由 `3ac12a3/32575190136` 公共闭环；
 - [completed-local] pure contracts、0010/ORM、Repository、lease-aware Worker、proof-based recovery、cancel/event API 与 package replay 纵向已按红绿 TDD 完成；
-- [completed-local] walkthrough 与 coverage 八维路径已补齐；完整 pytest `1670 passed, 133 skipped, 1 warning, 127 subtests passed`；
-- [in_progress] 完成两套 RAG、Harness、compileall/pip/YAML、安全/治理/diff 门，独立提交/推送并等待 exact-SHA 三 job；
+- [completed-local] walkthrough 与 coverage 八维路径已补齐；两个 PostgreSQL CI 修复与回归测试已完成；完整 pytest `1671 passed, 134 skipped, 1 warning, 127 subtests passed`；
+- [completed-local] 两套 RAG、Harness、compileall/pip/YAML、安全/治理/diff 门已通过；
+- [in_progress] 提交/推送 repair implementation 并等待 exact-SHA 三 job；
 - [ ] 公共全绿后 coverage complete，只交接 `8d-riot-opgg-evidence-fusion-core` prepared/waiting authorization；
 - [boundary] 不覆盖或重跑 8B holdout，不实现 Multi-Agent、DAG、第三方 Runtime、SSE、前端或 8D–8F。
 

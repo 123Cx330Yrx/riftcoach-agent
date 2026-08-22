@@ -3711,3 +3711,10 @@
   PostgreSQL/Docker/Linux 条件，真库和 package 仍需 public CI。
 - 八维 walkthrough 与 coverage 路径已补齐，coverage 继续 `planned`。下一动作是全部横向门、cached diff、
   独立 implementation/evidence 提交和 exact-SHA 三 job；不进入 8D。
+
+## 2026-08-23：8C PostgreSQL CI 修复本地收尾
+
+- 公共 run `32579514636` 日志确认 migration downgrade 约束名双前缀与 queued JSONB `null` 两个根因。
+- `_drop_reliable_task_constraints()` 已统一 `op.f(...)`；`ReviewTaskRecord.checkpoint_reference` 已设置 `JSONB(none_as_null=True)`。
+- 新增离线 downgrade 名称、metadata 与真实 queued insert 回归；完整 pytest `1671 passed, 134 skipped, 1 warning, 127 subtests passed`。
+- RAG development/holdout、Harness dry-run、compileall、pip、SDK/Secret/tracked-data、governance、diff 全绿；真实 PostgreSQL/Linux 仍待公共 repair SHA。

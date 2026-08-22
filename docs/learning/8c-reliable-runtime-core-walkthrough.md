@@ -169,10 +169,15 @@ tests/test_packaging_smoke.py` 为 `29 passed`。
 
 ### 5.2 本地证据
 
-最新完整 Windows 本地回归：`1670 passed, 133 skipped, 1 warning, 127 subtests passed`。133 个 skip
+最新完整 Windows 本地回归：`1671 passed, 134 skipped, 1 warning, 127 subtests passed`。134 个 skip
 主要是本机无 PostgreSQL/Docker/Linux 条件；它们不能写成“本地真库已通过”。pure、Worker、Fake API、
 offline migration 和普通回归已经执行；0010 真迁移、并发 fencing/recovery 和 Linux package 必须由同一
 implementation SHA 的公共 `postgres-migrations`、`packaging-smoke` 补证。
+
+上一版 implementation SHA 的公共 CI 先暴露了两个真实 PostgreSQL 边界问题：Alembic downgrade 对已经带
+命名 convention 前缀的约束名重复套前缀，以及 SQLAlchemy JSONB 把 queued checkpoint 的 Python `None`
+编码成 JSON `null`。本轮分别用 `op.f()` 和 `JSONB(none_as_null=True)` 修复，并增加离线 downgrade、metadata
+与 queued insert 回归；这些修复仍待 repair SHA 的公共真库/Linux job 证明。
 
 ### 5.3 公共关闭门
 

@@ -18,6 +18,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.persistence.config import DatabaseSettings
 from app.persistence.database import build_engine, build_session_factory
 from app.persistence.task_event_record import ReviewTaskEventRecord
+from app.persistence.task_record import ReviewTaskRecord
 from app.persistence.task_repository import PostgresTaskRepository
 from app.product.run_receipts import RunReceiptReference
 from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
@@ -134,6 +135,21 @@ def test_repository_exposes_reliable_control_plane_without_opening_database() ->
         "read_events",
     ):
         assert callable(getattr(repository, method_name))
+
+
+def test_create_queued_task_persists_sql_null_checkpoint() -> None:
+    with migrated_repository() as (repository, factory):
+        task = pending(1)
+        create(repository, task)
+
+        with factory() as session:
+            checkpoint_is_sql_null = session.scalar(
+                sa.select(
+                    ReviewTaskRecord.checkpoint_reference.is_(None)
+                ).where(ReviewTaskRecord.task_id == task.task_id)
+            )
+
+        assert checkpoint_is_sql_null is True
 
 
 def test_create_replay_and_claim_append_one_contiguous_history() -> None:

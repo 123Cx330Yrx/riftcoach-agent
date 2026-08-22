@@ -511,5 +511,5 @@ Agent 已接入或 Memory 已完成。
 
 - 0010 migration、durable event/replay、lease/fencing、cancel、checkpoint、proof-based recovery、Worker/API
   与 package event query 已在工作树完成；八维 walkthrough 已进入 coverage ledger，coverage 仍 planned。
-- 最新完整本地 pytest `1670 passed, 133 skipped`；真实 PostgreSQL 17、Linux package 和 exact-SHA 三 job
+- 最新完整本地 pytest `1671 passed, 134 skipped`；真实 PostgreSQL 17、Linux package 和 exact-SHA 三 job
   仍是关闭门，公共成功前不进入 8D。

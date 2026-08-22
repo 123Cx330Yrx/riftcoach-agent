@@ -41,6 +41,7 @@ def test_reliable_runtime_metadata_and_head_are_explicit() -> None:
     assert event.metadata is task.metadata
     assert event.name == "review_task_events"
     assert event.c.checkpoint_reference.type.__class__ is JSONB
+    assert task.c.checkpoint_reference.type.none_as_null is True
     assert event.c.occurred_at.type.timezone is True
     assert event.c.event_cursor.identity is not None
     assert task.c.status.type.length == 24
@@ -102,6 +103,28 @@ def test_reliable_runtime_offline_sql_has_stable_schema_and_bootstrap(
     assert "INSERT INTO review_task_events" in sql
     assert "snapshot_imported" in sql
     assert "snapshot-import-0010" in sql
+
+
+def test_reliable_runtime_offline_downgrade_uses_existing_constraint_names(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    url = "postgresql+psycopg://riftcoach:offline@localhost:5432/riftcoach"
+    monkeypatch.setenv("DATABASE_URL", url)
+    output = io.StringIO()
+    config = Config(str(ROOT / "alembic.ini"), output_buffer=output)
+    config.set_main_option("script_location", str(ROOT / "migrations"))
+
+    command.downgrade(
+        config,
+        f"{HEAD}:0009_owner_data_lifecycle",
+        sql=True,
+    )
+    sql = output.getvalue()
+
+    assert (
+        "DROP CONSTRAINT ck_review_tasks_timestamp_order" in sql
+    )
+    assert "ck_review_tasks_ck_review_tasks_" not in sql
 
 
 @pytest.fixture()

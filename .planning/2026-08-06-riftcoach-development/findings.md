@@ -3605,3 +3605,10 @@
   无需提高 package schema 或引入 SSE。公共 DTO 也无需暴露内部 operation identity。
 - Windows 最新完整回归 `1670 passed, 133 skipped` 不能替代真实 0010、concurrency 或 Linux image；这些仍是
   implementation exact-SHA 三 job 的阻塞关闭证据。
+
+## 2026-08-23：8C 公共 CI 根因与修复
+
+- PostgreSQL 0010 downgrade 使用裸 `ck_review_tasks_*` 名称时，Alembic naming convention 会再次生成 `ck_review_tasks_ck_review_tasks_*`；修复必须在 helper 内调用 `op.f()`，而不是放宽或重命名约束。
+- SQLAlchemy PostgreSQL JSONB 默认将 Python `None` 编码为 JSON `null`；`checkpoint_reference` 的数据库 shape 需要 SQL `NULL` 才能满足 queued invariant，因此 ORM 使用 `JSONB(none_as_null=True)`。
+- 新增 offline downgrade SQL、metadata 与 PostgreSQL queued-insert 回归；本机没有 PostgreSQL，queued-insert 测试按环境 skip，公共 job 是阻塞证据。
+- 修复后本地完整回归为 `1671 passed, 134 skipped, 1 warning, 127 subtests passed`，两套 RAG、Harness、compileall、pip、SDK/Secret/tracked-data、governance 与 diff 门全绿。

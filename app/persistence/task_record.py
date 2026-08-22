@@ -71,7 +71,9 @@ class ReviewTaskRecord(Base):
         nullable=False,
         server_default=sa.text("0"),
     )
-    checkpoint_reference: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+    checkpoint_reference: Mapped[dict[str, Any] | None] = mapped_column(
+        JSONB(none_as_null=True)
+    )
     recovery_count: Mapped[int] = mapped_column(
         sa.Integer,
         nullable=False,
