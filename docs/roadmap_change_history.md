@@ -2648,3 +2648,15 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   `tmp/`，正式 result 在 case 前 exclusive reserve，crash sentinel 也禁止重跑。
 - `BOUNDARY`：截至本记录正式 holdout/external I/O 均为 0，采用结论未知；当前下一动作是完整本地门、实现
   提交与 exact-SHA 三 job，不进入 8C。
+
+### 2026-08-22：8B implementation CI、唯一 holdout 与 ADR-0053
+
+- `PUBLIC-CI`：`180bc8b452603572d010b6e25b14ed71f6470ce7` / Actions `32572085065` 三 job
+  completed/success；pytest 1623/116 skips/127 subtests，真库 164，package schema 1.6/外部调用 0。
+- `DEVELOPMENT`：同一 clean SHA 得到 `eligible_for_holdout`；candidate latency 27.05%、Token 1.45、+2 calls，
+  quality/safety 门全过。
+- `HOLDOUT-ONCE`：预留不可覆盖路径后唯一执行；结果 experiment `0be05e...50494`、文件 SHA
+  `944258...445e8`、external I/O/retry/hard gates 0，裁决 `reject_multi_agent`。
+- `DECISION`：candidate holdout latency 18.95%<20%，普通并行 22.88%；二者 isolation 均 1.0。ADR-0053
+  拒绝产品 Multi-Agent、保留评测资产，bounded parallel 作为 8D 优先设计输入而非 8B 产品改动。
+- `PENDING`：result/ADR/tests/walkthrough 尚待独立 evidence SHA 三 job；coverage planned，8C 未进入。

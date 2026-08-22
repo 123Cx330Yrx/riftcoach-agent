@@ -3554,3 +3554,15 @@
   Multi-Agent 价值；如果 holdout 没有相对普通并行的增量收益，最终 reject 是正确工程结论。
 - 正式 holdout 在实现 SHA 三 job 公共成功前禁止执行；development result 进入 ignored `tmp/` 并作为同 SHA
   holdout admission，正式结果用 exclusive create，crash sentinel 也会消费唯一执行机会。
+
+## 2026-08-22：8B holdout 裁决发现
+
+- development 的 candidate modeled latency improvement 为 27.05%，足以进入 holdout；calibration-excluded
+  holdout 改为 slow Knowledge branch 后只有 18.95%，低于冻结 20% 门。不能拿 development 覆盖 holdout。
+- 普通并行在同一 holdout 为 22.88%，Token ratio 1.05、无额外 Provider calls；Multi-Agent 为 1.45 和
+  +2 calls/例。两者 match/safe degraded/isolation 都是 1.0，strict Adapter + typed Artifact + atomic tool
+  preflight 已解决全部压力案例，没有观察到角色隔离的增量结果。
+- 所以 ADR-0053 必须明确 reject 产品 Multi-Agent，而不是用“结构更先进”做 partial adoption；保留 runner
+  是评测资产，不是生产采用。bounded parallel 只作为 8D 优先设计输入，8B 不提前改产品 Runtime。
+- 结果绑定 code/public-CI SHA `180bc8b...0ce7`，文件 SHA `944258...445e8`，body-free scan/strict loader
+  通过，holdout executions=1；任何删除、覆盖或重跑都会破坏证据链。

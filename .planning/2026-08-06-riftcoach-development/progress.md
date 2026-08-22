@@ -3641,3 +3641,26 @@
   全绿。测试生成物均在 ignored `tmp/`/pytest temp；正式 8B holdout result 不存在。
 - coverage 保持 planned；当前只允许实现 diff/cached diff、提交/推送与 exact-SHA 三 job。公共全绿前
   development admission 和 holdout 均不得执行。
+
+## 2026-08-22：8B 实现公共门、development 与唯一 holdout
+
+- implementation `180bc8b452603572d010b6e25b14ed71f6470ce7` / Actions `32572085065` 三 job
+  completed/success：公共 pytest `1623 passed, 116 skipped, 1 warning, 127 subtests passed`；真库
+  `164 passed, 1 warning` 且 migration/head 一致；Linux package schema 1.6、外部调用 0。
+- HEAD/origin/main/工作树精确一致后，development 唯一执行并得到 `eligible_for_holdout`；候选 latency
+  improvement 27.05%、Token ratio 1.45、extra calls/例 2、match/safe degraded 1.0。
+- 随后 holdout 在 case 前预留正式路径并唯一执行一次；strict 复读为 `reject_multi_agent`。候选 latency
+  18.95% 未达 20%，普通并行为 22.88%，两者 isolation 均 1.0，因此没有增量收益。
+- result SHA 为 `94425872102032bd59d188766b46b8f9e7700b04dee6a397832e88f24ae445e8`，experiment ID
+  `0be05e49b89ea644696c878cd81141e389c6e834c4c22651248a0898f5750494`；hard gates/retry/external I/O 0。
+- ADR-0053 拒绝产品采用角色隔离 Multi-Agent，保留 evaluation assets，并把普通受限并行作为 8D 优先设计
+  输入。新增结果回归后聚焦 `25 passed`；coverage 仍 planned，下一动作是 evidence 提交/public CI。
+
+## 2026-08-22：8B result/evidence 提交前门禁
+
+- 三个冻结结果回归锁定 exact result SHA/code/public-CI/experiment identity、三路 holdout metrics、逐案例
+  terminal/preserved Artifact、hard gates 和 body-free 字段；聚焦总数 `25 passed`。
+- 完整本地 pytest `1625 passed, 117 skipped, 1 warning, 127 subtests passed`；两套 RAG、Harness dry-run、
+  compileall、pip、39 YAML、SDK/Secret/tracked-data、result body-free、governance 与 diff check 全绿。
+- 正式结果仍是同一个 20107-byte 不可覆盖文件，SHA `944258...445e8`；测试只复读，没有再次执行 holdout。
+- 唯一下一动作是独立 result/ADR/evidence cached diff、提交/推送和 exact-SHA 三 job；coverage 保持 planned。

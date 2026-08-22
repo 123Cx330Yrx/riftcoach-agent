@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8b-conditional-multi-agent-experiment"
 status: in_progress
-pause_reason: "8B local implementation gates passed; implementation commit and exact-SHA public CI must succeed before clean-SHA development admission and the one permitted holdout"
+pause_reason: "8B holdout executed once with reject_multi_agent; immutable result, ADR-0053, and evidence tests await exact-SHA public CI before state-only closure"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "8B local implementation gates passed; implementation commit and e
 
 ## 状态元数据
 
-- 最后更新：2026-08-22（8B holdout 前本地实现与完整门禁已通过，等待实现提交/public CI）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design 与 8A 均已关闭。当前唯一检查点为 `8b-conditional-multi-agent-experiment / in_progress`；三路实验必须在同一 fixture/Coach/Harness/Context/预算身份下运行，先通过实现 SHA 的 exact-SHA 公共 CI，再在该干净 SHA 上唯一执行一次 calibration-excluded holdout。当前尚未运行 holdout，也未实现任何 Stage 8 Core 产品能力
+- 最后更新：2026-08-22（8B 实现 CI 与唯一 holdout 已完成，等待 result/ADR/evidence 公共闭环）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design 与 8A 均已关闭。当前唯一检查点为 `8b-conditional-multi-agent-experiment / in_progress`；实现 `180bc8b` / Actions `32572085065` 三 job 已成功，同一 clean SHA 的 holdout 已唯一执行一次并裁决 `reject_multi_agent`。当前只等待 result/ADR/evidence exact-SHA CI 与独立状态收尾，未实现任何 Stage 8 Core 产品能力
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "8B local implementation gates passed; implementation commit and e
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8b-conditional-multi-agent-experiment` 已由 RQ-082 授权。先冻结专用设计/实施计划并按 TDD 实现三路 evaluation-only runner、严格结果 validator、不可覆盖输出和 no-I/O preflight；实现提交取得 exact-SHA 三 job 公共成功后，才在同一干净 SHA 上运行 development 并唯一执行一次 holdout。结果归档与 adopt/partial/reject ADR 公共闭环前不进入 8C–8F。
+- 唯一下一步：继续完成 `8b-conditional-multi-agent-experiment` 的不可覆盖 holdout result、ADR-0053、结果回归与八维复盘提交，并等待该 exact SHA 的三个公共 job；全绿后才以独立状态提交将 8B/coverage 置 complete、只交接 `8c-reliable-runtime-core` prepared/waiting authorization。不得再次执行 holdout，也不进入 8C–8F 实现。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1922,5 +1922,21 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   127 subtests passed`。117 skip 仍是本机无 PostgreSQL/Docker/Linux 条件，不能冒充公共真库/package。
 - 两套 RAG 满冻结阈值；Harness dry-run `published`/0 revisions；compileall、pip、39 YAML、SDK boundary、
   tracked Secret/run-data、governance 与 diff 门通过。external I/O 与正式 holdout executions 均为 0。
-- 唯一下一动作：完整/cached diff 终审，独立提交/推送实现并等待 exact-SHA `pytest`、
-  `postgres-migrations`、`packaging-smoke`。三 job 全绿前不得运行 clean-SHA development/holdout。
+- 唯一下一动作：当前 checkpoint 仍为 `8b-conditional-multi-agent-experiment`；完整/cached diff 终审，
+  独立提交/推送实现并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`。三 job 全绿前
+  不得运行 clean-SHA development/holdout。
+
+## 2026-08-22：8B implementation 公共门与唯一 holdout 裁决
+
+- implementation `180bc8b452603572d010b6e25b14ed71f6470ce7` / Actions `32572085065` 三 job
+  completed/success；公共 pytest 1623/116 skips/127 subtests，真库 164，package schema 1.6/外部调用 0。
+- 同一 clean SHA 的 development 得到 `eligible_for_holdout` 后，正式路径在 case 前 exclusive reserve，
+  calibration-excluded holdout 唯一执行一次；结果 strict/body-free validator 通过。
+- holdout candidate latency improvement 18.95% 未达 20%，普通并行为 22.88%；二者 match/safe degraded/
+  isolation 都是 1.0，hard gates 均 0。ADR-0053 裁决 `reject_multi_agent`，不重跑追绿。
+- 结果 SHA `94425872102032bd59d188766b46b8f9e7700b04dee6a397832e88f24ae445e8`，experiment ID
+  `0be05e49b89ea644696c878cd81141e389c6e834c4c22651248a0898f5750494`，holdout executions=1、external I/O=0。
+- result tests 后完整本地 pytest `1625 passed, 117 skipped, 1 warning, 127 subtests passed`；两套 RAG、
+  Harness、compileall、pip、39 YAML、安全/治理/body-free/diff 门全绿，测试只复读结果。
+- 唯一下一动作：当前 checkpoint 仍为 `8b-conditional-multi-agent-experiment`；独立提交/推送 result、
+  ADR-0053、结果回归和 walkthrough，并等待该 exact SHA 三 job。全绿后再做 coverage/canonical 状态收尾。

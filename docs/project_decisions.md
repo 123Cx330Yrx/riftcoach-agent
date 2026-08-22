@@ -1761,3 +1761,12 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   制造收益。DAG/第三方 Runtime、Agentic Retrieval、真实模型/OP.GG I/O 继续排除。
 - 实现 SHA 必须先 exact-SHA 三 job 公共成功；随后 clean SHA development admission 和 holdout result 均
   immutable/SHA-bound/body-free。当前 holdout 0 次，最终 ADR 尚未创建。
+
+## 2026-08-22：ADR-0053 拒绝产品 Multi-Agent
+
+- implementation `180bc8b` / Actions `32572085065` 全绿后，development 与 holdout 按冻结顺序各执行一次；
+  holdout result SHA `944258...445e8`，不得覆盖或重跑。
+- Multi-Agent 的 match/safe degraded/hard gates 都合格，但 latency improvement 18.95% 未达 20%，且
+  failure isolation 1.0 与普通并行相同；普通并行自身为 22.88%、Token 1.05、无额外 calls。
+- 产品决策是 reject role-isolated Multi-Agent；保留 strict runner/lifecycle/result validator 作为评测资产，
+  bounded parallel 作为 8D 优先方案输入。该决定不等于 8D 已实现，也不改变 8C 可靠 Runtime Core 顺序。

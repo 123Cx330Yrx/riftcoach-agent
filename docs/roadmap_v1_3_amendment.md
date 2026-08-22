@@ -479,3 +479,11 @@ Agent 已接入或 Memory 已完成。
   atomic exact-tool preflight，角色隔离额外证明独立 Context digest 和 Coach 零工具。
 - development/holdout result 会复算 identity、role、Artifact binding、metrics 与 verdict；正式 holdout 只能在
   实现 SHA 公共全绿后执行一次。当前只完成本地 holdout 前 TDD，结果和采用裁决尚不存在。
+
+### 2026-08-22：8B 最终采用裁决
+
+- `180bc8b/32572085065` 公共全绿后唯一 holdout 已执行；result SHA `944258...445e8`、外部 I/O 0。
+- Multi-Agent match/safe degraded/hard gates 合格，但 modeled latency 18.95% 未达 20%，Token 1.45、+2 calls；
+  普通并行为 22.88%、Token 1.05、无额外 calls，失败隔离同为 1.0。
+- ADR-0053 拒绝产品 Multi-Agent，证明 V3 Advanced 的 `reject` 出口真实可用；普通并行仅交给 8D 重新按
+  Core 边界实施。DAG/第三方 Runtime/Agentic Retrieval 不因此自动恢复。

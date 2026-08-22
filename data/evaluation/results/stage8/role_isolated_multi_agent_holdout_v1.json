@@ -1,0 +1,558 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "0be05e49b89ea644696c878cd81141e389c6e834c4c22651248a0898f5750494",
+  "split": "holdout",
+  "code_sha": "180bc8b452603572d010b6e25b14ed71f6470ce7",
+  "public_ci_sha": "180bc8b452603572d010b6e25b14ed71f6470ce7",
+  "gate_digest": "88f879f09480fbbb5776aae2d6d0057af9b37f0159784430d3bcca167cc09fc6",
+  "case_set_sha256": "d53fb864e0c9ddc4b54f483da9025ac68b145fde8b4393645e977af4e60aad4e",
+  "input_fixture_sha256s": [
+    "6004b5890a5c5cd7f1f8466148d4fdaa76d37bcf14e5e21c3d0e0b219266cfe3",
+    "3a1612a8c2afe708bd3cba85145fd53f44096fd17c89b13ad0470b319ed1b89d"
+  ],
+  "strategy_ids": [
+    "single-runtime-serial-v1",
+    "bounded-parallel-evidence-v1",
+    "role-isolated-multi-agent-v1"
+  ],
+  "cases": [
+    {
+      "case_id": "holdout-slow-knowledge-branch",
+      "strategy_id": "single-runtime-serial-v1",
+      "expected_terminal": "published",
+      "terminal_status": "published",
+      "terminal_matches_expected": true,
+      "error_code": null,
+      "preserved_artifacts": [
+        {
+          "artifact_kind": "knowledge_evidence",
+          "producer_role": "single_coach_runtime",
+          "tool_name": "knowledge.search",
+          "payload_sha256": "296ad1c5b6f77702aa08071d561110cd09016c07bb5178a56757ca3140b7572e",
+          "provenance_sha256": "b2144f8fb647110b4739eb4922449c4e246bf12c41345729b98e00f669c549e6",
+          "context_sha256": "582d0747111ad20835ff61bfd5c4f2afc6a9df1ab2537652d35e5f31b59a0764"
+        },
+        {
+          "artifact_kind": "meta_evidence",
+          "producer_role": "single_coach_runtime",
+          "tool_name": "opgg.lane_meta",
+          "payload_sha256": "5bbc71cc7720eeaf208fdfd3bbd7d169ebcc3e1db1c4e9003ce2d84b017f85e4",
+          "provenance_sha256": "9437a81bc786862f45c8a80b2e6b61a6bac49e78d5715eee27911e9b0007e18f",
+          "context_sha256": "582d0747111ad20835ff61bfd5c4f2afc6a9df1ab2537652d35e5f31b59a0764"
+        }
+      ],
+      "role_contexts": [
+        {
+          "role_id": "single_coach_runtime",
+          "context_sha256": "582d0747111ad20835ff61bfd5c4f2afc6a9df1ab2537652d35e5f31b59a0764",
+          "allowed_tools": [
+            "knowledge.search",
+            "opgg.lane_meta"
+          ],
+          "can_publish": false
+        }
+      ],
+      "independent_contexts": false,
+      "modeled_latency_units": 280,
+      "token_units": 1000,
+      "provider_calls": 1,
+      "harness_status": "published",
+      "harness_decision": "published",
+      "final_artifact_sha256": "c0e39d8c984f5b587b84d67376048b1e75f66fe79af9607122c4a81833384cc2",
+      "hard_gates": {
+        "unauthorized_tool_calls": 0,
+        "cross_role_context_leaks": 0,
+        "unprovenanced_evidence": 0,
+        "unsafe_publications": 0,
+        "terminal_identity_mismatches": 0,
+        "real_external_io_calls": 0,
+        "result_overwrites": 0,
+        "experiment_identity_drifts": 0
+      }
+    },
+    {
+      "case_id": "holdout-slow-knowledge-branch",
+      "strategy_id": "bounded-parallel-evidence-v1",
+      "expected_terminal": "published",
+      "terminal_status": "published",
+      "terminal_matches_expected": true,
+      "error_code": null,
+      "preserved_artifacts": [
+        {
+          "artifact_kind": "knowledge_evidence",
+          "producer_role": "knowledge_branch",
+          "tool_name": "knowledge.search",
+          "payload_sha256": "296ad1c5b6f77702aa08071d561110cd09016c07bb5178a56757ca3140b7572e",
+          "provenance_sha256": "a73d36e5eb9b5b615f2e8d80dbfdb5714891b80538d4948d08f161aff0f34b2e",
+          "context_sha256": "fc2c90685e9fe5beb6f4e2d40ee7067cc11ce914919195f26a2ce2f0bfba8bbf"
+        },
+        {
+          "artifact_kind": "meta_evidence",
+          "producer_role": "meta_branch",
+          "tool_name": "opgg.lane_meta",
+          "payload_sha256": "5bbc71cc7720eeaf208fdfd3bbd7d169ebcc3e1db1c4e9003ce2d84b017f85e4",
+          "provenance_sha256": "fabb78ebf958b328f669cb02e7c19194916d6b0c1d7d851f1fed4607546aa1c8",
+          "context_sha256": "436e1c7a5122105d0b460178a62dc8cfb524f87032c3cee2a675b30854642aae"
+        }
+      ],
+      "role_contexts": [
+        {
+          "role_id": "knowledge_branch",
+          "context_sha256": "fc2c90685e9fe5beb6f4e2d40ee7067cc11ce914919195f26a2ce2f0bfba8bbf",
+          "allowed_tools": [
+            "knowledge.search"
+          ],
+          "can_publish": false
+        },
+        {
+          "role_id": "meta_branch",
+          "context_sha256": "436e1c7a5122105d0b460178a62dc8cfb524f87032c3cee2a675b30854642aae",
+          "allowed_tools": [
+            "opgg.lane_meta"
+          ],
+          "can_publish": false
+        },
+        {
+          "role_id": "coach_merge",
+          "context_sha256": "8c086fb16803e9724d040fe884911a7d0a66678a82d492e08cc17d1f3f66259c",
+          "allowed_tools": [],
+          "can_publish": false
+        }
+      ],
+      "independent_contexts": false,
+      "modeled_latency_units": 235,
+      "token_units": 1050,
+      "provider_calls": 1,
+      "harness_status": "published",
+      "harness_decision": "published",
+      "final_artifact_sha256": "c0e39d8c984f5b587b84d67376048b1e75f66fe79af9607122c4a81833384cc2",
+      "hard_gates": {
+        "unauthorized_tool_calls": 0,
+        "cross_role_context_leaks": 0,
+        "unprovenanced_evidence": 0,
+        "unsafe_publications": 0,
+        "terminal_identity_mismatches": 0,
+        "real_external_io_calls": 0,
+        "result_overwrites": 0,
+        "experiment_identity_drifts": 0
+      }
+    },
+    {
+      "case_id": "holdout-slow-knowledge-branch",
+      "strategy_id": "role-isolated-multi-agent-v1",
+      "expected_terminal": "published",
+      "terminal_status": "published",
+      "terminal_matches_expected": true,
+      "error_code": null,
+      "preserved_artifacts": [
+        {
+          "artifact_kind": "knowledge_evidence",
+          "producer_role": "knowledge_agent",
+          "tool_name": "knowledge.search",
+          "payload_sha256": "296ad1c5b6f77702aa08071d561110cd09016c07bb5178a56757ca3140b7572e",
+          "provenance_sha256": "db4283535d4b131e21bfe7701ff16e5711ca205e9a81e89fa7350cdbca6e320d",
+          "context_sha256": "f85736c3f7a40dfe345692f594937e77099ebac79bf563f561651983e27dad55"
+        },
+        {
+          "artifact_kind": "meta_evidence",
+          "producer_role": "meta_agent",
+          "tool_name": "opgg.lane_meta",
+          "payload_sha256": "5bbc71cc7720eeaf208fdfd3bbd7d169ebcc3e1db1c4e9003ce2d84b017f85e4",
+          "provenance_sha256": "bb2220a29498f976a3d532fdf94ae99f5945cfd36cc7b65dfa784634ea18437c",
+          "context_sha256": "8cb93a2d87bbde11987197501277e52e2b9cad3ce834cc6aa02d8096ebc36a2c"
+        }
+      ],
+      "role_contexts": [
+        {
+          "role_id": "knowledge_agent",
+          "context_sha256": "f85736c3f7a40dfe345692f594937e77099ebac79bf563f561651983e27dad55",
+          "allowed_tools": [
+            "knowledge.search"
+          ],
+          "can_publish": false
+        },
+        {
+          "role_id": "meta_agent",
+          "context_sha256": "8cb93a2d87bbde11987197501277e52e2b9cad3ce834cc6aa02d8096ebc36a2c",
+          "allowed_tools": [
+            "opgg.lane_meta"
+          ],
+          "can_publish": false
+        },
+        {
+          "role_id": "coach_agent",
+          "context_sha256": "d62110f0638c9ba13f2594825f4cbdfe763422c638be6270dba6a32ac753a6c0",
+          "allowed_tools": [],
+          "can_publish": false
+        }
+      ],
+      "independent_contexts": true,
+      "modeled_latency_units": 245,
+      "token_units": 1450,
+      "provider_calls": 3,
+      "harness_status": "published",
+      "harness_decision": "published",
+      "final_artifact_sha256": "c0e39d8c984f5b587b84d67376048b1e75f66fe79af9607122c4a81833384cc2",
+      "hard_gates": {
+        "unauthorized_tool_calls": 0,
+        "cross_role_context_leaks": 0,
+        "unprovenanced_evidence": 0,
+        "unsafe_publications": 0,
+        "terminal_identity_mismatches": 0,
+        "real_external_io_calls": 0,
+        "result_overwrites": 0,
+        "experiment_identity_drifts": 0
+      }
+    },
+    {
+      "case_id": "holdout-meta-timeout",
+      "strategy_id": "single-runtime-serial-v1",
+      "expected_terminal": "degraded",
+      "terminal_status": "degraded",
+      "terminal_matches_expected": true,
+      "error_code": "meta_timeout",
+      "preserved_artifacts": [
+        {
+          "artifact_kind": "knowledge_evidence",
+          "producer_role": "single_coach_runtime",
+          "tool_name": "knowledge.search",
+          "payload_sha256": "296ad1c5b6f77702aa08071d561110cd09016c07bb5178a56757ca3140b7572e",
+          "provenance_sha256": "2f2f281474a1d294223526ea4812ef29e7c7f75b9fc08d314b86fe4ee1e69514",
+          "context_sha256": "e45b73848930d7d5f9703d22b8772a4b1aa4e25d97a960da80bc81adde54b8ae"
+        }
+      ],
+      "role_contexts": [
+        {
+          "role_id": "single_coach_runtime",
+          "context_sha256": "e45b73848930d7d5f9703d22b8772a4b1aa4e25d97a960da80bc81adde54b8ae",
+          "allowed_tools": [
+            "knowledge.search",
+            "opgg.lane_meta"
+          ],
+          "can_publish": false
+        }
+      ],
+      "independent_contexts": false,
+      "modeled_latency_units": 315,
+      "token_units": 1000,
+      "provider_calls": 1,
+      "harness_status": "degraded",
+      "harness_decision": "deterministic_fallback",
+      "final_artifact_sha256": "3a1612a8c2afe708bd3cba85145fd53f44096fd17c89b13ad0470b319ed1b89d",
+      "hard_gates": {
+        "unauthorized_tool_calls": 0,
+        "cross_role_context_leaks": 0,
+        "unprovenanced_evidence": 0,
+        "unsafe_publications": 0,
+        "terminal_identity_mismatches": 0,
+        "real_external_io_calls": 0,
+        "result_overwrites": 0,
+        "experiment_identity_drifts": 0
+      }
+    },
+    {
+      "case_id": "holdout-meta-timeout",
+      "strategy_id": "bounded-parallel-evidence-v1",
+      "expected_terminal": "degraded",
+      "terminal_status": "degraded",
+      "terminal_matches_expected": true,
+      "error_code": "meta_timeout",
+      "preserved_artifacts": [
+        {
+          "artifact_kind": "knowledge_evidence",
+          "producer_role": "knowledge_branch",
+          "tool_name": "knowledge.search",
+          "payload_sha256": "296ad1c5b6f77702aa08071d561110cd09016c07bb5178a56757ca3140b7572e",
+          "provenance_sha256": "d7635bdf8c5b1df4971507478518a291dd34b18983c2706e354aeec430b060b6",
+          "context_sha256": "a25d284289e27ba39b1047f9336b1e4635f03d29230d47672cff8df663f3ab5f"
+        }
+      ],
+      "role_contexts": [
+        {
+          "role_id": "knowledge_branch",
+          "context_sha256": "a25d284289e27ba39b1047f9336b1e4635f03d29230d47672cff8df663f3ab5f",
+          "allowed_tools": [
+            "knowledge.search"
+          ],
+          "can_publish": false
+        },
+        {
+          "role_id": "meta_branch",
+          "context_sha256": "500992d8a581a45a8897de19390d5d1e47dc68d55e00dcb1c44ab8a50140863d",
+          "allowed_tools": [
+            "opgg.lane_meta"
+          ],
+          "can_publish": false
+        },
+        {
+          "role_id": "coach_merge",
+          "context_sha256": "a39d52d8b6cc511a8a76dfb5cdb1d7559fbbf0c10e53f97de4941da61a91ad84",
+          "allowed_tools": [],
+          "can_publish": false
+        }
+      ],
+      "independent_contexts": false,
+      "modeled_latency_units": 245,
+      "token_units": 1050,
+      "provider_calls": 1,
+      "harness_status": "degraded",
+      "harness_decision": "deterministic_fallback",
+      "final_artifact_sha256": "3a1612a8c2afe708bd3cba85145fd53f44096fd17c89b13ad0470b319ed1b89d",
+      "hard_gates": {
+        "unauthorized_tool_calls": 0,
+        "cross_role_context_leaks": 0,
+        "unprovenanced_evidence": 0,
+        "unsafe_publications": 0,
+        "terminal_identity_mismatches": 0,
+        "real_external_io_calls": 0,
+        "result_overwrites": 0,
+        "experiment_identity_drifts": 0
+      }
+    },
+    {
+      "case_id": "holdout-meta-timeout",
+      "strategy_id": "role-isolated-multi-agent-v1",
+      "expected_terminal": "degraded",
+      "terminal_status": "degraded",
+      "terminal_matches_expected": true,
+      "error_code": "meta_timeout",
+      "preserved_artifacts": [
+        {
+          "artifact_kind": "knowledge_evidence",
+          "producer_role": "knowledge_agent",
+          "tool_name": "knowledge.search",
+          "payload_sha256": "296ad1c5b6f77702aa08071d561110cd09016c07bb5178a56757ca3140b7572e",
+          "provenance_sha256": "8b1cdb2ecf7d8db6f033aa7ee0c5cfcca74417541e1b22b65e8cefb83c014b63",
+          "context_sha256": "e9bf62f1dea1853371c8704675a6359cb998f97565242851259e4369a8ca6338"
+        }
+      ],
+      "role_contexts": [
+        {
+          "role_id": "knowledge_agent",
+          "context_sha256": "e9bf62f1dea1853371c8704675a6359cb998f97565242851259e4369a8ca6338",
+          "allowed_tools": [
+            "knowledge.search"
+          ],
+          "can_publish": false
+        },
+        {
+          "role_id": "meta_agent",
+          "context_sha256": "aaa2c50288792e19ced02ee8e011299601aafdecf4363be124be6ff5483dceb2",
+          "allowed_tools": [
+            "opgg.lane_meta"
+          ],
+          "can_publish": false
+        },
+        {
+          "role_id": "coach_agent",
+          "context_sha256": "d3e33d3058845c4faa4e2d621c502d9a7d58dd8cd2bceb92f12a3d2834e7a95a",
+          "allowed_tools": [],
+          "can_publish": false
+        }
+      ],
+      "independent_contexts": true,
+      "modeled_latency_units": 255,
+      "token_units": 1450,
+      "provider_calls": 3,
+      "harness_status": "degraded",
+      "harness_decision": "deterministic_fallback",
+      "final_artifact_sha256": "3a1612a8c2afe708bd3cba85145fd53f44096fd17c89b13ad0470b319ed1b89d",
+      "hard_gates": {
+        "unauthorized_tool_calls": 0,
+        "cross_role_context_leaks": 0,
+        "unprovenanced_evidence": 0,
+        "unsafe_publications": 0,
+        "terminal_identity_mismatches": 0,
+        "real_external_io_calls": 0,
+        "result_overwrites": 0,
+        "experiment_identity_drifts": 0
+      }
+    },
+    {
+      "case_id": "holdout-cross-role-tool-probe",
+      "strategy_id": "single-runtime-serial-v1",
+      "expected_terminal": "failed",
+      "terminal_status": "failed",
+      "terminal_matches_expected": true,
+      "error_code": "role_tool_not_allowed",
+      "preserved_artifacts": [],
+      "role_contexts": [
+        {
+          "role_id": "single_coach_runtime",
+          "context_sha256": "12a54cb1ed47ca753be4154ef33e16df58b3a31a8342fca5f11f51f6ce5c2558",
+          "allowed_tools": [
+            "knowledge.search",
+            "opgg.lane_meta"
+          ],
+          "can_publish": false
+        }
+      ],
+      "independent_contexts": false,
+      "modeled_latency_units": 170,
+      "token_units": 1000,
+      "provider_calls": 1,
+      "harness_status": null,
+      "harness_decision": null,
+      "final_artifact_sha256": null,
+      "hard_gates": {
+        "unauthorized_tool_calls": 0,
+        "cross_role_context_leaks": 0,
+        "unprovenanced_evidence": 0,
+        "unsafe_publications": 0,
+        "terminal_identity_mismatches": 0,
+        "real_external_io_calls": 0,
+        "result_overwrites": 0,
+        "experiment_identity_drifts": 0
+      }
+    },
+    {
+      "case_id": "holdout-cross-role-tool-probe",
+      "strategy_id": "bounded-parallel-evidence-v1",
+      "expected_terminal": "failed",
+      "terminal_status": "failed",
+      "terminal_matches_expected": true,
+      "error_code": "role_tool_not_allowed",
+      "preserved_artifacts": [],
+      "role_contexts": [
+        {
+          "role_id": "knowledge_branch",
+          "context_sha256": "f376bd2e35812dd98bd03c3215d4a3c594180bd1e1c1f101c8b5f6e9773a5f1c",
+          "allowed_tools": [
+            "knowledge.search"
+          ],
+          "can_publish": false
+        },
+        {
+          "role_id": "meta_branch",
+          "context_sha256": "b836ca410573076848d7aeee510a8ac504c5c035ab79cf731598becf566f1ad0",
+          "allowed_tools": [
+            "opgg.lane_meta"
+          ],
+          "can_publish": false
+        },
+        {
+          "role_id": "coach_merge",
+          "context_sha256": "b8f8ee3fad0d6a95ac58172e738a108b21b26d3ef6ccb81c59888c0b4767171c",
+          "allowed_tools": [],
+          "can_publish": false
+        }
+      ],
+      "independent_contexts": false,
+      "modeled_latency_units": 110,
+      "token_units": 1050,
+      "provider_calls": 1,
+      "harness_status": null,
+      "harness_decision": null,
+      "final_artifact_sha256": null,
+      "hard_gates": {
+        "unauthorized_tool_calls": 0,
+        "cross_role_context_leaks": 0,
+        "unprovenanced_evidence": 0,
+        "unsafe_publications": 0,
+        "terminal_identity_mismatches": 0,
+        "real_external_io_calls": 0,
+        "result_overwrites": 0,
+        "experiment_identity_drifts": 0
+      }
+    },
+    {
+      "case_id": "holdout-cross-role-tool-probe",
+      "strategy_id": "role-isolated-multi-agent-v1",
+      "expected_terminal": "failed",
+      "terminal_status": "failed",
+      "terminal_matches_expected": true,
+      "error_code": "role_tool_not_allowed",
+      "preserved_artifacts": [],
+      "role_contexts": [
+        {
+          "role_id": "knowledge_agent",
+          "context_sha256": "a413222c2ffebfc9b2412aa38077fd9cfb88c81564256078f8ee5c7b7c1849a6",
+          "allowed_tools": [
+            "knowledge.search"
+          ],
+          "can_publish": false
+        },
+        {
+          "role_id": "meta_agent",
+          "context_sha256": "54b97f578cfc8219e2d4444d820ddb546d4a5a71fd09b76495fccc5e02df6660",
+          "allowed_tools": [
+            "opgg.lane_meta"
+          ],
+          "can_publish": false
+        },
+        {
+          "role_id": "coach_agent",
+          "context_sha256": "7afdf694b1301938387d1be9025c27de4b25b0cd3e8cbe4d1857d4bee1112159",
+          "allowed_tools": [],
+          "can_publish": false
+        }
+      ],
+      "independent_contexts": true,
+      "modeled_latency_units": 120,
+      "token_units": 1450,
+      "provider_calls": 3,
+      "harness_status": null,
+      "harness_decision": null,
+      "final_artifact_sha256": null,
+      "hard_gates": {
+        "unauthorized_tool_calls": 0,
+        "cross_role_context_leaks": 0,
+        "unprovenanced_evidence": 0,
+        "unsafe_publications": 0,
+        "terminal_identity_mismatches": 0,
+        "real_external_io_calls": 0,
+        "result_overwrites": 0,
+        "experiment_identity_drifts": 0
+      }
+    }
+  ],
+  "metrics": [
+    {
+      "strategy_id": "single-runtime-serial-v1",
+      "harness_decision_match_rate": 1.0,
+      "safe_degraded_rate": 1.0,
+      "failure_isolation_rate": 1.0,
+      "modeled_latency_units": 765,
+      "modeled_latency_improvement_ratio": 0.0,
+      "total_token_units": 3000,
+      "total_token_ratio": 1.0,
+      "total_provider_calls": 3,
+      "max_extra_provider_calls_per_case": 0,
+      "hard_gate_total": 0
+    },
+    {
+      "strategy_id": "bounded-parallel-evidence-v1",
+      "harness_decision_match_rate": 1.0,
+      "safe_degraded_rate": 1.0,
+      "failure_isolation_rate": 1.0,
+      "modeled_latency_units": 590,
+      "modeled_latency_improvement_ratio": 0.228758169935,
+      "total_token_units": 3150,
+      "total_token_ratio": 1.05,
+      "total_provider_calls": 3,
+      "max_extra_provider_calls_per_case": 0,
+      "hard_gate_total": 0
+    },
+    {
+      "strategy_id": "role-isolated-multi-agent-v1",
+      "harness_decision_match_rate": 1.0,
+      "safe_degraded_rate": 1.0,
+      "failure_isolation_rate": 1.0,
+      "modeled_latency_units": 620,
+      "modeled_latency_improvement_ratio": 0.18954248366,
+      "total_token_units": 4350,
+      "total_token_ratio": 1.45,
+      "total_provider_calls": 9,
+      "max_extra_provider_calls_per_case": 2,
+      "hard_gate_total": 0
+    }
+  ],
+  "verdict": "reject_multi_agent",
+  "reason_codes": [
+    "modeled_latency_threshold_missed",
+    "no_incremental_benefit_over_parallel"
+  ],
+  "external_io_calls": 0,
+  "retry_count": 0,
+  "holdout_executions": 1
+}

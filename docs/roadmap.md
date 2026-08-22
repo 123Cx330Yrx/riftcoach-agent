@@ -478,3 +478,13 @@ derived Memory、relationship private data；Task/Artifact 与全局 Player Subj
 - 聚焦 `22 passed`、相邻 `168 passed, 12 subtests passed`；正式 holdout 仍为 0 次。实现 SHA 先取得
   exact-SHA 公共三 job 后，才在 clean SHA 运行 development admission 和一次不可覆盖 holdout。
 - 最终 Multi-Agent adopt/partial/reject 未知；8C–8F 未进入，DAG/第三方 Runtime/Agentic Retrieval 继续 deferred。
+
+## 2026-08-22：8B 唯一 holdout 与 Multi-Agent reject
+
+- implementation `180bc8b` / Actions `32572085065` 三 job 全绿后，同一 clean SHA 先运行 development，
+  再唯一执行 calibration-excluded holdout；外部 I/O、retry、hard-gate breaches 均为 0。
+- holdout 中普通并行 latency improvement 22.88%、Token ratio 1.05；角色隔离 Multi-Agent 为 18.95%、
+  Token ratio 1.45、额外 2 calls/例。两者 match/safe degraded/isolation 均为 1.0。
+- ADR-0053 因未达 20% 且没有相对普通并行的隔离增益，拒绝产品采用 Multi-Agent；保留评测资产，普通并行
+  只作为 8D 优先设计输入。结果 SHA `944258...445e8`，不得覆盖或重跑。
+- 当前仍是 8B in_progress：result/ADR/evidence 提交的 exact-SHA 三 job 和独立状态收尾尚未完成；8C 未进入。

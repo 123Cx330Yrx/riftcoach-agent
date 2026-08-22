@@ -701,9 +701,9 @@ RQ-081 不授权 8B，授权前不实现或运行实验、不执行 holdout、�
 - State: RQ-082 authorized；当前处于设计/TDD 与 holdout 前实现阶段。
 - [completed] 冻结初学者教学、三路公平身份、分阶段公共门和一次性 holdout 生命周期；
 - [completed] 先写失败测试，再实现 evaluation-only 串行/普通并行/角色隔离 runner、真实 Harness 接线和 body-free metrics；
-- [in_progress] no-I/O development/preflight 与完整本地门禁已完成；等待独立实现提交与 exact-SHA 三 job；
-- [ ] 在同一干净公共成功 SHA 上运行 development，并唯一执行一次不可覆盖 holdout；
-- [ ] 按结果形成 adopt/partial/reject ADR、八维 evidence、独立归档/状态提交与 exact-SHA 三 job；
+- [completed] no-I/O development/preflight、完整本地门、实现 `180bc8b` / Actions `32572085065` 三 job 已完成；
+- [completed] 同一 clean/public-success SHA 的 development 与不可覆盖 holdout 各执行一次；
+- [in_progress] ADR-0053/result tests/八维 evidence 已本地完成；等待独立归档提交与 exact-SHA 三 job，再做状态收尾；
 - [boundary] 不调用真实 Riot/OP.GG/Provider、不读取 Key、不安装 DAG/第三方 Runtime、不修改产品 Runtime、不进入 8C–8F。
 
 ## 6A Entry Design Checklist

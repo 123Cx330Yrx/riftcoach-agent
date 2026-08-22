@@ -1,7 +1,7 @@
 # 8B Conditional Multi-Agent Experiment walkthrough
 
-> 当前状态：holdout 前 implementation。本文先记录已经存在的设计、源码与本地 TDD；最终 development、
-> 唯一 holdout、ADR、结果 SHA 和两次公共 CI 证据将在真实发生后补齐。coverage 在此之前保持 `planned`。
+> 当前状态：唯一 holdout 已执行并形成 reject 裁决，结果/evidence 提交等待 exact-SHA 公共 CI。coverage 在
+> 该公共证据完成前保持 `planned`；本结果不得覆盖或重跑。
 
 ## 1. 问题与原理
 
@@ -80,6 +80,30 @@ abstention/citation 均 1.0；Harness dry-run `published`/0 revisions。compilea
 tracked Secret/run-data、governance 和 diff check 均通过。exact-SHA 公共 CI 仍待本批后续记录。以上测试均
 未读取 Key、调用 Riot/OP.GG/Provider 或执行正式 holdout。
 
+实现提交 `180bc8b452603572d010b6e25b14ed71f6470ce7` / Actions `32572085065` 随后完成
+exact-SHA 公共闭环：pytest `1623 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+`164 passed, 1 warning`、migration/head 一致；Linux package schema 1.6、外部调用 0。
+
+同一 clean SHA 的 development 只执行一次，experiment ID 为
+`73a0cc181f974ace2b1350512ab8e5937f63a24ae5715495e37438b0e345e0d1`，裁决
+`eligible_for_holdout`。随后正式 holdout 唯一执行一次：
+
+| Strategy | Latency units | 改善 | Token ratio | Extra calls/例 | Isolation |
+|---|---:|---:|---:|---:|---:|
+| Serial | 765 | 0% | 1.00 | 0 | 1.0 |
+| Bounded parallel | 590 | 22.88% | 1.05 | 0 | 1.0 |
+| Role-isolated Multi-Agent | 620 | 18.95% | 1.45 | 2 | 1.0 |
+
+三路 decision match/safe degraded 均 1.0、hard gates 均 0。Multi-Agent 低于 20% 延迟门且没有相对普通
+并行的隔离增益，最终 `reject_multi_agent`。experiment ID 为
+`0be05e49b89ea644696c878cd81141e389c6e834c4c22651248a0898f5750494`，结果 SHA-256 为
+`94425872102032bd59d188766b46b8f9e7700b04dee6a397832e88f24ae445e8`。结果 validator/body-free scan 通过；
+结果归档的 exact-SHA 公共 CI 尚待后续记录。
+
+归档提交前新增 3 个冻结结果回归，聚焦总数变为 `25 passed`；完整本地 pytest 为
+`1625 passed, 117 skipped, 1 warning, 127 subtests passed`。两套 RAG、Harness、compileall、pip、39 YAML、
+SDK/Secret/tracked-data、result body-free、governance 与 diff 门再次通过。
+
 ## 6. 安全运行手册
 
 holdout 前只允许运行测试。实现提交取得 exact-SHA 公共成功且工作树干净后，先运行 development：
@@ -101,8 +125,8 @@ holdout 前只允许运行测试。实现提交取得 exact-SHA 公共成功且�
   --confirm-holdout
 ```
 
-CLI 在运行 case 前先以 `x` 模式预留正式 JSON；失败留下空 sentinel，同一目标不能重跑。不要删除/覆盖结果
-追绿，不要把 `tmp/` development 结果提交，不要在公共 CI 中运行 holdout。
+CLI 在运行 case 前先以 `x` 模式预留正式 JSON；本次结果已存在，以上两条命令现在都属于历史 runbook，
+不得再次执行。不要删除/覆盖结果追绿，不要把 `tmp/` development 结果提交，不要在公共 CI 中运行 holdout。
 
 ## 7. 失败、安全与范围边界
 
@@ -112,14 +136,15 @@ CLI 在运行 case 前先以 `x` 模式预留正式 JSON；失败留下空 senti
 - `external_io_calls=0` 指没有网络/Provider，不表示没有本地 fixture、线程或文件 I/O；
 - Scripted Token 与 latency units 只用于公平预算模型，不是 tokenizer、费用、p95 或线上 SLA；
 - 当前没有安装/采用 DAG、LangGraph、第三方 Runtime 或 Agentic Retrieval；没有修改产品 Runtime；
-- 当前 holdout executions = 0，最终 adopt/partial/reject 仍未知。
+- holdout executions = 1，最终产品裁决为 reject Multi-Agent；普通并行仅作为 8D 优先设计输入，尚未接产品。
 
 ## 8. 面试准确表述
 
-当前可以说：
+完成结果后可以说：
 
-> 我把 Multi-Agent 采用问题拆成串行、普通并行和角色隔离三路，用同一 fixture 与真实 Harness 做
-> evaluation-only TDD，并为角色工具、Context、Artifact digest、结果防篡改和一次性 holdout 建了硬门。
+> 我把 Multi-Agent 采用问题拆成串行、普通并行和角色隔离三路，用同一 fixture 与真实 Harness 做一次性
+> holdout。候选安全门都过了，但延迟改善 18.95% 未达 20%，且没有比普通并行更强的失败隔离，所以我拒绝
+> 产品采用 Multi-Agent，并把更小的普通并行方案留给后续 Evidence fusion。
 
-当前不能说：“Multi-Agent 已采用/上线”“真实模型或 OP.GG 已并行”“实测提速 20%”“holdout 已通过”。最终
-表述必须等待不可覆盖结果和 ADR，且 reject 仍是完整、可信的实验结论。
+仍不能说：“Multi-Agent 已采用/上线”“真实模型或 OP.GG 已并行”“生产实测提速”“实现 DAG/恢复”。
+18.95%/22.88% 是 frozen modeled units，不是生产 p95；reject 是本实验的完整、可信结论。

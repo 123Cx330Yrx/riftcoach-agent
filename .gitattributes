@@ -7,3 +7,6 @@
 /data/evaluation/results/provider_capabilities/deepseek_v4_pro_domain_adoption_v2.json text eol=lf
 /data/evaluation/results/provider_capabilities/deepseek_v4_pro_resource_calibration_v1.json text eol=lf
 /data/evaluation/results/provider_capabilities/deepseek_v4_pro_resource_calibration_v1_adjudication.json text eol=lf
+
+# Keep the immutable Stage 8 experiment evidence digest stable across platforms.
+/data/evaluation/results/stage8/role_isolated_multi_agent_holdout_v1.json text eol=lf
