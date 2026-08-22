@@ -1745,3 +1745,8 @@ deferred；不是永久拒绝，重开需新 Bad Case 和独立 ADR。
 完成本地 TDD；没有启动 Agent、线程或网络，也没有调用 Riot/OP.GG/Provider、读取 Key、安装框架或修改
 产品 Runtime。8B 的 20% 延迟、1.5x Token、额外至多 2 次 Provider call 等是预冻结门槛，不是 8A
 性能证据。8A 仍等待完整本地门禁和 exact-SHA 公共闭环。
+
+implementation `12ad83532d99990f5523d6ecc6def0b8a325d7d0` / Actions `32567642315` 随后完成
+exact-SHA 三 job：公共 pytest `1601 passed, 116 skipped, 1 warning, 127 subtests passed`，真库
+`164 passed, 1 warning` 且 migration/head 一致，Linux package schema 1.6/外部调用 0。8A 与八维
+coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepared/waiting authorization。

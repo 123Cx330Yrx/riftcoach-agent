@@ -2623,3 +2623,15 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   Harness published/0 revisions，compileall、pip、6 YAML、安全/治理/diff 门全绿。
 - `PENDING`：8A coverage 保持 planned；当前只准备独立 implementation SHA。
   exact-SHA 公共三 job 全绿前不关闭 8A，不实现/运行 8B，不调用 Riot/OP.GG/Provider 或读取 Key。
+
+### 2026-08-22：8A exact-SHA 公共闭环与 8B 交接
+
+- `PUBLIC-CI`：implementation `12ad83532d99990f5523d6ecc6def0b8a325d7d0` / Actions
+  `32567642315` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。
+- `COUNTS`：公共 pytest `1601 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+  `164 passed, 1 warning`，0001→0009 可逆且 metadata=head；Linux package schema 1.6，
+  `external_riot_provider_calls=0`。
+- `CLOSED`：8A 八维 coverage complete。该证据只证明候选采用门与 8B 实验合同，不证明 Multi-Agent、
+  普通并行、DAG、holdout、真实 Provider 或任何 Stage 8 Core 产品能力已实现/运行。
+- `HANDOFF`：唯一下一检查点为 `8b-conditional-multi-agent-experiment` prepared/waiting authorization；
+  RQ-081 不授权 8B，授权前停止。

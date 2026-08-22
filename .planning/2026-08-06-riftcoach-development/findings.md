@@ -3531,3 +3531,12 @@
   role/DAG/Artifact/scheduler 方案检查，缺 Git 元数据且未执行，不能声称其 upstream commit 或运行质量。
 - strict gate 的 case-set SHA 与 decision digest 稳定；当前 `external_io_calls=0`、`holdout_executions=0`。
   它只证明实验设计可执行，不证明 Multi-Agent 已实现、提速 20% 或通过 holdout。
+
+## 2026-08-22：8A 公共闭环发现
+
+- `12ad835/32567642315` 三 job 全绿，证明 strict adoption gate 在 Linux 完整回归、真实 PostgreSQL、
+  no-I/O package、RAG/Harness 与安全边界下自洽；公共 pytest 与本地差 1 pass/1 skip 仍来自环境条件。
+- 8A 输出中的 `candidate` 只表示“有资格进入 8B”，不是 adopted/production；DAG/Agentic Retrieval
+  继续 deferred，lease/recovery 继续属于 8C Core。
+- holdout executions 仍为 0，8B 的 20% latency/1.5x Token/+2 calls 没有被实测。canonical 前移到 8B
+  prepared 不构成执行授权。

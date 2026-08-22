@@ -3590,3 +3590,17 @@
   本批外部 Riot/OP.GG/Provider/Key I/O 仍为 0，holdout executions 为 0。
 - 唯一下一动作：完整/cached diff 终审、独立 implementation 提交/推送并等待 exact-SHA
   `pytest`、`postgres-migrations`、`packaging-smoke`。公共全绿前 coverage planned，不进入 8B。
+
+## 2026-08-22：8A implementation exact-SHA 公共闭环
+
+- implementation `12ad83532d99990f5523d6ecc6def0b8a325d7d0` 已推送；Actions `32567642315`
+  精确对应该 SHA，三个阻塞 job 全部 completed/success。
+- 公共 pytest `1601 passed, 116 skipped, 1 warning, 127 subtests passed`；RAG 两套门、Harness
+  published/0 revisions、compileall、SDK/secret/tracked-data 边界均通过。
+- PostgreSQL 17 真库 `164 passed, 1 warning`，0001→0009 upgrade/downgrade/upgrade 可逆且
+  `alembic check` 无新 upgrade；Linux package schema 1.6、外部 Riot/Provider 调用 0、image boundary 通过。
+- 8A coverage 已置 complete。canonical 只前移到 `8b-conditional-multi-agent-experiment`
+  prepared/waiting authorization；当前只做独立状态收尾提交与其 exact-SHA 三 job，不实现或运行 8B。
+- state-only 收尾本地完整回归 `1600 passed, 117 skipped, 1 warning, 127 subtests passed`，治理聚焦
+  `35 passed`；治理首次准确拦住陈旧 Next Step 和 0 个 in_progress phase，修正机器状态后全绿，
+  Phase 34 正文仍明确 waiting authorization/未实现。

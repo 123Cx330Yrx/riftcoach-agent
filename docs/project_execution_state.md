@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
-current_checkpoint: "8a-advanced-adoption-gate"
+current_checkpoint: "8b-conditional-multi-agent-experiment"
 status: in_progress
-pause_reason: "RQ-081 authorized 8A; offline adoption-gate TDD and evidence are complete locally, pending full gates and exact-SHA public closure; 8B-8F remain deferred"
+pause_reason: "8A closed through 12ad835 / Actions 32567642315; 8B is prepared and awaiting explicit user authorization"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "RQ-081 authorized 8A; offline adoption-gate TDD and evidence are 
 
 ## 状态元数据
 
-- 最后更新：2026-08-22（Stage 8 entry design 已由 `3431e8b` / Actions `32564500421` 完成 exact-SHA 公共闭环）
-- 主阶段：阶段 8；Stage 7 已关闭。Stage 8 entry design 已由 `3431e8b/32564500421` 公共闭环，独立状态提交 `c538512/32564757665` 也已三 job 全绿。当前唯一检查点为 `8a-advanced-adoption-gate`，已由 RQ-081 授权；真实 workflow Bad Case、候选矩阵、评测身份、离线 strict gate TDD 与八维路径已本地完成，等待完整门禁与 exact-SHA 公共闭环。8B–8F 与 Stage 8 产品实现仍 deferred
+- 最后更新：2026-08-22（8A 已由 `12ad835` / Actions `32567642315` 完成 exact-SHA 公共闭环）
+- 主阶段：阶段 8；Stage 7 与 Stage 8 entry design 均已关闭。8A strict adoption gate 已由 `12ad83532d99990f5523d6ecc6def0b8a325d7d0` / Actions `32567642315` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环，coverage complete。当前唯一检查点为 `8b-conditional-multi-agent-experiment`，仅 prepared/waiting authorization；尚未实现或运行三路实验、holdout 或任何 Stage 8 Core 产品能力
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "RQ-081 authorized 8A; offline adoption-gate TDD and evidence are 
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：完成 `8a-advanced-adoption-gate` 的完整本地门禁、独立 implementation 提交/推送与 exact-SHA 公共闭环；公共全绿后 coverage complete，只把 `8b-conditional-multi-agent-experiment` 置为 prepared/waiting authorization 并完成独立状态 SHA。当前不实现或运行 8B Multi-Agent 实验、8C 可靠 Runtime、8D 数据融合、8E 前端/部署或 8F 最终作品集。
+- 唯一下一步：`8b-conditional-multi-agent-experiment` 仅 prepared/waiting authorization。用户明确授权后，才按 ADR-0052 在同一 frozen slice 上实现串行 baseline、普通受限并行 comparator 与角色隔离 Multi-Agent candidate，运行 development 后再执行一次不可覆盖 holdout；当前不实现或运行 8B，不进入 8C–8F。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1899,3 +1899,13 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   published/0 revisions、compileall/pip/YAML/安全/治理/diff 门通过。
 - coverage 仍 planned。唯一下一动作是独立 implementation 提交/推送与该 exact SHA 的三 job；公共全绿后
   才关闭 8A，并只把 `8b-conditional-multi-agent-experiment` 置 prepared/waiting authorization。
+
+## 2026-08-22：8A exact-SHA 公共闭环与 8B 准备态
+
+- implementation `12ad83532d99990f5523d6ecc6def0b8a325d7d0` / Actions `32567642315` 三 job
+  completed/success；公共 pytest `1601 passed, 116 skipped, 1 warning, 127 subtests passed`。
+- 真库 `164 passed, 1 warning`，0001→0009 可逆且 metadata=head；Linux package schema 1.6，
+  `external_riot_provider_calls=0`，image boundary 全绿。
+- 8A coverage complete；其 `candidate` 结果不等于 Multi-Agent 已采用，holdout 仍未执行。
+- canonical 唯一交接 `8b-conditional-multi-agent-experiment` prepared/waiting authorization；RQ-081 不授权
+  8B。当前只完成独立状态收尾提交与 exact-SHA 三 job，授权前不写 8B 实验代码。

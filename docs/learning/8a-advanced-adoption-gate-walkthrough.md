@@ -66,6 +66,11 @@ Recall/MRR/nDCG 均 `1.0`、FPR `0.0`，holdout abstention/citation 均 `1.0`；
 `published`/0 revisions。compileall、pip、6 个 YAML、SDK/Secret/tracked-data、governance 和 diff 门均
 通过；exact-SHA 公共三 job 前 coverage 保持 `planned`。
 
+实现提交 `12ad83532d99990f5523d6ecc6def0b8a325d7d0` / Actions `32567642315` 随后完成
+exact-SHA 公共闭环：pytest `1601 passed, 116 skipped, 1 warning, 127 subtests passed`；真实
+PostgreSQL `164 passed, 1 warning`，0001→0009 可逆且 metadata=head；Linux package schema 1.6、
+`external_riot_provider_calls=0`。8A coverage 因而置为 `complete`；8B 仅 prepared/waiting authorization。
+
 ## 6. 安全运行方法
 
 ```powershell

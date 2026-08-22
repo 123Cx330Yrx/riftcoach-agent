@@ -709,7 +709,7 @@ groups:
     sequence: 310
     covers:
       - 8a-advanced-adoption-gate
-    status: planned
+    status: complete
     evidence:
       problem_and_principle:
         - docs/adr/0052-admit-role-isolated-multi-agent-to-bounded-stage8-experiment.md

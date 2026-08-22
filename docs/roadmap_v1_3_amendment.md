@@ -469,5 +469,5 @@ Agent 已接入或 Memory 已完成。
   任一非零即 reject。
 - DAG/第三方 Runtime 与 Agentic Retrieval 继续 deferred；可靠 lease/recovery 明确属于 8C V3 Core，
   不作为 8B Multi-Agent 采用理由。
-- 当前只完成离线 gate TDD 与持久证据，holdout 未运行、外部调用为 0；8B 的收益/成本数字是未来停止线，
-  不是当前实测。coverage 与 checkpoint 等待 exact-SHA 公共闭环。
+- 离线 gate TDD 与持久证据已由 `12ad835` / Actions `32567642315` exact-SHA 三 job公共闭环；
+  holdout 未运行、外部调用为 0。8B 的收益/成本数字仍是未来停止线，不是当前实测；8B 只 prepared。

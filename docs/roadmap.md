@@ -465,5 +465,6 @@ derived Memory、relationship private data；Task/Artifact 与全局 Player Subj
   candidate；只有相对普通并行仍有增量失败隔离收益，或满足同一质量/安全/成本门的可测收益，才可采用。
 - DAG/第三方 Runtime 与 Agentic Retrieval 当前 deferred；`ReviewHarness` 保持唯一发布权，所有 Agent
   均无发布权限，Coach 无工具权限。
-- 8A 本地 strict adoption gate、ADR、计划、walkthrough 和八维路径已建立；当前 coverage 仍 planned，
-  等完整门禁和 exact-SHA 公共三 job 后才关闭。此状态不表示 8B 已实现或运行。
+- 8A strict adoption gate、ADR、计划与八维证据已由 `12ad835` / Actions `32567642315` 三 job
+  exact-SHA 公共闭环，coverage complete。当前只交接 8B prepared/waiting authorization；此状态不表示
+  8B 已实现或运行。
