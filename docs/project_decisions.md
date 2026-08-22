@@ -1777,3 +1777,17 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - 当前唯一下一检查点为 `8c-reliable-runtime-core` prepared/waiting authorization。8C 只在用户授权后开始
   lease/fencing、cancel、checkpoint、recovery 和 late-result isolation 的教学/设计/TDD；不把 8B reject
   或普通并行设计输入解释成 8C 已实现。
+
+## 2026-08-22：ADR-0054 采用 PostgreSQL leased/fenced task control plane
+
+- RQ-083 已授权 `8c-reliable-runtime-core`；用户在 8B 复盘后再次确认继续。8C 不重新打开产品 Multi-Agent，
+  也不把 8D Riot+OP.GG fusion 偷渡到当前范围。
+- 三案比较采用 PostgreSQL 增量可靠控制面；完整事件溯源/DAG Runtime 重写因 8B reject 与迁移成本拒绝，
+  Redis/Celery 因没有 PostgreSQL 不足 Bad Case deferred。
+- `review_tasks` 保存当前 projection，append-only `review_task_events` 保存 body-free lifecycle history；
+  Runtime Trace 继续保存 Provider/Tool/Harness 内部事实。claim 分配 generation + private token + expiry，
+  heartbeat/checkpoint/terminal 使用同一 fencing identity。
+- cancel 是 owner-scoped 持久请求。自动 recovery 只接受 strict Receipt/Trace/Artifact terminal proof 或最新
+  `claimed_safe` checkpoint；已开始未知副作用而没有终态证据时进入 `recovery_required`，不盲目重跑。
+- 当前只完成教学、ADR、专用设计与实施计划；0010 migration、Repository、Worker、Recovery 和 API 产品代码
+  尚未开始，coverage 继续 planned。

@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8c-reliable-runtime-core"
 status: in_progress
-pause_reason: "8B closed through 783a329 / Actions 32572610725; 8C is prepared and awaiting explicit authorization"
+pause_reason: ""
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "8B closed through 783a329 / Actions 32572610725; 8C is prepared a
 
 ## 状态元数据
 
-- 最后更新：2026-08-22（8B result/ADR/evidence 已由 `783a329` / Actions `32572610725` 公共闭环）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A 与 8B 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject，bounded parallel 仅作为 8D 设计输入；当前唯一检查点为 `8c-reliable-runtime-core / prepared/waiting authorization`，未实现任何 Stage 8 Core 产品能力
+- 最后更新：2026-08-22（RQ-083 已授权 `8c-reliable-runtime-core`，当前进入教学、接缝审计与设计）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A 与 8B 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject，bounded parallel 仅作为 8D 设计输入；当前唯一检查点为 `8c-reliable-runtime-core / authorized/in progress`，尚未实现 Stage 8 Core 产品能力
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "8B closed through 783a329 / Actions 32572610725; 8C is prepared a
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8c-reliable-runtime-core`；当前仅 prepared/waiting authorization。8B 的 holdout 不得再次执行，8C 需用户明确授权后才开始教学/设计/TDD；在此之前不实现 lease/recovery/cancel/checkpoint、DAG、SSE、前端或 8D–8F。
+- 唯一下一步：`8c-reliable-runtime-core`；RQ-083 已授权，教学、接缝审计、ADR-0054、专用设计和实施计划的本地门已完成。当前只提交/推送设计批并等待 exact-SHA 三 job；公共全绿后才从 pure contracts 红灯开始。8B holdout 不得再次执行；本检查点不实现 DAG、SSE、前端或 8D–8F。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层

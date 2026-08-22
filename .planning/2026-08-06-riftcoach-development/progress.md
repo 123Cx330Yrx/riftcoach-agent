@@ -3673,3 +3673,22 @@
 - 8B 八维 coverage 置 `complete`，ADR-0053 的 `reject-role-isolated-multi-agent / prefer-bounded-parallel-evidence-design`
   成为最终产品裁决；8B 不修改产品 Runtime。
 - canonical 已只交接 `8c-reliable-runtime-core` prepared/waiting authorization；8C 未获授权、未实现、未开始。
+
+## 2026-08-22：RQ-083 授权并启动 8C 设计
+
+- 用户明确“继续啊，咋停了”，授权唯一 checkpoint `8c-reliable-runtime-core`；canonical 已清除 waiting authorization。
+- 本批先完成初学者教学、Task/Worker/Runtime/Harness 真实接缝审计、方案比较、ADR、专用设计与实施计划，
+  再从 pure contracts 红灯开始；无需逐小步重复审批，但每批仍保持 TDD 和比例验证。
+- 8B 唯一 holdout result/SHA 保持不可覆盖且不重跑；不进入 Multi-Agent、DAG/第三方 Runtime、SSE/前端、
+  8D Riot+OP.GG fusion 或真实 Provider/Riot/OP.GG I/O。
+
+## 2026-08-22：8C 设计批本地门禁完成
+
+- ADR-0054、专用设计与实施计划已冻结 PostgreSQL 增量可靠控制面、task event/Runtime Trace 分工、
+  generation+private-token fencing、持久 cancel、safe checkpoint/Receipt recovery 和 conservative limitations。
+- 治理聚焦 `12 passed`；完整 pytest `1625 passed, 117 skipped, 1 warning, 127 subtests passed`；117 skip 仍只
+  表示本机无 PostgreSQL/Docker/Linux 条件，不能冒充真库/package 成功。
+- RAG development/independent holdout 的 Recall/MRR/nDCG 均 1.0、FPR 0；holdout abstention/citation 均 1.0；
+  Harness dry-run `published`/0 revisions。compileall、pip、6 YAML、SDK/Secret/tracked-data、governance 与 diff 门通过。
+- 首次 YAML 扫描因 PowerShell 引号截断 Python `-c` 表达式产生 `IndentationError`，没有文件变化；修正为单引号
+  外壳后 `yaml_ok=6`。当前唯一下一动作是独立设计提交/推送与 exact-SHA 三 job；公共全绿前不写 0010 或产品红灯。

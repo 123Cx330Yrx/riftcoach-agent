@@ -493,4 +493,14 @@ Agent 已接入或 Memory 已完成。
 - result/ADR/evidence `783a329/32572610725` exact-SHA 三 job 全绿后，8B 八维 coverage 置 complete。
 - 8B 的 reject 结论保持：Multi-Agent 不进入产品；普通并行不在 8B 越级实现，待 8D 重新设计。
 - 可靠 Runtime Core（lease/fencing、cancel、checkpoint、recovery、late-result isolation）成为唯一下一
-  检查点 `8c-reliable-runtime-core`，当前 prepared/waiting authorization。
+  检查点 `8c-reliable-runtime-core`；RQ-083 已授权，当前进入 ADR-0054、专用设计和 TDD 计划，产品实现尚未开始。
+
+## 2026-08-22：8C 可靠控制面设计裁决
+
+- 继续以 PostgreSQL 为唯一 task control plane，扩展现有 `review_tasks`、Repository 和 Worker；新增 body-free
+  append-only task event、global cursor/task-local sequence 与 SHA identity，不复制 Provider/Tool Runtime Trace。
+- claim 分配 generation + private token + expiry；heartbeat/checkpoint/terminal 必须携带 fencing identity。
+  cancel 是持久请求；过期任务只在 strict Receipt 或 `claimed_safe` checkpoint 证明下自动处理，否则进入
+  `recovery_required`。
+- 单 Worker/单 Runtime 与 Harness 唯一发布权保持兼容；DAG/第三方 Runtime、Redis/Celery/Kafka、SSE/前端、
+  8D fusion 与真实外部 I/O 均不进入 8C。

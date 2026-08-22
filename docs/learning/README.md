@@ -81,7 +81,8 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | 7-5：双向 MCP 互操作与退出审查 | 完整/公共闭环 | [ADR-0050](../adr/0050-adopt-pinned-official-mcp-client-over-stdio-for-interoperability.md) / [专用设计](../plans/2026-08-21-stage7-mcp-interoperability-exit-review.md) / [walkthrough](7-5-mcp-interoperability-exit-review-walkthrough.md) | 实现 `a88fbc4` / Actions `32483521108` 三 job 全绿；同一 clean SHA 已由官方 SDK 1.30.0 Client 调用 RiftCoach stdio Server，且 RiftCoach Client 调用 OP.GG Streamable HTTP；不可覆盖 evidence `fac6fe0` / Actions `32484257736` 最终三 job 全绿并关闭 Stage 7 |
 | 阶段 8：Multi-Agent、可靠运行时与产品化 entry design | 完整/公共闭环 | [入口设计学习材料](stage-8-multi-agent-reliable-runtime-productization-entry-design-walkthrough.md) / [ADR-0051](../adr/0051-adopt-stage8-evidence-gated-runtime-fusion-and-productization.md) / [入口设计](../plans/2026-08-22-stage8-multi-agent-reliable-runtime-productization-entry-design.md) | `3431e8b` / Actions `32564500421` 已冻结 8A–8F、8-Core/8-Advanced、Riot+OP.GG EvidenceBundle、前端和 MotionSites 采用门；这仍不表示 Stage 8 产品能力已实现 |
 | 8A：Advanced Adoption Gate | 完整/公共闭环 | [walkthrough](8a-advanced-adoption-gate-walkthrough.md) / [ADR-0052](../adr/0052-admit-role-isolated-multi-agent-to-bounded-stage8-experiment.md) / [设计](../plans/2026-08-22-8a-advanced-adoption-gate-design.md) | strict gate、串行 baseline、受限并行 comparator、角色隔离 Multi-Agent candidate 与 deferred 裁决已由 `12ad835` / Actions `32567642315` 三 job 公共闭环；这不表示 8B 已实现或 Multi-Agent 已采用 |
-| 8B：Conditional Multi-Agent Experiment | 完整/公共闭环 | [walkthrough](8b-conditional-multi-agent-experiment-walkthrough.md) / [ADR-0053](../adr/0053-reject-role-isolated-multi-agent-and-prefer-bounded-parallel-evidence.md) / [设计](../plans/2026-08-22-8b-conditional-multi-agent-experiment-design.md) | implementation `180bc8b` / Actions `32572085065` 与 result/ADR/evidence `783a329` / Actions `32572610725` 均三 job 全绿；唯一 holdout 裁决 `reject_multi_agent`：候选 18.95% 未达 20%，且与普通并行无隔离增益。8B 已关闭，只交接 8C prepared/waiting authorization |
+| 8B：Conditional Multi-Agent Experiment | 完整/公共闭环 | [walkthrough](8b-conditional-multi-agent-experiment-walkthrough.md) / [ADR-0053](../adr/0053-reject-role-isolated-multi-agent-and-prefer-bounded-parallel-evidence.md) / [设计](../plans/2026-08-22-8b-conditional-multi-agent-experiment-design.md) | implementation `180bc8b` / Actions `32572085065` 与 result/ADR/evidence `783a329` / Actions `32572610725` 均三 job 全绿；唯一 holdout 裁决 `reject_multi_agent`：候选 18.95% 未达 20%，且与普通并行无隔离增益。8B 已关闭；RQ-083 随后授权 8C |
+| 8C：Reliable Runtime Core | 设计进行中/产品未实现 | [ADR-0054](../adr/0054-adopt-postgresql-leased-fenced-task-control-plane.md) / [专用设计](../plans/2026-08-22-8c-reliable-runtime-core-design.md) / [实施计划](../plans/2026-08-22-8c-reliable-runtime-core-implementation.md) | 已冻结 PostgreSQL durable task event、lease/fencing、持久 cancel、safe checkpoint/receipt recovery 与迟到结果边界；0010 migration、Repository/Worker/API TDD 和公共证据尚未完成，coverage 保持 planned |
 
 “完整”表示仓库中已经具备八类持久证据，并不表示项目已生产就绪，也不表示项目所有者已经学会。
 个人理解进度需要通过实际复述、读码、运行和问答单独确认。
@@ -147,6 +148,6 @@ canonical 推进到 6B-4。这能防止“代码写完就一路往后走，教�
   公网部署或 Stage 8 已实现。Stage 7 入口与 7-1…7-5 已公共闭环；实现、clean-SHA 双向真实门和
   evidence exact-SHA 均有独立证据。OP.GG 仍只证明 lane-meta partial provenance，不证明全工具、精确
   patch/freshness 或 Riot+OP.GG 数据融合；Stage 8 entry design、8A 与 8B 已公共闭环，8B 唯一 holdout 形成
-  reject Multi-Agent 结论，当前只交接 8C prepared/waiting authorization。8C–8F、前端和 EvidenceBundle 产品实现仍不存在。
+  reject Multi-Agent 结论。RQ-083 已授权 8C 且 ADR/专用设计进行中，但可靠 Runtime 产品实现、8D–8F、前端和 EvidenceBundle 仍不存在。
 
 这些边界既是工程事实，也是项目在面试中保持可信度的重要部分。

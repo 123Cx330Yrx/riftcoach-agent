@@ -3575,3 +3575,20 @@
   deadline、预算、merge 和证据 provenance；Multi-Agent reject 不自动决定 8D 设计。
 - 当前唯一下一检查点是 `8c-reliable-runtime-core` prepared/waiting authorization；8C 才处理 durable event、
   lease/fencing、cancel/checkpoint/recovery/late-result，不能被 8B runner 代替。
+
+## 2026-08-22：RQ-083 授权 8C
+
+- 用户明确“继续啊，咋停了”，授权 canonical 唯一检查点 `8c-reliable-runtime-core` 连续推进，不要求逐小步重复审批。
+- 授权不改变 ADR-0053：8B holdout 不得覆盖或重跑，产品 Multi-Agent 继续 reject；8C 只扩展现有单 Runtime、
+  PostgreSQL task/worker 与 Harness 接缝的可靠控制面。
+- 当前先进行教学、源码接缝审计、2–3 方案比较、ADR/专用设计和实施计划；在红灯测试前不写产品实现，
+  不进入 8D fusion、8E 前端/部署或真实外部 I/O。
+
+## 2026-08-22：8C 设计复核发现
+
+- task durable event 必须与 Runtime Trace 分层：前者是 PostgreSQL control-plane lifecycle/cursor，后者继续是
+  immutable Provider/Tool/Harness terminal Trace；复制正文会制造双真源并扩大隐私面。
+- 当前同步 Runtime 无法撤回已发出的外部 HTTP 请求，因此 cancel 的诚实语义是持久请求 + terminal fencing；
+  不能宣称强制中断。自动 recovery 也只覆盖 `claimed_safe` 或 strict terminal Receipt，未知副作用 fail closed。
+- 设计批完整/横向门未发现与现有 1625-test 基线冲突；真实 lease/fencing 并发仍必须等 0010 TDD 和公共
+  PostgreSQL 17 job，设计绿灯本身不证明 8C 产品能力。

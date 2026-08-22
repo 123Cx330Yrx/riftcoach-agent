@@ -2669,3 +2669,13 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `CLOSED`：result SHA `944258...445e8`、ADR-0053、结果回归和八维 walkthrough 均有持久证据；8B coverage
   complete。Multi-Agent 产品 reject，bounded parallel 只作为 8D 输入。
 - `HANDOFF`：唯一下一检查点为 `8c-reliable-runtime-core` prepared/waiting authorization；不自动实现 8C。
+
+### 2026-08-22：RQ-083 授权 8C Reliable Runtime Core
+
+- `AUTHORIZED`：用户明确“继续啊，咋停了”，授权 canonical 唯一检查点 `8c-reliable-runtime-core`，无需逐小步重复审批。
+- `SCOPE`：只推进 durable lifecycle event/replay cursor、lease/heartbeat/fencing、cancel request、safe
+  checkpoint/recovery、late-result/duplicate-terminal rejection、owner/global backpressure 与观测；沿用 PostgreSQL
+  单一控制面、单 Runtime 与 Harness 唯一发布权。
+- `BOUNDARY`：8B holdout 不覆盖、不重跑；不接产品 Multi-Agent、DAG/第三方 Runtime、Redis/Celery/Kafka、
+  SSE/前端、8D fusion 或真实 Provider/Riot/OP.GG I/O。
+- `NEXT`：先完成教学、现有代码接缝审计、替代方案比较、ADR/专用设计与实施计划，再进入 pure contract 红灯。
