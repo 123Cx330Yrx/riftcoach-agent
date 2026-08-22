@@ -3730,3 +3730,8 @@
 - `b2b4737/32584944802` 已证明 migration downgrade 与 pytest 通过，真库失败从 34 降为 2；剩余 recovery requeue 的 strict JSON 读回与既有测试导入问题已修复。
 - package smoke 已推进到 event query；Repository task/event/requeue 三条路径统一 strict JSONB parser，并处理 psycopg `Jsonb` wrapper。
 - 最新修复待提交，coverage 仍 planned。
+
+## 2026-08-23：8C 第四轮 event JSONB 修复
+
+- 最新公共 SHA 的 pytest 与 PostgreSQL job 已全绿，package smoke 只剩 event replay query；event checkpoint 的 JSONB `None` 映射已与 task row 统一为 SQL `NULL`。
+- 本轮为无 schema 变更的最小 ORM 修复，待提交/推送后重跑 exact-SHA 三 job。

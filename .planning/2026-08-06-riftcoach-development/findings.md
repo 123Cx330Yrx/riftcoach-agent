@@ -3624,3 +3624,8 @@
 - `b2b4737/32584944802` 的真库结果为 `184 passed, 2 failed`；剩余 recovery requeue 仍调用旧 `model_validate(dict)`，与 claim 已修复的路径不一致。
 - package smoke 的错误已从 claim 推进到 event query，说明 fencing/terminal/JSONB claim 接缝已成立；event replay 需要兼容 psycopg `Jsonb` wrapper 的统一 parser。
 - `tests/test_task_product_vertical_postgres.py` 的 `timedelta` 漏导入只在公共真库执行时暴露，已补最小测试导入，不修改生产代码。
+
+## 2026-08-23：第四轮 event replay 边界
+
+- `424ba43` 的 migration 与 PostgreSQL job 已全绿，package smoke 报 `packaging_smoke_task_event_query_failed`；task JSONB parser 已通过 claim/requeue，event row 仍可能把 `None` 绑定为 JSON `null`。
+- event ORM 现使用 `JSONB(none_as_null=True)`，保持 task/event 两个 control-plane projection 的空值语义一致；下一次公共 package job 是最终证据。

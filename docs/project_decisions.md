@@ -1821,3 +1821,8 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - Repository 的所有 JSONB checkpoint 读回路径（task、event、requeue）统一经过 strict JSON wire parser，并兼容 psycopg `Jsonb` wrapper；不以 `strict=False` 放宽 Pydantic 合同。
 - package smoke 已从 claim 推进到 owner-scoped event page，说明前两轮修复有效；event query 仍待最新 SHA 公共 Linux 复验，8C 不提前关闭。
 - 一个既有 PostgreSQL-only product vertical test 的 `timedelta` 漏导入是测试接线错误，已补最小导入，不改变产品行为。
+
+## 2026-08-23：8C 第四轮 event JSONB 裁决
+
+- task 与 event 的可空 checkpoint 都必须把 Python `None` 映射为 SQL `NULL`；否则无 checkpoint event 在 psycopg JSONB 边界可能变成 JSON `null` wrapper，破坏 body-free replay 读取。
+- 采用 `ReviewTaskEventRecord.checkpoint_reference = JSONB(none_as_null=True)`；不放宽 event parser、不改变 migration schema、不暴露 checkpoint body。

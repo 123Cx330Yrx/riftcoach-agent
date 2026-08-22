@@ -186,6 +186,9 @@ implementation SHA 的公共 `postgres-migrations`、`packaging-smoke` 补证。
 requeue、task read 和 event replay 三条 JSONB 读回路径现在共享同一 parser；它同时处理普通 JSON mapping 和
 psycopg `Jsonb` wrapper，仍以严格 JSON Schema 解析，不把任意 Python 类型默默强转。
 
+task row 与 event row 的可空 checkpoint 也统一使用 SQL `NULL` 映射；这样 created/claimed/failed 等无 checkpoint
+事件不会在数据库中留下 JSON `null` 伪对象，replay 只面对明确的空值或严格 checkpoint object。
+
 ### 5.3 公共关闭门
 
 8C 只有在同一 implementation/evidence SHA 的以下三 job 全部成功后才能关闭：

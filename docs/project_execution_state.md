@@ -1987,3 +1987,9 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - `b2b4737` 对应公共 run `32584944802` 已通过 pytest；migration 真库由 34 个失败收敛至 2 个，证明终态 generation/heartbeat 与 checkpoint claim 修复有效。
 - 新发现并已修复：recovery requeue 仍有一处旧 strict dict parse；package smoke 已走到 owner-scoped event query，JSONB wrapper 兼容路径已补强；既有纵向测试缺 `timedelta` 导入也已修正。
 - 当前待提交最新 repair；coverage 保持 `planned`，不进入 8D。
+
+## 2026-08-23：8C 第四轮 event JSONB 边界修复
+
+- 最新 SHA 的 migration 与完整 PostgreSQL job 已全绿，package smoke 唯一失败为 event replay query；task checkpoint 已修复但 event checkpoint 仍默认把 Python `None` 当 JSON `null`。
+- `ReviewTaskEventRecord.checkpoint_reference` 现与 task row 一样使用 `JSONB(none_as_null=True)`；这是无 schema 变更的存储映射修复，公共 event DTO 仍 body-free。
+- 当前待提交/推送该最小修复；coverage 继续 `planned`，不进入 8D。

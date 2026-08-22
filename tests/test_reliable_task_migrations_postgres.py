@@ -41,6 +41,7 @@ def test_reliable_runtime_metadata_and_head_are_explicit() -> None:
     assert event.metadata is task.metadata
     assert event.name == "review_task_events"
     assert event.c.checkpoint_reference.type.__class__ is JSONB
+    assert event.c.checkpoint_reference.type.none_as_null is True
     assert task.c.checkpoint_reference.type.none_as_null is True
     lifecycle = next(
         constraint

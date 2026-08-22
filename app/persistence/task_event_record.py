@@ -36,7 +36,9 @@ class ReviewTaskEventRecord(Base):
     worker_id: Mapped[str | None] = mapped_column(sa.String(128))
     operation_identity: Mapped[str] = mapped_column(sa.String(128), nullable=False)
     reason: Mapped[str | None] = mapped_column(sa.String(64))
-    checkpoint_reference: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+    checkpoint_reference: Mapped[dict[str, Any] | None] = mapped_column(
+        JSONB(none_as_null=True)
+    )
     occurred_at: Mapped[datetime] = mapped_column(
         sa.DateTime(timezone=True),
         nullable=False,
