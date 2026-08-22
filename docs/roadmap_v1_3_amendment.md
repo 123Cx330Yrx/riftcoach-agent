@@ -266,7 +266,7 @@ ADR-0048 裁决 OP.GG `admitted_with_restrictions`，并由 `64311a1` / Actions 
 又由 `431c584` / Actions `32480827952` 完成 strict Server/Facade、四个只读工具与 exact-SHA 三 job
 公共闭环。7-5 实现 `a88fbc4` / Actions `32483521108`、clean-SHA 官方 SDK→RiftCoach stdio 与
 RiftCoach→OP.GG Streamable HTTP 双向门，以及不可覆盖 evidence `fac6fe0` / Actions `32484257736`
-均已通过；Stage 7 正式关闭。Stage 8 entry design 已由 RQ-080 授权并在本地收尾，公共闭环前仍不推进 8A–8F 产品实现。
+均已通过；Stage 7 正式关闭。Stage 8 entry design 已由 `3431e8b` / Actions `32564500421` 公共闭环；当前只交接 `8a-advanced-adoption-gate` prepared/waiting authorization，尚未推进 8A–8F 产品实现。
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh

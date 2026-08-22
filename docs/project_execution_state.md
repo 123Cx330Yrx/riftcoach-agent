@@ -2,9 +2,9 @@
 state_schema: 1
 main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
-current_checkpoint: "stage-8-multi-agent-reliable-runtime-productization-entry-design"
+current_checkpoint: "8a-advanced-adoption-gate"
 status: in_progress
-pause_reason: "RQ-080 authorized Stage 8 entry design; design and governance closure are in progress, with Stage 8 product implementation deferred"
+pause_reason: "Stage 8 entry design closed through 3431e8b / Actions 32564500421; 8A is prepared and awaiting explicit user authorization"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,8 +16,8 @@ pause_reason: "RQ-080 authorized Stage 8 entry design; design and governance clo
 
 ## 状态元数据
 
-- 最后更新：2026-08-22（7-5 与 Stage 7 已完成实现、双向真实 evidence 和 exact-SHA 公共闭环；Stage 8 entry design 已获授权并在本地收尾）
-- 主阶段：阶段 8；Stage 7 入口设计与 7-1…7-4 已依次公共闭环，7-5 实现 `a88fbc4/32483521108`、clean-SHA 官方 SDK→RiftCoach stdio + RiftCoach→OP.GG Streamable HTTP 双向门，以及 evidence `fac6fe0/32484257736` 均已通过。7-5 coverage complete，Stage 7 正式关闭。当前唯一检查点为 `stage-8-multi-agent-reliable-runtime-productization-entry-design`，已由 RQ-080 授权并进入教学/设计/治理收尾；Stage 8 产品实现仍 deferred
+- 最后更新：2026-08-22（Stage 8 entry design 已由 `3431e8b` / Actions `32564500421` 完成 exact-SHA 公共闭环）
+- 主阶段：阶段 8；Stage 7 已关闭。Stage 8 entry design 已完成初学者教学、接缝审计、ADR-0051、8A–8F 顺序、Riot+OP.GG EvidenceBundle、前端/MotionSites 采用门和八维持久证据，并由 `3431e8b47dd992b6c4741e12158855feb64ef917` / Actions `32564500421` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环。当前唯一检查点为 `8a-advanced-adoption-gate`，仅 prepared/waiting authorization；尚未开始 8A 候选审计或任何 Stage 8 产品实现
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "RQ-080 authorized Stage 8 entry design; design and governance clo
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`stage-8-multi-agent-reliable-runtime-productization-entry-design` 已由 RQ-080 授权；当前完成 8-Core/8-Advanced 的初学者教学、现有能力与 Bad Case 审计及入口设计，不提前实现 Multi-Agent、DAG、cancel/resume、恢复、SSE/前端、正式 Auth、付费资源或生产部署。入口设计公共闭环后唯一下一步为 `8A-advanced-adoption-gate`。
+- 唯一下一步：`8a-advanced-adoption-gate` 仅 prepared/waiting authorization。用户明确授权后，只审计高级候选的真实 Bad Case、替代方案、指标、成本、失败/安全边界、实验身份和停止条件；不提前实现 8B Multi-Agent 实验、8C 可靠 Runtime、8D 数据融合、8E 前端/部署或 8F 最终作品集。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1870,5 +1870,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 8E 冻结五个前端模块：电影感 Riot ID 入口、近期复盘工作台、Rift Timeline、Evidence/Agent Trace 抽屉、
   Training Plan/Progress；采用自主 React 设计系统，MotionSites 公开目录/预览和用户离线表只作为逐项资源审计输入。
 - 本批入口设计没有读取 Key、调用 Riot/OP.GG/Provider/LLM、购买付费资源、修改产品 API/Runtime/DB 或创建前端代码。
-- 当前本地裁决：`entry-design-in-progress-no-product-io`。唯一下一动作是完成本地门禁、独立提交/推送和
-  entry design exact-SHA 公共三 job；公共全绿后置 `coverage=complete` 并交接 `8A-advanced-adoption-gate`。
+- 当时本地裁决为 `entry-design-in-progress-no-product-io`，尚待本地门禁、独立提交/推送和 entry design
+  exact-SHA 公共三 job；该条件随后已由下一节记录的 `3431e8b/32564500421` 满足。
+
+## 2026-08-22：Stage 8 entry design exact-SHA 公共闭环与 8A 交接
+
+- 入口设计提交 `3431e8b47dd992b6c4741e12158855feb64ef917` / Actions `32564500421` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 completed/success。
+- 公共 pytest 为 `1578 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL 17
+  为 `164 passed, 1 warning`，0001→0009 migration 可逆且 `alembic check` 为 metadata=head。
+- Linux package smoke schema 1.6 成功，`external_riot_provider_calls=0`；两套 RAG、compileall、Harness
+  SDK/Secret/tracked-data 边界与 dry-run 均通过。
+- entry-design 八维 coverage 已置 `complete`。本检查点只关闭教学、设计、治理和采用门，不证明
+  Multi-Agent、DAG、可靠恢复、Riot+OP.GG fusion、正式 Web/Auth/SSE、备份或部署已实现。
+- canonical 唯一交接为 `8a-advanced-adoption-gate` prepared/waiting authorization；授权前停止。

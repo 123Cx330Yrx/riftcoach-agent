@@ -26,9 +26,11 @@ Phase 29 - `7-3-opgg-meta-adapter` is complete at `64311a1` / Actions
 Actions `32480827952`. RQ-079 authorizes Phase 31 -
 `7-5-mcp-interoperability-exit-review`, now complete through implementation
 `a88fbc4` / Actions `32483521108` and evidence `fac6fe0` / Actions
-`32484257736`. RQ-080 authorizes Phase 32 -
-`stage-8-multi-agent-reliable-runtime-productization-entry-design`; the entry
-design is now in progress and no Stage 8 product implementation has started.
+`32484257736`. RQ-080 authorized Phase 32 -
+`stage-8-multi-agent-reliable-runtime-productization-entry-design`, now complete
+at `3431e8b` / Actions `32564500421`. Phase 33 -
+`8a-advanced-adoption-gate` is prepared and awaiting explicit user authorization;
+no Stage 8 product implementation has started.
 
 ## Phases
 
@@ -285,9 +287,9 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环，coverage complete。
 `7-5-mcp-interoperability-exit-review` 已由实现 `a88fbc4/32483521108`、不可覆盖双向 evidence 与
 证据提交 `fac6fe0/32484257736` 完成 exact-SHA 公共闭环，coverage complete，Stage 7 关闭。
-`stage-8-multi-agent-reliable-runtime-productization-entry-design` 已由 RQ-080 授权并进入教学、现状审计与入口设计；
-当前仍只做 entry design，不提前实施 8-Core 或 8-Advanced。完成本轮公共闭环后，唯一下一步为
-`8A-advanced-adoption-gate` prepared/waiting authorization。
+`stage-8-multi-agent-reliable-runtime-productization-entry-design` 已由 `3431e8b` / Actions
+`32564500421` 完成 exact-SHA 公共闭环，coverage complete。唯一下一步为
+`8a-advanced-adoption-gate` prepared/waiting authorization；授权前不实施 8A，也不提前进入 8B–8F。
 
 ## 6A-1 Checklist
 
@@ -661,16 +663,24 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 
 ### Phase 32 - stage-8-multi-agent-reliable-runtime-productization-entry-design
 
-- Status: in_progress
-- State: RQ-080 已执行；Stage 8 entry design 进行中，产品实现仍 deferred。
+- Status: complete
+- State: `3431e8b` / Actions `32564500421` exact-SHA 三 job 公共闭环；coverage complete。
 - [completed-local] 按教学合同审计 8-Core 必做产品/部署/合规/Eval/作品集缺口与
   8-Advanced 的 Bad Case/采用实验边界；
 - [completed-local] 比较入口分解方案并冻结 ADR-0051、entry design、8A–8F canonical
   子检查点与逐项 exact-SHA 退出门；
 - [completed-local] 在 entry design 公共闭环前保持 Multi-Agent、DAG、cancel/resume、恢复、
   SSE/前端、正式 Auth/付费资源和生产部署 deferred；
-- [ ] 完成本地门禁、独立提交/推送和 entry design exact-SHA 公共三 job；
-- [ ] 公共全绿后将 entry design coverage 置 complete，并交接 `8A-advanced-adoption-gate`。
+- [completed-public] 完成本地门禁、独立提交/推送和 entry design exact-SHA 公共三 job；
+- [completed-exit] entry design coverage complete，只交接 `8a-advanced-adoption-gate`。
+
+### Phase 33 - 8a-advanced-adoption-gate
+
+- Status: in_progress
+- State: prepared/waiting authorization；尚未开始候选审计、实验或产品实现。
+- [ ] 用户明确授权后，按教学合同冻结真实 Bad Case、候选矩阵、替代方案、指标、成本、安全边界、
+  实验身份和停止条件；
+- [ ] 只交付 8A 采用门证据，不提前实现 8B Multi-Agent、8C Runtime、8D fusion、8E 产品化或 8F exit。
 
 ## 6A Entry Design Checklist
 

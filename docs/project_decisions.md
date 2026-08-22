@@ -1718,3 +1718,10 @@ entry design → 8A gate → 8B advanced experiment → 8C reliable runtime
 `stage-8-multi-agent-reliable-runtime-productization-entry-design`，同步治理常量、coverage、活动计划与路线。
 该句记录的是 7-5 关闭时的 prepared/waiting authorization 交接；随后 RQ-080 已明确授权 entry design。
 当前仍不把该授权外推为 8A–8F 的 Multi-Agent、DAG、可靠恢复、SSE、正式 Auth、前端或部署实现授权。
+
+入口设计提交 `3431e8b47dd992b6c4741e12158855feb64ef917` / Actions `32564500421` 随后完成
+exact-SHA 公共三 job：pytest `1578 passed, 116 skipped, 1 warning, 127 subtests passed`；真实
+PostgreSQL `164 passed, 1 warning` 且 0001→0009 可逆、metadata=head；Linux package schema 1.6，
+外部 Riot/Provider 调用 0。entry-design coverage complete。该闭环只证明 Stage 8 路线、采用门、
+EvidenceBundle 与前端产品蓝图已冻结；当前 canonical 只交接 `8a-advanced-adoption-gate`
+prepared/waiting authorization，不证明任何 8A–8F 产品能力已实现。

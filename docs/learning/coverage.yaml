@@ -676,7 +676,7 @@ groups:
     sequence: 300
     covers:
       - stage-8-multi-agent-reliable-runtime-productization-entry-design
-    status: planned
+    status: complete
     evidence:
       problem_and_principle:
         - docs/roadmap.md

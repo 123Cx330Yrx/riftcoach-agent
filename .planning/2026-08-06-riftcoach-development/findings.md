@@ -3507,3 +3507,14 @@
 - entry design 的八维证据已全部映射到有效持久 Markdown；本地门禁和 exact-SHA 公共 CI 是唯一剩余
   关闭条件。入口设计闭环前不得写 Multi-Agent、DAG、cancel/resume、recovery、SSE、正式 Auth、前端
   或真实外部调用代码。
+
+## 2026-08-22：Stage 8 entry design 公共闭环发现
+
+- `3431e8b/32564500421` 三 job 全绿，证明入口设计在 Linux、真实 PostgreSQL、完整回归、RAG、Harness、
+  SDK/Secret/tracked-data 和 no-I/O package 边界下自洽；它没有把设计事实升级成产品实现事实。
+- 本机完整回归为 `1577 passed, 117 skipped`，公共 pytest 为 `1578 passed, 116 skipped`；差异来自环境
+  skip，真实 PostgreSQL 结论只由公共 `164 passed` 支持。
+- npm 默认镜像的 audit API 返回 404；显式切到官方 npmjs registry 后为 0 vulnerabilities。这是镜像能力
+  差异，不是依赖漏洞证据，也没有改 lockfile。
+- canonical 可以安全前移到 `8a-advanced-adoption-gate`，但 RQ-080 没有授权 8A；prepared 状态不能解释为
+  已开始候选研究或 Multi-Agent 实验。

@@ -2590,3 +2590,15 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   Key/Provider/Riot/OP.GG 调用、无付费资源购买。
 - `NEXT`：入口设计只剩本地门禁、独立提交/推送和 exact-SHA 公共三 job。公共全绿后将 entry-design
   coverage 置为 `complete`，并把唯一下一检查点交接为 `8A-advanced-adoption-gate`。
+
+### 2026-08-22：Stage 8 entry design exact-SHA 公共闭环与 8A 交接
+
+- `PUBLIC-CI`：`3431e8b47dd992b6c4741e12158855feb64ef917` / Actions `32564500421` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `COUNTS`：公共 pytest `1578 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+  `164 passed, 1 warning`，0001→0009 可逆且 metadata=head；Linux package schema 1.6，
+  `external_riot_provider_calls=0`。
+- `CLOSED`：entry-design 八维 coverage complete；教学、ADR、8A–8F 顺序、Core/Advanced、EvidenceBundle、
+  前端五模块与 MotionSites 采用门正式冻结。该闭环没有写 Stage 8 产品代码。
+- `HANDOFF`：唯一下一检查点为 `8a-advanced-adoption-gate` prepared/waiting authorization；授权前不开始
+  候选审计、实验，也不提前实现 8B–8F。

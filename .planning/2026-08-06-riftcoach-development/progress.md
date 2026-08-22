@@ -3550,3 +3550,13 @@
   coverage 仍保持 `planned`，但八个维度已绑定有效 ADR/计划/教学 Markdown，等待公共闭环后再改 `complete`。
 - 当前下一动作：运行完整本地门禁，复核 diff，独立提交/推送 entry design，并等待该 SHA 的
   `pytest`、`postgres-migrations`、`packaging-smoke` exact-SHA 公共 CI。
+
+## 2026-08-22：Stage 8 entry design exact-SHA 公共闭环
+
+- `3431e8b47dd992b6c4741e12158855feb64ef917` / Actions `32564500421` 的 pytest、
+  postgres-migrations、packaging-smoke 全部 completed/success。
+- 公共 pytest `1578 passed, 116 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+  `164 passed, 1 warning` 且 migration/head 一致；Linux package schema 1.6、外部调用 0。
+- entry-design coverage 已置 complete；Phase 32 关闭。唯一下一检查点为
+  `8a-advanced-adoption-gate` prepared/waiting authorization，本批停止且未写 Stage 8 产品代码。
+- 当前只剩状态收尾提交/推送及其 exact-SHA 三 job；全绿后本轮正式结束。
