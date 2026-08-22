@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（8C 本地实现与两轮 CI 修复门已完成，等待最新 repair implementation exact-SHA 公共三 job）
+- 最后更新：2026-08-23（8C 本地实现与三轮 CI 修复门已完成，等待最新 repair implementation exact-SHA 公共三 job）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A 与 8B 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject，bounded parallel 仅作为 8D 设计输入；当前唯一检查点为 `8c-reliable-runtime-core / authorized/in progress`，可靠 Runtime Core 已本地实现但尚未取得真库/Linux 公共闭环
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -250,7 +250,7 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：继续收尾 `8c-reliable-runtime-core`；Task 1–6、两轮 PostgreSQL CI 修复与八维材料已在工作树本地完成，最新完整回归
+- 唯一下一步：继续收尾 `8c-reliable-runtime-core`；Task 1–6、三轮 PostgreSQL CI 修复与八维材料已在工作树本地完成，最新完整回归
   `1672 passed, 134 skipped, 1 warning, 127 subtests passed`。当前只运行 cached diff、独立 repair implementation 提交和 exact-SHA 三 job；公共全绿后才关闭 8C 并交接 8D。8B holdout 不得再次执行，
   本检查点不实现 DAG、SSE、前端或 8D–8F。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
@@ -1981,3 +1981,9 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 最新 repair run `32584144522` 的 migration downgrade 已通过，`pytest` 已通过；真库仍发现三类兼容性缺口：既有终态 fixture/legacy row 的 heartbeat 为空且 generation 为旧默认 0，以及 JSONB checkpoint 以 JSON 字符串时间戳读回时被 strict Pydantic 误拒。
 - 终态不再把运行期 heartbeat 误设为必填，并允许旧终态 generation 0；`running/recovery_required` 仍要求 heartbeat/generation。Repository 通过 strict JSON wire parsing 读取 JSONB checkpoint，保留字段/类型合同，不放宽任意 Python coercion。
 - 当前新增本地回归覆盖 checkpoint JSON round-trip；最新完整本地回归和横向门需在此轮修复后重跑，公共全绿前 coverage 继续 `planned`，不进入 8D。
+
+## 2026-08-23：8C 第三轮真库兼容修复
+
+- `b2b4737` 对应公共 run `32584944802` 已通过 pytest；migration 真库由 34 个失败收敛至 2 个，证明终态 generation/heartbeat 与 checkpoint claim 修复有效。
+- 新发现并已修复：recovery requeue 仍有一处旧 strict dict parse；package smoke 已走到 owner-scoped event query，JSONB wrapper 兼容路径已补强；既有纵向测试缺 `timedelta` 导入也已修正。
+- 当前待提交最新 repair；coverage 保持 `planned`，不进入 8D。

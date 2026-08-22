@@ -13,6 +13,7 @@ import pytest
 import sqlalchemy as sa
 from alembic import command
 from alembic.config import Config
+from psycopg.types.json import Jsonb
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.persistence.config import DatabaseSettings
@@ -139,8 +140,7 @@ def test_repository_exposes_reliable_control_plane_without_opening_database() ->
 
 
 def test_checkpoint_json_storage_round_trips_through_strict_contract() -> None:
-    checkpoint = _checkpoint_from_storage(
-        {
+    stored = {
             "schema_version": "1.0",
             "checkpoint_id": "claimed-1-1",
             "run_id": "review_reliable_repository_1",
@@ -150,9 +150,11 @@ def test_checkpoint_json_storage_round_trips_through_strict_contract() -> None:
             "safe_to_replay": True,
             "created_at": "2026-08-22T15:00:00Z",
         }
-    )
+    checkpoint = _checkpoint_from_storage(stored)
+    wrapped = _checkpoint_from_storage(Jsonb(stored))
     assert checkpoint.phase is TaskCheckpointPhase.CLAIMED_SAFE
     assert checkpoint.created_at == BASE.replace(hour=15)
+    assert wrapped == checkpoint
 
 
 def test_create_queued_task_persists_sql_null_checkpoint() -> None:

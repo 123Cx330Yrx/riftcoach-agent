@@ -3,7 +3,7 @@ from __future__ import annotations
 import copy
 import json
 import secrets
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from uuid import UUID
@@ -820,9 +820,7 @@ class PostgresTaskRepository:
                     checkpoint = (
                         None
                         if record.checkpoint_reference is None
-                        else TaskCheckpointReference.model_validate(
-                            copy.deepcopy(record.checkpoint_reference)
-                        )
+                        else _checkpoint_from_storage(record.checkpoint_reference)
                     )
                     if (
                         record.cancel_requested_at is not None
@@ -1881,12 +1879,22 @@ def _default_lease_token() -> str:
 
 
 def _checkpoint_from_storage(
-    value: dict[str, object],
+    value: object,
 ) -> TaskCheckpointReference:
     """Parse JSONB checkpoint data through the strict JSON wire contract."""
 
     try:
-        payload = json.dumps(value, separators=(",", ":"), ensure_ascii=False)
+        # psycopg may expose JSONB values as its Jsonb wrapper in some result
+        # paths; unwrap it without changing the strict JSON contract.
+        value = getattr(value, "obj", value)
+        if isinstance(value, str):
+            payload = value
+        elif isinstance(value, Mapping):
+            payload = json.dumps(
+                dict(value), separators=(",", ":"), ensure_ascii=False
+            )
+        else:
+            raise TypeError("checkpoint_reference must be JSON object data")
         return TaskCheckpointReference.model_validate_json(payload)
     except (TypeError, ValueError, ValidationError):
         raise ValueError("checkpoint_reference has an invalid JSON shape") from None

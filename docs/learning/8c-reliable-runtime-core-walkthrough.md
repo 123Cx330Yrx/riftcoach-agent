@@ -183,6 +183,9 @@ implementation SHA 的公共 `postgres-migrations`、`packaging-smoke` 补证。
 读回是 JSON 字符串，不能直接喂给 strict Pydantic dict validation。现在终态 CHECK 允许 heartbeat 为空，
 允许 legacy generation 0，Repository 通过 strict JSON wire parsing 还原 checkpoint；这保留了运行期 fencing 要求，也兼容既有终态投影。
 
+requeue、task read 和 event replay 三条 JSONB 读回路径现在共享同一 parser；它同时处理普通 JSON mapping 和
+psycopg `Jsonb` wrapper，仍以严格 JSON Schema 解析，不把任意 Python 类型默默强转。
+
 ### 5.3 公共关闭门
 
 8C 只有在同一 implementation/evidence SHA 的以下三 job 全部成功后才能关闭：

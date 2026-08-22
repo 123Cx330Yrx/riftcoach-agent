@@ -3724,3 +3724,9 @@
 - repair run `32584144522` 的 migration downgrade 与 pytest 已通过；真库发现既有终态没有 heartbeat、strict checkpoint JSON 读回失败，package claim 也因此未形成成功证据。
 - lifecycle CHECK 已改为仅运行期状态要求 heartbeat；Repository 通过 `model_validate_json` 解析 JSONB checkpoint；新增 strict JSON round-trip 回归。
 - 该轮修改尚未提交；修复后需重新跑完整本地门并推送新的 exact-SHA。
+
+## 2026-08-23：8C 第三轮真库修复
+
+- `b2b4737/32584944802` 已证明 migration downgrade 与 pytest 通过，真库失败从 34 降为 2；剩余 recovery requeue 的 strict JSON 读回与既有测试导入问题已修复。
+- package smoke 已推进到 event query；Repository task/event/requeue 三条路径统一 strict JSONB parser，并处理 psycopg `Jsonb` wrapper。
+- 最新修复待提交，coverage 仍 planned。

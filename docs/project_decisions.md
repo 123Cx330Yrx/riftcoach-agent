@@ -1815,3 +1815,9 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - 终态 `succeeded/failed` 是已结束的控制面投影，heartbeat 只属于运行期租约；为兼容已有合法终态行，lifecycle CHECK 仅要求 `running/recovery_required` 有 heartbeat/generation，终态允许 heartbeat 为空且保留 legacy generation 0。
 - JSONB checkpoint 在数据库中是 JSON wire data；strict Pydantic 合同通过 JSON round-trip 解析字符串时间戳，不改为宽松模型验证，也不暴露 checkpoint body。
 - 该轮修复继续属于 8C PostgreSQL boundary repair；coverage 保持 `planned`，不提前进入 8D。
+
+## 2026-08-23：8C 第三轮真库兼容裁决
+
+- Repository 的所有 JSONB checkpoint 读回路径（task、event、requeue）统一经过 strict JSON wire parser，并兼容 psycopg `Jsonb` wrapper；不以 `strict=False` 放宽 Pydantic 合同。
+- package smoke 已从 claim 推进到 owner-scoped event page，说明前两轮修复有效；event query 仍待最新 SHA 公共 Linux 复验，8C 不提前关闭。
+- 一个既有 PostgreSQL-only product vertical test 的 `timedelta` 漏导入是测试接线错误，已补最小导入，不改变产品行为。

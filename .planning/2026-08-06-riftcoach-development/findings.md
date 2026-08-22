@@ -3618,3 +3618,9 @@
 - repair run `32584144522` 的 migration downgrade 与 pytest 已通过；PostgreSQL 真库仍有 34 个失败，根因是旧的 `succeeded/failed` 终态 fixture 没有 heartbeat 且 generation 保持旧默认 0，而 0010 CHECK 错误把运行期字段设为终态必填。
 - 另一个链路问题是 Repository 把 `model_dump(mode="json")` 产生的 checkpoint 时间戳字符串直接用 strict `model_validate(dict)` 读取，导致 claim 在真库中变成 `task_repository_integrity_failed`；package smoke 因此报告 claim failed。
 - 修复策略是终态 heartbeat 可空、运行期 heartbeat 仍必填，并在 JSONB 边界用 `model_validate_json` 严格解析；不改放宽业务 DTO、不删除 lifecycle CHECK。
+
+## 2026-08-23：第三轮真库收敛
+
+- `b2b4737/32584944802` 的真库结果为 `184 passed, 2 failed`；剩余 recovery requeue 仍调用旧 `model_validate(dict)`，与 claim 已修复的路径不一致。
+- package smoke 的错误已从 claim 推进到 event query，说明 fencing/terminal/JSONB claim 接缝已成立；event replay 需要兼容 psycopg `Jsonb` wrapper 的统一 parser。
+- `tests/test_task_product_vertical_postgres.py` 的 `timedelta` 漏导入只在公共真库执行时暴露，已补最小测试导入，不修改生产代码。

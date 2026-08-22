@@ -718,7 +718,7 @@ lease/fencing、cancel、checkpoint/recovery、Worker/API/package 纵向与八�
 - [completed-local] pure contracts、0010/ORM、Repository、lease-aware Worker、proof-based recovery、cancel/event API 与 package replay 纵向已按红绿 TDD 完成；
 - [completed-local] walkthrough 与 coverage 八维路径已补齐；两轮 PostgreSQL CI 修复与回归测试已完成；完整 pytest `1672 passed, 134 skipped, 1 warning, 127 subtests passed`；
 - [completed-local] 两套 RAG、Harness、compileall/pip/YAML、安全/治理/diff 门已通过；
-- [completed-local] repair SHA 的 migration downgrade 与 pytest 公共门通过后，修复终态 heartbeat 兼容与 strict JSONB checkpoint 读回；
+- [completed-local] repair SHA 的 migration downgrade 与 pytest 公共门通过后，修复终态 heartbeat/generation 兼容、strict JSONB task/event/requeue 读回与公共纵向测试导入；
 - [in_progress] 重跑完整本地门，提交/推送最新 repair implementation 并等待 exact-SHA 三 job；
 - [ ] 公共全绿后 coverage complete，只交接 `8d-riot-opgg-evidence-fusion-core` prepared/waiting authorization；
 - [boundary] 不覆盖或重跑 8B holdout，不实现 Multi-Agent、DAG、第三方 Runtime、SSE、前端或 8D–8F。
