@@ -2691,3 +2691,17 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `EVIDENCE`：8C walkthrough 与 coverage 八维路径已齐，coverage 仍 `planned`。
 - `NEXT`：完成全部横向门、独立 implementation/evidence SHA 与 exact-SHA 三 job；公共全绿前不关闭 8C、
   不进入 8D。
+
+### 2026-08-23：8C clean implementation 公共闭环与 8D 准备态
+
+- `ROOT-CAUSE`：package smoke 的 Repository 直接返回合法 6-event `TaskEventPage`；API 503 根因是
+  deployment composition `_TaskServiceProxy` 漏掉 `request_cancel` / `read_events` 转发。补齐后新增
+  composed-app cancel/event 回归，未改变 owner scope、lease token 隐私或 Runtime/Harness 边界。
+- `PUBLIC-CI`：clean implementation `2df5349d85e48138c05d6293d4e3885b6b4756ec` / Actions
+  `32587659678` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 completed/success。
+- `LOCAL-GATES`：完整 pytest `1673 passed, 134 skipped, 1 warning, 127 subtests passed`；两套 RAG、
+  Harness dry-run、compileall、pip、SDK/Secret/tracked-data、governance 与 diff 全绿。
+- `CLOSED`：8C 八维 coverage 置 `complete`，PostgreSQL 0010、lease/fencing、cancel、checkpoint/recovery、
+  event replay 与 Linux package 纵向获得公共证据；这不等于正式 Auth、SSE、前端、备份或生产 SLA。
+- `HANDOFF`：唯一下一检查点为 `8d-riot-opgg-evidence-fusion-core` prepared/waiting authorization；授权前
+  不调用 Riot/OP.GG/Provider/LLM、不读取 Key、不实现 8D。8B holdout SHA `944258...445e8` 不得覆盖或重跑。

@@ -31,9 +31,10 @@ Actions `32480827952`. RQ-079 authorizes Phase 31 -
 at `3431e8b` / Actions `32564500421`. Phase 33 -
 `8a-advanced-adoption-gate` is complete at `12ad835` / Actions `32567642315`.
 Phase 34 - `8b-conditional-multi-agent-experiment` is complete at `783a329` /
-Actions `32572610725`. RQ-083 authorizes Phase 35 - `8c-reliable-runtime-core`;
-Task 1–6 and the eight-dimension evidence are complete locally; exact-SHA PostgreSQL/Linux
-public closure is still pending.
+Actions `32572610725`. RQ-083 authorized Phase 35 - `8c-reliable-runtime-core`;
+it is complete at `2df5349` / Actions `32587659678` with exact-SHA PostgreSQL/Linux
+public closure. Phase 36 - `8d-riot-opgg-evidence-fusion-core` is the current governance
+pointer, prepared/waiting authorization and not yet implemented.
 
 ## Phases
 
@@ -294,9 +295,9 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 `32564500421` 完成 exact-SHA 公共闭环，coverage complete；`8a-advanced-adoption-gate` 又由
 `12ad835` / Actions `32567642315` 完成。`8b-conditional-multi-agent-experiment` 的 implementation
 `180bc8b/32572085065` 与 result/ADR/evidence `783a329/32572610725` 均 exact-SHA 公共闭环，
-coverage complete。RQ-083 已授权唯一下一步 `8c-reliable-runtime-core`；0010、durable event/replay、
-lease/fencing、cancel、checkpoint/recovery、Worker/API/package 纵向与八维材料已本地完成。当前只运行
-最终本地门、独立 implementation/evidence 提交和 exact-SHA 三 job；公共闭环前不进入 8D–8F。
+coverage complete。8C 已由 `2df5349/32587659678` 完成 0010、durable event/replay、lease/fencing、cancel、
+checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公共闭环；coverage complete。当前唯一下一步
+为 `8d-riot-opgg-evidence-fusion-core` prepared/waiting authorization，授权前不实现 8D–8F。
 
 ## 6A-1 Checklist
 
@@ -712,16 +713,24 @@ lease/fencing、cancel、checkpoint/recovery、Worker/API/package 纵向与八�
 
 ### Phase 35 - 8c-reliable-runtime-core
 
-- Status: in_progress
-- State: RQ-083 authorized；8B 已完成，8C Task 1–6 与八维材料本地完成，公共 implementation 门待执行。
+- Status: complete
+- State: RQ-083 authorized；8C 已由 clean implementation `2df5349` / Actions `32587659678` exact-SHA 三 job 完成，正式交接 `8d-riot-opgg-evidence-fusion-core` prepared/waiting authorization。
 - [completed] durable event/replay、lease/fencing、cancel、checkpoint、recovery、late-result 隔离的教学、方案比较、ADR 与专用设计已由 `3ac12a3/32575190136` 公共闭环；
 - [completed-local] pure contracts、0010/ORM、Repository、lease-aware Worker、proof-based recovery、cancel/event API 与 package replay 纵向已按红绿 TDD 完成；
-- [completed-local] walkthrough 与 coverage 八维路径已补齐；两轮 PostgreSQL CI 修复与回归测试已完成；完整 pytest `1672 passed, 134 skipped, 1 warning, 127 subtests passed`；
-- [completed-local] 两套 RAG、Harness、compileall/pip/YAML、安全/治理/diff 门已通过；
+- [completed] walkthrough 与 coverage 八维路径已补齐；PostgreSQL CI 修复与回归测试已完成；完整 pytest `1673 passed, 134 skipped, 1 warning, 127 subtests passed`；
+- [completed] 两套 RAG、Harness、compileall/pip/YAML、安全/治理/diff 门已通过；
 - [completed-local] repair SHA 的 migration downgrade 与 pytest 公共门通过后，修复终态 heartbeat/generation 兼容、strict JSONB task/event/requeue 读回、event SQL NULL 映射与公共纵向测试导入；
-- [in_progress] 重跑完整本地门，提交/推送最新 repair implementation 并等待 exact-SHA 三 job；
-- [ ] 公共全绿后 coverage complete，只交接 `8d-riot-opgg-evidence-fusion-core` prepared/waiting authorization；
+- [completed] 修复 deployment composition `_TaskServiceProxy` 漏掉的 `request_cancel` / `read_events` 转发，新增 composed-app 回归并移除临时诊断；
+- [completed] clean implementation `2df5349` / Actions `32587659678` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 均 completed/success；
+- [completed] 公共闭环后 coverage 置为 complete，只交接 `8d-riot-opgg-evidence-fusion-core` prepared/waiting authorization；
 - [boundary] 不覆盖或重跑 8B holdout，不实现 Multi-Agent、DAG、第三方 Runtime、SSE、前端或 8D–8F。
+
+### Phase 36 - 8d-riot-opgg-evidence-fusion-core
+
+- Status: in_progress
+- State: prepared/waiting authorization；这是治理指针，不表示 8D 已开始实施。
+- [ ] 等待用户明确授权后，先完成 Riot 官方事实层与 OP.GG partial Meta 的 typed EvidenceBundle 设计、TDD 与采用门；
+- [boundary] 授权前不读取 Key、不调用 Riot/OP.GG/Provider/LLM，不实现真实 fusion、SSE、前端、正式 Auth 或部署；8B holdout 不得覆盖/重跑。
 
 ## 6A Entry Design Checklist
 

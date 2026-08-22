@@ -2,8 +2,8 @@
 state_schema: 1
 main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
-current_checkpoint: "8c-reliable-runtime-core"
-status: in_progress
+current_checkpoint: "8d-riot-opgg-evidence-fusion-core"
+status: pending
 pause_reason: ""
 ---
 
@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（8C 本地实现与三轮 CI 修复门已完成，等待最新 repair implementation exact-SHA 公共三 job）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A 与 8B 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject，bounded parallel 仅作为 8D 设计输入；当前唯一检查点为 `8c-reliable-runtime-core / authorized/in progress`，可靠 Runtime Core 已本地实现但尚未取得真库/Linux 公共闭环
+- 最后更新：2026-08-23（8C clean implementation exact-SHA 三公共 job 已全绿，coverage 与 canonical 收尾待本次状态提交）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B 与 8C 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject，bounded parallel 仅作为 8D 设计输入；当前唯一检查点为 `8d-riot-opgg-evidence-fusion-core / prepared/waiting authorization`
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,9 +250,10 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：继续收尾 `8c-reliable-runtime-core`；Task 1–6、三轮 PostgreSQL CI 修复与八维材料已在工作树本地完成，最新完整回归
-  `1672 passed, 134 skipped, 1 warning, 127 subtests passed`。当前只运行 cached diff、独立 repair implementation 提交和 exact-SHA 三 job；公共全绿后才关闭 8C 并交接 8D。8B holdout 不得再次执行，
-  本检查点不实现 DAG、SSE、前端或 8D–8F。
+- 唯一下一步：`8d-riot-opgg-evidence-fusion-core` 已 prepared/waiting authorization；8C 已由 clean implementation
+  `2df5349d85e48138c05d6293d4e3885b6b4756ec` / Actions `32587659678` 完成 exact-SHA
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三公共 job，coverage 待本次状态收尾提交置为 complete。
+  授权前不实现 Riot+OP.GG fusion；8B holdout 不得再次执行，本检查点也不实现 DAG、SSE、前端或 8E–8F。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -553,10 +554,10 @@ pause_reason: ""
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B 已关闭；8C 的 0010、event/lease/fencing/cancel/checkpoint/recovery、Worker/API/package 纵向与两轮 PostgreSQL CI 修复已本地验证，最新完整回归 `1672 passed, 134 skipped` | 本地普通测试通过等于真实 PostgreSQL migration/concurrency、Linux package 或 8C 已正式关闭 |
+| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C 已关闭；8C 的 0010、event/lease/fencing/cancel/checkpoint/recovery、Worker/API/package 纵向与公共 CI 修复已验证，最新完整回归 `1673 passed, 134 skipped` | 本地普通测试通过等于未来 8D fusion、正式 Auth/SSE/前端或生产 SLA |
 | 项目理解 | Stage 8 entry、8A、8B 已有完整材料；8C walkthrough 已补齐问题、原理、代码地图、控制流、验证、runbook、安全边界和面试表述 | 持久材料存在等于用户已能独立讲解 lease/fencing/recovery；owner mastery 仍需复述、读码和运行验证 |
 | 参考资料 | Saber/Sea 的 lease/event/checkpoint 思想只作选择性参考；8B 唯一 holdout 保持 SHA `944258...445e8` 且未重跑；8C 未执行外部 I/O | 引用参考思想等于复制其 Runtime/DAG，或 Multi-Agent reject 已被撤销 |
-| GitHub/部署 | 8C 设计 `3ac12a3/32575190136` 已 exact-SHA 公共闭环；implementation/evidence 尚未提交，真库 0010 与 Linux event replay 仍待公共三 job | 设计 CI 或 Windows 本地回归等于 8C implementation 公共闭环、正式 Auth/SSE/备份或生产 SLA |
+| GitHub/部署 | 8C clean implementation `2df5349/32587659678` 的 `pytest`、真实 PostgreSQL migration/control-plane、Linux package smoke 与 image boundary 均 exact-SHA 全绿；正式 Auth/SSE/前端/备份/生产 SLA 仍未实现 | 本次公共闭环等于 8D fusion、正式 Auth/SSE/备份或生产 SLA |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -1993,3 +1994,21 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 最新 SHA 的 migration 与完整 PostgreSQL job 已全绿，package smoke 唯一失败为 event replay query；task checkpoint 已修复但 event checkpoint 仍默认把 Python `None` 当 JSON `null`。
 - `ReviewTaskEventRecord.checkpoint_reference` 现与 task row 一样使用 `JSONB(none_as_null=True)`；这是无 schema 变更的存储映射修复，公共 event DTO 仍 body-free。
 - 当前待提交/推送该最小修复；coverage 继续 `planned`，不进入 8D。
+
+## 2026-08-23：8C clean implementation exact-SHA 公共闭环与 8D 交接
+
+- 根因最终定位为 deployment composition 的 `_TaskServiceProxy` 漏掉了新可靠任务 API 的
+  `request_cancel` 与 `read_events` 转发；Repository、`ReviewTaskService`、事件解码和公开 DTO
+  本身均已通过真库/聚焦测试。修复同时新增 composed-app cancel/event 回归，未扩大权限或公开内部 lease 字段。
+- clean implementation `2df5349d85e48138c05d6293d4e3885b6b4756ec` / Actions `32587659678`
+  的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 completed/success；公共 job
+  验证了 PostgreSQL 0010 可逆迁移、真实 claim/heartbeat/fencing/cancel/checkpoint/recovery/event replay、
+  Linux package no-I/O vertical 与非 root/image boundary。
+- 本地完整回归为 `1673 passed, 134 skipped, 1 warning, 127 subtests passed`；两套 RAG 的
+  Recall/MRR/nDCG/FPR 均 `1.0/0`，independent holdout 的 abstention/citation 均 `1.0`；Harness
+  dry-run 为 `published`/`0 revisions`；compileall、pip、SDK/Secret/tracked-data、governance、diff
+  全部通过。134 skip 只表示本机没有 PostgreSQL/Docker/Linux，真实结论由该 exact-SHA 公共 job 提供。
+- 8C 八维 learning/engineering coverage 现可置为 `complete`，checkpoint 正式关闭。下一检查点只登记为
+  `8d-riot-opgg-evidence-fusion-core / prepared / waiting authorization`；授权前停止，不读取 Key、
+  不调用真实 Riot/OP.GG/Provider/LLM，不实现 8D、8E 或 8F。Multi-Agent 产品 reject 与 8B 唯一 holdout
+  SHA `944258...445e8` 保持不可覆盖、不可重跑。

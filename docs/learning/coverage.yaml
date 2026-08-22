@@ -765,7 +765,7 @@ groups:
     sequence: 330
     covers:
       - 8c-reliable-runtime-core
-    status: planned
+    status: complete
     evidence:
       problem_and_principle:
         - docs/adr/0054-adopt-postgresql-leased-fenced-task-control-plane.md

@@ -3630,3 +3630,13 @@
 - `424ba43` 的 migration 与 PostgreSQL job 已全绿，package smoke 报 `packaging_smoke_task_event_query_failed`；task JSONB parser 已通过 claim/requeue，event row 仍可能把 `None` 绑定为 JSON `null`。
 - event ORM 现使用 `JSONB(none_as_null=True)`，保持 task/event 两个 control-plane projection 的空值语义一致；下一次公共 package job 是最终证据。
 - 为定位仍未解释的 event query failure，smoke 仅增加 status/code/JSON-key diagnostics，明确不打印正文或敏感字段。
+
+## 2026-08-23：8C clean implementation 根因与公共闭环
+
+- `packaging-smoke` 的 Repository 诊断返回合法 `TaskEventPage` 且包含 6 个事件；API 503 的根因是
+  composed deployment 的 `_TaskServiceProxy` 漏掉 `request_cancel` / `read_events` 两个可靠任务转发方法，
+  不是数据库事件解码或公开 DTO 合同问题。
+- 修复后新增 composed-app cancel/event 回归；`c7699f0/32587355051` 曾以临时安全诊断验证 package 通过，
+  随后 clean implementation `2df5349/32587659678` 移除诊断并让三个公共 job 全部 exact-SHA 成功。
+- 本地完整回归为 `1673 passed, 134 skipped, 1 warning, 127 subtests passed`。本机 134 skip 仍只代表没有
+  PostgreSQL/Docker/Linux；真实 migration/concurrency/package 事实只采用 `32587659678` 公共证据。
