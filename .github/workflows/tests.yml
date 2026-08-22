@@ -24,7 +24,7 @@ jobs:
           cache: pip
 
       - name: Set up Node for isolated evaluation dependencies
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: "24"
           cache: npm
