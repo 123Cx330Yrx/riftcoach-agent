@@ -3716,5 +3716,11 @@
 
 - 公共 run `32579514636` 日志确认 migration downgrade 约束名双前缀与 queued JSONB `null` 两个根因。
 - `_drop_reliable_task_constraints()` 已统一 `op.f(...)`；`ReviewTaskRecord.checkpoint_reference` 已设置 `JSONB(none_as_null=True)`。
-- 新增离线 downgrade 名称、metadata 与真实 queued insert 回归；完整 pytest `1671 passed, 134 skipped, 1 warning, 127 subtests passed`。
+- 新增离线 downgrade 名称、metadata 与真实 queued insert 回归；完整 pytest `1672 passed, 134 skipped, 1 warning, 127 subtests passed`。
 - RAG development/holdout、Harness dry-run、compileall、pip、SDK/Secret/tracked-data、governance、diff 全绿；真实 PostgreSQL/Linux 仍待公共 repair SHA。
+
+## 2026-08-23：8C 第二轮公共 CI 发现与修复
+
+- repair run `32584144522` 的 migration downgrade 与 pytest 已通过；真库发现既有终态没有 heartbeat、strict checkpoint JSON 读回失败，package claim 也因此未形成成功证据。
+- lifecycle CHECK 已改为仅运行期状态要求 heartbeat；Repository 通过 `model_validate_json` 解析 JSONB checkpoint；新增 strict JSON round-trip 回归。
+- 该轮修改尚未提交；修复后需重新跑完整本地门并推送新的 exact-SHA。

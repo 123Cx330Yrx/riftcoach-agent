@@ -42,6 +42,14 @@ def test_reliable_runtime_metadata_and_head_are_explicit() -> None:
     assert event.name == "review_task_events"
     assert event.c.checkpoint_reference.type.__class__ is JSONB
     assert task.c.checkpoint_reference.type.none_as_null is True
+    lifecycle = next(
+        constraint
+        for constraint in task.constraints
+        if constraint.name == "ck_review_tasks_reliable_lifecycle_shape"
+    )
+    assert "terminal_reason IS NOT NULL AND lease_generation >= 0" in str(
+        lifecycle.sqltext
+    )
     assert event.c.occurred_at.type.timezone is True
     assert event.c.event_cursor.identity is not None
     assert task.c.status.type.length == 24

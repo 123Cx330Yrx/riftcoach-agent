@@ -20,6 +20,7 @@ from app.persistence.database import build_engine, build_session_factory
 from app.persistence.task_event_record import ReviewTaskEventRecord
 from app.persistence.task_record import ReviewTaskRecord
 from app.persistence.task_repository import PostgresTaskRepository
+from app.persistence.task_repository import _checkpoint_from_storage
 from app.product.run_receipts import RunReceiptReference
 from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
 from app.tasks.models import (
@@ -135,6 +136,23 @@ def test_repository_exposes_reliable_control_plane_without_opening_database() ->
         "read_events",
     ):
         assert callable(getattr(repository, method_name))
+
+
+def test_checkpoint_json_storage_round_trips_through_strict_contract() -> None:
+    checkpoint = _checkpoint_from_storage(
+        {
+            "schema_version": "1.0",
+            "checkpoint_id": "claimed-1-1",
+            "run_id": "review_reliable_repository_1",
+            "checkpoint_sequence": 1,
+            "lease_generation": 1,
+            "phase": "claimed_safe",
+            "safe_to_replay": True,
+            "created_at": "2026-08-22T15:00:00Z",
+        }
+    )
+    assert checkpoint.phase is TaskCheckpointPhase.CLAIMED_SAFE
+    assert checkpoint.created_at == BASE.replace(hour=15)
 
 
 def test_create_queued_task_persists_sql_null_checkpoint() -> None:

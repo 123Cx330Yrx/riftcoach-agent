@@ -169,7 +169,7 @@ tests/test_packaging_smoke.py` 为 `29 passed`。
 
 ### 5.2 本地证据
 
-最新完整 Windows 本地回归：`1671 passed, 134 skipped, 1 warning, 127 subtests passed`。134 个 skip
+最新完整 Windows 本地回归：`1672 passed, 134 skipped, 1 warning, 127 subtests passed`。134 个 skip
 主要是本机无 PostgreSQL/Docker/Linux 条件；它们不能写成“本地真库已通过”。pure、Worker、Fake API、
 offline migration 和普通回归已经执行；0010 真迁移、并发 fencing/recovery 和 Linux package 必须由同一
 implementation SHA 的公共 `postgres-migrations`、`packaging-smoke` 补证。
@@ -178,6 +178,10 @@ implementation SHA 的公共 `postgres-migrations`、`packaging-smoke` 补证。
 命名 convention 前缀的约束名重复套前缀，以及 SQLAlchemy JSONB 把 queued checkpoint 的 Python `None`
 编码成 JSON `null`。本轮分别用 `op.f()` 和 `JSONB(none_as_null=True)` 修复，并增加离线 downgrade、metadata
 与 queued insert 回归；这些修复仍待 repair SHA 的公共真库/Linux job 证明。
+
+随后 repair SHA 的真库门又证明：旧终态记录不应被强制补写运行期 heartbeat 或虚构新的 generation；而 JSONB 中的 checkpoint 时间戳
+读回是 JSON 字符串，不能直接喂给 strict Pydantic dict validation。现在终态 CHECK 允许 heartbeat 为空，
+允许 legacy generation 0，Repository 通过 strict JSON wire parsing 还原 checkpoint；这保留了运行期 fencing 要求，也兼容既有终态投影。
 
 ### 5.3 公共关闭门
 

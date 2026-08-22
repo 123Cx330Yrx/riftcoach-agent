@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import json
 import secrets
 from collections.abc import Callable
 from dataclasses import dataclass, field
@@ -1689,7 +1690,7 @@ def _record_to_task(
     checkpoint_reference = (
         None
         if record.checkpoint_reference is None
-        else TaskCheckpointReference.model_validate(record.checkpoint_reference)
+        else _checkpoint_from_storage(record.checkpoint_reference)
     )
     return ReviewTask(
         task_id=record.task_id,
@@ -1866,9 +1867,7 @@ def _event_record_to_model(record: ReviewTaskEventRecord) -> TaskLifecycleEvent:
         checkpoint_reference=(
             None
             if record.checkpoint_reference is None
-            else TaskCheckpointReference.model_validate(
-                copy.deepcopy(record.checkpoint_reference)
-            )
+            else _checkpoint_from_storage(record.checkpoint_reference)
         ),
         occurred_at=record.occurred_at,
     )
@@ -1879,6 +1878,18 @@ def _event_record_to_model(record: ReviewTaskEventRecord) -> TaskLifecycleEvent:
 
 def _default_lease_token() -> str:
     return secrets.token_hex(32)
+
+
+def _checkpoint_from_storage(
+    value: dict[str, object],
+) -> TaskCheckpointReference:
+    """Parse JSONB checkpoint data through the strict JSON wire contract."""
+
+    try:
+        payload = json.dumps(value, separators=(",", ":"), ensure_ascii=False)
+        return TaskCheckpointReference.model_validate_json(payload)
+    except (TypeError, ValueError, ValidationError):
+        raise ValueError("checkpoint_reference has an invalid JSON shape") from None
 
 
 def _as_utc(value: datetime) -> datetime:

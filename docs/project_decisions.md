@@ -1806,6 +1806,12 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 
 ## 2026-08-23：8C 公共 CI 修复裁决
 
-- 公共 run `32579514636` 的 migration downgrade 与 package queued-insert 失败均属于 PostgreSQL 边界实现错误，不改变 ADR-0054 的架构或安全语义。
+- 公共 run `32579514636` 的 migration downgrade 与 package queued-insert 失败均属于 PostgreSQL 边界实现错误，不改变 ADR-0054 的架构或安全语义；repair run `32584144522` 又暴露了终态兼容与 strict JSONB 读回边界。
 - 采用最小修复：Alembic downgrade 对 naming-convention 约束名统一使用 `op.f()`；queued task 的可空 checkpoint 使用 `JSONB(none_as_null=True)`，不放宽 `ck_review_tasks_checkpoint_shape`。
 - 修复新增离线与真实真库回归，coverage 继续 `planned`；在 repair implementation SHA 的三 job 全绿前，不关闭 8C、不进入 8D。
+
+## 2026-08-23：8C 第二轮 CI 兼容性裁决
+
+- 终态 `succeeded/failed` 是已结束的控制面投影，heartbeat 只属于运行期租约；为兼容已有合法终态行，lifecycle CHECK 仅要求 `running/recovery_required` 有 heartbeat/generation，终态允许 heartbeat 为空且保留 legacy generation 0。
+- JSONB checkpoint 在数据库中是 JSON wire data；strict Pydantic 合同通过 JSON round-trip 解析字符串时间戳，不改为宽松模型验证，也不暴露 checkpoint body。
+- 该轮修复继续属于 8C PostgreSQL boundary repair；coverage 保持 `planned`，不提前进入 8D。

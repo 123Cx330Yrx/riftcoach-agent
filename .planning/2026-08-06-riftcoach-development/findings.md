@@ -3611,4 +3611,10 @@
 - PostgreSQL 0010 downgrade 使用裸 `ck_review_tasks_*` 名称时，Alembic naming convention 会再次生成 `ck_review_tasks_ck_review_tasks_*`；修复必须在 helper 内调用 `op.f()`，而不是放宽或重命名约束。
 - SQLAlchemy PostgreSQL JSONB 默认将 Python `None` 编码为 JSON `null`；`checkpoint_reference` 的数据库 shape 需要 SQL `NULL` 才能满足 queued invariant，因此 ORM 使用 `JSONB(none_as_null=True)`。
 - 新增 offline downgrade SQL、metadata 与 PostgreSQL queued-insert 回归；本机没有 PostgreSQL，queued-insert 测试按环境 skip，公共 job 是阻塞证据。
-- 修复后本地完整回归为 `1671 passed, 134 skipped, 1 warning, 127 subtests passed`，两套 RAG、Harness、compileall、pip、SDK/Secret/tracked-data、governance 与 diff 门全绿。
+- 修复后本地完整回归为 `1672 passed, 134 skipped, 1 warning, 127 subtests passed`，两套 RAG、Harness、compileall、pip、SDK/Secret/tracked-data、governance 与 diff 门全绿。
+
+## 2026-08-23：第二轮公共 CI 兼容性发现
+
+- repair run `32584144522` 的 migration downgrade 与 pytest 已通过；PostgreSQL 真库仍有 34 个失败，根因是旧的 `succeeded/failed` 终态 fixture 没有 heartbeat 且 generation 保持旧默认 0，而 0010 CHECK 错误把运行期字段设为终态必填。
+- 另一个链路问题是 Repository 把 `model_dump(mode="json")` 产生的 checkpoint 时间戳字符串直接用 strict `model_validate(dict)` 读取，导致 claim 在真库中变成 `task_repository_integrity_failed`；package smoke 因此报告 claim failed。
+- 修复策略是终态 heartbeat 可空、运行期 heartbeat 仍必填，并在 JSONB 边界用 `model_validate_json` 严格解析；不改放宽业务 DTO、不删除 lifecycle CHECK。
