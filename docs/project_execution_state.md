@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（8C clean implementation exact-SHA 三公共 job 已全绿，coverage 与 canonical 收尾待本次状态提交）
+- 最后更新：2026-08-23（8C clean implementation 与 canonical 状态收尾均已 exact-SHA 公共闭环）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B 与 8C 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject，bounded parallel 仅作为 8D 设计输入；当前唯一检查点为 `8d-riot-opgg-evidence-fusion-core / prepared/waiting authorization`
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -252,7 +252,7 @@ pause_reason: ""
   `31942483874` 的 exact-SHA 公共 CI
 - 唯一下一步：`8d-riot-opgg-evidence-fusion-core` 已 prepared/waiting authorization；8C 已由 clean implementation
   `2df5349d85e48138c05d6293d4e3885b6b4756ec` / Actions `32587659678` 完成 exact-SHA
-  `pytest`、`postgres-migrations`、`packaging-smoke` 三公共 job，coverage 待本次状态收尾提交置为 complete。
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三公共 job，coverage 已置为 complete。
   授权前不实现 Riot+OP.GG fusion；8B holdout 不得再次执行，本检查点也不实现 DAG、SSE、前端或 8E–8F。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
@@ -2008,7 +2008,7 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   Recall/MRR/nDCG/FPR 均 `1.0/0`，independent holdout 的 abstention/citation 均 `1.0`；Harness
   dry-run 为 `published`/`0 revisions`；compileall、pip、SDK/Secret/tracked-data、governance、diff
   全部通过。134 skip 只表示本机没有 PostgreSQL/Docker/Linux，真实结论由该 exact-SHA 公共 job 提供。
-- 8C 八维 learning/engineering coverage 现可置为 `complete`，checkpoint 正式关闭。下一检查点只登记为
+- 8C 八维 learning/engineering coverage 已置为 `complete`，checkpoint 正式关闭。下一检查点只登记为
   `8d-riot-opgg-evidence-fusion-core / prepared / waiting authorization`；授权前停止，不读取 Key、
   不调用真实 Riot/OP.GG/Provider/LLM，不实现 8D、8E 或 8F。Multi-Agent 产品 reject 与 8B 唯一 holdout
   SHA `944258...445e8` 保持不可覆盖、不可重跑。
