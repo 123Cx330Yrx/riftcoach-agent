@@ -1725,3 +1725,23 @@ PostgreSQL `164 passed, 1 warning` 且 0001→0009 可逆、metadata=head；Linu
 外部 Riot/Provider 调用 0。entry-design coverage complete。该闭环只证明 Stage 8 路线、采用门、
 EvidenceBundle 与前端产品蓝图已冻结；当前 canonical 只交接 `8a-advanced-adoption-gate`
 prepared/waiting authorization，不证明任何 8A–8F 产品能力已实现。
+
+### 8A Advanced Adoption Gate（2026-08-22，RQ-081）
+
+用户明确“开始”后，8A 只回答“哪些高级候选有资格进入公平实验”，不实现候选本身。ADR-0052
+选择三路同切片结构：现有单 Runtime 串行为 baseline、普通受限并行为必要 comparator、角色隔离
+Multi-Agent 为 primary candidate。这样未来观察到的等待时间改善不会被错误全部归因给 Multi-Agent。
+
+角色隔离候选固定为 Knowledge、Meta、Coach 三个独立 Context：前两者分别只持有
+`knowledge.search` 与 `opgg.lane_meta` fixture 权限，Coach 无工具，只消费 typed/digest-bound Artifact；
+任何角色都不能发布，`ReviewHarness` 仍是唯一评测/修订/发布控制面。OP.GG schema drift、instruction-like
+payload 与分支故障是安全压力假设，不冒充已发生的真实泄漏事故。
+
+自动 lease/recovery 是真实缺口，但属于 8C Core，不能用来为 Multi-Agent 凑采用理由。通用 DAG/第三方
+Runtime 和 Agentic Retrieval 当前分别因 durable core/框架特有 Bad Case、RAG 质量 Bad Case 不足而
+deferred；不是永久拒绝，重开需新 Bad Case 和独立 ADR。
+
+离线 gate 已用 strict models、case-set exact SHA、权限/发布/预算/holdout/停止线和 body-free decision
+完成本地 TDD；没有启动 Agent、线程或网络，也没有调用 Riot/OP.GG/Provider、读取 Key、安装框架或修改
+产品 Runtime。8B 的 20% 延迟、1.5x Token、额外至多 2 次 Provider call 等是预冻结门槛，不是 8A
+性能证据。8A 仍等待完整本地门禁和 exact-SHA 公共闭环。

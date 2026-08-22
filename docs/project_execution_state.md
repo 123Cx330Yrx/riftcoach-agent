@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8a-advanced-adoption-gate"
 status: in_progress
-pause_reason: "Stage 8 entry design closed through 3431e8b / Actions 32564500421; 8A is prepared and awaiting explicit user authorization"
+pause_reason: "RQ-081 authorized 8A; offline adoption-gate TDD and evidence are complete locally, pending full gates and exact-SHA public closure; 8B-8F remain deferred"
 ---
 
 # RiftCoach 当前执行状态
@@ -17,7 +17,7 @@ pause_reason: "Stage 8 entry design closed through 3431e8b / Actions 32564500421
 ## 状态元数据
 
 - 最后更新：2026-08-22（Stage 8 entry design 已由 `3431e8b` / Actions `32564500421` 完成 exact-SHA 公共闭环）
-- 主阶段：阶段 8；Stage 7 已关闭。Stage 8 entry design 已完成初学者教学、接缝审计、ADR-0051、8A–8F 顺序、Riot+OP.GG EvidenceBundle、前端/MotionSites 采用门和八维持久证据，并由 `3431e8b47dd992b6c4741e12158855feb64ef917` / Actions `32564500421` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环。当前唯一检查点为 `8a-advanced-adoption-gate`，仅 prepared/waiting authorization；尚未开始 8A 候选审计或任何 Stage 8 产品实现
+- 主阶段：阶段 8；Stage 7 已关闭。Stage 8 entry design 已由 `3431e8b/32564500421` 公共闭环，独立状态提交 `c538512/32564757665` 也已三 job 全绿。当前唯一检查点为 `8a-advanced-adoption-gate`，已由 RQ-081 授权；真实 workflow Bad Case、候选矩阵、评测身份、离线 strict gate TDD 与八维路径已本地完成，等待完整门禁与 exact-SHA 公共闭环。8B–8F 与 Stage 8 产品实现仍 deferred
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,7 +250,7 @@ pause_reason: "Stage 8 entry design closed through 3431e8b / Actions 32564500421
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8a-advanced-adoption-gate` 仅 prepared/waiting authorization。用户明确授权后，只审计高级候选的真实 Bad Case、替代方案、指标、成本、失败/安全边界、实验身份和停止条件；不提前实现 8B Multi-Agent 实验、8C 可靠 Runtime、8D 数据融合、8E 前端/部署或 8F 最终作品集。
+- 唯一下一步：完成 `8a-advanced-adoption-gate` 的完整本地门禁、独立 implementation 提交/推送与 exact-SHA 公共闭环；公共全绿后 coverage complete，只把 `8b-conditional-multi-agent-experiment` 置为 prepared/waiting authorization 并完成独立状态 SHA。当前不实现或运行 8B Multi-Agent 实验、8C 可靠 Runtime、8D 数据融合、8E 前端/部署或 8F 最终作品集。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -1884,3 +1884,18 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - entry-design 八维 coverage 已置 `complete`。本检查点只关闭教学、设计、治理和采用门，不证明
   Multi-Agent、DAG、可靠恢复、Riot+OP.GG fusion、正式 Web/Auth/SSE、备份或部署已实现。
 - canonical 唯一交接为 `8a-advanced-adoption-gate` prepared/waiting authorization；授权前停止。
+
+## 2026-08-22：RQ-081 授权与 8A 本地实现门
+
+- 用户明确“开始”后，当前唯一 checkpoint `8a-advanced-adoption-gate` 进入实施；8B–8F 未获授权且未开始。
+- ADR-0052 固定串行 baseline、普通受限并行 comparator、角色隔离 Multi-Agent primary candidate；
+  DAG/第三方 Runtime 与 Agentic Retrieval deferred，可靠 lease/recovery 路由到 8C Core。
+- strict/body-free/no-I/O evaluator 绑定 case-set SHA
+  `d53fb864e0c9ddc4b54f483da9025ac68b145fde8b4393645e977af4e60aad4e` 与 gate digest
+  `88f879f09480fbbb5776aae2d6d0057af9b37f0159784430d3bcca167cc09fc6`；holdout executions=0，
+  external I/O=0。
+- TDD 首红为缺模块；提交前两轮合同补强共 9 个负例也先红后绿，最终聚焦 `23 passed`、相邻 `129 passed`。
+  完整本地 pytest `1600 passed, 117 skipped, 1 warning, 127 subtests passed`；两套 RAG 满门、Harness
+  published/0 revisions、compileall/pip/YAML/安全/治理/diff 门通过。
+- coverage 仍 planned。唯一下一动作是独立 implementation 提交/推送与该 exact SHA 的三 job；公共全绿后
+  才关闭 8A，并只把 `8b-conditional-multi-agent-experiment` 置 prepared/waiting authorization。

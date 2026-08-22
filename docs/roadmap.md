@@ -456,3 +456,14 @@ derived Memory、relationship private data；Task/Artifact 与全局 Player Subj
 `32408101770` 的三 job 全绿。公共 pytest `1490 passed, 116 skipped, 1 warning, 110 subtests passed`，
 真实 PostgreSQL `164 passed, 1 warning`，Linux package schema 1.6 验证有界 export、conversation-only
 隐藏、Preference/Plan 存续与外部调用 0。6B-9、八维 coverage、Session/Memory V1 和阶段 6 正式关闭。
+
+## 2026-08-22：RQ-081 授权与 8A 本地采用门
+
+- 8A 已从当前源码接缝冻结三个可复核问题：顺序 ToolCall 的独立 evidence latency、外部 Meta
+  schema/instruction/failure 隔离压力假设，以及明确路由到 8C 的 durable recovery 缺口。
+- 8B 的公平比较必须同时包含串行 baseline、普通受限并行 comparator 与角色隔离 Multi-Agent
+  candidate；只有相对普通并行仍有增量失败隔离收益，或满足同一质量/安全/成本门的可测收益，才可采用。
+- DAG/第三方 Runtime 与 Agentic Retrieval 当前 deferred；`ReviewHarness` 保持唯一发布权，所有 Agent
+  均无发布权限，Coach 无工具权限。
+- 8A 本地 strict adoption gate、ADR、计划、walkthrough 和八维路径已建立；当前 coverage 仍 planned，
+  等完整门禁和 exact-SHA 公共三 job 后才关闭。此状态不表示 8B 已实现或运行。

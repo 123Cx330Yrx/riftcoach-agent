@@ -710,6 +710,28 @@ groups:
     covers:
       - 8a-advanced-adoption-gate
     status: planned
+    evidence:
+      problem_and_principle:
+        - docs/adr/0052-admit-role-isolated-multi-agent-to-bounded-stage8-experiment.md
+        - docs/learning/8a-advanced-adoption-gate-walkthrough.md
+      design_and_implementation:
+        - docs/plans/2026-08-22-8a-advanced-adoption-gate-design.md
+        - docs/plans/2026-08-22-8a-advanced-adoption-gate-implementation.md
+        - docs/learning/8a-advanced-adoption-gate-walkthrough.md
+      code_map:
+        - docs/learning/8a-advanced-adoption-gate-walkthrough.md
+      data_and_control_flow:
+        - docs/plans/2026-08-22-8a-advanced-adoption-gate-design.md
+        - docs/learning/8a-advanced-adoption-gate-walkthrough.md
+      verification:
+        - docs/learning/8a-advanced-adoption-gate-walkthrough.md
+      runbook:
+        - docs/learning/8a-advanced-adoption-gate-walkthrough.md
+      failure_security_boundary:
+        - docs/adr/0052-admit-role-isolated-multi-agent-to-bounded-stage8-experiment.md
+        - docs/learning/8a-advanced-adoption-gate-walkthrough.md
+      interview_wording:
+        - docs/learning/8a-advanced-adoption-gate-walkthrough.md
 
   - id: 8b-conditional-multi-agent-experiment
     sequence: 320

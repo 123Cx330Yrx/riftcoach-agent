@@ -29,8 +29,8 @@ Actions `32480827952`. RQ-079 authorizes Phase 31 -
 `32484257736`. RQ-080 authorized Phase 32 -
 `stage-8-multi-agent-reliable-runtime-productization-entry-design`, now complete
 at `3431e8b` / Actions `32564500421`. Phase 33 -
-`8a-advanced-adoption-gate` is prepared and awaiting explicit user authorization;
-no Stage 8 product implementation has started.
+`8a-advanced-adoption-gate` is authorized by RQ-081 and in progress; no Stage 8
+product implementation or 8B experiment has started.
 
 ## Phases
 
@@ -289,7 +289,7 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 证据提交 `fac6fe0/32484257736` 完成 exact-SHA 公共闭环，coverage complete，Stage 7 关闭。
 `stage-8-multi-agent-reliable-runtime-productization-entry-design` 已由 `3431e8b` / Actions
 `32564500421` 完成 exact-SHA 公共闭环，coverage complete。唯一下一步为
-`8a-advanced-adoption-gate` prepared/waiting authorization；授权前不实施 8A，也不提前进入 8B–8F。
+`8a-advanced-adoption-gate` 已由 RQ-081 授权；当前只完成 8A 候选审计、离线 gate 和持久证据，不提前进入 8B–8F。
 
 ## 6A-1 Checklist
 
@@ -677,10 +677,19 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 ### Phase 33 - 8a-advanced-adoption-gate
 
 - Status: in_progress
-- State: prepared/waiting authorization；尚未开始候选审计、实验或产品实现。
-- [ ] 用户明确授权后，按教学合同冻结真实 Bad Case、候选矩阵、替代方案、指标、成本、安全边界、
+- State: RQ-081 已授权；候选审计、离线采用门 TDD 与八维证据已本地完成，等待完整门禁和
+  exact-SHA 公共闭环；8B–8F deferred。
+- [completed-local] 按教学合同冻结真实 Bad Case、候选矩阵、替代方案、指标、成本、安全边界、
   实验身份和停止条件；
-- [ ] 只交付 8A 采用门证据，不提前实现 8B Multi-Agent、8C Runtime、8D fusion、8E 产品化或 8F exit。
+- [completed-local] 以 red→green TDD 实现 strict/body-free/no-I/O adoption gate，固定串行 baseline、
+  普通受限并行 comparator、角色隔离 Multi-Agent primary candidate 与 DAG/Agentic Retrieval deferred；
+- [completed-local] 补齐 ADR、设计/实施计划、walkthrough、八维 coverage 路径与 canonical 镜像；
+- [completed-local] 完整 pytest、两套 RAG、Harness、compileall、pip、YAML、安全/治理/diff 门通过；
+- [in_progress] 独立提交/推送和 implementation exact-SHA 三 job；
+- [ ] 公共全绿后 coverage complete，只交接 `8b-conditional-multi-agent-experiment`
+  prepared/waiting authorization，并完成独立状态 SHA 三 job；
+- [completed-boundary] 只交付 8A 采用门证据，未实现/运行 8B Multi-Agent、8C Runtime、8D fusion、
+  8E 产品化或 8F exit，未调用 Riot/OP.GG/Provider 或读取 Key。
 
 ## 6A Entry Design Checklist
 

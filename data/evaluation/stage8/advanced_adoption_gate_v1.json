@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0",
+  "gate_id": "stage8-advanced-adoption-gate-v1",
+  "product_slice_id": "recent-form-review-evidence-isolation-v1",
+  "source_product_sha": "c5385120f6f32cbfc93a149be59658ea731ec581",
+  "case_set": {
+    "case_set_id": "stage8-advanced-adoption-cases-v1",
+    "path": "data/evaluation/stage8/advanced_adoption_cases_v1.json",
+    "sha256": "d53fb864e0c9ddc4b54f483da9025ac68b145fde8b4393645e977af4e60aad4e"
+  },
+  "comparison_contract": {
+    "baseline_id": "single-runtime-serial-v1",
+    "primary_candidate_id": "role-isolated-multi-agent-v1",
+    "comparator_ids": ["bounded-parallel-evidence-v1"],
+    "skill_name": "recent-form-review",
+    "skill_version": "0.2.0",
+    "context_contract_version": "1.0.0",
+    "max_context_tokens": 16000,
+    "harness_policy_id": "review-harness-score-85-v1",
+    "publish_score_threshold": 85,
+    "input_fixture_sha256s": [
+      "6004b5890a5c5cd7f1f8466148d4fdaa76d37bcf14e5e21c3d0e0b219266cfe3",
+      "3a1612a8c2afe708bd3cba85145fd53f44096fd17c89b13ad0470b319ed1b89d"
+    ],
+    "tool_fixture_ids": ["knowledge-search-fixture-v1", "opgg-lane-meta-fixture-v1"],
+    "external_io_budget": 0,
+    "retry_budget": 0,
+    "holdout_max_executions": 1,
+    "result_overwrite_allowed": false
+  },
+  "hard_gate_metrics": [
+    "cross_role_context_leaks",
+    "terminal_identity_mismatches",
+    "unauthorized_tool_calls",
+    "unprovenanced_evidence",
+    "unsafe_publications"
+  ],
+  "benefit_thresholds": {
+    "min_harness_decision_match_rate": 1.0,
+    "min_safe_degraded_rate": 1.0,
+    "min_modeled_latency_improvement_ratio": 0.2,
+    "max_total_token_ratio": 1.5,
+    "max_extra_provider_calls": 2,
+    "allow_failure_isolation_instead_of_latency": true
+  },
+  "stop_condition_codes": [
+    "case_set_identity_drift",
+    "comparison_identity_drift",
+    "cross_role_context_leak",
+    "hard_gate_failed",
+    "holdout_reexecution_requested",
+    "no_incremental_benefit_over_parallel",
+    "real_external_io_requested",
+    "result_overwrite_requested",
+    "role_tool_permission_overlap",
+    "token_or_call_budget_exceeded",
+    "unsafe_publication"
+  ],
+  "candidates": [
+    {
+      "candidate_id": "single-runtime-serial-v1",
+      "kind": "serial_baseline",
+      "disposition": "baseline",
+      "target_bad_case_ids": ["BC-8A-01", "BC-8A-02"],
+      "roles": [
+        {
+          "role_id": "single_coach_runtime",
+          "context_scopes": ["deterministic_facts", "knowledge_evidence", "external_meta_evidence", "user_goal"],
+          "allowed_tools": ["knowledge.search", "opgg.lane_meta"],
+          "independent_context": false,
+          "can_publish": false
+        }
+      ],
+      "expected_benefit_metrics": [],
+      "deferred_reason_codes": [],
+      "production_dependency_allowed": false,
+      "product_runtime_changes_allowed": false
+    },
+    {
+      "candidate_id": "bounded-parallel-evidence-v1",
+      "kind": "bounded_parallel",
+      "disposition": "evaluate",
+      "target_bad_case_ids": ["BC-8A-01", "BC-8A-02"],
+      "roles": [
+        {
+          "role_id": "knowledge_branch",
+          "context_scopes": ["deterministic_facts", "knowledge_query"],
+          "allowed_tools": ["knowledge.search"],
+          "independent_context": false,
+          "can_publish": false
+        },
+        {
+          "role_id": "meta_branch",
+          "context_scopes": ["meta_allowlisted_query"],
+          "allowed_tools": ["opgg.lane_meta"],
+          "independent_context": false,
+          "can_publish": false
+        },
+        {
+          "role_id": "coach_merge",
+          "context_scopes": ["deterministic_facts", "knowledge_evidence", "external_meta_evidence", "user_goal"],
+          "allowed_tools": [],
+          "independent_context": false,
+          "can_publish": false
+        }
+      ],
+      "expected_benefit_metrics": ["modeled_latency_improvement", "safe_degraded_rate"],
+      "deferred_reason_codes": [],
+      "production_dependency_allowed": false,
+      "product_runtime_changes_allowed": false
+    },
+    {
+      "candidate_id": "role-isolated-multi-agent-v1",
+      "kind": "role_isolated_multi_agent",
+      "disposition": "evaluate",
+      "target_bad_case_ids": ["BC-8A-01", "BC-8A-02"],
+      "roles": [
+        {
+          "role_id": "knowledge_agent",
+          "context_scopes": ["deterministic_facts", "knowledge_query"],
+          "allowed_tools": ["knowledge.search"],
+          "independent_context": true,
+          "can_publish": false
+        },
+        {
+          "role_id": "meta_agent",
+          "context_scopes": ["meta_allowlisted_query"],
+          "allowed_tools": ["opgg.lane_meta"],
+          "independent_context": true,
+          "can_publish": false
+        },
+        {
+          "role_id": "coach_agent",
+          "context_scopes": ["deterministic_facts", "knowledge_evidence", "external_meta_evidence", "user_goal"],
+          "allowed_tools": [],
+          "independent_context": true,
+          "can_publish": false
+        }
+      ],
+      "expected_benefit_metrics": ["cross_role_context_isolation", "modeled_latency_improvement", "safe_degraded_rate"],
+      "deferred_reason_codes": [],
+      "production_dependency_allowed": false,
+      "product_runtime_changes_allowed": false
+    },
+    {
+      "candidate_id": "third-party-dag-runtime-v1",
+      "kind": "third_party_dag_runtime",
+      "disposition": "deferred",
+      "target_bad_case_ids": ["BC-8A-03"],
+      "roles": [],
+      "expected_benefit_metrics": [],
+      "deferred_reason_codes": ["durable_core_not_implemented", "no_framework_specific_bad_case"],
+      "production_dependency_allowed": false,
+      "product_runtime_changes_allowed": false
+    },
+    {
+      "candidate_id": "agentic-retrieval-v1",
+      "kind": "agentic_retrieval",
+      "disposition": "deferred",
+      "target_bad_case_ids": [],
+      "roles": [],
+      "expected_benefit_metrics": [],
+      "deferred_reason_codes": ["rag_quality_bad_case_absent"],
+      "production_dependency_allowed": false,
+      "product_runtime_changes_allowed": false
+    }
+  ]
+}

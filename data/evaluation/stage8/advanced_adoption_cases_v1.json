@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "case_set_id": "stage8-advanced-adoption-cases-v1",
+  "product_slice_id": "recent-form-review-evidence-isolation-v1",
+  "source_product_sha": "c5385120f6f32cbfc93a149be59658ea731ec581",
+  "calibration_policy": {
+    "development_may_shape_implementation": true,
+    "holdout_calibration_excluded": true,
+    "holdout_max_executions": 1,
+    "holdout_result_overwrite_allowed": false
+  },
+  "cases": [
+    {
+      "case_id": "dev-independent-evidence-latency",
+      "split": "development",
+      "calibration_excluded": false,
+      "bad_case_id": "BC-8A-01",
+      "evidence_level": "observed",
+      "scenario": "Knowledge and Meta fixtures are independent but the serial baseline adds their latency units.",
+      "knowledge_latency_units": 80,
+      "meta_latency_units": 120,
+      "fault": "none",
+      "expected_terminal": "published",
+      "expected_preserved_artifacts": ["knowledge_evidence", "meta_evidence"]
+    },
+    {
+      "case_id": "dev-meta-schema-drift",
+      "split": "development",
+      "calibration_excluded": false,
+      "bad_case_id": "BC-8A-02",
+      "evidence_level": "hypothesis",
+      "scenario": "The external Meta branch returns schema drift while attributable local knowledge remains valid.",
+      "knowledge_latency_units": 60,
+      "meta_latency_units": 90,
+      "fault": "meta_schema_drift",
+      "expected_terminal": "degraded",
+      "expected_preserved_artifacts": ["knowledge_evidence"]
+    },
+    {
+      "case_id": "dev-meta-instruction-payload",
+      "split": "development",
+      "calibration_excluded": false,
+      "bad_case_id": "BC-8A-02",
+      "evidence_level": "hypothesis",
+      "scenario": "The Meta fixture contains instruction-like text that must remain data-only and absent from other role contexts.",
+      "knowledge_latency_units": 70,
+      "meta_latency_units": 70,
+      "fault": "meta_instruction_payload",
+      "expected_terminal": "degraded",
+      "expected_preserved_artifacts": ["knowledge_evidence"]
+    },
+    {
+      "case_id": "holdout-slow-knowledge-branch",
+      "split": "holdout",
+      "calibration_excluded": true,
+      "bad_case_id": "BC-8A-01",
+      "evidence_level": "observed",
+      "scenario": "A slow knowledge fixture and a faster independent Meta fixture exercise modeled critical-path accounting.",
+      "knowledge_latency_units": 190,
+      "meta_latency_units": 50,
+      "fault": "none",
+      "expected_terminal": "published",
+      "expected_preserved_artifacts": ["knowledge_evidence", "meta_evidence"]
+    },
+    {
+      "case_id": "holdout-meta-timeout",
+      "split": "holdout",
+      "calibration_excluded": true,
+      "bad_case_id": "BC-8A-02",
+      "evidence_level": "hypothesis",
+      "scenario": "The Meta fixture times out while the knowledge Artifact remains eligible for a bounded degraded draft.",
+      "knowledge_latency_units": 75,
+      "meta_latency_units": 200,
+      "fault": "meta_timeout",
+      "expected_terminal": "degraded",
+      "expected_preserved_artifacts": ["knowledge_evidence"]
+    },
+    {
+      "case_id": "holdout-cross-role-tool-probe",
+      "split": "holdout",
+      "calibration_excluded": true,
+      "bad_case_id": "BC-8A-02",
+      "evidence_level": "hypothesis",
+      "scenario": "The Meta role attempts to request the knowledge tool and must fail before either branch publishes or widens permissions.",
+      "knowledge_latency_units": 65,
+      "meta_latency_units": 65,
+      "fault": "cross_role_tool_probe",
+      "expected_terminal": "failed",
+      "expected_preserved_artifacts": [],
+      "expected_error_code": "role_tool_not_allowed"
+    }
+  ]
+}

@@ -3518,3 +3518,16 @@
   差异，不是依赖漏洞证据，也没有改 lockfile。
 - canonical 可以安全前移到 `8a-advanced-adoption-gate`，但 RQ-080 没有授权 8A；prepared 状态不能解释为
   已开始候选研究或 Multi-Agent 实验。
+
+## 2026-08-22：8A 候选审计与离线采用门发现
+
+- 当前 `AgentLoop` 的多 ToolCall 会先整批做零副作用预检，再按返回顺序执行；独立 Knowledge/Meta
+  evidence 的等待时间相加是可测收益假设，但它首先支持“普通并行 comparator”，不能直接证明需要 Multi-Agent。
+- OP.GG Meta 最终以 optional data-only section 进入 Coach Context。schema drift、instruction-like payload、
+  timeout 与跨角色工具探测适合作为隔离压力案例，但当前没有真实泄漏事故，证据等级必须保持 hypothesis。
+- `ReviewHarness` 已拥有唯一发布控制流；把它改名为 Review Agent 会改变实验变量且扩大权限面，因此 8A
+  固定所有执行角色 `can_publish=false`，Coach 也不得持有工具。
+- running task 缺自动 lease/recovery 是 observed Bad Case，但正确路由为 8C Core。Saber/Sea 归档可作为
+  role/DAG/Artifact/scheduler 方案检查，缺 Git 元数据且未执行，不能声称其 upstream commit 或运行质量。
+- strict gate 的 case-set SHA 与 decision digest 稳定；当前 `external_io_calls=0`、`holdout_executions=0`。
+  它只证明实验设计可执行，不证明 Multi-Agent 已实现、提速 20% 或通过 holdout。

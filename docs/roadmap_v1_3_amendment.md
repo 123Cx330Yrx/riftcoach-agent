@@ -459,3 +459,15 @@ ADR-0040 将 6B-3 的隐含合同正式化：active relationship 必须在创建
 落到 domain、Service、0003、Repository、HTTP/composition/package 和分层测试；`7e4f233` /
 Actions `32329686381` 的 exact-SHA 三 job 已全绿，6B-3 现为 complete，下一检查点为 6B-4；这不表示
 Agent 已接入或 Memory 已完成。
+
+## 2026-08-22：8A Advanced 采用门本地裁决
+
+- RQ-081 授权后，8A 将 Advanced 候选收敛为串行 baseline、普通受限并行 comparator 与角色隔离
+  Multi-Agent primary candidate；这三路必须复用同一 fixture、Context ceiling、Harness 与发布阈值。
+- 角色隔离只允许 Knowledge/Meta 各持一个固定 fixture 工具，Coach 无工具且只消费 typed Artifact；
+  `ReviewHarness` 仍是唯一发布权。权限重叠、跨角色泄漏、无 provenance、终态漂移、真实 I/O 或结果覆盖
+  任一非零即 reject。
+- DAG/第三方 Runtime 与 Agentic Retrieval 继续 deferred；可靠 lease/recovery 明确属于 8C V3 Core，
+  不作为 8B Multi-Agent 采用理由。
+- 当前只完成离线 gate TDD 与持久证据，holdout 未运行、外部调用为 0；8B 的收益/成本数字是未来停止线，
+  不是当前实测。coverage 与 checkpoint 等待 exact-SHA 公共闭环。

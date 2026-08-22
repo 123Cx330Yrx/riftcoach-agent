@@ -3560,3 +3560,33 @@
 - entry-design coverage 已置 complete；Phase 32 关闭。唯一下一检查点为
   `8a-advanced-adoption-gate` prepared/waiting authorization，本批停止且未写 Stage 8 产品代码。
 - 当前只剩状态收尾提交/推送及其 exact-SHA 三 job；全绿后本轮正式结束。
+
+## 2026-08-22：RQ-081 授权与 8A 本地 TDD
+
+- 用户明确“开始”，RQ-081 只授权 `8a-advanced-adoption-gate`；8B–8F 继续 deferred。
+- ADR-0052、专用设计/实施计划、3 development + 3 calibration-excluded holdout synthetic cases、
+  strict gate JSON、Pydantic evaluator 与八维 walkthrough 已建立。
+- 首次 TDD 在 collection 阶段以 `ModuleNotFoundError: app.evaluation.stage8_adoption` 红灯；最小实现后
+  聚焦 `14 passed`。提交前 strict-contract 复核新增 6 个负例，实际先得到 `6 failed, 14 passed`，
+  锁定 duplicate JSON key、baseline kind、active candidate registry 和 exact role contract 后为 `20 passed`；
+  AgentLoop/Runtime/Context/OP.GG Meta/Harness 相邻集合 `129 passed`。
+- cached diff 公平性复核再新增第二 baseline、串行 baseline role、普通并行 comparator role 三个负例，
+  实际先得到 `3 failed, 20 passed`；锁定唯一 baseline 和三路 exact role contract 后最终 `23 passed`。
+- gate 固定 `single-runtime-serial-v1` baseline、`bounded-parallel-evidence-v1` comparator、
+  `role-isolated-multi-agent-v1` primary candidate；DAG/Agentic Retrieval deferred。
+- case-set SHA 为 `d53fb864e0c9ddc4b54f483da9025ac68b145fde8b4393645e977af4e60aad4e`，gate digest 为
+  `88f879f09480fbbb5776aae2d6d0057af9b37f0159784430d3bcca167cc09fc6`；未执行 holdout、真实 I/O 或 Provider。
+- coverage 继续 planned；下一动作是完整本地门禁、diff/cached diff 审查、独立提交/推送和 exact-SHA
+  三 job。公共闭环前不关闭 8A、不实现或运行 8B。
+
+## 2026-08-22：8A 完整本地门禁通过
+
+- 完整 pytest `1600 passed, 117 skipped, 1 warning, 127 subtests passed`；117 skip 仅为本机无
+  PostgreSQL/Docker/Linux 条件，真实真库和 Linux package 仍等待公共 job。
+- RAG development/independent holdout 的 Recall/MRR/nDCG 均 1.0、FPR 0.0，holdout abstention/citation
+  均 1.0；Harness dry-run `published`/0 revisions。
+- compileall、pip、6 YAML、SDK boundary、tracked Secret/run-data、governance 与 diff 门通过；stale phrase
+  扫描命中均为 append-only 的历史 8A handoff，并由后续 RQ-081 本地实现记录明确取代。
+  本批外部 Riot/OP.GG/Provider/Key I/O 仍为 0，holdout executions 为 0。
+- 唯一下一动作：完整/cached diff 终审、独立 implementation 提交/推送并等待 exact-SHA
+  `pytest`、`postgres-migrations`、`packaging-smoke`。公共全绿前 coverage planned，不进入 8B。

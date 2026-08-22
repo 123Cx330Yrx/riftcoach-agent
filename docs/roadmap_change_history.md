@@ -2602,3 +2602,24 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   前端五模块与 MotionSites 采用门正式冻结。该闭环没有写 Stage 8 产品代码。
 - `HANDOFF`：唯一下一检查点为 `8a-advanced-adoption-gate` prepared/waiting authorization；授权前不开始
   候选审计、实验，也不提前实现 8B–8F。
+
+### 2026-08-22：RQ-081 授权并完成 8A 本地采用门
+
+- `AUTHORIZED`：用户明确“开始”，授权唯一 canonical 检查点 `8a-advanced-adoption-gate`；本批授权
+  不外推为 8B 实验或 8C–8F 产品实现。
+- `DECISION`：ADR-0052 保留 `single-runtime-serial-v1` 为 baseline，允许
+  `bounded-parallel-evidence-v1` 作为必要 comparator、`role-isolated-multi-agent-v1` 作为 8B primary
+  candidate；`third-party-dag-runtime-v1` 与 `agentic-retrieval-v1` 因缺少独立 Bad Case deferred。
+- `IDENTITY`：case-set SHA-256 为 `d53fb864e0c9ddc4b54f483da9025ac68b145fde8b4393645e977af4e60aad4e`，
+  gate digest 为 `88f879f09480fbbb5776aae2d6d0057af9b37f0159784430d3bcca167cc09fc6`；development 与
+  calibration-excluded holdout 分离，当前 holdout executions 和 external I/O 均为 0。
+- `LOCAL-TDD`：首个红灯为缺少 `app.evaluation.stage8_adoption`；最小 strict/body-free evaluator 后聚焦
+  14 项通过；strict-contract 复核的 6 个负例先红后绿，最终聚焦 `20 passed`，相邻回归 `129 passed`。
+  cached diff 又以 3 个先红后绿负例锁定唯一 baseline 与串行/普通并行 exact role contract，最终
+  `23 passed`。
+  20% 延迟、1.5x Token 与 +2
+  Provider calls 是未来 8B 工程门，不是当前实测结果。
+- `LOCAL-GATES`：完整 pytest `1600 passed, 117 skipped, 1 warning, 127 subtests passed`；两套 RAG 满门、
+  Harness published/0 revisions，compileall、pip、6 YAML、安全/治理/diff 门全绿。
+- `PENDING`：8A coverage 保持 planned；当前只准备独立 implementation SHA。
+  exact-SHA 公共三 job 全绿前不关闭 8A，不实现/运行 8B，不调用 Riot/OP.GG/Provider 或读取 Key。
