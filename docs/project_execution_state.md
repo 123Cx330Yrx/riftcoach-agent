@@ -3,7 +3,7 @@ state_schema: 1
 main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8d-riot-opgg-evidence-fusion-core"
-status: pending
+status: in_progress
 pause_reason: ""
 ---
 
@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（8C clean implementation 与 canonical 状态收尾均已 exact-SHA 公共闭环）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B 与 8C 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject，bounded parallel 仅作为 8D 设计输入；当前唯一检查点为 `8d-riot-opgg-evidence-fusion-core / prepared/waiting authorization`
+- 最后更新：2026-08-23（RQ-084 已授权并启动 8D typed evidence fusion TDD）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B 与 8C 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8d-riot-opgg-evidence-fusion-core / in_progress`，8E/8F 未开始。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,10 +250,11 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8d-riot-opgg-evidence-fusion-core` 已 prepared/waiting authorization；8C 已由 clean implementation
-  `2df5349d85e48138c05d6293d4e3885b6b4756ec` / Actions `32587659678` 完成 exact-SHA
-  `pytest`、`postgres-migrations`、`packaging-smoke` 三公共 job，coverage 已置为 complete。
-  授权前不实现 Riot+OP.GG fusion；8B holdout 不得再次执行，本检查点也不实现 DAG、SSE、前端或 8E–8F。
+- 唯一下一步：继续完成 `8d-riot-opgg-evidence-fusion-core`。RQ-084 已授权；ADR-0055、专用设计/实施计划、
+  strict EvidenceBundle、现有 Summary/Data Dragon no-I/O adapter 与 focused TDD 已本地建立；八维 walkthrough/
+  coverage 路径、完整本地回归和横向门均已完成。当前尚未完成独立提交或 exact-SHA 公共 CI，因此 8D 仍为
+  `in_progress`、coverage 仍为 `planned`。
+  8B holdout 不得再次执行，本检查点也不读取 Key、不调用真实 Riot/OP.GG/Provider/LLM，不实现 DAG、SSE、前端或 8E–8F。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -2012,3 +2013,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   `8d-riot-opgg-evidence-fusion-core / prepared / waiting authorization`；授权前停止，不读取 Key、
   不调用真实 Riot/OP.GG/Provider/LLM，不实现 8D、8E 或 8F。Multi-Agent 产品 reject 与 8B 唯一 holdout
   SHA `944258...445e8` 保持不可覆盖、不可重跑。
+
+## 2026-08-23：RQ-084 授权并启动 8D Evidence Fusion
+
+- 用户明确继续正常下一步，授权唯一 checkpoint `8d-riot-opgg-evidence-fusion-core`；README/作品集的广泛
+  样本研究按 RQ-085 留作 8F 横向输入，不插队或阻塞 8D。
+- 已完成初学者教学、现有 Riot/Data Dragon/OP.GG Meta/Context 接缝审计与三方案比较。ADR-0055 采用
+  immutable typed `EvidenceBundle` + pure fusion kernel，拒绝无类型 JSON merge，暂缓通用 claim graph。
+- `app/evidence/` 已本地实现 strict Riot match、Data Dragon、official patch、join/conflict/gap/claim/
+  confidence contracts、existing Summary no-I/O adapter、canonical bundle digest 与 allowlisted public projection。
+- TDD 首红为 `ModuleNotFoundError: app.evidence`；最小实现和 Pydantic dataclass 边界修复后 focused 为
+  `18 passed`，相邻 OP.GG Meta/Context 合计 `48 passed`。partial OP.GG 可支持 current snapshot，但不能继承
+  Riot patch 或取得 exact-patch claim；missing/expired/mismatch 均结构化降级。
+- 当前 8D 仍 `in_progress`，coverage `planned`。唯一下一动作是独立提交/推送当前 implementation/evidence，
+  等待 exact-SHA 三 job；公共全绿前不关闭 8D、不进入 8E。

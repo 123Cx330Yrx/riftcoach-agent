@@ -3640,3 +3640,18 @@
   随后 clean implementation `2df5349/32587659678` 移除诊断并让三个公共 job 全部 exact-SHA 成功。
 - 本地完整回归为 `1673 passed, 134 skipped, 1 warning, 127 subtests passed`。本机 134 skip 仍只代表没有
   PostgreSQL/Docker/Linux；真实 migration/concurrency/package 事实只采用 `32587659678` 公共证据。
+
+## 2026-08-23：8D typed EvidenceBundle 本地发现
+
+- RQ-084 已授权 8D；RQ-085 明确 README 研究需广泛采样且图不限定 SVG/Mermaid，但该横向任务不阻塞 8D。
+- 现有 `app/lol` Summary 与 Data Dragon 仍是 dict/服务对象边界；Stage 7 `MetaEvidence` 已严格限制 partial
+  provenance、TTL 和 allowed use，可直接复用，不应再写第二个 OP.GG schema。
+- 无类型 JSON merge 会让 OP.GG 意外继承 Riot patch；通用 claim graph 又超出当前作品集规模。ADR-0055 选择
+  immutable typed EvidenceBundle + pure fusion kernel，并保留来源 digest、join key、gap/conflict 和 claim。
+- Pydantic 2 对带 `init=False digest` 的标准库 dataclass `MetaEvidence` 重新校验时会把 digest 当构造参数；bundle
+  因而把已经验证的 immutable dataclass 作为 opaque tuple，再在 model validator 中显式做 `isinstance`，避免复制
+  Stage 7 合同或放宽 arbitrary mapping。
+- Riot/Data Dragon 中文名称需要 Unicode-safe label，而不能沿用 OP.GG 英文 champion regex；当前边界允许无控制字符
+  Unicode 文本，并继续拒绝 instruction-like English label。public projection 不携带 PUUID、Key、raw MCP body 或 Prompt。
+- focused TDD 首红为缺模块，修复 dataclass seam 后 `18 passed`；相邻 Meta/Context 合计 `48 passed`。尚未完成
+  full regression、walkthrough、coverage 或 public CI，8D 不能关闭。

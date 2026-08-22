@@ -2705,3 +2705,14 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   event replay 与 Linux package 纵向获得公共证据；这不等于正式 Auth、SSE、前端、备份或生产 SLA。
 - `HANDOFF`：唯一下一检查点为 `8d-riot-opgg-evidence-fusion-core` prepared/waiting authorization；授权前
   不调用 Riot/OP.GG/Provider/LLM、不读取 Key、不实现 8D。8B holdout SHA `944258...445e8` 不得覆盖或重跑。
+
+### 2026-08-23：RQ-084 启动 8D；RQ-085 固定 README 广泛研究边界
+
+- `AUTHORIZED`：用户明确继续正常下一步，授权唯一 checkpoint `8d-riot-opgg-evidence-fusion-core`；8E/8F
+  未授权或开始。
+- `DECISION`：ADR-0055 采用 immutable typed EvidenceBundle + pure fusion kernel；Riot、Data Dragon、
+  official patch 与 OP.GG 各自保留 provenance/digest，partial Meta 不继承 patch/freshness，冲突降级不覆盖。
+- `LOCAL`：strict contracts、existing Summary/Data Dragon no-I/O adapter、canonical digest 与 public projection
+  已按 red→green TDD 本地实现；focused 18、相邻 48 通过，完整/公共门待完成。
+- `PORTFOLIO`：README 研究不局限高星或三个示例，也采纳星数较低但信息架构优秀的项目；图可按目的混用
+  AI 概念图、真实截图、SVG、Mermaid 等，但研究持续积累到 8F，不阻塞 8D，不把生成图冒充真实产品。

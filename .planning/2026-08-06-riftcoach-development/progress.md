@@ -3747,3 +3747,18 @@
 - 本地完整回归 `1673 passed, 134 skipped, 1 warning, 127 subtests passed`；RAG development/holdout、Harness
   dry-run、compileall、pip、SDK/Secret/tracked-data、governance 与 diff 全绿。8C coverage 可置 complete，
   canonical 只交接 `8d-riot-opgg-evidence-fusion-core / prepared / waiting authorization`。
+
+### 2026-08-23：RQ-084 授权并启动 8D Evidence Fusion
+
+- `AUTHORIZED`：用户明确继续正常下一步，授权 `8d-riot-opgg-evidence-fusion-core`；README 广泛研究按
+  RQ-085 留到 8F 横向积累，不打断当前开发。
+- `DESIGN`：ADR-0055 与 8D design/implementation plan 选择 immutable typed EvidenceBundle + pure fusion
+  kernel；拒绝 JSON merge，暂缓 claim graph，no-I/O/fail-closed。
+- `TDD`：首红 `ModuleNotFoundError: app.evidence`；实现 strict source/join/conflict/gap/claim/confidence、
+  canonical digest、public projection 与 Summary/Data Dragon adapters 后 focused `18 passed`，相邻 `48 passed`。
+- `BOUNDARY`：partial OP.GG 只支持 current snapshot，不继承 Riot patch/source time/freshness；missing/expired/
+  mismatch 降级。Key、真实 Riot/OP.GG/Provider/LLM 调用和 8B holdout execution 均为 0。
+- `LOCAL-GATES`：完整 pytest `1691 passed, 134 skipped, 1 warning, 127 subtests passed`；RAG development/holdout
+  满阈值、Harness `published`/0 revisions、compileall/pip/YAML/governance/diff 全绿；本机 skip 不冒充真库/Linux。
+- `NEXT`：独立提交/推送当前 implementation/evidence，等待 exact-SHA `pytest`、`postgres-migrations`、
+  `packaging-smoke` 三 job；公共全绿前 8D 保持 in_progress，8E 未进入。

@@ -1816,6 +1816,18 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - JSONB checkpoint 在数据库中是 JSON wire data；strict Pydantic 合同通过 JSON round-trip 解析字符串时间戳，不改为宽松模型验证，也不暴露 checkpoint body。
 - 该轮修复继续属于 8C PostgreSQL boundary repair；coverage 保持 `planned`，不提前进入 8D。
 
+## 2026-08-23：8D 采用 typed EvidenceBundle；README 研究留在 8F 横向线
+
+- RQ-084 已授权 `8d-riot-opgg-evidence-fusion-core`；ADR-0055 选择 immutable typed EvidenceBundle +
+  deterministic pure fusion kernel，拒绝无类型 JSON merge，暂缓通用 claim graph/event store。
+- Riot 官方事实、Data Dragon 静态、official patch/update 与 OP.GG Meta 各自保留 provenance/digest；join
+  显式使用 region/queue/position/champion/optional patch。OP.GG partial 只支持 current snapshot，缺失、过期、
+  schema drift 或 mismatch 进入 typed gap/conflict，不从 Riot 补 patch/source time/freshness。
+- RQ-085 要求 8F README 广泛研究高星和低星但优秀的项目，不限三个示例；总览/架构/流程/展示图按信息目的
+  选择 AI 绘图、截图、SVG 或 Mermaid。该横向要求不打断 8D，也不允许生成图冒充真实截图。
+- 当前只完成 8D 本地设计、contracts/adapters/fusion TDD；focused 18、相邻 48、完整 1691/134 skips；完整门和
+  exact-SHA 公共 CI 前不关闭 8D、不进入 8E。
+
 ## 2026-08-23：8C 第三轮真库兼容裁决
 
 - Repository 的所有 JSONB checkpoint 读回路径（task、event、requeue）统一经过 strict JSON wire parser，并兼容 psycopg `Jsonb` wrapper；不以 `strict=False` 放宽 Pydantic 合同。

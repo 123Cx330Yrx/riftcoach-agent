@@ -302,9 +302,9 @@ exact-SHA 三 job，7-5 coverage 与 Stage 7 已正式关闭。
 
 Stage 8 entry design、8A、8B 与 8C 已完成 exact-SHA 公共闭环；8B 唯一 holdout 由 ADR-0053 拒绝产品
 Multi-Agent。8C 已由 clean implementation `2df5349/32587659678` 验证 PostgreSQL durable task event、
-lease/fencing、cancel、checkpoint、receipt-proven recovery、Worker/API/package 纵向与八维材料；当前唯一
-检查点为 `8d-riot-opgg-evidence-fusion-core` prepared/waiting authorization。该状态不表示 DAG、SSE、正式
-Auth、前端、8D fusion 或生产部署已开始。
+lease/fencing、cancel、checkpoint、receipt-proven recovery、Worker/API/package 纵向与八维材料；RQ-084 已
+授权当前唯一检查点 `8d-riot-opgg-evidence-fusion-core`，ADR-0055 与 typed fusion TDD 正在本地推进。当前
+仍不表示 DAG、SSE、正式 Auth、前端、8E/8F 或生产部署已开始。
 
 ### 原理
 

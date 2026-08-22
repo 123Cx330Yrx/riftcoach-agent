@@ -33,8 +33,9 @@ at `3431e8b` / Actions `32564500421`. Phase 33 -
 Phase 34 - `8b-conditional-multi-agent-experiment` is complete at `783a329` /
 Actions `32572610725`. RQ-083 authorized Phase 35 - `8c-reliable-runtime-core`;
 it is complete at `2df5349` / Actions `32587659678` with exact-SHA PostgreSQL/Linux
-public closure. Phase 36 - `8d-riot-opgg-evidence-fusion-core` is the current governance
-pointer, prepared/waiting authorization and not yet implemented.
+public closure. RQ-084 now authorizes Phase 36 -
+`8d-riot-opgg-evidence-fusion-core`; typed design/contracts/fusion TDD are in
+progress and 8E/8F remain unstarted.
 
 ## Phases
 
@@ -297,7 +298,8 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 `180bc8b/32572085065` 与 result/ADR/evidence `783a329/32572610725` 均 exact-SHA 公共闭环，
 coverage complete。8C 已由 `2df5349/32587659678` 完成 0010、durable event/replay、lease/fencing、cancel、
 checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公共闭环；coverage complete。当前唯一下一步
-为 `8d-riot-opgg-evidence-fusion-core` prepared/waiting authorization，授权前不实现 8D–8F。
+为已获 RQ-084 授权、正在推进的 `8d-riot-opgg-evidence-fusion-core`；8D 本地 contracts/fusion/adapters、
+walkthrough 与 full local gates 已完成，待独立提交及 exact-SHA 公共 CI。8E–8F 尚未进入。
 
 ## 6A-1 Checklist
 
@@ -728,9 +730,13 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 ### Phase 36 - 8d-riot-opgg-evidence-fusion-core
 
 - Status: in_progress
-- State: prepared/waiting authorization；这是治理指针，不表示 8D 已开始实施。
-- [ ] 等待用户明确授权后，先完成 Riot 官方事实层与 OP.GG partial Meta 的 typed EvidenceBundle 设计、TDD 与采用门；
-- [boundary] 授权前不读取 Key、不调用 Riot/OP.GG/Provider/LLM，不实现真实 fusion、SSE、前端、正式 Auth 或部署；8B holdout 不得覆盖/重跑。
+- State: RQ-084 authorized；ADR-0055、专用设计/实施计划和 Task 1–3 pure TDD 已本地建立。
+- [completed] 审计 Riot summary/Data Dragon/OP.GG Meta/Context 接缝，比较 JSON merge、claim graph 与 typed bundle，采用 immutable typed EvidenceBundle + pure kernel；
+- [completed] 首红 `ModuleNotFoundError: app.evidence`；实现 strict Riot/Data Dragon/official patch/join/conflict/gap/claim/confidence contracts、canonical digest 与 public projection；
+- [completed] 增加现有 Summary/Data Dragon identity 的 no-I/O adapter，partial Meta 不继承 patch，missing/expired/mismatch 结构化降级；focused `18 passed`、相邻 `48 passed`；
+- [completed-local] failure/vertical cases、八维 walkthrough、coverage 和 canonical/路线镜像已补齐；完整本地回归 `1691 passed, 134 skipped, 1 warning, 127 subtests passed`，RAG/Harness/compileall/pip/YAML/governance/diff 全绿；
+- [ ] 独立提交/推送和 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；公共全绿后才关闭 8D；
+- [boundary] 不读取 Key、不调用真实 Riot/OP.GG/Provider/LLM，不实现 SSE、前端、正式 Auth、部署、Multi-Agent/DAG；8B holdout 不得覆盖/重跑。
 
 ## 6A Entry Design Checklist
 
