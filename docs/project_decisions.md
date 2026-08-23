@@ -2083,3 +2083,13 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - 按用户连续授权进入 E5 packaging/observability：先以 red tests 固定 migration order、health/readiness、
   rollback 和 body-free structured observability，再决定最小实现；不因为“可观测性”引入未经 Bad Case/ADR
   论证的 Redis、Kubernetes 或第二套 metrics runtime。
+
+## 2026-08-24：RQ-099 E5 metrics projection 本地首批
+
+- E5 采用 `TaskObservability.emit()` event counters + `public_snapshot(max_samples=1000)` latency bound，
+  由 `GET /health/metrics` 返回 typed p50/p95 projection；不会暴露 owner、Prompt、Report、Riot ID、Secret
+  或原始事件 body。
+- 继续使用现有 Compose migration order、`health/live`/`health/ready`、non-root image 和 no-I/O package
+  smoke；rollback 先以旧镜像/兼容 migration/ready gate runbook 证明，不承诺自动回滚或 HA。
+- 当前只完成 focused 本地实现，等待完整回归、独立提交和 exact-SHA 公共 CI；不引入 Prometheus/Redis/
+  Kubernetes/第二套 metrics runtime。

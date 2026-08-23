@@ -4112,3 +4112,15 @@
 - E4 不声称 KMS/对象存储/加密 backup bytes、定时备份或 RPO/RTO 实测；这些边界和八维材料已持久化。
 - `NEXT`：按连续授权进入 E5 packaging/observability，先审查 Docker/Compose/health/metrics/rollback
   接缝并用 red tests 冻结 readiness、migration order、非 root 和 body-free observability 合同。
+
+### 2026-08-24：E5 packaging/observability 本地首批
+
+- 红灯先冻结 `GET /health/metrics` 的 body-free typed projection；实现 `TaskObservability.emit()` event
+  counters、`public_snapshot(max_samples=1000)` latency bound、p50/p95 DTO 与 `/health/metrics` route。
+- 健康检查仍分为 liveness/readiness；Compose migration order、non-root/image boundary、Linux no-I/O smoke
+  和 rollback runbook 保持单机边界，不引入新 metrics runtime。
+- FastAPI + observability focused `17 passed`，最终完整 pytest `1971 passed, 1 skipped, 1 warning, 127
+  subtests passed`，compileall/diff/governance 继续通过；当前尚未独立提交和
+  公共 CI，E5 仍 in progress。
+- `NEXT`：完成 E5 八维 walkthrough/计划同步，跑完整 pytest、RAG/Harness、Alembic、Compose smoke 与 stale
+  门，创建独立 implementation/evidence commit 并等待 exact-SHA 三 job。

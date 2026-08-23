@@ -63,6 +63,18 @@ def test_observability_counters_and_latency_snapshot_are_safe() -> None:
     }
 
 
+def test_public_observability_snapshot_is_bounded_and_counts_events() -> None:
+    observer = TaskObservability(logger_name="riftcoach.test.public-metrics")
+    for value in range(5):
+        observer.emit("task.completed", {"status": "succeeded"})
+        observer.observe_latency("task.complete", value)
+
+    snapshot = observer.public_snapshot(max_samples=2)
+
+    assert snapshot.counters == {"events.task.completed": 5}
+    assert snapshot.latencies_ms == {"task.complete": (3.0, 4.0)}
+
+
 @pytest.mark.parametrize(
     ("values", "expected"),
     (([10], 10.0), ([1, 2, 3, 4], 3.0), ([1, 2, 3, 4, 5], 4.0)),

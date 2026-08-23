@@ -21,6 +21,7 @@ from app.tasks.models import (
     TaskCreateResult,
     TaskStatus,
 )
+from app.tasks.observability import TaskObservability
 
 
 NOW = datetime(2026, 8, 18, 9, 0, 0, tzinfo=timezone.utc)
@@ -79,7 +80,9 @@ class ReadyProbe:
         return ReadinessResult.ready()
 
 
-def app_and_service() -> tuple[TestClient, FakeTaskService]:
+def app_and_service(
+    *, observability: TaskObservability | None = None
+) -> tuple[TestClient, FakeTaskService]:
     service = FakeTaskService()
     app = create_app(
         task_service=service,
@@ -90,6 +93,7 @@ def app_and_service() -> tuple[TestClient, FakeTaskService]:
             profile="test",
         ),
         readiness_probe=ReadyProbe(),
+        observability=observability,
     )
     return TestClient(app), service
 
@@ -179,6 +183,7 @@ def test_app_factory_and_openapi_do_not_read_keys_or_open_io(monkeypatch) -> Non
         "/runs/{run_id}/recent-summary",
         "/health/live",
         "/health/ready",
+        "/health/metrics",
     }
 
 
@@ -248,3 +253,44 @@ def test_liveness_and_readiness_are_separate_contracts() -> None:
 
     assert http.get("/health/live").json()["status"] == "ok"
     assert http.get("/health/ready").json()["status"] == "ready"
+
+
+def test_metrics_projection_is_body_free_and_reports_bounded_snapshots() -> None:
+    observability = TaskObservability(logger_name="riftcoach.test.metrics-api")
+    observability.increment("task.created", amount=2)
+    observability.observe_latency("task.create", 10)
+    observability.observe_latency("task.create", 30)
+    http, _service = app_and_service(observability=observability)
+
+    response = http.get("/health/metrics")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "schema_version": "1.0",
+        "counters": {"task.created": 2},
+        "latencies": [
+            {
+                "name": "task.create",
+                "sample_count": 2,
+                "p50_ms": 10.0,
+                "p95_ms": 30.0,
+            }
+        ],
+    }
+    assert all(
+        forbidden not in response.text.casefold()
+        for forbidden in ("prompt", "report", "api_key", "puuid", "token")
+    )
+
+
+def test_metrics_endpoint_is_safe_when_no_observability_sink_is_injected() -> None:
+    http, _service = app_and_service()
+
+    response = http.get("/health/metrics")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "schema_version": "1.0",
+        "counters": {},
+        "latencies": [],
+    }

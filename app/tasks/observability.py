@@ -102,6 +102,9 @@ class TaskObservability:
         event = TaskEvent(name=name, metadata=safe)
         with self._lock:
             self._events.append(event)
+            self._counters[f"events.{name}"] = (
+                self._counters.get(f"events.{name}", 0) + 1
+            )
         # Serialize only the projected envelope.  No ``exc_info`` or stack is
         # passed, by design.
         self._logger.info(
@@ -134,6 +137,22 @@ class TaskObservability:
                 counters=dict(self._counters),
                 latencies_ms={
                     name: tuple(values)
+                    for name, values in self._latencies.items()
+                },
+            )
+
+    def public_snapshot(self, *, max_samples: int = 1_000) -> TaskMetricsSnapshot:
+        """Return a bounded projection suitable for an operational endpoint."""
+
+        if isinstance(max_samples, bool) or not isinstance(max_samples, int):
+            raise TypeError("max_samples must be an integer")
+        if not 1 <= max_samples <= 10_000:
+            raise ValueError("max_samples must be between 1 and 10000")
+        with self._lock:
+            return TaskMetricsSnapshot(
+                counters=dict(self._counters),
+                latencies_ms={
+                    name: tuple(values[-max_samples:])
                     for name, values in self._latencies.items()
                 },
             )

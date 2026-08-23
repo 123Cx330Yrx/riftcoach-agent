@@ -16,6 +16,7 @@ from app.tasks.reliable_runtime import (
     TaskLifecycleEvent,
     TaskLifecycleEventKind,
 )
+from app.tasks.observability import TaskMetricsSnapshot, percentile
 
 
 ApiVersion = Literal["2.0"]
@@ -183,6 +184,41 @@ class LivenessResponse(ApiModel):
     schema_version: ApiSchemaVersion = "1.0"
 
 
+class MetricsLatencyResponse(ApiModel):
+    name: str
+    sample_count: int
+    p50_ms: float
+    p95_ms: float
+
+
+class MetricsResponse(ApiModel):
+    schema_version: ApiSchemaVersion = "1.0"
+    counters: dict[str, int]
+    latencies: tuple[MetricsLatencyResponse, ...]
+
+    @classmethod
+    def from_snapshot(cls, snapshot: TaskMetricsSnapshot) -> "MetricsResponse":
+        if not isinstance(snapshot, TaskMetricsSnapshot):
+            raise TypeError("snapshot must be a TaskMetricsSnapshot")
+        latency_rows = []
+        for name in sorted(snapshot.latencies_ms):
+            values = snapshot.latencies_ms[name]
+            if not values:
+                continue
+            latency_rows.append(
+                MetricsLatencyResponse(
+                    name=name,
+                    sample_count=len(values),
+                    p50_ms=percentile(values, 0.50).value_ms,
+                    p95_ms=percentile(values, 0.95).value_ms,
+                )
+            )
+        return cls(
+            counters=dict(sorted(snapshot.counters.items())),
+            latencies=tuple(latency_rows),
+        )
+
+
 class ReadinessResult(ApiModel):
     is_ready: bool
     code: ReadinessCode | None = None
@@ -232,6 +268,8 @@ __all__ = [
     "DeleteTaskResponse",
     "ErrorResponse",
     "LivenessResponse",
+    "MetricsLatencyResponse",
+    "MetricsResponse",
     "ReadinessCode",
     "ReadinessResponse",
     "ReadinessResult",

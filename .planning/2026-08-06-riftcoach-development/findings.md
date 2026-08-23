@@ -3896,6 +3896,15 @@
 - 下一批 E5 的真实问题不是再加一个基础设施名词，而是证明现有 Compose 的 migration order、API/Worker
   readiness、非 root image、rollback/structured body-free observability 在一次 package 交付中保持一致；
   Redis/Kubernetes/第二套 metrics stack 仍需 Bad Case 和 ADR 才能采用。
+
+## 2026-08-24：E5 metrics seam 发现
+
+- 现有 `TaskObservability` 已有 allowlist/event/latency 基础，但没有对外的 bounded projection；直接暴露
+  内存历史会造成无界 payload 和隐私边界漂移。
+- 最小闭环是 event counter + 最近 1000 个 latency 样本的 p50/p95 `/health/metrics`，仍然只输出 safe
+  metric names/values；不把它扩展成 Prometheus exporter 或长期时序库。
+- Compose 已有 PostgreSQL→migration→API/Worker 依赖与 readiness gate；E5 的 rollback 先固化为可审计
+  runbook（旧镜像/兼容 migration/ready 后接流量），不声称自动回滚或跨区 HA。
 ## 2026-08-24：Portal → Workbench 视觉合同发现
 
 - 当前 `web/` 已具备 live/fixture workbench、relationship-safe Training、Evidence drawer、Motion/Radix

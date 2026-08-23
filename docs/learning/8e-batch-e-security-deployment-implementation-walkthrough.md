@@ -140,7 +140,42 @@ run reference；因此 locator 出现跨 owner 数据时是 fail-closed，而不
 - 当前仍未完成 OIDC/RSO、PostgreSQL session repository、HTTPS/HSTS edge、多副本 limiter、
   生产 Secret Manager、完整 Timeline/Training、OP.GG breadth 和 golden slice。
 
-## 9. 面试准确表述
+## 9. E5：packaging / observability 接缝
+
+E5 的问题是“一个部署包能不能被重复启动、检查、回滚，并且不会把私密正文变成日志”。现有 Compose
+已经固定了 PostgreSQL → migration → API → worker/smoke 的依赖顺序、API liveness/readiness、非 root
+镜像和 Linux no-I/O smoke；本批只补一个可审计的 metrics 投影，不把它升级成新的监控平台。
+
+- `TaskObservability.emit()` 自动累加 body-free event counter；`public_snapshot(max_samples=1000)`
+  对 latency 样本做硬上限，避免 metrics 端点把进程内历史无限暴露。
+- `GET /health/metrics` 只返回 allowlisted counter 名称/数值和 p50/p95 latency；不需要 owner、cookie、
+  report、Prompt、Riot ID 或 Provider Secret，也不读取数据库或外部网络。
+- `health/live` 仍只表示进程可响应，`health/ready` 仍要求 PostgreSQL 连通且 Alembic current=head；
+  migration 失败时 API 不会被误判 ready。Compose smoke 继续是 no-I/O 的发布前门。
+
+### E5 runbook（当前单机边界）
+
+```text
+docker compose --profile smoke config --quiet
+docker compose --profile smoke up --build --detach --wait api
+docker compose --profile smoke run --rm --no-deps smoke
+docker compose --profile smoke down -v --remove-orphans
+```
+
+发布前必须先执行 migration head→base→head 与 `alembic check`，再确认 `/health/ready`；回滚采用
+“停止当前 Compose → 选择已验证的旧镜像 tag/digest → 按兼容 migration 顺序启动”，不可在 API 尚未
+ready 时接受流量。当前 runbook 不承诺跨区 HA、自动 rollback、99.9% SLA 或长时间指标存储。
+
+### E5 验证与边界
+
+- focused：FastAPI metrics + observability `17 passed`；完整回归和公共 exact-SHA 门继续复用 E4 的
+  三 job contract。
+- E5 不引入 Prometheus exporter、Redis、Kubernetes、Celery、Kafka 或第二套 metrics runtime；若未来
+  多副本/长期告警成为真实 Bad Case，再单独做采用 ADR 和容量评测。
+- Web static artifact 仍保持 Batch D 的 fixture-backed boundary，等 Production shell/Auth gate 后再
+  决定如何由 edge 提供，不把当前 Python image 说成完整前端部署。
+
+## 10. 面试准确表述
 
 “我在 8E 先把安全边界拆成可测试的 provider-neutral seams：opaque server session 和 session-bound CSRF，
 ASGI 层的 header/body/rate budgets，versioned SecretSource 的 key-last Worker composition，以及

@@ -2440,3 +2440,15 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   E5 先做现有 Compose/Docker/health/observability 接缝的设计审查与 red tests，再实现和验证。Auth/RSO、
   HTTPS/HSTS、真实 Secret Manager、多副本 limiter、完整 Timeline/Training、OP.GG breadth/golden slice
   与 8F 仍未完成。
+
+## 2026-08-24：E5 packaging/observability 本地首批
+
+- E5 首批采用最小 body-free observability seam：`TaskObservability.emit()` 自动记录 bounded event counter，
+  `public_snapshot(max_samples=1000)` 限制 latency 投影，`GET /health/metrics` 返回只含 allowlisted
+  counter 与 p50/p95 latency 的 typed DTO。
+- `health/live`、`health/ready` 与 Compose migration order/non-root/no-I/O smoke 保持原合同；metrics
+  端点不读取 owner、Cookie、Prompt、Report、Riot ID、Secret、数据库或外部网络。
+- focused FastAPI/observability 为 `17 passed`；最终完整回归为 `1971 passed, 1 skipped, 1 warning, 127
+  subtests passed`；当前 E5 尚未取得独立提交或公共 CI，8E 仍 `in_progress/planned`。
+- `NEXT`：补 E5 packaging/observability 八维 walkthrough、Compose/rollback/red-contract 文档与比例回归，
+  再创建独立提交并等待 exact-SHA 三 job；不引入 Prometheus/Redis/Kubernetes/第二套 metrics runtime。

@@ -2956,3 +2956,10 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   compensation、真库 migration 和 Linux package image boundary；无外部 Riot/OP.GG/Provider/LLM I/O。
 - 下一项按连续授权进入 E5 packaging/observability，仍维持单机 Compose 与 body-free observability 边界；
   KMS/对象存储、Kubernetes/Redis、8F 和 OP.GG golden slice 不因 E4 关闭而提前完成。
+
+## 2026-08-24：RQ-099 E5 metrics projection 本地首批
+
+- 在现有 Compose/Docker/readiness/structured logging 基础上增加 bounded event counters、latency snapshot
+  和 `/health/metrics` typed projection；未新增外部监控 runtime、Secret、网络 I/O 或前端部署。
+- E5 当前只完成 focused 本地实现，完整回归、独立提交和 exact-SHA 三 job 公共 CI 仍是关闭门；不把
+  `/health/metrics` 写成 Prometheus/长期存储/自动告警能力。

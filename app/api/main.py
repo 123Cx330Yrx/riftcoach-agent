@@ -73,6 +73,7 @@ from app.api.task_models import (
     DeleteTaskResponse,
     ErrorResponse,
     LivenessResponse,
+    MetricsResponse,
     ReadinessResponse,
     ReadinessResult,
     TaskLinks,
@@ -627,6 +628,9 @@ def create_app(
     if not isinstance(cors_allow_credentials, bool):
         raise TypeError("cors_allow_credentials must be a bool")
     normalized_origins = tuple(cors_origins)
+    metrics_observability = observability or TaskObservability(
+        logger_name="riftcoach.api.metrics"
+    )
     if any(not isinstance(origin, str) or not origin.strip() for origin in normalized_origins):
         raise ValueError("cors_origins must contain non-blank strings")
     if "*" in normalized_origins and cors_allow_credentials:
@@ -2419,6 +2423,12 @@ def create_app(
     @app.get("/health/live", response_model=LivenessResponse)
     def liveness() -> LivenessResponse:
         return LivenessResponse()
+
+    @app.get("/health/metrics", response_model=MetricsResponse)
+    def metrics() -> MetricsResponse:
+        return MetricsResponse.from_snapshot(
+            metrics_observability.public_snapshot()
+        )
 
     @app.get(
         "/health/ready",

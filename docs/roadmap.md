@@ -602,3 +602,11 @@ derived Memory、relationship private data；Task/Artifact 与全局 Player Subj
   不重跑，8D Riot+OP.GG fusion、SSE/前端和真实外部 I/O 不进入本检查点。
 - 该段记录设计入口时的历史事实；随后 0010、Repository/Worker/recovery/API 与八维材料已本地完成，
   当前仍等待 implementation exact-SHA 公共闭环，不进入 8D。
+
+## 2026-08-24：8E E4 公共关闭与 E5 metrics 首批
+
+- E4 `27b9256` / Actions `32660145945` 三 job 全绿后正式关闭；owner erase/restore replay/Artifact-Trace
+  cleanup 证据已公共验证，KMS/对象存储/RPO-RTO 仍是明确 deferred 边界。
+- E5 首批增加 bounded body-free `TaskObservability` projection 与 `/health/metrics`；Compose migration
+  order、health/readiness、non-root image 和 no-I/O package smoke 继续复用，不引入新 metrics runtime。
+- E5 当前仍等待独立 implementation/evidence commit 和 exact-SHA 公共闭环，8F 不提前进入。

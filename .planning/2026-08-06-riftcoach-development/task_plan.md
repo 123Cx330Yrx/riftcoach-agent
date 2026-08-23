@@ -1471,5 +1471,5 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
 - [completed-public] E4 backup/restore/erase：restore/erase contracts、owner marker → Artifact/Trace
   locator/cleanup、manifest digest、幂等 replay 与 readiness compensation 已由 `27b9256` / Actions
   `32660145945` 完成 exact-SHA 三 job 公共闭环。
-- [in_progress] E5 packaging/observability：按连续授权开始审查现有 Compose/Docker/health/observability
-  接缝，先冻结 red contracts，再实现、验证和取得独立 exact-SHA 公共闭环。
+- [in_progress] E5 packaging/observability：已冻结并实现 body-free metrics projection、bounded latency
+  snapshot 与 event counters；当前完成 focused 门，等待比例回归、独立提交和 exact-SHA 公共闭环。

@@ -210,6 +210,7 @@ def test_openapi_versions_the_async_contract_and_exact_paths() -> None:
             "/runs/{run_id}/report",
             "/health/live",
             "/health/ready",
+            "/health/metrics",
     }
     assert document["paths"]["/reviews/recent"]["post"]["responses"].get("202")
     assert "201" not in document["paths"]["/reviews/recent"]["post"]["responses"]
