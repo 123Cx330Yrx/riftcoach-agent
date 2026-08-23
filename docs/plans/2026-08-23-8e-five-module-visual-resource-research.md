@@ -60,6 +60,25 @@ RiftCoach/LoL 语义 25%、视觉完成度/时尚感/记忆点 25%、交互清�
 
 ## 5. 五模块采用矩阵
 
+RQ-094 对旧日志再次定向复核后，五模块与最终三方向的关系固定如下；这比 Batch D 的施工顺序更高层：
+
+```text
+Rift Awakening / Cinematic Portal
+  └─ 电影感 Riot ID / RSO 入口
+          ↓
+Esports Intelligence / Broadcast Workbench
+  ├─ 近期复盘工作台
+  ├─ Rift Timeline
+  ├─ Evidence / Agent Trace
+  └─ Training Plan / Progress
+
+Void Holographic Lab
+  └─ 仅为入口 Hero 的受限 3D/全息实验候选
+```
+
+`Hextech Tactical Editorial` 是 A/B 共享的色彩、字体、材质和状态语言；`Rift Command Center` 是方向 B 的
+首个 fixture 纵切。二者均不表示电影感入口被取消，也不授权完整 3D 工作台。
+
 ### 5.1 电影感 Riot ID / RSO 入口
 
 **参考池**：Riot Hextech/Universe、Awwwards/SiteInspire/Recent Design、MotionSites Hero/Backgrounds/Nexar、

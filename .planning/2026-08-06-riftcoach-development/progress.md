@@ -3975,3 +3975,18 @@
 - `HANDOFF`：整个 8E/coverage 仍 `in_progress/planned`。唯一下一动作是 owner-scoped API/SSE 接线设计门，
   先盘点 profile/product/evidence/event DTO 和缺失 Summary/report projection；不自动进入 Auth/RSO、部署、
   电影感入口、完整 Timeline/Training 或 8F。
+
+### 2026-08-23：RQ-094/RQ-095 Live Integration 设计门
+
+- `CONTEXT-RECONCILED`：定向日志复核恢复 A `Rift Awakening`、B `Esports Intelligence`、C
+  `Void Holographic Lab` 与 A→B 组合；C 仍只作受限 Hero 实验。小复盘、OP.GG breadth 与完整真实 fusion
+  golden slice 已登记为后续必做，不把 lane-meta/degraded replay 冒充完成。
+- `AUTHORIZED`：用户明确继续当前唯一下一动作；RQ-095 只授权 live API/SSE 接线设计门，不授权实现、
+  Auth/部署、其余五模块、真实外部调用或 8F。
+- `DESIGN`：ADR-0062 与 design/implementation plan 采用 owner-scoped latest locator + existing APIs；补
+  Recent Summary/typed Evidence，前端使用 same-origin exact decoder、generation/abort、单 EventSource、
+  restricted Markdown 与真实 Training 字段。
+- `BOUNDARY`：当前没有产品代码、migration、npm 安装、Riot/OP.GG/Provider/LLM 调用、Key 读取或 8B
+  holdout；8E coverage 保持 `planned`。
+- `NEXT`：同步 roadmap/amendment/capability/learning 与 requirements/canonical，运行 governance/stale/diff，
+  创建独立 design commit 并等待 exact-SHA 三 job；公共闭环后才交接 implementation prepared。

@@ -143,6 +143,18 @@ Tailwind/shadcn 在当前无 SSR/复杂路由的静态门没有净收益，因�
 3D 与 ECharts 保持带 Bad Case 的后续候选。MotionSites、Design Prompts、Aura、React Bits、Aceternity、
 Uiverse 等继续参与跨来源筛选，但不能绕过许可、性能和 a11y 门或替代自主实现。
 
+### 8. RQ-094 对历史三方向的补充解释
+
+后续 session-log 差异审计确认，本 ADR 的 Batch D 三案是施工优先级，不是最终视觉三方向。最终职责为：
+
+- `Rift Awakening`：电影感入口；
+- `Esports Intelligence`：长期电竞分析工作台，Batch D 属于这一层；
+- `Void Holographic Lab`：只作受限 Hero 实验。
+
+采用组合是 `Cinematic Portal → Broadcast Workbench`。本 ADR 的 `Hextech Tactical Editorial` 是入口与
+工作台共享的视觉系统，`Rift Command Center` 是工作台首个纵切；两者不取代三方向，也不将整站缩成
+普通 Dashboard。Void 仍必须通过本 ADR 的许可、性能、移动、reduced-motion 和撤出门，未获得默认采用。
+
 ## 后果
 
 正面影响：首批前端同时具备强辨识度和可审计状态，不会因炫技发明后端能力；外部资源可持续扩展，

@@ -345,6 +345,21 @@ exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE�
   Batch D 静态前端正式关闭；下一步先设计真实 API/SSE 接线和缺失 Summary/report projection，不提前接
   Auth/部署、电影感入口、完整 Timeline/Training 或 8F。
 
+### 8E Live Workbench 接线设计门（RQ-094/RQ-095）
+
+- RQ-094 补回最终视觉职责：`Rift Awakening` 电影感入口与 `Esports Intelligence` 工作台组成
+  `Cinematic Portal → Broadcast Workbench`，`Void Holographic Lab` 只作受限 Hero 实验；
+  `Hextech Tactical Editorial` 是共享语言，Batch D `Rift Command Center` 是工作台施工切片；
+- checkpoint 关闭必须给短复盘，连续批次再给总复盘；该节奏不替代八维 coverage；
+- Stage 7/8D 不重开，但 8F 前另设 OP.GG useful-breadth gate，并完成一次实际包含 Riot match、Data Dragon、
+  official patch、OP.GG、训练建议与 UI Evidence 的 body-free golden slice。现有 lane-meta 与
+  `degraded/unjoined` replay 不满足该完整目标；
+- RQ-095 当前只冻结薄 latest-review locator、Recent Summary HTTP、typed Evidence HTTP、same-origin exact
+  decoder、generation/abort、单 EventSource、restricted Markdown 与真实 Training 字段；不实现产品代码、
+  Auth/部署、其余五模块或上述两个后续验收；
+- ADR-0062 与 live integration design/implementation plan 完成本地同步后，必须先经过独立 design SHA 的
+  三 job exact-SHA 公共门，才可把 implementation 交为 prepared。
+
 ### 原理
 
 只有当任务出现可以独立并行的上下文、权限和失败边界时才拆 Agent。Multi-Agent 是隔离职责和并发的手段，不是项目完成度标签。

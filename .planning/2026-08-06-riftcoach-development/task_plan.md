@@ -39,9 +39,11 @@ public closure. RQ-084 authorized Phase 36 -
 The bounded Riot/OP.GG validation and JSON-null Bad Case are publicly closed;
 Batch B profile/routing, Batch C Evidence/Product/SSE backend and Batch D
 fixture-backed Rift Command Center are also publicly closed, most recently at
-`f7ebedd` / Actions `32636771507`. Full productization remains unimplemented:
-8E coverage is still `planned`, and the next action is the real API/SSE
-integration design gate before Auth/deployment or 8F.
+`f7ebedd` / Actions `32636771507`. Full productization remains unimplemented.
+RQ-094 recovered the final A/B/C visual roles, checkpoint recap rhythm, OP.GG
+useful-breadth gate and complete live-fusion golden slice as durable pending
+work. RQ-095 now authorizes only the real API/SSE integration design gate before
+Auth/deployment or 8F; 8E coverage remains `planned`.
 
 ## Phases
 
@@ -748,7 +750,7 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 ### Phase 37 - 8e-productization
 
 - Status: in_progress
-- State: RQ-086 已授权 8E preflight；8D closure 不表示 React/SSE/Auth/HTTPS/备份/部署已完成。
+- State: RQ-095 已授权当前 live API/SSE integration design gate；8D/Batch D closure 不表示真实 Web、Auth/HTTPS/备份/部署已完成。
 - [completed] 创建 ADR-0056 与 `docs/plans/2026-08-23-8e-productization-preflight.md`，冻结真实验证、玩家档案和慢前端顺序；
 - [completed] 真实 OP.GG 有界 body-free smoke：1 次 initialize/list/call，3 条 top facts，证据 digest 已持久化；
 - [completed] `DK ShowMaker#KR1 / asia / observed` 的 Account/Match body-free gate：3 次 Riot calls、1 局详情通过；
@@ -798,6 +800,15 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
   frontend unit 35/e2e 12/typecheck/build 与 Linux package schema 1.6 全绿；Batch D 静态前端正式关闭；
 - [handoff] 整个 8E coverage 继续 `planned`；唯一下一动作是先设计 owner-scoped API/SSE 接线及缺失的
   Summary/report HTTP projection，不直接实现 Auth/RSO、部署、电影感入口、完整 Timeline/Training 或 8F；
+- [completed-context-reconciliation] RQ-094 定向复核“五项裁决→Stage 8 开工”，恢复最终
+  `Rift Awakening + Esports Intelligence` 双层组合、`Void Holographic Lab` 受限 Hero 实验、小复盘节奏、
+  OP.GG useful-breadth gate 与完整 live fusion golden slice；不重开 Stage 7/8D，也不把现有
+  `degraded/unjoined` replay 写成完整纵向完成；
+- [completed-local-design] RQ-095、ADR-0062、live integration design/implementation plan 采用薄
+  latest-review locator + 现有 API 客户端组合，补 Recent Summary/typed Evidence，并冻结 exact decoders、
+  generation/abort、单 EventSource、restricted Markdown、真实 Training 与分层验证；
+- [in-progress-design-gate] 当前只完成设计与治理持久化；下一动作是治理/stale/diff 检查、独立 design
+  commit/push 与 exact-SHA 三 job。公共闭环前不进入产品代码实现；
 - [boundary] Batch D 不接真实 API/SSE/Auth，不实现完整 Timeline/历史列表、HTTPS、backup、deployment
   或公网发布；MotionSites/React Bits/Aceternity 等只按裁决作 reference，不复制受限源组件；
 - [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout；Windows symlink 单项 skip 由 exact-SHA Linux pytest 独立补证。

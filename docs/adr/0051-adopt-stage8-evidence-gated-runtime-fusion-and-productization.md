@@ -117,6 +117,12 @@ MotionSites 的采用门固定为：公开 URL/预览、适配页面、技术栈
 Trace 抽屉、Training Plan/Progress。首页动效预算最高；工作台动效服务于状态理解；所有页面
 必须有 loading/empty/error/degraded/no-evidence 状态、键盘焦点和 reduced-motion 方案。
 
+RQ-094 后续补齐本入口 ADR 未持久化的视觉职责：`Rift Awakening` 入口与 `Esports Intelligence`
+工作台组成 `Cinematic Portal → Broadcast Workbench`，`Void Holographic Lab` 只作受限 Hero 实验。
+同一纠偏要求 8F 前另设 OP.GG useful-breadth gate，并完成一次实际覆盖 Riot match、Data Dragon、
+official patch、OP.GG、训练建议和 UI Evidence 的 body-free golden slice；8D pure kernel 与当前
+`degraded/unjoined` replay 不单独满足这项完整纵向验收。
+
 ### 7. 安全与隐私边界
 
 - 前端只收到 owner-scoped、allowlisted DTO；不返回 PUUID、Key、路径、Prompt、原始 MCP body、

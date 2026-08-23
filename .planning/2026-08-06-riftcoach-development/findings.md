@@ -3794,6 +3794,28 @@
   能减少 SSR/路由/模板依赖且保留自主视觉控制。Motion/Radix 已有直接消费者，其他库继续按采用门 deferred。
 - 提交审查发现首个 web lockfile 继承本机 `registry.npmmirror.com` resolved URL；最终用 npm 官方 registry
   重建并 clean `npm ci`，避免 exact-SHA 公共门依赖个人镜像。第一次 mirror audit 404 同样没有冒充成功。
+
+## 2026-08-23：RQ-094 上下文差异与 Live Integration 接缝发现
+
+- 历史中存在三组容易混淆的“三案”：早期 visual draft、最终 `Rift Awakening / Esports Intelligence /
+  Void Holographic Lab` 三方向，以及 Batch D 施工优先级三案。只有第二组及其
+  `Cinematic Portal → Broadcast Workbench` combination 是最终视觉职责；`Rift Command Center` 只是 B 的
+  首个施工切片，`Hextech Tactical Editorial` 是共享语言。
+- 五项裁决中 Stage 8 顺序、Stage 7 V1、五模块和资源门已持久化；checkpoint 小复盘、OP.GG breadth 最低
+  候选和完整真实 fusion golden slice 没有。当前只产品化 lane-meta；真实 replay 缺 Data Dragon/official
+  patch、训练建议与 UI trace，仍为 `degraded/unjoined`。
+- 后端已有 profiles、task/event/SSE、run/report、Product/Evidence 和 Training；缺的 identity seam 是
+  profile→latest conversation-bound review。只靠 URL/localStorage 会串号，单一大 BFF 又会建立 UI 聚合真源，
+  因此采用薄 locator + 现有 API 客户端组合。
+- `RecentSummaryView` 已经通过 Artifact/Trace/manifest 严格查询，但没有 HTTP route；
+  `EvidenceSnapshotResponse.projection` 仍是自由 object；这两处应在浏览器消费前收紧，不让前端解析内部文件。
+- fixture 的战术 headline、Markdown 猜造 verdict/strength/priority/next-session、`2/5 sessions`、completion
+  percent 与 next action 均没有现行后端字段。live 模式必须删除或改成可推导 Summary、verified Markdown 与
+  baseline/current/target/trend/sample count。
+- profile 切换必须先 abort fetch 和 close EventSource，再用 generation/profile/task/run guard 接受响应；
+  SSE reconnect 是 client transport 状态，不是 Product State rejected。observed 不请求 personal Training。
+- 当前消费 DTO 足够小，手写 exact decoder 比引入 Zod/codegen 更小；原生 EventSource 足够，不引入 parser。
+  `react-markdown@10.1.0` 只有在 restricted elements、无 raw HTML/image/link 且总 JS gzip ≤150 kB 时采用。
 ## 2026-08-23：Batch D 公共关闭前 AutoGLM 可用性复核
 
 - 本地 token 服务和 AutoGLM Web Search API 已连通；首轮 Windows GBK 输出因搜索摘要含 `U+00A0`

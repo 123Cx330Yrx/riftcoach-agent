@@ -155,6 +155,17 @@ Web/Auth/HTTPS/备份与部署；`8F` 做最终 Eval 和作品集退出。DAG、
   `88a5ab6/32631766013` 与 implementation/evidence `f7ebedd/32636771507` 均完成 exact-SHA 三 job，
   Batch D 静态 fixture screen 正式关闭。下一动作是 API/SSE 接线设计门；不提前接 Auth/部署或 8F。
 
+### 2026-08-23：RQ-094/RQ-095 Live Integration 设计门
+
+- 历史双层视觉组合重新持久化为 `Rift Awakening → Esports Intelligence`；Void 3D 只按 Advanced 风格
+  采用门局部实验，不把 Batch D 的工作台优先顺序误写成最终视觉三选一；
+- 8-Core 仍要求完整真实 Evidence→Training→UI 纵向。8D pure typed kernel 与 8E degraded replay 是必要
+  前置证据，但缺 Data Dragon/official patch/训练/UI 时不能关闭该目标；
+- OP.GG breadth 不按工具数量扩张：champion analysis 与 lane matchup 是最低评估候选，synergies 由阵容
+  消费者触发；每项继续经过 per-tool schema/provenance/cost/degrade gate；
+- 当前接线门只采用 owner-scoped latest locator + existing APIs，在客户端做 strict composition；拒绝大 BFF
+  聚合真源和 URL/localStorage-only 身份。实施前先完成 ADR/design/plan 与 exact-SHA public design closure。
+
 ## 7. 产品切片
 
 阶段 5 在本地 AgentRuntime 可运行后，增加不依赖临时数据库的早期 API 切片：

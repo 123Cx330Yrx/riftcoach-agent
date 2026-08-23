@@ -2845,3 +2845,17 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   `in_progress/planned`。真实 API/SSE/Auth、电影感入口、完整 Timeline/Training、部署和 8F 没有被完成。
 - 唯一下一动作改为真实数据接线设计门：盘点 Batch B/C owner-scoped DTO 与 Summary/report HTTP
   projection 缺口，再冻结 decoder、Last-Event-ID 重连、错误和状态保持合同；不自动进入 Batch E/8F。
+
+## 2026-08-23：RQ-094/RQ-095 上下文纠偏与 Live Integration 设计
+
+- `CORRECTED`：RQ-093 只恢复五模块和资源池仍不够。定向复核“五项裁决→开工”后，补回最终 A/B/C
+  视觉职责、A→B combination、checkpoint 小复盘、OP.GG breadth gate 与完整真实 fusion golden slice。
+- `NOT-REOPENED`：Stage 7 V1、8D typed fusion 与现有 live parser Bad Case 均保持关闭；补的是未排期的产品
+  广度/纵向验收，不改写历史提交或重跑负面结果。
+- `ADOPTED-DESIGN`：ADR-0062 选择 thin latest-review locator + existing APIs client composition；新增 Recent
+  Summary HTTP 和 typed Evidence schema，前端冻结 exact decoder、generation/AbortController、one
+  EventSource、restricted Markdown 与真实 Training 字段。
+- `REJECTED`：当前不采用大 Workbench BFF、URL/localStorage-only run binding、Zod/OpenAPI codegen、第二
+  SSE parser/动画栈，亦不因接线门提前进入 WebGL、Auth、部署、完整 Timeline/Training 或外部调用。
+- `STATUS`：整个 8E/coverage 继续 `in_progress/planned`。当前只待设计文档/治理本地门、独立 design SHA 与
+  exact-SHA 三 job；公共成功前 implementation 未获授权。

@@ -1950,3 +1950,32 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - 下一步只进入真实数据接线设计门：复用 Batch B/C owner-scoped profile/product/evidence/SSE DTO，先补清
   Summary/report HTTP projection 和 decoder/重连/错误合同。Auth/RSO、部署安全、电影感入口、完整 Timeline/
   Training 与 8F 均不随 Batch D 自动进入。
+
+## 2026-08-23：RQ-094 恢复最终视觉组合与两个未结 Core 目标
+
+- 旧日志中早期 `Hextech Analyst Console / Esports Broadcast Lab / Coach Film Room` 是初稿；后来经用户
+  纠正形成的最终三方向是 `Rift Awakening`、`Esports Intelligence`、`Void Holographic Lab`。Batch D 的
+  Command/Cinematic/Timeline 三案只决定施工顺序，不能覆盖最终视觉职责。
+- 采用 `Cinematic Portal → Broadcast Workbench`：入口承担作品集级电影感，工作台保留统一画风但让动效
+  服务数据理解；Void 只允许 Hero 级实验。`Hextech Tactical Editorial` 是共享 design language，
+  `Rift Command Center` 是工作台首个纵切。
+- 每 checkpoint 关闭给一次问题/取舍/数据流/证据/限制/下一步短复盘；连续 checkpoint 再给批次总复盘。
+- Stage 7 V1 不重开，但当前只产品化 lane-meta。8F 前新增 OP.GG useful-breadth gate，最低候选为 champion
+  analysis 与 lane matchup，synergies 按阵容消费者；不为数量接满目录工具。
+- 8D no-I/O typed fusion 与现有 live `degraded/unjoined` bundle 不等于完整真实纵向。8F 前必须至少一次实际
+  覆盖 Riot match、Data Dragon、official patch、OP.GG、个性化 Training advice 与 live UI Evidence；允许
+  诚实 degraded，但不得缺来源仍声称完成或覆盖旧负面证据追绿。
+
+## 2026-08-23：ADR-0062 采用薄 latest locator 与客户端组合式 Live Workbench
+
+- RQ-095 只授权当前设计门。三案比较拒绝单一 `/workbench` 大 BFF 和 URL/localStorage-only 身份，采用
+  owner-scoped profile→latest review locator，加现有 task/run/product/evidence/training/SSE API 客户端组合。
+- 后端补 `/runs/{run_id}/recent-summary`，Evidence HTTP projection 改为 typed nested schema；不改变 storage
+  JSON、增加聚合表、cache 或 migration。
+- 前端 `unknown wire → exact decoder → identity assertion → view adapter → React`；切 profile 先 abort/close/
+  clear，再以 generation/profile/task/run 四重 guard 接收结果。每 task 最多一个 EventSource；transport
+  reconnect 不改 Product State。
+- verified report 只按 restricted Markdown 显示，不猜 verdict/strength/priority；Training 只显示后端可推导
+  的 baseline/current/target/trend/sample count。observed 不请求个人 Training。
+- 当前只完成设计与计划，不安装 npm、不写产品代码、不调用外部服务；设计 exact-SHA 公共门成功后才交接
+  implementation prepared。

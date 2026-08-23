@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（8E Batch D fixture-backed Rift Command Center 已由 `f7ebedd` / Actions `32636771507` 完成 exact-SHA 三 job 公共闭环；整个 8E/coverage 仍为 `in_progress/planned`，下一动作只进入真实 API/SSE 接线的设计门，不提前实现 Auth/部署）
+- 最后更新：2026-08-23（RQ-094 已补回最终视觉三方向/组合、小复盘、OP.GG breadth 与完整真实融合 golden slice；RQ-095 当前只推进真实 API/SSE 接线设计门，产品实现、Auth/部署及其余五模块尚未进入）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2269,3 +2269,20 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 唯一下一动作是先设计真实数据接线：盘点 Batch B/C owner-scoped profile/product/evidence/SSE DTO 与
   仍缺的安全 Summary/report HTTP projection，冻结 fixture decoder→HTTP/SSE adapter、错误/重连/状态保持
   合同；设计门完成前不把当前 screen 接到真实服务，也不进入 Batch E 安全/部署或 8F。
+
+## 2026-08-23：RQ-094 上下文纠偏与 RQ-095 Live Integration 设计门
+
+- 定向复核“五项裁决→Stage 8 正式开工”区间后，确认五模块与多来源门已持久化，但最终视觉三方向、
+  checkpoint 小复盘、OP.GG useful-breadth 最低候选和完整真实融合 golden slice 没有形成可执行持久合同。
+- RQ-094 当前明确：`Rift Awakening` 入口 + `Esports Intelligence` 工作台是长期双层组合，
+  `Void Holographic Lab` 只作受限 Hero 实验；Batch D `Rift Command Center` 属工作台第一施工切片。
+- Stage 7 V1 和 8D typed fusion 不重开。当前只有 lane-meta；champion analysis/lane matchup 与条件
+  synergies 后续通过独立 breadth gate。现有 live bundle 仍 `degraded/unjoined`，缺 Data Dragon/official
+  patch、训练建议和 UI 追溯，不能写成完整真实纵向完成。
+- RQ-095 只授权当前设计门。ADR-0062 采用薄 profile→latest review locator + 现有 API 客户端组合，补
+  `/runs/{run_id}/recent-summary` 与 typed Evidence HTTP；前端采用 exact wire decoder、generation + abort、
+  每 task 单 EventSource、受限 Markdown 和真实 Training 字段，不增加 BFF 表、缓存、第二动画栈或浏览器 secret。
+- 当前本地只新增/修改 ADR、design、implementation plan 与治理状态，没有产品代码、migration、npm 安装、
+  外部 Riot/OP.GG/Provider/LLM 调用、Key 读取、8B holdout 或付费素材获取。整个 8E coverage 继续 `planned`。
+- 唯一下一动作是完成文档/治理/stale/diff 门，创建独立 design commit 并等待同 SHA 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke`；公共闭环前不进入 live integration implementation。
