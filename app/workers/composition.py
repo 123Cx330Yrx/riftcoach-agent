@@ -12,6 +12,7 @@ import math
 import re
 from collections.abc import Mapping
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Literal, TypeAlias
 
@@ -39,6 +40,11 @@ from app.providers.config import (
     create_zhipu_provider,
     load_provider_registry_settings,
     load_zhipu_settings,
+)
+from app.providers.secrets import (
+    InMemorySecretSource,
+    SecretConfigurationError,
+    SecretSource,
 )
 from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.runtime.composition import RuntimeCompositionRoot
@@ -84,9 +90,11 @@ class WorkerCompositionError(RuntimeError):
 @dataclass(frozen=True, slots=True)
 class WorkerCompositionSettings:
     database: DatabaseSettings = field(repr=False)
-    zhipu: ZhipuSettings = field(repr=False)
+    zhipu: "WorkerZhipuSettings"
     provider_registry: ProviderRegistrySettings
-    riot_api_key: str = field(repr=False)
+    secret_source: SecretSource = field(repr=False)
+    riot_secret_name: str
+    llm_secret_name: str
     runs_root: Path
     knowledge_root: Path
     skills_root: Path
@@ -96,6 +104,15 @@ class WorkerCompositionSettings:
     min_duration_seconds: int
     polling_policy: PollingPolicy
     lease_policy: TaskLeasePolicy
+
+
+@dataclass(frozen=True, slots=True)
+class WorkerZhipuSettings:
+    """Non-secret provider configuration retained in the worker plan."""
+
+    base_url: str
+    model: str
+    default_timeout_s: float
 
 
 @dataclass(slots=True)
@@ -121,6 +138,8 @@ class ReviewWorkerProcess:
 
 def load_worker_composition_settings(
     environment: Mapping[str, str],
+    *,
+    secret_source: SecretSource | None = None,
 ) -> WorkerCompositionSettings:
     """Parse every production dependency without performing external I/O."""
 
@@ -128,12 +147,17 @@ def load_worker_composition_settings(
         raise WorkerCompositionError("worker_configuration_invalid")
     try:
         database = load_database_settings(environment)
-        zhipu = load_zhipu_settings(environment)
+        raw_zhipu = load_zhipu_settings(
+            {
+                **environment,
+                "LLM_API_KEY": environment.get("LLM_API_KEY", "secret-source-placeholder"),
+            }
+        )
         registry = load_provider_registry_settings(environment)
         if registry.default_provider_id != "zhipu":
             raise ValueError("only the current product baseline may be selected")
 
-        riot_api_key = _required_secret(environment, "RIOT_API_KEY")
+        selected_secret_source = secret_source or _environment_secret_source(environment)
         language = environment.get("RIFTCOACH_DDRAGON_LANGUAGE", "zh_CN").strip()
         if not _SAFE_LANGUAGE.fullmatch(language):
             raise ValueError("RIFTCOACH_DDRAGON_LANGUAGE is invalid")
@@ -200,9 +224,15 @@ def load_worker_composition_settings(
         )
         return WorkerCompositionSettings(
             database=database,
-            zhipu=zhipu,
+            zhipu=WorkerZhipuSettings(
+                base_url=raw_zhipu.base_url,
+                model=raw_zhipu.model,
+                default_timeout_s=raw_zhipu.default_timeout_s,
+            ),
             provider_registry=registry,
-            riot_api_key=riot_api_key,
+            secret_source=selected_secret_source,
+            riot_secret_name="riot-api",
+            llm_secret_name="llm-api",
             runs_root=_read_path(
                 environment,
                 "RIFTCOACH_RUNS_ROOT",
@@ -272,8 +302,16 @@ def build_review_worker_process(
         session_factory = build_session_factory(engine)
         repository = PostgresTaskRepository(session_factory)
 
+        riot_api_key = _read_secret_value(
+            settings.secret_source,
+            name=settings.riot_secret_name,
+        )
+        llm_api_key = _read_secret_value(
+            settings.secret_source,
+            name=settings.llm_secret_name,
+        )
         riot_clients = {
-            region: RiotClient(api_key=settings.riot_api_key, region=region)
+            region: RiotClient(api_key=riot_api_key, region=region)
             for region in _RIOT_ROUTING_REGIONS
         }
         ddragon = DataDragonService(
@@ -294,7 +332,16 @@ def build_review_worker_process(
             prompt_programs_root=settings.prompt_programs_root,
         )
         registry = create_provider_registry(
-            {"zhipu": create_zhipu_provider(settings.zhipu)},
+            {
+                "zhipu": create_zhipu_provider(
+                    ZhipuSettings(
+                        api_key=llm_api_key,
+                        base_url=settings.zhipu.base_url,
+                        model=settings.zhipu.model,
+                        default_timeout_s=settings.zhipu.default_timeout_s,
+                    )
+                )
+            },
             settings.provider_registry,
         )
         runtime = runtime_root.build_runtime(
@@ -347,6 +394,37 @@ def build_review_worker_process(
         if engine is not None:
             engine.dispose()
         raise WorkerCompositionError("worker_dependency_invalid") from None
+
+
+def _environment_secret_source(environment: Mapping[str, str]) -> InMemorySecretSource:
+    source = InMemorySecretSource()
+    try:
+        source.put(
+            name="riot-api",
+            version="environment",
+            value=_required_secret(environment, "RIOT_API_KEY"),
+        )
+        source.put(
+            name="llm-api",
+            version="environment",
+            value=_required_secret(environment, "LLM_API_KEY"),
+        )
+    except ValueError:
+        raise
+    return source
+
+
+def _read_secret_value(source: SecretSource, *, name: str) -> str:
+    try:
+        material = source.read(
+            name=name,
+            now=datetime.now(timezone.utc),
+        )
+    except SecretConfigurationError:
+        raise WorkerCompositionError("worker_configuration_invalid") from None
+    if not material.value or len(material.value) > 1024:
+        raise WorkerCompositionError("worker_configuration_invalid")
+    return material.value
 
 
 def _required_secret(environment: Mapping[str, str], name: str) -> str:

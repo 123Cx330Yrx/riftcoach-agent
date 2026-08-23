@@ -51,6 +51,12 @@ from .structured import (
     contract_for_model,
     decode_structured_response,
 )
+from .secrets import (
+    InMemorySecretSource,
+    SecretConfigurationError,
+    SecretMaterial,
+    SecretSource,
+)
 
 __all__ = [
     "ChatMessage",
@@ -83,6 +89,10 @@ __all__ = [
     "ToolSpec",
     "ZhipuProvider",
     "ZhipuSettings",
+    "InMemorySecretSource",
+    "SecretConfigurationError",
+    "SecretMaterial",
+    "SecretSource",
     "create_provider_registry",
     "create_zhipu_provider",
     "contract_for_model",

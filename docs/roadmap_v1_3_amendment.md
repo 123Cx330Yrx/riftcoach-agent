@@ -1,5 +1,11 @@
 # RiftCoach 路线 v1.3 局部校准
 
+## 2026-08-24：8E 视觉前置的顺序约束
+
+`Rift Awakening → Broadcast Workbench` 是 8E 内的设计前置，不是新的主阶段或新的 canonical checkpoint。
+它必须先完成 presentation-state 合同、分层资产/来源账本、入口 storyboard 及 responsive/reduced-motion
+验证，再进入对应前端实现；不会绕过 Batch E 安全/部署合同、外部调用门或 8F 真实 golden slice。
+
 本文件只记录对既有阶段 0-8 路线的增量修正，不增加、删除或重排九个主阶段。
 
 ## 1. 决策原则
@@ -560,3 +566,24 @@ Agent 已接入或 Memory 已完成。
   与 package event query 已在工作树完成；八维 walkthrough 已进入 coverage ledger，coverage 仍 planned。
 - 最新完整本地 pytest `1671 passed, 134 skipped`；真实 PostgreSQL 17、Linux package 和 exact-SHA 三 job
   仍是关闭门，公共成功前不进入 8D。
+
+### 2026-08-23：8E Batch E 安全/部署入口设计
+
+ADR-0063 将 8E 的公开交付边界冻结为 provider-neutral AuthPort、server-side opaque session、
+RiftCoach Auth/RSO 分离、edge/static Web + API/Worker/PostgreSQL 单机 Compose，以及在线数据、
+Artifact 和加密 backup 共用 deletion marker/restore erase 语义。后续原子顺序为 E1 Auth/session、
+E2 edge security/limits、E3 Secret lifecycle、E4 backup/restore/erase、E5 packaging/observability，
+然后才施工 Rift Awakening、Timeline、Evidence/Trace、Training 和 OP.GG useful-breadth/golden slice。
+
+该入口设计不引入 Auth/HTTPS/备份/部署代码，不读取 Secret 或调用外部服务；8E coverage 继续 planned，
+必须等待设计 exact-SHA 公共三 job 后再进入 implementation。
+
+### 2026-08-24：8E 视觉 Task 3 与 Batch E implementation 本地接续
+
+- 视觉合同前置的 Task 3 已完成本地门，不改变 E1→E5 顺序：低对比 atmosphere/instrumentarium layers、
+  typed route choreography、state-aware handoff 和 reduced-motion/mobile fallback 均由 React/CSS/SVG 完成。
+- 在用户连续推进授权下，Batch E implementation 已进入 E1/E2/E3 的最小本地实现：opaque session/CSRF、
+  bounded request/单机 rate policy、versioned SecretSource/key-last Worker composition。生产 Auth/RSO、
+  PostgreSQL session、HTTPS、Secret Manager、backup/erase 与公网部署仍待后续原子批和公共门。
+- 当前 8E coverage 保持 planned；本地 focused tests 通过但不替代独立 commit、完整比例回归和 exact-SHA
+  `pytest`/`postgres-migrations`/`packaging-smoke`。

@@ -29,6 +29,7 @@ from app.api.actor import (
     StaticActorContextProvider,
     UnavailableActorContextProvider,
 )
+from app.auth.session import AuthSessionService, CookiePolicy
 from app.api.main import (
     EvidenceProductServicePort,
     LatestProfileReviewServicePort,
@@ -41,6 +42,7 @@ from app.api.main import (
     TaskEventStreamServicePort,
     create_app,
 )
+from app.api.security import InMemoryRateLimiter, RequestBudget
 from app.api.task_models import ReadinessCode, ReadinessResult
 from app.conversations.models import (
     AppendUserMessageCommand,
@@ -142,6 +144,10 @@ class ApiCompositionSettings:
         default_factory=PlayerLinkCapacityPolicy,
         repr=False,
     )
+    request_budget: RequestBudget = field(
+        default_factory=RequestBudget,
+        repr=False,
+    )
 
 
 def load_api_composition_settings(
@@ -216,6 +222,28 @@ def load_api_composition_settings(
             default=50,
         ),
     )
+    request_budget = RequestBudget(
+        max_body_bytes=_read_positive_int(
+            environment,
+            "RIFTCOACH_MAX_BODY_BYTES",
+            default=1_048_576,
+        ),
+        max_header_bytes=_read_positive_int(
+            environment,
+            "RIFTCOACH_MAX_HEADER_BYTES",
+            default=16_384,
+        ),
+        rate_limit=_read_positive_int(
+            environment,
+            "RIFTCOACH_RATE_LIMIT",
+            default=60,
+        ),
+        rate_window_seconds=_read_positive_int(
+            environment,
+            "RIFTCOACH_RATE_WINDOW_SECONDS",
+            default=60,
+        ),
+    )
 
     return ApiCompositionSettings(
         profile=profile,  # type: ignore[arg-type]
@@ -225,6 +253,7 @@ def load_api_composition_settings(
         cors_allow_credentials=cors_allow_credentials,
         task_capacity=task_capacity,
         player_link_capacity=player_link_capacity,
+        request_budget=request_budget,
     )
 
 
@@ -742,6 +771,8 @@ def create_composed_app(
     *,
     environment: Mapping[str, str] | None = None,
     actor_provider: ActorContextProvider | None = None,
+    auth_session_service: AuthSessionService | None = None,
+    auth_cookie_policy: CookiePolicy | None = None,
 ) -> FastAPI:
     """Create a side-effect-free app whose resources are bound in lifespan."""
 
@@ -930,6 +961,13 @@ def create_composed_app(
         evidence_product_service=evidence_product_proxy,
         task_event_stream_service=task_event_stream_proxy,
         latest_profile_review_service=latest_profile_review_proxy,
+        auth_session_service=auth_session_service,
+        auth_cookie_policy=auth_cookie_policy,
+        request_budget=api_settings.request_budget,
+        rate_limiter=InMemoryRateLimiter(
+            limit=api_settings.request_budget.rate_limit,
+            window_seconds=api_settings.request_budget.rate_window_seconds,
+        ),
     )
     app.state.database_engine = None
     return app

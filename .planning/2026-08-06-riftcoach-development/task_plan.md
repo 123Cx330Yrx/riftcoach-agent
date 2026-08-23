@@ -5,6 +5,18 @@
 在不改变既定阶段 0-8 和用户已确认子阶段的前提下，以可恢复、可审计、逐步
 教学的方式推进 RiftCoach；任何当前状态都必须由仓库文件和测试证据支持。
 
+## Current visual preflight (2026-08-24)
+
+RQ-098 已确认 `Rift Awakening → Broadcast Workbench`，作为 `8e-productization` 内不改变 canonical
+顺序的视觉前置。该计划的 Task 1 presentation-state、Task 2 语义入口 shell 和隔离 preview 已完成；当前
+Task 3 的分层氛围/路线 choreography、状态边缘、handoff 过渡与来源/资产采用账本已完成本地门。
+视觉层仍是可替换 preview，不能把概念图、当前工作台施工切片或视觉 preview 当作 8E 完整闭环。
+
+Batch E implementation 已在视觉前置后继续：E1 session HTTP boundary、E2 request budget/rate policy、
+E3 versioned SecretSource composition 已完成本地 focused TDD；下一动作是同步八维证据、跑比例回归、
+独立提交并等待 exact-SHA 公共 CI。生产 OIDC/RSO、PostgreSQL session repository、真实 Secret Manager、
+HTTPS edge 与多副本 limiter 仍保持显式 deferred/待后续实现。
+
 ## Current Phase
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
@@ -1444,3 +1456,15 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
 - [completed] Task 6：薄 API/composition 与 Linux package schema 1.6 纵向。
 - [completed] Task 7：八维 walkthrough、6B-1→9 exit matrix 与本地比例回归。
 - [completed] 设计 `4bdb1bb/32404203265` 与最终修复 `cbc7cbd/32408101770` 均完成 exact-SHA 三 job；coverage complete，阶段 6 关闭。
+
+## 2026-08-23：RQ-097 8E Batch E 安全/部署入口设计
+
+- [completed] 读取 Batch E 所需的 canonical 状态、8E preflight、ADR-0059/0060/0061/0062、Live Workbench
+  代码/测试/Compose/CI 接缝，并通过 `python scripts/check_project_governance.py`。
+- [completed] 以初学者语言解释 owner/Auth/RSO、claimed_self/public_observed、外部证据与部署信任边界。
+- [completed] 比较 Auth session/JWT/BaaS、单机 Compose/托管 PostgreSQL/Kubernetes，冻结 provider-neutral
+  AuthPort + opaque session 与 edge/static Web + API/Worker/PostgreSQL 单机拓扑。
+- [completed] 冻结 CORS/CSP/HTTPS/限流容量、Secret key-last/rotation/revocation、backup restore/erase、
+  隐私/观测与 E1–E5/W1–W5 原子顺序；未实现产品代码、未读 Secret、未调用外部服务。
+- [completed] 完成 Batch E entry design 的 stale/diff/比例门与治理同步；design 已交接为 implementation prepared。
+- [in_progress] E1/E2/E3 implementation：完成本地 TDD、八维 walkthrough/coverage、比例回归、独立提交与 exact-SHA 三 job；公共全绿后再交接 E4。

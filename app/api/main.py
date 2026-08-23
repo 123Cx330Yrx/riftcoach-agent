@@ -22,10 +22,22 @@ from pydantic import ValidationError
 from starlette.middleware.cors import CORSMiddleware
 from starlette.types import Lifespan
 
+from app.auth.session import (
+    AuthSessionError,
+    AuthSessionService,
+    CookiePolicy,
+)
 from app.api.actor import (
     ActorContext,
     ActorContextProvider,
     ActorContextUnavailable,
+)
+from app.api.auth_models import AuthSessionResponse
+from app.api.security import (
+    InMemoryRateLimiter,
+    RequestBudget,
+    RequestBudgetMiddleware,
+    SecurityHeadersMiddleware,
 )
 from app.api.conversation_models import (
     AppendUserMessageRequest,
@@ -475,6 +487,26 @@ def _lifecycle_service_error(error: OwnerDataLifecycleError) -> JSONResponse:
     return _lifecycle_error_response(code, status_code=status_code)
 
 
+class _AuthBoundaryError(RuntimeError):
+    def __init__(self, *, code: ApiErrorCode, status_code: int) -> None:
+        super().__init__(code)
+        self.code = code
+        self.status_code = status_code
+
+
+def _auth_error_response(*, code: ApiErrorCode, status_code: int) -> JSONResponse:
+    return _error_response(code, status_code=status_code)
+
+
+def _auth_session_error_code(error: AuthSessionError) -> tuple[ApiErrorCode, int]:
+    mapping: Mapping[str, tuple[ApiErrorCode, int]] = {
+        "session_invalid": ("auth_session_invalid", 401),
+        "session_expired": ("auth_session_expired", 401),
+        "session_revoked": ("auth_session_revoked", 401),
+    }
+    return mapping.get(error.args[0] if error.args else "", ("auth_session_invalid", 401))
+
+
 def create_app(
     *,
     task_service: TaskServicePort,
@@ -495,6 +527,10 @@ def create_app(
     evidence_product_service: EvidenceProductServicePort | None = None,
     task_event_stream_service: TaskEventStreamServicePort | None = None,
     latest_profile_review_service: LatestProfileReviewServicePort | None = None,
+    auth_session_service: AuthSessionService | None = None,
+    auth_cookie_policy: CookiePolicy | None = None,
+    request_budget: RequestBudget | None = None,
+    rate_limiter: InMemoryRateLimiter | None = None,
 ) -> FastAPI:
     """Create API V2 from explicit ports without doing deployment I/O."""
 
@@ -570,6 +606,19 @@ def create_app(
         raise TypeError(
             "latest_profile_review_service must expose get_latest()"
         )
+    if auth_session_service is not None:
+        for method_name in ("issue", "resolve", "verify_csrf", "revoke"):
+            if not callable(getattr(auth_session_service, method_name, None)):
+                raise TypeError(
+                    f"auth_session_service must expose {method_name}()"
+                )
+    selected_cookie_policy = auth_cookie_policy or CookiePolicy()
+    if not isinstance(selected_cookie_policy, CookiePolicy):
+        raise TypeError("auth_cookie_policy must be a CookiePolicy")
+    if request_budget is not None and not isinstance(request_budget, RequestBudget):
+        raise TypeError("request_budget must be a RequestBudget")
+    if rate_limiter is not None and not isinstance(rate_limiter, InMemoryRateLimiter):
+        raise TypeError("rate_limiter must be an InMemoryRateLimiter")
     if observability is not None and not isinstance(
         observability,
         TaskObservability,
@@ -599,8 +648,71 @@ def create_app(
         allow_methods=["GET", "POST", "DELETE"],
         allow_headers=["Content-Type", "Idempotency-Key", "Last-Event-ID"],
     )
+    app.add_middleware(SecurityHeadersMiddleware, include_hsts=False)
+    if request_budget is not None:
+        app.add_middleware(
+            RequestBudgetMiddleware,
+            budget=request_budget,
+            rate_limiter=rate_limiter,
+        )
 
-    def trusted_actor() -> ActorContext:
+    @app.middleware("http")
+    async def session_csrf_boundary(request: Request, call_next):
+        if (
+            auth_session_service is not None
+            and request.method in {"POST", "PUT", "PATCH", "DELETE"}
+            and not (
+                request.method == "POST"
+                and request.url.path == "/auth/session"
+            )
+        ):
+            cookie_value = request.cookies.get(selected_cookie_policy.name)
+            if cookie_value is None:
+                return _auth_error_response(
+                    code="authentication_required",
+                    status_code=401,
+                )
+            csrf_token = request.headers.get("X-CSRF-Token")
+            if csrf_token is None:
+                return _auth_error_response(code="csrf_invalid", status_code=403)
+            try:
+                csrf_valid = auth_session_service.verify_csrf(
+                    cookie_value=cookie_value,
+                    csrf_token=csrf_token,
+                    now=datetime.now(timezone.utc),
+                )
+            except AuthSessionError as error:
+                code, status_code = _auth_session_error_code(error)
+                return _auth_error_response(code=code, status_code=status_code)
+            if not csrf_valid:
+                return _auth_error_response(code="csrf_invalid", status_code=403)
+        return await call_next(request)
+
+    def trusted_actor(request: Request) -> ActorContext:
+        if auth_session_service is not None:
+            cookie_value = request.cookies.get(selected_cookie_policy.name)
+            if cookie_value is None:
+                raise _AuthBoundaryError(
+                    code="authentication_required",
+                    status_code=401,
+                )
+            try:
+                context = auth_session_service.resolve(
+                    cookie_value=cookie_value,
+                    now=datetime.now(timezone.utc),
+                )
+            except AuthSessionError as error:
+                code, status_code = _auth_session_error_code(error)
+                raise _AuthBoundaryError(
+                    code=code,
+                    status_code=status_code,
+                ) from error
+            if not isinstance(context, ActorContext):
+                raise _AuthBoundaryError(
+                    code="auth_session_invalid",
+                    status_code=401,
+                )
+            return context
         context = actor_provider()
         if not isinstance(context, ActorContext):
             raise ActorContextUnavailable()
@@ -629,6 +741,77 @@ def create_app(
     ) -> JSONResponse:
         del request, exc
         return _error_response("service_unavailable", status_code=503)
+
+    @app.exception_handler(_AuthBoundaryError)
+    async def auth_boundary_handler(
+        request: Request,
+        exc: _AuthBoundaryError,
+    ) -> JSONResponse:
+        del request
+        return _auth_error_response(code=exc.code, status_code=exc.status_code)
+
+    @app.post(
+        "/auth/session",
+        response_model=AuthSessionResponse,
+        responses={503: {"model": ErrorResponse}},
+    )
+    def issue_auth_session(response: Response) -> AuthSessionResponse | JSONResponse:
+        if auth_session_service is None:
+            return _auth_error_response(code="auth_unavailable", status_code=503)
+        try:
+            issued = auth_session_service.issue()
+        except Exception:
+            return _auth_error_response(code="auth_unavailable", status_code=503)
+        response.set_cookie(
+            key=selected_cookie_policy.name,
+            value=issued.cookie_value,
+            expires=issued.expires_at,
+            secure=selected_cookie_policy.secure,
+            httponly=selected_cookie_policy.http_only,
+            samesite=selected_cookie_policy.same_site,
+            path=selected_cookie_policy.path,
+        )
+        return AuthSessionResponse(
+            csrf_token=issued.csrf_token,
+            expires_at=issued.expires_at,
+        )
+
+    @app.delete(
+        "/auth/session",
+        status_code=204,
+        response_model=None,
+        responses={
+            401: {"model": ErrorResponse},
+            403: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def revoke_auth_session(request: Request, response: Response) -> Response:
+        if auth_session_service is None:
+            return _auth_error_response(code="auth_unavailable", status_code=503)
+        cookie_value = request.cookies.get(selected_cookie_policy.name)
+        if cookie_value is None:
+            return _auth_error_response(
+                code="authentication_required",
+                status_code=401,
+            )
+        try:
+            auth_session_service.revoke(
+                cookie_value=cookie_value,
+                now=datetime.now(timezone.utc),
+            )
+        except AuthSessionError as error:
+            code, status_code = _auth_session_error_code(error)
+            return _auth_error_response(code=code, status_code=status_code)
+        response.delete_cookie(
+            key=selected_cookie_policy.name,
+            path=selected_cookie_policy.path,
+            secure=selected_cookie_policy.secure,
+            httponly=selected_cookie_policy.http_only,
+            samesite=selected_cookie_policy.same_site,
+        )
+        response.status_code = 204
+        return response
 
     @app.post(
         "/conversations",

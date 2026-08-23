@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 from app.api.actor import StaticActorContextProvider
 from app.api.composition import load_api_composition_settings
 from app.api.main import create_app
+from app.api.security import InMemoryRateLimiter, RequestBudget
 from app.api.task_models import ReadinessResult
 from app.product.run_query import RunView
 from app.runtime.models import RuntimeStatus
@@ -118,7 +119,6 @@ def test_capacity_configuration_is_bounded_and_reaches_composition_settings() ->
                 "RIFTCOACH_TASK_OWNER_ACTIVE_LIMIT": "0",
             }
         )
-
     with pytest.raises(ValueError, match="positive integer"):
         load_api_composition_settings(
             {
@@ -127,6 +127,85 @@ def test_capacity_configuration_is_bounded_and_reaches_composition_settings() ->
                 "RIFTCOACH_PLAYER_LINK_OWNER_ACTIVE_LIMIT": "0",
             }
         )
+
+
+def test_request_budget_configuration_is_bounded_and_reaches_composition_settings() -> None:
+    settings = load_api_composition_settings(
+        {
+            "RIFTCOACH_API_PROFILE": "test",
+            "RIFTCOACH_LOCAL_OWNER_ID": "owner-1",
+            "RIFTCOACH_MAX_BODY_BYTES": "4096",
+            "RIFTCOACH_MAX_HEADER_BYTES": "8192",
+            "RIFTCOACH_RATE_LIMIT": "7",
+            "RIFTCOACH_RATE_WINDOW_SECONDS": "30",
+        }
+    )
+
+    assert settings.request_budget == RequestBudget(
+        max_body_bytes=4096,
+        max_header_bytes=8192,
+        rate_limit=7,
+        rate_window_seconds=30,
+    )
+
+    with pytest.raises(ValueError, match="positive integer"):
+        load_api_composition_settings(
+            {
+                "RIFTCOACH_API_PROFILE": "test",
+                "RIFTCOACH_LOCAL_OWNER_ID": "owner-1",
+                "RIFTCOACH_MAX_BODY_BYTES": "0",
+            }
+        )
+
+
+def test_single_node_rate_limiter_resets_after_window() -> None:
+    from datetime import datetime, timedelta, timezone
+
+    current = [datetime(2026, 8, 24, 5, 0, tzinfo=timezone.utc)]
+    limiter = InMemoryRateLimiter(
+        limit=2,
+        window_seconds=10,
+        clock=lambda: current[0],
+    )
+
+    assert limiter.allow("127.0.0.1")
+    assert limiter.allow("127.0.0.1")
+    assert not limiter.allow("127.0.0.1")
+    current[0] += timedelta(seconds=10)
+    assert limiter.allow("127.0.0.1")
+
+
+def test_request_budget_rejects_oversized_body_and_headers() -> None:
+    app = create_app(
+        task_service=_fake_task_service(),
+        player_link_service=UnusedPlayerLinkService(),
+        query_service=_Query(),
+        actor_provider=StaticActorContextProvider(
+            owner_id="owner-1", profile="test"
+        ),
+        readiness_probe=_Ready(),
+        request_budget=RequestBudget(
+            max_body_bytes=32,
+            max_header_bytes=1024,
+            rate_limit=100,
+            rate_window_seconds=60,
+        ),
+    )
+    with TestClient(app) as client:
+        body = client.post(
+            "/reviews/recent",
+            headers={"Idempotency-Key": "budget-body"},
+            json={"riot_id": "A" * 64},
+        )
+        headers = client.get(
+            "/health/live",
+            headers={"X-Budget-Probe": "x" * 2_000},
+        )
+
+    assert body.status_code == 413
+    assert body.json() == {"code": "request_body_too_large"}
+    assert headers.status_code == 431
+    assert headers.json() == {"code": "request_headers_too_large"}
 
 
 def test_cors_is_closed_by_default_and_explicit_origins_are_reflected() -> None:

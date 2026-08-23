@@ -1,5 +1,14 @@
 # RiftCoach 架构能力覆盖矩阵
 
+### 2026-08-24：8E 视觉层与能力边界
+
+视觉层只消费现有 owner/profile/product-state/evidence/training projections；它不拥有身份认证、Riot RSO
+绑定、外部数据检索或报告发布权。Portal 的环境、路线和转场属于 presentation capability，必须在无远程 I/O、
+keyboard、mobile、reduced-motion 和 bundle budget 下验证；真实数据和状态仍由后端 typed contracts 决定。
+Task 3 已完成本地视觉门；Batch E implementation 当前补入 E1 session/CSRF、E2 request budgets/单机 rate
+policy、E3 SecretSource/key-last composition，但正式 Auth/RSO、HTTPS、Secret Manager、多副本 limiter 和
+backup/erase 仍属于未完成能力。
+
 ## 1. 用途
 
 本矩阵是阶段 0-8 路线的横向能力总账，不新增主阶段，也不替代 `roadmap.md`。它解决三个问题：
@@ -63,6 +72,10 @@
 4. 阶段 6：在引入 SQL 与 Memory 前定义数据保留、导出、更正、删除、鉴权和限流；
 5. 阶段 7：将 MCP/Meta 返回内容视为外部不可信证据，经过 Adapter、版本和来源校验；
 6. 阶段 8 Core：完成知识库更新/回滚、生产安全、备份恢复和完整产品回归。
+
+8E Batch E 已把第 6 项进一步拆成可执行入口：Auth/RSO 身份分离、CSP/CORS/HTTPS/限流、Secret
+生命周期、backup restore/erase、隐私说明、观测/容量和部署拓扑；这些仍是“已规划”，不能用现有
+local/test Actor、Compose smoke 或静态 Web 截图冒充生产安全证据。
 
 ## 5. 明确不默认采用
 

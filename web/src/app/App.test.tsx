@@ -5,6 +5,15 @@ import { App } from "./App"
 import type { LiveWorkbenchControllerLike } from "./App"
 
 describe("Rift Command Center shell", () => {
+  it("exposes the isolated portal preview without mounting the workbench", () => {
+    render(<App surfaceOverride="awakening" />)
+
+    expect(screen.getByTestId("awakening-scene")).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: /calibrate your analysis field/i })).toBeInTheDocument()
+    expect(screen.queryByRole("navigation", { name: /command sections/i })).not.toBeInTheDocument()
+    expect(screen.getByText(/preview only · no external lookup/i)).toBeInTheDocument()
+  })
+
   it("exposes a semantic, fixture-disclosed workbench", () => {
     render(<App scenarioOverride="published" />)
 

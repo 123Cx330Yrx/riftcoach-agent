@@ -1,5 +1,13 @@
 # RiftCoach 主路线 v1.1（阶段 0—8）
 
+## 2026-08-24：Stage 8 视觉合同前置（不改变路线顺序）
+
+在 `8e-productization` 内，用户确认 `Rift Awakening / Cinematic Portal →
+Esports Intelligence / Broadcast Workbench` 为前端融合方向。该项是实现入口前的设计/验证前置，不新增
+主阶段、不改变 8E/8F 顺序，也不把概念图当成已完成页面。实现必须保持现有 typed DTO、relationship/product
+state、Evidence 和 Training 边界；Image2/Photoshop 只提供可替换氛围层，CSS/SVG/React 提供真实 UI 和响应式
+交互。详见 ADR-0064 与 `docs/plans/2026-08-24-8e-portal-workbench-visual-contract.md`。
+
 本路线是项目唯一主阶段编号，共九个阶段。阶段内部可以继续迭代 `Harness v1.1`、`RAG v1.2` 等小版本，但不再增加、删除或重排主阶段。若必须改变主阶段职责，需先新增 ADR，说明证据、备选方案和迁移影响。
 
 ## 不变的总体策略
@@ -362,9 +370,21 @@ exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE�
 - locator/Summary/typed Evidence、exact decoder/client/controller/EventSource 和 default-live React 已由
   `f441061e7444fa6d1d3c213b81e05a02f0fc68c5` / Actions `32647933692` exact-SHA 三 job 公共闭环；
   公共 pytest 1796、真 PostgreSQL 200、frontend unit 66/e2e 17、JS gzip 122.01 kB 与 Linux package schema 1.6 全绿；
-- 该已公共闭环的实现仍不包含 Auth/部署、电影感入口、完整 Timeline/Training、OP.GG breadth、fusion golden slice
-  或 8F；整个 8E/coverage 继续 `in_progress/planned`。唯一下一检查点为
-  `8e-batch-e-security-deployment-entry-design` prepared/waiting authorization，先设计再原子化实现。
+- 该已公共闭环的实现仍不包含完整 Auth/RSO、部署、完整 Timeline/Training、OP.GG breadth、fusion golden slice
+  或 8F；整个 8E/coverage 继续 `in_progress/planned`。Batch E implementation 已开始本地 E1/E2/E3，
+  仍需八维证据与 exact-SHA 公共门。
+
+### 8E Batch E：安全/部署实现（当前检查点）
+
+Batch E 入口设计冻结在 ADR-0063 与专用 design/implementation plan：RiftCoach Auth 产生可信 owner，
+Riot RSO 只负责未来 verified-self 关系证明；首个部署采用 edge/static Web + API/Worker/PostgreSQL
+单机 Compose，托管数据库是迁移路径，Kubernetes/Redis/Celery/Kafka deferred。设计覆盖威胁模型、
+CORS/CSP/HTTPS/限流、Secret 轮换/撤销、backup restore/erase、隐私、观测与剩余 Web 模块顺序。
+
+当前已完成本地 E1 session boundary、E2 request budgets/单机 rate policy、E3 SecretSource/key-last composition
+的最小实现与 focused tests；不把它们说成生产 Auth/RSO、HTTPS、真实 Secret Manager、多副本 limiter、备份、
+部署、电影感入口、Timeline、完整 Training、OP.GG breadth、golden slice 或 8F。8E coverage 继续 `planned`，
+公共 implementation/evidence 三 job 全绿前不关闭 Batch E。
 
 ### 原理
 

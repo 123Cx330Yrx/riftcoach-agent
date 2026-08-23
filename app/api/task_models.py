@@ -40,6 +40,15 @@ ApiErrorCode: TypeAlias = Literal[
     "evidence_not_available",
     "evidence_integrity_failed",
     "evidence_unavailable",
+    "auth_unavailable",
+    "authentication_required",
+    "auth_session_invalid",
+    "auth_session_expired",
+    "auth_session_revoked",
+    "csrf_invalid",
+    "request_headers_too_large",
+    "request_body_too_large",
+    "rate_limited",
 ]
 ReadinessCode: TypeAlias = Literal[
     "database_unavailable",

@@ -3861,3 +3861,45 @@
 - preflight 的真实接线交接已经完成，按既定批次下一项是 Batch E 安全/部署；但其范围横跨 Auth/RSO、
   HTTPS/CSP/CORS/限流、backup/erase、隐私、观测和剩余五模块，必须先做独立 entry design/atomization，
   不能把一条“继续”解释成一次性配置生产系统。
+
+## 2026-08-23：RQ-097 Batch E 安全/部署入口设计发现
+
+- 当前 production API 的 `ActorContext` 只有可注入 provider；local/test 才允许静态 owner，production 无
+  actor 时 readiness fail-closed。因此 Auth 实现应接在 Actor port，而不是在路由 body 接收 owner。
+- 当前 `compose.yaml` 的 API/Worker/PostgreSQL 是模块化单机包，Dockerfile 未复制 `web/`；首个公开拓扑应由
+  edge 提供静态 Web 和 TLS，API 只提供同源 `/api`，不要为了开发方便放宽公网 wildcard CORS。
+- RQ-061/062 的关系语义继续有效：RiftCoach owner、Riot RSO 和 public observed 不是同一身份；RSO 未来
+  必须 callback + `/accounts/me` 精确 PUUID match，CN/自动跨区/ShowMaker 默认均不允许。
+- 6B-9 已有 online owner lifecycle marker，但 Artifact/backup 尚未纳入；Batch E 必须规定 restore 先重放
+  deletion marker，未证明 erase 一致性前 readiness 不得通过。
+- 当前 8C event、8E Evidence/SSE 和 Live Workbench 可作为观测事实源；新增指标必须保持 body-free，不能复制
+  Runtime Trace、Prompt、raw upstream body 或 lease token。
+- 视觉连续性不因安全批收缩：安全 hard gate 之后仍保留 `Rift Awakening → Esports Intelligence`，MotionSites
+  只是候选池，Void Holographic Lab 仍是受限 Hero 实验。
+## 2026-08-24：Portal → Workbench 视觉合同发现
+
+- 当前 `web/` 已具备 live/fixture workbench、relationship-safe Training、Evidence drawer、Motion/Radix
+  接缝；入口仍未实现，不能把 Batch D 的截图称为完整视觉产品。
+- Image2 概念图适合表达深度、三路路径、Coach Core 和工作台 handoff，但其中伪文字/伪图表不能进入产品；
+  必须拆为 atmosphere plates 与 CSS/SVG/DOM 层。
+- 用户确认融合方向后，视觉复杂度可以主动提高，但采用门仍是硬门：真实状态、键盘/focus、mobile、
+  reduced-motion、bundle、许可和可移除性。
+
+## 2026-08-24：视觉 Task 3 与 Batch E implementation 发现
+
+- 机械感的主要来源不是 Hextech 几何本身，而是 instrumentarium plate 的 `screen` 混合、高透明度和
+  calibration panel 的重复网格叠加；改为低透明 `soft-light`、saturation/contrast 收敛、去掉重复网格后，
+  金属结构仍在但不再压过 Rift atmosphere 与 Coach Core。
+- Route 是产品状态 choreography，不是常驻装饰：idle/editing 静态或低频，calibrating 才流动，ready/degraded
+  才显示一次 handoff；状态文案和 DOM 仍是事实源，reduced-motion 关闭连续/transform 动画。
+- Session HTTP boundary 必须与 ActorContext 分层：cookie 只承载不可读 opaque token，owner 从 server-side
+  session 解析；`POST /auth/session` 只返回一次 CSRF token 与 expiry，不接受 body owner；启用 session 后所有
+  写请求由同一 cookie 绑定的 `X-CSRF-Token` 通过后才进入业务路由。未注入 Auth/RSO adapter 时返回
+  `auth_unavailable`，production 不因为 local/test session primitive 而假装登录完成。
+- Request budget 的 chunk/body/header 预算与单机 IP rate limiter 放在 ASGI edge seam；CSP 等安全头也覆盖预算
+  rejection。该 limiter 没有多副本一致性，不能把内存 bucket 说成生产分布式限流；SSE 仍由有限 poll service
+  保持终止，不额外引入第二 runtime。
+- SecretSource composition 的关键是 key-last：Worker settings 只保留 provider endpoint/public config 与
+  redacted SecretSource；PostgreSQL readiness 通过后才 resolve Riot/LLM secret 并构造 client。默认环境注入只
+  是 local/test-compatible fallback；外部 Secret Manager adapter、PostgreSQL session repository、OIDC/RSO
+  callback 和 backup/erase 仍未完成。

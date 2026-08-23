@@ -2020,3 +2020,35 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   `8e-batch-e-security-deployment-entry-design`：比较身份/RSO、部署拓扑、CORS/CSP/HTTPS/限流、Secret
   生命周期、backup restore/erase、隐私、观测和剩余五模块施工顺序；设计公共关闭前不实现或配置外部系统。
 - OP.GG useful-breadth 和完整 fusion→Training→UI golden slice 继续是 8F 前硬门，不被 Batch E 入口设计吞并。
+
+## 2026-08-23：RQ-097 冻结 Batch E 安全/部署入口设计
+
+- ADR-0063 采用 provider-neutral AuthPort + server-side opaque session；RiftCoach Auth 产生 owner，
+  Riot RSO 仅作为未来 `verified_self` 关系证明，不能替代产品登录或把 Riot ID 输入当归属认证。
+- 首个公开拓扑采用 edge/static Web + API/Worker/PostgreSQL 单机 Compose；托管 PostgreSQL 是迁移路径，
+  Kubernetes/Redis/Celery/Kafka deferred。生产 API 同源 `/api`，CORS/CSP/HTTPS/限流/安全响应头按后续 E2 批次实现。
+- 6B-9 deletion marker 必须扩展到 Artifact/backup restore erase replay；RPO≤24h/RTO≤2h 是待演练目标，
+  不是当前 SLA。Secret 不进浏览器、DB、Artifact、Trace、日志或 backup。
+- 冻结后续 E1 Auth → E2 edge security → E3 Secret → E4 backup/erase → E5 packaging/observability，
+  再施工 Rift Awakening、Timeline、Evidence/Trace、Training、OP.GG breadth+golden slice 与 8E exit。
+- 当前只完成设计/教学/coverage 路径，8E 仍 planned；不读取 Secret、不调用外部服务、不实施产品代码。
+
+## 2026-08-24：ADR-0064 Portal → Workbench 视觉合同
+
+采用 `Rift Awakening / Cinematic Portal → Esports Intelligence / Broadcast Workbench` 作为 8E 前端融合方向；
+`Void Holographic Lab` 限制在 Hero 实验。入口使用抽象 Rift 环境、身份校准核心和路线点亮 handoff，工作台
+复用几何/材质/状态语言但优先数据可读性。Image2/Photoshop 只做可替换 preview/氛围层，CSS/SVG/React 才是
+真实 UI、数据和交互事实源；默认不引入 Three/GSAP/第二动画栈或购买 Prompt。该项不改变 canonical stage order，
+不关闭 8E，也不授权 Auth/RSO、部署或外部调用。
+
+## 2026-08-24：RQ-098 Task 3 polish 与 Batch E implementation 本地边界
+
+- 视觉 Task 3 通过本地门：instrumentarium 只作低对比可移除的 soft-light atmosphere layer；CSS/SVG/React
+  继续拥有 route、Core、状态和真实交互，避免机械 overlay 喧宾夺主。路线只在 calibrating 流动，ready/
+  degraded handoff 是一次性过渡，reduced-motion 关闭连续动效。
+- E1 的 HTTP session seam 采用 opaque Secure/HttpOnly/SameSite cookie；session service 解析 owner，所有写
+  请求在启用 session 时要求同 session CSRF。没有绑定 Auth/RSO provider 时 `/auth/session` 返回
+  `auth_unavailable`，不把 Riot ID 或请求 body 当认证。
+- E2 的 request budget/header/body/单机 IP limiter 是 edge seam；E3 的 SecretSource 只在 Worker DB readiness
+  后解析 key 并构造 Riot/LLM client。环境注入仅为 local/test fallback，真实 Secret Manager、多副本 rate
+  store、PostgreSQL session repository 与 backup/erase 不随本地实现被宣称完成。

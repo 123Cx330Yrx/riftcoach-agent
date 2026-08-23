@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（RQ-096 live integration 已由 `f441061` / Actions `32647933692` 完成 exact-SHA 三 job 公共闭环；唯一下一项为 Batch E 安全/部署入口设计）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / batch-e-security-deployment-entry-design-prepared`，尚未实现完整 8E/8F。
+- 最后更新：2026-08-24（RQ-098 视觉 Task 3 已完成本地门；Batch E implementation 的 E1/E2/E3 已开始并通过 focused TDD）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / 8e-batch-e-security-deployment-implementation`，E1/E2/E3 仍待完整比例回归、八维证据与 exact-SHA 公共闭环，完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -2350,3 +2350,52 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 唯一下一检查点为 `8e-batch-e-security-deployment-entry-design`，仅
   `prepared / waiting authorization`；先做威胁/身份/拓扑/备份/隐私/观测与剩余前端施工顺序设计，授权前
   不写实现、不部署、不读 Secret、不调用外部服务。
+
+## 2026-08-23：RQ-097 Batch E 安全/部署入口设计授权与冻结
+
+- 用户最新“那继续做你觉得接下来应该做的事”只授权当前唯一检查点
+  `8e-batch-e-security-deployment-entry-design`；本轮不实施 Auth/RSO、HTTPS、CSP/CORS、限流、
+  Secret、备份、部署、入口/Timeline/完整 Training、OP.GG breadth、golden slice 或 8F。
+- 已完成初学者教学、现状代码接缝审计、三类身份/信任边界、Auth 与 RSO 职责分离、单机 Compose +
+  edge/static Web 部署方案比较、安全响应头/容量/Secret/生命周期/隐私/观测合同，以及剩余 Web 模块
+  的 E1–E5/W1–W5 原子顺序。
+- 新增并同步 ADR-0063、Batch E design/implementation plan 与八维 walkthrough；coverage 仍为
+  `8e-productization: planned`，因为入口设计不是实现闭环。
+- 设计裁决：RiftCoach Auth 产生 owner；RSO 只在未来安全 callback + `/accounts/me` PUUID 精确匹配后
+  升级 `verified_self`；`claimed_self`/`public_observed` 语义不变。首个部署采用 edge/static Web +
+  API/Worker/PostgreSQL 单机 Compose，托管数据库是迁移路径，Kubernetes/Redis/Celery/Kafka deferred。
+- 当前下一动作：完成文档/状态/coverage/治理与 stale/diff 本地门，创建独立 design commit、push，等待
+  同 SHA `pytest`、`postgres-migrations`、`packaging-smoke` exact-SHA 公共闭环；公共全绿后只把
+  `8e-batch-e-security-deployment-implementation` 交为 prepared，不自动实现。
+
+## 2026-08-24：RQ-098 视觉合同确认与 8E 前置
+
+- 用户确认最终采用 `Rift Awakening / Cinematic Portal → Esports Intelligence / Broadcast Workbench`；
+  `Void Holographic Lab` 仍只作受限 Hero 实验，`Hextech Tactical Editorial` 作为共享语言。
+- 新增 ADR-0064、视觉合同实施计划和八维学习 walkthrough。母图、Image2/Photoshop 只负责 preview/可替换
+  氛围层；CSS/SVG/React 负责响应式几何、真实表单、关系/产品状态、数据和工作台 handoff。
+- 该前置不新增主阶段或 canonical checkpoint，不关闭 `8e-productization`，不实施 Auth/RSO、HTTPS、
+  部署、完整 Timeline/Training、OP.GG breadth/golden slice，不读取 Secret、不调用外部服务、不购买付费 Prompt。
+- 当前下一动作继续按 `docs/plans/2026-08-24-8e-portal-workbench-visual-contract.md` 的 Task 3 做视觉
+  polish：审查 WebP 氛围 plate 与 CSS/SVG 路线的层级、面板材质和 Portal → Workbench handoff；Task 1
+  presentation state、Task 2 语义入口 shell、`?surface=awakening` preview 和首个 77.8 kB WebP plate
+  已通过前端 unit/typecheck/build/Playwright 门。视觉门通过前不把概念图或当前工作台切片说成完整产品化。
+
+## 2026-08-24：RQ-098 Task 3 本地关闭与 Batch E implementation 进入
+
+- 视觉 Task 3 已完成本地实现与审查：instrumentarium WebP 降为可移除的低对比 soft-light overlay，面板去除
+  重复网格，Core/route/handoff 状态按视觉合同编排；desktop、390px mobile、ready handoff、keyboard/focus、
+  reduced-motion 均保持可用。Impeccable detector 无告警。
+- 前端证据：unit `80 passed`、typecheck/build 通过，JS/CSS gzip `123.91/13.20 kB`；以 `CI=1` 强制隔离
+  fake API/Vite 后 Playwright `20 passed`。并行复用未配置 fake API 的旧 Vite 所产生的 5 个 live 失败已归因于
+  `127.0.0.1:4174` 未启动，不计为代码回归。
+- Batch E implementation 已开始并保持原子边界：E1 opaque HTTP session issuance/revoke、Secure/HttpOnly/
+  SameSite cookie、server-side owner resolve 与 session-scoped CSRF；E2 request body/header budgets、CSP 覆盖
+  budget errors、single-node IP rate policy；E3 versioned SecretSource、dual-key/revoke/expiry 与 key-last
+  Worker composition。E1/E2/E3 focused backend `56 passed`，compileall 与 diff check 通过。
+- 当前限制：Auth/RSO/OIDC callback、PostgreSQL session repository、真实 Secret Manager、HTTPS edge、
+  多副本 rate store、backup/restore/erase、前端登录 states 尚未实现；环境 SecretSource 只保留 local/test
+  fallback，不将 Riot ID 视为认证。当前 coverage 仍 `planned`，不能关闭 8E。
+- 唯一下一动作：补 Batch E implementation 八维 walkthrough/coverage 与 stale/gov 门，跑比例完整回归，创建
+  独立 implementation/evidence commit 并等待该 SHA 的 `pytest`、`postgres-migrations`、`packaging-smoke`
+  exact-SHA 公共 CI；全绿后再交接 E4/剩余模块，不进入 8F。

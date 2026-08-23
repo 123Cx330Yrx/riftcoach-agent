@@ -145,6 +145,7 @@ def test_app_factory_and_openapi_do_not_read_keys_or_open_io(monkeypatch) -> Non
     assert document["info"]["version"] == "2.0"
     assert set(document["paths"]) == {
         "/conversations",
+        "/auth/session",
         "/conversations/{conversation_id}",
         "/conversations/{conversation_id}/messages",
         "/conversations/{conversation_id}/archive",
@@ -179,6 +180,19 @@ def test_app_factory_and_openapi_do_not_read_keys_or_open_io(monkeypatch) -> Non
         "/health/live",
         "/health/ready",
     }
+
+
+def test_security_headers_are_explicit_and_do_not_enable_hsts_before_tls() -> None:
+    http, _service = app_and_service()
+
+    response = http.get("/health/live")
+
+    assert response.status_code == 200
+    assert response.headers["x-content-type-options"] == "nosniff"
+    assert response.headers["referrer-policy"] == "strict-origin-when-cross-origin"
+    assert response.headers["permissions-policy"] == "camera=(), geolocation=(), microphone=()"
+    assert "default-src 'self'" in response.headers["content-security-policy"]
+    assert "strict-transport-security" not in response.headers
 
 
 def test_post_is_only_an_enqueue_adapter_and_never_returns_report_body() -> None:

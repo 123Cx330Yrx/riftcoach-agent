@@ -16,6 +16,7 @@ import type { WorkbenchScreenState } from "../contracts/workbench"
 import { CoachBrief } from "../components/CoachBrief"
 import { CommandRail } from "../components/CommandRail"
 import { EvidenceDrawer } from "../components/EvidenceDrawer"
+import { AwakeningScene, type AwakeningIdentityInput } from "../components/AwakeningScene"
 import { ProductStateBanner } from "../components/ProductStateBanner"
 import { RecentFormPanel } from "../components/RecentFormPanel"
 import { RiftAtmosphere } from "../components/RiftAtmosphere"
@@ -33,6 +34,11 @@ import type {
   WorkbenchPlayerProfile,
   WorkbenchTaskEvent,
 } from "../workbench/model"
+import {
+  createAwakeningState,
+  transitionAwakeningState,
+  type AwakeningPresentationState,
+} from "../awakening/model"
 
 export interface LiveWorkbenchControllerLike {
   readonly snapshot: LiveWorkbenchSnapshot
@@ -45,6 +51,57 @@ export interface LiveWorkbenchControllerLike {
 interface AppProps {
   readonly scenarioOverride?: string
   readonly createLiveController?: () => LiveWorkbenchControllerLike
+  readonly surfaceOverride?: "awakening"
+}
+
+function getAwakeningSurface(override?: "awakening"): boolean {
+  if (override === "awakening") return true
+  if (typeof window === "undefined") return false
+  return new URLSearchParams(window.location.search).get("surface") === "awakening"
+}
+
+function getAwakeningPreviewState(): AwakeningPresentationState {
+  const demo = typeof window === "undefined"
+    ? undefined
+    : new URLSearchParams(window.location.search).get("demo")
+  if (demo !== "ready" && demo !== "degraded") return createAwakeningState()
+
+  const calibrating = transitionAwakeningState(
+    transitionAwakeningState(createAwakeningState(), "begin_editing"),
+    "begin_calibration",
+  )
+  return transitionAwakeningState(calibrating, demo === "ready" ? "calibration_ready" : "calibration_degraded")
+}
+
+function movePreviewToCalibration(state: AwakeningPresentationState): AwakeningPresentationState {
+  const editing = state.phase === "idle"
+    ? transitionAwakeningState(state, "begin_editing")
+    : state
+  return editing.phase === "editing"
+    ? transitionAwakeningState(editing, "begin_calibration")
+    : editing
+}
+
+function AwakeningPreview() {
+  const [state, setState] = useState(getAwakeningPreviewState)
+  const handleSubmit = (_input: AwakeningIdentityInput) => {
+    setState(movePreviewToCalibration)
+  }
+  const handleHandoff = () => {
+    if (typeof window !== "undefined") window.location.assign("/?scenario=published")
+  }
+
+  return (
+    <div className="awakening-preview-shell">
+      <a className="skip-link" href="#awakening-title">Skip to identity calibration</a>
+      <AwakeningScene
+        state={state}
+        disclosure="Preview only · no external lookup or authentication"
+        onSubmit={handleSubmit}
+        onHandoff={handleHandoff}
+      />
+    </div>
+  )
 }
 
 function createDefaultLiveController(): LiveWorkbenchControllerLike {
@@ -377,7 +434,8 @@ function AppFrame({
   )
 }
 
-export function App({ scenarioOverride, createLiveController }: AppProps) {
+export function App({ scenarioOverride, createLiveController, surfaceOverride }: AppProps) {
+  if (getAwakeningSurface(surfaceOverride)) return <AwakeningPreview />
   const fixtureState = useMemo(() => getExplicitScenario(scenarioOverride), [scenarioOverride])
   if (fixtureState !== undefined) {
     return <AppFrame mode="fixture"><FixtureWorkbench state={fixtureState} /></AppFrame>

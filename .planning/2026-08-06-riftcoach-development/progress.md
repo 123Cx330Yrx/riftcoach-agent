@@ -4035,3 +4035,43 @@
 - `CLOSED`：RQ-096 Live Workbench integration 正式关闭；整个 8E/coverage 继续 in_progress/planned。
 - `HANDOFF`：唯一下一检查点 `8e-batch-e-security-deployment-entry-design` prepared/waiting authorization；
   Auth/部署实现、入口/Timeline/完整 Training、breadth/golden slice 与 8F 均未自动进入。
+
+### 2026-08-23：RQ-097 Batch E 入口设计
+
+- `AUTHORIZED`：用户最新“那继续”恢复唯一设计检查点，不授权 Batch E 实现或 8F。
+- `DESIGN-CLOSED-LOCAL`：新增 ADR-0063、Batch E design/implementation plan 和八维 walkthrough；冻结
+  Auth/RSO 分离、single-node edge topology、security headers/limits、Secret、backup erase、privacy、
+  observability 与 E1–E5/W1–W5 顺序。
+- `NO-IO`：本轮不修改产品代码、不安装依赖、不读 Secret、不调用 Riot/OP.GG/Provider/LLM、不部署。
+- `NEXT`：完成 stale/diff/比例门，独立 design commit/push，等待 exact-SHA 三 job；公共全绿后只交接
+  `8e-batch-e-security-deployment-implementation` prepared。
+## 2026-08-24：RQ-098 视觉前置开始
+
+- 已完成恢复顺序、治理基线检查和用户确认方向的 ADR/视觉合同/实施计划/学习 walkthrough。
+- 已登记 Image2/Photoshop、MotionSites、Riot 官方语言、成熟数据产品和动效库的角色边界；未购买付费
+  Prompt、未安装新依赖、未调用外部服务、未改动真实数据合同。
+- 已完成 Task 1 presentation state、Task 2 语义入口 shell 和 `?surface=awakening` 隔离 preview；前端 unit
+  `79 passed`、typecheck/build、Playwright `19 passed`、desktop/mobile/reduced-motion 截图检查通过。
+- Task 3 已接入一张无文字/无 UI 的 Image2 氛围 plate，压缩为 77.8 kB WebP，并登记来源、fallback、
+  bundle 和移除路径；CSS/SVG 路线与核心仍可独立工作。服务重启后 `127.0.0.1:4173` 返回 200。
+- 下一动作：继续 Task 3 的 Hextech 面板材质、状态边缘和 Portal → Workbench handoff polish，再做真实
+  profile/产品状态接线，不把当前 preview 误报成成品。
+
+### 2026-08-24：RQ-098 Task 3 视觉 polish 与 Batch E implementation 接续
+
+- `AwakeningScene` 的 Task 3 已完成本地视觉门：Image2 instrumentarium 由 screen/high-contrast overlay
+  收敛为低对比 soft-light 支撑层；去掉 calibration panel 的重复网格；Core、边框、输入材质和 cyan
+  action 统一减弱机械噪声，同时保留 Hextech square/diamond/circle 语义与 Rift atmosphere。
+- SVG route 现在按 `idle/editing/calibrating/ready/degraded/rejected/client-error` 编排；calibrating 才有
+  明显 dash choreography，ready/degraded handoff 使用一次 820ms transition，reduced-motion 会冻结所有
+  连续/transform 动效。桌面、390px mobile、ready handoff 截图人工检查通过；Impeccable detector 为空。
+- 前端门：unit `80 passed`、typecheck/build 通过，JS/CSS gzip `123.91/13.20 kB`；强制隔离 fake API/Vite
+  的 `CI=1 npm run test:e2e` 为 `20 passed`。第一次并行复用旧 Vite 的 5 个 live 失败确认为环境 proxy
+  指向未启动 `127.0.0.1:4174`，不计入代码回归。
+- 随后继续 Batch E implementation 本地 TDD：新增 opaque HTTP session issuance/revoke、Secure/HttpOnly/
+  SameSite cookie、server-side owner resolve、启用 session 时全写请求 CSRF、header/body budget、单机
+  IP rate limiter、Versioned SecretSource 注入到 Worker composition；E1/E2/E3 focused backend `56 passed`
+  （含原有回归）和 compileall 通过。Auth/RSO、PostgreSQL session repository、真实 Secret Manager、HTTPS
+  edge 和多副本 rate store 仍未声称完成。
+- `NEXT`：补齐 Batch E implementation walkthrough/coverage 与 canonical 状态，跑完整比例后创建独立
+  implementation/evidence commit；公共 exact-SHA 三 job 全绿前不关闭 Batch E 或进入 8F。

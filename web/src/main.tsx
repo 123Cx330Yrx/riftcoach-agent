@@ -7,6 +7,7 @@ import { App } from "./app/App"
 import "./styles/tokens.css"
 import "./styles/global.css"
 import "./styles/workbench.css"
+import "./styles/awakening.css"
 
 const root = document.getElementById("root")
 if (root === null) {

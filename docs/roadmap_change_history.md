@@ -2896,3 +2896,37 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   Training、breadth/golden slice 与 8F 未完成。
 - `HANDOFF`：唯一下一检查点为 `8e-batch-e-security-deployment-entry-design` prepared/waiting
   authorization；先原子化安全/部署与剩余模块顺序，不自动实施或配置生产环境。
+
+## 2026-08-23：RQ-097 Batch E 安全/部署入口设计
+
+- `AUTHORIZED`：用户最新“那继续做你觉得接下来应该做的事”恢复唯一检查点
+  `8e-batch-e-security-deployment-entry-design`；不把授权外推为 Auth/RSO、HTTPS、备份或部署实现。
+- `DESIGN`：ADR-0063 采用 provider-neutral AuthPort + server-side opaque session，明确 RiftCoach
+  Auth 与 Riot RSO 分离；首个公开拓扑采用 edge/static Web + API/Worker/PostgreSQL 单机 Compose，
+  托管 PostgreSQL 保留为迁移路径，Kubernetes/Redis/Celery/Kafka deferred。
+- `SECURITY`：冻结 same-origin/CORS/CSP/安全响应头、body/connection/SSE/限流容量、Secret
+  key-last/rotation/revocation、owner/observed/self 隔离、deletion marker→backup restore erase replay、
+  隐私说明、readiness/observability 和待演练 RPO≤24h/RTO≤2h 目标；这些是后续实施合同，不是当前证据。
+- `PRODUCT-ORDER`：冻结 E1 Auth → E2 edge security → E3 Secret → E4 backup/erase → E5 packaging/observability，
+  再按 secure shell/Rift Awakening、Timeline、Evidence/Trace、Training、OP.GG breadth+golden slice、8E exit/8F handoff
+  施工。视觉继续遵守多来源两层采用门，不能因安全门退化成普通后台。
+- `BOUNDARY`：新增 ADR/design/implementation plan/walkthrough 并登记 8E planned coverage；本轮不读 Secret、
+  不调用外部服务、不写产品代码、不部署。公共设计 SHA 全绿后才把 Batch E implementation 标为 prepared。
+
+## 2026-08-24：RQ-098 视觉合同前置
+
+- 用户确认 A/B 融合方向 `Rift Awakening → Broadcast Workbench`，并要求在保持 suitable、可访问、可维护和
+  数据真实的前提下提高 visual completion、fashion、cool 和互动叙事。
+- 该决定只在 Stage 8 `8e-productization` 下增加一个不改变主阶段顺序的视觉前置：先冻结 ADR-0064、分层
+  资产/来源账本、presentation state、动效 storyboard 与多来源采用账本，再实现入口 preview；不把它重新命名成
+  新主阶段或提前关闭 Batch E。
+
+## 2026-08-24：RQ-099 视觉 Task 3 后连续进入 Batch E implementation
+
+- 用户要求先继续 polish 入口，降低机械 overlay 的喧宾夺主，再不需每个小步骤重新授权地进入后续 Batch E
+  原子工作；该授权不改变 Stage 8 顺序，也不把连续推进等同于完成公共闭环。
+- Task 3 已通过本地视觉与前端门；E1/E2/E3 进入本地 TDD：opaque session/CSRF、request budgets/单机
+  rate、versioned SecretSource/key-last Worker composition。每批仍保留八维 evidence、完整比例回归、独立
+  commit 和 exact-SHA 三 job 公共 CI；正式 Auth/RSO、HTTPS、Secret Manager、备份/部署与 8F 继续后续。
+- 生成图不可冒充真实 UI、数据或产品截图；MotionSites、React/动效库、Riot 官方语言、成熟游戏数据产品与
+  Image2/Photoshop 继续按 RQ-091/RQ-092 两层采用门横评。

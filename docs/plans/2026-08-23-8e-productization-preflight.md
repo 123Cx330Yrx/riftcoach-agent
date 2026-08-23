@@ -169,3 +169,7 @@ frozen live-success evidence 又由 `efaccd9a8022f0d75e9baca5470450be6a1a3357` /
 Actions `32615821339` 完成 exact-SHA 三 job 公共闭环。
 玩家档案/显式路由 implementation/evidence `e844bdd673ee051568e8611160f6ba53e8c745c4` /
 Actions `32622696087` 也已完成 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环。
+
+Batch E 入口设计现已由 ADR-0063、`2026-08-23-8e-batch-e-security-deployment-entry-design.md` 与
+对应 walkthrough/implementation plan 冻结；公共设计门完成前不进入 Auth/RSO、HTTPS、备份、部署或
+其余 Web 模块实施。
