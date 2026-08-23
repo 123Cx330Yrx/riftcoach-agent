@@ -16,6 +16,7 @@ from app.meta.models import MetaProvenance, MetaUseCase
 from app.meta.opgg import (
     OPGG_LANE_META_LOCAL_TOOL,
     OPGG_LANE_META_REMOTE_TOOL,
+    OPGGMetaSchemaDiagnostic,
     OPGGLaneMetaAdapter,
     OPGGMetaError,
 )
@@ -279,6 +280,42 @@ def test_opgg_parser_rejects_code_instruction_text_invalid_rates_and_duplicate_r
     assert caught.value.code == "opgg_meta_result_invalid"
     assert result_text not in str(caught.value)
     assert result_text not in repr(caught.value)
+
+
+def test_opgg_schema_drift_diagnostic_is_body_free_and_field_scoped() -> None:
+    drifted_text = (
+        "class LolListLaneMetaChampions: lang,position_filter,data\n"
+        "class Data: positions\n"
+        "class Positions: mid\n"
+        "class Mid: champion,win_rate,pick_rate,ban_rate,tier,rank,rank_prev,rank_prev_patch\n\n"
+        "LolListLaneMetaChampions(\"en_US\",\"mid\",Data(Positions(["
+        'Mid("Ahri",0.5,0.1,0.1,1,1,1,null)])))'
+    )
+    adapter, _calls = make_adapter(result_text=drifted_text)
+
+    with pytest.raises(OPGGMetaError) as caught:
+        adapter.fetch(position="mid")
+
+    diagnostic = caught.value.diagnostic
+    assert isinstance(diagnostic, OPGGMetaSchemaDiagnostic)
+    assert diagnostic.stage == "row_field"
+    assert diagnostic.position == "mid"
+    assert diagnostic.row_name == "Mid"
+    assert diagnostic.field_name == "rank_prev_patch"
+    assert diagnostic.field_index == 7
+    assert diagnostic.observed_node_type == "Name"
+    assert diagnostic.text_length == len(drifted_text)
+    assert len(diagnostic.text_digest) == 64
+    assert "null" not in repr(caught.value)
+    assert drifted_text not in repr(caught.value)
+
+    fixture = json.loads(
+        Path("data/evaluation/results/mcp/opgg_mid_schema_drift_fixture_v1.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert diagnostic.to_public_projection() == fixture["failure"]["diagnostic"]
+    assert fixture["raw_response_persisted"] is False
 
 
 def test_opgg_adapter_rejects_output_schema_drift_and_oversized_text() -> None:

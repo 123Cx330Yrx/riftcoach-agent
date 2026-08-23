@@ -83,7 +83,8 @@ allowlisted grammar。当前选择保留 fail-closed 行为，先拿到受控 sc
 - [x] Riot account/match 有界 smoke；`DK ShowMaker#KR1 / asia / observed`，3 次 Riot calls 通过。
 - [x] 用脱敏 Riot typed output 尝试一次真实 `mid` OP.GG EvidenceBundle replay/fusion；失败被安全归类为 `opgg_meta_result_invalid`。
 - [x] 将真实失败分类和 limitations 写入 body-free 结果，不修改 8D 规则。
-- [ ] 对真实 mid 响应做受控 schema-drift 诊断并补一个不含原始 body 的回归样例；未完成前不放宽 parser。
+- [x] 增加受控 schema-drift diagnostic 合同与不含原始 body 的回归 fixture；诊断只记录阶段、allowlisted 字段位置、AST 节点类型、长度和摘要。
+- [ ] 在新的明确外部授权窗口内重跑一次真实 mid replay，取得字段级 live diagnostic；在此之前只承认 stack-level `row_field` 失败，不把受控 fixture 当成真实 schema 结论。
 
 ### Batch B：玩家档案合同
 
@@ -120,7 +121,7 @@ allowlisted grammar。当前选择保留 fail-closed 行为，先拿到受控 sc
 
 ## 6. 下一动作
 
-1. 先诊断真实 OP.GG `mid` 响应与现有 grammar 的差异，形成安全 schema-drift case；
-2. 决定是按证据扩大 allowlist，还是保留该工具的 degraded/unavailable 状态；
+1. 在明确授权窗口内完成一次真实 OP.GG `mid` replay 的字段级 body-free diagnostic；
+2. 决定是按 live 证据扩大 allowlist，还是保留该工具的 degraded/unavailable 状态；
 3. 冻结 owner-scoped player profile list/selection API 合同；
 4. 之后再进入 8E 的第一个静态/fixture-backed 前端小批次。

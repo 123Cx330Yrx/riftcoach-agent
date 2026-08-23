@@ -2743,3 +2743,9 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `FUSION-REAL`：使用脱敏 Riot projection 调用一次真实 OP.GG `mid` Meta 并尝试进入 8D adapter；真实响应以 `opgg_meta_result_invalid` 被 fail-closed，未创建 bundle，raw body 未持久化。
 - `DECISION`：该真实 Bad Case 归类为上游响应与严格 grammar 的 schema-drift；不放宽 parser、不把分别通过说成融合通过，先补安全诊断/回归样例。
 - `NEXT`：schema-drift 处理裁决后再冻结玩家档案选择 DTO，之后进入前端首个静态小批。
+
+### 2026-08-23：8E body-free schema-drift diagnostic 接缝
+
+- `ADR-0057` 采用字段级 body-free 结构诊断；受控 fixture 只验证 fail-closed 诊断合同，不能冒充 live schema。
+- 真实 `mid` 结果仍只保留 `opgg_meta_result_invalid` 与 stack-level `row_field` 事实；没有新的外部授权不重跑服务、不扩大 parser。
+- 前端、player profile selection 与 legacy 地区修正继续排在 live drift 裁决之后。

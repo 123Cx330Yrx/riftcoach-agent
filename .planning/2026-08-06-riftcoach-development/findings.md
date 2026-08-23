@@ -3679,3 +3679,9 @@
 - Riot 官方 API 有界 probe 成功：Account-V1、recent match IDs、Match Detail 各一次；`DK ShowMaker#KR1` 解析为自身请求相同 Riot ID，目标比赛是 `MIDDLE/Akali`，game version `16.16.804.9184`。结果文件只含 PUUID/match digests 和 allowlisted gameplay facts。
 - 为实现真实两源 join，第二次 Riot probe只补齐 `champion_id=84` 的 allowlisted projection，随后调用一次真实 OP.GG `mid` Meta。远端返回内容无法通过现有 grammar，适配器以 `opgg_meta_result_invalid` 安全拒绝；这说明“协议可达”不等于“当前字段解析与产品合同兼容”。
 - 当前最重要的真实 Bad Case 是 `mid` lane-meta response shape drift。不要抓取或打印 raw body，也不要将 parser 放宽到任意 JSON/`eval`；应先做安全、字段级 schema-drift 诊断并用脱敏 case 固化。
+
+## 2026-08-23：OP.GG schema-drift 诊断边界
+
+- 真实 replay 的可复核 stack-level 事实是失败发生在 lane row 的字面量字段解析；没有持久化 raw MCP body，因此不能从一次失败臆测具体字段或 token。
+- `OPGGMetaSchemaDiagnostic` 只暴露阶段、position/row、allowlisted 字段名/索引、AST 节点类型、长度和摘要 hash；`OPGGMetaError.__str__`/`repr__` 继续 body-free。
+- 受控 `null` fixture 证明 `Name` AST 节点会在字段字面量边界 fail closed，但不证明 live OP.GG mid 使用该确切形状；live 字段级证据仍需新的明确外部授权。

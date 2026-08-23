@@ -9,6 +9,7 @@ from .models import (
 from .opgg import (
     OPGG_LANE_META_LOCAL_TOOL,
     OPGG_LANE_META_REMOTE_TOOL,
+    OPGGMetaSchemaDiagnostic,
     OPGGLaneMetaAdapter,
     OPGGMetaError,
 )
@@ -20,6 +21,7 @@ __all__ = [
     "MetaUseCase",
     "OPGG_LANE_META_LOCAL_TOOL",
     "OPGG_LANE_META_REMOTE_TOOL",
+    "OPGGMetaSchemaDiagnostic",
     "OPGGLaneMetaAdapter",
     "OPGGMetaError",
 ]

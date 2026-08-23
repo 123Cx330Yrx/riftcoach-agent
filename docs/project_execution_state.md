@@ -2065,3 +2065,10 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - preflight 文档/脱敏证据提交 `8c0cc187e93e76c26e9d03f9e8f2371333c783a3` 的公共 Actions run `32611044101`
   已完成 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job success；该 run 只验证持久合同/现有
   no-I/O package，没有把 OP.GG 网络调用放入 CI。
+
+## 2026-08-23：8E schema-drift 诊断接缝完成（live 字段级证据仍待授权）
+
+- `app/meta/opgg.py` 现在可在 fail-closed 时生成 `OPGGMetaSchemaDiagnostic`；只允许 stage、position/row、allowlisted 字段位置、AST 节点类型、长度和摘要 hash，原始正文/字段值不进入异常或持久结果。
+- `data/evaluation/results/mcp/opgg_mid_schema_drift_fixture_v1.json` 与 `tests/test_opgg_meta_adapter.py` 固化受控 null-like 非字面量回归；该 fixture 明确不是 live upstream 证据。
+- ADR-0057 记录“先诊断、后裁决；不因真实失败放宽 parser”的边界。现有真实结果仍只承认 `opgg_meta_result_invalid` 与 stack-level `row_field` 失败；没有新的明确外部授权时不重跑 OP.GG。
+- 当前唯一下一动作：若获新的有界授权，执行一次真实 `mid` replay 读取字段级 body-free diagnostic；随后再裁决扩大 allowlist/degraded，并冻结 player profile selection DTO。前端仍未开始。

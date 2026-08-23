@@ -1837,6 +1837,12 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - canonical 只交接 `8e-productization` prepared/waiting authorization；Auth/SSE/React/部署、真实刷新和 8F
   README/作品集统一交付尚未开始。
 
+### 2026-08-23：8E schema-drift 诊断边界
+
+- ADR-0057 采用 `OPGGMetaSchemaDiagnostic` 记录字段级结构摘要；错误和持久 evidence 保持 body-free。
+- 受控 fixture 只证明 adapter 能安全识别非字面量节点，不证明真实 OP.GG `mid` 的具体字段；live
+  字段级诊断与 allowlist 裁决仍待新的明确外部授权。
+
 ## 2026-08-23：8C 第三轮真库兼容裁决
 
 - Repository 的所有 JSONB checkpoint 读回路径（task、event、requeue）统一经过 strict JSON wire parser，并兼容 psycopg `Jsonb` wrapper；不以 `strict=False` 放宽 Pydantic 合同。

@@ -1,0 +1,22 @@
+{
+  "body_free": true,
+  "fixture_kind": "controlled_schema_drift_regression",
+  "raw_response_persisted": false,
+  "schema_version": "1.0",
+  "source_tool": "lol_list_lane_meta_champions",
+  "position": "mid",
+  "failure": {
+    "error_code": "opgg_meta_result_invalid",
+    "diagnostic": {
+      "stage": "row_field",
+      "position": "mid",
+      "row_name": "Mid",
+      "field_name": "rank_prev_patch",
+      "field_index": 7,
+      "observed_node_type": "Name",
+      "text_length": 279,
+      "text_digest": "3e20e4085194857526f692bf4816ea67ad138009f8f0bf98149ceaed205d2c03"
+    }
+  },
+  "interpretation": "A controlled null-like token is rejected as a non-literal AST node; this fixture tests the fail-closed diagnostic contract and is not evidence that the live upstream uses this exact field or token."
+}

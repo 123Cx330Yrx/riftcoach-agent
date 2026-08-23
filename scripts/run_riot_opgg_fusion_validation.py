@@ -168,6 +168,11 @@ def run_validation(*, riot_result_path: Path, position: str, top_n: int) -> dict
                 "position": position,
                 "requested_top_n": top_n,
                 "error_code": error.code,
+                "schema_diagnostic": (
+                    error.diagnostic.to_public_projection()
+                    if error.diagnostic is not None
+                    else None
+                ),
             },
             "external_io": {
                 "riot_calls": 0,

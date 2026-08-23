@@ -750,7 +750,8 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 - [completed] 真实 OP.GG 有界 body-free smoke：1 次 initialize/list/call，3 条 top facts，证据 digest 已持久化；
 - [completed] `DK ShowMaker#KR1 / asia / observed` 的 Account/Match body-free gate：3 次 Riot calls、1 局详情通过；
 - [completed-with-boundary] 用脱敏 Riot typed output 尝试真实 `mid` OP.GG EvidenceBundle replay；上游结果被严格 adapter 以 `opgg_meta_result_invalid` 拒绝；
-- [ ] 对真实 mid 响应做安全 schema-drift 诊断并补回归样例，不放宽 parser 追绿；
+- [completed-local-with-boundary] adapter 增加 body-free schema-drift diagnostic（stage/字段索引/AST 节点类型/长度/digest），并以受控 `null` 形状 fixture 固化 fail-closed 回归；
+- [ ] 在再次获得明确外部调用授权后，用一次真实 mid replay 产生字段级 diagnostic；当前真实证据仍只有 `opgg_meta_result_invalid` 与 stack-level row-field 失败，不把受控 fixture 冒充 live schema；
 - [ ] 冻结 owner-scoped player profile list/selection DTO，修正 legacy `/reviews/recent` 地区隐式来源；
 - [ ] 前端从静态/fixture-backed 合同小批开始，再接 API/SSE/Auth，最后才加入口动效；
 - [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout。
