@@ -1939,3 +1939,14 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   MotionSites live Apps 和 Riot/Langfuse/TrainingPeaks/Mobalytics/21st.dev/Aura 深读建立五模块采用矩阵。
   采用收益只落为 Evidence Drawer 的 body-free Safe Run Path；其余候选绑定未来真实消费者，不为证明
   “广撒网”而安装库或购买 Prompt。
+
+## 2026-08-23：Batch D 公共关闭与真实数据接线 handoff
+
+- implementation/evidence `f7ebedd7c6cfd135201847a327dfd06c01cc7205` / Actions `32636771507`
+  已完成 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job；公共 pytest 1752、真库 194，
+  frontend unit 35/e2e 12/typecheck/build 与 Linux package schema 1.6 同 SHA 通过。
+- 因此 Batch D 静态/fixture-backed 产品纵切可以关闭；8E coverage 仍 `planned`，且不把静态 screen 写成
+  已接真实 API/SSE/Auth、已部署或五模块全部实现。
+- 下一步只进入真实数据接线设计门：复用 Batch B/C owner-scoped profile/product/evidence/SSE DTO，先补清
+  Summary/report HTTP projection 和 decoder/重连/错误合同。Auth/RSO、部署安全、电影感入口、完整 Timeline/
+  Training 与 8F 均不随 Batch D 自动进入。

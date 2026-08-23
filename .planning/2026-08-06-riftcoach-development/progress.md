@@ -3960,4 +3960,18 @@
   head→base→head/check、两套 RAG、Harness、compile/pip/6 YAML、Secret/tracked-data/governance/diff、
   隔离 Linux Compose schema 1.6/外部调用 0/non-root/image exclusion 全绿。唯一 skip 为 Windows symlink。
 - `BOUNDARY/NEXT`：外部 Riot/OP.GG/Provider/LLM calls 0，8B holdout 未重跑，Dockerfile 不 COPY web。
-  当前审查 diff 后独立提交/push，等待 exact-SHA 三 job；8E coverage 继续 planned。
+  该记录时等待独立提交/push 与 exact-SHA 三 job；下节公共闭环已经完成该动作。8E coverage 继续 planned。
+
+### 2026-08-23：8E Batch D exact-SHA 公共闭环
+
+- `PUBLIC-CI`：implementation/evidence `f7ebedd7c6cfd135201847a327dfd06c01cc7205` / Actions
+  `32636771507` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `COUNTS`：公共 pytest `1752 passed, 139 skipped, 1 warning, 127 subtests passed`；frontend
+  `6 files / 35 passed`、Playwright `12 passed`、typecheck/build 也在同一 job 通过；真实 PostgreSQL
+  `194 passed, 1 warning`，0011 可逆且 metadata=head；Linux package schema 1.6/外部调用 0/image boundary
+  与资源清理全绿。
+- `CLOSED`：Batch D 静态/fixture-backed Rift Command Center 正式关闭；AutoGLM 新一轮可用性复核没有发现
+  推翻五模块资源矩阵的新模式，继续坚持跨来源筛选而非单押 MotionSites。
+- `HANDOFF`：整个 8E/coverage 仍 `in_progress/planned`。唯一下一动作是 owner-scoped API/SSE 接线设计门，
+  先盘点 profile/product/evidence/event DTO 和缺失 Summary/report projection；不自动进入 Auth/RSO、部署、
+  电影感入口、完整 Timeline/Training 或 8F。

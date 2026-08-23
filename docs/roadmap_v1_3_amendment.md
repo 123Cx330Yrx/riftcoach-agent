@@ -152,8 +152,8 @@ Web/Auth/HTTPS/备份与部署；`8F` 做最终 Eval 和作品集退出。DAG、
   已完成公共 pytest 1750、真实 PostgreSQL 194 与 Linux package 三 job；Batch C 正式关闭；
 - 八维材料已登记，整个 8E coverage 继续 `planned`。RQ-091/RQ-092/RQ-093、ADR-0061 与专用计划已
   冻结多来源采用门、五模块连续性、`Rift Command Center`、状态和 a11y；design
-  `88a5ab6/32631766013` 已公共闭环，静态 fixture screen、unit/e2e/视觉证据已本地完成并等待实现
-  exact-SHA 三 job；不接 Auth/API/部署。
+  `88a5ab6/32631766013` 与 implementation/evidence `f7ebedd/32636771507` 均完成 exact-SHA 三 job，
+  Batch D 静态 fixture screen 正式关闭。下一动作是 API/SSE 接线设计门；不提前接 Auth/部署或 8F。
 
 ## 7. 产品切片
 

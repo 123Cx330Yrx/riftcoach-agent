@@ -3794,3 +3794,11 @@
   能减少 SSR/路由/模板依赖且保留自主视觉控制。Motion/Radix 已有直接消费者，其他库继续按采用门 deferred。
 - 提交审查发现首个 web lockfile 继承本机 `registry.npmmirror.com` resolved URL；最终用 npm 官方 registry
   重建并 clean `npm ci`，避免 exact-SHA 公共门依赖个人镜像。第一次 mirror audit 404 同样没有冒充成功。
+## 2026-08-23：Batch D 公共关闭前 AutoGLM 可用性复核
+
+- 本地 token 服务和 AutoGLM Web Search API 已连通；首轮 Windows GBK 输出因搜索摘要含 `U+00A0`
+  发生 `UnicodeEncodeError`，设置 `PYTHONUTF8=1` 后同批查询正常返回。这是控制台编码问题，不是登录、
+  token 或搜索服务失败，也不需要修改产品仓库脚本。
+- 新查询继续返回 reduced-motion、dashboard/motion inspiration 与 agent observability 资源，但没有出现能
+  推翻现有五模块矩阵或需要立即新增依赖/购买 Prompt 的新模式。当前合理裁决仍是跨来源筛选并把候选
+  绑定到真实消费者；电影感入口、Timeline、完整 Training 各自在后续设计门再深挖。

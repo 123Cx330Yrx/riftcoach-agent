@@ -126,9 +126,17 @@ RQ-088 生效后已执行一次修复后 replay：strict adapter 成功解析 10
 
 - [x] ADR-0061 与专用 design/implementation plan 已冻结信息架构、两层多来源采用门、设计 token、
   客户端/产品状态矩阵和可访问性合同；RQ-092 明确硬门之后仍主动追求视觉完成度与时尚感。
-- [x] 静态/fixture-backed Rift Command Center 已本地完成；unit 35、Playwright 12、桌面/tablet/移动、
-  键盘/焦点、reduced-motion、axe 与人工截图 QA 通过，当前只待 implementation/evidence exact-SHA 公共门。
-- [ ] 再接 API、SSE、Auth；最后才加入入口叙事、视差和粒子动效。
+- [x] 静态/fixture-backed Rift Command Center 已由 `f7ebedd7c6cfd135201847a327dfd06c01cc7205` /
+  Actions `32636771507` 完成 exact-SHA 公共闭环；unit 35、Playwright 12、桌面/tablet/移动、键盘/焦点、
+  reduced-motion、axe 与人工截图 QA 均有证据。
+- [x] Batch D 在真实 API/SSE/Auth 之前停止；电影感入口、视差/粒子、完整 Timeline/Training 不用 fixture
+  越级实现。
+
+### Batch D 后续交接：真实数据接线设计门（尚未实现）
+
+- [ ] 盘点 Batch B/C owner-scoped profile/product/evidence/SSE DTO，以及安全 Summary/report HTTP projection 缺口。
+- [ ] 冻结 fixture decoder 到 HTTP/SSE adapter、Last-Event-ID 重连、四态保持、错误与降级合同。
+- [ ] 设计公共闭环后才接真实 API/SSE；Auth/RSO 与部署安全仍由 Batch E 单独处理。
 
 ### Batch E：部署与安全
 
@@ -147,9 +155,10 @@ RQ-088 生效后已执行一次修复后 replay：strict adapter 成功解析 10
 ## 6. 下一动作
 
 1. Batch C 已由 `7975dc3` / Actions `32629160732` 完成独立教学、TDD、持久证据和 exact-SHA 公共门；
-2. RQ-091/RQ-092 已授权 Batch D；多来源视觉采用审计、信息架构、状态矩阵与 a11y 合同已冻结。当前
-   唯一下一动作是按 TDD 实现静态/fixture-backed Rift Command Center，并确认桌面/移动/键盘/
-   reduced-motion；不直接接 Auth、API 或重型入口动效。
+2. Batch D 又由 `f7ebedd7c6cfd135201847a327dfd06c01cc7205` / Actions `32636771507` 完成 fixture-backed
+   Rift Command Center 与同 SHA frontend/Python/PostgreSQL/Linux 公共门；
+3. 当前唯一下一动作是先完成真实数据接线设计门：盘点现有 owner-scoped API/SSE 与 Summary/report
+   projection 缺口，再冻结 decoder、重连、错误和状态合同。未完成设计前不接 Auth、部署或重型入口动效。
 
 ADR-0058 最小修复已由 `83fde7d014aae8fdccf2ebd91929967868101075` / Actions
 `32615340228` 完成 exact-SHA 三 job 公共闭环；RQ-088 的后续 live 复验现已独立通过。

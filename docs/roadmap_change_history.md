@@ -2835,3 +2835,13 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   Linux package schema 1.6/外部调用 0/非 root/image boundary 与资源清理全绿。
 - `STATUS`：Batch C 正式关闭；整个 8E coverage 保持 planned。唯一下一内部批为 Batch D
   静态/fixture-backed 前端设计门，prepared/waiting authorization；不静默进入 React/Auth/部署。
+
+## 2026-08-23：8E Batch D 静态前端公共闭环
+
+- implementation/evidence `f7ebedd7c6cfd135201847a327dfd06c01cc7205` / Actions `32636771507` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；公共 pytest 1752、真 PostgreSQL 194，
+  frontend unit 35/e2e 12/typecheck/build 与 Linux package schema 1.6 均在 exact SHA 通过。
+- 因此 Batch D fixture-backed Rift Command Center 正式关闭，但 `8e-productization` 与 coverage 仍为
+  `in_progress/planned`。真实 API/SSE/Auth、电影感入口、完整 Timeline/Training、部署和 8F 没有被完成。
+- 唯一下一动作改为真实数据接线设计门：盘点 Batch B/C owner-scoped DTO 与 Summary/report HTTP
+  projection 缺口，再冻结 decoder、Last-Event-ID 重连、错误和状态保持合同；不自动进入 Batch E/8F。

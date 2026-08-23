@@ -36,11 +36,12 @@ it is complete at `2df5349` / Actions `32587659678` with exact-SHA PostgreSQL/Li
 public closure. RQ-084 authorized Phase 36 -
 `8d-riot-opgg-evidence-fusion-core`; it is complete at `a274b7f` / Actions
 `32598480400`. Phase 37 - `8e-productization` is the current governance pointer.
-RQ-086 authorizes a slow, preflight-first start: one bounded real Riot + OP.GG
-validation, player-profile selection/region audit, then small frontend batches;
-full productization remains unimplemented. RQ-087 authorized one new body-free
-OP.GG `mid` diagnostic replay; it identified nullable `rank_prev_patch` JSON-null
-drift, and ADR-0058's narrow parser fix is now under local/public verification.
+The bounded Riot/OP.GG validation and JSON-null Bad Case are publicly closed;
+Batch B profile/routing, Batch C Evidence/Product/SSE backend and Batch D
+fixture-backed Rift Command Center are also publicly closed, most recently at
+`f7ebedd` / Actions `32636771507`. Full productization remains unimplemented:
+8E coverage is still `planned`, and the next action is the real API/SSE
+integration design gate before Auth/deployment or 8F.
 
 ## Phases
 
@@ -791,8 +792,12 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 - [completed-local-gates] 完整真库 `1890 passed, 1 skipped, 1 warning, 127 subtests`、0011 可逆/head、
   两套 RAG、Harness、compile/pip/YAML、安全/governance/diff 与隔离 Linux Compose schema 1.6/外部调用 0/
   image boundary 全绿；唯一 skip 为 Windows symlink；
-- [in-progress] 审查 diff、独立 implementation/evidence commit/push 和 exact-SHA
-  `pytest`/`postgres-migrations`/`packaging-smoke`；整个 8E coverage 继续 `planned`；
+- [completed-public] implementation/evidence `f7ebedd7c6cfd135201847a327dfd06c01cc7205` / Actions
+  `32636771507` 的 `pytest`/`postgres-migrations`/`packaging-smoke` 三 job 全绿；公共 pytest
+  `1752 passed, 139 skipped, 1 warning, 127 subtests passed`，真库 `194 passed, 1 warning`，同一 SHA
+  frontend unit 35/e2e 12/typecheck/build 与 Linux package schema 1.6 全绿；Batch D 静态前端正式关闭；
+- [handoff] 整个 8E coverage 继续 `planned`；唯一下一动作是先设计 owner-scoped API/SSE 接线及缺失的
+  Summary/report HTTP projection，不直接实现 Auth/RSO、部署、电影感入口、完整 Timeline/Training 或 8F；
 - [boundary] Batch D 不接真实 API/SSE/Auth，不实现完整 Timeline/历史列表、HTTPS、backup、deployment
   或公网发布；MotionSites/React Bits/Aceternity 等只按裁决作 reference，不复制受限源组件；
 - [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout；Windows symlink 单项 skip 由 exact-SHA Linux pytest 独立补证。

@@ -270,3 +270,13 @@ Review staged files and cached diff, commit only Batch D files, push the exact S
 **Step 4: Close only Batch D**
 
 Record exact SHA/run/job evidence. Do not mark 8E complete or enter real API/SSE/Auth, HTTPS, backup, deployment or 8F.
+
+## Execution result
+
+- implementation/evidence: `f7ebedd7c6cfd135201847a327dfd06c01cc7205`
+- public Actions: `32636771507`
+- exact-SHA jobs: `pytest`, `postgres-migrations`, `packaging-smoke` all completed/success
+- public evidence: Python `1752 passed, 139 skipped, 1 warning, 127 subtests passed`; PostgreSQL
+  `194 passed, 1 warning`; frontend unit `35 passed`, Playwright `12 passed`, typecheck/build passed; Linux package
+  schema 1.6 and external calls 0
+- closure: Batch D static/fixture-backed frontend complete; whole 8E coverage remains `planned`

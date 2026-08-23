@@ -23,7 +23,7 @@
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 已完成；7-5 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 完成最终公共闭环 |
-| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D 与 8E Batch B/C 已公共闭环，ADR-0053 reject 产品 Multi-Agent；Batch D 设计门已公共闭环且 fixture 前端本地完成，待 implementation exact-SHA 三 job |
+| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D 与 8E Batch B/C/D 已公共闭环，ADR-0053 reject 产品 Multi-Agent；8E 下一步为真实 API/SSE 接线设计，Auth/部署和 8F 未完成 |
 
 ## 横向能力总账
 
@@ -341,8 +341,9 @@ exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE�
   `194 passed, 1 warning` 与 Linux package schema 1.6 三 job 全绿；
 - 八维 walkthrough 路径已建立但整个 8E coverage 仍 `planned`。RQ-091/RQ-092/RQ-093 与 ADR-0061 已
   冻结多来源两层采用门、五模块连续性、`Rift Command Center`、tokens、客户端/产品状态和 a11y；
-  design `88a5ab6/32631766013` 已公共闭环，静态 fixture screen、unit/e2e/截图已本地完成，当前只待实现
-  exact-SHA 三 job，不提前接 Auth/API/部署。
+  design `88a5ab6/32631766013` 与 implementation/evidence `f7ebedd/32636771507` 均完成 exact-SHA 三 job。
+  Batch D 静态前端正式关闭；下一步先设计真实 API/SSE 接线和缺失 Summary/report projection，不提前接
+  Auth/部署、电影感入口、完整 Timeline/Training 或 8F。
 
 ### 原理
 

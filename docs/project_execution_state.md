@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（RQ-091/RQ-092/RQ-093 下 8E Batch D 设计门已公共闭环，fixture-backed Rift Command Center 已本地完成 unit/e2e/视觉 QA；当前只待横向本地门、独立实现提交与 exact-SHA 三 job）
+- 最后更新：2026-08-23（8E Batch D fixture-backed Rift Command Center 已由 `f7ebedd` / Actions `32636771507` 完成 exact-SHA 三 job 公共闭环；整个 8E/coverage 仍为 `in_progress/planned`，下一动作只进入真实 API/SSE 接线的设计门，不提前实现 Auth/部署）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2249,5 +2249,23 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   Chromium e2e；Dockerfile 继续不复制 `web/`，因此本批不冒充部署。整个 8E coverage 保持 `planned`。
   带真实 PostgreSQL 的完整回归 `1890 passed, 1 skipped, 1 warning, 127 subtests`；0011 可逆/head check、
   两套 RAG、Harness、compile/pip/YAML、Secret/tracked-data/governance/diff 与隔离 Linux Compose schema 1.6/
-  外部调用 0/image boundary 全绿。当前唯一下一动作是审查 diff、创建独立 implementation/evidence commit
-  并等待同 SHA 三个公共 job；本批真实 Riot/OP.GG/Provider/LLM calls 为 0，8B holdout 未重跑。
+  外部调用 0/image boundary 全绿。该记录时的下一动作是审查 diff、创建独立 implementation/evidence commit
+  并等待同 SHA 三个公共 job；下节公共闭环证据已经完成该动作。本批真实 Riot/OP.GG/Provider/LLM calls
+  为 0，8B holdout 未重跑。
+
+## 2026-08-23：8E Batch D exact-SHA 公共闭环
+
+- implementation/evidence `f7ebedd7c6cfd135201847a327dfd06c01cc7205` / Actions `32636771507` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 completed/success。
+- 公共 pytest 为 `1752 passed, 139 skipped, 1 warning, 127 subtests passed`；同一 job 又执行 frontend
+  typecheck、`6 files / 35 passed` unit、production build 和 Playwright `12 passed`。bundle 继续为
+  JS gzip `109.89 kB`、CSS gzip `10.99 kB`。
+- 真实 PostgreSQL 17 为 `194 passed, 1 warning`；0011 head→base→head 可逆且 `alembic check` 无新 upgrade。
+  Linux package schema 1.6、Memory Context 3 records、terminal assistant 0、外部 Riot Provider calls 0、
+  非 root/image exclusion/资源清理均通过。
+- Batch D 静态/fixture-backed 前端正式关闭；整个 `8e-productization` 与 coverage 继续
+  `in_progress/planned`。这不证明真实 API/SSE/Auth、电影感入口、完整 Rift Timeline/Training、HTTPS、
+  backup/restore、部署或公网发布。
+- 唯一下一动作是先设计真实数据接线：盘点 Batch B/C owner-scoped profile/product/evidence/SSE DTO 与
+  仍缺的安全 Summary/report HTTP projection，冻结 fixture decoder→HTTP/SSE adapter、错误/重连/状态保持
+  合同；设计门完成前不把当前 screen 接到真实服务，也不进入 Batch E 安全/部署或 8F。
