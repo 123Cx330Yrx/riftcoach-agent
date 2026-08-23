@@ -4101,3 +4101,14 @@
   diff check 通过。该批仍没有对象存储/KMS/备份字节/定时任务，不能声称生产加密灾备或 RPO/RTO。
 - `NEXT`：运行完整回归、真实 PostgreSQL locator/migration 与 Linux package smoke，完成 stale/governance
   门后创建独立 implementation/evidence commit；公共 exact-SHA 三 job 全绿前不交接 E5。
+
+### 2026-08-24：E4 exact-SHA 公共闭环，进入 E5
+
+- implementation/evidence `27b9256b8987ade45fbc9eb5f62497cbaef9f518` / Actions `32660145945` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，E4 正式关闭。
+- 本批公共 pytest 包含前端合同、全量 Python、RAG/Harness/security/tracked-data/governance；真库 job
+  覆盖 migration head、owner lifecycle locator 与控制面回归；package job 覆盖 Compose、Linux no-I/O、
+  non-root/image exclusion、资源清理和 external Riot Provider calls = 0。
+- E4 不声称 KMS/对象存储/加密 backup bytes、定时备份或 RPO/RTO 实测；这些边界和八维材料已持久化。
+- `NEXT`：按连续授权进入 E5 packaging/observability，先审查 Docker/Compose/health/metrics/rollback
+  接缝并用 red tests 冻结 readiness、migration order、非 root 和 body-free observability 合同。

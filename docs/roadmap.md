@@ -387,10 +387,15 @@ CORS/CSP/HTTPS/限流、Secret 轮换/撤销、backup restore/erase、隐私、�
 coverage 继续 `planned`，整个 Batch E 公共闭环前不进入 E5/8F。
 
 E4 已开始本地实现：manifest 只保留 deletion-marker metadata + deterministic digest；PostgreSQL
- owner lifecycle repository 按 conversation/relationship 精确定位 run，API composition 在 marker commit
- 后复用 `FileRunDataCleaner` 清理 Artifact/Runtime Trace。restore 先 replay markers，再通过 readiness；
- marker replay 支持幂等和 partial-failure compensation。当前仍没有对象存储/KMS/加密 backup bytes、定时备份
- 或真实 RPO/RTO 演练，因而不能把 E4 说成生产灾备完成；下一动作是比例门、独立提交和 exact-SHA 公共 CI。
+owner lifecycle repository 按 conversation/relationship 精确定位 run，API composition 在 marker commit
+后复用 `FileRunDataCleaner` 清理 Artifact/Runtime Trace。restore 先 replay markers，再通过 readiness；
+marker replay 支持幂等和 partial-failure compensation。当前仍没有对象存储/KMS/加密 backup bytes、定时备份
+或真实 RPO/RTO 演练，因而不能把 E4 说成生产灾备完成；下一动作是比例门、独立提交和 exact-SHA 公共 CI。
+
+E4 implementation/evidence `27b9256` / Actions `32660145945` 已取得 `pytest`、`postgres-migrations`、
+`packaging-smoke` 三 job exact-SHA 全绿，正式关闭。按连续授权下一项是 E5 packaging/observability：
+围绕现有 Compose/Docker/health/rollback 和 body-free structured logs 做最小可验证增强；E5 前不扩张到
+Kubernetes/Redis/第二套 metrics runtime，也不提前关闭 8E 或进入 8F。
 
 ### 原理
 

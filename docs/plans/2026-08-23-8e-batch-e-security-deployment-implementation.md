@@ -16,6 +16,10 @@ local implementation，尚未取得本批独立 exact-SHA 公共闭环；OIDC/RS
 Secret Manager、HTTPS edge 和 deployment 继续按原顺序保留；E4 backup/restore/erase 已进入本地 TDD，
 但仍未有对象存储/KMS/加密 backup bytes 或生产 restore drill。
 
+E4 implementation/evidence `27b9256` / Actions `32660145945` 已完成 exact-SHA 三 job 公共闭环。下一项
+是 E5 packaging/observability，继续复用单机 Compose、现有 health/readiness 与 body-free observability
+接缝；E5 不自动引入 Redis/Kubernetes/第二套 metrics runtime。
+
 ---
 
 ## Task 1: Auth and owner session

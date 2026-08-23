@@ -2073,3 +2073,13 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   不重复执行，并且补偿只撤销本次 restore 新应用的 marker。
 - 本地 focused/相邻 lifecycle 为 `31 passed`；该记录不关闭 E4，仍待真实 PostgreSQL locator/migration、
   Linux package smoke、八维材料、独立提交和 exact-SHA 三 job 公共 CI。RPO≤24h/RTO≤2h 仍是待演练目标。
+
+## 2026-08-24：RQ-099 E4 公共关闭与 E5 交接
+
+- `27b9256b8987ade45fbc9eb5f62497cbaef9f518` / Actions `32660145945` 的 `pytest`、`postgres-migrations`、
+  `packaging-smoke` 三 job 全绿，E4 正式关闭。
+- 公共证据同时确认 owner erase locator/Artifact-Trace cleanup、restore marker replay/幂等/readiness
+  compensation、真库 migration 与 Linux package boundary；E4 仍不包含 KMS/对象存储或 RPO/RTO 实测。
+- 按用户连续授权进入 E5 packaging/observability：先以 red tests 固定 migration order、health/readiness、
+  rollback 和 body-free structured observability，再决定最小实现；不因为“可观测性”引入未经 Bad Case/ADR
+  论证的 Redis、Kubernetes 或第二套 metrics runtime。

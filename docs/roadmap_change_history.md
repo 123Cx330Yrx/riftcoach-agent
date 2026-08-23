@@ -2947,3 +2947,12 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   本地/离线 drill，不读取 Secret、不调用 Riot/OP.GG/LLM、不写外部 backup，不宣称 KMS、对象存储或 RPO/RTO
   实测。
 - 下一动作是比例门和公共 exact-SHA 闭环；E5/8F 不提前进入。
+
+## 2026-08-24：RQ-099 E4 exact-SHA 公共关闭，交接 E5
+
+- implementation/evidence `27b9256b8987ade45fbc9eb5f62497cbaef9f518` / Actions `32660145945` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success；E4 正式关闭。
+- E4 公共证据覆盖 owner marker→run locator→Artifact/Trace cleanup、restore marker replay/幂等、readiness
+  compensation、真库 migration 和 Linux package image boundary；无外部 Riot/OP.GG/Provider/LLM I/O。
+- 下一项按连续授权进入 E5 packaging/observability，仍维持单机 Compose 与 body-free observability 边界；
+  KMS/对象存储、Kubernetes/Redis、8F 和 OP.GG golden slice 不因 E4 关闭而提前完成。

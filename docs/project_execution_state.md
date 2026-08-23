@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-24（视觉 Task 3 与 Batch E E1/E2/E3 implementation 已由 `92b7685` / Actions `32658277570` 完成 exact-SHA 三 job 公共闭环）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / 8e-batch-e-security-deployment-implementation`，E1/E2/E3 已公共关闭，下一原子项为 E4 backup/restore/erase；完整 8E/8F 尚未完成。
+- 最后更新：2026-08-24（视觉 Task 3 与 Batch E E1/E2/E3/E4 implementation 已由 `27b9256` / Actions `32660145945` 完成 exact-SHA 三 job 公共闭环）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / 8e-batch-e-security-deployment-implementation`，E1/E2/E3/E4 已公共关闭，下一原子项为 E5 packaging/observability；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -2426,3 +2426,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   RPO≤24h/RTO≤2h 实测；8E 继续 `in_progress/planned`，E5/8F 不提前进入。
 - `NEXT`：完成完整回归、真实 PostgreSQL locator/migration 与 Linux package smoke，补 stale/governance
   门和八维 E4 evidence，再创建独立 implementation/evidence commit 并等待 exact-SHA 三 job 全绿。
+
+## 2026-08-24：RQ-099 E4 exact-SHA 公共闭环与 E5 交接
+
+- E4 implementation/evidence `27b9256b8987ade45fbc9eb5f62497cbaef9f518` / Actions `32660145945` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success；E4 正式关闭。
+- 公共证据覆盖 owner marker → targeted run locator → Artifact/Runtime Trace cleanup、manifest digest、
+  restore marker replay、幂等、readiness-before-ready 和 partial-failure compensation；公共 package smoke
+  继续证明 Linux image boundary、migration/API readiness 与 external Riot Provider calls = 0。
+- E4 仍不等于真实 KMS/对象存储/加密 backup bytes、定时备份或 RPO≤24h/RTO≤2h 演练；这些边界已经记录在
+  walkthrough/ADR，不能在作品集里夸大。
+- 按连续授权进入下一原子项 `8e-batch-e-security-deployment-implementation / E5-packaging-observability`；
+  E5 先做现有 Compose/Docker/health/observability 接缝的设计审查与 red tests，再实现和验证。Auth/RSO、
+  HTTPS/HSTS、真实 Secret Manager、多副本 limiter、完整 Timeline/Training、OP.GG breadth/golden slice
+  与 8F 仍未完成。

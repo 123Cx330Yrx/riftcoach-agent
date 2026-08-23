@@ -3888,6 +3888,14 @@
   不创建伪加密文件，不读取 Secret，不宣称对象存储、KMS、RPO≤24h/RTO≤2h 已实测。
 - restore 的幂等包装需要区分“本次 restore 新应用的 marker”和“历史已应用 marker”；readiness 失败时只能
   补偿前者，否则重复 drill 会把历史成功状态错误撤销。
+
+## 2026-08-24：E4 公共闭环与 E5 进入
+
+- `27b9256` / Actions `32660145945` 的三个阻塞 job 全绿，E4 的本地合同取得 exact-SHA 公共证据；
+  这次公共闭环没有新的 Riot/OP.GG/Provider/LLM 调用。
+- 下一批 E5 的真实问题不是再加一个基础设施名词，而是证明现有 Compose 的 migration order、API/Worker
+  readiness、非 root image、rollback/structured body-free observability 在一次 package 交付中保持一致；
+  Redis/Kubernetes/第二套 metrics stack 仍需 Bad Case 和 ADR 才能采用。
 ## 2026-08-24：Portal → Workbench 视觉合同发现
 
 - 当前 `web/` 已具备 live/fixture workbench、relationship-safe Training、Evidence drawer、Motion/Radix
