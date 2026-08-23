@@ -3863,3 +3863,14 @@
 - `LOCAL-INFRA`：Docker Desktop + WSL2、PostgreSQL 17 容器和用户级测试 URL 已配置；CI-equivalent PostgreSQL collection `187 passed`，migration/check 与真实 Linux Compose package smoke 已通过。
 - `LOCAL-GATES`：focused `268 passed`；完整 `1842 passed, 1 skipped, 1 warning, 127 subtests passed`；两套 RAG 满阈值，Harness `published`/0 revisions，compileall/pip/YAML、SDK/Secret/tracked-data、governance/diff 全绿。Linux Compose schema 1.6/外部调用 0/image boundary 通过并清理资源。
 - `BOUNDARY`：8E 仍 in progress/coverage planned；前端、Auth/RSO、SSE、EvidenceBundle persistence、HTTPS、备份与部署没有开始。唯一下一动作是独立提交/push 与 exact-SHA 三 job。
+
+### 2026-08-23：8E Batch B exact-SHA 公共闭环
+
+- `PUBLIC-CI`：implementation/evidence `e844bdd673ee051568e8611160f6ba53e8c745c4` / Actions
+  `32622696087` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `COUNTS`：公共 pytest `1709 passed, 134 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+  `187 passed, 1 warning` 且 migration/head 一致；Linux package schema 1.6/外部调用 0/image boundary 全绿。
+- `CLOSED-BATCH`：owner-scoped profile list/selection、opaque alias、explicit legacy/Conversation routing 和本机
+  Docker/PostgreSQL 补环境正式闭环。整个 8E 与 coverage 仍 in progress/planned。
+- `HANDOFF`：按既有 preflight 顺序唯一下一内部批为 Batch C EvidenceBundle persistence/refresh/expiry、
+  event replay→SSE DTO 与四态产品状态合同；Batch C 公共闭环前不进入 Batch D 静态前端。

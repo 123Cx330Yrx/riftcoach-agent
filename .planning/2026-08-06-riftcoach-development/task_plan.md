@@ -766,8 +766,8 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 - [completed-local] 本机已配置 Docker Desktop、持久 PostgreSQL 17 与用户级测试 URL；真库集合 `187 passed`、focused `268 passed`、完整 `1842 passed, 1 skipped, 1 warning, 127 subtests passed`，Linux Compose/package smoke schema 1.6/外部调用 0 与 image boundary 已通过；
 - [completed-local] Batch B 八维 walkthrough 与 coverage evidence map 已建立；整个 8E 尚未完成，coverage 继续 `planned`；
 - [completed-local] 两套 RAG、Harness dry-run、compileall/pip/YAML、SDK/Secret/tracked-data、governance 与 diff 门全绿；
-- [ ] 完成独立 Batch B implementation/evidence 提交、push 和 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；
-- [ ] 前端从静态/fixture-backed 合同小批开始，再接 API/SSE/Auth，最后才加入口动效；
+- [completed-public] Batch B implementation/evidence `e844bdd673ee051568e8611160f6ba53e8c745c4` / Actions `32622696087` 的 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 全绿；公共 pytest 1709/134 skips/127 subtests、真库 187、Linux package schema 1.6/外部调用 0；
+- [ ] Batch C 先冻结 EvidenceBundle 安全持久化/刷新/过期、8C event replay→SSE DTO 与四态产品状态合同；完成独立公共门后再进入 Batch D 静态/fixture-backed 前端；
 - [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout；Windows symlink 单项 skip 由 exact-SHA Linux pytest 独立补证。
 
 ## 6A Entry Design Checklist

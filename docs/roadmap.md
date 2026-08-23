@@ -308,11 +308,11 @@ lease/fencing、cancel、checkpoint、receipt-proven recovery、Worker/API/packa
 OP.GG `Mid.rank_prev_patch` JSON-null drift，ADR-0058 的窄修复已由 `83fde7d/32615340228` 公共闭环；
 修复后 live replay 已创建 body-free bundle，但 Akali Meta join 因 top-10 未命中诚实 degraded。ADR-0059
 随后把玩家档案冻结为 successful Player Link 的 owner-scoped latest-success projection，并把 legacy/Conversation
-Riot routing 改为逐请求/SQL target exact region；本地实现、PostgreSQL 17 与 Linux Compose smoke 已通过，
-仍待 Batch B 独立 exact-SHA 公共三 job。这不表示 exact-patch/freshness、DAG、SSE、正式 Auth、前端、备份、
+Riot routing 改为逐请求/SQL target exact region；implementation/evidence `e844bdd/32622696087` 已完成
+exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE、正式 Auth、前端、备份、
 8F 或生产部署已经完成。
 
-### 8E Batch B：玩家档案选择与显式 Riot 路由（本地完成，待公共闭环）
+### 8E Batch B：玩家档案选择与显式 Riot 路由（已公共闭环）
 
 - owner 可列出自己已成功解析且仍 active 的多个外服玩家/公开观察对象；重复 link 只投影最新一条，公共
   DTO 不含 PUUID、owner/task identity 或 upstream body；
@@ -320,6 +320,9 @@ Riot routing 改为逐请求/SQL target exact region；本地实现、PostgreSQL
 - legacy recent review 必须提交 allowlisted routing region；Conversation 使用 SQL execution target region，
   Worker exact-select `americas/asia/europe/sea`，没有 ambient default、CN fallback 或自动探区；
 - 本批不包含 profile 昵称/排序/默认项、正式 Auth/RSO、SSE、前端、EvidenceBundle store、HTTPS、备份或部署。
+- `e844bdd/32622696087` 的公共 pytest 1709、真库 187 与 Linux package schema 1.6 三 job 全绿；唯一下一
+  内部批按 preflight 顺序为 Batch C EvidenceBundle persistence/refresh/expiry、event replay→SSE DTO 和
+  四态产品状态合同，之后才进入 Batch D 静态前端。
 
 ### 原理
 

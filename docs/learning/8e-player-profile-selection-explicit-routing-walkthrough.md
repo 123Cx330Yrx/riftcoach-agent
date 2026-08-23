@@ -81,6 +81,9 @@ conversation: SQL execution target.region┘  → exact regional Riot Client →
 - 本机 Linux Compose smoke 已返回 schema `1.6`、`external_riot_provider_calls=0`，并通过非 root、无
   `.env/tests/cache/runs/reports/tmp` 镜像边界；临时 Compose 容器、网络和 volume 已清理；
 - 两套 RAG、Harness dry-run、compileall、pip、YAML、SDK/Secret/tracked-data、governance 与 diff 门均通过。
+- implementation/evidence `e844bdd673ee051568e8611160f6ba53e8c745c4` / Actions `32622696087` 的
+  exact-SHA 三 job 全绿：公共 pytest `1709 passed, 134 skipped, 1 warning, 127 subtests passed`；真实
+  PostgreSQL `187 passed, 1 warning` 且 migration/head 一致；Linux package schema 1.6、外部调用 0。
 
 ## 6. 运行手册
 

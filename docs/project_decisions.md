@@ -1856,6 +1856,15 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   公共 `pytest`、`postgres-migrations`、`packaging-smoke`，也不把整个 8E 标为完成。
 - 本批不实现正式 Auth/RSO、SSE、前端、EvidenceBundle store、HTTPS、备份或部署；ShowMaker 不是默认账号。
 
+## 2026-08-23：8E Batch B 公共关闭与 Batch C 顺序
+
+- `e844bdd673ee051568e8611160f6ba53e8c745c4` / Actions `32622696087` 的 exact-SHA `pytest`、
+  `postgres-migrations`、`packaging-smoke` 三 job 全绿；公共 pytest 1709、真库 187、Linux package 1.6。
+- ADR-0059 的 profile/routing 裁决正式关闭当前批，但不关闭 8E、不把 coverage 改为 complete。
+- 按已持久化的 preflight 顺序，下一内部批仍是 Batch C：EvidenceBundle persistence/refresh/expiry、8C
+  event replay→SSE body-free DTO 与 `published/degraded/rejected/not_ready` 状态合同；不得静默跳过后直接
+  开始 Batch D 前端。Batch C 公共闭环后才进入静态/fixture-backed screen。
+
 ## 2026-08-23：8C 第三轮真库兼容裁决
 
 - Repository 的所有 JSONB checkpoint 读回路径（task、event、requeue）统一经过 strict JSON wire parser，并兼容 psycopg `Jsonb` wrapper；不以 `strict=False` 放宽 Pydantic 合同。

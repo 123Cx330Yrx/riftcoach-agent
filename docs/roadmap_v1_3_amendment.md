@@ -126,8 +126,9 @@ lease/fencing、cancel、checkpoint、recovery 与迟到隔离；`8D` 已由 `a2
 fusion；`8E` 已获 RQ-086 授权进入 preflight，RQ-087 又用一次 body-free live diagnostic 把 OP.GG
 `mid` drift 收敛到 nullable rank-history JSON `null`，ADR-0058 窄修复已由 `83fde7d/32615340228` 公共闭环，RQ-088 下修复后 live replay 又成功创建 body-free bundle；随后做玩家档案选择合同和 legacy 地区审计，
 ADR-0059 的 owner-scoped latest-success profile projection、opaque selection 与逐请求/SQL target 四地区路由
-现已本地实现并通过 PostgreSQL 17/Linux Compose smoke，仍待独立 exact-SHA 三 job；随后分批实施
-Web/SSE/Auth/HTTPS/备份与部署；`8F` 做最终 Eval 和作品集退出。DAG、Subagent、Agentic Retrieval 和第三方 Runtime
+已由 `e844bdd/32622696087` 完成 exact-SHA pytest/PostgreSQL/Linux package 公共闭环；随后先做
+EvidenceBundle persistence/refresh/expiry、event replay→SSE DTO 和四态状态合同，再分批实施
+Web/Auth/HTTPS/备份与部署；`8F` 做最终 Eval 和作品集退出。DAG、Subagent、Agentic Retrieval 和第三方 Runtime
 仍是条件性候选，不因名称进入 Core。
 
 ### 2026-08-23：8E Batch B 本地产品合同
@@ -137,7 +138,8 @@ Web/SSE/Auth/HTTPS/备份与部署；`8F` 做最终 Eval 和作品集退出。DA
 - legacy request 地区进入 payload/fingerprint，Conversation 使用 SQL execution target，Worker exact-select
   `americas/asia/europe/sea`；环境只提供 Riot Key，不再提供默认 region；
 - RQ-089 已补齐本机 Docker/PostgreSQL/Linux smoke，历史公共 PostgreSQL/Linux exact-SHA 证据仍保持独立；
-- coverage 继续 `planned`，因为 8E 前端/Auth/SSE/备份/部署与整体退出尚未完成。
+- `e844bdd/32622696087` 的公共 pytest 1709、真库 187、Linux package schema 1.6 三 job 全绿；
+- coverage 继续 `planned`，因为 Batch C、前端/Auth/SSE/备份/部署与整体退出尚未完成。
 
 ## 7. 产品切片
 

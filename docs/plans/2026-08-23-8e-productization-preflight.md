@@ -109,8 +109,10 @@ RQ-088 生效后已执行一次修复后 replay：strict adapter 成功解析 10
 
 - [x] 采用 `Riot ID + routing_region + relationship_role` 输入。
 - [x] 采用 `self/unverified_claim` 与 `observed/public_observed` 双关系语义。
-- [ ] 设计 owner-scoped profile list/selection DTO 与 API。
-- [ ] 设计 legacy endpoint 的兼容/迁移策略，禁止地区隐式错配。
+- [x] ADR-0059、专用设计/TDD 实现 owner-scoped latest-success profile list/selection DTO 与 API；
+  `player_profile_id` opaque/PUUID-free，Conversation 保留 strict legacy alias。
+- [x] legacy endpoint required `routing_region`，Conversation 使用 SQL execution target，Worker exact-select
+  四地区 client 并删除 ambient `RIOT_REGION`；`e844bdd` / Actions `32622696087` exact-SHA 三 job 全绿。
 
 ### Batch C：证据与产品 API
 
@@ -140,10 +142,14 @@ RQ-088 生效后已执行一次修复后 replay：strict adapter 成功解析 10
 
 ## 6. 下一动作
 
-1. 冻结 owner-scoped player profile list/selection API 合同与 legacy 地区迁移；
-2. 之后再进入 8E 的第一个静态/fixture-backed 前端小批次。
+1. 进入 Batch C：先冻结 EvidenceBundle 安全持久化/刷新/过期投影、8C event replay → SSE 安全 DTO 和
+   `published/degraded/rejected/not_ready` 前端状态合同；
+2. Batch C 完成独立教学、TDD、持久证据与 exact-SHA 公共门后，再进入 Batch D 的第一个
+   静态/fixture-backed 前端小批次。
 
 ADR-0058 最小修复已由 `83fde7d014aae8fdccf2ebd91929967868101075` / Actions
 `32615340228` 完成 exact-SHA 三 job 公共闭环；RQ-088 的后续 live 复验现已独立通过。
 frozen live-success evidence 又由 `efaccd9a8022f0d75e9baca5470450be6a1a3357` /
 Actions `32615821339` 完成 exact-SHA 三 job 公共闭环。
+玩家档案/显式路由 implementation/evidence `e844bdd673ee051568e8611160f6ba53e8c745c4` /
+Actions `32622696087` 也已完成 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环。

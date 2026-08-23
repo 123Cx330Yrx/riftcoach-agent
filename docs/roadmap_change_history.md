@@ -2802,3 +2802,14 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `STATUS`：两套 RAG、Harness、compile/pip/YAML、安全/治理/diff 门均全绿。8E 保持 `in_progress`，coverage
   保持 `planned`；唯一下一动作是独立提交/push
   和 exact-SHA 三 job。公共全绿前不进入静态前端小批。
+
+### 2026-08-23：8E Batch B exact-SHA 公共关闭
+
+- `PUBLIC-CI`：implementation/evidence `e844bdd673ee051568e8611160f6ba53e8c745c4` / Actions
+  `32622696087` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `COUNTS`：公共 pytest `1709 passed, 134 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+  `187 passed, 1 warning`、migration/head 一致；Linux package schema 1.6/外部调用 0/image boundary 全绿。
+- `CLOSED`：ADR-0059、profile/routing implementation、八维 walkthrough 与本机基础设施补齐正式关闭 Batch B；
+  8E/coverage 继续 in progress/planned。
+- `HANDOFF`：按 preflight 既定顺序唯一下一内部批为 Batch C EvidenceBundle persistence/refresh/expiry、
+  event replay→SSE body-free DTO 与四态产品状态合同；不得静默跳过 Batch C 进入 Batch D 前端。
