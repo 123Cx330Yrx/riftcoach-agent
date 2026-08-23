@@ -23,7 +23,7 @@
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 已完成；7-5 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 完成最终公共闭环 |
-| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D 与 8E Batch B/C/D 已公共闭环，ADR-0053 reject 产品 Multi-Agent；8E 下一步为真实 API/SSE 接线设计，Auth/部署和 8F 未完成 |
+| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B/C/D 与 Live Workbench integration 已公共闭环，ADR-0053 reject 产品 Multi-Agent；下一项为 Batch E 安全/部署入口设计，完整 8E/8F 未完成 |
 
 ## 横向能力总账
 
@@ -342,10 +342,10 @@ exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE�
 - 八维 walkthrough 路径已建立但整个 8E coverage 仍 `planned`。RQ-091/RQ-092/RQ-093 与 ADR-0061 已
   冻结多来源两层采用门、五模块连续性、`Rift Command Center`、tokens、客户端/产品状态和 a11y；
   design `88a5ab6/32631766013` 与 implementation/evidence `f7ebedd/32636771507` 均完成 exact-SHA 三 job。
-  Batch D 静态前端正式关闭；下一步先设计真实 API/SSE 接线和缺失 Summary/report projection，不提前接
-  Auth/部署、电影感入口、完整 Timeline/Training 或 8F。
+  Batch D 静态前端正式关闭；后续 Live Workbench 接线又由 `f441061/32647933692` 公共闭环。当前下一项
+  是 Batch E 安全/部署入口设计；仍不表示 Auth/部署、电影感入口、完整 Timeline/Training 或 8F 已完成。
 
-### 8E Live Workbench 接线设计门（RQ-094/RQ-095）
+### 8E Live Workbench 接线（RQ-094–RQ-096，已公共闭环）
 
 - RQ-094 补回最终视觉职责：`Rift Awakening` 电影感入口与 `Esports Intelligence` 工作台组成
   `Cinematic Portal → Broadcast Workbench`，`Void Holographic Lab` 只作受限 Hero 实验；
@@ -359,11 +359,12 @@ exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE�
 - ADR-0062 与 live integration design/implementation plan 完成本地同步后，必须先经过独立 design SHA 的
   三 job exact-SHA 公共门，才可把 implementation 交为 prepared。该门现已由
   `4057c93/32639561338` 全绿关闭；RQ-096 随后授权实施；
-- locator/Summary/typed Evidence、exact decoder/client/controller/EventSource 和 default-live React 已本地完成；
-  backend focused 58、完整 pytest 1939、真 PostgreSQL 200、frontend unit 66/e2e 17、JS gzip 122.01 kB 与
-  Linux package schema 1.6 全绿。当前唯一下一动作是独立 implementation/evidence SHA 与三 job 公共门；
-- 该本地实现仍不包含 Auth/部署、电影感入口、完整 Timeline/Training、OP.GG breadth、fusion golden slice
-  或 8F；整个 8E/coverage 继续 `in_progress/planned`。
+- locator/Summary/typed Evidence、exact decoder/client/controller/EventSource 和 default-live React 已由
+  `f441061e7444fa6d1d3c213b81e05a02f0fc68c5` / Actions `32647933692` exact-SHA 三 job 公共闭环；
+  公共 pytest 1796、真 PostgreSQL 200、frontend unit 66/e2e 17、JS gzip 122.01 kB 与 Linux package schema 1.6 全绿；
+- 该已公共闭环的实现仍不包含 Auth/部署、电影感入口、完整 Timeline/Training、OP.GG breadth、fusion golden slice
+  或 8F；整个 8E/coverage 继续 `in_progress/planned`。唯一下一检查点为
+  `8e-batch-e-security-deployment-entry-design` prepared/waiting authorization，先设计再原子化实现。
 
 ### 原理
 

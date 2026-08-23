@@ -751,7 +751,7 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 ### Phase 37 - 8e-productization
 
 - Status: in_progress
-- State: RQ-096 live integration implementation/evidence 本地全部门已完成，唯一下一动作是独立提交/push 与 exact-SHA 三 job；这仍不表示完整 8E、Auth/HTTPS/备份/部署已完成。
+- State: RQ-096 live integration implementation/evidence 已由 `f441061` / Actions `32647933692` exact-SHA 三 job 公共闭环；唯一下一检查点为 `8e-batch-e-security-deployment-entry-design` prepared/waiting authorization。这仍不表示完整 8E、Auth/HTTPS/备份/部署已完成。
 - [completed] 创建 ADR-0056 与 `docs/plans/2026-08-23-8e-productization-preflight.md`，冻结真实验证、玩家档案和慢前端顺序；
 - [completed] 真实 OP.GG 有界 body-free smoke：1 次 initialize/list/call，3 条 top facts，证据 digest 已持久化；
 - [completed] `DK ShowMaker#KR1 / asia / observed` 的 Account/Match body-free gate：3 次 Riot calls、1 局详情通过；
@@ -821,8 +821,11 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
   RAG/Harness/compile/pip/YAML/security/governance/diff 与隔离 Linux package schema 1.6 全绿；
 - [completed-local-evidence] 八维 walkthrough 与 coverage paths 已完成，8E group 继续 `planned`；公共 job 已加入
   latest locator repository 真库文件；
-- [handoff] 唯一下一动作是独立 implementation/evidence commit/push 并等待同 SHA `pytest`、
-  `postgres-migrations`、`packaging-smoke` 全绿；公共关闭前不进入下一 8E 原子批；
+- [completed-public] implementation/evidence `f441061e7444fa6d1d3c213b81e05a02f0fc68c5` / Actions
+  `32647933692` 的三 job 全绿；公共 pytest 1796/144 skips/127 subtests、真库 200、frontend unit 66/e2e 17、
+  JS gzip 122.01 kB 与 Linux package schema 1.6/外部调用 0 同 SHA 通过；
+- [handoff] 唯一下一检查点为 `8e-batch-e-security-deployment-entry-design` prepared/waiting authorization；
+  只先设计 Auth/RSO、CORS/CSP/HTTPS/限流、Secret 生命周期、backup/erase、隐私、观测/部署和剩余五模块顺序；
 - [boundary] Batch D 与 RQ-095 design 均不接真实 API/SSE/Auth，不实现完整 Timeline/历史列表、HTTPS、backup、deployment
   或公网发布；MotionSites/React Bits/Aceternity 等只按裁决作 reference，不复制受限源组件；
 - [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout；Windows symlink 单项 skip 由 exact-SHA Linux pytest 独立补证。

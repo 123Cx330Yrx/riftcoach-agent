@@ -2010,3 +2010,13 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   package schema 1.6 与横向门全绿；公共 exact-SHA 三 job 成功前只称本地完成。
 - 整个 8E coverage 保持 planned；Auth/RSO、部署、电影感入口、完整 Timeline/Training、OP.GG breadth、
   fusion golden slice 和 8F 均不并入本批。
+
+## 2026-08-23：RQ-096 Live Integration 公共关闭与 Batch E 交接
+
+- implementation/evidence `f441061e7444fa6d1d3c213b81e05a02f0fc68c5` / Actions `32647933692`
+  的 pytest/PostgreSQL/Linux package 三 job 全绿；RQ-096 正式关闭，既有安全/性能取舍不再只是本地证据。
+- 整个 8E coverage 继续 planned，不能因工作台接真数据就声称 Auth、部署或五模块完成。
+- preflight 的下一批是 Batch E，但其范围过宽，先固定为
+  `8e-batch-e-security-deployment-entry-design`：比较身份/RSO、部署拓扑、CORS/CSP/HTTPS/限流、Secret
+  生命周期、backup restore/erase、隐私、观测和剩余五模块施工顺序；设计公共关闭前不实现或配置外部系统。
+- OP.GG useful-breadth 和完整 fusion→Training→UI golden slice 继续是 8F 前硬门，不被 Batch E 入口设计吞并。

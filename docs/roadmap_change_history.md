@@ -2885,3 +2885,14 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   schema 1.6 全绿；八维 walkthrough/coverage paths 完成。
 - `NEXT`：独立 implementation/evidence commit/push 与同 SHA 三 job。公共成功前 live integration 批保持
   open，8E/coverage 继续 in_progress/planned。
+
+## 2026-08-23：RQ-096 Live Integration exact-SHA closure
+
+- `PUBLIC-CI`：`f441061e7444fa6d1d3c213b81e05a02f0fc68c5` / Actions `32647933692` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `COUNTS`：公共 pytest 1796/144 skips/127 subtests、真实 PostgreSQL 200、frontend unit 66/e2e 17、
+  JS gzip 122.01 kB、Linux package schema 1.6/Memory Context 3/外部调用 0 同 SHA 通过。
+- `CLOSED`：RQ-096 批正式关闭；整个 8E/coverage 仍 in_progress/planned，Auth/部署、入口/Timeline/完整
+  Training、breadth/golden slice 与 8F 未完成。
+- `HANDOFF`：唯一下一检查点为 `8e-batch-e-security-deployment-entry-design` prepared/waiting
+  authorization；先原子化安全/部署与剩余模块顺序，不自动实施或配置生产环境。

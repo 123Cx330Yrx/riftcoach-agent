@@ -4024,3 +4024,14 @@
 - `BOUNDARY/NEXT`：外部 Riot/OP.GG/Provider/LLM calls 0，8B holdout 0；唯一下一动作是独立
   implementation/evidence commit/push 与同 SHA 三 job，公共闭环前不进入 Auth/部署、其余五模块、breadth、
   golden slice 或 8F。
+
+### 2026-08-23：RQ-096 Live Integration 公共闭环
+
+- `PUBLIC-CI`：implementation/evidence `f441061e7444fa6d1d3c213b81e05a02f0fc68c5` / Actions
+  `32647933692` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `COUNTS`：公共 pytest `1796 passed, 144 skipped, 1 warning, 127 subtests passed`；frontend unit 66、
+  Playwright 17、JS/CSS gzip `122.01/11.35 kB`；真 PostgreSQL `200 passed, 1 warning`；Linux package
+  schema 1.6、Memory Context 3、terminal assistant 0、外部调用 0 与 image boundary 全绿。
+- `CLOSED`：RQ-096 Live Workbench integration 正式关闭；整个 8E/coverage 继续 in_progress/planned。
+- `HANDOFF`：唯一下一检查点 `8e-batch-e-security-deployment-entry-design` prepared/waiting authorization；
+  Auth/部署实现、入口/Timeline/完整 Training、breadth/golden slice 与 8F 均未自动进入。

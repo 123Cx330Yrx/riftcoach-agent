@@ -3855,3 +3855,9 @@
   list exact match 决定；URL 不能提供 task/run，也不会使 observed 请求个人 Training。
 - 本机只有 `RIFTCOACH_TEST_DATABASE_URL`，完整 suite 中使用 Alembic 的旧 fixture 还要求同进程
   `DATABASE_URL`。按 CI 同源映射后完整 1939 与真库 200 通过；这不是产品配置放宽。
+- exact-SHA `f441061/32647933692` 公共 pytest 为 1796/144 skips，而本地为 1939/1 skip；差异来自公共主 job
+  不连接 PostgreSQL，真实 DB 语义由同 SHA 独立 `postgres-migrations` 的 200 项阻塞集合承担。Linux 主 job
+  同时补齐 Windows symlink skip，因此不能只比较单个 pytest 数字判断证据变弱。
+- preflight 的真实接线交接已经完成，按既定批次下一项是 Batch E 安全/部署；但其范围横跨 Auth/RSO、
+  HTTPS/CSP/CORS/限流、backup/erase、隐私、观测和剩余五模块，必须先做独立 entry design/atomization，
+  不能把一条“继续”解释成一次性配置生产系统。

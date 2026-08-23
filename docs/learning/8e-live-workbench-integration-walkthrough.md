@@ -1,6 +1,6 @@
 # 8E Live Workbench Integration Walkthrough
 
-> 状态：本地 implementation/evidence 已完成，exact-SHA 公共 CI 待闭环。整个 8E 仍为
+> 状态：implementation/evidence `f441061` / Actions `32647933692` 已完成 exact-SHA 公共闭环。整个 8E 仍为
 > `in_progress / coverage planned`；本文只覆盖真实 API/SSE 接线批。
 
 ## 1. 问题与原理
@@ -180,8 +180,10 @@ GET profiles
 - 隔离 Linux Compose package schema `1.6`，Memory Context 3 records、terminal assistant 0、外部调用 0，
   非 root/image exclusion 通过，临时 container/volume/network 已清理。
 
-公共完成门仍是同一 implementation/evidence SHA 的 GitHub Actions `pytest`、`postgres-migrations`、
-`packaging-smoke` 三 job 全部 success；在它们完成前，本批只称“本地完成”。
+公共完成门已由同一 implementation/evidence SHA `f441061e7444fa6d1d3c213b81e05a02f0fc68c5` 的
+GitHub Actions `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 success 关闭：公共 pytest
+`1796 passed, 144 skipped, 1 warning, 127 subtests passed`，frontend unit 66/e2e 17，真实 PostgreSQL
+`200 passed, 1 warning`，Linux package schema 1.6/外部调用 0。公共主 job 的 DB skips 由独立真库 job 承担。
 
 ## 7. 运行手册
 
