@@ -757,7 +757,7 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 - [completed-local] ADR-0058 只在 `rank_prev`/`rank_prev_patch` 两个 nullable 字段接受精确小写 JSON `null`；正例及非 nullable/未知 Name/大小写负例已完成 red→green TDD；
 - [completed] `c5cbc94` / Actions `32613573022` exact-SHA 三 job 全绿；公共 pytest、真实 PostgreSQL 与 Linux package 均通过，外部调用仍为 0；
 - [completed-local] 完整 pytest `1699 passed, 134 skipped, 1 warning, 127 subtests passed`；两套 RAG、Harness dry-run、compileall、pip、治理、SDK/Secret/tracked-data 与 diff 门全绿；
-- [ ] 独立提交/推送当前 implementation/evidence 并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；离线绿灯不冒充修复后 live replay 已通过；
+- [completed-public] implementation/evidence `83fde7d` / Actions `32615340228` 的 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 全绿；公共 pytest 1700、真库 186、Linux package schema 1.6/外部 Riot Provider calls 0；
 - [ ] 若获新的明确授权，执行一次修复后最终 mid replay；成功才可记录真实两源 EvidenceBundle，失败则按新诊断继续 degraded；
 - [ ] 冻结 owner-scoped player profile list/selection DTO，修正 legacy `/reviews/recent` 地区隐式来源；
 - [ ] 前端从静态/fixture-backed 合同小批开始，再接 API/SSE/Auth，最后才加入口动效；

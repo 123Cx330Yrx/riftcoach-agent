@@ -135,7 +135,9 @@ ADR-0058 采用最小兼容：只在 `rank_prev` 和 `rank_prev_patch` 两个 nu
 
 ## 6. 下一动作
 
-1. 独立提交 ADR-0058 最小修复并完成 exact-SHA 公共 CI；本地完整门已通过；
-2. 若获新的明确授权，执行一次修复后最终 live replay，成功才保存真实 bundle projection；
-3. 冻结 owner-scoped player profile list/selection API 合同与 legacy 地区迁移；
-4. 之后再进入 8E 的第一个静态/fixture-backed 前端小批次。
+1. 若获新的明确授权，执行一次修复后最终 live replay，成功才保存真实 bundle projection；
+2. 冻结 owner-scoped player profile list/selection API 合同与 legacy 地区迁移；
+3. 之后再进入 8E 的第一个静态/fixture-backed 前端小批次。
+
+ADR-0058 最小修复已由 `83fde7d014aae8fdccf2ebd91929967868101075` / Actions
+`32615340228` 完成 exact-SHA 三 job 公共闭环；该 CI 为 no-I/O，不替代上述 live 复验。

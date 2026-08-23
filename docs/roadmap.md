@@ -23,7 +23,7 @@
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 已完成；7-5 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 完成最终公共闭环 |
-| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A、8B、8C 与 8D 已公共闭环，ADR-0053 reject 产品 Multi-Agent；8E preflight 已用 live diagnostic 定位 OP.GG nullable rank-history JSON-null drift，ADR-0058 最小修复待公共门与最终 live 复验 |
+| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A、8B、8C 与 8D 已公共闭环，ADR-0053 reject 产品 Multi-Agent；8E ADR-0058 nullable rank-history JSON-null 修复已由 `83fde7d/32615340228` 公共闭环，修复后 live 复验待新授权 |
 
 ## 横向能力总账
 
@@ -305,7 +305,7 @@ Multi-Agent。8C 已由 clean implementation `2df5349/32587659678` 验证 Postgr
 lease/fencing、cancel、checkpoint、receipt-proven recovery、Worker/API/package 纵向与八维材料；8D 又由
 `a274b7f/32598480400` 完成 Riot/Data Dragon/official patch/OP.GG partial typed EvidenceBundle 公共闭环。
 当前唯一检查点为 `8e-productization`，已进入 preflight；RQ-087 live diagnostic 已定位
-OP.GG `Mid.rank_prev_patch` JSON-null drift，ADR-0058 的窄修复正在验证。这不表示修复后 live
+OP.GG `Mid.rank_prev_patch` JSON-null drift，ADR-0058 的窄修复已由 `83fde7d/32615340228` 公共闭环。这不表示修复后 live
 EvidenceBundle、DAG、SSE、正式 Auth、前端、备份、8F 或生产部署已经完成。
 
 ### 原理

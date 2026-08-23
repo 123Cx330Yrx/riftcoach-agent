@@ -2760,3 +2760,10 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   其他 Name、字段、大小写和表达式继续 fail closed，不改变 partial provenance/freshness/patch 边界。
 - `TDD`：nullable 正例先红；实现后 OP.GG/fusion 16 项、相邻 MCP/Evidence 60 项通过。完整本地和 exact-SHA
   公共门待执行；该授权 call 已用完，修复后最终 live replay 仍需新的明确授权。
+
+### 2026-08-23：ADR-0058 exact-SHA 公共闭环
+
+- `PUBLIC-CI`：implementation/evidence `83fde7d014aae8fdccf2ebd91929967868101075` / Actions
+  `32615340228` 三 job completed/success；公共 pytest 1700、真实 PostgreSQL 186、Linux package schema 1.6。
+- `BOUNDARY`：公共 CI 外部 Riot/Provider calls 0，也不调用 OP.GG；因此它证明代码/回归/部署兼容，不证明
+  修复后 live bundle 成功。8E 继续 in progress，唯一下一动作是等待新授权的一次最终 `mid` replay。

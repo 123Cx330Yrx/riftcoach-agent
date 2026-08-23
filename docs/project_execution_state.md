@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（RQ-087 live diagnostic 已定位 nullable rank-history JSON-null drift；ADR-0058 最小修复进入本地/公共验证）
+- 最后更新：2026-08-23（ADR-0058 最小修复由 `83fde7d/32615340228` exact-SHA 公共闭环；修复后 live 复验待新授权）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2087,3 +2087,14 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   完整 pytest `1699 passed, 134 skipped, 1 warning, 127 subtests passed`，两套 RAG、Harness、compileall、pip、
   governance 与安全/diff 门全绿。当前唯一下一动作是独立 implementation/evidence 提交与 exact-SHA 三 job；本授权 call 已用完，
   新授权前不执行修复后 live replay，也不声称真实两源 EvidenceBundle 已成功。
+
+## 2026-08-23：ADR-0058 exact-SHA 公共闭环
+
+- implementation/evidence `83fde7d014aae8fdccf2ebd91929967868101075` / Actions `32615340228` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 completed/success。
+- 公共 pytest `1700 passed, 133 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+  `186 passed, 1 warning` 且 migration/head 一致；Linux package schema 1.6、外部 Riot Provider calls 0。
+- 代码与公共 CI 已证明窄 JSON-null 合同和回归兼容，但公共 CI 不调用 OP.GG；当前 8E 继续
+  `in_progress / coverage planned`。唯一下一动作是在新的明确授权窗口执行一次修复后真实 `mid` replay；
+  成功才登记真实两源 EvidenceBundle，失败则保留 degraded 并按新 body-free diagnostic 裁决。之后才进入
+  owner-scoped player profile selection DTO、legacy 地区修正和前端小批。

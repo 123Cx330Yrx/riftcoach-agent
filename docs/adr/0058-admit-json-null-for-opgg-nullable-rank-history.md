@@ -47,3 +47,7 @@ patch/freshness 限制、最多 10 行、单次调用、deadline 或 body-free �
 本授权窗口只允许并已执行一次真实 OP.GG call，因此本 ADR 证明修复由 live 诊断驱动，
 但不把离线绿灯冒充“修复后 live replay 已通过”。若要形成真实两源成功 EvidenceBundle，
 仍需新的明确授权执行一次最终验证。
+
+实现提交 `83fde7d014aae8fdccf2ebd91929967868101075` 已由 Actions `32615340228`
+完成 exact-SHA `pytest`、真实 PostgreSQL 与 Linux package 三 job 公共验证；公共 CI
+外部 OP.GG/Riot/Provider 调用为 0。

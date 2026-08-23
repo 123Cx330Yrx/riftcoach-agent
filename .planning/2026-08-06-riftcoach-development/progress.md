@@ -3814,3 +3814,14 @@
 - `LOCAL-GATES`：完整 pytest `1699 passed, 134 skipped, 1 warning, 127 subtests passed`；development/holdout
   RAG 满阈值，Harness `published`/0 revisions，compileall、pip、governance、SDK/Secret/tracked-data、JSON 与
   diff 门全绿。本机 skip 不冒充真实 PostgreSQL/Linux；下一动作是独立 implementation/evidence 提交与三 job。
+
+### 2026-08-23：ADR-0058 implementation exact-SHA 公共闭环
+
+- `PUBLIC-CI`：`83fde7d014aae8fdccf2ebd91929967868101075` / Actions `32615340228` 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `COUNTS`：公共 pytest `1700 passed, 133 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+  `186 passed, 1 warning`，migration/head 一致；Linux package schema 1.6、`external_riot_provider_calls=0`。
+- `EVIDENCE`：live diagnostic 文件 SHA-256 为 `796c539d04f1d2009d97af38f6248d8576f61877fd55dc12741ecb5d2195f099`；
+  raw body/Key/PUUID/Match ID 未持久化。受控 fixture 明确标记为 retained pre-fix evidence。
+- `NEXT`：当前 code/public-CI 修复闭环；8E 仍 in progress。若用户再次明确授权，下一步只执行一次修复后
+  `mid` live replay；成功才登记真实两源 bundle，随后进入 player profile selection DTO/legacy region。
