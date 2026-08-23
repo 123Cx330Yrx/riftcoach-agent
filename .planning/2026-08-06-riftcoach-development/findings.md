@@ -3655,3 +3655,11 @@
   Unicode 文本，并继续拒绝 instruction-like English label。public projection 不携带 PUUID、Key、raw MCP body 或 Prompt。
 - focused TDD 首红为缺模块，修复 dataclass seam 后 `18 passed`；相邻 Meta/Context 合计 `48 passed`。尚未完成
   full regression、walkthrough、coverage 或 public CI，8D 不能关闭。
+
+## 2026-08-23：8D 公共闭环事实
+
+- implementation/evidence `a274b7f8900d61cb7edb7d09e2f5c87f8b0b2e48` 的 Actions `32598480400`
+  三 job 全绿；pytest 1692/133 skips/127 subtests，PostgreSQL 186，package schema 1.6/外部调用 0。
+- 公共门只证明 typed fusion contract、no-I/O adapter 和现有产品/package 回归兼容；没有读取 Key 或调用本轮
+  Riot/OP.GG/Provider/LLM，也不证明实时刷新、全工具、EvidenceBundle SQL 持久化或 8E 产品化。
+- 8D coverage 可置 complete；唯一 handoff 是 `8e-productization` prepared/waiting authorization。

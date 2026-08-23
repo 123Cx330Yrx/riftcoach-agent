@@ -1828,6 +1828,15 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - 当前只完成 8D 本地设计、contracts/adapters/fusion TDD；focused 18、相邻 48、完整 1691/134 skips；完整门和
   exact-SHA 公共 CI 前不关闭 8D、不进入 8E。
 
+## 2026-08-23：8D 公共关闭，8E 仅 prepared
+
+- implementation/evidence `a274b7f8900d61cb7edb7d09e2f5c87f8b0b2e48` / Actions `32598480400`
+  的 pytest、PostgreSQL、Linux package 三 job 全绿；8D coverage complete。
+- 产品采用结论保持 ADR-0055：typed EvidenceBundle + deterministic pure fusion，不引入 claim graph、DAG、
+  Multi-Agent 或新持久化真源。partial OP.GG 只支持 current snapshot，不从 Riot 补 patch/freshness。
+- canonical 只交接 `8e-productization` prepared/waiting authorization；Auth/SSE/React/部署、真实刷新和 8F
+  README/作品集统一交付尚未开始。
+
 ## 2026-08-23：8C 第三轮真库兼容裁决
 
 - Repository 的所有 JSONB checkpoint 读回路径（task、event、requeue）统一经过 strict JSON wire parser，并兼容 psycopg `Jsonb` wrapper；不以 `strict=False` 放宽 Pydantic 合同。

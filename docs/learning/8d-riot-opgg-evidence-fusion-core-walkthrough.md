@@ -2,8 +2,8 @@
 
 这份材料记录 `8d-riot-opgg-evidence-fusion-core` 的当前本地实现和边界。设计依据是
 [ADR-0055](../adr/0055-adopt-typed-evidence-bundle-fusion.md)、[8D 设计](../plans/2026-08-23-8d-riot-opgg-evidence-fusion-design.md)
-和[实施计划](../plans/2026-08-23-8d-riot-opgg-evidence-fusion-implementation.md)。当前尚未完成
-公共 exact-SHA 三 job，因此本材料不会把 8D 写成已关闭或实时外部接入。
+和[实施计划](../plans/2026-08-23-8d-riot-opgg-evidence-fusion-implementation.md)。implementation/evidence
+`a274b7f` 已由 Actions `32598480400` 完成 exact-SHA 三 job；这仍不等于实时外部刷新或 8E 产品化。
 
 ## 1. 问题与原理
 
@@ -76,9 +76,15 @@ TDD 首先以 `ModuleNotFoundError: app.evidence` 红灯，随后最小 contract
 - public projection 中不得出现 PUUID、Key、raw MCP body、Prompt 或异常正文；
 - monkeypatch `requests`/`os.getenv` 后仍完成 no-I/O vertical。
 
-当前完整 pytest 为 `1691 passed, 134 skipped, 1 warning, 127 subtests passed`；RAG development/holdout、
+本地完整 pytest 为 `1691 passed, 134 skipped, 1 warning, 127 subtests passed`；RAG development/holdout、
 Harness dry-run、compileall、pip、YAML、governance 和 diff 均通过。134 个 skip 主要是本机无 PostgreSQL/
-Docker/Linux 条件；它们不能替代 exact-SHA 公共 PostgreSQL/Linux 证据。独立提交和公共三 job 尚待完成。
+Docker/Linux 条件；它们不能替代 exact-SHA 公共 PostgreSQL/Linux 证据。
+
+公共 run `32598480400` 精确绑定 implementation/evidence SHA `a274b7f8900d61cb7edb7d09e2f5c87f8b0b2e48`：
+
+- `pytest`：`1692 passed, 133 skipped, 1 warning, 127 subtests passed`；RAG/Harness/安全门全绿；
+- `postgres-migrations`：PostgreSQL 17 上 `186 passed, 1 warning`，migration 可逆且 metadata=head；
+- `packaging-smoke`：Linux no-I/O 产品纵向 schema 1.6，外部 Riot/Provider 调用 0，非 root/image boundary 全绿。
 
 ## 6. Runbook
 

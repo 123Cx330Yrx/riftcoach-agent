@@ -2716,3 +2716,13 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   已按 red→green TDD 本地实现；focused 18、相邻 48 通过，完整/公共门待完成。
 - `PORTFOLIO`：README 研究不局限高星或三个示例，也采纳星数较低但信息架构优秀的项目；图可按目的混用
   AI 概念图、真实截图、SVG、Mermaid 等，但研究持续积累到 8F，不阻塞 8D，不把生成图冒充真实产品。
+
+### 2026-08-23：8D exact-SHA 公共闭环与 8E 交接
+
+- `PUBLIC-CI`：implementation/evidence `a274b7f8900d61cb7edb7d09e2f5c87f8b0b2e48` / Actions
+  `32598480400` 三 job completed/success；公共 pytest 1692/133 skips/127 subtests，真库 186，package
+  schema 1.6/外部调用 0。
+- `CLOSED`：ADR-0055、strict EvidenceBundle、no-I/O source adapters、partial-provenance/non-inheritance、
+  conflict/gap/freshness/claim、public projection 和八维 walkthrough 均有本地/公共证据；coverage complete。
+- `BOUNDARY`：真实 refresh、全部 OP.GG、SQL bundle store、React/SSE/Auth/HTTPS/备份/部署仍未实现。
+- `HANDOFF`：唯一下一 checkpoint `8e-productization` prepared/waiting authorization；本批停止。

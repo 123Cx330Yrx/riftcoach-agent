@@ -3762,3 +3762,13 @@
   满阈值、Harness `published`/0 revisions、compileall/pip/YAML/governance/diff 全绿；本机 skip 不冒充真库/Linux。
 - `NEXT`：独立提交/推送当前 implementation/evidence，等待 exact-SHA `pytest`、`postgres-migrations`、
   `packaging-smoke` 三 job；公共全绿前 8D 保持 in_progress，8E 未进入。
+
+### 2026-08-23：8D exact-SHA 公共闭环与 8E 准备态
+
+- `PUBLIC-CI`：implementation/evidence `a274b7f8900d61cb7edb7d09e2f5c87f8b0b2e48` / Actions
+  `32598480400` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `COUNTS`：公共 pytest `1692 passed, 133 skipped, 1 warning, 127 subtests passed`；真 PostgreSQL 17
+  `186 passed, 1 warning` 且 migration/head 一致；Linux package schema 1.6/外部调用 0。
+- `CLOSED`：8D strict typed fusion、no-I/O adapters、digest/provenance/freshness/join/conflict/gap/claim、
+  public projection 与八维 coverage complete。真实刷新、全部 OP.GG、React/SSE/Auth/部署仍未实现。
+- `HANDOFF`：唯一下一 checkpoint `8e-productization` prepared/waiting authorization；本批停止，不开始 8E。

@@ -793,7 +793,7 @@ groups:
     sequence: 340
     covers:
       - 8d-riot-opgg-evidence-fusion-core
-    status: planned
+    status: complete
     evidence:
       problem_and_principle:
         - docs/adr/0055-adopt-typed-evidence-bundle-fusion.md
