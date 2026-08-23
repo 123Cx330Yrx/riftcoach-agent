@@ -386,6 +386,12 @@ CORS/CSP/HTTPS/限流、Secret 轮换/撤销、backup restore/erase、隐私、�
 备份、部署、电影感入口、Timeline、完整 Training、OP.GG breadth、golden slice 或 8F。下一项是 E4，8E
 coverage 继续 `planned`，整个 Batch E 公共闭环前不进入 E5/8F。
 
+E4 已开始本地实现：manifest 只保留 deletion-marker metadata + deterministic digest；PostgreSQL
+ owner lifecycle repository 按 conversation/relationship 精确定位 run，API composition 在 marker commit
+ 后复用 `FileRunDataCleaner` 清理 Artifact/Runtime Trace。restore 先 replay markers，再通过 readiness；
+ marker replay 支持幂等和 partial-failure compensation。当前仍没有对象存储/KMS/加密 backup bytes、定时备份
+ 或真实 RPO/RTO 演练，因而不能把 E4 说成生产灾备完成；下一动作是比例门、独立提交和 exact-SHA 公共 CI。
+
 ### 原理
 
 只有当任务出现可以独立并行的上下文、权限和失败边界时才拆 Agent。Multi-Agent 是隔离职责和并发的手段，不是项目完成度标签。

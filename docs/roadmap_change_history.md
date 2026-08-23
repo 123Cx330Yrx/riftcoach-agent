@@ -2937,3 +2937,13 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   不因连续授权跳过八维证据、独立提交或把未实现的 Auth/RSO/HTTPS/Secret Manager/备份说成完成。
 - 生成图不可冒充真实 UI、数据或产品截图；MotionSites、React/动效库、Riot 官方语言、成熟游戏数据产品与
   Image2/Photoshop 继续按 RQ-091/RQ-092 两层采用门横评。
+
+## 2026-08-24：RQ-099 E4 本地实现记录
+
+- E4 首轮实现把 6B-9 owner deletion marker 接到真实 run data locator/cleaner：PostgreSQL
+  `ReviewTaskRecord` 提供 body-free run identity，API composition 在 marker commit 后才删除 Artifact/Trace
+  目录，cleanup failure 仍保留 hidden-before-cleanup compensation。
+- restore 合同增加 deterministic manifest digest、幂等 marker replay 和 readiness-before-ready；当前只做
+  本地/离线 drill，不读取 Secret、不调用 Riot/OP.GG/LLM、不写外部 backup，不宣称 KMS、对象存储或 RPO/RTO
+  实测。
+- 下一动作是比例门和公共 exact-SHA 闭环；E5/8F 不提前进入。

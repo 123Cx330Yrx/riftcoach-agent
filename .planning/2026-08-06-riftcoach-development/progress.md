@@ -4086,3 +4086,18 @@
   Secret Manager、HTTPS/HSTS、多副本 rate store 或 backup/restore/erase 完成。
 - `NEXT`：进入 E4 backup/restore/erase；先补 restore replay、erase-before-ready、partial failure compensation
   的红灯合同与实现计划，再按同一八维/本地/独立提交/exact-SHA 节奏推进。
+
+### 2026-08-24：E4 backup/restore/erase 本地实现
+
+- 先以红灯测试冻结 manifest digest 篡改拒绝、restore marker replay、partial failure compensation、
+  readiness fail-closed、重复 restore 幂等，以及 owner/conversation/relationship run 目标隔离。
+- `app/lifecycle/backup.py` 新增 `OwnerRunReference`、`OwnerRunArtifactTraceCleaner` 与
+  `IdempotentDeletionMarkerReplayer`；restore 会校验 deterministic marker digest，并只对本次新应用的
+  marker 做补偿，避免把上一次成功恢复的 marker 错误回滚。
+- `PostgresOwnerDataLifecycleRepository.locate()` 通过真实 `ReviewTaskRecord` 只读定位目标 run；API
+  composition 将 owner lifecycle cleaner 接到已有 `FileRunDataCleaner`，因此 SQL marker commit 后才清理
+  run 目录中的 Artifact/Runtime Trace。错误 owner/target 或 run cleanup 失败均保持 body-free pending。
+- focused `tests/test_backup_restore.py` 与相邻 lifecycle tests：`16 + 15 = 31 passed`；compileall、
+  diff check 通过。该批仍没有对象存储/KMS/备份字节/定时任务，不能声称生产加密灾备或 RPO/RTO。
+- `NEXT`：运行完整回归、真实 PostgreSQL locator/migration 与 Linux package smoke，完成 stale/governance
+  门后创建独立 implementation/evidence commit；公共 exact-SHA 三 job 全绿前不交接 E5。

@@ -1468,4 +1468,6 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   隐私/观测与 E1–E5/W1–W5 原子顺序；未实现产品代码、未读 Secret、未调用外部服务。
 - [completed] 完成 Batch E entry design 的 stale/diff/比例门与治理同步；design 已交接为 implementation prepared。
 - [completed-public] E1/E2/E3 implementation：本地 TDD、八维 walkthrough/coverage、比例回归、独立提交与 `92b7685` / Actions `32658277570` exact-SHA 三 job 全绿。
-- [in_progress] E4 backup/restore/erase：先冻结 restore/erase red contracts，再实现与验证；公共闭环前不进入 E5/剩余 Web 模块。
+- [in_progress] E4 backup/restore/erase：已冻结并实现 restore/erase contracts、owner marker → Artifact/Trace
+  locator/cleanup、manifest digest、幂等 replay 与 readiness compensation；当前等待比例门、独立提交和
+  exact-SHA 公共闭环，公共闭环前不进入 E5/剩余 Web 模块。

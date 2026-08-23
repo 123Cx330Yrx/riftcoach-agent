@@ -20,6 +20,7 @@ from app.lifecycle.models import (
     OwnerDataPurgeSummary,
     OwnerDataRetentionSummary,
 )
+from app.lifecycle.backup import OwnerRunReference
 from app.lifecycle.service import OwnerDataLifecycleError
 from app.persistence.conversation_records import ConversationMessageRecord, ConversationRecord
 from app.persistence.memory_records import MemoryCandidateRecord
@@ -192,6 +193,47 @@ class PostgresOwnerDataLifecycleRepository:
                     )
                 )
                 return None if record is None else _marker(record)
+        except SQLAlchemyError:
+            raise OwnerDataLifecycleError("lifecycle_unavailable") from None
+        except (TypeError, ValueError, ValidationError):
+            raise OwnerDataLifecycleError("lifecycle_integrity_failed") from None
+
+    def locate(self, marker: OwnerDataDeletionMarker) -> tuple[OwnerRunReference, ...]:
+        """Locate run namespaces covered by an already-hidden owner marker.
+
+        This is deliberately read-only and body-free.  Run directories are
+        cleaned only after the lifecycle repository commits the hidden marker.
+        """
+
+        if not isinstance(marker, OwnerDataDeletionMarker):
+            raise TypeError("marker must be an OwnerDataDeletionMarker")
+        try:
+            with self._session_factory() as session:
+                query = sa.select(
+                    ReviewTaskRecord.run_id,
+                    ReviewTaskRecord.conversation_id,
+                    ReviewTaskRecord.relationship_id,
+                ).where(ReviewTaskRecord.owner_id == marker.owner_id)
+                if marker.conversation_id is not None:
+                    query = query.where(
+                        ReviewTaskRecord.conversation_id == marker.conversation_id
+                    )
+                elif marker.relationship_id is not None:
+                    query = query.where(
+                        ReviewTaskRecord.relationship_id == marker.relationship_id
+                    )
+                else:
+                    return ()
+                rows = session.execute(query).all()
+            return tuple(
+                OwnerRunReference(
+                    owner_id=marker.owner_id,
+                    run_id=run_id,
+                    conversation_id=conversation_id,
+                    relationship_id=relationship_id,
+                )
+                for run_id, conversation_id, relationship_id in rows
+            )
         except SQLAlchemyError:
             raise OwnerDataLifecycleError("lifecycle_unavailable") from None
         except (TypeError, ValueError, ValidationError):

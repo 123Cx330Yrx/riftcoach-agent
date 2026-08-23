@@ -11,6 +11,7 @@ from app.persistence.conversation_repository import PostgresConversationReposito
 from app.persistence.owner_data_lifecycle_repository import (
     PostgresOwnerDataLifecycleRepository,
 )
+from app.persistence.task_record import ReviewTaskRecord
 from tests.memory_candidate_postgres_support import BASE, migrated_memory_repository, seed_conversation
 from uuid import UUID
 
@@ -111,3 +112,53 @@ def test_relationship_private_data_hides_relationship_and_conversation() -> None
         with factory() as session:
             row = session.get(ConversationRecord, conversation)
             assert row is not None and row.status == "hidden"
+
+
+def test_locate_returns_only_marker_targeted_run_namespaces() -> None:
+    with migrated_memory_repository() as (_candidate, factory, _engine):
+        subject, relationship, conversation = seed_conversation(factory, number=604)
+        task_id = UUID("96000000-0000-4000-8000-000000000604")
+        with factory() as session:
+            session.add(
+                ReviewTaskRecord(
+                    task_id=task_id,
+                    run_id="owner-run-604",
+                    task_kind="recent_form_review",
+                    schema_version="2.0",
+                    owner_id="memory-owner",
+                    idempotency_key="run-604",
+                    request_fingerprint="a" * 64,
+                    request_payload={},
+                    conversation_id=conversation,
+                    relationship_id=relationship,
+                    player_subject_id=subject,
+                    relationship_role="self",
+                    status="failed",
+                    worker_id="worker-604",
+                    created_at=BASE,
+                    updated_at=BASE + timedelta(minutes=1),
+                    claimed_at=BASE + timedelta(minutes=1),
+                    finished_at=BASE + timedelta(minutes=2),
+                    lease_generation=0,
+                    checkpoint_sequence=0,
+                    terminal_reason="worker_execution_failed",
+                    report_available=False,
+                )
+            )
+            session.commit()
+
+        repository = PostgresOwnerDataLifecycleRepository(factory)
+        marker = repository.hide_owner_data(
+            _command(
+                OwnerDataDeleteScope.CONVERSATION_ONLY,
+                conversation_id=conversation,
+                key="delete-run-604",
+            )
+        )
+
+        references = repository.locate(marker)
+
+        assert tuple(reference.run_id for reference in references) == ("owner-run-604",)
+        assert references[0].owner_id == "memory-owner"
+        assert references[0].conversation_id == conversation
+        assert references[0].relationship_id == relationship

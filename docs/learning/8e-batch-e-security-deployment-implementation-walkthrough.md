@@ -1,4 +1,4 @@
-# 8E Batch E implementation walkthrough（E1/E2/E3 本地阶段）
+# 8E Batch E implementation walkthrough（E1/E2/E3/E4 本地阶段）
 
 > 这份材料记录当前实现到哪里、为什么这样拆，以及哪些仍然没有完成。它不是“生产安全已就绪”的声明。
 
@@ -83,9 +83,67 @@ Worker startup
 - 未实现：OIDC/RSO、正式登录 UI、PostgreSQL session migration、HTTPS/HSTS edge、backup restore/erase、
   deployment packaging、metrics/alerting、完整 Timeline/Training、OP.GG breadth 和 golden slice。
 
-## 8. 面试准确表述
+## 8. E4：backup / restore / erase 接缝
+
+E4 把 6B-9 已有的在线 owner deletion marker 延伸到两个仍会留下数据的落点：
+`runs_root/<run_id>/` 下的 final Artifact 与 Runtime Trace，以及恢复后的数据集。这里的“备份”
+仍然只生成 body-free manifest；真正的加密对象存储和 KMS 由外部适配器承担，代码不会把普通
+JSON 当成加密备份。
+
+### 代码地图
+
+| 责任 | 代码 |
+|---|---|
+| manifest、marker digest、restore readiness | `app/lifecycle/backup.py` |
+| marker → conversation/relationship → run 的只读定位 | `app/persistence/owner_data_lifecycle_repository.py` |
+| run 目录（Artifact + Trace）清理与补偿 marker | `app/tasks/deletion.py` + `app/lifecycle/backup.py` |
+| API composition 的 hidden-before-cleanup 接线 | `app/api/composition.py` |
+| focused restore/erase drill | `tests/test_backup_restore.py` |
+
+### 数据与控制流
+
+```text
+owner delete request
+  → PostgreSQL transaction: hide target + immutable deletion marker
+  → commit
+  → locator finds only matching owner/conversation/relationship run IDs
+  → FileRunDataCleaner removes Artifact + Runtime Trace directory
+  → success: marker COMPLETE
+     failure: body-free cleanup_pending compensation; online rows stay hidden
+
+backup restore
+  → validate marker IDs and deterministic digest
+  → replay deletion markers (idempotent wrapper may skip an already-applied marker)
+  → readiness probe
+  → ready only after replay succeeds; otherwise rollback newly-applied markers
+```
+
+`OwnerRunArtifactTraceCleaner` 会拒绝错误 owner、错误 conversation/relationship 或无目标的
+run reference；因此 locator 出现跨 owner 数据时是 fail-closed，而不是“尽量删”。重复 restore
+不会再次提交同一个 marker；readiness 失败也不会把上一次成功恢复的 marker 错误回滚。
+
+### E4 验证与运行方法
+
+- `tests/test_backup_restore.py` 当前覆盖 manifest digest 篡改、重复 marker、restore replay、
+  partial failure、compensation failure、readiness failure、幂等重放、owner 目标过滤，以及
+  真实 `FileRunDataCleaner` 删除同时包含 Artifact/Trace 的 run 目录。
+- lifecycle service 的既有测试证明 SQL 隐藏先于 cleaner，cleaner 失败只留下 pending marker，
+  不重新暴露正文；PostgreSQL locator 使用同一真实 `ReviewTaskRecord` control plane。
+- 本地 E4 focused：`16 passed`；`compileall` 和 `git diff --check` 通过。
+
+### E4 边界
+
+- 当前没有对象存储、KMS、备份字节、定时备份任务或跨主机 restore drill；`encryption` 固定为
+  `external_kms_required`，因此不能宣称“已加密备份”或 RPO/RTO 达标。
+- marker replay 的实际数据库写入由部署侧 adapter 提供；本批冻结并验证的是顺序、幂等、
+  补偿和 readiness 合同，不伪造 PostgreSQL restore 或外部 I/O。
+- 当前仍未完成 OIDC/RSO、PostgreSQL session repository、HTTPS/HSTS edge、多副本 limiter、
+  生产 Secret Manager、完整 Timeline/Training、OP.GG breadth 和 golden slice。
+
+## 9. 面试准确表述
 
 “我在 8E 先把安全边界拆成可测试的 provider-neutral seams：opaque server session 和 session-bound CSRF，
-ASGI 层的 header/body/rate budgets，以及 versioned SecretSource 的 key-last Worker composition。当前证据是
-本地 focused TDD 和 fail-closed 行为；我不会把 local in-memory session、environment fallback 或单机 limiter
-说成正式 Auth/RSO、Secret Manager、HTTPS 或分布式生产 SLA。”
+ASGI 层的 header/body/rate budgets，versioned SecretSource 的 key-last Worker composition，以及
+hidden-before-cleanup 的 owner marker→Artifact/Trace→restore replay 链。E4 的证据是本地 focused TDD
+和 fail-closed/幂等行为；我不会把 local in-memory session、environment fallback、单机 limiter 或
+external-kms-required manifest 说成正式 Auth/RSO、Secret Manager、HTTPS、加密备份或分布式生产 SLA。”

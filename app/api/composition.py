@@ -67,9 +67,9 @@ from app.memory.typed_service import TypedMemoryQueryService, TypedMemoryQuerySe
 from app.memory.training_models import TrainingPlanPage, TrainingProgressPage
 from app.memory.training_query_ports import TrainingQueryServicePort
 from app.memory.training_service import TrainingQueryService, TrainingQueryServiceError
+from app.lifecycle.backup import OwnerRunArtifactTraceCleaner
 from app.lifecycle.models import OwnerDataDeleteCommand, OwnerDataDeletionMarker, OwnerDataExport
 from app.lifecycle.service import (
-    NoopOwnerDataCleaner,
     OwnerDataLifecycleError,
     OwnerDataLifecycleService,
 )
@@ -872,7 +872,13 @@ def create_composed_app(
             owner_data_lifecycle_proxy.bind(
                 OwnerDataLifecycleService(
                     repository=owner_data_lifecycle_repository,
-                    cleaner=NoopOwnerDataCleaner(),
+                    cleaner=OwnerRunArtifactTraceCleaner(
+                        locator=owner_data_lifecycle_repository,
+                        run_cleaner=FileRunDataCleaner(
+                            api_settings.runs_root,
+                            clock=lambda: datetime.now(timezone.utc),
+                        ),
+                    ),
                 )
             )
             deletion_proxy.bind(TaskDeletionService(

@@ -2410,3 +2410,19 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   Manager、HTTPS/HSTS edge、多副本 limiter 或 backup/erase 已实现。
 - `NEXT`：按既定顺序进入 `8e-batch-e-security-deployment-implementation / E4-backup-restore-erase`，先冻结
   restore/erase 设计与 red tests，再做实现、八维 evidence、比例门、独立提交和 exact-SHA 公共 CI。
+
+## 2026-08-24：RQ-099 E4 本地实现进行中
+
+- E4 已完成首轮 TDD 与真实清理接缝：backup manifest 校验 deterministic deletion-marker digest；restore
+  在 readiness 前重放 marker，partial failure 只补偿本次新应用的 marker；重复 restore 由幂等 replayer
+  跳过已应用 marker。
+- 6B-9 PostgreSQL lifecycle repository 新增 owner-scoped run locator，按 conversation/relationship identity
+  返回 body-free `run_id` 引用；API composition 已用 `OwnerRunArtifactTraceCleaner` 接上既有
+  `FileRunDataCleaner`，SQL marker commit 后才清理 run 目录中的 Artifact/Runtime Trace。错误 owner、错
+  scope、cleanup 失败均 fail closed 并保留 pending compensation。
+- 本地 focused 为 `16 passed`（backup/restore/erase），相邻 lifecycle 为 `15 passed`；compileall 与
+  `git diff --check` 通过。完整 pytest 正在运行，尚未取得本批独立 exact-SHA 公共 CI。
+- 限制仍明确：没有对象存储/KMS/加密 backup bytes、定时备份、真实 PostgreSQL restore replay drill 或
+  RPO≤24h/RTO≤2h 实测；8E 继续 `in_progress/planned`，E5/8F 不提前进入。
+- `NEXT`：完成完整回归、真实 PostgreSQL locator/migration 与 Linux package smoke，补 stale/governance
+  门和八维 E4 evidence，再创建独立 implementation/evidence commit 并等待 exact-SHA 三 job 全绿。

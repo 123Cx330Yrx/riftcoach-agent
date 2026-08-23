@@ -13,7 +13,8 @@
 视觉 Task 3 已先完成本地门，随后 E1/E2/E3 的最小实现已落地并通过 focused TDD：HTTP opaque session/CSRF、
 request body/header budgets 与单机 rate policy、versioned SecretSource/key-last Worker composition。当前仍是
 local implementation，尚未取得本批独立 exact-SHA 公共闭环；OIDC/RSO、PostgreSQL session repository、真实
-Secret Manager、HTTPS edge、backup/erase 和 deployment 继续按原顺序保留。
+Secret Manager、HTTPS edge 和 deployment 继续按原顺序保留；E4 backup/restore/erase 已进入本地 TDD，
+但仍未有对象存储/KMS/加密 backup bytes 或生产 restore drill。
 
 ---
 

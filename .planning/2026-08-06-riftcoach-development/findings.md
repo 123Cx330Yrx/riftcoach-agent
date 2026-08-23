@@ -3876,6 +3876,18 @@
   Runtime Trace、Prompt、raw upstream body 或 lease token。
 - 视觉连续性不因安全批收缩：安全 hard gate 之后仍保留 `Rift Awakening → Esports Intelligence`，MotionSites
   只是候选池，Void Holographic Lab 仍是受限 Hero 实验。
+
+## 2026-08-24：E4 restore/erase 接缝发现
+
+- 6B-9 的 marker 只负责 PostgreSQL 在线数据隐藏；若 owner-scoped task 的 run 目录仍留在 Artifact/Trace
+  volume，恢复或文件读取仍可能重新暴露已删除内容。因此 E4 locator 必须以同一 owner + conversation/
+  relationship identity 精确筛选 `ReviewTaskRecord.run_id`，不能按 owner 全目录删除。
+- `OwnerRunArtifactTraceCleaner` 复用已有 `FileRunDataCleaner`，保留 hidden-before-cleanup 顺序和
+  body-free compensation marker；cleaner 只接受匹配目标，跨 owner 或错 scope 直接 fail closed。
+- backup manifest 目前只保存 marker 元数据和 digest，`encryption=external_kms_required` 是明确的采用门。
+  不创建伪加密文件，不读取 Secret，不宣称对象存储、KMS、RPO≤24h/RTO≤2h 已实测。
+- restore 的幂等包装需要区分“本次 restore 新应用的 marker”和“历史已应用 marker”；readiness 失败时只能
+  补偿前者，否则重复 drill 会把历史成功状态错误撤销。
 ## 2026-08-24：Portal → Workbench 视觉合同发现
 
 - 当前 `web/` 已具备 live/fixture workbench、relationship-safe Training、Evidence drawer、Motion/Radix

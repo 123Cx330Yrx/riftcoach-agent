@@ -2061,3 +2061,15 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   PostgreSQL session repository、真实 Secret Manager、HTTPS edge、多副本限流和 backup/erase 仍未完成。
 - 按冻结顺序下一项为 E4 backup/restore/erase，先用红灯冻结 restore replay、erase-before-ready 与 partial
   failure compensation，再实施；不进入 E5 或 8F。
+
+## 2026-08-24：RQ-099 E4 owner erase / restore 本地实现
+
+- E4 采用 body-free `BackupManifest`：只记录 deletion-marker 元数据和 deterministic digest，
+  `encryption=external_kms_required` 明确要求后续外部 KMS/对象存储适配器；不把普通 JSON 冒充加密备份。
+- `PostgresOwnerDataLifecycleRepository.locate()` 按 marker 的 owner + conversation/relationship identity
+  只读返回 run 引用；`OwnerRunArtifactTraceCleaner` 在 SQL marker 提交后复用 `FileRunDataCleaner` 清掉
+  对应 Artifact/Runtime Trace 目录。跨 owner、错 target 或清理失败均 fail closed，marker 保持 pending。
+- restore 先校验 marker digest、再 replay deletion markers、最后通过 readiness；幂等 replayer 对已应用 marker
+  不重复执行，并且补偿只撤销本次 restore 新应用的 marker。
+- 本地 focused/相邻 lifecycle 为 `31 passed`；该记录不关闭 E4，仍待真实 PostgreSQL locator/migration、
+  Linux package smoke、八维材料、独立提交和 exact-SHA 三 job 公共 CI。RPO≤24h/RTO≤2h 仍是待演练目标。
