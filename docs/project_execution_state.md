@@ -2058,3 +2058,6 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - Riot Key 存在但未输出；Riot gate 尚未执行，因为仓库没有可安全猜测的测试 Riot ID。下一动作是用户提供
   准确 `gameName#tagLine` 和 `americas|asia|europe|sea` routing，再做一次受限 Account/Match gate；不保存
   Key、PUUID 或原始 response，不自动跨区重试。
+- preflight 文档/脱敏证据提交 `8c0cc187e93e76c26e9d03f9e8f2371333c783a3` 的公共 Actions run `32611044101`
+  已完成 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job success；该 run 只验证持久合同/现有
+  no-I/O package，没有把 OP.GG 网络调用放入 CI。

@@ -2734,3 +2734,4 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `OPGG-REAL`：官方 OP.GG Streamable HTTP endpoint 的 initialize/list/selected lane-meta call 真实通过 1 次，3 facts，body-free digest `24b49ea9eb9c4c6c6ee682ad21309c7a643fbdde70a8ea18ba8fdf1d26a8c1ec` 已归档；partial provenance 限制保持不变。
 - `IDENTITY-GAP`：仓库没有 ShowMaker 硬编码，`/player-links` 已支持显式 Riot ID/region/role；旧 `/reviews/recent` 仍从环境默认地区读取，owner-scoped profile list/selection DTO 留给 8E preflight。
 - `NEXT`：等待准确测试 Riot ID + regional routing，执行一次受限 Riot Account/Match gate；随后用脱敏 typed output 做 EvidenceBundle replay/fusion，再进入前端第一小批。
+- `PUBLIC-CI`：preflight commit `8c0cc187e93e76c26e9d03f9e8f2371333c783a3` / Actions `32611044101` 的 pytest、PostgreSQL migration 和 Linux package 三 job 均 success；该 CI 不执行外部网络调用。

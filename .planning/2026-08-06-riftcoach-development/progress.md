@@ -3780,4 +3780,5 @@
 - `OPGG-REAL`：使用项目 `.venv` 执行 `scripts/run_opgg_meta_smoke.py --execute`；真实 OP.GG initialize/list/call 通过，1 次 lane-meta 工具调用、top 3 facts、body-free digest `24b49ea9eb9c4c6c6ee682ad21309c7a643fbdde70a8ea18ba8fdf1d26a8c1ec` 已保存到 `data/evaluation/results/mcp/opgg_external_validation_2026-08-23.json`。
 - `IDENTITY-AUDIT`：仓库没有 ShowMaker 硬编码；`/player-links` 已接受 Riot ID、regional routing、self/observed；Conversation 固定 player subject；旧 `/reviews/recent` 仍使用环境地区默认，列为 8E 缺口。
 - `RIOT-BLOCKER`：`.env` 中 Riot Key 存在但未输出；仓库没有可安全猜测的测试 Riot ID，因此 Riot Account/Match gate 暂停在用户提供准确 `gameName#tagLine + americas|asia|europe|sea` 前。
+- `PUBLIC-CI`：preflight commit `8c0cc187e93e76c26e9d03f9e8f2371333c783a3` / Actions `32611044101` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 success；CI 仍保持外部 Riot/OP.GG/Provider/LLM 调用 0。
 - `NEXT`：执行一次 body-free Riot gate；用脱敏 typed output 与 OP.GG evidence 做 EvidenceBundle replay/fusion；冻结 owner-scoped profile list/selection DTO 后再进入首个静态/fixture-backed 前端小批。
