@@ -3783,6 +3783,14 @@
 - `PUBLIC-CI`：preflight commit `8c0cc187e93e76c26e9d03f9e8f2371333c783a3` / Actions `32611044101` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 success；CI 仍保持外部 Riot/OP.GG/Provider/LLM 调用 0。
 - `NEXT`：真实 mid replay 已暴露 `opgg_meta_result_invalid`；先做 schema-drift 诊断/回归裁决，再冻结 owner-scoped profile list/selection DTO 和首个静态/fixture-backed 前端小批。
 
+### 2026-08-23：8E body-free schema-drift diagnostic 本地与公共闭环
+
+- `TDD`：先加入 `null` 形状的受控失败测试，确认缺少诊断接缝后红灯；实现 `OPGGMetaSchemaDiagnostic`、字段级 AST 位置摘要与 fusion validation 的安全投影后，OP.GG/融合聚焦 `18 passed`。
+- `BOUNDARY`：诊断只保存 stage、position/row、allowlisted field/index、AST node type、text length/digest；异常 `str/repr` 和持久 fixture 均不含 raw body/field value。受控 fixture 不冒充 live schema。
+- `LOCAL`：完整 pytest `1695 passed, 134 skipped, 1 warning, 127 subtests passed`；compileall、governance、diff 全绿。
+- `PUBLIC-CI`：`c5cbc94` / Actions `32613573022` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job exact-SHA 全绿，外部调用为 0。
+- `NEXT`：若获新的有界外部授权，才重跑一次真实 mid replay 取得字段级 diagnostic；随后裁决 allowlist/degraded，再冻结 player profile selection DTO；前端仍未开始。
+
 ### 2026-08-23：RQ-086 真实 Riot 通过与 mid replay 失败证据
 
 - `SEARCH`：AutoGLM token 服务恢复；公开搜索与 OP.GG 当前页面交叉核对 `DK ShowMaker#KR1`、KR、Dplus KIA/ShowMaker 关联；不把候选写成默认账号。
