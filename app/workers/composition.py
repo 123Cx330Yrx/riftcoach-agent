@@ -21,7 +21,7 @@ from app.agent.context import ContextBuilderV1
 from app.agent.memory_context import MemoryAwareContextBuilder
 from app.api.composition import PostgresReadinessProbe
 from app.lol.data_dragon import DataDragonService
-from app.lol.player_summary import RiotPlayerSummaryBuilder
+from app.lol.player_summary import RoutedRiotPlayerSummaryBuilder
 from app.lol.riot_client import RiotClient
 from app.persistence.config import DatabaseSettings, load_database_settings
 from app.persistence.database import build_engine, build_session_factory
@@ -66,8 +66,8 @@ _ERROR_CODES = frozenset(
         "worker_dependency_invalid",
     }
 )
-_SAFE_REGION = re.compile(r"^[a-z0-9][a-z0-9-]{1,31}$")
 _SAFE_LANGUAGE = re.compile(r"^[a-z]{2}_[A-Z]{2}$")
+_RIOT_ROUTING_REGIONS = ("americas", "asia", "europe", "sea")
 _WORKER_ID_ADAPTER = TypeAdapter(WorkerId)
 
 
@@ -87,7 +87,6 @@ class WorkerCompositionSettings:
     zhipu: ZhipuSettings = field(repr=False)
     provider_registry: ProviderRegistrySettings
     riot_api_key: str = field(repr=False)
-    riot_region: str
     runs_root: Path
     knowledge_root: Path
     skills_root: Path
@@ -135,10 +134,6 @@ def load_worker_composition_settings(
             raise ValueError("only the current product baseline may be selected")
 
         riot_api_key = _required_secret(environment, "RIOT_API_KEY")
-        riot_region = environment.get("RIOT_REGION", "asia").strip().lower()
-        if not _SAFE_REGION.fullmatch(riot_region):
-            raise ValueError("RIOT_REGION is invalid")
-
         language = environment.get("RIFTCOACH_DDRAGON_LANGUAGE", "zh_CN").strip()
         if not _SAFE_LANGUAGE.fullmatch(language):
             raise ValueError("RIFTCOACH_DDRAGON_LANGUAGE is invalid")
@@ -208,7 +203,6 @@ def load_worker_composition_settings(
             zhipu=zhipu,
             provider_registry=registry,
             riot_api_key=riot_api_key,
-            riot_region=riot_region,
             runs_root=_read_path(
                 environment,
                 "RIFTCOACH_RUNS_ROOT",
@@ -278,16 +272,16 @@ def build_review_worker_process(
         session_factory = build_session_factory(engine)
         repository = PostgresTaskRepository(session_factory)
 
-        riot_client = RiotClient(
-            api_key=settings.riot_api_key,
-            region=settings.riot_region,
-        )
+        riot_clients = {
+            region: RiotClient(api_key=settings.riot_api_key, region=region)
+            for region in _RIOT_ROUTING_REGIONS
+        }
         ddragon = DataDragonService(
             language=settings.ddragon_language,
             cache_dir=str(settings.ddragon_cache_root),
         )
-        summary_builder = RiotPlayerSummaryBuilder(
-            client=riot_client,
+        summary_builder = RoutedRiotPlayerSummaryBuilder(
+            clients=riot_clients,
             ddragon=ddragon,
             min_duration_seconds=settings.min_duration_seconds,
         )

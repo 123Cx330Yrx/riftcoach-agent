@@ -429,6 +429,73 @@ def test_same_owner_subject_role_reuses_relationship() -> None:
             ) == 1
 
 
+def test_profile_list_is_owner_scoped_latest_success_only_and_hidden_safe() -> None:
+    with migrated_repository() as (repository, factory, _engine):
+        first = pending(1, owner_id="owner-1")
+        create(repository, first)
+        claim(repository, worker_id="worker-1")
+        first_terminal = repository.resolve_link(
+            link_task_id=first.link_task_id,
+            worker_id="worker-1",
+            resolved_account=resolved(game_name="Old Name", tag_line="KR1"),
+        )
+        assert first_terminal is not None and first_terminal.relationship is not None
+
+        duplicate = pending(2, owner_id="owner-1")
+        create(repository, duplicate)
+        claim(repository, worker_id="worker-2")
+        duplicate_terminal = repository.resolve_link(
+            link_task_id=duplicate.link_task_id,
+            worker_id="worker-2",
+            resolved_account=resolved(game_name="New Name", tag_line="KR2"),
+        )
+        assert duplicate_terminal is not None
+
+        other = pending(4, owner_id="owner-2", role=RelationshipRole.OBSERVED)
+        create(repository, other)
+        claim(repository, worker_id="worker-3")
+        other_terminal = repository.resolve_link(
+            link_task_id=other.link_task_id,
+            worker_id="worker-3",
+            resolved_account=resolved(
+                puuid="PUUID_OTHER_1234567890",
+                game_name="Observed Pro",
+                tag_line="EUW",
+            ),
+        )
+        assert other_terminal is not None
+        create(repository, pending(3, owner_id="owner-1"))
+
+        owner_profiles = repository.list_profiles(owner_id="owner-1", limit=50)
+        other_profiles = repository.list_profiles(owner_id="owner-2", limit=50)
+
+        assert len(owner_profiles) == 1
+        assert owner_profiles[0].riot_id == "New Name#KR2"
+        assert (
+            owner_profiles[0].player_profile_id
+            == first_terminal.relationship.relationship_id
+        )
+        assert len(other_profiles) == 1
+        assert other_profiles[0].relationship_role is RelationshipRole.OBSERVED
+        assert (
+            other_profiles[0].verification_status
+            is VerificationStatus.NOT_APPLICABLE
+        )
+        assert "puuid" not in owner_profiles[0].model_dump_json().lower()
+
+        with factory.begin() as session:
+            relationship = session.get(
+                OwnerPlayerRelationshipRecord,
+                first_terminal.relationship.relationship_id,
+            )
+            assert relationship is not None
+            relationship.status = "hidden"
+            relationship.hidden_at = relationship.created_at + timedelta(minutes=1)
+            relationship.updated_at = relationship.hidden_at
+
+        assert repository.list_profiles(owner_id="owner-1", limit=50) == ()
+
+
 def test_role_conflict_is_one_transaction_failure_without_alias_mutation() -> None:
     with migrated_repository() as (repository, factory, _engine):
         first = pending(1, role=RelationshipRole.SELF)

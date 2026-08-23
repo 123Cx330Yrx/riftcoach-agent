@@ -13,6 +13,8 @@ from app.players.models import (
     PlayerLinkFailure,
     PlayerLinkStatus,
     PlayerLinkTaskView,
+    PlayerProfilePage,
+    PlayerProfileView,
     RelationshipRole,
     VerificationStatus,
 )
@@ -125,9 +127,48 @@ class PlayerLinkResponse(PlayerApiModel):
         )
 
 
+class PlayerProfileResponse(PlayerApiModel):
+    schema_version: Literal["1.0"] = "1.0"
+    player_profile_id: UUID
+    riot_id: str = Field(min_length=3, max_length=97)
+    routing_region: Literal["americas", "asia", "europe", "sea"]
+    relationship_role: Literal["self", "observed"]
+    verification_status: Literal[
+        "unverified_claim",
+        "not_applicable",
+        "rso_verified",
+    ]
+    last_resolved_at: datetime
+
+    @classmethod
+    def from_view(cls, view: PlayerProfileView) -> PlayerProfileResponse:
+        if not isinstance(view, PlayerProfileView):
+            raise TypeError("view must be a PlayerProfileView")
+        return cls(**view.model_dump(mode="python"))
+
+
+class PlayerProfilePageResponse(PlayerApiModel):
+    schema_version: Literal["1.0"] = "1.0"
+    profiles: tuple[PlayerProfileResponse, ...]
+    limit: int = Field(ge=1, le=100)
+
+    @classmethod
+    def from_page(cls, page: PlayerProfilePage) -> PlayerProfilePageResponse:
+        if not isinstance(page, PlayerProfilePage):
+            raise TypeError("page must be a PlayerProfilePage")
+        return cls(
+            profiles=tuple(
+                PlayerProfileResponse.from_view(profile) for profile in page.items
+            ),
+            limit=page.limit,
+        )
+
+
 __all__ = [
     "CreatePlayerLinkRequest",
     "CreatePlayerLinkResponse",
     "PlayerLinkFailureResponse",
     "PlayerLinkResponse",
+    "PlayerProfilePageResponse",
+    "PlayerProfileResponse",
 ]

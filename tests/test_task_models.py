@@ -38,6 +38,7 @@ def queued_task(**changes: object) -> ReviewTask:
         "request_fingerprint": "a" * 64,
         "request_payload": {
             "riot_id": "DemoPlayer#TEST",
+            "routing_region": "asia",
             "count": 10,
             "queue": 420,
             "focus": "overall",
@@ -94,7 +95,10 @@ def test_create_command_is_strict_frozen_and_normalizes_only_product_request() -
     command = CreateReviewTaskCommand(
         owner_id="owner-1",
         idempotency_key="request-1",
-        request=RecentReviewProductRequest(riot_id="  DemoPlayer#TEST  "),
+        request=RecentReviewProductRequest(
+            routing_region="asia",
+            riot_id="  DemoPlayer#TEST  ",
+        ),
     )
 
     assert command.owner_id == "owner-1"
@@ -122,7 +126,10 @@ def test_create_command_rejects_unsafe_or_coerced_identity_fields(
     payload: dict[str, object] = {
         "owner_id": "owner-1",
         "idempotency_key": "request-1",
-        "request": RecentReviewProductRequest(riot_id="DemoPlayer#TEST"),
+        "request": RecentReviewProductRequest(
+            routing_region="asia",
+            riot_id="DemoPlayer#TEST",
+        ),
     }
     payload[field] = value
 

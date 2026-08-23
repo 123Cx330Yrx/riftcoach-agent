@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（ADR-0058 修复后 live evidence 已由 `efaccd9/32615821339` exact-SHA 公共闭环；8E 转入玩家档案合同）
+- 最后更新：2026-08-23（8E Batch B 玩家档案/显式路由已本地实现并补齐 PostgreSQL/Docker/Linux smoke；等待独立 exact-SHA 公共闭环）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -250,11 +250,12 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8e-productization` preflight 正在进行。8D implementation/evidence
+- 唯一下一步：`8e-productization` Batch B 公共闭环。8D implementation/evidence
   `a274b7f8900d61cb7edb7d09e2f5c87f8b0b2e48` / Actions `32598480400` 的 `pytest`、
   `postgres-migrations`、`packaging-smoke` 三 job 全绿，八维 coverage 已 complete。8E 先完成
-  有界真实 Riot/OP.GG 验证、脱敏 EvidenceBundle replay、玩家档案选择合同和 legacy 地区审计，
-  再分小批实现 React/SSE/Auth/HTTPS/部署；8B holdout 不得再次执行。
+  有界真实 Riot/OP.GG 验证与脱敏 EvidenceBundle replay 已闭环；owner-scoped 玩家档案选择、legacy
+  地区显式化和四地区 Worker 路由已本地完成。当前只运行最终门禁并独立提交/push，等待 exact-SHA
+  三 job；公共全绿前不进入静态前端小批，8B holdout 不得再次执行。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -555,10 +556,10 @@ pause_reason: ""
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C/8D 已关闭；8D EvidenceBundle、no-I/O adapter、public projection 与现有产品回归已验证；8E preflight 已保存真实 Riot/OP.GG body-free 证据，并记录 mid replay 的严格 adapter 拒绝 | 本地普通测试或一次真实 gate 等于正式 Auth/SSE/前端、真实 refresh 或生产 SLA |
-| 项目理解 | Stage 8 entry、8A、8B、8C、8D 均有 walkthrough/ADR/设计材料；8D 已补齐 provenance/freshness/join/conflict/gap/claim 的初学者解释 | 持久材料存在等于用户已能独立讲解所有融合代码；owner mastery 仍需复述、读码和运行验证 |
-| 参考资料 | Saber/Sea 的 lease/event/checkpoint 思想只作选择性参考；8B 唯一 holdout 保持 SHA `944258...445e8` 且未重跑；8E 已真实观察 Riot/OP.GG，mid replay 暴露远端内容与严格 grammar 的差异；README 样本研究按 RQ-085 留到 8F | 引用参考思想等于复制其 Runtime/DAG，或 Multi-Agent reject 已被撤销；一次外部观察也不等于长期 freshness/SLA |
-| GitHub/部署 | 8C `2df5349/32587659678` 与 8D `a274b7f/32598480400` 的 pytest、真实 PostgreSQL、Linux package 均 exact-SHA 全绿；正式 Auth/SSE/前端/备份/生产 SLA 仍未实现 | 本次公共闭环等于 8E 产品化、正式 Auth/SSE/备份或生产 SLA |
+| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C/8D 已关闭；8E 已完成 live evidence preflight，并本地实现 owner-scoped profile list/selection、explicit routing 与四地区 Worker selector；本机 PostgreSQL 17、Docker/Linux Compose smoke 已补齐 | Batch B 本地绿灯等于正式 Auth/SSE/前端、真实 refresh、完整 8E 或生产 SLA |
+| 项目理解 | Stage 8 entry、8A–8D 与 8E profile/routing 批均有 walkthrough/ADR/设计；当前材料解释稳定 subject、显示别名与 network routing 的区别 | 持久材料存在等于用户已能独立讲解所有实现；owner mastery 仍需复述、读码和运行验证 |
+| 参考资料 | Saber/Sea 的 lease/event/checkpoint 思想只作选择性参考；8B 唯一 holdout 保持 SHA `944258...445e8` 且未重跑；OP.GG live Bad Case 已闭环；README 样本研究按 RQ-085 留到 8F | 引用参考思想等于复制其 Runtime/DAG，或 Multi-Agent reject 已被撤销；一次外部观察也不等于长期 freshness/SLA |
+| GitHub/部署 | 8C `2df5349/32587659678`、8D `a274b7f/32598480400` 与 OP.GG evidence `efaccd9/32615821339` 已 exact-SHA 全绿；Batch B 尚未提交/公开闭环，正式 Auth/SSE/前端/备份/生产 SLA 仍未实现 | 本机 Docker/PostgreSQL 配齐或旧公共 CI 等于当前 Batch B 已公开关闭、8E 完成或已生产部署 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -2122,3 +2123,21 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   公共 pytest 1701、真实 PostgreSQL 186、Linux package schema 1.6/外部 Riot Provider calls 0。
 - OP.GG parser Bad Case 当前正式闭环；8E 仍 `in_progress / coverage planned`。唯一下一动作是 owner-scoped
   player profile list/selection DTO 与 legacy `/reviews/recent` 地区来源修正；前端小批排在该合同之后。
+
+## 2026-08-23：8E Batch B 玩家档案/显式路由本地收尾
+
+- ADR-0059 与专用 design/implementation plan 已冻结复用 successful Player Link 的 owner-scoped
+  latest-success profile projection；`player_profile_id` 为 opaque selection ID，当前复用 relationship identity，
+  不新增默认档案表、migration、昵称、排序或全局默认状态。
+- 本地实现已覆盖 `GET /player-profiles`、PUUID-free DTO、Conversation canonical selection + strict legacy
+  alias、legacy required `routing_region`、SQL execution target region 传播、四地区 exact-select Riot builder，
+  并从 Worker/Compose 删除 ambient `RIOT_REGION`。ShowMaker 只保留为历史验证样本，产品无默认账号。
+- RQ-089 下已安装并配置 Docker Desktop/WSL2、持久 PostgreSQL 17 容器和用户级测试 URL；CI-equivalent
+  PostgreSQL collection `187 passed`、Alembic upgrade/check 与真实 Linux Compose package smoke 已通过。
+  当前唯一 skip 为 Windows symlink 创建；不为清零而扩大系统权限，exact-SHA Linux pytest 仍独立补证。
+- 最终 focused `268 passed`；完整 `1842 passed, 1 skipped, 1 warning, 127 subtests passed`；两套 RAG、
+  Harness `published`/0 revisions、compileall/pip/YAML、SDK/Secret/tracked-data、governance/diff 全绿。Linux
+  package schema 1.6、外部调用 0、非 root/image boundary 通过且临时 Compose 资源已清理。
+- `docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md` 已覆盖八维 evidence；整个 8E 尚未
+  完成，coverage 必须保持 `planned`。唯一下一动作是独立提交并 push Batch B，
+  等待同一 SHA 的 `pytest`、`postgres-migrations`、`packaging-smoke`；三 job 全绿前不进入前端小批。

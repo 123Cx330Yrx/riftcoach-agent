@@ -80,7 +80,7 @@ def test_worker_settings_hide_secrets_and_resolve_runtime_assets(
 ) -> None:
     settings = load_worker_composition_settings(valid_environment(tmp_path))
 
-    assert settings.riot_region == "asia"
+    assert not hasattr(settings, "riot_region")
     assert settings.knowledge_root == (ROOT / "data/rag_docs").resolve()
     assert settings.polling_policy.maximum_delay_s == 2
     assert settings.lease_policy.lease_seconds == 120
@@ -88,6 +88,17 @@ def test_worker_settings_hide_secrets_and_resolve_runtime_assets(
     assert "riot-secret" not in repr(settings)
     assert "llm-secret" not in repr(settings)
     assert "database-secret" not in repr(settings)
+
+
+def test_worker_settings_ignore_legacy_ambient_region_instead_of_using_it(
+    tmp_path: Path,
+) -> None:
+    environment = valid_environment(tmp_path)
+    environment["RIOT_REGION"] = "cn"
+
+    settings = load_worker_composition_settings(environment)
+
+    assert not hasattr(settings, "riot_region")
 
 
 def test_database_readiness_failure_disposes_engine_before_any_riot_dependency(
@@ -240,6 +251,27 @@ def test_successful_composition_finishes_all_preflight_before_returning_worker(
     monkeypatch.setattr(
         "app.workers.composition.RiotClient",
         lambda **_kwargs: (events.append("riot.build") or object()),
+    )
+
+    class RoutedSummary:
+        def __init__(self, **kwargs):
+            assert set(kwargs["clients"]) == {
+                "americas",
+                "asia",
+                "europe",
+                "sea",
+            }
+            events.append("riot.router")
+
+        def build(self, **_kwargs):
+            return {}
+
+        def build_by_puuid(self, **_kwargs):
+            return {}
+
+    monkeypatch.setattr(
+        "app.workers.composition.RoutedRiotPlayerSummaryBuilder",
+        RoutedSummary,
     )
     monkeypatch.setattr(
         "app.workers.composition.DataDragonService",

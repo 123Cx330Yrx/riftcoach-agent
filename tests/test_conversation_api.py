@@ -217,7 +217,7 @@ def client(
 
 
 def create_conversation(http: TestClient, **overrides: Any):
-    payload: dict[str, Any] = {"relationship_id": str(RELATIONSHIP_ID)}
+    payload: dict[str, Any] = {"player_profile_id": str(RELATIONSHIP_ID)}
     payload.update(overrides)
     return http.post(
         "/conversations",
@@ -302,6 +302,27 @@ def test_create_uses_trusted_owner_and_returns_201_safe_projection() -> None:
     }.intersection(response.json())
 
 
+def test_create_accepts_legacy_relationship_alias_but_rejects_both_selectors() -> None:
+    service = FakeConversationService()
+    http = client(service)
+
+    legacy = http.post(
+        "/conversations",
+        headers={"Idempotency-Key": "legacy-selection"},
+        json={"relationship_id": str(RELATIONSHIP_ID)},
+    )
+    ambiguous = create_conversation(
+        http,
+        relationship_id=str(RELATIONSHIP_ID),
+    )
+
+    assert legacy.status_code == 201
+    assert legacy.json()["relationship_id"] == str(RELATIONSHIP_ID)
+    assert ambiguous.status_code == 422
+    assert ambiguous.json() == {"code": "request_invalid"}
+    assert len(service.create_commands) == 1
+
+
 def test_create_replay_returns_200_without_a_second_contract_shape() -> None:
     service = FakeConversationService()
     service.created = service.created.model_copy(
@@ -321,7 +342,7 @@ def test_create_rejects_missing_key_and_privileged_or_unknown_body_fields() -> N
 
     missing_key = http.post(
         "/conversations",
-        json={"relationship_id": str(RELATIONSHIP_ID)},
+        json={"player_profile_id": str(RELATIONSHIP_ID)},
     )
     privileged = create_conversation(
         http,

@@ -85,6 +85,7 @@ def running_task(
         request_payload=payload
         or {
             "riot_id": "DemoPlayer#TEST",
+            "routing_region": "asia",
             "count": 10,
             "queue": 420,
             "focus": "overall",
@@ -206,7 +207,7 @@ class FakeApplication:
     def __init__(self, result: RecentReviewApplicationResult):
         self.result = result
         self.calls: list[tuple[object, str]] = []
-        self.puuid_calls: list[tuple[object, str, str, str, str]] = []
+        self.puuid_calls: list[tuple[object, str, str, str, str, str]] = []
         self.memory_context_bindings: list[object] = []
 
     def review(self, request, *, run_id: str):
@@ -218,13 +219,14 @@ class FakeApplication:
         request,
         *,
         puuid: str,
+        routing_region: str,
         game_name: str,
         tag_line: str,
         run_id: str,
         memory_context_binding=None,
     ):
         self.puuid_calls.append(
-            (request, puuid, game_name, tag_line, run_id)
+            (request, puuid, routing_region, game_name, tag_line, run_id)
         )
         self.memory_context_bindings.append(memory_context_binding)
         return self.result
@@ -411,6 +413,7 @@ def test_executor_v2_uses_private_puuid_target_and_existing_terminal_gate():
         (
             ConversationRecentReviewRequest(),
             "trusted-puuid",
+            "asia",
             "Renamed Player",
             "KR2",
             task.run_id,
@@ -675,6 +678,7 @@ def test_manual_recovery_requires_exact_worker_confirmation_and_uses_cas():
 class FixtureSummaryBuilder:
     def build(self, **kwargs) -> dict:
         assert kwargs == {
+            "routing_region": "asia",
             "game_name": "DemoPlayer",
             "tag_line": "TEST",
             "count": 10,

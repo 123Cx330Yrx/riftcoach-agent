@@ -41,6 +41,7 @@ from app.api.player_models import (
     CreatePlayerLinkRequest,
     CreatePlayerLinkResponse,
     PlayerLinkResponse,
+    PlayerProfilePageResponse,
 )
 from app.api.memory_models import (
     CreateMemoryCandidateRequest,
@@ -117,6 +118,7 @@ from app.players.models import (
     CreatePlayerLinkCommand,
     PlayerLinkCreateResult,
     PlayerLinkTaskView,
+    PlayerProfilePage,
     RelationshipRole,
     RoutingRegion,
 )
@@ -185,6 +187,13 @@ class PlayerLinkServicePort(Protocol):
         owner_id: str,
         link_task_id: UUID,
     ) -> PlayerLinkTaskView: ...
+
+    def list_profiles(
+        self,
+        *,
+        owner_id: str,
+        limit: int = 50,
+    ) -> PlayerProfilePage: ...
 
 
 class RunQueryPort(Protocol):
@@ -569,7 +578,7 @@ def create_app(
             command = CreateConversationCommand(
                 owner_id=actor.owner_id,
                 idempotency_key=idempotency_key,
-                relationship_id=conversation_request.relationship_id,
+                relationship_id=conversation_request.player_profile_id,
             )
         except ValidationError:
             return _conversation_error_response(
@@ -1379,6 +1388,30 @@ def create_app(
             return _error_response(code, status_code=status_code)
         except ValidationError:
             return _error_response("request_invalid", status_code=422)
+        except Exception:
+            return _error_response("service_unavailable", status_code=503)
+
+    @app.get(
+        "/player-profiles",
+        response_model=PlayerProfilePageResponse,
+        responses={
+            503: {"model": ErrorResponse},
+        },
+    )
+    def get_player_profiles(
+        limit: int = Query(default=50, ge=1, le=100),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> PlayerProfilePageResponse | JSONResponse:
+        try:
+            page = player_link_service.list_profiles(
+                owner_id=actor.owner_id,
+                limit=limit,
+            )
+            if not isinstance(page, PlayerProfilePage) or page.limit != limit:
+                raise TypeError("player link service returned an invalid profile page")
+            return PlayerProfilePageResponse.from_page(page)
+        except PlayerLinkServiceError:
+            return _error_response("service_unavailable", status_code=503)
         except Exception:
             return _error_response("service_unavailable", status_code=503)
 

@@ -1843,6 +1843,19 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - 受控 fixture 只证明 adapter 能安全识别非字面量节点，不证明真实 OP.GG `mid` 的具体字段；live
   字段级诊断与 allowlist 裁决仍待新的明确外部授权。
 
+## 2026-08-23：ADR-0059 玩家档案与显式 Riot 路由
+
+- 采用 successful Player Link 的 owner-scoped latest-success projection 作为玩家档案列表；当前没有独立
+  default/profile table 的 Bad Case，因此不新增 migration、默认项、昵称或排序状态。
+- `player_profile_id` 是 opaque 公共 selection ID，当前复用 relationship identity。Conversation 新字段以它
+  为 canonical；旧 `relationship_id` 仅作严格输入兼容，双字段同时出现拒绝。
+- legacy recent review 必须显式提交 allowlisted routing region；Conversation review 从私有 SQL execution
+  target 取得 region。Worker 只从环境读取 Key，预建四地区 client 并 exact-select；拒绝 ambient default、
+  CN fallback、自动探区和跨区重试。
+- RQ-089 后本机 Docker Desktop/PostgreSQL 17/Linux Compose smoke 已可作为提交前反馈；它不取代 exact-SHA
+  公共 `pytest`、`postgres-migrations`、`packaging-smoke`，也不把整个 8E 标为完成。
+- 本批不实现正式 Auth/RSO、SSE、前端、EvidenceBundle store、HTTPS、备份或部署；ShowMaker 不是默认账号。
+
 ## 2026-08-23：8C 第三轮真库兼容裁决
 
 - Repository 的所有 JSONB checkpoint 读回路径（task、event、requeue）统一经过 strict JSON wire parser，并兼容 psycopg `Jsonb` wrapper；不以 `strict=False` 放宽 Pydantic 合同。

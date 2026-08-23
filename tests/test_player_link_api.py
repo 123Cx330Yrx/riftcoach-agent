@@ -20,6 +20,8 @@ from app.players.models import (
     PlayerLinkFailure,
     PlayerLinkStatus,
     PlayerLinkTaskView,
+    PlayerProfilePage,
+    PlayerProfileView,
     RelationshipRole,
     RoutingRegion,
     VerificationStatus,
@@ -80,6 +82,20 @@ class FakePlayerLinkService:
         self.error: Exception | None = None
         self.commands: list[CreatePlayerLinkCommand] = []
         self.get_calls: list[tuple[str, UUID]] = []
+        self.profile_calls: list[tuple[str, int]] = []
+        self.profiles = PlayerProfilePage(
+            items=(
+                PlayerProfileView(
+                    player_profile_id=RELATIONSHIP_ID,
+                    riot_id="Confirmed Player#KR1",
+                    routing_region=RoutingRegion.ASIA,
+                    relationship_role=RelationshipRole.SELF,
+                    verification_status=VerificationStatus.UNVERIFIED_CLAIM,
+                    last_resolved_at=NOW + timedelta(seconds=2),
+                ),
+            ),
+            limit=50,
+        )
 
     def create(self, command: CreatePlayerLinkCommand) -> PlayerLinkCreateResult:
         self.commands.append(command)
@@ -95,6 +111,12 @@ class FakePlayerLinkService:
         if self.error is not None:
             raise self.error
         return self.view
+
+    def list_profiles(self, *, owner_id: str, limit: int = 50) -> PlayerProfilePage:
+        self.profile_calls.append((owner_id, limit))
+        if self.error is not None:
+            raise self.error
+        return self.profiles.model_copy(update={"limit": limit})
 
 
 class UnusedTaskService:
@@ -160,11 +182,56 @@ def test_openapi_has_strict_player_link_contract_without_puuid() -> None:
 
     assert document["paths"]["/player-links"]["post"]["responses"].get("202")
     assert document["paths"]["/player-links/{link_task_id}"]["get"]
+    assert document["paths"]["/player-profiles"]["get"]
     serialized = json.dumps(document, sort_keys=True).lower()
     assert '"puuid"' not in serialized
     assert "verification_status" not in document["components"]["schemas"][
         "CreatePlayerLinkRequest"
     ]["properties"]
+
+
+def test_list_profiles_uses_trusted_owner_and_returns_only_safe_selection_data() -> None:
+    service = FakePlayerLinkService()
+
+    response = client(service).get("/player-profiles", params={"limit": 25})
+
+    assert response.status_code == 200
+    assert service.profile_calls == [("owner-1", 25)]
+    assert response.json() == {
+        "schema_version": "1.0",
+        "profiles": [
+            {
+                "schema_version": "1.0",
+                "player_profile_id": str(RELATIONSHIP_ID),
+                "riot_id": "Confirmed Player#KR1",
+                "routing_region": "asia",
+                "relationship_role": "self",
+                "verification_status": "unverified_claim",
+                "last_resolved_at": (NOW + timedelta(seconds=2))
+                .isoformat()
+                .replace("+00:00", "Z"),
+            }
+        ],
+        "limit": 25,
+    }
+    serialized = response.text.lower()
+    assert "puuid" not in serialized
+    assert "owner-1" not in serialized
+    assert "link_task_id" not in serialized
+
+
+def test_list_profiles_is_bounded_and_maps_repository_failure_safely() -> None:
+    service = FakePlayerLinkService()
+    http = client(service)
+
+    assert http.get("/player-profiles", params={"limit": 0}).status_code == 422
+    assert http.get("/player-profiles", params={"limit": 101}).status_code == 422
+    assert service.profile_calls == []
+
+    service.error = PlayerLinkServiceError("link_persistence_failed")
+    failed = http.get("/player-profiles")
+    assert failed.status_code == 503
+    assert failed.json() == {"code": "service_unavailable"}
 
 
 def test_app_factory_and_openapi_do_not_read_keys_or_open_io(monkeypatch) -> None:

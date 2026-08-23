@@ -85,7 +85,6 @@ services:
     environment:
       DATABASE_URL: postgresql+psycopg://riftcoach:${POSTGRES_PASSWORD:-riftcoach-local}@postgres:5432/riftcoach
       RIOT_API_KEY: ${RIOT_API_KEY:-}
-      RIOT_REGION: ${RIOT_REGION:-asia}
       LLM_PROVIDER: ${LLM_PROVIDER:-zhipu}
       LLM_DEFAULT_PROVIDER: ${LLM_DEFAULT_PROVIDER:-zhipu}
       LLM_API_KEY: ${LLM_API_KEY:-}

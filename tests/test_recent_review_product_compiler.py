@@ -54,7 +54,10 @@ def valid_summary() -> dict:
 
 
 def test_product_request_normalizes_riot_id_and_applies_safe_defaults():
-    request = RecentReviewProductRequest(riot_id="  Name#Part # CN1  ")
+    request = RecentReviewProductRequest(
+        riot_id="  Name#Part # CN1  ",
+        routing_region="asia",
+    )
 
     assert request.riot_id == "Name#Part#CN1"
     assert request.game_name == "Name#Part"
@@ -64,6 +67,7 @@ def test_product_request_normalizes_riot_id_and_applies_safe_defaults():
     assert request.focus == "overall"
     assert request.model_dump(mode="python") == {
         "riot_id": "Name#Part#CN1",
+        "routing_region": "asia",
         "count": 10,
         "queue": 420,
         "focus": "overall",
@@ -71,6 +75,22 @@ def test_product_request_normalizes_riot_id_and_applies_safe_defaults():
 
     with pytest.raises(ValidationError, match="frozen"):
         request.count = 20
+
+
+def test_product_request_requires_allowlisted_explicit_routing_region() -> None:
+    with pytest.raises(ValidationError):
+        RecentReviewProductRequest(riot_id="DemoPlayer#TEST")
+    for invalid in ("cn", "zh_CN", "", "ASIA", 1, None):
+        with pytest.raises(ValidationError):
+            RecentReviewProductRequest(
+                riot_id="DemoPlayer#TEST",
+                routing_region=invalid,
+            )
+
+    assert RecentReviewProductRequest(
+        riot_id="DemoPlayer#TEST",
+        routing_region="europe",
+    ).routing_region == "europe"
 
 
 @pytest.mark.parametrize(
@@ -87,7 +107,11 @@ def test_product_request_normalizes_riot_id_and_applies_safe_defaults():
     ),
 )
 def test_product_request_rejects_every_server_owned_field(field: str, value):
-    payload = {"riot_id": "DemoPlayer#TEST", field: value}
+    payload = {
+        "riot_id": "DemoPlayer#TEST",
+        "routing_region": "asia",
+        field: value,
+    }
 
     with pytest.raises(ValidationError, match="Extra inputs are not permitted"):
         RecentReviewProductRequest.model_validate(payload)
@@ -96,19 +120,28 @@ def test_product_request_rejects_every_server_owned_field(field: str, value):
 @pytest.mark.parametrize("count", (4, 21, "10", True))
 def test_product_request_rejects_invalid_or_coerced_count(count):
     with pytest.raises(ValidationError):
-        RecentReviewProductRequest(riot_id="DemoPlayer#TEST", count=count)
+        RecentReviewProductRequest(
+            riot_id="DemoPlayer#TEST",
+            routing_region="asia",
+            count=count,
+        )
 
 
 @pytest.mark.parametrize("queue", (0, 430, "420", True))
 def test_product_request_rejects_unsupported_or_coerced_queue(queue):
     with pytest.raises(ValidationError):
-        RecentReviewProductRequest(riot_id="DemoPlayer#TEST", queue=queue)
+        RecentReviewProductRequest(
+            riot_id="DemoPlayer#TEST",
+            routing_region="asia",
+            queue=queue,
+        )
 
 
 def test_product_request_accepts_no_queue_filter_and_all_supported_focuses():
     assert (
         RecentReviewProductRequest(
             riot_id="DemoPlayer#TEST",
+            routing_region="asia",
             queue=None,
         ).queue
         is None
@@ -117,6 +150,7 @@ def test_product_request_accepts_no_queue_filter_and_all_supported_focuses():
         assert (
             RecentReviewProductRequest(
                 riot_id="DemoPlayer#TEST",
+                routing_region="asia",
                 focus=focus,
             ).focus
             == focus
@@ -125,6 +159,7 @@ def test_product_request_accepts_no_queue_filter_and_all_supported_focuses():
     with pytest.raises(ValidationError):
         RecentReviewProductRequest(
             riot_id="DemoPlayer#TEST",
+            routing_region="asia",
             focus="teamfighting",
         )
 
@@ -143,7 +178,7 @@ def test_product_request_accepts_no_queue_filter_and_all_supported_focuses():
 )
 def test_product_request_rejects_malformed_or_unbounded_riot_id(riot_id: str):
     with pytest.raises(ValidationError, match="riot_id"):
-        RecentReviewProductRequest(riot_id=riot_id)
+        RecentReviewProductRequest(riot_id=riot_id, routing_region="asia")
 
 
 def _compile(
@@ -159,6 +194,7 @@ def _compile(
         request
         or RecentReviewProductRequest(
             riot_id="DemoPlayer#TEST",
+            routing_region="asia",
             focus="survival",
         ),
         player_summary=valid_summary(),
@@ -268,7 +304,10 @@ def test_compiler_preserves_trusted_memory_context_binding_and_rejects_drift():
     )
 
     compiled = compiler.compile(
-        RecentReviewProductRequest(riot_id="DemoPlayer#TEST"),
+        RecentReviewProductRequest(
+            riot_id="DemoPlayer#TEST",
+            routing_region="asia",
+        ),
         player_summary=valid_summary(),
         deterministic_report="# facts",
         memory_context_binding=context_binding,
@@ -277,7 +316,10 @@ def test_compiler_preserves_trusted_memory_context_binding_and_rejects_drift():
 
     with pytest.raises(ProductRequestCompilationError, match="run_id"):
         compiler.compile(
-            RecentReviewProductRequest(riot_id="DemoPlayer#TEST"),
+            RecentReviewProductRequest(
+                riot_id="DemoPlayer#TEST",
+                routing_region="asia",
+            ),
             player_summary=valid_summary(),
             deterministic_report="# facts",
             memory_context_binding=context_binding.model_copy(
@@ -296,6 +338,7 @@ def test_compiler_builds_canonical_skill_input_binding_and_runtime_request():
 
     request = RecentReviewProductRequest(
         riot_id="DemoPlayer#TEST",
+        routing_region="asia",
         count=20,
         queue=None,
         focus="vision",
@@ -396,7 +439,10 @@ def test_compiler_uses_a_trusted_preallocated_run_id_without_calling_factory():
     )
 
     compiled = compiler.compile(
-        RecentReviewProductRequest(riot_id="DemoPlayer#TEST"),
+        RecentReviewProductRequest(
+            riot_id="DemoPlayer#TEST",
+            routing_region="asia",
+        ),
         player_summary=valid_summary(),
         deterministic_report="# Facts",
         run_id="review_sql_preallocated",
@@ -416,7 +462,10 @@ def test_compiler_rejects_an_invalid_trusted_run_id_before_generation():
 
     with pytest.raises(ProductRequestCompilationError, match="trusted run_id"):
         compiler.compile(
-            RecentReviewProductRequest(riot_id="DemoPlayer#TEST"),
+            RecentReviewProductRequest(
+                riot_id="DemoPlayer#TEST",
+                routing_region="asia",
+            ),
             player_summary=valid_summary(),
             deterministic_report="# Facts",
             run_id="../sql-run",
@@ -427,7 +476,10 @@ def test_default_compiler_run_id_is_server_generated_and_portable():
     compiled = RecentReviewRuntimeRequestCompiler(
         SkillCatalog.from_directory("skills")
     ).compile(
-        RecentReviewProductRequest(riot_id="DemoPlayer#TEST"),
+        RecentReviewProductRequest(
+            riot_id="DemoPlayer#TEST",
+            routing_region="asia",
+        ),
         player_summary=valid_summary(),
         deterministic_report="# Facts",
     )

@@ -90,6 +90,7 @@ class RecentReviewSummaryBuilder(Protocol):
     def build(
         self,
         *,
+        routing_region: str,
         game_name: str,
         tag_line: str,
         count: int,
@@ -99,6 +100,7 @@ class RecentReviewSummaryBuilder(Protocol):
     def build_by_puuid(
         self,
         *,
+        routing_region: str,
         puuid: str,
         game_name: str,
         tag_line: str,
@@ -253,6 +255,7 @@ class RecentReviewApplicationService:
         request: ConversationRecentReviewRequest,
         *,
         puuid: str,
+        routing_region: str,
         game_name: str,
         tag_line: str,
         run_id: str | None = None,
@@ -264,6 +267,7 @@ class RecentReviewApplicationService:
         summary = self._build_summary_by_puuid(
             request,
             puuid=puuid,
+            routing_region=routing_region,
             game_name=game_name,
             tag_line=tag_line,
         )
@@ -365,6 +369,7 @@ class RecentReviewApplicationService:
         summary: Any = None
         try:
             summary = self._summary_builder.build(
+                routing_region=request.routing_region,
                 game_name=request.game_name,
                 tag_line=request.tag_line,
                 count=request.count,
@@ -393,6 +398,7 @@ class RecentReviewApplicationService:
         request: ConversationRecentReviewRequest,
         *,
         puuid: str,
+        routing_region: str,
         game_name: str,
         tag_line: str,
     ) -> dict:
@@ -404,6 +410,7 @@ class RecentReviewApplicationService:
                 raise TypeError("summary builder has no trusted PUUID path")
             summary = build_by_puuid(
                 puuid=puuid,
+                routing_region=routing_region,
                 game_name=game_name,
                 tag_line=tag_line,
                 count=request.count,

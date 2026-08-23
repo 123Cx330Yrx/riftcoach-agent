@@ -91,6 +91,7 @@ def test_compose_separates_real_worker_from_no_io_smoke() -> None:
     )
     assert smoke_command.startswith("python -m scripts.run_packaging_smoke")
     assert services["worker"]["environment"]["RIOT_API_KEY"] is not None
+    assert "RIOT_REGION" not in services["worker"]["environment"]
     assert services["player-link-worker"]["environment"]["RIOT_API_KEY"] is not None
     assert "LLM_API_KEY" not in services["player-link-worker"]["environment"]
     assert "RIOT_API_KEY" not in services["smoke"].get("environment", {})

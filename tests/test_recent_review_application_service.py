@@ -50,12 +50,14 @@ class FakeSummaryBuilder:
     def build(
         self,
         *,
+        routing_region: str,
         game_name: str,
         tag_line: str,
         count: int,
         queue: int | None,
     ) -> dict:
         self._events.append("summary")
+        assert routing_region == "asia"
         assert (game_name, tag_line, count, queue) == (
             "DemoPlayer",
             "TEST",
@@ -67,6 +69,7 @@ class FakeSummaryBuilder:
     def build_by_puuid(
         self,
         *,
+        routing_region: str,
         puuid: str,
         game_name: str,
         tag_line: str,
@@ -74,6 +77,7 @@ class FakeSummaryBuilder:
         queue: int | None,
     ) -> dict:
         self._events.append("summary_by_puuid")
+        assert routing_region == "asia"
         assert (puuid, game_name, tag_line, count, queue) == (
             "trusted-puuid",
             "Renamed Player",
@@ -219,7 +223,7 @@ def test_service_runs_the_real_compiler_in_order_and_projects_terminal_result(
     )
 
     result = service.review(
-        RecentReviewProductRequest(riot_id="DemoPlayer#TEST")
+        RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST")
     )
 
     assert events == ["summary", "report", "runtime", "receipt"]
@@ -252,7 +256,7 @@ def test_service_threads_a_trusted_sql_run_id_through_runtime_and_receipt() -> N
     )
 
     result = service.review(
-        RecentReviewProductRequest(riot_id="DemoPlayer#TEST"),
+        RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"),
         run_id="review_sql_application",
     )
 
@@ -278,6 +282,7 @@ def test_service_reuses_runtime_harness_after_trusted_puuid_summary() -> None:
     result = service.review_by_puuid(
         ConversationRecentReviewRequest(),
         puuid="trusted-puuid",
+        routing_region="asia",
         game_name="Renamed Player",
         tag_line="KR2",
         run_id="review_conversation_application",
@@ -327,7 +332,7 @@ def test_service_rejects_a_receipt_writer_identity_mismatch() -> None:
     )
 
     with pytest.raises(RecentReviewApplicationError) as caught:
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
 
     assert caught.value.code == "review_runtime_failed"
     assert caught.value.run_id == "application_run"
@@ -387,7 +392,7 @@ def test_upstream_failures_map_to_body_free_safe_errors(
     )
 
     with pytest.raises(RecentReviewApplicationError) as caught:
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
 
     public = caught.value.to_public_dict()
     assert public["code"] == expected_code
@@ -412,7 +417,7 @@ def test_rate_limit_retry_after_is_bounded_and_never_echoed_raw() -> None:
     )
 
     with pytest.raises(RecentReviewApplicationError) as caught:
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
 
     assert caught.value.retry_after_seconds is None
     assert "private" not in str(caught.value.to_public_dict())
@@ -427,7 +432,7 @@ def test_invalid_summary_is_configuration_failure_before_report_or_runtime() -> 
     )
 
     with pytest.raises(RecentReviewApplicationError) as caught:
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
 
     assert caught.value.code == "service_configuration_invalid"
     assert events == ["summary"]
@@ -444,7 +449,7 @@ def test_malformed_match_row_cannot_escape_as_a_raw_python_error() -> None:
     )
 
     with pytest.raises(RecentReviewApplicationError) as caught:
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
 
     assert caught.value.code == "service_configuration_invalid"
     assert "private" not in str(caught.value)
@@ -470,7 +475,7 @@ def test_zero_analyzable_matches_stops_before_run_id_generation() -> None:
     )
 
     with pytest.raises(RecentReviewApplicationError) as caught:
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
 
     assert caught.value.code == "insufficient_match_data"
     assert caught.value.run_id is None
@@ -494,7 +499,7 @@ def test_renderer_and_compiler_drift_fail_closed_before_runtime(
     )
     with pytest.raises(RecentReviewApplicationError) as renderer_error:
         renderer_service.review(
-            RecentReviewProductRequest(riot_id="DemoPlayer#TEST")
+            RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST")
         )
     assert renderer_error.value.code == "service_configuration_invalid"
     assert "private" not in str(renderer_error.value)
@@ -510,7 +515,7 @@ def test_renderer_and_compiler_drift_fail_closed_before_runtime(
     )
     with pytest.raises(RecentReviewApplicationError) as compiler_error:
         compiler_service.review(
-            RecentReviewProductRequest(riot_id="DemoPlayer#TEST")
+            RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST")
         )
     assert compiler_error.value.code == "service_configuration_invalid"
     assert events == ["summary", "report"]
@@ -537,7 +542,7 @@ def test_prompt_program_drift_is_configuration_failure_without_raw_details() -> 
     )
 
     with pytest.raises(RecentReviewApplicationError) as caught:
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
 
     assert caught.value.code == "service_configuration_invalid"
     assert caught.value.run_id is None
@@ -569,7 +574,7 @@ def test_runtime_failure_becomes_safe_review_error_with_trusted_run_id(
     )
 
     with pytest.raises(RecentReviewApplicationError) as caught:
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
 
     assert caught.value.code == "review_runtime_failed"
     assert caught.value.run_id == "application_run"
@@ -594,7 +599,7 @@ def test_typed_failed_runtime_is_receipted_before_safe_error() -> None:
     )
 
     with pytest.raises(RecentReviewApplicationError) as caught:
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
 
     assert caught.value.code == "review_runtime_failed"
     assert events == ["summary", "report", "runtime", "receipt"]
@@ -618,7 +623,7 @@ def test_application_service_can_write_the_real_file_receipt_store(
     )
 
     result = service.review(
-        RecentReviewProductRequest(riot_id="DemoPlayer#TEST")
+        RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST")
     )
 
     receipt = receipt_store.read_receipt(result.run_id)
@@ -640,7 +645,7 @@ def test_untyped_runtime_exception_does_not_invent_a_receipt() -> None:
     )
 
     with pytest.raises(RecentReviewApplicationError):
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
 
     assert events == ["summary", "report"]
     assert writer.results == []
@@ -663,7 +668,7 @@ def test_receipt_failure_is_body_free_and_blocks_success_projection() -> None:
     )
 
     with pytest.raises(RecentReviewApplicationError) as caught:
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
 
     assert events == ["summary", "report", "runtime", "receipt"]
     assert caught.value.code == "review_runtime_failed"
@@ -687,7 +692,7 @@ def test_runtime_terminal_mismatch_and_untrusted_reason_are_not_projected() -> N
         receipt_writer=writer,
     )
     with pytest.raises(RecentReviewApplicationError) as mismatch_error:
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
     assert mismatch_error.value.code == "review_runtime_failed"
     assert mismatch_error.value.terminal_reason is None
     assert writer.results == []
@@ -707,7 +712,7 @@ def test_runtime_terminal_mismatch_and_untrusted_reason_are_not_projected() -> N
         receipt_writer=RecordingReceiptWriter(events),
     )
     with pytest.raises(RecentReviewApplicationError) as unknown_error:
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
     assert unknown_error.value.terminal_reason is None
 
 
@@ -726,7 +731,7 @@ def test_runtime_result_cannot_switch_the_server_generated_run_id() -> None:
     )
 
     with pytest.raises(RecentReviewApplicationError) as caught:
-        service.review(RecentReviewProductRequest(riot_id="DemoPlayer#TEST"))
+        service.review(RecentReviewProductRequest(routing_region="asia", riot_id="DemoPlayer#TEST"))
 
     assert caught.value.code == "review_runtime_failed"
     assert caught.value.run_id == "application_run"

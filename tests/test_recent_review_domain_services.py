@@ -3,8 +3,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from app.lol.player_summary import (
     RiotPlayerSummaryBuilder,
+    RoutedRiotPlayerSummaryBuilder,
     build_player_summary,
     build_player_summary_by_puuid,
 )
@@ -64,6 +67,42 @@ def test_trusted_puuid_builder_skips_account_lookup_and_keeps_display_alias() ->
     assert summary["player"]["tag_line"] == "KR2"
     assert summary["recent_summary"]["games_analyzed"] == 1
     assert build_player_summary_by_puuid is not build_player_summary
+
+
+class ForbiddenRegionClient(FakeClient):
+    def get_account_by_riot_id(self, game_name: str, tag_line: str) -> dict:
+        del game_name, tag_line
+        raise AssertionError("the wrong regional client was selected")
+
+
+def test_routed_summary_builder_selects_only_the_explicit_region_without_fallback() -> None:
+    builder = RoutedRiotPlayerSummaryBuilder(
+        clients={
+            "americas": ForbiddenRegionClient(),
+            "asia": ForbiddenRegionClient(),
+            "europe": FakeClient(),
+            "sea": ForbiddenRegionClient(),
+        },
+        ddragon=FakeDataDragon(),
+    )
+
+    summary = builder.build(
+        routing_region="europe",
+        game_name="Player Name",
+        tag_line="EUW",
+        count=10,
+        queue=420,
+    )
+
+    assert summary["recent_summary"]["games_analyzed"] == 1
+    with pytest.raises(ValueError, match="not supported"):
+        builder.build(
+            routing_region="cn",
+            game_name="Player Name",
+            tag_line="CN1",
+            count=10,
+            queue=420,
+        )
 
 
 def test_report_cli_and_app_renderer_are_byte_identical() -> None:

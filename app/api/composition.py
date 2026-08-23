@@ -82,6 +82,7 @@ from app.players.models import (
     PlayerLinkCapacityPolicy,
     PlayerLinkCreateResult,
     PlayerLinkTaskView,
+    PlayerProfilePage,
 )
 from app.players.service import PlayerLinkService, PlayerLinkServiceError
 from app.product.run_query import RunQueryError, RunQueryService, RunView
@@ -370,6 +371,14 @@ class _PlayerLinkServiceProxy:
             owner_id=owner_id,
             link_task_id=link_task_id,
         )
+
+    def list_profiles(
+        self,
+        *,
+        owner_id: str,
+        limit: int = 50,
+    ) -> PlayerProfilePage:
+        return self._service().list_profiles(owner_id=owner_id, limit=limit)
 
 
 class _ConversationServiceProxy:

@@ -567,6 +567,21 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     assert result.external_riot_provider_calls == 0
     assert events == ["engine.dispose"]
 
+    task_post = next(
+        item
+        for item in requests_seen
+        if item[0] == "POST"
+        and item[1].endswith("/reviews/recent")
+        and "/conversations/" not in item[1]
+    )
+    assert task_post[2]["json"] == {
+        "riot_id": "SyntheticSmoke#TEST",
+        "routing_region": "asia",
+        "count": 5,
+        "queue": 420,
+        "focus": "overall",
+    }
+
     task_event_get = next(
         item
         for item in requests_seen

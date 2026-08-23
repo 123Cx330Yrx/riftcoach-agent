@@ -2785,3 +2785,20 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   三 job completed/success；公共 pytest 1701、真实 PostgreSQL 186、Linux package schema 1.6。
 - `CLOSED-BATCH`：OP.GG nullable JSON-null Bad Case 已完成从 live diagnosis 到 post-fix live/public evidence 的
   全链闭环；8E 继续 in progress，下一批转为 player profile selection DTO/legacy region。
+
+### 2026-08-23：RQ-089 与 8E Batch B 本地收尾
+
+- `REQUIREMENT`：用户要求消除各阶段可避免的本机 skip；已配置 Docker Desktop/WSL2、持久 PostgreSQL 17
+  与用户级测试 URL。历史 skip 主要延迟本地反馈，相应 exact-SHA PostgreSQL/Linux job 仍是完成事实源，
+  不因今天补环境而重写历史。
+- `DECISION`：ADR-0059 复用成功 Player Link 投影 owner-scoped latest profile；不新建 default/profile table。
+  `player_profile_id` 是 opaque relationship-backed selection，公共 DTO 保持 PUUID-free。
+- `IMPLEMENTED-LOCAL`：`GET /player-profiles`、Conversation canonical selection/legacy alias、legacy required
+  region、SQL target region propagation、四地区 exact-select builder 与 Compose 去 ambient `RIOT_REGION` 已完成。
+- `LOCAL-EVIDENCE`：CI-equivalent PostgreSQL collection `187 passed`、focused `268 passed`、完整
+  `1842 passed, 1 skipped, 1 warning, 127 subtests passed`、Alembic upgrade/check 与 Linux Compose
+  package schema 1.6/外部调用 0/image boundary 已通过。Windows symlink 单项 skip 继续由
+  exact-SHA Linux pytest 补证，不扩大系统权限追求零 skip。
+- `STATUS`：两套 RAG、Harness、compile/pip/YAML、安全/治理/diff 门均全绿。8E 保持 `in_progress`，coverage
+  保持 `planned`；唯一下一动作是独立提交/push
+  和 exact-SHA 三 job。公共全绿前不进入静态前端小批。

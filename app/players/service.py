@@ -17,6 +17,8 @@ from app.players.models import (
     PlayerLinkCreateResult,
     PlayerLinkRepositoryCreateDisposition,
     PlayerLinkTaskView,
+    PlayerProfilePage,
+    PlayerProfileView,
     compute_alias_hash,
 )
 from app.players.ports import PlayerRepository
@@ -167,6 +169,33 @@ class PlayerLinkService:
         if task is None:
             raise PlayerLinkServiceError("link_not_found")
         return PlayerLinkTaskView.from_task(task)
+
+    def list_profiles(
+        self,
+        *,
+        owner_id: str,
+        limit: int = 50,
+    ) -> PlayerProfilePage:
+        _validate_owner_scope(owner_id)
+        if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 100:
+            raise PlayerLinkServiceError("link_identity_invalid")
+        list_profiles = getattr(self._repository, "list_profiles", None)
+        if not callable(list_profiles):
+            raise PlayerLinkServiceError("link_persistence_failed")
+        try:
+            profiles = list_profiles(owner_id=owner_id, limit=limit)
+        except Exception:
+            raise PlayerLinkServiceError("link_persistence_failed") from None
+        if (
+            not isinstance(profiles, tuple)
+            or len(profiles) > limit
+            or any(not isinstance(profile, PlayerProfileView) for profile in profiles)
+        ):
+            raise PlayerLinkServiceError("link_persistence_failed")
+        try:
+            return PlayerProfilePage(items=profiles, limit=limit)
+        except (TypeError, ValueError, ValidationError):
+            raise PlayerLinkServiceError("link_persistence_failed") from None
 
 
 def _validate_owner_scope(owner_id: str) -> None:

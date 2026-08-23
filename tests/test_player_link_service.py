@@ -20,6 +20,7 @@ from app.players.models import (
     PlayerLinkRepositoryCreateResult,
     PlayerLinkStatus,
     PlayerLinkTask,
+    PlayerProfileView,
     RelationshipRole,
     RoutingRegion,
     VerificationStatus,
@@ -100,6 +101,8 @@ class FakePlayerRepository(PlayerRepository):
     def __init__(self) -> None:
         self.tasks: list[PlayerLinkTask] = []
         self.failure: Exception | None = None
+        self.profiles: tuple[PlayerProfileView, ...] = ()
+        self.profile_calls: list[tuple[str, int]] = []
 
     def create_or_replay_link(
         self,
@@ -164,6 +167,17 @@ class FakePlayerRepository(PlayerRepository):
             ),
             None,
         )
+
+    def list_profiles(
+        self,
+        *,
+        owner_id: str,
+        limit: int,
+    ) -> tuple[PlayerProfileView, ...]:
+        if self.failure is not None:
+            raise self.failure
+        self.profile_calls.append((owner_id, limit))
+        return self.profiles[:limit]
 
     def claim_next_link(self, *, worker_id: str, now: datetime) -> PlayerLinkTask | None:
         raise NotImplementedError
@@ -283,6 +297,34 @@ def test_service_creates_and_replays_same_owner_key_and_fingerprint() -> None:
     assert replayed.disposition is PlayerLinkCreateDisposition.REPLAYED
     assert replayed.task.link_task_id == created.task.link_task_id
     assert len(repository.tasks) == 1
+
+
+def test_service_lists_bounded_owner_profiles_and_hides_repository_failures() -> None:
+    repository = FakePlayerRepository()
+    repository.profiles = (
+        PlayerProfileView(
+            player_profile_id=RELATIONSHIP_ID,
+            riot_id="Confirmed Player#KR1",
+            routing_region=RoutingRegion.ASIA,
+            relationship_role=RelationshipRole.SELF,
+            verification_status=VerificationStatus.UNVERIFIED_CLAIM,
+            last_resolved_at=NOW,
+        ),
+    )
+    link_service = service(repository)
+
+    page = link_service.list_profiles(owner_id="owner-1", limit=25)
+
+    assert page.items == repository.profiles
+    assert page.limit == 25
+    assert repository.profile_calls == [("owner-1", 25)]
+    assert "puuid" not in page.model_dump_json().lower()
+
+    repository.failure = PlayerRepositoryError("private database detail")
+    with pytest.raises(PlayerLinkServiceError) as caught:
+        link_service.list_profiles(owner_id="owner-1")
+    assert caught.value.code == "link_persistence_failed"
+    assert "private" not in repr(caught.value)
 
 
 def test_same_owner_key_with_different_fingerprint_is_safe_conflict() -> None:

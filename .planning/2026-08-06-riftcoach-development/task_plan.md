@@ -761,9 +761,14 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 - [completed-live] RQ-088 下修复后最终 mid replay 通过；1 次 OP.GG call、Riot/LLM/Key calls 0，10 条 mid facts 进入 strict adapter 并创建 bundle `69ed8a...fff1a`；bundle 因 Akali 未命中当前 top-10 Meta、缺 Data Dragon/official patch 而诚实 `degraded/unjoined`，不是 parser 失败；
 - [completed-local] frozen live-success evidence regression 与 OP.GG/MCP/Evidence 相邻 `61 passed`，governance、JSON、diff 门全绿；
 - [completed-public] RQ-088 policy/live-success evidence `efaccd9` / Actions `32615821339` exact-SHA 三 job 全绿；公共 pytest 1701、真库 186、Linux package schema 1.6/外部 Riot Provider calls 0；
-- [ ] 冻结 owner-scoped player profile list/selection DTO，修正 legacy `/reviews/recent` 地区隐式来源；
+- [completed-local] ADR-0059 与专用设计/实施计划冻结 owner-scoped latest-success profile projection、opaque `player_profile_id`、strict legacy alias 与逐请求 exact regional routing；不新增 default/profile 表；
+- [completed-local] 实现 `GET /player-profiles`、Conversation profile selection、legacy required `routing_region`、SQL target region 传播、四地区 routed Riot builder，并从 Worker/Compose 删除 ambient `RIOT_REGION`；
+- [completed-local] 本机已配置 Docker Desktop、持久 PostgreSQL 17 与用户级测试 URL；真库集合 `187 passed`、focused `268 passed`、完整 `1842 passed, 1 skipped, 1 warning, 127 subtests passed`，Linux Compose/package smoke schema 1.6/外部调用 0 与 image boundary 已通过；
+- [completed-local] Batch B 八维 walkthrough 与 coverage evidence map 已建立；整个 8E 尚未完成，coverage 继续 `planned`；
+- [completed-local] 两套 RAG、Harness dry-run、compileall/pip/YAML、SDK/Secret/tracked-data、governance 与 diff 门全绿；
+- [ ] 完成独立 Batch B implementation/evidence 提交、push 和 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；
 - [ ] 前端从静态/fixture-backed 合同小批开始，再接 API/SSE/Auth，最后才加入口动效；
-- [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout。
+- [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout；Windows symlink 单项 skip 由 exact-SHA Linux pytest 独立补证。
 
 ## 6A Entry Design Checklist
 

@@ -3854,3 +3854,12 @@
 - `CLOSED-BATCH`：OP.GG JSON-null parser Bad Case 已完成 live diagnosis → red/green fix → code public CI →
   post-fix live pass → frozen evidence public CI 的完整链。8E 仍 in progress，下一批为 owner-scoped player
   profile list/selection DTO 与 legacy region 修正；不把当前 degraded join 说成 exact Meta match。
+### 2026-08-23：8E Batch B 本地实现与真库/Linux 验证
+
+- `AUTHORIZED`：RQ-086/RQ-088 的 8E 连续推进授权保持有效；RQ-089 又要求消除可避免的本地 DB/Docker skip，并继续保留 exact-SHA 公共关闭门。
+- `DESIGN`：ADR-0059、专用 design/implementation plan 采用已有 Player Link 的 owner-scoped latest-success projection；不新增 default/profile 表或 migration。
+- `IMPLEMENTED`：profile domain/port/service/SQL/API、Conversation canonical selection + legacy alias、legacy required routing、SQL execution-target routing、四地区 exact-select builder、Worker/Compose 去 ambient region 与 package smoke 已完成。
+- `TDD`：profile 隔离/去重/hidden/PUUID-free、双字段 422、region required/CN/unknown、fingerprint、legacy/conversation propagation、无 fallback 与 Compose/package 合同均有回归。
+- `LOCAL-INFRA`：Docker Desktop + WSL2、PostgreSQL 17 容器和用户级测试 URL 已配置；CI-equivalent PostgreSQL collection `187 passed`，migration/check 与真实 Linux Compose package smoke 已通过。
+- `LOCAL-GATES`：focused `268 passed`；完整 `1842 passed, 1 skipped, 1 warning, 127 subtests passed`；两套 RAG 满阈值，Harness `published`/0 revisions，compileall/pip/YAML、SDK/Secret/tracked-data、governance/diff 全绿。Linux Compose schema 1.6/外部调用 0/image boundary 通过并清理资源。
+- `BOUNDARY`：8E 仍 in progress/coverage planned；前端、Auth/RSO、SSE、EvidenceBundle persistence、HTTPS、备份与部署没有开始。唯一下一动作是独立提交/push 与 exact-SHA 三 job。

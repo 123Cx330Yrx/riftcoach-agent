@@ -80,6 +80,7 @@ class RecentReviewApplicationPort(Protocol):
         request: ConversationRecentReviewRequest,
         *,
         puuid: str,
+        routing_region: str,
         game_name: str,
         tag_line: str,
         run_id: str,
@@ -243,6 +244,7 @@ class RecentReviewTaskExecutor:
             return review_by_puuid(
                 request,
                 puuid=target.puuid,
+                routing_region=target.routing_region.value,
                 game_name=target.game_name,
                 tag_line=target.tag_line,
                 run_id=task.run_id,

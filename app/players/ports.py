@@ -10,6 +10,7 @@ from app.players.models import (
     PlayerLinkFailure,
     PlayerLinkRepositoryCreateResult,
     PlayerLinkTask,
+    PlayerProfileView,
     ResolvedRiotAccount,
 )
 
@@ -32,6 +33,13 @@ class PlayerRepository(Protocol):
         owner_id: str,
         link_task_id: UUID,
     ) -> PlayerLinkTask | None: ...
+
+    def list_profiles(
+        self,
+        *,
+        owner_id: str,
+        limit: int,
+    ) -> tuple[PlayerProfileView, ...]: ...
 
     def claim_next_link(
         self,

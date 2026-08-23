@@ -825,6 +825,30 @@ groups:
     covers:
       - 8e-productization
     status: planned
+    evidence:
+      problem_and_principle:
+        - docs/adr/0059-adopt-owner-scoped-player-profiles-and-explicit-riot-routing.md
+        - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+      design_and_implementation:
+        - docs/adr/0059-adopt-owner-scoped-player-profiles-and-explicit-riot-routing.md
+        - docs/plans/2026-08-23-player-profile-selection-explicit-routing-design.md
+        - docs/plans/2026-08-23-player-profile-selection-explicit-routing-implementation.md
+        - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+      code_map:
+        - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+      data_and_control_flow:
+        - docs/plans/2026-08-23-player-profile-selection-explicit-routing-design.md
+        - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+      verification:
+        - docs/plans/2026-08-23-player-profile-selection-explicit-routing-implementation.md
+        - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+      runbook:
+        - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+      failure_security_boundary:
+        - docs/adr/0059-adopt-owner-scoped-player-profiles-and-explicit-riot-routing.md
+        - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+      interview_wording:
+        - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
 
   - id: 8f-final-evaluation-and-portfolio
     sequence: 360

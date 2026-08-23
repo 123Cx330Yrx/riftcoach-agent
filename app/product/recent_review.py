@@ -51,6 +51,7 @@ class RecentReviewProductRequest(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
 
     riot_id: str = Field(min_length=3, max_length=_MAX_RIOT_ID_LENGTH)
+    routing_region: Literal["americas", "asia", "europe", "sea"]
     count: int = Field(default=10, ge=5, le=20)
     queue: Literal[420] | None = 420
     focus: Literal[

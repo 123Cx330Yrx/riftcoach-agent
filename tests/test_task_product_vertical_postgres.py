@@ -41,6 +41,7 @@ NOW = datetime(2026, 8, 18, 8, 0, tzinfo=timezone.utc)
 class FixtureSummaryBuilder:
     def build(self, **kwargs) -> dict:
         assert kwargs == {
+            "routing_region": "asia",
             "game_name": "DemoPlayer",
             "tag_line": "TEST",
             "count": 10,
@@ -84,6 +85,7 @@ def test_claimed_task_runs_real_offline_application_runtime_harness_and_persists
         run_id = "review_product_pg_vertical"
         payload = {
             "riot_id": "DemoPlayer#TEST",
+            "routing_region": "asia",
             "count": 10,
             "queue": 420,
             "focus": "survival",

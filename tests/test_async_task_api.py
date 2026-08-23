@@ -157,7 +157,11 @@ def client(
 
 
 def post_recent(http: TestClient, **overrides: Any):
-    payload = {"riot_id": "DemoPlayer#TEST", "focus": "survival"}
+    payload = {
+        "riot_id": "DemoPlayer#TEST",
+        "routing_region": "asia",
+        "focus": "survival",
+    }
     payload.update(overrides)
     return http.post(
         "/reviews/recent",
@@ -190,15 +194,16 @@ def test_openapi_versions_the_async_contract_and_exact_paths() -> None:
             "/owner-data/deletions",
             "/owner-data/deletions/{marker_id}/retry",
             "/reviews/recent",
-        "/player-links",
-        "/player-links/{link_task_id}",
-        "/tasks/{task_id}",
-        "/tasks/{task_id}/cancel",
-        "/tasks/{task_id}/events",
-        "/runs/{run_id}",
-        "/runs/{run_id}/report",
-        "/health/live",
-        "/health/ready",
+            "/player-profiles",
+            "/player-links",
+            "/player-links/{link_task_id}",
+            "/tasks/{task_id}",
+            "/tasks/{task_id}/cancel",
+            "/tasks/{task_id}/events",
+            "/runs/{run_id}",
+            "/runs/{run_id}/report",
+            "/health/live",
+            "/health/ready",
     }
     assert document["paths"]["/reviews/recent"]["post"]["responses"].get("202")
     assert "201" not in document["paths"]["/reviews/recent"]["post"]["responses"]
@@ -227,6 +232,7 @@ def test_post_commits_task_and_returns_202_receipt_without_private_input() -> No
             owner_id="owner-1",
             idempotency_key="request-1",
             request=RecentReviewProductRequest(
+                routing_region="asia",
                 riot_id="DemoPlayer#TEST",
                 focus="survival",
             ),
@@ -255,16 +261,37 @@ def test_post_requires_bounded_idempotency_key_before_service_call() -> None:
 
     missing = http.post(
         "/reviews/recent",
-        json={"riot_id": "DemoPlayer#TEST"},
+        json={"riot_id": "DemoPlayer#TEST", "routing_region": "asia"},
     )
     invalid = http.post(
         "/reviews/recent",
         headers={"Idempotency-Key": "contains spaces"},
-        json={"riot_id": "DemoPlayer#TEST"},
+        json={"riot_id": "DemoPlayer#TEST", "routing_region": "asia"},
     )
 
     assert missing.status_code == invalid.status_code == 422
     assert missing.json() == invalid.json() == {"code": "request_invalid"}
+    assert service.commands == []
+
+
+def test_post_requires_explicit_supported_region_without_cn_or_ambient_fallback() -> None:
+    service = FakeTaskService()
+    http = client(task_service=service)
+    headers = {"Idempotency-Key": "request-1"}
+
+    missing = http.post(
+        "/reviews/recent",
+        headers=headers,
+        json={"riot_id": "DemoPlayer#TEST"},
+    )
+    cn = http.post(
+        "/reviews/recent",
+        headers=headers,
+        json={"riot_id": "DemoPlayer#TEST", "routing_region": "cn"},
+    )
+
+    assert missing.status_code == cn.status_code == 422
+    assert missing.json() == cn.json() == {"code": "request_invalid"}
     assert service.commands == []
 
 
@@ -280,6 +307,7 @@ def test_owner_cannot_be_supplied_in_body_or_internal_headers() -> None:
         },
         json={
             "riot_id": "DemoPlayer#TEST",
+            "routing_region": "asia",
             "owner_id": "attacker-owner",
         },
     )

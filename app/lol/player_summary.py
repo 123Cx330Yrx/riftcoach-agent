@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Any, Protocol
 
 from app.lol.match_analyzer import (
@@ -300,10 +301,97 @@ class RiotPlayerSummaryBuilder:
         )
 
 
+class RoutedRiotPlayerSummaryBuilder:
+    """Select one explicitly configured regional client with no fallback."""
+
+    _REGIONS = frozenset({"americas", "asia", "europe", "sea"})
+
+    def __init__(
+        self,
+        *,
+        clients: Mapping[str, RiotMatchClient],
+        ddragon: MatchStaticDataService,
+        min_duration_seconds: int = 300,
+    ) -> None:
+        if not isinstance(clients, Mapping) or set(clients) != self._REGIONS:
+            raise ValueError("clients must contain every supported routing region")
+        if any(
+            not all(
+                callable(getattr(client, method_name, None))
+                for method_name in (
+                    "get_account_by_riot_id",
+                    "get_recent_match_ids",
+                    "get_match_detail",
+                    "get_match_timeline",
+                )
+            )
+            for client in clients.values()
+        ):
+            raise TypeError("every regional client must implement RiotMatchClient")
+        if (
+            isinstance(min_duration_seconds, bool)
+            or not isinstance(min_duration_seconds, int)
+            or min_duration_seconds < 0
+        ):
+            raise ValueError("min_duration_seconds must be a non-negative integer")
+        self._clients = dict(clients)
+        self._ddragon = ddragon
+        self._min_duration_seconds = min_duration_seconds
+
+    def build(
+        self,
+        *,
+        routing_region: str,
+        game_name: str,
+        tag_line: str,
+        count: int,
+        queue: int | None,
+    ) -> dict:
+        return build_player_summary(
+            client=self._client(routing_region),
+            ddragon=self._ddragon,
+            game_name=game_name,
+            tag_line=tag_line,
+            count=count,
+            queue=queue,
+            min_duration_seconds=self._min_duration_seconds,
+        )
+
+    def build_by_puuid(
+        self,
+        *,
+        routing_region: str,
+        puuid: str,
+        game_name: str,
+        tag_line: str,
+        count: int,
+        queue: int | None,
+    ) -> dict:
+        return build_player_summary_by_puuid(
+            client=self._client(routing_region),
+            ddragon=self._ddragon,
+            puuid=puuid,
+            game_name=game_name,
+            tag_line=tag_line,
+            count=count,
+            queue=queue,
+            min_duration_seconds=self._min_duration_seconds,
+        )
+
+    def _client(self, routing_region: str) -> RiotMatchClient:
+        if not isinstance(routing_region, str):
+            raise TypeError("routing_region must be a string")
+        client = self._clients.get(routing_region)
+        if client is None:
+            raise ValueError("routing_region is not supported")
+        return client
+
+
 __all__ = [
     "MatchStaticDataService",
     "RiotMatchClient",
     "RiotPlayerSummaryBuilder",
+    "RoutedRiotPlayerSummaryBuilder",
     "build_player_summary",
     "build_player_summary_by_puuid",
     "process_match",

@@ -299,6 +299,7 @@ def execute_packaging_smoke(
                 headers={"Idempotency-Key": f"packaging-smoke-{uuid4().hex}"},
                 json={
                     "riot_id": "SyntheticSmoke#TEST",
+                    "routing_region": "asia",
                     "count": 5,
                     "queue": 420,
                     "focus": "overall",

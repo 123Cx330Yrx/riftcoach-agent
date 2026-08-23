@@ -7,11 +7,12 @@ not client-authoritative HTTP fields.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from datetime import datetime
 from typing import Literal, Self, TypeAlias
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from app.conversations.models import (
     ConversationCreateResult,
@@ -43,9 +44,24 @@ class ConversationApiModel(BaseModel):
 
 
 class CreateConversationRequest(ConversationApiModel):
-    relationship_id: UUID
+    player_profile_id: UUID
 
-    @field_validator("relationship_id", mode="before")
+    @model_validator(mode="before")
+    @classmethod
+    def accept_legacy_relationship_alias(cls, value: object) -> object:
+        if not isinstance(value, Mapping):
+            return value
+        has_profile = "player_profile_id" in value
+        has_relationship = "relationship_id" in value
+        if has_profile == has_relationship:
+            return value
+        if has_relationship:
+            normalized = dict(value)
+            normalized["player_profile_id"] = normalized.pop("relationship_id")
+            return normalized
+        return value
+
+    @field_validator("player_profile_id", mode="before")
     @classmethod
     def parse_json_uuid(cls, value: object) -> object:
         # FastAPI supplies JSON strings to model validation.  Keep the DTO
@@ -58,7 +74,7 @@ class CreateConversationRequest(ConversationApiModel):
                 return UUID(value)
             except ValueError:
                 pass
-        raise ValueError("relationship_id must be a UUID")
+        raise ValueError("player_profile_id must be a UUID")
 
 
 class AppendUserMessageRequest(ConversationApiModel):

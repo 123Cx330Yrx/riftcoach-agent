@@ -3706,3 +3706,11 @@
   不能为了得到绿色 join 而换样本、扩大抓取或让 OP.GG 继承 Riot patch。
 - 本次外部计数：OP.GG tools/call 1，Riot/LLM/Key 0，无重试；bundle digest
   `69ed8a...fff1a`，结果文件 SHA-256 `1dd803...54d1d`。
+## 2026-08-23：8E Batch B 玩家档案与显式 Riot 路由
+
+- 成功 Player Link 已经拥有 owner relationship、stable subject、显示 Riot ID、地区、角色与验证语义；复用它做 latest-success profile projection 比新增默认档案表更小、更一致，且没有 migration。
+- `player_profile_id` 当前是 `relationship_id` 的 opaque 公共名称；Conversation 新字段以它为 canonical，旧 `relationship_id` 只作输入 alias。双字段同时出现必须 422，输出不暴露 PUUID、owner、task 或 fingerprint。
+- legacy `/reviews/recent` 的 ambient `RIOT_REGION` 是真实跨区缺口。地区现在进入严格 HTTP DTO、task payload/fingerprint、Application/Executor 接缝；Conversation 路径从私有 SQL execution target 取地区。
+- Worker 预建 `americas/asia/europe/sea` 四个 Riot Client 并 exact-select；没有 default、自动探区或 CN fallback。ShowMaker 只保留为历史 live validation 样本，产品不存在默认账号。
+- 本机历史 PostgreSQL/Docker skip 的主要风险是提交前反馈慢，而不是公开关闭门缺失：相应阶段均有 exact-SHA PostgreSQL/Linux job。RQ-089 后已补齐 Docker Desktop、PostgreSQL 17 与 Linux Compose smoke；当前仅 Windows symlink 创建仍单项 skip。
+- 本地数据库 URL/密码只保存在用户环境，不进入仓库；持久容器 `riftcoach-local-postgres` 绑定 `127.0.0.1:54329` 并采用 `unless-stopped`。

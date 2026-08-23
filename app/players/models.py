@@ -424,6 +424,47 @@ class PlayerLinkTaskView(PlayerDomainModel):
         )
 
 
+class PlayerProfileView(PlayerDomainModel):
+    """PUUID-free selectable projection of one resolved owner relationship."""
+
+    schema_version: Literal["1.0"] = "1.0"
+    player_profile_id: UUID
+    riot_id: str = Field(min_length=3, max_length=_MAX_RIOT_ID_LENGTH)
+    routing_region: RoutingRegion
+    relationship_role: RelationshipRole
+    verification_status: VerificationStatus
+    last_resolved_at: datetime
+
+    @field_validator("riot_id")
+    @classmethod
+    def validate_riot_id(cls, value: str) -> str:
+        return CreatePlayerLinkCommand.normalize_riot_id(value)
+
+    @field_validator("last_resolved_at")
+    @classmethod
+    def normalize_last_resolved_at(cls, value: datetime) -> datetime:
+        return _as_utc(value)
+
+    @model_validator(mode="after")
+    def validate_relationship_projection(self) -> Self:
+        _validate_role_verification_pair(
+            self.relationship_role,
+            self.verification_status,
+        )
+        return self
+
+
+class PlayerProfilePage(PlayerDomainModel):
+    items: tuple[PlayerProfileView, ...]
+    limit: int = Field(ge=1, le=100)
+
+    @model_validator(mode="after")
+    def validate_bound(self) -> Self:
+        if len(self.items) > self.limit:
+            raise ValueError("profile page exceeds its requested limit")
+        return self
+
+
 class PlayerLinkCreateDisposition(StrEnum):
     CREATED = "created"
     REPLAYED = "replayed"
@@ -561,6 +602,8 @@ __all__ = [
     "PlayerLinkStatus",
     "PlayerLinkTask",
     "PlayerLinkTaskView",
+    "PlayerProfilePage",
+    "PlayerProfileView",
     "RelationshipRole",
     "ResolvedRiotAccount",
     "RoutingRegion",

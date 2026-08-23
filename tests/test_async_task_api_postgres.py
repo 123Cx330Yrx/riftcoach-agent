@@ -68,7 +68,11 @@ def test_postgres_api_create_replay_owner_scope_and_not_ready_run(
 ) -> None:
     owner, other_owner = migrated_api
     headers = {"Idempotency-Key": "api-request-1"}
-    payload = {"riot_id": "DemoPlayer#TEST", "focus": "survival"}
+    payload = {
+        "riot_id": "DemoPlayer#TEST",
+        "routing_region": "asia",
+        "focus": "survival",
+    }
 
     created = owner.post("/reviews/recent", headers=headers, json=payload)
     replayed = owner.post("/reviews/recent", headers=headers, json=payload)
@@ -95,7 +99,11 @@ def test_postgres_cancel_and_event_cursor_are_owner_scoped(
     created = owner.post(
         "/reviews/recent",
         headers={"Idempotency-Key": "postgres-cancel-1"},
-        json={"riot_id": "DemoPlayer#TEST", "focus": "overall"},
+        json={
+            "riot_id": "DemoPlayer#TEST",
+            "routing_region": "asia",
+            "focus": "overall",
+        },
     )
     task_id = created.json()["task_id"]
 

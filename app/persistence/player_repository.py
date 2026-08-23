@@ -25,6 +25,7 @@ from app.players.models import (
     PlayerLinkRepositoryCreateResult,
     PlayerLinkStatus,
     PlayerLinkTask,
+    PlayerProfileView,
     RelationshipRole,
     ResolvedRiotAccount,
     RoutingRegion,
@@ -119,6 +120,104 @@ class PostgresPlayerRepository:
                         return None
                     task = self._map_record(session, record)
                 return task
+        except PlayerRepositoryError:
+            raise
+        except SQLAlchemyError:
+            raise PlayerRepositoryError("player_repository_unavailable") from None
+        except (TypeError, ValueError, ValidationError):
+            raise PlayerRepositoryError(
+                "player_repository_integrity_failed"
+            ) from None
+
+    def list_profiles(
+        self,
+        *,
+        owner_id: str,
+        limit: int,
+    ) -> tuple[PlayerProfileView, ...]:
+        if not isinstance(owner_id, str) or not owner_id:
+            raise TypeError("owner_id must be a non-empty string")
+        if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 100:
+            raise TypeError("limit must be an integer between 1 and 100")
+
+        ranked_links = (
+            sa.select(
+                PlayerLinkTaskRecord.owner_id.label("owner_id"),
+                PlayerLinkTaskRecord.relationship_id.label("relationship_id"),
+                PlayerLinkTaskRecord.routing_region.label("routing_region"),
+                PlayerLinkTaskRecord.confirmed_game_name.label("game_name"),
+                PlayerLinkTaskRecord.confirmed_tag_line.label("tag_line"),
+                PlayerLinkTaskRecord.finished_at.label("last_resolved_at"),
+                sa.func.row_number()
+                .over(
+                    partition_by=PlayerLinkTaskRecord.relationship_id,
+                    order_by=(
+                        PlayerLinkTaskRecord.finished_at.desc(),
+                        PlayerLinkTaskRecord.link_task_id.desc(),
+                    ),
+                )
+                .label("profile_rank"),
+            )
+            .where(
+                PlayerLinkTaskRecord.owner_id == owner_id,
+                PlayerLinkTaskRecord.status == PlayerLinkStatus.SUCCEEDED.value,
+                PlayerLinkTaskRecord.relationship_id.is_not(None),
+            )
+            .subquery()
+        )
+        statement = (
+            sa.select(
+                OwnerPlayerRelationshipRecord,
+                ranked_links.c.routing_region,
+                ranked_links.c.game_name,
+                ranked_links.c.tag_line,
+                ranked_links.c.last_resolved_at,
+            )
+            .join(
+                ranked_links,
+                sa.and_(
+                    ranked_links.c.owner_id
+                    == OwnerPlayerRelationshipRecord.owner_id,
+                    ranked_links.c.relationship_id
+                    == OwnerPlayerRelationshipRecord.relationship_id,
+                ),
+            )
+            .where(
+                OwnerPlayerRelationshipRecord.owner_id == owner_id,
+                OwnerPlayerRelationshipRecord.status == "active",
+                ranked_links.c.profile_rank == 1,
+            )
+            .order_by(
+                ranked_links.c.last_resolved_at.desc(),
+                OwnerPlayerRelationshipRecord.relationship_id.asc(),
+            )
+            .limit(limit)
+        )
+        try:
+            with self._session_factory() as session:
+                with session.begin():
+                    rows = session.execute(statement).all()
+                return tuple(
+                    PlayerProfileView(
+                        player_profile_id=relationship.relationship_id,
+                        riot_id=f"{game_name}#{tag_line}",
+                        routing_region=RoutingRegion(routing_region),
+                        relationship_role=RelationshipRole(
+                            relationship.relationship_role
+                        ),
+                        verification_status=VerificationStatus(
+                            relationship.verification_status
+                        ),
+                        last_resolved_at=last_resolved_at,
+                    )
+                    for (
+                        relationship,
+                        routing_region,
+                        game_name,
+                        tag_line,
+                        last_resolved_at,
+                    ) in rows
+                )
         except PlayerRepositoryError:
             raise
         except SQLAlchemyError:

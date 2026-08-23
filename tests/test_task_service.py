@@ -50,6 +50,7 @@ def command(
         owner_id=owner_id,
         idempotency_key=key,
         request=RecentReviewProductRequest(
+            routing_region="asia",
             riot_id="DemoPlayer#TEST",
             focus=focus,
         ),
@@ -291,6 +292,7 @@ def test_service_creates_one_queued_task_and_returns_only_safe_view() -> None:
     stored = repository.tasks[0]
     assert stored.request_payload == {
         "riot_id": "DemoPlayer#TEST",
+        "routing_region": "asia",
         "count": 10,
         "queue": 420,
         "focus": "overall",
