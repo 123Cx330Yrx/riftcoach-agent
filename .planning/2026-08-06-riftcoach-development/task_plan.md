@@ -780,8 +780,19 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 - [completed-design] RQ-091/RQ-092 已授权并校准 Batch D；ADR-0061 与专用 design/implementation plan
   采用 fixture-backed `Rift Command Center`，冻结多来源两层采用门、信息架构、design tokens、客户端/
   产品状态矩阵、fixture 安全字段与键盘/reduced-motion 合同；
-- [in-progress] 按 red→green TDD 建立独立 `web/` React/Vite/TypeScript 包、静态近期复盘工作台、Evidence
-  Drawer、Training 摘要和桌面/移动/键盘/reduced-motion/视觉证据；整个 8E coverage 继续 `planned`；
+- [completed-public-design] design `88a5ab6` / Actions `32631766013` exact-SHA 三 job 全绿；
+- [completed-local] 独立 `web/` React/Vite/TypeScript 包、七场景/forbidden-field fixture、静态近期复盘
+  工作台、Evidence Drawer、Training 摘要和桌面/tablet/移动/键盘/reduced-motion/axe/视觉证据已按
+  red→green TDD 完成；unit `35 passed`、Playwright `12 passed`、strict/build/audit/license 通过；
+- [completed-context-audit] RQ-093 定向回查恢复五模块与完整来源池；本批只先完成工作台并验证 Drawer/
+  Training 共享系统，未删除电影感入口/Rift Timeline/8F README 任务；
+- [completed-second-research] 8 AutoGLM queries + 35-site scan + MotionSites live + 7 类关键页深读形成五模块
+  资源矩阵；研究推动 Evidence Drawer 增加 Safe Run Path，未新增依赖/采购或伪造产品能力；
+- [completed-local-gates] 完整真库 `1890 passed, 1 skipped, 1 warning, 127 subtests`、0011 可逆/head、
+  两套 RAG、Harness、compile/pip/YAML、安全/governance/diff 与隔离 Linux Compose schema 1.6/外部调用 0/
+  image boundary 全绿；唯一 skip 为 Windows symlink；
+- [in-progress] 审查 diff、独立 implementation/evidence commit/push 和 exact-SHA
+  `pytest`/`postgres-migrations`/`packaging-smoke`；整个 8E coverage 继续 `planned`；
 - [boundary] Batch D 不接真实 API/SSE/Auth，不实现完整 Timeline/历史列表、HTTPS、backup、deployment
   或公网发布；MotionSites/React Bits/Aceternity 等只按裁决作 reference，不复制受限源组件；
 - [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout；Windows symlink 单项 skip 由 exact-SHA Linux pytest 独立补证。

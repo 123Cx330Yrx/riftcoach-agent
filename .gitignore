@@ -10,6 +10,11 @@ build/
 dist/
 node_modules/
 
+# Web build and browser-test artifacts
+web/coverage/
+web/playwright-report/
+web/test-results/
+
 # Env
 .env
 

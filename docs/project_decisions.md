@@ -1922,3 +1922,20 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   Aceternity、MotionSites、Riot UI 和游戏数据产品只作机制/信息架构参考；不复制受限源码或品牌美术。
 - Batch D 只实现安全 fixture screen 与桌面/移动/键盘/reduced-motion 证据；真实 API/SSE/Auth、HTTPS、
   备份、部署、公网发布和完整 Timeline/历史列表不在本批。
+
+## 2026-08-23：Batch D 实施期合同修正与 RQ-093 连续性裁决
+
+- API 审计确认 `RecentSummaryView` 当前只有聚合 Summary；设计中的逐局 match capsule 在实现前删除，
+  改成无顺序胜负占比、Wins-vs-Losses 聚合和主位置/英雄标签，避免 fixture 伪造历史/Timeline。
+- 档案 selector 切到 observed 时，不把 self 的 Summary/report 重新绑定到新标题；页面改为明确的只读
+  observation surface，个人 Training completion 不出现。
+- tablet 断点由单一 900px 改为 `>=1280` 三栏、960–1279 主区 + context 两栏、`<960` 单列；人工
+  screenshot QA 又修复 Evidence control 被 grid 拉伸的问题。
+- RQ-093 的 session-logs/focused export 回查确认五模块仍完整保留。Batch D 只先完整交付近期工作台，
+  并用 Evidence/Training 薄纵切验证共享系统；电影感入口、Rift Timeline 和 8F README 没有被取消。
+- 当前无 SSR/复杂路由消费者，因此用 Vite/vanilla CSS 取代旧提案的 Next.js/Tailwind；Motion/Radix
+  因有直接用途采用，ECharts/Image2/Photoshop/Anime.js 按入口/Timeline 的未来真实消费者保留。
+- 用户质疑第一版研究深度后，没有用既有截图直接关闭 Batch D；第二轮以 8 组 AutoGLM、35 站扫描、
+  MotionSites live Apps 和 Riot/Langfuse/TrainingPeaks/Mobalytics/21st.dev/Aura 深读建立五模块采用矩阵。
+  采用收益只落为 Evidence Drawer 的 body-free Safe Run Path；其余候选绑定未来真实消费者，不为证明
+  “广撒网”而安装库或购买 Prompt。

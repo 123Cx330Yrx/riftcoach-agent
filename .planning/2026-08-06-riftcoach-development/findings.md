@@ -3784,3 +3784,13 @@
 - Motion 可直接采用；Radix 只承担 Dialog 语义。React Bits 当前 MIT + Commons Clause、Aceternity
   自定义 end-product license，均只学习机制不复制源码；Uiverse 逐项审查；Anime.js、GSAP、OGL/Three、
   ECharts 本批无真实需要而 deferred。MotionSites Excel 只作 metadata 索引且明显偏 Hero，不得决定工作台。
+- UI 批评复核发现 `RecentSummaryView` 只有聚合指标、胜负聚合对照、主位置和英雄名称，没有逐局 DTO；
+  因此原设计中的 match capsules 已在实现前删除，改为无顺序胜负占比与聚合对照。响应式也从单一 900px
+  折叠改为 `>=1280` 三栏、960–1279 tablet 两栏、`<960` 单列，防止 1024px 拥挤。
+- RQ-093 触发的 session-logs 定向回查确认，旧任务已完整冻结五模块：电影感入口、近期工作台、Rift
+  Timeline、Evidence/Agent Trace、Training Plan/Progress。当前 Batch D 的工作台 + Drawer/Training 薄纵切
+  是第一施工批，不是范围缩减；Image2/Photoshop 仍归后续入口素材，ECharts 仍归真实 Timeline 消费者。
+- 旧技术组合中的 Next.js/Tailwind/shadcn 是早期建议，不是用户硬性指定；当前静态门用 Vite/vanilla CSS
+  能减少 SSR/路由/模板依赖且保留自主视觉控制。Motion/Radix 已有直接消费者，其他库继续按采用门 deferred。
+- 提交审查发现首个 web lockfile 继承本机 `registry.npmmirror.com` resolved URL；最终用 npm 官方 registry
+  重建并 clean `npm ci`，避免 exact-SHA 公共门依赖个人镜像。第一次 mirror audit 404 同样没有冒充成功。

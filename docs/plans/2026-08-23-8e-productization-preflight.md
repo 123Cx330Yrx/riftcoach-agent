@@ -126,7 +126,8 @@ RQ-088 生效后已执行一次修复后 replay：strict adapter 成功解析 10
 
 - [x] ADR-0061 与专用 design/implementation plan 已冻结信息架构、两层多来源采用门、设计 token、
   客户端/产品状态矩阵和可访问性合同；RQ-092 明确硬门之后仍主动追求视觉完成度与时尚感。
-- [ ] 先做静态/fixture-backed screen，确认桌面/移动/键盘/reduced-motion。
+- [x] 静态/fixture-backed Rift Command Center 已本地完成；unit 35、Playwright 12、桌面/tablet/移动、
+  键盘/焦点、reduced-motion、axe 与人工截图 QA 通过，当前只待 implementation/evidence exact-SHA 公共门。
 - [ ] 再接 API、SSE、Auth；最后才加入入口叙事、视差和粒子动效。
 
 ### Batch E：部署与安全

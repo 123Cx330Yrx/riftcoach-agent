@@ -3937,3 +3937,27 @@
   TypeScript + vanilla CSS tokens、Motion、Radix Dialog、本地 OFL 字体；其余组件/动效库只作机制参考。
 - `BOUNDARY/NEXT`：整个 8E coverage 保持 planned；当前进入 fixture contracts 与 web shell 的 red→green
   TDD，不接真实 API/SSE/Auth，不实现 HTTPS、backup、deployment 或公网发布。
+
+### 2026-08-23：8E Batch D 本地实现、浏览器门与视觉 QA
+
+- `PUBLIC-DESIGN`：design `88a5ab6` / Actions `32631766013` exact-SHA 三 job 全绿；只证明设计门。
+- `TDD`：fixture/依赖先形成 25 项绿灯；UI 首红为缺 `App` 的 3 suites，CI contract 首红为缺 web
+  lockfile；最终 unit `6 files / 35 passed`，Python workflow/Docker contract `2 passed`。
+- `IMPLEMENTED`：React/Vite/TypeScript + vanilla tokens、Rift SVG/CSS atmosphere、产品四态、聚合 Summary、
+  quality-gated Coach brief、relationship-safe Training、Radix/Motion Evidence Drawer 和七客户端场景完成。
+- `BROWSER`：Playwright `12 passed`；1440/1024/390/320、Drawer keyboard/Escape/focus return、observed
+  binding、reduced-motion、no remote I/O 和 axe critical/serious 0 均通过。
+- `VISUAL-QA`：逐张查看 desktop/mobile/tablet/degraded/Drawer/reduced-motion；修复 tablet Evidence grid
+  拉伸。接受 JPEG 保存 `docs/assets/8e-batch-d/`，不把测试自动截图冒充未审查证据。
+- `SUPPLY-CHAIN`：strict build JS gzip 109.89 kB / CSS gzip 10.99 kB；npm 官方 registry production audit
+  0 vulnerabilities。直接 runtime dependency license 为 MIT/OFL-1.1，未复制 React Bits/Aceternity 源码。
+- `CONTEXT`：RQ-093 session-logs/focused export 回查确认五模块、Image2/Photoshop、ECharts/Timeline、广泛
+  资源池与 8F README 要求仍在；首批工作台不是 scope reduction。
+- `SECOND-RESEARCH/POLISH`：用户指出第一版可能过快后，补 8 组 AutoGLM、35 站可访问性、MotionSites
+  live Apps 和 Riot/Langfuse/TrainingPeaks/Mobalytics/21st.dev/Aura 深读；正式五模块资源矩阵已创建。
+  研究只推动 Drawer 增加 body-free Safe Run Path，没有引入重依赖或提前购买/复制 Prompt。
+- `LOCAL-GATES`：带真实 PostgreSQL 的完整 `1890 passed, 1 skipped, 1 warning, 127 subtests`；0011
+  head→base→head/check、两套 RAG、Harness、compile/pip/6 YAML、Secret/tracked-data/governance/diff、
+  隔离 Linux Compose schema 1.6/外部调用 0/non-root/image exclusion 全绿。唯一 skip 为 Windows symlink。
+- `BOUNDARY/NEXT`：外部 Riot/OP.GG/Provider/LLM calls 0，8B holdout 未重跑，Dockerfile 不 COPY web。
+  当前审查 diff 后独立提交/push，等待 exact-SHA 三 job；8E coverage 继续 planned。

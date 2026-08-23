@@ -1,5 +1,8 @@
 # 8E Batch D Rift Command Center 设计
 
+多来源第二轮研究与五模块采用矩阵见
+[`2026-08-23-8e-five-module-visual-resource-research.md`](2026-08-23-8e-five-module-visual-resource-research.md)。
+
 ## 1. 初学者教学
 
 ### 具体问题
@@ -48,9 +51,9 @@ Batch D 先建一个 fixture-backed 近期复盘工作台。fixture 像电影拍
 
 ### 2.2 移动骨架
 
-小于 900px 时取消三栏：顶部品牌/状态，随后玩家选择、核心指标、比赛摘要、Coach brief、Training 和
-Evidence CTA 单列排列。Command rail 变成水平 section nav；指标网格保持至少两列，极窄屏降为一列。
-没有 hover-only 行为，Evidence Drawer 改为接近全屏但仍保留可见标题和关闭按钮。
+`>=1280px` 使用三栏；`960–1279px` 使用窄 Command rail + 主区，Context 模块移到主区下方两列；
+`<960px` 改为单列和水平 section nav；`<560px` 主指标全宽、次指标两列；`<360px` 全部单列。
+没有 hover-only 行为，Evidence Drawer 在手机改为接近全屏但仍保留可见标题和关闭按钮。
 
 ## 3. 视觉系统
 
@@ -111,7 +114,7 @@ V1 安全子集；后续接 API 前仍需 runtime decoder 或收紧 HTTP DTO。
 | `CommandRail` | 品牌、section navigation、fixture disclosure；不伪装 router |
 | `ProfileSelector` | 切换合成 self/observed 档案；显示 region/relationship/verification |
 | `ProductStateBanner` | 四态文字、icon、reason 与限制；最终颜色来自 ProductState，而非 runtime completed |
-| `RecentFormPanel` | 安全 Summary 指标与合成 match capsules；无假完整 Timeline |
+| `RecentFormPanel` | 安全 Summary 指标、无顺序胜负占比、Wins vs Losses 聚合对照、主位置/英雄文字标签；无逐局卡片或假 Timeline |
 | `CoachBrief` | 展示 verified fixture brief；rejected 时不读取/显示报告 |
 | `TrainingPanel` | self 显示计划/进度；observed 改为只读“学习观察”说明 |
 | `EvidenceDrawer` | Radix Dialog 焦点管理；展示 source/join/gap/digest，不展示隐藏推理 |
@@ -157,7 +160,8 @@ HTML/link sanitization。
   scenario 与报告隐藏；
 - TypeScript/build：严格类型、无未使用字段、production bundle 成功；
 - Playwright desktop：1440×1000 页面层级、Drawer focus/Esc/return focus、无横向溢出；
-- Playwright mobile：390×844 单列、nav/controls 可触达、Drawer 不越界；
+- Playwright responsive：1440 三栏、1024 tablet 重排、390×844 单列、320 最窄宽度，nav/control 可触达且
+  Drawer 不越界；1920 超宽内容保持最大宽度；
 - reduced-motion：emulated media 下 environment/transform 动效关闭，信息仍可见；
 - accessibility：landmark/heading/name/role、Tab 顺序、focus-visible、颜色非唯一信号与 axe critical/serious 0；
 - visual QA：实际查看 desktop/mobile/published/degraded/reduced-motion 截图，发现问题先修再保存证据；

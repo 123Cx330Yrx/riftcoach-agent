@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（RQ-091/RQ-092 已授权并校准 8E Batch D；当前冻结多来源视觉采用门、信息架构、状态与可访问性合同，再实施静态/fixture-backed Rift Command Center）
+- 最后更新：2026-08-23（RQ-091/RQ-092/RQ-093 下 8E Batch D 设计门已公共闭环，fixture-backed Rift Command Center 已本地完成 unit/e2e/视觉 QA；当前只待横向本地门、独立实现提交与 exact-SHA 三 job）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -257,8 +257,10 @@ pause_reason: ""
   有界真实 Riot/OP.GG 验证、脱敏 EvidenceBundle replay、owner-scoped 玩家档案选择、legacy 地区显式化
   与四地区 Worker 路由均已闭环。Batch C 又由 implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07`
   / Actions `32629160732` 完成 EvidenceBundle 安全持久化、refresh/expiry、8C event replay→SSE 安全 DTO、
-  四态产品状态与 exact-SHA 三 job；Batch D 先完成多来源采用审计、信息架构、design tokens、状态/a11y
-  合同，再实现 fixture-backed screen；8B holdout 不得再次执行。
+  四态产品状态与 exact-SHA 三 job；Batch D 设计提交 `88a5ab67bce2cee655b384b4fd94ea8abe1d15e1`
+  / Actions `32631766013` 已三 job 全绿。React/Vite 严格 fixture 工作台、四态、Evidence Drawer、Training、
+  桌面/tablet/mobile、键盘/reduced-motion 与持久截图已本地完成；当前唯一动作是横向本地门、独立
+  implementation/evidence commit/push 和 exact-SHA 三 job。8B holdout 不得再次执行。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -2221,3 +2223,31 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 当前仍不接真实 API/SSE/Auth，不实现完整 Timeline/历史列表、HTTPS、备份、部署或公网发布。整个 8E
   coverage 保持 `planned`；下一动作是冻结 ADR/设计/实施计划并按 TDD 建立 React fixture screen、桌面/
   移动、键盘和 reduced-motion 证据。
+
+## 2026-08-23：8E Batch D 本地实现、视觉 QA 与 RQ-093 回查
+
+- 设计提交 `88a5ab67bce2cee655b384b4fd94ea8abe1d15e1` / Actions `32631766013` 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke` 三 job 均 completed/success；该 SHA 只冻结 ADR-0061、设计、
+  两层视觉采用门和实施计划，不冒充前端代码完成。
+- `web/` 已建立 React 19/Vite 8/TypeScript 7、vanilla CSS tokens、Motion、Radix Dialog 和本地 OFL 字体；
+  七种不可变 fixture 场景递归拒绝 owner/PUUID/Prompt/raw body/worker/lease/path/DSN/Secret 等字段和值。
+- unit 最终 `6 files / 35 passed`；Playwright `12 passed`，覆盖 1440/1024/390/320、四态、observed
+  relationship、Drawer 键盘/Escape/焦点返回、reduced-motion、无远程 I/O；axe critical/serious 为 0。
+  TypeScript strict 与生产 build 通过，JS gzip `109.89 kB`、CSS gzip `10.99 kB`；npm 官方 audit 0 high
+  vulnerabilities，直接 runtime license 为 MIT/OFL-1.1。
+- 人工查看 desktop/mobile/tablet/degraded/Drawer/reduced-motion 截图后，修复 tablet Evidence 卡被 grid
+  拉伸的大空块；接受证据保存于 `docs/assets/8e-batch-d/`。页面没有逐局伪历史或假 Timeline，切换
+  observed 档案也不会把原 self Summary 偷换到新标题。
+- RQ-093 的 session-logs/focused export 定向回查确认五模块仍是电影感入口、近期工作台、Rift Timeline、
+  Evidence/Agent Trace、Training Plan/Progress；本批工作台 + Drawer/Training 薄纵切只是施工顺序。
+  Image2/Photoshop 留给后续入口素材，ECharts/Anime.js 留给出现真实 Timeline/复杂 SVG 消费者之后的采用门。
+- 用户指出第一版可能过快后，本批没有直接关闭：又执行 8 组 AutoGLM 搜索、35 站公开可访问性扫描、
+  MotionSites live Apps 目录和 Riot/Langfuse/TrainingPeaks/Mobalytics/21st.dev/Aura 深读，并形成正式五模块
+  资源矩阵。研究推动 Evidence Drawer 增加 body-free `Safe run path`，不推动新增重依赖或购买 Prompt；
+  `F1 Racing Hub`、`Forecast Center`、`Fitness Dashboard`、`Nexar` 分别留给 Timeline/Trace/Training/入口门。
+- `.github/workflows/tests.yml` 已本地接入 web lockfile、`npm ci --ignore-scripts`、typecheck、unit、build、
+  Chromium e2e；Dockerfile 继续不复制 `web/`，因此本批不冒充部署。整个 8E coverage 保持 `planned`。
+  带真实 PostgreSQL 的完整回归 `1890 passed, 1 skipped, 1 warning, 127 subtests`；0011 可逆/head check、
+  两套 RAG、Harness、compile/pip/YAML、Secret/tracked-data/governance/diff 与隔离 Linux Compose schema 1.6/
+  外部调用 0/image boundary 全绿。当前唯一下一动作是审查 diff、创建独立 implementation/evidence commit
+  并等待同 SHA 三个公共 job；本批真实 Riot/OP.GG/Provider/LLM calls 为 0，8B holdout 未重跑。

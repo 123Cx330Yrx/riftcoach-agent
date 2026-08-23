@@ -4,6 +4,9 @@
 - 范围：首个 React 静态纵切、视觉采用门、客户端/产品状态分层、响应式与可访问性；
   不包含真实 API/SSE/Auth、完整 Timeline、HTTPS、备份、部署或公网发布。
 
+第二轮跨来源采用证据见
+[`2026-08-23-8e-five-module-visual-resource-research.md`](../plans/2026-08-23-8e-five-module-visual-resource-research.md)。
+
 ## 背景
 
 Batch B/C 已公开闭环 owner-scoped 玩家档案、显式 Riot routing、Evidence 快照、cursor SSE 与
@@ -119,6 +122,26 @@ Evidence refresh identity、本地路径/DSN 或 training source candidate ident
 - 动效节奏为 120–200ms 微反馈、250–450ms 状态切换、700–1200ms 仅环境叙事；
 - `prefers-reduced-motion` 下取消 transform、视差、粒子和自动播放，保留静态层级或短淡入；
 - 数字直接落到 fixture 真值，不使用 scramble/glitch/从零滚动暗示不存在的增长。
+
+### 7. 与五模块产品蓝图的关系
+
+定向回查当前任务日志和早期 Stage 8 focused export 后，五模块继续作为 8E 产品蓝图：
+
+1. 电影感 Riot ID / RSO 入口；
+2. 近期状态与复盘工作台；
+3. Rift Timeline；
+4. 全局 Evidence / Agent Trace Drawer；
+5. Training Plan / Progress。
+
+Batch D 选择第 2 项作为首个完整静态纵切，同时实现第 4 项的 Evidence 安全抽屉和第 5 项的 Training
+摘要，以验证共享视觉/状态合同。这是实施顺序，不是把五模块缩成一个 Dashboard。第 1 项仍保留最高
+动效预算，后续可使用 Image2 生成抽象 Rift/光影概念素材、Photoshop 做有权素材的精修合成；第 3 项
+必须等 owner-scoped match/timeline DTO 后再采用 ECharts + SVG，不用假曲线提前展示。
+
+旧分析中的技术栈建议按消费者更新，而不是被遗忘：Motion/Radix 本批已有真实用途并采用；Next.js、
+Tailwind/shadcn 在当前无 SSR/复杂路由的静态门没有净收益，因此以 Vite/vanilla CSS 取代；Anime.js、
+3D 与 ECharts 保持带 Bad Case 的后续候选。MotionSites、Design Prompts、Aura、React Bits、Aceternity、
+Uiverse 等继续参与跨来源筛选，但不能绕过许可、性能和 a11y 门或替代自主实现。
 
 ## 后果
 

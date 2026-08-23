@@ -135,7 +135,7 @@ Expected: FAIL before components exist.
 
 **Step 3: Implement minimal state-aware panels**
 
-Render direct fixture values with text/icon/reason labels. Add match capsules and a tactical brief, but no invented complete Timeline or run-history list. Use Motion only for bounded reveal; numeric values render directly at their final values.
+Render direct fixture values with text/icon/reason labels. Add an unordered win/loss share, aggregate Wins-vs-Losses comparison, primary role/champion text tags and a tactical brief. Do not add per-match cards, dates, W/L sequences, invented Timeline or run-history list. Use Motion only for bounded reveal; numeric values render directly at their final values.
 
 **Step 4: Run state and app tests**
 
