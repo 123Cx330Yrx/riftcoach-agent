@@ -38,17 +38,33 @@
 `current_snapshot_recommendation`，不能做 exact-patch attribution 或 historical
 patch comparison。
 
-### 2.2 Riot 真实验证：等待测试身份
+### 2.2 Riot 真实验证：已通过
 
-仓库 `.env` 中存在 Riot Key 且未被输出；仓库没有硬编码 ShowMaker，也没有发现用户
-提供的测试 Riot ID。Riot 半边不能猜账号执行，必须由用户给出准确的：
+用户授权公开核验后，AutoGLM 与 OP.GG 公开页面交叉确认 `DK ShowMaker#KR1` 是当前
+可查询的 KR 账号，并显示 Dplus KIA/ShowMaker 关联。以 `DK ShowMaker#KR1 / asia /
+observed` 执行有界 Riot probe：
 
-```text
-Riot ID: gameName#tagLine
-routing region: americas | asia | europe | sea
-```
+- Account-V1：1 次；
+- 最近 Match ID：1 次，返回 1 局；
+- Match Detail：1 次；
+- 结果：`passed`；
+- 真实 game version：`16.16.804.9184`；queue `420`；目标位置 `MIDDLE`；英雄 `Akali`；
+  `6/9/12`；对局时长 `1925s`；
+- PUUID 只保存 digest `9967ad74365538ce5af6106fa1c58f40ed034e039031cbc1a09d8f255a241333`。
 
-执行前后都不把 Key、PUUID 或原始 response 写入结果文件。
+脱敏结果：[riot_external_validation_2026-08-23-v2.json](../../data/evaluation/results/riot_external_validation_2026-08-23-v2.json)。
+Key 读取次数记录为 1，但 Key 值、PUUID、Match ID 和原始 response 均未落盘。
+
+### 2.3 真实两源 replay：暴露上游适配缺口
+
+使用上面的 Riot typed projection，调用一次真实 OP.GG `mid` lane-meta 工具并尝试进入
+8D `fuse_evidence()`。OP.GG 返回内容触发严格适配器的 `opgg_meta_result_invalid`，因此
+本次没有创建 bundle。脱敏失败证据见
+[riot_opgg_fusion_validation-2026-08-23.json](../../data/evaluation/results/riot_opgg_fusion_validation_2026-08-23.json)。
+
+这不是 Riot 失败，也不是融合规则失败，而是一个真实上游响应没有满足当前冻结的
+allowlisted grammar。当前选择保留 fail-closed 行为，先拿到受控 schema-drift 诊断和回归
+样例，再决定是否扩大字段合同；不能用放宽解析器的方式追绿。
 
 ## 3. 已发现的身份/地区缺口
 
@@ -64,9 +80,10 @@ routing region: americas | asia | europe | sea
 ### Batch A：真实外部验证
 
 - [x] OP.GG initialize/list/call 有界 smoke；保存 body-free evidence。
-- [ ] Riot account/match 有界 smoke；等待用户提供测试 Riot ID + routing region。
-- [ ] 用脱敏 typed output 做一次 Riot + OP.GG EvidenceBundle replay/fusion。
-- [ ] 将真实失败分类和 limitations 写入结果，不修改 8D 规则。
+- [x] Riot account/match 有界 smoke；`DK ShowMaker#KR1 / asia / observed`，3 次 Riot calls 通过。
+- [x] 用脱敏 Riot typed output 尝试一次真实 `mid` OP.GG EvidenceBundle replay/fusion；失败被安全归类为 `opgg_meta_result_invalid`。
+- [x] 将真实失败分类和 limitations 写入 body-free 结果，不修改 8D 规则。
+- [ ] 对真实 mid 响应做受控 schema-drift 诊断并补一个不含原始 body 的回归样例；未完成前不放宽 parser。
 
 ### Batch B：玩家档案合同
 
@@ -103,8 +120,7 @@ routing region: americas | asia | europe | sea
 
 ## 6. 下一动作
 
-1. 用户提供一个准确的测试 Riot ID 和 regional routing；
-2. 执行一次 body-free Riot Account/Match gate；
-3. 将 Riot typed digest 与本次 OP.GG evidence 做一次离线融合 replay；
-4. 冻结 player profile list/selection API 合同；
-5. 之后再进入 8E 的第一个小前端批次。
+1. 先诊断真实 OP.GG `mid` 响应与现有 grammar 的差异，形成安全 schema-drift case；
+2. 决定是按证据扩大 allowlist，还是保留该工具的 degraded/unavailable 状态；
+3. 冻结 owner-scoped player profile list/selection API 合同；
+4. 之后再进入 8E 的第一个静态/fixture-backed 前端小批次。

@@ -1,0 +1,52 @@
+{
+  "body_free": true,
+  "calls": {
+    "account": 1,
+    "match_detail": 1,
+    "recent_match_ids": 1
+  },
+  "external_io": {
+    "key_reads": 1,
+    "llm_provider_calls": 0,
+    "opgg_tools_call_calls": 0,
+    "riot_calls": 3
+  },
+  "identity": {
+    "puuid_digest": "9967ad74365538ce5af6106fa1c58f40ed034e039031cbc1a09d8f255a241333"
+  },
+  "latency_ms": 1216.191,
+  "limitations": [
+    "account_control_not_verified",
+    "single_match_observation",
+    "timeline_not_requested",
+    "raw_response_not_persisted"
+  ],
+  "match": {
+    "game_duration_seconds": 1925,
+    "game_version": "16.16.804.9184",
+    "participant_count": 10,
+    "queue_id": 420,
+    "target": {
+      "assists": 12,
+      "champion": "Akali",
+      "champion_id": 84,
+      "deaths": 9,
+      "kills": 6,
+      "role": "MIDDLE",
+      "win": true
+    }
+  },
+  "matches": {
+    "match_ids_digest": "02420165132ddf64f3b291597ade1fab956b0c028b5e2acd7a33ee1c09d314c9",
+    "returned_count": 1,
+    "selected_match_id_digest": "02420165132ddf64f3b291597ade1fab956b0c028b5e2acd7a33ee1c09d314c9"
+  },
+  "observed_at": "2026-08-23T02:21:21.760385+00:00",
+  "relationship_role": "observed",
+  "requested_riot_id": "DK ShowMaker#KR1",
+  "resolved_riot_id": "DK ShowMaker#KR1",
+  "result": "passed",
+  "routing_region": "asia",
+  "schema_version": "1.0",
+  "source": "riot_official_api"
+}

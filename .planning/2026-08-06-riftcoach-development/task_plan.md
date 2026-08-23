@@ -302,8 +302,8 @@ RQ-071 授权的 `6B-7→6B-8→6B-9` 已严格依次闭环：6B-8 由 `aacc11a`
 coverage complete。8C 已由 `2df5349/32587659678` 完成 0010、durable event/replay、lease/fencing、cancel、
 checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公共闭环；coverage complete。当前唯一下一步
 `8d-riot-opgg-evidence-fusion-core` 已由 `a274b7f/32598480400` 完成 exact-SHA 公共三 job 与 coverage
-闭环。RQ-086 已授权当前唯一下一步 `8e-productization`，现处于 preflight：OP.GG 真实 gate 已通过，
-Riot gate 等待准确测试 Riot ID；8E–8F 的完整实现仍未进入。
+闭环。RQ-086 已授权当前唯一下一步 `8e-productization`，现处于 preflight：Riot Account/Match 真实 gate
+已通过，OP.GG mid replay 暴露严格 adapter schema-drift；8E–8F 的完整实现仍未进入。
 
 ## 6A-1 Checklist
 
@@ -748,8 +748,9 @@ Riot gate 等待准确测试 Riot ID；8E–8F 的完整实现仍未进入。
 - State: RQ-086 已授权 8E preflight；8D closure 不表示 React/SSE/Auth/HTTPS/备份/部署已完成。
 - [completed] 创建 ADR-0056 与 `docs/plans/2026-08-23-8e-productization-preflight.md`，冻结真实验证、玩家档案和慢前端顺序；
 - [completed] 真实 OP.GG 有界 body-free smoke：1 次 initialize/list/call，3 条 top facts，证据 digest 已持久化；
-- [ ] 取得明确测试 Riot ID + regional routing，执行一次 Account/Match body-free gate；
-- [ ] 用脱敏 Riot typed output 与 OP.GG evidence 做一次 EvidenceBundle replay/fusion；
+- [completed] `DK ShowMaker#KR1 / asia / observed` 的 Account/Match body-free gate：3 次 Riot calls、1 局详情通过；
+- [completed-with-boundary] 用脱敏 Riot typed output 尝试真实 `mid` OP.GG EvidenceBundle replay；上游结果被严格 adapter 以 `opgg_meta_result_invalid` 拒绝；
+- [ ] 对真实 mid 响应做安全 schema-drift 诊断并补回归样例，不放宽 parser 追绿；
 - [ ] 冻结 owner-scoped player profile list/selection DTO，修正 legacy `/reviews/recent` 地区隐式来源；
 - [ ] 前端从静态/fixture-backed 合同小批开始，再接 API/SSE/Auth，最后才加入口动效；
 - [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout。

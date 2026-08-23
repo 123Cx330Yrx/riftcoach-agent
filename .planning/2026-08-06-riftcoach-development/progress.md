@@ -3779,6 +3779,14 @@
 - `DESIGN`：创建 ADR-0056 与 `docs/plans/2026-08-23-8e-productization-preflight.md`；冻结 external validation、player profile selection、routing 和 legacy endpoint 审计边界。
 - `OPGG-REAL`：使用项目 `.venv` 执行 `scripts/run_opgg_meta_smoke.py --execute`；真实 OP.GG initialize/list/call 通过，1 次 lane-meta 工具调用、top 3 facts、body-free digest `24b49ea9eb9c4c6c6ee682ad21309c7a643fbdde70a8ea18ba8fdf1d26a8c1ec` 已保存到 `data/evaluation/results/mcp/opgg_external_validation_2026-08-23.json`。
 - `IDENTITY-AUDIT`：仓库没有 ShowMaker 硬编码；`/player-links` 已接受 Riot ID、regional routing、self/observed；Conversation 固定 player subject；旧 `/reviews/recent` 仍使用环境地区默认，列为 8E 缺口。
-- `RIOT-BLOCKER`：`.env` 中 Riot Key 存在但未输出；仓库没有可安全猜测的测试 Riot ID，因此 Riot Account/Match gate 暂停在用户提供准确 `gameName#tagLine + americas|asia|europe|sea` 前。
+- `RIOT-READY`：`.env` 中 Riot Key 存在但未输出；用户授权公开核验后已用 `DK ShowMaker#KR1 / asia / observed` 完成 Account/Match gate，结果已 body-free 归档。
 - `PUBLIC-CI`：preflight commit `8c0cc187e93e76c26e9d03f9e8f2371333c783a3` / Actions `32611044101` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 success；CI 仍保持外部 Riot/OP.GG/Provider/LLM 调用 0。
-- `NEXT`：执行一次 body-free Riot gate；用脱敏 typed output 与 OP.GG evidence 做 EvidenceBundle replay/fusion；冻结 owner-scoped profile list/selection DTO 后再进入首个静态/fixture-backed 前端小批。
+- `NEXT`：真实 mid replay 已暴露 `opgg_meta_result_invalid`；先做 schema-drift 诊断/回归裁决，再冻结 owner-scoped profile list/selection DTO 和首个静态/fixture-backed 前端小批。
+
+### 2026-08-23：RQ-086 真实 Riot 通过与 mid replay 失败证据
+
+- `SEARCH`：AutoGLM token 服务恢复；公开搜索与 OP.GG 当前页面交叉核对 `DK ShowMaker#KR1`、KR、Dplus KIA/ShowMaker 关联；不把候选写成默认账号。
+- `RIOT-REAL`：`DK ShowMaker#KR1 / asia / observed` Account-V1、recent match IDs、Match Detail 共 3 calls 通过；真实 game version `16.16.804.9184`、queue 420、MIDDLE/Akali、6/9/12、1925s；结果只保存 digest/allowlisted facts。
+- `FUSION-REAL`：使用 Riot body-free result 调用一次真实 OP.GG `mid` lane-meta 并进入纯 `fuse_evidence()` 前的 adapter；远端内容触发 `opgg_meta_result_invalid`，未创建 bundle，raw body 未保存。
+- `BOUNDARY`：该失败归类为真实上游内容/schema 与严格 allowlist 的差异，不修改 8D parser，不把 Riot/OP.GG 分别通过冒充两源融合通过。
+- `NEXT`：安全诊断真实 mid schema drift，补 body-free regression case，再决定扩大 allowlist 或保留 degraded/unavailable；之后才冻结 player profile selection DTO 和前端小批。

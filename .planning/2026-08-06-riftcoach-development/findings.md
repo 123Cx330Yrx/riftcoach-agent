@@ -3672,3 +3672,10 @@
 - `CreatePlayerLinkRequest`/`CreatePlayerLinkCommand` 已有 `riot_id + routing_region + relationship_role`，并且 owner/player subject、Conversation 固定关系和 self/observed 语义已落地；但最终产品仍缺 owner-scoped profile list/selection DTO。
 - 旧 `/reviews/recent` 的产品请求只含 Riot ID/count/queue/focus，summary builder 的 Riot region来自部署配置（默认 `asia`）。它应保留兼容性，但不能成为最终多地区 profile UX；8E 必须让选定 player subject/region 成为服务器可信来源，并禁止自动跨区探测。
 - 前端按用户要求采用“合同和真实状态先行、动效后置”的批次：先静态/fixture-backed loading/empty/error/degraded/rejected/not-ready 状态和键盘/reduced-motion，再接 API/SSE/Auth，最后做入口叙事和高质量动效。
+
+## 2026-08-23：真实 Riot/OP.GG preflight 结果
+
+- AutoGLM token 服务恢复后，三个查询均返回 OP.GG 当前页面；`DK ShowMaker#KR1` 的 OP.GG 页面显示 Dplus KIA/ShowMaker 关联、KR、Challenger 和最近更新时间，TrackingThePros 也列出同一账号。`showmaker#KR126` 虽可查询，但页面显示低段位且没有职业关联，不采用为 ShowMaker 验证样本。
+- Riot 官方 API 有界 probe 成功：Account-V1、recent match IDs、Match Detail 各一次；`DK ShowMaker#KR1` 解析为自身请求相同 Riot ID，目标比赛是 `MIDDLE/Akali`，game version `16.16.804.9184`。结果文件只含 PUUID/match digests 和 allowlisted gameplay facts。
+- 为实现真实两源 join，第二次 Riot probe只补齐 `champion_id=84` 的 allowlisted projection，随后调用一次真实 OP.GG `mid` Meta。远端返回内容无法通过现有 grammar，适配器以 `opgg_meta_result_invalid` 安全拒绝；这说明“协议可达”不等于“当前字段解析与产品合同兼容”。
+- 当前最重要的真实 Bad Case 是 `mid` lane-meta response shape drift。不要抓取或打印 raw body，也不要将 parser 放宽到任意 JSON/`eval`；应先做安全、字段级 schema-drift 诊断并用脱敏 case 固化。

@@ -2735,3 +2735,11 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `IDENTITY-GAP`：仓库没有 ShowMaker 硬编码，`/player-links` 已支持显式 Riot ID/region/role；旧 `/reviews/recent` 仍从环境默认地区读取，owner-scoped profile list/selection DTO 留给 8E preflight。
 - `NEXT`：等待准确测试 Riot ID + regional routing，执行一次受限 Riot Account/Match gate；随后用脱敏 typed output 做 EvidenceBundle replay/fusion，再进入前端第一小批。
 - `PUBLIC-CI`：preflight commit `8c0cc187e93e76c26e9d03f9e8f2371333c783a3` / Actions `32611044101` 的 pytest、PostgreSQL migration 和 Linux package 三 job 均 success；该 CI 不执行外部网络调用。
+
+### 2026-08-23：RQ-086 真实 Riot gate 通过与 OP.GG mid schema-drift
+
+- `SEARCH`：AutoGLM token 服务恢复；公开网页与 OP.GG 当前页面交叉核验 `DK ShowMaker#KR1` 的 KR、Dplus KIA/ShowMaker 关联；不把它写入产品默认。
+- `RIOT-REAL`：`DK ShowMaker#KR1 / asia / observed` 的 Account-V1、recent match IDs、Match Detail 共 3 calls 通过；结果只保存 PUUID/match digest 和 allowlisted facts。
+- `FUSION-REAL`：使用脱敏 Riot projection 调用一次真实 OP.GG `mid` Meta 并尝试进入 8D adapter；真实响应以 `opgg_meta_result_invalid` 被 fail-closed，未创建 bundle，raw body 未持久化。
+- `DECISION`：该真实 Bad Case 归类为上游响应与严格 grammar 的 schema-drift；不放宽 parser、不把分别通过说成融合通过，先补安全诊断/回归样例。
+- `NEXT`：schema-drift 处理裁决后再冻结玩家档案选择 DTO，之后进入前端首个静态小批。
