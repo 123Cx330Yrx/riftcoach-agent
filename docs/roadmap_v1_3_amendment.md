@@ -123,8 +123,8 @@ Stage 8 entry design 已把 V3 能力放入可靠 Runtime Core，并增加一条
 `8A` 先审计高级候选，`8B` 用同一 Harness 做单流程/并行对照，`8C` 才实施 durable event、
 lease/fencing、cancel、checkpoint、recovery 与迟到隔离；`8D` 已由 `a274b7f/32598480400` 以 ADR-0055
 和 pure TDD 完成 Riot 官方事实、Data Dragon 静态、official patch/update 与 OP.GG partial Meta 的 typed
-fusion；`8E` 当前 prepared/waiting authorization，获批后实施 Web/SSE/Auth/HTTPS/
-备份与部署；`8F` 做最终 Eval 和作品集退出。DAG、Subagent、Agentic Retrieval 和第三方 Runtime
+fusion；`8E` 已获 RQ-086 授权进入 preflight，先做有界真实验证、玩家档案选择合同和 legacy 地区审计，
+随后分批实施 Web/SSE/Auth/HTTPS/备份与部署；`8F` 做最终 Eval 和作品集退出。DAG、Subagent、Agentic Retrieval 和第三方 Runtime
 仍是条件性候选，不因名称进入 Core。
 
 ## 7. 产品切片

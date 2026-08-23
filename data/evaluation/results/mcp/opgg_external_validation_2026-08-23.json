@@ -1,0 +1,52 @@
+{
+  "body_free": true,
+  "catalog": {
+    "admitted_tool_count": 1,
+    "digest": "381f3f77bc7aa583ccbeb62f13058292e17cbe25d654ca07912d5427b2381bba",
+    "selected_tool": "lol_list_lane_meta_champions",
+    "selected_tool_output_schema_present": false,
+    "selected_tool_schema_digest": "780986a49a045678367d8df876fd205a57477646d65d76c4f5773fcc87bd1990"
+  },
+  "context": {
+    "instructional": false,
+    "message_role": "user",
+    "required": false,
+    "section_id": "meta:opgg:24b49ea9eb9c4c6c",
+    "trust": "external_meta_evidence"
+  },
+  "endpoint": "https://mcp-api.op.gg/mcp",
+  "evidence": {
+    "allowed_uses": [
+      "current_snapshot_recommendation"
+    ],
+    "digest": "24b49ea9eb9c4c6c6ee682ad21309c7a643fbdde70a8ea18ba8fdf1d26a8c1ec",
+    "expires_at": "2026-08-23T01:47:50.416926+00:00",
+    "fact_count": 3,
+    "position": "top",
+    "provenance": "partial",
+    "retrieved_at": "2026-08-23T01:32:50.416926+00:00",
+    "source_generated_at": null,
+    "upstream_patch": null
+  },
+  "external_io": {
+    "key_reads": 0,
+    "llm_provider_calls": 0,
+    "opgg_tools_call_calls": 1,
+    "riot_calls": 0
+  },
+  "limitations": [
+    "upstream_patch_unknown",
+    "source_generated_at_unknown",
+    "upstream_freshness_unknown",
+    "exact_patch_attribution_forbidden",
+    "historical_patch_comparison_forbidden"
+  ],
+  "protocol": {
+    "server_name": "OP.GG MCP Server",
+    "server_version": "1.0.0",
+    "tools_capability": true,
+    "version": "2025-06-18"
+  },
+  "result": "passed",
+  "schema_version": "1.0"
+}

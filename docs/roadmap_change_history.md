@@ -2726,3 +2726,11 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   conflict/gap/freshness/claim、public projection 和八维 walkthrough 均有本地/公共证据；coverage complete。
 - `BOUNDARY`：真实 refresh、全部 OP.GG、SQL bundle store、React/SSE/Auth/HTTPS/备份/部署仍未实现。
 - `HANDOFF`：唯一下一 checkpoint `8e-productization` prepared/waiting authorization；本批停止。
+
+### 2026-08-23：RQ-086 授权 8E preflight 与真实 OP.GG 验证
+
+- `AUTHORIZED`：用户授权一次真实 Riot + OP.GG 验证并进入 8E preflight，同时要求账号由用户选择、支持外服和公开观察对象，前端分小批推进。
+- `ADR`：ADR-0056 将真实 external validation 与 8D 公共 CI 分离，冻结 body-free evidence、Key-last、错误分类和不自动跨区重试；玩家档案使用 `Riot ID + routing_region + self|observed`，Conversation 固定 player subject。
+- `OPGG-REAL`：官方 OP.GG Streamable HTTP endpoint 的 initialize/list/selected lane-meta call 真实通过 1 次，3 facts，body-free digest `24b49ea9eb9c4c6c6ee682ad21309c7a643fbdde70a8ea18ba8fdf1d26a8c1ec` 已归档；partial provenance 限制保持不变。
+- `IDENTITY-GAP`：仓库没有 ShowMaker 硬编码，`/player-links` 已支持显式 Riot ID/region/role；旧 `/reviews/recent` 仍从环境默认地区读取，owner-scoped profile list/selection DTO 留给 8E preflight。
+- `NEXT`：等待准确测试 Riot ID + regional routing，执行一次受限 Riot Account/Match gate；随后用脱敏 typed output 做 EvidenceBundle replay/fusion，再进入前端第一小批。

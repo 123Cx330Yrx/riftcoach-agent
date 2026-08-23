@@ -3,7 +3,7 @@ state_schema: 1
 main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization"
-status: pending
+status: in_progress
 pause_reason: ""
 ---
 
@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（8D typed EvidenceBundle implementation/evidence 已 exact-SHA 公共闭环）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / prepared / waiting authorization`，8E/8F 未开始。
+- 最后更新：2026-08-23（RQ-086 已授权 8E preflight；OP.GG 真实 body-free smoke 通过，Riot gate 等待测试 Riot ID）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,10 +250,11 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8e-productization` 已 prepared/waiting authorization。8D implementation/evidence
+- 唯一下一步：`8e-productization` preflight 正在进行。8D implementation/evidence
   `a274b7f8900d61cb7edb7d09e2f5c87f8b0b2e48` / Actions `32598480400` 的 `pytest`、
-  `postgres-migrations`、`packaging-smoke` 三 job 全绿，八维 coverage 可置 complete。授权前不实现 React/SSE/
-  Auth/HTTPS/部署或 8F；8B holdout 不得再次执行，也不读取 Key/调用真实 Riot/OP.GG/Provider/LLM。
+  `postgres-migrations`、`packaging-smoke` 三 job 全绿，八维 coverage 已 complete。8E 先完成
+  有界真实 Riot/OP.GG 验证、脱敏 EvidenceBundle replay、玩家档案选择合同和 legacy 地区审计，
+  再分小批实现 React/SSE/Auth/HTTPS/部署；8B holdout 不得再次执行。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -554,9 +555,9 @@ pause_reason: ""
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C/8D 已关闭；8D EvidenceBundle、no-I/O adapter、public projection 与现有产品回归已验证，本地完整回归 `1691 passed, 134 skipped` | 本地普通测试通过等于正式 Auth/SSE/前端、真实 refresh 或生产 SLA |
+| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C/8D 已关闭；8D EvidenceBundle、no-I/O adapter、public projection 与现有产品回归已验证；8E preflight 已保存 OP.GG 真实 body-free evidence，Riot gate 尚待测试身份 | 本地普通测试通过或一次真实 smoke 等于正式 Auth/SSE/前端、真实 refresh 或生产 SLA |
 | 项目理解 | Stage 8 entry、8A、8B、8C、8D 均有 walkthrough/ADR/设计材料；8D 已补齐 provenance/freshness/join/conflict/gap/claim 的初学者解释 | 持久材料存在等于用户已能独立讲解所有融合代码；owner mastery 仍需复述、读码和运行验证 |
-| 参考资料 | Saber/Sea 的 lease/event/checkpoint 思想只作选择性参考；8B 唯一 holdout 保持 SHA `944258...445e8` 且未重跑；8D 未执行真实 Riot/OP.GG I/O；README 样本研究按 RQ-085 留到 8F | 引用参考思想等于复制其 Runtime/DAG，或 Multi-Agent reject 已被撤销；README 研究也不改路线顺序 |
+| 参考资料 | Saber/Sea 的 lease/event/checkpoint 思想只作选择性参考；8B 唯一 holdout 保持 SHA `944258...445e8` 且未重跑；8E 已真实观察一次 OP.GG，Riot 真实验证等待用户测试 ID；README 样本研究按 RQ-085 留到 8F | 引用参考思想等于复制其 Runtime/DAG，或 Multi-Agent reject 已被撤销；一次外部观察也不等于长期 freshness/SLA |
 | GitHub/部署 | 8C `2df5349/32587659678` 与 8D `a274b7f/32598480400` 的 pytest、真实 PostgreSQL、Linux package 均 exact-SHA 全绿；正式 Auth/SSE/前端/备份/生产 SLA 仍未实现 | 本次公共闭环等于 8E 产品化、正式 Auth/SSE/备份或生产 SLA |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
@@ -2038,5 +2039,22 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   explicit join/provenance/freshness/conflict/gap/claim、Summary/Data Dragon no-I/O adapter 与 public projection
   完成八维证据。partial OP.GG 不能继承 Riot patch/source time/freshness，版本冲突保留双方并降级。
 - 该闭环不证明真实刷新、全部 OP.GG 工具、Riot/OP.GG 本轮网络 I/O、EvidenceBundle 持久化、React/SSE/Auth/
-  HTTPS/备份或公网部署。8D coverage 置 `complete`；canonical 只交接 `8e-productization` prepared/waiting
-  authorization，不自动开始 8E。
+  HTTPS/备份或公网部署。8D coverage 置 `complete`；canonical 交接 `8e-productization` prepared/waiting
+  authorization。
+
+## 2026-08-23：RQ-086 授权 8E preflight 与一次真实 OP.GG 验证
+
+- 用户授权一次真实 Riot + OP.GG 验证并进入 8E preflight，同时要求前端分小批推进；用户账号不能硬编码
+  为 ShowMaker，必须支持用户自填外服 Riot ID、选择自己的账号或以 `observed/public_observed` 分析
+  职业选手/高手账号。该要求已持久化为 RQ-086，ADR-0056 和 preflight 计划已创建。
+- 本轮只读检查确认仓库没有 ShowMaker 硬编码；`POST /player-links` 已支持 `riot_id`、
+  `routing_region` 和 `relationship_role`，Conversation 绑定稳定 player subject；旧 `/reviews/recent`
+  仍受环境 `RIOT_REGION` 默认影响，列为 8E legacy 地区审计缺口。
+- 真实 OP.GG gate 已执行一次并通过：endpoint `https://mcp-api.op.gg/mcp`，协议 `2025-06-18`，
+  server `OP.GG MCP Server 1.0.0`，只调用 `lol_list_lane_meta_champions` 1 次，top 位置 3 条 fact，
+  body-free evidence digest `24b49ea9eb9c4c6c6ee682ad21309c7a643fbdde70a8ea18ba8fdf1d26a8c1ec`；结果文件为
+  `data/evaluation/results/mcp/opgg_external_validation_2026-08-23.json`。限制仍为 partial provenance、
+  patch/source time/upstream freshness unknown，只允许 current snapshot recommendation。
+- Riot Key 存在但未输出；Riot gate 尚未执行，因为仓库没有可安全猜测的测试 Riot ID。下一动作是用户提供
+  准确 `gameName#tagLine` 和 `americas|asia|europe|sea` routing，再做一次受限 Account/Match gate；不保存
+  Key、PUUID 或原始 response，不自动跨区重试。

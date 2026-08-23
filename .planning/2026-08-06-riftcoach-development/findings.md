@@ -3663,3 +3663,12 @@
 - 公共门只证明 typed fusion contract、no-I/O adapter 和现有产品/package 回归兼容；没有读取 Key 或调用本轮
   Riot/OP.GG/Provider/LLM，也不证明实时刷新、全工具、EvidenceBundle SQL 持久化或 8E 产品化。
 - 8D coverage 可置 complete；唯一 handoff 是 `8e-productization` prepared/waiting authorization。
+
+## 2026-08-23：8E preflight 发现
+
+- 用户担心 fixture-only 会闭门造车；结论是 Stage 7 已有历史真实 OP.GG smoke，但 8D 纯融合内核仍需要独立的真实外部验证门。真实调用不能进入公共 exact-SHA CI，否则会把 Key、网络、限流和远端 schema 漂移混入可复现门。
+- 本次真实 OP.GG smoke 使用官方 Streamable HTTP endpoint 和已准入只读 `lol_list_lane_meta_champions`，结果为 body-free、partial provenance、3 facts；没有 patch/source time/upstream freshness，因此只能 current snapshot recommendation。
+- Riot 验证不能猜账号。仓库 `.env` 只检查到 Key 存在性，没有读取值；代码/文档没有 ShowMaker 硬编码。必须等待用户提供准确 Riot ID 与 regional routing。
+- `CreatePlayerLinkRequest`/`CreatePlayerLinkCommand` 已有 `riot_id + routing_region + relationship_role`，并且 owner/player subject、Conversation 固定关系和 self/observed 语义已落地；但最终产品仍缺 owner-scoped profile list/selection DTO。
+- 旧 `/reviews/recent` 的产品请求只含 Riot ID/count/queue/focus，summary builder 的 Riot region来自部署配置（默认 `asia`）。它应保留兼容性，但不能成为最终多地区 profile UX；8E 必须让选定 player subject/region 成为服务器可信来源，并禁止自动跨区探测。
+- 前端按用户要求采用“合同和真实状态先行、动效后置”的批次：先静态/fixture-backed loading/empty/error/degraded/rejected/not-ready 状态和键盘/reduced-motion，再接 API/SSE/Auth，最后做入口叙事和高质量动效。
