@@ -2778,3 +2778,10 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   `degraded/unjoined`；这是正确 gap，不换样本、不扩大抓取、不继承 patch 追绿。
 - `NEXT`：frozen success evidence regression、比例本地门、独立 evidence SHA 与三 job；随后进入 player
   profile selection DTO/legacy region，不再阻塞于 OP.GG parser。
+
+### 2026-08-23：修复后 live-success evidence 公共闭环
+
+- `PUBLIC-CI`：evidence `efaccd9a8022f0d75e9baca5470450be6a1a3357` / Actions `32615821339`
+  三 job completed/success；公共 pytest 1701、真实 PostgreSQL 186、Linux package schema 1.6。
+- `CLOSED-BATCH`：OP.GG nullable JSON-null Bad Case 已完成从 live diagnosis 到 post-fix live/public evidence 的
+  全链闭环；8E 继续 in progress，下一批转为 player profile selection DTO/legacy region。

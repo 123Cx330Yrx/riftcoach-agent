@@ -760,7 +760,7 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 - [completed-public] implementation/evidence `83fde7d` / Actions `32615340228` 的 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 全绿；公共 pytest 1700、真库 186、Linux package schema 1.6/外部 Riot Provider calls 0；
 - [completed-live] RQ-088 下修复后最终 mid replay 通过；1 次 OP.GG call、Riot/LLM/Key calls 0，10 条 mid facts 进入 strict adapter 并创建 bundle `69ed8a...fff1a`；bundle 因 Akali 未命中当前 top-10 Meta、缺 Data Dragon/official patch 而诚实 `degraded/unjoined`，不是 parser 失败；
 - [completed-local] frozen live-success evidence regression 与 OP.GG/MCP/Evidence 相邻 `61 passed`，governance、JSON、diff 门全绿；
-- [ ] 独立提交/推送 RQ-088 policy 与 live-success evidence，等待 exact-SHA 三 job；
+- [completed-public] RQ-088 policy/live-success evidence `efaccd9` / Actions `32615821339` exact-SHA 三 job 全绿；公共 pytest 1701、真库 186、Linux package schema 1.6/外部 Riot Provider calls 0；
 - [ ] 冻结 owner-scoped player profile list/selection DTO，修正 legacy `/reviews/recent` 地区隐式来源；
 - [ ] 前端从静态/fixture-backed 合同小批开始，再接 API/SSE/Auth，最后才加入口动效；
 - [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout。

@@ -145,3 +145,5 @@ RQ-088 生效后已执行一次修复后 replay：strict adapter 成功解析 10
 
 ADR-0058 最小修复已由 `83fde7d014aae8fdccf2ebd91929967868101075` / Actions
 `32615340228` 完成 exact-SHA 三 job 公共闭环；RQ-088 的后续 live 复验现已独立通过。
+frozen live-success evidence 又由 `efaccd9a8022f0d75e9baca5470450be6a1a3357` /
+Actions `32615821339` 完成 exact-SHA 三 job 公共闭环。

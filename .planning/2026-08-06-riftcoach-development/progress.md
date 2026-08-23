@@ -3844,3 +3844,13 @@
   exact-SHA 三 job；随后 8E 下一实现批为 owner-scoped player profile selection DTO/legacy region。
 - `LOCAL-GATES`：success evidence regression、OP.GG/MCP/Evidence 相邻 `61 passed`；governance、JSON 与
   diff check 全绿。当前只待独立 evidence 提交/推送和 exact-SHA 三 job。
+
+### 2026-08-23：修复后 live-success evidence exact-SHA 公共闭环
+
+- `PUBLIC-CI`：`efaccd9a8022f0d75e9baca5470450be6a1a3357` / Actions `32615821339` 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `COUNTS`：公共 pytest `1701 passed, 133 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+  `186 passed, 1 warning` 且 migration/head 一致；Linux package schema 1.6/外部 Riot Provider calls 0。
+- `CLOSED-BATCH`：OP.GG JSON-null parser Bad Case 已完成 live diagnosis → red/green fix → code public CI →
+  post-fix live pass → frozen evidence public CI 的完整链。8E 仍 in progress，下一批为 owner-scoped player
+  profile list/selection DTO 与 legacy region 修正；不把当前 degraded join 说成 exact Meta match。

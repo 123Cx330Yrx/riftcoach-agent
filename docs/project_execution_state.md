@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（ADR-0058 修复后 OP.GG live replay 已通过并创建 body-free bundle；evidence 收尾进行中）
+- 最后更新：2026-08-23（ADR-0058 修复后 live evidence 已由 `efaccd9/32615821339` exact-SHA 公共闭环；8E 转入玩家档案合同）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2118,5 +2118,7 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - bundle 诚实保持 `degraded/unjoined`：Akali 未命中当前 OP.GG top-10 mid Meta，且本 replay 未加入
   Data Dragon/official patch；这证明 parser Bad Case 已修复，不表示 exact champion Meta join、exact-patch 或 freshness。
 - frozen success evidence regression、OP.GG/MCP/Evidence 相邻 `61 passed`，governance、JSON 与 diff 门全绿。
-  当前唯一下一动作是独立 evidence 提交与 exact-SHA 三 job；完成后 8E 下一批为 owner-scoped player profile
-  list/selection DTO 与 legacy `/reviews/recent` 地区修正。
+  evidence `efaccd9a8022f0d75e9baca5470450be6a1a3357` / Actions `32615821339` 的 exact-SHA 三 job 又全部成功：
+  公共 pytest 1701、真实 PostgreSQL 186、Linux package schema 1.6/外部 Riot Provider calls 0。
+- OP.GG parser Bad Case 当前正式闭环；8E 仍 `in_progress / coverage planned`。唯一下一动作是 owner-scoped
+  player profile list/selection DTO 与 legacy `/reviews/recent` 地区来源修正；前端小批排在该合同之后。
