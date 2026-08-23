@@ -2,10 +2,10 @@ import * as Dialog from "@radix-ui/react-dialog"
 import { LazyMotion, MotionConfig, domAnimation, m } from "motion/react"
 
 import type {
-  EvidenceFixture,
-  RunFixture,
-  TaskEventFixture,
-} from "../contracts/workbench"
+  WorkbenchEvidence,
+  WorkbenchRun,
+  WorkbenchTaskEvent,
+} from "../workbench/model"
 import { Glyph } from "./VisualGlyphs"
 
 const statusCopy = {
@@ -15,9 +15,9 @@ const statusCopy = {
 } as const
 
 interface EvidenceDrawerProps {
-  readonly evidence: EvidenceFixture | undefined
-  readonly events: readonly TaskEventFixture[]
-  readonly run: RunFixture | undefined
+  readonly evidence: WorkbenchEvidence | undefined
+  readonly events: readonly WorkbenchTaskEvent[]
+  readonly run: WorkbenchRun | undefined
 }
 
 export function EvidenceDrawer({ evidence, events, run }: EvidenceDrawerProps) {
@@ -83,7 +83,7 @@ export function EvidenceDrawer({ evidence, events, run }: EvidenceDrawerProps) {
                       <div className="drawer-section-title"><span>02</span><h3 id="run-path-title">Safe run path</h3></div>
                       <div className="run-path">
                         {events.map((event, index) => (
-                          <article className="run-path__event" key={`${event.sequence}-${event.eventKind}`}>
+                          <article className="run-path__event" key={`${event.cursor}-${event.eventKind}`}>
                             <span className={`run-path__node${index === events.length - 1 ? " run-path__node--terminal" : ""}`} aria-hidden="true" />
                             <div>
                               <strong>{event.eventKind.replaceAll("_", " ")}</strong>
@@ -131,7 +131,7 @@ export function EvidenceDrawer({ evidence, events, run }: EvidenceDrawerProps) {
                     <section className="digest-block" aria-labelledby="digest-title">
                       <div className="drawer-section-title"><span>05</span><h3 id="digest-title">Bundle digest</h3></div>
                       <code>{evidence.bundleDigest}</code>
-                      <p>Full SHA-256 of the safe fixture bundle. This is not a player identifier.</p>
+                      <p>Full SHA-256 of the safe evidence bundle. This is not a player identifier.</p>
                     </section>
                   </div>
                 )}

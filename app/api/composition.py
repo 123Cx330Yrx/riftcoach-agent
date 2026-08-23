@@ -31,6 +31,7 @@ from app.api.actor import (
 )
 from app.api.main import (
     EvidenceProductServicePort,
+    LatestProfileReviewServicePort,
     OwnerDataLifecyclePort,
     PlayerLinkServicePort,
     ReadinessPort,
@@ -80,6 +81,9 @@ from app.persistence.database import build_engine, build_session_factory
 from app.persistence.player_repository import PostgresPlayerRepository
 from app.persistence.task_repository import PostgresTaskRepository
 from app.persistence.evidence_snapshot_repository import PostgresEvidenceSnapshotRepository
+from app.persistence.latest_review_repository import (
+    PostgresLatestProfileReviewRepository,
+)
 from app.players.models import (
     CreatePlayerLinkCommand,
     PlayerLinkCapacityPolicy,
@@ -88,7 +92,17 @@ from app.players.models import (
     PlayerProfilePage,
 )
 from app.players.service import PlayerLinkService, PlayerLinkServiceError
-from app.product.run_query import RunQueryError, RunQueryService, RunView
+from app.product.latest_review import (
+    LatestProfileReviewResult,
+    LatestProfileReviewService,
+    LatestProfileReviewServiceError,
+)
+from app.product.run_query import (
+    RecentSummaryView,
+    RunQueryError,
+    RunQueryService,
+    RunView,
+)
 from app.tasks.models import (
     CreateConversationReviewTaskCommand,
     CreateReviewTaskCommand,
@@ -352,6 +366,32 @@ class _EvidenceProductServiceProxy:
         return self._service().get_product_state(owner_id=owner_id, run_id=run_id)
 
 
+class _LatestProfileReviewServiceProxy:
+    def __init__(self) -> None:
+        self._target: LatestProfileReviewServicePort | None = None
+
+    def bind(self, target: LatestProfileReviewServicePort | None) -> None:
+        self._target = target
+
+    def _service(self) -> LatestProfileReviewServicePort:
+        if self._target is None:
+            raise LatestProfileReviewServiceError(
+                "latest_review_unavailable"
+            )
+        return self._target
+
+    def get_latest(
+        self,
+        *,
+        owner_id: str,
+        player_profile_id: UUID,
+    ) -> LatestProfileReviewResult:
+        return self._service().get_latest(
+            owner_id=owner_id,
+            player_profile_id=player_profile_id,
+        )
+
+
 class _TaskEventStreamServiceProxy:
     def __init__(self) -> None:
         self._target: TaskEventStreamServicePort | None = None
@@ -398,6 +438,9 @@ class _RunQueryProxy:
 
     def get_report(self, run_id: str) -> str:
         return self._query().get_report(run_id)
+
+    def get_recent_summary(self, run_id: str) -> RecentSummaryView:
+        return self._query().get_recent_summary(run_id)
 
 
 class _PlayerLinkServiceProxy:
@@ -711,6 +754,7 @@ def create_composed_app(
     api_settings = load_api_composition_settings(source)
     task_proxy = _TaskServiceProxy()
     evidence_product_proxy = _EvidenceProductServiceProxy()
+    latest_profile_review_proxy = _LatestProfileReviewServiceProxy()
     task_event_stream_proxy = _TaskEventStreamServiceProxy()
     player_link_proxy = _PlayerLinkServiceProxy()
     conversation_proxy = _ConversationServiceProxy()
@@ -734,6 +778,9 @@ def create_composed_app(
             session_factory = build_session_factory(engine)
             repository = PostgresTaskRepository(session_factory)
             evidence_snapshot_repository = PostgresEvidenceSnapshotRepository(
+                session_factory
+            )
+            latest_review_repository = PostgresLatestProfileReviewRepository(
                 session_factory
             )
             player_repository = PostgresPlayerRepository(session_factory)
@@ -763,6 +810,9 @@ def create_composed_app(
                     task_service=task_proxy,
                     repository=evidence_snapshot_repository,
                 )
+            )
+            latest_profile_review_proxy.bind(
+                LatestProfileReviewService(latest_review_repository)
             )
             task_event_stream_proxy.bind(
                 TaskEventStreamService(task_service=task_proxy)
@@ -830,6 +880,7 @@ def create_composed_app(
             actor_proxy.bind(None)
             task_proxy.bind(None)
             evidence_product_proxy.bind(None)
+            latest_profile_review_proxy.bind(None)
             task_event_stream_proxy.bind(None)
             player_link_proxy.bind(None)
             conversation_proxy.bind(None)
@@ -844,6 +895,7 @@ def create_composed_app(
         finally:
             task_proxy.bind(None)
             evidence_product_proxy.bind(None)
+            latest_profile_review_proxy.bind(None)
             task_event_stream_proxy.bind(None)
             player_link_proxy.bind(None)
             conversation_proxy.bind(None)
@@ -877,6 +929,7 @@ def create_composed_app(
         owner_data_lifecycle_service=owner_data_lifecycle_proxy,
         evidence_product_service=evidence_product_proxy,
         task_event_stream_service=task_event_stream_proxy,
+        latest_profile_review_service=latest_profile_review_proxy,
     )
     app.state.database_engine = None
     return app

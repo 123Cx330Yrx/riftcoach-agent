@@ -354,12 +354,16 @@ exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE�
 - Stage 7/8D 不重开，但 8F 前另设 OP.GG useful-breadth gate，并完成一次实际包含 Riot match、Data Dragon、
   official patch、OP.GG、训练建议与 UI Evidence 的 body-free golden slice。现有 lane-meta 与
   `degraded/unjoined` replay 不满足该完整目标；
-- RQ-095 当前只冻结薄 latest-review locator、Recent Summary HTTP、typed Evidence HTTP、same-origin exact
-  decoder、generation/abort、单 EventSource、restricted Markdown 与真实 Training 字段；不实现产品代码、
-  Auth/部署、其余五模块或上述两个后续验收；
+- RQ-095 设计门冻结薄 latest-review locator、Recent Summary HTTP、typed Evidence HTTP、same-origin exact
+  decoder、generation/abort、单 EventSource、restricted report 与真实 Training 字段；
 - ADR-0062 与 live integration design/implementation plan 完成本地同步后，必须先经过独立 design SHA 的
   三 job exact-SHA 公共门，才可把 implementation 交为 prepared。该门现已由
-  `4057c93/32639561338` 全绿关闭；implementation 当前 prepared/waiting authorization，尚未写代码。
+  `4057c93/32639561338` 全绿关闭；RQ-096 随后授权实施；
+- locator/Summary/typed Evidence、exact decoder/client/controller/EventSource 和 default-live React 已本地完成；
+  backend focused 58、完整 pytest 1939、真 PostgreSQL 200、frontend unit 66/e2e 17、JS gzip 122.01 kB 与
+  Linux package schema 1.6 全绿。当前唯一下一动作是独立 implementation/evidence SHA 与三 job 公共门；
+- 该本地实现仍不包含 Auth/部署、电影感入口、完整 Timeline/Training、OP.GG breadth、fusion golden slice
+  或 8F；整个 8E/coverage 继续 `in_progress/planned`。
 
 ### 原理
 

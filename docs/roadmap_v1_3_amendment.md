@@ -165,7 +165,13 @@ Web/Auth/HTTPS/备份与部署；`8F` 做最终 Eval 和作品集退出。DAG、
   消费者触发；每项继续经过 per-tool schema/provenance/cost/degrade gate；
 - 当前接线门只采用 owner-scoped latest locator + existing APIs，在客户端做 strict composition；拒绝大 BFF
   聚合真源和 URL/localStorage-only 身份。ADR/design/plan 已由 `4057c93/32639561338` exact-SHA 三 job
-  公共关闭；implementation 当前只 prepared/waiting authorization。
+  公共关闭；RQ-096 随后授权并完成本地 implementation/evidence；
+- locator/Summary/typed Evidence、exact wire decoders、generation/abort、single EventSource、default-live React
+  与真实 Training 边界均已通过本地 TDD。escaped plain text 因 150 kB bundle 门取代超限 react-markdown；
+- 本地完整 pytest 1939、真实 PostgreSQL 200、frontend unit 66/e2e 17、JS gzip 122.01 kB、可逆 Alembic 与
+  Linux package schema 1.6 全绿；当前只待独立 implementation/evidence exact-SHA 三 job；
+- 8E/coverage 继续 in_progress/planned；Auth/部署、入口/Timeline/完整 Training、breadth/golden slice 与 8F
+  不随本批进入。
 
 ## 7. 产品切片
 

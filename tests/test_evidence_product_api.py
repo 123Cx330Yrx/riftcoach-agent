@@ -2,10 +2,18 @@ from __future__ import annotations
 
 import json
 
+import copy
+import pytest
+from pydantic import ValidationError
+
 from fastapi.testclient import TestClient
 
 from app.api.actor import StaticActorContextProvider
 from app.api.main import create_app
+from app.api.evidence_models import (
+    EvidencePublicProjectionResponse,
+    EvidenceSnapshotResponse,
+)
 from app.api.task_models import ReadinessResult
 from app.evidence.service import EvidenceProductServiceError
 from app.evidence.storage import project_evidence_snapshot, project_product_run_state
@@ -148,3 +156,69 @@ def test_unbound_product_service_fails_closed_and_openapi_is_body_free() -> None
     assert f"/runs/{{run_id}}/product-state" in schema
     for forbidden in ("owner_id", "refresh_id", "puuid", "raw_response", "api_key"):
         assert forbidden not in schema
+
+
+def test_evidence_openapi_exposes_concrete_nested_projection_without_wire_drift() -> None:
+    http = client(Products())
+
+    body = http.get(f"/runs/{RUN_ID}/evidence").json()
+    openapi = http.get("/openapi.json").json()
+    snapshot_schema = openapi["components"]["schemas"][
+        "EvidenceSnapshotResponse"
+    ]
+    projection_schema = openapi["components"]["schemas"][
+        "EvidencePublicProjectionResponse"
+    ]
+
+    assert snapshot_schema["properties"]["projection"] == {
+        "$ref": "#/components/schemas/EvidencePublicProjectionResponse"
+    }
+    assert set(projection_schema["properties"]) == {
+        "schema_version",
+        "bundle_digest",
+        "disposition",
+        "confidence",
+        "claims",
+        "matches",
+        "joins",
+        "conflicts",
+        "gaps",
+        "sources",
+    }
+    expected_projection = project_evidence_snapshot(
+        snapshot(), now=NOW
+    ).projection
+    assert body["projection"] == expected_projection
+    assert set(body["projection"]["sources"]) == {
+        "riot_official",
+        "data_dragon",
+        "riot_patch",
+        "opgg",
+    }
+
+
+@pytest.mark.parametrize("tamper", ("extra", "enum", "digest"))
+def test_typed_evidence_projection_rejects_schema_drift(tamper: str) -> None:
+    payload = copy.deepcopy(
+        project_evidence_snapshot(snapshot(), now=NOW).projection
+    )
+    if tamper == "extra":
+        payload["raw_body"] = "forbidden"
+    elif tamper == "enum":
+        payload["confidence"] = "certain"
+    else:
+        payload["bundle_digest"] = "not-a-digest"
+
+    with pytest.raises(ValidationError):
+        EvidencePublicProjectionResponse.model_validate(payload)
+
+
+def test_typed_evidence_snapshot_rejects_bad_outer_timestamp() -> None:
+    response = EvidenceSnapshotResponse.from_view(
+        project_evidence_snapshot(snapshot(), now=NOW)
+    )
+    payload = response.model_dump(mode="python")
+    payload["stored_at"] = "2026-08-23"
+
+    with pytest.raises(ValidationError):
+        EvidenceSnapshotResponse.model_validate(payload)

@@ -1987,3 +1987,26 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   frontend unit 35/e2e 12/typecheck/build 与 Linux package smoke 同 SHA 成功。
 - 该公共证据接受 ADR-0062/design/implementation plan 与 RQ-094 治理同步，不表示 locator/API/frontend
   已实现。live integration implementation 只交为 prepared/waiting authorization；8E coverage 继续 planned。
+
+## 2026-08-23：RQ-096 Live Integration 实施裁决
+
+- 实施保持 ADR-0062 的 thin locator + existing APIs client composition；不增加 BFF table/cache/query framework，
+  不把 component 变成 HTTP/SSE parser。
+- browser unknown input 必须先 exact decode，再经过 generation/profile/task/run binding；late response/event、
+  cross-binding、bad enum/time/digest/extra key 均 fail closed。SSE transport 不改 Product State。
+- `react-markdown@10.1.0` 因 production JS gzip 156.52 kB 超过 150 kB 硬门而不采用；当前使用 React 原生
+  escaped plain text。该路径不执行 HTML/link/image，也不宣传为完整 Markdown renderer。
+- native fetch receiver 采用 `globalThis.fetch.bind(globalThis)`；默认网络只允许 same-origin `/api` client 和
+  task EventSource。fixture 仅在显式 `?scenario=` 使用，live/fixture rail 必须如实标识。
+- package smoke 必须在 review task running 时写 Evidence，随后 no-I/O executor 可安全失败；不得放宽
+  `PostgresEvidenceSnapshotRepository` 的 running/succeeded-only write invariant 追绿。
+- locator route 插入后必须保留既有 `/player-profiles` generic exception→body-free 503 映射；提交前 diff
+  审查发现并以 RuntimeError 红灯修复了异常分支错位，不能只依赖 happy-path/OpenAPI 绿灯。
+- HTTP body 上限必须在流读取期间执行；不能先 `response.text()` 全量缓冲后才检查。无 Content-Length
+  response 超限时立即 cancel reader，并保持错误 body 16 KiB、JSON 2 MiB、report 1 MiB 三种限额。
+- profile selection 无论候选是否合法都必须先开启新 generation、abort 旧请求并关闭旧 EventSource；URL 的
+  `player_profile_id` 只可作为 owner-scoped server profile list 的 initial candidate，不能指定 task/run。
+- 本地验收为完整 pytest 1939、真 PostgreSQL 200、frontend unit 66/e2e 17、JS gzip 122.01 kB、Linux
+  package schema 1.6 与横向门全绿；公共 exact-SHA 三 job 成功前只称本地完成。
+- 整个 8E coverage 保持 planned；Auth/RSO、部署、电影感入口、完整 Timeline/Training、OP.GG breadth、
+  fusion golden slice 和 8F 均不并入本批。

@@ -1,9 +1,10 @@
-import type { CoachReportFixture, ProductStateFixture } from "../contracts/workbench"
+import type { WorkbenchCoachReport, WorkbenchProductState } from "../workbench/model"
+import { SafeMarkdown } from "./SafeMarkdown"
 import { Glyph } from "./VisualGlyphs"
 
 interface CoachBriefProps {
-  readonly productState: ProductStateFixture
-  readonly report: CoachReportFixture | undefined
+  readonly productState: WorkbenchProductState
+  readonly report: WorkbenchCoachReport | undefined
 }
 
 export function CoachBrief({ productState, report }: CoachBriefProps) {
@@ -44,22 +45,7 @@ export function CoachBrief({ productState, report }: CoachBriefProps) {
         </div>
         <span className="coach-brief__status">{productState.state === "degraded" ? "LIMITED" : "VERIFIED"}</span>
       </div>
-      <blockquote>{report.verdict}</blockquote>
-      <p className="coach-brief__summary">{report.summary}</p>
-      <div className="coach-brief__orders">
-        <div>
-          <span className="order-label">HOLD</span>
-          <p>{report.strengths[0]}</p>
-        </div>
-        <div>
-          <span className="order-label order-label--move">MOVE</span>
-          <p>{report.priorities[0]}</p>
-        </div>
-      </div>
-      <div className="next-session">
-        <span>NEXT SESSION</span>
-        <p>{report.nextSession}</p>
-      </div>
+      <SafeMarkdown markdown={report.markdown} />
     </section>
   )
 }

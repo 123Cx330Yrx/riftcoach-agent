@@ -7,6 +7,7 @@ const root = resolve(process.cwd())
 const productionExtensions = new Set([".ts", ".tsx", ".css", ".html"])
 const forbiddenNetworkTokens = [
   /\bfetch\s*\(/,
+  /\bglobalThis\.fetch\b/,
   /\bEventSource\s*\(/,
   /\bXMLHttpRequest\b/,
   /\bWebSocket\s*\(/,
@@ -31,15 +32,22 @@ function productionFiles(directory: string): string[] {
   return files
 }
 
-describe("Batch D no-network boundary", () => {
-  it("keeps the fixture surface free of API, SSE, sockets and remote assets", () => {
+describe("8E browser network boundary", () => {
+  it("keeps network access inside the approved same-origin client seams", () => {
     const scanned = [resolve(root, "index.html"), ...productionFiles(resolve(root, "src"))]
     const violations: string[] = []
 
     for (const path of scanned) {
       const content = readFileSync(path, "utf8")
+      const projectPath = relative(root, path).replaceAll("\\", "/")
       for (const pattern of forbiddenNetworkTokens) {
         if (pattern.test(content)) {
+          if (projectPath === "src/api/client.ts" && pattern.source === "\\bglobalThis\\.fetch\\b") {
+            continue
+          }
+          if (projectPath === "src/api/taskEventStream.ts" && pattern.source === "\\bEventSource\\s*\\(") {
+            continue
+          }
           violations.push(`${relative(root, path)} matched ${pattern.source}`)
         }
       }

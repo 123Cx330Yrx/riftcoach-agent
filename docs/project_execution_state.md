@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（RQ-094 上下文纠偏与 RQ-095 live integration design 已由 `4057c93` / Actions `32639561338` exact-SHA 三 job 公共闭环；下一内部检查点仅为 implementation prepared/waiting authorization）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
+- 最后更新：2026-08-23（RQ-096 live integration implementation/evidence 已完成全部本地、真 PostgreSQL 与 Linux package 门；唯一下一动作是独立提交/push 并等待 exact-SHA 三 job）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / live-integration-public-ci-pending`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -561,10 +561,10 @@ pause_reason: ""
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C/8D 已关闭；8E 已完成 live evidence preflight，并本地实现 owner-scoped profile list/selection、explicit routing 与四地区 Worker selector；本机 PostgreSQL 17、Docker/Linux Compose smoke 已补齐 | Batch B 本地绿灯等于正式 Auth/SSE/前端、真实 refresh、完整 8E 或生产 SLA |
-| 项目理解 | Stage 8 entry、8A–8D 与 8E profile/routing 批均有 walkthrough/ADR/设计；当前材料解释稳定 subject、显示别名与 network routing 的区别 | 持久材料存在等于用户已能独立讲解所有实现；owner mastery 仍需复述、读码和运行验证 |
-| 参考资料 | Saber/Sea 的 lease/event/checkpoint 思想只作选择性参考；8B 唯一 holdout 保持 SHA `944258...445e8` 且未重跑；OP.GG live Bad Case 已闭环；README 样本研究按 RQ-085 留到 8F | 引用参考思想等于复制其 Runtime/DAG，或 Multi-Agent reject 已被撤销；一次外部观察也不等于长期 freshness/SLA |
-| GitHub/部署 | 8C `2df5349/32587659678`、8D `a274b7f/32598480400`、OP.GG evidence `efaccd9/32615821339` 与 Batch B `e844bdd/32622696087` 已 exact-SHA 全绿；正式 Auth/SSE/前端/备份/生产 SLA 仍未实现 | Batch B 公共闭环等于整个 8E 完成、正式前端或已生产部署 |
+| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C/8D 已关闭；8E Batch B/C/D 已公共关闭，RQ-096 又本地完成 profile→latest task/run、Summary/Evidence API、strict HTTP/SSE client 与 default-live Workbench；PostgreSQL 17、Docker/Linux package 门全绿 | live integration 本地绿灯等于正式 Auth、完整五模块、真实 refresh、完整 8E 或生产 SLA |
+| 项目理解 | Stage 8 entry、8A–8D 与 8E Batch B/C/D/live integration 均有 ADR/设计/walkthrough；最新材料解释 server identity、wire/view 分层、generation guard、Product/SSE/client 三态与 escaped report 取舍 | 持久材料存在等于用户已能独立讲解所有实现；owner mastery 仍需复述、读码和运行验证 |
+| 参考资料 | Saber/Sea 只作选择性参考；8B reject 结果未重跑；OP.GG lane-meta live Bad Case 已闭环；视觉继续多来源门，breadth/golden slice 与 README 广泛研究分别留后续 8E/8F | 引用参考思想等于复制 Runtime/DAG，或 Multi-Agent reject 被撤销；一次外部观察等于长期 freshness/SLA，或 MotionSites 是唯一视觉来源 |
+| GitHub/部署 | 8C、8D、OP.GG evidence、Batch B/C/D 与 live integration design 均已有 exact-SHA 公共证据；RQ-096 implementation 仍待独立 SHA 三 job。Docker image 仍不 COPY web，正式 Auth/HTTPS/备份/前端部署/生产 SLA 未实现 | 本地 Compose 或 Batch D/Live UI 公共代码等于整个 8E 完成、前端已随镜像部署或公网生产可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -2301,3 +2301,36 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   `2026-08-23-8e-live-workbench-integration-implementation.md` 实施 live integration，当前
   `prepared / waiting authorization`；授权前不写代码，不进入 Auth/部署、其余五模块、OP.GG breadth、
   fusion golden slice 或 8F。
+
+## 2026-08-23：RQ-096 Live Integration 本地实现与全部门禁完成
+
+- 后端已实现 owner-scoped latest-review locator、Recent Summary HTTP、typed Evidence public projection 与
+  composition/package 接线；PostgreSQL latest 查询排除 cross-owner/hidden/inactive/legacy/wrong-kind，失败任务
+  不被旧成功任务越过。公共 `postgres-migrations` job 已纳入 locator 真库测试。
+- 前端已实现 exact wire decoders、bounded same-origin client、generation/AbortController、单 EventSource、
+  terminal authoritative reload、fixture/live 共用 view 与默认 live 页面；profile switch 清空旧内容，observed
+  不请求个人 Training，Product State、client error 与 SSE reconnect 保持独立。
+- `react-markdown@10.1.0` 候选因 JS gzip `156.52 kB` 超过 150 kB 硬门被移除；当前 report 使用 React 原生
+  转义纯文本，不冒充完整 Markdown renderer。bounded body 改为逐 chunk 计数并在超限时 cancel；最终
+  JS/CSS gzip 为 `122.01/11.35 kB`，official npm audit
+  `0 vulnerabilities`。
+- 实施期修复九类 Bad Case：Chromium native fetch receiver、旧 OpenAPI exact paths 漏项、E2E fixed-ledger
+  污染、Windows 10-worker 资源饥饿、package smoke 在 failed task 后写 Evidence，以及提交前审查发现的
+  `/player-profiles` generic exception 映射错位、无 Content-Length body 的先完整缓冲后检查、invalid selection
+  未关闭 active stream，以及默认 App 漏接 server-list-only URL profile 候选。Evidence 修复保持生产
+  repository 只允许 running/succeeded；其余均由 red→green unit/browser gate 固定。
+- 本地证据：focused backend `58 passed`、package/composition `59 passed`、完整
+  `1939 passed, 1 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL 17 CI-equivalent collection
+  `200 passed, 1 warning`；0011 head→base→head 可逆且 `alembic check` 无 drift。
+- 前端 typecheck、`12 files / 66 passed` unit、Playwright `17 passed` 全绿；覆盖 active SSE→published、四态、
+  Markdown injection 不执行、self→observed、Training 请求边界、1440/1024/390/320、keyboard/focus、
+  reduced-motion、axe critical/serious 0 与 remote request 0。
+- 两套 RAG、Harness `published/0 revisions`、compileall/pip/6 YAML、SDK/Secret/tracked-data、governance/diff
+  均通过。隔离 Linux Compose package schema 1.6、Memory Context 3 records、terminal assistant 0、外部调用 0、
+  非 root/image exclusion 通过，临时 container/volume/network 已清理。唯一 Windows symlink skip 仍由公共
+  Linux pytest 补证。
+- 八维证据已写入 `docs/learning/8e-live-workbench-integration-walkthrough.md` 并登记 coverage paths；整个
+  8E coverage 继续 `planned`。本批 Riot/OP.GG/Provider/LLM calls 0，8B holdout 0，未进入 Auth/RSO、部署、
+  电影感入口、完整 Timeline/Training、OP.GG breadth、fusion golden slice 或 8F。
+- 唯一下一动作：审查 diff，创建独立 implementation/evidence commit 并 push；等待该 exact SHA 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 success。公共关闭前不交接下一 8E 原子批。

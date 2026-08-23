@@ -35,6 +35,12 @@ __all__ = [
     "ConversationRecentReviewRequest",
     "ApiRunReceipt",
     "FileRunReceiptStore",
+    "LatestProfileReview",
+    "LatestProfileReviewRepositoryError",
+    "LatestProfileReviewRepositoryPort",
+    "LatestProfileReviewResult",
+    "LatestProfileReviewService",
+    "LatestProfileReviewServiceError",
     "RecentReviewApplicationError",
     "RecentReviewApplicationResult",
     "RecentReviewApplicationService",
@@ -53,3 +59,26 @@ __all__ = [
     "RunView",
     "SingleMatchReviewView",
 ]
+
+
+_LAZY_LATEST_REVIEW_EXPORTS = frozenset(
+    {
+        "LatestProfileReview",
+        "LatestProfileReviewRepositoryError",
+        "LatestProfileReviewRepositoryPort",
+        "LatestProfileReviewResult",
+        "LatestProfileReviewService",
+        "LatestProfileReviewServiceError",
+    }
+)
+
+
+def __getattr__(name: str):
+    # ``app.tasks.models`` imports ``app.product.recent_review``.  Keeping the
+    # locator export lazy avoids making that established import path depend on
+    # the task enums before their module has finished initializing.
+    if name in _LAZY_LATEST_REVIEW_EXPORTS:
+        from . import latest_review
+
+        return getattr(latest_review, name)
+    raise AttributeError(name)

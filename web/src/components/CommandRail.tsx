@@ -7,7 +7,7 @@ const links = [
   { href: "#evidence", label: "Evidence", icon: "evidence" as const },
 ]
 
-export function CommandRail() {
+export function CommandRail({ mode }: { readonly mode: "fixture" | "live" }) {
   return (
     <nav className="command-rail" aria-label="Command sections">
       <a className="brand-mark" href="#review-workspace" aria-label="RiftCoach command center">
@@ -30,10 +30,10 @@ export function CommandRail() {
         ))}
       </div>
 
-      <div className="command-rail__mode" aria-label="Preview environment">
+      <div className="command-rail__mode" aria-label="Runtime environment">
         <span className="mode-pulse" />
-        <span>FIXTURE</span>
-        <small>NO LIVE I/O</small>
+        <span>{mode === "live" ? "LIVE" : "FIXTURE"}</span>
+        <small>{mode === "live" ? "OWNER SCOPED" : "NO LIVE I/O"}</small>
       </div>
     </nav>
   )

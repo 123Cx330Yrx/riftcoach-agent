@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { render, screen, waitFor } from "@testing-library/react"
+import { describe, expect, it, vi } from "vitest"
 
 import { App } from "./App"
+import type { LiveWorkbenchControllerLike } from "./App"
 
 describe("Rift Command Center shell", () => {
   it("exposes a semantic, fixture-disclosed workbench", () => {
@@ -19,6 +20,8 @@ describe("Rift Command Center shell", () => {
       screen.getByRole("heading", { level: 1, name: /rift command center/i }),
     ).toBeInTheDocument()
     expect(screen.getByText(/fixture preview/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/runtime environment/i)).toHaveTextContent(/fixture/i)
+    expect(screen.getByLabelText(/runtime environment/i)).toHaveTextContent(/no live i\/o/i)
     expect(screen.getByRole("heading", { name: "Riverline#EUW" })).toBeInTheDocument()
     expect(screen.getByText(/europe routing/i)).toBeInTheDocument()
 
@@ -32,5 +35,49 @@ describe("Rift Command Center shell", () => {
     expect(screen.getByRole("heading", { name: /workbench unavailable/i })).toBeInTheDocument()
     expect(screen.getByText(/fixture_scenario_unknown/i)).toBeInTheDocument()
     expect(screen.queryByText(/^published$/i)).not.toBeInTheDocument()
+  })
+
+  it("uses the live controller by default and keeps fixture mode explicit", async () => {
+    const controller: LiveWorkbenchControllerLike = {
+      snapshot: {
+        state: {
+          client: "ready",
+          data: {
+            profiles: [{
+              playerProfileId: "95000000-0000-4000-8000-000000000001",
+              riotId: "LiveRiver#EUW",
+              routingRegion: "europe",
+              relationshipRole: "self",
+              verificationStatus: "unverified_claim",
+              lastResolvedAt: "2026-08-23T11:00:00Z",
+            }],
+            selectedProfileId: "95000000-0000-4000-8000-000000000001",
+            events: [],
+            training: {
+              mode: "personal",
+              title: "Wave-state discipline",
+              objective: "Name the wave before leaving lane.",
+            },
+          },
+        },
+        liveUpdates: "closed",
+      },
+      subscribe: vi.fn(() => () => undefined),
+      start: vi.fn(async () => undefined),
+      selectProfile: vi.fn(async () => undefined),
+      dispose: vi.fn(),
+    }
+
+    render(<App createLiveController={() => controller} />)
+
+    await waitFor(() => expect(controller.start).toHaveBeenCalledTimes(1))
+    expect(screen.getByRole("heading", { name: "LiveRiver#EUW" })).toBeInTheDocument()
+    expect(screen.getByText(/live server projection/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/runtime environment/i)).toHaveTextContent(/live/i)
+    expect(screen.getByLabelText(/runtime environment/i)).toHaveTextContent(/owner scoped/i)
+    expect(screen.getByLabelText(/runtime environment/i)).not.toHaveTextContent(/fixture/i)
+    expect(screen.queryByText(/fixture preview/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/2\s*\/\s*5/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/next session/i)).not.toBeInTheDocument()
   })
 })

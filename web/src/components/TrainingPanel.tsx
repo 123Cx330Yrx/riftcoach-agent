@@ -1,9 +1,9 @@
-import type { PlayerProfileFixture, ProfileTrainingFixture } from "../contracts/workbench"
+import type { WorkbenchPlayerProfile, WorkbenchTraining } from "../workbench/model"
 import { Glyph } from "./VisualGlyphs"
 
 interface TrainingPanelProps {
-  readonly profile: PlayerProfileFixture
-  readonly training: ProfileTrainingFixture | undefined
+  readonly profile: WorkbenchPlayerProfile
+  readonly training: WorkbenchTraining | undefined
 }
 
 export function TrainingPanel({ profile, training }: TrainingPanelProps) {
@@ -18,11 +18,7 @@ export function TrainingPanel({ profile, training }: TrainingPanelProps) {
         <p className="training-panel__note">
           {observation?.note ?? "This profile is read-only and has no personal completion state."}
         </p>
-        <ul className="focus-list">
-          {(observation?.focusPoints ?? ["Study repeatable public choices without inferring private intent."]).map((point) => (
-            <li key={point}>{point}</li>
-          ))}
-        </ul>
+        <ul className="focus-list"><li>Study repeatable public choices without inferring private intent.</li></ul>
         <span className="read-only-tag">READ-ONLY STUDY MODE</span>
       </section>
     )
@@ -44,29 +40,17 @@ export function TrainingPanel({ profile, training }: TrainingPanelProps) {
         <div><p className="eyebrow">ACTIVE PROGRAM</p><h3 id="training-title">Your training plan</h3></div>
       </div>
       <h4>{training.title}</h4>
-      <p className="training-panel__focus">{training.focus}</p>
-      <div className="training-progress">
-        <div className="training-progress__copy">
-          <span>SESSION PROGRESS</span>
-          <b>{training.completedSessions} / {training.targetSessions}</b>
-        </div>
-        <div
-          className="training-progress__track"
-          role="progressbar"
-          aria-label="Training session progress"
-          aria-valuemin={0}
-          aria-valuemax={training.targetSessions}
-          aria-valuenow={training.completedSessions}
-        >
-          <span style={{ width: `${training.completionPercent}%` }} />
-        </div>
-      </div>
-      <div className="training-metric">
-        <span>{training.metricLabel}</span>
-        <strong>{training.metricValue}</strong>
-        <small>{training.trend.replace("_", " ")}</small>
-      </div>
-      <p className="training-panel__next"><span>NEXT</span>{training.nextAction}</p>
+      <p className="training-panel__focus">{training.objective}</p>
+      {training.metric !== undefined ? (
+        <dl className="training-metric" aria-label="Training metric evidence">
+          <div><dt>Metric</dt><dd>{training.metric.metricKey.replaceAll("_", " ")}</dd></div>
+          <div><dt>Baseline</dt><dd>{training.metric.baseline ?? "unknown"}</dd></div>
+          <div><dt>Target</dt><dd>{training.metric.target ?? "unknown"}</dd></div>
+          <div><dt>Current</dt><dd>{training.metric.current ?? "unknown"}</dd></div>
+          <div><dt>Trend</dt><dd>{training.metric.trend.replaceAll("_", " ")}</dd></div>
+          <div><dt>Samples</dt><dd>{training.metric.sampleCount}</dd></div>
+        </dl>
+      ) : <p className="training-panel__boundary">No verified progress metric is available yet.</p>}
     </section>
   )
 }

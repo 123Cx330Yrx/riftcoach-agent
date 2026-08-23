@@ -18,8 +18,9 @@ import json
 import math
 import os
 import sys
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from typing import Any, Literal, TypeAlias
 from urllib.parse import urlsplit
 from uuid import UUID, uuid4
@@ -29,6 +30,8 @@ from pydantic import TypeAdapter
 from sqlalchemy.engine import make_url
 
 from app.api.composition import PostgresReadinessProbe
+from app.evidence.fusion import RiotMatchEvidence, fuse_evidence
+from app.evidence.storage import PendingEvidenceBundleSnapshot
 from app.memory.context_models import MemoryContextBinding, MemoryContextRecordKind, MemoryContextSnapshot
 from app.persistence.memory_context_repository import PostgresMemoryContextRepository
 from app.persistence.memory_context_repository import MemoryContextRepositoryError
@@ -36,6 +39,9 @@ from app.players.models import RelationshipRole
 from app.persistence.config import DatabaseSettings, load_database_settings
 from app.persistence.database import build_engine, build_session_factory
 from app.persistence.player_repository import PostgresPlayerRepository
+from app.persistence.evidence_snapshot_repository import (
+    PostgresEvidenceSnapshotRepository,
+)
 from app.persistence.task_repository import PostgresTaskRepository
 from app.players.link_worker import (
     PlayerLinkWorker,
@@ -92,6 +98,13 @@ PackagingSmokeErrorCode: TypeAlias = Literal[
     "packaging_smoke_conversation_review_iteration_invalid",
     "packaging_smoke_conversation_review_query_failed",
     "packaging_smoke_conversation_review_terminal_invalid",
+    "packaging_smoke_latest_review_query_failed",
+    "packaging_smoke_latest_review_invalid",
+    "packaging_smoke_recent_summary_query_failed",
+    "packaging_smoke_recent_summary_invalid",
+    "packaging_smoke_typed_evidence_write_failed",
+    "packaging_smoke_typed_evidence_query_failed",
+    "packaging_smoke_typed_evidence_invalid",
     "packaging_smoke_memory_context_unavailable",
     "packaging_smoke_memory_context_repository_unavailable",
     "packaging_smoke_memory_context_integrity_failed",
@@ -142,6 +155,13 @@ _ERROR_CODES = frozenset(
         "packaging_smoke_conversation_review_iteration_invalid",
         "packaging_smoke_conversation_review_query_failed",
         "packaging_smoke_conversation_review_terminal_invalid",
+        "packaging_smoke_latest_review_query_failed",
+        "packaging_smoke_latest_review_invalid",
+        "packaging_smoke_recent_summary_query_failed",
+        "packaging_smoke_recent_summary_invalid",
+        "packaging_smoke_typed_evidence_write_failed",
+        "packaging_smoke_typed_evidence_query_failed",
+        "packaging_smoke_typed_evidence_invalid",
         "packaging_smoke_memory_context_unavailable",
         "packaging_smoke_memory_context_repository_unavailable",
         "packaging_smoke_memory_context_integrity_failed",
@@ -214,7 +234,18 @@ class PackagingSmokeResult:
 
 
 class _NoExternalIoExecutor:
+    def __init__(
+        self,
+        *,
+        before_failure: Callable[[], None] | None = None,
+    ) -> None:
+        if before_failure is not None and not callable(before_failure):
+            raise TypeError("before_failure must be callable")
+        self._before_failure = before_failure
+
     def execute(self, _task: ReviewTask) -> TaskTerminal:
+        if self._before_failure is not None:
+            self._before_failure()
         # ReviewWorker converts this into its allowlisted safe failure reason.
         # No request body, secret or exception text reaches SQL/log/API.
         raise RuntimeError("packaging smoke intentionally performs no external I/O")
@@ -952,10 +983,57 @@ def execute_packaging_smoke(
                 "packaging_smoke_conversation_review_create_failed"
             ) from None
 
+        evidence_write_succeeded = False
+        try:
+            evidence_now = datetime.now(timezone.utc)
+            smoke_bundle = fuse_evidence(
+                riot_matches=(
+                    RiotMatchEvidence(
+                        match_id="PACKAGING_SMOKE_MATCH",
+                        routing_region="asia",
+                        queue_id=420,
+                        champion_id=103,
+                        champion_name="Ahri",
+                        position="mid",
+                        patch_version="16.16",
+                        win=True,
+                        duration_seconds=1800,
+                        timeline_available=True,
+                        observed_at=evidence_now,
+                        source_digest="a" * 64,
+                    ),
+                ),
+                data_dragon=None,
+                official_patch=None,
+                meta_evidence=(),
+                now=evidence_now,
+            )
+            pending_smoke_evidence = PendingEvidenceBundleSnapshot(
+                task_id=conversation_review_task_id,
+                run_id=conversation_review_run_id,
+                owner_id=settings.owner_id,
+                refresh_id="packaging-smoke-live-workbench",
+                bundle=smoke_bundle,
+                stored_at=evidence_now,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_typed_evidence_write_failed"
+            ) from None
+
+        def write_smoke_evidence() -> None:
+            nonlocal evidence_write_succeeded
+            PostgresEvidenceSnapshotRepository(session_factory).append(
+                pending_smoke_evidence
+            )
+            evidence_write_succeeded = True
+
         try:
             conversation_review_iteration = ReviewWorker(
                 repository=repository,
-                executor=_NoExternalIoExecutor(),
+                executor=_NoExternalIoExecutor(
+                    before_failure=write_smoke_evidence
+                ),
                 worker_id=worker_id,
             ).run_once()
         except ReviewWorkerError as error:
@@ -980,6 +1058,10 @@ def execute_packaging_smoke(
             raise PackagingSmokeError(
                 "packaging_smoke_conversation_review_iteration_invalid"
             ) from None
+        if not evidence_write_succeeded:
+            raise PackagingSmokeError(
+                "packaging_smoke_typed_evidence_write_failed"
+            )
         if (
             conversation_review_iteration.status
             is not WorkerIterationStatus.FAILED
@@ -1014,6 +1096,103 @@ def execute_packaging_smoke(
             raise PackagingSmokeError(
                 "packaging_smoke_conversation_review_terminal_invalid"
             )
+
+        try:
+            latest_review = session.get(
+                (
+                    f"{settings.base_url}/player-profiles/{relationship_id}"
+                    "/reviews/recent/latest"
+                ),
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_latest_review_query_failed"
+            ) from None
+        latest_review_body = _json_object(latest_review)
+        latest_item = latest_review_body.get("latest_review")
+        if (
+            latest_review.status_code != 200
+            or latest_review_body.get("player_profile_id")
+            != str(relationship_id)
+            or not isinstance(latest_item, dict)
+            or latest_item.get("task_id") != str(conversation_review_task_id)
+            or latest_item.get("run_id") != conversation_review_run_id
+            or latest_item.get("status") != "failed"
+            or any(
+                forbidden in repr(latest_review_body).casefold()
+                for forbidden in (
+                    "owner_id",
+                    "puuid",
+                    "worker_id",
+                    "lease_token",
+                    "request_payload",
+                )
+            )
+        ):
+            raise PackagingSmokeError("packaging_smoke_latest_review_invalid")
+
+        try:
+            recent_summary = session.get(
+                (
+                    f"{settings.base_url}/runs/{conversation_review_run_id}"
+                    "/recent-summary"
+                ),
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_recent_summary_query_failed"
+            ) from None
+        if recent_summary.status_code != 409 or _json_object(recent_summary) != {
+            "code": "run_not_available",
+            "run_id": conversation_review_run_id,
+        }:
+            raise PackagingSmokeError("packaging_smoke_recent_summary_invalid")
+
+        try:
+            typed_evidence = session.get(
+                (
+                    f"{settings.base_url}/runs/{conversation_review_run_id}"
+                    "/evidence"
+                ),
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_typed_evidence_query_failed"
+            ) from None
+        typed_evidence_body = _json_object(typed_evidence)
+        typed_projection = typed_evidence_body.get("projection")
+        typed_sources = (
+            typed_projection.get("sources")
+            if isinstance(typed_projection, dict)
+            else None
+        )
+        if (
+            typed_evidence.status_code != 200
+            or typed_evidence_body.get("task_id")
+            != str(conversation_review_task_id)
+            or typed_evidence_body.get("run_id") != conversation_review_run_id
+            or typed_evidence_body.get("revision") != 1
+            or typed_evidence_body.get("bundle_disposition") != "degraded"
+            or not isinstance(typed_projection, dict)
+            or typed_projection.get("disposition") != "degraded"
+            or not isinstance(typed_sources, dict)
+            or set(typed_sources)
+            != {"riot_official", "data_dragon", "riot_patch", "opgg"}
+            or any(
+                forbidden in repr(typed_evidence_body).casefold()
+                for forbidden in (
+                    "owner_id",
+                    "refresh_id",
+                    "puuid",
+                    "request_payload",
+                    "raw_response",
+                )
+            )
+        ):
+            raise PackagingSmokeError("packaging_smoke_typed_evidence_invalid")
 
         try:
             get_persisted_task = getattr(repository, "get_by_task_id", None)

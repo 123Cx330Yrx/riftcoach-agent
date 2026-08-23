@@ -1,8 +1,8 @@
-import type { ProductStateFixture } from "../contracts/workbench"
+import type { WorkbenchProductState } from "../workbench/model"
 import { Glyph, type GlyphName } from "./VisualGlyphs"
 
 const stateContent: Record<
-  ProductStateFixture["state"],
+  WorkbenchProductState["state"],
   { label: string; title: string; description: string; icon: GlyphName }
 > = {
   published: {
@@ -31,7 +31,7 @@ const stateContent: Record<
   },
 }
 
-export function ProductStateBanner({ state }: { readonly state: ProductStateFixture }) {
+export function ProductStateBanner({ state }: { readonly state: WorkbenchProductState }) {
   const content = stateContent[state.state]
 
   return (

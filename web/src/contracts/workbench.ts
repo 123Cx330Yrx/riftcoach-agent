@@ -1,4 +1,8 @@
 export type RoutingRegion = "americas" | "asia" | "europe" | "sea";
+export type {
+  LiveWorkbenchView,
+  LiveWorkbenchScreenState,
+} from "../workbench/model";
 export type RelationshipRole = "self" | "public_observed";
 export type VerificationStatus =
   | "unverified_claim"

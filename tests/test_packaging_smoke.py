@@ -288,6 +288,55 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                     409,
                     {"code": "evidence_not_available", "run_id": run_id},
                 )
+            if url.endswith(
+                "/player-profiles/90000000-0000-4000-8000-000000000004"
+                "/reviews/recent/latest"
+            ):
+                return Response(
+                    200,
+                    {
+                        "schema_version": "1.0",
+                        "player_profile_id": (
+                            "90000000-0000-4000-8000-000000000004"
+                        ),
+                        "latest_review": {
+                            "task_id": conversation_task_id,
+                            "run_id": conversation_run_id,
+                            "status": "failed",
+                            "created_at": "2026-08-20T00:00:00Z",
+                            "updated_at": "2026-08-20T00:01:00Z",
+                            "publication_status": None,
+                            "report_available": False,
+                            "links": {},
+                        },
+                    },
+                )
+            if url.endswith(f"/runs/{conversation_run_id}/recent-summary"):
+                return Response(
+                    409,
+                    {"code": "run_not_available", "run_id": conversation_run_id},
+                )
+            if url.endswith(f"/runs/{conversation_run_id}/evidence"):
+                return Response(
+                    200,
+                    {
+                        "schema_version": "1.0",
+                        "snapshot_id": "90000000-0000-4000-8000-000000000012",
+                        "task_id": conversation_task_id,
+                        "run_id": conversation_run_id,
+                        "revision": 1,
+                        "bundle_disposition": "degraded",
+                        "projection": {
+                            "disposition": "degraded",
+                            "sources": {
+                                "riot_official": {},
+                                "data_dragon": {},
+                                "riot_patch": {},
+                                "opgg": {},
+                            },
+                        },
+                    },
+                )
             if "/memory-candidates/" in url:
                 is_training = training_candidate_id in url
                 return Response(
@@ -495,9 +544,15 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
 
         def __init__(self, **kwargs) -> None:
             assert type(kwargs["executor"]).__name__ == "_NoExternalIoExecutor"
+            self.executor = kwargs["executor"]
 
         def run_once(self) -> WorkerIterationResult:
             type(self).calls += 1
+            if type(self).calls == 2:
+                events.append("conversation.worker.start")
+                with pytest.raises(RuntimeError):
+                    self.executor.execute(None)
+                events.append("conversation.worker.end")
             claimed_task_id = (
                 task_id if type(self).calls == 1 else conversation_task_id
             )
@@ -536,6 +591,21 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     monkeypatch.setattr(
         "scripts.run_packaging_smoke.PostgresPlayerRepository",
         lambda _factory: object(),
+    )
+    class EvidenceRepository:
+        def __init__(self, _factory) -> None:
+            pass
+
+        def append(self, pending):
+            events.append("evidence.append")
+            assert str(pending.task_id) == conversation_task_id
+            assert pending.run_id == conversation_run_id
+            assert pending.owner_id == SMOKE_OWNER_ID
+            assert pending.bundle.disposition.value == "degraded"
+
+    monkeypatch.setattr(
+        "scripts.run_packaging_smoke.PostgresEvidenceSnapshotRepository",
+        EvidenceRepository,
     )
     class ContextRepository:
         def __init__(self, _factory) -> None:
@@ -629,7 +699,12 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     }
     assert result.terminal_assistant_message_count == 0
     assert result.external_riot_provider_calls == 0
-    assert events == ["engine.dispose"]
+    assert events == [
+        "conversation.worker.start",
+        "evidence.append",
+        "conversation.worker.end",
+        "engine.dispose",
+    ]
 
     task_post = next(
         item
@@ -662,6 +737,20 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     )
     assert any(
         method == "GET" and url.endswith(f"/runs/{run_id}/evidence")
+        for method, url, _kwargs in requests_seen
+    )
+    assert any(
+        method == "GET" and url.endswith("/reviews/recent/latest")
+        for method, url, _kwargs in requests_seen
+    )
+    assert any(
+        method == "GET"
+        and url.endswith(f"/runs/{conversation_run_id}/recent-summary")
+        for method, url, _kwargs in requests_seen
+    )
+    assert any(
+        method == "GET"
+        and url.endswith(f"/runs/{conversation_run_id}/evidence")
         for method, url, _kwargs in requests_seen
     )
     task_stream_get = next(
@@ -739,6 +828,13 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         "packaging_smoke_conversation_review_iteration_invalid",
         "packaging_smoke_conversation_review_query_failed",
         "packaging_smoke_conversation_review_terminal_invalid",
+        "packaging_smoke_latest_review_query_failed",
+        "packaging_smoke_latest_review_invalid",
+        "packaging_smoke_recent_summary_query_failed",
+        "packaging_smoke_recent_summary_invalid",
+        "packaging_smoke_typed_evidence_write_failed",
+        "packaging_smoke_typed_evidence_query_failed",
+        "packaging_smoke_typed_evidence_invalid",
         "packaging_smoke_owner_export_failed",
         "packaging_smoke_owner_export_invalid",
         "packaging_smoke_owner_delete_failed",

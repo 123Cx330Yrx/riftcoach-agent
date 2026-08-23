@@ -3824,3 +3824,34 @@
 - 新查询继续返回 reduced-motion、dashboard/motion inspiration 与 agent observability 资源，但没有出现能
   推翻现有五模块矩阵或需要立即新增依赖/购买 Prompt 的新模式。当前合理裁决仍是跨来源筛选并把候选
   绑定到真实消费者；电影感入口、Timeline、完整 Training 各自在后续设计门再深挖。
+
+## 2026-08-23：Live Integration implementation 发现
+
+- 原生 browser `fetch` 不能直接保存后再作为 `ApiClient` 实例方法调用；Chromium 会以错误 receiver 抛
+  `Illegal invocation`。用 `globalThis.fetch.bind(globalThis)` 保留 receiver，并增加 default-fetch 单测；
+  network-boundary 仍只允许批准的 client seam。
+- exact decoder 与 deterministic server DTO 并无首错；浏览器最初连第一条 `/api/player-profiles` 都未发出。
+  先按 network ledger/trace 收敛到 pre-fetch，再用短暂本地诊断得到 receiver 根因，诊断日志未留在产品。
+- E2E fixed test id 会让复用 server 的 terminal/request ledger 跨重跑污染；每次使用 UUID test identity 后，
+  active→terminal 与 Training request count 可重复。Windows 10-worker 同时跑 live 与全页截图会整体资源饥饿；
+  本地封顶 4，CI 保持 1，不提高断言 timeout 掩盖。
+- `react-markdown@10.1.0` 安全配置正确，但 production JS gzip 156.52 kB 超过 150 kB 硬门；按 ADR 移除后
+  使用 React 原生转义纯文本；提交前流式 body/selection hardening 后最终 122.01 kB。不能把该 fallback
+  写成完整 Markdown renderer。
+- 首次 Linux package smoke 在 conversation review 已进入 failed 后写 Evidence；production repository 正确
+  返回 not-writable。修复把 write hook 放到 Worker claim 后、no-I/O executor 故意失败前，保留
+  running/succeeded-only 写入 invariant、最终 failed task 和 typed Evidence 查询；事件顺序红灯与真实 Compose
+  均通过。
+- 提交前逐行 diff 审查发现，新 locator route 插入时把原属于 `/player-profiles` 的 generic exception 映射
+  移到新 route 尾部并形成重复 `except Exception`。先补 RuntimeError 红灯复现异常泄漏，再把 body-free 503
+  映射归位并删除重复分支；这证明完整绿灯仍不能替代提交前代码审查。
+- 安全审查发现 `boundedText()` 只在 `response.text()` 完整缓冲后检查实际字节数；无 Content-Length 的
+  chunked body 因而不是真正有界。新流式红灯证明旧实现会读过边界并失去 `api_body_too_large` 语义；现按
+  chunk 累计字节、超限立即 cancel reader，保留 2 MiB JSON/1 MiB report 与 16 KiB error 原门槛。
+- Controller 对合法 profile switch 会先 abort/close，但 invalid ID 原先直接进入 error，遗留 active stream。
+  新红灯要求任何 selection 都先 begin 新 generation 并清理旧资源，再做 server-list membership 判断。
+- Design/walkthrough 已写明“URL-valid profile else first”，Controller 也预留 `initialProfileId`，但默认 App
+  composition 没有传入。浏览器红灯后，App 只读取 `player_profile_id` 作为候选，并仍由 owner-scoped profile
+  list exact match 决定；URL 不能提供 task/run，也不会使 observed 请求个人 Training。
+- 本机只有 `RIFTCOACH_TEST_DATABASE_URL`，完整 suite 中使用 Alembic 的旧 fixture 还要求同进程
+  `DATABASE_URL`。按 CI 同源映射后完整 1939 与真库 200 通过；这不是产品配置放宽。

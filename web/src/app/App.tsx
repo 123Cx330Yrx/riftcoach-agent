@@ -1,14 +1,18 @@
-import { useMemo, useState } from "react"
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react"
 import { LazyMotion, MotionConfig, domAnimation, m } from "motion/react"
 
-import type {
-  PlayerProfileFixture,
-  ReviewWorkbenchFixture,
-  WorkbenchScreenState,
-} from "../contracts/workbench"
-import {
-  resolveWorkbenchScenario,
-} from "../fixtures/workbenchFixtures"
+import { ApiClient } from "../api/client"
+import { LiveWorkbenchHttpApi } from "../api/liveWorkbenchApi"
+import { createTaskEventStream } from "../api/taskEventStream"
+import type { WorkbenchScreenState } from "../contracts/workbench"
 import { CoachBrief } from "../components/CoachBrief"
 import { CommandRail } from "../components/CommandRail"
 import { EvidenceDrawer } from "../components/EvidenceDrawer"
@@ -17,27 +21,62 @@ import { RecentFormPanel } from "../components/RecentFormPanel"
 import { RiftAtmosphere } from "../components/RiftAtmosphere"
 import { TrainingPanel } from "../components/TrainingPanel"
 import { Glyph } from "../components/VisualGlyphs"
+import { resolveWorkbenchScenario } from "../fixtures/workbenchFixtures"
+import { adaptFixtureWorkbench } from "../workbench/adapters"
+import {
+  LiveWorkbenchController,
+  type LiveWorkbenchSnapshot,
+} from "../workbench/liveController"
+import type {
+  LiveWorkbenchScreenState,
+  LiveWorkbenchView,
+  WorkbenchPlayerProfile,
+  WorkbenchTaskEvent,
+} from "../workbench/model"
+
+export interface LiveWorkbenchControllerLike {
+  readonly snapshot: LiveWorkbenchSnapshot
+  subscribe(listener: () => void): () => void
+  start(): Promise<void>
+  selectProfile(profileId: string): Promise<void>
+  dispose(): void
+}
 
 interface AppProps {
   readonly scenarioOverride?: string
+  readonly createLiveController?: () => LiveWorkbenchControllerLike
 }
 
-function getInitialScenario(override?: string): WorkbenchScreenState {
-  if (override !== undefined) {
-    return resolveWorkbenchScenario(override)
-  }
-  if (typeof window === "undefined") {
-    return resolveWorkbenchScenario()
-  }
-  return resolveWorkbenchScenario(new URLSearchParams(window.location.search).get("scenario"))
+function createDefaultLiveController(): LiveWorkbenchControllerLike {
+  const initialProfileId = typeof window === "undefined"
+    ? undefined
+    : new URLSearchParams(window.location.search).get("player_profile_id") ?? undefined
+  return new LiveWorkbenchController({
+    api: new LiveWorkbenchHttpApi(new ApiClient()),
+    streamFactory: (binding, callbacks) => createTaskEventStream({ ...binding, ...callbacks }),
+    ...(initialProfileId === undefined ? {} : { initialProfileId }),
+  })
 }
 
-function ClientBoundary({ state }: { readonly state: Exclude<WorkbenchScreenState, { client: "ready" }> }) {
+function getExplicitScenario(override?: string): WorkbenchScreenState | undefined {
+  if (override !== undefined) return resolveWorkbenchScenario(override)
+  if (typeof window === "undefined") return undefined
+  const query = new URLSearchParams(window.location.search)
+  return query.has("scenario") ? resolveWorkbenchScenario(query.get("scenario")) : undefined
+}
+
+function ClientBoundary({
+  state,
+  mode,
+}: {
+  readonly state: Exclude<LiveWorkbenchScreenState, { client: "ready" }>
+  readonly mode: "fixture" | "live"
+}) {
   if (state.client === "loading") {
     return (
       <div className="client-state client-state--loading" role="status" aria-busy="true">
         <div className="loading-core" aria-hidden="true"><span /><span /><span /></div>
-        <p className="eyebrow">FIXTURE CHANNEL · CALIBRATING</p>
+        <p className="eyebrow">{mode === "live" ? "LIVE CHANNEL · SYNCHRONIZING" : "FIXTURE CHANNEL · CALIBRATING"}</p>
         <h2>Calibrating the Rift</h2>
         <p>{state.message}</p>
         <div className="skeleton-lines" aria-hidden="true"><span /><span /><span /></div>
@@ -52,7 +91,7 @@ function ClientBoundary({ state }: { readonly state: Exclude<WorkbenchScreenStat
         <p className="eyebrow">COMMAND ROSTER · EMPTY</p>
         <h2>No player profiles yet</h2>
         <p>{state.message}</p>
-        <button type="button" disabled>{state.actionLabel}</button>
+        <button type="button" disabled>Add a player profile later</button>
         <small>Profile creation belongs to a later API/Auth batch.</small>
       </div>
     )
@@ -65,24 +104,30 @@ function ClientBoundary({ state }: { readonly state: Exclude<WorkbenchScreenStat
       <h2>Workbench unavailable</h2>
       <p>{state.message}</p>
       <code>{state.code}</code>
-      <small>This is a client fixture error, not a rejected coaching result.</small>
+      <small>This client resource error does not rewrite the server Product State.</small>
     </div>
   )
 }
 
 function ProfileHeader({
-  fixture,
+  view,
   selectedProfile,
+  mode,
+  liveUpdates,
+  disclosure,
   onSelect,
 }: {
-  readonly fixture: ReviewWorkbenchFixture
-  readonly selectedProfile: PlayerProfileFixture
+  readonly view: LiveWorkbenchView
+  readonly selectedProfile: WorkbenchPlayerProfile
+  readonly mode: "fixture" | "live"
+  readonly liveUpdates: LiveWorkbenchSnapshot["liveUpdates"]
+  readonly disclosure: string
   readonly onSelect: (profileId: string) => void
 }) {
   return (
     <header className="workspace-header">
       <div className="workspace-header__intro">
-        <p className="eyebrow"><span className="eyebrow__line" /> TACTICAL SURFACE / STATIC DATA</p>
+        <p className="eyebrow"><span className="eyebrow__line" /> TACTICAL SURFACE / {mode === "live" ? "LIVE DATA" : "STATIC PREVIEW"}</p>
         <h1>Rift Command Center</h1>
         <p className="workspace-header__lede">A quality-gated review surface for the decisions between lane control and objective tempo.</p>
       </div>
@@ -95,7 +140,7 @@ function ProfileHeader({
             value={selectedProfile.playerProfileId}
             onChange={(event) => onSelect(event.target.value)}
           >
-            {fixture.profiles.map((profile) => (
+            {view.profiles.map((profile) => (
               <option key={profile.playerProfileId} value={profile.playerProfileId}>{profile.riotId}</option>
             ))}
           </select>
@@ -107,100 +152,130 @@ function ProfileHeader({
           <span>{selectedProfile.verificationStatus.replaceAll("_", " ")}</span>
         </div>
       </div>
-      <div className="fixture-disclosure">
+      <div className={`fixture-disclosure fixture-disclosure--${mode}`}>
         <span className="fixture-disclosure__beacon" aria-hidden="true" />
-        <div><strong>Fixture preview</strong><small>{fixture.disclosure}</small></div>
+        <div>
+          <strong>{mode === "live" ? "Live server projection" : "Fixture preview"}</strong>
+          <small>{disclosure}</small>
+          {mode === "live" ? <small className="live-transport-state">updates: {liveUpdates}</small> : null}
+        </div>
       </div>
     </header>
   )
 }
 
-function EventStrip({ fixture }: { readonly fixture: ReviewWorkbenchFixture }) {
+function EventStrip({
+  events,
+  liveUpdates,
+}: {
+  readonly events: readonly WorkbenchTaskEvent[]
+  readonly liveUpdates: LiveWorkbenchSnapshot["liveUpdates"]
+}) {
   return (
     <section className="event-strip" aria-label="Safe task lifecycle">
       <span className="event-strip__title">LIFECYCLE</span>
-      {fixture.events.map((event, index) => (
-        <div className="event-strip__event" key={`${event.sequence}-${event.eventKind}`}>
-          <span className={`event-node${index === fixture.events.length - 1 ? " event-node--active" : ""}`} />
+      {events.map((event, index) => (
+        <div className="event-strip__event" key={`${event.cursor}-${event.eventKind}`}>
+          <span className={`event-node${index === events.length - 1 ? " event-node--active" : ""}`} />
           <span>{event.eventKind.replaceAll("_", " ")}</span>
           <small>{new Date(event.occurredAt).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "UTC" })}Z</small>
         </div>
       ))}
+      {liveUpdates === "reconnecting" ? <span className="event-strip__transport" role="status">LIVE UPDATES RECONNECTING</span> : null}
     </section>
   )
 }
 
-function AlternateProfileView({
+function EmptyProfileView({
   profile,
-  fixture,
+  view,
+  fixtureMode,
 }: {
-  readonly profile: PlayerProfileFixture
-  readonly fixture: ReviewWorkbenchFixture
+  readonly profile: WorkbenchPlayerProfile
+  readonly view: LiveWorkbenchView
+  readonly fixtureMode: boolean
 }) {
+  const observed = profile.relationshipRole === "public_observed"
   return (
     <div className="alternate-profile-view">
       <section className="profile-observation panel">
-        <p className="eyebrow">RELATIONSHIP-SAFE PROFILE PREVIEW</p>
-        <h2>Observation mode</h2>
-        <p>This public-observed profile has no loaded review in the current fixture. Aggregate metrics and a published brief remain hidden instead of being rebound to the wrong player.</p>
+        <p className="eyebrow">RELATIONSHIP-SAFE PROFILE VIEW</p>
+        <h2>{observed ? "Observation mode" : "No recent review"}</h2>
+        <p>
+          {observed
+            ? `This public-observed profile has no loaded review${fixtureMode ? " in the current fixture" : ""}. Aggregate metrics and a published brief remain hidden instead of being rebound to the wrong player.`
+            : "This profile has no visible recent review. RiftCoach does not borrow content from another profile."}
+        </p>
         <dl>
           <div><dt>Routing</dt><dd>{profile.routingRegion}</dd></div>
-          <div><dt>Relationship</dt><dd>public observed</dd></div>
-          <div><dt>Access</dt><dd>read-only public study</dd></div>
+          <div><dt>Relationship</dt><dd>{observed ? "public observed" : "claimed self"}</dd></div>
+          <div><dt>Access</dt><dd>{observed ? "read-only public study" : "owner-scoped review"}</dd></div>
         </dl>
       </section>
-      <TrainingPanel profile={profile} training={fixture.trainingByProfile[profile.playerProfileId]} />
+      <TrainingPanel profile={profile} training={view.training} />
     </div>
   )
 }
 
-function ReadyWorkbench({ fixture }: { readonly fixture: ReviewWorkbenchFixture }) {
-  const [selectedProfileId, setSelectedProfileId] = useState(fixture.selectedProfileId)
-  const selectedProfile = useMemo(
-    () => fixture.profiles.find((profile) => profile.playerProfileId === selectedProfileId) ?? fixture.profiles[0],
-    [fixture.profiles, selectedProfileId],
-  )
-
+function ReadyWorkbench({
+  view,
+  mode,
+  liveUpdates,
+  disclosure,
+  onSelect,
+}: {
+  readonly view: LiveWorkbenchView
+  readonly mode: "fixture" | "live"
+  readonly liveUpdates: LiveWorkbenchSnapshot["liveUpdates"]
+  readonly disclosure: string
+  readonly onSelect: (profileId: string) => void
+}) {
+  const selectedProfile = view.profiles.find((profile) => profile.playerProfileId === view.selectedProfileId)
+    ?? view.profiles[0]
   if (selectedProfile === undefined) {
-    return <ClientBoundary state={{ fixture_mode: true, client: "error", code: "fixture_load_failed", message: "No safe fixture profile was available." }} />
+    return <ClientBoundary mode={mode} state={{ client: "error", code: "profile_projection_invalid", message: "No safe player profile was available." }} />
   }
-
-  const viewingBoundProfile = selectedProfile.playerProfileId === fixture.selectedProfileId
-  const training = fixture.trainingByProfile[selectedProfile.playerProfileId]
 
   return (
     <>
-      <ProfileHeader fixture={fixture} selectedProfile={selectedProfile} onSelect={setSelectedProfileId} />
+      <ProfileHeader
+        view={view}
+        selectedProfile={selectedProfile}
+        mode={mode}
+        liveUpdates={liveUpdates}
+        disclosure={disclosure}
+        onSelect={onSelect}
+      />
       <h2 className="profile-name-heading">{selectedProfile.riotId}</h2>
-      {!viewingBoundProfile ? (
-        <AlternateProfileView profile={selectedProfile} fixture={fixture} />
+      {view.productState === undefined ? (
+        <EmptyProfileView profile={selectedProfile} view={view} fixtureMode={mode === "fixture"} />
       ) : (
         <div className="command-layout">
           <div className="command-layout__primary">
-            <ProductStateBanner state={fixture.productState} />
-            <EventStrip fixture={fixture} />
-            {fixture.summary !== undefined && <RecentFormPanel summary={fixture.summary} />}
-            {fixture.summary === undefined && fixture.productState.state === "not_ready" && (
+            <ProductStateBanner state={view.productState} />
+            <EventStrip events={view.events} liveUpdates={liveUpdates} />
+            {view.summary !== undefined ? <RecentFormPanel summary={view.summary} /> : null}
+            {view.summary === undefined && view.productState.state === "not_ready" ? (
               <section className="analysis-pending panel" aria-labelledby="analysis-pending-title">
                 <span className="analysis-pending__route" aria-hidden="true" />
                 <p className="eyebrow">RUNNING · NO SYNTHETIC ETA</p>
                 <h3 id="analysis-pending-title">Waiting for a terminal review</h3>
                 <p>RiftCoach is waiting for a terminal, quality-gated result. The event rail above is the only progress signal.</p>
               </section>
-            )}
-            <CoachBrief productState={fixture.productState} report={fixture.report} />
+            ) : null}
+            <CoachBrief productState={view.productState} report={view.report} />
           </div>
           <aside className="context-rail" aria-label="Review context">
             <div className="context-rail__header"><span>CONTEXT CHANNEL</span><small>SAFE PROJECTION</small></div>
-            <TrainingPanel profile={selectedProfile} training={training} />
-            <EvidenceDrawer evidence={fixture.evidence} events={fixture.events} run={fixture.run} />
+            <TrainingPanel profile={selectedProfile} training={view.training} />
+            <EvidenceDrawer evidence={view.evidence} events={view.events} run={view.run} />
             <section className="source-summary panel" aria-labelledby="source-summary-title">
               <p className="eyebrow">SOURCE POSTURE</p>
               <h3 id="source-summary-title">What the brief can claim</h3>
               <div className="source-summary__facts">
-                <span><b>{fixture.evidence?.sources.length ?? 0}</b> typed sources</span>
-                <span><b>{fixture.evidence?.joins.length ?? 0}</b> explicit joins</span>
-                <span><b>{fixture.evidence?.gaps.length ?? 0}</b> known gaps</span>
+                <span><b>{view.evidence?.sources.length ?? 0}</b> typed sources</span>
+                <span><b>{view.evidence?.joins.length ?? 0}</b> explicit joins</span>
+                <span><b>{view.evidence?.gaps.length ?? 0}</b> known gaps</span>
               </div>
               <p>Evidence is visible. Hidden reasoning is not.</p>
             </section>
@@ -211,16 +286,78 @@ function ReadyWorkbench({ fixture }: { readonly fixture: ReviewWorkbenchFixture 
   )
 }
 
-export function App({ scenarioOverride }: AppProps) {
-  const state = useMemo(() => getInitialScenario(scenarioOverride), [scenarioOverride])
+function FixtureWorkbench({ state }: { readonly state: WorkbenchScreenState }) {
+  const [selectedProfileId, setSelectedProfileId] = useState(
+    state.client === "ready" ? state.data.selectedProfileId : "",
+  )
+  if (state.client !== "ready") {
+    const safeState: Exclude<LiveWorkbenchScreenState, { client: "ready" }> = state.client === "empty"
+      ? { client: "empty", message: state.message }
+      : state.client === "error"
+        ? { client: "error", code: state.code, message: state.message }
+        : { client: "loading", message: state.message }
+    return <ClientBoundary state={safeState} mode="fixture" />
+  }
+  const view = adaptFixtureWorkbench(state.data, selectedProfileId)
+  return (
+    <ReadyWorkbench
+      view={view}
+      mode="fixture"
+      liveUpdates="closed"
+      disclosure={state.data.disclosure}
+      onSelect={setSelectedProfileId}
+    />
+  )
+}
 
+function LiveWorkbench({ createController }: { readonly createController: () => LiveWorkbenchControllerLike }) {
+  const [controller] = useState(createController)
+  const started = useRef(false)
+  const mountToken = useRef(0)
+  const subscribe = useCallback((listener: () => void) => controller.subscribe(listener), [controller])
+  const getSnapshot = useCallback(() => controller.snapshot, [controller])
+  const snapshot = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+
+  useEffect(() => {
+    mountToken.current += 1
+    if (!started.current) {
+      started.current = true
+      void controller.start()
+    }
+    return () => {
+      const closingToken = ++mountToken.current
+      queueMicrotask(() => {
+        if (mountToken.current === closingToken) controller.dispose()
+      })
+    }
+  }, [controller])
+
+  if (snapshot.state.client !== "ready") return <ClientBoundary state={snapshot.state} mode="live" />
+  return (
+    <ReadyWorkbench
+      view={snapshot.state.data}
+      mode="live"
+      liveUpdates={snapshot.liveUpdates}
+      disclosure="Owner-scoped typed API · no browser secrets"
+      onSelect={(profileId) => { void controller.selectProfile(profileId) }}
+    />
+  )
+}
+
+function AppFrame({
+  children,
+  mode,
+}: {
+  readonly children: ReactNode
+  readonly mode: "fixture" | "live"
+}) {
   return (
     <MotionConfig reducedMotion="user">
       <LazyMotion features={domAnimation}>
         <div className="app-shell">
           <a className="skip-link" href="#review-workspace">Skip to review workspace</a>
           <RiftAtmosphere />
-          <CommandRail />
+          <CommandRail mode={mode} />
           <m.main
             id="review-workspace"
             className="review-workspace"
@@ -228,14 +365,26 @@ export function App({ scenarioOverride }: AppProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
           >
-            {state.client === "ready" ? <ReadyWorkbench fixture={state.data} /> : <ClientBoundary state={state} />}
+            {children}
           </m.main>
           <footer className="app-footer">
-            <span>RIFTCOACH / BATCH D</span>
-            <span>STATIC CONTRACT SURFACE · EXTERNAL CALLS 0</span>
+            <span>RIFTCOACH / 8E LIVE INTEGRATION</span>
+            <span>{mode === "live" ? "OWNER-SCOPED CONTRACT SURFACE" : "STATIC SCENARIO · EXTERNAL CALLS 0"}</span>
           </footer>
         </div>
       </LazyMotion>
     </MotionConfig>
+  )
+}
+
+export function App({ scenarioOverride, createLiveController }: AppProps) {
+  const fixtureState = useMemo(() => getExplicitScenario(scenarioOverride), [scenarioOverride])
+  if (fixtureState !== undefined) {
+    return <AppFrame mode="fixture"><FixtureWorkbench state={fixtureState} /></AppFrame>
+  }
+  return (
+    <AppFrame mode="live">
+      <LiveWorkbench createController={createLiveController ?? createDefaultLiveController} />
+    </AppFrame>
   )
 }

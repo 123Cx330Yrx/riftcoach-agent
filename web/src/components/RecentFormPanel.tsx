@@ -1,4 +1,4 @@
-import type { RecentSummaryFixture } from "../contracts/workbench"
+import type { WorkbenchRecentSummary } from "../workbench/model"
 
 function formatDecimal(value: number, digits = 1) {
   return value.toFixed(digits)
@@ -11,7 +11,7 @@ const metricDefinitions = [
   { key: "killParticipationPercent", label: "KILL PARTICIPATION", suffix: "%", digits: 1 },
 ] as const
 
-export function RecentFormPanel({ summary }: { readonly summary: RecentSummaryFixture }) {
+export function RecentFormPanel({ summary }: { readonly summary: WorkbenchRecentSummary }) {
   const winShare = `${summary.winRate}%`
 
   return (
@@ -20,7 +20,7 @@ export function RecentFormPanel({ summary }: { readonly summary: RecentSummaryFi
       <div className="recent-form__heading">
         <div>
           <p className="eyebrow">AGGREGATE REVIEW · {summary.gamesAnalyzed} GAMES</p>
-          <h3 id="recent-form-title">The lane is stable. The first move decides the ceiling.</h3>
+          <h3 id="recent-form-title">Recent performance snapshot</h3>
         </div>
         <div className="role-cluster" aria-label="Primary role and champions">
           <span className="role-cluster__role">{summary.mainRole}</span>

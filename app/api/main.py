@@ -43,6 +43,10 @@ from app.api.player_models import (
     PlayerLinkResponse,
     PlayerProfilePageResponse,
 )
+from app.api.live_workbench_models import (
+    LatestProfileReviewResponse,
+    RecentSummaryResponse,
+)
 from app.api.memory_models import (
     CreateMemoryCandidateRequest,
     MemoryCandidateApiErrorCode,
@@ -128,7 +132,11 @@ from app.product.recent_review import (
     ConversationRecentReviewRequest,
     RecentReviewProductRequest,
 )
-from app.product.run_query import RunView
+from app.product.latest_review import (
+    LatestProfileReviewResult,
+    LatestProfileReviewServiceError,
+)
+from app.product.run_query import RecentSummaryView, RunQueryError, RunView
 from app.tasks.models import (
     CreateConversationReviewTaskCommand,
     CreateReviewTaskCommand,
@@ -207,6 +215,17 @@ class RunQueryPort(Protocol):
     def get_run(self, run_id: str) -> RunView: ...
 
     def get_report(self, run_id: str) -> str: ...
+
+    def get_recent_summary(self, run_id: str) -> RecentSummaryView: ...
+
+
+class LatestProfileReviewServicePort(Protocol):
+    def get_latest(
+        self,
+        *,
+        owner_id: str,
+        player_profile_id: UUID,
+    ) -> LatestProfileReviewResult: ...
 
 
 class EvidenceProductServicePort(Protocol):
@@ -475,6 +494,7 @@ def create_app(
     owner_data_lifecycle_service: OwnerDataLifecyclePort | None = None,
     evidence_product_service: EvidenceProductServicePort | None = None,
     task_event_stream_service: TaskEventStreamServicePort | None = None,
+    latest_profile_review_service: LatestProfileReviewServicePort | None = None,
 ) -> FastAPI:
     """Create API V2 from explicit ports without doing deployment I/O."""
 
@@ -544,6 +564,12 @@ def create_app(
                 raise TypeError(
                     f"task_event_stream_service must expose {method_name}()"
                 )
+    if latest_profile_review_service is not None and not callable(
+        getattr(latest_profile_review_service, "get_latest", None)
+    ):
+        raise TypeError(
+            "latest_profile_review_service must expose get_latest()"
+        )
     if observability is not None and not isinstance(
         observability,
         TaskObservability,
@@ -1473,6 +1499,48 @@ def create_app(
             return _error_response("service_unavailable", status_code=503)
 
     @app.get(
+        "/player-profiles/{player_profile_id}/reviews/recent/latest",
+        response_model=LatestProfileReviewResponse,
+        responses={
+            404: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def get_latest_profile_review(
+        player_profile_id: str,
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> LatestProfileReviewResponse | JSONResponse:
+        try:
+            parsed_profile_id = UUID(player_profile_id)
+        except (AttributeError, TypeError, ValueError):
+            return _error_response(
+                "player_profile_not_found",
+                status_code=404,
+            )
+        if latest_profile_review_service is None:
+            return _error_response("service_unavailable", status_code=503)
+        try:
+            result = latest_profile_review_service.get_latest(
+                owner_id=actor.owner_id,
+                player_profile_id=parsed_profile_id,
+            )
+            if (
+                not isinstance(result, LatestProfileReviewResult)
+                or result.player_profile_id != parsed_profile_id
+            ):
+                raise TypeError("latest review service returned invalid identity")
+            return LatestProfileReviewResponse.from_result(result)
+        except LatestProfileReviewServiceError as error:
+            if error.code == "player_profile_not_found":
+                return _error_response(
+                    "player_profile_not_found",
+                    status_code=404,
+                )
+            return _error_response("service_unavailable", status_code=503)
+        except Exception:
+            return _error_response("service_unavailable", status_code=503)
+
+    @app.get(
         "/player-links/{link_task_id}",
         response_model=PlayerLinkResponse,
         responses={
@@ -1993,6 +2061,82 @@ def create_app(
                 "evidence_integrity_failed",
                 status_code=500,
                 run_id=run_id,
+            )
+
+    @app.get(
+        "/runs/{run_id}/recent-summary",
+        response_model=RecentSummaryResponse,
+        responses={
+            404: {"model": ErrorResponse},
+            409: {"model": ErrorResponse},
+            500: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def get_recent_summary(
+        run_id: str,
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> RecentSummaryResponse | JSONResponse:
+        task = owned_run_task(actor, run_id)
+        if isinstance(task, JSONResponse):
+            return task
+        if task.status in {
+            TaskStatus.QUEUED,
+            TaskStatus.RUNNING,
+            TaskStatus.RECOVERY_REQUIRED,
+        }:
+            return _error_response(
+                "run_not_ready",
+                status_code=409,
+                run_id=task.run_id,
+            )
+        if task.status in {TaskStatus.FAILED, TaskStatus.CANCELLED}:
+            return _error_response(
+                "run_not_available",
+                status_code=409,
+                run_id=task.run_id,
+            )
+        if not task.report_available:
+            return _error_response(
+                "report_not_available",
+                status_code=409,
+                run_id=task.run_id,
+            )
+        get_summary = getattr(query_service, "get_recent_summary", None)
+        if not callable(get_summary):
+            return _error_response(
+                "service_unavailable",
+                status_code=503,
+                run_id=task.run_id,
+            )
+        try:
+            result = get_summary(task.run_id)
+            if (
+                not isinstance(result, RecentSummaryView)
+                or result.run_id != task.run_id
+                or task.publication_status is None
+                or result.publication_status.value
+                != task.publication_status.value
+            ):
+                raise ValueError("recent Summary identity mismatch")
+            return RecentSummaryResponse.from_view(result)
+        except RunQueryError as error:
+            if error.code == "report_not_available":
+                return _error_response(
+                    "report_not_available",
+                    status_code=409,
+                    run_id=task.run_id,
+                )
+            return _error_response(
+                "run_integrity_failed",
+                status_code=500,
+                run_id=task.run_id,
+            )
+        except Exception:
+            return _error_response(
+                "run_integrity_failed",
+                status_code=500,
+                run_id=task.run_id,
             )
 
     @app.get(

@@ -837,6 +837,7 @@ groups:
         - docs/learning/8e-batch-d-rift-command-center-walkthrough.md
         - docs/adr/0062-adopt-latest-profile-review-locator-and-client-composed-live-workbench.md
         - docs/plans/2026-08-23-8e-live-workbench-integration-design.md
+        - docs/learning/8e-live-workbench-integration-walkthrough.md
       design_and_implementation:
         - docs/adr/0059-adopt-owner-scoped-player-profiles-and-explicit-riot-routing.md
         - docs/plans/2026-08-23-player-profile-selection-explicit-routing-design.md
@@ -854,10 +855,12 @@ groups:
         - docs/adr/0062-adopt-latest-profile-review-locator-and-client-composed-live-workbench.md
         - docs/plans/2026-08-23-8e-live-workbench-integration-design.md
         - docs/plans/2026-08-23-8e-live-workbench-integration-implementation.md
+        - docs/learning/8e-live-workbench-integration-walkthrough.md
       code_map:
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
         - docs/learning/8e-evidence-product-api-walkthrough.md
         - docs/learning/8e-batch-d-rift-command-center-walkthrough.md
+        - docs/learning/8e-live-workbench-integration-walkthrough.md
       data_and_control_flow:
         - docs/plans/2026-08-23-player-profile-selection-explicit-routing-design.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
@@ -866,6 +869,7 @@ groups:
         - docs/plans/2026-08-23-8e-batch-d-rift-command-center-design.md
         - docs/learning/8e-batch-d-rift-command-center-walkthrough.md
         - docs/plans/2026-08-23-8e-live-workbench-integration-design.md
+        - docs/learning/8e-live-workbench-integration-walkthrough.md
       verification:
         - docs/plans/2026-08-23-player-profile-selection-explicit-routing-implementation.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
@@ -874,10 +878,12 @@ groups:
         - docs/plans/2026-08-23-8e-batch-d-rift-command-center-implementation.md
         - docs/learning/8e-batch-d-rift-command-center-walkthrough.md
         - docs/plans/2026-08-23-8e-live-workbench-integration-implementation.md
+        - docs/learning/8e-live-workbench-integration-walkthrough.md
       runbook:
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
         - docs/learning/8e-evidence-product-api-walkthrough.md
         - docs/learning/8e-batch-d-rift-command-center-walkthrough.md
+        - docs/learning/8e-live-workbench-integration-walkthrough.md
       failure_security_boundary:
         - docs/adr/0059-adopt-owner-scoped-player-profiles-and-explicit-riot-routing.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
@@ -888,10 +894,12 @@ groups:
         - docs/learning/8e-batch-d-rift-command-center-walkthrough.md
         - docs/adr/0062-adopt-latest-profile-review-locator-and-client-composed-live-workbench.md
         - docs/plans/2026-08-23-8e-live-workbench-integration-design.md
+        - docs/learning/8e-live-workbench-integration-walkthrough.md
       interview_wording:
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
         - docs/learning/8e-evidence-product-api-walkthrough.md
         - docs/learning/8e-batch-d-rift-command-center-walkthrough.md
+        - docs/learning/8e-live-workbench-integration-walkthrough.md
 
   - id: 8f-final-evaluation-and-portfolio
     sequence: 360

@@ -18,7 +18,7 @@ describe("Evidence Drawer", () => {
     expect(screen.getByText(/riot match api/i)).toBeInTheDocument()
     expect(screen.getByText(/op\.gg meta/i)).toBeInTheDocument()
     expect(screen.getByRole("heading", { name: /safe run path/i })).toBeInTheDocument()
-    expect(within(dialog).getByText("task completed", { exact: true })).toBeInTheDocument()
+    expect(within(dialog).getAllByText("succeeded", { exact: true }).length).toBeGreaterThan(0)
     expect(screen.getByText(/bundle digest/i)).toBeInTheDocument()
 
     const text = dialog.textContent?.toLowerCase() ?? ""

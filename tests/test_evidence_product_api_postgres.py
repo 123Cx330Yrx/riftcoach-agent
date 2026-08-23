@@ -17,7 +17,7 @@ from app.api.actor import StaticActorContextProvider
 from app.api.composition import PostgresReadinessProbe
 from app.api.main import create_app
 from app.evidence.service import EvidenceProductService
-from app.evidence.storage import PendingEvidenceBundleSnapshot
+from app.evidence.storage import PendingEvidenceBundleSnapshot, project_evidence_snapshot
 from app.persistence.evidence_snapshot_repository import (
     PostgresEvidenceSnapshotRepository,
 )
@@ -130,6 +130,11 @@ def test_real_postgres_snapshot_reaches_owner_scoped_product_http(
     assert written.snapshot.revision == 1
     assert evidence_response.status_code == 200
     assert evidence_response.json()["revision"] == 1
+    expected_projection = project_evidence_snapshot(
+        written.snapshot,
+        now=datetime.now(timezone.utc),
+    ).projection
+    assert evidence_response.json()["projection"] == expected_projection
     assert state_response.status_code == 200
     assert state_response.json()["state"] == "not_ready"
     assert other.get(f"/runs/{run_id}/evidence").status_code == 404

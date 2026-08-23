@@ -233,6 +233,11 @@ def test_list_profiles_is_bounded_and_maps_repository_failure_safely() -> None:
     assert failed.status_code == 503
     assert failed.json() == {"code": "service_unavailable"}
 
+    service.error = RuntimeError("internal details must stay private")
+    unexpected = http.get("/player-profiles")
+    assert unexpected.status_code == 503
+    assert unexpected.json() == {"code": "service_unavailable"}
+
 
 def test_app_factory_and_openapi_do_not_read_keys_or_open_io(monkeypatch) -> None:
     original_getenv = os.getenv

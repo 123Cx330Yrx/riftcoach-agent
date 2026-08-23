@@ -4002,3 +4002,25 @@
   外部调用、Key、8B holdout 或付费资源。
 - `HANDOFF`：live integration implementation 只交为 prepared/waiting authorization；整个 8E coverage 仍
   planned，Auth/部署、入口/Timeline/完整 Training、OP.GG breadth 与 fusion golden slice 仍未进入。
+
+### 2026-08-23：RQ-096 Live Integration 本地实现与门禁完成
+
+- `IMPLEMENTED-BACKEND`：owner-scoped latest locator、Recent Summary route、typed Evidence HTTP、composition
+  与 package 接线完成；公共 PostgreSQL collection 已加入 locator repository 真库文件。
+- `IMPLEMENTED-FRONTEND`：exact decoders、bounded client、deterministic adapters、generation/abort controller、
+  single EventSource、default-live React、真实 Summary/report/Evidence/Training 消费完成；observed 不请求
+  personal Training，profile switch 先 clear/abort/close。
+- `BUNDLE-DECISION`：`react-markdown` 使 JS gzip 156.52 kB 超过硬门，已按 ADR 移除并使用 escaped plain
+  text；流式 body 读取又增加真正的 byte-limit cancel，最终 JS/CSS gzip `122.01/11.35 kB`，official npm audit 0 vulnerabilities。
+- `BAD-CASES`：修复 native fetch illegal receiver、OpenAPI exact paths、E2E ledger reuse、Windows worker
+  资源饥饿、failed-task Evidence smoke ordering，以及提交前审查发现的 `/player-profiles` generic exception
+  映射错位，以及无 Content-Length body 原先在限额检查前被完整缓冲；后两者分别由 RuntimeError 红灯和
+  streaming cancel 红灯修复；invalid profile selection 也先清理旧 fetch/stream，且默认 App 已把
+  `player_profile_id` URL 参数接入 server-list-only initial selection。未放宽 decoder、Evidence repository 或 bundle budget。
+- `LOCAL-EVIDENCE`：backend focused 58、package/composition 59、完整
+  `1939 passed, 1 skipped, 1 warning, 127 subtests`、真 PostgreSQL 200、frontend unit 66/e2e 17、可逆
+  Alembic、两套 RAG、Harness、compile/pip/YAML/security/governance/diff 与 Linux package schema 1.6 全绿。
+- `LEARNING`：新增八维 walkthrough 并登记 8E coverage paths；整个 group 继续 planned。
+- `BOUNDARY/NEXT`：外部 Riot/OP.GG/Provider/LLM calls 0，8B holdout 0；唯一下一动作是独立
+  implementation/evidence commit/push 与同 SHA 三 job，公共闭环前不进入 Auth/部署、其余五模块、breadth、
+  golden slice 或 8F。

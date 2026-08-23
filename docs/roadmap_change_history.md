@@ -2868,3 +2868,20 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `CLOSED`：RQ-095 设计门正式关闭；未写产品代码、未调用外部服务、未进入 Auth/部署/五模块其余页面。
 - `HANDOFF`：live integration implementation 仅 prepared/waiting authorization；整个 8E/coverage 继续
   in_progress/planned，RQ-094 breadth/golden-slice 仍是后续待办而非本批完成项。
+
+## 2026-08-23：RQ-096 Live Integration 本地完成
+
+- `AUTHORIZED`：用户继续授权完整执行既有 implementation plan，无需逐 Task 再批准；边界仍排除 Auth、
+  部署、入口/Timeline/完整 Training、OP.GG breadth、fusion golden slice 与 8F。
+- `IMPLEMENTED`：PostgreSQL latest locator、Recent Summary、typed Evidence HTTP、composition/package 与前端
+  exact decoder/client/adapter/controller/EventSource/default-live UI 均按 TDD 完成；外部调用和 8B holdout 为 0。
+- `DECISION`：react-markdown bundle 超 150 kB 后移除，以 escaped plain text 保持安全/性能门；不提高预算。
+- `BAD-CASES`：修复 browser fetch receiver、OpenAPI exact paths、E2E ledger reuse/local worker pressure、
+  failed-task Evidence smoke order、`/player-profiles` generic exception 映射错位、chunked body 延迟限额、
+  invalid-selection stream cleanup 与 URL initial profile composition 漏项；严格 decoder、server-list membership、
+  Evidence write status 与 Product State 语义未放宽。
+- `LOCAL-EVIDENCE`：focused 58、package 59、完整 pytest 1939/1 skip/127 subtests、真 PostgreSQL 200、
+  frontend unit 66/e2e 17、JS gzip 122.01 kB、可逆 Alembic、RAG/Harness/security/governance 与 Linux package
+  schema 1.6 全绿；八维 walkthrough/coverage paths 完成。
+- `NEXT`：独立 implementation/evidence commit/push 与同 SHA 三 job。公共成功前 live integration 批保持
+  open，8E/coverage 继续 in_progress/planned。

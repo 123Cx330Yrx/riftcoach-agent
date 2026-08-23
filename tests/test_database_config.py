@@ -195,6 +195,7 @@ def test_compose_and_ci_define_a_real_postgresql_migration_gate() -> None:
     )
 
     serialized_job = yaml.safe_dump(migration_job)
+    assert "tests/test_latest_profile_review_repository_postgres.py" in serialized_job
     assert "sqlite" not in serialized_job.lower()
     assert "RIOT_API_KEY" not in serialized_job
     assert "LLM_API_KEY" not in serialized_job

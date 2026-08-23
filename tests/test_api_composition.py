@@ -33,6 +33,13 @@ from app.tasks.reliable_runtime import (
     TaskLifecycleEvent,
     TaskLifecycleEventKind,
 )
+from app.product.latest_review import LatestProfileReviewResult
+from tests.test_live_workbench_api import (
+    PROFILE_ID as LIVE_PROFILE_ID,
+    recent_summary,
+    task as live_task,
+)
+from app.tasks.models import TaskPublicationStatus
 
 
 VALID_ENV = {
@@ -198,6 +205,71 @@ def test_lifespan_builds_process_resources_once_and_disposes_engine(
 
     assert engine.dispose_calls == 1
     assert app.state.database_engine is None
+
+
+def test_composed_app_binds_latest_locator_and_recent_summary_proxies(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    engine = FakeEngine()
+    environment = {**VALID_ENV, "RIFTCOACH_RUNS_ROOT": str(tmp_path)}
+    locator_calls: list[tuple[str, UUID]] = []
+    summary_calls: list[str] = []
+
+    class BoundLatest:
+        def get_latest(self, *, owner_id: str, player_profile_id: UUID):
+            locator_calls.append((owner_id, player_profile_id))
+            return LatestProfileReviewResult(
+                player_profile_id=player_profile_id,
+                latest_review=None,
+            )
+
+    class BoundTasks:
+        def get_task_by_run_id(self, *, owner_id: str, run_id: str):
+            del owner_id, run_id
+            return live_task(
+                TaskStatus.SUCCEEDED,
+                publication=TaskPublicationStatus.PUBLISHED,
+                report_available=True,
+            )
+
+    class BoundQuery:
+        def get_recent_summary(self, run_id: str):
+            summary_calls.append(run_id)
+            return recent_summary()
+
+    monkeypatch.setattr("app.api.composition.build_engine", lambda _settings: engine)
+    monkeypatch.setattr(
+        "app.api.composition.build_session_factory",
+        lambda _engine: (lambda: None),
+    )
+    monkeypatch.setattr(
+        "app.api.composition.LatestProfileReviewService",
+        lambda _repository: BoundLatest(),
+    )
+    monkeypatch.setattr(
+        "app.api.composition.ReviewTaskService",
+        lambda **_kwargs: BoundTasks(),
+    )
+    monkeypatch.setattr(
+        "app.api.composition.RunQueryService",
+        lambda _root: BoundQuery(),
+    )
+
+    app = create_composed_app(environment=environment)
+    with TestClient(app) as http:
+        latest = http.get(
+            f"/player-profiles/{LIVE_PROFILE_ID}/reviews/recent/latest"
+        )
+        summary = http.get("/runs/review_live_workbench_1/recent-summary")
+
+    assert latest.status_code == 200
+    assert latest.json()["latest_review"] is None
+    assert summary.status_code == 200
+    assert summary.json()["games_analyzed"] == 2
+    assert locator_calls == [("test-owner", LIVE_PROFILE_ID)]
+    assert summary_calls == ["review_live_workbench_1"]
+    assert engine.dispose_calls == 1
 
 
 def test_composed_app_forwards_conversation_review_to_bound_task_service(

@@ -164,6 +164,7 @@ def test_app_factory_and_openapi_do_not_read_keys_or_open_io(monkeypatch) -> Non
         "/owner-data/deletions/{marker_id}/retry",
         "/reviews/recent",
         "/player-profiles",
+        "/player-profiles/{player_profile_id}/reviews/recent/latest",
         "/player-links",
         "/player-links/{link_task_id}",
         "/tasks/{task_id}",
@@ -174,6 +175,7 @@ def test_app_factory_and_openapi_do_not_read_keys_or_open_io(monkeypatch) -> Non
         "/runs/{run_id}/evidence",
         "/runs/{run_id}/product-state",
         "/runs/{run_id}/report",
+        "/runs/{run_id}/recent-summary",
         "/health/live",
         "/health/ready",
     }

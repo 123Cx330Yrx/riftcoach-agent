@@ -30,6 +30,7 @@ ApiErrorCode: TypeAlias = Literal[
     "cleanup_pending",
     "task_not_found",
     "player_link_not_found",
+    "player_profile_not_found",
     "run_not_found",
     "run_not_ready",
     "run_not_available",
