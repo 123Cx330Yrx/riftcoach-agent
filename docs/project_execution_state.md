@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（RQ-094 已补回最终视觉三方向/组合、小复盘、OP.GG breadth 与完整真实融合 golden slice；RQ-095 当前只推进真实 API/SSE 接线设计门，产品实现、Auth/部署及其余五模块尚未进入）
+- 最后更新：2026-08-23（RQ-094 上下文纠偏与 RQ-095 live integration design 已由 `4057c93` / Actions `32639561338` exact-SHA 三 job 公共闭环；下一内部检查点仅为 implementation prepared/waiting authorization）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2286,3 +2286,18 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   外部 Riot/OP.GG/Provider/LLM 调用、Key 读取、8B holdout 或付费素材获取。整个 8E coverage 继续 `planned`。
 - 唯一下一动作是完成文档/治理/stale/diff 门，创建独立 design commit 并等待同 SHA 的 `pytest`、
   `postgres-migrations`、`packaging-smoke`；公共闭环前不进入 live integration implementation。
+
+## 2026-08-23：Live Integration design exact-SHA 公共闭环
+
+- design `4057c93f4ac1ac9ebd181528e559b084e3425e89` / Actions `32639561338` 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke` 三 job 均 completed/success。
+- 公共 pytest `1752 passed, 139 skipped, 1 warning, 127 subtests passed`；同 job 的 frontend unit
+  `35 passed`、Playwright `12 passed`、typecheck/build 全绿，bundle 保持 JS gzip `109.89 kB`、CSS gzip
+  `10.99 kB`。真实 PostgreSQL 为 `194 passed, 1 warning`，0011 migration 可逆且 metadata=head；Linux
+  package smoke 成功。
+- 该 SHA 只关闭 RQ-094 上下文持久化和 RQ-095 设计门，不实现 locator、Summary route、typed Evidence、
+  decoder/controller/EventSource 或 Markdown 消费；外部 Riot/OP.GG/Provider/LLM 调用和 Key 读取为 0。
+- 整个 `8e-productization` 与 coverage 继续 `in_progress/planned`。唯一下一内部检查点是按
+  `2026-08-23-8e-live-workbench-integration-implementation.md` 实施 live integration，当前
+  `prepared / waiting authorization`；授权前不写代码，不进入 Auth/部署、其余五模块、OP.GG breadth、
+  fusion golden slice 或 8F。

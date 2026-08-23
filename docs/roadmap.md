@@ -358,7 +358,8 @@ exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE�
   decoder、generation/abort、单 EventSource、restricted Markdown 与真实 Training 字段；不实现产品代码、
   Auth/部署、其余五模块或上述两个后续验收；
 - ADR-0062 与 live integration design/implementation plan 完成本地同步后，必须先经过独立 design SHA 的
-  三 job exact-SHA 公共门，才可把 implementation 交为 prepared。
+  三 job exact-SHA 公共门，才可把 implementation 交为 prepared。该门现已由
+  `4057c93/32639561338` 全绿关闭；implementation 当前 prepared/waiting authorization，尚未写代码。
 
 ### 原理
 

@@ -1979,3 +1979,11 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   的 baseline/current/target/trend/sample count。observed 不请求个人 Training。
 - 当前只完成设计与计划，不安装 npm、不写产品代码、不调用外部服务；设计 exact-SHA 公共门成功后才交接
   implementation prepared。
+
+## 2026-08-23：Live Integration design 公共关闭
+
+- design `4057c93f4ac1ac9ebd181528e559b084e3425e89` / Actions `32639561338` 的 exact-SHA
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；公共 pytest 1752、真实 PostgreSQL 194，
+  frontend unit 35/e2e 12/typecheck/build 与 Linux package smoke 同 SHA 成功。
+- 该公共证据接受 ADR-0062/design/implementation plan 与 RQ-094 治理同步，不表示 locator/API/frontend
+  已实现。live integration implementation 只交为 prepared/waiting authorization；8E coverage 继续 planned。

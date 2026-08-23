@@ -164,7 +164,8 @@ Web/Auth/HTTPS/备份与部署；`8F` 做最终 Eval 和作品集退出。DAG、
 - OP.GG breadth 不按工具数量扩张：champion analysis 与 lane matchup 是最低评估候选，synergies 由阵容
   消费者触发；每项继续经过 per-tool schema/provenance/cost/degrade gate；
 - 当前接线门只采用 owner-scoped latest locator + existing APIs，在客户端做 strict composition；拒绝大 BFF
-  聚合真源和 URL/localStorage-only 身份。实施前先完成 ADR/design/plan 与 exact-SHA public design closure。
+  聚合真源和 URL/localStorage-only 身份。ADR/design/plan 已由 `4057c93/32639561338` exact-SHA 三 job
+  公共关闭；implementation 当前只 prepared/waiting authorization。
 
 ## 7. 产品切片
 

@@ -3990,3 +3990,15 @@
   holdout；8E coverage 保持 `planned`。
 - `NEXT`：同步 roadmap/amendment/capability/learning 与 requirements/canonical，运行 governance/stale/diff，
   创建独立 design commit 并等待 exact-SHA 三 job；公共闭环后才交接 implementation prepared。
+
+### 2026-08-23：Live Integration design 公共闭环
+
+- `PUBLIC-CI`：design `4057c93f4ac1ac9ebd181528e559b084e3425e89` / Actions `32639561338` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `COUNTS`：公共 pytest `1752 passed, 139 skipped, 1 warning, 127 subtests passed`；frontend unit 35、
+  Playwright 12、typecheck/build 与 JS/CSS gzip `109.89/10.99 kB` 全绿；真实 PostgreSQL
+  `194 passed, 1 warning`，migration 可逆且 metadata=head；Linux package smoke 成功。
+- `CLOSED-DESIGN`：RQ-094 context reconciliation 与 RQ-095 design gate 正式关闭；该证据没有产品代码、
+  外部调用、Key、8B holdout 或付费资源。
+- `HANDOFF`：live integration implementation 只交为 prepared/waiting authorization；整个 8E coverage 仍
+  planned，Auth/部署、入口/Timeline/完整 Training、OP.GG breadth 与 fusion golden slice 仍未进入。

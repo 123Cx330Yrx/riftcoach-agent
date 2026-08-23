@@ -807,9 +807,15 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 - [completed-local-design] RQ-095、ADR-0062、live integration design/implementation plan 采用薄
   latest-review locator + 现有 API 客户端组合，补 Recent Summary/typed Evidence，并冻结 exact decoders、
   generation/abort、单 EventSource、restricted Markdown、真实 Training 与分层验证；
-- [in-progress-design-gate] 当前只完成设计与治理持久化；下一动作是治理/stale/diff 检查、独立 design
-  commit/push 与 exact-SHA 三 job。公共闭环前不进入产品代码实现；
-- [boundary] Batch D 不接真实 API/SSE/Auth，不实现完整 Timeline/历史列表、HTTPS、backup、deployment
+- [completed-local-design-gates] 设计与治理持久化、governance/stale/diff、独立 design commit/push 均已完成；
+  该历史步骤在 public exact-SHA 成功前没有进入产品代码实现；
+- [completed-public-design] design `4057c93f4ac1ac9ebd181528e559b084e3425e89` / Actions
+  `32639561338` 的三个 job 全绿；公共 pytest 1752、真库 194、frontend unit 35/e2e 12/typecheck/build 与
+  Linux package smoke 均在 exact SHA 通过；
+- [handoff] live integration implementation 当前只 `prepared / waiting authorization`。整个 8E/coverage 继续
+  in_progress/planned；授权前不写 locator/API/frontend 代码，也不进入 Auth/部署、其余五模块、breadth/
+  golden-slice 或 8F；
+- [boundary] Batch D 与 RQ-095 design 均不接真实 API/SSE/Auth，不实现完整 Timeline/历史列表、HTTPS、backup、deployment
   或公网发布；MotionSites/React Bits/Aceternity 等只按裁决作 reference，不复制受限源组件；
 - [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout；Windows symlink 单项 skip 由 exact-SHA Linux pytest 独立补证。
 

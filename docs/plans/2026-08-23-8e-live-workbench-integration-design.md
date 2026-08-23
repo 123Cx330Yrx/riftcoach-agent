@@ -316,3 +316,10 @@ Riot 玩家比赛 + Data Dragon 静态定义 + Riot 官方 patch/update
 
 每个 checkpoint 关闭时提供一次短复盘：做了什么、为什么、数据流、证据、限制、下一步；连续完成多个
 checkpoint 时再给批次总复盘。聊天复盘不替代八维持久证据，八维材料也不替代实时进度感。
+
+## 14. 设计门公共证据
+
+design `4057c93f4ac1ac9ebd181528e559b084e3425e89` / Actions `32639561338` 的 exact-SHA
+`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿。公共 pytest 1752、真实 PostgreSQL 194，
+frontend unit 35/Playwright 12/typecheck/build 与 Linux package smoke 同 SHA 通过。该证据只关闭设计门；
+本设计中的 backend/frontend implementation 仍未开始。

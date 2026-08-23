@@ -2859,3 +2859,12 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   SSE parser/动画栈，亦不因接线门提前进入 WebGL、Auth、部署、完整 Timeline/Training 或外部调用。
 - `STATUS`：整个 8E/coverage 继续 `in_progress/planned`。当前只待设计文档/治理本地门、独立 design SHA 与
   exact-SHA 三 job；公共成功前 implementation 未获授权。
+
+## 2026-08-23：Live Integration design exact-SHA closure
+
+- `PUBLIC-CI`：`4057c93f4ac1ac9ebd181528e559b084e3425e89` / Actions `32639561338` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 全绿；pytest 1752、PostgreSQL 194、frontend
+  unit 35/e2e 12/typecheck/build 与 Linux package 同 SHA 通过。
+- `CLOSED`：RQ-095 设计门正式关闭；未写产品代码、未调用外部服务、未进入 Auth/部署/五模块其余页面。
+- `HANDOFF`：live integration implementation 仅 prepared/waiting authorization；整个 8E/coverage 继续
+  in_progress/planned，RQ-094 breadth/golden-slice 仍是后续待办而非本批完成项。
