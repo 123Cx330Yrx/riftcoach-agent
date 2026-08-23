@@ -1909,3 +1909,16 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   8E、正式前端、Auth/RSO、HTTPS、backup/restore、生产长连接容量或部署已完成。
 - 下一内部批固定为 Batch D 静态/fixture-backed 前端设计门，当前 prepared/waiting authorization；
   先做信息架构、状态矩阵、可访问性与外部视觉资源采用审计，授权前不创建 React 代码。
+
+## 2026-08-23：ADR-0061 采用 Rift Command Center 与两层多来源视觉门
+
+- RQ-091 已授权 Batch D，并要求 MotionSites 只作候选池；素材/Prompt 站、组件/动效库、成熟产品、
+  游戏数据界面与 Riot/LoL 官方视觉语言必须进入同一 rubric，最终自主重构。
+- RQ-092 明确采用约束不是过度简约的理由。许可、状态真实性、键盘/reduced-motion、移动降级与性能
+  是硬门；所有过门候选继续按视觉完成度、时尚感、品牌记忆点与 LoL 语义择优。
+- 三案比较采用近期复盘工作台优先的 `Rift Command Center`；电影感入口保留为后续高影响叙事，完整
+  Timeline 因当前缺少公开 DTO 而 deferred。
+- 首批采用 React/Vite/TypeScript、vanilla CSS tokens、Motion、Radix Dialog 与本地 OFL 字体。React Bits、
+  Aceternity、MotionSites、Riot UI 和游戏数据产品只作机制/信息架构参考；不复制受限源码或品牌美术。
+- Batch D 只实现安全 fixture screen 与桌面/移动/键盘/reduced-motion 证据；真实 API/SSE/Auth、HTTPS、
+  备份、部署、公网发布和完整 Timeline/历史列表不在本批。

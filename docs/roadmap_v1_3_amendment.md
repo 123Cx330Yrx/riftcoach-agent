@@ -150,8 +150,9 @@ Web/Auth/HTTPS/备份与部署；`8F` 做最终 Eval 和作品集退出。DAG、
 - 实现中额外修复浅拷贝 tamper 假阳性、retry timestamp 误冲突和 import-order circular dependency；
 - implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07` / Actions `32629160732`
   已完成公共 pytest 1750、真实 PostgreSQL 194 与 Linux package 三 job；Batch C 正式关闭；
-- 八维材料已登记，整个 8E coverage 继续 `planned`。Batch D 静态/fixture-backed 前端设计门当前仅
-  prepared/waiting authorization。
+- 八维材料已登记，整个 8E coverage 继续 `planned`。RQ-091/RQ-092 已授权 Batch D；ADR-0061 与专用
+  design/implementation plan 已冻结多来源采用门、`Rift Command Center`、状态和 a11y 合同，当前只
+  实现静态/fixture-backed screen，不接 Auth/API/部署。
 
 ## 7. 产品切片
 

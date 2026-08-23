@@ -339,8 +339,9 @@ exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE�
 - implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07` / Actions `32629160732`
   的公共 pytest `1750 passed, 139 skipped, 1 warning, 127 subtests passed`、真实 PostgreSQL
   `194 passed, 1 warning` 与 Linux package schema 1.6 三 job 全绿；
-- 八维 walkthrough 路径已建立但整个 8E coverage 仍 `planned`。唯一下一内部批为 Batch D
-  静态/fixture-backed 前端设计门，当前 prepared/waiting authorization。
+- 八维 walkthrough 路径已建立但整个 8E coverage 仍 `planned`。RQ-091/RQ-092 已授权 Batch D；
+  ADR-0061 已冻结多来源两层视觉采用门、`Rift Command Center` 信息架构、design tokens、客户端/产品
+  状态和 a11y 合同，当前按 TDD 实现静态/fixture-backed screen，不提前接 Auth/API/部署。
 
 ### 原理
 

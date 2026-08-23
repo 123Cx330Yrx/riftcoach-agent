@@ -3924,3 +3924,16 @@
   Memory Context 3 records、terminal assistant 0、外部调用 0、非 root/image boundary 全绿。
 - `CLOSED/HANDOFF`：Batch C 正式关闭，整个 8E/coverage 继续 in_progress/planned。唯一下一内部批为
   Batch D 静态/fixture-backed 前端设计门，当前 prepared/waiting authorization；本状态批不创建 React。
+
+### 2026-08-23：RQ-091/RQ-092 授权并冻结 8E Batch D 设计
+
+- `AUTHORIZED`：用户明确开始/继续 Batch D；视觉研究必须广撒网、统一横评、精挑选和自主重构，
+  MotionSites 不得成为主要或单一来源。
+- `CALIBRATED`：采用硬门不能成为过度简约的借口；过门候选继续以视觉完成度、fashion/cool、品牌
+  记忆点与 LoL 语义择优，允许为少量高价值效果承担可验证复杂度。
+- `AUDIT`：API/fixture 审计确认首批应做近期复盘工作台；安全 Summary 尚无 HTTP endpoint，Evidence
+  projection 仍需未来 runtime decoder，运行历史与完整 Timeline DTO 尚不存在，静态 UI 不得伪造。
+- `DESIGN`：ADR-0061 与专用 design/implementation plan 采用 `Rift Command Center`、React/Vite/
+  TypeScript + vanilla CSS tokens、Motion、Radix Dialog、本地 OFL 字体；其余组件/动效库只作机制参考。
+- `BOUNDARY/NEXT`：整个 8E coverage 保持 planned；当前进入 fixture contracts 与 web shell 的 red→green
+  TDD，不接真实 API/SSE/Auth，不实现 HTTPS、backup、deployment 或公网发布。

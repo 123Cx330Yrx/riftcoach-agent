@@ -777,8 +777,13 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
   `32629160732` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 全绿；公共 pytest
   `1750 passed, 139 skipped, 1 warning, 127 subtests passed`，真库 `194 passed, 1 warning`，Linux package
   schema 1.6/外部调用 0/image boundary 全绿；Batch C 正式关闭；
-- [prepared] 唯一下一内部批为 Batch D 静态/fixture-backed 前端设计门，等待授权；整个 8E coverage
-  继续 `planned`，不提前接 Auth/backup/deployment；
+- [completed-design] RQ-091/RQ-092 已授权并校准 Batch D；ADR-0061 与专用 design/implementation plan
+  采用 fixture-backed `Rift Command Center`，冻结多来源两层采用门、信息架构、design tokens、客户端/
+  产品状态矩阵、fixture 安全字段与键盘/reduced-motion 合同；
+- [in-progress] 按 red→green TDD 建立独立 `web/` React/Vite/TypeScript 包、静态近期复盘工作台、Evidence
+  Drawer、Training 摘要和桌面/移动/键盘/reduced-motion/视觉证据；整个 8E coverage 继续 `planned`；
+- [boundary] Batch D 不接真实 API/SSE/Auth，不实现完整 Timeline/历史列表、HTTPS、backup、deployment
+  或公网发布；MotionSites/React Bits/Aceternity 等只按裁决作 reference，不复制受限源组件；
 - [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout；Windows symlink 单项 skip 由 exact-SHA Linux pytest 独立补证。
 
 ## 6A Entry Design Checklist

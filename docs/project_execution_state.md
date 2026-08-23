@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization"
 status: in_progress
-pause_reason: "8E Batch C is publicly closed; waiting authorization for Batch D static frontend"
+pause_reason: ""
 ---
 
 # RiftCoach 当前执行状态
@@ -16,7 +16,7 @@ pause_reason: "8E Batch C is publicly closed; waiting authorization for Batch D 
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（8E Batch C implementation/evidence `7975dc3` / Actions `32629160732` exact-SHA 三 job 已公共闭环；当前只准备 Batch D 静态/fixture-backed 前端设计门）
+- 最后更新：2026-08-23（RQ-091/RQ-092 已授权并校准 8E Batch D；当前冻结多来源视觉采用门、信息架构、状态与可访问性合同，再实施静态/fixture-backed Rift Command Center）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -250,14 +250,15 @@ pause_reason: "8E Batch C is publicly closed; waiting authorization for Batch D 
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8e-productization` Batch D 静态/fixture-backed 前端设计门，当前为
-  prepared/waiting authorization。8D implementation/evidence
+- 唯一下一步：`8e-productization` Batch D 静态/fixture-backed 前端，当前为
+  authorized/in progress。8D implementation/evidence
   `a274b7f8900d61cb7edb7d09e2f5c87f8b0b2e48` / Actions `32598480400` 的 `pytest`、
   `postgres-migrations`、`packaging-smoke` 三 job 全绿，八维 coverage 已 complete。8E 先完成
   有界真实 Riot/OP.GG 验证、脱敏 EvidenceBundle replay、owner-scoped 玩家档案选择、legacy 地区显式化
   与四地区 Worker 路由均已闭环。Batch C 又由 implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07`
   / Actions `32629160732` 完成 EvidenceBundle 安全持久化、refresh/expiry、8C event replay→SSE 安全 DTO、
-  四态产品状态与 exact-SHA 三 job；Batch D 获授权前不创建 React，8B holdout 不得再次执行。
+  四态产品状态与 exact-SHA 三 job；Batch D 先完成多来源采用审计、信息架构、design tokens、状态/a11y
+  合同，再实现 fixture-backed screen；8B holdout 不得再次执行。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -2206,3 +2207,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - Batch C 正式关闭；整个 8E 与 coverage 仍 `in_progress/planned`。唯一下一内部批为 Batch D
   静态/fixture-backed 前端设计门，当前 prepared/waiting authorization；本状态收尾不创建 React，
   Auth/RSO、HTTPS、备份、部署和生产 SSE 容量仍未实现。
+
+## 2026-08-23：RQ-091/RQ-092 授权并校准 8E Batch D
+
+- 用户明确开始/继续 Batch D，并要求视觉研究坚持“广撒网、统一横评、精挑选、自主重构”；MotionSites
+  只是素材/Prompt 候选池之一，不能成为主要来源。研究同时覆盖组件/动效库、真实成熟产品、游戏数据
+  界面以及 Riot/LoL 官方视觉语言。
+- 用户进一步校准：许可、状态真实性、键盘/reduced-motion、移动降级和性能是采用硬门，不是做成普通
+  极简后台的理由；过门候选必须继续以视觉完成度、当代感、品牌记忆点和 LoL 语义择优。
+- API/fixture 审计裁决首批采用“Rift Command Center / 近期复盘工作台”静态纵切。客户端
+  `loading/empty/ready/error` 与产品 `published/degraded/rejected/not_ready` 分层；fixture 只按安全 DTO
+  塑形，不带 owner、PUUID、Prompt/Context、原始 MCP/Provider body 或内部运行身份。
+- 当前仍不接真实 API/SSE/Auth，不实现完整 Timeline/历史列表、HTTPS、备份、部署或公网发布。整个 8E
+  coverage 保持 `planned`；下一动作是冻结 ADR/设计/实施计划并按 TDD 建立 React fixture screen、桌面/
+  移动、键盘和 reduced-motion 证据。

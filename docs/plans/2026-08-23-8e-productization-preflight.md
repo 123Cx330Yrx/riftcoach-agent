@@ -124,7 +124,8 @@ RQ-088 生效后已执行一次修复后 replay：strict adapter 成功解析 10
 
 ### Batch D：前端第一小批
 
-- [ ] 先做信息架构、设计 token、真实状态矩阵和可访问性合同。
+- [x] ADR-0061 与专用 design/implementation plan 已冻结信息架构、两层多来源采用门、设计 token、
+  客户端/产品状态矩阵和可访问性合同；RQ-092 明确硬门之后仍主动追求视觉完成度与时尚感。
 - [ ] 先做静态/fixture-backed screen，确认桌面/移动/键盘/reduced-motion。
 - [ ] 再接 API、SSE、Auth；最后才加入入口叙事、视差和粒子动效。
 
@@ -145,8 +146,9 @@ RQ-088 生效后已执行一次修复后 replay：strict adapter 成功解析 10
 ## 6. 下一动作
 
 1. Batch C 已由 `7975dc3` / Actions `32629160732` 完成独立教学、TDD、持久证据和 exact-SHA 公共门；
-2. 唯一下一内部批为 Batch D 的首个静态/fixture-backed 前端设计门，当前 prepared/waiting authorization；
-   获授权后仍先做信息架构、状态矩阵与视觉资源采用审计，不直接堆叠动效或接 Auth。
+2. RQ-091/RQ-092 已授权 Batch D；多来源视觉采用审计、信息架构、状态矩阵与 a11y 合同已冻结。当前
+   唯一下一动作是按 TDD 实现静态/fixture-backed Rift Command Center，并确认桌面/移动/键盘/
+   reduced-motion；不直接接 Auth、API 或重型入口动效。
 
 ADR-0058 最小修复已由 `83fde7d014aae8fdccf2ebd91929967868101075` / Actions
 `32615340228` 完成 exact-SHA 三 job 公共闭环；RQ-088 的后续 live 复验现已独立通过。

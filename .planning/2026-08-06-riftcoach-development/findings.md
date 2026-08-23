@@ -3767,3 +3767,20 @@
   不把 Windows 本机结果改写为成功。
 - Batch C 正式关闭，但整个 8E coverage 保持 `planned`。唯一 handoff 是 Batch D 静态/fixture-backed
   前端设计门 prepared/waiting authorization；Auth/RSO、HTTPS、备份、部署和生产 SSE 容量仍未实现。
+
+## 2026-08-23：8E Batch D 合同与跨来源视觉审计发现
+
+- 首批静态 screen 最适合 `Rift Command Center / 近期复盘工作台`：它能同时验证 profile、task/product
+  四态、安全 Summary、Evidence 和 Training；电影感入口保留为后续高影响叙事，完整 Timeline 因缺 DTO
+  不能提前伪造。
+- 客户端资源状态必须是 `loading/empty/ready/error`，与产品
+  `published/degraded/rejected/not_ready` 分开。`runtime completed` 不等于 `published`；Evidence rejected
+  可能只让产品 degraded；observed 玩家不能展示“我的训练完成度”。
+- `RecentSummaryView` 是 PUUID-free 安全投影但尚无 FastAPI endpoint；原始
+  `examples/fixtures/player_summary_demo.json` 含不适合浏览器的字段，不能直接导入。Evidence public
+  projection 的 OpenAPI 仍是自由 object，未来 API 接线前要加 runtime decoder 或收紧 DTO。
+- 多来源两层采用门：许可/状态真实性/键盘/reduced-motion/移动降级/性能先作硬门；过门后视觉完成度、
+  时尚感和记忆点占显著权重，不能把“最简单”自动判为最好。
+- Motion 可直接采用；Radix 只承担 Dialog 语义。React Bits 当前 MIT + Commons Clause、Aceternity
+  自定义 end-product license，均只学习机制不复制源码；Uiverse 逐项审查；Anime.js、GSAP、OGL/Three、
+  ECharts 本批无真实需要而 deferred。MotionSites Excel 只作 metadata 索引且明显偏 Hero，不得决定工作台。
