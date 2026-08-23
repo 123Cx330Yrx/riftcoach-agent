@@ -2112,4 +2112,6 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   `authentication_required` 保持 body-free 且可审计。
 - fixture/awakening preview 是明确的本地预览边界，不是 production auth；CSRF token 仅内存保留以供后续
   mutation seam，OIDC/RSO、真实 session repository、HTTPS edge 仍须独立 adoption gate。
-- 下一项保持 `Timeline DTO/UI`，但必须先取得本批独立提交与 exact-SHA 公共 CI；8E coverage 仍 planned。
+- production shell/Auth gate 已由 `15a3a9e` / Actions `32663345737` 完成 exact-SHA 公共闭环；下一项保持
+  `Timeline DTO/UI`。时间线必须有真实 DTO/fixture boundary、缺失/部分语义和 source posture，不能用视觉
+  series 冒充数据；8E coverage 仍 planned。

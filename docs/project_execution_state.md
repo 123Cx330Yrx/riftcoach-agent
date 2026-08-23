@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-24（视觉 Task 3 polish 与 production shell/Auth gate 已完成本地实现；E5 `ca6da44` / Actions `32661425379` 已完成 exact-SHA 三 job 公共闭环）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / remaining-product-modules`，Batch E E1–E5 已公共关闭，下一原子项为 production shell/Auth gate；完整 8E/8F 尚未完成。
+- 最后更新：2026-08-24（视觉 Task 3 polish 与 production shell/Auth gate 已由 `15a3a9e` / Actions `32663345737` 完成 exact-SHA 公共闭环；E5 `ca6da44` / Actions `32661425379` 已完成 exact-SHA 三 job 公共闭环）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / remaining-product-modules`，Batch E E1–E5 与 production shell/Auth gate 已公共关闭，下一原子项为 Timeline DTO/UI；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -2477,3 +2477,14 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - `NEXT`：运行比例 Python/RAG/Harness/Alembic/package/Compose/governance 门，创建独立 implementation/
   evidence commit 并等待 exact-SHA 公共 CI；公共闭环后交接 `Timeline DTO/UI`，不提前进入 OP.GG golden
   slice 或 8F。
+
+## 2026-08-24：RQ-100 production shell/Auth gate exact-SHA 公共闭环，交接 Timeline
+
+- implementation/evidence `15a3a9eea5a1e84f1b1ef604ea42a3008f956cb2` / Actions `32663345737` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success；frontend auth gate、
+  visual polish、Python regression、真实 PostgreSQL service 与 Linux package boundary 均取得公共证据。
+- 本批正式关闭 production shell/Auth gate；仍不声称 OIDC/RSO、真实 provider callback、PostgreSQL session
+  repository、HTTPS edge 或 8E 完成。8E coverage 保持 `planned`。
+- 唯一下一检查点更新为 `remaining-product-modules / timeline-dto-ui`：先冻结真实/缺失/部分 timeline
+  DTO 与 fixture/live decoder 合同，再做 TDD、视觉与 a11y/performance 门；Evidence/Trace、Training、OP.GG
+  useful-breadth/golden slice 和 8F 不提前进入。

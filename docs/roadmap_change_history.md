@@ -2979,3 +2979,11 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   和 session expired/revoked/required 各自投影为安全 UI 状态；fixture/preview 不伪装生产登录。
 - 本地 frontend unit/e2e/typecheck/build 全绿，下一步是独立提交与 exact-SHA 公共 CI；CI 通过后交接
   `Timeline DTO/UI`，不提前进入 OP.GG golden slice 或 8F。
+
+## 2026-08-24：RQ-100 production shell/Auth gate 公共闭环，交接 Timeline DTO/UI
+
+- `15a3a9e` / Actions `32663345737` 的三 job 全绿，production shell/Auth gate 正式关闭；本地缺少真库的
+  skip 由公共 PostgreSQL service 补齐，Linux package/no-I/O smoke 也取得证据。
+- 下一检查点是 Timeline DTO/UI：优先冻结 match/timeline identity、available/partial/missing、source
+  freshness 和 owner/observed relationship 语义，再实现 typed decoder 和视觉呈现；不提前做 Evidence 深化、
+  Training full page、OP.GG golden slice 或 8F。

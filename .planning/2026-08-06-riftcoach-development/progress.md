@@ -4155,3 +4155,13 @@
 - `NEXT`：创建独立 implementation/evidence commit，运行 Python 完整回归、RAG/Harness、Alembic、
   governance、package/Compose smoke，并等待 exact-SHA 公共 CI；公共闭环后按顺序进入 Timeline DTO/UI，
   不把 OIDC/RSO 或真实 auth provider 宣称为已采用。
+
+### 2026-08-24：RQ-100 production shell/Auth gate exact-SHA 公共闭环，进入 Timeline DTO/UI
+
+- `15a3a9eea5a1e84f1b1ef604ea42a3008f956cb2` / Actions `32663345737` 的 `pytest`、`postgres-migrations`、
+  `packaging-smoke` 三 job 全绿；公共 pytest 包含 frontend unit/e2e/build、Python 回归、RAG/Harness、
+  governance；真库和 Linux package smoke 也通过。
+- production shell/Auth gate 正式关闭：live controller 只有在 typed same-origin session 成功后才启动，
+  auth unavailable/expired/revoked/required 各有安全状态；视觉 Task 3 polish 与资产可移除边界保持。
+- `NEXT`：进入 `remaining-product-modules / Timeline DTO/UI`，先做设计和红灯合同，禁止从 fixture 生成
+  假时间序列；必须绑定 `run_id/task_id`、timeline availability、partial/degraded 和 source posture。

@@ -1473,6 +1473,8 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   `32660145945` 完成 exact-SHA 三 job 公共闭环。
 - [completed-public] E5 packaging/observability：body-free metrics projection、bounded latency snapshot 与
   event counters 已由 `ca6da44` / Actions `32661425379` 完成 exact-SHA 三 job 公共闭环。
-- [in_progress] Remaining product modules / production shell + Auth gate：已完成本地设计/TDD 与浏览器状态门；
-  `AuthGate` 先建立 same-origin opaque session，再启动 live controller；auth_unavailable/session-expired
-  fail closed；真实 OIDC/RSO provider 仍保持独立 adoption gate，等待独立提交与 exact-SHA 公共 CI。
+- [completed-public] Remaining product modules / production shell + Auth gate：`AuthGate` 先建立 same-origin
+  opaque session，再启动 live controller；auth_unavailable/session-expired fail closed；由
+  `15a3a9e` / Actions `32663345737` 完成 exact-SHA 三 job 公共闭环。
+- [in_progress] Remaining product modules / Timeline DTO/UI：先冻结真实/缺失/部分时间线合同；Evidence/Trace、
+  Training full page、OP.GG useful-breadth/golden slice 和 OIDC/RSO adoption 继续保持独立顺序。
