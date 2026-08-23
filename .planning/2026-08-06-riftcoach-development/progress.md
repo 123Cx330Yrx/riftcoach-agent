@@ -3798,3 +3798,19 @@
 - `FUSION-REAL`：使用 Riot body-free result 调用一次真实 OP.GG `mid` lane-meta 并进入纯 `fuse_evidence()` 前的 adapter；远端内容触发 `opgg_meta_result_invalid`，未创建 bundle，raw body 未保存。
 - `BOUNDARY`：该失败归类为真实上游内容/schema 与严格 allowlist 的差异，不修改 8D parser，不把 Riot/OP.GG 分别通过冒充两源融合通过。
 - `NEXT`：安全诊断真实 mid schema drift，补 body-free regression case，再决定扩大 allowlist 或保留 degraded/unavailable；之后才冻结 player profile selection DTO 和前端小批。
+
+### 2026-08-23：RQ-087 live diagnostic 与 JSON-null 最小修复
+
+- `AUTHORIZED-IO`：复用既有 Riot body-free result，真实 OP.GG `mid` replay 恰好 1 次；Riot/LLM/Key calls
+  均为 0，raw MCP body 未保存。结果文件为
+  `data/evaluation/results/riot_opgg_fusion_validation_2026-08-23-v2.json`。
+- `LIVE-DIAGNOSTIC`：失败位置为 `Mid.rank_prev_patch` / field 7 / AST `Name`；live length/digest 与受控 fixture
+  不同，证明它是新的外部观察而不是 fixture 复读。
+- `TDD`：新增 nullable JSON-null 正例先以 `1 failed, 13 passed` 红灯；ADR-0058 的最小实现后 OP.GG/fusion
+  聚焦 `16 passed`、MCP/Evidence 相邻 `60 passed`。`null` 只允许在 field 6/7；`NULL`、`missing`、非 nullable
+  字段和可执行 AST 继续拒绝。
+- `BOUNDARY`：本授权 call 已用完；完整本地/公共门正在进行。新的明确授权前不执行修复后 live replay，
+  因而不把离线修复称为真实两源 bundle 已通过。
+- `LOCAL-GATES`：完整 pytest `1699 passed, 134 skipped, 1 warning, 127 subtests passed`；development/holdout
+  RAG 满阈值，Harness `published`/0 revisions，compileall、pip、governance、SDK/Secret/tracked-data、JSON 与
+  diff 门全绿。本机 skip 不冒充真实 PostgreSQL/Linux；下一动作是独立 implementation/evidence 提交与三 job。

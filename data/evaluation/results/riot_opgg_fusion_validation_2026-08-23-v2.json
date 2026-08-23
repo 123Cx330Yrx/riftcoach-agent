@@ -1,0 +1,41 @@
+{
+  "body_free": true,
+  "external_io": {
+    "key_reads": 0,
+    "llm_provider_calls": 0,
+    "opgg_tools_call_calls": 1,
+    "riot_calls": 0
+  },
+  "limitations": [
+    "real_opgg_result_rejected_by_strict_adapter",
+    "no_bundle_created",
+    "raw_response_not_persisted"
+  ],
+  "observed_at": "2026-08-23T03:15:20.273053+00:00",
+  "opgg": {
+    "endpoint": "https://mcp-api.op.gg/mcp",
+    "error_code": "opgg_meta_result_invalid",
+    "position": "mid",
+    "requested_top_n": 10,
+    "schema_diagnostic": {
+      "field_index": 7,
+      "field_name": "rank_prev_patch",
+      "observed_node_type": "Name",
+      "position": "mid",
+      "row_name": "Mid",
+      "stage": "row_field",
+      "text_digest": "76b1f9446be266cfe1dc67a5948cd702cff3791e50b2a101954bc0f5dd790820",
+      "text_length": 2421
+    },
+    "selected_tool": "lol_list_lane_meta_champions"
+  },
+  "relationship_role": "observed",
+  "result": "failed",
+  "riot": {
+    "result_file_digest": "3f17d10387b09d2668301ecc0ba1d6227ee0c65594421b3c3a6b8a7930f5abb1",
+    "riot_calls_in_fusion_run": 0,
+    "routing_region": "asia",
+    "source_digest": "02420165132ddf64f3b291597ade1fab956b0c028b5e2acd7a33ee1c09d314c9"
+  },
+  "schema_version": "1.0"
+}

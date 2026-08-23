@@ -2749,3 +2749,14 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - `ADR-0057` 采用字段级 body-free 结构诊断；受控 fixture 只验证 fail-closed 诊断合同，不能冒充 live schema。
 - 真实 `mid` 结果仍只保留 `opgg_meta_result_invalid` 与 stack-level `row_field` 事实；没有新的外部授权不重跑服务、不扩大 parser。
 - 前端、player profile selection 与 legacy 地区修正继续排在 live drift 裁决之后。
+
+### 2026-08-23：RQ-087 live diagnostic 与 ADR-0058 JSON-null 裁决
+
+- `AUTHORIZED`：用户明确新授权“把问题修复好”；本窗口复用既有 body-free Riot result，只执行一次
+  OP.GG `mid` tools/call，Riot/LLM/Key calls 为 0，raw response 不持久化。
+- `LIVE-EVIDENCE`：`riot_opgg_fusion_validation_2026-08-23-v2.json` 将失败定位到
+  `Mid.rank_prev_patch` / field 7 / AST `Name`；live length/digest 与受控 fixture 不同。
+- `DECISION`：ADR-0058 只在 `rank_prev`/`rank_prev_patch` 接纳精确小写 JSON `null` 并投影为 `None`；
+  其他 Name、字段、大小写和表达式继续 fail closed，不改变 partial provenance/freshness/patch 边界。
+- `TDD`：nullable 正例先红；实现后 OP.GG/fusion 16 项、相邻 MCP/Evidence 60 项通过。完整本地和 exact-SHA
+  公共门待执行；该授权 call 已用完，修复后最终 live replay 仍需新的明确授权。

@@ -169,6 +169,18 @@ def _constant(node: ast.AST) -> object:
     return value
 
 
+def _row_field_constant(node: ast.AST, *, field_index: int) -> object:
+    """Parse one row field while admitting only JSON null in nullable slots."""
+
+    if (
+        field_index in {6, 7}
+        and isinstance(node, ast.Name)
+        and node.id == "null"
+    ):
+        return None
+    return _constant(node)
+
+
 def _integer(value: object, *, nullable: bool = False) -> int | None:
     if value is None and nullable:
         return None
@@ -267,7 +279,9 @@ def _parse_lane_meta_text(
         values: list[object] = []
         for field_index, argument in enumerate(row.args):
             try:
-                values.append(_constant(argument))
+                values.append(
+                    _row_field_constant(argument, field_index=field_index)
+                )
             except OPGGMetaError:
                 raise OPGGMetaError(
                     "opgg_meta_result_invalid",

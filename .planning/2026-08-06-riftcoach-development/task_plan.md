@@ -38,7 +38,9 @@ public closure. RQ-084 authorized Phase 36 -
 `32598480400`. Phase 37 - `8e-productization` is the current governance pointer.
 RQ-086 authorizes a slow, preflight-first start: one bounded real Riot + OP.GG
 validation, player-profile selection/region audit, then small frontend batches;
-full productization remains unimplemented.
+full productization remains unimplemented. RQ-087 authorized one new body-free
+OP.GG `mid` diagnostic replay; it identified nullable `rank_prev_patch` JSON-null
+drift, and ADR-0058's narrow parser fix is now under local/public verification.
 
 ## Phases
 
@@ -751,8 +753,12 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 - [completed] `DK ShowMaker#KR1 / asia / observed` 的 Account/Match body-free gate：3 次 Riot calls、1 局详情通过；
 - [completed-with-boundary] 用脱敏 Riot typed output 尝试真实 `mid` OP.GG EvidenceBundle replay；上游结果被严格 adapter 以 `opgg_meta_result_invalid` 拒绝；
 - [completed-local-with-boundary] adapter 增加 body-free schema-drift diagnostic（stage/字段索引/AST 节点类型/长度/digest），并以受控 `null` 形状 fixture 固化 fail-closed 回归；
-- [ ] 在再次获得明确外部调用授权后，用一次真实 mid replay 产生字段级 diagnostic；当前真实证据仍只有 `opgg_meta_result_invalid` 与 stack-level row-field 失败，不把受控 fixture 冒充 live schema；
+- [completed-live-with-boundary] RQ-087 授权的一次真实 mid replay 已产生字段级 body-free diagnostic：`Mid.rank_prev_patch` / field 7 / AST `Name`；live length/digest 与受控 fixture 不同，未保存 raw body；
+- [completed-local] ADR-0058 只在 `rank_prev`/`rank_prev_patch` 两个 nullable 字段接受精确小写 JSON `null`；正例及非 nullable/未知 Name/大小写负例已完成 red→green TDD；
 - [completed] `c5cbc94` / Actions `32613573022` exact-SHA 三 job 全绿；公共 pytest、真实 PostgreSQL 与 Linux package 均通过，外部调用仍为 0；
+- [completed-local] 完整 pytest `1699 passed, 134 skipped, 1 warning, 127 subtests passed`；两套 RAG、Harness dry-run、compileall、pip、治理、SDK/Secret/tracked-data 与 diff 门全绿；
+- [ ] 独立提交/推送当前 implementation/evidence 并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；离线绿灯不冒充修复后 live replay 已通过；
+- [ ] 若获新的明确授权，执行一次修复后最终 mid replay；成功才可记录真实两源 EvidenceBundle，失败则按新诊断继续 degraded；
 - [ ] 冻结 owner-scoped player profile list/selection DTO，修正 legacy `/reviews/recent` 地区隐式来源；
 - [ ] 前端从静态/fixture-backed 合同小批开始，再接 API/SSE/Auth，最后才加入口动效；
 - [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout。

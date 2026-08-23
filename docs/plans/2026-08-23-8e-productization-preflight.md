@@ -66,6 +66,18 @@ Key 读取次数记录为 1，但 Key 值、PUUID、Match ID 和原始 response 
 allowlisted grammar。当前选择保留 fail-closed 行为，先拿到受控 schema-drift 诊断和回归
 样例，再决定是否扩大字段合同；不能用放宽解析器的方式追绿。
 
+### 2.4 RQ-087 字段级 live 诊断与窄兼容裁决
+
+新的明确授权窗口复用既有 Riot body-free projection，并执行一次 OP.GG `mid` replay。
+结果仍被拒绝，但 ADR-0057 的诊断把失败收敛到 `Mid.rank_prev_patch`、field index 7、
+AST `Name`；live response 的长度和摘要与受控 fixture 不同。脱敏结果见
+[riot_opgg_fusion_validation_2026-08-23-v2.json](../../data/evaluation/results/riot_opgg_fusion_validation_2026-08-23-v2.json)。
+
+ADR-0058 采用最小兼容：只在 `rank_prev` 和 `rank_prev_patch` 两个 nullable integer
+字段接受精确小写 JSON `null`，立即归一化为 `None`。其他字段上的 `null`、`NULL`、
+未知 `Name`、调用或表达式继续 fail closed。该窗口唯一 tools/call 已用于诊断，因此
+离线修复和公共 no-I/O CI 不能冒充“修复后 live replay 已通过”。
+
 ## 3. 已发现的身份/地区缺口
 
 - `POST /player-links` 已支持用户提交 Riot ID、routing region 和 `self|observed`。
@@ -84,7 +96,9 @@ allowlisted grammar。当前选择保留 fail-closed 行为，先拿到受控 sc
 - [x] 用脱敏 Riot typed output 尝试一次真实 `mid` OP.GG EvidenceBundle replay/fusion；失败被安全归类为 `opgg_meta_result_invalid`。
 - [x] 将真实失败分类和 limitations 写入 body-free 结果，不修改 8D 规则。
 - [x] 增加受控 schema-drift diagnostic 合同与不含原始 body 的回归 fixture；诊断只记录阶段、allowlisted 字段位置、AST 节点类型、长度和摘要。
-- [ ] 在新的明确外部授权窗口内重跑一次真实 mid replay，取得字段级 live diagnostic；在此之前只承认 stack-level `row_field` 失败，不把受控 fixture 当成真实 schema 结论。
+- [x] 在新的明确外部授权窗口内重跑一次真实 mid replay，取得字段级 live diagnostic；结果定位到 `Mid.rank_prev_patch` / field 7 / AST `Name`，且 live digest/length 与 fixture 不同。
+- [x] 依据 ADR-0058 用 red→green TDD 只接纳两个 nullable rank-history 字段上的精确小写 JSON `null`；其余 Name/字段/表达式继续拒绝。
+- [ ] 新授权下执行一次修复后最终 live replay；只有成功创建 bundle 才能把真实两源验证标为通过。
 
 ### Batch B：玩家档案合同
 
@@ -121,7 +135,7 @@ allowlisted grammar。当前选择保留 fail-closed 行为，先拿到受控 sc
 
 ## 6. 下一动作
 
-1. 在明确授权窗口内完成一次真实 OP.GG `mid` replay 的字段级 body-free diagnostic；
-2. 决定是按 live 证据扩大 allowlist，还是保留该工具的 degraded/unavailable 状态；
-3. 冻结 owner-scoped player profile list/selection API 合同；
+1. 独立提交 ADR-0058 最小修复并完成 exact-SHA 公共 CI；本地完整门已通过；
+2. 若获新的明确授权，执行一次修复后最终 live replay，成功才保存真实 bundle projection；
+3. 冻结 owner-scoped player profile list/selection API 合同与 legacy 地区迁移；
 4. 之后再进入 8E 的第一个静态/fixture-backed 前端小批次。

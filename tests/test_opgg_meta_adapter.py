@@ -282,14 +282,44 @@ def test_opgg_parser_rejects_code_instruction_text_invalid_rates_and_duplicate_r
     assert result_text not in repr(caught.value)
 
 
-def test_opgg_schema_drift_diagnostic_is_body_free_and_field_scoped() -> None:
+def test_opgg_parser_accepts_json_null_only_for_nullable_rank_history_fields() -> None:
+    nullable_text = (
+        "class LolListLaneMetaChampions: lang,position_filter,data\n"
+        "class Data: positions\n"
+        "class Positions: mid\n"
+        "class Mid: champion,win_rate,pick_rate,ban_rate,tier,rank,rank_prev,rank_prev_patch\n\n"
+        "LolListLaneMetaChampions(\"en_US\",\"mid\",Data(Positions(["
+        'Mid("Ahri",0.5,0.1,0.1,1,1,null,null)])))'
+    )
+    adapter, _calls = make_adapter(result_text=nullable_text)
+
+    evidence = adapter.fetch(position="mid")
+
+    assert len(evidence.facts) == 1
+    assert evidence.facts[0].rank_previous is None
+    assert evidence.facts[0].rank_previous_patch is None
+
+
+@pytest.mark.parametrize(
+    ("row", "field_name", "field_index"),
+    [
+        ('Mid(null,0.5,0.1,0.1,1,1,1,1)', "champion", 0),
+        ('Mid("Ahri",0.5,0.1,0.1,1,1,missing,1)', "rank_prev", 6),
+        ('Mid("Ahri",0.5,0.1,0.1,1,1,1,NULL)', "rank_prev_patch", 7),
+    ],
+)
+def test_opgg_schema_drift_diagnostic_rejects_names_outside_narrow_null_allowlist(
+    row: str,
+    field_name: str,
+    field_index: int,
+) -> None:
     drifted_text = (
         "class LolListLaneMetaChampions: lang,position_filter,data\n"
         "class Data: positions\n"
         "class Positions: mid\n"
         "class Mid: champion,win_rate,pick_rate,ban_rate,tier,rank,rank_prev,rank_prev_patch\n\n"
         "LolListLaneMetaChampions(\"en_US\",\"mid\",Data(Positions(["
-        'Mid("Ahri",0.5,0.1,0.1,1,1,1,null)])))'
+        f"{row}])))"
     )
     adapter, _calls = make_adapter(result_text=drifted_text)
 
@@ -301,21 +331,12 @@ def test_opgg_schema_drift_diagnostic_is_body_free_and_field_scoped() -> None:
     assert diagnostic.stage == "row_field"
     assert diagnostic.position == "mid"
     assert diagnostic.row_name == "Mid"
-    assert diagnostic.field_name == "rank_prev_patch"
-    assert diagnostic.field_index == 7
+    assert diagnostic.field_name == field_name
+    assert diagnostic.field_index == field_index
     assert diagnostic.observed_node_type == "Name"
     assert diagnostic.text_length == len(drifted_text)
     assert len(diagnostic.text_digest) == 64
-    assert "null" not in repr(caught.value)
     assert drifted_text not in repr(caught.value)
-
-    fixture = json.loads(
-        Path("data/evaluation/results/mcp/opgg_mid_schema_drift_fixture_v1.json").read_text(
-            encoding="utf-8"
-        )
-    )
-    assert diagnostic.to_public_projection() == fixture["failure"]["diagnostic"]
-    assert fixture["raw_response_persisted"] is False
 
 
 def test_opgg_adapter_rejects_output_schema_drift_and_oversized_text() -> None:

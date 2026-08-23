@@ -1,6 +1,7 @@
 {
   "body_free": true,
   "fixture_kind": "controlled_schema_drift_regression",
+  "lifecycle_status": "retained_pre_fix_evidence",
   "raw_response_persisted": false,
   "schema_version": "1.0",
   "source_tool": "lol_list_lane_meta_champions",
@@ -18,5 +19,5 @@
       "text_digest": "3e20e4085194857526f692bf4816ea67ad138009f8f0bf98149ceaed205d2c03"
     }
   },
-  "interpretation": "A controlled null-like token is rejected as a non-literal AST node; this fixture tests the fail-closed diagnostic contract and is not evidence that the live upstream uses this exact field or token."
+  "interpretation": "Before ADR-0058, a controlled JSON null token was rejected as a non-literal AST node. This fixture is retained as pre-fix diagnostic evidence; current code admits exact lowercase null only in the two nullable rank-history fields. It is not a live upstream body."
 }

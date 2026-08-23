@@ -3685,3 +3685,14 @@
 - 真实 replay 的可复核 stack-level 事实是失败发生在 lane row 的字面量字段解析；没有持久化 raw MCP body，因此不能从一次失败臆测具体字段或 token。
 - `OPGGMetaSchemaDiagnostic` 只暴露阶段、position/row、allowlisted 字段名/索引、AST 节点类型、长度和摘要 hash；`OPGGMetaError.__str__`/`repr__` 继续 body-free。
 - 受控 `null` fixture 证明 `Name` AST 节点会在字段字面量边界 fail closed，但不证明 live OP.GG mid 使用该确切形状；live 字段级证据仍需新的明确外部授权。
+
+## 2026-08-23：RQ-087 live 字段裁决与最小兼容边界
+
+- 新授权窗口只复用既有 Riot body-free projection，执行一次 OP.GG `mid` call；结果仍失败，但新诊断明确为
+  `Mid.rank_prev_patch`、field index 7、AST `Name`。live 正文长度 `2421`、digest `76b1f9...0820`，与
+  受控 fixture 的长度/digest 不同，因此证据不是 fixture 回放。
+- `rank_prev`/`rank_prev_patch` 的 typed contract 原本允许 `None`；JSON `null` 被 Python AST 表示为
+  `Name(id="null")`，这是安全、可枚举的语法兼容点。ADR-0058 只在字段 6/7 接受精确小写 `null` 并立即
+  投影为 `None`，不接受任意 Name、大小写变体、非 nullable 字段或表达式。
+- 该授权窗口唯一 live call 已用于诊断；当前实现可由离线正/负例和公共 no-I/O CI 验证，但在新的明确授权
+  进行最终 replay 前，不能声称真实两源 EvidenceBundle 已成功创建。

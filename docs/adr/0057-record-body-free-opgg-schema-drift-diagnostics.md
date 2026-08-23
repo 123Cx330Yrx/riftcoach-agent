@@ -34,3 +34,9 @@ adapter 在 fail-closed 的同时生成可选的 `OPGGMetaSchemaDiagnostic`。�
 - 诊断样例可以进入测试/证据，但不能冒充 live schema 结论。
 - 一旦获得新的有界授权，下一次 replay 应读取诊断并由 ADR/fixture 评审决定是否扩大字段合同。
 
+## 后续裁决
+
+RQ-087 的一次 live replay 已取得 `Mid.rank_prev_patch` / field 7 / AST `Name` 诊断，且
+live length/digest 与受控 fixture 不同。ADR-0058 据此只接纳 nullable rank-history
+字段上的精确小写 JSON `null`；本 ADR 的 body-free、先诊断后裁决和 fail-closed 原则
+保持不变。修复后 live 成功仍需独立的新授权验证。

@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（RQ-086 真实 Riot gate 通过；OP.GG mid replay 暴露严格 adapter schema-drift，8E preflight 继续）
+- 最后更新：2026-08-23（RQ-087 live diagnostic 已定位 nullable rank-history JSON-null drift；ADR-0058 最小修复进入本地/公共验证）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2074,3 +2074,16 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 当前唯一下一动作：若获新的有界授权，执行一次真实 `mid` replay 读取字段级 body-free diagnostic；随后再裁决扩大 allowlist/degraded，并冻结 player profile selection DTO。前端仍未开始。
 
 - `c5cbc9465da3529b722d27e307ab4f654b725a39` 的 Actions run `32613573022` 已完成 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job success；该公共验证没有外部 Riot/OP.GG/Provider/LLM I/O。
+
+## 2026-08-23：RQ-087 live 字段诊断与 ADR-0058 最小修复
+
+- 用户明确新授权后，本窗口复用既有 body-free Riot 结果，只执行一次真实 OP.GG `mid` tools/call；Riot、
+  LLM、Key calls 均为 0，raw response 未持久化。新结果为
+  `data/evaluation/results/riot_opgg_fusion_validation_2026-08-23-v2.json`。
+- live diagnostic 把失败收敛到 `Mid.rank_prev_patch`、field index 7、AST `Name`；其长度/digest 与受控 fixture
+  不同。ADR-0058 因此只在 `rank_prev`/`rank_prev_patch` 两个 nullable integer 字段接纳精确小写 JSON
+  `null` 并归一化为 `None`；其他 Name、字段、大小写与表达式继续 fail closed。
+- TDD 正例先出现 `1 failed, 13 passed`；实现后聚焦 `16 passed`、相邻 OP.GG/MCP/Evidence `60 passed`；
+  完整 pytest `1699 passed, 134 skipped, 1 warning, 127 subtests passed`，两套 RAG、Harness、compileall、pip、
+  governance 与安全/diff 门全绿。当前唯一下一动作是独立 implementation/evidence 提交与 exact-SHA 三 job；本授权 call 已用完，
+  新授权前不执行修复后 live replay，也不声称真实两源 EvidenceBundle 已成功。
