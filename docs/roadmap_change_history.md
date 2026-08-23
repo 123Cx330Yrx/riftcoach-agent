@@ -2928,5 +2928,12 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - Task 3 已通过本地视觉与前端门；E1/E2/E3 进入本地 TDD：opaque session/CSRF、request budgets/单机
   rate、versioned SecretSource/key-last Worker composition。每批仍保留八维 evidence、完整比例回归、独立
   commit 和 exact-SHA 三 job 公共 CI；正式 Auth/RSO、HTTPS、Secret Manager、备份/部署与 8F 继续后续。
+
+## 2026-08-24：RQ-099 E1/E2/E3 exact-SHA 公共闭环
+
+- `92b768591183e8a7fbe6d12a86359aac862b7efb` / Actions `32658277570` 的 pytest、PostgreSQL migrations、
+  Linux packaging-smoke 三 job 全绿，E1/E2/E3 取得公共代码证据。
+- canonical 继续停在 `8e-productization` implementation；下一项按原子顺序进入 E4 backup/restore/erase，
+  不因连续授权跳过八维证据、独立提交或把未实现的 Auth/RSO/HTTPS/Secret Manager/备份说成完成。
 - 生成图不可冒充真实 UI、数据或产品截图；MotionSites、React/动效库、Riot 官方语言、成熟游戏数据产品与
   Image2/Photoshop 继续按 RQ-091/RQ-092 两层采用门横评。

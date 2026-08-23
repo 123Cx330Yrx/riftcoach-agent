@@ -13,8 +13,8 @@ Task 3 的分层氛围/路线 choreography、状态边缘、handoff 过渡与来
 视觉层仍是可替换 preview，不能把概念图、当前工作台施工切片或视觉 preview 当作 8E 完整闭环。
 
 Batch E implementation 已在视觉前置后继续：E1 session HTTP boundary、E2 request budget/rate policy、
-E3 versioned SecretSource composition 已完成本地 focused TDD；下一动作是同步八维证据、跑比例回归、
-独立提交并等待 exact-SHA 公共 CI。生产 OIDC/RSO、PostgreSQL session repository、真实 Secret Manager、
+E3 versioned SecretSource composition 已由 `92b7685` / Actions `32658277570` 完成 exact-SHA 三 job 公共闭环；
+下一动作进入 E4 backup/restore/erase。生产 OIDC/RSO、PostgreSQL session repository、真实 Secret Manager、
 HTTPS edge 与多副本 limiter 仍保持显式 deferred/待后续实现。
 
 ## Current Phase
@@ -1467,4 +1467,5 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
 - [completed] 冻结 CORS/CSP/HTTPS/限流容量、Secret key-last/rotation/revocation、backup restore/erase、
   隐私/观测与 E1–E5/W1–W5 原子顺序；未实现产品代码、未读 Secret、未调用外部服务。
 - [completed] 完成 Batch E entry design 的 stale/diff/比例门与治理同步；design 已交接为 implementation prepared。
-- [in_progress] E1/E2/E3 implementation：完成本地 TDD、八维 walkthrough/coverage、比例回归、独立提交与 exact-SHA 三 job；公共全绿后再交接 E4。
+- [completed-public] E1/E2/E3 implementation：本地 TDD、八维 walkthrough/coverage、比例回归、独立提交与 `92b7685` / Actions `32658277570` exact-SHA 三 job 全绿。
+- [in_progress] E4 backup/restore/erase：先冻结 restore/erase red contracts，再实现与验证；公共闭环前不进入 E5/剩余 Web 模块。

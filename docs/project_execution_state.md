@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-24（RQ-098 视觉 Task 3 已完成本地门；Batch E implementation 的 E1/E2/E3 已开始并通过 focused TDD）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / 8e-batch-e-security-deployment-implementation`，E1/E2/E3 仍待完整比例回归、八维证据与 exact-SHA 公共闭环，完整 8E/8F 尚未完成。
+- 最后更新：2026-08-24（视觉 Task 3 与 Batch E E1/E2/E3 implementation 已由 `92b7685` / Actions `32658277570` 完成 exact-SHA 三 job 公共闭环）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / 8e-batch-e-security-deployment-implementation`，E1/E2/E3 已公共关闭，下一原子项为 E4 backup/restore/erase；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -2376,10 +2376,9 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   氛围层；CSS/SVG/React 负责响应式几何、真实表单、关系/产品状态、数据和工作台 handoff。
 - 该前置不新增主阶段或 canonical checkpoint，不关闭 `8e-productization`，不实施 Auth/RSO、HTTPS、
   部署、完整 Timeline/Training、OP.GG breadth/golden slice，不读取 Secret、不调用外部服务、不购买付费 Prompt。
-- 当前下一动作继续按 `docs/plans/2026-08-24-8e-portal-workbench-visual-contract.md` 的 Task 3 做视觉
-  polish：审查 WebP 氛围 plate 与 CSS/SVG 路线的层级、面板材质和 Portal → Workbench handoff；Task 1
-  presentation state、Task 2 语义入口 shell、`?surface=awakening` preview 和首个 77.8 kB WebP plate
-  已通过前端 unit/typecheck/build/Playwright 门。视觉门通过前不把概念图或当前工作台切片说成完整产品化。
+- Task 1 presentation state、Task 2 语义入口 shell 与 Task 3 WebP/CSS/SVG atmosphere/route/handoff polish
+  已通过前端 unit/typecheck/build/Playwright 门；视觉 preview 仍不是完整产品化，下一动作按 Batch E E4
+  backup/restore/erase 顺序推进。
 
 ## 2026-08-24：RQ-098 Task 3 本地关闭与 Batch E implementation 进入
 
@@ -2399,3 +2398,15 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 唯一下一动作：补 Batch E implementation 八维 walkthrough/coverage 与 stale/gov 门，跑比例完整回归，创建
   独立 implementation/evidence commit 并等待该 SHA 的 `pytest`、`postgres-migrations`、`packaging-smoke`
   exact-SHA 公共 CI；全绿后再交接 E4/剩余模块，不进入 8F。
+
+## 2026-08-24：RQ-099 Batch E E1/E2/E3 exact-SHA 公共闭环
+
+- implementation/evidence `92b768591183e8a7fbe6d12a86359aac862b7efb` / Actions `32658277570` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- 公共 pytest、RAG/Harness/secret/tracked-data/gov 门全绿；PostgreSQL control-plane migration/concurrency
+  job 全绿；Linux package smoke schema 1.6、非 root/image boundary、资源清理全绿。
+- 因此 E1 opaque session/CSRF、E2 request budgets/单机 rate policy、E3 versioned SecretSource/key-last
+  Worker composition 取得公共代码证据；这不证明 OIDC/RSO、PostgreSQL session repository、真实 Secret
+  Manager、HTTPS/HSTS edge、多副本 limiter 或 backup/erase 已实现。
+- `NEXT`：按既定顺序进入 `8e-batch-e-security-deployment-implementation / E4-backup-restore-erase`，先冻结
+  restore/erase 设计与 red tests，再做实现、八维 evidence、比例门、独立提交和 exact-SHA 公共 CI。

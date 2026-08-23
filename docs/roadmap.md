@@ -372,7 +372,7 @@ exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE�
   公共 pytest 1796、真 PostgreSQL 200、frontend unit 66/e2e 17、JS gzip 122.01 kB 与 Linux package schema 1.6 全绿；
 - 该已公共闭环的实现仍不包含完整 Auth/RSO、部署、完整 Timeline/Training、OP.GG breadth、fusion golden slice
   或 8F；整个 8E/coverage 继续 `in_progress/planned`。Batch E implementation 已开始本地 E1/E2/E3，
-  仍需八维证据与 exact-SHA 公共门。
+  已由 `92b7685/32658277570` 完成 exact-SHA 公共门；下一项是 E4 backup/restore/erase。
 
 ### 8E Batch E：安全/部署实现（当前检查点）
 
@@ -381,10 +381,10 @@ Riot RSO 只负责未来 verified-self 关系证明；首个部署采用 edge/st
 单机 Compose，托管数据库是迁移路径，Kubernetes/Redis/Celery/Kafka deferred。设计覆盖威胁模型、
 CORS/CSP/HTTPS/限流、Secret 轮换/撤销、backup restore/erase、隐私、观测与剩余 Web 模块顺序。
 
-当前已完成本地 E1 session boundary、E2 request budgets/单机 rate policy、E3 SecretSource/key-last composition
-的最小实现与 focused tests；不把它们说成生产 Auth/RSO、HTTPS、真实 Secret Manager、多副本 limiter、备份、
-部署、电影感入口、Timeline、完整 Training、OP.GG breadth、golden slice 或 8F。8E coverage 继续 `planned`，
-公共 implementation/evidence 三 job 全绿前不关闭 Batch E。
+当前 E1 session boundary、E2 request budgets/单机 rate policy、E3 SecretSource/key-last composition 已由
+`92b7685/32658277570` 公共闭环；不把它们说成生产 Auth/RSO、HTTPS、真实 Secret Manager、多副本 limiter、
+备份、部署、电影感入口、Timeline、完整 Training、OP.GG breadth、golden slice 或 8F。下一项是 E4，8E
+coverage 继续 `planned`，整个 Batch E 公共闭环前不进入 E5/8F。
 
 ### 原理
 

@@ -2052,3 +2052,12 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - E2 的 request budget/header/body/单机 IP limiter 是 edge seam；E3 的 SecretSource 只在 Worker DB readiness
   后解析 key 并构造 Riot/LLM client。环境注入仅为 local/test fallback，真实 Secret Manager、多副本 rate
   store、PostgreSQL session repository 与 backup/erase 不随本地实现被宣称完成。
+
+## 2026-08-24：RQ-099 E1/E2/E3 公共关闭与 E4 交接
+
+- `92b768591183e8a7fbe6d12a86359aac862b7efb` / Actions `32658277570` 的 pytest、PostgreSQL migrations、
+  Linux packaging-smoke 三 job 全绿，E1/E2/E3 的实现与八维材料取得 exact-SHA 公共证据。
+- 该关闭只覆盖 session/CSRF、请求预算/单机 rate、SecretSource/key-last composition；正式 OIDC/RSO、
+  PostgreSQL session repository、真实 Secret Manager、HTTPS edge、多副本限流和 backup/erase 仍未完成。
+- 按冻结顺序下一项为 E4 backup/restore/erase，先用红灯冻结 restore replay、erase-before-ready 与 partial
+  failure compensation，再实施；不进入 E5 或 8F。

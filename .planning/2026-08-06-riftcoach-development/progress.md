@@ -4075,3 +4075,14 @@
   edge 和多副本 rate store 仍未声称完成。
 - `NEXT`：补齐 Batch E implementation walkthrough/coverage 与 canonical 状态，跑完整比例后创建独立
   implementation/evidence commit；公共 exact-SHA 三 job 全绿前不关闭 Batch E 或进入 8F。
+
+### 2026-08-24：RQ-099 E1/E2/E3 exact-SHA 公共闭环
+
+- implementation/evidence `92b768591183e8a7fbe6d12a86359aac862b7efb` / Actions `32658277570` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；公共 pytest/RAG/Harness/gov、真实
+  PostgreSQL control-plane 与 Linux package smoke 均通过。
+- E1 opaque session/CSRF、E2 bounded request/header/body + 单机 rate policy、E3 versioned SecretSource 与
+  key-last Worker composition 取得公共代码证据；仍不声称 OIDC/RSO、PostgreSQL session repository、真实
+  Secret Manager、HTTPS/HSTS、多副本 rate store 或 backup/restore/erase 完成。
+- `NEXT`：进入 E4 backup/restore/erase；先补 restore replay、erase-before-ready、partial failure compensation
+  的红灯合同与实现计划，再按同一八维/本地/独立提交/exact-SHA 节奏推进。
