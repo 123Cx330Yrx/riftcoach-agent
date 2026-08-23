@@ -441,6 +441,29 @@ class EvidenceBundle(EvidenceModel):
         ).encode("utf-8")
         return hashlib.sha256(encoded).hexdigest()
 
+    def to_storage_projection(self) -> dict[str, object]:
+        """Return the full typed, body-free projection needed for rehydration.
+
+        The canonical bundle digest deliberately binds each Meta snapshot by its
+        own digest.  Persistence additionally needs the allowlisted Meta facts so
+        the dataclass can be rebuilt and that nested digest can be recomputed.
+        """
+
+        projection = self._projection()
+        projection["claims"] = [claim.value for claim in self.claims]
+        projection["meta_evidence"] = [
+            {
+                **row,
+                "facts": [fact.to_dict() for fact in evidence.facts],
+            }
+            for row, evidence in zip(
+                projection["meta_evidence"],
+                self.meta_evidence,
+                strict=True,
+            )
+        ]
+        return {**projection, "digest": self.digest}
+
     def has_valid_digest(self) -> bool:
         return self.digest == self.computed_digest()
 

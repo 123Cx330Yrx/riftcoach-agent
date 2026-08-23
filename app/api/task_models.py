@@ -36,6 +36,9 @@ ApiErrorCode: TypeAlias = Literal[
     "report_not_available",
     "conversation_not_found",
     "run_integrity_failed",
+    "evidence_not_available",
+    "evidence_integrity_failed",
+    "evidence_unavailable",
 ]
 ReadinessCode: TypeAlias = Literal[
     "database_unavailable",

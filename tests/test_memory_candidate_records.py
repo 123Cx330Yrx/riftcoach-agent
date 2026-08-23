@@ -55,7 +55,7 @@ def test_memory_candidate_metadata_contract() -> None:
 
 def test_memory_candidate_revision_is_short_and_offline_sql_has_trigger(monkeypatch) -> None:
     head = ScriptDirectory.from_config(_config()).get_current_head()
-    assert head == "0010_reliable_runtime_core"
+    assert head == "0011_evidence_product_api"
     assert len(head) <= 32
 
     output = io.StringIO()

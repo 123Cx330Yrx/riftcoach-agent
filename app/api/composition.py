@@ -30,12 +30,14 @@ from app.api.actor import (
     UnavailableActorContextProvider,
 )
 from app.api.main import (
+    EvidenceProductServicePort,
     OwnerDataLifecyclePort,
     PlayerLinkServicePort,
     ReadinessPort,
     RunQueryPort,
     TaskDeletionPort,
     TaskServicePort,
+    TaskEventStreamServicePort,
     create_app,
 )
 from app.api.task_models import ReadinessCode, ReadinessResult
@@ -77,6 +79,7 @@ from app.persistence.owner_data_lifecycle_repository import PostgresOwnerDataLif
 from app.persistence.database import build_engine, build_session_factory
 from app.persistence.player_repository import PostgresPlayerRepository
 from app.persistence.task_repository import PostgresTaskRepository
+from app.persistence.evidence_snapshot_repository import PostgresEvidenceSnapshotRepository
 from app.players.models import (
     CreatePlayerLinkCommand,
     PlayerLinkCapacityPolicy,
@@ -101,6 +104,9 @@ from app.tasks.deletion import (
     TaskDeletionService,
 )
 from app.tasks.observability import TaskObservability
+from app.evidence.service import EvidenceProductService, EvidenceProductServiceError
+from app.evidence.storage import EvidenceSnapshotView, ProductRunState
+from app.tasks.sse import TaskEventStreamService, TaskEventStreamServiceError
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -324,6 +330,54 @@ class _TaskServiceProxy:
             task_id=task_id,
             after_cursor=after_cursor,
             limit=limit,
+        )
+
+
+class _EvidenceProductServiceProxy:
+    def __init__(self) -> None:
+        self._target: EvidenceProductServicePort | None = None
+
+    def bind(self, target: EvidenceProductServicePort | None) -> None:
+        self._target = target
+
+    def _service(self) -> EvidenceProductServicePort:
+        if self._target is None:
+            raise EvidenceProductServiceError("evidence_unavailable")
+        return self._target
+
+    def get_evidence(self, *, owner_id: str, run_id: str) -> EvidenceSnapshotView:
+        return self._service().get_evidence(owner_id=owner_id, run_id=run_id)
+
+    def get_product_state(self, *, owner_id: str, run_id: str) -> ProductRunState:
+        return self._service().get_product_state(owner_id=owner_id, run_id=run_id)
+
+
+class _TaskEventStreamServiceProxy:
+    def __init__(self) -> None:
+        self._target: TaskEventStreamServicePort | None = None
+
+    def bind(self, target: TaskEventStreamServicePort | None) -> None:
+        self._target = target
+
+    def _service(self) -> TaskEventStreamServicePort:
+        if self._target is None:
+            raise TaskEventStreamServiceError("service_unavailable")
+        return self._target
+
+    def preflight(self, *, owner_id: str, task_id: UUID) -> ReviewTaskView:
+        return self._service().preflight(owner_id=owner_id, task_id=task_id)
+
+    def stream(
+        self,
+        *,
+        owner_id: str,
+        task_id: UUID,
+        after_cursor: int,
+    ):
+        return self._service().stream(
+            owner_id=owner_id,
+            task_id=task_id,
+            after_cursor=after_cursor,
         )
 
 
@@ -656,6 +710,8 @@ def create_composed_app(
     # to install the static CORS policy before the app can serve a request.
     api_settings = load_api_composition_settings(source)
     task_proxy = _TaskServiceProxy()
+    evidence_product_proxy = _EvidenceProductServiceProxy()
+    task_event_stream_proxy = _TaskEventStreamServiceProxy()
     player_link_proxy = _PlayerLinkServiceProxy()
     conversation_proxy = _ConversationServiceProxy()
     memory_candidate_proxy = _MemoryCandidateServiceProxy()
@@ -677,6 +733,9 @@ def create_composed_app(
             engine = build_engine(database_settings)
             session_factory = build_session_factory(engine)
             repository = PostgresTaskRepository(session_factory)
+            evidence_snapshot_repository = PostgresEvidenceSnapshotRepository(
+                session_factory
+            )
             player_repository = PostgresPlayerRepository(session_factory)
             conversation_repository = PostgresConversationRepository(
                 session_factory
@@ -698,6 +757,15 @@ def create_composed_app(
                     repository=repository,
                     capacity=api_settings.task_capacity,
                 )
+            )
+            evidence_product_proxy.bind(
+                EvidenceProductService(
+                    task_service=task_proxy,
+                    repository=evidence_snapshot_repository,
+                )
+            )
+            task_event_stream_proxy.bind(
+                TaskEventStreamService(task_service=task_proxy)
             )
             player_link_proxy.bind(
                 PlayerLinkService(
@@ -761,6 +829,8 @@ def create_composed_app(
             )
             actor_proxy.bind(None)
             task_proxy.bind(None)
+            evidence_product_proxy.bind(None)
+            task_event_stream_proxy.bind(None)
             player_link_proxy.bind(None)
             conversation_proxy.bind(None)
             memory_candidate_proxy.bind(None)
@@ -773,6 +843,8 @@ def create_composed_app(
             yield
         finally:
             task_proxy.bind(None)
+            evidence_product_proxy.bind(None)
+            task_event_stream_proxy.bind(None)
             player_link_proxy.bind(None)
             conversation_proxy.bind(None)
             memory_candidate_proxy.bind(None)
@@ -803,6 +875,8 @@ def create_composed_app(
         typed_memory_query_service=typed_memory_query_proxy,
         training_query_service=training_query_proxy,
         owner_data_lifecycle_service=owner_data_lifecycle_proxy,
+        evidence_product_service=evidence_product_proxy,
+        task_event_stream_service=task_event_stream_proxy,
     )
     app.state.database_engine = None
     return app

@@ -96,6 +96,9 @@ def test_compose_separates_real_worker_from_no_io_smoke() -> None:
     assert "LLM_API_KEY" not in services["player-link-worker"]["environment"]
     assert "RIOT_API_KEY" not in services["smoke"].get("environment", {})
     assert "LLM_API_KEY" not in services["smoke"].get("environment", {})
+    assert services["smoke"]["environment"]["RIFTCOACH_LOCAL_OWNER_ID"] == (
+        services["api"]["environment"]["RIFTCOACH_LOCAL_OWNER_ID"]
+    )
     assert services["api"]["volumes"] == services["worker"]["volumes"][:1]
 
 

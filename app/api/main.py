@@ -17,7 +17,7 @@ from uuid import UUID
 
 from fastapi import Depends, FastAPI, Header, Query, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import JSONResponse, Response, StreamingResponse
 from pydantic import ValidationError
 from starlette.middleware.cors import CORSMiddleware
 from starlette.types import Lifespan
@@ -80,6 +80,7 @@ from app.api.lifecycle_models import (
     OwnerDataDeletionResponse,
     OwnerDataExportResponse,
 )
+from app.api.evidence_models import EvidenceSnapshotResponse, ProductStateResponse
 from app.conversations.models import (
     AppendUserMessageCommand,
     ConversationCreateResult,
@@ -141,6 +142,12 @@ from app.tasks.service import TaskServiceError
 from app.tasks.reliable_runtime import TaskCancelResult, TaskEventPage
 from app.tasks.deletion import TaskDeletionError
 from app.tasks.observability import TaskObservability
+from app.tasks.sse import (
+    TaskEventStreamServiceError,
+    resolve_event_cursor,
+)
+from app.evidence.service import EvidenceProductServiceError
+from app.evidence.storage import EvidenceSnapshotView, ProductRunState
 
 
 class TaskServicePort(Protocol):
@@ -200,6 +207,24 @@ class RunQueryPort(Protocol):
     def get_run(self, run_id: str) -> RunView: ...
 
     def get_report(self, run_id: str) -> str: ...
+
+
+class EvidenceProductServicePort(Protocol):
+    def get_evidence(self, *, owner_id: str, run_id: str) -> EvidenceSnapshotView: ...
+
+    def get_product_state(self, *, owner_id: str, run_id: str) -> ProductRunState: ...
+
+
+class TaskEventStreamServicePort(Protocol):
+    def preflight(self, *, owner_id: str, task_id: UUID) -> ReviewTaskView: ...
+
+    def stream(
+        self,
+        *,
+        owner_id: str,
+        task_id: UUID,
+        after_cursor: int,
+    ): ...
 
 
 class ReadinessPort(Protocol):
@@ -305,6 +330,24 @@ def _task_lookup_error(
     if error.code == "task_not_found":
         return _error_response(not_found_code, status_code=404)
     return _error_response("service_unavailable", status_code=503)
+
+
+def _evidence_product_error(
+    error: EvidenceProductServiceError,
+    *,
+    run_id: str,
+) -> JSONResponse:
+    mapping: Mapping[str, tuple[int, ApiErrorCode]] = {
+        "run_not_found": (404, "run_not_found"),
+        "evidence_not_available": (409, "evidence_not_available"),
+        "evidence_integrity_failed": (500, "evidence_integrity_failed"),
+        "evidence_unavailable": (503, "evidence_unavailable"),
+    }
+    status_code, code = mapping.get(
+        error.code,
+        (503, "evidence_unavailable"),
+    )
+    return _error_response(code, status_code=status_code, run_id=run_id)
 
 
 def _conversation_error_response(
@@ -430,6 +473,8 @@ def create_app(
     typed_memory_query_service: TypedMemoryQueryServicePort | None = None,
     training_query_service: TrainingQueryServicePort | None = None,
     owner_data_lifecycle_service: OwnerDataLifecyclePort | None = None,
+    evidence_product_service: EvidenceProductServicePort | None = None,
+    task_event_stream_service: TaskEventStreamServicePort | None = None,
 ) -> FastAPI:
     """Create API V2 from explicit ports without doing deployment I/O."""
 
@@ -487,6 +532,18 @@ def create_app(
                 raise TypeError(
                     f"owner_data_lifecycle_service must expose {method_name}()"
                 )
+    if evidence_product_service is not None:
+        for method_name in ("get_evidence", "get_product_state"):
+            if not callable(getattr(evidence_product_service, method_name, None)):
+                raise TypeError(
+                    f"evidence_product_service must expose {method_name}()"
+                )
+    if task_event_stream_service is not None:
+        for method_name in ("preflight", "stream"):
+            if not callable(getattr(task_event_stream_service, method_name, None)):
+                raise TypeError(
+                    f"task_event_stream_service must expose {method_name}()"
+                )
     if observability is not None and not isinstance(
         observability,
         TaskObservability,
@@ -514,7 +571,7 @@ def create_app(
         allow_origins=list(normalized_origins),
         allow_credentials=cors_allow_credentials,
         allow_methods=["GET", "POST", "DELETE"],
-        allow_headers=["Content-Type", "Idempotency-Key"],
+        allow_headers=["Content-Type", "Idempotency-Key", "Last-Event-ID"],
     )
 
     def trusted_actor() -> ActorContext:
@@ -1766,6 +1823,60 @@ def create_app(
             return _error_response("service_unavailable", status_code=503)
 
     @app.get(
+        "/tasks/{task_id}/events/stream",
+        response_model=None,
+        responses={
+            404: {"model": ErrorResponse},
+            422: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def stream_task_events(
+        task_id: str,
+        after_cursor: int | None = Query(default=None, ge=0),
+        last_event_id: str | None = Header(default=None, alias="Last-Event-ID"),
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> StreamingResponse | JSONResponse:
+        try:
+            parsed_task_id = UUID(task_id)
+        except (AttributeError, TypeError, ValueError):
+            return _error_response("task_not_found", status_code=404)
+        try:
+            cursor = resolve_event_cursor(
+                after_cursor=after_cursor,
+                last_event_id=last_event_id,
+            )
+        except (TypeError, ValueError):
+            return _error_response("request_invalid", status_code=422)
+        if task_event_stream_service is None:
+            return _error_response("service_unavailable", status_code=503)
+        try:
+            task = task_event_stream_service.preflight(
+                owner_id=actor.owner_id,
+                task_id=parsed_task_id,
+            )
+            if not isinstance(task, ReviewTaskView) or task.task_id != parsed_task_id:
+                raise TaskEventStreamServiceError("service_unavailable")
+        except TaskEventStreamServiceError as error:
+            if error.code == "task_not_found":
+                return _error_response("task_not_found", status_code=404)
+            return _error_response("service_unavailable", status_code=503)
+        except Exception:
+            return _error_response("service_unavailable", status_code=503)
+        return StreamingResponse(
+            task_event_stream_service.stream(
+                owner_id=actor.owner_id,
+                task_id=parsed_task_id,
+                after_cursor=cursor,
+            ),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "X-Accel-Buffering": "no",
+            },
+        )
+
+    @app.get(
         "/tasks/{task_id}",
         response_model=ReviewTaskView,
         responses={
@@ -1810,6 +1921,79 @@ def create_app(
             return _task_lookup_error(error, not_found_code="run_not_found")
         except Exception:
             return _error_response("service_unavailable", status_code=503)
+
+    @app.get(
+        "/runs/{run_id}/evidence",
+        response_model=EvidenceSnapshotResponse,
+        responses={
+            404: {"model": ErrorResponse},
+            409: {"model": ErrorResponse},
+            500: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def get_run_evidence(
+        run_id: str,
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> EvidenceSnapshotResponse | JSONResponse:
+        if evidence_product_service is None:
+            return _error_response(
+                "evidence_unavailable",
+                status_code=503,
+                run_id=run_id,
+            )
+        try:
+            view = evidence_product_service.get_evidence(
+                owner_id=actor.owner_id,
+                run_id=run_id,
+            )
+            if not isinstance(view, EvidenceSnapshotView) or view.run_id != run_id:
+                raise TypeError("evidence service returned an invalid identity")
+            return EvidenceSnapshotResponse.from_view(view)
+        except EvidenceProductServiceError as error:
+            return _evidence_product_error(error, run_id=run_id)
+        except Exception:
+            return _error_response(
+                "evidence_integrity_failed",
+                status_code=500,
+                run_id=run_id,
+            )
+
+    @app.get(
+        "/runs/{run_id}/product-state",
+        response_model=ProductStateResponse,
+        responses={
+            404: {"model": ErrorResponse},
+            500: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def get_run_product_state(
+        run_id: str,
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> ProductStateResponse | JSONResponse:
+        if evidence_product_service is None:
+            return _error_response(
+                "evidence_unavailable",
+                status_code=503,
+                run_id=run_id,
+            )
+        try:
+            state = evidence_product_service.get_product_state(
+                owner_id=actor.owner_id,
+                run_id=run_id,
+            )
+            if not isinstance(state, ProductRunState) or state.run_id != run_id:
+                raise TypeError("product service returned an invalid identity")
+            return ProductStateResponse.from_state(state)
+        except EvidenceProductServiceError as error:
+            return _evidence_product_error(error, run_id=run_id)
+        except Exception:
+            return _error_response(
+                "evidence_integrity_failed",
+                status_code=500,
+                run_id=run_id,
+            )
 
     @app.get(
         "/runs/{run_id}",

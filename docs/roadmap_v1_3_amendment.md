@@ -141,6 +141,16 @@ Web/Auth/HTTPS/备份与部署；`8F` 做最终 Eval 和作品集退出。DAG、
 - `e844bdd/32622696087` 的公共 pytest 1709、真库 187、Linux package schema 1.6 三 job 全绿；
 - coverage 继续 `planned`，因为 Batch C、前端/Auth/SSE/备份/部署与整体退出尚未完成。
 
+### 2026-08-23：8E Batch C Evidence/Product API 本地实现
+
+- ADR-0060 已落地为 0011 PostgreSQL append-only EvidenceBundle revision、refresh content idempotency、
+  query-time expiry 与 strict nested/bundle/snapshot digest rehydrate；
+- owner-scoped Evidence/Product API 和 cursor SSE 已完成 TDD，composition/package smoke 继续保持外部
+  Riot/OP.GG/Provider/LLM calls 0；
+- 实现中额外修复浅拷贝 tamper 假阳性、retry timestamp 误冲突和 import-order circular dependency；
+- 八维材料已登记，8E coverage 继续 `planned`。Batch C 只在完整本地/真库/Linux 门、独立提交和 exact-SHA
+  三 job 后关闭；随后才进入 Batch D 静态/fixture-backed 前端。
+
 ## 7. 产品切片
 
 阶段 5 在本地 AgentRuntime 可运行后，增加不依赖临时数据库的早期 API 切片：

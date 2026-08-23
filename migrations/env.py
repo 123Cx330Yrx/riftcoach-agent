@@ -13,6 +13,7 @@ from app.persistence import (  # noqa: F401
 from app.persistence import player_records as _player_records  # noqa: F401
 from app.persistence import task_record as _task_record  # noqa: F401
 from app.persistence import task_event_record as _task_event_record  # noqa: F401
+from app.persistence import evidence_snapshot_record as _evidence_snapshot_record  # noqa: F401
 from app.persistence import memory_records as _memory_records  # noqa: F401
 from app.persistence import typed_memory_records as _typed_memory_records  # noqa: F401
 from app.persistence import training_records as _training_records  # noqa: F401

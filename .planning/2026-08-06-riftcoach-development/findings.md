@@ -3714,3 +3714,45 @@
 - Worker 预建 `americas/asia/europe/sea` 四个 Riot Client 并 exact-select；没有 default、自动探区或 CN fallback。ShowMaker 只保留为历史 live validation 样本，产品不存在默认账号。
 - 本机历史 PostgreSQL/Docker skip 的主要风险是提交前反馈慢，而不是公开关闭门缺失：相应阶段均有 exact-SHA PostgreSQL/Linux job。RQ-089 后已补齐 Docker Desktop、PostgreSQL 17 与 Linux Compose smoke；当前仅 Windows symlink 创建仍单项 skip。
 - 本地数据库 URL/密码只保存在用户环境，不进入仓库；持久容器 `riftcoach-local-postgres` 绑定 `127.0.0.1:54329` 并采用 `unless-stopped`。
+
+## 2026-08-23：8E Batch C 接缝审计与设计发现
+
+- 8D `EvidenceBundle` 已有 full canonical projection/digest 和 safe public projection，但 `MetaEvidence` 是带
+  `init=False digest` 的 frozen dataclass，不能把普通 JSONB dict 直接当作已验证对象；持久读回必须逐层
+  重建 Meta fact/evidence 并重算 nested/bundle digest。
+- 8C 的 `review_task_events` 已拥有 owner scope、global cursor、task sequence、event identity 和安全 HTTP DTO；
+  SSE 应复用 `TaskEventResponse` 与 Repository replay，不能另造进程内队列或把 Runtime stream 当 durable truth。
+- existing task deletion 先删除 SQL task row，event 已由 composite FK cascade；Evidence snapshot 使用同样
+  `(task_id, run_id, owner_id) ON DELETE CASCADE` 可以自动遵守 terminal delete/retention，不必增加文件清理双写。
+- Artifact/file store 会重复历史 SQL/文件 crash gap；reconstruct-on-read 会让 GET 隐含外部费用和 schema drift。
+  ADR-0060 因此采用 PostgreSQL append-only revision + query-time expiry。
+- 四态不能只照抄 TaskStatus：active=`not_ready`；failed/cancelled/Harness rejected=`rejected`；报告可用但
+  publication/evidence 有限制=`degraded`；published + complete/current evidence=`published`。
+
+## 2026-08-23：8E Batch C 实现发现
+
+- 本机 PostgreSQL 容器正常运行，但新 PowerShell 不自动继承用户级变量；必须同时设置
+  `RIFTCOACH_TEST_DATABASE_URL` 和 Alembic 使用的 `DATABASE_URL`。只设置前者会使旧 API migration fixture
+  error，这不是数据库 skip 或产品缺陷。
+- 第一轮 JSONB tamper 测试用 top-level shallow copy 后修改 nested list，ORM 比较到的值实际未变化；改为
+  deep copy 后才真正写入篡改并证明 get_latest digest fail closed。
+- refresh snapshot digest 包含首次 stored time，但 idempotency 的“相同内容”不能包含 retry time；Repository
+  已改为 bundle digest replay，changed bundle 仍 conflict。
+- evidence-first 多文件 collection 暴露 `app.api.__init__` eager composition 的循环导入；lazy package export
+  与 task-local SSE allowlist 让 import order 不再影响 collection。
+- package smoke 现在真实查询 product-state、missing evidence 与 terminal SSE，保持外部调用 0；前端仍未开始。
+
+## 2026-08-23：8E Batch C Linux smoke 根因与本地关闭发现
+
+- 首次本地 Compose smoke 的 `memory_context_unavailable` 不是 Memory Repository 回归：数据库 allowlisted
+  identity 查询证明 API 以默认 `local-demo-owner` 写入 relationship/conversation/schema-2.0 task，而 smoke
+  直连复核仍硬编码 `packaging-smoke-owner`；公共 CI 因 job env 显式对齐两者而没有暴露这个本地默认缺口。
+- 修复让 smoke 与 API 共用同一个 `RIFTCOACH_LOCAL_OWNER_ID` 插值，并把 validated owner 放入
+  `PackagingSmokeSettings` 后用于 task lookup、Memory binding 与 export assertion；没有放宽 owner 隔离或
+  `_binding_exists()`。缺失/非法 owner 现在在网络和数据库前 fail closed。
+- 无额外环境覆盖的全新 Compose project 已通过 schema 1.6 smoke，Memory Context 包含
+  owner preference/training plan/message 共 3 条、terminal assistant 0、外部调用 0；容器非 root UID 999，
+  `.env`/tests/cache/runs/reports/tmp 均未进入镜像，临时容器/volume/network 已清理。
+- 最终本地为 focused `79 passed`、package contracts `39 passed`、CI-equivalent PostgreSQL
+  `194 passed, 1 warning`、完整 `1888 passed, 1 skipped, 1 warning, 127 subtests passed`；唯一 skip 仍是
+  Windows symlink 创建，必须由 exact-SHA Linux pytest 补证，不能在本机冒充通过。

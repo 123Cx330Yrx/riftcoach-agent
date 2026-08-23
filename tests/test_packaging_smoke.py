@@ -22,10 +22,14 @@ from app.players.link_worker import (
 )
 
 
+SMOKE_OWNER_ID = "packaging-smoke-fixture-owner"
+
+
 def valid_environment(tmp_path: Path) -> dict[str, str]:
     return {
         "RIFTCOACH_PACKAGING_SMOKE": "true",
         "RIFTCOACH_API_PROFILE": "test",
+        "RIFTCOACH_LOCAL_OWNER_ID": SMOKE_OWNER_ID,
         "RIFTCOACH_SMOKE_BASE_URL": "http://api:8000",
         "DATABASE_URL": (
             "postgresql+psycopg://riftcoach:smoke-secret@postgres/riftcoach"
@@ -88,9 +92,24 @@ def test_packaging_smoke_settings_need_no_riot_or_provider_secret(
     settings = load_packaging_smoke_settings(valid_environment(tmp_path))
 
     assert settings.base_url == "http://api:8000"
+    assert settings.owner_id == SMOKE_OWNER_ID
     assert "smoke-secret" not in repr(settings)
     assert not hasattr(settings, "riot_api_key")
     assert not hasattr(settings, "llm_api_key")
+
+
+@pytest.mark.parametrize("owner_id", ("", "bad owner"))
+def test_packaging_smoke_requires_a_safe_explicit_owner_identity(
+    tmp_path: Path,
+    owner_id: str,
+) -> None:
+    environment = valid_environment(tmp_path)
+    environment["RIFTCOACH_LOCAL_OWNER_ID"] = owner_id
+
+    with pytest.raises(PackagingSmokeError) as exc_info:
+        load_packaging_smoke_settings(environment)
+
+    assert exc_info.value.code == "packaging_smoke_configuration_invalid"
 
 
 def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
@@ -114,9 +133,18 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     requests_seen: list[tuple[str, str, dict[str, object]]] = []
 
     class Response:
-        def __init__(self, status_code: int, body: dict) -> None:
+        def __init__(
+            self,
+            status_code: int,
+            body: dict,
+            *,
+            text: str = "",
+            headers: dict[str, str] | None = None,
+        ) -> None:
             self.status_code = status_code
             self._body = body
+            self.text = text
+            self.headers = headers or {}
 
         def json(self) -> dict:
             return dict(self._body)
@@ -136,7 +164,7 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                     {"record_kind": "owner_preference", "record_id": "90000000-0000-4000-8000-000000000009", "status": "active", "data": {}},
                     {"record_kind": "training_plan", "record_id": training_plan_id, "status": "active", "data": {}},
                 ]
-                return Response(200, {"schema_version": "1.0", "owner_id": "packaging-smoke-owner", "generated_at": "2026-08-20T00:00:00Z", "policy_version": "owner-export-v1", "sections": [{"name": "all", "records": records}], "total_record_count": len(records)})
+                return Response(200, {"schema_version": "1.0", "owner_id": SMOKE_OWNER_ID, "generated_at": "2026-08-20T00:00:00Z", "policy_version": "owner-export-v1", "sections": [{"name": "all", "records": records}], "total_record_count": len(records)})
             if url.endswith(f"/conversations/{conversation_id}/messages"):
                 if type(self).deleted:
                     return Response(404, {"code": "conversation_not_found"})
@@ -225,6 +253,41 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
                         ],
                     },
                 )
+            if url.endswith(f"/tasks/{task_id}/events/stream"):
+                return Response(
+                    200,
+                    {},
+                    text=(
+                        "id: 1\nevent: task.lifecycle\n"
+                        'data: {"event_kind":"created"}\n\n'
+                        "id: 4\nevent: task.lifecycle\n"
+                        'data: {"event_kind":"failed"}\n\n'
+                    ),
+                    headers={"content-type": "text/event-stream; charset=utf-8"},
+                )
+            if url.endswith(f"/runs/{run_id}/product-state"):
+                return Response(
+                    200,
+                    {
+                        "schema_version": "1.0",
+                        "task_id": task_id,
+                        "run_id": run_id,
+                        "state": "rejected",
+                        "reason_code": "task_failed",
+                        "task_status": "failed",
+                        "publication_status": None,
+                        "report_available": False,
+                        "evidence_revision": None,
+                        "evidence_bundle_digest": None,
+                        "evidence_freshness": None,
+                        "evidence_disposition": None,
+                    },
+                )
+            if url.endswith(f"/runs/{run_id}/evidence"):
+                return Response(
+                    409,
+                    {"code": "evidence_not_available", "run_id": run_id},
+                )
             if "/memory-candidates/" in url:
                 is_training = training_candidate_id in url
                 return Response(
@@ -306,7 +369,7 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
             requests_seen.append(("POST", url, kwargs))
             if url.endswith("/owner-data/deletions"):
                 type(self).deleted = True
-                return Response(200, {"schema_version": "1.0", "marker_id": "90000000-0000-4000-8000-000000000020", "owner_id": "packaging-smoke-owner", "idempotency_key": "packaging-delete", "scope": "conversation_only", "conversation_id": conversation_id, "relationship_id": None, "affected": {"conversations": 1, "messages": 1}, "status": "complete", "safe_reason": None, "created_at": "2026-08-20T00:00:00Z", "updated_at": "2026-08-20T00:00:00Z", "completed_at": "2026-08-20T00:00:00Z"})
+                return Response(200, {"schema_version": "1.0", "marker_id": "90000000-0000-4000-8000-000000000020", "owner_id": SMOKE_OWNER_ID, "idempotency_key": "packaging-delete", "scope": "conversation_only", "conversation_id": conversation_id, "relationship_id": None, "affected": {"conversations": 1, "messages": 1}, "status": "complete", "safe_reason": None, "created_at": "2026-08-20T00:00:00Z", "updated_at": "2026-08-20T00:00:00Z", "completed_at": "2026-08-20T00:00:00Z"})
             if url.endswith("/player-links"):
                 return Response(202, {"link_task_id": link_task_id})
             if url.endswith("/conversations"):
@@ -483,6 +546,7 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
             from app.players.models import RelationshipRole
             from uuid import UUID
 
+            assert binding.owner_id == SMOKE_OWNER_ID
             return MemoryContextSnapshot(
                 binding=binding,
                 records=(
@@ -592,6 +656,21 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
         "after_cursor": 0,
         "limit": 100,
     }
+    assert any(
+        method == "GET" and url.endswith(f"/runs/{run_id}/product-state")
+        for method, url, _kwargs in requests_seen
+    )
+    assert any(
+        method == "GET" and url.endswith(f"/runs/{run_id}/evidence")
+        for method, url, _kwargs in requests_seen
+    )
+    task_stream_get = next(
+        item
+        for item in requests_seen
+        if item[0] == "GET"
+        and item[1].endswith(f"/tasks/{task_id}/events/stream")
+    )
+    assert task_stream_get[2]["headers"] == {"Last-Event-ID": "0"}
 
     conversation_post = next(
         item
@@ -644,6 +723,12 @@ def test_packaging_smoke_proves_safe_terminal_without_external_dependencies(
     (
         "packaging_smoke_task_event_query_failed",
         "packaging_smoke_task_event_invalid",
+        "packaging_smoke_task_stream_query_failed",
+        "packaging_smoke_task_stream_invalid",
+        "packaging_smoke_product_state_query_failed",
+        "packaging_smoke_product_state_invalid",
+        "packaging_smoke_evidence_query_failed",
+        "packaging_smoke_evidence_invalid",
         "packaging_smoke_conversation_create_failed",
         "packaging_smoke_conversation_query_failed",
         "packaging_smoke_conversation_invalid",

@@ -324,6 +324,21 @@ exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE�
   内部批按 preflight 顺序为 Batch C EvidenceBundle persistence/refresh/expiry、event replay→SSE DTO 和
   四态产品状态合同，之后才进入 Batch D 静态前端。
 
+### 8E Batch C：Evidence/Product API 与 Cursor SSE（本地完成，等待公共门）
+
+- 0011 以 PostgreSQL append-only JSONB revision 保存 full typed EvidenceBundle；复合 owner/task/run FK、
+  refresh/revision 唯一约束、大小/digest CHECK、UPDATE trigger 与 cascade delete 已由真实 PostgreSQL 验证；
+- 同 refresh + 同 bundle content replay 首次 snapshot，即使 retry time 不同；changed content conflict；
+  task row lock 分配连续 revision，latest 不回退；
+- query-time expiry 保留历史 digest/revision，但撤销依赖当前 Meta/exact patch 的 usable claim；
+- `GET /runs/{run_id}/evidence`、`/product-state` 暴露 body-free owner-scoped DTO，四态固定为
+  `published/degraded/rejected/not_ready`；
+- `/tasks/{task_id}/events/stream` 复用 8C durable cursor，支持 `Last-Event-ID`、keepalive、重连去重、
+  terminal close 与 allowlisted stream error；
+- composition/Linux smoke 检查缺证据、失败四态和 terminal SSE，本批 Riot/OP.GG/Provider/LLM calls 0；
+- 八维 walkthrough/coverage 路径已建立但整个 8E 仍 `planned`。当前唯一下一动作是完整本地门、独立提交和
+  exact-SHA 三 job；公共关闭前不进入 Batch D 前端。
+
 ### 原理
 
 只有当任务出现可以独立并行的上下文、权限和失败边界时才拆 Agent。Multi-Agent 是隔离职责和并发的手段，不是项目完成度标签。

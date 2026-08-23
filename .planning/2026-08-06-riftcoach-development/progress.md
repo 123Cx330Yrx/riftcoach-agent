@@ -3874,3 +3874,43 @@
   Docker/PostgreSQL 补环境正式闭环。整个 8E 与 coverage 仍 in progress/planned。
 - `HANDOFF`：按既有 preflight 顺序唯一下一内部批为 Batch C EvidenceBundle persistence/refresh/expiry、
   event replay→SSE DTO 与四态产品状态合同；Batch C 公共闭环前不进入 Batch D 静态前端。
+
+### 2026-08-23：RQ-090 授权并启动 8E Batch C
+
+- `AUTHORIZED`：用户再次明确继续，授权 Batch C 连续实施；不跳到 Batch D React。
+- `RECOVERY`：clean HEAD/origin `3488d7b`，canonical `8e-productization/in_progress`，治理检查通过；本机
+  PostgreSQL/Docker 已可用，唯一 Windows symlink skip 继续由 Linux exact-SHA pytest 补证。
+- `DESIGN`：ADR-0060、专用 design/implementation plan 采用 PostgreSQL append-only Evidence revision、
+  refresh idempotency、query-time expiry、cursor SSE 与四态 product projector；file store/reconstruct-on-read 拒绝。
+- `BOUNDARY`：本批新的 Riot/OP.GG/Provider/LLM calls 为 0；8B holdout 不重跑；Auth/HTTPS/backup/frontend deferred。
+- `NEXT`：先写 storage round-trip/digest/expiry/product-state pure red tests，再实现最小合同。
+
+### 2026-08-23：8E Batch C 本地实现与八维材料完成
+
+- `TDD`：pure storage/snapshot/expiry/four-state、0011/PostgreSQL Repository、Product Service/API、cursor
+  SSE、composition 与 package smoke 均从缺模块/缺合同红灯进入绿色。
+- `IMPLEMENTED`：append-only Evidence revision、strict nested/bundle/snapshot digest、refresh replay/conflict、
+  owner latest、query-time expiry、四态 DTO、Last-Event-ID reconnect/keepalive/terminal/error close 已落地。
+- `REAL-POSTGRES`：Repository `6 passed`，包含并发连续 revision、tamper、trigger 和 cascade；Repository→
+  Service→HTTP 纵切通过，cross-owner evidence/product-state 均 404。
+- `REPAIR`：修复 shallow-copy tamper 假阳性、retry timestamp 误冲突、0011 head 旧断言和 import-order
+  circular dependency；没有放宽 typed/storage/owner 合同。
+- `EVIDENCE`：新增 `docs/learning/8e-evidence-product-api-walkthrough.md`，coverage 八维路径齐全但 8E 继续
+  `planned`；Batch C 公共关闭前不进入 Batch D。
+- `BOUNDARY`：本批 Riot/OP.GG/Provider/LLM calls 0，8B holdout 未重跑；Auth/React/HTTPS/backup/deployment
+  未实现。该记录时的下一动作是完成全部本地/真库/Linux 门、独立提交/push 与 exact-SHA 三 job。
+
+### 2026-08-23：8E Batch C 全部本地门闭环
+
+- `ROOT-CAUSE/TDD`：本地 Compose 默认 API owner 与 smoke 硬编码 owner 不一致，导致严格 Memory binding
+  正确返回 unavailable；红灯覆盖 settings 动态 owner 与 Compose 环境同源，最小修复后 package suites
+  `39 passed`，没有削弱 owner/relationship/conversation identity。
+- `LOCAL-LINUX`：无手工 owner 覆盖的全新 Compose project 通过 schema 1.6 no-I/O smoke；Memory Context
+  3 records、terminal assistant 0、外部调用 0，非 root UID 999 与 image exclusion 通过，资源已清理。
+- `LOCAL-GATES`：focused `79 passed`；CI-equivalent PostgreSQL `194 passed, 1 warning`；完整
+  `1888 passed, 1 skipped, 1 warning, 127 subtests passed`；Alembic head→base→head/check 无 drift。
+  两套 RAG 满阈值，Harness `published`/0 revisions，compileall/pip/6 YAML、SDK/Secret/tracked-data、
+  Evidence/SSE OpenAPI body-free 扫描均通过。
+- `BOUNDARY/NEXT`：唯一 skip 为 Windows symlink；Batch C 新的 Riot/OP.GG/Provider/LLM calls 0，8B
+  产品 holdout 未重跑。当前只待 governance/diff/cached diff、独立 implementation/evidence commit/push 和
+  exact-SHA 三 job；公共全绿前不进入 Batch D React。

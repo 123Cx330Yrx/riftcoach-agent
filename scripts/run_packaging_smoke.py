@@ -25,6 +25,7 @@ from urllib.parse import urlsplit
 from uuid import UUID, uuid4
 
 import requests
+from pydantic import TypeAdapter
 from sqlalchemy.engine import make_url
 
 from app.api.composition import PostgresReadinessProbe
@@ -42,7 +43,7 @@ from app.players.link_worker import (
     PlayerLinkWorkerIterationStatus,
 )
 from app.players.models import ResolvedRiotAccount, RoutingRegion
-from app.tasks.models import ReviewTask, TaskTerminal
+from app.tasks.models import OwnerId, ReviewTask, TaskTerminal
 from app.workers.review_worker import (
     ReviewWorker,
     ReviewWorkerError,
@@ -64,6 +65,12 @@ PackagingSmokeErrorCode: TypeAlias = Literal[
     "packaging_smoke_task_query_failed",
     "packaging_smoke_task_event_query_failed",
     "packaging_smoke_task_event_invalid",
+    "packaging_smoke_task_stream_query_failed",
+    "packaging_smoke_task_stream_invalid",
+    "packaging_smoke_product_state_query_failed",
+    "packaging_smoke_product_state_invalid",
+    "packaging_smoke_evidence_query_failed",
+    "packaging_smoke_evidence_invalid",
     "packaging_smoke_worker_failed",
     "packaging_smoke_terminal_invalid",
     "packaging_smoke_link_create_failed",
@@ -108,6 +115,12 @@ _ERROR_CODES = frozenset(
         "packaging_smoke_task_query_failed",
         "packaging_smoke_task_event_query_failed",
         "packaging_smoke_task_event_invalid",
+        "packaging_smoke_task_stream_query_failed",
+        "packaging_smoke_task_stream_invalid",
+        "packaging_smoke_product_state_query_failed",
+        "packaging_smoke_product_state_invalid",
+        "packaging_smoke_evidence_query_failed",
+        "packaging_smoke_evidence_invalid",
         "packaging_smoke_worker_failed",
         "packaging_smoke_terminal_invalid",
         "packaging_smoke_link_create_failed",
@@ -140,6 +153,7 @@ _ERROR_CODES = frozenset(
 )
 _LOCAL_SMOKE_API_HOSTS = frozenset({"api", "localhost", "127.0.0.1", "::1"})
 _LINK_SMOKE_WORKER_ID = "packaging-link-smoke-worker"
+_OWNER_ID_ADAPTER = TypeAdapter(OwnerId)
 _LOCAL_SMOKE_DATABASE_HOSTS = frozenset(
     {"postgres", "localhost", "127.0.0.1", "::1"}
 )
@@ -158,6 +172,7 @@ class PackagingSmokeSettings:
     database: DatabaseSettings = field(repr=False)
     base_url: str
     timeout_s: float
+    owner_id: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -258,10 +273,17 @@ def load_packaging_smoke_settings(
         )
         if not math.isfinite(timeout_s) or not 0 < timeout_s <= 30:
             raise ValueError("smoke timeout is invalid")
+        raw_owner_id = environment.get("RIFTCOACH_LOCAL_OWNER_ID")
+        if not isinstance(raw_owner_id, str) or not raw_owner_id.strip():
+            raise ValueError("smoke owner identity is required")
+        owner_id = _OWNER_ID_ADAPTER.validate_python(
+            raw_owner_id.strip(), strict=True
+        )
         return PackagingSmokeSettings(
             database=database,
             base_url=base_url,
             timeout_s=timeout_s,
+            owner_id=owner_id,
         )
     except PackagingSmokeError:
         raise
@@ -379,6 +401,43 @@ def execute_packaging_smoke(
             raise PackagingSmokeError("packaging_smoke_terminal_invalid")
 
         try:
+            product_state = session.get(
+                f"{settings.base_url}/runs/{run_id}/product-state",
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_product_state_query_failed"
+            ) from None
+        product_state_body = _json_object(product_state)
+        if (
+            product_state.status_code != 200
+            or product_state_body.get("run_id") != run_id
+            or product_state_body.get("task_id") != str(task_id)
+            or product_state_body.get("state") != "rejected"
+            or product_state_body.get("reason_code") != "task_failed"
+            or product_state_body.get("task_status") != "failed"
+            or product_state_body.get("evidence_revision") is not None
+        ):
+            raise PackagingSmokeError("packaging_smoke_product_state_invalid")
+
+        try:
+            evidence = session.get(
+                f"{settings.base_url}/runs/{run_id}/evidence",
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_evidence_query_failed"
+            ) from None
+        evidence_body = _json_object(evidence)
+        if evidence.status_code != 409 or evidence_body != {
+            "code": "evidence_not_available",
+            "run_id": run_id,
+        }:
+            raise PackagingSmokeError("packaging_smoke_evidence_invalid")
+
+        try:
             task_events = session.get(
                 f"{settings.base_url}/tasks/{task_id}/events",
                 params={"after_cursor": 0, "limit": 100},
@@ -424,6 +483,38 @@ def execute_packaging_smoke(
             )
         ):
             raise PackagingSmokeError("packaging_smoke_task_event_invalid")
+
+        try:
+            task_stream = session.get(
+                f"{settings.base_url}/tasks/{task_id}/events/stream",
+                headers={"Last-Event-ID": "0"},
+                timeout=settings.timeout_s,
+            )
+        except Exception:
+            raise PackagingSmokeError(
+                "packaging_smoke_task_stream_query_failed"
+            ) from None
+        stream_body = task_stream.text
+        stream_type = task_stream.headers.get("content-type", "")
+        if (
+            task_stream.status_code != 200
+            or not stream_type.startswith("text/event-stream")
+            or "event: task.lifecycle" not in stream_body
+            or '"event_kind":"failed"' not in stream_body
+            or any(
+                forbidden in stream_body
+                for forbidden in (
+                    "owner_id",
+                    "worker_id",
+                    "operation_identity",
+                    "checkpoint_reference",
+                    "lease_token",
+                    "request_payload",
+                    "puuid",
+                )
+            )
+        ):
+            raise PackagingSmokeError("packaging_smoke_task_stream_invalid")
 
         try:
             created_link = session.post(
@@ -930,7 +1021,7 @@ def execute_packaging_smoke(
                 None
                 if not callable(get_persisted_task)
                 else get_persisted_task(
-                    owner_id="packaging-smoke-owner",
+                    owner_id=settings.owner_id,
                     task_id=conversation_review_task_id,
                 )
             )
@@ -948,7 +1039,7 @@ def execute_packaging_smoke(
             ).load(
                 MemoryContextBinding(
                     run_id=conversation_review_run_id,
-                    owner_id="packaging-smoke-owner",
+                    owner_id=settings.owner_id,
                     conversation_id=(
                         conversation_id
                         if task_binding is None
@@ -1033,7 +1124,7 @@ def execute_packaging_smoke(
         if (
             owner_export.status_code != 200
             or owner_export_body.get("schema_version") != "1.0"
-            or owner_export_body.get("owner_id") != "packaging-smoke-owner"
+            or owner_export_body.get("owner_id") != settings.owner_id
             or not isinstance(export_sections, list)
             or owner_export_body.get("total_record_count") != len(export_records)
             or not {"conversation", "message", "owner_preference", "training_plan"}.issubset(set(export_kinds))

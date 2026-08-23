@@ -116,9 +116,10 @@ RQ-088 生效后已执行一次修复后 replay：strict adapter 成功解析 10
 
 ### Batch C：证据与产品 API
 
-- [ ] 设计 EvidenceBundle 的安全持久化/刷新/过期投影。
-- [ ] 设计 8C event replay → SSE 的安全 DTO，不暴露 raw body/Prompt/Key。
-- [ ] 为 `published/degraded/rejected/not_ready` 固定前端状态合同。
+- [x] ADR-0060/专用设计冻结 EvidenceBundle PostgreSQL append-only revision、幂等 refresh 与 query-time expiry 投影。
+- [x] 冻结 8C event replay → cursor SSE 的安全 DTO，不暴露 raw body/Prompt/Key。
+- [x] 固定 `published/degraded/rejected/not_ready` 状态和 reason-code 优先级。
+- [ ] 按 TDD 实现 0011/Repository、Evidence/Product API、SSE、composition/package 与八维证据，并完成 exact-SHA 公共闭环。
 
 ### Batch D：前端第一小批
 

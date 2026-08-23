@@ -150,7 +150,7 @@ services:
       DATABASE_URL: postgresql+psycopg://riftcoach:${POSTGRES_PASSWORD:-riftcoach-local}@postgres:5432/riftcoach
       RIFTCOACH_PACKAGING_SMOKE: "true"
       RIFTCOACH_API_PROFILE: test
-      RIFTCOACH_LOCAL_OWNER_ID: packaging-smoke-owner
+      RIFTCOACH_LOCAL_OWNER_ID: ${RIFTCOACH_LOCAL_OWNER_ID:-local-demo-owner}
       RIFTCOACH_SMOKE_BASE_URL: http://api:8000
     depends_on:
       api:

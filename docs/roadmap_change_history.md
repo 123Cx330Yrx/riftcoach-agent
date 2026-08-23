@@ -2813,3 +2813,16 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   8E/coverage 继续 in progress/planned。
 - `HANDOFF`：按 preflight 既定顺序唯一下一内部批为 Batch C EvidenceBundle persistence/refresh/expiry、
   event replay→SSE body-free DTO 与四态产品状态合同；不得静默跳过 Batch C 进入 Batch D 前端。
+
+### 2026-08-23：RQ-090 8E Batch C 本地实现与门禁闭环
+
+- `DESIGN/IMPLEMENTED`：ADR-0060 下 PostgreSQL immutable Evidence revision、query-time expiry、四态
+  Product API、cursor SSE、0011/composition/package 与八维 walkthrough 已按 TDD 完成；8E coverage 继续
+  `planned`。
+- `BAD-CASE/FIX`：本地 Compose 默认 API owner 与 smoke 硬编码 owner 漂移导致严格 Memory Context
+  unavailable；当前改为同源 validated owner，未放宽 owner/relationship/conversation checks。
+- `LOCAL-EVIDENCE`：focused 79、CI-equivalent PostgreSQL 194、完整 1888/1 skipped/127 subtests、可逆
+  Alembic、两套 RAG、Harness、compile/pip/YAML/security/OpenAPI 与 Linux schema 1.6/外部调用 0/image
+  boundary 全绿；Windows symlink 单项由 exact-SHA Linux pytest 补证。
+- `NEXT`：独立 implementation/evidence commit/push 与同 SHA 三 job；公共成功前 Batch C 保持 open，
+  不进入 Batch D React。

@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（8E Batch B `e844bdd/32622696087` exact-SHA 公共闭环；唯一下一内部批为 Batch C Evidence/Product API）
+- 最后更新：2026-08-23（8E Batch C contracts/0011/Repository/Product API/cursor SSE/package/八维材料与全部本地/真库/Linux 门已完成，当前只待独立提交与 exact-SHA 公共关闭）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2152,3 +2152,44 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - Batch B 正式关闭；8E 仍 `in_progress`、coverage 仍 `planned`。按已持久化的 preflight 顺序，唯一下一
   内部批为 Batch C：EvidenceBundle 安全持久化/刷新/过期投影、8C event replay→SSE 安全 DTO、
   `published/degraded/rejected/not_ready` 状态合同；Batch C 公共闭环前不进入 Batch D 静态前端。
+
+## 2026-08-23：RQ-090 授权 8E Batch C 并冻结设计
+
+- 用户再次明确“继续”；当前只连续实施 Batch C，不需要逐小步等待批准，也不外推到 Batch D 前端。
+- ADR-0060 比较 PostgreSQL append-only snapshot、Artifact/file store 与 reconstruct-on-read，采用与现有
+  task owner/run 复合身份绑定的 PostgreSQL immutable revision：同 refresh identity 幂等 replay，过期在
+  query-time 降级，旧 revision 不覆盖也不自动回退。
+- 四态合同固定为：active task `not_ready`；failed/cancelled/Harness rejected `rejected`；报告可用但 Harness
+  degraded 或 evidence missing/expired/non-complete `degraded`；published + complete/current evidence 才
+  `published`。SSE 只消费 8C durable cursor event，支持 Last-Event-ID，不复制 Runtime Trace。
+- 当前唯一下一动作是完成 Batch C 全部本地/真库/Linux 门、独立 implementation/evidence commit 与
+  exact-SHA 三 job；本批外部 Riot/OP.GG/Provider/LLM calls 维持 0，8B holdout 不重跑，coverage 继续 planned。
+
+## 2026-08-23：8E Batch C 本地实现与八维证据完成
+
+- pure/full storage round-trip、nested Meta/bundle/snapshot digest、query-time expiry/usable claims 与四态 projector
+  已完成；claims 的 canonical digest 继续排序，storage projection 保留 typed order 以支持严格重建。
+- migration 0011、append-only trigger、复合 task FK/cascade、refresh/revision unique、JSONB bound/index 与
+  PostgreSQL Repository 已实现；真库证明 replay/conflict、owner latest、并发连续 revision、tamper 和删除级联。
+- `EvidenceProductService`、`GET /runs/{run_id}/evidence`、`/product-state` 已实现 404/409/500/503 body-free
+  合同；SSE 支持 Last-Event-ID、reconnect no-duplicate、keepalive、terminal close 与 safe stream error。
+- composition lifespan 绑定 Evidence Repository/Product/SSE；Linux package smoke 增加失败四态、缺证据 409 和
+  terminal SSE，外部调用仍为 0。八维 walkthrough/coverage evidence paths 已建立，整个 8E 仍 planned。
+- 本批实现期修复 three real Bad Cases：JSONB shallow-copy tamper 假阳性、same-content retry time 误 conflict、
+  evidence-first collection import cycle。该记录时仍待全部横向本地门、独立提交和 exact-SHA 三 job；公共关闭前
+  不进入 Batch D React。
+
+## 2026-08-23：8E Batch C 全部本地门完成
+
+- 本地 Compose 的 Memory Context 失败已由数据库身份列定位为 API 默认 `local-demo-owner` 与 smoke
+  硬编码 `packaging-smoke-owner` 漂移，而非 Repository 权限回归；TDD 后两者共用 validated
+  `RIFTCOACH_LOCAL_OWNER_ID`，严格 owner/binding checks 保持不变。
+- 无手工 owner 覆盖的全新 Linux Compose smoke 已通过：schema 1.6、Memory Context 3 records、terminal
+  assistant 0、外部调用 0；非 root UID 999 与 image exclusion 通过，临时资源已清理。
+- focused `79 passed`、package suites `39 passed`、CI-equivalent PostgreSQL `194 passed, 1 warning`、完整
+  `1888 passed, 1 skipped, 1 warning, 127 subtests passed`；Alembic reversible/head check、两套 RAG、
+  Harness、compile/pip/YAML、安全/OpenAPI/governance 前置门全绿。唯一 skip 是 Windows symlink 创建，
+  仍由 exact-SHA Linux pytest 补证。
+- 本批新的 Riot/OP.GG/Provider/LLM calls 维持 0，8B 产品 holdout 未重跑。唯一下一动作是审查 diff、创建
+  独立 implementation/evidence commit 并 push，等待同 SHA `pytest`、`postgres-migrations`、
+  `packaging-smoke`；三 job 全绿前不关闭 Batch C、不进入 Batch D React。

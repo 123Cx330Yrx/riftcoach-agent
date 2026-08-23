@@ -829,26 +829,41 @@ groups:
       problem_and_principle:
         - docs/adr/0059-adopt-owner-scoped-player-profiles-and-explicit-riot-routing.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+        - docs/adr/0060-adopt-postgresql-evidence-snapshots-and-cursor-sse.md
+        - docs/learning/8e-evidence-product-api-walkthrough.md
       design_and_implementation:
         - docs/adr/0059-adopt-owner-scoped-player-profiles-and-explicit-riot-routing.md
         - docs/plans/2026-08-23-player-profile-selection-explicit-routing-design.md
         - docs/plans/2026-08-23-player-profile-selection-explicit-routing-implementation.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+        - docs/adr/0060-adopt-postgresql-evidence-snapshots-and-cursor-sse.md
+        - docs/plans/2026-08-23-8e-evidence-product-api-design.md
+        - docs/plans/2026-08-23-8e-evidence-product-api-implementation.md
+        - docs/learning/8e-evidence-product-api-walkthrough.md
       code_map:
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+        - docs/learning/8e-evidence-product-api-walkthrough.md
       data_and_control_flow:
         - docs/plans/2026-08-23-player-profile-selection-explicit-routing-design.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+        - docs/plans/2026-08-23-8e-evidence-product-api-design.md
+        - docs/learning/8e-evidence-product-api-walkthrough.md
       verification:
         - docs/plans/2026-08-23-player-profile-selection-explicit-routing-implementation.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+        - docs/plans/2026-08-23-8e-evidence-product-api-implementation.md
+        - docs/learning/8e-evidence-product-api-walkthrough.md
       runbook:
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+        - docs/learning/8e-evidence-product-api-walkthrough.md
       failure_security_boundary:
         - docs/adr/0059-adopt-owner-scoped-player-profiles-and-explicit-riot-routing.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+        - docs/adr/0060-adopt-postgresql-evidence-snapshots-and-cursor-sse.md
+        - docs/learning/8e-evidence-product-api-walkthrough.md
       interview_wording:
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
+        - docs/learning/8e-evidence-product-api-walkthrough.md
 
   - id: 8f-final-evaluation-and-portfolio
     sequence: 360

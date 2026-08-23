@@ -1876,3 +1876,26 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - task 与 event 的可空 checkpoint 都必须把 Python `None` 映射为 SQL `NULL`；否则无 checkpoint event 在 psycopg JSONB 边界可能变成 JSON `null` wrapper，破坏 body-free replay 读取。
 - 采用 `ReviewTaskEventRecord.checkpoint_reference = JSONB(none_as_null=True)`；不放宽 event parser、不改变 migration schema、不暴露 checkpoint body。
 - package smoke 在 event response 失败时只打印 status/code/JSON key 的 body-free diagnostics，便于区分 API service error 与 response-shape error。
+
+## 2026-08-23：ADR-0060 采用 PostgreSQL Evidence revision 与 cursor SSE
+
+- RQ-090 已授权 Batch C。三案比较拒绝 file-backed 双真源和 reconstruct-on-read 网络副作用，采用与
+  `review_tasks` owner/run 复合身份绑定的 PostgreSQL append-only typed snapshot；refresh 只追加 revision，
+  相同 refresh identity 幂等 replay，旧 revision 不覆盖或自动回退。
+- expiry 是 query-time usability projection：快照/digest 保留审计，但 expired Meta/exact-patch claim 不再
+  可用，产品至少降级。Batch C 只建立内部 refresh write seam，不调用新的 Riot/OP.GG/LLM 或公开 refresh POST。
+- SSE 只包装 8C durable event cursor，支持 Last-Event-ID、有限连接和 keepalive；不复制 Runtime Trace、
+  不暴露 owner/worker/checkpoint/token/operation/body。四态由 task + Harness + evidence pure projector 统一。
+- 当前只完成教学/ADR/design/implementation plan；下一动作是 pure-contract 红灯。React/Auth/HTTPS/backup/
+  deployment 仍不在本批，8E coverage 保持 planned。
+
+## 2026-08-23：Batch C 实施期补充裁决
+
+- refresh idempotency 比较 validated bundle digest，不比较 retry request 的 `stored_at`；首次 committed
+  timestamp 属于 immutable snapshot，稍后同内容重试必须 replay，不能误报 conflict。
+- JSONB tamper 测试必须 deep-copy nested value 或使用明确 SQL mutation，确保真的发出 UPDATE；浅拷贝造成的
+  ORM no-op 不得冒充 read-time digest 证据。
+- `app.api` convenience export 改为 lazy，SSE frame 在 task 层使用与 `TaskEventResponse` 等价的显式
+  allowlist；拒绝 task/evidence→API→composition 的 import-order cycle。
+- Product GET 只读已物化 snapshot，绝不 reconstruct-on-read 调用 Riot/OP.GG；自动 refresh scheduler、
+  Auth、前端、备份和生产连接容量仍不在 Batch C。
