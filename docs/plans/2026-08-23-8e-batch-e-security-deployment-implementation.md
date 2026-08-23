@@ -18,7 +18,14 @@ Secret Manager、HTTPS edge 和 deployment 继续按原顺序保留；E4 backup/
 
 E4 implementation/evidence `27b9256` / Actions `32660145945` 已完成 exact-SHA 三 job 公共闭环。下一项
 是 E5 packaging/observability，继续复用单机 Compose、现有 health/readiness 与 body-free observability
-接缝；E5 不自动引入 Redis/Kubernetes/第二套 metrics runtime。
+接缝；E5 不自动引入 Redis/Kubernetes/第二套 metrics runtime。E5 implementation/evidence `ca6da44` /
+Actions `32661425379` 也已完成 exact-SHA 三 job 公共闭环；下一项转入 production shell/Auth gate，仍不
+把 local/test session 说成 OIDC/RSO production login。
+
+当前 production shell/Auth gate 已完成本地 TDD：`AuthGate` 在同源 opaque session 成功前不 mount live
+controller；`auth_unavailable` 与 `auth_session_expired/revoked/required` 分别投影为配置缺失与可恢复
+session boundary。视觉 Task 3 同步完成低机械感 polish。实现仍等待独立提交与 exact-SHA 公共 CI；真实
+OIDC/RSO、PostgreSQL session repository、HTTPS edge 和 provider adoption 不在本批声称完成。
 
 ---
 

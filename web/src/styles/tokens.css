@@ -41,6 +41,9 @@
   --duration-state: 320ms;
   --duration-atmosphere: 900ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --awakening-atmosphere-opacity: 0.78;
+  --awakening-mechanics-opacity: 0.065;
+  --awakening-route-opacity: 0.12;
   --panel-border: rgba(123, 219, 211, 0.16);
   --panel-surface: linear-gradient(145deg, rgba(11, 31, 39, 0.92), rgba(5, 17, 23, 0.82));
   --panel-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);

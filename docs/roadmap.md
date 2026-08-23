@@ -609,4 +609,7 @@ derived Memory、relationship private data；Task/Artifact 与全局 Player Subj
   cleanup 证据已公共验证，KMS/对象存储/RPO-RTO 仍是明确 deferred 边界。
 - E5 首批增加 bounded body-free `TaskObservability` projection 与 `/health/metrics`；Compose migration
   order、health/readiness、non-root image 和 no-I/O package smoke 继续复用，不引入新 metrics runtime。
-- E5 当前仍等待独立 implementation/evidence commit 和 exact-SHA 公共闭环，8F 不提前进入。
+- E5 `ca6da44` / Actions `32661425379` 已完成 exact-SHA 三 job 公共闭环；production shell/Auth gate 与
+  Rift Awakening 视觉 polish 已完成本地 TDD，等待独立提交和 exact-SHA 公共 CI；之后按顺序进入 Timeline
+  DTO/UI、Evidence 深化、Training full page 和 OP.GG useful-breadth/golden slice。真实 OIDC/RSO 仍不因 UI
+  开始而默认采用，8F 不提前进入。

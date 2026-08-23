@@ -7,6 +7,7 @@ import type {
   EvidenceProjectionWire,
   EvidenceSnapshotWire,
   EvidenceSourceWire,
+  AuthSessionWire,
   ExpectedTaskRunBinding,
   LatestProfileReviewWire,
   LatestReviewItemWire,
@@ -142,6 +143,16 @@ function timestamp(value: unknown, path: string): string {
     throw new Error(`${path} must be a timezone-aware timestamp`)
   }
   return result
+}
+
+export function decodeAuthSession(value: unknown): AuthSessionWire {
+  const row = record(value, "auth_session")
+  exact(row, ["schema_version", "csrf_token", "expires_at"], "auth_session")
+  return {
+    schema_version: literal(row.schema_version, "1.0", "auth_session.schema_version"),
+    csrf_token: string(row.csrf_token, "auth_session.csrf_token", 256),
+    expires_at: timestamp(row.expires_at, "auth_session.expires_at"),
+  }
 }
 
 function patch(value: unknown, path: string): string {

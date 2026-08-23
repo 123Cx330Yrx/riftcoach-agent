@@ -45,6 +45,9 @@ describe("8E browser network boundary", () => {
           if (projectPath === "src/api/client.ts" && pattern.source === "\\bglobalThis\\.fetch\\b") {
             continue
           }
+          if (projectPath === "src/auth/session.ts" && pattern.source === "\\bglobalThis\\.fetch\\b") {
+            continue
+          }
           if (projectPath === "src/api/taskEventStream.ts" && pattern.source === "\\bEventSource\\s*\\(") {
             continue
           }

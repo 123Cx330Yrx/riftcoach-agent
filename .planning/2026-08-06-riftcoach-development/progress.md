@@ -4124,3 +4124,34 @@
   公共 CI，E5 仍 in progress。
 - `NEXT`：完成 E5 八维 walkthrough/计划同步，跑完整 pytest、RAG/Harness、Alembic、Compose smoke 与 stale
   门，创建独立 implementation/evidence commit 并等待 exact-SHA 三 job。
+
+### 2026-08-24：E5 exact-SHA 公共闭环与产品模块交接
+
+- E5 implementation/evidence `ca6da44be439b0020f231dc0c00d6a70322e723c` / Actions `32661425379` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，E5 正式关闭。
+- 公共 pytest 包含 frontend contract、完整 Python、RAG/Harness/security/tracked-data/governance；真库
+  job migration/control-plane 全绿；package job 构建 API、验证 `/health/metrics`、no-I/O smoke、non-root
+  image boundary 与资源清理。
+- `/health/metrics` 仍只是 bounded body-free operational projection，不是 Prometheus/长期时序/自动告警；
+  8E coverage 继续 planned，Auth/RSO、HTTPS、完整前端产品模块、OP.GG breadth/golden slice 和 8F 未完成。
+- `NEXT`：按连续授权进入 `remaining-product-modules / production-shell + Auth gate`；先审查现有 React
+  live/fixture 状态和 E1 session HTTP seam，冻结未登录/加载/拒绝/登录失败合同，再做前端 TDD，保持真实
+  OIDC/RSO provider adoption 独立且不伪造生产登录。
+
+### 2026-08-24：视觉 Task 3 polish 与 production shell/Auth gate 本地完成
+
+- 视觉 polish 根据 1440/390 截图修正：aperture 保留 Rift 水晶氛围，instrumentarium 降为低对比远景，
+  route/core/panel 的光晕与重复边框收敛；机械层不再压过标题、身份校准和 handoff。`prefers-reduced-motion`
+  仍冻结连续运动，CSS/SVG fallback 不变。
+- 新增 `AuthSessionWire`、`decodeAuthSession` 和 `BrowserAuthSessionClient`；同源 `POST /api/auth/session`
+  只接受 typed session projection，body-free auth codes 进入 allowlist，错误正文不进入 UI/日志。
+- 新增 `AuthGate` 与 `ProductionShell`：checking 时不启动 live controller，authenticated 后才 start；
+  `auth_unavailable` 显示安全配置缺失，`auth_session_expired/revoked/required` 显示可恢复 session boundary。
+  fixture scenario 与 `surface=awakening` preview 仍显式不走 production auth。
+- 本地 frontend unit `87 passed`、Playwright `22 passed`、typecheck/build 通过；JS gzip 仍约 `123.91 kB`；
+  detector 无 findings，Riot/OP.GG/OIDC/RSO/LLM 外部调用为 0。
+- 八维证据：`docs/plans/2026-08-24-8e-production-shell-auth-gate-{design,implementation}.md` 与
+  `docs/learning/8e-production-shell-auth-gate-walkthrough.md`；coverage 仍保持 8E `planned`。
+- `NEXT`：创建独立 implementation/evidence commit，运行 Python 完整回归、RAG/Harness、Alembic、
+  governance、package/Compose smoke，并等待 exact-SHA 公共 CI；公共闭环后按顺序进入 Timeline DTO/UI，
+  不把 OIDC/RSO 或真实 auth provider 宣称为已采用。

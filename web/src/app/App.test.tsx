@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest"
 
 import { App } from "./App"
 import type { LiveWorkbenchControllerLike } from "./App"
+import { AuthSessionError } from "../auth/session"
 
 describe("Rift Command Center shell", () => {
   it("exposes the isolated portal preview without mounting the workbench", () => {
@@ -77,7 +78,18 @@ describe("Rift Command Center shell", () => {
       dispose: vi.fn(),
     }
 
-    render(<App createLiveController={() => controller} />)
+    render(
+      <App
+        createLiveController={() => controller}
+        createAuthSessionClient={() => ({
+          issue: vi.fn(async () => ({
+            schema_version: "1.0" as const,
+            csrf_token: "csrf-test",
+            expires_at: "2026-08-24T06:00:00Z",
+          })),
+        })}
+      />,
+    )
 
     await waitFor(() => expect(controller.start).toHaveBeenCalledTimes(1))
     expect(screen.getByRole("heading", { name: "LiveRiver#EUW" })).toBeInTheDocument()
@@ -88,5 +100,19 @@ describe("Rift Command Center shell", () => {
     expect(screen.queryByText(/fixture preview/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/2\s*\/\s*5/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/next session/i)).not.toBeInTheDocument()
+  })
+
+  it("shows a provider-neutral auth failure instead of loading a live profile", async () => {
+    render(
+      <App
+        createAuthSessionClient={() => ({
+          issue: vi.fn(async () => { throw new AuthSessionError("auth_unavailable", 503) }),
+        })}
+      />,
+    )
+
+    expect(await screen.findByRole("heading", { name: /sign-in is not ready/i })).toBeInTheDocument()
+    expect(screen.getByText("auth_unavailable")).toBeInTheDocument()
+    expect(screen.queryByText(/rift command center/i)).not.toBeInTheDocument()
   })
 })

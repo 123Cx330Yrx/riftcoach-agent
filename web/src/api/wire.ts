@@ -379,3 +379,9 @@ export interface ExpectedTaskRunBinding {
   readonly taskId: string
   readonly runId: string
 }
+
+export interface AuthSessionWire {
+  readonly schema_version: "1.0"
+  readonly csrf_token: string
+  readonly expires_at: string
+}

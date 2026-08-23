@@ -3932,3 +3932,23 @@
   redacted SecretSource；PostgreSQL readiness 通过后才 resolve Riot/LLM secret 并构造 client。默认环境注入只
   是 local/test-compatible fallback；外部 Secret Manager adapter、PostgreSQL session repository、OIDC/RSO
   callback 和 backup/erase 仍未完成。
+
+## 2026-08-24：Production shell/Auth gate 实施发现
+
+- `create_composed_app` 已有 provider-neutral opaque session seam，但默认未注入 AuthSessionService 时必须
+  返回 `auth_unavailable`；前端不能因为能渲染 live shell 就把 local/test session 说成生产登录。
+- `AuthGate` 必须在 live controller mount 前完成 session issuance；否则 401 期间 controller 可能先读到
+  profile，造成状态闪烁和错误的“无玩家资料”解释。
+- auth failure code 必须和普通 `run_not_found`/`service_unavailable` 区分：expired/revoked/required 可
+  重试且会卸载旧 controller，provider unavailable 则 fail closed 并保留配置缺失事实。
+- CSRF token 本批只在内存中的 typed session projection 中保留，为下一 mutation seam 预留；不进入 URL、
+  localStorage、report、Trace 或浏览器可读 cookie。
+
+## 2026-08-24：E5 公共闭环与 production shell 交接
+
+- `ca6da44` / Actions `32661425379` 三 job 全绿，E5 的 bounded metrics projection、Compose/readiness/
+  package boundary 取得公共证据；没有新增外部 Provider、Riot、Secret 或网络 I/O。
+- 下一产品施工切片是 production shell/Auth gate：先复用真实 API 的 session/CSRF seam 和现有 live/fixture
+  decoder，明确未登录、加载、auth_unavailable、session expired 与安全拒绝状态，再决定前端引入方式。
+- 真实 OIDC/RSO provider 仍需独立许可/费用/安全 adoption gate；不能因为做登录页面就把 local/test session
+  或输入 Riot ID 说成 production authentication。

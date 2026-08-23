@@ -33,12 +33,13 @@ function context(request) {
   return { scenario, testId, ledger }
 }
 
-function sendJson(response, value, status = 200) {
+function sendJson(response, value, status = 200, extraHeaders = {}) {
   const body = JSON.stringify(value)
   response.writeHead(status, {
     "content-type": "application/json",
     "content-length": Buffer.byteLength(body),
     "cache-control": "no-store",
+    ...extraHeaders,
   })
   response.end(body)
 }
@@ -390,6 +391,20 @@ const server = createServer(async (request, response) => {
 
   const { scenario, ledger } = context(request)
   ledger.requests.push(`${request.method ?? "GET"} ${url.pathname}${url.search}`)
+  if (url.pathname === "/auth/session" && request.method === "POST") {
+    return sendJson(
+      response,
+      {
+        schema_version: "1.0",
+        csrf_token: `csrf-${ledger.testId}`,
+        expires_at: "2026-08-24T06:00:00Z",
+      },
+      200,
+      {
+        "set-cookie": `riftcoach_session=test-session-${encodeURIComponent(ledger.testId)}; Path=/; HttpOnly; SameSite=Lax`,
+      },
+    )
+  }
   if (request.method !== "GET") return sendJson(response, { code: "request_invalid" }, 405)
 
   if (url.pathname === "/player-profiles") {

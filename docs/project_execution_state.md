@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-24（视觉 Task 3 与 Batch E E1/E2/E3/E4 implementation 已由 `27b9256` / Actions `32660145945` 完成 exact-SHA 三 job 公共闭环）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / 8e-batch-e-security-deployment-implementation`，E1/E2/E3/E4 已公共关闭，下一原子项为 E5 packaging/observability；完整 8E/8F 尚未完成。
+- 最后更新：2026-08-24（视觉 Task 3 polish 与 production shell/Auth gate 已完成本地实现；E5 `ca6da44` / Actions `32661425379` 已完成 exact-SHA 三 job 公共闭环）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / remaining-product-modules`，Batch E E1–E5 已公共关闭，下一原子项为 production shell/Auth gate；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -2452,3 +2452,28 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   subtests passed`；当前 E5 尚未取得独立提交或公共 CI，8E 仍 `in_progress/planned`。
 - `NEXT`：补 E5 packaging/observability 八维 walkthrough、Compose/rollback/red-contract 文档与比例回归，
   再创建独立提交并等待 exact-SHA 三 job；不引入 Prometheus/Redis/Kubernetes/第二套 metrics runtime。
+
+## 2026-08-24：RQ-099 E5 exact-SHA 公共闭环与 product shell 交接
+
+- E5 implementation/evidence `ca6da44be439b0020f231dc0c00d6a70322e723c` / Actions `32661425379` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success；bounded metrics、
+  Compose/readiness、migration 和 Linux package boundary 取得 exact-SHA 公共证据。
+- E5 不声称 Prometheus/长期时序/自动告警、KMS/对象存储、OIDC/RSO、HTTPS edge 或 8F；8E coverage 仍
+  `planned`，当前唯一 checkpoint 仍为 `8e-productization / in_progress / remaining-product-modules`。
+- 视觉 Task 3 已根据 1440/390 截图完成一轮 polish：instrumentarium 变为低对比可移除远景，route/core/
+  panel 层次收敛，机械 atmosphere 不再压过标题、校准表单和 handoff。
+
+## 2026-08-24：RQ-100 production shell/Auth gate 本地完成
+
+- 新增 `AuthSessionWire`/严格 decoder/`BrowserAuthSessionClient` 和 `AuthGate`；默认 live 路径为
+  `ProductionShell → AuthGate → LiveWorkbenchController`，session 成功前不启动 controller。
+- `auth_unavailable`、`auth_session_expired`、`auth_session_revoked`、`authentication_required` 各自
+  投影为 body-free、可审计的配置缺失或恢复边界；fixture scenario 与 `surface=awakening` preview
+  保持显式 no-auth disclosure。CSRF token 只在内存 projection，未来 mutation 仍需独立门。
+- frontend unit `87 passed`、Playwright `22 passed`、typecheck/build 通过，Impeccable detector 无 findings；
+  本批没有 Riot/OP.GG/OIDC/RSO/LLM 外部调用，真实 provider adoption 未完成。
+- 八维材料已写入 `docs/plans/2026-08-24-8e-production-shell-auth-gate-{design,implementation}.md`、
+  `docs/learning/8e-production-shell-auth-gate-walkthrough.md`，coverage 仍 planned。
+- `NEXT`：运行比例 Python/RAG/Harness/Alembic/package/Compose/governance 门，创建独立 implementation/
+  evidence commit 并等待 exact-SHA 公共 CI；公共闭环后交接 `Timeline DTO/UI`，不提前进入 OP.GG golden
+  slice 或 8F。

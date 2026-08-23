@@ -2093,3 +2093,23 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   smoke；rollback 先以旧镜像/兼容 migration/ready gate runbook 证明，不承诺自动回滚或 HA。
 - 当前只完成 focused 本地实现，等待完整回归、独立提交和 exact-SHA 公共 CI；不引入 Prometheus/Redis/
   Kubernetes/第二套 metrics runtime。
+
+## 2026-08-24：RQ-099 E5 公共关闭与 production shell 交接
+
+- `ca6da44be439b0020f231dc0c00d6a70322e723c` / Actions `32661425379` 的三 job 全绿，E5 正式关闭；
+  bounded `/health/metrics`、Compose/readiness、真库 migration 和 Linux package boundary 取得公共证据。
+- 下一项是 remaining product modules 的 production shell/Auth gate：先把现有 opaque session/CSRF seam
+  投影为未登录/加载/过期/拒绝 UI 状态，再独立评估 OIDC/RSO；local/test session 与 Riot ID 输入不等于
+  production authentication。
+- 入口仍沿用 `Rift Awakening → Esports Intelligence` 视觉合同，机械 atmosphere 层不能改变安全状态事实。
+
+## 2026-08-24：Production shell/Auth gate 本地闭环与视觉 polish
+
+- 视觉 Task 3 根据真实 desktop/mobile 截图完成一轮收敛：instrumentarium 只作为低对比可移除层，
+  route/core/panel 光效服务于身份校准和 handoff；未增加第二动画引擎或远程素材。
+- Live 默认路径现在是 `ProductionShell → AuthGate → LiveWorkbenchController`。session 未成功时不启动
+  controller；`auth_unavailable`、`auth_session_expired`、`auth_session_revoked`、
+  `authentication_required` 保持 body-free 且可审计。
+- fixture/awakening preview 是明确的本地预览边界，不是 production auth；CSRF token 仅内存保留以供后续
+  mutation seam，OIDC/RSO、真实 session repository、HTTPS edge 仍须独立 adoption gate。
+- 下一项保持 `Timeline DTO/UI`，但必须先取得本批独立提交与 exact-SHA 公共 CI；8E coverage 仍 planned。

@@ -1471,5 +1471,8 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
 - [completed-public] E4 backup/restore/erase：restore/erase contracts、owner marker → Artifact/Trace
   locator/cleanup、manifest digest、幂等 replay 与 readiness compensation 已由 `27b9256` / Actions
   `32660145945` 完成 exact-SHA 三 job 公共闭环。
-- [in_progress] E5 packaging/observability：已冻结并实现 body-free metrics projection、bounded latency
-  snapshot 与 event counters；当前完成 focused 门，等待比例回归、独立提交和 exact-SHA 公共闭环。
+- [completed-public] E5 packaging/observability：body-free metrics projection、bounded latency snapshot 与
+  event counters 已由 `ca6da44` / Actions `32661425379` 完成 exact-SHA 三 job 公共闭环。
+- [in_progress] Remaining product modules / production shell + Auth gate：已完成本地设计/TDD 与浏览器状态门；
+  `AuthGate` 先建立 same-origin opaque session，再启动 live controller；auth_unavailable/session-expired
+  fail closed；真实 OIDC/RSO provider 仍保持独立 adoption gate，等待独立提交与 exact-SHA 公共 CI。

@@ -12,6 +12,8 @@ import { LazyMotion, MotionConfig, domAnimation, m } from "motion/react"
 import { ApiClient } from "../api/client"
 import { LiveWorkbenchHttpApi } from "../api/liveWorkbenchApi"
 import { createTaskEventStream } from "../api/taskEventStream"
+import { AuthGate } from "../auth/AuthGate"
+import { BrowserAuthSessionClient, isAuthSessionFailure, type AuthSessionClient } from "../auth/session"
 import type { WorkbenchScreenState } from "../contracts/workbench"
 import { CoachBrief } from "../components/CoachBrief"
 import { CommandRail } from "../components/CommandRail"
@@ -51,6 +53,7 @@ export interface LiveWorkbenchControllerLike {
 interface AppProps {
   readonly scenarioOverride?: string
   readonly createLiveController?: () => LiveWorkbenchControllerLike
+  readonly createAuthSessionClient?: () => AuthSessionClient
   readonly surfaceOverride?: "awakening"
 }
 
@@ -367,7 +370,13 @@ function FixtureWorkbench({ state }: { readonly state: WorkbenchScreenState }) {
   )
 }
 
-function LiveWorkbench({ createController }: { readonly createController: () => LiveWorkbenchControllerLike }) {
+function LiveWorkbench({
+  createController,
+  onAuthFailure,
+}: {
+  readonly createController: () => LiveWorkbenchControllerLike
+  readonly onAuthFailure: (code: string) => void
+}) {
   const [controller] = useState(createController)
   const started = useRef(false)
   const mountToken = useRef(0)
@@ -389,6 +398,14 @@ function LiveWorkbench({ createController }: { readonly createController: () => 
     }
   }, [controller])
 
+  const authFailureCode = snapshot.state.client === "error" && isAuthSessionFailure(snapshot.state.code)
+    ? snapshot.state.code
+    : undefined
+  useEffect(() => {
+    if (authFailureCode !== undefined) onAuthFailure(authFailureCode)
+  }, [authFailureCode, onAuthFailure])
+
+  if (authFailureCode !== undefined) return null
   if (snapshot.state.client !== "ready") return <ClientBoundary state={snapshot.state} mode="live" />
   return (
     <ReadyWorkbench
@@ -398,6 +415,30 @@ function LiveWorkbench({ createController }: { readonly createController: () => 
       disclosure="Owner-scoped typed API · no browser secrets"
       onSelect={(profileId) => { void controller.selectProfile(profileId) }}
     />
+  )
+}
+
+function ProductionShell({
+  createController,
+  createAuthSessionClient,
+}: {
+  readonly createController: () => LiveWorkbenchControllerLike
+  readonly createAuthSessionClient?: () => AuthSessionClient
+}) {
+  const [authClient] = useState(
+    () => createAuthSessionClient?.() ?? new BrowserAuthSessionClient(),
+  )
+  const [authFailureCode, setAuthFailureCode] = useState<string>()
+  const clearAuthFailure = useCallback(() => setAuthFailureCode(undefined), [])
+  const onAuthFailure = useCallback((code: string) => setAuthFailureCode(code), [])
+  return (
+    <AuthGate
+      client={authClient}
+      {...(authFailureCode === undefined ? {} : { failureCode: authFailureCode })}
+      onRetry={clearAuthFailure}
+    >
+      {() => <LiveWorkbench createController={createController} onAuthFailure={onAuthFailure} />}
+    </AuthGate>
   )
 }
 
@@ -434,7 +475,7 @@ function AppFrame({
   )
 }
 
-export function App({ scenarioOverride, createLiveController, surfaceOverride }: AppProps) {
+export function App({ scenarioOverride, createLiveController, createAuthSessionClient, surfaceOverride }: AppProps) {
   if (getAwakeningSurface(surfaceOverride)) return <AwakeningPreview />
   const fixtureState = useMemo(() => getExplicitScenario(scenarioOverride), [scenarioOverride])
   if (fixtureState !== undefined) {
@@ -442,7 +483,10 @@ export function App({ scenarioOverride, createLiveController, surfaceOverride }:
   }
   return (
     <AppFrame mode="live">
-      <LiveWorkbench createController={createLiveController ?? createDefaultLiveController} />
+      <ProductionShell
+        createController={createLiveController ?? createDefaultLiveController}
+        {...(createAuthSessionClient === undefined ? {} : { createAuthSessionClient })}
+      />
     </AppFrame>
   )
 }

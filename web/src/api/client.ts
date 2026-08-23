@@ -16,6 +16,12 @@ const ALLOWED_ERROR_CODES = new Set([
   "evidence_unavailable",
   "training_scope_not_found",
   "training_plan_not_found",
+  "auth_unavailable",
+  "authentication_required",
+  "auth_session_invalid",
+  "auth_session_expired",
+  "auth_session_revoked",
+  "csrf_invalid",
 ])
 
 type Fetcher = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>

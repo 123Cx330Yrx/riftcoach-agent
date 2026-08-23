@@ -2963,3 +2963,19 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   和 `/health/metrics` typed projection；未新增外部监控 runtime、Secret、网络 I/O 或前端部署。
 - E5 当前只完成 focused 本地实现，完整回归、独立提交和 exact-SHA 三 job 公共 CI 仍是关闭门；不把
   `/health/metrics` 写成 Prometheus/长期存储/自动告警能力。
+
+## 2026-08-24：RQ-099 E5 exact-SHA 公共关闭，交接 production shell
+
+- `ca6da44` / Actions `32661425379` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；
+  E5 正式关闭，metrics/readiness/Compose/package 证据已公开。
+- 下一产品切片是 production shell/Auth gate，先连接 opaque session/CSRF 的 UI 状态合同；OIDC/RSO、
+  HTTPS、完整 frontend modules、OP.GG breadth/golden slice 和 8F 仍按独立门推进。
+
+## 2026-08-24：Production shell/Auth gate 本地实现与视觉 polish
+
+- Rift Awakening 的 mechanical atmosphere 降为低对比可移除层，真实截图确认标题、校准表单与 handoff
+  成为主层；reduced-motion、CSS/SVG fallback 和资产 ledger 边界保持不变。
+- Live 默认路径新增 typed same-origin auth session gate：checking 不加载 controller；auth unavailable
+  和 session expired/revoked/required 各自投影为安全 UI 状态；fixture/preview 不伪装生产登录。
+- 本地 frontend unit/e2e/typecheck/build 全绿，下一步是独立提交与 exact-SHA 公共 CI；CI 通过后交接
+  `Timeline DTO/UI`，不提前进入 OP.GG golden slice 或 8F。
