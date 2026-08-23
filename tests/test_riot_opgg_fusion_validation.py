@@ -81,3 +81,33 @@ def test_live_mid_schema_diagnostic_is_body_free_and_distinct_from_fixture() -> 
     assert diagnostic["text_digest"] != controlled["text_digest"]
     assert diagnostic["text_length"] != controlled["text_length"]
     assert "DK ShowMaker" not in json.dumps(result)
+
+
+def test_post_fix_live_replay_creates_body_free_two_source_bundle() -> None:
+    result = json.loads(
+        Path(
+            "data/evaluation/results/riot_opgg_fusion_validation_2026-08-23-v3.json"
+        ).read_text(encoding="utf-8")
+    )
+
+    assert result["result"] == "passed"
+    assert result["body_free"] is True
+    assert result["external_io"] == {
+        "key_reads": 0,
+        "llm_provider_calls": 0,
+        "opgg_tools_call_calls": 1,
+        "riot_calls": 0,
+    }
+    assert result["opgg"]["fact_count"] == 10
+    assert result["opgg"]["position"] == "mid"
+    assert result["bundle"]["bundle_digest"] == (
+        "69ed8a83140da73818ed46a7857947d780d0132a309a6317036438161fbfff1a"
+    )
+    assert result["bundle"]["sources"]["riot_official"]["match_count"] == 1
+    assert result["bundle"]["sources"]["opgg"]["evidence_count"] == 1
+    assert result["bundle"]["disposition"] == "degraded"
+    assert result["bundle"]["joins"][0]["status"] == "unjoined"
+    assert "meta_join_missing" in {
+        gap["code"] for gap in result["bundle"]["gaps"]
+    }
+    assert "DK ShowMaker" not in json.dumps(result)

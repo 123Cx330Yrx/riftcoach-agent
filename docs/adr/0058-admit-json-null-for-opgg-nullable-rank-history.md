@@ -51,3 +51,8 @@ patch/freshness 限制、最多 10 行、单次调用、deadline 或 body-free �
 实现提交 `83fde7d014aae8fdccf2ebd91929967868101075` 已由 Actions `32615340228`
 完成 exact-SHA `pytest`、真实 PostgreSQL 与 Linux package 三 job 公共验证；公共 CI
 外部 OP.GG/Riot/Provider 调用为 0。
+
+RQ-088 生效后，修复后的单次 live replay 成功解析 10 条 `mid` facts 并创建 body-free
+EvidenceBundle `69ed8a...fff1a`；OP.GG/Riot/LLM/Key calls 为 `1/0/0/0`。bundle 因 Akali
+未命中当前 top-10 Meta 以及缺 Data Dragon/official patch 保持 `degraded/unjoined`；该结果
+证明 parser Bad Case 已修复，但不冒充 exact champion join、patch attribution 或 upstream freshness。

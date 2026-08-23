@@ -2767,3 +2767,14 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   `32615340228` 三 job completed/success；公共 pytest 1700、真实 PostgreSQL 186、Linux package schema 1.6。
 - `BOUNDARY`：公共 CI 外部 Riot/Provider calls 0，也不调用 OP.GG；因此它证明代码/回归/部署兼容，不证明
   修复后 live bundle 成功。8E 继续 in progress，唯一下一动作是等待新授权的一次最终 `mid` replay。
+
+### 2026-08-23：RQ-088 持续授权与 ADR-0058 修复后 live 通过
+
+- `POLICY`：必要、有界、低费用、隐私可控的只读真实调用不再逐次等待授权；高费用/批量、敏感数据发送、
+  不可逆写入与权限扩大仍需确认。每次调用继续记录次数、停止条件和 body-free 结果。
+- `LIVE-PASS`：修复后单次 OP.GG `mid` call 解析 10 facts，创建 EvidenceBundle `69ed8a...fff1a`；
+  OP.GG/Riot/LLM/Key calls `1/0/0/0`，无重试/raw body。
+- `HONEST-DEGRADE`：Akali 未命中 top-10 Meta，Data Dragon/official patch 未进入 replay，因此 bundle 为
+  `degraded/unjoined`；这是正确 gap，不换样本、不扩大抓取、不继承 patch 追绿。
+- `NEXT`：frozen success evidence regression、比例本地门、独立 evidence SHA 与三 job；随后进入 player
+  profile selection DTO/legacy region，不再阻塞于 OP.GG parser。

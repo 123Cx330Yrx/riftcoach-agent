@@ -78,6 +78,11 @@ ADR-0058 采用最小兼容：只在 `rank_prev` 和 `rank_prev_patch` 两个 nu
 未知 `Name`、调用或表达式继续 fail closed。该窗口唯一 tools/call 已用于诊断，因此
 离线修复和公共 no-I/O CI 不能冒充“修复后 live replay 已通过”。
 
+RQ-088 生效后已执行一次修复后 replay：strict adapter 成功解析 10 条 `mid` facts，
+并创建 bundle `69ed8a...fff1a`。bundle 仍为 `degraded/unjoined`，因为 Riot 样本 Akali
+未命中当前 top-10 Meta，且本 replay 不含 Data Dragon/official patch；这属于显式 gap，
+不是 parser/fusion 失败，也不改变 partial provenance 与 patch/freshness 限制。
+
 ## 3. 已发现的身份/地区缺口
 
 - `POST /player-links` 已支持用户提交 Riot ID、routing region 和 `self|observed`。
@@ -98,7 +103,7 @@ ADR-0058 采用最小兼容：只在 `rank_prev` 和 `rank_prev_patch` 两个 nu
 - [x] 增加受控 schema-drift diagnostic 合同与不含原始 body 的回归 fixture；诊断只记录阶段、allowlisted 字段位置、AST 节点类型、长度和摘要。
 - [x] 在新的明确外部授权窗口内重跑一次真实 mid replay，取得字段级 live diagnostic；结果定位到 `Mid.rank_prev_patch` / field 7 / AST `Name`，且 live digest/length 与 fixture 不同。
 - [x] 依据 ADR-0058 用 red→green TDD 只接纳两个 nullable rank-history 字段上的精确小写 JSON `null`；其余 Name/字段/表达式继续拒绝。
-- [ ] 新授权下执行一次修复后最终 live replay；只有成功创建 bundle 才能把真实两源验证标为通过。
+- [x] RQ-088 下执行一次修复后最终 live replay；strict adapter 通过并创建 body-free bundle。具体 Akali Meta join 仍因 top-10 未命中而显式 degraded。
 
 ### Batch B：玩家档案合同
 
@@ -135,9 +140,8 @@ ADR-0058 采用最小兼容：只在 `rank_prev` 和 `rank_prev_patch` 两个 nu
 
 ## 6. 下一动作
 
-1. 若获新的明确授权，执行一次修复后最终 live replay，成功才保存真实 bundle projection；
-2. 冻结 owner-scoped player profile list/selection API 合同与 legacy 地区迁移；
-3. 之后再进入 8E 的第一个静态/fixture-backed 前端小批次。
+1. 冻结 owner-scoped player profile list/selection API 合同与 legacy 地区迁移；
+2. 之后再进入 8E 的第一个静态/fixture-backed 前端小批次。
 
 ADR-0058 最小修复已由 `83fde7d014aae8fdccf2ebd91929967868101075` / Actions
-`32615340228` 完成 exact-SHA 三 job 公共闭环；该 CI 为 no-I/O，不替代上述 live 复验。
+`32615340228` 完成 exact-SHA 三 job 公共闭环；RQ-088 的后续 live 复验现已独立通过。

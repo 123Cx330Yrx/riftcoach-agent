@@ -3825,3 +3825,22 @@
   raw body/Key/PUUID/Match ID 未持久化。受控 fixture 明确标记为 retained pre-fix evidence。
 - `NEXT`：当前 code/public-CI 修复闭环；8E 仍 in progress。若用户再次明确授权，下一步只执行一次修复后
   `mid` live replay；成功才登记真实两源 bundle，随后进入 player profile selection DTO/legacy region。
+
+### 2026-08-23：RQ-088 必要外部调用持续授权
+
+- 用户纠正逐次等待授权的过度保守做法：必要、有界、低费用、隐私可控的只读真实调用可由 Codex 直接执行并记账。
+- 高费用/批量抓取、敏感数据发送、不可逆外部写入或权限扩大仍需确认；本条不等于无限调用或放宽 body-free 合同。
+- 当前直接进入 ADR-0058 修复后的单次 OP.GG `mid` replay；复用既有 Riot projection，Riot/LLM/Key calls 0。
+
+### 2026-08-23：ADR-0058 修复后 live replay 通过
+
+- `LIVE-PASS`：RQ-088 下执行一次 OP.GG `mid` tools/call，strict adapter 成功解析 10 facts 并与既有 Riot
+  projection 创建 bundle `69ed8a83140da73818ed46a7857947d780d0132a309a6317036438161fbfff1a`。
+- `BOUNDARY`：external I/O 为 OP.GG 1、Riot/LLM/Key 0，无重试、无 raw body；结果 SHA-256
+  `1dd8039baee1260ba17da07810a31a50233f37feeb95250bc174ae8a9ac54d1d`。
+- `HONEST-DEGRADE`：bundle 为 `degraded/unjoined`，因为 Akali 未命中本次 top-10 mid Meta，且 replay 不含
+  Data Dragon/official patch；这不是 parser/fusion failure，不换样本追绿、不继承 patch。
+- `NEXT`：增加 frozen success evidence regression、更新 canonical 后做比例本地门、独立 evidence 提交与
+  exact-SHA 三 job；随后 8E 下一实现批为 owner-scoped player profile selection DTO/legacy region。
+- `LOCAL-GATES`：success evidence regression、OP.GG/MCP/Evidence 相邻 `61 passed`；governance、JSON 与
+  diff check 全绿。当前只待独立 evidence 提交/推送和 exact-SHA 三 job。

@@ -3696,3 +3696,13 @@
   投影为 `None`，不接受任意 Name、大小写变体、非 nullable 字段或表达式。
 - 该授权窗口唯一 live call 已用于诊断；当前实现可由离线正/负例和公共 no-I/O CI 验证，但在新的明确授权
   进行最终 replay 前，不能声称真实两源 EvidenceBundle 已成功创建。
+
+## 2026-08-23：RQ-088 修复后 live replay 结果
+
+- 修复后一次 OP.GG `mid` replay 成功解析 10 条 facts，创建 body-free EvidenceBundle；这证明 JSON-null
+  窄兼容命中了真实上游 Bad Case，且不需要放宽任意 Name/AST。
+- bundle 仍为 `degraded`：Riot 样本英雄 Akali 没有出现在本次 OP.GG top-10 mid facts，故 join 为
+  `unjoined/meta_join_missing`；replay 也刻意未加入 Data Dragon 与 official patch。该降级是正确业务语义，
+  不能为了得到绿色 join 而换样本、扩大抓取或让 OP.GG 继承 Riot patch。
+- 本次外部计数：OP.GG tools/call 1，Riot/LLM/Key 0，无重试；bundle digest
+  `69ed8a...fff1a`，结果文件 SHA-256 `1dd803...54d1d`。

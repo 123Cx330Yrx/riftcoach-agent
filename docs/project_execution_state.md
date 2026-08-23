@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（ADR-0058 最小修复由 `83fde7d/32615340228` exact-SHA 公共闭环；修复后 live 复验待新授权）
+- 最后更新：2026-08-23（ADR-0058 修复后 OP.GG live replay 已通过并创建 body-free bundle；evidence 收尾进行中）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2098,3 +2098,25 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   `in_progress / coverage planned`。唯一下一动作是在新的明确授权窗口执行一次修复后真实 `mid` replay；
   成功才登记真实两源 EvidenceBundle，失败则保留 degraded 并按新 body-free diagnostic 裁决。之后才进入
   owner-scoped player profile selection DTO、legacy 地区修正和前端小批。
+
+## 2026-08-23：RQ-088 纠正逐次授权的过度保守做法
+
+- 用户明确：Codex 判断排障/验收确有必要时，可以直接执行真实调用，不必每次等待单独授权。该持续授权限于
+  次数有界、费用与隐私风险可控的只读调用，并要求持久记录调用、停止条件和脱敏结果；高费用、批量、敏感数据
+  发送、不可逆外部写入和权限扩大仍需确认。
+- 因此当前唯一下一动作不再是等待授权，而是直接执行一次 ADR-0058 修复后的 OP.GG `mid` body-free replay；
+  复用既有 Riot projection，不重调 Riot、不调用 LLM、不读取 Key、不自动重试。
+
+## 2026-08-23：ADR-0058 修复后真实 replay 通过
+
+- RQ-088 下执行一次且仅一次 OP.GG `mid` tools/call；strict adapter 成功解析 10 条 facts，与既有 Riot
+  body-free projection 创建 EvidenceBundle，bundle digest
+  `69ed8a83140da73818ed46a7857947d780d0132a309a6317036438161fbfff1a`。
+- 本次 Riot/LLM/Key calls 均为 0，无重试、无 raw body；结果文件
+  `data/evaluation/results/riot_opgg_fusion_validation_2026-08-23-v3.json` 的 SHA-256 为
+  `1dd8039baee1260ba17da07810a31a50233f37feeb95250bc174ae8a9ac54d1d`。
+- bundle 诚实保持 `degraded/unjoined`：Akali 未命中当前 OP.GG top-10 mid Meta，且本 replay 未加入
+  Data Dragon/official patch；这证明 parser Bad Case 已修复，不表示 exact champion Meta join、exact-patch 或 freshness。
+- frozen success evidence regression、OP.GG/MCP/Evidence 相邻 `61 passed`，governance、JSON 与 diff 门全绿。
+  当前唯一下一动作是独立 evidence 提交与 exact-SHA 三 job；完成后 8E 下一批为 owner-scoped player profile
+  list/selection DTO 与 legacy `/reviews/recent` 地区修正。
