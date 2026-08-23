@@ -772,7 +772,13 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 - [completed-local] Batch C 完整本地/真库/Linux 门已通过：focused `79 passed`、CI-equivalent PostgreSQL
   `194 passed`、完整 `1888 passed, 1 skipped, 1 warning, 127 subtests passed`，Compose schema 1.6/
   外部调用 0/Memory Context 3 records 与 image boundary 全绿；唯一下一动作是独立 implementation/evidence
-  commit/push 和 exact-SHA 三 job。公共关闭后才进入 Batch D 静态/fixture-backed 前端；
+  commit/push 和 exact-SHA 三 job；
+- [completed-public] implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07` / Actions
+  `32629160732` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 全绿；公共 pytest
+  `1750 passed, 139 skipped, 1 warning, 127 subtests passed`，真库 `194 passed, 1 warning`，Linux package
+  schema 1.6/外部调用 0/image boundary 全绿；Batch C 正式关闭；
+- [prepared] 唯一下一内部批为 Batch D 静态/fixture-backed 前端设计门，等待授权；整个 8E coverage
+  继续 `planned`，不提前接 Auth/backup/deployment；
 - [boundary] 不硬编码 ShowMaker/职业选手，不自动跨区重试，不把一次外部验证称作 SLA，不重跑 8B holdout；Windows symlink 单项 skip 由 exact-SHA Linux pytest 独立补证。
 
 ## 6A Entry Design Checklist

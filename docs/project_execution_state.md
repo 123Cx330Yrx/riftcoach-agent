@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization"
 status: in_progress
-pause_reason: ""
+pause_reason: "8E Batch C is publicly closed; waiting authorization for Batch D static frontend"
 ---
 
 # RiftCoach 当前执行状态
@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-23（8E Batch C contracts/0011/Repository/Product API/cursor SSE/package/八维材料与全部本地/真库/Linux 门已完成，当前只待独立提交与 exact-SHA 公共关闭）
+- 最后更新：2026-08-23（8E Batch C implementation/evidence `7975dc3` / Actions `32629160732` exact-SHA 三 job 已公共闭环；当前只准备 Batch D 静态/fixture-backed 前端设计门）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / preflight`，尚未实现完整 8E/8F。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -250,13 +250,14 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8e-productization` Batch C Evidence/Product API。8D implementation/evidence
+- 唯一下一步：`8e-productization` Batch D 静态/fixture-backed 前端设计门，当前为
+  prepared/waiting authorization。8D implementation/evidence
   `a274b7f8900d61cb7edb7d09e2f5c87f8b0b2e48` / Actions `32598480400` 的 `pytest`、
   `postgres-migrations`、`packaging-smoke` 三 job 全绿，八维 coverage 已 complete。8E 先完成
   有界真实 Riot/OP.GG 验证、脱敏 EvidenceBundle replay、owner-scoped 玩家档案选择、legacy 地区显式化
-  与四地区 Worker 路由均已闭环。按 preflight 固定顺序，下一批先设计/实现 EvidenceBundle 安全持久化、
-  refresh/expiry、8C event replay→SSE 安全 DTO 和四态产品状态合同；其公共门全绿后才进入静态前端，
-  8B holdout 不得再次执行。
+  与四地区 Worker 路由均已闭环。Batch C 又由 implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07`
+  / Actions `32629160732` 完成 EvidenceBundle 安全持久化、refresh/expiry、8C event replay→SSE 安全 DTO、
+  四态产品状态与 exact-SHA 三 job；Batch D 获授权前不创建 React，8B holdout 不得再次执行。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -2193,3 +2194,15 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 本批新的 Riot/OP.GG/Provider/LLM calls 维持 0，8B 产品 holdout 未重跑。唯一下一动作是审查 diff、创建
   独立 implementation/evidence commit 并 push，等待同 SHA `pytest`、`postgres-migrations`、
   `packaging-smoke`；三 job 全绿前不关闭 Batch C、不进入 Batch D React。
+
+## 2026-08-23：8E Batch C exact-SHA 公共闭环与 Batch D 准备态
+
+- implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07` / Actions `32629160732`
+  的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 completed/success。
+- 公共 pytest 为 `1750 passed, 139 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL 17 为
+  `194 passed, 1 warning`，0011 head→base→head 可逆且 `alembic check` metadata=head。
+- Linux package schema 1.6 输出 Memory Context 3 records、terminal assistant 0、外部调用 0；非 root、
+  image exclusion 与 Compose volume/network 清理全绿。公共 pytest 的 DB skips 继续由独立真库 job 承担。
+- Batch C 正式关闭；整个 8E 与 coverage 仍 `in_progress/planned`。唯一下一内部批为 Batch D
+  静态/fixture-backed 前端设计门，当前 prepared/waiting authorization；本状态收尾不创建 React，
+  Auth/RSO、HTTPS、备份、部署和生产 SSE 容量仍未实现。

@@ -1899,3 +1899,13 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   allowlist；拒绝 task/evidence→API→composition 的 import-order cycle。
 - Product GET 只读已物化 snapshot，绝不 reconstruct-on-read 调用 Riot/OP.GG；自动 refresh scheduler、
   Auth、前端、备份和生产连接容量仍不在 Batch C。
+
+## 2026-08-23：Batch C 公共关闭与 Batch D handoff
+
+- implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07` / Actions `32629160732`
+  已完成 exact-SHA 三 job：公共 pytest 1750、真实 PostgreSQL 194、Linux package schema 1.6；0011
+  可逆迁移、metadata=head、外部调用 0 与非 root/image boundary 均有公共证据。
+- 因此 Batch C 可以关闭；该结论只覆盖 Evidence snapshot/Product API/cursor SSE 后端接缝，不等于整个
+  8E、正式前端、Auth/RSO、HTTPS、backup/restore、生产长连接容量或部署已完成。
+- 下一内部批固定为 Batch D 静态/fixture-backed 前端设计门，当前 prepared/waiting authorization；
+  先做信息架构、状态矩阵、可访问性与外部视觉资源采用审计，授权前不创建 React 代码。

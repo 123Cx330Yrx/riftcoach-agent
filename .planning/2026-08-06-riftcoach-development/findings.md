@@ -3756,3 +3756,14 @@
 - 最终本地为 focused `79 passed`、package contracts `39 passed`、CI-equivalent PostgreSQL
   `194 passed, 1 warning`、完整 `1888 passed, 1 skipped, 1 warning, 127 subtests passed`；唯一 skip 仍是
   Windows symlink 创建，必须由 exact-SHA Linux pytest 补证，不能在本机冒充通过。
+
+## 2026-08-23：8E Batch C exact-SHA 公共关闭发现
+
+- implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07` / Actions `32629160732`
+  的三个 job 均 completed/success；公共 pytest 为 `1750 passed, 139 skipped, 1 warning,
+  127 subtests passed`，真实 PostgreSQL 为 `194 passed, 1 warning`。
+- Linux package schema 1.6 延续 Memory Context 3 records、terminal assistant 0、外部调用 0，并通过
+  非 root/image exclusion 与 Compose 资源清理；这补齐本地唯一 Windows symlink skip 的 Linux 侧证据，
+  不把 Windows 本机结果改写为成功。
+- Batch C 正式关闭，但整个 8E coverage 保持 `planned`。唯一 handoff 是 Batch D 静态/fixture-backed
+  前端设计门 prepared/waiting authorization；Auth/RSO、HTTPS、备份、部署和生产 SSE 容量仍未实现。

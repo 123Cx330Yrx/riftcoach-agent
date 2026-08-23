@@ -2826,3 +2826,12 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   boundary 全绿；Windows symlink 单项由 exact-SHA Linux pytest 补证。
 - `NEXT`：独立 implementation/evidence commit/push 与同 SHA 三 job；公共成功前 Batch C 保持 open，
   不进入 Batch D React。
+
+### 2026-08-23：8E Batch C exact-SHA 公共闭环与 Batch D 准备态
+
+- `PUBLIC-CI`：implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07` / Actions
+  `32629160732` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `COUNTS`：公共 pytest 1750/139 skips/127 subtests，真实 PostgreSQL 194，0011 可逆且 metadata=head；
+  Linux package schema 1.6/外部调用 0/非 root/image boundary 与资源清理全绿。
+- `STATUS`：Batch C 正式关闭；整个 8E coverage 保持 planned。唯一下一内部批为 Batch D
+  静态/fixture-backed 前端设计门，prepared/waiting authorization；不静默进入 React/Auth/部署。

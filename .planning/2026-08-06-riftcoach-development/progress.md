@@ -3914,3 +3914,13 @@
 - `BOUNDARY/NEXT`：唯一 skip 为 Windows symlink；Batch C 新的 Riot/OP.GG/Provider/LLM calls 0，8B
   产品 holdout 未重跑。当前只待 governance/diff/cached diff、独立 implementation/evidence commit/push 和
   exact-SHA 三 job；公共全绿前不进入 Batch D React。
+
+### 2026-08-23：8E Batch C exact-SHA 公共闭环
+
+- `PUBLIC-CI`：implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07` / Actions
+  `32629160732` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `COUNTS`：公共 pytest `1750 passed, 139 skipped, 1 warning, 127 subtests passed`；真实 PostgreSQL
+  `194 passed, 1 warning`，0011 head→base→head 与 `alembic check` 无 drift；Linux package schema 1.6、
+  Memory Context 3 records、terminal assistant 0、外部调用 0、非 root/image boundary 全绿。
+- `CLOSED/HANDOFF`：Batch C 正式关闭，整个 8E/coverage 继续 in_progress/planned。唯一下一内部批为
+  Batch D 静态/fixture-backed 前端设计门，当前 prepared/waiting authorization；本状态批不创建 React。

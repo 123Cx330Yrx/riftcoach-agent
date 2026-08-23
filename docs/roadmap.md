@@ -23,7 +23,7 @@
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 已完成；7-5 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 完成最终公共闭环 |
-| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A、8B、8C 与 8D 已公共闭环，ADR-0053 reject 产品 Multi-Agent；8E ADR-0058 修复已公共闭环且修复后 live replay 创建 body-free bundle，下一批为玩家档案选择/legacy region |
+| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D 与 8E Batch B/C 已公共闭环，ADR-0053 reject 产品 Multi-Agent；下一内部批为 Batch D 静态/fixture-backed 前端设计门 |
 
 ## 横向能力总账
 
@@ -324,7 +324,7 @@ exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE�
   内部批按 preflight 顺序为 Batch C EvidenceBundle persistence/refresh/expiry、event replay→SSE DTO 和
   四态产品状态合同，之后才进入 Batch D 静态前端。
 
-### 8E Batch C：Evidence/Product API 与 Cursor SSE（本地完成，等待公共门）
+### 8E Batch C：Evidence/Product API 与 Cursor SSE（已公共闭环）
 
 - 0011 以 PostgreSQL append-only JSONB revision 保存 full typed EvidenceBundle；复合 owner/task/run FK、
   refresh/revision 唯一约束、大小/digest CHECK、UPDATE trigger 与 cascade delete 已由真实 PostgreSQL 验证；
@@ -336,8 +336,11 @@ exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE�
 - `/tasks/{task_id}/events/stream` 复用 8C durable cursor，支持 `Last-Event-ID`、keepalive、重连去重、
   terminal close 与 allowlisted stream error；
 - composition/Linux smoke 检查缺证据、失败四态和 terminal SSE，本批 Riot/OP.GG/Provider/LLM calls 0；
-- 八维 walkthrough/coverage 路径已建立但整个 8E 仍 `planned`。当前唯一下一动作是完整本地门、独立提交和
-  exact-SHA 三 job；公共关闭前不进入 Batch D 前端。
+- implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07` / Actions `32629160732`
+  的公共 pytest `1750 passed, 139 skipped, 1 warning, 127 subtests passed`、真实 PostgreSQL
+  `194 passed, 1 warning` 与 Linux package schema 1.6 三 job 全绿；
+- 八维 walkthrough 路径已建立但整个 8E coverage 仍 `planned`。唯一下一内部批为 Batch D
+  静态/fixture-backed 前端设计门，当前 prepared/waiting authorization。
 
 ### 原理
 

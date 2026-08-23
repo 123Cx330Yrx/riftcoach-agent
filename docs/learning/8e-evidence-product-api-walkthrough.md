@@ -135,7 +135,10 @@ HTTP error matrix、SSE reconnect/terminal/keepalive/failure、composition no-I/
 纵切和 Linux package smoke。最终本地证据为 focused `79 passed`、CI-equivalent PostgreSQL
 `194 passed, 1 warning`、完整 `1888 passed, 1 skipped, 1 warning, 127 subtests passed`；唯一 skip 是
 Windows symlink 创建。Linux Compose 又证明 schema 1.6、Memory Context 3 records、外部调用 0、非 root 和
-image exclusion。公共关闭前仍不能把这些本地绿灯写成 exact-SHA 已公开完成。
+image exclusion。implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07` 随后由 Actions
+`32629160732` 完成 exact-SHA 公共闭环：公共 pytest `1750 passed, 139 skipped, 1 warning,
+127 subtests passed`、真实 PostgreSQL `194 passed, 1 warning`，Linux package schema 1.6、外部调用 0、
+非 root/image boundary 与资源清理均通过。
 
 最后一次 Linux smoke 还捕获了部署组合 Bad Case：API 的默认 owner 是 `local-demo-owner`，smoke 曾硬编码
 `packaging-smoke-owner`，严格 Memory binding 因此正确拒绝。修复不是放宽查询，而是让 API/smoke 共用

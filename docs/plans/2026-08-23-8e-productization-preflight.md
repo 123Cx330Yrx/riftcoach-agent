@@ -119,7 +119,8 @@ RQ-088 生效后已执行一次修复后 replay：strict adapter 成功解析 10
 - [x] ADR-0060/专用设计冻结 EvidenceBundle PostgreSQL append-only revision、幂等 refresh 与 query-time expiry 投影。
 - [x] 冻结 8C event replay → cursor SSE 的安全 DTO，不暴露 raw body/Prompt/Key。
 - [x] 固定 `published/degraded/rejected/not_ready` 状态和 reason-code 优先级。
-- [ ] 按 TDD 实现 0011/Repository、Evidence/Product API、SSE、composition/package 与八维证据，并完成 exact-SHA 公共闭环。
+- [x] 按 TDD 实现 0011/Repository、Evidence/Product API、SSE、composition/package 与八维证据；
+  `7975dc3` / Actions `32629160732` exact-SHA 三 job 已公共闭环。
 
 ### Batch D：前端第一小批
 
@@ -143,10 +144,9 @@ RQ-088 生效后已执行一次修复后 replay：strict adapter 成功解析 10
 
 ## 6. 下一动作
 
-1. 进入 Batch C：先冻结 EvidenceBundle 安全持久化/刷新/过期投影、8C event replay → SSE 安全 DTO 和
-   `published/degraded/rejected/not_ready` 前端状态合同；
-2. Batch C 完成独立教学、TDD、持久证据与 exact-SHA 公共门后，再进入 Batch D 的第一个
-   静态/fixture-backed 前端小批次。
+1. Batch C 已由 `7975dc3` / Actions `32629160732` 完成独立教学、TDD、持久证据和 exact-SHA 公共门；
+2. 唯一下一内部批为 Batch D 的首个静态/fixture-backed 前端设计门，当前 prepared/waiting authorization；
+   获授权后仍先做信息架构、状态矩阵与视觉资源采用审计，不直接堆叠动效或接 Auth。
 
 ADR-0058 最小修复已由 `83fde7d014aae8fdccf2ebd91929967868101075` / Actions
 `32615340228` 完成 exact-SHA 三 job 公共闭环；RQ-088 的后续 live 复验现已独立通过。
