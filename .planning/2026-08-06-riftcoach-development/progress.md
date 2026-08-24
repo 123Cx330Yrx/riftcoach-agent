@@ -4200,3 +4200,12 @@
   RQ-103 最终视觉；本批外部 Riot/OP.GG/Provider/LLM calls 0。
 - `NEXT`：按 RQ-102 与连续授权进入 bilingual product-surface foundation；先教学和冻结 locale contract，
   不提前混入 LoL asset enrichment、Evidence/Trace、Training 或 8F。
+
+### 2026-08-24：RQ-102 bilingual foundation 设计冻结
+
+- 初学者教学已区分 UI copy、Data Dragon entity locale 与 Coach Artifact language；比较整页机翻、第三方
+  i18n runtime 和 typed local catalog 后，ADR-0066 采用最后一项。
+- 新增专用 design/implementation plan 与八维 walkthrough；冻结 `zh-CN|en`、strict versioned localStorage、
+  navigator fallback、canonical code→localized copy、original generated content 不机翻和 asset enrichment 后序。
+- 当前只完成设计与只读代码接缝审计，尚未实现 locale provider/switch/catalog，也未修改 API/Memory、安装
+  dependency、调用外部服务或进入 RQ-103。下一动作是先写 locale contract/catalog 红灯。

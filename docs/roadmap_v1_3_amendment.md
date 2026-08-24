@@ -595,3 +595,5 @@ code 单一，不复制后端合同；当前 Timeline 高保真 V1 和截图不�
 - `794032f/32682243568` 三 job 已关闭 verified Timeline DTO/API/UI；当前截图仍按 RQ-103 定位为高保真 V1。
 - 下一原子项是 `zh-CN/en` product-surface foundation；先分离 UI catalog、canonical API code、Data Dragon
   entity locale 和 Coach report language，再进入资产 enrichment 与后续产品模块。
+- ADR-0066/design/implementation plan 已在本地冻结零依赖 typed catalog、strict versioned storage、navigator
+  fallback 和 original-content boundary；设计 exact-SHA 公共关闭前不实现 locale runtime，不进入 RQ-103。

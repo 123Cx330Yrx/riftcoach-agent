@@ -623,3 +623,7 @@ derived Memory、relationship private data；Task/Artifact 与全局 Player Subj
 - 当前截图按 RQ-103 仍只是高保真 V1；Data Dragon 资产/细节 enrichment 与全站 final visual QA 未完成。
 - 当前唯一下一原子项为 RQ-102 bilingual product-surface foundation；Evidence/Trace、Training、OP.GG
   breadth/golden slice 和 8F 不提前进入。
+
+ADR-0066 与专用设计/实施计划现已本地冻结 typed catalog、locale persistence、canonical code 与生成内容
+语言边界；当前仍未写 locale 产品代码。必须先完成独立 design exact-SHA 公共门，再进入 TDD；RQ-103
+Data Dragon 资产/细节 enrichment 和跨模块 final visual QA 继续排在本批之后。

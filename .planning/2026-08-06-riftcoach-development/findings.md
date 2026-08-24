@@ -3962,3 +3962,13 @@
   建立单一 asset resolver/manifest 合同，再让 Timeline 与其它模块消费，才能安全补头像、图标和 fallback。
 - 最终 polish 不只等于“加图”：还要统一色调、背景深度、布局节奏、面板材质、hover/focus/selection、
   中文 text expansion、移动降级和跨模块视觉叙事，并以全站截图/交互/a11y/bundle 门签收。
+
+## 2026-08-24：RQ-102 bilingual foundation 入口发现
+
+- 当前前端没有 locale runtime，静态 copy 分散在 App、Portal/Auth 和多个 Workbench 组件；同时 Evidence adapter
+  还会把 canonical source/gap 数值提前拼成英文句子。双语不能只加开关，必须让 adapter 保留结构化值、组件
+  render 时翻译。
+- 现有 Memory 已有 `report_language=zh-CN|en-US`，但 final report Artifact/receipt 没有 run-scoped language
+  provenance。UI 切换不能据此重写或猜测旧报告语言；本批只冻结“原文不机翻”和未来 producer 映射边界。
+- 两 locale 暂不需要第三方 i18n runtime。typed local catalog 可用编译时 key completeness、版本化 localStorage、
+  English fallback 和小 bundle 完成当前真实需求；未来 ICU plural/远程翻译平台 Bad Case 再评估依赖。

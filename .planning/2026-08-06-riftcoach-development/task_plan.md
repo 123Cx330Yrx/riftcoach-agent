@@ -5,17 +5,17 @@
 在不改变既定阶段 0-8 和用户已确认子阶段的前提下，以可恢复、可审计、逐步
 教学的方式推进 RiftCoach；任何当前状态都必须由仓库文件和测试证据支持。
 
-## Current visual preflight (2026-08-24)
+## Current 8E productization slice (2026-08-24)
 
-RQ-098 已确认 `Rift Awakening → Broadcast Workbench`，作为 `8e-productization` 内不改变 canonical
-顺序的视觉前置。该计划的 Task 1 presentation-state、Task 2 语义入口 shell 和隔离 preview 已完成；当前
-Task 3 的分层氛围/路线 choreography、状态边缘、handoff 过渡与来源/资产采用账本已完成本地门。
-视觉层仍是可替换 preview，不能把概念图、当前工作台施工切片或视觉 preview 当作 8E 完整闭环。
+RQ-098 已确认 `Rift Awakening → Broadcast Workbench`，RQ-103 又明确当前 Portal、Workbench 与 Timeline
+都不是最终视觉签收。Batch E E1–E5、production shell/Auth gate 和 Timeline DTO/UI 已取得 exact-SHA
+公共闭环；视觉、双语和剩余产品模块继续在 `8e-productization` 内按原子批推进。
 
-Batch E implementation 已在视觉前置后继续：E1 session HTTP boundary、E2 request budget/rate policy、
-E3 versioned SecretSource composition 已由 `92b7685` / Actions `32658277570` 完成 exact-SHA 三 job 公共闭环；
-下一动作进入 E4 backup/restore/erase。生产 OIDC/RSO、PostgreSQL session repository、真实 Secret Manager、
-HTTPS edge 与多副本 limiter 仍保持显式 deferred/待后续实现。
+当前唯一原子项是 RQ-102 `bilingual-product-surface-foundation`。ADR-0066 与专用设计/实施计划已在本地
+冻结 `zh-CN | en` typed catalog、strict locale persistence、canonical code 映射和 Coach 原文边界；产品
+代码尚未开始。设计 exact-SHA 公共关闭后才从 locale contract/catalog 红灯进入实现，随后才交接 RQ-103
+Data Dragon asset/detail enrichment。Evidence/Trace、Training、OP.GG breadth/golden slice、跨模块 final
+visual QA 和 8F 继续保持后序独立原子批。
 
 ## Current Phase
 
@@ -48,15 +48,12 @@ it is complete at `2df5349` / Actions `32587659678` with exact-SHA PostgreSQL/Li
 public closure. RQ-084 authorized Phase 36 -
 `8d-riot-opgg-evidence-fusion-core`; it is complete at `a274b7f` / Actions
 `32598480400`. Phase 37 - `8e-productization` is the current governance pointer.
-The bounded Riot/OP.GG validation and JSON-null Bad Case are publicly closed;
-Batch B profile/routing, Batch C Evidence/Product/SSE backend and Batch D
-fixture-backed Rift Command Center are also publicly closed, most recently at
-`f7ebedd` / Actions `32636771507`. Full productization remains unimplemented.
-RQ-094 recovered the final A/B/C visual roles, checkpoint recap rhythm, OP.GG
-useful-breadth gate and complete live-fusion golden slice as durable pending
-work. RQ-095 design is publicly closed; RQ-096 authorized the implementation
-plan. Live integration is locally complete and awaits its independent exact-SHA
-three-job public gate before the next 8E atomic batch; coverage remains `planned`.
+The bounded Riot/OP.GG validation and JSON-null Bad Case, Batch B profile/routing,
+Batch C Evidence/Product/SSE, Batch D Workbench, live integration, Batch E E1-E5,
+production shell/Auth gate and Timeline DTO/UI are publicly closed. The current
+atomic slice is `bilingual-product-surface-foundation`: its ADR/design/plan are
+locally frozen and await an independent design exact-SHA public gate before
+implementation. Full productization and coverage remain `in_progress/planned`.
 
 ## Phases
 
@@ -1483,3 +1480,6 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   locale persistence、missing-key fallback、canonical API code 与 Coach report language boundary；Data Dragon
   资产/细节 enrichment、Evidence/Trace、Training full page、OP.GG useful-breadth/golden slice 和 final visual QA
   继续保持后序独立原子批。
+  - [completed-local] ADR-0066、专用 design/implementation plan、八维 walkthrough 与 coverage 路径已冻结；
+    产品代码、依赖、API/Memory 和外部调用均未改变。
+  - [next] 独立 design commit/push 与 exact-SHA 三 job；公共全绿后从 locale contract/catalog 红灯进入 TDD。

@@ -17,7 +17,7 @@ pause_reason: ""
 ## 状态元数据
 
 - 最后更新：2026-08-24（Timeline DTO/UI 已由 `794032f` / Actions `32682243568` exact-SHA 三 job 公共闭环；唯一下一原子项为 `bilingual-product-surface-foundation`，当前截图仍只是高保真 V1）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / remaining-product-modules`，Batch E E1–E5 与 production shell/Auth gate 已公共关闭，下一原子项为 Timeline DTO/UI；完整 8E/8F 尚未完成。
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / remaining-product-modules / bilingual-product-surface-foundation`，Batch E E1–E5、production shell/Auth gate 与 Timeline DTO/UI 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -2531,3 +2531,16 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 唯一下一检查点更新为 `remaining-product-modules / bilingual-product-surface-foundation`，已获连续推进授权；
   先做初学者教学、现状审计、catalog/locale persistence/missing-key/Coach language 设计与 TDD，不提前进入
   Data Dragon asset/detail enrichment、Evidence/Trace 深页、Training full、OP.GG breadth/golden slice 或 8F。
+
+## 2026-08-24：RQ-102 bilingual foundation 设计冻结
+
+- ADR-0066、专用 design/implementation plan 与八维 walkthrough 已在本地冻结：UI locale 为
+  `zh-CN | en`，采用零新增依赖的 typed local catalog、版本化 strict localStorage、navigator fallback 和
+  English runtime fallback；API/status/reason/source/event code 继续保持 canonical 英文。
+- UI copy、Data Dragon entity locale 与 Coach Artifact language 是三层独立合同。UI 切换不得重取 API、
+  重连 SSE、改变 profile/Product State、静默写 Memory 或机翻已发布报告；旧 report language 不做无证据猜测。
+- 当前只完成设计和只读接缝审计，尚未实现 locale store/catalog/provider/switch，也未接 Data Dragon 资产、
+  修改 API/Memory、安装依赖或调用外部服务。8E coverage 继续 `planned`。
+- `NEXT`：完成 design diff/governance 门，创建独立 design commit、push，并等待该 exact SHA 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；公共关闭后从 locale contract/catalog 红灯
+  开始 implementation，不提前进入 RQ-103。

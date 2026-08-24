@@ -3022,3 +3022,12 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   全绿；Riot/OP.GG/Provider/LLM calls 0。
 - 该闭环不覆盖双语、LoL 资产 enrichment、Evidence/Trace、Training、breadth/golden slice 或最终视觉签收；
   唯一下一原子项按 RQ-102 更新为 bilingual product-surface foundation。
+
+## 2026-08-24：RQ-102 bilingual foundation 设计冻结
+
+- ADR-0066 与专用 design/implementation plan 采用 `zh-CN | en` typed local catalog + React context；不引入
+  i18n runtime，不把浏览器机翻用于 Coach report/Evidence，也不翻译 API canonical code。
+- versioned localStorage、navigator fallback、document lang、English missing-key fallback、text expansion、
+  mobile/a11y/bundle 和“不重取 API/不重连 SSE”成为实现阻塞合同。
+- 当前只完成本地设计/八维 planned evidence；产品代码、API/Memory、依赖、Data Dragon 资产和外部调用均未
+  改变。下一动作是独立 design SHA 三 job；公共关闭后才进入 locale contract/catalog TDD。
