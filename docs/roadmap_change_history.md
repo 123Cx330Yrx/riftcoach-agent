@@ -2987,3 +2987,29 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
 - 下一检查点是 Timeline DTO/UI：优先冻结 match/timeline identity、available/partial/missing、source
   freshness 和 owner/observed relationship 语义，再实现 typed decoder 和视觉呈现；不提前做 Evidence 深化、
   Training full page、OP.GG golden slice 或 8F。
+
+## 2026-08-24：RQ-101 Timeline 采用 verified event/phase projection
+
+- 当前 Summary Artifact 没有持久化 Gold/CS/XP/level series，因此 ADR-0065 拒绝前端假曲线和请求时重拉
+  Riot；只采用 persisted death/item/objective events 与 early/mid/late phase。
+- local implementation 已覆盖 strict bounded DTO、owner/publication/integrity gates、exact decoder/controller、
+  responsive/a11y UI、partial/unavailable 与 durable screenshot；本批无 migration、外部调用或新 chart library。
+- 当前路线顺序不变：Timeline exact-SHA 三 job 公共关闭后，才交接 Evidence/Trace 深页；Training full、
+  OP.GG useful-breadth + golden slice、8E exit 和 8F 继续保持后序独立门。
+
+## 2026-08-24：RQ-102 在后续模块前建立中英双语产品表面
+
+- 用户明确当前英文 UI 不是最终语言边界；8E 必须正式支持 `zh-CN/en`。
+- 为避免 Evidence/Trace、Training 完成后整站返工，Timeline 公共关闭后的唯一下一原子项调整为 bilingual
+  product-surface foundation；随后恢复 Evidence/Trace → Training → OP.GG breadth/golden slice 顺序。
+- UI catalog、Data Dragon entity locale、Coach report language 三层分离；API enum/status/reason code 保持唯一
+  canonical 值。语言切换持久化、missing-key fallback、text expansion、mobile/a11y/bundle 都是阻塞门。
+
+## 2026-08-24：RQ-103 当前高保真 V1 不等于最终视觉签收
+
+- 用户明确当前截图、UI、色调、背景、布局和细节都要继续 polish；英雄头像只是缺口示例，当前 Timeline
+  不得写成最终作品集视觉成品。
+- RQ-102 双语基础后新增 LoL asset/detail enrichment 原子批：先建立 Data Dragon version/locale/fallback
+  合同，再补英雄/装备/目标资产、加载失败回退与 hover/focus/selection 联动。
+- 8E 退出前必须完成入口、工作台、Timeline、Evidence/Trace、Training 的跨模块色彩、背景、布局、动效、
+  响应式、双语和 a11y final visual QA；该纠正不改变当前 Timeline 先完成 exact-SHA 公共关闭的顺序。

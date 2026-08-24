@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -539,6 +540,136 @@ def test_degraded_recent_summary_remains_explicit_and_available(tmp_path: Path) 
 
     assert view.publication_status is RuntimePublicationStatus.DEGRADED
     assert view.terminal_reason == "deterministic_fallback"
+
+
+def test_timeline_projects_only_real_bounded_events_and_safe_partial_state(
+    tmp_path: Path,
+) -> None:
+    summary = deepcopy(PLAYER_SUMMARY)
+    summary["matches"][0].update(
+        {
+            "death_times": ["04:30", "26:10"],
+            "item_purchases": [
+                {
+                    "time_ms": 780_000,
+                    "time": "13:00",
+                    "item_id": 6655,
+                    "item_name": "Luden's Companion",
+                }
+            ],
+            "objective_events": [
+                {
+                    "time_ms": 1_200_000,
+                    "time": "20:00",
+                    "monster": "DRAGON",
+                    "killer_id": 4,
+                }
+            ],
+        }
+    )
+    summary["matches"][1].update(
+        {
+            "timeline_status": "unavailable",
+            "timeline_error": "private path C:/secret/timeline.json",
+            "death_times": [],
+            "item_purchases": [],
+            "objective_events": [],
+        }
+    )
+    _, receipt = _create_terminal_run(tmp_path, player_summary=summary)
+
+    view = RunQueryService(tmp_path).get_timeline(receipt.run_id)
+
+    assert view.timeline_status == "partial"
+    assert view.total_matches == 2
+    assert view.projected_matches == 2
+    assert view.matches[0].timeline_status == "available"
+    assert [event.event_kind for event in view.matches[0].events] == [
+        "death",
+        "item_purchase",
+        "objective",
+        "death",
+    ]
+    assert [event.phase for event in view.matches[0].events] == [
+        "early",
+        "early",
+        "mid",
+        "late",
+    ]
+    assert view.matches[1].unavailable_reason == "source_unavailable"
+    assert "private path" not in view.model_dump_json()
+
+
+def test_timeline_reports_deterministic_event_truncation(tmp_path: Path) -> None:
+    summary = deepcopy(PLAYER_SUMMARY)
+    summary["matches"] = [summary["matches"][0]]
+    summary["matches"][0].update(
+        {
+            "death_times": [f"{minute:02d}:00" for minute in range(129)],
+            "item_purchases": [],
+            "objective_events": [],
+            "game_duration_seconds": 8_000,
+        }
+    )
+    _, receipt = _create_terminal_run(tmp_path, player_summary=summary)
+
+    match = RunQueryService(tmp_path).get_timeline(receipt.run_id).matches[0]
+
+    assert match.total_events == 129
+    assert match.projected_events == 128
+    assert match.events_truncated is True
+    assert match.events[-1].at_seconds == 127 * 60
+
+
+def test_timeline_rejects_disagreeing_event_clocks_without_leaking_input(
+    tmp_path: Path,
+) -> None:
+    summary = deepcopy(PLAYER_SUMMARY)
+    summary["matches"][0].update(
+        {
+            "death_times": [],
+            "item_purchases": [
+                {
+                    "time_ms": 60_000,
+                    "time": "private-path:C:/timeline.json",
+                    "item_id": 6655,
+                }
+            ],
+            "objective_events": [],
+        }
+    )
+    _, receipt = _create_terminal_run(tmp_path, player_summary=summary)
+
+    with pytest.raises(RunQueryError) as caught:
+        RunQueryService(tmp_path).get_timeline(receipt.run_id)
+
+    assert caught.value.code == "run_integrity_failed"
+    assert "private-path" not in str(caught.value)
+
+
+@pytest.mark.parametrize("bad_case", ("event_after_match", "duplicate_match_id"))
+def test_timeline_rejects_cross_field_match_integrity_drift(
+    tmp_path: Path,
+    bad_case: str,
+) -> None:
+    summary = deepcopy(PLAYER_SUMMARY)
+    if bad_case == "event_after_match":
+        summary["matches"][0].update(
+            {
+                "game_duration_seconds": 60,
+                "death_times": ["01:01"],
+                "item_purchases": [],
+                "objective_events": [],
+            }
+        )
+    else:
+        summary["matches"][1]["match_id"] = summary["matches"][0]["match_id"]
+    _, receipt = _create_terminal_run(tmp_path, player_summary=summary)
+
+    with pytest.raises(RunQueryError) as caught:
+        RunQueryService(tmp_path).get_timeline(receipt.run_id)
+
+    assert caught.value.code == "run_integrity_failed"
 
 
 @pytest.mark.parametrize("tamper", ("manifest_identity", "input_commitment"))

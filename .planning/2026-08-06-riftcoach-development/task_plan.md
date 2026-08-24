@@ -1476,5 +1476,7 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
 - [completed-public] Remaining product modules / production shell + Auth gate：`AuthGate` 先建立 same-origin
   opaque session，再启动 live controller；auth_unavailable/session-expired fail closed；由
   `15a3a9e` / Actions `32663345737` 完成 exact-SHA 三 job 公共闭环。
-- [in_progress] Remaining product modules / Timeline DTO/UI：先冻结真实/缺失/部分时间线合同；Evidence/Trace、
-  Training full page、OP.GG useful-breadth/golden slice 和 OIDC/RSO adoption 继续保持独立顺序。
+- [in_progress] Remaining product modules / Timeline DTO/UI：真实/缺失/部分时间线合同与高保真 V1 已本地
+  完成，当前只待独立提交和 exact-SHA 三 job；公共关闭后先做 RQ-102 双语 foundation，再做 RQ-103
+  Data Dragon 资产/细节 enrichment。Evidence/Trace、Training full page、OP.GG useful-breadth/golden slice
+  和 OIDC/RSO adoption 继续保持独立顺序；8E 退出前另有跨模块 final visual QA。

@@ -610,5 +610,7 @@ derived Memory、relationship private data；Task/Artifact 与全局 Player Subj
 - E5 首批增加 bounded body-free `TaskObservability` projection 与 `/health/metrics`；Compose migration
   order、health/readiness、non-root image 和 no-I/O package smoke 继续复用，不引入新 metrics runtime。
 - E5 `ca6da44` / Actions `32661425379` 与 production shell/Auth gate `15a3a9e` / Actions `32663345737`
-  均已完成 exact-SHA 三 job 公共闭环；下一项进入 Timeline DTO/UI，随后才是 Evidence 深化、Training full
-  page 和 OP.GG useful-breadth/golden slice。真实 OIDC/RSO 仍不因 UI 开始而默认采用，8F 不提前进入。
+  均已完成 exact-SHA 三 job 公共闭环；下一项进入 Timeline DTO/UI。按 RQ-102/RQ-103，Timeline 公共关闭后
+  先建立 `zh-CN/en` 双语产品表面基础，再以独立原子批建立 Data Dragon 资产合同并补 LoL 视觉/交互细节，
+  随后做 Evidence 深化、Training full page 和 OP.GG useful-breadth/golden slice；8E 退出前执行跨模块 final
+  visual QA。当前 Timeline 截图不是最终作品集签收，真实 OIDC/RSO 也不因 UI 开始而默认采用，8F 不提前进入。

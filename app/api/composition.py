@@ -103,6 +103,7 @@ from app.product.run_query import (
     RecentSummaryView,
     RunQueryError,
     RunQueryService,
+    RunTimelineView,
     RunView,
 )
 from app.tasks.models import (
@@ -470,6 +471,9 @@ class _RunQueryProxy:
 
     def get_recent_summary(self, run_id: str) -> RecentSummaryView:
         return self._query().get_recent_summary(run_id)
+
+    def get_timeline(self, run_id: str) -> RunTimelineView:
+        return self._query().get_timeline(run_id)
 
 
 class _PlayerLinkServiceProxy:

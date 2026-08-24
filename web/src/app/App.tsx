@@ -21,6 +21,7 @@ import { EvidenceDrawer } from "../components/EvidenceDrawer"
 import { AwakeningScene, type AwakeningIdentityInput } from "../components/AwakeningScene"
 import { ProductStateBanner } from "../components/ProductStateBanner"
 import { RecentFormPanel } from "../components/RecentFormPanel"
+import { TimelinePanel } from "../components/TimelinePanel"
 import { RiftAtmosphere } from "../components/RiftAtmosphere"
 import { TrainingPanel } from "../components/TrainingPanel"
 import { Glyph } from "../components/VisualGlyphs"
@@ -315,6 +316,7 @@ function ReadyWorkbench({
             <ProductStateBanner state={view.productState} />
             <EventStrip events={view.events} liveUpdates={liveUpdates} />
             {view.summary !== undefined ? <RecentFormPanel summary={view.summary} /> : null}
+            {view.timeline !== undefined ? <TimelinePanel timeline={view.timeline} /> : null}
             {view.summary === undefined && view.productState.state === "not_ready" ? (
               <section className="analysis-pending panel" aria-labelledby="analysis-pending-title">
                 <span className="analysis-pending__route" aria-hidden="true" />

@@ -110,6 +110,7 @@ function links() {
     stream: `/tasks/${TASK}/events/stream`,
     run: `/runs/${RUN}`,
     summary: `/runs/${RUN}/recent-summary`,
+    timeline: `/runs/${RUN}/timeline`,
     report: `/runs/${RUN}/report`,
     product_state: `/runs/${RUN}/product-state`,
     evidence: `/runs/${RUN}/evidence`,
@@ -246,6 +247,60 @@ function summaryPayload(scenario) {
       wins: metricRow({ gold_per_min: 452, deaths_before_15: 0.2 }),
       losses: metricRow({ gold_per_min: 378, deaths_before_15: 1 }),
     },
+  }
+}
+
+function timelinePayload(scenario) {
+  const available = {
+    match_id: "EUW1_123",
+    champion_name: "Ahri",
+    role: "MIDDLE",
+    win: true,
+    game_duration_seconds: 1920,
+    included_in_aggregate: true,
+    timeline_status: "available",
+    unavailable_reason: null,
+    total_events: 5,
+    projected_events: 5,
+    events_truncated: false,
+    events: [
+      { event_kind: "item_purchase", at_seconds: 270, phase: "early", label: "Lost Chapter", item_id: 3802 },
+      { event_kind: "death", at_seconds: 648, phase: "early", label: "Death", item_id: null },
+      { event_kind: "objective", at_seconds: 822, phase: "early", label: "Dragon secured", item_id: null },
+      { event_kind: "item_purchase", at_seconds: 1080, phase: "mid", label: "Luden's Companion", item_id: 6655 },
+      { event_kind: "objective", at_seconds: 1664, phase: "late", label: "Baron Nashor secured", item_id: null },
+    ],
+  }
+  const second = scenario === "degraded"
+    ? {
+        match_id: "EUW1_124", champion_name: "Akali", role: "MIDDLE", win: false,
+        game_duration_seconds: 1650, included_in_aggregate: true, timeline_status: "unavailable",
+        unavailable_reason: "source_unavailable", total_events: 0, projected_events: 0,
+        events_truncated: false, events: [],
+      }
+    : {
+        match_id: "EUW1_124", champion_name: "Akali", role: "MIDDLE", win: false,
+        game_duration_seconds: 1650, included_in_aggregate: true, timeline_status: "available",
+        unavailable_reason: null, total_events: 2, projected_events: 2, events_truncated: false,
+        events: [
+          { event_kind: "death", at_seconds: 590, phase: "early", label: "Death", item_id: null },
+          { event_kind: "objective", at_seconds: 1210, phase: "mid", label: "Rift Herald secured", item_id: null },
+        ],
+      }
+  return {
+    schema_version: "1.0",
+    run_id: RUN,
+    skill_name: "recent-form-review",
+    skill_version: "0.2.0",
+    runtime_status: "completed",
+    publication_status: scenario === "degraded" ? "degraded" : "published",
+    terminal_reason: "quality_gate_complete",
+    source: "riot_match_v5_timeline",
+    timeline_status: scenario === "degraded" ? "partial" : "available",
+    total_matches: 2,
+    projected_matches: 2,
+    matches_truncated: false,
+    matches: [available, second],
   }
 }
 
@@ -425,6 +480,7 @@ const server = createServer(async (request, response) => {
   if (url.pathname === `/runs/${RUN}/product-state`) return sendJson(response, productPayload(scenario, ledger))
   if (url.pathname === `/runs/${RUN}`) return sendJson(response, runPayload(scenario))
   if (url.pathname === `/runs/${RUN}/recent-summary`) return sendJson(response, summaryPayload(scenario))
+  if (url.pathname === `/runs/${RUN}/timeline`) return sendJson(response, timelinePayload(scenario))
   if (url.pathname === `/runs/${RUN}/report`) {
     const report = scenario === "degraded"
       ? '## Limited brief\n\nEvidence is expired.\n\n<script>window.pwned=true</script>\n\n[external](https://evil.invalid)\n\n![pixel](https://evil.invalid/pixel.png)'

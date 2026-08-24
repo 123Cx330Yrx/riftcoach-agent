@@ -1,3 +1,6 @@
+import type { WorkbenchTimeline } from "../workbench/model";
+
+export type { WorkbenchTimeline };
 export type RoutingRegion = "americas" | "asia" | "europe" | "sea";
 export type {
   LiveWorkbenchView,
@@ -226,6 +229,7 @@ export interface ReviewWorkbenchFixture {
   readonly task: TaskFixture;
   readonly productState: ProductStateFixture;
   readonly summary?: RecentSummaryFixture;
+  readonly timeline?: WorkbenchTimeline;
   readonly run?: RunFixture;
   readonly report?: CoachReportFixture;
   readonly evidence?: EvidenceFixture;
@@ -385,6 +389,7 @@ function assertProductStateBoundary(fixture: ReviewWorkbenchFixture): void {
       !productState.reportAvailable ||
       fixture.report === undefined ||
       fixture.summary === undefined ||
+      fixture.timeline === undefined ||
       fixture.evidence?.freshness !== "current" ||
       fixture.evidence.disposition !== "complete"
     ) {
@@ -393,7 +398,7 @@ function assertProductStateBoundary(fixture: ReviewWorkbenchFixture): void {
     return;
   }
   if (productState.state === "degraded") {
-    if (!productState.reportAvailable || fixture.report === undefined) {
+    if (!productState.reportAvailable || fixture.report === undefined || fixture.timeline === undefined) {
       throw new Error("degraded fixture must retain its limited report");
     }
     return;

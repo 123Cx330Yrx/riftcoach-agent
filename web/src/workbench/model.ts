@@ -75,6 +75,38 @@ export interface WorkbenchRecentSummary {
   }
 }
 
+export interface WorkbenchTimelineEvent {
+  readonly eventKind: "death" | "item_purchase" | "objective"
+  readonly atSeconds: number
+  readonly phase: "early" | "mid" | "late"
+  readonly label: string
+  readonly itemId?: number
+}
+
+export interface WorkbenchTimelineMatch {
+  readonly matchId: string
+  readonly championName: string
+  readonly role: string
+  readonly win: boolean
+  readonly gameDurationSeconds: number
+  readonly includedInAggregate: boolean
+  readonly timelineStatus: "available" | "unavailable"
+  readonly unavailableReason?: "source_unavailable"
+  readonly totalEvents: number
+  readonly projectedEvents: number
+  readonly eventsTruncated: boolean
+  readonly events: readonly WorkbenchTimelineEvent[]
+}
+
+export interface WorkbenchTimeline {
+  readonly source: "riot_match_v5_timeline"
+  readonly timelineStatus: "available" | "partial" | "unavailable"
+  readonly totalMatches: number
+  readonly projectedMatches: number
+  readonly matchesTruncated: boolean
+  readonly matches: readonly WorkbenchTimelineMatch[]
+}
+
 export interface WorkbenchCoachReport {
   readonly markdown: string
 }
@@ -144,6 +176,7 @@ export interface LiveWorkbenchView {
   readonly task?: WorkbenchTask
   readonly productState?: WorkbenchProductState
   readonly summary?: WorkbenchRecentSummary
+  readonly timeline?: WorkbenchTimeline
   readonly run?: WorkbenchRun
   readonly report?: WorkbenchCoachReport
   readonly evidence?: WorkbenchEvidence

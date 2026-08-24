@@ -8,6 +8,7 @@ import {
   decodeRecentSummary,
   decodeReport,
   decodeRun,
+  decodeRunTimeline,
   decodeTask,
   decodeTaskEventPage,
   decodeTrainingPlanPage,
@@ -53,6 +54,7 @@ const latest = () => ({
       stream: `/tasks/${TASK_ID}/events/stream`,
       run: `/runs/${RUN_ID}`,
       summary: `/runs/${RUN_ID}/recent-summary`,
+      timeline: `/runs/${RUN_ID}/timeline`,
       report: `/runs/${RUN_ID}/report`,
       product_state: `/runs/${RUN_ID}/product-state`,
       evidence: `/runs/${RUN_ID}/evidence`,
@@ -172,6 +174,54 @@ const summary = () => ({
       deaths_before_15: 0.5,
     },
   },
+})
+
+const timeline = () => ({
+  schema_version: "1.0",
+  run_id: RUN_ID,
+  skill_name: "recent-form-review",
+  skill_version: "0.2.0",
+  runtime_status: "completed",
+  publication_status: "published",
+  terminal_reason: "quality_gate_passed",
+  source: "riot_match_v5_timeline",
+  timeline_status: "partial",
+  total_matches: 2,
+  projected_matches: 2,
+  matches_truncated: false,
+  matches: [
+    {
+      match_id: "EUW1_123",
+      champion_name: "Ahri",
+      role: "MIDDLE",
+      win: true,
+      game_duration_seconds: 1800,
+      included_in_aggregate: true,
+      timeline_status: "available",
+      unavailable_reason: null,
+      total_events: 2,
+      projected_events: 2,
+      events_truncated: false,
+      events: [
+        { event_kind: "death", at_seconds: 270, phase: "early", label: "Death", item_id: null },
+        { event_kind: "objective", at_seconds: 1200, phase: "mid", label: "Dragon secured", item_id: null },
+      ],
+    },
+    {
+      match_id: "EUW1_124",
+      champion_name: "Akali",
+      role: "MIDDLE",
+      win: false,
+      game_duration_seconds: 1600,
+      included_in_aggregate: true,
+      timeline_status: "unavailable",
+      unavailable_reason: "source_unavailable",
+      total_events: 0,
+      projected_events: 0,
+      events_truncated: false,
+      events: [],
+    },
+  ],
 })
 
 const evidence = () => ({
@@ -330,6 +380,7 @@ describe("exact API decoders", () => {
     expect(decodeProductState(productState(), { taskId: TASK_ID, runId: RUN_ID }).state).toBe("not_ready")
     expect(decodeRun(run(), RUN_ID).runtime_status).toBe("completed")
     expect(decodeRecentSummary(summary(), RUN_ID).games_analyzed).toBe(2)
+    expect(decodeRunTimeline(timeline(), RUN_ID).matches[0]?.events[1]?.phase).toBe("mid")
     expect(decodeReport("## Verified brief\n\nKeep the wave stable.")).toContain("Verified brief")
     expect(decodeEvidence(evidence(), { taskId: TASK_ID, runId: RUN_ID }).projection.sources.opgg.evidence_count).toBe(0)
     expect(decodeTrainingPlanPage(planPage(), PROFILE_ID).plans[0]?.payload.metrics[0]?.target).toBe(0.7)
@@ -341,6 +392,27 @@ describe("exact API decoders", () => {
     Object.assign(payload.projection.sources.opgg, { raw_body: "secret" })
 
     expect(() => decodeEvidence(payload, { taskId: TASK_ID, runId: RUN_ID })).toThrow(/unexpected key/i)
+  })
+
+  it("rejects Timeline identity, phase and event count drift", () => {
+    const badRun = timeline()
+    badRun.run_id = "review_other"
+    const badPhase = timeline()
+    badPhase.matches[0]!.events[0]!.phase = "late"
+    const badCount = timeline()
+    badCount.matches[0]!.projected_events = 1
+
+    expect(() => decodeRunTimeline(badRun, RUN_ID)).toThrow(/run binding/i)
+    expect(() => decodeRunTimeline(badPhase, RUN_ID)).toThrow(/phase/i)
+    expect(() => decodeRunTimeline(badCount, RUN_ID)).toThrow(/event count/i)
+  })
+
+  it("rejects Timeline events outside the verified match duration", () => {
+    const payload = timeline()
+    payload.matches[0]!.events[1]!.at_seconds = 1801
+    payload.matches[0]!.events[1]!.phase = "late"
+
+    expect(() => decodeRunTimeline(payload, RUN_ID)).toThrow(/duration/i)
   })
 
   it("rejects unknown schema and enum values", () => {

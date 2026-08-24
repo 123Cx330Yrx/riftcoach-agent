@@ -573,7 +573,9 @@ ADR-0063 将 8E 的公开交付边界冻结为 provider-neutral AuthPort、serve
 RiftCoach Auth/RSO 分离、edge/static Web + API/Worker/PostgreSQL 单机 Compose，以及在线数据、
 Artifact 和加密 backup 共用 deletion marker/restore erase 语义。后续原子顺序为 E1 Auth/session、
 E2 edge security/limits、E3 Secret lifecycle、E4 backup/restore/erase、E5 packaging/observability，
-然后才施工 Rift Awakening、Timeline、Evidence/Trace、Training 和 OP.GG useful-breadth/golden slice。
+然后才施工 Rift Awakening、Timeline、双语产品表面、Data Dragon asset/detail enrichment、Evidence/Trace、
+Training 和 OP.GG useful-breadth/golden slice；8E 退出前执行跨模块 final visual QA。双语层保持 API/status
+code 单一，不复制后端合同；当前 Timeline 高保真 V1 和截图不等于最终视觉签收。
 
 该入口设计不引入 Auth/HTTPS/备份/部署代码，不读取 Secret 或调用外部服务；8E coverage 继续 planned，
 必须等待设计 exact-SHA 公共三 job 后再进入 implementation。

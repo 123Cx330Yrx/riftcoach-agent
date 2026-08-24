@@ -5,6 +5,7 @@ import type {
   RecentMetricRowWire,
   RecentSummaryWire,
   RunWire,
+  RunTimelineWire,
   TaskEventWire,
   TaskWire,
   TrainingPlanPageWire,
@@ -19,6 +20,7 @@ import type {
   WorkbenchRecentMetricRow,
   WorkbenchRecentSummary,
   WorkbenchRun,
+  WorkbenchTimeline,
   WorkbenchTask,
   WorkbenchTaskEvent,
   WorkbenchTraining,
@@ -135,6 +137,36 @@ export function adaptRecentSummary(value: RecentSummaryWire): WorkbenchRecentSum
       wins: adaptMetricRow(value.win_loss_comparison.wins),
       losses: adaptMetricRow(value.win_loss_comparison.losses),
     },
+  }
+}
+
+export function adaptTimeline(value: RunTimelineWire): WorkbenchTimeline {
+  return {
+    source: value.source,
+    timelineStatus: value.timeline_status,
+    totalMatches: value.total_matches,
+    projectedMatches: value.projected_matches,
+    matchesTruncated: value.matches_truncated,
+    matches: value.matches.map((match) => ({
+      matchId: match.match_id,
+      championName: match.champion_name,
+      role: match.role,
+      win: match.win,
+      gameDurationSeconds: match.game_duration_seconds,
+      includedInAggregate: match.included_in_aggregate,
+      timelineStatus: match.timeline_status,
+      ...(match.unavailable_reason === null ? {} : { unavailableReason: match.unavailable_reason }),
+      totalEvents: match.total_events,
+      projectedEvents: match.projected_events,
+      eventsTruncated: match.events_truncated,
+      events: match.events.map((event) => ({
+        eventKind: event.event_kind,
+        atSeconds: event.at_seconds,
+        phase: event.phase,
+        label: event.label,
+        ...(event.item_id === null ? {} : { itemId: event.item_id }),
+      })),
+    })),
   }
 }
 
@@ -326,6 +358,7 @@ export function adaptFixtureWorkbench(
     ...base,
     productState,
     ...(fixture.summary === undefined ? {} : { summary: fixture.summary }),
+    ...(fixture.timeline === undefined ? {} : { timeline: fixture.timeline }),
     ...(run === undefined ? {} : { run }),
     ...(fixture.report === undefined ? {} : { report: { markdown: fixture.report.markdown } }),
     ...(fixture.evidence === undefined ? {} : { evidence: fixture.evidence }),

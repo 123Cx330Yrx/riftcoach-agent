@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-24（视觉 Task 3 polish 与 production shell/Auth gate 已由 `15a3a9e` / Actions `32663345737` 完成 exact-SHA 公共闭环；E5 `ca6da44` / Actions `32661425379` 已完成 exact-SHA 三 job 公共闭环）
+- 最后更新：2026-08-24（Timeline DTO/UI 已本地完成 strict projection、前端/浏览器/真库/Linux 门，等待独立提交与 exact-SHA 三 job；production shell/Auth gate 已由 `15a3a9e` / Actions `32663345737` 公共闭环）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / remaining-product-modules`，Batch E E1–E5 与 production shell/Auth gate 已公共关闭，下一原子项为 Timeline DTO/UI；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2488,3 +2488,31 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 唯一下一检查点更新为 `remaining-product-modules / timeline-dto-ui`：先冻结真实/缺失/部分 timeline
   DTO 与 fixture/live decoder 合同，再做 TDD、视觉与 a11y/performance 门；Evidence/Trace、Training、OP.GG
   useful-breadth/golden slice 和 8F 不提前进入。
+
+## 2026-08-24：RQ-101 Timeline DTO/UI 本地完成，等待公共关闭门
+
+- ADR-0065 冻结 verified event/phase projection：只从 receipt/Trace/manifest/input commitment 验证过的
+  `PLAYER_SUMMARY` 投影死亡、购买和目标事件；原始 `timeline_error` 不出 API，Gold/CS/XP 连续曲线不伪造。
+- owner-scoped `GET /runs/{run_id}/timeline`、exact browser decoder、generation-guarded terminal load、match
+  selector、真实比例 phase rail、chronological list、partial/unavailable 和 synthetic fixture/live seam 已完成。
+- 本地证据：query/API focused `45 passed`；frontend unit `92 passed`、Playwright `25 passed`、
+  typecheck/build 与 JS/CSS gzip `128.51/15.27 kB`；完整 Python
+  `1981 passed, 1 skipped, 1 warning, 127 subtests`；真库
+  workflow 清单 `201 passed`、Alembic reversible/check；isolated Linux Compose schema 1.6/non-root/no-I/O 成功。
+- durable screenshot 已人工查看 desktop/mobile/partial-unavailable；机械纹理只保留低对比刻度与节点，不成为
+  页面主角。本批 Riot/OP.GG/Provider/LLM 调用 0。
+- 当前唯一 `NEXT` 仍是 Timeline 的独立 implementation/evidence commit、push 与该 SHA 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke`；公共三 job 全绿后按 RQ-102 先交接 bilingual product-surface
+  foundation，再进入 Evidence/Trace 深页。
+
+## 2026-08-24：RQ-103 当前视觉不是最终签收
+
+- 用户明确当前截图、UI、色调、背景、布局和细节都需要继续 polish；英雄名旁缺头像只是示例，不是完整
+  缺口清单。当前 Timeline 的准确定位是“严格功能合同 + 高保真 V1”，不是粗糙低保真稿，也不是最终
+  作品集截图。
+- RQ-102 双语基础完成后，必须新增独立 LoL asset/detail enrichment 原子批：先冻结 Data Dragon
+  version/locale/fallback 合同，再补英雄头像、装备图标、目标图形、asset loading/error fallback 和
+  hover/focus/selection 联动；不得直接使用未锁版本或 locale 的公网 URL。
+- 8E 退出前还必须对 Rift Awakening、Workbench、Timeline、Evidence/Trace、Training 做跨模块 final visual
+  QA，覆盖 UI、色调、背景、布局、材质、动效、响应式、双语 text expansion 与 a11y。该要求不改变当前
+  `NEXT`：仍先创建 Timeline 独立提交并取得 exact-SHA 三 job 公共闭环。

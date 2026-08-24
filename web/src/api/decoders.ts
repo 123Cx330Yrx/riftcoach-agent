@@ -22,6 +22,9 @@ import type {
   RecentSummaryWire,
   RoutingRegionWire,
   RunWire,
+  RunTimelineEventWire,
+  RunTimelineMatchWire,
+  RunTimelineWire,
   RuntimeUsageWire,
   TaskEventKindWire,
   TaskEventPageWire,
@@ -216,13 +219,14 @@ export function decodeLatestProfileReview(value: unknown, expectedProfileId: str
     const taskId = uuid(item.task_id, "latest.latest_review.task_id")
     const runId = safeId(item.run_id, "latest.latest_review.run_id")
     const links = record(item.links, "latest.latest_review.links")
-    exact(links, ["task", "events", "stream", "run", "summary", "report", "product_state", "evidence"], "latest.latest_review.links")
+    exact(links, ["task", "events", "stream", "run", "summary", "timeline", "report", "product_state", "evidence"], "latest.latest_review.links")
     const expectedLinks = {
       task: `/tasks/${taskId}`,
       events: `/tasks/${taskId}/events`,
       stream: `/tasks/${taskId}/events/stream`,
       run: `/runs/${runId}`,
       summary: `/runs/${runId}/recent-summary`,
+      timeline: `/runs/${runId}/timeline`,
       report: `/runs/${runId}/report`,
       product_state: `/runs/${runId}/product-state`,
       evidence: `/runs/${runId}/evidence`,
@@ -442,6 +446,101 @@ export function decodeRecentSummary(value: unknown, expectedRunId: string): Rece
       wins: metricRow(comparison.wins, "summary.win_loss_comparison.wins"),
       losses: metricRow(comparison.losses, "summary.win_loss_comparison.losses"),
     },
+  }
+}
+
+function decodeTimelineEvent(value: unknown, path: string): RunTimelineEventWire {
+  const row = record(value, path)
+  exact(row, ["event_kind", "at_seconds", "phase", "label", "item_id"], path)
+  const atSeconds = number(row.at_seconds, `${path}.at_seconds`, { integer: true, min: 0, max: 86_400 })
+  const phase = enumeration(row.phase, ["early", "mid", "late"] as const, `${path}.phase`)
+  const expectedPhase = atSeconds < 900 ? "early" : atSeconds < 1500 ? "mid" : "late"
+  if (phase !== expectedPhase) throw new Error(`${path}.phase disagrees with at_seconds`)
+  const eventKind = enumeration(row.event_kind, ["death", "item_purchase", "objective"] as const, `${path}.event_kind`)
+  const itemId = nullable(row.item_id, (item) => number(item, `${path}.item_id`, { integer: true, min: 1, max: 999_999 }))
+  if (eventKind !== "item_purchase" && itemId !== null) throw new Error(`${path}.item_id belongs only to purchases`)
+  return {
+    event_kind: eventKind,
+    at_seconds: atSeconds,
+    phase,
+    label: normalizedText(row.label, `${path}.label`, 96),
+    item_id: itemId,
+  }
+}
+
+function decodeTimelineMatch(value: unknown, index: number): RunTimelineMatchWire {
+  const path = `timeline.matches[${index}]`
+  const row = record(value, path)
+  exact(row, ["match_id", "champion_name", "role", "win", "game_duration_seconds", "included_in_aggregate", "timeline_status", "unavailable_reason", "total_events", "projected_events", "events_truncated", "events"], path)
+  const status = enumeration(row.timeline_status, ["available", "unavailable"] as const, `${path}.timeline_status`)
+  const reason = nullable(row.unavailable_reason, (item) => literal(item, "source_unavailable", `${path}.unavailable_reason`))
+  const totalEvents = number(row.total_events, `${path}.total_events`, { integer: true, min: 0, max: 100_000 })
+  const projectedEvents = number(row.projected_events, `${path}.projected_events`, { integer: true, min: 0, max: 128 })
+  const gameDurationSeconds = number(row.game_duration_seconds, `${path}.game_duration_seconds`, { integer: true, min: 1, max: 86_400 })
+  const events = array(row.events, `${path}.events`, (item, eventIndex) => decodeTimelineEvent(item, `${path}.events[${eventIndex}]`), 128)
+  if (projectedEvents !== events.length) throw new Error(`${path} event count mismatch`)
+  const truncated = bool(row.events_truncated, `${path}.events_truncated`)
+  if (truncated !== (totalEvents > projectedEvents)) throw new Error(`${path} truncation mismatch`)
+  if (status === "available" && reason !== null) throw new Error(`${path} available timeline has a reason`)
+  if (status === "unavailable" && (reason === null || totalEvents !== 0 || events.length !== 0)) {
+    throw new Error(`${path} unavailable timeline projects events`)
+  }
+  for (let eventIndex = 1; eventIndex < events.length; eventIndex += 1) {
+    if (events[eventIndex]!.at_seconds < events[eventIndex - 1]!.at_seconds) {
+      throw new Error(`${path}.events must be chronological`)
+    }
+  }
+  if (events.some((event) => event.at_seconds > gameDurationSeconds)) {
+    throw new Error(`${path}.events exceed the verified match duration`)
+  }
+  return {
+    match_id: safeId(row.match_id, `${path}.match_id`),
+    champion_name: normalizedText(row.champion_name, `${path}.champion_name`, 64),
+    role: normalizedText(row.role, `${path}.role`, 64),
+    win: bool(row.win, `${path}.win`),
+    game_duration_seconds: gameDurationSeconds,
+    included_in_aggregate: bool(row.included_in_aggregate, `${path}.included_in_aggregate`),
+    timeline_status: status,
+    unavailable_reason: reason,
+    total_events: totalEvents,
+    projected_events: projectedEvents,
+    events_truncated: truncated,
+    events,
+  }
+}
+
+export function decodeRunTimeline(value: unknown, expectedRunId: string): RunTimelineWire {
+  const row = record(value, "timeline")
+  exact(row, ["schema_version", "run_id", "skill_name", "skill_version", "runtime_status", "publication_status", "terminal_reason", "source", "timeline_status", "total_matches", "projected_matches", "matches_truncated", "matches"], "timeline")
+  const runId = safeId(row.run_id, "timeline.run_id")
+  if (runId !== safeId(expectedRunId, "expected timeline run_id")) throw new Error("timeline run binding mismatch")
+  const totalMatches = number(row.total_matches, "timeline.total_matches", { integer: true, min: 1, max: 100 })
+  const projectedMatches = number(row.projected_matches, "timeline.projected_matches", { integer: true, min: 1, max: 20 })
+  const matches = array(row.matches, "timeline.matches", decodeTimelineMatch, 20)
+  if (projectedMatches !== matches.length) throw new Error("timeline match count mismatch")
+  if (new Set(matches.map((match) => match.match_id)).size !== matches.length) throw new Error("timeline match ids must be unique")
+  const matchesTruncated = bool(row.matches_truncated, "timeline.matches_truncated")
+  if (matchesTruncated !== (totalMatches > projectedMatches)) throw new Error("timeline match truncation mismatch")
+  const status = enumeration(row.timeline_status, ["available", "partial", "unavailable"] as const, "timeline.timeline_status")
+  if (!matchesTruncated) {
+    const available = matches.filter((match) => match.timeline_status === "available").length
+    const expectedStatus = available === matches.length ? "available" : available === 0 ? "unavailable" : "partial"
+    if (status !== expectedStatus) throw new Error("timeline status disagrees with match availability")
+  }
+  return {
+    schema_version: literal(row.schema_version, "1.0", "timeline.schema_version"),
+    run_id: runId,
+    skill_name: literal(row.skill_name, "recent-form-review", "timeline.skill_name"),
+    skill_version: normalizedText(row.skill_version, "timeline.skill_version", 32),
+    runtime_status: literal(row.runtime_status, "completed", "timeline.runtime_status"),
+    publication_status: enumeration(row.publication_status, ["published", "degraded"] as const, "timeline.publication_status"),
+    terminal_reason: safeCode(row.terminal_reason, "timeline.terminal_reason"),
+    source: literal(row.source, "riot_match_v5_timeline", "timeline.source"),
+    timeline_status: status,
+    total_matches: totalMatches,
+    projected_matches: projectedMatches,
+    matches_truncated: matchesTruncated,
+    matches,
   }
 }
 

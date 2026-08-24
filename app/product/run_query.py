@@ -34,6 +34,8 @@ from .run_receipts import ApiRunReceipt, FileRunReceiptStore
 
 
 _MAX_PLAYER_SUMMARY_BYTES = 2 * 1024 * 1024
+_MAX_TIMELINE_MATCHES = 20
+_MAX_TIMELINE_EVENTS_PER_MATCH = 128
 
 
 def _reject_non_finite_json(value: str) -> Any:
@@ -186,6 +188,131 @@ class RecentSummaryView(BaseModel):
         return self
 
 
+class TimelineEventView(BaseModel):
+    """One allowlisted event whose position is derived from persisted facts."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+
+    event_kind: Literal["death", "item_purchase", "objective"]
+    at_seconds: int = Field(ge=0, le=86_400)
+    phase: Literal["early", "mid", "late"]
+    label: str = Field(min_length=1, max_length=96)
+    item_id: int | None = Field(default=None, ge=1, le=999_999)
+
+    @field_validator("label")
+    @classmethod
+    def validate_label(cls, value: str) -> str:
+        if not value.strip() or value != value.strip():
+            raise ValueError("timeline event label must be normalized")
+        return value
+
+
+class RunTimelineMatchView(BaseModel):
+    """Bounded public Timeline projection for one recent match."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+
+    match_id: str = Field(min_length=1, max_length=128)
+    champion_name: str = Field(min_length=1, max_length=64)
+    role: str = Field(min_length=1, max_length=64)
+    win: bool
+    game_duration_seconds: int = Field(ge=1, le=86_400)
+    included_in_aggregate: bool
+    timeline_status: Literal["available", "unavailable"]
+    unavailable_reason: Literal["source_unavailable"] | None
+    total_events: int = Field(ge=0, le=100_000)
+    projected_events: int = Field(ge=0, le=_MAX_TIMELINE_EVENTS_PER_MATCH)
+    events_truncated: bool
+    events: tuple[TimelineEventView, ...] = Field(
+        max_length=_MAX_TIMELINE_EVENTS_PER_MATCH
+    )
+
+    @field_validator("match_id")
+    @classmethod
+    def validate_match_id(cls, value: str) -> str:
+        if not re.fullmatch(r"[A-Za-z0-9_-]{1,128}", value):
+            raise ValueError("match_id is not a safe public identifier")
+        return value
+
+    @field_validator("champion_name", "role")
+    @classmethod
+    def validate_match_text(cls, value: str, info) -> str:
+        if not value.strip() or value != value.strip():
+            raise ValueError(f"{info.field_name} must be normalized")
+        return value
+
+    @model_validator(mode="after")
+    def validate_event_posture(self) -> "RunTimelineMatchView":
+        if self.projected_events != len(self.events):
+            raise ValueError("projected_events must equal events length")
+        if self.events_truncated != (self.total_events > self.projected_events):
+            raise ValueError("events_truncated does not match event counts")
+        if self.timeline_status == "available" and self.unavailable_reason is not None:
+            raise ValueError("available timeline cannot have an unavailable reason")
+        if self.timeline_status == "unavailable" and (
+            self.unavailable_reason is None
+            or self.total_events != 0
+            or self.events
+        ):
+            raise ValueError("unavailable timeline cannot project events")
+        return self
+
+
+class RunTimelineView(BaseModel):
+    """Verified, bounded Timeline product view for a recent-form run."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+
+    schema_version: Literal["1.0"] = "1.0"
+    run_id: str
+    skill_name: Literal["recent-form-review"] = "recent-form-review"
+    skill_version: str
+    runtime_status: RuntimeStatus
+    publication_status: RuntimePublicationStatus
+    terminal_reason: str
+    source: Literal["riot_match_v5_timeline"] = "riot_match_v5_timeline"
+    timeline_status: Literal["available", "partial", "unavailable"]
+    total_matches: int = Field(ge=1, le=100)
+    projected_matches: int = Field(ge=1, le=_MAX_TIMELINE_MATCHES)
+    matches_truncated: bool = False
+    matches: tuple[RunTimelineMatchView, ...] = Field(
+        min_length=1,
+        max_length=_MAX_TIMELINE_MATCHES,
+    )
+
+    @field_validator("run_id")
+    @classmethod
+    def validate_run_id(cls, value: str) -> str:
+        return normalize_run_id(value)
+
+    @field_validator("skill_version", "terminal_reason")
+    @classmethod
+    def validate_timeline_text(cls, value: str, info) -> str:
+        if not value.strip() or value != value.strip():
+            raise ValueError(f"{info.field_name} must be normalized")
+        return value
+
+    @model_validator(mode="after")
+    def validate_match_posture(self) -> "RunTimelineView":
+        if self.projected_matches != len(self.matches):
+            raise ValueError("projected_matches must equal matches length")
+        if self.matches_truncated != (self.total_matches > self.projected_matches):
+            raise ValueError("matches_truncated does not match match counts")
+        available = sum(
+            match.timeline_status == "available" for match in self.matches
+        )
+        expected = (
+            "available"
+            if available == len(self.matches)
+            else "unavailable"
+            if available == 0
+            else "partial"
+        )
+        if not self.matches_truncated and self.timeline_status != expected:
+            raise ValueError("timeline_status does not match match availability")
+        return self
+
+
 class SingleMatchReviewView(BaseModel):
     """Body-free identity of one verified published single-match review."""
 
@@ -297,6 +424,200 @@ class RunQueryService:
             raise
         except Exception:
             raise RunQueryError("run_integrity_failed") from None
+
+    def get_timeline(self, run_id: str) -> RunTimelineView:
+        verified = self._load_safely(run_id)
+        self._require_published_skill(verified, "recent-form-review")
+        try:
+            summary = self._read_verified_player_summary(verified)
+            raw_matches = summary.get("matches")
+            if not isinstance(raw_matches, list) or not raw_matches:
+                raise ValueError("timeline requires at least one match row")
+            all_matches = tuple(
+                self._project_timeline_match(row) for row in raw_matches
+            )
+            projected = all_matches[:_MAX_TIMELINE_MATCHES]
+            available_count = sum(
+                match.timeline_status == "available" for match in all_matches
+            )
+            timeline_status: Literal["available", "partial", "unavailable"] = (
+                "available"
+                if available_count == len(all_matches)
+                else "unavailable"
+                if available_count == 0
+                else "partial"
+            )
+            assert verified.trace is not None
+            return RunTimelineView(
+                run_id=verified.receipt.run_id,
+                skill_version=verified.trace.identity.skill_version,
+                runtime_status=verified.receipt.runtime_status,
+                publication_status=verified.receipt.publication_status,
+                terminal_reason=verified.receipt.terminal_reason,
+                timeline_status=timeline_status,
+                total_matches=len(all_matches),
+                projected_matches=len(projected),
+                matches_truncated=len(all_matches) > len(projected),
+                matches=projected,
+            )
+        except RunQueryError:
+            raise
+        except Exception:
+            raise RunQueryError("run_integrity_failed") from None
+
+    @classmethod
+    def _project_timeline_match(cls, value: Any) -> RunTimelineMatchView:
+        if not isinstance(value, Mapping):
+            raise ValueError("timeline match row is not a mapping")
+        status = value.get("timeline_status")
+        if status not in {"available", "unavailable"}:
+            raise ValueError("timeline status is invalid")
+        if "timeline_available" in value and value.get("timeline_available") is not (
+            status == "available"
+        ):
+            raise ValueError("timeline availability fields disagree")
+        common = {
+            "match_id": value.get("match_id"),
+            "champion_name": value.get("champion_name"),
+            "role": value.get("role"),
+            "win": value.get("win"),
+            "game_duration_seconds": value.get("game_duration_seconds"),
+            "included_in_aggregate": value.get("included_in_aggregate"),
+        }
+        if status == "unavailable":
+            for key in ("death_times", "item_purchases", "objective_events"):
+                if value.get(key, []) != []:
+                    raise ValueError("unavailable timeline contains events")
+            return RunTimelineMatchView(
+                **common,
+                timeline_status="unavailable",
+                unavailable_reason="source_unavailable",
+                total_events=0,
+                projected_events=0,
+                events_truncated=False,
+                events=(),
+            )
+
+        events = cls._project_timeline_events(value)
+        projected = events[:_MAX_TIMELINE_EVENTS_PER_MATCH]
+        return RunTimelineMatchView(
+            **common,
+            timeline_status="available",
+            unavailable_reason=None,
+            total_events=len(events),
+            projected_events=len(projected),
+            events_truncated=len(events) > len(projected),
+            events=projected,
+        )
+
+    @classmethod
+    def _project_timeline_events(
+        cls,
+        match: Mapping[str, Any],
+    ) -> tuple[TimelineEventView, ...]:
+        deaths = match.get("death_times")
+        purchases = match.get("item_purchases")
+        objectives = match.get("objective_events")
+        if (
+            not isinstance(deaths, list)
+            or not isinstance(purchases, list)
+            or not isinstance(objectives, list)
+        ):
+            raise ValueError("available timeline event collections must be lists")
+        events: list[TimelineEventView] = []
+        for value in deaths:
+            seconds = cls._parse_timeline_clock(value)
+            events.append(cls._timeline_event("death", seconds, "Death"))
+        for value in purchases:
+            if not isinstance(value, Mapping):
+                raise ValueError("item purchase is not a mapping")
+            seconds = cls._event_seconds(value)
+            item_id = value.get("item_id")
+            if isinstance(item_id, bool) or not isinstance(item_id, int):
+                raise ValueError("item purchase requires an integer item_id")
+            item_name = value.get("item_name")
+            label = "Item purchase"
+            if item_name is not None:
+                if (
+                    not isinstance(item_name, str)
+                    or not item_name.strip()
+                    or item_name != item_name.strip()
+                    or len(item_name) > 80
+                ):
+                    raise ValueError("item_name is not bounded normalized text")
+                label = item_name
+            events.append(
+                cls._timeline_event(
+                    "item_purchase",
+                    seconds,
+                    label,
+                    item_id=item_id,
+                )
+            )
+        objective_labels = {
+            "DRAGON": "Dragon secured",
+            "BARON_NASHOR": "Baron Nashor secured",
+            "RIFTHERALD": "Rift Herald secured",
+            "HORDE": "Void grubs secured",
+        }
+        for value in objectives:
+            if not isinstance(value, Mapping):
+                raise ValueError("objective event is not a mapping")
+            seconds = cls._event_seconds(value)
+            monster = value.get("monster")
+            label = (
+                objective_labels.get(monster, "Elite objective secured")
+                if isinstance(monster, str)
+                else "Elite objective secured"
+            )
+            events.append(cls._timeline_event("objective", seconds, label))
+        priority = {"death": 0, "item_purchase": 1, "objective": 2}
+        return tuple(
+            sorted(events, key=lambda event: (event.at_seconds, priority[event.event_kind]))
+        )
+
+    @staticmethod
+    def _parse_timeline_clock(value: Any) -> int:
+        if not isinstance(value, str):
+            raise ValueError("timeline clock must be text")
+        match = re.fullmatch(r"(\d{1,4}):([0-5]\d)", value)
+        if match is None:
+            raise ValueError("timeline clock is invalid")
+        seconds = int(match.group(1)) * 60 + int(match.group(2))
+        if seconds > 86_400:
+            raise ValueError("timeline clock exceeds the public bound")
+        return seconds
+
+    @classmethod
+    def _event_seconds(cls, value: Mapping[str, Any]) -> int:
+        milliseconds = value.get("time_ms")
+        if isinstance(milliseconds, bool) or not isinstance(milliseconds, int):
+            raise ValueError("timeline event requires integer time_ms")
+        if milliseconds < 0 or milliseconds // 1000 > 86_400:
+            raise ValueError("timeline event time is outside the public bound")
+        seconds = milliseconds // 1000
+        if cls._parse_timeline_clock(value.get("time")) != seconds:
+            raise ValueError("timeline event clock disagrees with time_ms")
+        return seconds
+
+    @staticmethod
+    def _timeline_event(
+        event_kind: Literal["death", "item_purchase", "objective"],
+        at_seconds: int,
+        label: str,
+        *,
+        item_id: int | None = None,
+    ) -> TimelineEventView:
+        phase: Literal["early", "mid", "late"] = (
+            "early" if at_seconds < 900 else "mid" if at_seconds < 1500 else "late"
+        )
+        return TimelineEventView(
+            event_kind=event_kind,
+            at_seconds=at_seconds,
+            phase=phase,
+            label=label,
+            item_id=item_id,
+        )
 
     def get_single_match_review(self, run_id: str) -> SingleMatchReviewView:
         verified = self._load_safely(run_id)

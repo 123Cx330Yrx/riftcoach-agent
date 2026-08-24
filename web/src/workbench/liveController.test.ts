@@ -4,6 +4,10 @@ import type {
   LatestProfileReviewWire,
   PlayerProfilePageWire,
   ProductStateWire,
+  RecentSummaryWire,
+  RunTimelineWire,
+  RunWire,
+  EvidenceSnapshotWire,
   TaskEventPageWire,
   TaskEventWire,
   TaskWire,
@@ -47,6 +51,7 @@ const latest = (profileId = SELF): LatestProfileReviewWire => ({
       stream: `/tasks/${TASK_ID}/events/stream`,
       run: `/runs/${RUN_ID}`,
       summary: `/runs/${RUN_ID}/recent-summary`,
+      timeline: `/runs/${RUN_ID}/timeline`,
       report: `/runs/${RUN_ID}/report`,
       product_state: `/runs/${RUN_ID}/product-state`,
       evidence: `/runs/${RUN_ID}/evidence`,
@@ -98,6 +103,11 @@ class FakeApi implements LiveWorkbenchDataApi {
   latestByProfile = new Map([[SELF, latest(SELF)], [OBSERVED, latest(OBSERVED)]])
   taskValue = task()
   productValue = product()
+  runValue: RunWire | undefined
+  summaryValue: RecentSummaryWire | undefined
+  timelineValue: RunTimelineWire | undefined
+  reportValue: string | undefined
+  evidenceValue: EvidenceSnapshotWire | undefined
   calls: string[] = []
 
   async listProfiles(_signal: AbortSignal) { this.calls.push("profiles"); return this.profilePage }
@@ -105,10 +115,11 @@ class FakeApi implements LiveWorkbenchDataApi {
   async getTask(_taskId: string, _runId: string, _signal: AbortSignal) { this.calls.push("task"); return this.taskValue }
   async getEvents(_taskId: string, _runId: string, _signal: AbortSignal) { this.calls.push("events"); return events() }
   async getProductState(_taskId: string, _runId: string, _signal: AbortSignal) { this.calls.push("product"); return this.productValue }
-  async getRun() { this.calls.push("run"); throw new Error("unused") }
-  async getSummary() { this.calls.push("summary"); throw new Error("unused") }
-  async getReport() { this.calls.push("report"); throw new Error("unused") }
-  async getEvidence() { this.calls.push("evidence"); throw new Error("unused") }
+  async getRun() { this.calls.push("run"); return this.runValue }
+  async getSummary() { this.calls.push("summary"); return this.summaryValue }
+  async getTimeline() { this.calls.push("timeline"); return this.timelineValue }
+  async getReport() { this.calls.push("report"); return this.reportValue }
+  async getEvidence() { this.calls.push("evidence"); return this.evidenceValue }
   async getTrainingPlans(_profileId: string, _signal: AbortSignal) { this.calls.push("training-plans"); return { schema_version: "1.0" as const, plans: [] } }
   async getTrainingProgress(_profileId: string, _signal: AbortSignal) { this.calls.push("training-progress"); return { schema_version: "1.0" as const, events: [], trends: [] } }
 }
@@ -124,6 +135,55 @@ function streamHarness() {
 }
 
 describe("generation-guarded live controller", () => {
+  it("loads the verified Timeline with terminal published content", async () => {
+    const api = new FakeApi()
+    api.taskValue = task("succeeded")
+    api.productValue = product("published")
+    api.runValue = {
+      schema_version: "1.0", run_id: RUN_ID, runtime_status: "completed", publication_status: "published",
+      terminal_reason: "quality_gate_passed", skill_name: "recent-form-review", skill_version: "0.2.0",
+      prompt_profile_id: "recent-form-review-coach", prompt_profile_version: "1.0.0", started_at_utc: NOW,
+      completed_at_utc: NOW, elapsed_ms: 100, usage: null, report_available: true,
+    }
+    api.summaryValue = {
+      schema_version: "1.0", run_id: RUN_ID, skill_name: "recent-form-review", skill_version: "0.2.0",
+      runtime_status: "completed", publication_status: "published", terminal_reason: "quality_gate_passed",
+      report_available: true, games_analyzed: 1, wins: 1, losses: 0, win_rate: 100, main_role: "MIDDLE",
+      main_champions: ["Ahri"],
+      averages: { kda: 3, cs_per_min: 8, gold_per_min: 410, damage_per_min: 550, vision_score: 21,
+        kill_participation_percent: 62, damage_share_percent: 27, gold_share_percent: 24, deaths_before_15: 0 },
+      win_loss_comparison: {
+        wins: { cs_per_min: 8, gold_per_min: 410, damage_per_min: 550, vision_score: 21, deaths_before_15: 0 },
+        losses: { cs_per_min: 0, gold_per_min: 0, damage_per_min: 0, vision_score: 0, deaths_before_15: 0 },
+      },
+    }
+    api.timelineValue = {
+      schema_version: "1.0", run_id: RUN_ID, skill_name: "recent-form-review", skill_version: "0.2.0",
+      runtime_status: "completed", publication_status: "published", terminal_reason: "quality_gate_passed",
+      source: "riot_match_v5_timeline", timeline_status: "available", total_matches: 1, projected_matches: 1,
+      matches_truncated: false, matches: [{ match_id: "EUW1_123", champion_name: "Ahri", role: "MIDDLE",
+        win: true, game_duration_seconds: 1800, included_in_aggregate: true, timeline_status: "available",
+        unavailable_reason: null, total_events: 1, projected_events: 1, events_truncated: false,
+        events: [{ event_kind: "objective", at_seconds: 1200, phase: "mid", label: "Dragon secured", item_id: null }] }],
+    }
+    api.reportValue = "## Verified brief"
+    api.evidenceValue = {
+      schema_version: "1.0", snapshot_id: "97000000-0000-4000-8000-000000000001", task_id: TASK_ID,
+      run_id: RUN_ID, revision: 1, bundle_digest: "a".repeat(64), snapshot_digest: "b".repeat(64),
+      stored_at: NOW, expires_at: null, freshness: "current", bundle_disposition: "complete", confidence: "high",
+      usable_claims: ["riot_match_facts"], projection: { schema_version: "1.0", bundle_digest: "a".repeat(64),
+        disposition: "complete", confidence: "high", claims: ["riot_match_facts"], matches: [], joins: [], conflicts: [],
+        sources: { riot_official: { match_count: 1, digests: ["c".repeat(64)], freshness: "current" },
+          data_dragon: { version: null, catalog_digest: null, freshness: "unknown" },
+          riot_patch: { patch_version: null, source_digest: null, freshness: "unknown" },
+          opgg: { evidence_count: 0, digests: [], provenance: [], freshness: "unknown" } }, gaps: [] },
+    }
+
+    const controller = new LiveWorkbenchController({ api, streamFactory: streamHarness().factory })
+    await controller.start()
+
+    expect(controller.snapshot.state.client === "ready" && controller.snapshot.state.data.timeline?.matches[0]?.events[0]?.phase).toBe("mid")
+  })
   it("loads profiles, active control state and opens at most one stream", async () => {
     const api = new FakeApi()
     const stream = streamHarness()

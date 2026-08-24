@@ -205,6 +205,7 @@ def test_openapi_versions_the_async_contract_and_exact_paths() -> None:
             "/tasks/{task_id}/events/stream",
             "/runs/{run_id}",
             "/runs/{run_id}/recent-summary",
+            "/runs/{run_id}/timeline",
             "/runs/{run_id}/evidence",
             "/runs/{run_id}/product-state",
             "/runs/{run_id}/report",

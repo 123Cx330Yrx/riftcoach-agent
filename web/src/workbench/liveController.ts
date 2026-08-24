@@ -6,6 +6,7 @@ import type {
   ProductStateWire,
   RecentSummaryWire,
   RunWire,
+  RunTimelineWire,
   TaskEventPageWire,
   TaskWire,
   TrainingPlanPageWire,
@@ -22,6 +23,7 @@ import {
   adaptProductState,
   adaptRecentSummary,
   adaptRun,
+  adaptTimeline,
   adaptTask,
   adaptTaskEvent,
   adaptTraining,
@@ -33,6 +35,7 @@ import type {
   WorkbenchEvidence,
   WorkbenchRecentSummary,
   WorkbenchRun,
+  WorkbenchTimeline,
   WorkbenchTraining,
 } from "./model"
 
@@ -46,6 +49,7 @@ export interface LiveWorkbenchDataApi {
   getProductState(taskId: string, runId: string, signal: AbortSignal): Promise<ProductStateWire>
   getRun(runId: string, signal: AbortSignal): Promise<RunWire | void>
   getSummary(runId: string, signal: AbortSignal): Promise<RecentSummaryWire | void>
+  getTimeline(runId: string, signal: AbortSignal): Promise<RunTimelineWire | void>
   getReport(runId: string, signal: AbortSignal): Promise<string | void>
   getEvidence(taskId: string, runId: string, signal: AbortSignal): Promise<EvidenceSnapshotWire | void>
   getTrainingPlans(profileId: string, signal: AbortSignal): Promise<TrainingPlanPageWire>
@@ -283,6 +287,7 @@ export class LiveWorkbenchController {
     if (productState.state === "rejected" || productState.state === "not_ready") return view
     const runPromise = this.api.getRun(binding.runId, signal)
     const summaryPromise = this.api.getSummary(binding.runId, signal)
+    const timelinePromise = this.api.getTimeline(binding.runId, signal)
     const reportPromise = this.api.getReport(binding.runId, signal)
     const evidencePromise = this.api.getEvidence(binding.taskId, binding.runId, signal).catch((error: unknown) => {
       if (
@@ -293,14 +298,15 @@ export class LiveWorkbenchController {
       }
       throw error
     })
-    const [run, summary, report, evidence] = await Promise.all([
+    const [run, summary, timeline, report, evidence] = await Promise.all([
       runPromise,
       summaryPromise,
+      timelinePromise,
       reportPromise,
       evidencePromise,
     ])
     if (!this.owns(binding)) return view
-    if (run === undefined || summary === undefined || report === undefined) {
+    if (run === undefined || summary === undefined || timeline === undefined || report === undefined) {
       throw new Error("terminal content is unavailable")
     }
     if (productState.state === "published" && evidence === undefined) {
@@ -310,6 +316,7 @@ export class LiveWorkbenchController {
       ...view,
       run: adaptRun(run) satisfies WorkbenchRun,
       summary: adaptRecentSummary(summary) satisfies WorkbenchRecentSummary,
+      timeline: adaptTimeline(timeline) satisfies WorkbenchTimeline,
       report: { markdown: report } satisfies WorkbenchCoachReport,
       ...(evidence === undefined ? {} : { evidence: adaptEvidence(evidence) satisfies WorkbenchEvidence }),
     }

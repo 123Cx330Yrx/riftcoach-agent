@@ -844,8 +844,15 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
+        - docs/adr/0065-adopt-verified-event-phase-timeline-projection.md
+        - docs/plans/2026-08-24-8e-timeline-dto-ui-design.md
+        - docs/learning/8e-timeline-dto-ui-walkthrough.md
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
+        - docs/adr/0065-adopt-verified-event-phase-timeline-projection.md
+        - docs/plans/2026-08-24-8e-timeline-dto-ui-design.md
+        - docs/plans/2026-08-24-8e-timeline-dto-ui-implementation.md
+        - docs/learning/8e-timeline-dto-ui-walkthrough.md
         - docs/adr/0064-adopt-portal-to-workbench-visual-contract.md
         - docs/plans/2026-08-24-8e-portal-workbench-visual-contract.md
         - docs/plans/2026-08-24-8e-visual-asset-adoption-ledger.md
@@ -889,6 +896,7 @@ groups:
         - docs/learning/8e-live-workbench-integration-walkthrough.md
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
+        - docs/learning/8e-timeline-dto-ui-walkthrough.md
       data_and_control_flow:
         - docs/plans/2026-08-23-player-profile-selection-explicit-routing-design.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
@@ -905,6 +913,7 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
+        - docs/learning/8e-timeline-dto-ui-walkthrough.md
       verification:
         - docs/plans/2026-08-23-player-profile-selection-explicit-routing-implementation.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
@@ -921,6 +930,8 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-implementation.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
+        - docs/plans/2026-08-24-8e-timeline-dto-ui-implementation.md
+        - docs/learning/8e-timeline-dto-ui-walkthrough.md
       runbook:
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
         - docs/learning/8e-evidence-product-api-walkthrough.md
@@ -930,6 +941,7 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-entry-design-walkthrough.md
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
+        - docs/learning/8e-timeline-dto-ui-walkthrough.md
       failure_security_boundary:
         - docs/adr/0059-adopt-owner-scoped-player-profiles-and-explicit-riot-routing.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
@@ -945,6 +957,8 @@ groups:
         - docs/plans/2026-08-23-8e-batch-e-security-deployment-entry-design.md
         - docs/learning/8e-batch-e-security-deployment-entry-design-walkthrough.md
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
+        - docs/adr/0065-adopt-verified-event-phase-timeline-projection.md
+        - docs/learning/8e-timeline-dto-ui-walkthrough.md
       interview_wording:
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
         - docs/learning/8e-evidence-product-api-walkthrough.md
@@ -953,6 +967,7 @@ groups:
         - docs/adr/0063-adopt-security-deployment-boundary-and-productization-sequence.md
         - docs/learning/8e-batch-e-security-deployment-entry-design-walkthrough.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
+        - docs/learning/8e-timeline-dto-ui-walkthrough.md
 
   - id: 8f-final-evaluation-and-portfolio
     sequence: 360

@@ -19,6 +19,8 @@ from app.product.run_query import (
     RecentComparisonRowView,
     RecentSummaryView,
     RecentWinLossComparisonView,
+    RunTimelineMatchView,
+    RunTimelineView,
     RunQueryError,
     RunView,
 )
@@ -105,6 +107,35 @@ def recent_summary(
     )
 
 
+def run_timeline() -> RunTimelineView:
+    return RunTimelineView(
+        run_id=RUN_ID,
+        skill_version="0.2.0",
+        runtime_status=RuntimeStatus.COMPLETED,
+        publication_status=RuntimePublicationStatus.PUBLISHED,
+        terminal_reason="quality_gate_passed",
+        timeline_status="available",
+        total_matches=1,
+        projected_matches=1,
+        matches=(
+            RunTimelineMatchView(
+                match_id="EUW1_123",
+                champion_name="Ahri",
+                role="MIDDLE",
+                win=True,
+                game_duration_seconds=1800,
+                included_in_aggregate=True,
+                timeline_status="available",
+                unavailable_reason=None,
+                total_events=0,
+                projected_events=0,
+                events_truncated=False,
+                events=(),
+            ),
+        ),
+    )
+
+
 class ReadyProbe:
     def check(self) -> ReadinessResult:
         return ReadinessResult.ready()
@@ -148,6 +179,7 @@ class QueryService:
         self.value = value or recent_summary()
         self.error = error
         self.summary_calls: list[str] = []
+        self.timeline_calls: list[str] = []
 
     def get_run(self, run_id: str) -> RunView:
         del run_id
@@ -162,6 +194,12 @@ class QueryService:
         if self.error is not None:
             raise self.error
         return self.value
+
+    def get_timeline(self, run_id: str) -> RunTimelineView:
+        self.timeline_calls.append(run_id)
+        if self.error is not None:
+            raise self.error
+        return run_timeline()
 
 
 def client(
@@ -236,6 +274,7 @@ def test_latest_locator_builds_only_relative_allowlisted_links() -> None:
         "stream": f"/tasks/{TASK_ID}/events/stream",
         "run": f"/runs/{RUN_ID}",
         "summary": f"/runs/{RUN_ID}/recent-summary",
+        "timeline": f"/runs/{RUN_ID}/timeline",
         "report": f"/runs/{RUN_ID}/report",
         "product_state": f"/runs/{RUN_ID}/product-state",
         "evidence": f"/runs/{RUN_ID}/evidence",
@@ -311,6 +350,114 @@ def test_recent_summary_obeys_task_and_publication_state(
     assert response.status_code == expected_status
     assert response.json() == {"code": expected_code, "run_id": RUN_ID}
     assert query.summary_calls == []
+
+
+def test_timeline_is_owner_gated_and_projects_a_typed_safe_response() -> None:
+    service = QueryService()
+
+    response = client(
+        task_service=TaskService(
+            task(
+                TaskStatus.SUCCEEDED,
+                publication=TaskPublicationStatus.PUBLISHED,
+                report_available=True,
+            )
+        ),
+        query_service=service,
+    ).get(f"/runs/{RUN_ID}/timeline")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "schema_version": "1.0",
+        "run_id": RUN_ID,
+        "skill_name": "recent-form-review",
+        "skill_version": "0.2.0",
+        "runtime_status": "completed",
+        "publication_status": "published",
+        "terminal_reason": "quality_gate_passed",
+        "source": "riot_match_v5_timeline",
+        "timeline_status": "available",
+        "total_matches": 1,
+        "projected_matches": 1,
+        "matches_truncated": False,
+        "matches": [
+            {
+                "match_id": "EUW1_123",
+                "champion_name": "Ahri",
+                "role": "MIDDLE",
+                "win": True,
+                "game_duration_seconds": 1800,
+                "included_in_aggregate": True,
+                "timeline_status": "available",
+                "unavailable_reason": None,
+                "total_events": 0,
+                "projected_events": 0,
+                "events_truncated": False,
+                "events": [],
+            }
+        ],
+    }
+    assert service.timeline_calls == [RUN_ID]
+    for forbidden in ("owner", "puuid", "artifact", "path", "timeline_error"):
+        assert forbidden not in response.text.lower()
+
+
+@pytest.mark.parametrize(
+    ("task_value", "expected_status", "expected_code"),
+    (
+        (task(TaskStatus.RUNNING), 409, "run_not_ready"),
+        (task(TaskStatus.FAILED), 409, "run_not_available"),
+        (
+            task(
+                TaskStatus.SUCCEEDED,
+                publication=TaskPublicationStatus.REJECTED,
+                report_available=False,
+            ),
+            409,
+            "report_not_available",
+        ),
+    ),
+)
+def test_timeline_obeys_terminal_publication_gate(
+    task_value: ReviewTaskView,
+    expected_status: int,
+    expected_code: str,
+) -> None:
+    query = QueryService()
+    response = client(
+        task_service=TaskService(task_value),
+        query_service=query,
+    ).get(
+        f"/runs/{RUN_ID}/timeline"
+    )
+
+    assert response.status_code == expected_status
+    assert response.json() == {"code": expected_code, "run_id": RUN_ID}
+    assert query.timeline_calls == []
+
+
+def test_timeline_maps_cross_owner_and_projection_identity_failure_body_free() -> None:
+    not_found = client(
+        task_service=TaskService(error=TaskServiceError("task_not_found"))
+    ).get(f"/runs/{RUN_ID}/timeline")
+    mismatched = run_timeline().model_copy(update={"run_id": "review_other"})
+    service = QueryService()
+    service.get_timeline = lambda _run_id: mismatched
+    integrity = client(
+        task_service=TaskService(
+            task(
+                TaskStatus.SUCCEEDED,
+                publication=TaskPublicationStatus.PUBLISHED,
+                report_available=True,
+            )
+        ),
+        query_service=service,
+    ).get(f"/runs/{RUN_ID}/timeline")
+
+    assert not_found.status_code == 404
+    assert not_found.json() == {"code": "run_not_found"}
+    assert integrity.status_code == 500
+    assert integrity.json() == {"code": "run_integrity_failed", "run_id": RUN_ID}
 
 
 @pytest.mark.parametrize(

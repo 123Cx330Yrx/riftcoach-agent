@@ -58,6 +58,7 @@ from app.api.player_models import (
 from app.api.live_workbench_models import (
     LatestProfileReviewResponse,
     RecentSummaryResponse,
+    RunTimelineResponse,
 )
 from app.api.memory_models import (
     CreateMemoryCandidateRequest,
@@ -149,7 +150,12 @@ from app.product.latest_review import (
     LatestProfileReviewResult,
     LatestProfileReviewServiceError,
 )
-from app.product.run_query import RecentSummaryView, RunQueryError, RunView
+from app.product.run_query import (
+    RecentSummaryView,
+    RunQueryError,
+    RunTimelineView,
+    RunView,
+)
 from app.tasks.models import (
     CreateConversationReviewTaskCommand,
     CreateReviewTaskCommand,
@@ -230,6 +236,8 @@ class RunQueryPort(Protocol):
     def get_report(self, run_id: str) -> str: ...
 
     def get_recent_summary(self, run_id: str) -> RecentSummaryView: ...
+
+    def get_timeline(self, run_id: str) -> RunTimelineView: ...
 
 
 class LatestProfileReviewServicePort(Protocol):
@@ -2307,6 +2315,82 @@ def create_app(
             ):
                 raise ValueError("recent Summary identity mismatch")
             return RecentSummaryResponse.from_view(result)
+        except RunQueryError as error:
+            if error.code == "report_not_available":
+                return _error_response(
+                    "report_not_available",
+                    status_code=409,
+                    run_id=task.run_id,
+                )
+            return _error_response(
+                "run_integrity_failed",
+                status_code=500,
+                run_id=task.run_id,
+            )
+        except Exception:
+            return _error_response(
+                "run_integrity_failed",
+                status_code=500,
+                run_id=task.run_id,
+            )
+
+    @app.get(
+        "/runs/{run_id}/timeline",
+        response_model=RunTimelineResponse,
+        responses={
+            404: {"model": ErrorResponse},
+            409: {"model": ErrorResponse},
+            500: {"model": ErrorResponse},
+            503: {"model": ErrorResponse},
+        },
+    )
+    def get_run_timeline(
+        run_id: str,
+        actor: ActorContext = Depends(trusted_actor),
+    ) -> RunTimelineResponse | JSONResponse:
+        task = owned_run_task(actor, run_id)
+        if isinstance(task, JSONResponse):
+            return task
+        if task.status in {
+            TaskStatus.QUEUED,
+            TaskStatus.RUNNING,
+            TaskStatus.RECOVERY_REQUIRED,
+        }:
+            return _error_response(
+                "run_not_ready",
+                status_code=409,
+                run_id=task.run_id,
+            )
+        if task.status in {TaskStatus.FAILED, TaskStatus.CANCELLED}:
+            return _error_response(
+                "run_not_available",
+                status_code=409,
+                run_id=task.run_id,
+            )
+        if not task.report_available:
+            return _error_response(
+                "report_not_available",
+                status_code=409,
+                run_id=task.run_id,
+            )
+        get_timeline = getattr(query_service, "get_timeline", None)
+        if not callable(get_timeline):
+            return _error_response(
+                "service_unavailable",
+                status_code=503,
+                run_id=task.run_id,
+            )
+        try:
+            result = get_timeline(task.run_id)
+            if (
+                not isinstance(result, RunTimelineView)
+                or result.run_id != task.run_id
+                or task.publication_status is None
+                or result.publication_status.value
+                != task.publication_status.value
+            ):
+                raise ValueError("Timeline identity mismatch")
+            return RunTimelineResponse.from_view(result)
         except RunQueryError as error:
             if error.code == "report_not_available":
                 return _error_response(

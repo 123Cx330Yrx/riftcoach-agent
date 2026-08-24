@@ -42,6 +42,8 @@ test.describe("live owner-scoped workbench", () => {
     await expect(page.getByText("Not ready", { exact: true })).toBeVisible()
     await expect(page.getByText("Published", { exact: true })).toBeVisible({ timeout: 5_000 })
     await expect(page.getByRole("heading", { name: "Recent performance snapshot" })).toBeVisible()
+    await expect(page.getByRole("heading", { name: "Match phase review" })).toBeVisible()
+    await expect(page.getByRole("button", { name: /baron nashor secured at 27:44/i })).toBeVisible()
     await expect(page.getByText(/## Verified brief/)).toBeVisible()
     await expect(page.getByText("Early death control", { exact: true })).toBeVisible()
 
@@ -55,6 +57,7 @@ test.describe("live owner-scoped workbench", () => {
     await useScenario(page, "degraded", uniqueTestId("degraded"))
     await page.goto("/")
     await expect(page.getByText("Degraded", { exact: true })).toBeVisible()
+    await expect(page.getByText(/1 of 2 timelines unavailable/i)).toBeVisible()
     await expect(page.getByText(/## Limited brief/)).toBeVisible()
     expect(await page.locator(".safe-markdown a, .safe-markdown img, .safe-markdown script").count()).toBe(0)
 

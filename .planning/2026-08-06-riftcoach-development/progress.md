@@ -4165,3 +4165,29 @@
   auth unavailable/expired/revoked/required 各有安全状态；视觉 Task 3 polish 与资产可移除边界保持。
 - `NEXT`：进入 `remaining-product-modules / Timeline DTO/UI`，先做设计和红灯合同，禁止从 fixture 生成
   假时间序列；必须绑定 `run_id/task_id`、timeline availability、partial/degraded 和 source posture。
+
+### 2026-08-24：RQ-101 Timeline DTO/UI 本地完整门禁
+
+- `DESIGN/TDD`：ADR-0065 与专用设计/实施计划拒绝未持久化的 Gold/CS/XP 假曲线；Backend 首红为缺 Timeline
+  view，Frontend 首红为 exact link/decoder/controller 与缺 component，均已绿。
+- `BACKEND`：新增 verified/bounded `RunTimelineView` 与 owner-scoped HTTP；整体/单场 available/partial/
+  unavailable、20 match/128 event 上限、total/projected/truncated 和安全 reason code 均为严格合同。
+- `FRONTEND`：same-origin exact decoder/controller 增加 Timeline；`TimelinePanel` 用真实秒数几何、三阶段、
+  match/event selection 和始终存在的语义 event list；mobile/reduced-motion/keyboard/缺失 fallback 完成。
+- `VISUAL`：desktop/mobile/partial-unavailable 三张 durable JPEG 已逐张查看；机械语言压缩为低对比阶段刻度、
+  状态边和节点，信息仍是主层。JS/CSS gzip `128.51/15.27 kB`。
+- `LOCAL-GATES`：focused query/API `45`、相邻 API/composition/package `123`、frontend unit `92`、Playwright
+  `25 passed`、完整 Python `1981 passed, 1 skipped, 1 warning, 127 subtests`、真 PostgreSQL `201 passed`、Alembic reversible/
+  no drift、Linux package schema 1.6/no-I/O/non-root/image exclusion/resource cleanup 全绿。唯一 skip 为 Windows
+  symlink；首次全量 4 个 DB setup error 来自缺进程级 `DATABASE_URL`，映射既有 test URL 后真库与全量通过。
+- `BOUNDARY/NEXT`：Riot/OP.GG/Provider/LLM calls 0；8E coverage 继续 planned。当前只待独立 commit/push 与
+  exact-SHA 三 job；公共关闭后先执行 RQ-102 bilingual product-surface foundation，再进入 Evidence/Trace
+  深页。Training full、OP.GG breadth/golden slice 与 8F 继续保持后序独立门。
+
+### 2026-08-24：RQ-103 当前视觉非最终签收
+
+- 用户明确当前截图、UI、色调、背景、布局与细节仍须继续 polish；英雄名旁缺头像只是未穷举示例。
+- 当前 Timeline 重新校准为“严格功能合同 + 高保真 V1”，不是最终作品集视觉。浏览器证据统一为
+  `25 passed`，frontend unit 为 `92 passed`，最新 bundle 为 JS/CSS gzip `128.51/15.27 kB`。
+- 顺序保持：Timeline exact-SHA 公共关闭 → RQ-102 双语 foundation → RQ-103 Data Dragon 资产/细节
+  enrichment → Evidence/Trace → Training → OP.GG breadth/golden slice → 8E final visual QA/exit。

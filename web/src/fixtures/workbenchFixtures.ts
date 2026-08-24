@@ -7,6 +7,7 @@ import {
   type RecentSummaryFixture,
   type ReviewWorkbenchFixture,
   type TaskEventFixture,
+  type WorkbenchTimeline,
   type WorkbenchScenarioName,
   type WorkbenchScreenState,
 } from "../contracts/workbench";
@@ -67,6 +68,74 @@ const summary = freezeWorkbenchFixture({
     },
   },
 } as const satisfies RecentSummaryFixture);
+
+const timeline = freezeWorkbenchFixture({
+  source: "riot_match_v5_timeline",
+  timelineStatus: "available",
+  totalMatches: 3,
+  projectedMatches: 3,
+  matchesTruncated: false,
+  matches: [
+    {
+      matchId: "EUW1_FIXTURE_001",
+      championName: "Orianna",
+      role: "MIDDLE",
+      win: true,
+      gameDurationSeconds: 2052,
+      includedInAggregate: true,
+      timelineStatus: "available",
+      totalEvents: 7,
+      projectedEvents: 7,
+      eventsTruncated: false,
+      events: [
+        { eventKind: "item_purchase", atSeconds: 246, phase: "early", label: "Lost Chapter", itemId: 3802 },
+        { eventKind: "death", atSeconds: 562, phase: "early", label: "Death" },
+        { eventKind: "objective", atSeconds: 714, phase: "early", label: "Dragon secured" },
+        { eventKind: "item_purchase", atSeconds: 1028, phase: "mid", label: "Archangel's Staff", itemId: 3003 },
+        { eventKind: "objective", atSeconds: 1242, phase: "mid", label: "Rift Herald secured" },
+        { eventKind: "death", atSeconds: 1584, phase: "late", label: "Death" },
+        { eventKind: "objective", atSeconds: 1818, phase: "late", label: "Baron Nashor secured" },
+      ],
+    },
+    {
+      matchId: "EUW1_FIXTURE_002",
+      championName: "Ahri",
+      role: "MIDDLE",
+      win: false,
+      gameDurationSeconds: 1660,
+      includedInAggregate: true,
+      timelineStatus: "available",
+      totalEvents: 5,
+      projectedEvents: 5,
+      eventsTruncated: false,
+      events: [
+        { eventKind: "item_purchase", atSeconds: 312, phase: "early", label: "Hextech Alternator", itemId: 3145 },
+        { eventKind: "death", atSeconds: 648, phase: "early", label: "Death" },
+        { eventKind: "objective", atSeconds: 986, phase: "mid", label: "Dragon secured" },
+        { eventKind: "death", atSeconds: 1324, phase: "mid", label: "Death" },
+        { eventKind: "objective", atSeconds: 1540, phase: "late", label: "Baron Nashor secured" },
+      ],
+    },
+    {
+      matchId: "EUW1_FIXTURE_003",
+      championName: "Syndra",
+      role: "MIDDLE",
+      win: true,
+      gameDurationSeconds: 1335,
+      includedInAggregate: true,
+      timelineStatus: "available",
+      totalEvents: 4,
+      projectedEvents: 4,
+      eventsTruncated: false,
+      events: [
+        { eventKind: "item_purchase", atSeconds: 280, phase: "early", label: "Lost Chapter", itemId: 3802 },
+        { eventKind: "objective", atSeconds: 702, phase: "early", label: "Dragon secured" },
+        { eventKind: "item_purchase", atSeconds: 1016, phase: "mid", label: "Luden's Companion", itemId: 6655 },
+        { eventKind: "objective", atSeconds: 1266, phase: "mid", label: "Rift Herald secured" },
+      ],
+    },
+  ],
+} as const satisfies WorkbenchTimeline);
 
 const report = freezeWorkbenchFixture({
   title: "Tempo before the second objective",
@@ -275,6 +344,7 @@ export const publishedWorkbenchFixture = freezeWorkbenchFixture({
     evidenceDisposition: "complete",
   },
   summary,
+  timeline,
   run: {
     runtimeStatus: "completed",
     publicationStatus: "published",
@@ -292,6 +362,22 @@ assertPublicWorkbenchFixture(publishedWorkbenchFixture);
 
 const degradedWorkbenchFixture = freezeWorkbenchFixture({
   ...publishedWorkbenchFixture,
+  timeline: {
+    ...timeline,
+    timelineStatus: "partial",
+    matches: [
+      timeline.matches[0],
+      {
+        ...timeline.matches[1],
+        timelineStatus: "unavailable",
+        unavailableReason: "source_unavailable",
+        totalEvents: 0,
+        projectedEvents: 0,
+        events: [],
+      },
+      timeline.matches[2],
+    ],
+  },
   productState: {
     state: "degraded",
     reasonCode: "evidence_expired",

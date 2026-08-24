@@ -66,6 +66,7 @@ export interface LatestReviewLinksWire {
   readonly stream: string
   readonly run: string
   readonly summary: string
+  readonly timeline: string
   readonly report: string
   readonly product_state: string
   readonly evidence: string
@@ -224,6 +225,48 @@ export interface RecentSummaryWire {
     readonly wins: RecentMetricRowWire
     readonly losses: RecentMetricRowWire
   }
+}
+
+export type TimelineEventKindWire = "death" | "item_purchase" | "objective"
+export type TimelinePhaseWire = "early" | "mid" | "late"
+
+export interface RunTimelineEventWire {
+  readonly event_kind: TimelineEventKindWire
+  readonly at_seconds: number
+  readonly phase: TimelinePhaseWire
+  readonly label: string
+  readonly item_id: number | null
+}
+
+export interface RunTimelineMatchWire {
+  readonly match_id: string
+  readonly champion_name: string
+  readonly role: string
+  readonly win: boolean
+  readonly game_duration_seconds: number
+  readonly included_in_aggregate: boolean
+  readonly timeline_status: "available" | "unavailable"
+  readonly unavailable_reason: "source_unavailable" | null
+  readonly total_events: number
+  readonly projected_events: number
+  readonly events_truncated: boolean
+  readonly events: readonly RunTimelineEventWire[]
+}
+
+export interface RunTimelineWire {
+  readonly schema_version: "1.0"
+  readonly run_id: string
+  readonly skill_name: "recent-form-review"
+  readonly skill_version: string
+  readonly runtime_status: "completed"
+  readonly publication_status: "published" | "degraded"
+  readonly terminal_reason: string
+  readonly source: "riot_match_v5_timeline"
+  readonly timeline_status: "available" | "partial" | "unavailable"
+  readonly total_matches: number
+  readonly projected_matches: number
+  readonly matches_truncated: boolean
+  readonly matches: readonly RunTimelineMatchWire[]
 }
 
 export interface EvidenceJoinKeyWire {

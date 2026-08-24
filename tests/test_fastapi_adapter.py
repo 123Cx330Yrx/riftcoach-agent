@@ -181,6 +181,7 @@ def test_app_factory_and_openapi_do_not_read_keys_or_open_io(monkeypatch) -> Non
         "/runs/{run_id}/product-state",
         "/runs/{run_id}/report",
         "/runs/{run_id}/recent-summary",
+        "/runs/{run_id}/timeline",
         "/health/live",
         "/health/ready",
         "/health/metrics",

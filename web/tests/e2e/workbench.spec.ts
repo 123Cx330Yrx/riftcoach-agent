@@ -26,6 +26,11 @@ test.describe("Rift Command Center", () => {
     await expect(page.getByText("Published", { exact: true })).toBeVisible()
     await expect(page.getByText(/Fixture preview/i)).toBeVisible()
     await expect(page.getByText(/Aggregate segments · not a match history/i)).toBeVisible()
+    await expect(page.getByRole("heading", { name: /match phase review/i })).toBeVisible()
+    await expect(page.getByRole("list", { name: /chronological events/i })).toBeVisible()
+    await page.getByRole("button", { name: /game 2.*ahri/i }).focus()
+    await page.keyboard.press("Enter")
+    await expect(page.getByRole("button", { name: /05:12 hextech alternator/i })).toBeVisible()
     await expectNoHorizontalOverflow(page)
 
     const results = await new AxeBuilder({ page }).analyze()
@@ -76,6 +81,7 @@ test.describe("Rift Command Center", () => {
     await expect(page.getByRole("heading", { name: /learning observation/i })).toBeVisible()
     await expect(page.getByText(/no loaded review in the current fixture/i)).toBeVisible()
     await expect(page.getByRole("heading", { name: /recent form/i })).toHaveCount(0)
+    await expect(page.getByRole("heading", { name: /match phase review/i })).toHaveCount(0)
     await expect(page.getByRole("heading", { name: /your training plan/i })).toHaveCount(0)
   })
 

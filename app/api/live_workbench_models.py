@@ -16,6 +16,8 @@ from app.product.run_query import (
     RecentAveragesView,
     RecentSummaryView,
     RecentWinLossComparisonView,
+    RunTimelineMatchView,
+    RunTimelineView,
 )
 from app.runtime.models import RuntimeStatus
 from app.runtime.signals import RuntimePublicationStatus
@@ -32,6 +34,7 @@ class LatestProfileReviewLinks(LiveWorkbenchApiModel):
     stream: str
     run: str
     summary: str
+    timeline: str
     report: str
     product_state: str
     evidence: str
@@ -64,6 +67,7 @@ class LatestProfileReviewItemResponse(LiveWorkbenchApiModel):
                 stream=f"{task_path}/events/stream",
                 run=run_path,
                 summary=f"{run_path}/recent-summary",
+                timeline=f"{run_path}/timeline",
                 report=f"{run_path}/report",
                 product_state=f"{run_path}/product-state",
                 evidence=f"{run_path}/evidence",
@@ -118,9 +122,32 @@ class RecentSummaryResponse(LiveWorkbenchApiModel):
         return cls(**view.model_dump(mode="python"))
 
 
+class RunTimelineResponse(LiveWorkbenchApiModel):
+    schema_version: Literal["1.0"] = "1.0"
+    run_id: str
+    skill_name: Literal["recent-form-review"] = "recent-form-review"
+    skill_version: str
+    runtime_status: RuntimeStatus
+    publication_status: RuntimePublicationStatus
+    terminal_reason: str
+    source: Literal["riot_match_v5_timeline"] = "riot_match_v5_timeline"
+    timeline_status: Literal["available", "partial", "unavailable"]
+    total_matches: int
+    projected_matches: int
+    matches_truncated: bool
+    matches: tuple[RunTimelineMatchView, ...]
+
+    @classmethod
+    def from_view(cls, view: RunTimelineView) -> "RunTimelineResponse":
+        if not isinstance(view, RunTimelineView):
+            raise TypeError("view must be a RunTimelineView")
+        return cls(**view.model_dump(mode="python"))
+
+
 __all__ = [
     "LatestProfileReviewItemResponse",
     "LatestProfileReviewLinks",
     "LatestProfileReviewResponse",
     "RecentSummaryResponse",
+    "RunTimelineResponse",
 ]

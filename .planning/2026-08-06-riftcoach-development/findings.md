@@ -3952,3 +3952,13 @@
   decoder，明确未登录、加载、auth_unavailable、session expired 与安全拒绝状态，再决定前端引入方式。
 - 真实 OIDC/RSO provider 仍需独立许可/费用/安全 adoption gate；不能因为做登录页面就把 local/test session
   或输入 Riot ID 说成 production authentication。
+
+## 2026-08-24：RQ-103 视觉签收边界发现
+
+- 当前 Timeline 已有真实几何、partial/unavailable、mobile、keyboard、reduced-motion 和截图证据，因此是
+  可运行的高保真 V1；但冠军卡片只有 champion name、事件只有通用 marker，尚无版本化英雄/装备/目标资产，
+  不能称为最终视觉成品。
+- 直接拼 Data Dragon CDN URL 会把版本、locale、加载失败和缓存语义散落进组件。后续 enrichment 必须先
+  建立单一 asset resolver/manifest 合同，再让 Timeline 与其它模块消费，才能安全补头像、图标和 fallback。
+- 最终 polish 不只等于“加图”：还要统一色调、背景深度、布局节奏、面板材质、hover/focus/selection、
+  中文 text expansion、移动降级和跨模块视觉叙事，并以全站截图/交互/a11y/bundle 门签收。
