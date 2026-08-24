@@ -3013,3 +3013,12 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   合同，再补英雄/装备/目标资产、加载失败回退与 hover/focus/selection 联动。
 - 8E 退出前必须完成入口、工作台、Timeline、Evidence/Trace、Training 的跨模块色彩、背景、布局、动效、
   响应式、双语和 a11y final visual QA；该纠正不改变当前 Timeline 先完成 exact-SHA 公共关闭的顺序。
+
+## 2026-08-24：RQ-101 Timeline exact-SHA 公共关闭
+
+- `794032f055f2fa37173f9525279870f0adbe5220` / Actions `32682243568` 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke` 三 job completed/success；Timeline DTO/UI 正式关闭。
+- 公共 pytest 1837/145 skips、frontend unit 92/e2e 25、真 PostgreSQL 201、Linux package schema 1.6 同 SHA
+  全绿；Riot/OP.GG/Provider/LLM calls 0。
+- 该闭环不覆盖双语、LoL 资产 enrichment、Evidence/Trace、Training、breadth/golden slice 或最终视觉签收；
+  唯一下一原子项按 RQ-102 更新为 bilingual product-surface foundation。

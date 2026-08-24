@@ -31,7 +31,7 @@ state、Evidence 和 Training 边界；Image2/Photoshop 只提供可替换氛围
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 已完成；7-5 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 完成最终公共闭环 |
-| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B/C/D 与 Live Workbench integration 已公共闭环，ADR-0053 reject 产品 Multi-Agent；下一项为 Batch E 安全/部署入口设计，完整 8E/8F 未完成 |
+| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B–E、Live integration、production shell/Auth gate 与 Timeline DTO/UI 已公共闭环，ADR-0053 reject 产品 Multi-Agent；下一项为 bilingual product-surface foundation，完整 8E/8F 未完成 |
 
 ## 横向能力总账
 
@@ -614,3 +614,12 @@ derived Memory、relationship private data；Task/Artifact 与全局 Player Subj
   先建立 `zh-CN/en` 双语产品表面基础，再以独立原子批建立 Data Dragon 资产合同并补 LoL 视觉/交互细节，
   随后做 Evidence 深化、Training full page 和 OP.GG useful-breadth/golden slice；8E 退出前执行跨模块 final
   visual QA。当前 Timeline 截图不是最终作品集签收，真实 OIDC/RSO 也不因 UI 开始而默认采用，8F 不提前进入。
+
+## 2026-08-24：Timeline exact-SHA 公共关闭与 bilingual foundation 交接
+
+- Timeline implementation/evidence `794032f` / Actions `32682243568` 的 pytest、真实 PostgreSQL 与 Linux
+  package 三 job 全绿；strict verified event/phase projection、owner-scoped API、exact decoder/controller、
+  responsive/a11y UI 和 partial/unavailable 正式关闭。
+- 当前截图按 RQ-103 仍只是高保真 V1；Data Dragon 资产/细节 enrichment 与全站 final visual QA 未完成。
+- 当前唯一下一原子项为 RQ-102 bilingual product-surface foundation；Evidence/Trace、Training、OP.GG
+  breadth/golden slice 和 8F 不提前进入。

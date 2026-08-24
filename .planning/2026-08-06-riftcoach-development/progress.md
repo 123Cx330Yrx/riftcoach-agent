@@ -4191,3 +4191,12 @@
   `25 passed`，frontend unit 为 `92 passed`，最新 bundle 为 JS/CSS gzip `128.51/15.27 kB`。
 - 顺序保持：Timeline exact-SHA 公共关闭 → RQ-102 双语 foundation → RQ-103 Data Dragon 资产/细节
   enrichment → Evidence/Trace → Training → OP.GG breadth/golden slice → 8E final visual QA/exit。
+
+### 2026-08-24：RQ-101 Timeline exact-SHA 公共闭环
+
+- implementation/evidence `794032f055f2fa37173f9525279870f0adbe5220` / Actions `32682243568` 的三 job
+  全绿；公共 pytest 1837/145 skips/127 subtests、frontend unit 92/e2e 25、真库 201、Linux package schema 1.6。
+- Timeline 正式关闭的是 verified DTO/API/decoder/controller/phase rail/partial-missing 高保真 V1，不是
+  RQ-103 最终视觉；本批外部 Riot/OP.GG/Provider/LLM calls 0。
+- `NEXT`：按 RQ-102 与连续授权进入 bilingual product-surface foundation；先教学和冻结 locale contract，
+  不提前混入 LoL asset enrichment、Evidence/Trace、Training 或 8F。

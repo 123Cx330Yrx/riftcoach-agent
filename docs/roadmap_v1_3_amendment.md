@@ -589,3 +589,9 @@ code 单一，不复制后端合同；当前 Timeline 高保真 V1 和截图不�
   PostgreSQL session、HTTPS、Secret Manager、backup/erase 与公网部署仍待后续原子批和公共门。
 - 当前 8E coverage 保持 planned；本地 focused tests 通过但不替代独立 commit、完整比例回归和 exact-SHA
   `pytest`/`postgres-migrations`/`packaging-smoke`。
+
+### 2026-08-24：Timeline 公共关闭与双语原子项
+
+- `794032f/32682243568` 三 job 已关闭 verified Timeline DTO/API/UI；当前截图仍按 RQ-103 定位为高保真 V1。
+- 下一原子项是 `zh-CN/en` product-surface foundation；先分离 UI catalog、canonical API code、Data Dragon
+  entity locale 和 Coach report language，再进入资产 enrichment 与后续产品模块。
