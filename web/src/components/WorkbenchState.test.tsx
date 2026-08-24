@@ -8,27 +8,28 @@ describe("workbench state matrix", () => {
   it("keeps client loading separate from a published product state", () => {
     render(<App scenarioOverride="loading" />)
 
-    expect(screen.getByRole("status")).toHaveTextContent(/calibrating the rift/i)
+    expect(screen.getByRole("status")).toHaveTextContent(/preparing the review/i)
     expect(screen.queryByText(/^published$/i)).not.toBeInTheDocument()
   })
 
   it("distinguishes empty from client error", () => {
     const { unmount } = render(<App scenarioOverride="empty" />)
     expect(screen.getByRole("heading", { name: /no player profiles yet/i })).toBeInTheDocument()
-    expect(screen.queryByText(/workbench unavailable/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/workbench is unavailable/i)).not.toBeInTheDocument()
 
     unmount()
     render(<App scenarioOverride="error" />)
-    expect(screen.getByRole("heading", { name: /workbench unavailable/i })).toBeInTheDocument()
-    expect(screen.getByText(/fixture_load_failed/i)).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: /workbench is unavailable/i })).toBeInTheDocument()
+    expect(screen.getByText(/demo couldn't be loaded/i)).toBeInTheDocument()
+    expect(screen.queryByText(/fixture_load_failed/i)).not.toBeInTheDocument()
   })
 
   it("shows lifecycle truth without inventing progress percentages", () => {
     render(<App scenarioOverride="not_ready" />)
 
-    expect(screen.getByText(/^not ready$/i)).toBeInTheDocument()
-    expect(screen.getByRole("heading", { name: /analysis in progress/i })).toBeInTheDocument()
-    expect(screen.getByText(/task_pending/i)).toBeInTheDocument()
+    expect(screen.getByText(/^in progress$/i)).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: /review is still running/i })).toBeInTheDocument()
+    expect(screen.queryByText(/task_pending/i)).not.toBeInTheDocument()
     expect(document.body.textContent).not.toMatch(/\d+%/)
   })
 
@@ -37,15 +38,15 @@ describe("workbench state matrix", () => {
 
     expect(screen.getByText(/^degraded$/i)).toBeInTheDocument()
     expect(screen.getByRole("heading", { name: /tactical brief/i })).toBeInTheDocument()
-    expect(screen.getByText(/evidence limitations/i)).toBeInTheDocument()
-    expect(screen.getByText(/evidence_expired/i)).toBeInTheDocument()
+    expect(screen.getByText(/some evidence is missing/i)).toBeInTheDocument()
+    expect(screen.queryByText(/evidence_expired/i)).not.toBeInTheDocument()
   })
 
   it("withholds a rejected report instead of rendering unsafe content", () => {
     render(<App scenarioOverride="rejected" />)
 
-    expect(screen.getByText(/^rejected$/i)).toBeInTheDocument()
-    expect(screen.getByRole("heading", { name: /review withheld/i })).toBeInTheDocument()
+    expect(screen.getByText(/^not published$/i)).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: /no coaching brief/i })).toBeInTheDocument()
     expect(screen.queryByRole("heading", { name: /tactical brief/i })).not.toBeInTheDocument()
   })
 
@@ -53,14 +54,14 @@ describe("workbench state matrix", () => {
     const user = userEvent.setup()
     render(<App scenarioOverride="published" />)
 
-    expect(screen.getByRole("heading", { name: /your training plan/i })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: /^training plan$/i })).toBeInTheDocument()
     await user.selectOptions(
       screen.getByRole("combobox", { name: /player profile/i }),
       "profile-northstar-kr",
     )
 
     expect(screen.getByRole("heading", { name: "Northstar#KR" })).toBeInTheDocument()
-    expect(screen.getByRole("heading", { name: /learning observation/i })).toBeInTheDocument()
-    expect(screen.queryByRole("heading", { name: /your training plan/i })).not.toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: /study notes/i })).toBeInTheDocument()
+    expect(screen.queryByRole("heading", { name: /^training plan$/i })).not.toBeInTheDocument()
   })
 })

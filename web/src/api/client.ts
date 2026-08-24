@@ -22,6 +22,12 @@ const ALLOWED_ERROR_CODES = new Set([
   "auth_session_expired",
   "auth_session_revoked",
   "csrf_invalid",
+  "idempotency_conflict",
+  "player_link_capacity_exceeded",
+  "player_link_not_found",
+  "request_body_too_large",
+  "request_headers_too_large",
+  "rate_limited",
 ])
 
 type Fetcher = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
@@ -42,6 +48,11 @@ export class ApiClientError extends Error {
 
 export interface ApiClientOptions {
   readonly fetcher?: Fetcher
+}
+
+export interface JsonMutationHeaders {
+  readonly csrfToken: string
+  readonly idempotencyKey: string
 }
 
 function apiPath(endpoint: string): string {
@@ -137,6 +148,50 @@ export class ApiClient {
       method: "GET",
       credentials: "same-origin",
       headers: { Accept: "application/json" },
+      ...(signal === undefined ? {} : { signal }),
+    })
+    if (!response.ok) throw await errorFrom(response)
+    if (!isJson(response)) throw new Error("api_content_type_invalid")
+    let value: unknown
+    try {
+      value = JSON.parse(await boundedText(response, JSON_BODY_LIMIT)) as unknown
+    } catch (error) {
+      if (error instanceof Error && error.message === "api_body_too_large") throw error
+      throw new Error("api_json_invalid")
+    }
+    return decode(value)
+  }
+
+  async postJson<T>(
+    endpoint: string,
+    body: unknown,
+    decode: (value: unknown) => T,
+    headers: JsonMutationHeaders,
+    signal?: AbortSignal,
+  ): Promise<T> {
+    if (
+      headers.csrfToken.length < 1 || headers.csrfToken.length > 256 || /[\r\n]/.test(headers.csrfToken) ||
+      !/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(headers.idempotencyKey)
+    ) throw new Error("api_mutation_headers_invalid")
+    let serialized: string
+    try {
+      const encoded = JSON.stringify(body)
+      if (typeof encoded !== "string") throw new TypeError("request is not JSON serializable")
+      serialized = encoded
+    } catch {
+      throw new Error("api_request_invalid")
+    }
+    if (new TextEncoder().encode(serialized).byteLength > 16 * 1024) throw new Error("api_request_too_large")
+    const response = await this.fetcher(apiPath(endpoint), {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Idempotency-Key": headers.idempotencyKey,
+        "X-CSRF-Token": headers.csrfToken,
+      },
+      body: serialized,
       ...(signal === undefined ? {} : { signal }),
     })
     if (!response.ok) throw await errorFrom(response)

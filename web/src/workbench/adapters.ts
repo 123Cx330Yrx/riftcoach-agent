@@ -30,28 +30,6 @@ import type {
   TaskEventFixture,
 } from "../contracts/workbench"
 
-const sourceLabels = {
-  riot_official: "Riot Match API",
-  data_dragon: "Data Dragon catalog",
-  riot_patch: "Official patch facts",
-  opgg: "OP.GG meta snapshot",
-} as const
-
-const gapCopy: Readonly<Record<string, { summary: string; impact: string }>> = {
-  data_dragon_missing: {
-    summary: "Static catalog unavailable",
-    impact: "Champion labels cannot claim an exact Data Dragon version.",
-  },
-  official_patch_missing: {
-    summary: "Official patch evidence unavailable",
-    impact: "The review cannot claim exact official patch alignment.",
-  },
-  opgg_meta_missing: {
-    summary: "Meta comparison unavailable",
-    impact: "Coaching remains grounded in Riot facts without a current Meta comparison.",
-  },
-}
-
 export function adaptPlayerProfile(value: PlayerProfileWire): WorkbenchPlayerProfile {
   return {
     playerProfileId: value.player_profile_id,
@@ -175,46 +153,42 @@ function adaptSources(value: EvidenceSnapshotWire): readonly WorkbenchEvidenceSo
   return [
     {
       sourceKind: "riot_official",
-      label: sourceLabels.riot_official,
       status: sources.riot_official.match_count > 0 ? "verified" : "unavailable",
       freshness: sources.riot_official.freshness,
-      detail: sources.riot_official.match_count > 0
-        ? `${sources.riot_official.match_count} typed Riot match projection${sources.riot_official.match_count === 1 ? "" : "s"}.`
-        : "No Riot match projection is available.",
+      matchCount: sources.riot_official.match_count,
     },
     {
       sourceKind: "data_dragon",
-      label: sourceLabels.data_dragon,
       status: sources.data_dragon.version === null ? "unavailable" : "verified",
       freshness: sources.data_dragon.freshness,
-      detail: sources.data_dragon.version === null
-        ? "No versioned static catalog is attached."
-        : `Version ${sources.data_dragon.version} is attached to the evidence bundle.`,
+      ...(sources.data_dragon.version === null ? {} : { version: sources.data_dragon.version }),
     },
     {
       sourceKind: "riot_patch",
-      label: sourceLabels.riot_patch,
       status: sources.riot_patch.patch_version === null ? "unavailable" : "verified",
       freshness: sources.riot_patch.freshness,
-      detail: sources.riot_patch.patch_version === null
-        ? "No official patch projection is attached."
-        : `Official patch ${sources.riot_patch.patch_version} is attached.`,
+      ...(sources.riot_patch.patch_version === null ? {} : { patchVersion: sources.riot_patch.patch_version }),
     },
     {
       sourceKind: "opgg",
-      label: sourceLabels.opgg,
       status: sources.opgg.evidence_count === 0
         ? "unavailable"
         : sources.opgg.provenance.every((item) => item === "complete")
           ? "verified"
           : "partial",
       freshness: sources.opgg.freshness,
-      detail: sources.opgg.evidence_count === 0
-        ? "No OP.GG Meta snapshot is attached."
-        : `${sources.opgg.evidence_count} typed OP.GG snapshot${sources.opgg.evidence_count === 1 ? "" : "s"}; provenance remains explicit.`,
+      evidenceCount: sources.opgg.evidence_count,
+      provenanceComplete: sources.opgg.provenance.every((item) => item === "complete"),
     },
   ]
 }
+
+const evidenceJoinSourceKinds = {
+  riot: "riot_official",
+  data_dragon: "data_dragon",
+  riot_patch: "riot_patch",
+  opgg: "opgg",
+} as const satisfies Readonly<Record<string, WorkbenchEvidenceSource["sourceKind"]>>
 
 export function adaptEvidence(value: EvidenceSnapshotWire): WorkbenchEvidence {
   return {
@@ -227,16 +201,17 @@ export function adaptEvidence(value: EvidenceSnapshotWire): WorkbenchEvidence {
     claims: value.usable_claims,
     sources: adaptSources(value),
     joins: value.projection.joins.map((join) => ({
-      label: `${join.key.champion_name} · ${join.key.position}`,
+      labelCode: "champion_position",
+      championName: join.key.champion_name,
+      position: join.key.position,
       status: join.status,
-      detail: `Sources present: ${Object.entries(join.sources_present).filter(([, present]) => present).map(([source]) => source.replaceAll("_", " ")).join(", ") || "none"}.`,
+      sourcesPresent: Object.entries(join.sources_present)
+        .filter(([, present]) => present)
+        .map(([source]) => evidenceJoinSourceKinds[source as keyof typeof evidenceJoinSourceKinds]),
     })),
     gaps: value.projection.gaps.map((gap) => ({
       code: gap.code,
-      ...(gapCopy[gap.code] ?? {
-        summary: "Evidence limitation",
-        impact: `The ${gap.source.replaceAll("_", " ")} source cannot support this claim.`,
-      }),
+      sourceKind: gap.source,
     })),
   }
 }
@@ -250,7 +225,7 @@ export function adaptTraining(
     return {
       mode: "learning_observation",
       readOnly: true,
-      note: "Public observed profiles are read-only; private training state is never inferred.",
+      noteCode: "public_observed_read_only",
     }
   }
   const plan = plans?.plans.find((item) => item.status === "active")
@@ -315,7 +290,7 @@ export function adaptFixtureWorkbench(
       ? {
           mode: "learning_observation",
           readOnly: true,
-          note: fixtureTraining.note,
+          noteCode: "public_observed_read_only",
         }
       : undefined
 
@@ -361,7 +336,33 @@ export function adaptFixtureWorkbench(
     ...(fixture.timeline === undefined ? {} : { timeline: fixture.timeline }),
     ...(run === undefined ? {} : { run }),
     ...(fixture.report === undefined ? {} : { report: { markdown: fixture.report.markdown } }),
-    ...(fixture.evidence === undefined ? {} : { evidence: fixture.evidence }),
+    ...(fixture.evidence === undefined ? {} : {
+      evidence: {
+        revision: fixture.evidence.revision,
+        bundleDigest: fixture.evidence.bundleDigest,
+        snapshotDigest: fixture.evidence.snapshotDigest,
+        freshness: fixture.evidence.freshness,
+        disposition: fixture.evidence.disposition,
+        confidence: fixture.evidence.confidence,
+        claims: fixture.evidence.claims,
+        sources: fixture.evidence.sources.map((source) => ({
+          sourceKind: source.sourceKind,
+          status: source.status,
+          freshness: source.freshness,
+        })),
+        joins: fixture.evidence.joins.map((join) => ({
+          labelCode: join.labelCode,
+          ...(join.championName === undefined ? {} : { championName: join.championName }),
+          ...(join.position === undefined ? {} : { position: join.position }),
+          status: join.status,
+          sourcesPresent: [],
+        })),
+        gaps: fixture.evidence.gaps.map((gap) => ({
+          code: gap.code,
+          ...(gap.sourceKind === undefined ? {} : { sourceKind: gap.sourceKind }),
+        })),
+      } satisfies WorkbenchEvidence,
+    }),
     events,
   }
 }

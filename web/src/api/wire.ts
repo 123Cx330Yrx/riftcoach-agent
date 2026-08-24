@@ -60,6 +60,44 @@ export interface PlayerProfilePageWire {
   readonly limit: number
 }
 
+export type PlayerLinkStatusWire = "queued" | "running" | "succeeded" | "failed"
+
+export interface CreatePlayerLinkResponseWire {
+  readonly schema_version: "1.0"
+  readonly disposition: "created" | "replayed"
+  readonly link_task_id: string
+  readonly status: PlayerLinkStatusWire
+  readonly link: string
+}
+
+export interface PlayerLinkFailureWire {
+  readonly code:
+    | "riot_rate_limited"
+    | "upstream_timeout"
+    | "upstream_unavailable"
+    | "player_not_found"
+    | "riot_authentication_failed"
+    | "account_response_invalid"
+    | "relationship_role_conflict"
+  readonly retryable: boolean
+}
+
+export interface PlayerLinkResponseWire {
+  readonly schema_version: "1.0"
+  readonly link_task_id: string
+  readonly status: PlayerLinkStatusWire
+  readonly created_at: string
+  readonly updated_at: string
+  readonly claimed_at: string | null
+  readonly finished_at: string | null
+  readonly relationship_role: RelationshipRoleWire
+  readonly verification_status: VerificationStatusWire
+  readonly player_subject_id: string | null
+  readonly relationship_id: string | null
+  readonly confirmed_riot_id: string | null
+  readonly failure: PlayerLinkFailureWire | null
+}
+
 export interface LatestReviewLinksWire {
   readonly task: string
   readonly events: string

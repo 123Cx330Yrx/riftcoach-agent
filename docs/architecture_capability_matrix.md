@@ -5,13 +5,19 @@
 视觉层只消费现有 owner/profile/product-state/evidence/training projections；它不拥有身份认证、Riot RSO
 绑定、外部数据检索或报告发布权。Portal 的环境、路线和转场属于 presentation capability，必须在无远程 I/O、
 keyboard、mobile、reduced-motion 和 bundle budget 下验证；真实数据和状态仍由后端 typed contracts 决定。
-Task 3 已完成本地视觉门；Batch E implementation 当前补入 E1 session/CSRF、E2 request budgets/单机 rate
-policy、E3 SecretSource/key-last composition，但正式 Auth/RSO、HTTPS、Secret Manager、多副本 limiter 和
-backup/erase 仍属于未完成能力。
+RQ-108 只取代 Task 3 作为最终 Portal 视觉/动效验收，以及可见 CSS/SVG core/route 作为最终 art；Task 3 已有的
+zero-early-I/O、Portal→Account→Workbench、原生语义 hit target、keyboard/focus、history、reduced-motion 与
+失败 fallback 功能证据继续有效。Batch E E1–E3 `92b7685/32658277570`、E4
+`27b9256/32660145945` 与 E5 `ca6da44/32661425379` 已公共闭环：session/CSRF、request budgets/单机 limiter、
+SecretSource、marker replay/Artifact-Trace cleanup 和 bounded metrics 已有证据；正式 OIDC/RSO、HTTPS、真实
+Secret Manager、共享 limiter、KMS/对象存储/加密备份和部署仍未完成。
 
-RQ-101 Timeline 本地切片只消费已验证 Summary Artifact：严格 DTO/API、exact decoder/controller 与
-event/phase UI 已通过 desktop/mobile/partial、真库与 Linux package 门，等待 exact-SHA 公共关闭。它不等于
-连续 Gold/CS/XP 曲线、实时 Riot refresh、因果分析或 OP.GG meta overlay。
+RQ-101 Timeline 已由 `794032f/32682243568` exact-SHA 公共关闭。RQ-102/104 与 RQ-105/106 又在本地完成
+typed bilingual projection、三层 journey、真实 Player Link、母图分层 V1 与 browser/a11y 门；仍待本批独立
+提交和公共 CI。它们不等于连续 Gold/CS/XP 曲线、正式 OIDC/RSO、最终电影化 Portal 或可追问 Coach。
+
+RQ-107 审计确认现有 Web 只查看最近 Report/Training summary，尚未消费 Conversation-bound Agent 创建链。
+bounded review-grounded Coach 是推荐的 8E 补齐项，但插入顺序待用户裁决，矩阵不把建议误写成已实现能力。
 
 ## 1. 用途
 
@@ -55,15 +61,15 @@ event/phase UI 已通过 desktop/mobile/partial、真库与 Linux package 门，
 | ID | 能力 | 当前基础 | V1 负责阶段 | 后续深化 | 验收证据 | 状态 |
 |---|---|---|---|---|---|---|
 | Q01 | 端到端 Evaluation | 报告事实评测、RAG/路由评测与 5D-7 分层合同已建立；DeepSeek V2/V3 均未测出质量，当前候选已关闭且质量 unknown | 阶段 5C 增加路由 Eval，5D 增加 Prompt Eval | G53-0 后按可用性决定；阶段 8 固定产品回归集和消融 | 数字忠实度、引用、路由、工具选择、实验身份、注入漏判、失败归因、预算可达性与发布安全 | 部分完成 |
-| Q02 | Trace 与 Observability | 5E Runtime Trace 已公开；8C 完成 body-free durable task event；8E Batch C `7975dc3/32629160732` 公共闭环 cursor SSE；RQ-096 `f441061/32647933692` 又完成 duplicate/mismatch/terminal/reconnect 与 authoritative reload，仍不复制 Trace | 阶段 5E | 8E 后续增加正式指标、容量和部署监控；G53 沿用安全错误合同 | run_id 串联版本、模型、工具、证据、耗时、决策、event cursor、reconnect、stream close 和恢复结果 | 8C/Batch C/live browser lifecycle 公共闭环；生产容量待后续 |
+| Q02 | Trace 与 Observability | 5E Runtime Trace 已公开；8C durable event、8E Batch C cursor SSE、RQ-096 browser lifecycle 均公共闭环；E5 `ca6da44/32661425379` 又完成 body-free counter/p50/p95 bounded metrics projection | 阶段 5E | 8E/8F 后续增加长期时序、自动告警、正式容量和部署监控；不复制 raw Trace | run_id 串联版本、模型、工具、证据、耗时、决策、event cursor、reconnect、stream close、bounded metrics 和恢复结果 | 8C/Batch C/live/E5 公共闭环；长期生产观测待后续 |
 | Q03 | Prompt/上下文注入防护 | 工具白名单、Schema、data-only sections、累积预算和实际 ToolExecutionRecord 证据；7-3 已公共验证固定远端 description、admitted subset、无 eval AST grammar 和 optional external-meta user section，拒绝代码/指令文本/schema drift；旧真实模型注入缺口仍不变 | 阶段 5D 建立不可信输入边界 | 已知 development 门完成；真实模型验证留给新鲜 Provider 门，阶段 6/7 扩展会话和 MCP 内容 | 恶意用户输入、恶意文档、恶意工具结果、评测漏判和越权测试 | 部分完成 |
-| Q04 | 应用安全 | `.env` 隔离、日志脱敏、trusted Actor/owner 404 与 body-free external evidence 已有公共证据；8E Batch B `e844bdd/32622696087` 又证明 profile PUUID-free、cross-owner not-found、CN/unknown region fail-closed、无 ambient default/自动探区；正式 Auth、限流、HTTPS 仍未实现 | 阶段 6 继续以 trusted ActorContext、owner-scoped Repository/复合约束完成 Session/Memory 隔离并保持公网 fail-closed | Stage 8 8E 建立正式 Auth/HTTPS/限流、CSP、部署威胁模型、安全扫描和响应流程 | 密钥扫描、profile/subject owner 隔离、routing allowlist、限流、CORS/CSP、脱敏和依赖审计 | 8E Batch B 公共闭环，正式安全产品化待完成 |
-| Q05 | 数据生命周期与隐私 | 本地缓存不提交；6A-6 已公开验证 task/run 生命周期；6B-9 owner export、三 scope hidden-before-cleanup、marker retry、retention/purge 已由 `cbc7cbd/32408101770` 完成真库/Linux 公共闭环 | 阶段 6 已完成 Memory 的查看/导出/更正/删除/补偿 V1 | Stage 8 8C/8E 加备份副本擦除、恢复和公开隐私说明 | 原始比赛、Run、Memory 的保留、更正、导出、删除失败补偿、备份 restore/erase 测试 | V1 已完成，Stage 8 深化 |
+| Q04 | 应用安全 | `.env` 隔离、日志脱敏、trusted Actor/owner 404 与 Batch B profile/routing 已有公共证据；E1/E2 又公共验证 opaque session/CSRF、request/header/body budget 与单机 IP limiter | 阶段 6 继续以 trusted ActorContext、owner-scoped Repository/复合约束完成 Session/Memory 隔离并保持公网 fail-closed | Stage 8 8E/8F 建立正式 OIDC/HTTPS edge、共享 limiter、CSP 与响应流程 | 密钥扫描、profile/subject owner 隔离、routing allowlist、限流、CORS/CSP、脱敏和依赖审计 | 单机安全 seam 公共闭环；正式公网安全产品化待完成 |
+| Q05 | 数据生命周期与隐私 | 6A/6B-9 owner export、hidden-before-cleanup、marker retry、retention/purge 已公共闭环；E4 `27b9256/32660145945` 又完成 deletion marker restore replay、owner run locator 与 Artifact/Trace cleanup/补偿 | 阶段 6 已完成 Memory 的查看/导出/更正/删除/补偿 V1 | Stage 8 后续补 KMS/对象存储、加密 backup bytes、定时备份、公开隐私说明和 RPO/RTO 实测 | 原始比赛、Run、Memory 的保留、更正、导出、删除失败补偿、marker restore/erase 和真实灾备演练 | 在线/marker/Artifact cleanup 公共闭环；生产加密灾备待后续 |
 | Q06 | 知识库更新与回滚 | 来源、版本、有效期和冲突策略已有 | 阶段 4 维护任务，公开部署前完成更新流程 | Stage 8 8D/8E 自动化索引构建、版本切换和回滚 | 新旧版本、失败构建、污染文档、EvidenceBundle 版本冲突和回滚测试 | 需显式补齐，入口已规划 |
 | Q07 | 性能、Token 与成本 | 既有 Runtime 预算/实验账本保留；6A-6 在 PostgreSQL 17/Python 3.11 公共环境记录 8 样本 warm create/query p95 `6.220ms` 与 queued→claim p95 `23.359ms`，并验证 owner 3/global 50 可配置背压；这不是 SLA | 阶段 5E 定义运行预算，阶段 6 定义并实测 API SLO | G53 使用独立预算；阶段 6/8 增加真实 p50/p95、队列等待与产品成本趋势 | p50/p95、Token、工具次数、模型成本、背压、预算可达性和超预算停止 | 部分完成 |
-| Q08 | 可靠性与故障恢复 | 6A 的 receipt reconciliation/recovery-required/人工 CAS 已公开；8C 已完成取消、lease/heartbeat/fencing、safe checkpoint、bounded automatic recovery、replay 与 late-result isolation | 阶段 6 增加持久状态、幂等、短事务、有证据 reconciliation 与安全生命周期 | 备份属于 8E；8D 只在独立设计中复用可靠控制面 | DB/Artifact 故障、并发 claim、进程中断、重复请求、人工恢复、自动 reclaim、删除补偿和迟到结果测试 | 8C `2df5349/32587659678` 公共闭环 |
-| Q09 | 开源、部署与合规 | MIT、CI、README、SECURITY、匿名化样例；6A 非 root image/Compose/no-I/O smoke 已公共验证 | 横向交付检查点 | Stage 8 8E/8F 完成正式 Auth/HTTPS/备份/前端部署与作品集证据 | Linux/Docker 冒烟、密钥扫描、许可证、CSP/CORS、备份 restore 和公开边界检查 | 部分完成 |
-| Q10 | 前端可解释性、双语与可访问性 | Batch D fixture React `f7ebedd/32636771507`、RQ-096 live API/SSE `f441061/32647933692`、production shell `15a3a9e/32663345737` 与 Timeline `794032f/32682243568` 已公共闭环，视觉组合保持 `Rift Awakening → Esports Intelligence`；ADR-0066 已本地冻结 typed bilingual surface 设计 | Stage 8 8E 正式 Web 纵向切片 | 当前下一项按 RQ-102 实现 `zh-CN/en` catalog/locale persistence/canonical code/Coach language boundary；RQ-103 再设 Data Dragon asset/detail enrichment 与 8E 跨模块 final visual QA，随后继续 Evidence/Trace、Training、OP.GG breadth/golden slice | desktop/tablet/mobile、中英 text expansion/missing-key、英雄/装备/目标资产 version/locale/fallback、键盘/Escape/焦点返回、hover/focus/selection、reduced-motion、axe 0、真实 event geometry、partial/missing、no-remote-I/O、identity race/SSE cleanup、byte-limit、状态/数据边界和人工截图 QA | Timeline 公共 pytest 1837/145 skips、frontend unit 92、Playwright 25、JS gzip 128.51 kB、真库 201/Linux package 全绿；双语当前只有设计、尚无产品代码/公共关闭，资产 enrichment/final QA 也未实现；8E coverage 仍 planned |
+| Q08 | 可靠性与故障恢复 | 6A receipt reconciliation/recovery-required/人工 CAS、8C cancel/lease/fencing/checkpoint/recovery/replay/late-result isolation 已公共；E4 又完成 marker restore replay/幂等/partial-failure compensation | 阶段 6 增加持久状态、幂等、短事务、有证据 reconciliation 与安全生命周期 | 真实加密备份和 RPO/RTO drill 仍属于 8E/8F | DB/Artifact 故障、并发 claim、进程中断、重复请求、自动/人工恢复、删除补偿和迟到结果测试 | 8C/E4 公共闭环；真实灾备演练待后续 |
+| Q09 | 开源、部署与合规 | MIT、CI、README、SECURITY、匿名化样例；6A/E5 非 root image、Compose migration/readiness、no-I/O smoke 与 rollback boundary 已公共验证 | 横向交付检查点 | Stage 8 8E/8F 完成正式 Auth/HTTPS、加密备份、静态 Web 部署与作品集证据 | Linux/Docker 冒烟、密钥扫描、许可证、CSP/CORS、备份 restore、Web media budget 和公开边界检查 | packaging 公共闭环；公网部署/合规待后续 |
+| Q10 | 前端可解释性、双语与可访问性 | Batch D fixture React `f7ebedd/32636771507`、RQ-096 live API/SSE `f441061/32647933692`、production shell `15a3a9e/32663345737` 与 Timeline `794032f/32682243568` 已公共闭环；ADR-0066 design `8969aef/32683742229` 公共关闭，RQ-102/104 typed bilingual copy 与 RQ-105/106 Portal→Account→Workbench/Player Link/母图分层 V1 已本地实现 | Stage 8 8E 正式 Web 纵向切片 | 当前 foundation 只待 exact-SHA；RQ-108 是公共关闭后的 next-only Portal Motion Polish，尚未设计/实现。RQ-108 后 RQ-107 bounded Coach 与 RQ-103 的相对顺序待裁决；Data Dragon asset/detail enrichment、Evidence/Trace、Training full、OP.GG breadth/golden slice 与跨模块 final QA 继续未完成 | desktop/tablet/mobile、中英 text expansion/missing-key、三层 reload/history/zero-early-I/O、Link 四态、场景内水晶透明语义 hit target、codec/poster/ambient media、Save-Data/媒体失败、下载/解码/JS 预算、英雄/装备/目标资产 version/locale/fallback、键盘/focus handoff、reduced-motion、axe 0、真实 event geometry、partial/missing、identity race/SSE cleanup、byte-limit、状态/数据边界和人工截图 QA | 本地 frontend `136 unit / 36 Playwright`、JS/CSS gzip `142.68/18.50 kB`、Python `1982/1 skip/127 subtests`、真库/Alembic/RAG/Harness/Linux package/安全治理全绿；独立 commit/public CI 前不称 foundation 关闭。RQ-108、正式 Auth、Coach chat、资产 enrichment/final QA 均未实现；8E coverage 仍 planned |
 | Q11 | 所有者学习与工程证据连续性 | RQ-067 已从阶段 0 重审真实缺口，并建立 `docs/learning/README.md`、八维 `coverage.yaml`、实现后 walkthrough/review、README 入口与治理红灯；成熟阶段直接复用既有设计/退出复核；本轮退出复核见 `docs/plans/2026-08-20-learning-engineering-documentation-backfill-exit-review.md` | 所有阶段的横向关闭合同，不新增主阶段 | 每个新 checkpoint 开始时可为 planned，关闭前补齐问题/原理、设计/实现、代码地图、数据/控制流、验证、运行、失败/安全/边界和面试表述 | coverage schema/path/sequence/当前 checkpoint/前序 complete 测试，聚焦与全量回归，独立提交和 exact-SHA CI `63435d9/32308631289` | 已完成（文档门公共闭环） |
 
 ## 4. 明确补齐项

@@ -3031,3 +3031,49 @@ migration、Repository、六个 HTTP endpoint、composition/package 纵向与分
   mobile/a11y/bundle 和“不重取 API/不重连 SSE”成为实现阻塞合同。
 - 当前只完成本地设计/八维 planned evidence；产品代码、API/Memory、依赖、Data Dragon 资产和外部调用均未
   改变。下一动作是独立 design SHA 三 job；公共关闭后才进入 locale contract/catalog TDD。
+
+design `8969aef` / Actions `32683742229` 的三 job 已全部成功；设计门正式关闭，当前只进入 bilingual
+foundation implementation，不提前进入 RQ-103 或后续产品模块。
+
+## 2026-08-24：RQ-104/105 双语 copy 与三层产品旅程纠偏
+
+- 用户否决直译、AI 说明腔和 `裂谷指挥中心` 等生硬命名，并确认母图应是可操作的动态 Portal：中央核心
+  → 独立账号访问 → Workbench；AuthGate 和 Riot ID 表单都不是开屏。
+- 新增 ADR-0067 与专用计划；ADR-0064 的视觉语言保留，但“Portal 内 identity calibration”被部分取代。
+- 本地实现 typed bilingual catalog/strict persistence/structured copy、`portal|account|workbench` history、
+  semantic core、Auth/Account、真实 Player Link client/controller、profile fail-closed 与 session failure cleanup。
+- fake API/E2E 已覆盖 core 前 0 API、Link queued/running/succeeded、reload/back/forward、fixture 隔离和 unlisted
+  profile；后端又增加 session owner→CSRF Link→terminal→profiles 纵向测试。该记录仍是本地实施，不是公共关闭。
+
+## 2026-08-24：RQ-106 母图分层与旧素材降级
+
+- 用户再次拒绝围绕旧 aperture/instrumentarium 反复打磨。采用母图三段构图生成无文字/UI 的 V2 keyframe，
+  再移除烘焙 core/beam 得到 runtime background；DOM core 保持唯一 focus/click/handoff 真值。
+- keyframe 只进 `docs/assets/8e-portal` 作设计证据；122.7 kB background 进入 same-origin public asset；aperture
+  是加载失败 fallback，instrumentarium 已移出 public runtime。正常 handoff 为 bounded 720ms，reduced-motion
+  立即进入。当前仍不是最终电影化动效或 RQ-103 final visual QA。
+
+## 2026-08-24：RQ-107 Coach/Training Agent 产品缺口待裁决
+
+- 只读审计确认后端已有 Conversation/Message、AgentRuntime/Harness、terminal assistant、Memory-aware Context
+  与 Training Candidate/Plan/Progress，但 Web 仍只是 report viewer + read-only Training summary。
+- 推荐当前批先闭环，再在 RQ-103 前插入 8E 内部 bounded review-grounded Coach；开放域聊天、token stream、
+  observed 持久 Plan 和自动长期写入不默认采用。
+- 该推荐会调整已持久化子项顺序，用户尚未集中裁决，因此 canonical 下一检查点保持当前 foundation，不自动
+  插入或实施 Coach。
+
+## 2026-08-25：RQ-108 固定 foundation 后的 Portal Motion Polish
+
+- `CURRENT`：canonical 唯一原子项仍是 bilingual product-surface foundation；design 已公共关闭，implementation
+  与本地全门完成，只待独立提交、push 和 exact-SHA 三 job。RQ-108 尚未进入设计或实现。
+- `DECIDED-NEXT`：foundation 公共关闭后固定进入独立 `portal-motion-polish`，不能先跳到 RQ-103、Coach 或
+  其它产品模块，也不能把当前静态 V1 冒充最终动效。
+- `SCOPED-SUPERSESSION`：RQ-108 只取代 Portal Task 3 作为最终视觉/动效验收，以及可见 CSS/SVG core/route
+  作为最终 art；zero-early-I/O、Portal→Account→Workbench、原生语义 hit target、keyboard/focus、history、
+  reduced-motion 和失败 fallback 等功能证据继续有效。
+- `CURRENT-DESIGN`：确认母图是构图源；水晶在场景内重绘/调大并参与 ambient media，透明原生 button 只提供
+  click/keyboard/读屏语义，不显示独立贴图或常规按钮。轻微光点/短脉冲提示进入，激活后汇聚、一次 burst 并
+  幕切到独立 Account 动态场景。媒体必须通过 codec/poster、移动安全区、Save-Data、reduced-motion、错误
+  fallback、下载/解码/JS 预算、许可和移除门；不热链、不复制付费素材、不默认增加 Three/OGL/Anime。
+- `UNRESOLVED`：RQ-108 之后，RQ-107 bounded Coach 与 RQ-103 Data Dragon asset/detail/final-QA 的相对顺序
+  仍待用户裁决。RQ-108 不实现 Coach、OIDC/RSO、Data Dragon enrichment 或全站 final visual QA。

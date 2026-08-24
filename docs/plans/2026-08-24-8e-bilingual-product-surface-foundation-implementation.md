@@ -16,3 +16,16 @@
    更新八维 walkthrough 和最新 bundle。
 8. 创建独立 implementation/evidence commit，push，并等待同一 SHA 的 `pytest`、`postgres-migrations`、
    `packaging-smoke` 全绿；之后才交接 RQ-103 Data Dragon asset/detail enrichment。
+
+## 2026-08-24 本地实施状态
+
+- Steps 1–6 已完成；RQ-104 的独立中英文 copy 审计与 RQ-105/ADR-0067 的 Portal→Account→Workbench 纠偏
+  作为同一 atomic implementation 合并验证，避免先把旧错误拓扑翻译两遍。
+- RQ-106 又把旧 plate-only Portal 校准为母图分层 V1；运行时 bitmap 无 text/UI/core，semantic DOM 不变。
+- Step 7 已完成：frontend unit `24 files / 136 passed`、Playwright `36 passed`、JS/CSS gzip
+  `142.68/18.50 kB`；Player Link focused `26 passed, 1 warning`，完整 Python
+  `1982 passed, 1 skipped, 1 warning, 127 subtests`；真 PostgreSQL/Alembic、两套 RAG、Harness、
+  compile/pip/YAML、npm audit、SDK/Secret、governance/diff 与 Linux package 全绿。
+- Step 8 尚未执行。公共 exact-SHA 三 job 前 foundation 保持 open，coverage 保持 planned。
+- RQ-107 bounded Coach 是本批后序建议，不在该 implementation 内塞入 Conversation client/chat UI；插入顺序
+  等用户裁决。

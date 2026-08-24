@@ -320,8 +320,8 @@ ADR-0048 裁决 OP.GG `admitted_with_restrictions`，并由 `64311a1` / Actions 
 公共闭环。7-5 实现 `a88fbc4` / Actions `32483521108`、clean-SHA 官方 SDK→RiftCoach stdio 与
 RiftCoach→OP.GG Streamable HTTP 双向门，以及不可覆盖 evidence `fac6fe0` / Actions `32484257736`
 均已通过；Stage 7 正式关闭。Stage 8 entry design、8A 与 8B 已依次公共闭环，ADR-0053 reject 产品
-Multi-Agent；RQ-083 授权的 8C 已本地完成 durable event、lease/fencing、cancel、checkpoint/recovery、
-Worker/API/package 纵向与八维材料，仍等待 implementation exact-SHA 三 job，不进入 8D–8F。
+  Multi-Agent；RQ-083 的 8C 已由 `2df5349/32587659678` exact-SHA 公共关闭，8D 又由
+  `a274b7f/32598480400` 公共关闭，当前主检查点为 8E productization。
 ```
 
 Fresh-Gate 4 运行入口已完成版本化 readmission、V2 active CLI、prepare-only 和 Fresh
@@ -595,5 +595,21 @@ code 单一，不复制后端合同；当前 Timeline 高保真 V1 和截图不�
 - `794032f/32682243568` 三 job 已关闭 verified Timeline DTO/API/UI；当前截图仍按 RQ-103 定位为高保真 V1。
 - 下一原子项是 `zh-CN/en` product-surface foundation；先分离 UI catalog、canonical API code、Data Dragon
   entity locale 和 Coach report language，再进入资产 enrichment 与后续产品模块。
-- ADR-0066/design/implementation plan 已在本地冻结零依赖 typed catalog、strict versioned storage、navigator
-  fallback 和 original-content boundary；设计 exact-SHA 公共关闭前不实现 locale runtime，不进入 RQ-103。
+- ADR-0066/design/implementation plan 的零依赖 typed catalog、strict versioned storage、navigator fallback 和
+  original-content boundary 已由 `8969aef/32683742229` 完成 design exact-SHA 公共门；当前进入实现，不进入 RQ-103。
+- RQ-104/105/106 已在该 implementation 内增加独立双语 copy 审计、Portal→Account→Workbench URL/history、
+  真实 Player Link 和母图分层 V1；当前本地门通过但尚无独立 exact-SHA 公共关闭。正式 OIDC/RSO、最终动效、
+  RQ-103 资产细节和 8E exit 不随本批完成。
+- RQ-107 指出 Web 尚未暴露 Conversation-bound Agent 追问。推荐的 bounded Coach 插入位置仍需用户裁决，
+  因此 amendment 目前不重排 Data Dragon/Evidence/Training/OP.GG/final QA 的既有后序。
+
+### 2026-08-25：foundation 后固定进入 RQ-108 Portal Motion Polish
+
+- 当前原子项仍是 bilingual product-surface foundation；独立 implementation/evidence commit 与 exact-SHA
+  三 job 公共关闭前，不把 `portal-motion-polish` 标为 in progress。
+- 公共关闭后的顺序先固定为 `foundation → RQ-108 portal-motion-polish`。RQ-108 是 8E 内部原子批，不是新主
+  阶段或新 coverage group，也不等于 RQ-103 的 Data Dragon enrichment/跨模块 final visual QA。
+- Portal 以已确认母图为构图源，水晶留在场景媒体内；透明原生 button 只覆盖点击区域。正常体验可使用同源
+  poster 与有界 ambient motion/video、汇聚/burst 和独立 Account 场景幕切，但必须提供 mobile、Save-Data、
+  reduced-motion、媒体失败、许可、性能和移除路径。Three/OGL/Anime 等新 runtime 仍需新的 Bad Case/ADR。
+- RQ-108 关闭后再裁决 RQ-107 bounded Coach 与 RQ-103 asset/detail/final-QA 的相对顺序；不提前实现二者。

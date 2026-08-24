@@ -4207,5 +4207,58 @@
   i18n runtime 和 typed local catalog 后，ADR-0066 采用最后一项。
 - 新增专用 design/implementation plan 与八维 walkthrough；冻结 `zh-CN|en`、strict versioned localStorage、
   navigator fallback、canonical code→localized copy、original generated content 不机翻和 asset enrichment 后序。
-- 当前只完成设计与只读代码接缝审计，尚未实现 locale provider/switch/catalog，也未修改 API/Memory、安装
+- 该设计记录时只完成设计与只读代码接缝审计，尚未实现 locale provider/switch/catalog，也未修改 API/Memory、安装
   dependency、调用外部服务或进入 RQ-103。下一动作是先写 locale contract/catalog 红灯。
+
+### 2026-08-24：RQ-102 bilingual design exact-SHA 公共闭环
+
+- design `8969aef689febfb059f72e2fa71c928b2e3bee67` / Actions `32683742229` 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。
+- 设计门正式关闭；当前进入 implementation TDD。该公共 SHA 没有 locale 产品代码、依赖、API/Memory 改动、
+  Data Dragon 资产或外部调用。
+
+### 2026-08-24：RQ-102/104/105/106 本地实现与三层旅程收口
+
+- 双语：zero-dependency typed `zh-CN|en` catalog、strict storage/navigator fallback、共享 LocaleSwitch、
+  structured Workbench copy 与 original Report/Plan 已完成；`MIDDLE`、metric/gap/error code、test scenario、
+  RSO/Match-V5 transport 名称不再直接进入普通产品表面。
+- 旅程：ADR-0067 的 Portal→Account→Workbench 已实现；默认 Portal core 前 API/SSE=0，Account 读取已有
+  profiles 或真实 POST/poll Player Link，明确选择 profile 后才启动一次 live controller；history、reload、
+  session failure、abort/late response、unlisted profile 与 focus handoff 均有测试。
+- 视觉：按 RQ-106 用母图生成 V2 keyframe，再移除 baked core/beam 形成 122.7 kB runtime background；
+  keyframe 只作 docs 证据，aperture fallback-only，instrumentarium 退出 public runtime。React core 保持唯一
+  click/keyboard 真值，正常 handoff 720ms，reduced-motion 立即进入；当前仍不是最终电影化签收。
+- 当前本地证据：Player Link HTTP 组合 `26 passed, 1 warning`；frontend unit `24 files / 136 passed`、
+  Playwright `36 passed`、JS/CSS gzip `142.68/18.50 kB`；完整 Python
+  `1982 passed, 1 skipped, 1 warning, 127 subtests`。真 PostgreSQL 17/Alembic、两套 RAG、Harness、
+  compile/pip/YAML、npm audit 0、SDK/Secret/tracked-data、governance/diff 与隔离 Linux package 全绿。
+- 产品 Riot/OP.GG/Provider/LLM calls 0；内置视觉生成调用 2。gptimage2 因本地代理未监听在请求前失败，
+  gptimage2 image calls 0。
+- RQ-107 审计确认 Web 仍是 Report viewer + Training summary；其与 RQ-103 的相对顺序现在延后到 RQ-108
+  关闭后集中裁决，当前 canonical 顺序不变。
+- `NEXT`：完成全部持久同步、比例 Python/RAG/Harness/安全/governance 门与最终视觉/asset 检查；创建独立
+  implementation/evidence commit/push，等待该 SHA 三 job。公共成功前不关闭 foundation 或进入 RQ-108。
+
+### 2026-08-25：RQ-108 持久化与用户母图纠正
+
+- `REQUIREMENT`：新增 RQ-108，固定 foundation exact-SHA 公共关闭后的立即下一原子项为
+  `portal-motion-polish`；RQ-108 当前只是 next-only，不标 in progress。
+- `VISUAL-TRUTH`：用户再次提供并确认母图。中央水晶必须在场景媒体内部重绘/调大并自然呼吸蓄能；透明
+  原生 button 只覆盖点击区，不能显示另贴水晶或常规按钮。轻微光点/脉冲提示进入，点击触发汇聚/burst 与
+  独立 Account 场景幕切。
+- `ASSET-BOUNDARY`：独立水晶候选拒绝采用，不进入当前提交；母图临时附件已本地保全为后续设计源，但不
+  进入 foundation staging/runtime。RQ-108 将独立登记 provenance、压缩/codec、poster/mobile/fallback 与预算。
+- `STATE-SYNC`：requirements/canonical/roadmap/history/amendment/matrix/learning/active plan 已同步；coverage
+  继续只保留 `8e-productization: planned`，不为尚无 ADR/实现的 RQ-108 创建空 evidence group。
+- `NEXT`：重新运行 governance/stale/diff 与 frontend/比例门；只提交 foundation 范围文件并等待 exact-SHA
+  三 job。公共全绿后才开始 RQ-108 教学、设计和 TDD。
+
+### 2026-08-25：foundation 提交前最新前端复验
+
+- 清理了一个由本仓库遗留的 `vite --host 127.0.0.1 --port 4173` 进程，随后以 `CI=1` 隔离启动 E2E 服务；
+  没有复用污染状态的旧服务。
+- `npm run test:unit`：24 files / 136 passed；`npm run typecheck`：通过；`npm run build`：通过。
+- production bundle：JS gzip `142.68 kB`、CSS gzip `18.50 kB`；JS 仍低于 150 kB 硬门。
+- `npm run test:e2e`：36/36 passed，包含 Portal/Account/Workbench 旅程、双语、认证边界、SSE、Timeline、
+  键盘/focus、reduced-motion、320/390/1024/1440 和 a11y/overflow 门。
+- 该复验只更新 foundation 的本地证据；没有启动 RQ-108，也没有把当前静态 Portal 误称为最终视觉。

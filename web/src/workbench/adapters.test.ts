@@ -20,7 +20,9 @@ import {
   adaptTask,
   adaptTaskEvent,
   adaptTraining,
+  adaptFixtureWorkbench,
 } from "./adapters"
+import { publishedWorkbenchFixture } from "../fixtures/workbenchFixtures"
 
 const PROFILE_ID = "95000000-0000-4000-8000-000000000001"
 const TASK_ID = "96000000-0000-4000-8000-000000000001"
@@ -146,7 +148,7 @@ describe("deterministic wire to workbench adapters", () => {
     expect(adaptRecentSummary(summary).averages.csPerMinute).toBe(8)
   })
 
-  it("maps Evidence through fixed source and gap dictionaries", () => {
+  it("keeps Evidence values structured instead of composing English display sentences", () => {
     const evidence: EvidenceSnapshotWire = {
       schema_version: "1.0",
       snapshot_id: "97000000-0000-4000-8000-000000000001",
@@ -182,13 +184,18 @@ describe("deterministic wire to workbench adapters", () => {
 
     const view = adaptEvidence(evidence)
 
-    expect(view.sources.map((source) => source.label)).toEqual([
-      "Riot Match API",
-      "Data Dragon catalog",
-      "Official patch facts",
-      "OP.GG meta snapshot",
+    expect(view.sources.map((source) => source.sourceKind)).toEqual([
+      "riot_official",
+      "data_dragon",
+      "riot_patch",
+      "opgg",
     ])
-    expect(view.gaps[0]).toMatchObject({ code: "future_gap_code", summary: "Evidence limitation" })
+    expect(view.sources[0]).toMatchObject({ matchCount: 1 })
+    expect(view.sources[0]).not.toHaveProperty("label")
+    expect(view.sources[0]).not.toHaveProperty("detail")
+    expect(view.gaps[0]).toEqual({ code: "future_gap_code", sourceKind: "opgg" })
+    expect(view.gaps[0]).not.toHaveProperty("summary")
+    expect(view.gaps[0]).not.toHaveProperty("impact")
   })
 
   it("uses only real Training plan/progress fields for self", () => {
@@ -242,8 +249,33 @@ describe("deterministic wire to workbench adapters", () => {
     expect(view).toEqual({
       mode: "learning_observation",
       readOnly: true,
-      note: "Public observed profiles are read-only; private training state is never inferred.",
+      noteCode: "public_observed_read_only",
     })
     expect(view).not.toHaveProperty("metric")
+  })
+
+  it("keeps fixture Evidence join semantics stable when join order changes", () => {
+    const evidence = publishedWorkbenchFixture.evidence
+    if (evidence === undefined) throw new Error("published fixture must include Evidence")
+    const original = adaptFixtureWorkbench(publishedWorkbenchFixture)
+    const reordered = adaptFixtureWorkbench({
+      ...publishedWorkbenchFixture,
+      evidence: {
+        ...evidence,
+        joins: [...evidence.joins].reverse(),
+      },
+    })
+
+    expect(original.evidence?.joins.map((join) => join.labelCode)).toEqual([
+      "review_patch_official_patch",
+      "champion_current_meta",
+    ])
+    expect(reordered.evidence?.joins.map((join) => join.labelCode)).toEqual([
+      "champion_current_meta",
+      "review_patch_official_patch",
+    ])
+    expect(new Set(reordered.evidence?.joins.map((join) => join.labelCode))).toEqual(
+      new Set(original.evidence?.joins.map((join) => join.labelCode)),
+    )
   })
 })

@@ -135,6 +135,22 @@ function streamHarness() {
 }
 
 describe("generation-guarded live controller", () => {
+  it("uses finite client message codes instead of English display strings", async () => {
+    const controller = new LiveWorkbenchController({
+      api: new FakeApi(),
+      streamFactory: streamHarness().factory,
+    })
+
+    expect(controller.snapshot.state).toEqual({ client: "loading", messageCode: "profiles_loading" })
+    await controller.selectProfile("missing-profile")
+
+    expect(controller.snapshot.state).toEqual({
+      client: "error",
+      code: "player_profile_not_found",
+      messageCode: "selected_profile_unavailable",
+    })
+  })
+
   it("loads the verified Timeline with terminal published content", async () => {
     const api = new FakeApi()
     api.taskValue = task("succeeded")

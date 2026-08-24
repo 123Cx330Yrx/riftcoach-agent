@@ -84,7 +84,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | 8B：Conditional Multi-Agent Experiment | 完整/公共闭环 | [walkthrough](8b-conditional-multi-agent-experiment-walkthrough.md) / [ADR-0053](../adr/0053-reject-role-isolated-multi-agent-and-prefer-bounded-parallel-evidence.md) / [设计](../plans/2026-08-22-8b-conditional-multi-agent-experiment-design.md) | implementation `180bc8b` / Actions `32572085065` 与 result/ADR/evidence `783a329` / Actions `32572610725` 均三 job 全绿；唯一 holdout 裁决 `reject_multi_agent`：候选 18.95% 未达 20%，且与普通并行无隔离增益。8B 已关闭；RQ-083 随后授权 8C |
 | 8C：Reliable Runtime Core | 完整/公共闭环 | [walkthrough](8c-reliable-runtime-core-walkthrough.md) / [ADR-0054](../adr/0054-adopt-postgresql-leased-fenced-task-control-plane.md) / [专用设计](../plans/2026-08-22-8c-reliable-runtime-core-design.md) | clean implementation `2df5349` / Actions `32587659678` 的 pytest、PostgreSQL migration/concurrency、Linux package 三 job 全绿；8C coverage 已 complete。正式 Auth、SSE、前端、备份和 8D fusion 仍留后续 |
 | 8D：Riot + OP.GG Evidence Fusion Core | 完整/公共闭环 | [walkthrough](8d-riot-opgg-evidence-fusion-core-walkthrough.md) / [ADR-0055](../adr/0055-adopt-typed-evidence-bundle-fusion.md) / [设计](../plans/2026-08-23-8d-riot-opgg-evidence-fusion-design.md) / [实施计划](../plans/2026-08-23-8d-riot-opgg-evidence-fusion-implementation.md) | implementation/evidence `a274b7f` / Actions `32598480400` 三 job 全绿；typed Riot/Data Dragon/official patch/OP.GG partial fusion、no-I/O adapter、digest/provenance/freshness/join/conflict/gap 与 public projection 已有本地/公共证据。真实刷新、8E Web/Auth/SSE/部署仍未实现 |
-| 8E：Productization | 进行中/coverage planned | [preflight](../plans/2026-08-23-8e-productization-preflight.md) / [Batch B](8e-player-profile-selection-explicit-routing-walkthrough.md) / [Batch C](8e-evidence-product-api-walkthrough.md) / [Batch D](8e-batch-d-rift-command-center-walkthrough.md) / [Live 接线](8e-live-workbench-integration-walkthrough.md) / [Batch E implementation](8e-batch-e-security-deployment-implementation-walkthrough.md) / [视觉合同](8e-portal-workbench-visual-contract-walkthrough.md) / [Timeline](8e-timeline-dto-ui-walkthrough.md) / [双语 foundation](8e-bilingual-product-surface-foundation-walkthrough.md) / [ADR-0066](../adr/0066-adopt-typed-bilingual-product-surface.md) | Batch B/C/D、Live 接线、E1–E5、production shell/Auth gate 与 Timeline `794032f/32682243568` 已公共闭环；RQ-102 双语 foundation 已完成本地设计冻结但尚未实现/公共关闭。RQ-103 明确现有截图只是高保真 V1、非最终视觉签收，其后还需 Data Dragon asset/detail enrichment 和跨模块 final visual QA。8E coverage 仍 planned；双语产品代码、资产细节、连续曲线、Evidence/Trace 深页、Training full、OP.GG breadth/golden slice 未完成。 |
+| 8E：Productization | 进行中/coverage planned | [preflight](../plans/2026-08-23-8e-productization-preflight.md) / [Batch B](8e-player-profile-selection-explicit-routing-walkthrough.md) / [Batch C](8e-evidence-product-api-walkthrough.md) / [Batch D](8e-batch-d-rift-command-center-walkthrough.md) / [Live 接线](8e-live-workbench-integration-walkthrough.md) / [Batch E implementation](8e-batch-e-security-deployment-implementation-walkthrough.md) / [视觉合同](8e-portal-workbench-visual-contract-walkthrough.md) / [Timeline](8e-timeline-dto-ui-walkthrough.md) / [双语 foundation](8e-bilingual-product-surface-foundation-walkthrough.md) / [三层产品旅程](8e-portal-account-workbench-journey-walkthrough.md) / [ADR-0067](../adr/0067-separate-cinematic-portal-account-access-and-workbench.md) | Batch B/C/D、Live 接线、E1–E5、production shell/Auth gate 与 Timeline `794032f/32682243568` 已公共闭环；RQ-102/104 typed bilingual copy 与 RQ-105/106 Portal→Account→Workbench/Player Link/分层视觉已本地实现，并通过 unit 136、Playwright 36、Python 1982、真库/Alembic/RAG/Harness/Linux package/安全治理全套本地门；只待独立提交和 exact-SHA 公共关闭。RQ-108 是关闭后的固定下一 Portal Motion Polish，但尚无 ADR/设计/实现证据；不在 coverage 中挂空路径。RQ-108 后 RQ-107 bounded Coach 与 RQ-103 资产细节/final-QA 的相对顺序待裁决；Evidence/Trace、Training full、OP.GG breadth/golden slice 也未完成。8E coverage 继续 planned。 |
 
 “完整”表示仓库中已经具备八类持久证据，并不表示项目已生产就绪，也不表示项目所有者已经学会。
 个人理解进度需要通过实际复述、读码、运行和问答单独确认。
@@ -143,7 +143,7 @@ canonical 推进到 6B-4。这能防止“代码写完就一路往后走，教�
 ## 7. 本索引不代表什么
 
 - 不代表 RiftCoach 已经完整接入 EchoMind、Saber、Sea、Pi、LangGraph 或 Claude Agent SDK；
-- 不代表当前有正式公网 Auth、RSO 账号验证、HTTPS、SSE、前端或生产级运维；
+- 不代表当前有正式公网 OIDC/RSO 账号验证、HTTPS edge、已部署 Web 或生产级运维；SSE 与前端代码已有公共切片证据，但不等于公网部署；
 - 不代表 RAG 开发集满分等于未知问题上的泛化满分；
 - 不代表 GLM、DeepSeek 或其他 Provider 已通过全部领域质量准入；
 - 6B-9 与 Session/Memory V1 已完成公共 PostgreSQL/package 闭环；这仍不表示正式 Auth/RSO、备份副本擦除、
@@ -151,8 +151,9 @@ canonical 推进到 6B-4。这能防止“代码写完就一路往后走，教�
   evidence exact-SHA 均有独立证据。OP.GG 仍只证明 lane-meta partial provenance，不证明全工具、精确
   patch/freshness 或 Riot+OP.GG 数据融合；Stage 8 entry design、8A 与 8B 已公共闭环，8B 唯一 holdout 形成
   reject Multi-Agent 结论。8C 已由 `2df5349/32587659678` 公共闭环；RQ-084 授权的 8D 已有本地
-  EvidenceBundle contracts/fusion/adapters 已由 `a274b7f/32598480400` 公共闭环并完成八维 coverage；8E、8F、
-  前端和正式实时刷新尚未实现。
+  EvidenceBundle contracts/fusion/adapters 已由 `a274b7f/32598480400` 公共闭环并完成八维 coverage；8E 已有
+  Batch B/C/D、Live、E1–E5、Auth gate、Timeline 公共证据与当前 foundation 本地实现，但完整 8E、Portal
+  Motion Polish、可追问 Coach、正式实时 refresh、已部署 Web 与 8F 尚未完成。
 
 这些边界既是工程事实，也是项目在面试中保持可信度的重要部分。README/作品集研究按 RQ-085 持续广泛采样
 高星与低星但信息架构优秀的项目；架构图、流程图、产品展示图按信息目的选择真实截图、AI 概念图、SVG 或

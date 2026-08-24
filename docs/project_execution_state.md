@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-24（Timeline DTO/UI 已由 `794032f` / Actions `32682243568` exact-SHA 三 job 公共闭环；唯一下一原子项为 `bilingual-product-surface-foundation`，当前截图仍只是高保真 V1）
+- 最后更新：2026-08-25（RQ-102/104 双语表面与 RQ-105/106 三层旅程/母图分层已本地实现，frontend/Python/真库/RAG/Harness/Linux package/安全治理全套本地门通过；当前只待独立提交和 exact-SHA 公共 CI。RQ-108 已固定为公共关闭后的下一独立 `portal-motion-polish`，尚未进入设计或实现）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / remaining-product-modules / bilingual-product-surface-foundation`，Batch E E1–E5、production shell/Auth gate 与 Timeline DTO/UI 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -562,10 +562,10 @@ pause_reason: ""
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C/8D 已关闭；8E Batch B/C/D 与 RQ-096 Live Workbench integration 已公共关闭，profile→latest task/run、Summary/Evidence API、strict HTTP/SSE client 与 default-live Workbench 均有 exact-SHA 证据 | live integration 公共绿灯等于正式 Auth、完整五模块、真实 refresh、完整 8E 或生产 SLA |
-| 项目理解 | Stage 8 entry、8A–8D 与 8E Batch B/C/D/live integration 均有 ADR/设计/walkthrough；最新材料解释 server identity、wire/view 分层、generation guard、Product/SSE/client 三态与 escaped report 取舍 | 持久材料存在等于用户已能独立讲解所有实现；owner mastery 仍需复述、读码和运行验证 |
+| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C/8D 与 8E Batch B/C/D、Live integration、E1–E5、production shell/Auth gate、Timeline 已公共关闭；RQ-102/104/105/106 implementation 与全套本地门已完成，当前只待独立 commit/push/exact-SHA；RQ-108 只是 next-only，尚未设计/实现 | 本地 foundation 全绿等于正式 OIDC/RSO、可追问 Coach、Portal Motion Polish、完整五模块、完整 8E 或生产 SLA |
+| 项目理解 | Stage 8 entry、8A–8D 与 8E 已闭环批次均有 ADR/设计/walkthrough；最新材料又解释 typed bilingual projection、Portal→Account→Workbench、Player Link、session/focus/history、RQ-107 Coach 缺口与 RQ-108 场景内水晶/媒体边界 | 持久材料存在等于用户已能独立讲解所有实现；owner mastery 仍需复述、读码和运行验证 |
 | 参考资料 | Saber/Sea 只作选择性参考；8B reject 结果未重跑；OP.GG lane-meta live Bad Case 已闭环；视觉继续多来源门，breadth/golden slice 与 README 广泛研究分别留后续 8E/8F | 引用参考思想等于复制 Runtime/DAG，或 Multi-Agent reject 被撤销；一次外部观察等于长期 freshness/SLA，或 MotionSites 是唯一视觉来源 |
-| GitHub/部署 | 8C、8D、OP.GG evidence、Batch B/C/D 与 RQ-096 implementation 均已有 exact-SHA 公共证据；Docker image 仍不 COPY web，正式 Auth/HTTPS/备份/前端部署/生产 SLA 未实现 | 本地 Compose 或 Batch D/Live UI 公共代码等于整个 8E 完成、前端已随镜像部署或公网生产可用 |
+| GitHub/部署 | 8C、8D、OP.GG evidence、Batch B/C/D、RQ-096、E1–E5、Auth gate 与 Timeline 均有 exact-SHA 公共证据；E4 marker replay/Artifact-Trace cleanup 与 E5 bounded metrics 已公共闭环，但 Docker image 仍不 COPY web | 本地 Compose 或公共 Web 代码等于正式 OIDC/HTTPS edge、加密备份/KMS/RPO-RTO、前端部署、完整 8E 或公网生产可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -2539,8 +2539,61 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   English runtime fallback；API/status/reason/source/event code 继续保持 canonical 英文。
 - UI copy、Data Dragon entity locale 与 Coach Artifact language 是三层独立合同。UI 切换不得重取 API、
   重连 SSE、改变 profile/Product State、静默写 Memory 或机翻已发布报告；旧 report language 不做无证据猜测。
-- 当前只完成设计和只读接缝审计，尚未实现 locale store/catalog/provider/switch，也未接 Data Dragon 资产、
+- 该设计冻结记录时只完成设计和只读接缝审计，尚未实现 locale store/catalog/provider/switch，也未接 Data Dragon 资产、
   修改 API/Memory、安装依赖或调用外部服务。8E coverage 继续 `planned`。
-- `NEXT`：完成 design diff/governance 门，创建独立 design commit、push，并等待该 exact SHA 的
-  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；公共关闭后从 locale contract/catalog 红灯
-  开始 implementation，不提前进入 RQ-103。
+- design commit `8969aef689febfb059f72e2fa71c928b2e3bee67` / Actions `32683742229` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 已全部 completed/success，设计门正式关闭。
+- `当时 NEXT`：从 locale contract/catalog 红灯开始 implementation，随后依次完成 Provider/Switch、Portal/Auth/App
+  shell、Workbench copy/structured Evidence、original-content disclosure 与 browser/a11y/bundle 门；不提前进入 RQ-103。
+
+## 2026-08-24：RQ-102/104/105/106 本地实现完成，等待公共闭环
+
+- 双语 foundation 已实现 `zh-CN|en` typed catalog、strict V1 storage、navigator/English fallback、共享
+  LocaleSwitch、structured Evidence/status/copy 与 original Report/Plan。role/metric/gap code 和 RSO/Match-V5/
+  fixture/test 实现术语不再直接进入普通产品表面；语言切换不重取 API、重连 SSE、改 profile 或机翻 Artifact。
+- ADR-0067 的默认旅程已实现为 zero-I/O `Portal → Account → Workbench`：core 是唯一真实 button，Account 才
+  issue provider-neutral session、加载已有 profile 或 POST/poll Player Link；明确 owner-scoped profile 后才
+  start live controller。reload/back/forward、session failure、late response/abort、unlisted profile 与 focus
+  handoff 均 fail closed。
+- Player Link browser decoder 增加 exact four-state/partial identity/claimed timestamp 检查；通用 POST client
+  维持 same-origin、16 KiB request、2 MiB response、CSRF、idempotency、Abort 与 body-free error。后端组合测试
+  证明同一 server owner 贯穿 session→CSRF Link→terminal→profiles。
+- RQ-106 已把母图转为 docs keyframe，再移除 baked core/beam 形成 122.7 kB runtime background；aperture
+  fallback-only，instrumentarium 移出 public。React core 负责唯一 copy/focus/click；正常 720ms handoff 与
+  bounded reveal、reduced-motion 即时进入已实现。当前仍是 V1 choreography，不是 RQ-103 final visual QA。
+- 本地已通过 Player Link file `26 passed, 1 warning`、frontend typecheck/build、unit `24 files / 136 passed`
+  与 Playwright `36 passed`；JS/CSS gzip `142.68/18.50 kB`。完整 Python 为
+  `1982 passed, 1 skipped, 1 warning, 127 subtests passed`，真实 PostgreSQL 17、0011 head→base→head/
+  `alembic check`、两套 RAG、Harness `published/0 revisions`、compileall/pip/YAML、npm audit 0、SDK/Secret/
+  tracked-data、governance/diff 与隔离 Linux package schema 1.6/non-root/image exclusion/resource cleanup 全绿。
+  唯一 Windows skip 保留给公共 Linux pytest 补证。本批产品
+  Riot/OP.GG/Provider/LLM calls 0；视觉生成调用 2，gptimage2 因代理未监听在 request 前失败，calls 0。
+- 正式 OIDC/RSO、PostgreSQL session repository、Data Dragon asset/detail enrichment、Evidence/Trace 深页、
+  Training full、OP.GG breadth/golden slice、final visual QA 与 8F 均未完成，8E coverage 保持 `planned`。
+
+## 2026-08-24：RQ-107 bounded Coach 推荐待用户裁决
+
+- 审计确认当前 Web 是 Recent Review viewer + read-only Training summary；虽然后端 Conversation/Message、
+  AgentRuntime/Harness、terminal assistant、Memory Context 与 Training Candidate/Plan/Progress 已公共完成，Web
+  尚不能发送问题或启动 conversation-bound Agent，因此不能称为可交互 Coach。
+- 当时建议当前批公共关闭后、RQ-103 前插入 8E 内部 `review-grounded-bounded-coach`，复用可靠 task/SSE 和
+  terminal whole reply；开放域 LoL chat、token stream、observed 持久 Plan 和自动长期写入 deferred。
+- RQ-108 后来把 foundation 公共关闭后的立即下一原子项固定为 Portal Motion Polish，因此本节不再决定立即
+  handoff。RQ-108 完成后，RQ-107 bounded Coach 与 RQ-103 asset/detail/final-QA 的相对顺序仍待集中裁决。
+
+## 2026-08-25：RQ-108 Portal Motion Polish 固定为下一原子批
+
+- 当前 canonical 不变：唯一原子项仍是 `bilingual-product-surface-foundation`，本地实现/门禁完成，只待独立
+  implementation/evidence commit、push 与同 SHA `pytest`、`postgres-migrations`、`packaging-smoke` 全绿。
+- foundation 公共关闭后才进入 `portal-motion-polish`。它只取代当前 Portal Task 3 作为最终视觉/动效验收，
+  不否定 zero-early-I/O、Portal→Account→Workbench、真实语义按钮、keyboard/focus、history、reduced-motion
+  与错误 fallback 的功能证据。
+- 视觉合同以用户确认的母图为构图源：水晶在场景内重绘/调大并随高清同源 poster/ambient media 呼吸蓄能；
+  透明原生 `<button>` 只覆盖点击区，不显示独立按钮或贴图水晶。提示只用融景微光点/短脉冲；激活后完成
+  能量汇聚、一次性 burst 与独立 Account 动态场景幕切。
+- RQ-108 必须独立完成 ADR/设计、素材 provenance、codec/poster、移动安全区、reduced-motion、Save-Data、
+  播放/解码失败 fallback、下载/解码/JS 预算、许可/移除路径、TDD、八维证据、独立提交和 exact-SHA 公共门。
+  不热链、不复制付费素材，不默认新增 Three/OGL/Anime；不实现 Coach、OIDC/RSO、Data Dragon enrichment 或
+  跨模块 final visual QA。
+- `NEXT`：完成当前 foundation 持久同步与全部本地门，创建独立 implementation/evidence commit 并 push，等待
+  exact-SHA 三 job 全绿；公共关闭后才把 RQ-108 标为 in progress。

@@ -45,7 +45,7 @@ test("captures desktop evidence drawer for manual QA", async ({ page }, testInfo
   await page.goto("/?scenario=published")
   await page.getByRole("button", { name: /open evidence/i }).click()
   await capture(page, testInfo, "desktop-evidence-drawer")
-  await page.getByRole("dialog", { name: /evidence ledger/i }).evaluate((element) => {
+  await page.getByRole("dialog", { name: /review evidence/i }).evaluate((element) => {
     element.scrollTop = element.scrollHeight
   })
   await capture(page, testInfo, "desktop-evidence-drawer-bottom")

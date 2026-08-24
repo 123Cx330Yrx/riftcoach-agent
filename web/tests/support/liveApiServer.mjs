@@ -4,7 +4,10 @@ const HOST = "127.0.0.1"
 const PORT = 4174
 const SELF = "95000000-0000-4000-8000-000000000001"
 const OBSERVED = "95000000-0000-4000-8000-000000000002"
+const ADDED = "95000000-0000-4000-8000-000000000003"
 const TASK = "96000000-0000-4000-8000-000000000001"
+const LINK_TASK = "96000000-0000-4000-8000-000000000002"
+const ADDED_SUBJECT = "94000000-0000-4000-8000-000000000003"
 const RUN = "review_live_workbench_1"
 const NOW = "2026-08-23T11:00:00Z"
 const DIGEST_A = "a".repeat(64)
@@ -27,10 +30,30 @@ function context(request) {
   const testId = values["riftcoach-test-id"] ?? `anonymous-${scenario}`
   let ledger = ledgers.get(testId)
   if (ledger === undefined) {
-    ledger = { requests: [], openStreams: 0, closedStreams: 0, terminal: false, latestSelfCalls: 0 }
+    ledger = {
+      testId,
+      requests: [],
+      openStreams: 0,
+      closedStreams: 0,
+      terminal: false,
+      latestSelfCalls: 0,
+      link: undefined,
+      linkSubmissions: [],
+    }
     ledgers.set(testId, ledger)
   }
   return { scenario, testId, ledger }
+}
+
+async function readJson(request, limit = 16 * 1024) {
+  const chunks = []
+  let received = 0
+  for await (const chunk of request) {
+    received += chunk.length
+    if (received > limit) throw new Error("request_too_large")
+    chunks.push(chunk)
+  }
+  return JSON.parse(Buffer.concat(chunks).toString("utf8"))
 }
 
 function sendJson(response, value, status = 200, extraHeaders = {}) {
@@ -53,9 +76,8 @@ function sendText(response, value, mediaType = "text/plain") {
   response.end(value)
 }
 
-function profiles(scenario) {
-  if (scenario === "empty") return []
-  return [
+function profiles(scenario, ledger) {
+  const values = scenario === "empty" ? [] : [
     {
       schema_version: "1.0",
       player_profile_id: SELF,
@@ -75,6 +97,42 @@ function profiles(scenario) {
       last_resolved_at: NOW,
     },
   ]
+  if (ledger.link?.succeeded === true) {
+    values.push({
+      schema_version: "1.0",
+      player_profile_id: ADDED,
+      riot_id: ledger.link.riotId,
+      routing_region: ledger.link.routingRegion,
+      relationship_role: ledger.link.relationshipRole,
+      verification_status: ledger.link.relationshipRole === "observed" ? "not_applicable" : "unverified_claim",
+      last_resolved_at: "2026-08-23T11:00:03Z",
+    })
+  }
+  return values
+}
+
+function playerLinkPayload(ledger) {
+  const link = ledger.link
+  if (link === undefined) return undefined
+  link.polls += 1
+  const status = link.polls === 1 ? "queued" : link.polls === 2 ? "running" : "succeeded"
+  const succeeded = status === "succeeded"
+  if (succeeded) link.succeeded = true
+  return {
+    schema_version: "1.0",
+    link_task_id: LINK_TASK,
+    status,
+    created_at: NOW,
+    updated_at: status === "queued" ? NOW : status === "running" ? "2026-08-23T11:00:01Z" : "2026-08-23T11:00:03Z",
+    claimed_at: status === "queued" ? null : "2026-08-23T11:00:01Z",
+    finished_at: succeeded ? "2026-08-23T11:00:03Z" : null,
+    relationship_role: link.relationshipRole,
+    verification_status: link.relationshipRole === "observed" ? "not_applicable" : "unverified_claim",
+    player_subject_id: succeeded ? ADDED_SUBJECT : null,
+    relationship_id: succeeded ? ADDED : null,
+    confirmed_riot_id: succeeded ? link.riotId : null,
+    failure: null,
+  }
 }
 
 function productMode(scenario, ledger) {
@@ -118,8 +176,8 @@ function links() {
 }
 
 function latest(profileId, scenario, ledger) {
-  if (profileId === OBSERVED) {
-    return { schema_version: "1.0", player_profile_id: OBSERVED, latest_review: null }
+  if (profileId === OBSERVED || profileId === ADDED) {
+    return { schema_version: "1.0", player_profile_id: profileId, latest_review: null }
   }
   const task = taskPayload(scenario, ledger)
   return {
@@ -440,8 +498,17 @@ const server = createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", `http://${HOST}:${PORT}`)
   if (url.pathname === "/health") return sendJson(response, { status: "ok" })
   if (url.pathname === "/__requests") {
-    const ledger = ledgers.get(url.searchParams.get("test_id") ?? "") ?? { requests: [], openStreams: 0, closedStreams: 0 }
-    return sendJson(response, { requests: ledger.requests, open_streams: ledger.openStreams, closed_streams: ledger.closedStreams })
+    const ledger = ledgers.get(url.searchParams.get("test_id") ?? "") ?? {
+      requests: [], openStreams: 0, closedStreams: 0, link: undefined, linkSubmissions: [],
+    }
+    return sendJson(response, {
+      requests: ledger.requests,
+      open_streams: ledger.openStreams,
+      closed_streams: ledger.closedStreams,
+      player_link_polls: ledger.link?.polls ?? 0,
+      player_link_succeeded: ledger.link?.succeeded ?? false,
+      player_link_submissions: ledger.linkSubmissions,
+    })
   }
 
   const { scenario, ledger } = context(request)
@@ -460,10 +527,55 @@ const server = createServer(async (request, response) => {
       },
     )
   }
+  if (url.pathname === "/player-links" && request.method === "POST") {
+    let body
+    try {
+      body = await readJson(request)
+    } catch {
+      return sendJson(response, { code: "request_invalid" }, 422)
+    }
+    const validBody = body !== null && typeof body === "object" && !Array.isArray(body)
+      && typeof body.riot_id === "string"
+      && ["americas", "asia", "europe", "sea"].includes(body.routing_region)
+      && ["self", "observed"].includes(body.relationship_role)
+    const csrfValid = request.headers["x-csrf-token"] === `csrf-${ledger.testId}`
+    const idempotencyKey = request.headers["idempotency-key"]
+    const idempotencyValid = typeof idempotencyKey === "string" && /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(idempotencyKey)
+    if (!validBody || !csrfValid || !idempotencyValid) {
+      return sendJson(response, { code: !csrfValid ? "csrf_invalid" : "request_invalid" }, !csrfValid ? 403 : 422)
+    }
+    ledger.link = {
+      polls: 0,
+      succeeded: false,
+      riotId: body.riot_id,
+      routingRegion: body.routing_region,
+      relationshipRole: body.relationship_role,
+    }
+    ledger.linkSubmissions.push({
+      riot_id: body.riot_id,
+      routing_region: body.routing_region,
+      relationship_role: body.relationship_role,
+      csrf_valid: csrfValid,
+      idempotency_key: idempotencyKey,
+    })
+    return sendJson(response, {
+      schema_version: "1.0",
+      disposition: "created",
+      link_task_id: LINK_TASK,
+      status: "queued",
+      link: `/player-links/${LINK_TASK}`,
+    }, 202)
+  }
   if (request.method !== "GET") return sendJson(response, { code: "request_invalid" }, 405)
 
   if (url.pathname === "/player-profiles") {
-    return sendJson(response, { schema_version: "1.0", profiles: profiles(scenario), limit: 50 })
+    return sendJson(response, { schema_version: "1.0", profiles: profiles(scenario, ledger), limit: 50 })
+  }
+  if (url.pathname === `/player-links/${LINK_TASK}`) {
+    const payload = playerLinkPayload(ledger)
+    return payload === undefined
+      ? sendJson(response, { code: "player_link_not_found" }, 404)
+      : sendJson(response, payload)
   }
   const latestMatch = /^\/player-profiles\/([^/]+)\/reviews\/recent\/latest$/.exec(url.pathname)
   if (latestMatch !== null) {

@@ -11,11 +11,12 @@ RQ-098 已确认 `Rift Awakening → Broadcast Workbench`，RQ-103 又明确当�
 都不是最终视觉签收。Batch E E1–E5、production shell/Auth gate 和 Timeline DTO/UI 已取得 exact-SHA
 公共闭环；视觉、双语和剩余产品模块继续在 `8e-productization` 内按原子批推进。
 
-当前唯一原子项是 RQ-102 `bilingual-product-surface-foundation`。ADR-0066 与专用设计/实施计划已在本地
-冻结 `zh-CN | en` typed catalog、strict locale persistence、canonical code 映射和 Coach 原文边界；产品
-代码尚未开始。设计 exact-SHA 公共关闭后才从 locale contract/catalog 红灯进入实现，随后才交接 RQ-103
-Data Dragon asset/detail enrichment。Evidence/Trace、Training、OP.GG breadth/golden slice、跨模块 final
-visual QA 和 8F 继续保持后序独立原子批。
+当前唯一原子项仍是 RQ-102 `bilingual-product-surface-foundation`。设计 `8969aef` / Actions
+`32683742229` 已完成 exact-SHA 三 job 公共关闭；RQ-102/104 typed bilingual copy 与 RQ-105/106
+Portal→Account→Workbench、真实 Player Link、母图分层 V1 与全套本地比例门已完成，当前只待独立提交、
+push 和 exact-SHA 三 job。RQ-108 已明确把 Portal V1 动效 supersede 为下一独立 `portal-motion-polish`；
+RQ-103 Data Dragon asset/detail enrichment、Evidence/Trace、Training、OP.GG breadth/golden slice、final visual QA
+和 8F 继续后序。RQ-108 关闭后，RQ-107 bounded Coach 与 RQ-103 的相对顺序仍待用户裁决。
 
 ## Current Phase
 
@@ -51,9 +52,10 @@ public closure. RQ-084 authorized Phase 36 -
 The bounded Riot/OP.GG validation and JSON-null Bad Case, Batch B profile/routing,
 Batch C Evidence/Product/SSE, Batch D Workbench, live integration, Batch E E1-E5,
 production shell/Auth gate and Timeline DTO/UI are publicly closed. The current
-atomic slice is `bilingual-product-surface-foundation`: its ADR/design/plan are
-locally frozen and await an independent design exact-SHA public gate before
-implementation. Full productization and coverage remain `in_progress/planned`.
+  atomic slice is `bilingual-product-surface-foundation`: design `8969aef/32683742229`
+  is publicly closed and implementation/local gates are complete; only the independent
+  implementation/evidence commit and exact-SHA public gate remain. Full productization
+  and coverage remain `in_progress/planned`.
 
 ## Phases
 
@@ -1155,6 +1157,12 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 | module-entry 状态回写时 canonical“唯一下一步”漏写 checkpoint 字面键 | 1 | governance 在提交前阻止；把 `6A-7-packaging-exit-review` 补回同一行，不改变根因、修复范围或阶段状态 |
 | direct script 在 Linux image 中从 wheel 导入 app，导致 Alembic PROJECT_ROOT 漂移 | 1 | d8c5063 安全码与 bounded logs 定位；用 `python -m scripts...` 统一 import root，adf53e5 packaging-smoke 全绿且未放宽 readiness |
 | 6B-2 首次 cached diff check 发现 Link Worker 测试 EOF 多余空行 | 1 | cached 门在 commit 前阻止；只删除尾部空行并重新暂存，cached diff/governance 通过后才提交，不改变行为 |
+| RQ-105 后端纵向 focused 首次误用桌面 Hermes Python | 1 | pytest 未启动且无产品变化；立即改用仓库 `.venv\Scripts\python.exe`，Player Link 文件 26 项通过 |
+| RQ-106 本地 gptimage2 使用已配置代理 `127.0.0.1:7890`，端口未监听 | 1 | helper 在 image request 前经三次连接检查失败，调用/费用为 0；没有直连绕过代理，改用内置 imagegen 生成两张项目资产并如实登记生成通道 |
+| 最终完整 pytest 首次真库 fixture 只有 `RIFTCOACH_TEST_DATABASE_URL`、Alembic 缺 `DATABASE_URL`，随后 Docker Desktop daemon 也未运行 | 2 | 首跑在业务断言前配置失败；仅在测试进程映射既有 URL，隐藏启动 Docker Desktop 后复用自动恢复的 `riftcoach-local-postgres`，`select 1` 成功，完整 1982/1 skip/127 subtests 通过；未改全局 DSN或测试 |
+| 尝试另建 `--rm` PostgreSQL 容器时 54329 已被自动恢复的既有容器占用 | 1 | 新容器在 networking 前失败且因 `--rm` 未保留；确认既有容器健康后直接复用，不删除或重建用户容器 |
+| YAML 横向门首个 Python one-liner 被 PowerShell 引号截断 | 1 | compileall/pip 已先成功，YAML 尚未解析；拆为逐文件 safe_load，4/4 通过，未修改 YAML |
+| `npm audit` 默认 npmmirror endpoint 返回明确 NOT_IMPLEMENTED 404 | 1 | 不是漏洞结论；按既有项目边界改用 npm 官方 advisories endpoint，最终 0 vulnerabilities |
 
 ### 5D-7 V3 资源校准离线实现（2026-08-15）
 
@@ -1480,6 +1488,22 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   locale persistence、missing-key fallback、canonical API code 与 Coach report language boundary；Data Dragon
   资产/细节 enrichment、Evidence/Trace、Training full page、OP.GG useful-breadth/golden slice 和 final visual QA
   继续保持后序独立原子批。
-  - [completed-local] ADR-0066、专用 design/implementation plan、八维 walkthrough 与 coverage 路径已冻结；
-    产品代码、依赖、API/Memory 和外部调用均未改变。
-  - [next] 独立 design commit/push 与 exact-SHA 三 job；公共全绿后从 locale contract/catalog 红灯进入 TDD。
+  - [completed-public] ADR-0066、专用 design/implementation plan、八维 walkthrough 与 coverage 路径已由
+    `8969aef` / Actions `32683742229` 三 job 公共闭环；该 SHA 没有产品代码、依赖、API/Memory 或外部调用。
+  - [in_progress] 从 locale contract/catalog 红灯进入 TDD；之后按 Provider/Switch → Portal/Auth/App shell →
+    Workbench structured copy → browser/a11y/bundle 顺序完成实现与证据。
+  - [completed-local] RQ-102/104：typed catalogs/Provider/Switch、strict storage、Workbench structured copy、
+    original Report/Plan、role/metric/gap code mapping 与独立中英文编辑已通过本地 unit/browser/build。
+  - [completed-local] RQ-105：默认 zero-I/O Portal、semantic core、Account/Auth、已有/新增 profile、真实
+    Player Link 四态、history/reload、unlisted profile/session failure cleanup 与 focus handoff 已通过 TDD；
+    后端 session→CSRF Link→terminal→profiles 组合测试通过。
+  - [completed-local] RQ-106：母图派生 keyframe/background，runtime plate 无文字/UI/core；aperture 降为
+    fallback，instrumentarium 移出 public，bounded 720ms handoff 与 reduced-motion 已通过 36 场 Playwright。
+  - [completed-local] 完整 Python `1982 passed, 1 skipped, 1 warning, 127 subtests`、unit 136、Playwright 36、
+    真 PostgreSQL/Alembic、RAG/Harness、compile/pip/YAML、npm audit、SDK/Secret、governance/diff 与隔离 Linux
+    package 全绿；JS/CSS gzip `142.68/18.50 kB`。
+  - [pending-close] 独立 implementation/evidence commit/push 与同 SHA 三 job；公共关闭前不进入后序原子批。
+  - [next-after-close] RQ-108 `portal-motion-polish`：先做 ADR/媒体与交互设计、TDD、八维证据、本地门、
+    独立提交和 exact-SHA；当前静态 Portal 只保留为功能/构图 V1，RQ-108 尚未 in progress。
+  - [pending-user-decision] RQ-108 关闭后，RQ-107 bounded Coach 与 RQ-103 asset/detail/final-QA 的相对顺序；
+    当前批不实现假聊天框、Data Dragon enrichment 或最终动效。

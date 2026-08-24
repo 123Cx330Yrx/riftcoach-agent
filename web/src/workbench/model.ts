@@ -113,10 +113,13 @@ export interface WorkbenchCoachReport {
 
 export interface WorkbenchEvidenceSource {
   readonly sourceKind: "riot_official" | "data_dragon" | "riot_patch" | "opgg"
-  readonly label: string
   readonly status: "verified" | "partial" | "unavailable"
   readonly freshness: "current" | "stale" | "unknown" | "expired"
-  readonly detail: string
+  readonly matchCount?: number
+  readonly version?: string
+  readonly patchVersion?: string
+  readonly evidenceCount?: number
+  readonly provenanceComplete?: boolean
 }
 
 export interface WorkbenchEvidence {
@@ -129,14 +132,15 @@ export interface WorkbenchEvidence {
   readonly claims: readonly EvidenceClaimWire[]
   readonly sources: readonly WorkbenchEvidenceSource[]
   readonly joins: readonly {
-    readonly label: string
+    readonly labelCode: "review_patch_official_patch" | "champion_current_meta" | "champion_position"
+    readonly championName?: string
+    readonly position?: "top" | "mid" | "jungle" | "adc" | "support"
     readonly status: "joined" | "joined_partial" | "unjoined" | "stale" | "conflict"
-    readonly detail: string
+    readonly sourcesPresent: readonly WorkbenchEvidenceSource["sourceKind"][]
   }[]
   readonly gaps: readonly {
     readonly code: string
-    readonly summary: string
-    readonly impact: string
+    readonly sourceKind?: WorkbenchEvidenceSource["sourceKind"]
   }[]
 }
 
@@ -167,7 +171,7 @@ export type WorkbenchTraining =
   | {
       readonly mode: "learning_observation"
       readonly readOnly: true
-      readonly note: string
+      readonly noteCode: "public_observed_read_only"
     }
 
 export interface LiveWorkbenchView {
@@ -184,8 +188,18 @@ export interface LiveWorkbenchView {
   readonly training?: WorkbenchTraining
 }
 
+export type WorkbenchClientMessageCode =
+  | "profiles_loading"
+  | "selected_review_loading"
+  | "fixture_loading"
+  | "profiles_empty"
+  | "workbench_load_failed"
+  | "selected_profile_unavailable"
+  | "profile_projection_invalid"
+  | "fixture_unavailable"
+
 export type LiveWorkbenchScreenState =
-  | { readonly client: "loading"; readonly message: string }
-  | { readonly client: "empty"; readonly message: string }
+  | { readonly client: "loading"; readonly messageCode: WorkbenchClientMessageCode }
+  | { readonly client: "empty"; readonly messageCode: WorkbenchClientMessageCode }
   | { readonly client: "ready"; readonly data: LiveWorkbenchView }
-  | { readonly client: "error"; readonly code: string; readonly message: string }
+  | { readonly client: "error"; readonly code: string; readonly messageCode: WorkbenchClientMessageCode }

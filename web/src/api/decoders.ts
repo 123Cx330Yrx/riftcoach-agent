@@ -11,6 +11,10 @@ import type {
   ExpectedTaskRunBinding,
   LatestProfileReviewWire,
   LatestReviewItemWire,
+  CreatePlayerLinkResponseWire,
+  PlayerLinkFailureWire,
+  PlayerLinkResponseWire,
+  PlayerLinkStatusWire,
   PlayerProfilePageWire,
   PlayerProfileWire,
   ProductStateReasonWire,
@@ -174,6 +178,113 @@ function publication(value: unknown, path: string): PublicationStatusWire {
 
 function routingRegion(value: unknown, path: string): RoutingRegionWire {
   return enumeration(value, ["americas", "asia", "europe", "sea"], path)
+}
+
+function playerLinkStatus(value: unknown, path: string): PlayerLinkStatusWire {
+  return enumeration(value, ["queued", "running", "succeeded", "failed"], path)
+}
+
+function playerLinkFailure(value: unknown, path: string): PlayerLinkFailureWire {
+  const row = record(value, path)
+  exact(row, ["code", "retryable"], path)
+  const code = enumeration(row.code, [
+    "riot_rate_limited",
+    "upstream_timeout",
+    "upstream_unavailable",
+    "player_not_found",
+    "riot_authentication_failed",
+    "account_response_invalid",
+    "relationship_role_conflict",
+  ] as const, `${path}.code`)
+  const retryable = bool(row.retryable, `${path}.retryable`)
+  const expectedRetryable = code === "riot_rate_limited" || code === "upstream_timeout" || code === "upstream_unavailable"
+  if (retryable !== expectedRetryable) throw new Error(`${path}.retryable does not match code`)
+  return { code, retryable }
+}
+
+export function decodeCreatePlayerLink(value: unknown): CreatePlayerLinkResponseWire {
+  const row = record(value, "player_link_create")
+  exact(row, ["schema_version", "disposition", "link_task_id", "status", "link"], "player_link_create")
+  const linkTaskId = uuid(row.link_task_id, "player_link_create.link_task_id")
+  const link = string(row.link, "player_link_create.link", 80)
+  if (link !== `/player-links/${linkTaskId}`) throw new Error("player_link_create.link binding mismatch")
+  return {
+    schema_version: literal(row.schema_version, "1.0", "player_link_create.schema_version"),
+    disposition: enumeration(row.disposition, ["created", "replayed"] as const, "player_link_create.disposition"),
+    link_task_id: linkTaskId,
+    status: playerLinkStatus(row.status, "player_link_create.status"),
+    link,
+  }
+}
+
+export function decodePlayerLink(value: unknown, expectedLinkTaskId: string): PlayerLinkResponseWire {
+  const row = record(value, "player_link")
+  exact(row, [
+    "schema_version",
+    "link_task_id",
+    "status",
+    "created_at",
+    "updated_at",
+    "claimed_at",
+    "finished_at",
+    "relationship_role",
+    "verification_status",
+    "player_subject_id",
+    "relationship_id",
+    "confirmed_riot_id",
+    "failure",
+  ], "player_link")
+  const linkTaskId = uuid(row.link_task_id, "player_link.link_task_id")
+  if (linkTaskId !== uuid(expectedLinkTaskId, "expected player link task")) throw new Error("player link binding mismatch")
+  const status = playerLinkStatus(row.status, "player_link.status")
+  const relationshipRole = enumeration(row.relationship_role, ["self", "observed"] as const, "player_link.relationship_role")
+  const verificationStatus = enumeration(row.verification_status, ["unverified_claim", "not_applicable", "rso_verified"] as const, "player_link.verification_status")
+  if (
+    (relationshipRole === "observed" && verificationStatus !== "not_applicable") ||
+    (relationshipRole === "self" && verificationStatus === "not_applicable")
+  ) throw new Error("player link relationship verification mismatch")
+  const decoded: PlayerLinkResponseWire = {
+    schema_version: literal(row.schema_version, "1.0", "player_link.schema_version"),
+    link_task_id: linkTaskId,
+    status,
+    created_at: timestamp(row.created_at, "player_link.created_at"),
+    updated_at: timestamp(row.updated_at, "player_link.updated_at"),
+    claimed_at: nullable(row.claimed_at, (item) => timestamp(item, "player_link.claimed_at")),
+    finished_at: nullable(row.finished_at, (item) => timestamp(item, "player_link.finished_at")),
+    relationship_role: relationshipRole,
+    verification_status: verificationStatus,
+    player_subject_id: nullable(row.player_subject_id, (item) => uuid(item, "player_link.player_subject_id")),
+    relationship_id: nullable(row.relationship_id, (item) => uuid(item, "player_link.relationship_id")),
+    confirmed_riot_id: nullable(row.confirmed_riot_id, (item) => normalizedText(item, "player_link.confirmed_riot_id", 97)),
+    failure: nullable(row.failure, (item) => playerLinkFailure(item, "player_link.failure")),
+  }
+  const allIdentity = decoded.player_subject_id !== null && decoded.relationship_id !== null && decoded.confirmed_riot_id !== null
+  const anyIdentity = decoded.player_subject_id !== null || decoded.relationship_id !== null || decoded.confirmed_riot_id !== null
+  const createdAtMs = Date.parse(decoded.created_at)
+  const updatedAtMs = Date.parse(decoded.updated_at)
+  const claimedAtMs = decoded.claimed_at === null ? undefined : Date.parse(decoded.claimed_at)
+  const finishedAtMs = decoded.finished_at === null ? undefined : Date.parse(decoded.finished_at)
+  if (
+    updatedAtMs < createdAtMs ||
+    (claimedAtMs !== undefined && (claimedAtMs < createdAtMs || updatedAtMs < claimedAtMs)) ||
+    (finishedAtMs !== undefined && (claimedAtMs === undefined || finishedAtMs < claimedAtMs || updatedAtMs < finishedAtMs))
+  ) throw new Error("player link timestamps are inconsistent")
+  if (status === "queued" && decoded.claimed_at !== null) {
+    throw new Error("queued player link cannot be claimed")
+  }
+  if (status !== "queued" && decoded.claimed_at === null) {
+    throw new Error("claimed player link requires claimed_at")
+  }
+  if (status === "succeeded" && (!allIdentity || decoded.failure !== null || decoded.finished_at === null)) {
+    throw new Error("succeeded player link requires resolved identity")
+  }
+  if (status === "failed" && (anyIdentity || decoded.failure === null || decoded.finished_at === null)) {
+    throw new Error("failed player link requires safe failure data")
+  }
+  if ((status === "queued" || status === "running") && (anyIdentity || decoded.failure !== null || decoded.finished_at !== null)) {
+    throw new Error("active player link cannot contain terminal data")
+  }
+  return decoded
 }
 
 function position(value: unknown, path: string) {

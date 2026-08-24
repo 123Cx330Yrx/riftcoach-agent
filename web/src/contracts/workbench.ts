@@ -138,27 +138,28 @@ export type EvidenceSourceKind =
 
 export interface EvidenceSourceFixture {
   readonly sourceKind: EvidenceSourceKind;
-  readonly label: string;
   readonly status: "verified" | "partial" | "unavailable";
   readonly freshness: "current" | "stale" | "unknown";
-  readonly detail: string;
 }
 
 export interface EvidenceJoinFixture {
-  readonly label: string;
+  readonly labelCode:
+    | "review_patch_official_patch"
+    | "champion_current_meta"
+    | "champion_position";
+  readonly championName?: string;
+  readonly position?: "top" | "mid" | "jungle" | "adc" | "support";
   readonly status:
     | "joined"
     | "joined_partial"
     | "unjoined"
     | "stale"
     | "conflict";
-  readonly detail: string;
 }
 
 export interface EvidenceGapFixture {
   readonly code: string;
-  readonly summary: string;
-  readonly impact: string;
+  readonly sourceKind?: EvidenceSourceKind;
 }
 
 export interface EvidenceFixture {
@@ -196,9 +197,6 @@ export interface PersonalTrainingFixture {
 export interface LearningObservationTrainingFixture {
   readonly mode: "learning_observation";
   readonly readOnly: true;
-  readonly title: string;
-  readonly note: string;
-  readonly focusPoints: readonly string[];
 }
 
 export type ProfileTrainingFixture =
@@ -223,7 +221,6 @@ export interface TaskEventFixture {
 export interface ReviewWorkbenchFixture {
   readonly schemaVersion: "1.0";
   readonly fixture_mode: true;
-  readonly disclosure: string;
   readonly profiles: readonly PlayerProfileFixture[];
   readonly selectedProfileId: string;
   readonly task: TaskFixture;
@@ -254,13 +251,10 @@ export type WorkbenchScreenState =
   | {
       readonly fixture_mode: true;
       readonly client: "loading";
-      readonly message: string;
     }
   | {
       readonly fixture_mode: true;
       readonly client: "empty";
-      readonly message: string;
-      readonly actionLabel: string;
     }
   | {
       readonly fixture_mode: true;
@@ -271,7 +265,6 @@ export type WorkbenchScreenState =
       readonly fixture_mode: true;
       readonly client: "error";
       readonly code: "fixture_load_failed" | "fixture_scenario_unknown";
-      readonly message: string;
     };
 
 const forbiddenFieldPatterns = [

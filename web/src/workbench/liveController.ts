@@ -31,6 +31,7 @@ import {
 import type {
   LiveWorkbenchScreenState,
   LiveWorkbenchView,
+  WorkbenchClientMessageCode,
   WorkbenchCoachReport,
   WorkbenchEvidence,
   WorkbenchRecentSummary,
@@ -113,7 +114,7 @@ export class LiveWorkbenchController {
   private binding: SelectionBinding | undefined
   private disposed = false
   private current: LiveWorkbenchSnapshot = {
-    state: { client: "loading", message: "Loading player profiles…" },
+    state: { client: "loading", messageCode: "profiles_loading" },
     liveUpdates: "closed",
   }
 
@@ -142,7 +143,7 @@ export class LiveWorkbenchController {
     this.update({ ...this.current, liveUpdates })
   }
 
-  private begin(message: string): { generation: number; signal: AbortSignal } {
+  private begin(messageCode: WorkbenchClientMessageCode): { generation: number; signal: AbortSignal } {
     this.generation += 1
     this.abortController?.abort()
     this.stream?.close()
@@ -150,7 +151,7 @@ export class LiveWorkbenchController {
     this.binding = undefined
     this.abortController = new AbortController()
     this.update({
-      state: { client: "loading", message },
+      state: { client: "loading", messageCode },
       liveUpdates: "closed",
     })
     return { generation: this.generation, signal: this.abortController.signal }
@@ -172,14 +173,14 @@ export class LiveWorkbenchController {
   }
 
   async start(): Promise<void> {
-    const { generation, signal } = this.begin("Loading player profiles…")
+    const { generation, signal } = this.begin("profiles_loading")
     try {
       const page = await this.api.listProfiles(signal)
       if (!this.isCurrent(generation)) return
       this.profiles = page.profiles
       if (this.profiles.length === 0) {
         this.update({
-          state: { client: "empty", message: "No player profiles are available." },
+          state: { client: "empty", messageCode: "profiles_empty" },
           liveUpdates: "closed",
         })
         return
@@ -187,6 +188,13 @@ export class LiveWorkbenchController {
       const requested = this.initialProfileId === undefined
         ? undefined
         : this.profiles.find((profile) => profile.player_profile_id === this.initialProfileId)
+      if (this.initialProfileId !== undefined && requested === undefined) {
+        this.update({
+          state: { client: "error", code: "player_profile_not_found", messageCode: "selected_profile_unavailable" },
+          liveUpdates: "closed",
+        })
+        return
+      }
       await this.loadProfile(requested ?? this.profiles[0]!, generation, signal)
     } catch (error) {
       this.handleFailure(error, generation)
@@ -194,11 +202,11 @@ export class LiveWorkbenchController {
   }
 
   async selectProfile(profileId: string): Promise<void> {
-    const { generation, signal } = this.begin("Loading the selected review…")
+    const { generation, signal } = this.begin("selected_review_loading")
     const profile = this.profiles.find((item) => item.player_profile_id === profileId)
     if (profile === undefined) {
       this.update({
-        state: { client: "error", code: "player_profile_not_found", message: "The selected player profile is unavailable." },
+        state: { client: "error", code: "player_profile_not_found", messageCode: "selected_profile_unavailable" },
         liveUpdates: "closed",
       })
       return
@@ -384,7 +392,7 @@ export class LiveWorkbenchController {
       state: {
         client: "error",
         code: safeErrorCode(error),
-        message: "The live workbench could not be loaded safely.",
+        messageCode: "workbench_load_failed",
       },
       liveUpdates: "closed",
     })

@@ -5,6 +5,8 @@ import type {
   WorkbenchTimelineEvent,
   WorkbenchTimelineMatch,
 } from "../workbench/model"
+import { useI18n } from "../i18n/ProductLocaleProvider"
+import type { MessageKey } from "../i18n/locale"
 
 function formatClock(seconds: number): string {
   const minutes = Math.floor(seconds / 60)
@@ -12,14 +14,22 @@ function formatClock(seconds: number): string {
   return `${minutes.toString().padStart(2, "0")}:${remainder.toString().padStart(2, "0")}`
 }
 
-function resultLabel(match: WorkbenchTimelineMatch): string {
-  return match.win ? "Win" : "Loss"
+const eventKindKeys: Readonly<Record<WorkbenchTimelineEvent["eventKind"], MessageKey>> = {
+  item_purchase: "timeline.event.purchase",
+  objective: "timeline.event.objective",
+  death: "timeline.event.death",
 }
 
-function eventKindLabel(event: WorkbenchTimelineEvent): string {
-  if (event.eventKind === "item_purchase") return "Purchase"
-  if (event.eventKind === "objective") return "Objective"
-  return "Death"
+const phaseKeys: Readonly<Record<WorkbenchTimelineEvent["phase"], MessageKey>> = {
+  early: "timeline.phase.early",
+  mid: "timeline.phase.mid",
+  late: "timeline.phase.late",
+}
+
+const timelineStatusKeys: Readonly<Record<WorkbenchTimeline["timelineStatus"], MessageKey>> = {
+  available: "timeline.status.available",
+  partial: "timeline.status.partial",
+  unavailable: "timeline.status.unavailable",
 }
 
 function PhaseRail({
@@ -31,6 +41,7 @@ function PhaseRail({
   readonly selectedEvent: number
   readonly onSelectEvent: (index: number) => void
 }) {
+  const { t } = useI18n()
   const early = Math.min(900 / match.gameDurationSeconds, 1) * 100
   const mid = Math.max(Math.min(1500, match.gameDurationSeconds) - 900, 0)
     / match.gameDurationSeconds * 100
@@ -42,13 +53,13 @@ function PhaseRail({
   return (
     <div className="timeline-focus">
       <div className="timeline-phase-key" style={phaseStyle} aria-hidden="true">
-        <span>EARLY · 0–15</span>
-        <span>MID · 15–25</span>
-        <span>LATE · 25+</span>
+        <span>{t("timeline.phase_key.early")}</span>
+        <span>{t("timeline.phase_key.mid")}</span>
+        <span>{t("timeline.phase_key.late")}</span>
       </div>
       <div
         className="timeline-rail"
-        aria-label={`Event phase timeline for ${match.championName}`}
+        aria-label={t("timeline.phase_rail_aria", { champion: match.championName })}
       >
         <span className="timeline-rail__base" aria-hidden="true" />
         {match.events.map((event, index) => {
@@ -59,7 +70,7 @@ function PhaseRail({
               key={`${event.eventKind}-${event.atSeconds}-${index}`}
               type="button"
               style={{ left: `${left}%` }}
-              aria-label={`${event.label} at ${formatClock(event.atSeconds)}`}
+              aria-label={t("timeline.event_at", { label: event.label, time: formatClock(event.atSeconds) })}
               aria-pressed={selectedEvent === index}
               onClick={() => onSelectEvent(index)}
             >
@@ -71,8 +82,11 @@ function PhaseRail({
       {match.events[selectedEvent] === undefined ? null : (
         <div className="timeline-callout" aria-live="polite">
           <span>{formatClock(match.events[selectedEvent].atSeconds)}</span>
-          <strong>{match.events[selectedEvent].label}</strong>
-          <small>{match.events[selectedEvent].phase} phase · {eventKindLabel(match.events[selectedEvent])}</small>
+          <strong translate="no">{match.events[selectedEvent].label}</strong>
+          <small>{t("timeline.callout", {
+            phase: t(phaseKeys[match.events[selectedEvent].phase]),
+            eventKind: t(eventKindKeys[match.events[selectedEvent].eventKind]),
+          })}</small>
         </div>
       )}
     </div>
@@ -80,6 +94,7 @@ function PhaseRail({
 }
 
 export function TimelinePanel({ timeline }: { readonly timeline: WorkbenchTimeline }) {
+  const { formatNumber, t } = useI18n()
   const [selectedMatchId, setSelectedMatchId] = useState(timeline.matches[0]?.matchId ?? "")
   const [selectedEvent, setSelectedEvent] = useState(0)
   const selectedMatch = timeline.matches.find((match) => match.matchId === selectedMatchId)
@@ -97,28 +112,31 @@ export function TimelinePanel({ timeline }: { readonly timeline: WorkbenchTimeli
 
   return (
     <section className="timeline-panel panel" id="timeline" aria-labelledby="timeline-title">
-      <div className="section-kicker"><span>02</span> MATCH TIMELINE</div>
+      <div className="section-kicker"><span>02</span> {t("timeline.section")}</div>
       <div className="timeline-heading">
         <div>
-          <p className="eyebrow">RIOT MATCH-V5 · VERIFIED EVENT FACTS</p>
-          <h3 id="timeline-title">Match phase review</h3>
-          <p>See when deaths, purchases and elite objectives landed—without inferred economy curves.</p>
+          <p className="eyebrow">{t("timeline.kicker")}</p>
+          <h3 id="timeline-title">{t("timeline.title")}</h3>
+          <p>{t("timeline.lede")}</p>
         </div>
         <span className={`timeline-posture timeline-posture--${timeline.timelineStatus}`}>
-          {timeline.timelineStatus}
+          {t(timelineStatusKeys[timeline.timelineStatus])}
         </span>
       </div>
 
       {timeline.timelineStatus === "partial" ? (
         <p className="timeline-notice">
-          {unavailableCount} of {timeline.totalMatches} timelines unavailable. Available matches remain factual.
+          {t("timeline.partial_notice", { unavailable: formatNumber(unavailableCount), total: formatNumber(timeline.totalMatches) })}
         </p>
       ) : null}
       {timeline.matchesTruncated ? (
-        <p className="timeline-notice">Showing {timeline.projectedMatches} of {timeline.totalMatches} verified matches.</p>
+        <p className="timeline-notice">{t("timeline.showing_matches", {
+          projected: formatNumber(timeline.projectedMatches),
+          total: formatNumber(timeline.totalMatches),
+        })}</p>
       ) : null}
 
-      <div className="timeline-match-strip" aria-label="Reviewed matches">
+      <div className="timeline-match-strip" aria-label={t("timeline.reviewed_matches")}>
         {timeline.matches.map((match, index) => (
           <button
             className={`timeline-match${match.matchId === selectedMatch.matchId ? " timeline-match--selected" : ""}`}
@@ -127,11 +145,11 @@ export function TimelinePanel({ timeline }: { readonly timeline: WorkbenchTimeli
             aria-pressed={match.matchId === selectedMatch.matchId}
             onClick={() => selectMatch(match.matchId)}
           >
-            <small>GAME {index + 1}</small>
-            <strong>{match.championName}</strong>
-            <span className={match.win ? "timeline-win" : "timeline-loss"}>{resultLabel(match)}</span>
+            <small>{t("timeline.game", { number: formatNumber(index + 1) })}</small>
+            <strong translate="no">{match.championName}</strong>
+            <span className={match.win ? "timeline-win" : "timeline-loss"}>{match.win ? t("timeline.win") : t("timeline.loss")}</span>
             <em>{formatClock(match.gameDurationSeconds)}</em>
-            {match.timelineStatus === "unavailable" ? <i>NO TIMELINE</i> : null}
+            {match.timelineStatus === "unavailable" ? <i>{t("timeline.no_timeline")}</i> : null}
           </button>
         ))}
       </div>
@@ -140,16 +158,16 @@ export function TimelinePanel({ timeline }: { readonly timeline: WorkbenchTimeli
         <div className="timeline-unavailable" role="status">
           <span aria-hidden="true">◇</span>
           <div>
-            <strong>Timeline source was unavailable</strong>
-            <p>The match result remains visible, but missing Riot Timeline events stay missing rather than becoming zero.</p>
+            <strong>{t("timeline.unavailable_title")}</strong>
+            <p>{t("timeline.unavailable_body")}</p>
           </div>
         </div>
       ) : selectedMatch.events.length === 0 ? (
         <div className="timeline-unavailable" role="status">
           <span aria-hidden="true">·</span>
           <div>
-            <strong>No projected events in this bounded view</strong>
-            <p>This does not imply that nothing happened in the match.</p>
+            <strong>{t("timeline.no_events_title")}</strong>
+            <p>{t("timeline.no_events_body")}</p>
           </div>
         </div>
       ) : (
@@ -159,7 +177,7 @@ export function TimelinePanel({ timeline }: { readonly timeline: WorkbenchTimeli
             selectedEvent={Math.min(selectedEvent, selectedMatch.events.length - 1)}
             onSelectEvent={setSelectedEvent}
           />
-          <ol className="timeline-event-list" aria-label="Chronological events">
+          <ol className="timeline-event-list" aria-label={t("timeline.chronological_events")}>
             {selectedMatch.events.map((event, index) => (
               <li key={`${event.eventKind}-${event.atSeconds}-${index}`}>
                 <button
@@ -169,7 +187,7 @@ export function TimelinePanel({ timeline }: { readonly timeline: WorkbenchTimeli
                 >
                   <time>{formatClock(event.atSeconds)}</time>
                   <span className={`timeline-event-icon timeline-event-icon--${event.eventKind}`} aria-hidden="true" />
-                  <span><strong>{event.label}</strong><small>{eventKindLabel(event)} · {event.phase}</small></span>
+                  <span><strong translate="no">{event.label}</strong><small>{t(eventKindKeys[event.eventKind])} · {t(phaseKeys[event.phase])}</small></span>
                 </button>
               </li>
             ))}
@@ -178,9 +196,12 @@ export function TimelinePanel({ timeline }: { readonly timeline: WorkbenchTimeli
       )}
 
       {selectedMatch.eventsTruncated ? (
-        <p className="timeline-boundary">Showing {selectedMatch.projectedEvents} of {selectedMatch.totalEvents} events for this match.</p>
+        <p className="timeline-boundary">{t("timeline.showing_events", {
+          projected: formatNumber(selectedMatch.projectedEvents),
+          total: formatNumber(selectedMatch.totalEvents),
+        })}</p>
       ) : null}
-      <p className="timeline-source">SOURCE · {timeline.source.replaceAll("_", " ")} · EVENT FACTS, NOT CAUSAL INFERENCE</p>
+      <p className="timeline-source">{t("timeline.source_boundary", { source: t("timeline.source.riot_match_v5_timeline") })}</p>
     </section>
   )
 }

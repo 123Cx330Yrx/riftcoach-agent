@@ -67,7 +67,6 @@ describe("workbench fixture scenarios", () => {
       fixture_mode: true,
       client: "error",
       code: "fixture_scenario_unknown",
-      message: "This fixture scenario is not available.",
     });
     expect(unknown).not.toBe(workbenchScenarios.published);
   });

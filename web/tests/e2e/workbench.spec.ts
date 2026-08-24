@@ -9,7 +9,7 @@ async function expectNoHorizontalOverflow(page: import("@playwright/test").Page)
   expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.clientWidth + 1)
 }
 
-test.describe("Rift Command Center", () => {
+test.describe("Match Review fixture", () => {
   test("renders the published desktop hierarchy without overflow or serious accessibility violations", async ({ page }) => {
     const remoteRequests: string[] = []
     page.on("request", (request) => {
@@ -21,13 +21,13 @@ test.describe("Rift Command Center", () => {
     await page.setViewportSize({ width: 1440, height: 1000 })
     await page.goto("/?scenario=published")
 
-    await expect(page.getByRole("heading", { level: 1, name: "Rift Command Center" })).toBeVisible()
+    await expect(page.getByRole("heading", { level: 1, name: "Match Review" })).toBeVisible()
     await expect(page.getByRole("heading", { name: "Riverline#EUW" })).toBeVisible()
     await expect(page.getByText("Published", { exact: true })).toBeVisible()
-    await expect(page.getByText(/Fixture preview/i)).toBeVisible()
-    await expect(page.getByText(/Aggregate segments · not a match history/i)).toBeVisible()
-    await expect(page.getByRole("heading", { name: /match phase review/i })).toBeVisible()
-    await expect(page.getByRole("list", { name: /chronological events/i })).toBeVisible()
+    await expect(page.getByText("Demo review", { exact: true })).toBeVisible()
+    await expect(page.getByText(/Average across selected games/i)).toBeVisible()
+    await expect(page.getByRole("heading", { name: /match tempo/i })).toBeVisible()
+    await expect(page.getByRole("list", { name: /event order/i })).toBeVisible()
     await page.getByRole("button", { name: /game 2.*ahri/i }).focus()
     await page.keyboard.press("Enter")
     await expect(page.getByRole("button", { name: /05:12 hextech alternator/i })).toBeVisible()
@@ -47,12 +47,12 @@ test.describe("Rift Command Center", () => {
 
     await trigger.focus()
     await page.keyboard.press("Enter")
-    await expect(page.getByRole("dialog", { name: /evidence ledger/i })).toBeVisible()
+    await expect(page.getByRole("dialog", { name: /review evidence/i })).toBeVisible()
     await expect(page.getByText("Riot Match API")).toBeVisible()
     await expect(page.getByText("OP.GG meta snapshot")).toBeVisible()
-    await expect(page.getByRole("heading", { name: /safe run path/i })).toBeVisible()
+    await expect(page.getByRole("heading", { name: /review log/i })).toBeVisible()
     await page.keyboard.press("Escape")
-    await expect(page.getByRole("dialog", { name: /evidence ledger/i })).toBeHidden()
+    await expect(page.getByRole("dialog", { name: /review evidence/i })).toBeHidden()
     await expect(trigger).toBeFocused()
   })
 
@@ -60,16 +60,16 @@ test.describe("Rift Command Center", () => {
     await page.goto("/?scenario=degraded")
     await expect(page.getByText("Degraded", { exact: true })).toBeVisible()
     await expect(page.getByRole("heading", { name: /tactical brief/i })).toBeVisible()
-    await expect(page.getByText("evidence_expired", { exact: true })).toBeVisible()
+    await expect(page.getByText("evidence_expired", { exact: true })).toHaveCount(0)
 
     await page.goto("/?scenario=rejected")
-    await expect(page.getByText("Rejected", { exact: true })).toBeVisible()
-    await expect(page.getByRole("heading", { name: /review withheld/i })).toBeVisible()
+    await expect(page.getByText("Not published", { exact: true })).toBeVisible()
+    await expect(page.getByRole("heading", { name: /no coaching brief/i })).toBeVisible()
     await expect(page.getByRole("heading", { name: /tactical brief/i })).toHaveCount(0)
 
     await page.goto("/?scenario=not_ready")
-    await expect(page.getByText("Not ready", { exact: true })).toBeVisible()
-    await expect(page.getByText("task_pending", { exact: true })).toBeVisible()
+    await expect(page.getByText("In progress", { exact: true })).toBeVisible()
+    await expect(page.getByText("task_pending", { exact: true })).toHaveCount(0)
     await expect(page.locator("body")).not.toContainText(/\d+%/)
   })
 
@@ -78,11 +78,11 @@ test.describe("Rift Command Center", () => {
     await page.getByRole("combobox", { name: /player profile/i }).selectOption("profile-northstar-kr")
 
     await expect(page.getByRole("heading", { name: "Northstar#KR" })).toBeVisible()
-    await expect(page.getByRole("heading", { name: /learning observation/i })).toBeVisible()
-    await expect(page.getByText(/no loaded review in the current fixture/i)).toBeVisible()
+    await expect(page.getByRole("heading", { name: /study notes/i })).toBeVisible()
+    await expect(page.getByText(/demo has no recent review for the selected player/i)).toBeVisible()
     await expect(page.getByRole("heading", { name: /recent form/i })).toHaveCount(0)
-    await expect(page.getByRole("heading", { name: /match phase review/i })).toHaveCount(0)
-    await expect(page.getByRole("heading", { name: /your training plan/i })).toHaveCount(0)
+    await expect(page.getByRole("heading", { name: /match tempo/i })).toHaveCount(0)
+    await expect(page.getByRole("heading", { name: /training plan/i })).toHaveCount(0)
   })
 
   test("reflows the tablet and mobile layouts without clipping", async ({ page }) => {
@@ -94,10 +94,10 @@ test.describe("Rift Command Center", () => {
 
     await page.setViewportSize({ width: 390, height: 844 })
     await expectNoHorizontalOverflow(page)
-    const navBox = await page.getByRole("navigation", { name: /command sections/i }).boundingBox()
+    const navBox = await page.getByRole("navigation", { name: /sections/i }).boundingBox()
     expect(navBox?.width).toBeGreaterThanOrEqual(389)
     await page.getByRole("button", { name: /open evidence/i }).click()
-    const dialogBox = await page.getByRole("dialog", { name: /evidence ledger/i }).boundingBox()
+    const dialogBox = await page.getByRole("dialog", { name: /review evidence/i }).boundingBox()
     expect(dialogBox?.width).toBeLessThanOrEqual(390.1)
     await page.keyboard.press("Escape")
 

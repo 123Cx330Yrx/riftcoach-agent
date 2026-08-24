@@ -6,6 +6,16 @@ Accepted for 8E visual preflight; implementation is the next bounded front-end
 slice. This decision does not close `8e-productization` and does not authorize
 production Auth, RSO, deployment, or external data expansion.
 
+The original placement of identity calibration inside the cinematic entry is
+superseded by ADR-0067 and RQ-105. The visual language and progressive-
+enhancement rules below remain accepted.
+
+RQ-106 further clarifies that the approved mother image is the composition
+target, not permission to keep polishing the earlier aperture/instrumentarium
+plates. A flattened keyframe may document direction, while a shipped bitmap
+must remove text, UI, and the central core so DOM/React owns the only real
+control and handoff.
+
 ## Context
 
 The fixture-backed `Rift Command Center` proves that the current React surface
@@ -30,9 +40,9 @@ source of product truth, readable UI text, or interaction semantics.
 
 Adopt a layered portal-to-workbench visual contract:
 
-1. The entry surface uses an abstract Rift environment, a central identity
-   calibration core, explicit Riot ID/region/relationship controls, and a
-   route-ignition handoff into the workbench.
+1. The entry surface uses an abstract Rift environment and a central Hextech
+   core. Identity controls live on the separate account-access surface defined
+   by ADR-0067; they are no longer composed inside the cinematic entry.
 2. The workbench reuses the same geometry, material, color, and state language
    but gives more visual budget to readable analysis, evidence, and training
    structure than to atmosphere.
@@ -85,6 +95,9 @@ Costs and limits:
 - paid Prompt acquisition is deferred until a source is mapped to a concrete
   consumer and passes license/performance/exit-cost gates;
 - the concept image itself is not evidence that the page is implemented.
+- the current `portal-background-v2` is a replaceable V1 atmosphere layer;
+  `portal-motion-keyframe-v2` is design evidence only, the old aperture is
+  fallback-only, and the old instrumentarium no longer ships at runtime.
 
 ## Exit criteria for the next implementation slice
 
@@ -99,4 +112,3 @@ Costs and limits:
   animation engine is introduced;
 - the asset/source ledger records origin, license status, consumer, fallback,
   and removal path for every adopted visual mechanism.
-

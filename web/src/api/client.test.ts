@@ -108,6 +108,20 @@ describe("bounded same-origin API client", () => {
     expect(String(caught)).not.toContain("private")
   })
 
+  it.each(["request_body_too_large", "request_headers_too_large", "rate_limited"])(
+    "preserves the safe HTTP budget code %s",
+    async (code) => {
+      const client = new ApiClient({
+        fetcher: vi.fn(async () => new Response(JSON.stringify({ code }), {
+          status: code === "rate_limited" ? 429 : code === "request_headers_too_large" ? 431 : 413,
+          headers: { "content-type": "application/json" },
+        })),
+      })
+
+      await expect(client.getJson("/player-profiles", (value) => value)).rejects.toMatchObject({ code })
+    },
+  )
+
   it("rejects unknown error codes and safely reads Markdown text", async () => {
     const unknown = new ApiClient({
       fetcher: vi.fn(async () =>
@@ -128,5 +142,30 @@ describe("bounded same-origin API client", () => {
 
     await expect(unknown.getJson("/runs/review_1", (value) => value)).rejects.toThrow("api_error_invalid")
     await expect(markdown.getText("/runs/review_1/report", (value) => value)).resolves.toBe("## Verified")
+  })
+
+  it("keeps malformed mutation responses body-free and preserves decoder failures", async () => {
+    const malformed = new ApiClient({
+      fetcher: vi.fn(async () => new Response('{"private":"postgresql://secret"', {
+        headers: { "content-type": "application/json" },
+      })),
+    })
+    const decoded = new ApiClient({
+      fetcher: vi.fn(async () => new Response("{}", {
+        headers: { "content-type": "application/json" },
+      })),
+    })
+    const headers = { csrfToken: "csrf", idempotencyKey: "mutation-1" }
+
+    const malformedError = await malformed.postJson("/player-links", {}, (value) => value, headers)
+      .catch((error: unknown) => error)
+    expect(malformedError).toBeInstanceOf(Error)
+    expect((malformedError as Error).message).toBe("api_json_invalid")
+    expect(String(malformedError)).not.toContain("postgresql")
+    await expect(decoded.postJson("/player-links", {}, () => {
+      throw new Error("mutation_contract_invalid")
+    }, headers)).rejects.toThrow("mutation_contract_invalid")
+    await expect(decoded.postJson("/player-links", undefined, (value) => value, headers))
+      .rejects.toThrow("api_request_invalid")
   })
 })

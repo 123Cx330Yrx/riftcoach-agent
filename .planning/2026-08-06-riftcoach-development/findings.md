@@ -3972,3 +3972,57 @@
   provenance。UI 切换不能据此重写或猜测旧报告语言；本批只冻结“原文不机翻”和未来 producer 映射边界。
 - 两 locale 暂不需要第三方 i18n runtime。typed local catalog 可用编译时 key completeness、版本化 localStorage、
   English fallback 和小 bundle 完成当前真实需求；未来 ICU plural/远程翻译平台 Bad Case 再评估依赖。
+
+## 2026-08-24：RQ-105 三层旅程与 Player Link 发现
+
+- 后端已有真实 `POST /player-links`、`GET /player-links/{id}`、`GET /player-profiles`，成功 Link 的
+  `relationship_id` 就是 `player_profile_id`；前端旧代码丢弃 Riot ID 输入并跳 fixture，缺口在 browser
+  mutation/controller/journey，而不是需要另造账号后端。
+- POST 的 `public_observed` UI 语义必须显式映射 wire `observed`；202/replayed 不是成功。queued/running 只等待，
+  succeeded 必须完整 identity 且刷新 owner profiles，failed 必须全 identity null + allowlisted failure。
+- 默认 `create_composed_app()` 没注入正式 provider，因此 `/auth/session` 可返回 `auth_unavailable`。这证明
+  Account UI 只能叫 provider-neutral access，不能画假密码框或宣称 OIDC/RSO 已完成。
+- Product journey 不需要新 Router dependency；严格 query/history + mutually-exclusive mount 已足以验证 reload/
+  back/forward，同时让 Portal zero-I/O 与 controller/EventSource 生命周期可审计。
+
+## 2026-08-24：RQ-104 copy 与 RQ-106 视觉资产发现
+
+- 用户表面最危险的“直译”不是单个词，而是 adapter/component 把 canonical role/metric/gap/status 直接当文案。
+  保留 structured model、render 时 allowlisted mapping，才能让两种语言独立编辑且切换不重取数据。
+- 一张含中央 core 的漂亮 keyframe 不能直接当 runtime background，否则与 DOM core 形成“双核心”。正确分层是：
+  keyframe 只作 art-direction evidence，再精确移除 core/beam，React 提供唯一 interactive core。
+- 老 instrumentarium 即使 opacity 很低，仍会把机械细节当作长期设计依赖。当前已移出 public；aperture 只在新
+  background 加载失败时作为第二 background layer，最终仍可回退 CSS/SVG。
+- 动效 V1 使用 bounded scene reveal 与一次性 handoff，避免用多组永久循环冒充高级感；reduced-motion 同时
+  控制 CSS 与 JS 导航延迟。
+
+## 2026-08-24：RQ-107 Coach/Training Agent 产品缺口
+
+- 后端已有 Conversation、Message、conversation-bound Recent Review、AgentRuntime/Harness、SSE、terminal
+  assistant、Memory-aware Context 与 Training Candidate/Plan/Progress；Web API client 却全是 GET，Coach 只是
+  report 锚点。因此“项目有 Agent”与“用户能在产品里用 Agent”是两条不同证据线。
+- 推荐方案不是开放域 LoL chat，而是 source-run/relationship-bound follow-up Skill + 专门 eval；生命周期 SSE
+  后 terminal whole reply，Harness reject 不写 assistant。Training draft 先经用户编辑确认，再复用 Candidate/
+  accept；observed 只给非持久学习清单。
+- 该插入会调整 RQ-103/Evidence/Training 的后序，必须等用户集中裁决；当前批不临时塞聊天输入框。
+
+## 2026-08-25：RQ-108 Portal Motion Polish 与母图水晶纠正
+
+- 用户明确当前静态 WebP、压暗/虚化、大标题和可见 CSS/贴图 core 不能作为最终 Portal；foundation 公共关闭后
+  固定先做独立 `portal-motion-polish`，当前 checkpoint 仍不变。
+- 母图真值是左 Rift 旋涡 / 中央海克斯水晶 / 右战术星图的完整场景。水晶必须在这张场景内部重绘/调大并
+  参与 ambient media，不能另生成一颗透明 cutout 再塞进可见按钮。
+- 可访问交互仍由透明原生 `<button>` 覆盖水晶 hit area；视觉提示只用融景微光点/短脉冲，focus-visible 也应
+  采用场景同材质的轻量能量轮廓。点击后由画面内水晶汇聚、burst 并幕切到独立 Account 动态场景。
+- 正常体验候选是同源高清 poster + 有界 ambient motion/video；必须从首次 render 处理 mobile safe area、
+  reduced-motion、Save-Data、codec/source、autoplay/playback/decoder failure、页面隐藏暂停、下载/解码/JS
+  预算、许可和移除路径。当前 JS gzip 余量不足以无证据引入 Three/OGL/Anime。
+- 早先生成的独立水晶候选明确不采用、不进入 foundation commit。RQ-108 只专项修正 Portal，不完成 Coach、
+  OIDC/RSO、Data Dragon asset/detail enrichment 或跨模块 final visual QA。
+
+## 2026-08-25：foundation 前端门最新结果
+
+- 遗留 Vite 进程占用 `4173` 已确认来自 `D:\riftcoach-agent\web\node_modules\vite` 并清理；隔离 E2E
+  随后完整通过，不使用旧服务。
+- 最新可重复结果为 unit `136`、Playwright `36`、typecheck/build 通过，JS/CSS gzip `142.68/18.50 kB`。
+- 这只证明当前双语与三层旅程 V1 的合同/状态/可访问性门；截图仍显示 Portal 视觉 V1，不是 RQ-108 成品。

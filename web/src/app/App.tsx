@@ -1,7 +1,6 @@
 import {
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
   useSyncExternalStore,
@@ -11,14 +10,17 @@ import { LazyMotion, MotionConfig, domAnimation, m } from "motion/react"
 
 import { ApiClient } from "../api/client"
 import { LiveWorkbenchHttpApi } from "../api/liveWorkbenchApi"
+import { PlayerLinkHttpApi, type PlayerAccessApi } from "../api/playerLinkApi"
 import { createTaskEventStream } from "../api/taskEventStream"
+import type { AuthSessionWire } from "../api/wire"
 import { AuthGate } from "../auth/AuthGate"
 import { BrowserAuthSessionClient, isAuthSessionFailure, type AuthSessionClient } from "../auth/session"
 import type { WorkbenchScreenState } from "../contracts/workbench"
 import { CoachBrief } from "../components/CoachBrief"
+import { AccountAccess } from "../components/AccountAccess"
 import { CommandRail } from "../components/CommandRail"
 import { EvidenceDrawer } from "../components/EvidenceDrawer"
-import { AwakeningScene, type AwakeningIdentityInput } from "../components/AwakeningScene"
+import { AwakeningScene } from "../components/AwakeningScene"
 import { ProductStateBanner } from "../components/ProductStateBanner"
 import { RecentFormPanel } from "../components/RecentFormPanel"
 import { TimelinePanel } from "../components/TimelinePanel"
@@ -34,6 +36,7 @@ import {
 import type {
   LiveWorkbenchScreenState,
   LiveWorkbenchView,
+  WorkbenchClientMessageCode,
   WorkbenchPlayerProfile,
   WorkbenchTaskEvent,
 } from "../workbench/model"
@@ -42,6 +45,15 @@ import {
   transitionAwakeningState,
   type AwakeningPresentationState,
 } from "../awakening/model"
+import { ProductLocaleProvider, useI18n } from "../i18n/ProductLocaleProvider"
+import { eventMessageKeys, regionMessageKeys, verificationMessageKeys } from "../i18n/productCopy"
+import type { MessageKey } from "../i18n/locale"
+import {
+  parseProductJourney,
+  productJourneyUrl,
+  type ProductJourneyLocation,
+  type ProductJourneyTarget,
+} from "./productJourney"
 
 export interface LiveWorkbenchControllerLike {
   readonly snapshot: LiveWorkbenchSnapshot
@@ -53,8 +65,9 @@ export interface LiveWorkbenchControllerLike {
 
 interface AppProps {
   readonly scenarioOverride?: string
-  readonly createLiveController?: () => LiveWorkbenchControllerLike
+  readonly createLiveController?: (initialProfileId: string) => LiveWorkbenchControllerLike
   readonly createAuthSessionClient?: () => AuthSessionClient
+  readonly createPlayerAccessApi?: () => PlayerAccessApi
   readonly surfaceOverride?: "awakening"
 }
 
@@ -77,45 +90,31 @@ function getAwakeningPreviewState(): AwakeningPresentationState {
   return transitionAwakeningState(calibrating, demo === "ready" ? "calibration_ready" : "calibration_degraded")
 }
 
-function movePreviewToCalibration(state: AwakeningPresentationState): AwakeningPresentationState {
-  const editing = state.phase === "idle"
-    ? transitionAwakeningState(state, "begin_editing")
-    : state
-  return editing.phase === "editing"
-    ? transitionAwakeningState(editing, "begin_calibration")
-    : editing
-}
-
 function AwakeningPreview() {
-  const [state, setState] = useState(getAwakeningPreviewState)
-  const handleSubmit = (_input: AwakeningIdentityInput) => {
-    setState(movePreviewToCalibration)
-  }
-  const handleHandoff = () => {
+  const { t } = useI18n()
+  const [state] = useState(getAwakeningPreviewState)
+  const handleEnter = () => {
     if (typeof window !== "undefined") window.location.assign("/?scenario=published")
   }
 
   return (
     <div className="awakening-preview-shell">
-      <a className="skip-link" href="#awakening-title">Skip to identity calibration</a>
+      <a className="skip-link" href="#awakening-title">{t("app.skip_identity")}</a>
       <AwakeningScene
         state={state}
-        disclosure="Preview only · no external lookup or authentication"
-        onSubmit={handleSubmit}
-        onHandoff={handleHandoff}
+        disclosure={t("app.preview_disclosure")}
+        onEnter={handleEnter}
+        entryMode="demo"
       />
     </div>
   )
 }
 
-function createDefaultLiveController(): LiveWorkbenchControllerLike {
-  const initialProfileId = typeof window === "undefined"
-    ? undefined
-    : new URLSearchParams(window.location.search).get("player_profile_id") ?? undefined
+function createDefaultLiveController(initialProfileId: string): LiveWorkbenchControllerLike {
   return new LiveWorkbenchController({
     api: new LiveWorkbenchHttpApi(new ApiClient()),
     streamFactory: (binding, callbacks) => createTaskEventStream({ ...binding, ...callbacks }),
-    ...(initialProfileId === undefined ? {} : { initialProfileId }),
+    initialProfileId,
   })
 }
 
@@ -133,13 +132,24 @@ function ClientBoundary({
   readonly state: Exclude<LiveWorkbenchScreenState, { client: "ready" }>
   readonly mode: "fixture" | "live"
 }) {
+  const { t } = useI18n()
+  const messageKeys: Readonly<Record<WorkbenchClientMessageCode, Parameters<typeof t>[0]>> = {
+    profiles_loading: "client.message.profiles_loading",
+    selected_review_loading: "client.message.selected_review_loading",
+    fixture_loading: "client.message.fixture_loading",
+    profiles_empty: "client.message.profiles_empty",
+    workbench_load_failed: "client.message.workbench_load_failed",
+    selected_profile_unavailable: "client.message.selected_profile_unavailable",
+    profile_projection_invalid: "client.message.profile_projection_invalid",
+    fixture_unavailable: "client.message.fixture_unavailable",
+  }
   if (state.client === "loading") {
     return (
       <div className="client-state client-state--loading" role="status" aria-busy="true">
         <div className="loading-core" aria-hidden="true"><span /><span /><span /></div>
-        <p className="eyebrow">{mode === "live" ? "LIVE CHANNEL · SYNCHRONIZING" : "FIXTURE CHANNEL · CALIBRATING"}</p>
-        <h2>Calibrating the Rift</h2>
-        <p>{state.message}</p>
+        <p className="eyebrow">{mode === "live" ? t("client.live_sync") : t("client.fixture_sync")}</p>
+        <h2>{t("client.calibrating_title")}</h2>
+        <p>{t(messageKeys[state.messageCode])}</p>
         <div className="skeleton-lines" aria-hidden="true"><span /><span /><span /></div>
       </div>
     )
@@ -149,11 +159,11 @@ function ClientBoundary({
     return (
       <div className="client-state client-state--empty">
         <span className="client-state__sigil"><Glyph name="command" /></span>
-        <p className="eyebrow">COMMAND ROSTER · EMPTY</p>
-        <h2>No player profiles yet</h2>
-        <p>{state.message}</p>
-        <button type="button" disabled>Add a player profile later</button>
-        <small>Profile creation belongs to a later API/Auth batch.</small>
+        <p className="eyebrow">{t("client.roster_empty")}</p>
+        <h2>{t("client.empty_title")}</h2>
+        <p>{t(messageKeys[state.messageCode])}</p>
+        <button type="button" disabled>{t("client.add_profile_later")}</button>
+        <small>{t("client.profile_future_boundary")}</small>
       </div>
     )
   }
@@ -161,11 +171,10 @@ function ClientBoundary({
   return (
     <div className="client-state client-state--error" role="alert">
       <span className="client-state__sigil"><Glyph name="limit" /></span>
-      <p className="eyebrow">CLIENT RESOURCE ERROR</p>
-      <h2>Workbench unavailable</h2>
-      <p>{state.message}</p>
-      <code>{state.code}</code>
-      <small>This client resource error does not rewrite the server Product State.</small>
+      <p className="eyebrow">{t("client.error_kicker")}</p>
+      <h2>{t("client.error_title")}</h2>
+      <p>{t(messageKeys[state.messageCode])}</p>
+      <small>{t("client.error_boundary")}</small>
     </div>
   )
 }
@@ -175,50 +184,58 @@ function ProfileHeader({
   selectedProfile,
   mode,
   liveUpdates,
-  disclosure,
   onSelect,
 }: {
   readonly view: LiveWorkbenchView
   readonly selectedProfile: WorkbenchPlayerProfile
   readonly mode: "fixture" | "live"
   readonly liveUpdates: LiveWorkbenchSnapshot["liveUpdates"]
-  readonly disclosure: string
   readonly onSelect: (profileId: string) => void
 }) {
+  const { t } = useI18n()
+  const headingRef = useRef<HTMLHeadingElement>(null)
+  useEffect(() => headingRef.current?.focus(), [])
+  const transportKeys: Readonly<Record<LiveWorkbenchSnapshot["liveUpdates"], MessageKey>> = {
+    connecting: "transport.connecting",
+    live: "transport.live",
+    reconnecting: "transport.reconnecting",
+    closed: "transport.closed",
+    error: "transport.error",
+  }
   return (
     <header className="workspace-header">
       <div className="workspace-header__intro">
-        <p className="eyebrow"><span className="eyebrow__line" /> TACTICAL SURFACE / {mode === "live" ? "LIVE DATA" : "STATIC PREVIEW"}</p>
-        <h1>Rift Command Center</h1>
-        <p className="workspace-header__lede">A quality-gated review surface for the decisions between lane control and objective tempo.</p>
+        <p className="eyebrow"><span className="eyebrow__line" /> {mode === "live" ? t("profile.surface_live") : t("profile.surface_fixture")}</p>
+        <h1 ref={headingRef} tabIndex={-1}>{t("app.workbench_title")}</h1>
+        <p className="workspace-header__lede">{t("app.workbench_lede")}</p>
       </div>
       <div className="profile-console">
-        <label htmlFor="player-profile">Player profile</label>
+        <label htmlFor="player-profile">{t("profile.label")}</label>
         <div className="profile-console__control">
           <select
             id="player-profile"
-            aria-label="Player profile"
+            aria-label={t("profile.label")}
             value={selectedProfile.playerProfileId}
             onChange={(event) => onSelect(event.target.value)}
           >
             {view.profiles.map((profile) => (
-              <option key={profile.playerProfileId} value={profile.playerProfileId}>{profile.riotId}</option>
+              <option key={profile.playerProfileId} value={profile.playerProfileId} translate="no">{profile.riotId}</option>
             ))}
           </select>
           <span className="profile-console__chevron" aria-hidden="true">⌄</span>
         </div>
         <div className="profile-console__meta">
-          <span>{selectedProfile.routingRegion} routing</span>
-          <span>{selectedProfile.relationshipRole === "self" ? "claimed self" : "public observed"}</span>
-          <span>{selectedProfile.verificationStatus.replaceAll("_", " ")}</span>
+          <span>{t("profile.routing", { region: t(regionMessageKeys[selectedProfile.routingRegion]) })}</span>
+          <span>{selectedProfile.relationshipRole === "self" ? t("profile.relationship_self") : t("profile.relationship_observed")}</span>
+          <span>{t(verificationMessageKeys[selectedProfile.verificationStatus])}</span>
         </div>
       </div>
       <div className={`fixture-disclosure fixture-disclosure--${mode}`}>
         <span className="fixture-disclosure__beacon" aria-hidden="true" />
         <div>
-          <strong>{mode === "live" ? "Live server projection" : "Fixture preview"}</strong>
-          <small>{disclosure}</small>
-          {mode === "live" ? <small className="live-transport-state">updates: {liveUpdates}</small> : null}
+          <strong>{mode === "live" ? t("profile.live_projection") : t("profile.fixture_preview")}</strong>
+          <small>{mode === "live" ? t("profile.live_disclosure") : t("profile.fixture_disclosure")}</small>
+          {mode === "live" ? <small className="live-transport-state">{t("profile.updates", { state: t(transportKeys[liveUpdates]) })}</small> : null}
         </div>
       </div>
     </header>
@@ -232,17 +249,18 @@ function EventStrip({
   readonly events: readonly WorkbenchTaskEvent[]
   readonly liveUpdates: LiveWorkbenchSnapshot["liveUpdates"]
 }) {
+  const { formatUtcTime, t } = useI18n()
   return (
-    <section className="event-strip" aria-label="Safe task lifecycle">
-      <span className="event-strip__title">LIFECYCLE</span>
+    <section className="event-strip" aria-label={t("event.safe_lifecycle")} tabIndex={0}>
+      <span className="event-strip__title">{t("event.lifecycle")}</span>
       {events.map((event, index) => (
         <div className="event-strip__event" key={`${event.cursor}-${event.eventKind}`}>
           <span className={`event-node${index === events.length - 1 ? " event-node--active" : ""}`} />
-          <span>{event.eventKind.replaceAll("_", " ")}</span>
-          <small>{new Date(event.occurredAt).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "UTC" })}Z</small>
+          <span>{t(eventMessageKeys[event.eventKind])}</span>
+          <small>{formatUtcTime(event.occurredAt)}Z</small>
         </div>
       ))}
-      {liveUpdates === "reconnecting" ? <span className="event-strip__transport" role="status">LIVE UPDATES RECONNECTING</span> : null}
+      {liveUpdates === "reconnecting" ? <span className="event-strip__transport" role="status">{t("event.reconnecting")}</span> : null}
     </section>
   )
 }
@@ -256,21 +274,22 @@ function EmptyProfileView({
   readonly view: LiveWorkbenchView
   readonly fixtureMode: boolean
 }) {
+  const { t } = useI18n()
   const observed = profile.relationshipRole === "public_observed"
   return (
     <div className="alternate-profile-view">
       <section className="profile-observation panel">
-        <p className="eyebrow">RELATIONSHIP-SAFE PROFILE VIEW</p>
-        <h2>{observed ? "Observation mode" : "No recent review"}</h2>
+        <p className="eyebrow">{t("profile.relationship_safe")}</p>
+        <h2>{observed ? t("profile.observation_mode") : t("profile.no_recent_review")}</h2>
         <p>
           {observed
-            ? `This public-observed profile has no loaded review${fixtureMode ? " in the current fixture" : ""}. Aggregate metrics and a published brief remain hidden instead of being rebound to the wrong player.`
-            : "This profile has no visible recent review. RiftCoach does not borrow content from another profile."}
+            ? t(fixtureMode ? "profile.observed_empty_fixture" : "profile.observed_empty_live")
+            : t("profile.self_empty")}
         </p>
         <dl>
-          <div><dt>Routing</dt><dd>{profile.routingRegion}</dd></div>
-          <div><dt>Relationship</dt><dd>{observed ? "public observed" : "claimed self"}</dd></div>
-          <div><dt>Access</dt><dd>{observed ? "read-only public study" : "owner-scoped review"}</dd></div>
+          <div><dt>{t("profile.routing_label")}</dt><dd>{t(regionMessageKeys[profile.routingRegion])}</dd></div>
+          <div><dt>{t("profile.relationship_label")}</dt><dd>{observed ? t("profile.relationship_observed") : t("profile.relationship_self")}</dd></div>
+          <div><dt>{t("profile.access_label")}</dt><dd>{observed ? t("profile.access_observed") : t("profile.access_self")}</dd></div>
         </dl>
       </section>
       <TrainingPanel profile={profile} training={view.training} />
@@ -282,19 +301,18 @@ function ReadyWorkbench({
   view,
   mode,
   liveUpdates,
-  disclosure,
   onSelect,
 }: {
   readonly view: LiveWorkbenchView
   readonly mode: "fixture" | "live"
   readonly liveUpdates: LiveWorkbenchSnapshot["liveUpdates"]
-  readonly disclosure: string
   readonly onSelect: (profileId: string) => void
 }) {
+  const { formatNumber, t } = useI18n()
   const selectedProfile = view.profiles.find((profile) => profile.playerProfileId === view.selectedProfileId)
     ?? view.profiles[0]
   if (selectedProfile === undefined) {
-    return <ClientBoundary mode={mode} state={{ client: "error", code: "profile_projection_invalid", message: "No safe player profile was available." }} />
+    return <ClientBoundary mode={mode} state={{ client: "error", code: "profile_projection_invalid", messageCode: "profile_projection_invalid" }} />
   }
 
   return (
@@ -304,10 +322,9 @@ function ReadyWorkbench({
         selectedProfile={selectedProfile}
         mode={mode}
         liveUpdates={liveUpdates}
-        disclosure={disclosure}
         onSelect={onSelect}
       />
-      <h2 className="profile-name-heading">{selectedProfile.riotId}</h2>
+      <h2 className="profile-name-heading" translate="no">{selectedProfile.riotId}</h2>
       {view.productState === undefined ? (
         <EmptyProfileView profile={selectedProfile} view={view} fixtureMode={mode === "fixture"} />
       ) : (
@@ -320,26 +337,26 @@ function ReadyWorkbench({
             {view.summary === undefined && view.productState.state === "not_ready" ? (
               <section className="analysis-pending panel" aria-labelledby="analysis-pending-title">
                 <span className="analysis-pending__route" aria-hidden="true" />
-                <p className="eyebrow">RUNNING · NO SYNTHETIC ETA</p>
-                <h3 id="analysis-pending-title">Waiting for a terminal review</h3>
-                <p>RiftCoach is waiting for a terminal, quality-gated result. The event rail above is the only progress signal.</p>
+                <p className="eyebrow">{t("analysis.running_kicker")}</p>
+                <h3 id="analysis-pending-title">{t("analysis.pending_title")}</h3>
+                <p>{t("analysis.pending_body")}</p>
               </section>
             ) : null}
             <CoachBrief productState={view.productState} report={view.report} />
           </div>
-          <aside className="context-rail" aria-label="Review context">
-            <div className="context-rail__header"><span>CONTEXT CHANNEL</span><small>SAFE PROJECTION</small></div>
+          <aside className="context-rail" aria-label={t("context.aria")}>
+            <div className="context-rail__header"><span>{t("context.channel")}</span><small>{t("context.safe_projection")}</small></div>
             <TrainingPanel profile={selectedProfile} training={view.training} />
             <EvidenceDrawer evidence={view.evidence} events={view.events} run={view.run} />
             <section className="source-summary panel" aria-labelledby="source-summary-title">
-              <p className="eyebrow">SOURCE POSTURE</p>
-              <h3 id="source-summary-title">What the brief can claim</h3>
+              <p className="eyebrow">{t("common.source_posture")}</p>
+              <h3 id="source-summary-title">{t("source.claim_title")}</h3>
               <div className="source-summary__facts">
-                <span><b>{view.evidence?.sources.length ?? 0}</b> typed sources</span>
-                <span><b>{view.evidence?.joins.length ?? 0}</b> explicit joins</span>
-                <span><b>{view.evidence?.gaps.length ?? 0}</b> known gaps</span>
+                <span><b>{formatNumber(view.evidence?.sources.length ?? 0)}</b> {t("source.typed_sources")}</span>
+                <span><b>{formatNumber(view.evidence?.joins.length ?? 0)}</b> {t("source.explicit_joins")}</span>
+                <span><b>{formatNumber(view.evidence?.gaps.length ?? 0)}</b> {t("source.known_gaps")}</span>
               </div>
-              <p>Evidence is visible. Hidden reasoning is not.</p>
+              <p>{t("source.reasoning_boundary")}</p>
             </section>
           </aside>
         </div>
@@ -354,10 +371,10 @@ function FixtureWorkbench({ state }: { readonly state: WorkbenchScreenState }) {
   )
   if (state.client !== "ready") {
     const safeState: Exclude<LiveWorkbenchScreenState, { client: "ready" }> = state.client === "empty"
-      ? { client: "empty", message: state.message }
+      ? { client: "empty", messageCode: "profiles_empty" }
       : state.client === "error"
-        ? { client: "error", code: state.code, message: state.message }
-        : { client: "loading", message: state.message }
+        ? { client: "error", code: state.code, messageCode: "fixture_unavailable" }
+        : { client: "loading", messageCode: "fixture_loading" }
     return <ClientBoundary state={safeState} mode="fixture" />
   }
   const view = adaptFixtureWorkbench(state.data, selectedProfileId)
@@ -366,7 +383,6 @@ function FixtureWorkbench({ state }: { readonly state: WorkbenchScreenState }) {
       view={view}
       mode="fixture"
       liveUpdates="closed"
-      disclosure={state.data.disclosure}
       onSelect={setSelectedProfileId}
     />
   )
@@ -374,12 +390,16 @@ function FixtureWorkbench({ state }: { readonly state: WorkbenchScreenState }) {
 
 function LiveWorkbench({
   createController,
+  initialProfileId,
   onAuthFailure,
+  onSelectProfile,
 }: {
-  readonly createController: () => LiveWorkbenchControllerLike
+  readonly createController: (initialProfileId: string) => LiveWorkbenchControllerLike
+  readonly initialProfileId: string
   readonly onAuthFailure: (code: string) => void
+  readonly onSelectProfile: (profileId: string) => void
 }) {
-  const [controller] = useState(createController)
+  const [controller] = useState(() => createController(initialProfileId))
   const started = useRef(false)
   const mountToken = useRef(0)
   const subscribe = useCallback((listener: () => void) => controller.subscribe(listener), [controller])
@@ -414,18 +434,48 @@ function LiveWorkbench({
       view={snapshot.state.data}
       mode="live"
       liveUpdates={snapshot.liveUpdates}
-      disclosure="Owner-scoped typed API · no browser secrets"
-      onSelect={(profileId) => { void controller.selectProfile(profileId) }}
+      onSelect={onSelectProfile}
     />
   )
 }
 
-function ProductionShell({
+function AccountAccessHost({
+  createPlayerAccessApi,
+  session,
+  onBack,
+  onContinue,
+  onAuthFailure,
+}: {
+  readonly createPlayerAccessApi?: () => PlayerAccessApi
+  readonly session: AuthSessionWire
+  readonly onBack: () => void
+  readonly onContinue: (profileId: string) => void
+  readonly onAuthFailure: (code: string) => void
+}) {
+  const [api] = useState(() => createPlayerAccessApi?.() ?? new PlayerLinkHttpApi(new ApiClient()))
+  return (
+    <AccountAccess
+      api={api}
+      csrfToken={session.csrf_token}
+      onBack={onBack}
+      onContinue={onContinue}
+      onAuthFailure={onAuthFailure}
+    />
+  )
+}
+
+function AuthenticatedProduct({
+  journey,
   createController,
   createAuthSessionClient,
+  createPlayerAccessApi,
+  onNavigate,
 }: {
-  readonly createController: () => LiveWorkbenchControllerLike
+  readonly journey: Exclude<ProductJourneyLocation, { stage: "portal" }>
+  readonly createController: (initialProfileId: string) => LiveWorkbenchControllerLike
   readonly createAuthSessionClient?: () => AuthSessionClient
+  readonly createPlayerAccessApi?: () => PlayerAccessApi
+  readonly onNavigate: (target: ProductJourneyTarget) => void
 }) {
   const [authClient] = useState(
     () => createAuthSessionClient?.() ?? new BrowserAuthSessionClient(),
@@ -438,9 +488,78 @@ function ProductionShell({
       client={authClient}
       {...(authFailureCode === undefined ? {} : { failureCode: authFailureCode })}
       onRetry={clearAuthFailure}
+      onBack={() => onNavigate({ stage: "portal" })}
     >
-      {() => <LiveWorkbench createController={createController} onAuthFailure={onAuthFailure} />}
+      {(session) => journey.stage === "account" ? (
+        <AccountAccessHost
+          {...(createPlayerAccessApi === undefined ? {} : { createPlayerAccessApi })}
+          session={session}
+          onBack={() => onNavigate({ stage: "portal" })}
+          onContinue={(profileId) => onNavigate({ stage: "workbench", profileId })}
+          onAuthFailure={onAuthFailure}
+        />
+      ) : (
+        <AppFrame mode="live">
+          <LiveWorkbench
+            key={journey.profileId}
+            createController={createController}
+            initialProfileId={journey.profileId}
+            onAuthFailure={onAuthFailure}
+            onSelectProfile={(profileId) => onNavigate({ stage: "workbench", profileId })}
+          />
+        </AppFrame>
+      )}
     </AuthGate>
+  )
+}
+
+function currentJourney(): ProductJourneyLocation {
+  if (typeof window === "undefined") return { stage: "portal", canonical: true }
+  return parseProductJourney(window.location.search)
+}
+
+function ProductJourney({
+  createLiveController,
+  createAuthSessionClient,
+  createPlayerAccessApi,
+}: Pick<AppProps, "createLiveController" | "createAuthSessionClient" | "createPlayerAccessApi">) {
+  const { t } = useI18n()
+  const [journey, setJourney] = useState(currentJourney)
+
+  useEffect(() => {
+    const onPopState = () => setJourney(currentJourney())
+    window.addEventListener("popstate", onPopState)
+    return () => window.removeEventListener("popstate", onPopState)
+  }, [])
+
+  useEffect(() => {
+    if (!journey.canonical) {
+      window.history.replaceState(null, "", productJourneyUrl({ stage: "portal" }))
+      setJourney({ stage: "portal", canonical: true })
+    }
+  }, [journey])
+
+  const navigate = useCallback((target: ProductJourneyTarget) => {
+    window.history.pushState(null, "", productJourneyUrl(target))
+    setJourney(parseProductJourney(window.location.search))
+  }, [])
+
+  if (journey.stage === "portal") {
+    return (
+      <div className="awakening-preview-shell">
+        <a className="skip-link" href="#awakening-title">{t("app.skip_identity")}</a>
+        <AwakeningScene state={createAwakeningState()} onEnter={() => navigate({ stage: "account" })} />
+      </div>
+    )
+  }
+  return (
+    <AuthenticatedProduct
+      journey={journey}
+      createController={createLiveController ?? createDefaultLiveController}
+      {...(createAuthSessionClient === undefined ? {} : { createAuthSessionClient })}
+      {...(createPlayerAccessApi === undefined ? {} : { createPlayerAccessApi })}
+      onNavigate={navigate}
+    />
   )
 }
 
@@ -451,11 +570,12 @@ function AppFrame({
   readonly children: ReactNode
   readonly mode: "fixture" | "live"
 }) {
+  const { t } = useI18n()
   return (
     <MotionConfig reducedMotion="user">
       <LazyMotion features={domAnimation}>
         <div className="app-shell">
-          <a className="skip-link" href="#review-workspace">Skip to review workspace</a>
+          <a className="skip-link" href="#review-workspace">{t("app.skip_workspace")}</a>
           <RiftAtmosphere />
           <CommandRail mode={mode} />
           <m.main
@@ -468,8 +588,8 @@ function AppFrame({
             {children}
           </m.main>
           <footer className="app-footer">
-            <span>RIFTCOACH / 8E LIVE INTEGRATION</span>
-            <span>{mode === "live" ? "OWNER-SCOPED CONTRACT SURFACE" : "STATIC SCENARIO · EXTERNAL CALLS 0"}</span>
+            <span>{t("app.footer_product")}</span>
+            <span>{mode === "live" ? t("app.footer_live") : t("app.footer_fixture")}</span>
           </footer>
         </div>
       </LazyMotion>
@@ -477,18 +597,21 @@ function AppFrame({
   )
 }
 
-export function App({ scenarioOverride, createLiveController, createAuthSessionClient, surfaceOverride }: AppProps) {
+function AppSurface({ scenarioOverride, createLiveController, createAuthSessionClient, createPlayerAccessApi, surfaceOverride }: AppProps) {
   if (getAwakeningSurface(surfaceOverride)) return <AwakeningPreview />
-  const fixtureState = useMemo(() => getExplicitScenario(scenarioOverride), [scenarioOverride])
+  const fixtureState = getExplicitScenario(scenarioOverride)
   if (fixtureState !== undefined) {
     return <AppFrame mode="fixture"><FixtureWorkbench state={fixtureState} /></AppFrame>
   }
   return (
-    <AppFrame mode="live">
-      <ProductionShell
-        createController={createLiveController ?? createDefaultLiveController}
-        {...(createAuthSessionClient === undefined ? {} : { createAuthSessionClient })}
-      />
-    </AppFrame>
+    <ProductJourney
+      {...(createLiveController === undefined ? {} : { createLiveController })}
+      {...(createAuthSessionClient === undefined ? {} : { createAuthSessionClient })}
+      {...(createPlayerAccessApi === undefined ? {} : { createPlayerAccessApi })}
+    />
   )
+}
+
+export function App(props: AppProps) {
+  return <ProductLocaleProvider><AppSurface {...props} /></ProductLocaleProvider>
 }

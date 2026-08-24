@@ -12,6 +12,7 @@ from fastapi.testclient import TestClient
 from app.api.actor import StaticActorContextProvider
 from app.api.main import create_app
 from app.api.task_models import ReadinessResult
+from app.auth.session import AuthSessionBoundary, CookiePolicy, InMemoryAuthSessionStore
 from app.players.models import (
     CreatePlayerLinkCommand,
     OwnerPlayerRelationshipRef,
@@ -295,6 +296,58 @@ def test_post_enqueues_owner_scoped_link_and_returns_body_free_202(
     ]
     assert "Demo Player" not in response.text
     assert "owner-1" not in response.text
+
+
+def test_session_csrf_link_terminal_and_profile_refresh_share_one_server_owner() -> None:
+    service = FakePlayerLinkService()
+    boundary = AuthSessionBoundary(
+        store=InMemoryAuthSessionStore(),
+        owner_provider=lambda: "session-owner",
+    )
+    http = TestClient(
+        create_app(
+            task_service=UnusedTaskService(),
+            player_link_service=service,
+            query_service=UnusedRunQuery(),
+            actor_provider=StaticActorContextProvider(
+                owner_id="static-owner-must-not-win",
+                profile="test",
+            ),
+            readiness_probe=ReadyProbe(),
+            auth_session_service=boundary,
+            auth_cookie_policy=CookiePolicy(secure=True),
+        ),
+        base_url="https://testserver",
+    )
+
+    issued = http.post("/auth/session")
+    created = http.post(
+        "/player-links",
+        headers={
+            "Idempotency-Key": "player-link-session-flow-1",
+            "X-CSRF-Token": issued.json()["csrf_token"],
+        },
+        json={
+            "riot_id": "Confirmed Player#KR1",
+            "routing_region": "asia",
+            "relationship_role": "self",
+        },
+    )
+    service.view = link_view(PlayerLinkStatus.SUCCEEDED)
+    terminal = http.get(f"/player-links/{LINK_TASK_ID}")
+    profiles = http.get("/player-profiles")
+
+    assert issued.status_code == 200
+    assert created.status_code == 202
+    assert terminal.status_code == 200
+    assert terminal.json()["relationship_id"] == str(RELATIONSHIP_ID)
+    assert profiles.status_code == 200
+    assert profiles.json()["profiles"][0]["player_profile_id"] == str(
+        RELATIONSHIP_ID
+    )
+    assert service.commands[0].owner_id == "session-owner"
+    assert service.get_calls == [("session-owner", LINK_TASK_ID)]
+    assert service.profile_calls == [("session-owner", 50)]
 
 
 @pytest.mark.parametrize(

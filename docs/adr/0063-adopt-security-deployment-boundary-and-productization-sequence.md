@@ -107,15 +107,19 @@ observed 与 self 的差异，OP.GG partial provenance，LLM 发送边界，保�
 
 ## 剩余前端与产品化顺序
 
-安全/部署 core 先行，之后保持 `Cinematic Portal → Broadcast Workbench`：
+安全/部署 core 先行，之后保持 `Cinematic Portal → Account Access → Broadcast Workbench`。以下编号首先记录
+施工顺序；用户可见拓扑已由 ADR-0067/RQ-105 澄清，不能再把 AuthGate 或 Riot ID 表单叫作 Portal：
 
 1. **Production shell/Auth gate**：同源静态 Web、登录态、未登录/加载/拒绝状态；不把 RSO 当登录捷径。
-2. **Rift Awakening**：电影感 Riot ID/RSO 入口，有限环境层、路线光和精致转场；Image2/Photoshop 只提供概念/有权素材，所有信息仍由真实状态驱动。
+2. **Rift Awakening + Account Access**：Portal 是核心激活前零 API/SSE 的电影开屏；激活后才进入独立 Account 层启动 provider-neutral session、已有档案与 Player Link。Image2/Photoshop 只提供无文字/无 UI 的可替换氛围层，所有身份、信息与状态仍由真实 DOM/typed contract 驱动。
 3. **Rift Timeline**：先冻结 owner-scoped Timeline DTO，再用 SVG/ECharts；没有 DTO 不画假曲线。
 4. **Evidence/Agent Trace**：深化现有 Drawer，展示 allowlisted event/claim/freshness/decision；不暴露 raw trace 或隐藏推理。
 5. **Training Plan/Progress**：把当前薄摘要扩成真实计划、metric history、纠错和趋势；observed 继续只读。
 6. **OP.GG useful-breadth + golden slice**：至少评估 champion analysis、lane matchup；synergies 只有真实阵容消费者需要时才加入。完成 Riot match + Data Dragon + official patch + OP.GG → training advice → UI evidence 的一次 body-free golden slice。
 7. **8E exit / 8F handoff**：补充评测、截图、部署/备份证据和广泛 README/作品集研究。
+
+RQ-107 又指出静态 Coach report 不是最终 Agent 产品交互。是否在 RQ-103 前插入 review-grounded bounded Coach
+原子项仍待用户裁决；裁决前本 ADR 不静默改写上述后序顺序，也不把现有 Report 锚点冒充可追问 Agent。
 
 这不是把五模块缩成普通 Dashboard：Batch D/Live Workbench 是工作台纵切，Rift Awakening 与
 受限 Void Holographic Lab 仍保留各自职责；任何新动画仍须通过许可、键盘、reduced-motion、

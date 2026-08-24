@@ -31,7 +31,7 @@ state、Evidence 和 Training 边界；Image2/Photoshop 只提供可替换氛围
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 已完成；7-5 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 完成最终公共闭环 |
-| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B–E、Live integration、production shell/Auth gate 与 Timeline DTO/UI 已公共闭环，ADR-0053 reject 产品 Multi-Agent；下一项为 bilingual product-surface foundation，完整 8E/8F 未完成 |
+| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B–E、Live integration、production shell/Auth gate 与 Timeline DTO/UI 已公共闭环，ADR-0053 reject 产品 Multi-Agent；当前原子项为 bilingual product-surface foundation，公共关闭后下一项为 RQ-108 `portal-motion-polish`，完整 8E/8F 未完成 |
 
 ## 横向能力总账
 
@@ -236,7 +236,7 @@ RAG 保存外部知识；Memory 保存玩家相关且可更新的长期状态；
   与事务内 typed materializer 接缝又由 `dd7c9c8` / Actions `32376405150` 完成真库/Linux 公共闭环；
   6B-6 typed target 又由 `5531c81` / Actions `32387026797` 完成 pytest、真实 PostgreSQL 和 Linux
   package 公共闭环；6B-7 Training Plan/Progress 又由 `f6d8922` / Actions `32397290175` 完成真库/Linux
-  package 公共闭环；当前进入 6B-8 Memory-aware Context/typed turns；这不等于正式 Auth、生命周期或公网部署已完成；
+  package 公共闭环；随后 6B-8/6B-9 也由 `aacc11a/32403187972`、`cbc7cbd/32408101770` 公共关闭，阶段 6 已完成；这不等于正式 Auth 或公网部署已完成；
 - FastAPI 对话和复盘入口；
 - `user_id`、`conversation_id` 和权限边界；
 - 外服 Riot 账号关系：官方 routing 没有中国大陆 CN；公开查询只形成以 PUUID 为稳定身份的
@@ -290,15 +290,10 @@ Stage 7 的内部检查点顺序固定为：入口设计 → `7-1-mcp-client-con
 允许对获准 OP.GG Server 做一次有界、body-free 的单向产品 smoke；7-5 才执行“外部
 Server 被 RiftCoach 调用 + 外部 Client 调用 RiftCoach Server”的双向互操作退出证明。
 
-当前状态：入口设计、7-1 pure contract、7-2 transport/discovery 与 7-3 OP.GG Meta Adapter 已公共闭环；
-7-3 的 `64311a1` / Actions `32455219404` 证明官方 Streamable HTTP、partial MetaEvidence、严格
-lane-meta Adapter、data-only Context 和一次真实 body-free 单向产品 smoke。当前唯一检查点
-`7-4-riftcoach-mcp-server` 已由 `431c584` / Actions `32480827952` 完成 strict Server/Facade、
-fixture TDD 与 exact-SHA 三 job 公共闭环。唯一下一检查点 `7-5-mcp-interoperability-exit-review`
-已由 RQ-079 授权：锁版官方 TypeScript MCP SDK Client 经标准 stdio 调用 RiftCoach Server，另一方向
-复用产品 OP.GG Streamable HTTP Client。实现 `a88fbc4` / Actions `32483521108` 三 job 与同一 clean SHA
-的双向真实门均已通过并生成 body-free evidence；证据提交 `fac6fe0` / Actions `32484257736` 又完成
-exact-SHA 三 job，7-5 coverage 与 Stage 7 已正式关闭。
+当前事实：入口设计与 7-1…7-5 均已公共闭环。7-3 的 `64311a1/32455219404` 证明官方 Streamable HTTP、
+partial MetaEvidence、严格 lane-meta Adapter 和一次真实 body-free 单向 smoke；7-4 `431c584/32480827952`
+完成 strict Server/Facade；7-5 implementation `a88fbc4/32483521108`、clean-SHA 双向真实门和 evidence
+`fac6fe0/32484257736` 全绿，Stage 7 已正式关闭。
 
 ### 完成标准
 
@@ -312,13 +307,13 @@ Stage 8 entry design、8A、8B 与 8C 已完成 exact-SHA 公共闭环；8B 唯�
 Multi-Agent。8C 已由 clean implementation `2df5349/32587659678` 验证 PostgreSQL durable task event、
 lease/fencing、cancel、checkpoint、receipt-proven recovery、Worker/API/package 纵向与八维材料；8D 又由
 `a274b7f/32598480400` 完成 Riot/Data Dragon/official patch/OP.GG partial typed EvidenceBundle 公共闭环。
-当前唯一检查点为 `8e-productization`，已进入 preflight；RQ-087 live diagnostic 已定位
+当前唯一主检查点为 `8e-productization`；RQ-087 live diagnostic 已定位
 OP.GG `Mid.rank_prev_patch` JSON-null drift，ADR-0058 的窄修复已由 `83fde7d/32615340228` 公共闭环；
 修复后 live replay 已创建 body-free bundle，但 Akali Meta join 因 top-10 未命中诚实 degraded。ADR-0059
 随后把玩家档案冻结为 successful Player Link 的 owner-scoped latest-success projection，并把 legacy/Conversation
 Riot routing 改为逐请求/SQL target exact region；implementation/evidence `e844bdd/32622696087` 已完成
-exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE、正式 Auth、前端、备份、
-8F 或生产部署已经完成。
+exact-SHA 三 job 公共闭环。后续 Batch C/D、Live、E1–E5、Auth gate 与 Timeline 也已公共关闭；这仍不表示
+exact-patch/freshness、DAG、正式 OIDC/RSO、加密备份、前端部署、8F 或生产 SLA 已完成。
 
 ### 8E Batch B：玩家档案选择与显式 Riot 路由（已公共闭环）
 
@@ -374,23 +369,23 @@ exact-SHA 三 job 公共闭环。这不表示 exact-patch/freshness、DAG、SSE�
   或 8F；整个 8E/coverage 继续 `in_progress/planned`。Batch E implementation 已开始本地 E1/E2/E3，
   已由 `92b7685/32658277570` 完成 exact-SHA 公共门；下一项是 E4 backup/restore/erase。
 
-### 8E Batch E：安全/部署实现（当前检查点）
+### 8E Batch E：安全/部署实现（已完成 E1–E5 公共闭环）
 
 Batch E 入口设计冻结在 ADR-0063 与专用 design/implementation plan：RiftCoach Auth 产生可信 owner，
 Riot RSO 只负责未来 verified-self 关系证明；首个部署采用 edge/static Web + API/Worker/PostgreSQL
 单机 Compose，托管数据库是迁移路径，Kubernetes/Redis/Celery/Kafka deferred。设计覆盖威胁模型、
 CORS/CSP/HTTPS/限流、Secret 轮换/撤销、backup restore/erase、隐私、观测与剩余 Web 模块顺序。
 
-当前 E1 session boundary、E2 request budgets/单机 rate policy、E3 SecretSource/key-last composition 已由
-`92b7685/32658277570` 公共闭环；不把它们说成生产 Auth/RSO、HTTPS、真实 Secret Manager、多副本 limiter、
-备份、部署、电影感入口、Timeline、完整 Training、OP.GG breadth、golden slice 或 8F。下一项是 E4，8E
-coverage 继续 `planned`，整个 Batch E 公共闭环前不进入 E5/8F。
+E1 session boundary、E2 request budgets/单机 rate policy、E3 SecretSource/key-last composition 已由
+`92b7685/32658277570` 公共闭环；E4 `27b9256/32660145945` 完成 marker replay/Artifact-Trace cleanup，E5
+`ca6da44/32661425379` 完成 bounded metrics/packaging。它们不等于生产 OIDC/RSO、HTTPS、真实 Secret
+Manager、共享 limiter、KMS/对象存储/加密备份、部署或 8F，8E coverage 继续 `planned`。
 
-E4 已开始本地实现：manifest 只保留 deletion-marker metadata + deterministic digest；PostgreSQL
+E4 的历史实现内容为：manifest 只保留 deletion-marker metadata + deterministic digest；PostgreSQL
 owner lifecycle repository 按 conversation/relationship 精确定位 run，API composition 在 marker commit
 后复用 `FileRunDataCleaner` 清理 Artifact/Runtime Trace。restore 先 replay markers，再通过 readiness；
 marker replay 支持幂等和 partial-failure compensation。当前仍没有对象存储/KMS/加密 backup bytes、定时备份
-或真实 RPO/RTO 演练，因而不能把 E4 说成生产灾备完成；下一动作是比例门、独立提交和 exact-SHA 公共 CI。
+或真实 RPO/RTO 演练，因而不能把 E4 说成生产灾备完成；其公共关闭证据见下一段。
 
 E4 implementation/evidence `27b9256` / Actions `32660145945` 已取得 `pytest`、`postgres-migrations`、
 `packaging-smoke` 三 job exact-SHA 全绿，正式关闭。按连续授权下一项是 E5 packaging/observability：
@@ -624,6 +619,19 @@ derived Memory、relationship private data；Task/Artifact 与全局 Player Subj
 - 当前唯一下一原子项为 RQ-102 bilingual product-surface foundation；Evidence/Trace、Training、OP.GG
   breadth/golden slice 和 8F 不提前进入。
 
-ADR-0066 与专用设计/实施计划现已本地冻结 typed catalog、locale persistence、canonical code 与生成内容
-语言边界；当前仍未写 locale 产品代码。必须先完成独立 design exact-SHA 公共门，再进入 TDD；RQ-103
+ADR-0066 与专用设计/实施计划已由 `8969aef/32683742229` 完成 design exact-SHA 三 job 公共门；当前从
+typed catalog、locale persistence、canonical code 与生成内容语言边界的红灯进入 TDD。RQ-103
 Data Dragon 资产/细节 enrichment 和跨模块 final visual QA 继续排在本批之后。
+
+RQ-104/105/106 又在同一原子批纠正 copy、产品拓扑和 Portal 资产：`zh-CN/en` 分别编辑；默认旅程为
+零 I/O Portal → Account session/profile/Player Link → 明确 profile 的 live Workbench；母图派生的 runtime
+background 不含文字/UI/core，React core 是唯一交互真值。当前全套本地门已通过，只待独立提交与
+exact-SHA 公共关闭，不能提前交接后序原子项。
+
+RQ-108 已把 foundation 公共关闭后的立即下一原子项固定为独立 `portal-motion-polish`：以确认母图为构图源，
+水晶保留在场景媒体内并由透明语义按钮覆盖点击区，高清 poster/有界 ambient media、汇聚/burst、独立 Account
+动态场景幕切及完整媒体降级/预算门必须单独设计和验证。它不新增主阶段，也不完成 RQ-103 跨模块 final QA。
+
+RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
+Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1
+称为最终电影化成品。

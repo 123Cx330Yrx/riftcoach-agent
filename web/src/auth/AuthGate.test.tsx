@@ -1,8 +1,10 @@
-import { render, screen } from "@testing-library/react"
+import { screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
 import { AuthGate } from "./AuthGate"
 import { AuthSessionError } from "./session"
+import { renderWithLocale as render } from "../test/renderWithLocale"
 
 const session = {
   schema_version: "1.0" as const,
@@ -18,7 +20,7 @@ describe("AuthGate", () => {
       {() => <p>live workbench</p>}
     </AuthGate>)
 
-    expect(screen.getByRole("heading", { name: /checking your session/i })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: /checking sign-in/i })).toBeInTheDocument()
     expect(screen.queryByText("live workbench")).not.toBeInTheDocument()
     resolve?.(session)
     expect(await screen.findByText("live workbench")).toBeInTheDocument()
@@ -30,8 +32,8 @@ describe("AuthGate", () => {
       {() => <p>live workbench</p>}
     </AuthGate>)
 
-    expect(await screen.findByRole("heading", { name: /sign-in is not ready/i })).toBeInTheDocument()
-    expect(screen.getByText("auth_unavailable")).toBeInTheDocument()
+    expect(await screen.findByRole("heading", { name: /sign-in is unavailable/i })).toHaveFocus()
+    expect(screen.queryByText("auth_unavailable")).not.toBeInTheDocument()
     expect(screen.queryByText("live workbench")).not.toBeInTheDocument()
   })
 
@@ -40,7 +42,39 @@ describe("AuthGate", () => {
       {() => <p>live workbench</p>}
     </AuthGate>)
 
-    expect(screen.getByRole("heading", { name: /session needs attention/i })).toBeInTheDocument()
-    expect(screen.getByText("auth_session_expired")).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: /your session has ended/i })).toBeInTheDocument()
+    expect(screen.queryByText("auth_session_expired")).not.toBeInTheDocument()
+  })
+
+  it("keeps a signed-out session distinct and retries without exposing the wire code", async () => {
+    const user = userEvent.setup()
+    const issue = vi.fn()
+      .mockRejectedValueOnce(new AuthSessionError("authentication_required", 401))
+      .mockResolvedValueOnce(session)
+    render(<AuthGate client={{ issue }}>
+      {() => <p>live workbench</p>}
+    </AuthGate>)
+
+    expect(await screen.findByRole("heading", { name: /sign in to riftcoach/i })).toBeInTheDocument()
+    expect(screen.queryByText("authentication_required")).not.toBeInTheDocument()
+    await user.click(screen.getByRole("button", { name: /check again/i }))
+
+    expect(await screen.findByText("live workbench")).toBeInTheDocument()
+    expect(issue).toHaveBeenCalledTimes(2)
+  })
+
+  it("aborts an in-flight session request when the account layer leaves", () => {
+    let requestSignal: AbortSignal | undefined
+    const issue = vi.fn((signal?: AbortSignal) => {
+      requestSignal = signal
+      return new Promise<typeof session>(() => undefined)
+    })
+    const view = render(<AuthGate client={{ issue }}>
+      {() => <p>live workbench</p>}
+    </AuthGate>)
+
+    expect(requestSignal?.aborted).toBe(false)
+    view.unmount()
+    expect(requestSignal?.aborted).toBe(true)
   })
 })

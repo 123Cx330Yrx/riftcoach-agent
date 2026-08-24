@@ -829,6 +829,8 @@ groups:
       problem_and_principle:
         - docs/adr/0066-adopt-typed-bilingual-product-surface.md
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
+        - docs/adr/0067-separate-cinematic-portal-account-access-and-workbench.md
+        - docs/learning/8e-portal-account-workbench-journey-walkthrough.md
         - docs/adr/0059-adopt-owner-scoped-player-profiles-and-explicit-riot-routing.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
         - docs/adr/0060-adopt-postgresql-evidence-snapshots-and-cursor-sse.md
@@ -865,6 +867,9 @@ groups:
         - docs/adr/0066-adopt-typed-bilingual-product-surface.md
         - docs/plans/2026-08-24-8e-bilingual-product-surface-foundation-design.md
         - docs/plans/2026-08-24-8e-bilingual-product-surface-foundation-implementation.md
+        - docs/adr/0067-separate-cinematic-portal-account-access-and-workbench.md
+        - docs/plans/2026-08-24-8e-portal-account-workbench-journey-correction.md
+        - docs/learning/8e-portal-account-workbench-journey-walkthrough.md
         - docs/adr/0059-adopt-owner-scoped-player-profiles-and-explicit-riot-routing.md
         - docs/plans/2026-08-23-player-profile-selection-explicit-routing-design.md
         - docs/plans/2026-08-23-player-profile-selection-explicit-routing-implementation.md
@@ -896,6 +901,7 @@ groups:
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
       code_map:
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
+        - docs/learning/8e-portal-account-workbench-journey-walkthrough.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
         - docs/learning/8e-evidence-product-api-walkthrough.md
         - docs/learning/8e-batch-d-rift-command-center-walkthrough.md
@@ -906,6 +912,8 @@ groups:
       data_and_control_flow:
         - docs/plans/2026-08-24-8e-bilingual-product-surface-foundation-design.md
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
+        - docs/plans/2026-08-24-8e-portal-account-workbench-journey-correction.md
+        - docs/learning/8e-portal-account-workbench-journey-walkthrough.md
         - docs/plans/2026-08-23-player-profile-selection-explicit-routing-design.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
         - docs/plans/2026-08-23-8e-evidence-product-api-design.md
@@ -925,6 +933,8 @@ groups:
       verification:
         - docs/plans/2026-08-24-8e-bilingual-product-surface-foundation-implementation.md
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
+        - docs/plans/2026-08-24-8e-portal-account-workbench-journey-correction.md
+        - docs/learning/8e-portal-account-workbench-journey-walkthrough.md
         - docs/plans/2026-08-23-player-profile-selection-explicit-routing-implementation.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
         - docs/plans/2026-08-23-8e-evidence-product-api-implementation.md
@@ -944,6 +954,7 @@ groups:
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
       runbook:
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
+        - docs/learning/8e-portal-account-workbench-journey-walkthrough.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
         - docs/learning/8e-evidence-product-api-walkthrough.md
         - docs/learning/8e-batch-d-rift-command-center-walkthrough.md
@@ -956,6 +967,8 @@ groups:
       failure_security_boundary:
         - docs/adr/0066-adopt-typed-bilingual-product-surface.md
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
+        - docs/adr/0067-separate-cinematic-portal-account-access-and-workbench.md
+        - docs/learning/8e-portal-account-workbench-journey-walkthrough.md
         - docs/adr/0059-adopt-owner-scoped-player-profiles-and-explicit-riot-routing.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
         - docs/adr/0060-adopt-postgresql-evidence-snapshots-and-cursor-sse.md
@@ -974,6 +987,7 @@ groups:
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
       interview_wording:
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
+        - docs/learning/8e-portal-account-workbench-journey-walkthrough.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
         - docs/learning/8e-evidence-product-api-walkthrough.md
         - docs/learning/8e-batch-d-rift-command-center-walkthrough.md

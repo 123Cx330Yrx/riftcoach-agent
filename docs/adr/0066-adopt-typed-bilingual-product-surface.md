@@ -28,6 +28,9 @@ provenance 的新内容；如果把 API enum 翻译掉，又会复制后端状�
    本批只冻结映射和 fallback，不拼未锁版本的 Data Dragon URL，也不把英文实体名做词典机翻。
 6. 同一可访问 locale control 覆盖 Portal、Auth 和 Workbench；键盘、focus-visible、320px、reduced-motion、
    text expansion、missing/corrupt storage、missing-key fallback 和 bundle <150 kB 均为阻塞门。
+7. `zh-CN` 与 `en` 分别按各自产品语境编辑。catalog 不是逐字翻译表，也不是给用户看的系统说明书；
+   `裂谷指挥中心`、`runtime environment`、`fixture`、`projection`、内部 reason/error/gap code 和解释设计意图的
+   旁白不得出现在普通产品主表面。地区与状态由 canonical code 映射成自然展示名，wire/model 真值保持不变。
 
 ## 比较过的方案
 

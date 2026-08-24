@@ -175,43 +175,33 @@ const publishedEvidence = freezeWorkbenchFixture({
   sources: [
     {
       sourceKind: "riot_official",
-      label: "Riot Match API",
       status: "verified",
       freshness: "current",
-      detail: "Eight aggregate review games passed the typed Riot projection.",
     },
     {
       sourceKind: "data_dragon",
-      label: "Data Dragon catalog",
       status: "verified",
       freshness: "current",
-      detail: "Champion labels are tied to the review patch catalog.",
     },
     {
       sourceKind: "riot_patch",
-      label: "Official patch facts",
       status: "verified",
       freshness: "current",
-      detail: "The review patch matches the official update projection.",
     },
     {
       sourceKind: "opgg",
-      label: "OP.GG meta snapshot",
       status: "verified",
       freshness: "current",
-      detail: "The typed meta projection is usable for this synthetic state.",
     },
   ],
   joins: [
     {
-      label: "Review patch → official patch",
+      labelCode: "review_patch_official_patch",
       status: "joined",
-      detail: "Both projections identify the same patch line.",
     },
     {
-      label: "Champion → current meta",
+      labelCode: "champion_current_meta",
       status: "joined",
-      detail: "The selected champion appears in the compatible meta snapshot.",
     },
   ],
   gaps: [],
@@ -235,24 +225,20 @@ const degradedEvidence = freezeWorkbenchFixture({
           ...source,
           status: "partial" as const,
           freshness: "unknown" as const,
-          detail:
-            "Meta remains a current-snapshot hint; exact upstream time is unavailable.",
         }
       : source,
   ),
   joins: [
     publishedEvidence.joins[0],
     {
-      label: "Champion → current meta",
+      labelCode: "champion_current_meta",
       status: "unjoined",
-      detail: "The reviewed champion is absent from the bounded meta projection.",
     },
   ],
   gaps: [
     {
       code: "meta_join_unavailable",
-      summary: "No exact champion-to-meta join is available.",
-      impact: "Meta recommendations stay advisory and cannot support patch claims.",
+      sourceKind: "opgg",
     },
   ],
 } as const satisfies EvidenceFixture);
@@ -310,21 +296,12 @@ const trainingByProfile = freezeWorkbenchFixture({
   "profile-northstar-kr": {
     mode: "learning_observation",
     readOnly: true,
-    title: "Learning observation",
-    note:
-      "This public profile is for studying repeatable choices, not personal training completion.",
-    focusPoints: [
-      "Track how the player creates a safe first move.",
-      "Compare objective setup without inferring private intent.",
-    ],
   },
 } as const);
 
 export const publishedWorkbenchFixture = freezeWorkbenchFixture({
   schemaVersion: "1.0",
   fixture_mode: true,
-  disclosure:
-    "Invented accounts and synthetic review evidence · no live API",
   profiles,
   selectedProfileId: "profile-riverline-euw",
   task: {
@@ -405,7 +382,6 @@ assertPublicWorkbenchFixture(degradedWorkbenchFixture);
 const rejectedWorkbenchFixture = freezeWorkbenchFixture({
   schemaVersion: "1.0",
   fixture_mode: true,
-  disclosure: publishedWorkbenchFixture.disclosure,
   profiles,
   selectedProfileId: "profile-riverline-euw",
   task: publishedWorkbenchFixture.task,
@@ -437,7 +413,6 @@ assertPublicWorkbenchFixture(rejectedWorkbenchFixture);
 const notReadyWorkbenchFixture = freezeWorkbenchFixture({
   schemaVersion: "1.0",
   fixture_mode: true,
-  disclosure: publishedWorkbenchFixture.disclosure,
   profiles,
   selectedProfileId: "profile-riverline-euw",
   task: {
@@ -487,19 +462,15 @@ export const workbenchScenarios = freezeWorkbenchFixture({
   loading: {
     fixture_mode: true,
     client: "loading",
-    message: "Preparing the fixture-backed command center…",
   },
   empty: {
     fixture_mode: true,
     client: "empty",
-    message: "No player profiles are available in this fixture scenario.",
-    actionLabel: "Add a player profile later",
   },
   error: {
     fixture_mode: true,
     client: "error",
     code: "fixture_load_failed",
-    message: "The fixture preview could not be loaded.",
   },
 } as const satisfies Record<WorkbenchScenarioName, WorkbenchScreenState>);
 
@@ -507,7 +478,6 @@ const unknownScenario = freezeWorkbenchFixture({
   fixture_mode: true,
   client: "error",
   code: "fixture_scenario_unknown",
-  message: "This fixture scenario is not available.",
 } as const satisfies WorkbenchScreenState);
 
 function isWorkbenchScenarioName(value: string): value is WorkbenchScenarioName {

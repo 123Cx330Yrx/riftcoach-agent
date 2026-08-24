@@ -13,13 +13,13 @@ describe("Evidence Drawer", () => {
     trigger.focus()
     await user.keyboard("{Enter}")
 
-    const dialog = screen.getByRole("dialog", { name: /evidence ledger/i })
+    const dialog = screen.getByRole("dialog", { name: /review evidence/i })
     expect(dialog).toBeInTheDocument()
     expect(screen.getByText(/riot match api/i)).toBeInTheDocument()
     expect(screen.getByText(/op\.gg meta/i)).toBeInTheDocument()
-    expect(screen.getByRole("heading", { name: /safe run path/i })).toBeInTheDocument()
-    expect(within(dialog).getAllByText("succeeded", { exact: true }).length).toBeGreaterThan(0)
-    expect(screen.getByText(/bundle digest/i)).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: /review log/i })).toBeInTheDocument()
+    expect(within(dialog).getAllByText("completed", { exact: true }).length).toBeGreaterThan(0)
+    expect(screen.getByText(/integrity check/i)).toBeInTheDocument()
 
     const text = dialog.textContent?.toLowerCase() ?? ""
     for (const forbidden of [
@@ -36,7 +36,18 @@ describe("Evidence Drawer", () => {
     }
 
     await user.keyboard("{Escape}")
-    expect(screen.queryByRole("dialog", { name: /evidence ledger/i })).not.toBeInTheDocument()
+    expect(screen.queryByRole("dialog", { name: /review evidence/i })).not.toBeInTheDocument()
     expect(trigger).toHaveFocus()
+  })
+
+  it("localizes an unknown evidence gap without exposing its internal code", async () => {
+    const user = userEvent.setup()
+    render(<App scenarioOverride="degraded" />)
+
+    await user.click(screen.getByRole("button", { name: /open evidence/i }))
+    const dialog = screen.getByRole("dialog", { name: /review evidence/i })
+
+    expect(within(dialog).getByText(/evidence limit/i)).toBeInTheDocument()
+    expect(within(dialog).queryByText("meta_join_unavailable", { exact: true })).not.toBeInTheDocument()
   })
 })

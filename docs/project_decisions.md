@@ -2115,3 +2115,57 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - production shell/Auth gate 已由 `15a3a9e` / Actions `32663345737` 完成 exact-SHA 公共闭环；下一项保持
   `Timeline DTO/UI`。时间线必须有真实 DTO/fixture boundary、缺失/部分语义和 source posture，不能用视觉
   series 冒充数据；8E coverage 仍 planned。
+
+## 2026-08-24：RQ-102/104 双语表面实施裁决
+
+- 采用 zero-dependency typed `zh-CN|en` catalog、strict V1 localStorage、navigator/English fallback 与共享
+  locale control；切换只重渲染 copy，不重取 API、重连 SSE、改 profile/Product State 或写 Memory。
+- UI copy、Data Dragon locale、Coach/Training Artifact language 继续是三个合同。Report/Plan 保留原文；浏览器
+  不机翻已经 Harness 验证的内容。
+- Workbench 不再显示 `MIDDLE`、Training metric key、Evidence gap/error code、`RSO verified`、`Match-V5`
+  transport 名称或 fixture/test 场景术语。地区下拉使用 routing 覆盖长名，卡片使用自然短名；未知 code 使用
+  bounded generic copy，不回退 identifier。
+- 最新 production build JS/CSS gzip 为 `142.68/18.50 kB`，JS 仍低于 150 kB 硬门；没有新 i18n/animation runtime 或 npm 依赖。
+
+## 2026-08-24：RQ-105/106 三层旅程与母图分层实现裁决
+
+- ADR-0067 取代“默认 AuthGate”与“Portal 内身份表单”：默认 `/` 为零 API/SSE Portal，激活唯一核心后才进入
+  Account；session + owner-scoped profiles/Player Link 成功且用户明确选择后，才进入 live Workbench。
+- URL/history 只接受 `portal|account|workbench + UUID`；非法/未列 profile fail closed。Account/Workbench
+  卸载时 abort/dispose，session failure 回到 Auth boundary；heading focus 随层级交接。
+- Player Link 使用 same-origin bounded POST、内存 CSRF、新 idempotency key、严格 queued/running/succeeded/
+  failed decoder、有界 poll、generation/abort、terminal profile refresh；202/pending 不冒充成功。
+- 母图先派生无文字/UI 的 keyframe，再精确移除烘焙核心/beam 形成 runtime background；React core 是唯一
+  clickable/focusable 真值。旧 aperture 只作失败 fallback，旧 instrumentarium 已移出 public runtime。
+- 正常模式使用 bounded scene reveal 与 720ms handoff；reduced-motion 立即进入且冻结装饰动画。当前只是 V1
+  choreography，不等于最终电影化 Portal 或 RQ-103 final visual QA。
+- 最新本地验收为 frontend unit 136/Playwright 36/JS gzip 142.68 kB、完整 Python 1982/1 skip/127 subtests、
+  真 PostgreSQL/Alembic、RAG/Harness、npm audit/安全治理与隔离 Linux package 全绿；公共 exact-SHA 前只称
+  本地完成。
+
+## 2026-08-24：RQ-107 Coach Agent 产品缺口（待用户裁决）
+
+- 当前 Web 是 recent-review viewer：Coach 只显示 published report，Training 只读 active Plan/Progress；前端
+  没有调用 Conversation/Message/conversation review create，因此不能说用户可从网页启动 Agent 或追问。
+- 后端已有 Conversation、user Message、conversation-bound Recent Review→AgentRuntime/Harness→SSE、
+  terminal assistant exactly-once、Memory-aware Context 和 Training Candidate/accept，可复用而不另造聊天 Runtime。
+- 推荐在当前批公共闭环后、RQ-103 前插入 8E 内部 `review-grounded-bounded-coach` 原子项：专用 follow-up
+  Skill/Prompt/eval，严格 source run/relationship 绑定，生命周期 SSE + terminal whole reply；开放域 LoL chat、
+  token streaming 与自动长期 Plan 写入 deferred。
+- 该插入会调整既有子项顺序。用户尚未对 bounded/open-domain、插入位置、observed study plan、token streaming
+  和 Conversation UX 五项作集中裁决，因此只记录缺口与推荐，不修改 canonical 下一检查点。
+## 2026-08-25：RQ-108 Portal Motion Polish 顺序与表现边界
+
+- 当前唯一原子项仍是 RQ-102/104/105/106 bilingual/product-journey foundation；独立 implementation/evidence
+  commit 与 exact-SHA 三 job 公共关闭前，不实施 RQ-108。
+- 公共关闭后固定先进入 8E 内部 `portal-motion-polish`。它不新增主阶段/coverage group，只取代 Portal Task 3
+  作为最终视觉/动效验收；zero-early-I/O、三层旅程、语义 hit target、keyboard/focus、history、
+  reduced-motion 与失败 fallback 的既有功能证据保留。
+- 用户确认母图是完整场景构图源。中央水晶在场景媒体内重绘/调大并自然呼吸/蓄能；透明原生 `<button>`
+  只覆盖水晶点击区，不显示独立贴图或常规按钮。提示只用融景微光点/短脉冲，激活后执行汇聚、一次 burst
+  和独立 Account 动态场景幕切。
+- 任何视频/ambient media 都必须同源版本化，并有 poster/codec、mobile safe area、Save-Data、
+  reduced-motion、播放/解码失败、下载/解码/JS 预算、许可和移除门。不热链、不复制付费素材；Three/OGL/
+  Anime 等新 runtime 没有新的 Bad Case/ADR 时不采用。
+- RQ-108 不实现 Coach、OIDC/RSO、Data Dragon asset/detail enrichment 或跨模块 final visual QA；RQ-108
+  关闭后再裁决 RQ-107 与 RQ-103 的相对顺序。
