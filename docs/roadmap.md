@@ -31,7 +31,7 @@ state、Evidence 和 Training 边界；Image2/Photoshop 只提供可替换氛围
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 已完成；7-5 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 完成最终公共闭环 |
-| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B–E、Live integration、production shell/Auth gate 与 Timeline DTO/UI 已公共闭环，ADR-0053 reject 产品 Multi-Agent；当前原子项为 bilingual product-surface foundation，公共关闭后下一项为 RQ-108 `portal-motion-polish`，完整 8E/8F 未完成 |
+| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B–E、Live integration、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共闭环，ADR-0053 reject 产品 Multi-Agent；下一项为 RQ-108 `portal-motion-polish` prepared/waiting authorization，完整 8E/8F 未完成 |
 
 ## 横向能力总账
 
@@ -625,8 +625,8 @@ Data Dragon 资产/细节 enrichment 和跨模块 final visual QA 继续排在�
 
 RQ-104/105/106 又在同一原子批纠正 copy、产品拓扑和 Portal 资产：`zh-CN/en` 分别编辑；默认旅程为
 零 I/O Portal → Account session/profile/Player Link → 明确 profile 的 live Workbench；母图派生的 runtime
-background 不含文字/UI/core，React core 是唯一交互真值。当前全套本地门已通过，只待独立提交与
-exact-SHA 公共关闭，不能提前交接后序原子项。
+background 不含文字/UI/core，React core 是唯一交互真值。implementation/evidence `6084937` / Actions
+`32757872792` 的 exact-SHA 三 job 已公共关闭该 foundation。
 
 RQ-108 已把 foundation 公共关闭后的立即下一原子项固定为独立 `portal-motion-polish`：以确认母图为构图源，
 水晶保留在场景媒体内并由透明语义按钮覆盖点击区，高清 poster/有界 ambient media、汇聚/burst、独立 Account

@@ -2140,8 +2140,8 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - 正常模式使用 bounded scene reveal 与 720ms handoff；reduced-motion 立即进入且冻结装饰动画。当前只是 V1
   choreography，不等于最终电影化 Portal 或 RQ-103 final visual QA。
 - 最新本地验收为 frontend unit 136/Playwright 36/JS gzip 142.68 kB、完整 Python 1982/1 skip/127 subtests、
-  真 PostgreSQL/Alembic、RAG/Harness、npm audit/安全治理与隔离 Linux package 全绿；公共 exact-SHA 前只称
-  本地完成。
+  真 PostgreSQL/Alembic、RAG/Harness、npm audit/安全治理与隔离 Linux package 全绿；implementation/evidence
+  `6084937` / Actions `32757872792` 又完成 exact-SHA 三 job，foundation 正式公共关闭。
 
 ## 2026-08-24：RQ-107 Coach Agent 产品缺口（待用户裁决）
 
@@ -2156,9 +2156,9 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   和 Conversation UX 五项作集中裁决，因此只记录缺口与推荐，不修改 canonical 下一检查点。
 ## 2026-08-25：RQ-108 Portal Motion Polish 顺序与表现边界
 
-- 当前唯一原子项仍是 RQ-102/104/105/106 bilingual/product-journey foundation；独立 implementation/evidence
-  commit 与 exact-SHA 三 job 公共关闭前，不实施 RQ-108。
-- 公共关闭后固定先进入 8E 内部 `portal-motion-polish`。它不新增主阶段/coverage group，只取代 Portal Task 3
+- RQ-102/104/105/106 bilingual/product-journey foundation 已由 `6084937/32757872792` exact-SHA 公共关闭；
+  RQ-108 当前仅为 prepared/waiting authorization。
+- 获得授权后固定先进入 8E 内部 `portal-motion-polish`。它不新增主阶段/coverage group，只取代 Portal Task 3
   作为最终视觉/动效验收；zero-early-I/O、三层旅程、语义 hit target、keyboard/focus、history、
   reduced-motion 与失败 fallback 的既有功能证据保留。
 - 用户确认母图是完整场景构图源。中央水晶在场景媒体内重绘/调大并自然呼吸/蓄能；透明原生 `<button>`

@@ -605,11 +605,15 @@ code 单一，不复制后端合同；当前 Timeline 高保真 V1 和截图不�
 
 ### 2026-08-25：foundation 后固定进入 RQ-108 Portal Motion Polish
 
-- 当前原子项仍是 bilingual product-surface foundation；独立 implementation/evidence commit 与 exact-SHA
-  三 job 公共关闭前，不把 `portal-motion-polish` 标为 in progress。
+- bilingual product-surface foundation 后来已由 `6084937/32757872792` 公共关闭；在该公共证据之前没有把
+  `portal-motion-polish` 标为 in progress，当前也仍只到 prepared/waiting authorization。
 - 公共关闭后的顺序先固定为 `foundation → RQ-108 portal-motion-polish`。RQ-108 是 8E 内部原子批，不是新主
   阶段或新 coverage group，也不等于 RQ-103 的 Data Dragon enrichment/跨模块 final visual QA。
 - Portal 以已确认母图为构图源，水晶留在场景媒体内；透明原生 button 只覆盖点击区域。正常体验可使用同源
   poster 与有界 ambient motion/video、汇聚/burst 和独立 Account 场景幕切，但必须提供 mobile、Save-Data、
   reduced-motion、媒体失败、许可、性能和移除路径。Three/OGL/Anime 等新 runtime 仍需新的 Bad Case/ADR。
 - RQ-108 关闭后再裁决 RQ-107 bounded Coach 与 RQ-103 asset/detail/final-QA 的相对顺序；不提前实现二者。
+
+implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
+Linux package 三 job exact-SHA 全绿；foundation 正式关闭。RQ-108 当前仅为 prepared/waiting authorization，
+不因上述绿灯自动进入设计或实现；8E coverage 继续 planned。

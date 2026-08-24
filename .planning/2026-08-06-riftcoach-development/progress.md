@@ -4262,3 +4262,12 @@
 - `npm run test:e2e`：36/36 passed，包含 Portal/Account/Workbench 旅程、双语、认证边界、SSE、Timeline、
   键盘/focus、reduced-motion、320/390/1024/1440 和 a11y/overflow 门。
 - 该复验只更新 foundation 的本地证据；没有启动 RQ-108，也没有把当前静态 Portal 误称为最终视觉。
+
+### 2026-08-25：foundation exact-SHA 公共闭环
+
+- implementation/evidence `6084937833beed625dbc64fdcd4c8175edbc9d8f` 已推送；Actions run
+  `32757872792` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿。
+- 公共 pytest 包含前端 typecheck/unit/build/E2E、完整 Python、两套 RAG、Harness、compile、治理和安全边界；
+  真 PostgreSQL 与 Linux package/non-root/image/resource cleanup 也在同一 SHA 通过。
+- RQ-102/104/105/106 foundation 正式关闭；8E parent coverage 仍 planned，不冒充完整 productization。
+- `NEXT`：RQ-108 `portal-motion-polish` 当前 prepared/waiting authorization；授权前不写其 ADR/实现或素材 runtime。

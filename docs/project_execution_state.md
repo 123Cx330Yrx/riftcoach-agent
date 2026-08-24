@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-25（RQ-102/104 双语表面与 RQ-105/106 三层旅程/母图分层已本地实现，frontend/Python/真库/RAG/Harness/Linux package/安全治理全套本地门通过；当前只待独立提交和 exact-SHA 公共 CI。RQ-108 已固定为公共关闭后的下一独立 `portal-motion-polish`，尚未进入设计或实现）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前唯一检查点为 `8e-productization / in_progress / remaining-product-modules / bilingual-product-surface-foundation`，Batch E E1–E5、production shell/Auth gate 与 Timeline DTO/UI 已公共关闭；完整 8E/8F 尚未完成。
+- 最后更新：2026-08-25（RQ-102/104 双语表面与 RQ-105/106 三层旅程/母图分层已由 `6084937` / Actions `32757872792` 完成 exact-SHA 公共闭环；RQ-108 已固定为公共关闭后的下一独立 `portal-motion-polish`，尚未进入设计或实现）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针仍为 `8e-productization / in_progress`，其 `bilingual-product-surface-foundation` 已公共关闭，下一原子项为 `portal-motion-polish / prepared / waiting authorization`；Batch E E1–E5、production shell/Auth gate 与 Timeline DTO/UI 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -562,7 +562,7 @@ pause_reason: ""
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C/8D 与 8E Batch B/C/D、Live integration、E1–E5、production shell/Auth gate、Timeline 已公共关闭；RQ-102/104/105/106 implementation 与全套本地门已完成，当前只待独立 commit/push/exact-SHA；RQ-108 只是 next-only，尚未设计/实现 | 本地 foundation 全绿等于正式 OIDC/RSO、可追问 Coach、Portal Motion Polish、完整五模块、完整 8E 或生产 SLA |
+| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C/8D 与 8E Batch B/C/D、Live integration、E1–E5、production shell/Auth gate、Timeline、RQ-102/104/105/106 foundation 已公共关闭；RQ-108 只是 prepared next-only，尚未设计/实现 | foundation 公共全绿等于正式 OIDC/RSO、可追问 Coach、Portal Motion Polish、完整五模块、完整 8E 或生产 SLA |
 | 项目理解 | Stage 8 entry、8A–8D 与 8E 已闭环批次均有 ADR/设计/walkthrough；最新材料又解释 typed bilingual projection、Portal→Account→Workbench、Player Link、session/focus/history、RQ-107 Coach 缺口与 RQ-108 场景内水晶/媒体边界 | 持久材料存在等于用户已能独立讲解所有实现；owner mastery 仍需复述、读码和运行验证 |
 | 参考资料 | Saber/Sea 只作选择性参考；8B reject 结果未重跑；OP.GG lane-meta live Bad Case 已闭环；视觉继续多来源门，breadth/golden slice 与 README 广泛研究分别留后续 8E/8F | 引用参考思想等于复制 Runtime/DAG，或 Multi-Agent reject 被撤销；一次外部观察等于长期 freshness/SLA，或 MotionSites 是唯一视觉来源 |
 | GitHub/部署 | 8C、8D、OP.GG evidence、Batch B/C/D、RQ-096、E1–E5、Auth gate 与 Timeline 均有 exact-SHA 公共证据；E4 marker replay/Artifact-Trace cleanup 与 E5 bounded metrics 已公共闭环，但 Docker image 仍不 COPY web | 本地 Compose 或公共 Web 代码等于正式 OIDC/HTTPS edge、加密备份/KMS/RPO-RTO、前端部署、完整 8E 或公网生产可用 |
@@ -2581,11 +2581,24 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - RQ-108 后来把 foundation 公共关闭后的立即下一原子项固定为 Portal Motion Polish，因此本节不再决定立即
   handoff。RQ-108 完成后，RQ-107 bounded Coach 与 RQ-103 asset/detail/final-QA 的相对顺序仍待集中裁决。
 
+## 2026-08-25：RQ-102/104/105/106 foundation exact-SHA 公共闭环
+
+- implementation/evidence `6084937833beed625dbc64fdcd4c8175edbc9d8f` / Actions `32757872792` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。
+- 公共 `pytest` 同时完成前端 typecheck/unit/build/E2E、完整 Python、两套 RAG、Harness、compile、治理与
+  tracked-data/SDK 边界；真实 PostgreSQL migration/concurrency 与 Linux package non-root/image/resource
+  boundary 也在同一 SHA 通过。最新本地复验为 unit `136`、Playwright `36`、JS/CSS gzip `142.68/18.50 kB`、
+  Python `1982 passed, 1 skipped, 1 warning, 127 subtests`。
+- 因此双语产品表面、Portal→Account→Workbench、真实 Player Link、owner-scoped profile selection、history/
+  focus/abort/fail-closed 与母图分层 V1 取得公共代码证据；这不等于正式 OIDC/RSO、最终 Portal 动效、Coach
+  追问、Data Dragon enrichment、完整 8E 或 8F。
+- `8e-productization` coverage 继续 `planned`，因为父阶段仍有后续模块和 final QA；不把父组提前标 complete。
+
 ## 2026-08-25：RQ-108 Portal Motion Polish 固定为下一原子批
 
-- 当前 canonical 不变：唯一原子项仍是 `bilingual-product-surface-foundation`，本地实现/门禁完成，只待独立
-  implementation/evidence commit、push 与同 SHA `pytest`、`postgres-migrations`、`packaging-smoke` 全绿。
-- foundation 公共关闭后才进入 `portal-motion-polish`。它只取代当前 Portal Task 3 作为最终视觉/动效验收，
+- foundation 已由 `6084937/32757872792` 公共关闭；当前唯一交接原子项为 `portal-motion-polish`，状态只到
+  `prepared / waiting authorization`，尚未进入教学、设计或实现。
+- 获得授权后进入 `portal-motion-polish`。它只取代当前 Portal Task 3 作为最终视觉/动效验收，
   不否定 zero-early-I/O、Portal→Account→Workbench、真实语义按钮、keyboard/focus、history、reduced-motion
   与错误 fallback 的功能证据。
 - 视觉合同以用户确认的母图为构图源：水晶在场景内重绘/调大并随高清同源 poster/ambient media 呼吸蓄能；
@@ -2595,5 +2608,5 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   播放/解码失败 fallback、下载/解码/JS 预算、许可/移除路径、TDD、八维证据、独立提交和 exact-SHA 公共门。
   不热链、不复制付费素材，不默认新增 Three/OGL/Anime；不实现 Coach、OIDC/RSO、Data Dragon enrichment 或
   跨模块 final visual QA。
-- `NEXT`：完成当前 foundation 持久同步与全部本地门，创建独立 implementation/evidence commit 并 push，等待
-  exact-SHA 三 job 全绿；公共关闭后才把 RQ-108 标为 in progress。
+- `NEXT`：RQ-108 当前为 `prepared / waiting authorization`；获得该检查点授权后，先完成教学、ADR/设计、素材
+  provenance 与媒体/交互 TDD，再实现并走八维证据、本地门、独立提交和 exact-SHA 公共 CI。

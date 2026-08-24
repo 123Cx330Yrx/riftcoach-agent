@@ -3077,3 +3077,12 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   fallback、下载/解码/JS 预算、许可和移除门；不热链、不复制付费素材、不默认增加 Three/OGL/Anime。
 - `UNRESOLVED`：RQ-108 之后，RQ-107 bounded Coach 与 RQ-103 Data Dragon asset/detail/final-QA 的相对顺序
   仍待用户裁决。RQ-108 不实现 Coach、OIDC/RSO、Data Dragon enrichment 或全站 final visual QA。
+
+## 2026-08-25：bilingual/product-journey foundation 公共关闭
+
+- `PUBLIC-CI`：implementation/evidence `6084937833beed625dbc64fdcd4c8175edbc9d8f` / Actions
+  `32757872792` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job completed/success。
+- `CLOSED`：RQ-102/104 typed bilingual product surface 与 RQ-105/106 Portal→Account→Workbench、Player Link、
+  owner-scoped selection、history/focus/fail-closed、母图分层 V1 取得公共证据；8E parent/coverage 仍未完成。
+- `HANDOFF`：RQ-108 `portal-motion-polish` 现在是 prepared/waiting authorization。公共 CI 不把静态 Portal
+  升级成最终视觉，也不授权自动开始媒体/素材实现。

@@ -4026,3 +4026,10 @@
   随后完整通过，不使用旧服务。
 - 最新可重复结果为 unit `136`、Playwright `36`、typecheck/build 通过，JS/CSS gzip `142.68/18.50 kB`。
 - 这只证明当前双语与三层旅程 V1 的合同/状态/可访问性门；截图仍显示 Portal 视觉 V1，不是 RQ-108 成品。
+
+## 2026-08-25：foundation 公共证据与 handoff
+
+- `6084937/32757872792` 三 job 全绿让 bilingual/product-journey foundation 取得 exact-SHA 公共证据；本地
+  截图的视觉不足仍由 RQ-108 处理，不能用公共 CI 反向宣称视觉成品。
+- RQ-108 现在只进入 `prepared / waiting authorization`；它仍需自己的教学、设计、素材采用门、TDD、八维
+  证据和公共 CI，不能复用 foundation 的绿灯冒充完成。

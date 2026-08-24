@@ -26,6 +26,7 @@
   `142.68/18.50 kB`；Player Link focused `26 passed, 1 warning`，完整 Python
   `1982 passed, 1 skipped, 1 warning, 127 subtests`；真 PostgreSQL/Alembic、两套 RAG、Harness、
   compile/pip/YAML、npm audit、SDK/Secret、governance/diff 与 Linux package 全绿。
-- Step 8 尚未执行。公共 exact-SHA 三 job 前 foundation 保持 open，coverage 保持 planned。
-- RQ-107 bounded Coach 是本批后序建议，不在该 implementation 内塞入 Conversation client/chat UI；插入顺序
-  等用户裁决。
+- Step 8 已完成：implementation/evidence `6084937` / Actions `32757872792` 的 exact-SHA 三 job 全绿，
+  foundation 正式公共关闭；8E parent coverage 因后续模块继续保持 planned。
+- RQ-108 Portal Motion Polish 是公共关闭后的 prepared 下一原子项；RQ-107 bounded Coach 与 RQ-103 的相对
+  顺序在 RQ-108 之后再裁决。本 implementation 不塞入 Conversation client/chat UI 或最终媒体动效。

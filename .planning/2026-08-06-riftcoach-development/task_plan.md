@@ -11,10 +11,10 @@ RQ-098 已确认 `Rift Awakening → Broadcast Workbench`，RQ-103 又明确当�
 都不是最终视觉签收。Batch E E1–E5、production shell/Auth gate 和 Timeline DTO/UI 已取得 exact-SHA
 公共闭环；视觉、双语和剩余产品模块继续在 `8e-productization` 内按原子批推进。
 
-当前唯一原子项仍是 RQ-102 `bilingual-product-surface-foundation`。设计 `8969aef` / Actions
-`32683742229` 已完成 exact-SHA 三 job 公共关闭；RQ-102/104 typed bilingual copy 与 RQ-105/106
-Portal→Account→Workbench、真实 Player Link、母图分层 V1 与全套本地比例门已完成，当前只待独立提交、
-push 和 exact-SHA 三 job。RQ-108 已明确把 Portal V1 动效 supersede 为下一独立 `portal-motion-polish`；
+RQ-102 `bilingual-product-surface-foundation` 已由 `6084937` / Actions `32757872792` 完成 exact-SHA 三 job
+公共关闭；RQ-102/104 typed bilingual copy 与 RQ-105/106 Portal→Account→Workbench、真实 Player Link、母图
+分层 V1 与全套本地比例门已完成。RQ-108 已明确把 Portal V1 动效 supersede 为下一独立 `portal-motion-polish`，
+当前状态为 `prepared / waiting authorization`；
 RQ-103 Data Dragon asset/detail enrichment、Evidence/Trace、Training、OP.GG breadth/golden slice、final visual QA
 和 8F 继续后序。RQ-108 关闭后，RQ-107 bounded Coach 与 RQ-103 的相对顺序仍待用户裁决。
 
@@ -51,11 +51,10 @@ public closure. RQ-084 authorized Phase 36 -
 `32598480400`. Phase 37 - `8e-productization` is the current governance pointer.
 The bounded Riot/OP.GG validation and JSON-null Bad Case, Batch B profile/routing,
 Batch C Evidence/Product/SSE, Batch D Workbench, live integration, Batch E E1-E5,
-production shell/Auth gate and Timeline DTO/UI are publicly closed. The current
-  atomic slice is `bilingual-product-surface-foundation`: design `8969aef/32683742229`
-  is publicly closed and implementation/local gates are complete; only the independent
-  implementation/evidence commit and exact-SHA public gate remain. Full productization
-  and coverage remain `in_progress/planned`.
+production shell/Auth gate and Timeline DTO/UI are publicly closed. The atomic slice
+`bilingual-product-surface-foundation` is publicly closed at `6084937/32757872792`;
+the next slice is `portal-motion-polish`, prepared/waiting authorization. Full
+productization and coverage remain `in_progress/planned`.
 
 ## Phases
 
@@ -1502,8 +1501,9 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-local] 完整 Python `1982 passed, 1 skipped, 1 warning, 127 subtests`、unit 136、Playwright 36、
     真 PostgreSQL/Alembic、RAG/Harness、compile/pip/YAML、npm audit、SDK/Secret、governance/diff 与隔离 Linux
     package 全绿；JS/CSS gzip `142.68/18.50 kB`。
-  - [pending-close] 独立 implementation/evidence commit/push 与同 SHA 三 job；公共关闭前不进入后序原子批。
-  - [next-after-close] RQ-108 `portal-motion-polish`：先做 ADR/媒体与交互设计、TDD、八维证据、本地门、
-    独立提交和 exact-SHA；当前静态 Portal 只保留为功能/构图 V1，RQ-108 尚未 in progress。
+  - [completed-public] implementation/evidence `6084937` / Actions `32757872792` 的 pytest、真实 PostgreSQL
+    migrations 与 Linux packaging-smoke 三 job 全绿；foundation 正式公共关闭。
+  - [prepared] RQ-108 `portal-motion-polish`：等待检查点授权；授权后先做 ADR/媒体与交互设计、TDD、八维证据、
+    本地门、独立提交和 exact-SHA。当前静态 Portal 只保留为功能/构图 V1，RQ-108 尚未 in progress。
   - [pending-user-decision] RQ-108 关闭后，RQ-107 bounded Coach 与 RQ-103 asset/detail/final-QA 的相对顺序；
     当前批不实现假聊天框、Data Dragon enrichment 或最终动效。
