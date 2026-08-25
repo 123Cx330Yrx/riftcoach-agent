@@ -132,6 +132,8 @@ Task 5 当前证据把“调研池”与“实际付费槽位”分开：Wan/Veo
 HyperFrames skill as-is 因 update/auth/provider/telemetry 越权而不安装；exact renderer 隔离 check 通过，重复 frame
 SHA 精确一致、raw seam SSIM `0.999600`，但默认 MP4 bytes/seam 门失败，所以只能作结构帧生成器，不能把本地
 smoke 说成最终 loop。
+上述 admission/spike evidence `7067ea1/32862942549` 已取得 exact-SHA 三 job 公共闭环；它不等于 Task 5、
+production media 或 RQ-108 完成。
 
 ## 6. 运行手册（设计阶段）
 

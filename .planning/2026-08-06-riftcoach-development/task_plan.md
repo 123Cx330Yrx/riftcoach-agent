@@ -1537,4 +1537,6 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-local-spike] HyperFrames `general-video` skill as-is 不准入；exact CLI 在临时 HOME、telemetry
     disabled、cached headless shell 下 check 通过，raw seam/重复 frame SHA 通过；默认 MP4 seam/bytes 门失败，
     只保留 renderer 作 C 线结构层，不把 smoke 当视觉候选。
+  - [completed-public-admission] candidate admission/HyperFrames spike evidence `7067ea1` / Actions
+    `32862942549` 的 pytest、真实 PostgreSQL migrations 与 Linux packaging-smoke 三 job 全绿；Task 5 本身未关闭。
   - [next] Wan 3.0 官方 endpoint/region/Key presence body-free preflight；不读取/输出 Key 值，不先上传母图。

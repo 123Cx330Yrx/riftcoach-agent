@@ -4473,3 +4473,11 @@
   H.264 5,650,074 B 与 seam DSSIM `0.039327` 均不通过。无产品代码、无 external model call、无母图上传。
 - `NEXT`：Wan 3.0 official endpoint/region/Key presence body-free preflight；通过后再冻结一项实际 A1 请求，
   A2 保留 Veo/Vidu，Grok 3 等待 schema/mapping evidence。
+
+### 2026-08-25：Task 5 admission/spike exact-SHA 公共闭环
+
+- `PUBLIC-CI`：`7067ea1d2a9ebfb17d0cec1831b248404eee52e2` / Actions `32862942549` 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。
+- `CLOSED-SCOPE`：只关闭 official/relay candidate admission、RQ-122 correction 和 HyperFrames isolated spike；
+  不关闭 Task 5/RQ-108，不产生模型调用或 production media。
+- `HANDOFF`：唯一下一动作是 Wan 3.0 official endpoint/region/Key presence body-free preflight。

@@ -3219,3 +3219,10 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   SHA 精确一致、seam SSIM `0.999600`。默认 MP4 超 H.264 bytes 门且 decoded seam DSSIM `0.039327 > 0.03`，
   裁决 `renderer-conditional-pass/default-encoder-reject`，不形成生产媒体。
 - `NEXT`：只做 Wan 3.0 官方 endpoint/region/Key presence body-free preflight；不先上传母图或调用模型。
+
+## 2026-08-25：Task 5 candidate admission/spike exact-SHA 公共闭环
+
+- `PUBLIC-CI`：`7067ea1/32862942549` 的 pytest、真实 PostgreSQL migrations/control-plane 与 Linux package
+  smoke 三 job 全绿。
+- `CLOSED-SCOPE`：候选准入与 HyperFrames 隔离 spike 批公开可复核；Task 5、RQ-108、8E 和生产媒体仍未关闭。
+- `HANDOFF`：唯一下一动作进入 Wan 3.0 官方 endpoint/region/Key presence body-free preflight。
