@@ -4271,3 +4271,84 @@
   真 PostgreSQL 与 Linux package/non-root/image/resource cleanup 也在同一 SHA 通过。
 - RQ-102/104/105/106 foundation 正式关闭；8E parent coverage 仍 planned，不冒充完整 productization。
 - `NEXT`：RQ-108 `portal-motion-polish` 当前 prepared/waiting authorization；授权前不写其 ADR/实现或素材 runtime。
+
+### 2026-08-25：RQ-109 授权开始 RQ-108
+
+- 用户明确“开始”，RQ-108 切为 authorized/in progress。
+- 已先按教学合同说明问题、progressive-enhancement 原理、范围、控制流、测试和限制；当前进入只读 seam/
+  资产/性能审计与 ADR-0068/设计，不提前写 runtime 动效实现。
+- `NEXT`：完成 Impeccable animate 上下文、现有 Portal/Account/媒体/测试接缝与母图审计，冻结三方案裁决。
+
+### 2026-08-25：RQ-110 视觉源纠正
+
+- 用户把上一轮暗化截图设为明确 anti-reference；已同步两个并行只读审计，并新增视觉方向审计。
+- 当前设计输入改为“确认高清母图 → 全屏 loop 正常体验 + 同源 poster fallback”，禁止阴影/暗幕/模糊/大字；
+  多来源素材筛选与少字/字体意见继续有效。
+
+### 2026-08-25：RQ-111 Account 英雄场景化纠正
+
+- 用户允许五个位置各固定一个英雄，但明确拒绝头像式摆放。
+- Account 母图改为峡谷光路连接五个全身能量幻影/晶体浮雕；统一蓝金材质、低对比纵深和有界轮流唤醒，
+  不侵占右侧账号面板负空间。具体 roster 进入 ADR-0068/概念图审查。
+
+### 2026-08-25：RQ-112 全局 loop 纠正
+
+- 用户否决“全屏载体但仅局部运动”的解释；Portal/Account 正常模式必须是全帧环境循环动态。
+- 当前设计将重写 storyboard 与媒体预算；poster 降为首帧/可访问/低流量/错误 fallback，DOM 动效只负责交互提示
+  和点击后的汇聚/burst。
+
+### 2026-08-25：官方英雄参考 URL 校验首错
+
+- 为 RQ-111 准备官方 Data Dragon splash 参考时，ClawDefender 首次 5 个 URL 校验均在联网前失败：Windows
+  `bash` 实际进入 WSL，`/c/Users/...` Git Bash 路径不存在。
+- 无文件下载、无外部正文处理；下一尝试改用 `/mnt/c/Users/...` 调同一安全脚本，不重复原命令。
+
+### 2026-08-25：Account 官方原画参考重做
+
+- ClawDefender 使用 WSL 正确路径后确认五个 `ddragon.leagueoflegends.com` splash URL 安全；下载的 Camille/
+  Kindred/Ahri/Jinx/Thresh JPG 均为 1215×717、合法 JPEG，并记录 SHA-256。
+- ImageGen 首次尝试“母图 + 5 splash”因工具最多 5 个 path 在请求前拒绝；没有生成。改用 FFmpeg 将五图机械
+  拼为 1824×718 参考板，再以“母图 + 参考板”生成 Account v2。
+- v2 删除右侧走廊并让五英雄可识别，但用户审查发现整体拼贴感、金克丝右脚与千珏下半身等畸形，判为
+  rejected 并移出仓库；不从该图继续修补。
+- RQ-113/114 将制作流程改为“无英雄干净内殿 → 单英雄场景化重塑/逐项验收 → 分层合成 → 全局 loop”，
+  官方 splash 仅作身份参考，禁止抠图换色。
+- 已按新流程生成无英雄底座 v1，但用户指出峡谷被抽象成机械架子，已判 rejected 并移出仓库；下一轮必须
+  加入官方 Data Dragon Summoner's Rift map 地理参考，尚未开始五个单英雄生成或 runtime 采用。
+- 使用官方 `16.16.1 map11` 参考生成无英雄底座 v2：峡谷地貌已可辨识、右侧平墙留白成立；当前等待用户
+  对底座方向签收，不提前生成/合成五英雄。
+- 用户指出 v2 双方都为蓝色；按 RQ-116 对同一底座做单项 edit，v3 已明确左下蓝方/右上红方并保留中性河道、
+  紫色男爵坑、暖色小龙坑。仍等待底座签收，不进入英雄层或 runtime。
+
+### 2026-08-25：RQ-117/118 / RQ-108 design gate 本地完成
+
+- `REQUIREMENT`：RQ-117 已追加并校准 RQ-115：保留官方三路/河道/双坑/基地/红蓝方向，但用有意概括的
+  terrain masses/轮廓/符号节点表达地形，禁止伪造具体树墙塔等微型细节；v3 仍是未签收 preview。
+- `REQUIREMENT`：RQ-118 取代早期水晶放大/重绘要求，确认母图原水晶/塔体/构图保持不变；放大 edit 与
+  独立/CSS/贴图水晶均保持 rejected。
+- `DESIGN`：ADR-0068 与正式 design 已同步 viewport-aware poster policy、playback sticky failure、archival
+  source→runtime poster 感知一致性、Account topology/abstraction gate 和 preview/adoption 状态机。
+- `PLAN/EVIDENCE`：新增详细 TDD implementation plan 与 design-stage 八维 walkthrough；coverage 继续挂在既有
+  `8e-productization: planned`，不新增/重排 checkpoint，也不把计划路径冒充 runtime evidence。
+- `BOUNDARY`：本批 `web/` runtime 修改、正式 loop、Account source adoption、Riot/OP.GG/Provider/LLM calls
+  均为 0；没有继续生图。
+- `NEXT`：完成 canonical/stale 同步和 design 比例门，独立 commit/push，等待 exact-SHA 三 job；公共全绿后
+  才按 implementation plan 进入 media policy/component/activation TDD。
+
+### 2026-08-25：RQ-119/120 Kimi 实测与替代路线设计
+
+- `LIVE-LOCAL-AUDIT`：只读认领用户 Chrome 的 `localhost:7100`，确认 12s/1080p Kimi MP4 正常播放；临时
+  提取视频做 ffprobe/六帧/首尾审查，仓库不保存视频。SHA `57043c...c95`，产品外部 calls 0。
+- `RESULT`：母图→首帧 SSIM `0.412818`，人工 source/composition/texture/motion language 不通过；裁决
+  rejected，不进入 source/runtime。完整 body-free 技术结果写入 I2V candidate audit。
+- `RESEARCH`：官方资料确认 Wan 2.7 与 Veo 3.1 支持 first+last，Luma 有 Loop/keyframes，Seedance 2.x 有
+  官方生成 API/reference，Runway/Firefly 可作多模型工作台；HyperFrames/Remotion 提供确定性 frame render。
+- `DECISION`：设计横评扩为生成式、确定性、混合式，推荐混合式为 primary candidate；本批未安装 skill、
+  购买/调用模型或改 `web/` runtime。NEXT 仍是修完 design review、跑门、独立 design exact-SHA。
+- `LOCAL-GATES`：governance tests 12、frontend unit 136/E2E 36/typecheck/build、Python no-DB
+  `1837 passed, 146 skipped, 1 warning, 127 subtests`、两套 RAG、Harness `published/0 revisions`、compileall、
+  SDK/Secret/tracked-data/governance/diff 全绿；JS/CSS gzip `142.68/18.50 kB`。本机 Docker daemon/测试
+  PostgreSQL 当前不可达，未把真库等待冒充代码失败，exact-SHA `postgres-migrations`/Linux job 仍是阻塞门。
+- `INDEPENDENT-REVIEW`：两轮只读设计复核先发现并随后确认修复 mobile source、asset-before-integration、
+  zero-prefetch、cover geometry、provenance/CSP、阈值、session-sticky/pause、RQ-120 ledger 等问题；最终
+  blocker/major findings 为 0，可进入独立 design commit。

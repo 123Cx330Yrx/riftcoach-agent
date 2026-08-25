@@ -4033,3 +4033,187 @@
   截图的视觉不足仍由 RQ-108 处理，不能用公共 CI 反向宣称视觉成品。
 - RQ-108 现在只进入 `prepared / waiting authorization`；它仍需自己的教学、设计、素材采用门、TDD、八维
   证据和公共 CI，不能复用 foundation 的绿灯冒充完成。
+
+## 2026-08-25：RQ-109 授权启动 Portal Motion Polish
+
+- 用户明确“开始”，授权 RQ-108；当前只先完成 motion/media 接缝审计、方案比较、ADR-0068、正式设计、
+  实施计划和素材采用门，不把授权直接解释为视觉成品已实现。
+- 采用候选先比较 full-video、CSS-only 与 hybrid poster/media + semantic hit target；既有证据倾向 hybrid，
+  仍须用当前 bundle、移动/Save-Data/reduced-motion 和 asset provenance 审计正式冻结。
+
+## 2026-08-25：RQ-110 高清母图与 anti-reference 纠正
+
+- 用户明确当前暗化 Portal 截图绝不能沿用；`rift-portal-background-v2` 只保留历史 V1/anti-reference 身份。
+- 正常体验应直接从确认高清母图制作全屏循环 background；同一母图导出的高清 poster 是 reduced-motion、
+  Save-Data 与媒体失败 fallback。不得再加全屏阴影、vignette、blur 或为文字压暗画面。
+- Portal 文案继续减到融景小型自有字标、语言控件和不可见可访问名称；水晶可点性只用微光点/短脉冲。
+- 此纠正让 full-screen loop 成为主候选，而不是仅把媒体拆成局部小层；最终仍需 codec/下载/解码/mobile 门。
+
+### 视觉文件复核
+
+- 确认母图源完整保留左 Rift 旋涡、中央带水晶的高塔/基座、右侧战术星图和前景金蓝地面；亮度与局部对比
+  已足以直接作为画面，不需要全屏暗幕。
+- 当前 runtime background 已删除水晶，无法满足 RQ-110“直接从高清母图做动态 background”；它只能保留为
+  历史 V1，不应作为 RQ-108 poster、loop 首帧或失败 fallback。
+- `portal-motion-keyframe-v2` 比 runtime background 更接近母图，但仍是后续生成的不同版本；RQ-110 要求
+  最终资产以用户确认原始母图为 edit target，不能用 keyframe-v2 悄悄替代。
+- anti-reference 截图的问题来自整页暗化、边框/左上说明字和独立语言面板共同遮蔽画面，不只是水晶缺失。
+
+### Account 第二幕母图候选
+
+- 推荐“激活后的核心内殿”：Portal 水晶爆发后镜头穿入同一建筑内层；左侧保留稳定 Rift 能量窗/悬浮晶片，
+  中间金蓝路径延续，右侧由画面构图形成安静金属/玻璃负空间给真实账号面板，不靠暗幕制造可读性。
+- Hexgate 门廊转场顺但更像通用科幻登录；战术观星台视觉强但会抢占 Workbench 的战术语义，均列替代。
+- Account loop 应比 Portal 更低频，只有稳定能量流、晶片微浮和远景呼吸；Portal transition 末帧需匹配
+  Account loop 首帧。该项仍是设计推荐，需在 ADR-0068/概念母图审查后才采用。
+
+### Account 与召唤师峡谷/英雄联动建议
+
+- 推荐把核心内殿细化为 `Rift Attunement Chamber`：左侧能量窗呈现自主重构的高空峡谷拓扑，地面光路形成
+  上/中/下三路与斜向河道，男爵侧用受限紫色节点、龙侧用青金节点；不复制官方地图 bitmap。
+- 右侧仍由场景构图保留账号面板负空间，不靠 overlay。Account loop 只让三路/河道能量与少量节点低频呼吸。
+- 用户随后纠正：固定英雄不构成问题；Account 可为上路/打野/中路/下路/辅助各固定一位英雄，但不得用头像。
+- 五位英雄应成为峡谷光路周围的全身能量幻影/晶体浮雕/建筑级全息剪影，以姿态、轮廓和标志性物件识别；
+  不放原画卡、头像框、英雄名或选角 UI，也不暗示用户主玩英雄。
+- 当前视觉候选为 Camille/Kindred/Ahri/Jinx/Thresh，对应腿刃、双面具与弓、九尾、长辫与火箭炮、灯笼/钩链；
+  roster 仍需结合概念图密度与许可边界正式冻结。
+
+### 本地媒体能力与母图身份
+
+- 用户确认母图为 `1672×941` RGB PNG、2,708,544 bytes，SHA-256
+  `552a87453daae53762f56f0cb5f7c7c2fee18256ef6d193c00575283e9b7aada`；现有暗化 runtime background
+  尺寸相同，但文件/画面身份不同，不能互换。
+- 本机 FFmpeg 具备 `libx264`、`libvpx-vp9`、`libaom-av1`、`libsvtav1`；实现阶段可本地编码 MP4/H.264 与
+  WebM/VP9 双 source，不需要为 codec 新增 JS 依赖。AV1 可作离线对照，不作为 V1 唯一格式。
+
+### Riot 英雄形象采用门（官方公开政策，2026-08-25 复核）
+
+- Riot `Legal Jibber Jabber` 为符合规则的非商业社区项目提供可撤销、有限的衍生使用许可，同时明确角色外观、
+  地图、图标等进入 game/app 受更严格限制；公开项目必须清楚声明不是 Riot 官方项目。
+- Riot Developer General Policies 要求第三方产品持续遵守最新政策、完成产品注册/合法 API 条件，并把
+  Data Dragon 与 Press Kit 列为产品开发/营销可用来源；产品不得冒充或高度仿制 Riot 客户端。
+- 当前仓库没有产品注册或官方免责声明证据。因此 RQ-111 可先制作/审查五英雄场景概念，但可识别角色形象
+  进入 public runtime 前必须单独证明 API product/policy 条件、加入官方免责声明、记录来源/移除路径；否则
+  使用同构原创五位置 archetype fallback。不能因“只是装饰”跳过许可门。
+- 官方来源：`https://www.riotgames.com/en/legal`、`https://developer.riotgames.com/policies/general`。
+
+### 第一轮 ImageGen 概念母图自审
+
+- Portal edit `exec-b05c20ba-c796-4b37-9d75-0a74ffa9fa20.png` 保留了母图三段构图与曝光，但中央水晶远超
+  要求，遮蔽塔体并改变视觉主次；拒绝作为 final/master，只保留 research rejected 记录。下一轮必须回到
+  原母图，仅把原水晶放大约 15%，不能从巨型水晶候选继续漂移。
+- Account concept `exec-1eca4fa8-66c0-4504-b19b-7fe34da3dbe5.png` 成功形成独立内殿、峡谷三路/河道
+  能量盆地、五个全身英雄晶体幻影与右侧天然负空间；没有头像卡/名字/UI/暗幕。它可进入 preview 候选，
+  仍需 16:9 crop、安全区、角色许可和用户视觉审查后才可成为 runtime source。
+- 两次均使用 built-in imagegen；此时没有 runtime 采用、视频生成或前端代码变化。
+
+### Account v2（官方原画参考）自审
+
+- `exec-16a1f087-2e7a-42a2-b4e8-2b25671f4ddd.png` 虽使用确认母图与官方五英雄 splash 参考，并消除
+  右侧走廊，但用户指出整体怪异、金克丝右脚/千珏下半身失真，人物仍像 splash 抠图换蓝后贴在地图上。
+- v2 因此直接 rejected 并移出仓库；不再讨论“压低对比即可修复”，也不从该图继续迭代。
+- 官方 splash 只是图像身份参考；可识别角色进入公开 runtime 仍受 Riot product/policy/disclaimer 采用门约束。
+
+### RQ-113/114 Account 分层重塑流程
+
+- 后续先生成无英雄、无右侧走廊的干净内殿/峡谷母图；五位英雄一次只处理一位并逐项验收解剖、手脚、
+  武器、尾巴、面具与羊狼双体关系。
+- 官方原画只锁定身份，不直接抠图或沿用 pose。每位要重新设计成与对应路线/基座/建筑遮挡/投影/反射一体的
+  场景原生全身能量回响，材质由内部晶体、金色结构骨架、雾化边缘和环境光组成。
+- 单体通过后再分层合成并做全局 loop；禁止单次生成同时解决场景、地图、五人和合成，也禁止简单蓝色滤镜。
+
+### Account 无英雄底座 v1
+
+- `account-rift-attunement-base-v1.png` 曾是分层流程第一张 preview candidate：
+  1672×941、2,338,850 B、SHA-256 `ff70d6472f1376bee74e31a0498418d89248257b90891b86c0cc828de7e00af2`。
+- 左侧为无英雄的峡谷三路/河道/紫色男爵侧/青金龙侧能量装置，右侧为无门洞/无走廊/无消失点的平整内殿
+  墙面；没有暗幕、文字、UI 或人物，适合作为单英雄分层合成底座。
+- 用户指出它几乎没有召唤师峡谷、只剩机械架子，因此已 rejected 并移出仓库，不作为后续生成底图。
+
+### RQ-115 可辨识召唤师峡谷底座
+
+- 下一底座必须以 Riot 官方 Data Dragon Summoner's Rift map 作地理参考，保留三路、斜向河道、两片野区、
+  男爵/小龙坑、双方基地、防御塔以及森林/岩壁/河水关系；Hextech 只改变材质/照明，不能取代地貌。
+- 内殿建筑应包围立体峡谷沙盘，五位英雄以后从对应路线/地貌中形成，不再设置五个通用机械 plinth。
+- 官方 Data Dragon `versions.json` 当前首版本为 `16.16.1`；已校验并下载官方
+  `cdn/16.16.1/img/map/map11.png`：512×512、70,985 B、SHA-256
+  `5b446777c3e8491c1ab1860bc8fd448ad58f46cf3630d909f74dd3dc3dda8cd1`。它只作地理参考，
+  不直接放大贴进背景；外部 URL 已通过 ClawDefender。
+
+### Account 可辨识峡谷底座 v2
+
+- `exec-146c7b66-cecc-4794-9a21-fa53836ad1e6.png` 使用确认母图作材质参考、官方 map11 作地理参考，
+  已形成可辨识三路、斜河道、双野区、两坑、基地/塔/森林/岩壁/河水的立体峡谷，并由内殿建筑包围。
+- 右侧约三分之一为无门洞/无走廊/无消失点的平整 obsidian 墙面，未用全屏 overlay；当前只等待用户对
+  峡谷底座本身的视觉签收，未加入任何英雄、UI 或 runtime 动画。
+- 若底座签收，后续五位英雄需从各自路线/野区地貌中逐个形成；不得遮蔽地图到再次不可辨识。
+
+### Account 红蓝峡谷底座 v3
+
+- `exec-2dd82754-04ec-43e3-821e-cc377816b24f.png` 只对 v2 做阵营语义修正：左下蓝方基地/塔/线路为
+  青蓝，右上红方为绯红/暖橙；河道保持中性蓝、男爵坑紫色、小龙坑暖色，地形和右侧平墙未改变。
+- 当前一眼可读 Summoner's Rift 地貌和双方阵营，没有 whole-frame 双色滤镜；仍是 preview candidate，等待
+  用户对地形/阵营/留白整体签收后才保存为 Account source 并进入单英雄重塑。
+
+### Riot 官方峡谷细节公开资料复核
+
+- Riot 2024 map changes 官方文章确认墙体、草丛、路口与双方对称性需要大量精确迭代，并公开“接近最终的
+  俯视地图概念”；公开图仍为 512×512 平面布局，不是可供精确重建每棵树/墙/塔的高分辨率正射地形母版。
+- Data Dragon 16.16.1 map11 与官方 2024 near-final concept 足以锁定拓扑、河道、墙/草丛块和阵营方向，
+  但不足以支持模型伪造写实微缩峡谷。用户提出的“笼统一点”因此是更诚实的视觉路线。
+- 下一方案应把地图明确表达为精确拓扑的 Hextech 战术地形投影：保留可辨轮廓/三路/河道/两坑/基地和
+  红蓝方向，用概括 terrain masses/contours 表达野区，不画位置看似具体却错误的微型树墙塔。
+- 官方来源：`https://www.leagueoflegends.com/en-us/news/dev/dev-season-2024-map-changes/`；near-final
+  concept SHA `8529f1b40b4d116082ba4f5ca6a4638c4ff9ca2d64d4deb57c486a2d54422459`。
+
+### 用户提供 B 站 Kimi/MotionSites 流程复核
+
+- 短链解析到 BVID `BV1AHd6BdEH7`，标题《跟我学，做个好看的网站不是很简单吗？》，时长 243.3 秒；
+  研究副本为 1280×720 H.264/AAC、20,154,885 B、SHA-256
+  `1e049dfa2932ff3df9b0b95d529e09d13d7d7cd131bb7d01b529eee5d8157310`，只存 workspace research。
+- 视频实际流程分两条：先从 MotionSites 取得整站/动效 prompt 并交给 Kimi 等 coding agent 生成网站；再找到
+  自己喜欢的图片上传 Kimi，要求“根据上传图片转化为循环视频”，生成/指定 ≤15 秒 MP4，随后把 MP4 上传
+  到 Kimi Code 文件区并要求“帮我在首页替换成我上传的视频”。
+- 因此 MotionSites prompt 主要提供网页视觉/交互模板，image-to-video 是独立资产生产步骤；视频最后仍作为
+  普通本地文件进入网页。该演示没有展示 codec 双格式、真正首尾 seam、Save-Data/reduced-motion/media-error、
+  文件/解码预算或 static edge header 门，这些是 RiftCoach 必须补的生产化差异。
+- B 站页面无公开字幕，内容通过官方 metadata/playurl API、固定时间帧和画面字幕复核；短链/页面/API/CDN
+  均先过 ClawDefender 或严格官方 hostname/size/类型校验。
+
+### RQ-112 全局循环动态纠正
+
+- 用户明确“动态 background”是全帧循环动态，不是全屏 video 容器内只有 Rift/水晶/星图几个局部在动。
+- Portal loop 必须同时覆盖 Rift/云雾/远景、整条道路/前景反射、建筑缝线/平台/水晶、星图/节点/粒子和
+  多层环境光；Account 也要覆盖峡谷路径、英雄幻影、内殿光线、粒子和反射，只是运动节奏更安静。
+- poster 仅限首帧/降级；DOM/SVG 只承担可访问提示与点击后的收敛/burst，不能成为主要动画来源。
+- 全帧运动会提高码率与解码成本，ADR-0068 必须放宽旧“局部运动”估算并以实际编码质量/文件大小裁决，
+  不能为了旧预算把视觉目标悄悄缩回静态。
+
+## 2026-08-25：RQ-117/118 与 RQ-108 design gate 收口
+
+- RQ-117 将 Account 地图冻结为“官方精确拓扑 + 有意概括的 Hextech 战术地形投影”：map11/near-final
+  concept 只支持三路、河道、双野区、双坑、基地、朝向和阵营等宏观锚点，不支持模型臆造写实微细节。
+- 当前 v3 即使缩略图可辨识，仍因 pseudo-real terrain 未通过 100% 细看与 annotated topology overlay，保持
+  unaccepted preview；不进入英雄层、视频层或 runtime。
+- RQ-118 取代早期水晶放大/重绘要求：确认母图原水晶、塔体和构图保持 source truth；两张放大 edit 以及
+  独立/CSS/贴图水晶均不能成为 edit target 或发布资产。
+- 媒体初始资格与播放状态必须分开；motion/poster 两个 policy 分支都携带 desktop/mobile。reduced-motion/
+  Save-Data 首次 render 不创建 video/source，play/decode/resume failure 进入 session-sticky poster。
+- 母 PNG 是逐字节 archival source；runtime poster 可以压缩，但必须绑定 source SHA 并通过 SSIM/人工原尺寸
+  感知一致性，不能用暗化/模糊换体积。
+- ADR-0068、正式 design、详细 TDD implementation plan、asset ledger 与八维 planned walkthrough 已建立；
+  当前没有 `web/` runtime 变更。下一动作是 design commit/exact-SHA，不再被逐张 preview 打断。
+
+### RQ-119/120 Kimi Bad Case 与视频路线扩展
+
+- Chrome `localhost:7100` 实际播放 `hero-loop.mp4`：H.264 High/yuv420p、1920×1080、30fps、12s、约
+  4.03Mbps/6.05MB；video ready/play 正常、CSS filter none，因此问题不只是网页没加载或 CSS 模糊。
+- 生成首帧相对母图等比 resize SSIM `0.412818`，人工帧组看到 left Rift/right star map 被重新取景、水晶/
+  塔体和纹理随时间重绘；loop seam 本身不比末相邻帧显著更坏，但能循环不能弥补 source fidelity 失败。
+- Kimi v1 记录为 rejected Bad Case，不把所有 Kimi 配置永久判死，也不再默认采用。正式 bake-off 使用同一
+  source/brief/scorecard，比较 Wan 2.7、Seedance、Veo、Luma、Runway/Firefly 等生成路线。
+- HyperFrames 与 Remotion 不是 I2V 模型，而是确定性逐帧制片框架。HyperFrames 为 Apache-2.0、HTML/
+  seekable animation、官方主 skill 安装量约 240K/仓库约 41.8K stars；Remotion React 生态成熟但许可需按
+  组织规模复核。推荐候选是先分层/inpaint，再用生成式有机 loop plates + deterministic architecture composite。
+- 当前只记录候选，不安装 skill、不购 credits、不创建 Key、不调用付费模型；任何 adoption 仍需安全审计、
+  隔离 spike、质量/许可/维护成本和新 ADR。

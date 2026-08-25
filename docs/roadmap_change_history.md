@@ -3086,3 +3086,56 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   owner-scoped selection、history/focus/fail-closed、母图分层 V1 取得公共证据；8E parent/coverage 仍未完成。
 - `HANDOFF`：RQ-108 `portal-motion-polish` 现在是 prepared/waiting authorization。公共 CI 不把静态 Portal
   升级成最终视觉，也不授权自动开始媒体/素材实现。
+
+## 2026-08-25：RQ-109 授权启动 Portal Motion Polish
+
+- `AUTHORIZED`：用户明确“开始”，授权唯一原子项 `portal-motion-polish`；当前从教学、现有 motion/media
+  seam 审计、方案比较、ADR-0068、正式设计和实施计划开始。
+- `BOUNDARY`：设计门完成前不写 runtime 动效实现、不采用生成资产、不改变 Portal→Account 的 Auth/API
+  生命周期；不进入 Coach、Data Dragon enrichment、跨模块 final QA 或 8F。
+
+## 2026-08-25：RQ-110 将暗化 Portal 固定为 anti-reference
+
+- `SUPERSEDED-FOR-FINAL`：当前 `rift-portal-background-v2`、全屏暗幕/vignette/blur 和左上说明字不进入
+  RQ-108 最终 runtime；它们只保留历史 V1/回归反例价值。
+- `CURRENT`：确认高清母图是唯一画面源。正常体验从它制作同构全屏循环 background，同母图 poster 负责
+  reduced-motion、Save-Data 和媒体失败；只保留融景小字标、语言控件、不可见可访问名和水晶微光提示。
+- `CURRENT`：此前多来源研究继续有效，必须广泛筛选后少量自主重构，不依赖 MotionSites 或任何单一来源。
+
+## 2026-08-25：RQ-111 至 RQ-114 Account 五英雄分层制作边界
+
+- `RQ-111`：Account 可固定 Camille/Kindred/Ahri/Jinx/Thresh 五个位置英雄，但必须以场景原生全身能量回响
+  融入峡谷，不使用头像、卡片、英雄名或假个性化。
+- `RQ-113/114`：一次性群像 v2 因人物解剖畸形、splash 抠图换蓝感被拒绝。流程改为无英雄底座 → 单英雄
+  场景化重塑与逐项解剖验收 → 分层透视/光照合成 → 全局 loop；rejected 图不再作为 edit target。
+- `BOUNDARY`：可识别英雄进入公开 runtime 前仍须 Riot 产品政策、免责声明、来源/hash 和移除路径；概念预览
+  不能冒充采用或许可完成。
+
+## 2026-08-25：RQ-115 至 RQ-117 Account 地图真实性收敛
+
+- `RQ-115` 拒绝把峡谷做成机械轨道；`RQ-116` 固定左下蓝方、右上红方、河道中性蓝、男爵紫与小龙暖色。
+- 用户随后指出红蓝 v3 宏观看似峡谷、细看仍是模型臆造。RQ-117 因此采用“官方精确拓扑 + 有意概括的
+  Hextech 战术地形投影”：map11 与 Riot 2024 near-final concept 锁定三路、斜河道、双野区、双坑、双方
+  基地和阵营方向；野区/墙体/塔/基地只用 terrain masses、轮廓、材质区与符号节点表达。
+- `REJECTED`：任何位置看似具体却无法由官方参考支持的微型树、墙、草丛、坡道、道路或建筑；当前 v3 继续
+  是未签收 preview，不得成为 Account source、英雄合成底座或 runtime。
+
+## 2026-08-25：RQ-108 design gate 本地冻结
+
+- ADR-0068、正式 design、TDD implementation plan、asset ledger 与八维 planned walkthrough 已建立；媒体架构
+  为 typed manifest → viewport-aware policy → poster-first/sticky playback → ProductJourney-owned activation。
+- RQ-118 正式取代早期水晶放大/重绘要求：保留确认母图的原水晶、塔体和构图，只在全局 loop/burst 中让
+  原水晶运动；两张放大 edit、独立/CSS/贴图水晶保持 rejected。
+- archival PNG 逐字节保留；runtime poster 可压缩，但必须绑定 source SHA、通过 SSIM 和人工原尺寸审查，
+  不得用暗化/模糊换体积。Save-Data/reduced-motion 首次 render 为 0 video requests。
+- `NEXT`：完成所有 canonical/stale 同步和本地 design 门，创建独立 design commit/push 并等待 exact-SHA 三
+  job。公共全绿前不写 runtime，不继续生成 Account candidate，也不进入 Coach/RQ-103/8F。
+
+## 2026-08-25：RQ-119/120 Kimi Bad Case 与三路线视频横评
+
+- 用户在 Chrome `localhost:7100` 展示按教程生成的 Kimi loop；媒体实际为有效 12s/1080p H.264，但母图→
+  首帧 SSIM `0.412818`，人工审查确认重新取景、有效细节发糊和几何/纹理重绘。裁决 rejected，不入仓库媒体。
+- `DECISION`：Kimi 降为未准入候选；同源 bake-off 增加 Wan 2.7、Seedance、Veo、Luma、Runway/Firefly。
+  同时比较 HyperFrames/Remotion 确定性 frame render，推荐“生成式有机层 + 确定性结构合成”为 primary candidate。
+- `BOUNDARY`：本批只完成官方资料/skill 质量审计和 body-free audit；没有安装 skill、购买 credits、创建 Key、
+  调用付费模型或修改 `web/` runtime。工具采用仍需安全审计、隔离 spike 和新 ADR。

@@ -3,6 +3,12 @@
 > 本文是 8E 的前置审查和真实验证门，不是 React 实现报告，也不表示正式 Auth、
 > SSE、备份或公网部署已经完成。
 
+> 2026-08-25 状态校准：本文第 4–6 节保留当时的分批/交接历史。Batch B/C/D、Live integration、
+> Batch E E1–E5、production shell/Auth gate、Timeline 与 bilingual/product-journey foundation 后来均已公共
+> 闭环；当前唯一原子项是 RQ-108 `portal-motion-polish / authorized / in_progress`。RQ-117–120、ADR-0068、
+> Kimi Bad Case 与三路线 design/TDD plan 已本地冻结，下一动作是独立 design exact-SHA；不得再把本文旧的
+> Batch E handoff 当成当前状态。
+
 ## 1. 初学者要解决的问题
 
 8D 已经像“在实验台上验证发动机规则”：给定带来源的 typed facts，融合内核能正确

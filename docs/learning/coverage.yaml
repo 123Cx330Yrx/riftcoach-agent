@@ -827,6 +827,9 @@ groups:
     status: planned
     evidence:
       problem_and_principle:
+        - docs/adr/0068-adopt-mother-image-global-loop-scenes-and-semantic-activation.md
+        - docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md
+        - docs/learning/8e-portal-motion-polish-walkthrough.md
         - docs/adr/0066-adopt-typed-bilingual-product-surface.md
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
         - docs/adr/0067-separate-cinematic-portal-account-access-and-workbench.md
@@ -864,6 +867,10 @@ groups:
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
       design_and_implementation:
+        - docs/adr/0068-adopt-mother-image-global-loop-scenes-and-semantic-activation.md
+        - docs/plans/2026-08-25-8e-portal-motion-polish-design.md
+        - docs/plans/2026-08-25-8e-portal-motion-polish-implementation.md
+        - docs/learning/8e-portal-motion-polish-walkthrough.md
         - docs/adr/0066-adopt-typed-bilingual-product-surface.md
         - docs/plans/2026-08-24-8e-bilingual-product-surface-foundation-design.md
         - docs/plans/2026-08-24-8e-bilingual-product-surface-foundation-implementation.md
@@ -900,6 +907,8 @@ groups:
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-implementation.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
       code_map:
+        - docs/plans/2026-08-25-8e-portal-motion-polish-implementation.md
+        - docs/learning/8e-portal-motion-polish-walkthrough.md
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
         - docs/learning/8e-portal-account-workbench-journey-walkthrough.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
@@ -910,6 +919,8 @@ groups:
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
       data_and_control_flow:
+        - docs/plans/2026-08-25-8e-portal-motion-polish-design.md
+        - docs/learning/8e-portal-motion-polish-walkthrough.md
         - docs/plans/2026-08-24-8e-bilingual-product-surface-foundation-design.md
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
         - docs/plans/2026-08-24-8e-portal-account-workbench-journey-correction.md
@@ -931,6 +942,9 @@ groups:
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
       verification:
+        - docs/plans/2026-08-25-8e-portal-motion-polish-implementation.md
+        - docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md
+        - docs/learning/8e-portal-motion-polish-walkthrough.md
         - docs/plans/2026-08-24-8e-bilingual-product-surface-foundation-implementation.md
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
         - docs/plans/2026-08-24-8e-portal-account-workbench-journey-correction.md
@@ -953,6 +967,8 @@ groups:
         - docs/plans/2026-08-24-8e-timeline-dto-ui-implementation.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
       runbook:
+        - docs/plans/2026-08-25-8e-portal-motion-polish-implementation.md
+        - docs/learning/8e-portal-motion-polish-walkthrough.md
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
         - docs/learning/8e-portal-account-workbench-journey-walkthrough.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md
@@ -965,6 +981,12 @@ groups:
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
       failure_security_boundary:
+        - docs/adr/0068-adopt-mother-image-global-loop-scenes-and-semantic-activation.md
+        - docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md
+        - docs/assets/8e-portal/portal-source-provenance-v1.md
+        - docs/plans/2026-08-25-8e-portal-motion-polish-design.md
+        - docs/plans/2026-08-24-8e-visual-asset-adoption-ledger.md
+        - docs/learning/8e-portal-motion-polish-walkthrough.md
         - docs/adr/0066-adopt-typed-bilingual-product-surface.md
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
         - docs/adr/0067-separate-cinematic-portal-account-access-and-workbench.md
@@ -986,6 +1008,7 @@ groups:
         - docs/adr/0065-adopt-verified-event-phase-timeline-projection.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
       interview_wording:
+        - docs/learning/8e-portal-motion-polish-walkthrough.md
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
         - docs/learning/8e-portal-account-workbench-journey-walkthrough.md
         - docs/learning/8e-player-profile-selection-explicit-routing-walkthrough.md

@@ -1,0 +1,123 @@
+# 8E Portal Motion Polish 学习与工程证据
+
+- 检查点：`8e-productization / portal-motion-polish`
+- 状态：设计门进行中；runtime implementation 尚未开始
+- 决策：ADR-0068
+- 需求：RQ-108 至 RQ-120
+- 视频候选审计：`docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md`（RQ-119）
+
+## 1. 问题与原理
+
+当前 Portal 已能安全地把用户带到 Account，再进入 Workbench，但视觉仍是暗化静态图、CSS 水晶和固定
+720ms timer。它证明了旅程合同，没有证明电影感入口。RQ-108 要解决的不是“多加几个动画”，而是把
+电影媒体和产品控制流拆开：媒体可以失败，真正的按钮、URL、Auth、profile 和 Workbench 仍必须正确。
+
+核心原理是 progressive enhancement：poster 与语义 DOM 是可用基线，满足设备与用户偏好时才挂载全帧
+loop；播放拒绝、解码失败、Save-Data 或 reduced-motion 都降回 poster，不能改变产品状态。
+
+## 2. 设计与实施边界
+
+采用的结构是：
+
+```text
+typed media manifest
+  → pure media policy
+  → poster-first scene media
+  → one-shot Portal activation
+  → existing ProductJourney
+```
+
+Portal 只使用用户确认母图的同源 poster/loop。Account 使用独立场景；其地图以官方参考锁定拓扑，以有意
+概括的 Hextech 战术投影表达地形，不伪造写实微细节。五英雄必须逐个场景化重塑、逐个验收，再分层合成。
+
+本设计不实现 Coach、Training full、Data Dragon 产品资产 enrichment、OIDC/RSO、公开部署、跨模块 final
+visual QA 或 8F。正式 runtime 实现只有在本设计提交通过 exact-SHA 公共门后才开始。
+
+## 3. 代码地图（计划）
+
+| 职责 | 计划路径 | 当前状态 |
+|---|---|---|
+| media manifest 与 viewport rendition | `web/src/cinematic/mediaManifest.ts` | pending |
+| cover/crop 与 hitbox 投影 | `web/src/cinematic/mediaGeometry.ts` | pending |
+| reduced-motion/Save-Data policy | `web/src/cinematic/mediaPolicy.ts` | pending |
+| poster/video 与 page-session sticky failure/pause | `web/src/components/CinematicSceneMedia.tsx`、`web/src/cinematic/mediaSession.ts` | pending |
+| 激活 latch/overlay | `web/src/cinematic/portalActivation.ts`、`web/src/components/PortalActivationOverlay.tsx` | pending |
+| Portal/Account 组合 | `web/src/components/AwakeningScene.tsx`、`web/src/app/App.tsx` | pending |
+| 视觉与 responsive | `web/src/styles/product-journey.css` | pending |
+| 媒体机械门 | `scripts/check_cinematic_media.py`、`tests/test_cinematic_media_contract.py` | pending |
+| browser 纵向 | `web/tests/e2e/cinematic-media.spec.ts`、`web/tests/e2e/portal-motion-visual-evidence.spec.ts` | pending |
+
+最终文件名若在红灯审计中调整，implementation plan 和本表必须一起更新，不能让文档指向不存在的接缝。
+
+## 4. 数据与控制流
+
+```text
+首次 render
+  ├─ reduced-motion / Save-Data → poster only，0 video requests
+  └─ motion eligible → poster + selected viewport video
+                           ├─ canplay/play success → video fades in
+                           └─ error/rejection → session-sticky poster
+
+Portal button click/Enter/Space
+  → single activation latch
+  → bounded convergence/burst overlay
+  → exactly one navigate(account)
+  → Account poster first
+  → AuthGate/session/profile I/O starts only now
+```
+
+媒体事件不写 URL、localStorage、Memory、Artifact 或 Runtime Trace，也不能产生第二次 `pushState`。Account
+loop 在 Account stage 之前不下载；Workbench 数据流保持不变。
+
+## 5. 验证证据（计划）
+
+当前 design gate 已通过 governance 12、frontend unit 136/E2E 36/typecheck/build、Python no-DB
+1837/146 skipped/127 subtests、两套 RAG、Harness dry-run、compileall 和安全/diff 门；本机 Docker/PostgreSQL
+不可达，因此真库/Linux 仍等待独立 design exact-SHA jobs。本节其余项目仍是 runtime 计划，不冒充已执行。
+
+- unit：manifest exactness、viewport、policy、listener cleanup、poster-first、canplay/play/error、sticky fallback、
+  hidden/visible pause、重复激活和迟到 callback；
+- browser：1440/1024/390/320、normal/reduced/Save-Data/media failure、keyboard/focus、back/forward、Account
+  独立媒体、Portal 前业务 API/SSE=0、axe 与 overflow；
+- media：source/output SHA、bytes、dimensions、codec、fps、pix_fmt、BT.709、no-audio、faststart、duration、
+  首尾 seam、poster/首帧、archival source→poster SSIM/人工感知一致性和 dist content hash；
+- Account art：map11/near-final reference SHA、拓扑锚点叠合、红蓝方向、无伪写实微细节、五英雄逐位解剖；
+- proportional：frontend typecheck/unit/build/E2E、Python focused/full、RAG/Harness、安全/治理、真 PostgreSQL
+  和 Linux package；设计门不把未来媒体结果写成已通过。
+
+## 6. 运行手册（设计阶段）
+
+1. 生成素材前核对采用账本，确认 source 和 candidate 状态；
+2. 先按冻结 source/brief/scorecard 做多路线短片横评；Kimi v1 只作 rejected Bad Case，不能作为后续 edit target；
+3. Portal 只从固定母图生成 loop；Account 先通过拓扑/抽象底座，再进入单英雄流程；
+4. 原始视频保存为研究输入，发布资产由固定 FFmpeg 参数编码为 VP9 WebM 与 H.264 MP4，并导出同源 poster；
+5. 运行媒体检查器和 frontend gates；失败资产不进入 `web/src/assets/cinematic/`；
+6. 成组审查 desktop/mobile/reduced/error 与 loop；阻断问题修复，非阻断偏好进入后序清单；
+7. 最终只提交 adopted/runtime 资产及 manifest，不提交 rejected preview、Key、玩家数据或远程热链。
+
+具体命令与红绿顺序见
+`docs/plans/2026-08-25-8e-portal-motion-polish-implementation.md`。
+
+## 7. 失败、安全与边界
+
+- poster/video 都失败时仍保留纯色背景、字标、语言控件和可访问进入按钮；这保证可用，不算视觉验收通过；
+- video 失败 session 内不自动重试，避免请求风暴；
+- Save-Data/reduced-motion 首次 render 不创建 video/source，不能先下载再隐藏；
+- media 同源、content-hashed、无音轨；远程 CDN、付费 Prompt/源码复制和第二动画 runtime 不采用；
+- 可识别 Riot 角色公开前必须有来源/hash、产品政策、免责声明和移除路径；否则不进入 runtime；
+- fixture/candidate/rejected 不能冒充 production asset；公共 edge headers 在真实 edge 验证前保持 unknown。
+
+## 8. 面试表述
+
+可以这样解释：
+
+> 我没有用 Three.js 重做一个实时 3D 首页，而是把高质量全帧循环媒体封装成可替换的 presentation layer。
+> React 继续拥有语义按钮、焦点、URL 和业务生命周期；媒体按 reduced-motion、Save-Data 和播放失败做
+> poster-first 降级。这样既保留视觉完成度，也能证明入口在媒体失败时仍可访问、不会提前启动 Auth/API。
+
+Account 地图还可以补充：
+
+> 官方低分辨率地图只足以约束拓扑，不足以证明每棵树和每堵墙。我把它做成拓扑准确、地形有意概括的
+> 战术投影，并把“看似写实但位置错误”设为拒绝条件，避免用生成细节冒充数据真实性。
+
+当前不能说 runtime 已完成、loop 已生成、Kimi/API 已接入、Riot 角色已获公开准入，或完整 8E 已关闭。

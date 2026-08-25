@@ -16,8 +16,8 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-25（RQ-102/104 双语表面与 RQ-105/106 三层旅程/母图分层已由 `6084937` / Actions `32757872792` 完成 exact-SHA 公共闭环；RQ-108 已固定为公共关闭后的下一独立 `portal-motion-polish`，尚未进入设计或实现）
-- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针仍为 `8e-productization / in_progress`，其 `bilingual-product-surface-foundation` 已公共关闭，下一原子项为 `portal-motion-polish / prepared / waiting authorization`；Batch E E1–E5、production shell/Auth gate 与 Timeline DTO/UI 已公共关闭；完整 8E/8F 尚未完成。
+- 最后更新：2026-08-25（RQ-102/104/105/106 foundation 已由 `6084937` / Actions `32757872792` 完成 exact-SHA 公共闭环；用户按 RQ-109 授权 RQ-108；RQ-117–120、ADR-0068、Kimi Bad Case、多路线设计/TDD plan 与八维 planned evidence 已本地冻结，当前只待独立 design exact-SHA，runtime 尚未开始）
+- 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
   公共验证；严格产品 DTO、Catalog-backed typed selection、服务器 run ID、Artifact binding 与
@@ -250,18 +250,13 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8e-productization / 8e-batch-e-security-deployment-entry-design`，当前为
-  `prepared / waiting authorization`。8D implementation/evidence
-  `a274b7f8900d61cb7edb7d09e2f5c87f8b0b2e48` / Actions `32598480400` 的 `pytest`、
-  `postgres-migrations`、`packaging-smoke` 三 job 全绿，八维 coverage 已 complete。8E 先完成
-  有界真实 Riot/OP.GG 验证、脱敏 EvidenceBundle replay、owner-scoped 玩家档案选择、legacy 地区显式化
-  与四地区 Worker 路由均已闭环。Batch C 又由 implementation/evidence `7975dc3cedfa8489eec317257a422577b6bfbf07`
-  / Actions `32629160732` 完成 EvidenceBundle 安全持久化、refresh/expiry、8C event replay→SSE 安全 DTO、
-  四态产品状态与 exact-SHA 三 job；Batch D 设计提交 `88a5ab67bce2cee655b384b4fd94ea8abe1d15e1`
-  / Actions `32631766013` 已三 job 全绿；Batch D implementation `f7ebedd/32636771507` 与 Live Workbench
-  integration `f441061/32647933692` 也已公共闭环。下一批只先设计 Auth/RSO、CORS/CSP/HTTPS/限流、密钥
-  生命周期、backup restore/erase、公开隐私、部署/观测与剩余五模块的安全施工顺序；授权前不实施、不配置
-  外部系统、不读取 Secret。8B holdout 不得再次执行。
+- 唯一下一步：`8e-productization / portal-motion-polish / design exact-SHA closure`，当前为
+  `authorized / in_progress`。8D、8E preflight、Batch B/C/D、Live Workbench、Batch E E1–E5、production
+  shell/Auth gate、Timeline 与 bilingual/product-journey foundation 均已公共闭环；RQ-117/118、ADR-0068、正式
+  design/TDD plan、asset ledger 与八维 planned walkthrough 已在本地建立。当前只完成 design 比例门、独立
+  commit/push 并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；三 job 全绿后才进入
+  runtime media TDD。当前不继续生成 Account candidate，不读取 Secret、不调用 Riot/OP.GG/Provider/LLM，
+  不进入 Coach、RQ-103、8F；8B holdout 不得再次执行。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -562,8 +557,8 @@ pause_reason: ""
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C/8D 与 8E Batch B/C/D、Live integration、E1–E5、production shell/Auth gate、Timeline、RQ-102/104/105/106 foundation 已公共关闭；RQ-108 只是 prepared next-only，尚未设计/实现 | foundation 公共全绿等于正式 OIDC/RSO、可追问 Coach、Portal Motion Polish、完整五模块、完整 8E 或生产 SLA |
-| 项目理解 | Stage 8 entry、8A–8D 与 8E 已闭环批次均有 ADR/设计/walkthrough；最新材料又解释 typed bilingual projection、Portal→Account→Workbench、Player Link、session/focus/history、RQ-107 Coach 缺口与 RQ-108 场景内水晶/媒体边界 | 持久材料存在等于用户已能独立讲解所有实现；owner mastery 仍需复述、读码和运行验证 |
+| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C/8D 与 8E Batch B/C/D、Live integration、E1–E5、production shell/Auth gate、Timeline、RQ-102/104/105/106 foundation 已公共关闭；RQ-108 已授权，本地 design/TDD plan 已完成但 `web/` runtime 动效仍为 0 | foundation 或 design 绿灯等于正式 OIDC/RSO、可追问 Coach、Portal Motion Polish、完整五模块、完整 8E 或生产 SLA |
+| 项目理解 | Stage 8 entry、8A–8D 与 8E 已闭环批次均有 ADR/设计/walkthrough；最新 RQ-108 材料又解释 media policy/playback、poster-first、唯一激活、RQ-117 拓扑/抽象、RQ-118 原水晶边界和可讲/不可讲 | 持久材料存在等于用户已能独立讲解所有实现；owner mastery 仍需复述、读码和运行验证 |
 | 参考资料 | Saber/Sea 只作选择性参考；8B reject 结果未重跑；OP.GG lane-meta live Bad Case 已闭环；视觉继续多来源门，breadth/golden slice 与 README 广泛研究分别留后续 8E/8F | 引用参考思想等于复制 Runtime/DAG，或 Multi-Agent reject 被撤销；一次外部观察等于长期 freshness/SLA，或 MotionSites 是唯一视觉来源 |
 | GitHub/部署 | 8C、8D、OP.GG evidence、Batch B/C/D、RQ-096、E1–E5、Auth gate 与 Timeline 均有 exact-SHA 公共证据；E4 marker replay/Artifact-Trace cleanup 与 E5 bounded metrics 已公共闭环，但 Docker image 仍不 COPY web | 本地 Compose 或公共 Web 代码等于正式 OIDC/HTTPS edge、加密备份/KMS/RPO-RTO、前端部署、完整 8E 或公网生产可用 |
 
@@ -2596,17 +2591,54 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 
 ## 2026-08-25：RQ-108 Portal Motion Polish 固定为下一原子批
 
-- foundation 已由 `6084937/32757872792` 公共关闭；当前唯一交接原子项为 `portal-motion-polish`，状态只到
-  `prepared / waiting authorization`，尚未进入教学、设计或实现。
-- 获得授权后进入 `portal-motion-polish`。它只取代当前 Portal Task 3 作为最终视觉/动效验收，
+- foundation 已由 `6084937/32757872792` 公共关闭；用户随后明确“开始”，当前唯一原子项
+  `portal-motion-polish` 已获授权并进入教学、ADR/设计、素材采用门与 TDD。
+- `portal-motion-polish` 只取代当前 Portal Task 3 作为最终视觉/动效验收，
   不否定 zero-early-I/O、Portal→Account→Workbench、真实语义按钮、keyboard/focus、history、reduced-motion
   与错误 fallback 的功能证据。
-- 视觉合同以用户确认的母图为构图源：水晶在场景内重绘/调大并随高清同源 poster/ambient media 呼吸蓄能；
+- 视觉合同以用户确认的母图为构图源；RQ-118 已取代早期“重绘/调大”要求：保留画面内原水晶、塔体与构图，
+  正常体验只让它在高清同源 full-frame loop 中呼吸蓄能，poster 仅作首帧/降级；
   透明原生 `<button>` 只覆盖点击区，不显示独立按钮或贴图水晶。提示只用融景微光点/短脉冲；激活后完成
   能量汇聚、一次性 burst 与独立 Account 动态场景幕切。
+- RQ-110 又把当前暗化 Portal 截图和 `rift-portal-background-v2` 固定为历史 V1/anti-reference：最终正常模式
+  直接从确认高清母图制作全屏循环动态 background，同母图 poster 负责 reduced-motion/Save-Data/media-error；
+  不加全屏阴影、vignette、blur 或大段文案，只保留融景小型字标、语言控件和微光点击提示。
+- RQ-111 要求 Account 的峡谷拓扑固定连接五个位置的英雄共鸣位；英雄以全身能量幻影/晶体浮雕/建筑级
+  全息剪影融入场景，通过姿态与标志性物件识别，不使用头像卡、原画墙、名字标签或假个性化。五个形象统一
+  蓝金材质且不得侵占右侧表单负空间；具体 roster/许可/生成边界在 ADR-0068 与概念图审查中冻结。
+- RQ-112 又纠正动态范围：Portal 与 Account 的正常体验必须是整张画面的全帧无缝循环视频，所有主要环境层、
+  能量路径、远景、光线、反射、星图/峡谷和角色幻影都持续运动；不能以静态 poster 加几个局部光点冒充成品。
+  poster 只用于首帧/reduced-motion/Save-Data/media-error，点击时再从全局 idle loop 收敛为一次蓄能/burst。
+- RQ-113/114 拒绝两张 Account 一次性群像候选：v2 人物解剖失真且像从 splash 抠图换蓝后贴到地图。后续先
+  制作无英雄内殿/峡谷母图，再把正确五英雄逐个重新雕塑为与路线、基座、建筑遮挡、投影和反射一体的场景
+  原生全身能量回响，逐项验收后分层合成；官方原画只锁身份，不直接抠图或沿用 pose。
+- RQ-115 又拒绝第一张无英雄底座：它把峡谷抽象成机械轨道。下一底座必须以官方 Data Dragon Summoner's
+  Rift map 锁定地理身份，保留三路、河道、双野区、两坑、基地、塔与森林/岩壁/河水，再由内殿建筑包围；
+  五英雄从对应地貌中形成，不站通用机械底座。
+- RQ-116 要求左下蓝方、右上红方的基地/塔/半区线路明确可辨，河道中性蓝、男爵坑紫、小龙坑暖色；不能
+  把双方统一成蓝色或给整张图套红蓝滤镜。当前无英雄峡谷底座 v3 已形成该 preview，仍待用户视觉签收。
+- RQ-117 进一步校准：官方 `map11` 与 Riot 2024 near-final concept 只锁定三路、斜河道、双野区、双坑、
+  双方基地和阵营方向；地形用有意概括的 Hextech terrain masses/轮廓/材质区/符号节点表达，禁止伪造看似
+  具体却无法由公开参考证明的微型树墙塔、坡道、道路或建筑。当前 v3 保持未签收 preview，不得进入英雄层、
+  视频层或 runtime。
+- RQ-118 保留母图原水晶/塔体/构图；两张放大 edit、独立/CSS/贴图水晶均 rejected。RQ-119 又把用户实际
+  Kimi 12 秒/1080p 输出作为 `rejected_for_source_fidelity_and_motion_language` Bad Case：页面播放和编码有效，
+  但母图→首帧 SSIM 仅 `0.412818`，构图/纹理/运动不合格，不能归因成单纯 CSS 或标称分辨率问题。
+- RQ-120 将正式横评分为生成式 Wan/Seedance/Veo/Luma/Runway、确定性 HyperFrames/Remotion 与混合式三线；
+  当前推荐候选是生成式有机层 + frame-driven 结构合成，但尚未安装 skill、采用工具、购买 credits、创建 Key
+  或调用付费模型。HyperFrames 若胜出仍需安全审计、隔离 spike 与新 ADR。
 - RQ-108 必须独立完成 ADR/设计、素材 provenance、codec/poster、移动安全区、reduced-motion、Save-Data、
   播放/解码失败 fallback、下载/解码/JS 预算、许可/移除路径、TDD、八维证据、独立提交和 exact-SHA 公共门。
   不热链、不复制付费素材，不默认新增 Three/OGL/Anime；不实现 Coach、OIDC/RSO、Data Dragon enrichment 或
   跨模块 final visual QA。
-- `NEXT`：RQ-108 当前为 `prepared / waiting authorization`；获得该检查点授权后，先完成教学、ADR/设计、素材
-  provenance 与媒体/交互 TDD，再实现并走八维证据、本地门、独立提交和 exact-SHA 公共 CI。
+- ADR-0068、I2V candidate audit、正式设计、详细 TDD implementation plan、asset/provenance ledger 与八维
+  planned walkthrough 已在本地建立；
+  本批未修改 `web/` runtime、未生成/采用正式 loop，也未把 Account candidate 冒充 source master。
+- design local gates：governance focused `12 passed`；frontend typecheck/unit `136`/build/E2E `36` 全绿，JS/CSS
+  gzip 仍为 `142.68/18.50 kB`；无本地 DB 环境的完整 Python 为 `1837 passed, 146 skipped, 1 warning, 127
+  subtests passed`；两套 RAG 满门、Harness `published/0 revisions`、compileall、SDK/Secret/tracked-data 与 diff
+  全绿。本机 Docker daemon/PostgreSQL 当前不可达，真库/Linux 证据必须由 design exact-SHA 公共 jobs 补齐。
+- 独立两轮设计复核最终 blocker/major findings `0`；mobile source、asset-before-integration、zero-prefetch、
+  cover geometry、CSP/provenance、可复现阈值、page-session sticky/pause 与三路线 ledger 已一致。
+- `NEXT`：完成 remaining canonical/stale 同步与 design 比例门，创建独立 design commit/push 并等待该 SHA 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job；公共全绿后才进入 runtime TDD，不继续逐图生成。

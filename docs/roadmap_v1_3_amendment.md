@@ -606,14 +606,26 @@ code 单一，不复制后端合同；当前 Timeline 高保真 V1 和截图不�
 ### 2026-08-25：foundation 后固定进入 RQ-108 Portal Motion Polish
 
 - bilingual product-surface foundation 后来已由 `6084937/32757872792` 公共关闭；在该公共证据之前没有把
-  `portal-motion-polish` 标为 in progress，当前也仍只到 prepared/waiting authorization。
+  `portal-motion-polish` 标为 in progress。用户随后按 RQ-109 授权，当前为 authorized/in progress。
 - 公共关闭后的顺序先固定为 `foundation → RQ-108 portal-motion-polish`。RQ-108 是 8E 内部原子批，不是新主
   阶段或新 coverage group，也不等于 RQ-103 的 Data Dragon enrichment/跨模块 final visual QA。
-- Portal 以已确认母图为构图源，水晶留在场景媒体内；透明原生 button 只覆盖点击区域。正常体验可使用同源
-  poster 与有界 ambient motion/video、汇聚/burst 和独立 Account 场景幕切，但必须提供 mobile、Save-Data、
+- Portal 以已确认母图为构图源，水晶留在场景媒体内；透明原生 button 只覆盖点击区域。正常体验必须使用
+  同源全帧 loop，poster 只负责首帧/降级；汇聚/burst 和独立 Account 场景幕切必须提供 mobile、Save-Data、
   reduced-motion、媒体失败、许可、性能和移除路径。Three/OGL/Anime 等新 runtime 仍需新的 Bad Case/ADR。
 - RQ-108 关闭后再裁决 RQ-107 bounded Coach 与 RQ-103 asset/detail/final-QA 的相对顺序；不提前实现二者。
 
+RQ-117 把 Account 地图的精度边界固定为“官方拓扑准确 + 地形有意概括”：三路、河道、双野区、双坑、基地和
+左下蓝/右上红必须可辨，野区/墙体/塔/基地用 terrain masses、轮廓和符号节点表达，不伪造无法由公开参考证明
+的微型细节。当前 v3 仍是未签收 preview，不能进入英雄合成或 runtime。ADR-0068、正式设计、implementation
+plan 与八维 planned walkthrough 已在本地建立；必须先完成独立 design exact-SHA 公共门，再开始 runtime TDD。
+
+RQ-118 又取代 RQ-108 的水晶放大/重绘细节：Portal source 保留确认母图原水晶、塔体和构图，只有全局 loop/
+点击 burst 让原水晶运动；独立、放大、CSS 或贴图水晶均不得进入 poster、fallback 或 runtime。
+
+RQ-119/120 把外部制片从“Kimi 默认”改为证据驱动三路线横评：生成式 Wan/Seedance/Veo/Luma/Runway，
+确定性 HyperFrames/Remotion，以及生成式有机层 + 确定性结构合成。用户实测 Kimi v1 因 source/texture/
+motion language rejected；本设计不安装 skill、不采购/调用模型，胜出工具仍需独立安全/许可/ADR 门。
+
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
-Linux package 三 job exact-SHA 全绿；foundation 正式关闭。RQ-108 当前仅为 prepared/waiting authorization，
-不因上述绿灯自动进入设计或实现；8E coverage 继续 planned。
+Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入
+教学、ADR/设计、素材采用门和 TDD；8E coverage 继续 planned。

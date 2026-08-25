@@ -31,7 +31,7 @@ state、Evidence 和 Training 边界；Image2/Photoshop 只提供可替换氛围
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 已完成；7-5 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 完成最终公共闭环 |
-| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B–E、Live integration、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共闭环，ADR-0053 reject 产品 Multi-Agent；下一项为 RQ-108 `portal-motion-polish` prepared/waiting authorization，完整 8E/8F 未完成 |
+| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B–E、Live integration、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共闭环，ADR-0053 reject 产品 Multi-Agent；RQ-108 `portal-motion-polish` 已按 RQ-109 授权并进入设计/TDD，完整 8E/8F 未完成 |
 
 ## 横向能力总账
 
@@ -629,8 +629,21 @@ background 不含文字/UI/core，React core 是唯一交互真值。implementat
 `32757872792` 的 exact-SHA 三 job 已公共关闭该 foundation。
 
 RQ-108 已把 foundation 公共关闭后的立即下一原子项固定为独立 `portal-motion-polish`：以确认母图为构图源，
-水晶保留在场景媒体内并由透明语义按钮覆盖点击区，高清 poster/有界 ambient media、汇聚/burst、独立 Account
+水晶保留在场景媒体内并由透明语义按钮覆盖点击区；正常体验必须使用同源全帧 loop，高清 poster 只负责
+首帧/降级，汇聚/burst、独立 Account
 动态场景幕切及完整媒体降级/预算门必须单独设计和验证。它不新增主阶段，也不完成 RQ-103 跨模块 final QA。
+
+RQ-117 又校准 Account 地图：Data Dragon map11 与 Riot 2024 near-final concept 只锁定官方拓扑与阵营，
+最终画面采用有意概括的 Hextech 战术地形投影，禁止伪造具体树墙塔等写实微细节。ADR-0068、正式设计、
+TDD implementation plan 与八维 planned walkthrough 已在本地建立；当前只待独立 design exact-SHA，尚无
+runtime media/video 实现，也没有已采用的 Account source master。
+
+RQ-118 同时消除了早期水晶句子的歧义：Portal 不再重绘或放大水晶，确认母图中的原水晶、塔体和构图保持
+source truth；全局 loop 与点击 burst 只赋予原水晶运动，透明语义按钮覆盖其真实位置。
+
+RQ-119/120 又用用户 Kimi 12s/1080p 实测建立第一个视频 Bad Case：有效播放/标称分辨率仍可能严重偏离
+source composition。Kimi v1 已 rejected；正式横评覆盖 Wan/Seedance/Veo/Luma/Runway 等生成 I2V、
+HyperFrames/Remotion 确定性分层 render，以及推荐的混合式。当前没有安装/采用新工具或调用付费模型。
 
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1

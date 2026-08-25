@@ -2157,11 +2157,12 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 ## 2026-08-25：RQ-108 Portal Motion Polish 顺序与表现边界
 
 - RQ-102/104/105/106 bilingual/product-journey foundation 已由 `6084937/32757872792` exact-SHA 公共关闭；
-  RQ-108 当前仅为 prepared/waiting authorization。
-- 获得授权后固定先进入 8E 内部 `portal-motion-polish`。它不新增主阶段/coverage group，只取代 Portal Task 3
+  用户随后按 RQ-109 授权 RQ-108，当前为 authorized/in progress。
+- 固定先进入 8E 内部 `portal-motion-polish`。它不新增主阶段/coverage group，只取代 Portal Task 3
   作为最终视觉/动效验收；zero-early-I/O、三层旅程、语义 hit target、keyboard/focus、history、
   reduced-motion 与失败 fallback 的既有功能证据保留。
-- 用户确认母图是完整场景构图源。中央水晶在场景媒体内重绘/调大并自然呼吸/蓄能；透明原生 `<button>`
+- 本句记录早期 RQ-108 方案，水晶放大/重绘细节已由 RQ-118 取代：确认母图原水晶、塔体和构图保持不变；
+  透明原生 `<button>`
   只覆盖水晶点击区，不显示独立贴图或常规按钮。提示只用融景微光点/短脉冲，激活后执行汇聚、一次 burst
   和独立 Account 动态场景幕切。
 - 任何视频/ambient media 都必须同源版本化，并有 poster/codec、mobile safe area、Save-Data、
@@ -2169,3 +2170,36 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   Anime 等新 runtime 没有新的 Bad Case/ADR 时不采用。
 - RQ-108 不实现 Coach、OIDC/RSO、Data Dragon asset/detail enrichment 或跨模块 final visual QA；RQ-108
   关闭后再裁决 RQ-107 与 RQ-103 的相对顺序。
+
+## 2026-08-25：RQ-110 至 RQ-118 Portal/Account 素材与地图裁决
+
+- Portal 的唯一 source master 是 SHA `552a874...aada` 的确认母图；旧暗图、aperture、keyframe、大标题、
+  CSS/贴图水晶、filter/vignette/blur 均是 anti-reference，不进入最终 poster/loop/fallback。
+- Portal 与 Account 正常体验都必须是全帧全局 loop；poster 只服务首帧、reduced-motion、Save-Data 和媒体
+  failure。媒体 policy 两个分支都携带 viewport，播放失败进入 session-sticky poster。
+- Account 固定 Camille/Kindred/Ahri/Jinx/Thresh 五个场景原生全身回响；一次性群像、splash 抠图换色、
+  畸形人物和通用机械底座均拒绝。先验收无英雄底座，再逐英雄验收、合成和 loop。
+- RQ-117 取代伪写实追求：map11 与 Riot 2024 near-final concept 锁定三路、河道、双野区、双坑、基地、
+  朝向和红蓝方；森林/岩壁/墙体/塔只用 terrain masses、轮廓、材质区和符号节点概括，禁止生成无法由公开
+  参考证明的微型细节。当前 v3 是未签收 preview，不得进入英雄层或 runtime。
+- RQ-118 取代早期“重绘/调大水晶”：确认母图的原水晶、塔体与构图保持 source truth，只在全局 loop 与
+  点击 burst 中让原水晶运动；放大 edit、独立/CSS/贴图水晶不得进入任何发布路径。
+- archival PNG 逐字节保留；runtime poster 可做同源感知压缩，但必须绑定 source SHA、通过 SSIM 和人工原
+  尺寸审查，不能用暗化/模糊换体积。
+
+## 2026-08-25：ADR-0068 design gate 本地裁决
+
+- 采用 typed manifest → viewport-aware media policy → poster-first playback → ProductJourney-owned activation，
+  拒绝 CSS-only 假全局动态和无 Bad Case 的 WebGL/第二动画引擎。
+- ADR、正式 design、详细 TDD implementation plan、asset ledger 和八维 planned walkthrough 已建立；本批
+  没有 `web/` runtime 修改、正式 loop adoption 或外部产品调用。
+- 唯一下一动作是 design 独立提交、push 和 exact-SHA 三 job；公共成功后才执行 runtime TDD。
+
+## 2026-08-25：RQ-119/120 视频制片路线裁决
+
+- 用户 Kimi v1 是有效 12s/1080p 视频而非播放故障，但 source→首帧 SSIM `0.412818` 且人工构图、纹理和
+  motion language 不通过；只作为 rejected Bad Case，不以新 Prompt 盲目补跑。
+- A 线比较 Wan/Seedance/Veo/Luma/Runway/Firefly 等 first/last/reference I2V；B 线比较 HyperFrames/
+  Remotion 分层 frame render；C 线以生成式有机 plates + 确定性建筑/水晶/拓扑合成为推荐候选。
+- HyperFrames 的 Apache-2.0、seekable HTML 和成熟主 skill 支持优先隔离 spike；Remotion 保留 React 对照但
+  需复核 source-available 许可。任何 skill 安装、credits/Key/付费调用前另行安全、费用与凭据门。
