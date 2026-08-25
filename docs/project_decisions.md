@@ -2243,3 +2243,10 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - `2111a78/32833608622` exact-SHA 三 job 全绿，Task 2 `mediaSession`/`CinematicSceneMedia` 公共关闭。
 - 下一裁决面只限 Task 3：单次激活 latch、reduced-motion、generation/跨幕 overlay 与唯一导航；生产 media/
   视频模型/relay 采用仍留后续独立门。
+
+## 2026-08-25：RQ-108 runtime Task 3 本地裁决
+
+- Portal 激活由 `ProductJourney` 持有 timer 与 navigation latch，`AwakeningScene` 只发 semantic activation intent；
+  overlay 跨 Portal→Account mount，generation 使迟到 timer/popstate/StrictMode no-op。
+- 聚焦 `27 passed`、frontend `257 passed`、typecheck/build/Playwright `36` 全绿；当前只待独立提交与公共 CI，
+  不接生产视频、Account source 或视频模型。

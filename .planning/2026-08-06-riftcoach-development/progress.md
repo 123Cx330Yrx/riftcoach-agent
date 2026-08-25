@@ -4413,3 +4413,14 @@
   和最小 cover/opacity 保障取得公共证据；公共门没有新增生产媒体或外部调用。
 - `HANDOFF`：唯一下一动作切为 Task 3 单次 Portal 激活与跨幕 overlay TDD；Task 4 媒体审计、Task 5 bake-off、
   App 组合和生产素材仍按计划后置。
+
+### 2026-08-25：RQ-108 runtime Task 3 本地完成
+
+- `RED→GREEN`：先以缺少 `portalActivation`/`PortalActivationOverlay` 得到预期红灯，再补纯状态机、overlay、
+  Awakening 受控语义和 ProductJourney 集成测试。
+- `IMPLEMENTED`：generation/latch 使重复 click/Enter/Space/StrictMode/迟到 timer 幂等；reduced-motion 立即
+  commit；popstate 取消并失效 generation；committed navigation 只 push 一次；overlay 在 Account mount 后有界退出。
+- `LOCAL`：focused `27 passed`；frontend `32 files / 257 passed`；typecheck/build、Playwright `36`、JS/CSS gzip
+  `144.07/18.50 kB`、governance 与 existing journey 门全绿。
+- `BOUNDARY/NEXT`：Task 3 尚未公共关闭；未接 production video/media、Account source、Auth 新行为或视频模型/relay。
+  下一动作是独立 implementation/evidence commit 与 exact-SHA 三 job。

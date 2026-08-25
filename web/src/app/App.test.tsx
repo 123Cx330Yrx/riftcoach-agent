@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react"
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
@@ -58,6 +58,66 @@ describe("RiftCoach product journey", () => {
     expect(createAuthSessionClient).not.toHaveBeenCalled()
     expect(createPlayerAccessApi).not.toHaveBeenCalled()
     expect(createLiveController).not.toHaveBeenCalled()
+  })
+
+  it("commits Portal activation once, keeps the overlay across Account mount, then dismisses it", async () => {
+    vi.useFakeTimers()
+    try {
+      const createAuthSessionClient = vi.fn(authClient)
+      render(
+        <App
+          createAuthSessionClient={createAuthSessionClient}
+          createPlayerAccessApi={vi.fn(playerAccessApi)}
+        />,
+      )
+
+      const core = screen.getByRole("button", { name: /enter riftcoach/i })
+      fireEvent.click(core)
+      fireEvent.click(core)
+      expect(screen.getByTestId("awakening-scene")).toHaveAttribute("data-activation", "activating")
+      expect(createAuthSessionClient).not.toHaveBeenCalled()
+
+      await act(async () => {
+        vi.advanceTimersByTime(719)
+      })
+      expect(createAuthSessionClient).not.toHaveBeenCalled()
+
+      await act(async () => {
+        vi.advanceTimersByTime(1)
+        await Promise.resolve()
+      })
+      expect(createAuthSessionClient).toHaveBeenCalledOnce()
+      expect(screen.getByRole("heading", { name: /who are we reviewing/i })).toBeInTheDocument()
+      expect(screen.getByTestId("portal-activation-overlay")).toHaveAttribute("data-phase", "committed")
+
+      await act(async () => {
+        vi.advanceTimersByTime(360)
+      })
+      expect(screen.queryByTestId("portal-activation-overlay")).not.toBeInTheDocument()
+      expect(screen.getByRole("heading", { name: /who are we reviewing/i })).toHaveFocus()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it("cancels a pending activation when history moves back before commit", async () => {
+    vi.useFakeTimers()
+    try {
+      const createAuthSessionClient = vi.fn(authClient)
+      render(<App createAuthSessionClient={createAuthSessionClient} />)
+      fireEvent.click(screen.getByRole("button", { name: /enter riftcoach/i }))
+
+      window.history.replaceState(null, "", "/")
+      window.dispatchEvent(new PopStateEvent("popstate"))
+      await act(async () => {
+        vi.advanceTimersByTime(720)
+      })
+
+      expect(createAuthSessionClient).not.toHaveBeenCalled()
+      expect(screen.getByTestId("awakening-scene")).toHaveAttribute("data-activation", "idle")
+    } finally {
+      vi.useRealTimers()
+    }
   })
 
   it("exposes the isolated portal preview without mounting the workbench", () => {

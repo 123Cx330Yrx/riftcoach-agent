@@ -3179,3 +3179,11 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `2111a78/32833608622` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；Task 2 正式关闭。
 - `HANDOFF`：唯一下一动作切为 Task 3 单次 Portal 激活与跨幕 overlay TDD；App 组合、production media、
   视频 skill/model/relay 与 Task 4/5 仍未进入。
+
+## 2026-08-25：RQ-108 runtime Task 3 本地完成
+
+- `portalActivation`、`PortalActivationOverlay` 与 ProductJourney-owned activation seam 已以 23 项聚焦测试
+  完成；覆盖 generation/latch、reduced-motion、popstate cancellation、唯一 navigation、aria/pointer isolation
+  和 Account 跨幕退出。
+- frontend unit `257`、typecheck/build、Playwright `36` 全绿，JS/CSS gzip `144.07/18.50 kB`；当前只待 Task 3
+  implementation/evidence exact-SHA 公共闭环，不进入 Task 4 或生产媒体。

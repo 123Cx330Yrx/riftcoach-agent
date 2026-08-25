@@ -4252,3 +4252,8 @@
   error 和 StrictMode 测试固定。
 - `2111a78/32833608622` 的 exact-SHA 三项公共 job 全绿；Task 2 的公共证据确认这些生命周期门在 Linux、真实
   PostgreSQL 与完整回归组合下没有破坏既有产品。Task 3 是唯一下一项，不能因组件已存在而提前接入 App。
+- Task 3 审计确认 timer 必须由 `ProductJourney` 持有：子场景卸载不应丢失 committed overlay，且 StrictMode
+  effect 重跑不能再次 `pushState`。generation ref、navigation latch 和 popstate cancellation 已固定该边界。
+- Task 3 不签收最终视觉：现有 AwakeningScene 的旧 CSS crystal/orbit/label/H1/lede 与临时 overlay 暗场仍是
+  V1 fallback，明确留到后续 production media/Task 5–6 组合门；本批只签收 activation semantics、focus 和
+  navigation 生命周期，不能把它写成 RQ-110/RQ-118 的最终画面。

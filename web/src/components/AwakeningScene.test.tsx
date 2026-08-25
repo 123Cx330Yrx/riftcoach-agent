@@ -7,22 +7,35 @@ import { createAwakeningState, transitionAwakeningState } from "../awakening/mod
 import { renderWithLocale as render } from "../test/renderWithLocale"
 
 describe("AwakeningScene", () => {
-  it("plays one bounded handoff before entering in full-motion mode", () => {
-    vi.useFakeTimers()
-    const onEnter = vi.fn()
-    render(
+  it("emits one activation intent and keeps the semantic core latched", () => {
+    const onActivate = vi.fn()
+    const view = render(
       <AwakeningScene
         state={createAwakeningState()}
-        onEnter={onEnter}
+        onEnter={vi.fn()}
+        onActivate={onActivate}
       />,
     )
 
-    fireEvent.click(screen.getByRole("button", { name: /enter riftcoach/i }))
-    expect(screen.getByTestId("awakening-scene")).toHaveClass("awakening-scene--departing")
-    expect(onEnter).not.toHaveBeenCalled()
-    vi.advanceTimersByTime(720)
-    expect(onEnter).toHaveBeenCalledOnce()
-    vi.useRealTimers()
+    const core = screen.getByRole("button", { name: /enter riftcoach/i })
+    expect(core).not.toHaveAttribute("aria-disabled")
+    fireEvent.click(core)
+    expect(onActivate).toHaveBeenCalledOnce()
+
+    const activating = { phase: "activating", generation: 1 } as const
+    view.rerender(
+      <AwakeningScene
+        state={createAwakeningState()}
+        activationState={activating}
+        onEnter={vi.fn()}
+        onActivate={onActivate}
+      />,
+    )
+    const latchedCore = screen.getByRole("button", { name: /enter riftcoach/i })
+    expect(screen.getByTestId("awakening-scene")).toHaveAttribute("data-activation", "activating")
+    expect(latchedCore).toHaveAttribute("aria-disabled", "true")
+    fireEvent.click(latchedCore)
+    expect(onActivate).toHaveBeenCalledOnce()
   })
 
   it("renders a cinematic portal without mounting account fields", () => {
@@ -43,17 +56,19 @@ describe("AwakeningScene", () => {
 
   it("activates the central core by keyboard while preserving reduced-motion state", async () => {
     const user = userEvent.setup()
-    const onEnter = vi.fn()
+    const onActivate = vi.fn()
     const editingReduced = transitionAwakeningState(
       transitionAwakeningState(createAwakeningState(), "begin_editing"),
       "reduce_motion",
     )
 
-    render(
+    const view = render(
       <AwakeningScene
         state={editingReduced}
         disclosure="Preview only"
-        onEnter={onEnter}
+        onEnter={vi.fn()}
+        activationState={{ phase: "idle", generation: 0 }}
+        onActivate={onActivate}
       />,
     )
 
@@ -66,7 +81,16 @@ describe("AwakeningScene", () => {
     await user.tab()
     expect(core).toHaveFocus()
     await user.keyboard("{Enter}")
+    view.rerender(
+      <AwakeningScene
+        state={editingReduced}
+        disclosure="Preview only"
+        onEnter={vi.fn()}
+        activationState={{ phase: "activating", generation: 1 }}
+        onActivate={onActivate}
+      />,
+    )
     await user.keyboard(" ")
-    expect(onEnter).toHaveBeenCalledOnce()
+    expect(onActivate).toHaveBeenCalledOnce()
   })
 })

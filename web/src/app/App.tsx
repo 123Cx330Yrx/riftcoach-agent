@@ -54,6 +54,18 @@ import {
   type ProductJourneyLocation,
   type ProductJourneyTarget,
 } from "./productJourney"
+import { useCinematicMediaPolicy } from "../cinematic/useCinematicMediaPolicy"
+import {
+  PORTAL_ACTIVATION_FULL_MOTION_MS,
+  PORTAL_ACTIVATION_OVERLAY_EXIT_MS,
+  cancelPortalActivation,
+  commitPortalActivation,
+  createPortalActivationState,
+  startPortalActivation,
+  shouldUseImmediatePortalActivation,
+  type PortalActivationState,
+} from "../cinematic/portalActivation"
+import { PortalActivationOverlay } from "../components/PortalActivationOverlay"
 
 export interface LiveWorkbenchControllerLike {
   readonly snapshot: LiveWorkbenchSnapshot
@@ -442,12 +454,14 @@ function LiveWorkbench({
 function AccountAccessHost({
   createPlayerAccessApi,
   session,
+  focusReady,
   onBack,
   onContinue,
   onAuthFailure,
 }: {
   readonly createPlayerAccessApi?: () => PlayerAccessApi
   readonly session: AuthSessionWire
+  readonly focusReady: boolean
   readonly onBack: () => void
   readonly onContinue: (profileId: string) => void
   readonly onAuthFailure: (code: string) => void
@@ -457,6 +471,7 @@ function AccountAccessHost({
     <AccountAccess
       api={api}
       csrfToken={session.csrf_token}
+      focusReady={focusReady}
       onBack={onBack}
       onContinue={onContinue}
       onAuthFailure={onAuthFailure}
@@ -466,12 +481,14 @@ function AccountAccessHost({
 
 function AuthenticatedProduct({
   journey,
+  accountFocusReady,
   createController,
   createAuthSessionClient,
   createPlayerAccessApi,
   onNavigate,
 }: {
   readonly journey: Exclude<ProductJourneyLocation, { stage: "portal" }>
+  readonly accountFocusReady: boolean
   readonly createController: (initialProfileId: string) => LiveWorkbenchControllerLike
   readonly createAuthSessionClient?: () => AuthSessionClient
   readonly createPlayerAccessApi?: () => PlayerAccessApi
@@ -494,6 +511,7 @@ function AuthenticatedProduct({
         <AccountAccessHost
           {...(createPlayerAccessApi === undefined ? {} : { createPlayerAccessApi })}
           session={session}
+          focusReady={accountFocusReady}
           onBack={() => onNavigate({ stage: "portal" })}
           onContinue={(profileId) => onNavigate({ stage: "workbench", profileId })}
           onAuthFailure={onAuthFailure}
@@ -525,9 +543,32 @@ function ProductJourney({
 }: Pick<AppProps, "createLiveController" | "createAuthSessionClient" | "createPlayerAccessApi">) {
   const { t } = useI18n()
   const [journey, setJourney] = useState(currentJourney)
+  const [activation, setActivation] = useState<PortalActivationState>(createPortalActivationState)
+  const cinematicPolicy = useCinematicMediaPolicy()
+  const reducedMotion = cinematicPolicy.mode === "poster"
+    && cinematicPolicy.reason === "reduced-motion"
+  const saveData = cinematicPolicy.mode === "poster"
+    && cinematicPolicy.reason === "save-data"
+  const activationNoSpatialMotion = shouldUseImmediatePortalActivation(reducedMotion, saveData)
+  const committedGenerationRef = useRef<number | undefined>(undefined)
+
+  const navigate = useCallback((target: ProductJourneyTarget) => {
+    if (target.stage !== "account") {
+      setActivation((current) => cancelPortalActivation(current, current.generation))
+    }
+    window.history.pushState(null, "", productJourneyUrl(target))
+    setJourney(parseProductJourney(window.location.search))
+  }, [])
+
+  const activatePortal = useCallback(() => {
+    setActivation((current) => startPortalActivation(current))
+  }, [])
 
   useEffect(() => {
-    const onPopState = () => setJourney(currentJourney())
+    const onPopState = () => {
+      setActivation((current) => cancelPortalActivation(current, current.generation))
+      setJourney(currentJourney())
+    }
     window.addEventListener("popstate", onPopState)
     return () => window.removeEventListener("popstate", onPopState)
   }, [])
@@ -535,31 +576,66 @@ function ProductJourney({
   useEffect(() => {
     if (!journey.canonical) {
       window.history.replaceState(null, "", productJourneyUrl({ stage: "portal" }))
+      setActivation((current) => cancelPortalActivation(current, current.generation))
       setJourney({ stage: "portal", canonical: true })
     }
   }, [journey])
 
-  const navigate = useCallback((target: ProductJourneyTarget) => {
-    window.history.pushState(null, "", productJourneyUrl(target))
-    setJourney(parseProductJourney(window.location.search))
-  }, [])
+  useEffect(() => {
+    if (activation.phase !== "activating") return
+    const generation = activation.generation
+    if (activationNoSpatialMotion) {
+      setActivation((current) => commitPortalActivation(current, generation))
+      return
+    }
+    const timer = setTimeout(() => {
+      setActivation((current) => commitPortalActivation(current, generation))
+    }, PORTAL_ACTIVATION_FULL_MOTION_MS)
+    return () => clearTimeout(timer)
+  }, [activation.generation, activation.phase, activationNoSpatialMotion])
 
-  if (journey.stage === "portal") {
-    return (
-      <div className="awakening-preview-shell">
-        <a className="skip-link" href="#awakening-title">{t("app.skip_identity")}</a>
-        <AwakeningScene state={createAwakeningState()} onEnter={() => navigate({ stage: "account" })} />
-      </div>
-    )
-  }
-  return (
+  useEffect(() => {
+    if (journey.stage !== "portal" || activation.phase !== "committed") return
+    if (committedGenerationRef.current === activation.generation) return
+    committedGenerationRef.current = activation.generation
+    navigate({ stage: "account" })
+  }, [activation.generation, activation.phase, journey.stage, navigate])
+
+  useEffect(() => {
+    if (journey.stage !== "account" || activation.phase !== "committed") return
+    const generation = activation.generation
+    const timer = setTimeout(() => {
+      setActivation((current) => cancelPortalActivation(current, generation))
+    }, activationNoSpatialMotion ? 0 : PORTAL_ACTIVATION_OVERLAY_EXIT_MS)
+    return () => clearTimeout(timer)
+  }, [activation.generation, activation.phase, journey.stage, activationNoSpatialMotion])
+
+  const content = journey.stage === "portal" ? (
+    <div className="awakening-preview-shell">
+      <a className="skip-link" href="#awakening-title">{t("app.skip_identity")}</a>
+      <AwakeningScene
+        state={activationNoSpatialMotion ? { phase: "idle", motion: "reduced" } : createAwakeningState()}
+        activationState={activation}
+        onActivate={activatePortal}
+        onEnter={() => navigate({ stage: "account" })}
+      />
+    </div>
+  ) : (
     <AuthenticatedProduct
       journey={journey}
+      accountFocusReady={activation.phase !== "committed"}
       createController={createLiveController ?? createDefaultLiveController}
       {...(createAuthSessionClient === undefined ? {} : { createAuthSessionClient })}
       {...(createPlayerAccessApi === undefined ? {} : { createPlayerAccessApi })}
       onNavigate={navigate}
     />
+  )
+
+  return (
+    <>
+      {content}
+      <PortalActivationOverlay state={activation} reducedMotion={activationNoSpatialMotion} />
+    </>
   )
 }
 

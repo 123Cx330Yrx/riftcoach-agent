@@ -633,9 +633,8 @@ RQ-121 允许用户正规中转目录作为 official-first 之后的 secondary t
 不证明模型身份或能力，必须通过 mapping/capability/compression/privacy/region/error/billing/body-free 门。
 该补充不改变 Task 1、8E/8F 顺序或外部调用授权。
 
-runtime Task 1 已由 `1b146e6/32826953474` 公共关闭；Task 2 `mediaSession` + poster-first 播放组件又由
-`2111a78/32833608622` exact-SHA 公共关闭。当前只进入 Task 3 单次激活/跨幕 overlay TDD，不提前进入 App
-组合、production media 或任何视频/relay 调用。
+runtime Task 1 与 Task 2 已由 `1b146e6/32826953474`、`2111a78/32833608622` 公共关闭；Task 3 单次激活/
+跨幕 overlay 已本地 TDD 完成，当前只待独立 exact-SHA，不提前进入媒体审计、production media 或视频/relay 调用。
 
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
 Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入

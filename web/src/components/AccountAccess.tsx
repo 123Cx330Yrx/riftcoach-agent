@@ -46,6 +46,7 @@ export function AccountAccess({
   csrfToken,
   onBack,
   onContinue,
+  focusReady = true,
   idempotencyKeyFactory,
   pollDelaysMs,
   onAuthFailure,
@@ -54,6 +55,7 @@ export function AccountAccess({
   readonly csrfToken: string
   readonly onBack: () => void
   readonly onContinue: (profileId: string) => void
+  readonly focusReady?: boolean
   readonly idempotencyKeyFactory?: () => string
   readonly pollDelaysMs?: readonly number[]
   readonly onAuthFailure?: (code: string) => void
@@ -79,7 +81,9 @@ export function AccountAccess({
     return () => controller.dispose()
   }, [controller])
 
-  useEffect(() => titleRef.current?.focus(), [])
+  useEffect(() => {
+    if (focusReady) titleRef.current?.focus()
+  }, [focusReady])
 
   useEffect(() => {
     const code = snapshot.status === "error"

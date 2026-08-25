@@ -1,7 +1,7 @@
 # 8E Portal Motion Polish 学习与工程证据
 
 - 检查点：`8e-productization / portal-motion-polish`
-- 状态：设计门 `b3b5280/32812868683`、runtime Task 1 `1b146e6/32826953474` 与 Task 2 `2111a78/32833608622` 均 exact-SHA 公共闭环；Task 3 待进入
+- 状态：设计门 `b3b5280/32812868683`、runtime Task 1 `1b146e6/32826953474` 与 Task 2 `2111a78/32833608622` exact-SHA 公共闭环；Task 3 本地完成，待独立 exact-SHA
 - 决策：ADR-0068
 - 需求：RQ-108 至 RQ-120
 - 视频候选审计：`docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md`（RQ-119）
@@ -41,8 +41,8 @@ visual QA 或 8F。正式 runtime 实现只有在本设计提交通过 exact-SHA
 | cover/crop 与 focal/hitbox 投影 | `web/src/cinematic/mediaGeometry.ts` | implemented-local；pure cover geometry |
 | reduced-motion/Save-Data policy | `web/src/cinematic/mediaPolicy.ts`、`web/src/cinematic/useCinematicMediaPolicy.ts` | implemented-local；preflight-first external store |
 | poster/video 与 page-session sticky failure/pause | `web/src/components/CinematicSceneMedia.tsx`、`web/src/cinematic/mediaSession.ts` | implemented-local；controlled session events + attempt/play tokens |
-| 激活 latch/overlay | `web/src/cinematic/portalActivation.ts`、`web/src/components/PortalActivationOverlay.tsx` | pending |
-| Portal/Account 组合 | `web/src/components/AwakeningScene.tsx`、`web/src/app/App.tsx` | pending |
+| 激活 latch/overlay | `web/src/cinematic/portalActivation.ts`、`web/src/components/PortalActivationOverlay.tsx` | implemented-local；generation/latch/reduced-motion |
+| Portal/Account 组合 | `web/src/components/AwakeningScene.tsx`、`web/src/app/App.tsx` | implemented-local；ProductJourney-owned timer/navigation |
 | 视觉与 responsive | `web/src/styles/product-journey.css` | pending |
 | 媒体机械门 | `scripts/check_cinematic_media.py`、`tests/test_cinematic_media_contract.py` | pending |
 | browser 纵向 | `web/tests/e2e/cinematic-media.spec.ts`、`web/tests/e2e/portal-motion-visual-evidence.spec.ts` | pending |
@@ -111,6 +111,13 @@ policy 且 session 未失败时才挂载 `<video>`；`canplay` 只启动一次 p
 Task 2 本地新增的结构性证据包括：poster/reduced/Save-Data 下 DOM 中没有 video/source、WebM→MP4 顺序和媒体
 属性、play reject/error sticky、旧 Promise/DOM 事件隔离、hidden/visible、user pause 正交性、poster load/error
 与 StrictMode listener cleanup。真实网络 0-request、codec fallback 和浏览器 autoplay 仍留后续 Playwright/媒体门。
+
+Task 3 本地证据覆盖：纯状态机 generation/latch/cancel、overlay 的 aria-hidden/pointer isolation、按钮
+`aria-disabled` 保持焦点、720ms full-motion commit、reduced-motion immediate commit、重复输入、popstate 取消、
+唯一 `pushState` 和 Account mount 后 overlay 有界退出。Task 3 implementation/evidence 尚未取得公共 exact-SHA。
+该批不签收最终 Portal 视觉；旧 CSS crystal/orbit/label/H1/lede 仅作为临时 V1 fallback，production media、
+原水晶同源 loop 与最终少字/无暗幕画面仍由后续 Task 4–6 独立门处理。Task 3 聚焦 `27 passed`、frontend
+`257 passed`，JS/CSS gzip 为 `144.07/18.50 kB`。
 
 ## 6. 运行手册（设计阶段）
 

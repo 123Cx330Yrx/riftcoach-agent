@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react"
-
 import type {
   AwakeningPresentationState,
 } from "../awakening/model"
+import type { PortalActivationState } from "../cinematic/portalActivation"
 import { useI18n } from "../i18n/ProductLocaleProvider"
 import { LocaleSwitch } from "./LocaleSwitch"
 
@@ -10,43 +9,35 @@ export function AwakeningScene({
   state,
   disclosure,
   onEnter,
+  activationState,
+  onActivate,
   entryMode = "production",
 }: {
   readonly state: AwakeningPresentationState
   readonly disclosure?: string
   readonly onEnter: () => void
+  readonly activationState?: PortalActivationState
+  readonly onActivate?: () => void
   readonly entryMode?: "production" | "demo"
 }) {
   const { t } = useI18n()
-  const [departing, setDeparting] = useState(false)
-  const departingRef = useRef(false)
-  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
-
-  useEffect(() => () => {
-    if (timer.current !== undefined) clearTimeout(timer.current)
-  }, [])
+  const activationPhase = activationState?.phase ?? "idle"
+  const activating = activationPhase !== "idle"
 
   const enter = () => {
-    if (departingRef.current) return
-    departingRef.current = true
-    setDeparting(true)
-    const reducedBySystem = typeof window !== "undefined" &&
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    if (state.motion === "reduced" || reducedBySystem) {
-      onEnter()
-      return
-    }
-    timer.current = setTimeout(onEnter, 720)
+    if (activating) return
+    const activate = onActivate ?? onEnter
+    activate()
   }
 
   return (
     <main
-      className={`awakening-scene awakening-scene--${state.phase}${departing ? " awakening-scene--departing" : ""}`}
+      className={`awakening-scene awakening-scene--${state.phase}${activating ? " awakening-scene--departing" : ""}${activationPhase !== "idle" ? ` awakening-scene--activation-${activationPhase}` : ""}`}
       data-testid="awakening-scene"
       data-phase={state.phase}
       data-motion={state.motion}
-      data-departing={departing ? "true" : "false"}
+      data-departing={activating ? "true" : "false"}
+      data-activation={activationPhase}
     >
       <div className="awakening-scene__field" aria-hidden="true">
         <svg viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice">
@@ -72,7 +63,7 @@ export function AwakeningScene({
           className="awakening-scene__core"
           type="button"
           onClick={enter}
-          disabled={departing}
+          aria-disabled={activating ? "true" : undefined}
           aria-describedby="awakening-enter-hint"
         >
           <span className="awakening-scene__core-orbit" />
