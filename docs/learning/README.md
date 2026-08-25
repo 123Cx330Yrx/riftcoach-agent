@@ -86,9 +86,9 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | 8D：Riot + OP.GG Evidence Fusion Core | 完整/公共闭环 | [walkthrough](8d-riot-opgg-evidence-fusion-core-walkthrough.md) / [ADR-0055](../adr/0055-adopt-typed-evidence-bundle-fusion.md) / [设计](../plans/2026-08-23-8d-riot-opgg-evidence-fusion-design.md) / [实施计划](../plans/2026-08-23-8d-riot-opgg-evidence-fusion-implementation.md) | implementation/evidence `a274b7f` / Actions `32598480400` 三 job 全绿；typed Riot/Data Dragon/official patch/OP.GG partial fusion、no-I/O adapter、digest/provenance/freshness/join/conflict/gap 与 public projection 已有本地/公共证据。真实刷新、8E Web/Auth/SSE/部署仍未实现 |
 | 8E：Productization | 进行中/coverage planned | [preflight](../plans/2026-08-23-8e-productization-preflight.md) / [Batch B](8e-player-profile-selection-explicit-routing-walkthrough.md) / [Batch C](8e-evidence-product-api-walkthrough.md) / [Batch D](8e-batch-d-rift-command-center-walkthrough.md) / [Live 接线](8e-live-workbench-integration-walkthrough.md) / [Batch E implementation](8e-batch-e-security-deployment-implementation-walkthrough.md) / [视觉合同](8e-portal-workbench-visual-contract-walkthrough.md) / [Timeline](8e-timeline-dto-ui-walkthrough.md) / [双语 foundation](8e-bilingual-product-surface-foundation-walkthrough.md) / [三层产品旅程](8e-portal-account-workbench-journey-walkthrough.md) / [Portal Motion Polish](8e-portal-motion-polish-walkthrough.md) / [I2V audit](../plans/2026-08-25-8e-image-to-video-candidate-audit.md) / [ADR-0068](../adr/0068-adopt-mother-image-global-loop-scenes-and-semantic-activation.md) | Batch B/C/D、Live、E1–E5、Auth gate、Timeline 与 bilingual/product-journey foundation 已公共闭环。RQ-108 design `b3b5280/32812868683` 又以 exact-SHA 三 job 冻结 RQ-117–120、Portal provenance、Kimi rejected Bad Case、三路线 bake-off 与详细 TDD plan。当前下一项是 runtime Task 1 manifest/geometry/policy；production media、视频 skill/付费模型调用仍为 0。RQ-108 后 RQ-107 bounded Coach 与 RQ-103 相对顺序待裁决；Evidence/Trace、Training full、OP.GG breadth/golden slice 也未完成。8E coverage 继续 planned。 |
 
-RQ-109 已授权启动 RQ-108；ADR-0068、正式设计、implementation plan 和 design-stage walkthrough 已建立并按
-八维 planned 路径登记。它们是设计证据，不是 runtime/媒体完成证据；必须先通过独立 design exact-SHA 公共门，
-再进入代码 TDD，不能用 planned 路径冒充实现或视觉签收。
+RQ-109 已授权启动 RQ-108；ADR-0068、正式设计、implementation plan 和 design-stage walkthrough 已按
+八维 planned 路径登记，并由 `b3b5280/32812868683` 与 state closure `b7e63e9/32813407485` 完成 exact-SHA
+公共门。当前只进入 runtime Task 1；这些仍只是设计/状态证据，不能冒充 runtime、媒体或视觉签收。
 
 “完整”表示仓库中已经具备八类持久证据，并不表示项目已生产就绪，也不表示项目所有者已经学会。
 个人理解进度需要通过实际复述、读码、运行和问答单独确认。
