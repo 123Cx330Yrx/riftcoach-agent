@@ -1,7 +1,7 @@
 # 8E Portal Motion Polish 学习与工程证据
 
 - 检查点：`8e-productization / portal-motion-polish`
-- 状态：设计门 `b3b5280/32812868683` exact-SHA 公共闭环；runtime Task 1 本地完成，等待独立 exact-SHA
+- 状态：设计门 `b3b5280/32812868683` 与 runtime Task 1 `1b146e6/32826953474` 均 exact-SHA 公共闭环；Task 2 待进入
 - 决策：ADR-0068
 - 需求：RQ-108 至 RQ-120
 - 视频候选审计：`docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md`（RQ-119）
@@ -87,6 +87,10 @@ RAG、Harness、compile/security 也全绿。独立审查先
 发现 legacy MediaQueryList crash 与 render→commit preference race；修复后使用 modern/legacy 对称订阅、
 `useSyncExternalStore` 和首个 `poster/preflight` commit，最终 blocker/major 为 0。该证据仍不包含 `<video>`、
 poster/source、媒体下载或页面视觉变化。
+
+runtime Task 1 的 implementation/evidence `1b146e6116587b855a6208e998b5254eac8cba1d` 随后由 Actions
+`32826953474` 完成 exact-SHA 公共闭环：`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿。
+因此 manifest/geometry/policy 接缝可以交接 Task 2；这仍不证明 `<video>` 组件、production media 或最终视觉。
 
 - unit：manifest exactness、viewport、policy、listener cleanup、poster-first、canplay/play/error、sticky fallback、
   hidden/visible pause、重复激活和迟到 callback；

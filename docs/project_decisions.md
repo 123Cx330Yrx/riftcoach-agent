@@ -2222,3 +2222,10 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   policy 已完成；首个 commit 固定 poster/preflight，订阅后才允许 motion，避免偏好竞态触发视频请求。
 - focused 71、frontend unit 207、typecheck/build/bundle 全绿，两轮独立复核 blocker/major 0；无生产 manifest、
   asset、video、network/storage/model call。下一动作只做独立提交与 exact-SHA 三 job。
+
+## 2026-08-25：RQ-108 runtime Task 1 公共裁决
+
+- implementation/evidence `1b146e6` / Actions `32826953474` 三 job 全绿，Task 1 strict manifest/geometry/
+  preflight policy 正式关闭。
+- 下一裁决面只限 Task 2：page-session playback state、poster-first component、sticky failure 与 user pause；
+  production media/模型/relay 采用仍留 Task 5 独立门。

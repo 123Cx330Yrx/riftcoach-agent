@@ -1516,10 +1516,11 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
     水晶不变，当前未安装/采用视频 skill 或调用付费模型。
   - [completed-public-design] `b3b5280` / Actions `32812868683` 的 pytest、真实 PostgreSQL migrations 与 Linux
     packaging-smoke 三 job 全绿；RQ-108 design gate 正式关闭，coverage 继续 planned。
-  - [completed-local] runtime Task 1：strict media manifest、cover geometry、viewport/reduced-motion/Save-Data
-    policy/hook 已 red→green；首个 poster/preflight、modern/legacy listener 与竞态回归完成。focused 71、frontend
-    unit 207、typecheck/build 全绿，bundle unchanged；不安装/调用视频工具，不采用 production media。
-  - [next] Task 1 独立 implementation/evidence commit/push 与 exact-SHA 三 job；公共全绿前不进入 Task 2。
+  - [completed-public] runtime Task 1：strict media manifest、cover geometry、viewport/reduced-motion/Save-Data
+    policy/hook 已 red→green；首个 poster/preflight、modern/legacy listener 与竞态回归完成。implementation
+    `1b146e6` / Actions `32826953474` 的 pytest、真实 PostgreSQL migrations 与 Linux packaging 三 job 全绿。
+  - [next] runtime Task 2：先冻结 page-session `mediaSession`、poster-first `<picture>/<video>`、sticky failure、
+    hidden/visible 与正交 pause 合同，再做 `CinematicSceneMedia` TDD；仍不接 App 或生产媒体。
   - [requirement-recorded-no-order-change] RQ-121：官方视频端点优先；用户正规中转仅在 model mapping、能力、
     压缩/水印、隐私/保留/删除、地区、错误/重试/计费与 body-free provenance 可验证时作 secondary transport。
-    该补充不打断 Task 1，也不授权上传母图、创建 Key 或付费调用。
+    该补充不打断 runtime 顺序，也不授权上传母图、创建 Key 或付费调用。

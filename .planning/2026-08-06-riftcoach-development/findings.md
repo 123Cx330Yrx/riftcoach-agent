@@ -4237,3 +4237,10 @@
   改为 cached `useSyncExternalStore` + `poster/preflight`，subscribe-then-read 才允许 motion。旧 Safari/iOS 的
   `addListener/removeListener` 也增加对称 fallback。
 - 低优先级边界：decoder readonly 是 TypeScript 不变量，未 deep-freeze；当前仅内部可信消费，不扩大实现。
+
+### Task 1 公共证据与 Task 2 接缝
+
+- `1b146e6/32826953474` 的三项公共 job 全绿，证明 Task 1 在 Linux、真实 PostgreSQL 与完整前端/后端门上没有
+  隐藏平台回归；该公共证据不增加 `<video>`、媒体下载或视觉完成度。
+- Task 2 必须保持两个维度分离：`PlaybackState` 是不可逆失败终态，`userPaused` 是正交用户选择。暂停、
+  visibility 或 policy 改变都不能把 `failed-sticky` 恢复成 loading/playing；整页 reload 才建立新 session。

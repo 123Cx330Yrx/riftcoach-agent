@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-25（RQ-108 runtime Task 1 manifest/cover geometry/media policy 已本地 TDD 完成：71 focused、207 frontend unit、typecheck/build 全绿；当前只待独立 implementation/evidence commit 与 exact-SHA 三 job。尚无 `<video>`、媒体资产、视频 skill 或模型调用）
+- 最后更新：2026-08-25（RQ-108 runtime Task 1 manifest/cover geometry/media policy 已由 `1b146e6` / Actions `32826953474` 完成 exact-SHA 三 job 公共闭环；唯一下一动作是 Task 2 poster-first 播放状态与 session-sticky failure TDD。尚无生产 `<video>` 接线、媒体资产、视频 skill 或模型调用）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2655,10 +2655,12 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   `postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。公共 pytest 同 SHA 验证 frontend
   unit `136`、Playwright `36`、Python `1838 passed, 145 skipped, 1 warning, 127 subtests`、两套 RAG、Harness/
   governance/security；真 PostgreSQL migration/control-plane 与 Linux no-I/O/non-root package 同时全绿。
-- `NEXT`：设计门已公共关闭；按 implementation plan 进入 runtime Task 1，先为 strict media manifest、
-  object-fit cover geometry 与 viewport/reduced-motion/Save-Data policy 写红灯。该 Task 已本地完成，聚焦
-  `71 passed`、frontend `207 passed`、Playwright `36 passed`、typecheck/build 全绿且 bundle unchanged；
-  Python no-DB `1837 passed, 146 skipped, 1 warning, 127 subtests`、两套 RAG、Harness published/0 revisions、
-  compileall、SDK/Secret/tracked-data、governance focused 12/diff 通过；下一动作是独立提交/push 与
-  exact-SHA `pytest`/`postgres-migrations`/`packaging-smoke`。公共全绿前不进入 Task 2，不安装 HyperFrames、
-  不调用 Wan/Seedance/Veo/Kimi、不创建 Key、不购买 credits、不采用 production media。
+- runtime Task 1 implementation/evidence commit
+  `1b146e6116587b855a6208e998b5254eac8cba1d` / Actions `32826953474` 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success；strict manifest、cover geometry 与
+  preflight-first media policy 正式公共闭环。公共 pytest 同 SHA 复验 frontend unit `207`、Playwright `36`、
+  typecheck/build、完整 Python/RAG/Harness/governance/security；真 PostgreSQL 与 Linux package 同时全绿。
+- `NEXT`：按 implementation plan 进入 runtime Task 2，先以红灯冻结 `mediaSession` 的
+  `poster → loading → playing | failed-sticky`、正交 `userPaused`，再实现 `CinematicSceneMedia` 的 poster-first、
+  canplay/play/error、hidden/visible 与迟到事件边界。Task 2 仍只使用明确 test fixture URL，不接 App、不采用
+  production media；不安装 HyperFrames，不调用 Wan/Seedance/Veo/Kimi/relay，不创建 Key、不购买 credits。

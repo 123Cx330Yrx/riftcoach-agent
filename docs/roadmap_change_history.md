@@ -3159,3 +3159,10 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   race，采用 useSyncExternalStore + poster/preflight。
 - focused 71、frontend 207、typecheck/build、bundle/governance/diff 全绿；当前只待独立 SHA/公共三 job，
   Task 2、production media、skill/model/relay calls 均为 0。
+
+## 2026-08-25：RQ-108 runtime Task 1 exact-SHA 公共关闭
+
+- implementation/evidence `1b146e6116587b855a6208e998b5254eac8cba1d` / Actions `32826953474` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；Task 1 正式关闭。
+- `HANDOFF`：唯一下一动作是 Task 2 poster-first playback/session-sticky failure TDD；公共绿灯不授权 App 集成、
+  production media、HyperFrames 安装或视频/relay/model 调用。

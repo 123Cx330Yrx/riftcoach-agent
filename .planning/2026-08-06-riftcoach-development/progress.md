@@ -4382,3 +4382,12 @@
   两轮 independent final review 均为 blocker/major 0。
 - `NEXT`：同步 walkthrough/canonical、governance/diff/比例门后独立 commit/push，等待 exact-SHA 三 job；
   公共成功前 Task 2 不进入，视频 skill/model/relay calls 0。
+
+### 2026-08-25：RQ-108 runtime Task 1 exact-SHA 公共闭环
+
+- `PUBLIC-CI`：implementation/evidence `1b146e6116587b855a6208e998b5254eac8cba1d` / Actions
+  `32826953474` 精确绑定；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。
+- `CLOSED`：strict 4-rendition manifest、cover/focal/hitBox geometry、760px viewport、poster/preflight、
+  reduced-motion/Save-Data 与 modern/legacy/StrictMode listener 取得公共代码、真库与 Linux package 证据。
+- `BOUNDARY/NEXT`：仍无 production manifest、`<video>` 组合、媒体资产或视频/relay/model 调用。唯一下一动作
+  是 Task 2 `mediaSession` + `CinematicSceneMedia` 红灯；Task 5 bake-off 与素材采用不提前进入。
