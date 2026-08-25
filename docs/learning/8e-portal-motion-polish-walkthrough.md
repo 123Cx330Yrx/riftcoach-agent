@@ -135,6 +135,11 @@ smoke 说成最终 loop。
 上述 admission/spike evidence `7067ea1/32862942549` 已取得 exact-SHA 三 job 公共闭环；它不等于 Task 5、
 production media 或 RQ-108 完成。
 
+Wan 3.0 v2 first/last 单样本随后以一次有效 free-quota call 完成：文件可播放且 bytes/no-audio 合格，但
+source→first `0.860852`、seam DSSIM `0.097587`、1918×1080/30fps、BT.709 metadata missing、AI watermark 以及
+人工 coherent full-frame motion 全部未过门，因此 rejected 且不重抽。重要学习点是：pixel change 不等于有
+方向的全局运动；相同首尾图和高密度保真约束可能把闭源 I2V 引向低价值呼吸/纹理变化。下一对照为 Veo。
+
 ## 6. 运行手册（设计阶段）
 
 1. 生成素材前核对采用账本，确认 source 和 candidate 状态；

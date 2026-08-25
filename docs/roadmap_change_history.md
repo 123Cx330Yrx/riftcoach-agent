@@ -3234,3 +3234,12 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   source，v1 保留 archival parent，强清噪与旧大水晶 edit 均 rejected。
 - `LOCAL`：审计器/manifest/provenance/ADR/ledger/plan 与 exact path fallback test 已同步；focused 26 passed。
 - `NEXT`：v2 source migration 独立 exact-SHA 公共门；绿灯前不上传或调用 Wan。
+
+## 2026-08-26：Wan 3.0 Portal v2 单样本负面裁决
+
+- `PUBLIC-PRECONDITION`：v2 migration `2a2da0e/32872452053` 三 job 全绿后才执行。
+- `REAL-CALL`：一次有效 first-party Wan call，free quota 100%→73.33%，无重试/充值；UI 空 prompt/hydration
+  预操作未形成 task，calls 0，不冒充模型结果。
+- `REJECTED`：有效 output `030a60f...1f58a` 的 source→first、seam、coherent full-frame motion、水印与发布
+  dimensions/fps/color metadata 未过门；不重抽 Wan。
+- `NEXT`：负面证据独立 exact-SHA 公共门；随后严格进入 Dragon/Veo A2。

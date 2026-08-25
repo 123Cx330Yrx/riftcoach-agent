@@ -4262,6 +4262,17 @@
 - auditor 新增非-fixture exact path gate，避免 planned/adopted ledger 只换 SHA 却回退 v1 文件；红灯 22 failed 后
   绿灯 26 passed。下一动作是 v2 source migration public gate，不先上传 Wan。
 
+## 2026-08-26：Wan 3.0 v2 first/last 单样本
+
+- `2a2da0e/32872452053` 三 job 全绿后才上传 v2。首轮 UI prompt 未落盘并水合失败，quota 100%、无结果，calls 0；
+  修正为 mode-first→prompt readback 1661 chars→两帧→六项核对后只创建一次有效 task。
+- output `030a60f...1f58a`，2,057,453 B，8s/240 frames/1918×1080/30fps/H.264/yuv420p/no-audio；quota
+  100%→73.33%。
+- source→first `0.860852`，first→last `0.902413`；adjacent DSSIM p95 `0.005222`，seam DSSIM
+  `0.097587 > 0.03`；AI watermark 可见。
+- first→4s regional SSIM left/center/right `0.898092/0.884466/0.861069`，像素有变但人工只见局部亮度/纹理
+  微动，未形成 RQ-112 的 coherent full-frame motion。Wan 结果 rejected，不重抽；下一项 Dragon/Veo。
+
 ## 2026-08-25：RQ-108 runtime Task 1 TDD 发现
 
 - strict runtime manifest 采用 schema `1.0` + 四项 scene/viewport matrix；asset file identity 固定

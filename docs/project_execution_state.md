@@ -16,10 +16,10 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-26（RQ-108 runtime Task 5 的 executable preflight `7fe47db` / Actions `32869447853` 已
-  exact-SHA 三 job 公共成功，但它绑定 v1。RQ-124 随后把用户签收的轻清噪 v2 固定为 active source；26 项
-  source/media 合同本地全绿。唯一下一动作是 v2 source migration 独立提交与 exact-SHA 公共门；尚未上传母图
-  或调用视频模型）
+- 最后更新：2026-08-26（RQ-124 v2 source migration `2a2da0e` / Actions `32872452053` 已 exact-SHA 三 job
+  公共成功。随后完成一次有效 Wan 3.0 free-quota v2 首尾同图样本；因 source→first、seam、coherent global
+  motion、水印和 encoding contract rejected，不重抽。唯一下一动作是 Wan sample audit 独立提交与 exact-SHA
+  公共门；公共成功后进入 Dragon/Veo A2）
   no-telemetry 隔离 spike 已由 `7067ea1` / Actions `32862942549` 完成 exact-SHA 三 job 公共闭环；Wan 3.0 官方
   access、DashScope endpoint 与两侧 Key presence 已 body-free 核对，RQ-123 又授权 official/relay 实际有界试用。
   唯一下一动作是 executable-preflight exact-SHA 公共门；尚无生产媒体或视频模型调用）
@@ -2715,3 +2715,9 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - RQ-124 v2 migration 当前本地完成：active path `portal-mother-image-source-v2.png`，SHA `8134c0ca...1a06e`，
   v1 archival parent 不变；provenance/ledger/ADR/计划/审计器和新增 anti-fallback test 已同步，focused `26 passed`。
   `NEXT`：独立 source-migration commit/push 与 exact-SHA 三 job；成功后才恢复 Wan 上传。
+- v2 source migration `2a2da0e9bf37180ae987920cff85a8c2d3d39bfa` / Actions `32872452053` 的
+  pytest、postgres-migrations、packaging-smoke 三 job 全绿；随后浏览器只创建一个有效 Wan task，free quota
+  100%→73.33%，external video calls `1`。
+- Wan output SHA `030a60f...1f58a`，8s/1918×1080/30fps/H.264/yuv420p/no-audio/2,057,453 B；source→first
+  `0.860852`、seam DSSIM `0.097587 > 0.03`、可见 `AI生成`，人工判定没有 RQ-112 coherent full-frame motion。
+  `NEXT`：先提交/公共关闭该负面证据批，再进入 Dragon/Veo；不重抽 Wan。

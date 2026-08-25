@@ -63,6 +63,9 @@
 6. 只有通过 source/geometry/full-frame/seam 的结果才进入 C 线分层/HyperFrames 结构合成；任何 raw 结果不直接
    接入 RiftCoach runtime。
 
+执行结果：A1 已由 `2026-08-26-8e-video-bakeoff-wan3-sample-audit.md` 以单次有效调用完成并 rejected；不重抽。
+当前 handoff 严格进入 A2 Dragon/Veo。
+
 ## 5. Account 不得丢失的同 Task 5 后半段
 
 本 Portal bake-off 只是在已确认 source 上选择制片方法，不把 Task 5 缩减成 Portal-only。两个首轮 Portal 样本

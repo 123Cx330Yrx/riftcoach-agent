@@ -1549,3 +1549,7 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
     但 RQ-124 已把 active source 从 v1 迁移到轻清噪 v2，故不能直接上传。
   - [completed-local-source-v2] v2 image/provenance/manifest/auditor/ADR/ledger/plan 已同步；focused 26 passed。
   - [next] v2 source migration 独立提交/推送与 exact-SHA 三 job；成功后恢复 Wan 上传。
+  - [completed-public-source-v2] `2a2da0e/32872452053` 三 job 全绿。
+  - [completed-local-rejected] Wan 3.0 effective calls 1；output `030a60f...1f58a` 因 source/seam/full-frame
+    motion/watermark/encoding rejected；无自动重试。
+  - [next] Wan negative sample audit 独立 commit/push/exact-SHA；公共成功后进入 Dragon/Veo A2。

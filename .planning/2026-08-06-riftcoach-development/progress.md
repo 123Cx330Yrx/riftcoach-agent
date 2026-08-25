@@ -4496,3 +4496,10 @@
 - 轻清噪 v2 已保存并签收；v1 不覆盖。provenance、audit manifest、auditor/tests、ADR/design/implementation、
   adoption ledger、coverage 与 canonical 已迁移；focused `26 passed`。
 - 外部上传/视频调用仍为 0。下一动作是 source migration 独立 SHA/公共三 job。
+
+### 2026-08-26：Wan 3.0 Portal v2 单样本完成并拒绝
+
+- v2 migration `2a2da0e/32872452053` 已公共全绿；随后完成一次有效 free-quota Wan call，无重试/充值。
+- 本地 MP4、0/2/4/6/末帧、region/full SSIM、adjacent p95/seam、ffprobe/watermark 人工审查已完成；结果因
+  source identity、seam、coherent full-frame motion、水印与发布规格 rejected。
+- 当前 external video calls 1；production media 0。下一动作是负面 audit commit/public gate，再进入 Dragon/Veo。
