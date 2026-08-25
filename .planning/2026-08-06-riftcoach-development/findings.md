@@ -4240,6 +4240,19 @@
   失败，raw snapshots 逐字节确定且 seam SSIM `0.999600`。裁决 renderer conditional pass/default encoder reject。
 - `NEXT`：Wan 3.0 官方 endpoint/region/Key presence body-free preflight；不读取 Key 值，不上传母图，不创建付费任务。
 
+## 2026-08-25：RQ-123 executable preflight
+
+- `IDENTITY`：千问AI平台签约主体/阿里云账号体系与官方 DashScope endpoint 已核对；Wan standard/prime 可用，
+  用户邀测 access、当前免费视频额度与 existing Key presence 均成立。DragonAPI 也有 existing masked Key。
+- `AUTHORIZATION`：用户明确 official 与正规 relay 都可实际试用，不因补充某一模型遗忘候选；不逐调用再问。
+  安全收敛仍是一候选一调用、首错停止、不充值/订阅/批量重抽。
+- `PROMPT`：source SHA `552a874...aada`；本地 prompt 1662 bytes，SHA
+  `f324264150a729daad5e7be71d5e762e8fec496d98e94ffebd2fdddcbd2f36fc`。内容逐层绑定左 Rift、道路/反射、
+  原水晶/塔体、右星图/节点/粒子/环境光，locked camera、8 秒首尾同相位。
+- `NEXT`：preflight exact-SHA 公共门；公共成功后先 Wan，再 Dragon/Veo。
+- `ACCOUNT-ORDER`：当前 v3 仍 preview/blocking。Portal bake-off 只选制片方法；完成两个样本后必须回 Account
+  source gate→五英雄逐位→adopted source→10s loop，不能跳 Task 6/Coach/RQ-103/8F。
+
 ## 2026-08-25：RQ-108 runtime Task 1 TDD 发现
 
 - strict runtime manifest 采用 schema `1.0` + 四项 scene/viewport matrix；asset file identity 固定

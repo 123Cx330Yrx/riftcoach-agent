@@ -4481,3 +4481,11 @@
 - `CLOSED-SCOPE`：只关闭 official/relay candidate admission、RQ-122 correction 和 HyperFrames isolated spike；
   不关闭 Task 5/RQ-108，不产生模型调用或 production media。
 - `HANDOFF`：唯一下一动作是 Wan 3.0 official endpoint/region/Key presence body-free preflight。
+
+### 2026-08-25：RQ-123 executable preflight 本地完成
+
+- official Wan/DashScope 与 DragonAPI 的 endpoint/model/access/Key presence 已核对；没有读取或复制 Key。
+- 同一 Portal source 与 prompt digest、RQ-112 全帧 motion language、Wan→Dragon/Veo 单样本顺序、失败替补池、
+  无充值/无重复提交边界已写入 executable preflight。
+- 外部视频调用、母图上传和远程任务仍为 0。下一动作是独立 preflight commit/push/exact-SHA 公共门。
+- Account v3 仍未签收；已把 Portal bake-off 后的 Account source/英雄/loop 固定为同一 Task 5 的阻塞后继。

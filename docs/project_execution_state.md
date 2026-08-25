@@ -18,8 +18,8 @@ pause_reason: ""
 
 - 最后更新：2026-08-25（RQ-108 runtime Task 5 的 DragonAPI/官方广筛、RQ-122 纠偏和 HyperFrames 安全/
   no-telemetry 隔离 spike 已由 `7067ea1` / Actions `32862942549` 完成 exact-SHA 三 job 公共闭环；Wan 3.0 官方
-  邀测 access 由用户 UI 证据确认。唯一下一动作是 Wan 3.0 官方 endpoint/region/Key presence body-free preflight；
-  尚无生产媒体或视频模型调用）
+  access、DashScope endpoint 与两侧 Key presence 已 body-free 核对，RQ-123 又授权 official/relay 实际有界试用。
+  唯一下一动作是 executable-preflight exact-SHA 公共门；尚无生产媒体或视频模型调用）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2699,3 +2699,10 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   只关闭候选准入/隔离 spike 批，不关闭 Task 5、RQ-108、8E 或任何生产媒体验收。
 - `NEXT`：只执行 Wan 3.0 官方 endpoint/region/Key presence 的 body-free preflight；先不上传母图或发起付费
   生成。preflight 后再在既定最多两个 A 槽位内执行一次 Wan 与一次 Veo/Vidu 候选，不自动重试。
+- Wan/Dragon executable preflight 现已在本地冻结：两边均有现成 Key presence 但未读取值；第一方 DashScope
+  endpoint、Wan standard/prime、免费额度、Dragon/Veo relay、source/prompt digest、RQ-112 全帧 motion language、
+  一候选一调用/不充值/替补池均有 body-free 记录。`NEXT` 改为该 preflight 独立 commit/push 与 exact-SHA
+  三 job；公共成功后才上传 Portal 母图并创建首个 Wan 任务。
+- Task 5 不因当前 Portal bake-off 变成 Portal-only：两个 Portal 首轮样本审计后，唯一后继是 Account
+  topology/intentional-abstraction source gate、五英雄逐位重塑、adopted source 与 10 秒全帧 loop；Portal/Account
+  两幕全通过才可进入 Task 6。当前 Account v3 仍 `preview/blocking/not adopted`。

@@ -1540,3 +1540,8 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-public-admission] candidate admission/HyperFrames spike evidence `7067ea1` / Actions
     `32862942549` 的 pytest、真实 PostgreSQL migrations 与 Linux packaging-smoke 三 job 全绿；Task 5 本身未关闭。
   - [next] Wan 3.0 官方 endpoint/region/Key presence body-free preflight；不读取/输出 Key 值，不先上传母图。
+  - [completed-local-preflight] RQ-123 授权 official/relay 实际有界试用；Wan/DashScope 与 DragonAPI 均已确认
+    Key presence（未读值），source/prompt digest、全帧 motion brief、Wan→Dragon/Veo 顺序、替补池与费用停止线已冻结。
+  - [next] executable-preflight 独立提交/推送与 exact-SHA 三 job；公共成功后创建首个 Wan 单样本任务。
+  - [fixed-handoff-after-portal-bakeoff] 两个 Portal 首轮样本审计后立即返回 Account source gate；完成官方拓扑叠合/
+    intentional abstraction、无英雄底座、五英雄逐位与分层合成，再做 Account 10s loop。两幕未齐不进入 Task 6。

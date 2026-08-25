@@ -46,6 +46,9 @@
   telemetry 均超出本任务权限；skill 不安装。Apache-2.0 renderer 只在 exact version、临时 HOME、
   `HYPERFRAMES_NO_TELEMETRY=1`、无网络/无云/本地资产条件下进入隔离 spike。详见
   `2026-08-25-hyperframes-task5-vetting.md`。
+- RQ-123 已把 official/relay 两条 transport 都提升为实际可执行候选，并固定相同 source/prompt digest/全局运动
+  语言、单样本/首错停止与替补顺序；body-free executable record 见
+  `2026-08-25-8e-video-bakeoff-executable-preflight.md`。
 
 ## 候选准入表
 
