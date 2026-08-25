@@ -1545,3 +1545,7 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [next] executable-preflight 独立提交/推送与 exact-SHA 三 job；公共成功后创建首个 Wan 单样本任务。
   - [fixed-handoff-after-portal-bakeoff] 两个 Portal 首轮样本审计后立即返回 Account source gate；完成官方拓扑叠合/
     intentional abstraction、无英雄底座、五英雄逐位与分层合成，再做 Account 10s loop。两幕未齐不进入 Task 6。
+  - [completed-public-preflight-superseded-source] `7fe47db/32869447853` 三 job 全绿；transport/费用/调用边界保留，
+    但 RQ-124 已把 active source 从 v1 迁移到轻清噪 v2，故不能直接上传。
+  - [completed-local-source-v2] v2 image/provenance/manifest/auditor/ADR/ledger/plan 已同步；focused 26 passed。
+  - [next] v2 source migration 独立提交/推送与 exact-SHA 三 job；成功后恢复 Wan 上传。

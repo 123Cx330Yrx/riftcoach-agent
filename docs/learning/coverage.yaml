@@ -984,6 +984,7 @@ groups:
         - docs/adr/0068-adopt-mother-image-global-loop-scenes-and-semantic-activation.md
         - docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md
         - docs/assets/8e-portal/portal-source-provenance-v1.md
+        - docs/assets/8e-portal/portal-source-provenance-v2.md
         - docs/plans/2026-08-25-8e-portal-motion-polish-design.md
         - docs/plans/2026-08-24-8e-visual-asset-adoption-ledger.md
         - docs/learning/8e-portal-motion-polish-walkthrough.md

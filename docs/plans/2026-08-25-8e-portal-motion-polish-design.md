@@ -16,7 +16,8 @@
 
 ### Portal
 
-- 唯一母图为 `docs/assets/8e-portal/portal-mother-image-source-v1.png`；保持原水晶和原曝光。
+- active 母图为 `docs/assets/8e-portal/portal-mother-image-source-v2.png`，由 v1 做轻量点状噪声收敛；保持
+  原小水晶、塔体、三段构图和曝光。v1 只保留 archival parent 身份。
 - RQ-118 取代早期放大/重绘要求：原水晶、塔体和构图不再做生成替换；loop/burst 只让画面内原水晶运动。
 - 正常模式是整张画面都在运动的无缝全屏 loop：Rift、云雾、道路、反射、建筑、水晶、星图、节点、粒子和
   环境光均参与；点击后才从全局 idle 收敛为汇聚/burst。

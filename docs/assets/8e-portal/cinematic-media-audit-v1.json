@@ -23,9 +23,9 @@
   "source": {
     "portal": {
       "status": "adopted-source",
-      "path": "docs/assets/8e-portal/portal-mother-image-source-v1.png",
-      "sha256": "552a87453daae53762f56f0cb5f7c7c2fee18256ef6d193c00575283e9b7aada",
-      "bytes": 2708544,
+      "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+      "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e",
+      "bytes": 2268033,
       "width": 1672,
       "height": 941
     },
@@ -38,5 +38,5 @@
     "non_media_cold_start_bytes": null,
     "total_media_bytes": null
   },
-  "notes": "Contract ledger only. Production Portal/Account media is not adopted; Task 5 must replace this with an evidence-bearing fixture/adopted manifest before runtime integration."
+  "notes": "Contract ledger only. Portal source v2 is the user-accepted light micro-speckle cleanup derived from archival v1; no video rendition is adopted. Production Portal/Account media is not adopted; Task 5 must replace this with an evidence-bearing adopted manifest before runtime integration."
 }

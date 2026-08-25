@@ -4489,3 +4489,10 @@
   无充值/无重复提交边界已写入 executable preflight。
 - 外部视频调用、母图上传和远程任务仍为 0。下一动作是独立 preflight commit/push/exact-SHA 公共门。
 - Account v3 仍未签收；已把 Portal bake-off 后的 Account source/英雄/loop 固定为同一 Task 5 的阻塞后继。
+
+### 2026-08-26：RQ-124 Portal source v2 本地迁移
+
+- `7fe47db/32869447853` executable preflight 三 job 已公共全绿，但 v1 source binding 随后被用户清噪要求 supersede。
+- 轻清噪 v2 已保存并签收；v1 不覆盖。provenance、audit manifest、auditor/tests、ADR/design/implementation、
+  adoption ledger、coverage 与 canonical 已迁移；focused `26 passed`。
+- 外部上传/视频调用仍为 0。下一动作是 source migration 独立 SHA/公共三 job。

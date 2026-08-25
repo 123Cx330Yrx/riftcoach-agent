@@ -2173,7 +2173,8 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 
 ## 2026-08-25：RQ-110 至 RQ-118 Portal/Account 素材与地图裁决
 
-- Portal 的唯一 source master 是 SHA `552a874...aada` 的确认母图；旧暗图、aperture、keyframe、大标题、
+- 本节原始裁决的 v1 SHA `552a874...aada` 仍作 archival parent；RQ-124 后 active source master 已迁移为
+  轻清噪 v2 SHA `8134c0ca...1a06e`。旧暗图、aperture、keyframe、大标题、
   CSS/贴图水晶、filter/vignette/blur 均是 anti-reference，不进入最终 poster/loop/fallback。
 - Portal 与 Account 正常体验都必须是全帧全局 loop；poster 只服务首帧、reduced-motion、Save-Data 和媒体
   failure。媒体 policy 两个分支都携带 viewport，播放失败进入 session-sticky poster。

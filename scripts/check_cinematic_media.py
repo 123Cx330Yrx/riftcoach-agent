@@ -27,7 +27,8 @@ SCENES = ("portal", "account")
 VIEWPORTS = ("desktop", "mobile")
 POSTER_FORMATS = ("avif", "webp")
 VIDEO_FORMATS = ("webm", "mp4")
-PORTAL_SOURCE_SHA256 = "552a87453daae53762f56f0cb5f7c7c2fee18256ef6d193c00575283e9b7aada"
+PORTAL_SOURCE_PATH = "docs/assets/8e-portal/portal-mother-image-source-v2.png"
+PORTAL_SOURCE_SHA256 = "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e"
 
 MAX_JS_GZIP_BYTES = 150_000
 MAX_CSS_GZIP_BYTES = 22_000
@@ -356,13 +357,16 @@ def validate_manifest_contract(manifest: Mapping[str, Any]) -> str:
         if source_status != "adopted-source":
             _fail("source_status_invalid", f"{source_path}.status", source_status)
         _exact_keys(source_row, ("status", "path", "sha256", "bytes", "width", "height"), (), source_path)
-        _validate_relative_path(source_row["path"], f"{source_path}.path")
+        relative_source_path = _validate_relative_path(source_row["path"], f"{source_path}.path")
         source_sha = _sha(source_row["sha256"], f"{source_path}.sha256")
         _integer(source_row["bytes"], f"{source_path}.bytes", minimum=1)
         _integer(source_row["width"], f"{source_path}.width", minimum=1)
         _integer(source_row["height"], f"{source_path}.height", minimum=1)
-        if scene == "portal" and source_sha != PORTAL_SOURCE_SHA256:
-            _fail("portal_source_identity_invalid", f"{source_path}.sha256", "does not match confirmed mother image")
+        if scene == "portal":
+            if source_sha != PORTAL_SOURCE_SHA256:
+                _fail("portal_source_identity_invalid", f"{source_path}.sha256", "does not match confirmed mother image")
+            if status != "fixture" and relative_source_path != PORTAL_SOURCE_PATH:
+                _fail("portal_source_identity_invalid", f"{source_path}.path", "does not match confirmed mother image")
 
     renditions = root["renditions"]
     if not isinstance(renditions, list):

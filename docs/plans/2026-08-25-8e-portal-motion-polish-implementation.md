@@ -320,8 +320,8 @@ plates + 确定性结构合成。使用同一 source、motion brief、duration �
 
 ### Step 1: Portal source gate
 
-desktop 输入只能是 SHA `552a87453daae53762f56f0cb5f7c7c2fee18256ef6d193c00575283e9b7aada`
-的确认母图。mobile portrait source 必须从该 archival master 单独派生并通过 adopted-source 门，记录新 SHA、
+desktop 输入只能是 SHA `8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e`
+的确认 v2 active source。mobile portrait source 必须从该 active source 单独派生并通过 adopted-source 门，记录新 SHA、
 edit/generation provenance 与原水晶/塔体、左 Rift、右星图、曝光锚点审查。Kimi/其他
 image-to-video 服务只作为离线制片工具；不接 RiftCoach runtime API，不发送玩家数据。不得用 FFmpeg 静态
 缩放、假 parallax 或暗化母图冒充全局 loop。

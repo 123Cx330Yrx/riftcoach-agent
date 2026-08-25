@@ -16,7 +16,10 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-25（RQ-108 runtime Task 5 的 DragonAPI/官方广筛、RQ-122 纠偏和 HyperFrames 安全/
+- 最后更新：2026-08-26（RQ-108 runtime Task 5 的 executable preflight `7fe47db` / Actions `32869447853` 已
+  exact-SHA 三 job 公共成功，但它绑定 v1。RQ-124 随后把用户签收的轻清噪 v2 固定为 active source；26 项
+  source/media 合同本地全绿。唯一下一动作是 v2 source migration 独立提交与 exact-SHA 公共门；尚未上传母图
+  或调用视频模型）
   no-telemetry 隔离 spike 已由 `7067ea1` / Actions `32862942549` 完成 exact-SHA 三 job 公共闭环；Wan 3.0 官方
   access、DashScope endpoint 与两侧 Key presence 已 body-free 核对，RQ-123 又授权 official/relay 实际有界试用。
   唯一下一动作是 executable-preflight exact-SHA 公共门；尚无生产媒体或视频模型调用）
@@ -2706,3 +2709,9 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - Task 5 不因当前 Portal bake-off 变成 Portal-only：两个 Portal 首轮样本审计后，唯一后继是 Account
   topology/intentional-abstraction source gate、五英雄逐位重塑、adopted source 与 10 秒全帧 loop；Portal/Account
   两幕全通过才可进入 Task 6。当前 Account v3 仍 `preview/blocking/not adopted`。
+- executable preflight `7fe47db4784b97f9df577b867e0bae11c5e841e7` / Actions `32869447853` 的 pytest、
+  postgres-migrations 与 packaging-smoke 三 job 全绿；其 transport/费用/控制流继续有效，但 v1 source identity
+  已被 RQ-124 supersede，不能直接据此上传 v2。
+- RQ-124 v2 migration 当前本地完成：active path `portal-mother-image-source-v2.png`，SHA `8134c0ca...1a06e`，
+  v1 archival parent 不变；provenance/ledger/ADR/计划/审计器和新增 anti-fallback test 已同步，focused `26 passed`。
+  `NEXT`：独立 source-migration commit/push 与 exact-SHA 三 job；成功后才恢复 Wan 上传。

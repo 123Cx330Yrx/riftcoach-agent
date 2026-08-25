@@ -18,7 +18,8 @@ from scripts.check_cinematic_media import (
 )
 
 
-PORTAL_SOURCE_SHA = "552a87453daae53762f56f0cb5f7c7c2fee18256ef6d193c00575283e9b7aada"
+PORTAL_SOURCE_PATH = "docs/assets/8e-portal/portal-mother-image-source-v2.png"
+PORTAL_SOURCE_SHA = "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e"
 
 
 def _write(root: Path, relative: str, marker: str) -> tuple[str, int]:
@@ -165,7 +166,7 @@ def test_planned_manifest_is_contract_only_and_performs_no_media_io() -> None:
         "policy": _fixture_policy(),
         "toolchain": {"status": "pending", "ffmpeg_version": None, "ffprobe_version": None},
         "source": {
-            "portal": {"status": "adopted-source", "path": "fixtures/source-portal.png", "sha256": PORTAL_SOURCE_SHA, "bytes": 1, "width": 1672, "height": 941},
+            "portal": {"status": "adopted-source", "path": PORTAL_SOURCE_PATH, "sha256": PORTAL_SOURCE_SHA, "bytes": 2_268_033, "width": 1672, "height": 941},
             "account": {"status": "pending"},
         },
         "renditions": [],
@@ -312,6 +313,36 @@ def test_portal_source_must_match_the_confirmed_mother_image(tmp_path: Path) -> 
     manifest, digests, probes = _fixture_manifest(tmp_path)
     manifest["source"]["portal"]["sha256"] = "d" * 64
     manifest["renditions"][0]["source_sha256"] = "d" * 64
+
+    with pytest.raises(CinematicMediaAuditError, match="portal_source_identity_invalid"):
+        validate_manifest_contract(manifest)
+
+
+def test_planned_portal_source_path_cannot_fall_back_to_archival_v1() -> None:
+    manifest = {
+        "schema_version": "1.0",
+        "status": "planned",
+        "policy": _fixture_policy(),
+        "toolchain": {"status": "pending", "ffmpeg_version": None, "ffprobe_version": None},
+        "source": {
+            "portal": {
+                "status": "adopted-source",
+                "path": "docs/assets/8e-portal/portal-mother-image-source-v1.png",
+                "sha256": PORTAL_SOURCE_SHA,
+                "bytes": 2_268_033,
+                "width": 1672,
+                "height": 941,
+            },
+            "account": {"status": "pending"},
+        },
+        "renditions": [],
+        "budgets": {
+            "js_gzip_bytes": None,
+            "css_gzip_bytes": None,
+            "non_media_cold_start_bytes": None,
+            "total_media_bytes": None,
+        },
+    }
 
     with pytest.raises(CinematicMediaAuditError, match="portal_source_identity_invalid"):
         validate_manifest_contract(manifest)

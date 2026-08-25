@@ -44,9 +44,11 @@ poster 始终在视频后方；reduced-motion、Save-Data、播放拒绝或解�
 
 ### 1. 场景和资产真值
 
-- Portal 唯一源为 `docs/assets/8e-portal/portal-mother-image-source-v1.png`：`1672×941`、
-  SHA-256 `552a87453daae53762f56f0cb5f7c7c2fee18256ef6d193c00575283e9b7aada`。
-- 该 PNG 是逐字节保留的 archival source。“同源/无损 poster”指构图、裁切、曝光、色彩和水晶身份不被
+- Portal active source 为 `docs/assets/8e-portal/portal-mother-image-source-v2.png`：`1672×941`、
+  SHA-256 `8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e`。它是用户签收的轻清噪 edit，
+  保留原小水晶/塔体/三段构图，并减少无意义点状碎光；完整父子 provenance 见 `portal-source-provenance-v2.md`。
+- v1 PNG 继续作为逐字节 archival parent，不再是当前 bake-off/production source。“同源/无损 poster”指
+  相对 active v2 的构图、裁切、曝光、色彩和水晶身份不被
   二次创作改变，不要求把 2.7 MB PNG 原样作为每次首屏传输。runtime AVIF/WebP poster 只有在固定 source
   SHA、SSIM 与人工原尺寸审查证明感知一致后才可采用；否则提高 poster 预算或拒绝该 rendition，不能靠暗化
   或模糊换体积。

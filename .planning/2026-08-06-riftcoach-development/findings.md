@@ -4253,6 +4253,15 @@
 - `ACCOUNT-ORDER`：当前 v3 仍 preview/blocking。Portal bake-off 只选制片方法；完成两个样本后必须回 Account
   source gate→五英雄逐位→adopted source→10s loop，不能跳 Task 6/Coach/RQ-103/8F。
 
+## 2026-08-26：RQ-124 Portal source v2 migration
+
+- hash 证明用户再次贴出的“小水晶图”与 v1 canonical 逐字节相同；“大水晶图”是另一 SHA 的后生成、后拒绝 edit。
+- 强清噪与轻清噪两项 built-in ImageGen edit 分别得到 parent SSIM `0.753497/0.859593`；用户签收轻版。
+- v2 SHA `8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e`、2,268,033 bytes、1672×941；
+  v1 保留 archival parent，RQ-118 小水晶/塔体/构图不变。
+- auditor 新增非-fixture exact path gate，避免 planned/adopted ledger 只换 SHA 却回退 v1 文件；红灯 22 failed 后
+  绿灯 26 passed。下一动作是 v2 source migration public gate，不先上传 Wan。
+
 ## 2026-08-25：RQ-108 runtime Task 1 TDD 发现
 
 - strict runtime manifest 采用 schema `1.0` + 四项 scene/viewport matrix；asset file identity 固定

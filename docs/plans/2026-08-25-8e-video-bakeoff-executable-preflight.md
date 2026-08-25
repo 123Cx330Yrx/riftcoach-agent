@@ -37,11 +37,12 @@
 
 ## 3. 固定 source 与 motion brief
 
-- source path：`docs/assets/8e-portal/portal-mother-image-source-v1.png`；
-- source SHA-256：`552a87453daae53762f56f0cb5f7c7c2fee18256ef6d193c00575283e9b7aada`；
+- source path：`docs/assets/8e-portal/portal-mother-image-source-v2.png`；
+- source SHA-256：`8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e`；
+- source bytes/dimensions：`2,268,033` / `1672×941`；v1 SHA `552a874...aada` 只作 archival parent；
 - prompt body：仅存在本地 research scratch，不入 Git；UTF-8 bytes `1662`；
 - prompt SHA-256：`f324264150a729daad5e7be71d5e762e8fec496d98e94ffebd2fdddcbd2f36fc`；
-- 核心 motion language：
+- 核心 motion language（prompt body/digest 不变，但输入身份已迁移到 v2）：
   1. 左 Rift 漩涡、云雾、远景空间持续闭环；
   2. 整条能量道路、前景平台和反射贯穿循环；
   3. 原水晶只做内部折射/呼吸且轮廓位置不变；塔体金缝/平台同步；

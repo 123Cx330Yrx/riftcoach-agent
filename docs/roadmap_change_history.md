@@ -3226,3 +3226,11 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   smoke 三 job 全绿。
 - `CLOSED-SCOPE`：候选准入与 HyperFrames 隔离 spike 批公开可复核；Task 5、RQ-108、8E 和生产媒体仍未关闭。
 - `HANDOFF`：唯一下一动作进入 Wan 3.0 官方 endpoint/region/Key presence body-free preflight。
+
+## 2026-08-26：RQ-124 Portal active source v2 migration
+
+- `PUBLIC-PREDECESSOR`：executable preflight `7fe47db/32869447853` 三 job 全绿，但绑定 v1。
+- `USER-CORRECTION`：用户指出 v1 点状碎光过密并签收轻清噪 edit；v2 SHA `8134c0ca...1a06e` 成为 active
+  source，v1 保留 archival parent，强清噪与旧大水晶 edit 均 rejected。
+- `LOCAL`：审计器/manifest/provenance/ADR/ledger/plan 与 exact path fallback test 已同步；focused 26 passed。
+- `NEXT`：v2 source migration 独立 exact-SHA 公共门；绿灯前不上传或调用 Wan。
