@@ -1,7 +1,8 @@
 # 8E Portal Motion Polish 学习与工程证据
 
 - 检查点：`8e-productization / portal-motion-polish`
-- 状态：设计门 `b3b5280/32812868683`、runtime Task 1 `1b146e6/32826953474` 与 Task 2 `2111a78/32833608622`、Task 3 `0198fc9/32836430378` 均 exact-SHA 公共闭环；Task 4 待进入
+- 状态：设计门、runtime Tasks 1–4 均 exact-SHA 公共闭环；Task 5 已完成 relay/official 广筛与 HyperFrames
+  no-telemetry 隔离 spike，尚无视频模型调用或 production media
 - 决策：ADR-0068
 - 需求：RQ-108 至 RQ-120
 - 视频候选审计：`docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md`（RQ-119）
@@ -125,6 +126,12 @@ Task 4 证据新增只读媒体审计器和 planned ledger：25 项测试覆盖 
 SHA、codec/fps/pix_fmt/color/audio、faststart/metadata/keyframe、SSIM/seam/dropped-frame、预算、anti-reference
 和固定 PATH ffprobe；`52def9c`/`d58ba15`、Actions `32841900909` 已取得 exact-SHA 三 job 公共闭环。当前没有
 adopted loop、视频生成调用或 production media。
+
+Task 5 当前证据把“调研池”与“实际付费槽位”分开：Wan/Veo/Vidu/Kling/MiniMax/Seedance/Grok 均进入广筛，
+首轮调用仍最多两个。Wan 3.0 官方邀测 access 已由用户 UI 证明；Grok 3 relay 存在，但专用 schema 尚缺。
+HyperFrames skill as-is 因 update/auth/provider/telemetry 越权而不安装；exact renderer 隔离 check 通过，重复 frame
+SHA 精确一致、raw seam SSIM `0.999600`，但默认 MP4 bytes/seam 门失败，所以只能作结构帧生成器，不能把本地
+smoke 说成最终 loop。
 
 ## 6. 运行手册（设计阶段）
 

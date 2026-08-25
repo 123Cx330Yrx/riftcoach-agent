@@ -320,9 +320,9 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 `8d-riot-opgg-evidence-fusion-core` 已由 `a274b7f/32598480400` 完成 exact-SHA 公共三 job 与 coverage
 闭环。8E 的真实 preflight、Batch B/C/D、Live integration、E1–E5、production shell/Auth gate、Timeline 与
 bilingual/product-journey foundation 已依次公共闭环。当前 canonical checkpoint 是 `8e-productization`，
-其中唯一原子项是 RQ-108 `portal-motion-polish`，状态
-`authorized / in_progress`；RQ-117–120、ADR-0068、Kimi Bad Case、三路线 design/TDD plan 与八维 planned evidence 已本地冻结。
-唯一下一动作是独立 design commit/push 与 exact-SHA 三 job；公共全绿后才进入 runtime TDD，8F 未进入。
+其中唯一原子项是 RQ-108 `portal-motion-polish`，状态 `authorized / in_progress`；design 与 runtime Tasks 1–4
+已公共闭环。Task 5 已完成 official/relay 广筛与 HyperFrames 隔离 spike；唯一下一动作是 Wan 3.0 官方
+endpoint/region/Key presence body-free preflight，8F 未进入。
 
 ## 6A-1 Checklist
 
@@ -1528,9 +1528,13 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-public] runtime Task 4：只读媒体审计器、planned ledger、codec/poster/loop seam/SSIM/budget/
     anti-reference 合同已由 `52def9c` + `d58ba15` / Actions `32841900909` 完成 exact-SHA 三 job；25 focused、
     frontend unit 257、typecheck/build、Playwright 36、no-DB Python `1862 passed, 146 skipped, 1 warning, 127 subtests`。
-  - [next] runtime Task 5：按 RQ-119/120/121 先冻结三路线 bake-off 的官方/中转候选、许可、费用、调用上限和来源证据；
-    不因目录截图或 Kimi Bad Case 直接安装工具、创建 Key 或付费调用。
+  - [in-progress] runtime Task 5：按 RQ-119/120/121/122 完成三路线 official/relay 广筛、费用/调用槽位和
+    body-free 来源冻结；Wan 3.0 official access 已由用户 UI 证明，Grok 3 relay 存在但专用 schema 未齐。
   - [requirement-recorded-no-order-change] RQ-121：官方视频端点优先；用户正规中转仅在 model mapping、能力、
     压缩/水印、隐私/保留/删除、地区、错误/重试/计费与 body-free provenance 可验证时作 secondary transport。
     该补充不打断 runtime 顺序，也不授权上传母图、创建 Key 或付费调用。
   - [in_progress-preflight] Task 5 preflight：`docs/plans/2026-08-25-8e-video-bakeoff-preflight.md` 已按官方 first/last/keyframe/loop 能力、relay secondary 门和三路线评分顺序冻结；当前没有外部视频调用或敏感图上传。
+  - [completed-local-spike] HyperFrames `general-video` skill as-is 不准入；exact CLI 在临时 HOME、telemetry
+    disabled、cached headless shell 下 check 通过，raw seam/重复 frame SHA 通过；默认 MP4 seam/bytes 门失败，
+    只保留 renderer 作 C 线结构层，不把 smoke 当视觉候选。
+  - [next] Wan 3.0 官方 endpoint/region/Key presence body-free preflight；不读取/输出 Key 值，不先上传母图。

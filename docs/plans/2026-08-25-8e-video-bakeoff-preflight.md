@@ -17,8 +17,8 @@
 
 | 路线 | 候选 | 负责什么 | 当前状态 |
 |---|---|---|---|
-| A 生成式 I2V | 官方 Veo 3.1、Luma Ray、Wan 2.7；Seedance 2.x 需重新核对官方实际 model ID | 生成环境雾、光线、粒子、能量等有机运动 | candidate-only；任何调用需单独冻结额度/隐私/删除/地域 |
-| B 确定性 frame render | HyperFrames 或 Remotion | 锁定镜头、建筑、水晶、道路拓扑、遮挡和循环时间 | deferred；安装前需 skill 安全审计、许可和隔离 spike |
+| A 生成式 I2V | 官方 Veo 3.1、Wan 3.0、Luma Ray；广筛 Seedance/Kling/Vidu/MiniMax/Grok 等 | 生成环境雾、光线、粒子、能量等有机运动 | 广筛完成；首轮调用槽位冻结为 Wan 3.0 official + Veo 3.1，Wan access 失败才以 Vidu Q3 替补 |
+| B 确定性 frame render | HyperFrames 或 Remotion | 锁定镜头、建筑、水晶、道路拓扑、遮挡和循环时间 | HyperFrames skill as-is 拒绝；exact CLI 只允许 no-network/no-telemetry 隔离 spike |
 | C 混合式（推荐） | A 只生成低风险有机 plates，B 锁定结构层 | 同时满足全局运动与 source fidelity | primary candidate；尚未采用 |
 
 ## 官方能力证据（2026-08-25 定向复核）
@@ -36,6 +36,16 @@
   <https://help.aliyun.com/en/model-studio/image-to-video-general-api-reference>。
 - Seedance 2.x、Kling 3、Grok Video、Hailuo、Sora 2、Vidu Q3 和 Wan 2.6/2.7 的中转站 slug/价格只作为用户提供的
   candidate catalog；在官方 model/version mapping 未确认前，不把 `official` 后缀当厂商身份事实。
+- 2026-08-25 的二次 official/relay 复核又确认：Wan 3.0 官方 `wan3.0-video` 支持 first/last、1080p、2–30 秒；
+  用户官方模型市场 UI 又证明邀测已通过并可进入 `调用 API`，DragonAPI 未启用只影响 transport。Vidu Q3 Pro、
+  Kling v3 与 MiniMax H3 的官方能力也与 relay 专用页基本吻合。DragonAPI 的 `grok-video-3` 第三代条目和
+  通用 `/videos` 示例均存在，不能因 xAI 当前公开索引主要暴露 `grok-imagine-video-1.5` 就把它降回 1.5；但站内
+  全文搜索仍没有 Grok 3 专用视频 schema，因此补齐映射/参数前不占首轮付费槽位。详见
+  `2026-08-25-8e-video-bakeoff-relay-admission.md`。
+- HyperFrames `general-video` skill 的全文件与 CLI 接缝审计发现 online update/auth/provider 和默认 PostHog
+  telemetry 均超出本任务权限；skill 不安装。Apache-2.0 renderer 只在 exact version、临时 HOME、
+  `HYPERFRAMES_NO_TELEMETRY=1`、无网络/无云/本地资产条件下进入隔离 spike。详见
+  `2026-08-25-hyperframes-task5-vetting.md`。
 
 ## 候选准入表
 
@@ -73,11 +83,12 @@
 
 ## 采用门与下一步
 
-Task 5 只在用户明确的费用/敏感图上传边界下进入实际调用。下一动作仍是：
+Task 5 的实际调用仍受冻结费用/敏感图上传边界约束。当前顺序是：
 
-1. 重新读取官方/实际账户可用 model catalog，锁定最多两个 A 线候选和一个 B/C 隔离候选；
-2. 为每个候选生成 body-free preflight record（不含 prompt 正文、Key、cookie、原始响应）；
-3. 若候选映射/隐私/费用都可接受，再单独请求实际生成授权；
+1. 已完成广筛和 body-free relay/official admission；首轮最多两个 A 槽位与一个 HyperFrames B/C 候选已冻结；
+2. 先执行 HyperFrames no-network/no-telemetry 隔离 preview；不安装 agent skill；
+3. 再核对 Wan official access 与 Veo transport/账单币种；任何 Key 创建、母图临时上传或付费任务发生前仍遵守
+   凭据、费用和传输边界；
 4. 结果全部按 adopted/candidate/rejected 写入不可覆盖 audit，不直接接入 RiftCoach runtime。
 
 ## 面试准确说法

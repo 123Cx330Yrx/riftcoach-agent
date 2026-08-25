@@ -4226,6 +4226,20 @@
   隐私/保留/删除/训练、地区、错误/重试/计费和有界 body-free provenance，无法验证则 catalog-only。
 - 站内列表可能滞后，正式横评前重新查官方最新模型；本补充不打断 Task 1，也不授权上传母图、创建 Key 或付费调用。
 
+## 2026-08-25：RQ-122 official/relay 广筛与 HyperFrames 隔离 spike
+
+- `RELAY`：DragonAPI 专用文档证明统一异步 `/v1/videos`、显式 first/last/reference、轮询/下载与多模型页面；
+  但目录计数、通用响应示例、Grok 广场 API 页和价格币种存在不一致，已写入
+  `docs/plans/2026-08-25-8e-video-bakeoff-relay-admission.md`，不把这些矛盾隐藏成准入事实。
+- `OFFICIAL`：用户官方 Model Studio UI 显示 `wan3.0-video`、`立即体验`、`调用 API`，并确认邀测已通过；
+  Wan 3.0 成为 A1，relay 未启用不再被误读成不可用。Grok `grok-video-3` 第三代由模型广场/价格页/通用视频
+  示例证实，站内全文仍缺专用 schema；上游官方当前公开名称是 `grok-imagine-video` 系列，故暂不假设 alias。
+- `HYPERFRAMES`：general-video 全文件审计发现强制 online update/auth/provider 与默认 PostHog telemetry，skill
+  as-is 不准入；exact `hyperframes@0.8.14` 隔离安装、临时 HOME/no telemetry/no auth/no cloud 下 cached
+  headless shell check 通过。系统 Chrome profile singleton 是可复现 Windows Bad Case；默认 MP4 bytes/seam
+  失败，raw snapshots 逐字节确定且 seam SSIM `0.999600`。裁决 renderer conditional pass/default encoder reject。
+- `NEXT`：Wan 3.0 官方 endpoint/region/Key presence body-free preflight；不读取 Key 值，不上传母图，不创建付费任务。
+
 ## 2026-08-25：RQ-108 runtime Task 1 TDD 发现
 
 - strict runtime manifest 采用 schema `1.0` + 四项 scene/viewport matrix；asset file identity 固定

@@ -3206,3 +3206,16 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   Task 4 正式关闭。首个 run `32841579832` 因 Ubuntu 缺 ffprobe 失败，随后只补 CI 工具安装，不放宽审计门。
 - `HANDOFF`：唯一下一动作切为 Task 5 三路线 bake-off；官方优先、中转 secondary，先冻结映射/许可/隐私/费用/
   调用上限，再决定是否安装工具、创建 Key 或发起付费调用。
+
+## 2026-08-25：RQ-122 候选广筛纠偏与 Task 5 隔离 spike
+
+- `CORRECTION`：两个 A 线付费槽位不是封闭调研池；已广筛 DragonAPI 当前 Wan/Veo/Vidu/Kling/MiniMax/
+  Seedance/Grok 等目录并与官方资料交叉核对。DragonAPI 缺 Wan 3.0 只影响 transport；用户官方 UI 证明
+  `wan3.0-video` 邀测通过。`grok-video-3` 第三代 relay 条目存在，不因 xAI 公布的命名体系降回 1.5；专用 schema
+  缺失仍诚实保留。
+- `VETTING`：HyperFrames `general-video` skill as-is 因 online update/auth/provider 与默认 PostHog telemetry 被拒；
+  Apache-2.0 renderer 只在 exact version、临时 HOME、no telemetry/no auth/no cloud 下准入一次隔离 spike。
+- `SPIKE`：系统 Chrome profile singleton 两次失败后改用本机 cached headless shell，check 全绿；raw frame 重复
+  SHA 精确一致、seam SSIM `0.999600`。默认 MP4 超 H.264 bytes 门且 decoded seam DSSIM `0.039327 > 0.03`，
+  裁决 `renderer-conditional-pass/default-encoder-reject`，不形成生产媒体。
+- `NEXT`：只做 Wan 3.0 官方 endpoint/region/Key presence body-free preflight；不先上传母图或调用模型。

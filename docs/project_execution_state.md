@@ -16,7 +16,9 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-25（RQ-108 runtime Task 4 媒体审计器与预算门已由 `52def9c`/`d58ba15`、Actions `32841900909` 完成 exact-SHA 三 job 公共闭环；唯一下一动作是 Task 5 三路线媒体 bake-off。尚无生产媒体、视频 skill 或模型调用）
+- 最后更新：2026-08-25（RQ-108 runtime Task 5 已完成 DragonAPI/官方广筛、RQ-122 纠偏和 HyperFrames 安全/
+  no-telemetry 隔离 spike；Wan 3.0 官方邀测 access 由用户 UI 证据确认，HyperFrames renderer conditional pass、
+  default encoder reject。唯一下一动作是 Wan 3.0 官方 endpoint/Key body-free preflight；尚无生产媒体或视频模型调用）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2683,6 +2685,13 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   typecheck/build、Playwright `36`、Python no-DB `1862 passed, 146 skipped, 1 warning, 127 subtests`、两套 RAG、
   Harness、compileall、governance 与 npm official-registry audit 全绿。没有 adopted production rendition、视频
   skill/model/relay 调用。
-- `NEXT`：按 implementation plan 进入 Task 5 三路线 bake-off：官方 first/last/reference 生成式候选、
-  HyperFrames/Remotion 确定性分层候选、生成有机层+确定性结构合成候选；先做来源/许可/安全/费用/调用上限
-  冻结，再决定是否安装工具或发起任何付费调用。
+- runtime Task 5 当前已建立 `2026-08-25-8e-video-bakeoff-relay-admission.md` 与 HyperFrames vetting：广筛
+  Wan/Veo/Vidu/Kling/MiniMax/Seedance/Grok 等，不把两个付费槽位误写成封闭候选池。用户官方 UI 证明
+  `wan3.0-video` 邀测 access 已通过；DragonAPI 无该 slug 只影响 relay transport。`grok-video-3` 第三代目录/
+  通用视频示例已证实，专用 schema/upstream mapping 仍待核对。
+- HyperFrames `general-video` agent skill 因 online update/auth/provider 与默认 PostHog telemetry 不准入；exact
+  `hyperframes@0.8.14` 仅在临时 HOME/no telemetry/no auth/no cloud 下隔离安装。cached headless shell 的 check
+  全绿，frame 0/191 重复 SHA 逐字节一致，raw seam SSIM `0.999600`；默认 MP4 因 5,650,074 B 与 decoded seam
+  DSSIM `0.039327 > 0.03` rejected。没有把 smoke 作为视觉候选或生产媒体。
+- `NEXT`：只执行 Wan 3.0 官方 endpoint/region/Key presence 的 body-free preflight；先不上传母图或发起付费
+  生成。preflight 后再在既定最多两个 A 槽位内执行一次 Wan 与一次 Veo/Vidu 候选，不自动重试。

@@ -4461,3 +4461,15 @@
 - `RESEARCH`：定向复核官方 Veo 3.1 first+last、Luma Ray loop/keyframes、Wan 2.7 first/last/continuation；Seedance/relay 仍需实际 model mapping，未提升为准入事实。
 - `DESIGN`：新增 `docs/plans/2026-08-25-8e-video-bakeoff-preflight.md`，冻结生成式/确定性/混合三路线、source fidelity/geometry/full-frame/seam/codec/privacy/cost 评分顺序、最多调用/首错停止和 body-free provenance。
 - `BOUNDARY`：本批没有安装 skill、读取 Key、上传母图、购买 credits 或视频模型调用；下一步须先冻结实际账号/费用/敏感图边界。
+
+### 2026-08-25：RQ-122 official/relay 广筛与 HyperFrames 隔离结果
+
+- `RESEARCH`：DragonAPI 三个可见标签页已核对通用/媒体/模型广场；Veo 3.1、Seedance 2/2.5、Kling v3、Vidu Q3、
+  Grok、Wan 2.6、MiniMax H3 均存在目录证据；官方 Wan 3.0 页面/用户截图又证明邀测 access 与 API 入口。
+- `PERSISTED`：新增 relay admission、HyperFrames vetting；RQ-122、state、roadmap、capability、learning 和
+  active plan 已同步；coverage 仍 planned，8E parent 未关闭。
+- `SPIKE`：HyperFrames exact install 135 packages/no scripts；system Chrome singleton failure；cached headless
+  shell check 0 errors/9 layout samples；raw frame 0/191 repeat SHA exact，raw seam SSIM `0.999600`；default
+  H.264 5,650,074 B 与 seam DSSIM `0.039327` 均不通过。无产品代码、无 external model call、无母图上传。
+- `NEXT`：Wan 3.0 official endpoint/region/Key presence body-free preflight；通过后再冻结一项实际 A1 请求，
+  A2 保留 Veo/Vidu，Grok 3 等待 schema/mapping evidence。

@@ -655,6 +655,10 @@ RQ-108 runtime Task 1–3 已分别由 `1b146e6/32826953474`、`2111a78/32833608
 完成 exact-SHA 三 job 公共闭环；Task 4 媒体审计器与预算门已由 `52def9c`/`d58ba15`、Actions `32841900909` 完成
 exact-SHA 公共闭环；当前唯一下一动作是 Task 5 三路线 bake-off，不接生产媒体。
 
+Task 5 已按 RQ-122 完成 official/relay 广筛和 HyperFrames 隔离 smoke：Wan 3.0 official access 已获用户 UI
+证据，Grok 3 relay 存在但专用 schema 待补；HyperFrames raw renderer 条件通过、默认 MP4 编码门拒绝。当前只
+进入 Wan 3.0 官方 endpoint/region/Key presence body-free preflight；仍无外部视频调用或 production media。
+
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1
 称为最终电影化成品。

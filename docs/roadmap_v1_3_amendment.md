@@ -637,6 +637,11 @@ runtime Task 1–3 已由 `1b146e6/32826953474`、`2111a78/32833608622`、`0198f
 Task 4 媒体审计器与预算门已由 `52def9c`/`d58ba15`、Actions `32841900909` 公共关闭；当前只进入 Task 5 三路线
 bake-off，不进入 production media 或视频/relay 调用。
 
+RQ-122 又明确付费槽位上限不是调研池上限。Task 5 已广筛现有 official/relay 视频目录：Wan 3.0 官方 access
+由用户 UI 证明，Grok 3 relay 第三代存在但专用 schema 未齐。HyperFrames agent skill as-is 不准入；exact renderer
+隔离 spike 证明 raw frames 可确定性闭合，但默认 MP4 seam/bytes 不合格。当前唯一下一步是 Wan 3.0 官方
+endpoint/region/Key presence body-free preflight，不改变 RQ-108/8E/8F 顺序。
+
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
 Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入
 教学、ADR/设计、素材采用门和 TDD；8E coverage 继续 planned。
