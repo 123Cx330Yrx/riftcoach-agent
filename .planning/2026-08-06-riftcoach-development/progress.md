@@ -4424,3 +4424,11 @@
   `144.07/18.50 kB`、governance 与 existing journey 门全绿。
 - `BOUNDARY/NEXT`：Task 3 尚未公共关闭；未接 production video/media、Account source、Auth 新行为或视频模型/relay。
   下一动作是独立 implementation/evidence commit 与 exact-SHA 三 job。
+
+### 2026-08-25：RQ-108 runtime Task 3 exact-SHA 公共闭环
+
+- `PUBLIC-CI`：implementation/evidence `0198fc9efd64d99b0af3a90d3cf468d14120461f` / Actions
+  `32836430378` 精确绑定；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。
+- `CLOSED`：单次 activation、reduced-motion/Save-Data、generation cancellation、唯一导航、focus handoff 与
+  跨幕 overlay 取得公共代码、真库与 Linux 证据；旧 V1 视觉仍未签收。
+- `HANDOFF`：唯一下一动作切为 Task 4 媒体审计器与预算门 TDD；Task 5 bake-off、生产媒体与 Account source 仍后置。

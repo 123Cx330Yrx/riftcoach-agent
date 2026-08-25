@@ -4257,3 +4257,5 @@
 - Task 3 不签收最终视觉：现有 AwakeningScene 的旧 CSS crystal/orbit/label/H1/lede 与临时 overlay 暗场仍是
   V1 fallback，明确留到后续 production media/Task 5–6 组合门；本批只签收 activation semantics、focus 和
   navigation 生命周期，不能把它写成 RQ-110/RQ-118 的最终画面。
+- `0198fc9/32836430378` 的 exact-SHA 三项公共 job 全绿；Task 3 的公共证据确认 focus handoff、Save-Data 短路径
+  和 Workbench 导航清理没有破坏既有 PostgreSQL/Linux/全量回归。下一检查点严格切为 Task 4。

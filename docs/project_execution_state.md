@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-25（RQ-108 runtime Task 3 单次 Portal 激活/跨幕 overlay 已本地 TDD 完成，当前只待 `feat(web): add one shot portal activation` 独立 exact-SHA 三 job；尚无生产媒体、视频 skill 或模型调用）
+- 最后更新：2026-08-25（RQ-108 runtime Task 3 单次 Portal 激活/跨幕 overlay 已由 `0198fc9` / Actions `32836430378` 完成 exact-SHA 三 job 公共闭环；唯一下一动作是 Task 4 媒体审计器与预算门 TDD。尚无生产媒体、视频 skill 或模型调用）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2669,11 +2669,13 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   事件隔离、StrictMode cleanup、poster load/error 和最小 opacity/cover 保障取得公共代码、真库与 Linux 证据。
   聚焦 `39 passed`；frontend unit `246 passed`、typecheck/build、Playwright `36 passed`、JS/CSS gzip
   `142.68/18.50 kB` 与 Impeccable detector 无 findings。当前仍无 App import、生产视频请求或视觉签收。
-- runtime Task 3 已完成本地 TDD：`portalActivation` 的 generation/latch/commit/cancel，以及
-  `PortalActivationOverlay` 的 idle/activating/committed、reduced-motion/Save-Data、aria-hidden/pointer isolation；
-  `AwakeningScene` 改为受控 activation intent/aria-disabled，`ProductJourney` 持有 timer、唯一 navigate、
-  popstate cancellation、reduced-motion immediate commit 与 Account 跨幕 overlay exit。聚焦 `23 passed`；
-  frontend unit `257 passed`、typecheck/build、Playwright `36 passed`，JS gzip `144.07 kB`、CSS gzip `18.50 kB`，
-  仍低于 150/22 kB 门。当前实现尚未公共关闭，生产媒体/视频模型/relay 仍为 0。
-- `NEXT`：创建 Task 3 implementation/evidence commit 并 push，等待同一 SHA 的 `pytest`、
-  `postgres-migrations`、`packaging-smoke` exact-SHA 公共门；公共绿灯前不进入 Task 4 媒体审计。
+- runtime Task 3 implementation/evidence `0198fc9efd64d99b0af3a90d3cf468d14120461f` / Actions
+  `32836430378` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success；
+  `portalActivation` 的 generation/latch/commit/cancel、`PortalActivationOverlay` 的 idle/activating/committed、
+  reduced-motion/Save-Data、aria-hidden/pointer isolation、受控 activation intent/aria-disabled、ProductJourney
+  timer/唯一 navigate/popstate cancellation、Account focus handoff 与跨幕 overlay exit 取得公共证据。
+  聚焦 `27 passed`；frontend unit `257 passed`、typecheck/build、Playwright `36 passed`，JS gzip `144.07 kB`、
+  CSS gzip `18.50 kB`，仍低于 150/22 kB 门。旧 V1 CSS crystal/文字与临时 overlay 仍明确是后续生产视觉门，
+  生产媒体/视频模型/relay 调用为 0。
+- `NEXT`：按 implementation plan 进入 Task 4，先以红灯冻结只读媒体审计器、codec/poster/loop seam/SSIM/
+  budget/anti-reference 门；不安装 HyperFrames，不调用 Wan/Seedance/Veo/Kimi/relay，不创建 Key 或购买 credits。

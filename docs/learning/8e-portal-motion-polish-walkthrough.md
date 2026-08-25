@@ -1,7 +1,7 @@
 # 8E Portal Motion Polish 学习与工程证据
 
 - 检查点：`8e-productization / portal-motion-polish`
-- 状态：设计门 `b3b5280/32812868683`、runtime Task 1 `1b146e6/32826953474` 与 Task 2 `2111a78/32833608622` exact-SHA 公共闭环；Task 3 本地完成，待独立 exact-SHA
+- 状态：设计门 `b3b5280/32812868683`、runtime Task 1 `1b146e6/32826953474` 与 Task 2 `2111a78/32833608622`、Task 3 `0198fc9/32836430378` 均 exact-SHA 公共闭环；Task 4 待进入
 - 决策：ADR-0068
 - 需求：RQ-108 至 RQ-120
 - 视频候选审计：`docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md`（RQ-119）
@@ -114,7 +114,8 @@ Task 2 本地新增的结构性证据包括：poster/reduced/Save-Data 下 DOM �
 
 Task 3 本地证据覆盖：纯状态机 generation/latch/cancel、overlay 的 aria-hidden/pointer isolation、按钮
 `aria-disabled` 保持焦点、720ms full-motion commit、reduced-motion immediate commit、重复输入、popstate 取消、
-唯一 `pushState` 和 Account mount 后 overlay 有界退出。Task 3 implementation/evidence 尚未取得公共 exact-SHA。
+唯一 `pushState` 和 Account mount 后 overlay 有界退出。Task 3 implementation/evidence `0198fc9/32836430378`
+已取得 exact-SHA 三 job 公共闭环。
 该批不签收最终 Portal 视觉；旧 CSS crystal/orbit/label/H1/lede 仅作为临时 V1 fallback，production media、
 原水晶同源 loop 与最终少字/无暗幕画面仍由后续 Task 4–6 独立门处理。Task 3 聚焦 `27 passed`、frontend
 `257 passed`，JS/CSS gzip 为 `144.07/18.50 kB`。

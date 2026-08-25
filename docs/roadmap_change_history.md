@@ -3187,3 +3187,9 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   和 Account 跨幕退出。
 - frontend unit `257`、typecheck/build、Playwright `36` 全绿，JS/CSS gzip `144.07/18.50 kB`；当前只待 Task 3
   implementation/evidence exact-SHA 公共闭环，不进入 Task 4 或生产媒体。
+
+## 2026-08-25：RQ-108 runtime Task 3 exact-SHA 公共关闭
+
+- `0198fc9/32836430378` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；Task 3 正式关闭。
+- `HANDOFF`：唯一下一动作切为 Task 4 媒体审计器与预算门 TDD；旧 V1 视觉、production media、视频模型/relay
+  仍不准入。

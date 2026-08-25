@@ -651,8 +651,8 @@ Task 1 manifest/cover geometry/media policy TDD；设计公共绿灯不等于视
 RQ-121 又把用户正规中转目录限定为 official-first 之后的可验证 secondary transport；目录 slug/标签/价格
 不是身份事实，未过 mapping、能力、压缩、隐私、地区、错误/计费与 body-free 门时不得上传母图或参加横评。
 
-RQ-108 runtime Task 1 与 Task 2 已分别由 `1b146e6/32826953474`、`2111a78/32833608622` 完成 exact-SHA
-三 job 公共闭环；Task 3 单次激活与跨幕 overlay 已本地完成，当前只待独立 exact-SHA 公共门，不接生产媒体。
+RQ-108 runtime Task 1–3 已分别由 `1b146e6/32826953474`、`2111a78/32833608622`、`0198fc9/32836430378`
+完成 exact-SHA 三 job 公共闭环；当前唯一下一动作是 Task 4 媒体审计器与预算门 TDD，不接生产媒体。
 
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1

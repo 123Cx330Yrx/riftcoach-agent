@@ -2250,3 +2250,8 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   overlay 跨 Portal→Account mount，generation 使迟到 timer/popstate/StrictMode no-op。
 - 聚焦 `27 passed`、frontend `257 passed`、typecheck/build/Playwright `36` 全绿；当前只待独立提交与公共 CI，
   不接生产视频、Account source 或视频模型。
+
+## 2026-08-25：RQ-108 runtime Task 3 公共裁决
+
+- `0198fc9/32836430378` exact-SHA 三 job 全绿，单次 activation/overlay/focus/navigation seam 公共关闭。
+- 下一裁决面只限 Task 4：只读媒体审计器与预算门；production media、HyperFrames、视频模型/relay 仍不采用。
