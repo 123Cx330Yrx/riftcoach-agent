@@ -1,7 +1,7 @@
 # 8E Portal Motion Polish 学习与工程证据
 
 - 检查点：`8e-productization / portal-motion-polish`
-- 状态：设计门进行中；runtime implementation 尚未开始
+- 状态：设计门 `b3b5280/32812868683` exact-SHA 公共闭环；runtime Task 1 prepared
 - 决策：ADR-0068
 - 需求：RQ-108 至 RQ-120
 - 视频候选审计：`docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md`（RQ-119）
@@ -74,6 +74,10 @@ loop 在 Account stage 之前不下载；Workbench 数据流保持不变。
 当前 design gate 已通过 governance 12、frontend unit 136/E2E 36/typecheck/build、Python no-DB
 1837/146 skipped/127 subtests、两套 RAG、Harness dry-run、compileall 和安全/diff 门；本机 Docker/PostgreSQL
 不可达，因此真库/Linux 仍等待独立 design exact-SHA jobs。本节其余项目仍是 runtime 计划，不冒充已执行。
+
+公共门随后已补齐：`b3b5280/32812868683` 的 pytest、真实 PostgreSQL 和 Linux packaging 三 job 全绿；
+公共 Python `1838 passed, 145 skipped, 1 warning, 127 subtests`，frontend unit 136/E2E 36、两套 RAG、Harness
+和治理/安全同 SHA 通过。该证据关闭 design，不关闭 runtime/media 或整个 8E。
 
 - unit：manifest exactness、viewport、policy、listener cleanup、poster-first、canplay/play/error、sticky fallback、
   hidden/visible pause、重复激活和迟到 callback；

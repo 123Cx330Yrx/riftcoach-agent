@@ -17,8 +17,8 @@ projection、三层 journey、真实 Player Link、母图分层 V1 与 browser/a
 公共关闭。RQ-108 已按 RQ-109 授权；ADR-0068/设计/TDD plan 采用 poster-first 全帧 loop、透明语义激活和
 sticky fallback，RQ-117 又把 Account 地图冻结为官方拓扑准确、地形有意概括、禁止伪写实微细节；RQ-118
 固定保留母图原水晶/塔体/构图，不再生成放大或替换水晶；RQ-119/120 又以 Kimi rejected Bad Case 建立
-Wan/Seedance/Veo/Luma/Runway、HyperFrames/Remotion 与混合式三路线横评。当前只待
-RQ-108 独立 design exact-SHA，runtime 动效尚未开始；这些证据不等于连续 Gold/CS/XP 曲线、正式 OIDC/RSO、
+Wan/Seedance/Veo/Luma/Runway、HyperFrames/Remotion 与混合式三路线横评。RQ-108 design
+`b3b5280/32812868683` 已 exact-SHA 公共关闭；当前进入 runtime Task 1，动效实现尚未开始；这些证据不等于连续 Gold/CS/XP 曲线、正式 OIDC/RSO、
 最终电影化 Portal 或可追问 Coach。
 
 RQ-107 审计确认现有 Web 只查看最近 Report/Training summary，尚未消费 Conversation-bound Agent 创建链。

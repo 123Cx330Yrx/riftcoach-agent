@@ -645,6 +645,9 @@ RQ-119/120 又用用户 Kimi 12s/1080p 实测建立第一个视频 Bad Case：�
 source composition。Kimi v1 已 rejected；正式横评覆盖 Wan/Seedance/Veo/Luma/Runway 等生成 I2V、
 HyperFrames/Remotion 确定性分层 render，以及推荐的混合式。当前没有安装/采用新工具或调用付费模型。
 
+上述 RQ-108 design 已由 `b3b5280/32812868683` 完成 exact-SHA 三 job 公共闭环。下一动作只进入 runtime
+Task 1 manifest/cover geometry/media policy TDD；设计公共绿灯不等于视频、runtime、skill 或模型已采用。
+
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1
 称为最终电影化成品。

@@ -4352,3 +4352,13 @@
 - `INDEPENDENT-REVIEW`：两轮只读设计复核先发现并随后确认修复 mobile source、asset-before-integration、
   zero-prefetch、cover geometry、provenance/CSP、阈值、session-sticky/pause、RQ-120 ledger 等问题；最终
   blocker/major findings 为 0，可进入独立 design commit。
+
+### 2026-08-25：RQ-108 design exact-SHA 公共闭环
+
+- `PUBLIC-CI`：design `b3b5280cbcc81fa202b52f9cf8437e71956032ac` / Actions `32812868683` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 success。
+- `PUBLIC-EVIDENCE`：frontend unit 136/E2E 36、Python 1838/145 skips/127 subtests、两套 RAG、Harness、
+  governance/security、真实 PostgreSQL migration/control-plane 与 Linux package 同 SHA 全绿。
+- `CLOSED`：ADR-0068、RQ-117–120、Portal provenance、Kimi rejected Bad Case、三路线 bake-off、媒体/激活/
+  provenance/预算 TDD plan 与八维 planned evidence 取得公共设计证据；这不等于 runtime 或视频已完成。
+- `NEXT`：进入 runtime Task 1 manifest/geometry/policy red tests；外部视频 skill/model/credits/Key 保持 0。

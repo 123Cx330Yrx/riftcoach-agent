@@ -2203,3 +2203,9 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   Remotion 分层 frame render；C 线以生成式有机 plates + 确定性建筑/水晶/拓扑合成为推荐候选。
 - HyperFrames 的 Apache-2.0、seekable HTML 和成熟主 skill 支持优先隔离 spike；Remotion 保留 React 对照但
   需复核 source-available 许可。任何 skill 安装、credits/Key/付费调用前另行安全、费用与凭据门。
+
+## 2026-08-25：RQ-108 design 公共闭环
+
+- `b3b5280/32812868683` 的 pytest、真实 PostgreSQL 与 Linux package 三 job 全绿；ADR-0068、RQ-117–120、
+  provenance/I2V audit/详细 TDD plan 获公共设计证据。
+- 下一动作仅为 runtime Task 1 manifest/cover geometry/media policy 红灯；production asset 与外部视频工具仍未采用。

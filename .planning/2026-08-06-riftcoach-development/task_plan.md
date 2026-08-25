@@ -1514,4 +1514,7 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-local-design] RQ-117–120、ADR-0068、Kimi Bad Case、生成式/确定性/混合式横评、正式 design/TDD
     implementation plan、asset/provenance ledger 与八维 planned walkthrough 已冻结；Account v3 未签收、原母图
     水晶不变，当前未安装/采用视频 skill 或调用付费模型。
-  - [next] 运行 design 比例门，创建独立 design commit/push 并等待 exact-SHA 三 job；公共全绿后才执行 runtime TDD。
+  - [completed-public-design] `b3b5280` / Actions `32812868683` 的 pytest、真实 PostgreSQL migrations 与 Linux
+    packaging-smoke 三 job 全绿；RQ-108 design gate 正式关闭，coverage 继续 planned。
+  - [next-authorized] runtime Task 1：strict media manifest、cover geometry、viewport/reduced-motion/Save-Data
+    policy 红灯与最小实现；不安装视频 skill、不调用/购买生成模型、不采用 production media。

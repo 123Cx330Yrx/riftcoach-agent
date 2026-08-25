@@ -3139,3 +3139,10 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   同时比较 HyperFrames/Remotion 确定性 frame render，推荐“生成式有机层 + 确定性结构合成”为 primary candidate。
 - `BOUNDARY`：本批只完成官方资料/skill 质量审计和 body-free audit；没有安装 skill、购买 credits、创建 Key、
   调用付费模型或修改 `web/` runtime。工具采用仍需安全审计、隔离 spike 和新 ADR。
+
+## 2026-08-25：RQ-108 design exact-SHA 公共关闭
+
+- `b3b5280/32812868683` 的 pytest、PostgreSQL migrations/control-plane 与 Linux packaging 三 job 全绿；设计门
+  正式关闭，8E coverage 仍 planned，Portal/Account runtime media 仍未实现。
+- 唯一下一动作是 implementation Task 1 manifest/cover geometry/media policy TDD；不把设计授权外推为 skill
+  安装、credits/Key、付费视频调用或 production asset adoption。

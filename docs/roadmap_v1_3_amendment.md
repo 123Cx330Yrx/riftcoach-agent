@@ -626,6 +626,9 @@ RQ-119/120 把外部制片从“Kimi 默认”改为证据驱动三路线横评�
 确定性 HyperFrames/Remotion，以及生成式有机层 + 确定性结构合成。用户实测 Kimi v1 因 source/texture/
 motion language rejected；本设计不安装 skill、不采购/调用模型，胜出工具仍需独立安全/许可/ADR 门。
 
+design `b3b5280` / Actions `32812868683` 的三 job 已公共关闭该设计门；当前只交接 runtime Task 1 的
+manifest/cover geometry/media policy TDD，8E coverage 继续 planned。
+
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
 Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入
 教学、ADR/设计、素材采用门和 TDD；8E coverage 继续 planned。
