@@ -1533,3 +1533,4 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [requirement-recorded-no-order-change] RQ-121：官方视频端点优先；用户正规中转仅在 model mapping、能力、
     压缩/水印、隐私/保留/删除、地区、错误/重试/计费与 body-free provenance 可验证时作 secondary transport。
     该补充不打断 runtime 顺序，也不授权上传母图、创建 Key 或付费调用。
+  - [in_progress-preflight] Task 5 preflight：`docs/plans/2026-08-25-8e-video-bakeoff-preflight.md` 已按官方 first/last/keyframe/loop 能力、relay secondary 门和三路线评分顺序冻结；当前没有外部视频调用或敏感图上传。

@@ -4455,3 +4455,9 @@
   anti-reference ledger 取得公共证据；仍没有 adopted media 或外部视频调用。
 - `HANDOFF`：唯一下一动作切为 Task 5 三路线 bake-off；先冻结 official-first/relay-secondary 的候选映射、
   许可、隐私、费用、调用上限与失败停止规则，再决定工具/模型采用。
+
+### 2026-08-25：RQ-108 runtime Task 5 preflight/design
+
+- `RESEARCH`：定向复核官方 Veo 3.1 first+last、Luma Ray loop/keyframes、Wan 2.7 first/last/continuation；Seedance/relay 仍需实际 model mapping，未提升为准入事实。
+- `DESIGN`：新增 `docs/plans/2026-08-25-8e-video-bakeoff-preflight.md`，冻结生成式/确定性/混合三路线、source fidelity/geometry/full-frame/seam/codec/privacy/cost 评分顺序、最多调用/首错停止和 body-free provenance。
+- `BOUNDARY`：本批没有安装 skill、读取 Key、上传母图、购买 credits 或视频模型调用；下一步须先冻结实际账号/费用/敏感图边界。

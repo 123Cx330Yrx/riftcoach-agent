@@ -4267,3 +4267,4 @@
   ffmpeg 后，run `32841900909` 三 job 全绿。该失败保留为可解释的环境 Bad Case，审计门与 planned ledger 未放宽。
 - Task 4 exact-SHA 公共闭环确认 planned ledger、审计器、前端 bundle 和既有 PostgreSQL/Linux 门可在同一 SHA
   重建；Task 5 才允许进入真实候选横评，不提前上传母图或读取 relay/provider Key。
+- Task 5 官方资料复核得到三个可用但层级不同的候选：Veo 3.1 的 first/last API 控制明确，Luma 当前 API 有 loop/keyframes，Wan 2.7 支持 first/last/continuation 但区域绑定；Seedance/中转目录暂列 catalog-only，不把 slug、价格或 `official` 后缀当作 provider capability 证据。

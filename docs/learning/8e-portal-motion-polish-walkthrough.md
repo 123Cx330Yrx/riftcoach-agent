@@ -119,6 +119,7 @@ Task 3 本地证据覆盖：纯状态机 generation/latch/cancel、overlay 的 a
 该批不签收最终 Portal 视觉；旧 CSS crystal/orbit/label/H1/lede 仅作为临时 V1 fallback，production media、
 原水晶同源 loop 与最终少字/无暗幕画面仍由后续 Task 4–6 独立门处理。Task 3 聚焦 `27 passed`、frontend
 `257 passed`，JS/CSS gzip 为 `144.07/18.50 kB`。
+Task 5 的 preflight 设计见 `docs/plans/2026-08-25-8e-video-bakeoff-preflight.md`：官方 first/last/keyframe/loop 能力先做 capability mapping，再比较生成式、确定性和混合式；中转只作 secondary transport。当前仍没有任何实际模型调用或母图上传。
 
 Task 4 证据新增只读媒体审计器和 planned ledger：25 项测试覆盖 exact scene/viewport matrix、Portal source
 SHA、codec/fps/pix_fmt/color/audio、faststart/metadata/keyframe、SSIM/seam/dropped-frame、预算、anti-reference
