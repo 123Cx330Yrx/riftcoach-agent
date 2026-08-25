@@ -4217,3 +4217,23 @@
   组织规模复核。推荐候选是先分层/inpaint，再用生成式有机 loop plates + deterministic architecture composite。
 - 当前只记录候选，不安装 skill、不购 credits、不创建 Key、不调用付费模型；任何 adoption 仍需安全审计、
   隔离 spike、质量/许可/维护成本和新 ADR。
+
+### RQ-121 官方优先与中转 secondary transport
+
+- 用户正规中转目录扩大了 Seedance/Kling/Grok/Hailuo/Sora/Veo/Vidu/Wan 的可达候选，但截图里的 model slug、
+  `official`/quality/vip 后缀和单价不是厂商身份、能力或直连证据。
+- bake-off 仍 official first；relay 必须先验证 model/version mapping、首尾帧/reference 合同、无静默压缩/水印、
+  隐私/保留/删除/训练、地区、错误/重试/计费和有界 body-free provenance，无法验证则 catalog-only。
+- 站内列表可能滞后，正式横评前重新查官方最新模型；本补充不打断 Task 1，也不授权上传母图、创建 Key 或付费调用。
+
+## 2026-08-25：RQ-108 runtime Task 1 TDD 发现
+
+- strict runtime manifest 采用 schema `1.0` + 四项 scene/viewport matrix；asset file identity 固定
+  `scene-viewport-poster|loop`，兼容当前 Vite root/dev 与 `name-hash.ext`，拒绝 remote/data/query/fragment/
+  traversal 和重复 URL。当前不支持未来 `base: './'`，因 Vite 仍为根基址，记录为非阻断兼容边界。
+- cover geometry 的关键公式是 `scale=max(container/source)` 与 `offset=(container-rendered)*objectPosition`；
+  object-position 百分比作用于剩余空间而不是把 source 点直接放到 viewport 点。hitBox 不裁切以保持像素对齐。
+- 初版 hook 的 passive-effect subscription 真实允许 render→commit 竞态先提交 motion；独立审查红灯复现后，
+  改为 cached `useSyncExternalStore` + `poster/preflight`，subscribe-then-read 才允许 motion。旧 Safari/iOS 的
+  `addListener/removeListener` 也增加对称 fallback。
+- 低优先级边界：decoder readonly 是 TypeScript 不变量，未 deep-freeze；当前仅内部可信消费，不扩大实现。

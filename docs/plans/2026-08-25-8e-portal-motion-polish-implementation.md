@@ -95,11 +95,12 @@ type MediaPolicy =
   | {
       readonly mode: "poster"
       readonly viewport: CinematicViewport
-      readonly reason: "reduced-motion" | "save-data"
+      readonly reason: "preflight" | "reduced-motion" | "save-data"
     }
 ```
 
-覆盖 760px 边界、reduced-motion 优先级、Save-Data、API 缺失、preference/resize listener 更新与 cleanup。
+覆盖 760px 边界、首个 commit `poster/preflight`、render→subscribe signal race、reduced-motion 优先级、
+Save-Data、API 缺失、modern/legacy MediaQueryList、preference/resize listener 更新、StrictMode 与 cleanup。
 
 ### Step 4: 运行 policy 红灯
 

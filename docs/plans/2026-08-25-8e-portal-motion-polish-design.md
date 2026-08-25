@@ -91,13 +91,14 @@ type MediaPolicy =
   | {
       readonly mode: "poster"
       readonly viewport: "desktop" | "mobile"
-      readonly reason: "reduced-motion" | "save-data"
+      readonly reason: "preflight" | "reduced-motion" | "save-data"
     }
 ```
 
 Hook 订阅 `matchMedia('(prefers-reduced-motion: reduce)')` 和存在时的 `navigator.connection.saveData/change`。
-Save-Data API 缺失不等于开启；poster 分支仍携带 viewport，以选择正确的 desktop/mobile poster；poster-only
-必须从首次 render 就不创建 `<video>/<source>`。
+Save-Data API 缺失不等于开启；poster 分支仍携带 viewport，以选择正确的 desktop/mobile poster。首个 commit
+使用 `poster/preflight`，`useSyncExternalStore` 完成订阅后才解析实际 motion/reduced/save-data；因此
+poster-only 从首次 render 就不创建 `<video>/<source>`，不会先请求再撤回。
 
 ### `CinematicSceneMedia`
 
@@ -112,7 +113,7 @@ Save-Data API 缺失不等于开启；poster 分支仍携带 viewport，以选�
 初始资格和运行期播放状态是两个合同：
 
 ```text
-MediaPolicy   = motion | poster(reason, viewport)
+MediaPolicy   = motion | poster(preflight|reduced-motion|save-data, viewport)
 PlaybackState = poster | loading | playing | failed-sticky
 ```
 

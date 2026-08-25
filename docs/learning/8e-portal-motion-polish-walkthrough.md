@@ -1,7 +1,7 @@
 # 8E Portal Motion Polish 学习与工程证据
 
 - 检查点：`8e-productization / portal-motion-polish`
-- 状态：设计门 `b3b5280/32812868683` exact-SHA 公共闭环；runtime Task 1 prepared
+- 状态：设计门 `b3b5280/32812868683` exact-SHA 公共闭环；runtime Task 1 本地完成，等待独立 exact-SHA
 - 决策：ADR-0068
 - 需求：RQ-108 至 RQ-120
 - 视频候选审计：`docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md`（RQ-119）
@@ -37,9 +37,9 @@ visual QA 或 8F。正式 runtime 实现只有在本设计提交通过 exact-SHA
 
 | 职责 | 计划路径 | 当前状态 |
 |---|---|---|
-| media manifest 与 viewport rendition | `web/src/cinematic/mediaManifest.ts` | pending |
-| cover/crop 与 hitbox 投影 | `web/src/cinematic/mediaGeometry.ts` | pending |
-| reduced-motion/Save-Data policy | `web/src/cinematic/mediaPolicy.ts` | pending |
+| media manifest 与 viewport rendition | `web/src/cinematic/mediaManifest.ts` | implemented-local；strict 4-entry decoder |
+| cover/crop 与 focal/hitbox 投影 | `web/src/cinematic/mediaGeometry.ts` | implemented-local；pure cover geometry |
+| reduced-motion/Save-Data policy | `web/src/cinematic/mediaPolicy.ts`、`web/src/cinematic/useCinematicMediaPolicy.ts` | implemented-local；preflight-first external store |
 | poster/video 与 page-session sticky failure/pause | `web/src/components/CinematicSceneMedia.tsx`、`web/src/cinematic/mediaSession.ts` | pending |
 | 激活 latch/overlay | `web/src/cinematic/portalActivation.ts`、`web/src/components/PortalActivationOverlay.tsx` | pending |
 | Portal/Account 组合 | `web/src/components/AwakeningScene.tsx`、`web/src/app/App.tsx` | pending |
@@ -53,8 +53,9 @@ visual QA 或 8F。正式 runtime 实现只有在本设计提交通过 exact-SHA
 
 ```text
 首次 render
-  ├─ reduced-motion / Save-Data → poster only，0 video requests
-  └─ motion eligible → poster + selected viewport video
+  └─ poster/preflight，0 video requests
+       ├─ subscribed reduced-motion / Save-Data → poster only
+       └─ subscribed motion eligible → poster + selected viewport video
                            ├─ canplay/play success → video fades in
                            └─ error/rejection → session-sticky poster
 
@@ -78,6 +79,14 @@ loop 在 Account stage 之前不下载；Workbench 数据流保持不变。
 公共门随后已补齐：`b3b5280/32812868683` 的 pytest、真实 PostgreSQL 和 Linux packaging 三 job 全绿；
 公共 Python `1838 passed, 145 skipped, 1 warning, 127 subtests`，frontend unit 136/E2E 36、两套 RAG、Harness
 和治理/安全同 SHA 通过。该证据关闭 design，不关闭 runtime/media 或整个 8E。
+
+runtime Task 1 当前本地证据：manifest/geometry/policy/hook 聚焦 `71 passed`，frontend 全量 `28 files / 207
+passed`、Playwright `36 passed`，typecheck/build 与 governance 12/diff 通过；未被任何组件 import，因此
+JS/CSS gzip 保持 `142.68/18.50 kB`。Python no-DB `1837 passed, 146 skipped, 1 warning, 127 subtests`，两套
+RAG、Harness、compile/security 也全绿。独立审查先
+发现 legacy MediaQueryList crash 与 render→commit preference race；修复后使用 modern/legacy 对称订阅、
+`useSyncExternalStore` 和首个 `poster/preflight` commit，最终 blocker/major 为 0。该证据仍不包含 `<video>`、
+poster/source、媒体下载或页面视觉变化。
 
 - unit：manifest exactness、viewport、policy、listener cleanup、poster-first、canplay/play/error、sticky fallback、
   hidden/visible pause、重复激活和迟到 callback；
@@ -125,3 +134,9 @@ Account 地图还可以补充：
 > 战术投影，并把“看似写实但位置错误”设为拒绝条件，避免用生成细节冒充数据真实性。
 
 当前不能说 runtime 已完成、loop 已生成、Kimi/API 已接入、Riot 角色已获公开准入，或完整 8E 已关闭。
+
+Task 1 面试表述可以补充：
+
+> 我先把媒体路径做成严格本地 manifest，并复刻 `object-fit: cover` 的裁切数学，让透明按钮和画面像素共享
+> 同一坐标真值。媒体策略首个 commit 固定为 poster/preflight，浏览器偏好订阅后才允许 motion，因此
+> reduced-motion 或 Save-Data 在 render→commit 竞态下也不会先下载视频再撤回。

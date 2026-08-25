@@ -629,6 +629,13 @@ motion language rejected；本设计不安装 skill、不采购/调用模型，�
 design `b3b5280` / Actions `32812868683` 的三 job 已公共关闭该设计门；当前只交接 runtime Task 1 的
 manifest/cover geometry/media policy TDD，8E coverage 继续 planned。
 
+RQ-121 允许用户正规中转目录作为 official-first 之后的 secondary transport；目录 slug、`official` 标签和价格
+不证明模型身份或能力，必须通过 mapping/capability/compression/privacy/region/error/billing/body-free 门。
+该补充不改变 Task 1、8E/8F 顺序或外部调用授权。
+
+runtime Task 1 已以 71 focused/207 frontend unit/typecheck/build 本地完成 strict manifest、cover geometry 与
+poster/preflight media policy；当前只待独立 SHA/公共三 job，不提前进入 Task 2 或任何视频/relay 调用。
+
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
 Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入
 教学、ADR/设计、素材采用门和 TDD；8E coverage 继续 planned。

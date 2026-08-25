@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-25（RQ-108 design `b3b5280` / Actions `32812868683` 已完成 exact-SHA 三 job 公共闭环；RQ-117–120、ADR-0068、Kimi Bad Case、生成/确定/混合三路线与详细 TDD plan 已冻结。当前下一动作是 runtime Task 1 manifest/cover geometry/media policy 红灯；尚未安装视频 skill、调用付费模型或采用媒体）
+- 最后更新：2026-08-25（RQ-108 runtime Task 1 manifest/cover geometry/media policy 已本地 TDD 完成：71 focused、207 frontend unit、typecheck/build 全绿；当前只待独立 implementation/evidence commit 与 exact-SHA 三 job。尚无 `<video>`、媒体资产、视频 skill 或模型调用）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -557,10 +557,10 @@ pause_reason: ""
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | 阶段 0-7、Stage 8 entry/8A/8B/8C/8D 与 8E Batch B/C/D、Live integration、E1–E5、production shell/Auth gate、Timeline、RQ-102/104/105/106 foundation 已公共关闭；RQ-108 已授权，本地 design/TDD plan 已完成但 `web/` runtime 动效仍为 0 | foundation 或 design 绿灯等于正式 OIDC/RSO、可追问 Coach、Portal Motion Polish、完整五模块、完整 8E 或生产 SLA |
-| 项目理解 | Stage 8 entry、8A–8D 与 8E 已闭环批次均有 ADR/设计/walkthrough；最新 RQ-108 材料又解释 media policy/playback、poster-first、唯一激活、RQ-117 拓扑/抽象、RQ-118 原水晶边界和可讲/不可讲 | 持久材料存在等于用户已能独立讲解所有实现；owner mastery 仍需复述、读码和运行验证 |
-| 参考资料 | Saber/Sea 只作选择性参考；8B reject 结果未重跑；OP.GG lane-meta live Bad Case 已闭环；视觉继续多来源门，breadth/golden slice 与 README 广泛研究分别留后续 8E/8F | 引用参考思想等于复制 Runtime/DAG，或 Multi-Agent reject 被撤销；一次外部观察等于长期 freshness/SLA，或 MotionSites 是唯一视觉来源 |
-| GitHub/部署 | 8C、8D、OP.GG evidence、Batch B/C/D、RQ-096、E1–E5、Auth gate 与 Timeline 均有 exact-SHA 公共证据；E4 marker replay/Artifact-Trace cleanup 与 E5 bounded metrics 已公共闭环，但 Docker image 仍不 COPY web | 本地 Compose 或公共 Web 代码等于正式 OIDC/HTTPS edge、加密备份/KMS/RPO-RTO、前端部署、完整 8E 或公网生产可用 |
+| 本地代码 | 已公共闭环项不变；RQ-108 Task 1 strict manifest/cover geometry/preflight media policy 已本地完成，但尚无 production manifest、`<video>`、媒体资产或页面集成 | Task 1 合同绿灯等于 Portal Motion Polish、正式 OIDC/RSO、可追问 Coach、完整 8E 或生产 SLA |
+| 项目理解 | RQ-108 walkthrough 已补 manifest、CSS cover 数学、poster/preflight、modern/legacy listener、竞态与可讲/不可讲边界 | 持久材料存在等于用户已能独立讲解所有实现；owner mastery 仍需复述、读码和运行验证 |
+| 参考资料 | Kimi Bad Case 与生成/确定/混合路线已审计；RQ-121 记录 official-first、relay-secondary，但中转目录仍只是未验证 catalog | 型号更“新”、站内 `official` 标签或低价等于模型身份、能力、隐私或视觉准入 |
+| GitHub/部署 | RQ-108 design/state closure 已 exact-SHA；Task 1 当前只本地完成等待独立公共 CI，Docker image 仍不 COPY web | 本地合同/Compose 或公共设计证据等于媒体已部署、HTTPS edge、完整 8E 或公网生产可用 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
@@ -2627,6 +2627,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - RQ-120 将正式横评分为生成式 Wan/Seedance/Veo/Luma/Runway、确定性 HyperFrames/Remotion 与混合式三线；
   当前推荐候选是生成式有机层 + frame-driven 结构合成，但尚未安装 skill、采用工具、购买 credits、创建 Key
   或调用付费模型。HyperFrames 若胜出仍需安全审计、隔离 spike 与新 ADR。
+- RQ-121 允许用户正规中转站作为可验证 secondary transport，但官方 API/Console 优先；站内 slug、`official`
+  后缀和价格只列为 catalog evidence。任何 relay 在上传母图前必须通过 model mapping、能力、压缩/水印、
+  隐私/保留/删除、地区、错误/重试/计费和调用上限门；本补充不改变当前 Task 1 的 no-media/no-external-I/O。
+- runtime Task 1 已新增 strict schema `1.0` manifest decoder：只接受四个 portal/account × desktop/mobile 本地
+  rendition，拒绝未知/缺失/重复 identity、远程/data/traversal/格式漂移，并把 Portal crystal hitBox 与 Account
+  身份隔离；没有 production manifest 常量或资产 URL。
+- `resolveCoverGeometry()` 以纯函数复刻 CSS `object-fit: cover` + percentage `object-position`，统一投影 media box、
+  focal point 和可选 hitBox；1440/1024/390/320、极宽/极高与非法/overflow 输入已有 TDD。
+- media policy 以 760px 为精确边界，motion/poster 都携带 viewport；首个 commit 固定 `poster/preflight`，
+  `useSyncExternalStore` 订阅 modern/legacy MediaQueryList、resize 与可选 Save-Data 后才允许 motion。render→commit
+  preference race、SSR conservative poster、StrictMode 和 listener cleanup 均有回归。
 - RQ-108 必须独立完成 ADR/设计、素材 provenance、codec/poster、移动安全区、reduced-motion、Save-Data、
   播放/解码失败 fallback、下载/解码/JS 预算、许可/移除路径、TDD、八维证据、独立提交和 exact-SHA 公共门。
   不热链、不复制付费素材，不默认新增 Three/OGL/Anime；不实现 Coach、OIDC/RSO、Data Dragon enrichment 或
@@ -2645,5 +2656,9 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   unit `136`、Playwright `36`、Python `1838 passed, 145 skipped, 1 warning, 127 subtests`、两套 RAG、Harness/
   governance/security；真 PostgreSQL migration/control-plane 与 Linux no-I/O/non-root package 同时全绿。
 - `NEXT`：设计门已公共关闭；按 implementation plan 进入 runtime Task 1，先为 strict media manifest、
-  object-fit cover geometry 与 viewport/reduced-motion/Save-Data policy 写红灯。该 Task 不需要也不授权安装
-  HyperFrames、调用 Wan/Seedance/Veo/Kimi、创建 Key、购买 credits 或采用任何 production media。
+  object-fit cover geometry 与 viewport/reduced-motion/Save-Data policy 写红灯。该 Task 已本地完成，聚焦
+  `71 passed`、frontend `207 passed`、Playwright `36 passed`、typecheck/build 全绿且 bundle unchanged；
+  Python no-DB `1837 passed, 146 skipped, 1 warning, 127 subtests`、两套 RAG、Harness published/0 revisions、
+  compileall、SDK/Secret/tracked-data、governance focused 12/diff 通过；下一动作是独立提交/push 与
+  exact-SHA `pytest`/`postgres-migrations`/`packaging-smoke`。公共全绿前不进入 Task 2，不安装 HyperFrames、
+  不调用 Wan/Seedance/Veo/Kimi、不创建 Key、不购买 credits、不采用 production media。

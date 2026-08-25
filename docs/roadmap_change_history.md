@@ -3146,3 +3146,16 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   正式关闭，8E coverage 仍 planned，Portal/Account runtime media 仍未实现。
 - 唯一下一动作是 implementation Task 1 manifest/cover geometry/media policy TDD；不把设计授权外推为 skill
   安装、credits/Key、付费视频调用或 production asset adoption。
+
+## 2026-08-25：RQ-121 正规中转目录补充
+
+- 用户提供 Seedance/Kling/Grok/Hailuo/Sora/Veo/Vidu/Wan 的中转候选；采用门保持 official first、relay second。
+- relay slug/`official` 标签/价格不作身份事实；必须先验证 mapping、能力、压缩、隐私、地区、错误/计费和
+  body-free provenance。该补充不打断 runtime Task 1，也不授权上传或付费调用。
+
+## 2026-08-25：RQ-108 runtime Task 1 本地完成
+
+- manifest/geometry/policy/hook 已 red→green；独立审查暴露并修复 legacy MQL crash 与 render→commit motion
+  race，采用 useSyncExternalStore + poster/preflight。
+- focused 71、frontend 207、typecheck/build、bundle/governance/diff 全绿；当前只待独立 SHA/公共三 job，
+  Task 2、production media、skill/model/relay calls 均为 0。

@@ -83,3 +83,14 @@ plates。这样可以让整帧持续变化，同时不允许生成模型重画�
 
 本设计门不实际购买 credits、不创建 API Key、不调用上述付费服务。正式横评的模型版本、最多调用数和金额
 上限要在执行前冻结；结果无论好坏都记录，不能换样本追绿。
+
+## RQ-121 中转站候选边界
+
+用户截图显示一个正规中转站当前列出 Seedance 1.0/1.5/2/2.5、Kling 2.6/3、Grok Video、MiniMax Hailuo、
+Sora 2、Veo 3.1、Vidu Q3 和 Wan 2.6 等 slug/价格。它扩大“可达性”，不提升证据等级：站内 `official`、
+`quality`、`vip` 等后缀与产品说明仍需用官方文档、受控 capability probe 和输出 metadata 交叉验证。
+
+采用顺序为 official first、relay second。relay admission 在任何母图上传前必须记录：provider/model/version
+映射、支持的首尾帧/参考图/locked-camera 参数、是否二次压缩/加水印、隐私/保留/训练/删除政策、地区、费用、
+超时/重试/错误、最大调用数和脱敏结果。无法验证的候选保持 `catalog-only`；列表在 bake-off 前重新发现，
+不因截图缺少更新模型而锁死候选集。

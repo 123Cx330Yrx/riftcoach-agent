@@ -4362,3 +4362,23 @@
 - `CLOSED`：ADR-0068、RQ-117–120、Portal provenance、Kimi rejected Bad Case、三路线 bake-off、媒体/激活/
   provenance/预算 TDD plan 与八维 planned evidence 取得公共设计证据；这不等于 runtime 或视频已完成。
 - `NEXT`：进入 runtime Task 1 manifest/geometry/policy red tests；外部视频 skill/model/credits/Key 保持 0。
+
+### 2026-08-25：RQ-121 中转目录补充（不打断 Task 1）
+
+- 用户提供 Seedance/Kling/Grok/Hailuo/Sora/Veo/Vidu/Wan 的正规中转候选截图；已按“official first、relay
+  secondary”记录采用门，目录 slug/`official` 后缀/价格不冒充厂商身份事实。
+- 当前没有读取/写入 relay Key/base URL，没有上传母图或调用视频模型；Task 1 manifest/geometry/policy TDD 顺序不变。
+
+### 2026-08-25：RQ-108 runtime Task 1 本地完成
+
+- `RED→GREEN`：manifest/geometry 两个缺模块红灯；policy/hook 两个缺模块红灯；独立审查又用 legacy API 和
+  render→commit preference race 复现 3 项红灯，均以最小合同修复。
+- `IMPLEMENTED`：8 个新 TS/test 文件完成 strict 4-rendition manifest、cover/object-position/focal/hitBox math、
+  760px viewport policy、poster/preflight、reduced-motion/Save-Data priority、useSyncExternalStore 与
+  modern/legacy/StrictMode cleanup。无 production manifest、asset、video、network/storage。
+- `LOCAL`：focused `71 passed`；frontend `28 files / 207 passed`；Playwright `36 passed`；typecheck/build 通过；
+  JS/CSS gzip unchanged `142.68/18.50 kB`；Python no-DB `1837 passed, 146 skipped, 1 warning, 127 subtests`；
+  两套 RAG、Harness published/0 revisions、compileall、SDK/Secret/tracked-data、governance tests 12/diff 全绿。
+  两轮 independent final review 均为 blocker/major 0。
+- `NEXT`：同步 walkthrough/canonical、governance/diff/比例门后独立 commit/push，等待 exact-SHA 三 job；
+  公共成功前 Task 2 不进入，视频 skill/model/relay calls 0。

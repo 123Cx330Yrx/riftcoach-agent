@@ -2209,3 +2209,16 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - `b3b5280/32812868683` 的 pytest、真实 PostgreSQL 与 Linux package 三 job 全绿；ADR-0068、RQ-117–120、
   provenance/I2V audit/详细 TDD plan 获公共设计证据。
 - 下一动作仅为 runtime Task 1 manifest/cover geometry/media policy 红灯；production asset 与外部视频工具仍未采用。
+
+## 2026-08-25：RQ-121 中转站只作 secondary transport
+
+- 官方 API/Console 保持优先。用户正规中转目录可参加后续 bake-off，但 model slug、`official` 后缀和价格只
+  是目录证据；必须先验证映射、first/last/reference、压缩/水印、隐私/删除、地区、错误/重试/计费和调用上限。
+- 本裁决不安装 skill、不配置 relay、不上传母图、不创建 Key、不调用模型，也不改变当前 runtime Task 1。
+
+## 2026-08-25：RQ-108 runtime Task 1 本地裁决
+
+- strict schema 1.0 manifest + exact 4-rendition matrix、pure cover/focal/hitBox geometry 和 viewport-aware media
+  policy 已完成；首个 commit 固定 poster/preflight，订阅后才允许 motion，避免偏好竞态触发视频请求。
+- focused 71、frontend unit 207、typecheck/build/bundle 全绿，两轮独立复核 blocker/major 0；无生产 manifest、
+  asset、video、network/storage/model call。下一动作只做独立提交与 exact-SHA 三 job。

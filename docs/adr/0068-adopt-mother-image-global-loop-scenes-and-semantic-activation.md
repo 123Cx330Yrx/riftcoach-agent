@@ -93,9 +93,10 @@ typed CinematicMediaManifest
   共用与 `object-fit: cover` 一致的纯 geometry resolver，不能直接把 source 百分比当成 viewport 百分比。
 - video `canplay` 后才淡入；`play()` rejection、`error`、codec/decode failure 都变成 session-sticky poster，
   不重试风暴、不导航、不隐藏语义按钮。页面 hidden 时 pause，恢复时仅 eligible 状态继续。
-- 初始资格与运行期状态分开：`MediaPolicy = motion | poster(reason, viewport)`，`PlaybackState = poster |
-  loading | playing | failed-sticky`。偏好在 activating 中切为 reduced-motion 时取消空间动画并只 commit 一次；
-  visible resume 再失败也进入 `failed-sticky`。
+- 初始资格与运行期状态分开：`MediaPolicy = motion | poster(preflight|reduced-motion|save-data, viewport)`，
+  `PlaybackState = poster | loading | playing | failed-sticky`。首个 commit 固定为 `poster/preflight`，只有浏览器
+  preference/network/viewport 订阅完成并再次读取后才允许 motion；偏好在 activating 中切为 reduced-motion
+  时取消空间动画并只 commit 一次，visible resume 再失败也进入 `failed-sticky`。
 - `ProductJourney` 持有 page-session 内 per-scene failed/paused state；back/forward remount 不重试已失败媒体，
   整页 reload 才重置。提供低视觉权重、可键盘操作的暂停/继续动效控件，满足持续自动运动的用户控制；它不
   改写系统 preference、URL 或业务状态。
