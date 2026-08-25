@@ -16,10 +16,9 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-26（RQ-124 v2 source migration `2a2da0e` / Actions `32872452053` 已 exact-SHA 三 job
-  公共成功。随后完成一次有效 Wan 3.0 free-quota v2 首尾同图样本；因 source→first、seam、coherent global
-  motion、水印和 encoding contract rejected，不重抽。唯一下一动作是 Wan sample audit 独立提交与 exact-SHA
-  公共门；公共成功后进入 Dragon/Veo A2）
+- 最后更新：2026-08-26（Wan 3.0 v2 单样本负面审计 `69fc4ab` / Actions `32876134114` 已 exact-SHA 三 job
+  公共成功；不重抽。唯一下一动作是 DragonAPI `Veo3.1-quality-official` A2 单样本，通过本地交互窗口只在
+  内存读取用户 Key、一次 POST、同一 task 轮询与下载）
   no-telemetry 隔离 spike 已由 `7067ea1` / Actions `32862942549` 完成 exact-SHA 三 job 公共闭环；Wan 3.0 官方
   access、DashScope endpoint 与两侧 Key presence 已 body-free 核对，RQ-123 又授权 official/relay 实际有界试用。
   唯一下一动作是 executable-preflight exact-SHA 公共门；尚无生产媒体或视频模型调用）
@@ -2721,3 +2720,7 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - Wan output SHA `030a60f...1f58a`，8s/1918×1080/30fps/H.264/yuv420p/no-audio/2,057,453 B；source→first
   `0.860852`、seam DSSIM `0.097587 > 0.03`、可见 `AI生成`，人工判定没有 RQ-112 coherent full-frame motion。
   `NEXT`：先提交/公共关闭该负面证据批，再进入 Dragon/Veo；不重抽 Wan。
+- Wan negative audit `69fc4ab9a9d76e2f11b031b95c7f855b352b56a5` / Actions `32876134114` 的
+  pytest、postgres-migrations、packaging-smoke 三 job 全部成功；该样本正式 rejected。
+- `NEXT`：A2 Dragon/Veo 一次有界调用。Key 只由用户在本地可见 PowerShell secure prompt 输入，脚本 SHA
+  `dcce8810bfd523b6fcf0061512a7a5738ff0e3fbc8e1429832cfbf406569a16c`，不写 Key/prompt/remote URL/raw body。

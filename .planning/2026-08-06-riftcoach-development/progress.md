@@ -4503,3 +4503,9 @@
 - 本地 MP4、0/2/4/6/末帧、region/full SSIM、adjacent p95/seam、ffprobe/watermark 人工审查已完成；结果因
   source identity、seam、coherent full-frame motion、水印与发布规格 rejected。
 - 当前 external video calls 1；production media 0。下一动作是负面 audit commit/public gate，再进入 Dragon/Veo。
+
+### 2026-08-26：Wan negative audit exact-SHA 公共闭环
+
+- `69fc4ab/32876134114` 的 pytest、真实 PostgreSQL migrations/control-plane 与 Linux package smoke 三 job 全绿。
+- Wan sample 正式 rejected；external video calls 保持 1，production media 0。
+- 下一动作：Dragon/Veo A2 secure local runner 单次调用。

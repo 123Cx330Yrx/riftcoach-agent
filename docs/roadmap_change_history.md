@@ -3243,3 +3243,9 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `REJECTED`：有效 output `030a60f...1f58a` 的 source→first、seam、coherent full-frame motion、水印与发布
   dimensions/fps/color metadata 未过门；不重抽 Wan。
 - `NEXT`：负面证据独立 exact-SHA 公共门；随后严格进入 Dragon/Veo A2。
+
+## 2026-08-26：Wan negative audit 公共闭环与 Veo 交接
+
+- `PUBLIC-CI`：`69fc4ab/32876134114` 三 job 全绿；Wan rejection 取得公开 provenance。
+- `HANDOFF`：唯一下一项为 DragonAPI `Veo3.1-quality-official`，同一 v2/prompt/scorecard，一次 POST、同 task
+  poll/download、不自动重试；Key 仅在用户本地 secure prompt 中存在。

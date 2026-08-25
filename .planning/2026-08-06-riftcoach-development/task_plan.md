@@ -1553,3 +1553,6 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-local-rejected] Wan 3.0 effective calls 1；output `030a60f...1f58a` 因 source/seam/full-frame
     motion/watermark/encoding rejected；无自动重试。
   - [next] Wan negative sample audit 独立 commit/push/exact-SHA；公共成功后进入 Dragon/Veo A2。
+  - [completed-public-rejected] `69fc4ab/32876134114` 三 job 全绿；Wan negative sample 正式关闭。
+  - [next] DragonAPI `Veo3.1-quality-official` A2：secure local Key prompt、一次 POST、同 task poll/download，
+    同一 v2/prompt/scorecard；不自动重试。
