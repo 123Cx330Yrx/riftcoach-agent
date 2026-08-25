@@ -62,6 +62,8 @@ jobs:
 
       - name: Verify cinematic audit toolchain and planned ledger
         run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
           ffprobe -version
           ffmpeg -version
           python scripts/check_cinematic_media.py \
