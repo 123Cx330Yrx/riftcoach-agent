@@ -4432,3 +4432,16 @@
 - `CLOSED`：单次 activation、reduced-motion/Save-Data、generation cancellation、唯一导航、focus handoff 与
   跨幕 overlay 取得公共代码、真库与 Linux 证据；旧 V1 视觉仍未签收。
 - `HANDOFF`：唯一下一动作切为 Task 4 媒体审计器与预算门 TDD；Task 5 bake-off、生产媒体与 Account source 仍后置。
+
+### 2026-08-25：RQ-108 runtime Task 4 本地完成
+
+- `RED→GREEN`：新增 `tests/test_cinematic_media_contract.py`，先冻结 planned/adopted manifest、四 rendition
+  matrix、policy/toolchain/anti-reference、codec/SSIM/seam/budget fail-closed 红灯，再实现只读审计器。
+- `IMPLEMENTED`：`scripts/check_cinematic_media.py` 不联网、不转码、不上传、不写素材；固定 PATH `ffprobe`，
+  通过显式 probe/digest 注入测试证明本地文件 digest/bytes/尺寸、poster/video schema、VP9/H.264、24fps、
+  yuv420p/BT.709/no-audio、faststart/metadata/keyframe、SSIM/seam/dropped-frame 与预算门。
+- `LOCAL`：focused `25 passed`；planned CLI `audit:cinematic`、frontend unit `257`、typecheck/build、Playwright
+  `36`、Python no-DB `1862 passed, 146 skipped, 1 warning, 127 subtests`、RAG/Harness/compile/governance/npm
+  official audit 全绿。
+- `BOUNDARY/NEXT`：没有 adopted production rendition、Account source、视频模型/relay/HyperFrames 调用；Task 4
+  尚未公共关闭，下一动作是独立 implementation/evidence commit 与 exact-SHA 三 job。

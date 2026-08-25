@@ -1525,8 +1525,10 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-public] runtime Task 3：`portalActivation`、`PortalActivationOverlay`、Awakening 受控 intent 与
     ProductJourney timer/navigation seam 已由 `0198fc9` / Actions `32836430378` 完成 exact-SHA 三 job；27 focused、
     frontend unit 257、typecheck/build、Playwright 36 全绿，JS/CSS gzip `144.07/18.50 kB`。
-  - [next] runtime Task 4：先冻结只读媒体审计器、codec/poster/loop seam/SSIM/budget/anti-reference 合同；
-    公共绿灯前不安装工具、不调用模型、不进入生产素材。
+  - [completed-local] runtime Task 4：只读媒体审计器、planned ledger、codec/poster/loop seam/SSIM/budget/
+    anti-reference 合同已 red→green；25 focused、frontend unit 257、typecheck/build、Playwright 36 全绿；
+    no-DB Python `1862 passed, 146 skipped, 1 warning, 127 subtests`。
+  - [next] Task 4 implementation/evidence 独立 commit/push 与 exact-SHA 三 job；公共绿灯前不进入 Task 5 bake-off。
   - [requirement-recorded-no-order-change] RQ-121：官方视频端点优先；用户正规中转仅在 model mapping、能力、
     压缩/水印、隐私/保留/删除、地区、错误/重试/计费与 body-free provenance 可验证时作 secondary transport。
     该补充不打断 runtime 顺序，也不授权上传母图、创建 Key 或付费调用。

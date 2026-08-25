@@ -3193,3 +3193,9 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `0198fc9/32836430378` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；Task 3 正式关闭。
 - `HANDOFF`：唯一下一动作切为 Task 4 媒体审计器与预算门 TDD；旧 V1 视觉、production media、视频模型/relay
   仍不准入。
+
+## 2026-08-25：RQ-108 runtime Task 4 本地完成
+
+- 新增只读媒体审计器、planned ledger 与 25 项合同测试；固定 source/codec/SSIM/seam/budget/anti-reference/toolchain
+  边界。没有 adopted rendition、视频生成调用或外部上传。
+- `NEXT`：独立 implementation/evidence commit 与 exact-SHA 三 job；公共成功前不进入 Task 5 bake-off。

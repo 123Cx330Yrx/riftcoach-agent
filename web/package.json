@@ -13,7 +13,8 @@
     "test": "vitest",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "audit:cinematic": "python ../scripts/check_cinematic_media.py --manifest ../docs/assets/8e-portal/cinematic-media-audit-v1.json --root .. --json"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "5.3.0",

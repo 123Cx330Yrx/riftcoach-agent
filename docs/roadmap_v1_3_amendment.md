@@ -634,7 +634,7 @@ RQ-121 允许用户正规中转目录作为 official-first 之后的 secondary t
 该补充不改变 Task 1、8E/8F 顺序或外部调用授权。
 
 runtime Task 1–3 已由 `1b146e6/32826953474`、`2111a78/32833608622`、`0198fc9/32836430378` 公共关闭；
-当前只进入 Task 4 媒体审计器与预算门 TDD，不提前进入 production media 或视频/relay 调用。
+Task 4 媒体审计器与预算门已本地 TDD 完成，当前只待独立 exact-SHA 公共门，不进入 production media 或视频/relay 调用。
 
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
 Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入

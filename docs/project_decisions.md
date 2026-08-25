@@ -2255,3 +2255,11 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 
 - `0198fc9/32836430378` exact-SHA 三 job 全绿，单次 activation/overlay/focus/navigation seam 公共关闭。
 - 下一裁决面只限 Task 4：只读媒体审计器与预算门；production media、HyperFrames、视频模型/relay 仍不采用。
+
+## 2026-08-25：RQ-108 runtime Task 4 本地裁决
+
+- 只读 `check_cinematic_media.py` 采用 planned/adopted manifest 两态：planned 只验证合同和固定策略，不读取
+  媒体；adopted/fixture 才验证 local digest/bytes/ffprobe/provenance/预算。CLI 固定 PATH `ffprobe`，不接受任意
+  可执行路径；SSIM/seam/dropped-frame 作为显式测量证据，不伪装成 ffprobe 自动推断。
+- 聚焦 `25 passed`、frontend `257 passed`、Python no-DB `1862 passed, 146 skipped, 1 warning, 127 subtests`、
+  RAG/Harness/compile/governance/npm official audit 全绿；Task 4 仍待独立 exact-SHA 公共门。

@@ -60,6 +60,15 @@ jobs:
           npm run build
           npm run test:e2e
 
+      - name: Verify cinematic audit toolchain and planned ledger
+        run: |
+          ffprobe -version
+          ffmpeg -version
+          python scripts/check_cinematic_media.py \
+            --manifest docs/assets/8e-portal/cinematic-media-audit-v1.json \
+            --root . \
+            --json
+
       - name: Check project governance continuity
         run: python scripts/check_project_governance.py
 

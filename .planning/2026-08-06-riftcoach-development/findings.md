@@ -4259,3 +4259,7 @@
   navigation 生命周期，不能把它写成 RQ-110/RQ-118 的最终画面。
 - `0198fc9/32836430378` 的 exact-SHA 三项公共 job 全绿；Task 3 的公共证据确认 focus handoff、Save-Data 短路径
   和 Workbench 导航清理没有破坏既有 PostgreSQL/Linux/全量回归。下一检查点严格切为 Task 4。
+- Task 4 设计审查确定：planned ledger 必须保留可验证的 Portal source SHA、阈值、预算和 anti-reference SHA，
+  不能用全空 pending 文件；审计 CLI 不接受任意可执行路径，固定使用 PATH `ffprobe`，避免命令注入边界。
+- 本机无 numpy/PIL/skimage，故 SSIM/seam/dropped-frame 作为外部测量证据字段做阈值校验；审计器不伪装成图像
+  质量生成器。真实 adopted media 的 ffprobe JSON 仍须在 Task 5/6 资产门产生并绑定 provenance。
