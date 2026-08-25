@@ -103,7 +103,8 @@ poster-only 从首次 render 就不创建 `<video>/<source>`，不会先请求�
 ### `CinematicSceneMedia`
 
 - `<picture>`/poster 永远先渲染；视频绝对定位 `inset:0;width/height:100%;object-fit:cover`。
-- `canplay` 后淡入视频；`play()` rejection、`error` 或 unmount 后迟到事件进入 sticky poster，零自动重试。
+- `canplay` 后发起 single-flight `play()`，只有当前 attempt 的 Promise resolve 才淡入；当前 attempt 的真实
+  rejection/error 进入 sticky poster，卸载或 source/policy replacement 后的迟到结果忽略。
 - `<video autoPlay loop muted playsInline preload="metadata" aria-hidden="true">`，无 controls、无音轨，关闭
   picture-in-picture/remote playback。
 - hidden tab pause；visible 时只有 motion policy 才 resume。Account stage mount 前没有 Account loop 请求。
@@ -117,7 +118,9 @@ MediaPolicy   = motion | poster(preflight|reduced-motion|save-data, viewport)
 PlaybackState = poster | loading | playing | failed-sticky
 ```
 
-`play()` rejection、network/decode error、迟到 `canplay` 或 visible resume failure 都进入 session-sticky poster；
+当前有效 media attempt 的 `play()` rejection、network/decode error 或 visible resume failure 才进入
+session-sticky poster；卸载、policy→poster、viewport/source replacement 后旧 `canplay`/Promise resolve/reject
+必须忽略，不能让正常导航、暂停或 StrictMode cleanup 毒化 page session。failure 后迟到 success 也不能复活。
 偏好在激活中切成 reduced-motion 时取消空间动画并只提交一次。
 
 sticky failure 由 `ProductJourney` 的 page-session media controller 持有，而不是组件局部 state；back/forward

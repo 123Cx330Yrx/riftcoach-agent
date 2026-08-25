@@ -652,8 +652,8 @@ RQ-121 又把用户正规中转目录限定为 official-first 之后的可验证
 不是身份事实，未过 mapping、能力、压缩、隐私、地区、错误/计费与 body-free 门时不得上传母图或参加横评。
 
 RQ-108 runtime Task 1 已由 implementation/evidence `1b146e6` / Actions `32826953474` 完成 exact-SHA
-三 job 公共闭环：strict manifest、cover/focal/hitBox geometry 与 preflight-first media policy 已验证；当前唯一
-下一动作是 Task 2 poster-first 播放状态与 session-sticky failure，不接 App 或生产媒体。
+三 job 公共闭环；Task 2 poster-first 播放状态与 session-sticky failure 已本地完成，当前只待其独立
+implementation/evidence commit 与 exact-SHA 三 job。公共绿灯前不接 App 或生产媒体。
 
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1

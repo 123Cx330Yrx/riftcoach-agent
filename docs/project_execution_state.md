@@ -2660,7 +2660,12 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   `postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success；strict manifest、cover geometry 与
   preflight-first media policy 正式公共闭环。公共 pytest 同 SHA 复验 frontend unit `207`、Playwright `36`、
   typecheck/build、完整 Python/RAG/Harness/governance/security；真 PostgreSQL 与 Linux package 同时全绿。
-- `NEXT`：按 implementation plan 进入 runtime Task 2，先以红灯冻结 `mediaSession` 的
-  `poster → loading → playing | failed-sticky`、正交 `userPaused`，再实现 `CinematicSceneMedia` 的 poster-first、
-  canplay/play/error、hidden/visible 与迟到事件边界。Task 2 仍只使用明确 test fixture URL，不接 App、不采用
-  production media；不安装 HyperFrames，不调用 Wan/Seedance/Veo/Kimi/relay，不创建 Key、不购买 credits。
+- Task 2 的范围与合同已按 implementation plan 冻结：只使用明确 test fixture URL，不接 App、不采用 production
+  media；不安装 HyperFrames，不调用 Wan/Seedance/Veo/Kimi/relay，不创建 Key、不购买 credits。
+- runtime Task 2 已完成本地 TDD：`mediaSession` 的失败单调性/暂停正交性/Portal-Account 隔离，以及
+  `CinematicSceneMedia` 的 poster-first、WebM→MP4、canplay single-flight、play/error sticky fallback、
+  visibility pause/resume、旧 attempt/Promise/DOM 事件隔离、StrictMode cleanup 与 poster load/error 均已实现。
+  聚焦 `39 passed`；frontend unit `246 passed`、typecheck/build、Playwright `36 passed`、JS/CSS gzip
+  `142.68/18.50 kB` 与 Impeccable detector 无 findings。当前代码仍未被 App import，故无生产视频请求或视觉变化。
+- `NEXT`：创建 Task 2 implementation/evidence commit 并 push，等待同一 SHA 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke` exact-SHA 公共门；公共绿灯前不进入 Task 3、App 集成或素材横评。

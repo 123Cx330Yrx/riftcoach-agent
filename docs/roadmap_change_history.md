@@ -3166,3 +3166,10 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；Task 1 正式关闭。
 - `HANDOFF`：唯一下一动作是 Task 2 poster-first playback/session-sticky failure TDD；公共绿灯不授权 App 集成、
   production media、HyperFrames 安装或视频/relay/model 调用。
+
+## 2026-08-25：RQ-108 runtime Task 2 本地完成
+
+- `mediaSession` 与 `CinematicSceneMedia` 已以 39 项聚焦 TDD 完成；覆盖 poster-first、single-flight play、
+  sticky failure、visibility/user pause、attempt/play token、mounted/StrictMode/旧 rendition 隔离和 poster 事件。
+- frontend unit `246`、typecheck/build、Playwright `36` 与 bundle 门通过；当前仍无 App import、production media、
+  视频 skill/model/relay 调用。唯一下一步是 Task 2 implementation/evidence exact-SHA 公共闭环。

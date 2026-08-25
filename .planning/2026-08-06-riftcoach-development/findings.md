@@ -4244,3 +4244,9 @@
   隐藏平台回归；该公共证据不增加 `<video>`、媒体下载或视觉完成度。
 - Task 2 必须保持两个维度分离：`PlaybackState` 是不可逆失败终态，`userPaused` 是正交用户选择。暂停、
   visibility 或 policy 改变都不能把 `failed-sticky` 恢复成 loading/playing；整页 reload 才建立新 session。
+- 独立只读审查纠正了设计中的迟到失败歧义：只有当前有效 attempt 的真实 error/play rejection 才 sticky；
+  unmount、policy/source/viewport replacement 后旧事件和 Promise 结果必须忽略。否则 React StrictMode 的
+  setup→cleanup→setup、正常导航或 `pause()` 中止 pending play 都可能错误毒化 session。
+- Task 2 实现复核又发现两个具体接缝：poster/video 兄弟节点不能共享 React key；卸载保护不能只依赖 ref
+  自动清空，必须显式维护 mounted 与 active-attempt 门。两项已修复并由 detached `canplay`、detached poster
+  error 和 StrictMode 测试固定。

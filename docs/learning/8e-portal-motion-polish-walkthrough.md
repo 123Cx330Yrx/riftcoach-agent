@@ -1,7 +1,7 @@
 # 8E Portal Motion Polish 学习与工程证据
 
 - 检查点：`8e-productization / portal-motion-polish`
-- 状态：设计门 `b3b5280/32812868683` 与 runtime Task 1 `1b146e6/32826953474` 均 exact-SHA 公共闭环；Task 2 待进入
+- 状态：设计门 `b3b5280/32812868683` 与 runtime Task 1 `1b146e6/32826953474` exact-SHA 公共闭环；Task 2 本地完成，待独立 exact-SHA
 - 决策：ADR-0068
 - 需求：RQ-108 至 RQ-120
 - 视频候选审计：`docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md`（RQ-119）
@@ -40,7 +40,7 @@ visual QA 或 8F。正式 runtime 实现只有在本设计提交通过 exact-SHA
 | media manifest 与 viewport rendition | `web/src/cinematic/mediaManifest.ts` | implemented-local；strict 4-entry decoder |
 | cover/crop 与 focal/hitbox 投影 | `web/src/cinematic/mediaGeometry.ts` | implemented-local；pure cover geometry |
 | reduced-motion/Save-Data policy | `web/src/cinematic/mediaPolicy.ts`、`web/src/cinematic/useCinematicMediaPolicy.ts` | implemented-local；preflight-first external store |
-| poster/video 与 page-session sticky failure/pause | `web/src/components/CinematicSceneMedia.tsx`、`web/src/cinematic/mediaSession.ts` | pending |
+| poster/video 与 page-session sticky failure/pause | `web/src/components/CinematicSceneMedia.tsx`、`web/src/cinematic/mediaSession.ts` | implemented-local；controlled session events + attempt/play tokens |
 | 激活 latch/overlay | `web/src/cinematic/portalActivation.ts`、`web/src/components/PortalActivationOverlay.tsx` | pending |
 | Portal/Account 组合 | `web/src/components/AwakeningScene.tsx`、`web/src/app/App.tsx` | pending |
 | 视觉与 responsive | `web/src/styles/product-journey.css` | pending |
@@ -92,6 +92,11 @@ runtime Task 1 的 implementation/evidence `1b146e6116587b855a6208e998b5254eac8c
 `32826953474` 完成 exact-SHA 公共闭环：`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿。
 因此 manifest/geometry/policy 接缝可以交接 Task 2；这仍不证明 `<video>` 组件、production media 或最终视觉。
 
+Task 2 本地实现随后以 `mediaSession` reducer 和 `CinematicSceneMedia` 完成：poster 永远先出现，只有 motion
+policy 且 session 未失败时才挂载 `<video>`；`canplay` 只启动一次 play request，Promise resolve 才显示视频。
+当前 attempt、play request、mounted 和 rendition identity 四道门让卸载、viewport 切换、暂停中止和 StrictMode
+迟到结果全部 no-op。聚焦 `39 passed`，frontend 全量 `246 passed`；公共 CI 尚未运行。
+
 - unit：manifest exactness、viewport、policy、listener cleanup、poster-first、canplay/play/error、sticky fallback、
   hidden/visible pause、重复激活和迟到 callback；
 - browser：1440/1024/390/320、normal/reduced/Save-Data/media failure、keyboard/focus、back/forward、Account
@@ -101,6 +106,10 @@ runtime Task 1 的 implementation/evidence `1b146e6116587b855a6208e998b5254eac8c
 - Account art：map11/near-final reference SHA、拓扑锚点叠合、红蓝方向、无伪写实微细节、五英雄逐位解剖；
 - proportional：frontend typecheck/unit/build/E2E、Python focused/full、RAG/Harness、安全/治理、真 PostgreSQL
   和 Linux package；设计门不把未来媒体结果写成已通过。
+
+Task 2 本地新增的结构性证据包括：poster/reduced/Save-Data 下 DOM 中没有 video/source、WebM→MP4 顺序和媒体
+属性、play reject/error sticky、旧 Promise/DOM 事件隔离、hidden/visible、user pause 正交性、poster load/error
+与 StrictMode listener cleanup。真实网络 0-request、codec fallback 和浏览器 autoplay 仍留后续 Playwright/媒体门。
 
 ## 6. 运行手册（设计阶段）
 

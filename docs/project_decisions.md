@@ -2229,3 +2229,11 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   preflight policy 正式关闭。
 - 下一裁决面只限 Task 2：page-session playback state、poster-first component、sticky failure 与 user pause；
   production media/模型/relay 采用仍留 Task 5 独立门。
+
+## 2026-08-25：RQ-108 runtime Task 2 本地裁决
+
+- `mediaSession` 采用 controlled semantic events；`CinematicSceneMedia` 只在 motion policy 且非 sticky failure
+  时挂载视频，poster 永远先渲染。当前有效 attempt 才能改变状态，旧 Promise/DOM 事件、暂停中止和 StrictMode
+  cleanup 全部 no-op。
+- 聚焦 `39 passed`、frontend `246 passed`、typecheck/build/Playwright `36` 全绿；当前只待独立提交与公共 CI，
+  不接 App、生产素材或视频模型。

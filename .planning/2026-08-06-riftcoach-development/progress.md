@@ -4391,3 +4391,16 @@
   reduced-motion/Save-Data 与 modern/legacy/StrictMode listener 取得公共代码、真库与 Linux package 证据。
 - `BOUNDARY/NEXT`：仍无 production manifest、`<video>` 组合、媒体资产或视频/relay/model 调用。唯一下一动作
   是 Task 2 `mediaSession` + `CinematicSceneMedia` 红灯；Task 5 bake-off 与素材采用不提前进入。
+
+### 2026-08-25：RQ-108 runtime Task 2 本地完成
+
+- `RED→GREEN`：先以缺少 `mediaSession`/`CinematicSceneMedia` 得到预期收集红灯；随后以 39 项聚焦测试冻结
+  reducer、DOM、Promise race、visibility、pause、poster 和 StrictMode 合同。
+- `IMPLEMENTED`：`mediaSession` 采用 controlled semantic events；组件始终渲染 poster，只有 motion 且非
+  `failed-sticky` 才挂载 video。attempt token、play-request token、mounted guard 和 distinct poster/video keys
+  防止旧 source、迟到 Promise、卸载事件及 React StrictMode 串台。
+- `LOCAL`：focused `39 passed`；frontend `30 files / 246 passed`；typecheck/build、Playwright `36`、
+  bundle `142.68/18.50 kB`、governance 与 Impeccable detector 全绿；无数据库环境下完整 Python 为
+  `1837 passed, 146 skipped, 1 warning, 127 subtests passed`。
+- `BOUNDARY/NEXT`：Task 2 尚未公共关闭；无 App import、production manifest/media、视频模型/relay/skill 调用。
+  下一动作是独立 implementation/evidence commit 与 exact-SHA 三 job，Task 3 之前保持等待。

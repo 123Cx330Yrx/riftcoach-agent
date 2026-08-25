@@ -155,8 +155,10 @@ poster → loading → playing
 `userPaused: boolean` 与该状态机正交；它只影响 effective play/pause，不允许覆盖 `failed-sticky`。
 
 覆盖：poster-first、WebM→MP4 source 顺序、`autoPlay/muted/loop/playsInline/preload=metadata`、`aria-hidden`、
-`disablePictureInPicture`、remote playback 禁用、`canplay` 后才显现、`play()` reject、network/decode error、
-迟到 canplay/promise、hidden pause、visible eligible resume、resume reject、user pause/resume 和 unmount cleanup。
+`disablePictureInPicture`、remote playback 禁用、`canplay` 后发起 single-flight `play()`、当前 attempt 的
+`play()` reject/network/decode error、hidden pause、visible eligible resume、resume reject、user pause/resume 和
+unmount cleanup。卸载、policy→poster、viewport/source replacement 后旧 `canplay`/Promise resolve/reject 必须
+忽略，不能把正常导航、暂停或 StrictMode cleanup 写成 sticky failure；failure 后迟到 success 也不能复活。
 
 ### Step 2: 验证红灯
 
@@ -169,10 +171,13 @@ npm run test:unit -- src/cinematic/mediaSession.test.ts src/components/Cinematic
 
 ### Step 3: 最小实现
 
-`mediaSession` 由后续 `ProductJourney` 持有 page-session per-scene state；组件 remount 复用 `failed-sticky` 与
-正交的 `userPaused`
-且零自动重试，整页 reload 才重置。媒体错误不调用 navigate、Auth API、Memory、Trace 或日志正文。poster
+`mediaSession` 采用 controlled semantic-event API，由后续 `ProductJourney` 持有 page-session per-scene state；
+组件 remount 复用 `failed-sticky` 与正交的 `userPaused`，且零自动重试，整页 reload 才重置。组件用 attempt token
+与 play-request token 隔离迟到事件，只把当前有效 attempt 的真实失败上报。媒体错误不调用 navigate、Auth API、
+Memory、Trace 或日志正文。poster
 加载也失败时暴露 `data-poster-failed=true`，让场景显示纯色安全背景和可见进入控件。
+组件自身同时提供最小 absolute-cover、poster-visible/video-opacity 保障，避免在最终场景 CSS 接入前裸露视频；
+Hextech 材质、层级、暂停控件和 Portal/Account layout 仍留给后续组合任务。
 
 ### Step 4: 绿灯与提交
 
