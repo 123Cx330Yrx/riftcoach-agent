@@ -1,7 +1,7 @@
 # 8E Portal Motion Polish 学习与工程证据
 
 - 检查点：`8e-productization / portal-motion-polish`
-- 状态：设计门 `b3b5280/32812868683` 与 runtime Task 1 `1b146e6/32826953474` exact-SHA 公共闭环；Task 2 本地完成，待独立 exact-SHA
+- 状态：设计门 `b3b5280/32812868683`、runtime Task 1 `1b146e6/32826953474` 与 Task 2 `2111a78/32833608622` 均 exact-SHA 公共闭环；Task 3 待进入
 - 决策：ADR-0068
 - 需求：RQ-108 至 RQ-120
 - 视频候选审计：`docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md`（RQ-119）
@@ -95,7 +95,8 @@ runtime Task 1 的 implementation/evidence `1b146e6116587b855a6208e998b5254eac8c
 Task 2 本地实现随后以 `mediaSession` reducer 和 `CinematicSceneMedia` 完成：poster 永远先出现，只有 motion
 policy 且 session 未失败时才挂载 `<video>`；`canplay` 只启动一次 play request，Promise resolve 才显示视频。
 当前 attempt、play request、mounted 和 rendition identity 四道门让卸载、viewport 切换、暂停中止和 StrictMode
-迟到结果全部 no-op。聚焦 `39 passed`，frontend 全量 `246 passed`；公共 CI 尚未运行。
+迟到结果全部 no-op。聚焦 `39 passed`，frontend 全量 `246 passed`；Task 2 implementation/evidence
+`2111a78/32833608622` 随后取得 exact-SHA 三 job 公共闭环。该证据仍不代表 App 组合、生产 media 或最终视觉。
 
 - unit：manifest exactness、viewport、policy、listener cleanup、poster-first、canplay/play/error、sticky fallback、
   hidden/visible pause、重复激活和迟到 callback；

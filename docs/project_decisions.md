@@ -2237,3 +2237,9 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   cleanup 全部 no-op。
 - 聚焦 `39 passed`、frontend `246 passed`、typecheck/build/Playwright `36` 全绿；当前只待独立提交与公共 CI，
   不接 App、生产素材或视频模型。
+
+## 2026-08-25：RQ-108 runtime Task 2 公共裁决
+
+- `2111a78/32833608622` exact-SHA 三 job 全绿，Task 2 `mediaSession`/`CinematicSceneMedia` 公共关闭。
+- 下一裁决面只限 Task 3：单次激活 latch、reduced-motion、generation/跨幕 overlay 与唯一导航；生产 media/
+  视频模型/relay 采用仍留后续独立门。

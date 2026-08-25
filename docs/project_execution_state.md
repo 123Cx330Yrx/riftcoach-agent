@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-25（RQ-108 runtime Task 1 manifest/cover geometry/media policy 已由 `1b146e6` / Actions `32826953474` 完成 exact-SHA 三 job 公共闭环；唯一下一动作是 Task 2 poster-first 播放状态与 session-sticky failure TDD。尚无生产 `<video>` 接线、媒体资产、视频 skill 或模型调用）
+- 最后更新：2026-08-25（RQ-108 runtime Task 2 `mediaSession`/`CinematicSceneMedia` 已由 `2111a78` / Actions `32833608622` 完成 exact-SHA 三 job 公共闭环；唯一下一动作是 Task 3 单次 Portal 激活与跨幕 overlay TDD。尚无 App 组合、生产媒体、视频 skill 或模型调用）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2662,10 +2662,13 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   typecheck/build、完整 Python/RAG/Harness/governance/security；真 PostgreSQL 与 Linux package 同时全绿。
 - Task 2 的范围与合同已按 implementation plan 冻结：只使用明确 test fixture URL，不接 App、不采用 production
   media；不安装 HyperFrames，不调用 Wan/Seedance/Veo/Kimi/relay，不创建 Key、不购买 credits。
-- runtime Task 2 已完成本地 TDD：`mediaSession` 的失败单调性/暂停正交性/Portal-Account 隔离，以及
-  `CinematicSceneMedia` 的 poster-first、WebM→MP4、canplay single-flight、play/error sticky fallback、
-  visibility pause/resume、旧 attempt/Promise/DOM 事件隔离、StrictMode cleanup 与 poster load/error 均已实现。
+- runtime Task 2 implementation/evidence `2111a7868bffb3d4d8525536afbb4c88cf8de1bc` / Actions
+  `32833608622` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success；
+  `mediaSession` 的失败单调性/暂停正交性/Portal-Account 隔离，以及 `CinematicSceneMedia` 的 poster-first、
+  WebM→MP4、canplay single-flight、play/error sticky fallback、visibility pause/resume、旧 attempt/Promise/DOM
+  事件隔离、StrictMode cleanup、poster load/error 和最小 opacity/cover 保障取得公共代码、真库与 Linux 证据。
   聚焦 `39 passed`；frontend unit `246 passed`、typecheck/build、Playwright `36 passed`、JS/CSS gzip
-  `142.68/18.50 kB` 与 Impeccable detector 无 findings。当前代码仍未被 App import，故无生产视频请求或视觉变化。
-- `NEXT`：创建 Task 2 implementation/evidence commit 并 push，等待同一 SHA 的 `pytest`、
-  `postgres-migrations`、`packaging-smoke` exact-SHA 公共门；公共绿灯前不进入 Task 3、App 集成或素材横评。
+  `142.68/18.50 kB` 与 Impeccable detector 无 findings。当前仍无 App import、生产视频请求或视觉签收。
+- `NEXT`：按 implementation plan 进入 Task 3，先以红灯冻结 `idle → activating → committed` 单次激活、
+  reduced-motion 即时提交、重复事件 latch、跨幕 overlay/generation 与唯一 navigate；Task 3 仍不接生产媒体、
+  Account source 或视频模型/relay。

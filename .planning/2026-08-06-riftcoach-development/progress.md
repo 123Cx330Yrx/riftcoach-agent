@@ -4404,3 +4404,12 @@
   `1837 passed, 146 skipped, 1 warning, 127 subtests passed`。
 - `BOUNDARY/NEXT`：Task 2 尚未公共关闭；无 App import、production manifest/media、视频模型/relay/skill 调用。
   下一动作是独立 implementation/evidence commit 与 exact-SHA 三 job，Task 3 之前保持等待。
+
+### 2026-08-25：RQ-108 runtime Task 2 exact-SHA 公共闭环
+
+- `PUBLIC-CI`：implementation/evidence `2111a7868bffb3d4d8525536afbb4c88cf8de1bc` / Actions
+  `32833608622` 精确绑定；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success。
+- `CLOSED`：media session 与 poster-first component 的状态、竞态、visibility、pause、StrictMode、旧 rendition
+  和最小 cover/opacity 保障取得公共证据；公共门没有新增生产媒体或外部调用。
+- `HANDOFF`：唯一下一动作切为 Task 3 单次 Portal 激活与跨幕 overlay TDD；Task 4 媒体审计、Task 5 bake-off、
+  App 组合和生产素材仍按计划后置。

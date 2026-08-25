@@ -4250,3 +4250,5 @@
 - Task 2 实现复核又发现两个具体接缝：poster/video 兄弟节点不能共享 React key；卸载保护不能只依赖 ref
   自动清空，必须显式维护 mounted 与 active-attempt 门。两项已修复并由 detached `canplay`、detached poster
   error 和 StrictMode 测试固定。
+- `2111a78/32833608622` 的 exact-SHA 三项公共 job 全绿；Task 2 的公共证据确认这些生命周期门在 Linux、真实
+  PostgreSQL 与完整回归组合下没有破坏既有产品。Task 3 是唯一下一项，不能因组件已存在而提前接入 App。

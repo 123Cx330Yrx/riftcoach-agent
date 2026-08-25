@@ -3173,3 +3173,9 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   sticky failure、visibility/user pause、attempt/play token、mounted/StrictMode/旧 rendition 隔离和 poster 事件。
 - frontend unit `246`、typecheck/build、Playwright `36` 与 bundle 门通过；当前仍无 App import、production media、
   视频 skill/model/relay 调用。唯一下一步是 Task 2 implementation/evidence exact-SHA 公共闭环。
+
+## 2026-08-25：RQ-108 runtime Task 2 exact-SHA 公共关闭
+
+- `2111a78/32833608622` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；Task 2 正式关闭。
+- `HANDOFF`：唯一下一动作切为 Task 3 单次 Portal 激活与跨幕 overlay TDD；App 组合、production media、
+  视频 skill/model/relay 与 Task 4/5 仍未进入。
