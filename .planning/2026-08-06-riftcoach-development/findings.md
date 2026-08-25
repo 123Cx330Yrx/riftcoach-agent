@@ -4263,3 +4263,7 @@
   不能用全空 pending 文件；审计 CLI 不接受任意可执行路径，固定使用 PATH `ffprobe`，避免命令注入边界。
 - 本机无 numpy/PIL/skimage，故 SSIM/seam/dropped-frame 作为外部测量证据字段做阈值校验；审计器不伪装成图像
   质量生成器。真实 adopted media 的 ffprobe JSON 仍须在 Task 5/6 资产门产生并绑定 provenance。
+- 首个 Task 4 公共 run `32841579832` 证明 GitHub Ubuntu job 未预装 ffprobe；CI toolchain fix `d58ba15` 安装
+  ffmpeg 后，run `32841900909` 三 job 全绿。该失败保留为可解释的环境 Bad Case，审计门与 planned ledger 未放宽。
+- Task 4 exact-SHA 公共闭环确认 planned ledger、审计器、前端 bundle 和既有 PostgreSQL/Linux 门可在同一 SHA
+  重建；Task 5 才允许进入真实候选横评，不提前上传母图或读取 relay/provider Key。

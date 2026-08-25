@@ -3199,3 +3199,10 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - 新增只读媒体审计器、planned ledger 与 25 项合同测试；固定 source/codec/SSIM/seam/budget/anti-reference/toolchain
   边界。没有 adopted rendition、视频生成调用或外部上传。
 - `NEXT`：独立 implementation/evidence commit 与 exact-SHA 三 job；公共成功前不进入 Task 5 bake-off。
+
+## 2026-08-25：RQ-108 runtime Task 4 exact-SHA 公共关闭
+
+- `52def9c`/`d58ba15`、Actions `32841900909` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；
+  Task 4 正式关闭。首个 run `32841579832` 因 Ubuntu 缺 ffprobe 失败，随后只补 CI 工具安装，不放宽审计门。
+- `HANDOFF`：唯一下一动作切为 Task 5 三路线 bake-off；官方优先、中转 secondary，先冻结映射/许可/隐私/费用/
+  调用上限，再决定是否安装工具、创建 Key 或发起付费调用。

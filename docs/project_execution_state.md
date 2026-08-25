@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-25（RQ-108 runtime Task 4 媒体审计器与预算门已本地 TDD 完成，当前只待独立 implementation/evidence exact-SHA 三 job；尚无生产媒体、视频 skill 或模型调用）
+- 最后更新：2026-08-25（RQ-108 runtime Task 4 媒体审计器与预算门已由 `52def9c`/`d58ba15`、Actions `32841900909` 完成 exact-SHA 三 job 公共闭环；唯一下一动作是 Task 5 三路线媒体 bake-off。尚无生产媒体、视频 skill 或模型调用）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -250,12 +250,11 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8e-productization / portal-motion-polish / design exact-SHA closure`，当前为
+- 唯一下一步：`8e-productization / portal-motion-polish / runtime Task 5 media bake-off`，当前为
   `authorized / in_progress`。8D、8E preflight、Batch B/C/D、Live Workbench、Batch E E1–E5、production
-  shell/Auth gate、Timeline 与 bilingual/product-journey foundation 均已公共闭环；RQ-117/118、ADR-0068、正式
-  design/TDD plan、asset ledger 与八维 planned walkthrough 已在本地建立。当前只完成 design 比例门、独立
-  commit/push 并等待 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`；三 job 全绿后才进入
-  runtime media TDD。当前不继续生成 Account candidate，不读取 Secret、不调用 Riot/OP.GG/Provider/LLM，
+  shell/Auth gate、Timeline、bilingual/product-journey foundation 与 RQ-108 runtime Task 1–4 均已取得 exact-SHA
+  公共证据；Task 5 先做 official-first/relay-secondary 候选映射、能力/许可/隐私/费用/调用上限审计和三路线
+  评分设计。当前不上传母图、不读取 Secret、不创建 Key、不购买 credits、不调用 Riot/OP.GG/Provider/LLM/视频模型，
   不进入 Coach、RQ-103、8F；8B holdout 不得再次执行。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
@@ -2677,12 +2676,13 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   聚焦 `27 passed`；frontend unit `257 passed`、typecheck/build、Playwright `36 passed`，JS gzip `144.07 kB`、
   CSS gzip `18.50 kB`，仍低于 150/22 kB 门。旧 V1 CSS crystal/文字与临时 overlay 仍明确是后续生产视觉门，
   生产媒体/视频模型/relay 调用为 0。
-- runtime Task 4 已完成本地 TDD：新增只读 `check_cinematic_media.py`、planned evidence ledger 与 25 项测试；
-  固定 Portal source SHA、scene/viewport matrix、poster/video codec/fps/pix_fmt/color/no-audio、faststart/
-  metadata/keyframe、source/poster SSIM、loop seam、dropped-frame、JS/CSS/cold-start/total-media budget、
-  anti-reference 路径/SHA、digest/bytes/尺寸和固定 PATH `ffprobe` 边界。planned ledger 不触碰媒体文件；fixture
-  audit 使用注入 probe/digest，真实采用资产仍未创建。focused `25 passed`；frontend unit `257 passed`、
-  typecheck/build、Playwright `36 passed`、Python no-DB `1862 passed, 146 skipped, 1 warning, 127 subtests`、
-  两套 RAG、Harness、compileall、governance 与 npm official-registry audit 全绿。Task 4 尚未公共关闭。
-- `NEXT`：创建 Task 4 implementation/evidence commit 并 push，等待同一 SHA 的 `pytest`、`postgres-migrations`、
-  `packaging-smoke` exact-SHA 公共门；公共绿灯前不进入 Task 5 bake-off，不安装 HyperFrames，不调用视频模型/relay。
+- runtime Task 4 implementation/evidence `52def9cf2384b8dc1161c4788f89a87c5f567ebc` + toolchain fix
+  `d58ba154e6ee9d4b887401a9530a450052cae574` / Actions `32841900909` 的 `pytest`、`postgres-migrations`、
+  `packaging-smoke` 三 job 全部 completed/success；只读审计器、planned ledger、固定 PATH ffprobe、codec/poster/
+  loop seam/SSIM/budget/anti-reference/toolchain 证据正式公共闭环。focused `25 passed`；frontend unit `257`、
+  typecheck/build、Playwright `36`、Python no-DB `1862 passed, 146 skipped, 1 warning, 127 subtests`、两套 RAG、
+  Harness、compileall、governance 与 npm official-registry audit 全绿。没有 adopted production rendition、视频
+  skill/model/relay 调用。
+- `NEXT`：按 implementation plan 进入 Task 5 三路线 bake-off：官方 first/last/reference 生成式候选、
+  HyperFrames/Remotion 确定性分层候选、生成有机层+确定性结构合成候选；先做来源/许可/安全/费用/调用上限
+  冻结，再决定是否安装工具或发起任何付费调用。

@@ -120,9 +120,10 @@ Task 3 本地证据覆盖：纯状态机 generation/latch/cancel、overlay 的 a
 原水晶同源 loop 与最终少字/无暗幕画面仍由后续 Task 4–6 独立门处理。Task 3 聚焦 `27 passed`、frontend
 `257 passed`，JS/CSS gzip 为 `144.07/18.50 kB`。
 
-Task 4 本地证据新增只读媒体审计器和 planned ledger：25 项测试覆盖 exact scene/viewport matrix、Portal source
+Task 4 证据新增只读媒体审计器和 planned ledger：25 项测试覆盖 exact scene/viewport matrix、Portal source
 SHA、codec/fps/pix_fmt/color/audio、faststart/metadata/keyframe、SSIM/seam/dropped-frame、预算、anti-reference
-和固定 PATH ffprobe。当前只证明审计合同和 planned status；没有 adopted loop、视频生成调用或 production media。
+和固定 PATH ffprobe；`52def9c`/`d58ba15`、Actions `32841900909` 已取得 exact-SHA 三 job 公共闭环。当前没有
+adopted loop、视频生成调用或 production media。
 
 ## 6. 运行手册（设计阶段）
 

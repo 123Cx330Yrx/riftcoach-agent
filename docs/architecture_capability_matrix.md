@@ -1,7 +1,7 @@
 # RiftCoach 架构能力覆盖矩阵
 
-> 2026-08-25 当前 8E Task 3 公共证据：`0198fc9/32836430378`，focused `27`、frontend unit `257`；
-> 不代表 production media 或完整 8E 已完成。
+> 2026-08-25 当前 8E Task 4 公共证据：`52def9c`/`d58ba15`、Actions `32841900909`，focused `25`、frontend unit `257`；
+> 不代表 adopted production media 或完整 8E 已完成。
 
 ### 2026-08-24：8E 视觉层与能力边界
 

@@ -4445,3 +4445,13 @@
   official audit 全绿。
 - `BOUNDARY/NEXT`：没有 adopted production rendition、Account source、视频模型/relay/HyperFrames 调用；Task 4
   尚未公共关闭，下一动作是独立 implementation/evidence commit 与 exact-SHA 三 job。
+
+### 2026-08-25：RQ-108 runtime Task 4 exact-SHA 公共闭环
+
+- `PUBLIC-CI`：implementation `52def9cf2384b8dc1161c4788f89a87c5f567ebc` 与 CI toolchain fix
+  `d58ba154e6ee9d4b887401a9530a450052cae574` 的 run `32841900909` 三 job 全绿；此前 run `32841579832` 因 Ubuntu
+  缺 ffprobe 以 exit 127 停止，保留为环境 Bad Case，未放宽审计门。
+- `CLOSED`：planned/adopted media audit contract、fixed PATH ffprobe、codec/SSIM/seam/budget/toolchain 与
+  anti-reference ledger 取得公共证据；仍没有 adopted media 或外部视频调用。
+- `HANDOFF`：唯一下一动作切为 Task 5 三路线 bake-off；先冻结 official-first/relay-secondary 的候选映射、
+  许可、隐私、费用、调用上限与失败停止规则，再决定工具/模型采用。

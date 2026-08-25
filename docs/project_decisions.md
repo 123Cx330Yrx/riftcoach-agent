@@ -2263,3 +2263,9 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   可执行路径；SSIM/seam/dropped-frame 作为显式测量证据，不伪装成 ffprobe 自动推断。
 - 聚焦 `25 passed`、frontend `257 passed`、Python no-DB `1862 passed, 146 skipped, 1 warning, 127 subtests`、
   RAG/Harness/compile/governance/npm official audit 全绿；Task 4 仍待独立 exact-SHA 公共门。
+
+## 2026-08-25：RQ-108 runtime Task 4 公共裁决
+
+- `52def9c`/`d58ba15`、Actions `32841900909` 三 job 全绿，媒体审计器/预算门公共关闭；`32841579832` 的 ffprobe
+  缺失失败作为环境 Bad Case 保留，CI 只补安装 ffmpeg。
+- 下一裁决面只限 Task 5 三路线 bake-off；没有 adopted asset 前，不把模型/skill/relay 变成生产依赖。
