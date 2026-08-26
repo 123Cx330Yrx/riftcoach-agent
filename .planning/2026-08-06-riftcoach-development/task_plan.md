@@ -1622,3 +1622,5 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-live-upstream-failed] exact v1 task `task_v8g...PDW9` 81s/100% generic failed/no output，19.712 全退；calls 8。
   - [paused] `Veo3.1-quality-official` 当前通道；不再重试。
   - [prepared] Seedance 2.5 first+last/8s/720p/no-audio/v5/2 images；price button `--` vs catalog `$11.9568`，待用户确认。
+  - [completed-pre-task-client-failure] 用户确认后 submit 返回 ratio TaskTypeConstraint；no task/no charge/calls unchanged。
+  - [fixed-preflight] ratio `16:9` → `adaptive`，等待用户重新 2/2 与 public gate；其余变量不变。

@@ -2830,3 +2830,7 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   两张 v2、8s/720p/16:9/no-audio/enhancement off、v5 SHA `91ca48b...b322`。
 - `NEXT`：先提交/public close 本结果与 preflight；按钮费用显示 `--`，模型广场按 `$1.4946/秒` 推导 8s
   `$11.9568`。用户接受此 price mismatch 后才 one submit，no retry。
+- 用户接受预计 11.9568 后，首次 Seedance Studio submit 在 task 创建前 HTTP 400：first/first+last 禁止显式
+  `ratio=16:9`，输出比例应跟随 first frame。task_id 无、费用 0、calls 仍 8；不是模型失败。
+- ratio 已修为 Studio `adaptive`，其余 Seedance/v5/8s/720p/no-audio/enhancement-off 不变；失败清空附件。
+- `NEXT`：用户重新上传同一 v2 两次至 2/2；本修复 exact-SHA public gate 后 readback 并执行同一已授权实验一次。

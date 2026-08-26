@@ -30,3 +30,14 @@ Grok 缺尾帧控制。
 - 目标保持 locked-frame、left/center/right + near/mid/far simultaneous medium motion 与八秒闭环；
 - 页面按钮费用显示 `--`，而不是数字；模型广场计价推导为 `$11.9568`。因此当前不得直接点击，必须向用户明确
   披露 price-calculator mismatch，并在用户接受预计金额后才 one submit；no retry。
+
+## Seedance Studio ratio client Bad Case 与修复
+
+- 用户接受预计 `$11.9568`，preflight `81fe9ef/32959781395` 三 job 全绿后只点击一次；
+- Studio/NewAPI 在创建 task 前返回 HTTP 400 `TaskTypeConstraint`：first/first+last 输出比例跟随首帧，显式
+  `ratio=16:9` 非法；task_id 不存在、费用 `$0`、external calls 仍为 `8`；
+- 这是精确 client/UI mapping bug，不是模型 quality/upstream failure；按 RQ-128 可在修复后继续同一授权实验；
+- Studio ratio 下拉存在 `adaptive`。已切 `adaptive`，它必须使 first-frame 决定输出比例；其余 model/source/
+  prompt/8s/720p/no-audio/enhancement-off 不变；
+- 失败会清空附件，用户须重新上传同一 v2 两次。只有 2/2、`adaptive` 与其余 readback 通过后才重新提交一次；
+  若仍返回 ratio error，停止 Studio Seedance mapping，不再尝试。

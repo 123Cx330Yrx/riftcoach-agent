@@ -3374,3 +3374,5 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `V1-RESULT`：`task_v8g...PDW9` 81s/100% generic failed/no output、19.712 全退；Veo 当前通道暂停。
 - `SEEDANCE-PREFLIGHT`：first+last/8s/720p/no-audio/v5/2 images 已 readback；按钮 price `--`，catalog 推导
   11.9568。用户接受 price mismatch 前不提交；Kling fallback、Grok 无尾帧 reject。
+- `SEEDANCE-CLIENT-BAD-CASE`：首次 submit no task/no charge，以 TaskTypeConstraint 拒绝显式 ratio。Studio 已改
+  `adaptive`，其余变量不变；重新 2/2/public gate 后只允许一次修复提交。

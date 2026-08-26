@@ -4640,3 +4640,5 @@
 - exact v1 reproduction 仍 generic failed/no output，证明 v5 constraint 不是必要原因；Veo 当前通道暂停，calls 8。
 - Studio contract compare：Seedance 2.5 first+last + exact 8s/720p，Kling V3 first+last/10s/720p，Grok 3 无尾帧。
   Seedance primary 已填 v5/2 images；按钮 `--`，catalog 预计 11.9568，未生成。
+- Seedance 首次 submit 在 task 前返回明确 ratio constraint；费用 0。Studio `adaptive` 是可证伪修复，已选择并
+  恢复 prompt/其它参数，等待用户重新 2/2；若再 ratio error 即停止该 Studio mapping。
