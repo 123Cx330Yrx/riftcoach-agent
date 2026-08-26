@@ -25,19 +25,35 @@ DragonAPI 的 `seedance-2.5` 专用文档明确提供：
 - model：`seedance-2-5`（页面显示 Seedance 2.5，但公共 API 名按专用文档小写）；
 - operation：`edit`；`duration=-1`；`aspect_ratio=adaptive`；`resolution=720p`；`output_format=mp4`；
   `generate_audio=false`；
-- reference：`video_with_roles=[{url:<source result>, role:"reference_video"}]`；不混用 image/first/last；
-- positive prompt：`portal-motion-v6-edit-seedance25.txt`，1,739 B，SHA
-  `68c1aa10b0a12958dfb50826634c780046cd1672f8e4b33608d704534ea61728`；
+- references：Video1 使用 `video_with_roles=[{url:<source result>, role:"reference_video"}]` 保存已有节奏/三个正确
+  主体动效；Image1 使用 immutable v2 `image_with_roles=[{url:<v2>, role:"reference_image"}]` 锁定建筑、道路、
+  地面、星图、材质与线稿。双锚点不混用 first/last frame；image URL HEAD 200、image/png、2,268,033 B，
+  SHA `8134c0ca...1a06e`；
+- positive prompt：`portal-motion-v6-edit-seedance25.txt` v6.1，2,368 B，SHA
+  `9cdcf28e007a8c5a52a8692d4bcaea288b024e2c57fede393f0f9edf4f664ac8`；
 - runner：`run-dragon-seedance25-video-edit-once.ps1`，SHA
-  `6b5c6bef3060cf7111c2cab862a0f67bacaf313a5447c7acee3b92dbe6a9901e`；PowerShell 7 parse 0 errors；
+  `08834b8a3f5198adf6c0fa520a82fcbcc295c6a1b865a20c907b2a64a38173b0`；PowerShell 7 parse 0 errors；
+  静态审计恰好 1 个 POST callsite、2 个 GET callsite（source/poll）；
 - post：最多 1 次；无 retry、无 top-up、无第二 task；Key/raw response/signed URL 不落盘；
 - output/status：唯一新路径，均在 repo 外 research scratch。
 
 ## 提示词策略
 
-使用时间段而不是效果清单：0–2s 环境流动建立，2–4s 多层持续，4–6s 达到丰富峰值，6–8s 回到开场相位；
-明确“编辑 Video1、保留现有镜头/三个正确主体运动”，把新增运动绑定到道路、地板、建筑缝、反射、远景云层、
-星图细节和材质遮挡；禁止 HUD、屏幕空间雾幕、整体漂移、重构图、添删物体和几何融化。
+采用官方示例风格的 `Edit Video1. Use Image1 ... Keep ... unchanged. Adjust only ...`。Video1 不是运动目标的
+唯一来源：Image1 单独约束静态身份，避免把现有雾带放大成主要语言。新增运动只绑定差分热图证明偏静的顶部建筑、
+底部中央地面、道路反射、远景云层和星图细节；显式禁止通过增强 Rift/水晶/右能量场来冒充改善。
+
+时间轴只控制同一周期的丰富度，不让区域轮流表演：全部层 0–8s 同时运行，4s 达材质运动峰值，8s 回到开场相位；
+雾必须分成位于前景之后、建筑之间和远景之前的多层 wisps，不允许单层 screen-space fog sheet。
+
+## 干扰风险与采用门
+
+`video_operation=edit` 仍是生成式编辑，不保证逐像素保留 Video1。控制方式是：
+
+1. 原片独立保留，编辑输出是 sibling candidate，永不覆盖；
+2. Video1 锚定已有时间运动，Image1 锚定原始几何/材质，prompt 限制“只改静区”；
+3. 若 edited output 的 camera/主体/geometry/source identity 任一劣于原片，即拒绝 edited sibling 并回退原片；
+4. 只有静区实质改善且不牺牲三主体/镜头时，才继续 seam/rendition proof。
 
 ## 费用与停止线
 

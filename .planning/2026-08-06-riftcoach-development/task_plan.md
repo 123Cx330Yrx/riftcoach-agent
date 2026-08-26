@@ -1627,6 +1627,6 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-live-candidate] Seedance task `task_w6...ULvW` NewAPI success；Studio result fetch 403 由 GET-only
     recovery 下载，11.9566、calls 9。raw candidate source/seam/720p 不过门，等待用户视觉审片。
   - [requirement-recorded] RQ-133：用户认可三主体方向，授权基于成功成片的 Seedance 2.5 文档化 video edit，优先补强静区。
-  - [prepared-local] v6 edit prompt/runner；`video_operation=edit`、`video_with_roles(reference_video)`、`duration=-1`、
-    `adaptive`、720p、audio false；Studio 视频参考 input 仅图片 MIME，故走 API。
+  - [prepared-local] v6.1 double-anchor edit prompt/runner；Video1 保留 motion，Image1 锁原几何/材质，只改热图静区；
+    `video_operation=edit`、`duration=-1`、`adaptive`、720p、audio false；1 POST/2 GET callsites。
   - [next] edit preflight 独立 public gate；通过并披露约 `$12.0191` 后 one POST/no retry。

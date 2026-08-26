@@ -3376,3 +3376,6 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   11.9568。用户接受 price mismatch 前不提交；Kling fallback、Grok 无尾帧 reject。
 - `SEEDANCE-CLIENT-BAD-CASE`：首次 submit no task/no charge，以 TaskTypeConstraint 拒绝显式 ratio。Studio 已改
   `adaptive`，其余变量不变；重新 2/2/public gate 后只允许一次修复提交。
+- `SEEDANCE-SUCCESS-CANDIDATE`：`task_w6...ULvW` 137s/100% success、11.9566；Studio result-fetch 403 由同 task
+  GET-only 恢复。locked camera/full-scene direction promising，但 source-first 0.864923、seam diff 0.060443、720p
+  未过门；先用户 visual review，再决定 no-generation postprocess proof。

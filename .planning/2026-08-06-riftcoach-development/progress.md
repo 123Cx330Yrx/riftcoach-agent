@@ -4645,6 +4645,6 @@
 - adaptive task `task_w6...ULvW` 137s/100% NewAPI success；Studio 403 仅 result fetch，GET-only 恢复 output。
   SHA `acf68ba6...d56c4`，720p/24fps/8.041667s/5.43MB/no-audio。source-first 0.864923、first-mid 0.852572、
   seam diff 0.060443；三大区均运动、镜头初审稳定。等待用户视觉签方向，不 adopted/不重抽。
-- 用户认可当前方向但要求静区更丰富；Dragon 专用 Seedance 文档补齐了真正 edit schema。v6 edit prompt 1739B/SHA
-  `68c1aa10...1728`，runner `6b5c6bef...9901e` parse 0；source task GET→临时 result URL→edit POST→poll/download，
-  不保存签名 URL，预计约 12.0191。尚未上传/POST，待 public gate。
+- 用户担心 Video1 放大现有雾层；v6.1 改为 double-anchor：Video1 保留运动，Image1 锁原几何/材质，严格只改热图
+  静区。prompt 2368B/SHA `9cdcf28e...64ac8`，runner `08834b8a...173b0` parse 0；1 POST/2 GET，
+  source task GET→临时 result URL→edit POST→poll/download，不保存签名 URL，预计约 12.0191。尚未 POST。

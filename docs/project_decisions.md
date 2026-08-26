@@ -2342,4 +2342,6 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - 用户认可三主体运动方向但要求静区真实参与，选择基于成功成片的文档化编辑。
 - Dragon 专用文档确认 `seedance-2-5` + `video_operation=edit` + `video_with_roles(reference_video)`，编辑用
   `duration=-1`/`aspect_ratio=adaptive`；Studio 主编排器视频参考 input 只接受图片 MIME，因此 edit 走 API。
-- v6 prompt/runner 已冻结，预计约 `$12.0191`；必须先 exact-SHA 公共门，one POST/no retry，失败不自动重抽。
+- v6.1 改为 double-anchor：Video1 保留已有 motion，Image1 锁原几何/材质，只编辑热图静区，原片永不覆盖。
+- prompt/runner SHA `9cdcf28e...64ac8` / `08834b8a...173b0`；预计约 `$12.0191`，必须先新 exact-SHA
+  公共门，one POST/no retry。edited sibling 任一核心维度劣化即拒绝并回退原片。

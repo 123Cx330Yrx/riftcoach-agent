@@ -4344,8 +4344,11 @@
   `duration=-1` 与 `aspect_ratio=adaptive`；同时说明最多 10 段视频参考。该证据消除了之前“只支持图片参考”的猜测。
 - Studio 主编排器的参考模式实际 input 仍只接受 image MIME，但这只是 UI 接缝；v6 runner 直接走文档化 API，先
   GET 成功 task 的临时 result URL，再单次 edit POST。它只发视频给同一 Dragon relay，不把签名 URL 写盘。
-- v6 prompt 用 0–2/2–4/4–6/6–8 时间轴，将新增运动绑定到道路、地面、反射、建筑缝、云层、星图和材质遮挡，
-  明确不是 HUD/雾幕 overlay。费用按 8.041667×$1.4946 估算约 `$12.0191`，编辑最低时长仍需以实际账单确认。
+- 用户进一步指出 Video1 也可能干扰模型、放大现有雾带。v6.1 因此采用 double-anchor：Video1 只提供已有 motion
+  rhythm，immutable Image1 锁定原始 geometry/material/linework；prompt 使用 `Edit Video1 / Use Image1 /
+  Keep unchanged / Adjust only`，且禁止增强三个主体来冒充改善。
+- v6.1 时间轴要求全部层全程同时运行，只让 4s 达丰富峰值；新增运动绑定道路、地面、反射、建筑缝、云层、星图
+  和材质遮挡，雾必须是不同深度的 wisps，不是 screen-space sheet。费用仍按 8.041667×$1.4946 估算 `$12.0191`。
 
 ## 2026-08-26：RQ-130 Paid-call content preflight
 

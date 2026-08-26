@@ -2845,6 +2845,8 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 用户随后认可三主体方向但指出静区像雾层覆盖，选择基于现有成片做 Seedance video edit。Dragon 专用文档确认
   `seedance-2-5`、`video_operation=edit`、`video_with_roles(reference_video)`、`duration=-1`、`adaptive`；Studio
   主编排器视频参考 input 实测仅接受图片 MIME，故不冒充 Studio 编辑。
-- v6 edit prompt SHA `68c1aa10...1728`、runner SHA `6b5c6bef...9901e`、source task `task_w6...ULvW`、output/status
-  唯一路径和 Key-last/no-retry 已冻结；编辑预计 `$12.0191`（8.041667 秒×$1.4946），但实际计费/最低时长待账单确认。
+- v6.1 double-anchor edit prompt SHA `9cdcf28e...64ac8`、runner SHA `08834b8a...173b0`、source task
+  `task_w6...ULvW`、immutable v2 Image1、output/status 唯一路径和 Key-last/no-retry 已冻结；恰好 1 POST/2 GET
+  callsites。Video1 保留已有 motion，Image1 锁几何/材质，只改热图静区；编辑预计 `$12.0191`（8.041667 秒×
+  $1.4946），但实际计费/最低时长待账单确认。
 - `NEXT`：独立提交/public gate；通过后向用户披露编辑费用，再 one POST。成功先审静区真实景内运动，失败不盲重试。

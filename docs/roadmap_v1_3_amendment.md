@@ -675,5 +675,6 @@ Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后�
 RQ-133：用户认可 Seedance 样本三个主体运动方向，但指出静区像雾层覆盖；当前尝试真正的视频编辑而非重抽。
 Dragon 专用页面已确认公共名 `seedance-2-5`、`video_operation=edit`、`video_with_roles` 的 `reference_video`、
 `duration=-1` 与 `aspect_ratio=adaptive`。Studio 主编排器虽显示视频参考，实际上传 input 只接受图片 MIME，故
-不把它冒充 edit。v6 edit prompt/runner 只在成功样本上补道路、地面反射、建筑缝、远景空气和星图静区，先
-exact-SHA 公共门，再按约 `$12.0191` 估算 one POST；失败不盲重试。
+不把它冒充 edit。v6.1 又按用户纠正采用 Video1 + immutable Image1 双锚点：前者保存已有 motion，后者锁原始
+geometry/material/linework，只补道路、地面反射、建筑缝、远景空气和星图静区，原片永不覆盖。先新 exact-SHA
+公共门，再按约 `$12.0191` 估算 one POST；edited sibling 劣化即拒绝，失败不盲重试。
