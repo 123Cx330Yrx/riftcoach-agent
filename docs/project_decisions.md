@@ -2326,3 +2326,5 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - 按 RQ-128，relay/upstream failure 是唯一可证实层；v5 prompt、Veo output quality、first=last 与方法保持 unknown/open。
 - `$19.712` 已全额退款；不重发同一 v5，不因此直接切 Seedance/Grok。
 - 本地终端误关是独立操作事故，影响轮询体验但没有创建第二 task；后续 Key runner 禁止按窗口句柄猜测并关闭。
+- audit 已由 `ac76f74/32952793297` exact-SHA 三 job 公共关闭。下一决策门只允许零成本 task-id/platform
+  diagnosis packet；代表用户联系支持仍需发送时确认，不能把“继续开发”泛化为对外沟通授权。

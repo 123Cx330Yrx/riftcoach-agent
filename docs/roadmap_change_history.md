@@ -3364,3 +3364,5 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `BILLING`：`$19.712` 预扣后同额异步退款，最终钱包 `$67.01`；calls 6、production media 0。
 - `INCIDENT`：本地父终端在用户输入后被误关，子 runner 已 POST 后退出；无第二 POST，status 按远端终态更正。
 - `CURRENT`：先公共关闭审计；不重发、不把失败归因 prompt/model/method、不立即换模型。
+- `PUBLIC-CLOSED`：`ac76f74/32952793297` 三 job 全绿；下一项为 zero-cost task-id/platform diagnosis decision
+  gate，只准备 body-free packet，不自动联系支持或产生新调用。

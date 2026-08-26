@@ -1610,3 +1610,5 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
     quality unknown；预扣 `$19.712` 已全额退款，calls 6、production media 0。
   - [incident-recorded] 可见终端父进程被误关，子 runner 已 POST 后退出；无第二 POST，本地 status 已按远端终态更正。
   - [next] upstream failure/terminal incident audit 独立 public gate；不重发、不跳模型，等待可证伪诊断证据。
+  - [completed-public-audit] `ac76f74` / Actions `32952793297` 三 job exact-SHA 全绿。
+  - [next] 零成本 task-id/platform diagnosis decision gate；只准备 body-free support packet，不代用户发送、不调用模型。

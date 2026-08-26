@@ -16,10 +16,11 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-26（Veo v5 paid-call preflight 已由 `d57b026` / Actions `32951125621` exact-SHA 三 job
-  公共闭环；唯一 task `task_I5...k9Mw` 随后 one POST 创建并在 159 秒/100% generic failed。无 output，故 v5/Veo/
-  first=last 质量 unknown；`$19.712` 已全额异步退款，钱包最终 `$67.01`。external video calls `6`、production
-  media `0`。当前唯一下一动作是先公共关闭本上游失败与本地终端事故审计；不重发、不跳模型。）
+- 最后更新：2026-08-26（Veo v5 paid-call preflight `d57b026/32951125621` 与 upstream failure/terminal incident
+  audit `ac76f74/32952793297` 均已 exact-SHA 三 job 公共闭环。唯一 task `task_I5...k9Mw` one POST、159 秒/100%
+  generic failed；无 output，故 v5/Veo/first=last 质量 unknown。`$19.712` 已全退，钱包最终 `$67.01`；external
+  video calls `6`、production media `0`。当前唯一下一动作是 Task 5 零成本 task-id/platform diagnosis decision
+  gate；不重发、不跳模型、不代用户联系支持。）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2805,3 +2806,9 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - `NEXT`：先独立提交/推送本 upstream failure 与 terminal incident audit 并取得 exact-SHA 三 job；不重发 v5，
   不把无输出失败归因 prompt/model/method，不立即切 Seedance/Grok。只有 task-id 级诊断、transient 证据或新的
   schema/transport 可证伪假设才能重开调用讨论。
+- upstream failure/terminal incident audit 已由 `ac76f74b89791f933e51183c8a4cf3b5e35323da` / Actions
+  `32952793297` 的 pytest、真实 PostgreSQL 与 Linux packaging 三 job exact-SHA 全绿并正式关闭。
+- `NEXT`：保持 `8e-productization / portal-motion-polish / runtime Task 5`，进入零成本 task-id/platform diagnosis
+  decision gate：先整理可提供给 Dragon 的 task ID、模型、时间、digest 与 generic error body-free packet；不读取/
+  发送 Key，不代表用户联系支持，不产生视频调用。若无法获得新增诊断，再由用户裁决 poster-only 暂停、官方
+  transport 对照或后续 Account source gate，不能由 agent 静默换路线。

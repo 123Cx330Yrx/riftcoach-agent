@@ -4629,3 +4629,5 @@
 - `$19.712` 先扣后全额异步退款，钱包最终 `$67.01`；calls 6，production media 0。
 - 用户输入 Key 时父终端被误关是本地操作事故；子 runner 已 POST 后退出，未产生第二 POST；status 已按远端终态修正。
 - 下一步只关闭审计，不重发或换模型；需 task-id 诊断、transient 证据或新可证伪假设才重开调用。
+- audit `ac76f74/32952793297` 三 job exact-SHA 全绿；当前下一动作收敛为零成本 task-id/platform diagnosis
+  decision gate。可先准备 body-free support packet，但代表用户发送给 Dragon 前必须单独确认。
