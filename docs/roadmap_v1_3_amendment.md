@@ -642,7 +642,8 @@ RQ-122 又明确付费槽位上限不是调研池上限。Task 5 已广筛现有
 隔离 spike 证明 raw frames 可确定性闭合，但默认 MP4 seam/bytes 不合格。Wan/Veo 各一个真实样本随后均未过
 source/seam/full-scene 门，external calls `2`、production media `0`。RQ-125 又防止过度外推：当前 Veo prompt
 未充分遵守 motion-only guidance，故 C 线只作为优先 no-paid-call proof；失败时恢复一次校正 A comparator，
-不改变 RQ-108/8E/8F 顺序。
+不改变 RQ-108/8E/8F 顺序。Veo audit 已由 `e79a76e/32918278259` exact-SHA 三 job 公共关闭；当前先冻结并
+执行 C-line proof，不先调用新模型。
 
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
 Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入

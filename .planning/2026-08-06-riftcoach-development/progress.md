@@ -4520,3 +4520,10 @@
 - RQ-125 又修正路线：字段映射正确，但当前 prompt 过密且多处主动压低 motion，没有充分遵守 motion-only
   best practice；不把 sample rejection 外推为 Provider/A 线 ceiling。唯一下一动作是本负面审计独立公共门；
   随后优先 no-paid-call C proof，并保留校正 A comparator。
+
+### 2026-08-26：Veo 负面审计 exact-SHA 公共闭环
+
+- `e79a76ef8de82d56f3b97ba84623def8ea656a5b` / Actions `32918278259` 的 pytest、真实 PostgreSQL 与 Linux
+  packaging 三 job 全绿；Veo negative sample 与 RQ-125 sample-reject/provider-open 裁决正式关闭。
+- 当前唯一下一动作进入 C-line no-paid-call Portal proof；在 scene graph/mask/motion coverage/frame clock/A
+  fallback gate 冻结并通过前，不创建新视频任务、不采用 production media、不跳 Account/Task 6。

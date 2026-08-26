@@ -1564,3 +1564,7 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
     guidance；样本 reject 不等于模型/A 线 reject。C 线只作为优先 no-paid-call proof，校正 A comparator 保留。
   - [next] Veo sample audit 独立 commit/push/exact-SHA；公共成功后进入 layer/mask/inpaint + deterministic
     frame-clock C proof，不先调用新模型。C proof 不过门才用新采用门恢复一次短 motion-only A comparator。
+  - [completed-public-rejected] Veo audit/RQ-125 `e79a76e` / Actions `32918278259` exact-SHA 三 job 全绿；
+    external video calls 2、production media 0，sample reject/provider open 正式关闭。
+  - [in-progress] C-line no-paid-call Portal proof：先冻结 scene graph、mask/inpaint 可行性、所有大区的 motion
+    coverage、deterministic clock/seam 和 A fallback gate，再做 research-only animatic；不调用新模型或接 runtime。

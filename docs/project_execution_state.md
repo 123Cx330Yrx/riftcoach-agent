@@ -16,11 +16,10 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-26（DragonAPI `Veo3.1-quality-official` A2 已按同一 v2/prompt 完成一次 POST；任务成功，
-  但 source→first `0.587962`、seam DSSIM `0.161631`、整幕 motion distribution、raw yuv444p/254MB 与预算
-  未过门，样本 rejected。Wan/Veo 合计 external video calls `2`，production media `0`。RQ-125 又纠正：本次
-  prompt 未充分遵守 motion-only guidance，不能把样本拒绝外推为模型/A 线能力上限。唯一下一动作是提交并
-  exact-SHA 公共关闭 Veo 负面审计；成功后进入 no-paid-call 混合 C 线分层 proof，校正 A comparator 保留。）
+- 最后更新：2026-08-26（Dragon/Veo 负面样本与 RQ-125 纠偏已由 `e79a76e` / Actions `32918278259` 完成
+  exact-SHA 三 job 公共闭环。Wan/Veo 合计 external video calls `2`，production media `0`；样本 rejected，
+  Provider/A 线未永久拒绝。当前唯一下一动作已进入 no-paid-call 混合 C 线分层 proof：先冻结 layer/mask/inpaint、
+  full-scene motion coverage、deterministic frame clock 与 A fallback gate，再制作 Portal proof，不先调用新模型。）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2735,3 +2734,8 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   layer/mask/inpaint + deterministic frame clock 验证整幕 motion coverage/source/seam/维护成本。proof 不合格
   时恢复一次短 motion-only、首帧控制 + deterministic seam 的校正 A comparator。Account 仍在 Portal 工艺
   通过后按 topology→无英雄底座→五英雄逐位→adopted source→10s loop 顺序继续。
+- Veo sample audit `e79a76ef8de82d56f3b97ba84623def8ea656a5b` / Actions `32918278259` 的 `pytest`、
+  `postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success；负面样本与 RQ-125 纠偏正式关闭。
+- `NEXT`：C 线 no-paid-call proof 已按 RQ-125 授权进入。先建立一个 repo-excluded research scene graph 与
+  deterministic animatic，证明所有大区持续参与、结构/source 锁定、帧时钟闭合和维护成本；在 proof 过门前
+  不调用新视频模型、不采用 production media、不进入 Account/Task 6。校正 A comparator 保持条件 fallback。

@@ -659,7 +659,8 @@ exact-SHA 公共闭环；当前唯一下一动作是 Task 5 三路线 bake-off�
 Task 5 已按 RQ-122 完成 official/relay 广筛和 HyperFrames 隔离 smoke；Wan 3.0 与 Dragon/Veo 各完成一个
 有界真实负面样本，external video calls `2`、production media `0`。Veo prompt 未充分遵守 official motion-only
 guidance，故不能外推 Provider ceiling。当前只先提交/公共关闭 Veo audit；随后 no-paid-call C 线证明分层/
-mask/inpaint、整幕 motion、source/seam 与维护成本，不合格时恢复一次校正 A comparator。
+mask/inpaint、整幕 motion、source/seam 与维护成本，不合格时恢复一次校正 A comparator。Veo audit 已由
+`e79a76e/32918278259` 完成 exact-SHA 三 job；当前已进入该 C-line no-paid-call proof，不先调用新模型。
 
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1

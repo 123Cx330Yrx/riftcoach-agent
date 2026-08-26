@@ -3263,3 +3263,10 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   seam/source 和维护成本；不合格则以新采用门恢复一次校正 A comparator。其他视频模型不永久拒绝，也不再
   复制当前失败配置抽卡。
 - `NEXT`：先以独立提交/exact-SHA 公共门关闭 Veo 样本审计，再进入 C proof。
+
+## 2026-08-26：Veo sample audit exact-SHA 公共闭环
+
+- `PUBLIC-CI`：`e79a76e/32918278259` 的 pytest、PostgreSQL migration/control-plane 与 Linux package 三 job
+  全绿；Veo sample rejection、Dragon `/content` Bad Case 与 RQ-125 纠偏可公共复核。
+- `HANDOFF`：唯一下一项为 no-paid-call C-line Portal proof；先冻结 scene graph、mask/inpaint、full-scene
+  motion coverage、deterministic seam 与 corrected-A fallback gate，不先调用新模型或接入 runtime。
