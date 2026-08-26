@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "status": "research-proof",
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e",
+    "runtime_name": "assets/portal-mother-image-source-v2.png"
+  },
+  "timeline": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "frames": 192,
+    "nominal_duration_s": 8.0,
+    "closed_animation_duration_s": 7.958333
+  },
+  "renderer": {
+    "name": "hyperframes",
+    "version": "0.8.14",
+    "telemetry": false,
+    "auth": false,
+    "network_assets": false
+  },
+  "motion_systems": [
+    {"id": "base-structure", "periodic": true, "role": "locked-source"},
+    {"id": "left-atmosphere", "periodic": true, "role": "fog-depth"},
+    {"id": "rift-interior", "periodic": true, "role": "rift-circulation"},
+    {"id": "route-energy", "periodic": true, "role": "road-and-reflection-flow"},
+    {"id": "crystal-tower", "periodic": true, "role": "refraction-and-seams"},
+    {"id": "star-map", "periodic": true, "role": "field-drift-and-node-flow"},
+    {"id": "foreground", "periodic": true, "role": "floor-reflection-and-particles"},
+    {"id": "global-light", "periodic": true, "role": "cross-frame-light-field"}
+  ],
+  "output_policy": {
+    "repository_media": false,
+    "runtime_adoption": false,
+    "audio": false,
+    "randomness": false,
+    "external_model_calls": 0,
+    "output_must_be_outside_repository": true
+  },
+  "quality_gates": {
+    "source_to_first_ssim_min": 0.95,
+    "raw_first_last_ssim_min": 0.999,
+    "encoded_seam_dssim_floor_max": 0.03,
+    "motion_grid": "3x3",
+    "manual_full_scene_motion_required": true,
+    "proof_preview_bytes_max": 20000000,
+    "production_mp4_bytes_max": 5500000
+  },
+  "fallback": {
+    "on_hybrid_failure": "proof_fail_reopen_corrected_a",
+    "a_prompt_style": "short-motion-only",
+    "a_input_mode": "first-frame-plus-deterministic-seam",
+    "same_source_first_last_retry": false
+  }
+}

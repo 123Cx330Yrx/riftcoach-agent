@@ -1573,3 +1573,8 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-public-design] `78ae6e3` / Actions `32919447127` exact-SHA 三 job 全绿；design gate 正式关闭。
   - [in-progress-implementation] 按 executing plan 执行 Tasks 1–3：contract red→green、deterministic scene graph、
     isolated renderer wrapper；完成聚焦测试后进入 Task 4 research-only render/audit。
+  - [completed-local-rejected] Tasks 1–4：6 focused pass；v3 output 3.90MB/192 frames/seam/grid mechanically viable，
+    但用户确认仍是诡异线条/HUD 覆层，不是母图环境自身全局运动；verdict `proof_fail_reopen_corrected_a`。
+  - [next] C proof implementation/result 独立 commit/push/exact-SHA；公共全绿后进入一次 RQ-126 corrected Veo A comparator。
+  - [requirement-recorded] RQ-127：corrected Veo 必须是整幕 breathing、medium-to-strong/evident/cool，允许锚定
+    composition 的小幅 camera parallax；禁止三主体轮流、静态大区、HUD 与 subtle/imperceptible direction。

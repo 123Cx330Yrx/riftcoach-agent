@@ -3285,3 +3285,20 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   最终门。
 - `HANDOFF`：implementation 正式进入 strict contract → deterministic scene graph → isolated renderer；
   不调用模型、不接 runtime，样片仍为 research-only。
+
+## 2026-08-26：C-line overlay proof 失败与 RQ-126
+
+- `IMPLEMENTED`：contract/8-system composition/isolated renderer/6 tests 与真实 v3 研究样片完成；external calls 0。
+- `MECHANICAL`：raw clock byte-exact、seam/grid/bytes 可控；这些只证明 frame engineering。
+- `REJECTED`：用户正确指出实际视觉仍是母图上叠加诡异线条/圆环/节点，不是图和环境自身全局运动；不得拿
+  metrics 追绿。裁决 `proof_fail_reopen_corrected_a`，停止 C overlay 微调。
+- `NEXT`：先公共关闭负面 proof；随后一次 corrected A comparator，first-frame only + short motion-only +
+  clearly perceptible full-scene environmental motion，seam 后处理。
+
+## 2026-08-26：RQ-127 全幕 breathing 与 cool 动态校准
+
+- `CORRECTION`：全局不是三个主体更明显，也不是每格有像素变化；是 near/mid/far、left/center/right 的体积
+  空气、环境光、建筑/地面/反射、道路、Rift、水晶和整片星空同时持续参与。
+- `CURRENT`：corrected Veo 使用 medium-to-strong、clearly perceptible、dramatic/cool motion-only direction；
+  允许构图锚定的小幅 camera float/parallax，禁止 static large regions、焦点轮流、HUD 与过轻动作。MotionSites/
+  B站只作观感 reference，不复制资产/Prompt/源码。

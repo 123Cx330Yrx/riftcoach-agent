@@ -2281,3 +2281,14 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   guidance。因此裁决是 sample reject/provider open，禁止把负面样本冒充模型上限。
 - C 线优先做 no-paid-call layer/mask/inpaint + deterministic frame-clock proof；只有自然整幕 motion、source/seam
   与维护成本过门才采用。失败时重开一次短 motion-only、首帧控制 + deterministic seam 的 A comparator。
+
+### RQ-126 C overlay proof 结果
+
+- proof 的 raw clock/source、encoded seam、3×3 motion coverage 与 3.90MB 编码均可控；这只证明制片工具链。
+- 用户审查确认 v2/v3 仍是母图上叠加诡异线条、圆环、节点，不是图和环境自身的全局运动。人工目标优先，
+  verdict 为 `proof_fail_reopen_corrected_a`。
+- tracked contract/composition/renderer 保留为负面证据，不接 runtime；下一项恢复一次 corrected A comparator，
+  first-frame only、short motion-only、medium full-scene environmental motion，seam 后处理。
+- RQ-127 要求 motion 不是三主体轮流或 grid 有变化，而是整幕 breathing：near/mid/far 空气与大尺度光影、
+  建筑/地面/反射、道路、Rift、水晶和整片星空同时持续参与；允许锚定构图的小幅 camera float/parallax，
+  amplitude 必须 clearly perceptible/cool，不再使用 subtle/almost-imperceptible wording。

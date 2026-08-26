@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>RiftCoach Portal Hybrid Motion Proof</title>
+    <style>
+      :root {
+        --cycle: 7.958333s;
+        --cyan: #78e8ff;
+        --blue: #2d8fff;
+        --violet: #ad73ff;
+        --gold: #d6b66f;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        margin: 0;
+        overflow: hidden;
+        background: #040912;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        isolation: isolate;
+      }
+      .layer { position: absolute; inset: 0; }
+      .screen { mix-blend-mode: screen; }
+      #base-structure {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        object-position: 50% 50%;
+      }
+
+      #left-atmosphere {
+        overflow: hidden;
+        opacity: 0;
+        mask-image: linear-gradient(90deg, #000 0%, #000 38%, transparent 60%);
+        animation: layer-presence var(--cycle) linear 1 both;
+      }
+      .fog {
+        position: absolute;
+        width: 760px;
+        height: 500px;
+        border-radius: 50%;
+        filter: blur(34px);
+        mix-blend-mode: screen;
+      }
+      .fog-a {
+        left: -90px;
+        top: 235px;
+        background:
+          radial-gradient(ellipse at 48% 45%, rgba(115, 218, 255, .23), transparent 39%),
+          radial-gradient(ellipse at 64% 58%, rgba(57, 118, 185, .22), transparent 55%);
+        animation: fog-a var(--cycle) ease-in-out 1 both;
+      }
+      .fog-b {
+        left: 150px;
+        top: 120px;
+        background:
+          radial-gradient(ellipse at 44% 52%, rgba(88, 128, 191, .18), transparent 48%),
+          radial-gradient(ellipse at 62% 40%, rgba(137, 103, 219, .12), transparent 56%);
+        animation: fog-b var(--cycle) ease-in-out 1 both;
+      }
+
+      #rift-interior {
+        opacity: 0;
+        animation: layer-presence var(--cycle) linear 1 both;
+      }
+      .rift-orbit-a,
+      .rift-orbit-b,
+      .rift-wave {
+        fill: none;
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+      .rift-orbit-a {
+        stroke: url(#rift-gradient);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-dasharray: 112 160;
+        filter: url(#wide-glow);
+        opacity: .38;
+        animation: rift-spin-a var(--cycle) linear 1 both;
+      }
+      .rift-orbit-b {
+        stroke: rgba(117, 212, 255, .7);
+        stroke-width: 1.5;
+        stroke-dasharray: 210 180;
+        filter: url(#soft-glow);
+        opacity: .32;
+        animation: rift-spin-b var(--cycle) linear 1 both;
+      }
+      .rift-wave {
+        stroke: rgba(187, 232, 255, .54);
+        stroke-width: 1.5;
+        stroke-dasharray: 24 100;
+        opacity: .28;
+        animation: rift-wave var(--cycle) ease-in-out 1 both;
+      }
+
+      #route-energy {
+        opacity: 0;
+        animation: layer-presence var(--cycle) linear 1 both;
+      }
+      .route-base {
+        fill: none;
+        stroke: rgba(50, 142, 224, .22);
+        stroke-width: 11;
+        filter: url(#wide-glow);
+      }
+      .route-pulse {
+        fill: none;
+        stroke: url(#route-gradient);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-dasharray: 90 260;
+        filter: url(#soft-glow);
+        opacity: .38;
+        animation: route-flow var(--cycle) linear 1 both;
+      }
+      .route-pulse.secondary {
+        stroke-width: 1.5;
+        stroke-dasharray: 70 240;
+        opacity: .24;
+        animation-name: route-flow-secondary;
+      }
+      .platform-ring {
+        fill: none;
+        stroke: rgba(95, 218, 255, .66);
+        stroke-width: 1.5;
+        stroke-dasharray: 120 180;
+        transform-box: fill-box;
+        transform-origin: center;
+        filter: url(#wide-glow);
+        opacity: .22;
+        animation: platform-ring var(--cycle) linear 1 both;
+      }
+
+      #crystal-tower {
+        opacity: 0;
+        animation: layer-presence var(--cycle) linear 1 both;
+      }
+      .crystal-bloom {
+        fill: url(#crystal-gradient);
+        filter: url(#crystal-glow);
+        opacity: .56;
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: crystal-breathe var(--cycle) ease-in-out 1 both;
+      }
+      .crystal-refraction {
+        fill: none;
+        stroke: rgba(219, 249, 255, .85);
+        stroke-width: 1.25;
+        stroke-dasharray: 90 160;
+        filter: url(#soft-glow);
+        opacity: .52;
+        animation: crystal-refraction var(--cycle) linear 1 both;
+      }
+      .tower-seam {
+        fill: none;
+        stroke: url(#tower-gradient);
+        stroke-width: 1.25;
+        stroke-linecap: round;
+        stroke-dasharray: 82 210;
+        filter: url(#soft-glow);
+        opacity: .34;
+        animation: tower-flow var(--cycle) linear 1 both;
+      }
+      .tower-beam {
+        fill: url(#beam-gradient);
+        animation: beam-breathe var(--cycle) ease-in-out 1 both;
+      }
+
+      #star-map {
+        opacity: 0;
+        transform-origin: 1540px 440px;
+        animation: star-field var(--cycle) ease-in-out 1 both;
+      }
+      .constellation-line {
+        fill: none;
+        stroke: rgba(110, 186, 255, .35);
+        stroke-width: 1;
+        opacity: .34;
+      }
+      .constellation-flow {
+        fill: none;
+        stroke: url(#star-gradient);
+        stroke-width: 1;
+        stroke-linecap: round;
+        stroke-dasharray: 54 220;
+        filter: url(#soft-glow);
+        opacity: .2;
+        animation: star-flow var(--cycle) linear 1 both;
+      }
+      .star-node {
+        fill: rgba(138, 226, 255, .56);
+        filter: url(#soft-glow);
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: node-breathe var(--cycle) ease-in-out 1 both;
+      }
+      .star-node.violet { fill: rgba(190, 122, 255, .92); animation-delay: -1.7s; }
+      .star-node.late { animation-delay: -3.1s; }
+      .star-sweep {
+        fill: none;
+        stroke: rgba(140, 91, 255, .2);
+        stroke-width: 24;
+        stroke-dasharray: 260 620;
+        filter: url(#wide-glow);
+        opacity: .12;
+        animation: star-sweep var(--cycle) linear 1 both;
+      }
+
+      #foreground {
+        overflow: hidden;
+        opacity: 0;
+        animation: layer-presence var(--cycle) linear 1 both;
+      }
+      .floor-sweep {
+        position: absolute;
+        left: -25%;
+        bottom: -15%;
+        width: 150%;
+        height: 55%;
+        background: linear-gradient(104deg, transparent 38%, rgba(91, 198, 255, .2) 49%, rgba(213, 185, 111, .1) 52%, transparent 62%);
+        filter: blur(12px);
+        mix-blend-mode: screen;
+        animation: floor-sweep var(--cycle) ease-in-out 1 both;
+      }
+      .reflection-pulse {
+        fill: none;
+        stroke: rgba(84, 190, 255, .36);
+        stroke-width: 1.5;
+        stroke-dasharray: 120 240;
+        filter: url(#soft-glow);
+        opacity: .24;
+        animation: reflection-flow var(--cycle) linear 1 both;
+      }
+      .particle {
+        fill: rgba(168, 232, 255, .46);
+        filter: url(#soft-glow);
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+      .particle.p1 { animation: particle-one var(--cycle) ease-in-out 1 both; }
+      .particle.p2 { animation: particle-two var(--cycle) ease-in-out 1 both; }
+      .particle.p3 { animation: particle-three var(--cycle) ease-in-out 1 both; }
+      .particle.p4 { animation: particle-four var(--cycle) ease-in-out 1 both; }
+
+      #global-light {
+        opacity: 0;
+        background:
+          radial-gradient(ellipse at 20% 48%, rgba(35, 142, 255, .14), transparent 31%),
+          radial-gradient(ellipse at 53% 50%, rgba(88, 220, 255, .1), transparent 26%),
+          radial-gradient(ellipse at 82% 43%, rgba(154, 82, 255, .1), transparent 32%),
+          linear-gradient(112deg, transparent 22%, rgba(91, 188, 255, .07) 48%, transparent 72%);
+        mix-blend-mode: screen;
+        animation: global-light var(--cycle) ease-in-out 1 both;
+      }
+
+      @keyframes layer-presence {
+        0%, 100% { opacity: 0; }
+        9%, 91% { opacity: 1; }
+      }
+      @keyframes fog-a {
+        0%, 100% { opacity: 0; transform: translate3d(-22px, 8px, 0) scale(.98); }
+        15% { opacity: .62; }
+        50% { opacity: .92; transform: translate3d(48px, -24px, 0) scale(1.08); }
+        85% { opacity: .58; }
+      }
+      @keyframes fog-b {
+        0%, 100% { opacity: 0; transform: translate3d(30px, -14px, 0) scale(1.04); }
+        12% { opacity: .48; }
+        48% { opacity: .78; transform: translate3d(-34px, 22px, 0) scale(.97); }
+        88% { opacity: .45; }
+      }
+      @keyframes rift-spin-a {
+        0% { transform: rotate(0deg) scale(.96); stroke-dashoffset: 0; }
+        50% { transform: rotate(180deg) scale(1.035); stroke-dashoffset: -110; }
+        100% { transform: rotate(360deg) scale(.96); stroke-dashoffset: -220; }
+      }
+      @keyframes rift-spin-b {
+        0% { transform: rotate(0deg) scale(1.02); stroke-dashoffset: 0; opacity: .25; }
+        50% { transform: rotate(-180deg) scale(.95); stroke-dashoffset: 80; opacity: .85; }
+        100% { transform: rotate(-360deg) scale(1.02); stroke-dashoffset: 160; opacity: .25; }
+      }
+      @keyframes rift-wave {
+        0%, 100% { opacity: .1; stroke-dashoffset: 0; transform: scale(.94); }
+        50% { opacity: .72; stroke-dashoffset: -120; transform: scale(1.06); }
+      }
+      @keyframes route-flow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -892; } }
+      @keyframes route-flow-secondary { from { stroke-dashoffset: 95; } to { stroke-dashoffset: -570; } }
+      @keyframes platform-ring { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      @keyframes crystal-breathe {
+        0%, 100% { opacity: .08; transform: scale(.985); }
+        30% { opacity: .7; transform: scale(1.018); }
+        62% { opacity: .38; transform: scale(.997); }
+        82% { opacity: .82; transform: scale(1.012); }
+      }
+      @keyframes crystal-refraction { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -312; } }
+      @keyframes tower-flow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -712; } }
+      @keyframes beam-breathe {
+        0%, 100% { opacity: .05; }
+        35% { opacity: .45; }
+        68% { opacity: .17; }
+        84% { opacity: .62; }
+      }
+      @keyframes star-field {
+        0%, 100% { opacity: 0; transform: translate3d(-5px, 4px, 0) rotate(-.7deg); }
+        10% { opacity: .62; }
+        50% { opacity: .96; transform: translate3d(11px, -8px, 0) rotate(.8deg); }
+        90% { opacity: .62; }
+      }
+      @keyframes star-flow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -620; } }
+      @keyframes star-sweep { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -1100; } }
+      @keyframes node-breathe {
+        0%, 100% { opacity: .22; transform: scale(.7); }
+        38% { opacity: 1; transform: scale(1.55); }
+        72% { opacity: .5; transform: scale(.94); }
+      }
+      @keyframes floor-sweep {
+        0%, 100% { opacity: 0; transform: translate3d(-22%, 4%, 0) skewX(-8deg); }
+        12% { opacity: .24; }
+        50% { opacity: .84; transform: translate3d(12%, -4%, 0) skewX(-8deg); }
+        88% { opacity: .2; }
+      }
+      @keyframes reflection-flow { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -496; } }
+      @keyframes particle-one {
+        0%, 100% { opacity: 0; transform: translate3d(0, 20px, 0) scale(.6); }
+        50% { opacity: .85; transform: translate3d(52px, -78px, 0) scale(1.3); }
+      }
+      @keyframes particle-two {
+        0%, 100% { opacity: 0; transform: translate3d(12px, 16px, 0) scale(.7); }
+        42% { opacity: .72; transform: translate3d(-38px, -62px, 0) scale(1.1); }
+      }
+      @keyframes particle-three {
+        0%, 100% { opacity: 0; transform: translate3d(-10px, 24px, 0) scale(.5); }
+        64% { opacity: .9; transform: translate3d(30px, -86px, 0) scale(1.4); }
+      }
+      @keyframes particle-four {
+        0%, 100% { opacity: 0; transform: translate3d(8px, 18px, 0) scale(.6); }
+        35% { opacity: .65; transform: translate3d(-22px, -52px, 0) scale(1.15); }
+      }
+      @keyframes global-light {
+        0%, 100% { opacity: 0; transform: translate3d(-2%, 1%, 0) scale(1); filter: hue-rotate(0deg); }
+        14% { opacity: .42; }
+        45% { opacity: .78; transform: translate3d(2%, -1%, 0) scale(1.025); filter: hue-rotate(8deg); }
+        72% { opacity: .58; transform: translate3d(-1%, 1%, 0) scale(1.01); filter: hue-rotate(-5deg); }
+        90% { opacity: .3; }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="1920" data-height="1080" data-fps="24" data-no-timeline>
+      <img id="base-structure" class="layer" data-start="0" data-duration="8" data-track-index="0" src="assets/portal-mother-image-source-v2.png" alt="" />
+
+      <section id="left-atmosphere" class="layer" data-start="0" data-duration="8" data-track-index="1" aria-hidden="true">
+        <div class="fog fog-a"></div><div class="fog fog-b"></div>
+      </section>
+
+      <svg id="rift-interior" class="layer screen" data-start="0" data-duration="8" data-track-index="2" viewBox="0 0 1920 1080" aria-hidden="true">
+        <defs>
+          <radialGradient id="rift-gradient"><stop stop-color="#d8f7ff"/><stop offset=".46" stop-color="#6bdcff"/><stop offset="1" stop-color="#397bff"/></radialGradient>
+          <linearGradient id="route-gradient"><stop stop-color="#d6faff"/><stop offset=".5" stop-color="#63d7ff"/><stop offset="1" stop-color="#6c7dff"/></linearGradient>
+          <linearGradient id="crystal-gradient" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e5fbff" stop-opacity=".82"/><stop offset=".5" stop-color="#50d8ff" stop-opacity=".55"/><stop offset="1" stop-color="#785dff" stop-opacity=".24"/></linearGradient>
+          <linearGradient id="tower-gradient"><stop stop-color="#d9bd70"/><stop offset=".45" stop-color="#63dfff"/><stop offset="1" stop-color="#d9bd70"/></linearGradient>
+          <linearGradient id="beam-gradient" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#91eeff" stop-opacity=".62"/><stop offset="1" stop-color="#42a8ff" stop-opacity="0"/></linearGradient>
+          <linearGradient id="star-gradient"><stop stop-color="#76e8ff"/><stop offset=".5" stop-color="#a078ff"/><stop offset="1" stop-color="#d4b76c"/></linearGradient>
+          <filter id="soft-glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="wide-glow"><feGaussianBlur stdDeviation="13" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="crystal-glow"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <clipPath id="rift-clip"><ellipse cx="270" cy="485" rx="214" ry="300"/></clipPath>
+        </defs>
+        <g clip-path="url(#rift-clip)">
+          <ellipse class="rift-orbit-a" cx="270" cy="485" rx="164" ry="236"/>
+          <ellipse class="rift-orbit-b" cx="270" cy="485" rx="126" ry="202"/>
+          <ellipse class="rift-wave" cx="270" cy="485" rx="94" ry="168"/>
+        </g>
+      </svg>
+
+      <svg id="route-energy" class="layer screen" data-start="0" data-duration="8" data-track-index="3" viewBox="0 0 1920 1080" aria-hidden="true">
+        <path class="route-base" d="M262 650 C340 735 472 752 620 722 S810 645 955 655"/>
+        <path class="route-pulse" d="M262 650 C340 735 472 752 620 722 S810 645 955 655"/>
+        <path class="route-pulse secondary" d="M350 690 C520 816 752 765 956 657"/>
+        <path class="route-pulse secondary" d="M955 657 C1140 670 1284 627 1445 562"/>
+        <ellipse class="platform-ring" cx="962" cy="655" rx="196" ry="54"/>
+      </svg>
+
+      <svg id="crystal-tower" class="layer screen" data-start="0" data-duration="8" data-track-index="4" viewBox="0 0 1920 1080" aria-hidden="true">
+        <path class="tower-beam" d="M948 648 L976 648 L998 98 L926 98 Z"/>
+        <polygon class="crystal-bloom" points="931,271 962,216 994,271 991,470 962,526 933,470"/>
+        <path class="crystal-refraction" d="M962 222 L940 281 L963 328 L987 280 M940 281 L985 281 M963 328 L939 405 L963 516 L989 405 M939 405 L989 405"/>
+        <path class="tower-seam" d="M868 125 L868 526 L808 601 M1057 125 L1057 526 L1116 601 M767 671 L1160 671 M731 718 L1195 718 M674 815 L1252 815"/>
+      </svg>
+
+      <svg id="star-map" class="layer screen" data-start="0" data-duration="8" data-track-index="5" viewBox="0 0 1920 1080" aria-hidden="true">
+        <path class="star-sweep" d="M1192 336 C1378 210 1692 214 1880 382 S1762 684 1460 646 S1198 488 1192 336"/>
+        <path class="constellation-line" d="M1240 553 L1360 475 L1482 526 L1578 408 L1708 467 L1812 354 M1326 645 L1455 573 L1586 650 L1720 563 L1848 608"/>
+        <path class="constellation-flow" d="M1240 553 L1360 475 L1482 526 L1578 408 L1708 467 L1812 354 M1326 645 L1455 573 L1586 650 L1720 563 L1848 608"/>
+        <circle class="star-node" cx="1240" cy="553" r="6"/><circle class="star-node late" cx="1360" cy="475" r="7"/>
+        <circle class="star-node violet" cx="1482" cy="526" r="8"/><circle class="star-node" cx="1578" cy="408" r="6"/>
+        <circle class="star-node late" cx="1708" cy="467" r="7"/><circle class="star-node" cx="1812" cy="354" r="5"/>
+        <circle class="star-node violet" cx="1586" cy="650" r="7"/><circle class="star-node late" cx="1720" cy="563" r="6"/>
+      </svg>
+
+      <section id="foreground" class="layer" data-start="0" data-duration="8" data-track-index="6" aria-hidden="true">
+        <div class="floor-sweep"></div>
+        <svg class="layer screen" viewBox="0 0 1920 1080">
+          <path class="reflection-pulse" d="M710 824 L961 720 L1213 824 M520 946 L960 778 L1400 946"/>
+          <circle class="particle p1" cx="514" cy="914" r="3"/><circle class="particle p2" cx="846" cy="872" r="4"/>
+          <circle class="particle p3" cx="1288" cy="904" r="3"/><circle class="particle p4" cx="1608" cy="824" r="4"/>
+        </svg>
+      </section>
+
+      <div id="global-light" class="layer" data-start="0" data-duration="8" data-track-index="7" aria-hidden="true"></div>
+    </main>
+  </body>
+</html>

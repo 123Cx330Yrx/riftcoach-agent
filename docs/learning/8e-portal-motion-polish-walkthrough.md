@@ -152,6 +152,13 @@ prompt 既重述源图又用多个 subtle/slow/restrained 词；这没有充分�
 这是优先 proof，不是不可逆架构采用；若 layer/inpaint、自然度或维护成本不合格，恢复一次短 motion-only、
 首帧控制 + deterministic seam 的 A comparator。
 
+C proof 随后用 tracked 8-system scene graph、HyperFrames 0.8.14 与固定 FFmpeg 成功证明 raw frame clock、
+source、seam、3×3 motion coverage 和 3.90MB 编码可控；但这次必须反过来学习：自动指标全绿也不等于视觉
+目标正确。v2/v3 的运动来自叠在母图上的线、圆环、节点与光带，环境自身没有动。用户明确拒绝后，裁决为
+`proof_fail_reopen_corrected_a`；不继续把 HUD 做细，而是按 RQ-126 回到正确利用 I2V 的 motion-only 对照。
+RQ-127 还区分了“全局”和“到处放一点变化”：目标是整幕空间从第一秒持续呼吸，近中远景和左右中区同时
+有体积空气、大尺度光影与反射；允许锚定构图的小幅 camera parallax，动作必须明显且 cool，而不是 subtle。
+
 ## 6. 运行手册（设计阶段）
 
 1. 生成素材前核对采用账本，确认 source 和 candidate 状态；

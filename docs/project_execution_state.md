@@ -2744,3 +2744,12 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   source/seam/region/grid/manual/budget 与三态 verdict 设计门正式关闭。
 - `NEXT`：C proof implementation 已获既有连续授权并进入 contract TDD。先完成 Task 1–3：strict contract、
   deterministic scene graph、isolated renderer wrapper；本批不调用新模型、不接 runtime、不生成 production media。
+- C proof contract/scene graph/renderer 已实现并真实输出 v3 研究样片；raw source/clock、encoded seam、3×3 coverage
+  与 3.90MB bytes 机械项可控，但人工与用户审查确认它仍只是母图上的 line/ring/node HUD 覆层，环境本身未动。
+  裁决为 `proof_fail_reopen_corrected_a`；不继续调 SVG/CSS，不进入 runtime。
+- `NEXT`：先提交/公共关闭 C proof 负面证据；全绿后执行一次 RQ-126 校正 A comparator：Veo first-frame only、
+  short motion-only、medium clearly perceptible full-scene motion、no object-by-object spotlight/HUD，同一 task/一 POST；
+  通过 source/full-scene motion 后才做 deterministic seam。Account/Task 6 继续阻塞。
+- RQ-127 进一步固定这次 comparator 的目标不是“多几个元素动”，而是全幕 breathing：near/mid/far 体积空气、
+  大尺度环境光、建筑/地面/反射、道路、Rift、水晶与整片星空同时持续运动；允许构图锚定的小幅 camera
+  float/parallax cycle，强度 medium-to-strong / clearly perceptible / cool，不再完全 locked/pixel-stable。

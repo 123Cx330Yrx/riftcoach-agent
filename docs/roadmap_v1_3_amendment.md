@@ -645,6 +645,9 @@ source/seam/full-scene 门，external calls `2`、production media `0`。RQ-125 
 不改变 RQ-108/8E/8F 顺序。Veo audit 已由 `e79a76e/32918278259` exact-SHA 三 job 公共关闭；当前先冻结并
 执行 C-line proof，不先调用新模型。8-system/192-frame/source-seam-grid/manual 三态 design 已由
 `78ae6e3/32919447127` 完成 exact-SHA 三 job；当前开始 contract TDD 与隔离 renderer 实现。
+C proof 实作虽通过 clock/seam/grid/bytes，但实际仍是母图上的 HUD 覆层；RQ-126 已拒绝并恢复一次校正 A
+comparator，禁止用机械指标绕过视觉失败。RQ-127 又把 comparator 固定为 near/mid/far、left/center/right
+同时持续 breathing、medium-to-strong/evident/cool，并允许构图锚定小幅 camera parallax。
 
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
 Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入

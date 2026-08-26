@@ -662,7 +662,10 @@ guidance，故不能外推 Provider ceiling。当前只先提交/公共关闭 Ve
 mask/inpaint、整幕 motion、source/seam 与维护成本，不合格时恢复一次校正 A comparator。Veo audit 已由
 `e79a76e/32918278259` 完成 exact-SHA 三 job；当前已进入该 C-line no-paid-call proof，不先调用新模型。
 其 scene graph/8-system/192-frame/source-seam-grid/manual 三态 design 与实施计划已由 `78ae6e3/32919447127`
-完成 exact-SHA 三 job；当前 implementation 进入 contract → scene graph → isolated renderer，不调用新模型。
+完成 exact-SHA 三 job；implementation 已完成机械可控的 v3 研究样片，但用户按 RQ-126 正确拒绝其线条/圆环/
+节点 HUD 覆层视觉，裁决 `proof_fail_reopen_corrected_a`。当前先公共关闭负面证据，再执行一次 first-frame-only
+短 motion-only 的校正 A comparator。RQ-127 固定该对照为 medium-to-strong、clearly perceptible 的整幕
+breathing，并允许构图锚定小幅 camera parallax；不再以三主体轮流或过轻 motion 冒充 cool 动态。
 
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1

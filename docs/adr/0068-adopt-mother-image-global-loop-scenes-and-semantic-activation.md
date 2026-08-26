@@ -204,4 +204,14 @@ A 线的能力上限。下一步是 no-paid-call C 线分层/mask/inpaint + dete
 整幕自然度、source/seam 和维护成本同时过门后才成为制片主线。失败则重开一次校正 A comparator，使用短
 motion-only direction、首帧控制和确定性 seam construction，不复制当前同图首尾/密集限制。
 
+RQ-126 随后的真实 C proof 证明“确定性可控”仍不是充分条件：8-system HTML/SVG 样片能做到 raw frame clock
+闭合、source/grid/seam/bytes 可控，但实际运动仍来自叠在母图上的线条、圆环和节点，环境自身没有活起来。
+该 proof 因视觉语言失败而 rejected，不能拿自动指标绕过。当前按 RQ-125 的既定 fallback 恢复一次 corrected
+A comparator；确定性层未来最多只承担极少量 seam/结构收尾，不能再做 Portal 主运动层。
+
+RQ-127 又明确 corrected A 不能回到“三主体更明显”的局部动画：整幅画的 near/mid/far 与 left/center/right
+必须从第一秒持续呼吸。允许构图锚定的小幅 camera float/parallax cycle，以 medium-to-strong、clearly perceptible
+的体积空气、环境光、地面反射和空间运动获得 cool/immersive 观感；这取代完全 pixel-stable locked camera 的
+过度约束，但仍禁止突发 zoom/reframe/shake、结构融化或新增物体。
+
 本 ADR 不实现 Coach、Data Dragon 产品 asset enrichment、OIDC/RSO、跨模块 final visual QA、公开部署或 8F。

@@ -4541,3 +4541,23 @@
 - 最终设计 SHA `78ae6e3875cee7ad02b2dbbb607ea7ff1d98a3d8` / Actions `32919447127` 的 pytest、
   PostgreSQL、Linux packaging 三 job 全绿；前一 `be75112` 的 EOF 空行警告已由修订提交移除，不作为最终门。
 - design gate 正式关闭；implementation 进入 Tasks 1–3，外部模型调用继续 0，输出继续 repo-excluded。
+
+### 2026-08-26：C-line proof Tasks 1–3 与首个 render Bad Case
+
+- contract TDD 为 `5 failed → 3 failed/2 passed → 5 passed`；tracked contract、8-system HTML/SVG scene graph 与
+  isolated renderer wrapper 已实现，runtime/product media 未改。
+- dry-run 验证 v2 SHA、HyperFrames 0.8.14、repo-excluded output、external model calls 0 和命令边界通过。
+- 第一次 execute 在 HyperFrames `check` 120s 超时，未进入 PNG sequence/FFmpeg。诊断发现新 HOME 下工具自行
+  建立 browser cache，而 wrapper 没有显式复用已验证的 cached headless-shell；这违反“渲染不下载浏览器”的
+  意图。下一尝试必须先定位并绑定旧 cached shell，测试固定 env/path 后使用新 output dir，不原样重跑。
+
+### 2026-08-26：C-line proof v2/v3 结果与 RQ-126
+
+- wrapper 新增 explicit `HYPERFRAMES_BROWSER_PATH/PRODUCER_HEADLESS_SHELL_PATH` 和 UTF-8 subprocess；测试 6 pass。
+- v2 完成 192 PNG，但暴露 `frame_`/start-number 编码路径 bug；修复后 v3 完整 wrapper 成功。
+- v3 SHA `64cf285...0d95b`，3,895,112 B、8s/1080p/24fps/yuv420p/BT.709/no audio；raw frame 1/192
+  byte-exact，raw source→first 0.982996，encoded seam DSSIM 0.026613，九宫格均有变化，external calls 0。
+- v2 粗 HUD 明显；v3 降低线宽/opacity 后仍本质是母图上覆线条、圆环、节点，环境本身没有有机运动。用户
+  明确拒绝；verdict `proof_fail_reopen_corrected_a`。下一动作是负面证据公共门，再执行一次校正 A comparator。
+- RQ-127 把 comparator 视觉标准补成全幕 breathing 与明显 cool 动态：所有空间层/大区持续参与，允许小幅
+  构图锚定 camera float/parallax，不再以完全 locked camera 和 subtle motion 压低幅度。
