@@ -2310,3 +2310,12 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - 目标不是 Veo v1 简单加大，而是 locked frame 下的 multi-depth fog/occlusion、surface-following caustics、Rift
   layered fluids、route/reflection currents、crystal material light、tower seams 和 volumetric star field 同时精细运行。
 - 下一实验保持成功 Veo first=last/model/transport/source，只改 storyboard；若仍不合格才进 Seedance 2.5。
+
+### Veo refined submit 403
+
+- refined Veo request 在 POST 阶段直接 403，task_id 为空；没有生成输出，因此质量保持 unknown。
+- Dragon common log 已证实当时余额 `$15.008`、8 秒预扣 `$19.712`，故 403 是预扣失败；同时间重复 pipeline
+  日志不是额外 task。充值后余额 `$65.01`，billing gate 已满足。
+- RQ-130 决定余额不能替代内容 preflight。v5 必须先以 official motion-only、单一连续镜头、locked/deep-focus、
+  全空间 simultaneous motion、八秒闭环、negative phenomena、source/schema/runner/唯一输出门完成公共闭环。
+- 只有 exact-SHA 三 job 成功后才 one POST/no retry；不自动重抽或换模型归因。

@@ -677,6 +677,12 @@ Studio-contract Vidu 随后成功，证明 API/first-only/prompt 可用；但样
 RQ-129 仅拒绝 sample。当前目标是 locked-frame refined in-scene motion；下一实验保持成功 Veo first+last/
 model/transport/source，只替换 multi-depth/material-aware storyboard，Seedance 2.5 后继、Grok 等 mapping/schema。
 
+refined v4 提交后的 403 已由 Dragon common log 证实为 `$15.008 < $19.712` 的预扣失败；它没有创建 task 或
+提供质量证据。用户充值后余额 `$65.01`，但 RQ-130 明确余额 ready 不能替代内容 ready。v5 只收敛同一 Veo
+comparator 的 prompt/negative：official motion-only/单一连续镜头、locked/deep-focus/source-linework、
+left/center/right + near/mid/far 同时运动、八秒 phase/illumination/velocity 闭环、negative phenomena；source/
+schema/runner/唯一 retry1 路径必须先独立提交并取得 exact-SHA 三 job，公共成功后才 one POST/no retry。
+
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1
 称为最终电影化成品。

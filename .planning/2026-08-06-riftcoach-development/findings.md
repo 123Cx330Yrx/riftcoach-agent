@@ -4334,3 +4334,17 @@
 - RQ-125 的裁决是 sample reject/provider open：不再用当前同图首尾/密集保守 brief 换模型抽卡；先做无付费
   C proof，证明层分离、整幕 motion coverage、source/seam 和维护成本。C proof 不佳则恢复一次短 motion-only、
   首帧控制 + deterministic seam 的 A comparator。该纠偏使混合路线更可控，但不把 A 线降为永久备胎。
+
+## 2026-08-26：RQ-130 Paid-call content preflight
+
+- Dragon common log 精确解释 refined 403：当时余额 `$15.008`、8 秒 Veo 预扣 `$19.712`；同一时间四条
+  common-log pipeline 行不是四个 task，runner `post_attempts=1` 且 task log 总数仍为原 4。充值后余额
+  `$65.01`，因此 billing 已从 hypothesis 变为 resolved/ready。
+- 用户明确“万事俱备”还包括提示词、要求与约束尽可能达到理想效果。Google official I2V guidance 支持
+  高质量 source、motion-only prompt、单一短场景和 unwanted-phenomena negative；不支持用密集场景重述或
+  `no/not` 清单替代运动编排。
+- v5 把 v4 并列效果清单收敛为一个 spatial choreography：固定 camera/frame/lens/deep focus/source linework，
+  以 left Rift / center crystal-platform / right constellation 与 near/mid/far 三深度同时运行；八秒末回到同
+  phase/illumination/velocity。它不改变 Veo/model/transport/source/first=last，只提高同一 comparator 的 art direction。
+- 付费门必须同时满足余额、无隐藏 task、source URL/SHA、schema、prompt/negative digest、runner parse、one POST/
+  no retry、唯一 output/status 和 exact-SHA public CI；任何单项不能替代另一项。

@@ -16,10 +16,11 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-26（Dragon/Veo 负面样本与 RQ-125 纠偏已由 `e79a76e` / Actions `32918278259` 完成
-  exact-SHA 三 job 公共闭环。Wan/Veo 合计 external video calls `2`，production media `0`；样本 rejected，
-  Provider/A 线未永久拒绝。当前唯一下一动作已进入 no-paid-call 混合 C 线分层 proof：先冻结 layer/mask/inpaint、
-  full-scene motion coverage、deterministic frame clock 与 A fallback gate，再制作 Portal proof，不先调用新模型。）
+- 最后更新：2026-08-26（Vidu audit 与 Veo refined v4 preflight 已由 `873421d` / Actions `32945327512`
+  exact-SHA 三 job 公共闭环；external video calls `5`、production media `0`。refined POST 的 403 已由 Dragon
+  通用日志证实为 `$15.008 < $19.712` 的预扣失败，task log 仍为原 4 项、无隐藏任务；用户充值后余额为
+  `$65.01`。RQ-130 又要求余额与提示词/请求双重 ready。当前唯一下一动作是先公共关闭 403 诊断与 v5
+  spatial-orchestration preflight，随后只执行一次 Veo first=last 计费请求。）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2781,3 +2782,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   四效果槽。下一最小变量实验保持成功 Veo first=last/model/transport/source，只改 refined medium/evident storyboard。
 - Veo positive/negative/runner SHA `4dbdf0...41f9` / `b6d7b4...9cbd` / `70332e...8406` 已本地冻结；尚未调用。
 - `NEXT`：先提交/公共关闭 Vidu audit + Veo refined preflight；exact-SHA 三 job 后 one POST。
+- Veo refined submit 已执行但在 POST 阶段直接 403：`task_id=""`、无任务、无输出、质量 unknown；不是上游
+  生成失败，也不是下载问题。提交当时钱包 `$15.01`，Veo 页面 `$2.464` 且描述按秒计费，8 秒估算约
+  `$19.712`；后续 common log 已在下条把该 hypothesis 证实为预扣失败。external video calls 仍为 `5`，
+  production media `0`。
+- Dragon 通用日志已把 403 精确归因为预扣失败：当时余额 `$15.008`、8 秒需要 `$19.712`；同一时间四条
+  common-log pipeline 记录不等于四个 task/POST，task log 仍只有原 4 个任务。用户充值 `$50` 后余额为
+  `$65.01`，故 billing gate 现已满足。
+- RQ-130 要求“万事俱备”还必须包含 prompt/constraint/request preflight。v5 positive 1,478 B/SHA
+  `99cce1b...e72a6`、negative 551 B/SHA `310b281...b8ab` 已按 Google official I2V motion-only、单一连续镜头、
+  fixed camera/deep focus/crisp linework、left/center/right + near/mid/far 同时运动和八秒 phase/illumination/velocity
+  闭环收敛；negative 使用 unwanted-phenomena 列表。runner SHA 仍为 `70332e...8406`，parse 0 errors；source
+  remote HEAD 200 image/png/2,268,033 B 且 local SHA `8134c0...a06e` 匹配；`retry1` output/status 均不存在。
+- `NEXT`：先把本诊断与 v5 preflight 独立提交、推送并取得 exact-SHA 三 job；公共成功后才以唯一新路径、
+  one POST/no retry 执行一次 refined Veo。不得用余额充足绕过 prompt gate，也不得自动重抽或切模型。

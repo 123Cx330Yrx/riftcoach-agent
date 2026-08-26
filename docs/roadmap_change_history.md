@@ -3345,3 +3345,14 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `CURRENT`：目标是 locked-frame refined in-scene motion，不是仅加强 Veo v1。下一最小变量实验保持成功
   Veo first=last/model/transport/source，只改 multi-depth/material-aware refined storyboard；Seedance 2.5 后继，
   Grok 等 exact mapping/schema。
+
+## 2026-08-26：Veo refined submit 403 账单/权限门
+
+- `LIVE-SUBMIT-REJECTED`：refined Veo 在 POST 阶段直接 403，task_id 为空，无 output/quality unknown；与已有 task
+  的 `/content` 403 不同。
+- `EVIDENCE`：common log 已证实当时余额 `$15.008`、需要预扣 `$19.712`，故 403 为预扣失败；文档 402/实现
+  403 仍不一致。task log 保持原 4 项，无隐藏 task。用户充值后余额为 `$65.01`。
+- `RQ-130`：用户要求付费前的“万事俱备”同时包含提示词/约束尽量理想。v5 spatial-orchestration 按官方
+  motion-only/单一场景/negative phenomena 收敛，并固定 locked/deep-focus/source-linework、3×3+三深度同时运动、
+  八秒闭环、source/schema/runner/唯一路径门。
+- `CURRENT`：先独立 commit/push/exact-SHA 三 job；公共成功后 one POST/no retry。余额 ready 不得绕过内容门。

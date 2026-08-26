@@ -658,6 +658,12 @@ Studio-contract Vidu 随后成功但以 camera drift 取得全帧变化，sample
 locked-frame refined in-scene motion；下一最小变量实验保持成功 Veo first+last/model/transport/source，只改
 精细 motion storyboard，未通过后才进入 Seedance 2.5。
 
+RQ-130 又把“余额 ready”与“内容 ready”分成两个阻塞门。Dragon common log 已证实 refined 403 是
+`$15.008 < $19.712` 的预扣失败，充值后余额 `$65.01`；task log 无隐藏任务。v5 spatial-orchestration 只改变
+同一 Veo comparator 的 prompt/negative：遵守 official motion-only/单场景、锁定 camera/deep focus/source
+linework，并把 left/center/right、near/mid/far 同时运动和八秒 phase/illumination/velocity 闭环写成单一编排。
+source/schema/runner/唯一输出路径与 prompt digest 必须先独立提交并取得 exact-SHA 三 job，之后才 one POST/no retry。
+
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
 Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入
 教学、ADR/设计、素材采用门和 TDD；8E coverage 继续 planned。

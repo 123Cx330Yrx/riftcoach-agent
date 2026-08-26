@@ -1594,4 +1594,14 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
     source/seam/720p provenance 不过门；sample reject/model open，calls 5。
   - [requirement-recorded] RQ-129：locked frame + intricate in-scene multi-depth simultaneous medium/evident/cool
     motion；下一实验保持 Veo first=last/model/transport/source，只改 refined storyboard。
-  - [completed-local-preflight] Veo refined positive/negative/runner digests 与 one-POST 门已冻结；下一动作 public gate。
+  - [superseded-preflight] Veo refined v4 positive/negative/runner digests 与 one-POST 门曾冻结；内容在 RQ-130 后由
+    v5 spatial-orchestration 取代，v4 bytes 只读保留。
+  - [completed-live-submit-rejected] Veo refined POST 直接 403，task_id 空、无 output/quality unknown；Dragon common
+    log 已证实 `$15.008 < $19.712` 导致预扣失败，task log 仍为原 4 项。
+  - [billing-ready] 用户充值 `$50` 后余额 `$65.01`；不等于内容 preflight 自动通过。
+  - [requirement-recorded] RQ-130：任何付费视频请求须同时完成余额、prompt/negative、source/schema、runner/路径与
+    exact-SHA 公共门；不能“有钱就发”。
+  - [completed-local-preflight] v5 spatial-orchestration positive/negative SHA `99cce1b...e72a6` / `310b281...b8ab`；
+    official motion-only/单场景、locked/deep-focus、3×3+三深度 simultaneous、八秒闭环、negative phenomena、
+    source HEAD/hash、runner parse 与 unique retry1 paths 全绿。
+  - [next] 独立 commit/push/exact-SHA 三 job；公共成功后 one POST/no retry，不自动重抽或切模型。

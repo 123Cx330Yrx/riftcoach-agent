@@ -83,6 +83,11 @@ bounded review-grounded Coach 是推荐的 8E 补齐项，但插入顺序待用�
 
 ## 4. 明确补齐项
 
+2026-08-26 Q10 补充：Task 5 external video calls 仍为 `5`、production media `0`。refined Veo POST 的 403 已由
+common log 证实为 `$15.008 < $19.712` 的预扣失败；充值后余额 `$65.01`。RQ-130 新增 paid-call content gate：
+v5 spatial-orchestration 的 official motion-only/单场景、locked/deep-focus、全空间 simultaneous motion、八秒
+闭环、negative phenomena、source/schema/runner/唯一路径必须先 exact-SHA 公共关闭，余额不能替代该门。
+
 以下项目不是新增主阶段，而是进入对应阶段前必须具备的验收项：
 
 1. 阶段 5C：建立路由评测集，覆盖正例、负例、歧义、未支持请求和拒绝原因；

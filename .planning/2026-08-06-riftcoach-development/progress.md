@@ -4606,3 +4606,16 @@
   Veo first=last/model/transport/source，只重写 refined storyboard；Seedance/Grok 后置。
 - Veo positive 1,277B/SHA `4dbdf0...41f9`，negative 435B/SHA `b6d7b4...9cbd`，runner 6,804B/SHA
   `70332e...8406` parse pass；尚未调用。
+
+### 2026-08-26：Veo refined POST 403 与账单门诊断
+
+- refined runner 在提交阶段直接 403，`task_id=""`、无任务/输出/质量结论；没有扣本次生成费用。
+- Dragon common log 已证实当时 `$15.008 < $19.712` 导致预扣失败；同时间四条 pipeline 日志不是四个 task，
+  task log 仍为原 4 项。用户充值 `$50` 后余额 `$65.01`，billing gate 已满足。
+- 之前成功的 Veo/Vidu task 与本次不同：这次未进入上游，不能把 403 写成模型或 prompt 失败。
+- RQ-130 又明确付费前必须把提示词/约束和请求做到 ready，不能因余额足够直接发。
+- v5 positive 1,478B/SHA `99cce1b...e72a6`、negative 551B/SHA `310b281...b8ab`；motion-only/单镜头、
+  locked/deep-focus/crisp linework、left/center/right + near/mid/far simultaneous、八秒 phase/illumination/velocity
+  闭环与 unwanted-phenomena negative 已完成静态 preflight。
+- source remote HEAD 200 image/png/2,268,033B、local/expected SHA 一致；runner SHA `70332e...8406` parse 0 errors；
+  retry1 output/status 均不存在。下一步先独立 commit/public gate，再 one POST/no retry。
