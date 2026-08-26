@@ -3249,3 +3249,17 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `PUBLIC-CI`：`69fc4ab/32876134114` 三 job 全绿；Wan rejection 取得公开 provenance。
 - `HANDOFF`：唯一下一项为 DragonAPI `Veo3.1-quality-official`，同一 v2/prompt/scorecard，一次 POST、同 task
   poll/download、不自动重试；Key 仅在用户本地 secure prompt 中存在。
+
+## 2026-08-26：Dragon/Veo A2 负面样本与 RQ-125 路线纠偏
+
+- `REAL-CALL`：Dragon/Veo 一个 task、一 POST，成功/100%；`/content` 对成功 task 403，query result URL 恢复
+  output，未重复生成。external video calls 累计 2，production media 0。
+- `REJECTED-SAMPLE`：raw output 的 source→first `0.587962`、seam DSSIM `0.161631`、full-scene motion
+  distribution、yuv444p/254MB 和预算未过门；转 yuv420p preview 只修复播放器兼容。
+- `CORRECTION`：用户指出两次模型试用本身未完美利用，不能直接切路线。复核确认 lastFrame 字段正确，但
+  prompt 大量重述画面且用多个 slow/subtle 词，与官方 motion-only I2V guidance 冲突。本样本不能代表 Veo/
+  A 线上限。
+- `CURRENT`：C 线成为优先 no-paid-call proof，而不是不可逆切换：先证明分层/mask/inpaint、整幕 motion、
+  seam/source 和维护成本；不合格则以新采用门恢复一次校正 A comparator。其他视频模型不永久拒绝，也不再
+  复制当前失败配置抽卡。
+- `NEXT`：先以独立提交/exact-SHA 公共门关闭 Veo 样本审计，再进入 C proof。

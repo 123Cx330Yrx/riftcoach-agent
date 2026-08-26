@@ -198,4 +198,10 @@ RQ-120 又增加 Wan/Seedance 与确定性/混合式对照。当前推荐 primar
 HyperFrames/Remotion frame-driven 结构合成”，但尚未采用任何新工具；HyperFrames 若胜出须先安全/许可/隔离
 spike 与新 ADR。当前设计/代码可继续，但不得用静态缩放/假 parallax 或单次平台预览冒充完成。
 
+RQ-125 在真实 Wan/Veo 单样本后收紧了该结论：两个当前样本均 rejected，但 Veo prompt 没有充分遵守官方
+motion-only I2V 指导，还主动用多个 slow/subtle 词压低运动幅度，因此不能把样本失败外推成 Provider 或整个
+A 线的能力上限。下一步是 no-paid-call C 线分层/mask/inpaint + deterministic frame-clock proof；它只有在
+整幕自然度、source/seam 和维护成本同时过门后才成为制片主线。失败则重开一次校正 A comparator，使用短
+motion-only direction、首帧控制和确定性 seam construction，不复制当前同图首尾/密集限制。
+
 本 ADR 不实现 Coach、Data Dragon 产品 asset enrichment、OIDC/RSO、跨模块 final visual QA、公开部署或 8F。

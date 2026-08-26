@@ -16,12 +16,11 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-26（Wan 3.0 v2 单样本负面审计 `69fc4ab` / Actions `32876134114` 已 exact-SHA 三 job
-  公共成功；不重抽。唯一下一动作是 DragonAPI `Veo3.1-quality-official` A2 单样本，通过本地交互窗口只在
-  内存读取用户 Key、一次 POST、同一 task 轮询与下载）
-  no-telemetry 隔离 spike 已由 `7067ea1` / Actions `32862942549` 完成 exact-SHA 三 job 公共闭环；Wan 3.0 官方
-  access、DashScope endpoint 与两侧 Key presence 已 body-free 核对，RQ-123 又授权 official/relay 实际有界试用。
-  唯一下一动作是 executable-preflight exact-SHA 公共门；尚无生产媒体或视频模型调用）
+- 最后更新：2026-08-26（DragonAPI `Veo3.1-quality-official` A2 已按同一 v2/prompt 完成一次 POST；任务成功，
+  但 source→first `0.587962`、seam DSSIM `0.161631`、整幕 motion distribution、raw yuv444p/254MB 与预算
+  未过门，样本 rejected。Wan/Veo 合计 external video calls `2`，production media `0`。RQ-125 又纠正：本次
+  prompt 未充分遵守 motion-only guidance，不能把样本拒绝外推为模型/A 线能力上限。唯一下一动作是提交并
+  exact-SHA 公共关闭 Veo 负面审计；成功后进入 no-paid-call 混合 C 线分层 proof，校正 A comparator 保留。）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2724,3 +2723,15 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   pytest、postgres-migrations、packaging-smoke 三 job 全部成功；该样本正式 rejected。
 - `NEXT`：A2 Dragon/Veo 一次有界调用。Key 只由用户在本地可见 PowerShell secure prompt 输入，脚本 SHA
   `dcce8810bfd523b6fcf0061512a7a5738ff0e3fbc8e1429832cfbf406569a16c`，不写 Key/prompt/remote URL/raw body。
+- Dragon/Veo A2 已执行一次：task 控制台成功/100%，原始 output SHA `b707bb1...fa913`；`/content` 对成功任务
+  返回 403，但同一 task query 的 `result.data[0].url` 可 body-free 恢复，未产生第二次 POST。原始 H.264
+  High 4:4:4/yuv444p 只作研究证据；另转码 yuv420p 兼容预览仅解决本机播放，不是生产资产。
+- 样本因 source→first `0.587962`、seam DSSIM `0.161631 > 0.03`、254,156,130 B、编码合同与只让少数焦点
+  分段运动而 rejected；external video calls 当前 `2`，production media `0`。
+- RQ-125 明确：`metadata.lastFrame` 字段映射经专用文档复核正确，但 1662-byte prompt 重述画面并同时使用
+  多个 subtle/slow/restrained 词，没有充分利用 I2V motion-only guidance。因此当前样本不是 Provider ceiling；
+  不继续复制同配置换模型抽卡，也不永久关闭 Wan/Veo/Vidu/Kling/MiniMax/Seedance/Grok。
+- `NEXT`：先独立提交/推送 Veo sample audit 并取得 exact-SHA 三 job；随后 no-paid-call C 线优先 proof：
+  layer/mask/inpaint + deterministic frame clock 验证整幕 motion coverage/source/seam/维护成本。proof 不合格
+  时恢复一次短 motion-only、首帧控制 + deterministic seam 的校正 A comparator。Account 仍在 Portal 工艺
+  通过后按 topology→无英雄底座→五英雄逐位→adopted source→10s loop 顺序继续。

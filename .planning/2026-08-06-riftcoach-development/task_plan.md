@@ -1556,3 +1556,11 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-public-rejected] `69fc4ab/32876134114` 三 job 全绿；Wan negative sample 正式关闭。
   - [next] DragonAPI `Veo3.1-quality-official` A2：secure local Key prompt、一次 POST、同 task poll/download，
     同一 v2/prompt/scorecard；不自动重试。
+  - [completed-local-rejected] Dragon/Veo effective POST 1；task 成功、output `b707bb1...fa913`，但 source/seam/
+    full-scene motion distribution/raw yuv444p/254MB/budget rejected；兼容 preview 只解决播放器解码。
+  - [transport-bad-case] Dragon 文档化 `/content` 对成功 task 实际 403；同一 query 的 `result.data[0].url` 可取回，
+    recovery `post_attempts=0`，没有重复生成。
+  - [correction] RQ-125：prompt 重述场景并使用多个 slow/subtle 约束，不充分符合 official motion-only I2V
+    guidance；样本 reject 不等于模型/A 线 reject。C 线只作为优先 no-paid-call proof，校正 A comparator 保留。
+  - [next] Veo sample audit 独立 commit/push/exact-SHA；公共成功后进入 layer/mask/inpaint + deterministic
+    frame-clock C proof，不先调用新模型。C proof 不过门才用新采用门恢复一次短 motion-only A comparator。

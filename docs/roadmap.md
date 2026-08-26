@@ -643,7 +643,8 @@ source truth；全局 loop 与点击 burst 只赋予原水晶运动，透明语�
 
 RQ-119/120 又用用户 Kimi 12s/1080p 实测建立第一个视频 Bad Case：有效播放/标称分辨率仍可能严重偏离
 source composition。Kimi v1 已 rejected；正式横评覆盖 Wan/Seedance/Veo/Luma/Runway 等生成 I2V、
-HyperFrames/Remotion 确定性分层 render，以及推荐的混合式。当前没有安装/采用新工具或调用付费模型。
+HyperFrames/Remotion 确定性分层 render，以及推荐的混合式。后续 Wan/Veo 各一个真实样本也已执行并拒绝；
+RQ-125 明确样本 rejection 不等于模型上限，C 线只作为优先 proof，校正 A comparator 保留。
 
 上述 RQ-108 design 已由 `b3b5280/32812868683` 完成 exact-SHA 三 job 公共闭环。下一动作只进入 runtime
 Task 1 manifest/cover geometry/media policy TDD；设计公共绿灯不等于视频、runtime、skill 或模型已采用。
@@ -655,9 +656,10 @@ RQ-108 runtime Task 1–3 已分别由 `1b146e6/32826953474`、`2111a78/32833608
 完成 exact-SHA 三 job 公共闭环；Task 4 媒体审计器与预算门已由 `52def9c`/`d58ba15`、Actions `32841900909` 完成
 exact-SHA 公共闭环；当前唯一下一动作是 Task 5 三路线 bake-off，不接生产媒体。
 
-Task 5 已按 RQ-122 完成 official/relay 广筛和 HyperFrames 隔离 smoke：Wan 3.0 official access 已获用户 UI
-证据，Grok 3 relay 存在但专用 schema 待补；HyperFrames raw renderer 条件通过、默认 MP4 编码门拒绝。当前只
-进入 Wan 3.0 官方 endpoint/region/Key presence body-free preflight；仍无外部视频调用或 production media。
+Task 5 已按 RQ-122 完成 official/relay 广筛和 HyperFrames 隔离 smoke；Wan 3.0 与 Dragon/Veo 各完成一个
+有界真实负面样本，external video calls `2`、production media `0`。Veo prompt 未充分遵守 official motion-only
+guidance，故不能外推 Provider ceiling。当前只先提交/公共关闭 Veo audit；随后 no-paid-call C 线证明分层/
+mask/inpaint、整幕 motion、source/seam 与维护成本，不合格时恢复一次校正 A comparator。
 
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1

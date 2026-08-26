@@ -4315,3 +4315,22 @@
 - Task 4 exact-SHA 公共闭环确认 planned ledger、审计器、前端 bundle 和既有 PostgreSQL/Linux 门可在同一 SHA
   重建；Task 5 才允许进入真实候选横评，不提前上传母图或读取 relay/provider Key。
 - Task 5 官方资料复核得到三个可用但层级不同的候选：Veo 3.1 的 first/last API 控制明确，Luma 当前 API 有 loop/keyframes，Wan 2.7 支持 first/last/continuation 但区域绑定；Seedance/中转目录暂列 catalog-only，不把 slug、价格或 `official` 后缀当作 provider capability 证据。
+
+## 2026-08-26：Dragon/Veo 样本、motion prompt 与 RQ-125 纠偏
+
+- Dragon/Veo 仅创建一个 task；控制台记录成功/100%/162s。公开 `/content` 对同一成功 task 返回 403，query
+  response 的 `result.data[0].url` 才可下载；脚本最初把下载失败覆盖为 task failed，是 transport 观察缺陷，
+  不是模型失败。恢复下载 `post_attempts=0`，未重复生成。
+- raw output 为 1920×1080/24fps/8s/H.264 High 4:4:4/yuv444p/no-audio，254,156,130 B，SHA
+  `b707bb1...fa913`；常见 Windows 播放器不支持 yuv444p。research-only yuv420p preview 能播放但仍 9.6MB，
+  转码不能修复 source/seam/motion。
+- source→first `0.587962`；seam DSSIM `0.161631`，adjacent p95 `0.009446`、允许值 `0.03`。left/center/right
+  first→4s SSIM 为 `0.793970/0.879543/0.884153`。左 Rift/道路/水晶/右星图较 Wan 明显，但其余主要层仍
+  冻结或只有亮度纹理变化，整幕节奏像少数焦点轮流表演。
+- Dragon 专用文档复核确认 `image_urls` 首帧与 `metadata.lastFrame` 尾帧字段正确；参数名不是根因。更关键的
+  prompt Bad Case 是 1662-byte brief 重述源图并同时使用 `subtle/slow/restrained/gently/almost imperceptibly/
+  extremely slow`。Google official I2V best practice 建议源图已给场景/风格时 prompt motion only，故本样本
+  没有充分代表 Veo 上限。
+- RQ-125 的裁决是 sample reject/provider open：不再用当前同图首尾/密集保守 brief 换模型抽卡；先做无付费
+  C proof，证明层分离、整幕 motion coverage、source/seam 和维护成本。C proof 不佳则恢复一次短 motion-only、
+  首帧控制 + deterministic seam 的 A comparator。该纠偏使混合路线更可控，但不把 A 线降为永久备胎。

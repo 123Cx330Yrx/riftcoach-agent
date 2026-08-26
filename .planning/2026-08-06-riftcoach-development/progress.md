@@ -4509,3 +4509,14 @@
 - `69fc4ab/32876134114` 的 pytest、真实 PostgreSQL migrations/control-plane 与 Linux package smoke 三 job 全绿。
 - Wan sample 正式 rejected；external video calls 保持 1，production media 0。
 - 下一动作：Dragon/Veo A2 secure local runner 单次调用。
+
+### 2026-08-26：Dragon/Veo A2 单样本完成并拒绝
+
+- secure local runner 只执行一次 POST；Dragon 控制台 task 成功/100%/162s，Key 不落盘，外部视频调用累计 2。
+- `/content` 对成功 task 返回 403；从同一 query response 的 `result.data[0].url` 恢复 raw output，下载恢复
+  `post_attempts=0`。原始文件/兼容预览/抽帧/log 全部只在 research scratch。
+- raw 1920×1080/24fps/8s/H.264 yuv444p/no-audio/254,156,130 B；source→first `0.587962`，seam DSSIM
+  `0.161631 > 0.03`，人工全幕运动分布失败。样本 rejected，production media 仍 0。
+- RQ-125 又修正路线：字段映射正确，但当前 prompt 过密且多处主动压低 motion，没有充分遵守 motion-only
+  best practice；不把 sample rejection 外推为 Provider/A 线 ceiling。唯一下一动作是本负面审计独立公共门；
+  随后优先 no-paid-call C proof，并保留校正 A comparator。

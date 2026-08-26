@@ -2270,3 +2270,14 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - `52def9c`/`d58ba15`、Actions `32841900909` 三 job 全绿，媒体审计器/预算门公共关闭；`32841579832` 的 ffprobe
   缺失失败作为环境 Bad Case 保留，CI 只补安装 ffmpeg。
 - 下一裁决面只限 Task 5 三路线 bake-off；没有 adopted asset 前，不把模型/skill/relay 变成生产依赖。
+
+## 2026-08-26：Task 5 Wan/Veo 样本与 RQ-125 裁决
+
+- Wan 与 Dragon/Veo 各执行一个有界真实样本，均因 source/seam/full-scene motion 等硬门 rejected；external
+  video calls 为 2，production media 为 0。Veo raw output 另因 yuv444p/254MB/预算拒绝，兼容转码不改变裁决。
+- Dragon `metadata.lastFrame` 字段经专用文档复核正确；`/content` 对成功 task 403 是 transport Bad Case，
+  query result URL 已恢复同一 output，没有第二 POST。
+- 当前冻结 prompt 重述源图并用多个 subtle/slow/restrained 词，未充分遵守 Google official motion-only I2V
+  guidance。因此裁决是 sample reject/provider open，禁止把负面样本冒充模型上限。
+- C 线优先做 no-paid-call layer/mask/inpaint + deterministic frame-clock proof；只有自然整幕 motion、source/seam
+  与维护成本过门才采用。失败时重开一次短 motion-only、首帧控制 + deterministic seam 的 A comparator。

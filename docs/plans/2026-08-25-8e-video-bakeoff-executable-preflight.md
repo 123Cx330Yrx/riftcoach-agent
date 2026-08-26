@@ -64,7 +64,10 @@
    接入 RiftCoach runtime。
 
 执行结果：A1 已由 `2026-08-26-8e-video-bakeoff-wan3-sample-audit.md` 以单次有效调用完成并 rejected；不重抽。
-当前 handoff 严格进入 A2 Dragon/Veo。
+A2 又由 `2026-08-26-8e-video-bakeoff-dragon-veo-sample-audit.md` 以单次 POST 完成并 rejected；Dragon
+`/content` 403 通过同一 task query result URL 恢复，没有第二次生成。RQ-125 明确：本样本 prompt 未充分
+遵守 motion-only guidance，故样本拒绝不等于 Provider/A 线永久拒绝。当前 handoff 先关闭 Veo audit 公共门，
+再进入 no-paid-call C proof；proof 不合格时恢复一次校正 A comparator。
 
 ## 5. Account 不得丢失的同 Task 5 后半段
 

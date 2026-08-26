@@ -1,10 +1,10 @@
 # 8E Portal Motion Polish 学习与工程证据
 
 - 检查点：`8e-productization / portal-motion-polish`
-- 状态：设计门、runtime Tasks 1–4 均 exact-SHA 公共闭环；Task 5 已完成 relay/official 广筛与 HyperFrames
-  no-telemetry 隔离 spike，尚无视频模型调用或 production media
+- 状态：设计门、runtime Tasks 1–4 均 exact-SHA 公共闭环；Task 5 已完成 relay/official 广筛、HyperFrames
+  no-telemetry 隔离 spike和 Wan/Veo 各一个真实负面样本；external video calls `2`，production media `0`
 - 决策：ADR-0068
-- 需求：RQ-108 至 RQ-120
+- 需求：RQ-108 至 RQ-125
 - 视频候选审计：`docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md`（RQ-119）
 
 ## 1. 问题与原理
@@ -140,6 +140,17 @@ source→first `0.860852`、seam DSSIM `0.097587`、1918×1080/30fps、BT.709 me
 人工 coherent full-frame motion 全部未过门，因此 rejected 且不重抽。重要学习点是：pixel change 不等于有
 方向的全局运动；相同首尾图和高密度保真约束可能把闭源 I2V 引向低价值呼吸/纹理变化。下一对照为 Veo。
 该负面审计已由 `69fc4ab/32876134114` 完成 exact-SHA 三 job 公共闭环。
+
+Dragon/Veo A2 随后只创建一个成功 task。raw output 为 1920×1080/24fps/8s/H.264 yuv444p/no-audio，SHA
+`b707bb1...fa913`，但 source→first `0.587962`、seam DSSIM `0.161631`、254MB、播放器兼容与整幕 motion
+distribution 均失败。`/content` 对成功 task 返回 403，query 的 result URL 可恢复，证明 transport contract
+偏差不能误写成模型失败；yuv420p preview 只解决播放，不改变质量裁决。
+
+RQ-125 的关键教学不是“生成模型不行”，而是“样本失败与能力上限不同”。本次 lastFrame 字段映射正确，但
+prompt 既重述源图又用多个 subtle/slow/restrained 词；这没有充分遵守官方 motion-only I2V guidance。所以下一
+步先用 C 线把 scene graph 显式化：结构层锁 source，生成模型只制作有机 plates，frame clock 锁相位/seam。
+这是优先 proof，不是不可逆架构采用；若 layer/inpaint、自然度或维护成本不合格，恢复一次短 motion-only、
+首帧控制 + deterministic seam 的 A comparator。
 
 ## 6. 运行手册（设计阶段）
 
