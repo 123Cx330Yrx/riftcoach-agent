@@ -2770,7 +2770,7 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - Vidu Q3 Pro 首个 task 已 one POST/queued 160s 后 generic failed/100%，无 output；quality unknown、不换模型。
   source URL 200/Range 206，local create/auth 正常；corrected Veo/Vidu 两个 first-only task 在同 relay 同形失败。
   external video calls 累计 `4`，production media `0`。
-- RQ-128 下只准入一个 Vidu minimal-request 假设：保持 model/source/prompt/first-only/8s/1080p/audio=false，
-  删除可选 aspect_ratio/seed；runner SHA `503a39...17b4`。若仍 generic failed，停止 API/model 切换并升级到
-  Dragon relay/upstream/first-only channel 诊断。
-- `NEXT`：先提交/公共关闭 Vidu failure/minimal preflight；exact-SHA 三 job 全绿后执行一次 minimal Vidu task。
+- 创浪云 Studio 登录态只读审计证明 Vidu Q3 Pro 原生 `首帧生视频`、8s/1080p/16:9，但音频固定开启；提示词
+  增强已关闭，预计 5.28 额度并获用户确认。RQ-128 下唯一重试改为 Studio-contract：删除 seed、audio=true，
+  其余保持；runner SHA `7f6d2e...0011`。若仍 generic failed，停止 API/model 切换并升级 relay/upstream 诊断。
+- `NEXT`：更新并公共关闭 Studio-contract preflight；exact-SHA 三 job 全绿后执行一次 Vidu task，成功后本地去音轨。

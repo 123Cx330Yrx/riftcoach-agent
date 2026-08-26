@@ -3331,5 +3331,7 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `LIVE-FAILED`：Vidu one POST queued 160s 后 generic failed，无 output/quality unknown；calls 4。
 - `FAULT-TREE`：source URL、auth/create、model ID/core schema 正常；两个不同模型 first-only 在同 relay 同形失败，
   优先 request/relay/upstream，不评价方法。
-- `NEXT`：只执行一次删除 optional aspect_ratio/seed 的 minimal Vidu request。若仍 generic failed，停止换模型/
-  API retry，转 Dragon task-id/official transport 诊断。
+- `STUDIO-EVIDENCE`：登录态 UI 证明 Vidu first-only/8s/1080p/16:9，但 audio 固定 true；提示词增强已关闭，
+  预计 5.28 并获用户确认。UI 上传 chooser 连接失败，未形成任务或扣费。
+- `NEXT`：只执行一次 Studio-contract Vidu request：删除 seed、audio=true，其他变量不变。若仍 generic failed，
+  停止换模型/API retry，转 Dragon task-id/official transport 诊断。

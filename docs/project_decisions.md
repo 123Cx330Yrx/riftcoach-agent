@@ -2299,6 +2299,6 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   method。无 output 不评模型质量；单个 Bad Case 不自动否定路线。
 - Vidu 是保持 transport/source/motion/first-only、只改变 schema/model 的 comparator。它若 generic failed，下一步
   是 relay/request audit；它若 completed 才进入 visual gate。Veο 和 first-only 方法当前未被拒绝。
-- Vidu 首个 task 后续也 generic failed。source URL 与 core schema 正常；只允许一次删除 optional aspect_ratio/
-  seed 的 minimal request 作为 request-overconstraint 假设。若仍失败，停止模型/API 切换，转 relay/upstream/
-  official transport 诊断。
+- Vidu 首个 task 后续也 generic failed。Studio 登录态证明 first-only/8s/1080p/16:9、音频固定 true；只允许
+  一次删除 seed、audio=true 的 Studio-contract request 作为参数映射假设。若仍失败，停止模型/API 切换，
+  转 relay/upstream/official transport 诊断。

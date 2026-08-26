@@ -1588,5 +1588,5 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [requirement-recorded] RQ-128：失败先走 local→request→transport→successful-output quality→cross-sample method
     五层 fault tree；无 output 不评质量。Vidu 是控制变量 comparator，不代表 Veo/方法被放弃。
   - [completed-live-failed] Vidu first-only one POST queued 160s 后 generic failed；无 output/quality unknown，calls 4。
-  - [completed-local-preflight] 只删除 optional aspect_ratio/seed 的 Vidu minimal request 已冻结；下一动作是 public
-    gate。若 minimal 仍 generic failed，停止换模型/API retry，进入 relay/upstream/official-transport diagnosis。
+  - [completed-local-preflight] Studio 登录态证明 Vidu first-only/8s/1080p/16:9 可用但 audio 固定 true；唯一重试
+    改为删除 seed、audio=true、其余不变，预计 5.28 已确认。若仍 generic failed，停止 API/model retry。

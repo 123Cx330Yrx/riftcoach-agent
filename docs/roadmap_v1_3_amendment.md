@@ -652,7 +652,8 @@ C proof 已由 `557dac1/32923151197` 公共关闭；corrected A 的 first-only/n
 当前先过 executable preflight exact-SHA，不提前调用。
 RQ-128 要求 failure 按 local/request/transport/output-quality/method 分层；corrected Veo 无 output 不构成质量或
 方法否决。Vidu 只作 model/schema 控制变量；其首个 task 也 generic failed 后，只准一次删除 optional
-aspect_ratio/seed 的 minimal request。仍失败则停止换模型/API retry 并审计 relay task-id/official transport。
+seed、audio=true 的 Studio-contract request；UI 已证明 first-only/8s/1080p/16:9 与固定音频。仍失败则停止
+换模型/API retry 并审计 relay task-id/official transport。
 
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
 Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入

@@ -4591,6 +4591,7 @@
 - Vidu task `task_yaHF...KF90` one POST，queued 160s 后 failed/100%，控制台同样只给 `task processing failed`；
   无 output/quality unknown，external calls 4。
 - source HEAD 200 image/png/2,268,033B、Range 206；local auth/create、model ID 与核心 schema 正常。
-- 共享证据把 fault domain 收敛到 first-only request/Dragon relay/upstream。只允许一次最小请求：删除 optional
-  aspect_ratio/seed，其他变量不变；runner SHA `503a39...17b4` parse pass。
-- minimal 再 generic failed 时停止模型/API 切换，转平台 task-id/official transport 诊断。
+- Studio 登录态只读审计证明 Vidu Q3 Pro/首帧/8s/1080p/16:9/5.28 额度存在，但 `生成音频` 固定开启；提示词
+  增强可关闭且已关闭。隐藏 input 上传 chooser 两次连接失败，未上传/生成/扣费，不继续死磕 UI。
+- 唯一 API 重试改为 Studio-contract：删除 seed、audio=true、保留 aspect_ratio；runner SHA `7f6d2e...0011`。
+  若再 generic failed，停止模型/API 切换，转平台 task-id/official transport 诊断。

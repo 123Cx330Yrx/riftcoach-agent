@@ -21,16 +21,23 @@
 Dragon error 文档把 500/502 归为 channel/upstream anomaly 并建议稍后重试，但 task log 没暴露本次 HTTP code。
 因此不能直接断言 transient；只允许一个 request-minimization 假设，不继续换模型。
 
-## 3. Minimal Vidu 重试的单一假设
+## 3. Studio-contract Vidu 重试的单一假设
 
-保持：Dragon transport、`viduq3-pro`、source、prompt、one image/first-only、8s、1080p、audio false。
+用户登录并绑定同一 NewAPI Key 后，创浪云 Studio 的 Vidu Q3 Pro 表单可见并证明：
 
-删除：可选 `aspect_ratio=16:9` 与 `seed=127`。理由是 Vidu 文档写明图生视频比例通常由图片决定；最小官方
-图生请求不要求这两个字段。该重试只检验“可选字段/over-specified request 是否触发 relay/upstream 失败”，
-不是盲重抽质量。
+- 原生模式含 `首帧生视频`，附件正好 1 张；
+- 可选择 8 秒、1080p、16:9；预计消耗 `5.28` 额度；
+- `生成音频` 是固定参数而非 toggle；`提示词增强` 可关闭，当前已确认关闭；
+- 因此 Studio 实际采用的 Vidu first-only 组合与前两个 API task 的关键差异是 audio 固定 true。
+
+保持：Dragon transport、`viduq3-pro`、source、prompt、one image/first-only、8s、1080p、16:9。
+
+改变：删除可选 `seed=127`；把 `audio=false` 改为 Studio 固定的 `audio=true`；保留 `aspect_ratio=16:9`。
+该重试只检验“API audio-off/seed 组合是否偏离 relay 当前 Studio contract”，不是盲重抽质量。下载成功后音轨
+在本地用 FFmpeg 移除，不进入 runtime。
 
 - prompt SHA：`a38bdcecaf938f65cceaf56ba925491ddd72c7fd4df2a6a83f3eef4965e7bb72`；
-- minimal runner SHA：`503a3904fb81ba7c9b6174102118cb8c22168975344ad51cdba0e22694b817b4`；parse pass；
-- one POST、same task、no retry/top-up/metadata/payload/callback/off-peak；
+- Studio-contract runner SHA：`7f6d2ef42793d97a31374784c99be1d510fb830ea2f91896f8959ad80e950011`；parse pass；
+- one POST、same task、no retry/top-up/seed/metadata/payload/callback/off-peak；用户已确认 5.28 额度；
 - 若 completed：进入 RQ-127 visual gate；若 generic failed：停止 API/model 切换，fault domain 提升为
   Dragon relay/upstream/first-only channel，需要平台侧 task-id 诊断或改用官方 transport；不再靠删除更多字段抽卡。
