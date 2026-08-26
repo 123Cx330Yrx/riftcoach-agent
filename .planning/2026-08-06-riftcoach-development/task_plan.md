@@ -1578,3 +1578,6 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [next] C proof implementation/result 独立 commit/push/exact-SHA；公共全绿后进入一次 RQ-126 corrected Veo A comparator。
   - [requirement-recorded] RQ-127：corrected Veo 必须是整幕 breathing、medium-to-strong/evident/cool，允许锚定
     composition 的小幅 camera parallax；禁止三主体轮流、静态大区、HUD 与 subtle/imperceptible direction。
+  - [completed-public-rejected] C proof/fix `557dac1` / Actions `32923151197` 三 job 全绿；negative proof 正式关闭。
+  - [completed-local-preflight] corrected Veo first-only/no-lastFrame prompt/negative/runner digests 与 visual/one-POST
+    边界已冻结；下一动作是 preflight 独立 exact-SHA，绿灯后才弹 secure Key runner。

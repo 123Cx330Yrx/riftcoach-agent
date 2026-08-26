@@ -648,6 +648,8 @@ source/seam/full-scene 门，external calls `2`、production media `0`。RQ-125 
 C proof 实作虽通过 clock/seam/grid/bytes，但实际仍是母图上的 HUD 覆层；RQ-126 已拒绝并恢复一次校正 A
 comparator，禁止用机械指标绕过视觉失败。RQ-127 又把 comparator 固定为 near/mid/far、left/center/right
 同时持续 breathing、medium-to-strong/evident/cool，并允许构图锚定小幅 camera parallax。
+C proof 已由 `557dac1/32923151197` 公共关闭；corrected A 的 first-only/no-lastFrame 与 one-POST 三 digest 已冻结，
+当前先过 executable preflight exact-SHA，不提前调用。
 
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
 Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入

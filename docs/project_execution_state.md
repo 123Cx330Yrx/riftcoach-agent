@@ -2753,3 +2753,9 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - RQ-127 进一步固定这次 comparator 的目标不是“多几个元素动”，而是全幕 breathing：near/mid/far 体积空气、
   大尺度环境光、建筑/地面/反射、道路、Rift、水晶与整片星空同时持续运动；允许构图锚定的小幅 camera
   float/parallax cycle，强度 medium-to-strong / clearly perceptible / cool，不再完全 locked/pixel-stable。
+- C proof implementation/fix `557dac14f62ae0234be949bf6a38e9126cd8cbf0` / Actions `32923151197` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success；首个 `e215f7e/32922688081`
+  只因 Windows-only test fixture 在 Linux 失败，已修复并保留为跨平台 Bad Case。负面 proof 正式关闭。
+- corrected A preflight 已本地冻结：first-only/no lastFrame、positive/negative/runner 三 SHA、one POST、motion-only
+  与 RQ-127 全幕强度门；尚未弹窗、读取 Key 或创建 task。
+- `NEXT`：先提交/公共关闭本 preflight；exact-SHA 三 job 全绿后启动 secure Key runner，一次 corrected Veo task。

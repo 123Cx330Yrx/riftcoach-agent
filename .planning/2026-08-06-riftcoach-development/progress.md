@@ -4565,3 +4565,12 @@
   `1869 passed, 145 skipped` 后因新 proof fixture 无条件创建 Windows `hyperframes.cmd` 在 Linux 失败；实现本身
   未执行外部工具。修复按 `os.name` 创建 executable/browser fixture，并让 wrapper 接受无后缀 headless-shell；
   当前必须用新 exact-SHA 三 job 重新闭环，绿灯前不调用 corrected Veo。
+
+### 2026-08-26：C proof 公共关闭与 corrected A preflight
+
+- portable fix `557dac1` / Actions `32923151197` 的 pytest、PostgreSQL、packaging 三 job 全绿；负面 proof/RQ-127
+  正式公共关闭。
+- corrected positive 819 B/SHA `b02264...8e29`，negative 357 B/SHA `931f0b...a348d`，runner 7,136 B/SHA
+  `cee5ac...ba850`；PowerShell parse pass。
+- first-only/no lastFrame、one POST/same task/no retry、motion-only/full-scene/evident/cool 与 Key/body-free 边界
+  已冻结。下一动作是 preflight 独立 public gate；尚未弹窗或创建 task。

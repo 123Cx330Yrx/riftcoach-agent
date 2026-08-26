@@ -666,6 +666,8 @@ mask/inpaint、整幕 motion、source/seam 与维护成本，不合格时恢复�
 节点 HUD 覆层视觉，裁决 `proof_fail_reopen_corrected_a`。当前先公共关闭负面证据，再执行一次 first-frame-only
 短 motion-only 的校正 A comparator。RQ-127 固定该对照为 medium-to-strong、clearly perceptible 的整幕
 breathing，并允许构图锚定小幅 camera parallax；不再以三主体轮流或过轻 motion 冒充 cool 动态。
+C proof portable fix 已由 `557dac1/32923151197` 三 job 公共关闭；corrected A 的 first-only/no-lastFrame、
+motion-only prompt/negative/runner digests 已本地冻结。当前先过独立 executable preflight，绿灯后才创建一次 task。
 
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1

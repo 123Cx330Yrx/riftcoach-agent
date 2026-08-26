@@ -3302,3 +3302,11 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `CURRENT`：corrected Veo 使用 medium-to-strong、clearly perceptible、dramatic/cool motion-only direction；
   允许构图锚定的小幅 camera float/parallax，禁止 static large regions、焦点轮流、HUD 与过轻动作。MotionSites/
   B站只作观感 reference，不复制资产/Prompt/源码。
+
+## 2026-08-26：C proof 公共关闭与 corrected A executable preflight
+
+- `PUBLIC-CI`：portable fix `557dac1/32923151197` 三 job 全绿；`e215f7e/32922688081` 的 Linux fixture failure
+  保留，不把首个红 run 隐藏。
+- `PREFLIGHT`：冻结 first-only/no lastFrame、819B positive、357B negative、one-POST runner 三 digest，PowerShell
+  parse pass；motion-only 与 RQ-127 全幕强度门一致。
+- `NEXT`：preflight 独立 exact-SHA；绿灯后才启动 secure Key runner 创建一次 corrected Veo task。
