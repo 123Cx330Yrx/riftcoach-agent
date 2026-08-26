@@ -2767,3 +2767,10 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   unknown，不能否定 Veo/first-only/生成路线。Vidu 只改变 model/schema，保持 transport/source/motion/first-only；
   若也 generic failed，下一步审计 relay/request 而不是继续换模型。
 - `NEXT`：先提交/公共关闭 Veo failure + Vidu preflight；exact-SHA 三 job 全绿后启动一次 Vidu Q3 Pro secure runner。
+- Vidu Q3 Pro 首个 task 已 one POST/queued 160s 后 generic failed/100%，无 output；quality unknown、不换模型。
+  source URL 200/Range 206，local create/auth 正常；corrected Veo/Vidu 两个 first-only task 在同 relay 同形失败。
+  external video calls 累计 `4`，production media `0`。
+- RQ-128 下只准入一个 Vidu minimal-request 假设：保持 model/source/prompt/first-only/8s/1080p/audio=false，
+  删除可选 aspect_ratio/seed；runner SHA `503a39...17b4`。若仍 generic failed，停止 API/model 切换并升级到
+  Dragon relay/upstream/first-only channel 诊断。
+- `NEXT`：先提交/公共关闭 Vidu failure/minimal preflight；exact-SHA 三 job 全绿后执行一次 minimal Vidu task。

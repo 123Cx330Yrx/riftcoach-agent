@@ -166,6 +166,10 @@ RQ-128 进一步防止“切太快”：Vidu 不是路线切换，而是保持 t
 model/schema 的控制实验。只有 successful output 才进质量门；若 Vidu 也只给 generic failure，必须回查
 request/relay，而不是继续在模型名单上向后跳。
 
+Vidu 首个控制实验随后也无 output/generic failed。source URL、auth/create 和核心 schema 均正常，因此只留下
+一个最小请求假设：删除 optional aspect_ratio/seed；其他变量全部保持。它若仍失败，就停止 API 抽卡并请求
+relay task-id 诊断或切到官方 transport，而不是继续把模型名当调参旋钮。
+
 ## 6. 运行手册（设计阶段）
 
 1. 生成素材前核对采用账本，确认 source 和 candidate 状态；

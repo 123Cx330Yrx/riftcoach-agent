@@ -670,7 +670,8 @@ C proof portable fix 已由 `557dac1/32923151197` 三 job 公共关闭；correct
 motion-only prompt/negative/runner digests 已本地冻结。当前先过独立 executable preflight，绿灯后才创建一次 task。
 RQ-128 又固定故障归因五层门：corrected Veo 无 output，request/relay/upstream unresolved、quality unknown；Vidu
 只是保持 transport/source/motion/first-only 的 model/schema comparator，不是放弃 Veo/方法。Vidu 若也 generic
-failed，必须停下审计 relay/request，不继续换模型。
+failed，必须停下审计 relay/request，不继续换模型。Vidu 首个 task 随后同样 generic failed；当前只允许一次
+删除 optional aspect_ratio/seed 的 minimal request，仍失败则转 relay task-id/official transport 诊断。
 
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1

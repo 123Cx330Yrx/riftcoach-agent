@@ -3325,3 +3325,11 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   relay/upstream、successful-output quality、跨样本 method；无 output 时 quality unknown。
 - `CURRENT`：Vidu 是控制变量 comparator，不是放弃 Veo/first-only。若 Vidu 也 generic failed，停止换模型并
   审计 relay/request；只有明确修复或新可证伪假设才允许重试，避免 blind retry 与无界死磕。
+
+## 2026-08-26：Vidu generic failure 与 minimal request gate
+
+- `LIVE-FAILED`：Vidu one POST queued 160s 后 generic failed，无 output/quality unknown；calls 4。
+- `FAULT-TREE`：source URL、auth/create、model ID/core schema 正常；两个不同模型 first-only 在同 relay 同形失败，
+  优先 request/relay/upstream，不评价方法。
+- `NEXT`：只执行一次删除 optional aspect_ratio/seed 的 minimal Vidu request。若仍 generic failed，停止换模型/
+  API retry，转 Dragon task-id/official transport 诊断。

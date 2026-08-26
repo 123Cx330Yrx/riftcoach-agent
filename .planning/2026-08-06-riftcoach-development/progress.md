@@ -4585,3 +4585,12 @@
 - 下一动作是 failure + Vidu preflight 独立 public gate；绿灯前不弹 Vidu Key 窗口。
 - RQ-128 纠正 failure adjudication：corrected Veo 无 output，fault domain 保持 request/relay/upstream unresolved；
   Vidu 只改变 model/schema 并保持其余变量。如果 Vidu 也 generic failed，必须停下审计 relay/request，不能再换模型。
+
+### 2026-08-26：Vidu generic failure 与 minimal request hypothesis
+
+- Vidu task `task_yaHF...KF90` one POST，queued 160s 后 failed/100%，控制台同样只给 `task processing failed`；
+  无 output/quality unknown，external calls 4。
+- source HEAD 200 image/png/2,268,033B、Range 206；local auth/create、model ID 与核心 schema 正常。
+- 共享证据把 fault domain 收敛到 first-only request/Dragon relay/upstream。只允许一次最小请求：删除 optional
+  aspect_ratio/seed，其他变量不变；runner SHA `503a39...17b4` parse pass。
+- minimal 再 generic failed 时停止模型/API 切换，转平台 task-id/official transport 诊断。
