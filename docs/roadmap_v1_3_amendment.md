@@ -671,3 +671,9 @@ generic failed；no output，故 output quality 与 method 仍 unknown/open。�
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
 Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入
 教学、ADR/设计、素材采用门和 TDD；8E coverage 继续 planned。
+
+RQ-133：用户认可 Seedance 样本三个主体运动方向，但指出静区像雾层覆盖；当前尝试真正的视频编辑而非重抽。
+Dragon 专用页面已确认公共名 `seedance-2-5`、`video_operation=edit`、`video_with_roles` 的 `reference_video`、
+`duration=-1` 与 `aspect_ratio=adaptive`。Studio 主编排器虽显示视频参考，实际上传 input 只接受图片 MIME，故
+不把它冒充 edit。v6 edit prompt/runner 只在成功样本上补道路、地面反射、建筑缝、远景空气和星图静区，先
+exact-SHA 公共门，再按约 `$12.0191` 估算 one POST；失败不盲重试。

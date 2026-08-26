@@ -691,3 +691,8 @@ first=last 或方法质量。`$19.712` 已全额退款，最终钱包 `$67.01`�
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1
 称为最终电影化成品。
+
+用户认可 Seedance 样本三大区运动方向，但指出静区像雾层覆盖，按 RQ-133 选择基于成功成片的真正 video edit。
+Dragon 专用文档确认 `seedance-2-5` 的 `video_operation=edit`、`video_with_roles(reference_video)`、`duration=-1`、
+`aspect_ratio=adaptive`；Studio 主编排器视频参考 input 实测仅接受图片 MIME，故 edit 走文档化 API。v6 edit
+prompt/runner 已冻结，先过 exact-SHA 公共门并披露约 `$12.0191` 估算，再 one POST；不混用首尾帧、不自动重试。

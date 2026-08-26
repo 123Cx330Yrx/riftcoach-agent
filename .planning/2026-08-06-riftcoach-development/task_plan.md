@@ -1624,3 +1624,9 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [prepared] Seedance 2.5 first+last/8s/720p/no-audio/v5/2 images；price button `--` vs catalog `$11.9568`，待用户确认。
   - [completed-pre-task-client-failure] 用户确认后 submit 返回 ratio TaskTypeConstraint；no task/no charge/calls unchanged。
   - [fixed-preflight] ratio `16:9` → `adaptive`，等待用户重新 2/2 与 public gate；其余变量不变。
+  - [completed-live-candidate] Seedance task `task_w6...ULvW` NewAPI success；Studio result fetch 403 由 GET-only
+    recovery 下载，11.9566、calls 9。raw candidate source/seam/720p 不过门，等待用户视觉审片。
+  - [requirement-recorded] RQ-133：用户认可三主体方向，授权基于成功成片的 Seedance 2.5 文档化 video edit，优先补强静区。
+  - [prepared-local] v6 edit prompt/runner；`video_operation=edit`、`video_with_roles(reference_video)`、`duration=-1`、
+    `adaptive`、720p、audio false；Studio 视频参考 input 仅图片 MIME，故走 API。
+  - [next] edit preflight 独立 public gate；通过并披露约 `$12.0191` 后 one POST/no retry。

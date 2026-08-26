@@ -4335,6 +4335,18 @@
   C proof，证明层分离、整幕 motion coverage、source/seam 和维护成本。C proof 不佳则恢复一次短 motion-only、
   首帧控制 + deterministic seam 的 A comparator。该纠偏使混合路线更可控，但不把 A 线降为永久备胎。
 
+## 2026-08-26：RQ-133 Seedance video edit
+
+- 用户认可 Seedance 样本的左 Rift/中心水晶/右能量方向，但观察到顶部建筑、道路、地面反射、远景空气主要由
+  一层雾带覆盖，要求保留已有动效并丰富静区。
+- Dragon 专用页 `#/model/video-seedance-2-5-generation` 明确公共模型名 `seedance-2-5`、上游
+  `doubao-seedance-2-5-260628`、`video_operation=edit`、`video_with_roles` 的 `reference_video`、编辑用
+  `duration=-1` 与 `aspect_ratio=adaptive`；同时说明最多 10 段视频参考。该证据消除了之前“只支持图片参考”的猜测。
+- Studio 主编排器的参考模式实际 input 仍只接受 image MIME，但这只是 UI 接缝；v6 runner 直接走文档化 API，先
+  GET 成功 task 的临时 result URL，再单次 edit POST。它只发视频给同一 Dragon relay，不把签名 URL 写盘。
+- v6 prompt 用 0–2/2–4/4–6/6–8 时间轴，将新增运动绑定到道路、地面、反射、建筑缝、云层、星图和材质遮挡，
+  明确不是 HUD/雾幕 overlay。费用按 8.041667×$1.4946 估算约 `$12.0191`，编辑最低时长仍需以实际账单确认。
+
 ## 2026-08-26：RQ-130 Paid-call content preflight
 
 - Dragon common log 精确解释 refined 403：当时余额 `$15.008`、8 秒 Veo 预扣 `$19.712`；同一时间四条

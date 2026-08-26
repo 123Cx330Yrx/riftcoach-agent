@@ -4642,3 +4642,9 @@
   Seedance primary 已填 v5/2 images；按钮 `--`，catalog 预计 11.9568，未生成。
 - Seedance 首次 submit 在 task 前返回明确 ratio constraint；费用 0。Studio `adaptive` 是可证伪修复，已选择并
   恢复 prompt/其它参数，等待用户重新 2/2；若再 ratio error 即停止该 Studio mapping。
+- adaptive task `task_w6...ULvW` 137s/100% NewAPI success；Studio 403 仅 result fetch，GET-only 恢复 output。
+  SHA `acf68ba6...d56c4`，720p/24fps/8.041667s/5.43MB/no-audio。source-first 0.864923、first-mid 0.852572、
+  seam diff 0.060443；三大区均运动、镜头初审稳定。等待用户视觉签方向，不 adopted/不重抽。
+- 用户认可当前方向但要求静区更丰富；Dragon 专用 Seedance 文档补齐了真正 edit schema。v6 edit prompt 1739B/SHA
+  `68c1aa10...1728`，runner `6b5c6bef...9901e` parse 0；source task GET→临时 result URL→edit POST→poll/download，
+  不保存签名 URL，预计约 12.0191。尚未上传/POST，待 public gate。

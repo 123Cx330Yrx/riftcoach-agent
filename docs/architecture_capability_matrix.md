@@ -92,6 +92,15 @@ v5 preflight 已由 `d57b026/32951125621` 三 job 公共关闭；唯一 task `ta
 无 output，`$19.712` 全额退款。Q10 当前 calls 6、production media 0；按 RQ-128 不评价 prompt/model/method，
 先关闭 failure/terminal incident audit。
 
+2026-08-26 Seedance 补充：Veo exact v1 后续也失败，当前通道暂停；Seedance 2.5 `adaptive` first+last task
+`task_w6...ULvW` 成功并由 GET-only recovery 下载。Q10 当前 calls 9、production media 0；候选镜头/三大区运动方向
+较好，但 source-first 0.864923、seam difference 0.060443、720p 未过门，等待用户 visual review。
+
+RQ-133：用户认可方向但要求静区更丰富；Dragon 专用 Seedance 页已确认 `video_operation=edit`、
+`video_with_roles(reference_video)`、`duration=-1`、`aspect_ratio=adaptive`。v6 edit runner/prompt 已冻结，尚未
+付费调用；Studio 的视频参考 input 只收图片 MIME，故不冒充 Studio 编辑。编辑成功仍需人工静区运动、source/seam/
+codec 门，不直接 adopted。
+
 以下项目不是新增主阶段，而是进入对应阶段前必须具备的验收项：
 
 1. 阶段 5C：建立路由评测集，覆盖正例、负例、歧义、未支持请求和拒绝原因；

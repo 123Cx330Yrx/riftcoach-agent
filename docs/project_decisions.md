@@ -2334,3 +2334,12 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   exact v1 reproduction：若成功，支持运动包络过重；若失败，支持当前 Veo 通道变化。任何结果都不重试。
 - exact v1 也 generic failed，因此暂停当前 Veo 通道。Seedance 2.5 以 first+last + exact 8s 合同优先于
   Kling 10s 和 Grok first-only；但 Studio price `--` 必须与 catalog 预计 11.9568 一并披露后再获确认。
+- Seedance ratio `adaptive` 修复后任务成功；Studio 403 只在结果拉取层。GET-only recovery 证明不需重生成。
+  样本只升为 awaiting visual review candidate：三大区运动/camera lock promising，source identity/seam/720p 不过门。
+
+### Seedance video edit v6
+
+- 用户认可三主体运动方向但要求静区真实参与，选择基于成功成片的文档化编辑。
+- Dragon 专用文档确认 `seedance-2-5` + `video_operation=edit` + `video_with_roles(reference_video)`，编辑用
+  `duration=-1`/`aspect_ratio=adaptive`；Studio 主编排器视频参考 input 只接受图片 MIME，因此 edit 走 API。
+- v6 prompt/runner 已冻结，预计约 `$12.0191`；必须先 exact-SHA 公共门，one POST/no retry，失败不自动重抽。

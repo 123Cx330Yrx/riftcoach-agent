@@ -16,11 +16,12 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-26（exact v1 Studio task `task_v8g...PDW9` 也在 81 秒/100% generic failed/no output，19.712
-  全退；Veo 当前通道暂停。calls `8`、production media `0`。Seedance 2.5 因支持 first+last + exact 8s 成为下一
-  primary；Studio 已 readback 2 images/v5 prompt/8s/720p/no-audio/enhancement-off，但按钮费用显示 `--`，模型广场
-  推导预计 `$11.9568`。当前唯一下一动作是先公共关闭 v1 result/Seedance preflight，并由用户明确接受 price UI
-  mismatch 后才 one submit。）
+- 最后更新：2026-08-26（Seedance ratio client bug 已以 `adaptive` 修复并由 `c6143c1/32960467379` 三 job
+  公共关闭；有效 task `task_w6...ULvW` 137 秒/100% 成功、实际 `$11.9566`。Studio 结果下载 403 被 GET-only
+  recovery 从 `task.result.data[0].url` 恢复，post attempts 0。calls `9`、production media `0`。原片 camera lock/
+  三大区运动方向 promising，但 source→first `0.864923`、seam difference `0.060443`、720p 未过门。用户认可
+  方向，RQ-133 选择文档化 Seedance `video_operation=edit` 增强静区；当前唯一下一动作先公共关闭 edit preflight，
+  通过后只执行一次 edit task。）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2834,3 +2835,16 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   `ratio=16:9`，输出比例应跟随 first frame。task_id 无、费用 0、calls 仍 8；不是模型失败。
 - ratio 已修为 Studio `adaptive`，其余 Seedance/v5/8s/720p/no-audio/enhancement-off 不变；失败清空附件。
 - `NEXT`：用户重新上传同一 v2 两次至 2/2；本修复 exact-SHA public gate 后 readback 并执行同一已授权实验一次。
+- `c6143c1/32960467379` 三 job 全绿后，Seedance `adaptive` task `task_w6...ULvW` 有效创建并在 137s/100%
+  NewAPI 成功。Studio 随后的 result fetch 403 不是生成失败；GET-only recovery 使用同一 task result URL 成功下载，
+  无 POST/额外费用。实际扣 `$11.9566`；calls 9、production media 0。
+- output SHA `acf68ba6...d56c4`，720p/H.264/yuv420p/24fps/193f/8.041667s/no-audio。人工 camera lock 与三大区
+  simultaneous motion 初审通过；source fidelity `0.864923`、raw seam difference `0.060443`、720p 不过 production 门。
+- `NEXT`：用户先观看本地原片并裁决 motion direction；认可后单独进入 no-generation source/seam/rendition proof，
+  不认可则拒绝 sample。当前不重抽、不切模型、不接 runtime。
+- 用户随后认可三主体方向但指出静区像雾层覆盖，选择基于现有成片做 Seedance video edit。Dragon 专用文档确认
+  `seedance-2-5`、`video_operation=edit`、`video_with_roles(reference_video)`、`duration=-1`、`adaptive`；Studio
+  主编排器视频参考 input 实测仅接受图片 MIME，故不冒充 Studio 编辑。
+- v6 edit prompt SHA `68c1aa10...1728`、runner SHA `6b5c6bef...9901e`、source task `task_w6...ULvW`、output/status
+  唯一路径和 Key-last/no-retry 已冻结；编辑预计 `$12.0191`（8.041667 秒×$1.4946），但实际计费/最低时长待账单确认。
+- `NEXT`：独立提交/public gate；通过后向用户披露编辑费用，再 one POST。成功先审静区真实景内运动，失败不盲重试。
