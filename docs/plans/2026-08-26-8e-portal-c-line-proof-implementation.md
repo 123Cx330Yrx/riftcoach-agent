@@ -64,4 +64,3 @@
 2. Update the eight-dimensional walkthrough, adoption ledger, active plan, state, roadmap/amendment, capability matrix and requirement history only where the observed verdict changes execution.
 3. Commit the reproducible code/evidence separately, push, and wait for exact-SHA `pytest`, `postgres-migrations`, and `packaging-smoke` success.
 4. Only a passed hybrid proof may proceed to organic plate calls; a failed proof switches to the one corrected-A comparator defined in RQ-125.
-

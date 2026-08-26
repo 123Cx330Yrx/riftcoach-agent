@@ -88,4 +88,3 @@ check、raw snapshots/PNG render、FFmpeg probe 与视觉审查。
 本 proof 不进入 `web/src/assets/cinematic/`，不修改 runtime manifest，不实现 Account、Coach、Training、RQ-103
 或 Task 6，不调用视频 API，不创建/读取 Key，不购买 credits。Account 仍等 Portal 工艺胜出后按既定拓扑与
 五英雄逐位流程继续。
-
