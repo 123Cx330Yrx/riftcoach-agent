@@ -3278,3 +3278,10 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `BOUNDARY`：设计批未写 composition/renderer/tests、未生成媒体、未调用模型；校正 A comparator 仍是 C proof
   失败后的唯一回退。
 - `NEXT`：design 独立 exact-SHA 公共门；全绿后才开始 contract TDD。
+
+## 2026-08-26：C-line proof design exact-SHA 公共闭环
+
+- `PUBLIC-CI`：最终设计 `78ae6e3/32919447127` 三 job 全绿；`be75112` 仅因 EOF 空行 warning 被修订，不作
+  最终门。
+- `HANDOFF`：implementation 正式进入 strict contract → deterministic scene graph → isolated renderer；
+  不调用模型、不接 runtime，样片仍为 research-only。

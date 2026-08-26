@@ -1570,3 +1570,6 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
     coverage、deterministic clock/seam 和 A fallback gate，再做 research-only animatic；不调用新模型或接 runtime。
   - [completed-local-design] C proof design/implementation plan 已冻结：8 systems、research-only output、
     source/seam/grid coverage/manual gates 与三态 verdict；下一动作是独立 design exact-SHA 公共门，绿灯前不写 proof code。
+  - [completed-public-design] `78ae6e3` / Actions `32919447127` exact-SHA 三 job 全绿；design gate 正式关闭。
+  - [in-progress-implementation] 按 executing plan 执行 Tasks 1–3：contract red→green、deterministic scene graph、
+    isolated renderer wrapper；完成聚焦测试后进入 Task 4 research-only render/audit。

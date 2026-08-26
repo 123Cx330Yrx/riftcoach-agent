@@ -4535,3 +4535,9 @@
   以及 `pass / fail-reopen-A / inconclusive-layer-gate` 三态 verdict。
 - 计划只跟踪 composition/contract/renderer/tests；PNG/MP4/log/node_modules 全部留 repo 外，proof 前半程外部模型调用 0。
 - 下一动作：design commit/push/exact-SHA 三 job；成功后才 red→green 实现。
+
+### 2026-08-26：C-line proof design exact-SHA 公共闭环
+
+- 最终设计 SHA `78ae6e3875cee7ad02b2dbbb607ea7ff1d98a3d8` / Actions `32919447127` 的 pytest、
+  PostgreSQL、Linux packaging 三 job 全绿；前一 `be75112` 的 EOF 空行警告已由修订提交移除，不作为最终门。
+- design gate 正式关闭；implementation 进入 Tasks 1–3，外部模型调用继续 0，输出继续 repo-excluded。

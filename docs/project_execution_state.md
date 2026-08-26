@@ -2739,7 +2739,8 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - `NEXT`：C 线 no-paid-call proof 已按 RQ-125 授权进入。先建立一个 repo-excluded research scene graph 与
   deterministic animatic，证明所有大区持续参与、结构/source 锁定、帧时钟闭合和维护成本；在 proof 过门前
   不调用新视频模型、不采用 production media、不进入 Account/Task 6。校正 A comparator 保持条件 fallback。
-- C proof design 与 implementation plan 已本地冻结：8 个 motion systems、7.958333s/192 帧时钟、source/seam/
-  left-center-right/3×3 coverage/manual/budget 门、repo-excluded media 和三态 verdict；尚未写 composition/renderer。
-- `NEXT`：先独立提交/推送 C proof design 并取得 exact-SHA 三 job；公共绿灯后从 contract 红灯开始实现，
-  不在设计提交中偷跑媒体代码或新模型调用。
+- C proof design/plan `78ae6e3875cee7ad02b2dbbb607ea7ff1d98a3d8` / Actions `32919447127` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全部 completed/success；8 systems、192 帧时钟、
+  source/seam/region/grid/manual/budget 与三态 verdict 设计门正式关闭。
+- `NEXT`：C proof implementation 已获既有连续授权并进入 contract TDD。先完成 Task 1–3：strict contract、
+  deterministic scene graph、isolated renderer wrapper；本批不调用新模型、不接 runtime、不生成 production media。
