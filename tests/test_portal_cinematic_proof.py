@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -131,10 +132,10 @@ def test_renderer_dry_run_verifies_identities_and_safe_commands(tmp_path: Path) 
     package = hyperframes_root / "node_modules" / "hyperframes" / "package.json"
     package.parent.mkdir(parents=True)
     package.write_text(json.dumps({"version": "0.8.14"}), encoding="utf-8")
-    executable = hyperframes_root / "node_modules" / ".bin" / "hyperframes.cmd"
+    executable = hyperframes_root / "node_modules" / ".bin" / ("hyperframes.cmd" if os.name == "nt" else "hyperframes")
     executable.parent.mkdir(parents=True)
     executable.write_text("@echo off\r\n", encoding="utf-8")
-    browser = tmp_path / "chrome-headless-shell.exe"
+    browser = tmp_path / ("chrome-headless-shell.exe" if os.name == "nt" else "chrome-headless-shell")
     browser.write_bytes(b"browser")
     output = tmp_path / "out"
 
@@ -170,10 +171,10 @@ def test_renderer_rejects_repository_output_and_version_drift(tmp_path: Path) ->
     package = hyperframes_root / "node_modules" / "hyperframes" / "package.json"
     package.parent.mkdir(parents=True)
     package.write_text(json.dumps({"version": "0.8.15"}), encoding="utf-8")
-    executable = hyperframes_root / "node_modules" / ".bin" / "hyperframes.cmd"
+    executable = hyperframes_root / "node_modules" / ".bin" / ("hyperframes.cmd" if os.name == "nt" else "hyperframes")
     executable.parent.mkdir(parents=True)
     executable.write_text("@echo off\r\n", encoding="utf-8")
-    browser = tmp_path / "chrome-headless-shell.exe"
+    browser = tmp_path / ("chrome-headless-shell.exe" if os.name == "nt" else "chrome-headless-shell")
     browser.write_bytes(b"browser")
 
     with pytest.raises(ValueError, match="hyperframes_version_mismatch"):
@@ -200,7 +201,7 @@ def test_renderer_rejects_repository_output_and_version_drift(tmp_path: Path) ->
 
 def test_renderer_environment_pins_existing_browser_and_disables_updates(tmp_path: Path) -> None:
     renderer = _load_renderer()
-    browser = tmp_path / "chrome-headless-shell.exe"
+    browser = tmp_path / ("chrome-headless-shell.exe" if os.name == "nt" else "chrome-headless-shell")
     browser.write_bytes(b"browser")
     plan = renderer.RenderPlan(
         project_root=ROOT,

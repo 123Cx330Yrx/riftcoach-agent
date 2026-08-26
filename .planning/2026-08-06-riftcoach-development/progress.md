@@ -4561,3 +4561,7 @@
   明确拒绝；verdict `proof_fail_reopen_corrected_a`。下一动作是负面证据公共门，再执行一次校正 A comparator。
 - RQ-127 把 comparator 视觉标准补成全幕 breathing 与明显 cool 动态：所有空间层/大区持续参与，允许小幅
   构图锚定 camera float/parallax，不再以完全 locked camera 和 subtle motion 压低幅度。
+- C proof evidence commit `e215f7e` 首个公共 run `32922688081` 的 PostgreSQL/packaging 通过，pytest 以
+  `1869 passed, 145 skipped` 后因新 proof fixture 无条件创建 Windows `hyperframes.cmd` 在 Linux 失败；实现本身
+  未执行外部工具。修复按 `os.name` 创建 executable/browser fixture，并让 wrapper 接受无后缀 headless-shell；
+  当前必须用新 exact-SHA 三 job 重新闭环，绿灯前不调用 corrected Veo。

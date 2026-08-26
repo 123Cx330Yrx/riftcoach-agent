@@ -97,7 +97,7 @@ def build_plan(
         raise ValueError("hyperframes_version_mismatch")
     hyperframes = _hyperframes_executable(hyperframes_root)
     browser_path = browser_path.resolve()
-    if not browser_path.is_file() or browser_path.name.casefold() != "chrome-headless-shell.exe":
+    if not browser_path.is_file() or browser_path.name.casefold() not in {"chrome-headless-shell", "chrome-headless-shell.exe"}:
         raise ValueError("browser_path_invalid")
 
     work_dir = output_dir / "work"
