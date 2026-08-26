@@ -2759,3 +2759,11 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - corrected A preflight 已本地冻结：first-only/no lastFrame、positive/negative/runner 三 SHA、one POST、motion-only
   与 RQ-127 全幕强度门；尚未弹窗、读取 Key 或创建 task。
 - `NEXT`：先提交/公共关闭本 preflight；exact-SHA 三 job 全绿后启动 secure Key runner，一次 corrected Veo task。
+- corrected Veo task 已 one POST 后在服务端 158s/100% 失败，公开原因仅 `Generation failed: task processing
+  failed`；无 output，质量 unknown，不重跑。external video calls 累计 `3`，production media `0`。
+- Vidu Q3 Pro schema/preflight 已本地冻结：`viduq3-pro`、1 张 image_urls=first frame、8s/1080p/16:9、audio
+  false、seed 127，prompt/runner SHA `a38bdc...bb72` / `60e4f8...24f5`；尚未读取 Key 或创建 Vidu task。
+- RQ-128 固定 failure fault tree；corrected Veo 无 output，故 request/relay/upstream fault domain unresolved、quality
+  unknown，不能否定 Veo/first-only/生成路线。Vidu 只改变 model/schema，保持 transport/source/motion/first-only；
+  若也 generic failed，下一步审计 relay/request 而不是继续换模型。
+- `NEXT`：先提交/公共关闭 Veo failure + Vidu preflight；exact-SHA 三 job 全绿后启动一次 Vidu Q3 Pro secure runner。

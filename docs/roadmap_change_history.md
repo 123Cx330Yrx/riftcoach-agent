@@ -3310,3 +3310,18 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `PREFLIGHT`：冻结 first-only/no lastFrame、819B positive、357B negative、one-POST runner 三 digest，PowerShell
   parse pass；motion-only 与 RQ-127 全幕强度门一致。
 - `NEXT`：preflight 独立 exact-SHA；绿灯后才启动 secure Key runner 创建一次 corrected Veo task。
+
+## 2026-08-26：Corrected Veo upstream failure 与 Vidu Q3 Pro 交接
+
+- `LIVE-FAILED`：corrected Veo one POST 在 158s/100% 后 `task processing failed`，无 output；不把 transport/upstream
+  failure写成 motion quality，按首错停止不重跑。external calls 3，production media 0。
+- `PREFLIGHT`：Vidu Q3 Pro 文档明确单 image first-frame、8s/1080p、audio false；motion-only/full-scene prompt、
+  seed 127 与 one-POST runner digests 已冻结，不用 opaque metadata。
+- `NEXT`：合并 failure/preflight 独立 exact-SHA；全绿后一次 Vidu task。
+
+## 2026-08-26：RQ-128 failure adjudication 纠偏
+
+- `CORRECTION`：禁止把单次失败直接归因成 Provider/工具/方法错误。依次检查 local runner、request schema、
+  relay/upstream、successful-output quality、跨样本 method；无 output 时 quality unknown。
+- `CURRENT`：Vidu 是控制变量 comparator，不是放弃 Veo/first-only。若 Vidu 也 generic failed，停止换模型并
+  审计 relay/request；只有明确修复或新可证伪假设才允许重试，避免 blind retry 与无界死磕。

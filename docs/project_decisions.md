@@ -2292,3 +2292,10 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - RQ-127 要求 motion 不是三主体轮流或 grid 有变化，而是整幕 breathing：near/mid/far 空气与大尺度光影、
   建筑/地面/反射、道路、Rift、水晶和整片星空同时持续参与；允许锚定构图的小幅 camera float/parallax，
   amplitude 必须 clearly perceptible/cool，不再使用 subtle/almost-imperceptible wording。
+
+### RQ-128 Failure adjudication
+
+- Failure attribution 固定为 local client → request/schema → relay/upstream → successful-output quality → cross-sample
+  method。无 output 不评模型质量；单个 Bad Case 不自动否定路线。
+- Vidu 是保持 transport/source/motion/first-only、只改变 schema/model 的 comparator。它若 generic failed，下一步
+  是 relay/request audit；它若 completed 才进入 visual gate。Veο 和 first-only 方法当前未被拒绝。

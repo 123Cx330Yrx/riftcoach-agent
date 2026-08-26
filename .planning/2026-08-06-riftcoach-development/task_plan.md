@@ -1581,3 +1581,9 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-public-rejected] C proof/fix `557dac1` / Actions `32923151197` 三 job 全绿；negative proof 正式关闭。
   - [completed-local-preflight] corrected Veo first-only/no-lastFrame prompt/negative/runner digests 与 visual/one-POST
     边界已冻结；下一动作是 preflight 独立 exact-SHA，绿灯后才弹 secure Key runner。
+  - [completed-live-failed] corrected Veo one POST 在 158s/100% 后 upstream task failed；无 output、quality unknown、
+    不重跑，external calls 3。
+  - [completed-local-preflight] Vidu Q3 Pro first-only schema、prompt/runner digest、audio false/seed 127 与 one-POST
+    边界已冻结；下一动作是合并 failure/preflight public gate，绿灯后才启动 Vidu。
+  - [requirement-recorded] RQ-128：失败先走 local→request→transport→successful-output quality→cross-sample method
+    五层 fault tree；无 output 不评质量。Vidu 是控制变量 comparator，不代表 Veo/方法被放弃。

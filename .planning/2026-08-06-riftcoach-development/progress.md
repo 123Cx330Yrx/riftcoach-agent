@@ -4574,3 +4574,14 @@
   `cee5ac...ba850`；PowerShell parse pass。
 - first-only/no lastFrame、one POST/same task/no retry、motion-only/full-scene/evident/cool 与 Key/body-free 边界
   已冻结。下一动作是 preflight 独立 public gate；尚未弹窗或创建 task。
+
+### 2026-08-26：Corrected Veo task failure 与 Vidu Q3 Pro preflight
+
+- corrected Veo task `task_c3y...77mT` one POST，158s/100% 后 failed；控制台只给 `task processing failed`，无
+  output，不能评价 prompt，按首错停止不重跑。external video calls 3，production media 0。
+- Vidu `viduq3-pro` 专用 schema 已核：单 image 为 first frame、8s/1080p、aspect_ratio 16:9、audio false、seed 127；
+  不用 metadata/payload/off-peak/callback。
+- Vidu motion-only prompt 1,007 B/SHA `a38bdc...bb72`，runner SHA `60e4f8...24f5`，PowerShell parse pass。
+- 下一动作是 failure + Vidu preflight 独立 public gate；绿灯前不弹 Vidu Key 窗口。
+- RQ-128 纠正 failure adjudication：corrected Veo 无 output，fault domain 保持 request/relay/upstream unresolved；
+  Vidu 只改变 model/schema 并保持其余变量。如果 Vidu 也 generic failed，必须停下审计 relay/request，不能再换模型。

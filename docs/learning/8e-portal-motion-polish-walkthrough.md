@@ -159,6 +159,13 @@ source、seam、3×3 motion coverage 和 3.90MB 编码可控；但这次必须�
 RQ-127 还区分了“全局”和“到处放一点变化”：目标是整幕空间从第一秒持续呼吸，近中远景和左右中区同时
 有体积空气、大尺度光影与反射；允许锚定构图的小幅 camera parallax，动作必须明显且 cool，而不是 subtle。
 
+corrected Veo 使用 first-only、短 motion-only prompt 后在 upstream 158s/100% 失败且无成片。这里的工程原则是
+“缺输出就不评质量”：不能说 prompt 无效，也不能说 Veo 通过/失败视觉门。按首错停止切到 schema 更明确的
+Vidu Q3 Pro 单样本，而不是重抽同一模型追结果。
+RQ-128 进一步防止“切太快”：Vidu 不是路线切换，而是保持 transport/source/motion/first-only、只改变
+model/schema 的控制实验。只有 successful output 才进质量门；若 Vidu 也只给 generic failure，必须回查
+request/relay，而不是继续在模型名单上向后跳。
+
 ## 6. 运行手册（设计阶段）
 
 1. 生成素材前核对采用账本，确认 source 和 candidate 状态；
