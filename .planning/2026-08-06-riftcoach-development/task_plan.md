@@ -1616,3 +1616,6 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [requirement-recorded] RQ-131：Studio 手动同一 Veo 对照，由用户本人上传/最终点击；Codex 不代扣费。
   - [prepared-user-action] Studio 已设 Veo Quality Official/首尾帧/8s/1080p/16:9/enhancement off；自动上传失败且
     0/2、calls unchanged。下一步用户按 handoff 上传同一 v2 两次、粘贴 prompt 并本人生成。
+  - [completed-live-upstream-failed] v5 Studio task `task_Rdr...maHP` 93s/100% generic failed/no output，已全额退款；calls 7。
+  - [requirement-recorded] RQ-132：拒绝 QQ 支持，授权 exact 成功 v1 Studio reproduction 一次，费用 19.71。
+  - [prepared] exact v1 prompt/first+last/8s/1080p/16:9/enhancement off 已填，当前 0/2；下一步用户上传并过 public gate。

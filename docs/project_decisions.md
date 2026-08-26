@@ -2330,3 +2330,5 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   diagnosis packet；代表用户联系支持仍需发送时确认，不能把“继续开发”泛化为对外沟通授权。
 - 用户按 RQ-131 选择 Studio；QQ 视频管理员 support 草稿保持未发送。Studio 手动对照保持同一模型/source/
   first+last/8s/1080p/16:9，合并单框 prompt、enhancement off；最终 19.71 按钮只由用户点击。
+- v5 Studio 同样 generic failed/no output；因此自写 API payload 不是必要根因。用户按 RQ-132 拒绝 QQ 并授权
+  exact v1 reproduction：若成功，支持运动包络过重；若失败，支持当前 Veo 通道变化。任何结果都不重试。

@@ -16,11 +16,10 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-26（Veo v5 API failure audit 已由 `ac76f74/32952793297` 与 state closure
-  `c430b8f/32953308027` exact-SHA 三 job 公共关闭。用户按 RQ-131 选择 Studio 手动提交同一对照；Studio 已预设
-  `Veo 3.1 Quality Official / first+last / 8s / 1080p / 16:9 / enhancement off`，预计 19.71。自动 file chooser
-  因 Chrome file URL 权限未上传，当前 0/2、无调用；QQ support 草稿未发送。external video calls `6`、
-  production media `0`。当前唯一下一动作是用户按手动交接上传同一 v2 母图两次、粘贴 Studio prompt 并本人点击生成。）
+- 最后更新：2026-08-26（v5 Studio task `task_Rdr...maHP` 93 秒/100% generic failed/no output，`$19.712`
+  已全退，calls `7`、production media `0`。用户拒绝 QQ 支持并按 RQ-132 授权付费原样复现早期成功 v1，区分
+  当前通道变化与运动约束过重。Studio 已预设 exact v1 prompt、Veo Quality Official、first+last、8s/1080p/
+  16:9、enhancement off，当前 0/2；唯一下一动作是用户手动上传同一 v2 两次，同时先公共关闭本 preflight。）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2818,3 +2817,9 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   Studio 仍为 0/2、没有上传/生成/扣费；不为本次修改扩展权限。
 - `NEXT`：用户按 `docs/plans/2026-08-26-8e-veo-studio-manual-handoff.md` 手动上传同一 v2 母图两次、粘贴
   Studio prompt、核对六项并本人点击生成；Codex 等待 task/completed 页面后只处理下载与质量审计，不自动重抽。
+- v5 Studio 任务 `task_Rdrn26RA6kgeyUlDdpORnnQ2KxUxmaHP` 已在 93 秒/100% 后 generic failed；无 output，
+  `$19.712` 全额退款，钱包 `$67.01`。这排除自写 runner 为必要根因，但仍不能区分 v5 constraint 与通道状态。
+- 用户明确不走 QQ 支持，并按 RQ-132 授权 19.71 的 exact v1 Studio reproduction。当前参数/prompt 已填，0/2；
+  QQ 草稿保持未发送。
+- `NEXT`：用户上传同一 v2 母图两次至 2/2；本 preflight exact-SHA 三 job 通过后，Codex readback 参数/prompt，
+  使用用户本轮明确费用授权执行一次生成。失败或成功均不自动重试。

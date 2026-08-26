@@ -4634,3 +4634,6 @@
 - support packet 与 QQ 视频管理员私聊草稿已准备但未发送；用户选择 Studio，故保持未发送。
 - Studio 已预设 Veo 3.1 Quality Official、首尾帧、8s、1080p、16:9、enhancement off、预计 19.71；Chrome
   file chooser 因扩展 file URL permission 未捕获，确认 0/2、无上传/调用。RQ-131 改由用户按手动 handoff 操作。
+- v5 Studio task `task_Rdr...maHP` 93s/100% generic failed，无 output，19.712 全退；calls 7、production media 0。
+- exact diff 显示早期成功 v1 要求 subtle/slow/restrained/almost imperceptible；后续失败 v2/v5 同时要求整幕
+  medium/strong motion。用户拒绝 QQ，并授权 exact v1 Studio reproduction；参数/prompt 已填，等待 2/2/public gate。

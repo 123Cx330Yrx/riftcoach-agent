@@ -3368,3 +3368,6 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   gate，只准备 body-free packet，不自动联系支持或产生新调用。
 - `RQ-131`：support packet/QQ 草稿已准备但未发送；用户选择 Studio 手动生成。参数保持同一 Veo/v2 first+last/
   8s/1080p/16:9/v5 目标，enhancement off；用户本人上传/点击 19.71 生成。自动 upload 失败时不改权限或替用户扣费。
+- `V5-STUDIO-FAILED`：`task_Rdr...maHP` 93s/100% generic failed/no output，19.712 全退；排除自写 runner 为必要根因。
+- `RQ-132`：用户拒绝 QQ 支持并授权一次 exact v1 Studio reproduction。只复现早期成功 prompt/参数，以区分
+  当前通道变化与 full-frame medium/strong constraint；no retry。
