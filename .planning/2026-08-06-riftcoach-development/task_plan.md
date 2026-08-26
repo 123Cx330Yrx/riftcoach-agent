@@ -1619,3 +1619,6 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-live-upstream-failed] v5 Studio task `task_Rdr...maHP` 93s/100% generic failed/no output，已全额退款；calls 7。
   - [requirement-recorded] RQ-132：拒绝 QQ 支持，授权 exact 成功 v1 Studio reproduction 一次，费用 19.71。
   - [prepared] exact v1 prompt/first+last/8s/1080p/16:9/enhancement off 已填，当前 0/2；下一步用户上传并过 public gate。
+  - [completed-live-upstream-failed] exact v1 task `task_v8g...PDW9` 81s/100% generic failed/no output，19.712 全退；calls 8。
+  - [paused] `Veo3.1-quality-official` 当前通道；不再重试。
+  - [prepared] Seedance 2.5 first+last/8s/720p/no-audio/v5/2 images；price button `--` vs catalog `$11.9568`，待用户确认。

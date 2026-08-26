@@ -2332,3 +2332,5 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
   first+last/8s/1080p/16:9，合并单框 prompt、enhancement off；最终 19.71 按钮只由用户点击。
 - v5 Studio 同样 generic failed/no output；因此自写 API payload 不是必要根因。用户按 RQ-132 拒绝 QQ 并授权
   exact v1 reproduction：若成功，支持运动包络过重；若失败，支持当前 Veo 通道变化。任何结果都不重试。
+- exact v1 也 generic failed，因此暂停当前 Veo 通道。Seedance 2.5 以 first+last + exact 8s 合同优先于
+  Kling 10s 和 Grok first-only；但 Studio price `--` 必须与 catalog 预计 11.9568 一并披露后再获确认。

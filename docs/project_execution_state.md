@@ -16,10 +16,11 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-26（v5 Studio task `task_Rdr...maHP` 93 秒/100% generic failed/no output，`$19.712`
-  已全退，calls `7`、production media `0`。用户拒绝 QQ 支持并按 RQ-132 授权付费原样复现早期成功 v1，区分
-  当前通道变化与运动约束过重。Studio 已预设 exact v1 prompt、Veo Quality Official、first+last、8s/1080p/
-  16:9、enhancement off，当前 0/2；唯一下一动作是用户手动上传同一 v2 两次，同时先公共关闭本 preflight。）
+- 最后更新：2026-08-26（exact v1 Studio task `task_v8g...PDW9` 也在 81 秒/100% generic failed/no output，19.712
+  全退；Veo 当前通道暂停。calls `8`、production media `0`。Seedance 2.5 因支持 first+last + exact 8s 成为下一
+  primary；Studio 已 readback 2 images/v5 prompt/8s/720p/no-audio/enhancement-off，但按钮费用显示 `--`，模型广场
+  推导预计 `$11.9568`。当前唯一下一动作是先公共关闭 v1 result/Seedance preflight，并由用户明确接受 price UI
+  mismatch 后才 one submit。）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2823,3 +2824,9 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   QQ 草稿保持未发送。
 - `NEXT`：用户上传同一 v2 母图两次至 2/2；本 preflight exact-SHA 三 job 通过后，Codex readback 参数/prompt，
   使用用户本轮明确费用授权执行一次生成。失败或成功均不自动重试。
+- exact v1 task `task_v8gAX2IvJT786Y79BLwxeukNx5HHPDW9` 81s/100% generic failed/no output，19.712 全退；
+  因历史成功 prompt 也失败，`Veo3.1-quality-official` 当前暂停。calls 8、production media 0。
+- Seedance/Kling/Grok Studio contract 已实测；Seedance 2.5 因 first+last + exact 8s 成为 primary。当前 readback：
+  两张 v2、8s/720p/16:9/no-audio/enhancement off、v5 SHA `91ca48b...b322`。
+- `NEXT`：先提交/public close 本结果与 preflight；按钮费用显示 `--`，模型广场按 `$1.4946/秒` 推导 8s
+  `$11.9568`。用户接受此 price mismatch 后才 one submit，no retry。

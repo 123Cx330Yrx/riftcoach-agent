@@ -4637,3 +4637,6 @@
 - v5 Studio task `task_Rdr...maHP` 93s/100% generic failed，无 output，19.712 全退；calls 7、production media 0。
 - exact diff 显示早期成功 v1 要求 subtle/slow/restrained/almost imperceptible；后续失败 v2/v5 同时要求整幕
   medium/strong motion。用户拒绝 QQ，并授权 exact v1 Studio reproduction；参数/prompt 已填，等待 2/2/public gate。
+- exact v1 reproduction 仍 generic failed/no output，证明 v5 constraint 不是必要原因；Veo 当前通道暂停，calls 8。
+- Studio contract compare：Seedance 2.5 first+last + exact 8s/720p，Kling V3 first+last/10s/720p，Grok 3 无尾帧。
+  Seedance primary 已填 v5/2 images；按钮 `--`，catalog 预计 11.9568，未生成。

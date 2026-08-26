@@ -3371,3 +3371,6 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `V5-STUDIO-FAILED`：`task_Rdr...maHP` 93s/100% generic failed/no output，19.712 全退；排除自写 runner 为必要根因。
 - `RQ-132`：用户拒绝 QQ 支持并授权一次 exact v1 Studio reproduction。只复现早期成功 prompt/参数，以区分
   当前通道变化与 full-frame medium/strong constraint；no retry。
+- `V1-RESULT`：`task_v8g...PDW9` 81s/100% generic failed/no output、19.712 全退；Veo 当前通道暂停。
+- `SEEDANCE-PREFLIGHT`：first+last/8s/720p/no-audio/v5/2 images 已 readback；按钮 price `--`，catalog 推导
+  11.9568。用户接受 price mismatch 前不提交；Kling fallback、Grok 无尾帧 reject。
