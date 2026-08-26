@@ -673,6 +673,9 @@ RQ-128 又固定故障归因五层门：corrected Veo 无 output，request/relay
 failed，必须停下审计 relay/request，不继续换模型。Vidu 首个 task 随后同样 generic failed；当前只允许一次
 Studio-contract request：登录态 UI 证明 first-only/8s/1080p/16:9 但 audio 固定 true；唯一重试删除 seed、
 audio=true。仍失败则转 relay task-id/official transport 诊断。
+Studio-contract Vidu 随后成功，证明 API/first-only/prompt 可用；但样本由 camera push/global drift 主导，按
+RQ-129 仅拒绝 sample。当前目标是 locked-frame refined in-scene motion；下一实验保持成功 Veo first+last/
+model/transport/source，只替换 multi-depth/material-aware storyboard，Seedance 2.5 后继、Grok 等 mapping/schema。
 
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1

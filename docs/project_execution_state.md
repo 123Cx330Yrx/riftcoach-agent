@@ -2774,3 +2774,10 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   增强已关闭，预计 5.28 额度并获用户确认。RQ-128 下唯一重试改为 Studio-contract：删除 seed、audio=true，
   其余保持；runner SHA `7f6d2e...0011`。若仍 generic failed，停止 API/model 切换并升级 relay/upstream 诊断。
 - `NEXT`：更新并公共关闭 Studio-contract preflight；exact-SHA 三 job 全绿后执行一次 Vidu task，成功后本地去音轨。
+- Studio-contract Vidu task 已 completed；output `6e1ce9...251a`、12.6MB、1080 container/metadata 720p conflict、
+  source→first `0.790736`、seam DSSIM `0.425097`。全幕变化明显但主要是 camera push/global drift，用户拒绝；
+  只拒绝 sample，external calls `5`，production media `0`。
+- RQ-129：目标是 locked-frame、精细 in-scene living environment，不是 Vidu 全局运镜，也不是 Veo v1 的粗
+  四效果槽。下一最小变量实验保持成功 Veo first=last/model/transport/source，只改 refined medium/evident storyboard。
+- Veo positive/negative/runner SHA `4dbdf0...41f9` / `b6d7b4...9cbd` / `70332e...8406` 已本地冻结；尚未调用。
+- `NEXT`：先提交/公共关闭 Vidu audit + Veo refined preflight；exact-SHA 三 job 后 one POST。

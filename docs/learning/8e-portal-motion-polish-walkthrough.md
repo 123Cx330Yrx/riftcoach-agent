@@ -170,6 +170,11 @@ Vidu 首个控制实验随后也无 output/generic failed。Studio 登录态进�
 16:9 存在，但音频固定开启；因此唯一重试不再随意删字段，而是精准对齐 Studio：删除 seed、audio=true，其他
 变量保持。它若仍失败，就停止 API 抽卡并请求 relay task-id 诊断或切到官方 transport。
 
+Studio-contract Vidu 随后成功，说明 API/first-only 方法本身可用。它也形成新的教学 Bad Case：九宫格变化很大，
+但主要来自相机推进和整体漂移，不是景物内部全局运动。RQ-129 把目标收紧为 locked-frame refined animated
+matte painting：环境多层同时明显运动，镜头/构图不动；Veo v1 的方向较近但效果槽粗、轻且不精细。下一样本
+回到 Veo first+last 只改 refined prompt，不是因为 Vidu 品牌不行而换模型。
+
 ## 6. 运行手册（设计阶段）
 
 1. 生成素材前核对采用账本，确认 source 和 candidate 状态；

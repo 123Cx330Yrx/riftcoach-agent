@@ -4595,3 +4595,14 @@
   增强可关闭且已关闭。隐藏 input 上传 chooser 两次连接失败，未上传/生成/扣费，不继续死磕 UI。
 - 唯一 API 重试改为 Studio-contract：删除 seed、audio=true、保留 aspect_ratio；runner SHA `7f6d2e...0011`。
   若再 generic failed，停止模型/API 切换，转平台 task-id/official transport 诊断。
+
+### 2026-08-26：Vidu Studio-contract 成功与 RQ-129
+
+- audio=true/no-seed 后 Vidu completed；output SHA `6e1ce9...251a`，12,616,484B、8.0417s/193f/1080 container/
+  H.264+yuvj420p+AAC，AIGC metadata ProduceID 却含 720p。
+- source→first 0.790736、seam DSSIM 0.425097；九宫格变化大，但视觉主要依赖 camera push/global drift，用户
+  正确拒绝。证明 API/first-only 可工作，也证明 pixel motion 大不等于目标正确。
+- RQ-129：目标是 locked-frame refined animated matte painting，景内多层同时中强度运动。下一对照保持成功
+  Veo first=last/model/transport/source，只重写 refined storyboard；Seedance/Grok 后置。
+- Veo positive 1,277B/SHA `4dbdf0...41f9`，negative 435B/SHA `b6d7b4...9cbd`，runner 6,804B/SHA
+  `70332e...8406` parse pass；尚未调用。

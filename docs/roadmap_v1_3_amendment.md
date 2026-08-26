@@ -654,6 +654,9 @@ RQ-128 要求 failure 按 local/request/transport/output-quality/method 分层�
 方法否决。Vidu 只作 model/schema 控制变量；其首个 task 也 generic failed 后，只准一次删除 optional
 seed、audio=true 的 Studio-contract request；UI 已证明 first-only/8s/1080p/16:9 与固定音频。仍失败则停止
 换模型/API retry 并审计 relay task-id/official transport。
+Studio-contract Vidu 随后成功但以 camera drift 取得全帧变化，sample rejected/model open。RQ-129 固定
+locked-frame refined in-scene motion；下一最小变量实验保持成功 Veo first+last/model/transport/source，只改
+精细 motion storyboard，未通过后才进入 Seedance 2.5。
 
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
 Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入

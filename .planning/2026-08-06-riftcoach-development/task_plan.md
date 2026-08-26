@@ -1590,3 +1590,8 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [completed-live-failed] Vidu first-only one POST queued 160s 后 generic failed；无 output/quality unknown，calls 4。
   - [completed-local-preflight] Studio 登录态证明 Vidu first-only/8s/1080p/16:9 可用但 audio 固定 true；唯一重试
     改为删除 seed、audio=true、其余不变，预计 5.28 已确认。若仍 generic failed，停止 API/model retry。
+  - [completed-live-rejected-sample] Studio-contract Vidu completed；全幕变化明显但 global camera drift 主导，
+    source/seam/720p provenance 不过门；sample reject/model open，calls 5。
+  - [requirement-recorded] RQ-129：locked frame + intricate in-scene multi-depth simultaneous medium/evident/cool
+    motion；下一实验保持 Veo first=last/model/transport/source，只改 refined storyboard。
+  - [completed-local-preflight] Veo refined positive/negative/runner digests 与 one-POST 门已冻结；下一动作 public gate。

@@ -3335,3 +3335,13 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   预计 5.28 并获用户确认。UI 上传 chooser 连接失败，未形成任务或扣费。
 - `NEXT`：只执行一次 Studio-contract Vidu request：删除 seed、audio=true，其他变量不变。若仍 generic failed，
   停止换模型/API retry，转 Dragon task-id/official transport 诊断。
+
+## 2026-08-26：Vidu completed sample 与 RQ-129 refined locked-scene
+
+- `LIVE-COMPLETED`：audio=true/no-seed 后 Vidu 成功，证明 API/image/first-only/prompt 可用；此前 failures 至少与
+  request/relay mapping 有关。
+- `REJECTED-SAMPLE`：Vidu 主要以 camera push/global drift 制造全帧变化，source/seam/resolution provenance
+  也失败；只拒绝 sample，不拒绝模型。
+- `CURRENT`：目标是 locked-frame refined in-scene motion，不是仅加强 Veo v1。下一最小变量实验保持成功
+  Veo first=last/model/transport/source，只改 multi-depth/material-aware refined storyboard；Seedance 2.5 后继，
+  Grok 等 exact mapping/schema。

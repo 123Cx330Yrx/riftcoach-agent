@@ -2302,3 +2302,11 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - Vidu 首个 task 后续也 generic failed。Studio 登录态证明 first-only/8s/1080p/16:9、音频固定 true；只允许
   一次删除 seed、audio=true 的 Studio-contract request 作为参数映射假设。若仍失败，停止模型/API 切换，
   转 relay/upstream/official transport 诊断。
+
+### RQ-129 Vidu sample 与 refined locked-scene
+
+- Studio-contract Vidu 成功，证明 API/first-only/prompt 可用；此前 generic failures 与参数/relay mapping 有关。
+- 输出以 camera push/global drift 获得显著变化，source/seam/resolution provenance 失败；sample rejected/model open。
+- 目标不是 Veo v1 简单加大，而是 locked frame 下的 multi-depth fog/occlusion、surface-following caustics、Rift
+  layered fluids、route/reflection currents、crystal material light、tower seams 和 volumetric star field 同时精细运行。
+- 下一实验保持成功 Veo first=last/model/transport/source，只改 storyboard；若仍不合格才进 Seedance 2.5。

@@ -214,4 +214,9 @@ RQ-127 又明确 corrected A 不能回到“三主体更明显”的局部动画
 的体积空气、环境光、地面反射和空间运动获得 cool/immersive 观感；这取代完全 pixel-stable locked camera 的
 过度约束，但仍禁止突发 zoom/reframe/shake、结构融化或新增物体。
 
+RQ-129 用 Vidu 成功样本再次校准：camera push/global drift 产生的全帧变化不算全局环境运动。frame/lens/scale/
+composition 必须基本锁死；复杂度要来自体积雾遮挡、沿真实材质传播的蓝金 caustics、Rift 多层流体、道路与
+反射回流、水晶材质内折射、暖金塔缝和星空体积场的同步精细运动。Veo v1 也不能只“加大”，须重写 motion
+craft；同 first=last/model/transport/source 的 refined storyboard 是下一最小变量门。
+
 本 ADR 不实现 Coach、Data Dragon 产品 asset enrichment、OIDC/RSO、跨模块 final visual QA、公开部署或 8F。
