@@ -3270,3 +3270,11 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   全绿；Veo sample rejection、Dragon `/content` Bad Case 与 RQ-125 纠偏可公共复核。
 - `HANDOFF`：唯一下一项为 no-paid-call C-line Portal proof；先冻结 scene graph、mask/inpaint、full-scene
   motion coverage、deterministic seam 与 corrected-A fallback gate，不先调用新模型或接入 runtime。
+
+## 2026-08-26：C-line Portal proof 设计门
+
+- `DESIGN`：比较校正 A、局部 CSS 与 hybrid scene graph；C 只获优先 proof。冻结 8 systems、192 帧闭合时钟、
+  source/seam/region/grid/manual/budget 门、repo-excluded output 和 pass/fail/inconclusive verdict。
+- `BOUNDARY`：设计批未写 composition/renderer/tests、未生成媒体、未调用模型；校正 A comparator 仍是 C proof
+  失败后的唯一回退。
+- `NEXT`：design 独立 exact-SHA 公共门；全绿后才开始 contract TDD。

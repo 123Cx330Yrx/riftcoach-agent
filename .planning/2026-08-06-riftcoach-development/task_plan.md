@@ -1568,3 +1568,5 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
     external video calls 2、production media 0，sample reject/provider open 正式关闭。
   - [in-progress] C-line no-paid-call Portal proof：先冻结 scene graph、mask/inpaint 可行性、所有大区的 motion
     coverage、deterministic clock/seam 和 A fallback gate，再做 research-only animatic；不调用新模型或接 runtime。
+  - [completed-local-design] C proof design/implementation plan 已冻结：8 systems、research-only output、
+    source/seam/grid coverage/manual gates 与三态 verdict；下一动作是独立 design exact-SHA 公共门，绿灯前不写 proof code。

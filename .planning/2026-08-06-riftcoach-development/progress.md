@@ -4527,3 +4527,11 @@
   packaging 三 job 全绿；Veo negative sample 与 RQ-125 sample-reject/provider-open 裁决正式关闭。
 - 当前唯一下一动作进入 C-line no-paid-call Portal proof；在 scene graph/mask/motion coverage/frame clock/A
   fallback gate 冻结并通过前，不创建新视频任务、不采用 production media、不跳 Account/Task 6。
+
+### 2026-08-26：C-line Portal proof 设计冻结
+
+- 设计比较校正 A、局部 CSS 与 scene-graph hybrid；C 只获优先 proof，不是不可逆采用。
+- 冻结 8 个 motion systems、7.958333s/192 帧闭合时钟、source/seam/三分区/3×3 coverage/manual/budget 门，
+  以及 `pass / fail-reopen-A / inconclusive-layer-gate` 三态 verdict。
+- 计划只跟踪 composition/contract/renderer/tests；PNG/MP4/log/node_modules 全部留 repo 外，proof 前半程外部模型调用 0。
+- 下一动作：design commit/push/exact-SHA 三 job；成功后才 red→green 实现。
