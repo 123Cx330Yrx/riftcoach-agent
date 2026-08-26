@@ -2319,3 +2319,10 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - RQ-130 决定余额不能替代内容 preflight。v5 必须先以 official motion-only、单一连续镜头、locked/deep-focus、
   全空间 simultaneous motion、八秒闭环、negative phenomena、source/schema/runner/唯一输出门完成公共闭环。
 - 只有 exact-SHA 三 job 成功后才 one POST/no retry；不自动重抽或换模型归因。
+
+### Veo spatial v5 上游失败
+
+- `d57b026/32951125621` 三 job 全绿后才创建唯一 task `task_I5...k9Mw`；159 秒/100% generic failed，无 output。
+- 按 RQ-128，relay/upstream failure 是唯一可证实层；v5 prompt、Veo output quality、first=last 与方法保持 unknown/open。
+- `$19.712` 已全额退款；不重发同一 v5，不因此直接切 Seedance/Grok。
+- 本地终端误关是独立操作事故，影响轮询体验但没有创建第二 task；后续 Key runner 禁止按窗口句柄猜测并关闭。

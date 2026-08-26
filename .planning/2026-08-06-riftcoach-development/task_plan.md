@@ -1605,3 +1605,8 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
     official motion-only/单场景、locked/deep-focus、3×3+三深度 simultaneous、八秒闭环、negative phenomena、
     source HEAD/hash、runner parse 与 unique retry1 paths 全绿。
   - [next] 独立 commit/push/exact-SHA 三 job；公共成功后 one POST/no retry，不自动重抽或切模型。
+  - [completed-public-preflight] `d57b026` / Actions `32951125621` 三 job exact-SHA 全绿。
+  - [completed-live-upstream-failed] v5 唯一 task `task_I5...k9Mw` one POST，159s/100% generic failed；无 output，
+    quality unknown；预扣 `$19.712` 已全额退款，calls 6、production media 0。
+  - [incident-recorded] 可见终端父进程被误关，子 runner 已 POST 后退出；无第二 POST，本地 status 已按远端终态更正。
+  - [next] upstream failure/terminal incident audit 独立 public gate；不重发、不跳模型，等待可证伪诊断证据。

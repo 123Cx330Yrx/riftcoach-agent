@@ -4348,3 +4348,11 @@
   phase/illumination/velocity。它不改变 Veo/model/transport/source/first=last，只提高同一 comparator 的 art direction。
 - 付费门必须同时满足余额、无隐藏 task、source URL/SHA、schema、prompt/negative digest、runner parse、one POST/
   no retry、唯一 output/status 和 exact-SHA public CI；任何单项不能替代另一项。
+
+## 2026-08-26：Veo v5 upstream failure / terminal incident
+
+- RQ-130 preflight 的公共证据是 `d57b026/32951125621` 三 job 全绿；因此本次不是未过治理门就付费。
+- task `task_I5...k9Mw` 被 relay 接受并在 159 秒/100% generic failed；no output 意味着不能用结果评价 v5 或 Veo。
+- 失败任务先扣 `$19.712` 后同额退款；钱包最终 `$67.01`。计费事实不能把 generic failure 细化成模型质量。
+- 终端事故的根因是用进程窗口句柄判断可见性并在用户输入竞态中关闭父进程；后续不能在 prompt 窗口可能被用户
+  操作时自动关闭。远端 task 与账单页优先于停在 50% 的本地 status；status 只能按同一 task body-free 更正。

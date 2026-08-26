@@ -664,6 +664,10 @@ RQ-130 又把“余额 ready”与“内容 ready”分成两个阻塞门。Drag
 linework，并把 left/center/right、near/mid/far 同时运动和八秒 phase/illumination/velocity 闭环写成单一编排。
 source/schema/runner/唯一输出路径与 prompt digest 必须先独立提交并取得 exact-SHA 三 job，之后才 one POST/no retry。
 
+v5 preflight `d57b026/32951125621` 三 job 公共成功后，唯一 task `task_I5...k9Mw` one POST 创建并在 159 秒/100%
+generic failed；no output，故 output quality 与 method 仍 unknown/open。预扣 `$19.712` 已全额退款，钱包最终
+`$67.01`；calls 6、production media 0。当前只关闭 upstream failure 与本地 terminal incident 审计，不重发或跳模型。
+
 implementation/evidence `6084937` / Actions `32757872792` 已让 foundation 的 pytest、真实 PostgreSQL 与
 Linux package 三 job exact-SHA 全绿；foundation 正式关闭。用户随后按 RQ-109 明确授权 RQ-108，当前进入
 教学、ADR/设计、素材采用门和 TDD；8E coverage 继续 planned。

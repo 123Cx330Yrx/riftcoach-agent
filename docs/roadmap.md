@@ -683,6 +683,11 @@ comparator 的 prompt/negative：official motion-only/单一连续镜头、locke
 left/center/right + near/mid/far 同时运动、八秒 phase/illumination/velocity 闭环、negative phenomena；source/
 schema/runner/唯一 retry1 路径必须先独立提交并取得 exact-SHA 三 job，公共成功后才 one POST/no retry。
 
+该 preflight 已由 `d57b026/32951125621` 三 job 公共关闭；唯一 v5 task `task_I5...k9Mw` 随后 one POST 创建，
+159 秒/100% generic failed，且没有 output。按 RQ-128，只能裁决 relay/upstream failure，不能评价 v5/Veo/
+first=last 或方法质量。`$19.712` 已全额退款，最终钱包 `$67.01`；external calls `6`、production media `0`。
+当前先公共关闭 failure/terminal incident audit，不重发或立即换模型。
+
 RQ-107 确认静态 Coach report 不是最终 Agent 产品。RQ-108 关闭后，bounded review-grounded Coach 与 RQ-103
 Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之前不实现假聊天 UI，也不把当前 Portal V1
 称为最终电影化成品。

@@ -4619,3 +4619,13 @@
   闭环与 unwanted-phenomena negative 已完成静态 preflight。
 - source remote HEAD 200 image/png/2,268,033B、local/expected SHA 一致；runner SHA `70332e...8406` parse 0 errors；
   retry1 output/status 均不存在。下一步先独立 commit/public gate，再 one POST/no retry。
+
+### 2026-08-26：Veo v5 one-task upstream failure
+
+- preflight `d57b026` / Actions `32951125621` 的 pytest、真实 PostgreSQL、Linux packaging 三 job 全绿。
+- 唯一 task `task_I5iJQDEiEOpZtsQCSOi3qELNTMFAk9Mw` one POST 创建；159 秒/100% 后 generic failed，无 output。
+- source/prompt/negative digest 与请求合同匹配；relay 接受 task，但没有足够证据区分 schema 语义与 upstream；
+  successful-output quality/method 保持 unknown/open。
+- `$19.712` 先扣后全额异步退款，钱包最终 `$67.01`；calls 6，production media 0。
+- 用户输入 Key 时父终端被误关是本地操作事故；子 runner 已 POST 后退出，未产生第二 POST；status 已按远端终态修正。
+- 下一步只关闭审计，不重发或换模型；需 task-id 诊断、transient 证据或新可证伪假设才重开调用。

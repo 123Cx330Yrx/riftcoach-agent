@@ -3356,3 +3356,11 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
   motion-only/单一场景/negative phenomena 收敛，并固定 locked/deep-focus/source-linework、3×3+三深度同时运动、
   八秒闭环、source/schema/runner/唯一路径门。
 - `CURRENT`：先独立 commit/push/exact-SHA 三 job；公共成功后 one POST/no retry。余额 ready 不得绕过内容门。
+
+## 2026-08-26：Veo spatial v5 无输出上游失败
+
+- `PUBLIC-PREFLIGHT`：`d57b026/32951125621` 三 job全绿。
+- `LIVE-UPSTREAM-FAILED`：唯一 task `task_I5...k9Mw` one POST，159s/100% generic failed；无 output，quality unknown。
+- `BILLING`：`$19.712` 预扣后同额异步退款，最终钱包 `$67.01`；calls 6、production media 0。
+- `INCIDENT`：本地父终端在用户输入后被误关，子 runner 已 POST 后退出；无第二 POST，status 按远端终态更正。
+- `CURRENT`：先公共关闭审计；不重发、不把失败归因 prompt/model/method、不立即换模型。

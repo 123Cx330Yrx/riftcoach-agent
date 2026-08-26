@@ -16,11 +16,10 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-26（Vidu audit 与 Veo refined v4 preflight 已由 `873421d` / Actions `32945327512`
-  exact-SHA 三 job 公共闭环；external video calls `5`、production media `0`。refined POST 的 403 已由 Dragon
-  通用日志证实为 `$15.008 < $19.712` 的预扣失败，task log 仍为原 4 项、无隐藏任务；用户充值后余额为
-  `$65.01`。RQ-130 又要求余额与提示词/请求双重 ready。当前唯一下一动作是先公共关闭 403 诊断与 v5
-  spatial-orchestration preflight，随后只执行一次 Veo first=last 计费请求。）
+- 最后更新：2026-08-26（Veo v5 paid-call preflight 已由 `d57b026` / Actions `32951125621` exact-SHA 三 job
+  公共闭环；唯一 task `task_I5...k9Mw` 随后 one POST 创建并在 159 秒/100% generic failed。无 output，故 v5/Veo/
+  first=last 质量 unknown；`$19.712` 已全额异步退款，钱包最终 `$67.01`。external video calls `6`、production
+  media `0`。当前唯一下一动作是先公共关闭本上游失败与本地终端事故审计；不重发、不跳模型。）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2796,3 +2795,13 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   remote HEAD 200 image/png/2,268,033 B 且 local SHA `8134c0...a06e` 匹配；`retry1` output/status 均不存在。
 - `NEXT`：先把本诊断与 v5 preflight 独立提交、推送并取得 exact-SHA 三 job；公共成功后才以唯一新路径、
   one POST/no retry 执行一次 refined Veo。不得用余额充足绕过 prompt gate，也不得自动重抽或切模型。
+- v5 preflight 已由 `d57b026c45993a41437a7fc4dd35cb2680445048` / Actions `32951125621` 三 job 全绿；
+  唯一 task `task_I5iJQDEiEOpZtsQCSOi3qELNTMFAk9Mw` one POST 创建，159 秒/100% 后以
+  `Generation failed: task processing failed` 终止。没有 output/result URL，v5 motion、Veo quality 与 first=last
+  方法质量保持 unknown。预扣 `$19.712` 已同额异步退款；最终钱包 `$67.01`。
+- 本地可见终端处理发生操作事故：父窗口在用户输入后被误关，子 runner 已成功 POST 但之后退出，status 曾停在
+  50%；没有第二次 POST，已按远端 task log 更正为 `failed/remote_terminal/100%/task_processing_failed`。
+  external video calls `6`，production media `0`。
+- `NEXT`：先独立提交/推送本 upstream failure 与 terminal incident audit 并取得 exact-SHA 三 job；不重发 v5，
+  不把无输出失败归因 prompt/model/method，不立即切 Seedance/Grok。只有 task-id 级诊断、transient 证据或新的
+  schema/transport 可证伪假设才能重开调用讨论。

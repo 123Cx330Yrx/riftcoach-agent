@@ -88,6 +88,10 @@ common log 证实为 `$15.008 < $19.712` 的预扣失败；充值后余额 `$65.
 v5 spatial-orchestration 的 official motion-only/单场景、locked/deep-focus、全空间 simultaneous motion、八秒
 闭环、negative phenomena、source/schema/runner/唯一路径必须先 exact-SHA 公共关闭，余额不能替代该门。
 
+v5 preflight 已由 `d57b026/32951125621` 三 job 公共关闭；唯一 task `task_I5...k9Mw` 159 秒/100% generic failed，
+无 output，`$19.712` 全额退款。Q10 当前 calls 6、production media 0；按 RQ-128 不评价 prompt/model/method，
+先关闭 failure/terminal incident audit。
+
 以下项目不是新增主阶段，而是进入对应阶段前必须具备的验收项：
 
 1. 阶段 5C：建立路由评测集，覆盖正例、负例、歧义、未支持请求和拒绝原因；
