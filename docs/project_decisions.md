@@ -2328,3 +2328,5 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - 本地终端误关是独立操作事故，影响轮询体验但没有创建第二 task；后续 Key runner 禁止按窗口句柄猜测并关闭。
 - audit 已由 `ac76f74/32952793297` exact-SHA 三 job 公共关闭。下一决策门只允许零成本 task-id/platform
   diagnosis packet；代表用户联系支持仍需发送时确认，不能把“继续开发”泛化为对外沟通授权。
+- 用户按 RQ-131 选择 Studio；QQ 视频管理员 support 草稿保持未发送。Studio 手动对照保持同一模型/source/
+  first+last/8s/1080p/16:9，合并单框 prompt、enhancement off；最终 19.71 按钮只由用户点击。

@@ -1612,3 +1612,7 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [next] upstream failure/terminal incident audit 独立 public gate；不重发、不跳模型，等待可证伪诊断证据。
   - [completed-public-audit] `ac76f74` / Actions `32952793297` 三 job exact-SHA 全绿。
   - [next] 零成本 task-id/platform diagnosis decision gate；只准备 body-free support packet，不代用户发送、不调用模型。
+  - [completed-local] body-free support packet 与 QQ 视频管理员未发送草稿已准备；用户选择不发送、改走 Studio。
+  - [requirement-recorded] RQ-131：Studio 手动同一 Veo 对照，由用户本人上传/最终点击；Codex 不代扣费。
+  - [prepared-user-action] Studio 已设 Veo Quality Official/首尾帧/8s/1080p/16:9/enhancement off；自动上传失败且
+    0/2、calls unchanged。下一步用户按 handoff 上传同一 v2 两次、粘贴 prompt 并本人生成。

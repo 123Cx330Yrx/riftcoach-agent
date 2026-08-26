@@ -4631,3 +4631,6 @@
 - 下一步只关闭审计，不重发或换模型；需 task-id 诊断、transient 证据或新可证伪假设才重开调用。
 - audit `ac76f74/32952793297` 三 job exact-SHA 全绿；当前下一动作收敛为零成本 task-id/platform diagnosis
   decision gate。可先准备 body-free support packet，但代表用户发送给 Dragon 前必须单独确认。
+- support packet 与 QQ 视频管理员私聊草稿已准备但未发送；用户选择 Studio，故保持未发送。
+- Studio 已预设 Veo 3.1 Quality Official、首尾帧、8s、1080p、16:9、enhancement off、预计 19.71；Chrome
+  file chooser 因扩展 file URL permission 未捕获，确认 0/2、无上传/调用。RQ-131 改由用户按手动 handoff 操作。

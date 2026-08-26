@@ -3366,3 +3366,5 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `CURRENT`：先公共关闭审计；不重发、不把失败归因 prompt/model/method、不立即换模型。
 - `PUBLIC-CLOSED`：`ac76f74/32952793297` 三 job 全绿；下一项为 zero-cost task-id/platform diagnosis decision
   gate，只准备 body-free packet，不自动联系支持或产生新调用。
+- `RQ-131`：support packet/QQ 草稿已准备但未发送；用户选择 Studio 手动生成。参数保持同一 Veo/v2 first+last/
+  8s/1080p/16:9/v5 目标，enhancement off；用户本人上传/点击 19.71 生成。自动 upload 失败时不改权限或替用户扣费。
