@@ -2486,3 +2486,7 @@ C′ 本地材质 proof 通过结构/覆盖的机器门，但人工审查认为�
 Kling v3 Omni image-reference comparator 已完成专用 schema/prompt/价格 preflight：`std/720p`、8s、16:9、
 audio off、`metadata.image_list` + `<<<image_1>>>`，预计 ¥3.696。未调用、未上传旧视频；下一步只做一次
 页面/账户 readback，结果仍须通过 source/seam/全幕运动和人工视觉门。
+
+Kling image-only 实际 task 已完成但拒绝：source-first `0.860618`，左 Rift 变成厚塑料圆环，中央强光柱，右场与
+整体环境近乎静止。该结果不证明 Kling reference-video/Omni 多模态模式无效，但证明不应再为 image-only prompt
+付费；下一步必须先核对 temporal/reference-video 输入能否获得、费用和隐私边界，再决定候选。

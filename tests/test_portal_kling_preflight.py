@@ -12,9 +12,9 @@ PROMPT = ASSETS / "portal-motion-brief-kling-v3-omni-b1.txt"
 SOURCE_SHA = "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e"
 
 
-def test_kling_preflight_is_image_only_and_not_paid() -> None:
+def test_kling_execution_receipt_is_image_only_and_rejected() -> None:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    assert manifest["status"] == "prepared"
+    assert manifest["status"] == "executed-rejected"
     assert manifest["candidate"] == "kling-v3-omni-image-reference-b1"
     assert manifest["request"] == {
         "model": "kling-v3-omni",
@@ -34,8 +34,9 @@ def test_kling_preflight_is_image_only_and_not_paid() -> None:
     assert manifest["references"]["image1"]["sha256"] == SOURCE_SHA
     assert manifest["preflight_gates"]["video_reference_used"] is False
     assert manifest["preflight_gates"]["price_readback_verified"] is True
-    assert manifest["preflight_gates"]["paid_call_authorized"] is False
-    assert manifest["preflight_gates"]["post_attempts_observed"] == 0
+    assert manifest["preflight_gates"]["paid_call_authorized"] is True
+    assert manifest["preflight_gates"]["execution_verdict"] == "research-candidate-rejected"
+    assert manifest["preflight_gates"]["post_attempts_observed"] == 1
 
 
 def test_kling_prompt_digest_and_placeholder_are_bound() -> None:

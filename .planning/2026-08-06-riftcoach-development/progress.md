@@ -4798,3 +4798,10 @@
 - runner parse 0 error、唯一 POST 1；当前未上传旧视频、未调用 Kling、未扣费，等待页面/账户 readback。
 - `cc35fae` / Actions `33098493865` 的 pytest、真实 PostgreSQL migrations、packaging-smoke 三 job 已全部成功，
   Kling preflight 公共闭环，仍保持 post observed 0。
+
+### 2026-08-28：Kling v3 Omni image-only result
+
+- Kling 只 POST 一次并成功下载（task `task_7iQRNXGQRrnbk1KdW6WYDpG1dRSoZHC0`，output SHA
+  `3eb0720c1b80d02ab43f8975f765c0444b1dd40239fad4fe5bfe43ff483c7fc6`）；首帧 source SSIM `0.860618`。
+- 左 Rift 变成廉价厚环，中心强光柱，右场/环境静止；按 source/full-scene/人工门 rejected。下一步停止 image-only，
+  只评估 reference-video/多模态控制或其他模型 preflight。

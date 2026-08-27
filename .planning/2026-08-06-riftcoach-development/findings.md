@@ -4529,3 +4529,10 @@
 - 价格页当前为 ¥0.462000/s，8 秒约 ¥3.696。专用 prompt/runner digest 已静态验证；没有外部 POST，等待页面/账户
   readback 后再决定是否执行一次模型对照。
 - `cc35fae` / Actions `33098493865` exact-SHA 三 job 全绿；该公共门只证明请求合同可重建，不改变未调用/未扣费状态。
+
+## 2026-08-28：Kling image-only 失败归因
+
+- Kling image-only 技术链成功，但 source-first `0.860618`，左区 MAD `0.018846` 远高于 center/right
+  `0.007312/0.006353`；视觉是厚塑料圆环 + 中央亮柱，右侧和环境没有持续运动。
+- 这次说明“换模型”本身不够：只给静态图时，Kling 仍选择显著主体重绘来制造 motion。下一候选必须提供真正的
+  temporal/reference-video 控制，或转入新的可控制片路线；不再重复同类 image-only prompt。

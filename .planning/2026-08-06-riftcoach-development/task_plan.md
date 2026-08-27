@@ -1721,6 +1721,13 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [completed-public-preflight] `cc35fae` / Actions `33098493865` 三 job exact-SHA 全部成功；Kling 仍未调用，等待
   用户在本机输入 Key 后执行一次 runner。
 
+## Kling image-reference result / next method gate (2026-08-28)
+
+- [completed-live-rejected] Kling v3 Omni image-only one POST task `task_7iQRNXGQRrnbk1KdW6WYDpG1dRSoZHC0`；
+  source-first `0.860618`，左圆环主导、右场/环境静止，candidate rejected，calls 14，production media 0。
+- [next-method-gate] 停止 Kling image-only 抽卡；评估 reference-video/多模态模式的 URL/隐私/费用/schema 控制，或
+  另一支持视频参考的模型。未完成新 preflight 前不付费。
+
 ## RQ-142 method fault split (2026-08-28)
 
 - [completed-local-review] 对 v3/v4、即梦 Smart Edit、C-line proof 与 T/X sibling 做同口径比较；结论为 prompt

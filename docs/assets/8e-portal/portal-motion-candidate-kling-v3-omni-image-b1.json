@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "status": "research-candidate-rejected",
+  "candidate": "kling-v3-omni-image-reference-b1",
+  "external_video_calls_total_after_run": 14,
+  "task_id": "task_7iQRNXGQRrnbk1KdW6WYDpG1dRSoZHC0",
+  "model": "kling-v3-omni",
+  "transport": "DragonAPI",
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e"
+  },
+  "request": {
+    "prompt_path": "docs/assets/8e-portal/portal-motion-brief-kling-v3-omni-b1.txt",
+    "prompt_sha256": "eeae44fdf85b5dbf8092d818ea4b5981543bece7f3f249d71432e37feff4df05",
+    "model": "kling-v3-omni",
+    "mode": "std",
+    "input_mode": "single_image_reference",
+    "duration_s": 8,
+    "aspect_ratio": "16:9",
+    "resolution": "720p",
+    "audio": false,
+    "post_attempts": 1,
+    "recovery_post_attempts": 0
+  },
+  "output": {
+    "path": "repo-excluded:tmp/riftcoach-task5-video-bakeoff/dragon-kling-v3-omni-image-b1.mp4",
+    "sha256": "3eb0720c1b80d02ab43f8975f765c0444b1dd40239fad4fe5bfe43ff483c7fc6",
+    "bytes": 4692815,
+    "duration_s": 8.041667,
+    "frames": 193,
+    "width": 1280,
+    "height": 720,
+    "fps": 24,
+    "codec": "h264-main",
+    "pixel_format": "yuv420p",
+    "audio": false
+  },
+  "measurements": {
+    "source_to_first_ssim": 0.8606182191,
+    "source_to_first_mad": 0.0268494952,
+    "first_to_last_ssim": 0.9635798254,
+    "first_to_last_mad": 0.0165944789,
+    "motion_mad_every_0_5s": {
+      "left": 0.0188463532,
+      "center": 0.0073116721,
+      "right": 0.0063530554
+    },
+    "motion_mad_every_0_5s_depth": {
+      "near": 0.0075556104,
+      "mid": 0.0136094187,
+      "far": 0.0113272801
+    }
+  },
+  "visual_review": {
+    "passed": [
+      "task completed and downloaded as browser-playable H.264/yuv420p/no-audio",
+      "large architectural composition is broadly stable without a major camera push"
+    ],
+    "failed": [
+      "source identity fails: the left Rift becomes a thick synthetic cyan torus from the first frame",
+      "left motion dominates as a plastic ring rather than layered spatial fluid depth",
+      "central crystal/column becomes a harsh bright beam instead of restrained internal refraction",
+      "right constellation and terrain remain mostly static except for sparse star twinkles",
+      "roads, architectural seams, reflections and near/mid/far environment do not form continuous full-scene motion",
+      "warm-gold points become bright decorative stars and the overall treatment reads cheap rather than premium"
+    ],
+    "user_verdict": "rejected: image-only Kling mode changes the source identity and still fails whole-scene motion"
+  },
+  "next_gate": "reference-video-mode-or-new-model-preflight",
+  "production_media": false
+}

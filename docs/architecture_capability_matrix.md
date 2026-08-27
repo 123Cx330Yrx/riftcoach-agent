@@ -394,3 +394,6 @@ Kling v3 Omni 单图片引用模式，待专用 schema/prompt/价格 preflight�
 
 Kling v3 Omni image-reference comparator 的专用 schema/prompt/价格 preflight 已固定：`std/720p`、8s、16:9、
 audio off、`metadata.image_list` + `<<<image_1>>>`，预计 ¥3.696。未调用、未上传旧视频，等待页面/账户 readback。
+
+Kling image-only 结果已拒绝：source-first `0.860618`，左圆环/中央亮柱主导，右场与环境不活跃；Task 5 calls `14`，
+production media `0`。停止 image-only 抽卡，下一门评估 reference-video/多模态控制或其他模型，先过 preflight。

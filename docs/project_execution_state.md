@@ -3009,3 +3009,15 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   `production_media=false` 保持不变。下一步仍需页面/账户实际 readback 后再决定是否调用。
 - `cc35fae` / Actions `33098493865` 的 exact-SHA pytest、真实 PostgreSQL migrations、packaging-smoke 三 job
   已全部成功；Kling preflight 公共证据闭环，尚未创建 task。
+
+### 2026-08-28：Kling v3 Omni image-reference 结果审查
+
+- Kling image-only task `task_7iQRNXGQRrnbk1KdW6WYDpG1dRSoZHC0` 只 POST 一次并下载成功，输出 SHA
+  `3eb0720c1b80d02ab43f8975f765c0444b1dd40239fad4fe5bfe43ff483c7fc6`；8.041667s、1280×720、24fps、
+  H.264/yuv420p、无音轨，Task 5 calls 累计为 `14`，production media 仍为 `0`。
+- source→first SSIM `0.860618`，left/center/right 每 0.5s MAD `0.018846/0.007312/0.006353`；视觉上左 Rift
+  变成厚重塑料感圆环，中央强光柱，右场和整体环境近乎静止，暖金星点也偏装饰化。
+- 裁决为 `research-candidate-rejected`：Kling image-only 仍不能保持母图身份或实现全幕持续运动；这不是编码/下载
+  问题，也不证明 Kling 所有参考模式的能力上限。
+- `NEXT`：停止 image-only 抽卡；先评估真正的 reference-video/多模态模式（包括视频 URL 获取、隐私/费用、schema
+  和可控性），或在明确证据下选择其他支持视频参考的模型；未完成 preflight 前不再付费。
