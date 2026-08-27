@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "status": "prepared",
+  "candidate": "kling-v3-omni-image-reference-b1",
+  "purpose": "single controlled comparator preflight; no generation receipt",
+  "mode": "Kling v3 Omni image reference",
+  "references": {
+    "image1": {
+      "role": "immutable visual identity anchor",
+      "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+      "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e",
+      "image_list_index": 1
+    }
+  },
+  "request": {
+    "model": "kling-v3-omni",
+    "mode": "std",
+    "input_mode": "single_image_reference",
+    "duration_s": 8,
+    "aspect_ratio": "16:9",
+    "resolution": "720p",
+    "audio": false,
+    "prompt_path": "docs/assets/8e-portal/portal-motion-brief-kling-v3-omni-b1.txt",
+    "prompt_chars": 1833,
+    "prompt_sha256": "eeae44fdf85b5dbf8092d818ea4b5981543bece7f3f249d71432e37feff4df05",
+    "prompt_placeholders": ["<<<image_1>>>"]
+  },
+  "pricing_readback": {
+    "source": "https://docs.dragon3api.com/pricing-data.js?v=20260824-toapis-sync",
+    "billing": "按秒",
+    "unit_price_cny_per_s": 0.462,
+    "quoted_duration_s": 8,
+    "quoted_total_cny": 3.696,
+    "readback_date": "2026-08-28",
+    "price_note": "pricing page lists Kling v3 Omni 720p/1080p at ¥0.462000/s; actual charge follows platform receipt"
+  },
+  "control_contract": {
+    "baseline_from_first_frame": true,
+    "regions": ["left_rift", "center_crystal_column", "right_constellation_terrain", "road", "architecture", "reflections", "near_mid_far_air"],
+    "central_swell_window_s": [4.5, 6.5],
+    "central_swell_local_only": true,
+    "platform_geometry_immutable": true,
+    "right_side_independently_active": true,
+    "camera_locked": true,
+    "loop_recovery_window_s": [7.0, 8.0]
+  },
+  "preflight_gates": {
+    "source_sha_verified": true,
+    "video_reference_used": false,
+    "video_reference_not_required": true,
+    "prompt_digest_verified": false,
+    "placeholder_order_verified": true,
+    "schema_readback_verified": true,
+    "price_readback_verified": true,
+    "paid_call_authorized": false,
+    "image2_used": false,
+    "production_media": false,
+    "post_attempts_planned": 1,
+    "post_attempts_observed": 0
+  },
+  "stop_conditions": [
+    "do not submit before final prompt digest and visible input/price readback",
+    "one POST only if later authorized; no automatic retry",
+    "reject camera drift, source redraw, central platform dome/pool, frozen right field, fog-only motion or HUD lines",
+    "keep output research-only until source/seam/codec and human full-scene review pass"
+  ]
+}

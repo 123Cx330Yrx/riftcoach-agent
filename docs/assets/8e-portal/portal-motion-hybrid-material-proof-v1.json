@@ -57,6 +57,6 @@
     ],
     "user_verdict": "rejected: engineering control is useful, but visual impact and material naturalness are insufficient"
   },
-  "next_gate": "kling-v3-omni-reference-video-image-preflight",
+  "next_gate": "kling-v3-omni-image-reference-preflight",
   "production_media": false
 }

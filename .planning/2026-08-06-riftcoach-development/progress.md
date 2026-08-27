@@ -4789,4 +4789,4 @@
 
 - C′ 已渲染并审查：left/center/right 0→4s 变化均衡、结构和编码通过，但视觉运动太轻且 mask 边界有贴层风险，
   按用户目标 rejected；不继续调 opacity/位移。
-- 依据“失败后先归因再换方法”原则，下一候选改为 Kling v3 Omni 参考视频+参考图，不复用 Seedance/Smart Edit prompt。
+- 依据“失败后先归因再换方法”原则，下一候选改为 Kling v3 Omni 单图片引用，不复用 Seedance/Smart Edit prompt。

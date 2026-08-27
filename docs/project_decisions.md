@@ -2480,5 +2480,5 @@ B1 页面 readback 当前受浏览器扩展超时阻塞：即梦标签可发现�
 
 C′ 本地材质 proof 通过结构/覆盖的机器门，但人工审查认为运动过轻、source-pixel mask 边缘有贴层风险，不能
 满足 Portal 的明显、cool、整幕呼吸目标；因此不再提高 opacity/位移追绿。B1 与已执行 Smart Edit 形态重复，
-也不再付费复跑。下一候选改评估 Kling v3 Omni 的参考视频+参考图模式，必须使用其专用 `video_list` 与
-`metadata.image_list` 占位符和 prompt，先过 schema/价格/source/单次调用 preflight。
+也不再付费复跑。下一候选改评估 Kling v3 Omni 的单图片引用模式，使用其专用 `metadata.image_list` 与
+`<<<image_1>>>` 占位符和 prompt，先过 schema/价格/source/单次调用 preflight。

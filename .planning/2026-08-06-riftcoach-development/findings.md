@@ -4518,5 +4518,5 @@
 
 - C′ 的 192 帧结果在指标上均衡，但人工观看仍偏静态，source-pixel displacement 的区域边界存在 ghosting 风险；
   这解释了为什么“全区有 MAD”仍不等于 MotionSites 类全幕动效。
-- C′ 保留为工程参考，不进入 runtime；下一候选采用 Kling v3 Omni 的参考视频+参考图模式，并为该模型重写
-  placeholder prompt，避免把 Seedance/Smart Edit 的语义直接搬过去。
+- C′ 保留为工程参考，不进入 runtime；下一候选采用 Kling v3 Omni 的单图片引用模式，并为该模型重写
+  `<<<image_1>>>` placeholder prompt，避免把 Seedance/Smart Edit 的语义直接搬过去。

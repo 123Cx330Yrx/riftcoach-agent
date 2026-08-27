@@ -1706,8 +1706,8 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 
 - [completed-local-rejected] C′ 192 帧 proof 结构和覆盖可控，但视觉太轻且有 mask ghosting 风险；audit
   `portal-motion-hybrid-material-proof-v1.json` 保存，production media 0。
-- [decision] 不再重复 Smart Edit B1；改评估 Kling v3 Omni reference-video + reference-image 模式，按其专用
-  placeholder/schema 重写 prompt。
+- [decision] 不再重复 Smart Edit B1；改评估 Kling v3 Omni image-reference 模式，按其专用
+  `metadata.image_list` / `<<<image_1>>>` schema 重写 prompt，不上传旧视频。
 - [next] 冻结 Kling source/prompt/schema/price/one-call preflight，未通过前不上传、不付费。
 
 ## RQ-142 method fault split (2026-08-28)

@@ -79,4 +79,4 @@ Smart Edit 已经有一次真实 coverage 证据，但 source/seam 失败；B1 �
 
 这不是“C′ 完全没用”：它保留了母图锁定、确定性 clock、reduced-motion 和可验证结构门的工程资产；但它不
 能作为 Portal 的主运动层，也不继续通过加大 opacity/位移追求更强视觉。下一候选改用中转站 `Kling v3 Omni`
-的参考视频 + 参考图模式，让模型负责有机材质和全幕运动；仍保留母图/Video1/source/seam/codec 人工门。
+的单图片引用模式，让模型负责有机材质和全幕运动；本轮不上传旧视频，仍保留母图/source/seam/codec 人工门。

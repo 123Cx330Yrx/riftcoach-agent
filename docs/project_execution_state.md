@@ -2993,7 +2993,7 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 
 - C′ 已完成 192 帧本地 proof：结构、全区覆盖和技术编码可控，但正常观看下运动过轻、source-pixel mask 有贴层
   风险，正式标为 `research-proof-rejected`；不再通过 opacity/位移追绿，也不接 runtime。
-- 下一候选切到中转站 `Kling v3 Omni` 的参考视频 + 参考图模式：Video1 作为 motion/reference anchor，v2 母图
-  作为 image identity anchor，按该模型的 `video_list` / `metadata.image_list` schema 编写专用 prompt；不复用
-  Seedance prompt，不把 B1 Smart Edit 重跑。
+- 下一候选切到中转站 `Kling v3 Omni` 的单图片引用模式：只传 v2 母图作为 image identity anchor，按该模型的
+  `metadata.image_list` + `<<<image_1>>>` schema 编写专用 prompt；不上传旧视频、不复用 Seedance prompt，
+  不把 B1 Smart Edit 重跑。
 - `NEXT`：先完成 Kling v3 Omni 的价格/schema/source/prompt/唯一调用 preflight；未过门前不上传、不付费。
