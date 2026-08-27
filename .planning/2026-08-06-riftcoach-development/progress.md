@@ -4743,3 +4743,13 @@
   reflections/clouds/air must move continuously from frame 1; the burst is a restrained 2–3 second central vertical
   pulse that gently excites the crystal and returns to baseline; no cross-frame straight-line network, HUD-like drawing,
   white exposure spike or burst-only right-side activity. Next action is brief/contract revision, not blind regeneration.
+
+### 2026-08-27：v4 source-side contract / no-cost preflight
+
+- 将 v3 的错误时序拆开：常驻基础层从首帧起让左 Rift、道路下方、中央水晶/平台、右星图/地形与
+  near/mid/far 环境持续运动；中央事件只保留 4.5–7.0 秒的圆润纵向呼吸，不再写跨画面汇聚或连线。
+- prompt 已落盘并完成 SHA 绑定；v4 runner 从仓库读取 prompt、校验 digest、固定 source SHA 和
+  `adaptive/720p/12s/first-only/audio-off`，静态解析 0 error 且只存在一个 POST 调用点。未运行 runner，
+  未读取 Key，未创建远端 task。
+- Image2 刻意跳过：已有两张稿只证明调色/提亮，不能回答时间编排问题；只有未来出现静态遮挡/反射 Bad Case
+  才做功能性同构 keyframe。当前等待付费调用门，不把 v4 预检误写为视频质量证据。

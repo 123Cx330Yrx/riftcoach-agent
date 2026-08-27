@@ -1664,3 +1664,14 @@ Task 5 的下一门改为静态方向验证：不沿用现有视频，先恢复 
 `material-breathing`、`depth-separation`、`energy-routing` 三张 preview；随后冻结首帧版
 source-side brief，再决定是否允许一次视频 preflight。该门完成前不接 runtime、不切 GLM Provider，
 也不进入 Account/Coach/8F。
+
+## RQ-141 v4 contract preflight (2026-08-27)
+
+- [completed-local-contract] 依据 v3 视觉复核把 prompt 改为两层：从首帧持续的全局基础运动 + 仅中央轴的
+  4.5–7.0 秒低幅呼吸；明确道路/Rift 下方和右侧独立运动不得延迟，不使用跨画面 `gather/travel/circuit`。
+- [completed-local-preflight] `portal-motion-brief-v4.txt` SHA `56ce81b8d508ae67edacfde6c1d846b9555d59ca0e9fafb80af3b88fd311620d`；
+  v4 runner parser 0 error、唯一 POST 路径 1，runner SHA `83cfd961633ad25d058a2c4bd34f6b51b42943017bcd4db6e5bf0bf854f7100c`。
+  manifest 固定 source SHA、12s/adaptive/720p/first-only/audio-off，记录 post observed 0、Image2 未使用和
+  production media 0。
+- [waiting-paid-call-gate] 不在本批调用 API、不读取 Key、不切模型、不接 runtime；下一动作是用户明确允许后重新
+  readback 价格/字段并只执行一次 v4 生成，失败不自动重试。

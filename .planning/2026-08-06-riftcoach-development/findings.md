@@ -4468,3 +4468,13 @@
 - 下一 brief 应拆成常驻基础层和小幅事件层：常驻层从首帧起持续让道路、裂隙下方、右侧星尘/地形、建筑接缝、
   地面反射、云和空气有独立的中等幅度运动；事件层只在中段约 2–3 秒沿中央垂直轴上行/下行，轻柔激发水晶并
   平滑回到基线。禁止跨画面直线联动、过曝白闪、burst-only 右侧和把同心环当作 Rift 深度。
+
+## 2026-08-27：v4 brief 的可证伪修订
+
+- 失败原因更像是语义编排而非“模型不会动”：`gather/travel/circuit` 会把场景关系具象化为穿屏光线，
+  “burst”也容易被实现为一次白闪。因此 v4 使用“每个观察点已经在动”的正向陈述，并把事件命名为
+  `gentle central breathing swell`，限定在已有水晶垂直轴。
+- 评审顺序固定为 baseline coverage → three-region balance → near/mid/far material motion → central swell
+  locality → phase recovery → source/seam/codec。这样不会再用一处明显闪光掩盖道路、右场或环境静止。
+- Image2 不是本轮必要工具：静态变色稿不能提供时序证据，继续调用只会增加成本和 source drift 风险；若有明确
+  occlusion/reflection 表达问题，再单独提出受限同构 keyframe 假设。

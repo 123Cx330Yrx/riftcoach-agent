@@ -359,3 +359,8 @@ module execution。新 exact-SHA Linux job 成功前，A14/Q09 仍不能升级�
 中央 burst 过曝且出现横向穿屏线、右场在 burst 外近乎静止、near/mid/far 缺少持续呼吸。该样本只保留为
  research evidence，Task 5 external video calls 累计 `12`，production media 仍为 `0`；下一步先修订常驻基础运动 + 中央纵向低幅 burst 合同，不付费
 重抽、不接 runtime、不据此否定模型。
+
+2026-08-27 Q10/RQ-141 v4 preflight：已将源侧 brief 固定为“首帧即持续的 left/center/right 与 near/mid/far
+基础运动 + 4.5–7.0 秒中央局部低幅呼吸”，删除易诱发穿屏连线的关系动词；prompt/manifest/runner digest 与
+PowerShell parse/唯一 POST 静态门均通过。当前实际 POST 仍为 `0`，Image2 未使用，production media 仍为 `0`；
+需用户明确允许并重新 readback 价格/字段后才可生成，且不降低 source/seam/全幕运动人工门。

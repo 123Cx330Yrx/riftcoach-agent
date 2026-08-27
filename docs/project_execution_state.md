@@ -2917,3 +2917,19 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - RQ-141 已追加：基础运动必须从首帧持续；burst 改为中央上下贯穿、低幅、约 2–3 秒的呼吸式蓄放，
   只轻柔激发水晶，不用跨画面直线、HUD、过曝或全局闪白；右场、道路、环境层在 burst 前后均保持独立且
   同级可感知运动。v3 不进入 runtime，下一动作是 source-side brief/合同修订，不立即重抽或换模型。
+
+### 2026-08-27：RQ-141 v4 source-side contract preflight
+
+- v4 已完成无成本 source-side 修订：常驻基础层从首帧开始，左 Rift、中央水晶/平台、右星图/能量场和
+  near/mid/far 环境全程同时保持可感知运动；中央事件改为约 4.5–7.0 秒的低幅、圆润、局部纵向呼吸，
+  不再使用容易诱发跨画面连线的 `gather/travel/circuit` 编排。
+- 正向 brief 已固定在 `docs/assets/8e-portal/portal-motion-brief-v4.txt`，SHA-256
+  `56ce81b8d508ae67edacfde6c1d846b9555d59ca0e9fafb80af3b88fd311620d`；请求 manifest 为
+  `docs/assets/8e-portal/portal-motion-preflight-v4.json`。repo 外 runner 已静态解析为 0 个 PowerShell
+  parser error、唯一 POST 路径 1，runner SHA 为
+  `83cfd961633ad25d058a2c4bd34f6b51b42943017bcd4db6e5bf0bf854f7100c`。
+- 当前 v4 实际 POST 仍为 `0`，价格/余额/请求 readback 尚未执行，`image2_used=false`；Image2 本轮不调用，
+  因为现缺口是时间编排而非静态材质。production media 继续为 `0`，不改 runtime。
+- `NEXT`：若用户明确允许下一次付费生成，先重新 readback 价格、schema、源图 SHA 与 prompt digest，随后只
+  运行 v4 一次；无授权不弹 Key/不 POST。生成后必须独立审查 source identity、三大区与 near/mid/far 全幕
+  运动、loop seam、编码和人工视觉，再决定是否采用。

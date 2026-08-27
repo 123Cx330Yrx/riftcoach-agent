@@ -1,7 +1,7 @@
 # 8E Portal Motion Direction Revision（静态方向与参考模式门）
 
-状态：`preview-generated / direction-rejected`。本文件只冻结下一轮设计与
-提示词方向，不把任何新图或视频标为 production media。
+状态：`contract-revised / preflight-prepared / waiting paid-call gate`。本文件只冻结下一轮
+设计与提示词方向，不把任何新图或视频标为 production media。
 
 ## 1. 本轮纠正
 
@@ -85,3 +85,28 @@ Keep the image crisp, deep-focus, stable and premium. No camera pan/zoom/dolly/o
 
 Image2 现在可用，但只在发现静态材质/遮挡/反射需要额外沟通时做有针对性的同构 preview；它不能替代这份
 时序 contract，也不应因为可用就自动生成新图。该 v4 草案尚未获得新的付费调用授权。
+
+## 6. v4 source-side contract 与无成本 preflight（2026-08-27）
+
+v3 的失败不是“没有动效”，而是动效被模型排成了错误的时序：基础环境直到事件才出现，左 Rift 被
+具象化为硬同心环，中央事件变成白闪/穿屏线，右场在事件外几乎冻结。v4 因此把“常驻基础层”和
+“中央事件层”明确分离，并且避免 `gather / travel / circuit` 这类容易诱发跨画面连线的动词。
+
+- 正向 prompt 已落盘到 `docs/assets/8e-portal/portal-motion-brief-v4.txt`（UTF-8，SHA-256
+  `56ce81b8d508ae67edacfde6c1d846b9555d59ca0e9fafb80af3b88fd311620d`）。它要求每个 0.5 秒观察点都能看到
+  左/中/右和 near/mid/far 的常驻运动；道路与 Rift 下方从第一帧就有低幅流；右侧独立活跃；中央只做
+  4.5–7.0 秒的圆润纵向呼吸，不沿道路或连接左右。
+- 请求/安全/边界 manifest 已落盘到 `docs/assets/8e-portal/portal-motion-preflight-v4.json`。它固定
+  v2 母图 SHA、Seedance 2.5、`adaptive`、720p、12 秒、首帧单锚点、无音频、只允许一次 POST、
+  `production_media=false` 与 `image2_used=false`；同时记录当前实际 POST 仍为 `0`，价格必须重新 readback。
+- repo 外 v4 runner 已做静态解析：PowerShell `parse_errors=0`、唯一 POST 路径为 1，且运行前会重新读取
+  prompt 并校验上述 digest；runner SHA 为
+  `83cfd961633ad25d058a2c4bd34f6b51b42943017bcd4db6e5bf0bf854f7100c`。它尚未运行、不会自动读取或保存
+  API Key，也没有创建 v4 task。
+- Image2 本轮刻意不调用：当前缺口是 temporal choreography，不是静态材质无法表达；此前 Image2 结果只是
+  调色/提亮稿，不能为 v4 提供可靠运动证据。若后续出现具体的遮挡或反射表达 Bad Case，再单独做一张
+  功能性同构 keyframe，而不是替换母图。
+
+本批只完成 source-side contract 与 no-cost preflight。只有在用户明确允许下一次付费生成、且重新读回
+价格/余额/请求字段后，才运行 v4 runner 一次；失败不自动重试，成功也必须先过 source identity、全幕
+运动分布、loop seam、编码和人工视觉门，才能讨论 runtime 采用。
