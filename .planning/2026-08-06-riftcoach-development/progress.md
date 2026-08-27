@@ -4723,3 +4723,9 @@
   and was not retried. No video request was made.
 - Next action: review the two previews against the exact mother SHA, then decide whether a single first-frame video
   preflight is justified; do not treat either preview as a new master or runtime asset.
+- Review result: both previews are effectively color/brightness variants and fail the intended static motion-direction gate;
+  keep the exact mother as the only source and do not spend another Image2 request until a non-color-changing edit brief is
+  explicitly prepared.
+- RQ-140 now allows skipping Image2 entirely. Added a first-frame-only regeneration preflight with a shorter positive
+  motion brief and bounded negative brief; current state is prepared, waiting for model/price/source readback before one
+  video call.

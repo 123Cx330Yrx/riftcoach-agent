@@ -4451,3 +4451,8 @@
   references. This is a multi-reference generation surface, not evidence of strict source-preserving video edit.
 - Recommended next method is first-frame-only generation from the confirmed mother image, with continuous in-scene
   near/mid/far + left/center/right motion and no camera drift. Static Image2 direction previews must precede any paid call.
+- Visual review of Image2 variants 1/2 found mostly brightness/contrast/blue-light grading rather than meaningful material,
+  occlusion, reflection or phase changes. They are rejected as motion-direction evidence; no third retry after the balance
+  403.
+- User allowed skipping Image2. The next candidate therefore returns to a source-only first-frame video request with a
+  shorter positive brief, avoiding the previous over-dense timeline/negative wording that may have suppressed motion.

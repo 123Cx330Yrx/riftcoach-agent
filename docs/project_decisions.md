@@ -2398,3 +2398,15 @@ GLM-5.3/Flash adoption 才作为下一高优先横向批恢复；不能在当前
 左 Rift/中央原水晶/右星场的几何和构图。即梦“全能参考”是多参考融合入口，不是严格 Video1 edit；下一次
 校正 A comparator 采用首帧单锚点，首尾帧不作为默认模式，因为当前同图首尾实验同时暴露 source redraw、
 阶段性 burst 和 seam 风险。Image2 代理不可达时保持等待，不改用未经用户选择的替代接口。
+### RQ-139：Image2 预览不是调色验收
+
+Image2 两张母图编辑稿经用户复核后只表现为亮度/对比度/蓝光变化，未证明裂隙、道路反射、水晶折射、右侧星图
+和 near/mid/far 空气层的景内状态变化。故两张均标为 `direction-rejected`，确认母图仍是唯一 source；第三次
+请求因余额不足不重试。下一次静态预览若继续进行，必须保持全局色调与几何，仅改变可供 I2V 理解的材质、遮挡、
+反射和相位状态。
+### RQ-140：skip Image2、prepare first-frame regeneration
+
+用户允许跳过 Image2 静态稿，直接准备新视频生成。下一候选不沿用现有视频，不用首尾帧和全能参考，只把确认
+母图作为首帧单锚点；prompt 改为短的正向 motion brief，强调 steady/continuous、三大区与 near/mid/far
+同时运动，negative 只保留 camera drift、重绘、局部闪烁、雾层伪全局和交付破坏项。先完成页面参数、价格、
+source SHA 和 prompt readback，再恰好一次调用；不自动重试。
