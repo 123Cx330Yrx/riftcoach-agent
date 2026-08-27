@@ -4437,3 +4437,15 @@
 - 失败任务先扣 `$19.712` 后同额退款；钱包最终 `$67.01`。计费事实不能把 generic failure 细化成模型质量。
 - 终端事故的根因是用进程窗口句柄判断可见性并在用户输入竞态中关闭父进程；后续不能在 prompt 窗口可能被用户
   操作时自动关闭。远端 task 与账单页优先于停在 50% 的本地 status；status 只能按同一 task body-free 更正。
+### 2026-08-27：Portal motion direction revision
+
+- Public run `33042204532` for the prior audit/evidence SHA is green; this closes the mechanical evidence batch, not the
+  visual adoption decision.
+- AutoGLM generated three concept images successfully, but all are preview-only: one has a full-width title/watermark,
+  one overemphasizes the crystal and warm orbital lines, and one splits the scene into literal red/blue halves. None is a
+  valid Portal mother or I2V source.
+- Image2 credentials are present but configured proxy `127.0.0.1:7890` is not listening; no Image2 call was made.
+- Official JiMeng current page readback shows a Seedance 2.5 `全能参考` input accepting up to 50 mixed image/text/audio/video
+  references. This is a multi-reference generation surface, not evidence of strict source-preserving video edit.
+- Recommended next method is first-frame-only generation from the confirmed mother image, with continuous in-scene
+  near/mid/far + left/center/right motion and no camera drift. Static Image2 direction previews must precede any paid call.

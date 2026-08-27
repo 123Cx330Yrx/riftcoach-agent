@@ -16,14 +16,12 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-27（Dragon v6.1 edit 的 task 前 400 diagnosis、豆包 comparator 与即梦 preflight 已本地
-  持久化；official 即梦 `Seedance 2.5 / 智能编辑` 随后完成一次有效 Video1+Image1+三时间戳帧标注调用。实际
-  compact prompt 与 1,439-char design prompt 已分开登记；raw SHA `4d3660b...155b` 的 locked-camera、三大区和
-  九宫格运动方向有希望，但 v2→first `0.889072 < 0.95`、seam DSSIM `0.046536 > 0.03`，且含 AAC/非 fixed-24。
-  零费用 FFmpeg 后处理修复 fixed-24/no-audio/BT.709/bytes，最佳 J seam `0.042684` 仍 fail 且 source identity
-  降至 `0.849216`。有效 video calls 现为 `11`、production media `0`。执行发生在本证据批 exact-SHA 公共闭环
-  之前的顺序偏差已披露。当前唯一下一动作是完成 result/audit 与既有 diagnosis/preflight 的本地门、独立提交/
-  推送和 exact-SHA 三 job；公共成功后先做 no-cost geometry/material/energy identity 归因，不先重新生成。）
+- 最后更新：2026-08-27（即梦 Smart Edit raw 与零费用后处理审计已由提交 `f041643` / Actions
+  `33042204532` 完成 exact-SHA 三 job；T/X identity fault split 已完成但仍是 research-only。用户随后明确拒绝
+  沿用当前视频节奏，要求先重做全局持续呼吸 brief，并在付费前用 Image2 对确认母图做多张静态方向预览。
+  AutoGLM 三张文生图仅作反例，Image2 当前因配置代理 `127.0.0.1:7890` 不可达而未调用；有效 video calls 仍为
+  `11`、production media `0`。当前唯一下一动作是恢复 Image2 代理后完成 `material-breathing`、`depth-separation`、
+  `energy-routing` 三个无费用 preview，并据此冻结首帧版 source-side motion brief；不沿用现有视频、不先烧新视频额度。）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -257,12 +255,12 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8e-productization / portal-motion-polish / runtime Task 5 media bake-off`，当前为
-  `authorized / in_progress`。8D、8E preflight、Batch B/C/D、Live Workbench、Batch E E1–E5、production
-  shell/Auth gate、Timeline、bilingual/product-journey foundation 与 RQ-108 runtime Task 1–4 均已取得 exact-SHA
-  公共证据；Task 5 先做 official-first/relay-secondary 候选映射、能力/许可/隐私/费用/调用上限审计和三路线
-  评分设计。当前不上传母图、不读取 Secret、不创建 Key、不购买 credits、不调用 Riot/OP.GG/Provider/LLM/视频模型，
-  不进入 Coach、RQ-103、8F；8B holdout 不得再次执行。
+- 唯一下一步：`8e-productization / portal-motion-polish / runtime Task 5 motion direction gate`，当前为
+  `authorized / in_progress`。Task 5 的 prior audit/evidence 已由 `f041643` / Actions `33042204532` 公共关闭，
+  但现有视频与 T/X 仍未采用。先恢复 Image2 代理并完成基于确认母图的三张静态方向 preview，再冻结首帧版
+  source-side brief；在此之前不重用现有视频、不烧新视频额度、不接 runtime。8D、Batch B/C/D、Live Workbench、
+  Batch E E1–E5、production shell/Auth gate、Timeline、bilingual/product-journey foundation 与 RQ-108 runtime
+  Task 1–4 的公共证据保持不变；GLM-5.3/Flash、Coach、RQ-103 与 8F 仍留后序。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层

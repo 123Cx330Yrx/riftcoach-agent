@@ -3411,3 +3411,10 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `RQ-137/SEQUENCE`：用户明确先把 Portal 做好；GLM-5.3/Flash migration gate 不插入当前脏批，改为 Portal
   Motion Polish 正式闭环后的高优先横向项。该顺序不降低媒体门、不授权无界调用，也不把 bounded Coach/8F
   标成完成。
+## 2026-08-27：RQ-138 Portal motion direction revision
+
+- Task 5 的公共 evidence 与 T/X identity split 已完成，但用户明确拒绝继续沿用当前视频节奏；“全局”重新定义为
+  左/中/右与 near/mid/far 全程重叠、稳定、可感知的景内材质运动，而不是 burst、雾层或局部变亮。
+- AutoGLM 三张文生图只作反例；Image2 只在代理恢复后对确认母图做 image-to-image 静态方向稿。即梦当前页面显示
+  “全能参考”可混合最多 50 个图/文/音/视频输入，故不把它当严格 Video1 temporal edit。
+- 下一校正视频先用首帧单锚点；首尾帧作为后置对照。新 source-side brief 未通过静态门前不重生成、不接 runtime。

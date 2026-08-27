@@ -1658,3 +1658,9 @@ source-first loss is not explainable as wholesale geometry redraw (edge correlat
 and that left/center/right plus near/mid/far temporal change is present. This is evidence only: the
 candidates remain research-only until the adoption package, browser two-loop check, static-edge proof,
 and the independent public gate are complete.
+## RQ-138 current amendment (2026-08-27)
+
+Task 5 的下一门改为静态方向验证：不沿用现有视频，先恢复 Image2 代理并基于确认母图生成
+`material-breathing`、`depth-separation`、`energy-routing` 三张 preview；随后冻结首帧版
+source-side brief，再决定是否允许一次视频 preflight。该门完成前不接 runtime、不切 GLM Provider，
+也不进入 Account/Coach/8F。

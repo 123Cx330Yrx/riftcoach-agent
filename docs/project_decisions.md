@@ -2390,3 +2390,11 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 Portal。RQ-137 因此不改变当前 checkpoint：Portal evidence/identity/source-side/runtime/visual gate 完成后，
 GLM-5.3/Flash adoption 才作为下一高优先横向批恢复；不能在当前未提交证据上同时改 Provider，也不能借此无限
 延长视觉抽卡或声称 Agent 已收工。
+
+### RQ-138：Portal motion direction revision
+
+用户明确拒绝继续沿用当前视频的 burst/局部节奏，要求先重述并验证整幕持续呼吸的目标，再决定是否重生成。
+本轮 AutoGLM 方向稿因重新绘制、风格漂移和水印仅作反例；Image2 编辑必须以确认母图为 edit target，保持
+左 Rift/中央原水晶/右星场的几何和构图。即梦“全能参考”是多参考融合入口，不是严格 Video1 edit；下一次
+校正 A comparator 采用首帧单锚点，首尾帧不作为默认模式，因为当前同图首尾实验同时暴露 source redraw、
+阶段性 burst 和 seam 风险。Image2 代理不可达时保持等待，不改用未经用户选择的替代接口。

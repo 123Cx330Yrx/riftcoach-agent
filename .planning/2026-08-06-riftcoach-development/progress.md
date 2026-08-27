@@ -4714,3 +4714,11 @@
   poster gate，暂不选用。T/X seam `0.027807/0.029357` 均在 `0.03` floor 内，但仍未过浏览器两轮与人工签收。
 - 三大区及 near/mid/far 的时域亮度变化均大于 0；该证据证明 coverage，不证明自然材质运动。完整数值写入
   `docs/assets/8e-portal/portal-motion-candidate-tx-v1.json`，候选仍是 research-only/not-adopted。
+### 2026-08-27：RQ-138 motion direction gate
+
+- Prior evidence/audit public CI is green (`33042204532`); production media remains `0`.
+- Rejected the three AutoGLM concept images as non-source-preserving, watermarked, and visually off-target.
+- Added provisional motion direction plan and compact first-frame prompt. Image2 execution is blocked only by the configured
+  local proxy being offline; no paid video request was made.
+- Next action: restore the user-side Image2 proxy, generate 2–3 mother-image edit previews, review material/depth/energy
+  variants, then decide whether a single first-frame video preflight is justified.
