@@ -4513,3 +4513,10 @@
   不能冒充新的控制能力。为避免重复付费，B1 deferred。
 - C' 不再使用可见 vector line/节点作为运动主体；运动载体改为母图材质的 mask 内低频流场、折射、反射和分层空气，
   这才是对旧 C-line 失败的实质修正。若仍显贴纸，直接停止，不继续堆 shader。
+
+## 2026-08-28：C′ proof 结果
+
+- C′ 的 192 帧结果在指标上均衡，但人工观看仍偏静态，source-pixel displacement 的区域边界存在 ghosting 风险；
+  这解释了为什么“全区有 MAD”仍不等于 MotionSites 类全幕动效。
+- C′ 保留为工程参考，不进入 runtime；下一候选采用 Kling v3 Omni 的参考视频+参考图模式，并为该模型重写
+  placeholder prompt，避免把 Seedance/Smart Edit 的语义直接搬过去。

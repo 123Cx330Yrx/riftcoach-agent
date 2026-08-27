@@ -1702,6 +1702,14 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [next] C' 本地 contract/TDD：母图锁定 + mask 内低频纹理位移/折射/near-mid-far 视差 + deterministic frame
   clock；旧 C-line 线条/HUD proof 仅作负面证据。先 8s research proof，再决定 10–12s 延长。
 
+## C′ proof result / Kling v3 Omni preflight (2026-08-28)
+
+- [completed-local-rejected] C′ 192 帧 proof 结构和覆盖可控，但视觉太轻且有 mask ghosting 风险；audit
+  `portal-motion-hybrid-material-proof-v1.json` 保存，production media 0。
+- [decision] 不再重复 Smart Edit B1；改评估 Kling v3 Omni reference-video + reference-image 模式，按其专用
+  placeholder/schema 重写 prompt。
+- [next] 冻结 Kling source/prompt/schema/price/one-call preflight，未通过前不上传、不付费。
+
 ## RQ-142 method fault split (2026-08-28)
 
 - [completed-local-review] 对 v3/v4、即梦 Smart Edit、C-line proof 与 T/X sibling 做同口径比较；结论为 prompt

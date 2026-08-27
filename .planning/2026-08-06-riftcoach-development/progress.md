@@ -4784,3 +4784,9 @@
 - 对照旧 Smart Edit 记录后确认 B1 不是新方法，只是 prompt ablation；不重复上传或付费。
 - 新路线 C' 设计完成：母图结构底 + 各区域遮罩内低频纹理位移/折射/分层视差 + 确定性时钟，明确禁止旧 C-line
   的线条/HUD 叠加。下一步实现本地 contract/TDD 和 research proof，不调用外部模型。
+
+### 2026-08-28：C′ proof rejection / Kling candidate
+
+- C′ 已渲染并审查：left/center/right 0→4s 变化均衡、结构和编码通过，但视觉运动太轻且 mask 边界有贴层风险，
+  按用户目标 rejected；不继续调 opacity/位移。
+- 依据“失败后先归因再换方法”原则，下一候选改为 Kling v3 Omni 参考视频+参考图，不复用 Seedance/Smart Edit prompt。

@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "status": "research-proof",
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e",
+    "runtime_name": "assets/portal-mother-image-source-v2.png"
+  },
+  "timeline": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "frames": 192,
+    "nominal_duration_s": 8.0,
+    "closed_animation_duration_s": 7.958333
+  },
+  "motion_model": "masked source-texture displacement and low-frequency local light only",
+  "motion_layers": [
+    "locked-base",
+    "rift-interior-texture",
+    "road-channel-texture",
+    "crystal-column-texture",
+    "right-field-texture",
+    "near-mid-far-air-texture",
+    "surface-reflection-texture",
+    "local-material-light"
+  ],
+  "prohibitions": [
+    "visible vector lines or rings",
+    "new platform volume",
+    "camera transform",
+    "full-frame fog or exposure pulse",
+    "remote assets",
+    "audio",
+    "randomness",
+    "runtime adoption"
+  ],
+  "output_policy": {
+    "repository_media": false,
+    "runtime_adoption": false,
+    "external_model_calls": 0,
+    "output_must_be_outside_repository": true
+  },
+  "quality_gates": {
+    "source_to_first_ssim_min": 0.95,
+    "encoded_seam_dssim_floor_max": 0.03,
+    "motion_grid": "3x3",
+    "manual_full_scene_motion_required": true,
+    "manual_no_sticker_or_hud_required": true
+  }
+}

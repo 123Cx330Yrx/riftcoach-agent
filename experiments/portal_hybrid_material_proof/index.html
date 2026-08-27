@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1920,height=1080" />
+    <title>RiftCoach C' hybrid material motion proof</title>
+    <style>
+      :root { --cycle: 8s; }
+      * { box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; margin: 0; overflow: hidden; background: #040912; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; isolation: isolate; }
+      #base { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+      #material-proof { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+      .texture { mix-blend-mode: screen; }
+      .rift-texture, .road-texture, .right-texture, .air-texture, .reflection-texture {
+        opacity: .18;
+        filter: url(#material-flow);
+      }
+      .rift-texture { opacity: .26; }
+      .road-texture { opacity: .20; }
+      .right-texture { opacity: .19; }
+      .air-texture { opacity: .10; filter: url(#air-flow); }
+      .reflection-texture { opacity: .13; filter: url(#reflection-flow); }
+      .crystal-texture { opacity: .22; filter: url(#crystal-flow); mix-blend-mode: screen; }
+      .local-glow { mix-blend-mode: screen; }
+      .rift-glow { opacity: .20; animation: local-breathe var(--cycle) ease-in-out infinite; }
+      .crystal-glow { opacity: .16; animation: crystal-breathe var(--cycle) ease-in-out infinite; }
+      .right-glow { opacity: .13; animation: right-breathe var(--cycle) ease-in-out infinite; }
+      .air-glow { opacity: .09; animation: air-breathe var(--cycle) ease-in-out infinite; }
+      @keyframes local-breathe { 0%,100% { opacity: .16; } 50% { opacity: .28; } }
+      @keyframes crystal-breathe { 0%,100% { opacity: .12; } 42% { opacity: .22; } 62% { opacity: .18; } }
+      @keyframes right-breathe { 0%,100% { opacity: .10; } 50% { opacity: .19; } }
+      @keyframes air-breathe { 0%,100% { opacity: .06; } 50% { opacity: .13; } }
+    </style>
+  </head>
+  <body>
+    <main id="root" data-composition-id="portal-hybrid-material-proof" data-start="0" data-duration="8" data-width="1920" data-height="1080" data-fps="24" data-no-timeline aria-hidden="true">
+      <img id="base" src="assets/portal-mother-image-source-v2.png" alt="" />
+      <svg id="material-proof" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <defs>
+          <clipPath id="clip-rift"><ellipse cx="278" cy="432" rx="252" ry="285" /></clipPath>
+          <clipPath id="clip-road"><path d="M80 770 C245 690 350 615 490 565 C590 530 675 500 770 486 L835 575 C695 602 560 650 430 720 C292 795 188 842 60 880 Z" /></clipPath>
+          <clipPath id="clip-crystal"><path d="M930 168 L1000 112 L1070 168 L1070 402 L1000 460 L930 402 Z" /></clipPath>
+          <clipPath id="clip-column"><path d="M982 420 L1018 420 L1046 686 L954 686 Z" /></clipPath>
+          <clipPath id="clip-right"><path d="M1180 115 L1918 60 L1918 770 L1255 790 L1125 625 Z" /></clipPath>
+          <clipPath id="clip-far"><rect x="0" y="0" width="1920" height="300" /></clipPath>
+          <clipPath id="clip-mid"><path d="M0 250 L1920 210 L1920 570 L0 600 Z" /></clipPath>
+          <clipPath id="clip-near"><path d="M0 610 L1920 575 L1920 1080 L0 1080 Z" /></clipPath>
+          <clipPath id="clip-reflection"><path d="M250 700 L1110 650 L1720 760 L1920 1080 L0 1080 L0 900 Z" /></clipPath>
+          <filter id="material-flow" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.006 0.010" numOctaves="2" seed="17" stitchTiles="stitch" result="noise">
+              <animate attributeName="baseFrequency" dur="8s" repeatCount="indefinite" values="0.006 0.010;0.008 0.006;0.006 0.010" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4" xChannelSelector="R" yChannelSelector="G">
+              <animate attributeName="scale" dur="8s" repeatCount="indefinite" values="1.2;2.4;1.2" />
+            </feDisplacementMap>
+          </filter>
+          <filter id="crystal-flow" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.035" numOctaves="1" seed="31" stitchTiles="stitch" result="crystal-noise">
+              <animate attributeName="baseFrequency" dur="8s" repeatCount="indefinite" values="0.012 0.035;0.018 0.022;0.012 0.035" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="crystal-noise" scale="1.6" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <filter id="air-flow" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.003 0.009" numOctaves="2" seed="7" stitchTiles="stitch" result="air-noise">
+              <animate attributeName="baseFrequency" dur="8s" repeatCount="indefinite" values="0.003 0.009;0.005 0.006;0.003 0.009" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="air-noise" scale="3.0" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <filter id="reflection-flow" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+            <feTurbulence type="turbulence" baseFrequency="0.004 0.018" numOctaves="1" seed="23" stitchTiles="stitch" result="reflection-noise">
+              <animate attributeName="baseFrequency" dur="8s" repeatCount="indefinite" values="0.004 0.018;0.007 0.011;0.004 0.018" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="reflection-noise" scale="2.0" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <radialGradient id="rift-gradient" cx="48%" cy="50%" r="62%">
+            <stop offset="0" stop-color="#64dfff" stop-opacity=".03" />
+            <stop offset=".55" stop-color="#2b98ff" stop-opacity=".16" />
+            <stop offset="1" stop-color="#102f78" stop-opacity="0" />
+          </radialGradient>
+          <radialGradient id="crystal-gradient" cx="50%" cy="42%" r="58%">
+            <stop offset="0" stop-color="#d5fbff" stop-opacity=".28" />
+            <stop offset=".58" stop-color="#58d9ff" stop-opacity=".12" />
+            <stop offset="1" stop-color="#2b74ff" stop-opacity="0" />
+          </radialGradient>
+          <linearGradient id="right-gradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#3ccfff" stop-opacity=".02" />
+            <stop offset=".5" stop-color="#54a9ff" stop-opacity=".13" />
+            <stop offset="1" stop-color="#6d6cff" stop-opacity=".02" />
+          </linearGradient>
+          <linearGradient id="air-gradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#429bff" stop-opacity=".04" />
+            <stop offset=".5" stop-color="#8ce5ff" stop-opacity=".10" />
+            <stop offset="1" stop-color="#2867c8" stop-opacity=".02" />
+          </linearGradient>
+        </defs>
+
+        <!-- Only existing source pixels are reused inside masks; no visible vector paths are introduced. -->
+        <image class="texture rift-texture" href="assets/portal-mother-image-source-v2.png" x="0" y="0" width="1920" height="1080" clip-path="url(#clip-rift)">
+          <animateTransform attributeName="transform" type="translate" dur="8s" repeatCount="indefinite" values="0 0;3 -2;0 0;-3 2;0 0" />
+        </image>
+        <image class="texture road-texture" href="assets/portal-mother-image-source-v2.png" x="0" y="0" width="1920" height="1080" clip-path="url(#clip-road)">
+          <animateTransform attributeName="transform" type="translate" dur="8s" repeatCount="indefinite" values="0 0;4 1;0 0;-4 -1;0 0" />
+        </image>
+        <image class="texture crystal-texture" href="assets/portal-mother-image-source-v2.png" x="0" y="0" width="1920" height="1080" clip-path="url(#clip-crystal)">
+          <animateTransform attributeName="transform" type="translate" dur="8s" repeatCount="indefinite" values="0 0;0 2;0 0;0 -2;0 0" />
+        </image>
+        <image class="texture crystal-texture" href="assets/portal-mother-image-source-v2.png" x="0" y="0" width="1920" height="1080" clip-path="url(#clip-column)">
+          <animateTransform attributeName="transform" type="translate" dur="8s" repeatCount="indefinite" values="0 0;0 -3;0 0;0 3;0 0" />
+        </image>
+        <image class="texture right-texture" href="assets/portal-mother-image-source-v2.png" x="0" y="0" width="1920" height="1080" clip-path="url(#clip-right)">
+          <animateTransform attributeName="transform" type="translate" dur="8s" repeatCount="indefinite" values="0 0;-3 1;0 0;3 -1;0 0" />
+        </image>
+        <image class="texture air-texture" href="assets/portal-mother-image-source-v2.png" x="0" y="0" width="1920" height="1080" clip-path="url(#clip-far)">
+          <animateTransform attributeName="transform" type="translate" dur="8s" repeatCount="indefinite" values="0 0;5 0;0 0;-5 0;0 0" />
+        </image>
+        <image class="texture air-texture" href="assets/portal-mother-image-source-v2.png" x="0" y="0" width="1920" height="1080" clip-path="url(#clip-mid)">
+          <animateTransform attributeName="transform" type="translate" dur="8s" repeatCount="indefinite" values="0 0;-4 1;0 0;4 -1;0 0" />
+        </image>
+        <image class="texture reflection-texture" href="assets/portal-mother-image-source-v2.png" x="0" y="0" width="1920" height="1080" clip-path="url(#clip-reflection)">
+          <animateTransform attributeName="transform" type="translate" dur="8s" repeatCount="indefinite" values="0 0;2 0;0 0;-2 0;0 0" />
+        </image>
+
+        <ellipse class="local-glow rift-glow" cx="278" cy="432" rx="250" ry="280" fill="url(#rift-gradient)" />
+        <path class="local-glow crystal-glow" d="M954 150 L1000 112 L1046 150 L1046 420 L1000 458 L954 420 Z" fill="url(#crystal-gradient)" />
+        <path class="local-glow crystal-glow" d="M980 424 L1020 424 L1044 688 L956 688 Z" fill="url(#crystal-gradient)" />
+        <path class="local-glow right-glow" d="M1180 115 L1918 60 L1918 770 L1255 790 L1125 625 Z" fill="url(#right-gradient)" />
+        <rect class="local-glow air-glow" x="0" y="260" width="1920" height="330" fill="url(#air-gradient)" />
+      </svg>
+    </main>
+  </body>
+</html>
