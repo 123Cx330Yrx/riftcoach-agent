@@ -1695,6 +1695,13 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   固定已有 Video1/mother SHA、`adaptive/720p`、8.041667s、音频优先关闭，当前未上传/未调用。
 - [next] 页面模式/素材角色/积分/音频 readback；输入不支持区域/时间控制则记录 request/mode failure，支持后才允许一次 B1。
 
+## B1 decision correction / C' hybrid material proof (2026-08-28)
+
+- [deferred] Smart Edit B1 与已执行的 official Smart Edit 使用相同 Video1+Image1+三时间点形态，保留为未提交
+  prompt ablation，不重复付费。
+- [next] C' 本地 contract/TDD：母图锁定 + mask 内低频纹理位移/折射/near-mid-far 视差 + deterministic frame
+  clock；旧 C-line 线条/HUD proof 仅作负面证据。先 8s research proof，再决定 10–12s 延长。
+
 ## RQ-142 method fault split (2026-08-28)
 
 - [completed-local-review] 对 v3/v4、即梦 Smart Edit、C-line proof 与 T/X sibling 做同口径比较；结论为 prompt

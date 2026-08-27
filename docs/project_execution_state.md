@@ -2978,3 +2978,13 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   页面状态，manifest 已记录 `mode_readback_status=blocked_extension_timeout`。
 - `NEXT`：只做 B1 的页面模式/素材角色/积分/音频 readback；若输入无法表达三时间点区域控制，则直接记录
   request/mode failure，不发起付费任务。若 readback 通过且用户继续授权，最多执行一次 B1。
+
+### 2026-08-28：B1 不重复执行，转向混合材质 proof
+
+- 复核确认即梦 Smart Edit 已经真实执行过一次相同的 Video1 + Image1 + `00:00/00:04/00:07` 形态；B1 仅是
+  prompt ablation，不是新模式，因此标为 deferred、未上传、未付费、未调用。
+- `docs/plans/2026-08-28-8e-portal-motion-hybrid-material-proof-design.md` 已冻结 C'：母图锁定结构，使用
+  遮罩内低频纹理位移/折射/分层视差和确定性 frame clock，禁止线条/HUD/平台体积变化；先做 8s research proof，
+  通过后再决定是否延长到 10–12s。
+- `NEXT`：执行 C' 的本地 contract/TDD 与静态 proof 设计，不调用 Image2/视频模型；只有发现具体材质纹理缺口时，
+  才单独评估局部 Image2/Photoshop tile。

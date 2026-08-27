@@ -4778,3 +4778,9 @@
 - 当前仅完成文本与 manifest 预检，未上传、未付费、未调用；下一步先 readback 页面是否保留这些时间/区域输入。
 - 即梦页初始只读快照确认默认是 `全能参考`；后续语义 DOM、可见 DOM 与截图均因扩展/页面超时未完成，未点击
   Smart Edit、未上传素材。当前保持 readback blocked，不把页面能力猜成已验证。
+
+### 2026-08-28：B1 defer / C' hybrid material proof
+
+- 对照旧 Smart Edit 记录后确认 B1 不是新方法，只是 prompt ablation；不重复上传或付费。
+- 新路线 C' 设计完成：母图结构底 + 各区域遮罩内低频纹理位移/折射/分层视差 + 确定性时钟，明确禁止旧 C-line
+  的线条/HUD 叠加。下一步实现本地 contract/TDD 和 research proof，不调用外部模型。

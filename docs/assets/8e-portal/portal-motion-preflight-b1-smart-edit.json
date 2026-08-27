@@ -1,8 +1,10 @@
 {
   "schema_version": "1.0",
-  "status": "prepared",
+  "status": "deferred-after-prior-equivalent-execution",
   "candidate": "jimeng-smart-edit-b1-double-anchor",
   "purpose": "no-cost contract/preflight for a controlled Smart Edit comparator; no generation receipt",
+  "defer_reason": "The same official Smart Edit surface was already executed once with Video1 + Image1 + 00:00/00:04/00:07 annotations; B1 is retained only as an unsubmitted prompt ablation, not a new paid method.",
+  "duplicate_of_prior_execution": true,
   "mode": "official JiMeng Smart Edit",
   "references": {
     "video1": {
