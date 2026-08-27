@@ -13,6 +13,11 @@ from .deepseek import (
     DEEPSEEK_MODEL,
     DeepSeekProvider,
 )
+from .orcarouter import (
+    ORCAROUTER_BASE_URL,
+    ORCAROUTER_MODEL,
+    OrcaRouterProvider,
+)
 from .protocol import LLMProvider
 from .registry import ProviderRegistry
 from .zhipu import ZhipuProvider
@@ -83,6 +88,46 @@ class DeepSeekSettings:
         if self.sdk_max_retries != 0:
             raise ProviderConfigurationError(
                 provider="deepseek",
+                code="invalid_sdk_retries",
+            )
+
+
+@dataclass(frozen=True)
+class OrcaRouterSettings:
+    api_key: str = field(repr=False)
+    base_url: str = ORCAROUTER_BASE_URL
+    model: str = ORCAROUTER_MODEL
+    default_timeout_s: float = 30.0
+    sdk_max_retries: int = 0
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.api_key, str) or not self.api_key.strip():
+            raise ProviderConfigurationError(
+                provider="orcarouter",
+                code="missing_api_key",
+            )
+        if self.base_url != ORCAROUTER_BASE_URL:
+            raise ProviderConfigurationError(
+                provider="orcarouter",
+                code="invalid_base_url",
+            )
+        if self.model != ORCAROUTER_MODEL:
+            raise ProviderConfigurationError(
+                provider="orcarouter",
+                code="invalid_model",
+            )
+        if (
+            isinstance(self.default_timeout_s, bool)
+            or not isinstance(self.default_timeout_s, (int, float))
+            or self.default_timeout_s <= 0
+        ):
+            raise ProviderConfigurationError(
+                provider="orcarouter",
+                code="invalid_default_timeout",
+            )
+        if self.sdk_max_retries != 0:
+            raise ProviderConfigurationError(
+                provider="orcarouter",
                 code="invalid_sdk_retries",
             )
 
@@ -164,6 +209,29 @@ def load_deepseek_settings(
     )
 
 
+def load_orcarouter_settings(
+    environ: Mapping[str, str] | None = None,
+) -> OrcaRouterSettings:
+    values = os.environ if environ is None else environ
+    timeout_text = values.get("ORCAROUTER_TIMEOUT_SECONDS", "30")
+    retries_text = values.get("ORCAROUTER_MAX_RETRIES", "0")
+    try:
+        timeout_s = float(timeout_text)
+        sdk_max_retries = int(retries_text)
+    except (TypeError, ValueError):
+        raise ProviderConfigurationError(
+            provider="orcarouter",
+            code="invalid_numeric_configuration",
+        ) from None
+    return OrcaRouterSettings(
+        api_key=values.get("ORCAROUTER_API_KEY", ""),
+        base_url=values.get("ORCAROUTER_BASE_URL", ORCAROUTER_BASE_URL),
+        model=values.get("ORCAROUTER_MODEL", ORCAROUTER_MODEL),
+        default_timeout_s=timeout_s,
+        sdk_max_retries=sdk_max_retries,
+    )
+
+
 def create_zhipu_provider(
     settings: ZhipuSettings,
     *,
@@ -189,6 +257,20 @@ def create_deepseek_provider(
         max_retries=settings.sdk_max_retries,
     )
     return DeepSeekProvider(client=client, model=settings.model)
+
+
+def create_orcarouter_provider(
+    settings: OrcaRouterSettings,
+    *,
+    client_factory: Callable[..., Any] = OpenAI,
+) -> OrcaRouterProvider:
+    client = client_factory(
+        api_key=settings.api_key,
+        base_url=settings.base_url,
+        timeout=settings.default_timeout_s,
+        max_retries=settings.sdk_max_retries,
+    )
+    return OrcaRouterProvider(client=client, model=settings.model)
 
 
 def create_provider_registry(

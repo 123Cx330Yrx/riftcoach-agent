@@ -51,6 +51,26 @@ _SAFE_PROVIDER_ERROR_CODES = MappingProxyType(
                 "unsupported_parallel_tool_calls",
             }
         ),
+        "orcarouter": frozenset(
+            {
+                "authentication_failed",
+                "connection_failed",
+                "incomplete_chat_response",
+                "invalid_chat_response",
+                "invalid_finish_reason",
+                "invalid_tool_call_request",
+                "invalid_tool_call_response",
+                "invalid_tool_name",
+                "provider_usage_unavailable",
+                "rate_limited",
+                "request_rejected",
+                "service_unavailable",
+                "timeout",
+                "tool_name_alias_conflict",
+                "unexpected_sdk_error",
+                "unknown_tool_name",
+            }
+        ),
     }
 )
 
