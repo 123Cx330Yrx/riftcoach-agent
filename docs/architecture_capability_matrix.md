@@ -97,9 +97,20 @@ v5 preflight 已由 `d57b026/32951125621` 三 job 公共关闭；唯一 task `ta
 较好，但 source-first 0.864923、seam difference 0.060443、720p 未过门，等待用户 visual review。
 
 RQ-133：用户认可方向但要求静区更丰富；Dragon 专用 Seedance 页已确认 `video_operation=edit`、
-`video_with_roles(reference_video)`、`duration=-1`、`aspect_ratio=adaptive`。v6 edit runner/prompt 已冻结，尚未
-付费调用；Studio 的视频参考 input 只收图片 MIME，故不冒充 Studio 编辑。编辑成功仍需人工静区运动、source/seam/
-codec 门，不直接 adopted。
+`video_with_roles(reference_video)`、`duration=-1`、`aspect_ratio=adaptive`。v6 edit runner/prompt 已冻结并公共
+关闭；Studio 的视频参考 input 只收图片 MIME，故不冒充 Studio 编辑。后续 v6.1 task 前 400/费用 0，仍无成功
+edit；未来成功输出也需人工静区运动、source/seam/codec 门，不直接 adopted。
+
+v6.1 随后在 task 创建前 HTTP 400：source GET 成功、task id 空、费用 0、无隐藏 task；有效 calls 仍为 9。
+原 runner 丢失 response body，因此确切字段 unknown。新增 strict body-free sanitizer/测试与 revised runner
+digest 只补 observability，不构成远端修复或 retry 依据；production media 仍为 0。
+
+豆包工作官方 comparator 使有效 calls 增至 10：Skill 以首尾帧+母图重生成，输出 source-first `0.407604`、seam
+diff `0.144582`、AAC/移动水印，按视觉与生产门 rejected。RQ-134 将三主体全部增强（右侧单列）与全局环境同步
+增强设为双硬门；暖金光轨只保留动作语言并转冷蓝/青蓝主色。下一即梦 `智能编辑` 尚未上传或生成。
+
+RQ-135/即梦 preflight：第一轮只用成功 MP4 + v2 母图，高级编辑区域框选优先，不堆新审美图；v7 prompt
+`edbc0d3...6f388` 已冻结。file picker 由用户操作，上传后仍需模式/时长/比例/720P/音频/积分/高级编辑 readback。
 
 以下项目不是新增主阶段，而是进入对应阶段前必须具备的验收项：
 
@@ -329,3 +340,16 @@ module execution。新 exact-SHA Linux job 成功前，A14/Q09 仍不能升级�
 - `Conversation/Message PostgreSQL evidence`：migration、trigger、回滚和双 writer/生命周期确定性并发测试
   已写入阻塞 job；`7e4f233` / Actions `32329686381` 的真实 PostgreSQL job 已通过（`100 passed`）。
 - `Agent/Review/Memory integration`：明确 deferred 到后续 6B 批次，不能把本设计稿写成已接入。
+
+### 2026-08-27：Q10 Portal official Smart Edit 与后处理边界
+
+- official 即梦 `Seedance 2.5 / 智能编辑` 有效调用使 Task 5 calls 为 `11`；raw SHA `4d3660b...155b`，
+  production media 仍为 `0`。
+- locked-camera、三大区和九宫格 coverage 有正向证据，但 source identity `0.889072 < 0.95`、seam
+  `0.046536 > 0.03`；不能用“画面都动了”替代 source/seam gate。
+- 零费用 FFmpeg 已证明音频、fixed24、BT.709、faststart 与 bytes 可修；最佳 J seam `0.042684` 仍失败并降低
+  mother-first，因此不接 runtime、不继续 crossfade 追绿。
+- 当前能力状态仍为“素材采用门部分完成”：先做 geometry/material/intended-energy identity fault split；若要
+  新生成，必须改 source-side first/last/keyframe contract，不能原样重抽。
+- RQ-137 把 GLM-5.3/Flash Provider refresh 排到 Portal Motion Polish 闭环后；A10/A11 的模型与 bounded Coach
+  缺口仍保持未完成，不能因当前 Portal-first 顺序从矩阵消失。

@@ -1,8 +1,9 @@
 # 8E Portal Motion Polish 学习与工程证据
 
 - 检查点：`8e-productization / portal-motion-polish`
-- 状态：设计门、runtime Tasks 1–4 均 exact-SHA 公共闭环；Task 5 已完成 relay/official 广筛、HyperFrames
-  no-telemetry 隔离 spike和 Wan/Veo 各一个真实负面样本；external video calls `2`，production media `0`
+- 状态：设计门、runtime Tasks 1–4 均 exact-SHA 公共闭环；Task 5 已完成多路线/故障树实测，当前有效 video
+  calls `11`、production media `0`。official 即梦 Smart Edit 是高价值 revise-candidate，但 source/seam 未过门；
+  zero-cost post-process 只修复 delivery contract，未形成 production loop
 - 决策：ADR-0068
 - 需求：RQ-108 至 RQ-125
 - 视频候选审计：`docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md`（RQ-119）
@@ -211,6 +212,13 @@ Account 地图还可以补充：
 > 战术投影，并把“看似写实但位置错误”设为拒绝条件，避免用生成细节冒充数据真实性。
 
 当前不能说 runtime 已完成、loop 已生成、Kimi/API 已接入、Riot 角色已获公开准入，或完整 8E 已关闭。
+
+official 即梦结果补充了一个新的面试 Bad Case：真实 edit 可以同时让三大区与九宫格运动、保持 camera/建筑
+稳定，却仍因 v2 source identity `0.889072` 和 seam `0.046536` 失败。FFmpeg 可以把音轨、VFR、颜色 metadata
+和 9.64MB 修成 fixed24/no-audio/BT.709/约3MB，却不能从错误 phase/identity 中恢复 production source。最佳 J
+seam `0.042684` 仍失败，因此工程上停止 crossfade 追绿，先把 geometry/material 与预期 energy/light 差异分开。
+完整 actual prompt/output/post-process 证据见
+`docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md`。
 
 Task 1 面试表述可以补充：
 

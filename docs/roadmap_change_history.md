@@ -3379,3 +3379,35 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - `SEEDANCE-SUCCESS-CANDIDATE`：`task_w6...ULvW` 137s/100% success、11.9566；Studio result-fetch 403 由同 task
   GET-only 恢复。locked camera/full-scene direction promising，但 source-first 0.864923、seam diff 0.060443、720p
   未过门；先用户 visual review，再决定 no-generation postprocess proof。
+- `SEEDANCE-EDIT-400`：RQ-133 v6.1 source GET 成功后，POST 在 task 创建前 HTTP 400；费用 0、task id 空、
+  task log 无隐藏任务。原 runner 丢失 response body，旧 ratio common-log 行不得冒充。strict body-free sanitizer
+  三项 red→green、revised runner no-I/O self-test 已完成，尚未重试。
+- `OFFICIAL-JIMENG-PREFLIGHT`：即梦官方五模式只读比较后，Seedance 2.5 `智能编辑` 的单 MP4/MOV edit 槽、
+  多参考槽、自动比例/时长和 720P 最贴合 Video1+Image1；全能参考/首尾帧会重生成，智能多帧当前为 1.0 Fast，
+  超长视频 30s。未上传/购买/生成；先公共关闭诊断，后续只在读回实际积分/参数后决定一次官方 edit。
+- `DOUBAO-COMPARATOR`：豆包工作标准套餐 only one Seedance 2.5 task completed；Skill 无 video-to-video，实际
+  抽 Video1 首尾帧 + Image1 做 image-to-video。输出 `e4b2f91...352cf`、720p/24fps/8.041667s/AAC/移动水印；
+  source-first `0.407604`、seam diff `0.144582`。宽暖金光轨沿道路/结构运动有局部启发，但重绘 source、三主体
+  内部与全局环境 motion stack 不完整，sample rejected/no retry。calls 10、production media 0。
+- `RQ-134`：下一即梦 Smart Edit 必须同时强化 left Rift、center crystal/platform、right constellation/field，
+  右侧单列 hard gate；建筑/道路/地面反射/云与空气/星空纵深也须同步增强。光轨改为冷蓝/青蓝主色、暖金低占比，
+  只作为一层而非全部效果。文件选择改由用户执行，Codex 负责上传后的费用/参数/prompt readback。
+- `RQ-135/JIMENG-V7`：即梦第一轮只用成功 MP4 + immutable v2 PNG，不追加审美概念图；高级编辑区域框选
+  优先于第三图。v7 prompt 1,439 chars/4,115 bytes/SHA `edbc0d3...6f388` 已冻结。Chrome 插件重装/重启后
+  general connection 恢复，但即梦页仍页面级读控超时；file picker 由用户，当前先 exact-SHA 公共关闭 preflight。
+
+## 2026-08-27：official 即梦 Smart Edit 与零费用后处理结果
+
+- `ORDER-DEVIATION`：用户在 400/豆包/即梦 preflight batch 尚未取得 exact-SHA 公共闭环时手动生成；事实顺序
+  原样披露，不改写为 public-gate-first。
+- `ACTUAL-PROMPT`：页面 2,000 字上限使 main prompt 压缩为 534 chars/SHA `d003f047...cff10`，三个 timestamp
+  instruction 有独立 digest；长版 `edbc0d3...6f388` 继续作为 design intent，不能冒充实际请求。
+- `LIVE-OUTPUT`：official Smart Edit raw SHA `4d3660b...155b`；三大区/九宫格均变化、camera/建筑初审稳定，
+  但 v2→first `0.889072`、seam `0.046536`、AAC 与 non-fixed-fps fail。calls `11`、production media `0`。
+- `POSTPROCESS`：fixed24/no-audio/BT.709/bytes 可修；最佳 J SHA `dadd7c3...a0b37`、seam `0.042684` 仍高于
+  `0.03` 且 mother-first 降至 `0.849216`。停止普通 crossfade/settle 追绿，所有 outputs 留 repo-excluded。
+- `NEXT`：先完成本 diagnosis/preflight/result evidence batch 的本地门、提交与 exact-SHA 三 job；公共成功后
+  做 no-cost geometry/material/energy identity fault split。不先付费重抽、不接 runtime、不进入 Account。
+- `RQ-137/SEQUENCE`：用户明确先把 Portal 做好；GLM-5.3/Flash migration gate 不插入当前脏批，改为 Portal
+  Motion Polish 正式闭环后的高优先横向项。该顺序不降低媒体门、不授权无界调用，也不把 bounded Coach/8F
+  标成完成。

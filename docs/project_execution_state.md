@@ -16,12 +16,14 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-26（Seedance ratio client bug 已以 `adaptive` 修复并由 `c6143c1/32960467379` 三 job
-  公共关闭；有效 task `task_w6...ULvW` 137 秒/100% 成功、实际 `$11.9566`。Studio 结果下载 403 被 GET-only
-  recovery 从 `task.result.data[0].url` 恢复，post attempts 0。calls `9`、production media `0`。原片 camera lock/
-  三大区运动方向 promising，但 source→first `0.864923`、seam difference `0.060443`、720p 未过门。用户认可
-  方向，RQ-133 选择文档化 Seedance `video_operation=edit` 增强静区；当前唯一下一动作先公共关闭 edit preflight，
-  通过后只执行一次 edit task。）
+- 最后更新：2026-08-27（Dragon v6.1 edit 的 task 前 400 diagnosis、豆包 comparator 与即梦 preflight 已本地
+  持久化；official 即梦 `Seedance 2.5 / 智能编辑` 随后完成一次有效 Video1+Image1+三时间戳帧标注调用。实际
+  compact prompt 与 1,439-char design prompt 已分开登记；raw SHA `4d3660b...155b` 的 locked-camera、三大区和
+  九宫格运动方向有希望，但 v2→first `0.889072 < 0.95`、seam DSSIM `0.046536 > 0.03`，且含 AAC/非 fixed-24。
+  零费用 FFmpeg 后处理修复 fixed-24/no-audio/BT.709/bytes，最佳 J seam `0.042684` 仍 fail 且 source identity
+  降至 `0.849216`。有效 video calls 现为 `11`、production media `0`。执行发生在本证据批 exact-SHA 公共闭环
+  之前的顺序偏差已披露。当前唯一下一动作是完成 result/audit 与既有 diagnosis/preflight 的本地门、独立提交/
+  推送和 exact-SHA 三 job；公共成功后先做 no-cost geometry/material/energy identity 归因，不先重新生成。）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -2849,4 +2851,52 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   `task_w6...ULvW`、immutable v2 Image1、output/status 唯一路径和 Key-last/no-retry 已冻结；恰好 1 POST/2 GET
   callsites。Video1 保留已有 motion，Image1 锁几何/材质，只改热图静区；编辑预计 `$12.0191`（8.041667 秒×
   $1.4946），但实际计费/最低时长待账单确认。
-- `NEXT`：独立提交/public gate；通过后向用户披露编辑费用，再 one POST。成功先审静区真实景内运动，失败不盲重试。
+- `当时 NEXT`：独立提交/public gate；通过后向用户披露编辑费用，再 one POST。成功先审静区真实景内运动，失败不盲重试。
+- v6.1 已在上述 public gate 后执行：source GET 成功，edit POST 返回 HTTP 400；task id 为空、费用 0、没有
+  隐藏 task。旧 ratio 400 不等于本次错误，原 runner又没有保存 response body，故当前只裁决
+  `request_or_schema_rejected_before_task_creation / exact_field_unknown`。
+- `NEXT`：先提交/公共关闭 `sanitize_dragon_video_error.py`、三项红绿测试、400 diagnosis 与 revised runner
+  digest。revised runner 尚未 POST；在取得精确 error body 或另一个可证伪修正前，不重发、不删双锚点试错、
+  不换模型。
+- 即梦官方 UI 的五模式已只读核对：Seedance 2.5 `智能编辑` 提供单 MP4/MOV 编辑视频槽 + 多参考素材槽、
+  自动比例/时长和 720P，最贴合 Video1+Image1；全能参考/首尾帧会重新生成，智能多帧当前切换到 1.0 Fast，
+  超长视频为 30s。尚未上传、购买积分/会员或生成。若后续选择官网，先读回上传后的实际积分与参数再决定
+  一次调用，不先购买高价会员/API 套餐。
+- 豆包工作首发 30 天标准套餐活动已由客户端与公开发布信息交叉支持，本机客户端显示 `标准套餐`；已执行一次
+  Seedance 2.5 comparator。Skill 明确没有 video-to-video edit，抽取首尾帧+母图以 `image_to_video` 重生成；
+  结果 SHA `e4b2f91...352cf`、778,877 B、8.041667s/720p/24fps/yuv420p + AAC。source→first `0.407604`、
+  last→first `0.855418`，移动 `豆包AI生成` 水印；暖金光轨方向部分可取，但 source/色彩/三主体内部/全局环境/
+  seam/audio/watermark 均失败，sample rejected、no retry。calls 增至 10，production media 仍 0。
+- RQ-134 修正后续门：左 Rift、中央水晶/平台、右星图/能量场三主体全部增强，右侧独立不可遗漏；同时建筑、
+  道路、地面反射、云/空气、星空纵深必须同步运动。光轨转冷蓝/青蓝为主，暖金只作低占比强调，且只是全局
+  motion stack 一层。下一候选切到即梦官方 `智能编辑` 真 video edit；文件选择交由用户，避免自动 file picker
+  失误，Codex 负责 readback/prompt/费用/单次调用门。
+- RQ-135/即梦 v7 preflight：第一轮只用成功 MP4 + immutable v2 母图，不追加审美概念图；高级编辑可用时优先
+  区域框选。v7 prompt 为 1,439 chars/4,115 bytes/SHA `edbc0d3...6f388`，同时冻结三主体/右侧与整体环境双硬门、
+  冷蓝/青蓝光轨和禁止暖金主导/只加光轨。当前先公共关闭本证据批；公共成功前不让用户重复上传或点击生成。
+- 用户截图确认高级编辑已解锁；RQ-136 随后纠正单帧方案。当前必须创建 `00:00 / 00:04 / 00:07` 三个独立
+  帧标注，每次定位时间→暂停→画区域/方向→写该时点说明→“添加至输入框”。00:00 同时启动、00:04 同级峰值、
+  00:07 循环回收；旧单帧 note `5e69688...9a419` 作废。文字工具不用，三个帧标注完成仍不等于生成授权。
+- official 即梦 Smart Edit 已由用户手动完成一次有效生成；本次在 preflight batch 尚未 public-close 时执行，
+  真实顺序已记录，不能倒写为 public-gate-first。2,000 字限制使实际主 prompt 压缩为 534 chars / SHA
+  `d003f047...cff10`，三个 frame instruction 另有独立 digest；稳定 placeholder projection SHA
+  `6dcd29d4...9d411`。长版 `edbc0d3...6f388` 只保留 design intent。
+- raw output SHA `4d3660b...155b`、9,641,527 B、8.063991s、1280×720 H.264/yuv420p、193f、AAC；
+  nominal `60/1`/average `11580/481`，不是发布 fixed-24。人工抽帧未见可见水印或明显 camera push/melt；
+  left/center/right first→4s SSIM 为 `0.858797/0.917767/0.889054`，九宫格均变化，右场未遗漏。
+- 两个硬门仍失败：v2 mother→first `0.889072`；adjacent DSSIM p95 `0.011254`、seam `0.046536 > 0.03`。
+  当前裁决 `revise-candidate / not-adopted`；official Smart Edit/motion direction 保持 open，不把单样本外推为模型
+  ceiling。
+- repo 外 FFmpeg A–P 有界实验只修交付与 seam。最佳 J 为 7.5s/fixed24/no-audio/BT.709/2,991,793B、SHA
+  `dadd7c3...a0b37`，但 mother→first 降至 `0.849216`、seam `0.042684` 仍 fail。强制首帧复制/settle 会引入
+  duplicate/freeze/ghost 风险，按视觉意图停止追绿；所有 outputs/logs 留 repo-excluded research scratch。
+- 当前 calls `11`、production media `0`、8E coverage `planned`。`NEXT`：先完成本证据批本地门与 exact-SHA
+  三 job；公共闭环后只做零费用 source-identity fault split，把 geometry/edge、material/color 和 intended
+  energy/light 分开。未形成新 source-side first/last/keyframe contract 前不付费重抽、不接 runtime、不进入 Account。
+- RQ-137 固定近期顺序：先把当前 Portal Motion Polish 做完，再重开 GLM-5.3/GLM-5.3-Flash adoption gate 与
+  bounded Coach 等 Agent 产品批；这不把 Portal 授权扩大为无界生成或降低冻结质量门。
+- 本 evidence batch 本地聚焦 `42 passed`；无 DB 完整回归 `1873 passed, 146 skipped, 1 warning, 127 subtests`
+  通过，两套 RAG、Harness dry-run、compileall、pip、SDK/secret/tracked-data、planned media audit、governance 与
+  diff 全绿。146 skip 原因是 Docker Desktop 4.87 被损坏的 `sailor-ingest.sock` reparse point 阻断，端口
+  `54329` 不可达；普通/metadata 删除与移动均被 Windows 拒绝，未重置 Docker、未触碰镜像/卷。真实 PostgreSQL
+  必须由本批 exact-SHA `postgres-migrations` job 阻塞补证，不能冒充本地通过。

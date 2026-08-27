@@ -321,8 +321,12 @@ checkpoint/recovery、Worker/API/package 纵向与八维材料的 exact-SHA 公�
 闭环。8E 的真实 preflight、Batch B/C/D、Live integration、E1–E5、production shell/Auth gate、Timeline 与
 bilingual/product-journey foundation 已依次公共闭环。当前 canonical checkpoint 是 `8e-productization`，
 其中唯一原子项是 RQ-108 `portal-motion-polish`，状态 `authorized / in_progress`；design 与 runtime Tasks 1–4
-已公共闭环。Task 5 已完成 official/relay 广筛与 HyperFrames 隔离 spike；唯一下一动作是 Wan 3.0 官方
-endpoint/region/Key presence body-free preflight，8F 未进入。
+已公共闭环。Task 5 的 RQ-133 v6.1 relay edit 在 task 前 HTTP 400/费用 0；豆包 comparator rejected。official
+即梦 Smart Edit 又完成一次有效调用，actual compact prompt 与长版 preflight 已分开；raw SHA
+`4d3660b...155b` 的 motion direction promising，但 source `0.889072`、seam `0.046536`、AAC/non-fixed-fps
+未过门。零费用 post-process 最佳 J seam `0.042684` 仍 fail。calls 11、production media 0。当前唯一下一动作
+是完成 400/豆包/即梦 preflight+result audit 的本地门、独立提交/push 和 exact-SHA 三 job；公共成功后先做
+no-cost source identity fault split，不先重抽，8F 未进入。
 
 ## 6A-1 Checklist
 
@@ -764,7 +768,12 @@ endpoint/region/Key presence body-free preflight，8F 未进入。
 ### Phase 37 - 8e-productization
 
 - Status: in_progress
-- State: RQ-096 live integration、Batch E E1–E5、production shell/Auth gate、Timeline 与 bilingual/product-journey foundation 均已公共闭环；当前唯一原子项为 RQ-108 `portal-motion-polish` authorized/in progress。RQ-117–120、ADR-0068/Kimi Bad Case/三路线 design/TDD plan 已本地冻结，待 design exact-SHA；这仍不表示 runtime 动效、完整 8E、Auth/HTTPS/部署已完成。
+- State: RQ-096 live integration、Batch E E1–E5、production shell/Auth gate、Timeline 与 bilingual/product-journey foundation 均已公共闭环；当前唯一原子项为 RQ-108 `portal-motion-polish` authorized/in progress。RQ-133 v6.1 edit task 前 400、豆包 reject、official 即梦 Smart Edit revise-candidate 与 FFmpeg post-process fail 已形成本地证据；production media、完整 8E、Auth/HTTPS/部署仍未完成。
+- [completed-local-diagnosis] v6.1 source GET 成功后 POST 400、task id 空、无隐藏 task；strict sanitizer 三项 red→green、revised runner no-I/O self-test 完成；精确 error field 仍 unknown，不重试 relay；
+- [completed-live-rejected] 豆包标准套餐 only one Seedance comparator：首尾帧+母图 image-to-video；输出
+  `e4b2f91...352cf` 因 source 0.407604/seam 0.144582/AAC/移动水印/暖金主导与 motion stack 不完整 rejected；
+- [completed-live-revise-candidate] RQ-134/135/136 的 MP4+v2、三主体尤其右场+整体环境、三 timestamp frame
+  annotations 已执行一次；raw `4d3660b...155b` source/seam fail，actual prompt provenance 已纠正；
 - [completed] 创建 ADR-0056 与 `docs/plans/2026-08-23-8e-productization-preflight.md`，冻结真实验证、玩家档案和慢前端顺序；
 - [completed] 真实 OP.GG 有界 body-free smoke：1 次 initialize/list/call，3 条 top facts，证据 digest 已持久化；
 - [completed] `DK ShowMaker#KR1 / asia / observed` 的 Account/Match body-free gate：3 次 Riot calls、1 局详情通过；
@@ -1630,3 +1639,13 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
   - [prepared-local] v6.1 double-anchor edit prompt/runner；Video1 保留 motion，Image1 锁原几何/材质，只改热图静区；
     `video_operation=edit`、`duration=-1`、`adaptive`、720p、audio false；1 POST/2 GET callsites。
   - [next] edit preflight 独立 public gate；通过并披露约 `$12.0191` 后 one POST/no retry。
+  - [completed-live-revise-candidate] official 即梦 Smart Edit one generation；实际 compact prompt 与三 timestamp
+    frame annotations 已绑定。raw SHA `4d3660b...155b`，三大区/九宫格/camera direction promising，但
+    source `0.889072`、seam `0.046536`、AAC/non-fixed-fps fail；calls 11、production media 0。
+  - [completed-local-rejected-postprocess] FFmpeg fixed24/no-audio/BT.709/bytes 修复与 xfade/blend/settle 对照完成；
+    最佳 J SHA `dadd7c3...a0b37`、seam `0.042684` 仍 fail 且 source identity 降低；停止追绿，不接 runtime。
+  - [in-progress] 持久化 actual-prompt/result/postprocess audit，连同 400 diagnosis/豆包/preflight 跑本地门、独立
+    commit/push/exact-SHA 三 job；真实调用早于 public preflight 的顺序偏差必须保留。
+  - [next-after-public] no-cost source identity fault split：geometry/edge、material/color、intended energy/light；
+    不调低冻结门、不先付费重抽、不进入 Account。
+  - [sequence-frozen] RQ-137：完成 Portal Motion Polish 后再重开 GLM-5.3/Flash adoption gate；当前不插队模型迁移。

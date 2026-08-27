@@ -696,3 +696,26 @@ Data Dragon asset/detail/final-QA 的相对顺序仍待集中裁决；在此之�
 Dragon 专用文档确认 `seedance-2-5` 的 `video_operation=edit`、`video_with_roles(reference_video)`、`duration=-1`、
 `aspect_ratio=adaptive`；Studio 主编排器视频参考 input 实测仅接受图片 MIME，故 edit 走文档化 API。v6 edit
 prompt/runner 已冻结，先过 exact-SHA 公共门并披露约 `$12.0191` 估算，再 one POST；不混用首尾帧、不自动重试。
+
+该 v6.1 POST 随后在 task 创建前返回 HTTP 400；source GET 成功、`task_id` 为空、费用 0、task log 无隐藏任务。
+原 runner 仅持久化 status code，故本次 exact error field 丢失；登录态 common log 的旧 ratio 400 不能替代。
+当前先公共关闭严格 body-free error sanitizer 与 incident diagnosis；没有精确 error body/可证伪字段修正前，
+不重发、不拆双锚点抽卡、不换模型。
+
+豆包工作标准套餐随后完成一次零新增现金的官方 Seedance 2.5 comparator，但 Skill 无 video-to-video edit，实际
+以 Video1 首尾帧 + Image1 做图生视频重生成。输出 source-first `0.407604`、seam diff `0.144582`，带 AAC 和移动
+水印；中段暖金光轨明显但重绘/简化 source，且未形成三主体内部与整体环境共同呼吸。样本 rejected/no retry，
+有效 video calls `10`、production media `0`。RQ-134 保留“沿真实结构/道路的光轨”动作语言但改为冷蓝/青蓝主色，
+并要求下一即梦 `智能编辑` 同时强化左 Rift、中央水晶/平台、尤其右星图/能量场以及全局环境。
+
+RQ-135 又冻结即梦第一轮素材为成功 MP4 + immutable v2 母图，不因支持多参考而生成更多审美图；高级编辑区域
+框选优先于第三图。file picker 由用户操作，Codex 只给路径/角色并在上传后 readback。v7 Smart Edit prompt 为
+1,439 chars/4,115 bytes/SHA `edbc0d3...6f388`；当前先公共关闭 400 diagnosis、豆包 audit 与即梦 preflight，
+全绿后才重新上传和执行唯一生成。
+
+实际 official Smart Edit 随后在该 preflight batch 尚未 public-close 时由用户手动完成；执行顺序偏差已保留。
+页面 2,000 字上限使实际 compact main prompt 改为 SHA `d003f047...cff10`，三帧说明另行绑定，长版仅保留 design
+intent。raw SHA `4d3660b...155b` 的 locked camera、left/center/right 与九宫格 motion 均有正向证据，但
+v2→first `0.889072`、seam DSSIM `0.046536`、AAC 与非 fixed-24 未过门。零费用 FFmpeg 最佳 J 虽完成
+fixed24/no-audio/BT.709/3MB，seam `0.042684` 仍 fail 且 source identity 更差。Task 5 calls `11`、production
+media `0`；当前先公共关闭 result/audit，再做 no-cost source-identity fault split，不先重抽或接 runtime。

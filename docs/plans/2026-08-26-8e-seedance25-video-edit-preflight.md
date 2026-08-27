@@ -67,3 +67,11 @@ seam/codec 评估。编辑若失败或只加雾层，不自动重试、不立刻
 
 - DragonAPI 专用页：`https://docs.dragon3api.com/#/model/video-seedance-2-5-generation`
 - ByteDance Seedance 2.5：`https://seed.bytedance.com/en/blog/one-take-creation-flexible-referencing-introducing-seedance-2-5`
+
+## 执行后诊断补充
+
+公共 preflight 关闭后，v6.1 在 source GET 成功、edit POST 提交阶段返回 HTTP 400；
+`task_id` 为空、output 不存在、费用 `$0`、任务日志没有隐藏 task。原 runner 只保存
+status code，未保留 response body，因此不能把旧 ratio 400 或任一猜测字段当作本次
+根因。安全错误投影器、revised runner 与禁止盲重试裁决见
+`docs/plans/2026-08-26-8e-seedance25-video-edit-submit-400-diagnosis.md`。

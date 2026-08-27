@@ -4350,6 +4350,61 @@
 - v6.1 时间轴要求全部层全程同时运行，只让 4s 达丰富峰值；新增运动绑定道路、地面、反射、建筑缝、云层、星图
   和材质遮挡，雾必须是不同深度的 wisps，不是 screen-space sheet。费用仍按 8.041667×$1.4946 估算 `$12.0191`。
 
+### v6.1 submit 400、诊断缺口与即梦官方模式
+
+- source GET 成功后，edit POST 在 task 创建前返回 HTTP 400；task id 空、output 不存在、费用 0、task log 无
+  隐藏任务，有效 calls 仍为 9。
+- 登录态 common log 没有本次 400；18:49 的 ratio 错误是旧生成请求，不能替代。原 runner 只保存 status code，
+  因而本次 exact field 已丢失。这是本地 observability gap，不是 400 根因本身。
+- strict sanitizer 只投影 allowlisted nested error；未知/敏感/额外字段 digest-only。三项 red→green 测试通过。
+  revised runner `e7eb8c9...c0807f` self-test no-I/O、1 POST/2 GET、唯一 output/status 均不存在。
+- 即梦官方 UI 五模式中，`智能编辑` 是 Seedance 2.5 的专用单视频 edit 槽，另有多参考素材槽，比例/时长
+  自动、720P；最符合 Video1+Image1。全能参考/首尾帧会重新生成，智能多帧当前切到 1.0 Fast，超长视频为
+  30s。未上传、未购买、未生成；不先买会员/API 套餐。
+- 当前不猜 Image1+Video1、duration 或 reference URL；先公共关闭诊断修复。后续若走官网，只允许先读回
+  上传后的实际积分与参数，再决定一次官方智能编辑；没有可证伪字段或费用门前不重发 relay。
+- 豆包工作 30 天订阅活动有客户端/公关公开信息交叉支持，当前账号 UI 显示标准套餐；客户端检索称可用月度
+  额度调用 Seedance 2.5。它没有即梦式五模式按钮，而以附件+prompt 触发同源能力，故只作为零新增现金但
+  控制较弱的 comparator；到期/剩余额度/素材角色未读回前不执行。
+
+### 豆包 Seedance comparator 结果与 RQ-134
+
+- 用户授权后上传既有 MP4 + v2 母图；Skill 明确无 video-to-video，抽 Video1 首尾帧 + Image1 作为三图参考，
+  读回 8s/16:9/seedance_2.5/prompt unchanged 后 only one generation。
+- 输出 4 个下载副本 SHA 都为 `e4b2f91...352cf`，确认只是重复下载；有效 calls 只增 1 到 10。视频为
+  720p/24fps/193f/8.041667s/yuv420p + AAC，778,877B。
+- source-first 0.407604、old-candidate-first 0.464484、first-mid 0.732047、left/center/right
+  0.727645/0.723375/0.742591、seam diff 0.144582。移动水印污染指标且生产 hard fail。
+- 人工确认主要语言是宽暖金轨迹/中段全局亮起；相较 C overlay 更贴材质但与蓝 Rift/水晶/右场不协调，且
+  重绘 source、右侧主要只多几条金弧，云/反射/材质/星尘深度不足。sample reject/no retry。
+- RQ-134：下一版三主体都增强，尤其右侧独立验收；全局环境也增强。允许三主体升级但不得替代全局；光轨
+  只保留为冷蓝/青蓝主色的一层，暖金降低占比。下一正式路线为即梦官方 Smart Edit 真 video edit。
+- RQ-135：多参考不是越多越稳。第一轮 MP4 负责时间/运动/构图，v2 PNG 负责几何/材质/色彩，职责已完备；
+  新审美图会引入构图和材质漂移。高级编辑区域标记优先于第三图；真实识别 Bad Case 后才评功能性 mask。
+- 即梦 v7 prompt 1,439 chars/4,115 bytes/SHA `edbc0d3...6f388`；当前 Chrome extension 重装/重启后可连接，
+  但即梦标签的 DOM/reload/screenshot 仍页面级超时，故 file picker/上传由用户，Codex不盲点。
+- 用户截图已证实高级编辑可用；后续研究确认帧标注表示“从该时间点开始修改”，可添加多个。旧单帧五标注方案
+  作废；采用 00:00 启动、00:04 峰值、00:07 回收三个独立帧标注，每次单独添加至输入框。三矩形均保留完整
+  右场，00:00 另有道路箭头/建筑点；不用画面文字，不增加第三张审美图。
+
+## 2026-08-27：official 即梦 Smart Edit 与 post-process fault tree
+
+- 即梦实际把主 prompt、三个 UI frame reference 和三段说明共同计入 2,000 字；执行版 main 压缩为
+  534 chars/SHA `d003f047...cff10`。preflight 长版仍是 design intent，不能作为 result provenance。
+- official output `4d3660b...155b` 是有效 call 11。1280×720/H.264/yuv420p/8.064s/193f+AAC；nominal 60、
+  average 24.07，不是 clean CFR。镜头/建筑稳定、三分区和九宫格都变化，说明高级编辑确实没有只复制 input。
+- raw mother→first 0.889072、input-first→output-first 0.874379、aligned stream 0.967997；这表明“整体延续 Video1”
+  与“首帧仍被重新解释”同时成立。source identity fail 不能被 full-stream 高相似度覆盖。
+- first→4s left/center/right 0.858797/0.917767/0.889054，center 相对最弱；右场已参与。adjacent p95
+  0.011254、seam 0.046536>0.03，raw 不能 loop。
+- FFmpeg normalization 能安全去 AAC、固定24、写 BT.709/faststart 并压到约3MB；这证明 delivery 问题可修。
+  6/9/12f xfade、显式 blend、native overlap、settle/exact-anchor 都没有在 source/seam 双门下胜出。最佳 J
+  seam 0.042684 仍 fail，且 phase rotation 把 mother-first 降到0.849216。
+- 不能把最后一帧硬复制为首帧来刷 seam：它会产生 1/24s duplicate 或尾段 freeze/ghost，违反持续运动回收。
+  停止 FFmpeg 追绿是 fault-tree 结论，不是把 official Smart Edit/model 判死。
+- 下一可证伪问题是 0.889 的差异究竟来自 geometry/material drift，还是冻结 full-frame SSIM 同时惩罚了预期
+  energy/light motion；回答前不调门、不付费重抽。
+
 ## 2026-08-26：RQ-130 Paid-call content preflight
 
 - Dragon common log 精确解释 refined 403：当时余额 `$15.008`、8 秒 Veo 预扣 `$19.712`；同一时间四条

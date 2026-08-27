@@ -4647,4 +4647,59 @@
   seam diff 0.060443；三大区均运动、镜头初审稳定。等待用户视觉签方向，不 adopted/不重抽。
 - 用户担心 Video1 放大现有雾层；v6.1 改为 double-anchor：Video1 保留运动，Image1 锁原几何/材质，严格只改热图
   静区。prompt 2368B/SHA `9cdcf28e...64ac8`，runner `08834b8a...173b0` parse 0；1 POST/2 GET，
-  source task GET→临时 result URL→edit POST→poll/download，不保存签名 URL，预计约 12.0191。尚未 POST。
+  source task GET→临时 result URL→edit POST→poll/download，不保存签名 URL，预计约 12.0191。该条为执行前
+  冻结记录；随后 POST 400/费用 0 见下节。
+
+### 2026-08-26：Seedance v6.1 submit 400 与官方即梦只读预检
+
+- `LIVE-SUBMIT-REJECTED`：source GET 成功；edit POST 返回 HTTP 400，task id 空、output 无、费用 0、task log
+  无隐藏任务。calls 继续 9，production media 0。
+- `INCIDENT`：原 runner 只保存 HTTP status，response body 丢失；旧 ratio common-log 行不能冒充本次错误。
+  当前 fault layer 只到 request/schema，exact field unknown。
+- `RED→GREEN`：`tests/test_dragon_video_error.py` 从缺模块红灯到 3 passed；strict sanitizer 对合法 nested error
+  投影 code/param/type/bounded message，未知或敏感形状 digest-only。
+- `NO-I/O`：revised runner SHA `e7eb8c9...c0807f`，sanitizer SHA `f5c4f67...58f5a`；PowerShell self-test 通过，
+  静态 1 POST/2 GET，唯一 output/status 不存在，未重试。
+- `OFFICIAL-UI`：即梦官方五模式已只读比较；Seedance 2.5 `智能编辑` 提供单 MP4/MOV 编辑视频槽 + 多参考槽、
+  自动比例/时长和 720P，最贴合双锚点。未上传、购买或生成；不先订高价会员/API 套餐。
+- `DOUBAO-WORK`：首发 30 天标准套餐有客户端/公开发布交叉证据，当前账号显示标准套餐；Seedance 2.5 以
+  月度额度、附件+prompt 触发，没有即梦同等显式模式/高清度控件。未读到期日/剩余额度，未上传或调用。
+- `DOUBAO-LIVE`：用户授权后 only one Seedance 2.5 comparator completed。Skill 抽原片首尾帧 + v2 母图进行
+  image-to-video，不是真 edit；输出 SHA `e4b2f91...352cf`，720p/24fps/8.041667s/AAC/移动水印。
+- `REJECTED`：source-first 0.407604、seam diff 0.144582；暖金光轨有可迁移动作语言，但重绘 source、色彩冲突、
+  三主体内部/整体环境 motion 不完整。calls 10、production media 0，不重跑豆包。
+- `RQ-134/NEXT`：三主体全部增强（右侧单列）+ 整体环境同步增强；光轨转冷蓝/青蓝、暖金低占比。下一即梦
+  `智能编辑` 文件由用户选择；Codex 只在上传后读回参数/积分并填修订 prompt，生成前不点。
+- `RQ-135/PREFLIGHT`：第一轮只用成功 MP4 + v2 母图，不堆审美参考；v7 prompt 1,439 chars/4,115 bytes/SHA
+  `edbc0d3...6f388` 已冻结。Chrome 插件重装/重启后 general connection 恢复，但即梦页仍页面级超时。
+- `ADVANCED-EDIT/RQ-136`：用户指出高级编辑需具体到时间点；公开教程与 ByteDance timestamp 能力复核后，旧
+  单帧 note 作废。当前为 00:00/00:04/00:07 三个独立帧标注，分别表示启动/峰值/回收；每次定位→暂停→标注→
+  写时点说明→添加至输入框。右侧每次都在完整矩形内，不使用文字工具、不增加第三张图。
+- `NEXT`：先提交/push 本 diagnosis/audit/preflight 批并取得 exact-SHA 三 job；全绿后用户手动上传，Codex按
+  截图/页面读数复核模式、素材、积分、高级编辑、音频和 prompt，再决定唯一生成。
+- `NEXT`：先独立 implementation/evidence commit 与 exact-SHA 三 job。公共闭环后，relay 需精确 error body/
+  可证伪字段才重开；官网需先上传后读回实际积分和参数，再决定一次智能编辑。
+
+### 2026-08-27：即梦 Smart Edit raw 与零费用 post-process
+
+- 用户在本 evidence batch exact-SHA public-close 前手动完成 official JiMeng `Seedance 2.5 / 智能编辑`；执行
+  顺序偏差已写入 audit，未倒写历史。
+- 实际 compact main prompt 534 chars/SHA `d003f047...cff10`；三个 timestamp instruction 独立 digest，稳定
+  placeholder projection SHA `6dcd29d4...9d411`。长版 `edbc0d3...6f388` 只保留 design intent。
+- raw output SHA `4d3660b...155b`：三大区/九宫格均变化且 camera/architecture 初审稳定；v2-first 0.889072、
+  seam 0.046536、AAC/non-fixed-fps fail。calls 11、production media 0、verdict revise-candidate/not-adopted。
+- A–P repo-excluded FFmpeg 对照完成。delivery contract 可修；最佳 J fixed24/no-audio/BT.709/2.99MB，SHA
+  `dadd7c3...a0b37`，但 seam 0.042684、mother-first 0.849216，reject runtime。停止 crossfade/settle 追绿。
+- 新增 `2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md`，同步 preflight/ledger/state/roadmap/
+  amendment/matrix/decisions/learning/coverage/active plan；当前开始本地门。
+- `NEXT`：本批 local gates → independent commit/push → exact-SHA three jobs；公共成功后 no-cost identity fault
+  split，不先重生成。
+
+### 2026-08-27：本地门与 Portal-first 顺序
+
+- RQ-137 明确当前先完成 Portal，不把 GLM-5.3/Flash 插入当前脏批；模型采用门保留为 Portal 闭环后的高优先项。
+- focused media/error/governance `42 passed`；无 DB 全量 `1873 passed, 146 skipped, 1 warning, 127 subtests`。
+- Docker Desktop 4.87 backend 因 stale `sailor-ingest.sock` reparse point 无法删除而崩溃，PostgreSQL 54329
+  不可达；普通移动/删除与 fsutil metadata 清除均被系统拒绝。未做 factory reset、未删镜像/卷/WSL 数据。
+- 两套 RAG 满门、Harness `published/0 revisions`、compileall、pip check、SDK/secret/tracked-data、planned
+  cinematic media audit、governance 与 diff check 通过。真库证据必须由 exact-SHA public job 补齐。

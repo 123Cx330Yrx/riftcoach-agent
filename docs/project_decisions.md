@@ -2345,3 +2345,48 @@ coverage 正式关闭；这不会把 candidate 升级为 adopted。8B 只 prepar
 - v6.1 改为 double-anchor：Video1 保留已有 motion，Image1 锁原几何/材质，只编辑热图静区，原片永不覆盖。
 - prompt/runner SHA `9cdcf28e...64ac8` / `08834b8a...173b0`；预计约 `$12.0191`，必须先新 exact-SHA
   公共门，one POST/no retry。edited sibling 任一核心维度劣化即拒绝并回退原片。
+
+### Seedance v6.1 submit 400 与官方 UI 候选
+
+- source GET 成功、POST 在 task 创建前 HTTP 400；费用 0、task id 空、无隐藏 task，故不是模型/画质失败。
+- 原 runner 丢失 response body；旧 ratio 400 不得代替。当前 decision 为
+  `request_or_schema_rejected_before_task_creation / exact_field_unknown`。
+- 采用 strict body-free sanitizer + revised runner 的最小诊断修复；公共闭环前不再 POST，公共闭环后也只有
+  精确 error body 或可证伪字段修正才能重开 relay。
+- 即梦官方 `智能编辑` 作为条件替代 transport：它直接支持 Seedance 2.5 单视频 edit + 多参考素材，UI 管理
+  自动比例/时长。先不购买会员/API；只有上传后实际积分和参数读回、用户确认费用，再允许一次官方 UI edit。
+- 豆包工作当前标准套餐作为更低现金成本的第二官方入口：只在读回剩余额度、Seedance 2.5 与附件角色后，
+  才可用一次附件+prompt edit；因无即梦式显式智能编辑/全能参考/首尾帧模式，不把它视为逐字段等价替代。
+
+### 豆包 comparator 退出与 RQ-134
+
+- 实际 Skill 无 video-to-video，按首尾帧+母图进行一次 Seedance 2.5 image-to-video；只执行一次，现金新增 0。
+- 输出 `e4b2f91...352cf` 因 source/seam/AAC/移动水印/暖金主导和整体 motion stack 不完整 reject；不重跑豆包。
+- 保留“沿真实道路/结构接缝运动的光轨”思路，但下一版以冷蓝/青蓝为主，暖金只作结构强调。左 Rift、中央
+  水晶/平台、尤其右星图/能量场都必须加强，并与建筑、反射、空气、云和星空整体同步；两组门缺一不可。
+- 下一正式 candidate 改用即梦 `智能编辑` 真正视频编辑；文件选择由用户执行，Codex 负责费用/参数/prompt 门。
+
+### 即梦 Smart Edit 素材与 v7 prompt
+
+- 选择双参考最小集：成功 MP4 锁时间/运动/构图，v2 PNG 锁几何/材质/色彩；不生成更多审美图稀释 source。
+- 若高级编辑可用，用区域框选表达左/中/右与静区；只有真实识别失败才新设计纯功能 motion mask。
+- v7 prompt SHA `edbc0d3...6f388`，三主体尤其右侧 + 全局环境双硬门，光轨冷蓝/青蓝主色、暖金低占比。
+- file picker 由用户执行；Codex 不盲点即梦页面，上传后依据截图/读数完成 readback。当前先独立公共门。
+
+### 即梦 Smart Edit result 与 post-process 裁决
+
+- 用户在 preflight batch public-close 前手动完成一次 official Smart Edit；该真实执行顺序保留，不倒写历史。
+- 2,000 字上限使实际 main prompt 压缩为 SHA `d003f047...cff10`；长版 `edbc0d3...6f388` 只表示 design intent。
+- raw SHA `4d3660b...155b` 保持 camera/大建筑并覆盖三大区/九宫格，右场不再遗漏；因此 official Smart Edit
+  和 motion direction 保持 open。
+- raw 仍因 mother-first `0.889072`、seam `0.046536`、AAC/non-fixed-fps 不准入。FFmpeg 可修 delivery contract，
+  不能修 source identity；最佳 J seam `0.042684` 仍 fail。所有 media 留 repo 外，production media `0`。
+- 不降低冻结阈值、不继续 xfade 追绿、不原样重抽。先 exact-SHA 公共关闭 audit，再拆 geometry/material 与
+  intended light/energy 差异；只有新 source-side 控制合同才允许下一生成 preflight。
+
+### Portal 与模型迁移顺序
+
+用户复核 Agent 产品仍缺 bounded Coach、默认仍请求 GLM-5.2 且 GLM-5.3/Flash 已正式可用后，选择先完成当前
+Portal。RQ-137 因此不改变当前 checkpoint：Portal evidence/identity/source-side/runtime/visual gate 完成后，
+GLM-5.3/Flash adoption 才作为下一高优先横向批恢复；不能在当前未提交证据上同时改 Provider，也不能借此无限
+延长视觉抽卡或声称 Agent 已收工。

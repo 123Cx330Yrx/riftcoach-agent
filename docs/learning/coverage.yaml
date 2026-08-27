@@ -867,6 +867,8 @@ groups:
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
       design_and_implementation:
+        - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
+        - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md
         - docs/adr/0068-adopt-mother-image-global-loop-scenes-and-semantic-activation.md
         - docs/plans/2026-08-25-8e-portal-motion-polish-design.md
         - docs/plans/2026-08-25-8e-portal-motion-polish-implementation.md
@@ -945,6 +947,10 @@ groups:
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
       verification:
+        - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
+        - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md
+        - docs/plans/2026-08-26-8e-seedance25-video-edit-submit-400-diagnosis.md
+        - docs/plans/2026-08-26-8e-doubao-seedance25-comparator-audit.md
         - docs/plans/2026-08-25-8e-portal-motion-polish-implementation.md
         - docs/plans/2026-08-26-8e-portal-c-line-proof-implementation.md
         - docs/plans/2026-08-26-8e-portal-c-line-proof-result.md
@@ -977,6 +983,8 @@ groups:
         - docs/plans/2026-08-24-8e-timeline-dto-ui-implementation.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
       runbook:
+        - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
+        - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md
         - docs/plans/2026-08-25-8e-portal-motion-polish-implementation.md
         - docs/plans/2026-08-26-8e-portal-c-line-proof-implementation.md
         - docs/learning/8e-portal-motion-polish-walkthrough.md
@@ -992,6 +1000,10 @@ groups:
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
       failure_security_boundary:
+        - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
+        - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md
+        - docs/plans/2026-08-26-8e-seedance25-video-edit-submit-400-diagnosis.md
+        - docs/plans/2026-08-26-8e-doubao-seedance25-comparator-audit.md
         - docs/adr/0068-adopt-mother-image-global-loop-scenes-and-semantic-activation.md
         - docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md
         - docs/plans/2026-08-26-8e-portal-c-line-proof-result.md

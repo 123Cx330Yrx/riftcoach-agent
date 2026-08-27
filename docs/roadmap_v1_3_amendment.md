@@ -678,3 +678,25 @@ Dragon 专用页面已确认公共名 `seedance-2-5`、`video_operation=edit`、
 不把它冒充 edit。v6.1 又按用户纠正采用 Video1 + immutable Image1 双锚点：前者保存已有 motion，后者锁原始
 geometry/material/linework，只补道路、地面反射、建筑缝、远景空气和星图静区，原片永不覆盖。先新 exact-SHA
 公共门，再按约 `$12.0191` 估算 one POST；edited sibling 劣化即拒绝，失败不盲重试。
+
+v6.1 实际 submit 在 source GET 后以 HTTP 400 停在 task 创建前；费用 0、task id 空、无隐藏任务。原 runner
+没有保存 error body，故当前只能定位到 request/schema 层，不能把旧 ratio 错误或双锚点猜测当成根因。新增
+严格 sanitizer 与 revised runner 只修复诊断缺口；公共闭环且取得可证伪字段前不允许新 POST。
+
+豆包工作标准套餐的一次 Seedance 2.5 comparator 已执行；其 Skill 抽首尾帧 + 母图重新生成而非 video edit。输出
+因 source-first `0.407604`、seam `0.144582`、AAC、移动水印、暖金轨迹主导和整体 motion stack 不完整 rejected，
+不重跑。RQ-134 要求三主体（尤其右侧）和整体环境都增强；光轨只保留为冷蓝/青蓝材质内运动的一层。下一正式
+candidate 改用即梦官方 `智能编辑`，用户手动选文件，生成前仍需参数/积分/prompt readback。
+
+RQ-135 固定即梦第一轮仅使用成功 MP4 + v2 母图：两者分别承担时间运动与视觉身份，额外审美图会增加 source
+drift；高级编辑区域框选优先。v7 prompt SHA `edbc0d3...6f388` 同时强化三主体（右侧单列）和全局环境；当前
+先 exact-SHA 公共关闭 preflight，用户之后手动选文件，Codex不再自动操作 file picker。
+
+official 即梦 Smart Edit 已完成一次有效调用，但发生在上述 preflight batch public-close 前；历史明确记录该
+顺序偏差。实际 compact prompt 与 design 长版分离。raw output 在镜头/三大区/九宫格方向上有希望，仍因
+v2→first `0.889072` 与 seam `0.046536` fail；FFmpeg 只能修 fixed24/no-audio/BT.709/bytes，最佳后处理 seam
+`0.042684` 仍 fail。calls `11`、production media `0`。下一门是本 evidence batch exact-SHA 公共闭环和 no-cost
+identity fault split，不改变 8E/8F 顺序，也不授权相同配置再生成。
+
+RQ-137 再固定短期排序：当前先完成 Portal Motion Polish 的 evidence、identity、source-side、runtime 与视觉门，
+之后才恢复 GLM-5.3/Flash adoption 和 bounded Coach 等 Agent 产品项；不在一个未提交批中同时改变媒体和 Provider。
