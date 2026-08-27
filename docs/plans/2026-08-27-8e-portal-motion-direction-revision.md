@@ -1,6 +1,6 @@
 # 8E Portal Motion Direction Revision（静态方向与参考模式门）
 
-状态：`preview-generated / awaiting visual review`。本文件只冻结下一轮设计与
+状态：`preview-generated / direction-rejected`。本文件只冻结下一轮设计与
 提示词方向，不把任何新图或视频标为 production media。
 
 ## 1. 本轮纠正
@@ -29,7 +29,9 @@ brief 的视觉沟通稿，不直接替换母图，也不进入 runtime；若 Im
 几何或材质，则回退到原母图，只保留文字 brief。
 
 本轮实际得到两张编辑稿（`variant-1`、`variant-2`），第三次请求因余额不足返回
-403，未重试。两张成功稿都保存在用户临时目录，仅供本轮评审，不写入仓库。
+403，未重试。两张成功稿主要表现为亮度/对比度与蓝光增强，未形成可验证的景内
+状态变化，因此按“调色稿”拒绝为 motion direction；它们仅保存在用户临时目录，
+不写入仓库。
 
 ## 3. 即梦参考模式裁决
 
