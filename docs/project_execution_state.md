@@ -3007,3 +3007,5 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   runner parser 0 error、唯一 POST 路径 1，runner SHA `5803f41b04aa74d022924b03b7aa8ee20f041db8580c8b94c8fd569b58875347`。
 - 只传确认母图，不上传旧视频；manifest 的 `paid_call_authorized=false`、`post_attempts_observed=0`、
   `production_media=false` 保持不变。下一步仍需页面/账户实际 readback 后再决定是否调用。
+- `cc35fae` / Actions `33098493865` 的 exact-SHA pytest、真实 PostgreSQL migrations、packaging-smoke 三 job
+  已全部成功；Kling preflight 公共证据闭环，尚未创建 task。

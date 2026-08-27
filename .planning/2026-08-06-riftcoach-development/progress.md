@@ -4796,3 +4796,5 @@
 - Kling 专用 image-reference prompt 已压至 1,833 字符，绑定母图 SHA、`metadata.image_list` 与
   `<<<image_1>>>`，并冻结 8s/std/720p/16:9/audio-off；价格 readback 为 ¥0.462/s，估算 ¥3.696。
 - runner parse 0 error、唯一 POST 1；当前未上传旧视频、未调用 Kling、未扣费，等待页面/账户 readback。
+- `cc35fae` / Actions `33098493865` 的 pytest、真实 PostgreSQL migrations、packaging-smoke 三 job 已全部成功，
+  Kling preflight 公共闭环，仍保持 post observed 0。

@@ -1718,6 +1718,8 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   runner parser 0 error、唯一 POST 1、SHA `5803f41b04aa74d022924b03b7aa8ee20f041db8580c8b94c8fd569b58875347`。
 - [next] 页面/账户 readback；只传母图、不上传旧视频。若实际输入与 manifest 不一致则记录 request/mode failure，
   一致且用户继续授权后才允许一次 Kling 调用。
+- [completed-public-preflight] `cc35fae` / Actions `33098493865` 三 job exact-SHA 全部成功；Kling 仍未调用，等待
+  用户在本机输入 Key 后执行一次 runner。
 
 ## RQ-142 method fault split (2026-08-28)
 

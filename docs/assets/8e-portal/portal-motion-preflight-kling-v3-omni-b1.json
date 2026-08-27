@@ -60,7 +60,19 @@
     "image2_used": false,
     "production_media": false,
     "post_attempts_planned": 1,
-    "post_attempts_observed": 0
+    "post_attempts_observed": 0,
+    "public_ci": {
+      "commit": "cc35fae4ee5a0707f2d00dc6e3444bdcf1480602",
+      "run_id": "33098493865",
+      "jobs": ["pytest", "postgres-migrations", "packaging-smoke"],
+      "conclusion": "success"
+    },
+    "public_ci": {
+      "commit": "cc35fae4ee5a0707f2d00dc6e3444bdcf1480602",
+      "run_id": "33098493865",
+      "jobs": ["pytest", "postgres-migrations", "packaging-smoke"],
+      "conclusion": "success"
+    }
   },
   "stop_conditions": [
     "do not submit before final prompt digest and visible input/price readback",
