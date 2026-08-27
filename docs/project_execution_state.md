@@ -2974,5 +2974,7 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   中央平台标成可变体积。
 - manifest `docs/assets/8e-portal/portal-motion-preflight-b1-smart-edit.json` 已绑定 Video1 SHA、母图 SHA、
   prompt/annotation digest、`adaptive/720p`、8.041667s 和音频策略；未上传、未调用、未扣费。
+- 即梦登录标签已找到且初始页面显示为 `全能参考`，但后续 DOM/CUA/截图读取连续超时；没有点击、上传或改变
+  页面状态，manifest 已记录 `mode_readback_status=blocked_extension_timeout`。
 - `NEXT`：只做 B1 的页面模式/素材角色/积分/音频 readback；若输入无法表达三时间点区域控制，则直接记录
   request/mode failure，不发起付费任务。若 readback 通过且用户继续授权，最多执行一次 B1。

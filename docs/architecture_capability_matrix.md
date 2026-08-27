@@ -385,3 +385,6 @@ Edit 的 coverage 更好但 source/seam 失败；C-line 线条 proof 仅证明 H
 
 B1 Smart Edit contract 已完成 no-cost preflight：1,977 字符主 prompt、`00:00/00:04/00:07` 三帧说明、
 Video1/mother 双锚点和平台几何不可变规则均已 digest 绑定；当前未上传/未调用，需先做页面模式与输入角色 readback。
+
+B1 readback 当前受即梦 Chrome 扩展/页面超时阻塞；初始页仅确认“全能参考”，Smart Edit 输入槽、积分和音频状态
+尚未证实，未进行点击或上传。

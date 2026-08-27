@@ -51,6 +51,8 @@
     "prompt_digest_verified": true,
     "frame_annotation_digests_verified": true,
     "mode_readback_required": true,
+    "mode_readback_status": "blocked_extension_timeout",
+    "mode_readback_note": "The logged-in JiMeng tab was found, but DOM/CUA/screenshot reads timed out repeatedly; no click or upload was performed.",
     "price_readback_required": true,
     "paid_call_authorized": false,
     "image2_used": false,

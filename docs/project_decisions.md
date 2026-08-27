@@ -2472,3 +2472,6 @@ mask/prompt contract 与 no-cost preflight，未完成前不再付费、不接 r
 B1 已把上一轮 Smart Edit 的控制收窄为双锚点与三个时间点：Video1 只保留节奏，v2 母图锁定结构；中央只
 允许水晶/现有光柱内部呼吸，平台几何不可变；左/右/道路/反射/云空气从首帧持续。主 prompt 压至 1,977 字符，
 三份 annotation 与 source/video SHA 已 digest 绑定。当前只完成 no-cost preflight，未上传、未付费、未调用。
+
+B1 页面 readback 当前受浏览器扩展超时阻塞：即梦标签可发现且初始页为“全能参考”，但 DOM/CUA/截图无法稳定
+返回；不把该阻塞误判为 Smart Edit 不可用，也不猜测模式/积分/音频状态。恢复后只做一次只读核对。
