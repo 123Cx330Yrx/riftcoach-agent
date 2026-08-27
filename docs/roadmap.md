@@ -719,3 +719,9 @@ intent。raw SHA `4d3660b...155b` 的 locked camera、left/center/right 与九�
 v2→first `0.889072`、seam DSSIM `0.046536`、AAC 与非 fixed-24 未过门。零费用 FFmpeg 最佳 J 虽完成
 fixed24/no-audio/BT.709/3MB，seam `0.042684` 仍 fail 且 source identity 更差。Task 5 calls `11`、production
 media `0`；当前先公共关闭 result/audit，再做 no-cost source-identity fault split，不先重抽或接 runtime。
+
+Seedance 2.5 v3 随后完成了一次 12 秒 first-frame-only 生成并由 GET-only recovery 下载。技术编码满足播放要求，
+但视觉候选被拒绝：左 Rift 变成硬同心环，道路流动在前段缺失，中央 burst 过曝且出现横向穿屏线，右侧在
+burst 外近乎静止，整体 near/mid/far 呼吸不足。RQ-141 因此把下一门收紧为“先改运动合同”：基础层从首帧
+持续运动，burst 仅是中央上下贯穿、低幅、约 2–3 秒的呼吸式水晶激发；未过 source/loop/visual gate 前不再
+付费重抽、不接 runtime。生产媒体仍为 `0`。

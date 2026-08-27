@@ -4456,3 +4456,15 @@
   403.
 - User allowed skipping Image2. The next candidate therefore returns to a source-only first-frame video request with a
   shorter positive brief, avoiding the previous over-dense timeline/negative wording that may have suppressed motion.
+
+## 2026-08-27：Seedance 2.5 v3 失败模式
+
+- 12 秒 v3 的时序九宫格显示，开场约 0–2.5 秒主要只有左 Rift 形状从小旋涡逐步变成硬同心环，
+  道路与 Rift 下方流动没有作为持续基础层出现；3 秒后才逐渐出现道路亮线。
+- 4–7 秒所谓 burst 不是中央纵向的温和蓄放，而是横向/斜向穿过画面的直线网络，中心在约 7 秒过曝成白色光柱，
+  右侧星图同时被画成高亮几何连线。该事件明显但不符合材质跟随、克制和可用于点击后转场的设计。
+- burst 之外右侧星图/地形场变化很小，near/mid/far 也没有稳定的全幕呼吸；因此“区域有像素变化”不能作为
+  “全局动态成立”的替代证据。v3 视觉 verdict 为 rejected，保留作 fault evidence，不进入 runtime。
+- 下一 brief 应拆成常驻基础层和小幅事件层：常驻层从首帧起持续让道路、裂隙下方、右侧星尘/地形、建筑接缝、
+  地面反射、云和空气有独立的中等幅度运动；事件层只在中段约 2–3 秒沿中央垂直轴上行/下行，轻柔激发水晶并
+  平滑回到基线。禁止跨画面直线联动、过曝白闪、burst-only 右侧和把同心环当作 Rift 深度。

@@ -700,3 +700,8 @@ identity fault split，不改变 8E/8F 顺序，也不授权相同配置再生�
 
 RQ-137 再固定短期排序：当前先完成 Portal Motion Polish 的 evidence、identity、source-side、runtime 与视觉门，
 之后才恢复 GLM-5.3/Flash adoption 和 bounded Coach 等 Agent 产品项；不在一个未提交批中同时改变媒体和 Provider。
+
+RQ-141 对 Seedance 2.5 v3 做了视觉否决：v3 的左 Rift、道路、中央 burst、右侧星图和 near/mid/far 环境没有形成
+用户要求的持续全幕呼吸；中段还出现过曝白闪与横向直线。后续 source-side brief 必须把常驻基础运动与事件层
+分开：道路/Rift 下方、右场、建筑接缝、地面反射、云和空气从首帧持续，burst 只沿中央垂直轴低幅蓄放约 2–3 秒，
+并自然回到基线。该修订不改变 8E/8F 顺序、不允许降低 source/seam 门，也不立即授权新的付费请求。

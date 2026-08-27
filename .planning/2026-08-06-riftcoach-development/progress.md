@@ -4729,3 +4729,17 @@
 - RQ-140 now allows skipping Image2 entirely. Added a first-frame-only regeneration preflight with a shorter positive
   motion brief and bounded negative brief; current state is prepared, waiting for model/price/source readback before one
   video call.
+
+### 2026-08-27：Seedance 2.5 v3 result review / RQ-141
+
+- v3 was submitted once with the confirmed v2 source, first-frame-only, `adaptive`, 720p, 12 seconds and audio off.
+  Codex restart interrupted local polling at 50%; a fixed-task GET-only recovery downloaded the existing result with
+  zero recovery POSTs. Output SHA `76be77750c8932666117e2e3ecdbb0e9fc1b3e845bb41f66532eb8802d1d2a04`.
+- The 12-second file is technically playable (1280×720, 24 fps, H.264/yuv420p, no audio) and has an obvious middle
+  event, but visual review rejects it: the Rift resolves into hard concentric rings, road flow starts late, the center
+  event is an overexposed white flash with crossing beams, the right field is mostly static outside the event, and the
+  near/mid/far environment lacks a stable breathing rhythm. It remains research-only and is not runtime media.
+- RQ-141 narrows the next contract before any new paid call: baseline road/Rift-underflow/right-field/building seams/
+  reflections/clouds/air must move continuously from frame 1; the burst is a restrained 2–3 second central vertical
+  pulse that gently excites the crystal and returns to baseline; no cross-frame straight-line network, HUD-like drawing,
+  white exposure spike or burst-only right-side activity. Next action is brief/contract revision, not blind regeneration.

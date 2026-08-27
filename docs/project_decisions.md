@@ -2410,3 +2410,15 @@ Image2 两张母图编辑稿经用户复核后只表现为亮度/对比度/蓝�
 母图作为首帧单锚点；prompt 改为短的正向 motion brief，强调 steady/continuous、三大区与 near/mid/far
 同时运动，negative 只保留 camera drift、重绘、局部闪烁、雾层伪全局和交付破坏项。先完成页面参数、价格、
 source SHA 和 prompt readback，再恰好一次调用；不自动重试。
+
+### RQ-141：Seedance v3 视觉失败后的运动合同修订
+
+Seedance 2.5 v3 的 12 秒 first-frame-only 输出已完成下载与逐帧复核。它证明 DragonAPI 请求、GET-only
+恢复、编码和审查链可工作，但不满足 Portal 视觉目标：左 Rift 先形成硬同心环，道路流动直到中段才出现，
+中央 burst 变成过曝白闪和横向穿屏直线，右侧在 burst 外近乎静止，near/mid/far 缺少持续呼吸，末帧也未充分
+回到首帧相位。因此候选保存为 `research-candidate-rejected`，不进入 runtime，也不能据此否定 Seedance 模型。
+
+用户纠正后，下一运动合同拆为两层：常驻基础层从首帧起持续驱动道路/Rift 下方、右侧星尘与地形、建筑接缝、
+地面反射、云和空气；事件层只在中段约 2–3 秒沿中央垂直轴做低幅、平滑的蓄放，轻柔激发水晶并回到基线。
+禁止跨画面直线网络、HUD 式线条、全局白闪、burst-only 右侧和用同心环代替 Rift 深度。未完成该 source-side
+brief、循环相位和视觉门前，不再付费重抽、不静默切换模型、不接 runtime。

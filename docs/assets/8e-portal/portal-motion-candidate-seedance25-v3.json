@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "status": "research-candidate-rejected",
+  "candidate": "dragon-seedance25-first-only-v3",
+  "task_id": "task_kOuGllihQ9z92BRSLzQ5StE8zAZ1v6tW",
+  "model": "seedance-2-5",
+  "transport": "DragonAPI",
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e"
+  },
+  "request": {
+    "prompt_sha256": "11c864061b6d03997517a153a43d3bce2520a5bd22df68e06ca66a7cf2a41351",
+    "duration_s": 12,
+    "aspect_ratio": "adaptive",
+    "resolution": "720p",
+    "first_frame": true,
+    "last_frame": false,
+    "generate_audio": false,
+    "post_attempts": 1,
+    "recovery_post_attempts": 0
+  },
+  "output": {
+    "path": "repo-excluded:tmp/riftcoach-task5-video-bakeoff/dragon-seedance25-first-only-v3.mp4",
+    "sha256": "76be77750c8932666117e2e3ecdbb0e9fc1b3e845bb41f66532eb8802d1d2a04",
+    "duration_s": 12.041667,
+    "frames": 289,
+    "width": 1280,
+    "height": 720,
+    "fps": 24,
+    "codec": "h264-high",
+    "pixel_format": "yuv420p",
+    "audio": false
+  },
+  "measurements": {
+    "source_to_first_ssim": 0.989294,
+    "source_to_first_mad": 0.013476,
+    "first_to_11_9s_ssim": 0.927839,
+    "first_to_11_9s_mad": 0.017672,
+    "region_adjacent_mad_mean": {
+      "left": 0.003850,
+      "center": 0.004740,
+      "right": 0.003133
+    },
+    "region_adjacent_mad_windows_1s": {
+      "left": [0.002661, 0.002639, 0.002471, 0.004131, 0.004790, 0.004743, 0.008557, 0.005686, 0.003780, 0.002768, 0.002079, 0.001895],
+      "center": [0.001590, 0.001228, 0.001292, 0.002940, 0.002676, 0.004810, 0.023181, 0.011636, 0.003592, 0.001890, 0.001053, 0.000993],
+      "right": [0.001215, 0.000949, 0.001299, 0.002374, 0.003317, 0.004148, 0.010550, 0.006778, 0.003527, 0.001761, 0.000885, 0.000787]
+    }
+  },
+  "visual_review": {
+    "passed": [
+      "12-second H.264 browser-compatible file with no audio",
+      "single fixed composition; no measurable integer-pixel camera translation in the downscaled phase-correlation check",
+      "source identity remains high at the decoded first frame",
+      "a middle-scene energy event is clearly visible"
+    ],
+    "failed": [
+      "left Rift begins as a small rotating mark and resolves into hard concentric rings rather than calm layered fluid depth",
+      "road/current motion is largely absent during the opening and appears mainly when the middle event starts",
+      "central event becomes a harsh white exposure spike and straight crossing beams rather than a restrained vertical crystal pulse",
+      "right constellation is mostly static outside the event; its event contribution is bright geometric line drawing, not continuous starfield/terrain motion",
+      "near/mid/far environment does not maintain a clearly perceptible breathing rhythm across the whole loop",
+      "opening and recovery are not phase-matched enough for a seamless loop; the late frame remains visibly different from the opening"
+    ],
+    "user_verdict": "rejected: motion is abrupt, object/line-driven and incomplete; do not adopt or place in runtime"
+  },
+  "next_gate": "revise-motion-contract-before-any-new-paid-call",
+  "production_media": false
+}

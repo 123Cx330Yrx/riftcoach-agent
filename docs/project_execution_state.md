@@ -20,8 +20,9 @@ pause_reason: ""
   `33042204532` 完成 exact-SHA 三 job；T/X identity fault split 已完成但仍是 research-only。用户随后明确拒绝
   沿用当前视频节奏，要求先重做全局持续呼吸 brief，并在付费前用 Image2 对确认母图做多张静态方向预览。
   旧代理端口 `7890` 已纠正为用户实际 HTTP 代理 `12000`；Image2 两张同构编辑预览主要是调色/提亮，第三次请求
-  因 `403 insufficient balance` 停止，均不作为 motion direction。用户按 RQ-140 允许跳过 Image2，当前唯一下一
-  动作是完成首帧单锚点的新视频请求 preflight；不沿用现有视频、不用首尾帧/全能参考、不先创建任务。）
+  因 `403 insufficient balance` 停止，均不作为 motion direction。用户按 RQ-140 允许跳过 Image2，已完成一次
+  首帧单锚点 12 秒 Seedance v3 生成；按 RQ-141 视觉审查拒绝，不进入 runtime，下一步先重写运动合同，
+  不立即付费重抽或切换模型。）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -257,10 +258,11 @@ pause_reason: ""
   `31942483874` 的 exact-SHA 公共 CI
 - 唯一下一步：`8e-productization / portal-motion-polish / runtime Task 5 motion direction gate`，当前为
   `authorized / in_progress`。Task 5 的 prior audit/evidence 已由 `f041643` / Actions `33042204532` 公共关闭，
-  但现有视频与 T/X 仍未采用。先恢复 Image2 代理并完成基于确认母图的三张静态方向 preview，再冻结首帧版
-  source-side brief；在此之前不重用现有视频、不烧新视频额度、不接 runtime。8D、Batch B/C/D、Live Workbench、
-  Batch E E1–E5、production shell/Auth gate、Timeline、bilingual/product-journey foundation 与 RQ-108 runtime
-  Task 1–4 的公共证据保持不变；GLM-5.3/Flash、Coach、RQ-103 与 8F 仍留后序。
+  v3 Seedance 研究候选已生成但按 `docs/assets/8e-portal/portal-motion-candidate-seedance25-v3.json` 拒绝，
+  现有视频与 T/X 仍未采用。先完成 RQ-141 的 source-side motion contract 修订和 no-cost preflight；在此之前
+  不重用现有视频、不烧新视频额度、不接 runtime。8D、Batch B/C/D、Live Workbench、Batch E E1–E5、production
+  shell/Auth gate、Timeline、bilingual/product-journey foundation 与 RQ-108 runtime Task 1–4 的公共证据保持不变；
+  GLM-5.3/Flash、Coach、RQ-103 与 8F 仍留后序。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -2898,3 +2900,18 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   diff 全绿。146 skip 原因是 Docker Desktop 4.87 被损坏的 `sailor-ingest.sock` reparse point 阻断，端口
   `54329` 不可达；普通/metadata 删除与移动均被 Windows 拒绝，未重置 Docker、未触碰镜像/卷。真实 PostgreSQL
   必须由本批 exact-SHA `postgres-migrations` job 阻塞补证，不能冒充本地通过。
+
+### 2026-08-27：Seedance 2.5 v3 视觉审查与 RQ-141
+
+- v3 使用当前唯一 Portal source v2（SHA `8134c0ca...1a06e`）、首帧单锚点、`seedance-2-5`、
+  `adaptive`、720p、12s、无音频，唯一生成 POST 为 task `task_kOuGllihQ9z92BRSLzQ5StE8zAZ1v6tW`；
+  Codex 重启后通过 GET-only runner 恢复，恢复 POST 为 `0`。
+- 输出 SHA `76be77750c8932666117e2e3ecdbb0e9fc1b3e845bb41f66532eb8802d1d2a04`，12.041667s、
+  1280×720、24fps、H.264 High/yuv420p、无音轨；source→decoded first SSIM `0.989294`，
+  first→11.9s SSIM `0.927839`。
+- 视觉结论为 `research-candidate-rejected`：左 Rift 先小幅旋转后变成硬同心环；道路/裂隙下方流动在
+  burst 前不持续；中央事件变成过曝白闪和横向穿屏直线；右侧在 burst 外近乎静止，near/mid/far 没有
+  稳定的全幕呼吸，末帧也没有充分回到首帧相位。该输出证明请求通道和审查链可工作，不证明模型或方法达标。
+- RQ-141 已追加：基础运动必须从首帧持续；burst 改为中央上下贯穿、低幅、约 2–3 秒的呼吸式蓄放，
+  只轻柔激发水晶，不用跨画面直线、HUD、过曝或全局闪白；右场、道路、环境层在 burst 前后均保持独立且
+  同级可感知运动。v3 不进入 runtime，下一动作是 source-side brief/合同修订，不立即重抽或换模型。

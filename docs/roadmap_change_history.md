@@ -3418,3 +3418,10 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 - AutoGLM 三张文生图只作反例；Image2 只在代理恢复后对确认母图做 image-to-image 静态方向稿。即梦当前页面显示
   “全能参考”可混合最多 50 个图/文/音/视频输入，故不把它当严格 Video1 temporal edit。
 - 下一校正视频先用首帧单锚点；首尾帧作为后置对照。新 source-side brief 未通过静态门前不重生成、不接 runtime。
+
+## 2026-08-27：RQ-141 Seedance v3 motion contract correction
+
+- `LIVE-OUTPUT`：DragonAPI `seedance-2-5` first-frame-only v3 任务 `task_kOu...v6tW` 已完成并由 GET-only
+  recovery 下载；12.041667s、1280×720、24fps、H.264/yuv420p、无音轨，唯一生成 POST，恢复阶段 POST 为 0。
+- `VISUAL-REJECTED`：左 Rift 从小旋涡变成硬同心环；道路/裂隙下方流动在前段缺失；中央中段出现过曝白闪与横向穿屏线；右侧非 burst 时近乎静止；near/mid/far 没有稳定的全幕呼吸；末帧与开场相位仍不够接近。该结果只证明这次请求产生了可审查输出，不证明模型或方法已达标。
+- `CURRENT`：下一候选必须先重写 brief：基础运动从首帧持续到末帧，burst 只做中央上下贯穿的低幅、约 2–3s 呼吸式蓄放，左/中/右和环境层在 burst 前后保持同级可感知；禁止跨画面直线联动、HUD 式线条、过曝闪白与 burst-only 右侧。未完成 source/loop/visual contract 前不再付费重抽、不接 runtime。

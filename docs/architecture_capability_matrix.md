@@ -353,3 +353,9 @@ module execution。新 exact-SHA Linux job 成功前，A14/Q09 仍不能升级�
   新生成，必须改 source-side first/last/keyframe contract，不能原样重抽。
 - RQ-137 把 GLM-5.3/Flash Provider refresh 排到 Portal Motion Polish 闭环后；A10/A11 的模型与 bounded Coach
   缺口仍保持未完成，不能因当前 Portal-first 顺序从矩阵消失。
+
+2026-08-27 Q10/RQ-141 补充：Seedance 2.5 v3 first-frame-only 12 秒样本已完成 GET-only recovery，输出技术
+编码可播放（1280×720、24fps、H.264/yuv420p、无音轨），但视觉门拒绝：左 Rift 硬同心环、道路基础流动延后、
+中央 burst 过曝且出现横向穿屏线、右场在 burst 外近乎静止、near/mid/far 缺少持续呼吸。该样本只保留为
+research evidence，production media 仍为 `0`；下一步先修订常驻基础运动 + 中央纵向低幅 burst 合同，不付费
+重抽、不接 runtime、不据此否定模型。
