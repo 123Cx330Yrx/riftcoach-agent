@@ -2906,6 +2906,8 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - v3 使用当前唯一 Portal source v2（SHA `8134c0ca...1a06e`）、首帧单锚点、`seedance-2-5`、
   `adaptive`、720p、12s、无音频，唯一生成 POST 为 task `task_kOuGllihQ9z92BRSLzQ5StE8zAZ1v6tW`；
   Codex 重启后通过 GET-only runner 恢复，恢复 POST 为 `0`。
+- Task 5 external video calls 累计为 `12`，production media 仍为 `0`；v3 及其恢复输出全部留在 repo-excluded
+  scratch 与 research evidence，不写入 `web/public/assets`。
 - 输出 SHA `76be77750c8932666117e2e3ecdbb0e9fc1b3e845bb41f66532eb8802d1d2a04`，12.041667s、
   1280×720、24fps、H.264 High/yuv420p、无音轨；source→decoded first SSIM `0.989294`，
   first→11.9s SSIM `0.927839`。

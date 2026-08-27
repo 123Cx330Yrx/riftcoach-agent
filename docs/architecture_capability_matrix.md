@@ -357,5 +357,5 @@ module execution。新 exact-SHA Linux job 成功前，A14/Q09 仍不能升级�
 2026-08-27 Q10/RQ-141 补充：Seedance 2.5 v3 first-frame-only 12 秒样本已完成 GET-only recovery，输出技术
 编码可播放（1280×720、24fps、H.264/yuv420p、无音轨），但视觉门拒绝：左 Rift 硬同心环、道路基础流动延后、
 中央 burst 过曝且出现横向穿屏线、右场在 burst 外近乎静止、near/mid/far 缺少持续呼吸。该样本只保留为
-research evidence，production media 仍为 `0`；下一步先修订常驻基础运动 + 中央纵向低幅 burst 合同，不付费
+ research evidence，Task 5 external video calls 累计 `12`，production media 仍为 `0`；下一步先修订常驻基础运动 + 中央纵向低幅 burst 合同，不付费
 重抽、不接 runtime、不据此否定模型。

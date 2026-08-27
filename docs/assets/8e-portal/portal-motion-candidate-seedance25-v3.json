@@ -2,6 +2,7 @@
   "schema_version": "1.0",
   "status": "research-candidate-rejected",
   "candidate": "dragon-seedance25-first-only-v3",
+  "external_video_calls_total_after_run": 12,
   "task_id": "task_kOuGllihQ9z92BRSLzQ5StE8zAZ1v6tW",
   "model": "seedance-2-5",
   "transport": "DragonAPI",
