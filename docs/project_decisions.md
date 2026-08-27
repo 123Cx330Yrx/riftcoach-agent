@@ -2475,3 +2475,10 @@ B1 已把上一轮 Smart Edit 的控制收窄为双锚点与三个时间点：Vi
 
 B1 页面 readback 当前受浏览器扩展超时阻塞：即梦标签可发现且初始页为“全能参考”，但 DOM/CUA/截图无法稳定
 返回；不把该阻塞误判为 Smart Edit 不可用，也不猜测模式/积分/音频状态。恢复后只做一次只读核对。
+
+### C′ proof 与候选切换（2026-08-28）
+
+C′ 本地材质 proof 通过结构/覆盖的机器门，但人工审查认为运动过轻、source-pixel mask 边缘有贴层风险，不能
+满足 Portal 的明显、cool、整幕呼吸目标；因此不再提高 opacity/位移追绿。B1 与已执行 Smart Edit 形态重复，
+也不再付费复跑。下一候选改评估 Kling v3 Omni 的参考视频+参考图模式，必须使用其专用 `video_list` 与
+`metadata.image_list` 占位符和 prompt，先过 schema/价格/source/单次调用 preflight。

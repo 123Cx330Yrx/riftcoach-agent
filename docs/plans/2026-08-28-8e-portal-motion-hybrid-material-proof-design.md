@@ -51,3 +51,32 @@
 Smart Edit 已经有一次真实 coverage 证据，但 source/seam 失败；B1 只改变 prompt，不新增控制能力，因此先
 延期，不烧第二次。混合 proof 若能在不变形的前提下通过审美门，再考虑让生成模型仅提供 Rift/云/星尘的有机
 局部 tile；若 proof 仍显贴纸，则停止 C，不再继续换模型抽卡。
+
+## 6. 需求→实现→验收矩阵
+
+| 用户要求 | C′ 的落实位置 | 验收证据 |
+|---|---|---|
+| 第一帧全局已在动 | 每个 mask 从 frame 0 启用；不存在 event 才开启的 layer | 0–0.5s、每 0.5s window 的 left/center/right 与 near/mid/far 非零变化 |
+| 左 Rift 漂亮且有纵深 | 原 Rift 内 source-texture displacement + 低频折射，宽幅流体，不新增轮廓 | 全尺寸抽帧无硬同心环、无尖锐线束、无黑洞缩放 |
+| 中央水晶不变形 | 只裁剪 crystal/column mask；不裁剪或位移 platform silhouette | 结构 edge/平台轮廓对照；无 dome/pool/new volume |
+| 右侧同级且持续 | 独立 right-field mask + 星尘/地形源像素错相位移 | burst 前/中/后右侧都能看到自然运动，不能只剩几条线 |
+| 道路/反射/云空气也动 | road/reflection/near-mid-far masks 各自使用 source texture 低频流 | 九宫格与深度分层人工审查；排除单层雾盖和全局闪烁 |
+| 中段温和 burst | 仅 crystal/column local-light envelope，2–3s 圆润 rise/fall | 事件前后基础层连续；无横向光束、白闪、跨屏联动 |
+| 整幕 cool 但不廉价 | 冷蓝材质采样与极低占比局部 glow，暖金不作为运动主色 | 人工审美门：锐利、深焦、无 HUD/cheap bloom |
+| 固定镜头与自然 loop | base 不做 transform；所有 layer 由 deterministic periodic clock 驱动 | camera lock、raw frame closure、encoded seam ≤ 0.03；禁止复制末帧 |
+| 点击转场不混入循环 | Portal click/Account transition 仍由 React activation state 管理，媒体 proof 只验证 loop | 交互测试单独验证 click hit target、focus、reduced-motion |
+
+这张表是施工合同，不是“实现了就算通过”：任何一行的人工视觉失败都会让 C′ proof rejected，不能用像素
+变化、SSIM 或 seam 绿灯抵消。
+
+## 7. C′ 实际 proof 结果与路线退出
+
+本地 HyperFrames proof 已完成 192 帧渲染和 H.264/yuv420p/no-audio 编码；`source→first SSIM=0.967628`、
+`first→last SSIM=0.998615`，且 left/center/right 的 0→4 秒变化约为 `0.00576/0.00584/0.00584`，说明
+几何底图与运动分布技术上可控。但全尺寸人工审查仍认为运动太轻，局部 source-pixel displacement 有 mask
+边缘贴层风险，缺少自然的 Rift/道路/右场/空气材质流动，因此 verdict 为
+`research-proof-rejected`，详见 `docs/assets/8e-portal/portal-motion-hybrid-material-proof-v1.json`。
+
+这不是“C′ 完全没用”：它保留了母图锁定、确定性 clock、reduced-motion 和可验证结构门的工程资产；但它不
+能作为 Portal 的主运动层，也不继续通过加大 opacity/位移追求更强视觉。下一候选改用中转站 `Kling v3 Omni`
+的参考视频 + 参考图模式，让模型负责有机材质和全幕运动；仍保留母图/Video1/source/seam/codec 人工门。

@@ -2988,3 +2988,12 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   通过后再决定是否延长到 10–12s。
 - `NEXT`：执行 C' 的本地 contract/TDD 与静态 proof 设计，不调用 Image2/视频模型；只有发现具体材质纹理缺口时，
   才单独评估局部 Image2/Photoshop tile。
+
+### 2026-08-28：C′ proof 退出与 Kling v3 Omni 候选
+
+- C′ 已完成 192 帧本地 proof：结构、全区覆盖和技术编码可控，但正常观看下运动过轻、source-pixel mask 有贴层
+  风险，正式标为 `research-proof-rejected`；不再通过 opacity/位移追绿，也不接 runtime。
+- 下一候选切到中转站 `Kling v3 Omni` 的参考视频 + 参考图模式：Video1 作为 motion/reference anchor，v2 母图
+  作为 image identity anchor，按该模型的 `video_list` / `metadata.image_list` schema 编写专用 prompt；不复用
+  Seedance prompt，不把 B1 Smart Edit 重跑。
+- `NEXT`：先完成 Kling v3 Omni 的价格/schema/source/prompt/唯一调用 preflight；未过门前不上传、不付费。

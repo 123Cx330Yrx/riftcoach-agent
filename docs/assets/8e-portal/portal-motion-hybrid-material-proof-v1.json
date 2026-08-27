@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "status": "research-proof-rejected",
+  "candidate": "portal-c-prime-material-proof-v1",
+  "transport": "local-hyperframes-proof",
+  "external_model_calls": 0,
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e"
+  },
+  "output": {
+    "path": "repo-excluded:tmp/riftcoach-task5-c-prime-proof-v3/portal-c-prime-material-proof-v1.mp4",
+    "sha256": "1e065bc3d78d619cd412a4a4bca1039599230aec07e8a9ee98478de4f63c8e2d",
+    "bytes": 3753451,
+    "duration_s": 8.0,
+    "frames": 192,
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "codec": "h264",
+    "pixel_format": "yuv420p",
+    "audio": false
+  },
+  "measurements": {
+    "source_to_first_ssim": 0.9676280245,
+    "source_to_first_mad": 0.0251730904,
+    "first_to_last_ssim": 0.9986150829,
+    "first_to_last_mad": 0.0054546995,
+    "motion_mad_every_0_5s": {
+      "left": 0.0044672421,
+      "center": 0.0042341864,
+      "right": 0.0036587111
+    },
+    "motion_mad_every_0_5s_depth": {
+      "near": 0.0032089234,
+      "mid": 0.0059116084,
+      "far": 0.0032387942
+    },
+    "motion_mad_0_to_4s": {
+      "left": 0.0057612527,
+      "center": 0.0058356253,
+      "right": 0.0058393157
+    }
+  },
+  "visual_review": {
+    "passed": [
+      "mother structure remains the locked base with no added vector line network",
+      "left/center/right and near/mid/far all have measurable changes",
+      "no central dome or platform volume transformation",
+      "8-second H.264/yuv420p/no-audio proof is technically playable"
+    ],
+    "failed": [
+      "motion is too subtle at normal viewing size for the requested cool, clearly perceptible cinematic background",
+      "source-pixel displacement creates mask-shaped ghosting risk at region boundaries",
+      "there is no convincing organic material flow in the Rift, road, right field or atmosphere",
+      "the central swell is not a distinct but restrained crystal event; it is mostly a low-level light change"
+    ],
+    "user_verdict": "rejected: engineering control is useful, but visual impact and material naturalness are insufficient"
+  },
+  "next_gate": "kling-v3-omni-reference-video-image-preflight",
+  "production_media": false
+}
