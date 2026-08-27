@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "status": "research-candidate",
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e",
+    "measurement_normalization": "v2 source scaled with Lanczos to 1280x720 and compared in yuv420p/BT.709"
+  },
+  "poster": {
+    "path_scratch": "tmp/riftcoach-task5-video-bakeoff/jimeng-result-1333-identity/portal-desktop-poster-q95.webp",
+    "sha256": "pending-recompute-at-adoption",
+    "bytes": 245232,
+    "width": 1280,
+    "height": 720,
+    "source_to_poster_ssim": 0.987838,
+    "poster_quality_note": "WebP q95 passes the 0.98 poster gate after color/range normalization; AVIF candidate measured below the gate and is not selected."
+  },
+  "candidates": [
+    {
+      "id": "T-source-anchored-range-corrected-crf14-8s",
+      "format": "mp4",
+      "path_scratch": "tmp/riftcoach-task5-video-bakeoff/jimeng-result-1333-identity/T-source-anchored-range-corrected-crf14-8s.mp4",
+      "sha256": "25d43bb4055098b15785df76984b0018dd47ef21fbb88746c2f216c2f60ffcae",
+      "bytes": 5437679,
+      "width": 1280,
+      "height": 720,
+      "duration_s": 8.0,
+      "fps": 24.0,
+      "pix_fmt": "yuv420p",
+      "color": "bt709/tv",
+      "has_audio": false,
+      "source_to_first_frame_ssim": 0.954464,
+      "poster_to_first_frame_ssim": 0.992257,
+      "adjacent_dssim_p95": 0.010794,
+      "seam_dssim": 0.027807,
+      "identity_fault_split": {
+        "edge_correlation": 0.995571,
+        "luma_mae_8bit": 1.3935,
+        "temporal_luma_mean_abs_8bit": 3.3866,
+        "left_mean_abs": 4.452,
+        "center_mean_abs": 3.238,
+        "right_mean_abs": 2.472,
+        "near_mean_abs": 2.456,
+        "mid_mean_abs": 5.495,
+        "far_mean_abs": 2.195
+      },
+      "verdict": "mechanically-eligible-candidate"
+    },
+    {
+      "id": "X-source-anchored-range-corrected-crf9-vp9-8s",
+      "format": "webm",
+      "path_scratch": "tmp/riftcoach-task5-video-bakeoff/jimeng-result-1333-identity/X-source-anchored-range-corrected-crf9-vp9-8s.webm",
+      "sha256": "58311700991fe2bd118b9d2c241aa816d17e67a74d0d58d12e88cf568d542e8a",
+      "bytes": 4410835,
+      "width": 1280,
+      "height": 720,
+      "duration_s": 8.0,
+      "fps": 24.0,
+      "pix_fmt": "yuv420p",
+      "color": "bt709/tv",
+      "has_audio": false,
+      "source_to_first_frame_ssim": 0.958294,
+      "poster_to_first_frame_ssim": 0.988248,
+      "adjacent_dssim_p95": 0.011350,
+      "seam_dssim": 0.029357,
+      "identity_fault_split": {
+        "edge_correlation": 0.997081,
+        "luma_mae_8bit": 1.3371,
+        "temporal_luma_mean_abs_8bit": 3.3481,
+        "left_mean_abs": 4.408,
+        "center_mean_abs": 3.188,
+        "right_mean_abs": 2.45,
+        "near_mean_abs": 2.426,
+        "mid_mean_abs": 5.436,
+        "far_mean_abs": 2.169
+      },
+      "verdict": "mechanically-eligible-candidate"
+    }
+  ],
+  "interpretation": {
+    "baseline_source_encode_ssim": 0.995139,
+    "geometry_material_signal": "Both candidates retain very high edge correlation with the source; the remaining source-first loss is not evidence of wholesale geometry redraw.",
+    "intended_energy_signal": "Temporal change is present in all left/center/right and near/mid/far bands; this is coverage evidence, not a substitute for human visual sign-off.",
+    "adoption_status": "not-adopted",
+    "blocking_reasons": [
+      "Account source and four-rendition matrix are not complete.",
+      "Portal candidate has not passed browser playback, two-loop dropped-frame, and static-edge checks.",
+      "Poster SHA is intentionally left pending until the exact file is copied into the adoption package.",
+      "This evidence does not authorize runtime integration or a GLM model change."
+    ]
+  }
+}

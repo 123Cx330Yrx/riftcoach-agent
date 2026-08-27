@@ -141,3 +141,31 @@ first→4 s 九宫格 SSIM 为：
 4. geometry/material 若稳定，raw 只可作为 motion donor，后续研究真正 source-aware motion/loop contract；
    若结构漂移，停止后处理，下一 paid call 必须改变 source-side first/last/keyframe 控制，不原样重抽；
 5. 在新 source-side preflight 公共闭环前不发起新生成、不接 runtime、不进入 Account media。
+
+## 零费用 identity fault split（T/X source-anchored candidates）
+
+为避免把 raw Smart Edit 的 `0.889072` 直接解释成“模型一定重绘了结构”，本轮对已经存在的
+source-anchored T (H.264) / X (VP9) 研究候选做了单独的三层拆分。测量先把 active v2 mother 用 Lanczos
+缩放到 `1280×720`，再统一到 `yuv420p/BT.709`；因此不会把 RGB/full-range PNG 与视频 limited-range 解码
+差异误记成内容漂移。
+
+| Signal | T / H.264 | X / VP9 | Interpretation |
+|---|---:|---:|---|
+| Mother → first SSIM | `0.954464` | `0.958294` | 两个候选均越过冻结的 `0.95` source gate |
+| Mother 直接编码→解码 baseline | `0.995139` | `0.995139` | 颜色/量化本身的可接受上限参照 |
+| Mother → WebP poster SSIM | `0.987838` | `0.987838` | 同一张 q95 WebP 海报越过 `0.98` poster gate；AVIF 未采用 |
+| Poster → first SSIM | `0.992257` | `0.988248` | poster 与两种 codec 的开场身份一致 |
+| Edge correlation | `0.995571` | `0.997081` | 建筑/道路/水晶/星图的大边缘仍高度对齐 |
+| Luma MAE (8-bit) | `1.3935` | `1.3371` | 剩余差异主要是动态与编码，而非大面积结构错位 |
+| Seam DSSIM | `0.027807` | `0.029357` | 两种 codec 均在 `0.03` floor 内；仍需浏览器两轮审查 |
+
+时域能量也按三大区和近/中/远景分别统计：T 的 left/center/right 为 `4.452/3.238/2.472`，X 为
+`4.408/3.188/2.450`；T 的 near/mid/far 为 `2.456/5.495/2.195`，X 为 `2.426/5.436/2.169`。
+这证明运动没有只落在单一主体或单一雾层，但它只是 coverage/energy 证据，不能替代人工审片对
+“景内材质真的在动、而不是叠加特效”的判断。
+
+完整机器记录见 [`portal-motion-candidate-tx-v1.json`](../assets/8e-portal/portal-motion-candidate-tx-v1.json)。
+该文件将 T/X 明确标为 `research-candidate`/`not-adopted`：scratch 视频仍不在 Git，poster SHA 在真正
+复制进 adoption package 前保持 pending，Account 四个 rendition 和浏览器/static-edge 证据也尚未补齐。
+因此本拆分只收窄了“geometry/material 是否稳定”的问题，不改变 Portal 仍未进入 runtime、也不改变
+GLM-5.3/Flash 必须排在 Portal 闭环后的顺序。

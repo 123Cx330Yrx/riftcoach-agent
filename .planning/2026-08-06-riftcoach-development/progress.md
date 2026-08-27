@@ -4703,3 +4703,14 @@
   不可达；普通移动/删除与 fsutil metadata 清除均被系统拒绝。未做 factory reset、未删镜像/卷/WSL 数据。
 - 两套 RAG 满门、Harness `published/0 revisions`、compileall、pip check、SDK/secret/tracked-data、planned
   cinematic media audit、governance 与 diff check 通过。真库证据必须由 exact-SHA public job 补齐。
+
+### 2026-08-27：Portal T/X identity fault split
+
+- 对已存在的 source-anchored T (H.264) / X (VP9) 研究候选，统一使用 active v2 缩放到 1280×720 后的
+  yuv420p/BT.709 口径，补齐了 geometry/edge、material/color、intended energy/light 三层证据。
+- 母图直接编码→解码 baseline SSIM 为 `0.995139`；T/X 首帧分别为 `0.954464/0.958294`，edge correlation
+  为 `0.995571/0.997081`，说明大结构仍稳定，不能把 source-first loss 简化成“整图重绘”。
+- q95 WebP poster 的母图 SSIM 为 `0.987838`；poster→T/X 首帧为 `0.992257/0.988248`。AVIF 候选低于
+  poster gate，暂不选用。T/X seam `0.027807/0.029357` 均在 `0.03` floor 内，但仍未过浏览器两轮与人工签收。
+- 三大区及 near/mid/far 的时域亮度变化均大于 0；该证据证明 coverage，不证明自然材质运动。完整数值写入
+  `docs/assets/8e-portal/portal-motion-candidate-tx-v1.json`，候选仍是 research-only/not-adopted。

@@ -1648,4 +1648,13 @@ Evaluation 或 Revision 资产漂移时 fail closed。旧 direct Runtime 测试�
     commit/push/exact-SHA 三 job；真实调用早于 public preflight 的顺序偏差必须保留。
   - [next-after-public] no-cost source identity fault split：geometry/edge、material/color、intended energy/light；
     不调低冻结门、不先付费重抽、不进入 Account。
-  - [sequence-frozen] RQ-137：完成 Portal Motion Polish 后再重开 GLM-5.3/Flash adoption gate；当前不插队模型迁移。
+- [sequence-frozen] RQ-137：完成 Portal Motion Polish 后再重开 GLM-5.3/Flash adoption gate；当前不插队模型迁移。
+
+### Portal-first continuation (2026-08-27)
+
+The no-cost identity fault split for the existing T/X source-anchored candidates is recorded in
+`docs/assets/8e-portal/portal-motion-candidate-tx-v1.json` and the result audit. It confirms that the
+source-first loss is not explainable as wholesale geometry redraw (edge correlation remains above 0.995)
+and that left/center/right plus near/mid/far temporal change is present. This is evidence only: the
+candidates remain research-only until the adoption package, browser two-loop check, static-edge proof,
+and the independent public gate are complete.
