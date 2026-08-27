@@ -2466,3 +2466,9 @@ v3/v4 连续显示首帧单锚点能较好保持源图，却缺乏把运动分�
 当前路线顺序冻结为：A 首帧 I2V 暂停；B 带时间/区域控制的真实视频编辑作为下一优先候选；C 改为锁母图的
 纹理/位移型混合制片 fallback。旧 C-line 线条/HUD proof 只保留负面证据。下一步先完成 B 窄版三时间点
 mask/prompt contract 与 no-cost preflight，未完成前不再付费、不接 runtime。
+
+### B1 Smart Edit contract（2026-08-28）
+
+B1 已把上一轮 Smart Edit 的控制收窄为双锚点与三个时间点：Video1 只保留节奏，v2 母图锁定结构；中央只
+允许水晶/现有光柱内部呼吸，平台几何不可变；左/右/道路/反射/云空气从首帧持续。主 prompt 压至 1,977 字符，
+三份 annotation 与 source/video SHA 已 digest 绑定。当前只完成 no-cost preflight，未上传、未付费、未调用。

@@ -1687,6 +1687,14 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [completed-public-audit] v4 rejection evidence 提交 `c964016` / Actions `33083670925` 的 pytest、真实
   PostgreSQL migrations 与 packaging-smoke 三 job exact-SHA 全部成功；Task 5 仍停在方法裁决，不进入 runtime。
 
+## B1 Smart Edit contract preflight (2026-08-28)
+
+- [completed-local-contract] 主 prompt 已压至 1,977 字符，明确 Video1 temporal anchor、v2 mother geometry/material
+  anchor、首帧常驻三大区、中央水晶局部呼吸和平台几何不可变。
+- [completed-local-preflight] `00:00/00:04/00:07` 三份 frame annotation 已分别落盘并完成 digest 绑定；manifest
+  固定已有 Video1/mother SHA、`adaptive/720p`、8.041667s、音频优先关闭，当前未上传/未调用。
+- [next] 页面模式/素材角色/积分/音频 readback；输入不支持区域/时间控制则记录 request/mode failure，支持后才允许一次 B1。
+
 ## RQ-142 method fault split (2026-08-28)
 
 - [completed-local-review] 对 v3/v4、即梦 Smart Edit、C-line proof 与 T/X sibling 做同口径比较；结论为 prompt

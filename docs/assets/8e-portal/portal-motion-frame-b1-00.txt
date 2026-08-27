@@ -1,0 +1,1 @@
+00:00 annotation: mark the complete left Rift, central crystal/column/platform, complete right constellation/terrain field, road channel, architectural seams, reflections and near/mid/far air. All marked regions are already moving from the first frame with a steady baseline; do not introduce a start-up flash or leave the right side static.

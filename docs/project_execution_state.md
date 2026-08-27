@@ -2966,3 +2966,13 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   线条/HUD proof 不被重新包装成成功。
 - `NEXT`：先冻结 B 的窄版三时间点 mask/prompt contract 并做 no-cost preflight；在此之前不再付费抽帧、不切
   模型、不接 runtime，Image2 只在出现明确材质/遮挡辅助需求时使用。
+
+### 2026-08-28：B1 Smart Edit 窄版 contract preflight
+
+- B1 已冻结：已有 Seedance 视频只作 temporal anchor，v2 母图只作 immutable geometry/material anchor；主 prompt
+  压到 1,977 字符，三份 `00:00/00:04/00:07` frame annotation 分别绑定常驻启动、同级峰值和回收，不把
+  中央平台标成可变体积。
+- manifest `docs/assets/8e-portal/portal-motion-preflight-b1-smart-edit.json` 已绑定 Video1 SHA、母图 SHA、
+  prompt/annotation digest、`adaptive/720p`、8.041667s 和音频策略；未上传、未调用、未扣费。
+- `NEXT`：只做 B1 的页面模式/素材角色/积分/音频 readback；若输入无法表达三时间点区域控制，则直接记录
+  request/mode failure，不发起付费任务。若 readback 通过且用户继续授权，最多执行一次 B1。

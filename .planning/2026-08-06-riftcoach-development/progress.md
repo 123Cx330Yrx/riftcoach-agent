@@ -4770,3 +4770,9 @@
   首帧模式没有提供足够的区域/时间控制，抽象词又与平台几何锁定冲突。
 - 已形成三路线裁决：A 首帧 I2V 暂停；B 真实视频编辑 + 三时间点 mask 为下一优先；C 采用母图锁定的纹理/位移型混合
   作为 fallback，避免重演线条/HUD proof。下一步只做 B contract/no-cost preflight。
+
+### 2026-08-28：B1 Smart Edit contract preflight
+
+- B1 主 prompt 1,977 字符，三时间点说明与 Video1/mother 双锚点 digest 已绑定；中心只允许水晶/现有光柱
+  局部呼吸，平台几何不可变，左/右/环境从首帧持续运动。
+- 当前仅完成文本与 manifest 预检，未上传、未付费、未调用；下一步先 readback 页面是否保留这些时间/区域输入。

@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "status": "prepared",
+  "candidate": "jimeng-smart-edit-b1-double-anchor",
+  "purpose": "no-cost contract/preflight for a controlled Smart Edit comparator; no generation receipt",
+  "mode": "official JiMeng Smart Edit",
+  "references": {
+    "video1": {
+      "role": "temporal anchor",
+      "path": "repo-excluded:tmp/riftcoach-task5-video-bakeoff/dragon-seedance25-portal-v5-first-last-adaptive-720p-8s.mp4",
+      "sha256": "acf68ba63a3382f4c79bee090ca9c89ff39727e35af26685aba1c9cc1add56c4"
+    },
+    "image1": {
+      "role": "immutable geometry/material anchor",
+      "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+      "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e"
+    }
+  },
+  "request": {
+    "duration_s": 8.041667,
+    "aspect_ratio": "adaptive",
+    "resolution": "720p",
+    "audio": "off_if_available; otherwise strip in zero-cost postprocess",
+    "prompt_path": "docs/assets/8e-portal/portal-motion-brief-b1-smart-edit.txt",
+    "prompt_chars": 1977,
+    "prompt_sha256": "4a7d62725de0ab1238d79eba6ab8d33f35b439d59a346770dd828f73ab451e14",
+    "frame_annotation_paths": [
+      "docs/assets/8e-portal/portal-motion-frame-b1-00.txt",
+      "docs/assets/8e-portal/portal-motion-frame-b1-04.txt",
+      "docs/assets/8e-portal/portal-motion-frame-b1-07.txt"
+    ],
+    "frame_annotation_sha256": [
+      "00083bcfe11a4a30e07b43f70241751eb728e2d246e51b17b6b78b2e1d47b764",
+      "a7636fff773282e15aa8955a375c1d90525bcfd154a0cce57adae1b65ca2ac1e",
+      "9aa689e83a1ae5a90fd04d6cc0e24bb6b13b5172615e1a9d3780f632ea5784c6"
+    ]
+  },
+  "control_contract": {
+    "baseline_from_first_frame": true,
+    "regions": ["left_rift", "center_crystal_column", "right_constellation_terrain", "road", "architecture", "reflections", "near_mid_far_air"],
+    "center_swell_window_s": [4.5, 7.0],
+    "center_swell_local_only": true,
+    "platform_geometry_immutable": true,
+    "right_side_independently_active": true,
+    "camera_locked": true,
+    "loop_recovery_window_s": [6.5, 8.041667]
+  },
+  "preflight_gates": {
+    "source_sha_verified": true,
+    "video1_sha_verified": true,
+    "prompt_digest_verified": true,
+    "frame_annotation_digests_verified": true,
+    "mode_readback_required": true,
+    "price_readback_required": true,
+    "paid_call_authorized": false,
+    "image2_used": false,
+    "production_media": false
+  },
+  "stop_conditions": [
+    "do not upload or submit before UI mode/input/price/audio readback",
+    "do not let the central platform become a new dome, pool or volume",
+    "reject if any region is static outside the event or if motion is only fog/flash/line overlay",
+    "one call only if later authorized; no automatic retry",
+    "keep output research-only until source/seam/codec and human full-scene review pass"
+  ]
+}

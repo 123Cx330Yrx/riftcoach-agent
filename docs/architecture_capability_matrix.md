@@ -382,3 +382,6 @@ v4 失败审计公共可重建，但视觉采用门仍失败，Task 5 不进入 
 RQ-142 method fault split：v3/v4 共同证明首帧模式的 source identity 较强但区域/时间运动控制不足；即梦 Smart
 Edit 的 coverage 更好但 source/seam 失败；C-line 线条 proof 仅证明 HUD 覆层不可取。因此 A 首帧盲抽暂停，B
 时间/区域编辑优先，C 纹理/位移混合为 fallback；下一动作是 B contract/no-cost preflight，production media 仍为 `0`。
+
+B1 Smart Edit contract 已完成 no-cost preflight：1,977 字符主 prompt、`00:00/00:04/00:07` 三帧说明、
+Video1/mother 双锚点和平台几何不可变规则均已 digest 绑定；当前未上传/未调用，需先做页面模式与输入角色 readback。

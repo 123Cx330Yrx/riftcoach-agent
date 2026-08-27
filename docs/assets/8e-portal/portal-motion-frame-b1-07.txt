@@ -1,0 +1,1 @@
+00:07 annotation: keep every marked region moving, including the right constellation/terrain and the road/environment. The central swell is returning to baseline; do not freeze, extinguish or reverse the baseline. Continue toward the opening phase for a natural loop.

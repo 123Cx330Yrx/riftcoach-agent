@@ -77,3 +77,18 @@ v4 使用的是“单张静态首帧 → 整段视频”。这种模式只收到
 
 本轮不再付费调用、不切到另一个模型、不把 v4 接入 runtime。下一次付费实验必须绑定这份 method fault split
 和新的 B contract；失败时继续按 local → request → transport → output quality → method 五层归因。
+
+## 7. B1 窄版 Smart Edit contract（无成本 preflight）
+
+B1 已把上一轮 Smart Edit 的三时间点要求重新压窄，落盘为：
+
+- `docs/assets/8e-portal/portal-motion-brief-b1-smart-edit.txt`：1,977 字符，避免超过即梦 2,000 字限制；
+  正向描述只写已有材质的可观察运动，明确平台不能变圆顶/新体积。
+- `portal-motion-frame-b1-00.txt`、`portal-motion-frame-b1-04.txt`、`portal-motion-frame-b1-07.txt`：分别绑定
+  首帧常驻、4 秒同级丰富、7 秒回收但不冻结；每个时间点都覆盖完整左/中/右与环境区域。
+- `docs/assets/8e-portal/portal-motion-preflight-b1-smart-edit.json`：绑定已有 Video1 SHA
+  `acf68ba...d56c4` 与母图 SHA `8134c0ca...1a06e`，固定 `adaptive/720p`、8.041667 秒、音频优先关闭，
+  并记录 prompt/三帧说明 digest；当前 `paid_call_authorized=false`、`production_media=false`。
+
+这份 B1 只证明文本、时间标注和输入角色可以被复核，不证明 Smart Edit 会通过 source/seam 或人工视觉门。
+若后续实际页面无法保持这些输入，B1 直接判为 request/mode 不可表达，不再用付费任务补猜。
