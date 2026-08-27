@@ -2456,3 +2456,13 @@ v4 的唯一任务成功下载且编码正常，但视觉审查拒绝：中央�
 
 v4 rejection audit `c964016` / Actions `33083670925` 已完成 exact-SHA 三 job 公共闭环。该证据确认失败样本、
 指标和 fault split 可复现；它不把 v4 变成可采用媒体，也不允许在未完成方法裁决前继续付费抽卡。
+
+### RQ-142 method fault split 裁决（2026-08-28）
+
+v3/v4 连续显示首帧单锚点能较好保持源图，却缺乏把运动分配到左/中/右和 near/mid/far 的真实控制；v4 的
+`platform response`、`fluid depth`、`breathing` 等抽象词又与平台几何不可变产生语义竞争。故不能把问题简化为
+“换模型”或“再加形容词”。
+
+当前路线顺序冻结为：A 首帧 I2V 暂停；B 带时间/区域控制的真实视频编辑作为下一优先候选；C 改为锁母图的
+纹理/位移型混合制片 fallback。旧 C-line 线条/HUD proof 只保留负面证据。下一步先完成 B 窄版三时间点
+mask/prompt contract 与 no-cost preflight，未完成前不再付费、不接 runtime。

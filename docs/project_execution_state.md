@@ -2956,3 +2956,13 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - v4 rejection audit 提交 `c964016` 的 Actions `33083670925` 已完成 exact-SHA 三 job（pytest、真实
   PostgreSQL migrations、packaging-smoke）并全部成功；该公共闭环只确认失败证据可重建，不改变视觉拒绝与
   `production_media=0`。
+
+### 2026-08-28：RQ-142 prompt/mode fault split
+
+- v3/v4 连续复核后，当前结论为“prompt 有责任，首帧单锚点也存在结构性区域/时间控制缺口，模型上限仍
+  unknown”。v4 的 source/seam 技术指标不能抵消中心圆顶、右场静止和环境无持续运动的人工失败。
+- 三路线比较已写入 `docs/plans/2026-08-28-8e-portal-motion-method-fault-split.md`：A（首帧 I2V）暂停，B（真实
+  视频编辑 + 时间/区域控制）作为下一优先候选，C（锁母图的纹理/位移型混合制片）作为可控 fallback；旧 C-line
+  线条/HUD proof 不被重新包装成成功。
+- `NEXT`：先冻结 B 的窄版三时间点 mask/prompt contract 并做 no-cost preflight；在此之前不再付费抽帧、不切
+  模型、不接 runtime，Image2 只在出现明确材质/遮挡辅助需求时使用。

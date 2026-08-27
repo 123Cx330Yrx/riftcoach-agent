@@ -1686,3 +1686,11 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [next-rq-142] 暂停首帧盲抽，先做 prompt/mode fault split 与方法裁决；不再仅靠抽象形容词或立即换模型。
 - [completed-public-audit] v4 rejection evidence 提交 `c964016` / Actions `33083670925` 的 pytest、真实
   PostgreSQL migrations 与 packaging-smoke 三 job exact-SHA 全部成功；Task 5 仍停在方法裁决，不进入 runtime。
+
+## RQ-142 method fault split (2026-08-28)
+
+- [completed-local-review] 对 v3/v4、即梦 Smart Edit、C-line proof 与 T/X sibling 做同口径比较；结论为 prompt
+  语义过载 + 首帧模式缺乏区域/时间控制，模型能力上限保持 unknown。
+- [decision] A 首帧盲抽暂停；B 真实视频编辑/时间区域控制为下一优先；C 改为纹理/位移型混合制片 fallback，旧线条
+  overlay proof 继续作为负面证据。
+- [next] 冻结 B 窄版三时间点 mask/prompt contract 与 no-cost preflight；未完成前不付费重抽、不切模型、不接 runtime。

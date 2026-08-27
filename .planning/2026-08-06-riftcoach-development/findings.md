@@ -4490,3 +4490,10 @@
   split，不继续付费抽卡。
 - v4 rejection evidence `c964016` / Actions `33083670925` 三 job 全绿；这只证明观测与审计链可重建，不能把
   center-only 的高 MAD 或 first→last 高 SSIM 误写成全局动态成功。
+
+## 2026-08-28：RQ-142 method fault split
+
+- v3/v4 的共同模式是：首帧身份/构图容易保持，运动却向中央显著物坍缩；v4 还把平台变成圆顶。由此不能只说
+  “prompt 不够详细”，更准确的归因是抽象运动语义 + 单静态首帧缺少区域/时间控制。
+- 即梦 Smart Edit 虽然三大区 coverage 更好，但 source/seam 仍失败；因此 B 值得窄化后再验证，不可原样复制。
+  C-line 的失败只针对线条/HUD 覆层，下一 C proof 必须改为材质纹理/遮罩位移，否则不再深挖。

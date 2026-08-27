@@ -4763,3 +4763,10 @@
   集中到中央发光圆顶，左 Rift、右场和整体环境未形成持续运动；按 RQ-142 rejected，production media 仍为 0。
 - `c964016` / Actions `33083670925` 的 exact-SHA 三 job 已全部成功，v4 失败审计正式公共闭环；下一步只做
   prompt/mode fault split 与方法裁决，不继续盲目付费重抽。
+
+### 2026-08-28：RQ-142 method fault split
+
+- 证据表明 v4 的问题不是下载/编码：source→first `0.989914`、first→last `0.994464`，但运动集中在中心圆顶；
+  首帧模式没有提供足够的区域/时间控制，抽象词又与平台几何锁定冲突。
+- 已形成三路线裁决：A 首帧 I2V 暂停；B 真实视频编辑 + 三时间点 mask 为下一优先；C 采用母图锁定的纹理/位移型混合
+  作为 fallback，避免重演线条/HUD proof。下一步只做 B contract/no-cost preflight。
