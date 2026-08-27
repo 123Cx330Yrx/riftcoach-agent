@@ -4520,3 +4520,11 @@
   这解释了为什么“全区有 MAD”仍不等于 MotionSites 类全幕动效。
 - C′ 保留为工程参考，不进入 runtime；下一候选采用 Kling v3 Omni 的单图片引用模式，并为该模型重写
   `<<<image_1>>>` placeholder prompt，避免把 Seedance/Smart Edit 的语义直接搬过去。
+
+## 2026-08-28：Kling v3 Omni image-reference preflight
+
+- Dragon 文档明确 Kling v3 Omni 的 image-only schema：`metadata.image_list` 中的图片由 `<<<image_1>>>` 引用，
+  `mode=std` 为 720P，`duration=8`，`aspect_ratio=16:9`，`audio=false`；有视频参考时才使用 `video_list`，
+  本轮刻意不上传旧视频。
+- 价格页当前为 ¥0.462000/s，8 秒约 ¥3.696。专用 prompt/runner digest 已静态验证；没有外部 POST，等待页面/账户
+  readback 后再决定是否执行一次模型对照。

@@ -2997,3 +2997,13 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   `metadata.image_list` + `<<<image_1>>>` schema 编写专用 prompt；不上传旧视频、不复用 Seedance prompt，
   不把 B1 Smart Edit 重跑。
 - `NEXT`：先完成 Kling v3 Omni 的价格/schema/source/prompt/唯一调用 preflight；未过门前不上传、不付费。
+
+### 2026-08-28：Kling v3 Omni image-reference preflight
+
+- 已核对 DragonAPI Kling v3 Omni 文档与当前价格：`model=kling-v3-omni`、`mode=std`（720P）、`duration=8`、
+  `aspect_ratio=16:9`、`audio=false`，使用 `metadata.image_list` + `<<<image_1>>>`；价格 `¥0.462000/s`，
+  8 秒估算 `¥3.696`。
+- 专用 prompt 已固定为 1,833 字符，SHA `eeae44fdf85b5dbf8092d818ea4b5981543bece7f3f249d71432e37feff4df05`；
+  runner parser 0 error、唯一 POST 路径 1，runner SHA `5803f41b04aa74d022924b03b7aa8ee20f041db8580c8b94c8fd569b58875347`。
+- 只传确认母图，不上传旧视频；manifest 的 `paid_call_authorized=false`、`post_attempts_observed=0`、
+  `production_media=false` 保持不变。下一步仍需页面/账户实际 readback 后再决定是否调用。

@@ -23,7 +23,9 @@
     "prompt_path": "docs/assets/8e-portal/portal-motion-brief-kling-v3-omni-b1.txt",
     "prompt_chars": 1833,
     "prompt_sha256": "eeae44fdf85b5dbf8092d818ea4b5981543bece7f3f249d71432e37feff4df05",
-    "prompt_placeholders": ["<<<image_1>>>"]
+    "prompt_placeholders": ["<<<image_1>>>"],
+    "runner_path": "repo-excluded:C:/Users/33502/Documents/Agent/tmp/riftcoach-task5-video-bakeoff/run-dragon-kling-v3-omni-image-once.ps1",
+    "runner_sha256": "5803f41b04aa74d022924b03b7aa8ee20f041db8580c8b94c8fd569b58875347"
   },
   "pricing_readback": {
     "source": "https://docs.dragon3api.com/pricing-data.js?v=20260824-toapis-sync",
@@ -48,9 +50,11 @@
     "source_sha_verified": true,
     "video_reference_used": false,
     "video_reference_not_required": true,
-    "prompt_digest_verified": false,
+    "prompt_digest_verified": true,
     "placeholder_order_verified": true,
     "schema_readback_verified": true,
+    "runner_parse_verified": true,
+    "single_post_path_verified": true,
     "price_readback_verified": true,
     "paid_call_authorized": false,
     "image2_used": false,

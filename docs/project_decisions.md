@@ -2482,3 +2482,7 @@ C′ 本地材质 proof 通过结构/覆盖的机器门，但人工审查认为�
 满足 Portal 的明显、cool、整幕呼吸目标；因此不再提高 opacity/位移追绿。B1 与已执行 Smart Edit 形态重复，
 也不再付费复跑。下一候选改评估 Kling v3 Omni 的单图片引用模式，使用其专用 `metadata.image_list` 与
 `<<<image_1>>>` 占位符和 prompt，先过 schema/价格/source/单次调用 preflight。
+
+Kling v3 Omni image-reference comparator 已完成专用 schema/prompt/价格 preflight：`std/720p`、8s、16:9、
+audio off、`metadata.image_list` + `<<<image_1>>>`，预计 ¥3.696。未调用、未上传旧视频；下一步只做一次
+页面/账户 readback，结果仍须通过 source/seam/全幕运动和人工视觉门。

@@ -27,7 +27,9 @@ def test_kling_preflight_is_image_only_and_not_paid() -> None:
         "prompt_path": "docs/assets/8e-portal/portal-motion-brief-kling-v3-omni-b1.txt",
         "prompt_chars": 1833,
         "prompt_sha256": "eeae44fdf85b5dbf8092d818ea4b5981543bece7f3f249d71432e37feff4df05",
-        "prompt_placeholders": ["<<<image_1>>>"]
+        "prompt_placeholders": ["<<<image_1>>>"],
+        "runner_path": "repo-excluded:C:/Users/33502/Documents/Agent/tmp/riftcoach-task5-video-bakeoff/run-dragon-kling-v3-omni-image-once.ps1",
+        "runner_sha256": "5803f41b04aa74d022924b03b7aa8ee20f041db8580c8b94c8fd569b58875347"
     }
     assert manifest["references"]["image1"]["sha256"] == SOURCE_SHA
     assert manifest["preflight_gates"]["video_reference_used"] is False

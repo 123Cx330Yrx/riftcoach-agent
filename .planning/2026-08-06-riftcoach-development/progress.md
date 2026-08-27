@@ -4790,3 +4790,9 @@
 - C′ 已渲染并审查：left/center/right 0→4s 变化均衡、结构和编码通过，但视觉运动太轻且 mask 边界有贴层风险，
   按用户目标 rejected；不继续调 opacity/位移。
 - 依据“失败后先归因再换方法”原则，下一候选改为 Kling v3 Omni 单图片引用，不复用 Seedance/Smart Edit prompt。
+
+### 2026-08-28：Kling v3 Omni preflight
+
+- Kling 专用 image-reference prompt 已压至 1,833 字符，绑定母图 SHA、`metadata.image_list` 与
+  `<<<image_1>>>`，并冻结 8s/std/720p/16:9/audio-off；价格 readback 为 ¥0.462/s，估算 ¥3.696。
+- runner parse 0 error、唯一 POST 1；当前未上传旧视频、未调用 Kling、未扣费，等待页面/账户 readback。

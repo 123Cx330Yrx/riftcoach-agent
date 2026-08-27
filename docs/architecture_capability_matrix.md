@@ -391,3 +391,6 @@ B1 readback 当前受即梦 Chrome 扩展/页面超时阻塞；初始页仅确�
 
 C′ proof 已完成但视觉拒绝：结构/覆盖可控，运动仍过轻且 mask 边缘有贴层风险；B1 不重复付费。下一候选为
 Kling v3 Omni 单图片引用模式，待专用 schema/prompt/价格 preflight；production media 仍为 `0`。
+
+Kling v3 Omni image-reference comparator 的专用 schema/prompt/价格 preflight 已固定：`std/720p`、8s、16:9、
+audio off、`metadata.image_list` + `<<<image_1>>>`，预计 ¥3.696。未调用、未上传旧视频，等待页面/账户 readback。
