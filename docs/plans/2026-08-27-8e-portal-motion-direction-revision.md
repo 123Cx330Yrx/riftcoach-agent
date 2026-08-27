@@ -1,6 +1,6 @@
 # 8E Portal Motion Direction Revision（静态方向与参考模式门）
 
-状态：`provisional / awaiting Image2 proxy`。本文件只冻结下一轮无费用设计与
+状态：`preview-generated / awaiting visual review`。本文件只冻结下一轮设计与
 提示词方向，不把任何新图或视频标为 production media。
 
 ## 1. 本轮纠正
@@ -17,8 +17,8 @@ HUD、文字、独立水晶、漂浮金线、暗幕或全局曝光闪烁。
 
 ## 2. 无费用静态验证
 
-Image2 可用时只对 `portal-mother-image-source-v2.png` 做 image-to-image，产出三
-张 preview：
+Image2 只对 `portal-mother-image-source-v2.png` 做 image-to-image，目标产出三张
+preview：
 
 1. `material-breathing`：只扩大现有材质高光/反射/空气层的连续性；
 2. `depth-separation`：只把 near/mid/far 的遮挡和体积层拉开，保持同一构图；
@@ -27,6 +27,9 @@ Image2 可用时只对 `portal-mother-image-source-v2.png` 做 image-to-image，
 每张都要求无文字/无水印/无 UI/无新物体，并与母图逐项对照。它们是 motion
 brief 的视觉沟通稿，不直接替换母图，也不进入 runtime；若 Image2 编辑仍改变
 几何或材质，则回退到原母图，只保留文字 brief。
+
+本轮实际得到两张编辑稿（`variant-1`、`variant-2`），第三次请求因余额不足返回
+403，未重试。两张成功稿都保存在用户临时目录，仅供本轮评审，不写入仓库。
 
 ## 3. 即梦参考模式裁决
 
@@ -48,4 +51,3 @@ Animate the supplied image as one coherent 8-second cinematic loop. Keep the exa
 
 该草案先经过 Image2 静态方向检查；没有新的 source-side 证据前，不发起付费视频
 请求、不把现有视频复制到 runtime，也不重开 Seedance/Dragon/Grok 横评。
-

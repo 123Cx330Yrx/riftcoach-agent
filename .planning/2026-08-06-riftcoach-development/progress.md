@@ -4718,7 +4718,8 @@
 
 - Prior evidence/audit public CI is green (`33042204532`); production media remains `0`.
 - Rejected the three AutoGLM concept images as non-source-preserving, watermarked, and visually off-target.
-- Added provisional motion direction plan and compact first-frame prompt. Image2 execution is blocked only by the configured
-  local proxy being offline; no paid video request was made.
-- Next action: restore the user-side Image2 proxy, generate 2–3 mother-image edit previews, review material/depth/energy
-  variants, then decide whether a single first-frame video preflight is justified.
+- Added provisional motion direction plan and compact first-frame prompt. After correcting the stale proxy port to the
+  active user port `12000`, two mother-image edit previews completed; a third request returned `403 insufficient balance`
+  and was not retried. No video request was made.
+- Next action: review the two previews against the exact mother SHA, then decide whether a single first-frame video
+  preflight is justified; do not treat either preview as a new master or runtime asset.

@@ -19,9 +19,9 @@ pause_reason: ""
 - 最后更新：2026-08-27（即梦 Smart Edit raw 与零费用后处理审计已由提交 `f041643` / Actions
   `33042204532` 完成 exact-SHA 三 job；T/X identity fault split 已完成但仍是 research-only。用户随后明确拒绝
   沿用当前视频节奏，要求先重做全局持续呼吸 brief，并在付费前用 Image2 对确认母图做多张静态方向预览。
-  AutoGLM 三张文生图仅作反例，Image2 当前因配置代理 `127.0.0.1:7890` 不可达而未调用；有效 video calls 仍为
-  `11`、production media `0`。当前唯一下一动作是恢复 Image2 代理后完成 `material-breathing`、`depth-separation`、
-  `energy-routing` 三个无费用 preview，并据此冻结首帧版 source-side motion brief；不沿用现有视频、不先烧新视频额度。）
+  旧代理端口 `7890` 已纠正为用户实际 HTTP 代理 `12000`；Image2 已成功生成两张同构编辑预览，第三次请求因
+  `403 insufficient balance` 停止，未重试。有效 video calls 仍为 `11`、production media `0`。当前唯一下一动作是
+  评审两张预览并据此冻结首帧版 source-side motion brief；不沿用现有视频、不先烧新视频额度。）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA

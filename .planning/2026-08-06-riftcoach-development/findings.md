@@ -4444,7 +4444,9 @@
 - AutoGLM generated three concept images successfully, but all are preview-only: one has a full-width title/watermark,
   one overemphasizes the crystal and warm orbital lines, and one splits the scene into literal red/blue halves. None is a
   valid Portal mother or I2V source.
-- Image2 credentials are present but configured proxy `127.0.0.1:7890` is not listening; no Image2 call was made.
+- Image2 credentials are present; the configured proxy was corrected from stale port `7890` to the user's active HTTP
+  proxy port `12000`, which passed a read-only connectivity check. Two mother-image edit previews completed successfully;
+  a third request returned `403 insufficient balance` and was not retried.
 - Official JiMeng current page readback shows a Seedance 2.5 `全能参考` input accepting up to 50 mixed image/text/audio/video
   references. This is a multi-reference generation surface, not evidence of strict source-preserving video edit.
 - Recommended next method is first-frame-only generation from the confirmed mother image, with continuous in-scene
