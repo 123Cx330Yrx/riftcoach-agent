@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "status": "research-candidate-rejected",
+  "candidate": "dragon-seedance25-first-only-v4",
+  "external_video_calls_total_after_run": 13,
+  "task_id": "task_s03TcAumrRVriOhr3qj7RxigZqBRLnYF",
+  "model": "seedance-2-5",
+  "transport": "DragonAPI",
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e"
+  },
+  "request": {
+    "prompt_path": "docs/assets/8e-portal/portal-motion-brief-v4.txt",
+    "prompt_sha256": "56ce81b8d508ae67edacfde6c1d846b9555d59ca0e9fafb80af3b88fd311620d",
+    "duration_s": 12,
+    "aspect_ratio": "adaptive",
+    "resolution": "720p",
+    "first_frame": true,
+    "last_frame": false,
+    "generate_audio": false,
+    "post_attempts": 1,
+    "recovery_post_attempts": 0
+  },
+  "output": {
+    "path": "repo-excluded:tmp/riftcoach-task5-video-bakeoff/dragon-seedance25-first-only-v4.mp4",
+    "sha256": "1fab5d0f10efe13402f8d31ddfa136ecc68c19875ca4d6a092982d4a1f49cb02",
+    "bytes": 8005725,
+    "duration_s": 12.041667,
+    "frames": 289,
+    "width": 1280,
+    "height": 720,
+    "fps": 24,
+    "codec": "h264",
+    "pixel_format": "yuv420p",
+    "audio": false
+  },
+  "measurements": {
+    "source_to_first_ssim": 0.9899142713,
+    "source_to_first_mad": 0.012686683,
+    "first_to_last_ssim": 0.9944637101,
+    "first_to_last_mad": 0.009010047,
+    "motion_mad_every_0_5s": {
+      "left": 0.0058514973,
+      "center": 0.0146247821,
+      "right": 0.0046527426
+    },
+    "motion_mad_every_0_5s_depth": {
+      "near": 0.0083666449,
+      "mid": 0.0120516734,
+      "far": 0.0047166213
+    },
+    "motion_mad_0_to_4s": {
+      "left": 0.012786848,
+      "center": 0.0216319524,
+      "right": 0.0076893475
+    },
+    "motion_mad_0_to_4s_depth": {
+      "near": 0.013765038,
+      "mid": 0.0207635108,
+      "far": 0.0075825253
+    }
+  },
+  "visual_review": {
+    "passed": [
+      "12-second H.264/yuv420p browser-compatible file with no audio",
+      "camera and large architectural composition remain broadly fixed",
+      "decoded first frame remains close to the source",
+      "the output returns close to its opening phase by the final frame"
+    ],
+    "failed": [
+      "central platform is replaced by a large glowing dome/pool during the event, violating unchanged geometry",
+      "motion is dominated by the center; it is not a whole-scene loop",
+      "left Rift has only small low-value change and no convincing layered fluid depth",
+      "right constellation and terrain field remain nearly static outside the central event",
+      "road current, architectural seams, reflections, clouds and near/mid/far air do not maintain clear baseline motion",
+      "the central swell reads as a discrete object transformation rather than a restrained vertical crystal pulse"
+    ],
+    "user_verdict": "rejected: prompt execution is visibly wrong; do not adopt or place in runtime"
+  },
+  "next_gate": "stop-first-frame-regeneration-revise-method",
+  "production_media": false
+}

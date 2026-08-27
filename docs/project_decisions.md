@@ -2442,3 +2442,14 @@ source identity、全幕运动分布、loop seam、编码和人工视觉门，�
 `4aa7459cff78d462779137fed82d7edc84c0a0fc2d9ee539dbb4311b1c6a6dcc`。Dragon pricing readback 为
 `¥1.494570/s`（720p、文本/图片参考），12 秒预算 `¥17.934840`；换行修复与价格回读须先公共闭环，
 再执行唯一一次付费调用。
+
+### RQ-142：Seedance v4 候选拒绝与方法层暂停（2026-08-27）
+
+v4 的唯一任务成功下载且编码正常，但视觉审查拒绝：中央平台被生成成大面积发光圆顶，左 Rift 只有弱变化，
+右侧星图/地形与整体环境近乎静止。指标显示 center 每 0.5 秒 MAD `0.014625`，left/right 为
+`0.005851/0.004653`，变化集中在中心而非全幕。
+
+该结果暴露的是我们 prompt/mode 的控制缺口：`platform response`、`fluid depth`、`breathing` 等抽象词与
+“平台几何不可变”产生语义竞争；静态首帧又没有区域/时间控制，模型选择中心显著物变形来制造运动。v4 作为
+`research-candidate-rejected` 保留，production media 仍为 0。下一步先做 prompt/mode fault split 与方法裁决，
+暂停首帧盲抽；不靠堆形容词、不立即换模型、不接 runtime。

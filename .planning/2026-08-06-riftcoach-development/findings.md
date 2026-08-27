@@ -4484,3 +4484,7 @@
   terminal newline，再与 manifest SHA 比较。该故障在 POST 前发现，external video calls 与费用均不变。
 - 当前 Dragon pricing readback 为 Seedance 2.5 720p 图片参考 `¥1.494570/s`，12 秒估算 `¥17.934840`；这只是
   预算证据，生成结果仍需独立质量审查。
+- v4 输出技术上稳定但视觉错误：中心每 0.5 秒 MAD `0.014625`，left/right 仅 `0.005851/0.004653`；
+  九宫格显示平台变成大圆顶，右侧与 near/far 远景几乎不动。根因不是随机 prompt typo，而是“不可变几何”与
+  “平台呼吸响应”正向冲突、抽象运动词缺少可观察载体、静态首帧缺少区域/时间控制。按 RQ-142 先做 method fault
+  split，不继续付费抽卡。

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "status": "prepared",
+  "status": "executed-rejected",
   "candidate": "dragon-seedance25-first-only-v4",
   "purpose": "source-side motion contract and no-cost preflight; not a generation receipt",
   "source": {
@@ -18,7 +18,9 @@
     "last_frame": false,
     "generate_audio": false,
     "post_attempts_planned": 1,
-    "post_attempts_observed": 0,
+    "post_attempts_observed": 1,
+    "task_id": "task_s03TcAumrRVriOhr3qj7RxigZqBRLnYF",
+    "result_candidate_path": "docs/assets/8e-portal/portal-motion-candidate-seedance25-v4.json",
     "runner_path": "repo-excluded:C:/Users/33502/Documents/Agent/tmp/riftcoach-task5-video-bakeoff/run-dragon-seedance25-first-only-v4-once.ps1",
     "runner_sha256": "4aa7459cff78d462779137fed82d7edc84c0a0fc2d9ee539dbb4311b1c6a6dcc",
     "prompt_normalization": "UTF-8 with CRLF/CR normalized to LF; terminal newline preserved",
@@ -39,6 +41,7 @@
     "prompt_digest_verified": true,
     "runner_parse_verified": true,
     "single_post_path_verified": true,
+    "post_execution_verified": true,
     "price_readback_required": false,
     "pricing_readback": {
       "source": "https://docs.dragon3api.com/pricing-data.js?v=20260824-toapis-sync",

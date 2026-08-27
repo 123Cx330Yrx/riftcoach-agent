@@ -371,3 +371,7 @@ PowerShell parse/唯一 POST 静态门均通过。当前实际 POST 仍为 `0`�
 后续 v4 runner 在 POST 前发现并修复了 Windows CRLF digest 差异（runner SHA
 `4aa7459cff78d462779137fed82d7edc84c0a0fc2d9ee539dbb4311b1c6a6dcc`）；pricing readback 为 `¥1.494570/s`、
 12 秒估算 `¥17.934840`。实际 POST 在修复公共门完成前保持 `0`。
+
+RQ-142 实际 v4 task 已完成一次并拒绝：source→first SSIM `0.989914`、first→last SSIM `0.994464`，但
+center/left/right 每 0.5 秒 MAD `0.014625/0.005851/0.004653`，视觉变化集中为中央平台发光圆顶，右场与
+整体环境不活跃。Task 5 calls `13`、production media `0`；当前暂停首帧盲抽，先做 prompt/mode fault split。

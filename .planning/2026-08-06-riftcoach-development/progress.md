@@ -4757,4 +4757,7 @@
   已全部成功；v4 文档证据正式公共闭环，视觉采用门与 production media 仍保持未完成。
 - 首次执行 v4 runner 在本地 prompt digest 门发现 Windows CRLF 与末尾换行差异并安全停止；修复为 LF 规范化后
   parser 0 error、唯一 POST 1，未产生 task/费用。Dragon pricing readback 为 `¥1.494570/s`，12 秒估算
-  `¥17.934840`，已写入 manifest，等待修复后的公共 gate。
+  `¥17.934840`，已写入 manifest；修复后的公共 gate 随后通过并再执行唯一一次 v4。
+- v4 通过公共 gate 后实际只 POST 一次并下载成功（task `task_s03TcAumrRVriOhr3qj7RxigZqBRLnYF`，输出
+  SHA `1fab5d0f10efe13402f8d31ddfa136ecc68c19875ca4d6a092982d4a1f49cb02`）。审查确认 prompt/mode 把变化
+  集中到中央发光圆顶，左 Rift、右场和整体环境未形成持续运动；按 RQ-142 rejected，production media 仍为 0。

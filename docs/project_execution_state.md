@@ -2929,8 +2929,9 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   parser error、唯一 POST 路径 1，runner SHA 为
   `4aa7459cff78d462779137fed82d7edc84c0a0fc2d9ee539dbb4311b1c6a6dcc`；首次启动在 prompt digest 门因
   Windows CRLF/末尾换行差异安全停止，未发 POST，现已改为 LF 规范化并重新解析通过。
-- 当前 v4 实际 POST 仍为 `0`，价格/余额/请求 readback 尚未执行，`image2_used=false`；Image2 本轮不调用，
-  因为现缺口是时间编排而非静态材质。production media 继续为 `0`，不改 runtime。
+- 在 v4 preflight closure 时实际 POST 为 `0`，价格/余额/请求 readback 尚未执行，`image2_used=false`；随后
+  用户“继续”授权并完成下方唯一一次 v4 调用。Image2 本轮不调用，因为现缺口是时间编排而非静态材质；
+  production media 继续为 `0`，不改 runtime。
 - v4 contract/preflight 提交 `0006858` 的 Actions `33078261349` 已完成 exact-SHA 三 job（pytest、真实
   PostgreSQL migrations、packaging-smoke）并全部成功；这只关闭文档/门禁证据，不关闭视觉采用门。
 - Dragon 当前价格页 readback 为 Seedance 2.5、720p、文本/图片参考按秒 `¥1.494570`，12 秒估算 `¥17.934840`；
@@ -2938,3 +2939,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - `NEXT`：若用户明确允许下一次付费生成，先重新 readback 价格、schema、源图 SHA 与 prompt digest，随后只
   运行 v4 一次；无授权不弹 Key/不 POST。生成后必须独立审查 source identity、三大区与 near/mid/far 全幕
   运动、loop seam、编码和人工视觉，再决定是否采用。
+
+### 2026-08-27：Seedance 2.5 v4 视觉审查与 RQ-142
+
+- v4 已按 manifest 只 POST 一次并成功下载：task `task_s03TcAumrRVriOhr3qj7RxigZqBRLnYF`，输出 SHA
+  `1fab5d0f10efe13402f8d31ddfa136ecc68c19875ca4d6a092982d4a1f49cb02`，12.041667s、1280×720、24fps、
+  H.264/yuv420p、无音轨；Task 5 external video calls 累计为 `13`，production media 仍为 `0`。
+- 无成本抽帧和指标确认：source→first SSIM `0.989914`、first→last SSIM `0.994464`；每 0.5s MAD 的
+  left/center/right 为 `0.005851/0.014625/0.004653`，near/mid/far 为 `0.008367/0.012052/0.004717`。
+  变化主要集中在中央，并不代表全幕运动成立。
+- 视觉裁决为 `research-candidate-rejected`：中央平台在事件中变成大面积发光圆顶，左 Rift 只有低价值变化，
+  右星图/地形与远景环境几乎静止，基础道路/接缝/反射/云空气没有持续动效。该结果是 prompt/mode 语义偏差的
+  可复现证据，不把模型能力直接判死。
+- RQ-142 生效：暂停首帧盲抽，先拆解 prompt/mode fault。后续要把可见运动载体写成具体局部行为，明确平台和
+  水晶几何不可变，并重新判断首帧单锚点是否适合整幕运动；未完成新合同与方法裁决前不再付费重抽、不接 runtime。

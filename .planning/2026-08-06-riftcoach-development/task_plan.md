@@ -1680,3 +1680,7 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [completed-public-preflight] 提交 `0006858` / Actions `33078261349` 的 pytest、真实 PostgreSQL migrations
   与 packaging-smoke 三 job exact-SHA 全部成功；仅关闭 source-side contract/preflight 证据，不代表视频已生成
   或 production media 已采用。
+- [completed-live-rejected] v4 唯一 POST 生成 task `task_s03TcAumrRVriOhr3qj7RxigZqBRLnYF`，输出 SHA
+  `1fab5d0f10efe13402f8d31ddfa136ecc68c19875ca4d6a092982d4a1f49cb02`；source/seam 技术可用但 center MAD
+  `0.014625` 明显高于 left/right `0.005851/0.004653`，视觉为中央圆顶变形、左/右/环境静止，拒绝采用。
+- [next-rq-142] 暂停首帧盲抽，先做 prompt/mode fault split 与方法裁决；不再仅靠抽象形容词或立即换模型。
