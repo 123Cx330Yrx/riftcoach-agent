@@ -4753,3 +4753,5 @@
   未读取 Key，未创建远端 task。
 - Image2 刻意跳过：已有两张稿只证明调色/提亮，不能回答时间编排问题；只有未来出现静态遮挡/反射 Bad Case
   才做功能性同构 keyframe。当前等待付费调用门，不把 v4 预检误写为视频质量证据。
+- `0006858` / Actions `33078261349` 的 exact-SHA pytest、真实 PostgreSQL migrations、packaging-smoke 三 job
+  已全部成功；v4 文档证据正式公共闭环，视觉采用门与 production media 仍保持未完成。

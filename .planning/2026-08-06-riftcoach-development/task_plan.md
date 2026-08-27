@@ -1675,3 +1675,6 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   production media 0。
 - [waiting-paid-call-gate] 不在本批调用 API、不读取 Key、不切模型、不接 runtime；下一动作是用户明确允许后重新
   readback 价格/字段并只执行一次 v4 生成，失败不自动重试。
+- [completed-public-preflight] 提交 `0006858` / Actions `33078261349` 的 pytest、真实 PostgreSQL migrations
+  与 packaging-smoke 三 job exact-SHA 全部成功；仅关闭 source-side contract/preflight 证据，不代表视频已生成
+  或 production media 已采用。

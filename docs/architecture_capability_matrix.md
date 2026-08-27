@@ -364,3 +364,6 @@ module execution。新 exact-SHA Linux job 成功前，A14/Q09 仍不能升级�
 基础运动 + 4.5–7.0 秒中央局部低幅呼吸”，删除易诱发穿屏连线的关系动词；prompt/manifest/runner digest 与
 PowerShell parse/唯一 POST 静态门均通过。当前实际 POST 仍为 `0`，Image2 未使用，production media 仍为 `0`；
 需用户明确允许并重新 readback 价格/字段后才可生成，且不降低 source/seam/全幕运动人工门。
+
+`0006858` / Actions `33078261349` 的 exact-SHA pytest、真实 PostgreSQL migrations 与 packaging-smoke 已全绿；
+这只证明 v4 合同/manifest/门禁的公共可重建性，不代表生成质量或 runtime 采用。

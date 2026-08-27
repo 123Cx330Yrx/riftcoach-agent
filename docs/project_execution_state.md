@@ -2930,6 +2930,8 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   `83cfd961633ad25d058a2c4bd34f6b51b42943017bcd4db6e5bf0bf854f7100c`。
 - 当前 v4 实际 POST 仍为 `0`，价格/余额/请求 readback 尚未执行，`image2_used=false`；Image2 本轮不调用，
   因为现缺口是时间编排而非静态材质。production media 继续为 `0`，不改 runtime。
+- v4 contract/preflight 提交 `0006858` 的 Actions `33078261349` 已完成 exact-SHA 三 job（pytest、真实
+  PostgreSQL migrations、packaging-smoke）并全部成功；这只关闭文档/门禁证据，不关闭视觉采用门。
 - `NEXT`：若用户明确允许下一次付费生成，先重新 readback 价格、schema、源图 SHA 与 prompt digest，随后只
   运行 v4 一次；无授权不弹 Key/不 POST。生成后必须独立审查 source identity、三大区与 near/mid/far 全幕
   运动、loop seam、编码和人工视觉，再决定是否采用。

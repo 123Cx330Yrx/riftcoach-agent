@@ -4478,3 +4478,5 @@
   locality → phase recovery → source/seam/codec。这样不会再用一处明显闪光掩盖道路、右场或环境静止。
 - Image2 不是本轮必要工具：静态变色稿不能提供时序证据，继续调用只会增加成本和 source drift 风险；若有明确
   occlusion/reflection 表达问题，再单独提出受限同构 keyframe 假设。
+- `0006858` / Actions `33078261349` 的 exact-SHA 三 job 全绿，证明 manifest、prompt digest、runner 静态门和
+  canonical 状态可在公共环境重建；它没有增加外部视频调用，也没有把 v4 变成质量已证实的候选。

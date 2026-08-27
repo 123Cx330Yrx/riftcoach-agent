@@ -2434,3 +2434,6 @@ v4 采用“常驻基础层 + 中央局部事件层”的 source-side contract�
 `docs/assets/8e-portal/portal-motion-preflight-v4.json`；实际 POST 仍为 0，Image2 未使用，production media 仍为 0。
 只有重新完成价格/请求 readback 并获得付费调用授权后，才允许 v4 runner 单次生成；成功也必须先通过
 source identity、全幕运动分布、loop seam、编码和人工视觉门，不能直接接入 runtime。
+
+`0006858` / Actions `33078261349` 已为该 source-side contract/preflight 完成 exact-SHA 三 job 公共闭环。
+该公共证据不改变实际 POST `0`、Image2 未使用、production media `0` 和付费调用门。
