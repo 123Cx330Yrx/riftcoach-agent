@@ -222,7 +222,7 @@ describe("RiftCoach product journey", () => {
     await user.click(screen.getByRole("button", { name: /enter riftcoach/i }))
     expect(await screen.findByRole("heading", { name: /who are we reviewing/i })).toBeInTheDocument()
     expect(controller.start).not.toHaveBeenCalled()
-    await user.click(screen.getByRole("button", { name: /open this review/i }))
+    await user.click(await screen.findByRole("button", { name: /open this review/i }))
     await waitFor(() => expect(controller.start).toHaveBeenCalledTimes(1))
     expect(createLiveController).toHaveBeenCalledWith(PROFILE_ID)
     expect(screen.getByRole("heading", { name: "LiveRiver#EUW" })).toBeInTheDocument()
