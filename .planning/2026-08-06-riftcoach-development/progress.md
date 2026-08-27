@@ -4761,3 +4761,5 @@
 - v4 通过公共 gate 后实际只 POST 一次并下载成功（task `task_s03TcAumrRVriOhr3qj7RxigZqBRLnYF`，输出
   SHA `1fab5d0f10efe13402f8d31ddfa136ecc68c19875ca4d6a092982d4a1f49cb02`）。审查确认 prompt/mode 把变化
   集中到中央发光圆顶，左 Rift、右场和整体环境未形成持续运动；按 RQ-142 rejected，production media 仍为 0。
+- `c964016` / Actions `33083670925` 的 exact-SHA 三 job 已全部成功，v4 失败审计正式公共闭环；下一步只做
+  prompt/mode fault split 与方法裁决，不继续盲目付费重抽。

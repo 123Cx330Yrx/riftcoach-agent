@@ -1684,3 +1684,5 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   `1fab5d0f10efe13402f8d31ddfa136ecc68c19875ca4d6a092982d4a1f49cb02`；source/seam 技术可用但 center MAD
   `0.014625` 明显高于 left/right `0.005851/0.004653`，视觉为中央圆顶变形、左/右/环境静止，拒绝采用。
 - [next-rq-142] 暂停首帧盲抽，先做 prompt/mode fault split 与方法裁决；不再仅靠抽象形容词或立即换模型。
+- [completed-public-audit] v4 rejection evidence 提交 `c964016` / Actions `33083670925` 的 pytest、真实
+  PostgreSQL migrations 与 packaging-smoke 三 job exact-SHA 全部成功；Task 5 仍停在方法裁决，不进入 runtime。

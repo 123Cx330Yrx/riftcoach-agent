@@ -4488,3 +4488,5 @@
   九宫格显示平台变成大圆顶，右侧与 near/far 远景几乎不动。根因不是随机 prompt typo，而是“不可变几何”与
   “平台呼吸响应”正向冲突、抽象运动词缺少可观察载体、静态首帧缺少区域/时间控制。按 RQ-142 先做 method fault
   split，不继续付费抽卡。
+- v4 rejection evidence `c964016` / Actions `33083670925` 三 job 全绿；这只证明观测与审计链可重建，不能把
+  center-only 的高 MAD 或 first→last 高 SSIM 误写成全局动态成功。

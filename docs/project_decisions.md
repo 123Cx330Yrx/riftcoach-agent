@@ -2453,3 +2453,6 @@ v4 的唯一任务成功下载且编码正常，但视觉审查拒绝：中央�
 “平台几何不可变”产生语义竞争；静态首帧又没有区域/时间控制，模型选择中心显著物变形来制造运动。v4 作为
 `research-candidate-rejected` 保留，production media 仍为 0。下一步先做 prompt/mode fault split 与方法裁决，
 暂停首帧盲抽；不靠堆形容词、不立即换模型、不接 runtime。
+
+v4 rejection audit `c964016` / Actions `33083670925` 已完成 exact-SHA 三 job 公共闭环。该证据确认失败样本、
+指标和 fault split 可复现；它不把 v4 变成可采用媒体，也不允许在未完成方法裁决前继续付费抽卡。

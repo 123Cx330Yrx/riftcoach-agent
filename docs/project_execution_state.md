@@ -2953,3 +2953,6 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   可复现证据，不把模型能力直接判死。
 - RQ-142 生效：暂停首帧盲抽，先拆解 prompt/mode fault。后续要把可见运动载体写成具体局部行为，明确平台和
   水晶几何不可变，并重新判断首帧单锚点是否适合整幕运动；未完成新合同与方法裁决前不再付费重抽、不接 runtime。
+- v4 rejection audit 提交 `c964016` 的 Actions `33083670925` 已完成 exact-SHA 三 job（pytest、真实
+  PostgreSQL migrations、packaging-smoke）并全部成功；该公共闭环只确认失败证据可重建，不改变视觉拒绝与
+  `production_media=0`。

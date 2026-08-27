@@ -79,5 +79,11 @@
     "user_verdict": "rejected: prompt execution is visibly wrong; do not adopt or place in runtime"
   },
   "next_gate": "stop-first-frame-regeneration-revise-method",
-  "production_media": false
+  "production_media": false,
+  "public_ci": {
+    "commit": "c9640164d46e1fefce3f51b8fedc00f98a5b244c",
+    "run_id": "33083670925",
+    "jobs": ["pytest", "postgres-migrations", "packaging-smoke"],
+    "conclusion": "success"
+  }
 }
