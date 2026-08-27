@@ -4755,3 +4755,6 @@
   才做功能性同构 keyframe。当前等待付费调用门，不把 v4 预检误写为视频质量证据。
 - `0006858` / Actions `33078261349` 的 exact-SHA pytest、真实 PostgreSQL migrations、packaging-smoke 三 job
   已全部成功；v4 文档证据正式公共闭环，视觉采用门与 production media 仍保持未完成。
+- 首次执行 v4 runner 在本地 prompt digest 门发现 Windows CRLF 与末尾换行差异并安全停止；修复为 LF 规范化后
+  parser 0 error、唯一 POST 1，未产生 task/费用。Dragon pricing readback 为 `¥1.494570/s`，12 秒估算
+  `¥17.934840`，已写入 manifest，等待修复后的公共 gate。

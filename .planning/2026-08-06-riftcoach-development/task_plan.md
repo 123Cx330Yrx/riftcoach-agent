@@ -1670,11 +1670,13 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [completed-local-contract] 依据 v3 视觉复核把 prompt 改为两层：从首帧持续的全局基础运动 + 仅中央轴的
   4.5–7.0 秒低幅呼吸；明确道路/Rift 下方和右侧独立运动不得延迟，不使用跨画面 `gather/travel/circuit`。
 - [completed-local-preflight] `portal-motion-brief-v4.txt` SHA `56ce81b8d508ae67edacfde6c1d846b9555d59ca0e9fafb80af3b88fd311620d`；
-  v4 runner parser 0 error、唯一 POST 路径 1，runner SHA `83cfd961633ad25d058a2c4bd34f6b51b42943017bcd4db6e5bf0bf854f7100c`。
+  v4 runner parser 0 error、唯一 POST 路径 1，runner SHA `4aa7459cff78d462779137fed82d7edc84c0a0fc2d9ee539dbb4311b1c6a6dcc`。
   manifest 固定 source SHA、12s/adaptive/720p/first-only/audio-off，记录 post observed 0、Image2 未使用和
   production media 0。
 - [waiting-paid-call-gate] 不在本批调用 API、不读取 Key、不切模型、不接 runtime；下一动作是用户明确允许后重新
   readback 价格/字段并只执行一次 v4 生成，失败不自动重试。
+- [completed-price-readback] Dragon pricing data 当前给出 `¥1.494570/s`（720p、文本/图片参考），12 秒估算
+  `¥17.934840`；首次 runner 启动因 Windows 换行 digest mismatch 在本地安全停止，修复后无 POST/无扣费。
 - [completed-public-preflight] 提交 `0006858` / Actions `33078261349` 的 pytest、真实 PostgreSQL migrations
   与 packaging-smoke 三 job exact-SHA 全部成功；仅关闭 source-side contract/preflight 证据，不代表视频已生成
   或 production media 已采用。

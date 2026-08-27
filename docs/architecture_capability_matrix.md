@@ -367,3 +367,7 @@ PowerShell parse/唯一 POST 静态门均通过。当前实际 POST 仍为 `0`�
 
 `0006858` / Actions `33078261349` 的 exact-SHA pytest、真实 PostgreSQL migrations 与 packaging-smoke 已全绿；
 这只证明 v4 合同/manifest/门禁的公共可重建性，不代表生成质量或 runtime 采用。
+
+后续 v4 runner 在 POST 前发现并修复了 Windows CRLF digest 差异（runner SHA
+`4aa7459cff78d462779137fed82d7edc84c0a0fc2d9ee539dbb4311b1c6a6dcc`）；pricing readback 为 `¥1.494570/s`、
+12 秒估算 `¥17.934840`。实际 POST 在修复公共门完成前保持 `0`。

@@ -2437,3 +2437,8 @@ source identity、全幕运动分布、loop seam、编码和人工视觉门，�
 
 `0006858` / Actions `33078261349` 已为该 source-side contract/preflight 完成 exact-SHA 三 job 公共闭环。
 该公共证据不改变实际 POST `0`、Image2 未使用、production media `0` 和付费调用门。
+
+首次 v4 runner 启动在 POST 前因 Windows 换行 digest mismatch 安全停止；修复后 runner SHA 为
+`4aa7459cff78d462779137fed82d7edc84c0a0fc2d9ee539dbb4311b1c6a6dcc`。Dragon pricing readback 为
+`¥1.494570/s`（720p、文本/图片参考），12 秒预算 `¥17.934840`；换行修复与价格回读须先公共闭环，
+再执行唯一一次付费调用。

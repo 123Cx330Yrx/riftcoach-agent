@@ -20,7 +20,8 @@
     "post_attempts_planned": 1,
     "post_attempts_observed": 0,
     "runner_path": "repo-excluded:C:/Users/33502/Documents/Agent/tmp/riftcoach-task5-video-bakeoff/run-dragon-seedance25-first-only-v4-once.ps1",
-    "runner_sha256": "83cfd961633ad25d058a2c4bd34f6b51b42943017bcd4db6e5bf0bf854f7100c",
+    "runner_sha256": "4aa7459cff78d462779137fed82d7edc84c0a0fc2d9ee539dbb4311b1c6a6dcc",
+    "prompt_normalization": "UTF-8 with CRLF/CR normalized to LF; terminal newline preserved",
     "prompt_path": "docs/assets/8e-portal/portal-motion-brief-v4.txt",
     "prompt_sha256": "56ce81b8d508ae67edacfde6c1d846b9555d59ca0e9fafb80af3b88fd311620d"
   },
@@ -38,8 +39,19 @@
     "prompt_digest_verified": true,
     "runner_parse_verified": true,
     "single_post_path_verified": true,
-    "price_readback_required": true,
-    "paid_call_authorized": false,
+    "price_readback_required": false,
+    "pricing_readback": {
+      "source": "https://docs.dragon3api.com/pricing-data.js?v=20260824-toapis-sync",
+      "model": "seedance-2-5",
+      "resolution": "720p",
+      "input": "文本 / 图片参考",
+      "billing": "按秒",
+      "unit_price_cny_per_s": 1.49457,
+      "quoted_duration_s": 12,
+      "quoted_total_cny": 17.93484,
+      "readback_date": "2026-08-27"
+    },
+    "paid_call_authorized": true,
     "image2_used": false,
     "image2_reason": "Not needed for this temporal-contract correction; prior previews were color/brightness variants and not motion-direction evidence.",
     "production_media": false

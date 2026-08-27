@@ -4480,3 +4480,7 @@
   occlusion/reflection 表达问题，再单独提出受限同构 keyframe 假设。
 - `0006858` / Actions `33078261349` 的 exact-SHA 三 job 全绿，证明 manifest、prompt digest、runner 静态门和
   canonical 状态可在公共环境重建；它没有增加外部视频调用，也没有把 v4 变成质量已证实的候选。
+- v4 首次启动的 digest mismatch 是换行规范化缺失而非 prompt 内容漂移；runner 现在把 CRLF/CR 统一为 LF 并保留
+  terminal newline，再与 manifest SHA 比较。该故障在 POST 前发现，external video calls 与费用均不变。
+- 当前 Dragon pricing readback 为 Seedance 2.5 720p 图片参考 `¥1.494570/s`，12 秒估算 `¥17.934840`；这只是
+  预算证据，生成结果仍需独立质量审查。

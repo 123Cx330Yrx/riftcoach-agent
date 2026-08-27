@@ -101,7 +101,8 @@ v3 的失败不是“没有动效”，而是动效被模型排成了错误的�
   `production_media=false` 与 `image2_used=false`；同时记录当前实际 POST 仍为 `0`，价格必须重新 readback。
 - repo 外 v4 runner 已做静态解析：PowerShell `parse_errors=0`、唯一 POST 路径为 1，且运行前会重新读取
   prompt 并校验上述 digest；runner SHA 为
-  `83cfd961633ad25d058a2c4bd34f6b51b42943017bcd4db6e5bf0bf854f7100c`。它尚未运行、不会自动读取或保存
+  `4aa7459cff78d462779137fed82d7edc84c0a0fc2d9ee539dbb4311b1c6a6dcc`。首次启动曾因 Windows 换行差异在
+  digest 门安全停止，修复后才允许进入 Key prompt；它不会自动保存
   API Key，也没有创建 v4 task。
 - Image2 本轮刻意不调用：当前缺口是 temporal choreography，不是静态材质无法表达；此前 Image2 结果只是
   调色/提亮稿，不能为 v4 提供可靠运动证据。若后续出现具体的遮挡或反射表达 Bad Case，再单独做一张
@@ -110,3 +111,6 @@ v3 的失败不是“没有动效”，而是动效被模型排成了错误的�
 本批只完成 source-side contract 与 no-cost preflight。只有在用户明确允许下一次付费生成、且重新读回
 价格/余额/请求字段后，才运行 v4 runner 一次；失败不自动重试，成功也必须先过 source identity、全幕
 运动分布、loop seam、编码和人工视觉门，才能讨论 runtime 采用。
+
+Dragon 当前 pricing readback 为 Seedance 2.5、720p、文本/图片参考 `¥1.494570/秒`，12 秒估算
+`¥17.934840`；该数值已写入 preflight manifest，实际账单仍以提交后的平台回执为准。
