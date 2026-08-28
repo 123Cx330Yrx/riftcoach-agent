@@ -1815,6 +1815,13 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   restoration sibling was manually rejected for crunchy AI texture and
   quality mismatch with the other saved region stills; a true higher-resolution
   source or different native still is required.
+- [completed-local-audit] The desktop inventory now contains 12 dynamic
+  candidates and 15 stills. A contact sheet, 5fps motion audit and provisional
+  region mapping are recorded in
+  `docs/assets/8e-portal/portal-region-media-inventory-review-v1.md`.
+- [next-user-review] Do not rename files yet. After the user confirms the
+  provisional mapping, create non-destructive normalized names and update the
+  catalog/manifest; keep all source hashes and rights gates intact.
 - [next] Expand the catalog one region at a time. Keep source/rights, WebM/MP4,
   poster, loop, mobile and reduced-motion gates separate from the existing
   product journey contract; do not change the default `/` until a candidate set

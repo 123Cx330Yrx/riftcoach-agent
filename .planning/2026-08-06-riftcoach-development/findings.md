@@ -4577,6 +4577,18 @@
   用户桌面素材目录；人工复核认为它虽然更锐但纹理偏脆、存在 AI 重绘感，与其它地区静态图不在同一质感层级，已判为
   `rejected`，原图保留，不能替代更高分辨率的官方源，也未进入 adopted media。
 
+## 2026-08-28：full region media inventory review
+
+- 桌面目录已包含除 Ixtal 外的 12 份动态 WebM。11 份为 1920×1080/15.04s，Harrowing 是 1280×720/5s；Bandle City
+  唯一带 Opus 音轨。动态文件名已经能稳定指向地区，但 `animated-harrowing.webm` 需要单独作为 Shadow Isles 的
+  低清/短时长备选，不把它与标准 15s 候选混为同一等级。
+- 15 张静态图中，匿名哈希文件名需要靠画面内容与地区动态交叉核对。暂定优先映射为：Piltover=`6c774...-4681x2114`,
+  Shadow Isles=`94e4...-2503x1080`, Ionia=`72ad...-1920x1079`, Ixtal=`ef261...-1920x900`, Bilgewater=`ab3c...-1920x726`,
+  Zaun=`3b6d...-1920x1057`, Void=`7107...-1920x1064`, Noxus=`6310...-1920x1080`；Demacia、Freljord、Targon、Shurima
+  优先使用已有命名文件，保留匿名图作 alternate/review evidence。完整暂定表见
+  `docs/assets/8e-portal/portal-region-media-inventory-review-v1.md`。
+- 当前只形成审计/推荐，不执行桌面批量改名。待用户确认后再做原文件不覆盖的 normalized sibling 与 manifest。
+
 ## 2026-08-28：official wallpaper fallback preview
 
 - RQ-146 已激活：Wan 3.0 停止在 HTTP 404/no-task，避免继续消耗额度；用户提供的 Demacia WebM 成为第一份真实

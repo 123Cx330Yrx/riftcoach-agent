@@ -4839,6 +4839,14 @@
   `RIFTCOACH`，未覆盖原图；人工复核认为生成图纹理脆硬、AI 重绘感明显，低于其它已存地区图，已标记 rejected，下一步
   改为寻找真实高分辨率官方源或直接从高质量动态候选抽取静态参考，不继续堆锐化。
 
+## 2026-08-28：region media inventory review
+
+- 已只读盘点桌面 `RIFTCOACH`：12 动态、15 静态；生成动态/静态 contact sheet 与 5fps motion audit。动态候选按分辨率、
+  时长、音轨和采样连续性记录，静态候选按地区视觉身份、构图和分辨率做暂定映射。
+- 暂定首选见 `docs/assets/8e-portal/portal-region-media-inventory-review-v1.md`；不确定项（Noxus 第二张、Demacia 多张、
+  Bandle 低清静态）保持 alternate/rejected，不在未确认前重命名。徽章方面，Universe 13 个官方 crest 已在选择器使用；
+  截图中的详细 3D LoR 风格徽章尚未找到完整、可核验的全套来源，暂不替换已稳定的小卡徽记。
+
 ## 2026-08-28：official wallpaper fallback local preview
 
 - Wan first-frame reopen 停在兼容文本 endpoint 的 HTTP 404/no-task，用户明确转战，不再继续找 Host 或发第二次 POST。
