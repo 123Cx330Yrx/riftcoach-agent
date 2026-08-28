@@ -397,3 +397,6 @@ audio off、`metadata.image_list` + `<<<image_1>>>`，预计 ¥3.696。未调用
 
 Kling image-only 结果已拒绝：source-first `0.860618`，左圆环/中央亮柱主导，右场与环境不活跃；Task 5 calls `14`，
 production media `0`。停止 image-only 抽卡，下一门评估 reference-video/多模态控制或其他模型，先过 preflight。
+
+Kling B2 video+image preflight 已本地冻结：base video result URL 执行时 GET-only/不落盘，v2 image identity、
+1,856-char 专用 prompt、std/720p/8s/16:9/audio omitted、one POST 和 ¥3.696 估算。当前 GET/POST 0，待 public gate。

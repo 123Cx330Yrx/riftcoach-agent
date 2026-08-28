@@ -1728,6 +1728,14 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [next-method-gate] 停止 Kling image-only 抽卡；评估 reference-video/多模态模式的 URL/隐私/费用/schema 控制，或
   另一支持视频参考的模型。未完成新 preflight 前不付费。
 
+## Kling v3 Omni video+image B2 preflight (2026-08-28)
+
+- [completed-local-contract] `video_list(base)` temporal anchor + `metadata.image_list` visual anchor；source task GET-only
+  取 URL 且不持久化，prompt 1,856 chars/SHA `666949...86b56`。
+- [completed-local-preflight] std/720p、8s、16:9、audio omitted、预计 ¥3.696；runner parse 0、source/poll 两个 GET、
+  one POST，source GET 或 POST observed 0。
+- [next] 独立 commit/public gate；绿灯后才由用户本机输入 Key，source GET 无 URL 则在 POST 前停止。
+
 ## RQ-142 method fault split (2026-08-28)
 
 - [completed-local-review] 对 v3/v4、即梦 Smart Edit、C-line proof 与 T/X sibling 做同口径比较；结论为 prompt

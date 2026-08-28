@@ -4805,3 +4805,9 @@
   `3eb0720c1b80d02ab43f8975f765c0444b1dd40239fad4fe5bfe43ff483c7fc6`）；首帧 source SSIM `0.860618`。
 - 左 Rift 变成廉价厚环，中心强光柱，右场/环境静止；按 source/full-scene/人工门 rejected。下一步停止 image-only，
   只评估 reference-video/多模态控制或其他模型 preflight。
+
+### 2026-08-28：Kling video+image B2 preflight
+
+- B2 以历史 Seedance success task GET-only 取得 Video1 临时 URL，v2 母图为 Image1；临时 URL 不写盘。
+- Kling 专用 prompt 明确保持 Rift 原不规则边界，禁止 solid torus、gold star decoration 和 solid laser block；
+  runner/price/schema/source digest 已完成静态门，当前 GET/POST 均为 0。

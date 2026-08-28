@@ -3021,3 +3021,15 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   问题，也不证明 Kling 所有参考模式的能力上限。
 - `NEXT`：停止 image-only 抽卡；先评估真正的 reference-video/多模态模式（包括视频 URL 获取、隐私/费用、schema
   和可控性），或在明确证据下选择其他支持视频参考的模型；未完成 preflight 前不再付费。
+
+### 2026-08-28：Kling v3 Omni video+image B2 preflight
+
+- B2 改用 Kling `video_list(refer_type=base)` + `metadata.image_list`：执行时先对历史 Seedance success task
+  `task_w6gg...ULvW` 做一次 GET-only，signed result URL 只在内存中传给 Kling，不写盘；v2 母图继续锁视觉身份。
+- 专用 prompt 1,856 字符，直接禁止 B1 的 solid torus、isolated gold stars 和 central laser block；SHA
+  `6669494364216c8ac366ac4c9ee2f354632b438e253625dbdadee1299eb86b56`。runner parser 0 error，两个 GET
+  路径（source + polling）、唯一 POST 1，runner SHA `feee4f77e5b7a701d268292386958bfcf429792dfca1ee8112ce7392d37cad20`。
+- 请求保持 `std/720p`、8s、16:9；有 `video_list` 时按 Kling 文档省略 audio 字段。预计 ¥3.696，但实际视频参考
+  计费以平台回执为准。当前 source GET/POST 均为 0，production media 仍为 0。
+- `NEXT`：先独立提交/public gate；通过后用户在本机输入 Key，若 source task GET 无有效 URL 则在 POST 前停止，
+  否则只执行一次 Kling B2。

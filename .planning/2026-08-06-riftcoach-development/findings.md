@@ -4536,3 +4536,10 @@
   `0.007312/0.006353`；视觉是厚塑料圆环 + 中央亮柱，右侧和环境没有持续运动。
 - 这次说明“换模型”本身不够：只给静态图时，Kling 仍选择显著主体重绘来制造 motion。下一候选必须提供真正的
   temporal/reference-video 控制，或转入新的可控制片路线；不再重复同类 image-only prompt。
+
+## 2026-08-28：Kling video+image B2 preflight
+
+- Kling Omni 文档允许 `video_list` 与 `metadata.image_list` 联用；占位符顺序必须对应 `<<<video_1>>>` / `<<<image_1>>>`，
+  有视频输入时 audio 字段应省略。B2 采用 base video 而非 feature，目标是保留已有 camera/tempo 而非角色特征。
+- source task result URL 通过执行时 GET-only 获取，signed URL 不写状态文件；若 URL 过期/缺失，B2 在 POST 前失败，
+  这把 transport/source readiness 与模型质量分开。

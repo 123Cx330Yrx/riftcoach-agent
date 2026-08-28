@@ -2490,3 +2490,7 @@ audio off、`metadata.image_list` + `<<<image_1>>>`，预计 ¥3.696。未调用
 Kling image-only 实际 task 已完成但拒绝：source-first `0.860618`，左 Rift 变成厚塑料圆环，中央强光柱，右场与
 整体环境近乎静止。该结果不证明 Kling reference-video/Omni 多模态模式无效，但证明不应再为 image-only prompt
 付费；下一步必须先核对 temporal/reference-video 输入能否获得、费用和隐私边界，再决定候选。
+
+Kling B2 选择 base video + image reference，而不是另一个 image-only prompt。历史 Seedance task 只提供临时 Video1
+URL 与时间节奏，v2 母图锁视觉；URL GET-only、不持久化。prompt 专门禁止 B1 的塑料圆环/金色星点/实心光柱，
+runner 只有一个 POST。独立 public gate 前不读取 Key、不调用模型。

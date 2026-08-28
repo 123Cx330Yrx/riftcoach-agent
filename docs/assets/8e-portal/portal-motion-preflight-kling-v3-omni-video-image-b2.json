@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "status": "prepared",
+  "candidate": "kling-v3-omni-video-image-b2",
+  "purpose": "single controlled reference-video + image comparator; no generation receipt",
+  "mode": "Kling v3 Omni base video reference + image identity reference",
+  "references": {
+    "video1": {
+      "role": "temporal rhythm and fixed-camera anchor",
+      "source_task_id": "task_w6ggXo15mMMw5Y3KMu9CfLK1QLevULvW",
+      "path": "repo-excluded:tmp/riftcoach-task5-video-bakeoff/dragon-seedance25-portal-v5-first-last-adaptive-720p-8s.mp4",
+      "sha256": "acf68ba63a3382f4c79bee090ca9c89ff39727e35af26685aba1c9cc1add56c4",
+      "video_list_index": 1,
+      "refer_type": "base",
+      "keep_original_sound": "no",
+      "result_url_policy": "GET source task at execution time; keep signed URL in memory only"
+    },
+    "image1": {
+      "role": "immutable visual identity anchor",
+      "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+      "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e",
+      "image_list_index": 1
+    }
+  },
+  "request": {
+    "model": "kling-v3-omni",
+    "mode": "std",
+    "input_mode": "base_video_plus_image_reference",
+    "duration_s": 8,
+    "aspect_ratio": "16:9",
+    "resolution": "720p",
+    "audio_field": "omitted because video_list is present",
+    "prompt_path": "docs/assets/8e-portal/portal-motion-brief-kling-v3-omni-video-image-b2.txt",
+    "prompt_chars": 1856,
+    "prompt_sha256": "6669494364216c8ac366ac4c9ee2f354632b438e253625dbdadee1299eb86b56",
+    "prompt_placeholders": ["<<<video_1>>>", "<<<image_1>>>"],
+    "runner_path": "repo-excluded:C:/Users/33502/Documents/Agent/tmp/riftcoach-task5-video-bakeoff/run-dragon-kling-v3-omni-video-image-once.ps1",
+    "runner_sha256": "feee4f77e5b7a701d268292386958bfcf429792dfca1ee8112ce7392d37cad20"
+  },
+  "pricing_readback": {
+    "source": "https://docs.dragon3api.com/pricing-data.js?v=20260824-toapis-sync",
+    "billing": "按秒",
+    "unit_price_cny_per_s": 0.462,
+    "quoted_duration_s": 8,
+    "quoted_total_cny": 3.696,
+    "readback_date": "2026-08-28",
+    "price_note": "Kling v3 Omni listing does not split image/video-reference rows; actual charge follows platform receipt"
+  },
+  "control_contract": {
+    "video_reference_is_temporal_only": true,
+    "image_reference_is_visual_identity": true,
+    "baseline_from_first_frame": true,
+    "original_rift_boundary_immutable": true,
+    "solid_torus_forbidden": true,
+    "platform_geometry_immutable": true,
+    "right_side_independently_active": true,
+    "camera_locked": true,
+    "central_swell_window_s": [4.5, 6.5],
+    "loop_recovery_window_s": [7.0, 8.0]
+  },
+  "preflight_gates": {
+    "source_image_sha_verified": true,
+    "source_video_sha_verified": true,
+    "source_task_get_only_required": true,
+    "source_result_url_persisted": false,
+    "prompt_digest_verified": true,
+    "placeholder_order_verified": true,
+    "schema_readback_verified": true,
+    "runner_parse_verified": true,
+    "source_get_path_verified": true,
+    "single_post_path_verified": true,
+    "price_readback_verified": true,
+    "paid_call_authorized": false,
+    "production_media": false,
+    "source_get_attempts_observed": 0,
+    "post_attempts_planned": 1,
+    "post_attempts_observed": 0
+  },
+  "stop_conditions": [
+    "if source task GET has no valid result URL, stop before POST",
+    "one POST only if later authorized; no automatic retry",
+    "reject source redraw, solid Rift torus, central laser block, frozen right field, fog-only motion or decorative stars",
+    "keep output research-only until source/seam/codec and human full-scene review pass"
+  ]
+}
