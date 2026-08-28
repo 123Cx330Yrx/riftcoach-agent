@@ -2510,3 +2510,9 @@ v2 母图作为 `first_frame`，不再把同图设为 `last_frame`；使用 `rat
 prompt_extend/watermark off、固定 seed 127 与新的 motion-only brief。先核对同区 endpoint/账号额度/价格、
 source/prompt digest 和 one-POST runner，再执行；无论结果如何都不自动重试、不接 runtime、不把输出直接当作
 production media。成功输出还必须过三大区/near-mid-far 全幕运动、source/loop/编码和人工材质审查。
+### RQ-145：Riot 官方壁纸/屏保作为条件回退（2026-08-28）
+
+这不是当前已采用路线，而是 Wan 3.0 重开失败后的明确止损选项：停止继续生成整幕 Portal 视频，改评估 Riot
+官方 League Displays 的地区主题动态壁纸作为 Portal 候选，并用一张静态壁纸作为 Account 背景；用户在 Portal
+开始前选择地区。Portal/Account 的 MotionSites 风格只影响界面结构与转场，不能绕过来源、许可、格式、体积、
+移动端、reduced-motion 和本地白名单门。当前先完成 Wan 一次公平对照，只有其人工视觉门失败才进入该回退评估。

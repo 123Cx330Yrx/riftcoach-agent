@@ -4576,6 +4576,10 @@
   约束会把运动压成插值/微动。RQ-144 允许一次公平的 first-frame-only 对照：adaptive、1080P、12s、
   audio/prompt_extend/watermark off，motion-only brief，暂不加入 burst。
 
+- 用户补充了 RQ-145 条件回退：若这次 Wan 仍然廉价或运动错误，停止自制整幕视频，转评估 Riot 官方 League
+  Displays 的地区主题动态壁纸；Portal 开始前选择地区，Account 使用独立静态壁纸。该路线目前只作为止损
+  方案，必须先核对素材来源/许可、格式、体积、浏览器可播放性、移动端和 reduced-motion，再决定是否采用。
+
 ## 2026-08-28：独立材质 plate 生成预检
 
 - built-in imagegen 的 5 张 plate 均不能直接进入合成：Rift 大水团像贴纸，wisps 只能做研究控制场；右场/道路仍有宽泛

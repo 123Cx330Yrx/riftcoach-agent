@@ -4839,6 +4839,9 @@
 - 用户要求重新利用 Wan 3.0 官方通道，已冻结 RQ-144 first-frame-only preflight、motion-only prompt 与
   one-POST runner；先核对同区 endpoint/账号余额/价格，再执行最多一次，失败不重试、不接 runtime。
 
+- 用户新增条件回退 RQ-145：若 Wan 重开仍不达标，停止自制整幕视频，改评估 Riot 官方 League Displays 地区
+  动态壁纸（Portal 选地区）与独立静态 Account 壁纸；当前不改变 Wan 这一次的执行顺序。
+
 ## 2026-08-28：独立材质 plate 预检结果
 
 - built-in imagegen 完成 5 个局部 plate 候选；Rift/右场/道路/晶体直接叠加分别暴露水团贴纸、宽蓝底、蓝雾和几何替换
