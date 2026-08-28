@@ -4566,6 +4566,19 @@
 - 视觉仍偏 restrained shimmer，缺少实际遮挡和材质 plate，不能把均衡 MAD 当作 MotionSites 级全局运动。下一步不是
   再加 opacity，而是 `material-plate-generation-gate`，先补独立 plate/backplate，再回到确定性合成。
 
+## 2026-08-29：MotionSites 广筛与 Region Entry Panel 试水
+
+- MotionSites 的公开 browse/catalog 不只是已保存 prompt 的重复清单；当前可见的方向包括 Cinematic Landing
+  Hero、Container Scroll Animation、Interactive Hover Button、Background Paper Shaders 和 Neon Nebula，
+  并按 hero/landing/technology/interactive-media 等类型组织。它们适合提炼信息层次、交互状态与运动节奏，
+  不足以替代 RiftCoach 的产品合同或授权素材。
+- 两地区试水选择 Demacia/Bandle City，是因为二者已有本地 WebM、无音频 H.264 sibling 和 poster 三件套；
+  其余地区虽有 crest 或 Account still，缺少同等级 ready 动态候选，继续 pending 更诚实。
+- `region` 必须是 product journey 的 typed allowlist，而不是任意 query string；这样背景选择不会顺带改变
+  routing region、player identity 或 owner scope。Account 背景是展示层 hint，不能被误解为账号验证或地区路由。
+- 研究预览先以 poster 作为稳定底层，再叠加 video；播放失败/reduced-motion 时只隐藏视频，保持同一构图和操作层。
+  这使视觉实验不依赖网络或远程 Provider，也保留了后续来源/许可替换空间。
+
 ## 2026-08-28：Bandle City wallpaper candidate and static still quality
 
 - 桌面 `RIFTCOACH` 文件夹中已核对 `animated-bandlecity.webm`：1920×1080、25fps、15.04s、VP8 video +

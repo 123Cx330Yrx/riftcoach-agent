@@ -1777,6 +1777,15 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [next] Check Photoshop/manual masked editing or a reachable Image2 edit path; only after one region passes consider road/right/crystal
   plates and a no-cost composite.
 
+## Region entry panel trial (2026-08-29)
+
+- [completed-design] 继续公开审阅 MotionSites browse/catalog、React Bits 和 Motion transitions，提炼全幅媒体英雄、紧凑选择器、即时反馈、语义动作和完整状态设计；不引入新依赖、不复制页面。
+- [completed-implementation] `RegionWallpaperLab` 以 Demacia/Bandle City 两个 ready candidate 完成地区选择、背景即时切换、WebM→MP4→poster/reduced-motion 降级和 760ms activation hand-off。
+- [completed-implementation] product journey typed allowlist 携带 region 进入 Account，并在 Account Back/Continue 时保留；Account 仅使用低对比静态氛围层。
+- [completed-verification] focused unit `9 passed`、完整前端单测 `270 passed`、TypeScript/Vite build 和研究预览 E2E `2 passed` 已通过。
+- [boundary] 两个候选仍是 `research-candidate`/`rights=unverified`，其它 11 区保持 pending；本切片不等于 8E 完成或最终视觉签收。
+- [next] 用户审阅两地区纵向切片后，决定是否扩展第三个地区或先做 Account/Portal 视觉联调；媒体采用门保持不变。
+
 ## Masked-inpaint plate proof and Wan reopen (2026-08-28)
 
 - [completed-local-rejected] `masked-inpaint-plate-proof`: a bounded Rift mask,

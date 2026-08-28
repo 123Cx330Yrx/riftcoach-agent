@@ -13,6 +13,7 @@ import { PlayerAccessController } from "../account/playerAccessController"
 import { isAuthSessionFailure } from "../auth/session"
 import { useI18n } from "../i18n/ProductLocaleProvider"
 import type { MessageKey } from "../i18n/locale"
+import type { WallpaperRegion } from "../wallpapers/regionWallpaperCatalog"
 import { LocaleSwitch } from "./LocaleSwitch"
 
 const regions: readonly RoutingRegionWire[] = ["americas", "europe", "asia", "sea"]
@@ -50,6 +51,7 @@ export function AccountAccess({
   idempotencyKeyFactory,
   pollDelaysMs,
   onAuthFailure,
+  wallpaperRegion,
 }: {
   readonly api: PlayerAccessApi
   readonly csrfToken: string
@@ -59,6 +61,7 @@ export function AccountAccess({
   readonly idempotencyKeyFactory?: () => string
   readonly pollDelaysMs?: readonly number[]
   readonly onAuthFailure?: (code: string) => void
+  readonly wallpaperRegion?: WallpaperRegion
 }) {
   const { t } = useI18n()
   const [controller] = useState(() => new PlayerAccessController({
@@ -104,7 +107,7 @@ export function AccountAccess({
   }
 
   return (
-    <main className="account-access" data-testid="account-access">
+    <main className="account-access" data-testid="account-access" data-wallpaper-region={wallpaperRegion ?? "default"}>
       <div className="account-access__atmosphere" aria-hidden="true" />
       <header className="account-access__header">
         <button type="button" className="account-access__back" onClick={onBack}>{t("account.back")}</button>

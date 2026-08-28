@@ -28,6 +28,10 @@ poster-first 播放状态/组件已本地完成、待公共门；这些证据不
 RQ-107 审计确认现有 Web 只查看最近 Report/Training summary，尚未消费 Conversation-bound Agent 创建链。
 bounded review-grounded Coach 是推荐的 8E 补齐项，但插入顺序待用户裁决，矩阵不把建议误写成已实现能力。
 
+2026-08-29 Region Entry Panel 试水补充了 Q10 的局部实现证据：地区是 presentation-only typed hint，
+动态候选通过 WebM/MP4/poster/reduced-motion/failure 降级，进入 Account 后不改变身份或 routing。它仍是
+research preview，不能替代最终媒体许可、移动端、loop、视觉 QA 或 8E exit。
+
 ## 1. 用途
 
 本矩阵是阶段 0-8 路线的横向能力总账，不新增主阶段，也不替代 `roadmap.md`。它解决三个问题：

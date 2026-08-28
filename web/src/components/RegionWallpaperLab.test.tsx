@@ -29,8 +29,8 @@ describe("RegionWallpaperLab", () => {
 
   it("uses natural Chinese product copy when the locale is zh-CN", () => {
     render(<ProductLocaleProvider navigatorLanguages={["zh-CN"]}><RegionWallpaperLab /></ProductLocaleProvider>)
-    expect(screen.getByRole("heading", { name: /选择一处地区.*开启 RiftCoach/i })).toBeInTheDocument()
-    expect(screen.getByText("先选一处符文大陆，再进入 RiftCoach。这里的画面只负责氛围，复盘仍由真实数据驱动。")).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: /先选一处.*落脚点/i })).toBeInTheDocument()
+    expect(screen.getByText("选定地区后，RiftCoach 会带着对应的场景进入账号页。画面负责氛围，复盘仍由真实数据驱动。")).toBeInTheDocument()
   })
 
   it("keeps a poster fallback when video fails", async () => {
@@ -49,6 +49,17 @@ describe("RegionWallpaperLab", () => {
     expect(screen.getByTestId("wallpaper-lab")).toHaveClass("wallpaper-lab--activating")
     await act(async () => { vi.advanceTimersByTime(760) })
     expect(screen.getByTestId("wallpaper-lab")).not.toHaveClass("wallpaper-lab--activating")
+    vi.useRealTimers()
+  })
+
+  it("passes the selected region to the account transition", async () => {
+    vi.useFakeTimers()
+    const onEnter = vi.fn()
+    render(<ProductLocaleProvider navigatorLanguages={["en"]}><RegionWallpaperLab onEnter={onEnter} /></ProductLocaleProvider>)
+    fireEvent.click(screen.getByRole("button", { name: /bandle city/i }))
+    fireEvent.click(screen.getByRole("button", { name: /enter riftcoach/i }))
+    await act(async () => { vi.advanceTimersByTime(760) })
+    expect(onEnter).toHaveBeenCalledWith("bandle-city")
     vi.useRealTimers()
   })
 })

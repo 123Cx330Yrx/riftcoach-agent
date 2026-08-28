@@ -52,6 +52,7 @@ import {
   parseProductJourney,
   productJourneyUrl,
   type ProductJourneyLocation,
+  type ProductJourneyRegion,
   type ProductJourneyTarget,
 } from "./productJourney"
 import { useCinematicMediaPolicy } from "../cinematic/useCinematicMediaPolicy"
@@ -464,6 +465,7 @@ function AccountAccessHost({
   onBack,
   onContinue,
   onAuthFailure,
+  region,
 }: {
   readonly createPlayerAccessApi?: () => PlayerAccessApi
   readonly session: AuthSessionWire
@@ -471,6 +473,7 @@ function AccountAccessHost({
   readonly onBack: () => void
   readonly onContinue: (profileId: string) => void
   readonly onAuthFailure: (code: string) => void
+  readonly region?: ProductJourneyRegion
 }) {
   const [api] = useState(() => createPlayerAccessApi?.() ?? new PlayerLinkHttpApi(new ApiClient()))
   return (
@@ -481,6 +484,7 @@ function AccountAccessHost({
       onBack={onBack}
       onContinue={onContinue}
       onAuthFailure={onAuthFailure}
+      {...(region === undefined ? {} : { wallpaperRegion: region })}
     />
   )
 }
@@ -511,15 +515,16 @@ function AuthenticatedProduct({
       client={authClient}
       {...(authFailureCode === undefined ? {} : { failureCode: authFailureCode })}
       onRetry={clearAuthFailure}
-      onBack={() => onNavigate({ stage: "portal" })}
+      onBack={() => onNavigate(journey.region === undefined ? { stage: "portal" } : { stage: "portal", region: journey.region })}
     >
       {(session) => journey.stage === "account" ? (
         <AccountAccessHost
           {...(createPlayerAccessApi === undefined ? {} : { createPlayerAccessApi })}
           session={session}
           focusReady={accountFocusReady}
-          onBack={() => onNavigate({ stage: "portal" })}
-          onContinue={(profileId) => onNavigate({ stage: "workbench", profileId })}
+          {...(journey.region === undefined ? {} : { region: journey.region })}
+          onBack={() => onNavigate(journey.region === undefined ? { stage: "portal" } : { stage: "portal", region: journey.region })}
+          onContinue={(profileId) => onNavigate(journey.region === undefined ? { stage: "workbench", profileId } : { stage: "workbench", profileId, region: journey.region })}
           onAuthFailure={onAuthFailure}
         />
       ) : (
@@ -529,7 +534,7 @@ function AuthenticatedProduct({
             createController={createController}
             initialProfileId={journey.profileId}
             onAuthFailure={onAuthFailure}
-            onSelectProfile={(profileId) => onNavigate({ stage: "workbench", profileId })}
+            onSelectProfile={(profileId) => onNavigate(journey.region === undefined ? { stage: "workbench", profileId } : { stage: "workbench", profileId, region: journey.region })}
           />
         </AppFrame>
       )}
@@ -680,7 +685,9 @@ function AppFrame({
 }
 
 function AppSurface({ scenarioOverride, createLiveController, createAuthSessionClient, createPlayerAccessApi, surfaceOverride }: AppProps) {
-  if (getWallpaperLabSurface()) return <RegionWallpaperLab />
+  if (getWallpaperLabSurface()) {
+    return <RegionWallpaperLab onEnter={(region) => { window.location.assign(productJourneyUrl({ stage: "account", region })) }} />
+  }
   if (getAwakeningSurface(surfaceOverride)) return <AwakeningPreview />
   const fixtureState = getExplicitScenario(scenarioOverride)
   if (fixtureState !== undefined) {

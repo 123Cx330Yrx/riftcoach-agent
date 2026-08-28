@@ -4828,6 +4828,19 @@
 - 人工结论为 `foundation-pass-with-visual-boundary`：运动仍偏弱且缺少真实 occlusion/backplate，不进入 runtime。
   证据 JSON 已落盘，下一检查点为 `material-plate-generation-gate`，先补独立材质 plate 再回到合成。
 
+## 2026-08-29：Region Entry Panel 两地区试水
+
+- 已继续公开检索 MotionSites：browse/catalog 中的 `Cinematic Landing Hero`、`Container Scroll Animation`、
+  `Interactive Hover Button`、`Background Paper Shaders`、`Neon Nebula` 等只作为模式参考；实现采用适合
+  RiftCoach 的全幅媒体+结构化 atlas+即时切换+focus/reduced-motion/failure 状态，不整页照搬。
+- `RegionWallpaperLab` 现在在 Demacia 与 Bandle City 间切换 WebM/MP4/poster；点击 Enter 经过既有语义转场，
+  回调以 `/?stage=account&region=...` 进入 Account。Account 背景根据地区切换低对比静态候选，默认 journey
+  不受影响。
+- focused unit `9 passed`、完整前端单测 `270 passed`、TypeScript/Vite build 和研究预览 E2E `2 passed` 已通过。
+- 所有媒体仍为本地 research candidates，`rights=unverified`、`production_media=0`；11 个未具备 ready 动态
+  候选的地区显示 pending，不能从 crest 存在推断壁纸可用。
+- 下一步转为两地区纵向切片审阅：决定是否扩展第三地区，或先做 Account/Portal 视觉联调；不会因试水通过而自动提升媒体采用状态。
+
 ## 2026-08-28：Bandle City candidate added
 
 - 从桌面 `RIFTCOACH` 文件夹核对到 `animated-bandlecity.webm`，完成 1920×1080/25fps/15.04s 与连续运动采样审计；
@@ -4854,6 +4867,18 @@
   动态首帧。生成图尚未接入 runtime，等待质感与来源边界复核。
 - 详细 LoR 地区徽章的官方附件清单已核对，但旧链接全部重定向，暂存为 reference-only；Universe 13 个小 crest 仍是当前
   选择器的稳定素材。用户若提供高清徽章文件，可再逐个做 hash/来源/尺寸审计并用于选中地区 hero。
+
+## 2026-08-29：Region Entry Panel 两地区试水
+
+- 已继续公开检索 MotionSites：browse/catalog 中的 `Cinematic Landing Hero`、`Container Scroll Animation`、
+  `Interactive Hover Button`、`Background Paper Shaders`、`Neon Nebula` 等只作为模式参考；实现采用适合
+  RiftCoach 的全幅媒体+结构化 atlas+即时切换+focus/reduced-motion/failure 状态，不整页照搬。
+- `RegionWallpaperLab` 现在在 Demacia 与 Bandle City 间切换 WebM/MP4/poster；点击 Enter 经过既有语义转场，
+  回调以 `/?stage=account&region=...` 进入 Account。Account 背景根据地区切换低对比静态候选，默认 journey
+  不受影响。
+- focused unit `9 passed`、TypeScript/Vite build 已通过；E2E 合同已更新，待本地研究预览服务器条件下运行。
+- 所有媒体仍为本地 research candidates，`rights=unverified`、`production_media=0`；11 个未具备 ready 动态
+  候选的地区显示 pending，不能从 crest 存在推断壁纸可用。
 - 虚空缺失徽章已按用户允许生成原创补位；最终平衡版为透明 RGBA、低饱和紫色可辨、深黑曜石材质，保存在桌面
   `RIFTCOACH/badge-void-generated-v3-balanced.png`，暂作 selected-region hero 候选。
 - 用户提供的 Image2 Void 徽章候选已保存为 `badge-void-image2-v1.png` 与 `badge-void-image2-v2-muted.png`；

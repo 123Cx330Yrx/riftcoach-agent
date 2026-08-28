@@ -6,6 +6,8 @@
 它必须先完成 presentation-state 合同、分层资产/来源账本、入口 storyboard 及 responsive/reduced-motion
 验证，再进入对应前端实现；不会绕过 Batch E 安全/部署合同、外部调用门或 8F 真实 golden slice。
 
+2026-08-29 的 Region Entry Panel 只是该前置在两个地区的可运行试水：它验证地区选择、媒体切换、Account hand-off 和降级状态，不推进 adopted media，也不改写 8E/8F 顺序。
+
 本文件只记录对既有阶段 0-8 路线的增量修正，不增加、删除或重排九个主阶段。
 
 ## 1. 决策原则

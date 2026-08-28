@@ -10,6 +10,10 @@ state、Evidence 和 Training 边界；Image2/Photoshop 只提供可替换氛围
 
 本路线是项目唯一主阶段编号，共九个阶段。阶段内部可以继续迭代 `Harness v1.1`、`RAG v1.2` 等小版本，但不再增加、删除或重排主阶段。若必须改变主阶段职责，需先新增 ADR，说明证据、备选方案和迁移影响。
 
+## 2026-08-29：8E 地区入口试水（不改变默认入口）
+
+8E 的官方/授权壁纸回退先以 `?surface=wallpaper-lab` 做两地区纵向试水：Demacia 与 Bandle City 可切换本地研究候选，进入 Account 时保留 typed `region` 参数；其它地区仍 pending。该试水不改变默认 `/`、`production_media` 或来源/许可门，也不代表完整 8E 已完成。MotionSites 继续作为公开模式库广筛，最终只吸收适合 RiftCoach 的交互结构与状态设计。
+
 ## 不变的总体策略
 
 - 保留当前独立 `riftcoach-agent` 仓库和已经实现的 LoL 领域核心；

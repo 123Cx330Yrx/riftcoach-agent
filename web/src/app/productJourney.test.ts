@@ -13,6 +13,8 @@ describe("product journey URL contract", () => {
       profileId: PROFILE_ID,
       canonical: true,
     })
+    expect(parseProductJourney("?region=demacia")).toEqual({ stage: "portal", canonical: true, region: "demacia" })
+    expect(parseProductJourney("?stage=account&region=bandle-city")).toEqual({ stage: "account", canonical: true, region: "bandle-city" })
   })
 
   it("fails closed to the portal for unknown stages or unbound workbench links", () => {
@@ -29,6 +31,11 @@ describe("product journey URL contract", () => {
     expect(productJourneyUrl({ stage: "account" })).toBe("/?stage=account")
     expect(productJourneyUrl({ stage: "workbench", profileId: PROFILE_ID })).toBe(
       `/?stage=workbench&player_profile_id=${PROFILE_ID}`,
+    )
+    expect(productJourneyUrl({ stage: "account", region: "demacia" })).toBe("/?stage=account&region=demacia")
+    expect(productJourneyUrl({ stage: "portal", region: "bandle-city" })).toBe("/?region=bandle-city")
+    expect(productJourneyUrl({ stage: "workbench", profileId: PROFILE_ID, region: "demacia" })).toBe(
+      `/?stage=workbench&player_profile_id=${PROFILE_ID}&region=demacia`,
     )
   })
 })

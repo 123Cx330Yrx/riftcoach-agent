@@ -2574,3 +2574,11 @@ H.264 候选。逐段抽帧确认官方 splash 的建筑、山体、构图与材
 候选审计、SHA、区域运动统计和未关闭门记录在
 `docs/assets/8e-portal/portal-ixtal-wallpaper-candidate-seedance25-v1.md`。待真实布局可见后保留一次明确回看：由用户选择
 保留柔和版、进行一次有界调优或替换更强官方动态源；不自动再次付费生成、不覆盖现有文件，`production_media` 继续为 `0`。
+
+### RQ-154：两地区 Region Entry Panel 试水（2026-08-29）
+
+用户要求先用两个地区验证“选区—背景切换—进入账号”的完整产品链路，并提醒 MotionSites 研究要继续公开广筛，不能只重复已保存案例。当前采用 `Demacia + Bandle City` 两个本地研究候选；13 个 Universe crest 仍全部展示，但没有动态候选的 11 区显示 pending 并禁用，避免把图标存在误报成壁纸可用。
+
+试水保持独立 `?surface=wallpaper-lab`，不替换默认 `/`。选中候选后立即重挂 WebM/MP4/poster；Enter 通过既有语义转场，以 `/?stage=account&region=...` 进入 Account，Account 只读取地区作为低对比静态氛围层，Back/Continue 保留同一地区参数。所有候选仍是 `research-candidate`、rights `unverified`，不进入 adopted manifest。
+
+MotionSites 的公开 browse/catalog 继续作为模式库：只吸收全幅媒体英雄、紧凑选择器、即时反馈、聚焦动作和完整 hover/focus/reduced-motion/failure 状态；不复制页面、不购买或引入新依赖。实现与验证设计见 `docs/plans/2026-08-29-8e-region-entry-panel-trial-design.md`。

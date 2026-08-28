@@ -1114,3 +1114,61 @@ h1[tabindex="-1"]:focus { outline: none; }
 @media (prefers-reduced-motion: reduce) { .wallpaper-lab__video { display: none; animation: none; } .wallpaper-lab__transition, .wallpaper-lab__transition span { transition: none; animation: none !important; } .wallpaper-lab--activating .wallpaper-lab__transition { opacity: 1; } }
 @media (max-width: 980px) { .wallpaper-lab__content { grid-template-columns: minmax(15rem,.8fr) minmax(24rem,1.2fr); gap: 1.8rem 2rem; } .wallpaper-lab__selection { grid-template-columns: repeat(3,minmax(0,1fr)); } }
 @media (max-width: 720px) { .wallpaper-lab::before { inset: .65rem; } .wallpaper-lab__header { padding: 1.15rem 1.2rem; } .wallpaper-lab__content { display: block; width: min(100% - 2.4rem,34rem); padding-bottom: 1.7rem; } .wallpaper-lab__atlas { margin-top: 1.6rem; } .wallpaper-lab__selection { grid-template-columns: repeat(2,minmax(0,1fr)); } .wallpaper-lab__scrim { background: linear-gradient(90deg,rgba(4,10,14,.78),rgba(4,10,14,.3)),linear-gradient(0deg,rgba(3,9,12,.94),rgba(3,9,12,.04) 70%); } .wallpaper-lab h1 { font-size: clamp(2.5rem,14vw,4.6rem); } .wallpaper-lab__footer-row { align-items: stretch; flex-direction: column; gap: 1rem; margin-top: 1.5rem; } .wallpaper-lab__note { margin-top: .75rem; } .wallpaper-lab__enter { width: 100%; justify-content: space-between; } }
+
+/* 8E trial pass: let the selected scene breathe while the controls read as a
+   deliberate atlas, not a disabled card wall. */
+.wallpaper-lab { grid-template-rows: auto minmax(0,1fr); }
+.wallpaper-lab__header { padding: clamp(1.25rem,3.5vw,3rem) clamp(1.4rem,4.5vw,4.75rem); }
+.wallpaper-lab__header-meta { display: flex; align-items: center; gap: 1rem; color: rgba(224,241,236,.58); font: 600 .55rem var(--font-display); letter-spacing: .18em; }
+.wallpaper-lab__content { grid-template-columns: minmax(17rem,.86fr) minmax(25rem,1.14fr); gap: 2.4rem clamp(2rem,6vw,6rem); width: min(100% - 2.5rem,88rem); padding: 0 clamp(0rem,3vw,3.25rem) clamp(1.8rem,5.5vh,4rem); }
+.wallpaper-lab__intro { max-width: 31rem; padding-bottom: 1.2rem; }
+.wallpaper-lab__kicker { margin-bottom: 1.25rem; }
+.wallpaper-lab h1 { max-width: 30rem; font-size: clamp(3.2rem,6.2vw,6.7rem); line-height: .88; letter-spacing: -.065em; text-wrap: balance; }
+.wallpaper-lab__lede { max-width: 28rem; margin-top: 1.45rem; line-height: 1.7; text-wrap: pretty; }
+.wallpaper-lab__current { display: inline-flex; align-items: center; gap: .75rem; margin-top: 2.15rem; padding-top: .85rem; border-top: 1px solid rgba(224,241,236,.2); }
+.wallpaper-lab__current-mark { display: grid; width: 2.7rem; height: 2.7rem; place-items: center; border: 1px solid rgba(236,217,140,.45); background: rgba(4,15,21,.42); clip-path: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%); }
+.wallpaper-lab__current-mark img { width: 1.9rem; height: 1.9rem; object-fit: contain; }
+.wallpaper-lab__current small, .wallpaper-lab__current strong { display: block; }
+.wallpaper-lab__current small { color: rgba(224,241,236,.5); font: 600 .5rem var(--font-display); letter-spacing: .16em; }
+.wallpaper-lab__current strong { margin-top: .25rem; color: var(--ink-100); font: 650 1rem var(--font-display); }
+.wallpaper-lab__atlas { padding: 1.2rem; background: rgba(5,17,23,.64); box-shadow: inset 0 1px 0 rgba(236,217,140,.1), 0 28px 80px rgba(0,0,0,.24); backdrop-filter: blur(7px); }
+.wallpaper-lab__atlas-head { align-items: flex-start; padding-bottom: .9rem; }
+.wallpaper-lab__atlas-head span { display: block; }
+.wallpaper-lab__atlas-head b, .wallpaper-lab__atlas-head span small { display: block; }
+.wallpaper-lab__atlas-head span small { margin-top: .3rem; color: rgba(224,241,236,.5); font: 400 .62rem var(--font-body); letter-spacing: 0; }
+.wallpaper-lab__atlas-count { color: var(--coach-gold-300) !important; font: 650 .55rem var(--font-display) !important; letter-spacing: .13em !important; white-space: nowrap; }
+.wallpaper-lab__selection { grid-template-columns: repeat(2,minmax(0,1fr)); gap: .55rem; margin-top: .9rem; }
+.wallpaper-lab__region { min-height: 4.5rem; padding: .55rem .65rem; gap: .7rem; transition: color var(--duration-feedback),border-color var(--duration-feedback),background var(--duration-feedback),transform var(--duration-feedback),box-shadow var(--duration-feedback); }
+.wallpaper-lab__region:not(.wallpaper-lab__region--pending) { order: -1; }
+.wallpaper-lab__region--pending { min-height: 3.1rem; color: rgba(224,241,236,.46); border-color: rgba(224,241,236,.1); background: rgba(5,17,23,.3); }
+.wallpaper-lab__region--pending .wallpaper-lab__region-glyph { width: 1.45rem; height: 1.45rem; opacity: .5; }
+.wallpaper-lab__selection-note { display: flex; align-items: flex-start; gap: .6rem; margin-top: .9rem; line-height: 1.55; }
+.wallpaper-lab__selection-note-line { flex: 0 0 1.2rem; height: 1px; margin-top: .52rem; background: var(--hex-cyan-300); box-shadow: 0 0 9px rgba(82,230,219,.7); }
+.wallpaper-lab__footer-row { padding-top: 1.05rem; border-top-color: rgba(224,241,236,.2); }
+.wallpaper-lab__enter { min-height: 3.25rem; padding-left: 1.1rem; }
+.wallpaper-lab__note { margin-top: -.95rem; }
+@media (max-width: 980px) { .wallpaper-lab__content { grid-template-columns: minmax(15rem,.8fr) minmax(23rem,1.2fr); gap: 1.8rem 2rem; } }
+@media (max-width: 720px) { .wallpaper-lab__header-meta > span { display: none; } .wallpaper-lab__content { display: block; width: min(100% - 2.4rem,34rem); } .wallpaper-lab__intro { padding-bottom: 0; } .wallpaper-lab__atlas { margin-top: 1.6rem; } .wallpaper-lab h1 { font-size: clamp(2.8rem,14vw,4.8rem); } }
+
+/* Region trial hand-off: account keeps the selected scene as a quiet visual
+   identity while the form remains the foreground product surface. These are
+   local research assets only; promotion still requires the media gate. */
+.account-access[data-wallpaper-region="demacia"]::before,
+.account-access[data-wallpaper-region="bandle-city"]::before {
+  opacity: .32;
+  background-position: center;
+  background-size: cover;
+  filter: saturate(.64) brightness(.52) contrast(1.06);
+  mask-image: linear-gradient(90deg, #000, rgba(0,0,0,.72) 44%, transparent 84%);
+  -webkit-mask-image: linear-gradient(90deg, #000, rgba(0,0,0,.72) 44%, transparent 84%);
+}
+.account-access[data-wallpaper-region="demacia"]::before {
+  background-image: url("/assets/wallpapers/candidates/account-demacia.jpg");
+}
+.account-access[data-wallpaper-region="bandle-city"]::before {
+  background-image: url("/assets/wallpapers/candidates/bandle-city-poster.webp");
+}
+.account-access[data-wallpaper-region="demacia"] .account-access__atmosphere,
+.account-access[data-wallpaper-region="bandle-city"] .account-access__atmosphere {
+  background: linear-gradient(90deg, rgba(3,9,12,.24), rgba(3,9,12,.72) 53%, rgba(3,9,12,.5)), repeating-linear-gradient(90deg, transparent 0 9.9%, rgba(137,246,235,.018) 10% 10.08%);
+}

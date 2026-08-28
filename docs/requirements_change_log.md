@@ -161,6 +161,8 @@
 
 | RQ-153 | 2026-08-29 | 生效；Ixtal Seedance 候选暂准使用但保留替换提醒 | 用户审看 Ixtal Seedance 2.5 候选后认为“差不多可以先用”，同时指出动效仍稍轻；这不是 Portal 母图强动效目标的最终视觉签字，也不是对来源/再分发权利的确认 | exactly-one-POST 的 10 秒 first-frame-only 候选通过当前研究候选门，可作为 Ixtal Portal 的可替换候选继续做布局/播放降级联调，但不得写入 adopted media manifest 或将 `production_media` 置为非零。待地区选择与 Portal/Account 真实布局完成后，保留显式回看点，由用户选择保留柔和版、做一次有界调优或替换更强官方动态源；不因“先用着”自动再次付费生成或覆盖本候选。 |
 
+| RQ-154 | 2026-08-29 | 生效；两地区入口面板试水与扩大 MotionSites 研究范围 | 用户要求先做两个地区验证完整交互：选地区后立即切换对应背景，支持换区，点击进入账号页；同时强调 MotionSites 不能只看已保存样本，应继续广泛查找公开目录中的适配案例 | 在 `?surface=wallpaper-lab` 做隔离试水：Demacia/Bandle City 为 ready，其他 11 区保持 pending；地区通过 typed URL 传入 Account，Account 使用低干扰静态背景并在返回/继续时保留地区。MotionSites/React Bits/Motion 等只提供可迁移的层次、交互状态和动效参考，不整页照搬、不引入新依赖、不改变默认 `/`、production media 或来源/许可门。 |
+
 ## 新条目格式
 
 后续新增长期要求时，使用新的 `RQ-xxx` 行，并注明日期、状态以及它如何改变
