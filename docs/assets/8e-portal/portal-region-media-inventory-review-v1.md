@@ -46,7 +46,7 @@ kept in this table until the user approves the mapping.
 | Demacia | `5b80fe8ddd3d935c3f258f3e145b8aed4b7460bf-1920x887.jpg` | Bright hall/monument; `demacia.jpg` is a city alternate with lower width. |
 | Freljord | `freljord.jpg` | 1577×1080 but visually coherent with the dynamic scene; search for a larger source later. |
 | Ionia | `72ad1322d9a8b12047f23f9f7d344de6735e54fc-1920x1079.jpg` | White organic temple with colored flora; strong 16:9 fit. |
-| Ixtal | **none in the current folder** | The user explicitly excluded Ixtal from the collected dynamic/static set; keep the region pending instead of borrowing another region's still. |
+| Ixtal | **no dynamic candidate** | `1a75d072fa01ec3d0cda3f87fc1bf18dce736424-5000x2811.jpg` is the dynamic first-frame source. A separate generated 16:9 static candidate `ixtal-account-generated-v1.png` is available for Account review. |
 | Mount Targon | `mount-targon.jpg` | 1920×946 celestial spire; good focal silhouette. |
 | Noxus | `6310fe5db818f80b84ee784a746cc28ee1273e6b-1920x1080.jpg` | City skyline with clear 16:9 framing; `fb300ca74eea40f058e348f4e376293f38b8b68d-1920x962.jpg` is an alternate interior/forge scene. |
 | Piltover | `6c77423961def6e3a82d9a36545782f1a06386e0-4681x2114.jpg` | Highest-resolution still; visible “PILTOVER EXPLORATION” provenance mark must be checked before use. |
@@ -76,6 +76,8 @@ alternates/rejected evidence rather than being deleted.
 | `freljord.jpg` | Freljord | primary candidate |
 | `mount-targon.jpg` | Mount Targon | primary candidate |
 | `runeterra-bandlecity-03.jpg` | Bandle City | rejected for Account use until a higher-resolution source is found |
+| `1a75d072fa01ec3d0cda3f87fc1bf18dce736424-5000x2811.jpg` | Ixtal | dynamic first-frame source; user-provided official Universe splash hash, 5000×2811 |
+| `ixtal-account-generated-v1.png` | Ixtal | static Account concept candidate; generated sibling, 1672×941, not official |
 | `shurima.jpg` | Shurima | primary candidate |
 
 ## Next normalization step after approval

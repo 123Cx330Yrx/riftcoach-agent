@@ -266,7 +266,8 @@ pause_reason: ""
   `docs/assets/8e-portal/portal-region-wallpaper-candidate-bandle-city-v1.json`。`?surface=wallpaper-lab` 的
   no-I/O 本地研究预览已实现：包含 Universe 13 地区 crest 选择卡、Demacia/Bandle City 动态候选、动态视频/静态 poster
   降级、键盘激活和独立入口转场；Bandle 静态 JPEG 的 imagegen 修复候选因纹理/质感不达标已 rejected。它尚未改变默认 `/`，也没有把任何壁纸提交进公开 runtime。下一动作是逐地区补充经过来源/许可、
-  格式/体积、浏览器/移动端/reduced-motion 与 loop 门的候选，全部通过后再接入默认 Portal，`production_media` 保持 `0`。
+  格式/体积、浏览器/移动端/reduced-motion 与 loop 门的候选，全部通过后再接入默认 Portal，`production_media` 保持 `0`。Ixtal
+  已补充 5000×2811 静态 splash 作为动态首帧；对应 Account 原创静态概念仍为 research-only，下一步只准备一次有界动态 preflight。
   8D、Batch B/C/D、Live Workbench、Batch E E1–E5、production shell/Auth gate、Timeline、bilingual/product-journey
   foundation 与 RQ-108 runtime Task 1–4 的公共证据保持不变；GLM-5.3/Flash、Coach、RQ-103 与 8F 仍留后序。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、

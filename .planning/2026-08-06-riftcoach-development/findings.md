@@ -4590,6 +4590,20 @@
   `docs/assets/8e-portal/portal-region-media-inventory-review-v1.md`。
 - 当前只形成审计/推荐，不执行桌面批量改名。待用户确认后再做原文件不覆盖的 normalized sibling 与 manifest。
 
+## 2026-08-28：Ixtal static candidate added
+
+- 用户补充了 `1a75d072fa01ec3d0cda3f87fc1bf18dce736424-5000x2811.jpg`，原始 5000×2811，画面为 Ixtal 的丛林、远景建筑、
+  悬浮晶体和前中后景层次；这正好补齐 Account 静态候选，但不代表已有 Portal 动态文件。
+- 已复制为本地研究副本 `account-ixtal.jpg`；Portal 的 Ixtal 动态仍保持 pending。该图比 Bandle 低清图更适合做一次有界
+  image-to-video 试验，因为它有明确的树叶/藤蔓、云雾、光束、悬浮晶体和远景雾层等自然 motion carriers，同时中心建筑
+  仍可作为几何锚点。
+- 依据用户希望静态图与其它地区处于同一质感层级，已用 Ixtal 官方图作视觉参考生成一张原创 16:9 Account 概念
+  `ixtal-account-generated-v1.png`（1672×941）。它与原图职责分离：原图保留作动态首帧，生成图只作静态候选；是否采用需
+  通过纹理匹配、构图、原创/许可与用户视觉裁决，不能把生成图称为 Riot 官方素材。
+- Badge source audit：Riot LoR 支持页仍列出详细地区徽章附件，但旧 `article_attachments` URL 当前重定向到支持首页，
+  无法作为稳定下载/runtime 源。它们可作为设计参考；当前小卡继续使用稳定的 Universe crest，详细徽章等待用户提供高清文件
+  或新的稳定来源。
+
 ## 2026-08-28：official wallpaper fallback preview
 
 - RQ-146 已激活：Wan 3.0 停止在 HTTP 404/no-task，避免继续消耗额度；用户提供的 Demacia WebM 成为第一份真实

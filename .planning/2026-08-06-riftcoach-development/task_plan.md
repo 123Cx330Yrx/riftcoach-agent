@@ -1815,6 +1815,14 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   restoration sibling was manually rejected for crunchy AI texture and
   quality mismatch with the other saved region stills; a true higher-resolution
   source or different native still is required.
+- [completed-local] User added the official Ixtal splash
+  `1a75d072...-5000x2811.jpg`. It is now the dynamic first-frame source and an
+  `account-ixtal.jpg` research copy exists; a separate generated 16:9 static
+  concept is stored for visual review only.
+- [next] Prepare one no-blind-retry Ixtal first-frame-only motion preflight. The
+  source has natural foliage, cloud, light-shaft and floating-crystal carriers;
+  keep architecture/camera/colour identity fixed and do not reuse the rejected
+  Portal motion prompt.
 - [completed-local-audit] The desktop inventory now contains 12 dynamic
   candidates and 15 stills. A contact sheet, 5fps motion audit and provisional
   region mapping are recorded in

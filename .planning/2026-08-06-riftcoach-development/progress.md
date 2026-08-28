@@ -4848,6 +4848,13 @@
   `ef261...-1920x900` 属于比尔吉沃特；当前不为 Ixtal 硬分配静态图。徽章方面，Universe 13 个官方 crest 已在选择器使用；
   截图中的详细 3D LoR 风格徽章尚未找到完整、可核验的全套来源，暂不替换已稳定的小卡徽记。
 
+- 用户新增 Ixtal 5000×2811 静态图，已生成 `account-ixtal.jpg` 本地研究副本；Ixtal 动态仍缺失，下一步只准备一次
+  first-frame-only motion preflight，不把静态图冒充动态壁纸。
+- 已生成独立 Ixtal Account 静态概念 `ixtal-account-generated-v1.png`（1672×941）；原 Ixtal splash 不变，继续作为未来
+  动态首帧。生成图尚未接入 runtime，等待质感与来源边界复核。
+- 详细 LoR 地区徽章的官方附件清单已核对，但旧链接全部重定向，暂存为 reference-only；Universe 13 个小 crest 仍是当前
+  选择器的稳定素材。用户若提供高清徽章文件，可再逐个做 hash/来源/尺寸审计并用于选中地区 hero。
+
 ## 2026-08-28：official wallpaper fallback local preview
 
 - Wan first-frame reopen 停在兼容文本 endpoint 的 HTTP 404/no-task，用户明确转战，不再继续找 Host 或发第二次 POST。
