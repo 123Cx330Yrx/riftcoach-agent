@@ -261,8 +261,8 @@ pause_reason: ""
   `/compatible-mode/v1` 返回 HTTP 404，状态无 task_id/结果，不构成模型质量证据；用户已明确“转战”，不再继续寻找
   Wan Host 或发送第二次 POST。用户提供的 `animated-demacia.webm` 已完成候选审计：1920×1080、15.04s、25fps、
   VP8 WebM、无音轨，持续运动可见但首尾非无缝，来源/公开再分发许可仍待核验。`?surface=wallpaper-lab` 的
-  no-I/O 本地研究预览已实现：包含地区选择、动态视频/静态 poster 降级、键盘激活和独立入口转场；它尚未改变
-  默认 `/`，也没有把 Demacia 文件提交进公开 runtime。下一动作是逐地区补充经过来源/许可、格式/体积、浏览器/
+  no-I/O 本地研究预览已实现：包含 Universe 13 地区 crest 选择卡、动态视频/静态 poster 降级、键盘激活和独立
+  入口转场；它尚未改变默认 `/`，也没有把 Demacia 文件提交进公开 runtime。下一动作是逐地区补充经过来源/许可、格式/体积、浏览器/
   移动端/reduced-motion 与 loop 门的候选，全部通过后再接入默认 Portal，`production_media` 保持 `0`。
   8D、Batch B/C/D、Live Workbench、Batch E E1–E5、production shell/Auth gate、Timeline、bilingual/product-journey
   foundation 与 RQ-108 runtime Task 1–4 的公共证据保持不变；GLM-5.3/Flash、Coach、RQ-103 与 8F 仍留后序。

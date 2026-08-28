@@ -4839,6 +4839,11 @@
 - 前端单测 `266 passed`、研究预览 E2E `2 passed`、typecheck/build 通过；下一步逐地区补充经来源/许可、格式/
   体积、浏览器/移动端/reduced-motion 和 loop 门核验的候选，再决定是否接入默认 Portal。
 
+- 依据用户提供的 Universe 截图，已改用 Universe 官方 13 个地区 crest（含 Ixtal、Bandle City、Piltover、Zaun、
+  Void）作为本地选择卡素材；选区从单个小按钮改为四列大区卡，未有动态壁纸的地区显示“壁纸待核验”，不伪造可用状态。
+- 预览 E2E/单测继续覆盖 no-I/O、键盘、poster 降级和双语；官方 crest 来源与本地 SHA 记录在
+  `docs/assets/8e-portal/portal-region-icon-provenance-v1.md`。
+
 ## 2026-08-28：masked-inpaint plate proof rejected；Wan 3.0 first-frame reopen prepared
 
 - 完成 bounded Rift proof：ImageGen 清洁背板只在局部遮罩内使用，独立 RGBA 流体层只在该遮罩内做周期位移；

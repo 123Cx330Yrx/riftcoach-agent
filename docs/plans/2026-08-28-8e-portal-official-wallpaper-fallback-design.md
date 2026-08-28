@@ -14,6 +14,14 @@ The first sample is the user-supplied `animated-demacia.webm`. It is a real
 are not yet verified and its first/last frames are not a seamless loop. It is a
 research candidate, not a production asset.
 
+The region picker uses the richer crest set visible on the official Universe
+regions surface rather than the small LoR core icons. The current local set
+contains 13 entries: Ixtal, Mount Targon, Freljord, Demacia, Shurima, Shadow
+Isles, Bilgewater, Bandle City, Piltover, Zaun, Ionia, the Void and Noxus.
+Those crests are already useful even when a region has no matching dynamic
+wallpaper; the card remains selectable only after its wallpaper candidate has
+passed the same media gate.
+
 ## Product shape
 
 The Portal becomes a region-aware cinematic surface:
