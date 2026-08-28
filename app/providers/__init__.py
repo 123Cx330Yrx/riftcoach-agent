@@ -9,10 +9,13 @@ from .capabilities import (
     required_capabilities_for,
 )
 from .config import (
+    OrcaRouterSettings,
     ProviderRegistrySettings,
     ZhipuSettings,
+    create_orcarouter_provider,
     create_provider_registry,
     create_zhipu_provider,
+    load_orcarouter_settings,
     load_provider_registry_settings,
     load_zhipu_settings,
 )
@@ -45,6 +48,7 @@ from .registry import (
     ProviderSelection,
 )
 from .zhipu import ZhipuProvider
+from .orcarouter import OrcaRouterProvider
 from .structured import (
     StructuredDecodeResult,
     StructuredRepairRequest,
@@ -89,14 +93,18 @@ __all__ = [
     "ToolSpec",
     "ZhipuProvider",
     "ZhipuSettings",
+    "OrcaRouterProvider",
+    "OrcaRouterSettings",
     "InMemorySecretSource",
     "SecretConfigurationError",
     "SecretMaterial",
     "SecretSource",
+    "create_orcarouter_provider",
     "create_provider_registry",
     "create_zhipu_provider",
     "contract_for_model",
     "decode_structured_response",
+    "load_orcarouter_settings",
     "load_provider_registry_settings",
     "load_zhipu_settings",
     "negotiate_capabilities",
