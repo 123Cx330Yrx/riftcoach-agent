@@ -1766,6 +1766,15 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [next] `material-plate-generation-gate`：补至少一组独立 Rift/右场/道路反射材质 plate 与可移除遮挡背板，先本地 proof，
   通过前不付费调用、不接 runtime、不进入 Account。
 
+## Material plate generation gate (2026-08-28)
+
+- [completed-local-negative] `replace-shifted` visible variant (motion_scale 2.5) makes motion clearer but confirms ghosting/
+  softness and right/far imbalance; rejected, no further opacity/shift tuning.
+- [in_progress] Freeze independent transparent Rift/right-field/road-reflection/crystal plates, clean backplates and
+  occlusion masks; check Image2/Photoshop availability without exposing keys or paying for video generation.
+- [next] Render a no-cost plate-over-base proof, audit crispness/ghosting/full-scene motion/seam, then decide whether any
+  external video model is worth a single controlled call.
+
 ## Source-derived layer assets proof v1 (2026-08-28)
 
 - [completed-local] 高通亮部提取、羽化 mask、双相位局部位移和 central crystal-only swell 已实现；先红灯后绿灯，

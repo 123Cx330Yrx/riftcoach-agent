@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0",
+  "status": "research-proof-rejected",
+  "candidate": "layer-assets-proof-visible-v1",
+  "model": "deterministic-source-derived-layers",
+  "transport": "local-only",
+  "external_model_calls": 0,
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e"
+  },
+  "request": {
+    "renderer": "experiments/portal_layer_assets_proof_v1/render_material_layers.py",
+    "mode": "replace-shifted",
+    "motion_scale": 2.5,
+    "duration_s": 8,
+    "fps": 24,
+    "width": 960,
+    "height": 540,
+    "audio": false
+  },
+  "output": {
+    "path": "repo-excluded:tmp/riftcoach-task5-portal-replace-shifted-proof-lowres/layer-assets-proof-v1.mp4",
+    "sha256": "7006f334560eecb23d6cd7bf2d2e73174ad2b1dd4b031185dc0844f6435f0cc2",
+    "bytes": 1249974,
+    "duration_s": 8.0,
+    "frames": 192,
+    "codec": "h264-high",
+    "pixel_format": "yuv420p",
+    "color": "bt709",
+    "audio": false,
+    "duplicate_frame_count": 0
+  },
+  "measurements": {
+    "source_to_first_ssim": 0.9879509807,
+    "first_to_last_ssim": 0.9929247499,
+    "first_to_last_mad": 0.0085303551,
+    "motion_mad_every_0_5s": {
+      "left": 0.0087439987,
+      "center": 0.0060140311,
+      "right": 0.0032258618
+    },
+    "motion_mad_every_0_5s_depth": {
+      "near": 0.0059099139,
+      "mid": 0.0099768804,
+      "far": 0.0020970977
+    },
+    "motion_mad_0_to_4s": {
+      "left": 0.0120254708,
+      "center": 0.0098001854,
+      "right": 0.0056718104
+    }
+  },
+  "visual_review": {
+    "passed": [
+      "base structure remains recognizable",
+      "motion is more visible than the low-scale source-derived proof",
+      "no new objects or full-frame blue veil are intentionally added"
+    ],
+    "failed": [
+      "replace-shifted highlights leave softened source edges and visible ghosting",
+      "Rift and road motion reads as displaced copies rather than material flow",
+      "central crystal is mostly an intensity shift, not authored refraction",
+      "right field and far depth remain underactive",
+      "the higher motion scale confirms that this source-derived shift technique cannot be made both bold and clean"
+    ],
+    "user_verdict": "rejected: visible motion is not worth the ghosting and softness"
+  },
+  "next_gate": "material-plate-generation-gate",
+  "production_media": false
+}

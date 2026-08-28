@@ -4568,6 +4568,13 @@
 - RQ-143 已生效：后续 proof 必须底图像素锁定、只移动源图高光/独立透明 plate，禁止 source duplicate 纱罩、全局
   tint 和建筑边缘双影；Image2 只有在代理恢复且用于具体 plate/backplate 时才调用。
 
+## 2026-08-28：source-derived visible variant rejection
+
+- `replace-shifted` 通过局部模糊背板尝试消除原高光，再以 `motion_scale=2.5` 移动源亮部；低分辨率 contact sheet
+  的运动比默认版本明显，但 Rift/道路/晶体边缘仍然 ghost/soft，右场和 far 不足。
+- 结论：该方法不能同时满足 bold、sharp、no-ghost 三个要求；不继续提升倍率或修补边缘。下一步必须获取独立
+  透明材质 plate 与真实 occlusion/backplate，再回到确定性合成。
+
 ## 2026-08-28：分层材质 proof v2 result
 
 - Phase 0/1 的第一版可控 proof 通过结构、源图和技术编码门，三大区/三深度的像素变化也达到均衡，但人工观感仍然

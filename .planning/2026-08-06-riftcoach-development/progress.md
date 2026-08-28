@@ -4828,6 +4828,12 @@
 - 人工结论为 `foundation-pass-with-visual-boundary`：运动仍偏弱且缺少真实 occlusion/backplate，不进入 runtime。
   证据 JSON 已落盘，下一检查点为 `material-plate-generation-gate`，先补独立材质 plate 再回到合成。
 
+## 2026-08-28：replace-shifted visible motion rejection
+
+- `motion_scale=2.5` 的 `replace-shifted` 低分辨率对照已完成，聚焦测试保持通过；运动更可见但产生 Rift/道路/晶体
+  边缘重影与软化，右场/far 仍弱，按用户反馈判 rejected。
+- 新的 material plate/backplate gate 已写入计划；Image2 代理不可达，本轮没有外部图像/视频调用，production media 仍为 0。
+
 ## 2026-08-28：分层材质 proof v2 result review
 
 - 新建 v2 分层材质 proof，先红灯后绿灯，聚焦 `3 passed`；HyperFrames GPU 本地渲染完成 8s/1920×1080/24fps/

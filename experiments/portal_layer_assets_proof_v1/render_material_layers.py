@@ -34,6 +34,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--height", type=int, default=1080)
     parser.add_argument("--fps", type=int, default=FPS)
     parser.add_argument("--duration", type=float, default=DURATION)
+    parser.add_argument("--motion-scale", type=float, default=1.0)
+    parser.add_argument("--mode", choices=("lightfield", "shifted", "replace-shifted"), default="lightfield")
     return parser.parse_args()
 
 
@@ -64,12 +66,31 @@ def phase_shift(t: float, phase: float, amplitude: tuple[float, float], speed: f
     return round(amplitude[0] * math.sin(theta)), round(amplitude[1] * math.cos(theta * 1.13))
 
 
+def lightfield_coordinate(name: str, width: int, height: int) -> tuple[np.ndarray, int, float]:
+    y, x = np.mgrid[0:height, 0:width]
+    xn = x / max(width - 1, 1)
+    yn = y / max(height - 1, 1)
+    if name == "rift-energy":
+        angle = (np.arctan2(y - height * 0.40, x - width * 0.15) + math.pi) / (2.0 * math.pi)
+        radius = np.sqrt(((x - width * 0.15) / width) ** 2 + ((y - height * 0.40) / height) ** 2)
+        return (angle + radius * 0.65) % 1.0, 3, 1.0
+    if name == "road-reflection":
+        return (xn * 0.72 + yn * 0.28) % 1.0, 3, 1.0
+    if name == "crystal-refraction":
+        return yn % 1.0, 2, 0.92
+    if name == "right-constellation-terrain":
+        return (xn * 0.78 + yn * 0.22) % 1.0, 2, 1.0
+    if name.startswith("air-"):
+        return yn % 1.0, 2, 0.68
+    return xn % 1.0, 2, 0.86
+
+
 def write_preview(path: Path, alpha: np.ndarray) -> None:
     preview = np.clip(alpha * 255.0, 0, 255).astype(np.uint8)
     Image.fromarray(preview, mode="L").save(path)
 
 
-def build_layers(source: np.ndarray) -> dict[str, tuple[np.ndarray, tuple[float, float], float, float]]:
+def build_layers(source: np.ndarray, motion_scale: float = 1.0) -> dict[str, tuple[np.ndarray, tuple[float, float], float, float]]:
     height, width = source.shape[:2]
     r, g, b = source[..., 0], source[..., 1], source[..., 2]
     luma = 0.2126 * r + 0.7152 * g + 0.0722 * b
@@ -114,7 +135,7 @@ def build_layers(source: np.ndarray) -> dict[str, tuple[np.ndarray, tuple[float,
     layers: dict[str, tuple[np.ndarray, tuple[float, float], float, float]] = {}
     for name, mask in masks.items():
         amp, strength, phase = specs[name]
-        layers[name] = (energy * mask * strength, amp, phase, 1.0)
+        layers[name] = (energy * mask * strength * motion_scale, tuple(value * motion_scale for value in amp), phase, 1.0)
     return layers
 
 
@@ -131,7 +152,18 @@ def render(args: argparse.Namespace) -> dict[str, object]:
         raise SystemExit(f"source SHA mismatch: {source_sha}")
     source_image = Image.open(source_path).convert("RGB").resize((args.width, args.height), Image.Resampling.LANCZOS)
     source = np.asarray(source_image, dtype=np.float32) / 255.0
-    layers = build_layers(source)
+    if not 0.5 <= args.motion_scale <= 3.0:
+        raise SystemExit("motion-scale must stay between 0.5 and 3.0")
+    layers = build_layers(source, args.motion_scale)
+    if args.mode == "replace-shifted":
+        blurred = np.asarray(source_image.filter(ImageFilter.GaussianBlur(8)), dtype=np.float32) / 255.0
+        moving_alpha = np.maximum.reduce([values[0] for values in layers.values()])
+        removal = np.clip(moving_alpha * 0.55, 0.0, 0.16)[..., None]
+        # Approximate a backplate only where moving source highlights will be
+        # replaced. The rest of the mother image remains pixel-identical.
+        clean_base = source * (1.0 - removal) + blurred * removal
+    else:
+        clean_base = source
     for name, (alpha, _amp, _phase, _event) in layers.items():
         write_preview(layer_dir / f"{name}-alpha.png", alpha)
 
@@ -147,8 +179,19 @@ def render(args: argparse.Namespace) -> dict[str, object]:
     assert ffmpeg.stdin is not None
     for frame_index in range(args.fps * int(args.duration)):
         t = frame_index / args.fps
-        frame = source.copy()
+        frame = clean_base.copy()
         for name, (alpha, amplitude, phase, _event) in layers.items():
+            if args.mode == "lightfield":
+                coord, cycles, speed = lightfield_coordinate(name, args.width, args.height)
+                phase_wave = (2.0 * math.pi * (coord * cycles - (t / DURATION) * speed) + phase)
+                wave = np.sin(phase_wave)
+                modulation = 1.0 + np.clip(0.18 * args.motion_scale, 0.0, 0.48) * wave
+                if name == "crystal-refraction":
+                    event = math.exp(-0.5 * ((t - 4.5) / 0.85) ** 2)
+                    modulation *= 1.0 + 0.35 * event
+                a = np.clip(alpha * modulation, 0.0, min(0.30, 0.18 * args.motion_scale))[..., None]
+                frame = frame * (1.0 - a) + source * a
+                continue
             dx, dy = phase_shift(t, phase, amplitude, speed=0.82 if name.startswith("air-") else 1.0)
             # Two source-derived samples create parallax-like material flow
             # inside a layer. Neither sample carries opaque architecture.
@@ -163,7 +206,7 @@ def render(args: argparse.Namespace) -> dict[str, object]:
                     shifted_alpha = shifted_alpha * (1.0 + 0.35 * event)
                 local_phase = 2.0 * math.pi * (t / DURATION) + phase + sample_weight
                 shifted_alpha *= 0.88 + 0.12 * (0.5 + 0.5 * math.sin(local_phase))
-                a = np.clip(shifted_alpha, 0.0, 0.18)[..., None]
+                a = np.clip(shifted_alpha, 0.0, min(0.36, 0.18 * args.motion_scale))[..., None]
                 frame = frame * (1.0 - a) + shifted_rgb * a
         ffmpeg.stdin.write(np.clip(frame * 255.0, 0, 255).astype(np.uint8).tobytes())
     ffmpeg.stdin.close()
@@ -181,6 +224,8 @@ def render(args: argparse.Namespace) -> dict[str, object]:
         "frames": args.fps * int(args.duration),
         "duration_s": args.duration,
         "alpha_policy": "source-derived-high-energy-only",
+        "motion_scale": args.motion_scale,
+        "mode": args.mode,
         "base_geometry_moves": False,
         "external_model_calls": 0,
         "output": str(output_path),

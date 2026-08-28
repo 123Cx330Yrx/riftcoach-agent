@@ -3091,3 +3091,14 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   本轮未调用。
 - `layer-assets-and-occlusion-proof` 的下一细分为 `material-plate-generation-gate`：先准备独立的 Rift/右场/道路
   反射 plate 和可移除遮挡背板，再决定是否值得新一轮视频模型调用；不继续调同类 opacity/filter。
+
+### 2026-08-28：source-derived visible motion variant rejected
+
+- 为回应“看不到变化”做了一个有界 `replace-shifted` 对照（960×540、motion_scale 2.5）：先以局部模糊近似背板，再
+  移动源图高光。它确实更容易看到运动，但用户复核确认 Rift/道路/晶体边缘仍有重影和软化，右场/far 仍偏静；因此
+  `portal-motion-candidate-layer-assets-visible-v1.json` 判为 `research-proof-rejected`，不继续提高倍率。
+- 这次进一步确认：只要移动的像素原本仍存在于母图，位移副本就会造成 ghosting；要同时做到“明显、清晰、无重影”，
+  必须有独立透明 plate + 清洁 backplate/occlusion，而不是 source-derived shift。
+- 新增 `docs/plans/2026-08-28-8e-portal-material-plate-generation-gate.md`；当前下一检查点仍为
+  `material-plate-generation-gate`，先准备独立 Rift/右场/道路反射/中央折射素材和背板。Image2 代理仍不可达，
+  未调用视频或图像模型；runtime、Account 和 production_media 保持不变。
