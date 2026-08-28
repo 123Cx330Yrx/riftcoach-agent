@@ -827,6 +827,7 @@ groups:
     status: planned
     evidence:
       problem_and_principle:
+        - docs/adr/0069-adopt-local-region-wallpaper-fallback.md
         - docs/adr/0068-adopt-mother-image-global-loop-scenes-and-semantic-activation.md
         - docs/plans/2026-08-25-8e-image-to-video-candidate-audit.md
         - docs/learning/8e-portal-motion-polish-walkthrough.md
@@ -867,8 +868,10 @@ groups:
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
       design_and_implementation:
+        - docs/adr/0069-adopt-local-region-wallpaper-fallback.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md
+        - docs/plans/2026-08-28-8e-portal-official-wallpaper-fallback-design.md
         - docs/plans/2026-08-28-8e-portal-material-plate-generation-gate.md
         - docs/plans/2026-08-28-8e-portal-material-plate-generation-implementation.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
@@ -953,6 +956,7 @@ groups:
       verification:
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md
+        - docs/plans/2026-08-28-8e-portal-official-wallpaper-fallback-design.md
         - docs/plans/2026-08-28-8e-wan3-first-frame-post404-diagnosis.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
@@ -992,6 +996,7 @@ groups:
       runbook:
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md
+        - docs/plans/2026-08-28-8e-portal-official-wallpaper-fallback-design.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
         - docs/plans/2026-08-25-8e-portal-motion-polish-implementation.md
@@ -1009,8 +1014,10 @@ groups:
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
       failure_security_boundary:
+        - docs/adr/0069-adopt-local-region-wallpaper-fallback.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md
+        - docs/plans/2026-08-28-8e-portal-official-wallpaper-fallback-design.md
         - docs/plans/2026-08-28-8e-wan3-first-frame-post404-diagnosis.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
@@ -1059,6 +1066,7 @@ groups:
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
       interview_wording:
         - docs/learning/8e-portal-motion-polish-walkthrough.md
+        - docs/plans/2026-08-28-8e-portal-official-wallpaper-fallback-design.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
         - docs/learning/8e-bilingual-product-surface-foundation-walkthrough.md
         - docs/learning/8e-portal-account-workbench-journey-walkthrough.md

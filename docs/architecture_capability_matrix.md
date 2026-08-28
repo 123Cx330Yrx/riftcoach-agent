@@ -411,3 +411,6 @@ preflight，再执行 one POST；结果仍须通过全幕材质运动和人工�
 RQ-145 条件回退已记录：若 Wan 3.0 官方 first-frame-only 重开仍未通过人工视觉门，停止自制整幕视频，改评估
 Riot League Displays 官方地区动态壁纸作为 Portal 候选，并用静态壁纸作为 Account 候选；必须先核对来源/许可、
 格式、体积、浏览器/桌面可播放性、移动端与 reduced-motion fallback，当前不算采用。
+
+RQ-146 已激活该回退：Wan 停止在 HTTP 404/no-task 诊断，Demacia WebM 进入研究审计；下一实现切片是 region
+wallpaper catalog 与 no-I/O local preview，不改变现有 Portal→Account→Workbench 业务控制流。

@@ -256,19 +256,15 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8e-productization / portal-motion-polish / Wan3 official first-frame reopen preflight`，当前为
-  `authorized / in_progress`。masked-inpaint Rift proof 已判 `research-proof-rejected`：机械遮罩边界通过，但
-  独立透明层在可见强度下呈贴纸/蓝带，ImageGen 整图编辑也存在轻微全局差异，不能成为新母图；证据见
-  `docs/assets/8e-portal/portal-motion-candidate-masked-inpaint-plate-v1.json` 与
-  `docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md`。RQ-144 现授权一次官方 Wan 3.0
-  `first_frame` only 对照：`adaptive/1080P/12s/audio=false/prompt_extend=false/watermark=false`，motion-only
-  brief。首次启动因用户粘贴 OpenAI-compatible 的 `/compatible-mode/v1` 地址而在错误路径返回 HTTP 404，
-  本地状态无 task_id/结果，不构成 Wan 模型调用或质量证据。runner 已改为只保留 allowlisted Alibaba API Host，
-  自动重建 video POST 与 task GET 路径，并兼容 Markdown link 输入；修复须先取得 exact-SHA 公共门，再执行唯一一次任务。
-  在正式结果通过全幕运动/编码/人工视觉门前，不再批量生成、不自动重试、不接 runtime、不进入 Account，
-  `production_media` 继续为 `0`；8D、Batch B/C/D、Live Workbench、Batch E E1–E5、production shell/Auth gate、
-  Timeline、bilingual/product-journey foundation 与 RQ-108 runtime Task 1–4 的公共证据保持不变；GLM-5.3/Flash、
-  Coach、RQ-103 与 8F 仍留后序。
+- 唯一下一步：`8e-productization / portal-motion-polish / official-wallpaper-fallback`，当前为
+  `authorized / in_progress`。Wan 3.0 official first-frame reopen 因 endpoint 误填 OpenAI-compatible
+  `/compatible-mode/v1` 返回 HTTP 404，状态无 task_id/结果，不构成模型质量证据；用户已明确“转战”，不再继续寻找
+  Wan Host 或发送第二次 POST。用户提供的 `animated-demacia.webm` 已完成候选审计：1920×1080、15.04s、25fps、
+  VP8 WebM、无音轨，持续运动可见但首尾非无缝，来源/公开再分发许可仍待核验。下一动作是建立 region wallpaper
+  catalog 和本地研究预览：Portal 先选择地区并加载对应本地动态壁纸，Account 使用独立静态壁纸；在来源/许可、
+  格式/体积、浏览器/移动端/reduced-motion 与 loop 门通过前，不进入公开 runtime，`production_media` 保持 `0`。
+  8D、Batch B/C/D、Live Workbench、Batch E E1–E5、production shell/Auth gate、Timeline、bilingual/product-journey
+  foundation 与 RQ-108 runtime Task 1–4 的公共证据保持不变；GLM-5.3/Flash、Coach、RQ-103 与 8F 仍留后序。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -3127,3 +3123,13 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   背板/遮罩机械边界通过，但透明 Rift 层在可见强度下呈贴纸/蓝带、在低强度下不可见；ImageGen 整图编辑存在
   轻微全局差异，不能成为新母图。下一动作只评估 source-aware 人工/分段材质制作或区域遮罩视频编辑；在裁决前
   不再批量生成、付费重抽、接 runtime 或进入 Account，`production_media` 保持 `0`。
+
+### 2026-08-28：RQ-146 官方/授权壁纸路线激活
+
+- 用户明确“转战”，Wan first-frame reopen 停止，不再寻找 API Host 或发送第二次 POST；第一次 404 仍是
+  no-task/request-routing 诊断，不是质量结果。
+- 用户提供的 `animated-demacia.webm` 已完成只读候选审计：1920×1080、15.04s、25fps、VP8 WebM、无音轨，
+  连续运动可见但原生首尾不无缝；来源声称为 Riot League Displays，但公开再分发许可尚未核验。
+- 下一动作改为 `official-wallpaper-fallback`：region wallpaper catalog + no-I/O local preview；Portal 选择
+  地区后加载本地动态壁纸，Account 使用独立静态壁纸，先过来源/许可、格式/体积、浏览器/移动端/reduced-motion
+  与 loop 门，`production_media` 继续为 `0`。

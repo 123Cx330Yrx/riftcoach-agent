@@ -1793,6 +1793,20 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   intentionally omitted. Endpoint/region/quota readback and exact-SHA gate
   precede one POST; no retry or runtime adoption.
 
+## Official wallpaper fallback (2026-08-28)
+
+- [completed-decision] User explicitly stopped the Wan route after the
+  endpoint/Host confusion; no task ID or model output was created.
+- [completed-local-audit] User-supplied `animated-demacia.webm` is recorded as
+  a research candidate: 1920×1080, 15.04s, 25fps, VP8 WebM, no audio; motion is
+  continuous but the native first/last seam is not seamless. Provenance and
+  public redistribution permission remain unknown.
+- [in_progress] Build a strict region wallpaper catalog and a no-I/O local
+  preview. Portal will choose a region before loading its local dynamic
+  wallpaper; Account will use a separate static poster. Keep source/rights,
+  WebM/MP4, poster, loop, mobile and reduced-motion gates separate from the
+  existing product journey contract.
+
 ## Source-derived layer assets proof v1 (2026-08-28)
 
 - [completed-local] 高通亮部提取、羽化 mask、双相位局部位移和 central crystal-only swell 已实现；先红灯后绿灯，

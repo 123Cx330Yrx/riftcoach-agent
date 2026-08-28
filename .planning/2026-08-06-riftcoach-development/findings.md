@@ -4585,6 +4585,12 @@
   Alibaba scheme/host，并固定重建 `/api/v1/services/aigc/video-generation/video-synthesis` 与
   `/api/v1/tasks/{task_id}`，同时接受用户粘贴的 Markdown 链接形式。
 
+- 用户随后明确转战官方/授权壁纸路线。`animated-demacia.webm` 是 1920×1080、15.04s、25fps、VP8、无音轨的
+  高清动态场景，连续运动可见但首尾 SSIM 约 `0.941`，不能直接当无缝 loop；来源/公开再分发权限尚未核验。
+- League Displays 官方页面提供 HD wallpaper/screen saver 与 Animated Art，但桌面应用不等于公开再分发许可；
+  Wallpaper Engine 官方文档说明场景壁纸不能直接导出成视频，下载作品再发布可能需要原作者许可。下一步先做
+  region catalog/local preview，不把 Workshop 或用户文件直接写进公开 runtime。
+
 ## 2026-08-28：独立材质 plate 生成预检
 
 - built-in imagegen 的 5 张 plate 均不能直接进入合成：Rift 大水团像贴纸，wisps 只能做研究控制场；右场/道路仍有宽泛

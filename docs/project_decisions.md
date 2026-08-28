@@ -2516,3 +2516,11 @@ production media。成功输出还必须过三大区/near-mid-far 全幕运动�
 官方 League Displays 的地区主题动态壁纸作为 Portal 候选，并用一张静态壁纸作为 Account 背景；用户在 Portal
 开始前选择地区。Portal/Account 的 MotionSites 风格只影响界面结构与转场，不能绕过来源、许可、格式、体积、
 移动端、reduced-motion 和本地白名单门。当前先完成 Wan 一次公平对照，只有其人工视觉门失败才进入该回退评估。
+
+### RQ-146：立即转入官方/授权壁纸路线（2026-08-28）
+
+用户已明确“转战”。Wan first-frame reopen 停止在错误 endpoint 的 HTTP 404/no-task 诊断，不再继续寻找 Host
+或发送第二次 POST。`animated-demacia.webm` 作为第一份真实候选进入审计；下一步建立 region wallpaper catalog 和
+本地研究预览，Portal 先选择地区再加载动态壁纸，Account 使用独立静态壁纸。League Displays、Wallpaper Engine/
+Steam Workshop、Riot 官方素材及其它来源继续按来源/许可、格式/体积、浏览器/移动端/reduced-motion 与 loop 门
+分别准入，未经核验不得进入公开 runtime。

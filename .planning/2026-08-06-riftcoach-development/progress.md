@@ -4845,6 +4845,13 @@
 - Wan runner 首次启动因 `/compatible-mode/v1` 错误路径返回 404；无 task_id、无结果、无模型质量证据。
   已完成 API Host allowlist/路径归一化/Markdown link 兼容和正确 task GET 路径修复，等待独立公共门后一次纠正执行。
 
+## 2026-08-28：切换官方/授权壁纸路线
+
+- 用户明确停止 Wan 路线，未发送第二个模型任务。Demacia WebM 已完成只读审计：1920×1080、15.04s、25fps、VP8、
+  无音轨、连续帧变化可见，但原生 loop seam 不过门。
+- 已冻结 RQ-146：建立 region wallpaper catalog/local preview；Portal 地区选择后加载对应本地动态壁纸，
+  Account 使用独立静态壁纸；来源/许可、WebM/MP4、poster、loop、移动端和 reduced-motion 逐项核验后才可采用。
+
 ## 2026-08-28：独立材质 plate 预检结果
 
 - built-in imagegen 完成 5 个局部 plate 候选；Rift/右场/道路/晶体直接叠加分别暴露水团贴纸、宽蓝底、蓝雾和几何替换

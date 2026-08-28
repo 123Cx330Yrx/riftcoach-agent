@@ -242,3 +242,13 @@ Rift 流体层放到这块背板上，并让它做小幅周期位移。
 `docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md`。该视频仍是研究文件，
 没有进入 `web/public/assets`、runtime manifest 或 production media。下一步应先取得真正贴合 Rift
 边界的人工/分段材质层，或使用明确支持区域遮罩的视频编辑模式，再考虑其它区域或新的付费生成。
+
+## 10. Wan 停止后为什么改用成品壁纸
+
+Wan 的问题不再是“Prompt 再长一点”就能解决：它需要在复杂母图里同时保持建筑、道路、水晶、右侧星图和
+多层空气，却没有给我们可靠的区域控制。用户提供的 Demacia WebM 已经是做好的完整场景，光照、人群和空气
+本身在动，因此更适合当 Portal 的背景层。
+
+这条路线把风险从“生成质量”换成了可审计的产品工程问题：文件来源和再分发许可、WebM/MP4 编码、循环接缝、
+首帧 poster、移动端和 reduced-motion。Portal 只负责地区选择、媒体策略和语义激活按钮，不再修改壁纸像素；
+Account 使用独立静态壁纸。这样即使某个地区视频不能播放，用户仍然可以用 poster 进入 Account，业务旅程不受影响。

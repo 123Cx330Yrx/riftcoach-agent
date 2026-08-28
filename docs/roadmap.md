@@ -658,17 +658,19 @@ exact-SHA 公共闭环；当前唯一下一动作是 Task 5 三路线 bake-off�
 
 Task 5 已按 RQ-122 完成 official/relay 广筛和 HyperFrames 隔离 smoke；Wan 3.0 与 Dragon/Veo 各完成一个
 有界真实负面样本，后续又完成 Seedance、即梦、Kling 与本地分层 proof 审计，production media 始终为 `0`。
-样本失败不等于模型上限：Wan 早期调用使用同一张图作首尾帧，分层 proof 又暴露了素材贴纸风险。RQ-144 现已
-明确重开一次 Wan 3.0 官方 first-frame-only 对照：adaptive/1080P/12s、motion-only prompt、audio/prompt_extend/
-watermark off；先做同区 endpoint/额度/价格与 SHA preflight，再只允许一个 POST，不把输出直接接入 runtime。
+样本失败不等于模型上限：Wan 早期调用使用同一张图作首尾帧，分层 proof 又暴露了素材贴纸风险。RQ-144 的
+first-frame-only 重开因用户填入兼容文本 endpoint 而在 HTTP 404/no-task 停止，随后用户明确转战；当前不再寻找
+Wan Host、不再发送第二次 POST，也不把旧 Wan 结果接入 runtime。RQ-146 激活官方/授权壁纸路线，第一候选为
+用户提供的 Demacia WebM，先做 region catalog/local preview 与来源/许可/格式/loop 门。
 其 scene graph/8-system/192-frame/source-seam-grid/manual 三态 design 与实施计划已由 `78ae6e3/32919447127`
 完成 exact-SHA 三 job；implementation 已完成机械可控的 v3 研究样片，但用户按 RQ-126 正确拒绝其线条/圆环/
 节点 HUD 覆层视觉，裁决 `proof_fail_reopen_corrected_a`。当前先公共关闭负面证据，再执行一次 first-frame-only
 短 motion-only 的校正 A comparator。RQ-127 固定该对照为 medium-to-strong、clearly perceptible 的整幕
 breathing，并允许构图锚定小幅 camera parallax；不再以三主体轮流或过轻 motion 冒充 cool 动态。
 C proof portable fix 已由 `557dac1/32923151197` 三 job 公共关闭；随后 C′、Kling B1/B2 和 source/masked plate
-proof 均已按人工材质门拒绝，不能继续通过叠加/opacity 追绿。当前唯一候选是 RQ-144 的 Wan 3.0 官方 first-frame-only
-reopen；在其 executable preflight 绿灯前不再付费重抽或接入 runtime。
+proof 均已按人工材质门拒绝，不能继续通过叠加/opacity 追绿。Wan first-frame reopen 因 endpoint 误填在 404/no-task
+诊断停止；当前唯一候选切为 RQ-146 的官方/授权壁纸路线，先完成 Demacia local preview 与 region catalog，再考虑
+其它地区，不接 runtime。
 RQ-128 又固定故障归因五层门：corrected Veo 无 output，request/relay/upstream unresolved、quality unknown；Vidu
 只是保持 transport/source/motion/first-only 的 model/schema comparator，不是放弃 Veo/方法。Vidu 若也 generic
 failed，必须停下审计 relay/request，不继续换模型。Vidu 首个 task 随后同样 generic failed；当前只允许一次

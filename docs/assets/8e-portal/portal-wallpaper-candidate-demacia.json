@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "candidate_id": "league-displays-demacia-user-supplied-v1",
+  "status": "research-candidate",
+  "source": {
+    "user_path": "C:/Users/33502/Desktop/animated-demacia.webm",
+    "sha256": "e57f1f1c470f3e1a2499e8622b30f61cabafc2c775d3c54f39dcdcbd31c13507",
+    "claimed_origin": "Riot League Displays / official wallpaper download",
+    "origin_verified": false,
+    "license_for_public_redistribution": "unknown"
+  },
+  "technical": {
+    "container": "webm",
+    "video_codec": "vp8",
+    "width": 1920,
+    "height": 1080,
+    "fps": 25,
+    "duration_s": 15.04,
+    "frames": 376,
+    "pix_fmt": "yuv420p",
+    "audio": false,
+    "bytes": 19261633
+  },
+  "motion_audit": {
+    "first_last_ssim_downscaled": 0.9409576588,
+    "first_last_mean_abs_diff_downscaled": 0.0283634420,
+    "adjacent_mean_abs_diff_downscaled": 0.0026656636,
+    "adjacent_p95_abs_diff_downscaled": 0.0053613232,
+    "continuous_frame_changes": true,
+    "native_seam_loop": "not_seamless"
+  },
+  "product_fit": {
+    "portal_candidate": true,
+    "account_static_candidate": "poster frame only until a separate static source is selected",
+    "strengths": [
+      "complete high-resolution scene rather than a generated overlay",
+      "continuous light, crowd and atmospheric movement",
+      "central composition leaves a usable interaction axis"
+    ],
+    "risks": [
+      "bright Demacia palette may compete with readable Portal controls",
+      "25fps VP8 WebM needs an H.264 fallback",
+      "native loop seam needs a bounded treatment",
+      "public redistribution rights are not verified"
+    ]
+  },
+  "runtime_adoption": false,
+  "production_media": false,
+  "next": "Build a local research preview and source/rights ledger; do not commit the user video to public runtime assets until provenance and redistribution permission are confirmed."
+}

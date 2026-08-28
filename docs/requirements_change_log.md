@@ -151,6 +151,8 @@
 | RQ-144 | 2026-08-28 | 生效；在分层 proof 被拒后，有界重开 Wan 3.0 官方 first-frame-only 对照 | 用户明确指出当前局部分层结果廉价且不对，要求不要继续在错误素材上调参，重新好好使用此前未公平利用的 Wan 3.0 官方通道 | 只允许一次新的 Wan 3.0 官方诊断：active v2 母图仅作为 `first_frame`，不再把同一张图同时当 `last_frame`；使用 `ratio=adaptive`、1080P、12 秒、audio=false、prompt_extend=false、watermark=false、固定 seed 127；motion-only brief 只描述持续的景内材质运动，暂不加入 burst。先核对同区 endpoint/账号余额或价格、source/prompt SHA 与 one-POST runner；失败不盲重试、不接 runtime、不进入 production_media。成功输出仍须通过 source identity、三大区与 near/mid/far 全幕运动、loop/编码和人工视觉门。 |
 | RQ-145 | 2026-08-28 | 条件提案；Wan 重开仍不理想时切换为 Riot 官方壁纸/屏保素材路线 | 用户提出若本轮 Wan 仍廉价或运动错误，就停止自制整幕视频，改用 Riot 官方 League Displays 中按符文大陆地区选择的动态壁纸作为 Portal 背景，并以静态壁纸作为 Account 背景；Portal/Account UI 继续吸收 MotionSites 的交互结构 | 在 Wan 结果未审查前不替换当前路线。若触发条件成立，先核对 League Displays 官方素材的可下载格式、动态播放方式、来源/许可、体积、移动端和 reduced-motion fallback；用户选择地区后只加载对应的本地白名单素材，Account 使用独立静态素材，Portal 点击/登录过渡与媒体降级保持现有 journey 合同。不得把第三方壁纸热链或未经来源核验的转载素材直接放入 runtime。 |
 
+| RQ-146 | 2026-08-28 | 生效；用户确认立即转入官方/授权壁纸路线 | 用户明确“转战”，放弃继续寻找 Wan endpoint，并提供已下载的 `animated-demacia.webm` 作为第一个真实动态壁纸候选；同时要求后续广泛寻找高质量地区壁纸和其它合法来源 | Wan first-frame reopen 停止在 HTTP 404/no-task 诊断，不再发送第二次 POST。当前先审计 Demacia 文件并建立 region wallpaper catalog/research preview；Portal 采用地区选择后加载对应本地动态壁纸，Account 使用独立静态壁纸。League Displays、Wallpaper Engine/Steam Workshop、Riot 官方素材或其它来源必须分别经过来源/许可、格式/体积、浏览器/移动端/reduced-motion 和 loop 门；未通过的文件不得进入 runtime 或公开仓库。 |
+
 ## 新条目格式
 
 后续新增长期要求时，使用新的 `RQ-xxx` 行，并注明日期、状态以及它如何改变
