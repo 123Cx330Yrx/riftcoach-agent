@@ -1801,11 +1801,14 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   a research candidate: 1920×1080, 15.04s, 25fps, VP8 WebM, no audio; motion is
   continuous but the native first/last seam is not seamless. Provenance and
   public redistribution permission remain unknown.
-- [in_progress] Build a strict region wallpaper catalog and a no-I/O local
-  preview. Portal will choose a region before loading its local dynamic
-  wallpaper; Account will use a separate static poster. Keep source/rights,
-  WebM/MP4, poster, loop, mobile and reduced-motion gates separate from the
-  existing product journey contract.
+- [completed-local] Built the strict region wallpaper catalog and a no-I/O
+  `?surface=wallpaper-lab` preview with the Demacia candidate. It renders the
+  local WebM/MP4 pair, poster fallback, keyboard-safe region control and an
+  isolated activation transition without Auth/API/navigation side effects.
+- [next] Expand the catalog one region at a time. Keep source/rights, WebM/MP4,
+  poster, loop, mobile and reduced-motion gates separate from the existing
+  product journey contract; do not change the default `/` until a candidate set
+  passes those gates.
 
 ## Source-derived layer assets proof v1 (2026-08-28)
 

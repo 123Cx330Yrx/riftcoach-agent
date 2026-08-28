@@ -4566,6 +4566,15 @@
 - 视觉仍偏 restrained shimmer，缺少实际遮挡和材质 plate，不能把均衡 MAD 当作 MotionSites 级全局运动。下一步不是
   再加 opacity，而是 `material-plate-generation-gate`，先补独立 plate/backplate，再回到确定性合成。
 
+## 2026-08-28：official wallpaper fallback preview
+
+- RQ-146 已激活：Wan 3.0 停止在 HTTP 404/no-task，避免继续消耗额度；用户提供的 Demacia WebM 成为第一份真实
+  地区壁纸候选。
+- `RegionWallpaperLab` 以本地 catalog 驱动动态 WebM/MP4、poster、reduced-motion/播放失败降级和独立入口转场；
+  研究路径 `/?surface=wallpaper-lab` 不触发 Auth/API，也不改变默认 Portal。
+- 候选文件仍被 `.gitignore` 隔离；只有来源/许可、loop、格式/体积、浏览器/移动端和公开再分发门全部通过后，才
+  允许接入默认 Portal。
+
 ## 2026-08-28：masked-inpaint Rift proof 与 Wan 3.0 重开判断
 
 - ImageGen 的“去掉 Rift 旋涡”编辑并非只修改目标区域，整图存在轻微像素差异；把它限制到 Rift 遮罩内可以

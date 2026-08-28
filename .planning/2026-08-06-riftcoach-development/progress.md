@@ -4828,6 +4828,17 @@
 - 人工结论为 `foundation-pass-with-visual-boundary`：运动仍偏弱且缺少真实 occlusion/backplate，不进入 runtime。
   证据 JSON 已落盘，下一检查点为 `material-plate-generation-gate`，先补独立材质 plate 再回到合成。
 
+## 2026-08-28：official wallpaper fallback local preview
+
+- Wan first-frame reopen 停在兼容文本 endpoint 的 HTTP 404/no-task，用户明确转战，不再继续找 Host 或发第二次 POST。
+- `animated-demacia.webm` 已完成只读审计：1920×1080、15.04s、25fps、VP8 WebM、无音轨；连续运动可见但
+  原生首尾不无缝，来源/公开再分发许可仍待核验。
+- 已实现 `web/src/wallpapers/regionWallpaperCatalog.ts` 与 `RegionWallpaperLab` 研究预览，入口为
+  `/?surface=wallpaper-lab`；本地候选提供 WebM/MP4/poster，包含地区选择、poster/reduced-motion/播放失败降级、
+  键盘激活和独立入口转场，不改变默认 `/`、Auth、Account、Workbench 或 product journey。
+- 前端单测 `266 passed`、研究预览 E2E `2 passed`、typecheck/build 通过；下一步逐地区补充经来源/许可、格式/
+  体积、浏览器/移动端/reduced-motion 和 loop 门核验的候选，再决定是否接入默认 Portal。
+
 ## 2026-08-28：masked-inpaint plate proof rejected；Wan 3.0 first-frame reopen prepared
 
 - 完成 bounded Rift proof：ImageGen 清洁背板只在局部遮罩内使用，独立 RGBA 流体层只在该遮罩内做周期位移；
