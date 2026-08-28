@@ -4844,7 +4844,8 @@
 - 已只读盘点桌面 `RIFTCOACH`：12 动态、15 静态；生成动态/静态 contact sheet 与 5fps motion audit。动态候选按分辨率、
   时长、音轨和采样连续性记录，静态候选按地区视觉身份、构图和分辨率做暂定映射。
 - 暂定首选见 `docs/assets/8e-portal/portal-region-media-inventory-review-v1.md`；不确定项（Noxus 第二张、Demacia 多张、
-  Bandle 低清静态）保持 alternate/rejected，不在未确认前重命名。徽章方面，Universe 13 个官方 crest 已在选择器使用；
+  Bandle 低清静态）保持 alternate/rejected，不在未确认前重命名。用户随后纠正两项：`ab3c...-1920x726` 属于暗影岛，
+  `ef261...-1920x900` 属于比尔吉沃特；当前不为 Ixtal 硬分配静态图。徽章方面，Universe 13 个官方 crest 已在选择器使用；
   截图中的详细 3D LoR 风格徽章尚未找到完整、可核验的全套来源，暂不替换已稳定的小卡徽记。
 
 ## 2026-08-28：official wallpaper fallback local preview

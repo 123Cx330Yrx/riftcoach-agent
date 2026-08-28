@@ -153,6 +153,7 @@
 
 | RQ-146 | 2026-08-28 | 生效；用户确认立即转入官方/授权壁纸路线 | 用户明确“转战”，放弃继续寻找 Wan endpoint，并提供已下载的 `animated-demacia.webm` 作为第一个真实动态壁纸候选；同时要求后续广泛寻找高质量地区壁纸和其它合法来源 | Wan first-frame reopen 停止在 HTTP 404/no-task 诊断，不再发送第二次 POST。当前先审计 Demacia 文件并建立 region wallpaper catalog/research preview；Portal 采用地区选择后加载对应本地动态壁纸，Account 使用独立静态壁纸。League Displays、Wallpaper Engine/Steam Workshop、Riot 官方素材或其它来源必须分别经过来源/许可、格式/体积、浏览器/移动端/reduced-motion 和 loop 门；未通过的文件不得进入 runtime 或公开仓库。 |
 | RQ-147 | 2026-08-28 | 生效；补充班德尔城候选与静态图清晰度门 | 用户找到班德尔城动态壁纸，并在桌面 `RIFTCOACH` 文件夹整理了多地区动态/静态素材；其中 `runeterra-bandlecity-03.jpg` 只有 926×1080，存在明显压缩与低清感，要求评估高清修复 | 班德尔城动态 WebM 以独立 `research-candidate` 加入本地 catalog，并保留 WebM/无音频 MP4/poster 三件套；静态 Account 素材必须先做来源/许可、原始分辨率、构图保真和清晰度审查。AI 修复只允许非破坏性 sibling 输出，不能覆盖原图、伪造来源或在未通过人工审查前写入 adopted media manifest。 |
+| RQ-148 | 2026-08-28 | 生效；纠正静态地区映射，不沿用错误猜测 | 用户复核指出 `ab3c2d4...-1920x726.jpg` 是暗影岛而非比尔吉沃特，`ef261f0...-1920x900.jpg` 是比尔吉沃特；同时确认其它暂定映射可继续复核 | 先将 `ab3c...` 记为暗影岛备选、`ef261...` 记为比尔吉沃特候选，以用户更正和官方 Universe JSON 索引优先；任何匿名图在用户最终检查前不得改名或进入 adopted manifest。以绪塔尔当前不分配静态候选。 |
 
 ## 新条目格式
 

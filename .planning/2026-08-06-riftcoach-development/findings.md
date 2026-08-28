@@ -4583,8 +4583,9 @@
   唯一带 Opus 音轨。动态文件名已经能稳定指向地区，但 `animated-harrowing.webm` 需要单独作为 Shadow Isles 的
   低清/短时长备选，不把它与标准 15s 候选混为同一等级。
 - 15 张静态图中，匿名哈希文件名需要靠画面内容与地区动态交叉核对。暂定优先映射为：Piltover=`6c774...-4681x2114`,
-  Shadow Isles=`94e4...-2503x1080`, Ionia=`72ad...-1920x1079`, Ixtal=`ef261...-1920x900`, Bilgewater=`ab3c...-1920x726`,
-  Zaun=`3b6d...-1920x1057`, Void=`7107...-1920x1064`, Noxus=`6310...-1920x1080`；Demacia、Freljord、Targon、Shurima
+  Shadow Isles=`94e4...-2503x1080`（`ab3c...-1920x726` 为同地区备选，已由用户纠正确认），Ionia=`72ad...-1920x1079`,
+  Bilgewater=`ef261...-1920x900`（已由用户纠正确认），Zaun=`3b6d...-1920x1057`, Void=`7107...-1920x1064`,
+  Noxus=`6310...-1920x1080`；当前不为 Ixtal 硬分配静态图，Demacia、Freljord、Targon、Shurima
   优先使用已有命名文件，保留匿名图作 alternate/review evidence。完整暂定表见
   `docs/assets/8e-portal/portal-region-media-inventory-review-v1.md`。
 - 当前只形成审计/推荐，不执行桌面批量改名。待用户确认后再做原文件不覆盖的 normalized sibling 与 manifest。
