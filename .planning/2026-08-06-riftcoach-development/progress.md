@@ -4854,6 +4854,10 @@
   动态首帧。生成图尚未接入 runtime，等待质感与来源边界复核。
 - 详细 LoR 地区徽章的官方附件清单已核对，但旧链接全部重定向，暂存为 reference-only；Universe 13 个小 crest 仍是当前
   选择器的稳定素材。用户若提供高清徽章文件，可再逐个做 hash/来源/尺寸审计并用于选中地区 hero。
+- 虚空缺失徽章已按用户允许生成原创补位；最终平衡版为透明 RGBA、低饱和紫色可辨、深黑曜石材质，保存在桌面
+  `RIFTCOACH/badge-void-generated-v3-balanced.png`，暂作 selected-region hero 候选。
+- 用户提供的 Image2 Void 徽章候选已保存为 `badge-void-image2-v1.png` 与 `badge-void-image2-v2-muted.png`；
+  目前视觉方向优先于自绘版，但仍是 RGB 深色背景，不作为透明小卡直接使用。
 
 ## 2026-08-28：official wallpaper fallback local preview
 

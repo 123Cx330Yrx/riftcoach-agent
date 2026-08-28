@@ -4603,6 +4603,11 @@
 - Badge source audit：Riot LoR 支持页仍列出详细地区徽章附件，但旧 `article_attachments` URL 当前重定向到支持首页，
   无法作为稳定下载/runtime 源。它们可作为设计参考；当前小卡继续使用稳定的 Universe crest，详细徽章等待用户提供高清文件
   或新的稳定来源。
+- Void gap：用户确认旧详细徽章集合缺少虚空，允许自行绘制。imagegen 首版过亮，第二版/第三版出现棋盘格背景；最终采用
+  原版真实 Alpha + FFmpeg 确定性色彩分级的 `badge-void-generated-v3-balanced.png` 研究候选（1254×1254 RGBA），
+  黑曜石/深靛主体保留可识别的低饱和紫色。它尚未进入 selector/runtime。
+- 用户又提供 Image2 网页端 Void 徽章，人工观感优于前述自绘版本；原图与轻微 muted sibling 均为 1254×1254 RGB 深色
+  不透明背景，当前优先作为 selected-region hero 候选，但尚未做透明 cutout 或 runtime 接入。
 
 ## 2026-08-28：official wallpaper fallback preview
 
