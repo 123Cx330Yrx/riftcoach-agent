@@ -2530,5 +2530,5 @@ reduced-motion 与 loop 门分别准入，未经核验不得进入公开 runtime
 用户在桌面 `RIFTCOACH` 素材中找到班德尔城动态壁纸。它与 Demacia 一样先作为本地研究候选；WebM 原文件带 Opus
 音轨，已额外生成无音频 H.264 sibling 和 poster，但 `rights` 仍为 `unverified`。用户同时指出
 `runeterra-bandlecity-03.jpg` 只有 926×1080 且压缩痕迹明显。静态 Account 图的处理采用非破坏性 sibling：先查找
-更高分辨率官方源；找不到时才用保留构图的 AI 修复候选，并同时保留原图、记录 hash 与人工视觉裁决。任何修复图或
+更高分辨率官方源；本轮 AI 修复候选因纹理脆硬、AI 重绘感和质感不一致已判 rejected，并同时保留原图、记录 hash 与人工视觉裁决。任何修复图或
 动态壁纸在来源/许可、格式、清晰度、浏览器/移动端/reduced-motion 与 loop 门完成前都不进入 adopted media。

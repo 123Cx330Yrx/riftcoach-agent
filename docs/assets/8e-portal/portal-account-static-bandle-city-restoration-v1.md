@@ -1,6 +1,6 @@
 # Bandle City static Account image restoration candidate
 
-Status: `research-only` · not adopted
+Status: `research-only` · `rejected` · not adopted
 
 ## Inputs and output
 
@@ -19,7 +19,7 @@ compression cleanup. The original JPEG was not overwritten.
 
 ## Review boundary
 
-The candidate looks materially crisper, with cleaner bark/leaf edges and less JPEG smearing, but AI restoration can subtly reinterpret
-brushwork or emblem geometry. Therefore it is not automatically better than a true high-resolution Riot source. Compare it against any
-official higher-resolution still before adoption; if no such source is found, perform a manual crop/identity review at the intended Account
-viewport and keep both siblings available for rollback.
+The candidate is sharper than the JPEG, but manual review rejects it as a final asset: the reconstruction is too crunchy/high-frequency,
+the bark highlights read as AI-invented texture, and the emblem/brushwork no longer sits at the same quality level as the other saved
+region stills. It remains only as a comparison artifact. A true higher-resolution Riot source or a different native still is required;
+do not spend more generation attempts on this prompt or promote it by increasing sharpness.

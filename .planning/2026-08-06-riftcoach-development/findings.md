@@ -4574,7 +4574,8 @@
 - 已生成本地无音频 H.264/`yuv420p` sibling 和 poster；原 WebM、MP4、poster 均隔离在 ignored candidates 目录，
   不进入公开 runtime。完整审计见 `docs/assets/8e-portal/portal-region-wallpaper-candidate-bandle-city-v1.json`。
 - `runeterra-bandlecity-03.jpg` 只有 926×1080，压缩/低清感明显。已用内置 imagegen 做一个非破坏性高分辨率修复候选并另存于
-  用户桌面素材目录；该图保留原图，不能替代更高分辨率的官方源，也未进入 adopted media。
+  用户桌面素材目录；人工复核认为它虽然更锐但纹理偏脆、存在 AI 重绘感，与其它地区静态图不在同一质感层级，已判为
+  `rejected`，原图保留，不能替代更高分辨率的官方源，也未进入 adopted media。
 
 ## 2026-08-28：official wallpaper fallback preview
 

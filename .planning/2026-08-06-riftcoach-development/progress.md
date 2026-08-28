@@ -4836,7 +4836,8 @@
 - 新增候选审计 JSON 与 `regionWallpaperCatalog`/组件测试；聚焦 10 项、完整前端单测 269 项、E2E 38 项、build/typecheck
   通过。动态素材仍仅为 research candidate，production media 继续为 `0`。
 - 用户提供的 Bandle City 静态图 `runeterra-bandlecity-03.jpg` 原始 926×1080；已另存一份 imagegen 修复候选到桌面
-  `RIFTCOACH`，未覆盖原图，下一步需与更高分辨率官方源和人工清晰度/构图门比较。
+  `RIFTCOACH`，未覆盖原图；人工复核认为生成图纹理脆硬、AI 重绘感明显，低于其它已存地区图，已标记 rejected，下一步
+  改为寻找真实高分辨率官方源或直接从高质量动态候选抽取静态参考，不继续堆锐化。
 
 ## 2026-08-28：official wallpaper fallback local preview
 

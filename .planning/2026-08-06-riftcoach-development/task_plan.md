@@ -1811,9 +1811,10 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   control and an isolated activation transition without Auth/API/navigation
   side effects.
 - [completed-local-boundary] The Bandle static Account still
-  `runeterra-bandlecity-03.jpg` is only 926×1080. A non-destructive imagegen
-  restoration sibling exists in the user's desktop folder, but a true
-  higher-resolution source and manual composition review are still preferred.
+  `runeterra-bandlecity-03.jpg` is only 926×1080. Its non-destructive imagegen
+  restoration sibling was manually rejected for crunchy AI texture and
+  quality mismatch with the other saved region stills; a true higher-resolution
+  source or different native still is required.
 - [next] Expand the catalog one region at a time. Keep source/rights, WebM/MP4,
   poster, loop, mobile and reduced-motion gates separate from the existing
   product journey contract; do not change the default `/` until a candidate set
