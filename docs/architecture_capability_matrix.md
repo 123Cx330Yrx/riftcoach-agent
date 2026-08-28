@@ -407,3 +407,7 @@ Kling B2 video+image preflight 已本地冻结：base video result URL 执行时
 audio/prompt_extend/watermark off 与 motion-only brief。需先完成同区 endpoint/额度/价格/source/prompt SHA
 preflight，再执行 one POST；结果仍须通过全幕材质运动和人工视觉门，不能直接接 runtime。Data Dragon、Coach、8F
 和最终 Account/Portal visual QA 继续未完成。
+
+RQ-145 条件回退已记录：若 Wan 3.0 官方 first-frame-only 重开仍未通过人工视觉门，停止自制整幕视频，改评估
+Riot League Displays 官方地区动态壁纸作为 Portal 候选，并用静态壁纸作为 Account 候选；必须先核对来源/许可、
+格式、体积、浏览器/桌面可播放性、移动端与 reduced-motion fallback，当前不算采用。
