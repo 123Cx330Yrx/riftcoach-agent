@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "status": "layer-assets-proof-v1",
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e"
+  },
+  "timeline": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "frames": 192,
+    "duration_s": 8.0
+  },
+  "layer_names": [
+    "locked-base",
+    "rift-energy",
+    "road-reflection",
+    "crystal-refraction",
+    "right-constellation-terrain",
+    "air-far-mid-near",
+    "foreground-surface-light"
+  ],
+  "alpha_policy": "source-derived-high-energy-only",
+  "central_event": {
+    "scope": ["crystal-refraction"],
+    "window_s": [3.5, 5.5],
+    "max_alpha_multiplier": 1.35
+  },
+  "occlusion_rules": {
+    "base_geometry_moves": false,
+    "opaque_structure_moves": false,
+    "layer_shift_px_max": 12,
+    "full_frame_overlay": false
+  },
+  "output_policy": {
+    "external_model_calls": 0,
+    "repository_media": false,
+    "runtime_adoption": false
+  },
+  "quality_gates": {
+    "source_to_first_ssim_min": 0.95,
+    "encoded_seam_dssim_max": 0.03,
+    "manual_source_crispness_required": true,
+    "manual_material_motion_required": true,
+    "manual_no_sticker_or_veil_required": true
+  }
+}

@@ -4821,6 +4821,13 @@
   与复盘文档已落盘，production media 仍为 0。
 - 用户要求暂停并完整复盘；下一动作不再是付费生成，而是 method-review-hold 下的 no-cost 分层材质载体证明。
 
+## 2026-08-28：source-derived layer assets proof v1
+
+- 新建 source-derived layer renderer/contract/tests，聚焦测试 `3 passed`；本地完成 1920×1080/24fps/8s/no-audio
+  proof，外部调用 `0`。底图清晰、无全屏纱罩，亮部层可独立检查。
+- 人工结论为 `foundation-pass-with-visual-boundary`：运动仍偏弱且缺少真实 occlusion/backplate，不进入 runtime。
+  证据 JSON 已落盘，下一检查点为 `material-plate-generation-gate`，先补独立材质 plate 再回到合成。
+
 ## 2026-08-28：分层材质 proof v2 result review
 
 - 新建 v2 分层材质 proof，先红灯后绿灯，聚焦 `3 passed`；HyperFrames GPU 本地渲染完成 8s/1920×1080/24fps/
@@ -4830,3 +4837,10 @@
 - 下一动作切为 `layer-assets-and-occlusion-proof`，先补 inpaint 背板/遮挡/材质层，再做一轮本地 proof；不再付费生成。
 - 本机完整 pytest 受数据库环境阻塞，`--maxfail=1` 在 PostgreSQL fixture setup 报 `DATABASE_URL is required`，此前
   已得到 `126 passed, 1 warning, 1 error`；不把它误报为本次实验回归，公共 PostgreSQL 门仍需补证。
+
+## 2026-08-28：source-derived layer assets proof v1
+
+- 新建 source-derived layer renderer/contract/tests，聚焦测试 `3 passed`；本地完成 1920×1080/24fps/8s/no-audio
+  proof，外部调用 `0`。底图清晰、无全屏纱罩，亮部层可独立检查。
+- 人工结论为 `foundation-pass-with-visual-boundary`：运动仍偏弱且缺少真实 occlusion/backplate，不进入 runtime。
+  证据 JSON 已落盘，下一检查点为 `material-plate-generation-gate`，先补独立材质 plate 再回到合成。

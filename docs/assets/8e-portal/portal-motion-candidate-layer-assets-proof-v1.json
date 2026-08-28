@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "status": "research-foundation-candidate",
+  "candidate": "layer-assets-proof-v1",
+  "model": "deterministic-source-derived-layers",
+  "transport": "local-only",
+  "external_model_calls": 0,
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e"
+  },
+  "request": {
+    "renderer": "experiments/portal_layer_assets_proof_v1/render_material_layers.py",
+    "contract": "experiments/portal_layer_assets_proof_v1/layer-contract.json",
+    "alpha_policy": "source-derived-high-energy-only",
+    "duration_s": 8,
+    "fps": 24,
+    "width": 1920,
+    "height": 1080,
+    "audio": false,
+    "central_event_scope": ["crystal-refraction"],
+    "central_event_window_s": [3.5, 5.5]
+  },
+  "output": {
+    "path": "repo-excluded:tmp/riftcoach-task5-portal-layer-assets-proof-v1-final-v3/layer-assets-proof-v1.mp4",
+    "sha256": "077bac71f4e2a94edc525222ee014bcfb6ea2dcd3f4ae9a27460d164ac2d350d",
+    "bytes": 1905994,
+    "duration_s": 8.0,
+    "frames": 192,
+    "codec": "h264-high",
+    "pixel_format": "yuv420p",
+    "color": "bt709",
+    "audio": false,
+    "duplicate_frame_count": 0
+  },
+  "measurements": {
+    "source_to_first_ssim": 0.9975558519,
+    "first_to_last_ssim": 0.9989192486,
+    "first_to_last_mad": 0.0038528321,
+    "motion_mad_every_0_5s": {
+      "left": 0.0021985858,
+      "center": 0.0014870435,
+      "right": 0.0017428500
+    },
+    "motion_mad_every_0_5s_depth": {
+      "near": 0.0014124211,
+      "mid": 0.0031492951,
+      "far": 0.0008658511
+    },
+    "motion_mad_0_to_4s": {
+      "left": 0.0042728931,
+      "center": 0.0038190905,
+      "right": 0.0037749349
+    }
+  },
+  "visual_review": {
+    "passed": [
+      "the original mother-image structure stays sharp and recognizable",
+      "no full-frame veil, camera transform, platform morph, solid ring or hard central beam is introduced",
+      "moving pixels are source-derived highlights rather than duplicated opaque architecture",
+      "left/center/right and near/mid/far have measurable continuous motion",
+      "central swell is scoped to the crystal-refraction layer"
+    ],
+    "failed": [
+      "normal viewing still reads too close to a restrained shimmer for the requested MotionSites-level ambient motion",
+      "the source-derived plate has no real occlusion/backplate variation, so material depth is limited",
+      "road, right-field and far-air motion is technically present but not yet clearly perceptible enough",
+      "this is a reusable layer foundation, not an adopted Portal loop"
+    ],
+    "agent_verdict": "foundation-pass-with-visual-boundary"
+  },
+  "next_gate": "material-plate-generation-gate",
+  "production_media": false
+}

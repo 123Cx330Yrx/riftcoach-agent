@@ -4558,6 +4558,16 @@
   可逆的运动载体和审查证据，再决定是否值得新的模型调用；用户已要求停下做完整复盘，当前为
   `method-review-hold`。
 
+## 2026-08-28：source-derived layer assets proof v1
+
+- 直接移动整张母图会产生纱罩/建筑双影；改为从源图提取高频蓝青亮部，底图永不移动，mask 内只移动透明亮部。
+- 1920×1080 proof 的 source→first SSIM `0.997556`，首尾 `0.998919`，三大区和三深度均有变化；人工确认清晰度、
+  结构、无全屏雾/圆环/硬柱通过。
+- 视觉仍偏 restrained shimmer，缺少实际遮挡和材质 plate，不能把均衡 MAD 当作 MotionSites 级全局运动。下一步不是
+  再加 opacity，而是 `material-plate-generation-gate`，先补独立 plate/backplate，再回到确定性合成。
+- RQ-143 已生效：后续 proof 必须底图像素锁定、只移动源图高光/独立透明 plate，禁止 source duplicate 纱罩、全局
+  tint 和建筑边缘双影；Image2 只有在代理恢复且用于具体 plate/backplate 时才调用。
+
 ## 2026-08-28：分层材质 proof v2 result
 
 - Phase 0/1 的第一版可控 proof 通过结构、源图和技术编码门，三大区/三深度的像素变化也达到均衡，但人工观感仍然
@@ -4570,3 +4580,11 @@
 - 本机完整回归的 `--maxfail=1` 在第 127 项 PostgreSQL API fixture setup 因 `DATABASE_URL` 未配置而停止：
   `126 passed, 1 warning, 1 error`。该错误发生在真实数据库环境初始化，不涉及 v2 proof 文件；聚焦 proof/相邻媒体测试
   仍通过，公共 PostgreSQL job 负责真实数据库补证。
+
+## 2026-08-28：source-derived layer assets proof v1
+
+- 直接移动整张母图会产生纱罩/建筑双影；改为从源图提取高频蓝青亮部，底图永不移动，mask 内只移动透明亮部。
+- 1920×1080 proof 的 source→first SSIM `0.997556`，首尾 `0.998919`，三大区和三深度均有变化；人工确认清晰度、
+  结构、无全屏雾/圆环/硬柱通过。
+- 视觉仍偏 restrained shimmer，缺少实际遮挡和材质 plate，不能把均衡 MAD 当作 MotionSites 级全局运动。下一步不是
+  再加 opacity，而是 `material-plate-generation-gate`，先补独立 plate/backplate，再回到确定性合成。

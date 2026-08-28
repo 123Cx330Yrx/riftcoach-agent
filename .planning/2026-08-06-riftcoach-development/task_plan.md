@@ -1755,3 +1755,23 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [decision] 不再增加 opacity、重写同类滤镜或付费换模型；当前保持 `method-review-hold`。
 - [next] `layer-assets-and-occlusion-proof`：先制作可移除的 inpaint 背板、遮挡边界和真实材质层，再做一轮本地 proof；
   通过前不调用外部视频模型、不接 runtime、不进入 Account。
+
+## Source-derived layer assets proof v1 (2026-08-28)
+
+- [completed-local] 高通亮部提取、羽化 mask、双相位局部位移和 central crystal-only swell 已实现；先红灯后绿灯，
+  聚焦 `3 passed`，外部调用 0。
+- [completed-local-boundary] 1920×1080/24fps/8s 输出保持母图清晰、无纱罩/圆环/硬柱，三大区与 near/mid/far 有可测变化；
+  但人工观感仍偏弱、缺少真实遮挡/背板，不能视为 adopted loop。
+- [decision] 不再继续 opacity/同类滤镜调参；当前保持 method-review 边界。
+- [next] `material-plate-generation-gate`：补至少一组独立 Rift/右场/道路反射材质 plate 与可移除遮挡背板，先本地 proof，
+  通过前不付费调用、不接 runtime、不进入 Account。
+
+## Source-derived layer assets proof v1 (2026-08-28)
+
+- [completed-local] 高通亮部提取、羽化 mask、双相位局部位移和 central crystal-only swell 已实现；先红灯后绿灯，
+  聚焦 `3 passed`，外部调用 0。
+- [completed-local-boundary] 1920×1080/24fps/8s 输出保持母图清晰、无纱罩/圆环/硬柱，三大区与 near/mid/far 有可测变化；
+  但人工观感仍偏弱、缺少真实遮挡/背板，不能视为 adopted loop。
+- [decision] 不再继续 opacity/同类滤镜调参；当前保持 method-review 边界。
+- [next] `material-plate-generation-gate`：补至少一组独立 Rift/右场/道路反射材质 plate 与可移除遮挡背板，先本地 proof，
+  通过前不付费调用、不接 runtime、不进入 Account。

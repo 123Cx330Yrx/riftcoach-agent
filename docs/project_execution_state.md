@@ -3054,6 +3054,20 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   Account 推进。恢复时先做可见分层/材质载体的 no-cost proof，再评估是否存在真正支持相同区域/时间控制的
   视频编辑模式；不以更长 prompt 或新品牌抽卡替代方法决策。
 
+### 2026-08-28：source-derived layer assets proof v1
+
+- 用户指出上一版 proof 像给母图蒙纱且清晰度下降；新增 RQ-143，要求底图不动、只移动可解释的源图亮部/材质层，
+  禁止 source duplicate、global tint/veil 和建筑边缘双影。Image2 代理当前不可达 `127.0.0.1:7890`，本轮未调用。
+- 新建 `experiments/portal_layer_assets_proof_v1/`，通过高通蓝青亮部提取、羽化 mask 和双相位局部位移完成
+  1920×1080/24fps/8s/no-audio 本地 proof；外部模型调用 `0`。输出 SHA
+  `077bac71f4e2a94edc525222ee014bcfb6ea2dcd3f4ae9a27460d164ac2d350d`，1,905,994 B、192 帧、yuv420p/BT.709。
+- 机械结果：source→first SSIM `0.997556`，first→last SSIM `0.998919`，无重复帧；left/center/right 每 0.5s
+  MAD `0.002199/0.001487/0.001743`，near/mid/far `0.001412/0.003149/0.000866`。结构/清晰度/无纱罩门通过，
+  但人工观感仍偏弱，真实遮挡/背板与独立材质 plate 尚未具备；裁决为 `foundation-pass-with-visual-boundary`，
+  不是 adopted Portal loop，`production_media=0`。
+- `layer-assets-and-occlusion-proof` 细分下一项为 `material-plate-generation-gate`：先补 Rift/右场/道路反射的独立
+  plate 与可移除遮挡背板，再决定是否值得新一轮视频模型调用；当前不继续 opacity/filter 调参、不接 runtime、不进入 Account。
+
 ### 2026-08-28：分层材质 proof v2 结果
 
 - 依据复盘后的 Phase 0/1 合同，新建 `experiments/portal_layered_material_proof_v2/`；先红灯后绿灯，
@@ -3067,3 +3081,13 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   完整证据见 `docs/assets/8e-portal/portal-motion-candidate-layered-material-v2.json`。
 - `method-review-hold` 继续有效，但下一项不再是滤镜调参，而是 `layer-assets-and-occlusion-proof`：先制作可移除的
   inpaint 背板、遮挡边界和至少六个真实材质层，再做一次有界本地 proof；不调用外部视频模型、不接 runtime、不进入 Account。
+
+### 2026-08-28：source-derived layer assets proof v1 收口
+
+- 高通亮部提取、羽化 mask 和双相位局部位移在 1920×1080 版本保持母图清晰，source→first SSIM `0.997556`，
+  首尾 SSIM `0.998919`，无重复帧；结构/无纱罩门通过。
+- 运动仍偏 restrained shimmer，路面、右场和 far 层缺少足够可感知的材质流动与真实遮挡；裁决为
+  `foundation-pass-with-visual-boundary`，不是 Portal adopted media。Image2 代理当前为不可达 `127.0.0.1:7890`，
+  本轮未调用。
+- `layer-assets-and-occlusion-proof` 的下一细分为 `material-plate-generation-gate`：先准备独立的 Rift/右场/道路
+  反射 plate 和可移除遮挡背板，再决定是否值得新一轮视频模型调用；不继续调同类 opacity/filter。
