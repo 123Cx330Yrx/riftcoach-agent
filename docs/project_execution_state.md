@@ -256,16 +256,17 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8e-productization / portal-motion-polish / masked-inpaint-plate-proof` 已完成并判为
-  `research-proof-rejected`，当前进入有界方法裁决，状态仍为 `authorized / in_progress`。本轮用 ImageGen
-  生成的 Rift 清洁背板只在局部遮罩内使用，并叠合一张独立 RGBA 流体层；机械边界通过，但肉眼可见时
-  流体层呈贴纸/蓝带，压低后又不可见，且整图 ImageGen 编辑存在轻微全局差异，不能成为新母图。证据见
+- 唯一下一步：`8e-productization / portal-motion-polish / Wan3 official first-frame reopen preflight`，当前为
+  `authorized / in_progress`。masked-inpaint Rift proof 已判 `research-proof-rejected`：机械遮罩边界通过，但
+  独立透明层在可见强度下呈贴纸/蓝带，ImageGen 整图编辑也存在轻微全局差异，不能成为新母图；证据见
   `docs/assets/8e-portal/portal-motion-candidate-masked-inpaint-plate-v1.json` 与
-  `docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md`。下一动作只评估
-  source-aware 的人工/分段材质制作或明确支持区域遮罩的视频编辑模式；在裁决前不再批量生成、不付费重抽、
-  不接 runtime、不进入 Account。production media 继续为 `0`；8D、Batch B/C/D、Live Workbench、Batch E
-  E1–E5、production shell/Auth gate、Timeline、bilingual/product-journey foundation 与 RQ-108 runtime Task 1–4
-  的公共证据保持不变；GLM-5.3/Flash、Coach、RQ-103 与 8F 仍留后序。
+  `docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md`。RQ-144 现授权一次官方 Wan 3.0
+  `first_frame` only 对照：`adaptive/1080P/12s/audio=false/prompt_extend=false/watermark=false`，motion-only
+  brief；先核对同区 endpoint、账号额度/价格、source/prompt SHA 与 one-POST runner，再执行唯一一次任务。
+  在正式结果通过全幕运动/编码/人工视觉门前，不再批量生成、不自动重试、不接 runtime、不进入 Account，
+  `production_media` 继续为 `0`；8D、Batch B/C/D、Live Workbench、Batch E E1–E5、production shell/Auth gate、
+  Timeline、bilingual/product-journey foundation 与 RQ-108 runtime Task 1–4 的公共证据保持不变；GLM-5.3/Flash、
+  Coach、RQ-103 与 8F 仍留后序。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层

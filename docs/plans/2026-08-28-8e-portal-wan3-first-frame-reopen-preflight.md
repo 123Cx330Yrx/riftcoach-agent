@@ -34,6 +34,14 @@ model, endpoint and API key to belong to the same region. See the [official
 API reference](https://help.aliyun.com/en/model-studio/wan3-video-generation-api-reference)
 and [official model pricing](https://help.aliyun.com/en/model-studio/model-pricing).
 
+The official prompt guide makes the same distinction we are applying here:
+for image-to-video, the image already supplies the entity, scene and style,
+so the text should concentrate on motion and camera movement. This prompt is
+therefore intentionally shorter and motion-first; it names the visible
+carriers (Rift currents, crystal refraction, right-field depth and surface
+reflections) instead of rewriting the artwork as a second scene description.
+See the [official image-to-video prompt guide](https://help.aliyun.com/en/model-studio/text-to-video-prompt).
+
 ## One-call guard
 
 Before the POST, the runner must read back the active account region, matching
