@@ -35,5 +35,5 @@ def test_prompt_digest_and_motion_only_brief_are_bound() -> None:
     assert hashlib.sha256(PROMPT.read_bytes()).hexdigest() == contract["prompt"]["sha256"]
     brief = PROMPT.read_text(encoding="utf-8")
     assert "first frame" in brief.lower()
-    assert "No separate burst event" in brief
-    assert "No camera movement" in brief
+    assert "No separate burst" in brief
+    assert "No camera drift" in brief
