@@ -2520,7 +2520,15 @@ production media。成功输出还必须过三大区/near-mid-far 全幕运动�
 ### RQ-146：立即转入官方/授权壁纸路线（2026-08-28）
 
 用户已明确“转战”。Wan first-frame reopen 停止在错误 endpoint 的 HTTP 404/no-task 诊断，不再继续寻找 Host
-或发送第二次 POST。`animated-demacia.webm` 作为第一份真实候选进入审计；下一步建立 region wallpaper catalog 和
-本地研究预览，Portal 先选择地区再加载动态壁纸，Account 使用独立静态壁纸。League Displays、Wallpaper Engine/
-Steam Workshop、Riot 官方素材及其它来源继续按来源/许可、格式/体积、浏览器/移动端/reduced-motion 与 loop 门
-分别准入，未经核验不得进入公开 runtime。
+或发送第二次 POST。`animated-demacia.webm` 作为第一份真实候选进入审计；随后又核对了班德尔城 WebM。下一步建立
+region wallpaper catalog 和本地研究预览，Portal 先选择地区再加载动态壁纸，Account 使用独立静态壁纸。League
+Displays、Wallpaper Engine/Steam Workshop、Riot 官方素材及其它来源继续按来源/许可、格式/体积、浏览器/移动端/
+reduced-motion 与 loop 门分别准入，未经核验不得进入公开 runtime。
+
+### RQ-147：补充 Bandle City 候选与静态清晰度门（2026-08-28）
+
+用户在桌面 `RIFTCOACH` 素材中找到班德尔城动态壁纸。它与 Demacia 一样先作为本地研究候选；WebM 原文件带 Opus
+音轨，已额外生成无音频 H.264 sibling 和 poster，但 `rights` 仍为 `unverified`。用户同时指出
+`runeterra-bandlecity-03.jpg` 只有 926×1080 且压缩痕迹明显。静态 Account 图的处理采用非破坏性 sibling：先查找
+更高分辨率官方源；找不到时才用保留构图的 AI 修复候选，并同时保留原图、记录 hash 与人工视觉裁决。任何修复图或
+动态壁纸在来源/许可、格式、清晰度、浏览器/移动端/reduced-motion 与 loop 门完成前都不进入 adopted media。

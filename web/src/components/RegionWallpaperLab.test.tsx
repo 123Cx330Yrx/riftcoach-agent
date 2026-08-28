@@ -14,8 +14,17 @@ describe("RegionWallpaperLab", () => {
     expect(screen.getByTestId("wallpaper-lab")).toHaveAttribute("data-region", "demacia")
     expect(screen.getByRole("button", { name: /demacia/i })).toHaveAttribute("aria-pressed", "true")
     expect(screen.getAllByRole("button")).toHaveLength(16)
-    expect(screen.getAllByRole("button").filter((button) => (button as HTMLButtonElement).disabled)).toHaveLength(12)
+    expect(screen.getAllByRole("button").filter((button) => (button as HTMLButtonElement).disabled)).toHaveLength(11)
     expect(screen.getByRole("button", { name: /enter riftcoach/i })).toBeVisible()
+  })
+
+  it("switches the local preview when an audited candidate region is selected", () => {
+    renderLab()
+    fireEvent.click(screen.getByRole("button", { name: /bandle city/i }))
+    expect(screen.getByTestId("wallpaper-lab")).toHaveAttribute("data-region", "bandle-city")
+    expect(screen.getByRole("button", { name: /bandle city/i })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByTestId("wallpaper-lab").querySelector("video source")).toHaveAttribute("src", "/assets/wallpapers/candidates/bandle-city.webm")
+    expect(screen.getByText("Official wallpaper candidate · local preview")).toBeInTheDocument()
   })
 
   it("uses natural Chinese product copy when the locale is zh-CN", () => {

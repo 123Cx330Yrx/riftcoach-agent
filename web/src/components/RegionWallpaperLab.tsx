@@ -46,7 +46,7 @@ export function RegionWallpaperLab() {
       <div className="wallpaper-lab__media" aria-hidden="true">
         <img className="wallpaper-lab__poster" src={selected.poster} alt="" />
         {playVideo ? (
-          <video className="wallpaper-lab__video" autoPlay loop muted playsInline poster={selected.poster} onError={() => setVideoFailed(true)}>
+          <video key={selected.id} className="wallpaper-lab__video" autoPlay loop muted playsInline poster={selected.poster} onError={() => setVideoFailed(true)}>
             <source src={selected.webm} type="video/webm" />
             <source src={selected.mp4} type="video/mp4" />
           </video>

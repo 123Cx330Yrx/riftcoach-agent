@@ -3,9 +3,10 @@ import { describe, expect, it } from "vitest"
 import { decodeRegionWallpaperCatalog, regionWallpaperCatalog } from "./regionWallpaperCatalog"
 
 describe("region wallpaper catalog", () => {
-  it("exposes the Demacia research candidate without claiming adoption", () => {
-    expect(regionWallpaperCatalog.candidates).toHaveLength(1)
+  it("exposes the local Demacia and Bandle City candidates without claiming adoption", () => {
+    expect(regionWallpaperCatalog.candidates).toHaveLength(2)
     expect(regionWallpaperCatalog.candidates[0]).toMatchObject({ id: "demacia-v1", region: "demacia", status: "research-candidate", rights: "unverified" })
+    expect(regionWallpaperCatalog.candidates[1]).toMatchObject({ id: "bandle-city-v1", region: "bandle-city", status: "research-candidate", rights: "unverified" })
   })
 
   it.each([

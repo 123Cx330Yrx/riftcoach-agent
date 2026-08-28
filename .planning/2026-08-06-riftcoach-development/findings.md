@@ -4566,6 +4566,16 @@
 - 视觉仍偏 restrained shimmer，缺少实际遮挡和材质 plate，不能把均衡 MAD 当作 MotionSites 级全局运动。下一步不是
   再加 opacity，而是 `material-plate-generation-gate`，先补独立 plate/backplate，再回到确定性合成。
 
+## 2026-08-28：Bandle City wallpaper candidate and static still quality
+
+- 桌面 `RIFTCOACH` 文件夹中已核对 `animated-bandlecity.webm`：1920×1080、25fps、15.04s、VP8 video +
+  Opus audio。它展示了持续的树林、蘑菇荧光、萤火与空间层次；5fps 低分辨率采样的相邻帧 mean absolute diff 为
+  `0.0043761693`，p95 为 `0.006180584`，采样首尾差为 `0.0062992894`。这些是候选技术证据，不是视觉签收或许可证明。
+- 已生成本地无音频 H.264/`yuv420p` sibling 和 poster；原 WebM、MP4、poster 均隔离在 ignored candidates 目录，
+  不进入公开 runtime。完整审计见 `docs/assets/8e-portal/portal-region-wallpaper-candidate-bandle-city-v1.json`。
+- `runeterra-bandlecity-03.jpg` 只有 926×1080，压缩/低清感明显。已用内置 imagegen 做一个非破坏性高分辨率修复候选并另存于
+  用户桌面素材目录；该图保留原图，不能替代更高分辨率的官方源，也未进入 adopted media。
+
 ## 2026-08-28：official wallpaper fallback preview
 
 - RQ-146 已激活：Wan 3.0 停止在 HTTP 404/no-task，避免继续消耗额度；用户提供的 Demacia WebM 成为第一份真实

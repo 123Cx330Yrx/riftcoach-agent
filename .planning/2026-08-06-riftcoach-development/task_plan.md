@@ -1801,10 +1801,19 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   a research candidate: 1920×1080, 15.04s, 25fps, VP8 WebM, no audio; motion is
   continuous but the native first/last seam is not seamless. Provenance and
   public redistribution permission remain unknown.
+- [completed-local-audit] A second local `animated-bandlecity.webm` candidate is
+  recorded as 1920×1080, 15.04s, 25fps, VP8+Opus; an audio-free H.264 sibling and
+  poster are generated for browser fallback tests. Its source and rights remain
+  unverified; machine and human audit are in the Bandle candidate evidence files.
 - [completed-local] Built the strict region wallpaper catalog and a no-I/O
-  `?surface=wallpaper-lab` preview with the Demacia candidate. It renders the
-  local WebM/MP4 pair, poster fallback, keyboard-safe region control and an
-  isolated activation transition without Auth/API/navigation side effects.
+  `?surface=wallpaper-lab` preview with Demacia and Bandle City candidates. It
+  renders each local WebM/MP4 pair, poster fallback, keyboard-safe region
+  control and an isolated activation transition without Auth/API/navigation
+  side effects.
+- [completed-local-boundary] The Bandle static Account still
+  `runeterra-bandlecity-03.jpg` is only 926×1080. A non-destructive imagegen
+  restoration sibling exists in the user's desktop folder, but a true
+  higher-resolution source and manual composition review are still preferred.
 - [next] Expand the catalog one region at a time. Keep source/rights, WebM/MP4,
   poster, loop, mobile and reduced-motion gates separate from the existing
   product journey contract; do not change the default `/` until a candidate set

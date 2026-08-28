@@ -4828,6 +4828,16 @@
 - 人工结论为 `foundation-pass-with-visual-boundary`：运动仍偏弱且缺少真实 occlusion/backplate，不进入 runtime。
   证据 JSON 已落盘，下一检查点为 `material-plate-generation-gate`，先补独立材质 plate 再回到合成。
 
+## 2026-08-28：Bandle City candidate added
+
+- 从桌面 `RIFTCOACH` 文件夹核对到 `animated-bandlecity.webm`，完成 1920×1080/25fps/15.04s 与连续运动采样审计；
+  已生成无音频 H.264 fallback 和 poster，并加入本地 catalog。Region Wallpaper Lab 现在可在 Demacia 与 Bandle City
+  之间切换；其它 11 个地区仍保持 pending，不伪造壁纸可用状态。
+- 新增候选审计 JSON 与 `regionWallpaperCatalog`/组件测试；聚焦 10 项、完整前端单测 269 项、E2E 38 项、build/typecheck
+  通过。动态素材仍仅为 research candidate，production media 继续为 `0`。
+- 用户提供的 Bandle City 静态图 `runeterra-bandlecity-03.jpg` 原始 926×1080；已另存一份 imagegen 修复候选到桌面
+  `RIFTCOACH`，未覆盖原图，下一步需与更高分辨率官方源和人工清晰度/构图门比较。
+
 ## 2026-08-28：official wallpaper fallback local preview
 
 - Wan first-frame reopen 停在兼容文本 endpoint 的 HTTP 404/no-task，用户明确转战，不再继续找 Host 或发第二次 POST。

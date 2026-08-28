@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-27（即梦 Smart Edit raw 与零费用后处理审计已由提交 `f041643` / Actions
+- 最后更新：2026-08-28（即梦 Smart Edit raw 与零费用后处理审计已由提交 `f041643` / Actions
   `33042204532` 完成 exact-SHA 三 job；T/X identity fault split 已完成但仍是 research-only。用户随后明确拒绝
   沿用当前视频节奏，要求先重做全局持续呼吸 brief，并在付费前用 Image2 对确认母图做多张静态方向预览。
   旧代理端口 `7890` 已纠正为用户实际 HTTP 代理 `12000`；Image2 两张同构编辑预览主要是调色/提亮，第三次请求
@@ -260,10 +260,13 @@ pause_reason: ""
   `authorized / in_progress`。Wan 3.0 official first-frame reopen 因 endpoint 误填 OpenAI-compatible
   `/compatible-mode/v1` 返回 HTTP 404，状态无 task_id/结果，不构成模型质量证据；用户已明确“转战”，不再继续寻找
   Wan Host 或发送第二次 POST。用户提供的 `animated-demacia.webm` 已完成候选审计：1920×1080、15.04s、25fps、
-  VP8 WebM、无音轨，持续运动可见但首尾非无缝，来源/公开再分发许可仍待核验。`?surface=wallpaper-lab` 的
-  no-I/O 本地研究预览已实现：包含 Universe 13 地区 crest 选择卡、动态视频/静态 poster 降级、键盘激活和独立
-  入口转场；它尚未改变默认 `/`，也没有把 Demacia 文件提交进公开 runtime。下一动作是逐地区补充经过来源/许可、格式/体积、浏览器/
-  移动端/reduced-motion 与 loop 门的候选，全部通过后再接入默认 Portal，`production_media` 保持 `0`。
+  VP8 WebM、无音轨，持续运动可见但首尾非无缝，来源/公开再分发许可仍待核验。随后在桌面 `RIFTCOACH` 素材中发现并核对
+  `animated-bandlecity.webm`：1920×1080、15.04s、25fps、VP8+Opus，已生成无音频 H.264 sibling 与 poster，
+  仍标为 `research-candidate`、rights unverified；审计 JSON 为
+  `docs/assets/8e-portal/portal-region-wallpaper-candidate-bandle-city-v1.json`。`?surface=wallpaper-lab` 的
+  no-I/O 本地研究预览已实现：包含 Universe 13 地区 crest 选择卡、Demacia/Bandle City 动态候选、动态视频/静态 poster
+  降级、键盘激活和独立入口转场；它尚未改变默认 `/`，也没有把任何壁纸提交进公开 runtime。下一动作是逐地区补充经过来源/许可、
+  格式/体积、浏览器/移动端/reduced-motion 与 loop 门的候选，全部通过后再接入默认 Portal，`production_media` 保持 `0`。
   8D、Batch B/C/D、Live Workbench、Batch E E1–E5、production shell/Auth gate、Timeline、bilingual/product-journey
   foundation 与 RQ-108 runtime Task 1–4 的公共证据保持不变；GLM-5.3/Flash、Coach、RQ-103 与 8F 仍留后序。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、

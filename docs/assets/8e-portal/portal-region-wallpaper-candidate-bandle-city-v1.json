@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0",
+  "candidateId": "bandle-city-v1",
+  "region": "bandle-city",
+  "status": "research-candidate",
+  "source": {
+    "kind": "user-provided-local-download",
+    "originalFileName": "84d14187e66ee28277609d55a3db93b96ae2a34c (1).webm",
+    "originalSha256": "17da832a35c669df551663a2a363e43b825895ba1a1b7648a4d07694a0eddb6c",
+    "originalPath": "C:/Users/33502/Desktop/RIFTCOACH/animated-bandlecity.webm",
+    "provenance": "not yet verified",
+    "redistributionRights": "unverified"
+  },
+  "technicalAudit": {
+    "container": "WebM",
+    "videoCodec": "VP8",
+    "audioCodec": "Opus",
+    "width": 1920,
+    "height": 1080,
+    "fps": 25,
+    "durationSeconds": 15.04,
+    "frameCount": 376,
+    "pixelFormat": "yuv420p",
+    "continuousMotion": "visible across sampled frames",
+    "sampledAdjacentMeanAbsDiff": 0.0043761693,
+    "sampledAdjacentP95MeanAbsDiff": 0.006180584,
+    "sampledFirstLastMeanAbsDiff": 0.0062992894
+  },
+  "browserVariants": {
+    "webm": {
+      "path": "/assets/wallpapers/candidates/bandle-city.webm",
+      "sha256": "17da832a35c669df551663a2a363e43b825895ba1a1b7648a4d07694a0eddb6c",
+      "audio": "present-in-source; runtime must mute playback"
+    },
+    "mp4": {
+      "path": "/assets/wallpapers/candidates/bandle-city.mp4",
+      "sha256": "786eac540d764f5b91265b6513f4651f2e1ba23012a7d3545ddba518cf13454d",
+      "audio": "omitted",
+      "encoding": "H.264/yuv420p/1920x1080/25fps"
+    },
+    "poster": {
+      "path": "/assets/wallpapers/candidates/bandle-city-poster.webp",
+      "sha256": "9c751c64eb3ae4cdb40a31ee9a9bae31ff081a57ad556c47a2fcfeeee71bbec9"
+    }
+  },
+  "loopAssessment": {
+    "nativeLoop": "candidate only",
+    "seamEvidence": "sampled first-last mean absolute difference is low, but no crossfade or loop acceptance has been performed",
+    "decision": "not adopted"
+  },
+  "nextGates": [
+    "identify the official source and redistribution terms",
+    "verify browser playback on WebM and H.264 fallback",
+    "verify mobile and prefers-reduced-motion poster behavior",
+    "review crop/focal point in the region selector and Account handoff",
+    "only then consider inclusion in the adopted media manifest"
+  ]
+}

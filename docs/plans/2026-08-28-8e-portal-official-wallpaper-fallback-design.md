@@ -12,7 +12,11 @@ image.
 The first sample is the user-supplied `animated-demacia.webm`. It is a real
 1920×1080 scene with continuous motion, but its source/redistribution rights
 are not yet verified and its first/last frames are not a seamless loop. It is a
-research candidate, not a production asset.
+research candidate, not a production asset. A second local candidate,
+`animated-bandlecity.webm`, is also 1920×1080/25fps/15.04s; it has a low
+sampled seam and continuous forest motion, but the source file carries Opus
+audio and its provenance is likewise unverified. It is paired with a muted
+H.264 sibling and poster for browser testing only.
 
 The region picker uses the richer crest set visible on the official Universe
 regions surface rather than the small LoR core icons. The current local set
@@ -84,8 +88,9 @@ scene wallpapers are not directly exportable as video. Therefore:
 
 1. Add a strict region-wallpaper catalog separate from the existing four-entry
    Portal/Account cinematic manifest.
-2. Build a local research preview using Demacia only; verify poster-first,
-   browser decode, keyboard/focus, reduced-motion and mobile fallback.
+2. Build a local research preview using the Demacia and Bandle City candidates;
+   verify poster-first, browser decode, keyboard/focus, reduced-motion and
+   mobile fallback for both.
 3. Add a no-cost loop-segment/export audit. Transcode an H.264 sibling only in
    research output; do not call it production until the seam and rights gates
    pass.
