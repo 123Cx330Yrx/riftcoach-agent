@@ -22,6 +22,14 @@ Those crests are already useful even when a region has no matching dynamic
 wallpaper; the card remains selectable only after its wallpaper candidate has
 passed the same media gate.
 
+The Universe page and League Displays do not expose the same media inventory.
+For example, the user found a Bandle City page with animated background motion,
+while League Displays currently offers only a static Bandle City image. We
+therefore model `region icon`, `static still` and `dynamic wallpaper` as three
+separate assets. A region can be selectable with a crest and static Account
+image even when its Portal video is still pending; it must not be advertised as
+dynamic until a standalone, locally playable file is audited.
+
 ## Product shape
 
 The Portal becomes a region-aware cinematic surface:
@@ -81,7 +89,9 @@ scene wallpapers are not directly exportable as video. Therefore:
 3. Add a no-cost loop-segment/export audit. Transcode an H.264 sibling only in
    research output; do not call it production until the seam and rights gates
    pass.
-4. Add further regions one at a time, each with the same audit envelope.
+4. Add further regions one at a time, each with the same audit envelope. If a
+   Universe page animation is only a webpage effect rather than a downloadable
+   file, keep it as visual reference until a permitted standalone source exists.
 5. Only after a candidate set passes the source/format/rights gate, wire the
    region picker into the default Portal route and update the adopted media
    manifest. Existing Account and Workbench business control flow remains

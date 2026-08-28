@@ -4844,6 +4844,9 @@
 - 预览 E2E/单测继续覆盖 no-I/O、键盘、poster 降级和双语；官方 crest 来源与本地 SHA 记录在
   `docs/assets/8e-portal/portal-region-icon-provenance-v1.md`。
 
+- 依据新截图补齐 Universe 13 区域（含 Ixtal、Bandle City、Piltover、Zaun、Void）；Bandle City 的 Universe
+  动态背景与 League Displays 静态资源差异已记录，后续按 crest/static/dynamic 三态建模。
+
 ## 2026-08-28：masked-inpaint plate proof rejected；Wan 3.0 first-frame reopen prepared
 
 - 完成 bounded Rift proof：ImageGen 清洁背板只在局部遮罩内使用，独立 RGBA 流体层只在该遮罩内做周期位移；

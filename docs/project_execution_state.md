@@ -3134,3 +3134,11 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 下一动作改为 `official-wallpaper-fallback`：region wallpaper catalog + no-I/O local preview；Portal 选择
   地区后加载本地动态壁纸，Account 使用独立静态壁纸，先过来源/许可、格式/体积、浏览器/移动端/reduced-motion
   与 loop 门，`production_media` 继续为 `0`。
+
+### 2026-08-28：Universe crest 与 Bandle City 资源差异
+
+- 用户确认地区选择应独立成类似国服大区选择的卡片；Universe 页面提供 13 个官方地区 crest，已纳入本地研究预览。
+- Bandle City 在 Universe 页面存在网页动态背景，但 League Displays 当前只有静态资源；因此 region crest、Account
+  静态图和 Portal 动态壁纸分别建模，网页动态效果若没有允许再分发的独立文件只作参考，不直接抓取注入。
+- 用户提供的高细节 3D 徽章更接近 LoR 详细 region emblem；暂作为 selected-region hero 候选，不替换已核验的
+  Universe crest，也不改变当前 Portal/Account 业务控制流。

@@ -4600,6 +4600,13 @@
   Wallpaper Engine 官方文档说明场景壁纸不能直接导出成视频，下载作品再发布可能需要原作者许可。下一步先做
   region catalog/local preview，不把 Workshop 或用户文件直接写进公开 runtime。
 
+- 用户补充了 Universe 与 League Displays 的素材差异：Bandle City 在 Universe 页面存在网页动态背景，但
+  League Displays 目前只有静态图。故 region crest、Account 静态图和 Portal 动态壁纸必须拆成三个独立资源状态；
+  网页动画若不能取得允许再分发的独立文件，只能作为设计参考，不能直接抓取注入。
+- 用户提供的另一类 3D 立体徽章更接近 Legends of Runeterra 的详细 region emblem；其中 Targon 版本可在 Riot
+  官方支持附件中核对。小卡片仍优先 Universe crest，详细 emblem 保留为后续 selected-region hero 资产候选，
+  先核对每张的官方来源和许可。
+
 ## 2026-08-28：独立材质 plate 生成预检
 
 - built-in imagegen 的 5 张 plate 均不能直接进入合成：Rift 大水团像贴纸，wisps 只能做研究控制场；右场/道路仍有宽泛
