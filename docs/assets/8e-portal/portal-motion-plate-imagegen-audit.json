@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0",
+  "status": "research-plate-preflight-rejected",
+  "candidate": "imagegen-independent-material-plates-2026-08-28",
+  "tool": "built-in image_gen",
+  "calls": 5,
+  "production_media": false,
+  "runtime_adoption": false,
+  "assets": [
+    {"role":"rift-fluid-blob","path":"repo-excluded:$CODEX_HOME/generated_images/01a0200b-d00e-7e12-91fa-bf78dc3ddfe1/exec-dd335655-1b04-4ce6-9bdb-1d35c96f66ec.png","sha256":"763b34abdcd6f64f4dd5cefff058cbf477ba4334ac4c1d4004df735fa6df56a8","verdict":"rejected-direct-overlay","reason":"large contiguous blue fluid mass reads as a sticker/water blob"},
+    {"role":"rift-fluid-separated-wisps","path":"repo-excluded:$CODEX_HOME/generated_images/01a0200b-d00e-7e12-91fa-bf78dc3ddfe1/exec-fc565fc6-90b6-4d29-baac-abb3c8cae23c.png","sha256":"fb3a4bd991fbf69ac2cd2a4d96eb496dfeefc589987cb16ca244f087bad998c3","verdict":"research-only-control-field","reason":"separated wisps are promising but lack a clean Rift backplate"},
+    {"role":"right-field-stardust","path":"repo-excluded:$CODEX_HOME/generated_images/01a0200b-d00e-7e12-91fa-bf78dc3ddfe1/exec-3c5a7c6d-c37c-4ce6-90ce-f36798304739.png","sha256":"3cf3fcab3631a6e81bae6e8c288ed570e3920651473d1d1f5b3aeac8ae460882","verdict":"rejected-unmasked","reason":"broad dark-blue field needs terrain-aware alpha/occlusion"},
+    {"role":"road-reflection-caustic","path":"repo-excluded:$CODEX_HOME/generated_images/01a0200b-d00e-7e12-91fa-bf78dc3ddfe1/exec-ceacbc88-a833-47de-9324-70925f2a2106.png","sha256":"751ea9f5bb5cce42e51b908d9056dce7cfe768f592f6767e0ca78f961040abfd","verdict":"rejected-unmasked","reason":"water-like broad field would veil the road"},
+    {"role":"crystal-refraction","path":"repo-excluded:$CODEX_HOME/generated_images/01a0200b-d00e-7e12-91fa-bf78dc3ddfe1/exec-06f66474-7e9d-478d-8764-47f1206f1141.png","sha256":"68b86837a1eba6bde692d85bfef9a07d92efda7234b42bd040b315df0cc89147","verdict":"rejected-geometry","reason":"shattered crystal changes the original crystal identity"}
+  ],
+  "gate_result": {"direct_overlay":"failed","clean_backplate":"not_available","transparent_material_identity":"partial","next_gate":"masked-inpaint-plate-proof"}
+}

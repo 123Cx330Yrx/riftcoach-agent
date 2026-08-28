@@ -4565,6 +4565,13 @@
   结构、无全屏雾/圆环/硬柱通过。
 - 视觉仍偏 restrained shimmer，缺少实际遮挡和材质 plate，不能把均衡 MAD 当作 MotionSites 级全局运动。下一步不是
   再加 opacity，而是 `material-plate-generation-gate`，先补独立 plate/backplate，再回到确定性合成。
+
+## 2026-08-28：独立材质 plate 生成预检
+
+- built-in imagegen 的 5 张 plate 均不能直接进入合成：Rift 大水团像贴纸，wisps 只能做研究控制场；右场/道路仍有宽泛
+  蓝底，晶体改变原始几何。alpha 存在不等于 plate 与场景材质相容。
+- 直接叠加要么产生蓝雾，要么需要压低到不可见；问题仍是缺少真实 mask/inpaint backplate。下一步必须从一个 bounded
+  Rift 区域开始做 `masked-inpaint-plate-proof`，不再批量生成、不再尝试整体 source 位移。
 - RQ-143 已生效：后续 proof 必须底图像素锁定、只移动源图高光/独立透明 plate，禁止 source duplicate 纱罩、全局
   tint 和建筑边缘双影；Image2 只有在代理恢复且用于具体 plate/backplate 时才调用。
 

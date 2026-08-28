@@ -4828,6 +4828,13 @@
 - 人工结论为 `foundation-pass-with-visual-boundary`：运动仍偏弱且缺少真实 occlusion/backplate，不进入 runtime。
   证据 JSON 已落盘，下一检查点为 `material-plate-generation-gate`，先补独立材质 plate 再回到合成。
 
+## 2026-08-28：独立材质 plate 预检结果
+
+- built-in imagegen 完成 5 个局部 plate 候选；Rift/右场/道路/晶体直接叠加分别暴露水团贴纸、宽蓝底、蓝雾和几何替换
+  问题，均不进入 runtime。完整 SHA/路径审计已落盘。
+- `material-plate-generation-gate` 未通过；下一动作收窄为 `masked-inpaint-plate-proof`，只做一个 Rift bounded 区域的
+  清洁 backplate + transparent plate 叠合验证。Image2 代理与 Photoshop 当前不可用，先不继续批量生成。
+
 ## 2026-08-28：replace-shifted visible motion rejection
 
 - `motion_scale=2.5` 的 `replace-shifted` 低分辨率对照已完成，聚焦测试保持通过；运动更可见但产生 Rift/道路/晶体

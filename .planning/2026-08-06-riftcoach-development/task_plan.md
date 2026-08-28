@@ -1770,10 +1770,12 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 
 - [completed-local-negative] `replace-shifted` visible variant (motion_scale 2.5) makes motion clearer but confirms ghosting/
   softness and right/far imbalance; rejected, no further opacity/shift tuning.
-- [in_progress] Freeze independent transparent Rift/right-field/road-reflection/crystal plates, clean backplates and
-  occlusion masks; check Image2/Photoshop availability without exposing keys or paying for video generation.
-- [next] Render a no-cost plate-over-base proof, audit crispness/ghosting/full-scene motion/seam, then decide whether any
-  external video model is worth a single controlled call.
+- [completed-local-negative] Five built-in imagegen plates were inspected; direct overlays failed for sticker, broad blue-field,
+  veil, or crystal-geometry reasons. No plate is adopted.
+- [decision] An alpha channel alone is not a material plate; stop unmasked generation and require a real backplate/occlusion proof.
+- [in_progress] `masked-inpaint-plate-proof`: one bounded Rift mask, clean backplate, independent transparent plate, and 100% edge review.
+- [next] Check Photoshop/manual masked editing or a reachable Image2 edit path; only after one region passes consider road/right/crystal
+  plates and a no-cost composite.
 
 ## Source-derived layer assets proof v1 (2026-08-28)
 

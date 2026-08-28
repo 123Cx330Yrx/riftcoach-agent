@@ -3102,3 +3102,13 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 新增 `docs/plans/2026-08-28-8e-portal-material-plate-generation-gate.md`；当前下一检查点仍为
   `material-plate-generation-gate`，先准备独立 Rift/右场/道路反射/中央折射素材和背板。Image2 代理仍不可达，
   未调用视频或图像模型；runtime、Account 和 production_media 保持不变。
+
+### 2026-08-28：独立材质 plate 预检结果
+
+- built-in imagegen 做了 5 个窄范围 plate 试验，没有上传母图、没有视频调用。Rift 第一张是完整蓝色水团，第二张 wisps
+  仅保留为研究控制场；右场/道路带宽泛底色，晶体生成碎裂几何，均不直接采用。
+- 直接叠加测试暴露贴纸/蓝雾/几何替换风险；完整 body-free 路径、SHA 和裁决见
+  `docs/assets/8e-portal/portal-motion-plate-imagegen-audit.json` 与
+  `docs/plans/2026-08-28-8e-portal-material-plate-generation-result-audit.md`。
+- `material-plate-generation-gate` 未通过，下一细分为 `masked-inpaint-plate-proof`：先对一个 bounded Rift 区域做
+  清洁 backplate + 独立透明 plate 的 100% 叠合验证，再扩展右场/道路/晶体；Image2 代理仍不可达，当前不再批量生成。
