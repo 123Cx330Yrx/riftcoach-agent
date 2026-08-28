@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "status": "research-proof-rejected",
+  "candidate": "layered-material-proof-v2",
+  "external_video_calls_total_after_run": 15,
+  "task_id": null,
+  "model": "deterministic-hyperframes",
+  "transport": "local-only",
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e"
+  },
+  "request": {
+    "composition_path": "experiments/portal_layered_material_proof_v2/index.html",
+    "contract_path": "experiments/portal_layered_material_proof_v2/motion-contract.json",
+    "motion_model": "feathered source-texture displacement with deterministic phase clock",
+    "duration_s": 8,
+    "fps": 24,
+    "width": 1920,
+    "height": 1080,
+    "audio": false,
+    "renderer": "HyperFrames 0.8.14 browser GPU / one worker",
+    "external_model_calls": 0
+  },
+  "output": {
+    "path": "repo-excluded:tmp/riftcoach-task5-layered-material-proof-v2/layered-material-proof-v2-gpu-v2.mp4",
+    "sha256": "94ba1990f29905d7d58eb714878a09cefae400d7eb18c20f7747fa0950c4c07",
+    "duration_s": 8.0,
+    "frames": 192,
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "codec": "h264-constrained-baseline",
+    "pixel_format": "yuv420p",
+    "color": "bt709",
+    "bytes": 2814186,
+    "audio": false
+  },
+  "measurements": {
+    "source_to_first_ssim": 0.9505147667,
+    "first_to_last_ssim": 0.9976901635,
+    "first_to_last_mad": 0.0076707713,
+    "motion_mad_every_0_5s": {
+      "left": 0.0088993569,
+      "center": 0.0074891675,
+      "right": 0.0110294605
+    },
+    "motion_mad_every_0_5s_depth": {
+      "near": 0.0089372677,
+      "mid": 0.0084700248,
+      "far": 0.0100112548
+    },
+    "motion_mad_0_to_4s": {
+      "left": 0.0072805835,
+      "center": 0.0073183225,
+      "right": 0.0082372837
+    },
+    "motion_mad_0_to_4s_depth": {
+      "near": 0.0079906937,
+      "mid": 0.0075954185,
+      "far": 0.0072508547
+    },
+    "duplicate_frame_count": 0
+  },
+  "visual_review": {
+    "passed": [
+      "mother-image structure remains recognizable with no camera transform",
+      "all declared regions have measurable changes from the first frame",
+      "no visible solid Rift ring, central platform dome, cross-screen beam, HUD line or full-frame fog sheet",
+      "output is technically playable, fixed 24fps, BT.709, yuv420p and silent"
+    ],
+    "failed": [
+      "normal viewing still reads mostly as brightness/texture modulation rather than material flow through space",
+      "Rift internal depth and road current are not visibly traveling along their existing surfaces",
+      "central crystal remains visually static except for a light envelope; local swell lacks authored refraction detail",
+      "right constellation/terrain changes are too quiet and do not create independent depth motion",
+      "near/mid/far movement is numerically balanced but has no convincing occlusion or parallax carrier",
+      "the pass is still a source-image duplicate/mask technique, so stronger opacity would increase sticker/ghost risk"
+    ],
+    "user_verdict": "not yet provided",
+    "agent_verdict": "rejected: proof establishes control plumbing, not MotionSites-level visual quality"
+  },
+  "next_gate": "layer-assets-and-occlusion-proof",
+  "production_media": false
+}

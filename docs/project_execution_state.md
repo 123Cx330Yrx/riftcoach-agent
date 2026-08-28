@@ -3053,3 +3053,17 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - 用户要求停下完整复盘；当前切换为 `method-review-hold`：暂停新视频生成、模型切换、runtime 接入和
   Account 推进。恢复时先做可见分层/材质载体的 no-cost proof，再评估是否存在真正支持相同区域/时间控制的
   视频编辑模式；不以更长 prompt 或新品牌抽卡替代方法决策。
+
+### 2026-08-28：分层材质 proof v2 结果
+
+- 依据复盘后的 Phase 0/1 合同，新建 `experiments/portal_layered_material_proof_v2/`；先红灯后绿灯，
+  聚焦测试 `3 passed`。HyperFrames 0.8.14 GPU/单 worker 在仓库外完成 192 帧、8s/1920×1080/24fps
+  研究视频，外部模型调用 `0`。
+- 技术检查：输出 SHA `94ba1990f29905d7d58eb714878a09cefae400d7eb18c20f7747fa0950c4c07`，H.264/yuv420p/BT.709/
+  无音频，source→first SSIM `0.950515`，first→last SSIM `0.997690`，无重复帧；left/center/right 每 0.5s
+  MAD `0.008899/0.007489/0.011029`，near/mid/far `0.008937/0.008470/0.010011`。
+- 人工裁决为 `research-proof-rejected`：结构和覆盖门通过，但正常观看仍主要是亮度/纹理调制，不是 Rift、道路、
+  水晶折射、右场星图和近中远空气的真实空间流动；继续增加 opacity 会放大 source duplicate 的贴层/ghosting 风险。
+  完整证据见 `docs/assets/8e-portal/portal-motion-candidate-layered-material-v2.json`。
+- `method-review-hold` 继续有效，但下一项不再是滤镜调参，而是 `layer-assets-and-occlusion-proof`：先制作可移除的
+  inpaint 背板、遮挡边界和至少六个真实材质层，再做一次有界本地 proof；不调用外部视频模型、不接 runtime、不进入 Account。

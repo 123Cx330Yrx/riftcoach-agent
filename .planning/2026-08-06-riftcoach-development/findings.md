@@ -4557,3 +4557,16 @@
 - 过程纠正：重复“扁平母图 + 整幕生成”会把 motion 坍缩到显著主体。下一次必须先验证每个可见层有独立、
   可逆的运动载体和审查证据，再决定是否值得新的模型调用；用户已要求停下做完整复盘，当前为
   `method-review-hold`。
+
+## 2026-08-28：分层材质 proof v2 result
+
+- Phase 0/1 的第一版可控 proof 通过结构、源图和技术编码门，三大区/三深度的像素变化也达到均衡，但人工观感仍然
+  过轻，主要像 source image duplicate 的低幅亮度/纹理调制。Rift 内部、道路、晶体折射、右场和 near/mid/far
+  没有出现清晰的空间流动或遮挡关系。
+- 结论：控制时钟和 mask plumbing 是可复用工程资产；问题不在“再把 opacity 加大”，而在缺少真实的 layer
+  backplate、遮挡补全、材质纹理和可观察 motion carrier。继续调参会产生贴层/ghosting 或整体蓝雾。
+- 下一动作收窄为 `layer-assets-and-occlusion-proof`，仍不产生外部模型调用；若真实分层 proof 仍显廉价，停止生成式
+  Portal 动效并保留高质量 poster，不把低质视频放入 runtime。
+- 本机完整回归的 `--maxfail=1` 在第 127 项 PostgreSQL API fixture setup 因 `DATABASE_URL` 未配置而停止：
+  `126 passed, 1 warning, 1 error`。该错误发生在真实数据库环境初始化，不涉及 v2 proof 文件；聚焦 proof/相邻媒体测试
+  仍通过，公共 PostgreSQL job 负责真实数据库补证。

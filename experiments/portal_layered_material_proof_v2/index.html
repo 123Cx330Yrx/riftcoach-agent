@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1920,height=1080" />
+    <title>RiftCoach layered material motion proof v2</title>
+    <style>
+      :root { --cycle: 7.958333s; }
+      *, *::before, *::after { box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; margin: 0; overflow: hidden; background: #040912; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; isolation: isolate; }
+      #base { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+      #material-field { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+      .material { mix-blend-mode: screen; transform-box: fill-box; transform-origin: center; }
+      .source-pass { opacity: .16; }
+      .rift-pass { opacity: .24; }
+      .road-pass { opacity: .20; }
+      .crystal-pass { opacity: .20; }
+      .right-pass { opacity: .19; }
+      .depth-pass { opacity: .10; }
+      .foreground-pass { opacity: .14; }
+      .pulse-pass { opacity: .10; }
+      @media (prefers-reduced-motion: reduce) {
+        .material, .animated { animation-play-state: paused !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="root" data-composition-id="portal-layered-material-proof-v2" data-start="0" data-duration="8" data-width="1920" data-height="1080" data-fps="24" data-no-timeline data-layout-allow-overflow="true" aria-hidden="true">
+      <img id="base" src="assets/portal-mother-image-source-v2.png" alt="" />
+      <svg id="material-field" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <defs>
+          <filter id="feather-rift" x="-12%" y="-12%" width="124%" height="124%">
+            <feGaussianBlur stdDeviation="18" />
+          </filter>
+          <filter id="feather-soft" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur stdDeviation="12" />
+          </filter>
+
+          <mask id="mask-rift" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+            <path d="M68 104 C170 56 362 74 464 197 C522 268 535 402 477 520 C423 629 304 694 182 646 C84 608 35 490 47 356 C54 256 24 166 68 104 Z" fill="#fff" filter="url(#feather-rift)" />
+          </mask>
+          <mask id="mask-road" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+            <path d="M48 788 C230 699 354 620 486 568 C604 522 709 496 827 484 L860 562 C718 602 598 649 452 731 C305 814 181 858 52 901 Z" fill="#fff" filter="url(#feather-soft)" />
+          </mask>
+          <mask id="mask-crystal" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+            <path d="M928 154 L1000 98 L1072 154 L1072 412 L1000 470 L928 412 Z" fill="#fff" filter="url(#feather-soft)" />
+            <path d="M957 424 L1043 424 L1059 704 L941 704 Z" fill="#fff" filter="url(#feather-soft)" />
+          </mask>
+          <mask id="mask-right" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+            <path d="M1137 82 C1392 53 1684 48 1920 20 L1920 814 L1539 824 C1367 790 1231 725 1120 624 Z" fill="#fff" filter="url(#feather-soft)" />
+          </mask>
+          <mask id="mask-far" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+            <path d="M0 0 H1920 V302 C1580 264 1294 292 960 270 C610 246 294 287 0 318 Z" fill="#fff" filter="url(#feather-soft)" />
+          </mask>
+          <mask id="mask-mid" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+            <path d="M0 216 C438 205 734 233 1037 219 C1392 203 1657 214 1920 196 V606 C1596 576 1288 598 958 586 C628 574 308 604 0 618 Z" fill="#fff" filter="url(#feather-soft)" />
+          </mask>
+          <mask id="mask-near" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+            <path d="M0 568 C398 586 730 556 1057 571 C1408 588 1671 563 1920 579 V1080 H0 Z" fill="#fff" filter="url(#feather-soft)" />
+          </mask>
+          <mask id="mask-foreground" maskUnits="userSpaceOnUse" x="0" y="0" width="1920" height="1080">
+            <path d="M0 754 C390 718 723 706 1028 724 C1388 745 1652 735 1920 764 V1080 H0 Z" fill="#fff" filter="url(#feather-soft)" />
+          </mask>
+
+          <filter id="flow-rift" x="-14%" y="-14%" width="128%" height="128%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.004 0.011" numOctaves="3" seed="11" stitchTiles="stitch" result="rift-noise">
+              <animate attributeName="baseFrequency" dur="7.958333s" repeatCount="indefinite" values="0.004 0.011;0.006 0.008;0.003 0.013;0.004 0.011" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="rift-noise" scale="7" xChannelSelector="R" yChannelSelector="G">
+              <animate attributeName="scale" dur="7.958333s" repeatCount="indefinite" values="4;8;5;4" />
+            </feDisplacementMap>
+          </filter>
+          <filter id="flow-road" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.002 0.018" numOctaves="2" seed="19" stitchTiles="stitch" result="road-noise">
+              <animate attributeName="baseFrequency" dur="7.958333s" repeatCount="indefinite" values="0.002 0.018;0.003 0.012;0.001 0.021;0.002 0.018" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="road-noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <filter id="flow-crystal" x="-14%" y="-14%" width="128%" height="128%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.008 0.024" numOctaves="2" seed="29" stitchTiles="stitch" result="crystal-noise">
+              <animate attributeName="baseFrequency" dur="7.958333s" repeatCount="indefinite" values="0.008 0.024;0.012 0.016;0.006 0.029;0.008 0.024" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="crystal-noise" scale="3.4" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <filter id="flow-right" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.002 0.009" numOctaves="3" seed="37" stitchTiles="stitch" result="right-noise">
+              <animate attributeName="baseFrequency" dur="7.958333s" repeatCount="indefinite" values="0.002 0.009;0.003 0.007;0.001 0.011;0.002 0.009" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="right-noise" scale="5.5" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <filter id="flow-depth" x="-14%" y="-14%" width="128%" height="128%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.001 0.004" numOctaves="2" seed="43" stitchTiles="stitch" result="depth-noise">
+              <animate attributeName="baseFrequency" dur="7.958333s" repeatCount="indefinite" values="0.001 0.004;0.002 0.003;0.001 0.005;0.001 0.004" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="depth-noise" scale="8" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <filter id="flow-foreground" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.004 0.015" numOctaves="2" seed="53" stitchTiles="stitch" result="foreground-noise">
+              <animate attributeName="baseFrequency" dur="7.958333s" repeatCount="indefinite" values="0.004 0.015;0.006 0.011;0.003 0.018;0.004 0.015" />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="foreground-noise" scale="4.5" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <filter id="caustic-rift" x="-14%" y="-14%" width="128%" height="128%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.006 0.018" numOctaves="2" seed="61" stitchTiles="stitch" result="rift-caustic">
+              <animate attributeName="baseFrequency" dur="7.958333s" repeatCount="indefinite" values="0.006 0.018;0.009 0.012;0.004 0.021;0.006 0.018" />
+            </feTurbulence>
+            <feColorMatrix in="rift-caustic" type="matrix" values="0 0 0 0 0.06 0 0 0 0 0.48 0 0 0 0 0.86 0 0 0 0.86 0" result="rift-blue" />
+            <feGaussianBlur in="rift-blue" stdDeviation="5" />
+          </filter>
+          <filter id="caustic-surface" x="-14%" y="-14%" width="128%" height="128%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.003 0.014" numOctaves="2" seed="67" stitchTiles="stitch" result="surface-caustic">
+              <animate attributeName="baseFrequency" dur="7.958333s" repeatCount="indefinite" values="0.003 0.014;0.005 0.010;0.002 0.017;0.003 0.014" />
+            </feTurbulence>
+            <feColorMatrix in="surface-caustic" type="matrix" values="0 0 0 0 0.04 0 0 0 0 0.40 0 0 0 0 0.78 0 0 0 0.72 0" result="surface-blue" />
+            <feGaussianBlur in="surface-blue" stdDeviation="7" />
+          </filter>
+          <filter id="caustic-air" x="-14%" y="-14%" width="128%" height="128%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency="0.0016 0.006" numOctaves="2" seed="71" stitchTiles="stitch" result="air-caustic">
+              <animate attributeName="baseFrequency" dur="7.958333s" repeatCount="indefinite" values="0.0016 0.006;0.0026 0.004;0.0012 0.007;0.0016 0.006" />
+            </feTurbulence>
+            <feColorMatrix in="air-caustic" type="matrix" values="0 0 0 0 0.03 0 0 0 0 0.34 0 0 0 0 0.70 0 0 0 0.55 0" result="air-blue" />
+            <feGaussianBlur in="air-blue" stdDeviation="16" />
+          </filter>
+
+          <radialGradient id="rift-material" cx="48%" cy="50%" r="66%">
+            <stop offset="0" stop-color="#87efff" stop-opacity=".07" />
+            <stop offset=".58" stop-color="#2a9dff" stop-opacity=".20" />
+            <stop offset="1" stop-color="#0b2c75" stop-opacity="0" />
+          </radialGradient>
+          <linearGradient id="crystal-material" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#dcfbff" stop-opacity=".22" />
+            <stop offset=".48" stop-color="#56dcff" stop-opacity=".12" />
+            <stop offset="1" stop-color="#1676de" stop-opacity=".03" />
+          </linearGradient>
+          <linearGradient id="right-material" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#36cfff" stop-opacity=".03" />
+            <stop offset=".42" stop-color="#5abfff" stop-opacity=".13" />
+            <stop offset="1" stop-color="#236ad7" stop-opacity=".04" />
+          </linearGradient>
+          <linearGradient id="depth-material" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#247ad3" stop-opacity=".02" />
+            <stop offset=".5" stop-color="#8ddfff" stop-opacity=".08" />
+            <stop offset="1" stop-color="#1b4e9e" stop-opacity=".02" />
+          </linearGradient>
+        </defs>
+
+        <!-- Each pass reuses source material inside a feathered mask. No new visible geometry is drawn. -->
+        <g class="material source-pass layer-rift" data-phase="rift-0.00" mask="url(#mask-rift)" filter="url(#flow-rift)">
+          <image href="assets/portal-mother-image-source-v2.png" x="-4" y="2" width="1920" height="1080">
+            <animateTransform attributeName="transform" type="translate" dur="7.958333s" repeatCount="indefinite" values="0 0; 7 -3; 1 4; -5 1; 0 0" />
+          </image>
+        </g>
+        <path class="material layer-rift" data-phase="rift-light-1.73" d="M68 104 C170 56 362 74 464 197 C522 268 535 402 477 520 C423 629 304 694 182 646 C84 608 35 490 47 356 C54 256 24 166 68 104 Z" fill="url(#rift-material)" mask="url(#mask-rift)" filter="url(#flow-rift)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".18;.38;.23;.18" />
+        </path>
+        <rect class="material layer-rift" data-phase="rift-caustic-0.91" x="0" y="0" width="1920" height="1080" fill="#44d9ff" opacity=".17" mask="url(#mask-rift)" filter="url(#caustic-rift)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".12;.22;.15;.12" />
+        </rect>
+
+        <g class="material road-pass layer-road" data-phase="road-1.10" mask="url(#mask-road)" filter="url(#flow-road)">
+          <image href="assets/portal-mother-image-source-v2.png" x="-6" y="0" width="1920" height="1080">
+            <animateTransform attributeName="transform" type="translate" dur="7.958333s" repeatCount="indefinite" values="0 0; 10 3; 2 -2; -7 -1; 0 0" />
+          </image>
+        </g>
+        <path class="material layer-road" data-phase="road-light-3.22" d="M48 788 C230 699 354 620 486 568 C604 522 709 496 827 484 L860 562 C718 602 598 649 452 731 C305 814 181 858 52 901 Z" fill="url(#depth-material)" mask="url(#mask-road)" filter="url(#flow-road)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".12;.30;.18;.12" />
+        </path>
+        <rect class="material layer-road" data-phase="road-caustic-2.28" x="0" y="0" width="1920" height="1080" fill="#35caff" opacity=".14" mask="url(#mask-road)" filter="url(#caustic-surface)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".10;.19;.14;.10" />
+        </rect>
+
+        <g class="material crystal-pass layer-crystal" data-phase="crystal-2.00" mask="url(#mask-crystal)" filter="url(#flow-crystal)">
+          <image href="assets/portal-mother-image-source-v2.png" x="0" y="-3" width="1920" height="1080">
+            <animateTransform attributeName="transform" type="translate" dur="7.958333s" repeatCount="indefinite" values="0 0; 0 4; 0 1; 0 -3; 0 0" />
+          </image>
+        </g>
+        <path class="material layer-crystal" data-phase="crystal-swell-4.50" d="M928 154 L1000 98 L1072 154 L1072 412 L1000 470 L928 412 Z M957 424 L1043 424 L1059 704 L941 704 Z" fill="url(#crystal-material)" fill-rule="evenodd" mask="url(#mask-crystal)" filter="url(#flow-crystal)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".10;.18;.35;.20;.10" keyTimes="0;.42;.56;.70;1" />
+        </path>
+        <rect class="material layer-crystal" data-phase="crystal-caustic-4.08" x="0" y="0" width="1920" height="1080" fill="#7ceaff" opacity=".12" mask="url(#mask-crystal)" filter="url(#caustic-surface)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".08;.16;.24;.14;.08" keyTimes="0;.42;.56;.70;1" />
+        </rect>
+
+        <g class="material right-pass layer-right" data-phase="right-0.82" mask="url(#mask-right)" filter="url(#flow-right)">
+          <image href="assets/portal-mother-image-source-v2.png" x="4" y="-2" width="1920" height="1080">
+            <animateTransform attributeName="transform" type="translate" dur="7.958333s" repeatCount="indefinite" values="0 0; -6 2; -1 -4; 5 -1; 0 0" />
+          </image>
+        </g>
+        <path class="material layer-right" data-phase="right-light-2.65" d="M1137 82 C1392 53 1684 48 1920 20 L1920 814 L1539 824 C1367 790 1231 725 1120 624 Z" fill="url(#right-material)" mask="url(#mask-right)" filter="url(#flow-right)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".10;.22;.16;.10" />
+        </path>
+        <rect class="material layer-right" data-phase="right-caustic-1.62" x="0" y="0" width="1920" height="1080" fill="#42ceff" opacity=".13" mask="url(#mask-right)" filter="url(#caustic-surface)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".09;.18;.14;.09" />
+        </rect>
+
+        <g class="material depth-pass layer-far" data-phase="far-0.47" mask="url(#mask-far)" filter="url(#flow-depth)">
+          <image href="assets/portal-mother-image-source-v2.png" x="-5" y="0" width="1920" height="1080">
+            <animateTransform attributeName="transform" type="translate" dur="7.958333s" repeatCount="indefinite" values="0 0; 6 0; 2 2; -5 0; 0 0" />
+          </image>
+        </g>
+        <g class="material depth-pass layer-mid" data-phase="mid-2.91" mask="url(#mask-mid)" filter="url(#flow-depth)">
+          <image href="assets/portal-mother-image-source-v2.png" x="3" y="0" width="1920" height="1080">
+            <animateTransform attributeName="transform" type="translate" dur="7.958333s" repeatCount="indefinite" values="0 0; -5 1; -1 -2; 4 1; 0 0" />
+          </image>
+        </g>
+        <g class="material depth-pass layer-near" data-phase="near-5.14" mask="url(#mask-near)" filter="url(#flow-depth)">
+          <image href="assets/portal-mother-image-source-v2.png" x="-2" y="2" width="1920" height="1080">
+            <animateTransform attributeName="transform" type="translate" dur="7.958333s" repeatCount="indefinite" values="0 0; 4 -2; 1 3; -3 0; 0 0" />
+          </image>
+        </g>
+        <rect class="material pulse-pass layer-far" data-phase="far-air-6.20" x="0" y="0" width="1920" height="320" fill="url(#depth-material)" mask="url(#mask-far)" filter="url(#flow-depth)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".04;.12;.07;.04" />
+        </rect>
+        <rect class="material pulse-pass layer-mid" data-phase="mid-air-1.38" x="0" y="218" width="1920" height="400" fill="url(#depth-material)" mask="url(#mask-mid)" filter="url(#flow-depth)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".03;.10;.06;.03" />
+        </rect>
+        <rect class="material pulse-pass layer-far" data-phase="far-caustic-5.73" x="0" y="0" width="1920" height="320" fill="#36aee8" opacity=".08" mask="url(#mask-far)" filter="url(#caustic-air)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".05;.11;.07;.05" />
+        </rect>
+        <rect class="material pulse-pass layer-mid" data-phase="mid-caustic-3.64" x="0" y="218" width="1920" height="400" fill="#36b8ef" opacity=".07" mask="url(#mask-mid)" filter="url(#caustic-air)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".04;.10;.06;.04" />
+        </rect>
+        <rect class="material pulse-pass layer-near" data-phase="near-caustic-0.31" x="0" y="568" width="1920" height="512" fill="#2ba9e2" opacity=".07" mask="url(#mask-near)" filter="url(#caustic-air)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".04;.10;.06;.04" />
+        </rect>
+
+        <g class="material foreground-pass layer-foreground" data-phase="foreground-3.77" mask="url(#mask-foreground)" filter="url(#flow-foreground)">
+          <image href="assets/portal-mother-image-source-v2.png" x="2" y="-2" width="1920" height="1080">
+            <animateTransform attributeName="transform" type="translate" dur="7.958333s" repeatCount="indefinite" values="0 0; -4 2; -1 -2; 3 1; 0 0" />
+          </image>
+        </g>
+        <path class="material layer-foreground" data-phase="foreground-light-6.88" d="M0 754 C390 718 723 706 1028 724 C1388 745 1652 735 1920 764 V1080 H0 Z" fill="url(#depth-material)" mask="url(#mask-foreground)" filter="url(#flow-foreground)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".07;.18;.10;.07" />
+        </path>
+        <rect class="material layer-foreground" data-phase="foreground-caustic-7.44" x="0" y="0" width="1920" height="1080" fill="#39c4f5" opacity=".08" mask="url(#mask-foreground)" filter="url(#caustic-surface)">
+          <animate attributeName="opacity" dur="7.958333s" repeatCount="indefinite" values=".05;.12;.08;.05" />
+        </rect>
+      </svg>
+    </main>
+  </body>
+</html>

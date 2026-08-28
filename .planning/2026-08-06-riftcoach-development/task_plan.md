@@ -1743,3 +1743,15 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [decision] A 首帧盲抽暂停；B 真实视频编辑/时间区域控制为下一优先；C 改为纹理/位移型混合制片 fallback，旧线条
   overlay proof 继续作为负面证据。
 - [next] 冻结 B 窄版三时间点 mask/prompt contract 与 no-cost preflight；未完成前不付费重抽、不切模型、不接 runtime。
+
+## Method review hold / layered material proof v2 (2026-08-28)
+
+- [completed-review] 已完成从 Kimi、HyperFrames、Wan、Veo、Vidu、Seedance、豆包、即梦、C′、Kling B1 到 B2 的
+  全路线复盘；共同缺口是扁平母图缺少真实 layer/backplate/occlusion，整景生成模式没有可靠区域/时间控制。
+- [completed-local] 新建 `experiments/portal_layered_material_proof_v2/`，先红灯后绿灯，聚焦 `3 passed`；GPU/单 worker
+  完成 8s/1920×1080/24fps/no-audio research proof，外部模型调用 0。
+- [completed-local-rejected] 结构/编码/覆盖机械门通过，人工观感仍过轻，主要是 source duplicate 的亮度/纹理调制，
+  没有真实空间流动、遮挡和材质层；结果 `portal-motion-candidate-layered-material-v2.json` 已保存。
+- [decision] 不再增加 opacity、重写同类滤镜或付费换模型；当前保持 `method-review-hold`。
+- [next] `layer-assets-and-occlusion-proof`：先制作可移除的 inpaint 背板、遮挡边界和真实材质层，再做一轮本地 proof；
+  通过前不调用外部视频模型、不接 runtime、不进入 Account。

@@ -4820,3 +4820,13 @@
 - 首帧身份/编码门通过，但视觉门拒绝：左 Rift 塑料环、中央硬亮柱、右场/远景和整体材质运动不足；候选审计
   与复盘文档已落盘，production media 仍为 0。
 - 用户要求暂停并完整复盘；下一动作不再是付费生成，而是 method-review-hold 下的 no-cost 分层材质载体证明。
+
+## 2026-08-28：分层材质 proof v2 result review
+
+- 新建 v2 分层材质 proof，先红灯后绿灯，聚焦 `3 passed`；HyperFrames GPU 本地渲染完成 8s/1920×1080/24fps/
+  H.264/yuv420p/BT.709/no-audio，外部调用 `0`。
+- 机械结果均衡且结构稳定，但人工视觉拒绝：仍像低幅 source duplicate/亮度调制，缺少真实材质流、遮挡和纵深；
+  不继续 opacity 追绿。研究候选 JSON 已落盘，production media 仍为 `0`。
+- 下一动作切为 `layer-assets-and-occlusion-proof`，先补 inpaint 背板/遮挡/材质层，再做一轮本地 proof；不再付费生成。
+- 本机完整 pytest 受数据库环境阻塞，`--maxfail=1` 在 PostgreSQL fixture setup 报 `DATABASE_URL is required`，此前
+  已得到 `126 passed, 1 warning, 1 error`；不把它误报为本次实验回归，公共 PostgreSQL 门仍需补证。
