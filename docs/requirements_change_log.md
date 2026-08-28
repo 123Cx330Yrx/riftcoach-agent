@@ -159,6 +159,8 @@
 | RQ-151 | 2026-08-28 | 生效；补齐虚空详细徽章的原创候选 | 用户确认旧 LoR 详细徽章资源中缺少虚空，希望自行绘制一枚匹配其它徽章的版本；随后指出首版过亮、二版过暗 | 以现有官方 Void crest 只作形状语义参考，生成一枚透明 RGBA 的深黑曜石/深靛材质徽章；当前平衡版保留可识别的低饱和紫色，仅作 selected-region hero 候选，不替换 13 个 Universe 小 crest，也不冒充 Riot 官方资产。 |
 | RQ-152 | 2026-08-28 | 生效；优先用户提供的 Image2 Void 徽章方向 | 用户提供了一张 Image2 网页端生成的 Void 徽章，认为其结构和质感更接近目标；随后接受轻微降高光/降饱和处理，但要求保留可辨识紫色 | 将 `badge-void-image2-v1.png` 作为视觉主候选，`badge-void-image2-v2-muted.png` 作为低亮度 sibling；两者暂为 RGB 深色背景图，不冒充透明 badge。先做用户视觉裁决，再决定是否做真实透明 cutout 和 selected-region hero 接入。 |
 
+| RQ-153 | 2026-08-29 | 生效；Ixtal Seedance 候选暂准使用但保留替换提醒 | 用户审看 Ixtal Seedance 2.5 候选后认为“差不多可以先用”，同时指出动效仍稍轻；这不是 Portal 母图强动效目标的最终视觉签字，也不是对来源/再分发权利的确认 | exactly-one-POST 的 10 秒 first-frame-only 候选通过当前研究候选门，可作为 Ixtal Portal 的可替换候选继续做布局/播放降级联调，但不得写入 adopted media manifest 或将 `production_media` 置为非零。待地区选择与 Portal/Account 真实布局完成后，保留显式回看点，由用户选择保留柔和版、做一次有界调优或替换更强官方动态源；不因“先用着”自动再次付费生成或覆盖本候选。 |
+
 ## 新条目格式
 
 后续新增长期要求时，使用新的 `RQ-xxx` 行，并注明日期、状态以及它如何改变

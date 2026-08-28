@@ -1,6 +1,6 @@
 # Ixtal first-frame motion preflight
 
-Status: `prepared` · no external generation call yet · production media `0`
+Status: `executed · candidate review pending` · production media `0`
 
 ## Goal
 
@@ -76,6 +76,18 @@ stronger motion if the two conflict.
 5. Human gate: compare against the saved region stills; reject if it looks like
    a translucent overlay, camera drift or generic fantasy repainting.
 
-The failed Portal motion experiments remain negative evidence only. A failed
-Ixtal sample would keep model quality unknown and trigger diagnosis, not an
-automatic route switch.
+The failed Portal motion experiments remain negative evidence only. This Ixtal
+sample completed the one-call preflight and is visually usable as a restrained
+candidate, but slightly light for the desired “cool” motion. It remains
+research-only until the audit gates (rights, browser fallback, reduced motion,
+crop and later keep/tune/replace review) are closed. A future tuning pass must
+be a separately identified experiment; it must not overwrite this output or
+silently spend another paid request.
+
+## Result
+
+- Task: `task_kUGmfjSuAXEl5VJza7tlctIUAeQAxs2z`
+- Candidate: `D:/riftcoach-agent/tmp/riftcoach-ixtal-seedance25-first-only-v1/ixtal-seedance25-first-only-v1.mp4`
+- Candidate SHA-256: `c56f39dd768675f09f3559339ff05350b7e5c077d52a513380e014c69ac384aa`
+- Request status: downloaded, exactly one POST, 10.041667s, 1280×720 H.264, no audio
+- Audit: `docs/assets/8e-portal/portal-ixtal-wallpaper-candidate-seedance25-v1.md`

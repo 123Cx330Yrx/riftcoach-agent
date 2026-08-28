@@ -16,13 +16,15 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-08-28（即梦 Smart Edit raw 与零费用后处理审计已由提交 `f041643` / Actions
+- 最后更新：2026-08-29（即梦 Smart Edit raw 与零费用后处理审计已由提交 `f041643` / Actions
   `33042204532` 完成 exact-SHA 三 job；T/X identity fault split 已完成但仍是 research-only。用户随后明确拒绝
   沿用当前视频节奏，要求先重做全局持续呼吸 brief，并在付费前用 Image2 对确认母图做多张静态方向预览。
   旧代理端口 `7890` 已纠正为用户实际 HTTP 代理 `12000`；Image2 两张同构编辑预览主要是调色/提亮，第三次请求
   因 `403 insufficient balance` 停止，均不作为 motion direction。用户按 RQ-140 允许跳过 Image2，已完成一次
-  首帧单锚点 12 秒 Seedance v3 生成；按 RQ-141 视觉审查拒绝，不进入 runtime，下一步先重写运动合同，
-  不立即付费重抽或切换模型。）
+   首帧单锚点 12 秒 Seedance v3 生成；按 RQ-141 视觉审查拒绝，不进入 runtime，下一步先重写运动合同，
+   不立即付费重抽或切换模型。随后按 RQ-150 完成 Ixtal first-frame-only Seedance preflight：exactly one
+   POST，候选已下载并通过编码/无音频/稳定构图检查；按 RQ-153 暂准作为可替换研究候选联调，但视觉仍偏轻，
+   来源权利与最终保留/调优/替换裁决待后续显式回看。）
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；当前治理指针为 `8e-productization / in_progress / portal-motion-polish / authorized / in_progress`；Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整 8E/8F 尚未完成。
 - 当前子阶段组：`5P-1-product-contract-compiler` 已由提交
   `57bd36adcd289b7cc51c1c430e04398daf0683f3` 与 Actions run `31987501935` 完成 exact-SHA
@@ -266,8 +268,10 @@ pause_reason: ""
   `docs/assets/8e-portal/portal-region-wallpaper-candidate-bandle-city-v1.json`。`?surface=wallpaper-lab` 的
   no-I/O 本地研究预览已实现：包含 Universe 13 地区 crest 选择卡、Demacia/Bandle City 动态候选、动态视频/静态 poster
   降级、键盘激活和独立入口转场；Bandle 静态 JPEG 的 imagegen 修复候选因纹理/质感不达标已 rejected。它尚未改变默认 `/`，也没有把任何壁纸提交进公开 runtime。下一动作是逐地区补充经过来源/许可、
-  格式/体积、浏览器/移动端/reduced-motion 与 loop 门的候选，全部通过后再接入默认 Portal，`production_media` 保持 `0`。Ixtal
-  已补充 5000×2811 静态 splash 作为动态首帧；对应 Account 原创静态概念仍为 research-only，下一步只准备一次有界动态 preflight。
+   格式/体积、浏览器/移动端/reduced-motion 与 loop 门的候选，全部通过后再接入默认 Portal，`production_media` 保持 `0`。Ixtal
+   已补充 5000×2811 静态 splash 作为动态首帧；对应 Account 原创静态概念仍为 research-only。Ixtal 动态候选审计见
+   `docs/assets/8e-portal/portal-ixtal-wallpaper-candidate-seedance25-v1.md`，下一动作仍是补齐地区候选与播放降级门，
+   再在真实 Portal/Account 布局中回看并决定保留、调优或替换。
   8D、Batch B/C/D、Live Workbench、Batch E E1–E5、production shell/Auth gate、Timeline、bilingual/product-journey
   foundation 与 RQ-108 runtime Task 1–4 的公共证据保持不变；GLM-5.3/Flash、Coach、RQ-103 与 8F 仍留后序。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
