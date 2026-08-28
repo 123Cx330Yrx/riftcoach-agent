@@ -1059,3 +1059,51 @@ h1[tabindex="-1"]:focus { outline: none; }
   opacity: 1;
   transform: none;
 }
+
+/* Official-wallpaper research preview. The wallpaper supplies the scene;
+   this layer supplies hierarchy, selection and the semantic action only. */
+.wallpaper-lab { position: relative; isolation: isolate; display: grid; min-height: 100vh; min-height: 100dvh; overflow: hidden; color: var(--ink-100); background: var(--obsidian-1000); }
+.wallpaper-lab__media, .wallpaper-lab__scrim, .wallpaper-lab__transition { position: absolute; inset: 0; pointer-events: none; }
+.wallpaper-lab__media { z-index: 0; overflow: hidden; background: #111a1a; }
+.wallpaper-lab__poster, .wallpaper-lab__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+.wallpaper-lab__poster { z-index: 0; }
+.wallpaper-lab__video { z-index: 1; animation: wallpaper-lab-video-in 760ms var(--ease-out) both; }
+.wallpaper-lab__scrim { z-index: 1; background: linear-gradient(90deg, rgba(4,10,14,.86) 0%, rgba(4,10,14,.54) 34%, rgba(4,10,14,.12) 68%, rgba(4,10,14,.25) 100%), linear-gradient(0deg, rgba(3,9,12,.82) 0%, transparent 34%, rgba(3,9,12,.06) 72%, rgba(3,9,12,.24) 100%); }
+.wallpaper-lab::before { content: ""; position: absolute; z-index: 3; inset: 1rem; border: 1px solid rgba(236,217,140,.18); clip-path: polygon(0 0,42% 0,43% .25rem,57% .25rem,58% 0,100% 0,100% 100%,62% 100%,61% calc(100% - .25rem),39% calc(100% - .25rem),38% 100%,0 100%); pointer-events: none; }
+.wallpaper-lab::after { content: ""; position: absolute; z-index: 3; inset: 0; opacity: .035; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' width='160' height='160'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C%2Ffilter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='.75'/%3E%3C%2Fsvg%3E"); mix-blend-mode: soft-light; }
+.wallpaper-lab__header { position: relative; z-index: 2; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: clamp(1.5rem,4vw,3.4rem); }
+.wallpaper-lab__brand { display: inline-flex; align-items: center; gap: .65rem; color: var(--ink-100); font: 650 .72rem var(--font-display); letter-spacing: .19em; }
+.wallpaper-lab__brand-mark { display: grid; width: 1.9rem; height: 1.9rem; place-items: center; color: var(--obsidian-1000); background: var(--coach-gold-300); clip-path: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%); font-size: .8rem; letter-spacing: 0; }
+.wallpaper-lab__content { position: relative; z-index: 2; align-self: end; width: min(100% - 2.5rem,70rem); margin: 0 auto; padding: 0 clamp(0rem,5vw,5.6rem) clamp(2rem,8vh,6rem); }
+.wallpaper-lab__kicker { margin: 0 0 1.4rem; color: var(--coach-gold-300); font: 620 .59rem var(--font-display); letter-spacing: .18em; text-transform: uppercase; }
+.wallpaper-lab__kicker::before { content: ""; display: inline-block; width: 2.2rem; height: 1px; margin: 0 .7rem .2rem 0; background: var(--coach-gold-300); box-shadow: 0 0 12px rgba(236,217,140,.55); }
+.wallpaper-lab h1 { max-width: 46rem; margin: 0; color: var(--ink-100); font: 620 clamp(2.8rem,7.8vw,7.4rem)/.91 var(--font-display); letter-spacing: -.055em; }
+.wallpaper-lab h1 em { color: var(--hex-cyan-300); font-style: normal; }
+.wallpaper-lab__lede { max-width: 35rem; margin: 1.45rem 0 0; color: var(--ink-300); font-size: clamp(.77rem,1.2vw,.96rem); line-height: 1.65; }
+.wallpaper-lab__selection { display: flex; align-items: center; flex-wrap: wrap; gap: .55rem; margin-top: 2rem; }
+.wallpaper-lab__region { display: inline-flex; align-items: center; gap: .65rem; min-height: 2.8rem; padding: .45rem .85rem .45rem .55rem; color: var(--ink-400); border: 1px solid rgba(224,241,236,.17); background: rgba(5,17,23,.48); cursor: pointer; transition: color var(--duration-feedback),border-color var(--duration-feedback),background var(--duration-feedback),transform var(--duration-feedback); }
+.wallpaper-lab__region:hover, .wallpaper-lab__region:focus-visible { color: var(--ink-100); border-color: rgba(82,230,219,.55); background: rgba(9,32,38,.72); transform: translateY(-1px); }
+.wallpaper-lab__region--active { color: var(--ink-100); border-color: var(--coach-gold-300); background: rgba(24,30,29,.62); box-shadow: 0 0 0 1px rgba(236,217,140,.08),0 0 28px rgba(236,217,140,.08); }
+.wallpaper-lab__region-glyph { display: grid; width: 1.5rem; height: 1.5rem; place-items: center; color: var(--hex-cyan-300); border: 1px solid currentColor; transform: rotate(45deg); font-size: .8rem; line-height: 1; }
+.wallpaper-lab__region strong, .wallpaper-lab__region small { display: block; text-align: left; }
+.wallpaper-lab__region strong { font: 600 .72rem var(--font-display); }
+.wallpaper-lab__region small { margin-top: .18rem; color: var(--ink-500); font: 600 .47rem var(--font-display); letter-spacing: .13em; }
+.wallpaper-lab__region-note { color: rgba(224,241,236,.58); font-size: .62rem; }
+.wallpaper-lab__footer-row { display: flex; align-items: end; justify-content: space-between; gap: 1.5rem; margin-top: 2.35rem; padding-top: 1rem; border-top: 1px solid rgba(224,241,236,.18); }
+.wallpaper-lab__footer-row > div { display: flex; align-items: center; flex-wrap: wrap; gap: .45rem .6rem; color: var(--ink-200); font: 600 .63rem var(--font-display); letter-spacing: .08em; text-transform: uppercase; }
+.wallpaper-lab__footer-row small { flex-basis: 100%; padding-left: 1.1rem; color: var(--ink-500); font: 400 .62rem var(--font-body); letter-spacing: 0; text-transform: none; }
+.wallpaper-lab__status-dot { width: .46rem; height: .46rem; border-radius: 50%; background: var(--hex-cyan-300); box-shadow: 0 0 13px rgba(82,230,219,.75); }
+.wallpaper-lab__enter { display: inline-flex; align-items: center; gap: 1.25rem; min-height: 3.15rem; padding: .55rem .78rem .55rem 1rem; color: var(--obsidian-1000); border: 1px solid var(--coach-gold-300); background: var(--coach-gold-300); box-shadow: 0 0 32px rgba(236,217,140,.13); cursor: pointer; font: 650 .67rem var(--font-display); letter-spacing: .09em; transition: color var(--duration-feedback),background var(--duration-feedback),transform var(--duration-feedback),box-shadow var(--duration-feedback); }
+.wallpaper-lab__enter span:last-child { display: grid; width: 1.8rem; height: 1.8rem; place-items: center; border: 1px solid rgba(3,9,12,.4); font-size: 1rem; }
+.wallpaper-lab__enter:hover, .wallpaper-lab__enter:focus-visible { color: var(--ink-100); background: rgba(3,9,12,.9); transform: translateY(-2px); box-shadow: 0 0 34px rgba(236,217,140,.28); }
+.wallpaper-lab__note { margin: .75rem 0 0; color: rgba(224,241,236,.56); font-size: .6rem; }
+.wallpaper-lab__transition { z-index: 4; display: grid; place-items: center; opacity: 0; background: rgba(3,9,12,.94); transition: opacity 220ms ease; }
+.wallpaper-lab__transition span { position: absolute; width: 8rem; height: 8rem; border: 1px solid rgba(236,217,140,.55); transform: rotate(45deg) scale(.2); opacity: 0; }
+.wallpaper-lab__transition span:nth-child(2) { width: 13rem; height: 13rem; border-color: rgba(82,230,219,.4); }
+.wallpaper-lab__transition span:nth-child(3) { width: 2.2rem; height: 2.2rem; background: var(--coach-gold-300); box-shadow: 0 0 50px rgba(236,217,140,.8); }
+.wallpaper-lab--activating .wallpaper-lab__transition { opacity: 1; }
+.wallpaper-lab--activating .wallpaper-lab__transition span { animation: wallpaper-lab-converge 760ms var(--ease-out) both; }
+@keyframes wallpaper-lab-video-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes wallpaper-lab-converge { 0% { transform: rotate(45deg) scale(.2); opacity: 0; } 30% { opacity: .9; } 100% { transform: rotate(45deg) scale(1.7); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .wallpaper-lab__video { display: none; animation: none; } .wallpaper-lab__transition, .wallpaper-lab__transition span { transition: none; animation: none !important; } .wallpaper-lab--activating .wallpaper-lab__transition { opacity: 1; } }
+@media (max-width: 720px) { .wallpaper-lab::before { inset: .65rem; } .wallpaper-lab__header { padding: 1.15rem 1.2rem; } .wallpaper-lab__content { width: min(100% - 2.4rem,34rem); padding-bottom: 1.7rem; } .wallpaper-lab__scrim { background: linear-gradient(90deg,rgba(4,10,14,.78),rgba(4,10,14,.3)),linear-gradient(0deg,rgba(3,9,12,.94),rgba(3,9,12,.04) 70%); } .wallpaper-lab h1 { font-size: clamp(2.5rem,14vw,4.6rem); } .wallpaper-lab__footer-row { align-items: stretch; flex-direction: column; gap: 1rem; } .wallpaper-lab__enter { width: 100%; justify-content: space-between; } }

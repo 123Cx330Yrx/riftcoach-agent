@@ -38,6 +38,9 @@ data/runs/
 # Local verification scratch artifacts
 tmp/
 
+# User-supplied wallpaper candidates stay local until source/rights are cleared
+web/public/assets/wallpapers/candidates/
+
 # IDE
 .vscode/
 .idea/

@@ -66,6 +66,7 @@ import {
   type PortalActivationState,
 } from "../cinematic/portalActivation"
 import { PortalActivationOverlay } from "../components/PortalActivationOverlay"
+import { RegionWallpaperLab } from "../components/RegionWallpaperLab"
 
 export interface LiveWorkbenchControllerLike {
   readonly snapshot: LiveWorkbenchSnapshot
@@ -87,6 +88,11 @@ function getAwakeningSurface(override?: "awakening"): boolean {
   if (override === "awakening") return true
   if (typeof window === "undefined") return false
   return new URLSearchParams(window.location.search).get("surface") === "awakening"
+}
+
+function getWallpaperLabSurface(): boolean {
+  if (typeof window === "undefined") return false
+  return new URLSearchParams(window.location.search).get("surface") === "wallpaper-lab"
 }
 
 function getAwakeningPreviewState(): AwakeningPresentationState {
@@ -674,6 +680,7 @@ function AppFrame({
 }
 
 function AppSurface({ scenarioOverride, createLiveController, createAuthSessionClient, createPlayerAccessApi, surfaceOverride }: AppProps) {
+  if (getWallpaperLabSurface()) return <RegionWallpaperLab />
   if (getAwakeningSurface(surfaceOverride)) return <AwakeningPreview />
   const fixtureState = getExplicitScenario(scenarioOverride)
   if (fixtureState !== undefined) {
