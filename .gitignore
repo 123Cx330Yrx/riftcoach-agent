@@ -40,6 +40,9 @@ tmp/
 
 # User-supplied wallpaper candidates stay local until source/rights are cleared
 web/public/assets/wallpapers/candidates/
+# Alternate LoR core-bundle icons are kept as local research material; the
+# region picker currently uses the Universe crest set under /universe/.
+web/public/assets/wallpapers/regions/*.png
 
 # IDE
 .vscode/

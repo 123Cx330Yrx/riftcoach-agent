@@ -13,6 +13,8 @@ describe("RegionWallpaperLab", () => {
     renderLab()
     expect(screen.getByTestId("wallpaper-lab")).toHaveAttribute("data-region", "demacia")
     expect(screen.getByRole("button", { name: /demacia/i })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getAllByRole("button")).toHaveLength(16)
+    expect(screen.getAllByRole("button").filter((button) => (button as HTMLButtonElement).disabled)).toHaveLength(12)
     expect(screen.getByRole("button", { name: /enter riftcoach/i })).toBeVisible()
   })
 

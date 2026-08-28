@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react"
 
-import { LocaleSwitch } from "./LocaleSwitch"
-import { regionWallpaperCatalog } from "../wallpapers/regionWallpaperCatalog"
 import { useI18n } from "../i18n/ProductLocaleProvider"
+import { regionIconCatalog } from "../wallpapers/regionIconCatalog"
+import { regionWallpaperCatalog } from "../wallpapers/regionWallpaperCatalog"
+import { LocaleSwitch } from "./LocaleSwitch"
 
 function useReducedMotion(): boolean {
   const [reduced, setReduced] = useState(false)
@@ -45,15 +46,7 @@ export function RegionWallpaperLab() {
       <div className="wallpaper-lab__media" aria-hidden="true">
         <img className="wallpaper-lab__poster" src={selected.poster} alt="" />
         {playVideo ? (
-          <video
-            className="wallpaper-lab__video"
-            autoPlay
-            loop
-            muted
-            playsInline
-            poster={selected.poster}
-            onError={() => setVideoFailed(true)}
-          >
+          <video className="wallpaper-lab__video" autoPlay loop muted playsInline poster={selected.poster} onError={() => setVideoFailed(true)}>
             <source src={selected.webm} type="video/webm" />
             <source src={selected.mp4} type="video/mp4" />
           </video>
@@ -65,20 +58,26 @@ export function RegionWallpaperLab() {
         <LocaleSwitch />
       </header>
       <section className="wallpaper-lab__content" aria-labelledby="wallpaper-lab-title">
-        <p className="wallpaper-lab__kicker">{locale === "zh-CN" ? "地区地图 / 本地预览" : "REGION ATLAS / LOCAL PREVIEW"}</p>
-        <h1 id="wallpaper-lab-title">{locale === "zh-CN" ? <>选择一处地区<br /><em>开启 RiftCoach。</em></> : <>Choose the region<br /><em>that opens the Rift.</em></>}</h1>
-        <p className="wallpaper-lab__lede">{locale === "zh-CN" ? "先选一处符文大陆，再进入 RiftCoach。这里的画面只负责氛围，复盘仍由真实数据驱动。" : "Choose a place in Runeterra before entering RiftCoach. The scene sets the mood; your review still comes from real data."}</p>
-        <div className="wallpaper-lab__selection" aria-label={locale === "zh-CN" ? "地区选择" : "Region selection"}>
-          {candidates.map((candidate) => {
-            const active = candidate.id === selected.id
-            return (
-              <button className={`wallpaper-lab__region${active ? " wallpaper-lab__region--active" : ""}`} key={candidate.id} type="button" aria-pressed={active} onClick={() => { setSelectedId(candidate.id); setVideoFailed(false) }}>
-                <span className="wallpaper-lab__region-glyph" aria-hidden="true">◇</span>
-                <span><strong>{candidate.label[locale]}</strong><small>{candidate.region.toUpperCase()}</small></span>
-              </button>
-            )
-          })}
-          <span className="wallpaper-lab__region-note">{locale === "zh-CN" ? "更多地区素材待核验" : "More regions after source review"}</span>
+        <div className="wallpaper-lab__intro">
+          <p className="wallpaper-lab__kicker">{locale === "zh-CN" ? "地区地图 / 本地预览" : "REGION ATLAS / LOCAL PREVIEW"}</p>
+          <h1 id="wallpaper-lab-title">{locale === "zh-CN" ? <>选择一处地区<br /><em>开启 RiftCoach。</em></> : <>Choose the region<br /><em>that opens the Rift.</em></>}</h1>
+          <p className="wallpaper-lab__lede">{locale === "zh-CN" ? "先选一处符文大陆，再进入 RiftCoach。这里的画面只负责氛围，复盘仍由真实数据驱动。" : "Choose a place in Runeterra before entering RiftCoach. The scene sets the mood; your review still comes from real data."}</p>
+        </div>
+        <div className="wallpaper-lab__atlas" aria-label={locale === "zh-CN" ? "地区选择" : "Region selection"}>
+          <div className="wallpaper-lab__atlas-head"><span>{locale === "zh-CN" ? "选择地区" : "Select a region"}</span><small>{locale === "zh-CN" ? "选择后进入 Portal" : "The Portal opens after selection"}</small></div>
+          <div className="wallpaper-lab__selection">
+            {regionIconCatalog.map((icon) => {
+              const candidate = candidates.find((item) => item.region === icon.id)
+              const active = candidate?.id === selected.id
+              return (
+                <button className={`wallpaper-lab__region${active ? " wallpaper-lab__region--active" : ""}`} key={icon.id} type="button" aria-pressed={active} disabled={candidate === undefined} onClick={() => { if (candidate !== undefined) { setSelectedId(candidate.id); setVideoFailed(false) } }}>
+                  <img className="wallpaper-lab__region-glyph" src={icon.asset} alt="" />
+                  <span><strong>{candidate ? candidate.label[locale] : icon.label[locale]}</strong><small>{candidate ? (locale === "zh-CN" ? "可用预览" : "PREVIEW READY") : (locale === "zh-CN" ? "壁纸待核验" : "WALLPAPER PENDING")}</small></span>
+                </button>
+              )
+            })}
+          </div>
+          <div className="wallpaper-lab__selection-note">{locale === "zh-CN" ? "地区徽记来自 Riot Universe；动态壁纸逐地区核验后加入。" : "Region crests from Riot Universe; wallpapers enter one region at a time after review."}</div>
         </div>
         <div className="wallpaper-lab__footer-row">
           <div><span className="wallpaper-lab__status-dot" /> <span>{label}</span><small>{description}</small></div>
