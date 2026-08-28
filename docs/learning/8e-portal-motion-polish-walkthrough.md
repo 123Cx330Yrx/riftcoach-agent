@@ -225,3 +225,20 @@ Task 1 面试表述可以补充：
 > 我先把媒体路径做成严格本地 manifest，并复刻 `object-fit: cover` 的裁切数学，让透明按钮和画面像素共享
 > 同一坐标真值。媒体策略首个 commit 固定为 poster/preflight，浏览器偏好订阅后才允许 motion，因此
 > reduced-motion 或 Save-Data 在 render→commit 竞态下也不会先下载视频再撤回。
+
+## 9. 为什么“遮罩 + 背板 + 独立透明层”仍然没有直接过门
+
+这一轮做了一个很小但关键的验证。先让 ImageGen 只负责生成一个“去掉 Rift 内部能量”的底图候选，
+再在真实母图的 Rift 内部画一块有边界的遮罩；遮罩外继续使用原母图。最后把一张真正带 alpha 的
+Rift 流体层放到这块背板上，并让它做小幅周期位移。
+
+这比“把整张母图复制一份再移动”更安全：建筑边缘不会跟着移动，理论上可以消除之前的重影。结果也
+证明了这个工程方向是对的——底图确实只在指定区域替换，结构没有被整张重绘。但视觉材料仍不合格：
+透明流体层一旦提高到肉眼可见，就像贴了一条蓝色布带；一旦降低到不露边，又几乎看不出运动。
+因此这次的机械门可以通过，视觉门必须拒绝。这个结论不是“ImageGen 没用”，而是这个透明层的
+形状、材质和 Rift 的真实遮挡关系还没有对上。
+
+证据保存在 `docs/assets/8e-portal/portal-motion-candidate-masked-inpaint-plate-v1.json` 和
+`docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md`。该视频仍是研究文件，
+没有进入 `web/public/assets`、runtime manifest 或 production media。下一步应先取得真正贴合 Rift
+边界的人工/分段材质层，或使用明确支持区域遮罩的视频编辑模式，再考虑其它区域或新的付费生成。

@@ -657,17 +657,18 @@ RQ-108 runtime Task 1–3 已分别由 `1b146e6/32826953474`、`2111a78/32833608
 exact-SHA 公共闭环；当前唯一下一动作是 Task 5 三路线 bake-off，不接生产媒体。
 
 Task 5 已按 RQ-122 完成 official/relay 广筛和 HyperFrames 隔离 smoke；Wan 3.0 与 Dragon/Veo 各完成一个
-有界真实负面样本，external video calls `2`、production media `0`。Veo prompt 未充分遵守 official motion-only
-guidance，故不能外推 Provider ceiling。当前只先提交/公共关闭 Veo audit；随后 no-paid-call C 线证明分层/
-mask/inpaint、整幕 motion、source/seam 与维护成本，不合格时恢复一次校正 A comparator。Veo audit 已由
-`e79a76e/32918278259` 完成 exact-SHA 三 job；当前已进入该 C-line no-paid-call proof，不先调用新模型。
+有界真实负面样本，后续又完成 Seedance、即梦、Kling 与本地分层 proof 审计，production media 始终为 `0`。
+样本失败不等于模型上限：Wan 早期调用使用同一张图作首尾帧，分层 proof 又暴露了素材贴纸风险。RQ-144 现已
+明确重开一次 Wan 3.0 官方 first-frame-only 对照：adaptive/1080P/12s、motion-only prompt、audio/prompt_extend/
+watermark off；先做同区 endpoint/额度/价格与 SHA preflight，再只允许一个 POST，不把输出直接接入 runtime。
 其 scene graph/8-system/192-frame/source-seam-grid/manual 三态 design 与实施计划已由 `78ae6e3/32919447127`
 完成 exact-SHA 三 job；implementation 已完成机械可控的 v3 研究样片，但用户按 RQ-126 正确拒绝其线条/圆环/
 节点 HUD 覆层视觉，裁决 `proof_fail_reopen_corrected_a`。当前先公共关闭负面证据，再执行一次 first-frame-only
 短 motion-only 的校正 A comparator。RQ-127 固定该对照为 medium-to-strong、clearly perceptible 的整幕
 breathing，并允许构图锚定小幅 camera parallax；不再以三主体轮流或过轻 motion 冒充 cool 动态。
-C proof portable fix 已由 `557dac1/32923151197` 三 job 公共关闭；corrected A 的 first-only/no-lastFrame、
-motion-only prompt/negative/runner digests 已本地冻结。当前先过独立 executable preflight，绿灯后才创建一次 task。
+C proof portable fix 已由 `557dac1/32923151197` 三 job 公共关闭；随后 C′、Kling B1/B2 和 source/masked plate
+proof 均已按人工材质门拒绝，不能继续通过叠加/opacity 追绿。当前唯一候选是 RQ-144 的 Wan 3.0 官方 first-frame-only
+reopen；在其 executable preflight 绿灯前不再付费重抽或接入 runtime。
 RQ-128 又固定故障归因五层门：corrected Veo 无 output，request/relay/upstream unresolved、quality unknown；Vidu
 只是保持 transport/source/motion/first-only 的 model/schema comparator，不是放弃 Veo/方法。Vidu 若也 generic
 failed，必须停下审计 relay/request，不继续换模型。Vidu 首个 task 随后同样 generic failed；当前只允许一次

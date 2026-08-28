@@ -400,3 +400,10 @@ production media `0`。停止 image-only 抽卡，下一门评估 reference-vide
 
 Kling B2 video+image preflight 已本地冻结：base video result URL 执行时 GET-only/不落盘，v2 image identity、
 1,856-char 专用 prompt、std/720p/8s/16:9/audio omitted、one POST 和 ¥3.696 估算。当前 GET/POST 0，待 public gate。
+
+2026-08-28 Q10/RQ-143/RQ-144 补充：masked-inpaint Rift proof 的局部遮罩/编码机械门通过，但透明层在可见强度下
+呈廉价蓝带，候选拒绝且 production media 仍为 `0`；不再通过通用 plate 或 opacity 追绿。用户已授权一次 Wan 3.0
+官方 first-frame-only 重开：active v2 母图只作 `first_frame`，`last_frame` 不再复用，使用 adaptive/1080P/12s、
+audio/prompt_extend/watermark off 与 motion-only brief。需先完成同区 endpoint/额度/价格/source/prompt SHA
+preflight，再执行 one POST；结果仍须通过全幕材质运动和人工视觉门，不能直接接 runtime。Data Dragon、Coach、8F
+和最终 Account/Portal visual QA 继续未完成。

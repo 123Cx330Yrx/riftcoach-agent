@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "status": "masked-inpaint-plate-proof-v1",
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e",
+    "role": "immutable structural base"
+  },
+  "backplate": {
+    "path": "experiments/portal_masked_inpaint_plate_proof_v1/rift-backplate-imagegen-v1.png",
+    "role": "bounded Rift interior inpaint candidate; never used outside mask",
+    "imagegen_sha256": "04a8302f050dd54934e7af8ac297caf5a6e91d622aab51305a2a2c7f1c0434d0"
+  },
+  "plate": {
+    "path": "experiments/portal_masked_inpaint_plate_proof_v1/rift-fluid-wisps-plate-research.png",
+    "role": "independent transparent research plate; clipped to the bounded Rift interior",
+    "imagegen_sha256": "fb3a4bd991fbf69ac2cd2a4d96eb496dfeefc589987cb16ca244f087bad998c3"
+  },
+  "mask": {
+    "name": "rift-interior-only",
+    "coordinates": [[132, 234], [170, 184], [252, 166], [350, 184], [430, 246], [468, 338], [463, 440], [418, 514], [350, 562], [270, 579], [184, 548], [126, 492], [106, 394], [112, 300]],
+    "feather_px": 9,
+    "outside_pixels_locked": true
+  },
+  "timeline": {
+    "width": 960,
+    "height": 540,
+    "fps": 24,
+    "frames": 192,
+    "duration_s": 8.0
+  },
+  "motion": {
+    "carrier": "rift-fluid-wisps",
+    "max_translation_px_at_output": 9,
+    "clock": "periodic-sine",
+    "base_moves": false,
+    "global_tint": false,
+    "full_frame_veil": false
+  },
+  "output_policy": {
+    "external_model_calls": 0,
+    "repository_media": false,
+    "runtime_adoption": false,
+    "research_only": true
+  },
+  "quality_gates": {
+    "outside_mask_exact": true,
+    "no_architecture_edge_ghosting": true,
+    "no_sticker_or_veil": true,
+    "source_crispness_100_percent": true,
+    "motion_must_read_as_interior_material": true
+  }
+}

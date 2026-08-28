@@ -256,13 +256,16 @@ pause_reason: ""
   `31878052835` 的 exact-SHA 公共 CI；5E-1 实现提交
   `d891184e1bf82068188d2fb5715769bdaa3da022` 已通过 GitHub Actions run
   `31942483874` 的 exact-SHA 公共 CI
-- 唯一下一步：`8e-productization / portal-motion-polish / runtime Task 5 motion direction gate`，当前为
-  `authorized / in_progress`。Task 5 的 prior audit/evidence 已由 `f041643` / Actions `33042204532` 公共关闭，
-  v3 Seedance 研究候选已生成但按 `docs/assets/8e-portal/portal-motion-candidate-seedance25-v3.json` 拒绝，
-  现有视频与 T/X 仍未采用。先完成 RQ-141 的 source-side motion contract 修订和 no-cost preflight；在此之前
-  不重用现有视频、不烧新视频额度、不接 runtime。8D、Batch B/C/D、Live Workbench、Batch E E1–E5、production
-  shell/Auth gate、Timeline、bilingual/product-journey foundation 与 RQ-108 runtime Task 1–4 的公共证据保持不变；
-  GLM-5.3/Flash、Coach、RQ-103 与 8F 仍留后序。
+- 唯一下一步：`8e-productization / portal-motion-polish / masked-inpaint-plate-proof` 已完成并判为
+  `research-proof-rejected`，当前进入有界方法裁决，状态仍为 `authorized / in_progress`。本轮用 ImageGen
+  生成的 Rift 清洁背板只在局部遮罩内使用，并叠合一张独立 RGBA 流体层；机械边界通过，但肉眼可见时
+  流体层呈贴纸/蓝带，压低后又不可见，且整图 ImageGen 编辑存在轻微全局差异，不能成为新母图。证据见
+  `docs/assets/8e-portal/portal-motion-candidate-masked-inpaint-plate-v1.json` 与
+  `docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md`。下一动作只评估
+  source-aware 的人工/分段材质制作或明确支持区域遮罩的视频编辑模式；在裁决前不再批量生成、不付费重抽、
+  不接 runtime、不进入 Account。production media 继续为 `0`；8D、Batch B/C/D、Live Workbench、Batch E
+  E1–E5、production shell/Auth gate、Timeline、bilingual/product-journey foundation 与 RQ-108 runtime Task 1–4
+  的公共证据保持不变；GLM-5.3/Flash、Coach、RQ-103 与 8F 仍留后序。
 - 范围约束：5P-5 只增加本地同步 HTTP Adapter 与 no-I/O 纵向测试，没有实现真实 Riot/Provider、
   SQL/Session/Memory/SSE/恢复、公网部署或进入 5F；
   DeepSeek V2 结果不得覆盖或重跑，不能把安全降级解释为模型质量通过，也不能用低层
@@ -3105,10 +3108,19 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 
 ### 2026-08-28：独立材质 plate 预检结果
 
+### 2026-08-28：masked-inpaint-plate-proof 结果
+
+- 本轮用内置 ImageGen 的 Rift 清洁背板候选和一张独立 RGBA Rift 流体层，完成了 960×540、24fps、8 秒、无音轨的本地 bounded proof；未调用视频模型、DragonAPI、Image2 或远程服务。
+- 背板只在 Rift 内部的有界遮罩中使用，母图其余区域保持 source-owned；透明层只在该遮罩内做周期位移。输出 SHA 为 `329ea1e797a3774ab7fc8543b8cdfcf266d26282833a07c5236c76744e54aff3`，192 帧、H.264/yuv420p，`source_first_ssim=0.9126610023`、`first_last_ssim=0.9979960032`；这些指标只证明局部合成和循环技术链，不代表视觉采用。
+- 人工复核判定 `research-proof-rejected`：透明 Rift 层增强后像贴上的蓝色带状素材，降低透明度则几乎看不见；ImageGen 背板整图还有轻微差异，因此不能替换确认母图。完整结果见 `docs/assets/8e-portal/portal-motion-candidate-masked-inpaint-plate-v1.json` 与 `docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md`。
+- 下一动作：只做 source-aware 人工/分段材质制作或区域遮罩视频编辑的有界方法裁决，不再批量生成通用 plate、不调同类 opacity、不付费重抽、不接 runtime；`production_media` 保持 `0`。
+
 - built-in imagegen 做了 5 个窄范围 plate 试验，没有上传母图、没有视频调用。Rift 第一张是完整蓝色水团，第二张 wisps
   仅保留为研究控制场；右场/道路带宽泛底色，晶体生成碎裂几何，均不直接采用。
 - 直接叠加测试暴露贴纸/蓝雾/几何替换风险；完整 body-free 路径、SHA 和裁决见
   `docs/assets/8e-portal/portal-motion-plate-imagegen-audit.json` 与
   `docs/plans/2026-08-28-8e-portal-material-plate-generation-result-audit.md`。
-- `material-plate-generation-gate` 未通过，下一细分为 `masked-inpaint-plate-proof`：先对一个 bounded Rift 区域做
-  清洁 backplate + 独立透明 plate 的 100% 叠合验证，再扩展右场/道路/晶体；Image2 代理仍不可达，当前不再批量生成。
+- `material-plate-generation-gate` 未通过，`masked-inpaint-plate-proof` 已完成并判为 `research-proof-rejected`：
+  背板/遮罩机械边界通过，但透明 Rift 层在可见强度下呈贴纸/蓝带、在低强度下不可见；ImageGen 整图编辑存在
+  轻微全局差异，不能成为新母图。下一动作只评估 source-aware 人工/分段材质制作或区域遮罩视频编辑；在裁决前
+  不再批量生成、付费重抽、接 runtime 或进入 Account，`production_media` 保持 `0`。

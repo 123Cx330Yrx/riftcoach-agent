@@ -3421,6 +3421,11 @@ foundation implementation，不提前进入 RQ-103 或后续产品模块。
 
 ## 2026-08-27：RQ-141 Seedance v3 motion contract correction
 
+## 2026-08-28：RQ-143 masked-inpaint proof 与 RQ-144 Wan 官方重开
+
+- RQ-143 的 bounded Rift proof 使用局部 ImageGen 背板 + 独立 RGBA 流体层；遮罩/编码机械门通过，但视觉像廉价蓝带，判 `research-proof-rejected`，不再通过 opacity 或通用 plate 数量追绿。
+- 用户随后明确要求重新公平测试此前未充分利用的 Wan 3.0 官方通道。RQ-144 冻结 first-frame-only、adaptive、1080P、12s、audio/prompt_extend/watermark off、motion-only brief；同图 last-frame 不再使用。先做同区 endpoint/额度/价格与 SHA 预检，再只允许一次 POST；不自动重试、不接 runtime，结果仍需三大区/near-mid-far 与人工材质运动门。
+
 - `LIVE-OUTPUT`：DragonAPI `seedance-2-5` first-frame-only v3 任务 `task_kOu...v6tW` 已完成并由 GET-only
   recovery 下载；12.041667s、1280×720、24fps、H.264/yuv420p、无音轨，唯一生成 POST，恢复阶段 POST 为 0。
 - `VISUAL-REJECTED`：左 Rift 从小旋涡变成硬同心环；道路/裂隙下方流动在前段缺失；中央中段出现过曝白闪与横向穿屏线；右侧非 burst 时近乎静止；near/mid/far 没有稳定的全幕呼吸；末帧与开场相位仍不够接近。该结果只证明这次请求产生了可审查输出，不证明模型或方法已达标。

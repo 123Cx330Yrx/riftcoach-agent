@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "candidate_id": "portal-masked-inpaint-plate-v1",
+  "status": "research-proof-rejected",
+  "checkpoint": "8e-productization/portal-motion-polish/masked-inpaint-plate-proof",
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e",
+    "role": "immutable base"
+  },
+  "backplate": {
+    "path": "experiments/portal_masked_inpaint_plate_proof_v1/rift-backplate-imagegen-v1.png",
+    "sha256": "04a8302f050dd54934e7af8ac297caf5a6e91d622aab51305a2a2c7f1c0434d0",
+    "role": "ImageGen edit, confined to Rift mask"
+  },
+  "transparent_plate": {
+    "path": "experiments/portal_masked_inpaint_plate_proof_v1/rift-fluid-wisps-plate-research.png",
+    "sha256": "fb3a4bd991fbf69ac2cd2a4d96eb496dfeefc589987cb16ca244f087bad998c3",
+    "role": "independent RGBA research layer"
+  },
+  "proof": {
+    "output_path": "tmp/portal-mask-proof-v2/masked-inpaint-plate-proof-v1.mp4",
+    "output_sha256": "329ea1e797a3774ab7fc8543b8cdfcf266d26282833a07c5236c76744e54aff3",
+    "output_bytes": 226707,
+    "width": 960,
+    "height": 540,
+    "fps": 24,
+    "frames": 192,
+    "duration_s": 8.0,
+    "audio": false,
+    "codec": "h264",
+    "pix_fmt": "yuv420p",
+    "external_model_calls": 0,
+    "source_first_ssim": 0.9126610023,
+    "first_last_ssim": 0.9979960032,
+    "seam_mean_abs_diff": 0.0005281434,
+    "region_delta": {
+      "left_max": 0.0054123602,
+      "center_max": 0.0001384928,
+      "right_max": 0.0001499719
+    }
+  },
+  "human_review": {
+    "verdict": "rejected",
+    "reason": "Visible opacity makes the independent wisps read as a pasted blue ribbon; lowering opacity hides the edge and makes motion too weak. The whole-image ImageGen edit also has subtle global differences and is therefore not a safe new master.",
+    "runtime_adoption": false,
+    "production_media": false
+  },
+  "next": "Do not batch-generate more unmasked plates. Evaluate a source-aware manual/segmented plate workflow or a video editor with explicit region masks before any further paid video call."
+}

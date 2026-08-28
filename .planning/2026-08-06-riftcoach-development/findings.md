@@ -4566,6 +4566,16 @@
 - 视觉仍偏 restrained shimmer，缺少实际遮挡和材质 plate，不能把均衡 MAD 当作 MotionSites 级全局运动。下一步不是
   再加 opacity，而是 `material-plate-generation-gate`，先补独立 plate/backplate，再回到确定性合成。
 
+## 2026-08-28：masked-inpaint Rift proof 与 Wan 3.0 重开判断
+
+- ImageGen 的“去掉 Rift 旋涡”编辑并非只修改目标区域，整图存在轻微像素差异；把它限制到 Rift 遮罩内可以
+  避免污染母图，但不能自动修复材质不匹配。
+- 独立 RGBA wisps 层在可见强度下像一条贴上的蓝色带，压低透明度则运动消失；因此 bounded proof 的机械
+  遮罩门通过、视觉门拒绝。这个结果不是继续调 alpha 的理由。
+- 官方 Wan 3.0 当前文档已明确区分 `first_frame`、`last_frame` 和 `reference_*` 模式，且首尾帧模式与同图
+  约束会把运动压成插值/微动。RQ-144 允许一次公平的 first-frame-only 对照：adaptive、1080P、12s、
+  audio/prompt_extend/watermark off，motion-only brief，暂不加入 burst。
+
 ## 2026-08-28：独立材质 plate 生成预检
 
 - built-in imagegen 的 5 张 plate 均不能直接进入合成：Rift 大水团像贴纸，wisps 只能做研究控制场；右场/道路仍有宽泛

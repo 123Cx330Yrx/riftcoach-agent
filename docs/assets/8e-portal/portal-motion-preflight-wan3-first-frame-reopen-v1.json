@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "candidate_id": "wan3-official-first-frame-reopen-v1",
+  "checkpoint": "8e-productization/portal-motion-polish",
+  "status": "prepared",
+  "transport": {
+    "provider": "Alibaba Cloud Model Studio official",
+    "model": "wan3.0-video",
+    "region": "user-account-region-must-match-endpoint",
+    "endpoint": "video-synthesis asynchronous POST then task GET",
+    "reference": "official API docs: first_frame image-to-video"
+  },
+  "source": {
+    "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+    "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e",
+    "role": "only first_frame image; no last_frame because identical endpoints previously over-constrained motion"
+  },
+  "prompt": {
+    "path": "docs/assets/8e-portal/portal-motion-brief-wan3-first-frame-reopen-v1.txt",
+    "sha256": "7222a6a476897d5d6f9e7010397dd65d460400d1f1b4dc793055d880953392e6"
+  },
+  "parameters": {
+    "resolution": "1080P",
+    "ratio": "adaptive",
+    "duration_s": 12,
+    "audio": false,
+    "prompt_extend": false,
+    "watermark": false,
+    "seed": 127
+  },
+  "method_hypothesis": "First-frame-only lets Wan3 spend its temporal budget on continuous in-scene motion instead of interpolating identical first/last images. Adaptive ratio avoids the prior 1918px width mismatch. Concise motion-only language reduces static-scene restatement and avoids the old low-value breathing shortcut.",
+  "guardrails": {
+    "max_post": 1,
+    "max_recovery_post": 0,
+    "get_retries": "bounded transport retry only, never create a second task",
+    "key_input": "local secure prompt only; never persist",
+    "production_media": false,
+    "runtime_adoption": false,
+    "postprocess": "only after output audit; no crossfade or duplicate-frame seam repair"
+  },
+  "paid_call_authorized": true,
+  "preflight_observed": {
+    "source_readback": true,
+    "official_docs_readback": true,
+    "account_balance_readback": false,
+    "region_endpoint_readback": false,
+    "post_attempts_observed": 0
+  },
+  "next": "Read the official console account region/free quota and endpoint once, then execute at most one first-frame-only task. Reject on missing region/price/source mismatch before POST."
+}

@@ -2494,3 +2494,19 @@ Kling image-only 实际 task 已完成但拒绝：source-first `0.860618`，左 
 Kling B2 选择 base video + image reference，而不是另一个 image-only prompt。历史 Seedance task 只提供临时 Video1
 URL 与时间节奏，v2 母图锁视觉；URL GET-only、不持久化。prompt 专门禁止 B1 的塑料圆环/金色星点/实心光柱，
 runner 只有一个 POST。独立 public gate 前不读取 Key、不调用模型。
+
+### RQ-143：分层材质门与 masked-inpaint proof（2026-08-28）
+
+source-derived 位移和五张未遮罩 ImageGen plate 均不能同时满足明显、清晰、无重影。故先做一个 bounded Rift
+proof：确认母图保持底图，ImageGen 清洁背板只在 Rift 内遮罩使用，独立 RGBA 流体层只在该遮罩内运动。机械
+合成门通过，但透明层可见时像贴上的蓝带、不可见时运动不足；ImageGen 整图输出还有轻微全局差异，不能成为新母图。
+候选 `portal-motion-candidate-masked-inpaint-plate-v1` 判为 `research-proof-rejected`，不进入 runtime 或
+production media。
+
+### RQ-144：Wan 3.0 官方 first-frame-only 重开（2026-08-28）
+
+在局部分层 proof 被拒后，用户明确要求重新使用此前未公平利用的 Wan 3.0 官方通道。只做一次有界诊断：active
+v2 母图作为 `first_frame`，不再把同图设为 `last_frame`；使用 `ratio=adaptive`、1080P、12 秒、audio/
+prompt_extend/watermark off、固定 seed 127 与新的 motion-only brief。先核对同区 endpoint/账号额度/价格、
+source/prompt digest 和 one-POST runner，再执行；无论结果如何都不自动重试、不接 runtime、不把输出直接当作
+production media。成功输出还必须过三大区/near-mid-far 全幕运动、source/loop/编码和人工材质审查。

@@ -1777,6 +1777,22 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [next] Check Photoshop/manual masked editing or a reachable Image2 edit path; only after one region passes consider road/right/crystal
   plates and a no-cost composite.
 
+## Masked-inpaint plate proof and Wan reopen (2026-08-28)
+
+- [completed-local-rejected] `masked-inpaint-plate-proof`: a bounded Rift mask,
+  an ImageGen-derived clean backplate and an independent RGBA fluid layer were
+  composited locally at 960×540/24fps/8s. Mechanical masking/encoding passed;
+  human review rejected the result because the visible layer reads as a pasted
+  blue ribbon and the whole-image edit has subtle global drift.
+- [decision] Do not generate more generic transparent plates or tune opacity/
+  source shifts. Keep production media at 0 and preserve the confirmed v2
+  mother image as the only master.
+- [authorized-next] RQ-144 reopens one official Wan 3.0 comparator using
+  `first_frame` only, `ratio=adaptive`, 1080P, 12s, audio/prompt extension/
+  watermark off and a concise motion-only brief. Same-image `last_frame` is
+  intentionally omitted. Endpoint/region/quota readback and exact-SHA gate
+  precede one POST; no retry or runtime adoption.
+
 ## Source-derived layer assets proof v1 (2026-08-28)
 
 - [completed-local] 高通亮部提取、羽化 mask、双相位局部位移和 central crystal-only swell 已实现；先红灯后绿灯，

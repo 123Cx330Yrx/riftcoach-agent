@@ -4828,6 +4828,17 @@
 - 人工结论为 `foundation-pass-with-visual-boundary`：运动仍偏弱且缺少真实 occlusion/backplate，不进入 runtime。
   证据 JSON 已落盘，下一检查点为 `material-plate-generation-gate`，先补独立材质 plate 再回到合成。
 
+## 2026-08-28：masked-inpaint plate proof rejected；Wan 3.0 first-frame reopen prepared
+
+- 完成 bounded Rift proof：ImageGen 清洁背板只在局部遮罩内使用，独立 RGBA 流体层只在该遮罩内做周期位移；
+  本地输出 960×540/24fps/8s/no-audio，外部模型调用 0。
+- 机械审计：192 帧、H.264/yuv420p、source-first SSIM `0.9126610023`、首尾 SSIM `0.9979960032`；
+  这些数值只说明局部合成与编码链可复现。
+- 人工审查：透明流体层可见时呈廉价贴纸/蓝带，不可见时动效不足；候选判定 `research-proof-rejected`，
+  没有进入 runtime 或 production media。证据见 `portal-motion-candidate-masked-inpaint-plate-v1.json`。
+- 用户要求重新利用 Wan 3.0 官方通道，已冻结 RQ-144 first-frame-only preflight、motion-only prompt 与
+  one-POST runner；先核对同区 endpoint/账号余额/价格，再执行最多一次，失败不重试、不接 runtime。
+
 ## 2026-08-28：独立材质 plate 预检结果
 
 - built-in imagegen 完成 5 个局部 plate 候选；Rift/右场/道路/晶体直接叠加分别暴露水团贴纸、宽蓝底、蓝雾和几何替换

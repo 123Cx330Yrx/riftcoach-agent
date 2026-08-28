@@ -640,11 +640,9 @@ bake-off，不进入 production media 或视频/relay 调用。
 RQ-122 又明确付费槽位上限不是调研池上限。Task 5 已广筛现有 official/relay 视频目录：Wan 3.0 官方 access
 由用户 UI 证明，Grok 3 relay 第三代存在但专用 schema 未齐。HyperFrames agent skill as-is 不准入；exact renderer
 隔离 spike 证明 raw frames 可确定性闭合，但默认 MP4 seam/bytes 不合格。Wan/Veo 各一个真实样本随后均未过
-source/seam/full-scene 门，external calls `2`、production media `0`。RQ-125 又防止过度外推：当前 Veo prompt
-未充分遵守 motion-only guidance，故 C 线只作为优先 no-paid-call proof；失败时恢复一次校正 A comparator，
-不改变 RQ-108/8E/8F 顺序。Veo audit 已由 `e79a76e/32918278259` exact-SHA 三 job 公共关闭；当前先冻结并
-执行 C-line proof，不先调用新模型。8-system/192-frame/source-seam-grid/manual 三态 design 已由
-`78ae6e3/32919447127` 完成 exact-SHA 三 job；当前开始 contract TDD 与隔离 renderer 实现。
+source/seam/full-scene 门，后续 Seedance、即梦、Kling 与分层 proof 也未形成 production media。RQ-144 现已
+明确重开一次 Wan 3.0 官方 first-frame-only 对照，避免把旧的同图首尾调用当成能力上限；先做同区 endpoint/额度/
+价格与 SHA preflight，再只允许一个 POST。该重开不改变 RQ-108/8E/8F 顺序，也不授权无界换模型或 runtime 接入。
 C proof 实作虽通过 clock/seam/grid/bytes，但实际仍是母图上的 HUD 覆层；RQ-126 已拒绝并恢复一次校正 A
 comparator，禁止用机械指标绕过视觉失败。RQ-127 又把 comparator 固定为 near/mid/far、left/center/right
 同时持续 breathing、medium-to-strong/evident/cool，并允许构图锚定小幅 camera parallax。
