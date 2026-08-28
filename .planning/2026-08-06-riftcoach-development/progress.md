@@ -4842,6 +4842,9 @@
 - 用户新增条件回退 RQ-145：若 Wan 重开仍不达标，停止自制整幕视频，改评估 Riot 官方 League Displays 地区
   动态壁纸（Portal 选地区）与独立静态 Account 壁纸；当前不改变 Wan 这一次的执行顺序。
 
+- Wan runner 首次启动因 `/compatible-mode/v1` 错误路径返回 404；无 task_id、无结果、无模型质量证据。
+  已完成 API Host allowlist/路径归一化/Markdown link 兼容和正确 task GET 路径修复，等待独立公共门后一次纠正执行。
+
 ## 2026-08-28：独立材质 plate 预检结果
 
 - built-in imagegen 完成 5 个局部 plate 候选；Rift/右场/道路/晶体直接叠加分别暴露水团贴纸、宽蓝底、蓝雾和几何替换

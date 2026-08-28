@@ -953,6 +953,7 @@ groups:
       verification:
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md
+        - docs/plans/2026-08-28-8e-wan3-first-frame-post404-diagnosis.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
         - docs/plans/2026-08-26-8e-seedance25-video-edit-submit-400-diagnosis.md
@@ -1010,6 +1011,7 @@ groups:
       failure_security_boundary:
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md
+        - docs/plans/2026-08-28-8e-wan3-first-frame-post404-diagnosis.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
         - docs/plans/2026-08-26-8e-seedance25-video-edit-submit-400-diagnosis.md

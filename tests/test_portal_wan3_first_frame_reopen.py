@@ -27,7 +27,9 @@ def test_wan_reopen_preflight_uses_first_frame_only_and_no_runtime() -> None:
     assert contract["guardrails"]["max_post"] == 1
     assert contract["guardrails"]["max_recovery_post"] == 0
     assert contract["paid_call_authorized"] is True
-    assert contract["preflight_observed"]["post_attempts_observed"] == 0
+    assert contract["preflight_observed"]["post_attempts_observed"] == 1
+    assert contract["preflight_observed"]["task_ids_observed"] == 0
+    assert "404" in contract["preflight_observed"]["first_attempt"]
 
 
 def test_prompt_digest_and_motion_only_brief_are_bound() -> None:

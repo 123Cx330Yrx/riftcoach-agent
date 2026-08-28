@@ -4580,6 +4580,11 @@
   Displays 的地区主题动态壁纸；Portal 开始前选择地区，Account 使用独立静态壁纸。该路线目前只作为止损
   方案，必须先核对素材来源/许可、格式、体积、浏览器可播放性、移动端和 reduced-motion，再决定是否采用。
 
+- Wan first-frame runner 首次启动收到 HTTP 404，因为输入是 OpenAI-compatible 文本地址
+  `/compatible-mode/v1`，不是视频生成路径；状态文件无 task_id/结果。修复后从输入 URL 只取 allowlisted
+  Alibaba scheme/host，并固定重建 `/api/v1/services/aigc/video-generation/video-synthesis` 与
+  `/api/v1/tasks/{task_id}`，同时接受用户粘贴的 Markdown 链接形式。
+
 ## 2026-08-28：独立材质 plate 生成预检
 
 - built-in imagegen 的 5 张 plate 均不能直接进入合成：Rift 大水团像贴纸，wisps 只能做研究控制场；右场/道路仍有宽泛

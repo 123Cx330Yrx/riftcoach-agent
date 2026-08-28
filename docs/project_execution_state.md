@@ -262,7 +262,9 @@ pause_reason: ""
   `docs/assets/8e-portal/portal-motion-candidate-masked-inpaint-plate-v1.json` 与
   `docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md`。RQ-144 现授权一次官方 Wan 3.0
   `first_frame` only 对照：`adaptive/1080P/12s/audio=false/prompt_extend=false/watermark=false`，motion-only
-  brief；先核对同区 endpoint、账号额度/价格、source/prompt SHA 与 one-POST runner，再执行唯一一次任务。
+  brief。首次启动因用户粘贴 OpenAI-compatible 的 `/compatible-mode/v1` 地址而在错误路径返回 HTTP 404，
+  本地状态无 task_id/结果，不构成 Wan 模型调用或质量证据。runner 已改为只保留 allowlisted Alibaba API Host，
+  自动重建 video POST 与 task GET 路径，并兼容 Markdown link 输入；修复须先取得 exact-SHA 公共门，再执行唯一一次任务。
   在正式结果通过全幕运动/编码/人工视觉门前，不再批量生成、不自动重试、不接 runtime、不进入 Account，
   `production_media` 继续为 `0`；8D、Batch B/C/D、Live Workbench、Batch E E1–E5、production shell/Auth gate、
   Timeline、bilingual/product-journey foundation 与 RQ-108 runtime Task 1–4 的公共证据保持不变；GLM-5.3/Flash、

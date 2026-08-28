@@ -1,4 +1,4 @@
-Generate one single shot from the provided first frame. Motion only: animate materials inside the image; do not redraw the scene, camera, composition or object layout. Keep a fixed camera, deep focus and crisp linework.
+Generate single shot. Fixed camera. From the provided first frame, animate only materials inside the image; do not redraw the scene, composition or object layout. Keep deep focus and crisp linework.
 
 For all 12 seconds, the left Rift, central crystal, right constellation field and near/mid/far environment must move continuously and simultaneously. Motion is spatial and clearly visible, not an exposure pulse.
 
@@ -6,6 +6,6 @@ Left Rift: broad asymmetric fluid currents shear and curl around the existing ap
 
 Across the environment, cloud and air layers, road highlights, ground caustics, architectural seams and reflections flow along their real surfaces. It must feel like materials and volume moving in place, not a translucent overlay. Use cool blue/cyan/electric blue; warm gold is only a small structural accent.
 
-Timing: 0–2s starts every zone together; 2–10s sustains an even rich rhythm; 10–12s eases toward the opening phase without freezing or fading. No separate burst or sudden flash in this diagnostic pass.
+All motion begins immediately, stays continuous and evenly rich for most of the 12 seconds, then gently eases toward the opening phase during the final two seconds without freezing or fading. No separate burst or sudden flash in this diagnostic pass.
 
 No camera drift, zoom, rotation, lens breathing, geometry change, object addition/removal, repainting, hard beam, ring shortcut, HUD line, full-screen fog, overexposure, text, logo, watermark, cut or black fade. If motion conflicts with structure, preserve the structure and reduce motion locally.

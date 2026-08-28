@@ -17,7 +17,7 @@
   },
   "prompt": {
     "path": "docs/assets/8e-portal/portal-motion-brief-wan3-first-frame-reopen-v1.txt",
-    "sha256": "11379f0a5e8f28c4a226561048914545c39a70077e70abd84376fe1fe0fbac9c"
+    "sha256": "4dd776c3140c6782cb5ff8ea00faf304be1555cc4113728b6e9ff096bf61fa9f"
   },
   "parameters": {
     "resolution": "1080P",
@@ -38,13 +38,22 @@
     "runtime_adoption": false,
     "postprocess": "only after output audit; no crossfade or duplicate-frame seam repair"
   },
+  "runner": {
+    "path": "tmp/riftcoach-wan3-first-frame-reopen-v1/run-wan3-first-frame-once.ps1",
+    "sha256": "9853a289b9e1e05c06d9aee14044e6d7212599d4fbfde031ebd813dea00a9924",
+    "powershell_parse_errors": 0,
+    "task_creation_post_paths": 1,
+    "endpoint_normalization": "accept API Host, full video endpoint, or compatible-mode URL; retain only allowlisted Alibaba host and rebuild the video/task paths"
+  },
   "paid_call_authorized": true,
   "preflight_observed": {
     "source_readback": true,
     "official_docs_readback": true,
     "account_balance_readback": false,
-    "region_endpoint_readback": false,
-    "post_attempts_observed": 0
+    "region_endpoint_readback": "legacy_beijing_dashscope_host_from_user_input",
+    "post_attempts_observed": 1,
+    "task_ids_observed": 0,
+    "first_attempt": "HTTP 404 after the user pasted the OpenAI-compatible /compatible-mode/v1 URL; no task id or result was created"
   },
-  "next": "Read the official console account region/free quota and endpoint once, then execute at most one first-frame-only task. Reject on missing region/price/source mismatch before POST."
+  "next": "After exact-SHA public validation of endpoint normalization, run one corrected first-frame-only task against the same allowlisted Alibaba API Host. The prior 404 is not a model call and must not be retried against the wrong path."
 }
