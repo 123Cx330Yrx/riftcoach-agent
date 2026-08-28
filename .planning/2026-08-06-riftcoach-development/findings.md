@@ -4543,3 +4543,17 @@
   有视频输入时 audio 字段应省略。B2 采用 base video 而非 feature，目标是保留已有 camera/tempo 而非角色特征。
 - source task result URL 通过执行时 GET-only 获取，signed URL 不写状态文件；若 URL 过期/缺失，B2 在 POST 前失败，
   这把 transport/source readiness 与模型质量分开。
+
+## 2026-08-28：Kling v3 Omni video+image B2 result review
+
+- B2 的唯一付费 task 在轮询阶段遇到两次瞬时 `HttpRequestException`，GET-only recovery 最终完成；
+  `post_attempts=1`、`recovery_post_attempts=0`，证明恢复没有重复计费。
+- 输出技术完整且首帧身份良好（source→first SSIM `0.989310`），但人工审查仍拒绝：左 Rift 塑料厚环、
+  中央硬亮柱、右场/远景与道路环境偏静。每 0.5s MAD left/center/right 为 `0.008926/0.007587/0.004271`，
+  只能证明像素变化分布，不能证明材质运动成立。
+- 根因不是单一模型或单一 prompt typo：base video temporal anchor 本身不均衡；Kling video+image 接缝没有
+  可靠的区域/时间控制；正向 `vertical swell`/arc/node 语言仍允许 beam/ring/star shortcut；母图首帧身份并非
+  当前主缺口。该证据不永久判死 Kling，也不支持立即再付费。
+- 过程纠正：重复“扁平母图 + 整幕生成”会把 motion 坍缩到显著主体。下一次必须先验证每个可见层有独立、
+  可逆的运动载体和审查证据，再决定是否值得新的模型调用；用户已要求停下做完整复盘，当前为
+  `method-review-hold`。

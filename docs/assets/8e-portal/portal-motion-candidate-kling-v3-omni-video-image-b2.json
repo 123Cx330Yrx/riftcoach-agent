@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "status": "research-candidate-rejected",
+  "candidate": "kling-v3-omni-video-image-b2",
+  "external_video_calls_total_after_run": 15,
+  "task_id": "task_BxImX98XdGOIwIGRzKgRYUZzEmXvbVMe",
+  "model": "kling-v3-omni",
+  "transport": "DragonAPI",
+  "source": {
+    "video": {
+      "role": "temporal rhythm and fixed-camera anchor",
+      "task_id": "task_w6ggXo15mMMw5Y3KMu9CfLK1QLevULvW",
+      "sha256": "acf68ba63a3382f4c79bee090ca9c89ff39727e35af26685aba1c9cc1add56c4"
+    },
+    "image": {
+      "role": "visual identity anchor",
+      "path": "docs/assets/8e-portal/portal-mother-image-source-v2.png",
+      "sha256": "8134c0ca00223e1ff180630be9d21f4c21da0e97e952fbc09e6713209e81a06e"
+    }
+  },
+  "request": {
+    "prompt_path": "docs/assets/8e-portal/portal-motion-brief-kling-v3-omni-video-image-b2.txt",
+    "prompt_sha256": "6669494364216c8ac366ac4c9ee2f354632b438e253625dbdadee1299eb86b56",
+    "mode": "std",
+    "input_mode": "base_video_plus_image_reference",
+    "duration_s": 8,
+    "aspect_ratio": "16:9",
+    "resolution": "720p",
+    "audio_field": "omitted",
+    "post_attempts": 1,
+    "recovery_post_attempts": 0,
+    "recovery_get_attempts": 4,
+    "transient_get_errors": 2
+  },
+  "output": {
+    "path": "repo-excluded:tmp/riftcoach-task5-video-bakeoff/dragon-kling-v3-omni-video-image-b2.mp4",
+    "sha256": "5a9509ee3efdd2dbc0e8264bba88bba1315f3880e2c0932c8ac56da56f02cbba",
+    "bytes": 3506882,
+    "duration_s": 8.041667,
+    "frames": 193,
+    "width": 1280,
+    "height": 720,
+    "fps": 24,
+    "codec": "h264-main",
+    "pixel_format": "yuv420p",
+    "audio": false,
+    "watermark_observed": false
+  },
+  "measurements": {
+    "source_to_first_ssim": 0.9893096372,
+    "source_to_first_mad": 0.0134896850,
+    "first_to_last_ssim": 0.9953213687,
+    "first_to_last_mad": 0.0083169937,
+    "motion_mad_every_0_5s": {
+      "left": 0.0089264013,
+      "center": 0.0075868163,
+      "right": 0.0042711925
+    },
+    "motion_mad_every_0_5s_depth": {
+      "near": 0.0056768189,
+      "mid": 0.0107525247,
+      "far": 0.0043503831
+    },
+    "motion_mad_0_to_4s": {
+      "left": 0.0237356331,
+      "center": 0.0189726260,
+      "right": 0.0114544937
+    },
+    "motion_mad_0_to_4s_depth": {
+      "near": 0.0120126214,
+      "mid": 0.0318878442,
+      "far": 0.0102489702
+    },
+    "mean_luma_range": 0.0102993473,
+    "duplicate_frame_count": 0
+  },
+  "visual_review": {
+    "passed": [
+      "the paid task completed and was recovered after two transient polling errors without another POST",
+      "first frame remains close to the confirmed mother image",
+      "fixed-camera composition is broadly retained",
+      "output is browser-playable H.264/yuv420p with 24 fps and no audio"
+    ],
+    "failed": [
+      "left Rift is reinterpreted as a thick synthetic plastic ring instead of broad layered organic currents",
+      "central crystal event becomes a hard luminous vertical column rather than internal refraction and restrained local swell",
+      "right constellation/terrain remains much less active than left and center; far depth is weakest",
+      "roads, architectural seams, reflections, clouds, air and stardust do not form convincing continuous material motion",
+      "the supplied temporal anchor is itself too weak to carry the requested whole-scene motion, so preserving it constrains the result",
+      "first-to-last similarity is not sufficient evidence of a natural loop; the result still reads as a short generated pass, not a MotionSites-like ambient loop"
+    ],
+    "user_verdict": "rejected: not a production candidate; pause generation and perform a full method review"
+  },
+  "method_conclusion": {
+    "prompt_fault": "positive instructions and prohibitions still leave the model's strongest prior (central subject enhancement) in control",
+    "mode_fault": "video-plus-image reference preserves broad timing/identity but does not expose reliable per-region material or time controls",
+    "source_fault": "the temporal reference already has uneven, focal motion and therefore cannot be a strong whole-scene motion blueprint",
+    "model_ceiling": "unknown; this sample does not justify a permanent Kling rejection or a new paid attempt",
+    "next_gate": "method-review-hold",
+    "production_media": false
+  }
+}

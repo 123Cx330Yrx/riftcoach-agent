@@ -4811,3 +4811,12 @@
 - B2 以历史 Seedance success task GET-only 取得 Video1 临时 URL，v2 母图为 Image1；临时 URL 不写盘。
 - Kling 专用 prompt 明确保持 Rift 原不规则边界，禁止 solid torus、gold star decoration 和 solid laser block；
   runner/price/schema/source digest 已完成静态门，当前 GET/POST 均为 0。
+
+## 2026-08-28：Kling v3 Omni video+image B2 result review
+
+- 已完成唯一一次 B2 生成并用 GET-only recovery 下载；两次瞬时轮询异常后完成，未重复 POST。输出为
+  8.041667s/1280×720/24fps/H.264 Main/yuv420p/no-audio，SHA
+  `5a9509ee3efdd2dbc0e8264bba88bba1315f3880e2c0932c8ac56da56f02cbba`。
+- 首帧身份/编码门通过，但视觉门拒绝：左 Rift 塑料环、中央硬亮柱、右场/远景和整体材质运动不足；候选审计
+  与复盘文档已落盘，production media 仍为 0。
+- 用户要求暂停并完整复盘；下一动作不再是付费生成，而是 method-review-hold 下的 no-cost 分层材质载体证明。

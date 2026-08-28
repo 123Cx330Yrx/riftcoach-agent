@@ -3033,3 +3033,23 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   计费以平台回执为准。当前 source GET/POST 均为 0，production media 仍为 0。
 - `NEXT`：先独立提交/public gate；通过后用户在本机输入 Key，若 source task GET 无有效 URL 则在 POST 前停止，
   否则只执行一次 Kling B2。
+
+### 2026-08-28：Kling v3 Omni video+image B2 结果与方法复盘暂停
+
+- B2 已按合同只创建一个付费 task `task_BxImX98XdGOIwIGRzKgRYUZzEmXvbVMe`；首次轮询遇到
+  `HttpRequestException`，恢复脚本两次 GET 重试后完成下载，`post_attempts=1`、
+  `recovery_post_attempts=0`，未产生第二次计费。输出 SHA
+  `5a9509ee3efdd2dbc0e8264bba88bba1315f3880e2c0932c8ac56da56f02cbba`。
+- 技术检查通过：8.041667s、1280×720、24fps、H.264 Main/yuv420p、无音轨、无重复解码帧；母图→首帧
+  SSIM `0.989310`，首尾 SSIM `0.995321`。这些只证明传输/首帧身份/编码，不代表视觉采用。
+- 视觉裁决为 `research-candidate-rejected`：左 Rift 变成厚塑料环，中央变成硬亮柱，右星图/地形和远景明显
+  偏静，路面/接缝/反射/云空气没有形成 MotionSites 类全幕材质运动。左/中/右每 0.5s MAD 为
+  `0.008926/0.007587/0.004271`，右侧和 far 层明显落后；高首尾相似度不能掩盖运动载体错误。
+- 根因拆分已写入 `docs/plans/2026-08-28-8e-portal-motion-kling-b2-result-review.md`：
+  video+image 模式缺少可靠区域/时间控制；temporal anchor 本身动作不均衡；prompt 的 `vertical swell`
+  等语义仍会诱发 beam/ring/star shortcut；母图不是当前首要问题；MAD 不能替代人工材质审查。
+- `docs/assets/8e-portal/portal-motion-candidate-kling-v3-omni-video-image-b2.json` 保存完整 body-free
+  结果与证据；`production_media` 仍为 `0`，8E coverage 仍为 `planned`。
+- 用户要求停下完整复盘；当前切换为 `method-review-hold`：暂停新视频生成、模型切换、runtime 接入和
+  Account 推进。恢复时先做可见分层/材质载体的 no-cost proof，再评估是否存在真正支持相同区域/时间控制的
+  视频编辑模式；不以更长 prompt 或新品牌抽卡替代方法决策。
