@@ -16,6 +16,10 @@ from .deepseek import (
 from .protocol import LLMProvider
 from .registry import ProviderRegistry
 from .zhipu import ZhipuProvider
+from .zhipu_profiles import (
+    ZhipuThinkingProfile,
+    resolve_zhipu_thinking_profile,
+)
 
 
 @dataclass(frozen=True)
@@ -45,6 +49,24 @@ class ZhipuSettings:
                 provider="zhipu",
                 code="invalid_default_timeout",
             )
+
+    @property
+    def thinking_profile(self) -> ZhipuThinkingProfile:
+        """Return the immutable profile selected by the exact model ID."""
+
+        try:
+            return resolve_zhipu_thinking_profile(self.model)
+        except ValueError as error:
+            raise ProviderConfigurationError(
+                provider="zhipu",
+                code="invalid_model",
+            ) from error
+
+    @property
+    def thinking_profile_id(self) -> str:
+        """Expose a stable, auditable profile identity."""
+
+        return self.thinking_profile.profile_id
 
 
 @dataclass(frozen=True)
@@ -174,7 +196,11 @@ def create_zhipu_provider(
         base_url=settings.base_url,
         timeout=settings.default_timeout_s,
     )
-    return ZhipuProvider(client=client, model=settings.model)
+    return ZhipuProvider(
+        client=client,
+        model=settings.model,
+        profile=settings.thinking_profile,
+    )
 
 
 def create_deepseek_provider(

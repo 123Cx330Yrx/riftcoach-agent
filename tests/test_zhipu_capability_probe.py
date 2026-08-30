@@ -7,6 +7,7 @@ from types import SimpleNamespace
 import pytest
 
 from app.providers.zhipu_probe import ZhipuCapabilityProbe
+from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_MODEL
 
 
 MISSING = object()
@@ -105,17 +106,44 @@ def build_probe(
     *,
     scope: str = "p1_p5",
     max_calls: int = 5,
+    model: str = "glm-test",
 ) -> ZhipuCapabilityProbe:
     timestamps = iter([0.0, 0.01, 1.0, 1.02, 2.0, 2.03, 3.0, 3.04, 4.0, 4.05])
     return ZhipuCapabilityProbe(
         client=client,
-        model="glm-test",
+        model=model,
         code_sha="a" * 40,
         scope=scope,
         max_calls=max_calls,
         clock=lambda: next(timestamps),
         now=lambda: datetime(2026, 8, 9, tzinfo=timezone.utc),
     )
+
+
+def test_flash_diagnostic_uses_enabled_low_and_drops_reasoning_body() -> None:
+    client = FakeClient(
+        [
+            sdk_response(
+                content="RIFTCOACH_PROVIDER_OK",
+                reasoning_content="RAW_FLASH_REASONING",
+            )
+        ]
+    )
+
+    report = build_probe(
+        client,
+        scope="p1_diagnostic",
+        max_calls=1,
+        model=ZHIPU_GLM53_FLASH_MODEL,
+    ).run()
+
+    assert report.cases[0].status == "passed"
+    assert report.cases[0].reasoning_content_state == "non_empty"
+    assert client.completions.calls[0]["extra_body"] == {
+        "thinking": {"type": "enabled"},
+        "reasoning_effort": "low",
+    }
+    assert "RAW_FLASH_REASONING" not in report.model_dump_json()
 
 
 def test_runs_p1_to_p5_and_exposes_only_sanitized_evidence() -> None:

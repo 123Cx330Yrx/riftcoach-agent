@@ -43,6 +43,12 @@ _DEFAULT_OUTPUTS = {
     ),
 }
 
+_MODEL_OUTPUT_PREFIXES = {
+    "glm-5.2": "zhipu_glm52",
+    "glm-5.3": "zhipu_glm53",
+    "glm-5.3-flash": "zhipu_glm53_flash",
+}
+
 
 @dataclass(frozen=True)
 class ProbeCliOptions:
@@ -84,7 +90,11 @@ def run_cli(
     allowed_root = (
         root / "data/evaluation/results/provider_capabilities"
     ).resolve()
-    output = options.output or _DEFAULT_OUTPUTS[options.scope]
+    settings = load_zhipu_settings(environ)
+    output = options.output or _default_output_for_model(
+        options.scope,
+        settings.model,
+    )
     if not output.is_absolute():
         output = root / output
     output = output.resolve()
@@ -93,7 +103,6 @@ def run_cli(
             "Output must remain inside the provider capability result directory."
         )
 
-    settings = load_zhipu_settings(environ)
     code_sha = (code_sha_reader or _read_code_sha)(root)
     client = client_factory(
         api_key=settings.api_key,
@@ -103,7 +112,11 @@ def run_cli(
     )
     if options.scope == "adapter_protocol":
         report = AdapterProtocolSliceRunner(
-            provider=ZhipuProvider(client=client, model=settings.model),
+            provider=ZhipuProvider(
+                client=client,
+                model=settings.model,
+                profile=settings.thinking_profile,
+            ),
             code_sha=code_sha,
             max_calls=options.max_calls,
         ).run()
@@ -115,11 +128,28 @@ def run_cli(
             code_sha=code_sha,
             scope=probe_scope,
             max_calls=options.max_calls,
+            profile=settings.thinking_profile,
         ).run()
 
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(report.model_dump_json(indent=2), encoding="utf-8")
     return report
+
+
+def _default_output_for_model(scope: ProbeCliScope, model: str) -> Path:
+    """Keep historical outputs stable while isolating known model families."""
+
+    prefix = _MODEL_OUTPUT_PREFIXES.get(model.strip().lower())
+    if prefix is None:
+        return _DEFAULT_OUTPUTS[scope]
+    suffix = {
+        "p1_diagnostic": "p1_diagnostic.json",
+        "p1_p5": "p1_p5.json",
+        "adapter_protocol": "adapter_protocol.json",
+    }[scope]
+    return Path(
+        "data/evaluation/results/provider_capabilities"
+    ) / f"{prefix}_{suffix}"
 
 
 def _read_code_sha(repository_root: Path) -> str:

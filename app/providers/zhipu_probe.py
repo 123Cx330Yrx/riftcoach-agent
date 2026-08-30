@@ -27,6 +27,11 @@ from app.evaluation.provider_capability_gate import (
 )
 from app.providers.models import ChatResponse, TokenUsage
 from app.providers.structured import decode_structured_response
+from app.providers.zhipu_profiles import (
+    ZhipuThinkingProfile,
+    resolve_zhipu_thinking_profile,
+    validate_zhipu_profile_for_model,
+)
 
 
 _PROVIDER_TOOL_NAME = "knowledge_search"
@@ -47,7 +52,6 @@ _TOOL_SPEC = {
         },
     },
 }
-_DISABLED_THINKING = {"thinking": {"type": "disabled"}}
 _PASS_PAYLOAD = {
     "score": 100,
     "verdict": "pass",
@@ -114,6 +118,7 @@ class ZhipuCapabilityProbe:
         code_sha: str,
         scope: ProbeScope = "p1_p5",
         max_calls: int = 5,
+        profile: ZhipuThinkingProfile | None = None,
         clock: Callable[[], float] = time.monotonic,
         now: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
     ) -> None:
@@ -132,6 +137,16 @@ class ZhipuCapabilityProbe:
             )
         self._client = client
         self._model = model.strip()
+        selected_profile = profile or resolve_zhipu_thinking_profile(
+            self._model
+        )
+        try:
+            self._profile = validate_zhipu_profile_for_model(
+                self._model,
+                selected_profile,
+            )
+        except ValueError as error:
+            raise ValueError(str(error)) from error
         self._code_sha = code_sha.strip().lower()
         self._scope = scope
         self._budget = ExternalCallBudget(max_calls=max_calls)
@@ -154,7 +169,7 @@ class ZhipuCapabilityProbe:
                 ],
                 "temperature": 0.0,
                 "max_tokens": 128,
-                "extra_body": _DISABLED_THINKING,
+                "extra_body": self._profile.extra_body(),
             },
             validator=self._validate_baseline_text,
         )
@@ -207,7 +222,7 @@ class ZhipuCapabilityProbe:
                 "tool_choice": "auto",
                 "temperature": 0.0,
                 "max_tokens": 512,
-                "extra_body": _DISABLED_THINKING,
+                "extra_body": self._profile.extra_body(),
             },
             validator=self._validate_tool_request,
         )
@@ -355,7 +370,7 @@ class ZhipuCapabilityProbe:
             "response_format": {"type": "json_object"},
             "temperature": 0.0,
             "max_tokens": 1024,
-            "extra_body": _DISABLED_THINKING,
+            "extra_body": self._profile.extra_body(),
         }
 
     def _tool_final_request(self, state: Mapping[str, Any]) -> dict[str, Any]:
@@ -407,38 +422,37 @@ class ZhipuCapabilityProbe:
             "tool_choice": "auto",
             "temperature": 0.0,
             "max_tokens": 512,
-            "extra_body": _DISABLED_THINKING,
+            "extra_body": self._profile.extra_body(),
         }
 
-    @staticmethod
-    def _validate_text(raw: Any) -> _ObservedResponse:
+    def _validate_text(self, raw: Any) -> _ObservedResponse:
         observed = _common_observation(raw)
         content = _message(raw).content
         if not isinstance(content, str) or not content.strip():
             raise _ProbeFailure("invalid_text_response")
+        self._validate_reasoning_content(raw)
         return _replace_output(observed, content.strip())
 
-    @staticmethod
-    def _validate_baseline_text(raw: Any) -> _ObservedResponse:
-        observed = ZhipuCapabilityProbe._validate_text(raw)
+    def _validate_baseline_text(self, raw: Any) -> _ObservedResponse:
+        observed = self._validate_text(raw)
         if observed.output_value != "RIFTCOACH_PROVIDER_OK":
             raise _ProbeFailure("text_semantic_mismatch")
         return observed
 
-    @staticmethod
-    def _validate_text_without_tool_call(raw: Any) -> _ObservedResponse:
+    def _validate_text_without_tool_call(self, raw: Any) -> _ObservedResponse:
         message = _message(raw)
         if getattr(message, "tool_calls", None):
             raise _ProbeFailure("unexpected_additional_tool_call")
-        return ZhipuCapabilityProbe._validate_text(raw)
+        return self._validate_text(raw)
 
-    @staticmethod
     def _validate_structured(
+        self,
         raw: Any,
         expected: Mapping[str, Any],
     ) -> _ObservedResponse:
         try:
             observed = _common_observation(raw)
+            self._validate_reasoning_content(raw)
             content = _message(raw).content
             response = ChatResponse(
                 content=content,
@@ -460,16 +474,13 @@ class ZhipuCapabilityProbe:
             raise _ProbeFailure("structured_semantic_mismatch")
         return _replace_output(observed, value)
 
-    @staticmethod
-    def _validate_tool_request(raw: Any) -> _ObservedResponse:
+    def _validate_tool_request(self, raw: Any) -> _ObservedResponse:
         observed = _common_observation(raw)
         message = _message(raw)
-        reasoning_state = _classify_field(message, "reasoning_content")
-        if reasoning_state not in ("missing", "null", "empty"):
-            raise _ProbeFailure("unexpected_reasoning_content")
         tool_calls = list(getattr(message, "tool_calls", None) or [])
         if len(tool_calls) != 1:
             raise _ProbeFailure("tool_call_not_observed")
+        self._validate_reasoning_content(raw, tool_roundtrip=True)
         call = tool_calls[0]
         call_id = getattr(call, "id", None)
         function = getattr(call, "function", None)
@@ -505,6 +516,25 @@ class ZhipuCapabilityProbe:
             output_value=state,
             tool_call_count=1,
         )
+
+    def _validate_reasoning_content(
+        self,
+        raw: Any,
+        *,
+        tool_roundtrip: bool = False,
+    ) -> None:
+        """Validate reasoning shape while keeping its body out of evidence."""
+
+        message = _message(raw)
+        value = getattr(message, "reasoning_content", None)
+        if value is None:
+            return
+        if not isinstance(value, str):
+            raise _ProbeFailure("unexpected_reasoning_content")
+        if not value.strip():
+            return
+        if not self._profile.accepts_reasoning_content or tool_roundtrip:
+            raise _ProbeFailure("unexpected_reasoning_content")
 
     @staticmethod
     def _skipped(

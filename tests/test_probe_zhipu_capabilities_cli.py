@@ -17,6 +17,8 @@ VALID_ENV = {
     "LLM_TIMEOUT_SECONDS": "30",
 }
 
+FLASH_ENV = {**VALID_ENV, "LLM_MODEL": "glm-5.3-flash"}
+
 
 def test_cli_refuses_real_io_without_explicit_confirmation(tmp_path: Path) -> None:
     factories: list[dict] = []
@@ -119,6 +121,52 @@ def test_cli_p1_diagnostic_uses_one_call_and_separate_default_output(
     assert len(calls) == 1
     assert output.is_file()
     assert "raw-request-secret" not in output.read_text(encoding="utf-8")
+
+
+def test_cli_isolates_flash_default_output_by_model(
+    tmp_path: Path,
+) -> None:
+    def create(**kwargs):
+        return SimpleNamespace(
+            id="raw-flash-request-secret",
+            model="glm-5.3-flash",
+            choices=[
+                SimpleNamespace(
+                    finish_reason="stop",
+                    message=SimpleNamespace(
+                        content="RIFTCOACH_PROVIDER_OK",
+                        reasoning_content="raw-flash-reasoning",
+                        tool_calls=[],
+                    ),
+                )
+            ],
+            usage=SimpleNamespace(prompt_tokens=3, completion_tokens=2),
+        )
+
+    client = SimpleNamespace(
+        chat=SimpleNamespace(completions=SimpleNamespace(create=create))
+    )
+    report = run_cli(
+        ProbeCliOptions(
+            confirm_real_call=True,
+            scope="p1_diagnostic",
+            max_calls=1,
+            output=None,
+        ),
+        environ=FLASH_ENV,
+        repository_root=tmp_path,
+        client_factory=lambda **kwargs: client,
+        code_sha_reader=lambda root: "a" * 40,
+    )
+
+    output = (
+        tmp_path
+        / "data/evaluation/results/provider_capabilities"
+        / "zhipu_glm53_flash_p1_diagnostic.json"
+    )
+    assert report.requested_model == "glm-5.3-flash"
+    assert output.is_file()
+    assert "raw-flash-reasoning" not in output.read_text(encoding="utf-8")
 
 
 def test_cli_adapter_protocol_uses_production_adapter_and_exact_budget(

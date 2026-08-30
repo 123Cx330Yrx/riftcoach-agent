@@ -26,10 +26,14 @@ from .models import (
     ToolChoiceMode,
     ToolSpec,
 )
+from .zhipu_profiles import (
+    ZhipuThinkingProfile,
+    resolve_zhipu_thinking_profile,
+    validate_zhipu_profile_for_model,
+)
 
 
 _PROVIDER_TOOL_NAME_PATTERN = re.compile(r"^[A-Za-z0-9_-]+$")
-_DISABLED_THINKING = {"thinking": {"type": "disabled"}}
 
 
 class ZhipuProvider:
@@ -42,13 +46,43 @@ class ZhipuProvider:
         structured_output=True,
     )
 
-    def __init__(self, *, client: Any, model: str) -> None:
+    def __init__(
+        self,
+        *,
+        client: Any,
+        model: str,
+        profile: ZhipuThinkingProfile | None = None,
+    ) -> None:
         if client is None:
             raise ValueError("client is required.")
-        if not model.strip():
+        if not isinstance(model, str) or not model.strip():
             raise ValueError("model must not be empty.")
+        normalized_model = model.strip()
+        selected_profile = profile or resolve_zhipu_thinking_profile(
+            normalized_model
+        )
+        try:
+            selected_profile = validate_zhipu_profile_for_model(
+                normalized_model,
+                selected_profile,
+            )
+        except ValueError as error:
+            raise ValueError(str(error)) from error
         self._client = client
-        self.model_name = model
+        self.model_name = normalized_model
+        self._thinking_profile = selected_profile
+
+    @property
+    def profile(self) -> ZhipuThinkingProfile:
+        """The immutable model-specific thinking profile used for requests."""
+
+        return self._thinking_profile
+
+    @property
+    def thinking_profile_id(self) -> str:
+        """Stable profile identity for audit records and diagnostics."""
+
+        return self._thinking_profile.profile_id
 
     def chat(self, request: ChatRequest) -> ChatResponse:
         require_provider_capabilities(
@@ -80,7 +114,7 @@ class ZhipuProvider:
             ],
             "temperature": request.temperature,
             "timeout": request.timeout_s,
-            "extra_body": _DISABLED_THINKING,
+            "extra_body": self._thinking_profile.extra_body(),
         }
         if request.max_tokens is not None:
             payload["max_tokens"] = request.max_tokens
@@ -100,16 +134,6 @@ class ZhipuProvider:
         try:
             choice = raw_response.choices[0]
             message = choice.message
-            reasoning_content = getattr(message, "reasoning_content", None)
-            if reasoning_content is not None and (
-                not isinstance(reasoning_content, str)
-                or bool(reasoning_content.strip())
-            ):
-                raise ProviderResponseError(
-                    provider=self.provider_name,
-                    code="unexpected_reasoning_content",
-                )
-
             raw_content = getattr(message, "content", None)
             if raw_content is not None and not isinstance(raw_content, str):
                 raise ProviderResponseError(
@@ -124,6 +148,10 @@ class ZhipuProvider:
             tool_calls = self._decode_tool_calls(
                 getattr(message, "tool_calls", None),
                 aliases,
+            )
+            self._validate_reasoning_content(
+                getattr(message, "reasoning_content", None),
+                has_tool_calls=bool(tool_calls),
             )
 
             model = getattr(raw_response, "model", None) or self.model_name
@@ -151,6 +179,38 @@ class ZhipuProvider:
                 provider=self.provider_name,
                 code="invalid_chat_response",
             ) from None
+
+    def _validate_reasoning_content(
+        self,
+        reasoning_content: Any,
+        *,
+        has_tool_calls: bool,
+    ) -> None:
+        """Validate vendor reasoning without exposing it in neutral contracts."""
+
+        if reasoning_content is None:
+            return
+        if not isinstance(reasoning_content, str):
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="unexpected_reasoning_content",
+            )
+        if not reasoning_content.strip():
+            return
+        if not self._thinking_profile.accepts_reasoning_content:
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="unexpected_reasoning_content",
+            )
+        # A tool round would need the opaque vendor reasoning state on the
+        # next request.  The provider-neutral message contract intentionally
+        # has no such field, so fail closed until a separate contract is
+        # designed and admitted.
+        if has_tool_calls:
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="unexpected_reasoning_content",
+            )
 
     @staticmethod
     def _encode_message(
