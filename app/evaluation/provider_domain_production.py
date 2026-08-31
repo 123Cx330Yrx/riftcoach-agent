@@ -12,6 +12,10 @@ from typing import Any
 from app.agent.context import ContextBuilderV1
 from app.agent.draft import AgentFailureObservation, SkillAgentDraftPreparer
 from app.agent.loop import AgentLoop, AgentRunResult
+from app.model_runtime import (
+    ModelRuntimeProfile,
+    require_registered_model_runtime_profile,
+)
 from app.evaluation.coach_report import (
     EVALUATOR_SYSTEM_PROMPT,
     REVISER_SYSTEM_PROMPT,
@@ -115,13 +119,30 @@ class ProductionDomainCaseExecutor:
         project_root: str | Path,
         input_plan: LoadedDomainCaseInputPlan,
         runs_root: str | Path,
+        runtime_profile: ModelRuntimeProfile | None = None,
     ) -> None:
         if not isinstance(input_plan, LoadedDomainCaseInputPlan):
             raise TypeError("input_plan must be a loaded input plan")
         self._root = Path(project_root).resolve()
         self._input_plan = input_plan
         self._runs_root = Path(runs_root).resolve()
+        if runtime_profile is not None and not isinstance(
+            runtime_profile,
+            ModelRuntimeProfile,
+        ):
+            raise TypeError("runtime_profile must be a ModelRuntimeProfile")
+        if runtime_profile is not None:
+            runtime_profile = require_registered_model_runtime_profile(
+                runtime_profile
+            )
+        self._runtime_profile = runtime_profile
         self.execution_plan = input_plan.execution_plan
+
+    @property
+    def runtime_profile(self) -> ModelRuntimeProfile | None:
+        """The trusted request profile bound to this executor, if any."""
+
+        return self._runtime_profile
 
     def execute(
         self,
@@ -155,7 +176,11 @@ class ProductionDomainCaseExecutor:
                 call_id_factory=lambda: f"{case_id}-knowledge-runtime",
             ),
         )
-        llm_runtime = _single_attempt_llm_runtime(observed, case_id)
+        llm_runtime = _single_attempt_llm_runtime(
+            observed,
+            case_id,
+            runtime_profile=self._runtime_profile,
+        )
         evaluator = SecureChatEvaluationAdapter(
             runtime=llm_runtime,
             system_prompt=EVALUATOR_SYSTEM_PROMPT,
@@ -169,7 +194,10 @@ class ProductionDomainCaseExecutor:
         )
         result = SkillReviewExecutor(
             runs_root=self._runs_root,
-            draft_preparer=SkillAgentDraftPreparer(loop),
+            draft_preparer=SkillAgentDraftPreparer(
+                loop,
+                runtime_profile=self._runtime_profile,
+            ),
             evaluator=evaluator,
             reviser=reviser,
             max_revisions=0,
@@ -228,9 +256,17 @@ class ProductionDomainCaseExecutor:
         )
 
 
-def _single_attempt_llm_runtime(provider: LLMProvider, case_id: str):
+def _single_attempt_llm_runtime(
+    provider: LLMProvider,
+    case_id: str,
+    *,
+    runtime_profile: ModelRuntimeProfile | None = None,
+):
     registry = ToolRegistry()
-    definition = build_llm_tools(provider)[0]
+    definition = build_llm_tools(
+        provider,
+        runtime_profile=runtime_profile,
+    )[0]
     registry.register(
         replace(
             definition,
@@ -397,6 +433,10 @@ def _request_digest(request: ChatRequest) -> str:
             for row in request.messages
         ],
         "tools": [row.name for row in request.tools],
+        "temperature": request.temperature,
+        "max_tokens": request.max_tokens,
+        "timeout_s": request.timeout_s,
+        "top_p": request.top_p,
         "response_contract": (
             request.response_contract.schema_dict()
             if request.response_contract is not None

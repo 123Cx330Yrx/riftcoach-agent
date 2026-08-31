@@ -130,12 +130,22 @@ class ChatMessage:
     tool_calls: tuple[ToolCall, ...] = ()
     tool_call_id: str | None = None
     name: str | None = None
+    # Vendor reasoning is an internal transport field.  It is only valid on
+    # assistant messages and must never be copied into public evidence.
+    reasoning_content: str | None = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
         if not isinstance(self.role, MessageRole):
             raise ValueError("role must be a MessageRole.")
         if self.content is not None and not self.content.strip():
             raise ValueError("message content must be non-blank or None.")
+        if self.reasoning_content is not None:
+            if not isinstance(self.reasoning_content, str):
+                raise ValueError("reasoning_content must be a string or None.")
+            if not self.reasoning_content.strip():
+                raise ValueError(
+                    "reasoning_content must be non-blank or None."
+                )
         if not all(isinstance(call, ToolCall) for call in self.tool_calls):
             raise ValueError("tool_calls must contain only ToolCall values.")
         if len({call.id for call in self.tool_calls}) != len(self.tool_calls):
@@ -144,7 +154,12 @@ class ChatMessage:
         if self.role in {MessageRole.SYSTEM, MessageRole.USER}:
             if self.content is None:
                 raise ValueError("system and user messages require content.")
-            if self.tool_calls or self.tool_call_id is not None or self.name is not None:
+            if (
+                self.tool_calls
+                or self.tool_call_id is not None
+                or self.name is not None
+                or self.reasoning_content is not None
+            ):
                 raise ValueError(
                     "system and user messages cannot carry tool metadata."
                 )
@@ -164,6 +179,8 @@ class ChatMessage:
                 raise ValueError("tool messages require a tool_call_id.")
             if self.tool_calls:
                 raise ValueError("tool messages cannot request more tools.")
+            if self.reasoning_content is not None:
+                raise ValueError("tool messages cannot carry reasoning content.")
             if self.name is not None and not self.name.strip():
                 raise ValueError("tool message name must be non-blank or None.")
 
@@ -178,6 +195,7 @@ class ChatRequest:
     timeout_s: float = 30.0
     response_contract: StructuredResponseContract | None = None
     metadata: Mapping[str, Any] = field(default_factory=dict)
+    top_p: float | None = None
 
     def __post_init__(self) -> None:
         if not self.messages:
@@ -198,6 +216,13 @@ class ChatRequest:
             raise ValueError("temperature must be a number between 0 and 2.")
         if not 0 <= self.temperature <= 2:
             raise ValueError("temperature must be between 0 and 2.")
+        if self.top_p is not None:
+            if isinstance(self.top_p, bool) or not isinstance(
+                self.top_p, (int, float)
+            ):
+                raise ValueError("top_p must be a number between 0 and 1.")
+            if not 0 <= self.top_p <= 1:
+                raise ValueError("top_p must be between 0 and 1.")
         if self.max_tokens is not None and (
             isinstance(self.max_tokens, bool)
             or not isinstance(self.max_tokens, int)
@@ -223,11 +248,13 @@ class ChatRequest:
 class TokenUsage:
     input_tokens: int = 0
     output_tokens: int = 0
+    cached_input_tokens: int = 0
 
     def __post_init__(self) -> None:
         for name, value in (
             ("input_tokens", self.input_tokens),
             ("output_tokens", self.output_tokens),
+            ("cached_input_tokens", self.cached_input_tokens),
         ):
             if isinstance(value, bool) or not isinstance(value, int) or value < 0:
                 raise ValueError(f"{name} must be a non-negative integer.")
@@ -246,10 +273,20 @@ class ChatResponse:
     tool_calls: tuple[ToolCall, ...] = ()
     finish_reason: str | None = None
     request_id: str | None = None
+    # Internal provider state used only to replay preserved thinking.  Public
+    # report/evidence projections intentionally omit this field.
+    reasoning_content: str | None = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
         if self.content is not None and not self.content.strip():
             raise ValueError("response content must be non-blank or None.")
+        if self.reasoning_content is not None:
+            if not isinstance(self.reasoning_content, str):
+                raise ValueError("reasoning_content must be a string or None.")
+            if not self.reasoning_content.strip():
+                raise ValueError(
+                    "reasoning_content must be non-blank or None."
+                )
         if not all(isinstance(call, ToolCall) for call in self.tool_calls):
             raise ValueError("tool_calls must contain only ToolCall values.")
         if len({call.id for call in self.tool_calls}) != len(self.tool_calls):

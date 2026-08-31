@@ -9,7 +9,7 @@ from app.providers.config import (
     create_zhipu_provider,
     load_zhipu_settings,
 )
-from app.providers.errors import ProviderResponseError
+from app.providers.errors import ProviderConfigurationError, ProviderResponseError
 from app.providers.models import (
     ChatMessage,
     ChatRequest,
@@ -93,10 +93,11 @@ def test_model_resolution_keeps_legacy_and_adds_flash_profile() -> None:
         "thinking": {"type": "enabled"},
         "reasoning_effort": "low",
     }
-    assert flash.profile_id == "glm-5.3-flash-enabled-low"
+    assert flash.profile_id == "glm-5.3-flash-enabled-max-replay"
+    assert flash.preserves_reasoning_content is True
     assert flash.extra_body() == {
-        "thinking": {"type": "enabled"},
-        "reasoning_effort": "low",
+        "thinking": {"type": "enabled", "clear_thinking": False},
+        "reasoning_effort": "max",
     }
 
     first = flash.extra_body()
@@ -132,7 +133,7 @@ def test_profile_rejects_unsafe_thinking_combinations(kwargs: dict) -> None:
         ZhipuThinkingProfile(**kwargs)
 
 
-def test_flash_request_uses_profile_and_discards_reasoning_from_neutral_response() -> None:
+def test_flash_request_uses_profile_and_retains_reasoning_for_internal_replay() -> None:
     client = FakeClient(
         sdk_response(
             content="  可公开回答  ",
@@ -146,52 +147,25 @@ def test_flash_request_uses_profile_and_discards_reasoning_from_neutral_response
     )
 
     assert response.content == "可公开回答"
-    assert not hasattr(response, "reasoning_content")
-    assert provider.profile.profile_id == "glm-5.3-flash-enabled-low"
+    assert response.reasoning_content == "不可公开的内部推理"
+    assert provider.profile.profile_id == "glm-5.3-flash-enabled-max-replay"
     assert client.completions.calls[0]["extra_body"] == {
-        "thinking": {"type": "enabled"},
-        "reasoning_effort": "low",
+        "thinking": {"type": "enabled", "clear_thinking": False},
+        "reasoning_effort": "max",
     }
 
 
-def test_flash_rejects_non_string_reasoning_and_unreplayable_tool_reasoning() -> None:
-    for reasoning_content, tool_calls in (
-        ({"hidden": "state"}, []),
-        (
-            "不可回传的工具回合推理",
-            [
-                SimpleNamespace(
-                    id="call-1",
-                    type="function",
-                    function=SimpleNamespace(
-                        name="lookup",
-                        arguments='{"query":"x"}',
-                    ),
+def test_flash_rejects_non_string_reasoning() -> None:
+    with pytest.raises(ProviderResponseError) as caught:
+        ZhipuProvider(
+            client=FakeClient(
+                sdk_response(
+                    reasoning_content={"hidden": "state"},
                 )
-            ],
-        ),
-    ):
-        with pytest.raises(ProviderResponseError) as caught:
-            request = ChatRequest(
-                messages=(ChatMessage(MessageRole.USER, "回答。"),),
-                tools=(
-                    lookup_tool(),
-                )
-                if tool_calls
-                else (),
-            )
-            ZhipuProvider(
-                client=FakeClient(
-                    sdk_response(
-                        content=None if tool_calls else "回答",
-                        reasoning_content=reasoning_content,
-                        tool_calls=tool_calls,
-                        finish_reason="tool_calls" if tool_calls else "stop",
-                    )
-                ),
-                model=ZHIPU_GLM53_FLASH_MODEL,
-            ).chat(request)
-        assert caught.value.code == "unexpected_reasoning_content"
+            ),
+            model=ZHIPU_GLM53_FLASH_MODEL,
+        ).chat(ChatRequest(messages=(ChatMessage(MessageRole.USER, "回答。"),)))
+    assert caught.value.code == "unexpected_reasoning_content"
 
 
 def test_flash_tool_request_keeps_single_call_boundary_and_payload_contract() -> None:
@@ -221,12 +195,12 @@ def test_flash_tool_request_keeps_single_call_boundary_and_payload_contract() ->
 
     assert response.tool_calls[0].name == "lookup"
     assert client.completions.calls[0]["extra_body"] == {
-        "thinking": {"type": "enabled"},
-        "reasoning_effort": "low",
+        "thinking": {"type": "enabled", "clear_thinking": False},
+        "reasoning_effort": "max",
     }
 
 
-def test_flash_still_rejects_parallel_tool_calls_before_neutral_admission() -> None:
+def test_flash_accepts_parallel_tool_calls_for_sequential_agent_consumption() -> None:
     raw_calls = [
         SimpleNamespace(
             id=f"call-{index}",
@@ -249,14 +223,13 @@ def test_flash_still_rejects_parallel_tool_calls_before_neutral_admission() -> N
         model=ZHIPU_GLM53_FLASH_MODEL,
     )
 
-    with pytest.raises(ProviderResponseError) as caught:
-        provider.chat(
-            ChatRequest(
-                messages=(ChatMessage(MessageRole.USER, "查找。"),),
-                tools=(lookup_tool(),),
-            )
+    response = provider.chat(
+        ChatRequest(
+            messages=(ChatMessage(MessageRole.USER, "查找。"),),
+            tools=(lookup_tool(),),
         )
-    assert caught.value.code == "unsupported_parallel_tool_calls"
+    )
+    assert [call.id for call in response.tool_calls] == ["call-1", "call-2"]
 
 
 def test_explicit_profile_cannot_override_model_contract() -> None:
@@ -277,8 +250,8 @@ def test_settings_and_factory_expose_the_resolved_profile_without_new_override()
             "LLM_MODEL": ZHIPU_GLM53_FLASH_MODEL,
         }
     )
-    assert settings.thinking_profile.profile_id == "glm-5.3-flash-enabled-low"
-    assert settings.thinking_profile_id == "glm-5.3-flash-enabled-low"
+    assert settings.thinking_profile.profile_id == "glm-5.3-flash-enabled-max-replay"
+    assert settings.thinking_profile_id == "glm-5.3-flash-enabled-max-replay"
 
     factory_calls: list[dict] = []
 
@@ -287,8 +260,24 @@ def test_settings_and_factory_expose_the_resolved_profile_without_new_override()
         return FakeClient(sdk_response())
 
     provider = create_zhipu_provider(settings, client_factory=client_factory)
-    assert provider.profile.profile_id == "glm-5.3-flash-enabled-low"
+    assert provider.profile.profile_id == "glm-5.3-flash-enabled-max-replay"
     assert factory_calls[0]["base_url"].endswith("/paas/v4/")
+    assert factory_calls[0]["timeout"] == 120.0
+    assert factory_calls[0]["max_retries"] == 0
+
+
+def test_flash_factory_rejects_a_non_official_base_url() -> None:
+    settings = ZhipuSettings(
+        api_key="secret-value",
+        base_url="https://example.invalid/v1/",
+        model=ZHIPU_GLM53_FLASH_MODEL,
+    )
+
+    with pytest.raises(
+        ProviderConfigurationError,
+        match="invalid_base_url_for_runtime_profile",
+    ):
+        create_zhipu_provider(settings, client_factory=lambda **_: FakeClient(sdk_response()))
 
 
 def test_settings_object_derives_profile_for_known_model() -> None:

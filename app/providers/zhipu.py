@@ -3,9 +3,16 @@ from __future__ import annotations
 import json
 import re
 from collections.abc import Mapping
+from dataclasses import dataclass
+from types import SimpleNamespace
 from typing import Any
 
 import openai
+
+from app.model_runtime import (
+    ModelRuntimeProfile,
+    require_registered_model_runtime_profile,
+)
 
 from .capabilities import ProviderCapabilities, require_provider_capabilities
 from .errors import (
@@ -34,6 +41,27 @@ from .zhipu_profiles import (
 
 
 _PROVIDER_TOOL_NAME_PATTERN = re.compile(r"^[A-Za-z0-9_-]+$")
+_TERMINAL_FINISH_REASONS = frozenset({"stop", "tool_calls"})
+_INCOMPLETE_FINISH_REASONS = frozenset(
+    {"length", "content_filter", "insufficient_system_resource"}
+)
+
+
+@dataclass(frozen=True)
+class ZhipuStreamResult:
+    """One fully assembled provider stream plus body-free diagnostics.
+
+    RiftCoach's provider-neutral runtime remains synchronous.  This opt-in
+    adapter surface exists so transport streaming and streamed tool calls can
+    be verified without pretending that the product already exposes live
+    token streaming end to end.
+    """
+
+    response: ChatResponse
+    chunk_count: int
+    content_chunk_count: int
+    reasoning_chunk_count: int
+    tool_call_chunk_count: int
 
 
 class ZhipuProvider:
@@ -52,6 +80,7 @@ class ZhipuProvider:
         client: Any,
         model: str,
         profile: ZhipuThinkingProfile | None = None,
+        runtime_profile: ModelRuntimeProfile | None = None,
     ) -> None:
         if client is None:
             raise ValueError("client is required.")
@@ -68,9 +97,18 @@ class ZhipuProvider:
             )
         except ValueError as error:
             raise ValueError(str(error)) from error
+        if runtime_profile is not None:
+            runtime_profile = require_registered_model_runtime_profile(
+                runtime_profile
+            )
+            if not runtime_profile.matches(self.provider_name, normalized_model):
+                raise ValueError(
+                    "runtime_profile does not match the Zhipu model"
+                )
         self._client = client
         self.model_name = normalized_model
         self._thinking_profile = selected_profile
+        self._runtime_profile = runtime_profile
 
     @property
     def profile(self) -> ZhipuThinkingProfile:
@@ -83,6 +121,12 @@ class ZhipuProvider:
         """Stable profile identity for audit records and diagnostics."""
 
         return self._thinking_profile.profile_id
+
+    @property
+    def runtime_profile(self) -> ModelRuntimeProfile | None:
+        """The optional product execution profile bound to this Provider."""
+
+        return self._runtime_profile
 
     def chat(self, request: ChatRequest) -> ChatResponse:
         require_provider_capabilities(
@@ -106,18 +150,44 @@ class ZhipuProvider:
             )
 
         aliases = _ToolAliasMap.from_tools(request.tools)
+        runtime_profile = self._runtime_profile
+        effective_temperature = (
+            runtime_profile.temperature
+            if runtime_profile is not None
+            else request.temperature
+        )
+        effective_top_p = (
+            runtime_profile.top_p
+            if runtime_profile is not None
+            else request.top_p
+        )
+        effective_max_tokens = request.max_tokens
+        effective_timeout = request.timeout_s
+        if runtime_profile is not None:
+            effective_max_tokens = (
+                runtime_profile.max_output_tokens
+                if effective_max_tokens is None
+                else min(effective_max_tokens, runtime_profile.max_output_tokens)
+            )
+            effective_timeout = min(
+                effective_timeout,
+                runtime_profile.llm_tool_timeout_s,
+            )
         payload: dict[str, Any] = {
             "model": self.model_name,
             "messages": [
                 self._encode_message(message, aliases)
                 for message in request.messages
             ],
-            "temperature": request.temperature,
-            "timeout": request.timeout_s,
+            "temperature": effective_temperature,
+            "timeout": effective_timeout,
+            "stream": False,
             "extra_body": self._thinking_profile.extra_body(),
         }
-        if request.max_tokens is not None:
-            payload["max_tokens"] = request.max_tokens
+        if effective_top_p is not None:
+            payload["top_p"] = effective_top_p
+        if effective_max_tokens is not None:
+            payload["max_tokens"] = effective_max_tokens
         if request.tools and request.tool_choice is ToolChoiceMode.AUTO:
             payload["tools"] = [
                 self._encode_tool(tool, aliases) for tool in request.tools
@@ -149,13 +219,14 @@ class ZhipuProvider:
                 getattr(message, "tool_calls", None),
                 aliases,
             )
-            self._validate_reasoning_content(
+            reasoning_content = self._validate_reasoning_content(
                 getattr(message, "reasoning_content", None),
                 has_tool_calls=bool(tool_calls),
             )
 
             model = getattr(raw_response, "model", None) or self.model_name
             finish_reason = getattr(choice, "finish_reason", None)
+            self._validate_finish_reason(finish_reason)
             if bool(tool_calls) != (finish_reason == "tool_calls"):
                 raise ProviderResponseError(
                     provider=self.provider_name,
@@ -171,6 +242,7 @@ class ZhipuProvider:
                 finish_reason=finish_reason,
                 usage=usage,
                 request_id=request_id,
+                reasoning_content=reasoning_content,
             )
         except ProviderResponseError:
             raise
@@ -180,37 +252,368 @@ class ZhipuProvider:
                 code="invalid_chat_response",
             ) from None
 
+    def chat_stream(
+        self,
+        request: ChatRequest,
+        *,
+        tool_stream: bool = False,
+    ) -> ZhipuStreamResult:
+        """Consume one official SSE response and normalize the assembled turn.
+
+        The method deliberately returns a complete response instead of leaking
+        vendor chunks into the provider-neutral contract.  It is currently an
+        adapter/evaluation surface; ``capabilities.streaming`` stays false
+        until live chunks are wired through the whole product runtime.
+        """
+
+        if not isinstance(tool_stream, bool):
+            raise ValueError("tool_stream must be a boolean.")
+        require_provider_capabilities(
+            provider_name=self.provider_name,
+            capabilities=self.capabilities,
+            request=request,
+        )
+        if request.tool_choice is ToolChoiceMode.REQUIRED:
+            raise ProviderCapabilityError(
+                provider=self.provider_name,
+                missing_capabilities=("required_tool_choice",),
+            )
+        if (
+            request.response_contract is not None
+            and request.tools
+            and request.tool_choice is ToolChoiceMode.AUTO
+        ):
+            raise ProviderCapabilityError(
+                provider=self.provider_name,
+                missing_capabilities=("structured_tool_combination",),
+            )
+        if tool_stream and not request.tools:
+            raise ValueError("tool_stream requires at least one tool.")
+
+        aliases = _ToolAliasMap.from_tools(request.tools)
+        extra_body = self._thinking_profile.extra_body()
+        if tool_stream:
+            extra_body["tool_stream"] = True
+        payload: dict[str, Any] = {
+            "model": self.model_name,
+            "messages": [
+                self._encode_message(message, aliases)
+                for message in request.messages
+            ],
+            "temperature": request.temperature,
+            "timeout": request.timeout_s,
+            "stream": True,
+            "extra_body": extra_body,
+        }
+        if request.top_p is not None:
+            payload["top_p"] = request.top_p
+        if request.max_tokens is not None:
+            payload["max_tokens"] = request.max_tokens
+        if request.tools and request.tool_choice is ToolChoiceMode.AUTO:
+            payload["tools"] = [
+                self._encode_tool(tool, aliases) for tool in request.tools
+            ]
+            payload["tool_choice"] = "auto"
+        if request.response_contract is not None:
+            payload["response_format"] = {"type": "json_object"}
+
+        try:
+            raw_stream = self._client.chat.completions.create(**payload)
+            return self._consume_stream(raw_stream, aliases)
+        except ProviderResponseError:
+            raise
+        except Exception as error:
+            raise self._translate_error(error) from None
+
+    def _consume_stream(
+        self,
+        raw_stream: Any,
+        aliases: _ToolAliasMap,
+    ) -> ZhipuStreamResult:
+        content_parts: list[str] = []
+        reasoning_parts: list[str] = []
+        tool_fragments: dict[int, dict[str, Any]] = {}
+        usage: TokenUsage | None = None
+        resolved_model: str | None = None
+        request_id: str | None = None
+        finish_reason: str | None = None
+        chunk_count = 0
+        content_chunk_count = 0
+        reasoning_chunk_count = 0
+        tool_call_chunk_count = 0
+
+        for chunk in raw_stream:
+            chunk_count += 1
+            raw_model = getattr(chunk, "model", None)
+            if raw_model is not None:
+                if not isinstance(raw_model, str) or not raw_model.strip():
+                    raise ProviderResponseError(
+                        provider=self.provider_name,
+                        code="invalid_stream_response",
+                    )
+                if resolved_model is not None and resolved_model != raw_model:
+                    raise ProviderResponseError(
+                        provider=self.provider_name,
+                        code="invalid_stream_response",
+                    )
+                resolved_model = raw_model
+            raw_request_id = getattr(chunk, "id", None)
+            if raw_request_id is not None:
+                if not isinstance(raw_request_id, str) or not raw_request_id.strip():
+                    raise ProviderResponseError(
+                        provider=self.provider_name,
+                        code="invalid_stream_response",
+                    )
+                if request_id is not None and request_id != raw_request_id:
+                    raise ProviderResponseError(
+                        provider=self.provider_name,
+                        code="invalid_stream_response",
+                    )
+                request_id = raw_request_id
+
+            raw_usage = getattr(chunk, "usage", None)
+            if raw_usage is not None:
+                usage = self._normalize_usage(raw_usage)
+            choices = getattr(chunk, "choices", None)
+            if not isinstance(choices, (list, tuple)):
+                raise ProviderResponseError(
+                    provider=self.provider_name,
+                    code="invalid_stream_response",
+                )
+            if not choices:
+                continue
+            if len(choices) != 1:
+                raise ProviderResponseError(
+                    provider=self.provider_name,
+                    code="invalid_stream_response",
+                )
+            choice = choices[0]
+            raw_finish_reason = getattr(choice, "finish_reason", None)
+            if raw_finish_reason is not None:
+                if (
+                    finish_reason is not None
+                    and finish_reason != raw_finish_reason
+                ):
+                    raise ProviderResponseError(
+                        provider=self.provider_name,
+                        code="invalid_stream_response",
+                    )
+                finish_reason = raw_finish_reason
+            delta = getattr(choice, "delta", None)
+            if delta is None:
+                raise ProviderResponseError(
+                    provider=self.provider_name,
+                    code="invalid_stream_response",
+                )
+            raw_content = getattr(delta, "content", None)
+            if raw_content is not None:
+                if not isinstance(raw_content, str):
+                    raise ProviderResponseError(
+                        provider=self.provider_name,
+                        code="invalid_stream_response",
+                    )
+                if raw_content:
+                    content_parts.append(raw_content)
+                    content_chunk_count += 1
+            raw_reasoning = getattr(delta, "reasoning_content", None)
+            if raw_reasoning is not None:
+                if not isinstance(raw_reasoning, str):
+                    raise ProviderResponseError(
+                        provider=self.provider_name,
+                        code="unexpected_reasoning_content",
+                    )
+                if raw_reasoning:
+                    reasoning_parts.append(raw_reasoning)
+                    reasoning_chunk_count += 1
+            raw_tool_calls = getattr(delta, "tool_calls", None)
+            if raw_tool_calls:
+                try:
+                    calls = list(raw_tool_calls)
+                except TypeError:
+                    raise ProviderResponseError(
+                        provider=self.provider_name,
+                        code="invalid_stream_tool_call",
+                    ) from None
+                for raw_call in calls:
+                    self._append_stream_tool_fragment(
+                        tool_fragments,
+                        raw_call,
+                    )
+                    tool_call_chunk_count += 1
+
+        if chunk_count == 0 or usage is None:
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="invalid_stream_response",
+            )
+        self._validate_finish_reason(finish_reason)
+        tool_calls = self._decode_stream_tool_calls(tool_fragments, aliases)
+        if bool(tool_calls) != (finish_reason == "tool_calls"):
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="invalid_stream_tool_call",
+            )
+        content_text = "".join(content_parts)
+        content = content_text.strip() if content_text.strip() else None
+        reasoning_text = "".join(reasoning_parts)
+        reasoning_content = self._validate_reasoning_content(
+            reasoning_text if reasoning_text.strip() else None,
+            has_tool_calls=bool(tool_calls),
+        )
+        try:
+            response = ChatResponse(
+                content=content,
+                model=resolved_model or self.model_name,
+                provider=self.provider_name,
+                usage=usage,
+                tool_calls=tool_calls,
+                finish_reason=finish_reason,
+                request_id=request_id,
+                reasoning_content=reasoning_content,
+            )
+        except ValueError:
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="invalid_stream_response",
+            ) from None
+        return ZhipuStreamResult(
+            response=response,
+            chunk_count=chunk_count,
+            content_chunk_count=content_chunk_count,
+            reasoning_chunk_count=reasoning_chunk_count,
+            tool_call_chunk_count=tool_call_chunk_count,
+        )
+
+    def _append_stream_tool_fragment(
+        self,
+        fragments: dict[int, dict[str, Any]],
+        raw_call: Any,
+    ) -> None:
+        index = getattr(raw_call, "index", None)
+        if isinstance(index, bool) or not isinstance(index, int) or index < 0:
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="invalid_stream_tool_call",
+            )
+        state = fragments.setdefault(
+            index,
+            {"id": None, "type": None, "name": "", "arguments": ""},
+        )
+        for field_name in ("id", "type"):
+            value = getattr(raw_call, field_name, None)
+            if value is None:
+                continue
+            if not isinstance(value, str) or not value.strip():
+                raise ProviderResponseError(
+                    provider=self.provider_name,
+                    code="invalid_stream_tool_call",
+                )
+            if state[field_name] is not None and state[field_name] != value:
+                raise ProviderResponseError(
+                    provider=self.provider_name,
+                    code="invalid_stream_tool_call",
+                )
+            state[field_name] = value
+        function = getattr(raw_call, "function", None)
+        if function is None:
+            return
+        for field_name in ("name", "arguments"):
+            value = getattr(function, field_name, None)
+            if value is None:
+                continue
+            if not isinstance(value, str):
+                raise ProviderResponseError(
+                    provider=self.provider_name,
+                    code="invalid_stream_tool_call",
+                )
+            state[field_name] += value
+
+    def _decode_stream_tool_calls(
+        self,
+        fragments: dict[int, dict[str, Any]],
+        aliases: _ToolAliasMap,
+    ) -> tuple[ToolCall, ...]:
+        if not fragments:
+            return ()
+        indexes = sorted(fragments)
+        if indexes != list(range(len(indexes))):
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="invalid_stream_tool_call",
+            )
+        assembled = []
+        for index in indexes:
+            state = fragments[index]
+            assembled.append(
+                SimpleNamespace(
+                    id=state["id"],
+                    type=state["type"],
+                    function=SimpleNamespace(
+                        name=state["name"],
+                        arguments=state["arguments"],
+                    ),
+                )
+            )
+        try:
+            return self._decode_tool_calls(assembled, aliases)
+        except ProviderResponseError:
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="invalid_stream_tool_call",
+            ) from None
+
+    def _validate_finish_reason(self, finish_reason: Any) -> None:
+        if finish_reason is None:
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="invalid_chat_response",
+            )
+        if finish_reason in _INCOMPLETE_FINISH_REASONS:
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="incomplete_chat_response",
+            )
+        if finish_reason not in _TERMINAL_FINISH_REASONS:
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="invalid_finish_reason",
+            )
+
     def _validate_reasoning_content(
         self,
         reasoning_content: Any,
         *,
         has_tool_calls: bool,
-    ) -> None:
-        """Validate vendor reasoning without exposing it in neutral contracts."""
+    ) -> str | None:
+        """Validate and retain reasoning needed for a later tool replay.
+
+        The value is kept only in the internal provider-neutral response/message
+        path.  Public evidence builders deliberately project it away.
+        """
 
         if reasoning_content is None:
-            return
+            return None
         if not isinstance(reasoning_content, str):
             raise ProviderResponseError(
                 provider=self.provider_name,
                 code="unexpected_reasoning_content",
             )
         if not reasoning_content.strip():
-            return
+            return None
         if not self._thinking_profile.accepts_reasoning_content:
             raise ProviderResponseError(
                 provider=self.provider_name,
                 code="unexpected_reasoning_content",
             )
-        # A tool round would need the opaque vendor reasoning state on the
-        # next request.  The provider-neutral message contract intentionally
-        # has no such field, so fail closed until a separate contract is
-        # designed and admitted.
-        if has_tool_calls:
+        # Standard API preserved thinking must be explicitly enabled for a
+        # tool round.  Without that profile flag we still fail closed rather
+        # than silently dropping state that the vendor expects to see again.
+        if has_tool_calls and not self._thinking_profile.preserves_reasoning_content:
             raise ProviderResponseError(
                 provider=self.provider_name,
                 code="unexpected_reasoning_content",
             )
+        return reasoning_content
 
     @staticmethod
     def _encode_message(
@@ -221,12 +624,14 @@ class ZhipuProvider:
             "role": message.role.value,
             "content": message.content,
         }
+        if (
+            message.role is MessageRole.ASSISTANT
+            and message.reasoning_content is not None
+        ):
+            # Do not strip, normalize, or otherwise rewrite this string.  The
+            # GLM preserved-thinking contract requires byte-for-byte replay.
+            encoded["reasoning_content"] = message.reasoning_content
         if message.role is MessageRole.ASSISTANT and message.tool_calls:
-            if len(message.tool_calls) > 1:
-                raise ProviderResponseError(
-                    provider="zhipu",
-                    code="unsupported_parallel_tool_calls",
-                )
             try:
                 encoded["tool_calls"] = [
                     {
@@ -339,11 +744,6 @@ class ZhipuProvider:
                 ) from None
             seen_ids.add(normalized_call_id)
             decoded.append(decoded_call)
-        if len(decoded) > 1:
-            raise ProviderResponseError(
-                provider=self.provider_name,
-                code="unsupported_parallel_tool_calls",
-            )
         return tuple(decoded)
 
     def _translate_error(self, error: Exception):
@@ -400,9 +800,29 @@ class ZhipuProvider:
                     provider="zhipu",
                     code="provider_usage_unavailable",
                 )
+        raw_details = getattr(raw_usage, "prompt_tokens_details", None)
+        if isinstance(raw_details, Mapping):
+            cached_input_tokens = raw_details.get("cached_tokens", 0)
+        elif raw_details is None:
+            cached_input_tokens = 0
+        else:
+            cached_input_tokens = getattr(raw_details, "cached_tokens", 0)
+        if cached_input_tokens is None:
+            cached_input_tokens = 0
+        if (
+            isinstance(cached_input_tokens, bool)
+            or not isinstance(cached_input_tokens, int)
+            or cached_input_tokens < 0
+            or cached_input_tokens > input_tokens
+        ):
+            raise ProviderResponseError(
+                provider="zhipu",
+                code="provider_usage_unavailable",
+            )
         return TokenUsage(
             input_tokens=input_tokens,
             output_tokens=output_tokens,
+            cached_input_tokens=cached_input_tokens,
         )
 
 

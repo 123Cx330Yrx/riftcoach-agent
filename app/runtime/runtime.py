@@ -13,6 +13,11 @@ from app.agent.draft import SkillAgentDraftPreparer
 from app.agent.loop import AgentLoop
 from app.harness.models import RunManifest, RunStatus
 from app.harness.store import FileRunStore
+from app.model_runtime import (
+    ModelRuntimeProfile,
+    require_registered_model_runtime_profile,
+    resolve_model_runtime_profile,
+)
 from app.providers.protocol import LLMProvider
 from app.runtime.observed_provider import ObservedLLMProvider
 from app.runtime.observer import (
@@ -94,6 +99,7 @@ class RuntimeExecutionFactory:
         knowledge_provider: Any,
         evaluator_factory: EvaluatorFactory,
         reviser_factory: ReviserFactory,
+        runtime_profile: ModelRuntimeProfile | None = None,
     ) -> None:
         if not callable(evaluator_factory):
             raise TypeError("evaluator_factory must be callable")
@@ -102,6 +108,17 @@ class RuntimeExecutionFactory:
         self._knowledge_provider = knowledge_provider
         self._evaluator_factory = evaluator_factory
         self._reviser_factory = reviser_factory
+        self._runtime_profile = (
+            require_registered_model_runtime_profile(runtime_profile)
+            if runtime_profile is not None
+            else None
+        )
+
+    @property
+    def runtime_profile(self) -> ModelRuntimeProfile | None:
+        """The trusted model profile bound to this execution factory."""
+
+        return self._runtime_profile
 
     def build(
         self,
@@ -109,6 +126,29 @@ class RuntimeExecutionFactory:
         provider: ObservedLLMProvider,
         observer: RuntimeSignalObserver,
     ) -> RuntimeExecutionBundle:
+        expected_profile = resolve_model_runtime_profile(
+            provider.provider_name,
+            provider.model_name,
+        )
+        selected_profile = self._runtime_profile
+        if expected_profile is not None:
+            if getattr(provider, "runtime_profile", None) != expected_profile:
+                raise RuntimeCompositionError(
+                    "Flash Provider requires the registered runtime profile"
+                )
+            if selected_profile is None:
+                selected_profile = expected_profile
+            elif selected_profile != expected_profile:
+                raise RuntimeCompositionError(
+                    "runtime_profile does not match the observed Provider"
+                )
+        elif selected_profile is not None and not selected_profile.matches(
+            provider.provider_name,
+            provider.model_name,
+        ):
+            raise RuntimeCompositionError(
+                "runtime_profile does not match the observed Provider"
+            )
         knowledge_registry = ToolRegistry()
         for definition in build_knowledge_tools(self._knowledge_provider):
             knowledge_registry.register(definition)
@@ -120,7 +160,10 @@ class RuntimeExecutionFactory:
         )
 
         harness_llm_registry = ToolRegistry()
-        for definition in build_llm_tools(provider):
+        for definition in build_llm_tools(
+            provider,
+            runtime_profile=selected_profile,
+        ):
             harness_llm_registry.register(definition)
         harness_llm_runtime = ToolRuntime(harness_llm_registry)
 
@@ -139,6 +182,7 @@ class RuntimeExecutionFactory:
             draft_preparer=SkillAgentDraftPreparer(
                 agent_loop,
                 observer=observer,
+                runtime_profile=selected_profile,
             ),
             evaluator=evaluator,
             reviser=reviser,
@@ -217,6 +261,7 @@ class AgentRuntimeV1:
         execution_factory: RuntimeExecutionFactory,
         context_builder: ContextBuilderV1 | None = None,
         prompt_program_resolver: RuntimePromptIdentityResolver,
+        runtime_profile: ModelRuntimeProfile | None = None,
     ) -> None:
         if not isinstance(catalog, SkillCatalog):
             raise TypeError("catalog must be a SkillCatalog")
@@ -230,6 +275,44 @@ class AgentRuntimeV1:
         self._catalog = catalog
         self._provider = provider
         self._execution_factory = execution_factory
+        factory_profile = execution_factory.runtime_profile
+        if runtime_profile is not None:
+            runtime_profile = require_registered_model_runtime_profile(
+                runtime_profile
+            )
+            if factory_profile is not None and factory_profile != runtime_profile:
+                raise RuntimeCompositionError(
+                    "Runtime and execution factory profiles do not match"
+                )
+        selected_profile = runtime_profile or factory_profile
+        expected_profile = resolve_model_runtime_profile(
+            provider.provider_name,
+            provider.model_name,
+        )
+        provider_profile = getattr(provider, "runtime_profile", None)
+        if expected_profile is not None:
+            if provider_profile != expected_profile:
+                raise RuntimeCompositionError(
+                    "Flash Provider requires the registered runtime profile"
+                )
+            if selected_profile is None:
+                selected_profile = expected_profile
+        if selected_profile is not None and not selected_profile.matches(
+            provider.provider_name,
+            provider.model_name,
+        ):
+            raise RuntimeCompositionError(
+                "runtime_profile does not match the Runtime Provider"
+            )
+        if (
+            selected_profile is not None
+            and provider_profile is not None
+            and provider_profile != selected_profile
+        ):
+            raise RuntimeCompositionError(
+                "runtime_profile does not match the bound Provider profile"
+            )
+        self._runtime_profile = selected_profile
         self._context_builder = context_builder or ContextBuilderV1()
         if not callable(getattr(prompt_program_resolver, "resolve", None)):
             raise TypeError(
@@ -333,6 +416,7 @@ class AgentRuntimeV1:
             raise RuntimeCompositionError(
                 "Runtime execution requires a selected Skill identity"
             )
+        self._validate_runtime_profile_policy(request.policy)
 
         recorder = RuntimeRecorder(
             run_id=request.run_id,
@@ -764,7 +848,44 @@ class AgentRuntimeV1:
             provider_id=self._provider.provider_name,
             provider_model=self._provider.model_name,
             harness_version=_HARNESS_VERSION,
+            runtime_profile_id=(
+                self._runtime_profile.profile_id
+                if self._runtime_profile is not None
+                else None
+            ),
+            runtime_profile_version=(
+                self._runtime_profile.version
+                if self._runtime_profile is not None
+                else None
+            ),
         )
+
+    def _validate_runtime_profile_policy(
+        self,
+        policy: RuntimePolicySnapshot,
+    ) -> None:
+        policy_identity = (
+            policy.runtime_profile_id,
+            policy.runtime_profile_version,
+        )
+        expected_identity = (
+            self._runtime_profile.profile_id,
+            self._runtime_profile.version,
+        ) if self._runtime_profile is not None else (None, None)
+        if policy_identity != expected_identity:
+            raise RuntimeCompositionError(
+                "runtime policy is not bound to the Runtime profile"
+            )
+        if self._runtime_profile is None:
+            if policy.execution_timeout_s is not None:
+                raise RuntimeCompositionError(
+                    "unprofiled runtime policy cannot set execution timeout"
+                )
+            return
+        if policy.execution_timeout_s != self._runtime_profile.agent_timeout_s:
+            raise RuntimeCompositionError(
+                "runtime policy execution timeout does not match profile"
+            )
 
     @staticmethod
     def _required_event_budget(policy: RuntimePolicySnapshot) -> int:

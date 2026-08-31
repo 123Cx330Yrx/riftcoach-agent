@@ -94,6 +94,8 @@ class DeepSeekProvider:
             "stream": False,
             "extra_body": _DISABLED_THINKING,
         }
+        if request.top_p is not None:
+            payload["top_p"] = request.top_p
         if request.max_tokens is not None:
             payload["max_tokens"] = request.max_tokens
         if request.tools and request.tool_choice is ToolChoiceMode.AUTO:
@@ -359,9 +361,29 @@ class DeepSeekProvider:
                     provider=self.provider_name,
                     code="provider_usage_unavailable",
                 )
+        details = getattr(raw_usage, "prompt_tokens_details", None)
+        if isinstance(details, Mapping):
+            cached_input_tokens = details.get("cached_tokens", 0)
+        elif details is None:
+            cached_input_tokens = 0
+        else:
+            cached_input_tokens = getattr(details, "cached_tokens", 0)
+        if cached_input_tokens is None:
+            cached_input_tokens = 0
+        if (
+            isinstance(cached_input_tokens, bool)
+            or not isinstance(cached_input_tokens, int)
+            or cached_input_tokens < 0
+            or cached_input_tokens > input_tokens
+        ):
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="provider_usage_unavailable",
+            )
         return TokenUsage(
             input_tokens=input_tokens,
             output_tokens=output_tokens,
+            cached_input_tokens=cached_input_tokens,
         )
 
 

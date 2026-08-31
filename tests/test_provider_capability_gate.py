@@ -30,6 +30,13 @@ from app.evaluation.provider_resource_calibration import (
     ResourceCalibrationAdjudication,
     V3ResourceBudgetRecord,
 )
+from app.evaluation.glm53_flash_capability_matrix import (
+    GLM53FlashCapabilityMatrixReport,
+)
+from app.evaluation.glm53_flash_tool_stream_followup import (
+    ToolStreamFollowupReport,
+)
+from app.evaluation.glm53_domain_gate import GLM53FreshDomainResult
 
 
 DEEPSEEK_V4_PRO_PROTOCOL_RESULT = Path(
@@ -241,6 +248,24 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
             "cases",
         }.issubset(payload):
             model = ProviderDomainExperimentRecord
+        elif {
+            "experiment_id",
+            "admission",
+            "resources",
+            "control",
+            "protocol_calls",
+            "domain_calls_used",
+            "cumulative_calls_used",
+        }.issubset(payload):
+            model = GLM53FreshDomainResult
+        elif payload.get("experiment_name") == (
+            "g53-5-fresh-flash-capability-matrix-v1"
+        ):
+            model = GLM53FlashCapabilityMatrixReport
+        elif payload.get("experiment_name") == (
+            "g53-5-fresh-flash-tool-stream-followup-v1"
+        ):
+            model = ToolStreamFollowupReport
         else:
             model = {
                 "adapter_protocol": AdapterProtocolSliceReport,

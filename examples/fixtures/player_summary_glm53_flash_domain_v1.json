@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "metadata": {
+    "generated_at_utc": "2026-08-31T00:00:00+00:00",
+    "source": "synthetic_fixture",
+    "matches_requested": 2,
+    "matches_received": 2,
+    "matches_analyzed": 2
+  },
+  "player": {
+    "game_name": "OrbitLedger",
+    "tag_line": "Q7",
+    "riot_id": "OrbitLedger#Q7",
+    "puuid_prefix": "glm53-anon..."
+  },
+  "request": {
+    "count": 2,
+    "queue": 420,
+    "region": "europe"
+  },
+  "recent_summary": {
+    "games_analyzed": 2,
+    "wins": 1,
+    "losses": 1,
+    "win_rate": 50.0,
+    "main_role": "MID",
+    "main_champions": ["星界练习者", "潮汐练习者"],
+    "averages": {
+      "cs_per_min": 7.4,
+      "deaths_before_15": 0.5
+    },
+    "win_loss_comparison": {
+      "wins": {
+        "cs_per_min": 8.1,
+        "deaths_before_15": 0.0
+      },
+      "losses": {
+        "cs_per_min": 6.7,
+        "deaths_before_15": 1.0
+      }
+    },
+    "champion_summary": [
+      {"champion": "星界练习者", "games": 1, "wins": 1, "win_rate": 100.0},
+      {"champion": "潮汐练习者", "games": 1, "wins": 0, "win_rate": 0.0}
+    ],
+    "role_summary": [
+      {"role": "MID", "games": 2, "wins": 1, "win_rate": 50.0}
+    ]
+  },
+  "matches": [
+    {
+      "match_id": "GLM53_FLASH_SYNTH_201",
+      "game_duration_seconds": 1800,
+      "champion_id": 930201,
+      "champion_name": "星界练习者",
+      "role": "MID",
+      "win": true,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 8.1,
+      "deaths_before_15": 0
+    },
+    {
+      "match_id": "GLM53_FLASH_SYNTH_202",
+      "game_duration_seconds": 1800,
+      "champion_id": 930202,
+      "champion_name": "潮汐练习者",
+      "role": "MID",
+      "win": false,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 6.7,
+      "deaths_before_15": 1
+    }
+  ],
+  "failed_matches": [],
+  "excluded_matches": []
+}

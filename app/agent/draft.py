@@ -5,6 +5,10 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
+from app.model_runtime import (
+    ModelRuntimeProfile,
+    require_registered_model_runtime_profile,
+)
 from app.harness.knowledge import (
     KnowledgeEvidenceBuildError,
     knowledge_evidence_from_search_payloads,
@@ -107,12 +111,26 @@ class SkillAgentDraftPreparer:
         agent_loop: AgentLoop,
         *,
         observer: RuntimeSignalObserver | None = None,
+        runtime_profile: ModelRuntimeProfile | None = None,
     ) -> None:
         if not callable(getattr(agent_loop, "run", None)):
             raise TypeError("agent_loop must provide run()")
         self._agent_loop = agent_loop
         self._observer = observer
-        self._compiler = AgentRunCompiler(agent_loop.tool_registry)
+        if runtime_profile is not None:
+            runtime_profile = require_registered_model_runtime_profile(
+                runtime_profile
+            )
+            provider_name = getattr(agent_loop.provider, "provider_name", None)
+            model_name = getattr(agent_loop.provider, "model_name", None)
+            if not runtime_profile.matches(provider_name, model_name):
+                raise ValueError(
+                    "runtime_profile does not match the Agent Provider"
+                )
+        self._compiler = AgentRunCompiler(
+            agent_loop.tool_registry,
+            runtime_profile=runtime_profile,
+        )
 
     def prepare(
         self,

@@ -64,6 +64,34 @@ class ToolCallingMessageTests(unittest.TestCase):
         self.assertEqual(call, message.tool_calls[0])
         self.assertTrue(response.requests_tools)
 
+    def test_assistant_reasoning_is_internal_and_replayable(self) -> None:
+        message = ChatMessage(
+            role=MessageRole.ASSISTANT,
+            content=None,
+            tool_calls=(
+                ToolCall(
+                    id="call-1",
+                    name="riot.recent_match_ids",
+                    arguments={"puuid": "masked"},
+                ),
+            ),
+            reasoning_content="完整思考状态",
+        )
+        response = ChatResponse(
+            content=None,
+            tool_calls=message.tool_calls,
+            reasoning_content="完整思考状态",
+            model="glm-test",
+            provider="zhipu",
+            finish_reason="tool_calls",
+            usage=TokenUsage(),
+        )
+
+        self.assertEqual("完整思考状态", message.reasoning_content)
+        self.assertEqual("完整思考状态", response.reasoning_content)
+        self.assertNotIn("完整思考状态", repr(message))
+        self.assertNotIn("完整思考状态", repr(response))
+
     def test_tool_result_message_correlates_with_the_original_call(self) -> None:
         message = ChatMessage(
             role=MessageRole.TOOL,
@@ -96,6 +124,17 @@ class ToolCallingMessageTests(unittest.TestCase):
                 MessageRole.ASSISTANT,
                 None,
                 tool_calls=(call, call),
+            ),
+            lambda: ChatMessage(
+                MessageRole.USER,
+                "hello",
+                reasoning_content="must be assistant-only",
+            ),
+            lambda: ChatMessage(
+                MessageRole.TOOL,
+                "result",
+                tool_call_id="call-1",
+                reasoning_content="must be assistant-only",
             ),
         )
 

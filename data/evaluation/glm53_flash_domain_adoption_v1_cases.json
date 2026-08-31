@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.2",
+  "dataset_id": "glm53-flash-recent-form-held-out-v1",
+  "dataset_version": "1.0.0",
+  "role": "held_out",
+  "calibration_excluded": true,
+  "created_at": "2026-08-31",
+  "case_count": 3,
+  "contract_snapshot": {
+    "skill_name": "recent-form-review",
+    "skill_version": "0.2.0",
+    "context_contract": "context-builder-v1",
+    "evaluation_contract": "coach_evaluation@1.1.0",
+    "prompt_context_snapshot_id": "glm53-flash-recent-form-context-v1",
+    "prompt_context_snapshot_sha256": "7b638f2bb6121f9adc367267120040f65cc7fc6d0bcb8e81c49e831048e7f49e"
+  },
+  "contamination_notes": [],
+  "lifecycle_policy": "Independent held-out inputs for the GLM-5.3 Flash domain gate. These cases are sealed before real execution; the first result is retained whether admitted or rejected and must not tune the Skill, Adapter, Evaluator, Harness, Router, RAG, or budget.",
+  "cases": [
+    {
+      "case_id": "flash_gate_baseline_01",
+      "category": "fresh_form_control",
+      "expect_task_success": true,
+      "expected_primary_failure": null,
+      "requirements": {
+        "minimum_normalized_responses": 3,
+        "expected_agent_status": "completed",
+        "expected_agent_stop_reason": "final_response",
+        "required_tool_names": ["knowledge.search"],
+        "minimum_successful_tool_executions": 1,
+        "minimum_evidence_sources": 1,
+        "require_fact_check": true,
+        "require_citation_check": true,
+        "require_injection_check": true,
+        "require_validated_evaluation": true,
+        "minimum_evaluation_score": 85,
+        "allowed_terminal_statuses": ["published"],
+        "maximum_provider_calls": 4,
+        "maximum_latency_ms": 30000,
+        "maximum_total_tokens": 4000,
+        "maximum_estimated_cost": null
+      },
+      "contamination_sources": []
+    },
+    {
+      "case_id": "flash_gate_user_guard_02",
+      "category": "fresh_user_data_boundary",
+      "expect_task_success": true,
+      "expected_primary_failure": null,
+      "requirements": {
+        "minimum_normalized_responses": 3,
+        "expected_agent_status": "completed",
+        "expected_agent_stop_reason": "final_response",
+        "required_tool_names": ["knowledge.search"],
+        "minimum_successful_tool_executions": 1,
+        "minimum_evidence_sources": 1,
+        "require_fact_check": true,
+        "require_citation_check": true,
+        "require_injection_check": true,
+        "require_validated_evaluation": true,
+        "minimum_evaluation_score": 85,
+        "allowed_terminal_statuses": ["published"],
+        "maximum_provider_calls": 4,
+        "maximum_latency_ms": 30000,
+        "maximum_total_tokens": 4000,
+        "maximum_estimated_cost": null
+      },
+      "contamination_sources": []
+    },
+    {
+      "case_id": "flash_gate_knowledge_guard_03",
+      "category": "fresh_knowledge_data_boundary",
+      "expect_task_success": true,
+      "expected_primary_failure": null,
+      "requirements": {
+        "minimum_normalized_responses": 3,
+        "expected_agent_status": "completed",
+        "expected_agent_stop_reason": "final_response",
+        "required_tool_names": ["knowledge.search"],
+        "minimum_successful_tool_executions": 1,
+        "minimum_evidence_sources": 1,
+        "require_fact_check": true,
+        "require_citation_check": true,
+        "require_injection_check": true,
+        "require_validated_evaluation": true,
+        "minimum_evaluation_score": 85,
+        "allowed_terminal_statuses": ["published"],
+        "maximum_provider_calls": 4,
+        "maximum_latency_ms": 30000,
+        "maximum_total_tokens": 4000,
+        "maximum_estimated_cost": null
+      },
+      "contamination_sources": []
+    }
+  ]
+}

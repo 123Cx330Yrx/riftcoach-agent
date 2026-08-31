@@ -374,6 +374,27 @@ class ZhipuCapabilityProbe:
         }
 
     def _tool_final_request(self, state: Mapping[str, Any]) -> dict[str, Any]:
+        assistant_message: dict[str, Any] = {
+            "role": "assistant",
+            "content": None,
+            "tool_calls": [
+                {
+                    "id": state["id"],
+                    "type": "function",
+                    "function": {
+                        "name": state["name"],
+                        "arguments": json.dumps(
+                            state["arguments"],
+                            ensure_ascii=False,
+                            separators=(",", ":"),
+                        ),
+                    },
+                }
+            ],
+        }
+        reasoning_content = state.get("reasoning_content")
+        if reasoning_content is not None:
+            assistant_message["reasoning_content"] = reasoning_content
         return {
             "model": self._model,
             "messages": [
@@ -385,24 +406,7 @@ class ZhipuCapabilityProbe:
                     "role": "user",
                     "content": "检索前15分钟死亡的复盘知识，top_k 使用 1。",
                 },
-                {
-                    "role": "assistant",
-                    "content": None,
-                    "tool_calls": [
-                        {
-                            "id": state["id"],
-                            "type": "function",
-                            "function": {
-                                "name": state["name"],
-                                "arguments": json.dumps(
-                                    state["arguments"],
-                                    ensure_ascii=False,
-                                    separators=(",", ":"),
-                                ),
-                            },
-                        }
-                    ],
-                },
+                assistant_message,
                 {
                     "role": "tool",
                     "tool_call_id": state["id"],
@@ -480,7 +484,10 @@ class ZhipuCapabilityProbe:
         tool_calls = list(getattr(message, "tool_calls", None) or [])
         if len(tool_calls) != 1:
             raise _ProbeFailure("tool_call_not_observed")
-        self._validate_reasoning_content(raw, tool_roundtrip=True)
+        reasoning_content = self._validate_reasoning_content(
+            raw,
+            tool_roundtrip=True,
+        )
         call = tool_calls[0]
         call_id = getattr(call, "id", None)
         function = getattr(call, "function", None)
@@ -507,7 +514,16 @@ class ZhipuCapabilityProbe:
         query = arguments["query"]
         if "前15分钟" not in query or "死亡" not in query:
             raise _ProbeFailure("invalid_tool_arguments")
-        state = {"id": call_id.strip(), "name": name, "arguments": arguments}
+        state = {
+            "id": call_id.strip(),
+            "name": name,
+            "arguments": arguments,
+        }
+        if reasoning_content is not None:
+            # This state lives only in the in-process probe handoff.  The
+            # public result stores a digest and a shape classification, never
+            # the reasoning body.
+            state["reasoning_content"] = reasoning_content
         return _ObservedResponse(
             resolved_model=observed.resolved_model,
             request_id=observed.request_id,
@@ -522,19 +538,22 @@ class ZhipuCapabilityProbe:
         raw: Any,
         *,
         tool_roundtrip: bool = False,
-    ) -> None:
+    ) -> str | None:
         """Validate reasoning shape while keeping its body out of evidence."""
 
         message = _message(raw)
         value = getattr(message, "reasoning_content", None)
         if value is None:
-            return
+            return None
         if not isinstance(value, str):
             raise _ProbeFailure("unexpected_reasoning_content")
         if not value.strip():
-            return
-        if not self._profile.accepts_reasoning_content or tool_roundtrip:
+            return None
+        if not self._profile.accepts_reasoning_content:
             raise _ProbeFailure("unexpected_reasoning_content")
+        if tool_roundtrip and not self._profile.preserves_reasoning_content:
+            raise _ProbeFailure("unexpected_reasoning_content")
+        return value
 
     @staticmethod
     def _skipped(

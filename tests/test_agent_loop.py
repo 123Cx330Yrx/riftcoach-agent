@@ -123,7 +123,12 @@ def final_response(content: str) -> ChatResponse:
     )
 
 
-def tool_response(name: str = "system.echo", arguments=None) -> ChatResponse:
+def tool_response(
+    name: str = "system.echo",
+    arguments=None,
+    *,
+    reasoning_content: str | None = None,
+) -> ChatResponse:
     return ChatResponse(
         content=None,
         model="fake-agent-model",
@@ -136,6 +141,7 @@ def tool_response(name: str = "system.echo", arguments=None) -> ChatResponse:
             ),
         ),
         usage=TokenUsage(input_tokens=5, output_tokens=4),
+        reasoning_content=reasoning_content,
     )
 
 
@@ -177,6 +183,27 @@ def test_agent_loop_executes_tool_then_returns_final_response():
     assert provider.requests[0].tools[0].name == "system.echo"
     assert provider.requests[1].messages[-1].role is MessageRole.TOOL
     assert '"echo":"hello"' in provider.requests[1].messages[-1].content
+
+
+def test_agent_loop_replays_provider_reasoning_on_the_next_tool_round():
+    provider = ScriptedProvider(
+        responses=[
+            tool_response(reasoning_content="不可改写的思考状态"),
+            final_response("工具结果已收到"),
+        ]
+    )
+
+    result = build_loop(provider).run(
+        AgentRunRequest(
+            messages=(ChatMessage(role=MessageRole.USER, content="请回显 hello"),),
+            allowed_tools=("system.echo",),
+        )
+    )
+
+    assert result.status is AgentRunStatus.COMPLETED
+    assistant = provider.requests[1].messages[-2]
+    assert assistant.role is MessageRole.ASSISTANT
+    assert assistant.reasoning_content == "不可改写的思考状态"
 
 
 def test_agent_loop_preflights_then_executes_tool_batch_in_response_order():

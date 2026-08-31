@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+from app.model_runtime import (
+    ModelRuntimeProfile,
+    require_registered_model_runtime_profile,
+)
 from app.skills.execution import ValidatedSkillExecution
 from app.tools.errors import ToolNotFoundError
 from app.tools.registry import ToolRegistry
@@ -26,11 +30,17 @@ class AgentRunCompiler:
         tool_registry: ToolRegistry,
         *,
         sizer: ContextSizer | None = None,
+        runtime_profile: ModelRuntimeProfile | None = None,
     ) -> None:
         if not isinstance(tool_registry, ToolRegistry):
             raise TypeError("tool_registry must be a ToolRegistry")
         self._tool_registry = tool_registry
         self._sizer = sizer or DeterministicContextSizer()
+        self._runtime_profile = (
+            require_registered_model_runtime_profile(runtime_profile)
+            if runtime_profile is not None
+            else None
+        )
 
     def compile(
         self,
@@ -86,27 +96,46 @@ class AgentRunCompiler:
                 + ", ".join(missing_tools)
             )
 
+        profile = self._runtime_profile
+        metadata = {
+            "context_estimated_tokens": actual_estimate,
+            "context_max_tokens": context.max_context_tokens,
+            "context_omitted_section_ids": context.omitted_section_ids,
+            "deterministic_report_sha256": (
+                execution.input_artifacts.deterministic_report.sha256
+            ),
+            "player_summary_sha256": (
+                execution.input_artifacts.player_summary.sha256
+            ),
+            "run_id": execution.run_id,
+            "skill_name": manifest.name,
+            "skill_version": manifest.version,
+        }
+        if profile is not None:
+            metadata.update(
+                {
+                    "runtime_profile_id": profile.profile_id,
+                    "runtime_profile_version": profile.version,
+                }
+            )
+
         return AgentRunRequest(
             messages=context.messages,
             allowed_tools=manifest.permissions.allowed_tools,
             max_iterations=manifest.budgets.max_iterations,
             max_tool_calls=manifest.budgets.max_tool_calls,
-            timeout_s=manifest.budgets.timeout_s,
+            timeout_s=(
+                profile.agent_timeout_s
+                if profile is not None
+                else manifest.budgets.timeout_s
+            ),
             max_context_tokens=context.max_context_tokens,
-            metadata={
-                "context_estimated_tokens": actual_estimate,
-                "context_max_tokens": context.max_context_tokens,
-                "context_omitted_section_ids": (
-                    context.omitted_section_ids
-                ),
-                "deterministic_report_sha256": (
-                    execution.input_artifacts.deterministic_report.sha256
-                ),
-                "player_summary_sha256": (
-                    execution.input_artifacts.player_summary.sha256
-                ),
-                "run_id": execution.run_id,
-                "skill_name": manifest.name,
-                "skill_version": manifest.version,
-            },
+            temperature=(
+                profile.temperature if profile is not None else 0.0
+            ),
+            max_tokens=(
+                profile.max_output_tokens if profile is not None else None
+            ),
+            top_p=profile.top_p if profile is not None else None,
+            metadata=metadata,
         )

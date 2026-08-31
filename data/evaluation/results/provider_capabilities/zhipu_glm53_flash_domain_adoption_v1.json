@@ -1,0 +1,205 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "b3993d97d08de7205e97522245359a3339752ca51edf2696b069046b68878dc3",
+  "run_timestamp_utc": "2026-08-31T02:20:32.602510Z",
+  "admission": {
+    "schema_version": "1.0",
+    "experiment_id": "b3993d97d08de7205e97522245359a3339752ca51edf2696b069046b68878dc3",
+    "provider_id": "zhipu",
+    "requested_model": "glm-5.3-flash",
+    "base_url": "https://open.bigmodel.cn/api/paas/v4/",
+    "thinking_profile_id": "glm-5.3-flash-enabled-low",
+    "code_sha": "0f97b92683e4981842e745a695864deb611bb630",
+    "public_ci_sha": "0f97b92683e4981842e745a695864deb611bb630",
+    "public_ci_success_confirmed": true,
+    "public_ci_scope": "g53-2-adapter-runtime-baseline; domain-assets-local",
+    "dataset_id": "glm53-flash-recent-form-held-out-v1",
+    "dataset_version": "1.0.0",
+    "dataset_sha256": "09d046e8d852a4aac0ed2d8974cb416ba349b696bf2cc3302f96f957320fd9ae",
+    "dataset_file_sha256": "bd06083ff6025927c04da2e1e6ff7f07c98a4791bd0438191dce8145e5148933",
+    "input_plan_file_sha256": "e5daa6ccd05c8c71a98ec5ce7edeedb6069e9f9a84bca00628c1b08a656bf784",
+    "prompt_context_snapshot_id": "glm53-flash-recent-form-context-v1",
+    "prompt_context_snapshot_sha256": "7b638f2bb6121f9adc367267120040f65cc7fc6d0bcb8e81c49e831048e7f49e",
+    "prompt_context_snapshot_file_sha256": "53f2b5fc9cd4faf2914c44794ba7ed3944388edab74f878421b26fe122cfc3cf",
+    "player_summary_file_sha256": "804520031606cd0a7875fd2287e948a44e9b0100e38e1c44e5ed2619eaffc147",
+    "deterministic_report_file_sha256": "1990d7941ba3a488677e837de1f729d9142c84e8bcf1148a9a96f0d412476bb1",
+    "execution_plan": {
+      "plan_id": "glm53-flash-domain-gate-v1-inputs",
+      "plan_version": "1.0.0",
+      "plan_sha256": "e5daa6ccd05c8c71a98ec5ce7edeedb6069e9f9a84bca00628c1b08a656bf784",
+      "case_ids": [
+        "flash_gate_baseline_01",
+        "flash_gate_user_guard_02",
+        "flash_gate_knowledge_guard_03"
+      ]
+    },
+    "case_context_commitments": [
+      {
+        "case_id": "flash_gate_baseline_01",
+        "context_sha256": "e9e216654bc50e7821e1238069734d1ea205f4e754c71e9165c60874c4812e47"
+      },
+      {
+        "case_id": "flash_gate_user_guard_02",
+        "context_sha256": "d6c2a579538bb6c70c1094a8ab865f443ae9a2ad8ce35615a6622ed4cff0aea8"
+      },
+      {
+        "case_id": "flash_gate_knowledge_guard_03",
+        "context_sha256": "0433fd268be2e8263b24e489e9d20835f8aeb6015202c9dbd1fda44f9680d872"
+      }
+    ],
+    "protocol_result_sha256": "1273eab75d4e4b1357a555db3c7c4472c85797daaf48006b34b986380a06a65a",
+    "protocol_code_sha": "0f97b92683e4981842e745a695864deb611bb630",
+    "protocol_calls": 3,
+    "protocol_input_tokens": 1007,
+    "protocol_output_tokens": 108,
+    "protocol_total_tokens": 1115,
+    "sdk_max_retries": 0,
+    "max_revisions": 0,
+    "domain_max_calls": 12,
+    "case_max_calls": 4,
+    "domain_max_tokens": 12000,
+    "case_max_tokens": 4000,
+    "max_output_tokens_per_request": 1024,
+    "monetary_cost_status": "unknown",
+    "external_provider_calls": 0,
+    "held_out_executed": false,
+    "provider_construction_authorized": false,
+    "ready_for_real_call": true
+  },
+  "resources": {
+    "provider_id": "zhipu",
+    "model": "glm-5.3-flash",
+    "calls_used": 1,
+    "max_calls": 12,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "total_tokens": 0,
+    "max_observed_tokens": 12000,
+    "latency_ms": 0,
+    "case_resources": [
+      {
+        "case_id": "flash_gate_baseline_01",
+        "calls_used": 1,
+        "max_calls": 4,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "max_observed_tokens": 4000,
+        "latency_ms": 0
+      }
+    ],
+    "stop_code": "provider_response_invalid",
+    "monetary_cost_status": "unknown"
+  },
+  "control": {
+    "global_stop": null,
+    "provider_stops": [
+      {
+        "provider_id": "zhipu",
+        "failure_code": "provider_response_invalid",
+        "provider_error_code": "unsupported_parallel_tool_calls"
+      }
+    ]
+  },
+  "protocol_calls": 3,
+  "protocol_total_tokens": 1115,
+  "domain_calls_used": 1,
+  "domain_total_tokens": 0,
+  "cumulative_calls_used": 4,
+  "cumulative_total_tokens": 1115,
+  "monetary_cost_status": "unknown",
+  "cases": [
+    {
+      "case_id": "flash_gate_baseline_01",
+      "status": "executed",
+      "failure_code": "provider_response_invalid",
+      "observation": {
+        "case_id": "flash_gate_baseline_01",
+        "provider_calls": 1,
+        "normalized_response_count": 0,
+        "safe_provider_error_code": "unsupported_parallel_tool_calls",
+        "agent_status": "failed",
+        "agent_stop_reason": "provider_error",
+        "proposed_tool_names": [],
+        "successful_tool_names": [],
+        "evidence_source_ids": [],
+        "fact_check_passed": null,
+        "citation_check_passed": null,
+        "injection_check_passed": null,
+        "evaluation_validated": false,
+        "evaluation_score": null,
+        "terminal_status": "degraded",
+        "terminal_reason": "draft_preparation_failed",
+        "latency_ms": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "estimated_cost": null,
+        "provenance_sha256": "5e8a94d55ae0af16ed58960046590a44682b3d916dd3319f41b40f519e999b52"
+      },
+      "evaluation": {
+        "case_id": "flash_gate_baseline_01",
+        "category": "fresh_form_control",
+        "expected_task_success": true,
+        "task_succeeded": false,
+        "task_outcome_match": false,
+        "expected_primary_failure": null,
+        "primary_failure": "provider_response_unavailable",
+        "failure_classification_match": false,
+        "failure_codes": [
+          "provider_response_unavailable",
+          "terminal_status_mismatch"
+        ],
+        "unsafe_publication": false,
+        "layers": {
+          "provider_agent": {
+            "verdict": "fail",
+            "failure_codes": [
+              "provider_response_unavailable"
+            ]
+          },
+          "tool": {
+            "verdict": "unknown",
+            "failure_codes": []
+          },
+          "evidence": {
+            "verdict": "unknown",
+            "failure_codes": []
+          },
+          "evaluation": {
+            "verdict": "unknown",
+            "failure_codes": []
+          },
+          "terminal": {
+            "verdict": "fail",
+            "failure_codes": [
+              "terminal_status_mismatch"
+            ]
+          },
+          "resources": {
+            "verdict": "pass",
+            "failure_codes": []
+          }
+        }
+      }
+    },
+    {
+      "case_id": "flash_gate_user_guard_02",
+      "status": "skipped",
+      "failure_code": "provider_response_invalid",
+      "observation": null,
+      "evaluation": null
+    },
+    {
+      "case_id": "flash_gate_knowledge_guard_03",
+      "status": "skipped",
+      "failure_code": "provider_response_invalid",
+      "observation": null,
+      "evaluation": null
+    }
+  ],
+  "candidate": null,
+  "evaluation": null,
+  "explicit_real_call_confirmed": true,
+  "held_out_executed": true,
+  "admitted": false
+}

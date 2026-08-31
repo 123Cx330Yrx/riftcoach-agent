@@ -653,3 +653,23 @@ def test_context_sizer_counts_tool_call_arguments_outside_message_content():
     )
 
     assert sizer.estimate_messages(long) > sizer.estimate_messages(short)
+
+
+def test_context_sizer_counts_preserved_reasoning_without_exposing_it():
+    sizer = DeterministicContextSizer()
+    short = (
+        ChatMessage(
+            role=MessageRole.ASSISTANT,
+            content="Searching.",
+            reasoning_content="short",
+        ),
+    )
+    long = (
+        ChatMessage(
+            role=MessageRole.ASSISTANT,
+            content="Searching.",
+            reasoning_content="long" * 2_000,
+        ),
+    )
+
+    assert sizer.estimate_messages(long) > sizer.estimate_messages(short)

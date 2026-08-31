@@ -120,7 +120,7 @@ def build_probe(
     )
 
 
-def test_flash_diagnostic_uses_enabled_low_and_drops_reasoning_body() -> None:
+def test_flash_diagnostic_uses_max_preserved_thinking_without_persisting_body() -> None:
     client = FakeClient(
         [
             sdk_response(
@@ -140,8 +140,8 @@ def test_flash_diagnostic_uses_enabled_low_and_drops_reasoning_body() -> None:
     assert report.cases[0].status == "passed"
     assert report.cases[0].reasoning_content_state == "non_empty"
     assert client.completions.calls[0]["extra_body"] == {
-        "thinking": {"type": "enabled"},
-        "reasoning_effort": "low",
+        "thinking": {"type": "enabled", "clear_thinking": False},
+        "reasoning_effort": "max",
     }
     assert "RAW_FLASH_REASONING" not in report.model_dump_json()
 
@@ -178,6 +178,33 @@ def test_runs_p1_to_p5_and_exposes_only_sanitized_evidence() -> None:
     )
     assert calls[1]["response_format"] == {"type": "json_object"}
     assert calls[2]["response_format"] == {"type": "json_object"}
+
+
+def test_flash_probe_replays_tool_round_reasoning_without_public_leak() -> None:
+    reasoning = "RAW_FLASH_TOOL_REASONING"
+    client = FakeClient(
+        [
+            sdk_response(content="RIFTCOACH_PROVIDER_OK"),
+            sdk_response(content=PASS_JSON),
+            sdk_response(content=ISSUE_JSON),
+            sdk_response(
+                content=None,
+                reasoning_content=reasoning,
+                tool_calls=[tool_call()],
+                finish_reason="tool_calls",
+            ),
+            sdk_response(content="工具结果已处理"),
+        ]
+    )
+
+    report = build_probe(client, model=ZHIPU_GLM53_FLASH_MODEL).run()
+
+    assert report.admitted is True
+    assert client.completions.calls[4]["messages"][2]["reasoning_content"] == (
+        reasoning
+    )
+    assert reasoning not in report.model_dump_json()
+    calls = client.completions.calls
     assert calls[3]["tools"][0]["function"]["name"] == "knowledge_search"
     assert calls[3]["tool_choice"] == "auto"
     assert calls[4]["messages"][-1]["role"] == "tool"

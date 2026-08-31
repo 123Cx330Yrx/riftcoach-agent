@@ -7,6 +7,8 @@ from typing import Any
 
 from openai import OpenAI
 
+from app.model_runtime import resolve_model_runtime_profile
+
 from .errors import ProviderConfigurationError
 from .deepseek import (
     DEEPSEEK_BASE_URL,
@@ -17,6 +19,7 @@ from .protocol import LLMProvider
 from .registry import ProviderRegistry
 from .zhipu import ZhipuProvider
 from .zhipu_profiles import (
+    ZHIPU_STANDARD_BASE_URL,
     ZhipuThinkingProfile,
     resolve_zhipu_thinking_profile,
 )
@@ -191,15 +194,31 @@ def create_zhipu_provider(
     *,
     client_factory: Callable[..., Any] = OpenAI,
 ) -> ZhipuProvider:
+    runtime_profile = resolve_model_runtime_profile("zhipu", settings.model)
+    if (
+        runtime_profile is not None
+        and settings.base_url.rstrip("/")
+        != ZHIPU_STANDARD_BASE_URL.rstrip("/")
+    ):
+        raise ProviderConfigurationError(
+            provider="zhipu",
+            code="invalid_base_url_for_runtime_profile",
+        )
     client = client_factory(
         api_key=settings.api_key,
         base_url=settings.base_url,
-        timeout=settings.default_timeout_s,
+        timeout=(
+            runtime_profile.transport_timeout_s
+            if runtime_profile is not None
+            else settings.default_timeout_s
+        ),
+        max_retries=0,
     )
     return ZhipuProvider(
         client=client,
         model=settings.model,
         profile=settings.thinking_profile,
+        runtime_profile=runtime_profile,
     )
 
 

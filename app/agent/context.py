@@ -105,21 +105,26 @@ class DeterministicContextSizer:
         return sum(self._estimate_message(message) for message in messages)
 
     def _estimate_message(self, message: ChatMessage) -> int:
+        payload = {
+            "content": message.content,
+            "name": message.name,
+            "role": message.role.value,
+            "tool_call_id": message.tool_call_id,
+            "tool_calls": [
+                {
+                    "arguments": dict(tool_call.arguments),
+                    "id": tool_call.id,
+                    "name": tool_call.name,
+                }
+                for tool_call in message.tool_calls
+            ],
+        }
+        if message.reasoning_content is not None:
+            # Preserved thinking contributes to the actual request size, but
+            # is never emitted by the public context snapshots.
+            payload["reasoning_content"] = message.reasoning_content
         content = json.dumps(
-            {
-                "content": message.content,
-                "name": message.name,
-                "role": message.role.value,
-                "tool_call_id": message.tool_call_id,
-                "tool_calls": [
-                    {
-                        "arguments": dict(tool_call.arguments),
-                        "id": tool_call.id,
-                        "name": tool_call.name,
-                    }
-                    for tool_call in message.tool_calls
-                ],
-            },
+            payload,
             ensure_ascii=False,
             sort_keys=True,
             separators=(",", ":"),

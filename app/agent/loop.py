@@ -69,6 +69,11 @@ class AgentRunRequest:
     max_tool_calls: int = 8
     timeout_s: float = 30.0
     max_context_tokens: int = 200_000
+    # Request-level model defaults are supplied only by trusted compilation
+    # profiles.  Ordinary callers keep the historical conservative values.
+    temperature: float = 0.0
+    max_tokens: int | None = None
+    top_p: float | None = None
     metadata: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
@@ -96,6 +101,22 @@ class AgentRunRequest:
             or self.max_context_tokens <= 0
         ):
             raise ValueError("max_context_tokens must be a positive integer.")
+        if isinstance(self.temperature, bool) or not isinstance(
+            self.temperature, (int, float)
+        ) or not 0 <= self.temperature <= 2:
+            raise ValueError("temperature must be between 0 and 2.")
+        if self.max_tokens is not None and (
+            isinstance(self.max_tokens, bool)
+            or not isinstance(self.max_tokens, int)
+            or self.max_tokens <= 0
+        ):
+            raise ValueError("max_tokens must be a positive integer or None.")
+        if self.top_p is not None and (
+            isinstance(self.top_p, bool)
+            or not isinstance(self.top_p, (int, float))
+            or not 0 <= self.top_p <= 1
+        ):
+            raise ValueError("top_p must be between 0 and 1.")
         object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
 
 
@@ -215,7 +236,10 @@ class AgentLoop:
                     if tool_specs
                     else ToolChoiceMode.NONE
                 ),
+                temperature=request.temperature,
+                max_tokens=request.max_tokens,
                 timeout_s=remaining_s,
+                top_p=request.top_p,
                 metadata={
                     **request.metadata,
                     "agent_loop_iteration": iteration,
@@ -248,6 +272,7 @@ class AgentLoop:
                     role=MessageRole.ASSISTANT,
                     content=response.content,
                     tool_calls=response.tool_calls,
+                    reasoning_content=response.reasoning_content,
                 )
             )
 
@@ -442,6 +467,9 @@ def _sum_usage(left: TokenUsage, right: TokenUsage) -> TokenUsage:
     return TokenUsage(
         input_tokens=left.input_tokens + right.input_tokens,
         output_tokens=left.output_tokens + right.output_tokens,
+        cached_input_tokens=(
+            left.cached_input_tokens + right.cached_input_tokens
+        ),
     )
 
 

@@ -54,6 +54,12 @@ class ObservedLLMProvider:
         self.model_name = delegate.model_name
         self.capabilities = delegate.capabilities
 
+    @property
+    def runtime_profile(self):
+        """Expose an optional concrete model profile without widening the port."""
+
+        return getattr(self._delegate, "runtime_profile", None)
+
     def chat(self, request: ChatRequest) -> ChatResponse:
         if not isinstance(request, ChatRequest):
             raise TypeError("request must be a ChatRequest")

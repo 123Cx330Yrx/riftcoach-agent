@@ -30,6 +30,10 @@ from app.persistence.memory_context_repository import PostgresMemoryContextRepos
 from app.persistence.task_repository import PostgresTaskRepository
 from app.persistence.terminal_turn_writer import PostgresTerminalTurnWriter
 from app.memory.context_manifest_store import FileMemoryContextManifestStore
+from app.model_runtime import (
+    ModelRuntimeProfile,
+    resolve_model_runtime_profile,
+)
 from app.product.recent_review import RecentReviewRuntimeRequestCompiler
 from app.product.recent_review_service import RecentReviewApplicationService
 from app.product.run_receipts import FileRunReceiptStore
@@ -45,6 +49,11 @@ from app.providers.secrets import (
     InMemorySecretSource,
     SecretConfigurationError,
     SecretSource,
+)
+from app.providers.zhipu_profiles import (
+    ZHIPU_GLM52_MODEL,
+    ZHIPU_GLM53_FLASH_MODEL,
+    ZHIPU_STANDARD_BASE_URL,
 )
 from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.runtime.composition import RuntimeCompositionRoot
@@ -75,6 +84,12 @@ _ERROR_CODES = frozenset(
 _SAFE_LANGUAGE = re.compile(r"^[a-z]{2}_[A-Z]{2}$")
 _RIOT_ROUTING_REGIONS = ("americas", "asia", "europe", "sea")
 _WORKER_ID_ADAPTER = TypeAdapter(WorkerId)
+_FLASH_MIN_LEASE_SECONDS = 300
+_FLASH_DEFAULT_LEASE_SECONDS = 360
+_FLASH_DEFAULT_HEARTBEAT_SECONDS = 60
+_PRODUCT_ZHIPU_MODELS = frozenset(
+    {ZHIPU_GLM52_MODEL, ZHIPU_GLM53_FLASH_MODEL}
+)
 
 
 class WorkerCompositionError(RuntimeError):
@@ -104,6 +119,7 @@ class WorkerCompositionSettings:
     min_duration_seconds: int
     polling_policy: PollingPolicy
     lease_policy: TaskLeasePolicy
+    runtime_profile: ModelRuntimeProfile | None = field(default=None, repr=False)
 
 
 @dataclass(frozen=True, slots=True)
@@ -156,6 +172,18 @@ def load_worker_composition_settings(
         registry = load_provider_registry_settings(environment)
         if registry.default_provider_id != "zhipu":
             raise ValueError("only the current product baseline may be selected")
+        runtime_profile = resolve_model_runtime_profile(
+            "zhipu",
+            raw_zhipu.model,
+        )
+        if raw_zhipu.model.strip().lower() not in _PRODUCT_ZHIPU_MODELS:
+            raise ValueError("worker model is not an admitted product model")
+        if (
+            runtime_profile is not None
+            and raw_zhipu.base_url.rstrip("/")
+            != ZHIPU_STANDARD_BASE_URL.rstrip("/")
+        ):
+            raise ValueError("Flash worker requires the standard Zhipu API base URL")
 
         selected_secret_source = secret_source or _environment_secret_source(environment)
         language = environment.get("RIFTCOACH_DDRAGON_LANGUAGE", "zh_CN").strip()
@@ -196,14 +224,22 @@ def load_worker_composition_settings(
             lease_seconds=_read_int(
                 environment,
                 "RIFTCOACH_WORKER_LEASE_SECONDS",
-                default=120,
+                default=(
+                    _FLASH_DEFAULT_LEASE_SECONDS
+                    if runtime_profile is not None
+                    else 120
+                ),
                 minimum=15,
                 maximum=3600,
             ),
             heartbeat_seconds=_read_int(
                 environment,
                 "RIFTCOACH_WORKER_HEARTBEAT_SECONDS",
-                default=30,
+                default=(
+                    _FLASH_DEFAULT_HEARTBEAT_SECONDS
+                    if runtime_profile is not None
+                    else 30
+                ),
                 minimum=1,
                 maximum=1200,
             ),
@@ -222,6 +258,13 @@ def load_worker_composition_settings(
                 maximum=25,
             ),
         )
+        if (
+            runtime_profile is not None
+            and lease_policy.lease_seconds < _FLASH_MIN_LEASE_SECONDS
+        ):
+            raise ValueError(
+                "Flash runtime requires a lease window of at least 300 seconds"
+            )
         return WorkerCompositionSettings(
             database=database,
             zhipu=WorkerZhipuSettings(
@@ -262,6 +305,7 @@ def load_worker_composition_settings(
             min_duration_seconds=min_duration,
             polling_policy=polling_policy,
             lease_policy=lease_policy,
+            runtime_profile=runtime_profile,
         )
     except WorkerCompositionError:
         raise
@@ -344,10 +388,18 @@ def build_review_worker_process(
             },
             settings.provider_registry,
         )
+        resolved_provider = registry.resolve()
+        if (
+            settings.runtime_profile is not None
+            and getattr(resolved_provider, "runtime_profile", None)
+            != settings.runtime_profile
+        ):
+            raise WorkerCompositionError("worker_dependency_invalid")
         runtime = runtime_root.build_runtime(
             runs_root=settings.runs_root,
-            provider=registry.resolve(),
+            provider=resolved_provider,
             knowledge_provider=knowledge,
+            runtime_profile=settings.runtime_profile,
             context_builder=MemoryAwareContextBuilder(
                 delegate=ContextBuilderV1(),
                 repository=PostgresMemoryContextRepository(session_factory),
@@ -360,6 +412,7 @@ def build_review_worker_process(
             summary_builder=summary_builder,
             compiler=RecentReviewRuntimeRequestCompiler(
                 runtime_root.skill_catalog,
+                runtime_profile=settings.runtime_profile,
             ),
             runtime=runtime,
             receipt_writer=FileRunReceiptStore(settings.runs_root),

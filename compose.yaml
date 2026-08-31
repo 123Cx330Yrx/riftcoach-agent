@@ -89,8 +89,8 @@ services:
       LLM_DEFAULT_PROVIDER: ${LLM_DEFAULT_PROVIDER:-zhipu}
       LLM_API_KEY: ${LLM_API_KEY:-}
       LLM_BASE_URL: ${LLM_BASE_URL:-https://open.bigmodel.cn/api/paas/v4/}
-      LLM_MODEL: ${LLM_MODEL:-glm-5.2}
-      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-30}
+      LLM_MODEL: ${LLM_MODEL:-glm-5.3-flash}
+      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-120}
       RIFTCOACH_RUNS_ROOT: /var/lib/riftcoach/runs
       RIFTCOACH_KNOWLEDGE_ROOT: /opt/riftcoach/data/rag_docs
       RIFTCOACH_SKILLS_ROOT: /opt/riftcoach/skills

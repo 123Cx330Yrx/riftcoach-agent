@@ -111,11 +111,52 @@ class RuntimePolicySnapshot(RuntimeContractModel):
     publish_score_threshold: int = Field(ge=0, le=100)
     max_revisions: int = Field(ge=0, le=3)
     allow_deterministic_fallback: bool
+    # Optional model-runtime binding.  Older traces and test-only runtimes
+    # remain valid when these fields are absent; product Flash runs carry the
+    # exact trusted profile and its execution deadline separately from the
+    # Skill quality-gate timeout above.
+    runtime_profile_id: str | None = None
+    runtime_profile_version: str | None = None
+    execution_timeout_s: float | None = Field(default=None, gt=0, le=300)
 
     @field_validator("policy_version")
     @classmethod
     def validate_policy_version(cls, value: str) -> str:
         return _validate_semver(value, field_name="policy_version")
+
+    @field_validator("runtime_profile_id")
+    @classmethod
+    def validate_runtime_profile_id(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        if not _SAFE_ID_PATTERN.fullmatch(value):
+            raise ValueError("runtime_profile_id must be a safe identifier")
+        return value
+
+    @field_validator("runtime_profile_version")
+    @classmethod
+    def validate_runtime_profile_version(
+        cls,
+        value: str | None,
+    ) -> str | None:
+        if value is None:
+            return None
+        return _validate_semver(value, field_name="runtime_profile_version")
+
+    @model_validator(mode="after")
+    def validate_runtime_profile_binding(self) -> "RuntimePolicySnapshot":
+        has_id = self.runtime_profile_id is not None
+        has_version = self.runtime_profile_version is not None
+        has_timeout = self.execution_timeout_s is not None
+        if has_id != has_version:
+            raise ValueError(
+                "runtime profile id and version must be supplied together"
+            )
+        if has_id != has_timeout:
+            raise ValueError(
+                "execution timeout must be supplied with a runtime profile"
+            )
+        return self
 
 
 class RuntimeIdentitySnapshot(RuntimeContractModel):
@@ -127,6 +168,8 @@ class RuntimeIdentitySnapshot(RuntimeContractModel):
     provider_id: str
     provider_model: str
     harness_version: str
+    runtime_profile_id: str | None = None
+    runtime_profile_version: str | None = None
 
     @field_validator(
         "skill_name",
@@ -149,6 +192,35 @@ class RuntimeIdentitySnapshot(RuntimeContractModel):
     @classmethod
     def validate_versions(cls, value: str, info) -> str:
         return _validate_semver(value, field_name=info.field_name)
+
+    @field_validator("runtime_profile_id")
+    @classmethod
+    def validate_runtime_profile_id(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        if not _SAFE_ID_PATTERN.fullmatch(value):
+            raise ValueError("runtime_profile_id must be a safe identifier")
+        return value
+
+    @field_validator("runtime_profile_version")
+    @classmethod
+    def validate_runtime_profile_version(
+        cls,
+        value: str | None,
+    ) -> str | None:
+        if value is None:
+            return None
+        return _validate_semver(value, field_name="runtime_profile_version")
+
+    @model_validator(mode="after")
+    def validate_runtime_profile_binding(self) -> "RuntimeIdentitySnapshot":
+        if (self.runtime_profile_id is None) != (
+            self.runtime_profile_version is None
+        ):
+            raise ValueError(
+                "runtime profile id and version must be supplied together"
+            )
+        return self
 
 
 class RuntimePricingProfile(RuntimeContractModel):
@@ -494,6 +566,16 @@ class RuntimeTrace(RuntimeContractModel):
     def validate_trace_invariants(self) -> "RuntimeTrace":
         if self.trace_schema_version != self.event_schema_version:
             raise ValueError("Trace and Event schema versions must match")
+        if (
+            self.identity.runtime_profile_id,
+            self.identity.runtime_profile_version,
+        ) != (
+            self.policy.runtime_profile_id,
+            self.policy.runtime_profile_version,
+        ):
+            raise ValueError(
+                "trace runtime profile identity does not match policy"
+            )
         if len(self.events) > self.policy.event_budget:
             raise ValueError("events exceed the runtime event budget")
         if any(event.run_id != self.run_id for event in self.events):

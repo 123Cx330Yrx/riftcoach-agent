@@ -44,7 +44,7 @@ from .registry import (
     ProviderRegistry,
     ProviderSelection,
 )
-from .zhipu import ZhipuProvider
+from .zhipu import ZhipuProvider, ZhipuStreamResult
 from .zhipu_profiles import (
     ZHIPU_GLM52_MODEL,
     ZHIPU_GLM52_THINKING_PROFILE,
@@ -104,6 +104,7 @@ __all__ = [
     "ToolChoiceMode",
     "ToolSpec",
     "ZhipuProvider",
+    "ZhipuStreamResult",
     "ZhipuModelProfile",
     "ZhipuSettings",
     "ZhipuThinkingProfile",

@@ -29,7 +29,7 @@ def valid_environment(tmp_path: Path) -> dict[str, str]:
         "LLM_DEFAULT_PROVIDER": "zhipu",
         "LLM_API_KEY": "llm-secret",
         "LLM_BASE_URL": "https://provider.invalid/v4/",
-        "LLM_MODEL": "glm-test",
+        "LLM_MODEL": "glm-5.2",
         "LLM_TIMEOUT_SECONDS": "30",
         "RIFTCOACH_RUNS_ROOT": str(tmp_path / "runs"),
         "RIFTCOACH_KNOWLEDGE_ROOT": str(ROOT / "data/rag_docs"),
@@ -88,6 +88,35 @@ def test_worker_settings_hide_secrets_and_resolve_runtime_assets(
     assert "riot-secret" not in repr(settings)
     assert "llm-secret" not in repr(settings)
     assert "database-secret" not in repr(settings)
+
+
+def test_flash_worker_settings_bind_profile_and_expand_lease_window(
+    tmp_path: Path,
+) -> None:
+    environment = valid_environment(tmp_path)
+    environment["LLM_BASE_URL"] = "https://open.bigmodel.cn/api/paas/v4/"
+    environment["LLM_MODEL"] = "glm-5.3-flash"
+
+    settings = load_worker_composition_settings(environment)
+
+    assert settings.runtime_profile is not None
+    assert settings.runtime_profile.profile_id == "glm-5.3-flash-runtime-v1"
+    assert settings.lease_policy.lease_seconds == 360
+    assert settings.lease_policy.heartbeat_seconds == 60
+
+
+def test_flash_worker_rejects_a_lease_that_cannot_cover_runtime_budget(
+    tmp_path: Path,
+) -> None:
+    environment = valid_environment(tmp_path)
+    environment["LLM_BASE_URL"] = "https://open.bigmodel.cn/api/paas/v4/"
+    environment["LLM_MODEL"] = "glm-5.3-flash"
+    environment["RIFTCOACH_WORKER_LEASE_SECONDS"] = "120"
+
+    with pytest.raises(WorkerCompositionError) as exc_info:
+        load_worker_composition_settings(environment)
+
+    assert exc_info.value.code == "worker_configuration_invalid"
 
 
 def test_worker_settings_ignore_legacy_ambient_region_instead_of_using_it(

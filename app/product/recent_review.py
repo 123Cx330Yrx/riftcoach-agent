@@ -13,6 +13,10 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from app.harness.run_ids import normalize_run_id
 from app.memory.context_models import MemoryContextBinding
+from app.model_runtime import (
+    ModelRuntimeProfile,
+    require_registered_model_runtime_profile,
+)
 from app.runtime.models import RuntimePolicySnapshot, RuntimeRunRequest
 from app.skills.catalog import SkillCatalog
 from app.skills.execution import (
@@ -32,6 +36,7 @@ from app.skills.routing_models import (
 _RECENT_SKILL_NAME = "recent-form-review"
 _TYPED_ENTRYPOINT_SIGNAL = "entrypoint:reviews.recent"
 _RUNTIME_POLICY_VERSION = "1.0.0"
+_PROFILE_RUNTIME_POLICY_VERSION = "1.1.0"
 _RUNTIME_EVENT_BUDGET = 256
 _RUNTIME_MAX_REVISIONS = 1
 _MAX_GAME_NAME_LENGTH = 64
@@ -148,11 +153,22 @@ def _select_recent_skill(
     return skill, decision
 
 
-def _compile_runtime_policy(skill: LoadedSkill) -> RuntimePolicySnapshot:
+def _compile_runtime_policy(
+    skill: LoadedSkill,
+    runtime_profile: ModelRuntimeProfile | None = None,
+) -> RuntimePolicySnapshot:
     budgets = skill.manifest.budgets
     quality_gate = skill.manifest.quality_gate
+    if runtime_profile is not None:
+        runtime_profile = require_registered_model_runtime_profile(
+            runtime_profile
+        )
     return RuntimePolicySnapshot(
-        policy_version=_RUNTIME_POLICY_VERSION,
+        policy_version=(
+            _PROFILE_RUNTIME_POLICY_VERSION
+            if runtime_profile is not None
+            else _RUNTIME_POLICY_VERSION
+        ),
         event_budget=_RUNTIME_EVENT_BUDGET,
         max_iterations=budgets.max_iterations,
         max_tool_calls=budgets.max_tool_calls,
@@ -162,6 +178,17 @@ def _compile_runtime_policy(skill: LoadedSkill) -> RuntimePolicySnapshot:
         max_revisions=_RUNTIME_MAX_REVISIONS,
         allow_deterministic_fallback=(
             quality_gate.allow_deterministic_fallback
+        ),
+        runtime_profile_id=(
+            runtime_profile.profile_id if runtime_profile is not None else None
+        ),
+        runtime_profile_version=(
+            runtime_profile.version if runtime_profile is not None else None
+        ),
+        execution_timeout_s=(
+            runtime_profile.agent_timeout_s
+            if runtime_profile is not None
+            else None
         ),
     )
 
@@ -174,9 +201,19 @@ class RecentReviewRuntimeRequestCompiler:
         catalog: SkillCatalog,
         *,
         run_id_factory: RunIdFactory = _default_run_id_factory,
+        runtime_profile: ModelRuntimeProfile | None = None,
     ) -> None:
         self._catalog = catalog
         self._run_id_factory = run_id_factory
+        self._runtime_profile = (
+            require_registered_model_runtime_profile(runtime_profile)
+            if runtime_profile is not None
+            else None
+        )
+
+    @property
+    def runtime_profile(self) -> ModelRuntimeProfile | None:
+        return self._runtime_profile
 
     def compile(
         self,
@@ -236,7 +273,7 @@ class RecentReviewRuntimeRequestCompiler:
         )
         return RuntimeRunRequest(
             execution_request=execution_request,
-            policy=_compile_runtime_policy(skill),
+            policy=_compile_runtime_policy(skill, self._runtime_profile),
             memory_context_binding=memory_context_binding,
         )
 

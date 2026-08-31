@@ -1,8 +1,8 @@
 """Explicit, immutable request profiles for Zhipu model families.
 
-The provider-neutral chat contract does not carry vendor-specific thinking
-fields.  Keeping those fields in a model-selected profile makes the adapter
-boundary auditable while preserving the historical GLM-5.2 behavior.
+    The provider-neutral chat contract does not expose vendor-specific request
+    knobs. Keeping those fields in a model-selected profile makes the adapter
+    boundary auditable while preserving the historical GLM-5.2 behavior.
 """
 
 from __future__ import annotations
@@ -80,9 +80,15 @@ class ZhipuThinkingProfile:
 
     @property
     def accepts_reasoning_content(self) -> bool:
-        """Whether non-empty provider reasoning may be consumed and dropped."""
+        """Whether this profile may carry non-empty provider reasoning."""
 
         return self.thinking_type == "enabled"
+
+    @property
+    def preserves_reasoning_content(self) -> bool:
+        """Whether preserved thinking may be replayed on a tool round."""
+
+        return self.thinking_type == "enabled" and self.clear_thinking is False
 
     def extra_body(self) -> dict[str, object]:
         """Return a fresh vendor-extension payload for one SDK request."""
@@ -114,10 +120,11 @@ ZHIPU_GLM53_THINKING_PROFILE = ZhipuThinkingProfile(
     reasoning_effort="low",
 )
 ZHIPU_GLM53_FLASH_THINKING_PROFILE = ZhipuThinkingProfile(
-    profile_id="glm-5.3-flash-enabled-low",
+    profile_id="glm-5.3-flash-enabled-max-replay",
     model=ZHIPU_GLM53_FLASH_MODEL,
     thinking_type="enabled",
-    reasoning_effort="low",
+    reasoning_effort="max",
+    clear_thinking=False,
 )
 
 _MODEL_PROFILES = MappingProxyType(

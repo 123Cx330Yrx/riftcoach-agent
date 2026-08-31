@@ -593,6 +593,9 @@ def _sum_usage(responses: list[ChatResponse]) -> TokenUsage:
     return TokenUsage(
         input_tokens=sum(row.usage.input_tokens for row in responses),
         output_tokens=sum(row.usage.output_tokens for row in responses),
+        cached_input_tokens=sum(
+            row.usage.cached_input_tokens for row in responses
+        ),
     )
 
 
