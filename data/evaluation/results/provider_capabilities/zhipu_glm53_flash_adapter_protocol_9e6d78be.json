@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "probe_scope": "adapter_protocol",
+  "provider_id": "zhipu",
+  "requested_model": "glm-5.3-flash",
+  "code_sha": "9e6d78be51c3a5c512b67f83d2849f9b1261cf77",
+  "documentation_snapshot_date": "2026-08-09",
+  "run_timestamp_utc": "2026-08-31T10:36:28.732140Z",
+  "max_calls": 3,
+  "calls_used": 3,
+  "admitted": true,
+  "cases": [
+    {
+      "case_id": "A1_structured_contract",
+      "status": "passed",
+      "error_code": null,
+      "external_calls": 1,
+      "latency_ms": 15688,
+      "input_tokens": 433,
+      "output_tokens": 570,
+      "response_count": 1,
+      "resolved_models": [
+        "glm-5.3-flash"
+      ],
+      "finish_reasons": [
+        "stop"
+      ],
+      "request_id_sha256": [
+        "62f639edab258adfce706ab3561684a0b19e1448e781ad45863d915bc501623b"
+      ],
+      "output_sha256": "d895e36bff79e4c47b3a7ad72ab3e660a3c8a70c3ff353d1bb7462d6b1d048f0",
+      "tool_call_count": 0,
+      "tool_execution_count": 0,
+      "tool_arguments_sha256": null,
+      "tool_result_sha256": null
+    },
+    {
+      "case_id": "A2_agent_tool_round_trip",
+      "status": "passed",
+      "error_code": null,
+      "external_calls": 2,
+      "latency_ms": 12156,
+      "input_tokens": 662,
+      "output_tokens": 162,
+      "response_count": 2,
+      "resolved_models": [
+        "glm-5.3-flash",
+        "glm-5.3-flash"
+      ],
+      "finish_reasons": [
+        "tool_calls",
+        "stop"
+      ],
+      "request_id_sha256": [
+        "28560c584d990f4cf8ca14beefceadd1291664d65803dd7666738f9c193a290b",
+        "e8b8e09ca587a85d61791bf2ec00c82096285952f2b0968fee507b73092368ca"
+      ],
+      "output_sha256": "b8e1581bbee7a74eb6755501c2be669718a40bc99516143f04826cf751dd92e1",
+      "tool_call_count": 1,
+      "tool_execution_count": 1,
+      "tool_arguments_sha256": "61761343984a584f2264c6d2803663c9a95c3796718ea1518c9744d7db22f18b",
+      "tool_result_sha256": "445f578a388b68049269b39d9842e769b2cb00952c3442b98de231f97b4588f2"
+    }
+  ],
+  "estimated_cost": null,
+  "cost_note": "No verified unit-price snapshot was applied."
+}
