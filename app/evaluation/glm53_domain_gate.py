@@ -112,6 +112,10 @@ G53_7_OUTPUT_PATH = Path(
     "zhipu_glm53_flash_domain_adoption_g53_7_runtime_profile_v1.json"
 )
 G53_7_RUNS_ROOT = Path("data/runs/evaluation/glm53_flash_domain_g53_7")
+G53_3_CURRENT_PROTOCOL_RESULT_PATH = Path(
+    "data/evaluation/results/provider_capabilities/"
+    "zhipu_glm53_flash_adapter_protocol_f0d5ee2.json"
+)
 
 PUBLIC_CI_SHA = "0f97b92683e4981842e745a695864deb611bb630"
 EXPECTED_PROTOCOL_RESULT_SHA256 = (
@@ -155,6 +159,61 @@ SafeErrorText = Annotated[str, StringConstraints(pattern=r"^[a-z][a-z0-9_]{0,127
 
 class _FrozenModel(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
+
+
+def _validate_evidence_path(value: str) -> None:
+    path = PurePosixPath(value)
+    if (
+        "\\" in value
+        or path.is_absolute()
+        or ".." in path.parts
+        or not value.startswith("data/evaluation/results/provider_capabilities/")
+    ):
+        raise ValueError("evidence paths must stay in the capability results tree")
+
+
+class GLM53ABIdentityBinding(_FrozenModel):
+    """Bind implementation commit A to evidence commit B without self-reference.
+
+    The implementation and protocol execution identities intentionally remain
+    separate from the commit that adds the sanitized evidence.  CI run IDs are
+    human-attested facts supplied by the release record; this model checks their
+    shape and relationships without making a network request.
+    """
+
+    schema_version: Literal["1.0"] = "1.0"
+    implementation_sha: GitShaText
+    implementation_public_ci_sha: GitShaText
+    implementation_public_ci_run_id: int = Field(gt=0)
+    implementation_public_ci_success_confirmed: Literal[True]
+    protocol_code_sha: GitShaText
+    evidence_commit_sha: GitShaText
+    evidence_public_ci_sha: GitShaText
+    evidence_public_ci_run_id: int = Field(gt=0)
+    evidence_public_ci_success_confirmed: Literal[True]
+    protocol_result_path: NonBlankText
+    protocol_result_sha256: Sha256Text
+    evidence_paths: tuple[NonBlankText, ...]
+
+    @model_validator(mode="after")
+    def validate_binding(self) -> "GLM53ABIdentityBinding":
+        if self.implementation_public_ci_sha != self.implementation_sha:
+            raise ValueError("implementation CI SHA must match commit A")
+        if self.protocol_code_sha != self.implementation_sha:
+            raise ValueError("protocol code SHA must match implementation commit A")
+        if self.evidence_public_ci_sha != self.evidence_commit_sha:
+            raise ValueError("evidence CI SHA must match evidence commit B")
+        if self.evidence_commit_sha == self.implementation_sha:
+            raise ValueError("implementation and evidence commits must be distinct")
+        if not self.evidence_paths:
+            raise ValueError("evidence commit must declare at least one evidence path")
+        if self.protocol_result_path not in self.evidence_paths:
+            raise ValueError("protocol result must be part of the evidence commit")
+        if len(set(self.evidence_paths)) != len(self.evidence_paths):
+            raise ValueError("evidence paths must be unique")
+        for value in self.evidence_paths:
+            _validate_evidence_path(value)
+        return self
 
 
 class GLM53CaseResource(_FrozenModel):
@@ -223,7 +282,7 @@ class GLM53ControlSnapshot(_FrozenModel):
 class GLM53FreshDomainAdmission(_FrozenModel):
     """No-I/O identity proving that a fresh run may be constructed."""
 
-    schema_version: Literal["1.0"] = "1.0"
+    schema_version: Literal["1.0", "1.1"] = "1.0"
     experiment_id: Sha256Text
     provider_id: Literal[GLM53_PROVIDER_ID] = GLM53_PROVIDER_ID
     requested_model: Literal[GLM53_MODEL] = GLM53_MODEL
@@ -258,6 +317,7 @@ class GLM53FreshDomainAdmission(_FrozenModel):
     case_context_commitments: tuple[DomainCaseContextCommitment, ...]
     protocol_result_sha256: Sha256Text
     protocol_code_sha: GitShaText
+    identity_binding: GLM53ABIdentityBinding | None = None
     protocol_calls: Literal[PROTOCOL_MAX_CALLS] = PROTOCOL_MAX_CALLS
     protocol_input_tokens: int = Field(ge=0)
     protocol_output_tokens: int = Field(ge=0)
@@ -281,6 +341,23 @@ class GLM53FreshDomainAdmission(_FrozenModel):
 
     @model_validator(mode="after")
     def validate_identity(self) -> "GLM53FreshDomainAdmission":
+        if self.schema_version == "1.1":
+            binding = self.identity_binding
+            if binding is None:
+                raise ValueError("schema 1.1 admissions require A/B identity binding")
+            if self.runtime_profile_id != GLM53_RUNTIME_PROFILE_ID:
+                raise ValueError(
+                    "schema 1.1 admissions require the specialised Flash runtime profile"
+                )
+            if (
+                binding.implementation_sha != self.code_sha
+                or binding.implementation_public_ci_sha != self.public_ci_sha
+                or binding.protocol_code_sha != self.protocol_code_sha
+                or binding.protocol_result_sha256 != self.protocol_result_sha256
+            ):
+                raise ValueError("admission and A/B identity binding disagree")
+        elif self.identity_binding is not None:
+            raise ValueError("schema 1.0 admissions cannot carry A/B identity binding")
         if self.runtime_profile_id == GLM53_RUNTIME_PROFILE_ID:
             if self.runtime_profile_version != GLM53_RUNTIME_PROFILE_VERSION:
                 raise ValueError(
@@ -334,7 +411,7 @@ class GLM53FreshDomainAdmission(_FrozenModel):
 class GLM53FreshDomainResult(_FrozenModel):
     """Immutable, body-free result of one authorized fresh-domain attempt."""
 
-    schema_version: Literal["1.0"] = "1.0"
+    schema_version: Literal["1.0", "1.1"] = "1.0"
     experiment_id: Sha256Text
     run_timestamp_utc: datetime
     admission: GLM53FreshDomainAdmission
@@ -356,6 +433,8 @@ class GLM53FreshDomainResult(_FrozenModel):
 
     @model_validator(mode="after")
     def validate_composition(self) -> "GLM53FreshDomainResult":
+        if self.schema_version != self.admission.schema_version:
+            raise ValueError("result and admission schema identities differ")
         if self.experiment_id != self.admission.experiment_id:
             raise ValueError("result and admission identities differ")
         if tuple(row.case_id for row in self.cases) != (
@@ -665,6 +744,130 @@ class GLM53BudgetedProvider:
         raise ProviderResponseError(provider=self.provider_name, code=code.value)
 
 
+def build_glm53_ab_identity_binding(
+    *,
+    project_root: str | Path,
+    protocol_result_path: str | Path,
+    implementation_sha: str,
+    implementation_public_ci_run_id: int,
+    evidence_commit_sha: str,
+    evidence_public_ci_run_id: int,
+    current_head_sha: str,
+    implementation_public_ci_sha: str | None = None,
+    evidence_public_ci_sha: str | None = None,
+    confirm_implementation_ci_success: bool = False,
+    confirm_evidence_ci_success: bool = False,
+    expected_protocol_result_sha256: str | None = None,
+    evidence_paths: Sequence[str] | None = None,
+) -> GLM53ABIdentityBinding:
+    """Build and verify the A/B identity used by a new G53-7 preflight.
+
+    Commit A contains the implementation and the protocol execution code.
+    Commit B contains the sanitized protocol evidence (and only explicitly
+    declared evidence files).  The function performs local Git/file checks
+    only; CI run IDs are caller-supplied attestations and are never fetched
+    from the network here.
+    """
+
+    if implementation_public_ci_sha is None:
+        implementation_public_ci_sha = implementation_sha
+    if evidence_public_ci_sha is None:
+        evidence_public_ci_sha = evidence_commit_sha
+    if (
+        not _is_git_sha(implementation_sha)
+        or not _is_git_sha(implementation_public_ci_sha)
+        or not _is_git_sha(evidence_commit_sha)
+        or not _is_git_sha(evidence_public_ci_sha)
+    ):
+        raise ValueError("A/B identities must be git SHAs")
+    if (
+        confirm_implementation_ci_success is not True
+        or confirm_evidence_ci_success is not True
+    ):
+        raise ValueError("both implementation and evidence CI confirmations are required")
+    if (
+        isinstance(implementation_public_ci_run_id, bool)
+        or not isinstance(implementation_public_ci_run_id, int)
+        or implementation_public_ci_run_id <= 0
+    ):
+        raise ValueError("implementation CI run ID must be positive")
+    if (
+        isinstance(evidence_public_ci_run_id, bool)
+        or not isinstance(evidence_public_ci_run_id, int)
+        or evidence_public_ci_run_id <= 0
+    ):
+        raise ValueError("evidence CI run ID must be positive")
+    root = Path(project_root).resolve()
+    if not _is_git_sha(current_head_sha):
+        raise ValueError("current checkout identity must be a git SHA")
+    actual_head_sha = _read_head_sha(root)
+    if current_head_sha != actual_head_sha:
+        raise ValueError("supplied checkout identity does not match the current HEAD")
+    if actual_head_sha != evidence_commit_sha:
+        raise ValueError("current checkout must be evidence commit B")
+
+    protocol_file = _inside(root, protocol_result_path, "protocol result")
+    protocol_relpath = protocol_file.relative_to(root).as_posix()
+    declared_paths = (
+        (protocol_relpath,) if evidence_paths is None else tuple(evidence_paths)
+    )
+    if protocol_relpath not in declared_paths:
+        raise ValueError("declared evidence paths must include the protocol result")
+    for evidence_path in declared_paths:
+        _validate_evidence_path(evidence_path)
+    _require_direct_evidence_parent(root, implementation_sha, evidence_commit_sha)
+    committed_protocol_bytes = _read_commit_file_bytes(
+        root, evidence_commit_sha, protocol_relpath
+    )
+    committed_protocol_sha = _sha256_bytes(
+        committed_protocol_bytes, suffix=protocol_file.suffix
+    )
+    working_protocol_sha = _file_sha256(protocol_file)
+    if working_protocol_sha != committed_protocol_sha:
+        raise ValueError("working protocol bytes do not match evidence commit B")
+    actual_protocol_sha = committed_protocol_sha
+    if expected_protocol_result_sha256 is not None:
+        if not _is_sha256(expected_protocol_result_sha256):
+            raise ValueError("expected protocol result identity must be a SHA-256")
+        if actual_protocol_sha != expected_protocol_result_sha256:
+            raise ValueError("protocol result bytes do not match the expected identity")
+    protocol = AdapterProtocolSliceReport.model_validate_json(committed_protocol_bytes)
+    if not protocol.admitted or protocol.calls_used != PROTOCOL_MAX_CALLS:
+        raise ValueError("protocol result is not an admitted three-call slice")
+    if (protocol.provider_id, protocol.requested_model) != (
+        GLM53_PROVIDER_ID,
+        GLM53_MODEL,
+    ):
+        raise ValueError("protocol result Provider identity does not match GLM-5.3 Flash")
+    if protocol.code_sha != implementation_sha:
+        raise ValueError("protocol result code SHA must match implementation commit A")
+
+    changed_paths = _read_commit_diff_paths(
+        root, implementation_sha, evidence_commit_sha
+    )
+    if set(changed_paths) != set(declared_paths) or len(changed_paths) != len(
+        set(changed_paths)
+    ):
+        raise ValueError("evidence commit B changed paths outside the declared evidence set")
+    for evidence_path in declared_paths:
+        _read_commit_file_bytes(root, evidence_commit_sha, evidence_path)
+
+    return GLM53ABIdentityBinding(
+        implementation_sha=implementation_sha,
+        implementation_public_ci_sha=implementation_public_ci_sha,
+        implementation_public_ci_run_id=implementation_public_ci_run_id,
+        implementation_public_ci_success_confirmed=True,
+        protocol_code_sha=protocol.code_sha,
+        evidence_commit_sha=evidence_commit_sha,
+        evidence_public_ci_sha=evidence_public_ci_sha,
+        evidence_public_ci_run_id=evidence_public_ci_run_id,
+        evidence_public_ci_success_confirmed=True,
+        protocol_result_path=protocol_relpath,
+        protocol_result_sha256=actual_protocol_sha,
+        evidence_paths=declared_paths,
+    )
+
+
 def build_glm53_preflight(
     *,
     project_root: str | Path,
@@ -675,6 +878,9 @@ def build_glm53_preflight(
     code_sha: str,
     public_ci_sha: str = PUBLIC_CI_SHA,
     confirm_public_ci_success: bool = False,
+    confirm_evidence_ci_success: bool = False,
+    identity_binding: GLM53ABIdentityBinding | None = None,
+    current_head_sha: str | None = None,
 ) -> GLM53PreparedRun:
     """Validate all fresh identities without reading `.env` or making a client."""
 
@@ -685,10 +891,45 @@ def build_glm53_preflight(
     protocol_file = _inside(root, protocol_result_path, "protocol result")
     if not _is_git_sha(code_sha) or not _is_git_sha(public_ci_sha):
         raise ValueError("code and public CI identities must be git SHAs")
-    if code_sha != public_ci_sha or not confirm_public_ci_success:
+    if code_sha != public_ci_sha or confirm_public_ci_success is not True:
         raise ValueError("current code/public CI identity is not confirmed")
-    if _file_sha256(protocol_file) != EXPECTED_PROTOCOL_RESULT_SHA256:
-        raise ValueError("prior GLM-5.3 protocol bytes do not match frozen evidence")
+    if identity_binding is None:
+        if _file_sha256(protocol_file) != EXPECTED_PROTOCOL_RESULT_SHA256:
+            raise ValueError("prior GLM-5.3 protocol bytes do not match frozen evidence")
+    else:
+        if not isinstance(identity_binding, GLM53ABIdentityBinding):
+            raise TypeError("identity_binding must be a GLM53ABIdentityBinding")
+        if current_head_sha is None:
+            raise ValueError("A/B preflight must verify the current evidence commit B")
+        if confirm_evidence_ci_success is not True:
+            raise ValueError("evidence CI confirmation is required for A/B preflight")
+        if (
+            identity_binding.implementation_sha != code_sha
+            or identity_binding.implementation_public_ci_sha != public_ci_sha
+        ):
+            raise ValueError("A/B binding does not match implementation identity")
+        verified_binding = build_glm53_ab_identity_binding(
+            project_root=root,
+            protocol_result_path=protocol_file,
+            implementation_sha=identity_binding.implementation_sha,
+            implementation_public_ci_run_id=identity_binding.implementation_public_ci_run_id,
+            evidence_commit_sha=identity_binding.evidence_commit_sha,
+            evidence_public_ci_run_id=identity_binding.evidence_public_ci_run_id,
+            implementation_public_ci_sha=identity_binding.implementation_public_ci_sha,
+            evidence_public_ci_sha=identity_binding.evidence_public_ci_sha,
+            confirm_implementation_ci_success=confirm_public_ci_success,
+            confirm_evidence_ci_success=confirm_evidence_ci_success,
+            current_head_sha=current_head_sha,
+            expected_protocol_result_sha256=identity_binding.protocol_result_sha256,
+            evidence_paths=identity_binding.evidence_paths,
+        )
+        if verified_binding != identity_binding:
+            raise ValueError("A/B identity binding could not be reverified")
+        protocol_relpath = protocol_file.relative_to(root).as_posix()
+        if protocol_relpath != identity_binding.protocol_result_path:
+            raise ValueError("protocol result path does not match A/B binding")
+        if _file_sha256(protocol_file) != identity_binding.protocol_result_sha256:
+            raise ValueError("protocol result bytes do not match A/B binding")
     dataset = load_domain_dataset(dataset_file)
     _validate_dataset(dataset, dataset_file)
     loaded_plan = load_domain_case_input_plan(
@@ -736,12 +977,13 @@ def build_glm53_preflight(
         GLM53_MODEL,
     ):
         raise ValueError("prior protocol Provider identity does not match")
-    if protocol.code_sha != public_ci_sha:
-        raise ValueError("prior protocol code SHA does not match public CI SHA")
+    if protocol.code_sha != code_sha:
+        raise ValueError("prior protocol code SHA does not match implementation SHA")
     protocol_input = sum(row.input_tokens for row in protocol.cases)
     protocol_output = sum(row.output_tokens for row in protocol.cases)
     admission_data = {
         "experiment_id": "0" * 64,
+        "schema_version": "1.1" if identity_binding is not None else "1.0",
         "code_sha": code_sha,
         "public_ci_sha": public_ci_sha,
         "public_ci_scope": (
@@ -767,6 +1009,7 @@ def build_glm53_preflight(
         "protocol_input_tokens": protocol_input,
         "protocol_output_tokens": protocol_output,
         "protocol_total_tokens": protocol_input + protocol_output,
+        "identity_binding": identity_binding,
     }
     # Build the digest from the already validated control-plane fields before
     # constructing the strict model (whose validator quite correctly rejects a
@@ -937,6 +1180,7 @@ def run_glm53_domain_gate(
         )
     )
     return GLM53FreshDomainResult(
+        schema_version=admission.schema_version,
         experiment_id=admission.experiment_id,
         run_timestamp_utc=now(),
         admission=admission,
@@ -1131,6 +1375,11 @@ def _admission_identity(
         excluded.add("runtime_profile_id")
         excluded.add("runtime_profile_version")
     payload = admission.model_dump(mode="json", exclude=excluded)
+    # Pydantic fills the new optional A/B field with ``None`` when reading a
+    # historical schema-1.0 artifact.  Omitting that absent field preserves
+    # the original experiment digest byte-for-byte.
+    if admission.identity_binding is None:
+        payload.pop("identity_binding", None)
     return _digest_json(payload)
 
 
@@ -1152,7 +1401,50 @@ def _digest_json(value: Any) -> str:
 
 
 def _file_sha256(path: str | Path) -> str:
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    return hashlib.sha256(_canonical_file_bytes(path)).hexdigest()
+
+
+def _sha256_bytes(data: bytes, *, suffix: str = "") -> str:
+    if suffix.lower() in {".json", ".md", ".txt", ".yaml", ".yml"}:
+        data = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(data).hexdigest()
+
+
+def _canonical_file_bytes(path: str | Path) -> bytes:
+    """Hash text evidence with the repository's canonical LF representation."""
+
+    file_path = Path(path)
+    raw = file_path.read_bytes()
+    if file_path.suffix.lower() in {".json", ".md", ".txt", ".yaml", ".yml"}:
+        return raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return raw
+
+
+def _read_commit_file_bytes(root: Path, commit_sha: str, relative_path: str) -> bytes:
+    """Read one immutable file from a commit without consulting the network."""
+
+    if (
+        "\\" in relative_path
+        or PurePosixPath(relative_path).is_absolute()
+        or ".." in PurePosixPath(relative_path).parts
+    ):
+        raise ValueError("commit evidence path is unsafe")
+    completed = subprocess.run(
+        ["git", "cat-file", "-p", f"{commit_sha}:{relative_path}"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        timeout=10,
+    )
+    if completed.returncode != 0:
+        raise ValueError("evidence commit B does not contain the declared file")
+    return completed.stdout
+
+
+def _is_sha256(value: str) -> bool:
+    return isinstance(value, str) and len(value) == 64 and all(
+        char in "0123456789abcdef" for char in value
+    )
 
 
 def _is_git_sha(value: str) -> bool:
@@ -1198,11 +1490,75 @@ def _require_clean_worktree(root: Path) -> None:
         )
 
 
+def _require_direct_evidence_parent(
+    root: Path, implementation_sha: str, evidence_sha: str
+) -> None:
+    """Require B to be the single evidence-only child commit of A."""
+
+    ancestor = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", implementation_sha, evidence_sha],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        timeout=10,
+    )
+    if ancestor.returncode != 0:
+        raise ValueError("evidence commit B must descend from implementation commit A")
+    parent = subprocess.run(
+        ["git", "rev-list", "--parents", "-n", "1", evidence_sha],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+    parent_tokens = parent.stdout.strip().split()
+    # A valid evidence commit has exactly one parent, and that parent must be A.
+    # This rejects merge commits even when A is one of several ancestors.
+    if (
+        parent.returncode != 0
+        or len(parent_tokens) != 2
+        or parent_tokens[1] != implementation_sha
+    ):
+        raise ValueError("evidence commit B must be the direct child of commit A")
+
+
+def _read_commit_diff_paths(root: Path, implementation_sha: str, evidence_sha: str) -> tuple[str, ...]:
+    """Return the paths changed by B after verifying A is its ancestor."""
+
+    _require_direct_evidence_parent(root, implementation_sha, evidence_sha)
+    completed = subprocess.run(
+        ["git", "diff", "--name-status", "--no-renames", implementation_sha, evidence_sha],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+    changed: list[str] = []
+    for line in completed.stdout.splitlines():
+        status, separator, path = line.partition("\t")
+        # Evidence B must add a new immutable result. Allowing ``M`` would
+        # permit rewriting an already-admitted capability artifact in place.
+        if not separator or status != "A":
+            raise ValueError(
+                "evidence commit B must only add new capability-result evidence"
+            )
+        changed.append(path)
+    return tuple(changed)
+
+
 @dataclass(frozen=True)
 class GLM53DomainGateOptions:
     confirm_real_call: bool
     public_ci_sha: str = PUBLIC_CI_SHA
     confirm_public_ci_success: bool = False
+    implementation_sha: str | None = None
+    implementation_public_ci_run_id: int | None = None
+    evidence_commit_sha: str | None = None
+    evidence_public_ci_run_id: int | None = None
+    confirm_evidence_ci_success: bool = False
+    identity_binding: GLM53ABIdentityBinding | None = None
     preflight_only: bool = False
     max_calls: int = DOMAIN_MAX_CALLS
     dataset: Path = Path(
@@ -1216,7 +1572,7 @@ class GLM53DomainGateOptions:
     )
     protocol_result: Path = Path(
         "data/evaluation/results/provider_capabilities/"
-        "zhipu_glm53_flash_adapter_protocol_retry2.json"
+        "zhipu_glm53_flash_adapter_protocol_f0d5ee2.json"
     )
     output: Path = G53_7_OUTPUT_PATH
     runs_root: Path = G53_7_RUNS_ROOT
@@ -1234,7 +1590,7 @@ def run_cli(
 
     if options.max_calls != DOMAIN_MAX_CALLS:
         raise ValueError("GLM-5.3 Flash domain gate requires exactly 12 calls")
-    if not options.preflight_only and not options.confirm_real_call:
+    if not options.preflight_only and options.confirm_real_call is not True:
         raise RuntimeError("Real GLM-5.3 Flash calls require explicit confirmation")
     root = (repository_root or Path(__file__).resolve().parents[2]).resolve()
     output = _inside(root, options.output, "output")
@@ -1245,16 +1601,56 @@ def run_cli(
         raise FileExistsError("GLM-5.3 domain evidence is immutable")
     if not options.preflight_only:
         _require_clean_worktree(root)
-    code_sha = code_sha_reader(root)
+    current_head_sha = code_sha_reader(root)
+    binding = options.identity_binding
+    implementation_sha = options.implementation_sha
+    if binding is not None and options.confirm_evidence_ci_success is not True:
+        raise ValueError("evidence CI confirmation is required for G53-7")
+    if binding is None:
+        supplied_ab_fields = (
+            implementation_sha,
+            options.implementation_public_ci_run_id,
+            options.evidence_commit_sha,
+            options.evidence_public_ci_run_id,
+        )
+        if any(value is not None for value in supplied_ab_fields):
+            if not all(value is not None for value in supplied_ab_fields):
+                raise ValueError("G53-7 A/B identity binding fields are incomplete")
+            assert implementation_sha is not None
+            assert options.evidence_commit_sha is not None
+            assert options.implementation_public_ci_run_id is not None
+            assert options.evidence_public_ci_run_id is not None
+            binding = build_glm53_ab_identity_binding(
+                project_root=root,
+                protocol_result_path=_inside(
+                    root, options.protocol_result, "protocol result"
+                ),
+                implementation_sha=implementation_sha,
+                implementation_public_ci_run_id=options.implementation_public_ci_run_id,
+                evidence_commit_sha=options.evidence_commit_sha,
+                evidence_public_ci_run_id=options.evidence_public_ci_run_id,
+                confirm_implementation_ci_success=options.confirm_public_ci_success,
+                confirm_evidence_ci_success=options.confirm_evidence_ci_success,
+                current_head_sha=current_head_sha,
+            )
+        else:
+            raise ValueError(
+                "G53-7 requires explicit implementation commit A and evidence commit B"
+            )
+    if implementation_sha is None:
+        implementation_sha = binding.implementation_sha
     prepared = build_glm53_preflight(
         project_root=root,
         dataset_path=_inside(root, options.dataset, "dataset"),
         input_plan_path=_inside(root, options.input_plan, "input plan"),
         snapshot_path=_inside(root, options.snapshot, "snapshot"),
         protocol_result_path=_inside(root, options.protocol_result, "protocol result"),
-        code_sha=code_sha,
+        code_sha=implementation_sha,
         public_ci_sha=options.public_ci_sha,
         confirm_public_ci_success=options.confirm_public_ci_success,
+        confirm_evidence_ci_success=options.confirm_evidence_ci_success,
+        identity_binding=binding,
+        current_head_sha=current_head_sha,
     )
     if options.preflight_only:
         return prepared.admission
@@ -1306,6 +1702,11 @@ def _parse_args(argv: Sequence[str] | None = None) -> GLM53DomainGateOptions:
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("--public-ci-sha", default=PUBLIC_CI_SHA)
     parser.add_argument("--confirm-public-ci-success", action="store_true")
+    parser.add_argument("--implementation-sha")
+    parser.add_argument("--implementation-public-ci-run-id", type=int)
+    parser.add_argument("--evidence-commit-sha")
+    parser.add_argument("--evidence-public-ci-run-id", type=int)
+    parser.add_argument("--confirm-evidence-ci-success", action="store_true")
     parser.add_argument("--max-calls", type=int, default=DOMAIN_MAX_CALLS)
     parser.add_argument("--dataset", type=Path, default=GLM53DomainGateOptions.dataset)
     parser.add_argument("--input-plan", type=Path, default=GLM53DomainGateOptions.input_plan)
@@ -1321,8 +1722,13 @@ def _parse_args(argv: Sequence[str] | None = None) -> GLM53DomainGateOptions:
     return GLM53DomainGateOptions(
         confirm_real_call=values.confirm_real_call,
         public_ci_sha=values.public_ci_sha,
-        confirm_public_ci_success=(
-            values.confirm_public_ci_success or values.preflight_only
+        confirm_public_ci_success=(values.confirm_public_ci_success or values.preflight_only),
+        implementation_sha=values.implementation_sha,
+        implementation_public_ci_run_id=values.implementation_public_ci_run_id,
+        evidence_commit_sha=values.evidence_commit_sha,
+        evidence_public_ci_run_id=values.evidence_public_ci_run_id,
+        confirm_evidence_ci_success=(
+            values.confirm_evidence_ci_success or values.preflight_only
         ),
         preflight_only=values.preflight_only,
         max_calls=values.max_calls,
@@ -1364,6 +1770,7 @@ __all__ = [
     "DOMAIN_MAX_CALLS",
     "DOMAIN_MAX_TOKENS",
     "EXPECTED_PROTOCOL_RESULT_SHA256",
+    "G53_3_CURRENT_PROTOCOL_RESULT_PATH",
     "GLM53_BASE_URL",
     "GLM53_LEGACY_PROFILE_ID",
     "GLM53_MODEL",
@@ -1376,6 +1783,7 @@ __all__ = [
     "G53_7_RUNS_ROOT",
     "GLM53BudgetState",
     "GLM53BudgetedProvider",
+    "GLM53ABIdentityBinding",
     "GLM53CaseResource",
     "GLM53ControlSnapshot",
     "GLM53DomainGateOptions",
@@ -1384,6 +1792,7 @@ __all__ = [
     "GLM53PreparedRun",
     "GLM53ResourceSnapshot",
     "build_glm53_preflight",
+    "build_glm53_ab_identity_binding",
     "create_glm53_provider",
     "main",
     "run_cli",
