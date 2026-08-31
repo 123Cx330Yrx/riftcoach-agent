@@ -22,6 +22,19 @@ EVIDENCE_SHA = "407ee7559c46a84e82f81d5f43f435ad89013949"
 EVIDENCE_PATH = G53_3_CURRENT_PROTOCOL_RESULT_PATH.as_posix()
 
 
+@pytest.fixture
+def historical_evidence_checkout(monkeypatch):
+    """Run historical A→B fixtures without weakening the production guard.
+
+    The real gate must require the running checkout to be B.  These tests
+    intentionally inspect the already-published f0d5→407 pair while the
+    test suite itself is checked out at a newer implementation commit, so
+    only the private Git-head reader is replaced in this fixture.
+    """
+
+    monkeypatch.setattr(gate, "_read_head_sha", lambda _root: EVIDENCE_SHA)
+
+
 def _binding(**overrides):
     values = {
         "project_root": ROOT,
@@ -38,7 +51,9 @@ def _binding(**overrides):
     return build_glm53_ab_identity_binding(**values)
 
 
-def test_ab_binding_separates_implementation_and_evidence_commits():
+def test_ab_binding_separates_implementation_and_evidence_commits(
+    historical_evidence_checkout,
+):
     binding = _binding()
 
     assert binding.implementation_sha == IMPLEMENTATION_SHA
@@ -52,7 +67,9 @@ def test_ab_binding_separates_implementation_and_evidence_commits():
     )
 
 
-def test_ab_binding_checks_real_git_parent_and_committed_blob():
+def test_ab_binding_checks_real_git_parent_and_committed_blob(
+    historical_evidence_checkout,
+):
     binding = _binding()
 
     assert binding.evidence_paths == (EVIDENCE_PATH,)
@@ -76,7 +93,9 @@ def test_ab_binding_rejects_same_commit_for_a_and_b():
         )
 
 
-def test_ab_binding_rejects_a_code_change_in_evidence_commit(monkeypatch):
+def test_ab_binding_rejects_a_code_change_in_evidence_commit(
+    monkeypatch, historical_evidence_checkout
+):
     monkeypatch.setattr(
         gate,
         "_read_commit_diff_paths",
@@ -89,7 +108,9 @@ def test_ab_binding_rejects_a_code_change_in_evidence_commit(monkeypatch):
         _binding()
 
 
-def test_ab_binding_rejects_protocol_result_not_present_in_evidence_commit():
+def test_ab_binding_rejects_protocol_result_not_present_in_evidence_commit(
+    historical_evidence_checkout,
+):
     with pytest.raises(ValueError, match="does not contain"):
         _binding(
             protocol_result_path=(
@@ -100,7 +121,9 @@ def test_ab_binding_rejects_protocol_result_not_present_in_evidence_commit():
         )
 
 
-def test_ab_preflight_emits_schema_1_1_and_rechecks_the_binding():
+def test_ab_preflight_emits_schema_1_1_and_rechecks_the_binding(
+    historical_evidence_checkout,
+):
     binding = _binding()
     prepared = build_glm53_preflight(
         project_root=ROOT,
@@ -121,7 +144,9 @@ def test_ab_preflight_emits_schema_1_1_and_rechecks_the_binding():
     assert prepared.admission.code_sha == IMPLEMENTATION_SHA
 
 
-def test_ab_preflight_requires_current_evidence_head():
+def test_ab_preflight_requires_current_evidence_head(
+    historical_evidence_checkout,
+):
     binding = _binding()
     with pytest.raises(ValueError, match="current evidence commit B"):
         build_glm53_preflight(
@@ -138,7 +163,9 @@ def test_ab_preflight_requires_current_evidence_head():
         )
 
 
-def test_schema_1_1_admission_cannot_downgrade_runtime_profile():
+def test_schema_1_1_admission_cannot_downgrade_runtime_profile(
+    historical_evidence_checkout,
+):
     binding = _binding()
     prepared = build_glm53_preflight(
         project_root=ROOT,
@@ -165,12 +192,16 @@ def test_schema_1_1_admission_cannot_downgrade_runtime_profile():
         gate.GLM53FreshDomainAdmission(**payload)
 
 
-def test_ab_binding_rejects_a_tampered_protocol_digest():
+def test_ab_binding_rejects_a_tampered_protocol_digest(
+    historical_evidence_checkout,
+):
     with pytest.raises(ValueError, match="expected identity"):
         _binding(expected_protocol_result_sha256="a" * 64)
 
 
-def test_ab_binding_rejects_unsafe_declared_evidence_path():
+def test_ab_binding_rejects_unsafe_declared_evidence_path(
+    historical_evidence_checkout,
+):
     with pytest.raises(ValueError, match="capability results tree"):
         _binding(
             evidence_paths=(
@@ -222,13 +253,17 @@ def test_commit_diff_rejects_modifying_existing_evidence(monkeypatch):
         gate._read_commit_diff_paths(ROOT, IMPLEMENTATION_SHA, EVIDENCE_SHA)
 
 
-def test_ab_binding_rejects_working_protocol_tamper(monkeypatch):
+def test_ab_binding_rejects_working_protocol_tamper(
+    monkeypatch, historical_evidence_checkout
+):
     monkeypatch.setattr(gate, "_file_sha256", lambda _path: "a" * 64)
     with pytest.raises(ValueError, match="working protocol bytes"):
         _binding()
 
 
-def test_ab_binding_requires_both_ci_confirmations():
+def test_ab_binding_requires_both_ci_confirmations(
+    historical_evidence_checkout,
+):
     with pytest.raises(ValueError, match="CI confirmations"):
         _binding(confirm_evidence_ci_success=False)
     with pytest.raises(ValueError, match="CI confirmations"):
@@ -257,7 +292,9 @@ def test_g53_7_cli_refuses_to_run_without_explicit_a_b_identities():
         )
 
 
-def test_g53_7_cli_builds_ab_preflight_before_environment():
+def test_g53_7_cli_builds_ab_preflight_before_environment(
+    historical_evidence_checkout,
+):
     admission = run_cli(
         GLM53DomainGateOptions(
             confirm_real_call=False,
