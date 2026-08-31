@@ -126,6 +126,8 @@ def test_cli_p1_diagnostic_uses_one_call_and_separate_default_output(
 def test_cli_isolates_flash_default_output_by_model(
     tmp_path: Path,
 ) -> None:
+    client_options: list[dict] = []
+
     def create(**kwargs):
         return SimpleNamespace(
             id="raw-flash-request-secret",
@@ -155,7 +157,7 @@ def test_cli_isolates_flash_default_output_by_model(
         ),
         environ=FLASH_ENV,
         repository_root=tmp_path,
-        client_factory=lambda **kwargs: client,
+        client_factory=lambda **kwargs: (client_options.append(kwargs) or client),
         code_sha_reader=lambda root: "a" * 40,
     )
 
@@ -167,6 +169,7 @@ def test_cli_isolates_flash_default_output_by_model(
     assert report.requested_model == "glm-5.3-flash"
     assert output.is_file()
     assert "raw-flash-reasoning" not in output.read_text(encoding="utf-8")
+    assert client_options[0]["timeout"] == 120.0
 
 
 def test_cli_adapter_protocol_uses_production_adapter_and_exact_budget(

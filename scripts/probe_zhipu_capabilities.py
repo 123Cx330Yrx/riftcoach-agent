@@ -17,6 +17,7 @@ from app.evaluation.provider_capability_gate import (
     CapabilityProbeReport,
     ProbeScope,
 )
+from app.model_runtime import resolve_model_runtime_profile
 from app.evaluation.provider_adapter_protocol import (
     AdapterProtocolSliceReport,
     AdapterProtocolSliceRunner,
@@ -104,10 +105,18 @@ def run_cli(
         )
 
     code_sha = (code_sha_reader or _read_code_sha)(root)
+    runtime_profile = resolve_model_runtime_profile(
+        "zhipu",
+        settings.model,
+    )
     client = client_factory(
         api_key=settings.api_key,
         base_url=settings.base_url,
-        timeout=settings.default_timeout_s,
+        timeout=(
+            runtime_profile.transport_timeout_s
+            if runtime_profile is not None
+            else settings.default_timeout_s
+        ),
         max_retries=0,
     )
     if options.scope == "adapter_protocol":
@@ -116,9 +125,11 @@ def run_cli(
                 client=client,
                 model=settings.model,
                 profile=settings.thinking_profile,
+                runtime_profile=runtime_profile,
             ),
             code_sha=code_sha,
             max_calls=options.max_calls,
+            runtime_profile=runtime_profile,
         ).run()
     else:
         probe_scope: ProbeScope = options.scope

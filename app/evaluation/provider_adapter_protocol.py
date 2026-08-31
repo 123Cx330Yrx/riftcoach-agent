@@ -16,6 +16,10 @@ from app.evaluation.coach_report import (
     EvaluationResponseModel,
     evaluation_response_contract,
 )
+from app.model_runtime import (
+    ModelRuntimeProfile,
+    require_registered_model_runtime_profile,
+)
 from app.providers.errors import ProviderError, ProviderResponseError
 from app.providers.models import (
     ChatMessage,
@@ -213,14 +217,27 @@ class AdapterProtocolSliceRunner:
         provider: LLMProvider,
         code_sha: str,
         max_calls: int = _PROTOCOL_MAX_CALLS,
+        runtime_profile: ModelRuntimeProfile | None = None,
         clock: Callable[[], float] = time.monotonic,
         now: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
     ) -> None:
         if max_calls != _PROTOCOL_MAX_CALLS:
             raise ValueError("adapter protocol slice requires exactly 3 calls.")
+        if runtime_profile is not None:
+            runtime_profile = require_registered_model_runtime_profile(
+                runtime_profile
+            )
+            if not runtime_profile.matches(
+                provider.provider_name,
+                provider.model_name,
+            ):
+                raise ValueError(
+                    "runtime_profile does not match the protocol Provider"
+                )
         self._budget = ExternalCallBudget(max_calls=max_calls)
         self._provider = BudgetedProvider(provider=provider, budget=self._budget)
         self._code_sha = code_sha
+        self._runtime_profile = runtime_profile
         self._clock = clock
         self._now = now
 
@@ -253,7 +270,9 @@ class AdapterProtocolSliceRunner:
         error_code: str | None = None
         output_digest: str | None = None
         try:
-            response = self._provider.chat(_structured_request())
+            response = self._provider.chat(
+                _structured_request(runtime_profile=self._runtime_profile)
+            )
             decoded = decode_structured_response(
                 response=response,
                 contract=evaluation_response_contract(),
@@ -298,8 +317,37 @@ class AdapterProtocolSliceRunner:
                     allowed_tools=("knowledge.search",),
                     max_iterations=2,
                     max_tool_calls=1,
-                    timeout_s=30.0,
-                    metadata={"probe_scope": "adapter_protocol"},
+                    timeout_s=(
+                        self._runtime_profile.agent_timeout_s
+                        if self._runtime_profile is not None
+                        else 30.0
+                    ),
+                    temperature=(
+                        self._runtime_profile.temperature
+                        if self._runtime_profile is not None
+                        else 0.0
+                    ),
+                    max_tokens=(
+                        self._runtime_profile.max_output_tokens
+                        if self._runtime_profile is not None
+                        else None
+                    ),
+                    top_p=(
+                        self._runtime_profile.top_p
+                        if self._runtime_profile is not None
+                        else None
+                    ),
+                    metadata={
+                        "probe_scope": "adapter_protocol",
+                        **(
+                            {
+                                "runtime_profile_id": self._runtime_profile.profile_id,
+                                "runtime_profile_version": self._runtime_profile.version,
+                            }
+                            if self._runtime_profile is not None
+                            else {}
+                        ),
+                    },
                 )
             )
         except Exception:
@@ -355,7 +403,10 @@ class AdapterProtocolSliceRunner:
         )
 
 
-def _structured_request() -> ChatRequest:
+def _structured_request(
+    *,
+    runtime_profile: ModelRuntimeProfile | None = None,
+) -> ChatRequest:
     contract = evaluation_response_contract()
     schema_text = json.dumps(
         contract.schema_dict(),
@@ -382,9 +433,31 @@ def _structured_request() -> ChatRequest:
         ),
         tool_choice=ToolChoiceMode.NONE,
         response_contract=contract,
-        max_tokens=512,
-        timeout_s=30.0,
-        metadata={"probe_scope": "adapter_protocol"},
+        temperature=(
+            runtime_profile.temperature if runtime_profile is not None else 0.0
+        ),
+        max_tokens=(
+            runtime_profile.max_output_tokens
+            if runtime_profile is not None
+            else 512
+        ),
+        timeout_s=(
+            runtime_profile.llm_tool_timeout_s
+            if runtime_profile is not None
+            else 30.0
+        ),
+        top_p=(runtime_profile.top_p if runtime_profile is not None else None),
+        metadata={
+            "probe_scope": "adapter_protocol",
+            **(
+                {
+                    "runtime_profile_id": runtime_profile.profile_id,
+                    "runtime_profile_version": runtime_profile.version,
+                }
+                if runtime_profile is not None
+                else {}
+            ),
+        },
     )
 
 

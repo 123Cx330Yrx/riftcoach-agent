@@ -11,6 +11,7 @@ from app.evaluation.provider_adapter_protocol import (
     BudgetedProvider,
 )
 from app.evaluation.provider_capability_gate import ExternalCallBudget
+from app.model_runtime import GLM53_FLASH_RUNTIME_PROFILE
 from app.providers.capabilities import ProviderCapabilities
 from app.providers.errors import ProviderResponseError
 from app.providers.models import (
@@ -130,6 +131,34 @@ def test_protocol_slice_composes_structured_and_agent_round_trip() -> None:
     assert "RAW_" not in serialized
     assert "reduce deaths before 15 minutes" not in serialized
     assert "RIFTCOACH_TOOL_ROUNDTRIP_OK" not in serialized
+
+
+def test_flash_runtime_profile_is_applied_to_every_protocol_request() -> None:
+    provider = ScriptedProvider(
+        responses=[structured_response(), tool_response(), final_response()],
+        provider_name="zhipu",
+        model_name="glm-5.3-flash",
+    )
+
+    report = AdapterProtocolSliceRunner(
+        provider=provider,
+        code_sha="a" * 40,
+        runtime_profile=GLM53_FLASH_RUNTIME_PROFILE,
+        clock=lambda: 100.0,
+        now=lambda: datetime(2026, 8, 13, tzinfo=timezone.utc),
+    ).run()
+
+    assert report.admitted is True
+    assert len(provider.requests) == 3
+    assert all(request.max_tokens == 2048 for request in provider.requests)
+    assert all(request.temperature == 1.0 for request in provider.requests)
+    assert all(request.top_p == 0.95 for request in provider.requests)
+    assert all(request.timeout_s == 90.0 for request in provider.requests)
+    assert all(
+        request.metadata["runtime_profile_id"]
+        == GLM53_FLASH_RUNTIME_PROFILE.profile_id
+        for request in provider.requests
+    )
 
 
 def test_structured_failure_stops_before_agent_loop() -> None:
