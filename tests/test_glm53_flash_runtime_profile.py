@@ -244,7 +244,10 @@ def test_agent_compiler_and_loop_apply_only_injected_flash_profile():
 
     assert result.agent_run.final_response is not None
     request = provider.requests[0]
-    assert request.timeout_s == pytest.approx(90.0)
+    # AgentLoop passes the remaining deadline, so normal clock progression
+    # can shave a small amount off the configured 90-second budget.
+    assert 0 < request.timeout_s <= 90.0
+    assert request.timeout_s == pytest.approx(90.0, abs=0.1)
     assert request.max_tokens == 2048
     assert request.temperature == 1.0
     assert request.top_p == 0.95

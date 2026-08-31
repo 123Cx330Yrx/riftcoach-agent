@@ -10,3 +10,6 @@
 
 # Keep the immutable Stage 8 experiment evidence digest stable across platforms.
 /data/evaluation/results/stage8/role_isolated_multi_agent_holdout_v1.json text eol=lf
+
+# Keep the immutable GLM-5.3 Flash evaluation evidence digest stable across platforms.
+/data/evaluation/results/provider_capabilities/zhipu_glm53_flash_*.json text eol=lf
