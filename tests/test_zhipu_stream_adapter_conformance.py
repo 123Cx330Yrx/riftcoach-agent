@@ -9,6 +9,7 @@ contract without making a network call or changing the production adapter.
 
 from __future__ import annotations
 
+import json
 from collections.abc import Callable, Iterable
 from hashlib import sha256
 from types import SimpleNamespace
@@ -359,6 +360,9 @@ def test_text_chunks_conform_and_match_existing_zhipu_assembly() -> None:
     assert neutral.trace.request_id_sha256 == sha256(
         b"fixture-stream-id"
     ).hexdigest()
+    trace_text = json.dumps(neutral.trace.as_dict(), ensure_ascii=False)
+    assert "RIFTCOACH" not in trace_text
+    assert "think" not in trace_text
 
     # The neutral adapter is purely local and never receives a client or
     # secret; the legacy comparison above is the only fake provider call.
@@ -401,6 +405,9 @@ def test_tool_fragments_decode_aliases_and_match_existing_zhipu_assembly() -> No
     assert neutral.response.finish_reason == legacy.response.finish_reason == "tool_calls"
     assert neutral.trace.tool_call_chunk_count == legacy.tool_call_chunk_count == 3
     assert neutral.trace.tool_call_count == 1
+    trace_text = json.dumps(neutral.trace.as_dict(), ensure_ascii=False)
+    assert "兵线" not in trace_text
+    assert "knowledge.search" not in trace_text
 
 
 @pytest.mark.parametrize(
