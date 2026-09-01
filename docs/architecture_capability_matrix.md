@@ -672,3 +672,15 @@ request identity，Trace/错误只保存 SHA-256 摘要。只有真实 EOF、合
 `capabilities.streaming` 仍为 `False`；严格 Flash v1 2048/零额外调用、默认模型、同步/既有流接口、AgentLoop、ToolRuntime、
 Runtime Trace、预算、Workbench、Portal、Account、Auth、路由和 `production_media=0` 均不变，候选未注册。下一项是独立的
 候选 runtime 接线裁决；矩阵不将其标为生产能力、领域准入或 8-Core 必需项。
+
+### 2026-09-01：RQ-195 候选 runtime 接线架构能力边界
+
+RQ-195 把“候选 adapter 可装配完整流”和“候选 runtime 可安全恢复”分成两项能力。现有
+`ZhipuStreamAdapter.assemble()` 只交付 EOF、terminal、Usage 齐全的完整 `stop`/`tool_calls` 流；不完整流和异常
+必须 fail-closed。候选资格不能由 `StreamAdapterError`、私有正文或 reasoning 反推。
+
+未来若获单独授权，能力矩阵要求隔离的 `CandidateStreamEvaluationHarness` 精确绑定 zhipu/model/profile/policy 四元
+身份，并先提供 body-free `BoundaryObservation`、ledger 生命周期和 allow-list `ResponseRecoveryTrace` 投影；不得
+自动注册为 `LLMProvider` 或打开产品 streaming。候选仍未注册、`execution_allowed=false`，严格 Flash v1 2048/零额外调用，
+默认 Runtime、Workbench、Portal、Account、Auth、路由和 `production_media=0` 不变。下一项为
+`candidate-runtime-wiring-design / pending`，不标记为生产能力、领域准入或 8-Core 必需项。

@@ -24,7 +24,8 @@ pause_reason: ""
   `ZhipuStreamAdapter` 本地实现与 `20 passed` 聚焦测试；该提交的同 SHA 公共 CI Actions run `33496237588`
   的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 `completed/success` 且 head_sha 精确匹配。
   这只证明候选接缝的公共可复现性，不代表产品代码已接线。候选未注册，严格 Flash v1 仍 2048/零额外调用，
-  Stage 8/8E 继续 `in_progress`，`production_media=0`。以下为此前连续诊断记录。）
+  Stage 8/8E 继续 `in_progress`，`production_media=0`。RQ-195 已完成候选 runtime 接线架构评审，
+  决定先设计隔离评测调用方和只输出状态的 BoundaryObservation，不直接改产品 Runtime。以下为此前连续诊断记录。）
 - 历史诊断记录：2026-09-01（RQ-190 已完成两次单路、有界的流式首个可见正文探针：同一冻结上下文、
   `reasoning_effort=low`、`max_tokens=2048` 下，`clear_thinking=true` 在 2.547 秒出现首个可见正文，
   `clear_thinking=false` 在 3.875 秒出现首个可见正文；两路均先观察到 reasoning，随后在正文出现时主动关闭，
@@ -107,7 +108,7 @@ pause_reason: ""
   为显式兼容/应急回退。旧 Dataset 的 30 秒仍是质量资源阈值，不是新档案执行截止；真实 G53-7 会拒绝 dirty
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
-- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-wiring-review / pending`。RQ-193 提交 `8bcbaa5` 的 Actions run `33489903978` 与 RQ-194 提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 均三 job 全绿且 head_sha 精确匹配；RQ-194 聚焦测试为 `20 passed`。公共证据已完成，但只证明候选接缝可复现；下一步需另行评审 runtime 接线范围、预算/Trace/回退/失败门，不注册候选、不打开 `capabilities.streaming`、不接入产品默认或执行 recovery/G53-7。
+- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-runtime-wiring-design / pending`。RQ-193 提交 `8bcbaa5` 的 Actions run `33489903978` 与 RQ-194 提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 均三 job 全绿且 head_sha 精确匹配；RQ-194 聚焦测试为 `20 passed`。RQ-195 已完成架构评审，确认不能把 `assemble()` 的完整流异常当作恢复资格；下一步只冻结 BoundaryObservation、四元身份校验、候选状态机和 Trace 投影，不注册候选、不打开 `capabilities.streaming`、不接入产品默认或执行 recovery/G53-7。
 - RQ-179–RQ-181 的 exact-SHA、G53-7 失败与一次性正文零留存诊断证据均保持不可变，旧证据不覆盖；RQ-182 聚焦离线测试为 `41 passed`，RQ-183 聚焦离线合同为 `30 passed`，均未改变 Provider-neutral 消息、AgentLoop、ToolRuntime、Trace、预算、默认模型、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
 - 2026-08-31 按用户确认新建普通 API Key 后重开 G53-3：进程预检确认 `zhipu`、普通 API 端点与
   `glm-5.3-flash` 均生效；未输出 Key 值，也未改除用户自行更新的 `.env` 之外的默认配置。A1 结构化合同
@@ -3771,3 +3772,22 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
 - [boundary-next] exact-SHA 公共 CI 已完成；当前唯一下一门改为候选 runtime 接线裁决（范围、预算/Trace/回退/失败门）。
   不自动打开 `capabilities.streaming`、注册候选、执行 G53-7/黄金切片或进入生产准入，Stage 8/8E 继续
   `in_progress`，8F 尚未开始。
+
+### 2026-09-01：RQ-195 候选 runtime 接线架构评审
+
+- [completed-review] 评审确认 `ZhipuStreamAdapter.assemble()` 只交付拥有真实 EOF、合法终止和有效 Usage 的完整
+  `stop`/`tool_calls` 流；`length`、缺终止、缺 Usage、读取/翻译/关闭异常均 fail-closed，不能从
+  `StreamAdapterError` 或私有部分状态推导恢复资格。
+- [decision] 不把候选接缝包装成 `LLMProvider`，不改 `AgentRuntimeV1`、`AgentLoop`、Worker、统一 Runtime Trace、
+  产品预算、默认 composition root 或 `capabilities.streaming`。未来若获单独授权，先在 `app/evaluation/` 设计隔离的
+  `CandidateStreamEvaluationHarness`，由调用方显式持有 adapter 与候选合同，禁止默认注册表发现。
+- [boundary-observation] 下一设计门须冻结只输出 field state、finish code、Usage 数字、耗时和安全错误码的
+  `BoundaryObservation`（暂定名），复用 adapter 的分块/model/sequence/tool/Usage 校验；不得返回或持久化部分正文、
+  reasoning、工具参数，也不得把不完整流包装成 `ChatResponse`。完整流继续走 `assemble()`。
+- [identity-budget] 调用前必须精确绑定 `provider_id=zhipu`、`model=glm-5.3-flash`、
+  `glm-5.3-flash-runtime-v2-candidate/2.0.0` 与
+  `glm-5.3-flash-fresh-recovery-candidate-v1/1.0.0`；候选最多 2 attempts、1 次额外调用、32,000 input、16,384 output、
+  180,000ms，当前 `execution_allowed=false`，不得发送 recovery。Trace 需用 allow-list 独立投影，request ID 仅存 SHA-256。
+- [unchanged] 严格 Flash v1 仍 2048/零额外调用；候选未注册，默认模型、同步/既有流接口、Workbench、Portal、Account、
+  Auth、路由、生产媒体和 `production_media=0` 均不变。RQ-195 只完成评审，下一精确 checkpoint 为
+  `candidate-runtime-wiring-design / pending`；8E 仍 `in_progress`，8F 尚未开始。

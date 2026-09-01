@@ -1027,3 +1027,14 @@ Workbench、Portal、Account、Auth、路由、预算/Trace 与 `production_medi
 `tests/test_zhipu_stream_adapter.py` 聚焦 `20 passed`。这只证明候选接缝公共可复现，不等于产品 runtime 接线或生产准入。下一门是独立
 裁决候选 runtime 接线范围；RQ-194 不改变 Stage 8/8E 的 `in_progress` 顺序，
 8F 尚未开始，不提前进入 G53-7、黄金切片或生产准入。
+
+### 2026-09-01：RQ-195 候选 runtime 接线架构评审
+
+RQ-195 继续遵守 v1.3 的 8-Core/8-Advanced 分层：候选 streaming 接缝仍是受控高级实验，不能因为本地 adapter
+和公共 CI 通过就写成 8-Core 生产能力。评审确认完整流装配与候选恢复资格是两种不同合同：`assemble()` 对
+`length`、缺终止、缺 Usage 和异常路径 fail-closed，不能把异常当作恢复资格。
+
+因此下一设计门只冻结隔离的 `CandidateStreamEvaluationHarness`、四元身份绑定、`BoundaryObservation` 状态机、
+候选 ledger/Trace 投影和回退矩阵；不改 `LLMProvider`、`AgentLoop`、默认模型、`capabilities.streaming`、Workbench、
+Portal、Account、Auth、路由或生产媒体。候选 profile 仍未注册且 `execution_allowed=false`，严格 Flash v1 仍为
+2048/零额外调用；8E 继续 `in_progress`，8F 尚未开始。下一精确项为 `candidate-runtime-wiring-design / pending`。

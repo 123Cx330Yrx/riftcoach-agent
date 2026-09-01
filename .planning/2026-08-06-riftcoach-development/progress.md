@@ -5445,3 +5445,14 @@
 - [boundary] `capabilities.streaming=False`、严格 Flash v1 2048/零额外调用、默认模型、AgentLoop、Workbench、Portal、
   Account、Auth、路由、统一 Trace/预算、`production_media=0` 均不变；候选/recovery 未注册，不调用真实 API。
 - [next] exact-SHA 公共 CI 已完成；下一项是独立裁决候选 runtime 接线；8E 仍 `in_progress`，8F 尚未开始。
+
+## 2026-09-01：RQ-195 候选 runtime 接线架构评审
+
+- [completed-review] 新增 ADR-0075、候选接线评审计划和 8E 学习 walkthrough；评审只冻结边界，不改 `app/`、产品 Runtime
+  或默认模型，不发真实 API 请求。
+- [finding] `assemble()` 对不完整流 fail-closed，不能把异常当候选资格；未来必须先设计只输出状态的
+  `BoundaryObservation`，完整流继续走 provider-neutral assembler。
+- [decision] 推荐隔离的 `CandidateStreamEvaluationHarness`，精确校验 zhipu/model/runtime profile/policy 四元身份，
+  用独立 ledger 和 allow-list Trace 投影管理候选预算与撤出；拒绝包装成 `LLMProvider` 或改 `AgentLoop`。
+- [boundary] 候选未注册且 `execution_allowed=false`；严格 Flash v1、`capabilities.streaming=False`、Workbench、Portal、
+  Account、Auth、路由和 `production_media=0` 不变。下一精确项为 `candidate-runtime-wiring-design / pending`。

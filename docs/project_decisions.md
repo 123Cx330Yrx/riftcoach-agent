@@ -2997,3 +2997,19 @@ request identity；Trace、错误、repr 只保留 SHA-256 摘要，拒绝 Promp
 ToolRuntime、Runtime Trace、预算、Workbench、Portal、Account、Auth、路由和 `production_media=0` 均不变，候选未注册。
 下一门改为独立裁决候选 runtime 接线范围；不把该公共接缝写成 8-Core 生产能力，
 也不宣称 8E/8F 完成。
+
+### RQ-195：候选 runtime 接线架构评审（2026-09-01）
+
+本轮决定不把 RQ-194 的显式 `ZhipuStreamAdapter` 直接包装成产品 `LLMProvider`，也不在 `AgentLoop` 增加隐式
+streaming 分支。评审发现 `assemble()` 只交付拥有真实 EOF、合法 terminal 和有效 Usage 的完整 `stop`/`tool_calls` 流；
+`length`、缺终止、缺 Usage、读取/翻译/关闭异常均 fail-closed，不能把 `StreamAdapterError` 当作候选恢复资格。
+
+未来若获单独授权，先在 `app/evaluation/` 设计隔离的 `CandidateStreamEvaluationHarness`，调用前精确校验
+`provider_id=zhipu`、`model=glm-5.3-flash`、candidate runtime profile v2 与 fresh-recovery policy v1 四元身份，
+再通过只输出字段状态、finish code、Usage 数字、耗时和安全错误码的 `BoundaryObservation` 分类，交给独立 ledger 和
+allow-list Trace 投影结算。观察接缝不得返回或持久化部分正文、reasoning、工具参数，也不得把不完整流包装成
+`ChatResponse`；候选当前 `execution_allowed=false`，不得发送 recovery。
+
+严格 Flash v1 的 2048/零额外调用、默认模型、`capabilities.streaming=False`、AgentLoop、Workbench、Portal、Account、
+Auth、路由、预算/Trace 和 `production_media=0` 均不变。RQ-195 只完成架构评审；下一精确项是
+`candidate-runtime-wiring-design / pending`，不宣称产品 streaming、领域准入或生产成熟度。

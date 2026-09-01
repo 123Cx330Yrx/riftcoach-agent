@@ -5175,3 +5175,17 @@
   调用、AgentLoop、Workbench、Portal、Account、Auth、路由、统一 Trace/预算和 `production_media=0` 均不变。
 - 下一门是独立裁决候选 runtime 接线范围；不注册候选、不注册 recovery、不执行 G53-7/黄金切片，也不宣称
   生产 streaming 或领域准入。
+
+## 2026-09-01：RQ-195 候选 runtime 接线架构评审发现
+
+- `ZhipuStreamAdapter.assemble()` 的完整合同与候选恢复资格不是同一个判定：它只在真实 EOF、合法 terminal 和有效
+  Usage 同时存在时交付 `stop`/`tool_calls`；`length`、缺终止、缺 Usage、读取/翻译/关闭异常会安全拒绝。
+- 因此不能捕获 `StreamAdapterError` 就触发 recovery，也不能读取 adapter 私有部分正文/reasoning 来补资格；这样会把半流、
+  错误模型或传输失败混入候选白名单。下一设计门需要独立 `BoundaryObservation`，只输出字段状态、finish code、Usage 数字、
+  耗时和安全错误码，并复用同一分块/model/sequence/tool/Usage 校验。
+- 现有产品 Runtime 只接受同步 `LLMProvider`/已注册 v1 profile；候选 v2 profile 与 fresh-recovery policy 是不同身份，
+  直接包装或在 `AgentLoop` 增加分支会扩大预算、Trace、工具回放和默认注册边界。推荐未来使用隔离的
+  `CandidateStreamEvaluationHarness`，由调用方精确绑定四元身份并经 `ResponseRecoveryLedger` 结算。
+- 当前候选 `execution_allowed=false`，即使未来观察到白名单形状也只能记录 `awaiting_recovery`，不能发第二次请求；严格
+  Flash v1 2048/零额外调用、默认模型和全部产品模块保持不变。下一精确 checkpoint 为
+  `candidate-runtime-wiring-design / pending`，本轮不新增代码、不做真实 I/O。

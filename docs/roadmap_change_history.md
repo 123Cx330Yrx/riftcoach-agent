@@ -3878,3 +3878,18 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
   `production_media=0` 均不变，候选未注册，Stage 8/8E 仍 `in_progress`，8F 尚未开始。
 - `BOUNDARY-NEXT`：exact-SHA 公共 CI 已完成，下一门是独立裁决候选 runtime 接线范围；
   不自动打开 `capabilities.streaming`、执行 G53-7/黄金切片或进入生产准入。
+
+## 2026-09-01：RQ-195 候选 runtime 接线架构评审
+
+- `REVIEW`：复核 RQ-194 的显式 `ZhipuStreamAdapter` 与现有产品 Runtime 的合同边界；
+  `assemble()` 只交付真实 EOF、合法 terminal、有效 Usage 齐全的完整 `stop`/`tool_calls` 流，
+  不完整形状和异常均 fail-closed。
+- `DECISION`：不把 adapter 包装成 `LLMProvider`，不在 `AgentLoop` 增加隐式 streaming 分支，
+  不修改默认注册、统一 Trace/预算或 `capabilities.streaming`。未来若单独授权，采用隔离的
+  `CandidateStreamEvaluationHarness`，由调用方精确绑定 provider/model/profile/policy 四元身份。
+- `BOUNDARY-OBSERVATION`：下一设计门先冻结只输出字段状态、finish code、Usage 数字、耗时和安全错误码的
+  `BoundaryObservation`，复用分块/model/sequence/tool/Usage 校验；不得暴露或持久化部分正文、reasoning、工具参数，
+  也不得把不完整流包装成 `ChatResponse`。
+- `UNCHANGED`：候选仍 `activation_state=candidate`、`execution_allowed=false`，严格 Flash v1 仍 2048/零额外调用；
+  Portal、Account、Workbench、Auth、路由、默认模型和 `production_media=0` 不变，8E 仍进行中，8F 未开始。
+- `BOUNDARY-NEXT`：下一精确项为 `candidate-runtime-wiring-design / pending`；不执行真实 API、recovery、G53-7 或黄金切片。
