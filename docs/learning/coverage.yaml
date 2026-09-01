@@ -827,7 +827,12 @@ groups:
     status: planned
     evidence:
       problem_and_principle:
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/plans/2026-08-30-8e-agent-mainline-handoff-readme-factual-alignment.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
         - docs/plans/2026-08-29-8e-region-entry-panel-trial-design.md
+        - docs/plans/2026-08-29-8e-region-entry-polish-design.md
         - docs/adr/0069-adopt-local-region-wallpaper-fallback.md
         - docs/assets/8e-portal/portal-region-icon-provenance-v1.md
         - docs/assets/8e-portal/portal-region-wallpaper-candidate-bandle-city-v1.md
@@ -860,6 +865,15 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
+        - docs/adr/0071-adopt-versioned-response-completion-policy.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md
+        - docs/plans/2026-08-31-glm53-response-completion-candidate-runtime-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
         - docs/adr/0065-adopt-verified-event-phase-timeline-projection.md
         - docs/plans/2026-08-24-8e-timeline-dto-ui-design.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
@@ -876,7 +890,14 @@ groups:
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
       design_and_implementation:
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/plans/2026-08-30-8e-agent-mainline-handoff-readme-factual-alignment.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
+        - docs/plans/2026-08-29-8e-region-focus-rail-design.md
+        - docs/plans/2026-08-29-8e-region-focus-rail-implementation-plan.md
         - docs/plans/2026-08-29-8e-region-entry-panel-trial-design.md
+        - docs/plans/2026-08-29-8e-region-entry-polish-design.md
         - docs/adr/0069-adopt-local-region-wallpaper-fallback.md
         - docs/assets/8e-portal/portal-region-icon-provenance-v1.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
@@ -928,7 +949,20 @@ groups:
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-implementation.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
+        - docs/adr/0071-adopt-versioned-response-completion-policy.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md
+        - docs/plans/2026-08-31-glm53-response-completion-candidate-runtime-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
       code_map:
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
+        - docs/plans/2026-08-29-8e-region-focus-rail-implementation-plan.md
         - docs/plans/2026-08-25-8e-portal-motion-polish-implementation.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
         - docs/learning/8e-portal-motion-polish-walkthrough.md
@@ -941,7 +975,16 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
       data_and_control_flow:
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
+        - docs/plans/2026-08-29-8e-region-focus-rail-design.md
         - docs/plans/2026-08-25-8e-portal-motion-polish-design.md
         - docs/plans/2026-08-26-8e-portal-c-line-proof-design.md
         - docs/learning/8e-portal-motion-polish-walkthrough.md
@@ -965,7 +1008,19 @@ groups:
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/plans/2026-08-31-glm53-response-completion-candidate-runtime-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
       verification:
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/plans/2026-08-30-8e-agent-mainline-handoff-readme-factual-alignment.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
+        - docs/plans/2026-08-29-8e-region-focus-rail-implementation-plan.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
         - docs/assets/8e-portal/portal-region-icon-provenance-v1.md
         - docs/assets/8e-portal/portal-region-wallpaper-candidate-bandle-city-v1.md
@@ -1012,7 +1067,21 @@ groups:
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/plans/2026-08-24-8e-timeline-dto-ui-implementation.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
+        - docs/adr/0071-adopt-versioned-response-completion-policy.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md
+        - docs/plans/2026-08-31-glm53-response-completion-candidate-runtime-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
       runbook:
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/plans/2026-08-30-8e-agent-mainline-handoff-readme-factual-alignment.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
+        - docs/plans/2026-08-29-8e-region-focus-rail-implementation-plan.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
         - docs/assets/8e-portal/portal-region-icon-provenance-v1.md
         - docs/assets/8e-portal/portal-region-wallpaper-candidate-bandle-city-v1.md
@@ -1035,7 +1104,19 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
+        - docs/adr/0071-adopt-versioned-response-completion-policy.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md
+        - docs/plans/2026-08-31-glm53-response-completion-candidate-runtime-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
       failure_security_boundary:
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
         - docs/adr/0069-adopt-local-region-wallpaper-fallback.md
         - docs/assets/8e-portal/portal-region-icon-provenance-v1.md
         - docs/assets/8e-portal/portal-region-wallpaper-candidate-bandle-city-v1.md
@@ -1088,7 +1169,19 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
         - docs/adr/0065-adopt-verified-event-phase-timeline-projection.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
+        - docs/adr/0071-adopt-versioned-response-completion-policy.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md
+        - docs/plans/2026-08-31-glm53-response-completion-candidate-runtime-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
       interview_wording:
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
         - docs/learning/8e-portal-motion-polish-walkthrough.md
         - docs/plans/2026-08-28-8e-portal-official-wallpaper-fallback-design.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
@@ -1102,6 +1195,14 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-entry-design-walkthrough.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
+        - docs/adr/0071-adopt-versioned-response-completion-policy.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
 
   - id: 8f-final-evaluation-and-portfolio
     sequence: 360

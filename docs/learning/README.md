@@ -17,6 +17,14 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 本轮补齐的整体裁决、审计方法、验证结果和下一检查点见
 [RQ-067 退出复核](../plans/2026-08-20-learning-engineering-documentation-backfill-exit-review.md)。
 
+2026-08-31 的 GLM-5.3-Flash A/B 证据身份学习材料已补充 RQ-179 公共 CI 生命周期、RQ-180 领域门边界及 RQ-181
+响应完成度诊断、RQ-182 版本化完成策略与 RQ-183 候选 fresh-recovery 合同：最终实现 A=`9e6d78be…`、Actions run `33378687984` 三 job exact-SHA 通过，随后一次 G53-7
+真实尝试以 `provider_response_invalid/incomplete_chat_response` 首错停止；一次独立正文零留存诊断确认首回合
+`finish_reason=length` 且 2048 输出额度先被 reasoning 耗尽。历史 fixture 与浅克隆失败为何必须保留、以及为什么当前
+不自动重试；RQ-184 已为 RQ-183 候选合同取得实现 A/B 的 exact-SHA 公共 CI，并在同一 A 重取 G53-3（严格 `3/3` 调用通过）。RQ-185 的无响应已由 RQ-186 定位为请求级 timeout 覆盖问题，RQ-187 又在完整 90 秒窗口复核仍无响应，RQ-188 再把传输与生成拆开：合法 Flash 控制、冻结短同步和冻结流式首块均观察到响应。RQ-189 进一步固定上下文和采样参数，确认 `low+2048` 可以在 28.344 秒返回可见正文，而两个 8192 同步请求在 45 秒窗口内未完成；这只是候选诊断，不是生产档案升级。策略、候选 runtime/attempt/预算/Trace 合同和离线 TDD 见 [8E Flash 响应完成策略 walkthrough](8e-glm53-response-completion-strategy-walkthrough.md)、
+[8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
+该记录不把 8E coverage、领域采用或生产成熟度标为完成。
+
 ## 2. 建议怎样学习每一个能力
 
 不要一上来逐行背代码。建议对每个覆盖组做四遍：
@@ -84,7 +92,32 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | 8B：Conditional Multi-Agent Experiment | 完整/公共闭环 | [walkthrough](8b-conditional-multi-agent-experiment-walkthrough.md) / [ADR-0053](../adr/0053-reject-role-isolated-multi-agent-and-prefer-bounded-parallel-evidence.md) / [设计](../plans/2026-08-22-8b-conditional-multi-agent-experiment-design.md) | implementation `180bc8b` / Actions `32572085065` 与 result/ADR/evidence `783a329` / Actions `32572610725` 均三 job 全绿；唯一 holdout 裁决 `reject_multi_agent`：候选 18.95% 未达 20%，且与普通并行无隔离增益。8B 已关闭；RQ-083 随后授权 8C |
 | 8C：Reliable Runtime Core | 完整/公共闭环 | [walkthrough](8c-reliable-runtime-core-walkthrough.md) / [ADR-0054](../adr/0054-adopt-postgresql-leased-fenced-task-control-plane.md) / [专用设计](../plans/2026-08-22-8c-reliable-runtime-core-design.md) | clean implementation `2df5349` / Actions `32587659678` 的 pytest、PostgreSQL migration/concurrency、Linux package 三 job 全绿；8C coverage 已 complete。正式 Auth、SSE、前端、备份和 8D fusion 仍留后续 |
 | 8D：Riot + OP.GG Evidence Fusion Core | 完整/公共闭环 | [walkthrough](8d-riot-opgg-evidence-fusion-core-walkthrough.md) / [ADR-0055](../adr/0055-adopt-typed-evidence-bundle-fusion.md) / [设计](../plans/2026-08-23-8d-riot-opgg-evidence-fusion-design.md) / [实施计划](../plans/2026-08-23-8d-riot-opgg-evidence-fusion-implementation.md) | implementation/evidence `a274b7f` / Actions `32598480400` 三 job 全绿；typed Riot/Data Dragon/official patch/OP.GG partial fusion、no-I/O adapter、digest/provenance/freshness/join/conflict/gap 与 public projection 已有本地/公共证据。真实刷新、8E Web/Auth/SSE/部署仍未实现 |
-| 8E：Productization | 进行中/coverage planned | [preflight](../plans/2026-08-23-8e-productization-preflight.md) / [Batch B](8e-player-profile-selection-explicit-routing-walkthrough.md) / [Batch C](8e-evidence-product-api-walkthrough.md) / [Batch D](8e-batch-d-rift-command-center-walkthrough.md) / [Live 接线](8e-live-workbench-integration-walkthrough.md) / [Batch E implementation](8e-batch-e-security-deployment-implementation-walkthrough.md) / [视觉合同](8e-portal-workbench-visual-contract-walkthrough.md) / [Timeline](8e-timeline-dto-ui-walkthrough.md) / [双语 foundation](8e-bilingual-product-surface-foundation-walkthrough.md) / [三层产品旅程](8e-portal-account-workbench-journey-walkthrough.md) / [Portal Motion Polish](8e-portal-motion-polish-walkthrough.md) / [I2V audit](../plans/2026-08-25-8e-image-to-video-candidate-audit.md) / [Veo v5 failure](../plans/2026-08-26-8e-veo-spatial-v5-upstream-failure.md) / [Seedance candidate](../plans/2026-08-26-8e-seedance25-sample-audit.md) / [Seedance edit preflight](../plans/2026-08-26-8e-seedance25-video-edit-preflight.md) / [Seedance edit 400](../plans/2026-08-26-8e-seedance25-video-edit-submit-400-diagnosis.md) / [豆包 comparator](../plans/2026-08-26-8e-doubao-seedance25-comparator-audit.md) / [即梦 preflight](../plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md) / [即梦 result/postprocess](../plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md) / [ADR-0068](../adr/0068-adopt-mother-image-global-loop-scenes-and-semantic-activation.md) | 已闭环批次不变；Veo 当前通道暂停。official 即梦 Smart Edit 已完成一次有效调用：raw SHA `4d3660b...155b` 的 locked-camera/三分区/九宫格方向有希望，但 v2→first `0.889072` 与 seam `0.046536` 未过门。零费用 FFmpeg 修复 fixed-24/no-audio/BT.709/bytes，最佳 J seam `0.042684` 仍 fail 且 source identity 降低。Task 5 calls `11`、production media `0`；actual compact prompt 与长版 preflight SHA 已分开记录。下一步先 exact-SHA 公共关闭本证据批，再做 no-cost geometry/material/energy identity 归因；不先重新生成。 |
+| 8E：Productization | 进行中/coverage planned | [G53-1/2/3/4/5/7 适配档案、CI、协议与能力门](8e-glm53-adapter-profile-tdd-walkthrough.md) / [RQ-182 响应完成策略](8e-glm53-response-completion-strategy-walkthrough.md) / [RQ-183 fresh-recovery 合同](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) / [ADR-0071](../adr/0071-adopt-versioned-response-completion-policy.md) / [ADR-0072](../adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md) / [G53-0 无 I/O 审计](../plans/2026-08-31-g53-0-glm53-no-io-audit.md) / [Flash 运行时晋级 ADR](../adr/0070-adopt-glm53-flash-product-runtime-profile.md) / [preflight](../plans/2026-08-23-8e-productization-preflight.md) / [Batch B](8e-player-profile-selection-explicit-routing-walkthrough.md) / [Batch C](8e-evidence-product-api-walkthrough.md) / [Batch D](8e-batch-d-rift-command-center-walkthrough.md) / [Live 接线](8e-live-workbench-integration-walkthrough.md) / [Batch E implementation](8e-batch-e-security-deployment-implementation-walkthrough.md) / [视觉合同](8e-portal-workbench-visual-contract-walkthrough.md) / [Timeline](8e-timeline-dto-ui-walkthrough.md) / [双语 foundation](8e-bilingual-product-surface-foundation-walkthrough.md) / [三层产品旅程](8e-portal-account-workbench-journey-walkthrough.md) / [Portal Motion Polish](8e-portal-motion-polish-walkthrough.md) / [I2V audit](../plans/2026-08-25-8e-image-to-video-candidate-audit.md) / [Veo v5 failure](../plans/2026-08-26-8e-veo-spatial-v5-upstream-failure.md) / [Seedance candidate](../plans/2026-08-26-8e-seedance25-sample-audit.md) / [Seedance edit preflight](../plans/2026-08-26-8e-seedance25-video-edit-preflight.md) / [Seedance edit 400](../plans/2026-08-26-8e-seedance25-video-edit-400-diagnosis.md) / [豆包 comparator](../plans/2026-08-26-8e-doubao-seedance25-comparator-audit.md) / [即梦 preflight](../plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md) / [即梦 result/postprocess](../plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md) / [ADR-0068](../adr/0068-adopt-mother-image-global-loop-scenes-and-semantic-activation.md) | 已闭环批次不变；G53-0 已完成本地无 I/O 审计，G53-1 已完成普通 API 的离线适配档案，G53-2 已由 `0f97b92` / Actions `33325222755` 完成 exact-SHA 三 job 公共验证，G53-3 已在更换普通 API Key 后通过 A1/A2（严格 3/3 次调用）；G53-4 已执行一次但未准入，G53-5 新鲜矩阵 11/11 calls 中 7/8 通过，RQ-175/176 已完成 Flash 专属运行时的本地接线，RQ-179 已为最终实现 A 取得 exact-SHA 公共 CI，RQ-180 已完成一次 G53-7 真实尝试但首例以 `provider_response_invalid/incomplete_chat_response` 停止且未准入，RQ-181 又确认首回合 `finish_reason=length` 且 2048 输出额度先被 reasoning 耗尽；RQ-182 已完成策略设计与离线 TDD，RQ-183 已完成候选 runtime/attempt/预算/Trace 离线合同，RQ-184 已完成 A/B exact-SHA 公共 CI 与同 SHA G53-3；RQ-185 两次独立诊断启动均无可观察响应、未发 fresh-recovery 或生成结果，下一门为传输/代理边界复核。严格策略不续接、8192/一次 fresh-recovery 仍为未注册候选；公共生产准入仍未完成，production media `0`。 |
+
+8E 当前最新候选接缝材料：[RQ-192 walkthrough](8e-glm53-provider-neutral-stream-adapter-walkthrough.md) / [ADR-0073](../adr/0073-adopt-provider-neutral-stream-assembly-contract.md) /
+[实施计划](../plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md)；三者均只记录离线合同与 29 项聚焦回归，
+不把本地适配器通过写成产品 streaming 或生产准入。
+
+本次交接材料：[8E Agent 主线交接与 README 事实版 walkthrough](8e-agent-mainline-handoff-readme-walkthrough.md)；它只记录当前事实和后续闸门，不把 Portal/Account 的本地视觉切片、GLM-5.3 协议候选或未来 Coach 说成已完成产品。
+> 注：上方 8E 表格行只概括当前证据；RQ-170、RQ-172、RQ-173、RQ-175、RQ-182、RQ-183、RQ-184 的完整边界和不可变结果详见对应 walkthrough 与项目状态记录。 |
+
+RQ-176 已将 RQ-175 的 Flash 专属运行时档案接入产品组合根、Worker、Runtime、Agent/`llm.chat`、预算包装器、
+Provider、运行时策略和 Trace；Flash 目标是产品正常运行路线，GLM-5.2 只作显式兼容/应急回退。Root/Factory/Runtime
+要求精确 Flash 在组合阶段显式绑定，或从已绑定同一注册档案的 concrete Provider 自动推断，避免 30 秒质量门和 90 秒
+执行窗隐式分裂。新实现仍需 exact-SHA 公共 CI、
+同 SHA G53-3、独立 G53-7、黄金切片与生产安全/部署合规；旧数据集的 30 秒仍是质量资源阈值。
+
+RQ-178 又补齐了 G53-7 的 A/B 身份接缝：实现提交 A、协议 `code_sha`、证据提交 B 及各自 CI 见证分开记录，
+本地预检从 B 的 Git blob 核对 canonical-LF 摘要、当前 `HEAD=B` 和只新增证据文件的差异；该接缝本地聚焦
+`53 passed`，不等于领域采用、公共生产准入或 8E 完成，A′/B′ 仍需后续冻结。
+
+### 2026-08-31：RQ-170 G53-4 领域门结果校正
+
+G53-4 已按一次性授权执行一次本地真实门：独立三案例输入和 no-I/O preflight 通过，首案因
+`unsupported_parallel_tool_calls` 在 Adapter 边界拒绝，后两案跳过，结果为 `completed-local-rejected`；
+领域 `1/12` calls、`0` normalized tokens，累计含 G53-3 为 `4/15` calls、`1115` tokens。不可变结果文件为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_domain_adoption_v1.json`，不含 Key、Prompt、
+响应正文或 reasoning。新 runner/资产尚无 exact-SHA 公共 CI，G53-4 不准入默认；Stage 8/8E 继续进行中。
 
 RQ-109 已授权启动 RQ-108；ADR-0068、正式设计、implementation plan 和 design-stage walkthrough 已按
 八维 planned 路径登记，并由 `b3b5280/32812868683` 与 state closure `b7e63e9/32813407485` 完成 exact-SHA
@@ -170,3 +203,70 @@ Seedance 2.5 v3 的 12 秒输出（task `task_kOu...v6tW`）技术上可播放�
 道路基础流动延后，中央 burst 过曝并画出横向直线，右侧在 burst 外近乎静止，整体 near/mid/far 呼吸不足。
 这次复盘的关键学习点是：区域/九宫格“有变化”不等于全幕持续运动；必须分别验证常驻基础层、事件层、右场独立
 活动和首尾相位。下一版先重写 source-side motion contract，不降低 source/seam 门、不付费盲重抽、不接 runtime。
+
+### 2026-08-31：RQ-185 候选恢复诊断中断
+
+候选恢复合同、公共 CI 与同 SHA 协议通过不等于真实恢复已经可用。RQ-185 的两次独立启动均只进入
+`primary` 首回合，约 60 秒内没有可观察响应，也没有 Usage、finish reason、Trace 或结果文件；没有发送
+`fresh_recovery`。学习记录因此必须把“外层进程未返回”“SDK/代理传输边界”和“模型响应失败”分开，
+不能把没有响应的进程直接归因于模型。后续若获授权，先复核传输/代理截止；严格 Flash v1 的
+2048/零额外调用与候选未注册状态不变。
+
+### 2026-09-01：RQ-186 请求级 timeout 的层级教训
+
+客户端默认 timeout 可能被具体请求的 timeout 覆盖；诊断“20 秒为何没停”时，必须检查最终 SDK payload，而不是只看
+client factory。RQ-186 用 payload 断言和一次真实调用确认 30 秒请求截止在约 30.141 秒生效，并生成 body-free
+fail-closed 结果。与此同时，transport timeout 只说明该窗口内没有收到响应；没有 Usage、finish reason 或正文时，
+不能推断模型能力、生成阶段或计费。因为 30 秒低于候选 90 秒 Agent 窗口，下一步属于延迟预算决策，不是自动重试。
+
+RQ-187 又用候选完整 90 秒请求窗口复核：唯一 primary 在 90.188 秒仍无响应并以 transport timeout 结束。
+这排除了“只是诊断窗口太短”，但仍不能把无响应直接解释成模型失败；必须把连接、代理读取、首字节和服务端生成
+阶段分开观测。没有 Usage 时，费用仍只能记为 unknown；候选也不能因超时结果自动升级。
+
+### 2026-09-01：RQ-188 如何把“不可达”与“已开始生成”分开
+
+这批诊断先纠正一个容易误判的实验形状：GLM-5.3-Flash 的 thinking 必须保持 enabled，不能用 disabled 控制去判断网络是否可达。合法的低推理档位最小请求收到响应，说明 endpoint/model 路径确实可达；16 token 只够产生 reasoning，marker 未出现是额度耗尽，不是认证失败。
+
+接着对同一冻结上下文做两路观察：256 token 的同步请求收到有效 Usage，但以 `length + 空正文 + 非空 reasoning` 结束；8192 token 的流式请求在约 687ms 先给出 `delta_reasoning` 首块。第二路只读首块便关闭，因此学习时必须区分“首字节/首块已到”和“完整流已装配并收到终止 Usage”。
+
+正式结果 `60073a5f0d0d0324d0fe4deb588d4a49becc607ebfe6b1d008bf04d60a2faf51` 只支持三个结论：传输路径可达、生成已经开始、小额度同步请求会先耗尽 reasoning。它不支持完整 streaming、长请求根因、模型一般质量或生产准入结论。下一步是版本化的输出额度/推理档位校准；严格 Flash v1 的 2048/零额外调用和候选未注册状态不变。
+
+### 2026-09-01：RQ-189 为什么更高输出上限不等于更容易完成
+
+RQ-189 在相同冻结上下文、采样参数和合法 thinking 形状下分别观察三路请求。`low+2048` 在 28.344 秒返回
+`finish_reason=stop` 和可见正文；`low+8192`、`max+8192` 都在 45 秒请求截止内没有完整同步响应。这个结果说明
+“允许更多输出”并不会自动降低首个完整响应的延迟，也不能用更高上限替代流式观测或明确的请求截止。
+
+三份结果都不保存 Prompt、正文或 reasoning，只记录状态、Usage 数字、延迟和哈希。两次 8192 超时没有 Usage，
+所以不能据此断言模型质量差、账号没权限或一定发生了计费；`low+2048` 成功也只证明这份冻结上下文可完成，不能直接
+升级为领域或生产准入。下一批应验证流式请求何时出现首个可见正文，并把 `clear_thinking` 的请求形状与产品的
+保留推理合同分开记录；严格 Flash v1 继续保持 2048/零额外调用。
+
+### 2026-09-01：RQ-190 为什么“首个正文”不能等同于“完成”
+
+RQ-190 在冻结上下文上分别测试了 `clear_thinking=true` 和 `false` 的低推理、2048、流式请求。两路都在约 1.5 秒
+收到首块，并在约 2.5–3.9 秒出现首个非空可见正文；这证明用户可见输出可以早于完整终态到达。探针随后主动关闭，
+因此没有终态 finish reason 或 Usage，预算状态必须记为 unknown，不能把资源数字写成零或宣称完整流式能力。
+
+`clear_thinking` 在这里只是单轮请求形状的共现变量。真正的跨轮思考保留/清理和 reasoning 精确回放仍未测，当前产品
+profile 也没有被改写。学习时应把“首块”“首个可见正文”“终态/Usage”“完整 provider-neutral 装配”分成四道证据门。
+
+### 2026-09-01：RQ-191 如何证明“完整流”而不是只看到首正文
+
+RQ-191 沿用当前产品的 `clear_thinking=false`、低推理、2048、流式形状，把一条冻结上下文流完整读到结束。首块约
+2.203 秒、首正文约 3.531 秒，24.140 秒收到 `finish_reason=stop` 和有效 Usage（1973 输入、652 输出），说明供应商
+流本身可以在这个案例中完整终止并计量。与 RQ-190 的主动早退结果相比，关键差别是本次不在首正文处关闭，并允许读取
+末尾 Usage-only 块。
+
+这仍不是产品已接入 streaming 的证明：只覆盖一个上下文/档位，不包含工具流、跨轮 reasoning 回放或公共 provider-neutral
+接口。学习和面试表述要分清“原始供应商流完整”“适配器合同通过”“产品 runtime 接线”“领域/生产准入”四个层级。
+
+### 2026-09-01：RQ-192 提供商无关流式装配合同
+
+RQ-192 把 RQ-191 的原始流观察落成一个不依赖 SDK 的候选接缝：先把厂商分块翻译成
+`ProviderStreamEvent`，再由单次装配器在真实 EOF、终止原因和有效 Usage 都成立时生成完整回答。
+工具片段按连续索引装配，正文/工具互斥，JSON 重复键、非有限数字、深度和数量上限均拒绝；
+首次合同错误会毒化实例，Trace 与结果默认 repr 都不泄露正文或工具参数。聚焦测试为 `29 passed`，
+但这仍不是产品 streaming 接入或生产准入。详见 [RQ-192 walkthrough](8e-glm53-provider-neutral-stream-adapter-walkthrough.md)、
+[ADR-0073](../adr/0073-adopt-provider-neutral-stream-assembly-contract.md) 与
+[实施计划](../plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md)。
