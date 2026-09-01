@@ -96,7 +96,8 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 
 > 8E 表格中的旧“下一门为传输/代理边界复核”、RQ-195 的
 > `candidate-runtime-wiring-design / pending` 以及 RQ-197 的公共 CI 待验证均是历史摘要；RQ-198 已取得
-> exact-SHA 公共 CI，当前唯一下一门更新为 `candidate-evaluation-harness-design / pending`。
+> exact-SHA 公共 CI，RQ-199 已完成隔离候选评估台设计；当前唯一下一门更新为
+> `candidate-evaluation-harness-implementation / pending`。
 
 8E 当前最新候选接缝材料：[RQ-192/RQ-193 walkthrough](8e-glm53-provider-neutral-stream-adapter-walkthrough.md) /
 [ADR-0073](../adr/0073-adopt-provider-neutral-stream-assembly-contract.md) /
@@ -120,7 +121,8 @@ RQ-196 候选 runtime 接线设计材料：[walkthrough](8e-glm53-candidate-runt
 [设计计划](../plans/2026-09-01-glm53-candidate-runtime-wiring-design.md)；冻结了候选四元身份、body-free
 BoundaryObservation、共享事件校验、隔离 v2 transport、预算/结算顺序和独立 Trace 投影。Flash 是当前唯一主力候选目标，
 但候选仍未注册、`execution_allowed=false`，不代表产品默认或生产准入。RQ-197 已将该设计落成
-fake/local 边界观察实现，RQ-198 已完成同 SHA 公共 CI；当前下一精确项为 `candidate-evaluation-harness-design / pending`。
+fake/local 边界观察实现，RQ-198 已完成同 SHA 公共 CI；RQ-199 又完成了 staged ledger、单次事件泵和独立
+body-free receipt 的候选评估台设计，当前下一精确项为 `candidate-evaluation-harness-implementation / pending`。
 
 ### 2026-09-01：RQ-197 候选边界观察合同本地实现
 
@@ -372,3 +374,18 @@ exact-SHA 公共验证；`pytest`、`postgres-migrations`、`packaging-smoke` �
 不打开 `capabilities.streaming`、不发真实 API 或执行 recovery/G53-7。收口后的下一精确项为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`；
 本轮到此暂停，后续需用户明确继续。
+
+### 2026-09-02：RQ-199 隔离候选评估台设计
+
+RQ-199 学习材料：[设计 walkthrough](8e-glm53-candidate-evaluation-harness-design-walkthrough.md) /
+[ADR-0077](../adr/0077-design-isolated-glm53-candidate-evaluation-harness.md) /
+[实现计划](../plans/2026-09-02-glm53-candidate-evaluation-harness-design.md)。本门说明为什么
+真实 primary 必须在 I/O 前预留、但 recovery plan 又只能在真实边界观察后冻结；设计采用
+candidate-only staged ledger，拒绝 sentinel snapshot 和结束后才 reserve。一条 normalized
+stream 只经一次事件泵，同时喂给 body-free observer 与仅内存 assembler；新的 receipt 不保存
+正文、reasoning、工具参数、Prompt、Key 或原始 request ID。
+
+该门只有设计证据，没有 `app/` 实现或真实调用。当前 activation disabled，候选仍未注册、
+`execution_allowed=false`、`capabilities.streaming=False`；严格 Flash v1、产品 Runtime、
+Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`。

@@ -1082,3 +1082,18 @@ exact-SHA 公共证据；`pytest`、`postgres-migrations`、`packaging-smoke` �
 收口后的唯一下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`；
 本轮暂停，后续需用户明确继续。
+
+### 2026-09-02：RQ-199 隔离候选评估台设计
+
+RQ-199 继续遵守 v1.3 的 8-Core/8-Advanced 分层：候选评估台是 8-Advanced 的受控设计，
+不是把流式恢复能力强塞进 8-Core 生产。新增 ADR-0077、实现计划和学习 walkthrough，
+采用 candidate-only staged ledger（primary I/O 前预留，真实边界观察后才重算 policy）、
+单次 normalized event pump（observer 与 assembler 共用）和独立 body-free receipt；拒绝
+sentinel snapshot、首回合后才 reserve、隐式 Provider/AgentLoop streaming 和产品 Trace
+迁移。当前 activation 仍关闭，候选 `execution_allowed=false`，严格 Flash v1 2048/零额外
+调用、`capabilities.streaming=False`、默认模型和 `production_media=0` 不变；没有真实 API、
+fresh-recovery、G53-7、黄金切片或公共生产准入。
+
+设计门完成后的唯一下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`；
+后续实现仍须 fake/local、聚焦测试和 exact-SHA 公共 CI，真实候选执行与 8F 继续独立排队。

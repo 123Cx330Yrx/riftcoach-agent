@@ -132,9 +132,10 @@ Usage/预算/时钟/关闭异常与状态伪造均有矩阵测试；不完整或
 RQ-197 实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 已由 RQ-198 / Actions run `33507627615`
 取得 exact-SHA 公共三 job 全绿证据，公共 pytest 为 `2178 passed, 145 skipped, 1 warning, 127 subtests passed`。
 Stage 8/8E 仍 `in_progress`、8F 未开始、`production_media=0`；严格 Flash v1 2048/零额外调用，GLM-5.2
-仅作显式回退。当前唯一精确 checkpoint 是：
+仅作显式回退。RQ-199 已完成独立 harness/ledger/Trace 接缝设计，详见 ADR-0077、
+`docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md` 和对应学习 walkthrough。当前唯一精确 checkpoint 是：
 
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`
 
-下一轮只设计独立 harness/ledger/Trace 接缝；fresh-recovery 真实诊断、G53-7、黄金切片或生产准入均未获自动授权。
-本轮在此暂停。
+下一轮只允许 fake/local staged-ledger/harness 实现；fresh-recovery 真实诊断、G53-7、黄金切片或生产准入均未获自动授权。
+本设计和实现计划均不改变产品 Runtime。

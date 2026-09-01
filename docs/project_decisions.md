@@ -3061,3 +3061,24 @@ RQ-198 已完成该公共 CI 门：提交 `127e6da43ef1b71b284a7e8d4198547b04c55
 ### RQ-198：候选边界观察合同公共 CI 闭环（2026-09-01）
 
 该证据只关闭公共可复现性检查，不构成候选注册或 8-Core 生产准入。
+
+### RQ-199：采用 staged ledger 的隔离候选评估台设计（2026-09-02）
+
+决定在 `app/evaluation/` 设计独立 `CandidateEvaluationHarness`，不把候选 adapter
+包装成产品 `LLMProvider`，也不修改 `AgentLoop`。评估台采用 candidate-only staged
+ledger：primary 必须在 I/O 前预留；真实 `BoundaryObservation` 形成后，才映射
+`ResponseBoundarySnapshot`、重新运行精确 candidate policy 并冻结 recovery plan。
+拒绝用 sentinel snapshot 预建账本，也拒绝请求结束后才 reserve。
+
+一条 normalized stream 只经一次事件泵，共享事件校验后分别送入
+`CandidateStreamBoundaryObserver` 与 `ProviderStreamAssembler`。observer 只保留状态；
+assembler 只在单次评估内存中暂存完整结果。完整结果只能交给显式 evaluation-only
+consumer，独立 `CandidateEvaluationReceipt` 只保存候选身份、生命周期、字段状态、
+Usage/耗时、预算确定性和安全码；unknown Usage 不当零，不写入统一 `RuntimeTrace`。
+
+当前 activation 仍 disabled，命中候选形状只记录 `awaiting_recovery`，不会发送第二条
+流。严格 Flash v1 2048/零额外调用、`capabilities.streaming=False`、默认模型、产品
+Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。本轮
+只有 ADR-0077、实现计划与学习材料，没有产品代码、真实 API/Key、fresh-recovery、
+G53-7 或黄金切片。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`。

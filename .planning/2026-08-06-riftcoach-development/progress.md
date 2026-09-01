@@ -5499,3 +5499,17 @@
 - [next] 当前唯一精确 checkpoint 已切换为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`。
   只在用户明确继续后设计隔离 harness/ledger/Trace 接缝，本轮暂停。
+
+## 2026-09-02：RQ-199 隔离候选评估台设计
+
+- 按 canonical 唯一下一步完成 ADR-0077、候选评估台实现计划和学习 walkthrough；本轮没有修改 `app/`、产品 Runtime、
+  Portal/Account/Workbench/Auth、默认模型或统一 Trace，也没有读取 Key、发真实 API 或执行 recovery/G53-7。
+- 识别并解决现有恢复合同的时序缺口：首回合快照在 I/O 前未知，但请求必须先记账；设计采用 candidate-only staged ledger，
+  primary 先 reserve，真实 `BoundaryObservation` 形成后才映射 snapshot、重算 policy 和冻结 recovery plan，拒绝 sentinel
+  snapshot 以及首回合结束后才 reserve。
+- 冻结单次 normalized event pump：共享事件校验后同时喂给 body-free observer 和仅内存的 assembler；完整流可短暂交给显式
+  evaluation consumer，不完整流不构造 `ChatResponse`，receipt 永远只含 allow-list 状态/计数/安全码。
+- 固定候选 activation 当前关闭；命中候选 shape 只能产生 `awaiting_recovery`。候选预算保持 8192/90/120 秒、累计
+  32,000/16,384/180,000ms、最多 2 attempts/1 次额外调用，unknown Usage 不当零，第三次/重复 settle fail closed。
+- 文档治理与 `git diff --check` 在本批收尾；未运行产品测试，因为没有代码变更。下一精确项切换为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`。

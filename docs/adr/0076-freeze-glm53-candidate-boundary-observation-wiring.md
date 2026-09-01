@@ -1,7 +1,7 @@
 # ADR-0076：冻结 GLM-5.3 候选边界观察与隔离接线合同
 
 - 日期：2026-09-01
-- 状态：`implementation-local / candidate-only / public-ci-pending`
+- 状态：`implementation-public / candidate-only / harness-design-complete`
 - 范围：Stage 8 / 8E；GLM-5.3-Flash 候选 runtime wiring design（RQ-196）
 - 依据：RQ-194 实现提交 `a7580e861cd986c026040c7fcfcc3fa577737961`、
   Actions `33496237588`；RQ-195 评审与其三 job 公共证据
@@ -190,3 +190,18 @@ RQ-198 已完成该公共 CI 门：实现提交 `127e6da43ef1b71b284a7e8d4198547
 
 下一轮只设计隔离 harness/ledger/Trace 接缝；候选仍不注册、不打开 `capabilities.streaming`，不执行真实 API、
 fresh-recovery、G53-7、黄金切片或生产准入。严格 Flash v1 和现有产品边界继续不变，本轮暂停。
+
+### RQ-199 设计附录（2026-09-02）
+
+上段“下一轮只设计”的状态已由 RQ-199 推进。ADR-0077 进一步发现：现有
+`ResponseRecoveryLedger` 需要已知的首回合快照，而真实 harness 又必须在 primary I/O
+前 reserve，因此不能直接用 sentinel snapshot 或结束后才记账。后续实现采用
+candidate-only staged ledger：先预留未知 primary，真实 `BoundaryObservation` 完成后才
+冻结 policy/plan 并结算；一条 normalized stream 只经一次事件泵，同时服务 observer 和
+仅内存 assembler，最后生成独立 body-free receipt。
+
+当前唯一下一精确 checkpoint 已更新为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`。
+候选仍未注册、activation disabled、`execution_allowed=false`；严格 Flash v1、产品 Runtime、
+`capabilities.streaming=False`、Workbench、Portal、Account、Auth 和 `production_media=0` 不变，
+没有真实 API、fresh-recovery、G53-7 或黄金切片。

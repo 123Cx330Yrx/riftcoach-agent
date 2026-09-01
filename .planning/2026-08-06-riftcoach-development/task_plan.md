@@ -47,8 +47,8 @@ head_sha 精确匹配；RQ-193 的测试内 Trace 脱敏断言也已纳入该提
 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 也已三 job 全绿且 head_sha 精确匹配。
 RQ-195 已完成独立的候选 runtime 接线架构评审，RQ-196 已完成候选 runtime wiring design，确认不完整流必须先有
 BoundaryObservation，不能直接包装成产品 Runtime；RQ-197 已完成 fake/local 边界观察合同本地实现与 `163 passed`
-聚焦/相邻回归，RQ-198 已取得同 SHA 公共 CI 三 job 全绿。下一精确项为
-`candidate-evaluation-harness-design / pending`，不自动注册或改变默认。
+聚焦/相邻回归，RQ-198 已取得同 SHA 公共 CI 三 job 全绿；RQ-199 已完成隔离候选评估台设计。下一精确项为
+`candidate-evaluation-harness-implementation / pending`，不自动注册或改变默认。
 
 ## Current Phase
 
@@ -98,7 +98,8 @@ Full productization and coverage remain
 提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的同 SHA 公共 CI run `33489903978` 与 RQ-194 提交
 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 均三 job 全绿且 head_sha 精确匹配。
 RQ-197 已完成候选边界观察合同的 fake/local 实现，聚焦与相邻回归 `163 passed`；RQ-198 已记录同一干净提交的
-exact-SHA 公共 CI 三 job 全绿。当前下一项为 `candidate-evaluation-harness-design / pending`，仍不注册候选或改变默认。
+exact-SHA 公共 CI 三 job 全绿；RQ-199 已完成隔离候选评估台设计。当前下一项为
+`candidate-evaluation-harness-implementation / pending`，仍不注册候选或改变默认。
 
 ## Phases
 
@@ -384,9 +385,9 @@ RQ-194 已完成 `ZhipuStreamAdapter` 本地实现与 `20 passed` fake 测试。
 公共 CI run `33496237588` 已通过，三 job 全绿且 head_sha 精确匹配；RQ-195 已完成候选 runtime 接线架构评审，RQ-196
 又完成候选 runtime wiring design，冻结四元身份、BoundaryObservation、共享校验、v2 transport 和独立 Trace 投影；
 RQ-197 又完成候选边界观察合同的 fake/local 实现与 `163 passed` 聚焦/相邻回归，RQ-198 已取得同 SHA 公共 CI
-三 job 全绿。当前下一项为 `candidate-evaluation-harness-design / pending`，不注册候选、不接入产品 streaming、
-不进入 G53-7、不进入 Workbench、不新增媒体采用、不改变 8E checkpoint；不打开 `capabilities.streaming`，不把候选
-实现写成生产准入。
+三 job 全绿；RQ-199 已完成隔离候选评估台设计（staged ledger、单次事件泵、独立 receipt 和失败矩阵）。当前下一项为
+`candidate-evaluation-harness-implementation / pending`，不注册候选、不接入产品 streaming、不进入 G53-7、
+不进入 Workbench、不新增媒体采用、不改变 8E checkpoint；不打开 `capabilities.streaming`，不把候选实现写成生产准入。
 
 ## RQ-195 / 候选 runtime 接线架构评审（2026-09-01）
 
@@ -453,7 +454,23 @@ RQ-197 又完成候选边界观察合同的 fake/local 实现与 `163 passed` �
   Portal、Account、Workbench、Auth、路由或 `production_media=0`；没有真实 API/Key、recovery、G53-7 或黄金切片。
 - [next] 收口后的唯一下一精确项为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`。
-  本轮到此暂停，后续只在用户明确继续后进入该设计门。
+  该项已由 RQ-199 完成，当前状态见下方 RQ-199 条目。
+
+## RQ-199 / 隔离候选评估台设计（2026-09-02）
+
+- [completed-design] 本轮只完成设计材料：ADR-0077、
+  `docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md` 和学习 walkthrough。
+- [decision] 采用 candidate-only staged ledger：primary 在 I/O 前预留，真实
+  `BoundaryObservation` 形成后才重算 policy/冻结 recovery plan；拒绝 sentinel snapshot
+  和首回合结束后才 reserve。一个 normalized stream 只走一次事件泵，同时服务 observer
+  与 assembler；完整结果仅可瞬时交给显式 consumer，receipt 永远 body-free。
+- [boundary] 当前 activation disabled，命中候选形状只记录 `awaiting_recovery`；严格
+  Flash v1、产品 Runtime、AgentLoop、Workbench、Portal、Account、Auth、路由、默认模型、
+  `capabilities.streaming=False` 和 `production_media=0` 均不变，没有真实 API/Key、recovery、
+  G53-7 或黄金切片。
+- [next] 当前唯一精确项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`；
+  后续只在明确继续后实现 fake/local harness/staged ledger，再做聚焦测试与公共 CI。
 
 ## 6A-1 Checklist
 
@@ -895,15 +912,17 @@ RQ-197 又完成候选边界观察合同的 fake/local 实现与 `163 passed` �
 ### Phase 37 - 8e-productization
 
 - Status: in_progress
-- Canonical current override (RQ-198): the previous `candidate-wiring-review / pending`,
+- Canonical current override (RQ-199): the previous `candidate-wiring-review / pending`,
   `candidate-runtime-wiring-design / pending`, `candidate-boundary-observation-contract-implementation / pending` and
   `candidate-boundary-observation-contract-public-ci / pending` wording below is historical; RQ-197 local implementation and
-  RQ-198 exact-SHA public CI are complete and the active next checkpoint is `candidate-evaluation-harness-design / pending`.
-  No product Runtime or real API change occurred.
+  RQ-198 exact-SHA public CI and RQ-199 harness design are complete; the active next checkpoint is
+  `candidate-evaluation-harness-implementation / pending`. No product Runtime or real API change occurred.
 - State: RQ-096 live integration、Batch E E1–E5、production shell/Auth gate、Timeline 与 bilingual/product-journey foundation 均已公共闭环；RQ-108 Portal 视觉历史批次与 RQ-161/162 presentation hygiene 已保留其证据。RQ-163 Agent 主线交接与 README 事实版已完成；RQ-164 G53-0 已完成本地静态审计并保持 `blocked/deferred`；RQ-165 G53-1 离线适配档案 TDD 与 RQ-166 G53-2 exact-SHA 公共 CI 已完成；RQ-167 首次旧 Key 尝试因 `authentication_failed` 阻塞，RQ-168 重开仍失败，RQ-169 更换普通 API Key 后 G53-3 已通过；RQ-182 响应完成策略、RQ-183 候选 runtime/attempt/预算/Trace 合同、RQ-184 A/B 公共证据链、RQ-185–RQ-187 诊断、RQ-188 传输/生成拆分、RQ-189 预算校准、RQ-190 首正文探针与 RQ-191 完整流终态均已记录；RQ-192 离线 provider-neutral 流式装配合同与 RQ-193 测试内智谱 conformance 均已完成本地（分别 29 与 13 项聚焦测试），RQ-194 已完成候选级显式 `ZhipuStreamAdapter` 本地实现（`stream_events()`/`assemble()` 与 `ZhipuProvider.stream_adapter()` 显式工厂），聚焦 `20 passed` 且已取得同 SHA 公共 CI（`a7580e861cd986c026040c7fcfcc3fa577737961` / Actions `33496237588` 三 job 全绿且 head_sha 精确匹配）。提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的同 SHA 公共 CI run `33489903978` 已三 job 全绿且 head_sha 精确匹配，Trace 脱敏断言已包含；RQ-195 评审、RQ-196 设计与 RQ-197 fake/local 边界观察合同实现已完成，production media、完整 8E、Auth/HTTPS/部署仍未完成，下一项为 `candidate-boundary-observation-contract-public-ci / pending`，先做同 SHA 公共 CI；不注册候选、不改产品默认。
-- [current-evidence] 上述状态摘要中的 `candidate-boundary-observation-contract-public-ci / pending` 仅为历史措辞；RQ-198
-  已以 `127e6da43ef1b71b284a7e8d4198547b04c556d8` / Actions `33507627615` 完成三 job 公共闭环，当前唯一下一项为
-  `candidate-evaluation-harness-design / pending`。
+- [current-evidence] 上述状态摘要中的 `candidate-boundary-observation-contract-public-ci / pending` 和
+  `candidate-evaluation-harness-design / pending` 仅为历史措辞；RQ-198 已以
+  `127e6da43ef1b71b284a7e8d4198547b04c556d8` / Actions `33507627615` 完成三 job 公共闭环，RQ-199 已完成
+  两阶段账本、单次事件泵、独立 body-free receipt 的设计；当前唯一下一项为
+  `candidate-evaluation-harness-implementation / pending`。
 - [completed-local-diagnosis] v6.1 source GET 成功后 POST 400、task id 空、无隐藏 task；strict sanitizer 三项 red→green、revised runner no-I/O self-test 完成；精确 error field 仍 unknown，不重试 relay；
 - [completed-live-rejected] 豆包标准套餐 only one Seedance comparator：首尾帧+母图 image-to-video；输出
   `e4b2f91...352cf` 因 source 0.407604/seam 0.144582/AAC/移动水印/暖金主导与 motion stack 不完整 rejected；

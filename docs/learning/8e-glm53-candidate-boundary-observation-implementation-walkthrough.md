@@ -79,9 +79,9 @@ request ID 的 SHA-256 和安全错误码。正文、reasoning、工具参数、
 
 ## 6. 当前门与下一步
 
-当前状态为 `completed-public / candidate-only`。下一精确 checkpoint 是：
+当前状态为 `completed-public / candidate-only`。RQ-199 已完成下一层候选评估台设计，当前下一精确 checkpoint 是：
 
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`
 
-下一轮只设计隔离 harness/ledger/Trace 接缝；fresh-recovery、G53-7、候选注册和生产准入仍需单独裁决。
+下一轮只实现 fake/local staged harness/ledger；fresh-recovery、G53-7、候选注册和生产准入仍需单独裁决。
 公共 CI 通过不等于领域准入或公共生产成熟度，本轮到此暂停。

@@ -5230,3 +5230,22 @@
 - 收口后的唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`；
   下一轮只设计隔离 harness/ledger/Trace，需用户明确继续后才进入。
+
+## 2026-09-02：RQ-199 隔离候选评估台设计发现
+
+- 现有 `ResponseRecoveryLedger` 的构造前提是首回合 `ResponseBoundarySnapshot` 已知；真实
+  harness 在 primary I/O 前无法满足该前提。不能用 sentinel snapshot，也不能把 reserve 推迟到
+  响应结束后，否则会漏记 open/read/timeout 失败。下一实现需要 candidate-only staged ledger
+  session，或在保持旧构造器语义的前提下增加等价的 staged API。
+- 一条 normalized stream 只能消费一次。未来 harness 应以单次事件泵共享事件级校验，然后分别
+  喂给 `CandidateStreamBoundaryObserver`（O(1)、不保存正文）与 `ProviderStreamAssembler`（一次
+  run 内临时保存完整结果）；`length` 可由 observer 观察，但不完整 assembler 结果不能交付。
+- receipt 应是新的 body-free envelope，不能直接冒充 `RuntimeTrace` 或把旧 ledger 的 `or 0`
+  汇总解释为可用余额。Usage unknown 时要保留 unknown/下界语义，预算状态允许 `within`、
+  `exceeded`、`unknown` 三态。
+- 当前 activation 必须是不可伪造的 disabled gate；命中候选形状只记录 `awaiting_recovery`，
+  不发第二条流。未来若激活，仍须独立凭据、一次额外调用上限和第二次完整请求，不称为 API resume。
+- 设计门不改变严格 Flash v1（2048/零额外调用）、`capabilities.streaming=False`、默认
+  Runtime、Workbench、Portal/Account、Auth、路由或 `production_media=0`；没有真实 API/Key、
+  recovery、G53-7、黄金切片或 8F 证据。下一精确项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`。

@@ -1,6 +1,6 @@
 # RiftCoach 主路线 v1.1（阶段 0—8）
 
-> 当前校正（2026-09-01，RQ-197）：G53-5 矩阵及 F7 follow-up 的历史观察保持不可变；用户已授权将
+> 当前校正（2026-09-02，RQ-199）：G53-5 矩阵及 F7 follow-up 的历史观察保持不可变；用户已授权将
 > 普通智谱 API `zhipu/glm-5.3-flash` 作为产品正常运行目标，GLM-5.2 仅作显式兼容/应急回退。RQ-176 的
 > Flash 目标接线已有本地实现，但当前 RQ-194 适配接缝仍是候选、尚未注册；RQ-177 已在旧实现 A 上取得新的 G53-3 协议证据，RQ-178 完成 A/B 身份绑定，
 > RQ-179 又将最终新实现 A=`9e6d78be…` 以 Actions run `33378687984` 三 job exact-SHA 公共冻结；随后
@@ -21,7 +21,8 @@
 > 聚焦测试 `20 passed`；提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 三 job exact-SHA 全绿。
 > 这只证明候选接缝公共可复现，不等于产品 runtime 或生产准入。严格 Flash v1 仍保持 2048/零额外调用，
 > `capabilities.streaming` 仍为 `False`，候选仍未注册；RQ-195 评审、RQ-196 设计、RQ-197 边界观察实现与 RQ-198
-> 同 SHA 公共 CI 已完成。当前下一项是 `candidate-evaluation-harness-design / pending`，不能自动重试或进入 G53-7；
+> 同 SHA 公共 CI 已完成。RQ-199 又完成了隔离候选评估台设计（两阶段 staged ledger、单次事件泵、独立 body-free receipt）；
+> 当前下一项是 `candidate-evaluation-harness-implementation / pending`，不能自动重试或进入 G53-7；
 >
 > 历史观察：G53-5 矩阵完成 `11/11` 次真实调用、`46,151` tokens、`7/8` cases pass；
 > 随后独立 F7 follow-up 仅将 `max_tokens` 从 512 调至 2048，完成 `1/1` 调用、`557` tokens，
@@ -78,7 +79,7 @@ RQ-181 的一次诊断确认 Flash 在 2048 输出额度内先耗尽 reasoning�
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B–E、Live integration、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共闭环，ADR-0053 reject 产品 Multi-Agent；Portal/Account 当前展示切片已按 RQ-163 阶段性收口并交回 Agent 主线，G53-1/2 已完成，RQ-177 的同 SHA G53-3 已通过，RQ-178 完成本地 A/B 预检，RQ-179 已为最终实现 A 取得 exact-SHA CI，RQ-180 已完成一次 G53-7 领域尝试但以 `provider_response_invalid/incomplete_chat_response` 首错拒绝，RQ-181 已确认首回合 `finish_reason=length` 且 2048 输出额度先被 reasoning 耗尽；RQ-182 已完成版本化响应完成策略与离线 TDD，RQ-183 已完成候选 runtime/attempt/预算/Trace 的离线合同，RQ-184 已完成候选 A/B exact-SHA 公共 CI 与同 SHA G53-3；RQ-186 已修复隔离诊断器的请求级截止，RQ-187 在完整 90 秒窗口取得一次 90.188 秒 transport-timeout 脱敏结果，RQ-188/189/190/191 已完成后续有界拆分、预算、首正文和完整流观察；RQ-192 离线装配合同与 RQ-193 智谱 conformance 已完成，RQ-194 已完成本地 `ZhipuStreamAdapter`（`stream_events()`/`assemble()`）及 `ZhipuProvider.stream_adapter()` 显式工厂，聚焦 `20 passed`，提交 `a7580e861cd986c026040c7fcfcc3fa577737961` / Actions `33496237588` 三 job exact-SHA 全绿；RQ-195 已完成候选 runtime 接线架构评审，确认不完整流必须先经 BoundaryObservation，推荐隔离候选评测调用方，不直接接入产品 Runtime。严格 Flash v1 仍保持 2048/零额外调用，`capabilities.streaming` 仍为 `False`，候选未注册；下一项为 `candidate-runtime-wiring-design / pending`，完整 8E/8F 仍未完成 |
 
 > 阶段 8 表格中的 RQ-195 下一项是历史摘要。RQ-196 已完成候选 runtime wiring design，RQ-197 已完成边界观察本地实现，
-> RQ-198 已取得同 SHA 公共 CI；当前唯一下一项为 `candidate-evaluation-harness-design / pending`。Flash 是当前唯一主力候选目标，
+> RQ-198 已取得同 SHA 公共 CI，RQ-199 已完成候选评估台设计；当前唯一下一项为 `candidate-evaluation-harness-implementation / pending`。Flash 是当前唯一主力候选目标，
 > 但仍未注册为产品默认，8E/8F、生产准入和 `production_media=0` 的边界不变。
 
 ## 横向能力总账
@@ -1113,8 +1114,8 @@ reasoning-only length、缺 EOF/终态/Usage、身份与序号冲突、工具/�
 
 本批没有真实 API/Key、fresh-recovery、G53-7、候选注册或产品 streaming 接线；严格 Flash v1 2048/零额外调用、
 默认模型、AgentLoop、Workbench、Portal、Auth、路由、统一 Trace/预算和 `production_media=0` 均不变。RQ-198 已取得
-同 SHA 公共 CI；当前唯一下一项为 `candidate-evaluation-harness-design / pending`，后续才另行裁决候选 harness、
-fresh-recovery、G53-7 与生产准入。
+同 SHA 公共 CI；RQ-199 已完成候选 harness 的两阶段账本/事件泵/receipt 设计；当前唯一下一项为
+`candidate-evaluation-harness-implementation / pending`，后续才另行裁决 fresh-recovery、G53-7 与生产准入。
 
 ### 2026-09-01：RQ-198 候选边界观察合同公共 CI 闭环
 
@@ -1125,3 +1126,20 @@ RQ-197 实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的 Actions run `
 `production_media=0` 不变。当前唯一下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`；
 本轮在此暂停。
+
+### 2026-09-02：RQ-199 隔离候选评估台设计
+
+RQ-199 在 8E 内新增的是一个候选协调设计门，不是新的生产能力。设计采用隔离的
+`CandidateEvaluationHarness`，以 candidate-only staged ledger 解决 primary 发出前
+尚未知晓首回合边界、但又必须先 reserve 的时序问题；拒绝 sentinel snapshot 和首回合
+结束后才记账。一次 normalized stream 只经一个事件泵，同时服务
+`CandidateStreamBoundaryObserver` 与临时 `ProviderStreamAssembler`；完整结果只可经
+显式 evaluation consumer 短暂使用，不完整流不构造成产品 `ChatResponse`。
+
+新增 ADR-0077、实现计划和学习 walkthrough，冻结独立 body-free
+`CandidateEvaluationReceipt`、Usage unknown/预算/取消/关闭/重复结算失败语义和 fake/local
+测试矩阵。当前 activation 仍关闭，候选仍 `execution_allowed=false`；严格 Flash v1 的
+2048/零额外调用、`capabilities.streaming=False`、默认模型、AgentLoop、Workbench、
+Portal、Account、Auth、路由和 `production_media=0` 不变。该设计不注册候选、不发真实
+API、不执行 fresh-recovery、G53-7 或黄金切片。当前唯一下一项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`。

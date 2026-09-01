@@ -3941,3 +3941,21 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 - `CURRENT`：收口后的唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`；
   本轮暂停，后续需用户明确继续。
+
+## 2026-09-02：RQ-199 隔离候选评估台设计
+
+- `DESIGN`：用户“继续”只授权当前 `candidate-evaluation-harness-design`；新增 ADR-0077、
+  候选评估台实现计划和学习 walkthrough。本轮没有产品代码、真实 API/Key、recovery、G53-7 或前端改动。
+- `DECISION`：采用隔离的 `CandidateEvaluationHarness`，以 candidate-only staged ledger
+  解决“primary 预留时还不知道首回合快照”的时序问题；primary 先 reserve，观察完成后才
+  映射真实 snapshot、重算 policy 和冻结 recovery plan。拒绝 sentinel snapshot、首回合结束后
+  才 reserve、隐式 `LLMProvider`/AgentLoop streaming 分支。
+- `DECISION`：一条 normalized stream 只经一次事件泵，同时喂给 body-free observer 与仅内存
+  assembler；完整结果只可交给显式 evaluation consumer，新的 `CandidateEvaluationReceipt`
+  只保留身份、生命周期、字段状态、Usage/耗时、预算和安全码，不进入统一 Runtime Trace。
+- `BOUNDARY`：当前 activation disabled，候选仍 `execution_allowed=false`；严格 Flash v1
+  2048/零额外调用、`capabilities.streaming=False`、默认模型、Portal、Account、Workbench、
+  Auth、路由和 `production_media=0` 不变，Stage 8/8E 仍进行中、8F 未开始。
+- `CURRENT`：设计门完成后的唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`；
+  后续只在明确继续后实现 fake/local staged ledger/harness，再做聚焦测试和公共 CI。

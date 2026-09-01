@@ -713,11 +713,37 @@ RQ-197 将 RQ-196 冻结的边界落成隔离的 fake/local 实现：新增
 
 RQ-198 已取得同 SHA 公共 CI：提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的 Actions run
 `33507627615` 三 job 全绿，公共 pytest 为 `2178 passed, 145 skipped, 1 warning, 127 subtests passed`。
-当前唯一下一项是 `candidate-evaluation-harness-design / pending`，之后才另行裁决 candidate harness 的实现、
-fresh-recovery、G53-7 和生产准入；候选仍未注册，`execution_allowed=false`，`capabilities.streaming=False`，
+RQ-199 已完成 candidate harness 设计；当前唯一下一项是 `candidate-evaluation-harness-implementation / pending`，
+之后才另行裁决 fresh-recovery、G53-7 和生产准入；候选仍未注册，`execution_allowed=false`，`capabilities.streaming=False`，
 `production_media=0` 不变。
 
 ### 2026-09-01：RQ-198 候选边界观察合同公共 CI 闭环
 
 本公共 CI 只证明 RQ-197 的隔离 fake/local 边界合同可复现，不改变 8E/8-Core 生产能力矩阵，也未触发真实 API、
 recovery、G53-7 或产品 Runtime 接线。本轮到此暂停。
+
+### 2026-09-02：RQ-199 候选评估台设计能力边界
+
+RQ-199 新增的是 `design-complete / implementation-pending` 的候选协调能力，不是已实现的
+Runtime capability。设计把现有 observer、assembler、completion policy 与 recovery budget 连接为：
+
+```text
+exact candidate RunSpec
+  → staged ledger reserve(primary)
+  → one-pass normalized event pump
+      ├─ body-free BoundaryObservation
+      └─ ephemeral complete assembler
+  → real snapshot + policy reclassification
+  → settle + independent CandidateEvaluationReceipt
+```
+
+staged ledger 解决首回合快照在 I/O 前未知的问题；禁止 sentinel snapshot、结束后才 reserve、
+caller eligibility 和隐式 retry。receipt 只保留身份、生命周期、字段状态、Usage/耗时、预算和
+安全码，unknown Usage 不当零；完整正文只可经显式 evaluation consumer 短暂使用。当前 activation
+仍 disabled，候选不注册、不打开 `capabilities.streaming`、不接产品 Runtime/AgentLoop/统一 Trace，
+也没有真实 API、fresh-recovery、G53-7 或黄金切片证据。因此 capability matrix 仍把它列为
+8-Advanced candidate design，8E/8-Core 生产成熟度不变，`production_media=0`。
+
+唯一下一项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`；
+下一门只允许 fake/local 实现和公共 CI。
