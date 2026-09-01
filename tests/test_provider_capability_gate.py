@@ -37,6 +37,26 @@ from app.evaluation.glm53_flash_tool_stream_followup import (
     ToolStreamFollowupReport,
 )
 from app.evaluation.glm53_domain_gate import GLM53FreshDomainResult
+from app.evaluation.glm53_flash_output_budget_calibration import (
+    OutputBudgetCalibrationReport,
+)
+from app.evaluation.glm53_flash_response_recovery_diagnostic import (
+    CandidateRecoveryDiagnosticReport,
+)
+from app.evaluation.glm53_flash_stream_terminal_completion_probe import (
+    StreamTerminalCompletionReport,
+)
+from app.evaluation.glm53_flash_stream_visible_completion_probe import (
+    StreamVisibleCompletionReport,
+)
+from app.evaluation.glm53_flash_transport_generation_split_diagnostic import (
+    TransportGenerationSplitReport,
+)
+from app.evaluation.provider_capability_result_contracts import (
+    GLM53FlashResponseDiagnostic,
+    LegacyTransportGenerationSplitReport,
+    LegacyTransportGenerationSplitReportCorrected,
+)
 
 
 DEEPSEEK_V4_PRO_PROTOCOL_RESULT = Path(
@@ -266,6 +286,47 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
             "g53-5-fresh-flash-tool-stream-followup-v1"
         ):
             model = ToolStreamFollowupReport
+        elif payload.get("experiment_id") == (
+            "b1e4a1fc51bed23803b5f94acbd2a652330d5847061dbb7b60022c88da4ff1b9"
+        ):
+            model = GLM53FlashResponseDiagnostic
+        elif payload.get("experiment_id") == (
+            "fab7b4f668e2fa992fab206cc9f395b7431d872090e2700c04b850ba378ea41f"
+        ):
+            model = LegacyTransportGenerationSplitReport
+        elif payload.get("experiment_id") == (
+            "791eb51955267cd6da7dc82711863ab4b8bfcaf0e421c932fc71756e4321843b"
+        ):
+            model = LegacyTransportGenerationSplitReportCorrected
+        elif payload.get("experiment_name") == (
+            "g53-8-transport-generation-split-v1"
+        ):
+            model = TransportGenerationSplitReport
+        elif payload.get("experiment_name") == (
+            "g53-9-output-budget-calibration-v1"
+        ):
+            model = OutputBudgetCalibrationReport
+        elif payload.get("experiment_name") == (
+            "g53-10-stream-visible-completion-v1"
+        ):
+            model = StreamVisibleCompletionReport
+        elif payload.get("experiment_name") == (
+            "g53-11-stream-terminal-completion-v1"
+        ):
+            model = StreamTerminalCompletionReport
+        elif {
+            "runtime_profile_id",
+            "runtime_profile_version",
+            "policy_id",
+            "policy_version",
+            "request_variant",
+            "observations",
+            "trace",
+            "terminal_state",
+        }.issubset(payload) and payload.get("runtime_profile_id") == (
+            "glm-5.3-flash-runtime-v2-candidate"
+        ):
+            model = CandidateRecoveryDiagnosticReport
         else:
             model = {
                 "adapter_protocol": AdapterProtocolSliceReport,
