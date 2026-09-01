@@ -653,3 +653,21 @@ Trace 脱敏；conformance 聚焦 `13 passed`。
 矩阵仍只标记 candidate-only seam：不把 `capabilities.streaming` 改为 true，不宣称产品 runtime、工具流、跨轮
 思考回放、领域/生产准入或公共部署；候选、严格 Flash v1 2048/零额外调用、统一 Runtime Trace、产品模块和
 `production_media=0` 均不变。下一项为候选接线裁决，而非自动启用。
+
+### 2026-09-01：RQ-194 explicit Zhipu→neutral adapter seam capability boundary
+
+RQ-194 已从设计占位落为候选级、调用方显式触发的本地接缝：
+`app/providers/zhipu_stream_adapter.py` 的 `ZhipuStreamAdapter`（不实现 `LLMProvider`）提供
+`stream_events(request)` 与 `assemble(request, *, max_output_tokens=None, require_request_identity=True)`；
+`ZhipuProvider.stream_adapter(*, tool_stream=False)` 是显式工厂，底层通过
+`_open_stream_for_adapter()` 和 `_validate_stream_response_for_adapter()` 连接现有 provider。
+适配器把已绑定的 Zhipu raw chunks 翻译为 `ProviderStreamEvent`，再交给 `ProviderStreamAssembler`，并保证单次开流。
+
+可信 provider runtime profile 的 `max_output_tokens` 上限（1–8192）是硬边界，请求/显式 cap 只能收紧；默认要求
+request identity，Trace/错误只保存 SHA-256 摘要。只有真实 EOF、合法 terminal 和有效 Usage 同时成立才完成；取消、
+迭代器/翻译/关闭异常均 `abort()`/fail-closed，不 retry、recovery 或 ToolRuntime，不注册 recovery，只支持 fake/local evidence。
+本地 `tests/test_zhipu_stream_adapter.py` 为 `20 passed`，同 SHA 公共 CI 尚未取得，故仍不标记为公共或生产 capability。
+
+`capabilities.streaming` 仍为 `False`；严格 Flash v1 2048/零额外调用、默认模型、同步/既有流接口、AgentLoop、ToolRuntime、
+Runtime Trace、预算、Workbench、Portal、Account、Auth、路由和 `production_media=0` 均不变，候选未注册。下一项是 review 后
+取得同一提交的 exact-SHA 公共 CI，再裁决候选 runtime 接线；矩阵不将其标为生产能力、领域准入或 8-Core 必需项。

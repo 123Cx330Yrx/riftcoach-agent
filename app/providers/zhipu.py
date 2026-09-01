@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import json
 import re
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from types import SimpleNamespace
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import openai
 
@@ -38,6 +38,9 @@ from .zhipu_profiles import (
     resolve_zhipu_thinking_profile,
     validate_zhipu_profile_for_model,
 )
+
+if TYPE_CHECKING:
+    from .zhipu_stream_adapter import ZhipuStreamAdapter
 
 
 _PROVIDER_TOOL_NAME_PATTERN = re.compile(r"^[A-Za-z0-9_-]+$")
@@ -127,6 +130,31 @@ class ZhipuProvider:
         """The optional product execution profile bound to this Provider."""
 
         return self._runtime_profile
+
+    def stream_adapter(self, *, tool_stream: bool = False) -> ZhipuStreamAdapter:
+        """Return an explicit candidate-only neutral stream adapter.
+
+        The returned object is deliberately separate from ``LLMProvider`` and
+        does not change this provider's ``capabilities.streaming`` flag.  A
+        caller must opt in for every adapter instance; the normal synchronous
+        ``chat``/``chat_stream`` paths and the AgentLoop remain unchanged.
+        """
+
+        if not isinstance(tool_stream, bool):
+            raise ValueError("tool_stream must be a boolean.")
+        # Local import keeps the provider-neutral adapter module independent
+        # from this implementation and avoids an import cycle.
+        from .zhipu_stream_adapter import ZhipuStreamAdapter
+
+        return ZhipuStreamAdapter(
+            self,
+            tool_stream=tool_stream,
+            default_max_output_tokens=(
+                self._runtime_profile.max_output_tokens
+                if self._runtime_profile is not None
+                else None
+            ),
+        )
 
     def chat(self, request: ChatRequest) -> ChatResponse:
         require_provider_capabilities(
@@ -324,6 +352,122 @@ class ZhipuProvider:
             raise
         except Exception as error:
             raise self._translate_error(error) from None
+
+    def _open_stream_for_adapter(
+        self,
+        request: ChatRequest,
+        *,
+        tool_stream: bool,
+    ) -> tuple[Any, Callable[[str], str]]:
+        """Open one raw stream for the explicit neutral adapter seam.
+
+        This method is intentionally private.  It centralizes request
+        validation and applies a bound runtime profile when one is present,
+        while leaving the historical ``chat_stream`` payload behavior intact.
+        The adapter receives only a request-local tool-name decoder; raw IDs,
+        SDK objects and payloads never enter the neutral trace.
+        """
+
+        if not isinstance(request, ChatRequest):
+            raise TypeError("request must be a ChatRequest")
+        if not isinstance(tool_stream, bool):
+            raise ValueError("tool_stream must be a boolean.")
+        require_provider_capabilities(
+            provider_name=self.provider_name,
+            capabilities=self.capabilities,
+            request=request,
+        )
+        if request.tool_choice is ToolChoiceMode.REQUIRED:
+            raise ProviderCapabilityError(
+                provider=self.provider_name,
+                missing_capabilities=("required_tool_choice",),
+            )
+        if (
+            request.response_contract is not None
+            and request.tools
+            and request.tool_choice is ToolChoiceMode.AUTO
+        ):
+            raise ProviderCapabilityError(
+                provider=self.provider_name,
+                missing_capabilities=("structured_tool_combination",),
+            )
+        if tool_stream and not request.tools:
+            raise ValueError("tool_stream requires at least one tool.")
+
+        aliases = _ToolAliasMap.from_tools(request.tools)
+        runtime_profile = self._runtime_profile
+        effective_temperature = (
+            runtime_profile.temperature
+            if runtime_profile is not None
+            else request.temperature
+        )
+        effective_top_p = (
+            runtime_profile.top_p
+            if runtime_profile is not None
+            else request.top_p
+        )
+        effective_max_tokens = request.max_tokens
+        effective_timeout = request.timeout_s
+        if runtime_profile is not None:
+            effective_max_tokens = (
+                runtime_profile.max_output_tokens
+                if effective_max_tokens is None
+                else min(effective_max_tokens, runtime_profile.max_output_tokens)
+            )
+            effective_timeout = min(
+                effective_timeout,
+                runtime_profile.llm_tool_timeout_s,
+            )
+
+        extra_body = self._thinking_profile.extra_body()
+        if tool_stream:
+            extra_body["tool_stream"] = True
+        payload: dict[str, Any] = {
+            "model": self.model_name,
+            "messages": [
+                self._encode_message(message, aliases)
+                for message in request.messages
+            ],
+            "temperature": effective_temperature,
+            "timeout": effective_timeout,
+            "stream": True,
+            "extra_body": extra_body,
+        }
+        if effective_top_p is not None:
+            payload["top_p"] = effective_top_p
+        if effective_max_tokens is not None:
+            payload["max_tokens"] = effective_max_tokens
+        if request.tools and request.tool_choice is ToolChoiceMode.AUTO:
+            payload["tools"] = [
+                self._encode_tool(tool, aliases) for tool in request.tools
+            ]
+            payload["tool_choice"] = "auto"
+        if request.response_contract is not None:
+            payload["response_format"] = {"type": "json_object"}
+
+        try:
+            raw_stream = self._client.chat.completions.create(**payload)
+        except ProviderResponseError:
+            raise
+        except Exception as error:
+            raise self._translate_error(error) from None
+        return raw_stream, aliases.decode
+
+    def _validate_stream_response_for_adapter(
+        self,
+        response: ChatResponse,
+    ) -> None:
+        """Apply the model's reasoning replay rules to a neutral response."""
+
+        if not isinstance(response, ChatResponse):
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="invalid_stream_response",
+            )
+        self._validate_reasoning_content(
+            response.reasoning_content,
+            has_tool_calls=bool(response.tool_calls),
+        )
 
     def _consume_stream(
         self,

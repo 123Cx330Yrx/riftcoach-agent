@@ -5413,3 +5413,35 @@
   全部 conformance 与 Trace 脱敏断言。
 - [next] 公共证据已对齐，下一精确项是候选接线裁决：明确是否接入
   runtime、接入范围、预算/Trace/回退门和失败处理；在裁决前不自动启用、不执行 G53-7 或黄金切片。
+
+## 2026-09-01：RQ-194 显式智谱→中立适配接缝设计草案（历史设计阶段）
+
+- [planned-review] RQ-193 公共 conformance 已完成；本轮只留下候选级、仅显式调用的 adapter seam 设计材料，
+  模块/API 尚待评审，文档占位符不代表实现文件。
+- [planned-boundary] 预期流程为已绑定 Zhipu raw chunks 翻译成 `ProviderStreamEvent`，再交给既有
+  `ProviderStreamAssembler`；一条流、EOF+terminal+Usage 完成条件，错误 `abort()`/fail-closed，不 retry、recovery 或 ToolRuntime。
+- [no-change] 只支持 fake/local evidence，不调用真实 API、不读取 Key、不注册 recovery；`capabilities.streaming=False`，
+  严格 Flash v1 2048/零额外调用、默认模型、AgentLoop、Workbench、Portal、Account、Auth、路由、预算、Trace 和
+  `production_media=0` 均保持不变。
+- [next] 等待设计评审；通过后才做最小 fake/local 实现并跑同一干净提交的 exact-SHA 公共 CI，之后另行裁决是否允许
+  候选 runtime 接线。该阶段已由下方本地实现记录推进；占位符保留为历史过程。Stage 8/8E 继续 `in_progress`，8F 尚未开始。
+
+## 2026-09-01：RQ-194 显式智谱→中立适配接缝本地实现
+
+- [implementation] `app/providers/zhipu_stream_adapter.py` 的 `ZhipuStreamAdapter` 已实现，
+  `ZhipuProvider.stream_adapter(*, tool_stream=False)` 提供显式工厂；adapter 实现独立 `ProviderStreamAdapter`，
+  不是 `LLMProvider`，调用方必须显式选择。
+- [flow] `stream_events(request)` 将一条智谱原始流归一化为 `ProviderStreamEvent`；
+  `assemble(request, *, max_output_tokens=None, require_request_identity=True)` 只打开一次 stream，
+  由 `ProviderStreamAssembler` 在 EOF+terminal+有效 Usage 后完成。
+- [budget-identity] cap 限制为 `1..8192`，runtime profile、显式 cap 与请求 cap 取最小值并同时下传；provider/model
+  身份严格绑定，request identity 默认要求，Trace 只存 request ID SHA-256。
+- [close-failure] 正常 EOF 才 `mark_exhausted()`；异常/取消/翻译错误调用 `abort("stream_aborted")` 或保留 typed
+  provider error，close 失败映射安全码；iterator/raw stream 在 finally 关闭，无 retry/recovery/ToolRuntime，输出和
+  诊断保持 body-free。
+- [verification] `tests/test_zhipu_stream_adapter.py` fake/local 聚焦 `20 passed`；当前没有同 SHA 公共 CI run，不能
+  把本地结果写成公共可复现或生产能力。
+- [boundary] `capabilities.streaming=False`、严格 Flash v1 2048/零额外调用、默认模型、AgentLoop、Workbench、Portal、
+  Account、Auth、路由、统一 Trace/预算、`production_media=0` 均不变；候选/recovery 未注册，不调用真实 API。
+- [next] 等待包含实现与测试的同一干净 SHA exact-SHA 公共 CI，随后才另行裁决候选 runtime 接线；8E 仍 `in_progress`，
+  8F 尚未开始。

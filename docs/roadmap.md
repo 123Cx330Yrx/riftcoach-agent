@@ -1,6 +1,6 @@
 # RiftCoach 主路线 v1.1（阶段 0—8）
 
-> 当前校正（2026-09-01，RQ-193）：G53-5 矩阵及 F7 follow-up 的历史观察保持不可变；用户已授权将
+> 当前校正（2026-09-01，RQ-194）：G53-5 矩阵及 F7 follow-up 的历史观察保持不可变；用户已授权将
 > 普通智谱 API `zhipu/glm-5.3-flash` 作为产品正常运行目标，GLM-5.2 仅作显式兼容/应急回退。本地
 > Flash 运行时接线已完成；RQ-177 已在旧实现 A 上取得新的 G53-3 协议证据，RQ-178 完成 A/B 身份绑定，
 > RQ-179 又将最终新实现 A=`9e6d78be…` 以 Actions run `33378687984` 三 job exact-SHA 公共冻结；随后
@@ -16,8 +16,10 @@
 > 完成输出额度校准、首正文和完整终态/Usage 观察。RQ-192 已将原始观察冻结为离线 provider-neutral 流式装配合同；
 > RQ-193 又在测试内完成智谱分块到该合同的 conformance（13 项聚焦），提交
 > `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的同 SHA 公共 CI run `33489903978` 三 job 全绿且 head_sha 精确匹配，
-> 并包含全部 Trace 脱敏断言。严格 Flash v1 仍保持 2048/零额外调用，候选仍未注册；下一项是候选接线裁决，不能自动重试
-> 或进入 G53-7；
+> 并包含全部 Trace 脱敏断言。RQ-194 已在本地完成候选级、仅显式调用的真实 `ZhipuStreamAdapter` 接缝：
+> `app/providers/zhipu_stream_adapter.py` 提供 `stream_events()`/`assemble()`，`ZhipuProvider.stream_adapter()` 是显式工厂，
+> 聚焦测试 `20 passed`；同 SHA 公共 CI 尚未取得，不能把本地证据写成公共通过。严格 Flash v1 仍保持 2048/零额外调用，
+> `capabilities.streaming` 仍为 `False`，候选仍未注册；下一项是 review 后取得同一 SHA 的 exact-SHA 公共 CI，不能自动重试或进入 G53-7；
 >
 > 历史观察：G53-5 矩阵完成 `11/11` 次真实调用、`46,151` tokens、`7/8` cases pass；
 > 随后独立 F7 follow-up 仅将 `max_tokens` 从 512 调至 2048，完成 `1/1` 调用、`557` tokens，
@@ -71,7 +73,7 @@ RQ-181 的一次诊断确认 Flash 在 2048 输出额度内先耗尽 reasoning�
 | 5 | Skill 系统与路由 | 如何把复盘能力封装成可复用、受约束的工作流 | 自主设计，参考 Agent Skills 思想 | 已完成，进入维护 |
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 已完成；7-5 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 完成最终公共闭环 |
-| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B–E、Live integration、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共闭环，ADR-0053 reject 产品 Multi-Agent；Portal/Account 当前展示切片已按 RQ-163 阶段性收口并交回 Agent 主线，G53-1/2 已完成，RQ-177 的同 SHA G53-3 已通过，RQ-178 完成本地 A/B 预检，RQ-179 已为最终实现 A 取得 exact-SHA CI，RQ-180 已完成一次 G53-7 领域尝试但以 `provider_response_invalid/incomplete_chat_response` 首错拒绝，RQ-181 已确认首回合 `finish_reason=length` 且 2048 输出额度先被 reasoning 耗尽；RQ-182 已完成版本化响应完成策略与离线 TDD，RQ-183 已完成候选 runtime/attempt/预算/Trace 的离线合同，RQ-184 已完成候选 A/B exact-SHA 公共 CI 与同 SHA G53-3；RQ-186 已修复隔离诊断器的请求级截止，RQ-187 在完整 90 秒窗口取得一次 90.188 秒 transport-timeout 脱敏结果，RQ-188/189/190/191 已完成后续有界拆分、预算、首正文和完整流观察；RQ-192 离线装配合同与 RQ-193 智谱 conformance 已完成，`8bcbaa5`/run `33489903978` 三 job 全绿且包含全部 Trace 断言。严格 Flash v1 仍保持 2048/零额外调用，候选未注册；下一项为候选接线裁决，完整 8E/8F 仍未完成 |
+| 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B–E、Live integration、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共闭环，ADR-0053 reject 产品 Multi-Agent；Portal/Account 当前展示切片已按 RQ-163 阶段性收口并交回 Agent 主线，G53-1/2 已完成，RQ-177 的同 SHA G53-3 已通过，RQ-178 完成本地 A/B 预检，RQ-179 已为最终实现 A 取得 exact-SHA CI，RQ-180 已完成一次 G53-7 领域尝试但以 `provider_response_invalid/incomplete_chat_response` 首错拒绝，RQ-181 已确认首回合 `finish_reason=length` 且 2048 输出额度先被 reasoning 耗尽；RQ-182 已完成版本化响应完成策略与离线 TDD，RQ-183 已完成候选 runtime/attempt/预算/Trace 的离线合同，RQ-184 已完成候选 A/B exact-SHA 公共 CI 与同 SHA G53-3；RQ-186 已修复隔离诊断器的请求级截止，RQ-187 在完整 90 秒窗口取得一次 90.188 秒 transport-timeout 脱敏结果，RQ-188/189/190/191 已完成后续有界拆分、预算、首正文和完整流观察；RQ-192 离线装配合同与 RQ-193 智谱 conformance 已完成，RQ-194 已完成本地 `ZhipuStreamAdapter`（`stream_events()`/`assemble()`）及 `ZhipuProvider.stream_adapter()` 显式工厂，聚焦 `20 passed`，同 SHA 公共 CI 待定。严格 Flash v1 仍保持 2048/零额外调用，`capabilities.streaming` 仍为 `False`，候选未注册；下一项为 review + exact-SHA 公共 CI，完整 8E/8F 仍未完成 |
 
 ## 横向能力总账
 
@@ -1046,3 +1048,20 @@ RQ-193 在测试模块内以 fake OpenAI-compatible 分块验证智谱到中立�
 匹配，并包含全部 Trace 脱敏断言。公共证据完成后，下一精确项为
 候选接线裁决（runtime 范围、预算/Trace/回退/失败门），不自动注册候选、打开 streaming、执行 G53-7 或黄金切片；
 Stage 8/8E 继续 `in_progress`，8F 尚未开始，`production_media=0` 不变。
+
+### 2026-09-01：RQ-194 候选级显式智谱→中立适配接缝（本地实现完成，公共 CI 待定）
+
+RQ-194 已把早期设计草案落成本地实现：`app/providers/zhipu_stream_adapter.py` 的 `ZhipuStreamAdapter` 不是
+`LLMProvider`，而是调用方显式取得的候选接缝；`ZhipuProvider.stream_adapter(*, tool_stream=False)` 是唯一显式工厂。
+`stream_events(request)` 将已绑定的 OpenAI-compatible raw chunks 翻译为 `ProviderStreamEvent`，`assemble()` 再交给
+`ProviderStreamAssembler`，并保证单次开流、正常 EOF/合法 terminal/有效 Usage 才交付完整响应。
+
+适配器继承可信 provider runtime profile 的 `max_output_tokens` 上限（范围 1–8192），请求/显式 cap 只能收紧预算；
+请求身份默认必需，Trace 与错误只保留 SHA-256 摘要，不含 Prompt、正文、reasoning、工具参数、Key 或 SDK 对象。
+取消、迭代器/翻译/关闭异常均安全 `abort()`/fail-closed；不 retry、不 recovery、不执行 ToolRuntime，不注册 recovery。
+本地 `tests/test_zhipu_stream_adapter.py` 聚焦 `20 passed`，但 RQ-194 尚无同 SHA 公共 CI，不能声称公共验证已过。
+
+`ZhipuProvider` 既有同步接口、`chat_stream()`、默认模型和 `capabilities.streaming=False` 均不变；AgentLoop、Workbench、
+Portal、Account、Auth、路由、预算、Trace、严格 Flash v1 2048/零额外调用及 `production_media=0` 不动，候选未注册。
+早期占位符设计保留作历史记录，已由本地实现更新；下一门是 review 后为同一提交取得 exact-SHA 公共 CI，再另行裁决
+候选 runtime 接线范围。Stage 8/8E 仍 `in_progress`，8F 尚未开始，不提前进入 G53-7、黄金切片或生产准入。

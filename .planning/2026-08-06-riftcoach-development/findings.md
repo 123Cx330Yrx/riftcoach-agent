@@ -5138,3 +5138,39 @@
 - `8bcbaa5` 的 conformance 聚焦为 `13 passed`；同 SHA 公共 CI run `33489903978` 已三 job 全绿且 `head_sha`
   精确匹配，包含全部 Trace 脱敏断言，因此该提交范围的本地/公共证据均已闭环，但仍不是真实 streaming 生产能力。
   候选继续未注册，下一项是候选接线裁决，而不是自动把 `capabilities.streaming` 打开。
+
+## 2026-09-01：RQ-194 显式智谱→中立适配接缝设计发现（历史设计阶段）
+
+- RQ-193 的 fake conformance 只能证明分块翻译和中立装配合同相容；是否建立可被调用方显式触发的候选 adapter，
+  仍需先冻结调用者身份、请求/模型绑定、事件转换和错误撤出边界。实现文件/API 尚不确定，本轮使用
+  `app/providers/<zhipu-neutral-stream-adapter>.py`、`<ZhipuNeutralStreamAdapter>` 和
+  `<stream_candidate(request)>` 作为占位符，不能当作现有代码路径。
+- 设计候选是单向 `raw chunks → ProviderStreamEvent → ProviderStreamAssembler`：单次只消费一条流，必须观察正常 EOF、
+  合法 terminal 和有效 Usage；迭代器异常/取消走 `abort()`，任何合同错误 fail closed，不隐式 retry、recovery 或 ToolRuntime。
+- 该接缝只针对 fake/local evidence；不调用真实 API、不读取 Key、不注册 recovery，`capabilities.streaming` 继续为 `False`，
+  严格 Flash v1 的 2048/零额外调用和默认路径保持不变。AgentLoop、Workbench、Portal、Account、Auth、路由、预算、统一
+  Runtime Trace 与 `production_media=0` 均不动。
+- 下一门必须是设计评审；只有评审冻结后才可实现 fake/local 最小版本，再以同一干净 SHA 取得公共 CI。不得把设计草案、
+  fake 通过或 CI 通过外推为候选启用、G53-7、领域采用或生产成熟度。后续实现已采用真实 API，以下历史占位符不再
+  代表当前代码。
+
+## 2026-09-01：RQ-194 显式智谱→中立适配接缝本地实现发现
+
+- 设计评审后的实现位于 `app/providers/zhipu_stream_adapter.py`，真实类为 `ZhipuStreamAdapter`；
+  `ZhipuProvider.stream_adapter(*, tool_stream=False)` 是显式工厂，返回独立的 `ProviderStreamAdapter` port，
+  不把 adapter 变成 `LLMProvider` 或自动能力。
+- `stream_events(request)` 将一条 OpenAI-compatible 智谱流翻译为 `ProviderStreamEvent`；
+  `assemble(request, *, max_output_tokens=None, require_request_identity=True)` 只打开一次流，交给
+  `ProviderStreamAssembler` 并返回 `StreamAssemblyResult`。私有 `_open_stream_for_adapter(...)` 负责请求校验、
+  thinking/runtime profile、工具 alias 与 SDK open。
+- 输出 cap 受 `1..8192` 限制；runtime profile cap、显式 cap 与 `ChatRequest.max_tokens` 取最小值并同时传到
+  payload/assembler，不能越过 trusted cap。provider 必须是 `zhipu`，event model 必须匹配绑定 model，默认要求
+  request identity；Trace 只保留 request ID SHA-256。
+- 只有正常 EOF 才 `mark_exhausted()`/`finalize()`；异常、取消、翻译错误或 close 失败会 `abort("stream_aborted")`、
+  保留 typed `ProviderError` 或安全 `zhipu_stream_close`。iterator/raw stream 在 `finally` 关闭，错误/repr/Trace
+  均不含正文、reasoning、工具参数、Key 或原始 request ID；适配器无 retry/recovery/ToolRuntime。
+- `tests/test_zhipu_stream_adapter.py` 仅用 fake SDK/client，聚焦 `20 passed`（含参数化坏 chunk）；这是本地证据，
+  尚未形成 RQ-194 实现/测试的同 SHA 公共 CI。默认模型、`capabilities.streaming=False`、严格 Flash v1 2048/零额外
+  调用、AgentLoop、Workbench、Portal、Account、Auth、路由、统一 Trace/预算和 `production_media=0` 均不变。
+- 下一门是把实现与测试放入同一干净提交并取得 exact-SHA 公共 CI；在此之前不注册候选、不注册 recovery、不执行
+  G53-7/黄金切片，也不宣称生产 streaming 或领域准入。

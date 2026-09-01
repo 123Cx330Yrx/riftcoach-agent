@@ -874,6 +874,9 @@ groups:
         - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
         - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
         - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
         - docs/adr/0065-adopt-verified-event-phase-timeline-projection.md
         - docs/plans/2026-08-24-8e-timeline-dto-ui-design.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
@@ -958,6 +961,9 @@ groups:
         - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
         - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
         - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
       code_map:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -980,6 +986,9 @@ groups:
         - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
         - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
         - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
       data_and_control_flow:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1015,6 +1024,9 @@ groups:
         - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
         - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
         - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
       verification:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1076,6 +1088,9 @@ groups:
         - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
         - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
         - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
       runbook:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1113,6 +1128,9 @@ groups:
         - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
         - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
         - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
       failure_security_boundary:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1178,6 +1196,9 @@ groups:
         - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
         - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
         - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
       interview_wording:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1203,6 +1224,9 @@ groups:
         - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
         - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
         - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
 
   - id: 8f-final-evaluation-and-portfolio
     sequence: 360

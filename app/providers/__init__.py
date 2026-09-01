@@ -80,6 +80,7 @@ from .stream_adapter_contract import (
     StreamAssemblyTrace,
     StreamToolCallDelta,
 )
+from .zhipu_stream_adapter import ZhipuStreamAdapter
 from .registry import (
     ProviderDescriptor,
     ProviderRegistry,
@@ -151,6 +152,7 @@ __all__ = [
     "ToolChoiceMode",
     "ToolSpec",
     "ZhipuProvider",
+    "ZhipuStreamAdapter",
     "ZhipuStreamResult",
     "ZhipuModelProfile",
     "ZhipuSettings",

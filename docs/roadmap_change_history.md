@@ -3857,3 +3857,23 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
   Runtime Trace、预算、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
 - `BOUNDARY-NEXT`：下一项是候选接线裁决（runtime 接入范围、预算/Trace/回退/失败门）；
   不自动打开 streaming、执行 G53-7 或黄金切片，Stage 8/8E 继续 `in_progress`，8F 尚未开始。
+
+## 2026-09-01：RQ-194 候选级显式智谱→中立适配接缝（本地实现完成，公共 CI 待定）
+
+- `DESIGN-HISTORY`：早期记录只起草由调用方显式触发的 seam，并将模块/API 写成占位符；该历史设计保留，
+  已由本地实现更新，不能再作为“尚无代码”的当前状态。
+- `IMPLEMENTATION`：`app/providers/zhipu_stream_adapter.py` 新增 `ZhipuStreamAdapter`（非 `LLMProvider`），
+  `ZhipuProvider.stream_adapter(*, tool_stream=False)` 提供显式工厂；`stream_events(request)` 将 raw chunks 翻译为
+  `ProviderStreamEvent`，`assemble()` 交给 `ProviderStreamAssembler`，底层端口为
+  `_open_stream_for_adapter()` / `_validate_stream_response_for_adapter()`。
+- `BOUNDARY`：适配器继承可信 provider profile 的 `max_output_tokens` 上限（1–8192），请求 cap 只能收紧预算；
+  默认要求 request identity，Trace/错误仅存 SHA-256 摘要。单流必须真实 EOF、合法 terminal、有效 Usage 才完成；
+  取消、迭代器/翻译/关闭异常均 `abort()`/fail-closed，不 retry、不 recovery、不执行 ToolRuntime，不注册 recovery，
+  只允许 fake/local evidence。
+- `VERIFICATION`：本地 `tests/test_zhipu_stream_adapter.py` 聚焦 `20 passed`；当前实现尚未取得同 SHA 公共 CI，
+  因此不写入公共 run ID，也不把本地通过写成公共验证。
+- `UNCHANGED`：`capabilities.streaming` 仍为 `False`，严格 Flash v1 仍 2048/零额外调用；默认模型、同步 `chat()`、
+  既有 `chat_stream()`、AgentLoop、ToolRuntime、Runtime Trace、预算、Workbench、Portal、Account、Auth、路由及
+  `production_media=0` 均不变，候选未注册，Stage 8/8E 仍 `in_progress`，8F 尚未开始。
+- `BOUNDARY-NEXT`：下一门是 review 后为包含实现的同一提交取得 exact-SHA 公共 CI，再另行裁决候选 runtime 接线范围；
+  不自动打开 `capabilities.streaming`、执行 G53-7/黄金切片或进入生产准入。
