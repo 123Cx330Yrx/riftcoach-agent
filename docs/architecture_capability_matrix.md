@@ -711,5 +711,13 @@ RQ-197 将 RQ-196 冻结的边界落成隔离的 fake/local 实现：新增
 模型、AgentLoop、Workbench、Portal、Account、Auth、路由和 `production_media=0` 均不变。聚焦与相邻回归为 `163 passed`；同一
 干净实现提交的 exact-SHA 公共 CI 尚待验证，因此本地实现不标记为生产能力、领域准入或 8-Core 必需项。
 
-当前唯一下一项是 `candidate-boundary-observation-contract-public-ci / pending`，先取得同 SHA 公共 CI，再另行裁决
-candidate harness、fresh-recovery、G53-7 和生产准入。
+RQ-198 已取得同 SHA 公共 CI：提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的 Actions run
+`33507627615` 三 job 全绿，公共 pytest 为 `2178 passed, 145 skipped, 1 warning, 127 subtests passed`。
+当前唯一下一项是 `candidate-evaluation-harness-design / pending`，之后才另行裁决 candidate harness 的实现、
+fresh-recovery、G53-7 和生产准入；候选仍未注册，`execution_allowed=false`，`capabilities.streaming=False`，
+`production_media=0` 不变。
+
+### 2026-09-01：RQ-198 候选边界观察合同公共 CI 闭环
+
+本公共 CI 只证明 RQ-197 的隔离 fake/local 边界合同可复现，不改变 8E/8-Core 生产能力矩阵，也未触发真实 API、
+recovery、G53-7 或产品 Runtime 接线。本轮到此暂停。

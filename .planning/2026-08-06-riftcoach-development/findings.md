@@ -5219,3 +5219,14 @@
 - 本地候选及相邻回归为 `163 passed`，compileall、diff check、governance 已通过；全量本地首错来自缺少
   `RIFTCOACH_TEST_DATABASE_URL` 的既有 PostgreSQL fixture。当前仍需同一干净提交的 exact-SHA 公共 CI，不能把本地证据写成
   生产准入。
+
+## 2026-09-01：RQ-198 候选边界观察合同公共 CI 闭环发现
+
+- RQ-197 实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的 Actions run `33507627615` 已完成
+  exact-SHA 公共验证；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，公共 pytest 摘要为
+  `2178 passed, 145 skipped, 1 warning, 127 subtests passed`。
+- 公共 CI 没有改变候选边界：仍不注册 Provider/Runtime、不打开 `capabilities.streaming`、不发真实 API、
+  不执行 recovery/G53-7/黄金切片；严格 Flash v1、默认模型和 `production_media=0` 保持不变。
+- 收口后的唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`；
+  下一轮只设计隔离 harness/ledger/Trace，需用户明确继续后才进入。

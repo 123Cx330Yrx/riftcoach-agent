@@ -181,9 +181,12 @@ fail-closed，不构造 `ChatResponse`，unknown Usage 不当零。
 Auth、默认模型和 `production_media=0` 均保持原状。聚焦与相邻回归为 `163 passed`，compileall、diff check、
 governance 已通过；全量本地首错是缺少 `RIFTCOACH_TEST_DATABASE_URL` 的 PostgreSQL fixture。
 
+RQ-198 已完成该公共 CI 门：实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的 Actions run
+`33507627615` 三 job 全绿，公共 pytest 为 `2178 passed, 145 skipped, 1 warning, 127 subtests passed`。
+
 当前唯一下一精确 checkpoint 为：
 
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`
 
-先取得同一干净实现提交的 exact-SHA 公共 CI；之后才另行决定候选 harness、fresh-recovery、G53-7、黄金切片
-或生产准入。严格 Flash v1 和现有产品边界继续不变。
+下一轮只设计隔离 harness/ledger/Trace 接缝；候选仍不注册、不打开 `capabilities.streaming`，不执行真实 API、
+fresh-recovery、G53-7、黄金切片或生产准入。严格 Flash v1 和现有产品边界继续不变，本轮暂停。

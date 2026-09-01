@@ -5487,3 +5487,15 @@
 - [next] 当前唯一精确项为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`；
   先取得同一干净实现提交的 exact-SHA 公共 CI，再另行裁决 candidate harness、fresh-recovery、G53-7 与生产准入。
+
+## 2026-09-01：RQ-198 候选边界观察合同公共 CI 闭环
+
+- [public-ci] RQ-197 的实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 已由 GitHub Actions
+  run `33507627615` 完成 exact-SHA 公共验证；`pytest`、`postgres-migrations`、`packaging-smoke`
+  三 job 均 `completed/success`，公共 pytest 为 `2178 passed, 145 skipped, 1 warning, 127 subtests passed`。
+- [boundary] 该公共证据只证明 fake/local 候选边界合同可复现；候选仍未注册、`execution_allowed=false`，
+  严格 Flash v1、默认 Runtime、产品模块、`capabilities.streaming=False` 和 `production_media=0` 不变；
+  没有真实 API/Key、recovery、G53-7 或黄金切片。
+- [next] 当前唯一精确 checkpoint 已切换为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`。
+  只在用户明确继续后设计隔离 harness/ledger/Trace 接缝，本轮暂停。

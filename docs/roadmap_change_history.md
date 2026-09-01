@@ -3929,3 +3929,15 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 - `BOUNDARY-NEXT`：当前唯一下一精确项为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`；
   先在同一干净实现提交上取得 exact-SHA 公共 CI，再另行裁决 candidate harness、fresh-recovery、G53-7、黄金切片和生产准入。
+
+## 2026-09-01：RQ-198 候选边界观察合同公共 CI 闭环
+
+- `PUBLIC-CI`：RQ-197 实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的 Actions run
+  `33507627615` 三 job（`pytest`、`postgres-migrations`、`packaging-smoke`）均 `completed/success`，
+  `head_sha` 精确匹配；公共 pytest 为 `2178 passed, 145 skipped, 1 warning, 127 subtests passed`。
+- `BOUNDARY`：候选仍 `activation_state=candidate`、`execution_allowed=false`，不注册、不打开
+  `capabilities.streaming`，不改默认模型、产品 Runtime、Portal、Account、Workbench、Auth 或
+  `production_media=0`，没有真实 API/Key、recovery、G53-7 或黄金切片。
+- `CURRENT`：收口后的唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`；
+  本轮暂停，后续需用户明确继续。

@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-09-01（RQ-197 的候选边界观察合同已完成本地实现，公共 CI 待验证；此前 RQ-192 的 provider-neutral 流式装配合同与 RQ-193 的智谱适配器一致性接缝均已完成本地；
+- 最后更新：2026-09-01（RQ-197 的候选边界观察合同已完成本地实现，并已取得同 SHA 公共 CI；此前 RQ-192 的 provider-neutral 流式装配合同与 RQ-193 的智谱适配器一致性接缝均已完成本地；
   RQ-193 实现提交为 `8bcbaa5ba467fcaad76193d3790d34a106a47d72`，conformance 聚焦回归为 `13 passed`，
   只使用测试内伪造 SDK 分块，未改生产 Provider、未发真实 API。该提交的同 SHA 公共 CI run `33489903978`
   已 `completed/success`（pytest、postgres-migrations、packaging-smoke 三 job，head_sha 精确匹配），且包含全部
@@ -109,7 +109,7 @@ pause_reason: ""
   为显式兼容/应急回退。旧 Dataset 的 30 秒仍是质量资源阈值，不是新档案执行截止；真实 G53-7 会拒绝 dirty
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
-- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`。RQ-193 提交 `8bcbaa5` 的 Actions run `33489903978` 与 RQ-194 提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 均三 job 全绿且 head_sha 精确匹配；RQ-194 聚焦测试为 `20 passed`。RQ-195 已完成架构评审，RQ-196 已完成设计，RQ-197 已完成 fake/local 边界观察合同实现与 `163 passed` 聚焦/相邻回归；同一干净实现提交的公共 CI 尚待取得。下一步只做 exact-SHA 公共 CI 验证，不注册候选、不打开 `capabilities.streaming`、不接入产品默认或执行 recovery/G53-7。
+- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`。RQ-193 提交 `8bcbaa5` 的 Actions run `33489903978` 与 RQ-194 提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 均三 job 全绿且 head_sha 精确匹配；RQ-194 聚焦测试为 `20 passed`。RQ-195 已完成架构评审，RQ-196 已完成设计，RQ-197 已完成 fake/local 边界观察合同实现与 `163 passed` 聚焦/相邻回归；实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的公共 CI run `33507627615` 三 job 全绿且 head_sha 精确匹配（公共 pytest `2178 passed, 145 skipped, 1 warning, 127 subtests passed`）。下一步只设计隔离候选 evaluation harness，不注册候选、不打开 `capabilities.streaming`、不接入产品默认或执行 recovery/G53-7。
 - RQ-179–RQ-181 的 exact-SHA、G53-7 失败与一次性正文零留存诊断证据均保持不可变，旧证据不覆盖；RQ-182 聚焦离线测试为 `41 passed`，RQ-183 聚焦离线合同为 `30 passed`，均未改变 Provider-neutral 消息、AgentLoop、ToolRuntime、Trace、预算、默认模型、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
 - 2026-08-31 按用户确认新建普通 API Key 后重开 G53-3：进程预检确认 `zhipu`、普通 API 端点与
   `glm-5.3-flash` 均生效；未输出 Key 值，也未改除用户自行更新的 `.env` 之外的默认配置。A1 结构化合同
@@ -3829,9 +3829,21 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 本批没有真实 API/Key I/O，没有 fresh-recovery、G53-7、黄金切片或候选注册；`execution_allowed=false`、
 严格 Flash v1 2048/零额外调用、`capabilities.streaming=False`、默认模型、AgentLoop、Worker、
 统一 Trace/预算、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变。
-当前状态为 `implementation-local / public-ci-pending`，唯一下一精确项为：
+当前状态已达到 `completed-public`：实现提交
+`127e6da43ef1b71b284a7e8d4198547b04c556d8` 的 Actions run `33507627615` 中，
+`pytest`、`postgres-migrations`、`packaging-smoke` 三个 job 均 `completed/success`，且 `head_sha`
+精确匹配；公共 pytest 为 `2178 passed, 145 skipped, 1 warning, 127 subtests passed`。
 
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`
+### 2026-09-01：RQ-198 候选边界观察合同公共 CI 闭环
 
-需在同一干净实现提交上取得 exact-SHA 公共 CI 后，才另行裁决候选 evaluation harness、
-fresh-recovery、G53-7 与生产准入。
+- [completed-public] RQ-197 的同一干净实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 已取得
+  Actions run `33507627615` exact-SHA 公共证据；`pytest`、`postgres-migrations`、`packaging-smoke`
+  三 job 全绿。公共 pytest 摘要为 `2178 passed, 145 skipped, 1 warning, 127 subtests passed`。
+- [unchanged] 公共 CI 只验证候选边界合同可复现，不把候选注册为 Provider/Runtime，不打开
+  `capabilities.streaming`，不改变严格 Flash v1 2048/零额外调用、默认模型、AgentLoop、Worker、统一
+  Trace/预算、Portal、Account、Workbench、Auth、路由或 `production_media=0`；没有真实 API/Key、
+  fresh-recovery、G53-7 或黄金切片。
+- [boundary-next] 当前唯一下一精确 checkpoint 为：
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`。
+  下一轮只设计隔离的候选 evaluation harness 及其 ledger/Trace 接缝，完成设计门后再由用户决定是否实现、
+  执行 fresh-recovery、重跑 G53-7 或进入生产准入。

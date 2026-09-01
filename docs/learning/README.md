@@ -94,9 +94,9 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | 8D：Riot + OP.GG Evidence Fusion Core | 完整/公共闭环 | [walkthrough](8d-riot-opgg-evidence-fusion-core-walkthrough.md) / [ADR-0055](../adr/0055-adopt-typed-evidence-bundle-fusion.md) / [设计](../plans/2026-08-23-8d-riot-opgg-evidence-fusion-design.md) / [实施计划](../plans/2026-08-23-8d-riot-opgg-evidence-fusion-implementation.md) | implementation/evidence `a274b7f` / Actions `32598480400` 三 job 全绿；typed Riot/Data Dragon/official patch/OP.GG partial fusion、no-I/O adapter、digest/provenance/freshness/join/conflict/gap 与 public projection 已有本地/公共证据。真实刷新、8E Web/Auth/SSE/部署仍未实现 |
 | 8E：Productization | 进行中/coverage planned | [G53-1/2/3/4/5/7 适配档案、CI、协议与能力门](8e-glm53-adapter-profile-tdd-walkthrough.md) / [RQ-182 响应完成策略](8e-glm53-response-completion-strategy-walkthrough.md) / [RQ-183 fresh-recovery 合同](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) / [ADR-0071](../adr/0071-adopt-versioned-response-completion-policy.md) / [ADR-0072](../adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md) / [G53-0 无 I/O 审计](../plans/2026-08-31-g53-0-glm53-no-io-audit.md) / [Flash 运行时晋级 ADR](../adr/0070-adopt-glm53-flash-product-runtime-profile.md) / [preflight](../plans/2026-08-23-8e-productization-preflight.md) / [Batch B](8e-player-profile-selection-explicit-routing-walkthrough.md) / [Batch C](8e-evidence-product-api-walkthrough.md) / [Batch D](8e-batch-d-rift-command-center-walkthrough.md) / [Live 接线](8e-live-workbench-integration-walkthrough.md) / [Batch E implementation](8e-batch-e-security-deployment-implementation-walkthrough.md) / [视觉合同](8e-portal-workbench-visual-contract-walkthrough.md) / [Timeline](8e-timeline-dto-ui-walkthrough.md) / [双语 foundation](8e-bilingual-product-surface-foundation-walkthrough.md) / [三层产品旅程](8e-portal-account-workbench-journey-walkthrough.md) / [Portal Motion Polish](8e-portal-motion-polish-walkthrough.md) / [I2V audit](../plans/2026-08-25-8e-image-to-video-candidate-audit.md) / [Veo v5 failure](../plans/2026-08-26-8e-veo-spatial-v5-upstream-failure.md) / [Seedance candidate](../plans/2026-08-26-8e-seedance25-sample-audit.md) / [Seedance edit preflight](../plans/2026-08-26-8e-seedance25-video-edit-preflight.md) / [Seedance edit 400](../plans/2026-08-26-8e-seedance25-video-edit-400-diagnosis.md) / [豆包 comparator](../plans/2026-08-26-8e-doubao-seedance25-comparator-audit.md) / [即梦 preflight](../plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md) / [即梦 result/postprocess](../plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md) / [ADR-0068](../adr/0068-adopt-mother-image-global-loop-scenes-and-semantic-activation.md) / [RQ-197 边界观察实现](8e-glm53-candidate-boundary-observation-implementation-walkthrough.md) | 已闭环批次不变；G53-0 已完成本地无 I/O 审计，G53-1 已完成普通 API 的离线适配档案，G53-2 已由 `0f97b92` / Actions `33325222755` 完成 exact-SHA 三 job 公共验证，G53-3 已在更换普通 API Key 后通过 A1/A2（严格 3/3 次调用）；G53-4 已执行一次但未准入，G53-5 新鲜矩阵 11/11 calls 中 7/8 通过，RQ-175/176 已完成 Flash 专属运行时的本地接线，RQ-179 已为最终实现 A 取得 exact-SHA 公共 CI，RQ-180 已完成一次 G53-7 真实尝试但首例以 `provider_response_invalid/incomplete_chat_response` 停止且未准入，RQ-181 又确认首回合 `finish_reason=length` 且 2048 输出额度先被 reasoning 耗尽；RQ-182 已完成策略设计与离线 TDD，RQ-183 已完成候选 runtime/attempt/预算/Trace 离线合同，RQ-184 已完成 A/B exact-SHA 公共 CI 与同 SHA G53-3；RQ-185 两次独立诊断启动均无可观察响应，RQ-192–RQ-196 已完成候选流合同/适配器/设计材料，RQ-197 已完成边界观察本地实现与 `163 passed`，同 SHA 公共 CI 待验证。严格策略不续接、8192/一次 fresh-recovery 仍为未注册候选；公共生产准入仍未完成，production media `0`。 |
 
-> 8E 表格中的旧“下一门为传输/代理边界复核”以及 RQ-195 的
-> `candidate-runtime-wiring-design / pending` 均是历史摘要；RQ-196 已将当前唯一下一门更新为
-> `candidate-boundary-observation-contract-public-ci / pending`，详见下方 RQ-197 材料。
+> 8E 表格中的旧“下一门为传输/代理边界复核”、RQ-195 的
+> `candidate-runtime-wiring-design / pending` 以及 RQ-197 的公共 CI 待验证均是历史摘要；RQ-198 已取得
+> exact-SHA 公共 CI，当前唯一下一门更新为 `candidate-evaluation-harness-design / pending`。
 
 8E 当前最新候选接缝材料：[RQ-192/RQ-193 walkthrough](8e-glm53-provider-neutral-stream-adapter-walkthrough.md) /
 [ADR-0073](../adr/0073-adopt-provider-neutral-stream-assembly-contract.md) /
@@ -120,7 +120,7 @@ RQ-196 候选 runtime 接线设计材料：[walkthrough](8e-glm53-candidate-runt
 [设计计划](../plans/2026-09-01-glm53-candidate-runtime-wiring-design.md)；冻结了候选四元身份、body-free
 BoundaryObservation、共享事件校验、隔离 v2 transport、预算/结算顺序和独立 Trace 投影。Flash 是当前唯一主力候选目标，
 但候选仍未注册、`execution_allowed=false`，不代表产品默认或生产准入。RQ-197 已将该设计落成
-fake/local 边界观察实现，当前下一精确项为 `candidate-boundary-observation-contract-public-ci / pending`。
+fake/local 边界观察实现，RQ-198 已完成同 SHA 公共 CI；当前下一精确项为 `candidate-evaluation-harness-design / pending`。
 
 ### 2026-09-01：RQ-197 候选边界观察合同本地实现
 
@@ -363,3 +363,12 @@ RQ-197 已在隔离分支完成 fake/local 边界观察合同：新增精确 can
 关闭异常和状态伪造矩阵均通过，聚焦及相邻回归为 `163 passed`；同一干净实现提交的 exact-SHA 公共 CI 尚待验证。
 候选仍未注册、`execution_allowed=false`，不改产品 Runtime、默认模型、Portal、Account、Workbench、Auth 或
 `production_media=0`。通过公共 CI 后才另行裁决候选 harness、fresh-recovery、G53-7 与生产准入。
+
+### 2026-09-01：RQ-198 候选边界观察合同公共 CI 闭环
+
+RQ-197 的实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 已由 Actions run `33507627615` 完成
+exact-SHA 公共验证；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，公共 pytest 为
+`2178 passed, 145 skipped, 1 warning, 127 subtests passed`。该证据不改变候选/生产边界，仍不注册候选、
+不打开 `capabilities.streaming`、不发真实 API 或执行 recovery/G53-7。收口后的下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`；
+本轮到此暂停，后续需用户明确继续。

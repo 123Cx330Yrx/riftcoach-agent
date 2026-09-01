@@ -3049,6 +3049,15 @@ tool、Usage 与大小限制。
 recovery、G53-7 或黄金切片。聚焦与相邻回归 `163 passed`，compileall、diff check、governance 已通过；全量本地首错
 是未配置 `RIFTCOACH_TEST_DATABASE_URL` 的 PostgreSQL fixture。
 
+RQ-198 已完成该公共 CI 门：提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的 Actions run `33507627615`
+三 job 全绿，公共 pytest 为 `2178 passed, 145 skipped, 1 warning, 127 subtests passed`。候选仍未注册、
+`execution_allowed=false`，严格 Flash v1、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和
+`production_media=0` 不变，没有真实 API/Key、recovery、G53-7 或黄金切片。
+
 当前唯一下一精确项为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`；
-先取得同 SHA 公共 CI，再另行裁决 candidate harness、fresh-recovery、G53-7、黄金切片和生产准入。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`；
+下一轮只设计隔离 harness/ledger/Trace 接缝，本轮暂停，后续需用户明确继续。
+
+### RQ-198：候选边界观察合同公共 CI 闭环（2026-09-01）
+
+该证据只关闭公共可复现性检查，不构成候选注册或 8-Core 生产准入。

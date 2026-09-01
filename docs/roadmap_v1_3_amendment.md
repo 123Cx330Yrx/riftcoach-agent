@@ -1070,3 +1070,15 @@ allow-list；`ProviderStreamEvent` 的显式 null/缺失标记与完整 assemble
 当前唯一下一精确项为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`：
 先取得同一干净实现提交的 exact-SHA 公共 CI，再另行裁决 candidate harness、fresh-recovery、G53-7、黄金切片和生产准入。
+
+### 2026-09-01：RQ-198 候选边界观察合同公共 CI 闭环
+
+RQ-197 实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 已取得 Actions run `33507627615` 的
+exact-SHA 公共证据；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，公共 pytest 为
+`2178 passed, 145 skipped, 1 warning, 127 subtests passed`。这只是 8-Advanced 候选实验的公共可复现性证据，
+不把候选写成 8-Core 生产能力；候选仍未注册、`execution_allowed=false`，严格 Flash v1、默认模型、产品模块、
+`capabilities.streaming=False` 与 `production_media=0` 均不变。
+
+收口后的唯一下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`；
+本轮暂停，后续需用户明确继续。

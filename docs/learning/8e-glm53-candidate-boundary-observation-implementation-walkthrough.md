@@ -65,8 +65,10 @@ request ID 的 SHA-256 和安全错误码。正文、reasoning、工具参数、
   model/request identity conflict、重复 terminal/Usage、工具索引/元数据/参数上限、输出
   预算、时钟异常、迭代器与外层资源关闭，以及 body-free JSON/repr。
 - 全量本地 pytest 的首个错误来自未配置 `RIFTCOACH_TEST_DATABASE_URL` 的 PostgreSQL
-  fixture（`DATABASE_URL is required`），不是本批代码路径；公共 CI 仍需在带 PostgreSQL
-  service 的干净提交上验证。
+  fixture（`DATABASE_URL is required`），不是本批代码路径。
+- 同一干净实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的 Actions run `33507627615`
+  已由 RQ-198 完成 exact-SHA 公共验证：三个 job 全绿，公共 pytest 为
+  `2178 passed, 145 skipped, 1 warning, 127 subtests passed`。
 
 ## 5. 明确没有做的事
 
@@ -77,9 +79,9 @@ request ID 的 SHA-256 和安全错误码。正文、reasoning、工具参数、
 
 ## 6. 当前门与下一步
 
-当前状态为 `implementation-local / public-ci-pending`。下一精确 checkpoint 是：
+当前状态为 `completed-public / candidate-only`。下一精确 checkpoint 是：
 
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`
 
-只有同一干净实现提交取得 exact-SHA 公共 CI 后，才可进入候选 harness/fresh-recovery 的
-单独裁决；本地测试通过不等于领域准入或公共生产成熟度。
+下一轮只设计隔离 harness/ledger/Trace 接缝；fresh-recovery、G53-7、候选注册和生产准入仍需单独裁决。
+公共 CI 通过不等于领域准入或公共生产成熟度，本轮到此暂停。
