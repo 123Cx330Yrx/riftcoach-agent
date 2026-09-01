@@ -47,8 +47,20 @@ Auth、路由或 `production_media`；不发真实请求、不注册候选、不
 
 `tests/test_stream_adapter_contract.py` 的聚焦测试为 `29 passed`，覆盖正常文本与
 reasoning、终止/Usage/EOF、失败毒化与原子性、序号/身份冲突、并行工具片段、JSON
-深度/数字/重复键、输出与输入上限和 Trace 脱敏。该证据仍是本地实现证据；下一步
-需要同一新实现 SHA 的公共 CI 与供应商适配器一致性测试，之后才重新评估候选运行时。
+深度/数字/重复键、输出与输入上限和 Trace 脱敏。RQ-193 又以测试内 fake translator
+完成智谱分块一致性对照（`13 passed`）；提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72`
+的同 SHA 公共 CI run `33489903978` 三 job 全绿且 head_sha 精确匹配，并包含全部 Trace 脱敏断言。
+公共证据完成后进入候选接线裁决。
 正文只用 `strip()` 判断是否为空而不改写首尾空白；异常文本只保留安全错误码，底层迭代器异常/取消必须先 `abort()`。
 在那些闸门完成前，严格 Flash v1 继续 2048 输出上限和零额外调用，候选保持未注册，
 `production_media=0` 不变。
+
+## RQ-193 证据增量：智谱 conformance（2026-09-01）
+
+这次一致性测试不是新的生产适配器。`_FixtureZhipuStreamAdapter` 留在测试模块，使用
+fake SDK 形状验证字段提取、工具别名解码、终态/EOF 与异常边界，再和旧的
+`ZhipuProvider.chat_stream()` fake-client 结果对照。它证明的是“智谱形状可以被翻译到候选
+合同”的可重复接缝，不证明真实供应商 streaming 已接入。
+
+公共 CI 已对 `8bcbaa5` 完成。因此当前决策仍保持 `candidate-only`，下一项是候选
+接线裁决（runtime 范围、预算/Trace/回退与失败处理），而非自动启用或领域准入。

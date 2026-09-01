@@ -50,6 +50,19 @@ RQ-191 观察到的是智谱原始分块；它不能直接证明 RiftCoach 已�
 
 相邻智谱 Provider、响应完成策略、候选恢复合同和 Runtime stream 回归仍通过。
 
+## 8. RQ-193：智谱分块一致性（本地接缝 + c17 公共 CI）
+
+RQ-193 在测试模块内建立 `_FixtureZhipuStreamAdapter`，把 OpenAI-compatible 的智谱
+chunk 只投影成安全的 `ProviderStreamEvent`，再交给同一个 `ProviderStreamAssembler`。
+正文/reasoning、`knowledge_search` 工具别名与跨分块参数、坏形状、未知工具、空 choices、
+model/terminal 冲突、迭代器异常必须 `abort()`、正文空白保留和 Trace 脱敏均有断言。
+测试聚焦为 `13 passed`，旧同步 `ZhipuProvider.chat_stream()` 只用 fake client 做逐字段对照。
+
+提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的 GitHub Actions run `33489903978`
+已三 job 全绿且 `head_sha` 精确匹配，并包含全部 Trace 脱敏断言；这是该提交范围的公共可复现证据，
+不等于真实 Provider streaming 或产品 runtime 接入。现在进入候选接线裁决，审查 runtime/预算/Trace/回退/失败
+边界；在此之前不注册候选、不打开能力标记、不执行 G53-7。
+
 ## 5. 运行与复现
 
 ```powershell
@@ -77,5 +90,6 @@ Trace 使用显式白名单，避免把 SDK 对象或敏感字段沿链路传播
 ## 7. 面试表述
 
 可以说：“我把供应商流分块先翻译成无 SDK 的规范化事件，再用单次状态机装配；
-只有终止原因和有效 Usage 同时出现才交付完整回答，Trace 只保留状态和摘要。”
+只有终止原因和有效 Usage 同时出现才交付完整回答，Trace 只保留状态和摘要；另外用
+测试内 fake 智谱 translator 做了逐字段 conformance，并在同 SHA 公共 CI 验证。”
 不能说：“GLM-5.3 已经完成了产品级 token streaming。”

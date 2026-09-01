@@ -49,9 +49,11 @@ Prompt、原始响应、API Key 或原始 request ID。终止后只允许 Usage-
 
 ## 退出边界
 
-本合同完成只代表离线装配接缝被冻结。下一步若要继续，仍需单独的厂商适配器
-一致性测试、同一新实现 SHA 的公共 CI，以及重新审查是否值得进入候选运行时；
-不得把本地合同通过写成领域准入、公共部署或 8E/8F 完成。
+本合同完成只代表离线装配接缝被冻结。RQ-193 已在测试内完成智谱厂商分块的一致性
+对照；提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的同 SHA 公共 CI run
+`33489903978` 三 job 全绿且 `head_sha` 精确匹配，并包含全部 Trace 脱敏断言。公共证据
+对齐后进入候选接线裁决，
+不得把任何本地/公共合同证据写成领域准入、公共部署或 8E/8F 完成。
 
 ## 完成记录（2026-09-01）
 
@@ -60,3 +62,15 @@ Prompt、原始响应、API Key 或原始 request ID。终止后只允许 Usage-
 - `app/providers/__init__.py` 仅导出合同类型；未修改现有 Provider 的请求路径。
 - 真实 API 调用、Key、Workbench、Portal、Account、Auth、默认模型和
   `production_media=0` 均未改变。
+
+## RQ-193 补充：智谱分块一致性与公共证据（2026-09-01）
+
+- 测试内 `_FixtureZhipuStreamAdapter` 只从 fake OpenAI-compatible chunk 提取安全字段，
+  翻译为 `ProviderStreamEvent` 后交由中立装配器；正文/reasoning、工具别名和分片、坏形状、
+  model/terminal 边界、迭代器异常 `abort()`、空 choices、正文空白保留和 Trace 脱敏均有覆盖。
+- `tests/test_zhipu_stream_adapter_conformance.py` 聚焦为 `13 passed`；现有生产
+  `ZhipuProvider.chat_stream()` 仅作为 fake-client 对照，生产适配器、能力声明和产品 streaming 均未改。
+- `8bcbaa5` 的公共 CI run `33489903978` 已 `completed/success`，`pytest`、
+  `postgres-migrations`、`packaging-smoke` 三 job 全绿且 `head_sha` 精确匹配，包含全部 Trace 脱敏断言。
+- 公共证据增量完成后，下一项是候选接线裁决：明确是否把中立接缝接入 runtime、接入哪些事件/工具/终态、
+  如何保留预算/Trace/回退和失败门；在裁决前不注册候选、不打开 `capabilities.streaming`、不执行 G53-7。

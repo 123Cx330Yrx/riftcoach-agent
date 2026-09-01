@@ -5397,3 +5397,19 @@
 - [boundary] 候选仍未注册，严格 Flash v1 仍 2048/零额外调用；不接入产品 streaming、Portal、Account、
   Workbench、Auth、路由或 `production_media=0`，8E 仍 `in_progress`、8F 未开始。
 - [next] 等待同一新实现 SHA 的公共 CI 与 provider-conformance 测试；本地测试通过不等于公共生产准入。
+
+## 2026-09-01：RQ-193 智谱流式适配器一致性接缝
+
+- [implementation] 提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 新增测试内
+  `_FixtureZhipuStreamAdapter`，将代表性智谱 OpenAI-compatible chunks 翻译为中立事件；生产
+  `ZhipuProvider`、同步接口与能力声明保持不变。
+- [verification] conformance 聚焦 `13 passed`；正文/reasoning、工具别名和分片、坏形状、model/terminal
+  边界、异常 `abort()`、空 choices、空白保留和 Trace 脱敏均有断言。测试只使用 fake client，无 SDK/网络/Key I/O。
+- [boundary] 该批不注册候选、不改 `capabilities.streaming`、严格 Flash v1 2048/零额外调用、默认模型、
+  AgentLoop、ToolRuntime、Runtime Trace、预算、Workbench、Portal、Account、Auth、路由或
+  `production_media=0`；Stage 8/8E 仍 `in_progress`，8F 未开始。
+- [completed-public] `8bcbaa5` 的同 SHA 公共 CI run `33489903978` 已 `completed/success`，
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿且 `head_sha` 精确匹配；该提交已包含
+  全部 conformance 与 Trace 脱敏断言。
+- [next] 公共证据已对齐，下一精确项是候选接线裁决：明确是否接入
+  runtime、接入范围、预算/Trace/回退门和失败处理；在裁决前不自动启用、不执行 G53-7 或黄金切片。

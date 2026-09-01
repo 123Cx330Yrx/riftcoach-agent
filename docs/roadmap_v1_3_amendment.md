@@ -996,3 +996,16 @@ RQ-192 在 v1.3 的 8-Core/8-Advanced 分层内新增一个候选适配接缝，
 该合同不注册 GLM-5.3-Flash 候选、不改变严格 Flash v1 的 2048/零额外调用、不打开产品 streaming，也不改变
 8-Core 必需项、8-Advanced 证据门、Portal/Account/Workbench/Auth、部署/合规或 `production_media=0`。下一项
 仍是同一实现 SHA 的公共 CI 与供应商一致性测试；8E 未完成，8F 未开始。
+
+### 2026-09-01：RQ-193 智谱流式适配器一致性接缝
+
+RQ-193 在 v1.3 的候选接缝范围内完成测试内 provider conformance：用 fake OpenAI-compatible 智谱分块验证
+正文/reasoning、工具别名和参数分片、坏形状与未知工具、空 choices、model/terminal 边界、异常 `abort()`、
+正文空白保留及 Trace 脱敏，再与既有同步 `ZhipuProvider.chat_stream()` 的 fake-client 结果逐字段对照。
+conformance 聚焦为 `13 passed`，不改变任何生产 Provider 或能力标记。
+
+提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的同 SHA 公共 CI run `33489903978` 已三 job 全绿且 head_sha
+精确匹配，并包含全部 Trace 脱敏断言。该证据只完成候选接缝的
+公共可复现性，不把高级 streaming 强塞入 8-Core 生产要求；候选仍未注册，严格 Flash v1 仍 2048/零额外调用。
+公共验证后，下一项是候选接线裁决（是否接入 runtime、范围、预算/Trace/回退/失败门），8E 仍 `in_progress`，
+8F 尚未开始，`production_media=0` 不变。

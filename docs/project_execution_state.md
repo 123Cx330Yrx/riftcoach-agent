@@ -16,10 +16,12 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-09-01（RQ-192 已完成离线 provider-neutral 流式装配合同与 `29 passed` 聚焦回归；
-  合同要求 EOF 后显式 `mark_exhausted()`、终止+有效 Usage、工具/正文边界和失败毒化，未接入产品或真实 API；
-  下一项是同一新实现 SHA 的公共 CI 与供应商适配器一致性测试。候选未注册，严格 Flash v1 仍 2048/零额外调用，
-  Stage 8/8E 继续 `in_progress`，`production_media=0`。以下为此前连续诊断记录。）
+- 最后更新：2026-09-01（RQ-192 的 provider-neutral 流式装配合同与 RQ-193 的智谱适配器一致性接缝均已完成本地；
+  RQ-193 实现提交为 `8bcbaa5ba467fcaad76193d3790d34a106a47d72`，conformance 聚焦回归为 `13 passed`，
+  只使用测试内伪造 SDK 分块，未改生产 Provider、未发真实 API。该提交的同 SHA 公共 CI run `33489903978`
+  已 `completed/success`（pytest、postgres-migrations、packaging-smoke 三 job，head_sha 精确匹配），且包含全部
+  Trace 脱敏断言。候选未注册，严格 Flash v1 仍 2048/零额外调用，Stage 8/8E 继续 `in_progress`，
+  `production_media=0`。以下为此前连续诊断记录。）
 - 历史诊断记录：2026-09-01（RQ-190 已完成两次单路、有界的流式首个可见正文探针：同一冻结上下文、
   `reasoning_effort=low`、`max_tokens=2048` 下，`clear_thinking=true` 在 2.547 秒出现首个可见正文，
   `clear_thinking=false` 在 3.875 秒出现首个可见正文；两路均先观察到 reasoning，随后在正文出现时主动关闭，
@@ -85,7 +87,7 @@ pause_reason: ""
  （SHA-256 `dde918b17f8f93914ccf8e330fd96e936699f5fa8313c30dcb6d69f5ae19e66c`）记录 `calls_used=1/3`、
   `admitted=false`；没有再发第三次请求。该结果仍不能区分密钥失效、请求接缝或服务端权限返回。
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；
-  当前治理指针为 `8e-productization / provider-neutral-stream-adapter-contract / candidate-provider-stream-conformance + same-SHA public CI / pending`；
+  当前治理指针为 `8e-productization / provider-neutral-stream-adapter-contract / candidate-provider-stream-conformance + same-SHA public CI / completed-public`；
   Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整
   8E/8F 尚未完成。G53-0 已按 RQ-164 完成本地无 I/O 审计，G53-1 已完成离线适配合同，G53-2 已完成公共
   exact-SHA 验证；G53-3 前两次旧 Key 尝试在 A1 认证阶段阻塞，用户更新普通 API Key 后第三次尝试已通过；
@@ -102,7 +104,7 @@ pause_reason: ""
   为显式兼容/应急回退。旧 Dataset 的 30 秒仍是质量资源阈值，不是新档案执行截止；真实 G53-7 会拒绝 dirty
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
-- 唯一下一步：`8e-productization / provider-neutral-stream-adapter-contract / completed-local / candidate-provider-stream-conformance + same-SHA public CI / pending`。RQ-192 的离线装配合同已经完成；下一步只做同一新实现 SHA 的公共 CI 与供应商适配器一致性测试，不直接接入产品默认、不改 Workbench/Portal/Auth，也不把本地合同写成领域或生产准入。
+- 唯一下一步：`8e-productization / provider-neutral-stream-adapter-contract / candidate-provider-stream-conformance + same-SHA public CI / completed-public` 已完成：RQ-193 提交 `8bcbaa5` 的 Actions run `33489903978` 与 `head_sha` 精确匹配且三 job 全绿。下一精确项是候选接线裁决：审查是否把候选接缝接入 runtime，以及保留哪些能力/预算/Trace/回退门；不直接接入产品默认、不改 Workbench/Portal/Auth，也不把本地合同写成领域或生产准入。
 - RQ-179–RQ-181 的 exact-SHA、G53-7 失败与一次性正文零留存诊断证据均保持不可变，旧证据不覆盖；RQ-182 聚焦离线测试为 `41 passed`，RQ-183 聚焦离线合同为 `30 passed`，均未改变 Provider-neutral 消息、AgentLoop、ToolRuntime、Trace、预算、默认模型、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
 - 2026-08-31 按用户确认新建普通 API Key 后重开 G53-3：进程预检确认 `zhipu`、普通 API 端点与
   `glm-5.3-flash` 均生效；未输出 Key 值，也未改除用户自行更新的 `.env` 之外的默认配置。A1 结构化合同
@@ -3723,3 +3725,20 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   也没有改默认模型、AgentLoop、ToolRuntime、Runtime Trace、预算、Portal、Account、Workbench、Auth、路由或
   `production_media=0`。Stage 8/8E 仍 `in_progress`，8F 尚未开始；下一项是同一新实现 SHA 的公共 CI 与供应商
   适配器一致性测试，完成前不进入候选 runtime/G53-7/黄金切片。
+
+### 2026-09-01：RQ-193 智谱流式适配器一致性接缝（本地与公共 CI 已完成）
+
+- [completed-local] 在提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 中新增测试内的
+  `_FixtureZhipuStreamAdapter`，把代表性的 OpenAI-compatible 智谱分块翻译为
+  `ProviderStreamEvent`，再与现有 `ZhipuProvider.chat_stream()` 的伪造分块结果逐字段对照；覆盖正文/reasoning、
+  工具别名与参数分片、坏分块 fail-closed、模型/终止边界、异常 `abort()`、空 choices 与正文空白保留。
+- [completed-local] conformance 聚焦为 `13 passed`（另有历史 capability-result 严格 schema 回归随该提交保留）；
+  测试只构造本地 fake client，不读取 Key、不发网络、不改 `ZhipuProvider` 生产实现，也不把
+  `capabilities.streaming` 改为 true。Trace 脱敏断言继续确保正文、reasoning、工具参数和内部工具名不外泄。
+- [completed-public] `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的同 SHA 公共 CI run `33489903978` 已
+  `completed/success`，pytest、postgres-migrations、packaging-smoke 三 job 均成功且 head_sha 精确匹配；全部 Trace
+  脱敏断言均已包含在该提交，主工作树/用户 dirty 改动不参与本条冻结。
+- [boundary-next] 候选仍未注册，严格 Flash v1 仍 2048/零额外调用；不接入产品 streaming、不改默认模型、
+  AgentLoop、ToolRuntime、Runtime Trace、预算、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
+  公共 CI 已通过，下一精确动作是候选接线裁决（是否接入、接入范围及保留的
+  runtime/预算/Trace/回退门），而不是自动启用或直接执行 G53-7/黄金切片；Stage 8/8E 仍 `in_progress`，8F 尚未开始。

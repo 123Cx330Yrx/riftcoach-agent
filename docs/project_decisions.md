@@ -2961,3 +2961,17 @@ evaluation-only 的流式可见正文与 `clear_thinking` 探针。
 `LLMProvider`、`capabilities.streaming=False`、严格 Flash v1、候选注册、默认模型、AgentLoop、Workbench、
 Portal、Account、Auth、路由或 `production_media=0`。下一步先取得同一实现 SHA 的公共 CI 与供应商一致性证据，
 再决定是否值得进入真实适配器接线；不得把本地合同通过写成领域或生产准入。
+
+### RQ-193：智谱流式适配器一致性接缝（2026-09-01）
+
+在不修改生产 Provider 的前提下，先用测试内 fake translator 验证智谱分块能否稳定落到 RQ-192 的中立事件合同。
+`_FixtureZhipuStreamAdapter` 对正文/reasoning、工具别名与参数分片、坏形状/未知工具/空 choices、model/terminal
+边界、异常 `abort()`、正文空白和 Trace 脱敏做逐项断言，并与现有 `ZhipuProvider.chat_stream()` fake-client 结果对照；
+conformance 聚焦 `13 passed`。
+
+提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的同 SHA Actions run `33489903978` 已三 job 全绿且 head_sha 精确
+匹配，且包含全部 Trace 脱敏断言。
+因此决策仍是 candidate-only：不注册候选、不打开 `capabilities.streaming`、不改严格 Flash v1 2048/零额外调用、
+默认模型、AgentLoop、ToolRuntime、Runtime Trace、预算、Portal、Account、Workbench、Auth、路由或
+`production_media=0`。公共验证完成后进行候选接线裁决，决定 runtime 接入范围及预算/Trace/回退/失败门，
+而非自动启用或进入 G53-7/黄金切片。

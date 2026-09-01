@@ -640,3 +640,16 @@ provider-neutral streaming、长请求根因、领域采用或生产成熟度；
 能力矩阵只把它记为 candidate-only offline seam：不代表 `capabilities.streaming`、产品 runtime、工具流、跨轮
 思考回放、领域或生产准入；不注册候选、不改严格 Flash v1 2048/零额外调用、统一 Trace、产品模块或
 `production_media=0`。下一项是同一实现 SHA 的公共 CI 与 provider conformance。
+
+### 2026-09-01：RQ-193 Zhipu provider conformance capability boundary
+
+在 RQ-192 的候选接缝上，测试内 `_FixtureZhipuStreamAdapter` 将代表性的 OpenAI-compatible 智谱分块安全翻译为
+`ProviderStreamEvent`，并与现有 `ZhipuProvider.chat_stream()` 的 fake-client 结果逐字段核对。覆盖正文/reasoning、
+工具别名与参数分片、坏形状/未知工具/空 choices、model/terminal 边界、迭代器异常 `abort()`、正文空白保留与
+Trace 脱敏；conformance 聚焦 `13 passed`。
+
+提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的 Actions run `33489903978` 三 job 全绿且 head_sha 精确匹配，
+因此该提交范围（含全部 Trace 脱敏断言）的公共可复现性已确认。
+矩阵仍只标记 candidate-only seam：不把 `capabilities.streaming` 改为 true，不宣称产品 runtime、工具流、跨轮
+思考回放、领域/生产准入或公共部署；候选、严格 Flash v1 2048/零额外调用、统一 Runtime Trace、产品模块和
+`production_media=0` 均不变。下一项为候选接线裁决，而非自动启用。

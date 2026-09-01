@@ -3842,3 +3842,18 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
   候选/领域/生产准入。
 - `BOUNDARY-NEXT`：下一项为同一新实现 SHA 的公共 CI 与 provider conformance；候选未注册，严格 Flash v1 仍
   2048/零额外调用，Stage 8/8E 仍 `in_progress`，8F 与 `production_media` 状态不变。
+
+## 2026-09-01：RQ-193 智谱流式适配器一致性接缝
+
+- `IMPLEMENTATION`：提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 在测试模块内加入
+  `_FixtureZhipuStreamAdapter`，将代表性 OpenAI-compatible 智谱 chunks 翻译为 `ProviderStreamEvent`，
+  并与现有 `ZhipuProvider.chat_stream()` 的 fake-client 结果逐字段对照；生产 Provider、同步接口和
+  `capabilities.streaming` 未改。
+- `VERIFICATION`：conformance 聚焦 `13 passed`，覆盖正文/reasoning、工具别名与分片、坏形状/未知工具/空 choices、
+  model/terminal 边界、迭代器异常 `abort()`、正文空白保留及 Trace 脱敏。该提交 Actions run `33489903978` 的
+  `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 `completed/success`，`head_sha` 精确匹配。
+- `BOUNDARY`：该公共证据仍只说明测试夹具级候选接缝可复现，不证明真实供应商 streaming 或产品 runtime 接入。
+  候选未注册，严格 Flash v1 仍 2048/零额外调用，未改默认模型、AgentLoop、ToolRuntime、
+  Runtime Trace、预算、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
+- `BOUNDARY-NEXT`：下一项是候选接线裁决（runtime 接入范围、预算/Trace/回退/失败门）；
+  不自动打开 streaming、执行 G53-7 或黄金切片，Stage 8/8E 继续 `in_progress`，8F 尚未开始。

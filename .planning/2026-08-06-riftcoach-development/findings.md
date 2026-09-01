@@ -5122,3 +5122,19 @@
   `147 passed, 27 subtests passed`。
 - 这批只完成离线候选合同；没有 SDK、网络、重试、真实供应商适配器、产品默认、Workbench、Portal、Auth 或
   `production_media` 改动。下一步是同一新实现 SHA 的公共 CI 与 provider conformance，不能把本地回归当作生产准入。
+
+## 2026-09-01：RQ-193 智谱流式适配器一致性接缝发现
+
+- 测试内 `_FixtureZhipuStreamAdapter` 足以验证“厂商分块翻译”和“中立装配”之间的边界，而不需要把真实
+  SDK 客户端、Key 或网络带入合同。它从 OpenAI-compatible fixture 只提取 model、序号、请求 ID 摘要、正文/
+  reasoning、工具片段、终止原因和 Usage，再交给 `ProviderStreamAssembler`。
+- 正文 fixture 与现有 `ZhipuProvider.chat_stream()` 的 fake-client 结果逐字段一致；工具 fixture 验证
+  `knowledge_search` 别名还原为内部 `knowledge.search`、跨分块参数拼接和 `tool_calls` 终态。中立 Trace 只保留
+  白名单计数/摘要，正文、reasoning、工具参数和内部工具名不会进入 JSON 投影。
+- 坏 choices、delta、content、reasoning、tool、usage、未知工具和空非 Usage 帧均在供应商翻译层以安全错误码
+  拒绝；model 冲突、终止后载荷和供应商迭代器异常则由中立装配器 fail closed，异常路径必须 `abort()`，不能
+  把异常误封为 EOF。中立合同交付正文时保留首尾空白，只用 `strip()` 判断全空，和旧智谱整流面的行为差异已被
+  显式记录。
+- `8bcbaa5` 的 conformance 聚焦为 `13 passed`；同 SHA 公共 CI run `33489903978` 已三 job 全绿且 `head_sha`
+  精确匹配，包含全部 Trace 脱敏断言，因此该提交范围的本地/公共证据均已闭环，但仍不是真实 streaming 生产能力。
+  候选继续未注册，下一项是候选接线裁决，而不是自动把 `capabilities.streaming` 打开。
