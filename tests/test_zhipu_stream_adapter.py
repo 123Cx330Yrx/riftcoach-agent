@@ -384,6 +384,35 @@ def test_mapping_chunks_and_usage_are_supported_without_changing_trace() -> None
     assert result.trace.request_id_sha256 == sha256(b"mapping-id").hexdigest()
 
 
+def test_explicit_null_delta_fields_keep_presence_for_candidate_observers() -> None:
+    raw = ClosableStream(
+        [
+            SimpleNamespace(
+                id="null-id",
+                model=MODEL,
+                choices=[
+                    SimpleNamespace(
+                        delta=SimpleNamespace(
+                            content=None,
+                            reasoning_content="thinking",
+                            tool_calls=None,
+                        ),
+                        finish_reason=None,
+                    )
+                ],
+                usage=None,
+            )
+        ]
+    )
+    provider = ZhipuProvider(client=FakeClient(raw), model=MODEL)
+    event = next(iter(provider.stream_adapter().stream_events(request())))
+
+    assert event.content_delta is None
+    assert event.content_observed is True
+    assert event.reasoning_delta == "thinking"
+    assert event.reasoning_observed is True
+
+
 def test_iterator_exception_is_not_mistaken_for_eof() -> None:
     raw = ClosableStream(
         [chunk(content="partial")],
@@ -397,6 +426,17 @@ def test_iterator_exception_is_not_mistaken_for_eof() -> None:
     assert caught.value.code == "unexpected_sdk_error"
     assert "vendor body" not in str(caught.value)
     assert raw.closed is True
+
+
+def test_cleanup_preserves_keyboard_interrupt_from_provider_stream() -> None:
+    raw = ClosableStream(
+        [chunk(content="partial")],
+        close_error=KeyboardInterrupt,
+    )
+    provider = ZhipuProvider(client=FakeClient(raw), model=MODEL)
+
+    with pytest.raises(KeyboardInterrupt):
+        list(provider.stream_adapter().stream_events(request()))
 
 
 def test_provider_sdk_iterator_error_keeps_typed_error_without_body() -> None:

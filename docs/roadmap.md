@@ -1,6 +1,6 @@
 # RiftCoach 主路线 v1.1（阶段 0—8）
 
-> 当前校正（2026-09-01，RQ-195）：G53-5 矩阵及 F7 follow-up 的历史观察保持不可变；用户已授权将
+> 当前校正（2026-09-01，RQ-197）：G53-5 矩阵及 F7 follow-up 的历史观察保持不可变；用户已授权将
 > 普通智谱 API `zhipu/glm-5.3-flash` 作为产品正常运行目标，GLM-5.2 仅作显式兼容/应急回退。RQ-176 的
 > Flash 目标接线已有本地实现，但当前 RQ-194 适配接缝仍是候选、尚未注册；RQ-177 已在旧实现 A 上取得新的 G53-3 协议证据，RQ-178 完成 A/B 身份绑定，
 > RQ-179 又将最终新实现 A=`9e6d78be…` 以 Actions run `33378687984` 三 job exact-SHA 公共冻结；随后
@@ -20,8 +20,8 @@
 > `app/providers/zhipu_stream_adapter.py` 提供 `stream_events()`/`assemble()`，`ZhipuProvider.stream_adapter()` 是显式工厂，
 > 聚焦测试 `20 passed`；提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 三 job exact-SHA 全绿。
 > 这只证明候选接缝公共可复现，不等于产品 runtime 或生产准入。严格 Flash v1 仍保持 2048/零额外调用，
-> `capabilities.streaming` 仍为 `False`，候选仍未注册；RQ-195 已完成候选 runtime 接线架构评审，下一项是
-> `candidate-runtime-wiring-design / pending`，不能自动重试或进入 G53-7；
+> `capabilities.streaming` 仍为 `False`，候选仍未注册；RQ-195 评审、RQ-196 设计与 RQ-197 边界观察本地实现已完成，下一项是
+> `candidate-boundary-observation-contract-public-ci / pending`，不能自动重试或进入 G53-7；
 >
 > 历史观察：G53-5 矩阵完成 `11/11` 次真实调用、`46,151` tokens、`7/8` cases pass；
 > 随后独立 F7 follow-up 仅将 `max_tokens` 从 512 调至 2048，完成 `1/1` 调用、`557` tokens，
@@ -76,6 +76,10 @@ RQ-181 的一次诊断确认 Flash 在 2048 输出额度内先耗尽 reasoning�
 | 6 | API、Session 与 Memory | 如何从脚本变成真正的长期个性化 Coach | 自主实现，选择性吸收 EchoMind Session/Memory 思想 | 已完成；6B-1 至 6B-9 与 RQ-067 前置门均已 exact-SHA 公共闭环，6B-9 为 `cbc7cbd` / Actions `32408101770` |
 | 7 | 标准 MCP 与动态 Meta | 如何标准化连接 OP.GG，并向外暴露能力 | 标准 MCP | 已完成；7-5 实现 `a88fbc4/32483521108`、clean-SHA 双向门与 evidence `fac6fe0/32484257736` 完成最终公共闭环 |
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B–E、Live integration、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共闭环，ADR-0053 reject 产品 Multi-Agent；Portal/Account 当前展示切片已按 RQ-163 阶段性收口并交回 Agent 主线，G53-1/2 已完成，RQ-177 的同 SHA G53-3 已通过，RQ-178 完成本地 A/B 预检，RQ-179 已为最终实现 A 取得 exact-SHA CI，RQ-180 已完成一次 G53-7 领域尝试但以 `provider_response_invalid/incomplete_chat_response` 首错拒绝，RQ-181 已确认首回合 `finish_reason=length` 且 2048 输出额度先被 reasoning 耗尽；RQ-182 已完成版本化响应完成策略与离线 TDD，RQ-183 已完成候选 runtime/attempt/预算/Trace 的离线合同，RQ-184 已完成候选 A/B exact-SHA 公共 CI 与同 SHA G53-3；RQ-186 已修复隔离诊断器的请求级截止，RQ-187 在完整 90 秒窗口取得一次 90.188 秒 transport-timeout 脱敏结果，RQ-188/189/190/191 已完成后续有界拆分、预算、首正文和完整流观察；RQ-192 离线装配合同与 RQ-193 智谱 conformance 已完成，RQ-194 已完成本地 `ZhipuStreamAdapter`（`stream_events()`/`assemble()`）及 `ZhipuProvider.stream_adapter()` 显式工厂，聚焦 `20 passed`，提交 `a7580e861cd986c026040c7fcfcc3fa577737961` / Actions `33496237588` 三 job exact-SHA 全绿；RQ-195 已完成候选 runtime 接线架构评审，确认不完整流必须先经 BoundaryObservation，推荐隔离候选评测调用方，不直接接入产品 Runtime。严格 Flash v1 仍保持 2048/零额外调用，`capabilities.streaming` 仍为 `False`，候选未注册；下一项为 `candidate-runtime-wiring-design / pending`，完整 8E/8F 仍未完成 |
+
+> 阶段 8 表格中的 RQ-195 下一项是历史摘要。RQ-196 已完成候选 runtime wiring design，RQ-197 已完成边界观察本地实现；当前唯一下一项为
+> `candidate-boundary-observation-contract-public-ci / pending`。Flash 是当前唯一主力候选目标，但仍未注册为产品默认，
+> 8E/8F、生产准入和 `production_media=0` 的边界不变。
 
 ## 横向能力总账
 
@@ -1069,7 +1073,7 @@ Portal、Account、Auth、路由、预算、Trace、严格 Flash v1 2048/零额�
 早期占位符设计保留作历史记录，已由本地实现更新；下一门是独立裁决候选 runtime 接线范围。
 Stage 8/8E 仍 `in_progress`，8F 尚未开始，不提前进入 G53-7、黄金切片或生产准入。
 
-### 2026-09-01：RQ-195 候选 runtime 接线架构评审
+### 2026-09-01：RQ-195 候选 runtime 接线架构评审（历史状态）
 
 RQ-195 复核了 RQ-194 的接缝与现有 Agent Runtime 的边界。`ZhipuStreamAdapter.assemble()` 只在 EOF、合法终止和有效
 Usage 齐全时交付完整结果；`length`、缺终止、缺 Usage 或读取/翻译/关闭异常都 fail-closed，不能把异常当作恢复资格。
@@ -1078,4 +1082,35 @@ Usage 齐全时交付完整结果；`length`、缺终止、缺 Usage 或读取/�
 只输出字段状态、finish code、Usage 数字、耗时和安全错误码的 `BoundaryObservation`；完整流仍由 assembler 收口。
 
 该评审不改变 `capabilities.streaming=False`、严格 Flash v1 2048/零额外调用、候选未注册、产品模块和
-`production_media=0`。下一精确项为 `candidate-runtime-wiring-design / pending`，8E 仍进行中，8F 尚未开始。
+`production_media=0`。当时下一精确项为 `candidate-runtime-wiring-design / pending`；该状态已由 RQ-196 更新，8E 仍进行中，8F 尚未开始。
+
+### 2026-09-01：RQ-196 候选 runtime 接线设计
+
+RQ-196 在用户确认继续推进且基本决定采用 GLM-5.3-Flash 后完成候选 runtime wiring design。该确认被记录为唯一主力
+候选目标，不等于静默改成全产品默认。设计冻结 `CandidateRuntimeBinding` 的四元身份与尝试序号、body-free
+`BoundaryObservation`、共享事件校验、完整流/不完整流分流、候选 v2 transport 和独立 Trace 投影。
+
+未来候选调用方只在 `app/evaluation/` 显式持有 v2 profile/policy，使用 8192 单次 cap、90/120 秒窗口、`temperature=1`、
+`top_p=0.95`、SDK retries=0；按 reserve→open→observe/assemble→settle 结算最多 2 attempts、1 次额外调用、32,000
+input、16,384 output、180,000ms，unknown Usage 不当零。完整流仍由 assembler 收口，不完整流不得构造 `ChatResponse`。
+
+本轮新增 ADR-0076、设计计划与学习 walkthrough，未改产品 Runtime、默认模型、`capabilities.streaming`、Portal、Account、
+Workbench、Auth、路由或 `production_media=0`，未发真实 API。当时下一精确项为
+`candidate-boundary-observation-contract-implementation / pending`；该项已由 RQ-197 推进，先做 fake/local 合同与同 SHA
+公共 CI，再另行决定候选 harness、fresh-recovery、G53-7、黄金切片与生产准入。
+
+### 2026-09-01：RQ-197 候选边界观察合同本地实现
+
+RQ-197 将 RQ-196 的设计落成隔离的 fake/local 实现：`app/evaluation/candidate_stream_contract.py`
+提供精确 candidate binding、body-free `BoundaryObservation`、不可变快照、字段 presence/状态聚合、候选 v2
+注入式 transport port 和独立 Trace 投影；共享事件级校验同时被完整 assembler 与观察器使用，智谱翻译保留
+显式 `null` 与字段缺失的区别。
+
+本地聚焦与相邻回归为 `163 passed`，并通过 compileall、`git diff --check` 和 governance。覆盖完整 stop/tool-call、
+reasoning-only length、缺 EOF/终态/Usage、身份与序号冲突、工具/输出预算、时钟和资源关闭失败；所有不完整或异常流
+均 fail-closed，不构造 `ChatResponse`，用户中断类异常不被吞掉。全量本地首错是 PostgreSQL fixture 缺少
+`RIFTCOACH_TEST_DATABASE_URL`，公共 CI 尚待在干净提交上验证。
+
+本批没有真实 API/Key、fresh-recovery、G53-7、候选注册或产品 streaming 接线；严格 Flash v1 2048/零额外调用、
+默认模型、AgentLoop、Workbench、Portal、Auth、路由、统一 Trace/预算和 `production_media=0` 均不变。当前唯一下一项为
+`candidate-boundary-observation-contract-public-ci / pending`，通过后才另行裁决候选 harness 与生产准入。

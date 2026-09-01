@@ -129,6 +129,13 @@ class ProviderStreamEvent:
     model: str | None = None
     sequence: int | None = None
     request_id_sha256: str | None = None
+    # ``None`` is used for both an absent vendor field and an explicit JSON
+    # null in the historical event shape.  These flags preserve that small
+    # distinction for boundary observers without retaining vendor objects or
+    # response text.  Non-None values always imply presence and are normalized
+    # to ``True`` below, so existing callers remain source-compatible.
+    content_observed: bool = False
+    reasoning_observed: bool = False
 
     def __post_init__(self) -> None:
         for field_name in ("content_delta", "reasoning_delta"):
@@ -139,6 +146,14 @@ class ProviderStreamEvent:
                 raise ValueError(
                     f"{field_name} must be a bounded string or None"
                 )
+        for field_name in ("content_observed", "reasoning_observed"):
+            value = getattr(self, field_name)
+            if not isinstance(value, bool):
+                raise ValueError(f"{field_name} must be a boolean")
+        if self.content_delta is not None and not self.content_observed:
+            object.__setattr__(self, "content_observed", True)
+        if self.reasoning_delta is not None and not self.reasoning_observed:
+            object.__setattr__(self, "reasoning_observed", True)
         if not isinstance(self.tool_call_deltas, tuple) or not all(
             isinstance(delta, StreamToolCallDelta)
             for delta in self.tool_call_deltas
@@ -182,6 +197,8 @@ class ProviderStreamEvent:
             "ProviderStreamEvent("
             f"content_chars={len(self.content_delta or '')}, "
             f"reasoning_chars={len(self.reasoning_delta or '')}, "
+            f"content_observed={self.content_observed}, "
+            f"reasoning_observed={self.reasoning_observed}, "
             f"tool_delta_count={len(self.tool_call_deltas)}, "
             f"finish_reason={self.finish_reason!r}, "
             f"usage_present={self.usage is not None}, "
@@ -189,6 +206,82 @@ class ProviderStreamEvent:
             f"request_identity_present={self.request_id_sha256 is not None}"
             ")"
         )
+
+
+def validate_provider_stream_event(
+    event: ProviderStreamEvent,
+    *,
+    ordinal: int,
+    max_events: int = _MAX_EVENTS,
+    content_chars_before: int = 0,
+    reasoning_chars_before: int = 0,
+    tool_argument_chars_before: int = 0,
+    max_content_chars: int = _MAX_TEXT_CHARS,
+    max_reasoning_chars: int = _MAX_TEXT_CHARS,
+    max_tool_calls_per_event: int = _MAX_TOOL_CALLS,
+    max_tool_argument_chars: int = _MAX_TOOL_ARGUMENT_CHARS,
+) -> None:
+    """Run the provider-neutral, event-local safety checks once.
+
+    Both the complete-response assembler and the candidate boundary observer
+    call this helper before applying their own stateful rules.  Keeping the
+    immutable event limits in one place prevents the two paths from drifting
+    while allowing the observer to remain body-free.
+    """
+
+    _validate_shared_limit(max_events, _MAX_EVENTS, "stream_event_limit")
+    _validate_shared_limit(max_content_chars, _MAX_TEXT_CHARS, "content_limit")
+    _validate_shared_limit(max_reasoning_chars, _MAX_TEXT_CHARS, "reasoning_limit")
+    _validate_shared_limit(
+        max_tool_calls_per_event,
+        _MAX_TOOL_CALLS,
+        "tool_call_limit",
+    )
+    _validate_shared_limit(
+        max_tool_argument_chars,
+        _MAX_TOOL_ARGUMENT_CHARS,
+        "tool_argument_limit",
+    )
+    if not isinstance(event, ProviderStreamEvent):
+        raise StreamAdapterError("invalid_event")
+    if (
+        isinstance(ordinal, bool)
+        or not isinstance(ordinal, int)
+        or ordinal < 1
+        or ordinal > max_events
+    ):
+        raise StreamAdapterError("stream_event_limit")
+    if event.sequence is not None and event.sequence != ordinal:
+        raise StreamAdapterError("sequence_conflict")
+    if event.finish_reason is not None and event.finish_reason not in _FINISH_REASONS:
+        raise StreamAdapterError("invalid_finish_reason")
+    if event.usage is not None:
+        _validate_usage(event.usage)
+    if (
+        isinstance(content_chars_before, bool)
+        or not isinstance(content_chars_before, int)
+        or content_chars_before < 0
+        or content_chars_before + len(event.content_delta or "") > max_content_chars
+    ):
+        raise StreamAdapterError("content_limit")
+    if (
+        isinstance(reasoning_chars_before, bool)
+        or not isinstance(reasoning_chars_before, int)
+        or reasoning_chars_before < 0
+        or reasoning_chars_before + len(event.reasoning_delta or "") > max_reasoning_chars
+    ):
+        raise StreamAdapterError("reasoning_limit")
+    if len(event.tool_call_deltas) > max_tool_calls_per_event:
+        raise StreamAdapterError("tool_call_limit")
+    if (
+        isinstance(tool_argument_chars_before, bool)
+        or not isinstance(tool_argument_chars_before, int)
+        or tool_argument_chars_before < 0
+        or tool_argument_chars_before
+        + sum(len(delta.arguments_delta or "") for delta in event.tool_call_deltas)
+        > max_tool_argument_chars
+    ):
+        raise StreamAdapterError("tool_argument_limit")
 
 
 @runtime_checkable
@@ -478,10 +571,21 @@ class ProviderStreamAssembler:
 
     def _accept_validated(self, event: ProviderStreamEvent) -> None:
         ordinal = self._chunk_count + 1
-        if ordinal > self._max_events:
-            self._poison("stream_event_limit")
-        if event.sequence is not None and event.sequence != ordinal:
-            self._poison("sequence_conflict")
+        try:
+            validate_provider_stream_event(
+                event,
+                ordinal=ordinal,
+                max_events=self._max_events,
+                content_chars_before=self._content_chars,
+                reasoning_chars_before=self._reasoning_chars,
+                tool_argument_chars_before=self._tool_argument_chars,
+                max_content_chars=self._max_content_chars,
+                max_reasoning_chars=self._max_reasoning_chars,
+                max_tool_calls_per_event=self._max_tool_calls,
+                max_tool_argument_chars=self._max_tool_argument_chars,
+            )
+        except StreamAdapterError as error:
+            self._poison(error.code)
 
         next_model = self._resolved_model
         if event.model is not None:
@@ -505,8 +609,8 @@ class ProviderStreamAssembler:
             if event.usage is None:
                 self._poison("payload_after_terminal")
             if (
-                event.content_delta is not None
-                or event.reasoning_delta is not None
+                event.content_observed
+                or event.reasoning_observed
                 or event.tool_call_deltas
             ):
                 self._poison("payload_after_terminal")
@@ -514,13 +618,10 @@ class ProviderStreamAssembler:
                 self._poison("duplicate_usage")
 
         if event.finish_reason is not None:
-            if event.finish_reason not in _FINISH_REASONS:
-                self._poison("invalid_finish_reason")
             if self._finish_reason is not None:
                 self._poison("duplicate_terminal")
 
         if event.usage is not None:
-            _validate_usage(event.usage)
             if self._terminal_ordinal is None and event.finish_reason is None:
                 self._poison("usage_before_terminal")
             if self._usage is not None:
@@ -782,6 +883,18 @@ def _validate_limit(value: int, field_name: str) -> int:
 def _validate_usage(usage: TokenUsage) -> None:
     if usage.cached_input_tokens > usage.input_tokens:
         raise StreamAdapterError("invalid_usage")
+
+
+def _validate_shared_limit(value: object, upper: int, code: str) -> None:
+    """Reject malformed caller limits with a safe contract code."""
+
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, int)
+        or value < 1
+        or value > upper
+    ):
+        raise StreamAdapterError(code)
 
 
 def _reject_json_constant(value: str) -> None:

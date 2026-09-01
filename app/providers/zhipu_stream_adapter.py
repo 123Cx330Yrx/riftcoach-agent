@@ -371,8 +371,10 @@ def _translate_chunk(
         delta = _read_field(choice, "delta")
         if delta is None:
             raise StreamAdapterError("zhipu_delta_shape")
-        content = _read_field(delta, "content")
-        reasoning = _read_field(delta, "reasoning_content")
+        content_observed, content = _read_field_with_presence(delta, "content")
+        reasoning_observed, reasoning = _read_field_with_presence(
+            delta, "reasoning_content"
+        )
         if content is not None and not isinstance(content, str):
             raise StreamAdapterError("zhipu_content_shape")
         if reasoning is not None and not isinstance(reasoning, str):
@@ -406,6 +408,8 @@ def _translate_chunk(
             model=raw_model,
             sequence=ordinal,
             request_id_sha256=request_id_sha256,
+            content_observed=content_observed,
+            reasoning_observed=reasoning_observed,
         )
     except StreamAdapterError:
         raise
@@ -524,6 +528,21 @@ def _read_field(value: Any, name: str, default: Any = None) -> Any:
     return getattr(value, name, default)
 
 
+def _read_field_with_presence(
+    value: Any,
+    name: str,
+    default: Any = None,
+) -> tuple[bool, Any]:
+    """Read a vendor field while preserving missing versus explicit null."""
+
+    if isinstance(value, Mapping):
+        return name in value, value.get(name, default)
+    try:
+        return hasattr(value, name), getattr(value, name, default)
+    except Exception:
+        raise StreamAdapterError("zhipu_chunk_shape") from None
+
+
 def _provider_bound_output_cap(provider: Any) -> int | None:
     """Read a trusted registered runtime cap without accepting ad-hoc input."""
 
@@ -544,7 +563,7 @@ def _close_iterator(iterator: Iterator[Any] | None) -> bool:
     if callable(close):
         try:
             close()
-        except BaseException:
+        except Exception:
             # Do not leak an SDK close exception; the caller decides whether
             # it may replace a normal EOF or must preserve an active error.
             return True
@@ -558,14 +577,14 @@ def _close_stream(raw_stream: Iterable[Any] | None) -> bool:
     if callable(close):
         try:
             close()
-        except BaseException:
+        except Exception:
             return True
         return False
     exit_method = getattr(raw_stream, "__exit__", None)
     if callable(exit_method):
         try:
             exit_method(None, None, None)
-        except BaseException:
+        except Exception:
             return True
     return False
 

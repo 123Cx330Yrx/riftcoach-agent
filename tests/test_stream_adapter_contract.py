@@ -13,6 +13,7 @@ from app.providers.stream_adapter_contract import (
     StreamAssemblyTrace,
     StreamToolCallDelta,
     ProviderStreamAssembler,
+    validate_provider_stream_event,
 )
 
 
@@ -92,6 +93,21 @@ def test_normalized_event_is_frozen_and_rejects_raw_or_malformed_values():
         StreamAdapterError("stream_failed", "SECRET_BODY_MARKER")
     safe_error = StreamAdapterError("stream_failed", "safe_detail")
     assert str(safe_error) == "stream_failed"
+
+
+def test_shared_event_validator_is_used_for_both_boundary_paths():
+    valid = _event(content="ok", finish="stop", usage=_usage(), sequence=1)
+    validate_provider_stream_event(valid, ordinal=1)
+    with pytest.raises(StreamAdapterError, match="sequence_conflict"):
+        validate_provider_stream_event(valid, ordinal=2)
+    with pytest.raises(StreamAdapterError, match="content_limit"):
+        validate_provider_stream_event(
+            _event(content="ok"),
+            ordinal=1,
+            max_content_chars=1,
+        )
+    with pytest.raises(StreamAdapterError, match="stream_event_limit"):
+        validate_provider_stream_event(valid, ordinal=1, max_events=0)
 
 
 def test_result_repr_keeps_response_body_and_tool_arguments_private():

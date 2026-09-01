@@ -1028,7 +1028,7 @@ Workbench、Portal、Account、Auth、路由、预算/Trace 与 `production_medi
 裁决候选 runtime 接线范围；RQ-194 不改变 Stage 8/8E 的 `in_progress` 顺序，
 8F 尚未开始，不提前进入 G53-7、黄金切片或生产准入。
 
-### 2026-09-01：RQ-195 候选 runtime 接线架构评审
+### 2026-09-01：RQ-195 候选 runtime 接线架构评审（历史状态）
 
 RQ-195 继续遵守 v1.3 的 8-Core/8-Advanced 分层：候选 streaming 接缝仍是受控高级实验，不能因为本地 adapter
 和公共 CI 通过就写成 8-Core 生产能力。评审确认完整流装配与候选恢复资格是两种不同合同：`assemble()` 对
@@ -1037,4 +1037,36 @@ RQ-195 继续遵守 v1.3 的 8-Core/8-Advanced 分层：候选 streaming 接缝�
 因此下一设计门只冻结隔离的 `CandidateStreamEvaluationHarness`、四元身份绑定、`BoundaryObservation` 状态机、
 候选 ledger/Trace 投影和回退矩阵；不改 `LLMProvider`、`AgentLoop`、默认模型、`capabilities.streaming`、Workbench、
 Portal、Account、Auth、路由或生产媒体。候选 profile 仍未注册且 `execution_allowed=false`，严格 Flash v1 仍为
-2048/零额外调用；8E 继续 `in_progress`，8F 尚未开始。下一精确项为 `candidate-runtime-wiring-design / pending`。
+2048/零额外调用；8E 继续 `in_progress`，8F 尚未开始。当时下一精确项为 `candidate-runtime-wiring-design / pending`，
+现已由 RQ-196 更新。
+
+### 2026-09-01：RQ-196 候选 runtime 接线设计
+
+RQ-196 在用户基本决定采用 GLM-5.3-Flash 后完成候选 runtime wiring design。按照 v1.3 的 8-Core/8-Advanced 分层，
+Flash 记录为唯一主力候选目标，但本轮仍是受控高级实验设计，不把 streaming、recovery 或 8192 上限写成 8-Core 生产能力。
+
+本轮冻结 `CandidateRuntimeBinding` 四元身份、body-free `BoundaryObservation`、共享事件校验、完整流/不完整流分流、
+隔离 v2 transport 和独立 Trace 投影；候选预算为最多 2 attempts、1 次额外调用、32,000 input、16,384 output、180,000ms，
+unknown Usage 不得当零，当前 `execution_allowed=false`。严格 Flash v1 2048/零额外调用、默认 Runtime、
+`capabilities.streaming=False`、产品模块和 `production_media=0` 不变。
+
+当时唯一下一精确项为 `candidate-boundary-observation-contract-implementation / pending`；该门已由 RQ-197
+推进，8E 仍进行中，8F 尚未开始。
+
+### 2026-09-01：RQ-197 候选边界观察合同本地实现
+
+RQ-197 按 v1.3 的 8-Core/8-Advanced 分层完成了候选高级实验的离线实现门，但没有把候选写成 8-Core
+生产能力。新增隔离 `app/evaluation/candidate_stream_contract.py`，提供精确 candidate binding、body-free
+`BoundaryObservation`、不可变状态快照、字段 presence 聚合、候选 v2 注入式 transport port 和独立 Trace
+allow-list；`ProviderStreamEvent` 的显式 null/缺失标记与完整 assembler、智谱翻译共同使用事件级校验核心。
+
+本地失败矩阵覆盖完整 `stop`/`tool_calls`、`length` reasoning-only、缺 EOF/terminal/Usage、身份/序号/工具/预算/
+时钟/关闭异常和状态伪造；不完整或异常流均 fail-closed，不构造 `ChatResponse`，unknown Usage 不当零。候选仍
+`activation_state=candidate`、`execution_allowed=false`，严格 Flash v1 2048/零额外调用，
+`capabilities.streaming=False`，默认模型、AgentLoop、Workbench、Portal、Account、Auth、路由和
+`production_media=0` 不变。聚焦/相邻回归为 `163 passed`，compileall、diff check、governance 已通过；全量本地
+首错是缺少 PostgreSQL 测试环境变量 `RIFTCOACH_TEST_DATABASE_URL`。
+
+当前唯一下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`：
+先取得同一干净实现提交的 exact-SHA 公共 CI，再另行裁决 candidate harness、fresh-recovery、G53-7、黄金切片和生产准入。

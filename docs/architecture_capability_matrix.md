@@ -673,7 +673,7 @@ request identity，Trace/错误只保存 SHA-256 摘要。只有真实 EOF、合
 Runtime Trace、预算、Workbench、Portal、Account、Auth、路由和 `production_media=0` 均不变，候选未注册。下一项是独立的
 候选 runtime 接线裁决；矩阵不将其标为生产能力、领域准入或 8-Core 必需项。
 
-### 2026-09-01：RQ-195 候选 runtime 接线架构能力边界
+### 2026-09-01：RQ-195 候选 runtime 接线架构能力边界（历史状态）
 
 RQ-195 把“候选 adapter 可装配完整流”和“候选 runtime 可安全恢复”分成两项能力。现有
 `ZhipuStreamAdapter.assemble()` 只交付 EOF、terminal、Usage 齐全的完整 `stop`/`tool_calls` 流；不完整流和异常
@@ -683,4 +683,33 @@ RQ-195 把“候选 adapter 可装配完整流”和“候选 runtime 可安全�
 身份，并先提供 body-free `BoundaryObservation`、ledger 生命周期和 allow-list `ResponseRecoveryTrace` 投影；不得
 自动注册为 `LLMProvider` 或打开产品 streaming。候选仍未注册、`execution_allowed=false`，严格 Flash v1 2048/零额外调用，
 默认 Runtime、Workbench、Portal、Account、Auth、路由和 `production_media=0` 不变。下一项为
-`candidate-runtime-wiring-design / pending`，不标记为生产能力、领域准入或 8-Core 必需项。
+`candidate-runtime-wiring-design / pending`，不标记为生产能力、领域准入或 8-Core 必需项；该下一项已由 RQ-196 更新。
+
+### 2026-09-01：RQ-196 候选 runtime 接线设计能力边界（历史状态）
+
+RQ-196 将 GLM-5.3-Flash 记录为当前唯一主力候选目标，但仍属于 8E 内受控高级实验设计，不是 8-Core 生产能力或默认模型。
+能力矩阵冻结 `CandidateRuntimeBinding` 的四元身份与尝试序号、body-free `BoundaryObservation`、共享事件校验、完整流/不完整
+流分流、隔离 v2 transport 和独立 Trace 投影。候选 v2 的单次 8192 cap、90/120 秒窗口和累计预算只对显式 evaluation 调用方
+有效；未知 Usage 不得当零，当前 `execution_allowed=false`。
+
+未改 `LLMProvider`、AgentLoop、Worker、统一 Runtime Trace/预算、`capabilities.streaming`、默认模型、Portal、Account、
+Workbench、Auth、路由或 `production_media=0`。当时下一项为
+`candidate-boundary-observation-contract-implementation / pending`；该门已由 RQ-197 推进。
+
+### 2026-09-01：RQ-197 候选边界观察合同本地实现
+
+RQ-197 将 RQ-196 冻结的边界落成隔离的 fake/local 实现：新增
+`app/evaluation/candidate_stream_contract.py`，提供精确 `CandidateRuntimeBinding`、body-free
+`BoundaryObservation`、不可变状态快照、字段 presence 聚合、候选 v2 注入式 transport port 和独立
+`CandidateStreamTrace`。`ProviderStreamEvent` 的显式 null/缺失标记与
+`validate_provider_stream_event()` 让完整 `ProviderStreamAssembler` 和候选观察器共享事件级 model、sequence、tool、Usage
+及大小限制；观察器只保留计数、状态、耗时和 SHA-256，不保存正文、reasoning、Prompt、工具参数、Key 或 SDK 对象。
+
+本地失败矩阵覆盖完整 `stop`/`tool_calls`、`length` reasoning-only、缺 EOF/terminal/Usage、身份/序号/工具/预算/时钟/关闭
+异常及状态伪造；不完整或异常流均 fail-closed，不构造 `ChatResponse`，unknown Usage 不当零。候选仍
+`activation_state=candidate`、`execution_allowed=false`，`capabilities.streaming=False`，严格 Flash v1 2048/零额外调用、默认
+模型、AgentLoop、Workbench、Portal、Account、Auth、路由和 `production_media=0` 均不变。聚焦与相邻回归为 `163 passed`；同一
+干净实现提交的 exact-SHA 公共 CI 尚待验证，因此本地实现不标记为生产能力、领域准入或 8-Core 必需项。
+
+当前唯一下一项是 `candidate-boundary-observation-contract-public-ci / pending`，先取得同 SHA 公共 CI，再另行裁决
+candidate harness、fresh-recovery、G53-7 和生产准入。

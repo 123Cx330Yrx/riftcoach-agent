@@ -3893,3 +3893,39 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 - `UNCHANGED`：候选仍 `activation_state=candidate`、`execution_allowed=false`，严格 Flash v1 仍 2048/零额外调用；
   Portal、Account、Workbench、Auth、路由、默认模型和 `production_media=0` 不变，8E 仍进行中，8F 未开始。
 - `BOUNDARY-NEXT`：下一精确项为 `candidate-runtime-wiring-design / pending`；不执行真实 API、recovery、G53-7 或黄金切片。
+
+## 2026-09-01：RQ-196 候选 runtime 接线设计
+
+- `AUTHORIZATION`：用户确认继续推进且基本决定采用 GLM-5.3-Flash；本条授权完成设计门，记录唯一主力候选目标，
+  不等于静默改成全产品唯一默认或立即发起真实 recovery。
+- `DESIGN`：冻结 `CandidateRuntimeBinding` 的 provider/model/runtime-profile/policy/attempt 四元身份，body-free
+  `BoundaryObservation` 的生命周期、终止码、字段状态、工具计数、有效 Usage 数字、单调耗时、model/request SHA-256
+  与安全错误码，并规定完整流/不完整流共享校验后分流。
+- `ISOLATION`：未来候选 v2 transport 与 `CandidateStreamEvaluationHarness` 只放在 `app/evaluation/`，不实现
+  `LLMProvider`，不进入 registry、composition、AgentLoop、Worker 或统一 Runtime Trace；v1 的 2048 cap 不得泄漏到 v2。
+- `BUDGET`：reserve→open→observe/assemble→settle 每槽位恰好一次，最多 2 attempts/1 次额外调用/32,000 input/
+  16,384 output/180,000ms；unknown Usage 不按零，第三次调用拒绝；当前 `execution_allowed=false`。
+- `UNCHANGED`：未改 `app/` 产品 Runtime、默认模型、`capabilities.streaming`、Portal、Account、Workbench、Auth、路由或
+  `production_media=0`，未执行真实 API、recovery、G53-7 或黄金切片。
+- `BOUNDARY-NEXT`：当时唯一下一精确项为
+  `candidate-boundary-observation-contract-implementation / pending`；该门已由 RQ-197 推进，后续状态以最新条目为准。
+
+## 2026-09-01：RQ-197 候选边界观察合同本地实现
+
+- `IMPLEMENTATION`：按 RQ-196 的隔离边界新增 `app/evaluation/candidate_stream_contract.py`，落地精确
+  candidate binding、body-free `BoundaryObservation`、不可变快照、字段 presence/状态聚合、候选 v2 注入式
+  transport port 与独立 `CandidateStreamTrace`。观察对象只保留生命周期、终止码、字段状态、工具计数、有效 Usage
+  数字、单调耗时、model/request SHA-256 和安全错误码。
+- `SHARED-VALIDATION`：`ProviderStreamEvent` 保留显式 null 与缺失的区别；完整 assembler、智谱翻译和候选观察器共享
+  `validate_provider_stream_event()` 的 model/sequence/tool/Usage/大小校验，避免两条路径漂移。
+- `FAILURE-MATRIX`：覆盖完整 `stop`/`tool_calls`、`length` reasoning-only、缺 EOF/terminal/Usage、身份/序号/工具/预算/
+  时钟/关闭异常、状态伪造和 body-free 序列化。不完整或异常流均 fail-closed，不构造 `ChatResponse`，unknown Usage 不当零；
+  用户中断类异常不会被清理路径吞掉。
+- `VERIFICATION-LOCAL`：候选、assembler、智谱 adapter、响应策略和恢复合同聚焦/相邻回归 `163 passed`，compileall、
+  diff check 和 governance 通过；全量本地首错是环境缺少 `RIFTCOACH_TEST_DATABASE_URL`，不归因于本批。
+- `UNCHANGED`：候选仍 `activation_state=candidate`、`execution_allowed=false`，严格 Flash v1 2048/零额外调用，
+  `capabilities.streaming=False`、默认模型、AgentLoop、Workbench、Portal、Account、Auth、路由、统一 Trace/预算和
+  `production_media=0` 均不变；没有真实 API/Key、recovery、G53-7 或黄金切片。
+- `BOUNDARY-NEXT`：当前唯一下一精确项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`；
+  先在同一干净实现提交上取得 exact-SHA 公共 CI，再另行裁决 candidate harness、fresh-recovery、G53-7、黄金切片和生产准入。

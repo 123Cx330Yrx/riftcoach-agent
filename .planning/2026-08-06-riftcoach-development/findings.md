@@ -5189,3 +5189,33 @@
 - 当前候选 `execution_allowed=false`，即使未来观察到白名单形状也只能记录 `awaiting_recovery`，不能发第二次请求；严格
   Flash v1 2048/零额外调用、默认模型和全部产品模块保持不变。下一精确 checkpoint 为
   `candidate-runtime-wiring-design / pending`，本轮不新增代码、不做真实 I/O。
+
+## 2026-09-01：RQ-196 候选 runtime 接线设计发现（历史状态）
+
+- 用户已基本决定采用 GLM-5.3-Flash；本轮授权的是候选接线设计门，不是把它静默提升为全产品默认或立即执行真实 recovery。
+- 候选必须由不可变 `CandidateRuntimeBinding` 精确绑定 `zhipu`、`glm-5.3-flash`、candidate v2 profile/policy 及
+  `primary`/`fresh_recovery` 尝试序号；调用方不能通过 metadata 或资格布尔值伪造身份。
+- `BoundaryObservation` 只能保存 body-free 的生命周期、终止码、字段状态、工具计数、有效 Usage 数字、单调耗时、
+  model/request SHA-256 和安全错误码。部分正文、reasoning、工具参数、Prompt、Key、SDK 对象和异常原文不进入观察、Trace 或 repr。
+- 完整流仍由 `ProviderStreamAssembler` 交付；不完整流只能进入观察/fail-closed。事件的 model、sequence、tool 和 Usage 校验
+  必须共享同一核心或通过逐字段 conformance 证明一致，不能捕获异常后直接推导候选资格。
+- 候选 v2 transport 必须在 `app/evaluation/` 隔离，承载 8192 单次 cap、90/120 秒窗口、`temperature=1`、`top_p=0.95`、
+  SDK retries=0；预算最多 2 attempts/1 次额外调用/32,000 input/16,384 output/180,000ms，unknown Usage 不可当零。
+- 当时唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-implementation / pending`；
+  先做 fake/local 合同实现与测试，再取得同 SHA 公共 CI，之后才另行裁决 harness、fresh-recovery、G53-7 或生产准入；该实现门已由 RQ-197 推进。
+
+## 2026-09-01：RQ-197 候选边界观察合同实现发现
+
+- `BoundaryObservation` 必须是不可变、body-free 的值对象：只允许生命周期、终止码、字段状态、工具计数、有效 Usage
+  数字、单调耗时、model/request SHA-256 和安全错误码；直接构造时也要验证状态与生命周期的一致性，不能让调用方伪造
+  `candidate_shape` 或 `complete_text`。
+- 完整 assembler 与候选观察器共享事件级验证核心，并保留供应商字段“缺失”和“显式 null”的 presence 区别；这样
+  `length + reasoning-only` 可以被准确识别，而不会因 `None` 语义合并而误判。观察路径仍不保存正文、reasoning 或工具参数。
+- 观察器采用 fail-closed 与 sticky poison：缺 EOF/terminal/Usage、model/sequence/request identity 冲突、工具元数据不全、
+  输出或耗时越界、迭代/关闭异常和状态伪造均不能构造 `ChatResponse`；unknown Usage 不得按零，用户中断类异常必须继续传播。
+- 候选 v2 transport 只接受注入 opener，强制 `glm-5.3-flash` candidate profile/policy、8192 cap、90/120 秒窗口和 retries=0，
+  不注册 `LLMProvider`、不打开 `capabilities.streaming`，也不触发 recovery 或真实 API。
+- 本地候选及相邻回归为 `163 passed`，compileall、diff check、governance 已通过；全量本地首错来自缺少
+  `RIFTCOACH_TEST_DATABASE_URL` 的既有 PostgreSQL fixture。当前仍需同一干净提交的 exact-SHA 公共 CI，不能把本地证据写成
+  生产准入。

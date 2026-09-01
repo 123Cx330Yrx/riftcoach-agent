@@ -45,8 +45,9 @@ provider-neutral 流式装配合同，RQ-193 又在测试内完成智谱分块�
 提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的同 SHA 公共 CI run `33489903978` 已三 job 全绿且
 head_sha 精确匹配；RQ-193 的测试内 Trace 脱敏断言也已纳入该提交。RQ-194 聚焦测试为 `20 passed`，实现提交
 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 也已三 job 全绿且 head_sha 精确匹配。
-RQ-195 已完成独立的候选 runtime 接线架构评审，确认不完整流必须先有 BoundaryObservation，不能直接包装成产品 Runtime；
-下一精确项为 `candidate-runtime-wiring-design / pending`，不自动注册或改变默认。
+RQ-195 已完成独立的候选 runtime 接线架构评审，RQ-196 已完成候选 runtime wiring design，确认不完整流必须先有
+BoundaryObservation，不能直接包装成产品 Runtime；RQ-197 已完成 fake/local 边界观察合同本地实现与 `163 passed`
+聚焦/相邻回归。下一精确项为 `candidate-boundary-observation-contract-public-ci / pending`，不自动注册或改变默认。
 
 ## Current Phase
 
@@ -91,11 +92,12 @@ RQ-163 的 Agent 主线交接与 README 事实版已完成；
   但 `production_admitted=false`、`public_ci_confirmed=false`。RQ-176 Flash-only 产品运行时接线已完成本地实现，
   要求精确 Flash Provider 先绑定注册 profile；组合根可从该 concrete profile 自动推断，显式 profile 仍须一致；
   完整产品化仍为 `in_progress`。
- Full productization and coverage remain
+Full productization and coverage remain
 `in_progress/planned`; RQ-192 的候选装配合同与 RQ-193 的本地 provider conformance 已完成，RQ-194 已完成候选适配器本地实现与公共 CI，未接入产品 streaming；
 提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的同 SHA 公共 CI run `33489903978` 与 RQ-194 提交
 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 均三 job 全绿且 head_sha 精确匹配。
-下一项为独立的候选 runtime 接线裁决，仍不注册候选或改变默认。
+RQ-197 已完成候选边界观察合同的 fake/local 实现，聚焦与相邻回归 `163 passed`，但同一干净提交的公共 CI 尚待验证；
+下一项为 `candidate-boundary-observation-contract-public-ci / pending`，仍不注册候选或改变默认。
 
 ## Phases
 
@@ -376,11 +378,13 @@ handoff、双语文案和响应式 hygiene 已完成本地实现与回归；RQ-1
    实现 A/B 的 exact-SHA 公共 CI 与同一 SHA G53-3（A=`e25c3579…`、B=`eca01ce…`）。RQ-185–RQ-187 记录候选诊断的
    无响应边界，RQ-188 又以三路固定探针确认合法 Flash endpoint/model 路径可达、同步小额度先耗尽 reasoning，并
    观察到流式首个 reasoning chunk。严格 Flash v1 为 2048/零额外调用，8192/一次 fresh-recovery 仍是未注册候选；
-  RQ-192 已完成离线 provider-neutral 流式装配合同（29 项聚焦测试），RQ-193 已完成测试内智谱 provider conformance；
-  RQ-194 已完成 `ZhipuStreamAdapter` 本地实现与 `20 passed` fake 测试。提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的同 SHA
-   公共 CI run `33496237588` 已通过，三 job 全绿且 head_sha 精确匹配；RQ-195 已完成候选 runtime 接线架构评审，
-  下一项为 `candidate-runtime-wiring-design / pending`，不注册候选、不接入产品 streaming、不进入 G53-7、不进入 Workbench、
-  不新增媒体采用、不改变 8E checkpoint；不注册候选、不打开 `capabilities.streaming`，不把本地实现写成公共准入。
+RQ-192 已完成离线 provider-neutral 流式装配合同（29 项聚焦测试），RQ-193 已完成测试内智谱 provider conformance；
+RQ-194 已完成 `ZhipuStreamAdapter` 本地实现与 `20 passed` fake 测试。提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的同 SHA
+公共 CI run `33496237588` 已通过，三 job 全绿且 head_sha 精确匹配；RQ-195 已完成候选 runtime 接线架构评审，RQ-196
+又完成候选 runtime wiring design，冻结四元身份、BoundaryObservation、共享校验、v2 transport 和独立 Trace 投影；
+RQ-197 又完成候选边界观察合同的 fake/local 实现与 `163 passed` 聚焦/相邻回归。当前下一项为
+`candidate-boundary-observation-contract-public-ci / pending`，不注册候选、不接入产品 streaming、不进入 G53-7、
+不进入 Workbench、不新增媒体采用、不改变 8E checkpoint；不打开 `capabilities.streaming`，不把本地实现写成公共准入。
 
 ## RQ-195 / 候选 runtime 接线架构评审（2026-09-01）
 
@@ -392,6 +396,45 @@ handoff、双语文案和响应式 hygiene 已完成本地实现与回归；RQ-1
   ledger/Trace allow-list 投影和回退矩阵；完整流继续走 `assemble()`，不完整流不得伪装成 `ChatResponse`。
 - [boundary] 候选保持 `activation_state=candidate`、`execution_allowed=false`，最多 2 attempts/1 次额外调用；严格 Flash v1、
   默认模型、产品 Runtime、Workbench、Portal、Account、Auth、路由和 `production_media=0` 均不变。
+
+## RQ-196 / 候选 runtime 接线设计（2026-09-01，历史状态）
+
+- [completed-design] 用户确认继续推进且基本决定采用 GLM-5.3-Flash；本轮完成设计门，不把该确认解释成静默的全产品唯一默认切换。
+- [completed-design] 冻结 `CandidateRuntimeBinding` 的 provider/model/runtime-profile/policy/attempt 四元身份，以及不可变、
+  body-free 的 `BoundaryObservation`：仅保留生命周期、终止码、字段状态、工具计数、有效 Usage 数字、单调耗时、
+  model/request SHA-256 和安全错误码；正文、reasoning、工具参数、Prompt、Key、SDK 对象和异常原文永不进入观察或 Trace。
+- [completed-design] 完整流继续由 `ProviderStreamAssembler` 收口；不完整流只进入观察状态，事件的 model/sequence/tool/Usage
+  校验必须共享或逐字段证明一致。候选资格由既有 policy 重新计算，不能由调用方填写 `candidate_eligible`。
+- [completed-design] 未来候选调用方隔离在 `app/evaluation/`，使用 v2 transport/profile（8192 单次 cap、90/120 秒窗口、
+  `temperature=1`、`top_p=0.95`、SDK retries=0）；reserve→open→observe/assemble→settle 每槽位恰好一次，
+  最多 2 attempts/1 次额外调用/32,000 input/16,384 output/180,000ms，未知 Usage 不当零，第三次调用拒绝。
+- [unchanged] 候选仍 `activation_state=candidate`、`execution_allowed=false`；严格 Flash v1 2048/零额外调用、默认模型、
+  `capabilities.streaming=False`、AgentLoop、Worker、统一 Trace/预算、Portal、Account、Workbench、Auth、路由和
+  `production_media=0` 均不变，未执行真实 API、recovery、G53-7 或黄金切片。
+- [boundary-next] 当时唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-implementation / pending`；
+  该历史实现门已由 RQ-197 推进，当前状态见下方 RQ-197 条目。
+
+## RQ-197 / 候选边界观察合同本地实现（2026-09-01）
+
+- [completed-local] 按当前精确门新增 `app/evaluation/candidate_stream_contract.py`，落地精确 candidate binding、
+  body-free `BoundaryObservation`、不可变快照、字段 presence/状态聚合、候选 v2 注入式 transport port 和独立
+  `CandidateStreamTrace`；不实现 harness，不注册候选，不进入产品 Runtime。
+- [shared-core] `ProviderStreamEvent` 新增显式 null presence 标记；智谱 delta 翻译、完整
+  `ProviderStreamAssembler` 与候选观察器共用 `validate_provider_stream_event` 的事件级校验，避免 model/sequence/tool/
+  Usage/字符上限漂移。
+- [failure-matrix] 覆盖完整 stop/tool-call、`length` reasoning-only、缺 EOF/terminal/Usage、model/序号/request identity
+  冲突、工具元数据/参数与输出预算、时钟、迭代器/外层关闭失败、状态伪造和 body-free JSON/repr；任何不完整或异常流均
+  fail-closed，不构造 `ChatResponse`，unknown Usage 不写成零。
+- [verification-local] 候选、assembler、智谱 adapter、响应策略和恢复合同聚焦/相邻回归 `163 passed`；compileall、
+  `git diff --check`、governance 通过。全量本地 pytest 首个错误是未配置 `RIFTCOACH_TEST_DATABASE_URL` 的 PostgreSQL
+  fixture，未归因于本批实现。
+- [unchanged] 严格 Flash v1 仍 2048/零额外调用；候选 `activation_state=candidate`、`execution_allowed=false`，
+  `capabilities.streaming=False`、默认模型、AgentLoop、Worker、统一 Trace/预算、Portal、Account、Workbench、Auth、
+  路由和 `production_media=0` 均不变；没有真实 API/Key、recovery、G53-7 或黄金切片。
+- [boundary-next] 当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`；
+  先在同一干净实现提交上取得 exact-SHA 公共 CI，再另行裁决候选 harness、fresh-recovery、G53-7 和生产准入。
 
 ## 6A-1 Checklist
 
@@ -833,9 +876,11 @@ handoff、双语文案和响应式 hygiene 已完成本地实现与回归；RQ-1
 ### Phase 37 - 8e-productization
 
 - Status: in_progress
-- Canonical current override (RQ-195): the previous `candidate-wiring-review / pending` wording below is historical; the active next
-  checkpoint is `candidate-runtime-wiring-design / pending`. RQ-195 review is complete, with no product Runtime or real API change.
-- State: RQ-096 live integration、Batch E E1–E5、production shell/Auth gate、Timeline 与 bilingual/product-journey foundation 均已公共闭环；RQ-108 Portal 视觉历史批次与 RQ-161/162 presentation hygiene 已保留其证据。RQ-163 Agent 主线交接与 README 事实版已完成；RQ-164 G53-0 已完成本地静态审计并保持 `blocked/deferred`；RQ-165 G53-1 离线适配档案 TDD 与 RQ-166 G53-2 exact-SHA 公共 CI 已完成；RQ-167 首次旧 Key 尝试因 `authentication_failed` 阻塞，RQ-168 重开仍失败，RQ-169 更换普通 API Key 后 G53-3 已通过；RQ-182 响应完成策略、RQ-183 候选 runtime/attempt/预算/Trace 合同、RQ-184 A/B 公共证据链、RQ-185–RQ-187 诊断、RQ-188 传输/生成拆分、RQ-189 预算校准、RQ-190 首正文探针与 RQ-191 完整流终态均已记录；RQ-192 离线 provider-neutral 流式装配合同与 RQ-193 测试内智谱 conformance 均已完成本地（分别 29 与 13 项聚焦测试），RQ-194 已完成候选级显式 `ZhipuStreamAdapter` 本地实现（`stream_events()`/`assemble()` 与 `ZhipuProvider.stream_adapter()` 显式工厂），聚焦 `20 passed` 且已取得同 SHA 公共 CI（`a7580e861cd986c026040c7fcfcc3fa577737961` / Actions `33496237588` 三 job 全绿且 head_sha 精确匹配）。提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的同 SHA 公共 CI run `33489903978` 已三 job 全绿且 head_sha 精确匹配，Trace 脱敏断言已包含；production media、完整 8E、Auth/HTTPS/部署仍未完成，下一项为 `candidate-runtime-wiring-design / pending`，先裁决 runtime 接线范围再决定是否实现；不注册候选、不改产品默认。
+- Canonical current override (RQ-197): the previous `candidate-wiring-review / pending`,
+  `candidate-runtime-wiring-design / pending` and `candidate-boundary-observation-contract-implementation / pending` wording
+  below is historical; RQ-197 local implementation is complete and the active next checkpoint is
+  `candidate-boundary-observation-contract-public-ci / pending`. No product Runtime or real API change occurred.
+- State: RQ-096 live integration、Batch E E1–E5、production shell/Auth gate、Timeline 与 bilingual/product-journey foundation 均已公共闭环；RQ-108 Portal 视觉历史批次与 RQ-161/162 presentation hygiene 已保留其证据。RQ-163 Agent 主线交接与 README 事实版已完成；RQ-164 G53-0 已完成本地静态审计并保持 `blocked/deferred`；RQ-165 G53-1 离线适配档案 TDD 与 RQ-166 G53-2 exact-SHA 公共 CI 已完成；RQ-167 首次旧 Key 尝试因 `authentication_failed` 阻塞，RQ-168 重开仍失败，RQ-169 更换普通 API Key 后 G53-3 已通过；RQ-182 响应完成策略、RQ-183 候选 runtime/attempt/预算/Trace 合同、RQ-184 A/B 公共证据链、RQ-185–RQ-187 诊断、RQ-188 传输/生成拆分、RQ-189 预算校准、RQ-190 首正文探针与 RQ-191 完整流终态均已记录；RQ-192 离线 provider-neutral 流式装配合同与 RQ-193 测试内智谱 conformance 均已完成本地（分别 29 与 13 项聚焦测试），RQ-194 已完成候选级显式 `ZhipuStreamAdapter` 本地实现（`stream_events()`/`assemble()` 与 `ZhipuProvider.stream_adapter()` 显式工厂），聚焦 `20 passed` 且已取得同 SHA 公共 CI（`a7580e861cd986c026040c7fcfcc3fa577737961` / Actions `33496237588` 三 job 全绿且 head_sha 精确匹配）。提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的同 SHA 公共 CI run `33489903978` 已三 job 全绿且 head_sha 精确匹配，Trace 脱敏断言已包含；RQ-195 评审、RQ-196 设计与 RQ-197 fake/local 边界观察合同实现已完成，production media、完整 8E、Auth/HTTPS/部署仍未完成，下一项为 `candidate-boundary-observation-contract-public-ci / pending`，先做同 SHA 公共 CI；不注册候选、不改产品默认。
 - [completed-local-diagnosis] v6.1 source GET 成功后 POST 400、task id 空、无隐藏 task；strict sanitizer 三项 red→green、revised runner no-I/O self-test 完成；精确 error field 仍 unknown，不重试 relay；
 - [completed-live-rejected] 豆包标准套餐 only one Seedance comparator：首尾帧+母图 image-to-video；输出
   `e4b2f91...352cf` 因 source 0.407604/seam 0.144582/AAC/移动水印/暖金主导与 motion stack 不完整 rejected；

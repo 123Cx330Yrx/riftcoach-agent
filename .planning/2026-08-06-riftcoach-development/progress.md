@@ -5456,3 +5456,34 @@
   用独立 ledger 和 allow-list Trace 投影管理候选预算与撤出；拒绝包装成 `LLMProvider` 或改 `AgentLoop`。
 - [boundary] 候选未注册且 `execution_allowed=false`；严格 Flash v1、`capabilities.streaming=False`、Workbench、Portal、
   Account、Auth、路由和 `production_media=0` 不变。下一精确项为 `candidate-runtime-wiring-design / pending`。
+
+## 2026-09-01：RQ-196 候选 runtime 接线设计（历史状态）
+
+- [completed-design] 已按用户继续授权完成设计门：冻结 `CandidateRuntimeBinding` 四元身份与尝试序号，定义 body-free
+  `BoundaryObservation`、生命周期/字段状态/Usage 聚合、共享事件校验、候选 v2 transport 接缝和独立 Trace 投影。
+- [completed-design] 明确完整流与不完整流分流：真实 EOF、terminal、close 和有效 Usage 才能交给完整 assembler；
+  `length`、缺终态、缺 Usage、读取/翻译/身份/关闭错误只产生脱敏观察并 fail-closed，不能构造 `ChatResponse` 或自行填写资格。
+- [completed-design] 冻结 reserve→open→observe/assemble→settle 的未来调用顺序和硬账本；最多 2 attempts、1 次额外调用、
+  32,000 input、16,384 output、180,000ms，unknown Usage 保持未知，第三次调用拒绝；当前 `execution_allowed=false`。
+- [verification] 新增 ADR-0076、设计计划、学习 walkthrough，更新状态/需求账本；本批未改 `app/`、Provider、AgentLoop、
+  默认模型、产品模块或主工作树，治理与差异检查已通过。
+- [boundary-next] 当时下一唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-implementation / pending`；
+  只做 fake/local 合同实现、聚焦测试和同 SHA 公共 CI，不自动发真实 API、recovery、G53-7 或黄金切片；该门已由 RQ-197 推进。
+
+## 2026-09-01：RQ-197 候选边界观察合同本地实现
+
+- [implementation-local] 在隔离分支新增 `app/evaluation/candidate_stream_contract.py`，实现精确 candidate binding、
+  body-free `BoundaryObservation`、不可变终态快照、字段 presence/状态聚合、候选 v2 注入式 transport port 和独立
+  `CandidateStreamTrace`；没有注册候选或接入产品 Runtime。
+- [shared-core] `ProviderStreamEvent` 保留显式 null 与缺失的区别；完整 assembler、智谱翻译和候选观察器共享
+  `validate_provider_stream_event()` 的 model/sequence/tool/Usage/大小校验，避免事件规则漂移。
+- [verification-local] 完整 stop/tool-call、length reasoning-only、缺 EOF/terminal/Usage、身份/序号/工具/预算/时钟/
+  关闭异常、状态伪造和 body-free 序列化矩阵均通过；候选及相邻回归 `163 passed`，compileall、diff check、governance 通过。
+  全量本地首错是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_URL`，不归因于本批。
+- [boundary] 候选仍 `activation_state=candidate`、`execution_allowed=false`，严格 Flash v1 2048/零额外调用，
+  `capabilities.streaming=False`、默认模型、AgentLoop、Workbench、Portal、Account、Auth、路由、统一 Trace/预算和
+  `production_media=0` 均不变；未执行真实 API、recovery、G53-7 或黄金切片。
+- [next] 当前唯一精确项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`；
+  先取得同一干净实现提交的 exact-SHA 公共 CI，再另行裁决 candidate harness、fresh-recovery、G53-7 与生产准入。

@@ -3013,3 +3013,42 @@ allow-list Trace 投影结算。观察接缝不得返回或持久化部分正文
 严格 Flash v1 的 2048/零额外调用、默认模型、`capabilities.streaming=False`、AgentLoop、Workbench、Portal、Account、
 Auth、路由、预算/Trace 和 `production_media=0` 均不变。RQ-195 只完成架构评审；下一精确项是
 `candidate-runtime-wiring-design / pending`，不宣称产品 streaming、领域准入或生产成熟度。
+
+### RQ-196：候选 runtime 接线设计冻结（2026-09-01）
+
+用户确认继续推进且基本决定采用 GLM-5.3-Flash。本轮将其记录为唯一主力候选目标，但只完成设计闸门，
+不把候选静默提升为全产品唯一默认。冻结的 `CandidateRuntimeBinding` 必须精确绑定 provider/model、candidate
+v2 runtime profile/policy 及 `primary`/`fresh_recovery` 尝试身份；错配、伪造和不连续 ordinal 在任何 Provider I/O 前拒绝。
+
+候选流先经过共享事件校验，再分成完整 assembler 或 body-free `BoundaryObservation`。观察只允许生命周期、终止码、
+字段状态、工具计数、有效 Usage 数字、单调耗时、model/request SHA-256 和安全错误码；正文、reasoning、工具参数、
+Prompt、Key、SDK 对象和异常原文永不进入观察、Trace 或 repr。未来调用方隔离在 `app/evaluation/`，承载 v2 的 8192
+单次 cap、90/120 秒窗口、`temperature=1`、`top_p=0.95`、SDK retries=0，并以 reserve→open→settle 严格结算最多
+2 attempts、1 次额外调用、32,000 input、16,384 output、180,000ms；unknown Usage 不得当零，当前仍 `execution_allowed=false`。
+
+本轮新增 ADR-0076、设计计划和学习 walkthrough，未改产品 Runtime、默认模型、`capabilities.streaming`、Portal、
+Account、Workbench、Auth、路由或 `production_media=0`；当时下一精确项为
+`candidate-boundary-observation-contract-implementation / pending`，该门已由 RQ-197 推进。
+
+### RQ-197：候选边界观察合同本地实现（2026-09-01）
+
+本轮将 RQ-196 的设计落成隔离 fake/local 合同。新增 `app/evaluation/candidate_stream_contract.py`，包含精确
+`CandidateRuntimeBinding`、body-free `BoundaryObservation`、不可变终态快照、字段 presence/状态聚合、候选 v2
+注入式 transport port 和独立 `CandidateStreamTrace`。`ProviderStreamEvent` 增加显式 null/缺失标记，并由完整
+`ProviderStreamAssembler`、智谱翻译和候选观察器共同调用 `validate_provider_stream_event()`，统一 model、sequence、
+tool、Usage 与大小限制。
+
+观察器只保留生命周期、终止码、字段状态、工具计数、有效 Usage 数字、单调耗时、model/request SHA-256 和安全错误码；
+正文、reasoning、Prompt、工具参数、Key、SDK 对象及异常原文不进入观察、Trace 或 repr。完整 `stop`/`tool_calls`、
+`length` reasoning-only、缺 EOF/terminal/Usage、身份/序号/工具/预算/时钟/关闭异常及状态伪造均有矩阵断言；不完整
+或异常流 fail-closed，不构造 `ChatResponse`，unknown Usage 不当零。
+
+候选继续 `activation_state=candidate`、`execution_allowed=false`，严格 Flash v1 2048/零额外调用，
+`capabilities.streaming=False`，默认模型、AgentLoop、Worker、统一 Trace/预算、Portal、Account、Workbench、Auth、
+路由和 `production_media=0` 不变；本批已改 evaluation/共享事件合同与相邻测试，但未改产品 Runtime，也未执行真实 API、
+recovery、G53-7 或黄金切片。聚焦与相邻回归 `163 passed`，compileall、diff check、governance 已通过；全量本地首错
+是未配置 `RIFTCOACH_TEST_DATABASE_URL` 的 PostgreSQL fixture。
+
+当前唯一下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`；
+先取得同 SHA 公共 CI，再另行裁决 candidate harness、fresh-recovery、G53-7、黄金切片和生产准入。

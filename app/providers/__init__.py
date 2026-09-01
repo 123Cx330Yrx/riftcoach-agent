@@ -79,6 +79,7 @@ from .stream_adapter_contract import (
     StreamAssemblyResult,
     StreamAssemblyTrace,
     StreamToolCallDelta,
+    validate_provider_stream_event,
 )
 from .zhipu_stream_adapter import ZhipuStreamAdapter
 from .registry import (
@@ -211,4 +212,5 @@ __all__ = [
     "StreamAssemblyResult",
     "StreamAssemblyTrace",
     "StreamToolCallDelta",
+    "validate_provider_stream_event",
 ]
