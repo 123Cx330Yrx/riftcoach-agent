@@ -1,7 +1,7 @@
 # 8E 学习记录：候选级显式智谱→中立流适配接缝（RQ-194）
 
-状态：`completed-local / public-ci-pending`。本 walkthrough 记录当前本地实现；
-它不是公共 CI 或生产准入证明。
+状态：`implemented-public / candidate-only`。本 walkthrough 记录当前本地实现及其
+exact-SHA 公共 CI；它仍不是产品 runtime 或生产准入证明。
 
 ## 1. 问题与原则
 
@@ -64,8 +64,9 @@ provider adapter 只负责形状与字段，中立 assembler 负责终态、Usag
 typed iterator error、消费者提前关闭、close failure、thinking profile、tool_stream
 约束和 capability 不变。聚焦命令结果为 `20 passed`。
 
-这只是当前工作树的本地证据；实现尚未取得同 SHA 公共 CI，因此不能写成公共可复现、
-生产 streaming 或领域准入。
+提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588`
+已将 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 固定为 exact-SHA 全绿。
+这只证明候选接缝公共可复现，不能写成产品 streaming 或领域准入。
 
 ## 6. 明确未接线边界
 
@@ -76,11 +77,10 @@ Portal、Account、Auth、路由和 `production_media=0` 均未接入。没有 r
 
 ## 7. 下一门与面试表述
 
-下一步是将实现与测试放入同一干净提交，运行 exact-SHA 公共 CI 并记录真实 run/job；
-通过后还要单独评审候选 runtime 接线范围、预算/Trace/回退和失败门。
+下一步是单独评审候选 runtime 接线范围、预算/Trace/回退和失败门。
 
 可以说：“我把智谱的 OpenAI-compatible 分块限制在显式 `ZhipuStreamAdapter`，
 先归一化为中立事件，再由装配器以 EOF、terminal、Usage 和 body-free Trace 收口，
-目前有 20 项 fake/local 测试，等待同 SHA 公共 CI。”
+目前有 20 项 fake/local 测试，并已取得同 SHA 公共 CI。”
 
 不能说：“我已经把智谱 streaming 接入生产 Agent 或打开了 streaming capability。”

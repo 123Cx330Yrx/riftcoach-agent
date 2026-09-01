@@ -666,8 +666,9 @@ RQ-194 已从设计占位落为候选级、调用方显式触发的本地接缝�
 可信 provider runtime profile 的 `max_output_tokens` 上限（1–8192）是硬边界，请求/显式 cap 只能收紧；默认要求
 request identity，Trace/错误只保存 SHA-256 摘要。只有真实 EOF、合法 terminal 和有效 Usage 同时成立才完成；取消、
 迭代器/翻译/关闭异常均 `abort()`/fail-closed，不 retry、recovery 或 ToolRuntime，不注册 recovery，只支持 fake/local evidence。
-本地 `tests/test_zhipu_stream_adapter.py` 为 `20 passed`，同 SHA 公共 CI 尚未取得，故仍不标记为公共或生产 capability。
+提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的同 SHA Actions run `33496237588` 已三 job 全绿且 head_sha 精确匹配；
+`tests/test_zhipu_stream_adapter.py` 为 `20 passed`。这只证明候选接缝公共可复现，仍不标记为产品或生产 capability。
 
 `capabilities.streaming` 仍为 `False`；严格 Flash v1 2048/零额外调用、默认模型、同步/既有流接口、AgentLoop、ToolRuntime、
-Runtime Trace、预算、Workbench、Portal、Account、Auth、路由和 `production_media=0` 均不变，候选未注册。下一项是 review 后
-取得同一提交的 exact-SHA 公共 CI，再裁决候选 runtime 接线；矩阵不将其标为生产能力、领域准入或 8-Core 必需项。
+Runtime Trace、预算、Workbench、Portal、Account、Auth、路由和 `production_media=0` 均不变，候选未注册。下一项是独立的
+候选 runtime 接线裁决；矩阵不将其标为生产能力、领域准入或 8-Core 必需项。

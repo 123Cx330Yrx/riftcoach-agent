@@ -2,9 +2,10 @@
 
 ## 状态与目标
 
-状态：`completed-local / public-ci-pending`。RQ-194 已把最初的设计草案落成
-候选级、仅显式调用的本地 adapter；当前等待包含实现与测试的同一干净提交取得
-exact-SHA 公共 CI。尚未注册候选或接入产品 runtime。
+状态：`implemented-public / candidate-only`。RQ-194 已把最初的设计草案落成
+候选级、仅显式调用的本地 adapter；包含实现与测试的同一干净提交已取得
+exact-SHA 公共 CI（提交 `a7580e861cd986c026040c7fcfcc3fa577737961` / Actions
+`33496237588` 三 job 全绿）。尚未注册候选或接入产品 runtime。
 
 目标是把智谱 OpenAI-compatible 原始分块隔离在 provider 层：翻译为 RQ-192 的
 中立事件，再由既有装配器负责完整终态、Usage、预算和隐私边界。
@@ -82,8 +83,9 @@ StreamAssemblyResult.response + body-free StreamAssemblyTrace
 `tests/test_zhipu_stream_adapter.py` 使用 fake SDK/client 覆盖文本/reasoning、工具别名
 与参数分片、runtime/request cap、model/identity、坏 chunk、typed iterator error、
 消费者提前关闭、close 失败、thinking profile 和 capability 不变；聚焦结果为
-`20 passed`。实现目前尚无同 SHA 公共 CI；下一门是把实现与测试放入干净提交并运行
-exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke`，随后记录真实 run/job。
+`20 passed`。提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的同 SHA Actions run
+`33496237588` 已完成 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job；
+下一门是独立评审候选 runtime 接线范围。
 
 ## 退出条件与未接线边界
 

@@ -20,10 +20,11 @@ pause_reason: ""
   RQ-193 实现提交为 `8bcbaa5ba467fcaad76193d3790d34a106a47d72`，conformance 聚焦回归为 `13 passed`，
   只使用测试内伪造 SDK 分块，未改生产 Provider、未发真实 API。该提交的同 SHA 公共 CI run `33489903978`
   已 `completed/success`（pytest、postgres-migrations、packaging-smoke 三 job，head_sha 精确匹配），且包含全部
-  Trace 脱敏断言。RQ-194 已在当前工作树完成候选级、仅显式调用的
-  `ZhipuStreamAdapter` 本地实现与 `20 passed` 聚焦测试；实现及测试尚未取得同 SHA 公共 CI，
-  也没有产品代码接线。候选未注册，严格 Flash v1 仍 2048/零额外调用，Stage 8/8E 继续 `in_progress`，
-  `production_media=0`。以下为此前连续诊断记录。）
+  Trace 脱敏断言。RQ-194 已在提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 完成候选级、仅显式调用的
+  `ZhipuStreamAdapter` 本地实现与 `20 passed` 聚焦测试；该提交的同 SHA 公共 CI Actions run `33496237588`
+  的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 `completed/success` 且 head_sha 精确匹配。
+  这只证明候选接缝的公共可复现性，不代表产品代码已接线。候选未注册，严格 Flash v1 仍 2048/零额外调用，
+  Stage 8/8E 继续 `in_progress`，`production_media=0`。以下为此前连续诊断记录。）
 - 历史诊断记录：2026-09-01（RQ-190 已完成两次单路、有界的流式首个可见正文探针：同一冻结上下文、
   `reasoning_effort=low`、`max_tokens=2048` 下，`clear_thinking=true` 在 2.547 秒出现首个可见正文，
   `clear_thinking=false` 在 3.875 秒出现首个可见正文；两路均先观察到 reasoning，随后在正文出现时主动关闭，
@@ -106,7 +107,7 @@ pause_reason: ""
   为显式兼容/应急回退。旧 Dataset 的 30 秒仍是质量资源阈值，不是新档案执行截止；真实 G53-7 会拒绝 dirty
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
-- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / same-SHA public CI / pending`。RQ-193 提交 `8bcbaa5` 的 Actions run `33489903978` 已三 job 全绿；RQ-194 已在本地工作树落地 `ZhipuStreamAdapter` 及 `ZhipuProvider.stream_adapter(*, tool_stream=False)` 显式工厂，聚焦测试 `20 passed`，但尚无 RQ-194 实现/测试的公共 CI SHA 或 run。下一步只提交/推送包含实现与测试的干净 SHA 并取得 exact-SHA 公共 CI；在该门完成前不注册候选、不打开 `capabilities.streaming`、不接入产品默认或执行 recovery/G53-7。
+- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-wiring-review / pending`。RQ-193 提交 `8bcbaa5` 的 Actions run `33489903978` 与 RQ-194 提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 均三 job 全绿且 head_sha 精确匹配；RQ-194 聚焦测试为 `20 passed`。公共证据已完成，但只证明候选接缝可复现；下一步需另行评审 runtime 接线范围、预算/Trace/回退/失败门，不注册候选、不打开 `capabilities.streaming`、不接入产品默认或执行 recovery/G53-7。
 - RQ-179–RQ-181 的 exact-SHA、G53-7 失败与一次性正文零留存诊断证据均保持不可变，旧证据不覆盖；RQ-182 聚焦离线测试为 `41 passed`，RQ-183 聚焦离线合同为 `30 passed`，均未改变 Provider-neutral 消息、AgentLoop、ToolRuntime、Trace、预算、默认模型、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
 - 2026-08-31 按用户确认新建普通 API Key 后重开 G53-3：进程预检确认 `zhipu`、普通 API 端点与
   `glm-5.3-flash` 均生效；未输出 Key 值，也未改除用户自行更新的 `.env` 之外的默认配置。A1 结构化合同
@@ -3745,25 +3746,28 @@ passed`；真实 PostgreSQL 17 job 执行 6 个数据库测试文件并得到 `4
   公共 CI 已通过，下一精确动作是候选接线裁决（是否接入、接入范围及保留的
   runtime/预算/Trace/回退门），而不是自动启用或直接执行 G53-7/黄金切片；Stage 8/8E 仍 `in_progress`，8F 尚未开始。
 
-### 2026-09-01：RQ-194 候选级显式智谱→中立适配接缝（本地实现完成）
+### 2026-09-01：RQ-194 候选级显式智谱→中立适配接缝（公共闭环完成）
 
 - [completed-local] 早期设计中的占位符已落为实际 `app/providers/zhipu_stream_adapter.py`、
   `ZhipuStreamAdapter` 与 `ZhipuProvider.stream_adapter(*, tool_stream=False)` 显式工厂；适配器实现独立
   `ProviderStreamAdapter` 协议，但不是 `LLMProvider`，调用方必须显式取得实例。
-- [completed-local] `stream_events(request)` 将一个 Zhipu OpenAI-compatible 原始流翻译为
+- [completed-public] 提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的同 SHA Actions run `33496237588`
+  中 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均 `completed/success`，head_sha 精确匹配；在此提交上
+  `tests/test_zhipu_stream_adapter.py` 聚焦 `20 passed`。该公共证据只确认候选接缝可复现，不等于产品 runtime 接线。
+- [completed-public] `stream_events(request)` 将一个 Zhipu OpenAI-compatible 原始流翻译为
   `ProviderStreamEvent`；`assemble(request, *, max_output_tokens=None, require_request_identity=True)`
   只打开一次流并交给 `ProviderStreamAssembler`。`_open_stream_for_adapter(...)` 集中请求校验、thinking/runtime
   profile 绑定、工具 alias 编码和 SDK open；工具流形状由实例创建时固定。
-- [completed-local] 输出 cap 只接受 `1..8192`；runtime profile cap、显式 cap 与 `ChatRequest.max_tokens` 取最小值，
+- [completed-public] 输出 cap 只接受 `1..8192`；runtime profile cap、显式 cap 与 `ChatRequest.max_tokens` 取最小值，
   同时传给供应商 payload 和 assembler，不能越过 trusted cap。provider 必须为 `zhipu`，event model 必须与绑定 model
   一致；默认要求 request identity，Trace 仅保存 request ID SHA-256，不保存原始 ID。
-- [completed-local] 正常 EOF 后才 `mark_exhausted()`/`finalize()`；SDK/迭代器异常、取消、翻译错误或 close 失败会
+- [completed-public] 正常 EOF 后才 `mark_exhausted()`/`finalize()`；SDK/迭代器异常、取消、翻译错误或 close 失败会
   `abort("stream_aborted")`、保留 typed provider error 或返回安全 `zhipu_stream_close`，不能误当 EOF、retry 或 recovery。
   iterator/raw stream 均在 `finally` 关闭，Trace/错误/repr 保持 body-free。`tests/test_zhipu_stream_adapter.py`
   fake/local 聚焦 `20 passed`。
-- [unchanged] 本地实现仍未接入默认模型、`capabilities.streaming`（继续 `False`）、严格 Flash v1 2048/零额外调用、
+- [unchanged] 实现仍未接入默认模型、`capabilities.streaming`（继续 `False`）、严格 Flash v1 2048/零额外调用、
   AgentLoop、ToolRuntime、统一 Runtime Trace、产品预算、Portal、Account、Workbench、Auth、路由或
   `production_media=0`；不注册 recovery，不调用真实 API 或读取 Key，候选未注册。
-- [boundary-next] 当前唯一下一门改为 RQ-194 实现/测试同一干净 SHA 的 exact-SHA 公共 CI；尚无该 SHA/run，不能宣称
-  公共可复现或生产成熟度。CI 后仍需单独裁决候选 runtime 接线，不自动执行 G53-7/黄金切片，Stage 8/8E 继续
+- [boundary-next] exact-SHA 公共 CI 已完成；当前唯一下一门改为候选 runtime 接线裁决（范围、预算/Trace/回退/失败门）。
+  不自动打开 `capabilities.streaming`、注册候选、执行 G53-7/黄金切片或进入生产准入，Stage 8/8E 继续
   `in_progress`，8F 尚未开始。

@@ -1,9 +1,10 @@
 # ADR-0074：候选级显式智谱→中立流适配接缝（本地实现记录）
 
 - 日期：2026-09-01
-- 状态：`implemented-local / public-ci-pending`
+- 状态：`implemented-public / candidate-only`
 - 范围：Stage 8 / 8E；GLM-5.3-Flash 候选 streaming 接缝
-- 当前证据：工作树本地实现与聚焦测试 `20 passed`；尚无同 SHA 公共 CI 证据
+- 当前证据：提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的同 SHA Actions run
+  `33496237588` 三 job 全绿；聚焦测试 `20 passed`
 
 ## 背景与历史设计
 
@@ -51,9 +52,10 @@ RQ-192 冻结了不依赖 SDK 的 `ProviderStreamEvent` 与
 
 `tests/test_zhipu_stream_adapter.py` 以 fake SDK/client 覆盖文本与 reasoning、工具
 别名与分片、runtime cap、请求 cap、model/identity、坏 chunk、typed iterator error、
-关闭失败、消费者提前关闭和 capability 不变，聚焦结果为 `20 passed`。这些是本地
-证据，不等于公共 CI 或生产准入。下一门是把包含实现与测试的同一干净提交送入
-exact-SHA 公共 CI；记录真实 run/job 后，才另行评审是否允许候选 runtime 接线。
+关闭失败、消费者提前关闭和 capability 不变，聚焦结果为 `20 passed`。提交
+`a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 已将
+pytest、postgres-migrations、packaging-smoke 三 job 固定为 exact-SHA 全绿。这只证明
+候选接缝可公共复现，不等于生产准入；下一门是另行评审是否允许候选 runtime 接线。
 
 ## 明确不做的事
 

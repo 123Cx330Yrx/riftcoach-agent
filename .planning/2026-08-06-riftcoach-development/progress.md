@@ -5439,9 +5439,9 @@
 - [close-failure] 正常 EOF 才 `mark_exhausted()`；异常/取消/翻译错误调用 `abort("stream_aborted")` 或保留 typed
   provider error，close 失败映射安全码；iterator/raw stream 在 finally 关闭，无 retry/recovery/ToolRuntime，输出和
   诊断保持 body-free。
-- [verification] `tests/test_zhipu_stream_adapter.py` fake/local 聚焦 `20 passed`；当前没有同 SHA 公共 CI run，不能
-  把本地结果写成公共可复现或生产能力。
+- [verification] `tests/test_zhipu_stream_adapter.py` fake/local 聚焦 `20 passed`；提交
+  `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 三 job exact-SHA 全绿，证明候选
+  接缝可公共复现但不等于产品或生产能力。
 - [boundary] `capabilities.streaming=False`、严格 Flash v1 2048/零额外调用、默认模型、AgentLoop、Workbench、Portal、
   Account、Auth、路由、统一 Trace/预算、`production_media=0` 均不变；候选/recovery 未注册，不调用真实 API。
-- [next] 等待包含实现与测试的同一干净 SHA exact-SHA 公共 CI，随后才另行裁决候选 runtime 接线；8E 仍 `in_progress`，
-  8F 尚未开始。
+- [next] exact-SHA 公共 CI 已完成；下一项是独立裁决候选 runtime 接线；8E 仍 `in_progress`，8F 尚未开始。

@@ -5169,8 +5169,9 @@
 - 只有正常 EOF 才 `mark_exhausted()`/`finalize()`；异常、取消、翻译错误或 close 失败会 `abort("stream_aborted")`、
   保留 typed `ProviderError` 或安全 `zhipu_stream_close`。iterator/raw stream 在 `finally` 关闭，错误/repr/Trace
   均不含正文、reasoning、工具参数、Key 或原始 request ID；适配器无 retry/recovery/ToolRuntime。
-- `tests/test_zhipu_stream_adapter.py` 仅用 fake SDK/client，聚焦 `20 passed`（含参数化坏 chunk）；这是本地证据，
-  尚未形成 RQ-194 实现/测试的同 SHA 公共 CI。默认模型、`capabilities.streaming=False`、严格 Flash v1 2048/零额外
+- `tests/test_zhipu_stream_adapter.py` 仅用 fake SDK/client，聚焦 `20 passed`（含参数化坏 chunk）；提交
+  `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 三 job exact-SHA 全绿，
+  证明候选接缝可公共复现但不等于产品/生产能力。默认模型、`capabilities.streaming=False`、严格 Flash v1 2048/零额外
   调用、AgentLoop、Workbench、Portal、Account、Auth、路由、统一 Trace/预算和 `production_media=0` 均不变。
-- 下一门是把实现与测试放入同一干净提交并取得 exact-SHA 公共 CI；在此之前不注册候选、不注册 recovery、不执行
-  G53-7/黄金切片，也不宣称生产 streaming 或领域准入。
+- 下一门是独立裁决候选 runtime 接线范围；不注册候选、不注册 recovery、不执行 G53-7/黄金切片，也不宣称
+  生产 streaming 或领域准入。

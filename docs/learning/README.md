@@ -103,7 +103,8 @@ RQ-194 本地实现材料：[walkthrough](8e-glm53-explicit-zhipu-neutral-stream
 [ADR-0074](../adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md) /
 [计划](../plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md)；记录候选级、显式调用的
 `ZhipuStreamAdapter`、`ZhipuProvider.stream_adapter()` 工厂及 `stream_events()`/`assemble()` API。
-本地聚焦测试为 `20 passed`，同 SHA 公共 CI 待定；这仍不代表产品已打开 `capabilities.streaming` 或完成生产准入。
+本地聚焦测试为 `20 passed`；提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588`
+三 job exact-SHA 全绿。这仍不代表产品已打开 `capabilities.streaming` 或完成生产准入。
 
 本次交接材料：[8E Agent 主线交接与 README 事实版 walkthrough](8e-agent-mainline-handoff-readme-walkthrough.md)；它只记录当前事实和后续闸门，不把 Portal/Account 的本地视觉切片、GLM-5.3 协议候选或未来 Coach 说成已完成产品。
 > 注：上方 8E 表格行只概括当前证据；RQ-170、RQ-172、RQ-173、RQ-175、RQ-182、RQ-183、RQ-184 的完整边界和不可变结果详见对应 walkthrough 与项目状态记录。 |
@@ -290,7 +291,7 @@ client 与旧 `ZhipuProvider.chat_stream()` 做语义对照。
 `33489903978` 三 job 全绿且 `head_sha` 精确匹配，并包含全部 Trace 脱敏断言。后续候选接线仍须单独裁决 runtime、预算、
 Trace、回退和失败门；在裁决前不打开 `capabilities.streaming`、不注册候选或执行 G53-7。
 
-### 2026-09-01：RQ-194 显式智谱→中立适配接缝（本地实现完成，公共 CI 待定）
+### 2026-09-01：RQ-194 显式智谱→中立适配接缝（公共闭环完成）
 
 RQ-194 已把早期设计草案（其中的占位模块/API 仅作历史记录）落成调用方显式取得的
 `ZhipuStreamAdapter`：`stream_events(request)` 将已绑定的 Zhipu raw chunks 翻译为 `ProviderStreamEvent`，
@@ -300,9 +301,9 @@ RQ-194 已把早期设计草案（其中的占位模块/API 仅作历史记录�
 学习时仍应按四层区分：原始供应商流、适配器合同、产品 runtime 接线、领域/生产准入。实现继承可信 provider profile
 的 `max_output_tokens` 上限（1–8192），请求 cap 只能收紧；默认要求 request identity，Trace/错误/ repr 只保留
 SHA-256 摘要。单流必须正常 EOF、terminal 与有效 Usage，取消或迭代器/翻译/关闭异常均 `abort()`/fail-closed；
-不 retry、不 recovery、不执行 ToolRuntime，只支持 fake/local evidence。聚焦测试为 `20 passed`，但尚未取得包含实现的
-同 SHA 公共 CI，不能把本地证据写成公共通过。
+不 retry、不 recovery、不执行 ToolRuntime，只支持 fake/local evidence。聚焦测试为 `20 passed`；提交
+`a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 三 job exact-SHA 全绿。这只证明候选
+接缝公共可复现，不能写成产品 runtime 或生产准入。
 
 `capabilities.streaming` 仍为 `False`，严格 Flash v1 仍 2048/零额外调用，默认模型、AgentLoop、Workbench、Portal、
-Account、Auth、路由、预算、Trace 和 `production_media=0` 均不变，候选未注册。下一门是 review 后取得 exact-SHA CI，
-再独立裁决 runtime 接线范围。
+Account、Auth、路由、预算、Trace 和 `production_media=0` 均不变，候选未注册。下一门是独立裁决 runtime 接线范围。

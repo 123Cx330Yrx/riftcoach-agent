@@ -1010,7 +1010,7 @@ conformance 聚焦为 `13 passed`，不改变任何生产 Provider 或能力标�
 公共验证后，下一项是候选接线裁决（是否接入 runtime、范围、预算/Trace/回退/失败门），8E 仍 `in_progress`，
 8F 尚未开始，`production_media=0` 不变。
 
-### 2026-09-01：RQ-194 候选级显式智谱→中立适配接缝（本地实现完成，公共 CI 待定）
+### 2026-09-01：RQ-194 候选级显式智谱→中立适配接缝（公共闭环完成）
 
 RQ-194 继续遵守 v1.3 的 8-Core/8-Advanced 分层：这是候选级、仅显式调用的高级适配接缝，不是 8-Core 生产必需项，
 也不把 streaming 强制升级为默认能力。早期设计中的占位模块/API 已落为
@@ -1023,6 +1023,7 @@ Trace/错误只保留 SHA-256 摘要，不含 Prompt、正文、reasoning、工�
 只允许 fake/local evidence；`capabilities.streaming` 继续 `False`，严格 Flash v1 仍 2048/零额外调用，默认模型、AgentLoop、
 Workbench、Portal、Account、Auth、路由、预算/Trace 与 `production_media=0` 均不变，候选未注册。
 
-`tests/test_zhipu_stream_adapter.py` 本地聚焦 `20 passed`，同 SHA 公共 CI 尚未取得，不能写成公共通过。下一门是 review 后
-为包含实现的同一提交取得 exact-SHA 公共 CI，再裁决候选 runtime 接线范围；RQ-194 不改变 Stage 8/8E 的 `in_progress` 顺序，
+提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的同 SHA Actions run `33496237588` 已三 job 全绿且 head_sha 精确匹配；
+`tests/test_zhipu_stream_adapter.py` 聚焦 `20 passed`。这只证明候选接缝公共可复现，不等于产品 runtime 接线或生产准入。下一门是独立
+裁决候选 runtime 接线范围；RQ-194 不改变 Stage 8/8E 的 `in_progress` 顺序，
 8F 尚未开始，不提前进入 G53-7、黄金切片或生产准入。
