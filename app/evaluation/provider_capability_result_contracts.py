@@ -185,6 +185,8 @@ class GLM53FlashResponseDiagnostic(_FrozenModel):
     def validate_report(self) -> "GLM53FlashResponseDiagnostic":
         if self.provider_calls_attempted != len(self.observations):
             raise ValueError("provider call count must match observations")
+        if tuple(row.request.ordinal for row in self.observations) != (1,):
+            raise ValueError("historical diagnostic observations must be ordinal 1")
         if self.normalized_response_count != sum(
             row.normalized for row in self.observations
         ):
@@ -201,6 +203,38 @@ class GLM53FlashResponseDiagnostic(_FrozenModel):
         expected_failure = failure_ordinals[0] if failure_ordinals else None
         if self.first_failure_ordinal != expected_failure:
             raise ValueError("first failure ordinal must match observations")
+        if self.provider_calls_attempted != 1:
+            raise ValueError("the immutable RQ-181 receipt contains one provider call")
+        if self.normalized_response_count != 0 or self.settled_response_count != 0:
+            raise ValueError("the immutable RQ-181 receipt has no settled responses")
+        observation = self.observations[0]
+        if (
+            observation.request.phase != "agent_initial"
+            or observation.request.message_count != 2
+            or observation.request.message_roles != ("system", "user")
+            or observation.request.tool_definition_count != 1
+            or observation.request.tool_choice != "auto"
+            or observation.request.has_response_contract
+            or observation.request.requested_max_tokens != 2048
+            or observation.request.effective_timeout_s != 90.0
+            or observation.request.temperature != 1.0
+            or observation.request.top_p != 0.95
+        ):
+            raise ValueError("RQ-181 request shape drifted")
+        if (
+            observation.response_received is not True
+            or observation.finish_reason != "length"
+            or observation.content_state != "empty"
+            or observation.reasoning_content_state != "non_empty"
+            or observation.tool_calls_state != "null"
+            or observation.tool_call_count != 0
+            or observation.usage_state != "valid"
+            or observation.adapter_error_code != "incomplete_chat_response"
+            or observation.adapter_error_stage != "finish_reason"
+            or observation.normalized
+            or observation.settled
+        ):
+            raise ValueError("RQ-181 observation outcome drifted")
         if self.cached_input_total > self.input_total:
             raise ValueError("cached input cannot exceed input")
         return self
@@ -247,6 +281,67 @@ LegacyVariant = Literal[
     "frozen_short_nonstream",
     "frozen_stream_first_chunk",
 ]
+
+
+_LEGACY_MESSAGE_SHAPES = {
+    "minimal_transport_control": (
+        ("user",),
+        "2b005cf9aee44f10c1c5d6c41f04be4b76165f03c08e814da403337c46e7a1d5",
+    ),
+    "frozen_short_nonstream": (
+        ("system", "user"),
+        "0ff4054090d4e9a42ed2f3abafb7f79925b16b3230e55326900463ae847f75c6",
+    ),
+    "frozen_stream_first_chunk": (
+        ("system", "user"),
+        "0ff4054090d4e9a42ed2f3abafb7f79925b16b3230e55326900463ae847f75c6",
+    ),
+}
+
+
+def _validate_legacy_request_shape(
+    request: "LegacySplitRequestSummary",
+    *,
+    minimal_thinking_type: Literal["disabled", "enabled"],
+    minimal_reasoning_effort: Literal["none", "low", "max"],
+) -> None:
+    expected = {
+        "minimal_transport_control": {
+            "message_count": 1,
+            "message_roles": ("user",),
+            "max_tokens": 16,
+            "timeout_s": 15.0,
+            "stream": False,
+            "thinking_type": minimal_thinking_type,
+            "reasoning_effort": minimal_reasoning_effort,
+        },
+        "frozen_short_nonstream": {
+            "message_count": 2,
+            "message_roles": ("system", "user"),
+            "max_tokens": 256,
+            "timeout_s": 30.0,
+            "stream": False,
+            "thinking_type": "enabled",
+            "reasoning_effort": "max",
+        },
+        "frozen_stream_first_chunk": {
+            "message_count": 2,
+            "message_roles": ("system", "user"),
+            "max_tokens": 8192,
+            "timeout_s": 45.0,
+            "stream": True,
+            "thinking_type": "enabled",
+            "reasoning_effort": "max",
+        },
+    }[request.variant]
+    for field_name, expected_value in expected.items():
+        if getattr(request, field_name) != expected_value:
+            raise ValueError(f"historical request shape drifted: {field_name}")
+    expected_roles, expected_sha = _LEGACY_MESSAGE_SHAPES[request.variant]
+    if request.message_roles != expected_roles:
+        raise ValueError("historical message roles drifted")
+    if request.message_shape_sha256 != expected_sha:
+        raise ValueError("historical message shape digest drifted")
 
 
 class LegacySplitRequestSummary(_FrozenModel):
@@ -335,6 +430,21 @@ class LegacySplitObservation(_FrozenModel):
                 raise ValueError("first chunk requires an opened stream")
             if self.first_chunk_latency_ms is None:
                 raise ValueError("first chunk needs a latency")
+        elif self.first_chunk_latency_ms is not None:
+            raise ValueError("a missing first chunk cannot have a latency")
+        if self.stream_opened and not self.request.stream:
+            raise ValueError("only streaming requests may open a stream")
+        if self.generation_observed and not self.response_received:
+            raise ValueError("generation requires a received response")
+        if not self.response_received and any(
+            (
+                self.finish_reason is not None,
+                self.resolved_model is not None,
+                self.request_id_sha256 is not None,
+                self.usage_state != "missing",
+            )
+        ):
+            raise ValueError("an unreceived response cannot carry response metadata")
         if self.request.stream and self.generation_observed and not self.first_chunk_observed:
             raise ValueError("stream generation requires a first chunk")
         if self.usage_state == "valid":
@@ -451,6 +561,14 @@ class _LegacySplitReportCommon(_FrozenModel):
         )
         if tuple(row.variant for row in self.observations) != expected:
             raise ValueError("probe variants must use canonical order")
+        for ordinal, (row, variant) in enumerate(
+            zip(self.observations, expected),
+            1,
+        ):
+            if row.ordinal != ordinal:
+                raise ValueError("observation ordinals must be canonical")
+            if row.request.ordinal != ordinal or row.request.variant != variant:
+                raise ValueError("observation request identity must match its row")
         if self.calls_attempted != sum(row.external_calls for row in self.observations):
             raise ValueError("call count mismatch")
         if self.resources.calls_used != self.calls_attempted:
@@ -488,6 +606,12 @@ class LegacyTransportGenerationSplitReport(
     def validate_source_identity(self) -> "LegacyTransportGenerationSplitReport":
         if self.source_identity.head_sha != "d7b535e4dbfcab758c1bee105087add2c2b4146d":
             raise ValueError("historical source identity drifted")
+        for row in self.observations:
+            _validate_legacy_request_shape(
+                row.request,
+                minimal_thinking_type="disabled",
+                minimal_reasoning_effort="none",
+            )
         return self
 
 
@@ -508,4 +632,10 @@ class LegacyTransportGenerationSplitReportCorrected(
     ) -> "LegacyTransportGenerationSplitReportCorrected":
         if self.source_identity.head_sha != "20331a580462171331fbae84acf0c8b1ba2e4430":
             raise ValueError("historical source identity drifted")
+        for row in self.observations:
+            _validate_legacy_request_shape(
+                row.request,
+                minimal_thinking_type="enabled",
+                minimal_reasoning_effort="low",
+            )
         return self

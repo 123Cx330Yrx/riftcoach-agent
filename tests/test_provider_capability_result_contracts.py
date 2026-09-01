@@ -53,3 +53,43 @@ def test_historical_contracts_reject_body_or_unknown_fields() -> None:
 
     with pytest.raises(ValidationError):
         LegacyTransportGenerationSplitReport.model_validate(payload)
+
+
+@pytest.mark.parametrize(
+    ("model", "path", "value"),
+    (
+        (
+            LegacyTransportGenerationSplitReport,
+            ("observations", 0, "request", "thinking_type"),
+            "enabled",
+        ),
+        (
+            LegacyTransportGenerationSplitReportCorrected,
+            ("observations", 0, "request", "reasoning_effort"),
+            "none",
+        ),
+        (
+            LegacyTransportGenerationSplitReportCorrected,
+            ("observations", 1, "ordinal"),
+            3,
+        ),
+    ),
+)
+def test_historical_contracts_reject_variant_and_ordinal_drift(
+    model,
+    path: tuple[object, ...],
+    value: object,
+) -> None:
+    filename = (
+        "zhipu_glm53_flash_transport_generation_split_diagnostic_rq188_v1.json"
+        if model is LegacyTransportGenerationSplitReport
+        else "zhipu_glm53_flash_transport_generation_split_diagnostic_rq188_corrected_v1.json"
+    )
+    payload = json.loads((RESULT_ROOT / filename).read_text(encoding="utf-8"))
+    target = payload
+    for key in path[:-1]:
+        target = target[key]  # type: ignore[index]
+    target[path[-1]] = value  # type: ignore[index]
+
+    with pytest.raises(ValidationError):
+        model.model_validate(payload)
