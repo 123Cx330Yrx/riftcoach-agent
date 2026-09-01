@@ -875,6 +875,8 @@ groups:
         - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
         - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
         - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
         - docs/adr/0071-adopt-versioned-response-completion-policy.md
         - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
         - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
@@ -984,6 +986,8 @@ groups:
         - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
         - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
         - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
       code_map:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1018,6 +1022,8 @@ groups:
         - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
         - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
         - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
       data_and_control_flow:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1066,6 +1072,8 @@ groups:
         - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
         - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
         - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
       verification:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1139,6 +1147,8 @@ groups:
         - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
         - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
         - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
       runbook:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1189,6 +1199,8 @@ groups:
         - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
         - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
         - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
       failure_security_boundary:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1267,6 +1279,8 @@ groups:
         - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
         - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
         - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
       interview_wording:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1304,6 +1318,8 @@ groups:
         - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
         - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
         - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
 
   - id: 8f-final-evaluation-and-portfolio
     sequence: 360

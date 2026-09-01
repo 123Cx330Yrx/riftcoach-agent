@@ -5249,3 +5249,21 @@
   Runtime、Workbench、Portal/Account、Auth、路由或 `production_media=0`；没有真实 API/Key、
   recovery、G53-7、黄金切片或 8F 证据。下一精确项为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`。
+
+## 2026-09-02：RQ-200 隔离候选评估台本地实现发现
+
+- staged ledger 需要把 `reserve` 与真实边界快照解耦：primary 先占用槽位，观察器封存后
+  才构造 `ResponseBoundarySnapshot`、重算候选策略并 settle；这样 open/read/timeout/close
+  失败不会漏记，也不必用 sentinel 快照污染旧恢复合同。
+- 单次事件泵可以让 observer 与 assembler 共享同一 normalized stream；observer 保持 O(1)
+  且 body-free，assembler 只在本次 fake/local 评估内存中暂存完整响应。只有 EOF、终止、关闭
+  和有效 Usage 全齐时才允许显式 evaluation consumer 接收，评估结束立即清理正文引用。
+- `CandidateEvaluationReceipt` 必须独立于统一 `RuntimeTrace`，只记录候选身份、生命周期、
+  字段状态、终止/错误码、ToolCall 计数、Usage/耗时、预算确定性与 SHA-256；未知 Usage 保持
+  unknown/None，不能用 `or 0` 推导余额或成本。
+- 15 项 harness 聚焦与边界观察、流装配、旧恢复合同相邻回归共 `102 passed`；异常矩阵还覆盖
+  显式 null/缺失、重复 reserve/settle、disabled activation、consumer 独立失败和时钟异常。
+  Python 3.11/3.13 编译、diff check、governance 均通过。
+- 当前实现仍是 candidate-only fake/local seam；没有真实 API/Key、fresh recovery、G53-7、
+  Provider/AgentLoop 注册或产品 streaming。下一精确项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`。

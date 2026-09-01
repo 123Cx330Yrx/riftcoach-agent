@@ -3959,3 +3959,23 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 - `CURRENT`：设计门完成后的唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`；
   后续只在明确继续后实现 fake/local staged ledger/harness，再做聚焦测试和公共 CI。
+
+## 2026-09-02：RQ-200 隔离候选评估台本地实现
+
+- `IMPLEMENTATION`：按 RQ-199 的设计新增隔离 `CandidateEvaluationHarness`、candidate-only
+  staged ledger、单次 normalized event pump、一次性内存 assembler 接缝和独立
+  `CandidateEvaluationReceipt`；实现位于 `app/evaluation/`，不包装成 `LLMProvider`，不进入
+  ProviderRegistry、AgentLoop、Worker 或统一 Runtime Trace。
+- `FAIL-CLOSED`：primary 在 I/O 前预留，观察完成后才映射真实 snapshot、重算 policy 并 settle；
+  缺 EOF/终止/Usage、`length` 不完整、身份/序号/工具/预算/时钟/打开/读取/关闭异常均不构造
+  产品 `ChatResponse`，unknown Usage 保持 unknown，不执行 ToolRuntime 或隐式 retry。
+- `VERIFICATION-LOCAL`：harness 聚焦测试 `15 passed`，与边界观察、流装配和旧恢复合同相邻回归
+  `102 passed`；Python 3.11/3.13 编译、`git diff --check` 和治理预检均通过。测试只使用
+  fake/local transport，不读 Key、不发真实 API。
+- `UNCHANGED`：activation 仍为不可伪造的 `disabled`，候选仍
+  `execution_allowed=false`；严格 Flash v1 2048/零额外调用、`capabilities.streaming=False`、
+  默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0`
+  均不变，未执行 fresh-recovery、G53-7、黄金切片或生产准入。
+- `BOUNDARY-NEXT`：实现提交取得同 SHA 公共 CI 前，唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`；
+  CI 之后是否启用 fake/真实 recovery、重跑 G53-7、黄金切片或生产准入仍须独立授权。

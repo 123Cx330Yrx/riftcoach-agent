@@ -5513,3 +5513,20 @@
   32,000/16,384/180,000ms、最多 2 attempts/1 次额外调用，unknown Usage 不当零，第三次/重复 settle fail closed。
 - 文档治理与 `git diff --check` 在本批收尾；未运行产品测试，因为没有代码变更。下一精确项切换为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`。
+
+## 2026-09-02：RQ-200 隔离候选评估台本地实现
+
+- [implementation-local] 在隔离分支新增 `CandidateEvaluationHarness` 与 staged ledger：primary 在
+  I/O 前预留，单次 normalized event pump 同时驱动 body-free observer 和临时 assembler，观察完成后
+  才重算 policy 并 settle；每个槽位严格一次，open/read/clock/close 失败也计入。
+- [receipt] 新增独立 body-free `CandidateEvaluationReceipt`/result 与显式 evaluation consumer；完整
+  stop/tool 流才可短暂交付，`length`、缺 EOF/终止/Usage、身份/序号/工具/预算错误均 fail-closed，
+  unknown Usage 保持 `None`/`unknown`，不执行 ToolRuntime 或隐式 retry。
+- [verification-local] harness 聚焦 `15 passed`，与边界观察、流装配和旧恢复合同相邻回归 `102 passed`；
+  Python 3.11/3.13 编译、diff check 和治理预检通过。只使用 fake/local transport，未读取 Key 或发真实 API。
+- [boundary] activation 仍 sealed `disabled`，候选仍不注册、不打开 `capabilities.streaming`；严格 Flash v1
+  2048/零额外调用、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和
+  `production_media=0` 不变，8F 未开始。
+- [next] 当前唯一精确 checkpoint 更新为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`；
+  先取得同一干净提交的 exact-SHA 公共 CI，之后才另行裁决 recovery、G53-7、黄金切片和生产准入。

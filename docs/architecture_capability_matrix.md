@@ -747,3 +747,19 @@ caller eligibility 和隐式 retry。receipt 只保留身份、生命周期、�
 唯一下一项为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`；
 下一门只允许 fake/local 实现和公共 CI。
+
+### 2026-09-02：RQ-200 候选评估台本地实现能力边界
+
+RQ-200 将上述候选设计实现为隔离的 `CandidateEvaluationHarness`，但仍不是 Runtime capability。
+candidate-only staged ledger 在 primary I/O 前预留槽位，单次 normalized event pump 同时驱动
+body-free observer 与一次性内存 assembler，真实边界观察后才重算 completion policy 并 settle；
+独立 `CandidateEvaluationReceipt` 只保留身份、生命周期、字段状态、Usage/耗时、预算确定性与
+安全码。完整 stop/tool 流才可交给显式 evaluation consumer，不完整流、未知 Usage、资源/身份/
+序号/预算/时钟异常均 fail-closed，不构造产品 `ChatResponse`。
+
+本地 harness 聚焦 `15 passed`，与边界观察、流装配和旧恢复合同相邻回归 `102 passed`；编译、
+diff check、governance 通过。activation 仍 disabled，候选不注册、不打开
+`capabilities.streaming`，严格 Flash v1 2048/零额外调用、默认模型、产品 Runtime、Portal、
+Account、Workbench、Auth、路由和 `production_media=0` 不变。该项仍属于 8-Advanced candidate
+evidence，不是 8-Core 或公共生产准入；当前下一项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`。

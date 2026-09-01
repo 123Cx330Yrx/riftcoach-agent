@@ -109,7 +109,7 @@ pause_reason: ""
   为显式兼容/应急回退。旧 Dataset 的 30 秒仍是质量资源阈值，不是新档案执行截止；真实 G53-7 会拒绝 dirty
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
-- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`。RQ-193 提交 `8bcbaa5` 的 Actions run `33489903978` 与 RQ-194 提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 均三 job 全绿且 head_sha 精确匹配；RQ-194 聚焦测试为 `20 passed`。RQ-195 已完成架构评审，RQ-196 已完成设计，RQ-197 已完成 fake/local 边界观察合同实现与 `163 passed` 聚焦/相邻回归；实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的公共 CI run `33507627615` 三 job 全绿且 head_sha 精确匹配（公共 pytest `2178 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-199 已完成隔离候选评估台设计（两阶段 staged ledger、单次事件泵、独立 body-free receipt 与 fake/local 测试矩阵），下一步只实现该候选 harness；不注册候选、不打开 `capabilities.streaming`、不接入产品默认或执行 recovery/G53-7。
+- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`。RQ-193 提交 `8bcbaa5` 的 Actions run `33489903978` 与 RQ-194 提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 均三 job 全绿且 head_sha 精确匹配；RQ-194 聚焦测试为 `20 passed`。RQ-195 已完成架构评审，RQ-196 已完成设计，RQ-197 已完成 fake/local 边界观察合同实现与 `163 passed` 聚焦/相邻回归；实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的公共 CI run `33507627615` 三 job 全绿且 head_sha 精确匹配（公共 pytest `2178 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-199 已完成隔离候选评估台设计，RQ-200 已完成 fake/local 候选 harness、staged ledger、单次事件泵与独立 body-free receipt 的本地实现及 `102 passed` 相邻回归；下一步只做同一干净提交的 exact-SHA 公共 CI；不注册候选、不打开 `capabilities.streaming`、不接入产品默认或执行 recovery/G53-7。
 - RQ-179–RQ-181 的 exact-SHA、G53-7 失败与一次性正文零留存诊断证据均保持不可变，旧证据不覆盖；RQ-182 聚焦离线测试为 `41 passed`，RQ-183 聚焦离线合同为 `30 passed`，均未改变 Provider-neutral 消息、AgentLoop、ToolRuntime、Trace、预算、默认模型、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
 - 2026-08-31 按用户确认新建普通 API Key 后重开 G53-3：进程预检确认 `zhipu`、普通 API 端点与
   `glm-5.3-flash` 均生效；未输出 Key 值，也未改除用户自行更新的 `.env` 之外的默认配置。A1 结构化合同
@@ -3880,3 +3880,24 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
   仍需另行授权真实 recovery、G53-7、生产准入和 8F。
   设计门已由 RQ-199 完成；下一轮只在明确继续后实现隔离的候选 evaluation harness 及其 staged
   ledger/Trace 接缝，随后再由用户决定是否执行 fresh-recovery、重跑 G53-7 或进入生产准入。
+
+### 2026-09-02：RQ-200 隔离候选评估台本地实现
+
+- `[completed-local]` 按 RQ-199 冻结的范围新增 `app/evaluation/candidate_evaluation_harness.py` 与
+  `tests/test_candidate_evaluation_harness.py`，实现候选专用 staged ledger、primary I/O 前预留、
+  单次 normalized event pump、临时内存 assembler、显式 evaluation consumer 和独立
+  `CandidateEvaluationReceipt`。`app/evaluation/__init__.py` 仅导出该 evaluation API，不注册 Provider。
+- `[fail-closed]` 每个槽位严格 reserve→open→observe/assemble→settle 一次；open/read/clock/close
+  异常、缺 EOF/终止/Usage、`length` 不完整、身份/序号/工具/预算冲突均不会构造产品
+  `ChatResponse`。完整 stop/tool 流才可短暂交付 consumer；unknown Usage 保持 `None`/`unknown`，
+  不执行 ToolRuntime、隐式 retry 或 fresh recovery。
+- `[verification-local]` harness 聚焦 `15 passed`，与边界观察、provider-neutral 流装配和旧恢复合同
+  相邻回归 `102 passed`；Python 3.11/3.13 编译、`git diff --check` 和治理预检通过。仅使用
+  fake/local transport，没有读取 Key、真实 API、G53-3/G53-7 或黄金切片。
+- `[unchanged]` activation 仍为不可伪造的 `disabled`，候选仍 `execution_allowed=false`；严格
+  Flash v1 2048/零额外调用、`capabilities.streaming=False`、默认模型、产品 Runtime、Portal、
+  Account、Workbench、Auth、路由和 `production_media=0` 均不变，8F 尚未开始。
+- `[boundary-next]` 当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`；
+  先在同一干净提交上取得 exact-SHA 公共 CI，再另行裁决 recovery 激活、G53-7、黄金切片、生产准入
+  与 8F，不把本地测试或候选实现写成公共生产成熟度。

@@ -1097,3 +1097,18 @@ fresh-recovery、G53-7、黄金切片或公共生产准入。
 设计门完成后的唯一下一精确项为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`；
 后续实现仍须 fake/local、聚焦测试和 exact-SHA 公共 CI，真实候选执行与 8F 继续独立排队。
+
+## 2026-09-02：RQ-200 候选评估台实现边界
+
+RQ-200 继续遵守 v1.3 的 8-Core/8-Advanced 分层：只把 RQ-199 的候选协调设计落成
+fake/local evaluation seam，不把流式恢复写入 8-Core 生产。实现使用 candidate-only staged
+ledger、单次 normalized event pump、临时内存 assembler 和独立 body-free receipt；完整结果
+必须经显式 evaluation consumer 短暂交付，不完整流或未知 Usage 不得伪装成产品响应或可用余额。
+
+本地 harness 聚焦 `15 passed`，与边界观察、流装配和旧恢复合同相邻回归 `102 passed`，并通过
+编译、diff check 与治理预检。activation 仍 disabled，候选不注册、不打开
+`capabilities.streaming`，严格 Flash v1、默认模型、产品 Runtime、Portal、Account、Workbench、
+Auth、路由和 `production_media=0` 不变；没有真实 API/Key、recovery、G53-7、黄金切片或 8F 证据。
+当前唯一下一门为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`，
+先取得同一干净提交的 exact-SHA 公共 CI，再另行裁决高级候选是否继续。

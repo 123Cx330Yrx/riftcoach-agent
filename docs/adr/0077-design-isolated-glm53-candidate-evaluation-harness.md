@@ -1,7 +1,7 @@
 # ADR-0077：设计隔离的 GLM-5.3 候选评估台
 
 - 日期：2026-09-02
-- 状态：`design-complete / candidate-only / implementation-pending`
+- 状态：`implementation-complete-local / candidate-only / public-ci-pending`
 - 范围：Stage 8 / 8E；`candidate-evaluation-harness-design`（RQ-199）
 - 依据：ADR-0071、0072、0075、0076；RQ-192–RQ-198；
   `app/evaluation/candidate_stream_contract.py`、
@@ -311,3 +311,16 @@ RQ-199 设计门完成的证据是：本 ADR、实现计划和学习 walkthrough
 该实现门仍只允许 fake/local 与公共 CI；实现完成后，是否执行真实 fresh-recovery、
 G53-7 或将 Flash 提升为产品唯一运行时，必须分别获得新的授权和新的 exact-SHA/领域
 证据。Stage 8/8E 继续 `in_progress`，8F 尚未开始，`production_media=0`。
+
+## RQ-200 实现回填（2026-09-02）
+
+设计已在隔离工作树落成为 `app/evaluation/candidate_evaluation_harness.py`：
+`CandidateEvaluationRunSpec` 精确绑定候选身份，`CandidateEvaluationLedger` 在
+primary I/O 前预留并在真实观察后结算，`CandidateEvaluationHarness` 以一条事件泵
+同时驱动边界观察器和临时装配器，`CandidateEvaluationReceipt` 提供独立的
+body-free envelope。当前 activation 只有 sealed `disabled`，候选形状不会触发第二条
+流；产品 Provider/Runtime、统一 Trace 和默认模型均未改变。
+
+fake/local 聚焦测试为 `15 passed`，与边界观察、流装配和旧恢复合同相邻回归为
+`102 passed`；编译检查通过。公共 exact-SHA CI 仍是下一门，故本 ADR 不把本地实现
+写成公共生产准入或模型能力证据。

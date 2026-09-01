@@ -3082,3 +3082,22 @@ Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` �
 只有 ADR-0077、实现计划与学习材料，没有产品代码、真实 API/Key、fresh-recovery、
 G53-7 或黄金切片。下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`。
+
+### RQ-200：实现隔离候选评估台（2026-09-02）
+
+按 RQ-199 的设计，新增 `CandidateEvaluationHarness`，但不把它包装成产品
+`LLMProvider` 或接入 `AgentLoop`。评估台采用 candidate-only staged ledger：primary
+在 I/O 前预留，单次 normalized event pump 同时服务 body-free observer 与临时内存
+assembler，真实边界观察完成后才重算 policy 并 settle；每个槽位严格只结算一次。
+
+完整 `stop`/`tool_calls` 流才可经显式 evaluation-only consumer 短暂接收；缺 EOF/终止/Usage、
+`length` 不完整、身份/序号/工具/预算/时钟或资源异常均 fail-closed，不构造产品
+`ChatResponse`，不执行 ToolRuntime、隐式 retry 或 recovery。独立
+`CandidateEvaluationReceipt` 只允许候选身份、生命周期、字段状态、终止/错误码、计数、
+Usage/耗时、预算确定性和 SHA-256，unknown Usage 保持 unknown/None。
+
+当前 activation 仍为 sealed `disabled`，候选未注册、不打开 `capabilities.streaming`；严格
+Flash v1 2048/零额外调用、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和
+`production_media=0` 均不变。harness 聚焦 `15 passed`，相邻回归 `102 passed`；下一精确门是
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`，
+先取得同一干净提交的 exact-SHA 公共 CI，再另行决定高级候选是否继续。
