@@ -849,6 +849,7 @@ class _BoundedPipe:
 def _started_marker(stdout: bytes) -> tuple[int, bool]:
     """Read only the small safe marker, never return raw child output."""
 
+    latest: tuple[int, bool] = (0, False)
     for line in stdout.decode("utf-8", "replace").splitlines():
         try:
             item = json.loads(line)
@@ -864,8 +865,8 @@ def _started_marker(stdout: bytes) -> tuple[int, bool]:
             and count in {0, 1}
             and isinstance(opened, bool)
         ):
-            return count, opened
-    return 0, False
+            latest = (count, opened)
+    return latest
 
 
 def _child_observation(stdout: bytes) -> CandidateCloseWakeObservation | None:
@@ -1020,7 +1021,10 @@ def run_parent_close_wakeup_observation(
             # exit code; the child cannot know that code while it is writing
             # its last safe line.
             if exit_code not in (0, None):
-                observation = _child_error_observation("child_nonzero_exit")
+                if observation.observation_state == CloseWakeState.CHILD_ERROR.value:
+                    observation = replace(observation, child_exit_code=exit_code)
+                else:
+                    observation = _child_error_observation("child_nonzero_exit")
             else:
                 observation = replace(observation, child_exit_code=exit_code)
 

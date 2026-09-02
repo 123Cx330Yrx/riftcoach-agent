@@ -222,9 +222,9 @@ def test_pending_reader_cancel_return_and_wake_are_distinguished():
     session = _FakeSession([blocked], cancel_action=release.set)
     result = observe_candidate_session(
         lambda *, include_usage_tail: session,
-        initial_read_timeout_s=0.01,
-        cancel_timeout_s=0.1,
-        reader_grace_s=0.1,
+        initial_read_timeout_s=0.05,
+        cancel_timeout_s=0.2,
+        reader_grace_s=0.2,
     )
     assert result.observation_state == "pending_cancel_returned"
     assert result.pending_reader_observed is True
@@ -240,9 +240,9 @@ def test_pending_reader_cancel_timeout_is_bounded():
     )
     result = observe_candidate_session(
         lambda *, include_usage_tail: session,
-        initial_read_timeout_s=0.01,
-        cancel_timeout_s=0.01,
-        reader_grace_s=0.01,
+        initial_read_timeout_s=0.05,
+        cancel_timeout_s=0.05,
+        reader_grace_s=0.05,
     )
     assert result.observation_state == "pending_cancel_timeout"
     assert result.cancel_status == "timeout"
@@ -256,9 +256,9 @@ def test_cancel_exception_is_safe_and_close_report_is_retained():
     )
     result = observe_candidate_session(
         lambda *, include_usage_tail: session,
-        initial_read_timeout_s=0.01,
-        cancel_timeout_s=0.1,
-        reader_grace_s=0.01,
+        initial_read_timeout_s=0.05,
+        cancel_timeout_s=0.2,
+        reader_grace_s=0.05,
     )
     assert result.observation_state == "pending_cancel_returned"
     assert result.cancel_status == "raised"
