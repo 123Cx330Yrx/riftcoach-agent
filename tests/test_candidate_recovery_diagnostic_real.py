@@ -182,6 +182,12 @@ def test_wrong_case_is_rejected_before_client_creation(tmp_path: Path):
     assert called is False
 
 
+def test_frozen_context_repr_does_not_expose_message_bodies():
+    rendered = repr(_context())
+    assert "private system instructions" not in rendered
+    assert "private user request" not in rendered
+
+
 def test_real_seam_makes_one_stream_call_and_writes_body_free_receipt(tmp_path: Path):
     client = _FakeClient(_complete_chunks())
 

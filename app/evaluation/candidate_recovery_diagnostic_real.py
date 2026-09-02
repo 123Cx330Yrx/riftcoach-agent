@@ -114,7 +114,7 @@ class CandidateRealCallError(RuntimeError):
 class FrozenCandidateContext:
     """One validated held-out context; message bodies never leave this object."""
 
-    messages: tuple[ChatMessage, ...]
+    messages: tuple[ChatMessage, ...] = field(repr=False)
     # The v2 receipt's input_plan_sha is a Git identity. Keep the canonical
     # file-content digest separately for frozen-input verification.
     input_plan_sha: str
