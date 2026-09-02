@@ -304,7 +304,7 @@ class CandidateCloseWakeObservation:
     cancel_elapsed_ms: int | None = None
     reader_grace_ms: int = 0
     reader_wake_elapsed_ms: int | None = None
-    close_report: CloseReportProjection | Mapping[str, object] | object | None = None
+    close_report: CloseReportProjection | Mapping[str, object] | None = None
     error_code: str | None = None
     child_exit_code: int | None = None
     child_terminated: bool = False
@@ -345,6 +345,8 @@ class CandidateCloseWakeObservation:
         expected_cancel_returned = self.cancel_status in {"returned", "raised"}
         if self.cancel_returned != expected_cancel_returned:
             raise CandidateCloseWakeObservationError("cancel_status_mismatch", "cancel_returned")
+        if self.cancel_status == "raised" and self.error_code is None:
+            raise CandidateCloseWakeObservationError("cancel_error_code_missing", "error_code")
         if state is CloseWakeState.NOT_PENDING:
             if self.pending_reader_observed or self.cancel_status != "not_attempted":
                 raise CandidateCloseWakeObservationError("not_pending_lifecycle_invalid", "observation_state")
@@ -358,6 +360,8 @@ class CandidateCloseWakeObservation:
                 raise CandidateCloseWakeObservationError("pending_timeout_lifecycle_invalid", "observation_state")
             if self.reader_woke:
                 raise CandidateCloseWakeObservationError("reader_woke_on_cancel_timeout", "reader_woke")
+            if self.error_code != "cancel_timeout":
+                raise CandidateCloseWakeObservationError("pending_timeout_error_invalid", "error_code")
         elif state is CloseWakeState.CHILD_TIMEOUT:
             if not self.child_terminated or self.error_code != "child_timeout":
                 raise CandidateCloseWakeObservationError("child_timeout_lifecycle_invalid", "observation_state")

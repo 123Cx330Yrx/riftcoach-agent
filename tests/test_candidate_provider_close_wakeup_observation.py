@@ -110,6 +110,24 @@ def test_contract_rejects_unsafe_or_invalid_values(field, value):
         _report(**{field: value})
 
 
+def test_contract_requires_safe_error_code_for_cancel_failures():
+    with pytest.raises(CandidateCloseWakeObservationError):
+        _report(
+            observation_state="pending_cancel_returned",
+            pending_reader_observed=True,
+            cancel_status="raised",
+            cancel_returned=True,
+        )
+    with pytest.raises(CandidateCloseWakeObservationError):
+        _report(
+            observation_state="pending_cancel_timeout",
+            pending_reader_observed=True,
+            cancel_status="timeout",
+            cancel_returned=False,
+            error_code=None,
+        )
+
+
 def test_from_dict_rejects_body_headers_request_ids_and_extra_keys():
     payload = _report().as_dict()
     for key, value in (
