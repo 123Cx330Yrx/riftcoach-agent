@@ -1161,3 +1161,20 @@ observer/receipt、Usage/预算/费用三态、失败类别和 create-only canon
 当前唯一下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`；
 先取得同一干净实现提交的 exact-SHA 公共 CI 与协议 dry-run，不能把本地 fake 证据写成生产成熟度。
+
+## 2026-09-02：RQ-205 版本化候选 recovery 诊断公共闭环边界
+
+RQ-205 完成 RQ-204 的 exact-SHA 公共 CI 和 fake/local 协议演练：提交
+`90242822df0e47304700644572bc12f0a3aa88ad` / Actions `33598541029` 三 job 全绿，公共 pytest
+`2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`；
+前端契约、构建、E2E、RAG、治理与打包冒烟均通过。该证据只说明 8-Advanced 候选评估接缝可复现，
+不把 recovery、streaming 或 8192 输出上限提升为 8-Core 产品能力。
+
+本地协议演练只使用 fake transport，一次 primary 调用即可生成临时 body-free 回执；没有读取 Key、
+真实 API、第二次 recovery 或持久结果。候选仍 disabled、`execution_allowed=false`、
+`capabilities.streaming=False`，严格 Flash v1、默认模型、AgentLoop、统一 Trace/预算、Portal、
+Account、Workbench、Auth、路由和 `production_media=0` 不变；8E/8F 的生产、合规、黄金切片闸门不变。
+
+下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`；
+真实 recovery 只能在新的明确一次性授权后执行。

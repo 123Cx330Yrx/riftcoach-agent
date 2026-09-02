@@ -5325,3 +5325,15 @@
 - 当前唯一下一精确项为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`；
   公共 CI 与协议 dry-run 需要绑定同一干净实现提交，不能把本地 fake 证据写成生产准入。
+
+## 2026-09-02：RQ-205 版本化候选 recovery 诊断公共闭环发现
+
+- 提交 `90242822df0e47304700644572bc12f0a3aa88ad` 的 Actions run `33598541029` 对同一干净实现完成
+  exact-SHA 公共验证：`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿；公共 pytest
+  `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，数据库控制面 `201 passed, 1 warning`。
+- 本地 fake transport 演练确认 v2 生命周期可在一次 primary 调用内完成 reserve/open/observe/settle/receipt，
+  回执可写为临时 canonical body-free JSON（3900 bytes），且 disabled gate 不产生第二次调用。
+- 公共 CI 与协议演练只证明候选评估接缝可复现，不提升为产品 Runtime capability；真实 recovery、G53-7、
+  黄金切片、生产安全/部署/合规和 8F 仍需单独授权与证据。
+- 当前唯一下一精确项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`。

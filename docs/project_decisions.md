@@ -3151,3 +3151,17 @@ compileall、静态 no-I/O/import 和 diff check 通过。unknown Usage 与未�
 `production_media=0` 不变。没有真实 API/Key、fresh-recovery、G53-7、黄金切片、生产准入或 8F
 证据。下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`。
+
+### RQ-205：版本化候选 recovery 诊断公共闭环（2026-09-02）
+
+接受 RQ-204 实现提交 `90242822df0e47304700644572bc12f0a3aa88ad` 的 exact-SHA 公共证据和本地协议演练：
+Actions run `33598541029` 的 `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，公共 pytest
+`2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`；
+fake transport 的一次 primary 演练写入临时 canonical body-free 回执。该决定只关闭公共可复现性门，
+不等于真实模型质量、生产准入或 recovery 已开启。
+
+候选仍 `activation_state=disabled`、`execution_allowed=false`、`capabilities.streaming=False`；严格
+Flash v1 2048/零额外调用、默认模型、AgentLoop、统一 Trace/预算、Portal、Account、Workbench、Auth、
+路由和 `production_media=0` 不变。当前下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`；
+真实 recovery、G53-7、黄金切片、生产安全/部署/合规与 8F 必须另行授权。

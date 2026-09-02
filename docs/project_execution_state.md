@@ -29,6 +29,10 @@ pause_reason: ""
   四元身份、共享校验、v2 预算和独立 Trace 投影；仍不直接改产品 Runtime。以下为此前连续诊断记录。）
 - RQ-204 最新状态补充：版本化候选 recovery 诊断已完成 fake/local 本地实现与比例回归，
   系统 Python 3.13 用户环境已安装 `pytest 9.1.1`；项目验证仍使用仓库 `.venv` 的完整依赖。
+- RQ-205 最新状态覆盖：提交 `90242822df0e47304700644572bc12f0a3aa88ad` 的 exact-SHA 公共 CI
+  run `33598541029` 已三 job 全绿；公共 pytest 为 `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，
+  PostgreSQL 控制面为 `201 passed, 1 warning`，另完成 fake/local 协议演练。当前唯一下一步是一次性授权的
+  `candidate-recovery-diagnostic-real-call`，不自动发起真实 recovery。
 - 历史诊断记录：2026-09-01（RQ-190 已完成两次单路、有界的流式首个可见正文探针：同一冻结上下文、
   `reasoning_effort=low`、`max_tokens=2048` 下，`clear_thinking=true` 在 2.547 秒出现首个可见正文，
   `clear_thinking=false` 在 3.875 秒出现首个可见正文；两路均先观察到 reasoning，随后在正文出现时主动关闭，
@@ -112,6 +116,7 @@ pause_reason: ""
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
 - 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`。RQ-193 提交 `8bcbaa5` 的 Actions run `33489903978` 与 RQ-194 提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 均三 job 全绿且 head_sha 精确匹配；RQ-194 聚焦测试为 `20 passed`。RQ-195 已完成架构评审，RQ-196 已完成设计，RQ-197 已完成 fake/local 边界观察合同实现与 `163 passed` 聚焦/相邻回归；实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的公共 CI run `33507627615` 三 job 全绿且 head_sha 精确匹配（公共 pytest `2178 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-199 已完成隔离候选评估台设计，RQ-200 已完成 fake/local 候选 harness、staged ledger、单次事件泵与独立 body-free receipt 的本地实现及 `102 passed` 相邻回归；RQ-201 的实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 已取得 Actions run `33536168224` 三 job exact-SHA 公共通过（公共 pytest `2193 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-202 的离线加固提交 `67031145d3b3e5c864e881576c69e2fda931e950` 已取得 Actions run `33582049836` 三 job exact-SHA 公共通过（公共 pytest `2193 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-203 已完成版本化诊断协议设计，RQ-204 已完成 fake/local 版本化诊断实现与本地回归；不注册候选、不打开 `capabilities.streaming`、不接入产品默认或自动执行 recovery/G53-7。
+- RQ-205 已覆盖前述公共 CI 待办：`90242822df0e47304700644572bc12f0a3aa88ad` / Actions `33598541029` 三 job exact-SHA 全绿，公共 pytest `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`，fake/local 协议演练通过。当前下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`，不自动发真实 recovery。
 - RQ-179–RQ-181 的 exact-SHA、G53-7 失败与一次性正文零留存诊断证据均保持不可变，旧证据不覆盖；RQ-182 聚焦离线测试为 `41 passed`，RQ-183 聚焦离线合同为 `30 passed`，均未改变 Provider-neutral 消息、AgentLoop、ToolRuntime、Trace、预算、默认模型、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
 - 2026-08-31 按用户确认新建普通 API Key 后重开 G53-3：进程预检确认 `zhipu`、普通 API 端点与
   `glm-5.3-flash` 均生效；未输出 Key 值，也未改除用户自行更新的 `.env` 之外的默认配置。A1 结构化合同
@@ -3972,3 +3977,21 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`；
   先在同一干净实现提交上取得 exact-SHA 公共 CI 和协议 dry-run，之后仍需另行授权真实
   recovery、G53-7、黄金切片、生产安全/部署与 8F。
+
+### 2026-09-02：RQ-205 版本化候选 recovery 诊断公共闭环
+
+- `[completed-public]` RQ-204 实现提交 `90242822df0e47304700644572bc12f0a3aa88ad` 的 GitHub Actions
+  run `33598541029` 已 `completed/success`；`pytest`、`postgres-migrations`、`packaging-smoke`
+  三 job 均成功且 `head_sha` 精确匹配。公共 pytest 为 `2218 passed, 145 skipped, 1 warning,
+  127 subtests passed`，PostgreSQL 控制面为 `201 passed, 1 warning`；前端契约、typecheck、unit、build、
+  E2E、RAG、治理和打包冒烟均通过。
+- `[completed-dry-run]` 在本地 fake transport 上完成一次 primary 协议演练并写入临时 canonical
+  body-free 回执：`calls=1`、`body_free=true`、回执 `3900` bytes；没有读取 Key、发送真实 API、
+  发起第二次 recovery 或生成持久诊断结果。
+- `[unchanged]` 候选仍 `activation_state=disabled`、`execution_allowed=false`、
+  `capabilities.streaming=False`；严格 Flash v1 2048/零额外调用、默认模型、AgentLoop、统一
+  Trace/预算、Portal、Account、Workbench、Auth、路由、媒体采用和 `production_media=0` 不变。
+  Stage 8/8E 仍 `in_progress`，8F 未开始；没有 G53-7、黄金切片、生产准入或真实模型质量证据。
+- `[boundary-next]` 当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`；
+  真实 recovery 只能在新的明确一次性授权后执行，不能因公共 CI 通过而自动打开候选或默认模型。

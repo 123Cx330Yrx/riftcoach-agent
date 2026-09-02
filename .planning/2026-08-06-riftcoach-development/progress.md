@@ -5590,3 +5590,18 @@
 - [next] 当前唯一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`；
   等待同一干净实现提交的 exact-SHA 公共 CI 和协议 dry-run。
+
+## 2026-09-02：RQ-205 版本化候选 recovery 诊断公共闭环
+
+- [completed-public] 提交 `90242822df0e47304700644572bc12f0a3aa88ad` 的 Actions run
+  `33598541029` 三 job exact-SHA 全绿；公共 pytest `2218 passed, 145 skipped, 1 warning,
+  127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`，前端契约/typecheck/unit/build/E2E、
+  RAG、治理和打包冒烟均通过。
+- [completed-dry-run] fake transport 协议演练完成一次 primary 调用并写入临时 canonical body-free
+  回执（`calls=1`、`body_free=true`、`3900` bytes）；没有读取 Key、真实 API、第二次 recovery 或持久结果。
+- [boundary] 候选仍 disabled、未注册，`execution_allowed=false`、`capabilities.streaming=False`；严格
+  Flash v1 2048/零额外调用、默认模型、产品 Runtime、Workbench/Portal/Account/Auth、路由和
+  `production_media=0` 不变，G53-7、黄金切片、生产准入和 8F 未进入。
+- [next] 当前唯一精确 checkpoint 改为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`；
+  真实 recovery 仅待新的明确一次性授权。

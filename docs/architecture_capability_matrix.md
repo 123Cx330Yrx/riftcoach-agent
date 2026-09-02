@@ -809,3 +809,16 @@ compileall、静态 no-I/O/import 与 diff check 通过。候选 activation 仍 
 下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`，
 先取得同一干净实现提交的 exact-SHA 公共 CI 与协议 dry-run。
+
+### 2026-09-02：RQ-205 版本化候选 recovery 诊断公共能力边界
+
+RQ-205 已为 RQ-204 的 candidate-only 评估接缝取得同一实现提交的 exact-SHA 公共证据：
+`90242822df0e47304700644572bc12f0a3aa88ad` / Actions `33598541029` 三 job 全绿；公共 pytest
+`2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`，
+并完成一次 fake/local body-free 协议演练。该项仍是 8-Advanced evaluation evidence，不新增 Runtime capability，
+不包装 `LLMProvider`、不注册候选、不打开 `capabilities.streaming`，不写统一 Runtime Trace。
+
+候选 activation 仍 disabled、`execution_allowed=false`；严格 Flash v1 2048/零额外调用、默认模型、
+AgentLoop、Portal/Account/Workbench/Auth、路由与 `production_media=0` 不变。没有真实 recovery、G53-7、
+黄金切片、生产准入或 8F 证据。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`。

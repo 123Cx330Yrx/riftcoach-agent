@@ -100,8 +100,8 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 > `candidate-recovery-diagnostic-version-public-ci / pending`。
 
 RQ-203 已完成版本化候选 recovery 诊断协议设计（见下方材料）；上表中 RQ-202 的“下一步设计”文字仅保留
-历史快照，RQ-204 已完成 fake/local 版本化诊断实现，当前唯一下一门已更新为
-`candidate-recovery-diagnostic-version-public-ci / pending`。
+历史快照，RQ-204 已完成 fake/local 版本化诊断实现，RQ-205 已完成同 SHA 公共 CI 与协议演练，当前唯一下一门已更新为
+`candidate-recovery-diagnostic-real-call / pending-user-authorization`。
 
 8E 当前最新候选接缝材料：[RQ-192/RQ-193 walkthrough](8e-glm53-provider-neutral-stream-adapter-walkthrough.md) /
 [ADR-0073](../adr/0073-adopt-provider-neutral-stream-assembly-contract.md) /
@@ -464,4 +464,18 @@ compileall、静态 no-I/O/import 和 diff check 通过。系统 Python 3.13 用
 或生产准入；候选未注册，严格 Flash v1 2048/零额外调用、默认模型、Portal、Account、Workbench、
 Auth、路由与 `production_media=0` 不变。下一精确项为
 `candidate-recovery-diagnostic-version-public-ci / pending`，真实 recovery、G53-7、黄金切片、
+生产安全/部署与 8F 仍需独立授权。
+
+### 2026-09-02：RQ-205 版本化候选 recovery 诊断公共闭环
+
+RQ-205 的学习材料由 [实现 walkthrough](8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md)、
+[实现计划](../plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md) 和公共 CI 记录共同组成。
+提交 `90242822df0e47304700644572bc12f0a3aa88ad` 的 Actions run `33598541029` 三 job exact-SHA 全绿，
+公共 pytest `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`；
+前端契约、构建、E2E、RAG、治理和打包冒烟也通过。一次 fake/local primary 协议演练完成临时 body-free 回执写入，
+未读取 Key、未发送真实 API、未发起第二次 recovery。
+
+这只是候选评估接缝的公共可复现性，不是产品 streaming 或生产准入。候选仍 disabled、未注册，严格 Flash v1、
+默认模型、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。下一精确项为
+`candidate-recovery-diagnostic-real-call / pending-user-authorization`，真实 recovery、G53-7、黄金切片、
 生产安全/部署与 8F 仍需独立授权。

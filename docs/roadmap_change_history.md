@@ -4033,3 +4033,17 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
   当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`，
   先取得同一干净实现提交的 exact-SHA 公共 CI 和协议 dry-run。
+
+## 2026-09-02：RQ-205 版本化候选 recovery 诊断公共闭环
+
+- `PUBLIC-CI`：RQ-204 实现提交 `90242822df0e47304700644572bc12f0a3aa88ad` 的 Actions run
+  `33598541029` 已 `completed/success`，三 job（`pytest`、`postgres-migrations`、`packaging-smoke`）均成功且
+  `head_sha` 精确匹配；公共 pytest `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，
+  PostgreSQL 控制面 `201 passed, 1 warning`。
+- `DRY-RUN`：本地 fake transport 完成一次 primary 协议生命周期并写入临时 canonical body-free 回执，
+  `calls=1`、`body_free=true`、`3900` bytes；前端契约/typecheck/unit/build/E2E、RAG 和治理也随公共门通过。
+- `BOUNDARY`：没有读取 Key、真实 API、第二次 recovery、候选注册或产品 Runtime 接线；严格 Flash v1、
+  默认模型、`capabilities.streaming=False`、Portal/Account/Workbench/Auth、路由和 `production_media=0` 不变。
+- `BOUNDARY-NEXT`：当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`；
+  真实 recovery、G53-7、黄金切片、生产准入与 8F 仍需新的明确授权。

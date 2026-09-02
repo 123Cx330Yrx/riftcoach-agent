@@ -79,7 +79,7 @@ RQ-181 的一次诊断确认 Flash 在 2048 输出额度内先耗尽 reasoning�
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B–E、Live integration、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共闭环，ADR-0053 reject 产品 Multi-Agent；Portal/Account 当前展示切片已按 RQ-163 阶段性收口并交回 Agent 主线，G53-1/2 已完成，RQ-177 的同 SHA G53-3 已通过，RQ-178 完成本地 A/B 预检，RQ-179 已为最终实现 A 取得 exact-SHA CI，RQ-180 已完成一次 G53-7 领域尝试但以 `provider_response_invalid/incomplete_chat_response` 首错拒绝，RQ-181 已确认首回合 `finish_reason=length` 且 2048 输出额度先被 reasoning 耗尽；RQ-182 已完成版本化响应完成策略与离线 TDD，RQ-183 已完成候选 runtime/attempt/预算/Trace 的离线合同，RQ-184 已完成候选 A/B exact-SHA 公共 CI 与同 SHA G53-3；RQ-186 已修复隔离诊断器的请求级截止，RQ-187 在完整 90 秒窗口取得一次 90.188 秒 transport-timeout 脱敏结果，RQ-188/189/190/191 已完成后续有界拆分、预算、首正文和完整流观察；RQ-192 离线装配合同与 RQ-193 智谱 conformance 已完成，RQ-194 已完成本地 `ZhipuStreamAdapter`（`stream_events()`/`assemble()`）及 `ZhipuProvider.stream_adapter()` 显式工厂，聚焦 `20 passed`，提交 `a7580e861cd986c026040c7fcfcc3fa577737961` / Actions `33496237588` 三 job exact-SHA 全绿；RQ-195 已完成候选 runtime 接线架构评审，确认不完整流必须先经 BoundaryObservation，推荐隔离候选评测调用方，不直接接入产品 Runtime。严格 Flash v1 仍保持 2048/零额外调用，`capabilities.streaming` 仍为 `False`，候选未注册；下一项为 `candidate-runtime-wiring-design / pending`，完整 8E/8F 仍未完成 |
 
 > 阶段 8 表格中的 RQ-195 下一项是历史摘要。RQ-196 已完成候选 runtime wiring design，RQ-197 已完成边界观察本地实现，
-> RQ-198 已取得同 SHA 公共 CI，RQ-199 已完成候选评估台设计，RQ-200 已完成 fake/local 候选评估台实现，RQ-201 已取得 exact-SHA 公共 CI，RQ-202 已完成候选 recovery 诊断边界复核与最小离线加固，RQ-203 已完成版本化候选 recovery 诊断协议设计，RQ-204 已完成 fake/local 版本化诊断实现；当前唯一下一项为 `candidate-recovery-diagnostic-version-public-ci / pending`。Flash 是当前唯一主力候选目标，
+> RQ-198 已取得同 SHA 公共 CI，RQ-199 已完成候选评估台设计，RQ-200 已完成 fake/local 候选评估台实现，RQ-201 已取得 exact-SHA 公共 CI，RQ-202 已完成候选 recovery 诊断边界复核与最小离线加固，RQ-203 已完成版本化候选 recovery 诊断协议设计，RQ-204 已完成 fake/local 版本化诊断实现，RQ-205 已完成 exact-SHA 公共 CI 与协议演练；当前唯一下一项为 `candidate-recovery-diagnostic-real-call / pending-user-authorization`。Flash 是当前唯一主力候选目标，
 > 但仍未注册为产品默认，8E/8F、生产准入和 `production_media=0` 的边界不变。
 
 ## 横向能力总账
@@ -1221,3 +1221,18 @@ evidence：activation disabled、候选未注册、不打开 `capabilities.strea
 当前唯一下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`；
 先取得同一干净实现提交的 exact-SHA 公共 CI 和协议 dry-run。
+
+### 2026-09-02：RQ-205 版本化候选 recovery 诊断公共闭环
+
+RQ-205 已完成 RQ-204 的同 SHA 公共验证与 fake/local 协议演练：提交
+`90242822df0e47304700644572bc12f0a3aa88ad` 的 Actions run `33598541029` 三 job 全绿，公共 pytest
+为 `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面为 `201 passed, 1 warning`；
+前端契约、typecheck、unit、build、E2E、RAG、治理和打包冒烟均通过。一次本地 fake primary 演练写入临时
+canonical body-free 回执，未读取 Key、未发真实 API、未执行第二次 recovery。
+
+候选仍是 8-Advanced evaluation evidence，不是 8-Core 产品能力：activation disabled、
+`execution_allowed=false`、`capabilities.streaming=False`，严格 Flash v1 2048/零额外调用、默认模型、
+产品 Runtime、Portal、Account、Workbench、Auth、路由与 `production_media=0` 不变。当前唯一下一精确
+checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`；
+真实 recovery、G53-7、黄金切片、生产安全/部署/合规与 8F 仍需另行裁决。
