@@ -11,6 +11,7 @@ import pytest
 from app.evaluation.candidate_evaluation_harness import (
     CANDIDATE_EVALUATION_RECEIPT_SCHEMA,
     CandidateActivationGate,
+    CandidateEvaluationError,
     CandidateEvaluationHarness,
     CandidateEvaluationLedger,
     CandidateEvaluationRunSpec,
@@ -23,7 +24,7 @@ from app.evaluation.candidate_stream_contract import (
     PRIMARY_CANDIDATE_BINDING,
 )
 from app.providers.models import ChatMessage, ChatRequest, MessageRole, TokenUsage
-from app.providers.response_completion_policy import ResponseRequestContext
+from app.providers.response_completion_policy import ResponseDisposition, ResponseRequestContext
 from app.providers.response_recovery_contract import RecoveryStateError
 from app.providers.stream_adapter_contract import (
     ProviderStreamEvent,
@@ -427,6 +428,63 @@ def test_consumer_failure_is_independent_and_body_free():
     assert result.receipt.consumer_error_code == "consumer_failed"
     assert result.consumer_delivered is False
     assert "consumer body secret" not in json.dumps(result.as_dict())
+
+
+def test_receipt_state_and_top_level_error_are_derived_not_caller_selectable():
+    result = CandidateEvaluationHarness().evaluate(
+        _request(),
+        _run(),
+        transport=_Transport(lambda: _Stream(_complete_events())),
+    )
+
+    with pytest.raises(CandidateEvaluationError, match="receipt_state_mismatch"):
+        replace(
+            result.receipt,
+            terminal_state="awaiting_recovery",
+            next_action="requires_registered_runtime",
+        )
+    with pytest.raises(CandidateEvaluationError, match="receipt_error_mismatch"):
+        replace(
+            result.receipt,
+            safe_error_code="forged_error",
+            safe_error_stage="observe",
+        )
+
+
+def test_attempt_receipt_decision_and_assembly_are_bound_to_observation():
+    result = CandidateEvaluationHarness().evaluate(
+        _request(),
+        _run(),
+        transport=_Transport(lambda: _Stream(_complete_events())),
+    )
+    attempt = result.receipt.attempts[0]
+
+    with pytest.raises(CandidateEvaluationError, match="attempt_decision_mismatch"):
+        replace(
+            attempt,
+            disposition=ResponseDisposition.FAIL_CLOSED,
+        )
+    with pytest.raises(CandidateEvaluationError, match="assembly_state_mismatch"):
+        replace(attempt, assembled_complete=False)
+    with pytest.raises(CandidateEvaluationError, match="budget_projection_mismatch"):
+        replace(attempt, budget_exceeded=True)
+
+
+def test_single_attempt_timeout_is_enforced_before_cumulative_budget():
+    ticks = iter((0.0, 91.0, 91.0))
+
+    def clock():
+        return next(ticks)
+
+    result = CandidateEvaluationHarness().evaluate(
+        _request(),
+        _run(),
+        transport=_Transport(lambda: _Stream(_complete_events())),
+        clock=clock,
+    )
+
+    assert result.receipt.terminal_state == "fail_closed"
+    assert result.receipt.safe_error_code == "elapsed_limit"
 
 
 def test_explicit_null_content_is_not_silently_promoted_to_empty_candidate_shape():

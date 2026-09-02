@@ -622,6 +622,66 @@ class CandidateEvaluationAttemptReceipt:
         if self.consumer_error_code is not None:
             _require_safe_code(self.consumer_error_code, "consumer_error_code")
         observed = self.observation.observation
+        if self.disposition is ResponseDisposition.COMPLETE_TEXT:
+            if (
+                observed.observation_state != "complete_text"
+                or self.error_code is not None
+                or self.reason_code != "complete_text"
+            ):
+                raise CandidateEvaluationError("attempt_decision_mismatch", "decision")
+        elif self.disposition is ResponseDisposition.TOOL_CALLS_READY:
+            if (
+                observed.observation_state != "tool_calls_ready"
+                or self.error_code is not None
+                or self.reason_code != "tool_calls_ready"
+            ):
+                raise CandidateEvaluationError("attempt_decision_mismatch", "decision")
+        elif self.disposition is ResponseDisposition.CANDIDATE_ELIGIBLE:
+            if (
+                observed.observation_state not in {"candidate_shape", "awaiting_recovery"}
+                or self.assembled_complete
+                or self.error_code != "incomplete_chat_response"
+                or self.reason_code != "fresh_recovery_shape_eligible"
+            ):
+                raise CandidateEvaluationError("attempt_decision_mismatch", "decision")
+        else:
+            if (
+                self.assembled_complete
+                or observed.observation_state not in {"fail_closed", "candidate_shape"}
+                or self.error_code is None
+            ):
+                raise CandidateEvaluationError("attempt_decision_mismatch", "decision")
+        if self.assembled_complete != (
+            self.disposition
+            in {ResponseDisposition.COMPLETE_TEXT, ResponseDisposition.TOOL_CALLS_READY}
+        ):
+            raise CandidateEvaluationError("assembly_state_mismatch", "assembly")
+        expected_budget_exceeded = (
+            (
+                observed.output_tokens is not None
+                and observed.output_tokens
+                > GLM53_FLASH_FRESH_RECOVERY_RUNTIME_CANDIDATE_V1.max_output_tokens
+            )
+            or (
+                observed.elapsed_ms
+                > round(
+                    GLM53_FLASH_FRESH_RECOVERY_RUNTIME_CANDIDATE_V1.agent_timeout_s
+                    * 1000
+                )
+            )
+            or (
+                observed.input_tokens is not None
+                and observed.input_tokens
+                > GLM53_FLASH_FRESH_RECOVERY_RUNTIME_CANDIDATE_V1.max_total_input_tokens
+            )
+            or (
+                observed.output_tokens is not None
+                and observed.output_tokens
+                > GLM53_FLASH_FRESH_RECOVERY_RUNTIME_CANDIDATE_V1.max_total_output_tokens
+            )
+        )
+        if self.budget_exceeded != expected_budget_exceeded:
+            raise CandidateEvaluationError("budget_projection_mismatch", "budget")
         if self.elapsed_ms != observed.elapsed_ms:
             raise CandidateEvaluationError("observation_elapsed_mismatch", "trace")
         if observed.usage_state == "valid":
@@ -805,6 +865,31 @@ class CandidateEvaluationReceipt:
                 raise CandidateEvaluationError("error_stage_without_error", "receipt")
         if self.consumer_error_code is not None:
             _require_safe_code(self.consumer_error_code, "consumer_error_code")
+        expected_terminal_state, expected_next_action = _expected_receipt_state(
+            self.attempts
+        )
+        if (
+            self.terminal_state != expected_terminal_state
+            or self.next_action != expected_next_action
+        ):
+            raise CandidateEvaluationError("receipt_state_mismatch", "state")
+        if len(self.attempts) > 1:
+            raise CandidateEvaluationError("activation_attempt_mismatch", "activation")
+        last_observation = (
+            self.attempts[-1].observation.observation if self.attempts else None
+        )
+        expected_error_code = last_observation.error_code if last_observation else None
+        expected_error_stage = last_observation.error_stage if last_observation else None
+        if (
+            self.safe_error_code != expected_error_code
+            or self.safe_error_stage != expected_error_stage
+        ):
+            raise CandidateEvaluationError("receipt_error_mismatch", "error")
+        expected_consumer_error = (
+            self.attempts[-1].consumer_error_code if self.attempts else None
+        )
+        if self.consumer_error_code != expected_consumer_error:
+            raise CandidateEvaluationError("receipt_consumer_error_mismatch", "consumer")
         expected_provider_identity = (
             CANDIDATE_PROVIDER_ID,
             CANDIDATE_MODEL,
@@ -1133,7 +1218,12 @@ class CandidateEvaluationHarness:
             binding,
             clock=clock,
             max_output_tokens=request_max_output_tokens,
-            max_elapsed_ms=run.runtime_profile.max_total_elapsed_ms,
+            # The observer enforces the per-attempt agent deadline.  The
+            # ledger separately enforces the larger cumulative budget.
+            max_elapsed_ms=min(
+                run.runtime_profile.max_total_elapsed_ms,
+                round(reservation.spec.timeout_s * 1000),
+            ),
             require_model_observation=True,
             require_request_identity=True,
         )
@@ -1373,6 +1463,23 @@ def _stage_for_code(code: str) -> str:
         "tool_call_arguments": "assemble",
         "invalid_assembled_response": "assemble",
     }.get(code, "observe")
+
+
+def _expected_receipt_state(
+    attempts: tuple[CandidateEvaluationAttemptReceipt, ...],
+) -> tuple[LedgerTerminalState, LedgerNextAction]:
+    """Derive the top-level state from settled attempt rows only."""
+
+    if not attempts:
+        return "awaiting_primary", "observe"
+    disposition = attempts[-1].disposition
+    if disposition is ResponseDisposition.COMPLETE_TEXT:
+        return "complete_text", "terminal_complete"
+    if disposition is ResponseDisposition.TOOL_CALLS_READY:
+        return "tool_calls_ready", "terminal_tool_calls"
+    if disposition is ResponseDisposition.CANDIDATE_ELIGIBLE:
+        return "awaiting_recovery", "requires_registered_runtime"
+    return "fail_closed", "terminal_fail_closed"
 
 
 def _record_as_dict(record: ResponseAttemptRecord) -> dict[str, Any]:
