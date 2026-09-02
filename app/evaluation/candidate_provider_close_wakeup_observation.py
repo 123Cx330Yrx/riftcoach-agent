@@ -23,7 +23,7 @@ from dataclasses import dataclass, field, replace
 from enum import StrEnum
 from pathlib import Path
 from re import fullmatch
-from typing import Any, Protocol, TypeAlias
+from typing import Any, Literal, Protocol, TypeAlias
 
 from app.providers.stream_adapter_contract import ProviderStreamEvent
 
@@ -107,7 +107,9 @@ class CloseWakeState(StrEnum):
     CHILD_ERROR = "child_error"
 
 
-CloseWakeCancelStatus: TypeAlias = str
+CloseWakeCancelStatus: TypeAlias = Literal[
+    "not_attempted", "returned", "raised", "timeout"
+]
 
 
 class CandidateCloseWakeObservationError(ValueError):
@@ -607,7 +609,6 @@ def observe_candidate_session(
     initial_timeout = _validate_timeout(initial_read_timeout_s, "initial_read_timeout_s")
     cancel_timeout = _validate_timeout(cancel_timeout_s, "cancel_timeout_s")
     grace_timeout = _validate_timeout(reader_grace_s, "reader_grace_s", maximum=10.0)
-    opened_at = clock()
     try:
         if request is None:
             session = session_factory(include_usage_tail=True)
@@ -633,7 +634,6 @@ def observe_candidate_session(
             for category in summarize_provider_event(first_result.event):
                 if category not in categories:
                     categories.append(category)
-            second_started = clock()
             _thread, second_result = _start_reader(session)
             if second_result.done.wait(initial_timeout):
                 if second_result.kind == "event" and second_result.event is not None:
