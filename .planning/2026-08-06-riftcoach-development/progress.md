@@ -5575,3 +5575,18 @@
 - [boundary] 没有新增代码、真实 API/Key、recovery、G53-7、黄金切片或生产能力；Stage 8/8E 仍 `in_progress`，8F 未开始，`production_media=0`。
 - [next] 当前唯一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`；待再次授权后实现 fake/local v2 协议。
+
+## 2026-09-02：RQ-204 版本化候选 recovery 诊断本地实现
+
+- [completed-local] 按 RQ-203 冻结协议新增 `app/evaluation/candidate_recovery_diagnostic_v2.py`、
+  `tests/test_candidate_recovery_diagnostic_v2.py` 和实现计划/学习 walkthrough；
+  `app/evaluation/__init__.py` 仅导出评估 API，不注册 Provider。
+- [verification-local] 新模块聚焦 `22 passed`；候选相关回归 `67 passed`，流式/适配器/恢复合同
+  相邻回归 `82 passed`；Python 3.11/3.13 compileall、静态 no-I/O/import 检查和 diff check 通过。
+  系统 Python 3.13 用户环境已安装 `pytest 9.1.1`，项目测试继续使用仓库 `.venv` 的完整依赖。
+- [boundary] activation 仍 sealed `disabled`，primary 先 reserve、一次事件泵和 body-free receipt
+  已落地；没有真实 API/Key、第二次 recovery、候选注册、产品 streaming、Workbench/Portal/Account/Auth
+  修改、G53-7、黄金切片或生产准入。严格 Flash v1 2048/零额外调用与 `production_media=0` 不变。
+- [next] 当前唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`；
+  等待同一干净实现提交的 exact-SHA 公共 CI 和协议 dry-run。

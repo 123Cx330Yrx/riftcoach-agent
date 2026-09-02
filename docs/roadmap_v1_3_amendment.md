@@ -1144,3 +1144,20 @@ Account、Workbench、Auth、路由或 `production_media=0`。实现、真实 re
 
 下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`。
+
+## 2026-09-02：RQ-204 版本化候选 recovery 诊断实现边界
+
+RQ-204 继续遵守 v1.3 的 8-Core/8-Advanced 分层：只把 RQ-203 的版本化诊断协议落成
+candidate-only fake/local evaluation seam，不把 recovery、streaming 或 8192 输出上限提升为
+8-Core 产品能力。实现使用 primary I/O 前 reserve、一次 normalized event pump、body-free
+observer/receipt、Usage/预算/费用三态、失败类别和 create-only canonical JSON；不包装为
+`LLMProvider`，不注册候选，不修改 AgentLoop、默认模型、统一 Runtime Trace 或前端。
+
+新模块聚焦 `22 passed`，候选相关回归 `67 passed`，流式/适配器/恢复合同相邻回归 `82 passed`，
+并通过编译、静态 no-I/O/import 与 diff check。activation 仍 disabled，严格 Flash v1 2048/零额外
+调用、`capabilities.streaming=False`、`production_media=0` 和 8E/8F 的生产、合规、黄金切片闸门
+不变；没有真实 API/Key、第二次 recovery、G53-7、黄金切片或生产准入证据。
+
+当前唯一下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`；
+先取得同一干净实现提交的 exact-SHA 公共 CI 与协议 dry-run，不能把本地 fake 证据写成生产成熟度。

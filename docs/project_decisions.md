@@ -3132,3 +3132,22 @@ canonical UTF-8/LF、body-free JSON，不写产品 Runtime Trace。
 Workbench、Auth、路由和 `production_media=0` 不变，Stage 8/8E 继续进行中，8F 未开始。下一精确项为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`，
 实现需再次明确授权。
+
+### RQ-204：实现版本化候选 recovery 诊断接缝（2026-09-02）
+
+按 RQ-203 的协议设计完成隔离实现：`app/evaluation/candidate_recovery_diagnostic_v2.py`
+负责 candidate-only staged ledger、primary I/O 前 reserve、一次 normalized event pump、
+临时 assembler、body-free 派生 receipt、预算/费用/延迟/失败投影和 canonical create-only
+JSON；`app/evaluation/__init__.py` 只导出评估 API，不把它包装成 `LLMProvider`，不注册
+Provider 或产品 Runtime。
+
+新模块聚焦 `22 passed`，候选相关回归 `67 passed`，流式/适配器/恢复合同相邻回归 `82 passed`，
+compileall、静态 no-I/O/import 和 diff check 通过。unknown Usage 与未验证价格保持
+`null/unknown`，控制异常在安全结算后继续抛出，disabled activation 永远不发送第二次请求。
+
+该项仍属于 8-Advanced candidate evidence，不是 8-Core 生产能力；候选未注册、
+`execution_allowed=false`、`capabilities.streaming=False`，严格 Flash v1 2048/零额外调用、
+默认模型、AgentLoop、统一 Trace/预算、Portal、Account、Workbench、Auth、路由和
+`production_media=0` 不变。没有真实 API/Key、fresh-recovery、G53-7、黄金切片、生产准入或 8F
+证据。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`。

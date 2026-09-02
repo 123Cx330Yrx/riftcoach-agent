@@ -4014,3 +4014,22 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 - `EVIDENCE`：设计明确单次/累计预算、Usage/费用三态、六段单调延迟、失败第一现场和 body-free 原子 create-only 回执；新增 ADR-0079、设计计划和学习 walkthrough。没有新增代码、结果 JSON、真实 API/Key 或产品接线。
 - `BOUNDARY-NEXT`：候选仍未注册、`execution_allowed=false`、`capabilities.streaming=False`，严格 Flash v1、默认模型、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变；唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`，不进入 G53-7、黄金切片、生产准入或 8F。
+
+## 2026-09-02：RQ-204 版本化候选 recovery 诊断本地实现
+
+- `IMPLEMENTATION`：将 RQ-203 协议落成隔离的 `candidate_recovery_diagnostic_v2.py`，并在
+  `app/evaluation/__init__.py` 仅导出评估 API。实现 candidate-only staged ledger、primary
+  I/O 前 reserve、一次 normalized event pump、临时 assembler、派生 receipt 和 canonical
+  create-only JSON；不接 ProviderRegistry、AgentLoop 或统一 Runtime Trace。
+- `FAIL-CLOSED`：缺 EOF/terminal/Usage、身份/序号/工具/预算/时钟/关闭/控制/consumer 异常和
+  伪造回执均安全结算或拒绝；unknown Usage/未验证价格保持 `null/unknown`，disabled gate 不
+  发送第二次 recovery 请求，正文、reasoning、工具参数、Key 和异常原文不进回执。
+- `VERIFICATION-LOCAL`：新模块 `22 passed`，候选相关回归 `67 passed`，流式/适配器/恢复合同
+  相邻回归 `82 passed`；Python 3.11/3.13 compileall、静态 no-I/O/import 与 diff check 通过。
+  系统 Python 3.13 用户环境已安装 `pytest 9.1.1`，项目测试仍由仓库 `.venv` 提供依赖。
+- `BOUNDARY-NEXT`：activation 仍 disabled，候选未注册、不打开 `capabilities.streaming`，严格
+  Flash v1 2048/零额外调用、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和
+  `production_media=0` 不变；没有真实 API/Key、第二次 recovery、G53-7、黄金切片、生产准入或 8F。
+  当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`，
+  先取得同一干净实现提交的 exact-SHA 公共 CI 和协议 dry-run。

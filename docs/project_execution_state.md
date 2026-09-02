@@ -27,6 +27,8 @@ pause_reason: ""
   Stage 8/8E 继续 `in_progress`，`production_media=0`。RQ-195 已完成候选 runtime 接线架构评审，
   RQ-196 又完成了候选 runtime wiring design：冻结隔离评测调用方、body-free BoundaryObservation、
   四元身份、共享校验、v2 预算和独立 Trace 投影；仍不直接改产品 Runtime。以下为此前连续诊断记录。）
+- RQ-204 最新状态补充：版本化候选 recovery 诊断已完成 fake/local 本地实现与比例回归，
+  系统 Python 3.13 用户环境已安装 `pytest 9.1.1`；项目验证仍使用仓库 `.venv` 的完整依赖。
 - 历史诊断记录：2026-09-01（RQ-190 已完成两次单路、有界的流式首个可见正文探针：同一冻结上下文、
   `reasoning_effort=low`、`max_tokens=2048` 下，`clear_thinking=true` 在 2.547 秒出现首个可见正文，
   `clear_thinking=false` 在 3.875 秒出现首个可见正文；两路均先观察到 reasoning，随后在正文出现时主动关闭，
@@ -109,7 +111,7 @@ pause_reason: ""
   为显式兼容/应急回退。旧 Dataset 的 30 秒仍是质量资源阈值，不是新档案执行截止；真实 G53-7 会拒绝 dirty
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
-- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`。RQ-193 提交 `8bcbaa5` 的 Actions run `33489903978` 与 RQ-194 提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 均三 job 全绿且 head_sha 精确匹配；RQ-194 聚焦测试为 `20 passed`。RQ-195 已完成架构评审，RQ-196 已完成设计，RQ-197 已完成 fake/local 边界观察合同实现与 `163 passed` 聚焦/相邻回归；实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的公共 CI run `33507627615` 三 job 全绿且 head_sha 精确匹配（公共 pytest `2178 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-199 已完成隔离候选评估台设计，RQ-200 已完成 fake/local 候选 harness、staged ledger、单次事件泵与独立 body-free receipt 的本地实现及 `102 passed` 相邻回归；RQ-201 的实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 已取得 Actions run `33536168224` 三 job exact-SHA 公共通过（公共 pytest `2193 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-202 的离线加固提交 `67031145d3b3e5c864e881576c69e2fda931e950` 已取得 Actions run `33582049836` 三 job exact-SHA 公共通过（公共 pytest `2193 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-203 已完成版本化诊断协议设计；不注册候选、不打开 `capabilities.streaming`、不接入产品默认或自动执行 recovery/G53-7。
+- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`。RQ-193 提交 `8bcbaa5` 的 Actions run `33489903978` 与 RQ-194 提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 均三 job 全绿且 head_sha 精确匹配；RQ-194 聚焦测试为 `20 passed`。RQ-195 已完成架构评审，RQ-196 已完成设计，RQ-197 已完成 fake/local 边界观察合同实现与 `163 passed` 聚焦/相邻回归；实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的公共 CI run `33507627615` 三 job 全绿且 head_sha 精确匹配（公共 pytest `2178 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-199 已完成隔离候选评估台设计，RQ-200 已完成 fake/local 候选 harness、staged ledger、单次事件泵与独立 body-free receipt 的本地实现及 `102 passed` 相邻回归；RQ-201 的实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 已取得 Actions run `33536168224` 三 job exact-SHA 公共通过（公共 pytest `2193 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-202 的离线加固提交 `67031145d3b3e5c864e881576c69e2fda931e950` 已取得 Actions run `33582049836` 三 job exact-SHA 公共通过（公共 pytest `2193 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-203 已完成版本化诊断协议设计，RQ-204 已完成 fake/local 版本化诊断实现与本地回归；不注册候选、不打开 `capabilities.streaming`、不接入产品默认或自动执行 recovery/G53-7。
 - RQ-179–RQ-181 的 exact-SHA、G53-7 失败与一次性正文零留存诊断证据均保持不可变，旧证据不覆盖；RQ-182 聚焦离线测试为 `41 passed`，RQ-183 聚焦离线合同为 `30 passed`，均未改变 Provider-neutral 消息、AgentLoop、ToolRuntime、Trace、预算、默认模型、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
 - 2026-08-31 按用户确认新建普通 API Key 后重开 G53-3：进程预检确认 `zhipu`、普通 API 端点与
   `glm-5.3-flash` 均生效；未输出 Key 值，也未改除用户自行更新的 `.env` 之外的默认配置。A1 结构化合同
@@ -3947,3 +3949,26 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 - `[unchanged]` 本门只有 ADR-0079、实施计划和学习材料；没有新增代码、结果 JSON、真实 API/Key、recovery、G53-7 或黄金切片。候选未注册，`execution_allowed=false`、`capabilities.streaming=False`，严格 Flash v1、默认模型、AgentLoop、Workbench、Portal、Account、Auth、路由和 `production_media=0` 均不变；Stage 8/8E 继续 `in_progress`，8F 未开始。
 - `[boundary-next]` 当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`；只有再次明确授权后才实现 v2 fake/local 协议与聚焦测试，随后再决定真实 recovery、G53-7、黄金切片和生产准入。
+
+### 2026-09-02：RQ-204 版本化候选 recovery 诊断本地实现
+
+- `[completed-local]` 按 RQ-203 协议新增 `candidate_recovery_diagnostic_v2.py`、严格的
+  body-free request/receipt allow-list、candidate-only staged ledger、一次 normalized
+  event pump、临时 assembler、预算/费用/六段延迟投影与 create-only canonical JSON；
+  `app/evaluation/__init__.py` 只导出评估 API，不注册 Provider 或产品 Runtime。
+- `[fail-closed]` primary 在 I/O 前 reserve，open/read/close/clock/control/consumer 异常均
+  安全 settle；缺 EOF/terminal/Usage、身份/序号/工具/预算冲突、时钟反转、伪造回执和
+  forbidden body fields 均拒绝。disabled gate 始终不发送第二次 recovery 请求，unknown
+  Usage/未验证价格保持 `null/unknown`。
+- `[verification-local]` 新模块聚焦 `22 passed`；候选相关回归 `67 passed`，流式/适配器/
+  恢复合同相邻回归 `82 passed`；Python 3.11/3.13 compileall、静态 no-I/O/import 检查、
+  `git diff --check` 通过。系统 Python 3.13 用户环境已安装 `pytest 9.1.1`，项目测试仍以
+  仓库 `.venv`（含项目依赖）为准。
+- `[unchanged]` 严格 Flash v1 继续 2048/零额外调用，候选 `execution_allowed=false`、
+  `capabilities.streaming=False`；默认模型、AgentLoop、统一 Trace/预算、Portal、Account、
+  Workbench、Auth、路由、媒体采用和 `production_media=0` 不变。没有真实 API/Key、fresh
+  recovery、G53-7、黄金切片、生产准入或 8F 证据。
+- `[boundary-next]` 当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`；
+  先在同一干净实现提交上取得 exact-SHA 公共 CI 和协议 dry-run，之后仍需另行授权真实
+  recovery、G53-7、黄金切片、生产安全/部署与 8F。

@@ -884,6 +884,8 @@ groups:
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
         - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
         - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
         - docs/adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md
@@ -997,6 +999,8 @@ groups:
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
       code_map:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1004,6 +1008,8 @@ groups:
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
         - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
@@ -1046,6 +1052,8 @@ groups:
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
         - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
@@ -1102,6 +1110,8 @@ groups:
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
         - docs/plans/2026-08-30-8e-agent-mainline-handoff-readme-factual-alignment.md
@@ -1183,6 +1193,8 @@ groups:
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
         - docs/plans/2026-08-30-8e-agent-mainline-handoff-readme-factual-alignment.md
@@ -1241,6 +1253,8 @@ groups:
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
         - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
@@ -1327,6 +1341,8 @@ groups:
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
         - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md

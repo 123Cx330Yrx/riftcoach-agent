@@ -5305,3 +5305,23 @@
 - 分段单调延迟和第一失败现场比单一总耗时更能解释 transport/protocol/completion 差异；原始异常、正文、reasoning、Prompt、工具参数、Key 和 request ID 均不进回执。
 - 设计退出后，下一精确项为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`；实现仍需另行授权。
+
+## 2026-09-02：RQ-204 版本化候选 recovery 诊断本地实现发现
+
+- 将新诊断器与旧同步诊断器、产品 Provider 和统一 Runtime Trace 分离是必要条件；
+  `app/evaluation/candidate_recovery_diagnostic_v2.py` 只依赖 provider-neutral 模型/策略/
+  流合同与标准库，静态导入检查未发现 SDK、网络、Key loader 或产品 Runtime 依赖。
+- 请求和回执的 allow-list 必须在值对象构造、`from_dict()` 和最终 JSON 三层同时执行；
+  仅检查顶层 JSON 会让嵌套正文或工具字段漏出。字段存在性与长度也要分开保存，不能把
+  缺失和显式 `null` 合并。
+- `reserve`/`settle` 的时序与延迟采样相互独立：时钟反转或不可用时延迟保持 `null`，但
+  预留槽位仍必须结算；关闭/控制异常不能被普通 close 错误覆盖，控制异常要在安全回执后继续抛出。
+- 未验证价格快照不能生成估算费用；Usage、预算和成本都需要明确的 unknown 状态，不能
+  用 `or 0` 制造可用余额。disabled activation 命中候选形状只能留下等待 recovery 的诊断，
+  不能发第二次请求。
+- 新模块聚焦 `22 passed`，候选相关回归 `67 passed`，流式/适配器/恢复合同相邻回归
+  `82 passed`；compileall、diff check 和静态 no-I/O/import 检查通过。系统 Python 3.13
+  已补装 `pytest 9.1.1`，但项目依赖仍由仓库 `.venv` 提供。
+- 当前唯一下一精确项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`；
+  公共 CI 与协议 dry-run 需要绑定同一干净实现提交，不能把本地 fake 证据写成生产准入。

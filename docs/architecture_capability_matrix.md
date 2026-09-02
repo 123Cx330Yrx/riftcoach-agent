@@ -792,3 +792,20 @@ body-free 原子回执。该设计不包装 `LLMProvider`、不注册候选、�
 严格 Flash v1、默认模型、AgentLoop、Portal、Account、Workbench、Auth、路由和 `production_media=0`
 不变，Stage 8/8E 继续 `in_progress`。下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`。
+
+### 2026-09-02：RQ-204 版本化候选 recovery 诊断实现能力边界
+
+RQ-204 将 RQ-203 的协议设计实现为 `completed-local / candidate-only` 的评估证据，仍不是
+Runtime capability。新模块位于 `app/evaluation/candidate_recovery_diagnostic_v2.py`，以
+candidate-only staged ledger、一次 normalized event pump、body-free observer/receipt 和
+派生预算/费用/失败投影组成；没有 Provider/AgentLoop/产品 Runtime 注册或真实网络入口。
+
+新模块聚焦 `22 passed`，候选相关回归 `67 passed`，流式/适配器/恢复合同相邻回归 `82 passed`，
+compileall、静态 no-I/O/import 与 diff check 通过。候选 activation 仍 disabled、
+`execution_allowed=false`、`capabilities.streaming=False`；严格 Flash v1 2048/零额外调用、
+默认模型、Portal/Account/Workbench/Auth、路由和 `production_media=0` 不变。未知 Usage 或未
+验证价格保持 unknown/null；没有真实 recovery、G53-7、黄金切片、生产准入或 8F 证据。
+
+下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`，
+先取得同一干净实现提交的 exact-SHA 公共 CI 与协议 dry-run。
