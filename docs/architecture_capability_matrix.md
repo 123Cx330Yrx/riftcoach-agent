@@ -894,3 +894,12 @@ SHA-256 `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`、`43
 2048/零额外调用、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0`
 不变；下一精确 checkpoint 保持
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`。
+
+### RQ-210：候选关闭报告能力边界（2026-09-03）
+
+RQ-210 新增的只是候选内部内存 seam：`ZhipuStreamCloseReport` 为迭代器和外层 SDK stream wrapper 提供 body-free
+的分资源状态投影，并维持旧 `close_failed` 兼容。A03/A10/Q02 及其他产品 capability 均 unchanged；没有新增
+持久 receipt 字段、raw HTTP response 控制、非阻塞 close 或 wakeup 证据。实现本地聚焦 73 passed、相邻集合
+182 passed/27 subtests；这些是候选可复现性证据，不是 provider 或公共生产能力。Actions `33657368435` 三 job 已
+`completed/success` 且 head SHA 精确匹配；公共 pytest `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，
+PostgreSQL 控制面 `201 passed, 1 warning`。

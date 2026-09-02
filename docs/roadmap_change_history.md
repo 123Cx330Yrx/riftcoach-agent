@@ -4120,3 +4120,11 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
   `production_media=0` 不变；唯一下一精确 checkpoint 仍为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，
   后续 provider close/wakeup 拆分或真实请求需新的明确一次性授权。
+
+### 2026-09-03：RQ-210 候选会话分资源关闭报告边界裁决
+
+接受在候选内部增加仅内存、body-free 的 `ZhipuStreamCloseReport`：它分别投影迭代器和外层 SDK stream wrapper
+的关闭状态、组合状态与对象别名，逐资源尝试清理，并保留旧 `close_failed`/RQ-209 回执兼容性。拒绝把该投影
+解释为底层 HTTP response 已关闭、close 非阻塞或已唤醒 pending `next()`；`cancel()` 仍同步经过 SDK close。
+本批不升级 receipt/schema、不改变 8E 路线或产品能力；实现提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 的
+公共 CI `33657368435` 三 job 已 exact-SHA 成功；后续 provider-level 观察或持久分资源字段仍需另立决策并获明确授权。

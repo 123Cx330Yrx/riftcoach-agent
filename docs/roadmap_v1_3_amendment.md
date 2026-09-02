@@ -1247,3 +1247,9 @@ body-free 回执由本地证据提交 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c`
 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变；Stage 8/8E 仍 `in_progress`，
 8F、G53-7、黄金切片和生产准入不因本观察提前完成。当前下一精确 checkpoint 保持原值，后续 provider close/wakeup
 拆分或真实请求必须另行授权。
+
+### RQ-210 边界澄清（2026-09-03）
+
+RQ-210 不新增、重排或重分类阶段，也不把候选流关闭报告提升为 8-Core 能力。它属于 8-Advanced 的 candidate-only
+证据：仅在 `ZhipuStreamSession` 内存中区分迭代器和外层 SDK stream wrapper，旧 receipt/schema 与产品 Runtime
+保持不变。公共 CI 已完成；provider-level cancel/wakeup 与生产准入仍是独立闸门，8E coverage 继续按既有 planned 状态维护。

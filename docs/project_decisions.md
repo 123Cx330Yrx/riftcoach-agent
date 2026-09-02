@@ -3241,3 +3241,12 @@ Portal/Account/Workbench/Auth、路由和 `production_media=0` 不变，Stage 8/
 `production_media=0` 不变；不注册候选、不发 recovery/重试、不进入 G53-7 或 8F。若要拆分关闭资源状态或再次
 真实观察，另立后续决策/ADR 并重新取得明确一次性授权；当前唯一下一 checkpoint 保持
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`。
+
+### RQ-210：采用候选会话分资源关闭报告（2026-09-03）
+
+决策：在不改 RQ-209 v2 receipt/schema 2.0.0 的前提下，为 `ZhipuStreamSession` 暴露仅内存、不可变、body-free
+的 `ZhipuStreamCloseReport`。它区分 `iterator_state`、外层 `sdk_stream_state`、`composite_state` 和
+`shared_resource`，close 逐资源最多一次并继续保留旧 `close_failed` 投影。范围严格限于候选评估接缝；不注册候选、
+不打开 `capabilities.streaming`、不接入 AgentLoop/产品 Runtime，也不修改 Portal、Account、Workbench、Auth、
+路由或 `production_media=0`。`cancel()` 仍同步调用 SDK close，因此不宣称底层 response cancel、非阻塞或唤醒能力；
+若未来要持久化分资源状态或将报告作为稳定公共合同，必须另立 ADR 并升级 schema/allow-list/CI。

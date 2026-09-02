@@ -571,3 +571,12 @@ RQ-209 已记录/完成 1 次有界真实 primary 并以 `fail_closed / elapsed_
 候选仍为 activation gate disabled、candidate 未注册，`capabilities.streaming=False`、严格 Flash v1 2048/零额外调用和 8E coverage planned
 保持不变。下一次若要拆分 provider response cancel、迭代器清理或重做真实观察，需要新的明确一次性授权；在此
 之前不改变产品 Runtime、Workbench、前端或默认模型。
+
+### 2026-09-03：RQ-210 候选会话关闭报告
+
+新增 [RQ-210 关闭报告 walkthrough](8e-glm53-candidate-close-report-walkthrough.md)，记录一个容易被混淆的边界：
+组合 `close_state` 不能说明究竟是哪一个资源关闭成功或失败，因此候选会话在内存中分别观察迭代器与外层 SDK
+stream wrapper，并用 `shared_resource` 表示对象别名。材料同时区分“取消请求”“资源关闭”和“唤醒挂起读取”，
+说明 body-free 约束、异常脱敏、无 hook 时的 `not_observed` 语义及并发读取限制。RQ-209 回执/schema/SHA、候选 gate、
+产品 Runtime 和 `production_media=0` 均不变；实现提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 的 Actions
+`33657368435` 已 exact-SHA 三 job 成功，但本地/公共候选证据都不是生产成熟度证明，8E coverage 仍按 planned 维护。

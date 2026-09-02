@@ -1318,3 +1318,14 @@ body-free 回执位于
 `capabilities.streaming=False`、严格 Flash v1 2048/零额外调用、默认模型、Portal、Account、Workbench、Auth、
 路由和 `production_media=0` 不变，Stage 8/8E 仍 `in_progress`。当前唯一下一精确 checkpoint 保持原值，
 后续 close/wakeup 拆分或真实调用必须另行取得明确一次性授权。
+
+### RQ-210：候选会话关闭报告（2026-09-03）
+
+RQ-210 只是 8E 内的 candidate-only 工程证据补充，不新增或重排阶段，也不改变 8-Core/8-Advanced 分层。
+`ZhipuStreamSession` 在内存中区分迭代器与外层 SDK stream wrapper 的关闭状态，并保留旧组合投影；RQ-209
+v2 回执、schema 和 canonical SHA 不变。该报告不证明底层 HTTP response 可取消、close 非阻塞或能唤醒挂起读取，
+候选仍 disabled/未注册，`capabilities.streaming=False`，产品 Runtime、Workbench、Portal、Account、Auth、
+路由与 `production_media=0` 不变。提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 的 exact-SHA 公共 CI
+`33657368435` 三 job 已成功；公共
+pytest `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`。
+这仍不等于 provider close/wakeup 证明；8F、G53-7、黄金切片和生产准入顺序保持不变。

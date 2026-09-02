@@ -5679,3 +5679,11 @@
   `production_media=0` 不变；当前唯一下一精确 checkpoint 仍为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，
   后续 provider close/wakeup 拆分或新的真实请求须另行取得明确一次性授权。
+
+## 2026-09-03：RQ-210 候选会话分资源关闭报告公共闭环
+
+- [implemented-local] `ZhipuStreamSession` 新增仅内存、不可变、body-free 的 `ZhipuStreamCloseReport`；报告区分迭代器、外层 SDK stream wrapper、组合状态和对象别名，close 逐拥有资源最多调用一次，并继续保留旧 `close_failed` 投影。
+- [verification-local/public] adapter/deadline/v2/real 聚焦共 `73 passed`；扩展相邻集合共 `182 passed, 27 subtests passed`；compileall、`git diff --check` 和治理检查通过。实现提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 的 Actions `33657368435` 三 job 均 `completed/success` 且 head SHA 精确匹配；公共 pytest `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`。
+- [boundary] 未修改 RQ-209 v2 receipt/schema 2.0.0 或其 canonical JSON/SHA；没有新增持久字段、正文、异常文本或底层 HTTP response handle。候选仍 disabled/未注册，产品 Runtime、默认模型、Workbench、Portal、Account、Auth、路由和 `production_media=0` 不变。
+- [limitation] `cancel()` 仍同步调用 SDK close；本地报告不等于 provider-level 非阻塞 close、唤醒 pending `next()` 或 raw response cancel 证据。并发 close 的报告读取需等拥有者 close 返回，竞态未在本门扩大修复。
+- [next] RQ-210 已完成公共闭环；若要持久化分资源状态或重做 provider close/wakeup 真实观察，另立 ADR/schema 版本并重新取得明确授权。

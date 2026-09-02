@@ -128,8 +128,8 @@ Full productization and coverage remain
 RQ-197 已完成候选边界观察合同的 fake/local 实现，聚焦与相邻回归 `163 passed`；RQ-198 已记录同一干净提交的
 exact-SHA 公共 CI 三 job 全绿；RQ-199 已完成隔离候选评估台设计，RQ-200/RQ-201 已完成实现及公共验证，RQ-202
 已完成边界加固，RQ-203 已完成版本化诊断协议设计，RQ-204 已完成 fake/local 版本化诊断实现。当前活动阶段为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，
-仍不注册候选或改变默认。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-provider-close-wakeup-observation / pending-user-authorization`，
+RQ-210 的本地实现与 exact-SHA 公共 CI 已完成，仍不注册候选或改变默认。
 
 ## Phases
 
@@ -437,8 +437,8 @@ RQ-197 又完成候选边界观察合同的 fake/local 实现与 `163 passed` �
   `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`）；只发出 1 次 primary，诊断层在
   `90015ms` 的 attempt 墙钟处 `fail_closed / elapsed_limit`，组合 `close_state=failed` 不能归因具体底层资源，
   未执行 recovery/重试。当前唯一下一项仍为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
-  本次授权已消费，不自动发送新的真实请求，不注册候选、不打开 `capabilities.streaming`。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-provider-close-wakeup-observation / pending-user-authorization`；
+  本次离线实现与公共验证授权已消费，不自动发送新的真实请求，不注册候选、不打开 `capabilities.streaming`。
 
 ## RQ-195 / 候选 runtime 接线架构评审（2026-09-01）
 
@@ -2856,3 +2856,13 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [next] 当前唯一精确 checkpoint 保持
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   任何 provider close/wakeup 拆分观察或新的真实请求都必须另行获得明确一次性授权。
+
+## RQ-210 / 候选会话分资源关闭报告（2026-09-03）
+
+- Status: complete-public; candidate-only; receipt-schema-unchanged; provider-close-wakeup-unproven
+- [problem] RQ-209 的 `close_state=failed` 只给出组合清理投影，不能判断迭代器和外层 SDK stream wrapper 哪一层提供了关闭钩子；这阻碍了候选诊断的下一步边界判断，但不授权把底层 HTTP response 或唤醒能力写成已知事实。
+- [completed-local] `ZhipuStreamSession` 新增仅内存、不可变、body-free 的 `ZhipuStreamCloseReport`，分开记录 `iterator_state`、`sdk_stream_state`、`composite_state` 与 `shared_resource`；close 逐拥有资源最多调用一次，控制类异常在尝试其他资源后重抛，旧 `close_failed` 投影保持兼容。
+- [verification-local/public] adapter/deadline/v2/real 聚焦共 `73 passed`，扩展相邻集合共 `182 passed, 27 subtests passed`；compileall、diff check、governance 均通过。实现提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 的 Actions `33657368435` 三 job 均 `completed/success` 且 head SHA 精确匹配；公共 pytest `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`。
+- [unchanged] RQ-209 v2 receipt/schema 2.0.0、canonical JSON/SHA 原样不变；没有新增持久字段、正文、异常文本或 HTTP response handle。候选仍 disabled/未注册，`capabilities.streaming=False`，严格 Flash v1 2048/零额外调用、默认模型、AgentLoop、产品 Runtime、Portal、Account、Workbench、Auth、路由与 `production_media=0` 均不变。
+- [limitation] `cancel()` 仍同步调用 SDK close；报告不证明 close 非阻塞、能唤醒 pending `next()` 或底层 HTTP response 可取消。并发 close 的报告读取必须在拥有者的 close 调用完成后进行；该竞态未在本门扩大修复。
+- [next] 若后续需要 provider-level cancel/wakeup 观察或持久化分资源状态，另立 ADR/receipt 版本并重新取得明确授权；在此之前不自动真实重测、注册候选或进入 G53-7。

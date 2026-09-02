@@ -5406,3 +5406,10 @@
   attempt `budget_state=exceeded` 与累计 token unknown 的整体预算状态不矛盾。
 - 证据提交 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 目前只代表本地保存，未宣称公共 CI；候选、产品 Runtime、
   默认模型、Workbench、前端与 `production_media=0` 边界不变。下一精确项仍等待新的明确一次性授权。
+
+## 2026-09-03：RQ-210 候选会话分资源关闭报告发现
+
+- RQ-209 的组合 `close_state` 无法归因到某个底层资源；在不改变旧回执的前提下，`ZhipuStreamSession` 现在只在内存中分别记录迭代器与外层 SDK stream wrapper 的关闭状态，并用 `shared_resource` 标明对象别名。这里的 “SDK stream” 是外层 SDK 包装器，不是底层 HTTP response 的证明。
+- close 会继续尝试已拥有的资源，控制类异常不会阻止其他资源的清理；旧 `close_failed`/supervisor/receipt 投影保持兼容。没有 close/exit hook 时报告保持 `not_observed`，而不是假报成功。
+- `cancel()` 仍同步经过 SDK close；本门没有 `cancel_state`、`wakeup_observed` 或 raw-response handle，因此不能宣称非阻塞、唤醒挂起 `next()` 或物理连接已关闭。并发 close 先标记 closed 后再清理的旧时序仍存在，报告应在拥有者 close 返回后读取。
+- RQ-209 v2 receipt/schema 2.0.0、canonical JSON/SHA、候选 gate 和产品边界均未改变；同一实现提交的 exact-SHA 公共 CI 已成功，之后若讨论 provider-level 观察或持久 schema，仍需单独授权。
