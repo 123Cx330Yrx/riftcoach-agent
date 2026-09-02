@@ -839,6 +839,15 @@ class _BoundedPipe:
 
     def join(self, timeout: float = 1.0) -> None:
         self._thread.join(timeout)
+        if self._thread.is_alive() and self._stream is not None:
+            # A misbehaving descendant must not keep a pipe handle attached to
+            # the parent after the hard boundary.  Closing the read end is a
+            # bounded discard operation; the daemon collector may then exit.
+            try:
+                self._stream.close()
+            except Exception:
+                pass
+            self._thread.join(0.1)
         if not self._thread.is_alive() and self._stream is not None:
             try:
                 self._stream.close()
