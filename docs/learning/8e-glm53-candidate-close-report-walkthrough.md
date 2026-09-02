@@ -41,6 +41,8 @@ compileall、`git diff --check` 和治理检查通过。实现提交与 Actions 
 报告不含正文、reasoning、工具参数、异常原文、headers、Key、完整 request ID 或 HTTP response
 句柄。`cancel()` 仍同步调用 SDK close；没有 `cancel_state`/`wakeup_observed`，因此不能说 close
 非阻塞、唤醒 pending `next()` 或物理连接已关闭。并发读取应等待拥有者的 close 返回。
+旧 supervisor/回执为兼容旧合同，可能把“没有 hook 但也没有失败”聚合成 `closed`；新报告的
+`not_observed` 才表示本层没有观察到具体资源的释放，不应把两个投影混为一谈。
 
 ## 面试时的准确说法
 

@@ -24,6 +24,8 @@ RQ-209 的 body-free 回执只有组合 `close_state=failed`。它能说明候�
 关闭过程对每个拥有的对象最多尝试一次；普通异常映射为安全状态，控制类异常在尝试其他资源后
 继续抛出。旧 `close_failed`、supervisor 行为和 RQ-209 v2 receipt/schema 2.0.0 保持兼容，
 报告不写入持久回执，不携带正文、异常文本、headers、Key、request ID 或 HTTP response 句柄。
+因此，旧 supervisor/回执仍可能把“无 hook 但无失败”投影成兼容性的组合 `closed`；这不等于
+新报告已经观察到每个资源关闭，读取者应优先看 `close_report` 的 `not_observed` 状态。
 
 ## 未决边界与替代方案
 

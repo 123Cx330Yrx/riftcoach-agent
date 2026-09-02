@@ -5411,5 +5411,6 @@
 
 - RQ-209 的组合 `close_state` 无法归因到某个底层资源；在不改变旧回执的前提下，`ZhipuStreamSession` 现在只在内存中分别记录迭代器与外层 SDK stream wrapper 的关闭状态，并用 `shared_resource` 标明对象别名。这里的 “SDK stream” 是外层 SDK 包装器，不是底层 HTTP response 的证明。
 - close 会继续尝试已拥有的资源，控制类异常不会阻止其他资源的清理；旧 `close_failed`/supervisor/receipt 投影保持兼容。没有 close/exit hook 时报告保持 `not_observed`，而不是假报成功。
+- 兼容性意味着旧 supervisor/receipt 在“无 hook 且无失败”时仍可能聚合出 `closed`；这只是历史组合投影，新报告的 `not_observed` 才是本层资源观测状态，不能互相替代。
 - `cancel()` 仍同步经过 SDK close；本门没有 `cancel_state`、`wakeup_observed` 或 raw-response handle，因此不能宣称非阻塞、唤醒挂起 `next()` 或物理连接已关闭。并发 close 先标记 closed 后再清理的旧时序仍存在，报告应在拥有者 close 返回后读取。
 - RQ-209 v2 receipt/schema 2.0.0、canonical JSON/SHA、候选 gate 和产品边界均未改变；同一实现提交的 exact-SHA 公共 CI 已成功，之后若讨论 provider-level 观察或持久 schema，仍需单独授权。

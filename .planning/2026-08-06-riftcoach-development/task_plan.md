@@ -1127,6 +1127,11 @@ RQ-197 又完成候选边界观察合同的 fake/local 实现与 `163 passed` �
   不归因具体 SDK 资源，未执行 recovery/重试。当前唯一下一项仍为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   不自动发送新的真实请求，不注册候选、不打开 `capabilities.streaming`。
+- [current-evidence-override] RQ-210 已完成候选会话分资源关闭报告及 exact-SHA 公共 CI：提交
+  `15026a8abeeb2f343fbf893e55e2d94c512a86f6` / Actions `33657368435` 三 job 全绿；报告只在内存中区分
+  迭代器与外层 SDK stream wrapper，RQ-209 receipt/schema/SHA 不变。当前唯一下一项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-provider-close-wakeup-observation / pending-user-authorization`；
+  `cancel()` 仍同步经过 SDK close，不自动发真实请求、不注册候选、不打开 `capabilities.streaming`。
 - [completed-local-diagnosis] v6.1 source GET 成功后 POST 400、task id 空、无隐藏 task；strict sanitizer 三项 red→green、revised runner no-I/O self-test 完成；精确 error field 仍 unknown，不重试 relay；
 - [completed-live-rejected] 豆包标准套餐 only one Seedance comparator：首尾帧+母图 image-to-video；输出
   `e4b2f91...352cf` 因 source 0.407604/seam 0.144582/AAC/移动水印/暖金主导与 motion stack 不完整 rejected；
