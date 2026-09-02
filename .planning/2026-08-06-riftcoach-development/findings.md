@@ -5376,3 +5376,18 @@
 - 当前唯一下一精确项为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
   先做同 SHA 公共 CI，再决定是否授权新的真实观察。
+
+## 2026-09-02：RQ-208 候选流硬墙钟与 Usage 尾帧公共验证发现
+
+- RQ-207 实现提交 `015b022bfce6d03452f753794ac126a377f8355b` 的 Actions run `33613113829`
+  三 job 均 `completed/success` 且 `head_sha` 精确匹配；公共 pytest 为
+  `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面为
+  `201 passed, 1 warning`。
+- 同一公共 run 的网页契约/生产包、媒体审计工具链、RAG v1/独立 4M holdout、治理、compileall
+  与 Harness dry-run 均通过；本地四文件聚焦仍为 `67 passed`，本轮真实 API 调用为 `0`。
+- 公共 CI 只证明 candidate-only 接缝可复现，不能证明同步 opener 可被安全中断，也不能替供应商
+  SDK close 的非阻塞/唤醒证据；候选继续 disabled，产品默认、Workbench、Portal、Auth、路由、
+  `capabilities.streaming` 与 `production_media=0` 不变。
+- 当前唯一下一精确项推进为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  新的真实观察必须获得单独一次性授权，不能因 CI 通过自动重试或注册候选。

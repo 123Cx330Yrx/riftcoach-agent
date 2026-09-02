@@ -22,7 +22,7 @@
 > 这只证明候选接缝公共可复现，不等于产品 runtime 或生产准入。严格 Flash v1 仍保持 2048/零额外调用，
 > `capabilities.streaming` 仍为 `False`，候选仍未注册；RQ-195 评审、RQ-196 设计、RQ-197 边界观察实现与 RQ-198
 > 同 SHA 公共 CI 已完成。RQ-199 又完成了隔离候选评估台设计（两阶段 staged ledger、单次事件泵、独立 body-free receipt），RQ-200
-> 已完成 fake/local 候选评估台实现及 `102 passed` 相邻回归，且已取得 RQ-201 exact-SHA 公共 CI（run `33536168224`）；RQ-202 已完成候选 recovery 诊断边界复核与最小离线加固，RQ-203 已完成版本化候选 recovery 诊断协议设计，RQ-204 已完成 fake/local 版本化诊断实现，RQ-205 已完成 exact-SHA 公共 CI 与协议演练，RQ-206 已完成 1 次有界真实 primary 观察并以 `fail_closed / elapsed_limit` 收口；RQ-207 已完成候选硬墙钟会话、取消/关闭与 Usage 尾帧本地实现，四文件聚焦回归（deadline 10、v2 24、real 8、adapter 25）统一为 `67 passed`，但同步 opener 与 SDK `close()` 的非阻塞/唤醒能力仍待公共 CI 证明；当前唯一下一项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`，不能自动重试、注册候选或进入 G53-7；
+> 已完成 fake/local 候选评估台实现及 `102 passed` 相邻回归，且已取得 RQ-201 exact-SHA 公共 CI（run `33536168224`）；RQ-202 已完成候选 recovery 诊断边界复核与最小离线加固，RQ-203 已完成版本化候选 recovery 诊断协议设计，RQ-204 已完成 fake/local 版本化诊断实现，RQ-205 已完成 exact-SHA 公共 CI 与协议演练，RQ-206 已完成 1 次有界真实 primary 观察并以 `fail_closed / elapsed_limit` 收口；RQ-207 已完成候选硬墙钟会话、取消/关闭与 Usage 尾帧本地实现，四文件聚焦回归（deadline 10、v2 24、real 8、adapter 25）统一为 `67 passed`；RQ-208 已完成 RQ-207 的 exact-SHA 公共 CI：提交 `015b022bfce6d03452f753794ac126a377f8355b` 的 Actions run `33613113829` 三 job `completed/success`，公共 CI 已闭环，但同步 opener 与 SDK `close()` 的真实非阻塞/唤醒能力仍需真实重测验证；当前唯一下一项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，不能自动重试、注册候选或进入 G53-7；
 >
 > 历史观察：G53-5 矩阵完成 `11/11` 次真实调用、`46,151` tokens、`7/8` cases pass；
 > 随后独立 F7 follow-up 仅将 `max_tokens` 从 512 调至 2048，完成 `1/1` 调用、`557` tokens，
@@ -79,7 +79,7 @@ RQ-181 的一次诊断确认 Flash 在 2048 输出额度内先耗尽 reasoning�
 | 8 | Multi-Agent、可靠运行时与产品化 | 复杂任务何时并行、恢复、观察和交付 | Saber + Sea 选择性吸收 | 进行中；entry design、8A–8D、8E Batch B–E、Live integration、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共闭环，ADR-0053 reject 产品 Multi-Agent；Portal/Account 当前展示切片已按 RQ-163 阶段性收口并交回 Agent 主线，G53-1/2 已完成，RQ-177 的同 SHA G53-3 已通过，RQ-178 完成本地 A/B 预检，RQ-179 已为最终实现 A 取得 exact-SHA CI，RQ-180 已完成一次 G53-7 领域尝试但以 `provider_response_invalid/incomplete_chat_response` 首错拒绝，RQ-181 已确认首回合 `finish_reason=length` 且 2048 输出额度先被 reasoning 耗尽；RQ-182 已完成版本化响应完成策略与离线 TDD，RQ-183 已完成候选 runtime/attempt/预算/Trace 的离线合同，RQ-184 已完成候选 A/B exact-SHA 公共 CI 与同 SHA G53-3；RQ-186 已修复隔离诊断器的请求级截止，RQ-187 在完整 90 秒窗口取得一次 90.188 秒 transport-timeout 脱敏结果，RQ-188/189/190/191 已完成后续有界拆分、预算、首正文和完整流观察；RQ-192 离线装配合同与 RQ-193 智谱 conformance 已完成，RQ-194 已完成本地 `ZhipuStreamAdapter`（`stream_events()`/`assemble()`）及 `ZhipuProvider.stream_adapter()` 显式工厂，聚焦 `20 passed`，提交 `a7580e861cd986c026040c7fcfcc3fa577737961` / Actions `33496237588` 三 job exact-SHA 全绿；RQ-195 已完成候选 runtime 接线架构评审，确认不完整流必须先经 BoundaryObservation，推荐隔离候选评测调用方，不直接接入产品 Runtime。严格 Flash v1 仍保持 2048/零额外调用，`capabilities.streaming` 仍为 `False`，候选未注册；下一项为 `candidate-runtime-wiring-design / pending`，完整 8E/8F 仍未完成 |
 
 > 阶段 8 表格中的 RQ-195 下一项是历史摘要。RQ-196 已完成候选 runtime wiring design，RQ-197 已完成边界观察本地实现，
-> RQ-198 已取得同 SHA 公共 CI，RQ-199 已完成候选评估台设计，RQ-200 已完成 fake/local 候选评估台实现，RQ-201 已取得 exact-SHA 公共 CI，RQ-202 已完成候选 recovery 诊断边界复核与最小离线加固，RQ-203 已完成版本化候选 recovery 诊断协议设计，RQ-204 已完成 fake/local 版本化诊断实现，RQ-205 已完成 exact-SHA 公共 CI 与协议演练，RQ-206 已完成 1 次有界真实 primary 观察并以 `fail_closed / elapsed_limit` 收口，RQ-207 已完成候选硬墙钟会话与 Usage 尾帧本地实现（四文件聚焦 `67 passed`）；当前唯一下一项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`。Flash 是当前唯一主力候选目标，
+> RQ-198 已取得同 SHA 公共 CI，RQ-199 已完成候选评估台设计，RQ-200 已完成 fake/local 候选评估台实现，RQ-201 已取得 exact-SHA 公共 CI，RQ-202 已完成候选 recovery 诊断边界复核与最小离线加固，RQ-203 已完成版本化候选 recovery 诊断协议设计，RQ-204 已完成 fake/local 版本化诊断实现，RQ-205 已完成 exact-SHA 公共 CI 与协议演练，RQ-206 已完成 1 次有界真实 primary 观察并以 `fail_closed / elapsed_limit` 收口，RQ-207 已完成候选硬墙钟会话与 Usage 尾帧本地实现（四文件聚焦 `67 passed`）；RQ-208 已完成 RQ-207 的 exact-SHA 公共 CI（`015b022bfce6d03452f753794ac126a377f8355b` / Actions run `33613113829` 三 job `completed/success`）；当前唯一下一项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`。Flash 是当前唯一主力候选目标，
 > 但仍未注册为产品默认，8E/8F、生产准入和 `production_media=0` 的边界不变。
 
 ## 横向能力总账
@@ -1271,6 +1271,24 @@ RQ-207 在 8E 内完成候选 GLM-5.3 Flash 的显式 `CandidateStreamSession` �
 不能声称 opener I/O 已被预验证。同步 opener 可能越过计时器，SDK `close()` 是否非阻塞并唤醒 `next()` 仍未由
 provider/public CI 证明；超时必须 fail closed，Usage 缺失保持 unknown/null，close 失败只作次级证据。
 
+> 历史快照（RQ-207 本地实现完成时）：当时的下一精确 checkpoint 曾为
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
+> RQ-208 已完成该公共 CI，当前唯一指针见下方最新段落。
+
+### 2026-09-02：RQ-208 候选流硬墙钟与 Usage 尾帧公共闭环
+
+RQ-207 的候选硬墙钟会话、取消/关闭资源合同与 Usage 尾帧离线实现，已在提交
+`015b022bfce6d03452f753794ac126a377f8355b` 取得 Actions run `33613113829` 的 exact-SHA 公共 CI 闭环；
+`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均为 `completed/success`。本地四文件聚焦回归仍为
+`67 passed`，公共 pytest 为 `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面为
+`201 passed, 1 warning`。本轮没有新的真实 API、重试或第二次请求。
+
+该公共证据只证明候选评估接缝可复现，不证明供应商 SDK `close()` 的非阻塞/唤醒能力，也不构成模型一般能力、
+领域采用或生产成熟度结论；同步 opener 永久阻塞与 SDK close 无法唤醒 `next()` 仍需真实 provider 验证。候选仍
+`activation_state=disabled`、`execution_allowed=false`、`capabilities.streaming=False`，严格 Flash v1
+2048/零额外调用，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由与 `production_media=0` 不变，
+Stage 8/8E 继续 `in_progress`。
+
 当前唯一下一精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
-先以同一干净提交取得 exact-SHA 公共 CI 与协议验证，再另行授权真实观察，不能自动注册候选或进入 G53-7。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+公共 CI 已闭环，真实重测只能在新的明确一次性授权后执行，不能自动注册候选或进入 G53-7。

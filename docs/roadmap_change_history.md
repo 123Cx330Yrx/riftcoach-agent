@@ -4083,6 +4083,22 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 - `BOUNDARY`：Stage 8/8E 继续 `in_progress`；候选保持 `activation_state=disabled`、
   `execution_allowed=false`、`capabilities.streaming=False`，严格 Flash v1 2048/零额外调用，产品模块、
   路由、默认模型和 `production_media=0` 不变。
-- `BOUNDARY-NEXT`：当前唯一下一精确 checkpoint 为
+- `BOUNDARY-NEXT`（历史快照）：RQ-207 本地实现完成时的下一精确 checkpoint 曾为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
-  先取得同一干净提交的 exact-SHA 公共 CI 与协议验证，再另行授权真实观察，不自动注册候选或进入 G53-7。
+  RQ-208 已完成该公共 CI，当前指针以 RQ-208 条目为准。
+
+## 2026-09-02：RQ-208 候选流硬墙钟与 Usage 尾帧公共闭环
+
+- `PUBLIC-CI`：RQ-207 实现提交 exact SHA `015b022bfce6d03452f753794ac126a377f8355b` 的 Actions run
+  `33613113829` 三 job（`pytest`、`postgres-migrations`、`packaging-smoke`）均为 `completed/success`，
+  `head_sha` 精确匹配，RQ-207 公共 CI 已闭环；该门仍不等于真实 provider 重测。
+- `VERIFICATION`：公共 pytest 为 `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL
+  控制面为 `201 passed, 1 warning`；网页契约/生产包、媒体审计工具链、RAG v1/独立 4M holdout、治理、
+  compileall 与 Harness dry-run 均通过；本地四文件聚焦保持 `67 passed`，没有新的真实 API、重试或第二次请求。
+- `BOUNDARY`：公共证据只证明候选评估接缝可复现，不证明供应商 SDK `close()` 非阻塞/能唤醒 `next()`，也不构成
+  模型一般能力、领域采用或生产成熟度结论；同步 opener 永久阻塞限制继续保留。候选仍 disabled、未注册，严格
+  Flash v1 2048/零额外调用、默认模型、产品 Runtime、Portal/Account/Workbench/Auth、路由和 `production_media=0`
+  不变，Stage 8/8E 继续 `in_progress`。
+- `BOUNDARY-NEXT`：当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  真实重测只能在新的明确一次性授权后进行，不能自动注册候选或进入 G53-7。

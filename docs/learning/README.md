@@ -102,8 +102,10 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 RQ-203 已完成版本化候选 recovery 诊断协议设计（见下方材料）；上表中 RQ-202 的“下一步设计”文字仅保留
 历史快照，RQ-204 已完成 fake/local 版本化诊断实现，RQ-205 已完成同 SHA 公共 CI 与协议演练，RQ-206 已完成 1 次
 有界真实 primary 观察并以 `fail_closed / elapsed_limit` 收口，RQ-207 已完成候选硬墙钟会话与 Usage 尾帧本地实现；
-四文件聚焦回归（deadline 10、v2 24、real 8、adapter 25）统一为 `67 passed`，当前唯一下一门更新为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`。
+四文件聚焦回归（deadline 10、v2 24、real 8、adapter 25）统一为 `67 passed`；RQ-208 已完成 RQ-207 的
+exact-SHA 公共 CI（提交 `015b022bfce6d03452f753794ac126a377f8355b` / Actions run `33613113829` 三 job
+`completed/success`），公共 CI 已闭环；当前唯一下一门更新为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`。
 
 > 表格中 8E 行较早的“RQ-204 fake/local、公共 CI、真实 recovery 未完成”是历史快照；以本段和下方 RQ-205/RQ-206/RQ-207
 > 记录为准。RQ-206 的真实观察和 RQ-207 的本地实现均不提升产品 streaming、默认模型或生产准入；Stage 8/8E 仍为
@@ -529,6 +531,24 @@ Usage/终态尾帧处理，再决定是否另行授权真实重测。
 SDK `close()` 是否非阻塞并唤醒 `next()` 尚待 provider/public CI 证明，因此 8E coverage 仍为 planned，Stage 8/8E
 保持 `in_progress`，候选 `activation_state=disabled`、`execution_allowed=false`、`capabilities.streaming=False`。
 
+> 历史快照（RQ-207 本地实现完成时）：当时的下一精确 checkpoint 曾为
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
+> RQ-208 已完成该公共 CI，当前唯一指针以最新学习段落为准。
+
+### 2026-09-02：RQ-208 候选流硬墙钟与 Usage 尾帧公共闭环
+
+RQ-207 的候选硬墙钟会话、取消/关闭资源合同与 Usage 尾帧离线实现，已在提交
+`015b022bfce6d03452f753794ac126a377f8355b` 取得 Actions run `33613113829` 的 exact-SHA 公共 CI 闭环；
+`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均为 `completed/success`。公共 pytest 为
+`2241 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面为 `201 passed, 1 warning`；
+本地四文件聚焦回归为 `67 passed`，没有新的真实 API、重试或第二次请求。
+
+学习重点是公共可复现性与真实边界的区分：该证据不证明供应商 SDK `close()` 非阻塞/能唤醒 `next()`，也不构成
+模型一般能力、领域采用或生产成熟度结论；同步 opener 永久阻塞限制继续保留。候选仍
+`activation_state=disabled`、`execution_allowed=false`、`capabilities.streaming=False`，严格 Flash v1
+2048/零额外调用，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由与 `production_media=0` 不变，
+Stage 8/8E 继续 `in_progress`，8E coverage 仍 planned。
+
 当前唯一下一精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
-先取得同一干净提交的 exact-SHA 公共 CI 与协议验证，再另行授权真实观察或任何候选注册。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+公共 CI 已闭环，真实重测只能在新的明确一次性授权后执行，不能自动注册候选或进入 G53-7。

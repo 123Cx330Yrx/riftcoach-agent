@@ -1208,6 +1208,24 @@ legacy iterable，兼容性校验在 opener 返回后执行并 fail closed。同
 非阻塞/能唤醒 `next()`，仍是公共 CI/真实重测闸门；Usage 缺失保持 unknown/null，禁止合成零值、重试或第二次请求。
 Stage 8/8E 仍为 `in_progress`，候选仍 disabled、未注册。
 
+> 历史快照（RQ-207 本地实现完成时）：当时的下一精确 checkpoint 曾为
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
+> RQ-208 已完成该公共 CI，当前唯一指针以最新 RQ-208 段落为准。
+
+## 2026-09-02：RQ-208 候选流硬墙钟与 Usage 尾帧公共闭环
+
+RQ-207 的候选硬墙钟会话、取消/关闭资源合同与 Usage 尾帧离线实现，已在提交
+`015b022bfce6d03452f753794ac126a377f8355b` 取得 Actions run `33613113829` 的 exact-SHA 公共 CI 闭环；
+`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均为 `completed/success`。本地四文件聚焦回归为
+`67 passed`，公共 pytest 为 `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面为
+`201 passed, 1 warning`。
+
+该公共证据只证明候选评估接缝可复现，不证明供应商 SDK `close()` 的非阻塞/唤醒能力，也不构成模型一般能力、
+领域采用或生产成熟度结论；同步 opener 永久阻塞与 SDK close 无法唤醒 `next()` 仍需真实 provider 验证。候选仍
+disabled、未注册，`activation_state=disabled`、`execution_allowed=false`、`capabilities.streaming=False`，
+严格 Flash v1 2048/零额外调用，默认模型、产品 Runtime、路由和 `production_media=0` 不变，Stage 8/8E 继续
+`in_progress`。
+
 当前唯一下一精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
-必须先取得同一干净提交的 exact-SHA 公共 CI 与协议验证，不能据此宣称生产成熟度或进入 G53-7/8F。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+公共 CI 已闭环，真实重测只能在新的明确一次性授权后执行，不能自动注册候选或进入 G53-7/8F。

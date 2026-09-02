@@ -3204,6 +3204,23 @@ real 8、adapter 25）统一为 `67 passed`，
   `capabilities.streaming=False`、未注册；严格 Flash v1 2048/零额外调用，默认模型、产品 Runtime、
   Portal/Account/Workbench/Auth、路由和 `production_media=0` 不变，Stage 8/8E 仍 `in_progress`。
 
+> 历史快照（RQ-207 本地实现完成时）：当时的下一精确 checkpoint 曾为
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
+> RQ-208 已完成该公共 CI，当前唯一指针以最新 RQ-208 决策段落为准。
+
+### RQ-208：RQ-207 候选流硬墙钟与 Usage 尾帧公共闭环（2026-09-02）
+
+接受 RQ-207 实现的 exact-SHA 公共 CI 证据，但不把它解释为产品 Runtime 或生产准入：提交
+`015b022bfce6d03452f753794ac126a377f8355b` 的 Actions run `33613113829` 中 `pytest`、
+`postgres-migrations`、`packaging-smoke` 三 job 均为 `completed/success` 且 `head_sha` 精确匹配；公共 pytest
+为 `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面为 `201 passed, 1 warning`，
+本地四文件聚焦仍为 `67 passed`。本轮没有新的真实 API、重试或第二次请求。
+
+该公共证据只证明候选评估接缝可复现，不证明供应商 SDK `close()` 非阻塞/能唤醒 `next()`，也不构成模型一般能力、
+领域采用或生产成熟度结论；同步 opener 永久阻塞限制继续保留。候选仍 `activation_state=disabled`、
+`execution_allowed=false`、`capabilities.streaming=False`，严格 Flash v1 2048/零额外调用，默认模型、产品 Runtime、
+Portal/Account/Workbench/Auth、路由和 `production_media=0` 不变，Stage 8/8E 仍 `in_progress`。
+
 当前唯一下一精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
-先取得同一干净提交的 exact-SHA 公共 CI 与协议验证，再另行授权真实观察或候选注册。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+公共 CI 已闭环，真实重测或候选注册仍需新的明确一次性授权。

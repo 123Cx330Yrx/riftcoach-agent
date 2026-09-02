@@ -5644,3 +5644,17 @@
 - [next] 当前唯一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
   先取得同一干净实现提交的 exact-SHA 公共 CI，之后再另行决定新的真实授权。
+
+## 2026-09-02：RQ-208 候选流硬墙钟与 Usage 尾帧公共闭环
+
+- [completed-public] RQ-207 实现提交 `015b022bfce6d03452f753794ac126a377f8355b` 的 Actions run
+  `33613113829` 三 job exact-SHA 全绿；公共 pytest `2241 passed, 145 skipped, 1 warning,
+  127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`。
+- [verification] 网页契约/生产包、媒体审计工具链、RAG v1 与独立 4M holdout、治理、compileall、
+  Harness dry-run 均通过；本地四文件聚焦 `67 passed`。没有新真实 API、没有重试或第二次请求。
+- [boundary] 公共 CI 不等于供应商 SDK close 的非阻塞/唤醒能力或生产成熟度证明；候选仍 disabled、
+  未注册，严格 Flash v1 2048/零额外调用、默认模型、产品 Runtime、Portal、Account、Workbench、
+  Auth、路由、`capabilities.streaming=False` 和 `production_media=0` 不变。
+- [next] 当前唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  等待新的明确一次性授权后才可做下一次真实观察。
