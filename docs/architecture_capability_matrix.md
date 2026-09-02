@@ -838,3 +838,23 @@ RQ-206 只新增一次有界真实观察证据，不新增 Runtime capability。
 `production_media=0` 不变。下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
 先离线验证硬墙钟取消、流关闭与 Usage/终态尾帧处理。
+
+### 2026-09-02：RQ-207 候选流硬墙钟/Usage 尾帧能力边界
+
+RQ-207 的能力状态为 `candidate-only / completed-local / public-ci-pending`，不新增产品 Runtime
+capability。显式 `CandidateStreamSession` 持有流资源，`CandidateStreamDeadlineSupervisor` 以 attempt
+起点的绝对 monotonic deadline 做直接检查；超时采用协作式、幂等 cancel/close，抑制截止后的迟到事件。
+完成合同要求终态与 Usage 同帧，或终态后恰好一个 Usage-only 尾帧；重复/过早/终态后内容和空非 Usage 帧
+fail closed，Usage 缺失与价格保持 unknown/null，close 失败仅为次级证据，安全映射不暴露 provider body/exception。
+
+legacy `open_stream() -> Iterable` 仍受支持；hard mode 必须显式提供 session opener。显式 opener 返回 legacy
+iterable 时，校验只能在 opener 返回后完成；同步 opener 可能阻塞越过 timer，SDK `close()` 的非阻塞/唤醒
+保证仍待 provider/public CI 证明，因此不能把本地实现当作生产超时保证。四文件聚焦回归（deadline 10、v2 24、real 8、
+adapter 25）统一为 `67 passed`，
+未调用真实 API。候选仍 `activation_state=disabled`、`execution_allowed=false`、
+`capabilities.streaming=False`，未注册；Stage 8/8E 保持 `in_progress`，产品模块、默认模型、路由和
+`production_media=0` 不变。
+
+当前唯一下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
+先取得同一干净提交的 exact-SHA 公共 CI 与协议验证，再讨论真实重测或任何候选注册。
