@@ -49,6 +49,11 @@ from app.evaluation.candidate_recovery_diagnostic_v2 import (
     CandidateRecoveryDiagnosticReceipt,
     canonical_receipt_bytes,
 )
+from app.evaluation.candidate_provider_close_wakeup_observation import (
+    CANDIDATE_CLOSE_WAKE_PROTOCOL_ID,
+    CANDIDATE_CLOSE_WAKE_SCHEMA_VERSION,
+    CandidateCloseWakeReceipt,
+)
 from app.evaluation.glm53_flash_stream_terminal_completion_probe import (
     StreamTerminalCompletionReport,
 )
@@ -243,6 +248,14 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
         ):
             receipt = CandidateRecoveryDiagnosticReceipt.from_dict(payload)
             assert canonical_receipt_bytes(receipt).decode("utf-8") == content
+            continue
+        if (
+            payload.get("protocol_id") == CANDIDATE_CLOSE_WAKE_PROTOCOL_ID
+            and payload.get("schema_version") == CANDIDATE_CLOSE_WAKE_SCHEMA_VERSION
+        ):
+            receipt = CandidateCloseWakeReceipt.from_dict(payload)
+            assert receipt.as_dict() == payload
+            assert content.endswith("\n")
             continue
         if {
             "calibration_experiment_id",

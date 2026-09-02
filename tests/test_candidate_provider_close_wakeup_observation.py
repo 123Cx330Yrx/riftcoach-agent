@@ -9,6 +9,7 @@ from pathlib import Path
 import pytest
 
 from app.evaluation.candidate_provider_close_wakeup_observation import (
+    CANDIDATE_CLOSE_WAKE_PROTOCOL_ID,
     CANDIDATE_CLOSE_WAKE_SCHEMA_VERSION,
     CandidateCloseWakeReceipt,
     CandidateCloseWakeObservation,
@@ -448,3 +449,27 @@ def test_child_rejects_model_or_endpoint_before_client(monkeypatch, capsys):
     output = capsys.readouterr().out
     assert "candidate_model_mismatch" in output
     assert "secret" not in output
+
+
+def test_persisted_rq211_receipt_round_trips_as_body_free_canonical_evidence():
+    path = Path(
+        "data/evaluation/results/provider_capabilities/"
+        "zhipu_glm53_flash_candidate_close_wakeup_observation_rq211_v1.json"
+    )
+    raw = path.read_bytes()
+    payload = json.loads(raw)
+    receipt = CandidateCloseWakeReceipt.from_dict(payload)
+    assert receipt.protocol_id == CANDIDATE_CLOSE_WAKE_PROTOCOL_ID
+    assert receipt.as_dict() == payload
+    assert raw.endswith(b"\n")
+    assert all(
+        token not in raw.lower()
+        for token in (
+            b"api_key",
+            b"authorization",
+            b"request_id",
+            b"reasoning_content",
+            b'"content"',
+            b'"body"',
+        )
+    )
