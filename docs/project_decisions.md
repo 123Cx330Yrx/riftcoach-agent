@@ -3103,3 +3103,32 @@ Flash v1 2048/零额外调用、默认模型、产品 Runtime、Portal、Account
 `2193 passed, 145 skipped, 1 warning, 127 subtests passed`）。下一精确门是
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`，
 先在单独授权后复核候选 recovery 的传输/预算/失败边界，再决定高级候选是否继续。
+
+### RQ-202：候选 recovery 诊断边界复核（2026-09-02）
+
+决定先把候选评估台的证据来源加固，再谈新的诊断版本。顶层回执状态、错误、attempt 决定/装配
+和预算投影不得由调用方单独填写，必须由 body-free 观察与候选硬上限推导；单次 observer 截止为
+90 秒，累计账本仍为 180 秒。旧同步诊断器直接持有真实 SDK/I/O 且把 unknown Usage 投影为零，
+不作为新 recovery 诊断的实现基础。
+
+本轮只做 fake/local 代码和测试，activation 继续 sealed `disabled`，不发真实 recovery、不注册候选、
+不改产品 Runtime、默认模型、Workbench、Portal、Account、Auth、路由或 `production_media=0`。下一
+精确项是
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-design / pending-user-authorization`，
+需新的明确授权。
+
+### RQ-203：版本化候选 recovery 诊断协议设计（2026-09-02）
+
+决定把候选 recovery 的下一步先冻结为独立的 evaluation 协议，而不是在旧同步诊断器上继续加开关。
+ADR-0079、设计计划和学习材料共同定义 `glm-5.3-flash-candidate-recovery-diagnostic-v2` / schema `2.0.0`，
+绑定 provider/model、runtime profile、policy 与实现/计划/上下文/运行 SHA；请求只保存脱敏形状摘要。
+
+协议时序固定为 `reserve → open → observe/assemble → settle → receipt`，每次潜在 I/O 先占槽位，
+fresh recovery 是完整新请求，禁止 resume、SDK/AgentLoop retry 和 ToolRuntime 副作用。预算、Usage、费用、
+分段延迟和失败第一现场都采用可审计的派生规则；未知资源保持 `unknown/null`，回执为原子 create-only、
+canonical UTF-8/LF、body-free JSON，不写产品 Runtime Trace。
+
+本门只有设计文档，没有实现、真实 API/Key、候选注册或产品接线；严格 Flash v1、默认模型、Portal、Account、
+Workbench、Auth、路由和 `production_media=0` 不变，Stage 8/8E 继续进行中，8F 未开始。下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`，
+实现需再次明确授权。

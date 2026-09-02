@@ -765,3 +765,30 @@ activation 仍 disabled，候选不注册、不打开 `capabilities.streaming`�
 8-Advanced candidate evidence，不是 8-Core 或公共生产准入；当前下一项为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`，
 只允许在单独授权后复核 recovery 边界。
+
+### 2026-09-02：RQ-202 候选 recovery 诊断复核能力边界
+
+RQ-202 新增的是 `completed-local / candidate-only` 的审计加固，不是新的 Runtime capability。
+`CandidateEvaluationReceipt` 现在从观察重新推导顶层 state/action/error、attempt decision/assembly
+和 budget projection；observer 以单次 90 秒 attempt 窗口为上限，ledger 仍维护累计 180 秒。旧同步
+诊断器的 SDK/真实 I/O 与 unknown-Usage 零值投影被明确排除在新版本之外。
+
+本地证据为 harness `18 passed`、相邻集合 `127 passed, 1 deselected`、compileall/diff/governance
+通过；加固提交 `67031145d3b3e5c864e881576c69e2fda931e950` 的 Actions run `33582049836` 三 job
+exact-SHA 全绿，公共 pytest 为 `2193 passed, 145 skipped, 1 warning, 127 subtests passed`。候选仍未注册、
+activation disabled、`execution_allowed=false`、`capabilities.streaming=False`。
+严格 Flash v1、默认 Runtime、产品模块、Portal/Account/Workbench/Auth、路由和 `production_media=0`
+不变；不宣称领域、生产或 8F 能力。下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-design / pending-user-authorization`。
+
+### 2026-09-02：RQ-203 版本化候选 recovery 诊断设计能力边界
+
+RQ-203 只新增 `design-complete / candidate-only` 的评估协议设计，不新增 Runtime capability。
+协议 `glm-5.3-flash-candidate-recovery-diagnostic-v2` / schema `2.0.0` 绑定候选身份与 SHA，冻结
+`reserve → observe → settle`、单次/累计预算、Usage/费用三态、分段延迟、失败第一现场和
+body-free 原子回执。该设计不包装 `LLMProvider`、不注册候选、不打开 `capabilities.streaming`，不写
+统一 Runtime Trace；实现、真实 recovery、G53-7、黄金切片、生产准入和 8F 仍未发生。
+
+严格 Flash v1、默认模型、AgentLoop、Portal、Account、Workbench、Auth、路由和 `production_media=0`
+不变，Stage 8/8E 继续 `in_progress`。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`。

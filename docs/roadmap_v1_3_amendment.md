@@ -1122,3 +1122,25 @@ RQ-200 实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 的 Actions run `
 Portal、Account、Workbench、Auth、路由与 `production_media=0` 均不变。下一精确门为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`，
 只允许在单独授权后复核 recovery 的传输/预算/失败边界。
+
+### 2026-09-02：RQ-202 对 8-Core / 8-Advanced 边界的补充
+
+RQ-202 仍归入 8-Advanced 的受控候选证据：只修补隔离评估台的回执派生一致性和单次 90 秒
+截止，不把 fresh-recovery、streaming 或 8192 上限提升为 8-Core 生产能力。旧同步诊断器不再
+作为新版本基础，unknown Usage 继续不得当零；候选 activation 仍 disabled，`production_media=0`
+和 8E/8F 的生产、合规、黄金切片闸门不变。下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-design / pending-user-authorization`，
+必须再次单独授权。
+
+## 2026-09-02：RQ-203 版本化候选 recovery 诊断设计边界
+
+RQ-203 将候选 recovery 继续留在 8-Advanced 受控实验层：新增独立的
+`glm-5.3-flash-candidate-recovery-diagnostic-v2` / schema `2.0.0` 设计，绑定候选身份、版本与 SHA，
+并冻结 `reserve → observe → settle`、未知资源三态、分段延迟、失败第一现场和 body-free 原子回执。
+这只是评估证据设计，不是 8-Core 的产品部署、合规、评测或 portfolio 能力；不把候选包装成产品
+`LLMProvider`，不打开 `capabilities.streaming`，不改变严格 Flash v1、默认模型、AgentLoop、Portal、
+Account、Workbench、Auth、路由或 `production_media=0`。实现、真实 recovery、G53-7、黄金切片、生产准入
+和 8F 仍需各自的证据与授权，不能因设计完成而提前宣称 Stage 8 完成。
+
+下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`。

@@ -3991,3 +3991,26 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 - `BOUNDARY-NEXT`：当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`；
   先复核候选 recovery 的传输、预算、失败和脱敏边界，是否建立新诊断版本仍需单独授权。
+
+## 2026-09-02：RQ-202 候选 recovery 诊断边界复核
+
+- `REVIEW`：在 RQ-201 公共 CI 之后完成一次离线复核；`CandidateEvaluationReceipt` 的顶层
+  state/action/error、attempt 决定/装配和 budget projection 均改为从受信观察推导，单次
+  observer 截止绑定 90 秒 attempt 窗口，累计账本仍为 180 秒。
+- `NON-REUSE`：旧同步 recovery 诊断器仍直接拥有 SDK/真实 I/O，并复用把 unknown Usage
+  当零的旧账本；明确不把它作为新诊断版本基础，旧文件保持历史兼容。
+- `EVIDENCE`：harness `18 passed`，候选相邻集合 `127 passed, 1 deselected`，compileall、
+  diff check、governance 通过；Windows CRLF fixture 与 canonical-LF 计划摘要差异只作环境
+  限制记录，不修改冻结资产。
+- `BOUNDARY-NEXT`：唯一下一精确 checkpoint 改为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-design / pending-user-authorization`；
+  不注册候选、不发 recovery、不进入 G53-7/黄金切片/生产准入或 8F。
+
+## 2026-09-02：RQ-203 版本化候选 recovery 诊断协议设计
+
+- `DESIGN`：在 RQ-202 加固后，按用户授权完成独立协议设计
+  `glm-5.3-flash-candidate-recovery-diagnostic-v2` / schema `2.0.0`。协议绑定 provider/model、runtime profile、policy 与实现/计划/上下文/运行 SHA；请求摘要只保存脱敏形状。
+- `LIFECYCLE`：冻结 `reserve → open → observe/assemble → settle → receipt`，每个潜在 I/O 先占槽位；fresh recovery 是完整新请求，禁止 resume、隐式 retry、AgentLoop retry 和 ToolRuntime 副作用。当前 activation 仍 sealed disabled。
+- `EVIDENCE`：设计明确单次/累计预算、Usage/费用三态、六段单调延迟、失败第一现场和 body-free 原子 create-only 回执；新增 ADR-0079、设计计划和学习 walkthrough。没有新增代码、结果 JSON、真实 API/Key 或产品接线。
+- `BOUNDARY-NEXT`：候选仍未注册、`execution_allowed=false`、`capabilities.streaming=False`，严格 Flash v1、默认模型、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变；唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`，不进入 G53-7、黄金切片、生产准入或 8F。

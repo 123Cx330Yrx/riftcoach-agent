@@ -5543,3 +5543,35 @@
 - [next] 当前唯一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`；
   需单独授权后才可复核候选 recovery 的传输、预算、失败和脱敏边界。
+
+## 2026-09-02：RQ-202 候选 recovery 诊断边界复核与最小离线加固
+
+- [completed-local] 在 `CandidateEvaluationReceipt`/`CandidateEvaluationAttemptReceipt` 边界增加
+  顶层 state/action/error、attempt decision/reason/assembly 与 budget projection 的派生校验；
+  新增伪造回执和预算字段的红绿测试。
+- [completed-local] 将候选 observer 的 elapsed 上限绑定到单次 attempt 90 秒（仍受累计 180 秒
+  上限约束）；不改变 ledger 的累计预算或 disabled activation。
+- [non-reuse] 复核旧同步 recovery 诊断器，确认其 SDK/真实 I/O、旧 ledger 的 unknown Usage
+  零值投影和 activation 语义不适合作为新版本基础；旧代码未改、没有真实 API/Key。
+- [verification-local] harness `18 passed`；候选流/装配/恢复合同/智谱 adapter/Flash profile
+  相邻集合 `127 passed, 1 deselected`；compileall、`git diff --check`、governance 通过。
+  deselected 与旧诊断测试阻断来自隔离 Windows CRLF fixture 与计划 canonical-LF 摘要差异，
+  未修改冻结资产。
+- [boundary] 候选仍未注册、activation `disabled`、`execution_allowed=false`、
+  `capabilities.streaming=False`；严格 Flash v1、默认模型、产品 Runtime、Portal、Account、
+  Workbench、Auth、路由和 `production_media=0` 不变；没有 recovery/G53-7/黄金切片/8F 证据。
+- [next] 当前唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-design / pending-user-authorization`；
+  等待新的单独授权后再设计版本化诊断协议。
+
+## RQ-203 / 版本化候选 recovery 诊断协议设计（2026-09-02）
+
+- [completed-design] 新增 ADR-0079、设计计划和学习 walkthrough，冻结协议
+  `glm-5.3-flash-candidate-recovery-diagnostic-v2` / schema `2.0.0`，四元候选身份、body-free 请求摘要和不可伪造的派生字段。
+- [lifecycle] 固定 `reserve → open → observe/assemble → settle → receipt`；primary 先预留，fresh recovery 为完整新请求，禁止 resume、隐式 retry 和 ToolRuntime 副作用；activation 仍 disabled。
+- [resource] 冻结单次 8192/90s/120s、累计 32000/16384/180000ms、最多 2 attempts；Usage/预算/费用未知保持 null/unknown，延迟记录六个单调分段。
+- [failure-boundary] 失败类别和第一现场由观察推导；回执采用原子 create-only、canonical UTF-8/LF、body-free allow-list，不写产品 Runtime Trace 或用户数据。
+- [verification] 设计文档与 coverage 已补齐；RQ-202 加固提交 `67031145d3b3e5c864e881576c69e2fda931e950` 的 exact-SHA 公共 CI run `33582049836` 三 job 全绿。
+- [boundary] 没有新增代码、真实 API/Key、recovery、G53-7、黄金切片或生产能力；Stage 8/8E 仍 `in_progress`，8F 未开始，`production_media=0`。
+- [next] 当前唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`；待再次授权后实现 fake/local v2 协议。

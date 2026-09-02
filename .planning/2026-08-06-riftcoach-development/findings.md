@@ -5276,3 +5276,32 @@
   但不证明候选已能进入产品 Runtime，也不证明 recovery、领域质量或生产成熟度。
 - 下一步不能由 CI 自动推导为真实调用；候选仍 disabled，下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`。
+
+## 2026-09-02：RQ-202 候选 recovery 诊断边界复核发现
+
+- `CandidateEvaluationReceipt` 的 frozen dataclass 仍可被 `dataclasses.replace()` 重新构造；
+  若不在 `__post_init__` 重算，顶层 state/error、attempt decision/assembly 和 budget flag
+  都可能脱离真实观察。已增加派生一致性校验，并用负例测试锁住这些边界。
+- observer 的 elapsed 限制必须按 attempt spec 的 90 秒执行，不能直接使用候选账本累计
+  180 秒；账本仍负责累计预算，二者不能混成一个截止。当前 candidate activation 关闭，
+  因而没有第二次请求路径。
+- 旧 `glm53_flash_response_recovery_diagnostic.py` 直接导入 SDK/dotenv/Provider，并复用
+  `ResponseRecoveryLedger` 的 `or 0` Usage 投影；它是历史真实诊断入口，不适合作为新
+  candidate-only 诊断版本，旧文件保持不动。
+- 隔离 Windows 工作树的冻结 fixture 原始 CRLF SHA 为
+  `fe93c7bab57218cee03371bd1351f8edf52cfb318259045679f68e7f9cad6f02`，计划记录的
+  canonical-LF SHA 为 `804520031606cd0a7875fd2287e948a44e9b0100e38e1c44e5ed2619eaffc147`；
+  相关旧诊断/运行时测试因此不作为本轮证据，不修改 fixture 或 plan。
+- 下一精确项收紧为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-design / pending-user-authorization`；
+  是否建立新诊断版本仍需再次授权。
+
+## 2026-09-02：RQ-203 版本化候选 recovery 诊断协议设计发现
+
+- 新协议必须与旧同步诊断器隔离：旧入口把供应商 SDK、真实 I/O、恢复决定和落盘混在一起，不能通过增加开关获得可追溯的 v2。
+- v2 的身份先于请求摘要冻结，摘要只允许角色、字段存在性、长度和工具数量等形状信息；任何调用方可控字段都不能选择 profile、policy、activation 或资格布尔值。
+- `reserve` 必须发生在每次潜在 I/O 之前，`settle` 只能由可信观察推导；fresh recovery 是完整新请求，不能沿用 resume、SDK retry、AgentLoop retry 或 ToolRuntime 副作用。
+- 资源证据必须三态：Usage 或预算未知时保持 `null/unknown`，费用只有冻结且可验证的单价快照才能标为估算，不能用零值或历史价格补齐。
+- 分段单调延迟和第一失败现场比单一总耗时更能解释 transport/protocol/completion 差异；原始异常、正文、reasoning、Prompt、工具参数、Key 和 request ID 均不进回执。
+- 设计退出后，下一精确项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`；实现仍需另行授权。
