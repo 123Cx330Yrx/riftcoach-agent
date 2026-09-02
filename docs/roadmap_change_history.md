@@ -4102,3 +4102,21 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 - `BOUNDARY-NEXT`：当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   真实重测只能在新的明确一次性授权后进行，不能自动注册候选或进入 G53-7。
+
+## 2026-09-02：RQ-209 候选真实流硬墙钟与关闭边界观察
+
+- `OBSERVATION`：按用户“继续”只发送 1 次普通智谱 `zhipu/glm-5.3-flash` primary；候选显式请求 Usage，
+  `max_tokens=8192`、attempt 90 秒、transport 120 秒、SDK retries=0。首事件/打开计时 `3421ms`，reasoning
+  非空；`90015ms` 到达硬墙钟，未见可见正文、terminal、EOF 或 Usage，回执为
+  `fail_closed / elapsed_limit`，`calls_reserved/settled=1/1`，费用 unknown，无 recovery/重试。
+- `EVIDENCE`：body-free 回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq207_v1.json`，
+  `4342` bytes，SHA-256 `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`，由本地提交
+  `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存；公共 CI 尚未宣称。
+- `BOUNDARY`：组合会话 `close_state=failed` 不能归因到供应商 response、迭代器或其他具体资源，不能证明
+  底层 close 非阻塞/唤醒 `next()`，也不能推出模型、API/Key、领域采用或生产成熟度。`observation.elapsed_ms=0`
+  是截止前未结算的初始投影，不能当作零耗时。
+- `BOUNDARY-NEXT`：候选仍 disabled/未注册，产品 Runtime、默认模型、Workbench、前端、Auth、路由和
+  `production_media=0` 不变；唯一下一精确 checkpoint 仍为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，
+  后续 provider close/wakeup 拆分或真实请求需新的明确一次性授权。

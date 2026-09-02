@@ -5391,3 +5391,18 @@
 - 当前唯一下一精确项推进为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   新的真实观察必须获得单独一次性授权，不能因 CI 通过自动重试或注册候选。
+
+## 2026-09-02：RQ-209 候选真实流硬墙钟与关闭边界发现
+
+- 真实候选 primary 在 `90015ms` 由诊断层记录为 attempt 硬截止并安全收口为 `fail_closed / elapsed_limit`；
+  这证明诊断层在墙钟到点作出 fail-closed 决定，但底层事件泵/SDK 读取是否已经收口仍未知，不能据此改写
+  旧 RQ-206 的约 `176s` 物理读取窗口。
+- 本次只观察到首事件/打开计时 `3421ms` 和非空 reasoning；没有可见正文、terminal、EOF 或 Usage。回执为
+  `calls_reserved/settled=1/1`、Usage missing、费用 unknown，未执行 recovery 或重试。
+- `close_state=failed` 是组合会话的资源清理投影；不能从 body-free 回执推断是供应商 SDK response、Python
+  generator/迭代器还是其他资源失败，也不能把截止后约 15ms 的收口单独解释为 SDK `response.close()` 已唤醒读取。
+  provider-level close/wakeup 仍是未证实闸门。
+- 回执 `observation.elapsed_ms=0` 只是截止前未结算的初始观察值，真实时序应读取 latency 的 `90015ms`；
+  attempt `budget_state=exceeded` 与累计 token unknown 的整体预算状态不矛盾。
+- 证据提交 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 目前只代表本地保存，未宣称公共 CI；候选、产品 Runtime、
+  默认模型、Workbench、前端与 `production_media=0` 边界不变。下一精确项仍等待新的明确一次性授权。

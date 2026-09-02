@@ -3224,3 +3224,20 @@ Portal/Account/Workbench/Auth、路由和 `production_media=0` 不变，Stage 8/
 当前唯一下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
 公共 CI 已闭环，真实重测或候选注册仍需新的明确一次性授权。
+
+### RQ-209：候选真实流硬墙钟与关闭边界观察（2026-09-02）
+
+接受本次一次性真实观察提供的“应用层硬墙钟触发并安全 fail closed”证据：在公共闭环树
+`015b022bfce6d03452f753794ac126a377f8355b` 的实现/诊断身份下，只发送 1 次普通智谱
+`zhipu/glm-5.3-flash` primary；`90015ms` 到达 attempt 截止，回执为 `fail_closed / elapsed_limit`，
+首事件/打开计时 `3421ms`，reasoning 非空，但正文、terminal、EOF、Usage 均未见，费用 unknown。
+
+拒绝把组合会话 `close_state=failed` 直接解释成供应商 SDK 成败；回执不足以区分 response、迭代器或其他资源，
+也不足以证明 close 非阻塞/唤醒挂起读取。证据由本地提交
+`0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存（回执 SHA-256
+`56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`，公共 CI 尚未宣称）。
+
+候选继续 activation gate disabled、activation_state=candidate 且未注册，默认模型、产品 Runtime、Workbench、前端、Auth、路由和
+`production_media=0` 不变；不注册候选、不发 recovery/重试、不进入 G53-7 或 8F。若要拆分关闭资源状态或再次
+真实观察，另立后续决策/ADR 并重新取得明确一次性授权；当前唯一下一 checkpoint 保持
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`。

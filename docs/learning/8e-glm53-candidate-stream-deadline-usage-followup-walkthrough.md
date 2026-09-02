@@ -94,3 +94,21 @@ Workbench、Portal、Account、Auth、路由、G53-7、黄金切片或生产准�
 > 到点只调用会话承诺的 cancel，并用一次事件泵同时做脱敏边界观察和临时装配；Usage
 > 缺失、晚到事件或关闭失败不会被伪造成成功。旧 iterable 和产品 Provider 保持兼容，
 > 候选仍未注册，所以这不是“产品已经接入 streaming”的结论。
+
+## RQ-209 真实观察后记（2026-09-02）
+
+RQ-209 在上述离线实现上只执行 1 次有界真实 primary。公共闭环树
+`015b022bfce6d03452f753794ac126a377f8355b` 作为实现/诊断身份，普通智谱
+`zhipu/glm-5.3-flash` 使用 `max_tokens=8192`、attempt 90 秒、transport 120 秒、SDK retries=0，显式请求
+Usage。首事件/打开计时 `3421ms`，reasoning 非空；`90015ms` 触发硬墙钟，未见正文、terminal、EOF 或 Usage，
+回执为 `fail_closed / elapsed_limit`，组合会话 `close_state=failed`，没有 recovery/重试。
+
+回执由本地证据提交 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存，SHA-256
+`56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`、`4342` bytes；公共 CI 尚未宣称。
+这里的组合 `close_state=failed` 不是供应商 SDK 具体资源的判决，不能证明 response close 的成败或唤醒能力；
+截止前 `observation.elapsed_ms=0` 也不是零耗时，真实时序以 latency `90015ms` 为准。
+
+这次观察只证明诊断层在 attempt 墙钟到点作出 fail-closed 决定；候选仍为 activation gate disabled、
+activation_state=candidate 且未注册，产品 Runtime、默认模型、
+Workbench、前端、Auth、路由和 `production_media=0` 不变。下一精确 checkpoint 仍需新的明确一次性授权，才能
+设计/拆分 provider close/wakeup 资源状态或再次观察。

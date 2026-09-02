@@ -878,3 +878,19 @@ Stage 8/8E 继续 `in_progress`。
 当前唯一下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
 公共 CI 已闭环，但真实重测仍需新的明确一次性授权，不能自动注册候选或进入 G53-7。
+
+### 2026-09-02：RQ-209 候选真实硬墙钟观察能力边界
+
+RQ-209 新增的只是一次 candidate-only 真实观察，不新增 A03/A10/Q02 或任何产品 Runtime capability。单次
+`zhipu/glm-5.3-flash` primary 在 `90015ms` 触发 attempt 硬墙钟并 `fail_closed / elapsed_limit`；首事件/打开
+计时 `3421ms`，reasoning 非空，但没有可见正文、terminal、EOF 或 Usage。组合会话 `close_state=failed` 只
+表示清理结果，不能归因到某个供应商 SDK 资源，也不能证明 close 非阻塞或唤醒 `next()`。
+
+回执路径为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq207_v1.json`，
+SHA-256 `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`、`4342` bytes，由本地证据提交
+`0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存；公共 CI 尚未宣称。候选仍为 activation gate disabled、
+`activation_state=candidate`、`execution_allowed=false`、`capabilities.streaming=False`，且未注册，严格 Flash v1
+2048/零额外调用、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0`
+不变；下一精确 checkpoint 保持
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`。

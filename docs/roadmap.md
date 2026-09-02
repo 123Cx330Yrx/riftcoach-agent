@@ -1,6 +1,6 @@
 # RiftCoach 主路线 v1.1（阶段 0—8）
 
-> 当前校正（2026-09-02，RQ-207）：G53-5 矩阵及 F7 follow-up 的历史观察保持不可变；用户已授权将
+> 当前校正（2026-09-02，RQ-209）：G53-5 矩阵及 F7 follow-up 的历史观察保持不可变；用户已授权将
 > 普通智谱 API `zhipu/glm-5.3-flash` 作为产品正常运行目标，GLM-5.2 仅作显式兼容/应急回退。RQ-176 的
 > Flash 目标接线已有本地实现，但当前 RQ-194 适配接缝仍是候选、尚未注册；RQ-177 已在旧实现 A 上取得新的 G53-3 协议证据，RQ-178 完成 A/B 身份绑定，
 > RQ-179 又将最终新实现 A=`9e6d78be…` 以 Actions run `33378687984` 三 job exact-SHA 公共冻结；随后
@@ -23,6 +23,10 @@
 > `capabilities.streaming` 仍为 `False`，候选仍未注册；RQ-195 评审、RQ-196 设计、RQ-197 边界观察实现与 RQ-198
 > 同 SHA 公共 CI 已完成。RQ-199 又完成了隔离候选评估台设计（两阶段 staged ledger、单次事件泵、独立 body-free receipt），RQ-200
 > 已完成 fake/local 候选评估台实现及 `102 passed` 相邻回归，且已取得 RQ-201 exact-SHA 公共 CI（run `33536168224`）；RQ-202 已完成候选 recovery 诊断边界复核与最小离线加固，RQ-203 已完成版本化候选 recovery 诊断协议设计，RQ-204 已完成 fake/local 版本化诊断实现，RQ-205 已完成 exact-SHA 公共 CI 与协议演练，RQ-206 已完成 1 次有界真实 primary 观察并以 `fail_closed / elapsed_limit` 收口；RQ-207 已完成候选硬墙钟会话、取消/关闭与 Usage 尾帧本地实现，四文件聚焦回归（deadline 10、v2 24、real 8、adapter 25）统一为 `67 passed`；RQ-208 已完成 RQ-207 的 exact-SHA 公共 CI：提交 `015b022bfce6d03452f753794ac126a377f8355b` 的 Actions run `33613113829` 三 job `completed/success`，公共 CI 已闭环，但同步 opener 与 SDK `close()` 的真实非阻塞/唤醒能力仍需真实重测验证；当前唯一下一项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，不能自动重试、注册候选或进入 G53-7；
+> RQ-209 最新观察：按一次性授权只执行 1 次真实 `zhipu/glm-5.3-flash` primary；诊断层在 `90015ms` 的 attempt
+> 墙钟处 `fail_closed / elapsed_limit`，正文、terminal、EOF、Usage 均缺失；组合 `close_state=failed` 的具体
+> 底层资源未归因。证据提交 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 尚未取得公共 CI，activation gate 仍
+> disabled、候选未注册，当前子阶段仍未关闭。
 >
 > 历史观察：G53-5 矩阵完成 `11/11` 次真实调用、`46,151` tokens、`7/8` cases pass；
 > 随后独立 F7 follow-up 仅将 `max_tokens` 从 512 调至 2048，完成 `1/1` 调用、`557` tokens，
@@ -1291,4 +1295,26 @@ Stage 8/8E 继续 `in_progress`。
 
 当前唯一下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
-公共 CI 已闭环，真实重测只能在新的明确一次性授权后执行，不能自动注册候选或进入 G53-7。
+RQ-209 已在该门执行 1 次有界真实 primary，硬墙钟于 `90015ms` 触发并以 `fail_closed / elapsed_limit` 收口；
+组合 `close_state=failed` 的具体底层资源仍未知，证据提交 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 尚待公共 CI，
+后续真实重测只能在新的明确一次性授权后执行，不能自动注册候选或进入 G53-7。
+
+### 2026-09-02：RQ-209 候选真实流硬墙钟与关闭边界观察
+
+RQ-209 按用户“继续”只发出 1 次普通智谱 `zhipu/glm-5.3-flash` primary。请求使用候选
+`max_tokens=8192`、attempt 90 秒、transport 120 秒、SDK retries=0 和显式 Usage；首事件/打开计时为
+`3421ms`，观察到非空 reasoning，随后在 `90015ms` 触发硬墙钟。没有可见正文、terminal、EOF 或 Usage，
+组合会话 `close_state=failed`，回执为 `fail_closed / elapsed_limit`，`calls_reserved/settled=1/1`，费用 unknown，
+没有 recovery 或重试。
+
+body-free 回执位于
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq207_v1.json`，
+大小 `4342` bytes、SHA-256 `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`，由本地证据提交
+`0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存；该提交目前没有公共 CI 结论。这里的 `close_state=failed`
+只表示组合会话清理未形成成功状态，不能归因到某一个供应商 SDK 资源，也不能证明 close 能唤醒挂起读取；
+`observation.elapsed_ms=0` 只是截止前未结算的初始投影，真实时序以 latency `90015ms` 为准。
+
+这项观察只新增应用层硬截止的真实证据，不新增产品 Runtime capability：候选仍 disabled/未注册，
+`capabilities.streaming=False`、严格 Flash v1 2048/零额外调用、默认模型、Portal、Account、Workbench、Auth、
+路由和 `production_media=0` 不变，Stage 8/8E 仍 `in_progress`。当前唯一下一精确 checkpoint 保持原值，
+后续 close/wakeup 拆分或真实调用必须另行取得明确一次性授权。

@@ -70,6 +70,14 @@ PostgreSQL 控制面为 `201 passed, 1 warning`。网页契约/生产包、媒�
 holdout、治理、compileall 与 Harness dry-run 均通过。候选保持 disabled，未发新的真实 API；当前
 唯一下一项改为需单独授权的 `candidate-real-call-timeout-usage-followup`。
 
+RQ-209 已按用户“继续”只完成一次真实候选观察：在隔离工作树以公共闭环树
+`015b022bfce6d03452f753794ac126a377f8355b` 作为实现/诊断身份，发出 1 次
+`zhipu/glm-5.3-flash` primary，`90015ms` 触发 attempt 硬墙钟并以
+`fail_closed / elapsed_limit` 收口；回执由本地证据提交
+`0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存，公共 CI 尚未宣称。组合会话
+`close_state=failed` 的具体底层资源尚不能归因，Usage/终态仍缺失；候选、产品 Runtime、默认模型、
+Workbench、前端与 `production_media=0` 均不变。当前仍等待新的明确一次性授权。
+
 ## Current Phase
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
@@ -423,6 +431,22 @@ RQ-197 又完成候选边界观察合同的 fake/local 实现与 `163 passed` �
   未触发 recovery。当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   下一轮先做离线硬墙钟取消、流关闭和 Usage/终态尾帧测试，不自动再次调用。
+
+- [current-evidence-override] RQ-209 已完成上述一次性真实观察：本地证据提交
+  `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存 canonical body-free 回执（`4342` bytes，SHA-256
+  `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`）；只发出 1 次 primary，诊断层在
+  `90015ms` 的 attempt 墙钟处 `fail_closed / elapsed_limit`，组合 `close_state=failed` 不能归因具体底层资源，
+  未执行 recovery/重试。当前唯一下一项仍为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  本次授权已消费，不自动发送新的真实请求，不注册候选、不打开 `capabilities.streaming`。
+
+- [current-evidence-override] RQ-209 已完成上述一次性真实观察：本地证据提交
+  `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存 canonical body-free 回执（`4342` bytes，SHA-256
+  `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`）；只发出 1 次 primary，诊断层在
+  `90015ms` 的 attempt 墙钟处 `fail_closed / elapsed_limit`，组合 `close_state=failed` 不能归因具体底层资源，
+  未执行 recovery/重试。当前唯一下一项仍为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  不自动发送新的真实请求，不注册候选、不打开 `capabilities.streaming`。
 
 ## RQ-195 / 候选 runtime 接线架构评审（2026-09-01）
 
@@ -1102,6 +1126,13 @@ RQ-197 又完成候选边界观察合同的 fake/local 实现与 `163 passed` �
   `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`；
   网页契约/生产包、媒体审计工具链、RAG v1/独立 4M holdout、治理、compileall 与 Harness dry-run 均通过。
   当前唯一下一项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  不自动发送新的真实请求，不注册候选、不打开 `capabilities.streaming`。
+- [current-evidence-override] RQ-209 已完成上述一次性真实观察：本地证据提交
+  `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存 canonical body-free 回执（SHA-256
+  `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`，`4342` bytes）；
+  只发出 1 次 primary，`90015ms` 触发硬墙钟，`close_state=failed` 仅代表组合会话清理结果，
+  不归因具体 SDK 资源，未执行 recovery/重试。当前唯一下一项仍为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   不自动发送新的真实请求，不注册候选、不打开 `capabilities.streaming`。
 - [completed-local-diagnosis] v6.1 source GET 成功后 POST 400、task id 空、无隐藏 task；strict sanitizer 三项 red→green、revised runner no-I/O self-test 完成；精确 error field 仍 unknown，不重试 relay；
@@ -2808,3 +2839,28 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [next] 当前唯一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   只有新的明确一次性授权才可执行下一次真实观察。
+
+## RQ-209 / 候选真实流硬墙钟与关闭边界观察（2026-09-02）
+
+- Status: completed-bounded-real; fail-closed; provider-close-unproven
+- [completed-bounded-real] 在隔离工作树以公共闭环树 SHA
+  `015b022bfce6d03452f753794ac126a377f8355b` 作为 implementation/diagnostic identity，按用户“继续”
+  只发出 1 次普通智谱 `zhipu/glm-5.3-flash` primary；`max_tokens=8192`、attempt 90 秒、transport 120 秒、
+  SDK retries=0、候选显式请求 Usage。
+- [evidence] 回执保存在
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq207_v1.json`，
+  由本地证据提交 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存；文件 `4342` bytes，SHA-256
+  `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`。`calls_reserved/settled=1/1`，
+  `run_state=fail_closed`、`terminal_reason=elapsed_limit`、`usage=missing`、`cost=unknown`、recovery 未执行。
+- [observed] 首事件/打开计时 `3421ms`，reasoning 非空；`90015ms` 触发硬墙钟，未见可见正文、terminal、EOF 或
+  Usage，组合会话 `close_state=failed`、`eof_observed=false`。该 close 状态不能归因到供应商 response、迭代器或
+  其他具体资源；`observation.elapsed_ms=0` 是截止前未结算的投影，真实时序以 latency `90015ms` 为准。
+- [interpretation] 这证明真实候选路径现在会按 attempt 墙钟 fail closed，不能证明底层 close 非阻塞/唤醒挂起
+  `next()`，也不能推出模型能力、API/Key、领域准入或生产成熟度；单次 attempt `budget_state=exceeded` 与累计
+  token 未知的 `budget.overall_state=unknown` 不矛盾。
+- [boundary] 候选仍 disabled/未注册，`execution_allowed=false`、`capabilities.streaming=False`；严格 Flash v1
+  2048/零额外调用、默认模型、产品 Runtime、AgentLoop、统一 Trace/预算、Portal、Account、Workbench、Auth、
+  路由和 `production_media=0` 不变；没有重试、第二请求、G53-7、黄金切片、生产准入或 8F。
+- [next] 当前唯一精确 checkpoint 保持
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  任何 provider close/wakeup 拆分观察或新的真实请求都必须另行获得明确一次性授权。

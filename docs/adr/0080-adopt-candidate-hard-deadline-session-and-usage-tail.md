@@ -113,3 +113,17 @@ candidate-stream-deadline-usage-public-ci / pending
 授权一次新的真实观察。供应商 SDK 的 close 非阻塞性、对阻塞 `next()` 的唤醒能力和
 同步 opener 的连接截止仍是新的前置闸门；若这些能力不能证明，必须保持
 `hard_deadline_unsupported`/fail closed，不能以“线程已启动”替代硬截止证据。
+
+## RQ-209 验证后记（2026-09-02）
+
+RQ-209 在本 ADR 所述合同上完成 1 次有界真实 primary：普通智谱
+`zhipu/glm-5.3-flash` 在 attempt `90015ms` 触发硬墙钟，首事件/打开计时 `3421ms`，reasoning 非空，未见
+正文、terminal、EOF 或 Usage，回执为 `fail_closed / elapsed_limit`，组合会话 `close_state=failed`，无 recovery
+或重试。body-free 回执（`4342` bytes，SHA-256
+`56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`）由本地证据提交
+`0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存，公共 CI 尚未宣称。
+
+该结果只验证诊断层在 attempt 墙钟到点作出 fail-closed 决定；组合 `close_state=failed` 不能归因到供应商 response、
+迭代器或其他具体资源，不能证明底层 close 非阻塞或唤醒挂起的 `next()`。回执中的
+`observation.elapsed_ms=0` 是截止前未结算的初始投影，不是零耗时。原 ADR 的候选隔离、Usage 缺失保持 unknown、
+不注册产品 Runtime 的决定继续有效；任何新的关闭资源拆分应另立 ADR-0081，不修改本 ADR 的原始决定。

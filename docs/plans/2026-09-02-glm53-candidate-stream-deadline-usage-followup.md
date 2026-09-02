@@ -75,3 +75,21 @@ candidate-stream-deadline-usage-public-ci / pending
 
 公共 CI 后仍需独立授权，才能决定是否做一次新的真实观察；在此之前不重测、不进入
 G53-7、不把候选提升为唯一产品模型。
+
+## RQ-209 执行后记（2026-09-02）
+
+本计划的原始“本轮不执行真实 API”是 RQ-207 历史快照；RQ-209 在取得新的“继续”后只执行了 1 次真实
+primary，并保留原计划的候选隔离边界。公共闭环树
+`015b022bfce6d03452f753794ac126a377f8355b` 作为实现/诊断身份，普通智谱
+`zhipu/glm-5.3-flash` 在 `90015ms` 触发 attempt 硬墙钟，首事件/打开计时 `3421ms`，reasoning 非空，
+正文、terminal、EOF、Usage 均未见；组合会话 `close_state=failed`，回执为 `fail_closed / elapsed_limit`，
+没有 recovery、重试或第二次请求。
+
+回执 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq207_v1.json`
+大小 `4342` bytes、SHA-256 `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`，由本地
+证据提交 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存；公共 CI 尚未宣称。组合 close 失败不能归因到某个
+底层 SDK 资源，provider close/wakeup 仍未证实；`observation.elapsed_ms=0` 是未结算投影，不是零耗时。
+
+本后记不改变候选 activation gate disabled、activation_state=candidate 且未注册、`capabilities.streaming=False`、严格 Flash v1、默认模型、产品 Runtime、
+Workbench、前端、Auth、路由、`production_media=0` 和 8E/8F 边界。若继续拆分关闭状态或再次真实观察，必须
+另行取得明确一次性授权。

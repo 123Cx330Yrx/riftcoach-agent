@@ -1229,3 +1229,21 @@ disabled、未注册，`activation_state=disabled`、`execution_allowed=false`�
 当前唯一下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
 公共 CI 已闭环，真实重测只能在新的明确一次性授权后执行，不能自动注册候选或进入 G53-7/8F。
+
+## 2026-09-02：RQ-209 候选真实流硬墙钟观察的分层边界
+
+RQ-209 只补充 8-Advanced candidate-only 的真实传输证据，不改变 v1.3 的 8-Core/8-Advanced 分层。按用户
+“继续”仅发送 1 次普通智谱 `zhipu/glm-5.3-flash` primary；候选显式请求 Usage，attempt 90 秒、transport
+120 秒、`max_tokens=8192`、SDK retries=0。首事件/打开计时为 `3421ms`，reasoning 非空；`90015ms` 触发
+应用硬墙钟，未见可见正文、terminal、EOF 或 Usage，最终 `fail_closed / elapsed_limit`，组合会话
+`close_state=failed`，费用 unknown，无 recovery/重试。
+
+body-free 回执由本地证据提交 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存，文件 SHA-256 为
+`56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`、大小 `4342` bytes；公共 CI 尚未宣称。
+`close_state=failed` 仅是组合会话清理结果，不能归因到供应商 response、迭代器或其他具体资源，也不能
+证明底层 close 非阻塞或唤醒挂起读取；`observation.elapsed_ms=0` 只是截止前未结算的初始投影。
+
+候选 activation gate 仍 disabled、`activation_state=candidate` 且未注册，`capabilities.streaming=False`、严格 Flash v1 2048/零额外调用、默认模型、产品
+Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变；Stage 8/8E 仍 `in_progress`，
+8F、G53-7、黄金切片和生产准入不因本观察提前完成。当前下一精确 checkpoint 保持原值，后续 provider close/wakeup
+拆分或真实请求必须另行授权。

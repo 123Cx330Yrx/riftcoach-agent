@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 最后更新：2026-09-02（RQ-208 已完成 RQ-207 候选流硬墙钟、会话取消/关闭和 Usage 尾帧实现的 exact-SHA 公共 CI；RQ-207 离线实现已完成；RQ-203 已完成版本化候选 recovery 诊断协议设计；RQ-202 已完成候选 recovery 诊断边界复核、最小离线加固及 exact-SHA 公共 CI；RQ-201 已完成候选评估台实现的 exact-SHA 公共 CI；此前 RQ-199 已完成隔离候选评估台设计、RQ-200 已完成 fake/local 实现；此前 RQ-197 的候选边界观察合同已完成本地实现，并已取得同 SHA 公共 CI；此前 RQ-192 的 provider-neutral 流式装配合同与 RQ-193 的智谱适配器一致性接缝均已完成本地；
+- 最后更新：2026-09-02（RQ-209 已完成一次候选真实 provider 硬墙钟观察并以 `fail_closed / elapsed_limit` 收口；证据提交为本地 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c`，尚未宣称公共 CI；RQ-208 已完成 RQ-207 候选流硬墙钟、会话取消/关闭和 Usage 尾帧实现的 exact-SHA 公共 CI；RQ-207 离线实现已完成；RQ-203 已完成版本化候选 recovery 诊断协议设计；RQ-202 已完成候选 recovery 诊断边界复核、最小离线加固及 exact-SHA 公共 CI；RQ-201 已完成候选评估台实现的 exact-SHA 公共 CI；此前 RQ-199 已完成隔离候选评估台设计、RQ-200 已完成 fake/local 实现；此前 RQ-197 的候选边界观察合同已完成本地实现，并已取得同 SHA 公共 CI；此前 RQ-192 的 provider-neutral 流式装配合同与 RQ-193 的智谱适配器一致性接缝均已完成本地；
   RQ-193 实现提交为 `8bcbaa5ba467fcaad76193d3790d34a106a47d72`，conformance 聚焦回归为 `13 passed`，
   只使用测试内伪造 SDK 分块，未改生产 Provider、未发真实 API。该提交的同 SHA 公共 CI run `33489903978`
   已 `completed/success`（pytest、postgres-migrations、packaging-smoke 三 job，head_sha 精确匹配），且包含全部
@@ -52,6 +52,11 @@ pause_reason: ""
   PostgreSQL 控制面为 `201 passed, 1 warning`；网页契约/生产包、媒体审计工具链、RAG v1 与独立 4M
   holdout、治理、compileall 和 Harness dry-run 均通过。该证据只证明候选接缝公共可复现，不提升为产品
   Runtime 或生产能力；候选仍 disabled、`capabilities.streaming=False`，本轮没有新的真实 API。
+- RQ-209 最新状态覆盖：在隔离工作树 `HEAD=cc5d5c82ddefd4e9932514634d53d1629e563655` 上，
+  按“继续”只发出 1 次 `zhipu/glm-5.3-flash` primary；回执为 `4342` bytes、SHA-256
+  `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`，总时长 `90015ms`，首事件
+  `3421ms`，reasoning 非空但无可见正文、terminal、EOF 或 Usage，组合会话 `close_state=failed`，费用 unknown。
+  硬墙钟已在真实路径生效，未发送 recovery 或重试；该组合关闭状态不能归因到某一个底层 SDK 资源，非阻塞/唤醒能力仍未证实，候选继续 disabled。
 - 历史诊断记录：2026-09-01（RQ-190 已完成两次单路、有界的流式首个可见正文探针：同一冻结上下文、
   `reasoning_effort=low`、`max_tokens=2048` 下，`clear_thinking=true` 在 2.547 秒出现首个可见正文，
   `clear_thinking=false` 在 3.875 秒出现首个可见正文；两路均先观察到 reasoning，随后在正文出现时主动关闭，
@@ -4087,3 +4092,28 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 - `[boundary-next]` 当前唯一精确 checkpoint 已推进为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   只有新的明确一次性授权才可执行下一次真实观察，不能因公共 CI 通过而自动发请求或注册候选。
+
+### 2026-09-02：RQ-209 候选流真实硬墙钟与关闭边界观察
+
+- `[completed-bounded-real]` 在隔离工作树 `HEAD=cc5d5c82ddefd4e9932514634d53d1629e563655` 上，
+  使用公共闭环树 SHA `015b022bfce6d03452f753794ac126a377f8355b` 作为回执的 implementation/diagnostic identity，
+  按用户“继续”只发出 1 次普通智谱 `zhipu/glm-5.3-flash` primary；SDK retries 为 `0`，候选显式请求 Usage。
+- `[evidence]` 回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq207_v1.json`，
+  `4342` bytes，SHA-256 `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`；该回执由本地
+  证据提交 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存（公共 CI 尚未宣称）；
+  `calls_reserved/settled=1/1`、`run_state=fail_closed`、`terminal_reason=elapsed_limit`、`usage=missing`、
+  `cost=unknown`、recovery 未执行。首个事件约 `3421ms`，`reasoning_content_state=non_empty`；总时长
+  `90015ms` 触发硬墙钟，未见正文、terminal、EOF 或 Usage，组合会话 `close_state=failed`、`eof_observed=false`。
+- `[interpretation]` 诊断层已在 attempt 墙钟到点 fail closed；底层 SDK 读取是否被唤醒、物理读取窗口是否继续，
+  仍不能由本回执判断；`close_state=failed` 只是组合会话清理结果，不能进一步归因是供应商 SDK response、迭代器或其他资源失败；
+  因而也不能证明底层 close 非阻塞或能唤醒挂起的 `next()`，更不能推出模型一般能力、API/Key、领域采用或生产成熟度结论。
+  `observation.elapsed_ms=0` 是截止前未结算的初始投影，真实时序以 latency 的 `90015ms` 为准；单次预算
+  `exceeded` 与累计 token `unknown` 并不矛盾。
+- `[unchanged]` 候选仍为 `activation_gate=disabled`、`activation_state=candidate`、`execution_allowed=false`、
+  `capabilities.streaming=False`，且未注册；
+  严格 Flash v1 仍 2048/零额外调用，默认模型、产品 Runtime、AgentLoop、统一 Trace/预算、Portal、Account、
+  Workbench、Auth、路由和 `production_media=0` 均不变；没有重试、第二请求、G53-7、黄金切片、生产准入或 8F。
+- `[boundary-next]` 当前子阶段尚未关闭，唯一下一精确 checkpoint 保持
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  若要继续验证 provider close/wakeup 或重新观察，必须另行取得明确一次性授权。

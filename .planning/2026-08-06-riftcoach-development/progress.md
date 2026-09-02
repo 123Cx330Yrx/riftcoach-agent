@@ -5658,3 +5658,24 @@
 - [next] 当前唯一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   等待新的明确一次性授权后才可做下一次真实观察。
+
+## 2026-09-02：RQ-209 候选真实流硬墙钟与关闭边界观察
+
+- [completed-bounded-real] 在隔离工作树以公共闭环树 SHA
+  `015b022bfce6d03452f753794ac126a377f8355b` 作为实现/诊断身份，按用户“继续”仅发送 1 次普通智谱
+  `zhipu/glm-5.3-flash` primary；`max_tokens=8192`、attempt 90 秒、transport 120 秒、SDK retries=0，
+  显式请求 Usage。没有 recovery、重试或第二次请求。
+- [evidence] canonical body-free 回执路径为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq207_v1.json`，
+  文件 `4342` bytes、SHA-256 `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`，由本地证据提交
+  `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存；公共 CI 尚未宣称。
+- [observed] `calls_reserved/settled=1/1`；首事件/打开计时 `3421ms`，reasoning 非空；`90015ms` 触发 attempt
+  硬墙钟，未见可见正文、terminal、EOF 或 Usage，组合会话 `close_state=failed`，`eof_observed=false`，
+  最终 `fail_closed / elapsed_limit`，Usage 缺失、费用 unknown。
+- [interpretation] 真实路径现在会在 attempt 墙钟到点后 fail closed；组合 `close_state=failed` 不能归因到
+  供应商 response、迭代器或其他具体资源，也不能证明底层 close 非阻塞或能唤醒挂起的 `next()`。回执中的
+  `observation.elapsed_ms=0` 是截止前未结算的初始投影，不是零耗时。
+- [boundary-next] 候选仍 disabled/未注册，产品默认、Runtime、Workbench、前端、Auth、路由和
+  `production_media=0` 不变；当前唯一下一精确 checkpoint 仍为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，
+  后续 provider close/wakeup 拆分或新的真实请求须另行取得明确一次性授权。

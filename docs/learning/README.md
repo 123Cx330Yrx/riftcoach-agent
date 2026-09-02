@@ -551,4 +551,23 @@ Stage 8/8E 继续 `in_progress`，8E coverage 仍 planned。
 
 当前唯一下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
-公共 CI 已闭环，真实重测只能在新的明确一次性授权后执行，不能自动注册候选或进入 G53-7。
+RQ-209 已记录/完成 1 次有界真实 primary 并以 `fail_closed / elapsed_limit` 收口，但该门仍未关闭；组合关闭
+状态的具体底层资源仍未知，公共 CI 尚未宣称，不能自动注册候选或进入 G53-7。
+
+### 2026-09-02：RQ-209 候选真实流硬墙钟观察后记
+
+这次后记对应一次真实但有界的候选观察，不改写 RQ-207/RQ-208 的历史“无真实请求”段落。按用户“继续”只
+发送 1 次普通智谱 `zhipu/glm-5.3-flash` primary：首事件/打开计时 `3421ms`，reasoning 非空；在
+`90015ms` 触发 attempt 硬墙钟，未见可见正文、terminal、EOF 或 Usage，组合会话 `close_state=failed`，
+回执为 `fail_closed / elapsed_limit`，费用 unknown，无 recovery 或重试。
+
+回执路径为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq207_v1.json`，
+文件 `4342` bytes、SHA-256 `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`，由本地提交
+`0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存；公共 CI 尚未宣称。最重要的学习边界是：`close_state=failed`
+只是组合清理投影，不能直接归因供应商 SDK，也不能据此说 close 已经或没有唤醒挂起读取；
+`observation.elapsed_ms=0` 不是零耗时，真实时序以 latency `90015ms` 为准。
+
+候选仍为 activation gate disabled、candidate 未注册，`capabilities.streaming=False`、严格 Flash v1 2048/零额外调用和 8E coverage planned
+保持不变。下一次若要拆分 provider response cancel、迭代器清理或重做真实观察，需要新的明确一次性授权；在此
+之前不改变产品 Runtime、Workbench、前端或默认模型。
