@@ -5337,3 +5337,22 @@
   黄金切片、生产安全/部署/合规和 8F 仍需单独授权与证据。
 - 当前唯一下一精确项为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`。
+
+## 2026-09-02：RQ-206 版本化候选 recovery 诊断一次真实主请求观察发现
+
+- 在实现提交 `90242822df0e47304700644572bc12f0a3aa88ad` 的干净隔离工作树上，诊断代码提交
+  `0b2342c240cfdc1801e673e830c9a7f30bed3fbd` 的 Actions run `33603143606` 三 job exact-SHA 全绿；
+  一次性授权只产生 1 次 primary，SDK retries 为 0，未发生第二次 recovery。
+- 普通智谱 `zhipu/glm-5.3-flash` 流实际到达并产生 reasoning、可见正文、`finish_reason=stop` 与 EOF；
+  首事件为 `3078ms`，首个可见正文为 `151453ms`，总延迟为 `175875ms`。但 Usage 缺失、close 失败，
+  单次 90 秒 observer 门在晚到事件中触发，故不能把 stop/EOF 单独解释为完整成功。
+- 回执为 `fail_closed / elapsed_limit`，`assembled_complete=false`、`calls_reserved/settled=1/1`、
+  成本 unknown；持久 canonical body-free 文件 SHA-256 为
+  `2ead059ea22f035e6201bee6f3638c8e7a113baed3bf51b55fbbd17e42f862e6`（`4355` bytes）。
+  `open_elapsed_ms=0` 是惰性流生成器计时起点，不是网络握手零耗时。
+- 该样本排除了“完全没打到接口”这一解释，但不能裁决 API/Key、模型一般能力、领域质量或生产成熟度；
+  它暴露了 SDK 读超时和总墙钟截止的差异：事件持续到达时，observer 直到晚到事件才发现 90 秒门，
+  物理请求可延长到约 176 秒。候选 activation 仍 disabled，产品默认和前端/Workbench 边界不变。
+- 下一精确项改为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  先离线验证硬墙钟取消、流关闭和 Usage/终态尾帧处理，之后才讨论新的真实请求授权。

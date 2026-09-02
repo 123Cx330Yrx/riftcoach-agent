@@ -33,6 +33,15 @@ pause_reason: ""
   run `33598541029` 已三 job 全绿；公共 pytest 为 `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，
   PostgreSQL 控制面为 `201 passed, 1 warning`，另完成 fake/local 协议演练。当前唯一下一步是一次性授权的
   `candidate-recovery-diagnostic-real-call`，不自动发起真实 recovery。
+- RQ-206 最新状态覆盖：在同一干净隔离工作树上，`0b2342c240cfdc1801e673e830c9a7f30bed3fbd` 的
+  Actions run `33603143606` exact-SHA 三 job 全绿；按一次性授权只发出 1 次 `glm-5.3-flash` primary。
+  真实流观察到首事件、reasoning、可见正文、`stop` 和 EOF，但首个可见正文约 `151453ms`、总延迟
+  `175875ms`，Usage 缺失且 close 失败，v2 回执安全记为 `fail_closed / elapsed_limit`，未触发 recovery。
+  回执 `zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq206_v1.json` 的 SHA-256 为
+  `2ead059ea22f035e6201bee6f3638c8e7a113baed3bf51b55fbbd17e42f862e6`、`4355` bytes。该结果不构成
+  模型质量或生产准入结论；当前唯一下一精确项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，
+  先设计硬墙钟取消与 Usage/终态尾帧处理，不自动重测。
 - 历史诊断记录：2026-09-01（RQ-190 已完成两次单路、有界的流式首个可见正文探针：同一冻结上下文、
   `reasoning_effort=low`、`max_tokens=2048` 下，`clear_thinking=true` 在 2.547 秒出现首个可见正文，
   `clear_thinking=false` 在 3.875 秒出现首个可见正文；两路均先观察到 reasoning，随后在正文出现时主动关闭，
@@ -98,7 +107,7 @@ pause_reason: ""
  （SHA-256 `dde918b17f8f93914ccf8e330fd96e936699f5fa8313c30dcb6d69f5ae19e66c`）记录 `calls_used=1/3`、
   `admitted=false`；没有再发第三次请求。该结果仍不能区分密钥失效、请求接缝或服务端权限返回。
 - 主阶段：阶段 8；Stage 7、Stage 8 entry design、8A、8B、8C 与 8D 均已关闭。Multi-Agent 产品候选按 ADR-0053 reject；
-  当前治理指针为 `8e-productization / provider-neutral-stream-adapter-contract / candidate-provider-stream-conformance + same-SHA public CI / completed-public`；
+  当前治理指针为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   Batch E E1–E5、production shell/Auth gate、Timeline DTO/UI 与 bilingual/product-journey foundation 已公共关闭；完整
   8E/8F 尚未完成。G53-0 已按 RQ-164 完成本地无 I/O 审计，G53-1 已完成离线适配合同，G53-2 已完成公共
   exact-SHA 验证；G53-3 前两次旧 Key 尝试在 A1 认证阶段阻塞，用户更新普通 API Key 后第三次尝试已通过；
@@ -117,6 +126,7 @@ pause_reason: ""
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
 - 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`。RQ-193 提交 `8bcbaa5` 的 Actions run `33489903978` 与 RQ-194 提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的 Actions run `33496237588` 均三 job 全绿且 head_sha 精确匹配；RQ-194 聚焦测试为 `20 passed`。RQ-195 已完成架构评审，RQ-196 已完成设计，RQ-197 已完成 fake/local 边界观察合同实现与 `163 passed` 聚焦/相邻回归；实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 的公共 CI run `33507627615` 三 job 全绿且 head_sha 精确匹配（公共 pytest `2178 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-199 已完成隔离候选评估台设计，RQ-200 已完成 fake/local 候选 harness、staged ledger、单次事件泵与独立 body-free receipt 的本地实现及 `102 passed` 相邻回归；RQ-201 的实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 已取得 Actions run `33536168224` 三 job exact-SHA 公共通过（公共 pytest `2193 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-202 的离线加固提交 `67031145d3b3e5c864e881576c69e2fda931e950` 已取得 Actions run `33582049836` 三 job exact-SHA 公共通过（公共 pytest `2193 passed, 145 skipped, 1 warning, 127 subtests passed`）。RQ-203 已完成版本化诊断协议设计，RQ-204 已完成 fake/local 版本化诊断实现与本地回归；不注册候选、不打开 `capabilities.streaming`、不接入产品默认或自动执行 recovery/G53-7。
 - RQ-205 已覆盖前述公共 CI 待办：`90242822df0e47304700644572bc12f0a3aa88ad` / Actions `33598541029` 三 job exact-SHA 全绿，公共 pytest `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`，fake/local 协议演练通过。当前下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`，不自动发真实 recovery。
+- RQ-206 已覆盖上述历史指针：同一干净隔离工作树的诊断提交 `0b2342c240cfdc1801e673e830c9a7f30bed3fbd` / Actions `33603143606` exact-SHA 三 job 全绿；按一次性授权只发出 1 次 `zhipu/glm-5.3-flash` primary。流观察到 reasoning、可见正文、`stop` 与 EOF，但 Usage 缺失、close 失败，90 秒 attempt 门在晚到事件中触发，回执为 `fail_closed / elapsed_limit`，没有第二次 recovery。当前唯一下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，先离线设计/测试硬墙钟取消与 Usage/终态尾帧处理，不自动重测。
 - RQ-179–RQ-181 的 exact-SHA、G53-7 失败与一次性正文零留存诊断证据均保持不可变，旧证据不覆盖；RQ-182 聚焦离线测试为 `41 passed`，RQ-183 聚焦离线合同为 `30 passed`，均未改变 Provider-neutral 消息、AgentLoop、ToolRuntime、Trace、预算、默认模型、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
 - 2026-08-31 按用户确认新建普通 API Key 后重开 G53-3：进程预检确认 `zhipu`、普通 API 端点与
   `glm-5.3-flash` 均生效；未输出 Key 值，也未改除用户自行更新的 `.env` 之外的默认配置。A1 结构化合同
@@ -3995,3 +4005,33 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 - `[boundary-next]` 当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`；
   真实 recovery 只能在新的明确一次性授权后执行，不能因公共 CI 通过而自动打开候选或默认模型。
+
+### 2026-09-02：RQ-206 版本化候选 recovery 诊断一次真实主请求观察
+
+- `[completed-public]` 新增的真实调用组合接缝与测试提交为
+  `0b2342c240cfdc1801e673e830c9a7f30bed3fbd`；Actions run `33603143606` 三 job
+  exact-SHA 全绿。实现基线为 `90242822df0e47304700644572bc12f0a3aa88ad`。
+- `[completed-bounded-real]` 在干净隔离工作树、普通智谱 API 官方基址和
+  `glm-5.3-flash` 上只发出一次 primary：`thinking=enabled`、`reasoning_effort=max`、
+  `clear_thinking=false`、`max_tokens=8192`、请求级 90 秒、传输 120 秒、SDK retries=0。
+  流观察到 model/request identity、reasoning、可见正文、`finish_reason=stop` 和 EOF；首事件
+  `3078ms`、首个可见正文 `151453ms`、总延迟 `175875ms`。由于 Usage 缺失、close 失败且单次
+  90 秒观察门已触发（在晚到事件中发现），回执安全结算为 `fail_closed / elapsed_limit`，`assembled_complete=false`，
+  `calls_reserved/settled=1/1`，没有第二次 recovery，费用 `unknown`。
+- `[evidence]` 持久回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq206_v1.json`，
+  canonical body-free、`4355` bytes，SHA-256=
+  `2ead059ea22f035e6201bee6f3638c8e7a113baed3bf51b55fbbd17e42f862e6`；已通过
+  `CandidateRecoveryDiagnosticReceipt.from_dict()` 重解析且 canonical bytes 一致。没有正文、
+  reasoning、Prompt、Key 或原始 request ID 写入回执。
+- `[interpretation-boundary]` 该结果说明这份冻结上下文在 `max+8192` 形状下确实开始生成，
+  但没有在候选单次 90 秒窗口内形成完整、可计量、可交付的中立响应；不能解释为 API/Key
+  失败、模型一般质量失败或生产成熟度结论。它还暴露 SDK 读超时与总墙钟截止不是一回事：
+  流持续有事件时，当前 observer 只能在事件到达时发现超时，实际请求可拖到约 176 秒。
+- `[unchanged]` 候选仍 `activation_state=disabled`、`execution_allowed=false`、
+  `capabilities.streaming=False`；严格 Flash v1 2048/零额外调用、默认模型、产品 Runtime、
+  AgentLoop、统一 Trace/预算、Portal、Account、Workbench、Auth、路由和 `production_media=0`
+  均不变。没有执行 fresh-recovery、G53-7、黄金切片、生产安全/部署/合规或 8F。
+- `[boundary-next]` 当前唯一下一精确 checkpoint 改为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  先离线设计并测试硬墙钟取消、流关闭和 Usage/终态尾帧处理，再决定是否另行授权真实重测。

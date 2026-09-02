@@ -101,7 +101,11 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 
 RQ-203 已完成版本化候选 recovery 诊断协议设计（见下方材料）；上表中 RQ-202 的“下一步设计”文字仅保留
 历史快照，RQ-204 已完成 fake/local 版本化诊断实现，RQ-205 已完成同 SHA 公共 CI 与协议演练，当前唯一下一门已更新为
-`candidate-recovery-diagnostic-real-call / pending-user-authorization`。
+`candidate-real-call-timeout-usage-followup / pending-user-authorization`。RQ-206 已完成 1 次有界真实 primary
+观察并以 `fail_closed / elapsed_limit` 收口；候选仍未注册，下一门先做离线硬墙钟取消与 Usage/终态尾帧处理。
+
+> 表格中 8E 行较早的“RQ-204 fake/local、公共 CI、真实 recovery 未完成”是历史快照；以本段和下方 RQ-205/RQ-206
+> 记录为准。RQ-206 的真实观察不提升产品 streaming、默认模型或生产准入。
 
 8E 当前最新候选接缝材料：[RQ-192/RQ-193 walkthrough](8e-glm53-provider-neutral-stream-adapter-walkthrough.md) /
 [ADR-0073](../adr/0073-adopt-provider-neutral-stream-assembly-contract.md) /
@@ -479,3 +483,23 @@ RQ-205 的学习材料由 [实现 walkthrough](8e-glm53-candidate-recovery-diagn
 默认模型、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。下一精确项为
 `candidate-recovery-diagnostic-real-call / pending-user-authorization`，真实 recovery、G53-7、黄金切片、
 生产安全/部署与 8F 仍需独立授权。
+
+### 2026-09-02：RQ-206 版本化候选 recovery 诊断一次真实主请求观察
+
+本门沿用 [版本化诊断实现 walkthrough](8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md)
+和[实现计划](../plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md)，在干净隔离工作树
+只执行 1 次普通智谱 `zhipu/glm-5.3-flash` primary。提交
+`0b2342c240cfdc1801e673e830c9a7f30bed3fbd` 的 Actions `33603143606` 三 job exact-SHA 全绿；SDK retries=0，
+没有第二次 recovery。
+
+这次学习重点不是“看到 stop 就算成功”：流确实观察到 reasoning、可见正文、`finish_reason=stop` 与 EOF，
+但首个可见正文在 `151453ms`、总延迟 `175875ms`；Usage 缺失、close 失败，90 秒 attempt 门在晚到事件中触发，
+所以回执保持 `fail_closed / elapsed_limit`、`assembled_complete=false`、费用 unknown。`open_elapsed_ms=0` 只是
+惰性流生成器的计时起点。持久回执是 body-free JSON（`4355` bytes，SHA-256
+`2ead059ea22f035e6201bee6f3638c8e7a113baed3bf51b55fbbd17e42f862e6`）。
+
+该样本只能说明请求到达接口并产生内容，不能裁决 API/Key、模型一般能力、领域准入或生产成熟度；候选仍
+disabled/未注册，严格 Flash v1、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和
+`production_media=0` 不变。下一精确项为
+`candidate-real-call-timeout-usage-followup / pending-user-authorization`：先离线验证硬墙钟取消、流关闭与
+Usage/终态尾帧处理，再决定是否另行授权真实重测。

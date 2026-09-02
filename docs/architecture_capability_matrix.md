@@ -822,3 +822,19 @@ RQ-205 已为 RQ-204 的 candidate-only 评估接缝取得同一实现提交的 
 AgentLoop、Portal/Account/Workbench/Auth、路由与 `production_media=0` 不变。没有真实 recovery、G53-7、
 黄金切片、生产准入或 8F 证据。下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`。
+
+### 2026-09-02：RQ-206 候选真实主请求观察能力边界
+
+RQ-206 只新增一次有界真实观察证据，不新增 Runtime capability。干净隔离工作树上的
+`0b2342c240cfdc1801e673e830c9a7f30bed3fbd` / Actions `33603143606` 三 job exact-SHA 全绿；
+普通智谱 `zhipu/glm-5.3-flash` primary 只调用 1 次，流观察到 reasoning、可见正文、`stop` 和 EOF，
+但 Usage 缺失、close 失败，90 秒 attempt 门在晚到事件中触发，最终 `fail_closed / elapsed_limit`。
+首事件 `3078ms`、首个可见正文 `151453ms`、总延迟 `175875ms`；`open_elapsed_ms=0` 仅是惰性流计时起点。
+
+持久回执是 canonical body-free JSON（`4355` bytes，SHA-256
+`2ead059ea22f035e6201bee6f3638c8e7a113baed3bf51b55fbbd17e42f862e6`），`calls_reserved/settled=1/1`、
+费用 unknown。该证据不构成 API/Key、模型一般能力、领域准入或生产成熟度结论；候选仍 disabled、未注册，
+`capabilities.streaming=False`，严格 Flash v1 2048/零额外调用、默认模型、产品模块和
+`production_media=0` 不变。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+先离线验证硬墙钟取消、流关闭与 Usage/终态尾帧处理。

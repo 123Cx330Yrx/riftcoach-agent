@@ -3165,3 +3165,23 @@ Flash v1 2048/零额外调用、默认模型、AgentLoop、统一 Trace/预算�
 路由和 `production_media=0` 不变。当前下一精确项为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`；
 真实 recovery、G53-7、黄金切片、生产安全/部署/合规与 8F 必须另行授权。
+
+### RQ-206：候选 recovery 诊断一次真实主请求观察（2026-09-02）
+
+接受在干净隔离工作树上对版本化候选诊断执行 1 次有界真实 primary 的结果：诊断提交
+`0b2342c240cfdc1801e673e830c9a7f30bed3fbd` 的 Actions run `33603143606` 三 job exact-SHA 全绿，
+实现基线为 `90242822df0e47304700644572bc12f0a3aa88ad`。普通智谱 `zhipu/glm-5.3-flash` 流观察到
+reasoning、可见正文、`stop` 与 EOF；首事件 `3078ms`、首个可见正文 `151453ms`、总延迟 `175875ms`。
+
+由于 Usage 缺失、close 失败，且 90 秒 attempt 墙钟门在晚到事件中触发，回执必须保持
+`fail_closed / elapsed_limit`、`assembled_complete=false`、费用 unknown；`calls_reserved/settled=1/1`，
+不发第二次 recovery。`open_elapsed_ms=0` 只代表惰性流生成器的计时起点。持久 body-free 回执为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq206_v1.json`，
+`4355` bytes，SHA-256 `2ead059ea22f035e6201bee6f3638c8e7a113baed3bf51b55fbbd17e42f862e6`。
+
+该决定只记录传输/完成度事实，不把它解释为 API/Key 失败、模型一般质量、领域准入或生产成熟度结论。
+候选仍 activation disabled、未注册，`capabilities.streaming=False`；严格 Flash v1 2048/零额外调用、
+默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变，G53-7、
+黄金切片、安全/部署/合规与 8F 均未开始。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+先离线设计/测试硬墙钟取消、流关闭和 Usage/终态尾帧处理，再另行裁决真实重测。

@@ -1178,3 +1178,18 @@ Account、Workbench、Auth、路由和 `production_media=0` 不变；8E/8F 的�
 下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`；
 真实 recovery 只能在新的明确一次性授权后执行。
+
+## 2026-09-02：RQ-206 版本化候选 recovery 诊断真实观察边界
+
+RQ-206 在同一干净隔离工作树只执行 1 次有界真实 primary：提交
+`0b2342c240cfdc1801e673e830c9a7f30bed3fbd` 的 Actions run `33603143606` 三 job exact-SHA 全绿。
+普通智谱 `zhipu/glm-5.3-flash` 流观察到 reasoning、可见正文、`stop` 和 EOF，但首个可见正文在
+`151453ms`、总延迟 `175875ms`；Usage 缺失、close 失败，90 秒 attempt 门在晚到事件中触发，
+因此回执为 `fail_closed / elapsed_limit`，没有第二次 recovery。持久 body-free 回执 SHA-256 为
+`2ead059ea22f035e6201bee6f3638c8e7a113baed3bf51b55fbbd17e42f862e6`（`4355` bytes）。
+
+该观察属于 8-Advanced 候选证据，不是 8-Core 产品能力，也不是 API/Key、模型一般质量、领域准入或生产
+成熟度结论；候选仍 disabled、未注册，严格 Flash v1、默认模型、产品 Runtime、前端、
+`production_media=0` 和 8F 边界不变。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+先离线设计/测试硬墙钟取消、流关闭与 Usage/终态尾帧处理，再另行裁决真实重测。

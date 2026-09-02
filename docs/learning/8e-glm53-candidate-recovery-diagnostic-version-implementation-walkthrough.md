@@ -139,6 +139,22 @@ Key loader、产品 Runtime 或 Provider 实现。系统 Python 3.13 的 `pytest
 > 预算、失败与回执。当前只通过 fake/local 测试，activation 仍 disabled，因此不能把
 > 这批结果说成 GLM-5.3 已进入产品或通过生产准入。
 
-不要说“已接入 streaming”“已自动 recovery”或“本地测试绿所以生产可用”。下一道
-明确门是同一实现提交的 exact-SHA 公共 CI 和协议 dry-run；真实 recovery、G53-7、黄金
-切片、生产安全/部署和 8F 仍要单独裁决。
+不要说“已接入 streaming”“已自动 recovery”或“本地测试绿所以生产可用”。RQ-205 已完成
+同一实现提交的 exact-SHA 公共 CI 和协议 dry-run；RQ-206 随后只执行 1 次有界真实 primary，
+其结果仍是候选传输/完成度证据，不是生产准入。
+
+## RQ-206 真实观察的复盘
+
+RQ-206 沿用本 walkthrough 的 reserve、单次事件泵、body-free observer 和派生回执，但把调用放在
+干净隔离工作树中，并显式冻结 `zhipu/glm-5.3-flash`、`max_tokens=8192`、SDK retries=0、90 秒
+attempt 与 120 秒传输上限。只产生 1 次 primary；没有 recovery、隐式 retry 或产品 Runtime 接线。
+
+结果流确实出现 reasoning、可见正文、`finish_reason=stop` 与 EOF，首事件 `3078ms`、首个可见正文
+`151453ms`、总延迟 `175875ms`。但 Usage 缺失、close 失败，90 秒 attempt 门在晚到事件中触发，
+所以观察和装配必须保持 `fail_closed / elapsed_limit`、`assembled_complete=false`，不能因为 stop/EOF
+就判为完整成功。`open_elapsed_ms=0` 是惰性流生成器的计时起点，不是网络握手零耗时。
+
+持久回执为 canonical body-free JSON（`4355` bytes，SHA-256
+`2ead059ea22f035e6201bee6f3638c8e7a113baed3bf51b55fbbd17e42f862e6`）。这个样本只证明请求到达接口
+并产生内容，不能裁决 API/Key、模型一般质量、领域准入或生产成熟度。下一门必须先离线解决总墙钟
+硬取消、流关闭资源收口和 Usage-only 终态尾帧处理，再考虑新的真实观察授权。

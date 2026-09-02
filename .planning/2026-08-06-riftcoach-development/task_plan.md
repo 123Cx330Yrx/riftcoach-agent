@@ -58,6 +58,11 @@ RQ-205 已完成 RQ-204 的 exact-SHA 公共 CI 与 fake/local 协议演练：�
 为 `201 passed, 1 warning`；当前唯一下一项改为一次性授权的
 `candidate-recovery-diagnostic-real-call`，不自动发送真实请求。
 
+RQ-206 已在同一干净隔离工作树完成一次有界真实 primary 观察：`0b2342c240cfdc1801e673e830c9a7f30bed3fbd` /
+Actions `33603143606` exact-SHA 三 job 全绿；单次调用观察到 reasoning、可见正文、stop/EOF，但 Usage 缺失、
+close 失败且 90 秒 attempt 墙钟门触发，回执为 `fail_closed / elapsed_limit`。当前唯一下一项是先离线设计和测试
+硬墙钟取消与 Usage/终态尾帧处理，再考虑是否另行授权真实重测。
+
 ## Current Phase
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
@@ -406,6 +411,12 @@ RQ-197 又完成候选边界观察合同的 fake/local 实现与 `163 passed` �
   Actions `33598541029` 三 job exact-SHA 全绿并完成协议演练；当前唯一下一项为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`。
 
+- [current-evidence-override] RQ-206 已覆盖上述真实调用门：`0b2342c240cfdc1801e673e830c9a7f30bed3fbd` /
+  Actions `33603143606` exact-SHA 三 job 全绿，并只执行 1 次 primary；观察结果为 `fail_closed / elapsed_limit`，
+  未触发 recovery。当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  下一轮先做离线硬墙钟取消、流关闭和 Usage/终态尾帧测试，不自动再次调用。
+
 ## RQ-195 / 候选 runtime 接线架构评审（2026-09-01）
 
 - [completed-review] RQ-194 的 `assemble()` 只交付完整 `stop`/`tool_calls` 流；`length`、缺终止、缺 Usage 和异常路径
@@ -589,6 +600,26 @@ RQ-197 又完成候选边界观察合同的 fake/local 实现与 `163 passed` �
 - [next] 唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`；
   真实 recovery 需新的明确一次性授权，不能因 CI 通过自动执行。
+
+## RQ-206 / 版本化候选 recovery 诊断一次真实主请求观察（2026-09-02）
+
+- Status: completed-bounded-real; fail-closed; timeout-usage-followup-pending
+- [preflight] 使用干净隔离工作树 `HEAD=0b2342c240cfdc1801e673e830c9a7f30bed3fbd`，实现基线为
+  `90242822df0e47304700644572bc12f0a3aa88ad`；同 SHA Actions run `33603143606` 三 job 全绿。
+- [real-call] 按一次性授权仅发送 1 次普通智谱 API `zhipu/glm-5.3-flash` primary，SDK retries 为 0，
+  `max_tokens=8192`、请求级 90 秒、传输 120 秒；未发送第二次 recovery。
+- [observation] 首事件 `3078ms`，首个可见正文 `151453ms`，总延迟 `175875ms`；观察到 reasoning、可见正文、
+  `finish_reason=stop` 与 EOF，但 Usage 缺失，close 状态失败，单次 90 秒 attempt 门在晚到事件中触发。
+  `open_elapsed_ms=0` 仅反映惰性流生成器的计时起点，不代表网络握手耗时为零。
+- [receipt] 持久化 canonical body-free 回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq206_v1.json`，
+  `4355` bytes，SHA-256 `2ead059ea22f035e6201bee6f3638c8e7a113baed3bf51b55fbbd17e42f862e6`；
+  `calls_reserved/settled=1/1`、`run_state=fail_closed`、`terminal_reason=elapsed_limit`、费用 unknown。
+- [boundary] 该结果不是 API/Key 失败、模型一般质量结论或生产准入证据；候选仍 disabled、未注册，严格 Flash v1、
+  默认模型、产品 Runtime、Workbench/Portal/Account/Auth、`production_media=0`、G53-7、黄金切片和 8F 均不变。
+- [next] 唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  先离线设计/测试硬墙钟取消、流关闭和 Usage/终态尾帧处理，再另行裁决真实重测。
 
 ## 6A-1 Checklist
 
@@ -1030,15 +1061,16 @@ RQ-197 又完成候选边界观察合同的 fake/local 实现与 `163 passed` �
 ### Phase 37 - 8e-productization
 
 - Status: in_progress
-- Canonical current override (RQ-204): the previous `candidate-wiring-review / pending`,
+- Canonical current override (RQ-206): the previous `candidate-wiring-review / pending`,
   `candidate-runtime-wiring-design / pending`, `candidate-boundary-observation-contract-implementation / pending` and
   `candidate-boundary-observation-contract-public-ci / pending` and `candidate-evaluation-harness-implementation / pending`
   wording below is historical; RQ-197 local implementation, RQ-198 exact-SHA public CI, RQ-199 harness design and RQ-200
   fake/local harness implementation and its exact-SHA public CI are complete; RQ-202 candidate recovery boundary review,
   RQ-203 versioned diagnostic protocol design, RQ-204 fake/local versioned diagnostic implementation and RQ-205 exact-SHA
-  public CI/protocol dry-run are complete; the active next checkpoint is
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`.
-  No product Runtime or real API change occurred.
+  public CI/protocol dry-run are complete; RQ-206 has completed one bounded real primary observation with a fail-closed
+  receipt; the active next checkpoint is
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`.
+  No product Runtime or default-model change occurred; no recovery retry was sent.
 - State: RQ-096 live integration、Batch E E1–E5、production shell/Auth gate、Timeline 与 bilingual/product-journey foundation 均已公共闭环；RQ-108 Portal 视觉历史批次与 RQ-161/162 presentation hygiene 已保留其证据。RQ-163 Agent 主线交接与 README 事实版已完成；RQ-164 G53-0 已完成本地静态审计并保持 `blocked/deferred`；RQ-165 G53-1 离线适配档案 TDD 与 RQ-166 G53-2 exact-SHA 公共 CI 已完成；RQ-167 首次旧 Key 尝试因 `authentication_failed` 阻塞，RQ-168 重开仍失败，RQ-169 更换普通 API Key 后 G53-3 已通过；RQ-182 响应完成策略、RQ-183 候选 runtime/attempt/预算/Trace 合同、RQ-184 A/B 公共证据链、RQ-185–RQ-187 诊断、RQ-188 传输/生成拆分、RQ-189 预算校准、RQ-190 首正文探针与 RQ-191 完整流终态均已记录；RQ-192 离线 provider-neutral 流式装配合同与 RQ-193 测试内智谱 conformance 均已完成本地（分别 29 与 13 项聚焦测试），RQ-194 已完成候选级显式 `ZhipuStreamAdapter` 本地实现（`stream_events()`/`assemble()` 与 `ZhipuProvider.stream_adapter()` 显式工厂），聚焦 `20 passed` 且已取得同 SHA 公共 CI（`a7580e861cd986c026040c7fcfcc3fa577737961` / Actions `33496237588` 三 job 全绿且 head_sha 精确匹配）。提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的同 SHA 公共 CI run `33489903978` 已三 job 全绿且 head_sha 精确匹配，Trace 脱敏断言已包含；RQ-195 评审、RQ-196 设计与 RQ-197 fake/local 边界观察合同实现已完成，production media、完整 8E、Auth/HTTPS/部署仍未完成，下一项为 `candidate-boundary-observation-contract-public-ci / pending`，先做同 SHA 公共 CI；不注册候选、不改产品默认。
 - [current-evidence] 上述状态摘要中的旧 candidate checkpoint 仅为历史措辞；RQ-198 已以
   `127e6da43ef1b71b284a7e8d4198547b04c556d8` / Actions `33507627615` 完成三 job 公共闭环，RQ-199 已完成
@@ -1048,6 +1080,10 @@ RQ-197 又完成候选边界观察合同的 fake/local 实现与 `163 passed` �
 - [current-evidence-override] RQ-205 已将上述历史指针推进为公共闭环：`90242822df0e47304700644572bc12f0a3aa88ad` /
   Actions `33598541029` 三 job exact-SHA 全绿，且 fake/local 协议演练通过；当前唯一下一项为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`。
+- [current-evidence-override] RQ-206 已将上述真实调用指针推进为一次观察完成：诊断提交
+  `0b2342c240cfdc1801e673e830c9a7f30bed3fbd` / Actions `33603143606` exact-SHA 三 job 全绿，
+  只发出 1 次 primary，结果为 `fail_closed / elapsed_limit`，未触发 recovery；当前唯一下一项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`。
 - [completed-local-diagnosis] v6.1 source GET 成功后 POST 400、task id 空、无隐藏 task；strict sanitizer 三项 red→green、revised runner no-I/O self-test 完成；精确 error field 仍 unknown，不重试 relay；
 - [completed-live-rejected] 豆包标准套餐 only one Seedance comparator：首尾帧+母图 image-to-video；输出
   `e4b2f91...352cf` 因 source 0.407604/seam 0.144582/AAC/移动水印/暖金主导与 motion stack 不完整 rejected；

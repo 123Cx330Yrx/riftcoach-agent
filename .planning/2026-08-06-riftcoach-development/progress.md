@@ -5605,3 +5605,21 @@
 - [next] 当前唯一精确 checkpoint 改为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`；
   真实 recovery 仅待新的明确一次性授权。
+
+## 2026-09-02：RQ-206 版本化候选 recovery 诊断一次真实主请求观察
+
+- [completed-bounded-real] 在干净隔离工作树 `0b2342c240cfdc1801e673e830c9a7f30bed3fbd` 上，
+  同 SHA Actions `33603143606` 三 job 全绿；按一次性授权只发送 1 次普通智谱
+  `zhipu/glm-5.3-flash` primary，SDK retries 为 0，未发第二次 recovery。
+- [observed] 请求使用候选 `max_tokens=8192`、90 秒 attempt、120 秒传输上限；首事件 `3078ms`、
+  首个可见正文 `151453ms`、总延迟 `175875ms`。流中确有 reasoning、可见正文、`stop` 和 EOF，
+  但 Usage 缺失且 close 失败；90 秒 attempt 门在晚到事件中触发，最终 `fail_closed / elapsed_limit`。
+- [evidence] 持久回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq206_v1.json`，
+  `4355` bytes，SHA-256 `2ead059ea22f035e6201bee6f3638c8e7a113baed3bf51b55fbbd17e42f862e6`；
+  canonical 重解析一致，`calls_reserved/settled=1/1`，费用与 Usage 为 unknown。
+- [boundary] 这是候选传输/完成度观察，不是 API/Key 失败、模型一般质量结论或生产准入；候选仍 disabled、
+  未注册，严格 Flash v1、默认模型、产品 Runtime、前端模块、`production_media=0`、G53-7、黄金切片与 8F 不变。
+- [next] 当前唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  先离线设计/测试硬墙钟取消、流关闭和 Usage/终态尾帧处理，再决定是否另行授权真实重测。

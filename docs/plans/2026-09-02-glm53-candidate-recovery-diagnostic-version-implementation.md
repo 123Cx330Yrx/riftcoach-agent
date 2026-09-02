@@ -2,7 +2,7 @@
 
 ## 状态与边界
 
-状态：`completed-local / candidate-only / public-ci-pending`。
+状态：`completed-public / candidate-only / real-observation-fail-closed`。
 
 本计划把 RQ-203 冻结的 v2 协议落成一个只供 fake/local 使用的评估接缝。它不是
 产品运行时、不是 `LLMProvider`、不是默认模型切换，也不是对真实 GLM-5.3 请求的
@@ -48,8 +48,8 @@ Workbench、Auth、路由或 `production_media=0`。
 - Python 3.11/3.13 编译、`git diff --check`、治理检查和静态 no-I/O/import 检查通过；
 - 不把本地 fake/local 测试写成公共生产成熟度，也不生成真实诊断结果 JSON。
 
-本门完成后，唯一下一项是同一干净实现提交的 exact-SHA 公共 CI 与协议 dry-run。公共
-验证通过后，是否做一次真实诊断仍须单独的一次性授权；即使成功，也不能自动执行
+本门完成后，RQ-205 已完成同一干净实现提交的 exact-SHA 公共 CI 与协议 dry-run；RQ-206
+又在新的诊断提交上按一次性授权只执行 1 次真实 primary。即使该观察完成，也不能自动执行
 G53-7、黄金切片、生产准入或 8F。
 
 ## 失败、恢复与回滚
@@ -66,4 +66,24 @@ G53-7、黄金切片、生产准入或 8F。
 本地实现与聚焦验证已完成；候选 activation 仍为 `disabled`、`execution_allowed=false`，
 `capabilities.streaming=False`，严格 Flash v1 仍为 2048/零额外调用。下一精确 checkpoint：
 
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`
+
+## RQ-206 真实观察结果与后续边界
+
+RQ-206 使用本计划落成的 v2 诊断接缝，在干净隔离工作树只发送 1 次普通智谱
+`zhipu/glm-5.3-flash` primary（SDK retries=0）。提交
+`0b2342c240cfdc1801e673e830c9a7f30bed3fbd` 的 Actions run `33603143606` 三 job exact-SHA 全绿，
+实现基线为 `90242822df0e47304700644572bc12f0a3aa88ad`。流观察到 reasoning、可见正文、`stop` 和 EOF，
+但首个可见正文为 `151453ms`、总延迟 `175875ms`；Usage 缺失、close 失败，单次 90 秒 attempt 门在晚到事件中触发，
+所以回执为 `fail_closed / elapsed_limit`、`assembled_complete=false`，没有第二次 recovery，费用 unknown。
+`open_elapsed_ms=0` 只是惰性流生成器的计时起点。
+
+持久回执路径为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq206_v1.json`，
+`4355` bytes，SHA-256 `2ead059ea22f035e6201bee6f3638c8e7a113baed3bf51b55fbbd17e42f862e6`。
+该样本只是候选传输/完成度证据，不裁决 API/Key、模型一般能力、领域准入或生产成熟度；候选 activation
+仍 disabled，严格 Flash v1、默认模型与产品 Runtime 不变。
+
+当前后续不再直接重测：先建立一个离线计划，解决惰性流无法被 observer 总墙钟硬中断、close 失败的
+资源收口，以及 Usage-only 终态尾帧的显式接收/拒绝规则；完成聚焦测试和公共 CI 后，再由独立授权决定是否
+进行新的真实观察。

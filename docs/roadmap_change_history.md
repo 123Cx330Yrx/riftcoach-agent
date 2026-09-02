@@ -4047,3 +4047,23 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 - `BOUNDARY-NEXT`：当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`；
   真实 recovery、G53-7、黄金切片、生产准入与 8F 仍需新的明确授权。
+
+## 2026-09-02：RQ-206 版本化候选 recovery 诊断一次真实主请求观察
+
+- `PUBLIC-CI`：诊断接缝提交 `0b2342c240cfdc1801e673e830c9a7f30bed3fbd` 的 Actions run
+  `33603143606` 三 job exact-SHA 全绿；实现基线为 `90242822df0e47304700644572bc12f0a3aa88ad`。
+- `REAL-OBSERVATION`：在干净隔离工作树按一次性授权仅发出 1 次普通智谱
+  `zhipu/glm-5.3-flash` primary，SDK retries=0；流观察到 reasoning、可见正文、`stop` 和 EOF，
+  首事件 `3078ms`、首个可见正文 `151453ms`、总延迟 `175875ms`。
+- `FAIL-CLOSED`：Usage 缺失、close 失败，单次 90 秒 attempt 门在晚到事件中触发；回执为
+  `fail_closed / elapsed_limit`、`calls_reserved/settled=1/1`、费用 unknown，没有第二次 recovery。
+  `open_elapsed_ms=0` 仅代表惰性流计时起点。
+- `EVIDENCE`：持久 canonical body-free 回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq206_v1.json`，
+  `4355` bytes，SHA-256 `2ead059ea22f035e6201bee6f3638c8e7a113baed3bf51b55fbbd17e42f862e6`。
+- `BOUNDARY`：该结果只证明本次请求到达接口并产生内容，不裁决模型一般质量、领域准入或生产成熟度；
+  候选仍 disabled/未注册，严格 Flash v1、默认模型、产品 Runtime、Portal/Account/Workbench/Auth、
+  `production_media=0`、G53-7、黄金切片和 8F 均不变。
+- `BOUNDARY-NEXT`：当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+  先离线设计和测试硬墙钟取消、流关闭与 Usage/终态尾帧处理，再讨论新的真实调用。
