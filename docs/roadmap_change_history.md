@@ -4143,3 +4143,10 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 - `BOUNDARY-NEXT`：候选/产品边界不变。下一精确项为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`，
   等待用户决定是否另立新版协议，不自动重试、注册候选或进入后续成熟度闸门。
+
+### 2026-09-03：RQ-211 公共回执分派补充
+
+提交 `1c669e0` 为 provider capability 全目录扫描加入 RQ-211 schema 的显式解析分支；Actions run
+`33666132282` 三 job exact-SHA 全绿，公共 pytest `2268 passed, 145 skipped, 1 warning, 127 subtests passed`，
+PostgreSQL `201 passed, 1 warning`。该修复只让持久 body-free 回执可被公共合同识别，没有新增真实调用；
+真实观察仍绑定 c311，候选 gate 与产品边界不变。

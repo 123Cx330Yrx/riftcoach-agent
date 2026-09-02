@@ -2914,3 +2914,8 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [next] 当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`；
   等待用户决定是否另立能稳定制造 pending-read 的新版协议，不自动追加真实请求或进入后续成熟度闸门。
+
+- [public-verification-addendum] 为注册 RQ-211 回执的 provider capability 分派已补测试，提交
+  `1c669e0` 的 Actions run `33666132282` 三 job exact-SHA 全绿；公共 pytest
+  `2268 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL `201 passed, 1 warning`。
+  该公共闭环没有新增真实 API；c311 仍是唯一真实观察的 implementation/diagnostic/input-plan identity。

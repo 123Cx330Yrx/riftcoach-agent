@@ -591,3 +591,7 @@ SHA-256 `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，不
 材料特别区分“没有观察到挂起读取”和“provider close/wakeup 已被证明”；后者仍未证实。候选 gate、
 产品 Runtime、Portal、Account、Workbench、Auth、路由、`production_media=0` 以及 8E coverage planned
 保持不变，下一步等待是否设计新版 pending-read 观察协议的用户裁决。
+
+补充验证：提交 `1c669e0` 为公共能力目录加入 RQ-211 回执的显式 schema 分派，Actions run `33666132282`
+三 job exact-SHA 全绿（公共 pytest `2268 passed, 145 skipped, 1 warning, 127 subtests passed`，
+PostgreSQL `201 passed, 1 warning`）。这是回执合同的公共可复现性验证，没有新增真实 API 调用；真实观察仍只绑定 c311。

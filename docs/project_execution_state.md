@@ -4163,7 +4163,7 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 - `[interpretation]` `not_pending` 只说明这次有限窗口没有进入挂起的第二次读取，不能证明或否定
   provider close 的非阻塞性、取消能否唤醒 pending `next()`、或底层 HTTP response 是否已被取消。
   全部资源投影为 `closed` 也只是拥有资源的 close 报告，不等于生产级网络中断保证。
-- `[verification-boundary]` 新探针聚焦测试在后续测试加固后为 `20 passed`；后续提交
+- `[verification-boundary]` 新探针聚焦测试在回执分派测试补齐后为 `21 passed`；随后提交
   `5b0ce15d9d4a4c3e413d53032b9f529d20e18f6c` 的公共 run `33662730304` 被外部取消，不能记为成功，
   也不改变本次回执绑定的 c311 exact-SHA 公共证据。候选继续 disabled/未注册，
   `execution_allowed=false`、`capabilities.streaming=False`；严格 Flash v1、默认模型、产品 Runtime、
@@ -4172,3 +4172,8 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`；
   等待用户决定是否设计可稳定制造 pending-read 的新版本观察协议，不自动追加真实请求、注册候选、进入
   G53-7、黄金切片、生产准入或 8F。
+- `[public-verification-addendum]` 为使 provider capability 目录能够识别这份新 schema，测试分派修复已在
+  提交 `1c669e0` 完成；其 Actions run `33666132282` 三 job 均 `completed/success` 且 head SHA 精确匹配。
+  公共 pytest 为 `2268 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面为
+  `201 passed, 1 warning`。此前 `5b0ce15` 的公共 run `33662730304` 外部取消仍保留为取消记录，不作为通过；
+  这次验证没有新增真实 API 调用，也不改变 c311 回执身份。

@@ -914,3 +914,6 @@ reader，因而没有执行 cancel。迭代器、外层 SDK stream wrapper 与�
 回执为 `908` bytes、SHA-256
 `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，只含允许列表状态。
 候选继续 disabled/未注册，`capabilities.streaming=False`；能力矩阵和 `production_media=0` 均不变。
+
+公共验证补充：提交 `1c669e0` / Actions `33666132282` 三 job exact-SHA 全绿，provider capability 扫描
+已能解析 RQ-211 的 schema；这只是合同识别证据，不是新的 provider 或产品 capability，也没有新增真实 API。

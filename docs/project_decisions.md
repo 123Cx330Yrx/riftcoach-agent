@@ -3269,3 +3269,8 @@ HTTP response 取消、非阻塞 close 和 pending `next()` 唤醒仍未被验�
 `capabilities.streaming=False`；严格 Flash v1、默认模型、AgentLoop、产品 Runtime、Portal、Account、
 Workbench、Auth、路由和 `production_media=0` 不变。下一步等待用户裁决是否设计能稳定制造 pending-read
 的新版协议；不自动追加真实请求、G53-7、黄金切片、生产准入或 8F。
+
+公共验证补充：提交 `1c669e0` 的 Actions run `33666132282` 三 job exact-SHA 全绿（pytest
+`2268 passed, 145 skipped, 1 warning, 127 subtests passed`；PostgreSQL `201 passed, 1 warning`）。
+它只修复新回执在既有 provider capability 扫描中的显式分派，不构成第二次真实调用或 wakeup 结论；c311
+仍是 RQ-211 唯一真实观察身份。

@@ -5710,3 +5710,7 @@
 - [next] 当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`；
   等待用户决定是否设计新版观察协议，不自动追加真实调用、G53-7、黄金切片、生产准入或 8F。
+
+- [public-verification-addendum] 提交 `1c669e0` 修复 provider capability 目录对 RQ-211 schema 的显式分派；
+  Actions `33666132282` 三 job exact-SHA 全绿，公共 pytest `2268 passed, 145 skipped, 1 warning,
+  127 subtests passed`，PostgreSQL `201 passed, 1 warning`。这只是回执可复现性验证，没有新增真实请求。

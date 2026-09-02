@@ -1261,3 +1261,6 @@ RQ-211 仍属于 8-Advanced 的 candidate-only 观察，不改变 8-Core 必做�
 provider close/wakeup。body-free 回执与 c311 exact-SHA 公共证据已固定；候选仍 disabled/未注册，产品
 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。若继续，先裁决是否设计
 能稳定制造 pending-read 的新版协议；不得把重复真实请求当作路线推进。
+
+公共验证补充：`1c669e0` / Actions `33666132282` 已三 job exact-SHA 全绿，确认 RQ-211 回执被既有
+provider capability 合同扫描正确识别。此验证不增加 8-Core 能力、不新增真实请求，8E/8F 与候选边界不变。

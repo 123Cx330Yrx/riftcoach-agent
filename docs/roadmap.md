@@ -1349,3 +1349,7 @@ cancel，也不能把本次结果解释为 provider wakeup 通过或失败。回
 当前下一精确项为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`；
 先等待是否另立能稳定制造 pending-read 的新版协议，不自动追加真实请求、G53-7、黄金切片、生产准入或 8F。
+
+补充公共验证：提交 `1c669e0` 为 RQ-211 回执加入 provider capability 分派，Actions run `33666132282`
+三 job exact-SHA 全绿；公共 pytest `2268 passed, 145 skipped, 1 warning, 127 subtests passed`，
+PostgreSQL `201 passed, 1 warning`。该闭环没有新增真实 API，c311 仍是唯一真实观察身份。

@@ -44,6 +44,10 @@ Authorization、request ID、正文、reasoning 原文或 provider body。
 后续测试加固提交 `5b0ce15d9d4a4c3e413d53032b9f529d20e18f6c` 的公共 run 被外部取消，不能把它
 写成公共通过；这不改变本次回执绑定的 c311 证据。
 
+随后提交 `1c669e0` 为公共 provider capability 扫描加入该 schema 的显式分派；Actions run
+`33666132282` 三 job exact-SHA 全绿（公共 pytest `2268 passed, 145 skipped, 1 warning, 127 subtests passed`）。
+这是回执合同的公共可复现性验证，不是第二次真实调用，也不改变 c311 的真实观察身份。
+
 ## 当前边界与下一步
 
 候选仍 `activation_state=disabled`、未注册，`execution_allowed=false`、

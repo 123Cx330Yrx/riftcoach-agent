@@ -5429,3 +5429,7 @@
 - 后续测试加固提交 `5b0ce15d9d4a4c3e413d53032b9f529d20e18f6c` 的公共 run 被外部取消，
   不应混入 c311 的真实回执证据。若还要裁决 wakeup，需要先设计能稳定制造 pending-read 的新版本协议，
   而不是重复同一请求；候选与产品边界保持不变。
+
+- 随后提交 `1c669e0` 为公共 provider capability 扫描补上 RQ-211 receipt/schema 分派；Actions
+  `33666132282` 三 job exact-SHA 全绿（pytest `2268 passed, 145 skipped, 1 warning, 127 subtests passed`，
+  PostgreSQL `201 passed, 1 warning`）。这验证的是持久回执的合同识别，不是新的模型调用；c311 回执仍唯一真实样本。
