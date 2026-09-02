@@ -2,7 +2,7 @@
 
 ## 状态与范围
 
-状态：`implementation-complete-local / candidate-only / public-ci-pending`。
+状态：`completed-public / candidate-only / recovery-review-pending`。
 
 本批只实现 RQ-199 冻结的 fake/local 候选评估台。实现仍在
 `app/evaluation/`，不注册 Provider，不打开产品 streaming，不修改默认运行时、
@@ -53,17 +53,18 @@ Key、SDK 对象、原始 request ID 和异常原文均不能从回执、`repr` 
 - consumer 独立失败、回执/Trace/异常/repr/JSON 的 body-free 断言。
 
 本地聚焦测试为 `15 passed`；连同边界观察、流装配和旧恢复合同相邻回归为
-`102 passed`。`compileall`、`git diff --check` 和治理检查
-需在最终文档同步后重跑。
+`102 passed`。`compileall`、`git diff --check` 和治理检查均通过。实现提交
+`f2a80320123d80a6441f3fcac310014a9bd4550e` 的 Actions run `33536168224` 已三 job
+全绿且 `head_sha` 精确匹配，公共 pytest 为 `2193 passed, 145 skipped, 1 warning, 127 subtests passed`。
 
 ## 仍未做的事情
 
 本批不提供真实 recovery 的激活凭据，不调用第二次真实流，不接入产品
 `ProviderRegistry`/Runtime，不重跑 G53-3/G53-7，不改变严格 Flash v1 的
-2048/零额外调用，也不宣称模型质量、领域采用或公共生产成熟度。下一检查点只取
-同一干净提交的 exact-SHA 公共 CI；之后是否允许 fake recovery、真实 recovery、
+2048/零额外调用，也不宣称模型质量、领域采用或公共生产成熟度。公共 CI 已完成；下一
+检查点改为候选 recovery 诊断边界复核，之后是否允许 fake recovery、真实 recovery、
 黄金切片、生产准入或 8F，仍需独立决策与授权。
 
 ## 下一检查点
 
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`

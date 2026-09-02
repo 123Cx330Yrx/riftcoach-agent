@@ -1112,3 +1112,13 @@ Auth、路由和 `production_media=0` 不变；没有真实 API/Key、recovery�
 当前唯一下一门为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`，
 先取得同一干净提交的 exact-SHA 公共 CI，再另行裁决高级候选是否继续。
+
+## 2026-09-02：RQ-201 候选评估台 exact-SHA 公共 CI 闭环
+
+RQ-200 实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 的 Actions run `33536168224` 已三 job
+全绿且 `head_sha` 精确匹配，公共 pytest 为 `2193 passed, 145 skipped, 1 warning, 127 subtests passed`。
+这只把候选评估台提升为可公共复现的 8-Advanced evidence，不改变 8-Core 生产矩阵；候选仍未注册、
+`execution_allowed=false`、`capabilities.streaming=False`，严格 Flash v1、默认模型、产品 Runtime、
+Portal、Account、Workbench、Auth、路由与 `production_media=0` 均不变。下一精确门为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`，
+只允许在单独授权后复核 recovery 的传输/预算/失败边界。

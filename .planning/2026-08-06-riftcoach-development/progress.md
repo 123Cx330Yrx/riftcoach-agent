@@ -5528,5 +5528,18 @@
   2048/零额外调用、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和
   `production_media=0` 不变，8F 未开始。
 - [next] 当前唯一精确 checkpoint 更新为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`；
-  先取得同一干净提交的 exact-SHA 公共 CI，之后才另行裁决 recovery、G53-7、黄金切片和生产准入。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`；
+  先复核候选 recovery 的传输、预算、失败与脱敏边界，之后才另行裁决是否建立新诊断版本、执行 recovery、G53-7、黄金切片和生产准入。
+
+## 2026-09-02：RQ-201 候选评估台 exact-SHA 公共 CI 闭环
+
+- [completed-public] RQ-200 实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 的 Actions run
+  `33536168224` 已完成且 `head_sha` 精确匹配；`pytest`、`postgres-migrations`、`packaging-smoke`
+  三 job 全绿，公共 pytest 为 `2193 passed, 145 skipped, 1 warning, 127 subtests passed`。
+- [boundary] 公共 CI 只证明隔离 fake/local 候选评估台可复现；activation 仍 disabled，候选仍未注册、
+  `execution_allowed=false`、`capabilities.streaming=False`，严格 Flash v1、默认模型、产品 Runtime、
+  AgentLoop、ToolRuntime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变；
+  没有真实 API/Key、recovery、G53-7、黄金切片或 8F 证据。
+- [next] 当前唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`；
+  需单独授权后才可复核候选 recovery 的传输、预算、失败和脱敏边界。

@@ -1,7 +1,7 @@
 # ADR-0077：设计隔离的 GLM-5.3 候选评估台
 
 - 日期：2026-09-02
-- 状态：`implementation-complete-local / candidate-only / public-ci-pending`
+- 状态：`completed-public / candidate-only / recovery-review-pending`
 - 范围：Stage 8 / 8E；`candidate-evaluation-harness-design`（RQ-199）
 - 依据：ADR-0071、0072、0075、0076；RQ-192–RQ-198；
   `app/evaluation/candidate_stream_contract.py`、
@@ -324,3 +324,19 @@ body-free envelope。当前 activation 只有 sealed `disabled`，候选形状�
 fake/local 聚焦测试为 `15 passed`，与边界观察、流装配和旧恢复合同相邻回归为
 `102 passed`；编译检查通过。公共 exact-SHA CI 仍是下一门，故本 ADR 不把本地实现
 写成公共生产准入或模型能力证据。
+
+## RQ-201 公共证据回填（2026-09-02）
+
+实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 的 GitHub Actions run
+`33536168224` 已完成且 `head_sha` 精确匹配；`pytest`、`postgres-migrations`、
+`packaging-smoke` 三个 job 均成功，公共 pytest 为
+`2193 passed, 145 skipped, 1 warning, 127 subtests passed`。这只证明候选评估台在干净
+公共环境中的可复现性，不改变其 candidate-only、sealed `disabled` activation 或任何
+产品能力边界。
+
+下一精确检查点为：
+
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`
+
+该检查点只复核候选 recovery 的传输、预算、失败和脱敏边界；是否建立新诊断版本、发起
+真实 recovery、重跑 G53-7 或进入生产准入，仍需单独授权与新的证据链。

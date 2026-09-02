@@ -3979,3 +3979,15 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 - `BOUNDARY-NEXT`：实现提交取得同 SHA 公共 CI 前，唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`；
   CI 之后是否启用 fake/真实 recovery、重跑 G53-7、黄金切片或生产准入仍须独立授权。
+
+## 2026-09-02：RQ-201 候选评估台 exact-SHA 公共 CI 闭环
+
+- `PUBLIC-CI`：RQ-200 实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 的 GitHub Actions run
+  `33536168224` 已完成且 `head_sha` 精确匹配；`pytest`、`postgres-migrations`、`packaging-smoke`
+  三 job 全部成功，公共 pytest 为 `2193 passed, 145 skipped, 1 warning, 127 subtests passed`。
+- `BOUNDARY`：该证据只验证隔离候选评估台的可复现性；候选仍未注册、`execution_allowed=false`、
+  `capabilities.streaming=False`，严格 Flash v1、默认产品 Runtime、Portal、Account、Workbench、
+  Auth、路由和 `production_media=0` 均不变，没有真实 API/Key、recovery、G53-7、黄金切片或 8F 证据。
+- `BOUNDARY-NEXT`：当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`；
+  先复核候选 recovery 的传输、预算、失败和脱敏边界，是否建立新诊断版本仍需单独授权。

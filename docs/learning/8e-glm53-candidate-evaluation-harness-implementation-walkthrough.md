@@ -82,6 +82,17 @@ Usage、open/read/close/clock、一次性迭代、身份、请求 cap、consumer
 Account、Auth、路由和 `production_media=0` 均不变；8F、公共部署、合规、领域黄金
 切片与模型生产准入仍未完成。
 
+## 8. 公共验证与下一门
+
+实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 的 Actions run `33536168224`
+已三 job 全绿且 `head_sha` 精确匹配；公共 pytest 为
+`2193 passed, 145 skipped, 1 warning, 127 subtests passed`。这只是候选评估台的公共可复现
+证据，不是候选注册、领域准入或生产成熟度证据。
+
+因此下一精确 checkpoint 是
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`。
+在单独授权前，不建立真实 recovery 请求、不重跑 G53-7、不改默认模型或产品运行时。
+
 ## 8. 面试表述
 
 可以这样解释：

@@ -758,8 +758,10 @@ body-free observer 与一次性内存 assembler，真实边界观察后才重算
 序号/预算/时钟异常均 fail-closed，不构造产品 `ChatResponse`。
 
 本地 harness 聚焦 `15 passed`，与边界观察、流装配和旧恢复合同相邻回归 `102 passed`；编译、
-diff check、governance 通过。activation 仍 disabled，候选不注册、不打开
-`capabilities.streaming`，严格 Flash v1 2048/零额外调用、默认模型、产品 Runtime、Portal、
-Account、Workbench、Auth、路由和 `production_media=0` 不变。该项仍属于 8-Advanced candidate
-evidence，不是 8-Core 或公共生产准入；当前下一项为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`。
+diff check、governance 通过。RQ-201 已补齐实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 的
+exact-SHA 公共 CI run `33536168224`（三 job 全绿，公共 pytest `2193 passed, 145 skipped, 1 warning, 127 subtests passed`）。
+activation 仍 disabled，候选不注册、不打开 `capabilities.streaming`，严格 Flash v1 2048/零额外调用、
+默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。该项仍属于
+8-Advanced candidate evidence，不是 8-Core 或公共生产准入；当前下一项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`，
+只允许在单独授权后复核 recovery 边界。

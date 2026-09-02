@@ -92,12 +92,12 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 | 8B：Conditional Multi-Agent Experiment | 完整/公共闭环 | [walkthrough](8b-conditional-multi-agent-experiment-walkthrough.md) / [ADR-0053](../adr/0053-reject-role-isolated-multi-agent-and-prefer-bounded-parallel-evidence.md) / [设计](../plans/2026-08-22-8b-conditional-multi-agent-experiment-design.md) | implementation `180bc8b` / Actions `32572085065` 与 result/ADR/evidence `783a329` / Actions `32572610725` 均三 job 全绿；唯一 holdout 裁决 `reject_multi_agent`：候选 18.95% 未达 20%，且与普通并行无隔离增益。8B 已关闭；RQ-083 随后授权 8C |
 | 8C：Reliable Runtime Core | 完整/公共闭环 | [walkthrough](8c-reliable-runtime-core-walkthrough.md) / [ADR-0054](../adr/0054-adopt-postgresql-leased-fenced-task-control-plane.md) / [专用设计](../plans/2026-08-22-8c-reliable-runtime-core-design.md) | clean implementation `2df5349` / Actions `32587659678` 的 pytest、PostgreSQL migration/concurrency、Linux package 三 job 全绿；8C coverage 已 complete。正式 Auth、SSE、前端、备份和 8D fusion 仍留后续 |
 | 8D：Riot + OP.GG Evidence Fusion Core | 完整/公共闭环 | [walkthrough](8d-riot-opgg-evidence-fusion-core-walkthrough.md) / [ADR-0055](../adr/0055-adopt-typed-evidence-bundle-fusion.md) / [设计](../plans/2026-08-23-8d-riot-opgg-evidence-fusion-design.md) / [实施计划](../plans/2026-08-23-8d-riot-opgg-evidence-fusion-implementation.md) | implementation/evidence `a274b7f` / Actions `32598480400` 三 job 全绿；typed Riot/Data Dragon/official patch/OP.GG partial fusion、no-I/O adapter、digest/provenance/freshness/join/conflict/gap 与 public projection 已有本地/公共证据。真实刷新、8E Web/Auth/SSE/部署仍未实现 |
-| 8E：Productization | 进行中/coverage planned | [G53-1/2/3/4/5/7 适配档案、CI、协议与能力门](8e-glm53-adapter-profile-tdd-walkthrough.md) / [RQ-182 响应完成策略](8e-glm53-response-completion-strategy-walkthrough.md) / [RQ-183 fresh-recovery 合同](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) / [ADR-0071](../adr/0071-adopt-versioned-response-completion-policy.md) / [ADR-0072](../adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md) / [G53-0 无 I/O 审计](../plans/2026-08-31-g53-0-glm53-no-io-audit.md) / [Flash 运行时晋级 ADR](../adr/0070-adopt-glm53-flash-product-runtime-profile.md) / [preflight](../plans/2026-08-23-8e-productization-preflight.md) / [Batch B](8e-player-profile-selection-explicit-routing-walkthrough.md) / [Batch C](8e-evidence-product-api-walkthrough.md) / [Batch D](8e-batch-d-rift-command-center-walkthrough.md) / [Live 接线](8e-live-workbench-integration-walkthrough.md) / [Batch E implementation](8e-batch-e-security-deployment-implementation-walkthrough.md) / [视觉合同](8e-portal-workbench-visual-contract-walkthrough.md) / [Timeline](8e-timeline-dto-ui-walkthrough.md) / [双语 foundation](8e-bilingual-product-surface-foundation-walkthrough.md) / [三层产品旅程](8e-portal-account-workbench-journey-walkthrough.md) / [Portal Motion Polish](8e-portal-motion-polish-walkthrough.md) / [I2V audit](../plans/2026-08-25-8e-image-to-video-candidate-audit.md) / [Veo v5 failure](../plans/2026-08-26-8e-veo-spatial-v5-upstream-failure.md) / [Seedance candidate](../plans/2026-08-26-8e-seedance25-sample-audit.md) / [Seedance edit preflight](../plans/2026-08-26-8e-seedance25-video-edit-preflight.md) / [Seedance edit 400](../plans/2026-08-26-8e-seedance25-video-edit-400-diagnosis.md) / [豆包 comparator](../plans/2026-08-26-8e-doubao-seedance25-comparator-audit.md) / [即梦 preflight](../plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md) / [即梦 result/postprocess](../plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md) / [ADR-0068](../adr/0068-adopt-mother-image-global-loop-scenes-and-semantic-activation.md) / [RQ-197 边界观察实现](8e-glm53-candidate-boundary-observation-implementation-walkthrough.md) / [RQ-200 候选评估台实现](8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md) | 已闭环批次不变；RQ-200 已完成 fake/local 候选评估台实现与 `102 passed` 相邻回归，但同 SHA 公共 CI、候选注册、真实 recovery、领域/生产准入仍未完成；严格策略不续接、8192/一次 fresh-recovery 仍为未注册候选，production media `0`。 |
+| 8E：Productization | 进行中/coverage planned | [G53-1/2/3/4/5/7 适配档案、CI、协议与能力门](8e-glm53-adapter-profile-tdd-walkthrough.md) / [RQ-182 响应完成策略](8e-glm53-response-completion-strategy-walkthrough.md) / [RQ-183 fresh-recovery 合同](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) / [ADR-0071](../adr/0071-adopt-versioned-response-completion-policy.md) / [ADR-0072](../adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md) / [G53-0 无 I/O 审计](../plans/2026-08-31-g53-0-glm53-no-io-audit.md) / [Flash 运行时晋级 ADR](../adr/0070-adopt-glm53-flash-product-runtime-profile.md) / [preflight](../plans/2026-08-23-8e-productization-preflight.md) / [Batch B](8e-player-profile-selection-explicit-routing-walkthrough.md) / [Batch C](8e-evidence-product-api-walkthrough.md) / [Batch D](8e-batch-d-rift-command-center-walkthrough.md) / [Live 接线](8e-live-workbench-integration-walkthrough.md) / [Batch E implementation](8e-batch-e-security-deployment-implementation-walkthrough.md) / [视觉合同](8e-portal-workbench-visual-contract-walkthrough.md) / [Timeline](8e-timeline-dto-ui-walkthrough.md) / [双语 foundation](8e-bilingual-product-surface-foundation-walkthrough.md) / [三层产品旅程](8e-portal-account-workbench-journey-walkthrough.md) / [Portal Motion Polish](8e-portal-motion-polish-walkthrough.md) / [I2V audit](../plans/2026-08-25-8e-image-to-video-candidate-audit.md) / [Veo v5 failure](../plans/2026-08-26-8e-veo-spatial-v5-upstream-failure.md) / [Seedance candidate](../plans/2026-08-26-8e-seedance25-sample-audit.md) / [Seedance edit preflight](../plans/2026-08-26-8e-seedance25-video-edit-preflight.md) / [Seedance edit 400](../plans/2026-08-26-8e-seedance25-video-edit-400-diagnosis.md) / [豆包 comparator](../plans/2026-08-26-8e-doubao-seedance25-comparator-audit.md) / [即梦 preflight](../plans/2026-08-27-8e-jimeng-seedance25-smart-edit-preflight.md) / [即梦 result/postprocess](../plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md) / [ADR-0068](../adr/0068-adopt-mother-image-global-loop-scenes-and-semantic-activation.md) / [RQ-197 边界观察实现](8e-glm53-candidate-boundary-observation-implementation-walkthrough.md) / [RQ-200 候选评估台实现](8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md) | 已闭环批次不变；RQ-200 fake/local 实现已取得 RQ-201 exact-SHA 公共 CI（`f2a8032` / run `33536168224`，公共 pytest `2193 passed, 145 skipped, 1 warning, 127 subtests passed`），但候选注册、真实 recovery、领域/生产准入仍未完成；严格策略不续接、8192/一次 fresh-recovery 仍为未注册候选，production media `0`。 |
 
 > 8E 表格中的旧“下一门为传输/代理边界复核”、RQ-195 的
 > `candidate-runtime-wiring-design / pending` 以及 RQ-197 的公共 CI 待验证均是历史摘要；RQ-198 已取得
 > exact-SHA 公共 CI，RQ-199 已完成隔离候选评估台设计，RQ-200 已完成 fake/local 实现；当前唯一下一门更新为
-> `candidate-evaluation-harness-public-ci / pending`。
+> `candidate-recovery-diagnostic-review / pending-user-authorization`。
 
 8E 当前最新候选接缝材料：[RQ-192/RQ-193 walkthrough](8e-glm53-provider-neutral-stream-adapter-walkthrough.md) /
 [ADR-0073](../adr/0073-adopt-provider-neutral-stream-assembly-contract.md) /
@@ -122,8 +122,9 @@ RQ-196 候选 runtime 接线设计材料：[walkthrough](8e-glm53-candidate-runt
 BoundaryObservation、共享事件校验、隔离 v2 transport、预算/结算顺序和独立 Trace 投影。Flash 是当前唯一主力候选目标，
 但候选仍未注册、`execution_allowed=false`，不代表产品默认或生产准入。RQ-197 已将该设计落成
 fake/local 边界观察实现，RQ-198 已完成同 SHA 公共 CI；RQ-199 又完成了 staged ledger、单次事件泵和独立
-body-free receipt 的候选评估台设计，RQ-200 已完成 fake/local harness 实现，当前下一精确项为
-`candidate-evaluation-harness-public-ci / pending`。
+body-free receipt 的候选评估台设计，RQ-200 已完成 fake/local harness 实现，RQ-201 已完成其 exact-SHA
+公共 CI，当前下一精确项为
+`candidate-recovery-diagnostic-review / pending-user-authorization`。
 
 ### 2026-09-01：RQ-197 候选边界观察合同本地实现
 
@@ -403,4 +404,14 @@ body-free observer 与临时 assembler，真实边界观察后再重算 policy/s
 聚焦 harness `15 passed`，与边界观察、流装配和旧恢复合同相邻回归 `102 passed`；activation 仍
 disabled，候选未注册、不打开 `capabilities.streaming`，严格 Flash v1、产品 Runtime、Portal、
 Account、Workbench、Auth、路由和 `production_media=0` 不变。当前下一精确项为
-`candidate-evaluation-harness-public-ci / pending`，公共 CI 完成前不能把本地实现写成生产准入。
+`candidate-recovery-diagnostic-review / pending-user-authorization`；公共 CI 已完成，但这不构成
+候选 recovery、领域准入或生产准入。
+
+### 2026-09-02：RQ-201 候选评估台 exact-SHA 公共 CI 闭环
+
+RQ-200 实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 的 Actions run `33536168224` 已三 job
+全绿且 `head_sha` 精确匹配，公共 pytest 为 `2193 passed, 145 skipped, 1 warning, 127 subtests passed`。
+该证据只证明隔离 fake/local harness 可公共复现；候选仍 disabled、未注册、不打开产品 streaming，严格
+Flash v1、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变。
+下一精确项为 `candidate-recovery-diagnostic-review / pending-user-authorization`，需要单独授权后才可
+复核传输/预算/失败边界或建立新的诊断版本。

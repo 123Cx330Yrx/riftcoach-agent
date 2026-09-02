@@ -5266,4 +5266,13 @@
   Python 3.11/3.13 编译、diff check、governance 均通过。
 - 当前实现仍是 candidate-only fake/local seam；没有真实 API/Key、fresh recovery、G53-7、
   Provider/AgentLoop 注册或产品 streaming。下一精确项为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`。
+
+## 2026-09-02：RQ-201 候选评估台 exact-SHA 公共 CI 闭环发现
+
+- 实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 的公共 Actions run `33536168224`
+  三 job 均成功且 `head_sha` 精确匹配；公共 pytest 为 `2193 passed, 145 skipped, 1 warning, 127 subtests passed`。
+- 该证据确认 RQ-200 的 fake/local staged ledger、单次事件泵、临时装配和 body-free receipt 在干净公共环境可复现，
+  但不证明候选已能进入产品 Runtime，也不证明 recovery、领域质量或生产成熟度。
+- 下一步不能由 CI 自动推导为真实调用；候选仍 disabled，下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`。

@@ -3098,6 +3098,8 @@ Usage/耗时、预算确定性和 SHA-256，unknown Usage 保持 unknown/None。
 
 当前 activation 仍为 sealed `disabled`，候选未注册、不打开 `capabilities.streaming`；严格
 Flash v1 2048/零额外调用、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和
-`production_media=0` 均不变。harness 聚焦 `15 passed`，相邻回归 `102 passed`；下一精确门是
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`，
-先取得同一干净提交的 exact-SHA 公共 CI，再另行决定高级候选是否继续。
+`production_media=0` 均不变。harness 聚焦 `15 passed`，相邻回归 `102 passed`；RQ-201 已取得实现
+提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 的 exact-SHA 公共 CI run `33536168224`（公共 pytest
+`2193 passed, 145 skipped, 1 warning, 127 subtests passed`）。下一精确门是
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`，
+先在单独授权后复核候选 recovery 的传输/预算/失败边界，再决定高级候选是否继续。
