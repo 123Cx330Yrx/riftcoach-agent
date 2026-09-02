@@ -5623,3 +5623,24 @@
 - [next] 当前唯一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   先离线设计/测试硬墙钟取消、流关闭和 Usage/终态尾帧处理，再决定是否另行授权真实重测。
+
+## 2026-09-02：RQ-207 候选流硬墙钟与 Usage 尾帧后续
+
+- [completed-local] 新增 `CandidateStreamSession` 和
+  `CandidateStreamDeadlineSupervisor`；从 attempt 起点按绝对单调墙钟计时，watchdog
+  只调用会话承诺的非阻塞 `cancel`，每次读取前后抑制截止后的晚到事件；legacy iterable
+  在没有显式 session opener 时于 opener I/O 前 fail closed，显式 opener 返回值随后验证。
+- [completed-local] 新增 `ZhipuStreamSession` 的候选专用 Usage opt-in，持有并关闭原始
+  SDK 迭代器/流，支持 `close`/`__exit__` 回退和安全 close-failure 状态；修正取消路径
+  的次级关闭证据保留。旧 `stream_events()`、产品 payload、Provider 注册和默认模型不变。
+- [verification-local] 候选硬截止、v2 诊断、真实接缝和智谱适配器集合 `67 passed`；
+  compileall、diff check 通过；本轮真实 API `0` 次。完整本地回归的 PostgreSQL 缺口
+  仍只记录为环境限制。
+- [boundary] activation 仍 `disabled`、`execution_allowed=false`、`capabilities.streaming=False`；
+  严格 Flash v1 2048/零额外调用、AgentLoop、统一 Trace/预算、Portal、Account、Workbench、
+  Auth、路由和 `production_media=0` 不变；没有 recovery、G53-7、黄金切片、生产准入或 8F。
+- [limitation] 同步 opener 永久阻塞、或供应商 SDK `close()` 阻塞/不能唤醒 `next()` 时，
+  普通 Python 无法提供安全全路径硬截止；真实重测前需 provider-level 连接/取消证据。
+- [next] 当前唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
+  先取得同一干净实现提交的 exact-SHA 公共 CI，之后再另行决定新的真实授权。

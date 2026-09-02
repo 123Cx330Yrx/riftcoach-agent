@@ -70,11 +70,14 @@ from .candidate_stream_contract import (
     CandidateBoundaryContractError,
     CandidateRuntimeBinding,
     CandidateStreamBoundaryObserver,
+    CandidateStreamDeadlineSupervisor,
+    CandidateStreamSession,
     CandidateStreamTrace,
     CandidateStreamTransport,
     CandidateTransportError,
     FRESH_RECOVERY_CANDIDATE_BINDING,
     PRIMARY_CANDIDATE_BINDING,
+    require_candidate_stream_session,
 )
 
 
@@ -2398,14 +2401,31 @@ class CandidateRecoveryDiagnostic:
         *,
         price_snapshot: PriceSnapshot | None = None,
         clock: Callable[[], float] = time.monotonic,
+        require_hard_deadline: bool = False,
+        deadline_override_s: float | None = None,
     ) -> None:
         if not isinstance(run, CandidateRecoveryRunSpec):
             raise TypeError("run must be CandidateRecoveryRunSpec")
         if price_snapshot is not None and not isinstance(price_snapshot, PriceSnapshot):
             raise TypeError("price_snapshot must be PriceSnapshot or None")
+        if not isinstance(require_hard_deadline, bool):
+            raise TypeError("require_hard_deadline must be a boolean")
+        if deadline_override_s is not None:
+            if (
+                isinstance(deadline_override_s, bool)
+                or not isinstance(deadline_override_s, (int, float))
+                or not isfinite(float(deadline_override_s))
+                or float(deadline_override_s) <= 0
+                or float(deadline_override_s) > run.runtime_profile.agent_timeout_s
+            ):
+                raise ValueError("deadline_override_s must be within the candidate timeout")
         self._run = run
         self._price_snapshot = price_snapshot
         self._clock = clock
+        self._require_hard_deadline = require_hard_deadline
+        self._deadline_override_s = (
+            float(deadline_override_s) if deadline_override_s is not None else None
+        )
         self._used = False
         self._last_receipt: CandidateRecoveryDiagnosticReceipt | None = None
 
@@ -2577,8 +2597,14 @@ class CandidateRecoveryDiagnostic:
             require_request_identity=True,
         )
         latency = _LatencyBuilder(sampler)
+        # The hard-deadline supervisor uses the real monotonic clock for the
+        # wall-clock budget.  Capture it before opening the provider session so
+        # a slow handshake cannot silently grant the stream a fresh budget.
+        attempt_started_at = time.monotonic()
         stream: Iterable[ProviderStreamEvent] | None = None
         iterator: Iterator[ProviderStreamEvent] | None = None
+        session: CandidateStreamSession | None = None
+        supervisor: CandidateStreamDeadlineSupervisor | None = None
         assembly: StreamAssemblyResult | None = None
         pending_control: BaseException | None = None
         normal_eof = False
@@ -2591,15 +2617,39 @@ class CandidateRecoveryDiagnostic:
 
             if observer.failed_code is None:
                 try:
-                    stream = transport.open_stream(
-                        binding,
-                        request,
-                        max_output_tokens=summary.output_cap,
-                        timeout_s=summary.agent_timeout_s,
-                        transport_timeout_s=summary.transport_timeout_s,
-                    )
-                    if stream is None or not isinstance(stream, Iterable):
-                        raise CandidateTransportError("transport_stream_invalid", "open")
+                    open_session = getattr(transport, "open_stream_session", None)
+                    if self._require_hard_deadline and callable(open_session):
+                        session = require_candidate_stream_session(
+                            open_session(
+                                binding,
+                                request,
+                                max_output_tokens=summary.output_cap,
+                                timeout_s=summary.agent_timeout_s,
+                                transport_timeout_s=summary.transport_timeout_s,
+                            )
+                        )
+                        deadline = self._deadline_override_s or summary.agent_timeout_s
+                        supervisor = CandidateStreamDeadlineSupervisor(
+                            session,
+                            deadline_s=deadline,
+                            started_at=attempt_started_at,
+                        )
+                        stream = supervisor
+                    elif self._require_hard_deadline:
+                        raise CandidateTransportError(
+                            "hard_deadline_unsupported",
+                            "transport",
+                        )
+                    else:
+                        stream = transport.open_stream(
+                            binding,
+                            request,
+                            max_output_tokens=summary.output_cap,
+                            timeout_s=summary.agent_timeout_s,
+                            transport_timeout_s=summary.transport_timeout_s,
+                        )
+                        if stream is None or not isinstance(stream, Iterable):
+                            raise CandidateTransportError("transport_stream_invalid", "open")
                     latency.mark("open_elapsed_ms")
                 except (GeneratorExit, KeyboardInterrupt, SystemExit) as error:
                     pending_control = error
@@ -2664,7 +2714,11 @@ class CandidateRecoveryDiagnostic:
         finally:
             close_failed = False
             seen: set[int] = set()
-            for resource in (iterator, stream):
+            # A deadline supervisor owns the session and its provider
+            # resources.  Closing its iterator first runs the supervisor's
+            # generator finally; the explicit supervisor close is idempotent.
+            resources: tuple[object | None, ...] = (iterator, stream)
+            for resource in resources:
                 if resource is None or id(resource) in seen:
                     continue
                 seen.add(id(resource))
@@ -2679,6 +2733,8 @@ class CandidateRecoveryDiagnostic:
                     close_failed = True
                 except Exception:
                     close_failed = True
+            if supervisor is not None and supervisor.close_failed:
+                close_failed = True
             if close_failed:
                 _safe_abort(
                     observer,

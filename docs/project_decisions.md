@@ -3185,3 +3185,25 @@ reasoning、可见正文、`stop` 与 EOF；首事件 `3078ms`、首个可见正
 黄金切片、安全/部署/合规与 8F 均未开始。下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
 先离线设计/测试硬墙钟取消、流关闭和 Usage/终态尾帧处理，再另行裁决真实重测。
+
+### RQ-207：候选流硬墙钟会话与 Usage 尾帧（2026-09-02）
+
+接受 RQ-207 的本地实现证据，但不把它解释为产品 Runtime 或生产准入：四文件聚焦回归（deadline 10、v2 24、
+real 8、adapter 25）统一为 `67 passed`，
+本轮不读取 Key、不调用真实 API、不重试或发第二次请求。决策如下：
+
+- 保留 legacy `CandidateStreamTransport.open_stream() -> Iterable` 兼容路径；hard mode 只有显式
+  `session_opener` 才可用，若该 opener 返回 legacy iterable，必须在 opener 返回后校验并 fail closed。
+- `CandidateStreamSession` 负责资源所有权；`CandidateStreamDeadlineSupervisor` 使用 attempt 起点的绝对
+  monotonic deadline，超时只允许显式、协作式、非阻塞且幂等的 cancel/close，并丢弃截止后的迟到事件。
+- 终态必须与 Usage 同帧，或终态后恰好一个 Usage-only 尾帧；重复/过早/终态后内容和空非 Usage 帧拒绝。
+  缺失 Usage/价格保持 unknown/null，禁止合成零值；close 失败仅作次级证据，回执不得携带 provider body/exception。
+- 同步 opener 可能阻塞越过计时器，SDK `close()` 是否非阻塞并唤醒 `next()` 尚未被 provider/public CI 证明，
+  这是下一闸门；不得以本地 watchdog 推断硬截止已获生产保证。
+- 8E 候选边界不变：`activation_state=disabled`、`execution_allowed=false`、
+  `capabilities.streaming=False`、未注册；严格 Flash v1 2048/零额外调用，默认模型、产品 Runtime、
+  Portal/Account/Workbench/Auth、路由和 `production_media=0` 不变，Stage 8/8E 仍 `in_progress`。
+
+当前唯一下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
+先取得同一干净提交的 exact-SHA 公共 CI 与协议验证，再另行授权真实观察或候选注册。

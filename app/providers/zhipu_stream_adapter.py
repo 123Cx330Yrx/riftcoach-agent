@@ -16,6 +16,7 @@ import sys
 from collections.abc import Callable, Iterable, Iterator, Mapping
 from dataclasses import replace
 from hashlib import sha256
+from threading import Lock
 from typing import Any, Protocol, runtime_checkable
 
 from .errors import ProviderError
@@ -47,8 +48,167 @@ class _ZhipuStreamProvider(Protocol):
         request: ChatRequest,
         *,
         tool_stream: bool,
+        include_usage_tail: bool = False,
     ) -> tuple[Iterable[Any], Callable[[str], str]]:
         """Open one raw stream and return a request-local tool-name decoder."""
+
+
+class ZhipuStreamSession:
+    """Eager, owned Zhipu stream used by the candidate deadline seam.
+
+    The OpenAI-compatible SDK exposes a synchronous iterator and a response
+    close hook. This wrapper makes ownership explicit: ``cancel`` is
+    idempotent and requests a close of the raw response, while ``close``
+    releases both the iterator and outer stream exactly once. The candidate
+    hard-deadline contract still requires the concrete SDK close operation to
+    be non-blocking and to wake a pending read; that property is a separate
+    provider-level verification gate, not assumed from this wrapper alone.
+    It does not retry and never stores provider payloads outside the event
+    being translated.
+    """
+
+    def __init__(
+        self,
+        adapter: "ZhipuStreamAdapter",
+        request: ChatRequest,
+        *,
+        include_usage_tail: bool,
+    ) -> None:
+        self._adapter = adapter
+        self._request = request
+        self._include_usage_tail = include_usage_tail
+        self._raw_stream: Iterable[Any] | None = None
+        self._raw_iterator: Iterator[Any] | None = None
+        self._decode_tool_name: Callable[[str], str] | None = None
+        self._ordinal = 0
+        self._cancelled = False
+        self._closed = False
+        self._close_failed = False
+        self._lock = Lock()
+        self._open()
+
+    @property
+    def cancelled(self) -> bool:
+        return self._cancelled
+
+    @property
+    def closed(self) -> bool:
+        return self._closed
+
+    @property
+    def close_failed(self) -> bool:
+        """Whether any owned raw resource reported a close failure."""
+
+        return self._close_failed
+
+    def __iter__(self) -> "ZhipuStreamSession":
+        return self
+
+    def __next__(self) -> ProviderStreamEvent:
+        if self._closed or self._cancelled:
+            raise StopIteration
+        iterator = self._raw_iterator
+        decode_tool_name = self._decode_tool_name
+        if iterator is None or decode_tool_name is None:
+            raise StreamAdapterError("zhipu_stream_open")
+        try:
+            chunk = next(iterator)
+        except StopIteration:
+            raise
+        except (GeneratorExit, KeyboardInterrupt, SystemExit):
+            raise
+        except StreamAdapterError:
+            raise
+        except ProviderError:
+            raise
+        except Exception as error:
+            translated = _translate_provider_error(self._adapter._provider, error)
+            if translated is not None:
+                raise translated from None
+            raise StreamAdapterError("zhipu_stream_read") from None
+        self._ordinal += 1
+        event = _translate_chunk(
+            chunk,
+            decode_tool_name=decode_tool_name,
+            ordinal=self._ordinal,
+        )
+        if event.model is not None and event.model != self._adapter.model_name:
+            raise StreamAdapterError("zhipu_model_mismatch")
+        return event
+
+    def cancel(self, code: str = "elapsed_limit") -> None:
+        """Request cancellation; closing the SDK response unblocks reads."""
+
+        if not isinstance(code, str) or not re.fullmatch(
+            r"^[a-z][a-z0-9_.-]{0,95}$", code
+        ):
+            raise StreamAdapterError("zhipu_cancel_code")
+        with self._lock:
+            if self._cancelled:
+                return
+            self._cancelled = True
+        # ``close`` is deliberately idempotent. If the SDK reports a close
+        # error, let the supervisor record it as a secondary cleanup failure.
+        self.close()
+
+    def close(self) -> None:
+        """Release raw iterator and stream once, without leaking SDK text."""
+
+        with self._lock:
+            if self._closed:
+                return
+            self._closed = True
+        close_failed = False
+        seen: set[int] = set()
+        resources = (
+            (self._raw_iterator, _close_iterator),
+            (self._raw_stream, _close_stream),
+        )
+        for resource, close_resource in resources:
+            if resource is None or id(resource) in seen:
+                continue
+            seen.add(id(resource))
+            try:
+                if close_resource(resource):
+                    close_failed = True
+            except (GeneratorExit, KeyboardInterrupt, SystemExit):
+                self._close_failed = True
+                raise
+            except Exception:
+                # A hostile SDK getter/close hook must not escape with body
+                # text; retain only the safe failure bit.
+                close_failed = True
+        self._raw_iterator = None
+        self._raw_stream = None
+        self._close_failed = close_failed
+        if close_failed:
+            raise StreamAdapterError("zhipu_stream_close")
+
+    def _open(self) -> None:
+        try:
+            raw_stream, decode_tool_name = self._adapter._provider._open_stream_for_adapter(
+                self._request,
+                tool_stream=self._adapter._tool_stream,
+                include_usage_tail=self._include_usage_tail,
+            )
+        except StreamAdapterError:
+            raise
+        except ProviderError:
+            raise
+        except ValueError:
+            raise StreamAdapterError("zhipu_stream_open") from None
+        except Exception:
+            raise StreamAdapterError("zhipu_stream_open") from None
+        if raw_stream is None or not callable(decode_tool_name):
+            raise StreamAdapterError("zhipu_stream_open")
+        try:
+            raw_iterator = iter(raw_stream)
+        except Exception:
+            _close_stream(raw_stream)
+            raise StreamAdapterError("zhipu_stream_read") from None
+        self._raw_stream = raw_stream
+        self._raw_iterator = raw_iterator
+        self._decode_tool_name = decode_tool_name
 
 
 class ZhipuStreamAdapter:
@@ -162,6 +322,32 @@ class ZhipuStreamAdapter:
         if not isinstance(request, ChatRequest):
             raise TypeError("request must be a ChatRequest")
         return self._iter_events(self._bound_request(request))
+
+    def stream_session(
+        self,
+        request: ChatRequest,
+        *,
+        include_usage_tail: bool = False,
+    ) -> "ZhipuStreamSession":
+        """Open an owned, explicitly cancellable candidate stream session.
+
+        This is separate from ``stream_events`` so existing provider callers
+        retain their lazy-generator behavior.  The session opens eagerly,
+        owns the vendor iterator/response, and exposes idempotent
+        ``cancel``/``close`` methods for the evaluation hard-deadline seam.
+        ``include_usage_tail`` is opt-in and only changes the provider payload
+        for callers that explicitly request a Usage-only terminal tail.
+        """
+
+        if not isinstance(request, ChatRequest):
+            raise TypeError("request must be a ChatRequest")
+        if not isinstance(include_usage_tail, bool):
+            raise ValueError("include_usage_tail must be a boolean")
+        return ZhipuStreamSession(
+            self,
+            self._bound_request(request),
+            include_usage_tail=include_usage_tail,
+        )
 
     def assemble(
         self,
@@ -559,7 +745,12 @@ def _provider_bound_output_cap(provider: Any) -> int | None:
 def _close_iterator(iterator: Iterator[Any] | None) -> bool:
     if iterator is None:
         return False
-    close = getattr(iterator, "close", None)
+    try:
+        close = getattr(iterator, "close", None)
+    except (GeneratorExit, KeyboardInterrupt, SystemExit):
+        raise
+    except Exception:
+        return True
     if callable(close):
         try:
             close()
@@ -567,20 +758,42 @@ def _close_iterator(iterator: Iterator[Any] | None) -> bool:
             # Do not leak an SDK close exception; the caller decides whether
             # it may replace a normal EOF or must preserve an active error.
             return True
+        return False
+    try:
+        exit_method = getattr(iterator, "__exit__", None)
+    except (GeneratorExit, KeyboardInterrupt, SystemExit):
+        raise
+    except Exception:
+        return True
+    if callable(exit_method):
+        try:
+            exit_method(None, None, None)
+        except Exception:
+            return True
     return False
 
 
 def _close_stream(raw_stream: Iterable[Any] | None) -> bool:
     if raw_stream is None:
         return False
-    close = getattr(raw_stream, "close", None)
+    try:
+        close = getattr(raw_stream, "close", None)
+    except (GeneratorExit, KeyboardInterrupt, SystemExit):
+        raise
+    except Exception:
+        return True
     if callable(close):
         try:
             close()
         except Exception:
             return True
         return False
-    exit_method = getattr(raw_stream, "__exit__", None)
+    try:
+        exit_method = getattr(raw_stream, "__exit__", None)
+    except (GeneratorExit, KeyboardInterrupt, SystemExit):
+        raise
+    except Exception:
+        return True
     if callable(exit_method):
         try:
             exit_method(None, None, None)
@@ -605,4 +818,4 @@ def _translate_provider_error(
     return translated if isinstance(translated, ProviderError) else None
 
 
-__all__ = ["ZhipuStreamAdapter"]
+__all__ = ["ZhipuStreamAdapter", "ZhipuStreamSession"]

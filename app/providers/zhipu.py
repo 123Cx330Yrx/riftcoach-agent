@@ -358,6 +358,7 @@ class ZhipuProvider:
         request: ChatRequest,
         *,
         tool_stream: bool,
+        include_usage_tail: bool = False,
     ) -> tuple[Any, Callable[[str], str]]:
         """Open one raw stream for the explicit neutral adapter seam.
 
@@ -372,6 +373,8 @@ class ZhipuProvider:
             raise TypeError("request must be a ChatRequest")
         if not isinstance(tool_stream, bool):
             raise ValueError("tool_stream must be a boolean.")
+        if not isinstance(include_usage_tail, bool):
+            raise ValueError("include_usage_tail must be a boolean.")
         require_provider_capabilities(
             provider_name=self.provider_name,
             capabilities=self.capabilities,
@@ -437,6 +440,11 @@ class ZhipuProvider:
             payload["top_p"] = effective_top_p
         if effective_max_tokens is not None:
             payload["max_tokens"] = effective_max_tokens
+        if include_usage_tail:
+            # OpenAI-compatible providers emit Usage in a final empty-choice
+            # frame only when explicitly requested.  Keep this opt-in so the
+            # historical provider and product paths retain their payload.
+            payload["stream_options"] = {"include_usage": True}
         if request.tools and request.tool_choice is ToolChoiceMode.AUTO:
             payload["tools"] = [
                 self._encode_tool(tool, aliases) for tool in request.tools

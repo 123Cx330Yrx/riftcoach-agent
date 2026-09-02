@@ -485,6 +485,56 @@ def test_consumer_close_closes_open_sdk_iterator_without_finalizing() -> None:
     assert raw.closed is True
 
 
+def test_explicit_candidate_session_requests_usage_tail_and_is_idempotently_closed() -> None:
+    raw = ClosableStream(
+        [
+            chunk(content="done", finish_reason="stop"),
+            chunk(raw_usage=usage(), choices=[]),
+        ]
+    )
+    client = FakeClient(raw)
+    provider = ZhipuProvider(client=client, model=MODEL)
+    session = provider.stream_adapter().stream_session(
+        request(),
+        include_usage_tail=True,
+    )
+
+    events = list(session)
+    assert events[-1].usage is not None
+    assert client.completions.calls[0]["stream_options"] == {
+        "include_usage": True
+    }
+    assert raw.closed is False
+
+    session.close()
+    session.close()
+    assert raw.closed is True
+
+
+def test_explicit_candidate_session_falls_back_to_context_manager_close() -> None:
+    class ContextOnlyStream:
+        def __init__(self) -> None:
+            self.closed = False
+
+        def __iter__(self):
+            return iter(
+                [
+                    chunk(content="done", finish_reason="stop"),
+                    chunk(raw_usage=usage(), choices=[]),
+                ]
+            )
+
+        def __exit__(self, *_args) -> None:
+            self.closed = True
+
+    raw = ContextOnlyStream()
+    provider = ZhipuProvider(client=FakeClient(raw), model=MODEL)
+    session = provider.stream_adapter().stream_session(request())
+    assert len(list(session)) == 2
+    session.close()
+    assert raw.closed is True
+
+
 def test_close_failure_is_a_safe_error_on_normal_eof() -> None:
     raw = ClosableStream(
         [chunk(content="done", finish_reason="stop"), chunk(raw_usage=usage())],
@@ -498,6 +548,28 @@ def test_close_failure_is_a_safe_error_on_normal_eof() -> None:
     assert caught.value.code == "zhipu_stream_close"
     assert "vendor body" not in str(caught.value)
     assert raw.closed is True
+
+
+def test_session_close_getter_failure_is_body_free_and_retained() -> None:
+    class HostileCloseStream(ClosableStream):
+        def __getattribute__(self, name: str) -> Any:
+            if name in {"close", "__exit__"}:
+                raise RuntimeError("private provider body")
+            return super().__getattribute__(name)
+
+    raw = HostileCloseStream(
+        [chunk(content="done", finish_reason="stop"), chunk(raw_usage=usage())]
+    )
+    provider = ZhipuProvider(client=FakeClient(raw), model=MODEL)
+    session = provider.stream_adapter().stream_session(request())
+    assert len(list(session)) == 2
+
+    with pytest.raises(StreamAdapterError) as caught:
+        session.close()
+
+    assert caught.value.code == "zhipu_stream_close"
+    assert "private provider body" not in str(caught.value)
+    assert session.close_failed is True
 
 
 def test_adapter_rejects_tool_stream_without_tools_before_opening_client() -> None:

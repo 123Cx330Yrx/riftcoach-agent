@@ -13,6 +13,7 @@ import json
 from dataclasses import replace
 from decimal import Decimal
 from pathlib import Path
+from threading import Event
 
 import pytest
 
@@ -137,6 +138,56 @@ class _Transport:
         return self.factory()
 
 
+class _CancellableSession:
+    """Fake session used to prove the independent deadline path offline."""
+
+    def __init__(self) -> None:
+        self.released = Event()
+        self.cancel_codes: list[str] = []
+        self.close_calls = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        self.released.wait(1.0)
+        raise StopIteration
+
+    def cancel(self, code: str = "elapsed_limit") -> None:
+        self.cancel_codes.append(code)
+        self.released.set()
+
+    def close(self) -> None:
+        self.close_calls += 1
+
+
+class _SessionTransport(_Transport):
+    def __init__(self, session: _CancellableSession) -> None:
+        super().__init__(lambda: [])
+        self.session = session
+        self.session_calls: list[dict] = []
+
+    def open_stream_session(
+        self,
+        binding,
+        request,
+        *,
+        max_output_tokens,
+        timeout_s,
+        transport_timeout_s,
+    ):
+        self.session_calls.append(
+            {
+                "binding": binding,
+                "request": request,
+                "max_output_tokens": max_output_tokens,
+                "timeout_s": timeout_s,
+                "transport_timeout_s": transport_timeout_s,
+            }
+        )
+        return self.session
+
+
 def _complete_events():
     return [
         _event(content="PRIVATE ANSWER BODY", sequence=1),
@@ -236,6 +287,51 @@ def test_exact_candidate_shape_is_recorded_but_activation_stays_disabled():
     assert len(transport.calls) == 1
     assert result.attempts[0].attempt_kind == CandidateAttemptKind.PRIMARY.value
     assert result.attempts[0].failure_class is None
+
+
+def test_hard_deadline_session_cancels_blocked_read_and_settles_primary():
+    session = _CancellableSession()
+    transport = _SessionTransport(session)
+    result = CandidateRecoveryDiagnostic(
+        _run(),
+        require_hard_deadline=True,
+        deadline_override_s=0.03,
+    ).run(
+        _request(),
+        transport,
+        clock=lambda: 1.0,
+    )
+
+    attempt = result.attempts[0]
+    assert result.run_state == "fail_closed"
+    assert result.calls_reserved == 1
+    assert result.calls_settled == 1
+    assert attempt.error_code == "elapsed_limit"
+    assert attempt.error_stage == "budget"
+    assert attempt.failure_class is DiagnosticFailureClass.BUDGET
+    assert attempt.observation.observation.eof_observed is False
+    assert attempt.observation.observation.close_state == "failed"
+    assert attempt.usage_state == "missing"
+    assert session.cancel_codes == ["elapsed_limit"]
+    assert session.close_calls == 1
+    assert len(transport.session_calls) == 1
+    assert transport.calls == []
+
+
+def test_hard_deadline_mode_rejects_legacy_transport_without_opening_it():
+    transport = _Transport(lambda: (_ for _ in ()).throw(AssertionError("opened")))
+    result = CandidateRecoveryDiagnostic(
+        _run(),
+        require_hard_deadline=True,
+    ).run(
+        _request(),
+        transport,
+        clock=lambda: 1.0,
+    )
+
+    assert result.run_state == "fail_closed"
+    assert result.attempts[0].error_code == "hard_deadline_unsupported"
+    assert transport.calls == []
 
 
 @pytest.mark.parametrize(

@@ -21,8 +21,9 @@ import json
 import os
 import re
 import subprocess
+import sys
 import tempfile
-from collections.abc import Callable, Iterable, Mapping
+from collections.abc import Callable, Iterable, Iterator, Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -75,6 +76,7 @@ from .candidate_stream_contract import (
     CANDIDATE_RUNTIME_PROFILE_VERSION,
     CandidateBoundaryContractError,
     CandidateRuntimeBinding,
+    CandidateStreamSession,
     CandidateStreamTransport,
     CandidateTransportError,
     CandidateZhipuStreamTransport,
@@ -92,7 +94,7 @@ PLAYER_SUMMARY_RELATIVE_PATH = "examples/fixtures/player_summary_glm53_flash_dom
 DETERMINISTIC_REPORT_RELATIVE_PATH = "examples/fixtures/deterministic_report_glm53_flash_domain_v1.md"
 DEFAULT_OUTPUT = Path(
     "data/evaluation/results/provider_capabilities/"
-    "zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq206_v1.json"
+    "zhipu_glm53_flash_candidate_recovery_diagnostic_v2_rq207_v1.json"
 )
 
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -261,7 +263,7 @@ def run_candidate_recovery_real_call(
         timeout_s: float,
         transport_timeout_s: float,
         max_retries: int,
-    ) -> Iterable[ProviderStreamEvent]:
+    ) -> CandidateStreamSession:
         nonlocal call_count
         if binding != PRIMARY_CANDIDATE_BINDING:
             raise CandidateTransportError("candidate_attempt_mismatch", "identity")
@@ -274,14 +276,19 @@ def run_candidate_recovery_real_call(
         call_count += 1
         if call_count != 1:
             raise CandidateTransportError("real_call_budget_exceeded", "budget")
-        return _safe_provider_events(adapter.stream_events(request))
+        # The real candidate seam opts into the owned/cancellable adapter
+        # session. Usage is requested explicitly so a normal terminal frame
+        # can be followed by the provider's one Usage-only tail. The legacy
+        # lazy generator remains untouched for product/offline callers.
+        return adapter.stream_session(request, include_usage_tail=True)
 
     transport: CandidateStreamTransport = CandidateZhipuStreamTransport(
         opener,
+        session_opener=opener,
         runtime_profile=profile,
         policy=policy,
     )
-    diagnostic = CandidateRecoveryDiagnostic(run)
+    diagnostic = CandidateRecoveryDiagnostic(run, require_hard_deadline=True)
     try:
         receipt = diagnostic.run_once(request, transport)
     except (GeneratorExit, KeyboardInterrupt, SystemExit):
@@ -327,10 +334,18 @@ def _candidate_request(messages: tuple[ChatMessage, ...]) -> ChatRequest:
 def _safe_provider_events(
     events: Iterable[ProviderStreamEvent],
 ) -> Iterable[ProviderStreamEvent]:
-    """Map provider/adapter failures to body-free candidate transport codes."""
+    """Map provider/adapter failures to body-free candidate transport codes.
 
+    The returned generator owns the adapter iterator.  Keeping that ownership
+    explicit is important for a consumer that stops after the first event (or
+    for the v2 runner's cancellation path): closing only this outer generator
+    must also close the provider iterator and release the vendor stream.
+    """
+
+    iterator: Iterator[ProviderStreamEvent] | None = None
     try:
-        for event in events:
+        iterator = iter(events)
+        for event in iterator:
             yield event
     except (GeneratorExit, KeyboardInterrupt, SystemExit):
         raise
@@ -344,6 +359,67 @@ def _safe_provider_events(
         raise CandidateTransportError(code, "protocol") from None
     except Exception:
         raise CandidateTransportError("stream_read_failed", "read") from None
+    finally:
+        # Preserve an already active read/control error.  Cleanup errors are
+        # deliberately reduced to one safe boundary code and never chained
+        # back to an SDK/provider exception or its response body.
+        active_error = sys.exc_info()[1]
+        close_failed = False
+        pending_control: BaseException | None = None
+        seen: set[int] = set()
+        for resource in (iterator, events):
+            if resource is None or id(resource) in seen:
+                continue
+            seen.add(id(resource))
+            try:
+                close_method = getattr(resource, "close", None)
+            except (GeneratorExit, KeyboardInterrupt, SystemExit) as error:
+                close_failed = True
+                if active_error is None and pending_control is None:
+                    pending_control = error
+                continue
+            except Exception:
+                close_failed = True
+                continue
+            if callable(close_method):
+                try:
+                    close_method()
+                except (GeneratorExit, KeyboardInterrupt, SystemExit) as error:
+                    close_failed = True
+                    if active_error is None and pending_control is None:
+                        pending_control = error
+                except Exception:
+                    close_failed = True
+                continue
+
+            # The real adapter currently returns a generator, but retaining
+            # context-manager cleanup here keeps this boundary safe for an
+            # injected iterable with a distinct iterator.
+            try:
+                exit_method = getattr(resource, "__exit__", None)
+            except (GeneratorExit, KeyboardInterrupt, SystemExit) as error:
+                close_failed = True
+                if active_error is None and pending_control is None:
+                    pending_control = error
+                continue
+            except Exception:
+                close_failed = True
+                continue
+            if callable(exit_method):
+                try:
+                    exit_method(None, None, None)
+                except (GeneratorExit, KeyboardInterrupt, SystemExit) as error:
+                    close_failed = True
+                    if active_error is None and pending_control is None:
+                        pending_control = error
+                except Exception:
+                    close_failed = True
+
+        if active_error is None:
+            if pending_control is not None:
+                raise pending_control
+            if close_failed:
+                raise CandidateTransportError("stream_close_failed", "close") from None
 
 
 def _load_environment(path: Path | None) -> Mapping[str, str]:

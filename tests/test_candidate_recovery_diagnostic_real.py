@@ -12,8 +12,10 @@ from app.providers.models import ChatMessage, MessageRole
 from app.evaluation.candidate_recovery_diagnostic_real import (
     FrozenCandidateContext,
     _load_frozen_context,
+    _safe_provider_events,
     run_candidate_recovery_real_call,
 )
+from app.evaluation.candidate_stream_contract import CandidateTransportError
 
 
 GIT_SHA = "0123456789abcdef0123456789abcdef01234567"
@@ -209,6 +211,7 @@ def test_real_seam_makes_one_stream_call_and_writes_body_free_receipt(tmp_path: 
     assert payload["stream"] is True
     assert payload["max_tokens"] == 8192
     assert payload["timeout"] == 90.0
+    assert payload["stream_options"] == {"include_usage": True}
     assert payload["extra_body"] == {
         "thinking": {"type": "enabled", "clear_thinking": False},
         "reasoning_effort": "max",
@@ -248,3 +251,37 @@ def test_frozen_context_loader_uses_committed_bytes_for_crlf_checkout():
         "e5daa6ccd05c8c71a98ec5ce7edeedb6069e9f9a84bca00628c1b08a656bf784"
     )
     assert len(context.input_plan_sha) == 40
+
+
+def test_safe_provider_events_closes_inner_adapter_on_outer_early_stop():
+    closed = False
+
+    def adapter_events():
+        nonlocal closed
+        try:
+            yield object()
+            yield object()
+        finally:
+            closed = True
+
+    outer = _safe_provider_events(adapter_events())
+    next(iter(outer))
+    outer.close()  # type: ignore[attr-defined]
+
+    assert closed is True
+
+
+def test_safe_provider_events_sanitizes_outer_close_failure():
+    class CloseBroken:
+        def __iter__(self):
+            return iter(())
+
+        def close(self):
+            raise RuntimeError("private provider close body")
+
+    with pytest.raises(CandidateTransportError) as caught:
+        list(_safe_provider_events(CloseBroken()))
+
+    assert caught.value.code == "stream_close_failed"
+    assert str(caught.value) == "stream_close_failed"
+    assert "private provider close body" not in repr(caught.value)

@@ -882,6 +882,9 @@ groups:
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
@@ -997,6 +1000,9 @@ groups:
         - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
         - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
@@ -1006,6 +1012,9 @@ groups:
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
@@ -1050,6 +1059,9 @@ groups:
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
@@ -1108,6 +1120,9 @@ groups:
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
@@ -1191,6 +1206,9 @@ groups:
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
@@ -1251,6 +1269,9 @@ groups:
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
@@ -1339,6 +1360,9 @@ groups:
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
         - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md

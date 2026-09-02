@@ -4067,3 +4067,22 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 - `BOUNDARY-NEXT`：当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   先离线设计和测试硬墙钟取消、流关闭与 Usage/终态尾帧处理，再讨论新的真实调用。
+
+## 2026-09-02：RQ-207 候选流硬墙钟与 Usage 尾帧后续
+
+- `VERIFICATION-LOCAL`：候选 `CandidateStreamSession` 与
+  `CandidateStreamDeadlineSupervisor` 已完成本地实现；四文件聚焦回归（deadline 10、v2 24、real 8、adapter 25）
+  统一为 `67 passed`，未读取 Key、未调用真实 API、未发起重试或第二次请求。
+- `DESIGN`：deadline 固定为 attempt 起点的绝对 monotonic 墙钟；超时只发显式、协作式、非阻塞意图，
+  cancel/close 幂等，截止后的迟到事件丢弃；终态必须与 Usage 同帧，或终态后恰好一个 Usage-only 尾帧，
+  缺失 Usage 保持 unknown/null，close 失败只作为次级证据。
+- `COMPATIBILITY`：legacy `open_stream() -> Iterable` 保持可用；hard mode 只接受显式 session opener。
+  显式 opener 若返回 legacy iterable，兼容性校验发生在 opener 返回后并 fail closed，不能宣称 opener I/O 已预验证。
+- `LIMITATION`：同步 opener 仍可能越过计时器；SDK `close()` 是否非阻塞且能唤醒 `next()` 尚无 provider/public CI
+  证明，故本地实现不能提升为产品 Runtime 能力或生产准入证据。
+- `BOUNDARY`：Stage 8/8E 继续 `in_progress`；候选保持 `activation_state=disabled`、
+  `execution_allowed=false`、`capabilities.streaming=False`，严格 Flash v1 2048/零额外调用，产品模块、
+  路由、默认模型和 `production_media=0` 不变。
+- `BOUNDARY-NEXT`：当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
+  先取得同一干净提交的 exact-SHA 公共 CI 与协议验证，再另行授权真实观察，不自动注册候选或进入 G53-7。

@@ -100,12 +100,14 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 > `candidate-recovery-diagnostic-version-public-ci / pending`。
 
 RQ-203 已完成版本化候选 recovery 诊断协议设计（见下方材料）；上表中 RQ-202 的“下一步设计”文字仅保留
-历史快照，RQ-204 已完成 fake/local 版本化诊断实现，RQ-205 已完成同 SHA 公共 CI 与协议演练，当前唯一下一门已更新为
-`candidate-real-call-timeout-usage-followup / pending-user-authorization`。RQ-206 已完成 1 次有界真实 primary
-观察并以 `fail_closed / elapsed_limit` 收口；候选仍未注册，下一门先做离线硬墙钟取消与 Usage/终态尾帧处理。
+历史快照，RQ-204 已完成 fake/local 版本化诊断实现，RQ-205 已完成同 SHA 公共 CI 与协议演练，RQ-206 已完成 1 次
+有界真实 primary 观察并以 `fail_closed / elapsed_limit` 收口，RQ-207 已完成候选硬墙钟会话与 Usage 尾帧本地实现；
+四文件聚焦回归（deadline 10、v2 24、real 8、adapter 25）统一为 `67 passed`，当前唯一下一门更新为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`。
 
-> 表格中 8E 行较早的“RQ-204 fake/local、公共 CI、真实 recovery 未完成”是历史快照；以本段和下方 RQ-205/RQ-206
-> 记录为准。RQ-206 的真实观察不提升产品 streaming、默认模型或生产准入。
+> 表格中 8E 行较早的“RQ-204 fake/local、公共 CI、真实 recovery 未完成”是历史快照；以本段和下方 RQ-205/RQ-206/RQ-207
+> 记录为准。RQ-206 的真实观察和 RQ-207 的本地实现均不提升产品 streaming、默认模型或生产准入；Stage 8/8E 仍为
+> `in_progress`，候选保持 disabled/未注册。
 
 8E 当前最新候选接缝材料：[RQ-192/RQ-193 walkthrough](8e-glm53-provider-neutral-stream-adapter-walkthrough.md) /
 [ADR-0073](../adr/0073-adopt-provider-neutral-stream-assembly-contract.md) /
@@ -503,3 +505,30 @@ disabled/未注册，严格 Flash v1、默认模型、产品 Runtime、Portal、
 `production_media=0` 不变。下一精确项为
 `candidate-real-call-timeout-usage-followup / pending-user-authorization`：先离线验证硬墙钟取消、流关闭与
 Usage/终态尾帧处理，再决定是否另行授权真实重测。
+
+### 2026-09-02：RQ-207 候选流硬墙钟与 Usage 尾帧
+
+学习材料：[ADR-0080](../adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md) / [实施计划](../plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md) /
+[实现 walkthrough](8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md)。本门回答一个具体问题：
+当 provider 流在预算墙钟附近迟到、关闭可能阻塞且 Usage 可能落在尾帧时，如何让候选评估可取消、可审计并 fail closed，
+而不把实验接缝误接成产品 Runtime。
+
+代码地图：`app/evaluation/candidate_stream_contract.py` 定义显式 session、终态/Usage 合同；
+`app/evaluation/candidate_stream_deadline.py` 提供 `CandidateStreamDeadlineSupervisor`；
+`app/providers/zhipu_stream_adapter.py` 的 `ZhipuStreamSession` 负责 SDK 流资源所有权、
+`stream_options={"include_usage": true}` 和幂等 close/cancel；`app/providers/zhipu.py` 只在候选显式路径暴露接缝。
+控制流以 attempt 起点记录绝对 monotonic deadline，watchdog 发出协作式 cancel，事件泵抑制迟到事件，
+终态必须与 Usage 同帧或紧随其后的单个 Usage-only 尾帧；重复、过早、终态后内容和空非 Usage 帧均拒绝。
+
+验证：四文件聚焦测试（deadline 10、v2 24、real 8、adapter 25）统一为 `67 passed`，
+并完成 compileall、治理与 diff check；本门不读取 Key、不调用真实 API、不发起重试。Usage/价格缺失保持 unknown/null，
+不合成零值；超时主错误保持 `elapsed_limit`，close 失败仅作次级证据且回执不携带 provider body/exception。
+
+边界与面试表述：legacy `open_stream() -> Iterable` 继续兼容，但 hard mode 必须显式 `session_opener`；
+显式 opener 返回 legacy iterable 时只能在 opener 返回后校验，不能声称 opener I/O 已预验证。同步 opener 可能越过计时器，
+SDK `close()` 是否非阻塞并唤醒 `next()` 尚待 provider/public CI 证明，因此 8E coverage 仍为 planned，Stage 8/8E
+保持 `in_progress`，候选 `activation_state=disabled`、`execution_allowed=false`、`capabilities.streaming=False`。
+
+当前唯一下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
+先取得同一干净提交的 exact-SHA 公共 CI 与协议验证，再另行授权真实观察或任何候选注册。

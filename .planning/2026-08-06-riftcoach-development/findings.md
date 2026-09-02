@@ -5356,3 +5356,23 @@
 - 下一精确项改为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   先离线验证硬墙钟取消、流关闭和 Usage/终态尾帧处理，之后才讨论新的真实请求授权。
+
+## 2026-09-02：RQ-207 候选流硬墙钟与 Usage 尾帧发现
+
+- 旧的同步 iterable 只能在 `next()` 返回后采样时钟；要让 attempt 的 90 秒窗口覆盖
+  整个读取过程，必须提供显式 `CandidateStreamSession`，由 watchdog 监督绝对
+  `started_at + deadline`，并要求会话的 `cancel` 能非阻塞地唤醒挂起读取。
+- 不能把“有 `open_stream_session` 方法”当成 opener 已被证明可取消：没有显式
+  `session_opener` 时可在 legacy opener I/O 前拒绝；显式 opener 返回值仍须在调用后
+  验证，且 opener 自身永久阻塞时普通 Python 没有安全强杀路径。
+- 智谱候选流需要显式 `stream_options.include_usage` 才有机会收到 Usage-only 尾帧；
+  terminal+Usage 或 terminal 后一个合法 Usage-only 尾帧才可完整，缺 Usage、迟到内容、
+  关闭失败都不能被补成成功/零成本。
+- `ZhipuStreamSession.cancel()` 目前通过 SDK `close()` 协作收口；本地 fake 已证明
+  取消/关闭状态和失败主次可记录，但 SDK close 的非阻塞性与唤醒能力尚无供应商层实证，
+  必须保留为真实重测前置闸门。
+- 本轮修正了取消内部 close 失败被幂等 follow-up 覆盖的次级证据丢失，并为显式 opener
+  返回 legacy iterable 增加 fail-closed 回归；没有发新的真实 API。
+- 当前唯一下一精确项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
+  先做同 SHA 公共 CI，再决定是否授权新的真实观察。

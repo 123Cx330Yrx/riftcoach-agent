@@ -81,7 +81,7 @@ from .stream_adapter_contract import (
     StreamToolCallDelta,
     validate_provider_stream_event,
 )
-from .zhipu_stream_adapter import ZhipuStreamAdapter
+from .zhipu_stream_adapter import ZhipuStreamAdapter, ZhipuStreamSession
 from .registry import (
     ProviderDescriptor,
     ProviderRegistry,
@@ -154,6 +154,7 @@ __all__ = [
     "ToolSpec",
     "ZhipuProvider",
     "ZhipuStreamAdapter",
+    "ZhipuStreamSession",
     "ZhipuStreamResult",
     "ZhipuModelProfile",
     "ZhipuSettings",

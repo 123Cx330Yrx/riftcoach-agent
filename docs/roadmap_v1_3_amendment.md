@@ -1193,3 +1193,21 @@ RQ-206 在同一干净隔离工作树只执行 1 次有界真实 primary：提�
 `production_media=0` 和 8F 边界不变。下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
 先离线设计/测试硬墙钟取消、流关闭与 Usage/终态尾帧处理，再另行裁决真实重测。
+
+## 2026-09-02：RQ-207 候选流硬墙钟与 Usage 尾帧边界
+
+RQ-207 只推进 `8e-productization` 的 8-Advanced candidate-only 证据：以显式
+`CandidateStreamSession`/`CandidateStreamDeadlineSupervisor` 固定 attempt 起点的绝对 monotonic 墙钟，
+并为协作式取消、幂等关闭、迟到事件抑制及终态/Usage 尾帧建立可测试合同。四文件聚焦回归（deadline 10、v2 24、
+real 8、adapter 25）统一为 `67 passed`；
+这不改变 8-Core 与 8-Advanced 的分层，不新增或重排主阶段，也不接入产品默认、Runtime、路由、
+`capabilities.streaming` 或其他生产模块。
+
+legacy `open_stream() -> Iterable` 继续兼容，但 hard mode 仅接受显式 session opener；若显式 opener 返回
+legacy iterable，兼容性校验在 opener 返回后执行并 fail closed。同步 opener 的阻塞，以及 SDK `close()` 是否
+非阻塞/能唤醒 `next()`，仍是公共 CI/真实重测闸门；Usage 缺失保持 unknown/null，禁止合成零值、重试或第二次请求。
+Stage 8/8E 仍为 `in_progress`，候选仍 disabled、未注册。
+
+当前唯一下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
+必须先取得同一干净提交的 exact-SHA 公共 CI 与协议验证，不能据此宣称生产成熟度或进入 G53-7/8F。

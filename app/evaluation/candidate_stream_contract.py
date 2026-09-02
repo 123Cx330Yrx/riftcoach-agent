@@ -21,6 +21,7 @@ from __future__ import annotations
 import hashlib
 import re
 import time
+from threading import Event, Lock, Thread, current_thread
 from collections.abc import Callable, Iterable, Iterator, Mapping
 from dataclasses import dataclass, field, replace
 from enum import StrEnum
@@ -131,6 +132,13 @@ class CandidateObservationError(CandidateBoundaryContractError):
 
 class CandidateTransportError(CandidateBoundaryContractError):
     """The injected candidate transport port was used incorrectly."""
+
+
+class CandidateStreamDeadlineError(CandidateTransportError):
+    """A candidate stream crossed its independent wall-clock deadline."""
+
+    def __init__(self) -> None:
+        super().__init__("elapsed_limit", "budget")
 
 
 class CandidateAttemptKind(StrEnum):
@@ -1134,6 +1142,296 @@ class CandidateStreamTransport(Protocol):
         """Open one already-authorized candidate stream."""
 
 
+@runtime_checkable
+class CandidateStreamSession(Protocol):
+    """Owned candidate stream that can be cancelled without a second call.
+
+    The ordinary ``CandidateStreamTransport`` protocol intentionally remains
+    iterable-only for backwards-compatible offline fixtures.  A real or
+    hard-deadline diagnostic must use this narrower session contract instead.
+    ``cancel`` is required to be non-blocking and to make a blocked
+    ``__next__`` return promptly; ``close`` owns all iterator/network
+    resources and is idempotent.
+    """
+
+    def __iter__(self) -> Iterator[ProviderStreamEvent]:
+        """Return the session's normalized event iterator."""
+
+    def cancel(self, code: str = "elapsed_limit") -> None:
+        """Request cancellation and unblock a pending read."""
+
+    def close(self) -> None:
+        """Release every resource owned by this session."""
+
+
+def require_candidate_stream_session(value: object) -> CandidateStreamSession:
+    """Validate the explicit cancellable-session seam without invoking it."""
+
+    if not isinstance(value, Iterable) or not isinstance(value, CandidateStreamSession):
+        raise CandidateTransportError("hard_deadline_unsupported", "transport")
+    return value
+
+
+class CandidateStreamDeadlineSupervisor:
+    """Supervise one cancellable session with an independent wall-clock timer.
+
+    A timer thread only performs the session's explicitly promised
+    non-blocking ``cancel`` operation.  It never attempts to kill an arbitrary
+    Python thread or wraps a blocking call in an executor.  The consuming
+    iterator remains on the caller thread and must return after cancellation;
+    a session that cannot make that guarantee is not a valid hard-deadline
+    transport.
+    """
+
+    def __init__(
+        self,
+        session: CandidateStreamSession,
+        *,
+        deadline_s: float,
+        cancel_grace_s: float = 1.0,
+        started_at: float | None = None,
+    ) -> None:
+        self._session = require_candidate_stream_session(session)
+        if (
+            isinstance(deadline_s, bool)
+            or not isinstance(deadline_s, (int, float))
+            or not isfinite(float(deadline_s))
+            or float(deadline_s) <= 0
+        ):
+            raise CandidateTransportError("deadline_invalid", "budget")
+        if (
+            isinstance(cancel_grace_s, bool)
+            or not isinstance(cancel_grace_s, (int, float))
+            or not isfinite(float(cancel_grace_s))
+            or float(cancel_grace_s) < 0
+            or float(cancel_grace_s) > 10
+        ):
+            raise CandidateTransportError("cancel_grace_invalid", "budget")
+        if started_at is not None and (
+            isinstance(started_at, bool)
+            or not isinstance(started_at, (int, float))
+            or not isfinite(float(started_at))
+        ):
+            raise CandidateTransportError("deadline_start_invalid", "budget")
+        self.deadline_s = float(deadline_s)
+        self.cancel_grace_s = float(cancel_grace_s)
+        self.started_at = float(started_at) if started_at is not None else None
+        self.deadline_at = (
+            self.started_at + self.deadline_s
+            if self.started_at is not None
+            else None
+        )
+        if self.deadline_at is not None and not isfinite(self.deadline_at):
+            raise CandidateTransportError("deadline_start_invalid", "budget")
+        self._started = False
+        self._deadline_reached = Event()
+        self._stop_watch = Event()
+        self._cancel_lock = Lock()
+        self._cancel_state: Literal["not_requested", "requested", "failed"] = (
+            "not_requested"
+        )
+        self._close_state: Literal["not_observed", "closed", "failed"] = (
+            "not_observed"
+        )
+        self._cancel_error = False
+        self._close_error = False
+        self._closed = False
+        self._timer: Thread | None = None
+
+    @property
+    def deadline_reached(self) -> bool:
+        return self._deadline_reached.is_set()
+
+    @property
+    def cancel_state(self) -> str:
+        return self._cancel_state
+
+    @property
+    def close_state(self) -> str:
+        return self._close_state
+
+    @property
+    def cancel_failed(self) -> bool:
+        return self._cancel_error
+
+    @property
+    def close_failed(self) -> bool:
+        return self._close_error
+
+    def __iter__(self) -> Iterator[ProviderStreamEvent]:
+        return self.iter_events()
+
+    def iter_events(self) -> Iterator[ProviderStreamEvent]:
+        """Yield events until EOF or raise one safe deadline/transport error."""
+
+        if self._started:
+            raise CandidateTransportError("supervisor_reused", "lifecycle")
+        self._started = True
+        self._timer = Thread(
+            target=self._watch_deadline,
+            name="riftcoach-candidate-deadline",
+            daemon=True,
+        )
+        self._timer.start()
+        iterator: Iterator[ProviderStreamEvent] | None = None
+        had_error = False
+        try:
+            try:
+                iterator = iter(self._session)
+            except (GeneratorExit, KeyboardInterrupt, SystemExit):
+                had_error = True
+                raise
+            except CandidateBoundaryContractError:
+                had_error = True
+                raise
+            except StreamAdapterError as error:
+                had_error = True
+                raise CandidateTransportError(error.code, "open") from None
+            except Exception:
+                had_error = True
+                raise CandidateTransportError("stream_open_failed", "open") from None
+            while True:
+                self._raise_if_deadline()
+                try:
+                    event = next(iterator)
+                except StopIteration:
+                    self._raise_if_deadline()
+                    break
+                except (GeneratorExit, KeyboardInterrupt, SystemExit):
+                    had_error = True
+                    raise
+                except CandidateBoundaryContractError:
+                    if self.deadline_reached:
+                        had_error = True
+                        raise CandidateStreamDeadlineError() from None
+                    had_error = True
+                    raise
+                except StreamAdapterError as error:
+                    had_error = True
+                    if self.deadline_reached:
+                        raise CandidateStreamDeadlineError() from None
+                    raise CandidateTransportError(error.code, "read") from None
+                except Exception:
+                    if self.deadline_reached:
+                        had_error = True
+                        raise CandidateStreamDeadlineError() from None
+                    had_error = True
+                    raise CandidateTransportError("stream_read_failed", "read") from None
+                self._raise_if_deadline()
+                yield event
+        except BaseException:
+            had_error = True
+            raise
+        finally:
+            self._stop_watch.set()
+            # If the timer won the race, make a second idempotent cancellation
+            # attempt on the caller thread as a fallback.  The lock prevents a
+            # duplicate session call.
+            if self.deadline_reached:
+                self._cancel_once()
+            close_control: BaseException | None = None
+            try:
+                self.close()
+            except (GeneratorExit, KeyboardInterrupt, SystemExit) as error:
+                # Preserve the primary read/deadline exception when one is
+                # already propagating; otherwise let the control exception
+                # escape rather than silently swallowing cancellation.
+                close_control = error
+            timer = self._timer
+            if timer is not None and timer is not current_thread():
+                timer.join(self.cancel_grace_s)
+            if close_control is not None and not had_error:
+                raise close_control
+        if not had_error and self.close_failed:
+            raise CandidateTransportError("stream_close_failed", "close")
+
+    def close(self) -> bool:
+        """Close the owned session once; return whether cleanup failed."""
+
+        with self._cancel_lock:
+            if self._closed:
+                return self._close_error
+            self._closed = True
+        try:
+            self._session.close()
+        except (GeneratorExit, KeyboardInterrupt, SystemExit):
+            self._close_error = True
+            self._close_state = "failed"
+            raise
+        except Exception:
+            self._close_error = True
+            self._close_state = "failed"
+        else:
+            try:
+                session_close_failed = bool(
+                    getattr(self._session, "close_failed", False)
+                )
+            except Exception:
+                session_close_failed = False
+            if session_close_failed:
+                self._close_error = True
+                self._close_state = "failed"
+            else:
+                self._close_state = "closed"
+        return self._close_error
+
+    def _watch_deadline(self) -> None:
+        wait_s = self.deadline_s
+        if self.deadline_at is not None:
+            wait_s = max(0.0, self.deadline_at - time.monotonic())
+        if self._stop_watch.wait(wait_s):
+            return
+        self._deadline_reached.set()
+        self._cancel_once()
+
+    def _cancel_once(self) -> None:
+        with self._cancel_lock:
+            if self._cancel_state != "not_requested":
+                return
+            self._cancel_state = "requested"
+        try:
+            try:
+                self._session.cancel("elapsed_limit")
+            except TypeError:
+                # A legacy session may omit the optional code argument; it is
+                # still required to be a no-argument cancellation method.
+                self._session.cancel()  # type: ignore[call-arg]
+        except (GeneratorExit, KeyboardInterrupt, SystemExit):
+            self._cancel_error = True
+            self._cancel_state = "failed"
+        except Exception:
+            self._cancel_error = True
+            self._cancel_state = "failed"
+        finally:
+            # A session may implement cancellation by closing its owned
+            # response and surface that failure only through a safe status
+            # property (the concrete Zhipu session does this).  Preserve it
+            # as secondary close evidence even when the idempotent follow-up
+            # ``close`` call has nothing left to do.
+            try:
+                session_close_failed = bool(
+                    getattr(self._session, "close_failed", False)
+                )
+            except Exception:
+                session_close_failed = False
+            if session_close_failed:
+                self._close_error = True
+                self._close_state = "failed"
+
+    def _raise_if_deadline(self) -> None:
+        deadline_elapsed = (
+            self.deadline_at is not None
+            and time.monotonic() >= self.deadline_at
+        )
+        if self.deadline_reached or deadline_elapsed:
+            # The watchdog normally sets this event, but the consuming thread
+            # must also enforce the absolute timestamp in case scheduler
+            # latency lets it run before the watchdog callback.
+            self._deadline_reached.set()
+            self._cancel_once()
+            raise CandidateStreamDeadlineError()
+
+
 class CandidateZhipuStreamTransport:
     """Candidate v2 transport port backed only by an injected opener.
 
@@ -1146,11 +1444,14 @@ class CandidateZhipuStreamTransport:
         self,
         opener: Callable[..., Iterable[ProviderStreamEvent]],
         *,
+        session_opener: Callable[..., CandidateStreamSession] | None = None,
         runtime_profile: Any = GLM53_FLASH_FRESH_RECOVERY_RUNTIME_CANDIDATE_V1,
         policy: ResponseCompletionPolicy = GLM53_FLASH_FRESH_RECOVERY_CANDIDATE_V1,
     ) -> None:
         if not callable(opener):
             raise TypeError("opener must be callable")
+        if session_opener is not None and not callable(session_opener):
+            raise TypeError("session_opener must be callable or None")
         if (
             type(runtime_profile)
             is not type(GLM53_FLASH_FRESH_RECOVERY_RUNTIME_CANDIDATE_V1)
@@ -1163,6 +1464,7 @@ class CandidateZhipuStreamTransport:
         ):
             raise CandidateIdentityError("candidate_policy_mismatch", "identity")
         self._opener = opener
+        self._session_opener = session_opener
         self.runtime_profile = runtime_profile
         self.policy = policy
 
@@ -1275,6 +1577,43 @@ class CandidateZhipuStreamTransport:
         if stream is None or not isinstance(stream, Iterable):
             raise CandidateTransportError("transport_stream_invalid", "open")
         return stream
+
+    def open_stream_session(
+        self,
+        binding: CandidateRuntimeBinding,
+        request: ChatRequest,
+        *,
+        max_output_tokens: int | None = None,
+        timeout_s: float | None = None,
+        transport_timeout_s: float | None = None,
+    ) -> CandidateStreamSession:
+        """Open the explicit cancellable session required for hard deadlines.
+
+        The legacy opener is deliberately never reused here: without an
+        explicit ``session_opener`` we can prove neither cancellation nor
+        ownership before making a provider request, so the call fails closed
+        with zero opener I/O.
+        """
+
+        if self._session_opener is None:
+            raise CandidateTransportError("hard_deadline_unsupported", "transport")
+        session_transport = CandidateZhipuStreamTransport(
+            self._session_opener,
+            runtime_profile=self.runtime_profile,
+            policy=self.policy,
+        )
+        stream = session_transport.open_stream(
+            binding,
+            request,
+            max_output_tokens=max_output_tokens,
+            timeout_s=timeout_s,
+            transport_timeout_s=transport_timeout_s,
+        )
+        return require_candidate_stream_session(stream)
+
+    # Descriptive alias used by callers that want to make the deadline
+    # requirement visible at the call site.
+    open_stream_with_deadline = open_stream_session
 
 
 def observe_candidate_events(
@@ -1530,6 +1869,9 @@ __all__ = [
     "CandidateObservationState",
     "CandidateRuntimeBinding",
     "CandidateStreamBoundaryObserver",
+    "CandidateStreamDeadlineError",
+    "CandidateStreamDeadlineSupervisor",
+    "CandidateStreamSession",
     "CandidateStreamTrace",
     "CandidateStreamTransport",
     "CandidateTransportError",
@@ -1548,4 +1890,5 @@ __all__ = [
     "merge_field_states",
     "observe_candidate_events",
     "require_exact_candidate_binding",
+    "require_candidate_stream_session",
 ]
