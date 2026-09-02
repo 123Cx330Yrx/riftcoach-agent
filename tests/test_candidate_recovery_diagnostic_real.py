@@ -153,6 +153,35 @@ def test_confirmation_gate_reads_nothing_and_makes_no_client(tmp_path: Path):
     assert called is False
 
 
+def test_wrong_case_is_rejected_before_client_creation(tmp_path: Path):
+    called = False
+
+    def factory(**kwargs):
+        nonlocal called
+        called = True
+        return _FakeClient(_complete_chunks())
+
+    wrong_case = FrozenCandidateContext(
+        messages=_context().messages,
+        input_plan_sha=GIT_SHA,
+        input_plan_content_sha256=PLAN_CONTENT_SHA,
+        prompt_context_snapshot_sha256=SNAPSHOT_SHA,
+        case_id="other_case",
+    )
+    with pytest.raises(Exception, match="case_id_mismatch"):
+        run_candidate_recovery_real_call(
+            repository_root=tmp_path,
+            implementation_sha=GIT_SHA,
+            diagnostic_code_sha=GIT_SHA,
+            output=tmp_path / "data/evaluation/results/provider_capabilities/result.json",
+            confirm_real_call=True,
+            client_factory=factory,
+            environment_loader=lambda _: _environment(),
+            context_loader=lambda _: wrong_case,
+        )
+    assert called is False
+
+
 def test_real_seam_makes_one_stream_call_and_writes_body_free_receipt(tmp_path: Path):
     client = _FakeClient(_complete_chunks())
 

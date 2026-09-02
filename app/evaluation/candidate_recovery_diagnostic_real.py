@@ -202,6 +202,8 @@ def run_candidate_recovery_real_call(
     context = (context_loader or _load_frozen_context)(root)
     if not isinstance(context, FrozenCandidateContext):
         raise CandidateRealCallError("context_loader_invalid")
+    if context.case_id != CASE_ID:
+        raise CandidateRealCallError("case_id_mismatch")
     profile = GLM53_FLASH_FRESH_RECOVERY_RUNTIME_CANDIDATE_V1
     policy = GLM53_FLASH_FRESH_RECOVERY_CANDIDATE_V1
     request_context = ResponseRequestContext(
