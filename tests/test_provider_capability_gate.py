@@ -43,6 +43,12 @@ from app.evaluation.glm53_flash_output_budget_calibration import (
 from app.evaluation.glm53_flash_response_recovery_diagnostic import (
     CandidateRecoveryDiagnosticReport,
 )
+from app.evaluation.candidate_recovery_diagnostic_v2 import (
+    CANDIDATE_RECOVERY_DIAGNOSTIC_PROTOCOL_ID,
+    CANDIDATE_RECOVERY_DIAGNOSTIC_SCHEMA_VERSION,
+    CandidateRecoveryDiagnosticReceipt,
+    canonical_receipt_bytes,
+)
 from app.evaluation.glm53_flash_stream_terminal_completion_probe import (
     StreamTerminalCompletionReport,
 )
@@ -229,6 +235,15 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
     for result_path in result_paths:
         content = result_path.read_text(encoding="utf-8")
         payload = json.loads(content)
+        if (
+            payload.get("protocol_id")
+            == CANDIDATE_RECOVERY_DIAGNOSTIC_PROTOCOL_ID
+            and payload.get("schema_version")
+            == CANDIDATE_RECOVERY_DIAGNOSTIC_SCHEMA_VERSION
+        ):
+            receipt = CandidateRecoveryDiagnosticReceipt.from_dict(payload)
+            assert canonical_receipt_bytes(receipt).decode("utf-8") == content
+            continue
         if {
             "calibration_experiment_id",
             "calibration_result_sha256",
