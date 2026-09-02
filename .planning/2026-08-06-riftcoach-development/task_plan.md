@@ -440,14 +440,6 @@ RQ-197 又完成候选边界观察合同的 fake/local 实现与 `163 passed` �
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
   本次授权已消费，不自动发送新的真实请求，不注册候选、不打开 `capabilities.streaming`。
 
-- [current-evidence-override] RQ-209 已完成上述一次性真实观察：本地证据提交
-  `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存 canonical body-free 回执（`4342` bytes，SHA-256
-  `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`）；只发出 1 次 primary，诊断层在
-  `90015ms` 的 attempt 墙钟处 `fail_closed / elapsed_limit`，组合 `close_state=failed` 不能归因具体底层资源，
-  未执行 recovery/重试。当前唯一下一项仍为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
-  不自动发送新的真实请求，不注册候选、不打开 `capabilities.streaming`。
-
 ## RQ-195 / 候选 runtime 接线架构评审（2026-09-01）
 
 - [completed-review] RQ-194 的 `assemble()` 只交付完整 `stop`/`tool_calls` 流；`length`、缺终止、缺 Usage 和异常路径
@@ -2855,7 +2847,7 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [observed] 首事件/打开计时 `3421ms`，reasoning 非空；`90015ms` 触发硬墙钟，未见可见正文、terminal、EOF 或
   Usage，组合会话 `close_state=failed`、`eof_observed=false`。该 close 状态不能归因到供应商 response、迭代器或
   其他具体资源；`observation.elapsed_ms=0` 是截止前未结算的投影，真实时序以 latency `90015ms` 为准。
-- [interpretation] 这证明真实候选路径现在会按 attempt 墙钟 fail closed，不能证明底层 close 非阻塞/唤醒挂起
+- [interpretation] 这证明诊断层记录了 attempt 墙钟到点的 fail-closed 决定，不能证明底层 close 非阻塞/唤醒挂起
   `next()`，也不能推出模型能力、API/Key、领域准入或生产成熟度；单次 attempt `budget_state=exceeded` 与累计
   token 未知的 `budget.overall_state=unknown` 不矛盾。
 - [boundary] 候选仍 disabled/未注册，`execution_allowed=false`、`capabilities.streaming=False`；严格 Flash v1

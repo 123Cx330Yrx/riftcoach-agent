@@ -5672,7 +5672,7 @@
 - [observed] `calls_reserved/settled=1/1`；首事件/打开计时 `3421ms`，reasoning 非空；`90015ms` 触发 attempt
   硬墙钟，未见可见正文、terminal、EOF 或 Usage，组合会话 `close_state=failed`，`eof_observed=false`，
   最终 `fail_closed / elapsed_limit`，Usage 缺失、费用 unknown。
-- [interpretation] 真实路径现在会在 attempt 墙钟到点后 fail closed；组合 `close_state=failed` 不能归因到
+- [interpretation] 诊断层记录了 attempt 墙钟到点后的 fail-closed 决定；组合 `close_state=failed` 不能归因到
   供应商 response、迭代器或其他具体资源，也不能证明底层 close 非阻塞或能唤醒挂起的 `next()`。回执中的
   `observation.elapsed_ms=0` 是截止前未结算的初始投影，不是零耗时。
 - [boundary-next] 候选仍 disabled/未注册，产品默认、Runtime、Workbench、前端、Auth、路由和
