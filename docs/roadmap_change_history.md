@@ -4128,3 +4128,18 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 解释为底层 HTTP response 已关闭、close 非阻塞或已唤醒 pending `next()`；`cancel()` 仍同步经过 SDK close。
 本批不升级 receipt/schema、不改变 8E 路线或产品能力；实现提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 的
 公共 CI `33657368435` 三 job 已 exact-SHA 成功；后续 provider-level 观察或持久分资源字段仍需另立决策并获明确授权。
+
+### 2026-09-03：RQ-211 候选 provider close/wakeup 一次观察裁决
+
+- `EXECUTION`：接受在 exact-SHA 公共绿灯的 `c31127b3c780fe4c493966d8b60f942d3b773fd4`
+  干净快照上执行一次真实观察；Actions run `33661910096` 三 job成功，探针只发 1 次请求、SDK retries=0，
+  无 recovery 或第二请求。
+- `EVIDENCE`：body-free 回执为 `908` bytes、SHA-256
+  `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`；状态为
+  `not_pending`，会话打开、首段读取 `78ms`、只见 reasoning/content 类别，cancel 未执行。迭代器、SDK stream
+  wrapper 与组合关闭投影均为 `closed`。
+- `REJECTED-CLAIM`：拒绝把 `not_pending` 写成 close/wakeup 通过或失败；本次没有形成 pending reader，
+  所以没有验证 close 是否非阻塞、能否唤醒 `next()` 或底层 HTTP response 是否取消。
+- `BOUNDARY-NEXT`：候选/产品边界不变。下一精确项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`，
+  等待用户决定是否另立新版协议，不自动重试、注册候选或进入后续成熟度闸门。

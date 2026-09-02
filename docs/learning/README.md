@@ -580,3 +580,14 @@ stream wrapper，并用 `shared_resource` 表示对象别名。材料同时区�
 说明 body-free 约束、异常脱敏、无 hook 时的 `not_observed` 语义及并发读取限制。RQ-209 回执/schema/SHA、候选 gate、
 产品 Runtime 和 `production_media=0` 均不变；实现提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 的 Actions
 `33657368435` 已 exact-SHA 三 job 成功，但本地/公共候选证据都不是生产成熟度证明，8E coverage 仍按 planned 维护。
+
+### 2026-09-03：RQ-211 候选 provider close/wakeup 一次观察
+
+新增 [RQ-211 close/wakeup 观察 walkthrough](8e-glm53-candidate-close-wakeup-observation-walkthrough.md)。
+这次在 c311 exact-SHA 公共绿灯快照上只发出 1 次真实请求，回执为 `not_pending`：会话打开并观察到
+reasoning/content 类别，但没有形成 pending reader，所以没有执行 cancel，`reader_woke=false` 不能
+解释为唤醒失败。迭代器、外层 SDK stream wrapper 与组合关闭投影均为 `closed`，回执为 `908` bytes、
+SHA-256 `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，不含敏感字段或正文。
+材料特别区分“没有观察到挂起读取”和“provider close/wakeup 已被证明”；后者仍未证实。候选 gate、
+产品 Runtime、Portal、Account、Workbench、Auth、路由、`production_media=0` 以及 8E coverage planned
+保持不变，下一步等待是否设计新版 pending-read 观察协议的用户裁决。

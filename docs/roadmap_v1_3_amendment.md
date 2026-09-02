@@ -1253,3 +1253,11 @@ Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` �
 RQ-210 不新增、重排或重分类阶段，也不把候选流关闭报告提升为 8-Core 能力。它属于 8-Advanced 的 candidate-only
 证据：仅在 `ZhipuStreamSession` 内存中区分迭代器和外层 SDK stream wrapper，旧 receipt/schema 与产品 Runtime
 保持不变。公共 CI 已完成；provider-level cancel/wakeup 与生产准入仍是独立闸门，8E coverage 继续按既有 planned 状态维护。
+
+### RQ-211 边界澄清（2026-09-03）
+
+RQ-211 仍属于 8-Advanced 的 candidate-only 观察，不改变 8-Core 必做项、8E/8F 顺序或 coverage 状态。
+一次真实请求的结果为 `not_pending`：有限窗口没有形成挂起读取，因此没有执行 cancel，不能证明或否定
+provider close/wakeup。body-free 回执与 c311 exact-SHA 公共证据已固定；候选仍 disabled/未注册，产品
+Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。若继续，先裁决是否设计
+能稳定制造 pending-read 的新版协议；不得把重复真实请求当作路线推进。

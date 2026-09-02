@@ -903,3 +903,14 @@ RQ-210 新增的只是候选内部内存 seam：`ZhipuStreamCloseReport` 为迭�
 182 passed/27 subtests；这些是候选可复现性证据，不是 provider 或公共生产能力。Actions `33657368435` 三 job 已
 `completed/success` 且 head SHA 精确匹配；公共 pytest `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，
 PostgreSQL 控制面 `201 passed, 1 warning`。
+
+### RQ-211：候选 close/wakeup 观察能力边界（2026-09-03）
+
+RQ-211 不新增 A03/A10/Q02 或任何产品 Runtime capability。一次真实 candidate-only 探针在 c311
+exact-SHA 公共绿灯快照上得到 `not_pending`：会话打开并观察到 reasoning/content 类别，但没有形成 pending
+reader，因而没有执行 cancel。迭代器、外层 SDK stream wrapper 与组合关闭投影均为 `closed`，这仍不能证明
+底层 HTTP response 可取消、close 在挂起读取时非阻塞或能唤醒 `next()`。
+
+回执为 `908` bytes、SHA-256
+`9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，只含允许列表状态。
+候选继续 disabled/未注册，`capabilities.streaming=False`；能力矩阵和 `production_media=0` 均不变。

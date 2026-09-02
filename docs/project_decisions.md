@@ -3250,3 +3250,22 @@ Portal/Account/Workbench/Auth、路由和 `production_media=0` 不变，Stage 8/
 不打开 `capabilities.streaming`、不接入 AgentLoop/产品 Runtime，也不修改 Portal、Account、Workbench、Auth、
 路由或 `production_media=0`。`cancel()` 仍同步调用 SDK close，因此不宣称底层 response cancel、非阻塞或唤醒能力；
 若未来要持久化分资源状态或将报告作为稳定公共合同，必须另立 ADR 并升级 schema/allow-list/CI。
+
+### RQ-211：接受一次 close/wakeup 观察，但不接受唤醒结论（2026-09-03）
+
+接受在 exact-SHA 公共绿灯的 `c31127b3c780fe4c493966d8b60f942d3b773fd4` 干净快照上执行一次
+candidate-only 真实探针；该 SHA 的 Actions run `33661910096` 三 job 成功。探针只发出 1 次普通智谱
+`zhipu/glm-5.3-flash` 请求，SDK retries=0、父进程硬边界 30 秒，无 retry/recovery。canonical body-free
+回执为 `908` bytes、SHA-256
+`9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`。
+
+接受的事实只有：会话已打开、调用数 1、首段读取 `78ms`、观察到 reasoning/content 类别，退出时 iterator、
+SDK stream wrapper 和 composite 报告均为 `closed`。拒绝把 `observation_state=not_pending` 与
+`reader_woke=false` 解读为唤醒成功或失败；本次没有形成 pending reader，所以 cancel 根本没有执行，底层
+HTTP response 取消、非阻塞 close 和 pending `next()` 唤醒仍未被验证。
+
+后续测试加固提交 `5b0ce15d9d4a4c3e413d53032b9f529d20e18f6c` 的公共 run `33662730304`
+被外部取消，不记为成功，也不替换 c311 回执身份。候选仍 disabled/未注册，`execution_allowed=false`、
+`capabilities.streaming=False`；严格 Flash v1、默认模型、AgentLoop、产品 Runtime、Portal、Account、
+Workbench、Auth、路由和 `production_media=0` 不变。下一步等待用户裁决是否设计能稳定制造 pending-read
+的新版协议；不自动追加真实请求、G53-7、黄金切片、生产准入或 8F。

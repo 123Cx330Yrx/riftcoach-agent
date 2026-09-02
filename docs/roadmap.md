@@ -27,6 +27,11 @@
 > 墙钟处 `fail_closed / elapsed_limit`，正文、terminal、EOF、Usage 均缺失；组合 `close_state=failed` 的具体
 > 底层资源未归因。证据提交 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 尚未取得公共 CI，activation gate 仍
 > disabled、候选未注册，当前子阶段仍未关闭。
+
+> RQ-211 最新观察：在 `c31127b3c780fe4c493966d8b60f942d3b773fd4` exact-SHA 公共绿灯快照上，
+> 只执行 1 次候选 close/wakeup 探针请求；回执为 `not_pending`，说明有限窗口内没有形成 pending reader，
+> 因而没有执行 cancel，不能把 `reader_woke=false` 写成唤醒成功或失败。回执 `908` bytes、SHA-256
+> `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`；候选仍 disabled、产品与生产边界不变。
 >
 > 历史观察：G53-5 矩阵完成 `11/11` 次真实调用、`46,151` tokens、`7/8` cases pass；
 > 随后独立 F7 follow-up 仅将 `max_tokens` 从 512 调至 2048，完成 `1/1` 调用、`557` tokens，
@@ -1329,3 +1334,18 @@ v2 回执、schema 和 canonical SHA 不变。该报告不证明底层 HTTP resp
 `33657368435` 三 job 已成功；公共
 pytest `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`。
 这仍不等于 provider close/wakeup 证明；8F、G53-7、黄金切片和生产准入顺序保持不变。
+
+### RQ-211：候选 provider close/wakeup 一次观察（2026-09-03）
+
+RQ-211 没有新增或重排路线，只完成 RQ-210 后的一个 8-Advanced 候选证据点。探针在 exact-SHA
+公共绿灯的 `c31127b3c780fe4c493966d8b60f942d3b773fd4` 干净快照上只发送 1 次真实
+`zhipu/glm-5.3-flash` 请求；回执为 `not_pending`，表示有限窗口内没有形成挂起读取，因此没有执行
+cancel，也不能把本次结果解释为 provider wakeup 通过或失败。回执为 `908` bytes、SHA-256
+`9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，保持 body-free；
+迭代器、外层 SDK stream wrapper 与组合关闭投影均为 `closed`。
+
+候选继续 disabled/未注册，`execution_allowed=false`、`capabilities.streaming=False`；严格 Flash v1、
+默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
+当前下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`；
+先等待是否另立能稳定制造 pending-read 的新版协议，不自动追加真实请求、G53-7、黄金切片、生产准入或 8F。

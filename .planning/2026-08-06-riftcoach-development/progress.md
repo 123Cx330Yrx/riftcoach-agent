@@ -5687,3 +5687,26 @@
 - [boundary] 未修改 RQ-209 v2 receipt/schema 2.0.0 或其 canonical JSON/SHA；没有新增持久字段、正文、异常文本或底层 HTTP response handle。候选仍 disabled/未注册，产品 Runtime、默认模型、Workbench、Portal、Account、Auth、路由和 `production_media=0` 不变。
 - [limitation] `cancel()` 仍同步调用 SDK close；本地报告不等于 provider-level 非阻塞 close、唤醒 pending `next()` 或 raw response cancel 证据。并发 close 的报告读取需等拥有者 close 返回，竞态未在本门扩大修复。
 - [next] RQ-210 已完成公共闭环；若要持久化分资源状态或重做 provider close/wakeup 真实观察，另立 ADR/schema 版本并重新取得明确授权。
+
+## 2026-09-03：RQ-211 候选 provider close/wakeup 一次真实观察
+
+- [public-precondition] 探针实现/诊断/输入计划身份均为
+  `c31127b3c780fe4c493966d8b60f942d3b773fd4`；Actions run `33661910096` 三 job
+  exact-SHA 成功。后续测试加固提交 `5b0ce15d9d4a4c3e413d53032b9f529d20e18f6c` 的 run
+  `33662730304` 被外部取消，不冒充成功，也不替换本次证据身份。
+- [completed-bounded-real] 在 c311 干净快照上只发送 1 次普通智谱 `zhipu/glm-5.3-flash`
+  请求，SDK retries=0、父进程硬边界 30 秒；没有 retry、recovery 或第二请求。
+- [evidence] 新回执路径为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_close_wakeup_observation_rq211_v1.json`，
+  schema `1.0.0`，`908` bytes，SHA-256
+  `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`；canonical 重解析通过且
+  不含 Key、Authorization、request ID、正文、reasoning 原文或 body。
+- [observed] 会话打开且调用数为 1，首段读取 `78ms`，只观察到 reasoning/content 类别；
+  `not_pending` / `pending_reader_observed=false`，所以未执行 cancel、`reader_woke=false`。子进程正常退出；
+  iterator、SDK stream 与 composite 关闭投影均为 `closed`，`shared_resource=false`。
+- [boundary] 本次没有进入 pending-read 分支，因而不能证明或否定 provider close 的非阻塞/唤醒能力或
+  底层 HTTP response 取消。候选仍 disabled/未注册，产品 Runtime、默认模型、Workbench、Portal、Account、
+  Auth、路由和 `production_media=0` 均不变。
+- [next] 当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`；
+  等待用户决定是否设计新版观察协议，不自动追加真实调用、G53-7、黄金切片、生产准入或 8F。

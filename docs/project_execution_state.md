@@ -27,6 +27,14 @@ pause_reason: ""
   Stage 8/8E 继续 `in_progress`，`production_media=0`。RQ-195 已完成候选 runtime 接线架构评审，
   RQ-196 又完成了候选 runtime wiring design：冻结隔离评测调用方、body-free BoundaryObservation、
   四元身份、共享校验、v2 预算和独立 Trace 投影；仍不直接改产品 Runtime。以下为此前连续诊断记录。）
+- RQ-211 最新状态覆盖：候选 close/wakeup 探针已在 exact-SHA 公共绿灯的
+  `c31127b3c780fe4c493966d8b60f942d3b773fd4` 快照上完成一次真实请求；Actions run
+  `33661910096` 三 job 成功。回执为 `908` bytes、SHA-256
+  `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，结果为
+  `not_pending`：会话打开且只调用一次，观察到 reasoning/content 类别，但有限窗口内没有 pending reader，
+  因而没有执行 cancel，也不能证明 close 能唤醒挂起读取。迭代器、外层 SDK stream 和组合关闭投影均为
+  `closed`；回执保持 body-free。后续测试加固提交 `5b0ce15d9d4a4c3e413d53032b9f529d20e18f6c`
+  的公共 run `33662730304` 被外部取消，不冒充通过。候选与产品边界保持不变。
 - RQ-204 最新状态补充：版本化候选 recovery 诊断已完成 fake/local 本地实现与比例回归，
   系统 Python 3.13 用户环境已安装 `pytest 9.1.1`；项目验证仍使用仓库 `.venv` 的完整依赖。
 - RQ-205 最新状态覆盖：提交 `90242822df0e47304700644572bc12f0a3aa88ad` 的 exact-SHA 公共 CI
@@ -139,7 +147,7 @@ pause_reason: ""
   为显式兼容/应急回退。旧 Dataset 的 30 秒仍是质量资源阈值，不是新档案执行截止；真实 G53-7 会拒绝 dirty
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
-- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-provider-close-wakeup-observation / pending-user-authorization`。RQ-210 的候选会话分资源关闭报告已在提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 完成本地实现与 exact-SHA 公共 CI（Actions `33657368435` 三 job 全绿，公共 pytest `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL `201 passed, 1 warning`）。报告仅在内存中区分迭代器与外层 SDK stream wrapper，RQ-209 v2 receipt/schema/SHA 不变；`cancel()` 仍同步走 close，provider-level close/wakeup 未证实。候选保持 activation gate `disabled`、`activation_state=candidate`、`execution_allowed=false`、`capabilities.streaming=False`，且未注册；严格 Flash v1 仍 2048/零额外调用，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变。下一次真实观察仍需新的明确一次性授权。
+- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`。RQ-211 已在 exact-SHA 公共绿灯的 `c31127b3c780fe4c493966d8b60f942d3b773fd4` 干净快照上执行一次且仅一次普通智谱 `glm-5.3-flash` 请求；回执为 `not_pending`，表示有限观察窗内没有形成待取消读取，因此没有执行 cancel，也不能宣称 provider close/wakeup 已通过。回执 `908` bytes、SHA-256 `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，只含允许列表状态；迭代器、外层 SDK stream wrapper 和组合关闭投影均为 `closed`。候选保持 activation gate `disabled`、`activation_state=candidate`、`execution_allowed=false`、`capabilities.streaming=False` 且未注册；严格 Flash v1 仍 2048/零额外调用，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变。下一步等待用户决定是否设计一个能稳定制造 pending-read 的新协议；不自动追加真实请求、G53-7、黄金切片或生产准入。
 - RQ-205 已覆盖前述公共 CI 待办：`90242822df0e47304700644572bc12f0a3aa88ad` / Actions `33598541029` 三 job exact-SHA 全绿，公共 pytest `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`，fake/local 协议演练通过。当前下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`，不自动发真实 recovery。
 - RQ-206 已覆盖上述历史指针：同一干净隔离工作树的诊断提交 `0b2342c240cfdc1801e673e830c9a7f30bed3fbd` / Actions `33603143606` exact-SHA 三 job 全绿；按一次性授权只发出 1 次 `zhipu/glm-5.3-flash` primary。流观察到 reasoning、可见正文、`stop` 与 EOF，但 Usage 缺失、close 失败，90 秒 attempt 门在晚到事件中触发，回执为 `fail_closed / elapsed_limit`，没有第二次 recovery。当前唯一下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，先离线设计/测试硬墙钟取消与 Usage/终态尾帧处理，不自动重测。
 - RQ-210 最新状态：隔离分支实现提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 已完成本地与 exact-SHA 公共 CI（Actions `33657368435` 三 job 全绿）；候选 adapter/deadline/v2/real 聚焦共 `73 passed`，扩展相邻回归共 `182 passed, 27 subtests passed`，compileall、diff check、governance 通过。报告字段只反映 session 所拥有的迭代器和外层 SDK stream wrapper，`shared_resource` 仅说明对象别名；不外推底层 HTTP response、非阻塞 close 或唤醒能力。RQ-209 回执不重写，候选/产品边界不变；当前等待新的明确一次性授权。
@@ -4135,3 +4143,32 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 - `[boundary-next]` 当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-provider-close-wakeup-observation / pending-user-authorization`；
   provider-level close/wakeup 观察、持久分资源字段、候选注册、G53-7、黄金切片、生产准入和 8F 均需另行明确授权。
+
+### 2026-09-03：RQ-211 候选 provider close/wakeup 一次真实观察
+
+- `[completed-bounded-real]` 探针实现、诊断与输入计划身份均冻结为
+  `c31127b3c780fe4c493966d8b60f942d3b773fd4`；该 SHA 的 GitHub Actions run
+  `33661910096` 三 job 均 `completed/success`。在这一干净快照上按用户“继续”只发送 1 次普通智谱
+  `zhipu/glm-5.3-flash` 请求，SDK retries=0，父进程硬边界为 30 秒，没有 recovery 或第二次请求。
+- `[evidence]` canonical body-free 回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_close_wakeup_observation_rq211_v1.json`，
+  schema `1.0.0`，`908` bytes，SHA-256
+  `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`。实现/诊断/输入计划 SHA
+  均精确为 `c31127b3c780fe4c493966d8b60f942d3b773fd4`；回执不含 Key、Authorization、request ID、
+  正文、reasoning 原文或 provider body。
+- `[observed]` `call_count=1`、`session_opened=true`、首段读取 `78ms`，事件类别只记录
+  `reasoning_seen` 与 `content_seen`。`observation_state=not_pending`、`pending_reader_observed=false`，
+  因此 `cancel_status=not_attempted`、`reader_woke=false`；子进程退出码为 0、未被强制终止。关闭报告为
+  iterator/SDK stream/composite 全部 `closed`，`shared_resource=false`。
+- `[interpretation]` `not_pending` 只说明这次有限窗口没有进入挂起的第二次读取，不能证明或否定
+  provider close 的非阻塞性、取消能否唤醒 pending `next()`、或底层 HTTP response 是否已被取消。
+  全部资源投影为 `closed` 也只是拥有资源的 close 报告，不等于生产级网络中断保证。
+- `[verification-boundary]` 新探针聚焦测试在后续测试加固后为 `20 passed`；后续提交
+  `5b0ce15d9d4a4c3e413d53032b9f529d20e18f6c` 的公共 run `33662730304` 被外部取消，不能记为成功，
+  也不改变本次回执绑定的 c311 exact-SHA 公共证据。候选继续 disabled/未注册，
+  `execution_allowed=false`、`capabilities.streaming=False`；严格 Flash v1、默认模型、产品 Runtime、
+  AgentLoop、Portal、Account、Workbench、Auth、路由与 `production_media=0` 均不变。
+- `[boundary-next]` 当前唯一下一精确 checkpoint 改为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`；
+  等待用户决定是否设计可稳定制造 pending-read 的新版本观察协议，不自动追加真实请求、注册候选、进入
+  G53-7、黄金切片、生产准入或 8F。

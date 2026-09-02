@@ -5414,3 +5414,18 @@
 - 兼容性意味着旧 supervisor/receipt 在“无 hook 且无失败”时仍可能聚合出 `closed`；这只是历史组合投影，新报告的 `not_observed` 才是本层资源观测状态，不能互相替代。
 - `cancel()` 仍同步经过 SDK close；本门没有 `cancel_state`、`wakeup_observed` 或 raw-response handle，因此不能宣称非阻塞、唤醒挂起 `next()` 或物理连接已关闭。并发 close 先标记 closed 后再清理的旧时序仍存在，报告应在拥有者 close 返回后读取。
 - RQ-209 v2 receipt/schema 2.0.0、canonical JSON/SHA、候选 gate 和产品边界均未改变；同一实现提交的 exact-SHA 公共 CI 已成功，之后若讨论 provider-level 观察或持久 schema，仍需单独授权。
+
+## 2026-09-03：RQ-211 候选 provider close/wakeup 观察发现
+
+- 探针在 exact-SHA 公共绿灯的 `c31127b3c780fe4c493966d8b60f942d3b773fd4` 干净快照上只发送
+  1 次真实请求；会话打开并在 `78ms` 内得到首段，安全类别为 `reasoning_seen/content_seen`。
+- 这次读取路径没有形成 pending reader，结果只能记为 `not_pending`；因此 cancel 没有执行，
+  `reader_woke=false` 也不是“唤醒失败”，而是本次没有可供唤醒的挂起读取。
+- 退出时迭代器、外层 SDK stream wrapper 与组合关闭投影都为 `closed`、两资源不同对象；这能说明
+  当前拥有资源的关闭报告，但不能证明底层 HTTP response 已取消或 close 在 pending-read 情形下非阻塞。
+- body-free 回执为 `908` bytes，SHA-256
+  `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，绑定同一个 c311
+  implementation/diagnostic/input-plan SHA；不含正文、reasoning 原文、Key、Authorization 或 request ID。
+- 后续测试加固提交 `5b0ce15d9d4a4c3e413d53032b9f529d20e18f6c` 的公共 run 被外部取消，
+  不应混入 c311 的真实回执证据。若还要裁决 wakeup，需要先设计能稳定制造 pending-read 的新版本协议，
+  而不是重复同一请求；候选与产品边界保持不变。

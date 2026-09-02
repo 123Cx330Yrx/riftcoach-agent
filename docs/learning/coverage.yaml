@@ -1019,6 +1019,7 @@ groups:
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-observation-walkthrough.md
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
         - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
