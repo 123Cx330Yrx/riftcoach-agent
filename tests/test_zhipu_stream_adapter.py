@@ -17,6 +17,7 @@ from app.providers import (
     MessageRole,
     ProviderStreamAdapter,
     StreamAdapterError,
+    ZhipuStreamCloseReport,
     ZhipuProvider,
     ZhipuStreamAdapter,
 )
@@ -146,6 +147,55 @@ class ClosableStream:
 
     def close(self) -> None:
         self.closed = True
+        if self._close_error is not None:
+            error, self._close_error = self._close_error, None
+            raise error
+
+
+class DistinctClosableIterator:
+    """A provider iterator with its own lifecycle hook for close reporting."""
+
+    def __init__(
+        self,
+        values: list[Any],
+        close_error: BaseException | None = None,
+    ) -> None:
+        self._values = values
+        self._close_error = close_error
+        self.close_calls = 0
+
+    def __iter__(self) -> "DistinctClosableIterator":
+        return self
+
+    def __next__(self) -> Any:
+        if self._values:
+            return self._values.pop(0)
+        raise StopIteration
+
+    def close(self) -> None:
+        self.close_calls += 1
+        if self._close_error is not None:
+            error, self._close_error = self._close_error, None
+            raise error
+
+
+class DistinctClosableStream:
+    """An outer SDK stream whose iterator is a distinct owned object."""
+
+    def __init__(
+        self,
+        iterator: DistinctClosableIterator,
+        close_error: BaseException | None = None,
+    ) -> None:
+        self.iterator = iterator
+        self._close_error = close_error
+        self.close_calls = 0
+
+    def __iter__(self) -> DistinctClosableIterator:
+        return self.iterator
+
+    def close(self) -> None:
+        self.close_calls += 1
         if self._close_error is not None:
             error, self._close_error = self._close_error, None
             raise error
@@ -509,6 +559,110 @@ def test_explicit_candidate_session_requests_usage_tail_and_is_idempotently_clos
     session.close()
     session.close()
     assert raw.closed is True
+    assert session.close_report == ZhipuStreamCloseReport(
+        iterator_state="closed",
+        sdk_stream_state="closed",
+        composite_state="closed",
+        shared_resource=True,
+    )
+
+
+def test_candidate_session_reports_distinct_iterator_and_sdk_stream_cleanup() -> None:
+    iterator = DistinctClosableIterator(
+        [chunk(content="done", finish_reason="stop"), chunk(raw_usage=usage())]
+    )
+    raw = DistinctClosableStream(iterator)
+    provider = ZhipuProvider(client=FakeClient(raw), model=MODEL)
+    session = provider.stream_adapter().stream_session(request())
+
+    assert len(list(session)) == 2
+    session.close()
+
+    assert iterator.close_calls == 1
+    assert raw.close_calls == 1
+    assert session.close_report.as_dict() == {
+        "iterator_state": "closed",
+        "sdk_stream_state": "closed",
+        "composite_state": "closed",
+        "shared_resource": False,
+    }
+
+
+@pytest.mark.parametrize(
+    ("iterator_error", "response_error", "expected_iterator", "expected_stream"),
+    [
+        (RuntimeError("iterator body"), None, "failed", "closed"),
+        (None, RuntimeError("response body"), "closed", "failed"),
+        (RuntimeError("iterator body"), RuntimeError("response body"), "failed", "failed"),
+    ],
+)
+def test_candidate_session_reports_each_cleanup_failure_without_vendor_text(
+    iterator_error: BaseException | None,
+    response_error: BaseException | None,
+    expected_iterator: str,
+    expected_stream: str,
+) -> None:
+    iterator = DistinctClosableIterator(
+        [chunk(content="done", finish_reason="stop"), chunk(raw_usage=usage())],
+        close_error=iterator_error,
+    )
+    raw = DistinctClosableStream(iterator, close_error=response_error)
+    provider = ZhipuProvider(client=FakeClient(raw), model=MODEL)
+    session = provider.stream_adapter().stream_session(request())
+    assert len(list(session)) == 2
+
+    with pytest.raises(StreamAdapterError) as caught:
+        session.close()
+
+    assert caught.value.code == "zhipu_stream_close"
+    assert "body" not in str(caught.value)
+    assert session.close_report.iterator_state == expected_iterator
+    assert session.close_report.sdk_stream_state == expected_stream
+    assert session.close_report.composite_state == "failed"
+    assert session.close_failed is True
+    assert iterator.close_calls == 1
+    assert raw.close_calls == 1
+
+
+def test_candidate_session_finishes_other_cleanup_before_reraising_control_error() -> None:
+    iterator = DistinctClosableIterator(
+        [chunk(content="done", finish_reason="stop"), chunk(raw_usage=usage())],
+        close_error=KeyboardInterrupt,
+    )
+    raw = DistinctClosableStream(iterator)
+    provider = ZhipuProvider(client=FakeClient(raw), model=MODEL)
+    session = provider.stream_adapter().stream_session(request())
+    assert len(list(session)) == 2
+
+    with pytest.raises(KeyboardInterrupt):
+        session.close()
+
+    assert iterator.close_calls == 1
+    assert raw.close_calls == 1
+    assert session.close_report.iterator_state == "failed"
+    assert session.close_report.sdk_stream_state == "closed"
+    assert session.close_report.composite_state == "failed"
+
+
+def test_candidate_session_marks_missing_cleanup_hook_as_not_observed() -> None:
+    class NoHookStream:
+        def __iter__(self):
+            return iter(
+                [
+                    chunk(content="done", finish_reason="stop"),
+                    chunk(raw_usage=usage()),
+                ]
+            )
+
+    raw = NoHookStream()
+    provider = ZhipuProvider(client=FakeClient(raw), model=MODEL)
+    session = provider.stream_adapter().stream_session(request())
+    assert len(list(session)) == 2
+    session.close()
+
+    assert session.close_report.iterator_state == "not_observed"
+    assert session.close_report.sdk_stream_state == "not_observed"
+    assert session.close_report.composite_state == "not_observed"
 
 
 def test_explicit_candidate_session_falls_back_to_context_manager_close() -> None:
@@ -533,6 +687,12 @@ def test_explicit_candidate_session_falls_back_to_context_manager_close() -> Non
     assert len(list(session)) == 2
     session.close()
     assert raw.closed is True
+    assert session.close_report.as_dict() == {
+        "iterator_state": "not_observed",
+        "sdk_stream_state": "closed",
+        "composite_state": "not_observed",
+        "shared_resource": False,
+    }
 
 
 def test_close_failure_is_a_safe_error_on_normal_eof() -> None:

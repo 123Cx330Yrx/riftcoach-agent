@@ -14,10 +14,10 @@ from __future__ import annotations
 import re
 import sys
 from collections.abc import Callable, Iterable, Iterator, Mapping
-from dataclasses import replace
+from dataclasses import dataclass, replace
 from hashlib import sha256
 from threading import Lock
-from typing import Any, Protocol, runtime_checkable
+from typing import Any, Literal, Protocol, TypeAlias, runtime_checkable
 
 from .errors import ProviderError
 from .models import ChatRequest, TokenUsage
@@ -34,6 +34,73 @@ _MAX_TOOL_METADATA_CHARS = 256
 _MAX_REQUEST_ID_CHARS = 512
 _MAX_TOOL_CALL_DELTAS_PER_EVENT = 128
 _EXPECTED_PROVIDER_NAME = "zhipu"
+
+ZhipuCloseResourceState: TypeAlias = Literal[
+    "not_observed", "closed", "failed"
+]
+ZhipuCloseCompositeState: TypeAlias = Literal[
+    "not_observed", "closed", "failed"
+]
+_ZHIPU_CLOSE_STATES = frozenset({"not_observed", "closed", "failed"})
+
+
+@dataclass(frozen=True, slots=True)
+class ZhipuStreamCloseReport:
+    """Body-free cleanup facts for one explicitly owned candidate stream.
+
+    ``sdk_stream_state`` refers to the outer SDK stream wrapper, while
+    ``iterator_state`` refers to the iterator obtained from it.  This is not
+    a claim about a deeper HTTP response unless the SDK hook itself exposes
+    that fact.  A provider may return the same object for both roles;
+    ``shared_resource`` makes that aliasing explicit so two role fields are
+    never mistaken for two physical close operations.  This report is an
+    in-memory provider seam only.  The versioned candidate receipt
+    deliberately keeps its legacy composite ``close_state`` until a
+    separately reviewed schema is introduced.
+    """
+
+    iterator_state: ZhipuCloseResourceState = "not_observed"
+    sdk_stream_state: ZhipuCloseResourceState = "not_observed"
+    composite_state: ZhipuCloseCompositeState = "not_observed"
+    shared_resource: bool = False
+
+    def __post_init__(self) -> None:
+        for field_name in (
+            "iterator_state",
+            "sdk_stream_state",
+            "composite_state",
+        ):
+            value = getattr(self, field_name)
+            if value not in _ZHIPU_CLOSE_STATES:
+                raise ValueError(f"{field_name} is not a supported close state")
+        if not isinstance(self.shared_resource, bool):
+            raise TypeError("shared_resource must be a boolean")
+        if self.composite_state == "failed" and not (
+            self.iterator_state == "failed"
+            or self.sdk_stream_state == "failed"
+        ):
+            raise ValueError("failed composite state needs a failed resource")
+        if self.composite_state == "closed" and (
+            self.iterator_state != "closed"
+            or self.sdk_stream_state != "closed"
+        ):
+            raise ValueError("closed composite state needs closed resources")
+
+    @property
+    def close_failed(self) -> bool:
+        """Whether at least one owned resource failed its close operation."""
+
+        return self.composite_state == "failed"
+
+    def as_dict(self) -> dict[str, object]:
+        """Return the small allow-listed projection used by offline tests."""
+
+        return {
+            "iterator_state": self.iterator_state,
+            "sdk_stream_state": self.sdk_stream_state,
+            "composite_state": self.composite_state,
+            "shared_resource": self.shared_resource,
+        }
 
 
 @runtime_checkable
@@ -84,6 +151,8 @@ class ZhipuStreamSession:
         self._cancelled = False
         self._closed = False
         self._close_failed = False
+        self._resources_shared = False
+        self._close_report = ZhipuStreamCloseReport()
         self._lock = Lock()
         self._open()
 
@@ -100,6 +169,12 @@ class ZhipuStreamSession:
         """Whether any owned raw resource reported a close failure."""
 
         return self._close_failed
+
+    @property
+    def close_report(self) -> ZhipuStreamCloseReport:
+        """Return body-free per-resource cleanup facts for this session."""
+
+        return self._close_report
 
     def __iter__(self) -> "ZhipuStreamSession":
         return self
@@ -137,7 +212,12 @@ class ZhipuStreamSession:
         return event
 
     def cancel(self, code: str = "elapsed_limit") -> None:
-        """Request cancellation; closing the SDK response unblocks reads."""
+        """Request cancellation and run the owned cleanup path once.
+
+        The report records cleanup attempts but does not claim that a vendor
+        close operation was non-blocking or woke a pending read.  Those are
+        provider-level facts that still require an explicit real observation.
+        """
 
         if not isinstance(code, str) or not re.fullmatch(
             r"^[a-z][a-z0-9_.-]{0,95}$", code
@@ -158,29 +238,59 @@ class ZhipuStreamSession:
             if self._closed:
                 return
             self._closed = True
+            raw_iterator = self._raw_iterator
+            raw_stream = self._raw_stream
         close_failed = False
+        iterator_state: ZhipuCloseResourceState = "not_observed"
+        sdk_stream_state: ZhipuCloseResourceState = "not_observed"
+        control_error: BaseException | None = None
         seen: set[int] = set()
         resources = (
-            (self._raw_iterator, _close_iterator),
-            (self._raw_stream, _close_stream),
+            ("iterator", raw_iterator),
+            ("sdk_stream", raw_stream),
         )
-        for resource, close_resource in resources:
+        for role, resource in resources:
             if resource is None or id(resource) in seen:
                 continue
             seen.add(id(resource))
             try:
-                if close_resource(resource):
-                    close_failed = True
+                state = _close_resource_state(resource)
             except (GeneratorExit, KeyboardInterrupt, SystemExit):
-                self._close_failed = True
-                raise
-            except Exception:
+                state = "failed"
+                close_failed = True
+                if control_error is None:
+                    control_error = sys.exc_info()[1]
+            if role == "iterator":
+                iterator_state = state
+            else:
+                sdk_stream_state = state
+            if state == "failed":
                 # A hostile SDK getter/close hook must not escape with body
                 # text; retain only the safe failure bit.
                 close_failed = True
+        if raw_iterator is not None and raw_iterator is raw_stream:
+            sdk_stream_state = iterator_state
+        if close_failed:
+            composite_state: ZhipuCloseCompositeState = "failed"
+        elif iterator_state == "closed" and sdk_stream_state == "closed":
+            composite_state = "closed"
+        else:
+            # A resource without a close/context-manager hook was not
+            # observed as released.  Preserve the legacy no-error behavior,
+            # but do not call that an observed composite close.
+            composite_state = "not_observed"
         self._raw_iterator = None
         self._raw_stream = None
-        self._close_failed = close_failed
+        with self._lock:
+            self._close_failed = close_failed
+            self._close_report = ZhipuStreamCloseReport(
+                iterator_state=iterator_state,
+                sdk_stream_state=sdk_stream_state,
+                composite_state=composite_state,
+                shared_resource=(raw_iterator is not None and raw_iterator is raw_stream),
+            )
+        if control_error is not None:
+            raise control_error
         if close_failed:
             raise StreamAdapterError("zhipu_stream_close")
 
@@ -208,6 +318,11 @@ class ZhipuStreamSession:
             raise StreamAdapterError("zhipu_stream_read") from None
         self._raw_stream = raw_stream
         self._raw_iterator = raw_iterator
+        self._resources_shared = raw_iterator is raw_stream
+        self._close_report = replace(
+            self._close_report,
+            shared_resource=self._resources_shared,
+        )
         self._decode_tool_name = decode_tool_name
 
 
@@ -742,64 +857,46 @@ def _provider_bound_output_cap(provider: Any) -> int | None:
     return cap
 
 
-def _close_iterator(iterator: Iterator[Any] | None) -> bool:
-    if iterator is None:
-        return False
+def _close_resource_state(resource: object | None) -> ZhipuCloseResourceState:
+    """Close one owned object and retain only a safe lifecycle state."""
+
+    if resource is None:
+        return "not_observed"
     try:
-        close = getattr(iterator, "close", None)
+        close = getattr(resource, "close", None)
     except (GeneratorExit, KeyboardInterrupt, SystemExit):
         raise
     except Exception:
-        return True
+        return "failed"
     if callable(close):
         try:
             close()
         except Exception:
             # Do not leak an SDK close exception; the caller decides whether
             # it may replace a normal EOF or must preserve an active error.
-            return True
-        return False
+            return "failed"
+        return "closed"
     try:
-        exit_method = getattr(iterator, "__exit__", None)
+        exit_method = getattr(resource, "__exit__", None)
     except (GeneratorExit, KeyboardInterrupt, SystemExit):
         raise
     except Exception:
-        return True
+        return "failed"
     if callable(exit_method):
         try:
             exit_method(None, None, None)
         except Exception:
-            return True
-    return False
+            return "failed"
+        return "closed"
+    return "not_observed"
+
+
+def _close_iterator(iterator: Iterator[Any] | None) -> bool:
+    return _close_resource_state(iterator) == "failed"
 
 
 def _close_stream(raw_stream: Iterable[Any] | None) -> bool:
-    if raw_stream is None:
-        return False
-    try:
-        close = getattr(raw_stream, "close", None)
-    except (GeneratorExit, KeyboardInterrupt, SystemExit):
-        raise
-    except Exception:
-        return True
-    if callable(close):
-        try:
-            close()
-        except Exception:
-            return True
-        return False
-    try:
-        exit_method = getattr(raw_stream, "__exit__", None)
-    except (GeneratorExit, KeyboardInterrupt, SystemExit):
-        raise
-    except Exception:
-        return True
-    if callable(exit_method):
-        try:
-            exit_method(None, None, None)
-        except Exception:
-            return True
-    return False
+    return _close_resource_state(raw_stream) == "failed"
 
 
 def _translate_provider_error(
@@ -818,4 +915,10 @@ def _translate_provider_error(
     return translated if isinstance(translated, ProviderError) else None
 
 
-__all__ = ["ZhipuStreamAdapter", "ZhipuStreamSession"]
+__all__ = [
+    "ZhipuCloseCompositeState",
+    "ZhipuCloseResourceState",
+    "ZhipuStreamAdapter",
+    "ZhipuStreamCloseReport",
+    "ZhipuStreamSession",
+]

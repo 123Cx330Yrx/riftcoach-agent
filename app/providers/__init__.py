@@ -81,7 +81,13 @@ from .stream_adapter_contract import (
     StreamToolCallDelta,
     validate_provider_stream_event,
 )
-from .zhipu_stream_adapter import ZhipuStreamAdapter, ZhipuStreamSession
+from .zhipu_stream_adapter import (
+    ZhipuCloseCompositeState,
+    ZhipuCloseResourceState,
+    ZhipuStreamAdapter,
+    ZhipuStreamCloseReport,
+    ZhipuStreamSession,
+)
 from .registry import (
     ProviderDescriptor,
     ProviderRegistry,
@@ -153,7 +159,10 @@ __all__ = [
     "ToolChoiceMode",
     "ToolSpec",
     "ZhipuProvider",
+    "ZhipuCloseCompositeState",
+    "ZhipuCloseResourceState",
     "ZhipuStreamAdapter",
+    "ZhipuStreamCloseReport",
     "ZhipuStreamSession",
     "ZhipuStreamResult",
     "ZhipuModelProfile",
