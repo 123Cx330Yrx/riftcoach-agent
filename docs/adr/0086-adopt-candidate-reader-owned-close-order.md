@@ -1,7 +1,7 @@
 # ADR-0086：采用候选读取器拥有的关闭顺序（RQ-216）
 
 - 日期：2026-09-03
-- 状态：accepted / completed-local / candidate-only
+- 状态：accepted / completed-public / candidate-only
 - 依据：ADR-0081、ADR-0084、ADR-0085；RQ-214、RQ-215
 
 ## 背景
@@ -35,7 +35,9 @@ Portal、Account、Auth 或默认模型。
 - 新增阻塞读取回归：外层 stream 关闭后，活跃迭代器在释放前保持
   `not_observed`，读取栈释放后只关闭一次并变为完整 `closed`；
 - 候选聚焦集合 `61 passed`，`compileall`、`git diff --check` 和治理检查通过；本轮真实
-  API 调用为 0；同 SHA 公共 CI 尚待本地提交后执行。
+  API 调用为 0。实现提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions
+  `33726209532` 三 job exact-SHA 全绿，公共 pytest `2297 passed, 145 skipped, 2 warnings,
+  127 subtests passed`，PostgreSQL 与 packaging-smoke 通过。
 
 ## 限制与拒绝外推
 
@@ -46,6 +48,7 @@ Portal、Account、Auth 或默认模型。
 
 ## 后续闸门
 
-先取得本实现提交的 exact-SHA 公共 CI，再回到
-`candidate-transport-gated-real-observation / pending-next-decision` 做是否重新观察的裁决。
+公共 CI 已取得；下一步回到
+`candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`
+做是否重新观察的裁决。
 本 ADR 不授权新的真实请求、G53-7、候选注册或 8F。

@@ -3363,3 +3363,11 @@ Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变�
 Runtime、Portal、Account、Workbench、Auth、路由、8-Core、G53-7、黄金切片或 `production_media=0`。
 RQ-215 旧回执不可变；当前下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`。
+
+#### RQ-216 公共验证补充
+
+提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions `33726209532` 三 job exact-SHA
+全绿；公共 pytest `2297 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL
+与 packaging-smoke 通过。该证据只关闭候选本地关闭顺序修复的公共可复现性，不改变候选
+disabled/未注册、默认模型、产品 Runtime 或 RQ-215 旧回执。当前下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`；是否重新执行真实观察需另行决定。

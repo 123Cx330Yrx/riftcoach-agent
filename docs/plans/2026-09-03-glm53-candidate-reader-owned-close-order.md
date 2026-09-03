@@ -40,12 +40,15 @@ cancel: close outer response -> wake reader --------> deferred iterator close
 - `python -m compileall -q app scripts tests`：通过；
 - `git diff --check`：通过；
 - `python scripts/check_project_governance.py`：通过；
+- 实现提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions `33726209532` 三 job
+  exact-SHA 全绿；公共 pytest `2297 passed, 145 skipped, 2 warnings, 127 subtests passed`，
+  PostgreSQL 与 packaging-smoke 通过；
 - 离线 transport gate 两阶段：一次请求预算保持不变、reader 唤醒、三层关闭均为
   `closed`；
 - 本批真实 API 调用：0。
 
 ## 未完成事项
 
-同一实现提交的公共 CI 仍是下一门；CI 通过后只回到“是否重新做一次受控真实观察”的
-决策点，不自动重发请求。即使未来真实观察 clean，也不能代替 G53-7、黄金切片、生产
+公共 CI 已通过；现在只回到“是否重新做一次受控真实观察”的决策点，不自动重发请求。
+即使未来真实观察 clean，也不能代替 G53-7、黄金切片、生产
 安全/部署/合规或 8F。

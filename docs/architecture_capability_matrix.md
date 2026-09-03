@@ -1004,3 +1004,9 @@ AgentLoop、Portal、Account、Workbench、Auth、路由和 `production_media=0`
 能力；候选仍 disabled/未注册，Portal、Account、Workbench、Auth、路由、8-Core、G53-7、黄金切片
 和 `production_media=0` 均不变。当前下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`。
+
+RQ-216 公共闭环：提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` / Actions `33726209532`
+三 job exact-SHA 全绿（pytest `2297 passed, 145 skipped, 2 warnings, 127 subtests passed`；
+PostgreSQL 与 packaging-smoke 通过）。能力矩阵仍不授予 provider-native close/wakeup、生产
+streaming、候选注册或默认模型能力；当前下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`。

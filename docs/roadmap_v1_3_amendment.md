@@ -1343,3 +1343,9 @@ SDK response，把 iterator close 交还给 reader 线程的 `finally`；非活�
 `production_media=0`，候选继续 disabled/未注册。当前唯一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`；
 公共 CI 通过后再回到真实观察决策点。
+
+RQ-216 公共闭环事实：提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions
+`33726209532` 三 job exact-SHA 全绿；pytest `2297 passed, 145 skipped, 2 warnings, 127 subtests passed`，
+PostgreSQL 与 packaging-smoke 通过。该证据仍仅属于 8-Advanced candidate-only 适配器修复，
+不把候选提升为 8-Core 或生产模型。当前下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`。

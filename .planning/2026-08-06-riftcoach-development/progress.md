@@ -5797,3 +5797,9 @@
 - [verification-local] 新增阻塞读取回归，并将 RQ-214 两阶段断言收紧为取消返回、reader 唤醒、iterator/SDK/composite 均 `closed`；候选聚焦回归 `61 passed`，compileall、`git diff --check`、governance 通过。此前尝试的全量本地 pytest 在约 60 秒且出现既有 PostgreSQL 环境错误后已中止，不能宣称全量通过。
 - [boundary-next] 旧 RQ-215 真实回执保持不可变；候选仍 disabled/未注册，`capabilities.streaming=False`，默认模型、AgentLoop、统一 Trace/预算、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`，下一动作是独立提交/推送并验证同 SHA 公共 CI。
+
+## RQ-216 公共闭环补充
+
+- [completed-public] 实现提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions `33726209532` 三 job exact-SHA 全绿；公共 pytest `2297 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL 与 packaging-smoke 通过。
+- [boundary-next] 公共 CI 只关闭候选本地关闭顺序修复的可复现性，不改变 RQ-215 旧回执，不新增真实 API、候选注册或产品接线。当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`；等待是否重新观察的用户决定。

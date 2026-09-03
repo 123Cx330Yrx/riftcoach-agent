@@ -686,3 +686,9 @@ transport 外层 gate 进入，pending reader 在 `31ms` 内被 response close �
 差异检查和治理校验；本批真实 API 调用为 0。该修复仍是候选 evaluation-only 客户端合同，不代表
 provider-native 能力或生产 streaming；候选未注册、8E coverage 继续 `planned`。当前下一检查点为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`。
+
+公共闭环补充：提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions `33726209532` 三 job
+exact-SHA 全绿；pytest `2297 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL
+与 packaging-smoke 通过。学习边界仍保持不变，当前下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`，
+是否重新执行真实观察需另行决定。

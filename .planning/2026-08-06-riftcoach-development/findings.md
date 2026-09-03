@@ -5518,3 +5518,9 @@
 - [evidence] 新增阻塞读取回归，收紧 RQ-214 两阶段 transport-gate 断言；候选聚焦回归 `61 passed`，compileall、`git diff --check`、governance 通过，真实 API 调用为 0。
 - [boundary] 这是候选适配器本地协议修复，不是 provider-native 能力或生产 streaming 结论；候选仍 disabled/未注册，产品 Runtime、默认模型、Portal、Account、Workbench、Auth、路由、G53-7、黄金切片与 `production_media=0` 不变。旧 RQ-215 回执不可变。
 - [next] 当前唯一精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`；先提交并做同 SHA 公共 CI，再回到真实观察决策点，不自动发新请求。
+
+### RQ-216 公共闭环补充
+
+- [public-ci] 实现提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions run `33726209532` 三 job exact-SHA 全绿；公共 pytest `2297 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL 与 packaging-smoke 通过。
+- [accepted] 公共 CI 只证明候选关闭顺序修复可复现；不改变 RQ-215 旧回执，不增加真实请求，不提升候选注册、provider-native close/wakeup、生产 streaming 或 8-Core 能力。
+- [next] 当前唯一精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`；下一动作是等待用户对是否重新做一次受控真实观察的明确决定。

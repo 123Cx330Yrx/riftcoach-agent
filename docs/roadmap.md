@@ -1460,3 +1460,10 @@ RQ-216 继续属于 `8e-productization` 的 8-Advanced candidate-only 适配器�
 Workbench、Auth、路由、G53-7、黄金切片与 `production_media=0` 均不变。当前唯一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`；
 先做同 SHA 公共 CI，再回到真实观察决策点。
+
+RQ-216 公共闭环事实：实现提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions
+`33726209532` 三 job exact-SHA 全绿；公共 pytest `2297 passed, 145 skipped, 2 warnings,
+127 subtests passed`，PostgreSQL 与 packaging-smoke 通过。该闭环只证明候选关闭顺序修复的
+可复现性；当前下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`，
+是否重新执行一次真实观察需另行决定。

@@ -37,6 +37,10 @@
 fixture 还验证了：取消瞬间 iterator 不会被跨线程调用，释放后恰好关闭一次。候选聚焦
 测试共 `61 passed`，编译、差异格式和治理检查通过；本批没有网络调用。
 
+实现提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions `33726209532` 三 job
+exact-SHA 全绿；公共 pytest `2297 passed, 145 skipped, 2 warnings, 127 subtests passed`，
+PostgreSQL 与 packaging-smoke 通过。该公共证据只确认候选本地关闭顺序可复现。
+
 ## 5. 边界与安全
 
 报告只保留状态和安全错误码，不保存正文、reasoning、headers、Key、Authorization 或
@@ -47,8 +51,9 @@ response close 若阻塞仍必须 fail closed。候选仍 disabled/未注册，�
 ## 6. 运行手册
 
 先跑 `tests/test_zhipu_stream_adapter.py` 与 `tests/test_candidate_transport_gate.py`，
-再跑候选观察器相关回归、compileall、`git diff --check` 和 governance。公共 CI 必须绑定
-提交 SHA；新的真实观察若要做，必须另行明确授权并最多执行既定的一次请求。
+再跑候选观察器相关回归、compileall、`git diff --check` 和 governance；本次公共 CI 已绑定
+提交 SHA `3740cdbe2d02b140780ea2b8834793df268e6ac1`。新的真实观察若要做，必须另行明确
+授权并最多执行既定的一次请求。
 
 ## 7. 面试式表述
 

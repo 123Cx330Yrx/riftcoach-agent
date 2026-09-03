@@ -4249,3 +4249,11 @@ Actions run `33712055286` 同 SHA 三 job 全绿：pytest `2292 passed, 145 skip
 - `EVIDENCE`：新增阻塞读取回归并收紧 RQ-214 两阶段离线 gate 断言；候选聚焦 `61 passed`，compileall、差异检查和治理通过，真实 API 为 0。
 - `BOUNDARY-NEXT`：RQ-216 仍是 8-Advanced candidate-only 修复，不提升候选注册、默认模型、8-Core、生产 streaming 或任何 Portal/Account/Workbench/Auth 能力。当前精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`；公共 CI 后才回到真实观察决策点。
+
+### RQ-216 公共闭环（2026-09-03）
+
+- `PUBLIC-CI`：提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` / Actions
+  `33726209532` 三 job exact-SHA 全绿；pytest `2297 passed, 145 skipped, 2 warnings,
+  127 subtests passed`，PostgreSQL 与 packaging-smoke 通过。
+- `BOUNDARY-NEXT`：公共闭环只证明候选关闭顺序修复可复现，不新增真实请求或产品能力；当前精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`，等待是否重新观察的用户决定。
