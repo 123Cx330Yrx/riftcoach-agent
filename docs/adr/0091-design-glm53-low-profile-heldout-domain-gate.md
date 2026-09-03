@@ -1,7 +1,7 @@
 # ADR-0091：设计 GLM-5.3 Flash 低思考候选独立领域门
 
 - 日期：2026-09-03
-- 状态：`implementation-complete-local / candidate-only / public-ci-pending`
+- 状态：`implementation-complete-public / candidate-only / next-stage-pending`
 - 范围：Stage 8 / 8E；RQ-222
 
 ## 背景
@@ -89,6 +89,8 @@ RQ-221 已在冻结、无工具上下文中用 `thinking=enabled`、`reasoning_e
 RQ-223 已按本 ADR 完成评测作用域、共享请求策略和最后一层预算墙的离线实现；实现细节与
 测试见 [离线实现计划](../plans/2026-09-04-glm53-low-profile-domain-gate-offline-implementation.md)
 和 [学习 walkthrough](../learning/8e-glm53-low-profile-domain-gate-offline-implementation-walkthrough.md)。
-下一步只在同一提交 SHA 上取得公共 exact-SHA CI；公共绿灯后才冻结新的 G53-3-L 与 held-out
-资产，不能把本地测试当作领域准入。当前精确检查点为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`。
+实现提交 `d823cc40c3fcafb7167edccded87e185be4cae8a` 的 Actions run `33781369322`
+三 job exact-SHA 全绿，公共 pytest 为 `2326 passed, 145 skipped, 2 warnings, 127 subtests
+passed`。下一步才是最多 3 次低思考 G53-3-L 协议门和全新 held-out 资产；公共绿灯不等于
+领域准入。当前精确检查点为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / pending-user-authorization`。

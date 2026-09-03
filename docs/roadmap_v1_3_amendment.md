@@ -1425,3 +1425,10 @@ RQ-223 完成了上述 candidate-only 作用域的离线实现：私有能力对
 执行器中关闭 deterministic fallback。Fake Provider 聚焦与相邻回归均通过，尚无真实调用或
 领域质量结论；同一 SHA 公共 CI 仍是下一闸门。该批不改变 8-Core/8-Advanced 分层，也不把
 候选当作唯一生产模型。
+
+### RQ-224：低思考候选领域门公共 CI 闭环（2026-09-04）
+
+RQ-223 的实现提交 `d823cc40c3fcafb7167edccded87e185be4cae8a` 已通过 Actions
+`33781369322` 的 exact-SHA 三 job 公共 CI。该证据仍只属于 8-Advanced candidate-only
+控制面，不新增 8-Core 能力，不改变产品默认或 Workbench；下一步才是新鲜 G53-3-L 和
+held-out 资产，候选不能因此自动注册或成为唯一模型。

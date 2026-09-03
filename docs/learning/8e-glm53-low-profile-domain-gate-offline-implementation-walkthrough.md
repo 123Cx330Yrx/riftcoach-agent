@@ -49,8 +49,10 @@ Provider 边界重复施加同一组上限。这样模型返回的参数不能�
 ## 现在还没有证明什么
 
 这批没有新真实 API、没有新 held-out Dataset、没有 G53-3-L 回执，也没有改变产品默认档案。
-下一检查点是同一 SHA 的公共 CI；公共绿灯后才可另行冻结新鲜协议/考卷，并在明确授权下进行
-一次性领域观察。候选仍属于 8-Advanced，不能算 8-Core、黄金切片、生产成熟度或 8F。
+实现提交 `d823cc40c3fcafb7167edccded87e185be4cae8a` 的 Actions `33781369322` 已完成
+exact-SHA 三 job 公共 CI，pytest 为 `2326 passed, 145 skipped, 2 warnings, 127 subtests passed`。
+该绿灯只证明离线控制面的可复现性；候选仍属于 8-Advanced，不能算 8-Core、黄金切片、
+生产成熟度或 8F。下一精确 checkpoint 是新的 G53-3-L 与全新 held-out 资产前置，且需明确授权。
 
 ## 面试式表述
 

@@ -1086,3 +1086,13 @@ Agent/RAG/Evaluation/Harness 的请求控制，并把 4096、90/120 秒、零重
 任何产品 A/Q 能力，不开启 streaming，不改变默认模型、Portal、Account、Workbench 或
 `production_media=0`。当前精确检查点为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`。
+
+## RQ-224：低思考候选领域门公共 CI 闭环
+
+RQ-223 的实现提交 `d823cc40c3fcafb7167edccded87e185be4cae8a` 已通过 Actions
+`33781369322` 的 exact-SHA 三 job 公共 CI（pytest、PostgreSQL migrations、packaging-smoke）。
+公共 pytest 报告 `2326 passed, 145 skipped, 2 warnings, 127 subtests passed`；本批
+provider calls=0。该证据只关闭可复现性闸门，不新增 8-Core 能力、不改变产品默认、
+Workbench 或 `production_media=0`，也不证明领域质量、G53-3-L、黄金切片、生产准入或 8F。
+下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / pending-user-authorization`。

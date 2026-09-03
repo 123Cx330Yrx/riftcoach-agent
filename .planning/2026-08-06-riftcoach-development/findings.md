@@ -5609,3 +5609,11 @@
   provider 延迟、Usage 或领域质量。
 - [next] 本地控制面完成后，先做同 SHA 公共 CI；再另立 G53-3-L 与全新 held-out 资产，
   不重跑旧 G53-4/G53-7，不自动注册候选。
+
+## 2026-09-04：RQ-224 公共 CI 发现
+
+- [evidence] `d823cc40c3fcafb7167edccded87e185be4cae8a` 的 Actions run `33781369322`
+  三 job 均成功，head SHA 精确匹配；公共 pytest `2326 passed, 145 skipped, 2 warnings,
+  127 subtests passed`。
+- [boundary] 该绿灯只证明 RQ-223 离线控制面可复现；provider calls=0，没有新考卷、Key、
+  真实请求或产品注册。下一步是低思考 G53-3-L 与新鲜资产，不把公共 CI 写成领域准入。

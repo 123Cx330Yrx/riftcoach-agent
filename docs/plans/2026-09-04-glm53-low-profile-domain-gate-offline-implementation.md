@@ -43,11 +43,13 @@ AgentRunCompiler ──► AgentLoop ──► llm.chat ──► budgeted Provi
   和 LLM 工具的预算覆盖、一次尝试/无回退，以及预算包装器的 reserve-before-I/O、调用墙和
   token 墙。
 - 离线聚焦测试：5 passed；候选/Runtime/Agent/Provider/工具/Harness 相邻回归：118 passed。
-- `compileall`、`git diff --check`、治理检查通过；下一步是在同一提交 SHA 上取得公共三 job
-  CI，之后才设计新的 G53-3-L 与 held-out 资产。
+- `compileall`、`git diff --check`、治理检查通过；实现提交
+  `d823cc40c3fcafb7167edccded87e185be4cae8a` 的 Actions run `33781369322` 三 job
+  exact-SHA 全绿，公共 pytest 为 `2326 passed, 145 skipped, 2 warnings, 127 subtests passed`。
+  下一步才设计新的 G53-3-L 与 held-out 资产。
 
 ## 边界
 
 本检查点不注册候选、不改变严格产品 Flash v1 的 2048 上限、不改 Portal、Account、
 Workbench、Auth、路由或 `production_media`，也不宣称模型领域质量、成本稳定性、黄金切片、
-安全/部署合规或 8F 完成。公共 CI 之前不能把本地结果当作可复现证据。
+安全/部署合规或 8F 完成。公共 CI 只关闭控制面可复现性，不能把它当作领域准入。

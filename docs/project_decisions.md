@@ -3445,3 +3445,13 @@ create-only。
 Runtime 注册表、严格 Flash v1、默认模型和前端/Workbench 边界不变。Fake Provider 新测试
 5/5、相邻回归 118 passed，provider calls=0；下一步只做同 SHA 公共 CI，之后才另立 G53-3-L
 和全新 held-out 资产。
+
+### RQ-224：接受低思考候选领域门公共 CI 闭环（2026-09-04）
+
+接受 RQ-223 的 exact-SHA 公共可复现性证据：实现提交
+`d823cc40c3fcafb7167edccded87e185be4cae8a` 对应 Actions `33781369322`，pytest、
+PostgreSQL migrations、packaging-smoke 三项均成功，公共 pytest 为
+`2326 passed, 145 skipped, 2 warnings, 127 subtests passed`。本批 provider calls=0，
+只关闭离线控制面的公共验证闸门，不授予候选领域采用或生产能力。候选继续
+`candidate-only/disabled`，默认模型、Portal、Account、Workbench、Auth、路由和
+`production_media=0` 不变；下一步才是新的 G53-3-L 与全新 held-out 资产，且需明确授权。

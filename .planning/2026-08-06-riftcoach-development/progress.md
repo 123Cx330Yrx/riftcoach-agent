@@ -5887,6 +5887,18 @@
 - [boundary] 未创建 held-out 资产、未读取 Key、未发真实请求、未注册候选，不改变严格 Flash
   v1、默认模型、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
 
+## 2026-09-04：RQ-224 RQ-223 公共 CI 闭环
+
+- [public-ci] 实现提交 `d823cc40c3fcafb7167edccded87e185be4cae8a` 的 Actions run
+  `33781369322` head SHA 精确匹配；`pytest`、`postgres-migrations`、`packaging-smoke`
+  三 job 全部 `completed/success`。公共 pytest 为 `2326 passed, 145 skipped, 2 warnings,
+  127 subtests passed`，RAG、网页契约/构建、媒体审计、compileall、治理和 Harness dry-run
+  也通过。
+- [boundary-next] 本批 provider calls=0、候选仍 disabled/未注册，严格产品 Flash v1、默认
+  模型、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。下一精确项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / pending-user-authorization`；
+  先做最多 3 次低思考 G53-3-L 协议门，再冻结全新三案例 held-out 资产，不重跑旧 G53-4/G53-7。
+
 ## 2026-09-03：RQ-222 低思考候选独立领域门设计
 
 - [design-accepted] 已完成 ADR/计划/学习材料，确定候选专用评测作用域、共享请求策略接缝和全新 oracle-blind held-out 三案例路线；拒绝旧考卷换档重跑与全局产品注册。

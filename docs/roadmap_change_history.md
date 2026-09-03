@@ -4344,3 +4344,11 @@ Draft/Domain executor 和最后预算包装器共享同一组 `low + 4096`、90/
 Provider 测试 5/5、相邻回归 118 passed，provider calls=0。该实现仍属 8-Advanced
 candidate-only，未改变 8-Core、默认模型、Portal、Account、Workbench、Auth 或
 `production_media=0`；下一步是同 SHA 公共 CI，不是 G53-3-L 或领域真实调用。
+
+## 2026-09-04：RQ-224 低思考候选领域门公共 CI 闭环
+
+实现 `d823cc40c3fcafb7167edccded87e185be4cae8a` 的 Actions run `33781369322` 三 job
+均 `completed/success` 且 head SHA 精确匹配；公共 pytest 为 `2326 passed, 145 skipped,
+2 warnings, 127 subtests passed`。本批仍 provider calls=0，候选未注册，8-Core、默认模型、
+Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。下一精确项是低思考
+G53-3-L 与全新 held-out 资产。

@@ -397,7 +397,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / pending-user-authorization`。
 RQ-217 的真实回执绑定实现/观察器/输入计划提交
 `3e028b1217f1274152ba161993287f29188a1b73`，文件为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`，
@@ -3078,5 +3078,6 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [boundary-next] 本批仍不创建 held-out 资产、不发 G53-3-L 或领域真实请求、不注册候选，
   不改 Portal、Account、Workbench、Auth、默认模型或 `production_media=0`。当前唯一精确
   checkpoint 为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`；
-  下一步在同一实现 SHA 上取得公共 exact-SHA CI。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / pending-user-authorization`；
+  RQ-223 实现 `d823cc40c3fcafb7167edccded87e185be4cae8a` 的公共 Actions run `33781369322`
+  三 job 已全绿，下一步再做低思考 G53-3-L 与新鲜资产。

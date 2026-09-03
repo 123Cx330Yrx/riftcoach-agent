@@ -782,4 +782,11 @@ provider calls=0，候选仍未注册，8E coverage 继续 `planned`。当前精
 Flash v1 不变。Fake Provider 新增测试 5/5、相邻回归 118 passed，provider calls=0；实现细节
 见 [RQ-223 walkthrough](8e-glm53-low-profile-domain-gate-offline-implementation-walkthrough.md)
 与 [实施计划](../plans/2026-09-04-glm53-low-profile-domain-gate-offline-implementation.md)。
-当前仍等待同 SHA 公共 CI，之后才进入 G53-3-L 与新鲜 held-out 资产阶段。
+该段记录实现阶段的待验状态；随后已完成同 SHA 公共 CI，进入 G53-3-L 与新鲜 held-out 资产前置。
+
+公共 CI 已于实现提交 `d823cc40c3fcafb7167edccded87e185be4cae8a` 的 Actions
+`33781369322` 完成 exact-SHA 三 job 闭环；公共 pytest 为
+`2326 passed, 145 skipped, 2 warnings, 127 subtests passed`，本批 provider calls=0。
+这只关闭离线控制面的可复现性闸门，不改变候选 disabled/未注册状态。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / pending-user-authorization`，
+再后面才可冻结新鲜领域资产。

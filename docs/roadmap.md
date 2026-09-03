@@ -1547,3 +1547,12 @@ deterministic fallback 在候选评测作用域关闭。先做零网络 TDD 和 
 fallback 均关闭；产品 Runtime 注册表、严格 Flash v1、默认模型及 Portal/Account/Workbench
 边界不变。Fake Provider 聚焦测试 5 passed、相邻回归 118 passed，provider calls=0；当前只
 等待同一实现 SHA 的公共 exact-SHA CI，之后才进入 G53-3-L 与新鲜 held-out 资产阶段。
+
+## RQ-224：低思考候选领域门公共 CI 闭环（2026-09-04）
+
+RQ-223 实现提交 `d823cc40c3fcafb7167edccded87e185be4cae8a` 已取得 Actions
+`33781369322` 的 exact-SHA 三 job 公共成功；公共 pytest 为 `2326 passed, 145 skipped,
+2 warnings, 127 subtests passed`，RAG、网页契约/构建、媒体审计、compileall、治理和
+Harness dry-run 也通过。该证据只关闭离线控制面的公共可复现性；候选仍未注册，默认模型、
+Portal、Account、Workbench、Auth 和 `production_media=0` 不变。下一项是低思考 G53-3-L
+协议门与全新 held-out 资产，不重跑旧 G53-4/G53-7，也不把 CI 绿灯当作领域准入。
