@@ -1226,9 +1226,9 @@ disabled、未注册，`activation_state=disabled`、`execution_allowed=false`�
 严格 Flash v1 2048/零额外调用，默认模型、产品 Runtime、路由和 `production_media=0` 不变，Stage 8/8E 继续
 `in_progress`。
 
-当前唯一下一精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
-公共 CI 已闭环，真实重测只能在新的明确一次性授权后执行，不能自动注册候选或进入 G53-7/8F。
+> 历史快照（RQ-208）：当时的下一精确 checkpoint 为
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+> 公共 CI 已闭环。当前指针见下方最新 RQ-212 段落。
 
 ## 2026-09-02：RQ-209 候选真实流硬墙钟观察的分层边界
 
@@ -1245,8 +1245,8 @@ body-free 回执由本地证据提交 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c`
 
 候选 activation gate 仍 disabled、`activation_state=candidate` 且未注册，`capabilities.streaming=False`、严格 Flash v1 2048/零额外调用、默认模型、产品
 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变；Stage 8/8E 仍 `in_progress`，
-8F、G53-7、黄金切片和生产准入不因本观察提前完成。当前下一精确 checkpoint 保持原值，后续 provider close/wakeup
-拆分或真实请求必须另行授权。
+8F、G53-7、黄金切片和生产准入不因本观察提前完成。当时的下一精确 checkpoint 保持原值，后续 provider
+close/wakeup 拆分或真实请求必须另行授权；当前指针见下方最新 RQ-212 段落。
 
 ### RQ-210 边界澄清（2026-09-03）
 
@@ -1264,3 +1264,18 @@ Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` �
 
 公共验证补充：`1c669e0` / Actions `33666132282` 已三 job exact-SHA 全绿，确认 RQ-211 回执被既有
 provider capability 合同扫描正确识别。此验证不增加 8-Core 能力、不新增真实请求，8E/8F 与候选边界不变。
+
+## 2026-09-03：RQ-212 候选 close/wakeup 离线回放分层边界
+
+RQ-212 继续遵守 v1.3 的 8-Core/8-Advanced 分层：只新增 candidate-only、evaluation-only 的离线回放，
+不把恢复、streaming 或供应商 close/wakeup 能力强塞进 8-Core。固定 Event 闸门覆盖正常 EOF、取消后唤醒、
+取消返回但未唤醒、取消超时和取消抛出五种场景；回执强制 `offline_fake`、供应商调用数 `0`、不联网，
+并隔离到 `data/evaluation/results/offline/`。它只证明本地观察器分类、单次 fake 打开、脱敏和不可变写入，
+不证明 SDK close 非阻塞、HTTP response 取消或真实 pending `next()` 唤醒。入口不读 dotenv/凭据、不创建或
+调用 SDK client（既有包导入可能加载依赖模块）。
+
+候选仍 disabled/未注册，`capabilities.streaming=False`；严格 Flash v1 2048/零额外调用、默认模型、
+产品 Runtime、Portal、Account、Workbench、Auth、路由、`production_media=0`、G53-7、黄金切片、生产准入
+和 8F 均不变。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / offline-pending-read-replay / in_progress`；
+公共验证完成后，是否进行新的真实 provider 观察仍是独立决定。

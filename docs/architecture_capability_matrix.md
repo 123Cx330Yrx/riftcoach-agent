@@ -875,9 +875,9 @@ Stage 8/8E 继续 `in_progress`。
 
 > 上述 `public-ci-pending` 与旧 checkpoint 仅记录 RQ-207 当时状态；当前唯一下一精确 checkpoint 以紧随其后的 RQ-208 段落为准。
 
-当前唯一下一精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
-公共 CI 已闭环，但真实重测仍需新的明确一次性授权，不能自动注册候选或进入 G53-7。
+> 历史快照（RQ-208）：当时的下一精确 checkpoint 为
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+> 公共 CI 已闭环。当前指针见下方最新 RQ-212 段落。
 
 ### 2026-09-02：RQ-209 候选真实硬墙钟观察能力边界
 
@@ -892,8 +892,9 @@ SHA-256 `56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`、`43
 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存；公共 CI 尚未宣称。候选仍为 activation gate disabled、
 `activation_state=candidate`、`execution_allowed=false`、`capabilities.streaming=False`，且未注册，严格 Flash v1
 2048/零额外调用、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0`
-不变；下一精确 checkpoint 保持
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`。
+不变；当时的下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+当前指针见下方最新 RQ-212 段落。
 
 ### RQ-210：候选关闭报告能力边界（2026-09-03）
 
@@ -917,3 +918,19 @@ reader，因而没有执行 cancel。迭代器、外层 SDK stream wrapper 与�
 
 公共验证补充：提交 `1c669e0` / Actions `33666132282` 三 job exact-SHA 全绿，provider capability 扫描
 已能解析 RQ-211 的 schema；这只是合同识别证据，不是新的 provider 或产品 capability，也没有新增真实 API。
+
+### 2026-09-03：RQ-212 候选 close/wakeup 离线回放能力边界
+
+RQ-212 仍属于 8-Advanced 的 candidate-only evaluation evidence，不新增或重排主阶段，也不把离线回放
+提升为 8-Core 产品能力。固定 Event 闸门重放正常 EOF、取消后唤醒、取消返回但未唤醒、取消超时和取消抛出
+五种场景，回执独立标记 `evidence_origin=offline_fake`、`real_provider_observed=false`、
+`provider_call_count=0`、`network_used=false`，并把 `fake_session_open_count=1` 与观察器调用次数分开。
+它只证明本地分类、单次 fake 打开、脱敏和不可变回执可重复；不证明供应商 SDK close 非阻塞、底层 HTTP
+response 可取消或真实 pending `next()` 能被唤醒。回放入口不读取 dotenv/凭据、不创建或调用 SDK client，
+但既有包导入可能加载依赖模块。
+
+候选仍 disabled/未注册，`capabilities.streaming=False`；严格 Flash v1 2048/零额外调用、默认模型、
+产品 Runtime、Portal、Account、Workbench、Auth、路由与 `production_media=0` 不变，G53-7、黄金切片、
+生产准入和 8F 仍未完成。当前唯一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / offline-pending-read-replay / in_progress`；
+公共 CI 闭环后再独立决定是否授权一次新的真实 provider 观察。

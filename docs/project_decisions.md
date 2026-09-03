@@ -3274,3 +3274,19 @@ Workbench、Auth、路由和 `production_media=0` 不变。下一步等待用户
 `2268 passed, 145 skipped, 1 warning, 127 subtests passed`；PostgreSQL `201 passed, 1 warning`）。
 它只修复新回执在既有 provider capability 扫描中的显式分派，不构成第二次真实调用或 wakeup 结论；c311
 仍是 RQ-211 唯一真实观察身份。
+
+### RQ-212：采用候选 close/wakeup 离线 pending-read 回放
+
+接受一个与真实 provider 回执完全分开的 evaluation-only 回放协议
+`glm-5.3-flash-candidate-close-wakeup-replay` / schema `1.0.0`。固定的内存 Event 闸门
+覆盖正常 EOF、取消后 reader 唤醒、取消返回但未唤醒、取消超时和取消抛出五种场景，并复用
+RQ-211 的观察器派生每个 case 的结果。回执必须标记 `evidence_origin=offline_fake`、
+`real_provider_observed=false`、`provider_call_count=0`、`network_used=false`，同时单独记录
+`fake_session_open_count=1`；它不能进入 provider capability 结果目录，也不能复用 RQ-211
+的协议或路径。
+
+这项决定只证明本地 pending-read 分类、单次打开、脱敏和不可变回执可重复；不证明供应商
+SDK close 非阻塞、底层 HTTP response 可取消或真实 pending `next()` 能唤醒。候选仍
+disabled/未注册，`capabilities.streaming=False`，严格 Flash v1、默认模型、产品 Runtime、
+Workbench、Portal、Account、Auth、路由和 `production_media=0` 不变。RQ-212 公共闭环后，
+是否执行新的真实 provider 观察仍需单独决定。

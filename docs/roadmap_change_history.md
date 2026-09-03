@@ -4150,3 +4150,22 @@ RQ-178 的身份实现最终冻结为 A=`9e6d78be51c3a5c512b67f83d2849f9b1261cf7
 `33666132282` 三 job exact-SHA 全绿，公共 pytest `2268 passed, 145 skipped, 1 warning, 127 subtests passed`，
 PostgreSQL `201 passed, 1 warning`。该修复只让持久 body-free 回执可被公共合同识别，没有新增真实调用；
 真实观察仍绑定 c311，候选 gate 与产品边界不变。
+
+### 2026-09-03：RQ-212 候选 close/wakeup 离线 pending-read 回放
+
+- `DESIGN/IMPLEMENTATION`：针对 RQ-211 真实样本为 `not_pending` 的条件缺口，新增独立
+  `glm-5.3-flash-candidate-close-wakeup-replay` / schema `1.0.0`。固定五个内存 Event
+  闸门场景并复用既有观察器，验证正常 EOF、取消后唤醒、取消返回但未唤醒、取消超时和
+  取消抛出五种生命周期。
+- `EVIDENCE-SEPARATION`：离线回执只允许放在
+  `data/evaluation/results/offline/`，强制 `evidence_origin=offline_fake`、
+  `real_provider_observed=false`、`provider_call_count=0`、`network_used=false`；
+  `fake_session_open_count=1` 与 `observer_call_count=1` 不被解释为供应商调用。固定
+  场景 SHA 为 `8a389a9796b0407b3e209ddaab5134b140d4c8379ba659380ae031229011fe26`。
+- `BOUNDARY`：本批只证明本地观察分类、单次打开、脱敏和不可变回执可重复，不能证明供应商
+  SDK close 非阻塞、底层 HTTP response 可取消或真实 pending `next()` 能唤醒；候选仍 disabled、
+  不注册、不打开 `capabilities.streaming`，产品 Runtime/前端/Workbench/默认模型和
+  `production_media=0` 不变。
+- `BOUNDARY-NEXT`：当前精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / offline-pending-read-replay / in_progress`；
+  待聚焦回归、公共 CI 和治理闭环后，再独立决定是否执行一次新的真实 provider 观察。

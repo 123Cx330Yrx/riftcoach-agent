@@ -25,6 +25,12 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 [8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
 该记录不把 8E coverage、领域采用或生产成熟度标为完成。
 
+> 当前学习指针（2026-09-03，RQ-212）：先阅读 [候选 close/wakeup 离线回放 walkthrough](8e-glm53-candidate-close-wakeup-replay-walkthrough.md)、
+> [ADR-0082](../adr/0082-adopt-offline-candidate-close-wakeup-replay.md) 与 [离线回放计划](../plans/2026-09-03-glm53-candidate-close-wakeup-replay.md)。
+> 这批只验证本地五场景分类和证据隔离，回执为 `offline_fake`、供应商调用数 `0`；当前 checkpoint 是
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / offline-pending-read-replay / in_progress`，
+> 8E coverage 仍 planned，真实 provider close/wakeup、候选注册、G53-7、黄金切片和 8F 均未进入。
+
 ## 2. 建议怎样学习每一个能力
 
 不要一上来逐行背代码。建议对每个覆盖组做四遍：
@@ -96,16 +102,15 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 
 > 8E 表格中的旧“下一门为传输/代理边界复核”、RQ-195 的
 > `candidate-runtime-wiring-design / pending` 以及 RQ-197 的公共 CI 待验证均是历史摘要；RQ-198 已取得
-> exact-SHA 公共 CI，RQ-199 已完成隔离候选评估台设计，RQ-200 已完成 fake/local 实现；当前唯一下一门更新为
-> `candidate-recovery-diagnostic-version-public-ci / pending`。
+> exact-SHA 公共 CI，RQ-199 已完成隔离候选评估台设计，RQ-200 已完成 fake/local 实现；这些是历史摘要，
+> 当前学习指针见本文开头的 RQ-212 校正。
 
 RQ-203 已完成版本化候选 recovery 诊断协议设计（见下方材料）；上表中 RQ-202 的“下一步设计”文字仅保留
 历史快照，RQ-204 已完成 fake/local 版本化诊断实现，RQ-205 已完成同 SHA 公共 CI 与协议演练，RQ-206 已完成 1 次
 有界真实 primary 观察并以 `fail_closed / elapsed_limit` 收口，RQ-207 已完成候选硬墙钟会话与 Usage 尾帧本地实现；
 四文件聚焦回归（deadline 10、v2 24、real 8、adapter 25）统一为 `67 passed`；RQ-208 已完成 RQ-207 的
 exact-SHA 公共 CI（提交 `015b022bfce6d03452f753794ac126a377f8355b` / Actions run `33613113829` 三 job
-`completed/success`），公共 CI 已闭环；当前唯一下一门更新为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`。
+`completed/success`），公共 CI 已闭环；这段“下一门”是 RQ-208 历史快照，当前学习指针见本文开头的 RQ-212 校正。
 
 > 表格中 8E 行较早的“RQ-204 fake/local、公共 CI、真实 recovery 未完成”是历史快照；以本段和下方 RQ-205/RQ-206/RQ-207
 > 记录为准。RQ-206 的真实观察和 RQ-207 的本地实现均不提升产品 streaming、默认模型或生产准入；Stage 8/8E 仍为
@@ -549,8 +554,9 @@ RQ-207 的候选硬墙钟会话、取消/关闭资源合同与 Usage 尾帧离�
 2048/零额外调用，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由与 `production_media=0` 不变，
 Stage 8/8E 继续 `in_progress`，8E coverage 仍 planned。
 
-当前唯一下一精确 checkpoint 为
+历史快照中的下一精确 checkpoint 曾为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+当前指针见本文开头的 RQ-212 校正。
 RQ-209 已记录/完成 1 次有界真实 primary 并以 `fail_closed / elapsed_limit` 收口，但该门仍未关闭；组合关闭
 状态的具体底层资源仍未知，公共 CI 尚未宣称，不能自动注册候选或进入 G53-7。
 
@@ -595,3 +601,13 @@ SHA-256 `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，不
 补充验证：提交 `1c669e0` 为公共能力目录加入 RQ-211 回执的显式 schema 分派，Actions run `33666132282`
 三 job exact-SHA 全绿（公共 pytest `2268 passed, 145 skipped, 1 warning, 127 subtests passed`，
 PostgreSQL `201 passed, 1 warning`）。这是回执合同的公共可复现性验证，没有新增真实 API 调用；真实观察仍只绑定 c311。
+
+### 2026-09-03：RQ-212 候选 close/wakeup 离线 pending-read 回放
+
+新增 [RQ-212 离线回放 walkthrough](8e-glm53-candidate-close-wakeup-replay-walkthrough.md)、
+[ADR-0082](../adr/0082-adopt-offline-candidate-close-wakeup-replay.md) 和
+[离线回放计划](../plans/2026-09-03-glm53-candidate-close-wakeup-replay.md)。这批用固定 Event 闸门
+重放五种生命周期，复用 RQ-211 观察器，但把回执明确隔离为 `offline_fake`：供应商调用数为 0，
+fake session 打开数单独为 1，结果不进入 provider capability 目录。它证明的是本地分类、单次打开、
+脱敏和不可变写入可以重复复核，不是 GLM-5.3 的 close/wakeup 或生产能力证据；候选仍未注册，8E
+coverage 继续 planned。

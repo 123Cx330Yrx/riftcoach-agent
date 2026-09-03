@@ -245,6 +245,8 @@
 > `2268 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面为 `201 passed, 1 warning`。
 > 该修复只验证回执合同可被公共扫描识别，没有新增真实 API 调用，也不改变 c311 的真实观察身份。
 
+| RQ-212 | 2026-09-03 | 候选 close/wakeup 离线 pending-read 回放已进入实现；只验证本地观察合同，不形成 provider-level 结论 | 用户“继续、每一步迈大一点”授权推进 RQ-211 暴露的观察条件缺口；本批新增 evaluation-only 离线协议与固定五场景，不追加真实 API、recovery、retry、候选注册或产品接线 | 新增 `glm-5.3-flash-candidate-close-wakeup-replay` / schema `1.0.0`、Event 闸门式 `ReplaySession`、严格离线回执和不允许覆盖 provider capability 目录的 writer；回执强制 `evidence_origin=offline_fake`、`real_provider_observed=false`、`provider_call_count=0`、`network_used=false`，并区分每个 fake session 的 `fake_session_open_count=1` 与观察器内部 `observer_call_count=1`。五场景为正常 EOF、取消后唤醒、取消返回但未唤醒、取消超时、取消抛出；提交前演练回执 `data/evaluation/results/offline/zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v1.json` 绑定旧 HEAD `6108aac7e43adfd86f9112aa959ef4f698840779`、SHA-256=`6e0de26d9fd9b2a778f8dba8d00463f232e77793711e311c063e6df60d665fde`，不作最终实现身份；提交后另生成绑定新 HEAD 的 v2。当前本地回放/观察器聚焦测试通过；尚待相邻回归、compileall、治理、diff check 与 exact-SHA 公共 CI。离线结果不能证明供应商 SDK close 非阻塞、底层 HTTP response 可取消或真实 pending `next()` 能唤醒；候选仍 disabled/未注册、`capabilities.streaming=False`，严格 Flash v1、默认模型、AgentLoop、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变。下一精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / offline-pending-read-replay / in_progress`；公共闭环后再独立决定是否授权一次新的真实观察。 |
+
 ## 新条目格式
 
 后续新增长期要求时，使用新的 `RQ-xxx` 行，并注明日期、状态以及它如何改变

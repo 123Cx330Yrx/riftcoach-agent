@@ -86,9 +86,10 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前仍处于 `8e-productization`。RQ-211 的一次真实观察已完成，精确执行指针为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`；
-这是候选证据裁决点，不是 8E、领域采用或生产准入完成。
+当前仍处于 `8e-productization`。用户已授权继续 RQ-211 暴露的观察条件缺口，当前精确执行指针为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / offline-pending-read-replay / in_progress`；
+这是候选 evaluation-only 回放，不是 8E、领域采用或生产准入完成。RQ-211 的真实回执仍保持
+`not_pending`，不被离线 fake 结果覆盖。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -386,8 +387,9 @@ RQ-210 的本地实现与 exact-SHA 公共 CI 已完成，仍不注册候选或�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`。
-先等待用户决定是否需要设计一个能稳定制造 pending-read 的新版观察协议；不自动追加真实 API 请求、
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / offline-pending-read-replay / in_progress`。
+先完成固定五场景的离线回放、body-free 独立回执、聚焦回归和 exact-SHA 公共验证；完成后只把
+“本地观察协议可重复、provider-level close/wakeup 仍未证实”写入状态。不得自动追加真实 API 请求、
 注册候选、进入 G53-7/黄金切片，也不修改产品 Runtime、Portal、Account、Workbench、Auth 或路由。
 
 `6B-6-preferences-profile-review-memory` 已由实现/最小测试修复 `5531c81` 与 Actions
