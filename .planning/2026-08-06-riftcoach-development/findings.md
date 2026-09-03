@@ -5434,18 +5434,21 @@
   `33666132282` 三 job exact-SHA 全绿（pytest `2268 passed, 145 skipped, 1 warning, 127 subtests passed`，
   PostgreSQL `201 passed, 1 warning`）。这验证的是持久回执的合同识别，不是新的模型调用；c311 回执仍唯一真实样本。
 
-## 2026-09-03：RQ-212 离线 close/wakeup 回放发现
+## 2026-09-03：RQ-212 离线 close/wakeup 回放发现（公共闭环完成）
 
-- RQ-211 的 `not_pending` 不能通过重复真实请求稳定变成 pending；先用固定内存 Event 闸门拆出
-  五种生命周期，才能把观察器分类问题与供应商行为分开。
-- 回放入口不读取 dotenv/凭据、不实例化或调用 SDK client、不建立网络连接；但普通包导入可能加载
-  SDK 依赖模块，文案必须保持这一边界，不能写成“完全不加载 SDK”。
-- 离线回执必须使用独立 `offline_fake` 来源、供应商调用数 `0` 和离线路径；`observer_call_count=1`
-  与 `fake_session_open_count=1` 只是本地夹具计数，不能解释成 provider call。create-only 写入可避免
-  后续误覆盖既有证据。
-- 观察器对取消抛出场景的安全投影是 `pending_cancel_returned` + `cancel_status=raised`，其中
-  `cancel_returned=true` 只表示控制线程结束，不表示供应商取消成功；超时场景单独投影
-  `pending_cancel_timeout`。
-- 当前聚焦 `34 passed`、compileall、diff check、governance 均通过；提交前 v1 回执仍绑定旧 HEAD，
-  必须在实现提交后生成新 SHA 绑定的 v2，再以公共 exact-SHA CI 闭环。离线结果仍不能推导 provider-level
-  close/wakeup、候选注册、G53-7、黄金切片或生产成熟度。
+- RQ-211 的 `not_pending` 不能通过重复真实请求稳定变成 pending；固定内存 Event 闸门拆出的五种生命周期，
+  让观察器分类问题与供应商行为保持分离。
+- 回放入口不读取 dotenv/凭据、不实例化或调用 SDK client、不建立网络连接；普通包导入可能加载 SDK 依赖模块，
+  因此文案保持这一准确边界。
+- 离线回执使用独立 `offline_fake` 来源、供应商调用数 `0` 和离线路径；`observer_call_count=1` 与
+  `fake_session_open_count=1` 只是本地夹具计数。writer 以显式 offline root、canonical JSON 和 create-only
+  方式阻止误写 provider capability 目录或覆盖既有证据。
+- 最终 v2 回执为 `data/evaluation/results/offline/zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json`，
+  `2220` bytes，SHA-256=`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`，三身份 SHA 绑定
+  实现提交 `1a32012d9dc6424aa012f160d48c8847e21b00ec`；v1 仅为旧 HEAD 的提交前演练。
+- 实现提交的公共 Actions `33707313651` 三 job exact-SHA 全绿（pytest `2284 passed, 145 skipped, 2 warnings,
+  127 subtests passed`；PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过），本地聚焦 `37 passed`、
+  compileall、diff check、governance 均通过。
+- 离线结果仍不能推导 provider-level close/wakeup、候选注册、G53-7、黄金切片或生产成熟度；下一精确 checkpoint
+  为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`，
+  是否执行真实观察需单独授权。

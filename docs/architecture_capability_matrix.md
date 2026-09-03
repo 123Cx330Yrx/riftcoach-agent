@@ -932,5 +932,14 @@ response 可取消或真实 pending `next()` 能被唤醒。回放入口不读�
 候选仍 disabled/未注册，`capabilities.streaming=False`；严格 Flash v1 2048/零额外调用、默认模型、
 产品 Runtime、Portal、Account、Workbench、Auth、路由与 `production_media=0` 不变，G53-7、黄金切片、
 生产准入和 8F 仍未完成。当前唯一精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / offline-pending-read-replay / in_progress`；
-公共 CI 闭环后再独立决定是否授权一次新的真实 provider 观察。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`；
+公共 CI 已闭环；是否执行一次参数明确的真实 provider 观察仍需单独授权。
+
+### RQ-212 公共闭环事实（2026-09-03）
+
+实现提交 `1a32012d9dc6424aa012f160d48c8847e21b00ec` 的 Actions `33707313651` 三 job exact-SHA 全绿；
+公共 pytest 为 `2284 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL 为 `201 passed, 2 warnings`，
+packaging-smoke 通过。v2 离线回执 `data/evaluation/results/offline/
+zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json` 为 `2220` bytes，SHA-256 为
+`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`，三个身份 SHA 均绑定该实现提交。
+它仍只证明 `offline_fake` 的本地分类与证据隔离，不提升为 provider capability；下一步需单独授权真实观察。

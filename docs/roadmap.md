@@ -44,7 +44,7 @@
 > 独立的五场景离线 pending-read 回放。回放回执固定为 `offline_fake`、供应商调用数 `0`、不联网，
 > 只证明本地分类、单次 fake 打开、脱敏和不可变写入；不证明供应商 SDK close/wakeup 或底层 HTTP 取消。
 > 当前精确 checkpoint 为
-> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / offline-pending-read-replay / in_progress`；
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`；
 > 候选仍 disabled/未注册，严格 Flash v1、产品 Runtime、Portal、Account、Workbench、Auth、路由、
 > `production_media=0`、G53-7、黄金切片和 8F 边界均不变。
 
@@ -1377,10 +1377,20 @@ RQ-211 观察器而不改真实 provider 路径。离线回执独立放在
 `real_provider_observed=false`、`provider_call_count=0`、`network_used=false`，并把
 fake session 打开次数与供应商调用次数分开记录。
 
-这一步只证明本地状态分类、单次打开、脱敏和不可变回执可重复，不能证明供应商 SDK
+这一步已完成本地与 exact-SHA 公共闭环；它只证明本地状态分类、单次打开、脱敏和不可变回执可重复，不能证明供应商 SDK
 close 非阻塞、底层 HTTP response 可取消或真实 pending `next()` 能唤醒。候选仍未注册、
 `capabilities.streaming=False`，不改变默认模型、产品 Runtime、Portal、Account、
 Workbench、Auth、路由或 `production_media=0`；Stage 8/8E 仍 `in_progress`，8F 尚未开始。
 当前唯一精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / offline-pending-read-replay / in_progress`；
-公共验证后再独立决定新的真实 provider 观察。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`；
+公共闭环已完成；是否执行一次参数明确的真实 provider 观察仍需单独授权。
+
+### RQ-212 公共闭环事实（2026-09-03）
+
+RQ-212 的离线 pending-read 回放已在实现提交 `1a32012d9dc6424aa012f160d48c8847e21b00ec` 上完成公共验证：
+Actions `33707313651` 三 job exact-SHA 全绿（pytest `2284 passed, 145 skipped, 2 warnings, 127 subtests passed`；
+PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过）。最终 v2 回执为
+`data/evaluation/results/offline/zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json`（`2220` bytes，
+SHA-256 `a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`），三个身份 SHA 均绑定该实现提交；
+v1 仅保留为旧 HEAD 的提交前演练。该证据仍是 `offline_fake`、供应商调用数 0，不能替代 provider-level
+close/wakeup 观察；当前下一精确 checkpoint 是 `candidate-close-wakeup-real-observation / pending-user-authorization`。

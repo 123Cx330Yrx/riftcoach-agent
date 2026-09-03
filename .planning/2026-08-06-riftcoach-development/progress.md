@@ -5715,21 +5715,23 @@
   Actions `33666132282` 三 job exact-SHA 全绿，公共 pytest `2268 passed, 145 skipped, 1 warning,
   127 subtests passed`，PostgreSQL `201 passed, 1 warning`。这只是回执可复现性验证，没有新增真实请求。
 
-## 2026-09-03：RQ-212 候选 close/wakeup 离线 pending-read 回放（进行中）
+## 2026-09-03：RQ-212 候选 close/wakeup 离线 pending-read 回放（公共闭环完成）
 
-- [authorized-next-substage] 用户要求继续并允许更大步推进；本批只处理 RQ-211 暴露的
-  `not_pending` 条件缺口，不追加真实 API、recovery/retry、候选注册或产品接线。
-- [implemented-local] 新增独立 `glm-5.3-flash-candidate-close-wakeup-replay` / schema `1.0.0`，
-  用固定 Event 闸门回放正常 EOF、取消后唤醒、取消返回但未唤醒、取消超时和取消抛出五场景，
-  复用既有观察器；每个场景只打开一次 fake session，并将 fake 打开次数与供应商调用次数分开。
-- [evidence-local] 离线回执强制 `evidence_origin=offline_fake`、`real_provider_observed=false`、
-  `provider_call_count=0`、`network_used=false`，放在 `data/evaluation/results/offline/`，使用
-  canonical JSON 和 create-only writer。提交前演练 v1 绑定旧 HEAD `6108aac7e43adfd86f9112aa959ef4f698840779`，
-  SHA-256=`6e0de26d9fd9b2a778f8dba8d00463f232e77793711e311c063e6df60d665fde`，不作最终实现身份；
-  提交后生成绑定新 HEAD 的 v2。
-- [verification-local] RQ-212 与 RQ-211 观察器聚焦回归 `34 passed`，compileall、`git diff --check` 和
-  governance 已通过；公共 exact-SHA CI 尚待提交后执行。
-- [boundary-next] 离线回放只能证明本地分类、脱敏、单次打开和不可变写入可重复，不能证明供应商 SDK
-  close 非阻塞、底层 HTTP response 可取消或真实 pending `next()` 可唤醒。候选继续 disabled/未注册，
-  `capabilities.streaming=False`，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和
-  `production_media=0` 不变；公共闭环后再独立决定是否授权一次真实 provider 观察。
+- [authorized-next-substage] 用户要求继续并允许更大步推进；本批只处理 RQ-211 暴露的 `not_pending` 条件缺口，
+  不追加真实 API、recovery/retry、候选注册或产品接线。
+- [implemented-local] 新增独立 `glm-5.3-flash-candidate-close-wakeup-replay` / schema `1.0.0`，用固定 Event
+  闸门回放正常 EOF、取消后唤醒、取消返回但未唤醒、取消超时和取消抛出五场景，复用既有观察器；每个场景只
+  打开一次 fake session，并将 fake 打开次数与供应商调用次数分开。
+- [evidence-public] 最终 v2 回执路径为
+  `data/evaluation/results/offline/zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json`，
+  `2220` bytes、SHA-256=`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`；
+  implementation/observer/input-plan 三个 SHA 均绑定 `1a32012d9dc6424aa012f160d48c8847e21b00ec`，场景 SHA=
+  `8a389a9796b0407b3e209ddaab5134b140d4c8379ba659380ae031229011fe26`。v1 仅为绑定旧 HEAD 的提交前演练。
+- [verification-public] 实现提交 Actions `33707313651` 三 job exact-SHA 全绿：pytest `2284 passed, 145 skipped,
+  2 warnings, 127 subtests passed`；PostgreSQL 控制面 `201 passed, 2 warnings`；packaging-smoke 通过。本地
+  RQ-212/RQ-211 聚焦回归 `37 passed`，compileall、diff check、governance 通过。
+- [boundary-next] 离线回放只能证明本地分类、脱敏、单次打开和不可变写入可重复，不能证明供应商 SDK close 非阻塞、
+  底层 HTTP response 可取消或真实 pending `next()` 可唤醒。候选继续 disabled/未注册，`capabilities.streaming=False`，
+  默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变；当前精确 checkpoint
+  改为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`，
+  是否执行新的真实 provider 观察仍需单独授权。

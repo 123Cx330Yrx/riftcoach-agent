@@ -68,3 +68,11 @@ OfflineReplayReceipt（不含正文，provider_call_count=0）
 > 我先用固定 Event 闸门做了五种 close/wakeup 生命周期的离线回放。回执明确标记
 > `offline_fake` 且供应商调用数为零，所以它证明的是我们自己的分类和脱敏合同可
 > 重复复核，不冒充供应商 close/wakeup 证据；真实 provider 观察仍是独立闸门。
+
+## 本批验证结果（2026-09-03）
+
+实现提交 `1a32012d9dc6424aa012f160d48c8847e21b00ec` 的公共 Actions `33707313651` 三 job exact-SHA 全绿；
+本地 RQ-212/RQ-211 聚焦回归 `37 passed`。最终 v2 回执为
+`data/evaluation/results/offline/zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json`（`2220` bytes，
+SHA-256=`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`），三身份 SHA 绑定该实现提交。
+这关闭的是离线回放合同；真实 provider close/wakeup 仍未证实，下一精确门是一次性真实观察授权。

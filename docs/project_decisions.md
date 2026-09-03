@@ -3288,5 +3288,13 @@ RQ-211 的观察器派生每个 case 的结果。回执必须标记 `evidence_or
 这项决定只证明本地 pending-read 分类、单次打开、脱敏和不可变回执可重复；不证明供应商
 SDK close 非阻塞、底层 HTTP response 可取消或真实 pending `next()` 能唤醒。候选仍
 disabled/未注册，`capabilities.streaming=False`，严格 Flash v1、默认模型、产品 Runtime、
-Workbench、Portal、Account、Auth、路由和 `production_media=0` 不变。RQ-212 公共闭环后，
+Workbench、Portal、Account、Auth、路由和 `production_media=0` 不变。RQ-212 公共闭环已完成；
 是否执行新的真实 provider 观察仍需单独决定。
+
+### RQ-212 公共闭环事实（2026-09-03）
+
+RQ-212 实现提交 `1a32012d9dc6424aa012f160d48c8847e21b00ec` 的 Actions `33707313651` 三 job exact-SHA 全绿；
+v2 离线回执 `data/evaluation/results/offline/zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json`
+为 `2220` bytes、SHA-256=`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`，三个身份 SHA 均绑定该实现提交。
+这只关闭本地回放合同，不改变候选 gate、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由或
+`production_media=0`；下一精确 checkpoint 为 `candidate-close-wakeup-real-observation / pending-user-authorization`。

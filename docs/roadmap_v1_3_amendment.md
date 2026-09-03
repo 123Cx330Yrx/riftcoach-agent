@@ -1277,5 +1277,14 @@ RQ-212 继续遵守 v1.3 的 8-Core/8-Advanced 分层：只新增 candidate-only
 候选仍 disabled/未注册，`capabilities.streaming=False`；严格 Flash v1 2048/零额外调用、默认模型、
 产品 Runtime、Portal、Account、Workbench、Auth、路由、`production_media=0`、G53-7、黄金切片、生产准入
 和 8F 均不变。当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / offline-pending-read-replay / in_progress`；
-公共验证完成后，是否进行新的真实 provider 观察仍是独立决定。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`；
+公共验证已完成；是否进行一次参数明确的真实 provider 观察仍需单独授权。
+
+## RQ-212 公共闭环事实（2026-09-03）
+
+RQ-212 已完成 candidate-only 离线回放的 exact-SHA 公共闭环：实现 `1a32012d9dc6424aa012f160d48c8847e21b00ec`、
+Actions `33707313651` 三 job 全绿，v2 回执为 `data/evaluation/results/offline/
+zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json`（`2220` bytes，SHA-256
+`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`）。回执仍标记 `offline_fake`、0 provider
+calls、无网络；它不证明 SDK/HTTP close/wakeup，候选不注册，8-Core/8-Advanced 分层和 `production_media=0`
+边界不变。下一精确 checkpoint 为 `candidate-close-wakeup-real-observation / pending-user-authorization`。

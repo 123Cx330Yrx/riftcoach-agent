@@ -28,7 +28,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 > 当前学习指针（2026-09-03，RQ-212）：先阅读 [候选 close/wakeup 离线回放 walkthrough](8e-glm53-candidate-close-wakeup-replay-walkthrough.md)、
 > [ADR-0082](../adr/0082-adopt-offline-candidate-close-wakeup-replay.md) 与 [离线回放计划](../plans/2026-09-03-glm53-candidate-close-wakeup-replay.md)。
 > 这批只验证本地五场景分类和证据隔离，回执为 `offline_fake`、供应商调用数 `0`；当前 checkpoint 是
-> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / offline-pending-read-replay / in_progress`，
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`，
 > 8E coverage 仍 planned，真实 provider close/wakeup、候选注册、G53-7、黄金切片和 8F 均未进入。
 
 ## 2. 建议怎样学习每一个能力
@@ -611,3 +611,13 @@ PostgreSQL `201 passed, 1 warning`）。这是回执合同的公共可复现性�
 fake session 打开数单独为 1，结果不进入 provider capability 目录。它证明的是本地分类、单次打开、
 脱敏和不可变写入可以重复复核，不是 GLM-5.3 的 close/wakeup 或生产能力证据；候选仍未注册，8E
 coverage 继续 planned。
+
+### RQ-212 公共闭环事实（2026-09-03）
+
+实现提交 `1a32012d9dc6424aa012f160d48c8847e21b00ec` 的 Actions `33707313651` 三 job exact-SHA 全绿，
+公共 pytest `2284 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，
+packaging-smoke 通过。最终 v2 回执为
+`data/evaluation/results/offline/zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json`（`2220` bytes，
+SHA-256=`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`）；v1 仅为旧 HEAD 的提交前演练。
+学习结论仍限于 `offline_fake` 本地分类/脱敏/不可变写入，真实 provider close/wakeup 未证实；下一步为
+`candidate-close-wakeup-real-observation / pending-user-authorization`，8E coverage 继续 `planned`。

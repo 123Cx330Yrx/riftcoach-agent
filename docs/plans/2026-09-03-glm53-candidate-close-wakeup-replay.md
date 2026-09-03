@@ -69,3 +69,11 @@ OfflineReplayReceipt（provider_call_count=0）
 完成后只能得出：“本地 pending-read 观察协议可重复，且脱敏/单次打开合同成立；
 provider-level close/wakeup 仍未证实。”下一精确决定是是否授权一次新的、参数明确的
 真实 provider 观察；不能由离线回放自动触发。
+
+## 已完成的验证记录（2026-09-03）
+
+实现提交 `1a32012d9dc6424aa012f160d48c8847e21b00ec` 的 Actions `33707313651` 三 job exact-SHA 全绿；
+本地聚焦回归为 `37 passed`，compileall、diff check、governance 通过。v2 回执写入
+`data/evaluation/results/offline/zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json`，`2220` bytes，
+SHA-256=`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`，三个身份 SHA 均绑定该实现提交。
+v1 仅为旧 HEAD 的提交前演练。计划目标已完成；后续真实 provider close/wakeup 观察仍是独立授权门。

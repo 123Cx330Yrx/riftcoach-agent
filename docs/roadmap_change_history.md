@@ -4167,5 +4167,16 @@ PostgreSQL `201 passed, 1 warning`。该修复只让持久 body-free 回执可�
   不注册、不打开 `capabilities.streaming`，产品 Runtime/前端/Workbench/默认模型和
   `production_media=0` 不变。
 - `BOUNDARY-NEXT`：当前精确 checkpoint 为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / offline-pending-read-replay / in_progress`；
-  待聚焦回归、公共 CI 和治理闭环后，再独立决定是否执行一次新的真实 provider 观察。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`；
+  聚焦回归、公共 CI 和治理闭环均已完成；是否执行一次参数明确的真实 provider 观察仍需单独授权。
+
+### 2026-09-03：RQ-212 公共闭环事实
+
+- 实现提交 `1a32012d9dc6424aa012f160d48c8847e21b00ec` 的 Actions `33707313651` 三 job exact-SHA 全绿：
+  pytest `2284 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，
+  packaging-smoke 通过。
+- v2 回执为 `data/evaluation/results/offline/zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json`，
+  `2220` bytes、SHA-256=`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`；
+  三个身份 SHA 均绑定实现提交，v1 仅为旧 HEAD 的提交前演练。
+- 该回执仍是 `offline_fake`/0 provider calls/no network，只关闭本地回放合同，不关闭 provider-level close/wakeup；
+  下一精确 checkpoint 为 `candidate-close-wakeup-real-observation / pending-user-authorization`。

@@ -52,3 +52,10 @@ Auth、路由、`production_media=0`、G53-7、黄金切片、生产准入和 8F
 
 只有在这份离线回放和公共验证闭环后，才可另行决定是否授权一次参数明确的真实
 provider close/wakeup 观察；离线回放不会自动触发真实请求。
+
+## 验证落点（2026-09-03）
+
+实现提交 `1a32012d9dc6424aa012f160d48c8847e21b00ec` 的 Actions `33707313651` 三 job exact-SHA 全绿；
+v2 回执 `data/evaluation/results/offline/zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json`
+为 `2220` bytes，SHA-256=`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`。这只证明离线
+回放合同可复核，不改变“真实 provider 观察需另行授权”的后续门。
