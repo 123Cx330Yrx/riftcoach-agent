@@ -88,6 +88,17 @@ from .candidate_recovery_diagnostic_v2 import (
     context_shape_sha256,
     write_candidate_recovery_receipt,
 )
+from .glm53_flash_response_profile_split import (
+    RESPONSE_PROFILE_SPLIT_FIXTURE_CATALOG_SHA256,
+    RESPONSE_PROFILE_SPLIT_FIXTURES,
+    ResponseProfileSplitCase,
+    ResponseProfileSplitError,
+    ResponseProfileSplitFixture,
+    ResponseProfileSplitReceipt,
+    canonical_receipt_bytes as canonical_response_profile_split_receipt_bytes,
+    run_response_profile_terminal_recovery_split,
+    write_response_profile_terminal_recovery_receipt,
+)
 
 __all__ = [
     "CapabilityProbeCaseResult",
@@ -170,4 +181,13 @@ __all__ = [
     "canonical_receipt_bytes",
     "context_shape_sha256",
     "write_candidate_recovery_receipt",
+    "RESPONSE_PROFILE_SPLIT_FIXTURE_CATALOG_SHA256",
+    "RESPONSE_PROFILE_SPLIT_FIXTURES",
+    "ResponseProfileSplitCase",
+    "ResponseProfileSplitError",
+    "ResponseProfileSplitFixture",
+    "ResponseProfileSplitReceipt",
+    "canonical_response_profile_split_receipt_bytes",
+    "run_response_profile_terminal_recovery_split",
+    "write_response_profile_terminal_recovery_receipt",
 ]

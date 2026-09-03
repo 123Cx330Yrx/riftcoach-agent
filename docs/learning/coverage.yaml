@@ -831,6 +831,8 @@ groups:
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
         - docs/plans/2026-08-30-8e-agent-mainline-handoff-readme-factual-alignment.md
         - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
+        - docs/learning/8e-glm53-protocol-and-candidate-timeout-walkthrough.md
+        - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
         - docs/plans/2026-08-29-8e-region-entry-panel-trial-design.md
         - docs/plans/2026-08-29-8e-region-entry-polish-design.md
         - docs/adr/0069-adopt-local-region-wallpaper-fallback.md

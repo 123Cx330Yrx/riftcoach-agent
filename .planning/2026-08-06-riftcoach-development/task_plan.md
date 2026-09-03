@@ -93,8 +93,10 @@ close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次
 真实请求，随后定位到 `client_wakeup_close_race` 并完成候选适配器的本地关闭顺序修复；实现提交
 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions `33726209532` 三 job exact-SHA 全绿。
 RQ-217 又在 RQ-216 的文档/证据闭环 SHA `3e028b1217f1274152ba161993287f29188a1b73` 上按一次性授权只发出 1 次真实
-transport-gated 请求，得到 `client_wakeup_clean`；当前精确执行指针改为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`。
+transport-gated 请求，得到 `client_wakeup_clean`；RQ-218 的 G53-3 在最新实现上 3/3
+通过，RQ-219 的候选 8192 单次真实流在 90 秒硬墙钟以 `fail_closed / elapsed_limit`
+收口。当前精确执行指针改为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -392,7 +394,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`。
 RQ-217 的真实回执绑定实现/观察器/输入计划提交
 `3e028b1217f1274152ba161993287f29188a1b73`，文件为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`，
@@ -3025,6 +3027,12 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [boundary] 这只证明真实流启动后本机受控客户端的唤醒/收尾，不证明 provider-native
   close/wakeup、模型一般能力、G53-7、黄金切片、生产准入或 8F；候选仍 disabled/未注册，
   产品 Runtime、默认模型、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
-- [next] 当前唯一下一精确 checkpoint 保持
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`；
-  没有新的独立决策/授权前不再发送真实请求。
+- [RQ-218] 在 `aa22cea0daeb443b635706144ccbfa66185670c4` 上 G53-3 精确 3/3 通过，证据提交
+  `4b6cd5807f40f6a8dd469f21c688be861261d20c` / Actions `33735039437` 三 job 全绿；
+  脱敏回执 SHA=`feeb7fd7eec2643ca692bd6182fd94a04abed354b17b892029402c0217641e99`。
+- [RQ-219] 候选 8192/90 秒真实诊断只发送 1 次 primary，结果为
+  `fail_closed / elapsed_limit`，回执 SHA=`21350d7883b4d2eea30e0467a7b8c23eed3a3ad5a9deeb309c44f8ded5cf3f84`；
+  证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 的公共 CI 当时仍在运行，未提前宣称通过。
+- [next] 下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`；
+  零网络 fake/fixture 拆分已经完成，下一动作是同 SHA 公共 CI，不自动追加真实请求。

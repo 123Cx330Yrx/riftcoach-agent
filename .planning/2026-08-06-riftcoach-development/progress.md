@@ -5822,3 +5822,30 @@
 - [next] 当前唯一精确 checkpoint 改为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`；
   没有新的独立授权前不再发送真实请求。
+
+## 2026-09-03：RQ-218/RQ-219 Flash 协议复核与候选 8192 超时
+
+- [RQ-218] 在实现 `aa22cea0daeb443b635706144ccbfa66185670c4` 上完成 G53-3 精确 3/3；
+  证据提交 `4b6cd5807f40f6a8dd469f21c688be861261d20c` / Actions `33735039437` 三 job
+  exact-SHA 全绿，脱敏回执 SHA=`feeb7fd7eec2643ca692bd6182fd94a04abed354b17b892029402c0217641e99`。
+- [RQ-219] 候选 `glm-5.3-flash-runtime-v2-candidate/2.0.0` 使用 8192 输出、Agent 90 秒、
+  传输 120 秒、retries=0，只发 1 次 primary；结果为 `fail_closed / elapsed_limit`，
+  未 recovery、retry 或第二请求，回执 SHA=`21350d7883b4d2eea30e0467a7b8c23eed3a3ad5a9deeb309c44f8ded5cf3f84`。
+  证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 的公共 CI 在记录时仍 `in_progress`。
+- [boundary] 候选仍 disabled/未注册，严格 Flash v1 仍 2048/零额外调用，
+  `capabilities.streaming=False`；默认模型、产品 Runtime、Portal、Account、Workbench、
+  Auth、路由和 `production_media=0` 不变。两条回执均 body-free。
+- [next] 当前唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / pending`；
+  下一批先做零网络 fake/fixture 拆分，不自动追加真实请求。
+
+## RQ-220 / Flash 响应档位—终态—恢复离线拆分（2026-09-03）
+
+- [implemented-local] 新增离线 fixture 矩阵、只读 CLI、create-only receipt 和聚焦测试；
+  复用 `CandidateStreamBoundaryObserver`、严格 Flash policy 与候选 policy。
+- [verification-local] 9/9 场景通过，相关集合 `109 passed`；compileall、`git diff --check`、
+  governance 通过，provider calls=0/network=false。候选 `length` 命中只记录
+  `candidate_eligible`，activation 仍阻断恢复。
+- [boundary-next] 当前唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`；
+  下一动作是 exact-SHA 公共 CI。

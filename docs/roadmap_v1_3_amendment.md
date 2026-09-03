@@ -1370,3 +1370,17 @@ close/wakeup、模型一般能力、生产 streaming、G53-7、黄金切片或 8
 未注册，产品 Runtime、默认模型、Portal、Account、Workbench、Auth、路由与
 `production_media=0` 不变；当前精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`。
+
+## RQ-218/RQ-219：Flash 协议与长响应完成度的分层记录（2026-09-03）
+
+按 v1.3 的 8-Core/8-Advanced 分层，RQ-218 的 G53-3 3/3 通过只属于协议身份观察；
+RQ-219 的候选 8192 单次真实流在 90 秒以 `fail_closed / elapsed_limit` 收口，只属于
+8-Advanced candidate-only 诊断。两者均不改变 8-Core、8E→8F 顺序、默认模型或产品 Runtime。
+RQ-219 公共 CI 仍待确认；下一步固定为零网络的思考档位、流终态、Usage 尾帧和恢复决策拆分，
+checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / pending`。
+
+## RQ-220：响应完成策略的离线分层（2026-09-03）
+
+RQ-220 属于 8-Advanced 的 evaluation-only 实现：9 个 fake/fixture 场景把请求档位、
+terminal/EOF、Usage 和 recovery action 分开验证，provider calls=0。它不增加 8-Core、
+不改变 8E→8F 顺序，也不把候选提升为默认模型；实现 exact-SHA 公共 CI 仍是当前出口。

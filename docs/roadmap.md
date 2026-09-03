@@ -1489,3 +1489,23 @@ G53-7、黄金切片或 8F。候选继续 disabled/未注册，`capabilities.str
 产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。当前唯一
 精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`。
+
+### RQ-218/RQ-219：Flash 协议复核与候选 8192 超时边界（2026-09-03）
+
+RQ-218 在实现 `aa22cea0daeb443b635706144ccbfa66185670c4` 上重新完成 G53-3，精确 3/3
+通过；证据提交 `4b6cd5807f40f6a8dd469f21c688be861261d20c` 的 Actions `33735039437`
+三 job exact-SHA 全绿，回执 SHA=`feeb7fd7eec2643ca692bd6182fd94a04abed354b17b892029402c0217641e99`。
+
+RQ-219 只发送 1 次候选 `glm-5.3-flash-runtime-v2-candidate/2.0.0` primary，8192 输出、
+Agent 90 秒、传输 120 秒、retries=0；在 90 秒硬墙钟以 `fail_closed / elapsed_limit`
+收口，未执行 recovery、retry 或第二请求。回执 SHA=`21350d7883b4d2eea30e0467a7b8c23eed3a3ad5a9deeb309c44f8ded5cf3f84`，
+证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 的公共 CI 在记录时仍待确认。
+这两条仍是 8E/8-Advanced candidate-only 证据，不提升 8-Core 或产品默认；当前下一精确
+checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / pending`。
+
+### RQ-220：Flash 响应档位—终态—恢复离线拆分（2026-09-03）
+
+新增零网络评测矩阵，固定比较 low/max、2048/8192、`clear_thinking`、流终态、Usage
+尾帧和候选恢复判定。9/9 场景本地通过；候选 `length` 形状只得到可识别结果，activation
+仍阻断恢复。该批不新增 8-Core 能力、不注册候选、不改变默认模型或产品模块；当前下一
+精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`。

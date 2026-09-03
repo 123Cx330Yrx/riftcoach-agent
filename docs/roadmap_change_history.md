@@ -4279,3 +4279,24 @@ Runtime、Portal、Account、Workbench、Auth、路由与 `production_media=0` �
 精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`；
 没有新的独立授权前不再发送真实请求。
+
+## 2026-09-03：RQ-218/RQ-219 Flash 协议复核与候选 8192 超时
+
+- `CURRENT`：RQ-218 在最新实现上重取 G53-3，精确 3/3 通过；证据提交
+  `4b6cd5807f40f6a8dd469f21c688be861261d20c` / Actions `33735039437` 三 job 全绿，
+  回执 SHA=`feeb7fd7eec2643ca692bd6182fd94a04abed354b17b892029402c0217641e99`。
+- `OBSERVATION`：RQ-219 只发 1 次候选 8192 primary，在 90 秒硬墙钟以
+  `fail_closed / elapsed_limit` 收口；回执 SHA=`21350d7883b4d2eea30e0467a7b8c23eed3a3ad5a9deeb309c44f8ded5cf3f84`。
+  证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 的公共 CI 在记录时仍 pending。
+- `BOUNDARY-NEXT`：候选保持 disabled/未注册，严格 Flash v1、默认模型和产品链路不变；
+  当前唯一 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / pending`，
+  先做零网络档位、终态、Usage 与恢复决策拆分，不重复真实请求。
+
+## 2026-09-03：RQ-220 响应档位—终态—恢复离线拆分
+
+- `IMPLEMENTED-LOCAL`：新增固定 9 场景的零网络矩阵与 body-free receipt，复用候选
+  stream observer、严格 policy 和 candidate policy；9/9 通过，provider calls=0。
+- `BOUNDARY-NEXT`：该批只增加评测归因能力，候选仍 disabled/未注册，严格 Flash v1 和
+  产品链路不变；当前 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`，
+  下一动作是 exact-SHA 公共 CI。

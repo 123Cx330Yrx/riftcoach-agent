@@ -3392,3 +3392,19 @@ provider-native close/wakeup、模型一般能力、生产 streaming、G53-7、�
 `production_media=0` 均不变。当前下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`；
 没有新的独立授权前不再发送真实请求。
+
+### RQ-218/RQ-219：接受协议通过与候选 8192 超时的分层结论（2026-09-03）
+
+接受 RQ-218 的 G53-3 3/3 为普通 API/基础工具协议可达证据；接受 RQ-219 的单次候选
+8192 观察为 `fail_closed / elapsed_limit`，不把它升级为模型质量、账号权限或生产 streaming
+结论。候选保持 disabled/未注册，旧 Flash v1 的 2048/零额外调用合同、默认模型、AgentLoop、
+Portal、Account、Workbench、Auth、路由及 `production_media=0` 均不变。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / pending`；
+先完成 fake/fixture 的档位—终态—Usage—恢复拆分，再决定是否另立域门。
+
+### RQ-220：接受离线响应分层矩阵（2026-09-03）
+
+接受 9/9 零网络场景作为解释 RQ-219 的本地合同证据：正常 stop/tool_calls、候选
+`length`、缺/非法 Usage 与 elapsed timeout 各自保留独立状态；候选可识别不等于可执行。
+不修改严格 Flash v1、默认模型、产品 Runtime 或前端边界。当前出口是实现提交的
+exact-SHA 公共 CI，之后再决定是否另立真实候选域门。

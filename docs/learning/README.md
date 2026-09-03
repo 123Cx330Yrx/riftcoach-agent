@@ -713,3 +713,23 @@ close/wakeup、模型一般能力或生产 streaming。候选仍 disabled/未注
 planned，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和
 `production_media=0` 不变；当前精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`。
+
+### 2026-09-03：RQ-218/RQ-219 Flash 协议与候选 8192 响应完成度
+
+新增 [RQ-218/RQ-219 walkthrough](8e-glm53-protocol-and-candidate-timeout-walkthrough.md)、
+[ADR-0088](../adr/0088-record-glm53-flash-protocol-and-candidate-timeout.md) 和
+[计划/结果记录](../plans/2026-09-03-glm53-flash-protocol-and-candidate-timeout.md)。
+RQ-218 在最新实现上以精确 3 次调用完成 G53-3，A1/A2 均通过；RQ-219 只发送 1 次候选
+8192 primary，在 90 秒硬墙钟以 `fail_closed / elapsed_limit` 结束，未 recovery、retry
+或第二请求。学习重点是把“协议可达”和“长响应终态完成”拆开归因；候选、默认模型、产品
+Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。RQ-219 的
+公共 CI 在记录时仍待确认；下一步是零网络 fake/fixture 拆分。
+
+### 2026-09-03：RQ-220 响应档位—终态—恢复离线拆分
+
+新增 [RQ-220 walkthrough](8e-glm53-response-profile-terminal-recovery-split-walkthrough.md)、
+[ADR-0089](../adr/0089-adopt-offline-response-profile-terminal-recovery-split.md) 和
+[实施计划](../plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md)。
+9 个固定场景全部通过，明确区分正常终态、候选 `length` 形状、缺/非法 Usage 与超时；
+候选恢复动作仍被 activation gate 阻断，provider calls=0。公共 CI 完成前不把本地矩阵
+写成公共闭环或产品成熟度结论。

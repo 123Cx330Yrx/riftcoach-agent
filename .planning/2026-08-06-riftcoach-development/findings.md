@@ -5540,3 +5540,28 @@
 - 该样本把 RQ-215 的客户端竞态收敛为 `client_wakeup_clean`，但仍只回答本机受控客户端
   生命周期问题；provider-native close/wakeup、模型一般能力、生产 streaming、G53-7、
   黄金切片和 8F 仍未证实。候选、默认模型和产品链路边界保持不变。
+
+## 2026-09-03：RQ-218/RQ-219 Flash 协议与候选 8192 诊断
+
+- RQ-218 在实现 `aa22cea0daeb443b635706144ccbfa66185670c4` 上重新完成 G53-3，精确
+  3/3 通过；A1 结构化合同用时 `20234ms`，A2 工具往返用时 `14938ms`。回执 SHA 为
+  `feeb7fd7eec2643ca692bd6182fd94a04abed354b17b892029402c0217641e99`，对应证据提交
+  `4b6cd5807f40f6a8dd469f21c688be861261d20c` 的公共 CI 已闭环。
+- RQ-219 在同一公共绿灯身份上只发送 1 次候选 primary；8192 输出/90 秒硬墙钟在
+  `fail_closed / elapsed_limit` 收口，未执行 recovery、retry 或第二请求。回执 SHA 为
+  `21350d7883b4d2eea30e0467a7b8c23eed3a3ad5a9deeb309c44f8ded5cf3f84`；其提交的公共 CI
+  在记录时仍为 `in_progress`，不能提前视为公共通过。
+- 归因边界：G53-3 的协议可达与长响应的终态完成度必须分开。8192 超时不能直接归因于
+  模型质量、账号权限或 provider-native streaming；下一批先用 fake/fixture 独立观察
+  思考档位、流终态、Usage 尾帧和恢复决策。
+- 下一精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`。
+
+## 2026-09-03：RQ-220 响应档位—终态—恢复离线拆分
+
+- 新增离线矩阵 `app/evaluation/glm53_flash_response_profile_split.py`，只组合既有候选
+  observer 与 response policy；不构造 SDK client、不读环境 Key、不联网。
+- 9/9 fixture 通过：正常 stop/tool_calls、候选 `length` reasoning-only、部分正文、
+  缺/非法 Usage 与 elapsed timeout 的状态和安全码均按预期分开；候选恢复动作明确为
+  `blocked_activation`，没有第二调用。
+- 该结果只说明本地合同的归因能力；当前下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`。
