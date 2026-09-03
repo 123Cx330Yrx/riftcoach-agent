@@ -1302,3 +1302,14 @@ RQ-213 仍属于 8-Advanced 的 candidate-only 证据，不新增 8-Core 能力�
 Auth、路由与 `production_media=0` 不变。下一精确 checkpoint 改为
 `candidate-close-wakeup-follow-up-decision / pending-user-decision`；先裁决是否设计可稳定制造
 pending-read 的新版协议，不以重复真实请求替代实验设计。
+
+## 2026-09-03：RQ-214 transport gate 仍属 8-Advanced
+
+RQ-214 只新增 candidate-only、evaluation-only 的离线 SDK/HTTP transport gate 预检，继续遵守
+8-Core（product/deployment/compliance/eval/portfolio）与 8-Advanced 分层。预检通过真实本地
+OpenAI SDK/Zhipu 适配器对象链和 `MockTransport` 固定 pending-read，供应商调用数为 0、网络为 0；
+它不把 streaming、provider close/wakeup 或取消能力强塞进 8-Core，也不改变默认模型或产品 Runtime。
+
+预检发现本地并发 iterator close race，故把 reader 唤醒与关闭投影分列并保持未决，不静默宣称成功。
+下一步若获明确授权，最多执行一次官方 TLS transport 包装的真实观察；该证据仍只能说明本机
+受控响应停顿下的客户端行为，不能替代 provider-native、G53-7、黄金切片、生产部署或 8F。

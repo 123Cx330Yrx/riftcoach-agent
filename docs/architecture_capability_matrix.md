@@ -957,3 +957,16 @@ HTTP response 取消；候选仍 disabled/未注册，`capabilities.streaming=Fa
 Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。下一步为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`，
 先决定是否建立新版本实验协议。
+
+## RQ-214：candidate transport gate 预检边界（2026-09-03）
+
+新增的 `glm-5.3-flash-candidate-close-wakeup-transport-gate` 是 8E/8-Advanced 的
+evaluation-only seam，不是 A03/A10/Q02 或任何产品 Runtime capability。它使用真实 OpenAI
+SDK、候选 Zhipu 适配器和本机 `MockTransport`，固定两个 SSE 闸门阶段，供应商调用数为 0、
+`network_used=false`，并把 `reader_woke`、cancel、gate close 和 iterator close 分开投影。
+
+本地结果可观察到 response close 传到 transport 并唤醒读取器，但可能伴随并发 iterator close
+竞态；这不等于 provider-native close 非阻塞、服务端停止生成或生产 streaming 已可用。候选仍
+disabled/未注册，默认模型、产品 Runtime、AgentLoop、Portal、Account、Workbench、Auth、
+路由与 `production_media=0` 不变。下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`。

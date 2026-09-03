@@ -5750,3 +5750,19 @@
 - [boundary-next] 该样本仍不能证明或否定 provider close/wakeup；下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`。
   先等新版 pending-read 协议裁决，不自动追加真实请求、G53-7、黄金切片、生产准入或 8F。
+
+## 2026-09-03：RQ-214 候选 SDK/HTTP transport gate 离线预检
+
+- [decision] 采用 evaluation-only 的 `glm-5.3-flash-candidate-close-wakeup-transport-gate` / schema
+  `1.0.0`；通过真实 OpenAI SDK/Zhipu 候选适配器对象链注入本机 `MockTransport`，不把 fake 证据
+  写入 provider capability 目录。
+- [implemented-local] 新增 `app/evaluation/candidate_transport_gate.py`、离线回放脚本、聚焦测试、
+  ADR、计划和学习 walkthrough；两阶段均只产生一次内存 transport 请求，供应商调用数和网络连接数
+  均为 0。
+- [observed] 两阶段都能形成 pending reader，并在 response close 后唤醒；同时记录到适配器
+  iterator/composite close race，结论码为 `client_wakeup_close_race`，不把它改写成 clean success。
+- [verification-pending] 本地聚焦测试已通过；离线 receipt、治理检查和 exact-SHA 公共 CI 将在
+  实现提交后完成并回填身份。
+- [boundary-next] 公共闭环后唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`；
+  在新的明确一次性授权前不发真实请求、不注册候选、不改产品链路。

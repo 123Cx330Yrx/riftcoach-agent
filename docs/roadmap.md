@@ -1407,3 +1407,18 @@ close/wakeup 观察；当前下一精确 checkpoint 是 `candidate-close-wakeup-
 候选仍 disabled/未注册，8E/8F、G53-7、黄金切片、产品默认和 `production_media=0` 不变。当前下一精确
 checkpoint 改为 `candidate-close-wakeup-follow-up-decision / pending-user-decision`，先决定是否另立
 可稳定制造 pending-read 的新版协议。
+
+### RQ-214：候选 SDK/HTTP transport gate 离线预检（2026-09-03）
+
+RQ-214 继续属于 8E 的 8-Advanced candidate-only 证据，不新增或重排 8-Core 能力。它在真实
+OpenAI SDK、Zhipu 候选适配器和既有观察器对象链上使用本机 `MockTransport`，固定
+`after_first_event`、`before_first_event` 两个阶段；两阶段都形成 pending-read，并在 SDK
+response close 后唤醒读取器。离线 receipt 单独标记 `offline_sdk_transport_fixture`、0 provider
+calls、无网络，且只保存状态和 close/gate 投影。
+
+本地观察同时暴露适配器并发 iterator close race，因此“reader 已醒”和“关闭干净”分开记录，
+暂不把竞态静默改成成功。该预检不证明智谱服务端原生 close/wakeup、模型领域能力或生产
+streaming；候选仍 disabled/未注册，产品 Runtime、默认模型、Portal、Account、Workbench、
+Auth、路由与 `production_media=0` 不变。下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`，
+公共闭环后才可在一次性授权下发出最多 1 次官方 TLS transport 包装的真实请求。

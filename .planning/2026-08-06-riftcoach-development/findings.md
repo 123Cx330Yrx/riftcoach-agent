@@ -5468,3 +5468,20 @@
 - 第二次样本仍没有回答 provider close/wakeup 问题。重复同形状请求不会稳定制造 pending-read；若继续，
   应先另立能控制读取闸门的协议/实验，而不是无界消耗真实调用。候选 gate、产品 Runtime、默认模型、
   Portal、Account、Workbench、Auth、路由和 `production_media=0` 均保持不变。
+
+## 2026-09-03：RQ-214 SDK/HTTP transport gate 离线预检发现
+
+- 直接重复自然请求无法稳定制造 pending-read；本批改用本机 `MockTransport`，但仍走真实
+  OpenAI SDK、显式 Zhipu 候选适配器和既有观察器，因而可以把客户端读取生命周期与 provider
+  服务端行为分开。
+- 固定 SSE 帧边界的 `after_first_event`、`before_first_event` 两阶段都形成 pending reader；
+  response close 能唤醒读取器，transport stream 也看到下游关闭。回执只保留状态/布尔投影，
+  不保留正文、原始帧、请求头、异常文本或凭据。
+- 适配器在并发生成器关闭时暴露 `iterator=failed`、`sdk_stream=closed`、
+  `composite=failed` 的 close race；这不是 reader wake 失败，也不是 provider-native 结论，
+  当前不在评估预检中擅自改顺序。
+- 离线协议标记 `offline_sdk_transport_fixture`、`provider_call_count=0`、`network_used=false`，
+  与 provider capability 回执目录隔离。候选仍 disabled/未注册，产品 Runtime、默认模型、
+  AgentLoop、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
+- 下一精确 checkpoint 是 `candidate-transport-gated-real-observation / pending-user-authorization`；
+  公共 CI 闭环后才考虑一次受控的官方 TLS transport 包装真实请求。

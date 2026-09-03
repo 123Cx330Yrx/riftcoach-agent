@@ -633,3 +633,18 @@ SHA-256=`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`）；
 材料强调 `not_pending` 不是 wakeup 成功或失败，`closed` 也不等于底层 HTTP response 已取消；候选 gate、
 产品 Runtime、默认模型、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变，8E
 coverage 继续 `planned`。下一步先裁决是否设计能稳定制造 pending-read 的新版协议，不自动重复真实请求。
+
+### 2026-09-03：RQ-214 候选 SDK/HTTP transport gate 离线预检
+
+新增 [RQ-214 walkthrough](8e-glm53-candidate-transport-gate-precheck-walkthrough.md)、
+[ADR-0084](../adr/0084-adopt-candidate-transport-gate-precheck.md) 和
+[离线预检计划](../plans/2026-09-03-glm53-candidate-transport-gate-precheck.md)。这批在真实
+OpenAI SDK、显式 Zhipu 候选适配器和既有观察器对象链上接入本机 `MockTransport`，按完整 SSE
+帧边界固定 `after_first_event` 与 `before_first_event` 两个挂起读取阶段；不读取或保存响应正文。
+
+两阶段都观察到读取器被 response close 唤醒，但适配器并发 iterator 关闭可能出现
+`iterator=failed` / `composite=failed`，所以把“读取器醒来”和“关闭干净”分开记录为
+`client_wakeup_close_race`，没有静默修改适配器。回执保持 `offline_sdk_transport_fixture`、供应商
+调用数 0、无网络，候选仍未注册，8E coverage 继续 `planned`；这不是智谱服务端原生 close/wakeup
+或生产 streaming 证据。下一检查点是经公共闭环后，在一次性授权下最多发出 1 次官方 TLS transport
+包装的真实观测。

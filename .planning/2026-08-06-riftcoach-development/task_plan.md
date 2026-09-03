@@ -89,8 +89,8 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放与 RQ-213 的一次真实
 close/wakeup 观察均已完成；它们只证明本地分类和一次有限真实窗口的状态，不是 8E、领域采用或生产准入完成。
 RQ-211 的真实回执仍保持不可变，RQ-213 也不覆盖它。当前精确执行指针改为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`，
-先裁决是否设计能稳定制造 pending-read 的新版观察协议。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gate-offline-precheck / pending-evidence-commit`，
+先完成 SDK/HTTP 闸门离线预检与独立回执，再决定是否授权一次真实 transport-gated 观察。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -388,10 +388,10 @@ RQ-210 的本地实现与 exact-SHA 公共 CI 已完成，仍不注册候选或�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gate-offline-precheck / pending-evidence-commit`。
 RQ-212 离线回放已由提交 `1a32012d9dc6424aa012f160d48c8847e21b00ec` / Actions `33707313651` 完成 exact-SHA
-公共闭环；RQ-213 又完成一次新的真实观察并得到 `not_pending`。下一步先决定是否另立能稳定制造
-pending-read 的新版协议；不得自动追加真实 API 请求、注册候选、进入 G53-7/黄金切片，也不修改产品
+公共闭环；RQ-213 又完成一次新的真实观察并得到 `not_pending`。本批只固化零网络 SDK/HTTP 闸门预检，
+随后才进入一次性授权的真实 transport-gated 观察；不得自动注册候选、进入 G53-7/黄金切片，也不修改产品
 Runtime、Portal、Account、Workbench、Auth 或路由。
 
 `6B-6-preferences-profile-review-memory` 已由实现/最小测试修复 `5531c81` 与 Actions
@@ -2944,3 +2944,23 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   黄金切片和生产准入未开始。下一精确 checkpoint 改为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`，
   先裁决是否设计能稳定制造 pending-read 的新版协议。
+
+## RQ-214 / 候选 SDK/HTTP transport gate 离线预检（2026-09-03）
+
+- Status: complete-local; offline-only; client-close-race-observed; real-call-pending-user-authorization
+- [design] RQ-213 的两次真实样本均为 `not_pending`。本批比较自然长尾、适配器外 fake 和
+  SDK/HTTP 闸门三种方案，选择在真实 OpenAI SDK/Zhipu 候选适配器对象链上注入本机
+  `MockTransport`；闸门只按 SSE 帧边界暂停，不读取或保存正文。
+- [implemented-local] 新增 `app/evaluation/candidate_transport_gate.py`、离线脚本
+  `scripts/replay_glm53_flash_candidate_transport_gate.py` 与聚焦测试
+  `tests/test_candidate_transport_gate.py`。固定 `after_first_event` 与 `before_first_event`
+  两阶段，每阶段只发起一次内存 transport 请求，供应商调用数和网络连接数均为 0。
+- [observation] 两阶段都能形成 pending reader，并在 SDK response close 后唤醒；当前适配器的
+  并发生成器关闭投影可能为 `iterator=failed`、`sdk_stream=closed`、`composite=failed`，
+  因而独立结论码为 `client_wakeup_close_race`。这只描述本地客户端合同，不是 provider-native 结论，
+  暂不静默修改适配器关闭顺序。
+- [boundary-next] 离线预检闭环后，下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`；
+  只有新的明确一次性授权才可把 gate 包装到官方 TLS transport 上发出 1 次真实请求。候选仍
+  disabled/未注册，`capabilities.streaming=False`，默认模型、产品 Runtime、AgentLoop、Portal、
+  Account、Workbench、Auth、路由和 `production_media=0` 均不变。

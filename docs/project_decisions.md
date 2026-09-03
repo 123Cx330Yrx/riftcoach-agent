@@ -3314,3 +3314,20 @@ close 已证明。候选 gate、产品 Runtime、默认模型、Workbench、前�
 保持不变。下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`，
 先裁决是否另立能稳定制造 pending-read 的新版协议。
+
+### RQ-214：采用候选 SDK/HTTP transport gate 离线预检（2026-09-03）
+
+接受一个独立于 provider capability 的 evaluation-only transport-gate 协议
+`glm-5.3-flash-candidate-close-wakeup-transport-gate` / schema `1.0.0`。它在真实 OpenAI SDK、
+显式 Zhipu 候选适配器和既有观察器对象链上接入本机 `MockTransport`，在完整 SSE 帧边界暂停，
+分别覆盖 `after_first_event` 与 `before_first_event`；每阶段只允许一次内存请求。
+
+预检的结论拆成两层：response close 后 reader 确实被唤醒，但并发 iterator 关闭可能出现
+`client_wakeup_close_race`。因此不把本地 transport 结果当成智谱服务端原生能力，不在该预检中
+静默修复适配器，也不把它提升为候选注册或产品默认模型。回执必须标记
+`offline_sdk_transport_fixture`、`provider_call_count=0`、`network_used=false`，并保存在离线目录。
+
+公共闭环后，如需继续，只允许在一次性授权下用同一 gate 包装官方 TLS transport 发出最多 1 次
+真实候选请求；下一精确 checkpoint 为
+`candidate-transport-gated-real-observation / pending-user-authorization`。Portal、Account、
+Workbench、Auth、路由、AgentLoop 和 `production_media=0` 均不变。

@@ -4196,3 +4196,21 @@ PostgreSQL `201 passed, 1 warning`。该修复只让持久 body-free 回执可�
 - `BOUNDARY-NEXT`：候选/产品边界不变。下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`；
   先裁决是否设计能稳定制造 pending-read 的新版协议，不自动追加真实请求。
+
+### 2026-09-03：RQ-214 候选 SDK/HTTP transport gate 离线预检
+
+- `DESIGN`：RQ-213 的两次真实样本都为 `not_pending`。比较自然长尾、适配器外 fake 和
+  SDK/HTTP 闸门后，选择在真实 OpenAI SDK/Zhipu 候选适配器对象链上注入本机
+  `MockTransport`；闸门只按完整 SSE 帧边界暂停。
+- `IMPLEMENTATION/EVIDENCE-SEPARATION`：新增独立 transport-gate 模块、脚本和测试，
+  固定 `after_first_event`、`before_first_event` 两阶段；每阶段 1 次内存 transport 请求，
+  回执使用独立 schema、`offline_sdk_transport_fixture`、0 provider calls 和 no network，
+  不保存正文、Key、headers、request ID 或异常文本。
+- `OBSERVATION`：两阶段均形成 pending reader，并在 SDK response close 后唤醒；当前适配器
+  并发关闭生成器的投影可能为 `iterator=failed`、`sdk_stream=closed`、`composite=failed`，
+  单独标记 `client_wakeup_close_race`。这只是本地客户端事实，不是 provider-native 结论，
+  本批不静默修复关闭顺序。
+- `BOUNDARY-NEXT`：离线回执提交并取得同 SHA 公共 CI 后，下一精确项为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`；
+  只有新的明确一次性授权才执行最多 1 次官方 TLS transport 包装的真实请求，不重试、
+  不 recovery、不注册候选、不改产品 Runtime/Workbench/前端或 `production_media=0`。
