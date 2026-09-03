@@ -1376,11 +1376,16 @@ close/wakeup、模型一般能力、生产 streaming、G53-7、黄金切片或 8
 按 v1.3 的 8-Core/8-Advanced 分层，RQ-218 的 G53-3 3/3 通过只属于协议身份观察；
 RQ-219 的候选 8192 单次真实流在 90 秒以 `fail_closed / elapsed_limit` 收口，只属于
 8-Advanced candidate-only 诊断。两者均不改变 8-Core、8E→8F 顺序、默认模型或产品 Runtime。
-RQ-219 公共 CI 仍待确认；下一步固定为零网络的思考档位、流终态、Usage 尾帧和恢复决策拆分，
-checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / pending`。
+RQ-219 的证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 已取得 Actions `33735717434`
+三 job exact-SHA 全绿；下一步固定为零网络的思考档位、流终态、Usage 尾帧和恢复决策拆分，
+checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。
 
 ## RQ-220：响应完成策略的离线分层（2026-09-03）
 
 RQ-220 属于 8-Advanced 的 evaluation-only 实现：9 个 fake/fixture 场景把请求档位、
-terminal/EOF、Usage 和 recovery action 分开验证，provider calls=0。它不增加 8-Core、
-不改变 8E→8F 顺序，也不把候选提升为默认模型；实现 exact-SHA 公共 CI 仍是当前出口。
+terminal/EOF、Usage 和 recovery action 分开验证，provider calls=0。实现提交
+`14254048f6ad2faea5c7b15801e5c7c11e0ceba4` / Actions `33738050233` 与回执提交
+`ebb09a525b3340f31ba71821b894b4a142dfb4e7` / Actions `33738673832` 均三 job exact-SHA
+全绿，回执 SHA-256=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`。
+它不增加 8-Core、不改变 8E→8F 顺序，也不把候选提升为默认模型；当前进入候选域门裁决，
+不自动追加真实请求。

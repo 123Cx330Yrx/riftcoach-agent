@@ -723,13 +723,17 @@ RQ-218 在最新实现上以精确 3 次调用完成 G53-3，A1/A2 均通过；R
 8192 primary，在 90 秒硬墙钟以 `fail_closed / elapsed_limit` 结束，未 recovery、retry
 或第二请求。学习重点是把“协议可达”和“长响应终态完成”拆开归因；候选、默认模型、产品
 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。RQ-219 的
-公共 CI 在记录时仍待确认；下一步是零网络 fake/fixture 拆分。
+证据提交 Actions `33735717434` 三 job 已 `completed/success`；下一步是零网络 fake/fixture 拆分。
 
 ### 2026-09-03：RQ-220 响应档位—终态—恢复离线拆分
 
 新增 [RQ-220 walkthrough](8e-glm53-response-profile-terminal-recovery-split-walkthrough.md)、
 [ADR-0089](../adr/0089-adopt-offline-response-profile-terminal-recovery-split.md) 和
 [实施计划](../plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md)。
-9 个固定场景全部通过，明确区分正常终态、候选 `length` 形状、缺/非法 Usage 与超时；
-候选恢复动作仍被 activation gate 阻断，provider calls=0。公共 CI 完成前不把本地矩阵
-写成公共闭环或产品成熟度结论。
+9 个固定场景全部通过，相关聚焦回归为 `133 passed`，明确区分正常终态、候选 `length` 形状、
+缺/非法 Usage 与超时；候选恢复动作仍被 activation gate 阻断，provider calls=0。
+实现提交 `14254048f6ad2faea5c7b15801e5c7c11e0ceba4` / Actions `33738050233` 与回执提交
+`ebb09a525b3340f31ba71821b894b4a142dfb4e7` / Actions `33738673832` 均三 job
+`completed/success`，回执 SHA-256=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`。
+该公共闭环只证明评测实现可复现，不是产品成熟度或候选准入；当前 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。

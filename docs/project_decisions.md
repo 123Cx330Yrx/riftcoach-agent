@@ -3406,5 +3406,8 @@ Portal、Account、Workbench、Auth、路由及 `production_media=0` 均不变�
 
 接受 9/9 零网络场景作为解释 RQ-219 的本地合同证据：正常 stop/tool_calls、候选
 `length`、缺/非法 Usage 与 elapsed timeout 各自保留独立状态；候选可识别不等于可执行。
-不修改严格 Flash v1、默认模型、产品 Runtime 或前端边界。当前出口是实现提交的
-exact-SHA 公共 CI，之后再决定是否另立真实候选域门。
+不修改严格 Flash v1、默认模型、产品 Runtime 或前端边界。实现提交
+`14254048f6ad2faea5c7b15801e5c7c11e0ceba4` / Actions `33738050233` 与回执提交
+`ebb09a525b3340f31ba71821b894b4a142dfb4e7` / Actions `33738673832` 均三 job exact-SHA
+全绿；回执 SHA-256=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`。
+当前进入候选域门裁决，不自动追加真实请求。

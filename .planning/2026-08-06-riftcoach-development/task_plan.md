@@ -96,7 +96,7 @@ RQ-217 又在 RQ-216 的文档/证据闭环 SHA `3e028b1217f1274152ba161993287f2
 transport-gated 请求，得到 `client_wakeup_clean`；RQ-218 的 G53-3 在最新实现上 3/3
 通过，RQ-219 的候选 8192 单次真实流在 90 秒硬墙钟以 `fail_closed / elapsed_limit`
 收口。当前精确执行指针改为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -394,7 +394,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。
 RQ-217 的真实回执绑定实现/观察器/输入计划提交
 `3e028b1217f1274152ba161993287f29188a1b73`，文件为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`，
@@ -3032,7 +3032,13 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   脱敏回执 SHA=`feeb7fd7eec2643ca692bd6182fd94a04abed354b17b892029402c0217641e99`。
 - [RQ-219] 候选 8192/90 秒真实诊断只发送 1 次 primary，结果为
   `fail_closed / elapsed_limit`，回执 SHA=`21350d7883b4d2eea30e0467a7b8c23eed3a3ad5a9deeb309c44f8ded5cf3f84`；
-  证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 的公共 CI 当时仍在运行，未提前宣称通过。
+  证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 的 Actions `33735717434`
+  已三 job `completed/success`。
+- [RQ-220] 零网络 fake/fixture 拆分固定 9 场景全部通过；实现提交
+  `14254048f6ad2faea5c7b15801e5c7c11e0ceba4` / Actions `33738050233` 与回执提交
+  `ebb09a525b3340f31ba71821b894b4a142dfb4e7` / Actions `33738673832` 均三 job
+  exact-SHA `completed/success`。回执 SHA=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`，
+  provider calls=0、network=false。
 - [next] 下一精确 checkpoint 为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`；
-  零网络 fake/fixture 拆分已经完成，下一动作是同 SHA 公共 CI，不自动追加真实请求。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`；
+  不自动追加真实请求。

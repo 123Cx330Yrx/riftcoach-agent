@@ -1035,12 +1035,17 @@ checkpoint 为
 
 RQ-218 的 3/3 G53-3 只为普通 API/基础工具协议增加可达性证据；RQ-219 的候选 8192
 真实观察在 90 秒以 `fail_closed / elapsed_limit` 结束，未授予任何新的产品能力矩阵项。
+RQ-219 证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 的 Actions `33735717434`
+三 job exact-SHA 已全绿。
 候选仍 disabled/未注册，`capabilities.streaming=False`，严格 Flash v1 与默认模型不变；
-当前下一精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / pending`。
+当前下一精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。
 
 ## RQ-220：Flash 响应分层评测能力边界（2026-09-03）
 
 新增的 9 场景离线矩阵仅验证现有 response policy 与候选 stream observer 的组合归因，
 不授予新的 A/Q 能力项；provider calls=0、network=false，候选仍 disabled/未注册，
-`capabilities.streaming=False`。当前 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`。
+`capabilities.streaming=False`。实现提交 `14254048f6ad2faea5c7b15801e5c7c11e0ceba4` /
+Actions `33738050233` 与回执提交 `ebb09a525b3340f31ba71821b894b4a142dfb4e7` /
+Actions `33738673832` 均三 job exact-SHA 全绿；回执 SHA-256=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`。
+当前 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。

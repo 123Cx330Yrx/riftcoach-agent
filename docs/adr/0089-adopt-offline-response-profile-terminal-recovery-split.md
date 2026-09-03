@@ -1,7 +1,7 @@
 # ADR-0089：采用 Flash 响应档位—终态—恢复离线拆分
 
 - 日期：2026-09-03
-- 状态：`implementation-complete-local / candidate-only / public-ci-pending`
+- 状态：`completed-public / candidate-only / next-decision-pending`
 - 范围：Stage 8 / 8E；RQ-220
 
 ## 背景
@@ -30,7 +30,11 @@ normalized-event 与 policy snapshot fixtures，复用已有 `CandidateStreamBou
 
 ## 验证与下一步
 
-本地矩阵 9/9 场景通过，相关策略/恢复/候选流聚焦回归通过；脚本只能写入
+本地矩阵 9/9 场景通过，相关策略/恢复/候选流聚焦回归为 `133 passed`；脚本只能写入
 `data/evaluation/results/offline/`，且回执为 `offline_fixture`、provider calls=0。
-实现提交的 exact-SHA 公共 CI 完成后，才可把本批标为公共闭环；下一步再审查是否需要
-新的候选真实域门，不自动追加真实请求。
+实现提交 `14254048f6ad2faea5c7b15801e5c7c11e0ceba4` 的 Actions `33738050233`，以及
+只新增回执的提交 `ebb09a525b3340f31ba71821b894b4a142dfb4e7` 的 Actions `33738673832`
+均三 job exact-SHA `completed/success`。最终回执为
+`data/evaluation/results/offline/zhipu_glm53_flash_response_profile_terminal_recovery_split_rq220_v1.json`
+（6209 bytes，SHA-256=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`）。
+这只关闭本批公共可复现性；下一步再审查是否需要新的候选真实域门，不自动追加真实请求。

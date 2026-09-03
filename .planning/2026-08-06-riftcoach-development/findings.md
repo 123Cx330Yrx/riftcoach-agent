@@ -5549,12 +5549,12 @@
   `4b6cd5807f40f6a8dd469f21c688be861261d20c` 的公共 CI 已闭环。
 - RQ-219 在同一公共绿灯身份上只发送 1 次候选 primary；8192 输出/90 秒硬墙钟在
   `fail_closed / elapsed_limit` 收口，未执行 recovery、retry 或第二请求。回执 SHA 为
-  `21350d7883b4d2eea30e0467a7b8c23eed3a3ad5a9deeb309c44f8ded5cf3f84`；其提交的公共 CI
-  在记录时仍为 `in_progress`，不能提前视为公共通过。
+  `21350d7883b4d2eea30e0467a7b8c23eed3a3ad5a9deeb309c44f8ded5cf3f84`；证据提交的 Actions
+  run `33735717434` 已 `completed/success`，三 job exact-SHA 公共闭环完成。
 - 归因边界：G53-3 的协议可达与长响应的终态完成度必须分开。8192 超时不能直接归因于
   模型质量、账号权限或 provider-native streaming；下一批先用 fake/fixture 独立观察
   思考档位、流终态、Usage 尾帧和恢复决策。
-- 下一精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`。
+- 下一精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。
 
 ## 2026-09-03：RQ-220 响应档位—终态—恢复离线拆分
 
@@ -5563,5 +5563,9 @@
 - 9/9 fixture 通过：正常 stop/tool_calls、候选 `length` reasoning-only、部分正文、
   缺/非法 Usage 与 elapsed timeout 的状态和安全码均按预期分开；候选恢复动作明确为
   `blocked_activation`，没有第二调用。
-- 该结果只说明本地合同的归因能力；当前下一精确 checkpoint 为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`。
+- 该结果只说明本地合同的归因能力。实现提交 `14254048f6ad2faea5c7b15801e5c7c11e0ceba4` /
+  Actions `33738050233` 与回执提交 `ebb09a525b3340f31ba71821b894b4a142dfb4e7` /
+  Actions `33738673832` 均三 job `completed/success`；回执为 `6209` bytes、SHA-256
+  `32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`，provider calls=0、
+  network=false。当前下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。

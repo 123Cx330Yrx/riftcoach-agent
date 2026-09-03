@@ -5831,7 +5831,8 @@
 - [RQ-219] 候选 `glm-5.3-flash-runtime-v2-candidate/2.0.0` 使用 8192 输出、Agent 90 秒、
   传输 120 秒、retries=0，只发 1 次 primary；结果为 `fail_closed / elapsed_limit`，
   未 recovery、retry 或第二请求，回执 SHA=`21350d7883b4d2eea30e0467a7b8c23eed3a3ad5a9deeb309c44f8ded5cf3f84`。
-  证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 的公共 CI 在记录时仍 `in_progress`。
+  证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 的 Actions `33735717434` 已三 job
+  `completed/success`。
 - [boundary] 候选仍 disabled/未注册，严格 Flash v1 仍 2048/零额外调用，
   `capabilities.streaming=False`；默认模型、产品 Runtime、Portal、Account、Workbench、
   Auth、路由和 `production_media=0` 不变。两条回执均 body-free。
@@ -5843,9 +5844,12 @@
 
 - [implemented-local] 新增离线 fixture 矩阵、只读 CLI、create-only receipt 和聚焦测试；
   复用 `CandidateStreamBoundaryObserver`、严格 Flash policy 与候选 policy。
-- [verification-local] 9/9 场景通过，相关集合 `109 passed`；compileall、`git diff --check`、
+- [verification-local] 9/9 场景通过，相关集合 `133 passed`；compileall、`git diff --check`、
   governance 通过，provider calls=0/network=false。候选 `length` 命中只记录
   `candidate_eligible`，activation 仍阻断恢复。
+- [completed-public] 实现提交 `14254048f6ad2faea5c7b15801e5c7c11e0ceba4` / Actions
+  `33738050233` 与回执提交 `ebb09a525b3340f31ba71821b894b4a142dfb4e7` / Actions
+  `33738673832` 均三 job exact-SHA `completed/success`；最终回执 SHA-256=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`。
 - [boundary-next] 当前唯一精确 checkpoint 为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`；
-  下一动作是 exact-SHA 公共 CI。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`；
+  不自动追加真实请求。

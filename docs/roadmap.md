@@ -1499,13 +1499,17 @@ RQ-218 在实现 `aa22cea0daeb443b635706144ccbfa66185670c4` 上重新完成 G53-
 RQ-219 只发送 1 次候选 `glm-5.3-flash-runtime-v2-candidate/2.0.0` primary，8192 输出、
 Agent 90 秒、传输 120 秒、retries=0；在 90 秒硬墙钟以 `fail_closed / elapsed_limit`
 收口，未执行 recovery、retry 或第二请求。回执 SHA=`21350d7883b4d2eea30e0467a7b8c23eed3a3ad5a9deeb309c44f8ded5cf3f84`，
-证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 的公共 CI 在记录时仍待确认。
+证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 的 Actions `33735717434` 三 job
+已 `completed/success`。
 这两条仍是 8E/8-Advanced candidate-only 证据，不提升 8-Core 或产品默认；当前下一精确
-checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / pending`。
+checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。
 
 ### RQ-220：Flash 响应档位—终态—恢复离线拆分（2026-09-03）
 
 新增零网络评测矩阵，固定比较 low/max、2048/8192、`clear_thinking`、流终态、Usage
 尾帧和候选恢复判定。9/9 场景本地通过；候选 `length` 形状只得到可识别结果，activation
-仍阻断恢复。该批不新增 8-Core 能力、不注册候选、不改变默认模型或产品模块；当前下一
-精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`。
+仍阻断恢复。实现提交 `14254048f6ad2faea5c7b15801e5c7c11e0ceba4` 的 Actions
+`33738050233`，以及回执提交 `ebb09a525b3340f31ba71821b894b4a142dfb4e7` 的 Actions
+`33738673832` 均三 job `completed/success`；回执 SHA-256=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`。
+该批不新增 8-Core 能力、不注册候选、不改变默认模型或产品模块；当前下一精确 checkpoint
+为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。

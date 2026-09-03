@@ -4287,7 +4287,8 @@ Runtime、Portal、Account、Workbench、Auth、路由与 `production_media=0` �
   回执 SHA=`feeb7fd7eec2643ca692bd6182fd94a04abed354b17b892029402c0217641e99`。
 - `OBSERVATION`：RQ-219 只发 1 次候选 8192 primary，在 90 秒硬墙钟以
   `fail_closed / elapsed_limit` 收口；回执 SHA=`21350d7883b4d2eea30e0467a7b8c23eed3a3ad5a9deeb309c44f8ded5cf3f84`。
-  证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 的公共 CI 在记录时仍 pending。
+  证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 的 Actions `33735717434` 三 job
+  已 `completed/success`。
 - `BOUNDARY-NEXT`：候选保持 disabled/未注册，严格 Flash v1、默认模型和产品链路不变；
   当前唯一 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / pending`，
   先做零网络档位、终态、Usage 与恢复决策拆分，不重复真实请求。
@@ -4297,6 +4298,9 @@ Runtime、Portal、Account、Workbench、Auth、路由与 `production_media=0` �
 - `IMPLEMENTED-LOCAL`：新增固定 9 场景的零网络矩阵与 body-free receipt，复用候选
   stream observer、严格 policy 和 candidate policy；9/9 通过，provider calls=0。
 - `BOUNDARY-NEXT`：该批只增加评测归因能力，候选仍 disabled/未注册，严格 Flash v1 和
-  产品链路不变；当前 checkpoint 为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`，
-  下一动作是 exact-SHA 公共 CI。
+  产品链路不变；实现提交 `14254048f6ad2faea5c7b15801e5c7c11e0ceba4` / Actions
+  `33738050233` 与回执提交 `ebb09a525b3340f31ba71821b894b4a142dfb4e7` / Actions
+  `33738673832` 均三 job `completed/success`，回执 SHA-256=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`。
+  当前 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`，
+  下一动作是候选域门裁决，不自动追加真实请求。

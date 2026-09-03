@@ -17,11 +17,14 @@
 
 9/9 场景通过：正常 stop 与 tool_calls 可交付；`length` 的 reasoning-only 形状在候选
 策略下可识别但恢复被 activation gate 阻断；部分正文、缺/非法 Usage 和 elapsed timeout
-均保持 fail-closed。聚焦集合为 `109 passed`，compileall、`git diff --check` 和治理
+均保持 fail-closed。聚焦集合为 `133 passed`，compileall、`git diff --check` 和治理
 检查通过。矩阵 provider calls=0、network=false。
 
 ## 退出条件与下一步
 
-实现提交需取得 exact-SHA 公共 CI；公共见证前状态为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-local / pending-public-ci`。
-公共闭环后再决定是否建立新的真实候选域门；不得因为离线矩阵通过而注册候选或切换默认模型。
+实现提交 `14254048f6ad2faea5c7b15801e5c7c11e0ceba4` 的 Actions `33738050233`，以及回执提交
+`ebb09a525b3340f31ba71821b894b4a142dfb4e7` 的 Actions `33738673832` 均三 job
+exact-SHA `completed/success`。回执为 `6209` bytes、SHA-256=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`。
+当前状态为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。
+公共闭环只关闭本地实现的可复现性；下一步再决定是否建立新的真实候选域门，不得因为离线矩阵通过而注册候选或切换默认模型。
