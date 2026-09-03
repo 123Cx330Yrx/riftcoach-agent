@@ -25,11 +25,12 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 [8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
 该记录不把 8E coverage、领域采用或生产成熟度标为完成。
 
-> 当前学习指针（2026-09-03，RQ-212）：先阅读 [候选 close/wakeup 离线回放 walkthrough](8e-glm53-candidate-close-wakeup-replay-walkthrough.md)、
-> [ADR-0082](../adr/0082-adopt-offline-candidate-close-wakeup-replay.md) 与 [离线回放计划](../plans/2026-09-03-glm53-candidate-close-wakeup-replay.md)。
-> 这批只验证本地五场景分类和证据隔离，回执为 `offline_fake`、供应商调用数 `0`；当前 checkpoint 是
-> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`，
-> 8E coverage 仍 planned，真实 provider close/wakeup、候选注册、G53-7、黄金切片和 8F 均未进入。
+> 当前学习指针（2026-09-03，RQ-215）：先阅读 [候选 transport-gated 真实观察 walkthrough](8e-glm53-candidate-transport-gate-real-observation-walkthrough.md)、
+> [ADR-0085](../adr/0085-record-candidate-transport-gated-real-observation.md) 与 [观察计划](../plans/2026-09-03-glm53-candidate-transport-gate-real-observation.md)。
+> 这批只记录一次真实流启动后本机受控停顿下的客户端行为：pending reader 被唤醒但出现
+> `client_wakeup_close_race`；当前 checkpoint 是
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`，
+> 8E coverage 仍 planned，provider-native close/wakeup、候选注册、G53-7、黄金切片和 8F 均未进入。
 
 ## 2. 建议怎样学习每一个能力
 
@@ -655,3 +656,19 @@ RQ-214 离线回执已绑定实现提交 `4c220c5751288ad77c589d2e0e581690085803
 canonical round-trip 通过，三份身份 SHA 相同。该提交的同 SHA 公共 CI run `33712055286` 三 job 全绿：
 pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，
 packaging-smoke 通过。
+
+### 2026-09-03：RQ-215 候选 transport-gated 一次真实观察
+
+新增 [RQ-215 真实观察 walkthrough](8e-glm53-candidate-transport-gate-real-observation-walkthrough.md)、
+[ADR-0085](../adr/0085-record-candidate-transport-gated-real-observation.md) 和
+[观察计划](../plans/2026-09-03-glm53-candidate-transport-gate-real-observation.md)。在 RQ-214
+离线闸门和同 SHA 公共 CI 后，本批只发出 1 次真实 `zhipu/glm-5.3-flash` 请求；官方 TLS
+transport 外层 gate 进入，pending reader 在 `31ms` 内被 response close 唤醒。
+
+取消抛出安全码 `zhipu_stream_close`，iterator/composite close 投影为 `failed`、SDK stream
+为 `closed`，所以结论是 `client_wakeup_close_race`。这只说明真实流启动后本机受控停顿下的
+客户端行为，不是 provider-native close/wakeup 或生产 streaming 证据。回执保持 body-free，
+路径为 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq215_v1.json`，
+大小 `1305` bytes、SHA-256=`732e870bbb0163d354006434c091bd7f15773ffa4e041b25edfc2a5d17739e59`。
+候选仍 disabled/未注册，8E coverage 继续 `planned`；当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。

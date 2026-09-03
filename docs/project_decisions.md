@@ -3336,3 +3336,18 @@ RQ-214 离线回执已绑定实现提交 `4c220c5751288ad77c589d2e0e581690085803
 `data/evaluation/results/offline/zhipu_glm53_flash_candidate_transport_gate_rq214_v1.json`，
 `1693` bytes、SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`；
 同 SHA Actions run `33712055286` 三 job 全绿：pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`；PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过。
+### RQ-215：接受一次 transport-gated 真实观察，但不接受生产能力结论（2026-09-03）
+
+接受在 RQ-214 离线预检和 exact-SHA 公共 CI 后，以实现/观察器/输入计划身份
+`2acdf795881733e70c9246c48f7147d5136821b5` 只发送 1 次真实 `zhipu/glm-5.3-flash` 请求；
+SDK/HTTPX retries=0、父进程 30 秒、阶段 `before_first_event`，无 retry、recovery 或第二请求。
+官方 TLS transport 外层 gate 进入，pending reader 形成并在 `31ms` 内唤醒；取消安全码为
+`zhipu_stream_close`，iterator/composite 为 `failed`、SDK stream 为 `closed`，因此接受的结论
+仅为 `client_wakeup_close_race`。
+
+回执 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq215_v1.json`
+为 `1305` bytes、SHA-256=`732e870bbb0163d354006434c091bd7f15773ffa4e041b25edfc2a5d17739e59`，
+保持 body-free。该结果只描述真实流启动后本机受控停顿下的客户端行为，不证明 provider-native
+close/wakeup、模型一般能力、候选注册或生产 streaming。候选 gate、默认模型、产品 Runtime、
+Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变；下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。

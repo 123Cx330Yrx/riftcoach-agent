@@ -86,11 +86,12 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放与 RQ-213 的一次真实
-close/wakeup 观察均已完成；它们只证明本地分类和一次有限真实窗口的状态，不是 8E、领域采用或生产准入完成。
-RQ-211 的真实回执仍保持不可变，RQ-213 也不覆盖它。当前精确执行指针改为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`，
-SDK/HTTP 闸门离线预检与独立回执已完成；同 SHA 公共 CI run `33712055286` 三 job 全绿，之后才决定是否授权一次真实 transport-gated 观察。
+当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
+close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
+观察均已完成；这些证据只描述客户端观察合同，不是 8E、领域采用或生产准入完成。RQ-211～214
+的历史回执保持不可变。RQ-215 在同 SHA 公共 CI run `33721483490` 三 job 全绿后只发出 1 次
+真实请求，当前精确执行指针改为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -388,12 +389,14 @@ RQ-210 的本地实现与 exact-SHA 公共 CI 已完成，仍不注册候选或�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`。
-RQ-212 离线回放已由提交 `1a32012d9dc6424aa012f160d48c8847e21b00ec` / Actions `33707313651` 完成 exact-SHA
-公共闭环；RQ-213 又完成一次新的真实观察并得到 `not_pending`。RQ-214 离线回执已生成并绑定实现提交
-`4c220c5751288ad77c589d2e0e581690085803c0`，文件为 `data/evaluation/results/offline/zhipu_glm53_flash_candidate_transport_gate_rq214_v1.json`，
-`1693` bytes、SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`；同 SHA 公共 CI run `33712055286` 三 job 全绿（pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`；PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过）。
-随后才进入一次性授权的真实 transport-gated 观察；不得自动注册候选、进入 G53-7/黄金切片，也不修改产品
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。
+RQ-215 的真实回执已生成并绑定实现/观察器/输入计划提交
+`2acdf795881733e70c9246c48f7147d5136821b5`，文件为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq215_v1.json`，
+`1305` bytes、SHA-256=`732e870bbb0163d354006434c091bd7f15773ffa4e041b25edfc2a5d17739e59`；
+同 SHA 公共 CI run `33721483490` 三 job 全绿（pytest `2296 passed, 145 skipped, 2 warnings, 127 subtests passed`；
+PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过）。结果为真实流启动后 gate 进入、pending reader
+被唤醒，但出现 `client_wakeup_close_race`；不得自动注册候选、进入 G53-7/黄金切片，也不修改产品
 Runtime、Portal、Account、Workbench、Auth 或路由。
 
 `6B-6-preferences-profile-review-memory` 已由实现/最小测试修复 `5531c81` 与 Actions
@@ -2965,4 +2968,29 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`；
   只有新的明确一次性授权才可把 gate 包装到官方 TLS transport 上发出 1 次真实请求。候选仍
   disabled/未注册，`capabilities.streaming=False`，默认模型、产品 Runtime、AgentLoop、Portal、
+  Account、Workbench、Auth、路由和 `production_media=0` 均不变。
+
+## RQ-215 / 候选 transport-gated 一次真实观察（2026-09-03）
+
+- Status: complete-bounded-real; candidate-only; client-wakeup-close-race; pending-next-decision
+- [authorized-next-substage] 在 RQ-214 离线回执和同 SHA 公共 CI 完成后，用户“继续”授权本批只执行
+  一次真实观察；不重试、不 recovery、不发送第二请求、不注册候选、不改产品链路。
+- [evidence] 实现、观察器和输入计划身份均为
+  `2acdf795881733e70c9246c48f7147d5136821b5`；Actions run `33721483490` 三 job exact-SHA 全绿，
+  公共 pytest `2296 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，
+  packaging-smoke 通过。真实回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq215_v1.json`，
+  `1305` bytes、SHA-256=`732e870bbb0163d354006434c091bd7f15773ffa4e041b25edfc2a5d17739e59`。
+- [observed] `provider_call_count=1`、`transport_request_count=1`、`network_used=true`；
+  `gate_entered=true`、`pending_reader_observed=true`、`reader_woke=true`，唤醒耗时 `31ms`，
+  `upstream_event_seen=true`、`upstream_stream_close_seen=true`。取消状态为 `raised`、安全错误码
+  `zhipu_stream_close`；close report 为 `iterator=failed`、`sdk_stream=closed`、`composite=failed`、
+  `shared_resource=false`，结论为 `client_wakeup_close_race`。
+- [interpretation] 这证明真实流启动后、本机受控首帧前停顿下的客户端 reader 唤醒路径可被观察，
+  同时暴露本地关闭竞态；不证明 provider-native close/wakeup、底层 HTTP response 独立可取消、
+  模型一般能力或生产 streaming。回执 body-free 且 canonical round-trip 通过。
+- [boundary-next] 当前唯一精确 checkpoint 改为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`；
+  后续修复关闭顺序、拆分 provider response 取消或新的真实请求需另立证据版本并取得明确授权。候选
+  仍 disabled/未注册，`capabilities.streaming=False`，默认模型、产品 Runtime、AgentLoop、Portal、
   Account、Workbench、Auth、路由和 `production_media=0` 均不变。

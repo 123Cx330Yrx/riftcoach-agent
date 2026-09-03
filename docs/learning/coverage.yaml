@@ -924,6 +924,9 @@ groups:
         - docs/adr/0084-adopt-candidate-transport-gate-precheck.md
         - docs/plans/2026-09-03-glm53-candidate-transport-gate-precheck.md
         - docs/learning/8e-glm53-candidate-transport-gate-precheck-walkthrough.md
+        - docs/adr/0085-record-candidate-transport-gated-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-real-observation.md
+        - docs/learning/8e-glm53-candidate-transport-gate-real-observation-walkthrough.md
       design_and_implementation:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md

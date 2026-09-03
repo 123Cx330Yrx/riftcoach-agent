@@ -1317,3 +1317,19 @@ OpenAI SDK/Zhipu 适配器对象链和 `MockTransport` 固定 pending-read，供
 本地回执已固定在实现提交 `4c220c5751288ad77c589d2e0e581690085803c0`（`1693` bytes，
 SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`）；同 SHA Actions
 `33712055286` 三 job 全绿（pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`；PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过），8E coverage 继续 `planned`。
+## 2026-09-03：RQ-215 transport-gated 真实观察仍属 8-Advanced
+
+RQ-215 在 RQ-214 离线预检和同 SHA 公共 CI 后，只执行 1 次真实
+`zhipu/glm-5.3-flash` 请求。实现/观察器/输入计划身份为
+`2acdf795881733e70c9246c48f7147d5136821b5`，Actions `33721483490` 三 job exact-SHA 全绿；
+pytest `2296 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，
+packaging-smoke 通过。官方 TLS transport 外层 gate 已进入，pending reader 在 `31ms` 内被
+response close 唤醒，但取消安全码为 `zhipu_stream_close`，iterator/composite 关闭投影为
+`failed`、SDK stream 为 `closed`，结论为 `client_wakeup_close_race`。
+
+该结果仍是 8-Advanced 的 candidate-only/evaluation-only 客户端证据，不新增 8-Core
+(product/deployment/compliance/eval/portfolio) 能力；不证明 provider-native close/wakeup、
+模型一般能力或生产 streaming。候选仍 disabled/未注册，默认模型、产品 Runtime、Portal、
+Account、Workbench、Auth、路由和 `production_media=0` 不变。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`；
+后续修复关闭顺序或新的真实请求必须另立证据版本并重新授权。

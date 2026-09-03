@@ -5771,3 +5771,21 @@
 - [boundary-next] 公共闭环后唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`；
   在新的明确一次性授权前不发真实请求、不注册候选、不改产品链路。
+## 2026-09-03：RQ-215 候选 transport-gated 一次真实观察
+
+- [authorized-next-substage] RQ-214 离线回执和同 SHA 公共 CI 完成后，用户“继续”授权本批只执行
+  一次真实观察；没有 retry、recovery、第二请求、候选注册或产品接线。
+- [evidence] 在实现/观察器/输入计划身份
+  `2acdf795881733e70c9246c48f7147d5136821b5` 上，Actions `33721483490` 三 job exact-SHA 全绿：
+  pytest `2296 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，
+  packaging-smoke 通过。真实回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq215_v1.json`，
+  `1305` bytes、SHA-256=`732e870bbb0163d354006434c091bd7f15773ffa4e041b25edfc2a5d17739e59`。
+- [observed] `provider_call_count=1`、`transport_request_count=1`、`network_used=true`；官方 TLS 外层
+  gate 进入，pending reader 形成并在 `31ms` 内唤醒，`upstream_event_seen=true`、
+  `upstream_stream_close_seen=true`。取消抛出安全码 `zhipu_stream_close`，iterator/composite
+  为 `failed`、SDK stream 为 `closed`，结论为 `client_wakeup_close_race`。
+- [boundary-next] 这只说明真实流启动后的本机受控客户端行为，不证明 provider-native close/wakeup、
+  底层 HTTP response 独立可取消、模型一般能力或生产 streaming。候选仍 disabled/未注册，产品默认、
+  Runtime、Workbench、前端、Auth、路由和 `production_media=0` 不变；当前精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。

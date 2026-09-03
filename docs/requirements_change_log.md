@@ -255,6 +255,8 @@ RQ-214 回执已在实现提交 `4c220c5751288ad77c589d2e0e581690085803c0` 上�
 `1693` bytes、SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`，
 canonical round-trip 通过。Actions run `33712055286` 三 job exact-SHA 全绿：pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`；PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过。
 
+| RQ-215 | 2026-09-03 | 候选 transport-gated 一次真实观察完成；真实流启动后的本机受控客户端 reader 唤醒已观察到，但出现 `client_wakeup_close_race`；不形成 provider-native 或生产 capability | 用户在 RQ-214 离线预检和同 SHA 公共 CI 完成后以“继续”授权本批；只发 1 次真实 `glm-5.3-flash` 请求，不 retry、不 recovery、不发送第二请求、不注册候选、不改产品 Runtime/Workbench/前端 | 实现/观察器/输入计划身份均为 `2acdf795881733e70c9246c48f7147d5136821b5`；Actions run `33721483490` 三 job exact-SHA 全绿，公共 pytest `2296 passed, 145 skipped, 2 warnings, 127 subtests passed`、PostgreSQL `201 passed, 2 warnings`、packaging-smoke 通过。回执 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq215_v1.json` 为 schema `1.0.0`、`1305` bytes、SHA-256=`732e870bbb0163d354006434c091bd7f15773ffa4e041b25edfc2a5d17739e59`，canonical round-trip 通过且 body-free。`provider_call_count=1`、`transport_request_count=1`、`network_used=true`、`gate_entered=true`、`pending_reader_observed=true`、`reader_woke=true`（`31ms`）；取消安全码 `zhipu_stream_close`，iterator/composite=`failed`、SDK stream=`closed`。该结果仅说明真实流启动后本机受控停顿的客户端行为；候选仍 disabled/未注册、`capabilities.streaming=False`，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。下一精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。 |
+
 ## 新条目格式
 
 后续新增长期要求时，使用新的 `RQ-xxx` 行，并注明日期、状态以及它如何改变

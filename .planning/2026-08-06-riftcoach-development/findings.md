@@ -5494,3 +5494,19 @@
   `4c220c5751288ad77c589d2e0e581690085803c0`。
 - 同 SHA Actions run `33712055286` 三 job 全绿：pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`，
   PostgreSQL `201 passed, 2 warnings`，packaging-smoke 通过。
+## 2026-09-03：RQ-215 SDK/HTTP transport gate 一次真实观察发现
+
+- RQ-214 的本机 `MockTransport` 预检在同 SHA 公共 CI 后得到一次真实验证；只发送 1 次
+  `zhipu/glm-5.3-flash` 请求，SDK/HTTPX retries=0，父进程 30 秒硬截止，没有 retry、recovery 或第二请求。
+- 官方 TLS transport 外层 gate 在首帧前进入；真实流启动后形成 pending reader，response close 后
+  `reader_woke=true` 且耗时 `31ms`，同时 `upstream_event_seen=true`、`upstream_stream_close_seen=true`。
+- 取消抛出安全错误码 `zhipu_stream_close`；iterator/composite close 投影为 `failed`、SDK stream 为
+  `closed`，所以结论是 `client_wakeup_close_race`。reader 唤醒和清理竞态必须分开解释。
+- 真实回执为 body-free、canonical 的
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq215_v1.json`，
+  `1305` bytes、SHA-256=`732e870bbb0163d354006434c091bd7f15773ffa4e041b25edfc2a5d17739e59`；
+  provider/transport 请求数均为 1，网络标记为 true。
+- 该样本只证明真实流启动后本机受控停顿下的客户端行为，不证明 provider-native close/wakeup、
+  底层 HTTP response 独立可取消、模型一般能力或生产 streaming。候选仍 disabled/未注册，产品
+  Runtime、默认模型、Workbench、前端和 `production_media=0` 不变；下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。
