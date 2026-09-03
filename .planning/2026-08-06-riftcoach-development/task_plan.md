@@ -99,7 +99,7 @@ transport-gated 请求，得到 `client_wakeup_clean`；RQ-218 的 G53-3 在最�
 `low + 4096` 候选 profile 的 exact-SHA 公共 CI 与一次真实无工具探针，得到
 `observed/stop/usage-valid`。当前精确执行指针改为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`。
-RQ-222 已完成低思考候选独立领域门的设计裁决；RQ-225 已完成协议接缝与新鲜资产的离线实现，当前只等待同一 SHA 的公共 exact-SHA CI。
+RQ-222 已完成低思考候选独立领域门的设计裁决；RQ-225 的协议接缝与新鲜资产已取得同一 SHA 的公共 exact-SHA CI，当前等待真实协议门的明确授权。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -397,7 +397,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`。
 RQ-217 的真实回执绑定实现/观察器/输入计划提交
 `3e028b1217f1274152ba161993287f29188a1b73`，文件为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`，
@@ -3084,7 +3084,7 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 
 ## RQ-225 / 低思考 G53-3-L 协议与新鲜资产离线实现（2026-09-04）
 
-- Status: complete-local; candidate-only; pending-public-ci
+- Status: complete-public; candidate-only; pending-user-authorization
 - [implemented-local] `AdapterProtocolSliceRunner` 增加显式 `request_policy` 接缝；新增
   `glm53_low_profile_protocol`，固定低思考/4096/90 秒策略，最多 3 次协议调用，报告
   body-free、create-only，真实来源仍要求显式确认。
@@ -3094,5 +3094,8 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [verification-local] 协议/资产聚焦及相邻回归 `20 passed`；compileall、diff check、
   governance 通过，provider calls=0。候选仍 disabled/未注册，产品 Runtime、严格 Flash
   v1、默认模型、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
-- [boundary-next] 本批没有真实 G53-3-L 或领域运行；下一步只做同一实现 SHA 的公共
-  exact-SHA CI，绿灯后再等待明确授权执行最多 3 次真实协议门，不自动进入领域门或产品准入。
+- [public-ci] 实现提交 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions run
+  `33787508488` 三 job exact-SHA 全绿；公共 pytest 为 `2332 passed, 145 skipped, 2 warnings,
+  127 subtests passed`。
+- [boundary-next] 本批没有真实 G53-3-L 或领域运行；当前等待明确授权执行最多 3 次真实协议门，
+  不自动进入领域门或产品准入。

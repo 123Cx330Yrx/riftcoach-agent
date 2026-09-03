@@ -76,7 +76,7 @@
 
 ## 当前指针
 
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`
 
-RQ-225 已完成本计划所需的协议接缝与新鲜资产离线实现；具体实现和验证记录见
+RQ-225 已完成本计划所需的协议接缝与新鲜资产离线实现，并取得同 SHA 公共 CI；具体实现和验证记录见
 [RQ-225 实施计划](2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md)。

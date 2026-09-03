@@ -270,6 +270,13 @@ canonical round-trip 通过。Actions run `33712055286` 三 job exact-SHA 全绿
 
 | RQ-225 | 2026-09-04 | 低思考 G53-3-L 协议接缝与全新三案例资产离线实现完成，等待同 SHA 公共 CI | 用户要求继续并加快；本批只在隔离树完成 evaluation-only 协议/资产控制面，不读取 Key、不发真实请求、不注册候选、不改默认模型或 Portal/Account/Workbench/Auth | 显式 `request_policy` 已接入协议切片；最多 3 次低思考协议组合器输出 body-free/create-only 报告；新 Dataset、V1.1 Input Plan、Prompt/Context Snapshot 和两个合成 fixture 通过交叉身份/marker 校验，资产准入 `external_provider_calls=0`。协议/资产及相邻回归 `20 passed`，compileall、diff check、governance 通过。候选仍 `candidate-only/disabled`，严格 Flash v1、`production_media=0`、8-Core/生产准入/8F 边界不变。下一精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`。 |
 
+RQ-225 后续公共验证更新：为修复新模块顶层导入环新增提交
+`411753c1d4b89fe0c4ce9098caf380c45e10fa0f`；Actions `33787508488` 的 pytest、PostgreSQL
+migrations、packaging-smoke 三 job 均成功，公共 pytest 为 `2332 passed, 145 skipped, 2 warnings,
+127 subtests passed`。当前 checkpoint 已进入
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`，
+provider calls=0，仍需明确授权才执行真实协议门。
+
 ## 新条目格式
 
 后续新增长期要求时，使用新的 `RQ-xxx` 行，并注明日期、状态以及它如何改变

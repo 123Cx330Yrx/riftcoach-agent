@@ -4360,6 +4360,9 @@ RQ-225 将 RQ-224 之后的前置工作落成可审计的离线控制面：协�
 只保留 body-free 安全身份与计数；新三案例 held-out Dataset、V1.1 Input Plan、
 Prompt/Context Snapshot 与合成 fixture 通过 no-I/O 交叉准入。聚焦协议/资产及相邻回归
 `20 passed`，provider calls=0。候选未注册，8-Core、默认模型、Portal、Account、Workbench、
-Auth、路由和 `production_media=0` 不变。当前 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`；
-下一步是同一实现 SHA 的公共 exact-SHA CI。
+Auth、路由和 `production_media=0` 不变。随后修复新模块顶层导入环；提交
+`411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions `33787508488` 三 job exact-SHA
+全绿，公共 pytest 为 `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`。当前
+checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`；
+下一步是明确授权后的真实协议门。

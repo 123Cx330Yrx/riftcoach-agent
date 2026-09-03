@@ -1565,5 +1565,7 @@ body-free/create-only 报告；新三案例 held-out Dataset、V1.1 Input Plan�
 Snapshot 与合成 fixture 通过 no-I/O 交叉准入。聚焦协议/资产及相邻回归 `20 passed`，
 provider calls=0。候选仍 disabled/未注册，产品 Runtime、默认模型、Portal、Account、
 Workbench、Auth、路由和 `production_media=0` 不变。当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`；
-下一步为同一实现 SHA 的公共 exact-SHA CI，绿灯后才等待真实协议门授权。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`。
+提交 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions `33787508488` 三 job exact-SHA
+全绿，公共 pytest 为 `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`；下一步
+仍需明确授权才执行真实协议门。

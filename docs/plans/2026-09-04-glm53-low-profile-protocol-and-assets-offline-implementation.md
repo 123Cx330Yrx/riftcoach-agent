@@ -45,4 +45,7 @@ Portal、Account、Workbench、Auth、路由或 `production_media=0`。候选仍
 
 ## 当前指针
 
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`
+
+实现提交 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions run `33787508488` 已通过
+exact-SHA 三 job；公共 pytest 为 `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`。

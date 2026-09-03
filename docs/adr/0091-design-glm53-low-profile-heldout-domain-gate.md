@@ -1,7 +1,7 @@
 # ADR-0091：设计 GLM-5.3 Flash 低思考候选独立领域门
 
 - 日期：2026-09-03
-- 状态：`protocol-assets-implemented-local / candidate-only / pending-public-ci`
+- 状态：`protocol-assets-public-ci / candidate-only / pending-user-authorization`
 - 范围：Stage 8 / 8E；RQ-222
 
 ## 背景
@@ -95,5 +95,7 @@ Prompt/Context Snapshot 和合成 fixture 均通过身份、case/marker 隔离�
 
 本批仍不读取 Key、不发真实请求、不注册候选、不改变产品 Runtime、默认模型、Portal、
 Account、Workbench、Auth、路由或 `production_media=0`。当前精确检查点为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`；
-同一实现 SHA 的公共 exact-SHA CI 是下一闸门，绿灯后仍需另一次明确授权才可执行真实协议门。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`。
+实现提交 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions run `33787508488`
+三 job exact-SHA 全绿（公共 pytest `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`）；
+仍需另一次明确授权才可执行真实协议门。

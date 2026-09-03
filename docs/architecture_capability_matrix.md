@@ -1105,5 +1105,9 @@ RQ-225 继续保持 8-Advanced candidate-only，不新增 8-Core 或产品 A/Q �
 新三案例 held-out Dataset、V1.1 Input Plan、Prompt/Context Snapshot 与合成 fixture 已通过
 no-I/O 资产准入，`external_provider_calls=0`。聚焦协议/资产及相邻回归 `20 passed`，
 compileall、diff check、governance 通过；不改变产品 Runtime、默认模型、Portal、Account、
-Workbench、Auth、路由或 `production_media=0`。当前精确检查点为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`。
+Workbench、Auth、路由或 `production_media=0`。实现提交
+`411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions `33787508488` 三 job exact-SHA
+全绿，公共 pytest 为 `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`。
+当前精确检查点为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`；
+真实协议门仍需明确授权。

@@ -3464,4 +3464,7 @@ PostgreSQL migrations、packaging-smoke 三项均成功，公共 pytest 为
 通过 no-I/O 身份及历史 marker 隔离校验。聚焦协议/资产与相邻回归 `20 passed`，
 provider calls=0。候选仍未注册，产品 Runtime、默认模型、Portal、Account、Workbench、
 Auth、路由和 `production_media=0` 不变；公共 exact-SHA CI 通过后仍须另一次明确授权，
-不能自动执行真实协议或领域门。
+不能自动执行真实协议或领域门。随后导入环已修复；提交
+`411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions `33787508488` 三 job exact-SHA
+全绿，公共 pytest 为 `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`。
+当前进入 `completed-public / pending-user-authorization`，仍需明确授权才执行真实协议门。

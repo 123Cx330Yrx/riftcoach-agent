@@ -805,4 +805,9 @@ Prompt/Context Snapshot 和合成 fixture，准入时交叉核对 SHA、case 顺
 详见 [RQ-225 walkthrough](8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md)
 与[实施计划](../plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md)。
 当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`。
+
+随后修复了新模块的顶层导入环；提交 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的
+Actions `33787508488` 三 job exact-SHA 全绿，公共 pytest 为
+`2332 passed, 145 skipped, 2 warnings, 127 subtests passed`。这只关闭离线控制面的公共
+可复现性，provider calls 仍为 0；真实 G53-3-L 仍需明确授权。

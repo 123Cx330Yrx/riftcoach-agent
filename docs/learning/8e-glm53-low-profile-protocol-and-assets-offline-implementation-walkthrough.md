@@ -35,5 +35,7 @@ Input Plan、Context Snapshot 的 SHA 与 case 顺序，并确认新 case/marker
 
 本批没有真实 G53-3-L 回执，也没有执行 held-out 领域案例；不证明模型领域质量、
 streaming 生产能力、成本/延迟稳定性、黄金切片、安全/部署合规或 8F。公共 CI 只会
-关闭这批离线实现的可复现性闸门。下一步是在同一实现身份上最多执行 3 次真实低思考
-协议门，之后才可在另一次明确授权下运行三案例领域门。
+关闭这批离线实现的可复现性闸门。提交
+`411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的公共 Actions `33787508488` 三 job 已全绿，
+公共 pytest `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`；下一步是在明确授权
+下最多执行 3 次真实低思考协议门，之后才可另行运行三案例领域门。

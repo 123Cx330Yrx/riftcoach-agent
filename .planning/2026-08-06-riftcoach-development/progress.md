@@ -5920,3 +5920,16 @@
 - [boundary-next] 当前精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`；
   下一步为同一 SHA 公共 exact-SHA CI，之后才等待真实 G53-3-L 的明确授权。
+
+## 2026-09-04：RQ-225 公共 CI 闭环
+
+- [completed-public] 修复协议模块的顶层导入环后，提交
+  `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions run `33787508488` head SHA
+  精确匹配；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均成功。
+- [evidence] 公共 pytest 为 `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`；
+  本批 provider calls=0。此前失败 run `33786726537` 仅暴露新模块顶层导入环，已由
+  `411753c` 修复，不把失败 run 当作证据。
+- [boundary-next] 候选仍 disabled/未注册，严格 Flash v1、默认模型、Portal、Account、
+  Workbench、Auth、路由和 `production_media=0` 不变。当前唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`；
+  下一步需明确授权后才执行最多 3 次真实 G53-3-L 协议门。

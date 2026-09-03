@@ -5631,3 +5631,13 @@
   `external_provider_calls=0`。
 - [verification] 协议/资产聚焦及相邻回归 `20 passed`，compileall、diff check、governance
   通过。该批仍没有真实调用或领域结论，下一步是同一实现 SHA 的公共 exact-SHA CI。
+
+## 2026-09-04：RQ-225 公共 CI 发现
+
+- [fix] 首轮公共 pytest 在技能路由子进程中暴露 `app/evaluation/__init__.py` 顶层导入环；
+  新协议/资产模块改为显式导入后，既有脚本入口回归恢复。
+- [evidence] 修复提交 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions run
+  `33787508488` head SHA 精确匹配，pytest、PostgreSQL migrations、packaging-smoke 三 job
+  全部成功；公共 pytest `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`。
+- [boundary-next] provider calls=0，候选未注册，下一步仍需明确授权才可执行真实 G53-3-L；
+  不把公共 CI 绿灯写成领域质量或产品准入。

@@ -1441,5 +1441,6 @@ RQ-225 在 8E/8-Advanced 内完成低思考 G53-3-L 协议组合器和全新三�
 上下文 commitment 与历史 marker 隔离校验。聚焦协议/资产及相邻回归 `20 passed`，
 provider calls=0。该批不新增 8-Core 能力、不改变产品默认、Portal、Account、Workbench、
 Auth、路由或 `production_media=0`；下一精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`，
-先做同 SHA 公共 CI，之后仍需明确授权才可真实执行。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`。
+提交 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions `33787508488` 三 job exact-SHA
+全绿；公共 pytest 为 `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`，之后仍需明确授权才可真实执行。
