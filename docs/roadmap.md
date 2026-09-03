@@ -1422,3 +1422,7 @@ streaming；候选仍 disabled/未注册，产品 Runtime、默认模型、Porta
 Auth、路由与 `production_media=0` 不变。下一精确项为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`，
 公共闭环后才可在一次性授权下发出最多 1 次官方 TLS transport 包装的真实请求。
+
+RQ-214 离线回执已绑定实现提交 `4c220c5751288ad77c589d2e0e581690085803c0`，文件大小
+`1693` bytes、SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`，
+canonical round-trip 通过；同 SHA Actions run `33712055286` 三 job 全绿：pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`；PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过。

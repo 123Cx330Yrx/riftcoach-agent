@@ -3331,3 +3331,8 @@ close 已证明。候选 gate、产品 Runtime、默认模型、Workbench、前�
 真实候选请求；下一精确 checkpoint 为
 `candidate-transport-gated-real-observation / pending-user-authorization`。Portal、Account、
 Workbench、Auth、路由、AgentLoop 和 `production_media=0` 均不变。
+
+RQ-214 离线回执已绑定实现提交 `4c220c5751288ad77c589d2e0e581690085803c0`，路径为
+`data/evaluation/results/offline/zhipu_glm53_flash_candidate_transport_gate_rq214_v1.json`，
+`1693` bytes、SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`；
+同 SHA Actions run `33712055286` 三 job 全绿：pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`；PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过。

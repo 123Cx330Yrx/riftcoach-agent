@@ -250,6 +250,11 @@
 
 | RQ-214 | 2026-09-03 | 候选 SDK/HTTP transport gate 离线预检已完成本地实现；两阶段均形成 pending-read 并在 response close 后唤醒，但暴露本地并发关闭竞态；真实 transport-gated 观察仍未执行 | 用户“继续”授权先把观察条件缺口做成更大、可复现的零调用批次；本条不读取 Key、不联网、不注册候选、不改产品 Runtime 或 Workbench | 新增独立 `glm-5.3-flash-candidate-close-wakeup-transport-gate` / schema `1.0.0`，用真实 OpenAI SDK、Zhipu 候选适配器和内存 `MockTransport` 固定 `after_first_event`、`before_first_event` 两阶段；每阶段仅 1 次本地 transport 请求，receipt 固定 `evidence_origin=offline_sdk_transport_fixture`、`provider_call_count=0`、`network_used=false`，只保存事件类别、读取/取消状态、gate 生命周期、close 投影和 fixture 描述 SHA，不保存正文、Key、headers、request ID 或异常文本。离线观察发现 reader 可唤醒，但当前并发 iterator close 可能为 failed，独立结论码为 `client_wakeup_close_race`；这不是 provider-native 结论，适配器关闭顺序不在本条静默修复。聚焦测试、compileall、diff check、governance 与同 SHA 公共 CI 完成后，下一精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`；届时最多发 1 次官方 TLS transport 包装的真实请求，不重试、不 recovery、不追加第二请求。 |
 
+RQ-214 回执已在实现提交 `4c220c5751288ad77c589d2e0e581690085803c0` 上生成：
+`data/evaluation/results/offline/zhipu_glm53_flash_candidate_transport_gate_rq214_v1.json`，
+`1693` bytes、SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`，
+canonical round-trip 通过。Actions run `33712055286` 三 job exact-SHA 全绿：pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`；PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过。
+
 ## 新条目格式
 
 后续新增长期要求时，使用新的 `RQ-xxx` 行，并注明日期、状态以及它如何改变

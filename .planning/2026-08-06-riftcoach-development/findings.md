@@ -5485,3 +5485,12 @@
   AgentLoop、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
 - 下一精确 checkpoint 是 `candidate-transport-gated-real-observation / pending-user-authorization`；
   公共 CI 闭环后才考虑一次受控的官方 TLS transport 包装真实请求。
+
+### RQ-214 回执身份与公共闭环
+
+- 离线回执 `data/evaluation/results/offline/zhipu_glm53_flash_candidate_transport_gate_rq214_v1.json`
+  为 `1693` bytes，SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`；
+  canonical round-trip 通过，三份身份 SHA 均为实现提交
+  `4c220c5751288ad77c589d2e0e581690085803c0`。
+- 同 SHA Actions run `33712055286` 三 job 全绿：pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`，
+  PostgreSQL `201 passed, 2 warnings`，packaging-smoke 通过。

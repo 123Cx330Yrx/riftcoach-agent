@@ -89,8 +89,8 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放与 RQ-213 的一次真实
 close/wakeup 观察均已完成；它们只证明本地分类和一次有限真实窗口的状态，不是 8E、领域采用或生产准入完成。
 RQ-211 的真实回执仍保持不可变，RQ-213 也不覆盖它。当前精确执行指针改为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gate-offline-precheck / pending-evidence-commit`，
-先完成 SDK/HTTP 闸门离线预检与独立回执，再决定是否授权一次真实 transport-gated 观察。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`，
+SDK/HTTP 闸门离线预检与独立回执已完成；同 SHA 公共 CI run `33712055286` 三 job 全绿，之后才决定是否授权一次真实 transport-gated 观察。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -388,9 +388,11 @@ RQ-210 的本地实现与 exact-SHA 公共 CI 已完成，仍不注册候选或�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gate-offline-precheck / pending-evidence-commit`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`。
 RQ-212 离线回放已由提交 `1a32012d9dc6424aa012f160d48c8847e21b00ec` / Actions `33707313651` 完成 exact-SHA
-公共闭环；RQ-213 又完成一次新的真实观察并得到 `not_pending`。本批只固化零网络 SDK/HTTP 闸门预检，
+公共闭环；RQ-213 又完成一次新的真实观察并得到 `not_pending`。RQ-214 离线回执已生成并绑定实现提交
+`4c220c5751288ad77c589d2e0e581690085803c0`，文件为 `data/evaluation/results/offline/zhipu_glm53_flash_candidate_transport_gate_rq214_v1.json`，
+`1693` bytes、SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`；同 SHA 公共 CI run `33712055286` 三 job 全绿（pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`；PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过）。
 随后才进入一次性授权的真实 transport-gated 观察；不得自动注册候选、进入 G53-7/黄金切片，也不修改产品
 Runtime、Portal、Account、Workbench、Auth 或路由。
 

@@ -4214,3 +4214,10 @@ PostgreSQL `201 passed, 1 warning`。该修复只让持久 body-free 回执可�
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`；
   只有新的明确一次性授权才执行最多 1 次官方 TLS transport 包装的真实请求，不重试、
   不 recovery、不注册候选、不改产品 Runtime/Workbench/前端或 `production_media=0`。
+
+### RQ-214 回执记录（2026-09-03）
+
+离线回执已绑定实现提交 `4c220c5751288ad77c589d2e0e581690085803c0`，路径为
+`data/evaluation/results/offline/zhipu_glm53_flash_candidate_transport_gate_rq214_v1.json`，
+`1693` bytes、SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`。
+Actions run `33712055286` 同 SHA 三 job 全绿：pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`；PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过，真实请求仍未执行。

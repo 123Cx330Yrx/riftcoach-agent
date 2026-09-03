@@ -5761,8 +5761,13 @@
   均为 0。
 - [observed] 两阶段都能形成 pending reader，并在 response close 后唤醒；同时记录到适配器
   iterator/composite close race，结论码为 `client_wakeup_close_race`，不把它改写成 clean success。
-- [verification-pending] 本地聚焦测试已通过；离线 receipt、治理检查和 exact-SHA 公共 CI 将在
-  实现提交后完成并回填身份。
+- [verification] 本地聚焦测试 `63 passed`、compileall、diff check、governance 已通过；离线 receipt
+  已生成并通过 canonical round-trip，文件为
+  `data/evaluation/results/offline/zhipu_glm53_flash_candidate_transport_gate_rq214_v1.json`，
+  `1693` bytes、SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`，三份身份 SHA
+  均绑定 `4c220c5751288ad77c589d2e0e581690085803c0`；同 SHA 公共 CI run `33712055286` 三 job 全绿：pytest
+  `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，
+  packaging-smoke 通过。
 - [boundary-next] 公共闭环后唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`；
   在新的明确一次性授权前不发真实请求、不注册候选、不改产品链路。

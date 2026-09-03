@@ -648,3 +648,10 @@ OpenAI SDK、显式 Zhipu 候选适配器和既有观察器对象链上接入本
 调用数 0、无网络，候选仍未注册，8E coverage 继续 `planned`；这不是智谱服务端原生 close/wakeup
 或生产 streaming 证据。下一检查点是经公共闭环后，在一次性授权下最多发出 1 次官方 TLS transport
 包装的真实观测。
+
+RQ-214 离线回执已绑定实现提交 `4c220c5751288ad77c589d2e0e581690085803c0`，路径为
+`data/evaluation/results/offline/zhipu_glm53_flash_candidate_transport_gate_rq214_v1.json`，
+`1693` bytes、SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`；
+canonical round-trip 通过，三份身份 SHA 相同。该提交的同 SHA 公共 CI run `33712055286` 三 job 全绿：
+pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，
+packaging-smoke 通过。

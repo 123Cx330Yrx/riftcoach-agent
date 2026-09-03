@@ -970,3 +970,7 @@ SDK、候选 Zhipu 适配器和本机 `MockTransport`，固定两个 SSE 闸门�
 disabled/未注册，默认模型、产品 Runtime、AgentLoop、Portal、Account、Workbench、Auth、
 路由与 `production_media=0` 不变。下一精确项为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / pending-user-authorization`。
+
+RQ-214 离线回执已绑定实现 SHA `4c220c5751288ad77c589d2e0e581690085803c0`，大小 `1693` bytes，
+SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`；Actions
+`33712055286` 同 SHA 三 job 全绿，未形成真实 provider 或产品 capability 准入。

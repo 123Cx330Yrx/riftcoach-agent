@@ -1313,3 +1313,7 @@ OpenAI SDK/Zhipu 适配器对象链和 `MockTransport` 固定 pending-read，供
 预检发现本地并发 iterator close race，故把 reader 唤醒与关闭投影分列并保持未决，不静默宣称成功。
 下一步若获明确授权，最多执行一次官方 TLS transport 包装的真实观察；该证据仍只能说明本机
 受控响应停顿下的客户端行为，不能替代 provider-native、G53-7、黄金切片、生产部署或 8F。
+
+本地回执已固定在实现提交 `4c220c5751288ad77c589d2e0e581690085803c0`（`1693` bytes，
+SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`）；同 SHA Actions
+`33712055286` 三 job 全绿（pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`；PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过），8E coverage 继续 `planned`。

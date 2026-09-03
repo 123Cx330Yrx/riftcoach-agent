@@ -4250,3 +4250,17 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
   只有新的明确一次性授权才可把 gate 包装到官方 TLS transport 上发出 1 次真实请求；候选仍
   disabled/未注册，`execution_allowed=false`、`capabilities.streaming=False`，默认模型、产品
   Runtime、AgentLoop、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
+
+### RQ-214 回执与公共验证状态（2026-09-03）
+
+- `[receipt]` 离线回执为
+  `data/evaluation/results/offline/zhipu_glm53_flash_candidate_transport_gate_rq214_v1.json`，
+  `1693` bytes、SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`；
+  implementation/observer/input-plan 三份身份均绑定 `4c220c5751288ad77c589d2e0e581690085803c0`，
+  canonical round-trip 通过。
+- `[public-ci]` 同 SHA Actions run `33712055286` 三 job 均 `completed/success` 且 head SHA 精确匹配；
+  pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，
+  packaging-smoke 通过。
+- `[boundary]` 回执仍为 `offline_sdk_transport_fixture`、`provider_call_count=0`、
+  `network_used=false`；候选未注册，产品 Runtime、默认模型、AgentLoop、Portal、Account、
+  Workbench、Auth、路由和 `production_media=0` 不变。
