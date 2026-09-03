@@ -758,3 +758,17 @@ exact-SHA 全绿；候选聚焦 `25 passed`，本次相关候选/流/智谱回�
 Auth、路由和 `production_media=0` 不变。当前精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`；
 下一步先设计/裁决独立低档候选 held-out 领域门，不自动追加真实请求。
+
+### 2026-09-03：RQ-222 低思考候选独立领域门设计
+
+新增 [RQ-222 walkthrough](8e-glm53-low-profile-domain-gate-design-walkthrough.md)、
+[ADR-0091](../adr/0091-design-glm53-low-profile-heldout-domain-gate.md) 和
+[设计计划](../plans/2026-09-03-glm53-low-profile-domain-gate-design.md)。本批把 RQ-221
+的一次无工具响应完成与领域任务准入明确拆开：旧 G53-4/G53-7 考卷不重跑，低思考档不注册到
+产品 Runtime，而是采用只有评测入口能持有私有令牌的候选作用域，以及共享请求策略接缝。
+
+下一步先做零网络离线 TDD，固定低思考/4096 输出、90/120 秒超时、每案 4 次/全域 12 次、
+24,000/72,000 token 墙、首错停止、无恢复/重试/修订和关闭 deterministic fallback；之后才在
+同一实现身份上取得新的 G53-3-L，再创建全新的 oracle-blind held-out 资产。设计阶段
+provider calls=0，候选仍未注册，8E coverage 继续 `planned`。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`。

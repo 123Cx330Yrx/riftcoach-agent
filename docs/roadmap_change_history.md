@@ -4323,3 +4323,14 @@ Runtime、Portal、Account、Workbench、Auth、路由与 `production_media=0` �
   Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。当前唯一精确
   checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`，
   下一步先设计/裁决低档候选 held-out 领域门。
+## 2026-09-03：RQ-222 低思考候选独立领域门设计裁决
+
+RQ-222 比较了旧考卷换档重跑、提前注册产品档案和独立评测作用域三种路线，接受第三种：
+新的候选作用域只在评测组合器中建立，通过共享请求策略复用现有 Agent/RAG/Evaluation/
+Harness，不削弱产品 Runtime 注册校验。旧 G53-4/G53-7 结果不重跑，规则冻结后创建全新的
+三案例 oracle-blind held-out 资产。
+
+候选领域合同固定 `low + 4096`、90/120 秒、4 次/案例与 12 次/全域、无重试/恢复/修订、
+首错停止，以及 24,000/72,000 token 墙；deterministic fallback 在评测作用域关闭。当前只
+完成设计，provider calls=0；下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`。

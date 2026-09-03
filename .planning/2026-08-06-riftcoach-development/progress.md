@@ -5872,3 +5872,10 @@
 - [next] 当前精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`；
   等待低档候选领域门设计/裁决，不自动追加真实请求。
+
+## 2026-09-03：RQ-222 低思考候选独立领域门设计
+
+- [design-accepted] 已完成 ADR/计划/学习材料，确定候选专用评测作用域、共享请求策略接缝和全新 oracle-blind held-out 三案例路线；拒绝旧考卷换档重跑与全局产品注册。
+- [boundary-next] 本批没有改产品代码、创建新考卷或发真实请求；候选仍 disabled/未注册，默认模型、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
+- [next] 当前唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`；下一批执行零网络离线 TDD。

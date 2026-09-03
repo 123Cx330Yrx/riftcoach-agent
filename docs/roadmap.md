@@ -1526,3 +1526,15 @@ RQ-221 在 8E 内增加显式 candidate-only `low + 4096` profile，并在冻结
 不变；G53-7、黄金切片、生产安全/部署/合规与 8F 仍未完成。当前精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`，
 下一步先设计/裁决独立低档候选 held-out 领域门，不自动追加真实请求。
+### RQ-222：低思考候选独立领域门设计（2026-09-03）
+
+RQ-222 已完成下一步领域门的设计裁决。旧 G53-4/G53-7 考卷已经消费，不能只换档位重跑；
+低思考档也不能在领域证据之前注册为产品 Runtime。采用显式评测作用域、共享请求策略接缝
+和全新 oracle-blind held-out 资产，复用既有 AgentLoop、知识检索、Evaluation 与
+ReviewHarness，而不复制第二套协调器。
+
+设计固定 `low + 4096`、90 秒 Agent/LLM 工具窗、120 秒传输窗、每案例 4 次/全域 12 次、
+无 retry/recovery/revision、首错停止，实验 token 墙为每案例 24,000、全域 72,000；
+deterministic fallback 在候选评测作用域关闭。先做零网络 TDD 和 exact-SHA CI，再做独立
+低思考 G53-3-L、冻结新三案例考卷，最后才在另一次授权下执行领域观察。当前精确下一检查点为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`；本批 provider calls=0，产品默认、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。

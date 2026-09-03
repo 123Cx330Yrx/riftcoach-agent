@@ -5587,3 +5587,11 @@
   `32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`，provider calls=0、
   network=false。当前下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。
+
+## 2026-09-03：RQ-222 低思考候选独立领域门设计裁决
+
+- [decision] 不重跑已消费的 G53-4/G53-7 旧考卷，也不把 RQ-221 的窄探针成功升级为产品准入；采用版本化的 evaluation-only 候选作用域和共享请求策略接缝，正常产品 Runtime resolver 继续拒绝候选。
+- [boundary] 新门使用全新的 oracle-blind 三案例 held-out 资产；每案最多 4 次、全域最多 12 次，单次 4096 输出、Agent/工具 90 秒、传输 120 秒，token 墙为 24,000/72,000；无 retry/recovery/revision，首个不安全失败停止，评测关闭 deterministic fallback。设计阶段 provider calls=0。
+- [evidence] 设计记录为 `docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md`、`docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md`、`docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md`；没有新增真实回执或产品代码。
+- [next] 当前唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`；下一步只做候选作用域/请求策略的离线 TDD，之后才考虑同 SHA 的 G53-3-L 和新考卷冻结。

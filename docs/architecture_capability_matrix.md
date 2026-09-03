@@ -1065,3 +1065,14 @@ exact-SHA 全绿；一次真实无工具请求的回执记录 `provider_call_cou
 候选仍 disabled/未注册，严格 Flash v1 仍 2048/零额外调用，`capabilities.streaming=False`；
 默认模型、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。当前精确
 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`。
+## RQ-222：低思考候选独立领域门能力边界（2026-09-03）
+
+RQ-222 仍是 8-Advanced candidate-only 设计，不新增 A/Q 产品能力。后续实现必须通过私有
+评测作用域把 `low + 4096` 请求策略传入共享 Agent/RAG/Evaluation/Harness 组合；普通产品
+解析器、Worker、默认模型和 `require_registered_model_runtime_profile()` 不得接受该档案。
+新领域门使用全新 oracle-blind 三案例资产，固定 4/12 次调用、90/120 秒、24,000/72,000
+token 墙和首错停止，评测作用域关闭 deterministic fallback。
+
+当前只完成设计，provider calls=0，Portal、Account、Workbench、Auth、路由、生产默认和
+`production_media=0` 不变。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`。

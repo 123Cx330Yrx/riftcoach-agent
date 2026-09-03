@@ -824,6 +824,7 @@ groups:
     sequence: 350
     covers:
       - 8e-productization
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending
     status: planned
     evidence:
       problem_and_principle:
@@ -944,6 +945,9 @@ groups:
         - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
         - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
         - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
       design_and_implementation:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1060,6 +1064,9 @@ groups:
         - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
         - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
         - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
       code_map:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1132,6 +1139,9 @@ groups:
         - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
         - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
         - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
       data_and_control_flow:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1217,6 +1227,9 @@ groups:
         - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
         - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
         - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
       verification:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1327,6 +1340,9 @@ groups:
         - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
         - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
         - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
       runbook:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1414,6 +1430,9 @@ groups:
         - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
         - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
         - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
       failure_security_boundary:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1529,6 +1548,9 @@ groups:
         - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
         - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
         - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
       interview_wording:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1557,6 +1579,9 @@ groups:
         - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
         - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
         - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md

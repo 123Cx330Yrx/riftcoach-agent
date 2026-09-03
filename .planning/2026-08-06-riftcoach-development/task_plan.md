@@ -99,6 +99,7 @@ transport-gated 请求，得到 `client_wakeup_clean`；RQ-218 的 G53-3 在最�
 `low + 4096` 候选 profile 的 exact-SHA 公共 CI 与一次真实无工具探针，得到
 `observed/stop/usage-valid`。当前精确执行指针改为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`。
+RQ-222 已完成低思考候选独立领域门的设计裁决，下一步只做候选作用域/请求策略的离线 TDD。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -396,7 +397,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`。
 RQ-217 的真实回执绑定实现/观察器/输入计划提交
 `3e028b1217f1274152ba161993287f29188a1b73`，文件为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`，

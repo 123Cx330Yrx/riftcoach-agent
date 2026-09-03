@@ -3429,3 +3429,10 @@ create-only。
 当前唯一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`；
 下一步先设计/裁决低档候选 held-out 领域门，不自动追加真实请求。
+### RQ-222：接受低思考候选独立领域门设计（2026-09-03）
+
+接受“显式评测作用域 + 共享请求策略 + 全新 held-out 资产”方案；拒绝重跑已消费的旧考卷，
+也拒绝在领域证据前把低思考档注册为产品 Runtime。实现时保留产品注册校验，候选作用域
+固定 `low + 4096`、90/120 秒、4/12 次调用、24,000/72,000 token 墙、无重试/恢复/修订和
+首错停止，并关闭 deterministic fallback。当前只完成设计，provider calls=0；下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`。

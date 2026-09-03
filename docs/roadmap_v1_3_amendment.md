@@ -1408,3 +1408,12 @@ G53-7、黄金切片、生产准入或 8F；严格 Flash v1、默认模型、产
 Account、Workbench、Auth、路由与 `production_media=0` 均不变。下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`，
 需先另立低档候选领域门设计并取得裁决。
+## RQ-222：低思考候选领域门仍属 8-Advanced（2026-09-03）
+
+RQ-222 不新增 8-Core 能力，也不把一次低思考探针升级为产品准入。设计采用显式评测作用域
+和共享请求策略，保持产品 Runtime 注册表封闭；旧领域考卷不重跑，规则冻结后创建新的匿名
+held-out 三案例资产。`low + 4096`、90/120 秒、4/12 次调用和 24,000/72,000 token 墙只
+属于 candidate-only 评测边界，deterministic fallback 在该作用域关闭。
+
+本批 provider calls=0、没有新考卷或真实回执；下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`。G53-3-L、资产冻结、领域真实观察、黄金切片、安全/部署/合规与 8F 仍在后面。
