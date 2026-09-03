@@ -36,6 +36,7 @@ from .models import (
 from .zhipu_profiles import (
     ZhipuThinkingProfile,
     resolve_zhipu_thinking_profile,
+    validate_zhipu_candidate_profile_for_model,
     validate_zhipu_profile_for_model,
 )
 
@@ -48,6 +49,7 @@ _TERMINAL_FINISH_REASONS = frozenset({"stop", "tool_calls"})
 _INCOMPLETE_FINISH_REASONS = frozenset(
     {"length", "content_filter", "insufficient_system_resource"}
 )
+_CANDIDATE_PROFILE_TOKEN = object()
 
 
 @dataclass(frozen=True)
@@ -84,6 +86,7 @@ class ZhipuProvider:
         model: str,
         profile: ZhipuThinkingProfile | None = None,
         runtime_profile: ModelRuntimeProfile | None = None,
+        _profile_scope: object | None = None,
     ) -> None:
         if client is None:
             raise ValueError("client is required.")
@@ -94,10 +97,22 @@ class ZhipuProvider:
             normalized_model
         )
         try:
-            selected_profile = validate_zhipu_profile_for_model(
-                normalized_model,
-                selected_profile,
-            )
+            if _profile_scope is _CANDIDATE_PROFILE_TOKEN:
+                if runtime_profile is not None:
+                    raise ValueError(
+                        "candidate profile cannot bind a product runtime profile"
+                    )
+                selected_profile = validate_zhipu_candidate_profile_for_model(
+                    normalized_model,
+                    selected_profile,
+                )
+            elif _profile_scope is not None:
+                raise ValueError("unknown Zhipu profile scope")
+            else:
+                selected_profile = validate_zhipu_profile_for_model(
+                    normalized_model,
+                    selected_profile,
+                )
         except ValueError as error:
             raise ValueError(str(error)) from error
         if runtime_profile is not None:
@@ -112,6 +127,29 @@ class ZhipuProvider:
         self.model_name = normalized_model
         self._thinking_profile = selected_profile
         self._runtime_profile = runtime_profile
+
+    @classmethod
+    def from_candidate_profile(
+        cls,
+        *,
+        client: Any,
+        model: str,
+        profile: ZhipuThinkingProfile,
+    ) -> "ZhipuProvider":
+        """Construct an explicitly selected, candidate-only provider profile.
+
+        This escape hatch is deliberately separate from the normal
+        constructor and cannot attach a product ``ModelRuntimeProfile``.  It
+        exists for isolated evaluation probes; environment/model metadata
+        never selects it automatically.
+        """
+
+        return cls(
+            client=client,
+            model=model,
+            profile=profile,
+            _profile_scope=_CANDIDATE_PROFILE_TOKEN,
+        )
 
     @property
     def profile(self) -> ZhipuThinkingProfile:

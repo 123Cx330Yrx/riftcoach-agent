@@ -126,6 +126,17 @@ ZHIPU_GLM53_FLASH_THINKING_PROFILE = ZhipuThinkingProfile(
     reasoning_effort="max",
     clear_thinking=False,
 )
+# Candidate-only alternate for the domain completion investigation.  It is
+# intentionally kept out of the model resolver below: product composition
+# must continue to receive the registered max-replay profile until a separate
+# admission decision is made.
+ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE = ZhipuThinkingProfile(
+    profile_id="glm-5.3-flash-candidate-enabled-low-replay",
+    model=ZHIPU_GLM53_FLASH_MODEL,
+    thinking_type="enabled",
+    reasoning_effort="low",
+    clear_thinking=False,
+)
 
 _MODEL_PROFILES = MappingProxyType(
     {
@@ -143,6 +154,12 @@ _PROFILE_BY_ID = MappingProxyType(
             ZHIPU_GLM53_THINKING_PROFILE,
             ZHIPU_GLM53_FLASH_THINKING_PROFILE,
         )
+    }
+)
+_CANDIDATE_PROFILE_BY_ID = MappingProxyType(
+    {
+        ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE.profile_id:
+        ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE,
     }
 )
 
@@ -180,6 +197,37 @@ def validate_zhipu_profile_for_model(
     return profile
 
 
+def resolve_zhipu_candidate_profile(profile_id: str) -> ZhipuThinkingProfile:
+    """Resolve an explicitly named candidate profile.
+
+    Candidate profiles have a separate registry so a generic model resolver
+    cannot select one implicitly from environment or model metadata.
+    """
+
+    if not isinstance(profile_id, str) or not profile_id.strip():
+        raise ValueError("profile_id must be a non-empty string.")
+    try:
+        return _CANDIDATE_PROFILE_BY_ID[profile_id.strip().lower()]
+    except KeyError:
+        raise ValueError("unknown Zhipu candidate thinking profile.") from None
+
+
+def validate_zhipu_candidate_profile_for_model(
+    model: str,
+    profile: ZhipuThinkingProfile,
+) -> ZhipuThinkingProfile:
+    """Validate the one allowlisted candidate profile for an exact model."""
+
+    if not isinstance(model, str) or not model.strip():
+        raise ValueError("model must be a non-empty string.")
+    if not isinstance(profile, ZhipuThinkingProfile):
+        raise ValueError("profile must be a ZhipuThinkingProfile.")
+    expected = _CANDIDATE_PROFILE_BY_ID.get(profile.profile_id)
+    if expected is None or profile != expected or profile.model != model.strip().lower():
+        raise ValueError("Zhipu candidate thinking profile does not match model.")
+    return profile
+
+
 # Compatibility aliases keep the public vocabulary concise for callers and
 # future evidence scripts without creating a second profile implementation.
 ZhipuModelProfile = ZhipuThinkingProfile
@@ -192,6 +240,7 @@ __all__ = [
     "ZHIPU_GLM52_MODEL",
     "ZHIPU_GLM52_THINKING_PROFILE",
     "ZHIPU_GLM53_FLASH_MODEL",
+    "ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE",
     "ZHIPU_GLM53_FLASH_THINKING_PROFILE",
     "ZHIPU_GLM53_MODEL",
     "ZHIPU_GLM53_THINKING_PROFILE",
@@ -201,6 +250,8 @@ __all__ = [
     "ZhipuThinkingProfile",
     "get_zhipu_model_profile",
     "resolve_zhipu_profile",
+    "resolve_zhipu_candidate_profile",
     "resolve_zhipu_thinking_profile",
+    "validate_zhipu_candidate_profile_for_model",
     "validate_zhipu_profile_for_model",
 ]
