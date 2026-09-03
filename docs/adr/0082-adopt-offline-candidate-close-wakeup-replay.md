@@ -23,8 +23,8 @@ RQ-211 的一次真实 `glm-5.3-flash` 观察在有限窗口内很快结束，�
    `provider_call_count=0`、`network_used=false`；观察器内部的
    `observer_call_count=1` 与 fake session 的 `fake_session_open_count=1` 不等同于
    供应商调用。
-4. 回执放在 `data/evaluation/results/offline/`，使用 canonical UTF-8/LF、原子
-   create-only writer；不复用 RQ-211 provider receipt 的 schema 或路径。
+4. 回执放在 `data/evaluation/results/offline/`，使用 canonical UTF-8/LF、显式离线根下的
+   独占创建（`O_EXCL`）与 `fsync`，拒绝覆盖；不复用 RQ-211 provider receipt 的 schema 或路径。
 
 回放入口不读取 dotenv/凭据、不创建或调用供应商 SDK client，也不建立网络连接；由于
 现有 Python 包的导入副作用，依赖模块可能出现在进程内，但这不等于供应商调用。
