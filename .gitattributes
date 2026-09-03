@@ -17,3 +17,4 @@
 # These frozen Flash domain inputs are referenced by byte-level SHA-256 commitments.
 /data/evaluation/glm53_flash_domain_adoption_v1_input_plan.json text eol=lf
 /examples/fixtures/player_summary_glm53_flash_domain_v1.json text eol=lf
+/examples/fixtures/deterministic_report_glm53_flash_domain_v1.md text eol=lf
