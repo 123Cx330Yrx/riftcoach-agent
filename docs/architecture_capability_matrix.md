@@ -943,3 +943,17 @@ packaging-smoke 通过。v2 离线回执 `data/evaluation/results/offline/
 zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json` 为 `2220` bytes，SHA-256 为
 `a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`，三个身份 SHA 均绑定该实现提交。
 它仍只证明 `offline_fake` 的本地分类与证据隔离，不提升为 provider capability；下一步需单独授权真实观察。
+
+### RQ-213：候选 close/wakeup 第二次真实观察能力边界（2026-09-03）
+
+RQ-213 不新增 A03/A10/Q02 或任何产品 Runtime capability。一次真实 candidate-only 请求绑定
+`a396412f7cd0f2e923536cf55f715dd56251aae5`，回执为 `not_pending`：首段 172ms，事件类别为
+`reasoning_seen/content_seen`，没有 pending reader，cancel 未尝试。回执
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_close_wakeup_observation_rq213_v1.json`
+为 909 bytes，SHA-256 为 `8b2b645bc79785cec6520759d63c530d1b6d6a7d06b192b472334df543706f7b`。
+
+`not_pending` 与资源 `closed` 投影都不能证明 provider close 非阻塞、pending `next()` 唤醒或底层
+HTTP response 取消；候选仍 disabled/未注册，`capabilities.streaming=False`，默认模型、产品 Runtime、
+Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。下一步为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`，
+先决定是否建立新版本实验协议。

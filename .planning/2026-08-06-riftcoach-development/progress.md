@@ -5735,3 +5735,18 @@
   默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变；当前精确 checkpoint
   改为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`，
   是否执行新的真实 provider 观察仍需单独授权。
+
+## 2026-09-03：RQ-213 候选 close/wakeup 第二次有界真实观察
+
+- [authorized-next-substage] 用户要求继续并允许更大步推进；在 RQ-212 公共闭环后只发出 1 次真实候选请求，
+  不重试、不 recovery、不发送第二请求、不注册候选、不改产品链路。
+- [evidence] 使用 exact-SHA 公共绿灯提交
+  `a396412f7cd0f2e923536cf55f715dd56251aae5`；回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_close_wakeup_observation_rq213_v1.json`，
+  schema `1.0.0`，909 bytes，SHA-256=`8b2b645bc79785cec6520759d63c530d1b6d6a7d06b192b472334df543706f7b`。
+- [observed] `call_count=1`、session opened、首段 172ms，事件类别 `reasoning_seen/content_seen`；
+  `not_pending`、无 pending reader、cancel 未尝试、reader 未报告唤醒；子进程正常退出，三层 close 投影均为
+  `closed`，`shared_resource=false`。
+- [boundary-next] 该样本仍不能证明或否定 provider close/wakeup；下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`。
+  先等新版 pending-read 协议裁决，不自动追加真实请求、G53-7、黄金切片、生产准入或 8F。

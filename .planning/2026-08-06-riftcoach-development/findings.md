@@ -5452,3 +5452,19 @@
 - 离线结果仍不能推导 provider-level close/wakeup、候选注册、G53-7、黄金切片或生产成熟度；下一精确 checkpoint
   为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`，
   是否执行真实观察需单独授权。
+
+## 2026-09-03：RQ-213 候选 close/wakeup 第二次真实观察发现
+
+- 在 RQ-212 公共闭环后的 exact-SHA 公共绿灯提交
+  `a396412f7cd0f2e923536cf55f715dd56251aae5` 上，只发送 1 次普通智谱
+  `zhipu/glm-5.3-flash` 请求；SDK retries 为 0，父进程边界为 30 秒，没有 retry、recovery 或第二请求。
+- 新回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_close_wakeup_observation_rq213_v1.json`，
+  909 bytes、SHA-256=`8b2b645bc79785cec6520759d63c530d1b6d6a7d06b192b472334df543706f7b`；实现、诊断和
+  输入计划身份均绑定该 SHA，且回执仍不含正文、reasoning 原文、Key、Authorization、request ID 或 body。
+- 会话在 172ms 内打开并产生 `reasoning_seen/content_seen`；仍为 `not_pending`，没有 pending reader，
+  所以 cancel 未执行。`reader_woke=false` 不能解释为唤醒失败；iterator、SDK wrapper 和 composite
+  close 投影均为 `closed`，只是本层资源事实。
+- 第二次样本仍没有回答 provider close/wakeup 问题。重复同形状请求不会稳定制造 pending-read；若继续，
+  应先另立能控制读取闸门的协议/实验，而不是无界消耗真实调用。候选 gate、产品 Runtime、默认模型、
+  Portal、Account、Workbench、Auth、路由和 `production_media=0` 均保持不变。

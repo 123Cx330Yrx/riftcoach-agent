@@ -918,6 +918,9 @@ groups:
         - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
         - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
         - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
       design_and_implementation:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1013,6 +1016,9 @@ groups:
         - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
         - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
         - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
       code_map:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1029,6 +1035,9 @@ groups:
         - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
         - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
         - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
         - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
@@ -1128,6 +1137,9 @@ groups:
         - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
         - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
         - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
       verification:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1217,6 +1229,9 @@ groups:
         - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
         - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
         - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
       runbook:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1283,6 +1298,9 @@ groups:
         - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
         - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
         - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
       failure_security_boundary:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1377,6 +1395,9 @@ groups:
         - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
         - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
         - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
       interview_wording:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1430,6 +1451,9 @@ groups:
         - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
         - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
         - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md

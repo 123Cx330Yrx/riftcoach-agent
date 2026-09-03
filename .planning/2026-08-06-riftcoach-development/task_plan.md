@@ -86,11 +86,11 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放已完成本地与 exact-SHA 公共闭环；
-它证明固定五场景的本地分类、脱敏、单次打开与不可变回执可重复，不是 8E、领域采用或生产准入完成。
-RQ-211 的真实回执仍保持 `not_pending`，不被离线 fake 结果覆盖。当前精确执行指针改为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`，
-等待是否执行一次参数明确的真实 provider 观察。
+当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放与 RQ-213 的一次真实
+close/wakeup 观察均已完成；它们只证明本地分类和一次有限真实窗口的状态，不是 8E、领域采用或生产准入完成。
+RQ-211 的真实回执仍保持不可变，RQ-213 也不覆盖它。当前精确执行指针改为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`，
+先裁决是否设计能稳定制造 pending-read 的新版观察协议。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -388,10 +388,11 @@ RQ-210 的本地实现与 exact-SHA 公共 CI 已完成，仍不注册候选或�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`。
 RQ-212 离线回放已由提交 `1a32012d9dc6424aa012f160d48c8847e21b00ec` / Actions `33707313651` 完成 exact-SHA
-公共闭环；下一步若要继续，必须另行明确一次真实 provider 观察的参数与预算。不得自动追加真实 API 请求、
-注册候选、进入 G53-7/黄金切片，也不修改产品 Runtime、Portal、Account、Workbench、Auth 或路由。
+公共闭环；RQ-213 又完成一次新的真实观察并得到 `not_pending`。下一步先决定是否另立能稳定制造
+pending-read 的新版协议；不得自动追加真实 API 请求、注册候选、进入 G53-7/黄金切片，也不修改产品
+Runtime、Portal、Account、Workbench、Auth 或路由。
 
 `6B-6-preferences-profile-review-memory` 已由实现/最小测试修复 `5531c81` 与 Actions
 `32387026797` 完成 exact-SHA `pytest`、`postgres-migrations`、`packaging-smoke` 三 job 公共闭环，
@@ -2922,3 +2923,24 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   `1c669e0` 的 Actions run `33666132282` 三 job exact-SHA 全绿；公共 pytest
   `2268 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL `201 passed, 1 warning`。
   该公共闭环没有新增真实 API；c311 仍是唯一真实观察的 implementation/diagnostic/input-plan identity。
+
+## RQ-213 / 候选 close/wakeup 第二次有界真实观察（2026-09-03）
+
+- Status: complete-bounded-real; not-pending; wakeup-unproven; pending-user-decision
+- [authorized-next-substage] 用户要求连续推进并允许把普通检查合并成较大批次；在 RQ-212 公共闭环后，
+  本批只执行一次新的真实候选观察，不追加 retry、recovery、第二请求、候选注册或产品接线。
+- [evidence] 在 exact-SHA 公共绿灯提交 `a396412f7cd0f2e923536cf55f715dd56251aae5` 上运行普通
+  `zhipu/glm-5.3-flash`，SDK `max_retries=0`、父进程 30 秒。回执
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_close_wakeup_observation_rq213_v1.json`
+  为 schema `1.0.0`、909 bytes、SHA-256=`8b2b645bc79785cec6520759d63c530d1b6d6a7d06b192b472334df543706f7b`；
+  implementation/diagnostic/input-plan 三个身份均绑定该 SHA。
+- [observed] `call_count=1`、会话已打开、首段 `172ms`，事件类别为 `reasoning_seen/content_seen`；
+  `observation_state=not_pending`、`pending_reader_observed=false`，因此 cancel 未尝试、
+  `reader_woke=false`。子进程正常退出，iterator/SDK stream/composite 均 `closed`，
+  `shared_resource=false`。回执不含 Key、Authorization、request ID、正文、reasoning 原文或 body。
+- [boundary-next] `not_pending` 不是 wakeup 成功或失败，不能证明 provider close 非阻塞、取消能唤醒
+  pending `next()` 或底层 HTTP response 已取消。候选仍 disabled/未注册，严格 Flash v1、默认模型、
+  产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变；8F、G53-7、
+  黄金切片和生产准入未开始。下一精确 checkpoint 改为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`，
+  先裁决是否设计能稳定制造 pending-read 的新版协议。

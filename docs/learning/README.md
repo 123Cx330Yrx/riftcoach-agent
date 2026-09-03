@@ -621,3 +621,15 @@ packaging-smoke 通过。最终 v2 回执为
 SHA-256=`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`）；v1 仅为旧 HEAD 的提交前演练。
 学习结论仍限于 `offline_fake` 本地分类/脱敏/不可变写入，真实 provider close/wakeup 未证实；下一步为
 `candidate-close-wakeup-real-observation / pending-user-authorization`，8E coverage 继续 `planned`。
+
+### 2026-09-03：RQ-213 候选 close/wakeup 第二次有界真实观察
+
+新增 [RQ-213 close/wakeup 真实观察 walkthrough](8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md)。
+在 RQ-212 公共闭环后的 exact-SHA 公共绿灯提交上只发出 1 次普通智谱请求，回执为 `not_pending`：会话
+在 172ms 内打开并记录 reasoning/content 类别，但没有形成 pending reader，所以 cancel 未尝试。
+回执为 909 bytes、SHA-256=`8b2b645bc79785cec6520759d63c530d1b6d6a7d06b192b472334df543706f7b`，
+不含敏感字段或正文；iterator、SDK stream wrapper 和 composite 投影均为 `closed`。
+
+材料强调 `not_pending` 不是 wakeup 成功或失败，`closed` 也不等于底层 HTTP response 已取消；候选 gate、
+产品 Runtime、默认模型、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变，8E
+coverage 继续 `planned`。下一步先裁决是否设计能稳定制造 pending-read 的新版协议，不自动重复真实请求。

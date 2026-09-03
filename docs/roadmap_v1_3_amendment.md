@@ -1288,3 +1288,17 @@ zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json`（`2220` bytes，
 `a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`）。回执仍标记 `offline_fake`、0 provider
 calls、无网络；它不证明 SDK/HTTP close/wakeup，候选不注册，8-Core/8-Advanced 分层和 `production_media=0`
 边界不变。下一精确 checkpoint 为 `candidate-close-wakeup-real-observation / pending-user-authorization`。
+
+## RQ-213：候选 close/wakeup 第二次真实观察分层边界（2026-09-03）
+
+RQ-213 仍属于 8-Advanced 的 candidate-only 证据，不新增 8-Core 能力，也不改变 8E→8F 顺序。
+在 exact-SHA 公共绿灯提交 `a396412f7cd0f2e923536cf55f715dd56251aae5` 上只发送 1 次
+`zhipu/glm-5.3-flash` 请求；回执为 `not_pending`，会话首段 172ms，未形成 pending reader，
+因此没有执行 cancel。回执保持 body-free（909 bytes，SHA-256
+`8b2b645bc79785cec6520759d63c530d1b6d6a7d06b192b472334df543706f7b`），不含 Key、正文或 request ID。
+
+该样本不能证明或否定 SDK close 非阻塞、取消唤醒或 HTTP response 关闭；候选仍 disabled/未注册，
+`capabilities.streaming=False`，严格 Flash v1、默认模型、产品 Runtime、Portal、Account、Workbench、
+Auth、路由与 `production_media=0` 不变。下一精确 checkpoint 改为
+`candidate-close-wakeup-follow-up-decision / pending-user-decision`；先裁决是否设计可稳定制造
+pending-read 的新版协议，不以重复真实请求替代实验设计。

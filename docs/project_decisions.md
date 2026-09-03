@@ -3298,3 +3298,19 @@ v2 离线回执 `data/evaluation/results/offline/zhipu_glm53_flash_candidate_clo
 为 `2220` bytes、SHA-256=`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`，三个身份 SHA 均绑定该实现提交。
 这只关闭本地回放合同，不改变候选 gate、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由或
 `production_media=0`；下一精确 checkpoint 为 `candidate-close-wakeup-real-observation / pending-user-authorization`。
+
+### RQ-213：接受一次新的真实观察，但不接受 wakeup 结论（2026-09-03）
+
+接受在 RQ-212 公共闭环后的 exact-SHA 公共绿灯提交
+`a396412f7cd0f2e923536cf55f715dd56251aae5` 上执行一次 candidate-only 真实观察，
+SDK retries=0、父进程边界 30 秒、无 retry/recovery/第二请求。回执
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_close_wakeup_observation_rq213_v1.json`
+为 909 bytes，SHA-256=`8b2b645bc79785cec6520759d63c530d1b6d6a7d06b192b472334df543706f7b`。
+
+接受的事实只有：会话打开、首段 172ms、观察到 reasoning/content 类别、状态为 `not_pending`，
+以及 iterator/SDK stream/composite 投影均 `closed`。拒绝把 `reader_woke=false` 写成唤醒失败，
+因为本次没有 pending reader、cancel 未执行；也拒绝把 `closed` 写成底层 HTTP response 或 provider
+close 已证明。候选 gate、产品 Runtime、默认模型、Workbench、前端、Auth、路由和 `production_media=0`
+保持不变。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`，
+先裁决是否另立能稳定制造 pending-read 的新版协议。

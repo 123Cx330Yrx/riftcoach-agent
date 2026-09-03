@@ -4180,3 +4180,19 @@ PostgreSQL `201 passed, 1 warning`。该修复只让持久 body-free 回执可�
   三个身份 SHA 均绑定实现提交，v1 仅为旧 HEAD 的提交前演练。
 - 该回执仍是 `offline_fake`/0 provider calls/no network，只关闭本地回放合同，不关闭 provider-level close/wakeup；
   下一精确 checkpoint 为 `candidate-close-wakeup-real-observation / pending-user-authorization`。
+
+### 2026-09-03：RQ-213 候选 close/wakeup 第二次有界真实观察
+
+- `EXECUTION`：在 RQ-212 公共闭环后的 exact-SHA 公共绿灯提交
+  `a396412f7cd0f2e923536cf55f715dd56251aae5` 上，只执行 1 次普通智谱
+  `zhipu/glm-5.3-flash` 请求；SDK retries 为 0、父进程边界 30 秒，无 retry、recovery 或第二请求。
+- `EVIDENCE`：回执
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_close_wakeup_observation_rq213_v1.json`
+  为 schema `1.0.0`、909 bytes、SHA-256
+  `8b2b645bc79785cec6520759d63c530d1b6d6a7d06b192b472334df543706f7b`；会话打开、首段 172ms，
+  只记录 reasoning/content 类别，`observation_state=not_pending`。
+- `REJECTED-CLAIM`：没有 pending reader，因此 cancel 未尝试；`reader_woke=false` 不是唤醒失败，
+  三层 `closed` 也不等于 provider close 或 HTTP response 取消已被证明。
+- `BOUNDARY-NEXT`：候选/产品边界不变。下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`；
+  先裁决是否设计能稳定制造 pending-read 的新版协议，不自动追加真实请求。

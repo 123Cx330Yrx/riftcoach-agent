@@ -1394,3 +1394,16 @@ PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过）。最终 v2 回�
 SHA-256 `a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`），三个身份 SHA 均绑定该实现提交；
 v1 仅保留为旧 HEAD 的提交前演练。该证据仍是 `offline_fake`、供应商调用数 0，不能替代 provider-level
 close/wakeup 观察；当前下一精确 checkpoint 是 `candidate-close-wakeup-real-observation / pending-user-authorization`。
+
+### RQ-213：候选 close/wakeup 第二次有界真实观察（2026-09-03）
+
+在用户允许连续推进后，候选只在 exact-SHA 公共绿灯提交
+`a396412f7cd0f2e923536cf55f715dd56251aae5` 上发送 1 次普通智谱
+`zhipu/glm-5.3-flash` 请求，SDK retries 为 0、父进程边界 30 秒，无 retry、recovery 或第二请求。
+新回执为 909 bytes、SHA-256
+`8b2b645bc79785cec6520759d63c530d1b6d6a7d06b192b472334df543706f7b`，状态为 `not_pending`：
+会话打开并在 172ms 内观察到 reasoning/content 类别，但没有形成 pending reader，cancel 未尝试。
+这只说明本次有限窗口没有进入可测分支，不证明或否定 provider close/wakeup 或底层 HTTP response 取消；
+候选仍 disabled/未注册，8E/8F、G53-7、黄金切片、产品默认和 `production_media=0` 不变。当前下一精确
+checkpoint 改为 `candidate-close-wakeup-follow-up-decision / pending-user-decision`，先决定是否另立
+可稳定制造 pending-read 的新版协议。
