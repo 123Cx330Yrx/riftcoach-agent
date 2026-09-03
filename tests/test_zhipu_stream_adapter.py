@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import threading
 from hashlib import sha256
 from types import SimpleNamespace
 from typing import Any
@@ -564,6 +565,81 @@ def test_explicit_candidate_session_requests_usage_tail_and_is_idempotently_clos
         sdk_stream_state="closed",
         composite_state="closed",
         shared_resource=True,
+    )
+
+
+def test_candidate_session_defers_active_iterator_close_until_reader_unwinds() -> None:
+    started = threading.Event()
+    release = threading.Event()
+    reader_errors: list[BaseException] = []
+
+    class BlockingIterator:
+        def __init__(self) -> None:
+            self.close_calls = 0
+
+        def __iter__(self) -> "BlockingIterator":
+            return self
+
+        def __next__(self) -> Any:
+            started.set()
+            if not release.wait(1.0):
+                raise RuntimeError("fixture reader did not release")
+            raise StopIteration
+
+        def close(self) -> None:
+            self.close_calls += 1
+
+    iterator = BlockingIterator()
+
+    class OuterStream:
+        def __init__(self) -> None:
+            self.closed = False
+
+        def __iter__(self) -> BlockingIterator:
+            return iterator
+
+        def close(self) -> None:
+            self.closed = True
+
+    raw = OuterStream()
+    provider = ZhipuProvider(client=FakeClient(raw), model=MODEL)
+    session = provider.stream_adapter().stream_session(request())
+
+    def read_once() -> None:
+        try:
+            next(session)
+        except StopIteration:
+            return
+        except BaseException as error:  # pragma: no cover - assertion below
+            reader_errors.append(error)
+
+    reader = threading.Thread(target=read_once, daemon=True)
+    reader.start()
+    assert started.wait(1.0)
+
+    # The outer stream closes immediately, while the active iterator is left
+    # for its own stack to finish instead of calling generator.close() across
+    # threads.
+    session.cancel()
+    assert raw.closed is True
+    assert iterator.close_calls == 0
+    assert session.close_report.as_dict() == {
+        "iterator_state": "not_observed",
+        "sdk_stream_state": "closed",
+        "composite_state": "not_observed",
+        "shared_resource": False,
+    }
+
+    release.set()
+    reader.join(1.0)
+    assert reader.is_alive() is False
+    assert reader_errors == []
+    assert iterator.close_calls == 1
+    assert session.close_report == ZhipuStreamCloseReport(
+        iterator_state="closed",
+        sdk_stream_state="closed",
+        composite_state="closed",
+        shared_resource=False,
     )
 
 

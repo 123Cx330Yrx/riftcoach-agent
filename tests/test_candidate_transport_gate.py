@@ -51,8 +51,11 @@ def test_sdk_transport_gate_reaches_pending_read_without_network(
     assert metrics.gate_released is False
     assert metrics.downstream_close_seen is True
     assert metrics.upstream_stream_close_seen is True
-    # The reader wake and cleanup projection are intentionally independent.
-    assert observation.close_report.composite_state in {"closed", "failed"}
+    # Closing the outer response must wake the reader without concurrently
+    # closing its active Python generator.  The reader-owned finally then
+    # completes both cleanup projections.
+    assert observation.cancel_status == "returned"
+    assert observation.close_report.composite_state == "closed"
 
 
 def test_replay_receipt_is_body_free_and_round_trips() -> None:
@@ -85,8 +88,8 @@ def test_projection_classifies_wakeup_and_close_race_separately() -> None:
 
     assert case.passed is True
     assert case.reader_woke is True
-    assert case.conclusion in {"client_wakeup_clean", "client_wakeup_close_race"}
-    assert case.close_report["composite_state"] in {"closed", "failed"}
+    assert case.conclusion == "client_wakeup_clean"
+    assert case.close_report["composite_state"] == "closed"
 
 
 def test_receipt_writer_is_immutable_and_stays_under_offline_root(tmp_path: Path) -> None:

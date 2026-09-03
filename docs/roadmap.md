@@ -1447,3 +1447,16 @@ provider-native close/wakeup、模型一般能力或生产 streaming。候选仍
 当前精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`；
 后续修复关闭顺序或新的真实请求需另立决策。
+
+### RQ-216：候选 reader-owned close 顺序修复（2026-09-03）
+
+RQ-216 继续属于 `8e-productization` 的 8-Advanced candidate-only 适配器工作，不新增或重排
+8-Core，也不把 GLM-5.3 Flash 注册为产品模型。针对 RQ-215 暴露的
+`client_wakeup_close_race`，候选会话在活跃 `next()` 期间先关闭外层 SDK response，将 iterator
+关闭延后到读取线程自己的 `finally`；无活跃读取时维持逐资源最多一次关闭。阻塞读取回归和两阶段
+离线 transport-gate 聚焦回归为 `61 passed`，compileall、差异检查与治理通过，真实 API 调用为 0。
+
+候选仍 disabled/未注册，`capabilities.streaming=False`，默认模型、产品 Runtime、Portal、Account、
+Workbench、Auth、路由、G53-7、黄金切片与 `production_media=0` 均不变。当前唯一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`；
+先做同 SHA 公共 CI，再回到真实观察决策点。

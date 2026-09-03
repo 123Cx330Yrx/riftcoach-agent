@@ -90,8 +90,8 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
 观察均已完成；这些证据只描述客户端观察合同，不是 8E、领域采用或生产准入完成。RQ-211～214
 的历史回执保持不可变。RQ-215 在同 SHA 公共 CI run `33721483490` 三 job 全绿后只发出 1 次
-真实请求，当前精确执行指针改为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。
+真实请求，随后定位到 `client_wakeup_close_race` 并完成候选适配器的本地关闭顺序修复；当前精确执行指针改为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -389,14 +389,14 @@ RQ-210 的本地实现与 exact-SHA 公共 CI 已完成，仍不注册候选或�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`。
 RQ-215 的真实回执已生成并绑定实现/观察器/输入计划提交
 `2acdf795881733e70c9246c48f7147d5136821b5`，文件为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq215_v1.json`，
 `1305` bytes、SHA-256=`732e870bbb0163d354006434c091bd7f15773ffa4e041b25edfc2a5d17739e59`；
 同 SHA 公共 CI run `33721483490` 三 job 全绿（pytest `2296 passed, 145 skipped, 2 warnings, 127 subtests passed`；
 PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过）。结果为真实流启动后 gate 进入、pending reader
-被唤醒，但出现 `client_wakeup_close_race`；不得自动注册候选、进入 G53-7/黄金切片，也不修改产品
+被唤醒，但出现 `client_wakeup_close_race`。本地修复已让离线闸门的取消、唤醒和三层关闭投影收敛；不得自动注册候选、进入 G53-7/黄金切片，也不修改产品
 Runtime、Portal、Account、Workbench、Auth 或路由。
 
 `6B-6-preferences-profile-review-memory` 已由实现/最小测试修复 `5531c81` 与 Actions

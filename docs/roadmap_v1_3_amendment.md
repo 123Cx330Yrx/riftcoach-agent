@@ -1333,3 +1333,13 @@ response close 唤醒，但取消安全码为 `zhipu_stream_close`，iterator/co
 Account、Workbench、Auth、路由和 `production_media=0` 不变。当前精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`；
 后续修复关闭顺序或新的真实请求必须另立证据版本并重新授权。
+
+## 2026-09-03：RQ-216 关闭顺序修复仍属 8-Advanced
+
+RQ-216 只修复候选适配器的本地 `client_wakeup_close_race`：活跃 reader 存在时先关闭外层
+SDK response，把 iterator close 交还给 reader 线程的 `finally`；非活跃路径仍逐资源最多一次关闭。
+阻塞读取回归与离线 transport-gate 聚焦测试 `61 passed`，真实 API 为 0。此修复不新增 8-Core
+能力，不改变严格 Flash v1、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由或
+`production_media=0`，候选继续 disabled/未注册。当前唯一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`；
+公共 CI 通过后再回到真实观察决策点。

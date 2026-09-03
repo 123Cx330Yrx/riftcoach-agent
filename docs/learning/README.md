@@ -672,3 +672,17 @@ transport 外层 gate 进入，pending reader 在 `31ms` 内被 response close �
 大小 `1305` bytes、SHA-256=`732e870bbb0163d354006434c091bd7f15773ffa4e041b25edfc2a5d17739e59`。
 候选仍 disabled/未注册，8E coverage 继续 `planned`；当前精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。
+
+### 2026-09-03：RQ-216 候选 reader-owned close 顺序修复
+
+新增 [RQ-216 walkthrough](8e-glm53-candidate-reader-owned-close-order-walkthrough.md)、
+[ADR-0086](../adr/0086-adopt-candidate-reader-owned-close-order.md) 和
+[修复计划](../plans/2026-09-03-glm53-candidate-reader-owned-close-order.md)。本批解释并修复
+`client_wakeup_close_race`：取消线程不再跨线程关闭正在执行 `next()` 的 Python iterator，先关闭
+外层 SDK response，让 reader 自己在 `finally` 中完成 iterator close；没有活跃 reader 时仍逐资源
+最多关闭一次。
+
+阻塞读取回归与 RQ-214 两阶段离线 transport-gate 聚焦测试共 `61 passed`，并通过 compileall、
+差异检查和治理校验；本批真实 API 调用为 0。该修复仍是候选 evaluation-only 客户端合同，不代表
+provider-native 能力或生产 streaming；候选未注册、8E coverage 继续 `planned`。当前下一检查点为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`。

@@ -3351,3 +3351,15 @@ SDK/HTTPX retries=0、父进程 30 秒、阶段 `before_first_event`，无 retry
 close/wakeup、模型一般能力、候选注册或生产 streaming。候选 gate、默认模型、产品 Runtime、
 Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变；下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。
+
+### RQ-216：采用 reader-owned close 顺序修复（2026-09-03）
+
+接受候选适配器对 `client_wakeup_close_race` 的本地修复：当 reader 正在执行 `next()` 时，取消
+路径先关闭外层 SDK response，避免跨线程调用 iterator `close()`；reader 在自己的 `finally` 中
+完成 iterator 收尾。无活跃读取时继续执行逐资源、最多一次的关闭。阻塞读取与两阶段离线 gate
+聚焦回归 `61 passed`，compileall、差异检查和治理通过，真实 API 为 0。
+
+该决定只覆盖候选 evaluation-only 生命周期合同，不改变候选 disabled/未注册、默认模型、产品
+Runtime、Portal、Account、Workbench、Auth、路由、8-Core、G53-7、黄金切片或 `production_media=0`。
+RQ-215 旧回执不可变；当前下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`。

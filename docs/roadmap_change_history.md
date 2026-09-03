@@ -4242,3 +4242,10 @@ Actions run `33712055286` 同 SHA 三 job 全绿：pytest `2292 passed, 145 skip
   不证明 provider-native close/wakeup、模型一般能力或生产 streaming。候选仍 disabled/未注册，
   默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变；
   当前精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。
+
+### 2026-09-03：RQ-216 候选 reader-owned close 顺序修复
+
+- `DECISION`：将 `client_wakeup_close_race` 定位为客户端 reader 与取消线程跨线程关闭 Python iterator 的竞态；活跃读取时先关外层 SDK response，iterator 由 reader 线程在 `finally` 中收尾。
+- `EVIDENCE`：新增阻塞读取回归并收紧 RQ-214 两阶段离线 gate 断言；候选聚焦 `61 passed`，compileall、差异检查和治理通过，真实 API 为 0。
+- `BOUNDARY-NEXT`：RQ-216 仍是 8-Advanced candidate-only 修复，不提升候选注册、默认模型、8-Core、生产 streaming 或任何 Portal/Account/Workbench/Auth 能力。当前精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`；公共 CI 后才回到真实观察决策点。

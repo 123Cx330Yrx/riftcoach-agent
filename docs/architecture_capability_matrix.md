@@ -994,3 +994,13 @@ streaming。回执路径为
 AgentLoop、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。当前
 精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。
+
+## RQ-216：候选 reader-owned close 顺序（2026-09-03）
+
+能力状态仍为 `candidate-only / evaluation-only`。`ZhipuStreamSession` 在活跃读取期间先关闭
+外层 SDK response，并由 reader 线程在 `finally` 中关闭 iterator；非活跃读取保持逐资源最多一次关闭。
+本地阻塞读取及两阶段 transport-gate 回归为 `61 passed`，真实 API 调用为 0。该修复只改变候选
+客户端资源生命周期合同，不授予 provider-native close/wakeup、streaming、默认模型或产品 Runtime
+能力；候选仍 disabled/未注册，Portal、Account、Workbench、Auth、路由、8-Core、G53-7、黄金切片
+和 `production_media=0` 均不变。当前下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`。

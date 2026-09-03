@@ -5510,3 +5510,11 @@
   底层 HTTP response 独立可取消、模型一般能力或生产 streaming。候选仍 disabled/未注册，产品
   Runtime、默认模型、Workbench、前端和 `production_media=0` 不变；下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`。
+
+## 2026-09-03：RQ-216 候选 reader-owned close 顺序修复
+
+- [diagnosis] `client_wakeup_close_race` 的本地根因是取消线程在 reader 线程仍阻塞于 `next()` 时跨线程调用 Python iterator `close()`；外层 SDK response 已能唤醒 reader，但迭代器关闭会与生成器栈交叉。
+- [decision] `ZhipuStreamSession` 记录活跃 reader；有活跃读取时先关闭外层 SDK response，并把 iterator close 延后到 reader 自己的 `finally`。没有活跃读取时保持逐资源、最多一次关闭；共享资源仍只关闭一次。
+- [evidence] 新增阻塞读取回归，收紧 RQ-214 两阶段 transport-gate 断言；候选聚焦回归 `61 passed`，compileall、`git diff --check`、governance 通过，真实 API 调用为 0。
+- [boundary] 这是候选适配器本地协议修复，不是 provider-native 能力或生产 streaming 结论；候选仍 disabled/未注册，产品 Runtime、默认模型、Portal、Account、Workbench、Auth、路由、G53-7、黄金切片与 `production_media=0` 不变。旧 RQ-215 回执不可变。
+- [next] 当前唯一精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`；先提交并做同 SHA 公共 CI，再回到真实观察决策点，不自动发新请求。
