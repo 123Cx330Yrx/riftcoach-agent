@@ -191,7 +191,8 @@ def _child_main(args: argparse.Namespace) -> int:
     try:
         root = args.repository_root.resolve()
         context = _load_frozen_context(root)
-        settings = load_zhipu_settings(_load_environment(args.env_file))
+        environment = _load_environment(args.env_file)
+        settings = load_zhipu_settings(environment)
         if settings.model.strip().lower() != MODEL:
             raise CandidateRealTransportGateError("candidate_model_mismatch", "identity")
         if settings.base_url.rstrip("/") != BASE_URL.rstrip("/"):
@@ -201,9 +202,14 @@ def _child_main(args: argparse.Namespace) -> int:
         profile = GLM53_FLASH_FRESH_RECOVERY_RUNTIME_CANDIDATE_V1
 
         # ``HTTPTransport(retries=0)`` and OpenAI ``max_retries=0`` make the
-        # one-request budget explicit at both retry layers.  ``trust_env`` is
-        # disabled so an ambient proxy cannot create an unaccounted route.
-        inner_transport = httpx.HTTPTransport(retries=0)
+        # one-request budget explicit at both retry layers.  Keep HTTPX's
+        # An explicit transport bypasses HTTPX's automatic environment-proxy
+        # selection, so carry the existing HTTPS/ALL proxy setting into the
+        # wrapped transport without printing or persisting its value.  The
+        # gate still counts and bounds the provider request itself.
+        proxy = environment.get("HTTPS_PROXY") or environment.get("https_proxy")
+        proxy = proxy or environment.get("ALL_PROXY") or environment.get("all_proxy")
+        inner_transport = httpx.HTTPTransport(proxy=proxy or None, retries=0)
         gate = GateTransport(inner_transport, phase=args.phase)
         http_client = httpx.Client(
             transport=gate,
