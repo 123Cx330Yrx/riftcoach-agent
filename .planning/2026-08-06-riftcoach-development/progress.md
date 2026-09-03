@@ -5853,3 +5853,22 @@
 - [boundary-next] 当前唯一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`；
   不自动追加真实请求。
+
+## 2026-09-03：RQ-221 GLM-5.3 Flash 低思考候选探针
+
+- [implemented] 增加显式 candidate-only `low + 4096` profile、候选 Provider 构造器、
+  一次性探针 CLI 与 body-free/create-only 回执；没有改产品 Runtime、默认模型、Portal、
+  Account、Workbench 或 Auth。
+- [verified] 候选聚焦 `25 passed`，本次相关候选/流/智谱回归 `357 passed`；实现提交
+  `c3de5555d0b00d77f402c41a842d00df53f46865` 的 Actions `33746833148` 三 job
+  exact-SHA 全绿，compileall、diff check、governance 通过。
+- [observed] 在同一实现身份上只发出 1 次真实请求（retries=0、无工具）；结果为
+  `observed / finish=stop / usage=valid`，输入/输出 token `1973/498`，延迟约 `20735ms`。
+  回执提交 `ef8d4b4133eeb952963e9e5cc112ec1fc458c671`，SHA-256=
+  `c2946954181b10da2dcb726e186a2800d4381da24d04395b7baef4eecebd1957`。
+- [boundary] 该结果只说明冻结无工具上下文的一次候选响应完成，不是领域门、黄金切片、
+  生产准入或 8F 证据；候选仍 disabled/未注册，严格 Flash v1 2048/零额外调用、
+  `capabilities.streaming=False`、默认模型和 `production_media=0` 不变。
+- [next] 当前精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`；
+  等待低档候选领域门设计/裁决，不自动追加真实请求。

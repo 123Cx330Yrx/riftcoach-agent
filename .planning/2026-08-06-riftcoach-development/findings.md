@@ -5519,6 +5519,24 @@
 - [boundary] 这是候选适配器本地协议修复，不是 provider-native 能力或生产 streaming 结论；候选仍 disabled/未注册，产品 Runtime、默认模型、Portal、Account、Workbench、Auth、路由、G53-7、黄金切片与 `production_media=0` 不变。旧 RQ-215 回执不可变。
 - [next] 当前唯一精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`；先提交并做同 SHA 公共 CI，再回到真实观察决策点，不自动发新请求。
 
+## 2026-09-03：RQ-221 低思考候选 profile 与真实探针发现
+
+- RQ-219 的 `max + 8192` 超时只能说明那组预算/档位没有在 90 秒内交付；不能直接把
+  `low + 4096` 当作默认修复。为保持归因，候选 profile 只改变思考档位与输出上限，
+  provider/model、采样、冻结上下文和调用次数均显式记录。
+- 正常产品 `ModelRuntimeProfile` resolver 不认识该 profile；只有显式候选构造器能绑定，
+  且 `execution_allowed=false`。这把“候选实验允许发一笔请求”和“产品可以自动采用”
+  分成两个不可混淆的开关。
+- 一次真实无工具探针在 `20.735s` 得到 `finish=stop` 和有效 Usage，说明该窄上下文
+  能完整规范化；它没有覆盖工具回合、AgentLoop、多轮恢复、领域质量、成本/延迟稳定性
+  或 provider-native streaming。
+- 回执提交后的 Actions `33747392719` 首次暴露了公共 capability contract registry 仍按旧
+  schema 解析新候选回执；这不是 API/模型失败。已在测试入口增加显式低档候选 schema 分支，
+  本地聚焦回归通过；该失败 run 不作为绿色证据，后续公共 CI 必须绑定修复后的 exact SHA。
+- 回执必须 create-only、body-free；旧 RQ-219/RQ-220 证据不可覆盖。候选仍 disabled，
+  严格 Flash v1、默认模型和产品边界不变。下一步应先设计独立 held-out 领域门，重新
+  绑定新鲜 G53-3、预算与终态/Usage 判定，再决定是否执行。
+
 ### RQ-216 公共闭环补充
 
 - [public-ci] 实现提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions run `33726209532` 三 job exact-SHA 全绿；公共 pytest `2297 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL 与 packaging-smoke 通过。

@@ -1389,3 +1389,22 @@ terminal/EOF、Usage 和 recovery action 分开验证，provider calls=0。实�
 全绿，回执 SHA-256=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`。
 它不增加 8-Core、不改变 8E→8F 顺序，也不把候选提升为默认模型；当前进入候选域门裁决，
 不自动追加真实请求。
+
+## RQ-221：显式低思考候选探针仍属 8-Advanced（2026-09-03）
+
+RQ-221 继续遵守 v1.3 的 8-Core/8-Advanced 分层：新增的 `low + 4096` profile 和一次
+真实无工具探针只是 candidate-only、evaluation-only 观察，不新增 8-Core 能力，不改变
+8E→8F 顺序。profile 通过显式候选构造器使用，`activation_state=candidate`、
+`execution_allowed=false`，不进入正常 Runtime resolver。
+
+实现提交 `c3de5555d0b00d77f402c41a842d00df53f46865` 的 Actions `33746833148` 三 job
+exact-SHA 全绿；一次真实观察得到 `observed / finish=stop / usage=valid`，输入/输出
+`1973/498`、延迟约 `20735ms`。body-free 回执提交
+`ef8d4b4133eeb952963e9e5cc112ec1fc458c671`，SHA-256=
+`c2946954181b10da2dcb726e186a2800d4381da24d04395b7baef4eecebd1957`。
+
+该窄结果不证明领域质量、工具多轮、成本/延迟稳定性、provider-native streaming、
+G53-7、黄金切片、生产准入或 8F；严格 Flash v1、默认模型、产品 Runtime、Portal、
+Account、Workbench、Auth、路由与 `production_media=0` 均不变。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`，
+需先另立低档候选领域门设计并取得裁决。

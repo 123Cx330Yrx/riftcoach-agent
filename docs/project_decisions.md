@@ -3411,3 +3411,21 @@ Portal、Account、Workbench、Auth、路由及 `production_media=0` 均不变�
 `ebb09a525b3340f31ba71821b894b4a142dfb4e7` / Actions `33738673832` 均三 job exact-SHA
 全绿；回执 SHA-256=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`。
 当前进入候选域门裁决，不自动追加真实请求。
+
+### RQ-221：接受低思考候选探针观察（2026-09-03）
+
+接受显式 candidate-only `low + 4096` profile 的一次真实无工具观察：实现提交
+`c3de5555d0b00d77f402c41a842d00df53f46865` 的 Actions `33746833148` 三 job exact-SHA
+全绿；只发送 1 次请求，结果为 `observed / finish=stop / usage=valid`，输入/输出
+`1973/498`，延迟约 `20735ms`。回执提交
+`ef8d4b4133eeb952963e9e5cc112ec1fc458c671`，canonical SHA-256=
+`c2946954181b10da2dcb726e186a2800d4381da24d04395b7baef4eecebd1957`，保持 body-free、
+create-only。
+
+该接受只覆盖冻结无工具上下文中的响应完成事实，不把低思考档提升为产品默认或候选准入；
+不证明领域质量、工具多轮、成本/延迟稳定性、G53-7、黄金切片、生产准入或 8F。候选仍
+`activation_state=candidate`、`execution_allowed=false`、未注册，严格 Flash v1、默认模型、
+产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变。
+当前唯一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`；
+下一步先设计/裁决低档候选 held-out 领域门，不自动追加真实请求。

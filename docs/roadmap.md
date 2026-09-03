@@ -1513,3 +1513,16 @@ checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adap
 `33738673832` 均三 job `completed/success`；回执 SHA-256=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`。
 该批不新增 8-Core 能力、不注册候选、不改变默认模型或产品模块；当前下一精确 checkpoint
 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。
+
+### RQ-221：GLM-5.3 Flash 低思考候选探针（2026-09-03）
+
+RQ-221 在 8E 内增加显式 candidate-only `low + 4096` profile，并在冻结无工具上下文中
+完成一次真实观察。实现提交 `c3de5555d0b00d77f402c41a842d00df53f46865` 的 Actions
+`33746833148` 三 job exact-SHA 全绿；真实请求恰好 1 次，结果为 `observed`、
+`finish_reason=stop`、Usage 有效，输入/输出 `1973/498`，延迟约 `20735ms`。该结果只
+说明窄上下文响应可完成，不改变严格 Flash v1、默认模型或产品 Runtime。
+
+候选仍 disabled/未注册，Portal、Account、Workbench、Auth、路由和 `production_media=0`
+不变；G53-7、黄金切片、生产安全/部署/合规与 8F 仍未完成。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`，
+下一步先设计/裁决独立低档候选 held-out 领域门，不自动追加真实请求。

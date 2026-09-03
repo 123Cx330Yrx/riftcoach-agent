@@ -65,6 +65,10 @@ from app.evaluation.glm53_flash_stream_terminal_completion_probe import (
 from app.evaluation.glm53_flash_stream_visible_completion_probe import (
     StreamVisibleCompletionReport,
 )
+from app.evaluation.glm53_flash_candidate_profile_probe import (
+    PROTOCOL_ID as LOW_PROFILE_PROBE_PROTOCOL_ID,
+    CandidateProfileProbeReport,
+)
 from app.evaluation.glm53_flash_transport_generation_split_diagnostic import (
     TransportGenerationSplitReport,
 )
@@ -245,6 +249,12 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
     for result_path in result_paths:
         content = result_path.read_text(encoding="utf-8")
         payload = json.loads(content)
+        if payload.get("protocol_id") == LOW_PROFILE_PROBE_PROTOCOL_ID:
+            report = CandidateProfileProbeReport.model_validate_json(content)
+            assert report.candidate_registered is False
+            assert report.production_admitted is False
+            assert content.endswith("\n")
+            continue
         if (
             payload.get("protocol_id")
             == CANDIDATE_RECOVERY_DIAGNOSTIC_PROTOCOL_ID

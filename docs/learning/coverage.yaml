@@ -941,6 +941,9 @@ groups:
         - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
         - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
         - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
       design_and_implementation:
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
         - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
@@ -1054,6 +1057,9 @@ groups:
         - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
         - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
         - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
       code_map:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1123,6 +1129,9 @@ groups:
         - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
         - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
         - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
       data_and_control_flow:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1205,6 +1214,9 @@ groups:
         - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
         - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
         - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
       verification:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1312,6 +1324,9 @@ groups:
         - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
         - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
         - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
       runbook:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1396,6 +1411,9 @@ groups:
         - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
         - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
         - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
       failure_security_boundary:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1508,6 +1526,9 @@ groups:
         - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
         - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
         - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
       interview_wording:
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
@@ -1533,6 +1554,9 @@ groups:
         - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
         - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
         - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
         - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
         - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
         - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md

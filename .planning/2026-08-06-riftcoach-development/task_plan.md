@@ -95,8 +95,10 @@ close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次
 RQ-217 又在 RQ-216 的文档/证据闭环 SHA `3e028b1217f1274152ba161993287f29188a1b73` 上按一次性授权只发出 1 次真实
 transport-gated 请求，得到 `client_wakeup_clean`；RQ-218 的 G53-3 在最新实现上 3/3
 通过，RQ-219 的候选 8192 单次真实流在 90 秒硬墙钟以 `fail_closed / elapsed_limit`
-收口。当前精确执行指针改为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。
+收口；RQ-220 已完成 9 场景零网络档位—终态—Usage—恢复拆分；RQ-221 又完成显式
+`low + 4096` 候选 profile 的 exact-SHA 公共 CI 与一次真实无工具探针，得到
+`observed/stop/usage-valid`。当前精确执行指针改为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -394,7 +396,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`。
 RQ-217 的真实回执绑定实现/观察器/输入计划提交
 `3e028b1217f1274152ba161993287f29188a1b73`，文件为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`，
@@ -3042,3 +3044,22 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [next] 下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`；
   不自动追加真实请求。
+
+## RQ-221 / GLM-5.3 Flash 低思考候选探针（2026-09-03）
+
+- Status: complete-bounded-real; candidate-only; observed; pending-next-decision
+- [implemented] 新增显式 `low + 4096` 候选 profile 与一次性探针；固定
+  `thinking=enabled`、`reasoning_effort=low`、`clear_thinking=false`、
+  `temperature=1`、`top_p=0.95`，候选不进入正常 Runtime resolver。
+- [verification] 候选聚焦 `25 passed`，本次相关候选/流/智谱回归 `357 passed`；实现提交
+  `c3de5555d0b00d77f402c41a842d00df53f46865` 的 Actions `33746833148` 三 job
+  exact-SHA 全绿；compileall、diff check、governance 通过。
+- [bounded-real] 按授权只发送 1 次真实请求，retries=0、不开工具、不 recovery；
+  `status=observed`、`finish_reason=stop`、Usage 有效，输入/输出 `1973/498`，延迟
+  `20735ms`。回执提交 `ef8d4b4133eeb952963e9e5cc112ec1fc458c671`，canonical SHA-256
+  为 `c2946954181b10da2dcb726e186a2800d4381da24d04395b7baef4eecebd1957`。
+- [boundary-next] 这只关闭冻结无工具上下文的一次响应完成观察；候选仍 disabled/未注册，
+  严格 Flash v1 2048/零额外调用、默认模型、产品 Runtime、Portal、Account、Workbench、
+  Auth、路由和 `production_media=0` 不变。下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`；
+  下一动作是设计/裁决独立低档 held-out 领域门，不自动追加真实请求。

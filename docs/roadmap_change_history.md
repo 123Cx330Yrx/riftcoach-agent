@@ -4304,3 +4304,22 @@ Runtime、Portal、Account、Workbench、Auth、路由与 `production_media=0` �
   当前 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`，
   下一动作是候选域门裁决，不自动追加真实请求。
+
+## 2026-09-03：RQ-221 低思考候选 profile 一次性探针
+
+- `IMPLEMENTED`：新增显式 candidate-only `low + 4096` profile 与探针；
+  `thinking=enabled`、`reasoning_effort=low`、`clear_thinking=false`，不进入正常
+  Runtime resolver，也不改变严格 Flash v1。
+- `PUBLIC-CI`：实现提交 `c3de5555d0b00d77f402c41a842d00df53f46865` 的 Actions
+  `33746833148` 三 job exact-SHA 全绿；候选聚焦 `25 passed`、本次相关候选/流/智谱回归
+  `357 passed`。
+- `REAL-OBSERVATION`：按授权只发 1 次无工具请求，`retries=0`；结果为
+  `observed / finish=stop / usage=valid`，输入/输出 `1973/498`，延迟约 `20735ms`。
+  回执提交 `ef8d4b4133eeb952963e9e5cc112ec1fc458c671`，SHA-256=
+  `c2946954181b10da2dcb726e186a2800d4381da24d04395b7baef4eecebd1957`，body-free、
+  create-only。
+- `BOUNDARY-NEXT`：这只是冻结无工具上下文的一次响应完成观察，不是领域采用、G53-7、
+  黄金切片、生产准入或 8F 证据；候选仍 disabled/未注册，默认模型、产品 Runtime、
+  Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。当前唯一精确
+  checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`，
+  下一步先设计/裁决低档候选 held-out 领域门。
