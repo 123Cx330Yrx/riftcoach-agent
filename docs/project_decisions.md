@@ -3371,3 +3371,24 @@ RQ-215 旧回执不可变；当前下一精确 checkpoint 为
 与 packaging-smoke 通过。该证据只关闭候选本地关闭顺序修复的公共可复现性，不改变候选
 disabled/未注册、默认模型、产品 Runtime 或 RQ-215 旧回执。当前下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`；是否重新执行真实观察需另行决定。
+
+### RQ-217：接受关闭顺序修复后的单次 transport-gated 真实观察（2026-09-03）
+
+接受在 RQ-216 公共 CI 闭环后，以实现/观察器/输入计划 SHA
+`3e028b1217f1274152ba161993287f29188a1b73` 只发送 1 次真实
+`zhipu/glm-5.3-flash` 请求。阶段固定为 `before_first_event`，SDK/HTTPX retries=0，父进程
+30 秒，无 retry、recovery 或第二请求；候选仍不注册、不打开 `capabilities.streaming`。
+
+官方 TLS transport 外层 gate 进入并形成 pending reader；`reader_woke=true`、
+`cancel_status=returned`，iterator/SDK/composite close report 均为 `closed`，结论为
+`client_wakeup_clean`。回执
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`
+为 `1284` bytes、SHA-256=`ad4b920e94f019dae0b08c166e248c12349bdee0d73bf14b8ab2342e6b428ef3`，
+body-free 且 canonical round-trip 通过；`gate_released=false` 是受控停顿协议的预期条件。
+
+该决定只接受“本机受控客户端的唤醒与 reader-owned 收尾”这一层事实，不把它升级为
+provider-native close/wakeup、模型一般能力、生产 streaming、G53-7、黄金切片或 8F 证据。
+候选、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和
+`production_media=0` 均不变。当前下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`；
+没有新的独立授权前不再发送真实请求。

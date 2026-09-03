@@ -4257,3 +4257,25 @@ Actions run `33712055286` 同 SHA 三 job 全绿：pytest `2292 passed, 145 skip
   127 subtests passed`，PostgreSQL 与 packaging-smoke 通过。
 - `BOUNDARY-NEXT`：公共闭环只证明候选关闭顺序修复可复现，不新增真实请求或产品能力；当前精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`，等待是否重新观察的用户决定。
+
+## 2026-09-03：RQ-217 关闭顺序修复后的 transport-gated 真实观察
+
+RQ-217 仍属于 8E/8-Advanced 的 candidate-only、evaluation-only 证据，不新增 8-Core
+（product/deployment/compliance/eval/portfolio）能力，也不改变 8E→8F 顺序。用户在
+RQ-216 的 exact-SHA 公共 CI 通过后授权只做一次真实观察；实现、观察器和输入计划均绑定
+`3e028b1217f1274152ba161993287f29188a1b73`，Actions `33727163550` 三 job 全绿。
+
+官方 TLS transport 外层 gate 在 `before_first_event` 进入并形成 pending reader；只发生
+1 次 provider/transport 请求，`reader_woke=true`、`cancel_status=returned`，iterator、
+SDK stream 和 composite close report 均为 `closed`，结论为 `client_wakeup_clean`。
+回执为 `1284` bytes、SHA-256=`ad4b920e94f019dae0b08c166e248c12349bdee0d73bf14b8ab2342e6b428ef3`，
+保持 body-free、canonical round-trip 可复核；`gate_released=false` 是受控停顿协议的
+预期条件。
+
+该样本只说明真实流启动后本机客户端的唤醒和 reader-owned 收尾，不证明 provider-native
+close/wakeup、底层 HTTP response 独立取消、模型一般能力、成本/延迟稳定性或生产
+streaming。候选仍 disabled/未注册，`capabilities.streaming=False`；默认模型、产品
+Runtime、Portal、Account、Workbench、Auth、路由与 `production_media=0` 不变。当前唯一
+精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`；
+没有新的独立授权前不再发送真实请求。

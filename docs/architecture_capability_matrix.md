@@ -1010,3 +1010,23 @@ RQ-216 公共闭环：提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` / Action
 PostgreSQL 与 packaging-smoke 通过）。能力矩阵仍不授予 provider-native close/wakeup、生产
 streaming、候选注册或默认模型能力；当前下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`。
+
+## RQ-217：关闭顺序修复后的 transport-gated 真实观察能力边界（2026-09-03）
+
+RQ-217 不新增 A03/A10/Q02 或任何产品 Runtime capability，仍是 8E/8-Advanced 的
+candidate-only、evaluation-only 客户端证据。实现/观察器/输入计划 SHA 均为
+`3e028b1217f1274152ba161993287f29188a1b73`，Actions `33727163550` 三 job exact-SHA 全绿。
+
+一次 `zhipu/glm-5.3-flash` 请求在官方 TLS transport 外的 `before_first_event` gate 中
+形成 pending reader；`reader_woke=true`、`cancel_status=returned`，iterator/SDK/composite
+close report 均为 `closed`，结论为 `client_wakeup_clean`。回执
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`
+为 `1284` bytes、SHA-256=`ad4b920e94f019dae0b08c166e248c12349bdee0d73bf14b8ab2342e6b428ef3`，
+body-free 且 canonical round-trip 通过；`gate_released=false` 是受控停顿协议的预期条件。
+
+这只证明本机客户端的唤醒和 reader-owned 收尾，不证明 provider-native close/wakeup、
+底层 HTTP response 独立取消、模型一般能力、成本/延迟稳定性或生产 streaming。候选仍
+disabled/未注册，`capabilities.streaming=False`；默认模型、产品 Runtime、Portal、Account、
+Workbench、Auth、路由、8-Core、G53-7、黄金切片和 `production_media=0` 均不变。当前精确
+checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`。

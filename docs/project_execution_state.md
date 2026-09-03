@@ -53,6 +53,16 @@ pause_reason: ""
   Auth、路由和 `production_media=0` 不变；同 SHA 公共 CI run `33726209532`（head SHA
   `3740cdbe2d02b140780ea2b8834793df268e6ac1`）三 job `completed/success`，公共 pytest 为
   `2297 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL 与 packaging-smoke 通过。
+- RQ-217 最新状态覆盖：在 RQ-216 的实现/观察器/输入计划身份
+  `3e028b1217f1274152ba161993287f29188a1b73` 上，先确认 Actions run `33727163550` 三 job
+  exact-SHA 全绿，再按一次性授权只发送 1 次真实 `zhipu/glm-5.3-flash` 请求。官方 TLS transport
+  外层 gate 在 `before_first_event` 进入，形成 pending reader；`cancel_status=returned`、
+  `reader_woke=true`，iterator/SDK/composite close report 全为 `closed`，结论为
+  `client_wakeup_clean`。回执为 `1284` bytes、SHA-256
+  `ad4b920e94f019dae0b08c166e248c12349bdee0d73bf14b8ab2342e6b428ef3`，canonical round-trip
+  通过且 body-free。候选仍 disabled/未注册、`execution_allowed=false`、
+  `capabilities.streaming=False`；产品 Runtime、默认模型、AgentLoop、Portal、Account、
+  Workbench、Auth、路由和 `production_media=0` 不变。
 - RQ-204 最新状态补充：版本化候选 recovery 诊断已完成 fake/local 本地实现与比例回归，
   系统 Python 3.13 用户环境已安装 `pytest 9.1.1`；项目验证仍使用仓库 `.venv` 的完整依赖。
 - RQ-205 历史状态覆盖：提交 `90242822df0e47304700644572bc12f0a3aa88ad` 的 exact-SHA 公共 CI
@@ -166,7 +176,7 @@ pause_reason: ""
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
 - 历史下一步（RQ-211）：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`。RQ-211 已在 exact-SHA 公共绿灯的 `c31127b3c780fe4c493966d8b60f942d3b773fd4` 干净快照上执行一次且仅一次普通智谱 `glm-5.3-flash` 请求；回执为 `not_pending`，表示有限观察窗内没有形成待取消读取，因此没有执行 cancel，也不能宣称 provider close/wakeup 已通过。回执 `908` bytes、SHA-256 `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，只含允许列表状态；迭代器、外层 SDK stream wrapper 和组合关闭投影均为 `closed`。候选保持 activation gate `disabled`、`activation_state=candidate`、`execution_allowed=false`、`capabilities.streaming=False` 且未注册；严格 Flash v1 仍 2048/零额外调用，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变。RQ-212 当前离线回放指针见本文最新段落；不自动追加真实请求、G53-7、黄金切片或生产准入。
-- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`。
+- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`。
 - RQ-205 已覆盖前述公共 CI 待办（历史）：`90242822df0e47304700644572bc12f0a3aa88ad` / Actions `33598541029` 三 job exact-SHA 全绿，公共 pytest `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`，fake/local 协议演练通过。当时的下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`，不自动发真实 recovery。
 - RQ-206 已覆盖上述历史指针：同一干净隔离工作树的诊断提交 `0b2342c240cfdc1801e673e830c9a7f30bed3fbd` / Actions `33603143606` exact-SHA 三 job 全绿；按一次性授权只发出 1 次 `zhipu/glm-5.3-flash` primary。流观察到 reasoning、可见正文、`stop` 与 EOF，但 Usage 缺失、close 失败，90 秒 attempt 门在晚到事件中触发，回执为 `fail_closed / elapsed_limit`，没有第二次 recovery。当时的下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，先离线设计/测试硬墙钟取消与 Usage/终态尾帧处理，不自动重测。
 - RQ-210 最新状态（历史）：隔离分支实现提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 已完成本地与 exact-SHA 公共 CI（Actions `33657368435` 三 job 全绿）；候选 adapter/deadline/v2/real 聚焦共 `73 passed`，扩展相邻回归共 `182 passed, 27 subtests passed`，compileall、diff check、governance 通过。报告字段只反映 session 所拥有的迭代器和外层 SDK stream wrapper，`shared_resource` 仅说明对象别名；不外推底层 HTTP response、非阻塞 close 或唤醒能力。RQ-209 回执不重写，候选/产品边界不变；当前指针见 RQ-212 最新段落。
@@ -4345,3 +4355,33 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 - `[next]` 当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`；
   只有用户明确决定后，才可另立版本并最多执行一次新的真实观察，否则保持候选隔离。
+
+### 2026-09-03：RQ-217 关闭顺序修复后的 transport-gated 一次真实观察
+
+- `[authorized-next-substage]` RQ-216 的 exact-SHA 公共 CI 已闭环后，用户明确授权本批只做一次
+  真实候选观察；不 retry、不 recovery、不发送第二请求、不注册候选、不改产品链路。
+- `[public-precondition]` 实现/观察器/输入计划身份均为
+  `3e028b1217f1274152ba161993287f29188a1b73`；Actions run `33727163550` 三 job
+  `completed/success` 且 head SHA 精确匹配。
+- `[completed-bounded-real]` 观察器在 `before_first_event` 阶段只发送 1 次普通智谱
+  `zhipu/glm-5.3-flash` 请求，SDK/HTTPX retries=0，父进程硬截止 30 秒；真实网络已使用。
+- `[evidence]` 回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`，
+  `1284` bytes、SHA-256=`ad4b920e94f019dae0b08c166e248c12349bdee0d73bf14b8ab2342e6b428ef3`。
+  `provider_call_count=1`、`transport_request_count=1`、`network_used=true`、
+  `gate_observation_valid=true`，canonical round-trip 通过且回执 body-free。
+- `[observed]` `pending_reader_observed=true`、`reader_woke=true`、
+  `observation_state=pending_cancel_returned`、`cancel_status=returned`；上游事件、gate
+  进入、下游关闭和上游 stream 关闭均观察到。iterator、SDK stream、composite close report
+  均为 `closed`，`shared_resource=false`，结论为 `client_wakeup_clean`。`gate_released=false`
+  是首帧前受控停顿协议的预期条件，不是资源泄漏。
+- `[interpretation]` 该证据只说明真实流启动后本机受控客户端的 reader 唤醒和
+  RQ-216 reader-owned 收尾已收敛；不证明 provider-native close/wakeup、底层 HTTP response
+  独立可取消、模型一般能力、成本/延迟稳定性或生产 streaming。
+- `[unchanged]` 候选继续 disabled/未注册，`execution_allowed=false`、
+  `capabilities.streaming=False`；严格 Flash v1 2048/零额外调用、默认模型、产品 Runtime、
+  AgentLoop、统一 Trace/预算、Portal、Account、Workbench、Auth、路由和 `production_media=0`
+  均不变；G53-7、黄金切片、生产准入和 8F 仍未完成。
+- `[boundary-next]` 当前唯一下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`；
+  没有新的独立决策/授权前不再发送真实请求。

@@ -5803,3 +5803,22 @@
 - [completed-public] 实现提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions `33726209532` 三 job exact-SHA 全绿；公共 pytest `2297 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL 与 packaging-smoke 通过。
 - [boundary-next] 公共 CI 只关闭候选本地关闭顺序修复的可复现性，不改变 RQ-215 旧回执，不新增真实 API、候选注册或产品接线。当前唯一下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`；等待是否重新观察的用户决定。
+
+## 2026-09-03：RQ-217 关闭顺序修复后的 transport-gated 一次真实观察
+
+- [authorized-next-substage] RQ-216 公共 CI 闭环后，用户授权只执行一次真实候选观察；无 retry、
+  recovery、第二请求、候选注册或产品接线。
+- [evidence] 实现/观察器/输入计划 SHA 为
+  `3e028b1217f1274152ba161993287f29188a1b73`，Actions `33727163550` 三 job exact-SHA 全绿；
+  回执 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`
+  为 `1284` bytes，SHA-256=`ad4b920e94f019dae0b08c166e248c12349bdee0d73bf14b8ab2342e6b428ef3`。
+- [observed] 只发生 1 次 provider/transport 请求；`gate_observation_valid=true`，pending
+  reader 被形成并唤醒，`cancel_status=returned`，iterator/SDK/composite close report 均为
+  `closed`，结论为 `client_wakeup_clean`。回执 canonical round-trip 通过且 body-free。
+- [boundary] 该结果只说明本机受控 transport gate 下的客户端唤醒和 reader-owned 收尾，不证明
+  provider-native close/wakeup、模型一般能力、G53-7、黄金切片、生产准入或 8F；候选仍
+  disabled/未注册，产品 Runtime、默认模型、Portal、Account、Workbench、Auth、路由和
+  `production_media=0` 不变。
+- [next] 当前唯一精确 checkpoint 改为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`；
+  没有新的独立授权前不再发送真实请求。

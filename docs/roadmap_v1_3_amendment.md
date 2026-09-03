@@ -1349,3 +1349,24 @@ RQ-216 公共闭环事实：提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` �
 PostgreSQL 与 packaging-smoke 通过。该证据仍仅属于 8-Advanced candidate-only 适配器修复，
 不把候选提升为 8-Core 或生产模型。当前下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`。
+
+## RQ-217：关闭顺序修复后的 transport-gated 真实观察（2026-09-03）
+
+RQ-217 继续按 v1.3 的 8-Core/8-Advanced 分层，属于 8-Advanced 的 candidate-only、
+evaluation-only 客户端证据，不新增 8-Core 能力，不改变 8E→8F 顺序。用户在 RQ-216
+公共 CI 闭环后授权一次真实观察；实现/观察器/输入计划身份均为
+`3e028b1217f1274152ba161993287f29188a1b73`，Actions `33727163550` 三 job exact-SHA
+全绿。
+
+观察在官方 TLS transport 外的 `before_first_event` gate 中只发送 1 次请求；
+`pending_reader_observed=true`、`reader_woke=true`、`cancel_status=returned`，
+iterator/SDK/composite close report 均为 `closed`，结论为 `client_wakeup_clean`。
+回执 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`
+为 `1284` bytes、SHA-256=`ad4b920e94f019dae0b08c166e248c12349bdee0d73bf14b8ab2342e6b428ef3`，
+body-free 且 canonical round-trip 通过；`gate_released=false` 是受控停顿协议的预期条件。
+
+该结果只说明本机客户端的 reader 唤醒和 reader-owned 收尾，不证明 provider-native
+close/wakeup、模型一般能力、生产 streaming、G53-7、黄金切片或 8F。候选仍 disabled/
+未注册，产品 Runtime、默认模型、Portal、Account、Workbench、Auth、路由与
+`production_media=0` 不变；当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`。

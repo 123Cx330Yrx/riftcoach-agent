@@ -5524,3 +5524,19 @@
 - [public-ci] 实现提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions run `33726209532` 三 job exact-SHA 全绿；公共 pytest `2297 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL 与 packaging-smoke 通过。
 - [accepted] 公共 CI 只证明候选关闭顺序修复可复现；不改变 RQ-215 旧回执，不增加真实请求，不提升候选注册、provider-native close/wakeup、生产 streaming 或 8-Core 能力。
 - [next] 当前唯一精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`；下一动作是等待用户对是否重新做一次受控真实观察的明确决定。
+
+### RQ-216 公共 CI 与 RQ-217 真实观察的衔接
+
+- RQ-216 的公共 CI 只证明候选关闭顺序修复可复现；它本身不提供 provider-native 或产品准入证据。
+- RQ-217 在同一修复后的干净身份
+  `3e028b1217f1274152ba161993287f29188a1b73` 上只发送 1 次真实请求。官方 TLS transport
+  外层首帧前 gate 进入，pending reader 形成并被 close 唤醒；`cancel_status=returned`，
+  iterator/SDK/composite close report 均为 `closed`。
+- `gate_released=false` 是 gate 持住首帧前停顿、等待 close 唤醒的协议成功条件；不能把它
+  误报成未释放资源或网络泄漏。
+- 回执为 body-free、canonical round-trip 可复核，`provider_call_count=1` 与
+  `transport_request_count=1` 一致；没有把响应正文、Key、headers、request ID 或异常文本
+  写入证据。
+- 该样本把 RQ-215 的客户端竞态收敛为 `client_wakeup_clean`，但仍只回答本机受控客户端
+  生命周期问题；provider-native close/wakeup、模型一般能力、生产 streaming、G53-7、
+  黄金切片和 8F 仍未证实。候选、默认模型和产品链路边界保持不变。
