@@ -1416,4 +1416,12 @@ held-out 三案例资产。`low + 4096`、90/120 秒、4/12 次调用和 24,000/
 属于 candidate-only 评测边界，deterministic fallback 在该作用域关闭。
 
 本批 provider calls=0、没有新考卷或真实回执；下一精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`。G53-3-L、资产冻结、领域真实观察、黄金切片、安全/部署/合规与 8F 仍在后面。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`。G53-3-L、资产冻结、领域真实观察、黄金切片、安全/部署/合规与 8F 仍在后面。
+
+### RQ-223：离线请求策略与预算墙（2026-09-04）
+
+RQ-223 完成了上述 candidate-only 作用域的离线实现：私有能力对象不进入产品 Runtime 注册表，
+共享链路通过显式 `request_policy` 消费固定预算，最后 Provider 边界先记账再 I/O，并在候选
+执行器中关闭 deterministic fallback。Fake Provider 聚焦与相邻回归均通过，尚无真实调用或
+领域质量结论；同一 SHA 公共 CI 仍是下一闸门。该批不改变 8-Core/8-Advanced 分层，也不把
+候选当作唯一生产模型。

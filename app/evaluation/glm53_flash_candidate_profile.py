@@ -17,6 +17,10 @@ from math import isfinite
 from typing import Any, Literal
 
 from app.providers.models import ChatRequest
+from app.model_runtime import (
+    CandidateEvaluationRequestPolicy,
+    _issue_candidate_evaluation_request_policy,
+)
 from app.providers.zhipu_profiles import (
     ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE,
     ZHIPU_GLM53_FLASH_MODEL,
@@ -38,6 +42,8 @@ TRANSPORT_TIMEOUT_S = 120.0
 TEMPERATURE = 1.0
 TOP_P = 0.95
 ACTIVATION_STATE: Literal["candidate"] = "candidate"
+REQUEST_POLICY_ID = "glm-5.3-flash-evaluation-low-4096"
+REQUEST_POLICY_VERSION = "1.0.0"
 
 _SAFE_ID = re.compile(r"^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$")
 _SEMVER = re.compile(r"^\d+\.\d+\.\d+$")
@@ -172,6 +178,12 @@ class FlashCandidateProfilePlan:
             top_p=self.top_p,
         )
 
+    @property
+    def request_policy(self) -> CandidateEvaluationRequestPolicy:
+        """The explicit evaluation-only request policy for this plan."""
+
+        return GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
+
     def public_identity(self) -> dict[str, object]:
         """Return only non-sensitive identity/budget fields for receipts."""
 
@@ -193,10 +205,50 @@ class FlashCandidateProfilePlan:
             "top_p": self.top_p,
             "activation_state": self.activation_state,
             "execution_allowed": self.execution_allowed,
+            "request_policy_id": REQUEST_POLICY_ID,
+            "request_policy_version": REQUEST_POLICY_VERSION,
+            "max_retries": self.request_policy.max_retries,
+            "deterministic_fallback_allowed": (
+                self.request_policy.deterministic_fallback_allowed
+            ),
         }
 
 
 GLM53_FLASH_LOW_CANDIDATE_PROFILE_PLAN = FlashCandidateProfilePlan()
+
+# This policy is deliberately issued by the private factory rather than by a
+# public constructor.  It is the only request-policy capability currently
+# available to the low-profile evaluation seam; it is not a product runtime
+# profile and is never returned by ``resolve_model_runtime_profile``.
+GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY = (
+    _issue_candidate_evaluation_request_policy(
+        policy_id=REQUEST_POLICY_ID,
+        version=REQUEST_POLICY_VERSION,
+        provider_id=PROVIDER_ID,
+        model=MODEL,
+        agent_timeout_s=AGENT_TIMEOUT_S,
+        llm_tool_timeout_s=LLM_TOOL_TIMEOUT_S,
+        transport_timeout_s=TRANSPORT_TIMEOUT_S,
+        max_output_tokens=MAX_OUTPUT_TOKENS,
+        temperature=TEMPERATURE,
+        top_p=TOP_P,
+    )
+)
+
+
+def require_glm53_flash_low_candidate_request_policy(
+    policy: CandidateEvaluationRequestPolicy | None = None,
+) -> CandidateEvaluationRequestPolicy:
+    """Accept only the exact low-profile policy issued for this experiment."""
+
+    selected = (
+        GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
+        if policy is None
+        else policy
+    )
+    if selected is not GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY:
+        raise ValueError("unsupported GLM-5.3 low candidate request policy")
+    return selected
 
 
 def select_candidate_profile_for_failure(
@@ -219,7 +271,9 @@ def select_candidate_profile_for_failure(
 __all__ = [
     "ACTIVATION_STATE",
     "AGENT_TIMEOUT_S",
+    "CandidateEvaluationRequestPolicy",
     "FlashCandidateProfilePlan",
+    "GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY",
     "GLM53_FLASH_LOW_CANDIDATE_PROFILE_PLAN",
     "LLM_TOOL_TIMEOUT_S",
     "MAX_OUTPUT_TOKENS",
@@ -227,9 +281,12 @@ __all__ = [
     "PROFILE_ID",
     "PROFILE_VERSION",
     "PROVIDER_ID",
+    "REQUEST_POLICY_ID",
+    "REQUEST_POLICY_VERSION",
     "RUNTIME_PROFILE_ID",
     "RUNTIME_PROFILE_VERSION",
     "TOP_P",
     "TRANSPORT_TIMEOUT_S",
     "select_candidate_profile_for_failure",
+    "require_glm53_flash_low_candidate_request_policy",
 ]

@@ -1075,4 +1075,14 @@ token 墙和首错停止，评测作用域关闭 deterministic fallback。
 
 当前只完成设计，provider calls=0，Portal、Account、Workbench、Auth、路由、生产默认和
 `production_media=0` 不变。下一精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`。
+
+## RQ-223：低思考候选请求策略离线实现
+
+新增的 `CandidateEvaluationRequestPolicy` 及 `CandidateEvaluationBudgetedProvider` 只属于
+8E/8-Advanced 的 evaluation-only 接缝。它们证明候选可以在不改产品注册表的情况下复用
+Agent/RAG/Evaluation/Harness 的请求控制，并把 4096、90/120 秒、零重试、无回退与 4/12 次及
+24,000/72,000 token 墙在最后边界重新施加。Fake Provider 测试通过、provider calls=0；不新增
+任何产品 A/Q 能力，不开启 streaming，不改变默认模型、Portal、Account、Workbench 或
+`production_media=0`。当前精确检查点为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`。

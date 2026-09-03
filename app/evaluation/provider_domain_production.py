@@ -13,7 +13,9 @@ from app.agent.context import ContextBuilderV1
 from app.agent.draft import AgentFailureObservation, SkillAgentDraftPreparer
 from app.agent.loop import AgentLoop, AgentRunResult
 from app.model_runtime import (
+    CandidateEvaluationRequestPolicy,
     ModelRuntimeProfile,
+    require_candidate_evaluation_request_policy,
     require_registered_model_runtime_profile,
 )
 from app.evaluation.coach_report import (
@@ -120,6 +122,7 @@ class ProductionDomainCaseExecutor:
         input_plan: LoadedDomainCaseInputPlan,
         runs_root: str | Path,
         runtime_profile: ModelRuntimeProfile | None = None,
+        request_policy: CandidateEvaluationRequestPolicy | None = None,
     ) -> None:
         if not isinstance(input_plan, LoadedDomainCaseInputPlan):
             raise TypeError("input_plan must be a loaded input plan")
@@ -131,11 +134,20 @@ class ProductionDomainCaseExecutor:
             ModelRuntimeProfile,
         ):
             raise TypeError("runtime_profile must be a ModelRuntimeProfile")
+        if runtime_profile is not None and request_policy is not None:
+            raise ValueError(
+                "runtime_profile and request_policy are mutually exclusive"
+            )
         if runtime_profile is not None:
             runtime_profile = require_registered_model_runtime_profile(
                 runtime_profile
             )
         self._runtime_profile = runtime_profile
+        self._request_policy = (
+            require_candidate_evaluation_request_policy(request_policy)
+            if request_policy is not None
+            else None
+        )
         self.execution_plan = input_plan.execution_plan
 
     @property
@@ -144,12 +156,24 @@ class ProductionDomainCaseExecutor:
 
         return self._runtime_profile
 
+    @property
+    def request_policy(self) -> CandidateEvaluationRequestPolicy | None:
+        """The explicit candidate evaluation policy, if bound."""
+
+        return self._request_policy
+
     def execute(
         self,
         *,
         case_id: str,
         provider: LLMProvider,
     ) -> DomainCaseSemanticObservation:
+        if self._request_policy is not None:
+            require_candidate_evaluation_request_policy(
+                self._request_policy,
+                provider_id=getattr(provider, "provider_name", None),
+                model=getattr(provider, "model_name", None),
+            )
         case = self._input_plan.artifact.case(case_id)
         execution = self._build_execution(case)
         context = ContextBuilderV1().build(execution)
@@ -180,6 +204,7 @@ class ProductionDomainCaseExecutor:
             observed,
             case_id,
             runtime_profile=self._runtime_profile,
+            request_policy=self._request_policy,
         )
         evaluator = SecureChatEvaluationAdapter(
             runtime=llm_runtime,
@@ -197,10 +222,14 @@ class ProductionDomainCaseExecutor:
             draft_preparer=SkillAgentDraftPreparer(
                 loop,
                 runtime_profile=self._runtime_profile,
+                request_policy=self._request_policy,
             ),
             evaluator=evaluator,
             reviser=reviser,
             max_revisions=0,
+            allow_deterministic_fallback=(
+                False if self._request_policy is not None else None
+            ),
         ).execute(execution=execution, context=context)
         store = FileRunStore(self._runs_root, execution.run_id)
         return _semantic_observation(
@@ -261,11 +290,17 @@ def _single_attempt_llm_runtime(
     case_id: str,
     *,
     runtime_profile: ModelRuntimeProfile | None = None,
+    request_policy: CandidateEvaluationRequestPolicy | None = None,
 ):
+    if runtime_profile is not None and request_policy is not None:
+        raise ValueError(
+            "runtime_profile and request_policy are mutually exclusive"
+        )
     registry = ToolRegistry()
     definition = build_llm_tools(
         provider,
         runtime_profile=runtime_profile,
+        request_policy=request_policy,
     )[0]
     registry.register(
         replace(

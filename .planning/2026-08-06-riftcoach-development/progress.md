@@ -5873,9 +5873,23 @@
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`；
   等待低档候选领域门设计/裁决，不自动追加真实请求。
 
+## 2026-09-04：RQ-223 低思考候选领域门离线实现
+
+- [implemented-local] 将候选作用域实现为私有签发、精确对象身份校验的
+  `CandidateEvaluationRequestPolicy`；`request_policy` 与产品 `runtime_profile` 互斥，
+  正常 Runtime resolver/Worker 未改变。
+- [implemented-local] Agent 编译器、`llm.chat`、Draft/Domain executor 和最后一层
+  `CandidateEvaluationBudgetedProvider` 统一固定 `low + 4096`、90/120 秒、固定采样、零重试；
+  候选执行显式关闭 deterministic fallback。
+- [verification-local] Fake Provider 新增测试 `5 passed`；候选/Runtime/Agent/Provider/
+  工具/Harness 相邻回归 `118 passed`；compileall、diff check、governance 通过，provider
+  calls=0。下一步为同一实现 SHA 的公共 exact-SHA CI。
+- [boundary] 未创建 held-out 资产、未读取 Key、未发真实请求、未注册候选，不改变严格 Flash
+  v1、默认模型、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
+
 ## 2026-09-03：RQ-222 低思考候选独立领域门设计
 
 - [design-accepted] 已完成 ADR/计划/学习材料，确定候选专用评测作用域、共享请求策略接缝和全新 oracle-blind held-out 三案例路线；拒绝旧考卷换档重跑与全局产品注册。
 - [boundary-next] 本批没有改产品代码、创建新考卷或发真实请求；候选仍 disabled/未注册，默认模型、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
 - [next] 当前唯一精确 checkpoint 为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`；下一批执行零网络离线 TDD。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`；离线 TDD 已完成，下一步是同 SHA 公共 CI。

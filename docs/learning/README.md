@@ -771,4 +771,15 @@ Auth、路由和 `production_media=0` 不变。当前精确 checkpoint 为
 24,000/72,000 token 墙、首错停止、无恢复/重试/修订和关闭 deterministic fallback；之后才在
 同一实现身份上取得新的 G53-3-L，再创建全新的 oracle-blind held-out 资产。设计阶段
 provider calls=0，候选仍未注册，8E coverage 继续 `planned`。当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`。
+
+### 2026-09-04：RQ-223 低思考候选领域门离线实现
+
+本批把 RQ-222 的设计落成可复用但不越权的控制面：候选使用私有签发的
+`CandidateEvaluationRequestPolicy`，共享 Agent/LLM/Domain 链只通过显式 `request_policy`
+接收它；最后一层预算包装器执行 reserve-before-I/O、每案 4 次/全域 12 次和
+24,000/72,000 token 墙。重试和 deterministic fallback 均关闭，产品 Runtime 注册表和严格
+Flash v1 不变。Fake Provider 新增测试 5/5、相邻回归 118 passed，provider calls=0；实现细节
+见 [RQ-223 walkthrough](8e-glm53-low-profile-domain-gate-offline-implementation-walkthrough.md)
+与 [实施计划](../plans/2026-09-04-glm53-low-profile-domain-gate-offline-implementation.md)。
+当前仍等待同 SHA 公共 CI，之后才进入 G53-3-L 与新鲜 held-out 资产阶段。

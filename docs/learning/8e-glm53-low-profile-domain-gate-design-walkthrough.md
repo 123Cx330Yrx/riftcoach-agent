@@ -41,4 +41,4 @@ Harness 发布；deterministic fallback 在候选评测中关闭，避免“回�
 
 当前下一检查点：
 
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`

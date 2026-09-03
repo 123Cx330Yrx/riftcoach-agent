@@ -3435,4 +3435,13 @@ create-only。
 也拒绝在领域证据前把低思考档注册为产品 Runtime。实现时保留产品注册校验，候选作用域
 固定 `low + 4096`、90/120 秒、4/12 次调用、24,000/72,000 token 墙、无重试/恢复/修订和
 首错停止，并关闭 deterministic fallback。当前只完成设计，provider calls=0；下一精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`。
+
+### RQ-223：接受低思考候选领域门离线控制面（2026-09-04）
+
+接受先实现、不先真实调用的路线：用私有签发的 `CandidateEvaluationRequestPolicy` 与显式
+`request_policy` 接缝复用共享 Agent 链，再由最后预算包装器执行 reserve-before-I/O、4/12 次
+调用及 24,000/72,000 token 墙。LLM 工具重试为一次、deterministic fallback 关闭；产品
+Runtime 注册表、严格 Flash v1、默认模型和前端/Workbench 边界不变。Fake Provider 新测试
+5/5、相邻回归 118 passed，provider calls=0；下一步只做同 SHA 公共 CI，之后才另立 G53-3-L
+和全新 held-out 资产。

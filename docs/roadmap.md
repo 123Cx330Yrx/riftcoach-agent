@@ -1537,4 +1537,13 @@ ReviewHarness，而不复制第二套协调器。
 无 retry/recovery/revision、首错停止，实验 token 墙为每案例 24,000、全域 72,000；
 deterministic fallback 在候选评测作用域关闭。先做零网络 TDD 和 exact-SHA CI，再做独立
 低思考 G53-3-L、冻结新三案例考卷，最后才在另一次授权下执行领域观察。当前精确下一检查点为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`；本批 provider calls=0，产品默认、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`；本批 provider calls=0，产品默认、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
+
+## RQ-223：低思考候选领域门离线实现（2026-09-04）
+
+在 RQ-222 设计裁决后，先完成 evaluation-only 控制面：候选请求策略由私有能力作用域签发，
+沿显式 `request_policy` 接入 Agent 编译、`llm.chat`、Draft/Domain executor，并由最后一层
+预算包装器执行每案 4 次、全域 12 次和 24,000/72,000 token 墙。候选重试与 deterministic
+fallback 均关闭；产品 Runtime 注册表、严格 Flash v1、默认模型及 Portal/Account/Workbench
+边界不变。Fake Provider 聚焦测试 5 passed、相邻回归 118 passed，provider calls=0；当前只
+等待同一实现 SHA 的公共 exact-SHA CI，之后才进入 G53-3-L 与新鲜 held-out 资产阶段。

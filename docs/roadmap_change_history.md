@@ -4333,4 +4333,14 @@ Harness，不削弱产品 Runtime 注册校验。旧 G53-4/G53-7 结果不重跑
 候选领域合同固定 `low + 4096`、90/120 秒、4 次/案例与 12 次/全域、无重试/恢复/修订、
 首错停止，以及 24,000/72,000 token 墙；deterministic fallback 在评测作用域关闭。当前只
 完成设计，provider calls=0；下一精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`。
+
+## 2026-09-04：RQ-223 低思考候选领域门离线实现
+
+RQ-223 按 RQ-222 的设计先落地零网络控制面。新增私有签发的候选
+`CandidateEvaluationRequestPolicy` 与显式 `request_policy` 接缝，Agent 编译器、LLM 工具、
+Draft/Domain executor 和最后预算包装器共享同一组 `low + 4096`、90/120 秒、固定采样、零重试
+和无回退约束；reserve-before-I/O 账本执行 4/12 次调用与 24,000/72,000 token 墙。Fake
+Provider 测试 5/5、相邻回归 118 passed，provider calls=0。该实现仍属 8-Advanced
+candidate-only，未改变 8-Core、默认模型、Portal、Account、Workbench、Auth 或
+`production_media=0`；下一步是同 SHA 公共 CI，不是 G53-3-L 或领域真实调用。

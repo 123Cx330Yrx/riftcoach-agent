@@ -5594,4 +5594,18 @@
 - [boundary] 新门使用全新的 oracle-blind 三案例 held-out 资产；每案最多 4 次、全域最多 12 次，单次 4096 输出、Agent/工具 90 秒、传输 120 秒，token 墙为 24,000/72,000；无 retry/recovery/revision，首个不安全失败停止，评测关闭 deterministic fallback。设计阶段 provider calls=0。
 - [evidence] 设计记录为 `docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md`、`docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md`、`docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md`；没有新增真实回执或产品代码。
 - [next] 当前唯一精确 checkpoint 为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`；下一步只做候选作用域/请求策略的离线 TDD，之后才考虑同 SHA 的 G53-3-L 和新考卷冻结。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`；离线 TDD 已完成，下一步先做同 SHA 公共 CI。
+
+## 2026-09-04：RQ-223 离线实现发现
+
+- [boundary] 候选必须使用独立 `request_policy` 类型；将它塞进
+  `ModelRuntimeProfile` 会绕过产品注册表，因而被拒绝。私有签发工厂加精确对象身份登记，
+  也能拒绝保留私有令牌的 `dataclasses.replace` 克隆。
+- [control] 共享链路只在显式候选入口消费该策略。编译器和 `llm.chat` 会压低调用方给出的
+  更大预算；LLM 工具只有一次尝试且没有 fallback，Domain executor 通过 Harness override
+  关闭 deterministic fallback。
+- [budget] 最终 Provider 包装器采用 reserve-before-I/O：失败调用也消耗槽位，单案 4 次、
+  全域 12 次、24,000/72,000 token 墙任一越界即停止；这批只用 Fake Provider，未验证真实
+  provider 延迟、Usage 或领域质量。
+- [next] 本地控制面完成后，先做同 SHA 公共 CI；再另立 G53-3-L 与全新 held-out 资产，
+  不重跑旧 G53-4/G53-7，不自动注册候选。

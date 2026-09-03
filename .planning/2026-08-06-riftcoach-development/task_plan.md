@@ -397,7 +397,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / pending`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`。
 RQ-217 的真实回执绑定实现/观察器/输入计划提交
 `3e028b1217f1274152ba161993287f29188a1b73`，文件为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`，
@@ -3064,3 +3064,19 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   Auth、路由和 `production_media=0` 不变。下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`；
   下一动作是设计/裁决独立低档 held-out 领域门，不自动追加真实请求。
+
+## RQ-223 / 低思考候选领域门离线实现（2026-09-04）
+
+- [implemented-local] 新增私有签发的 `CandidateEvaluationRequestPolicy`，并把显式
+  `request_policy` 接入 Agent 编译、`llm.chat`、Draft/Domain executor；产品
+  `ModelRuntimeProfile` 注册表与默认 Runtime 保持封闭。
+- [implemented-local] 新增 `CandidateEvaluationBudgetedProvider`，在 Provider I/O 前占用
+  调用槽，在响应后结算 Usage，执行每案 4 次/全域 12 次与 24,000/72,000 token 墙；候选
+  重试和 deterministic fallback 均关闭。
+- [verification-local] 新增聚焦测试 5 passed；候选/Runtime/Agent/Provider/工具/Harness
+  相邻回归 118 passed；compileall、diff check、governance 通过，provider calls=0。
+- [boundary-next] 本批仍不创建 held-out 资产、不发 G53-3-L 或领域真实请求、不注册候选，
+  不改 Portal、Account、Workbench、Auth、默认模型或 `production_media=0`。当前唯一精确
+  checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`；
+  下一步在同一实现 SHA 上取得公共 exact-SHA CI。

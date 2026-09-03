@@ -156,6 +156,7 @@ class SkillReviewExecutor:
         reviser: ReviserStep,
         output_builder: SkillTerminalOutputBuilder | None = None,
         max_revisions: int | None = None,
+        allow_deterministic_fallback: bool | None = None,
     ) -> None:
         if not callable(getattr(draft_preparer, "prepare", None)):
             raise TypeError("draft_preparer must provide prepare()")
@@ -175,6 +176,12 @@ class SkillReviewExecutor:
         ):
             raise ValueError("max_revisions must be a non-negative integer")
         self._max_revisions = max_revisions
+        if allow_deterministic_fallback is not None and not isinstance(
+            allow_deterministic_fallback,
+            bool,
+        ):
+            raise TypeError("allow_deterministic_fallback must be a bool or None")
+        self._allow_deterministic_fallback = allow_deterministic_fallback
 
     def execute(
         self,
@@ -205,6 +212,8 @@ class SkillReviewExecutor:
             ),
             allow_deterministic_fallback=(
                 quality_gate.allow_deterministic_fallback
+                if self._allow_deterministic_fallback is None
+                else self._allow_deterministic_fallback
             ),
         )
         typed_input = execution.typed_input
