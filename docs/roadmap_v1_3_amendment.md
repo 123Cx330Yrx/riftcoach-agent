@@ -1432,3 +1432,14 @@ RQ-223 的实现提交 `d823cc40c3fcafb7167edccded87e185be4cae8a` 已通过 Acti
 `33781369322` 的 exact-SHA 三 job 公共 CI。该证据仍只属于 8-Advanced candidate-only
 控制面，不新增 8-Core 能力，不改变产品默认或 Workbench；下一步才是新鲜 G53-3-L 和
 held-out 资产，候选不能因此自动注册或成为唯一模型。
+
+### RQ-225：低思考协议与新鲜资产离线前置（2026-09-04）
+
+RQ-225 在 8E/8-Advanced 内完成低思考 G53-3-L 协议组合器和全新三案例资产的离线实现。
+显式 `request_policy` 复用共享协议切片并固定 `low + 4096`、90 秒工具窗、最多 3 次调用；
+新 Dataset、V1.1 Input Plan、Prompt/Context Snapshot 和合成 fixture 通过 no-I/O 身份、
+上下文 commitment 与历史 marker 隔离校验。聚焦协议/资产及相邻回归 `20 passed`，
+provider calls=0。该批不新增 8-Core 能力、不改变产品默认、Portal、Account、Workbench、
+Auth、路由或 `production_media=0`；下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`，
+先做同 SHA 公共 CI，之后仍需明确授权才可真实执行。

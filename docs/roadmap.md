@@ -1556,3 +1556,14 @@ RQ-223 实现提交 `d823cc40c3fcafb7167edccded87e185be4cae8a` 已取得 Actions
 Harness dry-run 也通过。该证据只关闭离线控制面的公共可复现性；候选仍未注册，默认模型、
 Portal、Account、Workbench、Auth 和 `production_media=0` 不变。下一项是低思考 G53-3-L
 协议门与全新 held-out 资产，不重跑旧 G53-4/G53-7，也不把 CI 绿灯当作领域准入。
+
+## RQ-225：低思考 G53-3-L 协议与新鲜资产离线实现（2026-09-04）
+
+在 RQ-224 公共绿灯之后，先完成低思考候选的协议与资产前置控制面：显式
+`request_policy` 接入协议切片，固定 `low + 4096`、90 秒工具窗、最多 3 次调用，输出
+body-free/create-only 报告；新三案例 held-out Dataset、V1.1 Input Plan、Prompt/Context
+Snapshot 与合成 fixture 通过 no-I/O 交叉准入。聚焦协议/资产及相邻回归 `20 passed`，
+provider calls=0。候选仍 disabled/未注册，产品 Runtime、默认模型、Portal、Account、
+Workbench、Auth、路由和 `production_media=0` 不变。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`；
+下一步为同一实现 SHA 的公共 exact-SHA CI，绿灯后才等待真实协议门授权。

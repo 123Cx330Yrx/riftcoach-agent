@@ -790,3 +790,19 @@ Flash v1 不变。Fake Provider 新增测试 5/5、相邻回归 118 passed，pro
 这只关闭离线控制面的可复现性闸门，不改变候选 disabled/未注册状态。下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / pending-user-authorization`，
 再后面才可冻结新鲜领域资产。
+
+### 2026-09-04：RQ-225 低思考 G53-3-L 协议与新鲜资产离线实现
+
+本批把下一步拆成两个可复核的离线控制面：协议侧通过显式 `request_policy` 复用既有
+结构化响应与 `knowledge.search` 往返，固定 `low + 4096`、90 秒工具窗、最多 3 次调用，
+并以 body-free/create-only 报告收口；资产侧冻结全新三案例 Dataset、V1.1 Input Plan、
+Prompt/Context Snapshot 和合成 fixture，准入时交叉核对 SHA、case 顺序、marker 隔离与
+上下文 commitment。聚焦协议/资产及相邻回归 `20 passed`，compileall、diff check、治理
+通过，provider calls=0；没有读取 Key 或发真实请求。
+
+学习重点是：候选策略只能经私有签发的 evaluation-only 入口进入共享链，产品 Runtime
+注册表保持封闭；资产“准入”不等于资产“执行”；真实协议门仍需同 SHA 公共 CI 和明确授权。
+详见 [RQ-225 walkthrough](8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md)
+与[实施计划](../plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md)。
+当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`。

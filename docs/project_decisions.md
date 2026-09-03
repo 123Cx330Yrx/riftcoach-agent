@@ -3455,3 +3455,13 @@ PostgreSQL migrations、packaging-smoke 三项均成功，公共 pytest 为
 只关闭离线控制面的公共验证闸门，不授予候选领域采用或生产能力。候选继续
 `candidate-only/disabled`，默认模型、Portal、Account、Workbench、Auth、路由和
 `production_media=0` 不变；下一步才是新的 G53-3-L 与全新 held-out 资产，且需明确授权。
+
+### RQ-225：接受低思考 G53-3-L 协议与新鲜资产离线实现（2026-09-04）
+
+接受先完成离线控制面、再进入真实协议门的顺序：显式 `request_policy` 接入协议切片，
+低思考候选固定 `low + 4096`、90 秒工具窗、最多 3 次调用，并以 body-free/create-only
+报告收口；新三案例 Dataset、V1.1 Input Plan、Prompt/Context Snapshot 和合成 fixture
+通过 no-I/O 身份及历史 marker 隔离校验。聚焦协议/资产与相邻回归 `20 passed`，
+provider calls=0。候选仍未注册，产品 Runtime、默认模型、Portal、Account、Workbench、
+Auth、路由和 `production_media=0` 不变；公共 exact-SHA CI 通过后仍须另一次明确授权，
+不能自动执行真实协议或领域门。

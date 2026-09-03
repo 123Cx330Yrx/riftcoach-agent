@@ -65,6 +65,13 @@ pause_reason: ""
   `33781369322` 三 job 已 `completed/success`，公共 pytest 为 `2326 passed, 145 skipped,
   2 warnings, 127 subtests passed`；这只关闭该实现的公共可复现性，下一步另立低思考 G53-3-L
   与全新 held-out 资产，不能把本地/公共 CI 当作领域准入。
+- RQ-225 最新状态覆盖：已在隔离工作树完成低思考 G53-3-L 协议组合器、显式
+  `request_policy` 协议接缝与全新三案例 held-out 资产的 no-I/O 准入；协议/资产聚焦及
+  相邻回归 `20 passed`，compileall、diff check、governance 通过，provider calls=0。
+  当前唯一精确执行指针为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`；
+  候选仍 disabled/未注册，严格 Flash v1、默认模型、Portal、Account、Workbench、Auth、
+  路由及 `production_media=0` 不变，下一步只做同一实现 SHA 的公共 exact-SHA CI。
 - RQ-211 最新状态覆盖：候选 close/wakeup 探针已在 exact-SHA 公共绿灯的
   `c31127b3c780fe4c493966d8b60f942d3b773fd4` 快照上完成一次真实请求；Actions run
   `33661910096` 三 job 成功。回执为 `908` bytes、SHA-256
@@ -214,7 +221,7 @@ pause_reason: ""
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
 - 历史下一步（RQ-211）：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`。RQ-211 已在 exact-SHA 公共绿灯的 `c31127b3c780fe4c493966d8b60f942d3b773fd4` 干净快照上执行一次且仅一次普通智谱 `glm-5.3-flash` 请求；回执为 `not_pending`，表示有限观察窗内没有形成待取消读取，因此没有执行 cancel，也不能宣称 provider close/wakeup 已通过。回执 `908` bytes、SHA-256 `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，只含允许列表状态；迭代器、外层 SDK stream wrapper 和组合关闭投影均为 `closed`。候选保持 activation gate `disabled`、`activation_state=candidate`、`execution_allowed=false`、`capabilities.streaming=False` 且未注册；严格 Flash v1 仍 2048/零额外调用，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变。RQ-212 当前离线回放指针见本文最新段落；不自动追加真实请求、G53-7、黄金切片或生产准入。
-- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`。
+- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`。
 - RQ-205 已覆盖前述公共 CI 待办（历史）：`90242822df0e47304700644572bc12f0a3aa88ad` / Actions `33598541029` 三 job exact-SHA 全绿，公共 pytest `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`，fake/local 协议演练通过。当时的下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`，不自动发真实 recovery。
 - RQ-206 已覆盖上述历史指针：同一干净隔离工作树的诊断提交 `0b2342c240cfdc1801e673e830c9a7f30bed3fbd` / Actions `33603143606` exact-SHA 三 job 全绿；按一次性授权只发出 1 次 `zhipu/glm-5.3-flash` primary。流观察到 reasoning、可见正文、`stop` 与 EOF，但 Usage 缺失、close 失败，90 秒 attempt 门在晚到事件中触发，回执为 `fail_closed / elapsed_limit`，没有第二次 recovery。当时的下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，先离线设计/测试硬墙钟取消与 Usage/终态尾帧处理，不自动重测。
 - RQ-210 最新状态（历史）：隔离分支实现提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 已完成本地与 exact-SHA 公共 CI（Actions `33657368435` 三 job 全绿）；候选 adapter/deadline/v2/real 聚焦共 `73 passed`，扩展相邻回归共 `182 passed, 27 subtests passed`，compileall、diff check、governance 通过。报告字段只反映 session 所拥有的迭代器和外层 SDK stream wrapper，`shared_resource` 仅说明对象别名；不外推底层 HTTP response、非阻塞 close 或唤醒能力。RQ-209 回执不重写，候选/产品边界不变；当前指针见 RQ-212 最新段落。
@@ -4508,3 +4515,19 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / pending-user-authorization`；
   下一批先在该实现身份上做最多 3 次低思考 G53-3-L 协议门，再冻结全新的三案例
   oracle-blind held-out 资产；不重跑旧 G53-4/G53-7。
+
+### 2026-09-04：RQ-225 低思考 G53-3-L 协议与新鲜资产离线实现
+
+- `[implemented-local]` 在隔离工作树把显式 `request_policy` 接入协议切片运行器，新增
+  低思考 G53-3-L 组合器；请求固定 `low + 4096`、`temperature=1`、`top_p=0.95`、
+  90 秒工具窗，最多 3 次调用，证据报告为 body-free/create-only，真实来源需显式确认。
+- `[assets-frozen]` 新建三案例 held-out Dataset、V1.1 Input Plan、Prompt/Context Snapshot
+  和两个合成 fixture；准入函数交叉校验身份、case/marker 隔离与上下文 commitment，
+  `external_provider_calls=0`，不读取 Key、不构造客户端。
+- `[verification-local]` 协议/资产与相邻回归 `20 passed`，compileall、diff check、governance
+  通过；本批 provider calls=0。候选仍 `candidate-only/disabled`、未注册，严格 Flash v1、
+  默认模型、Portal、Account、Workbench、Auth、路由及 `production_media=0` 不变。
+- `[boundary-next]` 当前唯一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`；
+  下一步只做同一实现 SHA 的公共 exact-SHA CI，之后才等待明确授权执行最多 3 次真实协议门，
+  不自动进入领域运行或产品准入。

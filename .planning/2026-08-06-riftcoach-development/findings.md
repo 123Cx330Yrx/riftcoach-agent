@@ -5617,3 +5617,17 @@
   127 subtests passed`。
 - [boundary] 该绿灯只证明 RQ-223 离线控制面可复现；provider calls=0，没有新考卷、Key、
   真实请求或产品注册。下一步是低思考 G53-3-L 与新鲜资产，不把公共 CI 写成领域准入。
+
+## 2026-09-04：RQ-225 协议与新鲜资产离线实现发现
+
+- [seam] `AdapterProtocolSliceRunner` 用显式 `request_policy` 接收候选预算，和已登记的
+  产品 `runtime_profile` 互斥；策略在结构化请求与工具回合两处都重新覆盖 4096、采样和
+  90 秒时限，避免调用方带入更宽预算。
+- [protocol] 低思考 G53-3-L 组合器固定结构化 1 次加 `knowledge.search` 往返 2 次，
+  用候选预算账本 reserve-before-I/O；报告 create-only/body-free，真实来源没有显式确认
+  就 fail closed。
+- [assets] 新三案例资产通过 Dataset、Input Plan、Prompt/Context Snapshot 的 case
+  commitments 和历史 marker 隔离校验；资产准入本身不创建 Provider，实测
+  `external_provider_calls=0`。
+- [verification] 协议/资产聚焦及相邻回归 `20 passed`，compileall、diff check、governance
+  通过。该批仍没有真实调用或领域结论，下一步是同一实现 SHA 的公共 exact-SHA CI。

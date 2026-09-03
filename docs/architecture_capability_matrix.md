@@ -1096,3 +1096,14 @@ provider calls=0。该证据只关闭可复现性闸门，不新增 8-Core 能�
 Workbench 或 `production_media=0`，也不证明领域质量、G53-3-L、黄金切片、生产准入或 8F。
 下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / pending-user-authorization`。
+
+## RQ-225：低思考协议与新鲜资产离线控制面（2026-09-04）
+
+RQ-225 继续保持 8-Advanced candidate-only，不新增 8-Core 或产品 A/Q 能力。显式
+`request_policy` 已接入协议切片运行器，低思考 G53-3-L 组合器固定 `low + 4096`、
+90 秒工具窗和最多 3 次调用，报告只保留 body-free 安全身份与计数；真实来源仍需显式确认。
+新三案例 held-out Dataset、V1.1 Input Plan、Prompt/Context Snapshot 与合成 fixture 已通过
+no-I/O 资产准入，`external_provider_calls=0`。聚焦协议/资产及相邻回归 `20 passed`，
+compileall、diff check、governance 通过；不改变产品 Runtime、默认模型、Portal、Account、
+Workbench、Auth、路由或 `production_media=0`。当前精确检查点为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`。

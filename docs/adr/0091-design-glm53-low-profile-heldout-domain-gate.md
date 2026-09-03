@@ -1,7 +1,7 @@
 # ADR-0091：设计 GLM-5.3 Flash 低思考候选独立领域门
 
 - 日期：2026-09-03
-- 状态：`implementation-complete-public / candidate-only / next-stage-pending`
+- 状态：`protocol-assets-implemented-local / candidate-only / pending-public-ci`
 - 范围：Stage 8 / 8E；RQ-222
 
 ## 背景
@@ -84,13 +84,16 @@ RQ-221 已在冻结、无工具上下文中用 `thinking=enabled`、`reasoning_e
 当作黄金切片、公共生产成熟度或 8F 完成。任一身份、预算、终态、Usage、工具或安全检查失败，
 都保留不可变失败回执并停止；没有新的明确决定前不自动发真实请求。
 
-## 下一步
+## RQ-225 实现更新
 
-RQ-223 已按本 ADR 完成评测作用域、共享请求策略和最后一层预算墙的离线实现；实现细节与
-测试见 [离线实现计划](../plans/2026-09-04-glm53-low-profile-domain-gate-offline-implementation.md)
-和 [学习 walkthrough](../learning/8e-glm53-low-profile-domain-gate-offline-implementation-walkthrough.md)。
-实现提交 `d823cc40c3fcafb7167edccded87e185be4cae8a` 的 Actions run `33781369322`
-三 job exact-SHA 全绿，公共 pytest 为 `2326 passed, 145 skipped, 2 warnings, 127 subtests
-passed`。下一步才是最多 3 次低思考 G53-3-L 协议门和全新 held-out 资产；公共绿灯不等于
-领域准入。当前精确检查点为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / pending-user-authorization`。
+RQ-225 已按本 ADR 完成显式 `request_policy` 协议接缝、最多 3 次的低思考 G53-3-L
+离线组合器，以及全新三案例 held-out 资产的 no-I/O 准入。新增 Dataset、V1.1 Input Plan、
+Prompt/Context Snapshot 和合成 fixture 均通过身份、case/marker 隔离与上下文 commitment
+交叉校验；聚焦协议/资产回归 `20 passed`，provider calls=0。实现细节见
+[RQ-225 实施计划](../plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md)
+和[学习 walkthrough](../learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md)。
+
+本批仍不读取 Key、不发真实请求、不注册候选、不改变产品 Runtime、默认模型、Portal、
+Account、Workbench、Auth、路由或 `production_media=0`。当前精确检查点为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`；
+同一实现 SHA 的公共 exact-SHA CI 是下一闸门，绿灯后仍需另一次明确授权才可执行真实协议门。

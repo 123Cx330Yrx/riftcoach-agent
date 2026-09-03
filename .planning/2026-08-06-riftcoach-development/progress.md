@@ -5905,3 +5905,18 @@
 - [boundary-next] 本批没有改产品代码、创建新考卷或发真实请求；候选仍 disabled/未注册，默认模型、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
 - [next] 当前唯一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`；离线 TDD 已完成，下一步是同 SHA 公共 CI。
+
+## 2026-09-04：RQ-225 低思考 G53-3-L 协议与新鲜资产离线实现
+
+- [implemented-local] 将显式 `request_policy` 接入协议切片运行器，并新增低思考
+  G53-3-L 协议组合器；固定 `low + 4096`、90 秒工具窗、最多 3 次调用，报告只保留
+  安全身份、计数和终态，真实来源必须显式确认。
+- [assets-frozen] 新建三案例 held-out Dataset、V1.1 Input Plan、Prompt/Context Snapshot
+  与两个合成 fixture；准入函数交叉核对 case/marker/上下文 SHA，且不加载 Key、不构造
+  Provider，`external_provider_calls=0`。
+- [verification-local] 协议/资产聚焦集合 `20 passed`，compileall、diff check、governance
+  通过，provider calls=0。候选、默认模型、Portal、Account、Workbench、Auth、路由和
+  `production_media=0` 不变。
+- [boundary-next] 当前精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`；
+  下一步为同一 SHA 公共 exact-SHA CI，之后才等待真实 G53-3-L 的明确授权。

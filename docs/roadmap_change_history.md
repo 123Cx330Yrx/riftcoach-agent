@@ -4352,3 +4352,14 @@ candidate-only，未改变 8-Core、默认模型、Portal、Account、Workbench�
 2 warnings, 127 subtests passed`。本批仍 provider calls=0，候选未注册，8-Core、默认模型、
 Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。下一精确项是低思考
 G53-3-L 与全新 held-out 资产。
+
+## 2026-09-04：RQ-225 低思考 G53-3-L 协议与新鲜资产离线实现
+
+RQ-225 将 RQ-224 之后的前置工作落成可审计的离线控制面：协议切片显式消费候选
+`request_policy`，低思考 G53-3-L 固定 `low + 4096`、90 秒工具窗和最多 3 次调用，报告
+只保留 body-free 安全身份与计数；新三案例 held-out Dataset、V1.1 Input Plan、
+Prompt/Context Snapshot 与合成 fixture 通过 no-I/O 交叉准入。聚焦协议/资产及相邻回归
+`20 passed`，provider calls=0。候选未注册，8-Core、默认模型、Portal、Account、Workbench、
+Auth、路由和 `production_media=0` 不变。当前 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-local / pending-public-ci`；
+下一步是同一实现 SHA 的公共 exact-SHA CI。
