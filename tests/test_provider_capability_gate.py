@@ -54,6 +54,11 @@ from app.evaluation.candidate_provider_close_wakeup_observation import (
     CANDIDATE_CLOSE_WAKE_SCHEMA_VERSION,
     CandidateCloseWakeReceipt,
 )
+from app.evaluation.candidate_transport_gate_real import (
+    REAL_TRANSPORT_GATE_PROTOCOL_ID,
+    REAL_TRANSPORT_GATE_SCHEMA_VERSION,
+    CandidateRealTransportGateReceipt,
+)
 from app.evaluation.glm53_flash_stream_terminal_completion_probe import (
     StreamTerminalCompletionReport,
 )
@@ -254,6 +259,14 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
             and payload.get("schema_version") == CANDIDATE_CLOSE_WAKE_SCHEMA_VERSION
         ):
             receipt = CandidateCloseWakeReceipt.from_dict(payload)
+            assert receipt.as_dict() == payload
+            assert content.endswith("\n")
+            continue
+        if (
+            payload.get("protocol_id") == REAL_TRANSPORT_GATE_PROTOCOL_ID
+            and payload.get("schema_version") == REAL_TRANSPORT_GATE_SCHEMA_VERSION
+        ):
+            receipt = CandidateRealTransportGateReceipt.from_dict(payload)
             assert receipt.as_dict() == payload
             assert content.endswith("\n")
             continue
