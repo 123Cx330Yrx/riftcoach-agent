@@ -1163,3 +1163,13 @@ Portal、Account、Workbench、Auth、路由或 `production_media=0`。
 exact-SHA 全绿。当前精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`；
 该检查点不能替代领域质量、黄金切片、生产安全/合规或 8F 闭环。
+
+## RQ-229：加固领域 V2 资产准入能力边界（2026-09-04）
+
+新增的是 8-Advanced 的评测完整性能力：新版本资产隔离、六文件 SHA 交叉绑定、历史
+case/marker 防污染、候选可信 Context 重建，以及 RQ-228 质量版本和资源墙一致性检查。
+准入是纯离线的，provider calls=0；没有新增产品 A/Q、模型注册、运行时路由、Workbench、
+Auth、部署或媒体能力。GLM-5.2 仍只作显式手动应急/兼容路径，`production_media=0`。
+
+因此当前只达到 `candidate-hardened-domain-v2-assets / completed-local / pending-public-ci`；
+它不证明模型领域质量、黄金切片、生产准入、安全/合规或 8F 完成。

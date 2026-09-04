@@ -1626,3 +1626,17 @@ exact-SHA 全绿，公共 pytest 2344、PostgreSQL 201、packaging-smoke 通过�
 Workbench、Auth、路由和 `production_media=0` 不变。当前 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`；
 下一步另立新协议/新资产并先做 no-I/O 准入，不能重跑 RQ-227；真实观察仍需明确授权。
+
+## RQ-229：加固领域 V2 资产离线准入（2026-09-04）
+
+新建 `glm53-flash-hardened-domain-observation-v2` 协议计划、三案例 held-out Dataset、
+V1.1 Input Plan、带候选可信 policy 的 Prompt/Context Snapshot，以及两份全新匿名合成 fixture。
+no-I/O 准入重新计算六类文件身份并绑定 `glm53-flash-domain-quality-v1`、来源下限、低思考/4096、
+4/12 调用墙、24,000/72,000 token 墙、零 retry/revision 和首个不安全失败即停。
+
+新增与相邻回归 `123 passed`，no-I/O 准入、compileall、diff check 与治理检查通过。
+
+该批不读取 Key、不构造 Provider、不发网络请求，也不重跑或覆盖 RQ-227。候选仍未注册，
+GLM-5.2 手动兼容/应急路径、默认 Runtime、Portal、Account、Workbench、Auth、路由和
+`production_media=0` 不变；8E 仍在进行，8F 未开始。当前 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-local / pending-public-ci`。

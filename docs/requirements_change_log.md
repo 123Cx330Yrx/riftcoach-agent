@@ -282,6 +282,8 @@ provider calls=0，仍需明确授权才执行真实协议门。
 
 | RQ-228 | 2026-09-04 | 生效并完成公共闭环；候选领域门证据与注入边界加固，等待下一版本裁决 | RQ-227 的第二案同时出现无可归因来源与不安全指令回显；用户要求继续把 GLM-5.3 Flash 做成专属候选适配，但不应靠放宽门槛掩盖失败 | 新增版本化 `glm53-flash-domain-quality-v1` 候选入口：最低来源数硬门、可信 system policy 附录、marker 无关的拒绝性脱敏和 body-free `EvidenceDiagnostics`。相关/相邻回归 102 passed；实现 `e2efe8fd75e8cf27cbee7e90484fc90d288ce065` 的 Actions `33832025848` 三 job exact-SHA 全绿，公共 pytest 2344、PostgreSQL 201、packaging-smoke 通过。默认产品 Runtime、GLM-5.2 手动兼容/应急路径、Portal、Account、Workbench、Auth、路由与 `production_media=0` 不变；本批不读取 Key、不发真实请求、不重跑 RQ-227。下一步另立全新协议/资产版本并先做 no-I/O 准入，真实观察仍需新的明确授权。 |
 
+| RQ-229 | 2026-09-04 | 生效，本地完成待公共 CI | RQ-228 修复后不得重跑或改写 RQ-227 考卷；必须另立全新版本的协议、问题、合成数据、Context identity 和 marker，并先完成零外部调用准入 | 新 V2 准入必须绑定 `glm53-flash-domain-quality-v1`、至少一个来源、低思考/4096、原有调用/token 墙、零 retry/revision 和首个不安全失败即停；本批不读 Key、不发请求、不注册候选、不改 GLM-5.2 应急路径或产品/前端链路，公共 CI 后仍需明确授权才可真实观察 |
+
 ## 新条目格式
 
 后续新增长期要求时，使用新的 `RQ-xxx` 行，并注明日期、状态以及它如何改变

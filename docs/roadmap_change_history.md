@@ -4417,3 +4417,17 @@ RQ-228 将 RQ-227 的首个失败拆成两个不可合并的质量边界：检�
 `production_media=0` 均不变。当前唯一 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`；
 下一步另立全新协议/资产版本并先做 no-I/O 准入，不重跑 RQ-227；真实观察仍需明确授权。
+
+## 2026-09-04：RQ-229 加固领域 V2 资产离线准入
+
+RQ-229 按 RQ-228 的下一动作建立真正的新版本，而不是给旧题改名。新的协议计划、三案例
+held-out Dataset、V1.1 Input Plan、Prompt/Context Snapshot 和两个匿名合成 fixture 使用全新
+case/run ID、问题、数据与 marker；准入器重新构建带可信候选 policy 的 Context，并交叉验证
+`glm53-flash-domain-quality-v1`、至少一个来源、低思考/4096、4/12 调用墙、24,000/72,000
+token 墙、零 retry/revision 和首个不安全失败即停。
+
+本批 provider calls=0，未读取 Key、未构造 Provider、未重跑或覆盖 RQ-227。候选仍
+disabled/未注册，GLM-5.2 手动兼容/应急路径、默认 Runtime、Portal、Account、Workbench、
+Auth、路由和 `production_media=0` 不变。当前 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-local / pending-public-ci`；
+下一步仅做同一实现 SHA 的公共 CI，真实协议或领域观察仍需后续明确授权。

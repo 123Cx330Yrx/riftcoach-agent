@@ -5686,3 +5686,13 @@
   `33832025848` 三 job exact-SHA 全绿，公共 pytest 2344、PostgreSQL 201、packaging-smoke 通过。
 - [next] 当前为 `completed-public / pending-next-decision`；下一步另立新协议/资产版本并先完成
   no-I/O 准入，不能重跑 RQ-227，真实观察仍需新的明确授权。
+
+## 2026-09-04：RQ-229 加固领域 V2 资产发现
+
+- [contamination] 旧考卷已经用于定位和修复，不能继续承担独立验证；只换 ID 同样不能消除语义污染。
+- [routing] 新题初稿的“请分析”没有稳定命中 `recent-form-review`，离线 Context 重建提前发现；
+  改为明确“复盘我最近四局”的正常产品表达后通过，没有放宽路由器。
+- [identity] 候选 policy 附录经过 Context 标准化会去除首尾空白，因此冻结的是标准化内容摘要，
+  同时仍通过整份 Snapshot 重建保证真实内容一致。
+- [boundary] 新协议和资产可离线准入不等于模型通过；真实调用、候选注册、产品默认和生产成熟度
+  均保持未授权/未完成。

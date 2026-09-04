@@ -841,3 +841,14 @@ Provider、工具回合和评测请求本身都完成了，失败发生在领域
 当前结论是 `admitted=false`、候选未注册、生产准入为 false；这不是 API 崩溃，也不代表模型一般能力
 已被判定失败。下一学习动作是阅读失败归因与输出证据传播代码，决定是否另立版本；不重跑同一考卷，
 不改默认 Runtime、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
+
+### 2026-09-04：RQ-229 加固领域 V2 资产离线准入
+
+新增 [RQ-229 walkthrough](8e-glm53-hardened-domain-v2-assets-walkthrough.md)、
+[ADR-0093](../adr/0093-adopt-glm53-hardened-domain-v2-assets.md) 和
+[实施计划](../plans/2026-09-04-glm53-hardened-domain-v2-assets-implementation.md)。本批用全新
+问题、匿名数据、case/run ID、marker 和 Context Snapshot 建立 RQ-228 修复后的下一轮考卷；
+no-I/O 准入把六类文件身份与质量版本、来源下限和原有预算/停止规则绑定。
+
+这一步只证明新考卷干净且可安全开考，provider calls=0；候选仍未注册，产品与前端边界不变。
+下一 checkpoint 是同一实现 SHA 的公共 CI，真实模型观察仍需明确授权。

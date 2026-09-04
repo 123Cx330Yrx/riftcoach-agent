@@ -1480,3 +1480,13 @@ Auth、路由、`production_media=0`、8E→8F 顺序和 8-Core/8-Advanced 分�
 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`；
 下一步另立新协议/资产并先做 no-I/O 准入，不能重跑 RQ-227；任何真实观察仍需明确授权。
+
+### RQ-229：加固领域 V2 资产离线准入（2026-09-04）
+
+RQ-229 仍属于 8-Advanced candidate-only，不增加或重排 8-Core。它用全新协议计划、问题、
+匿名数据、case/run ID、marker 和带 RQ-228 policy 的 Context Snapshot 取代“原题重考”；
+no-I/O 准入绑定质量版本、来源下限和原有预算/停止规则，`external_provider_calls=0`。
+
+候选仍 disabled/未注册，GLM-5.2 手动应急/兼容路径、默认 Runtime、前端、Workbench、Auth、
+路由、`production_media=0` 和 8E→8F 顺序均不变。下一步只做同一实现 SHA 的公共 CI；
+真实模型观察、黄金切片、生产安全/部署/合规与 8F 都不能由本地资产准入替代。

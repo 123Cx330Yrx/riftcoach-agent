@@ -3504,3 +3504,15 @@ GLM-5.3 Flash 仍是产品正常路线的唯一目标候选但尚未注册，GLM
 默认 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。当前检查点为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`；
 下一步另立全新协议/资产并先做 no-I/O 准入，任何真实领域观察仍需新的明确授权。
+
+### RQ-229：接受加固领域 V2 新鲜资产与 no-I/O 准入（2026-09-04）
+
+接受 ADR-0093 的第三种路线：不重跑 RQ-227，也不只更换文件名，而是建立新的协议计划、
+三案例 Dataset、Input Plan、Prompt/Context Snapshot 和匿名合成 fixture。准入器必须重建
+带 `glm53-flash-domain-quality-v1` 可信 policy 的 Context，并固定至少一个来源、低思考/4096、
+原有调用/token 墙、零 retry/revision 和首个不安全失败即停。
+
+本地新增与相邻回归 `123 passed`，no-I/O 准入、compileall、diff check 与治理检查通过，
+provider calls=0。该接受不注册候选、不改变默认 Runtime，
+不删除 GLM-5.2 手动兼容/应急路径，不改 Portal、Account、Workbench、Auth、路由或
+`production_media=0`。下一步只允许同一实现 SHA 的公共 CI；任何真实调用仍需新的明确授权。

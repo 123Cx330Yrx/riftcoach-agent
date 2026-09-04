@@ -5985,3 +5985,16 @@
 - [next] 当前检查点为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`；
   下一步另立新协议/新资产并先做 no-I/O 准入；真实观察仍需新的明确授权。
+
+## 2026-09-04：RQ-229 加固领域 V2 资产离线准入
+
+- [implemented] 新增版本化协议计划、三案例 held-out Dataset、V1.1 Input Plan、带 RQ-228
+  候选 policy 的 Prompt/Context Snapshot 和两个全新匿名合成 fixture。
+- [admission] 新准入器在 Provider 创建前交叉验证六类文件 SHA、Context 重建、历史污染、
+  `glm53-flash-domain-quality-v1`、至少一个来源、低思考/4096、4/12 调用墙、24,000/72,000
+  token 墙、零 retry/revision 和首个不安全失败即停。
+- [verification] 新增与相邻回归 `123 passed`；no-I/O 准入、compileall、diff check 与治理检查
+  均通过。provider calls=0，未读取 Key，RQ-227 资产与回执保持不可变。
+- [next] 当前 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-local / pending-public-ci`；
+  下一步仅为同一实现 SHA 的公共 CI，真实观察仍需新的明确授权。
