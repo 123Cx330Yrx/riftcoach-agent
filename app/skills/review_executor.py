@@ -6,7 +6,7 @@ import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Any, Callable, Protocol
 
 from pydantic import BaseModel, ValidationError
 
@@ -157,6 +157,8 @@ class SkillReviewExecutor:
         output_builder: SkillTerminalOutputBuilder | None = None,
         max_revisions: int | None = None,
         allow_deterministic_fallback: bool | None = None,
+        minimum_evidence_sources: int | None = None,
+        draft_guard: Callable[[Any, Any], Any] | None = None,
     ) -> None:
         if not callable(getattr(draft_preparer, "prepare", None)):
             raise TypeError("draft_preparer must provide prepare()")
@@ -182,6 +184,18 @@ class SkillReviewExecutor:
         ):
             raise TypeError("allow_deterministic_fallback must be a bool or None")
         self._allow_deterministic_fallback = allow_deterministic_fallback
+        if minimum_evidence_sources is not None and (
+            isinstance(minimum_evidence_sources, bool)
+            or not isinstance(minimum_evidence_sources, int)
+            or minimum_evidence_sources < 0
+        ):
+            raise ValueError(
+                "minimum_evidence_sources must be a non-negative integer or None"
+            )
+        self._minimum_evidence_sources = minimum_evidence_sources
+        if draft_guard is not None and not callable(draft_guard):
+            raise TypeError("draft_guard must be callable or None")
+        self._draft_guard = draft_guard
 
     def execute(
         self,
@@ -215,6 +229,11 @@ class SkillReviewExecutor:
                 if self._allow_deterministic_fallback is None
                 else self._allow_deterministic_fallback
             ),
+            minimum_evidence_sources=(
+                0
+                if self._minimum_evidence_sources is None
+                else self._minimum_evidence_sources
+            ),
         )
         typed_input = execution.typed_input
         try:
@@ -225,6 +244,7 @@ class SkillReviewExecutor:
                 reviser=self._reviser,
                 config=config,
                 observer=observer,
+                draft_guard=self._draft_guard,
             ).run(
                 player_summary=typed_input.player_summary,
                 deterministic_report=typed_input.deterministic_report,

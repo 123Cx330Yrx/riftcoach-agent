@@ -4405,3 +4405,14 @@ disabled/未注册、`production_admitted=false`；这不是 API/适配器崩溃
 Account、Workbench、Auth、路由、streaming 或 `production_media=0`。当前精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`，
 下一步先做失败归因/是否另立版本的裁决。
+
+## 2026-09-04：RQ-228 候选领域证据与注入边界离线加固
+
+RQ-228 将 RQ-227 的首个失败拆成两个不可合并的质量边界：检索调用成功不代表存在可归因
+来源；数据块中的指令性文本也不能越过数据边界进入公开报告。采用版本化、仅候选启用的
+`glm53-flash-domain-quality-v1`，增加最低来源数硬门、可信 system policy 附录、拒绝性脱敏
+和 body-free `EvidenceDiagnostics`。本地相关/相邻回归 `102 passed`，provider calls=0；
+默认 Runtime、GLM-5.2 兼容路径、Portal、Account、Workbench、Auth、路由和
+`production_media=0` 均不变。当前唯一 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`；
+先做同 SHA 公共 exact-SHA CI，再另立全新协议/资产版本，不重跑 RQ-227。

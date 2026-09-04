@@ -5670,3 +5670,16 @@
   Portal、Account、Workbench、Auth、路由或 `production_media=0`。下一 checkpoint 是
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`，
   先做失败归因与是否另立版本的裁决。
+
+## 2026-09-04：RQ-228 候选证据与注入边界加固发现
+
+- [root-cause] RQ-227 的第二案同时暴露“检索调用成功但没有可归因来源”和“输出复述不透明
+  指令标识”两条独立失败；评分高不能替代这两个硬门。
+- [decision] 采用候选专用、版本化 `glm53-flash-domain-quality-v1`，在共享 Harness 上只
+  增加默认关闭的最低来源数门和 draft guard；不放宽旧安全规则，不重跑旧考卷。
+- [safety] 可信 policy 附录把用户/知识内容固定为数据；marker 无关的脱敏器只接受同一
+  语句/行内明确拒绝，其他情况 fail closed，异常不带原文。
+- [observability] 公开语义只增加检索调用/成功/片段/来源/工件/abstain/安全原因码计数，
+  保持 body-free，不记录 query、正文、reasoning、工具参数或凭据。
+- [verification] 相关与相邻回归 `102 passed`，compileall、diff check、governance 通过；
+  provider calls=0。下一步是同 SHA 公共 CI，再另立新协议/资产版本。

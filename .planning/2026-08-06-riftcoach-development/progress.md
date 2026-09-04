@@ -5967,3 +5967,18 @@
   Workbench、Auth、路由和 `production_media=0` 均不变；当前 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`，
   下一步只做失败归因与是否另立版本的裁决，不重跑同一 held-out 资产。
+
+## 2026-09-04：RQ-228 候选领域证据与注入边界离线加固
+
+- [plan] 选择候选专用版本 `glm53-flash-domain-quality-v1`；目标是修复 RQ-227 的证据
+  缺失和指令回显边界，不把失败改写成成功。
+- [implemented] `ReviewHarness`/`SkillReviewExecutor` 支持显式最低来源数与 draft guard；
+  `ContextBuilderV1` 支持可信候选 policy 附录；领域观察新增 body-free `EvidenceDiagnostics`；
+  新 `draft_safety` 只对明确拒绝的 marker 做固定占位符脱敏。
+- [verified] 聚焦与相邻回归 `102 passed`；compileall、git diff --check、治理检查通过；
+  本批没有读取 Key、真实 Provider 调用或旧 RQ-227 重跑。
+- [boundary] 默认 Harness 行为、GLM-5.2 兼容路径、产品 Runtime、Portal、Account、Workbench、
+  Auth、路由和 `production_media=0` 不变；候选仍 disabled/未注册。
+- [next] 当前检查点为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`；
+  先取得同一实现 SHA 的公共 exact-SHA CI，再考虑新协议/新资产和一次新的真实观察授权。

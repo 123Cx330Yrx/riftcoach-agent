@@ -1149,3 +1149,16 @@ Account、Workbench、Auth、路由、黄金切片和 `production_media=0` 不�
 重跑或覆盖。当前精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`，
 先等待失败归因与是否另立版本的裁决。
+
+## RQ-228：候选领域证据与注入边界加固（2026-09-04）
+
+能力矩阵保持 8-Core 与 8-Advanced 分层不变。RQ-228 只在显式候选执行器中增加
+`glm53-flash-domain-quality-v1`：最低可归因来源数、可信数据边界策略、拒绝性 marker
+脱敏，以及只含安全计数的 `EvidenceDiagnostics`。默认 Harness 行为仍兼容，GLM-5.2
+只作为手动兼容/应急回退；不打开产品 streaming、不注册候选、不改变默认 Runtime、
+Portal、Account、Workbench、Auth、路由或 `production_media=0`。
+
+本地相关/相邻回归 `102 passed`，provider calls=0；同一实现 SHA 的公共 exact-SHA CI
+仍待完成。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`；
+该检查点不能替代领域质量、黄金切片、生产安全/合规或 8F 闭环。

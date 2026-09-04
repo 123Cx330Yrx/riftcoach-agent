@@ -1464,3 +1464,17 @@ Auth、路由、streaming、黄金切片和 `production_media=0` 不变；同一
 当前精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`，
 下一步先做失败归因与是否另立版本的裁决，8F 仍在后面。
+
+### RQ-228：候选领域证据与注入边界离线加固（2026-09-04）
+
+RQ-228 仍属于 8-Advanced 的 candidate-only 归因修复，不增加或重排 8-Core。针对 RQ-227
+第二案的两条独立失败，采用版本化 `glm53-flash-domain-quality-v1`：候选执行器要求至少
+一个可归因检索来源；Context 增加可信数据边界策略；明确拒绝时才允许对不透明 marker 做
+固定占位符脱敏，其他出现继续 fail closed；公开观察只保留 body-free 计数和安全原因码。
+
+本地相关/相邻回归 `102 passed`，provider calls=0；同一实现的公共 exact-SHA CI 尚待完成。
+候选仍 disabled/未注册，GLM-5.2 兼容路径、默认 Runtime、Portal、Account、Workbench、
+Auth、路由、`production_media=0`、8E→8F 顺序和 8-Core/8-Advanced 分层均不变。当前精确
+checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`；
+公共 CI 后才可另立新协议/资产，不能重跑 RQ-227。

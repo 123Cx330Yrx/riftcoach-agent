@@ -5,12 +5,17 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from collections.abc import Mapping
 from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
-from app.agent.context import ContextBuilderV1
+from app.agent.context import (
+    CANDIDATE_CONTEXT_SAFETY_POLICY_V1,
+    ContextBuilderV1,
+)
 from app.agent.draft import AgentFailureObservation, SkillAgentDraftPreparer
+from app.agent.draft_safety import sanitize_forbidden_markers
 from app.agent.loop import AgentLoop, AgentRunResult
 from app.model_runtime import (
     CandidateEvaluationRequestPolicy,
@@ -28,7 +33,8 @@ from app.evaluation.coach_report import (
 )
 from app.harness.adapters import ChatCoachReviser, SecureChatEvaluationAdapter
 from app.harness.models import ArtifactKind, RunManifest
-from app.harness.store import FileRunStore
+from app.harness.steps import CoachDraft
+from app.harness.store import ArtifactIntegrityError, FileRunStore
 from app.providers.models import ChatRequest, ChatResponse
 from app.providers.protocol import LLMProvider
 from app.rag.hybrid import LocalHybridKnowledgeProvider
@@ -49,6 +55,7 @@ from app.tools.models import RetryPolicy
 from app.tools.registry import ToolRegistry
 from app.tools.runtime import ToolRuntime
 
+from .domain_e2e import EvidenceDiagnostics
 from .provider_domain_experiment import DomainCaseSemanticObservation
 from .provider_domain_plan import LoadedDomainCaseInputPlan
 
@@ -61,6 +68,8 @@ _FACT_ISSUE_CATEGORIES = {
     "meta_hallucination",
     "unsupported_comparison",
 }
+
+CANDIDATE_QUALITY_HARDENING_VERSION = "glm53-flash-domain-quality-v1"
 
 
 @dataclass
@@ -123,6 +132,7 @@ class ProductionDomainCaseExecutor:
         runs_root: str | Path,
         runtime_profile: ModelRuntimeProfile | None = None,
         request_policy: CandidateEvaluationRequestPolicy | None = None,
+        quality_hardening: bool = False,
     ) -> None:
         if not isinstance(input_plan, LoadedDomainCaseInputPlan):
             raise TypeError("input_plan must be a loaded input plan")
@@ -148,6 +158,13 @@ class ProductionDomainCaseExecutor:
             if request_policy is not None
             else None
         )
+        if not isinstance(quality_hardening, bool):
+            raise TypeError("quality_hardening must be a bool")
+        if quality_hardening and self._request_policy is None:
+            raise ValueError(
+                "quality hardening requires an explicit candidate request policy"
+            )
+        self._quality_hardening = quality_hardening
         self.execution_plan = input_plan.execution_plan
 
     @property
@@ -161,6 +178,12 @@ class ProductionDomainCaseExecutor:
         """The explicit candidate evaluation policy, if bound."""
 
         return self._request_policy
+
+    @property
+    def quality_hardening(self) -> bool:
+        """Whether the opt-in candidate quality boundary is active."""
+
+        return self._quality_hardening
 
     def execute(
         self,
@@ -176,7 +199,14 @@ class ProductionDomainCaseExecutor:
             )
         case = self._input_plan.artifact.case(case_id)
         execution = self._build_execution(case)
-        context = ContextBuilderV1().build(execution)
+        context = ContextBuilderV1().build(
+            execution,
+            policy_addendum=(
+                CANDIDATE_CONTEXT_SAFETY_POLICY_V1
+                if self._quality_hardening
+                else None
+            ),
+        )
         base_knowledge = LocalHybridKnowledgeProvider.from_directory(
             self._root / "data/rag_docs"
         )
@@ -230,6 +260,19 @@ class ProductionDomainCaseExecutor:
             allow_deterministic_fallback=(
                 False if self._request_policy is not None else None
             ),
+            minimum_evidence_sources=(
+                1 if self._quality_hardening else None
+            ),
+            draft_guard=(
+                (
+                    lambda draft, _knowledge: _guard_candidate_draft(
+                        draft,
+                        case.forbidden_output_markers,
+                    )
+                )
+                if self._quality_hardening
+                else None
+            ),
         ).execute(execution=execution, context=context)
         store = FileRunStore(self._runs_root, execution.run_id)
         return _semantic_observation(
@@ -242,6 +285,7 @@ class ProductionDomainCaseExecutor:
             output=result.output,
             manifest=result.manifest,
             store=store,
+            use_persisted_report=self._quality_hardening,
         )
 
     def _build_execution(self, case) -> Any:
@@ -325,6 +369,7 @@ def _semantic_observation(
     output,
     manifest: RunManifest,
     store: FileRunStore,
+    use_persisted_report: bool = False,
 ) -> DomainCaseSemanticObservation:
     draft = ""
     proposed: tuple[str, ...] = ()
@@ -348,12 +393,36 @@ def _semantic_observation(
         )
         if agent_run.final_response is not None:
             draft = agent_run.final_response.content or ""
+    # When a candidate boundary redacts a clearly quoted refusal, evaluate the
+    # persisted post-guard draft rather than the private raw Provider text.
+    # Rejected runs have no final report, so the raw draft remains available
+    # only for the local semantic failure calculation.
+    final_records = [
+        row
+        for row in manifest.artifacts
+        if row.get("kind") == ArtifactKind.FINAL_REPORT.value
+    ]
+    if (
+        use_persisted_report
+        and len(final_records) == 1
+        and manifest.status.value in {"published", "degraded"}
+    ):
+        try:
+            draft = store.read_artifact(final_records[0]).decode("utf-8")
+        except (ArtifactIntegrityError, UnicodeDecodeError, KeyError, OSError):
+            pass
     elif agent_failure is not None:
         agent_status = agent_failure.status.value
         agent_stop_reason = agent_failure.stop_reason.value
         error_code = agent_failure.error_code
 
     evidence_source_ids = tuple(getattr(output, "evidence_source_ids", ()))
+    evidence_diagnostics = _evidence_diagnostics(
+        agent_run=agent_run,
+        evidence_source_ids=evidence_source_ids,
+        manifest=manifest,
+        store=store,
+    )
     allowed_citations = _evidence_citation_ids(manifest, store)
     cited = set(_CITATION.findall(draft))
     citation_check = None if not draft else not cited.difference(allowed_citations)
@@ -405,6 +474,7 @@ def _semantic_observation(
         proposed_tool_names=proposed,
         successful_tool_names=successful,
         evidence_source_ids=evidence_source_ids,
+        evidence_diagnostics=evidence_diagnostics,
         fact_check_passed=fact_check,
         citation_check_passed=citation_check,
         injection_check_passed=injection_check,
@@ -429,6 +499,58 @@ def _evidence_citation_ids(manifest: RunManifest, store: FileRunStore) -> set[st
         for row in payload.get("citations", ())
         if isinstance(row, dict) and row.get("citation_id")
     }
+
+
+def _evidence_diagnostics(
+    *,
+    agent_run: AgentRunResult | None,
+    evidence_source_ids: tuple[str, ...],
+    manifest: RunManifest,
+    store: FileRunStore,
+) -> EvidenceDiagnostics:
+    """Project retrieval state into safe counters only."""
+
+    executions = tuple(
+        row
+        for row in (agent_run.tool_executions if agent_run is not None else ())
+        if row.tool_name == "knowledge.search"
+    )
+    successful = tuple(row for row in executions if row.result.success)
+    payloads = tuple(
+        row.result.data
+        for row in successful
+        if isinstance(row.result.data, Mapping)
+    )
+    chunks_returned = 0
+    abstained: bool | None = None
+    reason: str | None = None
+    for payload in payloads:
+        chunks = payload.get("chunks")
+        if isinstance(chunks, (list, tuple)):
+            chunks_returned += len(chunks)
+        if isinstance(payload.get("abstained"), bool):
+            abstained = bool(payload["abstained"])
+        diagnostics = payload.get("diagnostics")
+        if isinstance(diagnostics, Mapping):
+            candidate_reason = diagnostics.get("reason")
+            if isinstance(candidate_reason, str) and re.fullmatch(
+                r"[a-z][a-z0-9_]{0,127}", candidate_reason
+            ):
+                reason = candidate_reason
+    artifact_present = any(
+        row.get("kind") == ArtifactKind.RETRIEVAL_EVIDENCE.value
+        for row in manifest.artifacts
+    )
+    return EvidenceDiagnostics(
+        search_calls=len(executions),
+        successful_search_calls=len(successful),
+        payloads_with_data=len(payloads),
+        chunks_returned=chunks_returned,
+        source_count=len(evidence_source_ids),
+        artifact_present=artifact_present,
+        abstained=abstained,
+        reason=reason,
+    )
 
 
 def _evaluation_payload(manifest: RunManifest, store: FileRunStore) -> dict | None:
@@ -497,4 +619,19 @@ def _unique(values) -> tuple[str, ...]:
     return tuple(dict.fromkeys(str(value) for value in values))
 
 
-__all__ = ["ProductionDomainCaseExecutor"]
+def _guard_candidate_draft(
+    draft: CoachDraft,
+    forbidden_markers: tuple[str, ...],
+) -> CoachDraft:
+    """Apply the candidate-only marker boundary without leaking raw text."""
+
+    if not isinstance(draft, CoachDraft):
+        raise TypeError("draft guard requires CoachDraft")
+    result = sanitize_forbidden_markers(draft.report, forbidden_markers)
+    return CoachDraft(report=result.report)
+
+
+__all__ = [
+    "CANDIDATE_QUALITY_HARDENING_VERSION",
+    "ProductionDomainCaseExecutor",
+]

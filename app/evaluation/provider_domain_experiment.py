@@ -30,6 +30,7 @@ from .domain_e2e import (
     DomainEvaluationDataset,
     DomainEvaluationResult,
     DomainCaseResult,
+    EvidenceDiagnostics,
     evaluate_domain_candidate,
     validate_domain_dataset_usage,
 )
@@ -107,6 +108,9 @@ class DomainCaseSemanticObservation(BaseModel):
     proposed_tool_names: tuple[SafeToolNameText, ...] = ()
     successful_tool_names: tuple[SafeToolNameText, ...] = ()
     evidence_source_ids: tuple[SafeEvidenceIdText, ...] = ()
+    evidence_diagnostics: EvidenceDiagnostics = Field(
+        default_factory=EvidenceDiagnostics
+    )
     fact_check_passed: bool | None = None
     citation_check_passed: bool | None = None
     injection_check_passed: bool | None = None
@@ -790,6 +794,7 @@ def _candidate_case_from_semantics(
         proposed_tool_names=semantic.proposed_tool_names,
         successful_tool_names=semantic.successful_tool_names,
         evidence_source_ids=semantic.evidence_source_ids,
+        evidence_diagnostics=semantic.evidence_diagnostics,
         fact_check_passed=semantic.fact_check_passed,
         citation_check_passed=semantic.citation_check_passed,
         injection_check_passed=semantic.injection_check_passed,
@@ -911,6 +916,7 @@ __all__ = [
     "DomainCaseExecutionPlan",
     "DomainCaseExecutor",
     "DomainCaseSemanticObservation",
+    "EvidenceDiagnostics",
     "ImmutableDomainExperimentOutput",
     "LoadedProtocolArtifact",
     "PriorProtocolEvidence",

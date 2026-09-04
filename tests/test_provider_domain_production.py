@@ -19,6 +19,9 @@ from app.evaluation.provider_domain_plan import (
 from app.evaluation.provider_domain_production import (
     ProductionDomainCaseExecutor,
 )
+from app.evaluation.glm53_flash_candidate_profile import (
+    GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
+)
 from app.providers.capabilities import ProviderCapabilities
 from app.providers.config import DEEPSEEK_MODEL
 from app.providers.deepseek import DeepSeekProvider
@@ -300,6 +303,14 @@ def test_production_executor_runs_real_local_skill_rag_and_harness():
     assert observation.proposed_tool_names == ("knowledge.search",)
     assert observation.successful_tool_names == ("knowledge.search",)
     assert observation.evidence_source_ids
+    assert observation.evidence_diagnostics.search_calls == 1
+    assert observation.evidence_diagnostics.successful_search_calls == 1
+    assert observation.evidence_diagnostics.payloads_with_data == 1
+    assert observation.evidence_diagnostics.chunks_returned >= 1
+    assert observation.evidence_diagnostics.source_count == len(
+        observation.evidence_source_ids
+    )
+    assert observation.evidence_diagnostics.artifact_present is True
     assert observation.fact_check_passed is True
     assert observation.citation_check_passed is True
     assert observation.injection_check_passed is True
@@ -308,6 +319,31 @@ def test_production_executor_runs_real_local_skill_rag_and_harness():
     assert observation.terminal_status == "published"
     assert observation.normalized_response_count == 3
     assert len(provider.requests) == 3
+
+
+def test_quality_hardening_requires_explicit_candidate_policy() -> None:
+    plan = development_multi_tool_input_plan()
+    with tempfile.TemporaryDirectory() as directory:
+        try:
+            ProductionDomainCaseExecutor(
+                project_root=ROOT,
+                input_plan=plan,
+                runs_root=directory,
+                quality_hardening=True,
+            )
+        except ValueError as exc:
+            assert "explicit candidate request policy" in str(exc)
+        else:
+            raise AssertionError("quality hardening must not use a product default")
+
+        executor = ProductionDomainCaseExecutor(
+            project_root=ROOT,
+            input_plan=plan,
+            runs_root=directory,
+            request_policy=GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
+            quality_hardening=True,
+        )
+        assert executor.quality_hardening is True
 
 
 def test_deepseek_multi_tool_development_path_reaches_rag_and_harness():

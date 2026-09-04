@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 from .artifact_content import encode_json_artifact, encode_text_artifact
 from .models import ArtifactKind, HarnessConfig, RunManifest, RunStatus
@@ -47,6 +47,8 @@ class ReviewHarness:
         reviser: ReviserStep,
         config: HarnessConfig | None = None,
         observer: RuntimeSignalObserver | None = None,
+        draft_guard: Callable[[CoachDraft, KnowledgeEvidence], CoachDraft]
+        | None = None,
     ) -> None:
         self.store = store
         self.draft_preparer = draft_preparer
@@ -54,6 +56,9 @@ class ReviewHarness:
         self.reviser = reviser
         self.config = config or HarnessConfig()
         self.observer = observer
+        if draft_guard is not None and not callable(draft_guard):
+            raise TypeError("draft_guard must be callable or None")
+        self.draft_guard = draft_guard
 
     def run(
         self,
@@ -114,6 +119,26 @@ class ReviewHarness:
             producer="draft_preparer",
         )
         manifest = self._transition(RunStatus.KNOWLEDGE_READY)
+
+        if len(knowledge.source_ids) < self.config.minimum_evidence_sources:
+            return self._finish_unsuccessful_run(
+                deterministic_content,
+                reason="evidence_required",
+            )
+
+        if self.draft_guard is not None:
+            try:
+                guarded = self.draft_guard(draft, knowledge)
+                if not isinstance(guarded, CoachDraft):
+                    raise TypeError("draft guard must return CoachDraft")
+                draft = guarded
+            except RuntimeObservationError:
+                raise
+            except Exception as exc:
+                return self._finish_unsuccessful_run(
+                    deterministic_content,
+                    reason=self._step_failure_reason("draft_safety", exc),
+                )
 
         try:
             self._validate_report_citations(draft.report, knowledge)

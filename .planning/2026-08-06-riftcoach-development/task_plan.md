@@ -108,7 +108,10 @@ RQ-226 又在用户“继续”授权后完成低思考 G53-3-L 的一次有界�
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
 （7537 bytes，SHA-256=`b9fbebacf5c277c6b2cd57f018ff58cfb2646dbad95f6cdc9e90822646a68400`），
 累计领域调用 `6/12`、总调用 `9/15`，领域/累计 token 为 `17834/18925`；候选未注册且
-`admitted=false`。当前停在独立失败归因与下一版本裁决，不重跑同一考卷。
+`admitted=false`。当前停在独立失败归因与下一版本裁决，不重跑同一考卷。RQ-228 已完成候选专用的
+证据来源硬门、可信策略附录、marker 无关的拒绝性脱敏和 body-free 证据诊断；本地实现与相邻回归
+已通过，尚未取得该实现 SHA 的公共 exact-SHA CI。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -406,12 +409,13 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`。
 RQ-227 的真实领域门已完成有界观察但拒绝准入：第 1 案通过，第 2 案因证据来源缺失与注入检查失败触发
 `unsafe_publication`，第 3 案冻结跳过；回执为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
 （7537 bytes，SHA-256=`b9fbebacf5c277c6b2cd57f018ff58cfb2646dbad95f6cdc9e90822646a68400`）。
-下一动作只做失败归因与是否另立版本的裁决，不重跑同一 held-out 资产，不改产品 Runtime、默认模型或前端链路。
+RQ-228 只在候选入口加固上述两条边界，默认产品与 GLM-5.2 兼容路径不变；下一动作是提交并验证
+同一实现 SHA 的公共 CI，然后才另立全新协议/资产版本，不重跑同一 held-out 资产。
 RQ-217 的真实回执绑定实现/观察器/输入计划提交
 `3e028b1217f1274152ba161993287f29188a1b73`，文件为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`，
@@ -3153,3 +3157,21 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   路由和 `production_media=0` 不变。当前唯一 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`；
   下一动作是先做失败归因与是否另立版本的裁决，不重跑同一 held-out 资产。
+
+## RQ-228 / 候选领域证据与注入边界离线加固（2026-09-04）
+
+- Status: complete-local; candidate-only; public-ci-pending
+- [decision] 采用版本化 `glm53-flash-domain-quality-v1` 候选边界；拒绝放宽 RQ-227 的安全/证据门，
+  也不把旧 marker 或旧题目变成特例。
+- [implemented-local] Harness 增加默认关闭的最低来源数门；候选显式要求至少一个可归因来源，
+  并输出只含计数/状态/安全原因码的 `EvidenceDiagnostics`。
+- [implemented-local] 候选 Context 增加可信 system policy 附录；新增 marker 无关的拒绝性脱敏器，
+  明确拒绝可安全替换占位符，执行式或歧义出现仍 fail closed，不泄露原文。
+- [verification-local] 相关与相邻回归 `102 passed`，compileall、diff check、governance 通过；
+  未读取 Key、未发真实请求、未重跑 RQ-227。
+- [boundary] GLM-5.3 候选仍 disabled/未注册，GLM-5.2 手动兼容/应急路径、默认 Runtime、
+  Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变；8E、黄金切片、生产准入
+  与 8F 仍未完成。
+- [boundary-next] 当前唯一 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`；
+  先取得同一实现 SHA 的公共 exact-SHA CI，再另立全新协议/资产版本并等待明确真实观察授权。

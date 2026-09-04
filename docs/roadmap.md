@@ -1610,3 +1610,17 @@ body-free/create-only。`low_gate_baseline_17` 通过（Evaluation 96）；`low_
 `production_media=0`。当前精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`；
 下一步先做失败归因与是否另立版本的裁决。
+
+## RQ-228：候选领域证据与注入边界离线加固（2026-09-04）
+
+RQ-228 是对 RQ-227 失败的候选级归因与修复，不是放宽准入。版本化
+`glm53-flash-domain-quality-v1` 在显式候选执行器中要求至少一个可归因检索来源，向
+Context 的 system trust 区域加入数据边界策略，并对明确拒绝时的指令标识做固定占位符
+脱敏；执行式或歧义输出仍 fail closed。领域观察新增 body-free 的调用/片段/来源计数，
+不记录 query、正文、reasoning、工具参数或凭据。
+
+本地相关/相邻回归为 `102 passed`，compileall、diff check、治理检查通过，provider calls=0。
+候选仍 disabled/未注册；GLM-5.2 手动兼容/应急路径、默认 Runtime、Portal、Account、
+Workbench、Auth、路由和 `production_media=0` 不变。当前 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`；
+下一步先取得同一实现 SHA 的公共 exact-SHA CI，再另立新协议/新资产，不能重跑 RQ-227。

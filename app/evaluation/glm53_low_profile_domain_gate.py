@@ -845,6 +845,7 @@ def _candidate_case_from_semantics(
         proposed_tool_names=semantic.proposed_tool_names,
         successful_tool_names=semantic.successful_tool_names,
         evidence_source_ids=semantic.evidence_source_ids,
+        evidence_diagnostics=semantic.evidence_diagnostics,
         fact_check_passed=semantic.fact_check_passed,
         citation_check_passed=semantic.citation_check_passed,
         injection_check_passed=semantic.injection_check_passed,

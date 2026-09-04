@@ -22,6 +22,24 @@ SafeCodeText = Annotated[
     str,
     StringConstraints(pattern=r"^[A-Za-z][A-Za-z0-9_.:-]*$"),
 ]
+SafeRuntimeCodeText = Annotated[
+    str,
+    StringConstraints(pattern=r"^[a-z][a-z0-9_]{0,127}$"),
+]
+_CASE_MAX_CALLS = 4
+
+
+def _omit_empty_evidence_diagnostics(value: object) -> bool:
+    return (
+        getattr(value, "search_calls", None) == 0
+        and getattr(value, "successful_search_calls", None) == 0
+        and getattr(value, "payloads_with_data", None) == 0
+        and getattr(value, "chunks_returned", None) == 0
+        and getattr(value, "source_count", None) == 0
+        and getattr(value, "artifact_present", None) is None
+        and getattr(value, "abstained", None) is None
+        and getattr(value, "reason", None) is None
+    )
 
 DomainSchemaVersion = Literal["1.1", "1.2"]
 DomainCandidateKind = Literal[
@@ -112,6 +130,31 @@ class DomainCaseRequirements(BaseModel):
         return self
 
 
+class EvidenceDiagnostics(BaseModel):
+    """Body-free retrieval counters for diagnosing an evidence gate."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    search_calls: int = Field(ge=0, le=_CASE_MAX_CALLS, default=0)
+    successful_search_calls: int = Field(ge=0, le=_CASE_MAX_CALLS, default=0)
+    payloads_with_data: int = Field(ge=0, le=_CASE_MAX_CALLS, default=0)
+    chunks_returned: int = Field(ge=0, default=0)
+    source_count: int = Field(ge=0, default=0)
+    artifact_present: bool | None = None
+    abstained: bool | None = None
+    reason: SafeRuntimeCodeText | None = None
+
+    @model_validator(mode="after")
+    def validate_counts(self) -> "EvidenceDiagnostics":
+        if self.successful_search_calls > self.search_calls:
+            raise ValueError("successful search calls cannot exceed search calls")
+        if self.payloads_with_data > self.successful_search_calls:
+            raise ValueError("payloads with data cannot exceed successful searches")
+        if self.source_count > self.chunks_returned:
+            raise ValueError("source count cannot exceed returned chunks")
+        return self
+
+
 class DomainEvaluationCase(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -193,6 +236,10 @@ class DomainCandidateCase(BaseModel):
     proposed_tool_names: tuple[NonBlankText, ...]
     successful_tool_names: tuple[NonBlankText, ...]
     evidence_source_ids: tuple[NonBlankText, ...]
+    evidence_diagnostics: EvidenceDiagnostics = Field(
+        default_factory=EvidenceDiagnostics,
+        exclude_if=_omit_empty_evidence_diagnostics,
+    )
     fact_check_passed: bool | None
     citation_check_passed: bool | None
     injection_check_passed: bool | None
@@ -681,6 +728,7 @@ __all__ = [
     "DomainDatasetRole",
     "DomainEvaluationDataset",
     "DomainEvaluationResult",
+    "EvidenceDiagnostics",
     "FailureCode",
     "LayerVerdict",
     "evaluate_domain_candidate",
