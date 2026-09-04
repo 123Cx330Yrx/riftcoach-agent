@@ -5993,8 +5993,11 @@
 - [admission] 新准入器在 Provider 创建前交叉验证六类文件 SHA、Context 重建、历史污染、
   `glm53-flash-domain-quality-v1`、至少一个来源、低思考/4096、4/12 调用墙、24,000/72,000
   token 墙、零 retry/revision 和首个不安全失败即停。
-- [verification] 新增与相邻回归 `123 passed`；no-I/O 准入、compileall、diff check 与治理检查
-  均通过。provider calls=0，未读取 Key，RQ-227 资产与回执保持不可变。
+- [verification] 新增与相邻本地回归 `123 passed`；实现
+  `c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715` 三个任务 exact-SHA
+  全绿。公共 Python `2349 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL
+  控制面 `201 passed, 2 warnings`，前端 `270 passed`；no-I/O 准入、packaging-smoke、compileall、
+  diff check 与治理检查均通过。provider calls=0，未读取 Key，RQ-227 资产与回执保持不可变。
 - [next] 当前 checkpoint 为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-local / pending-public-ci`；
-  下一步仅为同一实现 SHA 的公共 CI，真实观察仍需新的明确授权。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-public / pending-user-authorization`；
+  下一步等待用户明确授权一次新的 V2 有界真实领域观察，当前不调用模型。

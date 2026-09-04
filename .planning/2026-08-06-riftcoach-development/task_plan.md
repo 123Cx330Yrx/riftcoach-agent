@@ -111,8 +111,10 @@ RQ-226 又在用户“继续”授权后完成低思考 G53-3-L 的一次有界�
 `admitted=false`。当前停在独立失败归因与下一版本裁决，不重跑同一考卷。RQ-228 已完成候选专用的
 证据来源硬门、可信策略附录、marker 无关的拒绝性脱敏和 body-free 证据诊断；实现
 `e2efe8fd75e8cf27cbee7e90484fc90d288ce065` 的 Actions `33832025848` 三个 job 全绿。RQ-229 又完成了
-全新加固领域 V2 协议与资产的 no-I/O 准入。当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-local / pending-public-ci`。
+全新加固领域 V2 协议与资产的 no-I/O 准入；实现
+`c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715` 三个任务 exact-SHA
+全绿。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-public / pending-user-authorization`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -410,14 +412,15 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-local / pending-public-ci`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-public / pending-user-authorization`。
 RQ-227 的真实领域门已完成有界观察但拒绝准入：第 1 案通过，第 2 案因证据来源缺失与注入检查失败触发
 `unsafe_publication`，第 3 案冻结跳过；回执为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
 （7537 bytes，SHA-256=`b9fbebacf5c277c6b2cd57f018ff58cfb2646dbad95f6cdc9e90822646a68400`）。
 RQ-228 只在候选入口加固上述两条边界，默认产品与 GLM-5.2 兼容路径不变；同一实现 SHA 的
-公共 CI 已全绿。RQ-229 已另立全新协议/资产版本并完成 no-I/O 准入；下一动作只做同一实现
-SHA 的公共 CI，不重跑同一 held-out 资产。
+公共 CI 已全绿。RQ-229 已另立全新协议/资产版本并完成 no-I/O 准入；实现
+`c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715` 三个任务 exact-SHA
+全绿。下一动作是等待用户明确授权一次新的 V2 有界真实领域观察，不重跑同一 held-out 资产。
 RQ-217 的真实回执绑定实现/观察器/输入计划提交
 `3e028b1217f1274152ba161993287f29188a1b73`，文件为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`，
@@ -3183,13 +3186,16 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 
 ## RQ-229 / 加固领域 V2 资产离线准入（2026-09-04）
 
-- Status: complete-local; candidate-only; provider-calls-zero; pending-public-ci
+- Status: complete-public; candidate-only; provider-calls-zero; pending-user-authorization
 - [decision] 采用 ADR-0093 的真正新版本路线，不复用或改名包装 RQ-227 的已消费题目。
 - [implemented-local] 新协议计划、三案例 Dataset、V1.1 Input Plan、带候选可信 policy 的
   Prompt/Context Snapshot 和两个匿名合成 fixture 已冻结；no-I/O 准入交叉校验六类 SHA、
   历史 case/marker、质量版本、来源下限、预算与停止规则。
-- [verification-local] 新增与相邻回归 `123 passed`；no-I/O 准入、compileall、diff check 与治理
-  均通过。本批不读 Key、不构造 Provider、不发网络请求，`external_provider_calls=0`。
+- [verification-public] 新增与相邻本地回归 `123 passed`；实现
+  `c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715` 与 head SHA 精确匹配，
+  三个任务均成功。公共 Python `2349 passed, 145 skipped, 2 warnings, 127 subtests passed`，
+  PostgreSQL 控制面 `201 passed, 2 warnings`，前端 `270 passed`；packaging-smoke、compileall、
+  diff check 与治理均通过。本批不读 Key、不构造 Provider、不发网络请求，`external_provider_calls=0`。
 - [boundary-next] 候选仍 disabled/未注册，GLM-5.2 手动兼容/应急路径、默认 Runtime、Portal、
-  Account、Workbench、Auth、路由和 `production_media=0` 不变。下一步仅为同一实现 SHA 的
-  公共 CI；真实协议/领域观察仍需后续明确授权。
+  Account、Workbench、Auth、路由和 `production_media=0` 不变。下一步等待用户明确授权一次
+  新的 V2 有界真实领域观察；当前不调用模型。

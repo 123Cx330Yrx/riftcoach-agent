@@ -5696,3 +5696,7 @@
   同时仍通过整份 Snapshot 重建保证真实内容一致。
 - [boundary] 新协议和资产可离线准入不等于模型通过；真实调用、候选注册、产品默认和生产成熟度
   均保持未授权/未完成。
+- [public-evidence] 实现提交 `c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions
+  `33843064715` 与 head SHA 精确匹配，三个任务均成功；公共 Python `2349 passed, 145 skipped,
+  2 warnings, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 2 warnings`，前端 `270 passed`。
+  这只关闭 V2 资产与准入器的公共可复现性，不替代真实领域观察。

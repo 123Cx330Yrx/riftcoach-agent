@@ -850,5 +850,7 @@ Provider、工具回合和评测请求本身都完成了，失败发生在领域
 问题、匿名数据、case/run ID、marker 和 Context Snapshot 建立 RQ-228 修复后的下一轮考卷；
 no-I/O 准入把六类文件身份与质量版本、来源下限和原有预算/停止规则绑定。
 
-这一步只证明新考卷干净且可安全开考，provider calls=0；候选仍未注册，产品与前端边界不变。
-下一 checkpoint 是同一实现 SHA 的公共 CI，真实模型观察仍需明确授权。
+实现 `c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715` 三个任务
+exact-SHA 全绿（公共 Python 2349、PostgreSQL 201、前端 270）。这只证明新考卷干净且可安全
+开考，provider calls=0；候选仍未注册，产品与前端边界不变。下一 checkpoint 等待用户明确授权
+一次新的 V2 有界真实领域观察。

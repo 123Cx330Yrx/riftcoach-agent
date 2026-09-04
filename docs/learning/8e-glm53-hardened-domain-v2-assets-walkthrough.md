@@ -52,6 +52,11 @@ V2 protocol + Dataset + Input Plan + Snapshot + 两个 fixture
 新 marker 与包含 RQ-227 在内的历史集合没有交集。新增与相邻回归共 `123 passed`；
 no-I/O 准入、compileall、`git diff --check` 和治理检查均通过。
 
+实现提交 `c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715`
+与 head SHA 精确匹配，三个任务均成功；公共 Python 为
+`2349 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL 控制面为
+`201 passed, 2 warnings`，前端为 `270 passed`。这证明资产准入可公开复现，仍不等于模型通过。
+
 ## 6. 运行手册
 
 离线检查只需在仓库根目录调用 `admit_hardened_domain_assets(project_root=..., confirm_rules_frozen=True)`；

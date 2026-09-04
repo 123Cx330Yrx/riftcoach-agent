@@ -1488,5 +1488,8 @@ RQ-229 仍属于 8-Advanced candidate-only，不增加或重排 8-Core。它用�
 no-I/O 准入绑定质量版本、来源下限和原有预算/停止规则，`external_provider_calls=0`。
 
 候选仍 disabled/未注册，GLM-5.2 手动应急/兼容路径、默认 Runtime、前端、Workbench、Auth、
-路由、`production_media=0` 和 8E→8F 顺序均不变。下一步只做同一实现 SHA 的公共 CI；
-真实模型观察、黄金切片、生产安全/部署/合规与 8F 都不能由本地资产准入替代。
+路由、`production_media=0` 和 8E→8F 顺序均不变。实现
+`c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715` 三个任务
+exact-SHA 全绿（公共 Python 2349、PostgreSQL 201、前端 270）。当前为
+`completed-public / pending-user-authorization`；下一步等待用户明确授权一次新的 V2 有界真实领域观察。
+真实模型观察、黄金切片、生产安全/部署/合规与 8F 都不能由资产公共闭环替代。

@@ -33,3 +33,10 @@ RQ-227 已经消耗了低思考三案例考卷，并留下不可覆盖的失败�
 Portal、Account、Workbench、Auth 或路由。离线通过只说明新一轮材料可安全开考，不证明真实领域
 质量、黄金切片、生产安全/部署/合规或 8F 完成。真实协议与领域观察仍需后续明确授权。
 
+## 公共验证
+
+实现提交 `c50cf231957bc54201d0207b99110fcf4b2897b3` 的 GitHub Actions
+`33843064715` 与 head SHA 精确匹配，`pytest`、`postgres-migrations`、`packaging-smoke`
+三个任务均成功。公共 Python 为 `2349 passed, 145 skipped, 2 warnings, 127 subtests passed`，
+PostgreSQL 控制面为 `201 passed, 2 warnings`，前端为 `270 passed`。CI 没有调用 Provider；
+当前状态为 `completed-public / pending-user-authorization`。

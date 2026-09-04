@@ -1171,5 +1171,7 @@ case/marker 防污染、候选可信 Context 重建，以及 RQ-228 质量版本
 准入是纯离线的，provider calls=0；没有新增产品 A/Q、模型注册、运行时路由、Workbench、
 Auth、部署或媒体能力。GLM-5.2 仍只作显式手动应急/兼容路径，`production_media=0`。
 
-因此当前只达到 `candidate-hardened-domain-v2-assets / completed-local / pending-public-ci`；
+实现 `c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715` 三个任务
+exact-SHA 全绿（公共 Python 2349、PostgreSQL 201、前端 270）。因此当前达到
+`candidate-hardened-domain-v2-assets / completed-public / pending-user-authorization`；
 它不证明模型领域质量、黄金切片、生产准入、安全/合规或 8F 完成。

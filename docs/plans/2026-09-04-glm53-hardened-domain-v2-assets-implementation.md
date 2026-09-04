@@ -74,3 +74,11 @@
 2. 记录 provider calls=0、候选仍未注册、产品边界未改变。
 3. 将唯一下一动作设为同一实现 SHA 的公共 CI；真实调用不得自动开始。
 
+### 完成记录
+
+- 本地新增与相邻回归：`123 passed`；no-I/O 准入、compileall、diff check、治理均通过。
+- 实现提交：`c50cf231957bc54201d0207b99110fcf4b2897b3`。
+- GitHub Actions：`33843064715`，三个任务 exact-SHA 全绿；公共 Python 2349、PostgreSQL 201、
+  前端 270，packaging-smoke 通过。
+- 当前状态：`completed-public / pending-user-authorization`；下一步须由用户明确授权一次新的
+  V2 有界真实领域观察。

@@ -3512,7 +3512,9 @@ GLM-5.3 Flash 仍是产品正常路线的唯一目标候选但尚未注册，GLM
 带 `glm53-flash-domain-quality-v1` 可信 policy 的 Context，并固定至少一个来源、低思考/4096、
 原有调用/token 墙、零 retry/revision 和首个不安全失败即停。
 
-本地新增与相邻回归 `123 passed`，no-I/O 准入、compileall、diff check 与治理检查通过，
-provider calls=0。该接受不注册候选、不改变默认 Runtime，
+本地新增与相邻回归 `123 passed`，no-I/O 准入、compileall、diff check 与治理检查通过。
+实现 `c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715` 三个任务
+exact-SHA 全绿（公共 Python 2349、PostgreSQL 201、前端 270）；provider calls=0。
+该接受不注册候选、不改变默认 Runtime，
 不删除 GLM-5.2 手动兼容/应急路径，不改 Portal、Account、Workbench、Auth、路由或
-`production_media=0`。下一步只允许同一实现 SHA 的公共 CI；任何真实调用仍需新的明确授权。
+`production_media=0`。下一步等待用户明确授权一次新的 V2 有界真实领域观察；当前不调用模型。
