@@ -1221,3 +1221,16 @@ Harness 从零修订配置切到最多一次修订，并在同一严格合同下
 `candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation`；
 候选仍未注册，默认 Runtime、GLM-5.2 应急路径、Portal、Account、Workbench、Auth、路由、
 streaming、黄金切片、部署/合规、`production_media=0` 和 8F 均不变。
+
+## RQ-232：V3 离线实现能力边界（2026-09-04）
+
+本批新增的是 8-Advanced 的候选评测控制能力，不是产品 A/Q 或 Runtime 能力。实现保留默认零
+修订兼容，V3 显式执行最多一次修订和同合同复评；body-free 诊断只投影轮次、分数、结论、通过
+项及类别/严重度计数。预算请求包络证明每案最多 9 次、全域 27 次调用，Token 墙为 `203000/608000`。
+
+全新三案例、Context、fixture、marker、协议和输入计划均通过 no-I/O 资产准入；实现提交
+`730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归 `54 passed`，compileall、diff check、
+治理检查通过，provider calls=0。当前进入
+`candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`；
+候选未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由、streaming、
+黄金切片、生产安全/部署/合规、`production_media=0` 和 8F 均不变。

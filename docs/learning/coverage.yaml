@@ -831,9 +831,11 @@ groups:
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci
     status: planned
     evidence:
       problem_and_principle:
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
         - docs/adr/0094-adopt-glm53-hardened-domain-v3-bounded-revision.md
         - docs/plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-design.md
@@ -968,6 +970,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       design_and_implementation:
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
         - docs/plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-implementation.md
         - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
@@ -1099,6 +1102,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       code_map:
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
@@ -1182,6 +1186,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       data_and_control_flow:
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
@@ -1279,6 +1284,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       verification:
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
@@ -1400,6 +1406,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       runbook:
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
@@ -1500,6 +1507,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       failure_security_boundary:
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
         - docs/adr/0094-adopt-glm53-hardened-domain-v3-bounded-revision.md
         - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
@@ -1629,6 +1637,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       interview_wording:
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md

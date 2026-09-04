@@ -1538,3 +1538,16 @@ RQ-227/RQ-230 不重跑。真实运行前还需 no-I/O 准入、exact-SHA 公共
 当前为 `candidate-hardened-domain-v3-bounded-revision-design / completed-design /
 pending-offline-implementation`。本批 provider calls=0；默认 Runtime、GLM-5.2 回退、前端、
 Workbench、Auth、`production_media=0`、8E→8F 顺序及生产安全/部署/合规边界不变。
+
+### RQ-232：V3 离线实现与资产准入（2026-09-04）
+
+RQ-232 仍属于 8-Advanced candidate-only，不增加或重排 8-Core。实现保留共享执行器的默认零
+修订路径，V3 才显式启用最多一次修订；评测只公开 body-free 枚举计数。新预算证明把每案/全域
+调用墙冻结为 `9/27`，Token 墙为 `203000/608000`；全新 Dataset、Context、fixture、marker、
+协议和输入计划通过 no-I/O SHA 准入。
+
+实现提交 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归 `54 passed`，compileall、
+diff check、治理检查通过，provider calls=0。当前为
+`candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`；
+候选未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由、
+`production_media=0`、安全/部署/合规和 8F 边界不变。下一步只取得同 SHA 公共 CI，不能自动发起真实调用。

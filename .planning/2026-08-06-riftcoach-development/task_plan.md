@@ -116,8 +116,8 @@ RQ-226 又在用户“继续”授权后完成低思考 G53-3-L 的一次有界�
 全绿。RQ-230 已在用户“继续”授权后完成 V2 专用真实运行器，并在同一 SHA 公共 CI 通过后完成一次
 有界真实观察；首案质量/终态不匹配，后两案按首错停止。RQ-231 已在用户“继续”后完成 V3
 有界修订设计：保持 85 分和全部安全/事实硬门，允许最多一次 Harness 修订，并增加 body-free
-枚举计数诊断。当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation`。
+枚举计数诊断。RQ-232 已完成离线实现、预算证明和全新资产准入；当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -415,10 +415,10 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation`。
-RQ-230 已完成一次 V2 真实观察并完成失败归因；RQ-231 随后接受全新 V3 的最多一次受控修订、
-body-free 枚举计数诊断和版本化预算证明设计。下一步只做离线 TDD、预算可达性证明与新资产
-no-I/O 准入，不发真实请求、不重跑本次或 RQ-227 考卷。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`。
+RQ-230 已完成一次 V2 真实观察并完成失败归因；RQ-231 接受的全新 V3 最多一次受控修订、
+body-free 枚举计数诊断、版本化预算证明和新资产 no-I/O 准入已由 RQ-232 完成。下一步只取得
+同一实现 SHA 的公共 exact-SHA CI，不发真实请求、不重跑本次或 RQ-227 考卷。
 RQ-227 的真实领域门已完成有界观察但拒绝准入：第 1 案通过，第 2 案因证据来源缺失与注入检查失败触发
 `unsafe_publication`，第 3 案冻结跳过；回执为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
@@ -3249,3 +3249,13 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   真实观察前还需 exact-SHA 公共 CI、新鲜 G53-3-L 和单独真实调用授权。
 - [next] 按 `docs/plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-implementation.md`
   开始离线 TDD、预算证明和资产准入；不构造 Provider。
+
+## RQ-232 / V3 离线实现与资产准入（2026-09-04）
+
+- Status: complete-local; candidate-only; provider-calls-zero; pending-public-ci
+- Tasks 1–5 已完成：默认零修订兼容、V3 最多一次修订与 body-free 诊断、预算可达性证明、全新
+  资产 no-I/O 准入和候选专用入口均已落地。
+- 预算报告冻结为每案 `203000`、全域 `608000` token；调用墙为每案 `9`、全域 `27`。
+- 相关与相邻本地回归 `54 passed`，compileall、`git diff --check`、治理检查通过。
+- 离线实现已提交为 `730c32d074269fb45e5a5351b1af591ecaa35de1`。下一步只取得该提交的
+  exact-SHA 公共 CI；不包含真实 Provider 调用、候选注册或产品接线。

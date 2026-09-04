@@ -5750,3 +5750,18 @@
   必须离线枚举包络后再冻结，不能把 V2 数值简单翻倍。
 - [boundary] 本批 provider calls=0；下一步是全新 V3 的离线实现与 no-I/O 资产准入，真实协议和
   领域观察仍各自需要后续授权。
+
+## 2026-09-04：RQ-232 V3 离线实现发现
+
+- [implementation] 共享执行器的默认 `max_revisions=0` 可保持旧 V2 行为；V3 通过显式
+  `max_revisions=1` 开启首评—修订—复评，阻断性安全失败仍不会修订。
+- [diagnostics] 评测工件可严格投影为轮次、分数、结论、通过项和枚举计数；任意自由文本或
+  工件身份不一致都 fail closed，不把正文带入回执。
+- [budget] 完整冻结请求包络证明每案 9 次、全域 27 次，Token 墙为 `203000/608000`；预算
+  报告可在无 Provider I/O 下重建，未知 Usage 或越界在调用墙内关闭。
+- [assets] V3 使用全新三案例、Context、marker、fixture、协议和输入计划；资产准入在构造
+  Provider 前交叉校验 SHA，并拒绝 RQ-227/V2 历史身份污染。
+- [verification] 实现提交 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归
+  `54 passed`，compileall、diff check、governance 通过；provider calls=0、network=false。
+- [next] 进入 `candidate-hardened-domain-v3-bounded-revision-implementation / completed-local /
+  pending-public-ci`；公共 exact-SHA CI、新鲜 G53-3-L 和真实领域授权仍未完成。

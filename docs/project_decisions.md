@@ -3570,3 +3570,14 @@ marker、协议和回执身份，并在真实领域观察前完成 no-I/O 准入
 该决定只完成设计，provider calls=0；不修改适配器或产品代码，不注册候选，不改变默认 Runtime、
 GLM-5.2 手动兼容/应急路径、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
 下一步只执行 V3 离线实施计划。
+
+### RQ-232：完成 V3 离线实现（2026-09-04）
+
+接受 RQ-231 的离线实施结果。共享执行器的 `max_revisions` 默认仍为 `0`，V3 入口显式使用 `1`；
+评测诊断严格限制为 body-free 轮次、分数、结论、通过项和枚举计数。预算墙经全请求包络证明冻结为
+每案 `9`、全域 `27` 次调用及 `203000/608000` token；全新三案例资产和上下文身份通过 no-I/O
+准入。
+
+实现提交为 `730c32d074269fb45e5a5351b1af591ecaa35de1`，相关与相邻回归 `54 passed`，compileall、
+diff check、治理检查通过，provider calls=0。当前只等待同一实现 SHA 的公共 exact-SHA CI；不注册
+候选、不切换默认 Runtime、不移除 GLM-5.2 回退，也不进入真实协议或领域观察。

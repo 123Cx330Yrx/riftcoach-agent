@@ -1693,3 +1693,17 @@ body-free 约束，具体错误句未知。当前不另立版本、不重跑、�
 `candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation`；
 下一步只做离线实现和 no-I/O 准入。候选注册、默认 Runtime、GLM-5.2 手动应急路径、Portal、
 Account、Workbench、Auth、路由、`production_media=0`、黄金切片、安全/部署/合规和 8F 均不变。
+
+## RQ-232：加固领域 V3 离线实现与资产准入（2026-09-04）
+
+RQ-232 完成了 RQ-231 设计的离线实现：共享执行器默认仍为零修订，候选 V3 显式允许最多一次
+修订；评测诊断只投影轮次、分数、结论、通过项和枚举计数。新增预算墙、全请求包络证明、全新
+三案例资产、Context/fixture 身份校验和候选专用入口。
+
+每案调用墙为 `9`、全域为 `27`，离线 Token 墙为每案 `203000`、全域 `608000`。实现提交
+`730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归 `54 passed`，compileall、
+`git diff --check`、治理检查通过，provider calls=0。该批仍属于 8-Advanced candidate-only，
+不增加 8-Core、不注册候选、不改变默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、
+Auth、路由或 `production_media=0`。当前 checkpoint 为
+`candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`；
+下一步只做同一实现 SHA 的公共 exact-SHA CI，真实协议和领域观察仍需分别授权。

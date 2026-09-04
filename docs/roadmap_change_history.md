@@ -4489,3 +4489,17 @@ V2 的 24,000/72,000。RQ-227/RQ-230 资产不重跑，V3 使用全新问题、�
 `candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation`。
 下一步只做离线 TDD、预算可达性证明、安全诊断和全新资产 no-I/O 准入；真实协议与领域观察仍需
 后续分别授权。
+
+## 2026-09-04：RQ-232 V3 离线实现与资产准入
+
+RQ-232 把 RQ-231 的设计落成 8-Advanced candidate-only 控制面：共享执行器继续默认零修订，V3
+显式允许最多一次修订并公开 body-free 评测计数；新增独立预算包装器、请求包络可达性证明、全新
+三案例资产和 no-I/O 准入入口。V3 每案最多 9 次、全域 27 次调用，Token 墙冻结为 `203000/608000`，
+预算报告内部 SHA 为 `93648818719df4ca1494203d1cf1d64f8dba27550546b2f44e9c5bb7b1c0b84e`。
+
+实现提交 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归为 `54 passed`，compileall、
+`git diff --check` 和治理检查通过；本批 `provider calls=0`、`network=false`。候选仍未注册，默认
+Runtime、GLM-5.2 兼容/应急路径、Portal、Account、Workbench、Auth、路由、`production_media=0`、
+黄金切片、安全/部署/合规和 8F 均不变。当前 checkpoint 为
+`candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`；
+下一步只取得同一实现 SHA 的公共 exact-SHA CI，之后仍需新鲜 G53-3-L 和单独真实授权。

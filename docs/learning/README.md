@@ -887,6 +887,18 @@ RQ-230 的首案确认 Provider/Agent/工具/证据链可用，但首评事实�
 又固定零修订。V3 因此不降门槛，而是验证 Harness 原生的最多一次修订并增加只含枚举计数的
 安全诊断。调用墙推导为 9 次/案、27 次/域；Token 墙留给离线请求包络证明后冻结。
 
-本批 provider calls=0，没有实现 V3 代码或创建考卷。当前下一步只做离线 TDD、预算证明和
-全新资产 no-I/O 准入；候选注册、默认 Runtime、GLM-5.2 应急路径、产品前端、黄金切片、
-安全/部署/合规和 8F 均不变。
+RQ-231 设计阶段 provider calls=0，没有实现 V3 代码或创建考卷。随后 RQ-232 已完成离线实现；
+以下 walkthrough 记录实现后的代码地图、资源墙和验证证据。
+
+### 2026-09-04：RQ-232 V3 离线实现与资产准入
+
+新增 [实现 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md)。
+共享执行器默认仍为零修订，候选 V3 显式使用最多一次修订和同合同复评；评测诊断只保存轮次、
+分数、结论、通过项数量及问题类别/严重度计数。全请求包络证明每案 9 次、全域 27 次调用，
+Token 墙为 `203000/608000`；全新三案例资产、Context、fixture、marker、协议和输入计划完成
+no-I/O 准入。
+
+实现提交 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归 `54 passed`，compileall、
+diff check、治理检查通过，provider calls=0、network=false。当前仍为 8-Advanced candidate-only，
+候选未注册，默认 Runtime、GLM-5.2 应急路径、Portal、Account、Workbench、Auth、路由、
+`production_media=0`、黄金切片、安全/部署/合规和 8F 均不变；下一步是同一提交的 exact-SHA 公共 CI。

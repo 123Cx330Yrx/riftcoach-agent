@@ -6051,3 +6051,16 @@
 - [next] 当前进入
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation`；
   下一批只做离线 TDD、预算可达性证明和全新 V3 资产 no-I/O 准入。
+
+## 2026-09-04：RQ-232 V3 离线实现与资产准入
+
+- [implemented-local] 完成默认零修订兼容、V3 最多一次受控修订、body-free 评测诊断、独立预算墙、
+  全新三案例资产和候选专用入口。
+- [budget] 离线请求包络证明每案最多 9 次、全域 27 次；Token 墙为每案 `203000`、全域 `608000`，
+  报告可在 `external_provider_calls=0` 下重建。
+- [verification] 实现提交 `730c32d074269fb45e5a5351b1af591ecaa35de1`；相关与相邻回归 `54 passed`，
+  compileall、`git diff --check`、治理检查通过，network=false。
+- [boundary-next] 候选仍 disabled/未注册，旧 V2、GLM-5.2 兼容/应急路径、默认 Runtime、Portal、
+  Account、Workbench、Auth、路由和 `production_media=0` 不变。当前唯一 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`；
+  下一步只做同一提交的 exact-SHA 公共 CI，不能自动发送真实请求。
