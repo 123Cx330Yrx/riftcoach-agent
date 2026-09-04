@@ -1524,3 +1524,17 @@ GLM-5.2 回退、Portal、Account、Workbench、Auth、路由、`production_medi
 事实核验为假，评分 `80` 未达到 `85` 发布门，零修订预算收敛为拒绝；终态和案例不匹配码是派生
 结果。由于回执不保存正文或评测 issues，具体错误句不能判定。保持 candidate-only，不另立版本、
 不重跑或放宽门槛；任何未来假设验证都必须取得新授权并建立全新版本化证据链。
+
+### RQ-231：加固领域 V3 有界修订设计（2026-09-04）
+
+RQ-231 继续属于 8-Advanced candidate-only，不增加、删除或重排 8-Core。用户在 RQ-230 归因后
+授权新的版本化设计；采用最多一次 Harness 原生修订与安全计数诊断，继续保持 85 分及事实、引用、
+注入、来源硬门。该决定不把一次候选实验变成必选生产架构。
+
+调用上界按完整可达控制流固定为 9 次/案、27 次/域；Token 墙必须在离线实现中根据新 V3 请求包络
+证明后冻结。V3 题目、匿名数据、case/run ID、marker、Context、协议和回执身份全部新建；
+RQ-227/RQ-230 不重跑。真实运行前还需 no-I/O 准入、exact-SHA 公共 CI、新鲜 G53-3-L 和单独授权。
+
+当前为 `candidate-hardened-domain-v3-bounded-revision-design / completed-design /
+pending-offline-implementation`。本批 provider calls=0；默认 Runtime、GLM-5.2 回退、前端、
+Workbench、Auth、`production_media=0`、8E→8F 顺序及生产安全/部署/合规边界不变。

@@ -286,6 +286,8 @@ provider calls=0，仍需明确授权才执行真实协议门。
 
 | RQ-230 | 2026-09-04 | 生效并完成一次 V2 有界真实观察；首案质量/终态不匹配而拒绝，后两案按首错停止；候选未注册、生产准入 false | 用户“继续”明确授权一次新的 V2 有界真实领域观察；旧 RQ-227 运行器身份不能用于新考卷，因此先补专用执行入口再运行；本条不重跑或改写 RQ-227/RQ-229 | 实现 SHA `5fe8606f205d49ca5dde969a5823a0eb75587c35` 的 Actions `33846260144` 三任务 exact-SHA 全绿；no-I/O preflight 通过后仅执行首案 3 次调用，领域/累计 token `10993/12084`，`network_used=true`。`hardened_form_control_41` 的 Provider/工具回合和证据检索完成（来源数 2、注入检查通过），但 `fact_check_failed`、`quality_gate_failed`、`terminal_status_mismatch` 导致 `rejected / revision_budget_exhausted`，首错 `domain_case_outcome_mismatch`，其余两案 skipped。脱敏 body-free/create-only 回执 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_hardened_domain_v2_rq230_v1.json` 为 7156 bytes、SHA-256=`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`；schema/canonical round-trip 通过。该结果是领域质量/发布合同拒绝，不是 API/适配器崩溃；不注册候选、不改默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由或 `production_media=0`。下一步只做失败归因与是否另立版本裁决。 |
 
+| RQ-231 | 2026-09-04 | 生效并完成设计；建立 V3“最多一次受控修订 + body-free 安全诊断”方案，等待离线实现 | RQ-230 已确认首案为事实核验失败且 `80<85`，但 V2 固定 `max_revisions=0`；用户随后以“继续”授权验证新的版本化假设。保持 85 分及事实/引用/注入/来源硬门，不原题重考、不降低门槛、不直接切换产品默认模型 | 接受 ADR-0094：V3 显式使用 `max_revisions=1` 并由同一 Harness 完成首评、最多一次修订和复评；公开诊断只保存评测轮次、分数、结论、通过项数量、问题类别计数与严重度计数，不含正文或自由文本。调用墙按控制流推导为 9 次/案、27 次/域；Token 墙须由离线请求包络证明后冻结，不能沿用 24,000/72,000。V3 必须使用全新问题、合成数据、case/run ID、marker、Context、协议和回执身份；真实运行前还需 no-I/O 实现/资产准入、exact-SHA 公共 CI、新鲜 G53-3-L 证据及分别明确的真实调用授权。本批 provider calls=0，不改适配器、默认 Runtime、GLM-5.2 应急路径、Portal、Account、Workbench、Auth、路由或 `production_media=0`。下一步只做 V3 离线实现。 |
+
 ## 新条目格式
 
 后续新增长期要求时，使用新的 `RQ-xxx` 行，并注明日期、状态以及它如何改变

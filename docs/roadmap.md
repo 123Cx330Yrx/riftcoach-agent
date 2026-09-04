@@ -1677,3 +1677,19 @@ RQ-227 考卷，不注册候选。当前 checkpoint 为
 使终态为 `rejected / revision_budget_exhausted`。终态/案例不匹配码是拒绝结果的派生投影；由于
 body-free 约束，具体错误句未知。当前不另立版本、不重跑、不放宽门槛，等待用户对未来全新假设验证
 的明确决定。
+
+## RQ-231：加固领域 V3 有界修订设计（2026-09-04）
+
+用户在 RQ-230 归因完成后以“继续”授权下一版本设计。ADR-0094 选择验证产品 Harness 原本已有的
+最多一次修订，而不是降低 85 分或弱化事实/引用/注入/来源门。V3 由同一状态机执行首评、一次修订
+和复评；安全阻断不可进入修订。
+
+公开诊断只保留每轮分数、结论、通过项数量、问题类别与严重度计数，不保存任何评测自由文本、
+报告正文、Prompt、reasoning 或工具参数。调用墙按控制流冻结为 9 次/案、27 次/域；Token 墙需先在
+离线实现中完成请求包络可达性证明。V3 必须使用全新题目、匿名数据、case/run ID、marker、Context、
+协议和回执身份，不重跑 RQ-227/RQ-230。
+
+该设计仍属于 8-Advanced candidate-only。当前 checkpoint 为
+`candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation`；
+下一步只做离线实现和 no-I/O 准入。候选注册、默认 Runtime、GLM-5.2 手动应急路径、Portal、
+Account、Workbench、Auth、路由、`production_media=0`、黄金切片、安全/部署/合规和 8F 均不变。

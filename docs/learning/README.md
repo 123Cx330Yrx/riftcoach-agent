@@ -25,12 +25,13 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 [8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
 该记录不把 8E coverage、领域采用或生产成熟度标为完成。
 
-> 当前学习指针（2026-09-04，RQ-230）：先阅读 [V2 真实观察 walkthrough](8e-glm53-hardened-domain-v2-real-observation-walkthrough.md)、
-> [RQ-230 实施计划](../plans/2026-09-04-glm53-hardened-domain-v2-real-observation.md) 以及前置的
-> [ADR-0091](../adr/0091-design-glm53-low-profile-heldout-domain-gate.md)。
-> RQ-227 已在用户授权下完成一次且仅一次三案例低思考 held-out 领域观察，但因第 2 案证据缺失与注入安全检查失败而拒绝准入；当前 checkpoint 是
-> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`，
-> 8E coverage 仍 planned，候选未注册；RQ-230 首案因事实核验/质量门/终态不匹配停止，后两案跳过，黄金切片、生产准入和 8F 均未进入。
+> 当前学习指针（2026-09-04，RQ-231）：先阅读 [V3 有界修订设计 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md)、
+> [ADR-0094](../adr/0094-adopt-glm53-hardened-domain-v3-bounded-revision.md)、
+> [V3 设计](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-design.md) 和
+> [详细实施计划](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-implementation.md)。
+> 当前 checkpoint 是
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation`；
+> 8E coverage 仍 planned，候选未注册。本批只完成设计且 provider calls=0，黄金切片、生产准入和 8F 均未进入。
 
 ## 2. 建议怎样学习每一个能力
 
@@ -874,3 +875,18 @@ no-I/O preflight 通过后按授权只执行一次观察。首案完成 3 次调
 `d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，`admitted=false`。
 这说明领域发布合同仍未满足，不是 API 或适配器崩溃；候选未注册，产品 Runtime、GLM-5.2 回退、
 Portal、Account、Workbench、Auth、路由、`production_media=0` 与 8F 边界保持不变。
+
+### 2026-09-04：RQ-231 V3 最多一次受控修订设计
+
+新增 [ADR-0094](../adr/0094-adopt-glm53-hardened-domain-v3-bounded-revision.md)、
+[V3 设计](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-design.md)、
+[详细实施计划](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-implementation.md) 和
+[学习 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md)。
+
+RQ-230 的首案确认 Provider/Agent/工具/证据链可用，但首评事实核验失败且 80 未达到 85；V2
+又固定零修订。V3 因此不降门槛，而是验证 Harness 原生的最多一次修订并增加只含枚举计数的
+安全诊断。调用墙推导为 9 次/案、27 次/域；Token 墙留给离线请求包络证明后冻结。
+
+本批 provider calls=0，没有实现 V3 代码或创建考卷。当前下一步只做离线 TDD、预算证明和
+全新资产 no-I/O 准入；候选注册、默认 Runtime、GLM-5.2 应急路径、产品前端、黄金切片、
+安全/部署/合规和 8F 均不变。

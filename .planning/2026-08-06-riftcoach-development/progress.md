@@ -6039,3 +6039,15 @@
 - [unknown] body-free 回执不含报告和评测 issues，具体错误句/类别无法本地证明。
 - [decision] 不修改代码、不另立版本、不重跑模型；未来如要验证新假设，须用户另行授权并新建
   版本化考卷/回执身份。当前 checkpoint 保持 `pending-next-decision`。
+
+## 2026-09-04：RQ-231 V3 有界修订设计完成
+
+- [authorized] 用户以“继续”授权 RQ-230 之后的新版本化假设设计；本批不含真实调用。
+- [completed-design] 新增 ADR-0094、V3 设计、详细实施计划与学习 walkthrough；采用
+  `max_revisions=1` 的 Harness 原生修订闭环，保持 85 分及全部质量/安全硬门。
+- [budget] 调用墙推导为 9 次/案、27 次/域；Token 墙留给离线包络证明后冻结，不复用旧数值。
+- [diagnostics] 诊断只保存结构化枚举和计数，不保存任何评测自由文本、正文或 reasoning。
+- [verification] 本批 provider calls=0；`git diff --check` 与 governance 结果在本批收口时复核。
+- [next] 当前进入
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation`；
+  下一批只做离线 TDD、预算可达性证明和全新 V3 资产 no-I/O 准入。

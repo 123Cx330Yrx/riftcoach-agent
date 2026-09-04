@@ -1206,3 +1206,18 @@ exact-SHA 公共证明和 `quality_hardening=True` 的强制组合。它复用�
 85 门槛，零修订预算使 Harness 拒绝；终态/案例不匹配是派生投影。body-free 回执无法定位具体
 错误句，因此不把该结果外推为模型一般质量、适配器故障或生产能力。候选注册、默认 Runtime、
 streaming、黄金切片、部署/合规和 8F 仍不变；不另立版本或重跑。
+
+## RQ-231：V3 有界修订与安全诊断能力设计（2026-09-04）
+
+RQ-231 新增的是 8-Advanced 候选评测设计能力，不是产品运行能力。设计让显式 V3 入口把共享
+Harness 从零修订配置切到最多一次修订，并在同一严格合同下复评；默认执行器行为仍为零修订兼容，
+产品 Runtime 不受影响。
+
+安全观察面只增加评测轮次、分数、结论、通过项数量、问题类别/严重度计数，不暴露评测或报告
+自由文本。资源面把调用上界推导为 9 次/案、27 次/域，并要求离线 Token 包络证明；身份面要求
+全新 V3 资产、预算报告、公共 CI 和新鲜协议证据。
+
+本批没有实现上述代码或资产，provider calls=0。当前为
+`candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation`；
+候选仍未注册，默认 Runtime、GLM-5.2 应急路径、Portal、Account、Workbench、Auth、路由、
+streaming、黄金切片、部署/合规、`production_media=0` 和 8F 均不变。

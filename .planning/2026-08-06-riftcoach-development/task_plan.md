@@ -114,8 +114,10 @@ RQ-226 又在用户“继续”授权后完成低思考 G53-3-L 的一次有界�
 全新加固领域 V2 协议与资产的 no-I/O 准入；实现
 `c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715` 三个任务 exact-SHA
 全绿。RQ-230 已在用户“继续”授权后完成 V2 专用真实运行器，并在同一 SHA 公共 CI 通过后完成一次
-有界真实观察；首案质量/终态不匹配，后两案按首错停止。当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`。
+有界真实观察；首案质量/终态不匹配，后两案按首错停止。RQ-231 已在用户“继续”后完成 V3
+有界修订设计：保持 85 分和全部安全/事实硬门，允许最多一次 Harness 修订，并增加 body-free
+枚举计数诊断。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -413,9 +415,10 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`。
-RQ-230 已完成一次 V2 真实观察：首案因事实核验/质量门/终态不匹配在 3 次调用后停止，后两案跳过，
-最终 `admitted=false`；下一步只做失败归因与是否另立版本的裁决，不重跑本次或 RQ-227 考卷。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation`。
+RQ-230 已完成一次 V2 真实观察并完成失败归因；RQ-231 随后接受全新 V3 的最多一次受控修订、
+body-free 枚举计数诊断和版本化预算证明设计。下一步只做离线 TDD、预算可达性证明与新资产
+no-I/O 准入，不发真实请求、不重跑本次或 RQ-227 考卷。
 RQ-227 的真实领域门已完成有界观察但拒绝准入：第 1 案通过，第 2 案因证据来源缺失与注入检查失败触发
 `unsafe_publication`，第 3 案冻结跳过；回执为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
@@ -3231,3 +3234,18 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [unknown] body-free 证据不含正文和评测 issues，无法定位具体错误句；不做未经证据支持的细化归因。
 - [decision] 不自动另立版本、不放宽门槛、不重跑本次或旧考卷；未来新假设需用户新授权和全新资产身份。
 - [next] 继续保持当前 checkpoint，等待用户对是否开展新的版本化假设验证作明确决定。
+
+## RQ-231 / V3 最多一次受控修订与安全诊断设计（2026-09-04）
+
+- Status: complete-design; candidate-only; provider-calls-zero; pending-offline-implementation
+- [authorized] RQ-230 归因后用户“继续”授权建立新版本化假设；不包含真实 API 调用。
+- [decision] 接受 ADR-0094：保持 85 分及事实/引用/注入/来源硬门，V3 显式启用
+  `max_revisions=1`，由同一 Harness 完成首评、最多一次修订和复评。
+- [diagnostics] 每次评测只公开 attempt、score、verdict、passed-check 数量、问题类别计数和
+  严重度计数；不公开评测自由文本、报告正文、Prompt、reasoning、工具参数或请求 ID。
+- [budget] 调用墙按控制流冻结为 9 次/案、27 次/域；Token 墙在离线实现中枚举新 V3 全请求
+  包络并为每次最多 4096 输出预留后冻结，不能复用 V2 的 24,000/72,000。
+- [freshness] V3 需要全新问题、合成数据、case/run ID、marker、Context、协议与回执身份；
+  真实观察前还需 exact-SHA 公共 CI、新鲜 G53-3-L 和单独真实调用授权。
+- [next] 按 `docs/plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-implementation.md`
+  开始离线 TDD、预算证明和资产准入；不构造 Provider。
