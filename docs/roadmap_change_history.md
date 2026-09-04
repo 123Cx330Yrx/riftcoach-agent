@@ -4411,8 +4411,9 @@ Account、Workbench、Auth、路由、streaming 或 `production_media=0`。当�
 RQ-228 将 RQ-227 的首个失败拆成两个不可合并的质量边界：检索调用成功不代表存在可归因
 来源；数据块中的指令性文本也不能越过数据边界进入公开报告。采用版本化、仅候选启用的
 `glm53-flash-domain-quality-v1`，增加最低来源数硬门、可信 system policy 附录、拒绝性脱敏
-和 body-free `EvidenceDiagnostics`。本地相关/相邻回归 `102 passed`，provider calls=0；
+和 body-free `EvidenceDiagnostics`。本地相关/相邻回归 `102 passed`，provider calls=0；实现
+`e2efe8fd75e8cf27cbee7e90484fc90d288ce065` / Actions `33832025848` 三 job exact-SHA 全绿；
 默认 Runtime、GLM-5.2 兼容路径、Portal、Account、Workbench、Auth、路由和
 `production_media=0` 均不变。当前唯一 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`；
-先做同 SHA 公共 exact-SHA CI，再另立全新协议/资产版本，不重跑 RQ-227。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`；
+下一步另立全新协议/资产版本并先做 no-I/O 准入，不重跑 RQ-227；真实观察仍需明确授权。

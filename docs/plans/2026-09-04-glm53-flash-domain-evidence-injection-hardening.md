@@ -53,3 +53,11 @@ Workbench、Auth 或 GLM-5.2 的前提下，修复低思考候选领域门暴露
 
 本计划完成后只形成新的离线实现检查点。必须看到同一实现 SHA 的公共 CI 通过，
 并另建全新协议/题目资产，才可以申请下一次真实领域观察。
+
+## 公共闭环（2026-09-04）
+
+实现 `e2efe8fd75e8cf27cbee7e90484fc90d288ce065` 的 GitHub Actions run
+`33832025848` 已完成 exact-SHA 验证，`pytest`、`postgres-migrations`、
+`packaging-smoke` 三个 job 全绿。公共 pytest 为 `2344 passed, 145 skipped,
+2 warnings, 127 subtests passed`，PostgreSQL 控制面为 `201 passed, 2 warnings`。
+因此本计划已完成公共闭环；后续新协议/资产和任何真实观察均属于新的检查点。

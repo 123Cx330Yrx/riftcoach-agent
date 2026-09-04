@@ -1,7 +1,7 @@
 # ADR-0092：采用 GLM-5.3 Flash 候选领域门的证据与注入边界加固
 
 - 日期：2026-09-04
-- 状态：`candidate-only / offline-complete / public-ci-pending`
+- 状态：`candidate-only / public-ci-complete / next-decision-pending`
 - 范围：Stage 8 / 8E；RQ-228
 - 加固版本：`glm53-flash-domain-quality-v1`
 
@@ -47,8 +47,10 @@ RQ-227 的低思考三案例领域门并不是 Provider 崩溃：基线案例通
 ## 验证与下一步
 
 本地候选/相邻回归共 `102 passed`；`compileall`、`git diff --check` 和治理检查均通过。
-这只是离线实现检查点。取得同一实现 SHA 的公共 exact-SHA CI 后，才可另立全新协议/资产
-版本并申请一次新的真实领域观察；不重跑或覆盖 RQ-227 回执。
+实现 `e2efe8fd75e8cf27cbee7e90484fc90d288ce065` 的 Actions `33832025848` 三 job
+exact-SHA 全绿；公共 pytest 为 `2344 passed, 145 skipped, 2 warnings, 127 subtests passed`，
+PostgreSQL 为 `201 passed, 2 warnings`，packaging-smoke 通过。下一步只能另立全新协议/资产
+版本并先做 no-I/O 准入；真实领域观察仍需新的明确授权，不重跑或覆盖 RQ-227 回执。
 
 ## 不变边界
 

@@ -3486,3 +3486,21 @@ body-free 规则不保留，不能仅凭回执判断标记是被执行还是在�
 `production_media=0` 不变；不得重跑或覆盖同一 held-out 资产。当前唯一 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`，
 下一步先做离线失败归因，再决定是否另立版本。
+
+### RQ-228：接受候选领域证据与注入边界加固及公共闭环（2026-09-04）
+
+接受 `glm53-flash-domain-quality-v1` 作为仅由显式候选执行器启用的质量加固版本：至少一个
+可归因来源才可继续发布；用户和知识字段固定为不可信数据；只有明确拒绝语境中的指令标识
+允许先替换为安全占位符，执行式或歧义出现继续失败关闭；公开诊断只保存计数、状态和安全原因码。
+拒绝放宽 RQ-227 的证据/安全门、为旧 marker 写特例或重跑已消费的 held-out 资产。
+
+本地相关/相邻回归为 `102 passed`。实现
+`e2efe8fd75e8cf27cbee7e90484fc90d288ce065` 的 Actions run `33832025848`
+与 head SHA 精确匹配，`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均成功；
+公共 pytest 为 `2344 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL 为
+`201 passed, 2 warnings`。该结果只关闭候选加固的公共可复现性，不代表领域准入或生产成熟度。
+
+GLM-5.3 Flash 仍是产品正常路线的唯一目标候选但尚未注册，GLM-5.2 只保留显式兼容/应急回退；
+默认 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。当前检查点为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`；
+下一步另立全新协议/资产并先做 no-I/O 准入，任何真实领域观察仍需新的明确授权。

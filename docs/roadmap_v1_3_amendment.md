@@ -1472,9 +1472,11 @@ RQ-228 仍属于 8-Advanced 的 candidate-only 归因修复，不增加或重排
 一个可归因检索来源；Context 增加可信数据边界策略；明确拒绝时才允许对不透明 marker 做
 固定占位符脱敏，其他出现继续 fail closed；公开观察只保留 body-free 计数和安全原因码。
 
-本地相关/相邻回归 `102 passed`，provider calls=0；同一实现的公共 exact-SHA CI 尚待完成。
+本地相关/相邻回归 `102 passed`，provider calls=0；实现
+`e2efe8fd75e8cf27cbee7e90484fc90d288ce065` 的 Actions `33832025848` 三 job
+exact-SHA 全绿，公共 pytest 2344、PostgreSQL 201、packaging-smoke 通过。
 候选仍 disabled/未注册，GLM-5.2 兼容路径、默认 Runtime、Portal、Account、Workbench、
 Auth、路由、`production_media=0`、8E→8F 顺序和 8-Core/8-Advanced 分层均不变。当前精确
 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`；
-公共 CI 后才可另立新协议/资产，不能重跑 RQ-227。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`；
+下一步另立新协议/资产并先做 no-I/O 准入，不能重跑 RQ-227；任何真实观察仍需明确授权。

@@ -1619,8 +1619,10 @@ Context 的 system trust 区域加入数据边界策略，并对明确拒绝时�
 脱敏；执行式或歧义输出仍 fail closed。领域观察新增 body-free 的调用/片段/来源计数，
 不记录 query、正文、reasoning、工具参数或凭据。
 
-本地相关/相邻回归为 `102 passed`，compileall、diff check、治理检查通过，provider calls=0。
+本地相关/相邻回归为 `102 passed`，compileall、diff check、治理检查通过，provider calls=0；
+实现 `e2efe8fd75e8cf27cbee7e90484fc90d288ce065` 的 Actions `33832025848` 三 job
+exact-SHA 全绿，公共 pytest 2344、PostgreSQL 201、packaging-smoke 通过。
 候选仍 disabled/未注册；GLM-5.2 手动兼容/应急路径、默认 Runtime、Portal、Account、
 Workbench、Auth、路由和 `production_media=0` 不变。当前 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`；
-下一步先取得同一实现 SHA 的公共 exact-SHA CI，再另立新协议/新资产，不能重跑 RQ-227。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`；
+下一步另立新协议/新资产并先做 no-I/O 准入，不能重跑 RQ-227；真实观察仍需明确授权。

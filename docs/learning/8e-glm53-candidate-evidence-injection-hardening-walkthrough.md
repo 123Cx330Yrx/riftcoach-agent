@@ -57,8 +57,9 @@ Workbench、Auth 和 `production_media=0` 都保持不变。
 
 ## 7. 后续运行手册
 
-先提交并取得本实现 SHA 的公共 exact-SHA CI；然后创建全新的协议/题目版本并重新做
-no-I/O admission。只有新的明确授权才可发起一次有界真实领域观察。观察结果仍需独立
+本实现 `e2efe8fd75e8cf27cbee7e90484fc90d288ce065` 已由 Actions `33832025848`
+完成 exact-SHA 三 job 公共验证；下一步创建全新的协议/题目版本并重新做 no-I/O admission。
+只有新的明确授权才可发起一次有界真实领域观察。观察结果仍需独立
 通过证据、安全、质量、成本/延迟和黄金切片闸门，不能直接注册为默认模型。
 
 ## 面试表达
@@ -69,4 +70,4 @@ no-I/O admission。只有新的明确授权才可发起一次有界真实领域�
 
 当前检查点：
 
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`

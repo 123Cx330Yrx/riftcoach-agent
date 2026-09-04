@@ -1158,7 +1158,8 @@ Account、Workbench、Auth、路由、黄金切片和 `production_media=0` 不�
 只作为手动兼容/应急回退；不打开产品 streaming、不注册候选、不改变默认 Runtime、
 Portal、Account、Workbench、Auth、路由或 `production_media=0`。
 
-本地相关/相邻回归 `102 passed`，provider calls=0；同一实现 SHA 的公共 exact-SHA CI
-仍待完成。当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`；
+本地相关/相邻回归 `102 passed`，provider calls=0；实现
+`e2efe8fd75e8cf27cbee7e90484fc90d288ce065` 的 Actions `33832025848` 三 job
+exact-SHA 全绿。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`；
 该检查点不能替代领域质量、黄金切片、生产安全/合规或 8F 闭环。

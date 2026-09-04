@@ -5977,8 +5977,11 @@
   新 `draft_safety` 只对明确拒绝的 marker 做固定占位符脱敏。
 - [verified] 聚焦与相邻回归 `102 passed`；compileall、git diff --check、治理检查通过；
   本批没有读取 Key、真实 Provider 调用或旧 RQ-227 重跑。
+- [verified-public] 实现 `e2efe8fd75e8cf27cbee7e90484fc90d288ce065` / Actions
+  `33832025848` 的 pytest、PostgreSQL、packaging-smoke 三 job exact-SHA 全绿；公共 pytest
+  `2344 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL `201 passed, 2 warnings`。
 - [boundary] 默认 Harness 行为、GLM-5.2 兼容路径、产品 Runtime、Portal、Account、Workbench、
   Auth、路由和 `production_media=0` 不变；候选仍 disabled/未注册。
 - [next] 当前检查点为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-local / pending-public-ci`；
-  先取得同一实现 SHA 的公共 exact-SHA CI，再考虑新协议/新资产和一次新的真实观察授权。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`；
+  下一步另立新协议/新资产并先做 no-I/O 准入；真实观察仍需新的明确授权。

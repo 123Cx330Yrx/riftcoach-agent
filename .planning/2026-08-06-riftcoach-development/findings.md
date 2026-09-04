@@ -5682,4 +5682,7 @@
 - [observability] 公开语义只增加检索调用/成功/片段/来源/工件/abstain/安全原因码计数，
   保持 body-free，不记录 query、正文、reasoning、工具参数或凭据。
 - [verification] 相关与相邻回归 `102 passed`，compileall、diff check、governance 通过；
-  provider calls=0。下一步是同 SHA 公共 CI，再另立新协议/资产版本。
+  provider calls=0。实现 `e2efe8fd75e8cf27cbee7e90484fc90d288ce065` 的 Actions
+  `33832025848` 三 job exact-SHA 全绿，公共 pytest 2344、PostgreSQL 201、packaging-smoke 通过。
+- [next] 当前为 `completed-public / pending-next-decision`；下一步另立新协议/资产版本并先完成
+  no-I/O 准入，不能重跑 RQ-227，真实观察仍需新的明确授权。
