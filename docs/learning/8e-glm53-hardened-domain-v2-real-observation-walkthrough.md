@@ -72,3 +72,14 @@ exact-SHA 全绿；no-I/O preflight 通过后按用户授权执行一次观察�
 公共 CI 身份准入，再以固定预算串行执行。一次真实观察中 Provider 和证据工具都完成，但
 事实核验/质量门失败，所以首错停止并保持候选未注册；公共可复现性、模型可达性和生产准入
 被严格分开。”
+
+## 9. 本次离线归因裁决
+
+回执可证明 Provider 没有报错，Agent 完成了 `final_response`，`knowledge.search` 返回 2 个
+来源且注入检查通过；真正的实质失败是独立事实核验为假和评分 `80<85`。由于执行器的修订预算
+固定为 0，`rejected / revision_budget_exhausted` 是合同内的拒绝；`terminal_status_mismatch`
+与 `domain_case_outcome_mismatch` 是外层派生码。
+
+回执按 body-free 规则不含报告正文或评测 issues，所以无法知道具体哪条事实出错。这个未知项
+必须保留，不能借一次案例把结论扩大为模型一般能力或适配器缺陷。当前裁决是不另立版本、不放宽
+质量门、不重跑；未来若提出新的可检验假设，需用户新授权并使用全新考卷和证据身份。

@@ -4465,3 +4465,11 @@ schema/canonical/body-free 校验通过。
 RQ-227/RQ-229 资产，不注册候选，不改变默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、
 Auth、路由、`production_media=0`、黄金切片、安全/部署/合规或 8F。当前 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`。
+
+## 2026-09-04：RQ-230 失败归因与版本裁决
+
+离线复核把 RQ-230 的失败分层为：Provider/Agent/工具/证据链已完成；独立事实核验为假且评测
+分数 `80<85`，零修订预算导致拒绝；`terminal_status_mismatch` 与
+`domain_case_outcome_mismatch` 是期望发布/成功与实际拒绝之间的派生码。body-free 回执没有
+正文或评测 issues，具体错误句保持未知。该结论不证明 API、适配器或模型一般能力失败，也不
+触发新版本、门槛放宽或重跑；未来验证必须用户新授权并使用全新资产身份。

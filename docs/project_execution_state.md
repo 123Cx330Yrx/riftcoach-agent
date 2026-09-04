@@ -4695,3 +4695,18 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
   合规和 8F 均不变。当前唯一 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`；
   下一步只做失败归因和是否另立版本的裁决，不重跑本次或 RQ-227 考卷。
+
+### 2026-09-04：RQ-230 失败归因与版本裁决
+
+- `[attribution-confirmed]` 离线复核回执确认：Provider 无安全错误，Agent 以
+  `completed/final_response` 完成 3 次规范化响应，`knowledge.search` 成功并有 2 个来源，
+  注入检查通过；评测结果已验证但 `fact_check_passed=false`、分数 `80`，低于
+  `recent-form-review` 的 `85` 发布门。
+- `[attribution-chain]` `rejected / revision_budget_exhausted` 是 `max_revisions=0` 下的预期
+  拒绝；`terminal_status_mismatch` 只是案例要求只允许 `published` 与实际 `rejected` 的连带码，
+  外层 `domain_case_outcome_mismatch` 是“期望成功而实际未成功”的停止码，不是新的 Provider 根因。
+- `[attribution-unknown]` body-free 回执不包含评测 issues、报告正文或原始响应，因此无法证明
+  具体哪条事实、派生计算或因果表述触发了事实核验；不把未知细节编造成模型或适配器缺陷。
+- `[version-decision]` 本轮不另立新版本、不放宽质量门、不重跑已消费考卷，也不修改适配器、默认
+  Runtime、GLM-5.2 回退或产品链路。若未来要验证新的假设，必须由用户另行授权并创建全新版本化
+  考卷与证据身份；当前 checkpoint 保持不变并等待该决定。

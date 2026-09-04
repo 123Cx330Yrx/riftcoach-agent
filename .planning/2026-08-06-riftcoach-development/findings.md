@@ -5726,3 +5726,14 @@
 - [evidence] 回执为 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_hardened_domain_v2_rq230_v1.json`，
   7156 bytes、SHA-256=`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，
   schema/canonical/body-free 校验通过。
+
+## 2026-09-04：RQ-230 失败归因边界
+
+- [confirmed] Provider 交互本身完成：无 Provider 错误，Agent `completed/final_response`，工具
+  `knowledge.search` 成功，来源数 2，注入检查通过。
+- [confirmed] 评测层是首个实质失败：`fact_check_passed=false` 且评分 80，低于技能门槛 85；
+  零修订预算导致 `rejected / revision_budget_exhausted`。
+- [derived] 终态不匹配和案例结果不匹配是上述拒绝向外层投影的派生码，不能倒推 API 或适配器异常。
+- [unknown] 由于回执严格 body-free，无法知道评测器指出的具体句子或 issue 类别；不能据此给模型
+  一般质量下结论。
+- [decision] 不另立版本、不放宽门、不重跑；任何新验证都必须有用户新授权、全新考卷和新证据身份。

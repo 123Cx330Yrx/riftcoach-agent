@@ -3221,3 +3221,13 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   schema/canonical/body-free 校验通过。
 - [boundary-next] 候选仍未注册、生产准入 false；不重跑本次或 RQ-227 考卷。下一步只做失败归因
   与是否另立版本裁决，产品默认、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
+
+### RQ-230 离线失败归因裁决（2026-09-04）
+
+- [confirmed] 回执确认 Provider/Agent/工具/证据链可用；`fact_check_passed=false`，评测分数
+  `80<85`，且 `max_revisions=0`，所以 Harness 终态只能是 `rejected / revision_budget_exhausted`。
+- [derived] `terminal_status_mismatch` 与 `domain_case_outcome_mismatch` 是案例期望与拒绝终态的
+  派生停止码，不是 API、适配器或 Provider 崩溃。
+- [unknown] body-free 证据不含正文和评测 issues，无法定位具体错误句；不做未经证据支持的细化归因。
+- [decision] 不自动另立版本、不放宽门槛、不重跑本次或旧考卷；未来新假设需用户新授权和全新资产身份。
+- [next] 继续保持当前 checkpoint，等待用户对是否开展新的版本化假设验证作明确决定。

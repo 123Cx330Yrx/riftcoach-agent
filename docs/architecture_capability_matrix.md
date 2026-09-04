@@ -1199,3 +1199,10 @@ exact-SHA 公共证明和 `quality_hardening=True` 的强制组合。它复用�
 该结果只关闭本次候选领域观察，不授予模型注册、产品 Runtime、streaming、黄金切片、部署/合规
 或 8F 能力；默认模型、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和
 `production_media=0` 均不变。下一步是失败归因与版本裁决，不重跑已消费考卷。
+
+### RQ-230 失败归因边界
+
+新增证据只支持“Provider/Agent/工具/证据链可用，领域评测不通过”：事实核验为假、评分 80 低于
+85 门槛，零修订预算使 Harness 拒绝；终态/案例不匹配是派生投影。body-free 回执无法定位具体
+错误句，因此不把该结果外推为模型一般质量、适配器故障或生产能力。候选注册、默认 Runtime、
+streaming、黄金切片、部署/合规和 8F 仍不变；不另立版本或重跑。

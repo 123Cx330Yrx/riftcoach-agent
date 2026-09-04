@@ -3544,3 +3544,15 @@ SHA-256=`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，
 RQ-227/RQ-229 或本次考卷，不注册候选，不改变默认 Runtime、GLM-5.2 兼容/应急路径、Portal、
 Account、Workbench、Auth、路由、`production_media=0`、黄金切片、安全/部署/合规或 8F。
 下一步只做失败归因和是否另立版本的裁决。
+
+### RQ-230 失败归因与版本裁决（2026-09-04）
+
+离线复核确认本次不是 Provider/适配器故障：Provider 无错误，Agent、`knowledge.search` 和
+证据检索完成，来源数为 2，注入检查通过。独立评测结果结构化有效但事实核验为假，评分 80
+低于 `recent-form-review` 的 85 分发布门；由于候选执行器固定 `max_revisions=0`，Harness
+按合同拒绝。`terminal_status_mismatch` 与 `domain_case_outcome_mismatch` 只是期望的
+`published/成功` 与实际拒绝终态之间的派生码。
+
+回执不含正文和评测 issues，因此具体错误句保持未知，不把它扩大为模型一般质量或适配器缺陷。
+本轮不另立新版本、不放宽质量门、不重跑本次或旧考卷；未来新假设验证必须取得用户新授权并创建
+全新版本化资产与证据身份。候选、默认 Runtime、GLM-5.2 回退和产品链路保持原状。

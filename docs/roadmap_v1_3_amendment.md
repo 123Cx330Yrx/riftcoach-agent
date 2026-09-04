@@ -1517,3 +1517,10 @@ exact-SHA 全绿；no-I/O preflight 通过后按授权执行一次 V2 观察。�
 该结论只影响 8-Advanced 候选领域质量观察，不增加 8-Core、不注册候选，也不改变默认 Runtime、
 GLM-5.2 回退、Portal、Account、Workbench、Auth、路由、`production_media=0` 或 8F 顺序；
 当前进入 `candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`。
+
+#### RQ-230 离线失败归因裁决
+
+本次失败可核验地落在 8-Advanced 领域质量合同：Provider/工具/证据检索和注入检查完成，独立
+事实核验为假，评分 `80` 未达到 `85` 发布门，零修订预算收敛为拒绝；终态和案例不匹配码是派生
+结果。由于回执不保存正文或评测 issues，具体错误句不能判定。保持 candidate-only，不另立版本、
+不重跑或放宽门槛；任何未来假设验证都必须取得新授权并建立全新版本化证据链。

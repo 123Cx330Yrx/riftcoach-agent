@@ -6027,3 +6027,15 @@
   schema/canonical/body-free 校验通过；`admitted=false`。
 - [next] 当前进入 `candidate-hardened-domain-v2-real-observation / completed-real-observation /
   pending-next-decision`，只等待失败归因与版本裁决，不重跑旧考卷或本次 V2。
+
+## 2026-09-04：RQ-230 离线失败归因与版本裁决
+
+- [confirmed] 脱敏回执字段显示无 Provider 错误；Agent `completed/final_response`，3 个规范化
+  响应，`knowledge.search` 成功、来源 2、注入检查通过。
+- [confirmed] 独立评测已通过结构化验证但事实核验为假，分数 `80` 低于技能发布门 `85`；
+  `max_revisions=0` 使终态确定为 `rejected / revision_budget_exhausted`。
+- [derived] `terminal_status_mismatch` 和 `domain_case_outcome_mismatch` 仅是案例“必须
+  published/必须成功”与拒绝终态不一致的派生码。
+- [unknown] body-free 回执不含报告和评测 issues，具体错误句/类别无法本地证明。
+- [decision] 不修改代码、不另立版本、不重跑模型；未来如要验证新假设，须用户另行授权并新建
+  版本化考卷/回执身份。当前 checkpoint 保持 `pending-next-decision`。

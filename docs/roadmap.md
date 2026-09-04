@@ -1669,3 +1669,11 @@ RQ-227 考卷，不注册候选。当前 checkpoint 为
 `candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`；
 默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由、`production_media=0`、
 黄金切片、安全/部署/合规和 8F 均不变。
+
+### RQ-230 离线失败归因与版本裁决（2026-09-04）
+
+回执进一步确认失败位于领域输出评测层，而非 Provider 或适配器：Agent、`knowledge.search`、
+2 个证据来源和注入检查均通过；评测结构有效但事实核验为假、评分 80 低于 85 门槛，零修订预算
+使终态为 `rejected / revision_budget_exhausted`。终态/案例不匹配码是拒绝结果的派生投影；由于
+body-free 约束，具体错误句未知。当前不另立版本、不重跑、不放宽门槛，等待用户对未来全新假设验证
+的明确决定。
