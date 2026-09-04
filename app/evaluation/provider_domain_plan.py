@@ -126,7 +126,7 @@ class DomainCaseInputPlanArtifact(BaseModel):
     player_summary: DomainFixtureCommitment
     deterministic_report: DomainFixtureCommitment
     sdk_max_retries: Literal[0]
-    max_revisions: Literal[0]
+    max_revisions: Literal[0, 1]
     prompt_context_snapshot_id: SafeCodeText | None = None
     prompt_context_snapshot_sha256: Sha256Text | None = None
     case_context_commitments: tuple[DomainCaseContextCommitment, ...] = ()

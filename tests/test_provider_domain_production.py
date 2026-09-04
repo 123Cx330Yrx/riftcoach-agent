@@ -8,6 +8,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 from app.evaluation.domain_e2e import load_domain_dataset
+from app.evaluation.coach_report import REVISER_SYSTEM_PROMPT
 from app.evaluation.provider_domain_experiment import DomainCaseExecutionPlan
 from app.evaluation.provider_domain_plan import (
     DomainCaseInput,
@@ -346,6 +347,106 @@ def test_quality_hardening_requires_explicit_candidate_policy() -> None:
         assert executor.quality_hardening is True
 
 
+REVISION_REPORT = """# RiftCoach 教练式复盘报告
+
+## 1. 总体结论
+当前两局合成样本只支持谨慎复盘，知识依据见 [K1]。
+
+## 2. 当前表现亮点
+赢局补刀表现较稳定，但样本不足以外推。
+
+## 3. 主要风险点
+输局前期死亡较多，需要回看录像验证。
+
+## 4. 赢局与输局差异
+这里只描述样本差异，不声称存在因果关系。
+
+## 5. 下一步复盘建议
+优先检查前十五分钟的决策节点。
+
+## 6. 训练计划
+用小样本记录前期死亡与补刀节奏。
+
+## 7. 数据边界与知识来源
+玩家数据来自匿名合成 fixture，知识来源见 [K1]。
+"""
+
+
+@dataclass
+class OneRevisionProvider(SafeProvider):
+    second_verdict: str = "pass"
+    evaluation_attempts: int = 0
+
+    def chat(self, request: ChatRequest) -> ChatResponse:
+        self.requests.append(request)
+        if request.response_contract is not None:
+            self.evaluation_attempts += 1
+            if self.evaluation_attempts == 1:
+                payload = {
+                    "score": 70,
+                    "verdict": "needs_revision",
+                    "issues": [
+                        {
+                            "severity": "medium",
+                            "category": "fact_error",
+                            "quote": "controlled",
+                            "evidence": "controlled",
+                            "explanation": "controlled",
+                            "suggested_correction": "controlled",
+                        }
+                    ],
+                    "passed_checks": ["schema"],
+                    "summary": "revision requested",
+                }
+            elif self.second_verdict == "pass":
+                payload = {
+                    "score": 95,
+                    "verdict": "pass",
+                    "issues": [],
+                    "passed_checks": ["facts", "citations", "security"],
+                    "summary": "controlled pass",
+                }
+            else:
+                payload = {
+                    "score": 80,
+                    "verdict": "fail",
+                    "issues": [
+                        {
+                            "severity": "low",
+                            "category": "other",
+                            "quote": "controlled",
+                            "evidence": "controlled",
+                            "explanation": "controlled",
+                            "suggested_correction": "controlled",
+                        }
+                    ],
+                    "passed_checks": ["schema", "citations"],
+                    "summary": "controlled rejection",
+                }
+            return self._text(json.dumps(payload, ensure_ascii=False))
+        if any(
+            message.content == REVISER_SYSTEM_PROMPT
+            for message in request.messages
+        ):
+            return self._text(REVISION_REPORT.replace("较多", "需要核验"))
+        if any(message.role.value == "tool" for message in request.messages):
+            return self._text(REVISION_REPORT)
+        return ChatResponse(
+            content=None,
+            provider=self.provider_name,
+            model=self.model_name,
+            finish_reason="tool_calls",
+            tool_calls=(
+                ToolCall(
+                    id="revision-knowledge-1",
+                    name="knowledge.search",
+                    arguments={"query": "早期死亡", "top_k": 2},
+                ),
+            ),
+            usage=TokenUsage(input_tokens=20, output_tokens=5),
+        )
+
+
 def test_deepseek_multi_tool_development_path_reaches_rag_and_harness():
     evaluation = json.dumps(
         {
@@ -519,3 +620,109 @@ def test_production_executor_disables_revision_calls_for_heldout():
     assert len(provider.requests) == 3
     assert observation.terminal_status == "degraded"
     assert observation.terminal_reason == "revision_budget_exhausted"
+
+
+def test_production_executor_exposes_default_closed_revision_budget():
+    plan = development_multi_tool_input_plan()
+    with tempfile.TemporaryDirectory() as directory:
+        executor = ProductionDomainCaseExecutor(
+            project_root=ROOT,
+            input_plan=plan,
+            runs_root=directory,
+        )
+        assert executor.max_revisions == 0
+
+        for invalid in (-1, 4, True, 1.5):
+            try:
+                ProductionDomainCaseExecutor(
+                    project_root=ROOT,
+                    input_plan=plan,
+                    runs_root=directory,
+                    max_revisions=invalid,
+                )
+            except (TypeError, ValueError):
+                pass
+            else:
+                raise AssertionError("invalid revision budget must fail closed")
+
+
+def test_production_executor_can_publish_after_one_bounded_revision():
+    plan = development_multi_tool_input_plan()
+    provider = OneRevisionProvider()
+    with tempfile.TemporaryDirectory() as directory:
+        observation = ProductionDomainCaseExecutor(
+            project_root=ROOT,
+            input_plan=plan,
+            runs_root=directory,
+            max_revisions=1,
+        ).execute(
+            case_id=plan.execution_plan.case_ids[0],
+            provider=provider,
+        )
+
+    assert len(provider.requests) == 5
+    assert observation.normalized_response_count == 5
+    assert observation.revision_count == 1
+    assert observation.terminal_status == "published"
+    assert [row.attempt_id for row in observation.evaluation_diagnostics.attempts] == [
+        0,
+        1,
+    ]
+    first, second = observation.evaluation_diagnostics.attempts
+    assert first.score == 70
+    assert first.verdict == "needs_revision"
+    assert first.passed_check_count == 1
+    assert first.issue_category_counts[0].name == "fact_error"
+    assert first.issue_category_counts[0].count == 1
+    assert first.severity_counts[0].name == "medium"
+    assert second.score == 95
+    assert second.verdict == "pass"
+    assert second.passed_check_count == 3
+    assert second.issue_category_counts == ()
+    assert second.severity_counts == ()
+    assert "controlled" not in observation.evaluation_diagnostics.model_dump_json()
+
+
+def test_production_executor_rejects_when_one_revision_still_fails():
+    plan = development_multi_tool_input_plan()
+    provider = OneRevisionProvider(second_verdict="fail")
+    with tempfile.TemporaryDirectory() as directory:
+        observation = ProductionDomainCaseExecutor(
+            project_root=ROOT,
+            input_plan=plan,
+            runs_root=directory,
+            max_revisions=1,
+        ).execute(
+            case_id=plan.execution_plan.case_ids[0],
+            provider=provider,
+        )
+
+    assert len(provider.requests) == 5
+    assert observation.revision_count == 1
+    assert observation.terminal_status == "degraded"
+    assert observation.terminal_reason == "evaluation_failed"
+    assert [row.score for row in observation.evaluation_diagnostics.attempts] == [
+        70,
+        80,
+    ]
+
+
+def test_prompt_injection_blocks_without_revision_even_when_enabled():
+    dataset = load_domain_dataset(DATASET)
+    plan = load_domain_case_input_plan(PLAN, project_root=ROOT, dataset=dataset)
+    provider = InjectionAwareProvider(marker="USER_INJECTION_ACCEPTED")
+    with tempfile.TemporaryDirectory() as directory:
+        observation = ProductionDomainCaseExecutor(
+            project_root=ROOT,
+            input_plan=plan,
+            runs_root=directory,
+            max_revisions=1,
+        ).execute(
+            case_id="heldout_user_request_instruction",
+            provider=provider,
+        )
+
+    assert len(provider.requests) == 3
+    assert observation.revision_count == 0
+    assert observation.terminal_status == "degraded"
+    assert observation.terminal_reason == "security_policy_blocked"

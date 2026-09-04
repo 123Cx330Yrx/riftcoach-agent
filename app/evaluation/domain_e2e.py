@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import date
 from enum import Enum
 from pathlib import Path
-from typing import Annotated, Literal
+from typing import Annotated, Literal, get_args
 
 from pydantic import (
     BaseModel,
@@ -13,6 +13,11 @@ from pydantic import (
     Field,
     StringConstraints,
     model_validator,
+)
+
+from app.evaluation.coach_report import (
+    EvaluationIssueCategoryV11,
+    EvaluationIssueSeverity,
 )
 
 
@@ -27,6 +32,8 @@ SafeRuntimeCodeText = Annotated[
     StringConstraints(pattern=r"^[a-z][a-z0-9_]{0,127}$"),
 ]
 _CASE_MAX_CALLS = 4
+EVALUATION_ISSUE_CATEGORY_ORDER = get_args(EvaluationIssueCategoryV11)
+EVALUATION_ISSUE_SEVERITY_ORDER = get_args(EvaluationIssueSeverity)
 
 
 def _omit_empty_evidence_diagnostics(value: object) -> bool:
@@ -40,6 +47,10 @@ def _omit_empty_evidence_diagnostics(value: object) -> bool:
         and getattr(value, "abstained", None) is None
         and getattr(value, "reason", None) is None
     )
+
+
+def _omit_empty_evaluation_diagnostics(value: object) -> bool:
+    return not getattr(value, "attempts", ())
 
 DomainSchemaVersion = Literal["1.1", "1.2"]
 DomainCandidateKind = Literal[
@@ -155,6 +166,79 @@ class EvidenceDiagnostics(BaseModel):
         return self
 
 
+class EvaluationIssueCount(BaseModel):
+    """One allowlisted evaluator issue-category count without issue text."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    name: EvaluationIssueCategoryV11
+    count: int = Field(ge=1)
+
+
+class EvaluationSeverityCount(BaseModel):
+    """One allowlisted evaluator severity count without issue text."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    name: EvaluationIssueSeverity
+    count: int = Field(ge=1)
+
+
+class EvaluationAttemptDiagnostics(BaseModel):
+    """Body-free counters for one V3 evaluation attempt."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    attempt_id: int = Field(ge=0, le=1)
+    score: int = Field(ge=0, le=100)
+    verdict: Literal["pass", "needs_revision", "fail"]
+    passed_check_count: int = Field(ge=0)
+    issue_category_counts: tuple[EvaluationIssueCount, ...] = ()
+    severity_counts: tuple[EvaluationSeverityCount, ...] = ()
+
+    @model_validator(mode="after")
+    def validate_count_order(self) -> "EvaluationAttemptDiagnostics":
+        self._require_canonical_counts(
+            self.issue_category_counts,
+            EVALUATION_ISSUE_CATEGORY_ORDER,
+            "issue category",
+        )
+        self._require_canonical_counts(
+            self.severity_counts,
+            EVALUATION_ISSUE_SEVERITY_ORDER,
+            "severity",
+        )
+        return self
+
+    @staticmethod
+    def _require_canonical_counts(values, order, label: str) -> None:
+        names = tuple(row.name for row in values)
+        if len(set(names)) != len(names):
+            raise ValueError(f"{label} counts must be unique")
+        expected = tuple(sorted(names, key=order.index))
+        if names != expected:
+            raise ValueError(f"{label} counts must use canonical enum order")
+
+
+class EvaluationDiagnostics(BaseModel):
+    """At most two contiguous body-free evaluation attempts for V3."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    attempts: tuple[EvaluationAttemptDiagnostics, ...] = ()
+
+    @model_validator(mode="after")
+    def validate_attempts(self) -> "EvaluationDiagnostics":
+        if len(self.attempts) > 2:
+            raise ValueError("evaluation diagnostics allow at most two attempts")
+        attempt_ids = tuple(row.attempt_id for row in self.attempts)
+        if attempt_ids != tuple(range(len(self.attempts))):
+            raise ValueError(
+                "evaluation diagnostic attempts must be contiguous and zero-based"
+            )
+        return self
+
+
 class DomainEvaluationCase(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -240,6 +324,11 @@ class DomainCandidateCase(BaseModel):
         default_factory=EvidenceDiagnostics,
         exclude_if=_omit_empty_evidence_diagnostics,
     )
+    revision_count: int = Field(ge=0, le=3, default=0, exclude_if=lambda value: value == 0)
+    evaluation_diagnostics: EvaluationDiagnostics = Field(
+        default_factory=EvaluationDiagnostics,
+        exclude_if=_omit_empty_evaluation_diagnostics,
+    )
     fact_check_passed: bool | None
     citation_check_passed: bool | None
     injection_check_passed: bool | None
@@ -274,6 +363,14 @@ class DomainCandidateCase(BaseModel):
             )
         if self.terminal_status is None and self.terminal_reason is not None:
             raise ValueError("terminal reason requires a terminal status")
+        if (
+            self.evaluation_diagnostics.attempts
+            and self.evaluation_diagnostics.attempts[-1].attempt_id
+            != self.revision_count
+        ):
+            raise ValueError(
+                "evaluation diagnostics must end at the observed revision count"
+            )
         return self
 
 
@@ -729,6 +826,12 @@ __all__ = [
     "DomainEvaluationDataset",
     "DomainEvaluationResult",
     "EvidenceDiagnostics",
+    "EvaluationAttemptDiagnostics",
+    "EvaluationDiagnostics",
+    "EvaluationIssueCount",
+    "EvaluationSeverityCount",
+    "EVALUATION_ISSUE_CATEGORY_ORDER",
+    "EVALUATION_ISSUE_SEVERITY_ORDER",
     "FailureCode",
     "LayerVerdict",
     "evaluate_domain_candidate",

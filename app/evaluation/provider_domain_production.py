@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from collections import Counter
 from collections.abc import Mapping
 from dataclasses import dataclass, replace
 from pathlib import Path
@@ -55,7 +56,15 @@ from app.tools.models import RetryPolicy
 from app.tools.registry import ToolRegistry
 from app.tools.runtime import ToolRuntime
 
-from .domain_e2e import EvidenceDiagnostics
+from .domain_e2e import (
+    EVALUATION_ISSUE_CATEGORY_ORDER,
+    EVALUATION_ISSUE_SEVERITY_ORDER,
+    EvidenceDiagnostics,
+    EvaluationAttemptDiagnostics,
+    EvaluationDiagnostics,
+    EvaluationIssueCount,
+    EvaluationSeverityCount,
+)
 from .provider_domain_experiment import DomainCaseSemanticObservation
 from .provider_domain_plan import LoadedDomainCaseInputPlan
 
@@ -133,6 +142,7 @@ class ProductionDomainCaseExecutor:
         runtime_profile: ModelRuntimeProfile | None = None,
         request_policy: CandidateEvaluationRequestPolicy | None = None,
         quality_hardening: bool = False,
+        max_revisions: int = 0,
     ) -> None:
         if not isinstance(input_plan, LoadedDomainCaseInputPlan):
             raise TypeError("input_plan must be a loaded input plan")
@@ -165,6 +175,11 @@ class ProductionDomainCaseExecutor:
                 "quality hardening requires an explicit candidate request policy"
             )
         self._quality_hardening = quality_hardening
+        if isinstance(max_revisions, bool) or not isinstance(max_revisions, int):
+            raise TypeError("max_revisions must be an integer")
+        if not 0 <= max_revisions <= 3:
+            raise ValueError("max_revisions must be between 0 and 3")
+        self._max_revisions = max_revisions
         self.execution_plan = input_plan.execution_plan
 
     @property
@@ -184,6 +199,12 @@ class ProductionDomainCaseExecutor:
         """Whether the opt-in candidate quality boundary is active."""
 
         return self._quality_hardening
+
+    @property
+    def max_revisions(self) -> int:
+        """The explicit Harness revision budget for this case executor."""
+
+        return self._max_revisions
 
     def execute(
         self,
@@ -256,7 +277,7 @@ class ProductionDomainCaseExecutor:
             ),
             evaluator=evaluator,
             reviser=reviser,
-            max_revisions=0,
+            max_revisions=self._max_revisions,
             allow_deterministic_fallback=(
                 False if self._request_policy is not None else None
             ),
@@ -431,7 +452,10 @@ def _semantic_observation(
         if not draft
         else not any(marker in draft for marker in case.forbidden_output_markers)
     )
-    evaluation_payload = _evaluation_payload(manifest, store)
+    evaluation_diagnostics, evaluation_payload = _evaluation_observation(
+        manifest,
+        store,
+    )
     fact_check = None
     evaluation_validated = False
     evaluation_score = getattr(output, "evaluation_score", None)
@@ -460,6 +484,10 @@ def _semantic_observation(
             "error_code": error_code,
             "terminal_status": terminal_status,
             "terminal_reason": terminal_reason,
+            "revision_count": manifest.revision_count,
+            "evaluation_diagnostics": evaluation_diagnostics.model_dump(
+                mode="json"
+            ),
             "fact_check_passed": fact_check,
             "citation_check_passed": citation_check,
             "injection_check_passed": injection_check,
@@ -475,6 +503,8 @@ def _semantic_observation(
         successful_tool_names=successful,
         evidence_source_ids=evidence_source_ids,
         evidence_diagnostics=evidence_diagnostics,
+        revision_count=manifest.revision_count,
+        evaluation_diagnostics=evaluation_diagnostics,
         fact_check_passed=fact_check,
         citation_check_passed=citation_check,
         injection_check_passed=injection_check,
@@ -553,19 +583,77 @@ def _evidence_diagnostics(
     )
 
 
-def _evaluation_payload(manifest: RunManifest, store: FileRunStore) -> dict | None:
+def _evaluation_observation(
+    manifest: RunManifest,
+    store: FileRunStore,
+) -> tuple[EvaluationDiagnostics, dict | None]:
+    empty = EvaluationDiagnostics()
     records = [
         row for row in manifest.artifacts
         if row.get("kind") == ArtifactKind.EVALUATION_RESULT.value
     ]
     if not records:
-        return None
-    expected = f"evaluations/evaluation_attempt_{manifest.attempt_id}.json"
-    matching = [row for row in records if row.get("path") == expected]
-    if len(matching) != 1:
-        return None
-    payload = json.loads(store.read_artifact(matching[0]).decode("utf-8"))
-    return payload if isinstance(payload, dict) else None
+        return empty, None
+    if manifest.attempt_id not in (0, 1) or manifest.revision_count != manifest.attempt_id:
+        return empty, None
+    expected_paths = tuple(
+        f"evaluations/evaluation_attempt_{attempt_id}.json"
+        for attempt_id in range(manifest.attempt_id + 1)
+    )
+    if len(records) != len(expected_paths):
+        return empty, None
+
+    attempts = []
+    latest_payload: dict | None = None
+    try:
+        for attempt_id, expected_path in enumerate(expected_paths):
+            matching = [row for row in records if row.get("path") == expected_path]
+            if len(matching) != 1:
+                return empty, None
+            record = matching[0]
+            if (
+                record.get("run_id") != manifest.run_id
+                or record.get("schema_version") != "1.0"
+                or record.get("producer") != "evaluator"
+            ):
+                return empty, None
+            payload = json.loads(store.read_artifact(record).decode("utf-8"))
+            evaluation = EvaluationResponseModelV11.model_validate(
+                payload,
+                strict=True,
+            )
+            category_counts = Counter(row.category for row in evaluation.issues)
+            severity_counts = Counter(row.severity for row in evaluation.issues)
+            attempts.append(
+                EvaluationAttemptDiagnostics(
+                    attempt_id=attempt_id,
+                    score=evaluation.score,
+                    verdict=evaluation.verdict,
+                    passed_check_count=len(evaluation.passed_checks),
+                    issue_category_counts=tuple(
+                        EvaluationIssueCount(name=name, count=category_counts[name])
+                        for name in EVALUATION_ISSUE_CATEGORY_ORDER
+                        if category_counts[name]
+                    ),
+                    severity_counts=tuple(
+                        EvaluationSeverityCount(name=name, count=severity_counts[name])
+                        for name in EVALUATION_ISSUE_SEVERITY_ORDER
+                        if severity_counts[name]
+                    ),
+                )
+            )
+            latest_payload = evaluation.model_dump(mode="json")
+    except (
+        ArtifactIntegrityError,
+        OSError,
+        UnicodeDecodeError,
+        json.JSONDecodeError,
+        KeyError,
+        TypeError,
+        ValueError,
+    ):
+        return empty, None
+    return EvaluationDiagnostics(attempts=tuple(attempts)), latest_payload
 
 
 def _valid_evaluation_payload(payload: dict) -> bool:
