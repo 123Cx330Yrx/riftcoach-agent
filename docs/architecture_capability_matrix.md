@@ -1111,3 +1111,20 @@ Workbench、Auth、路由或 `production_media=0`。实现提交
 当前精确检查点为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`；
 真实协议门仍需明确授权。
+
+## RQ-226：低思考 G53-3-L 真实协议观察（2026-09-04）
+
+在 RQ-225 公共 exact-SHA CI 闭环后，用户“继续”授权一次有界真实协议。候选策略固定为
+`zhipu/glm-5.3-flash`、`reasoning_effort=low`、4096 输出、90/120 秒、SDK retries=0，
+最多 3 次调用。实现/协议 SHA 为 `ac63bf4ee70d61fca78813b200cf7775e5ca61d8`；A1 结构化
+合同 `1/1`、A2 工具往返 `2/2` 均通过，`admitted=true`，总计 `3/3` provider calls，
+输入/输出/总 token `1007/84/1091`，累计延迟 `12062ms`。
+
+脱敏 body-free/create-only 回执为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_g53_3l_rq225_v1.json`
+（`2511` bytes，SHA-256=`a3077ce6d4729e676d0c0ce0d9a6429153075ca59e0850529dee4e29c0376e35`）。
+该证据只关闭固定三调用协议的真实可达性与归一化，不新增 8-Core 或产品 A/Q 能力；候选仍
+disabled/未注册，`production_admitted=false`，默认模型、产品 Runtime、Portal、Account、
+Workbench、Auth、路由和 `production_media=0` 不变。held-out 领域质量、streaming 生产能力、
+黄金切片、安全/部署/合规与 8F 仍未验证。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-protocol / completed-real-observation / pending-next-decision`。

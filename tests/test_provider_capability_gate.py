@@ -69,6 +69,10 @@ from app.evaluation.glm53_flash_candidate_profile_probe import (
     PROTOCOL_ID as LOW_PROFILE_PROBE_PROTOCOL_ID,
     CandidateProfileProbeReport,
 )
+from app.evaluation.glm53_low_profile_protocol import (
+    PROTOCOL_ID as LOW_PROFILE_PROTOCOL_ID,
+    GLM53LowProfileProtocolReport,
+)
 from app.evaluation.glm53_flash_transport_generation_split_diagnostic import (
     TransportGenerationSplitReport,
 )
@@ -251,6 +255,12 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
         payload = json.loads(content)
         if payload.get("protocol_id") == LOW_PROFILE_PROBE_PROTOCOL_ID:
             report = CandidateProfileProbeReport.model_validate_json(content)
+            assert report.candidate_registered is False
+            assert report.production_admitted is False
+            assert content.endswith("\n")
+            continue
+        if payload.get("protocol_id") == LOW_PROFILE_PROTOCOL_ID:
+            report = GLM53LowProfileProtocolReport.model_validate_json(content)
             assert report.candidate_registered is False
             assert report.production_admitted is False
             assert content.endswith("\n")

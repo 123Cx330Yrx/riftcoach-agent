@@ -99,7 +99,8 @@ transport-gated 请求，得到 `client_wakeup_clean`；RQ-218 的 G53-3 在最�
 `low + 4096` 候选 profile 的 exact-SHA 公共 CI 与一次真实无工具探针，得到
 `observed/stop/usage-valid`。当前精确执行指针改为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`。
-RQ-222 已完成低思考候选独立领域门的设计裁决；RQ-225 的协议接缝与新鲜资产已取得同一 SHA 的公共 exact-SHA CI，当前等待真实协议门的明确授权。
+RQ-222 已完成低思考候选独立领域门的设计裁决；RQ-225 的协议接缝与新鲜资产已取得同一 SHA 的公共 exact-SHA CI；
+RQ-226 又在用户“继续”授权后完成低思考 G53-3-L 的一次有界真实协议门，当前等待是否进入独立 held-out 领域门的决定。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -397,7 +398,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-protocol / completed-real-observation / pending-next-decision`。
 RQ-217 的真实回执绑定实现/观察器/输入计划提交
 `3e028b1217f1274152ba161993287f29188a1b73`，文件为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`，
@@ -3099,3 +3100,19 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   127 subtests passed`。
 - [boundary-next] 本批没有真实 G53-3-L 或领域运行；当前等待明确授权执行最多 3 次真实协议门，
   不自动进入领域门或产品准入。
+
+## RQ-226 / 低思考 G53-3-L 真实协议门（2026-09-04）
+
+- Status: complete-bounded-real; candidate-only; protocol-admitted; pending-next-decision
+- [authorized] RQ-225 的公共 exact-SHA CI 闭环后，用户“继续”授权一次最多 3 次的真实协议门；
+  SDK retries=0，不执行领域案例、retry、recovery、revision 或产品接线。
+- [evidence] 在 `ac63bf4ee70d61fca78813b200cf7775e5ca61d8` 上，A1 结构化合同与 A2 工具往返
+  均通过，精确 `3/3` 次调用完成；输入/输出/总 token 为 `1007/84/1091`，累计延迟 `12062ms`。
+  脱敏回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_g53_3l_rq225_v1.json`，
+  `2511` bytes，SHA-256=`a3077ce6d4729e676d0c0ce0d9a6429153075ca59e0850529dee4e29c0376e35`。
+- [boundary] 回执 body-free/create-only，候选仍 disabled/未注册，`candidate_registered=false`、
+  `production_admitted=false`；严格 Flash v1、默认模型、产品 Runtime、Portal、Account、
+  Workbench、Auth、路由和 `production_media=0` 不变。该证据不替代 held-out 领域门、黄金切片、
+  生产成熟度或 8F。
+- [next] 下一精确动作是等待用户决定是否另行授权独立三案例 held-out 领域门；未获授权前不发新请求。

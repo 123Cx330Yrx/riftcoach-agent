@@ -99,3 +99,15 @@ Account、Workbench、Auth、路由或 `production_media=0`。当前精确检查
 实现提交 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions run `33787508488`
 三 job exact-SHA 全绿（公共 pytest `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`）；
 仍需另一次明确授权才可执行真实协议门。
+
+## RQ-226 真实协议门更新（2026-09-04）
+
+在上述前置公共闭环后，用户“继续”授权了一次严格最多 3 次的真实 G53-3-L 协议。实现/协议
+SHA 为 `ac63bf4ee70d61fca78813b200cf7775e5ca61d8`；A1 结构化合同和 A2 工具往返均通过，
+`3/3` calls，输入/输出/总 token `1007/84/1091`，累计延迟 `12062ms`。body-free/create-only
+回执为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_g53_3l_rq225_v1.json`
+（`2511` bytes，SHA-256=`a3077ce6d4729e676d0c0ce0d9a6429153075ca59e0850529dee4e29c0376e35`）。
+
+该协议证据不等于三案例 held-out 领域门，也不改变候选 disabled/未注册、产品 Runtime、默认模型、
+Portal、Account、Workbench、Auth、路由或 `production_media=0`；下一步需另行授权才可运行领域门。

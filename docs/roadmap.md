@@ -1569,3 +1569,21 @@ Workbench、Auth、路由和 `production_media=0` 不变。当前精确 checkpoi
 提交 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions `33787508488` 三 job exact-SHA
 全绿，公共 pytest 为 `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`；下一步
 仍需明确授权才执行真实协议门。
+
+## RQ-226：低思考 G53-3-L 真实协议门（2026-09-04）
+
+RQ-226 在 RQ-225 公共 CI 闭环后按用户“继续”授权，严格执行一次最多 3 次的真实候选协议。
+`zhipu/glm-5.3-flash` 的 `low + 4096` 请求在实现/协议 SHA
+`ac63bf4ee70d61fca78813b200cf7775e5ca61d8` 上完成：A1 结构化合同 `1/1`、A2 工具往返 `2/2`
+均通过，精确 `3/3` calls，输入/输出/总 token `1007/84/1091`，累计延迟 `12062ms`。
+脱敏回执为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_g53_3l_rq225_v1.json`
+（`2511` bytes，SHA-256=`a3077ce6d4729e676d0c0ce0d9a6429153075ca59e0850529dee4e29c0376e35`），
+body-free、create-only，`candidate_registered=false`、`production_admitted=false`。
+
+该证据只证明固定三调用协议的真实可达性与适配器归一化，不证明 held-out 领域质量、成本/延迟
+稳定性、streaming 生产能力、黄金切片、生产准入或 8F。候选仍 disabled/未注册，8-Core、默认
+模型、产品 Runtime、Portal、Account、Workbench、Auth、路由及 `production_media=0` 不变。当前
+精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-protocol / completed-real-observation / pending-next-decision`；
+独立三案例 held-out 领域门需另行授权。

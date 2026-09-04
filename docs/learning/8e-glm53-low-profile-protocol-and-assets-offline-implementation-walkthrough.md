@@ -39,3 +39,21 @@ streaming 生产能力、成本/延迟稳定性、黄金切片、安全/部署�
 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的公共 Actions `33787508488` 三 job 已全绿，
 公共 pytest `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`；下一步是在明确授权
 下最多执行 3 次真实低思考协议门，之后才可另行运行三案例领域门。
+
+## RQ-226：真实协议门复盘
+
+用户在 RQ-225 公共闭环后授权一次有界真实运行。候选 profile 保持
+`reasoning_effort=low`、4096 输出、90/120 秒、固定采样和零重试；协议只包含结构化合同
+一调用与一次 `knowledge.search` 工具往返（首回合和终回合各一调用），因此严格为 `3/3`
+次 provider 调用。
+
+真实结果为 A1/A2 均 `passed`、`admitted=true`，终态序列为 `stop`、`tool_calls`、`stop`；
+输入/输出/总 token `1007/84/1091`，累计延迟 `12062ms`。回执
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_g53_3l_rq225_v1.json`
+为 `2511` bytes、SHA-256=`a3077ce6d4729e676d0c0ce0d9a6429153075ca59e0850529dee4e29c0376e35`，
+只保存安全身份、计数、终态和摘要哈希。
+
+这证明的是“低思考候选能完成这组固定适配器协议”，不是“模型已进入产品”或“领域质量已通过”。
+候选仍 disabled/未注册，产品 Runtime、默认模型、Workbench、Portal、Account、Auth、路由和
+`production_media=0` 不变；held-out 三案例领域质量、成本/延迟稳定性、streaming 生产能力、
+黄金切片、安全/部署/合规与 8F 仍未验证。下一步必须另行授权后才可运行领域门。

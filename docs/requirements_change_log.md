@@ -277,6 +277,8 @@ migrations、packaging-smoke 三 job 均成功，公共 pytest 为 `2332 passed,
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`，
 provider calls=0，仍需明确授权才执行真实协议门。
 
+| RQ-226 | 2026-09-04 | 低思考 G53-3-L 真实协议门完成，候选协议 `admitted=true` 但仍未注册或生产准入 | 用户在 RQ-225 公共 exact-SHA CI 闭环后以“继续”授权一次最多 3 次真实协议调用；本条不自动进入 held-out 领域门、不 retry/recovery/revision、不改默认模型、产品 Runtime、Portal/Account/Workbench/Auth | 在实现/协议 SHA `ac63bf4ee70d61fca78813b200cf7775e5ca61d8` 上，`zhipu/glm-5.3-flash` 候选 `low + 4096` 严格完成 A1 结构化合同 `1/1` 与 A2 工具往返 `2/2`，总 `3/3` calls，输入/输出/总 token `1007/84/1091`，累计 `12062ms`。脱敏、body-free、create-only 回执 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_g53_3l_rq225_v1.json` 为 `2511` bytes，SHA-256=`a3077ce6d4729e676d0c0ce0d9a6429153075ca59e0850529dee4e29c0376e35`；`candidate_registered=false`、`production_admitted=false`。该结果只证明固定协议可达性，不证明 held-out 领域质量、成本/延迟稳定性、streaming 生产能力、黄金切片、安全/部署/合规或 8F。下一精确 checkpoint 为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-protocol / completed-real-observation / pending-next-decision`，独立领域门需另行授权。 |
+
 ## 新条目格式
 
 后续新增长期要求时，使用新的 `RQ-xxx` 行，并注明日期、状态以及它如何改变

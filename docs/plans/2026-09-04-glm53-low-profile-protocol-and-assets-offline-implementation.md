@@ -49,3 +49,21 @@ Portal、Account、Workbench、Auth、路由或 `production_media=0`。候选仍
 
 实现提交 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions run `33787508488` 已通过
 exact-SHA 三 job；公共 pytest 为 `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`。
+
+## RQ-226 真实协议门结果（2026-09-04）
+
+RQ-225 的公共闭环完成后，用户“继续”授权一次最多 3 次的真实 G53-3-L 协议。使用同一候选
+`low + 4096` 策略、SDK retries=0，在实现/协议 SHA
+`ac63bf4ee70d61fca78813b200cf7775e5ca61d8` 上完成 A1 结构化合同 `1/1` 与 A2 工具往返
+`2/2`，协议 `admitted=true`。总计 `3/3` provider calls，输入/输出/总 token `1007/84/1091`，
+累计延迟 `12062ms`。
+
+回执使用原有 create-only 路径并以新文件名保存：
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_g53_3l_rq225_v1.json`，
+`2511` bytes、SHA-256=`a3077ce6d4729e676d0c0ce0d9a6429153075ca59e0850529dee4e29c0376e35`。
+它只含安全身份、计数、终态和摘要哈希，不含正文、reasoning、工具参数、Key 或完整请求标识。
+
+本结果只关闭固定三调用协议的真实可达性，不等于 held-out 领域质量、streaming 生产能力、
+黄金切片、生产准入或 8F；候选仍 `candidate-only/disabled`，未注册，产品 Runtime、默认模型、
+Portal、Account、Workbench、Auth、路由和 `production_media=0` 保持不变。下一步如需继续，
+必须另行授权独立三案例 held-out 领域门。

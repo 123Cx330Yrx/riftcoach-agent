@@ -25,12 +25,11 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 [8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
 该记录不把 8E coverage、领域采用或生产成熟度标为完成。
 
-> 当前学习指针（2026-09-03，RQ-215）：先阅读 [候选 transport-gated 真实观察 walkthrough](8e-glm53-candidate-transport-gate-real-observation-walkthrough.md)、
-> [ADR-0085](../adr/0085-record-candidate-transport-gated-real-observation.md) 与 [观察计划](../plans/2026-09-03-glm53-candidate-transport-gate-real-observation.md)。
-> 这批只记录一次真实流启动后本机受控停顿下的客户端行为：pending reader 被唤醒但出现
-> `client_wakeup_close_race`；当前 checkpoint 是
-> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`，
-> 8E coverage 仍 planned，provider-native close/wakeup、候选注册、G53-7、黄金切片和 8F 均未进入。
+> 当前学习指针（2026-09-04，RQ-226）：先阅读 [低思考协议 walkthrough](8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md)、
+> [ADR-0091](../adr/0091-design-glm53-low-profile-heldout-domain-gate.md) 与 [实施计划](../plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md)。
+> RQ-226 已在用户授权下完成一次严格 `3/3` 的真实低思考协议门；当前 checkpoint 是
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-protocol / completed-real-observation / pending-next-decision`，
+> 8E coverage 仍 planned，候选注册、领域门、黄金切片、生产准入和 8F 均未进入。
 
 ## 2. 建议怎样学习每一个能力
 
@@ -811,3 +810,16 @@ Prompt/Context Snapshot 和合成 fixture，准入时交叉核对 SHA、case 顺
 Actions `33787508488` 三 job exact-SHA 全绿，公共 pytest 为
 `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`。这只关闭离线控制面的公共
 可复现性，provider calls 仍为 0；真实 G53-3-L 仍需明确授权。
+
+### 2026-09-04：RQ-226 低思考 G53-3-L 真实协议门
+
+在 RQ-225 公共 exact-SHA CI 闭环后，用户“继续”授权一次最多 3 次的真实候选协议。实现/协议
+SHA 为 `ac63bf4ee70d61fca78813b200cf7775e5ca61d8`；A1 结构化合同和 A2 工具往返均通过，
+精确 `3/3` calls，输入/输出/总 token `1007/84/1091`，累计延迟 `12062ms`。
+脱敏 body-free/create-only 回执为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_g53_3l_rq225_v1.json`
+（`2511` bytes，SHA-256=`a3077ce6d4729e676d0c0ce0d9a6429153075ca59e0850529dee4e29c0376e35`）。
+
+这只证明固定协议可达性与适配器归一化；候选仍 disabled/未注册，默认 Runtime、Workbench、
+Portal、Account、Auth、路由及 `production_media=0` 不变。held-out 领域质量、成本/延迟稳定性、
+streaming 生产能力、黄金切片、安全/部署/合规与 8F 仍未验证；下一步如继续需另行授权领域门。

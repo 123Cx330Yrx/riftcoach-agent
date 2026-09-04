@@ -5641,3 +5641,16 @@
   全部成功；公共 pytest `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`。
 - [boundary-next] provider calls=0，候选未注册，下一步仍需明确授权才可执行真实 G53-3-L；
   不把公共 CI 绿灯写成领域质量或产品准入。
+
+## 2026-09-04：RQ-226 低思考 G53-3-L 真实协议发现
+
+- [observation] 用户“继续”构成了本批一次性授权；真实 `zhipu/glm-5.3-flash` 候选协议严格消耗
+  3 次调用：结构化合同 1 次、工具首回合 1 次、工具结果后的终回合 1 次。A1/A2 均通过，
+  终态为 `stop`、`tool_calls`、`stop`，未触发预算墙、重试或恢复。
+- [evidence] 输入/输出 token 为 `1007/84`，累计延迟 `12062ms`；脱敏回执 2511 bytes、SHA-256
+  `a3077ce6d4729e676d0c0ce0d9a6429153075ca59e0850529dee4e29c0376e35`，只含身份、计数、终态和摘要哈希。
+- [interpretation] 这关闭了低思考档在该固定协议组合上的真实可达性与适配器归一化门；不能外推到
+  held-out 领域质量、成本/延迟稳定性、streaming 生产能力或产品准入。候选仍 disabled/未注册，
+  不改变默认 Runtime、Workbench 或前端。
+- [next] 下一步是独立 held-out 三案例领域门；它有更高调用/Token预算，必须另行明确授权，不能由本条
+  协议成功自动触发。

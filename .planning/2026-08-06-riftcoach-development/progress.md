@@ -5933,3 +5933,19 @@
   Workbench、Auth、路由和 `production_media=0` 不变。当前唯一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`；
   下一步需明确授权后才执行最多 3 次真实 G53-3-L 协议门。
+
+## 2026-09-04：RQ-226 低思考 G53-3-L 真实协议门
+
+- [authorized] RQ-225 公共 CI 闭环后，用户“继续”授权一次最多 3 次的真实协议门；SDK retries=0，
+  不执行领域案例、retry、recovery、revision 或产品接线。
+- [completed-bounded-real] 在实现/协议 SHA `ac63bf4ee70d61fca78813b200cf7775e5ca61d8` 上，
+  A1 结构化合同 `1/1`、A2 工具往返 `2/2` 均通过，协议 `admitted=true`；总计 `3/3` provider
+  calls、`network=true`，输入/输出/总 token `1007/84/1091`，累计延迟 `12062ms`。
+- [evidence] 脱敏回执为
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_g53_3l_rq225_v1.json`，
+  `2511` bytes、SHA-256=`a3077ce6d4729e676d0c0ce0d9a6429153075ca59e0850529dee4e29c0376e35`；
+  body-free/create-only，候选未注册且未获生产准入。
+- [boundary-next] 这只证明低思考候选的三调用协议可达性，不证明 held-out 领域质量、成本/延迟
+  稳定性、streaming 生产能力、黄金切片、安全/部署/合规或 8F。下一精确 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-protocol / completed-real-observation / pending-next-decision`；
+  等待是否另行授权独立领域门。
