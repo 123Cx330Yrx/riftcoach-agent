@@ -5770,3 +5770,14 @@
   `33895602378` 三任务 exact-SHA 全绿，公共 pytest 2379、PostgreSQL 201、packaging-smoke 通过。
 - [next] 进入 `candidate-hardened-domain-v3-bounded-revision-implementation / completed-public /
   pending-fresh-g53-3l-authorization`；预检为 `pending_protocol_evidence`，真实协议与领域授权均未完成。
+
+## 2026-09-05：RQ-233 新鲜 G53-3-L 回执失败发现
+
+- [observation] 已授权的有界真实协议运行在回执构造阶段触发 `latency total does not match protocol`，
+  create-only 文件未生成；不得据此宣称协议通过。精确调用数未持久化，只确认最多 3 次且 SDK 零重试。
+- [root-cause] 候选预算包装器只计 Provider I/O 延迟，协议案例计端到端延迟；回执验证器要求案例
+  延迟之和，构造器却传入预算延迟。旧测试固定时钟为常数，把两者都压成零。
+- [correction] 回执改为对协议案例 `latency_ms` 求和，预算账本保持原语义；推进时钟测试证明旧实现
+  会失败而新实现通过。聚焦 `18 passed`，相关相邻 `32 passed`。
+- [next] 进入 `candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`；
+  只取得修复 SHA 的公共 CI，不自动重跑真实协议或进入 V3 领域观察。

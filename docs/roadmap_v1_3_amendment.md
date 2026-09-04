@@ -1555,3 +1555,14 @@ PostgreSQL 201、packaging-smoke 通过。exact-SHA 预检为 `pending_protocol_
 pending-fresh-g53-3l-authorization`；候选未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、
 Workbench、Auth、路由、`production_media=0`、安全/部署/合规和 8F 边界不变。下一步仅在明确
 授权后取得新鲜 G53-3-L，不能自动发起 V3 领域观察。
+
+### RQ-233：新鲜 G53-3-L 回执延迟口径修复（2026-09-05）
+
+本条仍属于 8-Advanced candidate-only，不增加、删除或重排 8-Core。已授权的新鲜 G53-3-L 在
+回执构造阶段因预算 I/O 延迟与协议端到端延迟口径不一致而失败，没有生成证据文件；最多 3 次和
+零重试边界成立，但精确调用数不能在无回执时补写。
+
+本地修复只让回执采用协议案例延迟之和，并增加推进时钟回归；请求参数、预算、结构化/工具合同、
+候选注册和质量门均未改变。当前为 `candidate-fresh-g53-3l-receipt-latency-fix / completed-local /
+pending-public-ci`；默认 Runtime、GLM-5.2 回退、前端、Workbench、Auth、`production_media=0`、
+8E→8F 顺序及生产安全/部署/合规边界不变。

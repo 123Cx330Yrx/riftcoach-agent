@@ -25,15 +25,16 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 [8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
 该记录不把 8E coverage、领域采用或生产成熟度标为完成。
 
-> 当前学习指针（2026-09-04，RQ-232）：先阅读 [V3 离线实现 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md)、
+> 当前学习指针（2026-09-05，RQ-233）：先阅读 [新鲜协议回执延迟修复 walkthrough](8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md)、
+> [V3 离线实现 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md)、
 > [V3 有界修订设计 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md)、
 > [ADR-0094](../adr/0094-adopt-glm53-hardened-domain-v3-bounded-revision.md)、
 > [V3 设计](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-design.md) 和
 > [详细实施计划](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-implementation.md)。
 > 当前 checkpoint 是
-> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`；
-> 8E coverage 仍 planned，候选未注册。RQ-232 已完成 exact-SHA 公共闭环，预检为
-> `pending_protocol_evidence`、provider calls=0；黄金切片、生产准入和 8F 均未进入。
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`；
+> 8E coverage 仍 planned，候选未注册。新鲜协议尝试没有生成回执，当前只完成计时口径的本地修复；
+> 黄金切片、生产准入和 8F 均未进入。
 
 ## 2. 建议怎样学习每一个能力
 
@@ -908,3 +909,14 @@ no-I/O 准入。
 当前仍为 8-Advanced candidate-only，候选未注册，默认 Runtime、GLM-5.2 应急路径、Portal、Account、
 Workbench、Auth、路由、`production_media=0`、黄金切片、安全/部署/合规和 8F 均不变；下一步仅在
 明确授权后取得新鲜 G53-3-L。
+
+### 2026-09-05：RQ-233 新鲜 G53-3-L 回执延迟口径修复
+
+新增 [学习 walkthrough](8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md) 和
+[修复计划](../plans/2026-09-05-glm53-fresh-g53-3l-receipt-latency-fix.md)。已授权的真实协议运行
+在回执构造阶段因预算 I/O 延迟与协议端到端延迟不一致而失败，create-only 文件未生成；因此没有
+协议通过结论，也不补写不可核验的精确调用数。
+
+修复让回执采用协议案例延迟之和，预算账本及模型请求、资源墙、结构化响应、工具往返和准入合同
+保持不变；推进时钟测试覆盖旧固定时钟遗漏。聚焦 `18 passed`、相关相邻 `32 passed`，当前等待
+修复提交的公共 exact-SHA CI，不自动重跑真实协议。

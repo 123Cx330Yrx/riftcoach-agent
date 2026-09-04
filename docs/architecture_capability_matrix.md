@@ -1237,3 +1237,14 @@ packaging-smoke 通过。exact-SHA 预检为 `pending_protocol_evidence`、provi
 `candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`；
 候选未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由、streaming、
 黄金切片、生产安全/部署/合规、`production_media=0` 和 8F 均不变。
+
+## RQ-233：新鲜协议回执延迟语义修复（2026-09-05）
+
+本批没有新增模型、Agent、RAG、产品 A/Q 或 Runtime 能力；只修复候选协议证据的计时投影。
+预算层继续记录 Provider I/O 延迟，协议层继续记录解析和工具执行在内的端到端案例延迟；回执
+`latency_ms` 现在采用案例延迟之和，符合既有 Schema 验证语义。推进时钟回归证明真实时间流逝时
+不会再次因口径混用拒绝回执。
+
+已授权的真实尝试没有生成证据文件，不能标记协议通过或补写精确调用数；只确认最多 3 次和 SDK
+零重试。当前为 `candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`，
+产品能力矩阵、候选注册、GLM-5.2 回退、streaming、黄金切片和生产边界均不变。

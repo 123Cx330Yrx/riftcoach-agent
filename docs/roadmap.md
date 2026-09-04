@@ -1712,3 +1712,15 @@ packaging-smoke 通过。exact-SHA 预检返回 `pending_protocol_evidence`、pr
 GLM-5.2 回退、Portal、Account、Workbench、Auth、路由或 `production_media=0`。当前 checkpoint 为
 `candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`；
 下一步仅在明确授权后取得新鲜 G53-3-L，V3 真实领域观察仍需之后的另一项授权。
+
+## RQ-233：新鲜 G53-3-L 回执延迟口径修复（2026-09-05）
+
+RQ-232 公共闭环后的新鲜协议运行已获授权，但在 create-only 回执构造时触发
+`latency total does not match protocol`，没有生成结果文件。因此这次尝试不能算协议通过，精确
+调用数没有持久证据，只确认最多 3 次、SDK 零重试，也不自动重跑。
+
+缺陷来自预算层 Provider I/O 延迟和协议层端到端案例延迟的混用。修复令回执总延迟采用协议案例
+之和，保持预算账本及请求、Token、结构化响应、工具往返和所有准入门不变；推进时钟回归覆盖真实
+时间流逝。聚焦 `18 passed`、相关相邻 `32 passed`。当前 checkpoint 为
+`candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`；公共 CI 通过后仍需
+新的真实调用授权，V3 领域观察继续单独授权。

@@ -54,6 +54,17 @@ class ScriptedProvider:
         return self.responses.pop(0)
 
 
+class AdvancingClock:
+    """Expose protocol overhead that a constant fake clock would hide."""
+
+    def __init__(self) -> None:
+        self._value = 100.0
+
+    def __call__(self) -> float:
+        self._value += 0.001
+        return self._value
+
+
 def _response(
     *,
     content: str | None,
@@ -140,6 +151,18 @@ def test_low_profile_protocol_uses_candidate_policy_and_is_admitted() -> None:
     assert "RIFTCOACH_TOOL_ROUNDTRIP_OK" not in serialized
     assert "reduce deaths before 15 minutes" not in serialized
     assert "content" not in serialized
+
+
+def test_low_profile_protocol_reports_end_to_end_case_latency() -> None:
+    report = run_glm53_low_profile_protocol(
+        provider=_successful_provider(),
+        implementation_sha="e" * 40,
+        clock=AdvancingClock(),
+    )
+
+    assert report.protocol.admitted is True
+    assert report.latency_ms == sum(row.latency_ms for row in report.protocol.cases)
+    assert report.latency_ms > 0
 
 
 def test_low_profile_protocol_requires_confirmation_for_real_origin() -> None:

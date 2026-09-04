@@ -4510,3 +4510,15 @@ RQ-232 把 RQ-231 的设计落成 8-Advanced candidate-only 控制面：共享�
 安全/部署/合规和 8F 均不变。当前 checkpoint 为
 `candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`；
 下一步仅在用户明确授权后取得新鲜 G53-3-L，不能自动进入 V3 领域观察。
+
+## 2026-09-05：RQ-233 新鲜 G53-3-L 回执延迟口径修复
+
+用户授权一次新鲜 G53-3-L 后，运行在回执构造阶段被 `latency total does not match protocol`
+拒绝，create-only 结果文件未生成。没有持久回执就不能宣称协议通过；精确调用数也不可恢复，只能
+确认受最多 3 次和 SDK 零重试约束，且不得自动重跑。
+
+根因不是模型/API，而是本地两层计时语义混用：预算包装器累计 Provider I/O 延迟，协议案例累计
+解析与工具执行在内的端到端延迟；回执验证器要求后者之和，构造器却传入前者。修复改为对协议案例
+延迟求和，并以推进时钟补上旧固定时钟测试遗漏。聚焦回归 `18 passed`，相关相邻 `32 passed`。
+当前进入 `candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`；候选、
+默认 Runtime、GLM-5.2 回退、产品/前端和 V3 领域边界均不变。

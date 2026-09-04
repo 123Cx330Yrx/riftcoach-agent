@@ -6069,3 +6069,14 @@
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`；
   exact-SHA 预检为 `pending_protocol_evidence`、provider calls=0。下一步等待新鲜 G53-3-L 的明确授权，
   不自动进入 V3 领域观察。
+
+## 2026-09-05：RQ-233 新鲜 G53-3-L 回执延迟口径修复
+
+- [authorized-attempt] 新鲜协议运行已按授权发起，但在回执构造阶段因
+  `latency total does not match protocol` 失败；没有生成结果文件，也不自动重跑。
+- [implementation] `GLM53LowProfileProtocolReport.latency_ms` 改为协议案例端到端延迟之和；
+  Provider I/O 预算计时和全部请求/资源/准入合同不变。新增推进时钟防止固定时钟再次掩盖差异。
+- [verification] 聚焦回归 `18 passed`，协议、预算、V2/V3 相邻回归 `32 passed`。
+- [boundary-next] 当前 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`；
+  下一步只做 exact-SHA 公共 CI。新的真实协议与 V3 领域观察仍分别需要后续授权。

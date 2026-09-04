@@ -116,8 +116,9 @@ RQ-226 又在用户“继续”授权后完成低思考 G53-3-L 的一次有界�
 全绿。RQ-230 已在用户“继续”授权后完成 V2 专用真实运行器，并在同一 SHA 公共 CI 通过后完成一次
 有界真实观察；首案质量/终态不匹配，后两案按首错停止。RQ-231 已在用户“继续”后完成 V3
 有界修订设计：保持 85 分和全部安全/事实硬门，允许最多一次 Harness 修订，并增加 body-free
-枚举计数诊断。RQ-232 已完成离线实现、兼容边界修复和 exact-SHA 公共闭环；当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`。
+枚举计数诊断。RQ-232 已完成离线实现、兼容边界修复和 exact-SHA 公共闭环。RQ-233 的新鲜
+G53-3-L 尝试在回执延迟校验处失败，离线修复已完成；当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -415,11 +416,12 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`。
 RQ-230 已完成一次 V2 真实观察并完成失败归因；RQ-231 接受的全新 V3 最多一次受控修订、
 body-free 枚举计数诊断、版本化预算证明和新资产 no-I/O 准入已由 RQ-232 完成；修复提交
 `f99c142c269df765deb592c463ce6e2555bcc3fe` 的 Actions `33895602378` 三任务 exact-SHA 全绿。
-下一步只在明确授权后取得新鲜 G53-3-L 协议证据，不发 V3 领域请求、不重跑旧考卷。
+RQ-233 的新鲜 G53-3-L 尝试因两层延迟口径不一致未能生成回执；下一步只取得本地修复的公共 CI，
+不再次调用模型、不发 V3 领域请求、不重跑旧考卷。
 RQ-227 的真实领域门已完成有界观察但拒绝准入：第 1 案通过，第 2 案因证据来源缺失与注入检查失败触发
 `unsafe_publication`，第 3 案冻结跳过；回执为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
@@ -3263,3 +3265,13 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，packaging-smoke 通过。
 - exact-SHA 预检为 `pending_protocol_evidence`、provider calls=0。下一步新鲜 G53-3-L 真实协议门
   需要明确授权；不包含 V3 领域调用、候选注册或产品接线。
+
+## RQ-233 / 新鲜 G53-3-L 回执延迟口径修复（2026-09-05）
+
+- Status: complete-local; candidate-only; real-attempt-not-persisted; pending-public-ci
+- 用户授权的真实协议运行在回执校验处失败，错误为 `latency total does not match protocol`；目标
+  create-only 文件不存在，不能宣称协议通过。调用数只可确认最多 3 次、SDK 零重试。
+- 根因是预算层 Provider I/O 延迟与协议层端到端案例延迟口径不同，旧固定时钟测试将差异隐藏。
+- 回执改为采用协议案例延迟之和，并新增推进时钟回归；请求、结构化响应、工具往返、资源墙和准入
+  合同不变。聚焦 `18 passed`，相关相邻 `32 passed`。
+- 下一步只提交并取得修复 SHA 的公共 exact-SHA CI；之后仍需重新授权真实协议，不自动进入 V3 领域。

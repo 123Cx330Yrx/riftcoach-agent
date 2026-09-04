@@ -226,7 +226,7 @@ def run_glm53_low_profile_protocol(
         input_tokens=snapshot["input_tokens"],
         output_tokens=snapshot["output_tokens"],
         total_tokens=snapshot["input_tokens"] + snapshot["output_tokens"],
-        latency_ms=snapshot["latency_ms"],
+        latency_ms=sum(row.latency_ms for row in protocol.cases),
         run_timestamp_utc=now(),
         protocol=protocol,
         unsupported_boundaries=(
