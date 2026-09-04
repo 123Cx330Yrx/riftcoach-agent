@@ -353,7 +353,12 @@ def build_v3_domain_preflight(
         budget_report_path=budget_file,
     )
     dataset = load_domain_dataset(dataset_file)
-    loaded_plan = load_domain_case_input_plan(plan_file, project_root=root, dataset=dataset)
+    loaded_plan = load_domain_case_input_plan(
+        plan_file,
+        project_root=root,
+        dataset=dataset,
+        expected_max_revisions=1,
+    )
     if _sha256_file(protocol_file) != assets.protocol_file_sha256:
         raise ValueError("V3 protocol bytes changed after asset admission")
     if _sha256_file(dataset_file) != assets.dataset_file_sha256:

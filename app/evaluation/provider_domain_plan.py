@@ -194,6 +194,7 @@ def load_domain_case_input_plan(
     *,
     project_root: str | Path,
     dataset: DomainEvaluationDataset,
+    expected_max_revisions: Literal[0, 1] = 0,
 ) -> LoadedDomainCaseInputPlan:
     """Load exact bytes and reject identity or fixture drift before Provider I/O."""
 
@@ -202,6 +203,8 @@ def load_domain_case_input_plan(
     plan_path = Path(path)
     raw = plan_path.read_bytes()
     artifact = DomainCaseInputPlanArtifact.model_validate_json(raw)
+    if artifact.max_revisions != expected_max_revisions:
+        raise ValueError("input plan revision budget does not match caller contract")
     if (artifact.dataset_id, artifact.dataset_version) != (
         dataset.dataset_id,
         dataset.dataset_version,

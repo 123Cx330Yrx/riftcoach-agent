@@ -246,6 +246,7 @@ def admit_hardened_domain_v3_assets(
         plan_file,
         project_root=root,
         dataset=dataset,
+        expected_max_revisions=1,
     )
     if (
         plan.artifact.schema_version != "1.1"

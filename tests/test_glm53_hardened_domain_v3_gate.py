@@ -92,7 +92,12 @@ class PassingExecutor:
 def admission():
     assets = admit_hardened_domain_v3_assets(project_root=ROOT, confirm_rules_frozen=True)
     dataset = load_domain_dataset(ROOT / DATASET_PATH)
-    plan = load_domain_case_input_plan(ROOT / INPUT_PLAN_PATH, project_root=ROOT, dataset=dataset)
+    plan = load_domain_case_input_plan(
+        ROOT / INPUT_PLAN_PATH,
+        project_root=ROOT,
+        dataset=dataset,
+        expected_max_revisions=1,
+    )
     budget = load_v3_budget_reachability_report(ROOT / "data/evaluation/contracts/glm53_flash_hardened_v3_budget_reachability.json")
     sha = head_sha()
     values = {
