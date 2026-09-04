@@ -25,13 +25,14 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 [8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
 该记录不把 8E coverage、领域采用或生产成熟度标为完成。
 
-> 当前学习指针（2026-09-04，RQ-231）：先阅读 [V3 有界修订设计 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md)、
+> 当前学习指针（2026-09-04，RQ-232）：先阅读 [V3 离线实现 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md)、
+> [V3 有界修订设计 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md)、
 > [ADR-0094](../adr/0094-adopt-glm53-hardened-domain-v3-bounded-revision.md)、
 > [V3 设计](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-design.md) 和
 > [详细实施计划](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-implementation.md)。
 > 当前 checkpoint 是
-> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation`；
-> 8E coverage 仍 planned，候选未注册。本批只完成设计且 provider calls=0，黄金切片、生产准入和 8F 均未进入。
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`；
+> 8E coverage 仍 planned，候选未注册。本批仅完成离线实现且 provider calls=0，黄金切片、生产准入和 8F 均未进入。
 
 ## 2. 建议怎样学习每一个能力
 
