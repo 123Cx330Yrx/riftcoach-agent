@@ -6058,9 +6058,14 @@
   全新三案例资产和候选专用入口。
 - [budget] 离线请求包络证明每案最多 9 次、全域 27 次；Token 墙为每案 `203000`、全域 `608000`，
   报告可在 `external_provider_calls=0` 下重建。
-- [verification] 实现提交 `730c32d074269fb45e5a5351b1af591ecaa35de1`；相关与相邻回归 `54 passed`，
-  compileall、`git diff --check`、治理检查通过，network=false。
+- [verification-local] 初始实现 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归
+  `54 passed`；公共首跑 `33894351184` 因旧输入计划隔离与 V2 回执分流两处遗漏失败。
+- [verification-public] 修复 `f99c142c269df765deb592c463ce6e2555bcc3fe` 的相关回归
+  `93 passed`，compileall、diff check、治理检查通过；Actions `33895602378` 三任务 exact-SHA
+  全绿，公共 pytest `2379 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL
+  `201 passed, 2 warnings`，packaging-smoke 通过。
 - [boundary-next] 候选仍 disabled/未注册，旧 V2、GLM-5.2 兼容/应急路径、默认 Runtime、Portal、
   Account、Workbench、Auth、路由和 `production_media=0` 不变。当前唯一 checkpoint 为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`；
-  下一步只做同一提交的 exact-SHA 公共 CI，不能自动发送真实请求。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`；
+  exact-SHA 预检为 `pending_protocol_evidence`、provider calls=0。下一步等待新鲜 G53-3-L 的明确授权，
+  不自动进入 V3 领域观察。

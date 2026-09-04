@@ -165,3 +165,18 @@ git diff --check
 **Step 3:** 记录本地测试数、V3 预算数值与报告 SHA；明确候选仍未注册、V2 不变、GLM-5.2 应急路径和产品/前端边界不变。
 
 **Step 4:** 提交离线实现。下一检查点只能是该实现 SHA 的公共 CI；公共绿灯后仍须新鲜 G53-3-L 的单独授权，不能自动运行 V3 领域门。
+
+## 执行结果：公共闭环（2026-09-05）
+
+初始实现 `730c32d074269fb45e5a5351b1af591ecaa35de1` 完成 Tasks 1–6 的离线范围；公共运行
+`33894351184` 随后暴露两处版本隔离遗漏：旧输入计划未默认锁回零修订，V2 加固回执被总检
+误分流为旧结果模型。修复提交 `f99c142c269df765deb592c463ce6e2555bcc3fe` 保持所有旧调用方
+默认 `max_revisions=0`，只有 V3 显式传入 `expected_max_revisions=1`，并按 V2 专属 `protocol_id`
+严格解析回执。
+
+修复后的相关与相邻回归为 `93 passed`，compileall、diff check、治理检查通过；Actions
+`33895602378` 三任务 exact-SHA 全绿，公共 pytest `2379 passed, 145 skipped, 2 warnings,
+127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，packaging-smoke 通过。exact-SHA 预检
+返回 `pending_protocol_evidence`、provider calls=0。当前 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`；
+下一步仅在用户明确授权后取得新鲜 G53-3-L，不能自动进入 V3 领域观察。

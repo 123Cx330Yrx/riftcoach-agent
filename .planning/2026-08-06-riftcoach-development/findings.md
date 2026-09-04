@@ -5761,7 +5761,12 @@
   报告可在无 Provider I/O 下重建，未知 Usage 或越界在调用墙内关闭。
 - [assets] V3 使用全新三案例、Context、marker、fixture、协议和输入计划；资产准入在构造
   Provider 前交叉校验 SHA，并拒绝 RQ-227/V2 历史身份污染。
-- [verification] 实现提交 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归
-  `54 passed`，compileall、diff check、governance 通过；provider calls=0、network=false。
-- [next] 进入 `candidate-hardened-domain-v3-bounded-revision-implementation / completed-local /
-  pending-public-ci`；公共 exact-SHA CI、新鲜 G53-3-L 和真实领域授权仍未完成。
+- [public-finding] 初始实现 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的公共运行
+  `33894351184` 暴露两处聚焦集合未覆盖的版本隔离：共享输入计划加载器未默认锁回零修订，公共
+  回执总检也未按 V2 加固协议 ID 精确分流。
+- [correction] `f99c142c269df765deb592c463ce6e2555bcc3fe` 让旧调用方继续默认
+  `max_revisions=0`，只有 V3 明示 `expected_max_revisions=1`；V2 回执使用自身严格模型解析。
+- [verification] 相关与相邻回归 `93 passed`，compileall、diff check、governance 通过；Actions
+  `33895602378` 三任务 exact-SHA 全绿，公共 pytest 2379、PostgreSQL 201、packaging-smoke 通过。
+- [next] 进入 `candidate-hardened-domain-v3-bounded-revision-implementation / completed-public /
+  pending-fresh-g53-3l-authorization`；预检为 `pending_protocol_evidence`，真实协议与领域授权均未完成。

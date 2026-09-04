@@ -1700,10 +1700,15 @@ RQ-232 完成了 RQ-231 设计的离线实现：共享执行器默认仍为零�
 修订；评测诊断只投影轮次、分数、结论、通过项和枚举计数。新增预算墙、全请求包络证明、全新
 三案例资产、Context/fixture 身份校验和候选专用入口。
 
-每案调用墙为 `9`、全域为 `27`，离线 Token 墙为每案 `203000`、全域 `608000`。实现提交
-`730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归 `54 passed`，compileall、
-`git diff --check`、治理检查通过，provider calls=0。该批仍属于 8-Advanced candidate-only，
-不增加 8-Core、不注册候选、不改变默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、
-Auth、路由或 `production_media=0`。当前 checkpoint 为
-`candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`；
-下一步只做同一实现 SHA 的公共 exact-SHA CI，真实协议和领域观察仍需分别授权。
+每案调用墙为 `9`、全域为 `27`，离线 Token 墙为每案 `203000`、全域 `608000`。初始实现
+`730c32d074269fb45e5a5351b1af591ecaa35de1` 的公共运行 `33894351184` 暴露旧输入计划隔离和
+V2 回执分流两处遗漏；修复提交 `f99c142c269df765deb592c463ce6e2555bcc3fe` 恢复旧调用方默认
+零修订，并只让 V3 显式使用一次修订。相关与相邻回归 `93 passed`，compileall、
+`git diff --check`、治理检查通过；Actions `33895602378` 三任务 exact-SHA 全绿，公共 pytest
+`2379 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，
+packaging-smoke 通过。exact-SHA 预检返回 `pending_protocol_evidence`、provider calls=0。
+
+该批仍属于 8-Advanced candidate-only，不增加 8-Core、不注册候选、不改变默认 Runtime、
+GLM-5.2 回退、Portal、Account、Workbench、Auth、路由或 `production_media=0`。当前 checkpoint 为
+`candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`；
+下一步仅在明确授权后取得新鲜 G53-3-L，V3 真实领域观察仍需之后的另一项授权。

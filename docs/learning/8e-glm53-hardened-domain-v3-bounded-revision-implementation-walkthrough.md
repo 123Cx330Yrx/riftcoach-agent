@@ -42,12 +42,18 @@ body-free 结果；候选仍未注册
 ## 4. 验证与运行手册
 
 预算脚本可离线重建冻结报告：`python scripts/build_glm53_bounded_revision_budget_reachability.py`。
-V3 入口预检使用 `python scripts/run_glm53_hardened_domain_v3_gate.py --preflight-only`；当前实现
-尚无公共 CI 声明，因此应停在 `pending_public_ci`，不得加载 Key 或构造 Provider。
+V3 入口预检使用 `python scripts/run_glm53_hardened_domain_v3_gate.py --preflight-only`；修复实现已取得
+exact-SHA 公共 CI，因此当前预检停在 `pending_protocol_evidence`，不得加载 Key 或构造 Provider。
 
-本地聚焦与相邻回归共 `54 passed`；`compileall`、`git diff --check` 和治理检查均通过，
-provider calls=0、network=false。实现冻结在提交
-`730c32d074269fb45e5a5351b1af591ecaa35de1`；这只是离线实现身份，不是公共 CI 或生产准入证据。
+初始实现 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的公共运行 `33894351184` 暴露两处版本隔离遗漏：
+旧输入计划未默认锁回零修订，V2 加固回执也被总检误分流。修复提交
+`f99c142c269df765deb592c463ce6e2555bcc3fe` 让旧调用方继续默认 `max_revisions=0`，只有 V3 显式
+使用 `expected_max_revisions=1`，并按 V2 专属 `protocol_id` 严格解析回执。
+
+修复后的相关与相邻回归共 `93 passed`；`compileall`、`git diff --check` 和治理检查均通过。
+Actions `33895602378` 三任务 exact-SHA 全绿：公共 pytest `2379 passed, 145 skipped, 2 warnings,
+127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，packaging-smoke 通过。该证据只证明实现
+可公开复现，不是生产准入或领域质量证据；provider calls=0。
 
 ## 5. 失败、安全与边界
 

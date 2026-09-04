@@ -31,8 +31,9 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 > [V3 设计](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-design.md) 和
 > [详细实施计划](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-implementation.md)。
 > 当前 checkpoint 是
-> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`；
-> 8E coverage 仍 planned，候选未注册。本批仅完成离线实现且 provider calls=0，黄金切片、生产准入和 8F 均未进入。
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`；
+> 8E coverage 仍 planned，候选未注册。RQ-232 已完成 exact-SHA 公共闭环，预检为
+> `pending_protocol_evidence`、provider calls=0；黄金切片、生产准入和 8F 均未进入。
 
 ## 2. 建议怎样学习每一个能力
 
@@ -899,7 +900,11 @@ RQ-231 设计阶段 provider calls=0，没有实现 V3 代码或创建考卷。�
 Token 墙为 `203000/608000`；全新三案例资产、Context、fixture、marker、协议和输入计划完成
 no-I/O 准入。
 
-实现提交 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归 `54 passed`，compileall、
-diff check、治理检查通过，provider calls=0、network=false。当前仍为 8-Advanced candidate-only，
-候选未注册，默认 Runtime、GLM-5.2 应急路径、Portal、Account、Workbench、Auth、路由、
-`production_media=0`、黄金切片、安全/部署/合规和 8F 均不变；下一步是同一提交的 exact-SHA 公共 CI。
+初始实现 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的公共运行 `33894351184` 暴露旧输入计划
+隔离和 V2 回执分流两处遗漏；修复 `f99c142c269df765deb592c463ce6e2555bcc3fe` 后，相关与相邻
+回归 `93 passed`，compileall、diff check、治理检查通过。Actions `33895602378` 三任务 exact-SHA
+全绿，公共 pytest `2379 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL
+`201 passed, 2 warnings`，packaging-smoke 通过；预检为 `pending_protocol_evidence`、provider calls=0。
+当前仍为 8-Advanced candidate-only，候选未注册，默认 Runtime、GLM-5.2 应急路径、Portal、Account、
+Workbench、Auth、路由、`production_media=0`、黄金切片、安全/部署/合规和 8F 均不变；下一步仅在
+明确授权后取得新鲜 G53-3-L。

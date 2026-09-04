@@ -1546,8 +1546,12 @@ RQ-232 仍属于 8-Advanced candidate-only，不增加或重排 8-Core。实现�
 调用墙冻结为 `9/27`，Token 墙为 `203000/608000`；全新 Dataset、Context、fixture、marker、
 协议和输入计划通过 no-I/O SHA 准入。
 
-实现提交 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归 `54 passed`，compileall、
-diff check、治理检查通过，provider calls=0。当前为
-`candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`；
-候选未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由、
-`production_media=0`、安全/部署/合规和 8F 边界不变。下一步只取得同 SHA 公共 CI，不能自动发起真实调用。
+初始实现 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的公共运行 `33894351184` 暴露旧输入计划
+零修订隔离和 V2 回执分流两处遗漏；修复提交 `f99c142c269df765deb592c463ce6e2555bcc3fe`
+保持旧调用方默认零修订，只有 V3 显式启用一次修订。相关与相邻回归 `93 passed`，compileall、
+diff check、治理检查通过；Actions `33895602378` 三任务 exact-SHA 全绿，公共 pytest 2379、
+PostgreSQL 201、packaging-smoke 通过。exact-SHA 预检为 `pending_protocol_evidence`、provider calls=0。
+当前为 `candidate-hardened-domain-v3-bounded-revision-implementation / completed-public /
+pending-fresh-g53-3l-authorization`；候选未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、
+Workbench、Auth、路由、`production_media=0`、安全/部署/合规和 8F 边界不变。下一步仅在明确
+授权后取得新鲜 G53-3-L，不能自动发起 V3 领域观察。

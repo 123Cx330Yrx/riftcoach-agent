@@ -1228,9 +1228,12 @@ streaming、黄金切片、部署/合规、`production_media=0` 和 8F 均不变
 修订兼容，V3 显式执行最多一次修订和同合同复评；body-free 诊断只投影轮次、分数、结论、通过
 项及类别/严重度计数。预算请求包络证明每案最多 9 次、全域 27 次调用，Token 墙为 `203000/608000`。
 
-全新三案例、Context、fixture、marker、协议和输入计划均通过 no-I/O 资产准入；实现提交
-`730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归 `54 passed`，compileall、diff check、
-治理检查通过，provider calls=0。当前进入
-`candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`；
+全新三案例、Context、fixture、marker、协议和输入计划均通过 no-I/O 资产准入。初始实现
+`730c32d074269fb45e5a5351b1af591ecaa35de1` 的公共运行 `33894351184` 暴露旧输入计划隔离和
+V2 回执分流两处遗漏；修复提交 `f99c142c269df765deb592c463ce6e2555bcc3fe` 让旧调用方保持
+默认零修订，只有 V3 显式启用一次修订。相关与相邻回归 `93 passed`，compileall、diff check、
+治理检查通过；Actions `33895602378` 三任务 exact-SHA 全绿，公共 pytest 2379、PostgreSQL 201、
+packaging-smoke 通过。exact-SHA 预检为 `pending_protocol_evidence`、provider calls=0。当前进入
+`candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`；
 候选未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由、streaming、
 黄金切片、生产安全/部署/合规、`production_media=0` 和 8F 均不变。

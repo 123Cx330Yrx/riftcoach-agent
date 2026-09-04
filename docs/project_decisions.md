@@ -3578,6 +3578,9 @@ GLM-5.2 手动兼容/应急路径、Portal、Account、Workbench、Auth、路由
 每案 `9`、全域 `27` 次调用及 `203000/608000` token；全新三案例资产和上下文身份通过 no-I/O
 准入。
 
-实现提交为 `730c32d074269fb45e5a5351b1af591ecaa35de1`，相关与相邻回归 `54 passed`，compileall、
-diff check、治理检查通过，provider calls=0。当前只等待同一实现 SHA 的公共 exact-SHA CI；不注册
-候选、不切换默认 Runtime、不移除 GLM-5.2 回退，也不进入真实协议或领域观察。
+初始实现为 `730c32d074269fb45e5a5351b1af591ecaa35de1`；其公共运行 `33894351184` 暴露旧输入计划
+零修订隔离和 V2 回执分流两处遗漏。接受修复提交 `f99c142c269df765deb592c463ce6e2555bcc3fe`：
+旧调用方继续默认零修订，只有 V3 显式使用一次修订，V2 回执按专属协议严格解析。相关与相邻回归
+`93 passed`，compileall、diff check、治理检查通过；Actions `33895602378` 三任务 exact-SHA 全绿。
+当前只等待用户明确授权的新鲜 G53-3-L；不注册候选、不切换默认 Runtime、不移除 GLM-5.2 回退，
+也不自动进入 V3 领域观察。

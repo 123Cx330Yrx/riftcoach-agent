@@ -4497,9 +4497,16 @@ RQ-232 把 RQ-231 的设计落成 8-Advanced candidate-only 控制面：共享�
 三案例资产和 no-I/O 准入入口。V3 每案最多 9 次、全域 27 次调用，Token 墙冻结为 `203000/608000`，
 预算报告内部 SHA 为 `93648818719df4ca1494203d1cf1d64f8dba27550546b2f44e9c5bb7b1c0b84e`。
 
-实现提交 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归为 `54 passed`，compileall、
-`git diff --check` 和治理检查通过；本批 `provider calls=0`、`network=false`。候选仍未注册，默认
-Runtime、GLM-5.2 兼容/应急路径、Portal、Account、Workbench、Auth、路由、`production_media=0`、
-黄金切片、安全/部署/合规和 8F 均不变。当前 checkpoint 为
-`candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci`；
-下一步只取得同一实现 SHA 的公共 exact-SHA CI，之后仍需新鲜 G53-3-L 和单独真实授权。
+初始实现提交 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的相关与相邻回归为 `54 passed`，但公共
+运行 `33894351184` 暴露两处版本隔离遗漏：旧输入计划未继续默认拒绝一次修订，V2 加固回执也被
+总检误分流为旧结果模型。修复提交 `f99c142c269df765deb592c463ce6e2555bcc3fe` 恢复旧调用方默认
+零修订，只有 V3 显式使用 `expected_max_revisions=1`，并按专属 `protocol_id` 严格解析 V2 回执。
+
+修复后的相关与相邻回归为 `93 passed`，compileall、`git diff --check` 和治理检查通过；Actions
+`33895602378` 三任务 exact-SHA 全绿，公共 pytest `2379 passed, 145 skipped, 2 warnings,
+127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，packaging-smoke 通过。exact-SHA 预检返回
+`pending_protocol_evidence`，本批 `provider calls=0`。候选仍未注册，默认 Runtime、GLM-5.2
+兼容/应急路径、Portal、Account、Workbench、Auth、路由、`production_media=0`、黄金切片、
+安全/部署/合规和 8F 均不变。当前 checkpoint 为
+`candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`；
+下一步仅在用户明确授权后取得新鲜 G53-3-L，不能自动进入 V3 领域观察。
