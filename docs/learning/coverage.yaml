@@ -829,9 +829,11 @@ groups:
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-public / pending-user-authorization
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision
     status: planned
     evidence:
       problem_and_principle:
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
         - docs/adr/0093-adopt-glm53-hardened-domain-v2-assets.md
         - docs/plans/2026-09-04-glm53-hardened-domain-v2-real-observation.md
@@ -962,6 +964,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       design_and_implementation:
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
         - docs/plans/2026-09-04-glm53-hardened-domain-v2-assets-implementation.md
         - docs/adr/0092-adopt-glm53-candidate-evidence-injection-hardening.md
@@ -1090,6 +1093,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       code_map:
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
         - docs/learning/8e-glm53-candidate-evidence-injection-hardening-walkthrough.md
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
@@ -1171,6 +1175,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       data_and_control_flow:
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
         - docs/plans/2026-09-04-glm53-flash-domain-evidence-injection-hardening.md
         - docs/learning/8e-glm53-candidate-evidence-injection-hardening-walkthrough.md
@@ -1266,6 +1271,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       verification:
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
         - docs/learning/8e-glm53-candidate-evidence-injection-hardening-walkthrough.md
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
@@ -1385,6 +1391,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       runbook:
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
         - docs/adr/0092-adopt-glm53-candidate-evidence-injection-hardening.md
         - docs/plans/2026-09-04-glm53-flash-domain-evidence-injection-hardening.md
@@ -1483,6 +1490,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       failure_security_boundary:
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
         - docs/adr/0093-adopt-glm53-hardened-domain-v2-assets.md
         - docs/adr/0092-adopt-glm53-candidate-evidence-injection-hardening.md
@@ -1609,6 +1617,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       interview_wording:
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
         - docs/learning/8e-glm53-candidate-evidence-injection-hardening-walkthrough.md
         - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md

@@ -1501,6 +1501,19 @@ RQ-230 仍属于 8-Advanced candidate-only，不增加或重排 8-Core。用户�
 资源墙和 exact-SHA 公共证明绑定；本地 no-I/O preflight 与 `107 passed` 相邻回归通过，
 provider calls=0。
 
-当前为 `completed-local / pending-public-ci`。公共绿灯后才在同一干净 SHA 上执行一次观察；
+此前为 `completed-local / pending-public-ci`；公共绿灯后已在同一干净 SHA 上执行一次观察，当前为
+`completed-real-observation / pending-next-decision`；
 GLM-5.2 手动应急/兼容路径、默认 Runtime、前端、Workbench、Auth、`production_media=0`、
 8E→8F 顺序及生产安全/部署/合规边界不变。
+
+#### RQ-230 真实观察结论
+
+实现 SHA `5fe8606f205d49ca5dde969a5823a0eb75587c35` 的 Actions `33846260144` 三任务
+exact-SHA 全绿；no-I/O preflight 通过后按授权执行一次 V2 观察。首案完成 3 次调用，
+证据来源数为 2、注入检查通过，但事实核验与质量门失败，修订预算耗尽，终态为
+`rejected / revision_budget_exhausted`，首错 `domain_case_outcome_mismatch`；后两案跳过。
+领域/累计 token 为 `10993/12084`，真实网络已使用。脱敏回执 SHA-256=
+`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，`admitted=false`。
+该结论只影响 8-Advanced 候选领域质量观察，不增加 8-Core、不注册候选，也不改变默认 Runtime、
+GLM-5.2 回退、Portal、Account、Workbench、Auth、路由、`production_media=0` 或 8F 顺序；
+当前进入 `candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`。

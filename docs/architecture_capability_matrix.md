@@ -1182,5 +1182,20 @@ exact-SHA 全绿（公共 Python 2349、PostgreSQL 201、前端 270）。因此�
 exact-SHA 公共证明和 `quality_hardening=True` 的强制组合。它复用串行预算与领域评测，不新增
 产品 A/Q、模型注册、默认路由、Workbench、Auth、部署或媒体能力。
 
-本地 no-I/O preflight、`107 passed` 相邻回归与 compileall 通过，provider calls=0；当前仅达到
-`candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`，尚无新的真实领域结论。
+本地 no-I/O preflight、`107 passed` 相邻回归与 compileall 通过；随后实现 SHA
+`5fe8606f205d49ca5dde969a5823a0eb75587c35` 的 Actions `33846260144` 三任务 exact-SHA 全绿，
+并按授权完成一次真实观察。当前进入
+`candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`，
+结论见下节。
+
+### RQ-230 真实观察边界
+
+运行器实现 SHA `5fe8606f205d49ca5dde969a5823a0eb75587c35` 的公共 Actions `33846260144`
+三任务全绿后，按授权执行一次真实 V2 观察。首案 3 次调用后因事实核验、质量门和终态匹配失败
+而以 `domain_case_outcome_mismatch` 停止，后两案跳过；领域/累计 token `10993/12084`，
+证据来源数 2、注入检查通过，最终 `admitted=false`。回执 SHA-256=
+`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，保持 body-free。
+
+该结果只关闭本次候选领域观察，不授予模型注册、产品 Runtime、streaming、黄金切片、部署/合规
+或 8F 能力；默认模型、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和
+`production_media=0` 均不变。下一步是失败归因与版本裁决，不重跑已消费考卷。

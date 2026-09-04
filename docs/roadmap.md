@@ -1652,5 +1652,20 @@ RQ-227 的协议或回执身份。真实执行器必须开启 `glm53-flash-domai
 exact-SHA 公共证明。
 
 本地 no-I/O preflight、`107 passed` 相邻回归与 compileall 通过，provider calls=0。当前
-checkpoint 为 `candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`；
-公共绿灯后只执行用户已授权的一次 V2 观察。8E、黄金切片、生产准入与 8F 仍未完成。
+checkpoint 曾为 `candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`；
+随后公共绿灯并完成一次 V2 观察，当前进入 `candidate-hardened-domain-v2-real-observation /
+completed-real-observation / pending-next-decision`。8E、黄金切片、生产准入与 8F 仍未完成。
+
+### RQ-230 真实观察结果（2026-09-04）
+
+实现 SHA `5fe8606f205d49ca5dde969a5823a0eb75587c35` 的 Actions `33846260144` 三任务
+exact-SHA 全绿；同一干净 SHA 的 no-I/O preflight 通过后，按授权只执行一次 V2 观察。
+首案 `hardened_form_control_41` 使用 3 次领域调用（领域/累计 token `10993/12084`），证据检索
+得到 2 个来源且注入检查通过，但事实核验、质量门和终态匹配失败，修订预算耗尽，
+`rejected / revision_budget_exhausted`，首错 `domain_case_outcome_mismatch`；其余两案跳过。
+回执 SHA-256=`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，
+`admitted=false`。这是 8-Advanced 领域质量/发布合同拒绝，不是 API 或适配器崩溃；不重跑本次或
+RQ-227 考卷，不注册候选。当前 checkpoint 为
+`candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`；
+默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由、`production_media=0`、
+黄金切片、安全/部署/合规和 8F 均不变。

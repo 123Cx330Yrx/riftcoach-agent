@@ -25,11 +25,12 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 [8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
 该记录不把 8E coverage、领域采用或生产成熟度标为完成。
 
-> 当前学习指针（2026-09-04，RQ-227）：先阅读 [低思考协议 walkthrough](8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md)、
-> [ADR-0091](../adr/0091-design-glm53-low-profile-heldout-domain-gate.md) 与 [实施计划](../plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md)。
+> 当前学习指针（2026-09-04，RQ-230）：先阅读 [V2 真实观察 walkthrough](8e-glm53-hardened-domain-v2-real-observation-walkthrough.md)、
+> [RQ-230 实施计划](../plans/2026-09-04-glm53-hardened-domain-v2-real-observation.md) 以及前置的
+> [ADR-0091](../adr/0091-design-glm53-low-profile-heldout-domain-gate.md)。
 > RQ-227 已在用户授权下完成一次且仅一次三案例低思考 held-out 领域观察，但因第 2 案证据缺失与注入安全检查失败而拒绝准入；当前 checkpoint 是
-> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`，
-> 8E coverage 仍 planned，候选未注册，第三案按首错停止跳过，黄金切片、生产准入和 8F 均未进入。
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`，
+> 8E coverage 仍 planned，候选未注册；RQ-230 首案因事实核验/质量门/终态不匹配停止，后两案跳过，黄金切片、生产准入和 8F 均未进入。
 
 ## 2. 建议怎样学习每一个能力
 
@@ -863,3 +864,13 @@ exact-SHA 全绿（公共 Python 2349、PostgreSQL 201、前端 270）。这只�
 
 本地 no-I/O preflight、`107 passed` 相邻回归与 compileall 已通过，provider calls=0。当前等待
 运行器实现的公共 CI；全绿后才执行用户本轮已授权的一次 V2 观察，候选和产品边界不变。
+### 2026-09-04：RQ-230 V2 有界真实领域观察结果
+
+详见 [RQ-230 真实观察 walkthrough](8e-glm53-hardened-domain-v2-real-observation-walkthrough.md)。
+实现 SHA `5fe8606f205d49ca5dde969a5823a0eb75587c35` 的 Actions `33846260144` 三任务全绿，
+no-I/O preflight 通过后按授权只执行一次观察。首案完成 3 次调用并成功检索 2 个来源、通过注入
+检查，但事实核验与质量门失败，修订预算耗尽，终态为 `rejected / revision_budget_exhausted`，
+首错 `domain_case_outcome_mismatch`；后两案跳过。领域/累计 token `10993/12084`，回执 SHA-256=
+`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，`admitted=false`。
+这说明领域发布合同仍未满足，不是 API 或适配器崩溃；候选未注册，产品 Runtime、GLM-5.2 回退、
+Portal、Account、Workbench、Auth、路由、`production_media=0` 与 8F 边界保持不变。

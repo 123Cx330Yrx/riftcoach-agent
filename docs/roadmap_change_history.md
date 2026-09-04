@@ -4440,7 +4440,28 @@ Auth、路由和 `production_media=0` 不变。当前 checkpoint 为
 本批新增独立 V2 Admission/Result/CLI，复用既有串行预算和逐案评测控制流，但强制
 `quality_hardening=True`，并绑定 RQ-229 六文件准入、真实 G53-3-L 证据与 exact-SHA 公共证明。
 
-本地 no-I/O preflight、相邻回归 `107 passed` 和 compileall 通过，provider calls=0；当前为
-`candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`。下一步仅为实现
-SHA 的公共三任务验证；全绿后才在同一干净 SHA 上执行本次已授权观察。候选注册、产品默认、
-Portal、Account、Workbench、Auth、路由与 `production_media=0` 不变。
+本地 no-I/O preflight、相邻回归 `107 passed` 和 compileall 通过，provider calls=0；当时为
+`candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`。随后实现 SHA
+`5fe8606f205d49ca5dde969a5823a0eb75587c35` 的 Actions `33846260144` 三任务全绿，并按授权完成一次
+V2 观察：首案 3 次调用后因事实核验/质量门/终态不匹配而停止，后两案跳过，最终 `admitted=false`。
+回执 SHA-256=`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，body-free 校验通过。
+当前为 `candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`；
+不重跑或覆盖考卷，不注册候选，产品默认、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由
+与 `production_media=0` 不变。
+
+## 2026-09-04：RQ-230 V2 有界真实领域观察
+
+实现 SHA `5fe8606f205d49ca5dde969a5823a0eb75587c35` 的 Actions `33846260144` 三任务
+exact-SHA 全绿，no-I/O preflight 通过。按用户授权只执行一次 V2 观察；首案
+`hardened_form_control_41` 消耗 3 次领域调用、领域/累计 token `10993/12084`，检索成功并有
+2 个来源，注入检查通过，但事实核验与质量门失败，修订预算耗尽，终态为
+`rejected / revision_budget_exhausted`，首错 `domain_case_outcome_mismatch`。后两案按停止规则
+跳过，最终 `admitted=false`。脱敏回执为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_hardened_domain_v2_rq230_v1.json`，
+7156 bytes，SHA-256=`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，
+schema/canonical/body-free 校验通过。
+
+这是 8-Advanced 候选领域质量/发布合同拒绝，不是 API、Provider 或适配器崩溃；不重跑或覆盖
+RQ-227/RQ-229 资产，不注册候选，不改变默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、
+Auth、路由、`production_media=0`、黄金切片、安全/部署/合规或 8F。当前 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`。

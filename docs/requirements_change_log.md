@@ -284,7 +284,7 @@ provider calls=0，仍需明确授权才执行真实协议门。
 
 | RQ-229 | 2026-09-04 | 生效并完成公共闭环；等待真实观察授权 | RQ-228 修复后不得重跑或改写 RQ-227 考卷；必须另立全新版本的协议、问题、合成数据、Context identity 和 marker，并先完成零外部调用准入 | 新 V2 准入绑定 `glm53-flash-domain-quality-v1`、至少一个来源、低思考/4096、原有调用/token 墙、零 retry/revision 和首个不安全失败即停；实现 `c50cf231957bc54201d0207b99110fcf4b2897b3` / Actions `33843064715` 三个任务 exact-SHA 全绿，公共 Python 2349、PostgreSQL 201、前端 270。本批不读 Key、不发请求、不注册候选、不改 GLM-5.2 应急路径或产品/前端链路；下一步仍需明确授权才可执行一次新的 V2 有界真实观察。 |
 
-| RQ-230 | 2026-09-04 | 生效；V2 专用运行器本地完成，等待公共 CI | 用户“继续”明确授权一次新的 V2 有界真实领域观察；旧 RQ-227 运行器身份不能用于新考卷，因此先补专用执行入口再运行 | 新 Admission/Result/CLI 必须绑定 RQ-229 六文件准入、既有真实 G53-3-L 证据、低思考/4096、质量加固与原资源墙，并要求 exact-SHA 公共 CI；本地 no-I/O preflight、107 项相邻回归和 compileall 通过，provider calls=0。公共全绿后可在同一干净 SHA 执行本次已授权的唯一一次观察；不注册候选、不改 GLM-5.2 应急路径、产品 Runtime 或前端。 |
+| RQ-230 | 2026-09-04 | 生效并完成一次 V2 有界真实观察；首案质量/终态不匹配而拒绝，后两案按首错停止；候选未注册、生产准入 false | 用户“继续”明确授权一次新的 V2 有界真实领域观察；旧 RQ-227 运行器身份不能用于新考卷，因此先补专用执行入口再运行；本条不重跑或改写 RQ-227/RQ-229 | 实现 SHA `5fe8606f205d49ca5dde969a5823a0eb75587c35` 的 Actions `33846260144` 三任务 exact-SHA 全绿；no-I/O preflight 通过后仅执行首案 3 次调用，领域/累计 token `10993/12084`，`network_used=true`。`hardened_form_control_41` 的 Provider/工具回合和证据检索完成（来源数 2、注入检查通过），但 `fact_check_failed`、`quality_gate_failed`、`terminal_status_mismatch` 导致 `rejected / revision_budget_exhausted`，首错 `domain_case_outcome_mismatch`，其余两案 skipped。脱敏 body-free/create-only 回执 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_hardened_domain_v2_rq230_v1.json` 为 7156 bytes、SHA-256=`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`；schema/canonical round-trip 通过。该结果是领域质量/发布合同拒绝，不是 API/适配器崩溃；不注册候选、不改默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由或 `production_media=0`。下一步只做失败归因与是否另立版本裁决。 |
 
 ## 新条目格式
 

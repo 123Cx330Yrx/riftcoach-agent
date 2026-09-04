@@ -113,9 +113,9 @@ RQ-226 又在用户“继续”授权后完成低思考 G53-3-L 的一次有界�
 `e2efe8fd75e8cf27cbee7e90484fc90d288ce065` 的 Actions `33832025848` 三个 job 全绿。RQ-229 又完成了
 全新加固领域 V2 协议与资产的 no-I/O 准入；实现
 `c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715` 三个任务 exact-SHA
-全绿。RQ-230 已在用户“继续”授权后完成 V2 专用真实运行器的本地实现，尚未调用模型。当前精确
-checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`。
+全绿。RQ-230 已在用户“继续”授权后完成 V2 专用真实运行器，并在同一 SHA 公共 CI 通过后完成一次
+有界真实观察；首案质量/终态不匹配，后两案按首错停止。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -413,7 +413,9 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`。
+RQ-230 已完成一次 V2 真实观察：首案因事实核验/质量门/终态不匹配在 3 次调用后停止，后两案跳过，
+最终 `admitted=false`；下一步只做失败归因与是否另立版本的裁决，不重跑本次或 RQ-227 考卷。
 RQ-227 的真实领域门已完成有界观察但拒绝准入：第 1 案通过，第 2 案因证据来源缺失与注入检查失败触发
 `unsafe_publication`，第 3 案冻结跳过；回执为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
@@ -3204,13 +3206,18 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 
 ## RQ-230 / 加固领域 V2 专用真实运行器（2026-09-04）
 
-- Status: complete-local; candidate-only; provider-calls-zero; pending-public-ci
+- Status: complete-real-observation; candidate-only; admitted=false; pending-next-decision
 - [authorized] 用户“继续”授权一次新的 V2 有界真实领域观察；执行前仍须先取得新运行器
   exact-SHA 公共 CI。
 - [implemented-local] 新 Admission/Result/CLI 绑定 RQ-229 资产、既有真实 G53-3-L 证据、质量
   加固版本和资源墙；只复用旧运行器的成熟预算/评测逻辑，不复用旧协议或回执身份。
 - [verification-local] no-I/O preflight 通过，聚焦与相邻回归 `107 passed`，compileall 通过；
-  `external_provider_calls=0`，尚未读取 Key、构造 Provider 或创建结果。
-- [boundary-next] 下一步只做实现 SHA 公共三任务验证；全绿后在同一干净 SHA 上执行本次已授权
-  的唯一一次 V2 观察。候选注册、产品默认、Portal、Account、Workbench、Auth、路由和
-  `production_media=0` 不变。
+  公共 Actions `33846260144` 三任务 exact-SHA 全绿，随后完成本次唯一一次 V2 观察。
+- [observation] 首案实际消耗领域 3/12、累计 6/15 调用（领域/累计 token `10993/12084`），
+  Provider 与工具回合完成，但事实核验与质量门失败，修订预算耗尽，终态为
+  `rejected / revision_budget_exhausted`，运行器以 `domain_case_outcome_mismatch` 停止；后两案跳过。
+- [evidence] 回执 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_hardened_domain_v2_rq230_v1.json`
+  为 7156 bytes、SHA-256=`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，
+  schema/canonical/body-free 校验通过。
+- [boundary-next] 候选仍未注册、生产准入 false；不重跑本次或 RQ-227 考卷。下一步只做失败归因
+  与是否另立版本裁决，产品默认、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。

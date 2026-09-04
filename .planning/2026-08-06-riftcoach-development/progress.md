@@ -6012,3 +6012,18 @@
 - [next] 当前 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`；
   下一步提交、推送并等待 exact-SHA 三任务全绿，然后执行本次已授权的唯一一次真实观察。
+
+## 2026-09-04：RQ-230 V2 有界真实领域观察完成
+
+- [public-ci] 实现 SHA `5fe8606f205d49ca5dde969a5823a0eb75587c35` 的 Actions `33846260144`
+  三任务 exact-SHA 全绿；no-I/O preflight 通过。
+- [real-observation] 使用现有 `GLM_API_KEY` 在进程内映射为仓库约定的 `LLM_API_KEY`，不落盘、不打印；
+  只执行一次 V2 观察。首案 `hardened_form_control_41` 3 次调用完成 Provider/工具交互，领域调用
+  `3/12`、累计 `6/15`，领域/累计 token `10993/12084`，`network_used=true`。
+- [result] 证据检索成功且来源数为 2、注入检查通过，但事实核验/质量门失败；修订预算耗尽，终态为
+  `rejected / revision_budget_exhausted`，失败码 `fact_check_failed`、`quality_gate_failed`、
+  `terminal_status_mismatch`，运行器以 `domain_case_outcome_mismatch` 停止；其余两案 skipped。
+- [evidence] 脱敏回执 7156 bytes，SHA-256=`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，
+  schema/canonical/body-free 校验通过；`admitted=false`。
+- [next] 当前进入 `candidate-hardened-domain-v2-real-observation / completed-real-observation /
+  pending-next-decision`，只等待失败归因与版本裁决，不重跑旧考卷或本次 V2。

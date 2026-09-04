@@ -5709,3 +5709,20 @@
 - [identity] 预检同时区分快照语义摘要与快照文件摘要，绑定六文件准入、G53-3-L 真实证据和
   当前实现/公共 CI SHA；任一不一致都在 Provider 构造前失败关闭。
 - [verification] no-I/O preflight、`107 passed` 相邻回归与 compileall 通过，provider calls=0。
+
+## 2026-09-04：RQ-230 V2 有界真实观察发现
+
+- [public-ci] 运行器实现 SHA `5fe8606f205d49ca5dde969a5823a0eb75587c35` 的 Actions
+  `33846260144` 三任务全绿，head SHA 精确匹配；真实执行前 no-I/O preflight 通过。
+- [configuration] 隔离树没有 `.env`，但当前进程存在未暴露内容的 `GLM_API_KEY`；仅在进程内映射到
+  仓库读取的 `LLM_API_KEY`，未写文件、未打印 Key。第一次启动因此在 Provider 创建前
+  `missing_api_key` fail closed，清理了它留下的 0 字节占位回执后才进行唯一真实执行。
+- [observation] 首案 `hardened_form_control_41` 3 次调用完成，`knowledge.search` 成功并得到 2 个
+  来源，注入检查通过；独立事实核验和质量门失败，修订预算耗尽，终态为
+  `rejected / revision_budget_exhausted`，失败码 `fact_check_failed`、`quality_gate_failed`、
+  `terminal_status_mismatch`，运行器以 `domain_case_outcome_mismatch` 停止；另两案 skipped。
+- [interpretation] 这是领域输出质量/发布合同拒绝，不是 API 认证、Provider 崩溃、适配器异常或
+  旧考卷失败的改写；不能据此宣称 GLM-5.3 一般能力失败，也不能注册候选或进入生产。
+- [evidence] 回执为 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_hardened_domain_v2_rq230_v1.json`，
+  7156 bytes、SHA-256=`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，
+  schema/canonical/body-free 校验通过。

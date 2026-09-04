@@ -3529,3 +3529,18 @@ RQ-229 六文件准入、RQ-228 质量版本、既有真实 G53-3-L 证据、低
 本地 no-I/O preflight、`107 passed` 相邻回归与 compileall 通过，provider calls=0。先取得实现
 SHA 公共绿灯，再执行本次已授权的唯一一次观察；不注册候选、不改变产品 Runtime、GLM-5.2
 应急路径、Portal、Account、Workbench、Auth、路由或 `production_media=0`。
+
+### RQ-230 真实观察裁决（2026-09-04）
+
+接受本次一次性观察的拒绝事实，不把它改写为准入。实现 SHA
+`5fe8606f205d49ca5dde969a5823a0eb75587c35` 的 Actions `33846260144` 三任务全绿；
+no-I/O preflight 通过后，首案消耗 3 次调用并完成 Provider/工具交互，得到 2 个证据来源且
+注入检查通过，但独立事实核验、质量门和终态匹配失败，修订预算耗尽，首错为
+`domain_case_outcome_mismatch`，后两案跳过。领域/累计 token 为 `10993/12084`，脱敏回执
+SHA-256=`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，
+`admitted=false`。
+
+该结论属于 8-Advanced 候选领域质量/发布合同，不是 API、Provider 或适配器崩溃；不重跑
+RQ-227/RQ-229 或本次考卷，不注册候选，不改变默认 Runtime、GLM-5.2 兼容/应急路径、Portal、
+Account、Workbench、Auth、路由、`production_media=0`、黄金切片、安全/部署/合规或 8F。
+下一步只做失败归因和是否另立版本的裁决。
