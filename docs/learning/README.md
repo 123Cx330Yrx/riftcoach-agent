@@ -32,8 +32,8 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 > [V3 设计](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-design.md) 和
 > [详细实施计划](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-implementation.md)。
 > 当前 checkpoint 是
-> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`；
-> 8E coverage 仍 planned，候选未注册。新鲜协议尝试没有生成回执，当前只完成计时口径的本地修复；
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-public / pending-fresh-g53-3l-reauthorization`；
+> 8E coverage 仍 planned，候选未注册。新鲜协议尝试没有生成回执，计时口径修复已通过公共 CI；
 > 黄金切片、生产准入和 8F 均未进入。
 
 ## 2. 建议怎样学习每一个能力
@@ -918,5 +918,6 @@ Workbench、Auth、路由、`production_media=0`、黄金切片、安全/部署/
 协议通过结论，也不补写不可核验的精确调用数。
 
 修复让回执采用协议案例延迟之和，预算账本及模型请求、资源墙、结构化响应、工具往返和准入合同
-保持不变；推进时钟测试覆盖旧固定时钟遗漏。聚焦 `18 passed`、相关相邻 `32 passed`，当前等待
-修复提交的公共 exact-SHA CI，不自动重跑真实协议。
+保持不变；推进时钟测试覆盖旧固定时钟遗漏。聚焦 `18 passed`、相关相邻 `32 passed`；修复提交
+`110f9e8008486bfb976643a6abdaa8e88ea334e6` 的 Actions `33897787039` 三任务 exact-SHA 全绿，
+公共 pytest 2380、PostgreSQL 201、packaging-smoke 通过。当前等待新的真实协议授权，不自动重跑。

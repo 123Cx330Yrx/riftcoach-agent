@@ -4520,5 +4520,7 @@ RQ-232 把 RQ-231 的设计落成 8-Advanced candidate-only 控制面：共享�
 根因不是模型/API，而是本地两层计时语义混用：预算包装器累计 Provider I/O 延迟，协议案例累计
 解析与工具执行在内的端到端延迟；回执验证器要求后者之和，构造器却传入前者。修复改为对协议案例
 延迟求和，并以推进时钟补上旧固定时钟测试遗漏。聚焦回归 `18 passed`，相关相邻 `32 passed`。
-当前进入 `candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`；候选、
-默认 Runtime、GLM-5.2 回退、产品/前端和 V3 领域边界均不变。
+修复提交 `110f9e8008486bfb976643a6abdaa8e88ea334e6` 的 Actions `33897787039` 三任务 exact-SHA
+全绿，公共 pytest 2380、PostgreSQL 201、packaging-smoke 通过。当前进入
+`candidate-fresh-g53-3l-receipt-latency-fix / completed-public / pending-fresh-g53-3l-reauthorization`；
+候选、默认 Runtime、GLM-5.2 回退、产品/前端和 V3 领域边界均不变。

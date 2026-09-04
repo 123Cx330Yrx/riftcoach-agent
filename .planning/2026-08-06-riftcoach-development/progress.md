@@ -6076,7 +6076,9 @@
   `latency total does not match protocol` 失败；没有生成结果文件，也不自动重跑。
 - [implementation] `GLM53LowProfileProtocolReport.latency_ms` 改为协议案例端到端延迟之和；
   Provider I/O 预算计时和全部请求/资源/准入合同不变。新增推进时钟防止固定时钟再次掩盖差异。
-- [verification] 聚焦回归 `18 passed`，协议、预算、V2/V3 相邻回归 `32 passed`。
+- [verification] 聚焦回归 `18 passed`，协议、预算、V2/V3 相邻回归 `32 passed`；修复提交
+  `110f9e8008486bfb976643a6abdaa8e88ea334e6` 的 Actions `33897787039` 三任务 exact-SHA
+  全绿，公共 pytest 2380、PostgreSQL 201、packaging-smoke 通过。
 - [boundary-next] 当前 checkpoint 为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`；
-  下一步只做 exact-SHA 公共 CI。新的真实协议与 V3 领域观察仍分别需要后续授权。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-public / pending-fresh-g53-3l-reauthorization`；
+  下一步等待重新授权。新的真实协议与 V3 领域观察仍分别需要后续授权。

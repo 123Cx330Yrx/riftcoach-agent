@@ -1246,5 +1246,7 @@ packaging-smoke 通过。exact-SHA 预检为 `pending_protocol_evidence`、provi
 不会再次因口径混用拒绝回执。
 
 已授权的真实尝试没有生成证据文件，不能标记协议通过或补写精确调用数；只确认最多 3 次和 SDK
-零重试。当前为 `candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`，
-产品能力矩阵、候选注册、GLM-5.2 回退、streaming、黄金切片和生产边界均不变。
+零重试。修复 `110f9e8008486bfb976643a6abdaa8e88ea334e6` / Actions `33897787039` 已取得
+exact-SHA 三任务公共绿灯。当前为 `candidate-fresh-g53-3l-receipt-latency-fix / completed-public /
+pending-fresh-g53-3l-reauthorization`，产品能力矩阵、候选注册、GLM-5.2 回退、streaming、黄金切片
+和生产边界均不变。

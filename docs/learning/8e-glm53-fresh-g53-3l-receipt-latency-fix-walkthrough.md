@@ -33,12 +33,14 @@ Provider/API 错误，却在最后的回执校验阶段失败。原则是：没�
 
 真实失败是本次红灯证据：`latency total does not match protocol`，且目标回执不存在。新增推进时钟
 测试会让旧实现稳定失败；修复后聚焦回归 `18 passed`，协议、预算和 V2/V3 相邻回归 `32 passed`。
-公共 exact-SHA CI 尚待完成，因此当前只能标记为本地完成。
+修复提交 `110f9e8008486bfb976643a6abdaa8e88ea334e6` 的 Actions `33897787039` 三任务 exact-SHA
+全绿：公共 pytest `2380 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL
+`201 passed, 2 warnings`，packaging-smoke 通过。
 
 ## 6. 运行手册
 
 先运行 `tests/test_glm53_low_profile_protocol.py` 和 V3 gate 相邻测试，再执行 compileall、
-`git diff --check` 与治理检查。公共 CI 全绿后，必须由用户重新授权；新的真实运行必须使用新文件名、
+`git diff --check` 与治理检查。当前公共 CI 已全绿，但仍必须由用户重新授权；新的真实运行必须使用新文件名、
 create-only 写入和与公共 CI 相同的实现 SHA。
 
 ## 7. 失败、安全与边界

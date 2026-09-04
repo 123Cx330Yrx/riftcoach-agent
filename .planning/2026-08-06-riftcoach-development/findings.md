@@ -5779,5 +5779,7 @@
   延迟之和，构造器却传入预算延迟。旧测试固定时钟为常数，把两者都压成零。
 - [correction] 回执改为对协议案例 `latency_ms` 求和，预算账本保持原语义；推进时钟测试证明旧实现
   会失败而新实现通过。聚焦 `18 passed`，相关相邻 `32 passed`。
-- [next] 进入 `candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`；
-  只取得修复 SHA 的公共 CI，不自动重跑真实协议或进入 V3 领域观察。
+- [verification-public] 修复 `110f9e8008486bfb976643a6abdaa8e88ea334e6` 的 Actions
+  `33897787039` 三任务 exact-SHA 全绿；公共 pytest 2380、PostgreSQL 201、packaging-smoke 通过。
+- [next] 进入 `candidate-fresh-g53-3l-receipt-latency-fix / completed-public /
+  pending-fresh-g53-3l-reauthorization`；不自动重跑真实协议或进入 V3 领域观察。

@@ -26,6 +26,8 @@
 
 ## 当前边界与下一步
 
-当前只完成本地修复，尚未形成新的真实协议回执。候选仍 disabled/未注册，默认 Runtime、GLM-5.2
-兼容/应急路径、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。公共 CI
-通过后仍须用户重新授权，才可在新实现 SHA 上再执行一次新鲜 G53-3-L；V3 领域观察继续单独授权。
+修复提交 `110f9e8008486bfb976643a6abdaa8e88ea334e6` 的 Actions `33897787039` 三任务 exact-SHA
+全绿，公共 pytest 2380、PostgreSQL 201、packaging-smoke 通过；尚未形成新的真实协议回执。候选仍
+disabled/未注册，默认 Runtime、GLM-5.2 兼容/应急路径、Portal、Account、Workbench、Auth、路由和
+`production_media=0` 不变。仍须用户重新授权，才可在该实现 SHA 上再执行一次新鲜 G53-3-L；V3
+领域观察继续单独授权。

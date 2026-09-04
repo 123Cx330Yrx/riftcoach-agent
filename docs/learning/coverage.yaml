@@ -834,6 +834,7 @@ groups:
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-public / pending-fresh-g53-3l-reauthorization
     status: planned
     evidence:
       problem_and_principle:

@@ -1721,6 +1721,8 @@ RQ-232 公共闭环后的新鲜协议运行已获授权，但在 create-only 回
 
 缺陷来自预算层 Provider I/O 延迟和协议层端到端案例延迟的混用。修复令回执总延迟采用协议案例
 之和，保持预算账本及请求、Token、结构化响应、工具往返和所有准入门不变；推进时钟回归覆盖真实
-时间流逝。聚焦 `18 passed`、相关相邻 `32 passed`。当前 checkpoint 为
-`candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci`；公共 CI 通过后仍需
-新的真实调用授权，V3 领域观察继续单独授权。
+时间流逝。聚焦 `18 passed`、相关相邻 `32 passed`。修复
+`110f9e8008486bfb976643a6abdaa8e88ea334e6` 的 Actions `33897787039` 三任务 exact-SHA 全绿，
+公共 pytest 2380、PostgreSQL 201、packaging-smoke 通过。当前 checkpoint 为
+`candidate-fresh-g53-3l-receipt-latency-fix / completed-public / pending-fresh-g53-3l-reauthorization`；
+仍需新的真实调用授权，V3 领域观察继续单独授权。
