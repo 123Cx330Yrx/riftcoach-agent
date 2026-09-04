@@ -1643,3 +1643,14 @@ GLM-5.2 手动兼容/应急路径、默认 Runtime、Portal、Account、Workbenc
 `production_media=0` 不变；8E 仍在进行，8F 未开始。当前 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-public / pending-user-authorization`。
 下一步等待用户明确授权一次新的 V2 有界真实领域观察，当前不调用模型。
+
+## RQ-230：加固领域 V2 专用真实运行器（2026-09-04）
+
+为 RQ-229 新考卷新增独立 V2 Admission/Result/CLI，复用成熟的串行预算与逐案评测，不沿用
+RQ-227 的协议或回执身份。真实执行器必须开启 `glm53-flash-domain-quality-v1`，并绑定
+六文件准入、真实 G53-3-L 证据、低思考/4096、4/12 调用墙、24,000/72,000 token 墙和
+exact-SHA 公共证明。
+
+本地 no-I/O preflight、`107 passed` 相邻回归与 compileall 通过，provider calls=0。当前
+checkpoint 为 `candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`；
+公共绿灯后只执行用户已授权的一次 V2 观察。8E、黄金切片、生产准入与 8F 仍未完成。

@@ -3518,3 +3518,14 @@ exact-SHA 全绿（公共 Python 2349、PostgreSQL 201、前端 270）；provide
 该接受不注册候选、不改变默认 Runtime，
 不删除 GLM-5.2 手动兼容/应急路径，不改 Portal、Account、Workbench、Auth、路由或
 `production_media=0`。下一步等待用户明确授权一次新的 V2 有界真实领域观察；当前不调用模型。
+
+### RQ-230：接受独立 V2 真实运行入口（2026-09-04）
+
+用户“继续”授权一次新的 V2 有界真实领域观察。接受专用 Admission/Result/CLI 方案，拒绝把
+RQ-229 路径直接塞给固定旧身份的 RQ-227 运行器。新入口复用成熟预算/评测控制流，但必须绑定
+RQ-229 六文件准入、RQ-228 质量版本、既有真实 G53-3-L 证据、低思考/4096 与 exact-SHA 公共 CI，
+并强制真实执行器 `quality_hardening=True`。
+
+本地 no-I/O preflight、`107 passed` 相邻回归与 compileall 通过，provider calls=0。先取得实现
+SHA 公共绿灯，再执行本次已授权的唯一一次观察；不注册候选、不改变产品 Runtime、GLM-5.2
+应急路径、Portal、Account、Workbench、Auth、路由或 `production_media=0`。

@@ -4433,3 +4433,14 @@ disabled/未注册，GLM-5.2 手动兼容/应急路径、默认 Runtime、Portal
 Auth、路由和 `production_media=0` 不变。当前 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-public / pending-user-authorization`；
 下一步等待用户明确授权一次新的 V2 有界真实领域观察，当前不调用模型。
+
+## 2026-09-04：RQ-230 加固领域 V2 专用真实运行器
+
+用户“继续”授权一次新的 V2 有界真实领域观察。由于旧运行器固定 RQ-227 协议与资产身份，
+本批新增独立 V2 Admission/Result/CLI，复用既有串行预算和逐案评测控制流，但强制
+`quality_hardening=True`，并绑定 RQ-229 六文件准入、真实 G53-3-L 证据与 exact-SHA 公共证明。
+
+本地 no-I/O preflight、相邻回归 `107 passed` 和 compileall 通过，provider calls=0；当前为
+`candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`。下一步仅为实现
+SHA 的公共三任务验证；全绿后才在同一干净 SHA 上执行本次已授权观察。候选注册、产品默认、
+Portal、Account、Workbench、Auth、路由与 `production_media=0` 不变。

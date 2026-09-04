@@ -113,8 +113,9 @@ RQ-226 又在用户“继续”授权后完成低思考 G53-3-L 的一次有界�
 `e2efe8fd75e8cf27cbee7e90484fc90d288ce065` 的 Actions `33832025848` 三个 job 全绿。RQ-229 又完成了
 全新加固领域 V2 协议与资产的 no-I/O 准入；实现
 `c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715` 三个任务 exact-SHA
-全绿。当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-public / pending-user-authorization`。
+全绿。RQ-230 已在用户“继续”授权后完成 V2 专用真实运行器的本地实现，尚未调用模型。当前精确
+checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -412,7 +413,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-public / pending-user-authorization`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`。
 RQ-227 的真实领域门已完成有界观察但拒绝准入：第 1 案通过，第 2 案因证据来源缺失与注入检查失败触发
 `unsafe_publication`，第 3 案冻结跳过；回执为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
@@ -420,7 +421,8 @@ RQ-227 的真实领域门已完成有界观察但拒绝准入：第 1 案通过�
 RQ-228 只在候选入口加固上述两条边界，默认产品与 GLM-5.2 兼容路径不变；同一实现 SHA 的
 公共 CI 已全绿。RQ-229 已另立全新协议/资产版本并完成 no-I/O 准入；实现
 `c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715` 三个任务 exact-SHA
-全绿。下一动作是等待用户明确授权一次新的 V2 有界真实领域观察，不重跑同一 held-out 资产。
+全绿。用户已授权一次新的 V2 有界真实领域观察；RQ-230 运行器本地完成后，下一动作先取得其
+实现 SHA 的公共 CI，再在同一干净 SHA 上执行，不重跑同一 held-out 资产。
 RQ-217 的真实回执绑定实现/观察器/输入计划提交
 `3e028b1217f1274152ba161993287f29188a1b73`，文件为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`，
@@ -3199,3 +3201,16 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [boundary-next] 候选仍 disabled/未注册，GLM-5.2 手动兼容/应急路径、默认 Runtime、Portal、
   Account、Workbench、Auth、路由和 `production_media=0` 不变。下一步等待用户明确授权一次
   新的 V2 有界真实领域观察；当前不调用模型。
+
+## RQ-230 / 加固领域 V2 专用真实运行器（2026-09-04）
+
+- Status: complete-local; candidate-only; provider-calls-zero; pending-public-ci
+- [authorized] 用户“继续”授权一次新的 V2 有界真实领域观察；执行前仍须先取得新运行器
+  exact-SHA 公共 CI。
+- [implemented-local] 新 Admission/Result/CLI 绑定 RQ-229 资产、既有真实 G53-3-L 证据、质量
+  加固版本和资源墙；只复用旧运行器的成熟预算/评测逻辑，不复用旧协议或回执身份。
+- [verification-local] no-I/O preflight 通过，聚焦与相邻回归 `107 passed`，compileall 通过；
+  `external_provider_calls=0`，尚未读取 Key、构造 Provider 或创建结果。
+- [boundary-next] 下一步只做实现 SHA 公共三任务验证；全绿后在同一干净 SHA 上执行本次已授权
+  的唯一一次 V2 观察。候选注册、产品默认、Portal、Account、Workbench、Auth、路由和
+  `production_media=0` 不变。

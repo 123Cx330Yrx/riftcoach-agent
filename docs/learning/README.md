@@ -854,3 +854,12 @@ no-I/O 准入把六类文件身份与质量版本、来源下限和原有预算/
 exact-SHA 全绿（公共 Python 2349、PostgreSQL 201、前端 270）。这只证明新考卷干净且可安全
 开考，provider calls=0；候选仍未注册，产品与前端边界不变。下一 checkpoint 等待用户明确授权
 一次新的 V2 有界真实领域观察。
+
+### 2026-09-04：RQ-230 加固领域 V2 专用真实运行器
+
+新增 [RQ-230 实施计划](../plans/2026-09-04-glm53-hardened-domain-v2-real-observation.md)。
+本批把“新考卷可安全开考”推进为“有独立身份的真实运行入口”：复用成熟的串行预算和领域评测，
+但要求六文件准入、真实 G53-3-L 证据、exact-SHA 公共证明与 `quality_hardening=True` 同时成立。
+
+本地 no-I/O preflight、`107 passed` 相邻回归与 compileall 已通过，provider calls=0。当前等待
+运行器实现的公共 CI；全绿后才执行用户本轮已授权的一次 V2 观察，候选和产品边界不变。

@@ -6001,3 +6001,14 @@
 - [next] 当前 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-public / pending-user-authorization`；
   下一步等待用户明确授权一次新的 V2 有界真实领域观察，当前不调用模型。
+
+## 2026-09-04：RQ-230 加固领域 V2 专用真实运行器
+
+- [authorized] 用户“继续”授权一次新 V2 有界真实领域观察；先补专用运行器和公共 CI。
+- [implemented] 新增 V2 Admission/Result/CLI 和只读命名 SHA 投影；强制质量加固、低思考/4096、
+  资源墙、既有真实协议证据和 exact-SHA 公共证明。
+- [verified-local] 首次红灯为新模块不存在；修复快照语义/文件摘要区分后，聚焦与相邻回归
+  `107 passed`，no-I/O preflight、compileall 通过，provider calls=0。
+- [next] 当前 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`；
+  下一步提交、推送并等待 exact-SHA 三任务全绿，然后执行本次已授权的唯一一次真实观察。

@@ -137,6 +137,7 @@ class GLM53HardenedDomainAssetAdmission(_FrozenModel):
         QUALITY_HARDENING_VERSION
     )
     minimum_evidence_sources: Literal[1] = 1
+    snapshot_sha256: Sha256Text
     case_ids: tuple[NonBlankText, ...]
     forbidden_marker_sha256: tuple[Sha256Text, ...]
     artifact_sha256: tuple[Sha256Text, ...]
@@ -155,6 +156,30 @@ class GLM53HardenedDomainAssetAdmission(_FrozenModel):
         ):
             raise ValueError("hardened V2 marker digests must be unique")
         return self
+
+    @property
+    def protocol_file_sha256(self) -> str:
+        return self.artifact_sha256[0]
+
+    @property
+    def dataset_sha256(self) -> str:
+        return self.artifact_sha256[1]
+
+    @property
+    def input_plan_sha256(self) -> str:
+        return self.artifact_sha256[2]
+
+    @property
+    def snapshot_file_sha256(self) -> str:
+        return self.artifact_sha256[3]
+
+    @property
+    def summary_fixture_sha256(self) -> str:
+        return self.artifact_sha256[4]
+
+    @property
+    def report_fixture_sha256(self) -> str:
+        return self.artifact_sha256[5]
 
 
 def admit_hardened_domain_assets(
@@ -287,6 +312,7 @@ def admit_hardened_domain_assets(
         plan.deterministic_report_path,
     )
     return GLM53HardenedDomainAssetAdmission(
+        snapshot_sha256=snapshot.snapshot_sha256,
         case_ids=CASE_IDS,
         forbidden_marker_sha256=tuple(_sha256_text(marker) for marker in markers),
         artifact_sha256=tuple(_sha256_file(path) for path in artifacts),

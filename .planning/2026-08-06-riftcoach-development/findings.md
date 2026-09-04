@@ -5700,3 +5700,12 @@
   `33843064715` 与 head SHA 精确匹配，三个任务均成功；公共 Python `2349 passed, 145 skipped,
   2 warnings, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 2 warnings`，前端 `270 passed`。
   这只关闭 V2 资产与准入器的公共可复现性，不替代真实领域观察。
+
+## 2026-09-04：RQ-230 加固领域 V2 运行器发现
+
+- [gap] RQ-229 只证明新考卷可开考；旧 RQ-227 运行器固定旧协议/资产类型，不能只替换文件路径。
+- [reuse] 新运行器用独立 V2 Admission/Result 身份复用已验证的串行预算和逐案评测控制流，避免
+  复制整个执行栈；真实执行器额外强制 `quality_hardening=True`。
+- [identity] 预检同时区分快照语义摘要与快照文件摘要，绑定六文件准入、G53-3-L 真实证据和
+  当前实现/公共 CI SHA；任一不一致都在 Provider 构造前失败关闭。
+- [verification] no-I/O preflight、`107 passed` 相邻回归与 compileall 通过，provider calls=0。

@@ -1175,3 +1175,12 @@ Auth、部署或媒体能力。GLM-5.2 仍只作显式手动应急/兼容路径�
 exact-SHA 全绿（公共 Python 2349、PostgreSQL 201、前端 270）。因此当前达到
 `candidate-hardened-domain-v2-assets / completed-public / pending-user-authorization`；
 它不证明模型领域质量、黄金切片、生产准入、安全/合规或 8F 完成。
+
+## RQ-230：加固领域 V2 真实运行能力边界（2026-09-04）
+
+新增的是 8-Advanced 的候选执行控制能力：独立 V2 结果身份、六文件准入、既有真实协议证据、
+exact-SHA 公共证明和 `quality_hardening=True` 的强制组合。它复用串行预算与领域评测，不新增
+产品 A/Q、模型注册、默认路由、Workbench、Auth、部署或媒体能力。
+
+本地 no-I/O preflight、`107 passed` 相邻回归与 compileall 通过，provider calls=0；当前仅达到
+`candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci`，尚无新的真实领域结论。

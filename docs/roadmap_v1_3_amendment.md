@@ -1493,3 +1493,14 @@ no-I/O 准入绑定质量版本、来源下限和原有预算/停止规则，`ex
 exact-SHA 全绿（公共 Python 2349、PostgreSQL 201、前端 270）。当前为
 `completed-public / pending-user-authorization`；下一步等待用户明确授权一次新的 V2 有界真实领域观察。
 真实模型观察、黄金切片、生产安全/部署/合规与 8F 都不能由资产公共闭环替代。
+
+### RQ-230：加固领域 V2 专用真实运行器（2026-09-04）
+
+RQ-230 仍属于 8-Advanced candidate-only，不增加或重排 8-Core。用户已授权一次 V2 真实观察，
+但执行前先用独立 V2 Admission/Result/CLI 把 RQ-229 资产、RQ-228 质量加固、既有真实协议证据、
+资源墙和 exact-SHA 公共证明绑定；本地 no-I/O preflight 与 `107 passed` 相邻回归通过，
+provider calls=0。
+
+当前为 `completed-local / pending-public-ci`。公共绿灯后才在同一干净 SHA 上执行一次观察；
+GLM-5.2 手动应急/兼容路径、默认 Runtime、前端、Workbench、Auth、`production_media=0`、
+8E→8F 顺序及生产安全/部署/合规边界不变。
