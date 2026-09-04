@@ -1444,3 +1444,23 @@ Auth、路由或 `production_media=0`；下一精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`。
 提交 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions `33787508488` 三 job exact-SHA
 全绿；公共 pytest 为 `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`，之后仍需明确授权才可真实执行。
+
+### RQ-227：低思考 held-out 领域门的失败归因边界（2026-09-04）
+
+RQ-227 继续遵守 v1.3 的 8-Core/8-Advanced 分层：一次协议门通过不能替代领域质量门，
+也不能把候选注册成产品唯一模型。用户授权后，在入口修复提交
+`659757eca7ff1b658dfd164631512d3964c5a2ff` 及其 exact-SHA 公共 Actions `33826568517`
+上执行一次全新的三案例低思考领域门；三 job 均成功，真实领域调用 6 次，累计（含协议）9/15
+次，领域/累计 token 为 17834/18925。
+
+脱敏回执
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
+（7537 bytes，SHA-256=`b9fbebacf5c277c6b2cd57f018ff58cfb2646dbad95f6cdc9e90822646a68400`）显示：
+首案 Evaluation 96 通过；第二案回答完成、Evaluation 97，但没有证据来源且注入检查失败，
+触发 `evidence_missing/unsafe_publication`，按首错停止，第三案 skipped；最终
+`admitted=false`。该失败说明领域发布安全/证据链未闭合，不能归因成 API 不可达或直接推断模型
+一般能力。候选仍 disabled/未注册，8-Core、默认模型、产品 Runtime、Portal、Account、Workbench、
+Auth、路由、streaming、黄金切片和 `production_media=0` 不变；同一 held-out 考卷与回执不得重跑/覆盖。
+当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`，
+下一步先做失败归因与是否另立版本的裁决，8F 仍在后面。

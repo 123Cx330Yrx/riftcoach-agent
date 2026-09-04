@@ -1128,3 +1128,24 @@ disabled/未注册，`production_admitted=false`，默认模型、产品 Runtime
 Workbench、Auth、路由和 `production_media=0` 不变。held-out 领域质量、streaming 生产能力、
 黄金切片、安全/部署/合规与 8F 仍未验证。当前精确 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-protocol / completed-real-observation / pending-next-decision`。
+
+## RQ-227：低思考 held-out 领域门的能力边界（2026-09-04）
+
+RQ-227 没有新增 8-Core 或产品 A/Q 能力。它在 8-Advanced 的 evaluation-only 作用域中运行
+一次新鲜三案例领域门，固定 `zhipu/glm-5.3-flash`、低思考/4096、90/120 秒、零重试/无恢复/无
+修订和首错停止；入口修复提交 `659757eca7ff1b658dfd164631512d3964c5a2ff` 的 Actions
+`33826568517` 三 job exact-SHA 全绿。
+
+真实回执为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
+（7537 bytes，SHA-256=`b9fbebacf5c277c6b2cd57f018ff58cfb2646dbad95f6cdc9e90822646a68400`），
+领域调用 6 次、领域 token 17834、累计 token 18925、`network_used=true`，且保持 body-free/create-only。
+首案 Evaluation 96 通过；第二案 Evaluation 97 但证据来源为空、注入检查失败，触发
+`evidence_missing/unsafe_publication` 并停止第三案。最终 `admitted=false`、候选未注册、
+`production_admitted=false`。这是领域安全/证据失败，不是 API 崩溃，也不授予模型或产品能力。
+
+因此候选仍 disabled、`capabilities.streaming=False`，严格 Flash v1、默认模型、Runtime、Portal、
+Account、Workbench、Auth、路由、黄金切片和 `production_media=0` 不变；同一 held-out 资产/回执不可
+重跑或覆盖。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`，
+先等待失败归因与是否另立版本的裁决。

@@ -1,7 +1,7 @@
 # ADR-0091：设计 GLM-5.3 Flash 低思考候选独立领域门
 
 - 日期：2026-09-03
-- 状态：`protocol-assets-public-ci / candidate-only / pending-user-authorization`
+- 状态：`domain-gate-observed-rejected / candidate-only / next-decision-pending`
 - 范围：Stage 8 / 8E；RQ-222
 
 ## 背景
@@ -99,6 +99,28 @@ Account、Workbench、Auth、路由或 `production_media=0`。当前精确检查
 实现提交 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions run `33787508488`
 三 job exact-SHA 全绿（公共 pytest `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`）；
 仍需另一次明确授权才可执行真实协议门。
+
+## RQ-227 真实领域门结果（2026-09-04）
+
+在 RQ-226 的低思考协议门完成后，用户“继续”授权一次独立三案例 held-out 领域运行。入口修复
+提交 `659757eca7ff1b658dfd164631512d3964c5a2ff` 的 Actions `33826568517` 三 job exact-SHA
+全绿；运行仍固定低思考/4096、90/120 秒、零重试、无恢复/修订，候选保持 evaluation-only。
+
+真实回执
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
+为 `7537` bytes、SHA-256=`b9fbebacf5c277c6b2cd57f018ff58cfb2646dbad95f6cdc9e90822646a68400`，
+body-free/create-only。领域调用 6 次（含协议累计 9/15），领域 token 17834、累计 token 18925，
+网络已使用。首案 `low_gate_baseline_17` Evaluation 96 通过；第二案
+`low_gate_user_boundary_23` Evaluation 97 且回答完成，但证据来源为空、注入检查失败，触发
+`evidence_missing/unsafe_publication`，全局首错停止；第三案按合同 skipped。最终
+`admitted=false`、`candidate_registered=false`、`production_admitted=false`。
+
+该结果只证明当前适配链在一个新鲜领域门上暴露了可定位的证据/安全发布缺口；它不是 API 崩溃，
+也不证明或否定模型一般能力。不得重跑或覆盖同一 held-out 资产/回执，不因失败静默修改产品
+Runtime、默认模型、Portal、Account、Workbench、Auth、路由、streaming 或 `production_media=0`。
+当前精确检查点为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`；
+下一步先进行失败归因与是否另立版本的裁决。
 
 ## RQ-226 真实协议门更新（2026-09-04）
 

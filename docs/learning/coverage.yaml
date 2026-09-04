@@ -825,6 +825,7 @@ groups:
     covers:
       - 8e-productization
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision
     status: planned
     evidence:
       problem_and_principle:

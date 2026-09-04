@@ -5949,3 +5949,21 @@
   稳定性、streaming 生产能力、黄金切片、安全/部署/合规或 8F。下一精确 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-protocol / completed-real-observation / pending-next-decision`；
   等待是否另行授权独立领域门。
+
+## 2026-09-04：RQ-227 低思考三案例 held-out 领域门真实观察
+
+- [authorized] 用户“继续”授权一次且仅一次的三案例领域观察；固定 `low + 4096`、每案最多 4 次/全域
+  12 次调用、24,000/72,000 token 墙，关闭 retry/recovery/revision。
+- [completed-bounded-real] 实现 SHA `659757eca7ff1b658dfd164631512d3964c5a2ff` 的 exact-SHA
+  CI run `33826568517` 三 job 全绿后执行；领域调用 `6/12`、累计调用 `9/15`，领域/累计 token
+  `17834/18925`。第 1 案 Evaluation=96 且安全通过；第 2 案 Evaluation=97 但缺失 evidence source
+  IDs、注入检查失败，触发 `unsafe_publication`；第 3 案按首个不安全失败规则跳过。
+- [evidence] 回执
+  `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
+  为 7537 bytes，SHA-256=`b9fbebacf5c277c6b2cd57f018ff58cfb2646dbad95f6cdc9e90822646a68400`，
+  body-free/create-only，canonical round-trip 与 dispatcher 验证通过。
+- [boundary-next] `admitted=false`、`candidate_registered=false`、`production_admitted=false`；
+  这是证据/安全门拒绝，不是 Provider 崩溃。候选、默认模型、产品 Runtime、Portal、Account、
+  Workbench、Auth、路由和 `production_media=0` 均不变；当前 checkpoint 为
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`，
+  下一步只做失败归因与是否另立版本的裁决，不重跑同一 held-out 资产。
