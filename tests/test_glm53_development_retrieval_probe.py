@@ -7,9 +7,12 @@ import pytest
 from scripts.probe_glm53_development_retrieval import (
     QueryObserver, development_plan, main, observe,
 )
+from app.evaluation.glm53_flash_candidate_profile import GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
+from app.evaluation.provider_domain_production import ProductionDomainCaseExecutor
 from tests.test_coaching_retrieval_development_chain import ScriptedCoach
 from tests.test_provider_domain_production import ROOT
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
+from app.rag.coaching_query import COACHING_QUERY_GUIDANCE_V1
 
 
 @pytest.fixture(autouse=True)
@@ -38,9 +41,30 @@ def test_development_observation_uses_real_chain_and_no_heldout(tmp_path):
     assert report["observation"]["evidence_source_ids"]
     assert report["queries"][0]["topic"] == "review"
     assert report["production_admitted"] is False
+    assert report["retrieval_guidance_id"] is None
+    assert report["retrieval_guidance_sha256"] is None
     assert development_plan(ROOT).artifact.dataset_id == "demo-development-not-heldout"
     for forbidden in ('"content"', '"reasoning"', '"api_key"', '"user_utterance"', '"arguments"'):
         assert forbidden not in json.dumps(report)
+
+
+def test_guidance_is_an_explicit_candidate_context_addendum(tmp_path):
+    with pytest.raises(ValueError, match="requires retrieval hardening"):
+        ProductionDomainCaseExecutor(
+            project_root=ROOT,
+            input_plan=development_plan(ROOT),
+            runs_root=tmp_path,
+            request_policy=GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
+            quality_hardening=True,
+            retrieval_guidance=COACHING_QUERY_GUIDANCE_V1,
+        )
+    report = observe(
+        ScriptedCoach(), root=ROOT, runs_root=tmp_path,
+        retrieval_guidance=COACHING_QUERY_GUIDANCE_V1,
+    )
+    assert report["observation"]["terminal_status"] == "published"
+    assert report["retrieval_guidance_id"] == "coaching-query-guidance-v1"
+    assert report["retrieval_guidance_sha256"]
 
 
 def test_real_flag_required_before_environment_and_output(tmp_path):

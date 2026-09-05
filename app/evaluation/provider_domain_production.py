@@ -147,6 +147,7 @@ class ProductionDomainCaseExecutor:
         request_policy: CandidateEvaluationRequestPolicy | None = None,
         quality_hardening: bool = False,
         retrieval_hardening: bool = False,
+        retrieval_guidance: str | None = None,
         max_revisions: int = 0,
     ) -> None:
         if not isinstance(input_plan, LoadedDomainCaseInputPlan):
@@ -187,6 +188,13 @@ class ProductionDomainCaseExecutor:
                 "retrieval hardening requires candidate quality hardening"
             )
         self._retrieval_hardening = retrieval_hardening
+        if retrieval_guidance is not None and (
+            not isinstance(retrieval_guidance, str) or not retrieval_guidance.strip()
+        ):
+            raise ValueError("retrieval_guidance must be non-blank when supplied")
+        if retrieval_guidance is not None and not retrieval_hardening:
+            raise ValueError("retrieval_guidance requires retrieval hardening")
+        self._retrieval_guidance = retrieval_guidance
         if isinstance(max_revisions, bool) or not isinstance(max_revisions, int):
             raise TypeError("max_revisions must be an integer")
         if not 0 <= max_revisions <= 3:
@@ -241,9 +249,17 @@ class ProductionDomainCaseExecutor:
         context = ContextBuilderV1().build(
             execution,
             policy_addendum=(
-                CANDIDATE_CONTEXT_SAFETY_POLICY_V1
-                if self._quality_hardening
-                else None
+                "\n\n".join(
+                    value
+                    for value in (
+                        CANDIDATE_CONTEXT_SAFETY_POLICY_V1
+                        if self._quality_hardening
+                        else None,
+                        self._retrieval_guidance,
+                    )
+                    if value is not None
+                )
+                or None
             ),
         )
         base_knowledge = LocalHybridKnowledgeProvider.from_directory(

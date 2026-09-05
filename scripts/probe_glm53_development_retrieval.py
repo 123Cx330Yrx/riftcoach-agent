@@ -23,7 +23,9 @@ from app.evaluation.provider_domain_plan import (
     DomainCaseInput, DomainCaseInputPlanArtifact, DomainFixtureCommitment, LoadedDomainCaseInputPlan,
 )
 from app.evaluation.provider_domain_production import ProductionDomainCaseExecutor
-from app.rag.coaching_query import _topic, _TOPICS, _contains_alias, _normalize
+from app.rag.coaching_query import (
+    COACHING_QUERY_GUIDANCE_V1, _TOPICS, _contains_alias, _normalize, _topic,
+)
 from app.rag.retriever import tokenize
 
 CASE_ID = "development_autonomous_recent_review_01"
@@ -93,7 +95,8 @@ class QueryObserver:
         return response
 
 
-def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=lambda _event: None):
+def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=lambda _event: None,
+            retrieval_guidance: str | None = None):
     plan = development_plan(root)
     state = BoundedRevisionBudgetState()
     state.register_case(CASE_ID)
@@ -104,8 +107,11 @@ def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=l
     observer = QueryObserver(budgeted, emit)
     result = ProductionDomainCaseExecutor(
         project_root=root, input_plan=plan, runs_root=runs_root,
-        request_policy=POLICY, quality_hardening=True, retrieval_hardening=True, max_revisions=1,
+        request_policy=POLICY, quality_hardening=True, retrieval_hardening=True,
+        retrieval_guidance=retrieval_guidance, max_revisions=1,
     ).execute(case_id=CASE_ID, provider=observer)
+    guidance_id = "coaching-query-guidance-v1" if retrieval_guidance is not None else None
+    guidance_sha256 = digest(retrieval_guidance.encode("utf-8")) if retrieval_guidance is not None else None
     return {
         "schema_version": "1.0", "scope": "development_not_admission",
         "evidence_origin": "real_provider" if real else "offline_fake",
@@ -116,6 +122,7 @@ def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=l
         "report_sha256": plan.artifact.deterministic_report.sha256,
         "request_policy_id": POLICY.policy_id, "max_calls": 9, "max_tokens": 205_000,
         "request_timeout_s": 45, "resources": state.snapshot(),
+        "retrieval_guidance_id": guidance_id, "retrieval_guidance_sha256": guidance_sha256,
         "queries": observer.queries, "observation": result.model_dump(mode="json"),
     }
 
@@ -126,6 +133,7 @@ def main(argv=None):
     parser.add_argument("--implementation-sha", required=True)
     parser.add_argument("--env-file", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--retrieval-guidance", action="store_true")
     args = parser.parse_args(argv)
     if not args.confirm_real_call:
         parser.error("real development observation requires --confirm-real-call")
@@ -152,6 +160,7 @@ def main(argv=None):
         provider = create_low_profile_provider(settings)
         with tempfile.TemporaryDirectory(prefix="riftcoach-dev-query-") as temporary:
             result = observe(provider, root=ROOT, runs_root=Path(temporary), real=True,
+                             retrieval_guidance=(COACHING_QUERY_GUIDANCE_V1 if args.retrieval_guidance else None),
                              emit=lambda row: print(json.dumps(row), flush=True))
         result.update(identity)
         result["status"] = "completed"
