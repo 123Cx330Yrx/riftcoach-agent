@@ -6097,3 +6097,17 @@
 - [next] 当前为 `candidate-fresh-g53-3l-protocol / completed-real-observation /
   pending-v3-domain-authorization`，下一次明确继续直接执行一次全新 V3 有界真实领域验收。
   本批未修改产品代码/前端、旧考卷/回执、GLM-5.2 回退或主工作树；不注册候选。
+
+## 2026-09-05：RQ-235 V3 真实领域验收结束
+
+- [authorized] 执行前 HEAD `9c82238ba72ffb65982f96c5358e1c79edc1cc35` 干净且远端同步；
+  相对公共代码 `110f9e8` 只有文档与 RQ-234 回执变化。既有 V3 回执不存在，预检通过后仅运行一次。
+- [real] 领域 2/27 次调用、6936 Token、29344ms；含既有协议累计 5 次/8052 Token。
+  首案检索 0 片段，rejected/evidence_required，未评测/修订；其余 skipped，admitted=false。
+- [receipt] `zhipu_glm53_flash_hardened_domain_v3_rq235_v1.json`：7451 bytes，
+  SHA-256=`2bf87351e38e4b6617604f4728d46047b710c7c11734630f4b364374ed545fcc`，严格校验通过。
+- [verification] 纠正计划过时测试路径后 V3/执行器/预算 48 passed；总检新 V3 分流红灯复现后
+  最小修复，相关 22 passed。离线检索对照零 Provider 调用；没有重试真实验收或覆盖旧证据。
+- [next] 只做候选检索合同离线诊断/加固，不改产品默认、前端、GLM-5.2 回退或质量/安全门。
+- [closeout] 相关模块/测试编译、git diff --check 与治理检查通过；新证据仅配套最小测试分流，
+  真实运行身份仍是既有公共代码 `110f9e8`，不是把收口测试提交冒充另一轮模型运行。

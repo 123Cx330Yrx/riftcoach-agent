@@ -5792,3 +5792,16 @@
   不能仅凭预检成功替代协议通过判断。领域考卷未执行，产品准入仍 false。
 - 首次收尾测试因引用不存在的旧路径未运行；按实际测试文件纠正后相邻回归 `26 passed`。
 - 下一步只执行全新 V3 真实领域验收，不再重跑本轮协议。
+
+## 2026-09-05：RQ-235 检索零片段归因
+
+- 真实首案的 Provider 无错误，Agent completed/final_response；两次 search 均成功但共 0 片段。
+  最后诊断 insufficient_evidence 对应 EvidencePolicy 有适用候选、但支持条件不满足的分支，
+  不是知识库为空、API 认证或调用预算不足。终态 evidence_required 先于评测/修订。
+- 实际查询/过滤器不保存，不能断言具体词句。独立离线开发对照：默认语料 4 文档/13 片段；
+  “复盘”0 命中，“复盘 事实 相关性 假设”1 命中，“补刀 经济 发育 训练 目标”2 命中。
+  这些只说明查询/支持过滤的敏感性，不是对真实查询的重放或已验证修复。
+- provider_response_unavailable 是归一化响应 2 小于题目要求 3 的派生码，不代表 HTTP 无响应；
+  后两案的 domain_case_observation_invalid 来自停止码映射默认分支，不代表后两案实际执行。
+- 新回执总检原先误用旧 GLM53FreshDomainResult；只补 V3 protocol_id 的严格模型分流及 canonical
+  比对，保持历史模型不变。红灯已复现，修复后相关 22 passed；领域/预算等另有 48 passed。

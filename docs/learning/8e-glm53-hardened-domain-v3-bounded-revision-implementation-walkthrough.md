@@ -68,3 +68,39 @@ reasoning、Prompt、工具参数、请求 ID 或凭据。旧 V2 的 `4/12` 与 
 > 我没有用更低门槛掩盖 V2 的事实核验失败，而是把产品原有的一次修订闭环做成候选专用 V3：
 > 保留所有硬门，先用全请求包络证明 9/27 调用和 203000/608000 token 墙，再用 body-free 诊断
 > 暴露可行动的枚举计数，同时把真实 Provider 继续挡在公共 CI 和新鲜协议证据之后。
+
+## 7. RQ-235：V3 真实观察与检索归因（2026-09-05）
+
+用户继续后已消费 RQ-234 新鲜协议，在代码 `110f9e8` 上执行一次 V3。首案实际 2 次模型调用、
+6936 Token、29344ms；含既有协议累计 5 次/8052 Token。Agent 正常完成，两次 knowledge.search
+成功，但共 0 个片段、来源数 0；最后检索诊断 insufficient_evidence，终态 rejected/evidence_required。
+因此没有进入首评、修订或复评，后两案按首错停止跳过；admitted=false。
+
+### 已证实的控制流
+
+1. `provider_domain_production.py` 从 `data/rag_docs` 构造本地混合检索器；语料实测 4 文档、
+   13 个父片段和 13 个子片段，不是空库。
+2. `rag/hybrid.py` 使用 BM25 与默认 local-hashing 检索融合，再交给 `rag/policy.py`。
+   insufficient_evidence 表示仍有适用候选，但没有候选同时满足 BM25 支持和查询覆盖条件。
+3. 由于证据数为零，最低来源门先拒绝；题目要求至少 3 个归一化响应，而实际 2 个，产生派生码
+   provider_response_unavailable。这不是 HTTP 无响应；后两案停止码映射也不能当成执行证据。
+
+原始真实查询/过滤器和模型正文不保留，无法精确判断哪些词或哪一项支持数值导致拒绝。
+独立开发查询、默认参数下，“复盘”返回 0，“复盘 事实 相关性 假设”返回 1，
+“补刀 经济 发育 训练 目标”返回 2；这些零外部调用对照说明查询具体程度值得修复，
+不是重放真实查询，也不是新的领域准入结果。
+
+### 回执与验证
+
+不可覆盖回执为
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_hardened_domain_v3_rq235_v1.json`，
+7451 bytes，SHA-256=`2bf87351e38e4b6617604f4728d46047b710c7c11734630f4b364374ed545fcc`。
+使用 `V3DomainGateResult.model_validate_json` 与 `canonical_v3_result_bytes` 可无网络复核，
+不要再次运行已消费考卷。公开回执只含安全计数/枚举/身份，不保留运行时临时正文。
+
+V3/执行器/预算相关 48 passed。新增真实回执暴露公共结果总检未识别 V3 protocol_id，误用旧
+结果模型；只为其增加 V3 严格模型分流和 canonical 比对，修复后总检相邻 22 passed。
+该修复不改运行器、模型、查询、阈值、结果结论或历史回执。
+
+下一批只做独立开发用例下的查询/检索/零命中合同与安全诊断加固，先冻结方案，再以聚焦测试
+实现；不重跑 V3，不通过伪造引用或降低质量/安全要求取得绿灯，不自动注册候选。

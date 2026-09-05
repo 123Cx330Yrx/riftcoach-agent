@@ -81,6 +81,13 @@ from app.evaluation.glm53_hardened_domain_assets import (
     PROTOCOL_ID as HARDENED_DOMAIN_GATE_PROTOCOL_ID,
 )
 from app.evaluation.glm53_hardened_domain_gate import HardenedDomainGateResult
+from app.evaluation.glm53_hardened_domain_v3_assets import (
+    PROTOCOL_ID as HARDENED_DOMAIN_V3_PROTOCOL_ID,
+)
+from app.evaluation.glm53_hardened_domain_v3_gate import (
+    V3DomainGateResult,
+    canonical_v3_result_bytes,
+)
 from app.evaluation.glm53_flash_transport_generation_split_diagnostic import (
     TransportGenerationSplitReport,
 )
@@ -278,6 +285,12 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
             assert report.candidate_registered is False
             assert report.production_admitted is False
             assert content.endswith("\n")
+            continue
+        if payload.get("protocol_id") == HARDENED_DOMAIN_V3_PROTOCOL_ID:
+            report = V3DomainGateResult.model_validate_json(content)
+            assert report.candidate_registered is False
+            assert report.production_admitted is False
+            assert canonical_v3_result_bytes(report).decode("utf-8") == content
             continue
         if payload.get("protocol_id") == HARDENED_DOMAIN_GATE_PROTOCOL_ID:
             report = HardenedDomainGateResult.model_validate_json(content)

@@ -292,6 +292,8 @@ provider calls=0，仍需明确授权才执行真实协议门。
 
 | RQ-234 | 2026-09-05 | 修复后新鲜 G53-3-L 已完成并通过，V3 零调用预检就绪 | 用户明确要求继续并加快；该继续已满足 RQ-233 的一次新鲜协议授权，不为同一步重复索要授权；不包含 V3 真实领域调用 | 在已通过 Actions `33897787039` 三任务的代码 `110f9e8008486bfb976643a6abdaa8e88ea334e6` 上，A1 `1/1`、A2 `2/2` 均通过，协议 admitted=true，3 次调用、SDK retries=0，输入/输出/总 Token `1008/108/1116`、累计 `12812ms`。新增不可覆盖回执 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_g53_3l_rq234_v1.json`，2512 bytes，SHA-256=`fd500c57fbdb12ac408625d6c64b1cc0eb506debbb54525e3e8eb612892488eb`；严格 Schema/canonical/body-free 校验及 V3 零调用预检通过，相邻回归 26 passed。旧失败记录保留；本条取代 RQ-233 的待协议授权动作，不改变历史失败事实。候选未注册、生产准入 false，未改产品代码/前端/默认 Runtime/GLM-5.2 回退；下一次明确继续的唯一任务为一次全新 V3 有界真实领域验收，不再重跑本次协议。 |
 
+| RQ-235 | 2026-09-05 | V3 真实领域验收已执行，首案检索无证据而安全停止；下一步离线检索合同加固 | 用户继续明确授权一次全新 V3 真实领域验收，不重复协议调用、不降低门槛、不改前端或默认 Runtime | 使用公共已验证代码 `110f9e8` 与 RQ-234 协议证据，领域 2/27 次调用、6936 Token、29344ms（含协议累计 5 次/8052 Token）；Agent 完成，两次 knowledge.search 成功但 0 片段，最后诊断 insufficient_evidence，终态 rejected/evidence_required，未评分/修订，后两案 skipped、admitted=false。新回执 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_hardened_domain_v3_rq235_v1.json` 为 7451 bytes，SHA-256=`2bf87351e38e4b6617604f4728d46047b710c7c11734630f4b364374ed545fcc`，严格 Schema/canonical/body-free 通过；V3 相关回归 48 passed，总检补齐 V3 专属分流后 22 passed。语料 4 文档/13 片段，开发对照显示查询具体程度影响检索，但真实查询未留存，具体词句根因未知。取代 RQ-234 的待 V3 授权动作，旧结果不覆盖；下一批只做独立开发用例下的离线检索合同设计/加固和安全诊断，不重跑已消费考卷、不追加真实请求、不改产品注册/默认模型/GLM-5.2 回退。 |
+
 ## 新条目格式
 
 后续新增长期要求时，使用新的 `RQ-xxx` 行，并注明日期、状态以及它如何改变

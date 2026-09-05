@@ -15,7 +15,7 @@
 **Files:**
 - Modify: `tests/test_provider_domain_production.py`
 - Modify: `tests/test_provider_domain_experiment.py`
-- Modify: `tests/test_domain_e2e.py`
+- Modify: `tests/test_domain_e2e_evaluation.py`
 
 **Step 1:** 新增测试，证明默认构造仍把 `max_revisions=0` 传给 Harness，旧 Fake Provider 序列和旧语义投影不变。
 
@@ -28,7 +28,7 @@
 **Step 5:** 运行：
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest tests/test_provider_domain_production.py tests/test_provider_domain_experiment.py tests/test_domain_e2e.py -q
+.\.venv\Scripts\python.exe -m pytest tests/test_provider_domain_production.py tests/test_provider_domain_experiment.py tests/test_domain_e2e_evaluation.py -q
 ```
 
 预期：新测试因参数和诊断模型尚不存在而失败，旧测试继续通过。
@@ -180,3 +180,14 @@ git diff --check
 返回 `pending_protocol_evidence`、provider calls=0。当前 checkpoint 为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization`；
 下一步仅在用户明确授权后取得新鲜 G53-3-L，不能自动进入 V3 领域观察。
+
+## RQ-235：真实领域验收已执行（2026-09-05）
+
+RQ-234 已通过新鲜协议。随后用户继续授权的一次 V3 在公共代码 `110f9e8` 上执行，首案
+2 次模型调用、两次检索成功但 0 片段，终态 rejected/evidence_required；未评测/修订，
+后两案跳过。回执 `zhipu_glm53_flash_hardened_domain_v3_rq235_v1.json` 严格校验通过，
+admitted=false。这次不测试重抽，也不因结果失败而增加调用。
+
+V3/执行器/预算相关回归 48 passed；公共回执总检为新 V3 增加专属严格分流和 canonical 比对后
+相邻 22 passed。没有修改产品实现、前端或质量/检索阈值；下一步只做候选检索合同离线诊断
+与版本化加固。详细归因见现有 V3 walkthrough 的 RQ-235 节。

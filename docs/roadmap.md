@@ -1735,3 +1735,11 @@ RQ-233 的待协议授权动作已由用户继续及本次真实运行关闭：�
 `candidate-fresh-g53-3l-protocol / completed-real-observation / pending-v3-domain-authorization`。
 下一次明确继续直接执行一次全新 V3 领域验收，不再重跑协议。尚未证明领域质量或生产准入，
 未改产品代码/前端、GLM-5.2 回退、黄金切片、部署/合规、production_media=0 或 8F 边界。
+
+## RQ-235：V3 真实验收结束，转向离线检索合同加固（2026-09-05）
+
+首案 2 次模型调用、6936 Token、29344ms；两次检索成功但 0 片段，终态 evidence_required，
+未进入评分/修订，后两案 skipped，admitted=false。回执已持久化；新 V3 严格测试分流已补齐。
+当前为 `candidate-hardened-domain-v3-real-observation / completed-real-observation /
+pending-retrieval-contract-hardening`。下一批不重跑真实考卷，只用独立开发用例离线设计并加固
+查询具体程度、检索支持与零命中处理及安全诊断；不降低门槛，不扩展前端、产品注册或生产准入。
