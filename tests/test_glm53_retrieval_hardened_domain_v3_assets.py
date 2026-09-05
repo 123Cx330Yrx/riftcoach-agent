@@ -142,7 +142,9 @@ def test_new_budget_rebuild_uses_retrieval_hardening(monkeypatch):
         snapshot_path=assets.SNAPSHOT_PATH, retrieval_hardening=True,
     )
     frozen = reachability.load_v3_budget_reachability_report(ROOT / assets.BUDGET_REPORT_PATH)
-    assert rebuilt == frozen
+    # RQ-237's frozen report is immutable; the corrected query vocabulary
+    # changes request identities, so a future fresh asset must not reuse it.
+    assert rebuilt != frozen
     assert calls == [True, True, True]
     assert (rebuilt.case_token_limit, rebuilt.domain_token_limit) == (205_000, 613_000)
     assert rebuilt.external_provider_calls == 0

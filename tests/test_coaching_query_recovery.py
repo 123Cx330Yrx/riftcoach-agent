@@ -8,6 +8,7 @@ from pydantic import ValidationError
 from app.rag.coaching_query import (
     CoachingQueryKnowledgeProvider,
     CoachingRetrievalDiagnostics,
+    _topic,
 )
 from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.rag.models import KnowledgeQuery, KnowledgeSearchResult
@@ -91,6 +92,12 @@ def test_short_query_reproduces_old_failure_without_changing_thresholds():
     assert result.diagnostics["thresholds"]["minimum_bm25_score"] == 15.0
     assert result.diagnostics["thresholds"]["minimum_query_coverage"] == 0.18
     assert len(result.diagnostics["query_recovery"]["attempts"]) == 2
+
+
+def test_model_style_survival_query_with_related_material_is_a_safe_topic():
+    topic, terms = _topic("早期死亡相关资料")
+    assert topic == "survival"
+    assert terms is not None
 
 
 def test_existing_hits_are_unchanged_and_never_search_twice():

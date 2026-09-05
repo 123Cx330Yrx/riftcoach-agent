@@ -120,7 +120,7 @@ RQ-226 又在用户“继续”授权后完成低思考 G53-3-L 的一次有界�
 G53-3-L 尝试在回执延迟校验处失败，修复及 exact-SHA 公共闭环已完成；RQ-234 随后已通过新鲜
 协议三次真实调用及 V3 零调用预检；RQ-235 的一次真实领域验收已在首案检索零片段后安全停止，
 未进入评测或修订。RQ-236 已完成候选检索合同的离线加固与执行器接线，并取得同一实现 SHA 的公共 CI；RQ-237 已接受全新领域资产设计；当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-real-observation / pending-retrieval-hardened-domain-observation`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-real-observation / pending-retrieval-failure-attribution`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -418,7 +418,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-real-observation / pending-retrieval-hardened-domain-observation`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-real-observation / pending-retrieval-failure-attribution`。
 RQ-230 已完成一次 V2 真实观察并完成失败归因；RQ-231 接受的全新 V3 最多一次受控修订、
 body-free 枚举计数诊断、版本化预算证明和新资产 no-I/O 准入已由 RQ-232 完成；修复提交
 `f99c142c269df765deb592c463ce6e2555bcc3fe` 的 Actions `33895602378` 三任务 exact-SHA 全绿。
@@ -3345,4 +3345,6 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [x] 将检索加固后最坏包络 `205000/613000` 贯通候选 token 墙；旧 V3 `203000/608000` 不变。
 - [x] 增加策略漂移、质量门削弱、历史身份和运行时 Dataset 篡改的 fail-closed 回归。
 - [x] 为本修复提交取得新的 exact-SHA 公共 CI（Actions `33963143593` 三任务全绿）。
-- [ ] 执行新资产身份的一次有界真实领域观察；首错停止，不重跑旧考卷。
+- [x] 执行新资产身份的一次有界真实领域观察；首错停止，不重跑旧考卷。
+- [x] 归因首案未触发补查的白名单缺口，并完成离线修复回归。
+- [ ] 裁决是否另立全新版本，不修改或重跑 RQ-237 旧资产与回执。
