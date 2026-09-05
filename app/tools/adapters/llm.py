@@ -5,7 +5,9 @@ from __future__ import annotations
 from typing import Any, Mapping
 
 from app.model_runtime import (
+    CandidateEvaluationRequestPolicy,
     ModelRuntimeProfile,
+    require_candidate_evaluation_request_policy,
     require_registered_model_runtime_profile,
 )
 from app.providers.models import (
@@ -31,7 +33,12 @@ def build_llm_tools(
     provider: Any,
     *,
     runtime_profile: ModelRuntimeProfile | None = None,
+    request_policy: CandidateEvaluationRequestPolicy | None = None,
 ) -> tuple[ToolDefinition, ...]:
+    if runtime_profile is not None and request_policy is not None:
+        raise ValueError(
+            "runtime_profile and request_policy are mutually exclusive"
+        )
     if runtime_profile is not None:
         runtime_profile = require_registered_model_runtime_profile(
             runtime_profile
@@ -41,6 +48,12 @@ def build_llm_tools(
             getattr(provider, "model_name", None),
         ):
             raise ValueError("runtime_profile does not match the Provider")
+    if request_policy is not None:
+        request_policy = require_candidate_evaluation_request_policy(
+            request_policy,
+            provider_id=getattr(provider, "provider_name", None),
+            model=getattr(provider, "model_name", None),
+        )
 
     def chat_handler(
         params: Mapping[str, Any],
@@ -71,6 +84,19 @@ def build_llm_tools(
             # otherwise override the trusted model profile's sampling policy.
             temperature = runtime_profile.temperature
             top_p = runtime_profile.top_p
+        elif request_policy is not None:
+            max_tokens = (
+                request_policy.max_output_tokens
+                if requested_max_tokens is None
+                else min(
+                    requested_max_tokens,
+                    request_policy.max_output_tokens,
+                )
+            )
+            # Candidate evaluation owns the sampling knobs just as the
+            # registered product profile does, but remains outside Runtime.
+            temperature = request_policy.temperature
+            top_p = request_policy.top_p
         else:
             max_tokens = requested_max_tokens
             temperature = params.get("temperature", 0.0)
@@ -89,6 +115,12 @@ def build_llm_tools(
                     "runtime_profile_version": runtime_profile.version,
                 }
             )
+        elif request_policy is not None:
+            request_timeout = min(
+                request_timeout,
+                request_policy.llm_tool_timeout_s,
+            )
+            request_metadata.update(request_policy.metadata())
 
         request = ChatRequest(
             messages=tuple(
@@ -236,17 +268,28 @@ def build_llm_tools(
                 timeout_s=(
                     runtime_profile.llm_tool_timeout_s
                     if runtime_profile is not None
-                    else 60.0
+                    else (
+                        request_policy.llm_tool_timeout_s
+                        if request_policy is not None
+                        else 60.0
+                    )
                 ),
                 retry=RetryPolicy(
-                    max_attempts=LLM_CHAT_RETRY_MAX_ATTEMPTS,
-                    base_delay_s=0.5,
-                    max_delay_s=2.0,
+                    max_attempts=(
+                        request_policy.max_attempts
+                        if request_policy is not None
+                        else LLM_CHAT_RETRY_MAX_ATTEMPTS
+                    ),
+                    base_delay_s=(0.0 if request_policy is not None else 0.5),
+                    max_delay_s=(0.0 if request_policy is not None else 2.0),
                 ),
                 circuit_breaker=CircuitBreakerPolicy(
                     failure_threshold=3,
                     recovery_s=30.0,
                 ),
             ),
+            # Explicitly state the candidate boundary: no tool-level fallback
+            # may turn a provider failure into a successful evaluation.
+            fallback=None,
         ),
     )

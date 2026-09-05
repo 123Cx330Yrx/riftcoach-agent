@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react"
+import { screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
@@ -32,7 +32,8 @@ describe("AuthGate", () => {
       {() => <p>live workbench</p>}
     </AuthGate>)
 
-    expect(await screen.findByRole("heading", { name: /sign-in is unavailable/i })).toHaveFocus()
+    const heading = await screen.findByRole("heading", { name: /sign-in is unavailable/i })
+    await waitFor(() => expect(heading).toHaveFocus())
     expect(screen.queryByText("auth_unavailable")).not.toBeInTheDocument()
     expect(screen.queryByText("live workbench")).not.toBeInTheDocument()
   })

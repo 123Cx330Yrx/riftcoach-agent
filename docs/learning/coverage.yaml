@@ -824,10 +824,50 @@ groups:
     sequence: 350
     covers:
       - 8e-productization
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-assets / completed-public / pending-user-authorization
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-runner / completed-local / pending-public-ci
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-design / completed-design / pending-offline-implementation
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-local / pending-public-ci
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-bounded-revision-implementation / completed-public / pending-fresh-g53-3l-authorization
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-local / pending-public-ci
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-public / pending-fresh-g53-3l-reauthorization
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-protocol / completed-real-observation / pending-v3-domain-authorization
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-real-observation / completed-real-observation / pending-retrieval-contract-hardening
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-local / pending-public-ci
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-public / pending-next-decision
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-design / pending-offline-implementation
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-local / pending-public-ci
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-real-observation / pending-retrieval-hardened-domain-observation
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-real-observation / pending-retrieval-failure-attribution
     status: planned
     evidence:
       problem_and_principle:
+        - docs/learning/8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
+        - docs/adr/0094-adopt-glm53-hardened-domain-v3-bounded-revision.md
+        - docs/adr/0096-design-fresh-retrieval-hardened-domain-assets.md
+        - docs/plans/2026-09-05-fresh-retrieval-hardened-domain-assets.md
+        - docs/learning/8e-glm53-retrieval-hardened-domain-assets-walkthrough.md
+        - docs/plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-design.md
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
+        - docs/adr/0093-adopt-glm53-hardened-domain-v2-assets.md
+        - docs/plans/2026-09-04-glm53-hardened-domain-v2-real-observation.md
+        - docs/adr/0092-adopt-glm53-candidate-evidence-injection-hardening.md
+        - docs/learning/8e-glm53-candidate-evidence-injection-hardening-walkthrough.md
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/plans/2026-08-30-8e-agent-mainline-handoff-readme-factual-alignment.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
+        - docs/learning/8e-glm53-protocol-and-candidate-timeout-walkthrough.md
+        - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
         - docs/plans/2026-08-29-8e-region-entry-panel-trial-design.md
+        - docs/plans/2026-08-29-8e-region-entry-polish-design.md
         - docs/adr/0069-adopt-local-region-wallpaper-fallback.md
         - docs/assets/8e-portal/portal-region-icon-provenance-v1.md
         - docs/assets/8e-portal/portal-region-wallpaper-candidate-bandle-city-v1.md
@@ -860,6 +900,41 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
+        - docs/adr/0075-keep-glm53-candidate-stream-caller-isolated.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-review.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-review-walkthrough.md
+        - docs/adr/0076-freeze-glm53-candidate-boundary-observation-wiring.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-design.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-design-walkthrough.md
+        - docs/learning/8e-glm53-candidate-boundary-observation-implementation-walkthrough.md
+        - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
+        - docs/adr/0071-adopt-versioned-response-completion-policy.md
+        - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
+        - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md
+        - docs/plans/2026-08-31-glm53-response-completion-candidate-runtime-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
         - docs/adr/0065-adopt-verified-event-phase-timeline-projection.md
         - docs/plans/2026-08-24-8e-timeline-dto-ui-design.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
@@ -875,8 +950,59 @@ groups:
         - docs/learning/8e-portal-workbench-visual-contract-walkthrough.md
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
+        - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
+        - docs/adr/0084-adopt-candidate-transport-gate-precheck.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-precheck.md
+        - docs/learning/8e-glm53-candidate-transport-gate-precheck-walkthrough.md
+        - docs/adr/0085-record-candidate-transport-gated-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-real-observation.md
+        - docs/learning/8e-glm53-candidate-transport-gate-real-observation-walkthrough.md
+        - docs/adr/0086-adopt-candidate-reader-owned-close-order.md
+        - docs/plans/2026-09-03-glm53-candidate-reader-owned-close-order.md
+        - docs/learning/8e-glm53-candidate-reader-owned-close-order-walkthrough.md
+        - docs/adr/0087-record-candidate-transport-gated-real-observation-after-close-order-fix.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-real-observation-rq217.md
+        - docs/learning/8e-glm53-candidate-transport-gate-real-observation-rq217-walkthrough.md
+        - docs/adr/0088-record-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/plans/2026-09-03-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/learning/8e-glm53-protocol-and-candidate-timeout-walkthrough.md
+        - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
+        - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
+        - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-domain-gate-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-offline-implementation-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       design_and_implementation:
+        - docs/learning/8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
+        - docs/plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-implementation.md
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
+        - docs/plans/2026-09-04-glm53-hardened-domain-v2-assets-implementation.md
+        - docs/adr/0092-adopt-glm53-candidate-evidence-injection-hardening.md
+        - docs/plans/2026-09-04-glm53-flash-domain-evidence-injection-hardening.md
+        - docs/learning/8e-glm53-candidate-evidence-injection-hardening-walkthrough.md
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/plans/2026-08-30-8e-agent-mainline-handoff-readme-factual-alignment.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
+        - docs/plans/2026-08-29-8e-region-focus-rail-design.md
+        - docs/plans/2026-08-29-8e-region-focus-rail-implementation-plan.md
         - docs/plans/2026-08-29-8e-region-entry-panel-trial-design.md
+        - docs/plans/2026-08-29-8e-region-entry-polish-design.md
         - docs/adr/0069-adopt-local-region-wallpaper-fallback.md
         - docs/assets/8e-portal/portal-region-icon-provenance-v1.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
@@ -928,7 +1054,98 @@ groups:
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-implementation.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
+        - docs/adr/0071-adopt-versioned-response-completion-policy.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md
+        - docs/plans/2026-08-31-glm53-response-completion-candidate-runtime-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0075-keep-glm53-candidate-stream-caller-isolated.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-review.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-review-walkthrough.md
+        - docs/adr/0076-freeze-glm53-candidate-boundary-observation-wiring.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-design.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-design-walkthrough.md
+        - docs/learning/8e-glm53-candidate-boundary-observation-implementation-walkthrough.md
+        - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
+        - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
+        - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
+        - docs/adr/0084-adopt-candidate-transport-gate-precheck.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-precheck.md
+        - docs/learning/8e-glm53-candidate-transport-gate-precheck-walkthrough.md
+        - docs/adr/0086-adopt-candidate-reader-owned-close-order.md
+        - docs/plans/2026-09-03-glm53-candidate-reader-owned-close-order.md
+        - docs/learning/8e-glm53-candidate-reader-owned-close-order-walkthrough.md
+        - docs/adr/0087-record-candidate-transport-gated-real-observation-after-close-order-fix.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-real-observation-rq217.md
+        - docs/learning/8e-glm53-candidate-transport-gate-real-observation-rq217-walkthrough.md
+        - docs/adr/0088-record-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/plans/2026-09-03-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/learning/8e-glm53-protocol-and-candidate-timeout-walkthrough.md
+        - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
+        - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
+        - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-domain-gate-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-offline-implementation-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       code_map:
+        - docs/learning/8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
+        - docs/learning/8e-glm53-candidate-evidence-injection-hardening-walkthrough.md
+        - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
+        - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-observation-walkthrough.md
+        - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
+        - docs/plans/2026-08-29-8e-region-focus-rail-implementation-plan.md
         - docs/plans/2026-08-25-8e-portal-motion-polish-implementation.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
         - docs/learning/8e-portal-motion-polish-walkthrough.md
@@ -941,7 +1158,73 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-review.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-review-walkthrough.md
+        - docs/adr/0076-freeze-glm53-candidate-boundary-observation-wiring.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-design.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-design-walkthrough.md
+        - docs/learning/8e-glm53-candidate-boundary-observation-implementation-walkthrough.md
+        - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
+        - docs/adr/0084-adopt-candidate-transport-gate-precheck.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-precheck.md
+        - docs/learning/8e-glm53-candidate-transport-gate-precheck-walkthrough.md
+        - docs/adr/0086-adopt-candidate-reader-owned-close-order.md
+        - docs/plans/2026-09-03-glm53-candidate-reader-owned-close-order.md
+        - docs/learning/8e-glm53-candidate-reader-owned-close-order-walkthrough.md
+        - docs/adr/0087-record-candidate-transport-gated-real-observation-after-close-order-fix.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-real-observation-rq217.md
+        - docs/learning/8e-glm53-candidate-transport-gate-real-observation-rq217-walkthrough.md
+        - docs/adr/0088-record-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/plans/2026-09-03-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/learning/8e-glm53-protocol-and-candidate-timeout-walkthrough.md
+        - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
+        - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
+        - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-domain-gate-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-offline-implementation-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       data_and_control_flow:
+        - docs/learning/8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
+        - docs/plans/2026-09-04-glm53-flash-domain-evidence-injection-hardening.md
+        - docs/learning/8e-glm53-candidate-evidence-injection-hardening-walkthrough.md
+        - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
+        - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
+        - docs/plans/2026-08-29-8e-region-focus-rail-design.md
         - docs/plans/2026-08-25-8e-portal-motion-polish-design.md
         - docs/plans/2026-08-26-8e-portal-c-line-proof-design.md
         - docs/learning/8e-portal-motion-polish-walkthrough.md
@@ -965,7 +1248,82 @@ groups:
         - docs/plans/2026-08-24-8e-production-shell-auth-gate-design.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/plans/2026-08-31-glm53-response-completion-candidate-runtime-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0075-keep-glm53-candidate-stream-caller-isolated.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-review.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-review-walkthrough.md
+        - docs/adr/0076-freeze-glm53-candidate-boundary-observation-wiring.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-design.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-design-walkthrough.md
+        - docs/learning/8e-glm53-candidate-boundary-observation-implementation-walkthrough.md
+        - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
+        - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
+        - docs/adr/0084-adopt-candidate-transport-gate-precheck.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-precheck.md
+        - docs/learning/8e-glm53-candidate-transport-gate-precheck-walkthrough.md
+        - docs/adr/0086-adopt-candidate-reader-owned-close-order.md
+        - docs/plans/2026-09-03-glm53-candidate-reader-owned-close-order.md
+        - docs/learning/8e-glm53-candidate-reader-owned-close-order-walkthrough.md
+        - docs/adr/0087-record-candidate-transport-gated-real-observation-after-close-order-fix.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-real-observation-rq217.md
+        - docs/learning/8e-glm53-candidate-transport-gate-real-observation-rq217-walkthrough.md
+        - docs/adr/0088-record-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/plans/2026-09-03-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/learning/8e-glm53-protocol-and-candidate-timeout-walkthrough.md
+        - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
+        - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
+        - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-domain-gate-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-offline-implementation-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       verification:
+        - docs/learning/8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
+        - docs/learning/8e-glm53-candidate-evidence-injection-hardening-walkthrough.md
+        - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
+        - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/plans/2026-08-30-8e-agent-mainline-handoff-readme-factual-alignment.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
+        - docs/plans/2026-08-29-8e-region-focus-rail-implementation-plan.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
         - docs/assets/8e-portal/portal-region-icon-provenance-v1.md
         - docs/assets/8e-portal/portal-region-wallpaper-candidate-bandle-city-v1.md
@@ -1012,7 +1370,85 @@ groups:
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/plans/2026-08-24-8e-timeline-dto-ui-implementation.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
+        - docs/adr/0071-adopt-versioned-response-completion-policy.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md
+        - docs/plans/2026-08-31-glm53-response-completion-candidate-runtime-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-review.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-review-walkthrough.md
+        - docs/adr/0076-freeze-glm53-candidate-boundary-observation-wiring.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-design.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-design-walkthrough.md
+        - docs/learning/8e-glm53-candidate-boundary-observation-implementation-walkthrough.md
+        - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
+        - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
+        - docs/adr/0084-adopt-candidate-transport-gate-precheck.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-precheck.md
+        - docs/learning/8e-glm53-candidate-transport-gate-precheck-walkthrough.md
+        - docs/adr/0086-adopt-candidate-reader-owned-close-order.md
+        - docs/plans/2026-09-03-glm53-candidate-reader-owned-close-order.md
+        - docs/learning/8e-glm53-candidate-reader-owned-close-order-walkthrough.md
+        - docs/adr/0087-record-candidate-transport-gated-real-observation-after-close-order-fix.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-real-observation-rq217.md
+        - docs/learning/8e-glm53-candidate-transport-gate-real-observation-rq217-walkthrough.md
+        - docs/adr/0088-record-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/plans/2026-09-03-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/learning/8e-glm53-protocol-and-candidate-timeout-walkthrough.md
+        - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
+        - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
+        - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-domain-gate-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-offline-implementation-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       runbook:
+        - docs/learning/8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
+        - docs/adr/0092-adopt-glm53-candidate-evidence-injection-hardening.md
+        - docs/plans/2026-09-04-glm53-flash-domain-evidence-injection-hardening.md
+        - docs/learning/8e-glm53-candidate-evidence-injection-hardening-walkthrough.md
+        - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
+        - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/plans/2026-08-30-8e-agent-mainline-handoff-readme-factual-alignment.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
+        - docs/plans/2026-08-29-8e-region-focus-rail-implementation-plan.md
         - docs/plans/2026-08-27-8e-jimeng-seedance25-smart-edit-result-audit.md
         - docs/assets/8e-portal/portal-region-icon-provenance-v1.md
         - docs/assets/8e-portal/portal-region-wallpaper-candidate-bandle-city-v1.md
@@ -1035,7 +1471,85 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
+        - docs/adr/0071-adopt-versioned-response-completion-policy.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md
+        - docs/plans/2026-08-31-glm53-response-completion-candidate-runtime-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0075-keep-glm53-candidate-stream-caller-isolated.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-review.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-review-walkthrough.md
+        - docs/adr/0076-freeze-glm53-candidate-boundary-observation-wiring.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-design.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-design-walkthrough.md
+        - docs/learning/8e-glm53-candidate-boundary-observation-implementation-walkthrough.md
+        - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
+        - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
+        - docs/adr/0084-adopt-candidate-transport-gate-precheck.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-precheck.md
+        - docs/learning/8e-glm53-candidate-transport-gate-precheck-walkthrough.md
+        - docs/adr/0086-adopt-candidate-reader-owned-close-order.md
+        - docs/plans/2026-09-03-glm53-candidate-reader-owned-close-order.md
+        - docs/learning/8e-glm53-candidate-reader-owned-close-order-walkthrough.md
+        - docs/adr/0087-record-candidate-transport-gated-real-observation-after-close-order-fix.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-real-observation-rq217.md
+        - docs/learning/8e-glm53-candidate-transport-gate-real-observation-rq217-walkthrough.md
+        - docs/adr/0088-record-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/plans/2026-09-03-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/learning/8e-glm53-protocol-and-candidate-timeout-walkthrough.md
+        - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
+        - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
+        - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-domain-gate-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-offline-implementation-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       failure_security_boundary:
+        - docs/learning/8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
+        - docs/adr/0094-adopt-glm53-hardened-domain-v3-bounded-revision.md
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
+        - docs/adr/0093-adopt-glm53-hardened-domain-v2-assets.md
+        - docs/adr/0092-adopt-glm53-candidate-evidence-injection-hardening.md
+        - docs/learning/8e-glm53-candidate-evidence-injection-hardening-walkthrough.md
+        - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
+        - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
         - docs/adr/0069-adopt-local-region-wallpaper-fallback.md
         - docs/assets/8e-portal/portal-region-icon-provenance-v1.md
         - docs/assets/8e-portal/portal-region-wallpaper-candidate-bandle-city-v1.md
@@ -1088,7 +1602,105 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-implementation-walkthrough.md
         - docs/adr/0065-adopt-verified-event-phase-timeline-projection.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
+        - docs/adr/0071-adopt-versioned-response-completion-policy.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md
+        - docs/plans/2026-08-31-glm53-response-completion-candidate-runtime-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0075-keep-glm53-candidate-stream-caller-isolated.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-review.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-review-walkthrough.md
+        - docs/adr/0076-freeze-glm53-candidate-boundary-observation-wiring.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-design.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-design-walkthrough.md
+        - docs/learning/8e-glm53-candidate-boundary-observation-implementation-walkthrough.md
+        - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
+        - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
+        - docs/adr/0084-adopt-candidate-transport-gate-precheck.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-precheck.md
+        - docs/learning/8e-glm53-candidate-transport-gate-precheck-walkthrough.md
+        - docs/adr/0086-adopt-candidate-reader-owned-close-order.md
+        - docs/plans/2026-09-03-glm53-candidate-reader-owned-close-order.md
+        - docs/learning/8e-glm53-candidate-reader-owned-close-order-walkthrough.md
+        - docs/adr/0087-record-candidate-transport-gated-real-observation-after-close-order-fix.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-real-observation-rq217.md
+        - docs/learning/8e-glm53-candidate-transport-gate-real-observation-rq217-walkthrough.md
+        - docs/adr/0088-record-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/plans/2026-09-03-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/learning/8e-glm53-protocol-and-candidate-timeout-walkthrough.md
+        - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
+        - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
+        - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-domain-gate-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-offline-implementation-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       interview_wording:
+        - docs/learning/8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
+        - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md
+        - docs/learning/8e-glm53-candidate-evidence-injection-hardening-walkthrough.md
+        - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
+        - docs/adr/0079-design-versioned-glm53-candidate-recovery-diagnostic.md
+        - docs/adr/0080-adopt-candidate-hard-deadline-session-and-usage-tail.md
+        - docs/plans/2026-09-02-glm53-candidate-stream-deadline-usage-followup.md
+        - docs/learning/8e-glm53-candidate-stream-deadline-usage-followup-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-design.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-design-walkthrough.md
+        - docs/adr/0084-adopt-candidate-transport-gate-precheck.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-precheck.md
+        - docs/learning/8e-glm53-candidate-transport-gate-precheck-walkthrough.md
+        - docs/adr/0086-adopt-candidate-reader-owned-close-order.md
+        - docs/plans/2026-09-03-glm53-candidate-reader-owned-close-order.md
+        - docs/learning/8e-glm53-candidate-reader-owned-close-order-walkthrough.md
+        - docs/adr/0087-record-candidate-transport-gated-real-observation-after-close-order-fix.md
+        - docs/plans/2026-09-03-glm53-candidate-transport-gate-real-observation-rq217.md
+        - docs/learning/8e-glm53-candidate-transport-gate-real-observation-rq217-walkthrough.md
+        - docs/adr/0088-record-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/plans/2026-09-03-glm53-flash-protocol-and-candidate-timeout.md
+        - docs/learning/8e-glm53-protocol-and-candidate-timeout-walkthrough.md
+        - docs/adr/0089-adopt-offline-response-profile-terminal-recovery-split.md
+        - docs/plans/2026-09-03-glm53-response-profile-terminal-recovery-split.md
+        - docs/learning/8e-glm53-response-profile-terminal-recovery-split-walkthrough.md
+        - docs/adr/0090-adopt-explicit-glm53-low-profile-candidate-probe.md
+        - docs/plans/2026-09-03-glm53-low-profile-candidate-probe.md
+        - docs/learning/8e-glm53-low-profile-candidate-probe-walkthrough.md
+        - docs/adr/0091-design-glm53-low-profile-heldout-domain-gate.md
+        - docs/plans/2026-09-03-glm53-low-profile-domain-gate-design.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-design-walkthrough.md
+        - docs/plans/2026-09-04-glm53-low-profile-domain-gate-offline-implementation.md
+        - docs/learning/8e-glm53-low-profile-domain-gate-offline-implementation-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-version-implementation.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-version-implementation-walkthrough.md
+        - docs/learning/8e-glm53-adapter-profile-tdd-walkthrough.md
+        - docs/plans/2026-08-31-g53-0-glm53-no-io-audit.md
+        - docs/learning/8e-agent-mainline-handoff-readme-walkthrough.md
         - docs/learning/8e-portal-motion-polish-walkthrough.md
         - docs/plans/2026-08-28-8e-portal-official-wallpaper-fallback-design.md
         - docs/plans/2026-08-28-8e-portal-masked-inpaint-plate-proof-result.md
@@ -1102,6 +1714,37 @@ groups:
         - docs/learning/8e-batch-e-security-deployment-entry-design-walkthrough.md
         - docs/learning/8e-production-shell-auth-gate-walkthrough.md
         - docs/learning/8e-timeline-dto-ui-walkthrough.md
+        - docs/adr/0071-adopt-versioned-response-completion-policy.md
+        - docs/plans/2026-08-31-glm53-response-completion-strategy-design.md
+        - docs/learning/8e-glm53-response-completion-strategy-walkthrough.md
+        - docs/adr/0072-adopt-bounded-fresh-recovery-attempt-contract.md
+        - docs/learning/8e-glm53-fresh-recovery-attempt-contract-walkthrough.md
+        - docs/adr/0073-adopt-provider-neutral-stream-assembly-contract.md
+        - docs/plans/2026-09-01-glm53-provider-neutral-stream-adapter-contract.md
+        - docs/learning/8e-glm53-provider-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0074-propose-explicit-zhipu-neutral-stream-adapter.md
+        - docs/plans/2026-09-01-glm53-explicit-zhipu-neutral-stream-adapter-seam.md
+        - docs/learning/8e-glm53-explicit-zhipu-neutral-stream-adapter-walkthrough.md
+        - docs/adr/0075-keep-glm53-candidate-stream-caller-isolated.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-review-walkthrough.md
+        - docs/adr/0076-freeze-glm53-candidate-boundary-observation-wiring.md
+        - docs/plans/2026-09-01-glm53-candidate-runtime-wiring-design.md
+        - docs/learning/8e-glm53-candidate-runtime-wiring-design-walkthrough.md
+        - docs/learning/8e-glm53-candidate-boundary-observation-implementation-walkthrough.md
+        - docs/adr/0077-design-isolated-glm53-candidate-evaluation-harness.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-design.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-design-walkthrough.md
+        - docs/plans/2026-09-02-glm53-candidate-evaluation-harness-implementation.md
+        - docs/learning/8e-glm53-candidate-evaluation-harness-implementation-walkthrough.md
+        - docs/adr/0082-adopt-offline-candidate-close-wakeup-replay.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-replay.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-replay-walkthrough.md
+        - docs/adr/0083-record-candidate-close-wakeup-real-observation.md
+        - docs/plans/2026-09-03-glm53-candidate-close-wakeup-real-observation.md
+        - docs/learning/8e-glm53-candidate-close-wakeup-real-observation-walkthrough.md
+        - docs/adr/0078-review-glm53-candidate-recovery-diagnostic-boundaries.md
+        - docs/plans/2026-09-02-glm53-candidate-recovery-diagnostic-review.md
+        - docs/learning/8e-glm53-candidate-recovery-diagnostic-review-walkthrough.md
 
   - id: 8f-final-evaluation-and-portfolio
     sequence: 360

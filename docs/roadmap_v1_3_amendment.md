@@ -6,9 +6,21 @@
 它必须先完成 presentation-state 合同、分层资产/来源账本、入口 storyboard 及 responsive/reduced-motion
 验证，再进入对应前端实现；不会绕过 Batch E 安全/部署合同、外部调用门或 8F 真实 golden slice。
 
+2026-08-29 的 RQ-155 复查进一步规定：此前收集的官方设计、视觉 gallery、MotionSites/组件库、电竞数据、
+Agent observability、Training 与素材工具必须按具体消费者分配。Portal 只吸收 Riot/Universe 语义、构图/字阶
+参照和可逆的轻量交互机制；Timeline、Trace、Training 的来源与数据语义不得因视觉 polish 提前混入。该规则不
+改变 8E 内部顺序，也不授权新增重型依赖或未经许可的素材。
+
 2026-08-29 的 Region Entry Panel 只是该前置在两个地区的可运行试水：它验证地区选择、媒体切换、Account hand-off 和降级状态，不推进 adopted media，也不改写 8E/8F 顺序。
 
 本文件只记录对既有阶段 0-8 路线的增量修正，不增加、删除或重排九个主阶段。
+
+## 2026-08-31：RQ-176 Flash-only 产品运行时路线校正
+
+用户已明确选择普通智谱 API 的 `zhipu/glm-5.3-flash` 作为产品正常运行目标，GLM-5.2 仅保留为显式兼容/应急
+回退；Pro/Flash 横向比较不再是当前路线的前置决策。该路线校正允许把 Flash 专属运行时档案接入产品 Agent
+主链，但不跳过公共 CI、同一 SHA 的协议复核、G53-7 领域门、完整黄金切片或安全/部署/合规收口。8E 仍在进行，
+8F 尚未开始，`production_media=0` 保持不变；Portal、Account、Workbench、Auth 和路由不在本批范围。
 
 ## 1. 决策原则
 
@@ -343,8 +355,9 @@ unknown，后 7 calls 未发送。预算与 V3 held-out 均未创建；结果/�
 公共归档。ADR-0027 已零调用关闭当前 DeepSeek V3，不生成 budget/held-out、不补跑，
 并把允许列表安全错误 provenance 设为未来真实 Provider 门前置条件；决策提交
 `ea91e9697c820c0850db488a93263fc169719515` 已通过 Actions run `31872476103`。
-安全错误 provenance 切片已完成本地/公开验证；GLM-5.3 G53-0 待普通 API 上线后再审计，
-或在出现明确 Pro/Flash 对照需求后另立实验。
+安全错误 provenance 切片已完成本地/公开验证；旧文档当时把 GLM-5.3 G53-0 记为“待普通 API
+上线后再审计”。RQ-164 已补做本地无 I/O 静态审计，但账号/Plan 权限、实际 endpoint/region、
+正式 model ID 与 `enabled + low` 可用性仍 unknown/deferred；不能把该旧快照当作当前可用性结论。
 
 ADR-0028 随后完成 5D-7 收尾裁决：分层评测、Prompt/Context 身份、Evaluation 1.1、
 held-out 生命周期、资源控制和安全失败归因已经构成完整采用门；GLM-5.2/DeepSeek 的领域
@@ -706,3 +719,890 @@ RQ-141 对 Seedance 2.5 v3 做了视觉否决：v3 的左 Rift、道路、中央
 用户要求的持续全幕呼吸；中段还出现过曝白闪与横向直线。后续 source-side brief 必须把常驻基础运动与事件层
 分开：道路/Rift 下方、右场、建筑接缝、地面反射、云和空气从首帧持续，burst 只沿中央垂直轴低幅蓄放约 2–3 秒，
 并自然回到基线。该修订不改变 8E/8F 顺序、不允许降低 source/seam 门，也不立即授权新的付费请求。
+
+RQ-156：补充 source 池的细粒度 provenance 记录，并把 Portal→Account handoff 做成可恢复 URL。Design Prompts、PPT/
+Photoshop、Radix/shadcn、图表库、付费 UI 候选和 League Displays/Steam Workshop 各自记录 consumer 与采用/撤出门；
+Portal 只新增所有本地细徽记的渐进 fallback 和 `from=wallpaper-lab` 返回标记，不提前实现 Workbench/Trace/Training，
+也不改变 `production_media=0`。
+
+同一 RQ-156 实现 hardening 进一步固定：新地区链接显式带 `surface=wallpaper-lab`，旧
+`?region=` 仅为兼容别名；选区对当前 history entry 做 `replaceState`，push/popstate 复位滚动，generation 绑定 handoff；长页面视觉层固定在 viewport；Portal/Auth
+使用语义 main、skip/heading focus、aria 状态和 intrinsic media 尺寸，并保留 poster/
+mobile/reduced-motion/error fallback。该增量不新增主阶段或 coverage group，也不把
+research candidate 当作 adopted media。
+
+RQ-157/158 进一步修订当前 8E Portal presentation：13 区 `RegionIconId` 与可选 motion candidate 拆分，横向
+Focus Rail 使用 Universe crest，选中 hero 才尝试本地高细节研究徽章；CTA 固定为通用“进入登录界面”，并由
+selected identity 驱动有界 Portal→Account aperture/crossfade。Bandle Account 静态图替换 frame grab，但仍走
+来源/分辨率/权利门。该增量不增加主阶段或 coverage group，不改变 Riot API routing、Workbench 和
+`production_media=0`。
+
+RQ-159 收口地区 presentation：13 区各自使用 RiftCoach 自写双语氛围句，正常界面移除 codec、时长、候选/动态
+readiness 等内部审计词；真实媒体状态仍由 catalog/data attributes/evidence 维护。Portal→Account 采用 shared shell phase、
+选中位置 aperture、Account 分层进入和延迟 focus，reduced-motion 即时提交。该增量不增加主阶段或 coverage group，
+不声称官方引文，不改变 Workbench、Riot routing、来源/许可门和 `production_media=0`。
+
+RQ-160 固定 Portal/Account 的双语 display-title 分行：完整句子继续作为语义 heading，视觉层使用显式两行，避免
+不同 viewport 下随机断句或留下不自然空白。该排版合同已有 unit/E2E 与 desktop/390px live-DOM 证据，不新增阶段、
+coverage group、依赖或产品能力，也不改变 8E in-progress 边界。
+
+RQ-161 只补 Account presentation hygiene：桌面 panel 以独立 `top` 微调上移，移动端归零；Riot ID 与两个原生
+select 统一 body 字体和字重，caption 统一可读字号。该增量有 computed-style E2E 与 live-DOM 证据，不改变
+handoff transform、Auth、Riot routing、Workbench、媒体权利门或 `production_media=0`，也不新增 coverage group。
+
+RQ-162 继续限定为 Portal/Account visual hygiene：用户提供的 Void crest 替换详细徽章候选，Universe crest 保持
+确定性回退；两页右侧面板降低遮挡，Account 的地区背景和氛围层提高可读性。该增量不新增依赖、阶段或 coverage
+group，也不改变媒体采用、Auth、路由、Workbench 或 `production_media=0`。
+
+### 2026-08-31：RQ-163 Portal/Account → Agent 主线交接
+
+Portal/Account 当前展示切片经用户确认已达到阶段性收口点，执行顺序回到 Agent 主线。该决定只改变 8E 内部的下一项
+工作指针，不改变 0–8 主路线，也不关闭 8E 或把研究媒体当成生产媒体。
+
+交接批先完成 README 事实版与学习/状态材料对齐，然后以 G53-0 无 I/O 可用性和配置审计作为下一候选。RQ-164 已完成
+该本地静态审计但停在 blocked/deferred；后续仍须
+独立完成 GLM-5.3 G53-1 至 G53-4、受限 Review Coach、Data Dragon/Evidence/Trace/Training、OP.GG useful
+breadth/黄金切片、安全部署合规和 8E 退出，最后进入 8F。RQ-154 的两地区/第三地区文字保留为历史，已被 RQ-157–162
+的 13 区 Focus Rail 方向取代；Workbench、Auth/RSO、Riot routing 和 `production_media=0` 不变。
+
+### 2026-08-31：RQ-165 G53-1 普通 API 适配档案离线 TDD
+
+RQ-165 在 RQ-164 的本地无 I/O 审计之后落地了第一批 Agent 主线实现：普通智谱 API 使用
+`glm-5.3-flash` 与官方基址 `https://open.bigmodel.cn/api/paas/v4/`，不使用 Coding Plan
+入口。不可变 profile 将 GLM-5.2 的 disabled thinking 与 GLM-5.3/Flash 的 enabled + low
+隔离；Provider、capability probe、CLI 和回归测试共用该合同，工具回合的 opaque reasoning
+仍拒绝回传。该批只关闭本地离线适配与回归，不改变默认模型、`.env`、Workbench、前端、Auth、路由或
+`production_media=0`，也不构成账号/额度/领域质量/生产准入证据。下一检查点为 G53-2 exact-SHA CI；
+8E 仍在进行，8F 尚未开始。
+
+### 2026-08-31：RQ-166 G53-2 exact-SHA 公共 CI
+
+G53-1 的隔离实现以精确提交 `0f97b92683e4981842e745a695864deb611bb630` 推送到 `main`；Actions
+`33325222755` 的 head SHA 精确匹配，`pytest`、`postgres-migrations`、`packaging-smoke` 三个 job 全部成功。
+公共 pytest 为 `1912 passed, 145 skipped, 1 warning, 127 subtests passed`。该批没有修改 workflow、默认模型、
+`.env`、Workbench、Auth、路由或媒体采用，没有读取/输出 Key，也没有真实 Provider/Riot/OP.GG 调用。
+
+RQ-166 只关闭 G53-2 的公共可复现性；G53-3 有界协议门（最多三次真实调用）必须等待独立明确授权，G53-4
+新鲜领域门、完整 8E 与 8F 仍未完成，`production_media=0` 保持不变。
+
+### 2026-08-31：RQ-167 G53-3 有界协议门首次尝试
+
+用户明确继续后，按最多三次的硬预算启动普通 API `adapter_protocol`。进程临时覆盖为 `zhipu`、普通 API
+端点和 `glm-5.3-flash`，没有修改 `.env` 或默认模型。A1 在第 1 次请求返回脱敏 `authentication_failed`，
+A2 被安全跳过；`calls_used=1/3`、`admitted=false`，没有重试或追加调用。
+
+脱敏结果已通过 schema 校验并保留为独立文件；该错误码不能区分 Key 无效、权限不足或账户/端点接缝错误，
+因此 G53-3 未通过，也不产生领域质量证据。下一步先确认凭证接缝，再由用户决定是否重开同一门；不进入 G53-4，
+`production_media=0`、Workbench 和完整 8E/8F 边界不变。
+
+### 2026-08-31：RQ-168/169 G53-3 重开通过
+
+前次 Key 已确认被删除；用户创建新的普通 API Key 并修正 `zhipu`、普通 `/api/paas/v4/` 端点和
+`glm-5.3-flash` 配置后，按原 3-call 上限重开。A1 结构化合同 1/1、A2 Agent 工具往返 2/2（1 次 ToolCall/执行）
+均通过，`admitted=true`。脱敏结果 SHA-256 为
+`1273eab75d4e4b1357a555db3c7c4472c85797daaf48006b34b986380a06a65a`；该证据只关闭协议接缝，G53-4、领域质量、
+生产成熟度和 8F 仍保持独立闸门。
+
+### 2026-08-31：RQ-171 GLM-5.3-Flash 适配器修复与 G53-5
+
+RQ-170 的并行 ToolCall 首错被确认是中立 Zhipu Adapter 的批量接缝缺口，旧领域考卷和结果不得重写。按用户
+授权，Flash 隔离 profile 改为 `thinking=enabled`、`reasoning_effort=max`、`clear_thinking=false`；
+`reasoning_content` 仅在内部工具回放链路中保留，多个合法 ToolCall 按 API 顺序进入 AgentLoop 逐个受控执行，
+能力矩阵仍不宣称并发。新的 `g53-5-fresh-flash-capability-gate` 需要独立身份、有界预算和脱敏结果，覆盖文本/思考、
+结构化、工具批次、上下文与 Agent 链路；真实 Provider 测试尚未执行。该准备不改变 8E/8F 顺序、默认模型、
+`.env`、Workbench、Auth、前端或 `production_media=0`。
+
+### 2026-08-31：RQ-172 G53-5 全能力矩阵真实观察
+
+G53-5 新实验已在 dirty worktree 上完成 `11/11` 次真实调用、`46,151` tokens，8 个案例中 `7/8` 通过。adapter
+core、AgentLoop 的有序多 ToolCall/思考回放、domain development、vendor text stream 与 vendor multimodal 均有
+观察证据；F7 vendor tool_stream 在 `max_tokens=512` 以 `incomplete_chat_response`/`length` 结束，不足以证伪能力；
+F4 缓存因 `cached_input_tokens=0`、`cache_status=unproven` 仍未证明，F8 仅为 vendor-only 观察。结果
+`production_admitted=false`、`public_ci_confirmed=false`，因此不关闭 Stage 8/8E、生产准入或 8F。下一步等待用户
+决定 Agent 主线下一项；不重跑 G53-4，不改默认模型、Workbench、Auth、前端、`production_media=0` 或既有路线顺序。
+
+### 2026-08-31：RQ-173 G53-5 F7 工具流上限独立诊断
+
+为诊断 RQ-172 F7 在 `max_tokens=512` 下的 `incomplete_chat_response`/`length`，新增独立 follow-up，唯一变化
+是将上限调至 2048，不修改或覆盖 RQ-172/旧结果。experiment_id 为
+`49ddb2504c08d3d066366d53011a8185d0e5c5aa698138cd1b949e58a3de191b`；父矩阵 experiment 为
+`4e2d14f9e2b294ec2898b22a4275dbbd706c28ca7f3b061a655d1a613a7aaefb`，父结果 SHA 为
+`bfff564cf4c6e7b2dd05f88542fd7a872d1565442b6d35c795ec6892cc84be0c`。唯一 `1/1` 调用消耗 `557` tokens，
+`finish_reason=tool_calls`、1 个 ToolCall、reasoning 372 chunks、tool 15 chunks，source identity stable、`cached=0`。
+结果文件 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_g53_5_tool_stream_followup_v1.json` 的
+SHA-256 为 `105722b2af2a4cbccc1b45a29b67a0864545aeeebb18f815ae7b62d6ace1d1a56`。
+
+该结果仅标记 `vendor_raw_transport_only`，`production_admitted=false`、`public_ci_confirmed=false`；不证明
+provider-neutral streaming、Agent 生产、领域采用或公共 CI。Stage 8/8E 继续 `in_progress`，下一步等待用户决定
+Agent 主线下一项；不改默认模型、Workbench、Auth、前端或 `production_media=0`。
+
+### 2026-08-31：RQ-176 Flash-only 产品运行时晋级（本地接线）
+
+Flash-only 是当前产品实现方向，不是“等比较后再决定”的候选状态。唯一注册的
+`glm-5.3-flash-runtime-v1` 已从组合根显式绑定到 Worker、Runtime、Agent/工具/Harness、Provider、运行时策略和
+Trace；精确 Flash 未绑定档案时在组合阶段直接拒绝，避免 Skill 的 30 秒质量资源门与 Flash 的 90 秒执行窗产生
+隐式分裂。Flash 运行时使用 120 秒传输、2048 输出上限、`temperature=1`、`top_p=0.95` 和 SDK retries=0；
+Worker lease/heartbeat 默认 360/60 秒。`.env.example` 与 Compose 模板已对齐 Flash，真实 `.env` 不由本批改动。
+
+这只改变 8E 内的 Agent 实现指针，不改变主阶段顺序，也不把本地回归写成生产成熟度。新实现仍须先取得自己的
+exact-SHA 公共 CI，在同一 SHA 重取 G53-3，之后执行 G53-7、黄金切片和安全/部署/合规闸门；GLM-5.2 可显式
+回退，旧证据不可覆盖，Portal/Account/Workbench/Auth/路由及 `production_media=0` 不变。
+
+### 2026-08-31：RQ-178 G53-7 A/B 身份边界
+
+为避免“写入脱敏结果后 `HEAD` 改变”造成协议身份自引用，G53-7 采用两提交模型：实现与协议执行代码固定在
+A，脱敏结果只能由 A 的直接单父子提交 B 新增。schema 1.1 admission 的本地预检会核对 A/B、各自 CI 见证、
+当前 `HEAD=B`、B 的 Git blob/canonical-LF 摘要、Provider/model 与三调用通过合同，并拒绝改写既有证据或混入
+代码。RQ-178 仅完成该无 I/O 接缝和 `53 passed` 回归；新的 A′公共 CI、同 SHA G53-3、B′及后续领域门仍按
+8E 顺序执行，不能据此宣称 8E/8F 或生产准入完成。
+
+### 2026-08-31：RQ-179 A 身份公共冻结补充
+
+两提交模型的最终实现 A 已固定为 `9e6d78be51c3a5c512b67f83d2849f9b1261cf77`，Actions run
+`33378687984` 三 job exact-SHA 通过。为让公共 runner 真正验证历史父子/blob/diff 身份，CI checkout 读取完整
+Git 历史；这不放宽生产 `HEAD=B` 门，也不改变 Stage 8/8E/8F 顺序。新 G53-3、只新增证据的 B、B 的 CI 与
+G53-7 仍是后续独立闸门。
+
+### 2026-08-31：RQ-180 G53-7 真实领域尝试边界
+
+RQ-179 的 A/B 证据链完成后，用户授权在干净 LF checkout 上执行一次 G53-7。协议调用 3/3，领域调用 2/12，
+累计 5/15 calls、领域 3505 tokens；首例因 `provider_response_invalid/incomplete_chat_response` 停止，后两例
+按首错跳过，`admitted=false`。脱敏结果 canonical-LF SHA-256 为
+`21e664d57d53bfc48ad9e109be48a999f52e25a0060821d711ae915002484426`，本地承载提交 C=`9157cde…` 未推送、未有公共 CI。
+结果没有保存底层 finish reason、Key、正文或 reasoning，不能把它进一步定性为 `length`，也不产生模型一般质量或生产成熟度结论。
+Stage 8/8E 仍 `in_progress`，当前停止自动重试；若继续须另立版本化的 Flash 响应完成/截断诊断，不覆盖旧证据。
+
+### 2026-08-31：RQ-181 响应完成度诊断补充
+
+RQ-180 的聚合错误不足以判断供应商结束原因。用户授权一次独立、正文零留存的诊断后，首个冻结案例在
+`agent_initial` 回合记录到有效 Usage（input `2220`、output `2048`）、原始 `finish_reason=length`、正文为空、
+reasoning 非空且无 ToolCall；适配器因此按 fail-closed 合同返回 `incomplete_chat_response`，未形成 normalized/settled
+response。脱敏结果的 canonical-LF SHA-256 为
+`050df3fc7afb2c2dc4e99fd2e731f8d9e6133d2806c65171f2dcdbd30834a000`，experiment 为
+`b1e4a1fc51bed23803b5f94acbd2a652330d5847061dbb7b60022c88da4ff1b9`，实现基线为
+`7cb66d218389c0e7d7aa7b2b1969a4678402f857`，诊断代码为 `447c11e85b6da53fe678d68e25d96b589c0d6ca2`。
+
+该证据只确认本次 2048 输出额度先被最大推理档案耗尽，不覆盖 RQ-180 的旧回合，也不把模型或账号判为不可用。
+它不改变 8E/8F 顺序、生产准入、Portal/Account/Workbench/Auth/路由或 `production_media=0`；下一项是先设计
+版本化响应完成策略并补离线 TDD，是否实现需新的明确授权，不自动提高全局上限或重跑领域门。
+
+### 2026-08-31：RQ-182 版本化响应完成策略
+
+用户明确继续 canonical 的下一项后，8E 新增纯离线、精确身份绑定的响应完成策略与 TDD。严格 Flash v1 仍使用
+当前 runtime profile 的 2048 输出上限和零额外调用；8192/一次 fresh-recovery 只作为未注册候选，用于验证
+`length + 空正文 + 非空 reasoning + 0 ToolCall` 的白名单形状，不会自动发起第二次请求。该项不改变主阶段顺序，
+不改消息/AgentLoop/Trace/预算合同，也不替代 G53-7、黄金切片、安全部署合规或 8F；后续候选启用必须重新取得
+exact-SHA 公共证据与独立授权。
+
+### 2026-08-31：RQ-183 候选 fresh-recovery 合同
+
+RQ-183 继续 8E 的同一 Agent 主线，把候选运行时、底层调用尝试、预算和脱敏 Trace
+做成独立离线合同。候选 profile 精确绑定 `zhipu/glm-5.3-flash` 与
+`glm-5.3-flash-runtime-v2-candidate/2.0.0`，计划最多包含序号 1 的 `primary`
+和序号 2 的 `fresh_recovery`；第二个槽位只在候选策略重新判定白名单形状后出现，且
+计划永远标记 `execution_allowed=false`。账本把每次预留都视为一个底层调用，结算
+实际 token/时间，失败或超预算也不抹掉消耗；独立 Trace 不修改既有 Runtime Trace
+schema，也不保存 Prompt、正文、reasoning、工具参数、Key 或 request ID。
+
+这只是 `30 passed` 的本地合同实现，不是恢复能力或生产准入。严格 Flash v1 的
+2048/零额外调用、默认模型、Workbench、Portal/Account、Auth、路由和
+`production_media=0` 均保持不变；后续仍需新 exact-SHA 公共 CI、同 SHA G53-3、
+单独真实诊断授权及成本/延迟/失败审查，8F 不提前开始。
+
+### 2026-08-31：RQ-184 候选合同公共证据链
+
+RQ-184 已完成 RQ-183 合同的公共可复现性和同 SHA 协议接缝：实现 A=`e25c3579e8c37724b76505ad028e066a7e28e654`
+的 Actions run `33405110692`，以及只新增脱敏结果的直接子提交 B=`eca01ce1393286dbbe83992c2985f600ea2b30b0` 的
+Actions run `33405881172`，三 job 均成功。同一 A checkout 的 G53-3 严格 `3/3` 调用通过（A1 `1/1`、A2 `2/2`，
+SDK retries `0`、`admitted=true`）；结果 `code_sha` 为 A，A/B 无 I/O 预检通过，结果 canonical-LF SHA-256 为
+`275e3a091a37dc12604143e6890f0ce899fb3d9007cef8c2aa46a51bdb9c8e72`。
+
+该项只提升候选合同的公共证据，不注册 `glm-5.3-flash-runtime-v2-candidate/2.0.0`，不执行 fresh-recovery 或
+G53-7，不改变严格 Flash v1 的 2048/零额外调用、默认模型、产品模块或 `production_media=0`。下一项仍需用户单独
+授权一次有界候选恢复诊断，并审查成本、延迟、失败与脱敏 Trace；完整 8E/8F、安全/部署/合规顺序不变。
+
+### 2026-08-31：RQ-185 候选恢复诊断中断
+
+RQ-185 记录了两次独立的有界候选恢复诊断启动：隔离诊断代码为
+`76de589a128b7a71f1def3316da3f30ebdd3a4c8`，实现基线为
+`eca01ce1393286dbbe83992c2985f600ea2b30b0`。两次都只进入 `primary` 首回合，
+没有发送 `fresh_recovery`；第一次沿用 120 秒传输边界并在约 60 秒无返回时中止，
+第二次使用全新结果名和临时 20 秒客户端传输上限，仍在约 60 秒内未结束后终止。
+两次都没有可观察响应、Usage、finish reason、Trace 或结果 JSON，不能把请求是否抵达供应商、
+费用或模型能力写成结论。候选继续保持未注册，严格 Flash v1 的 2048/零额外调用不变；
+后续若要重开，必须先复核传输/代理边界并取得新授权，不得自动重试或提前进入 G53-7/生产收口。
+
+### 2026-09-01：RQ-186 请求级截止结果
+
+RQ-185 的 20 秒客户端值被每请求 90 秒 timeout 覆盖；隔离诊断器现已把受校验的请求级 deadline 写入 SDK
+payload。代码提交 `94629161c5d3230629210444b5a1a38212799997` 通过 `82 passed` 相邻回归；唯一 30 秒
+primary 在约 30.141 秒后以 transport timeout 安全关闭，未产生响应、Usage 或 fresh-recovery。脱敏结果
+canonical-LF SHA-256=`0a0b6d058badf3d5001369cef9c4a66a582f0837bd1d645655555196ca8b324c`。
+这只证明诊断截止生效；30 秒低于候选 90 秒窗口，不构成模型能力拒绝、候选激活、G53-7 或生产成熟度。
+v1.3 的 8-Core/8-Advanced、完整 8E/8F、安全/部署/合规和 `production_media=0` 顺序均不变。
+
+### 2026-09-01：RQ-187 完整候选窗口结果
+
+RQ-186 之后按用户授权执行一次完整候选窗口：请求级 `timeout_s=90`、`max_tokens=8192`、SDK retries `0`，
+只发出一个 primary。90.188 秒后仍以 transport timeout 安全关闭，无响应、Usage、finish reason 或
+fresh-recovery；脱敏结果 canonical-LF SHA-256=`3d8d4744da3286b921d894684bfffcbf19d56d2c945821703ae1d4282fd80263`，
+由本地提交 `50ce5be` 承载。该结果排除 30 秒窗口过短，但不能在无响应时区分传输链路与服务端生成延迟，
+不增加模型/候选/领域能力，也不改变 8-Core/8-Advanced、完整 8E/8F 或 `production_media=0` 边界。
+
+### 2026-09-01：RQ-188 候选传输/生成拆分结果
+
+在用户新授权下，隔离诊断器只执行固定 `3/3` 次真实调用（SDK retries `0`）：合法 Flash
+`thinking=enabled`/`reasoning_effort=low` 最小控制、冻结上下文 256 token max 同步请求、冻结上下文 8192 token max
+流式首块请求。三路均 observed；同步两路有效 Usage 且 `finish_reason=length`、正文为空、reasoning 非空；流式路
+约 `687ms` 观察到首个 reasoning chunk 后按合同关闭。正式结果 SHA-256 为
+`60073a5f0d0d0324d0fe4deb588d4a49becc607ebfe6b1d008bf04d60a2faf51`，代码/source identity 为
+`b67b4500ebdbff934e470fd92c1461184aa7c49b`。该证据只把 endpoint/model 路径确认到“可达且已开始生成”，不升级
+8-Core/8-Advanced、候选、领域或生产能力；严格 Flash v1 仍为 2048/零额外调用，下一项是 evaluation-only
+`candidate-output-budget-calibration`，完整 8E/8F、安全/部署/合规与 `production_media=0` 顺序不变。
+
+### 2026-09-01：RQ-189 候选输出预算校准
+
+同一冻结上下文的三次独立调用显示：`reasoning_effort=low`、`max_tokens=2048` 在 28.344 秒内以
+`finish_reason=stop` 产生可见正文（输出 724）；`low+8192` 与 `max+8192` 两路在约 45 秒请求截止内没有
+同步响应。该观察支持“运行档位要同时考虑推理档位、输出预算和传输形状”，但没有证明 8192 需要更长时间、
+也没有证明模型一般质量。v1.3 仍要求 8-Core/8-Advanced 分离、候选证据和生产闸门逐项通过；严格 Flash v1
+继续 2048/零额外调用，下一步只做流式可见正文与 `clear_thinking` 的 evaluation-only 探针。
+
+### 2026-09-01：RQ-190 候选流式可见正文探针
+
+在连续推进授权下，项目以固定冻结上下文分别运行 `clear_thinking=true` 与 `false` 的单路流式请求，均使用
+`thinking=enabled`、`reasoning_effort=low`、`max_tokens=2048`、SDK retries `0`。两路都先观察 reasoning，再在
+约 2.547 秒/3.875 秒出现首个非空正文并立即关闭；没有把未观测的终态 Usage 当作零值，预算状态明确为 unknown。
+
+该证据只把“短同步可完成”扩展为“流式可在短时间给出首个可见正文”，不改变 8-Core/8-Advanced 分层，不注册候选，
+不把 `clear_thinking` 写成已验证的跨轮因果，也不接入产品默认、Workbench、Portal、Account、Auth 或生产媒体。下一项
+继续验证完整流式终态与 Usage，随后再决定是否值得设计 provider-neutral 装配接缝。
+
+### 2026-09-01：RQ-191 完整流式终态证据
+
+RQ-191 在 `clear_thinking=false`、低推理、2048、stream 形状下完整读取一条冻结上下文流；首块 2.203 秒、首正文
+3.531 秒、终态 24.140 秒，`finish_reason=stop` 且 Usage valid（1973/652/0）。这补足了 RQ-190 主动早退留下的
+终态缺口，但仍不是一般质量或生产准入证据，也没有验证跨轮思考回放、工具流或 provider-neutral runtime 接入。
+8-Core/8-Advanced 分层、候选未注册、严格 Flash v1 2048/零额外调用和 `production_media=0` 均不变；下一项转为
+离线流式装配合同。
+
+### 2026-09-01：RQ-192 提供商无关流式装配合同
+
+RQ-192 在 v1.3 的 8-Core/8-Advanced 分层内新增一个候选适配接缝，但不把高级流式能力强塞进生产：
+供应商分块先归一化，单次装配器要求真实 EOF、合法终止和有效 Usage，工具/正文互斥并对 JSON、序号、身份、
+资源和失败状态做 fail-closed 校验。实现与 29 项聚焦测试均为本地证据；Trace 采用白名单，内部结果默认 repr
+不暴露正文或工具参数。
+
+该合同不注册 GLM-5.3-Flash 候选、不改变严格 Flash v1 的 2048/零额外调用、不打开产品 streaming，也不改变
+8-Core 必需项、8-Advanced 证据门、Portal/Account/Workbench/Auth、部署/合规或 `production_media=0`。下一项
+仍是同一实现 SHA 的公共 CI 与供应商一致性测试；8E 未完成，8F 未开始。
+
+### 2026-09-01：RQ-193 智谱流式适配器一致性接缝
+
+RQ-193 在 v1.3 的候选接缝范围内完成测试内 provider conformance：用 fake OpenAI-compatible 智谱分块验证
+正文/reasoning、工具别名和参数分片、坏形状与未知工具、空 choices、model/terminal 边界、异常 `abort()`、
+正文空白保留及 Trace 脱敏，再与既有同步 `ZhipuProvider.chat_stream()` 的 fake-client 结果逐字段对照。
+conformance 聚焦为 `13 passed`，不改变任何生产 Provider 或能力标记。
+
+提交 `8bcbaa5ba467fcaad76193d3790d34a106a47d72` 的同 SHA 公共 CI run `33489903978` 已三 job 全绿且 head_sha
+精确匹配，并包含全部 Trace 脱敏断言。该证据只完成候选接缝的
+公共可复现性，不把高级 streaming 强塞入 8-Core 生产要求；候选仍未注册，严格 Flash v1 仍 2048/零额外调用。
+公共验证后，下一项是候选接线裁决（是否接入 runtime、范围、预算/Trace/回退/失败门），8E 仍 `in_progress`，
+8F 尚未开始，`production_media=0` 不变。
+
+### 2026-09-01：RQ-194 候选级显式智谱→中立适配接缝（公共闭环完成）
+
+RQ-194 继续遵守 v1.3 的 8-Core/8-Advanced 分层：这是候选级、仅显式调用的高级适配接缝，不是 8-Core 生产必需项，
+也不把 streaming 强制升级为默认能力。早期设计中的占位模块/API 已落为
+`app/providers/zhipu_stream_adapter.py` 的 `ZhipuStreamAdapter`；`ZhipuProvider.stream_adapter(*, tool_stream=False)`
+是显式工厂，`stream_events()`/`assemble()` 分别负责事件翻译和单次完整装配。
+
+本地实现把可信 provider runtime profile 的输出上限（1–8192）与请求 cap 绑定，只能收紧预算；默认要求 request identity，
+Trace/错误只保留 SHA-256 摘要，不含 Prompt、正文、reasoning、工具参数、Key 或 SDK 对象。单流必须正常 EOF、合法 terminal
+并有有效 Usage；取消、迭代器/翻译/关闭异常均 `abort()`/fail-closed，不 retry、不 recovery、不执行 ToolRuntime。
+只允许 fake/local evidence；`capabilities.streaming` 继续 `False`，严格 Flash v1 仍 2048/零额外调用，默认模型、AgentLoop、
+Workbench、Portal、Account、Auth、路由、预算/Trace 与 `production_media=0` 均不变，候选未注册。
+
+提交 `a7580e861cd986c026040c7fcfcc3fa577737961` 的同 SHA Actions run `33496237588` 已三 job 全绿且 head_sha 精确匹配；
+`tests/test_zhipu_stream_adapter.py` 聚焦 `20 passed`。这只证明候选接缝公共可复现，不等于产品 runtime 接线或生产准入。下一门是独立
+裁决候选 runtime 接线范围；RQ-194 不改变 Stage 8/8E 的 `in_progress` 顺序，
+8F 尚未开始，不提前进入 G53-7、黄金切片或生产准入。
+
+### 2026-09-01：RQ-195 候选 runtime 接线架构评审（历史状态）
+
+RQ-195 继续遵守 v1.3 的 8-Core/8-Advanced 分层：候选 streaming 接缝仍是受控高级实验，不能因为本地 adapter
+和公共 CI 通过就写成 8-Core 生产能力。评审确认完整流装配与候选恢复资格是两种不同合同：`assemble()` 对
+`length`、缺终止、缺 Usage 和异常路径 fail-closed，不能把异常当作恢复资格。
+
+因此下一设计门只冻结隔离的 `CandidateStreamEvaluationHarness`、四元身份绑定、`BoundaryObservation` 状态机、
+候选 ledger/Trace 投影和回退矩阵；不改 `LLMProvider`、`AgentLoop`、默认模型、`capabilities.streaming`、Workbench、
+Portal、Account、Auth、路由或生产媒体。候选 profile 仍未注册且 `execution_allowed=false`，严格 Flash v1 仍为
+2048/零额外调用；8E 继续 `in_progress`，8F 尚未开始。当时下一精确项为 `candidate-runtime-wiring-design / pending`，
+现已由 RQ-196 更新。
+
+### 2026-09-01：RQ-196 候选 runtime 接线设计
+
+RQ-196 在用户基本决定采用 GLM-5.3-Flash 后完成候选 runtime wiring design。按照 v1.3 的 8-Core/8-Advanced 分层，
+Flash 记录为唯一主力候选目标，但本轮仍是受控高级实验设计，不把 streaming、recovery 或 8192 上限写成 8-Core 生产能力。
+
+本轮冻结 `CandidateRuntimeBinding` 四元身份、body-free `BoundaryObservation`、共享事件校验、完整流/不完整流分流、
+隔离 v2 transport 和独立 Trace 投影；候选预算为最多 2 attempts、1 次额外调用、32,000 input、16,384 output、180,000ms，
+unknown Usage 不得当零，当前 `execution_allowed=false`。严格 Flash v1 2048/零额外调用、默认 Runtime、
+`capabilities.streaming=False`、产品模块和 `production_media=0` 不变。
+
+当时唯一下一精确项为 `candidate-boundary-observation-contract-implementation / pending`；该门已由 RQ-197
+推进，8E 仍进行中，8F 尚未开始。
+
+### 2026-09-01：RQ-197 候选边界观察合同本地实现
+
+RQ-197 按 v1.3 的 8-Core/8-Advanced 分层完成了候选高级实验的离线实现门，但没有把候选写成 8-Core
+生产能力。新增隔离 `app/evaluation/candidate_stream_contract.py`，提供精确 candidate binding、body-free
+`BoundaryObservation`、不可变状态快照、字段 presence 聚合、候选 v2 注入式 transport port 和独立 Trace
+allow-list；`ProviderStreamEvent` 的显式 null/缺失标记与完整 assembler、智谱翻译共同使用事件级校验核心。
+
+本地失败矩阵覆盖完整 `stop`/`tool_calls`、`length` reasoning-only、缺 EOF/terminal/Usage、身份/序号/工具/预算/
+时钟/关闭异常和状态伪造；不完整或异常流均 fail-closed，不构造 `ChatResponse`，unknown Usage 不当零。候选仍
+`activation_state=candidate`、`execution_allowed=false`，严格 Flash v1 2048/零额外调用，
+`capabilities.streaming=False`，默认模型、AgentLoop、Workbench、Portal、Account、Auth、路由和
+`production_media=0` 不变。聚焦/相邻回归为 `163 passed`，compileall、diff check、governance 已通过；全量本地
+首错是缺少 PostgreSQL 测试环境变量 `RIFTCOACH_TEST_DATABASE_URL`。
+
+当前唯一下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-boundary-observation-contract-public-ci / pending`：
+先取得同一干净实现提交的 exact-SHA 公共 CI，再另行裁决 candidate harness、fresh-recovery、G53-7、黄金切片和生产准入。
+
+### 2026-09-01：RQ-198 候选边界观察合同公共 CI 闭环
+
+RQ-197 实现提交 `127e6da43ef1b71b284a7e8d4198547b04c556d8` 已取得 Actions run `33507627615` 的
+exact-SHA 公共证据；`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 全绿，公共 pytest 为
+`2178 passed, 145 skipped, 1 warning, 127 subtests passed`。这只是 8-Advanced 候选实验的公共可复现性证据，
+不把候选写成 8-Core 生产能力；候选仍未注册、`execution_allowed=false`，严格 Flash v1、默认模型、产品模块、
+`capabilities.streaming=False` 与 `production_media=0` 均不变。
+
+收口后的唯一下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-design / pending`；
+本轮暂停，后续需用户明确继续。
+
+### 2026-09-02：RQ-199 隔离候选评估台设计
+
+RQ-199 继续遵守 v1.3 的 8-Core/8-Advanced 分层：候选评估台是 8-Advanced 的受控设计，
+不是把流式恢复能力强塞进 8-Core 生产。新增 ADR-0077、实现计划和学习 walkthrough，
+采用 candidate-only staged ledger（primary I/O 前预留，真实边界观察后才重算 policy）、
+单次 normalized event pump（observer 与 assembler 共用）和独立 body-free receipt；拒绝
+sentinel snapshot、首回合后才 reserve、隐式 Provider/AgentLoop streaming 和产品 Trace
+迁移。当前 activation 仍关闭，候选 `execution_allowed=false`，严格 Flash v1 2048/零额外
+调用、`capabilities.streaming=False`、默认模型和 `production_media=0` 不变；没有真实 API、
+fresh-recovery、G53-7、黄金切片或公共生产准入。
+
+设计门完成后的唯一下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-implementation / pending`；
+后续实现仍须 fake/local、聚焦测试和 exact-SHA 公共 CI，真实候选执行与 8F 继续独立排队。
+
+## 2026-09-02：RQ-200 候选评估台实现边界
+
+RQ-200 继续遵守 v1.3 的 8-Core/8-Advanced 分层：只把 RQ-199 的候选协调设计落成
+fake/local evaluation seam，不把流式恢复写入 8-Core 生产。实现使用 candidate-only staged
+ledger、单次 normalized event pump、临时内存 assembler 和独立 body-free receipt；完整结果
+必须经显式 evaluation consumer 短暂交付，不完整流或未知 Usage 不得伪装成产品响应或可用余额。
+
+本地 harness 聚焦 `15 passed`，与边界观察、流装配和旧恢复合同相邻回归 `102 passed`，并通过
+编译、diff check 与治理预检。activation 仍 disabled，候选不注册、不打开
+`capabilities.streaming`，严格 Flash v1、默认模型、产品 Runtime、Portal、Account、Workbench、
+Auth、路由和 `production_media=0` 不变；没有真实 API/Key、recovery、G53-7、黄金切片或 8F 证据。
+当前唯一下一门为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evaluation-harness-public-ci / pending`，
+先取得同一干净提交的 exact-SHA 公共 CI，再另行裁决高级候选是否继续。
+
+## 2026-09-02：RQ-201 候选评估台 exact-SHA 公共 CI 闭环
+
+RQ-200 实现提交 `f2a80320123d80a6441f3fcac310014a9bd4550e` 的 Actions run `33536168224` 已三 job
+全绿且 `head_sha` 精确匹配，公共 pytest 为 `2193 passed, 145 skipped, 1 warning, 127 subtests passed`。
+这只把候选评估台提升为可公共复现的 8-Advanced evidence，不改变 8-Core 生产矩阵；候选仍未注册、
+`execution_allowed=false`、`capabilities.streaming=False`，严格 Flash v1、默认模型、产品 Runtime、
+Portal、Account、Workbench、Auth、路由与 `production_media=0` 均不变。下一精确门为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-review / pending-user-authorization`，
+只允许在单独授权后复核 recovery 的传输/预算/失败边界。
+
+### 2026-09-02：RQ-202 对 8-Core / 8-Advanced 边界的补充
+
+RQ-202 仍归入 8-Advanced 的受控候选证据：只修补隔离评估台的回执派生一致性和单次 90 秒
+截止，不把 fresh-recovery、streaming 或 8192 上限提升为 8-Core 生产能力。旧同步诊断器不再
+作为新版本基础，unknown Usage 继续不得当零；候选 activation 仍 disabled，`production_media=0`
+和 8E/8F 的生产、合规、黄金切片闸门不变。下一精确项为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-design / pending-user-authorization`，
+必须再次单独授权。
+
+## 2026-09-02：RQ-203 版本化候选 recovery 诊断设计边界
+
+RQ-203 将候选 recovery 继续留在 8-Advanced 受控实验层：新增独立的
+`glm-5.3-flash-candidate-recovery-diagnostic-v2` / schema `2.0.0` 设计，绑定候选身份、版本与 SHA，
+并冻结 `reserve → observe → settle`、未知资源三态、分段延迟、失败第一现场和 body-free 原子回执。
+这只是评估证据设计，不是 8-Core 的产品部署、合规、评测或 portfolio 能力；不把候选包装成产品
+`LLMProvider`，不打开 `capabilities.streaming`，不改变严格 Flash v1、默认模型、AgentLoop、Portal、
+Account、Workbench、Auth、路由或 `production_media=0`。实现、真实 recovery、G53-7、黄金切片、生产准入
+和 8F 仍需各自的证据与授权，不能因设计完成而提前宣称 Stage 8 完成。
+
+下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-implementation / pending-user-authorization`。
+
+## 2026-09-02：RQ-204 版本化候选 recovery 诊断实现边界
+
+RQ-204 继续遵守 v1.3 的 8-Core/8-Advanced 分层：只把 RQ-203 的版本化诊断协议落成
+candidate-only fake/local evaluation seam，不把 recovery、streaming 或 8192 输出上限提升为
+8-Core 产品能力。实现使用 primary I/O 前 reserve、一次 normalized event pump、body-free
+observer/receipt、Usage/预算/费用三态、失败类别和 create-only canonical JSON；不包装为
+`LLMProvider`，不注册候选，不修改 AgentLoop、默认模型、统一 Runtime Trace 或前端。
+
+新模块聚焦 `22 passed`，候选相关回归 `67 passed`，流式/适配器/恢复合同相邻回归 `82 passed`，
+并通过编译、静态 no-I/O/import 与 diff check。activation 仍 disabled，严格 Flash v1 2048/零额外
+调用、`capabilities.streaming=False`、`production_media=0` 和 8E/8F 的生产、合规、黄金切片闸门
+不变；没有真实 API/Key、第二次 recovery、G53-7、黄金切片或生产准入证据。
+
+当前唯一下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-version-public-ci / pending`；
+先取得同一干净实现提交的 exact-SHA 公共 CI 与协议 dry-run，不能把本地 fake 证据写成生产成熟度。
+
+## 2026-09-02：RQ-205 版本化候选 recovery 诊断公共闭环边界
+
+RQ-205 完成 RQ-204 的 exact-SHA 公共 CI 和 fake/local 协议演练：提交
+`90242822df0e47304700644572bc12f0a3aa88ad` / Actions `33598541029` 三 job 全绿，公共 pytest
+`2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`；
+前端契约、构建、E2E、RAG、治理与打包冒烟均通过。该证据只说明 8-Advanced 候选评估接缝可复现，
+不把 recovery、streaming 或 8192 输出上限提升为 8-Core 产品能力。
+
+本地协议演练只使用 fake transport，一次 primary 调用即可生成临时 body-free 回执；没有读取 Key、
+真实 API、第二次 recovery 或持久结果。候选仍 disabled、`execution_allowed=false`、
+`capabilities.streaming=False`，严格 Flash v1、默认模型、AgentLoop、统一 Trace/预算、Portal、
+Account、Workbench、Auth、路由和 `production_media=0` 不变；8E/8F 的生产、合规、黄金切片闸门不变。
+
+下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`；
+真实 recovery 只能在新的明确一次性授权后执行。
+
+## 2026-09-02：RQ-206 版本化候选 recovery 诊断真实观察边界
+
+RQ-206 在同一干净隔离工作树只执行 1 次有界真实 primary：提交
+`0b2342c240cfdc1801e673e830c9a7f30bed3fbd` 的 Actions run `33603143606` 三 job exact-SHA 全绿。
+普通智谱 `zhipu/glm-5.3-flash` 流观察到 reasoning、可见正文、`stop` 和 EOF，但首个可见正文在
+`151453ms`、总延迟 `175875ms`；Usage 缺失、close 失败，90 秒 attempt 门在晚到事件中触发，
+因此回执为 `fail_closed / elapsed_limit`，没有第二次 recovery。持久 body-free 回执 SHA-256 为
+`2ead059ea22f035e6201bee6f3638c8e7a113baed3bf51b55fbbd17e42f862e6`（`4355` bytes）。
+
+该观察属于 8-Advanced 候选证据，不是 8-Core 产品能力，也不是 API/Key、模型一般质量、领域准入或生产
+成熟度结论；候选仍 disabled、未注册，严格 Flash v1、默认模型、产品 Runtime、前端、
+`production_media=0` 和 8F 边界不变。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+先离线设计/测试硬墙钟取消、流关闭与 Usage/终态尾帧处理，再另行裁决真实重测。
+
+## 2026-09-02：RQ-207 候选流硬墙钟与 Usage 尾帧边界
+
+RQ-207 只推进 `8e-productization` 的 8-Advanced candidate-only 证据：以显式
+`CandidateStreamSession`/`CandidateStreamDeadlineSupervisor` 固定 attempt 起点的绝对 monotonic 墙钟，
+并为协作式取消、幂等关闭、迟到事件抑制及终态/Usage 尾帧建立可测试合同。四文件聚焦回归（deadline 10、v2 24、
+real 8、adapter 25）统一为 `67 passed`；
+这不改变 8-Core 与 8-Advanced 的分层，不新增或重排主阶段，也不接入产品默认、Runtime、路由、
+`capabilities.streaming` 或其他生产模块。
+
+legacy `open_stream() -> Iterable` 继续兼容，但 hard mode 仅接受显式 session opener；若显式 opener 返回
+legacy iterable，兼容性校验在 opener 返回后执行并 fail closed。同步 opener 的阻塞，以及 SDK `close()` 是否
+非阻塞/能唤醒 `next()`，仍是公共 CI/真实重测闸门；Usage 缺失保持 unknown/null，禁止合成零值、重试或第二次请求。
+Stage 8/8E 仍为 `in_progress`，候选仍 disabled、未注册。
+
+> 历史快照（RQ-207 本地实现完成时）：当时的下一精确 checkpoint 曾为
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-stream-deadline-usage-public-ci / pending`；
+> RQ-208 已完成该公共 CI，当前唯一指针以最新 RQ-208 段落为准。
+
+## 2026-09-02：RQ-208 候选流硬墙钟与 Usage 尾帧公共闭环
+
+RQ-207 的候选硬墙钟会话、取消/关闭资源合同与 Usage 尾帧离线实现，已在提交
+`015b022bfce6d03452f753794ac126a377f8355b` 取得 Actions run `33613113829` 的 exact-SHA 公共 CI 闭环；
+`pytest`、`postgres-migrations`、`packaging-smoke` 三 job 均为 `completed/success`。本地四文件聚焦回归为
+`67 passed`，公共 pytest 为 `2241 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面为
+`201 passed, 1 warning`。
+
+该公共证据只证明候选评估接缝可复现，不证明供应商 SDK `close()` 的非阻塞/唤醒能力，也不构成模型一般能力、
+领域采用或生产成熟度结论；同步 opener 永久阻塞与 SDK close 无法唤醒 `next()` 仍需真实 provider 验证。候选仍
+disabled、未注册，`activation_state=disabled`、`execution_allowed=false`、`capabilities.streaming=False`，
+严格 Flash v1 2048/零额外调用，默认模型、产品 Runtime、路由和 `production_media=0` 不变，Stage 8/8E 继续
+`in_progress`。
+
+> 历史快照（RQ-208）：当时的下一精确 checkpoint 为
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`；
+> 公共 CI 已闭环。当前指针见下方最新 RQ-212 段落。
+
+## 2026-09-02：RQ-209 候选真实流硬墙钟观察的分层边界
+
+RQ-209 只补充 8-Advanced candidate-only 的真实传输证据，不改变 v1.3 的 8-Core/8-Advanced 分层。按用户
+“继续”仅发送 1 次普通智谱 `zhipu/glm-5.3-flash` primary；候选显式请求 Usage，attempt 90 秒、transport
+120 秒、`max_tokens=8192`、SDK retries=0。首事件/打开计时为 `3421ms`，reasoning 非空；`90015ms` 触发
+应用硬墙钟，未见可见正文、terminal、EOF 或 Usage，最终 `fail_closed / elapsed_limit`，组合会话
+`close_state=failed`，费用 unknown，无 recovery/重试。
+
+body-free 回执由本地证据提交 `0b276cc1c07ff2cfdb1dfd339e8dc66ab6aff40c` 保存，文件 SHA-256 为
+`56794fc171c959bbc9f4be6bcb12c5b9300b373dd0a2d270678db81c450c7c6a`、大小 `4342` bytes；公共 CI 尚未宣称。
+`close_state=failed` 仅是组合会话清理结果，不能归因到供应商 response、迭代器或其他具体资源，也不能
+证明底层 close 非阻塞或唤醒挂起读取；`observation.elapsed_ms=0` 只是截止前未结算的初始投影。
+
+候选 activation gate 仍 disabled、`activation_state=candidate` 且未注册，`capabilities.streaming=False`、严格 Flash v1 2048/零额外调用、默认模型、产品
+Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变；Stage 8/8E 仍 `in_progress`，
+8F、G53-7、黄金切片和生产准入不因本观察提前完成。当时的下一精确 checkpoint 保持原值，后续 provider
+close/wakeup 拆分或真实请求必须另行授权；当前指针见下方最新 RQ-212 段落。
+
+### RQ-210 边界澄清（2026-09-03）
+
+RQ-210 不新增、重排或重分类阶段，也不把候选流关闭报告提升为 8-Core 能力。它属于 8-Advanced 的 candidate-only
+证据：仅在 `ZhipuStreamSession` 内存中区分迭代器和外层 SDK stream wrapper，旧 receipt/schema 与产品 Runtime
+保持不变。公共 CI 已完成；provider-level cancel/wakeup 与生产准入仍是独立闸门，8E coverage 继续按既有 planned 状态维护。
+
+### RQ-211 边界澄清（2026-09-03）
+
+RQ-211 仍属于 8-Advanced 的 candidate-only 观察，不改变 8-Core 必做项、8E/8F 顺序或 coverage 状态。
+一次真实请求的结果为 `not_pending`：有限窗口没有形成挂起读取，因此没有执行 cancel，不能证明或否定
+provider close/wakeup。body-free 回执与 c311 exact-SHA 公共证据已固定；候选仍 disabled/未注册，产品
+Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。若继续，先裁决是否设计
+能稳定制造 pending-read 的新版协议；不得把重复真实请求当作路线推进。
+
+公共验证补充：`1c669e0` / Actions `33666132282` 已三 job exact-SHA 全绿，确认 RQ-211 回执被既有
+provider capability 合同扫描正确识别。此验证不增加 8-Core 能力、不新增真实请求，8E/8F 与候选边界不变。
+
+## 2026-09-03：RQ-212 候选 close/wakeup 离线回放分层边界
+
+RQ-212 继续遵守 v1.3 的 8-Core/8-Advanced 分层：只新增 candidate-only、evaluation-only 的离线回放，
+不把恢复、streaming 或供应商 close/wakeup 能力强塞进 8-Core。固定 Event 闸门覆盖正常 EOF、取消后唤醒、
+取消返回但未唤醒、取消超时和取消抛出五种场景；回执强制 `offline_fake`、供应商调用数 `0`、不联网，
+并隔离到 `data/evaluation/results/offline/`。它只证明本地观察器分类、单次 fake 打开、脱敏和不可变写入，
+不证明 SDK close 非阻塞、HTTP response 取消或真实 pending `next()` 唤醒。入口不读 dotenv/凭据、不创建或
+调用 SDK client（既有包导入可能加载依赖模块）。
+
+候选仍 disabled/未注册，`capabilities.streaming=False`；严格 Flash v1 2048/零额外调用、默认模型、
+产品 Runtime、Portal、Account、Workbench、Auth、路由、`production_media=0`、G53-7、黄金切片、生产准入
+和 8F 均不变。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-real-observation / pending-user-authorization`；
+公共验证已完成；是否进行一次参数明确的真实 provider 观察仍需单独授权。
+
+## RQ-212 公共闭环事实（2026-09-03）
+
+RQ-212 已完成 candidate-only 离线回放的 exact-SHA 公共闭环：实现 `1a32012d9dc6424aa012f160d48c8847e21b00ec`、
+Actions `33707313651` 三 job 全绿，v2 回执为 `data/evaluation/results/offline/
+zhipu_glm53_flash_candidate_close_wakeup_replay_rq212_v2.json`（`2220` bytes，SHA-256
+`a4477258735c5f217f1c328830e8453e4c686a9b386e1e04e0f37b6d777876f2`）。回执仍标记 `offline_fake`、0 provider
+calls、无网络；它不证明 SDK/HTTP close/wakeup，候选不注册，8-Core/8-Advanced 分层和 `production_media=0`
+边界不变。下一精确 checkpoint 为 `candidate-close-wakeup-real-observation / pending-user-authorization`。
+
+## RQ-213：候选 close/wakeup 第二次真实观察分层边界（2026-09-03）
+
+RQ-213 仍属于 8-Advanced 的 candidate-only 证据，不新增 8-Core 能力，也不改变 8E→8F 顺序。
+在 exact-SHA 公共绿灯提交 `a396412f7cd0f2e923536cf55f715dd56251aae5` 上只发送 1 次
+`zhipu/glm-5.3-flash` 请求；回执为 `not_pending`，会话首段 172ms，未形成 pending reader，
+因此没有执行 cancel。回执保持 body-free（909 bytes，SHA-256
+`8b2b645bc79785cec6520759d63c530d1b6d6a7d06b192b472334df543706f7b`），不含 Key、正文或 request ID。
+
+该样本不能证明或否定 SDK close 非阻塞、取消唤醒或 HTTP response 关闭；候选仍 disabled/未注册，
+`capabilities.streaming=False`，严格 Flash v1、默认模型、产品 Runtime、Portal、Account、Workbench、
+Auth、路由与 `production_media=0` 不变。下一精确 checkpoint 改为
+`candidate-close-wakeup-follow-up-decision / pending-user-decision`；先裁决是否设计可稳定制造
+pending-read 的新版协议，不以重复真实请求替代实验设计。
+
+## 2026-09-03：RQ-214 transport gate 仍属 8-Advanced
+
+RQ-214 只新增 candidate-only、evaluation-only 的离线 SDK/HTTP transport gate 预检，继续遵守
+8-Core（product/deployment/compliance/eval/portfolio）与 8-Advanced 分层。预检通过真实本地
+OpenAI SDK/Zhipu 适配器对象链和 `MockTransport` 固定 pending-read，供应商调用数为 0、网络为 0；
+它不把 streaming、provider close/wakeup 或取消能力强塞进 8-Core，也不改变默认模型或产品 Runtime。
+
+预检发现本地并发 iterator close race，故把 reader 唤醒与关闭投影分列并保持未决，不静默宣称成功。
+下一步若获明确授权，最多执行一次官方 TLS transport 包装的真实观察；该证据仍只能说明本机
+受控响应停顿下的客户端行为，不能替代 provider-native、G53-7、黄金切片、生产部署或 8F。
+
+本地回执已固定在实现提交 `4c220c5751288ad77c589d2e0e581690085803c0`（`1693` bytes，
+SHA-256=`9a952bd6d2798af8796e156d1922f214e6264b67dee12cd86a96b3f886c76bdb`）；同 SHA Actions
+`33712055286` 三 job 全绿（pytest `2292 passed, 145 skipped, 2 warnings, 127 subtests passed`；PostgreSQL `201 passed, 2 warnings`；packaging-smoke 通过），8E coverage 继续 `planned`。
+## 2026-09-03：RQ-215 transport-gated 真实观察仍属 8-Advanced
+
+RQ-215 在 RQ-214 离线预检和同 SHA 公共 CI 后，只执行 1 次真实
+`zhipu/glm-5.3-flash` 请求。实现/观察器/输入计划身份为
+`2acdf795881733e70c9246c48f7147d5136821b5`，Actions `33721483490` 三 job exact-SHA 全绿；
+pytest `2296 passed, 145 skipped, 2 warnings, 127 subtests passed`，PostgreSQL `201 passed, 2 warnings`，
+packaging-smoke 通过。官方 TLS transport 外层 gate 已进入，pending reader 在 `31ms` 内被
+response close 唤醒，但取消安全码为 `zhipu_stream_close`，iterator/composite 关闭投影为
+`failed`、SDK stream 为 `closed`，结论为 `client_wakeup_close_race`。
+
+该结果仍是 8-Advanced 的 candidate-only/evaluation-only 客户端证据，不新增 8-Core
+(product/deployment/compliance/eval/portfolio) 能力；不证明 provider-native close/wakeup、
+模型一般能力或生产 streaming。候选仍 disabled/未注册，默认模型、产品 Runtime、Portal、
+Account、Workbench、Auth、路由和 `production_media=0` 不变。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-real-observation / pending-next-decision`；
+后续修复关闭顺序或新的真实请求必须另立证据版本并重新授权。
+
+## 2026-09-03：RQ-216 关闭顺序修复仍属 8-Advanced
+
+RQ-216 只修复候选适配器的本地 `client_wakeup_close_race`：活跃 reader 存在时先关闭外层
+SDK response，把 iterator close 交还给 reader 线程的 `finally`；非活跃路径仍逐资源最多一次关闭。
+阻塞读取回归与离线 transport-gate 聚焦测试 `61 passed`，真实 API 为 0。此修复不新增 8-Core
+能力，不改变严格 Flash v1、默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由或
+`production_media=0`，候选继续 disabled/未注册。当前唯一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation-close-order-fix-public-ci / pending`；
+公共 CI 通过后再回到真实观察决策点。
+
+RQ-216 公共闭环事实：提交 `3740cdbe2d02b140780ea2b8834793df268e6ac1` 的 Actions
+`33726209532` 三 job exact-SHA 全绿；pytest `2297 passed, 145 skipped, 2 warnings, 127 subtests passed`，
+PostgreSQL 与 packaging-smoke 通过。该证据仍仅属于 8-Advanced candidate-only 适配器修复，
+不把候选提升为 8-Core 或生产模型。当前下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-adapter-close-order-fix / pending-next-decision`。
+
+## RQ-217：关闭顺序修复后的 transport-gated 真实观察（2026-09-03）
+
+RQ-217 继续按 v1.3 的 8-Core/8-Advanced 分层，属于 8-Advanced 的 candidate-only、
+evaluation-only 客户端证据，不新增 8-Core 能力，不改变 8E→8F 顺序。用户在 RQ-216
+公共 CI 闭环后授权一次真实观察；实现/观察器/输入计划身份均为
+`3e028b1217f1274152ba161993287f29188a1b73`，Actions `33727163550` 三 job exact-SHA
+全绿。
+
+观察在官方 TLS transport 外的 `before_first_event` gate 中只发送 1 次请求；
+`pending_reader_observed=true`、`reader_woke=true`、`cancel_status=returned`，
+iterator/SDK/composite close report 均为 `closed`，结论为 `client_wakeup_clean`。
+回执 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_transport_gate_real_rq217_v1.json`
+为 `1284` bytes、SHA-256=`ad4b920e94f019dae0b08c166e248c12349bdee0d73bf14b8ab2342e6b428ef3`，
+body-free 且 canonical round-trip 通过；`gate_released=false` 是受控停顿协议的预期条件。
+
+该结果只说明本机客户端的 reader 唤醒和 reader-owned 收尾，不证明 provider-native
+close/wakeup、模型一般能力、生产 streaming、G53-7、黄金切片或 8F。候选仍 disabled/
+未注册，产品 Runtime、默认模型、Portal、Account、Workbench、Auth、路由与
+`production_media=0` 不变；当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-transport-gated-real-observation / completed-clean-client-observation / pending-next-decision`。
+
+## RQ-218/RQ-219：Flash 协议与长响应完成度的分层记录（2026-09-03）
+
+按 v1.3 的 8-Core/8-Advanced 分层，RQ-218 的 G53-3 3/3 通过只属于协议身份观察；
+RQ-219 的候选 8192 单次真实流在 90 秒以 `fail_closed / elapsed_limit` 收口，只属于
+8-Advanced candidate-only 诊断。两者均不改变 8-Core、8E→8F 顺序、默认模型或产品 Runtime。
+RQ-219 的证据提交 `3f35d150b2f17f919f2be1597c08c6db0178c461` 已取得 Actions `33735717434`
+三 job exact-SHA 全绿；下一步固定为零网络的思考档位、流终态、Usage 尾帧和恢复决策拆分，
+checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / response-profile-terminal-recovery-offline-split / completed-public / pending-next-decision`。
+
+## RQ-220：响应完成策略的离线分层（2026-09-03）
+
+RQ-220 属于 8-Advanced 的 evaluation-only 实现：9 个 fake/fixture 场景把请求档位、
+terminal/EOF、Usage 和 recovery action 分开验证，provider calls=0。实现提交
+`14254048f6ad2faea5c7b15801e5c7c11e0ceba4` / Actions `33738050233` 与回执提交
+`ebb09a525b3340f31ba71821b894b4a142dfb4e7` / Actions `33738673832` 均三 job exact-SHA
+全绿，回执 SHA-256=`32965cbe06fc122c8ed436dbab0e4100fdf9b6f51510e2a69849b3cc4c2c8f8a`。
+它不增加 8-Core、不改变 8E→8F 顺序，也不把候选提升为默认模型；当前进入候选域门裁决，
+不自动追加真实请求。
+
+## RQ-221：显式低思考候选探针仍属 8-Advanced（2026-09-03）
+
+RQ-221 继续遵守 v1.3 的 8-Core/8-Advanced 分层：新增的 `low + 4096` profile 和一次
+真实无工具探针只是 candidate-only、evaluation-only 观察，不新增 8-Core 能力，不改变
+8E→8F 顺序。profile 通过显式候选构造器使用，`activation_state=candidate`、
+`execution_allowed=false`，不进入正常 Runtime resolver。
+
+实现提交 `c3de5555d0b00d77f402c41a842d00df53f46865` 的 Actions `33746833148` 三 job
+exact-SHA 全绿；一次真实观察得到 `observed / finish=stop / usage=valid`，输入/输出
+`1973/498`、延迟约 `20735ms`。body-free 回执提交
+`ef8d4b4133eeb952963e9e5cc112ec1fc458c671`，SHA-256=
+`c2946954181b10da2dcb726e186a2800d4381da24d04395b7baef4eecebd1957`。
+
+该窄结果不证明领域质量、工具多轮、成本/延迟稳定性、provider-native streaming、
+G53-7、黄金切片、生产准入或 8F；严格 Flash v1、默认模型、产品 Runtime、Portal、
+Account、Workbench、Auth、路由与 `production_media=0` 均不变。下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-probe / completed-real-observation / pending-next-decision`，
+需先另立低档候选领域门设计并取得裁决。
+## RQ-222：低思考候选领域门仍属 8-Advanced（2026-09-03）
+
+RQ-222 不新增 8-Core 能力，也不把一次低思考探针升级为产品准入。设计采用显式评测作用域
+和共享请求策略，保持产品 Runtime 注册表封闭；旧领域考卷不重跑，规则冻结后创建新的匿名
+held-out 三案例资产。`low + 4096`、90/120 秒、4/12 次调用和 24,000/72,000 token 墙只
+属于 candidate-only 评测边界，deterministic fallback 在该作用域关闭。
+
+本批 provider calls=0、没有新考卷或真实回执；下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-gate-offline-implementation / completed-local / pending-public-ci`。G53-3-L、资产冻结、领域真实观察、黄金切片、安全/部署/合规与 8F 仍在后面。
+
+### RQ-223：离线请求策略与预算墙（2026-09-04）
+
+RQ-223 完成了上述 candidate-only 作用域的离线实现：私有能力对象不进入产品 Runtime 注册表，
+共享链路通过显式 `request_policy` 消费固定预算，最后 Provider 边界先记账再 I/O，并在候选
+执行器中关闭 deterministic fallback。Fake Provider 聚焦与相邻回归均通过，尚无真实调用或
+领域质量结论；同一 SHA 公共 CI 仍是下一闸门。该批不改变 8-Core/8-Advanced 分层，也不把
+候选当作唯一生产模型。
+
+### RQ-224：低思考候选领域门公共 CI 闭环（2026-09-04）
+
+RQ-223 的实现提交 `d823cc40c3fcafb7167edccded87e185be4cae8a` 已通过 Actions
+`33781369322` 的 exact-SHA 三 job 公共 CI。该证据仍只属于 8-Advanced candidate-only
+控制面，不新增 8-Core 能力，不改变产品默认或 Workbench；下一步才是新鲜 G53-3-L 和
+held-out 资产，候选不能因此自动注册或成为唯一模型。
+
+### RQ-225：低思考协议与新鲜资产离线前置（2026-09-04）
+
+RQ-225 在 8E/8-Advanced 内完成低思考 G53-3-L 协议组合器和全新三案例资产的离线实现。
+显式 `request_policy` 复用共享协议切片并固定 `low + 4096`、90 秒工具窗、最多 3 次调用；
+新 Dataset、V1.1 Input Plan、Prompt/Context Snapshot 和合成 fixture 通过 no-I/O 身份、
+上下文 commitment 与历史 marker 隔离校验。聚焦协议/资产及相邻回归 `20 passed`，
+provider calls=0。该批不新增 8-Core 能力、不改变产品默认、Portal、Account、Workbench、
+Auth、路由或 `production_media=0`；下一精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-g53-3l-and-fresh-assets / completed-public / pending-user-authorization`。
+提交 `411753c1d4b89fe0c4ce9098caf380c45e10fa0f` 的 Actions `33787508488` 三 job exact-SHA
+全绿；公共 pytest 为 `2332 passed, 145 skipped, 2 warnings, 127 subtests passed`，之后仍需明确授权才可真实执行。
+
+### RQ-227：低思考 held-out 领域门的失败归因边界（2026-09-04）
+
+RQ-227 继续遵守 v1.3 的 8-Core/8-Advanced 分层：一次协议门通过不能替代领域质量门，
+也不能把候选注册成产品唯一模型。用户授权后，在入口修复提交
+`659757eca7ff1b658dfd164631512d3964c5a2ff` 及其 exact-SHA 公共 Actions `33826568517`
+上执行一次全新的三案例低思考领域门；三 job 均成功，真实领域调用 6 次，累计（含协议）9/15
+次，领域/累计 token 为 17834/18925。
+
+脱敏回执
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
+（7537 bytes，SHA-256=`b9fbebacf5c277c6b2cd57f018ff58cfb2646dbad95f6cdc9e90822646a68400`）显示：
+首案 Evaluation 96 通过；第二案回答完成、Evaluation 97，但没有证据来源且注入检查失败，
+触发 `evidence_missing/unsafe_publication`，按首错停止，第三案 skipped；最终
+`admitted=false`。该失败说明领域发布安全/证据链未闭合，不能归因成 API 不可达或直接推断模型
+一般能力。候选仍 disabled/未注册，8-Core、默认模型、产品 Runtime、Portal、Account、Workbench、
+Auth、路由、streaming、黄金切片和 `production_media=0` 不变；同一 held-out 考卷与回执不得重跑/覆盖。
+当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-heldout-domain-gate / completed-real-observation / pending-next-decision`，
+下一步先做失败归因与是否另立版本的裁决，8F 仍在后面。
+
+### RQ-228：候选领域证据与注入边界离线加固（2026-09-04）
+
+RQ-228 仍属于 8-Advanced 的 candidate-only 归因修复，不增加或重排 8-Core。针对 RQ-227
+第二案的两条独立失败，采用版本化 `glm53-flash-domain-quality-v1`：候选执行器要求至少
+一个可归因检索来源；Context 增加可信数据边界策略；明确拒绝时才允许对不透明 marker 做
+固定占位符脱敏，其他出现继续 fail closed；公开观察只保留 body-free 计数和安全原因码。
+
+本地相关/相邻回归 `102 passed`，provider calls=0；实现
+`e2efe8fd75e8cf27cbee7e90484fc90d288ce065` 的 Actions `33832025848` 三 job
+exact-SHA 全绿，公共 pytest 2344、PostgreSQL 201、packaging-smoke 通过。
+候选仍 disabled/未注册，GLM-5.2 兼容路径、默认 Runtime、Portal、Account、Workbench、
+Auth、路由、`production_media=0`、8E→8F 顺序和 8-Core/8-Advanced 分层均不变。当前精确
+checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-low-profile-domain-evidence-injection-hardening / completed-public / pending-next-decision`；
+下一步另立新协议/资产并先做 no-I/O 准入，不能重跑 RQ-227；任何真实观察仍需明确授权。
+
+### RQ-229：加固领域 V2 资产离线准入（2026-09-04）
+
+RQ-229 仍属于 8-Advanced candidate-only，不增加或重排 8-Core。它用全新协议计划、问题、
+匿名数据、case/run ID、marker 和带 RQ-228 policy 的 Context Snapshot 取代“原题重考”；
+no-I/O 准入绑定质量版本、来源下限和原有预算/停止规则，`external_provider_calls=0`。
+
+候选仍 disabled/未注册，GLM-5.2 手动应急/兼容路径、默认 Runtime、前端、Workbench、Auth、
+路由、`production_media=0` 和 8E→8F 顺序均不变。实现
+`c50cf231957bc54201d0207b99110fcf4b2897b3` 的 Actions `33843064715` 三个任务
+exact-SHA 全绿（公共 Python 2349、PostgreSQL 201、前端 270）。当前为
+`completed-public / pending-user-authorization`；下一步等待用户明确授权一次新的 V2 有界真实领域观察。
+真实模型观察、黄金切片、生产安全/部署/合规与 8F 都不能由资产公共闭环替代。
+
+### RQ-230：加固领域 V2 专用真实运行器（2026-09-04）
+
+RQ-230 仍属于 8-Advanced candidate-only，不增加或重排 8-Core。用户已授权一次 V2 真实观察，
+但执行前先用独立 V2 Admission/Result/CLI 把 RQ-229 资产、RQ-228 质量加固、既有真实协议证据、
+资源墙和 exact-SHA 公共证明绑定；本地 no-I/O preflight 与 `107 passed` 相邻回归通过，
+provider calls=0。
+
+此前为 `completed-local / pending-public-ci`；公共绿灯后已在同一干净 SHA 上执行一次观察，当前为
+`completed-real-observation / pending-next-decision`；
+GLM-5.2 手动应急/兼容路径、默认 Runtime、前端、Workbench、Auth、`production_media=0`、
+8E→8F 顺序及生产安全/部署/合规边界不变。
+
+#### RQ-230 真实观察结论
+
+实现 SHA `5fe8606f205d49ca5dde969a5823a0eb75587c35` 的 Actions `33846260144` 三任务
+exact-SHA 全绿；no-I/O preflight 通过后按授权执行一次 V2 观察。首案完成 3 次调用，
+证据来源数为 2、注入检查通过，但事实核验与质量门失败，修订预算耗尽，终态为
+`rejected / revision_budget_exhausted`，首错 `domain_case_outcome_mismatch`；后两案跳过。
+领域/累计 token 为 `10993/12084`，真实网络已使用。脱敏回执 SHA-256=
+`d1739c5d76da21c1109808b128e8ef82df251df32ea7355836f202d850e01c18`，`admitted=false`。
+该结论只影响 8-Advanced 候选领域质量观察，不增加 8-Core、不注册候选，也不改变默认 Runtime、
+GLM-5.2 回退、Portal、Account、Workbench、Auth、路由、`production_media=0` 或 8F 顺序；
+当前进入 `candidate-hardened-domain-v2-real-observation / completed-real-observation / pending-next-decision`。
+
+#### RQ-230 离线失败归因裁决
+
+本次失败可核验地落在 8-Advanced 领域质量合同：Provider/工具/证据检索和注入检查完成，独立
+事实核验为假，评分 `80` 未达到 `85` 发布门，零修订预算收敛为拒绝；终态和案例不匹配码是派生
+结果。由于回执不保存正文或评测 issues，具体错误句不能判定。保持 candidate-only，不另立版本、
+不重跑或放宽门槛；任何未来假设验证都必须取得新授权并建立全新版本化证据链。
+
+### RQ-231：加固领域 V3 有界修订设计（2026-09-04）
+
+RQ-231 继续属于 8-Advanced candidate-only，不增加、删除或重排 8-Core。用户在 RQ-230 归因后
+授权新的版本化设计；采用最多一次 Harness 原生修订与安全计数诊断，继续保持 85 分及事实、引用、
+注入、来源硬门。该决定不把一次候选实验变成必选生产架构。
+
+调用上界按完整可达控制流固定为 9 次/案、27 次/域；Token 墙必须在离线实现中根据新 V3 请求包络
+证明后冻结。V3 题目、匿名数据、case/run ID、marker、Context、协议和回执身份全部新建；
+RQ-227/RQ-230 不重跑。真实运行前还需 no-I/O 准入、exact-SHA 公共 CI、新鲜 G53-3-L 和单独授权。
+
+当前为 `candidate-hardened-domain-v3-bounded-revision-design / completed-design /
+pending-offline-implementation`。本批 provider calls=0；默认 Runtime、GLM-5.2 回退、前端、
+Workbench、Auth、`production_media=0`、8E→8F 顺序及生产安全/部署/合规边界不变。
+
+### RQ-232：V3 离线实现与资产准入（2026-09-04）
+
+RQ-232 仍属于 8-Advanced candidate-only，不增加或重排 8-Core。实现保留共享执行器的默认零
+修订路径，V3 才显式启用最多一次修订；评测只公开 body-free 枚举计数。新预算证明把每案/全域
+调用墙冻结为 `9/27`，Token 墙为 `203000/608000`；全新 Dataset、Context、fixture、marker、
+协议和输入计划通过 no-I/O SHA 准入。
+
+初始实现 `730c32d074269fb45e5a5351b1af591ecaa35de1` 的公共运行 `33894351184` 暴露旧输入计划
+零修订隔离和 V2 回执分流两处遗漏；修复提交 `f99c142c269df765deb592c463ce6e2555bcc3fe`
+保持旧调用方默认零修订，只有 V3 显式启用一次修订。相关与相邻回归 `93 passed`，compileall、
+diff check、治理检查通过；Actions `33895602378` 三任务 exact-SHA 全绿，公共 pytest 2379、
+PostgreSQL 201、packaging-smoke 通过。exact-SHA 预检为 `pending_protocol_evidence`、provider calls=0。
+当前为 `candidate-hardened-domain-v3-bounded-revision-implementation / completed-public /
+pending-fresh-g53-3l-authorization`；候选未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、
+Workbench、Auth、路由、`production_media=0`、安全/部署/合规和 8F 边界不变。下一步仅在明确
+授权后取得新鲜 G53-3-L，不能自动发起 V3 领域观察。
+
+### RQ-233：新鲜 G53-3-L 回执延迟口径修复（2026-09-05）
+
+本条仍属于 8-Advanced candidate-only，不增加、删除或重排 8-Core。已授权的新鲜 G53-3-L 在
+回执构造阶段因预算 I/O 延迟与协议端到端延迟口径不一致而失败，没有生成证据文件；最多 3 次和
+零重试边界成立，但精确调用数不能在无回执时补写。
+
+本地修复只让回执采用协议案例延迟之和，并增加推进时钟回归；请求参数、预算、结构化/工具合同、
+候选注册和质量门均未改变。修复 `110f9e8008486bfb976643a6abdaa8e88ea334e6` 的 Actions
+`33897787039` 三任务 exact-SHA 全绿。当前为 `candidate-fresh-g53-3l-receipt-latency-fix /
+completed-public / pending-fresh-g53-3l-reauthorization`；默认 Runtime、GLM-5.2 回退、前端、
+Workbench、Auth、`production_media=0`、8E→8F 顺序及生产安全/部署/合规边界不变。
+
+### RQ-234：修复后协议证据已取得（2026-09-05）
+
+新鲜 G53-3-L 在公共已验证代码 `110f9e8` 上通过，A1/A2 共 3 次真实调用，回执严格校验
+通过；V3 零调用预检就绪。本条仅关闭 RQ-233 的下一动作，不增加或重排 8-Core，不把协议
+可达性等同于领域/生产准入。下一次明确继续执行一次全新 V3 有界领域验收；候选仍未注册，
+前端、GLM-5.2 回退、黄金切片、生产安全/合规与 8F 边界不变。
+
+### RQ-235：V3 检索边界真实观察（2026-09-05）
+
+一次 V3 验收首案检索零片段，evidence_required 安全拒绝，未进入评分或修订；后两案跳过。
+下一步是候选检索合同离线诊断/加固，不降低支持或安全门、不重跑已消费考卷，不把这次失败
+归为模型一般能力结论。8-Core、8E→8F、产品/前端、GLM-5.2 回退和生产成熟度边界不变。
+
+## RQ-236：候选检索合同加固（2026-09-05）
+
+本批仍属于 8-Advanced candidate-only，不新增 8-Core。新增版本化的
+`coaching-query-recovery-v1`，仅在单一已登记教练主题的零命中/`insufficient_evidence` 情况下
+补查一次；原查询、`top_k`、过滤条件、BM25 `15.0`、查询覆盖率 `0.18` 和来源/安全硬门均保持不变。
+执行器默认关闭该策略，V2 入口前置拒绝，V3 候选入口显式开启；安全诊断只公开枚举、计数和过滤
+键名，并区分模型工具调用与本地补查。未知、混合、注入式、冲突、无适用资料和异常查询不补查。
+
+本地聚焦及相邻回归 `51 passed`，compileall、diff check、治理通过，provider calls=0。实现提交
+`ed62dbbc80506a8bcfae7eefb132348b21e587e0` 的 Actions `33943854904` 三任务 exact-SHA 全部成功。
+候选仍未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和
+`production_media=0` 不变；当前检查点为 `candidate-retrieval-contract-hardening / completed-public /
+pending-next-decision`，不能据此重跑旧领域考卷或宣称生产准入。
+
+## RQ-237：检索加固候选全新领域资产设计（2026-09-05）
+
+该设计仍属于 8-Advanced candidate-only，不新增 8-Core。新资产绑定 `coaching-query-recovery-v1` 与 V3 版本身份，使用全新 Dataset、Input Plan、Context、fixture、marker、协议和回执；旧 RQ-235/RQ-227/RQ-230 证据不重跑、不覆盖。先完成 no-I/O 身份交叉校验、预算证明、聚焦测试与公共 CI，再另行取得新鲜 G53-3-L；真实领域观察仍需单独授权。
+
+实现状态：全新资产与候选门控已完成本地 no-I/O 验证，当前 `completed-local / pending-public-ci`；不改变 8-Core、默认 Runtime 或产品模块。
+
+实现纠正已补齐 RQ-235 身份排重和检索策略绑定，并重新生成开启检索加固路径的预算证明；当前仍等待
+修复提交的 exact-SHA 公共 CI。
+
+RQ-237 真实领域观察已在首案 `evidence_required` 后停止；实际查询未留存，白名单缺口仅为假设；未观察到 Provider
+故障。白名单修复只在候选离线控制面生效，旧回执不可重跑。

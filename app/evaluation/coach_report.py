@@ -8,6 +8,16 @@ from app.providers.structured import contract_for_model
 
 
 NonBlankText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
+EvaluationIssueSeverity = Literal["high", "medium", "low"]
+EvaluationIssueCategoryV11 = Literal[
+    "fact_error",
+    "unsupported_comparison",
+    "derived_math",
+    "causality",
+    "meta_hallucination",
+    "prompt_injection",
+    "other",
+]
 
 EVALUATOR_SYSTEM_PROMPT = (
     "你是独立事实审查员，只依据输入证据检查报告。"
@@ -22,7 +32,7 @@ class EvaluationIssueModel(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    severity: Literal["high", "medium", "low"]
+    severity: EvaluationIssueSeverity
     category: Literal[
         "fact_error",
         "unsupported_comparison",
@@ -54,16 +64,8 @@ class EvaluationIssueModelV11(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    severity: Literal["high", "medium", "low"]
-    category: Literal[
-        "fact_error",
-        "unsupported_comparison",
-        "derived_math",
-        "causality",
-        "meta_hallucination",
-        "prompt_injection",
-        "other",
-    ]
+    severity: EvaluationIssueSeverity
+    category: EvaluationIssueCategoryV11
     quote: NonBlankText
     evidence: NonBlankText
     explanation: NonBlankText

@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from app.model_runtime import (
+    CandidateEvaluationRequestPolicy,
     ModelRuntimeProfile,
+    require_candidate_evaluation_request_policy,
     require_registered_model_runtime_profile,
 )
 from app.skills.execution import ValidatedSkillExecution
@@ -31,14 +33,24 @@ class AgentRunCompiler:
         *,
         sizer: ContextSizer | None = None,
         runtime_profile: ModelRuntimeProfile | None = None,
+        request_policy: CandidateEvaluationRequestPolicy | None = None,
     ) -> None:
         if not isinstance(tool_registry, ToolRegistry):
             raise TypeError("tool_registry must be a ToolRegistry")
         self._tool_registry = tool_registry
         self._sizer = sizer or DeterministicContextSizer()
+        if runtime_profile is not None and request_policy is not None:
+            raise ValueError(
+                "runtime_profile and request_policy are mutually exclusive"
+            )
         self._runtime_profile = (
             require_registered_model_runtime_profile(runtime_profile)
             if runtime_profile is not None
+            else None
+        )
+        self._request_policy = (
+            require_candidate_evaluation_request_policy(request_policy)
+            if request_policy is not None
             else None
         )
 
@@ -97,6 +109,7 @@ class AgentRunCompiler:
             )
 
         profile = self._runtime_profile
+        request_policy = self._request_policy
         metadata = {
             "context_estimated_tokens": actual_estimate,
             "context_max_tokens": context.max_context_tokens,
@@ -118,6 +131,8 @@ class AgentRunCompiler:
                     "runtime_profile_version": profile.version,
                 }
             )
+        if request_policy is not None:
+            metadata.update(request_policy.metadata())
 
         return AgentRunRequest(
             messages=context.messages,
@@ -127,15 +142,35 @@ class AgentRunCompiler:
             timeout_s=(
                 profile.agent_timeout_s
                 if profile is not None
-                else manifest.budgets.timeout_s
+                else (
+                    request_policy.agent_timeout_s
+                    if request_policy is not None
+                    else manifest.budgets.timeout_s
+                )
             ),
             max_context_tokens=context.max_context_tokens,
             temperature=(
-                profile.temperature if profile is not None else 0.0
+                profile.temperature
+                if profile is not None
+                else (
+                    request_policy.temperature
+                    if request_policy is not None
+                    else 0.0
+                )
             ),
             max_tokens=(
-                profile.max_output_tokens if profile is not None else None
+                profile.max_output_tokens
+                if profile is not None
+                else (
+                    request_policy.max_output_tokens
+                    if request_policy is not None
+                    else None
+                )
             ),
-            top_p=profile.top_p if profile is not None else None,
+            top_p=(
+                profile.top_p
+                if profile is not None
+                else (request_policy.top_p if request_policy is not None else None)
+            ),
             metadata=metadata,
         )

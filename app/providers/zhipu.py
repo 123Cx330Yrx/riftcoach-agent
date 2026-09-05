@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import json
 import re
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from types import SimpleNamespace
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import openai
 
@@ -36,8 +36,12 @@ from .models import (
 from .zhipu_profiles import (
     ZhipuThinkingProfile,
     resolve_zhipu_thinking_profile,
+    validate_zhipu_candidate_profile_for_model,
     validate_zhipu_profile_for_model,
 )
+
+if TYPE_CHECKING:
+    from .zhipu_stream_adapter import ZhipuStreamAdapter
 
 
 _PROVIDER_TOOL_NAME_PATTERN = re.compile(r"^[A-Za-z0-9_-]+$")
@@ -45,6 +49,7 @@ _TERMINAL_FINISH_REASONS = frozenset({"stop", "tool_calls"})
 _INCOMPLETE_FINISH_REASONS = frozenset(
     {"length", "content_filter", "insufficient_system_resource"}
 )
+_CANDIDATE_PROFILE_TOKEN = object()
 
 
 @dataclass(frozen=True)
@@ -81,6 +86,7 @@ class ZhipuProvider:
         model: str,
         profile: ZhipuThinkingProfile | None = None,
         runtime_profile: ModelRuntimeProfile | None = None,
+        _profile_scope: object | None = None,
     ) -> None:
         if client is None:
             raise ValueError("client is required.")
@@ -91,10 +97,22 @@ class ZhipuProvider:
             normalized_model
         )
         try:
-            selected_profile = validate_zhipu_profile_for_model(
-                normalized_model,
-                selected_profile,
-            )
+            if _profile_scope is _CANDIDATE_PROFILE_TOKEN:
+                if runtime_profile is not None:
+                    raise ValueError(
+                        "candidate profile cannot bind a product runtime profile"
+                    )
+                selected_profile = validate_zhipu_candidate_profile_for_model(
+                    normalized_model,
+                    selected_profile,
+                )
+            elif _profile_scope is not None:
+                raise ValueError("unknown Zhipu profile scope")
+            else:
+                selected_profile = validate_zhipu_profile_for_model(
+                    normalized_model,
+                    selected_profile,
+                )
         except ValueError as error:
             raise ValueError(str(error)) from error
         if runtime_profile is not None:
@@ -109,6 +127,29 @@ class ZhipuProvider:
         self.model_name = normalized_model
         self._thinking_profile = selected_profile
         self._runtime_profile = runtime_profile
+
+    @classmethod
+    def from_candidate_profile(
+        cls,
+        *,
+        client: Any,
+        model: str,
+        profile: ZhipuThinkingProfile,
+    ) -> "ZhipuProvider":
+        """Construct an explicitly selected, candidate-only provider profile.
+
+        This escape hatch is deliberately separate from the normal
+        constructor and cannot attach a product ``ModelRuntimeProfile``.  It
+        exists for isolated evaluation probes; environment/model metadata
+        never selects it automatically.
+        """
+
+        return cls(
+            client=client,
+            model=model,
+            profile=profile,
+            _profile_scope=_CANDIDATE_PROFILE_TOKEN,
+        )
 
     @property
     def profile(self) -> ZhipuThinkingProfile:
@@ -127,6 +168,31 @@ class ZhipuProvider:
         """The optional product execution profile bound to this Provider."""
 
         return self._runtime_profile
+
+    def stream_adapter(self, *, tool_stream: bool = False) -> ZhipuStreamAdapter:
+        """Return an explicit candidate-only neutral stream adapter.
+
+        The returned object is deliberately separate from ``LLMProvider`` and
+        does not change this provider's ``capabilities.streaming`` flag.  A
+        caller must opt in for every adapter instance; the normal synchronous
+        ``chat``/``chat_stream`` paths and the AgentLoop remain unchanged.
+        """
+
+        if not isinstance(tool_stream, bool):
+            raise ValueError("tool_stream must be a boolean.")
+        # Local import keeps the provider-neutral adapter module independent
+        # from this implementation and avoids an import cycle.
+        from .zhipu_stream_adapter import ZhipuStreamAdapter
+
+        return ZhipuStreamAdapter(
+            self,
+            tool_stream=tool_stream,
+            default_max_output_tokens=(
+                self._runtime_profile.max_output_tokens
+                if self._runtime_profile is not None
+                else None
+            ),
+        )
 
     def chat(self, request: ChatRequest) -> ChatResponse:
         require_provider_capabilities(
@@ -324,6 +390,130 @@ class ZhipuProvider:
             raise
         except Exception as error:
             raise self._translate_error(error) from None
+
+    def _open_stream_for_adapter(
+        self,
+        request: ChatRequest,
+        *,
+        tool_stream: bool,
+        include_usage_tail: bool = False,
+    ) -> tuple[Any, Callable[[str], str]]:
+        """Open one raw stream for the explicit neutral adapter seam.
+
+        This method is intentionally private.  It centralizes request
+        validation and applies a bound runtime profile when one is present,
+        while leaving the historical ``chat_stream`` payload behavior intact.
+        The adapter receives only a request-local tool-name decoder; raw IDs,
+        SDK objects and payloads never enter the neutral trace.
+        """
+
+        if not isinstance(request, ChatRequest):
+            raise TypeError("request must be a ChatRequest")
+        if not isinstance(tool_stream, bool):
+            raise ValueError("tool_stream must be a boolean.")
+        if not isinstance(include_usage_tail, bool):
+            raise ValueError("include_usage_tail must be a boolean.")
+        require_provider_capabilities(
+            provider_name=self.provider_name,
+            capabilities=self.capabilities,
+            request=request,
+        )
+        if request.tool_choice is ToolChoiceMode.REQUIRED:
+            raise ProviderCapabilityError(
+                provider=self.provider_name,
+                missing_capabilities=("required_tool_choice",),
+            )
+        if (
+            request.response_contract is not None
+            and request.tools
+            and request.tool_choice is ToolChoiceMode.AUTO
+        ):
+            raise ProviderCapabilityError(
+                provider=self.provider_name,
+                missing_capabilities=("structured_tool_combination",),
+            )
+        if tool_stream and not request.tools:
+            raise ValueError("tool_stream requires at least one tool.")
+
+        aliases = _ToolAliasMap.from_tools(request.tools)
+        runtime_profile = self._runtime_profile
+        effective_temperature = (
+            runtime_profile.temperature
+            if runtime_profile is not None
+            else request.temperature
+        )
+        effective_top_p = (
+            runtime_profile.top_p
+            if runtime_profile is not None
+            else request.top_p
+        )
+        effective_max_tokens = request.max_tokens
+        effective_timeout = request.timeout_s
+        if runtime_profile is not None:
+            effective_max_tokens = (
+                runtime_profile.max_output_tokens
+                if effective_max_tokens is None
+                else min(effective_max_tokens, runtime_profile.max_output_tokens)
+            )
+            effective_timeout = min(
+                effective_timeout,
+                runtime_profile.llm_tool_timeout_s,
+            )
+
+        extra_body = self._thinking_profile.extra_body()
+        if tool_stream:
+            extra_body["tool_stream"] = True
+        payload: dict[str, Any] = {
+            "model": self.model_name,
+            "messages": [
+                self._encode_message(message, aliases)
+                for message in request.messages
+            ],
+            "temperature": effective_temperature,
+            "timeout": effective_timeout,
+            "stream": True,
+            "extra_body": extra_body,
+        }
+        if effective_top_p is not None:
+            payload["top_p"] = effective_top_p
+        if effective_max_tokens is not None:
+            payload["max_tokens"] = effective_max_tokens
+        if include_usage_tail:
+            # OpenAI-compatible providers emit Usage in a final empty-choice
+            # frame only when explicitly requested.  Keep this opt-in so the
+            # historical provider and product paths retain their payload.
+            payload["stream_options"] = {"include_usage": True}
+        if request.tools and request.tool_choice is ToolChoiceMode.AUTO:
+            payload["tools"] = [
+                self._encode_tool(tool, aliases) for tool in request.tools
+            ]
+            payload["tool_choice"] = "auto"
+        if request.response_contract is not None:
+            payload["response_format"] = {"type": "json_object"}
+
+        try:
+            raw_stream = self._client.chat.completions.create(**payload)
+        except ProviderResponseError:
+            raise
+        except Exception as error:
+            raise self._translate_error(error) from None
+        return raw_stream, aliases.decode
+
+    def _validate_stream_response_for_adapter(
+        self,
+        response: ChatResponse,
+    ) -> None:
+        """Apply the model's reasoning replay rules to a neutral response."""
+
+        if not isinstance(response, ChatResponse):
+            raise ProviderResponseError(
+                provider=self.provider_name,
+                code="invalid_stream_response",
+            )
+        self._validate_reasoning_content(
+            response.reasoning_content,
+            has_tool_calls=bool(response.tool_calls),
+        )
 
     def _consume_stream(
         self,

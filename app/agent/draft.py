@@ -6,7 +6,9 @@ import re
 from dataclasses import dataclass
 
 from app.model_runtime import (
+    CandidateEvaluationRequestPolicy,
     ModelRuntimeProfile,
+    require_candidate_evaluation_request_policy,
     require_registered_model_runtime_profile,
 )
 from app.harness.knowledge import (
@@ -112,11 +114,16 @@ class SkillAgentDraftPreparer:
         *,
         observer: RuntimeSignalObserver | None = None,
         runtime_profile: ModelRuntimeProfile | None = None,
+        request_policy: CandidateEvaluationRequestPolicy | None = None,
     ) -> None:
         if not callable(getattr(agent_loop, "run", None)):
             raise TypeError("agent_loop must provide run()")
         self._agent_loop = agent_loop
         self._observer = observer
+        if runtime_profile is not None and request_policy is not None:
+            raise ValueError(
+                "runtime_profile and request_policy are mutually exclusive"
+            )
         if runtime_profile is not None:
             runtime_profile = require_registered_model_runtime_profile(
                 runtime_profile
@@ -127,10 +134,24 @@ class SkillAgentDraftPreparer:
                 raise ValueError(
                     "runtime_profile does not match the Agent Provider"
                 )
+        if request_policy is not None:
+            request_policy = require_candidate_evaluation_request_policy(
+                request_policy,
+                provider_id=getattr(agent_loop.provider, "provider_name", None),
+                model=getattr(agent_loop.provider, "model_name", None),
+            )
+        self._request_policy = request_policy
         self._compiler = AgentRunCompiler(
             agent_loop.tool_registry,
             runtime_profile=runtime_profile,
+            request_policy=request_policy,
         )
+
+    @property
+    def request_policy(self) -> CandidateEvaluationRequestPolicy | None:
+        """The explicit candidate policy bound to this preparer, if any."""
+
+        return self._request_policy
 
     def prepare(
         self,

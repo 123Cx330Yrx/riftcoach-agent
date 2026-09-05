@@ -359,6 +359,34 @@ class ReviewHarnessPassingPathTests(unittest.TestCase):
         self.assertEqual(RunStatus.PUBLISHED, manifest.status)
         self.assertEqual("published", manifest.final_decision)
 
+    def test_explicit_evidence_floor_rejects_empty_retrieval_before_publication(self) -> None:
+        generator = FakeGenerator()
+        harness = self._build_harness(
+            retriever=AbstainingRetriever(),
+            generator=generator,
+            config=HarnessConfig(
+                publish_score_threshold=85,
+                minimum_evidence_sources=1,
+                allow_deterministic_fallback=False,
+            ),
+        )
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self.assertEqual(RunStatus.REJECTED, manifest.status)
+        self.assertEqual("rejected", manifest.final_decision)
+        self.assertEqual(1, len(generator.requests))
+        self.assertEqual("evidence_required", manifest.transitions[-1]["reason"])
+        self.assertTrue(
+            any(
+                row["kind"] == ArtifactKind.RETRIEVAL_EVIDENCE.value
+                for row in manifest.artifacts
+            )
+        )
+
     def test_generation_failure_degrades_to_deterministic_report(self) -> None:
         evaluator = SequenceEvaluator([])
         harness = self._build_harness(
