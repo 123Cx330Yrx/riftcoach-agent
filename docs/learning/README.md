@@ -34,7 +34,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 > 当前 checkpoint 是
 > `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-real-observation / pending-retrieval-failure-attribution`；
 > 8E coverage 仍 planned，候选未注册。RQ-236 已完成候选检索合同的离线加固、执行器接线和同 SHA 公共 CI，查询恢复及相邻链路 51 项通过；
-> 新资产纠正已完成本地实现、公共 CI、新鲜 G53-3-L 和一次领域观察；首案检索白名单缺口已离线修复，下一步只做失败归因/是否另立版本裁决；
+> 实际领域查询原文未知；新增开发链路验证21项通过，相邻112项通过。下一步核验模型自主查询，先积累开发证据，不直接另开正式考卷；
 > 黄金切片、生产准入和 8F 均未进入。
 
 ## 2. 建议怎样学习每一个能力
