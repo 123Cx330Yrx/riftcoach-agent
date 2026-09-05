@@ -439,6 +439,8 @@ def run_v3_domain_gate(
         raise ValueError("case executor does not match V3 execution plan")
     if getattr(case_executor, "quality_hardening", None) is not True:
         raise ValueError("V3 executor must enable quality hardening")
+    if getattr(case_executor, "retrieval_hardening", None) is not True:
+        raise ValueError("V3 executor must enable retrieval hardening")
     if getattr(case_executor, "max_revisions", None) != 1:
         raise ValueError("V3 executor must allow exactly one revision")
     if getattr(case_executor, "request_policy", None) is not policy:
@@ -567,7 +569,7 @@ def run_cli(
     provider = provider_factory(settings)
     runs_root = _inside_directory(root, options.runs_root)
     with tempfile.TemporaryDirectory(prefix="glm53-hardened-domain-v3-", dir=str(runs_root.parent)) as temporary:
-        executor = ProductionDomainCaseExecutor(project_root=root, input_plan=prepared.input_plan, runs_root=temporary, request_policy=GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY, quality_hardening=True, max_revisions=1)
+        executor = ProductionDomainCaseExecutor(project_root=root, input_plan=prepared.input_plan, runs_root=temporary, request_policy=GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY, quality_hardening=True, retrieval_hardening=True, max_revisions=1)
         result = run_v3_domain_gate(admission=prepared.admission, dataset=prepared.dataset, provider=provider, case_executor=executor, confirm_real_call=True)
     output.write_bytes(canonical_v3_result_bytes(result))
     return result

@@ -1743,3 +1743,20 @@ RQ-233 的待协议授权动作已由用户继续及本次真实运行关闭：�
 当前为 `candidate-hardened-domain-v3-real-observation / completed-real-observation /
 pending-retrieval-contract-hardening`。下一批不重跑真实考卷，只用独立开发用例离线设计并加固
 查询具体程度、检索支持与零命中处理及安全诊断；不降低门槛，不扩展前端、产品注册或生产准入。
+
+## RQ-236：候选检索合同离线加固（2026-09-05）
+
+在 RQ-235 的检索零命中归因后，新增候选专用 `coaching-query-recovery-v1`。原查询始终优先，
+只有单一已登记教练主题在零命中且原因为 `insufficient_evidence` 时，才沿用 `top_k` 与全部过滤
+条件补查一次；BM25 `15.0`、查询覆盖率 `0.18` 和来源/安全门均不变。未知、混合、注入式、冲突、
+无适用资料和异常查询不补查。
+
+`ProductionDomainCaseExecutor` 的 `retrieval_hardening` 默认关闭，只有显式候选请求策略与质量
+加固同时存在才可开启；V2 在 Provider 调用前拒绝新策略，V3 候选入口显式开启。EvidenceDiagnostics
+只投影固定主题、尝试/计数、过滤键名和原因枚举，并把本地补查次数与模型工具调用分开；旧回执空字段
+继续省略。本地聚焦查询恢复与完整候选链路共 `51 passed`，compileall、diff check、治理通过，
+provider calls=0。
+
+该批仍属 8-Advanced candidate-only，不注册候选、不改变默认 Runtime、GLM-5.2 回退、Portal、
+Account、Workbench、Auth、路由或 `production_media=0`；同一实现 SHA 的 exact-SHA 公共 CI 尚待
+完成，之后才裁决是否另立新鲜协议/资产，不自动重跑 RQ-235 或发真实请求。

@@ -4541,3 +4541,18 @@ V3 零调用预检 ready_for_real_call，相邻回归 26 passed。旧失败事�
 修订，后两案跳过。本次不是 API/超时或 85 分质量门失败，不能据此否决模型一般能力。
 新回执已严格校验，48 项相关回归和 22 项总检相邻测试通过；只补测试的 V3 回执分流。
 下一步只做独立开发用例下的离线检索合同加固，不降门槛、不重跑考卷、不追加真实调用。
+
+## 2026-09-05：RQ-236 候选检索合同离线加固
+
+RQ-236 把 RQ-235 的检索零命中问题收敛为候选专用、版本化的 `coaching-query-recovery-v1`：
+原查询优先，仅对单一已登记教练主题在 `insufficient_evidence` 且零命中时保留 `top_k` 和全部
+过滤条件补查一次；BM25 `15.0`、查询覆盖率 `0.18`、来源与安全门不变。混合/未知/注入式查询、
+冲突、无适用资料和异常不补查。执行器开关默认关闭，只有显式候选 request policy + quality
+hardening 才能启用；V2 入口前置拒绝，V3 入口显式开启。诊断只投影固定枚举、计数与过滤键名，
+不保存查询正文、过滤值、提示词、推理、凭据或自由文本，并区分模型工具调用与本地补查次数。
+
+本地查询恢复、执行器、V2/V3 隔离及完整链路共 `51 passed`，compileall、diff check、治理通过，
+provider calls=0。该批仍属 8-Advanced candidate-only；候选未注册，默认 Runtime、GLM-5.2 回退、
+Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。当前为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-local / pending-public-ci`；
+下一步取得同一实现 SHA 的 exact-SHA 公共 CI，之后再决定是否另立新鲜协议/资产。

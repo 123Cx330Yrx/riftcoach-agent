@@ -60,11 +60,12 @@ class ScriptedProvider:
 
 
 class PassingExecutor:
-    def __init__(self, execution_plan):
+    def __init__(self, execution_plan, *, retrieval_hardening: bool = True):
         self.execution_plan = execution_plan
         self.runtime_profile = None
         self.request_policy = GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
         self.quality_hardening = True
+        self.retrieval_hardening = retrieval_hardening
         self.max_revisions = 1
 
     def execute(self, *, case_id: str, provider) -> DomainCaseSemanticObservation:
@@ -181,6 +182,24 @@ def test_v3_gate_runs_three_cases_under_revision_cap_without_registering():
     assert result.candidate_registered is False
     assert result.production_admitted is False
     assert all(row.observation.revision_count == 0 for row in result.cases)
+
+
+def test_v3_gate_requires_retrieval_contract_before_provider_calls():
+    admission_value, dataset = admission()
+    provider = ScriptedProvider()
+
+    with pytest.raises(ValueError, match="retrieval hardening"):
+        run_v3_domain_gate(
+            admission=admission_value,
+            dataset=dataset,
+            provider=provider,
+            case_executor=PassingExecutor(
+                admission_value.execution_plan,
+                retrieval_hardening=False,
+            ),
+        )
+
+    assert provider.requests == []
 
 
 def test_v3_result_is_body_free():

@@ -7,6 +7,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
+
 from app.evaluation.domain_e2e import load_domain_dataset
 from app.evaluation.coach_report import REVISER_SYSTEM_PROMPT
 from app.evaluation.provider_domain_experiment import DomainCaseExecutionPlan
@@ -193,6 +195,47 @@ class SafeProvider:
 
 
 @dataclass
+class CandidateRecoveryProvider(SafeProvider):
+    provider_name: str = "zhipu"
+    model_name: str = "glm-5.3-flash"
+
+    def chat(self, request: ChatRequest) -> ChatResponse:
+        self.requests.append(request)
+        if request.response_contract is not None:
+            return self._text(
+                json.dumps(
+                    {
+                        "score": 95,
+                        "verdict": "pass",
+                        "issues": [],
+                        "passed_checks": ["facts", "citations", "security"],
+                        "summary": "controlled pass",
+                    },
+                    ensure_ascii=False,
+                )
+            )
+        if any(message.role.value == "tool" for message in request.messages):
+            return self._text(
+                "# RiftCoach 复盘\n\n"
+                "建议优先检查前期生存，知识依据见 [K1]。"
+            )
+        return ChatResponse(
+            content=None,
+            provider=self.provider_name,
+            model=self.model_name,
+            finish_reason="tool_calls",
+            tool_calls=(
+                ToolCall(
+                    id="candidate-recovery-knowledge-1",
+                    name="knowledge.search",
+                    arguments={"query": "复盘", "top_k": 2},
+                ),
+            ),
+            usage=TokenUsage(input_tokens=20, output_tokens=5),
+        )
+
+
+@dataclass
 class InjectionAwareProvider(SafeProvider):
     marker: str = ""
 
@@ -345,6 +388,52 @@ def test_quality_hardening_requires_explicit_candidate_policy() -> None:
             quality_hardening=True,
         )
         assert executor.quality_hardening is True
+        assert executor.retrieval_hardening is False
+
+        with pytest.raises(ValueError, match="candidate quality hardening"):
+            ProductionDomainCaseExecutor(
+                project_root=ROOT,
+                input_plan=plan,
+                runs_root=directory,
+                request_policy=GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
+                retrieval_hardening=True,
+            )
+
+
+def test_candidate_retrieval_hardening_recovers_short_query_through_full_chain() -> None:
+    plan = development_multi_tool_input_plan()
+    provider = CandidateRecoveryProvider()
+    with tempfile.TemporaryDirectory() as directory:
+        observation = ProductionDomainCaseExecutor(
+            project_root=ROOT,
+            input_plan=plan,
+            runs_root=directory,
+            request_policy=GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
+            quality_hardening=True,
+            retrieval_hardening=True,
+        ).execute(
+            case_id=plan.execution_plan.case_ids[0],
+            provider=provider,
+        )
+
+    assert observation.evidence_source_ids
+    # One model tool call performs two bounded local retrieval attempts.
+    assert observation.evidence_diagnostics.search_calls == 1
+    assert observation.evidence_diagnostics.successful_search_calls == 1
+    assert observation.evidence_diagnostics.query_recovery_attempts == 2
+    assert observation.evidence_diagnostics.query_recovery_recovered is True
+    assert observation.evidence_diagnostics.query_recovery_topic == "review"
+    assert observation.evidence_diagnostics.chunks_returned >= 1
+    assert observation.evidence_diagnostics.source_count == len(
+        observation.evidence_source_ids
+    )
+    assert observation.fact_check_passed is True
+    assert observation.citation_check_passed is True
+    assert observation.injection_check_passed is True
+    assert observation.evaluation_validated is True
+    assert observation.evaluation_score == 95
+    assert observation.terminal_status == "published"
+    assert len(provider.requests) == 3
 
 
 REVISION_REPORT = """# RiftCoach 教练式复盘报告

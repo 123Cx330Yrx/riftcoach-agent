@@ -1580,3 +1580,16 @@ Workbench、Auth、`production_media=0`、8E→8F 顺序及生产安全/部署/�
 一次 V3 验收首案检索零片段，evidence_required 安全拒绝，未进入评分或修订；后两案跳过。
 下一步是候选检索合同离线诊断/加固，不降低支持或安全门、不重跑已消费考卷，不把这次失败
 归为模型一般能力结论。8-Core、8E→8F、产品/前端、GLM-5.2 回退和生产成熟度边界不变。
+
+## RQ-236：候选检索合同加固（2026-09-05）
+
+本批仍属于 8-Advanced candidate-only，不新增 8-Core。新增版本化的
+`coaching-query-recovery-v1`，仅在单一已登记教练主题的零命中/`insufficient_evidence` 情况下
+补查一次；原查询、`top_k`、过滤条件、BM25 `15.0`、查询覆盖率 `0.18` 和来源/安全硬门均保持不变。
+执行器默认关闭该策略，V2 入口前置拒绝，V3 候选入口显式开启；安全诊断只公开枚举、计数和过滤
+键名，并区分模型工具调用与本地补查。未知、混合、注入式、冲突、无适用资料和异常查询不补查。
+
+本地聚焦及相邻回归 `51 passed`，compileall、diff check、治理通过，provider calls=0。候选仍未注册，
+默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变；
+当前检查点为 `candidate-retrieval-contract-hardening / completed-local / pending-public-ci`，需先
+取得同一实现 SHA 的 exact-SHA 公共 CI，不能据此重跑旧领域考卷或宣称生产准入。

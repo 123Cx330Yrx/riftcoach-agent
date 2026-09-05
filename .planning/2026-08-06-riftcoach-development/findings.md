@@ -5805,3 +5805,18 @@
   后两案的 domain_case_observation_invalid 来自停止码映射默认分支，不代表后两案实际执行。
 - 新回执总检原先误用旧 GLM53FreshDomainResult；只补 V3 protocol_id 的严格模型分流及 canonical
   比对，保持历史模型不变。红灯已复现，修复后相关 22 passed；领域/预算等另有 48 passed。
+
+## 2026-09-05：RQ-236 候选检索合同加固发现
+
+- [root-cause] `LocalHybridKnowledgeProvider` 的支持门会对短查询按 BM25 与覆盖率再次过滤；
+  “复盘”在当前 4 文档/13 片段语料中可复现零命中，而加入明确教练概念后可命中。真实 RQ-235
+  查询正文未保存，不能把离线例子冒充真实根因。
+- [decision] 采用候选专用 `coaching-query-recovery-v1` 包装器，不降低 `15.0`/`0.18` 门槛，
+  原查询优先；仅在零命中、`insufficient_evidence` 且单一安全主题匹配时补查一次。主题识别允许
+  受限自然语言连接词，未知、混合主题和指令式文本不扩展。
+- [observability] 一次模型 `knowledge.search` 工具调用可包含两次本地检索；因此 EvidenceDiagnostics
+  分开记录 `search_calls` 与 `query_recovery_attempts`，防止把本地补查误计成模型/API 重试。诊断
+  只保留枚举、数字和过滤键名；自由文本指导常量不写入工具结果或证据回执。
+- [versioning] `ProductionDomainCaseExecutor` 的 `retrieval_hardening` 默认关闭，要求候选 policy
+  与质量加固；旧 V2 gate 在任何 Provider 调用前拒绝，V3 gate/CLI 显式要求。此次仅离线实现，
+  provider calls=0；后续真实验证必须另立实现 SHA、资产/协议身份和新鲜回执。

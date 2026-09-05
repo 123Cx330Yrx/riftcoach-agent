@@ -289,6 +289,10 @@ def run_hardened_domain_gate(
         raise RuntimeError("real hardened domain calls require explicit confirmation")
     if getattr(case_executor, "quality_hardening", None) is not True:
         raise ValueError("hardened V2 executor must enable quality hardening")
+    if getattr(case_executor, "retrieval_hardening", False):
+        raise ValueError(
+            "hardened V2 executor cannot enable the V3 retrieval contract"
+        )
     base = run_low_profile_domain_gate(
         admission=admission,
         dataset=dataset,

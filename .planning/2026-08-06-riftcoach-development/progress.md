@@ -6111,3 +6111,18 @@
 - [next] 只做候选检索合同离线诊断/加固，不改产品默认、前端、GLM-5.2 回退或质量/安全门。
 - [closeout] 相关模块/测试编译、git diff --check 与治理检查通过；新证据仅配套最小测试分流，
   真实运行身份仍是既有公共代码 `110f9e8`，不是把收口测试提交冒充另一轮模型运行。
+
+## 2026-09-05：RQ-236 候选检索合同离线加固
+
+- [implemented-local] `app/rag/coaching_query.py` 提供 `coaching-query-recovery-v1`：原查询优先，
+  只有单一安全教练主题在零命中/`insufficient_evidence` 时最多补查一次；保留 `top_k` 与全部
+  过滤条件，不降低 BM25 `15.0` 或查询覆盖率 `0.18`。自然语言采用显式别名与安全连接词白名单，
+  混合主题、未知/注入式文本、冲突、无适用资料和异常不补查。
+- [implemented-local] `ProductionDomainCaseExecutor` 新增默认关闭 `retrieval_hardening`，必须
+  同时绑定候选 request policy 与 `quality_hardening=True`；V2 gate 在 Provider 调用前拒绝，V3
+  gate/CLI 显式要求并开启。EvidenceDiagnostics 将本地补查次数与模型工具调用分开投影，旧空值
+  字段继续省略以保持历史回执兼容。
+- [verification-local] 查询恢复、执行器、V2/V3 版本隔离与完整候选链路共 `51 passed`；compileall、
+  `git diff --check`、治理检查通过；provider calls=0，尚未运行公共 CI 或真实模型。
+- [boundary-next] 下一步提交当前实现并取得同一 SHA 的 exact-SHA 公共 CI；在新的公共证明和新鲜
+  资产/协议身份前，不重跑 RQ-235、不发真实请求、不注册候选、不改默认模型或前端。

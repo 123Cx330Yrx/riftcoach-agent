@@ -11,6 +11,8 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Any
 
+from pydantic import ValidationError
+
 from app.agent.context import (
     CANDIDATE_CONTEXT_SAFETY_POLICY_V1,
     ContextBuilderV1,
@@ -38,6 +40,8 @@ from app.harness.steps import CoachDraft
 from app.harness.store import ArtifactIntegrityError, FileRunStore
 from app.providers.models import ChatRequest, ChatResponse
 from app.providers.protocol import LLMProvider
+from app.rag.coaching_query import CoachingQueryKnowledgeProvider
+from app.rag.coaching_query import CoachingRetrievalDiagnostics
 from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.rag.models import KnowledgeSearchResult
 from app.rag.provider import KnowledgeProvider
@@ -142,6 +146,7 @@ class ProductionDomainCaseExecutor:
         runtime_profile: ModelRuntimeProfile | None = None,
         request_policy: CandidateEvaluationRequestPolicy | None = None,
         quality_hardening: bool = False,
+        retrieval_hardening: bool = False,
         max_revisions: int = 0,
     ) -> None:
         if not isinstance(input_plan, LoadedDomainCaseInputPlan):
@@ -175,6 +180,13 @@ class ProductionDomainCaseExecutor:
                 "quality hardening requires an explicit candidate request policy"
             )
         self._quality_hardening = quality_hardening
+        if not isinstance(retrieval_hardening, bool):
+            raise TypeError("retrieval_hardening must be a bool")
+        if retrieval_hardening and not quality_hardening:
+            raise ValueError(
+                "retrieval hardening requires candidate quality hardening"
+            )
+        self._retrieval_hardening = retrieval_hardening
         if isinstance(max_revisions, bool) or not isinstance(max_revisions, int):
             raise TypeError("max_revisions must be an integer")
         if not 0 <= max_revisions <= 3:
@@ -199,6 +211,12 @@ class ProductionDomainCaseExecutor:
         """Whether the opt-in candidate quality boundary is active."""
 
         return self._quality_hardening
+
+    @property
+    def retrieval_hardening(self) -> bool:
+        """Whether the versioned candidate query recovery wrapper is active."""
+
+        return self._retrieval_hardening
 
     @property
     def max_revisions(self) -> int:
@@ -238,6 +256,8 @@ class ProductionDomainCaseExecutor:
                 base_knowledge,
                 case.injected_evidence_text,
             )
+        if self._retrieval_hardening:
+            knowledge = CoachingQueryKnowledgeProvider(knowledge)
 
         observed = _ObservedProvider(provider, [], [])
         registry = ToolRegistry()
@@ -554,6 +574,9 @@ def _evidence_diagnostics(
     chunks_returned = 0
     abstained: bool | None = None
     reason: str | None = None
+    recovery_attempts = 0
+    recovery_recovered: bool | None = None
+    recovery_topics: set[str] = set()
     for payload in payloads:
         chunks = payload.get("chunks")
         if isinstance(chunks, (list, tuple)):
@@ -567,6 +590,25 @@ def _evidence_diagnostics(
                 r"[a-z][a-z0-9_]{0,127}", candidate_reason
             ):
                 reason = candidate_reason
+            recovery = diagnostics.get("query_recovery")
+            if isinstance(recovery, Mapping):
+                try:
+                    parsed = CoachingRetrievalDiagnostics.model_validate(
+                        recovery
+                    )
+                except ValidationError:
+                    # Raw diagnostics are untrusted Provider/tool data.  Do
+                    # not project a malformed payload into the safe receipt.
+                    continue
+                recovery_attempts += len(parsed.attempts)
+                if len(parsed.attempts) == 2:
+                    recovered = parsed.attempts[-1].returned_count > 0
+                    recovery_recovered = (
+                        recovered
+                        if recovery_recovered is None
+                        else recovery_recovered or recovered
+                    )
+                recovery_topics.add(parsed.topic)
     artifact_present = any(
         row.get("kind") == ArtifactKind.RETRIEVAL_EVIDENCE.value
         for row in manifest.artifacts
@@ -580,6 +622,11 @@ def _evidence_diagnostics(
         artifact_present=artifact_present,
         abstained=abstained,
         reason=reason,
+        query_recovery_attempts=recovery_attempts,
+        query_recovery_recovered=recovery_recovered,
+        query_recovery_topic=(
+            next(iter(recovery_topics)) if len(recovery_topics) == 1 else None
+        ),
     )
 
 

@@ -53,11 +53,18 @@ class ScriptedProvider:
 
 
 class PassingHardenedExecutor:
-    def __init__(self, execution_plan, *, quality_hardening: bool = True) -> None:
+    def __init__(
+        self,
+        execution_plan,
+        *,
+        quality_hardening: bool = True,
+        retrieval_hardening: bool = False,
+    ) -> None:
         self.execution_plan = execution_plan
         self.runtime_profile = None
         self.request_policy = GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
         self.quality_hardening = quality_hardening
+        self.retrieval_hardening = retrieval_hardening
 
     def execute(self, *, case_id: str, provider) -> DomainCaseSemanticObservation:
         for _ in range(3):
@@ -160,6 +167,24 @@ def test_hardened_gate_rejects_executor_without_quality_hardening() -> None:
             provider=ScriptedProvider(),
             case_executor=executor,
         )
+
+
+def test_hardened_v2_rejects_new_retrieval_contract_before_provider_calls() -> None:
+    prepared = _prepared()
+    provider = ScriptedProvider()
+
+    with pytest.raises(ValueError, match="cannot enable the V3 retrieval contract"):
+        run_hardened_domain_gate(
+            admission=prepared.admission,
+            dataset=prepared.dataset,
+            provider=provider,
+            case_executor=PassingHardenedExecutor(
+                prepared.input_plan.execution_plan,
+                retrieval_hardening=True,
+            ),
+        )
+
+    assert provider.requests == []
 
 
 def test_hardened_gate_requires_explicit_real_call_confirmation() -> None:

@@ -46,6 +46,9 @@ def _omit_empty_evidence_diagnostics(value: object) -> bool:
         and getattr(value, "artifact_present", None) is None
         and getattr(value, "abstained", None) is None
         and getattr(value, "reason", None) is None
+        and getattr(value, "query_recovery_attempts", None) == 0
+        and getattr(value, "query_recovery_recovered", None) is None
+        and getattr(value, "query_recovery_topic", None) is None
     )
 
 
@@ -154,6 +157,28 @@ class EvidenceDiagnostics(BaseModel):
     artifact_present: bool | None = None
     abstained: bool | None = None
     reason: SafeRuntimeCodeText | None = None
+    # Candidate-only local retrieval attempts are separate from model/tool
+    # calls.  Field-level omission keeps historical receipts byte-stable.
+    query_recovery_attempts: int = Field(
+        ge=0,
+        le=2 * _CASE_MAX_CALLS,
+        default=0,
+        exclude_if=lambda value: value == 0,
+    )
+    query_recovery_recovered: bool | None = Field(
+        default=None,
+        exclude_if=lambda value: value is None,
+    )
+    query_recovery_topic: Literal[
+        "review",
+        "survival",
+        "economy",
+        "vision",
+        "damage",
+        "training",
+        "sample",
+        "unmapped",
+    ] | None = Field(default=None, exclude_if=lambda value: value is None)
 
     @model_validator(mode="after")
     def validate_counts(self) -> "EvidenceDiagnostics":
@@ -163,6 +188,10 @@ class EvidenceDiagnostics(BaseModel):
             raise ValueError("payloads with data cannot exceed successful searches")
         if self.source_count > self.chunks_returned:
             raise ValueError("source count cannot exceed returned chunks")
+        if self.query_recovery_recovered and self.query_recovery_attempts < 2:
+            raise ValueError(
+                "query recovery cannot be recovered with fewer than two attempts"
+            )
         return self
 
 
