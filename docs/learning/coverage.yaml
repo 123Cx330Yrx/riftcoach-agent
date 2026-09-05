@@ -839,6 +839,7 @@ groups:
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-hardened-domain-v3-real-observation / completed-real-observation / pending-retrieval-contract-hardening
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-local / pending-public-ci
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-public / pending-next-decision
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-design / pending-offline-implementation
     status: planned
     evidence:
       problem_and_principle:
