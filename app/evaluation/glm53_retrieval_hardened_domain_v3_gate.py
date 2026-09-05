@@ -19,7 +19,6 @@ from typing import Annotated, Any, Literal
 from dotenv import load_dotenv
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_validator
 
-from app.agent.context import CANDIDATE_CONTEXT_SAFETY_POLICY_V1
 from app.evaluation.domain_e2e import (
     DomainCandidate,
     DomainCandidateCase,
@@ -33,12 +32,9 @@ from app.evaluation.glm53_bounded_revision_budget import (
     BoundedRevisionBudgetState,
     BoundedRevisionBudgetedProvider,
     V3_CASE_MAX_CALLS,
-    V3_CASE_MAX_TOKENS,
     V3_DOMAIN_MAX_CALLS,
-    V3_DOMAIN_MAX_TOKENS,
 )
 from app.evaluation.glm53_bounded_revision_budget_reachability import (
-    REPORT_PATH as _DEFAULT_BUDGET_REPORT_PATH,
     load_v3_budget_reachability_report,
 )
 from app.evaluation.glm53_flash_candidate_profile import (
@@ -63,6 +59,8 @@ from app.evaluation.glm53_retrieval_hardened_domain_v3_assets import (
     QUALITY_HARDENING_VERSION,
     SNAPSHOT_ID,
     SNAPSHOT_PATH,
+    RETRIEVAL_CASE_MAX_TOKENS,
+    RETRIEVAL_DOMAIN_MAX_TOKENS,
     GLM53RetrievalHardenedDomainV3AssetAdmission,
     admit_retrieval_hardened_domain_v3_assets,
 )
@@ -71,7 +69,6 @@ from app.evaluation.glm53_low_profile_domain_gate import (
     _assert_body_free,
     _digest_json,
     _provider_failure_code,
-    _read_head_sha,
     _require_clean_worktree,
     _safe_code,
     _sha256_file,
@@ -80,7 +77,6 @@ from app.evaluation.glm53_low_profile_domain_gate import (
 from app.evaluation.glm53_low_profile_protocol import (
     GLM53LowProfileProtocolReport,
 )
-from app.evaluation.provider_adoption import ExperimentFailureCode
 from app.evaluation.provider_domain_experiment import (
     DomainCaseExecutionPlan,
     DomainCaseExecutionRecord,
@@ -98,7 +94,7 @@ SCHEMA_VERSION = "1.0"
 PROTOCOL_MAX_CALLS = 3
 DEFAULT_RETRIEVAL_PROTOCOL_RESULT = Path(
     "data/evaluation/results/provider_capabilities/"
-    "zhipu_glm53_flash_candidate_low_4096_g53_3l_rq225_v1.json"
+    "zhipu_glm53_flash_candidate_low_4096_g53_3l_retrieval_v3_rq237_v1.json"
 )
 DEFAULT_RETRIEVAL_OUTPUT = Path(
     "data/evaluation/results/provider_capabilities/"
@@ -126,8 +122,8 @@ class RetrievalV3CaseResource(_FrozenModel):
     max_calls: Literal[V3_CASE_MAX_CALLS] = V3_CASE_MAX_CALLS
     input_tokens: int = Field(ge=0)
     output_tokens: int = Field(ge=0)
-    total_tokens: int = Field(ge=0, le=V3_CASE_MAX_TOKENS)
-    max_observed_tokens: Literal[V3_CASE_MAX_TOKENS] = V3_CASE_MAX_TOKENS
+    total_tokens: int = Field(ge=0, le=RETRIEVAL_CASE_MAX_TOKENS)
+    max_observed_tokens: Literal[RETRIEVAL_CASE_MAX_TOKENS] = RETRIEVAL_CASE_MAX_TOKENS
     latency_ms: int = Field(ge=0)
 
     @model_validator(mode="after")
@@ -144,8 +140,8 @@ class RetrievalV3ResourceSnapshot(_FrozenModel):
     max_calls: Literal[V3_DOMAIN_MAX_CALLS] = V3_DOMAIN_MAX_CALLS
     input_tokens: int = Field(ge=0)
     output_tokens: int = Field(ge=0)
-    total_tokens: int = Field(ge=0, le=V3_DOMAIN_MAX_TOKENS)
-    max_observed_tokens: Literal[V3_DOMAIN_MAX_TOKENS] = V3_DOMAIN_MAX_TOKENS
+    total_tokens: int = Field(ge=0, le=RETRIEVAL_DOMAIN_MAX_TOKENS)
+    max_observed_tokens: Literal[RETRIEVAL_DOMAIN_MAX_TOKENS] = RETRIEVAL_DOMAIN_MAX_TOKENS
     latency_ms: int = Field(ge=0)
     case_resources: tuple[RetrievalV3CaseResource, ...]
     stop_code: SafeCodeText | None = None
@@ -205,8 +201,8 @@ class RetrievalV3DomainAdmission(_FrozenModel):
     protocol_total_tokens: int = Field(ge=0)
     domain_max_calls: Literal[V3_DOMAIN_MAX_CALLS] = V3_DOMAIN_MAX_CALLS
     case_max_calls: Literal[V3_CASE_MAX_CALLS] = V3_CASE_MAX_CALLS
-    domain_max_tokens: Literal[V3_DOMAIN_MAX_TOKENS] = V3_DOMAIN_MAX_TOKENS
-    case_max_tokens: Literal[V3_CASE_MAX_TOKENS] = V3_CASE_MAX_TOKENS
+    domain_max_tokens: Literal[RETRIEVAL_DOMAIN_MAX_TOKENS] = RETRIEVAL_DOMAIN_MAX_TOKENS
+    case_max_tokens: Literal[RETRIEVAL_CASE_MAX_TOKENS] = RETRIEVAL_CASE_MAX_TOKENS
     max_revisions: Literal[1] = 1
     sdk_max_retries: Literal[0] = 0
     evaluation_diagnostics_version: Literal[EVALUATION_DIAGNOSTICS_VERSION] = EVALUATION_DIAGNOSTICS_VERSION
@@ -244,7 +240,7 @@ class RetrievalV3DomainGateResult(_FrozenModel):
     protocol_calls: Literal[PROTOCOL_MAX_CALLS] = PROTOCOL_MAX_CALLS
     protocol_total_tokens: int = Field(ge=0)
     domain_calls_used: int = Field(ge=0, le=V3_DOMAIN_MAX_CALLS)
-    domain_total_tokens: int = Field(ge=0, le=V3_DOMAIN_MAX_TOKENS)
+    domain_total_tokens: int = Field(ge=0, le=RETRIEVAL_DOMAIN_MAX_TOKENS)
     cumulative_calls_used: int = Field(ge=0, le=PROTOCOL_MAX_CALLS + V3_DOMAIN_MAX_CALLS)
     cumulative_total_tokens: int = Field(ge=0)
     explicit_real_call_confirmed: Literal[True] = True
@@ -369,7 +365,6 @@ def build_retrieval_v3_domain_preflight(
     if _sha256_file(snapshot_file) != assets.snapshot_file_sha256:
         raise ValueError("V3 snapshot bytes changed after asset admission")
 
-    protocol = json.loads(protocol_file.read_text(encoding="utf-8"))
     budget = load_v3_budget_reachability_report(budget_file)
     prior_raw = protocol_result_file.read_bytes()
     prior = GLM53LowProfileProtocolReport.model_validate_json(prior_raw)
@@ -381,13 +376,14 @@ def build_retrieval_v3_domain_preflight(
         or prior.protocol_code_sha != implementation_sha
         or prior.implementation_sha != implementation_sha
         or prior.request_policy_id != REQUEST_POLICY_ID
+        or not prior.protocol.admitted
     ):
         raise ValueError("fresh G53-3-L protocol evidence is pending or stale")
     admission_data: dict[str, Any] = {
         "experiment_id": "0" * 64,
         "implementation_sha": implementation_sha,
         "public_ci_sha": public_ci_sha,
-        "public_ci_scope": "candidate-hardened-domain-v3-exact-sha",
+        "public_ci_scope": "candidate-retrieval-hardened-domain-v3-exact-sha",
         "asset_admission": assets,
         "dataset_sha256": _digest_json(dataset.model_dump(mode="json")),
         "dataset_file_sha256": _sha256_file(dataset_file),
@@ -431,6 +427,8 @@ def run_retrieval_v3_domain_gate(
         raise TypeError("dataset must be a DomainEvaluationDataset")
     if tuple(row.case_id for row in dataset.cases) != admission.execution_plan.case_ids:
         raise ValueError("runtime Dataset case order does not match V3 admission")
+    if _digest_json(dataset.model_dump(mode="json")) != admission.dataset_sha256:
+        raise ValueError("runtime Dataset content does not match retrieval V3 admission")
     policy = require_glm53_flash_low_candidate_request_policy()
     if getattr(provider, "provider_name", None) != PROVIDER_ID or getattr(provider, "model_name", None) != MODEL:
         raise ValueError("runtime Provider does not match V3 candidate")
@@ -462,6 +460,8 @@ def run_retrieval_v3_domain_gate(
             case_id=case.case_id,
             request_policy=policy,
             clock=clock,
+            case_max_tokens=RETRIEVAL_CASE_MAX_TOKENS,
+            domain_max_tokens=RETRIEVAL_DOMAIN_MAX_TOKENS,
         )
         try:
             semantic = case_executor.execute(case_id=case.case_id, provider=controlled)
@@ -490,7 +490,7 @@ def run_retrieval_v3_domain_gate(
     if len(observations) == len(dataset.cases):
         candidate = DomainCandidate(
             schema_version=dataset.schema_version,
-            candidate_id=f"zhipu-glm53-flash-hardened-v3-{admission.experiment_id[:16]}",
+            candidate_id=f"zhipu-glm53-flash-retrieval-v3-{admission.experiment_id[:16]}",
             candidate_kind="real_provider_recorded",
             dataset_id=dataset.dataset_id,
             dataset_version=dataset.dataset_version,
@@ -720,3 +720,7 @@ __all__ = [
     "run_retrieval_cli",
     "run_retrieval_v3_domain_gate",
 ]
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

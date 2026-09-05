@@ -9,7 +9,7 @@
   "max_revisions": 1,
   "case_max_calls": 9,
   "domain_max_calls": 27,
-  "input_plan_sha256": "e302a40e73b1c27338589bbb3a2036b56f850a8815090714353ab721e670175e",
+  "input_plan_sha256": "7b5aa5aafc9c178da962735fc8070325a7a025be10fb884d8f3ebf30e4ae081e",
   "snapshot_file_sha256": "3609e5082f9e46cf5dffb34b0001b6c19026f6ab2e9f2e627331a365b74e217e",
   "snapshot_sha256": "a32517f678de1c8db69eb88adf4e6b7109f1f7863a7c294a6c0feb609803923d",
   "cases": [
@@ -37,7 +37,7 @@
         {
           "ordinal": 2,
           "stage": "agent_after_tool_1",
-          "request_sha256": "27eb8774a31c6baa781dd4dd541fb8f82386e73f6d207c3fa007508ab13424a4",
+          "request_sha256": "41c0f9c8682e9094929871cb8091d87067e13bd24914046867755442faab7c40",
           "message_count": 4,
           "message_roles": [
             "system",
@@ -47,16 +47,16 @@
           ],
           "tool_count": 1,
           "structured_output": false,
-          "measured_local_units": 8340,
+          "measured_local_units": 8493,
           "prior_output_carryover_reservation": 4096,
-          "estimated_input_token_ceiling": 20776,
+          "estimated_input_token_ceiling": 21082,
           "output_token_reservation": 4096,
-          "reserved_total_tokens": 24872
+          "reserved_total_tokens": 25178
         },
         {
           "ordinal": 3,
           "stage": "agent_after_tool_2",
-          "request_sha256": "fa494c98d3044ec27679f3dbbe1b9b4e22ed40215e4c334b969bd9926a9213b6",
+          "request_sha256": "5e7d3a12d99b2e595ae2d7629b7fa806b136d0096c018a3877d6f118d497d0ce",
           "message_count": 6,
           "message_roles": [
             "system",
@@ -68,16 +68,16 @@
           ],
           "tool_count": 1,
           "structured_output": false,
-          "measured_local_units": 8811,
+          "measured_local_units": 9118,
           "prior_output_carryover_reservation": 8192,
-          "estimated_input_token_ceiling": 25814,
+          "estimated_input_token_ceiling": 26428,
           "output_token_reservation": 4096,
-          "reserved_total_tokens": 29910
+          "reserved_total_tokens": 30524
         },
         {
           "ordinal": 4,
           "stage": "agent_after_tool_3",
-          "request_sha256": "03be0d1f9d26221ee2117e8e290bad91ecf0fb9f07315ebbaafa1a29b7c53a09",
+          "request_sha256": "70e0cc444d5f59cc1a60f6555c76dc4ecf4c7bf588b9458ec6949106808e98ea",
           "message_count": 8,
           "message_roles": [
             "system",
@@ -91,11 +91,11 @@
           ],
           "tool_count": 1,
           "structured_output": false,
-          "measured_local_units": 9282,
+          "measured_local_units": 9743,
           "prior_output_carryover_reservation": 12288,
-          "estimated_input_token_ceiling": 30852,
+          "estimated_input_token_ceiling": 31774,
           "output_token_reservation": 4096,
-          "reserved_total_tokens": 34948
+          "reserved_total_tokens": 35870
         },
         {
           "ordinal": 5,
@@ -183,9 +183,9 @@
           "reserved_total_tokens": 15654
         }
       ],
-      "estimated_input_token_ceiling": 165192,
+      "estimated_input_token_ceiling": 167034,
       "output_token_reservation": 36864,
-      "reserved_total_tokens": 202056
+      "reserved_total_tokens": 203898
     },
     {
       "case_id": "retrieval_explicit_economy_89",
@@ -211,7 +211,7 @@
         {
           "ordinal": 2,
           "stage": "agent_after_tool_1",
-          "request_sha256": "650500f4222e1641a3cc98d2148c4e28624b3ecf3c563cb4ecd1be4b21c9e73e",
+          "request_sha256": "cde5026be150a04a3711e6212cc4310ab11a2b5ea8fc6a1ad6ca0f00e07a66b6",
           "message_count": 4,
           "message_roles": [
             "system",
@@ -221,16 +221,16 @@
           ],
           "tool_count": 1,
           "structured_output": false,
-          "measured_local_units": 8345,
+          "measured_local_units": 8498,
           "prior_output_carryover_reservation": 4096,
-          "estimated_input_token_ceiling": 20786,
+          "estimated_input_token_ceiling": 21092,
           "output_token_reservation": 4096,
-          "reserved_total_tokens": 24882
+          "reserved_total_tokens": 25188
         },
         {
           "ordinal": 3,
           "stage": "agent_after_tool_2",
-          "request_sha256": "307a5d09c907ad1ceef0e8f8704694b15f3f2b5420e1e21bba961948abc7c367",
+          "request_sha256": "b3a60cbe5a2919568e6f7f9dd4cdec352dac3aecd10dbbc972c49ea7d18afa7a",
           "message_count": 6,
           "message_roles": [
             "system",
@@ -242,16 +242,16 @@
           ],
           "tool_count": 1,
           "structured_output": false,
-          "measured_local_units": 8816,
+          "measured_local_units": 9123,
           "prior_output_carryover_reservation": 8192,
-          "estimated_input_token_ceiling": 25824,
+          "estimated_input_token_ceiling": 26438,
           "output_token_reservation": 4096,
-          "reserved_total_tokens": 29920
+          "reserved_total_tokens": 30534
         },
         {
           "ordinal": 4,
           "stage": "agent_after_tool_3",
-          "request_sha256": "8faf7f364a9e0b81212bdcf21cd79cc82f0eefc6c766db41c7919f3b59bd9ceb",
+          "request_sha256": "d1bfcb5d017e436c42aefc73d7d8fc7265b2a6110c40f7dd1e09f646fa086c81",
           "message_count": 8,
           "message_roles": [
             "system",
@@ -265,11 +265,11 @@
           ],
           "tool_count": 1,
           "structured_output": false,
-          "measured_local_units": 9287,
+          "measured_local_units": 9748,
           "prior_output_carryover_reservation": 12288,
-          "estimated_input_token_ceiling": 30862,
+          "estimated_input_token_ceiling": 31784,
           "output_token_reservation": 4096,
-          "reserved_total_tokens": 34958
+          "reserved_total_tokens": 35880
         },
         {
           "ordinal": 5,
@@ -357,9 +357,9 @@
           "reserved_total_tokens": 15654
         }
       ],
-      "estimated_input_token_ceiling": 165252,
+      "estimated_input_token_ceiling": 167094,
       "output_token_reservation": 36864,
-      "reserved_total_tokens": 202116
+      "reserved_total_tokens": 203958
     },
     {
       "case_id": "retrieval_injection_boundary_97",
@@ -385,7 +385,7 @@
         {
           "ordinal": 2,
           "stage": "agent_after_tool_1",
-          "request_sha256": "73c134a0fbd6e0734c766da196ea71dc21160c64eceedb0c9546566558367cf0",
+          "request_sha256": "59152422f40d420c9bfca82d3d19fa3042e2d6b9ef74cf4dc65822b672e3f1e1",
           "message_count": 4,
           "message_roles": [
             "system",
@@ -395,16 +395,16 @@
           ],
           "tool_count": 1,
           "structured_output": false,
-          "measured_local_units": 8400,
+          "measured_local_units": 8553,
           "prior_output_carryover_reservation": 4096,
-          "estimated_input_token_ceiling": 20896,
+          "estimated_input_token_ceiling": 21202,
           "output_token_reservation": 4096,
-          "reserved_total_tokens": 24992
+          "reserved_total_tokens": 25298
         },
         {
           "ordinal": 3,
           "stage": "agent_after_tool_2",
-          "request_sha256": "b0e02e46042c4820c5626415a0f84f7c7bc6a6d3fc4520ac6435c06773ff3017",
+          "request_sha256": "591ad379b31cd693e3ea16e329915f4a1f728f79e026e0348bbced4bc585bde0",
           "message_count": 6,
           "message_roles": [
             "system",
@@ -416,16 +416,16 @@
           ],
           "tool_count": 1,
           "structured_output": false,
-          "measured_local_units": 8877,
+          "measured_local_units": 9184,
           "prior_output_carryover_reservation": 8192,
-          "estimated_input_token_ceiling": 25946,
+          "estimated_input_token_ceiling": 26560,
           "output_token_reservation": 4096,
-          "reserved_total_tokens": 30042
+          "reserved_total_tokens": 30656
         },
         {
           "ordinal": 4,
           "stage": "agent_after_tool_3",
-          "request_sha256": "8a0c7ba2f072c1f56c45be59afea0045ab3dfb7a34208928e351dd92e90928a6",
+          "request_sha256": "d6068d28a50bedcddbf1f160cda50ac10a4a380ba5d65bb7dadb7668361f5736",
           "message_count": 8,
           "message_roles": [
             "system",
@@ -439,11 +439,11 @@
           ],
           "tool_count": 1,
           "structured_output": false,
-          "measured_local_units": 9354,
+          "measured_local_units": 9815,
           "prior_output_carryover_reservation": 12288,
-          "estimated_input_token_ceiling": 30996,
+          "estimated_input_token_ceiling": 31918,
           "output_token_reservation": 4096,
-          "reserved_total_tokens": 35092
+          "reserved_total_tokens": 36014
         },
         {
           "ordinal": 5,
@@ -531,13 +531,13 @@
           "reserved_total_tokens": 15654
         }
       ],
-      "estimated_input_token_ceiling": 165990,
+      "estimated_input_token_ceiling": 167832,
       "output_token_reservation": 36864,
-      "reserved_total_tokens": 202854
+      "reserved_total_tokens": 204696
     }
   ],
-  "case_token_limit": 203000,
-  "domain_token_limit": 608000,
+  "case_token_limit": 205000,
+  "domain_token_limit": 613000,
   "external_provider_calls": 0,
-  "report_sha256": "b920c7446640be8ee97d2a44f3628d9c5cf0a7452d187d3f5f2a19ce77bcacc9"
+  "report_sha256": "2777dd5e846e2cb21fc97d17dbe67e6946e9160c0fbf459b8d8189ad2f2a0d31"
 }

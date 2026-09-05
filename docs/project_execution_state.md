@@ -4878,7 +4878,7 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 - `[implemented-local]` 新增独立 V3 Dataset、Input Plan、Prompt/Context Snapshot、匿名 fixture、协议、
   预算可达性报告、资产准入模块与候选门控入口；新身份与 RQ-235/RQ-227/RQ-230 隔离，并绑定
   `coaching-query-recovery-v1`、一次修订和全部事实/引用/注入/来源/85 分硬门。
-- `[verification-local]` no-I/O 资产与门控聚焦测试 `5 passed`；compileall、`git diff --check`、治理检查通过；
+- `[verification-local]` 资产与门控聚焦测试 `21 passed`，相邻回归合计 `83 passed`；compileall、`git diff --check`、治理检查通过；
   本批 provider calls=0。
 - `[boundary-next]` 候选未注册、production_admitted=false；默认 Runtime、GLM-5.2 回退、Portal、Account、
   Workbench、Auth、路由、生产媒体和 8-Core 不变。下一步为同一实现 SHA 的 exact-SHA 公共 CI，随后才可

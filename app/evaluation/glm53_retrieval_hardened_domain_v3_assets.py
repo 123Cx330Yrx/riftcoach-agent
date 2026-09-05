@@ -10,6 +10,7 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, StringConstraints, model_validator
 
 from app.agent.context import CANDIDATE_CONTEXT_SAFETY_POLICY_V1
+from app.rag.coaching_query import POLICY_ID as RETRIEVAL_POLICY_ID
 
 from .domain_e2e import (
     DomainDatasetRole,
@@ -18,13 +19,10 @@ from .domain_e2e import (
 )
 from .glm53_bounded_revision_budget import (
     V3_CASE_MAX_CALLS,
-    V3_CASE_MAX_TOKENS,
     V3_DOMAIN_MAX_CALLS,
-    V3_DOMAIN_MAX_TOKENS,
 )
 from .glm53_bounded_revision_budget_reachability import (
     ALGORITHM_VERSION,
-    REPORT_PATH as BUDGET_REPORT_PATH,
     load_v3_budget_reachability_report,
 )
 from .glm53_flash_candidate_profile import (
@@ -61,6 +59,8 @@ DATASET_VERSION = "3.1.0"
 SNAPSHOT_ID = "glm53-flash-retrieval-hardened-context-v3"
 QUALITY_HARDENING_VERSION = CANDIDATE_QUALITY_HARDENING_VERSION
 EVALUATION_DIAGNOSTICS_VERSION = "body-free-evaluation-diagnostics-v1"
+RETRIEVAL_CASE_MAX_TOKENS = 205_000
+RETRIEVAL_DOMAIN_MAX_TOKENS = 613_000
 CASE_IDS = (
     "retrieval_short_survival_83",
     "retrieval_explicit_economy_89",
@@ -70,6 +70,7 @@ CASE_IDS = (
 _HISTORICAL_PLAN_PATHS = (
     Path("data/evaluation/glm53_flash_low_profile_domain_v1_1_input_plan.json"),
     Path("data/evaluation/glm53_flash_hardened_domain_v2_input_plan.json"),
+    Path("data/evaluation/glm53_flash_hardened_domain_v3_input_plan.json"),
 )
 
 Sha256Text = Annotated[str, StringConstraints(pattern=r"^[0-9a-f]{64}$")]
@@ -84,6 +85,9 @@ class RetrievalHardenedDomainV3Protocol(_FrozenModel):
     schema_version: Literal["1.0"] = "1.0"
     protocol_id: Literal[PROTOCOL_ID] = PROTOCOL_ID
     protocol_version: Literal[PROTOCOL_VERSION] = PROTOCOL_VERSION
+    retrieval_policy_id: Literal[RETRIEVAL_POLICY_ID]
+    quality_hardening: Literal[True]
+    retrieval_hardening: Literal[True]
     provider_id: Literal[PROVIDER_ID] = PROVIDER_ID
     model: Literal[MODEL] = MODEL
     request_policy_id: Literal[REQUEST_POLICY_ID] = REQUEST_POLICY_ID
@@ -105,8 +109,8 @@ class RetrievalHardenedDomainV3Protocol(_FrozenModel):
     minimum_evidence_sources: Literal[1] = 1
     case_max_calls: Literal[V3_CASE_MAX_CALLS] = V3_CASE_MAX_CALLS
     domain_max_calls: Literal[V3_DOMAIN_MAX_CALLS] = V3_DOMAIN_MAX_CALLS
-    case_max_tokens: Literal[V3_CASE_MAX_TOKENS] = V3_CASE_MAX_TOKENS
-    domain_max_tokens: Literal[V3_DOMAIN_MAX_TOKENS] = V3_DOMAIN_MAX_TOKENS
+    case_max_tokens: Literal[RETRIEVAL_CASE_MAX_TOKENS] = RETRIEVAL_CASE_MAX_TOKENS
+    domain_max_tokens: Literal[RETRIEVAL_DOMAIN_MAX_TOKENS] = RETRIEVAL_DOMAIN_MAX_TOKENS
     stop_on_first_unsafe: Literal[True] = True
     body_free_receipt: Literal[True] = True
 
@@ -118,6 +122,9 @@ class GLM53RetrievalHardenedDomainV3AssetAdmission(_FrozenModel):
     admission_id: NonBlankText = "glm53-retrieval-hardened-domain-v3-assets-admission"
     protocol_id: Literal[PROTOCOL_ID] = PROTOCOL_ID
     protocol_version: Literal[PROTOCOL_VERSION] = PROTOCOL_VERSION
+    retrieval_policy_id: Literal[RETRIEVAL_POLICY_ID] = RETRIEVAL_POLICY_ID
+    quality_hardening: Literal[True] = True
+    retrieval_hardening: Literal[True] = True
     dataset_id: Literal[DATASET_ID] = DATASET_ID
     dataset_version: Literal[DATASET_VERSION] = DATASET_VERSION
     snapshot_id: Literal[SNAPSHOT_ID] = SNAPSHOT_ID
@@ -233,6 +240,15 @@ def admit_retrieval_hardened_domain_v3_assets(
         != protocol.minimum_evidence_sources
         or row.requirements.maximum_provider_calls != protocol.case_max_calls
         or row.requirements.maximum_total_tokens != protocol.case_max_tokens
+        or row.requirements.minimum_evaluation_score != 85
+        or not all((
+            row.requirements.require_fact_check,
+            row.requirements.require_citation_check,
+            row.requirements.require_injection_check,
+            row.requirements.require_validated_evaluation,
+        ))
+        or not row.expect_task_success
+        or row.requirements.allowed_terminal_statuses != ("published",)
         for row in dataset.cases
     ):
         raise ValueError("retrieval hardened V3 Dataset quality or resource walls drifted")
@@ -257,6 +273,13 @@ def admit_retrieval_hardened_domain_v3_assets(
         or plan.artifact.prompt_context_snapshot_sha256 != snapshot.snapshot_sha256
     ):
         raise ValueError("retrieval hardened V3 input plan revision or Context contract drifted")
+    if (
+        plan.artifact.request_policy_id != REQUEST_POLICY_ID
+        or plan.artifact.request_policy_version != REQUEST_POLICY_VERSION
+        or plan.artifact.quality_hardening is not True
+        or plan.artifact.retrieval_hardening is not True
+    ):
+        raise ValueError("retrieval hardened V3 input plan must bind candidate retrieval policy")
     expected_commitments = tuple(
         (row.case_id, row.context_sha256)
         for row in plan.artifact.case_context_commitments

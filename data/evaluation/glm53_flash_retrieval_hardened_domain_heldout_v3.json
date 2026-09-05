@@ -41,7 +41,7 @@
         ],
         "maximum_provider_calls": 9,
         "maximum_latency_ms": 810000,
-        "maximum_total_tokens": 203000,
+        "maximum_total_tokens": 205000,
         "maximum_estimated_cost": null
       },
       "contamination_sources": []
@@ -70,7 +70,7 @@
         ],
         "maximum_provider_calls": 9,
         "maximum_latency_ms": 810000,
-        "maximum_total_tokens": 203000,
+        "maximum_total_tokens": 205000,
         "maximum_estimated_cost": null
       },
       "contamination_sources": []
@@ -99,7 +99,7 @@
         ],
         "maximum_provider_calls": 9,
         "maximum_latency_ms": 810000,
-        "maximum_total_tokens": 203000,
+        "maximum_total_tokens": 205000,
         "maximum_estimated_cost": null
       },
       "contamination_sources": []

@@ -208,6 +208,7 @@ def build_v3_budget_reachability_report(
     project_root: str | Path,
     input_plan_path: str | Path = INPUT_PLAN_PATH,
     snapshot_path: str | Path = SNAPSHOT_PATH,
+    retrieval_hardening: bool = False,
 ) -> V3BudgetReachabilityReport:
     """Trace all three worst paths locally and return only body-free evidence."""
 
@@ -232,6 +233,7 @@ def build_v3_budget_reachability_report(
                 runs_root=directory,
                 request_policy=GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
                 quality_hardening=True,
+                retrieval_hardening=retrieval_hardening,
                 max_revisions=1,
             ).execute(case_id=case_id, provider=provider)
         if (

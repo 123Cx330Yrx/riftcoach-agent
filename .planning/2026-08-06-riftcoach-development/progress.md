@@ -6137,3 +6137,13 @@
 - 聚焦 no-I/O 资产/门控测试 `5 passed`，compileall、`git diff --check`、governance 通过，provider calls=0。
 - 当前从 `completed-design / pending-offline-implementation` 推进至 `completed-local / pending-public-ci`。
 - 下一步是同一实现 SHA 的 exact-SHA 公共 CI；随后才建立新鲜 G53-3-L，真实领域观察仍需单独授权。
+
+## 2026-09-05：RQ-237 实现纠正
+
+- 复核发现初版实现的历史排重漏掉 RQ-235、输入计划没有显式策略身份，且预算重建默认关闭检索加固。
+- 已将 `coaching-query-recovery-v1` 与 `quality_hardening/retrieval_hardening` 绑定到新计划/协议；
+  纳入 RQ-235 旧计划排重，并在准入中锁定 85 分、事实/引用/注入/来源门。
+- 开启真实候选检索路径重建后，最坏 token 墙更新为每案 `205000`、全域 `613000`；旧 V3 预算仍为
+  `203000/608000`，并将新墙传递到候选预算执行器。
+- 修复后的聚焦与相邻测试 `83 passed`，compileall、diff check、governance 通过；下一步为修复提交的
+  exact-SHA 公共 CI，provider calls=0。

@@ -114,6 +114,8 @@ class BoundedRevisionBudgetedProvider:
             GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
         ),
         clock: Callable[[], float] = time.monotonic,
+        case_max_tokens: int = V3_CASE_MAX_TOKENS,
+        domain_max_tokens: int = V3_DOMAIN_MAX_TOKENS,
     ) -> None:
         if not callable(getattr(provider, "chat", None)):
             raise TypeError("provider must provide chat()")
@@ -130,10 +132,23 @@ class BoundedRevisionBudgetedProvider:
             raise ValueError("Provider model does not match candidate policy")
         if not callable(clock):
             raise TypeError("clock must be callable")
+        if (
+            isinstance(case_max_tokens, bool)
+            or not isinstance(case_max_tokens, int)
+            or case_max_tokens <= 0
+            or isinstance(domain_max_tokens, bool)
+            or not isinstance(domain_max_tokens, int)
+            or domain_max_tokens <= 0
+        ):
+            raise ValueError("custom token walls must be positive integers")
+        if case_max_tokens > domain_max_tokens:
+            raise ValueError("case token wall cannot exceed domain token wall")
         self._provider = provider
         self._state = state
         self._case_id = case_id
         self._clock = clock
+        self._case_max_tokens = case_max_tokens
+        self._domain_max_tokens = domain_max_tokens
         self.provider_name = provider.provider_name
         self.model_name = provider.model_name
         self.capabilities = provider.capabilities
@@ -187,8 +202,8 @@ class BoundedRevisionBudgetedProvider:
         ):
             self._block("external_call_budget_exhausted")
         remaining = min(
-            V3_DOMAIN_MAX_TOKENS - self._state.total_tokens,
-            V3_CASE_MAX_TOKENS - case.total_tokens,
+            self._domain_max_tokens - self._state.total_tokens,
+            self._case_max_tokens - case.total_tokens,
         )
         if remaining <= 0:
             self._block("token_budget_exhausted")
@@ -246,8 +261,8 @@ class BoundedRevisionBudgetedProvider:
         ):
             self._block("token_envelope_exceeded")
         if (
-            self._state.total_tokens > V3_DOMAIN_MAX_TOKENS
-            or case.total_tokens > V3_CASE_MAX_TOKENS
+            self._state.total_tokens > self._domain_max_tokens
+            or case.total_tokens > self._case_max_tokens
         ):
             self._block("token_budget_exhausted")
 

@@ -17,12 +17,13 @@ V3 领域资产，不重跑旧考卷，也不降低事实、引用、注入、�
   `data/evaluation/contracts/glm53_flash_retrieval_hardened_context_v3.json` 保存 body-free
   Context 身份；两份新 fixture 只用于离线重建。
 
-运行顺序是：冻结输入 → 重建 Context → 验证预算包络（每案 9 次/203000 token、全域 27 次/
-608000 token）→ no-I/O 资产准入 → 公共 CI → 新鲜 G53-3-L → 另行授权的真实领域观察。
+运行顺序是：冻结输入 → 重建 Context → 验证预算包络（每案 9 次/205000 token、全域 27 次/
+613000 token）→ no-I/O 资产准入 → 公共 CI → 新鲜 G53-3-L → 另行授权的真实领域观察。
 
 ## 验证与边界
 
-本批聚焦测试 5 passed，compileall、`git diff --check` 和 governance 通过；Provider calls=0。
+本批资产与门控聚焦测试 21 passed（含策略漂移、质量门削弱、历史身份、运行时篡改和完整离线门控），
+相邻回归合计 83 passed；compileall、`git diff --check` 和 governance 通过；Provider calls=0。
 准入回执只含版本、SHA、case ID、固定 marker 摘要和资源上界，不含查询正文、答案、reasoning、
 工具参数、注入文本或凭据。候选未注册、生产准入仍为 false；默认 Runtime、GLM-5.2 回退、
 Portal、Account、Workbench、Auth、路由和 `production_media=0` 均未改变。下一步是同一实现 SHA

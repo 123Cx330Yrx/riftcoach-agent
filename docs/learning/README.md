@@ -25,7 +25,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 [8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
 该记录不把 8E coverage、领域采用或生产成熟度标为完成。
 
-> 当前学习指针（2026-09-05，RQ-236）：在 [V3 实现与真实检索归因 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md) 的 RQ-236 小节继续阅读、
+> 当前学习指针（2026-09-05，RQ-237）：在 [检索加固领域资产实现 walkthrough](8e-glm53-retrieval-hardened-domain-assets-walkthrough.md) 继续阅读、
 > [新鲜协议回执修复与复核](8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md)、
 > [V3 有界修订设计 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md)、
 > [ADR-0094](../adr/0094-adopt-glm53-hardened-domain-v3-bounded-revision.md)、
@@ -34,7 +34,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 > 当前 checkpoint 是
 > `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-local / pending-public-ci`；
 > 8E coverage 仍 planned，候选未注册。RQ-236 已完成候选检索合同的离线加固、执行器接线和同 SHA 公共 CI，查询恢复及相邻链路 51 项通过；
-> 下一步只裁决是否另立新鲜协议/资产；
+> 新资产纠正已完成本地实现，下一步只等待修复提交的公共 CI；
 > 黄金切片、生产准入和 8F 均未进入。
 
 ## 2. 建议怎样学习每一个能力

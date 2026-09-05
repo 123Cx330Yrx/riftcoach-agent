@@ -16,6 +16,10 @@
   },
   "sdk_max_retries": 0,
   "max_revisions": 1,
+  "request_policy_id": "glm-5.3-flash-evaluation-low-4096",
+  "request_policy_version": "1.0.0",
+  "quality_hardening": true,
+  "retrieval_hardening": true,
   "prompt_context_snapshot_id": "glm53-flash-retrieval-hardened-context-v3",
   "prompt_context_snapshot_sha256": "a32517f678de1c8db69eb88adf4e6b7109f1f7863a7c294a6c0feb609803923d",
   "case_context_commitments": [

@@ -3336,3 +3336,12 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [x] 添加聚焦测试并通过 compileall、diff check、governance。
 - [ ] 取得同一实现 SHA 的 exact-SHA 公共 CI。
 - [ ] 公共 CI 后建立新鲜 G53-3-L；真实领域观察仍需单独授权。
+
+## RQ-237 implementation correction (2026-09-05)
+
+- [x] 将 `retrieval_hardening=True` 绑定到输入计划、协议、预算重建和候选门控。
+- [x] 纳入 RQ-235 V3 计划的 case/run/utterance/marker/fixture 身份排重，并锁定 85 分及事实、引用、
+  注入、来源门。
+- [x] 将检索加固后最坏包络 `205000/613000` 贯通候选 token 墙；旧 V3 `203000/608000` 不变。
+- [x] 增加策略漂移、质量门削弱、历史身份和运行时 Dataset 篡改的 fail-closed 回归。
+- [ ] 为本修复提交取得新的 exact-SHA 公共 CI。
