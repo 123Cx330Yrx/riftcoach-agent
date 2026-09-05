@@ -4896,3 +4896,6 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
   若继续验证必须另立全新版本。
 - `[boundary-next]` 当前唯一下一步为失败归因收口与是否另立新鲜版本裁决；候选仍未注册，默认 Runtime、
   GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
+
+- `[public-ci-correction]` 公共总检首跑曾因未识别 RQ-237 新回执协议 ID而误用旧 V3 模型；已补严格分流
+  与 canonical 校验，专项 `50 passed`。该修复不改变 RQ-237 领域结果或任何质量门。

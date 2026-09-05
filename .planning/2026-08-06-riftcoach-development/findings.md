@@ -5829,3 +5829,10 @@
   因此本批重新跑本地最坏路径追踪，仍得到每案 9 次/203000 token、全域 27 次/608000 token。
 - 候选门控入口独立复制 V3 的准入顺序，并在 Provider 构造前锁定 `retrieval_hardening=True`；
   新检索诊断使最坏包络为每案 `205000`、全域 `613000`，默认 Runtime 与旧 V2/V3 入口没有修改。
+
+## RQ-237 post-run correction finding (2026-09-05)
+
+- 公共总检初次未识别新回执的 `protocol_id`，将其误送入旧 `GLM53FreshDomainResult` 分支；这是测试
+  分流缺口，不是领域运行或模型错误。
+- 已在 `tests/test_provider_capability_gate.py` 加入新协议 ID 的严格模型解析、生产未准入断言和 canonical
+  round-trip 校验；专项回归 `50 passed`。
