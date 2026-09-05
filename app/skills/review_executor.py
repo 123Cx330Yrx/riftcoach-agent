@@ -464,6 +464,18 @@ class SkillTerminalOutputBuilder:
             for record in records
             if record.get("path") == expected_path
         ]
+        # Entering revision advances the attempt before a new evaluation exists.
+        # A failed revision/re-evaluation has no final-attempt score; do not
+        # substitute the earlier draft's score or mistake absence for corruption.
+        terminal = manifest.transitions[-1] if manifest.transitions else {}
+        if (
+            not matching
+            and manifest.attempt_id > 0
+            and manifest.status in {RunStatus.REJECTED, RunStatus.DEGRADED}
+            and (terminal.get("from"), terminal.get("reason"))
+            in {("revising", "revision_failed"), ("re_evaluating", "evaluation_failed")}
+        ):
+            return None
         if len(matching) != 1:
             raise ValueError("final evaluation artifact is missing or ambiguous")
         record = matching[0]

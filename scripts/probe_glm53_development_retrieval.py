@@ -23,6 +23,7 @@ from app.evaluation.provider_domain_plan import (
     DomainCaseInput, DomainCaseInputPlanArtifact, DomainFixtureCommitment, LoadedDomainCaseInputPlan,
 )
 from app.evaluation.provider_domain_production import ProductionDomainCaseExecutor
+from app.skills.review_executor import SkillReviewExecutionError
 from app.rag.coaching_query import (
     COACHING_QUERY_GUIDANCE_V1, _TOPICS, _contains_alias, _normalize, _topic,
 )
@@ -105,11 +106,19 @@ def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=l
         case_max_tokens=205_000, domain_max_tokens=205_000,
     )
     observer = QueryObserver(budgeted, emit)
-    result = ProductionDomainCaseExecutor(
+    executor = ProductionDomainCaseExecutor(
         project_root=root, input_plan=plan, runs_root=runs_root,
         request_policy=POLICY, quality_hardening=True, retrieval_hardening=True,
         retrieval_guidance=retrieval_guidance, max_revisions=1,
-    ).execute(case_id=CASE_ID, provider=observer)
+    )
+    execution_error = None
+    try:
+        result = executor.execute(case_id=CASE_ID, provider=observer)
+    except SkillReviewExecutionError:
+        # Retain bounded diagnostics even if terminal output projection fails.
+        # Never persist exception text, prompts, drafts or model reasoning.
+        result = None
+        execution_error = "terminal_output_validation_failed"
     guidance_id = "coaching-query-guidance-v1" if retrieval_guidance is not None else None
     guidance_sha256 = digest(retrieval_guidance.encode("utf-8")) if retrieval_guidance is not None else None
     return {
@@ -123,7 +132,9 @@ def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=l
         "request_policy_id": POLICY.policy_id, "max_calls": 9, "max_tokens": 205_000,
         "request_timeout_s": 45, "resources": state.snapshot(),
         "retrieval_guidance_id": guidance_id, "retrieval_guidance_sha256": guidance_sha256,
-        "queries": observer.queries, "observation": result.model_dump(mode="json"),
+        "queries": observer.queries,
+        "observation": result.model_dump(mode="json") if result is not None else None,
+        "execution_error": execution_error,
     }
 
 
@@ -163,14 +174,15 @@ def main(argv=None):
                              retrieval_guidance=(COACHING_QUERY_GUIDANCE_V1 if args.retrieval_guidance else None),
                              emit=lambda row: print(json.dumps(row), flush=True))
         result.update(identity)
-        result["status"] = "completed"
+        result["status"] = "execution_failed" if result["execution_error"] else "completed"
         stream.seek(0)
         stream.write(json.dumps(result, ensure_ascii=False, sort_keys=True) + "\n")
         stream.truncate()
-    print(json.dumps({"status": "completed", "calls": result["resources"]["calls_used"],
-                      "sources": len(result["observation"]["evidence_source_ids"]),
-                      "terminal": result["observation"]["terminal_status"]}), flush=True)
-    return 0
+    observation = result["observation"]
+    print(json.dumps({"status": result["status"], "calls": result["resources"]["calls_used"],
+                      "sources": len(observation["evidence_source_ids"]) if observation else None,
+                      "terminal": observation["terminal_status"] if observation else None}), flush=True)
+    return 1 if result["execution_error"] else 0
 
 
 if __name__ == "__main__":

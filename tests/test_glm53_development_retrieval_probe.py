@@ -13,6 +13,7 @@ from tests.test_coaching_retrieval_development_chain import ScriptedCoach
 from tests.test_provider_domain_production import ROOT
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.rag.coaching_query import COACHING_QUERY_GUIDANCE_V1
+from app.skills.review_executor import SkillReviewExecutionError
 
 
 @pytest.fixture(autouse=True)
@@ -65,6 +66,17 @@ def test_guidance_is_an_explicit_candidate_context_addendum(tmp_path):
     assert report["observation"]["terminal_status"] == "published"
     assert report["retrieval_guidance_id"] == "coaching-query-guidance-v1"
     assert report["retrieval_guidance_sha256"]
+
+
+def test_terminal_projection_failure_retains_safe_diagnostics(tmp_path, monkeypatch):
+    def broken(*args, **kwargs):
+        raise SkillReviewExecutionError("private model response must not leak")
+    monkeypatch.setattr(ProductionDomainCaseExecutor, "execute", broken)
+    report = observe(ScriptedCoach(), root=ROOT, runs_root=tmp_path)
+    assert report["execution_error"] == "terminal_output_validation_failed"
+    assert report["observation"] is None
+    assert report["resources"]["calls_used"] == 0
+    assert "private model response" not in json.dumps(report)
 
 
 def test_real_flag_required_before_environment_and_output(tmp_path):
