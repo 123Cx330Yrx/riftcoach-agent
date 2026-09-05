@@ -6147,3 +6147,12 @@
   `203000/608000`，并将新墙传递到候选预算执行器。
 - 修复后的聚焦与相邻测试 `83 passed`，compileall、diff check、governance 通过；下一步为修复提交的
   exact-SHA 公共 CI，provider calls=0。
+
+## 2026-09-05：RQ-237 修复提交公共 CI 与新鲜协议
+
+- 修复提交 `d7a92abdb17ac9ea246f4ed3a29bf63c30408a74` 的 Actions `33963143593` 三任务
+  exact-SHA 全绿（pytest、PostgreSQL migrations、packaging-smoke）。
+- 同一实现身份的新鲜 G53-3-L 严格 `3/3` 调用通过，`1109` tokens、`12234ms`，SDK retries=0；
+  脱敏回执已写入候选能力结果目录。
+- 当前 checkpoint 进入 `completed-real-observation / pending-retrieval-hardened-domain-observation`；
+  下一步是新资产一次有界真实领域观察，不重跑旧考卷或注册候选。
