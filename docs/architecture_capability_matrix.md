@@ -1250,3 +1250,10 @@ packaging-smoke 通过。exact-SHA 预检为 `pending_protocol_evidence`、provi
 exact-SHA 三任务公共绿灯。当前为 `candidate-fresh-g53-3l-receipt-latency-fix / completed-public /
 pending-fresh-g53-3l-reauthorization`，产品能力矩阵、候选注册、GLM-5.2 回退、streaming、黄金切片
 和生产边界均不变。
+
+## RQ-234：协议能力重新取得真实证据（2026-09-05）
+
+修复后的 `110f9e8` 已有公共 CI `33897787039` 与新鲜真实协议证据：结构化回答及本地工具
+往返通过，3 次调用、1116 Token、12812ms，回执持久化且严格校验。V3 预检消费该证据，
+external_provider_calls=0；并未执行领域题目或形成新的产品能力。下一步为全新 V3 真实领域
+验收，当前 candidate-only、生产准入 false；默认 Runtime、前端、GLM-5.2 回退不变。

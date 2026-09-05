@@ -1726,3 +1726,12 @@ RQ-232 公共闭环后的新鲜协议运行已获授权，但在 create-only 回
 公共 pytest 2380、PostgreSQL 201、packaging-smoke 通过。当前 checkpoint 为
 `candidate-fresh-g53-3l-receipt-latency-fix / completed-public / pending-fresh-g53-3l-reauthorization`；
 仍需新的真实调用授权，V3 领域观察继续单独授权。
+
+## RQ-234：新鲜协议完成，领域验收预检就绪（2026-09-05）
+
+RQ-233 的待协议授权动作已由用户继续及本次真实运行关闭：代码 `110f9e8`、公共 CI
+`33897787039`，A1/A2 全部通过，3 次调用、1116 Token、12812ms；新回执已持久化并严格
+验证。V3 预检消费该新回执、零外部调用，相邻回归 26 passed。当前为
+`candidate-fresh-g53-3l-protocol / completed-real-observation / pending-v3-domain-authorization`。
+下一次明确继续直接执行一次全新 V3 领域验收，不再重跑协议。尚未证明领域质量或生产准入，
+未改产品代码/前端、GLM-5.2 回退、黄金切片、部署/合规、production_media=0 或 8F 边界。

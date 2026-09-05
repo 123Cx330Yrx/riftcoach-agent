@@ -4524,3 +4524,12 @@ RQ-232 把 RQ-231 的设计落成 8-Advanced candidate-only 控制面：共享�
 全绿，公共 pytest 2380、PostgreSQL 201、packaging-smoke 通过。当前进入
 `candidate-fresh-g53-3l-receipt-latency-fix / completed-public / pending-fresh-g53-3l-reauthorization`；
 候选、默认 Runtime、GLM-5.2 回退、产品/前端和 V3 领域边界均不变。
+
+## 2026-09-05：RQ-234 修复后的新鲜协议已通过
+
+用户继续已授权 RQ-233 之后的一次新鲜协议。在代码 `110f9e8`（Actions `33897787039`
+三任务成功）上完成 A1/A2，共 3 次真实调用、1116 Token、12812ms，协议 admitted=true。
+新脱敏回执 `zhipu_glm53_flash_candidate_low_4096_g53_3l_rq234_v1.json` 已保存并严格校验；
+V3 零调用预检 ready_for_real_call，相邻回归 26 passed。旧失败事实保持不变，RQ-233 的
+待协议授权动作已被本条取代；下一次明确继续只进入全新 V3 有界真实领域验收，不重跑协议。
+候选未注册、生产准入 false，产品/前端和 GLM-5.2 回退不变；8E/8F 尚未完成。

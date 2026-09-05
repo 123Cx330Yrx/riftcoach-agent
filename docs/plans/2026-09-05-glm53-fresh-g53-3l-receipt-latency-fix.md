@@ -31,3 +31,16 @@
 disabled/未注册，默认 Runtime、GLM-5.2 兼容/应急路径、Portal、Account、Workbench、Auth、路由和
 `production_media=0` 不变。仍须用户重新授权，才可在该实现 SHA 上再执行一次新鲜 G53-3-L；V3
 领域观察继续单独授权。
+
+## RQ-234 执行结果（2026-09-05，取代上节待协议授权动作）
+
+用户继续后已在 `110f9e8008486bfb976643a6abdaa8e88ea334e6` 代码身份完成一次新鲜协议。
+A1 `1/1`、A2 `2/2` 均通过，3 次调用、SDK 零重试，输入/输出/总 Token `1008/108/1116`，
+累计端到端延迟 `12812ms`。create-only 回执
+`data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_g53_3l_rq234_v1.json`
+为 2512 bytes，SHA-256=`fd500c57fbdb12ac408625d6c64b1cc0eb506debbb54525e3e8eb612892488eb`；
+严格模型解析、canonical 字节一致性和 body-free 校验通过，相邻回归 26 passed。
+
+V3 零调用预检已消费上述回执并返回 ready_for_real_call；本次没有执行 V3 领域题目。下一次
+明确继续直接进入一次全新 V3 有界真实领域验收，消费现有代码 CI、该回执及冻结资产，不再
+重跑本轮协议。候选注册、产品默认、GLM-5.2 回退和前端边界不变。

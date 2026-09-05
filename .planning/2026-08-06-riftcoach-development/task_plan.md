@@ -117,8 +117,9 @@ RQ-226 又在用户“继续”授权后完成低思考 G53-3-L 的一次有界�
 有界真实观察；首案质量/终态不匹配，后两案按首错停止。RQ-231 已在用户“继续”后完成 V3
 有界修订设计：保持 85 分和全部安全/事实硬门，允许最多一次 Harness 修订，并增加 body-free
 枚举计数诊断。RQ-232 已完成离线实现、兼容边界修复和 exact-SHA 公共闭环。RQ-233 的新鲜
-G53-3-L 尝试在回执延迟校验处失败，修复及 exact-SHA 公共闭环已完成；当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-public / pending-fresh-g53-3l-reauthorization`。
+G53-3-L 尝试在回执延迟校验处失败，修复及 exact-SHA 公共闭环已完成；RQ-234 随后已通过新鲜
+协议三次真实调用及 V3 零调用预检。当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-protocol / completed-real-observation / pending-v3-domain-authorization`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -416,12 +417,13 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-public / pending-fresh-g53-3l-reauthorization`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-protocol / completed-real-observation / pending-v3-domain-authorization`。
 RQ-230 已完成一次 V2 真实观察并完成失败归因；RQ-231 接受的全新 V3 最多一次受控修订、
 body-free 枚举计数诊断、版本化预算证明和新资产 no-I/O 准入已由 RQ-232 完成；修复提交
 `f99c142c269df765deb592c463ce6e2555bcc3fe` 的 Actions `33895602378` 三任务 exact-SHA 全绿。
 RQ-233 的新鲜 G53-3-L 尝试因两层延迟口径不一致未能生成回执；修复 `110f9e8` 的公共 CI 已
-全绿。下一步等待重新授权后再跑新鲜协议；当前不再次调用模型、不发 V3 领域请求、不重跑旧考卷。
+全绿。RQ-234 新鲜协议已通过，V3 预检为 ready_for_real_call；下一次明确继续只执行一次全新
+V3 有界真实领域验收，使用本次回执、既有冻结资产和 9/27 调用墙，不再重跑协议或旧考卷。
 RQ-227 的真实领域门已完成有界观察但拒绝准入：第 1 案通过，第 2 案因证据来源缺失与注入检查失败触发
 `unsafe_publication`，第 3 案冻结跳过；回执为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_domain_gate_rq227_v1.json`
@@ -3277,3 +3279,12 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - 修复 `110f9e8008486bfb976643a6abdaa8e88ea334e6` 的 Actions `33897787039` 三任务 exact-SHA
   全绿：公共 pytest 2380、PostgreSQL 201、packaging-smoke 通过。
 - 下一步仍需重新授权真实协议，不自动进入 V3 领域。
+
+## RQ-234 / 修复后新鲜协议与 V3 零调用预检（2026-09-05）
+
+- Status: complete-real-observation; protocol-admitted; V3-preflight-ready; pending-v3-domain-authorization
+- 用户继续授权的协议运行已完成；代码 `110f9e8` / Actions `33897787039` 身份已核实，
+  A1 `1/1`、A2 `2/2` 通过，3 次调用、1116 Token、12812ms，SDK 零重试。
+- 新回执 `zhipu_glm53_flash_candidate_low_4096_g53_3l_rq234_v1.json` 严格校验通过，
+  V3 预检消费该回执且 external_provider_calls=0；相邻回归 `26 passed`。
+- 未改产品代码、前端、默认 Runtime、GLM-5.2 回退或冻结考卷；下一步是全新 V3 真实领域验收。

@@ -54,3 +54,21 @@ create-only 写入和与公共 CI 相同的实现 SHA。
 > 我把“模型调用完成”和“证据可接受”分开处理：真实协议在回执阶段暴露 Provider I/O 与端到端
 > 计时口径混用。我没有放宽 Schema 或重跑追绿，而是用推进时钟复现，令回执采用协议案例总耗时，
 > 保留预算账本原语义，并要求新实现重新通过公共 CI 和获得真实调用授权。
+
+## 9. RQ-234：修复后的真实复核与复现（2026-09-05）
+
+用户继续已授权新鲜协议；A1 结构化回答与 A2 工具往返均通过，3 次调用、1116 Token、
+12812ms，SDK 零重试。新回执 `zhipu_glm53_flash_candidate_low_4096_g53_3l_rq234_v1.json`
+为 2512 bytes，SHA-256=`fd500c57fbdb12ac408625d6c64b1cc0eb506debbb54525e3e8eb612892488eb`；
+严格解析和 canonical/body-free 校验通过。该结果证明本次协议完成且证据可持久化，不证明
+领域题目质量，也不能补写上次无回执运行的调用数。相邻回归 26 passed。
+
+以下命令只消费现有证据，不读取密钥、不调用模型，可重复执行：
+
+```powershell
+.\.venv\Scripts\python.exe scripts/run_glm53_hardened_domain_v3_gate.py --preflight-only --implementation-sha 110f9e8008486bfb976643a6abdaa8e88ea334e6 --public-ci-sha 110f9e8008486bfb976643a6abdaa8e88ea334e6 --confirm-public-ci-success --protocol-result data/evaluation/results/provider_capabilities/zhipu_glm53_flash_candidate_low_4096_g53_3l_rq234_v1.json
+```
+
+已实际得到 `ready_for_real_call / external_provider_calls=0 / held_out_executed=false`，并独立
+确认回执 `protocol.admitted=true`。下一次明确继续的任务为全新 V3 真实领域验收，不重跑
+本次协议。8E 学习覆盖仍 planned，生产准入、黄金切片及 8F 均未完成。

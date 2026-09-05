@@ -6082,3 +6082,18 @@
 - [boundary-next] 当前 checkpoint 为
   `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-public / pending-fresh-g53-3l-reauthorization`；
   下一步等待重新授权。新的真实协议与 V3 领域观察仍分别需要后续授权。
+
+## 2026-09-05：RQ-234 修复后新鲜协议通过
+
+- [authorized-complete] 用户继续已满足协议授权；执行前隔离树干净，HEAD `28219ed` 与同名
+  远端同步、相对 `110f9e8` 只有文档变化；重新查询 Actions `33897787039` 三任务成功。
+- [real-result] A1 `1/1`、A2 `2/2`，admitted=true；输入/输出/总 Token `1008/108/1116`，
+  12812ms，SDK 零重试；新回执 `zhipu_glm53_flash_candidate_low_4096_g53_3l_rq234_v1.json`
+  为 2512 bytes，SHA-256=`fd500c57fbdb12ac408625d6c64b1cc0eb506debbb54525e3e8eb612892488eb`。
+- [verified] 严格 Schema/canonical/body-free 校验通过；V3 预检 ready_for_real_call，
+  external_provider_calls=0、held_out_executed=false；纠正过时测试路径后 `26 passed`。
+- [closeout] 相关模块编译、git diff --check 与项目治理检查均通过；本轮只新增脱敏回执及必要
+  状态/学习记录，不增加实现文件或重复学习文档。
+- [next] 当前为 `candidate-fresh-g53-3l-protocol / completed-real-observation /
+  pending-v3-domain-authorization`，下一次明确继续直接执行一次全新 V3 有界真实领域验收。
+  本批未修改产品代码/前端、旧考卷/回执、GLM-5.2 回退或主工作树；不注册候选。

@@ -5783,3 +5783,12 @@
   `33897787039` 三任务 exact-SHA 全绿；公共 pytest 2380、PostgreSQL 201、packaging-smoke 通过。
 - [next] 进入 `candidate-fresh-g53-3l-receipt-latency-fix / completed-public /
   pending-fresh-g53-3l-reauthorization`；不自动重跑真实协议或进入 V3 领域观察。
+
+## 2026-09-05：RQ-234 新鲜协议真实复核
+
+- 新运行已证明修复后的端到端计时可生成严格回执：A1/A2 通过，3 次真实调用、1116 Token、
+  12812ms，未重试。该事实不追溯补写 RQ-233 丢失的调用数量或协议结论。
+- V3 预检成功消费绑定 `110f9e8` 的新回执；另行严格读取确认 `protocol.admitted=true`，
+  不能仅凭预检成功替代协议通过判断。领域考卷未执行，产品准入仍 false。
+- 首次收尾测试因引用不存在的旧路径未运行；按实际测试文件纠正后相邻回归 `26 passed`。
+- 下一步只执行全新 V3 真实领域验收，不再重跑本轮协议。

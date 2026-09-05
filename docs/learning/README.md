@@ -25,15 +25,15 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 [8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
 该记录不把 8E coverage、领域采用或生产成熟度标为完成。
 
-> 当前学习指针（2026-09-05，RQ-233）：先阅读 [新鲜协议回执延迟修复 walkthrough](8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md)、
+> 当前学习指针（2026-09-05，RQ-234）：先阅读 [新鲜协议回执延迟修复与真实复核 walkthrough](8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md)、
 > [V3 离线实现 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md)、
 > [V3 有界修订设计 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md)、
 > [ADR-0094](../adr/0094-adopt-glm53-hardened-domain-v3-bounded-revision.md)、
 > [V3 设计](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-design.md) 和
 > [详细实施计划](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-implementation.md)。
 > 当前 checkpoint 是
-> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-receipt-latency-fix / completed-public / pending-fresh-g53-3l-reauthorization`；
-> 8E coverage 仍 planned，候选未注册。新鲜协议尝试没有生成回执，计时口径修复已通过公共 CI；
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-fresh-g53-3l-protocol / completed-real-observation / pending-v3-domain-authorization`；
+> 8E coverage 仍 planned，候选未注册。修复后的新鲜协议已通过三次真实调用并保存回执，V3 零调用预检就绪；
 > 黄金切片、生产准入和 8F 均未进入。
 
 ## 2. 建议怎样学习每一个能力
