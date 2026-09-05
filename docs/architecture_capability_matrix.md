@@ -1281,3 +1281,5 @@ streaming、黄金切片、安全/部署/合规和 `production_media=0` 均不�
 ## RQ-237：检索加固候选全新领域资产设计边界（2026-09-05）
 
 新增的是候选评测资产设计，不是产品或模型能力。全新 Dataset、Input Plan、Context、fixture、marker、协议和回执身份将显式绑定 `coaching-query-recovery-v1`，并复用 V3 一次修订与全部质量/安全硬门；旧领域证据保持不可变。当前 provider calls=0，候选未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由、streaming、黄金切片、安全/部署/合规和 `production_media=0` 不变。
+
+当前实现状态：上述候选资产与准入门控已完成本地实现，5 项聚焦测试通过；仍属于 8-Advanced candidate-only，等待 exact-SHA 公共 CI，不构成产品或模型能力准入。

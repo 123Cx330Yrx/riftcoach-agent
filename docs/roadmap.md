@@ -1765,3 +1765,5 @@ Account、Workbench、Auth、路由或 `production_media=0`。实现提交
 ## RQ-237：检索加固候选全新领域资产设计（2026-09-05）
 
 接受 ADR-0096，在候选作用域建立全新 V3 Dataset、Input Plan、Prompt/Context Snapshot、fixture、marker、协议与回执身份，显式绑定 `coaching-query-recovery-v1`。保持 V3 一次修订、预算证明、事实/引用/注入/来源与 85 分质量门，旧领域考卷和回执保持不可变。当前只做离线资产实现与 no-I/O 准入；候选未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
+
+实现状态更新：全新资产包与候选门控已完成本地 no-I/O 实现，当前为 `completed-local / pending-public-ci`；公共 CI、新鲜 G53-3-L 与真实领域观察仍是后续独立闸门。

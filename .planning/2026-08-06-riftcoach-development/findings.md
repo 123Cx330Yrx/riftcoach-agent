@@ -5820,3 +5820,12 @@
 - [versioning] `ProductionDomainCaseExecutor` 的 `retrieval_hardening` 默认关闭，要求候选 policy
   与质量加固；旧 V2 gate 在任何 Provider 调用前拒绝，V3 gate/CLI 显式要求。此次仅离线实现，
   provider calls=0；后续真实验证必须另立实现 SHA、资产/协议身份和新鲜回执。
+
+## RQ-237 implementation findings (2026-09-05)
+
+- 全新资产必须重新生成 Context commitments 与完整请求包络预算；只复制旧 V3 文件会留下旧 case/run
+  身份，且无法满足 no-I/O 新鲜度检查。
+- 预算算法可以复用成熟实现，但输入计划、Context 快照和预算报告文件摘要必须绑定新文件字节；
+  因此本批重新跑本地最坏路径追踪，仍得到每案 9 次/203000 token、全域 27 次/608000 token。
+- 候选门控入口独立复制 V3 的准入顺序，并在 Provider 构造前锁定 `retrieval_hardening=True`；
+  默认 Runtime 与旧 V2/V3 入口没有修改。

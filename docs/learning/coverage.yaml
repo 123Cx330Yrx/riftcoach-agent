@@ -840,6 +840,7 @@ groups:
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-local / pending-public-ci
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-public / pending-next-decision
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-design / pending-offline-implementation
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-local / pending-public-ci
     status: planned
     evidence:
       problem_and_principle:
@@ -847,6 +848,9 @@ groups:
         - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
         - docs/adr/0094-adopt-glm53-hardened-domain-v3-bounded-revision.md
+        - docs/adr/0096-design-fresh-retrieval-hardened-domain-assets.md
+        - docs/plans/2026-09-05-fresh-retrieval-hardened-domain-assets.md
+        - docs/learning/8e-glm53-retrieval-hardened-domain-assets-walkthrough.md
         - docs/plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-design.md
         - docs/learning/8e-glm53-hardened-domain-v2-real-observation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v2-assets-walkthrough.md

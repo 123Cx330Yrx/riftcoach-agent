@@ -1598,3 +1598,5 @@ pending-next-decision`，不能据此重跑旧领域考卷或宣称生产准入�
 ## RQ-237：检索加固候选全新领域资产设计（2026-09-05）
 
 该设计仍属于 8-Advanced candidate-only，不新增 8-Core。新资产绑定 `coaching-query-recovery-v1` 与 V3 版本身份，使用全新 Dataset、Input Plan、Context、fixture、marker、协议和回执；旧 RQ-235/RQ-227/RQ-230 证据不重跑、不覆盖。先完成 no-I/O 身份交叉校验、预算证明、聚焦测试与公共 CI，再另行取得新鲜 G53-3-L；真实领域观察仍需单独授权。
+
+实现状态：全新资产与候选门控已完成本地 no-I/O 验证，当前 `completed-local / pending-public-ci`；不改变 8-Core、默认 Runtime 或产品模块。

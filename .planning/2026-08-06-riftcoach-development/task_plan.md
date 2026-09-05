@@ -120,7 +120,7 @@ RQ-226 又在用户“继续”授权后完成低思考 G53-3-L 的一次有界�
 G53-3-L 尝试在回执延迟校验处失败，修复及 exact-SHA 公共闭环已完成；RQ-234 随后已通过新鲜
 协议三次真实调用及 V3 零调用预检；RQ-235 的一次真实领域验收已在首案检索零片段后安全停止，
 未进入评测或修订。RQ-236 已完成候选检索合同的离线加固与执行器接线，并取得同一实现 SHA 的公共 CI；RQ-237 已接受全新领域资产设计；当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-design / pending-offline-implementation`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-local / pending-public-ci`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -418,7 +418,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-design / pending-offline-implementation`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-local / pending-public-ci`。
 RQ-230 已完成一次 V2 真实观察并完成失败归因；RQ-231 接受的全新 V3 最多一次受控修订、
 body-free 枚举计数诊断、版本化预算证明和新资产 no-I/O 准入已由 RQ-232 完成；修复提交
 `f99c142c269df765deb592c463ce6e2555bcc3fe` 的 Actions `33895602378` 三任务 exact-SHA 全绿。
@@ -3328,3 +3328,11 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [boundary] 继续保持 V3 的最多一次修订、预算证明、事实/引用/注入/来源硬门和 85 分质量门；不改变
   默认 Runtime、GLM-5.2、产品模块或候选注册，不发送真实 Provider 请求。
 - [next] 下一步只实现新资产并完成 no-I/O 准入，之后再取得公共 CI 和新鲜 G53-3-L。
+
+## RQ-237 implementation batch (2026-09-05)
+
+- [x] 建立全新 Dataset、Input Plan、Context、fixture、marker、协议和预算证明。
+- [x] 实现 no-I/O 身份交叉校验与候选隔离门控入口。
+- [x] 添加聚焦测试并通过 compileall、diff check、governance。
+- [ ] 取得同一实现 SHA 的 exact-SHA 公共 CI。
+- [ ] 公共 CI 后建立新鲜 G53-3-L；真实领域观察仍需单独授权。

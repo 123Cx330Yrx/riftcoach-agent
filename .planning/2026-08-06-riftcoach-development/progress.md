@@ -6129,3 +6129,11 @@
 - [boundary-next] 当前 checkpoint 为 `candidate-retrieval-contract-hardening / completed-public /
   pending-next-decision`；下一步只裁决是否另立新鲜资产/协议，在此之前不重跑 RQ-235、不发真实请求、
   不注册候选、不改默认模型或前端。
+
+## 2026-09-05：RQ-237 全新检索加固领域资产离线实现
+
+- 已新增独立检索加固 V3 Dataset、输入计划、Context 快照、匿名 fixture、协议、预算报告、资产准入
+  与候选门控模块；身份与旧 RQ-235/RQ-227/RQ-230 完全隔离。
+- 聚焦 no-I/O 资产/门控测试 `5 passed`，compileall、`git diff --check`、governance 通过，provider calls=0。
+- 当前从 `completed-design / pending-offline-implementation` 推进至 `completed-local / pending-public-ci`。
+- 下一步是同一实现 SHA 的 exact-SHA 公共 CI；随后才建立新鲜 G53-3-L，真实领域观察仍需单独授权。
