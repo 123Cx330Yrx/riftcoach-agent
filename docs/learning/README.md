@@ -32,9 +32,9 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 > [V3 设计](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-design.md) 和
 > [详细实施计划](../plans/2026-09-04-glm53-hardened-domain-v3-bounded-revision-implementation.md)。
 > 当前 checkpoint 是
-> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-local / pending-public-ci`；
-> 8E coverage 仍 planned，候选未注册。RQ-236 已完成候选检索合同的离线加固与执行器接线，查询恢复及相邻链路 51 项通过；
-> 下一步取得同一实现 SHA 的 exact-SHA 公共 CI；
+> `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-public / pending-next-decision`；
+> 8E coverage 仍 planned，候选未注册。RQ-236 已完成候选检索合同的离线加固、执行器接线和同 SHA 公共 CI，查询恢复及相邻链路 51 项通过；
+> 下一步只裁决是否另立新鲜协议/资产；
 > 黄金切片、生产准入和 8F 均未进入。
 
 ## 2. 建议怎样学习每一个能力

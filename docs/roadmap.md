@@ -1758,5 +1758,6 @@ pending-retrieval-contract-hardening`。下一批不重跑真实考卷，只用�
 provider calls=0。
 
 该批仍属 8-Advanced candidate-only，不注册候选、不改变默认 Runtime、GLM-5.2 回退、Portal、
-Account、Workbench、Auth、路由或 `production_media=0`；同一实现 SHA 的 exact-SHA 公共 CI 尚待
-完成，之后才裁决是否另立新鲜协议/资产，不自动重跑 RQ-235 或发真实请求。
+Account、Workbench、Auth、路由或 `production_media=0`。实现提交
+`ed62dbbc80506a8bcfae7eefb132348b21e587e0` 的 Actions `33943854904` 三任务 exact-SHA 全部成功；
+之后才裁决是否另立新鲜协议/资产，不自动重跑 RQ-235 或发真实请求。

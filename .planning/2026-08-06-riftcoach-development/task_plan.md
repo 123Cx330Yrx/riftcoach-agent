@@ -119,8 +119,8 @@ RQ-226 又在用户“继续”授权后完成低思考 G53-3-L 的一次有界�
 枚举计数诊断。RQ-232 已完成离线实现、兼容边界修复和 exact-SHA 公共闭环。RQ-233 的新鲜
 G53-3-L 尝试在回执延迟校验处失败，修复及 exact-SHA 公共闭环已完成；RQ-234 随后已通过新鲜
 协议三次真实调用及 V3 零调用预检；RQ-235 的一次真实领域验收已在首案检索零片段后安全停止，
-未进入评测或修订。RQ-236 已完成候选检索合同的离线加固与执行器接线；当前精确 checkpoint 为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-local / pending-public-ci`。
+未进入评测或修订。RQ-236 已完成候选检索合同的离线加固与执行器接线，并取得同一实现 SHA 的公共 CI；当前精确 checkpoint 为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-public / pending-next-decision`。
 
 Phase 20 - `6B-4-conversation-bound-recent-review-identity` is complete at
 `d63f908` / Actions `32347834279`. Phase 21 -
@@ -418,7 +418,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 ## Next Step
 
 当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-local / pending-public-ci`。
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-public / pending-next-decision`。
 RQ-230 已完成一次 V2 真实观察并完成失败归因；RQ-231 接受的全新 V3 最多一次受控修订、
 body-free 枚举计数诊断、版本化预算证明和新资产 no-I/O 准入已由 RQ-232 完成；修复提交
 `f99c142c269df765deb592c463ce6e2555bcc3fe` 的 Actions `33895602378` 三任务 exact-SHA 全绿。
@@ -3301,7 +3301,7 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 
 ## RQ-236 / 候选检索合同离线加固（2026-09-05）
 
-- Status: completed-local; candidate-only; provider-calls-zero; pending-public-ci
+- Status: completed-public; candidate-only; provider-calls-zero; pending-next-decision
 - [implemented-local] 新增 `coaching-query-recovery-v1` 包装器：原查询优先，只有单一安全教练
   主题在零命中且 `insufficient_evidence` 时最多补查一次；保留 `top_k` 与全部过滤条件，保持
   BM25 `15.0`、查询覆盖率 `0.18` 不变。自然语言识别采用显式别名与安全连接词白名单，混合/注入式
@@ -3314,7 +3314,8 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
   路由和 `production_media=0` 不变。
 - [verification-local] 查询恢复、执行器、V2/V3 版本隔离与完整 Agent→检索→Evidence→评测→发布链路
   共 `51 passed`；compileall、diff check、治理检查均通过；provider calls=0。
+- [verification-public] 实现提交 `ed62dbbc80506a8bcfae7eefb132348b21e587e0` 的 Actions
+  `33943854904` 中 `pytest`、`postgres-migrations`、`packaging-smoke` 三任务均成功且 head SHA 精确匹配。
 - [next] 当前 checkpoint 为
-  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-local / pending-public-ci`；
-  下一批提交并取得同一实现 SHA 的 exact-SHA 公共 CI，之后再裁决是否另立新鲜协议/资产，不能自动
-  发真实请求或注册候选。
+  `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-public / pending-next-decision`；
+  下一步只裁决是否另立新鲜资产/协议，不能自动发真实请求或注册候选。

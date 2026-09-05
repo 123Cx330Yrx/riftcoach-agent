@@ -1273,7 +1273,7 @@ V3 首案证明 Provider 与工具执行可完成，但没有检索片段进入�
 继续 fail closed。`EvidenceDiagnostics` 只投影固定主题、尝试/计数、过滤键名和原因枚举，并区分
 模型工具调用与本地补查；默认执行器和旧回执字段保持兼容，V2/V3 入口按版本隔离。
 
-本地相关与相邻测试 `51 passed`，compileall、diff check、治理通过，provider calls=0。候选未注册，
-默认模型、GLM-5.2 回退、产品 Runtime、Portal、Account、Workbench、Auth、路由、streaming、
-黄金切片、安全/部署/合规和 `production_media=0` 均不变；同 SHA 公共 CI 尚待完成，不能外推为
-领域质量或生产成熟度。
+本地相关与相邻测试 `51 passed`，compileall、diff check、治理通过，provider calls=0。实现提交
+`ed62dbbc80506a8bcfae7eefb132348b21e587e0` 的 Actions `33943854904` 三任务 exact-SHA 全部成功。
+候选未注册，默认模型、GLM-5.2 回退、产品 Runtime、Portal、Account、Workbench、Auth、路由、
+streaming、黄金切片、安全/部署/合规和 `production_media=0` 均不变；不能外推为领域质量或生产成熟度。

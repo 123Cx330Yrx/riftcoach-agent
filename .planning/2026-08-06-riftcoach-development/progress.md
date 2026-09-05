@@ -6123,6 +6123,9 @@
   gate/CLI 显式要求并开启。EvidenceDiagnostics 将本地补查次数与模型工具调用分开投影，旧空值
   字段继续省略以保持历史回执兼容。
 - [verification-local] 查询恢复、执行器、V2/V3 版本隔离与完整候选链路共 `51 passed`；compileall、
-  `git diff --check`、治理检查通过；provider calls=0，尚未运行公共 CI 或真实模型。
-- [boundary-next] 下一步提交当前实现并取得同一 SHA 的 exact-SHA 公共 CI；在新的公共证明和新鲜
-  资产/协议身份前，不重跑 RQ-235、不发真实请求、不注册候选、不改默认模型或前端。
+  `git diff --check`、治理检查通过；provider calls=0。
+- [verification-public] 实现提交 `ed62dbbc80506a8bcfae7eefb132348b21e587e0` 的 Actions
+  `33943854904` 中 `pytest`、`postgres-migrations`、`packaging-smoke` 三任务均成功且 head SHA 精确匹配。
+- [boundary-next] 当前 checkpoint 为 `candidate-retrieval-contract-hardening / completed-public /
+  pending-next-decision`；下一步只裁决是否另立新鲜资产/协议，在此之前不重跑 RQ-235、不发真实请求、
+  不注册候选、不改默认模型或前端。

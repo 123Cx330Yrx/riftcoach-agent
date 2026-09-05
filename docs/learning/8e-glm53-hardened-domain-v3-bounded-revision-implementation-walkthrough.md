@@ -132,8 +132,9 @@ compileall、`git diff --check` 和治理检查通过，provider calls=0。BM25 
 `0.18`、来源门、事实/引用/注入门与 85 分质量门均未放宽。查询指南常量暂不写入已冻结的 V3
 Context snapshot；若要让模型上下文主动生成更具体查询，必须另立 Context/资产版本并重新准入。
 候选仍未注册，GLM-5.2 仅为显式兼容/应急路径，默认 Runtime、Portal、Account、Workbench、Auth、
-路由和 `production_media=0` 不变；当前只等待同一实现 SHA 的 exact-SHA 公共 CI，不能据此重跑
-RQ-235 或宣称领域/生产准入。
+路由和 `production_media=0` 不变；实现提交 `ed62dbbc80506a8bcfae7eefb132348b21e587e0` 的
+Actions `33943854904` 三任务 exact-SHA 全部成功。不能据此重跑 RQ-235 或宣称领域/生产准入；
+下一步只裁决是否另立新鲜协议/资产。
 
 ### 面试表达
 

@@ -1589,7 +1589,8 @@ Workbench、Auth、`production_media=0`、8E→8F 顺序及生产安全/部署/�
 执行器默认关闭该策略，V2 入口前置拒绝，V3 候选入口显式开启；安全诊断只公开枚举、计数和过滤
 键名，并区分模型工具调用与本地补查。未知、混合、注入式、冲突、无适用资料和异常查询不补查。
 
-本地聚焦及相邻回归 `51 passed`，compileall、diff check、治理通过，provider calls=0。候选仍未注册，
-默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变；
-当前检查点为 `candidate-retrieval-contract-hardening / completed-local / pending-public-ci`，需先
-取得同一实现 SHA 的 exact-SHA 公共 CI，不能据此重跑旧领域考卷或宣称生产准入。
+本地聚焦及相邻回归 `51 passed`，compileall、diff check、治理通过，provider calls=0。实现提交
+`ed62dbbc80506a8bcfae7eefb132348b21e587e0` 的 Actions `33943854904` 三任务 exact-SHA 全部成功。
+候选仍未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和
+`production_media=0` 不变；当前检查点为 `candidate-retrieval-contract-hardening / completed-public /
+pending-next-decision`，不能据此重跑旧领域考卷或宣称生产准入。

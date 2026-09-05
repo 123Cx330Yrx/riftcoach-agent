@@ -4552,7 +4552,8 @@ hardening 才能启用；V2 入口前置拒绝，V3 入口显式开启。诊断�
 不保存查询正文、过滤值、提示词、推理、凭据或自由文本，并区分模型工具调用与本地补查次数。
 
 本地查询恢复、执行器、V2/V3 隔离及完整链路共 `51 passed`，compileall、diff check、治理通过，
-provider calls=0。该批仍属 8-Advanced candidate-only；候选未注册，默认 Runtime、GLM-5.2 回退、
-Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。当前为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-local / pending-public-ci`；
-下一步取得同一实现 SHA 的 exact-SHA 公共 CI，之后再决定是否另立新鲜协议/资产。
+provider calls=0。实现提交 `ed62dbbc80506a8bcfae7eefb132348b21e587e0` 的 Actions `33943854904`
+三任务 exact-SHA 全部成功。该批仍属 8-Advanced candidate-only；候选未注册，默认 Runtime、
+GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。当前为
+`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-contract-hardening / completed-public / pending-next-decision`；
+下一步只裁决是否另立新鲜协议/资产，不自动发真实请求。
