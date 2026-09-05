@@ -4899,3 +4899,9 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 
 - `[public-ci-correction]` 公共总检首跑曾因未识别 RQ-237 新回执协议 ID而误用旧 V3 模型；已补严格分流
   与 canonical 校验，专项 `50 passed`。该修复不改变 RQ-237 领域结果或任何质量门。
+
+### 2026-09-06：开发查询指引有界对照
+
+- `[implemented-local]` 指引仅作为开发观察可选上下文附加项，回执显式绑定指引 ID/SHA；正式准入路径与默认模型不变。
+- `[real-observation]` 新鲜匿名 demo 对照 `guided_03` 使用 3 次调用、12783 tokens、40890ms，3 次检索均成功，返回 4 个片段/3 个来源，最终评分 95，终态 `published`；事实、引用、注入检查均通过。
+- `[boundary-next]` 这是单一样本开发证据，不是生产准入或全领域质量证明；候选仍未注册，GLM-5.2 回退、Portal、Account、Workbench、Auth 与 `production_media=0` 不变。旧的 `guided_02` 因终端收口缺陷仅保留失败回执，不重跑旧考卷。
