@@ -86,7 +86,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-runtime-offline-wiring / completed-local / pending-public-ci`。
+当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-runtime-offline-wiring / completed-public / pending-product-version-real-acceptance-preparation`。
 
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
@@ -419,7 +419,9 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 
 ## Next Step
 
-当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-runtime-offline-wiring / completed-local / pending-public-ci`。
+当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-runtime-offline-wiring / completed-public / pending-product-version-real-acceptance-preparation`。
+
+RQ-245 公共验证已完成：实现 `cecde250e131a0e81585e2e91ec261fad6817700` / Actions `34026629061` 三任务全部成功。下一步准备新产品版本独立真实验收，明确绑定实际产品 Runtime、Skill/程序和预算，不复用旧领域结果；不自动调用真实 API 或打开默认。下方待 CI 动作为历史。
 
 RQ-245 已完成显式新产品组合的离线实现：真实 Runtime→报告/Evidence/Trace、Memory 与 Worker 所有权、九调用预算和假 SDK 智谱适配器均通过；33 项新增、271 项相邻测试通过。唯一下一步为本实现同 SHA 公共 CI；通过后才准备新产品版本独立真实验收，不自动调用 API 或启用默认。详见 `docs/plans/2026-09-06-offline-coach-runtime-wiring.md`。以下 RQ-244 及更早待办是历史。
 

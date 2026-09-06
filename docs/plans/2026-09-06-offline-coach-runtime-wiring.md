@@ -16,7 +16,13 @@
 下一步只有在本批实现公共闭环后，才进入新产品版本的真实验收准备；不重跑旧考卷、不直接打开默认。
 学习说明与实际结果见下，作为八维证据，不另起重复教程。
 
-## 实现与离线证据（本地完成，待本实现公共 CI）
+## 实现与离线证据（本地及公共完成）
+
+实现 `cecde250e131a0e81585e2e91ec261fad6817700` 的
+[Actions 34026629061](https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/34026629061)
+已核对 headSha，pytest、postgres-migrations、packaging-smoke 均 completed/success。
+本批已完成，无待执行真实调用；唯一下一步为新产品版本独立真实验收准备，绑定本次真实产品执行组合与
+全新验收身份，不能用旧领域回执或本地脚本95分冒充它通过。生产目标档案注册、默认启用与真实质量仍在后面。
 
 执行组合 `recent-form-review-flash-v2@1.0.0` 为 `unadmitted_opt_in`；policy 1.2.0，Skill 0.3.0，
 程序 2.0.0；组合摘要 `968c8dc8e2d745ed82bb4cdc1486bde0388d6782603bd833abdba067701e35d1`，
