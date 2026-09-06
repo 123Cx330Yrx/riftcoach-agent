@@ -38,13 +38,29 @@ from app.rag.retriever import tokenize
 CASE_ID = "development_autonomous_recent_review_01"
 UTTERANCE = "请复盘我最近两局的状态，区分数据事实和可能原因，结合教练资料给出下一局可记录的调整建议。"
 POLICY = GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
+DEVELOPMENT_SCENARIOS = {
+    "recent_review": (CASE_ID, UTTERANCE, "overall"),
+    "survival_adjustment": (
+        "development_autonomous_survival_adjustment_01",
+        "请帮我复盘最近几局总是早早阵亡的情况，结合教练资料给我一个下一局可记录的生存调整。",
+        "survival",
+    ),
+    "economy_adjustment": (
+        "development_autonomous_economy_adjustment_01",
+        "请帮我复盘最近补刀经济落后的情况，结合教练资料分析下一局可记录的经济调整。",
+        "economy",
+    ),
+}
 
 
 def digest(raw: bytes) -> str:
     return hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
 
 
-def development_plan(root: Path, *, guided: bool = False) -> LoadedDomainCaseInputPlan:
+def development_plan(root: Path, *, guided: bool = False, scenario: str = "recent_review") -> LoadedDomainCaseInputPlan:
+    if scenario not in DEVELOPMENT_SCENARIOS:
+        raise ValueError("unknown development scenario")
+    case_id, utterance, focus = DEVELOPMENT_SCENARIOS[scenario]
     summary = root / "examples/fixtures/player_summary_demo.json"
     report = root / "examples/fixtures/deterministic_report_demo.md"
     artifact = DomainCaseInputPlanArtifact(
@@ -56,8 +72,8 @@ def development_plan(root: Path, *, guided: bool = False) -> LoadedDomainCaseInp
         sdk_max_retries=0, max_revisions=1, request_policy_id=POLICY.policy_id,
         request_policy_version=POLICY.version, quality_hardening=True, retrieval_hardening=True,
         case_count=1, cases=(DomainCaseInput(
-            case_id=CASE_ID, run_id=CASE_ID, user_utterance=UTTERANCE,
-            focus="overall", knowledge_mode="standard",
+            case_id=case_id, run_id=case_id, user_utterance=utterance,
+            focus=focus, knowledge_mode="standard",
         ),),
     )
     if guided:
@@ -65,7 +81,7 @@ def development_plan(root: Path, *, guided: bool = False) -> LoadedDomainCaseInp
             artifact=artifact, player_summary_path=summary, deterministic_report_path=report,
             execution_plan=DomainCaseExecutionPlan(
                 plan_id=artifact.plan_id, plan_version=artifact.plan_version,
-                plan_sha256=digest(artifact.model_dump_json().encode()), case_ids=(CASE_ID,),
+                plan_sha256=digest(artifact.model_dump_json().encode()), case_ids=(case_id,),
             ),
         )
         snapshot = build_guided_context_snapshot_for_plan(provisional, root)
@@ -82,7 +98,7 @@ def development_plan(root: Path, *, guided: bool = False) -> LoadedDomainCaseInp
         artifact=artifact, player_summary_path=summary, deterministic_report_path=report,
         execution_plan=DomainCaseExecutionPlan(
             plan_id=artifact.plan_id, plan_version=artifact.plan_version,
-            plan_sha256=digest(artifact.model_dump_json().encode()), case_ids=(CASE_ID,),
+            plan_sha256=digest(artifact.model_dump_json().encode()), case_ids=(case_id,),
         ),
     )
 
@@ -136,14 +152,15 @@ class QueryObserver:
 
 
 def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=lambda _event: None,
-            retrieval_guidance: str | None = None):
-    plan = development_plan(root, guided=retrieval_guidance is not None)
+            retrieval_guidance: str | None = None, scenario: str = "recent_review"):
+    plan = development_plan(root, guided=retrieval_guidance is not None, scenario=scenario)
     if retrieval_guidance is not None:
         require_guided_candidate(project_root=root, input_plan=plan)
     state = BoundedRevisionBudgetState()
-    state.register_case(CASE_ID)
+    case_id = plan.execution_plan.case_ids[0]
+    state.register_case(case_id)
     budgeted = BoundedRevisionBudgetedProvider(
-        provider=provider, state=state, case_id=CASE_ID,
+        provider=provider, state=state, case_id=case_id,
         case_max_tokens=205_000, domain_max_tokens=205_000,
     )
     observer = QueryObserver(budgeted, emit)
@@ -154,7 +171,7 @@ def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=l
     )
     execution_error = None
     try:
-        result = executor.execute(case_id=CASE_ID, provider=observer)
+        result = executor.execute(case_id=case_id, provider=observer)
     except SkillReviewExecutionError:
         # Retain bounded diagnostics even if terminal output projection fails.
         # Never persist exception text, prompts, drafts or model reasoning.
@@ -186,6 +203,7 @@ def main(argv=None):
     parser.add_argument("--env-file", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--retrieval-guidance", action="store_true")
+    parser.add_argument("--scenario", choices=tuple(DEVELOPMENT_SCENARIOS), default="recent_review")
     args = parser.parse_args(argv)
     if not args.confirm_real_call:
         parser.error("real development observation requires --confirm-real-call")
@@ -213,6 +231,7 @@ def main(argv=None):
         with tempfile.TemporaryDirectory(prefix="riftcoach-dev-query-") as temporary:
             result = observe(provider, root=ROOT, runs_root=Path(temporary), real=True,
                              retrieval_guidance=(COACHING_QUERY_GUIDANCE_V1 if args.retrieval_guidance else None),
+                             scenario=args.scenario,
                              emit=lambda row: print(json.dumps(row), flush=True))
         result.update(identity)
         result["status"] = "execution_failed" if result["execution_error"] else "completed"

@@ -5,7 +5,7 @@ import socket
 import pytest
 
 from scripts.probe_glm53_development_retrieval import (
-    QueryObserver, development_plan, main, observe,
+    DEVELOPMENT_SCENARIOS, QueryObserver, development_plan, main, observe,
 )
 from app.evaluation.glm53_flash_candidate_profile import GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
 from app.evaluation.provider_domain_production import ProductionDomainCaseExecutor
@@ -69,6 +69,17 @@ def test_guidance_is_an_explicit_candidate_context_addendum(tmp_path):
     assert report["retrieval_guidance_sha256"]
     system_text = "\n".join(message.content for message in provider.requests[0].messages if message.role.value == "system")
     assert COACHING_QUERY_GUIDANCE_V1 in system_text
+
+
+@pytest.mark.parametrize("scenario", tuple(DEVELOPMENT_SCENARIOS))
+def test_guided_candidate_entry_supports_representative_coaching_scenarios(tmp_path, scenario):
+    report = observe(
+        ScriptedCoach(), root=ROOT, runs_root=tmp_path / scenario,
+        retrieval_guidance=COACHING_QUERY_GUIDANCE_V1, scenario=scenario,
+    )
+    assert report["observation"]["terminal_status"] == "published"
+    assert report["observation"]["evidence_source_ids"]
+    assert report["plan_sha256"]
 
 
 def test_terminal_projection_failure_retains_safe_diagnostics(tmp_path, monkeypatch):
