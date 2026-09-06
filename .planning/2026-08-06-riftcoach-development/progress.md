@@ -6239,3 +6239,4 @@
 - 新回执 `glm53_economy_diagnostic_rq241_01.json` 为 2673 bytes，SHA-256 `f9f61100d104015a4cb18be03d1862c36678f531bf0e9fa8445df61dea95dc0b`；身份/资源/类型/body-free 校验通过。探针原字段 `probe_public_ci_verified=false` 保留，外部公共关联如上；真实正文随临时目录清除，不能恢复初评分或具体校验失败项。
 - 新增三种修订校验码和开发回执 1.1 evaluation_history；三项全链路测试先红后绿，聚焦 35 passed/4 subtests，相邻 82 passed/12 subtests。历史正式回执/评分合同、拒绝规则、一次修订和请求墙均不变。
 - 产品接入差异已基于实际代码核对并记录到当前计划；本批未更换默认模型、注册候选或修改前端。下一步本次修复公共 CI；无第二次真实请求。
+- 公共收口：实现 `a64331b25dcc4612b83bbe13d12b1b9f1f2ebf11` / Actions `34022245397` 的 pytest、postgres-migrations、packaging-smoke 全部 success，代码 SHA 精确一致。下一步已改为候选生成/修订合同对齐的离线设计与回归，不再等待本批 CI 或重复经济观察。

@@ -68,7 +68,9 @@ Manifest 的可选 `failure_code` 没有值时省略，语义观察和开发回�
 本地验证：三种修订失败的完整链路测试先失败后通过；聚焦 35 项/4 subtests、相邻 82 项/12 subtests。
 经济回执 `data/evaluation/results/development/glm53_economy_diagnostic_rq241_01.json` 为 2673 bytes，
 SHA-256 `f9f61100d104015a4cb18be03d1862c36678f531bf0e9fa8445df61dea95dc0b`；严格类型、资源、身份、body-free 校验通过。
-新诊断尚未经新的真实模型调用，不能据此把经济场景改写成已修好；本地完成后取得该修复公共 CI。
+新诊断尚未经新的真实模型调用，不能据此把经济场景改写成已修好。实现
+`a64331b25dcc4612b83bbe13d12b1b9f1f2ebf11` / Actions `34022245397` 三任务 exact-SHA 成功，
+关闭本批公共验证；下一精确项是候选生成/修订合同对齐的离线设计与回归。
 
 ### 已核验的产品接入差异与后续顺序
 

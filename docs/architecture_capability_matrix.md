@@ -1294,4 +1294,4 @@ RQ-238 补充候选执行接缝：`coaching-query-guidance-v1` 通过 schema 1.1
 
 RQ-241（2026-09-06）：错误诊断链路完成公共验证，未知异常不输出任意文本；候选生存调整真实开发场景取得 2 来源、96 分。仅增加评测可观测性及开发证据，尚未启用候选产品配置；GLM-5.2、前端、生产质量门和 `production_media=0` 保持。下一步经济调整开发验证与正式运行时缺口汇总，见 [计划](plans/2026-09-06-guided-domain-candidate-assets.md)。
 
-RQ-242：经济观察已完成（3 来源、revision_failed）；本地补齐报告校验安全码与开发中间评测历史，117 测试通过，待公共 CI。正式 RuntimePolicy/Trace/Skill/Worker 尚未采用候选低思考和检索/来源策略；差异与验收路径已核对，未改产品默认、GLM-5.2、前端或 production_media=0。
+RQ-242：经济观察已完成（3 来源、revision_failed）；报告校验安全码与开发中间评测历史完成 117 测试及 `a64331b` / CI `34022245397` 三任务验证。下一项为候选生成/修订合同对齐的离线设计与回归；正式 RuntimePolicy/Trace/Skill/Worker 尚未采用候选低思考和检索/来源策略。未改产品默认、GLM-5.2、前端或 production_media=0。
