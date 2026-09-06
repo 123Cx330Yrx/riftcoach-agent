@@ -5877,3 +5877,10 @@
 - Context 指令在 JSON 的 internal_policy 分区；测试需先解析 JSON，不能把带真实换行的策略直接在序列化字符串里查找。新快照绑定该策略，执行前漂移检查有效。
 - 旧 development plan 摘要仍匹配 RQ-241 survival 不可变回执；新合同限定新的开发身份与匿名 demo 路径，不能改名消费旧 V4 fixture。
 - 保留 9 次/205000 token 墙，不代表已证明新上下文的全部最坏路径；完整预算与迁移身份是下一后续任务，不能借本地脚本 95 分作真实准入。
+
+## RQ-244：预算证据与产品接线复核（2026-09-06）
+
+- 旧预算脚本不含报告/查询指引；新检查器走 observe→GuidedCandidateExecutor→BudgetedProvider，三案九请求可达，参数实际为 45 秒上限/4096/1.0/0.95，生成与修订版本一致。
+- 完整预算余量只有约 2700；两局 demo 不能证明任意玩家数据和 Memory 的产品预算。计时参数检查不等于最长延迟实测，Agent 整段仍受 90 秒期限约束。
+- Worker 的 360 秒 lease 配合 60 秒 heartbeat，代表可续租所有权而不是整任务 timeout；不能把每调用时长简单相乘来调 lease。Runtime 目前仍未传候选 minimum_evidence_sources/draft_guard/fallback 覆盖参数。
+- 后续目标版本和代码地图见 RQ-244 计划，默认配置保持；下一批用实际 Runtime 的显式新组合做离线端到端接线，不另造首例考卷。

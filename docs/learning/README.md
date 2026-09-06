@@ -25,7 +25,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 [8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
 该记录不把 8E coverage、领域采用或生产成熟度标为完成。
 
-> 当前学习指针（2026-09-06，RQ-243）：[候选生成/修订合同对齐](../plans/2026-09-06-candidate-generation-revision-contract-alignment.md)。144 项本地测试及 `57c73e5` / CI `34023099294` 三任务通过；下一步完整预算证明与迁移版本对齐。学习重点是提示、验证、版本身份三者一致，以及模拟控制流不能代替真实质量。旧经济场景仍失败，8E coverage 仍 planned，未准入生产；历史诊断见 [RQ-242](../plans/2026-09-06-guided-domain-candidate-assets.md)。
+> 当前学习指针（2026-09-06，RQ-244）：[新报告合同预算与迁移](../plans/2026-09-06-report-contract-budget-and-runtime-migration.md)。三场景九请求实际本地链与满额结算通过，104 项测试通过，待本实现公共 CI；之后新产品执行组合离线接线。学习重点是固定输入预算与任意产品输入的差别、生成/修订和运行身份一致；所有者理解未新增确认，8E coverage 仍 planned，旧经济失败及生产准入边界不变。
 
 > 历史学习指针（2026-09-05，RQ-237）：在 [检索加固领域资产实现 walkthrough](8e-glm53-retrieval-hardened-domain-assets-walkthrough.md) 继续阅读、
 > [新鲜协议回执修复与复核](8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md)、
