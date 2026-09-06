@@ -51,4 +51,10 @@ Context 是 JSON 分区消息，测试解析真实请求的 internal_policy 后�
 复现：`python -m pytest tests/test_glm53_report_contract.py -q`，无需 Key、网络或服务器。
 代码地图见上方实施清单；开发回执追加合同 ID/SHA，原始报告不会进入公开回执。
 可准确表述为“修复了候选生成与修订的格式合同不对称，保持可追溯验证”，不能说已修好 RQ-242 的真实经济失败。
-当前只完成本地，下一步本实现公共 CI；之后是新合同完整预算证明与产品迁移版本对齐，不直接重复真实经济场景。
+公共验证已完成：实现 `57c73e53a794bc2a4ccab72d878057f378515b5b` / Actions `34023099294`
+的 pytest、postgres-migrations、packaging-smoke 三任务全绿；最后入口防遗漏补充后 25 项聚焦/相邻再验证通过。
+下一步新合同完整预算证明与产品迁移版本对齐，不直接重复真实经济场景。
+
+后续预算入口已只读核对：`glm53_bounded_revision_budget_reachability.build_v3_budget_reachability_report`
+目前构造旧 ProductionDomainCaseExecutor，不传新报告合同或查询指引；不可直接换输入文件把旧测量称为
+新合同证明。下一批复用其请求包络测量器与最坏路径思路，实际执行新具名候选链，保存独立无正文的预算证据。

@@ -1789,4 +1789,4 @@ Account、Workbench、Auth、路由或 `production_media=0`。实现提交
 
 ### RQ-243（2026-09-06）候选报告合同对齐
 
-生成/修订合同已完成本地接线，取代上条待对齐动作；144 项测试/16 subtests 通过，待公共 CI。具名新开发版本共用既有结构要求，旧路径、质量门和真实失败保持；真实 API=0。随后完成新合同预算证明及产品迁移版本对齐，不直接切默认。见 [计划与学习说明](plans/2026-09-06-candidate-generation-revision-contract-alignment.md)。
+生成/修订合同已完成接线，取代上条待对齐动作；144 项测试/16 subtests 及 `57c73e5` / CI `34023099294` 三任务通过。具名新开发版本共用既有结构要求，旧路径、质量门和真实失败保持；真实 API=0。下一步新合同预算证明及产品迁移版本对齐，不直接切默认。见 [计划与学习说明](plans/2026-09-06-candidate-generation-revision-contract-alignment.md)。

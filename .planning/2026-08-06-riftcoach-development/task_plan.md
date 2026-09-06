@@ -86,7 +86,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-report-contract-alignment / completed-local / pending-public-ci`。
+当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-report-contract-alignment / completed-public / pending-runtime-contract-budget-proof`。
 
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
@@ -419,9 +419,9 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 
 ## Next Step
 
-当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-report-contract-alignment / completed-local / pending-public-ci`。
+当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-report-contract-alignment / completed-public / pending-runtime-contract-budget-proof`。
 
-RQ-243 已完成候选生成/修订合同本地对齐，144 项测试/16 subtests 通过；下一步本实现公共 CI，随后新合同完整预算证明与产品迁移版本对齐。本批真实 API 为 0；详细执行见 `docs/plans/2026-09-06-candidate-generation-revision-contract-alignment.md`，下方 RQ-242 待对齐动作为历史。
+RQ-243 已完成候选生成/修订合同对齐，144 项测试/16 subtests 通过；`57c73e5` / CI `34023099294` 三任务全绿。下一步新合同完整预算证明与产品迁移版本对齐。本批真实 API 为 0；详细执行见 `docs/plans/2026-09-06-candidate-generation-revision-contract-alignment.md`，下方 RQ-242 待对齐动作为历史。
 
 RQ-242 本批：economy_adjustment 实际 4 次调用、3 来源、revision_failed；修订错误类别和中间评测诊断已通过 117 测试与 `a64331b` / CI `34022245397` 三任务公共验证。下一步候选生成/修订合同对齐的离线设计与回归，按当前计划的产品接入差异清单推进；不重复经济观察、不把开发回执算作正式准入。
 

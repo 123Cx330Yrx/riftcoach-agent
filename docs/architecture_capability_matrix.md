@@ -1296,4 +1296,4 @@ RQ-241（2026-09-06）：错误诊断链路完成公共验证，未知异常不�
 
 RQ-242：经济观察已完成（3 来源、revision_failed）；报告校验安全码与开发中间评测历史完成 117 测试及 `a64331b` / CI `34022245397` 三任务验证。下一项为候选生成/修订合同对齐的离线设计与回归；正式 RuntimePolicy/Trace/Skill/Worker 尚未采用候选低思考和检索/来源策略。未改产品默认、GLM-5.2、前端或 production_media=0。
 
-RQ-243：候选生成与修订共用旧结构校验，具名合同进入 Context 与开发回执身份；13 项新合同及相邻合计 144 项测试通过，待公共 CI。实现默认关闭，不改 Worker/RuntimePolicy/Trace 的产品注册、GLM-5.2、前端与 production_media=0。下一后续为新合同预算证明与产品迁移版本对齐，见 [计划](plans/2026-09-06-candidate-generation-revision-contract-alignment.md)。
+RQ-243：候选生成与修订共用旧结构校验，具名合同进入 Context 与开发回执身份；13 项新合同及相邻合计 144 项测试、`57c73e5` / CI `34023099294` 三任务通过。实现默认关闭，不改 Worker/RuntimePolicy/Trace 的产品注册、GLM-5.2、前端与 production_media=0。下一步新合同预算证明与产品迁移版本对齐，见 [计划](plans/2026-09-06-candidate-generation-revision-contract-alignment.md)。

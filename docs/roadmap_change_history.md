@@ -4582,4 +4582,4 @@ GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和 `production_med
 
 ## 2026-09-06：RQ-243 候选生成/修订合同对齐
 
-以同一既有八标题表生成可信指引，两端同等验证；新开发计划 2.0.0 独立绑定身份与 Context，旧默认路径及已消费资产不变。144 项测试通过，待本实现公共 CI；本批未调用真实 API、未更改产品默认模型或前端。下一后续为完整预算证明与迁移版本对齐，仍不宣称正式领域/生产/8F 完成。见 [计划](plans/2026-09-06-candidate-generation-revision-contract-alignment.md)。
+以同一既有八标题表生成可信指引，两端同等验证；新开发计划 2.0.0 独立绑定身份与 Context，旧默认路径及已消费资产不变。144 项测试及 `57c73e5` / CI `34023099294` 三任务通过；本批未调用真实 API、未更改产品默认模型或前端。下一步完整预算证明与迁移版本对齐，仍不宣称正式领域/生产/8F 完成。见 [计划](plans/2026-09-06-candidate-generation-revision-contract-alignment.md)。
