@@ -139,7 +139,7 @@ class RuntimeExecutionFactory:
         if self.coach_contract is not None:
             self.coach_contract.require_provider(provider)
             from .coach_budget import CoachBudgetedProvider
-            provider = CoachBudgetedProvider(provider)
+            provider = CoachBudgetedProvider(provider, coach_contract=self.coach_contract)
         elif expected_profile is not None:
             if getattr(provider, "runtime_profile", None) != expected_profile:
                 raise RuntimeCompositionError(
@@ -509,7 +509,7 @@ class AgentRuntimeV1:
                 **context_kwargs,
             )
             if self._coach_contract is not None:
-                require_coach_context(context)
+                require_coach_context(context, self._coach_contract)
             observe_runtime_signal(
                 observer,
                 ContextBuiltSignal(

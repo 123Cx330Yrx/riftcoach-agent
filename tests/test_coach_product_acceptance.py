@@ -327,3 +327,60 @@ def test_interruption_preserves_partial_results_and_call_count(isolated_root, mo
     raw = json.loads((state / "failure.json").read_text())
     assert raw["provider_calls"] == len(stub.requests) == 8
     assert "private" not in json.dumps(raw)
+    assert raw["evaluation_responses"]
+
+
+@pytest.mark.parametrize("problem", ["pass_with_issues", "revision_without_issues", "missing_citation"])
+def test_safe_diagnostics_explain_legacy_failure_without_bodies(problem):
+    from tests.test_coach_contract_repair import RepairProvider
+    from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE
+    stub = RepairProvider(problem=problem)
+    stub.thinking_profile_id = ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE.profile_id
+    receipt = run_acceptance(ROOT, provider=stub)
+    first = receipt.cases[0]
+    assert first.status == "failed" and first.observation.provider_calls == 3
+    detail = first.diagnostics
+    assert detail.trace_sha256
+    assert len(detail.evaluation_responses) == 1
+    response = detail.evaluation_responses[0]
+    assert response.call_ordinal == 3 and response.schema_valid
+    if problem == "missing_citation":
+        assert detail.citation_markers_seen == 0
+        assert detail.evaluation_artifact_count == 1
+        assert response.consistency_error is None
+    else:
+        assert detail.citation_markers_seen == 1
+        assert detail.evaluation_artifact_count == 0
+        assert response.consistency_error == problem
+    encoded = receipt.model_dump_json()
+    for forbidden in ("controlled", "revision requested", "较多", "合成", "quote", "suggested_correction"):
+        assert forbidden not in encoded
+
+
+def test_legacy_receipt_remains_readable_without_backfilled_diagnostics():
+    raw = run_acceptance(ROOT, provider=provider()).model_dump(mode="json")
+    raw["schema_version"] = "1.0"
+    for row in raw["cases"]:
+        row.pop("diagnostics")
+    legacy = validate_receipt(AcceptanceReceipt.model_validate(raw), admit_assets(ROOT))
+    assert "diagnostics" not in legacy.cases[0].model_dump()
+    assert legacy.model_dump(mode="json") == raw
+
+
+@pytest.mark.parametrize("mutation", ["body", "unsafe_code", "unparsed_verdict", "wrong_consistency", "ordinal"])
+def test_new_diagnostics_reject_body_fields_and_inconsistent_metadata(mutation):
+    raw = run_acceptance(ROOT, provider=provider()).model_dump(mode="json")
+    detail = raw["cases"][0]["diagnostics"]
+    response = detail["evaluation_responses"][0]
+    if mutation == "body":
+        detail["report"] = "must never persist"
+    elif mutation == "unsafe_code":
+        detail["harness_failure_code"] = "raw upstream private message"
+    elif mutation == "unparsed_verdict":
+        response["schema_valid"] = False
+    elif mutation == "wrong_consistency":
+        response["consistency_error"] = "pass_with_issues"
+    else:
+        response["call_ordinal"] = 36
+    with pytest.raises(ValueError):
+        AcceptanceReceipt.model_validate(raw)

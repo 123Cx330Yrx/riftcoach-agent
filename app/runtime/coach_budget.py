@@ -4,12 +4,13 @@ import time
 
 from app.providers.errors import ProviderResponseError
 from app.providers.models import ChatResponse
-from .coach_contract import COACH_CONTRACT
+from .coach_contract import COACH_CONTRACT, require_coach_contract
 
 
 class CoachBudgetedProvider:
-    def __init__(self, provider, *, clock=time.monotonic):
-        COACH_CONTRACT.require_provider(provider)
+    def __init__(self, provider, *, clock=time.monotonic, coach_contract=COACH_CONTRACT):
+        self.contract = require_coach_contract(coach_contract)
+        self.contract.require_provider(provider)
         self.provider = provider
         self.provider_name, self.model_name = provider.provider_name, provider.model_name
         self.capabilities = provider.capabilities
@@ -26,7 +27,7 @@ class CoachBudgetedProvider:
 
     def chat(self, request):
         from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
-        limits = COACH_CONTRACT.descriptor()
+        limits = self.contract.descriptor()
         remaining = limits["execution_timeout_s"] - (self.clock() - self.started)
         if self.stopped or self.calls >= limits["max_calls"]:
             self._fail("external_call_budget_exhausted")
@@ -35,7 +36,7 @@ class CoachBudgetedProvider:
         request = replace(request, max_tokens=min(request.max_tokens or limits["max_output_tokens"], limits["max_output_tokens"]),
                           timeout_s=min(request.timeout_s, limits["request_timeout_s"], remaining),
                           temperature=1.0, top_p=0.95,
-                          metadata={**request.metadata, "coach_budget_contract": "coach-bounded-review-v1"})
+                          metadata={**request.metadata, "coach_budget_contract": "coach-bounded-review-v2" if self.contract.grounded else "coach-bounded-review-v1"})
         ceiling = estimate_runtime_request_input_ceiling(request)
         if ceiling > limits["max_input_tokens"] or self.tokens + ceiling + request.max_tokens > limits["total_tokens"]:
             self._fail("token_budget_exhausted")

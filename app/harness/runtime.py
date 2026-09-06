@@ -60,6 +60,9 @@ _SAFE_FAILURE_CODES = frozenset(
         "report_missing_headings",
         "report_too_short",
         "unknown_report_citation",
+        "external_call_budget_exhausted",
+        "token_budget_exhausted",
+        "token_envelope_exceeded",
     }
 )
 

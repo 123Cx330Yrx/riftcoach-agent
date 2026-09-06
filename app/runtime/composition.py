@@ -21,7 +21,7 @@ from app.model_runtime import (
 )
 from app.prompt_program import PromptProgramCatalog, PromptProgramResolver
 from app.skills.catalog import SkillCatalog
-from .coach_contract import COACH_CONTRACT
+from .coach_contract import COACH_CONTRACT, GROUNDED_COACH_CONTRACT
 from .coach_context import CoachContextBuilder
 
 from .runtime import (
@@ -104,21 +104,26 @@ class RuntimeCompositionRoot:
         """Explicit migration seam; ordinary build_runtime and worker startup stay unchanged."""
         from app.rag.coaching_query import CoachingQueryKnowledgeProvider
         from app.evaluation.glm53_report_contract import build_aligned_revision_prompt
-        if self.prompt_program_resolver.coach_contract is not COACH_CONTRACT:
+        contract = self.prompt_program_resolver.coach_contract
+        if contract is not COACH_CONTRACT and contract is not GROUNDED_COACH_CONTRACT:
             raise RuntimeCompositionError("independent Coach assets must be explicitly verified")
-        COACH_CONTRACT.require_provider(provider)
+        contract.require_provider(provider)
+        evaluator_type, reviser_type = SecureChatEvaluationAdapter, ChatCoachReviser
+        if contract.grounded:
+            from app.evaluation.coach_grounded_contract import GroundedChatEvaluationAdapter, GroundedCoachReviser
+            evaluator_type, reviser_type = GroundedChatEvaluationAdapter, GroundedCoachReviser
         factory = RuntimeExecutionFactory(
             knowledge_provider=CoachingQueryKnowledgeProvider(knowledge_provider),
-            evaluator_factory=lambda runtime: SecureChatEvaluationAdapter(
+            evaluator_factory=lambda runtime: evaluator_type(
                 runtime=runtime, system_prompt=EVALUATOR_SYSTEM_PROMPT, fact_pack_builder=build_fact_pack),
-            reviser_factory=lambda runtime: ChatCoachReviser(
+            reviser_factory=lambda runtime: reviser_type(
                 runtime=runtime, system_prompt=REVISER_SYSTEM_PROMPT,
                 prompt_builder=build_aligned_revision_prompt, validator=validate_revised_report),
-            coach_contract=COACH_CONTRACT,
+            coach_contract=contract,
         )
         return AgentRuntimeV1(
             runs_root=runs_root, catalog=self.skill_catalog, provider=provider,
-            execution_factory=factory, context_builder=context_builder or CoachContextBuilder(),
+            execution_factory=factory, context_builder=context_builder or CoachContextBuilder(coach_contract=contract),
             prompt_program_resolver=self.prompt_program_resolver,
         )
 

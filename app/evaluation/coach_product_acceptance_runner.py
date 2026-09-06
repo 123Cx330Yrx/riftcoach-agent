@@ -17,11 +17,13 @@ from app.evaluation.coach_product_acceptance import (
 )
 from app.evaluation.domain_e2e import DomainCandidate, DomainCandidateCase, FailureCode, LayerVerdict, evaluate_domain_candidate
 from app.evaluation.glm53_low_profile_protocol import GLM53LowProfileProtocolReport
+from app.evaluation.coach_report import EvaluationResponseModelV11
 from app.evaluation.provider_domain_production import _evaluation_observation, _FACT_ISSUE_CATEGORIES
 from app.harness.models import ArtifactKind
+from app.harness.runtime import _SAFE_FAILURE_CODES
 from app.harness.store import FileRunStore
 from app.rag.hybrid import LocalHybridKnowledgeProvider
-from app.runtime.coach_contract import COACH_CONTRACT
+from app.runtime.coach_contract import COACH_CONTRACT, GROUNDED_COACH_CONTRACT
 from app.runtime.store import RuntimeTraceStore
 
 
@@ -65,17 +67,61 @@ def verify_real_evidence(assets, *, implementation_sha, ci, protocol_bytes, now=
     )
 
 
+class EvaluationResponseDiagnostic(BaseModel):
+    """Local response classification only: never a quote, report or reasoning."""
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    call_ordinal: int = Field(ge=1, le=36)
+    finish_reason: Literal["stop", "length", "tool_calls", "content_filter", "other"] | None
+    schema_valid: bool
+    verdict: Literal["pass", "needs_revision", "fail"] | None = None
+    issue_count: int | None = Field(default=None, ge=0)
+    consistency_error: Literal["pass_with_issues", "revision_without_issues"] | None = None
+
+    @model_validator(mode="after")
+    def validate_classification(self):
+        if not self.schema_valid:
+            if any(value is not None for value in (self.verdict, self.issue_count, self.consistency_error)):
+                raise ValueError("invalid_evaluation_has_no_parsed_fields")
+            return self
+        if self.verdict is None or self.issue_count is None:
+            raise ValueError("valid_evaluation_requires_parsed_fields")
+        expected = ("pass_with_issues" if self.verdict == "pass" and self.issue_count else
+                    "revision_without_issues" if self.verdict == "needs_revision" and not self.issue_count else None)
+        if self.consistency_error != expected:
+            raise ValueError("evaluation_consistency_diagnostic_mismatch")
+        return self
+
+
+class ProductCaseDiagnostics(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    citation_markers_seen: int = Field(ge=0)
+    unknown_citation_markers: int = Field(ge=0)
+    evaluation_artifact_count: int = Field(ge=0, le=2)
+    harness_failure_code: str | None = None
+    trace_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    evaluation_responses: tuple[EvaluationResponseDiagnostic, ...] = ()
+
+    @model_validator(mode="after")
+    def validate_safe_diagnostics(self):
+        if self.harness_failure_code is not None and self.harness_failure_code not in _SAFE_FAILURE_CODES:
+            raise ValueError("acceptance_unknown_failure_code")
+        if self.unknown_citation_markers > self.citation_markers_seen:
+            raise ValueError("acceptance_citation_counts_mismatch")
+        return self
+
+
 class CaseReceipt(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     case_id: Literal["coach246_recent", "coach246_survival", "coach246_economy", "coach246_memory"]
     status: Literal["passed", "failed", "skipped"]
     observation: DomainCandidateCase | None = None
     failure_codes: tuple[FailureCode | Literal["incomplete_evidence"], ...] = ()
+    diagnostics: ProductCaseDiagnostics | None = Field(default=None, exclude_if=lambda value: value is None)
 
 
 class AcceptanceReceipt(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
-    schema_version: Literal["1.0"] = "1.0"
+    schema_version: Literal["1.0", "1.1"] = "1.1"
     acceptance_id: Literal["coach-product-rq246-v1"] = "coach-product-rq246-v1"
     assets_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     evidence_origin: Literal["offline_fake", "real_provider"]
@@ -94,14 +140,23 @@ class AcceptanceReceipt(BaseModel):
             raise ValueError("acceptance_case_identity_mismatch")
         stopped = False
         for row in self.cases:
+            if self.schema_version == "1.0" and row.diagnostics is not None:
+                raise ValueError("legacy_acceptance_has_no_diagnostics")
             if (row.status == "skipped") != stopped:
                 raise ValueError("acceptance_must_stop_after_first_failure")
             if row.status == "skipped":
-                if row.observation is not None or row.failure_codes:
+                if row.observation is not None or row.failure_codes or row.diagnostics is not None:
                     raise ValueError("skipped_case_has_no_observation")
                 continue
             if row.observation is None or row.observation.case_id != row.case_id:
                 raise ValueError("acceptance_observation_required")
+            if self.schema_version == "1.1" and row.diagnostics is None:
+                raise ValueError("acceptance_diagnostics_required")
+            if row.diagnostics:
+                ordinals = tuple(d.call_ordinal for d in row.diagnostics.evaluation_responses)
+                if (len(ordinals) > 4 or ordinals != tuple(sorted(set(ordinals)))
+                        or any(i > row.observation.provider_calls for i in ordinals)):
+                    raise ValueError("acceptance_evaluation_call_ordinals_mismatch")
             if (row.status == "passed") != (not row.failure_codes):
                 raise ValueError("acceptance_failure_codes_mismatch")
             stopped = row.status == "failed"
@@ -118,11 +173,15 @@ class AcceptanceReceipt(BaseModel):
         return self
 
 
-def observe_product_result(runs_root, result, case, *, request, context_commitment):
+def observe_product_result(runs_root, result, case, *, request, context_commitment, diagnostics_sink=None):
+    contract = next((c for c in (COACH_CONTRACT, GROUNDED_COACH_CONTRACT)
+                     if c.snapshot() == request.policy.coach_contract), None)
+    if contract is None:
+        raise ValueError("acceptance_unknown_coach_contract")
     trace = RuntimeTraceStore(runs_root, result.run_id).read_trace(result.trace_reference)
     if (trace.run_id != case["case_id"] or trace.policy != request.policy
-            or trace.identity.coach_contract != COACH_CONTRACT.snapshot()
-            or trace.identity.skill_version != "0.3.0" or trace.identity.prompt_profile_version != "2.0.0"
+            or trace.identity.coach_contract != contract.snapshot()
+            or trace.identity.skill_version != "0.3.0" or trace.identity.prompt_profile_version != contract.descriptor()["program_version"]
             or trace.identity.provider_id != "zhipu" or trace.identity.provider_model != "glm-5.3-flash"
             or trace.publication_status != result.publication_status
             or trace.runtime_status != result.runtime_status or trace.terminal_reason != result.terminal_reason):
@@ -160,6 +219,13 @@ def observe_product_result(runs_root, result, case, *, request, context_commitme
     agent = terminated[-1] if terminated else None
     citations = {row["citation_id"] for row in evidence.get("citations", ()) if row.get("source_id") in source_ids}
     cited = set(re.findall(r"\[(K\d+)\]", report))
+    if diagnostics_sink is not None:
+        diagnostics_sink(ProductCaseDiagnostics(
+            citation_markers_seen=len(cited), unknown_citation_markers=len(cited.difference(citations)),
+            evaluation_artifact_count=len(artifact(ArtifactKind.EVALUATION_RESULT)),
+            harness_failure_code=manifest.failure_code if manifest and manifest.failure_code in _SAFE_FAILURE_CODES else None,
+            trace_sha256=result.trace_reference.sha256,
+        ))
     observation = DomainCandidateCase(
         case_id=case["case_id"], provider_calls=trace.usage.provider_calls_attempted,
         normalized_response_count=trace.usage.provider_responses_observed,
@@ -214,6 +280,7 @@ def run_acceptance(project_root: Path, *, provider, real_evidence: RealEvidence 
     if real_evidence and real_evidence.assets_sha256 != assets.sha256:
         raise ValueError("acceptance_real_assets_mismatch")
     COACH_CONTRACT.require_provider(provider)
+    provider = provider if isinstance(provider, _CallCounter) else _CallCounter(provider)
     root = composition(project_root)
     rows = []
     stopped = False
@@ -245,11 +312,18 @@ def run_acceptance(project_root: Path, *, provider, real_evidence: RealEvidence 
                 runs_root=temp, provider=provider, context_builder=builder,
                 knowledge_provider=LocalHybridKnowledgeProvider.from_directory(project_root / "data/rag_docs"),
             )
+            calls_before = provider.calls
             result = runtime.run(request)
-            observation = observe_product_result(temp, result, case, request=request, context_commitment=commitment)
+            collected = []
+            observation = observe_product_result(temp, result, case, request=request,
+                                                 context_commitment=commitment, diagnostics_sink=collected.append)
+            case_diagnostics = collected[0].model_copy(update={"evaluation_responses": tuple(
+                row.model_copy(update={"call_ordinal": row.call_ordinal - calls_before})
+                for row in provider.evaluation_responses if row.call_ordinal > calls_before
+            )})
             passed, failures = adjudicate(assets, index, observation, real=real_evidence is not None)
             rows.append(CaseReceipt(case_id=case["case_id"], status="passed" if passed else "failed",
-                                    observation=observation, failure_codes=failures))
+                                    observation=observation, failure_codes=failures, diagnostics=case_diagnostics))
             if on_case:
                 on_case(rows[-1])
             stopped = not passed
@@ -270,6 +344,7 @@ class _CallCounter:
     def __init__(self, provider):
         self.provider = provider
         self.calls = self.input_tokens = self.output_tokens = 0
+        self.evaluation_responses = []
 
     def __getattr__(self, name):
         return getattr(self.provider, name)
@@ -279,6 +354,24 @@ class _CallCounter:
         response = self.provider.chat(request)
         self.input_tokens += response.usage.input_tokens
         self.output_tokens += response.usage.output_tokens
+        if request.response_contract is not None and request.response_contract.name == "coach_evaluation":
+            reason = response.finish_reason
+            if reason is not None and reason not in {"stop", "length", "tool_calls", "content_filter"}:
+                reason = "other"
+            values = {"call_ordinal": self.calls, "finish_reason": reason, "schema_valid": False}
+            try:
+                evaluation = EvaluationResponseModelV11.model_validate_json(response.content or "", strict=True)
+            except ValueError:
+                pass
+            else:
+                error = None
+                if evaluation.verdict == "pass" and evaluation.issues:
+                    error = "pass_with_issues"
+                if evaluation.verdict == "needs_revision" and not evaluation.issues:
+                    error = "revision_without_issues"
+                values.update(schema_valid=True, verdict=evaluation.verdict,
+                              issue_count=len(evaluation.issues), consistency_error=error)
+            self.evaluation_responses.append(EvaluationResponseDiagnostic(**values))
         return response
 
 
@@ -311,5 +404,6 @@ def execute_once(project_root: Path, *, real_evidence, provider_factory):
             "provider_calls": counter.calls if counter else 0,
             "observed_input_tokens": counter.input_tokens if counter else 0,
             "observed_output_tokens": counter.output_tokens if counter else 0,
+            "evaluation_responses": [row.model_dump(mode="json") for row in counter.evaluation_responses] if counter else [],
         })
         raise

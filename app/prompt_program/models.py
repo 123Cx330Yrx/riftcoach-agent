@@ -92,9 +92,9 @@ class PromptProgramManifest(BaseModel):
             raise PromptProgramContractError(
                 "Prompt Program must use the coach_evaluation contract"
             )
-        if self.evaluation_contract_version != "1.1.0":
+        if self.evaluation_contract_version not in {"1.1.0", "1.2.0"}:
             raise PromptProgramContractError(
-                "Prompt Program requires secure Evaluation contract 1.1.0"
+                "Prompt Program requires secure Evaluation contract 1.1.0 or 1.2.0"
             )
         if self.program_sha256 != self.digest_for(self.model_dump(mode="json")):
             raise PromptProgramContractError(

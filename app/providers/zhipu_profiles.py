@@ -137,6 +137,13 @@ ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE = ZhipuThinkingProfile(
     reasoning_effort="low",
     clear_thinking=False,
 )
+ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE = ZhipuThinkingProfile(
+    profile_id="glm-5.3-flash-candidate-enabled-high-replay",
+    model=ZHIPU_GLM53_FLASH_MODEL,
+    thinking_type="enabled",
+    reasoning_effort="high",
+    clear_thinking=False,
+)
 
 _MODEL_PROFILES = MappingProxyType(
     {
@@ -160,6 +167,8 @@ _CANDIDATE_PROFILE_BY_ID = MappingProxyType(
     {
         ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE.profile_id:
         ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE,
+        ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE.profile_id:
+        ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE,
     }
 )
 
@@ -216,7 +225,7 @@ def validate_zhipu_candidate_profile_for_model(
     model: str,
     profile: ZhipuThinkingProfile,
 ) -> ZhipuThinkingProfile:
-    """Validate the one allowlisted candidate profile for an exact model."""
+    """Validate an explicitly allowlisted candidate profile for an exact model."""
 
     if not isinstance(model, str) or not model.strip():
         raise ValueError("model must be a non-empty string.")
@@ -241,6 +250,7 @@ __all__ = [
     "ZHIPU_GLM52_THINKING_PROFILE",
     "ZHIPU_GLM53_FLASH_MODEL",
     "ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE",
+    "ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE",
     "ZHIPU_GLM53_FLASH_THINKING_PROFILE",
     "ZHIPU_GLM53_MODEL",
     "ZHIPU_GLM53_THINKING_PROFILE",

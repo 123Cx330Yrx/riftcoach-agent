@@ -1,5 +1,6 @@
 """Explicit unadmitted Coach composition; never selected by a model resolver."""
 from dataclasses import dataclass
+from functools import lru_cache
 import hashlib
 import json
 from typing import Literal
@@ -10,18 +11,32 @@ from pydantic import BaseModel, ConfigDict, Field
 class CoachContractSnapshot(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     contract_id: Literal["recent-form-review-flash-v2"] = "recent-form-review-flash-v2"
-    version: Literal["1.0.0"] = "1.0.0"
+    version: Literal["1.0.0", "1.1.0"] = "1.0.0"
     scope: Literal["unadmitted_opt_in"] = "unadmitted_opt_in"
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
 
 @dataclass(frozen=True)
 class CoachExecutionContract:
+    version: str = "1.0.0"
+
+    @property
+    def grounded(self):
+        return self.version == "1.1.0"
+
+    @property
+    def context_policy(self):
+        if self.grounded:
+            from app.evaluation.coach_grounded_contract import grounded_context_policy
+            return grounded_context_policy()
+        from app.evaluation.glm53_report_contract import REPORT_CONTRACT_ID, candidate_context_policy
+        return candidate_context_policy(REPORT_CONTRACT_ID)
+
     def descriptor(self):
         from app.evaluation.glm53_report_contract import REPORT_CONTRACT_ID, candidate_context_policy
-        from app.evaluation.glm53_flash_candidate_profile import GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY as policy
+        policy = self.request_policy
         from app.rag.coaching_query import POLICY_ID
-        return {
+        value = {
             "contract_id": "recent-form-review-flash-v2", "version": "1.0.0", "scope": "unadmitted_opt_in",
             "target_runtime_profile_id": "glm-5.3-flash-runtime-v2", "target_runtime_profile_version": "2.0.0",
             "skill_version": "0.3.0", "program_version": "2.0.0",
@@ -37,50 +52,74 @@ class CoachExecutionContract:
             "agent_timeout_s": 90, "execution_timeout_s": 360, "extra_retries": 0,
             "allow_deterministic_fallback": False,
         }
+        if self.grounded:
+            from app.evaluation.coach_grounded_contract import GROUNDED_REPORT_ID
+            value.update(version=self.version, program_version="2.1.0", evaluation_contract_version="1.2.0",
+                         report_contract_id=GROUNDED_REPORT_ID,
+                         context_policy_sha256=hashlib.sha256(self.context_policy.encode()).hexdigest(),
+                         missing_citation_policy="existing-single-revision", evaluation_repair_policy="one-evidence-grounded-correction")
+            value.update(reasoning_effort="high", max_output_tokens=8192, total_tokens=9 * (64000 + 8192),
+                         request_timeout_s=60, agent_timeout_s=120, execution_timeout_s=480)
+        return value
 
     def snapshot(self):
         raw = json.dumps(self.descriptor(), sort_keys=True, separators=(",", ":"))
-        return CoachContractSnapshot(sha256=hashlib.sha256(raw.encode()).hexdigest())
+        return CoachContractSnapshot(version=self.version, sha256=hashlib.sha256(raw.encode()).hexdigest())
 
     @property
     def request_policy(self):
+        if self.grounded:
+            return _grounded_request_policy()
         from app.evaluation.glm53_flash_candidate_profile import GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
         return GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
 
     def require_provider(self, provider):
-        from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE
+        from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE, ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE
+        profile = ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE if self.grounded else ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE
         if (provider.provider_name != "zhipu" or provider.model_name != "glm-5.3-flash"
-                or getattr(provider, "thinking_profile_id", None) != ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE.profile_id
+                or getattr(provider, "thinking_profile_id", None) != profile.profile_id
                 or type(getattr(provider, "sdk_max_retries", None)) is not int
                 or provider.sdk_max_retries != 0
                 or getattr(provider, "runtime_profile", None) is not None):
-            raise ValueError("explicit Coach contract requires the exact unadmitted low profile and zero SDK retries")
+            raise ValueError("explicit Coach contract requires its exact unadmitted thinking profile and zero SDK retries")
+
+
+@lru_cache(maxsize=1)
+def _grounded_request_policy():
+    from app.model_runtime import _issue_candidate_evaluation_request_policy
+    return _issue_candidate_evaluation_request_policy(
+        policy_id="glm-5.3-flash-coach-high-8192", version="1.0.0", provider_id="zhipu", model="glm-5.3-flash",
+        agent_timeout_s=120.0, llm_tool_timeout_s=120.0, transport_timeout_s=150.0,
+        max_output_tokens=8192, temperature=1.0, top_p=0.95,
+    )
 
 
 COACH_CONTRACT = CoachExecutionContract()
+GROUNDED_COACH_CONTRACT = CoachExecutionContract(version="1.1.0")
 
 
 def require_coach_contract(value):
-    if value is not None and value is not COACH_CONTRACT:
+    if value is not None and value is not COACH_CONTRACT and value is not GROUNDED_COACH_CONTRACT:
         raise ValueError("unsupported Coach execution contract")
     return value
 
 
-def coach_component_fingerprint():
+def coach_component_fingerprint(contract=COACH_CONTRACT):
     from app.evaluation.prompt_context_identity import ComponentFingerprint
-    return ComponentFingerprint(component_id="coach_execution_contract", source="app.runtime.coach_contract:v1",
-                                sha256=COACH_CONTRACT.snapshot().sha256)
+    require_coach_contract(contract)
+    return ComponentFingerprint(component_id="coach_execution_contract",
+                                source="app.runtime.coach_contract:v1.1" if contract.grounded else "app.runtime.coach_contract:v1",
+                                sha256=contract.snapshot().sha256)
 
 
-def require_coach_context(context):
+def require_coach_context(context, contract=COACH_CONTRACT):
     from app.agent.context import ContextBundle, ContextTrust
-    from app.evaluation.glm53_report_contract import REPORT_CONTRACT_ID, candidate_context_policy
     if not isinstance(context, ContextBundle):
         raise ValueError("Coach requires a validated ContextBundle")
     policies = [row for row in context.sections if row.section_id == "candidate:policy_addendum"]
     if (len(policies) != 1 or policies[0].trust is not ContextTrust.INTERNAL_POLICY
             or not policies[0].required
-            or policies[0].content != candidate_context_policy(REPORT_CONTRACT_ID)):
+            or policies[0].content != contract.context_policy):
         raise ValueError("Coach Context does not contain the bound trusted policy")
 
 

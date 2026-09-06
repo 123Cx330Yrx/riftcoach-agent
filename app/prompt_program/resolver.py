@@ -68,19 +68,24 @@ class PromptProgramResolver:
             raise PromptProgramCatalogError(
                 "Prompt Program evaluation contract ID is unsupported"
             )
-        if manifest.evaluation_contract_version != "1.1.0":
+        grounded = self.coach_contract is not None and self.coach_contract.grounded
+        expected_evaluation = "1.2.0" if grounded else "1.1.0"
+        if manifest.evaluation_contract_version != expected_evaluation:
             raise PromptProgramCatalogError(
-                "Prompt Program requires secure Evaluation contract 1.1.0"
+                "Prompt Program evaluation version does not match execution contract"
             )
 
         current = build_component_fingerprints(
             skill,
-            evaluation_contract_version=manifest.evaluation_contract_version,
+            evaluation_contract_version="1.1.0",
         )
+        if grounded:
+            from app.evaluation.coach_grounded_contract import grounded_component_fingerprints
+            current = grounded_component_fingerprints(skill)
         if self.coach_contract is not None:
-            if skill_version != "0.3.0" or manifest.program_version != "2.0.0":
+            if skill_version != "0.3.0" or manifest.program_version != self.coach_contract.descriptor()["program_version"]:
                 raise PromptProgramCatalogError("Coach contract requires independent Skill/Program versions")
-            current = (*current, coach_component_fingerprint())
+            current = (*current, coach_component_fingerprint(self.coach_contract))
         if current != manifest.component_fingerprints:
             raise PromptProgramCatalogError(
                 "Prompt Program component fingerprint drift detected"
