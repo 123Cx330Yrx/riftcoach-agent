@@ -16,14 +16,16 @@ import subprocess
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Callable, Mapping, Sequence
+from typing import Any, Callable, Literal, Mapping, Sequence
 
 from dotenv import load_dotenv
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from app.evaluation.domain_e2e import (
     DomainCandidate,
     DomainCandidateCase,
     DomainEvaluationDataset,
+    DomainEvaluationResult,
     evaluate_domain_candidate,
 )
 from app.evaluation.glm53_bounded_revision_budget import (
@@ -56,6 +58,99 @@ DEFAULT_OUTPUT = Path(
     "zhipu_glm53_flash_guided_domain_v4_rq239_v1.json"
 )
 DEFAULT_RUNS_ROOT = Path("data/runs/evaluation/glm53_guided_domain_v4")
+
+
+class _GuidedReceiptModel(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+
+class GuidedCaseResource(_GuidedReceiptModel):
+    calls_used: int = Field(ge=0)
+    input_tokens: int = Field(ge=0)
+    output_tokens: int = Field(ge=0)
+    total_tokens: int = Field(ge=0)
+    latency_ms: int = Field(ge=0)
+
+    @model_validator(mode="after")
+    def validate_total(self) -> "GuidedCaseResource":
+        if self.total_tokens != self.input_tokens + self.output_tokens:
+            raise ValueError("guided case resource token total is inconsistent")
+        return self
+
+
+class GuidedResourceSnapshot(_GuidedReceiptModel):
+    calls_used: int = Field(ge=0)
+    input_tokens: int = Field(ge=0)
+    output_tokens: int = Field(ge=0)
+    total_tokens: int = Field(ge=0)
+    latency_ms: int = Field(ge=0)
+    stop_code: str | None = None
+    provider_error_code: str | None = None
+    cases: dict[str, GuidedCaseResource]
+
+    @model_validator(mode="after")
+    def validate_totals(self) -> "GuidedResourceSnapshot":
+        if self.total_tokens != self.input_tokens + self.output_tokens:
+            raise ValueError("guided resource token total is inconsistent")
+        if sum(row.calls_used for row in self.cases.values()) != self.calls_used:
+            raise ValueError("guided case calls do not match resource calls")
+        if sum(row.input_tokens for row in self.cases.values()) != self.input_tokens:
+            raise ValueError("guided case input does not match resource input")
+        if sum(row.output_tokens for row in self.cases.values()) != self.output_tokens:
+            raise ValueError("guided case output does not match resource output")
+        return self
+
+
+class GuidedCaseRecord(_GuidedReceiptModel):
+    case_id: str = Field(min_length=1)
+    status: Literal["executed", "failed", "skipped"]
+    failure_code: str | None = None
+    terminal_status: str | None = None
+    terminal_reason: str | None = None
+    provider_calls: int | None = Field(default=None, ge=0)
+    normalized_response_count: int | None = Field(default=None, ge=0)
+    evidence_source_count: int | None = Field(default=None, ge=0)
+    evaluation_score: float | None = Field(default=None, ge=0, le=100)
+    revision_count: int | None = Field(default=None, ge=0)
+
+    @model_validator(mode="after")
+    def validate_status(self) -> "GuidedCaseRecord":
+        if self.status == "executed" and self.provider_calls is None:
+            raise ValueError("executed guided case must include provider calls")
+        if self.status != "executed" and not self.failure_code:
+            raise ValueError("failed or skipped guided case must include failure code")
+        return self
+
+
+class GuidedDomainGateReceipt(_GuidedReceiptModel):
+    schema_version: Literal["1.0"] = "1.0"
+    protocol_id: Literal["glm53-flash-guided-domain-observation-v4"]
+    implementation_sha: str = Field(pattern=r"^[0-9a-f]{40}$")
+    asset_dataset_id: str = Field(min_length=1)
+    context_snapshot_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    guidance_id: str = Field(min_length=1)
+    guidance_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    evidence_origin: Literal["real_provider", "offline_fake"]
+    network_used: bool
+    explicit_real_call_confirmed: bool
+    resources: GuidedResourceSnapshot
+    cases: tuple[GuidedCaseRecord, ...]
+    evaluation: DomainEvaluationResult | None = None
+    candidate_registered: Literal[False] = False
+    production_admitted: Literal[False] = False
+    admitted: bool
+    unsupported_boundaries: tuple[str, ...]
+    run_timestamp_utc: str = Field(min_length=20)
+
+    @model_validator(mode="after")
+    def validate_identity(self) -> "GuidedDomainGateReceipt":
+        if self.evidence_origin == "real_provider" and not self.network_used:
+            raise ValueError("real guided receipt must record network use")
+        if self.evidence_origin == "offline_fake" and self.network_used:
+            raise ValueError("offline guided receipt cannot record network use")
+        if self.admitted and (not self.network_used or self.evaluation is None):
+            raise ValueError("admitted guided receipt requires evaluation and network")
+        return self
 
 
 def build_guided_domain_preflight(
@@ -180,8 +275,14 @@ def run_guided_domain(
     }
 
 
-def canonical_result_bytes(result: Mapping[str, Any]) -> bytes:
-    payload = json.loads(json.dumps(result, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+def canonical_result_bytes(result: Mapping[str, Any] | GuidedDomainGateReceipt) -> bytes:
+    receipt = (
+        result
+        if isinstance(result, GuidedDomainGateReceipt)
+        else GuidedDomainGateReceipt.model_validate(result)
+    )
+    payload = receipt.model_dump(mode="json", exclude_none=False)
+    payload = _drop_optional_nulls(payload)
     forbidden = {"content", "reasoning", "messages", "tool_arguments", "tool_results", "api_key", "authorization", "prompt"}
     if any(key in forbidden for key in _walk_keys(payload)):
         raise ValueError("guided domain result is not body-free")
@@ -227,6 +328,26 @@ def _walk_keys(value: Any):
             yield from _walk_keys(child)
 
 
+def _drop_optional_nulls(value: Any, *, key: str | None = None) -> Any:
+    preserve = {
+        "evaluation",
+        "evaluation_score",
+        "expected_primary_failure",
+        "primary_failure",
+        "provider_error_code",
+        "stop_code",
+    }
+    if isinstance(value, dict):
+        return {
+            name: _drop_optional_nulls(child, key=name)
+            for name, child in value.items()
+            if child is not None or name in preserve
+        }
+    if isinstance(value, list):
+        return [_drop_optional_nulls(child) for child in value]
+    return value
+
+
 def _inside(root: Path, value: str | Path) -> Path:
     path = (root / Path(value)).resolve()
     if not path.is_relative_to(root) or not path.is_file():
@@ -234,4 +355,9 @@ def _inside(root: Path, value: str | Path) -> Path:
     return path
 
 
-__all__ = ["build_guided_domain_preflight", "canonical_result_bytes", "run_guided_domain"]
+__all__ = [
+    "GuidedDomainGateReceipt",
+    "build_guided_domain_preflight",
+    "canonical_result_bytes",
+    "run_guided_domain",
+]

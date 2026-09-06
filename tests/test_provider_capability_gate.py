@@ -37,6 +37,10 @@ from app.evaluation.glm53_flash_tool_stream_followup import (
     ToolStreamFollowupReport,
 )
 from app.evaluation.glm53_domain_gate import GLM53FreshDomainResult
+from app.evaluation.glm53_guided_domain_gate import (
+    GuidedDomainGateReceipt,
+    canonical_result_bytes as canonical_guided_domain_result_bytes,
+)
 from app.evaluation.glm53_flash_output_budget_calibration import (
     OutputBudgetCalibrationReport,
 )
@@ -275,6 +279,12 @@ def test_all_public_provider_capability_results_match_versioned_contract() -> No
     for result_path in result_paths:
         content = result_path.read_text(encoding="utf-8")
         payload = json.loads(content)
+        if payload.get("protocol_id") == "glm53-flash-guided-domain-observation-v4":
+            receipt = GuidedDomainGateReceipt.model_validate_json(content)
+            assert receipt.candidate_registered is False
+            assert receipt.production_admitted is False
+            assert canonical_guided_domain_result_bytes(receipt).decode("utf-8") == content
+            continue
         if payload.get("protocol_id") == LOW_PROFILE_PROBE_PROTOCOL_ID:
             report = CandidateProfileProbeReport.model_validate_json(content)
             assert report.candidate_registered is False
