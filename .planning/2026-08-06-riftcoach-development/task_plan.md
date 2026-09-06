@@ -86,7 +86,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-version-acceptance-preparation / completed-local / pending-public-ci`。
+当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-version-acceptance-preparation / completed-public / pending-fresh-product-g53-3l`。
 
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
@@ -419,7 +419,9 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 
 ## Next Step
 
-当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-version-acceptance-preparation / completed-local / pending-public-ci`。
+当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-version-acceptance-preparation / completed-public / pending-fresh-product-g53-3l`。
+
+RQ-246 公共收口：实现 `3eca1e8995f37050d635451c53667ad7ad404b75` 的 Actions `34028036153` 已核对精确 headSha，pytest、postgres-migrations、packaging-smoke 三任务全部 success。产品版本独立验收准备完成本地与公共闭环，唯一下一步为新鲜产品 G53-3-L；后续协议使用执行时干净 HEAD 及其同 SHA 公共证据，不把纯文档收口 SHA 冒充已核验实现 SHA。上方待本实现 CI 动作已被本条取代。真实 API=0、默认/前端/GLM-5.2/旧回执不变，8E in_progress、production_media=0。
 
 RQ-246 已完成产品版本独立验收准备：全新五局合成输入、四场景冻结资产、实际产品 Runtime 观察入口、严格新鲜证据预检和不可覆盖回执；33项新增、聚焦/相邻共115项通过。下一步本实现同 SHA 公共 CI，之后才新鲜产品 G53-3-L。真实 API=0，默认、GLM-5.2、前端与旧回执不变；本条取代下方 RQ-245 准备待办。详见 `docs/plans/2026-09-06-coach-product-acceptance-preparation.md`。
 

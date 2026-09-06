@@ -25,7 +25,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 [8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
 该记录不把 8E coverage、领域采用或生产成熟度标为完成。
 
-> 当前学习指针（2026-09-06，RQ-246）：[产品版本独立验收准备](../plans/2026-09-06-coach-product-acceptance-preparation.md)。RQ-245 产品接线已完成公共验证；本批再冻结新输入与产品运行身份，增加真实产品链验收、来源/产物校验、不可重复身份与中断回执。新增33项、聚焦/相邻共115项通过；下一步同 SHA 公共 CI，通过后新鲜产品协议检查。八维说明与操作步骤见计划；假模型结果不是 Flash 真实成绩，所有者理解未新增确认，8E coverage 仍 planned，默认注册与生产准入未完成。
+> 当前学习指针（2026-09-06，RQ-246）：[产品版本独立验收准备](../plans/2026-09-06-coach-product-acceptance-preparation.md)。RQ-245 产品接线已完成公共验证；本批再冻结新输入与产品运行身份，增加真实产品链验收、来源/产物校验、不可重复身份与中断回执。新增33项、聚焦/相邻共115项通过，实现 3eca1e8 / CI 34028036153 三任务同 SHA 全绿；下一步新鲜产品协议检查。八维说明与操作步骤见计划；假模型结果不是 Flash 真实成绩，所有者理解未新增确认，8E coverage 仍 planned，默认注册与生产准入未完成。
 
 > 历史学习指针（2026-09-05，RQ-237）：在 [检索加固领域资产实现 walkthrough](8e-glm53-retrieval-hardened-domain-assets-walkthrough.md) 继续阅读、
 > [新鲜协议回执修复与复核](8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md)、

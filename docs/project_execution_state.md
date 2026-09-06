@@ -2,7 +2,7 @@
 state_schema: 1
 main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
-current_checkpoint: "8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-version-acceptance-preparation / completed-local / pending-public-ci"
+current_checkpoint: "8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-version-acceptance-preparation / completed-public / pending-fresh-product-g53-3l"
 status: in_progress
 pause_reason: ""
 ---
@@ -15,6 +15,8 @@ pause_reason: ""
 > `docs/roadmap_change_history.md`。
 
 ## 状态元数据
+
+- RQ-246 公共收口：实现 `3eca1e8995f37050d635451c53667ad7ad404b75` 的 Actions `34028036153` 已核对精确 headSha，pytest、postgres-migrations、packaging-smoke 三任务全部 success。产品版本独立验收准备完成本地与公共闭环，唯一下一步为新鲜产品 G53-3-L；后续协议使用执行时干净 HEAD 及其同 SHA 公共证据，不把纯文档收口 SHA 冒充已核验实现 SHA。上方待本实现 CI 动作已被本条取代。真实 API=0、默认/前端/GLM-5.2/旧回执不变，8E in_progress、production_media=0。
 
 - RQ-246 当前摘要（2026-09-06）：新产品版本独立验收准备已完成本地实现。冻结五局合成输入、四案例 Dataset、Context/程序/语料/预算；验收直接使用 RQ-245 产品 Runtime 并校验报告、来源、评测、Trace 一致性。新增33项、聚焦与相邻共115项通过，含四场景九调用满額结算、注入/篡改拒绝及中断保留记录。CLI 默认零网络，真实入口要求干净工作树、同 SHA 公共 CI、新鲜 G53-3-L 和不可覆盖身份。唯一下一步为本实现同 SHA 公共 CI；之后进入新鲜产品协议检查点。旧 RQ-245 准备动作已被本条完成取代。真实 API=0，默认模型、GLM-5.2、前端与旧回执不变，8E in_progress、production_media=0。八维学习和限制见 `docs/plans/2026-09-06-coach-product-acceptance-preparation.md`。
 
@@ -324,7 +326,7 @@ pause_reason: ""
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
 - 历史下一步（RQ-211）：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`。RQ-211 已在 exact-SHA 公共绿灯的 `c31127b3c780fe4c493966d8b60f942d3b773fd4` 干净快照上执行一次且仅一次普通智谱 `glm-5.3-flash` 请求；回执为 `not_pending`，表示有限观察窗内没有形成待取消读取，因此没有执行 cancel，也不能宣称 provider close/wakeup 已通过。回执 `908` bytes、SHA-256 `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，只含允许列表状态；迭代器、外层 SDK stream wrapper 和组合关闭投影均为 `closed`。候选保持 activation gate `disabled`、`activation_state=candidate`、`execution_allowed=false`、`capabilities.streaming=False` 且未注册；严格 Flash v1 仍 2048/零额外调用，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变。RQ-212 当前离线回放指针见本文最新段落；不自动追加真实请求、G53-7、黄金切片或生产准入。
-- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-version-acceptance-preparation / completed-local / pending-public-ci`。RQ-246 已完成产品版本独立验收准备，33项新增及聚焦/相邻共115项通过；下一步本实现同 SHA 公共 CI。通过后取得新鲜产品 G53-3-L，再执行新产品独立领域验收；不拿旧领域回执充当新版本成绩，不改默认或前端，GLM-5.2 保留。
+- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-version-acceptance-preparation / completed-public / pending-fresh-product-g53-3l`。RQ-246 准备已完成，33项新增及聚焦/相邻共115项通过，实现 3eca1e8 / CI 34028036153 三任务同 SHA 全绿；下一步新鲜产品 G53-3-L，随后才真实四场景验收。执行时绑定干净 HEAD 与其同 SHA 公共证据，不拿旧领域回执充当新版本成绩，不改默认或前端，GLM-5.2 保留。
 - RQ-205 已覆盖前述公共 CI 待办（历史）：`90242822df0e47304700644572bc12f0a3aa88ad` / Actions `33598541029` 三 job exact-SHA 全绿，公共 pytest `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`，fake/local 协议演练通过。当时的下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`，不自动发真实 recovery。
 - RQ-206 已覆盖上述历史指针：同一干净隔离工作树的诊断提交 `0b2342c240cfdc1801e673e830c9a7f30bed3fbd` / Actions `33603143606` exact-SHA 三 job 全绿；按一次性授权只发出 1 次 `zhipu/glm-5.3-flash` primary。流观察到 reasoning、可见正文、`stop` 与 EOF，但 Usage 缺失、close 失败，90 秒 attempt 门在晚到事件中触发，回执为 `fail_closed / elapsed_limit`，没有第二次 recovery。当时的下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，先离线设计/测试硬墙钟取消与 Usage/终态尾帧处理，不自动重测。
 - RQ-210 最新状态（历史）：隔离分支实现提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 已完成本地与 exact-SHA 公共 CI（Actions `33657368435` 三 job 全绿）；候选 adapter/deadline/v2/real 聚焦共 `73 passed`，扩展相邻回归共 `182 passed, 27 subtests passed`，compileall、diff check、governance 通过。报告字段只反映 session 所拥有的迭代器和外层 SDK stream wrapper，`shared_resource` 仅说明对象别名；不外推底层 HTTP response、非阻塞 close 或唤醒能力。RQ-209 回执不重写，候选/产品边界不变；当前指针见 RQ-212 最新段落。
@@ -937,7 +939,7 @@ pause_reason: ""
 | 本地代码 | RQ-246 产品验收准备与115项聚焦/相邻测试完成；默认注册与前端不变 | 离线产品链成功等于真实 Flash 质量、全面 Coach 能力或 8E 完成 |
 | 项目理解 | RQ-246 计划已补八维学习、资源语义和代码地图；没有新增用户掌握确认 | 持久材料存在等于用户已能独立讲解所有实现 |
 | 参考资料 | 本批复用已审计策略与本地实现，无新外部调研；研究媒体权利审计仍开放 | 接线测试等于新增官方验证或媒体授权 |
-| GitHub/部署 | RQ-245 公共证据保持；RQ-246 待本实现同 SHA 公共验证，公网与部署闸门仍开放 | 自动测试通过等于生产注册、HTTPS、正式 Auth 或公网发布 |
+| GitHub/部署 | RQ-246 实现 3eca1e8 / CI 34028036153 三任务 exact-SHA 全绿；公网与部署闸门仍开放 | 自动测试通过等于生产注册、HTTPS、正式 Auth 或公网发布 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前

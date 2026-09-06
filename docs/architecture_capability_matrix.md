@@ -1310,3 +1310,5 @@ RQ-244（2026-09-06）：新检查器经同一开发入口验证九请求和 Usa
 ## RQ-246：产品版本独立验收准备（2026-09-06）
 
 RQ-246 完成新产品版本独立验收准备：全新五局合成输入、四场景 Dataset 与上下文/程序/语料/预算承诺；验收直接走 RQ-245 产品 Runtime，校验报告、来源、评测和 Trace，并在首次失败停止。默认预检零网络，真实入口绑定同 SHA 公共 CI、新鲜 G53-3-L 和不可覆盖身份，保存逐案结果与中断计数。33项新增、聚焦/相邻共115项通过，四场景九调用满额路径可达；八维学习见 `docs/plans/2026-09-06-coach-product-acceptance-preparation.md`。下一步本实现同 SHA 公共 CI，通过后新鲜产品 G53-3-L；本条取代 RQ-245 准备待办。本批真实 API=0，不改前端、默认或 GLM-5.2，不重跑/覆盖旧结果，8E in_progress、production_media=0。
+
+RQ-246 公共收口：实现 `3eca1e8995f37050d635451c53667ad7ad404b75` 的 Actions `34028036153` 已核对精确 headSha，pytest、postgres-migrations、packaging-smoke 三任务全部 success。产品版本独立验收准备完成本地与公共闭环，唯一下一步为新鲜产品 G53-3-L；后续协议使用执行时干净 HEAD 及其同 SHA 公共证据，不把纯文档收口 SHA 冒充已核验实现 SHA。上方待本实现 CI 动作已被本条取代。真实 API=0、默认/前端/GLM-5.2/旧回执不变，8E in_progress、production_media=0。
