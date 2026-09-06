@@ -6192,3 +6192,9 @@
 - guided_03 是唯一真实开发模型证据（3 次调用、3 来源、95 分、published），不构成正式领域或生产准入。
 - 下一步为代表场景离线验证与 exact-SHA CI；默认模型、GLM-5.2 回退、产品模块和 `production_media=0` 不变。
 - `[verification-local]` recent review、生存调整、补刀经济三个代表场景均通过同一候选绑定和真实本地 Evidence 链；30 项聚焦回归通过。新增场景尚未发起真实 Provider 调用，待 exact-SHA CI 后再决定领域门。
+
+## RQ-239 implementation batch (2026-09-06)
+
+- Added the fresh four-case V4 Dataset, anonymous fixture, Input Plan, Context snapshot, body-free budget proof, and observation protocol.
+- Added `GuidedCandidateExecutor` so candidate execution rebinds the exact low-4096 policy and rebuilds Context before Provider I/O; added strict bundle admission and historical-identity rejection.
+- Local focused regression is green; no real Provider request was sent. Next checkpoint is exact-SHA public CI, followed only by a separately authorized fresh G53-3-L observation.

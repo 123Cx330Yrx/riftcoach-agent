@@ -86,6 +86,8 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
+当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-domain-assets-v4 / completed-offline-admission / pending-exact-sha-ci`。
+
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
 观察均已完成；这些证据只描述客户端观察合同，不是 8E、领域采用或生产准入完成。RQ-211～214
@@ -416,6 +418,8 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
   基础设施、migration、Compose 与真库 CI 又由 `854e52d` / Actions `32043214500` 公共完成。
 
 ## Next Step
+
+当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-domain-assets-v4 / completed-offline-admission / pending-exact-sha-ci`。
 
 当前唯一下一步为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-real-observation / pending-retrieval-failure-attribution`。
@@ -3363,4 +3367,4 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 - [x] 候选 Context 快照身份绑定与调用前漂移/旧考卷复用拒绝。
 - [x] 三个代表场景（recent review、生存调整、补刀经济）经同一候选绑定完成离线 Evidence 链；30 项相关测试通过。
 - [x] 提交并取得 exact-SHA 公共 CI（`93aae86` 三项通过）。
-- [next] RQ-239 新候选领域资产设计与离线身份/预算准入；之后才进行新的候选领域门。
+- [next] RQ-239 同一提交的 exact-SHA 公共 CI；通过后才进行新的 G53-3-L 真实领域门。

@@ -14,6 +14,10 @@ from app.evaluation.prompt_context_identity import (
 )
 from app.evaluation.provider_domain_plan import DomainCaseInput, LoadedDomainCaseInputPlan
 from app.rag.coaching_query import COACHING_QUERY_GUIDANCE_V1, POLICY_ID
+from app.evaluation.glm53_flash_candidate_profile import (
+    GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
+)
+from app.evaluation.provider_domain_production import ProductionDomainCaseExecutor
 
 GUIDANCE_ID = "coaching-query-guidance-v1"
 GUIDANCE_SHA256 = hashlib.sha256(COACHING_QUERY_GUIDANCE_V1.encode("utf-8")).hexdigest()
@@ -33,8 +37,14 @@ def validate_guided_domain_case_set(cases: tuple[DomainCaseInput, ...] = GUIDED_
         raise ValueError("guided domain case order is not canonical")
     if len({row.run_id for row in cases}) != len(cases):
         raise ValueError("guided domain run IDs must be unique")
-    if any("retrieval_" in row.case_id or "rq237" in row.run_id for row in cases):
-        raise ValueError("guided domain cases cannot reuse RQ-237 identities")
+    if any(
+        token in row.case_id.lower() or token in row.run_id.lower()
+        for row in cases
+        for token in ("retrieval_", "rq227", "rq230", "rq235", "rq237")
+    ):
+        raise ValueError("guided domain cases cannot reuse historical identities")
+    if any("guided_domain_" not in row.case_id for row in cases):
+        raise ValueError("guided domain cases must use the fresh identity namespace")
     markers = [marker for row in cases for marker in row.forbidden_output_markers]
     if len(set(markers)) != len(markers):
         raise ValueError("guided domain markers must be unique")
@@ -92,3 +102,57 @@ def require_guided_candidate(
     """Public candidate gate used by future real runners before Provider I/O."""
 
     return build_guided_context_snapshot(project_root=project_root, input_plan=input_plan)
+
+
+class GuidedCandidateExecutor:
+    """Provider-I/O boundary for the exact guided Flash candidate.
+
+    Construction and every execution revalidate the Context identity.  This
+    prevents a caller from passing a different guidance string or a plan whose
+    fixtures changed after the initial admission check.
+    """
+
+    def __init__(
+        self,
+        *,
+        project_root: str | Path,
+        input_plan: LoadedDomainCaseInputPlan,
+        runs_root: str | Path,
+    ) -> None:
+        self.project_root = Path(project_root).resolve()
+        self.input_plan = input_plan
+        self.runs_root = Path(runs_root).resolve()
+        self.context_snapshot = require_guided_candidate(
+            project_root=self.project_root,
+            input_plan=input_plan,
+        )
+        artifact = input_plan.artifact
+        if artifact.request_policy_id != GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY.policy_id:
+            raise ValueError("guided candidate request policy ID is not the Flash policy")
+        if artifact.request_policy_version != GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY.version:
+            raise ValueError("guided candidate request policy version is not the Flash policy")
+
+    @property
+    def guidance_id(self) -> str:
+        return GUIDANCE_ID
+
+    @property
+    def guidance_sha256(self) -> str:
+        return GUIDANCE_SHA256
+
+    def execute(self, *, case_id: str, provider):
+        self.context_snapshot = require_guided_candidate(
+            project_root=self.project_root,
+            input_plan=self.input_plan,
+        )
+        executor = ProductionDomainCaseExecutor(
+            project_root=self.project_root,
+            input_plan=self.input_plan,
+            runs_root=self.runs_root,
+            request_policy=GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
+            quality_hardening=True,
+            retrieval_hardening=True,
+            retrieval_guidance=COACHING_QUERY_GUIDANCE_V1,
+            max_revisions=1,
+        )
+        return executor.execute(case_id=case_id, provider=provider)

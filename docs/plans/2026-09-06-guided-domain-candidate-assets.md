@@ -12,8 +12,9 @@
 2. 实现 no-I/O 资产准入，检查快照中确实包含指引摘要、输入计划逐案承诺与候选策略；运行最坏路径预算证明。
 3. 加入聚焦测试和公共 CI；同 SHA 获取新鲜 G53-3-L 后，才执行一次真实领域观察。
 
-当前进度：四个新案例的稳定身份和排重校验已落到 `app/evaluation/glm53_guided_candidate.py`，并通过本地测试；
-Dataset/fixture/Context/预算/协议文件仍在同一实现批中完成，未进行真实 Provider 调用。
+当前进度：四个新案例的稳定身份和排重校验已落到 `app/evaluation/glm53_guided_candidate.py`；
+V4 Dataset、fixture、Context、Input Plan、预算证明、协议和 no-I/O 准入已在同一实现批中完成，
+聚焦测试通过，未进行真实 Provider 调用。
 
 ## 验收
 

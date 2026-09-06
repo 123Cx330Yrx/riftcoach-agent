@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "protocol_id": "glm53-flash-guided-domain-observation-v4",
+  "protocol_version": "4.0.0",
+  "retrieval_policy_id": "coaching-query-recovery-v1",
+  "retrieval_guidance_id": "coaching-query-guidance-v1",
+  "retrieval_guidance_sha256": "3a89bd4e6ff4210b841eddff8df1e718846b76cfba3697cd533de6c9bd602ca3",
+  "quality_hardening": true,
+  "retrieval_hardening": true,
+  "provider_id": "zhipu",
+  "model": "glm-5.3-flash",
+  "request_policy_id": "glm-5.3-flash-evaluation-low-4096",
+  "request_policy_version": "1.0.0",
+  "reasoning_effort": "low",
+  "max_output_tokens": 4096,
+  "sdk_max_retries": 0,
+  "max_revisions": 1,
+  "minimum_evidence_sources": 1,
+  "case_max_calls": 9,
+  "domain_max_calls": 36,
+  "case_max_tokens": 205000,
+  "domain_max_tokens": 820000,
+  "stop_on_first_unsafe": true,
+  "body_free_receipt": true
+}
+

@@ -27,7 +27,8 @@ from app.evaluation.provider_domain_plan import (
 )
 from app.evaluation.provider_domain_production import ProductionDomainCaseExecutor
 from app.evaluation.glm53_guided_candidate import (
-    GUIDANCE_ID, GUIDANCE_SHA256, build_guided_context_snapshot, require_guided_candidate,
+    GUIDANCE_ID, GUIDANCE_SHA256, build_guided_context_snapshot,
+    require_guided_candidate, GuidedCandidateExecutor,
 )
 from app.skills.review_executor import SkillReviewExecutionError
 from app.rag.coaching_query import (
@@ -164,10 +165,14 @@ def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=l
         case_max_tokens=205_000, domain_max_tokens=205_000,
     )
     observer = QueryObserver(budgeted, emit)
-    executor = ProductionDomainCaseExecutor(
-        project_root=root, input_plan=plan, runs_root=runs_root,
-        request_policy=POLICY, quality_hardening=True, retrieval_hardening=True,
-        retrieval_guidance=retrieval_guidance, max_revisions=1,
+    executor = (
+        GuidedCandidateExecutor(project_root=root, input_plan=plan, runs_root=runs_root)
+        if retrieval_guidance is not None
+        else ProductionDomainCaseExecutor(
+            project_root=root, input_plan=plan, runs_root=runs_root,
+            request_policy=POLICY, quality_hardening=True, retrieval_hardening=True,
+            max_revisions=1,
+        )
     )
     execution_error = None
     try:

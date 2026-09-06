@@ -14,7 +14,9 @@ from tests.test_provider_domain_production import ROOT
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.rag.coaching_query import COACHING_QUERY_GUIDANCE_V1
 from app.skills.review_executor import SkillReviewExecutionError
-from app.evaluation.glm53_guided_candidate import GUIDED_DOMAIN_CASES, validate_guided_domain_case_set
+from app.evaluation.glm53_guided_candidate import (
+    GUIDED_DOMAIN_CASES, GuidedCandidateExecutor, validate_guided_domain_case_set,
+)
 
 
 @pytest.fixture(autouse=True)
@@ -70,6 +72,24 @@ def test_guidance_is_an_explicit_candidate_context_addendum(tmp_path):
     assert report["retrieval_guidance_sha256"]
     system_text = "\n".join(message.content for message in provider.requests[0].messages if message.role.value == "system")
     assert COACHING_QUERY_GUIDANCE_V1 in system_text
+
+
+def test_guided_executor_rebinds_exact_candidate_policy_and_context(tmp_path):
+    plan = development_plan(ROOT, guided=True)
+    executor = GuidedCandidateExecutor(
+        project_root=ROOT, input_plan=plan, runs_root=tmp_path,
+    )
+    assert executor.guidance_id == "coaching-query-guidance-v1"
+    assert len(executor.guidance_sha256) == 64
+    assert executor.input_plan.artifact.request_policy_id == GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY.policy_id
+
+
+def test_guided_case_identity_rejects_all_historical_names():
+    for old in ("rq227", "rq230", "rq235", "rq237"):
+        mutated = list(GUIDED_DOMAIN_CASES)
+        mutated[0] = mutated[0].model_copy(update={"case_id": f"guided_domain_{old}"})
+        with pytest.raises(ValueError, match="canonical|historical"):
+            validate_guided_domain_case_set(tuple(mutated))
 
 
 @pytest.mark.parametrize("scenario", tuple(DEVELOPMENT_SCENARIOS))
