@@ -5861,3 +5861,4 @@
 - 候选评测 `llm.chat` 的工具输出合同放宽 `content=null` 并不能覆盖真实空响应：`ChatResponse` 仍要求正文或工具调用之一，且旧回执没有保留评测异常类别。因此“空正文是根因”不能作为已确认结论。
 - 已移除该猜测性放宽，仅保留向后兼容的 body-free `failure_code`，并限制为固定安全枚举。后续新鲜观察才能在不暴露正文/凭据的前提下区分结构化输出、超时或提供方错误。
 - 完整链路回归进一步复现：旧 `_require_success` 将 ToolResult 错误转成普通 RuntimeError，因此 timeout / invalid_chat_response / invalid_tool_output 仍丢失；三个新增测试修复前均失败。改用既有 ToolError 后三项通过，invalid_structured_output 的一次格式修复边界也通过。没有依据宣称旧 V4 的具体触发码已知。
+- 新真实 survival_adjustment 取得 `01_metric_interpretation.md` 与 `03_training_plan.md` 两个来源，评测 96 分且六项检查通过。两条自主查询虽归类 unmapped，但原查询检索均有结果，证明主题恢复未命中不等于检索失败；不据此推断旧失败查询内容。

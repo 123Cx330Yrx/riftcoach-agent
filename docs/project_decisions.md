@@ -3626,3 +3626,7 @@ Portal、Account、Workbench、Auth、路由或生产准入。
 ### RQ-239：带查询指引的新候选领域资产（2026-09-06）
 
 接受 ADR-0097 的离线设计：新领域资产必须全量换新身份并显式消费 `coaching-query-guidance-v1`，通过 no-I/O 排重、Context/预算重建和 exact-SHA CI 后才进入新的真实领域门。旧考卷、默认模型、GLM-5.2 回退、Portal、Account、Workbench、Auth 和生产媒体保持不变。
+
+### RQ-241：先验证已有开发场景，停止猜测旧失败原因（2026-09-06）
+
+完成 ToolResult→ToolError→Harness→Manifest→开发回执的安全码传递并移除无效空正文放宽。`88682fc` / CI `34021213331` 全绿后，一次生存调整真实开发观察取得 2 来源、96 分、published。下一步已有经济调整场景，再汇总正式运行时接入缺口；不再为一次开发验证另造完整考卷，不回写旧 V4 的未知根因，不取消正式准入或 GLM-5.2 回退。参见 [当前计划](plans/2026-09-06-guided-domain-candidate-assets.md)。

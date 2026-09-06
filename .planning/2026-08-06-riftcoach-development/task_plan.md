@@ -86,7 +86,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-domain-assets-v4 / completed-failure-attribution-diagnostics / pending-fresh-observation-decision`。
+当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-development / completed-survival-observation / pending-economy-observation`。
 
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
@@ -419,12 +419,11 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 
 ## Next Step
 
-当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-domain-assets-v4 / completed-failure-attribution-diagnostics / pending-fresh-observation-decision`。
+当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-development / completed-survival-observation / pending-economy-observation`。
 
-RQ-241 本批：完整错误链路修复已离线验证，公共 CI 后执行一次已有匿名 survival_adjustment 开发观察；详见 `docs/plans/2026-09-06-guided-domain-candidate-assets.md`。不重跑任何旧 held-out，不把新开发回执算作领域或生产准入。
+RQ-241 本批：完整错误链路修复和公共 CI 完成；survival_adjustment 实际 3 次调用、2 来源、96 分、published。下一步为已有 economy_adjustment 场景的一次开发观察，再汇总正式接入条件；详见 `docs/plans/2026-09-06-guided-domain-candidate-assets.md`。不重跑任何旧 held-out，不把开发回执算作领域或生产准入。
 
-此前检索加固阶段的下一步已完成并保留为历史记录；当前唯一下一步为
-`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-domain-assets-v4 / completed-failure-attribution-diagnostics / pending-fresh-observation-decision`。
+以下检索加固阶段的下一步均保留为历史记录，不能替代上方当前动作。
 RQ-230 已完成一次 V2 真实观察并完成失败归因；RQ-231 接受的全新 V3 最多一次受控修订、
 body-free 枚举计数诊断、版本化预算证明和新资产 no-I/O 准入已由 RQ-232 完成；修复提交
 `f99c142c269df765deb592c463ce6e2555bcc3fe` 的 Actions `33895602378` 三任务 exact-SHA 全绿。

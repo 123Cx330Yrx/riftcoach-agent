@@ -6224,3 +6224,11 @@
 - `failure_code` 现在只接受固定安全枚举；聚焦回归 34 项通过（含结构化解码回归），下一步取得本次纠正提交的 exact-SHA 公共 CI。
 - 补全 ToolResult→适配器的 typed 错误传递；新增四个完整开发链路错误场景与未知/非字符串错误码拒绝测试，相邻回归 107 passed、19 subtests passed。无错误的 Manifest 不写新增字段，旧回执不变。
 - 当前决策与运行边界已记在 RQ-239 计划：代码公共 CI 后只运行一次已有匿名开发场景 survival_adjustment，保存新开发回执；不重跑 V4、不给旧协议换 SHA、不发新的正式领域请求。
+
+## RQ-241：真实生存调整开发验证通过（2026-09-06）
+
+- 实现 `88682fc388adaa0f50c2fc6e451ce6a3ba77bc90` / CI `34021213331` 三项全绿；用户随后再次明确授权下一步。
+- 一次 survival_adjustment：3 次调用、11116 tokens、41016ms、2 来源、首评 96 分、零修订、published；事实/引用/注入检查通过，无安全错误码。
+- 新开发回执 `glm53_survival_diagnostic_rq241_01.json`，2759 bytes，SHA-256 `bbfe664c4e61702b0d3ecd0d15fce046d2db24a5530ea01c5aea425169818106`。严格语义类型/资源/body-free 校验通过，匿名正文临时目录随进程退出删除；旧模拟目录 `tmp/debug-guided` 已清理，正式回执和主仓库用户修改均未动。
+- 这是新的开发场景证据，不能追溯证明旧 V4 根因；探针保守保留 `probe_public_ci_verified=false`，外部同 SHA CI 关联在本记录明确列出，不回改原始回执。
+- 下一步：已有 economy_adjustment 一次开发观察，然后汇总代码/代表场景证据与正式运行时接入缺口；不再停留在“是否新观察”的笼统裁决。

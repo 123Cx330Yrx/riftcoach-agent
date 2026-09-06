@@ -844,10 +844,12 @@ groups:
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-real-observation / pending-retrieval-hardened-domain-observation
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-real-observation / pending-retrieval-failure-attribution
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-domain-assets-v4 / completed-failure-attribution-diagnostics / pending-fresh-observation-decision
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-development / completed-survival-observation / pending-economy-observation
     status: planned
     evidence:
       problem_and_principle:
         - docs/learning/8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md
+        - docs/plans/2026-09-06-guided-domain-candidate-assets.md
         - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-implementation-walkthrough.md
         - docs/learning/8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md
         - docs/adr/0094-adopt-glm53-hardened-domain-v3-bounded-revision.md

@@ -1291,3 +1291,5 @@ streaming、黄金切片、安全/部署/合规和 `production_media=0` 均不�
 后续验证必须使用新版本资产，不得重跑 RQ-237。
 
 RQ-238 补充候选执行接缝：`coaching-query-guidance-v1` 通过 schema 1.1 Prompt/Context 快照和逐案 SHA 承诺校验，调用前拒绝旧资产/漂移；不改变产品 Runtime、默认模型或前端模块。
+
+RQ-241（2026-09-06）：错误诊断链路完成公共验证，未知异常不输出任意文本；候选生存调整真实开发场景取得 2 来源、96 分。仅增加评测可观测性及开发证据，尚未启用候选产品配置；GLM-5.2、前端、生产质量门和 `production_media=0` 保持。下一步经济调整开发验证与正式运行时缺口汇总，见 [计划](plans/2026-09-06-guided-domain-candidate-assets.md)。

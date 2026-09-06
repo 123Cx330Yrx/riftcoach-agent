@@ -1778,3 +1778,7 @@ Account、Workbench、Auth、路由或 `production_media=0`。实现提交
 ### RQ-238（2026-09-06）候选查询指引接入
 
 8E candidate-only 执行路径已绑定版本化 `coaching-query-guidance-v1`，通过 schema 1.1 Context 快照、文件摘要和逐案承诺校验；不改变 8-Core、默认模型、GLM-5.2 回退或产品前端，guided_03 仍只是单样本开发证据。
+
+### RQ-241（2026-09-06）诊断修复与新代表场景
+
+同 SHA 公共 CI 通过的 `88682fc` 已完成一次匿名生存调整开发观察：3 调用、2 来源、96 分、published。接下来验证已有经济调整场景并汇总正式接入条件；仍在 8E，8F 未完成，开发成功不等于独立领域或生产准入。证据与边界见 [当前计划](plans/2026-09-06-guided-domain-candidate-assets.md)。

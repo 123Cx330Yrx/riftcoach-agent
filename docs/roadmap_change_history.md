@@ -4571,3 +4571,7 @@ GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和 `production_med
 ## 2026-09-06：RQ-239 新候选领域资产设计
 
 在 RQ-238 接线和公共 CI 完成后，接受 ADR-0097 建立与旧领域完全隔离的新鲜资产包；先做离线身份排重、Context/预算准入和公共 CI，再决定新的真实领域观察，不把开发样本升级为准入结论。
+
+## 2026-09-06：RQ-241 诊断链路修复与生存调整开发验证
+
+`88682fc` / CI `34021213331` 三项全绿；已有匿名 survival_adjustment 新观察为 3 调用、2 来源、96 分、published。旧 V4 四案评测拒绝及未知根因不改写，撤回空正文和三次上限的无证据归因。下一步补 economy_adjustment 开发场景，再汇总正式 Runtime 接入条件；8E/8F 顺序、生产质量门、GLM-5.2 回退与前端边界不变。详情见 [RQ-239/241 计划](plans/2026-09-06-guided-domain-candidate-assets.md)。
