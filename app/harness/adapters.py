@@ -17,6 +17,7 @@ from app.providers.models import (
     TokenUsage,
 )
 from app.providers.structured import decode_structured_response
+from app.tools.errors import ToolError
 from app.tools.runtime import ToolRuntime
 
 from .knowledge import knowledge_evidence_from_search_payloads
@@ -374,9 +375,17 @@ def _chat_response(
 def _require_success(result: Any, tool_name: str) -> dict[str, Any]:
     if not result.success:
         code = result.error.code if result.error is not None else "unknown"
-        raise RuntimeError(f"{tool_name} failed with safe code: {code}")
+        raise ToolError(
+            "tool execution failed",
+            tool_name=tool_name,
+            code=code,
+        )
     if result.data is None:
-        raise RuntimeError(f"{tool_name} returned no data")
+        raise ToolError(
+            "tool returned no data",
+            tool_name=tool_name,
+            code="missing_tool_data",
+        )
     return dict(result.data)
 
 

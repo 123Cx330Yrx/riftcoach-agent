@@ -303,6 +303,13 @@ class ReviewHarnessPassingPathTests(unittest.TestCase):
         self.assertEqual("invalid_structured_output", manifest.failure_code)
         self.assertEqual("evaluation_failed", manifest.transitions[-1]["reason"])
 
+    def test_failure_diagnostic_drops_unknown_and_non_string_codes(self) -> None:
+        error = ProviderResponseError(provider="zhipu", code="private_token_text")
+        for unsafe in ("private_token_text", "private body", [], {"private": "body"}):
+            error.code = unsafe
+            self.assertEqual("evaluation_failed", ReviewHarness._step_failure_reason("evaluation", error))
+        self.assertIsNone(ReviewHarness._failure_code("evaluation_failed:private_token_text"))
+
     def test_prompt_injection_issue_blocks_revision_and_publishing(self) -> None:
         evaluation = EvaluationResult(
             score=99,

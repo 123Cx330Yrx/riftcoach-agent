@@ -14,6 +14,8 @@ from tests.test_provider_domain_production import ROOT
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.rag.coaching_query import COACHING_QUERY_GUIDANCE_V1
 from app.skills.review_executor import SkillReviewExecutionError
+from app.harness.store import FileRunStore
+from app.providers.errors import ProviderResponseError, ProviderTimeoutError
 from app.evaluation.glm53_guided_candidate import (
     GUIDED_DOMAIN_CASES, GuidedCandidateExecutor, validate_guided_domain_case_set,
 )
@@ -50,6 +52,37 @@ def test_development_observation_uses_real_chain_and_no_heldout(tmp_path):
     assert development_plan(ROOT).artifact.dataset_id == "demo-development-not-heldout"
     for forbidden in ('"content"', '"reasoning"', '"api_key"', '"user_utterance"', '"arguments"'):
         assert forbidden not in json.dumps(report)
+
+
+@pytest.mark.parametrize("failure", ["timeout", "invalid_chat_response", "invalid_tool_output", "invalid_structured_output"])
+def test_evaluation_failure_survives_tool_adapter_manifest_and_development_receipt(tmp_path, failure):
+    class FailingEvaluator(ScriptedCoach):
+        def chat(self, request):
+            if request.response_contract is not None:
+                self.requests.append(request)
+                if failure == "timeout":
+                    raise ProviderTimeoutError(provider="zhipu", code=failure)
+                if failure == "invalid_chat_response":
+                    raise ProviderResponseError(provider="zhipu", code=failure)
+                if failure == "invalid_tool_output":
+                    # A valid tool-only response is not a valid evaluator text response.
+                    return ScriptedCoach().chat(ChatRequest(messages=(ChatMessage(MessageRole.USER, "development"),)))
+                return self._text("private_invalid_json")
+            return super().chat(request)
+
+    provider = FailingEvaluator()
+    report = observe(provider, root=ROOT, runs_root=tmp_path, retrieval_guidance=COACHING_QUERY_GUIDANCE_V1)
+    observation = report["observation"]
+    assert observation["terminal_status"] == "rejected"
+    assert observation["terminal_reason"] == "evaluation_failed"
+    assert observation["safe_provider_error_code"] == failure
+    assert observation["evaluation_score"] is None
+    assert report["resources"]["calls_used"] == (4 if failure == "invalid_structured_output" else 3)
+    assert "private_invalid_json" not in json.dumps(report)
+    run_id = development_plan(ROOT, guided=True).artifact.cases[0].run_id
+    manifest = FileRunStore(tmp_path, run_id).read_manifest()
+    assert manifest.failure_code == failure
+    assert not any(row["kind"] == "final_report" for row in manifest.artifacts)
 
 
 def test_guidance_is_an_explicit_candidate_context_addendum(tmp_path):

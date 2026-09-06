@@ -303,7 +303,7 @@ provider calls=0，仍需明确授权才执行真实协议门。
 | RQ-238 | 2026-09-06 | 查询指引候选路径接入 | 用户继续授权候选接入与代表场景验证，不扩大到前端或默认 Runtime | `coaching-query-guidance-v1` 已绑定候选 Context schema 1.1 快照、文件摘要和逐案承诺；旧 held-out 漂移在 Provider 调用前拒绝。guided_03 的 3 来源、95 分仅为开发证据；提交 `dd0033d` 等待 exact-SHA 公共 CI。 |
 | RQ-239 | 2026-09-06 | 建立带查询指引的新候选领域资产设计 | RQ-238 完成后继续推进离线资产设计；真实领域调用仍后置 | 新 Dataset、case/run、fixture、Input Plan、Context、预算、协议和回执身份必须与 RQ-237 隔离，显式绑定 `coaching-query-guidance-v1` 与全部现有质量/安全门；不重跑旧考卷、不改默认模型或产品模块。 |
 | RQ-240 | 2026-09-06 | V4 领域回执公共契约修复并取得 exact-SHA CI | 上一公共 CI 仅因新协议回执未接入总检契约而失败；继续授权仅限结果契约修复，不重跑真实观察 | 新增严格、禁止多余字段的 `GuidedDomainGateReceipt` 及资源/案例校验，并将 `glm53-flash-guided-domain-observation-v4` 接入公共结果分流。提交 `b7ac850` 的 Actions `34015592274` 三项全绿；不改变 V4 评测失败事实，不注册候选、不改默认模型或产品模块。下一步只做评测失败归因。 |
-| RQ-241 | 2026-09-06 | V4 评测失败归因观测接缝完成并通过公共 CI | RQ-240 之后只能确认评测层 fail-closed，旧回执没有保留具体异常类别；“空正文已确认根因”证据不足。继续授权仅限候选评测诊断与回归，不重跑旧考卷或改变质量门 | RunManifest 新增可选、向后兼容的 body-free `failure_code`；ProviderError 仅映射安全错误码，稳定终态仍为 `evaluation_failed`，语义投影可读取该码；产品默认工具合同、Runtime、模型准入和前端不变。聚焦 Harness/Store/生产执行器回归 36 项全绿，compileall、diff check、governance 通过；提交 `f2a7470` 的 exact-SHA 公共 CI `34017153819` 三项全绿。下一步裁决是否另立新鲜观察。 |
+| RQ-241 | 2026-09-06 | 诊断初版公共 CI 通过；本批补全真实调用路径的错误传递 | 旧 V4 具体触发原因未知，撤回“空正文已确认根因”；用户持续授权继续排查与推进 GLM-5.3 Flash，不重考旧案例、不改变质量门 | 初版 `f2a7470` / CI `34017153819` 全绿；新增完整链路回归发现 ToolResult 在适配器转成普通异常，三类错误码仍丢失。现用既有 ToolError 贯通 Harness/Manifest/开发回执，固定安全枚举，未知错误不公开；无错误时 Manifest 省略新字段，并移除无效空正文放宽。回归 107 passed、19 subtests passed，本批代码待公共 CI。随后只运行一次已有匿名 survival_adjustment 开发场景，新回执独立保存；不宣称正式领域或生产准入。默认模型、GLM-5.2 回退、前端、质量/修订规则不变。 |
 
 ## 新条目格式
 

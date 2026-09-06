@@ -5854,3 +5854,10 @@
   均unmapped，检索零命中。不能从这些摘要恢复原文、断言查询具体语言或补全准确错误词。
 - 静态代码确认COACHING_QUERY_GUIDANCE_V1只是常量，当前执行器的Context仅加入候选安全附录，
   没有说明知识库的中文教练语料及短主题查询方式。下一步只在开发作用域检验该指引假设。
+
+## RQ-241 diagnostic correction (2026-09-06)
+
+- 旧 V4 回执实际四个案例均执行并取得响应/来源，失败集中在评测层；调用墙为每案 9 次，不存在已证实的三次上限。
+- 候选评测 `llm.chat` 的工具输出合同放宽 `content=null` 并不能覆盖真实空响应：`ChatResponse` 仍要求正文或工具调用之一，且旧回执没有保留评测异常类别。因此“空正文是根因”不能作为已确认结论。
+- 已移除该猜测性放宽，仅保留向后兼容的 body-free `failure_code`，并限制为固定安全枚举。后续新鲜观察才能在不暴露正文/凭据的前提下区分结构化输出、超时或提供方错误。
+- 完整链路回归进一步复现：旧 `_require_success` 将 ToolResult 错误转成普通 RuntimeError，因此 timeout / invalid_chat_response / invalid_tool_output 仍丢失；三个新增测试修复前均失败。改用既有 ToolError 后三项通过，invalid_structured_output 的一次格式修复边界也通过。没有依据宣称旧 V4 的具体触发码已知。

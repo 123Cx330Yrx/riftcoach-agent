@@ -41,8 +41,11 @@ class FileRunStore:
         if manifest.run_id != self.run_id:
             raise ValueError("manifest run_id does not match this store.")
 
+        serialized = asdict(manifest)
+        if manifest.failure_code is None:
+            serialized.pop("failure_code")
         payload = json.dumps(
-            asdict(manifest),
+            serialized,
             ensure_ascii=False,
             indent=2,
         ).encode("utf-8") + b"\n"

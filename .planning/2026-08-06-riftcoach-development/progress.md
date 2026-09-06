@@ -6217,3 +6217,10 @@
 - 新增向后兼容的 body-free `RunManifest.failure_code`，仅从安全 ProviderError 码填充；`DomainCaseSemanticObservation` 在没有 Agent 错误码时读取该字段。终态原因和质量门不变。
 - Harness/Store/生产执行器聚焦回归 36 项通过，compileall、diff check、governance 通过；下一步是该诊断提交的 exact-SHA 公共 CI，不重跑旧考卷。
 - 提交 `f2a7470` 的 exact-SHA 公共 CI `34017153819` 三项全绿；当前收口为等待一次新鲜观察的是否立项裁决，旧 V4 回执不重跑。
+
+## RQ-241 diagnostic correction follow-up (2026-09-06)
+
+- 复核确认此前候选评测输出合同的 `content=null` 放宽无法解决真实响应接缝，已移除；`ChatResponse` 的正文/工具调用不为空约束和产品合同保持不变。
+- `failure_code` 现在只接受固定安全枚举；聚焦回归 34 项通过（含结构化解码回归），下一步取得本次纠正提交的 exact-SHA 公共 CI。
+- 补全 ToolResult→适配器的 typed 错误传递；新增四个完整开发链路错误场景与未知/非字符串错误码拒绝测试，相邻回归 107 passed、19 subtests passed。无错误的 Manifest 不写新增字段，旧回执不变。
+- 当前决策与运行边界已记在 RQ-239 计划：代码公共 CI 后只运行一次已有匿名开发场景 survival_adjustment，保存新开发回执；不重跑 V4、不给旧协议换 SHA、不发新的正式领域请求。

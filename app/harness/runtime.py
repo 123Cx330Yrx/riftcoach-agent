@@ -34,6 +34,30 @@ from app.runtime.signals import (
     RuntimePublicationStatus,
 )
 from app.providers.errors import ProviderError
+from app.tools.errors import ToolError
+
+_SAFE_FAILURE_CODES = frozenset(
+    {
+        "authentication_failed",
+        "connection_failed",
+        "fallback_failed",
+        "incomplete_chat_response",
+        "invalid_chat_response",
+        "invalid_finish_reason",
+        "invalid_structured_output",
+        "invalid_tool_input",
+        "invalid_tool_output",
+        "missing_tool_data",
+        "provider_usage_unavailable",
+        "rate_limited",
+        "request_rejected",
+        "retry_budget_exhausted",
+        "service_unavailable",
+        "timeout",
+        "tool_execution_failed",
+        "unexpected_sdk_error",
+    }
+)
 
 
 class ReviewHarness:
@@ -438,7 +462,13 @@ class ReviewHarness:
     def _step_failure_reason(step: str, error: Exception) -> str:
         # Keep the public terminal reason stable while retaining one safe,
         # body-free category for post-run diagnosis.
-        code = error.code if isinstance(error, ProviderError) else None
+        code = (
+            error.code
+            if isinstance(error, (ProviderError, ToolError))
+            else None
+        )
+        if not isinstance(code, str) or code not in _SAFE_FAILURE_CODES:
+            code = None
         return f"{step}_failed:{code}" if code else f"{step}_failed"
 
     @staticmethod
@@ -446,7 +476,7 @@ class ReviewHarness:
         if ":" not in reason:
             return None
         code = reason.split(":", 1)[1].strip()
-        if not code or not re.fullmatch(r"[a-z][a-z0-9_]{0,63}", code):
+        if code not in _SAFE_FAILURE_CODES:
             return None
         return code
 
