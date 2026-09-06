@@ -856,6 +856,7 @@ groups:
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-version-acceptance-preparation / completed-local / pending-public-ci
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-version-acceptance-preparation / completed-public / pending-fresh-product-g53-3l
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-citation-evaluation-repair / completed-local / pending-public-ci
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-citation-evaluation-repair / completed-public / pending-grounded-development-observation-preparation
     status: planned
     evidence:
       problem_and_principle:

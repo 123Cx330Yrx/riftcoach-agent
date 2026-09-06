@@ -90,7 +90,7 @@
 - 本地运行上述测试，不读取 `.env`。正常恢复路径分别4/4/5次脚本模型调用；这证明工程控制流，不是新的真实 GLM 分数。
 - 新版本通过 `RuntimeCompositionRoot.from_directories` 显式传入 `GROUNDED_COACH_CONTRACT`，skills_root使用原flash_v2/skills，
   prompt_programs_root使用flash_v2_repair/prompt_programs；请求编译器绑定同一合同，然后调用既有build_offline_coach_runtime。
-  不得用旧 RQ-246 CLI 或删除其预约来运行新版本。下一步为本修复版本公共验证；本批不再次调用模型。
+  不得用旧 RQ-246 CLI 或删除其预约来运行新版本。修复已完成下方同 SHA 公共验证；下一步只准备新组合 high 档有界开发观察入口，本批不再次调用模型。
 - 用户随后明确要求适度释放资源，同时强调不能用放宽掩盖缺陷。新显式组合改为high、输出8192、单请求60秒、Agent120秒、调用计时480秒；
   输入估算64000和9调用不变，总上界为649728 tokens。旧组合仍为low/4096/45/90/360，不覆盖其描述或成绩；85分及事实/来源/安全门均不变。
   官方[模型卡](https://huggingface.co/zai-org/GLM-5.3-Flash#note)确认low/high/max三档；这只支持参数合法性，不证明high在本产品最优。
@@ -103,4 +103,8 @@
 本地验证结果：新增36项，聚焦与相邻共269 passed、38 subtests passed；覆盖实际SDK参数透传、资源耗尽安全码与旧版本兼容。
 初始3个行为用例在修改前全部失败；修改后成功，不以加大预算来解释格式缺陷已经修复。资源错误现在保留明确类别，不混作低分结论。
 compileall、git diff --check、governance和旧资产零网络重建预检通过；旧真实回执SHA再次核对不变。
-本修复尚未提交/推送或取得公共CI，未产生新真实质量成绩；不能引用旧CI作为本修复的公共证据。
+实现 `679b203b5dfe65f64bc586e618caaf850cafd2db` / Actions `34030008563` 已核对同 SHA，pytest、postgres-migrations、packaging-smoke 三任务全部成功。公共后端2617 passed、145 skipped、2 warnings、127 subtests passed；PostgreSQL控制面201 passed，前端270项单测与38项端到端测试通过，打包检查通过。两条警告为现有测试依赖弃用提示，未作为失败或被隐藏。
+
+当前收口：本批实现与公共验证完成，仍未产生新的真实质量成绩。唯一下一步是修复版 high 档带安全诊断的有界开发观察入口准备（零网络）：复用实际产品 Runtime、新组合1.1.0及其诊断投影，绑定版本和预算，验证默认无网络、运行身份不可覆盖、失败记录可解释；不复制运行循环、不重跑 RQ-246 或自动另立正式考卷。后续真实请求应绑定新 high 配置及其实际执行 SHA，不能借用旧 low 档 G53-3-L 或旧真实成绩。
+后续纯文档收口提交不改变已验证实现身份；不得将其 SHA 冒充上述公共结果。修复阶段新增模型请求仍为0，默认注册、真实稳定性与产品准入均未完成。
+公共收口文档已通过12项治理回归、治理检查与diff check；没有再次重复运行未改动的产品回归套件。
