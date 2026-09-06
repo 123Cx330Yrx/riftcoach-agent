@@ -23,7 +23,7 @@ from app.harness.models import ArtifactKind
 from app.harness.runtime import _SAFE_FAILURE_CODES
 from app.harness.store import FileRunStore
 from app.rag.hybrid import LocalHybridKnowledgeProvider
-from app.runtime.coach_contract import COACH_CONTRACT, GROUNDED_COACH_CONTRACT
+from app.runtime.coach_contract import COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT
 from app.runtime.store import RuntimeTraceStore
 
 
@@ -174,14 +174,14 @@ class AcceptanceReceipt(BaseModel):
 
 
 def observe_product_result(runs_root, result, case, *, request, context_commitment, diagnostics_sink=None):
-    contract = next((c for c in (COACH_CONTRACT, GROUNDED_COACH_CONTRACT)
+    contract = next((c for c in (COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT)
                      if c.snapshot() == request.policy.coach_contract), None)
     if contract is None:
         raise ValueError("acceptance_unknown_coach_contract")
     trace = RuntimeTraceStore(runs_root, result.run_id).read_trace(result.trace_reference)
     if (trace.run_id != case["case_id"] or trace.policy != request.policy
             or trace.identity.coach_contract != contract.snapshot()
-            or trace.identity.skill_version != "0.3.0" or trace.identity.prompt_profile_version != contract.descriptor()["program_version"]
+            or trace.identity.skill_version != contract.descriptor()["skill_version"] or trace.identity.prompt_profile_version != contract.descriptor()["program_version"]
             or trace.identity.provider_id != "zhipu" or trace.identity.provider_model != "glm-5.3-flash"
             or trace.publication_status != result.publication_status
             or trace.runtime_status != result.runtime_status or trace.terminal_reason != result.terminal_reason):

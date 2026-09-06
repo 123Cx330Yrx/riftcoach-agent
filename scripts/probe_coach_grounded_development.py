@@ -41,6 +41,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--scenario", choices=("overall", "survival", "economy", "memory"), default="economy")
     parser.add_argument("--suite", action="store_true", help="Run all four known development cases, not an admission exam")
+    parser.add_argument("--tool-batch-v2", action="store_true", help="Explicit versioned eight-local-tool budget; model-call budget unchanged")
     parser.add_argument("--run-id")
     parser.add_argument("--plan-sha256")
     parser.add_argument("--confirm-real-call", action="store_true")
@@ -49,8 +50,8 @@ def main(argv=None):
     args = parser.parse_args(argv)
     phase = "local_preflight"
     try:
-        plan = (prepare_suite(ROOT, suite_id=args.run_id or "coach-grounded-suite-preview") if args.suite else
-                prepare_observation(ROOT, scenario=args.scenario, run_id=args.run_id or "coach-grounded-dev-preview"))
+        plan = (prepare_suite(ROOT, suite_id=args.run_id or "coach-grounded-suite-preview", tool_batch=args.tool_batch_v2) if args.suite else
+                prepare_observation(ROOT, scenario=args.scenario, run_id=args.run_id or "coach-grounded-dev-preview", tool_batch=args.tool_batch_v2))
         if not args.confirm_real_call:
             print(json.dumps({"status": "ready", "scope": "development_not_admission", "network": 0,
                 **({"run_id": plan.suite_id, "scenarios": [p.scenario for p in plan.plans]} if args.suite else

@@ -36,6 +36,7 @@ from app.rag.coaching_query import RetrievalAttemptDiagnostics, Topic, _attempt,
 from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.runtime.coach_context import CoachContextBuilder
 from app.runtime.coach_contract import GROUNDED_COACH_CONTRACT as CONTRACT
+from app.runtime.coach_contract import BATCH_COACH_CONTRACT
 from app.runtime.composition import RuntimeCompositionRoot
 from app.skills.execution import SkillExecutionBoundary
 
@@ -59,6 +60,7 @@ class DevelopmentPlan:
     composition: RuntimeCompositionRoot
     request: object
     builder: CoachContextBuilder | MemoryAwareContextBuilder
+    tool_batch: bool = False
 
     @property
     def sha256(self):
@@ -66,14 +68,15 @@ class DevelopmentPlan:
 
 
 def prepare_observation(project_root: Path, *, scenario: Scenario = "economy",
-                        run_id: str = "coach-grounded-dev-preview") -> DevelopmentPlan:
+                        run_id: str = "coach-grounded-dev-preview", tool_batch: bool = False) -> DevelopmentPlan:
     """Read only local public fixtures; never read credentials or construct clients."""
     if scenario not in SUITE_SCENARIOS or not re.fullmatch(RUN_PATTERN, run_id):
         raise ValueError("development_identity_invalid")
+    contract = BATCH_COACH_CONTRACT if tool_batch else CONTRACT
     root = RuntimeCompositionRoot.from_directories(
-        skills_root=project_root / "examples/runtime_profiles/flash_v2/skills",
-        prompt_programs_root=project_root / "examples/runtime_profiles/flash_v2_repair/prompt_programs",
-        coach_contract=CONTRACT,
+        skills_root=project_root / ("examples/runtime_profiles/flash_v2_batch/skills" if tool_batch else "examples/runtime_profiles/flash_v2/skills"),
+        prompt_programs_root=project_root / ("examples/runtime_profiles/flash_v2_batch/prompt_programs" if tool_batch else "examples/runtime_profiles/flash_v2_repair/prompt_programs"),
+        coach_contract=contract,
     )
     fixture = project_root / "examples/fixtures/player_summary_demo.json"
     report = project_root / "examples/fixtures/deterministic_report_demo.md"
@@ -83,7 +86,7 @@ def prepare_observation(project_root: Path, *, scenario: Scenario = "economy",
     # Product count has a minimum of five. Preserve the actual two available
     # matches, all aggregates, and the explicit incomplete-sample disclosure.
     summary["metadata"]["matches_requested"] = summary["request"]["count"] = 5
-    builder = CoachContextBuilder(coach_contract=CONTRACT)
+    builder = CoachContextBuilder(coach_contract=contract)
     binding, memory = None, None
     if scenario == "memory":
         binding = MemoryContextBinding(run_id=run_id, owner_id="synthetic-coach249-owner",
@@ -96,7 +99,7 @@ def prepare_observation(project_root: Path, *, scenario: Scenario = "economy",
             stable_order=f"message:{i:04d}", relationship_role=RelationshipRole.SELF) for i, text in enumerate(texts))
         memory = FrozenMemory(MemoryContextSnapshot(binding=binding, records=records))
         builder = MemoryAwareContextBuilder(delegate=builder, repository=memory, manifest_store=memory, clock=lambda: FIXED_TIME)
-    request = RecentReviewRuntimeRequestCompiler(root.skill_catalog, coach_contract=CONTRACT).compile(
+    request = RecentReviewRuntimeRequestCompiler(root.skill_catalog, coach_contract=contract).compile(
         RecentReviewProductRequest(riot_id=summary["player"]["riot_id"], routing_region="asia", count=5,
                                   focus="overall" if scenario == "memory" else scenario),
         player_summary=summary,
@@ -115,9 +118,9 @@ def prepare_observation(project_root: Path, *, scenario: Scenario = "economy",
         "schema_version": "1.0", "scope": "development_not_admission", "run_id": run_id, "scenario": scenario,
         "fixture_sha256": digest(summary), "report_sha256": hashlib.sha256(report.read_text(encoding="utf-8").encode()).hexdigest(),
         "request_sha256": digest(request.model_dump(mode="json")), "context_sha256": digest(asdict(context)),
-        "corpus": corpus, "coach_contract": CONTRACT.snapshot().model_dump(mode="json"),
-        "program_sha256": root.prompt_program_resolver.resolve("recent-form-review", "0.3.0").manifest.program_sha256,
-        "budget": CONTRACT.descriptor(),
+        "corpus": corpus, "coach_contract": contract.snapshot().model_dump(mode="json"),
+        "program_sha256": root.prompt_program_resolver.resolve("recent-form-review", contract.descriptor()["skill_version"]).manifest.program_sha256,
+        "budget": contract.descriptor(),
     }
     if memory:
         selected = sum(section.section_id.startswith("memory:") for section in context.sections)
@@ -132,13 +135,13 @@ def prepare_observation(project_root: Path, *, scenario: Scenario = "economy",
         required_tool_names=("knowledge.search",), minimum_successful_tool_executions=1, minimum_evidence_sources=1,
         require_fact_check=True, require_citation_check=True, require_injection_check=True,
         require_validated_evaluation=True, minimum_evaluation_score=85, allowed_terminal_statuses=("published",),
-        maximum_provider_calls=9, maximum_total_tokens=CONTRACT.descriptor()["total_tokens"],
+        maximum_provider_calls=9, maximum_total_tokens=contract.descriptor()["total_tokens"],
     )
     dataset = DomainEvaluationDataset(
         schema_version="1.2", dataset_id="coach-grounded-known-demo-development", dataset_version="1.0.0",
         role="development", calibration_excluded=False, created_at="2026-09-06", case_count=1,
         contract_snapshot=ContractSnapshot(
-            skill_name="recent-form-review", skill_version="0.3.0", context_contract="context-builder-v1@1.0.0",
+            skill_name="recent-form-review", skill_version=contract.descriptor()["skill_version"], context_contract="context-builder-v1@1.0.0",
             evaluation_contract="coach_evaluation@1.2.0", prompt_context_snapshot_id="grounded-development-context-v1",
             prompt_context_snapshot_sha256=digest(manifest)),
         contamination_notes=("Known public two-match demo used in prior development; not independent quality evidence.",),
@@ -147,7 +150,7 @@ def prepare_observation(project_root: Path, *, scenario: Scenario = "economy",
             expected_primary_failure=None, requirements=requirements, contamination_sources=("public_demo",)),),
     )
     manifest["assessment_sha256"] = digest(dataset.model_dump(mode="json"))
-    return DevelopmentPlan(run_id, scenario, manifest, dataset, root, request, builder)
+    return DevelopmentPlan(run_id, scenario, manifest, dataset, root, request, builder, tool_batch)
 
 
 class DevelopmentEvidence(BaseModel):
@@ -330,7 +333,7 @@ def validate_receipt(receipt, plan):
 
 
 def _fresh_plan(project_root, plan):
-    fresh = prepare_observation(project_root, scenario=plan.scenario, run_id=plan.run_id)
+    fresh = prepare_observation(project_root, scenario=plan.scenario, run_id=plan.run_id, tool_batch=plan.tool_batch)
     if fresh.sha256 != plan.sha256:
         raise ValueError("development_plan_drift")
     return fresh
@@ -342,7 +345,7 @@ def run_observation(project_root: Path, *, provider, plan: DevelopmentPlan, real
         real_evidence = DevelopmentEvidence.model_validate_json(real_evidence.model_dump_json())
         if real_evidence.plan_sha256 != plan.sha256:
             raise ValueError("development_real_plan_mismatch")
-    CONTRACT.require_provider(provider)
+    plan.composition.prompt_program_resolver.coach_contract.require_provider(provider)
     counter = provider if isinstance(provider, DevelopmentCounter) else DevelopmentCounter(provider)
     original_build = plan.builder.build
     def checked_build(*args, **kwargs):
@@ -430,29 +433,30 @@ class DevelopmentSuite:
     suite_id: str
     plans: tuple[DevelopmentPlan, ...]
     manifest: dict
+    tool_batch: bool = False
 
     @property
     def sha256(self):
         return digest(self.manifest)
 
 
-def prepare_suite(project_root: Path, *, suite_id="coach-grounded-suite-preview"):
+def prepare_suite(project_root: Path, *, suite_id="coach-grounded-suite-preview", tool_batch: bool = False):
     if not re.fullmatch(SUITE_PATTERN, suite_id):
         raise ValueError("development_suite_identity_invalid")
     suffix = suite_id.removeprefix("coach-grounded-suite-")
-    plans = tuple(prepare_observation(project_root, scenario=scenario,
+    plans = tuple(prepare_observation(project_root, scenario=scenario, tool_batch=tool_batch,
         run_id=f"coach-grounded-dev-{suffix}-{scenario}") for scenario in SUITE_SCENARIOS)
     manifest = {"schema_version": "1.0", "scope": "development_not_admission", "suite_id": suite_id,
         "cases": [{"run_id": p.run_id, "scenario": p.scenario, "plan_sha256": p.sha256} for p in plans],
-        "coach_contract": CONTRACT.snapshot().model_dump(mode="json"),
+        "coach_contract": (BATCH_COACH_CONTRACT if tool_batch else CONTRACT).snapshot().model_dump(mode="json"),
         "max_calls": 4 * 9, "max_total_tokens": 4 * CONTRACT.descriptor()["total_tokens"],
         "stop_policy": "continue-quality-failures-stop-common-errors-v1"}
-    return DevelopmentSuite(suite_id, plans, manifest)
+    return DevelopmentSuite(suite_id, plans, manifest, tool_batch)
 
 
 def execute_suite_once(project_root: Path, *, suite, provider_factory, implementation_sha=None, ci=None, on_progress=None):
     """Sequential independent cases; quality failure is not a transport failure."""
-    fresh = prepare_suite(project_root, suite_id=suite.suite_id)
+    fresh = prepare_suite(project_root, suite_id=suite.suite_id, tool_batch=suite.tool_batch)
     if fresh.sha256 != suite.sha256 or tuple(p.sha256 for p in fresh.plans) != tuple(p.sha256 for p in suite.plans):
         raise ValueError("development_suite_plan_drift")
     suite = fresh
@@ -478,6 +482,7 @@ def execute_suite_once(project_root: Path, *, suite, provider_factory, implement
                 receipt = execute_once(project_root, plan=plan, provider_factory=provider_factory,
                     real_evidence=evidence[index], on_progress=on_progress)
                 row.update(status="passed" if receipt.passed else "failed", provider_calls=receipt.provider_calls,
+                    agent_stop_reason=receipt.observation.agent_stop_reason,
                     observed_input_tokens=receipt.observed_input_tokens, observed_output_tokens=receipt.observed_output_tokens,
                     receipt_sha256=digest(receipt.model_dump(mode="json")), score=receipt.observation.evaluation_score,
                     sources=len(receipt.observation.evidence_source_ids), failure_codes=receipt.failure_codes,

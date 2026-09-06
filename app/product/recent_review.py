@@ -212,8 +212,11 @@ class RecentReviewRuntimeRequestCompiler:
         self.coach_contract = require_coach_contract(coach_contract)
         if coach_contract is not None:
             skill = catalog.get(_RECENT_SKILL_NAME)
-            if runtime_profile is not None or skill is None or skill.manifest.version != "0.3.0":
-                raise ProductRequestCompilationError("Coach compiler requires the independent 0.3.0 Skill")
+            if runtime_profile is not None or skill is None or skill.manifest.version != coach_contract.descriptor()["skill_version"]:
+                raise ProductRequestCompilationError("Coach compiler requires its independent versioned Skill")
+            expected_tools = coach_contract.descriptor().get("max_tool_calls")
+            if expected_tools is not None and skill.manifest.budgets.max_tool_calls != expected_tools:
+                raise ProductRequestCompilationError("Coach compiler tool budget mismatch")
         self._run_id_factory = run_id_factory
         self._runtime_profile = (
             require_registered_model_runtime_profile(runtime_profile)
