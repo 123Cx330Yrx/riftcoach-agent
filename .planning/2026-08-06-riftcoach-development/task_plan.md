@@ -86,7 +86,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-runtime-offline-wiring / completed-public / pending-product-version-real-acceptance-preparation`。
+当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-version-acceptance-preparation / completed-local / pending-public-ci`。
 
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
@@ -419,7 +419,9 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 
 ## Next Step
 
-当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-runtime-offline-wiring / completed-public / pending-product-version-real-acceptance-preparation`。
+当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-version-acceptance-preparation / completed-local / pending-public-ci`。
+
+RQ-246 已完成产品版本独立验收准备：全新五局合成输入、四场景冻结资产、实际产品 Runtime 观察入口、严格新鲜证据预检和不可覆盖回执；33项新增、聚焦/相邻共115项通过。下一步本实现同 SHA 公共 CI，之后才新鲜产品 G53-3-L。真实 API=0，默认、GLM-5.2、前端与旧回执不变；本条取代下方 RQ-245 准备待办。详见 `docs/plans/2026-09-06-coach-product-acceptance-preparation.md`。
 
 RQ-245 公共验证已完成：实现 `cecde250e131a0e81585e2e91ec261fad6817700` / Actions `34026629061` 三任务全部成功。下一步准备新产品版本独立真实验收，明确绑定实际产品 Runtime、Skill/程序和预算，不复用旧领域结果；不自动调用真实 API 或打开默认。下方待 CI 动作为历史。
 
