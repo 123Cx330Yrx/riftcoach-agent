@@ -2,7 +2,7 @@
 state_schema: 1
 main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
-current_checkpoint: "8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-tool-batch-budget-repair / in-progress / offline-public-and-bounded-development"
+current_checkpoint: "8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-tool-batch-budget-repair / completed-development / pending-product-adoption-preparation"
 status: in_progress
 pause_reason: ""
 ---
@@ -16,7 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
-- 当前摘要（2026-09-06，RQ-250）：RQ-249真实完整批次已执行四案，共4次调用、输入13050/输出812 tokens。四案都正常返回4个工具请求，却被Skill的max_tool_calls=3在检索前拦截；无报告/评分，不能判定模型质量不合格。原始逐案及整批回执保留。继续按用户授权修复这一预算错配：新增显式组合1.2.0、Skill0.4.0/程序2.2.0，将只读本地工具总量调整为8；模型9调用、high/8192/60秒、来源/事实/引用/注入/85分不变，旧组合/回执/默认/GLM-5.2/前端均不改。修复后验证四工具整批控制流与上限，再取得同SHA公共证据并完成有界开发复核；不另立正式考卷，8E in_progress、production_media=0。 本地修复已完成：新增13项、聚焦与相邻共196项通过，编译、治理、diff与零网络预检通过；下一步是本修复同SHA公共CI，随后执行一次新身份的完整开发复核。
+- 当前摘要（2026-09-06，RQ-250）：RQ-250工具批量预算修复完成本地、公共和完整真实开发验证。独立组合1.2.0/Skill0.4.0/程序2.2.0将本地工具总量从3调整为8，原报告/质量/9次模型调用预算不变；旧合同摘要及RQ-249失败回执保留。实现772179eba46ca02c99bc7d920e3ab048e39d0468 / Actions34033770356三任务同SHA全绿，新增13项/相邻196项、公共后端2701项通过。新完整四案经济96、整体97、生存96、记忆97，均3来源，事实/引用/注入检查通过，记忆预算偏好确认通过；17次真实调用，输入72595/输出14676 tokens。连同前一批定位问题的4次，本轮合计21调用/101133 tokens。当前开发验证已收口，下一步准备产品采用与真实数据黄金切片的衔接，不重复此开发批、不自动启默认或另立正式考卷。8E仍in_progress、production_media=0；这是已知两局合成demo的开发证据，不是独立领域准入或公共生产成熟度；GLM-5.2、前端与主仓库用户修改均不动。
 
 - RQ-249 历史摘要（2026-09-06，RQ-249）：用户明确要求全套测试并以“开始”授权本轮：补齐记忆专项，离线与同SHA公共验证通过后，直接执行经济→整体→生存→记忆四案真实开发批次，无需逐案再授权。四案使用同一实现及high/8192/60秒合同，每案最多9调用/649728 tokens，整批最多36调用/2598912 tokens；质量失败记录后继续独立后案，认证/额度/连接/超时或执行中断等共性故障停止。复用已知两局demo，不是新held-out，不拿旧96/95分拼接；不改默认、前端、GLM-5.2或旧回执，8E in_progress、production_media=0。RQ-248“只做一次经济观察”的下一步被本条取代；本地实现完成：新增18项，聚焦与相邻共180项通过，编译、零网络预检、治理及diff检查通过；当前待本实现公共CI，随后直接执行已授权真实批次，真实请求0。八维学习复用RQ-246计划的RQ-249节。
 
@@ -334,7 +334,7 @@ pause_reason: ""
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
 - 历史下一步（RQ-211）：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`。RQ-211 已在 exact-SHA 公共绿灯的 `c31127b3c780fe4c493966d8b60f942d3b773fd4` 干净快照上执行一次且仅一次普通智谱 `glm-5.3-flash` 请求；回执为 `not_pending`，表示有限观察窗内没有形成待取消读取，因此没有执行 cancel，也不能宣称 provider close/wakeup 已通过。回执 `908` bytes、SHA-256 `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，只含允许列表状态；迭代器、外层 SDK stream wrapper 和组合关闭投影均为 `closed`。候选保持 activation gate `disabled`、`activation_state=candidate`、`execution_allowed=false`、`capabilities.streaming=False` 且未注册；严格 Flash v1 仍 2048/零额外调用，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变。RQ-212 当前离线回放指针见本文最新段落；不自动追加真实请求、G53-7、黄金切片或生产准入。
-- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-tool-batch-budget-repair / in-progress / offline-public-and-bounded-development`。修复已确认的3工具限制错配，完成离线/公共/有界开发复核；不重跑或改写RQ-249原回执。
+- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-tool-batch-budget-repair / completed-development / pending-product-adoption-preparation`。准备产品采用与真实数据黄金切片的衔接，明确开发证据与独立采用证据的差别；不重复本开发批、不自动切默认或新建正式考卷。
 - RQ-205 已覆盖前述公共 CI 待办（历史）：`90242822df0e47304700644572bc12f0a3aa88ad` / Actions `33598541029` 三 job exact-SHA 全绿，公共 pytest `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`，fake/local 协议演练通过。当时的下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`，不自动发真实 recovery。
 - RQ-206 已覆盖上述历史指针：同一干净隔离工作树的诊断提交 `0b2342c240cfdc1801e673e830c9a7f30bed3fbd` / Actions `33603143606` exact-SHA 三 job 全绿；按一次性授权只发出 1 次 `zhipu/glm-5.3-flash` primary。流观察到 reasoning、可见正文、`stop` 与 EOF，但 Usage 缺失、close 失败，90 秒 attempt 门在晚到事件中触发，回执为 `fail_closed / elapsed_limit`，没有第二次 recovery。当时的下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，先离线设计/测试硬墙钟取消与 Usage/终态尾帧处理，不自动重测。
 - RQ-210 最新状态（历史）：隔离分支实现提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 已完成本地与 exact-SHA 公共 CI（Actions `33657368435` 三 job 全绿）；候选 adapter/deadline/v2/real 聚焦共 `73 passed`，扩展相邻回归共 `182 passed, 27 subtests passed`，compileall、diff check、governance 通过。报告字段只反映 session 所拥有的迭代器和外层 SDK stream wrapper，`shared_resource` 仅说明对象别名；不外推底层 HTTP response、非阻塞 close 或唤醒能力。RQ-209 回执不重写，候选/产品边界不变；当前指针见 RQ-212 最新段落。
@@ -944,10 +944,10 @@ pause_reason: ""
 
 | 进度线 | 当前事实 | 不能混淆为 |
 |---|---|---|
-| 本地代码 | RQ-249真实四案被3工具上限提前拦截；RQ-250独立版本将本地工具预算调整为8，新增13项/相邻196项通过；待公共及真实复核 | 工程限制中止等于模型质量差，或离线通过等于生产准入 |
-| 项目理解 | RQ-246计划追加RQ-249原理、代码地图、控制流、验证与操作边界；没有新增掌握确认 | 持久材料存在等于所有者独立掌握 |
+| 本地代码 | RQ-250独立版本8工具预算修复完成；196项相关测试和四案真实开发均通过：96/97/96/97分，各3来源 | 已知合成demo开发成功等于独立领域准入或8E完成 |
+| 项目理解 | RQ-246计划追加RQ-249/250的复现、版本化预算、完整结果及边界；没有新增掌握确认 | 持久材料存在等于所有者独立掌握 |
 | 参考资料 | 复用已核对的high参数支持，本批只核对仓库实现；媒体权利审计仍开放 | 合法参数或已知开发样本等于最优真实效果 |
-| GitHub/部署 | RQ-249实现ddd675c / Actions34032867533三任务同SHA全绿，公共后端2688项；RQ-250新实现待公共CI，公网闸门仍开放 | 自动测试通过等于真实领域质量、生产准入或发布 |
+| GitHub/部署 | RQ-250实现772179e / Actions34033770356三任务同SHA全绿，公共后端2701项；公网闸门仍开放 | 自动测试或本开发成绩等于生产准入、默认注册或发布 |
 
 当前 Riot 账号身份边界：官方 LoL routing 列表不含中国大陆 CN；外服 Riot ID 查询只能形成公开账号
 引用。用户选择“这是我的账号”在正式 RiftCoach Auth、安全绑定的 RSO callback 和精确 PUUID match 前
