@@ -25,7 +25,7 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 [8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
 该记录不把 8E coverage、领域采用或生产成熟度标为完成。
 
-> 当前学习指针（2026-09-06，RQ-248）：[产品验收计划的RQ-248节](../plans/2026-09-06-coach-product-acceptance-preparation.md)。新开发入口复用实际Runtime和已知demo；保留原失败词修复同主题别名识别，默认零网络、逐调用/检索/评测安全诊断及中断记录已离线验证。新增53项、相邻330项与27子测试通过，待本实现公共验证。本批真实请求0，不能等同真实质量或生产准入；所有者理解未新增确认，8E coverage仍planned。
+> 当前学习指针（2026-09-06，RQ-248）：[产品验收计划的RQ-248节](../plans/2026-09-06-coach-product-acceptance-preparation.md)。新开发入口复用实际Runtime和已知demo；保留原失败词修复同主题别名识别，默认零网络、逐调用/检索/评测安全诊断及中断记录已离线验证。新增53项、相邻330项与27子测试通过，实现 `02860e271ad595034f80d66f528edee838bebe1f` / Actions `34031421463` 已核对同SHA，pytest、postgres-migrations、packaging-smoke三任务全部成功；下一步为一次有界经济开发观察。本批真实请求0，不能等同真实质量或生产准入；所有者理解未新增确认，8E coverage仍planned。
 
 > 历史学习指针（2026-09-05，RQ-237）：在 [检索加固领域资产实现 walkthrough](8e-glm53-retrieval-hardened-domain-assets-walkthrough.md) 继续阅读、
 > [新鲜协议回执修复与复核](8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md)、
