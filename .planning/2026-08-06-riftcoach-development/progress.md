@@ -6210,3 +6210,9 @@
 - 归因：候选评测的 `llm.chat` 工具输出合同在结构化解码前要求正文非空；模型若返回不完整/空正文，既定的一次修复策略无法触发，表现为 `evaluation_unavailable`。
 - 修复仅作用于候选评测运行时，允许空正文进入解码器；生产工具合同、默认模型和质量门不变。生产执行器、V4 资产与领域门回归 16 项通过。
 - 下一步取得该修复提交的 exact-SHA 公共 CI；旧真实回执保持不可变，不立即重跑。
+
+## RQ-241 correction：失败类别可观测性（2026-09-06）
+
+- 复核发现“空正文是已确认根因”缺少直接证据；旧 V4 回执只保留稳定的 `evaluation_failed`，丢失了 ProviderError 的安全类别。
+- 新增向后兼容的 body-free `RunManifest.failure_code`，仅从安全 ProviderError 码填充；`DomainCaseSemanticObservation` 在没有 Agent 错误码时读取该字段。终态原因和质量门不变。
+- Harness/Store/生产执行器聚焦回归 36 项通过，compileall、diff check、governance 通过；下一步是该诊断提交的 exact-SHA 公共 CI，不重跑旧考卷。

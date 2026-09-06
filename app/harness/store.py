@@ -61,6 +61,7 @@ class FileRunStore:
             artifacts=raw.get("artifacts", []),
             transitions=raw.get("transitions", []),
             final_decision=raw.get("final_decision"),
+            failure_code=raw.get("failure_code"),
         )
 
     def write_artifact(

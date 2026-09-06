@@ -483,6 +483,8 @@ def _semantic_observation(
         agent_status = agent_failure.status.value
         agent_stop_reason = agent_failure.stop_reason.value
         error_code = agent_failure.error_code
+    if error_code is None:
+        error_code = manifest.failure_code
 
     evidence_source_ids = tuple(getattr(output, "evidence_source_ids", ()))
     evidence_diagnostics = _evidence_diagnostics(

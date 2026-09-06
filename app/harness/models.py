@@ -74,6 +74,9 @@ class RunManifest:
     artifacts: list[dict[str, Any]] = field(default_factory=list)
     transitions: list[dict[str, Any]] = field(default_factory=list)
     final_decision: str | None = None
+    # Optional body-free diagnostic for a failed bounded candidate run.
+    # Historical manifests omit this field and remain readable.
+    failure_code: str | None = None
 
     @classmethod
     def new(cls, run_id: str, config: HarnessConfig) -> "RunManifest":

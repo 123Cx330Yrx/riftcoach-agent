@@ -33,6 +33,7 @@ from app.runtime.signals import (
     RuntimeHarnessStatus,
     RuntimePublicationStatus,
 )
+from app.providers.errors import ProviderError
 
 
 class ReviewHarness:
@@ -386,6 +387,9 @@ class ReviewHarness:
         manifest = self.store.read_manifest()
         previous_status = manifest.status
         reason_code = self._reason_code(reason)
+        failure_code = self._failure_code(reason)
+        if failure_code is not None:
+            manifest.failure_code = failure_code
         advance(
             manifest,
             target,
@@ -432,7 +436,19 @@ class ReviewHarness:
 
     @staticmethod
     def _step_failure_reason(step: str, error: Exception) -> str:
-        return f"{step}_failed"
+        # Keep the public terminal reason stable while retaining one safe,
+        # body-free category for post-run diagnosis.
+        code = error.code if isinstance(error, ProviderError) else None
+        return f"{step}_failed:{code}" if code else f"{step}_failed"
+
+    @staticmethod
+    def _failure_code(reason: str) -> str | None:
+        if ":" not in reason:
+            return None
+        code = reason.split(":", 1)[1].strip()
+        if not code or not re.fullmatch(r"[a-z][a-z0-9_]{0,63}", code):
+            return None
+        return code
 
     @staticmethod
     def _reason_code(reason: str) -> str:

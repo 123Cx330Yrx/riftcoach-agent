@@ -18,6 +18,7 @@ from app.harness.steps import (
     RevisionRequest,
 )
 from app.harness.store import FileRunStore
+from app.providers.errors import ProviderResponseError
 
 
 class FakeRetriever:
@@ -281,6 +282,26 @@ class ReviewHarnessPassingPathTests(unittest.TestCase):
             },
             evaluation_paths,
         )
+
+    def test_provider_failure_keeps_only_a_safe_failure_code(self) -> None:
+        harness = self._build_harness(
+            evaluator=SequenceEvaluator([
+                ProviderResponseError(
+                    provider="zhipu",
+                    code="invalid_structured_output",
+                )
+            ]),
+            reviser=UnexpectedReviser(),
+        )
+
+        manifest = harness.run(
+            player_summary=self.player_summary,
+            deterministic_report=self.deterministic_report,
+        )
+
+        self.assertEqual(RunStatus.DEGRADED, manifest.status)
+        self.assertEqual("invalid_structured_output", manifest.failure_code)
+        self.assertEqual("evaluation_failed", manifest.transitions[-1]["reason"])
 
     def test_prompt_injection_issue_blocks_revision_and_publishing(self) -> None:
         evaluation = EvaluationResult(
