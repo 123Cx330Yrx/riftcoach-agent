@@ -850,6 +850,7 @@ groups:
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-report-contract-alignment / completed-local / pending-public-ci
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-report-contract-alignment / completed-public / pending-runtime-contract-budget-proof
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-report-contract-budget / completed-local / pending-public-ci
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-report-contract-budget / completed-public / pending-product-runtime-offline-wiring
     status: planned
     evidence:
       problem_and_principle:

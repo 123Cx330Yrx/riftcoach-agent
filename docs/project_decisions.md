@@ -3641,4 +3641,4 @@ Portal、Account、Workbench、Auth、路由或生产准入。
 
 ### RQ-244：预算证据限定与产品迁移组合（2026-09-06）
 
-采用经同一开发入口、满额模拟 Usage 的九请求预算证明，三场景预留在原 205000 墙内；104 项测试通过，待本实现公共 CI。接受 RQ-244 计划列出的下一产品版本组合，先显式离线接线，不自动更改注册表/默认值；固定 demo 不能替代长玩家/Memory 的产品预算验证。旧真实失败、GLM-5.2 和正式准入边界保持。下一步公共验证后推进实际 Runtime 接线，详见 [计划](plans/2026-09-06-report-contract-budget-and-runtime-migration.md)。
+采用经同一开发入口、满额模拟 Usage 的九请求预算证明，三场景预留在原 205000 墙内；104 项测试通过，实现 `1cd2deb` / CI `34025448118` 三任务同 SHA 全绿。接受 RQ-244 计划列出的下一产品版本组合，先显式离线接线，不自动更改注册表/默认值；固定 demo 不能替代长玩家/Memory 的产品预算验证。旧真实失败、GLM-5.2 和正式准入边界保持。下一步推进实际 Runtime 接线，详见 [计划](plans/2026-09-06-report-contract-budget-and-runtime-migration.md)。

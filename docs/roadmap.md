@@ -1793,4 +1793,4 @@ Account、Workbench、Auth、路由或 `production_media=0`。实现提交
 
 ### RQ-244（2026-09-06）报告合同预算与迁移
 
-三匿名场景通过九请求本地链预算，104 项测试通过；当前待本实现公共 CI，随后新产品执行组合离线接线，取代上条待预算动作。新产品版本仅为实施目标，默认模型/前端/GLM-5.2 不变；生产与 8F 未完成，详见 [计划](plans/2026-09-06-report-contract-budget-and-runtime-migration.md)。
+三匿名场景通过九请求本地链预算，104 项测试通过；实现 `1cd2deb` / CI `34025448118` 三任务同 SHA 全绿，下一步新产品执行组合离线接线，取代上条待预算动作。新产品版本仅为实施目标，默认模型/前端/GLM-5.2 不变；生产与 8F 未完成，详见 [计划](plans/2026-09-06-report-contract-budget-and-runtime-migration.md)。

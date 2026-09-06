@@ -1615,4 +1615,4 @@ RQ-242 取代“待经济观察”：该场景 3 来源但修订失败；诊断�
 
 RQ-243 已完成候选报告合同对齐（144 项测试及 `57c73e5` / CI `34023099294` 三任务通过）；新开发身份不升级旧正式证据，实际模型调用为 0。下一步完整预算证明与产品迁移版本对齐；正式领域、8-Core/8-Advanced 与 8F 退出规则不变，详见 [计划](plans/2026-09-06-candidate-generation-revision-contract-alignment.md)。
 
-RQ-244（2026-09-06）：新报告合同预算和迁移版本表完成，三场景九请求完整本地路径、104 项测试通过；当前待本实现公共 CI，随后新产品执行组合离线接线。该结果仍是开发证据，不改变 8-Core/8-Advanced 或 8F 出口，不开启产品默认，详见 [计划](plans/2026-09-06-report-contract-budget-and-runtime-migration.md)。
+RQ-244（2026-09-06）：新报告合同预算和迁移版本表完成，三场景九请求完整本地路径、104 项测试通过；实现 `1cd2deb` / CI `34025448118` 三任务同 SHA 全绿，下一步新产品执行组合离线接线。该结果仍是开发证据，不改变 8-Core/8-Advanced 或 8F 出口，不开启产品默认，详见 [计划](plans/2026-09-06-report-contract-budget-and-runtime-migration.md)。
