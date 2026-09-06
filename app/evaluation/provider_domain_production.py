@@ -651,6 +651,8 @@ def _evidence_diagnostics(
 def _evaluation_observation(
     manifest: RunManifest,
     store: FileRunStore,
+    *,
+    allow_incomplete_history: bool = False,
 ) -> tuple[EvaluationDiagnostics, dict | None]:
     empty = EvaluationDiagnostics()
     records = [
@@ -665,7 +667,18 @@ def _evaluation_observation(
         f"evaluations/evaluation_attempt_{attempt_id}.json"
         for attempt_id in range(manifest.attempt_id + 1)
     )
-    if len(records) != len(expected_paths):
+    incomplete = (
+        allow_incomplete_history
+        and manifest.attempt_id == 1
+        and len(records) == 1
+        and manifest.status.value in {"rejected", "degraded"}
+        and _terminal_reason(manifest) in {"revision_failed", "evaluation_failed"}
+    )
+    if incomplete:
+        # Development diagnostics may retain the validated first evaluation
+        # after revision/re-evaluation failed. It is never a final score.
+        expected_paths = expected_paths[:1]
+    elif len(records) != len(expected_paths):
         return empty, None
 
     attempts = []
@@ -718,7 +731,7 @@ def _evaluation_observation(
         ValueError,
     ):
         return empty, None
-    return EvaluationDiagnostics(attempts=tuple(attempts)), latest_payload
+    return EvaluationDiagnostics(attempts=tuple(attempts)), None if incomplete else latest_payload
 
 
 def _valid_evaluation_payload(payload: dict) -> bool:

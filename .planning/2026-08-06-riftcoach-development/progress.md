@@ -6232,3 +6232,10 @@
 - 新开发回执 `glm53_survival_diagnostic_rq241_01.json`，2759 bytes，SHA-256 `bbfe664c4e61702b0d3ecd0d15fce046d2db24a5530ea01c5aea425169818106`。严格语义类型/资源/body-free 校验通过，匿名正文临时目录随进程退出删除；旧模拟目录 `tmp/debug-guided` 已清理，正式回执和主仓库用户修改均未动。
 - 这是新的开发场景证据，不能追溯证明旧 V4 根因；探针保守保留 `probe_public_ci_verified=false`，外部同 SHA CI 关联在本记录明确列出，不回改原始回执。
 - 下一步：已有 economy_adjustment 一次开发观察，然后汇总代码/代表场景证据与正式运行时接入缺口；不再停留在“是否新观察”的笼统裁决。
+
+## RQ-242：经济开发观察完成，修订诊断离线补全（2026-09-06）
+
+- 同 SHA `7c931f6a7b01d81b1ee4b4ff4604f1ec87601f3e` / CI `34021621810` 三项全绿后执行一次 economy_adjustment；4 调用、13892 tokens、37548ms、3 来源、revision_count=1、rejected/revision_failed，没有最终评分。未自动重试。
+- 新回执 `glm53_economy_diagnostic_rq241_01.json` 为 2673 bytes，SHA-256 `f9f61100d104015a4cb18be03d1862c36678f531bf0e9fa8445df61dea95dc0b`；身份/资源/类型/body-free 校验通过。探针原字段 `probe_public_ci_verified=false` 保留，外部公共关联如上；真实正文随临时目录清除，不能恢复初评分或具体校验失败项。
+- 新增三种修订校验码和开发回执 1.1 evaluation_history；三项全链路测试先红后绿，聚焦 35 passed/4 subtests，相邻 82 passed/12 subtests。历史正式回执/评分合同、拒绝规则、一次修订和请求墙均不变。
+- 产品接入差异已基于实际代码核对并记录到当前计划；本批未更换默认模型、注册候选或修改前端。下一步本次修复公共 CI；无第二次真实请求。

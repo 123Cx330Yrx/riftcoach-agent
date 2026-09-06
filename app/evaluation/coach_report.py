@@ -5,6 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_vali
 
 from app.providers.models import StructuredResponseContract
 from app.providers.structured import contract_for_model
+from app.report_validation import ReportValidationError
 
 
 NonBlankText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
@@ -312,6 +313,10 @@ def validate_revised_report(report: str, original_report: str) -> None:
     ]
     missing = [heading for heading in required_headings if heading not in report]
     if missing:
-        raise ValueError(f"Revised report is missing headings: {missing}")
+        raise ReportValidationError(
+            "report_missing_headings", f"Revised report is missing headings: {missing}"
+        )
     if len(report) < len(original_report) * 0.7:
-        raise ValueError("Revised report is unexpectedly shorter than the original.")
+        raise ReportValidationError(
+            "report_too_short", "Revised report is unexpectedly shorter than the original."
+        )

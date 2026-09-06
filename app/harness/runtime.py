@@ -35,6 +35,7 @@ from app.runtime.signals import (
 )
 from app.providers.errors import ProviderError
 from app.tools.errors import ToolError
+from app.report_validation import ReportValidationError
 
 _SAFE_FAILURE_CODES = frozenset(
     {
@@ -56,6 +57,9 @@ _SAFE_FAILURE_CODES = frozenset(
         "timeout",
         "tool_execution_failed",
         "unexpected_sdk_error",
+        "report_missing_headings",
+        "report_too_short",
+        "unknown_report_citation",
     }
 )
 
@@ -464,7 +468,7 @@ class ReviewHarness:
         # body-free category for post-run diagnosis.
         code = (
             error.code
-            if isinstance(error, (ProviderError, ToolError))
+            if isinstance(error, (ProviderError, ToolError, ReportValidationError))
             else None
         )
         if not isinstance(code, str) or code not in _SAFE_FAILURE_CODES:
@@ -525,7 +529,8 @@ class ReviewHarness:
         }
         unknown = sorted(cited_ids.difference(allowed_ids))
         if unknown:
-            raise ValueError(
+            raise ReportValidationError(
+                "unknown_report_citation",
                 "Coach report contains unknown knowledge citation IDs: "
                 + ", ".join(unknown)
             )

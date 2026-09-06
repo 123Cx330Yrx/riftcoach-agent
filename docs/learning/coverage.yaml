@@ -845,6 +845,7 @@ groups:
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-real-observation / pending-retrieval-failure-attribution
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-domain-assets-v4 / completed-failure-attribution-diagnostics / pending-fresh-observation-decision
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-development / completed-survival-observation / pending-economy-observation
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-development / completed-revision-diagnostics-local / pending-public-ci
     status: planned
     evidence:
       problem_and_principle:

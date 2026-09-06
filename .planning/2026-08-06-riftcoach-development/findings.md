@@ -5862,3 +5862,10 @@
 - 已移除该猜测性放宽，仅保留向后兼容的 body-free `failure_code`，并限制为固定安全枚举。后续新鲜观察才能在不暴露正文/凭据的前提下区分结构化输出、超时或提供方错误。
 - 完整链路回归进一步复现：旧 `_require_success` 将 ToolResult 错误转成普通 RuntimeError，因此 timeout / invalid_chat_response / invalid_tool_output 仍丢失；三个新增测试修复前均失败。改用既有 ToolError 后三项通过，invalid_structured_output 的一次格式修复边界也通过。没有依据宣称旧 V4 的具体触发码已知。
 - 新真实 survival_adjustment 取得 `01_metric_interpretation.md` 与 `03_training_plan.md` 两个来源，评测 96 分且六项检查通过。两条自主查询虽归类 unmapped，但原查询检索均有结果，证明主题恢复未命中不等于检索失败；不据此推断旧失败查询内容。
+
+## RQ-242：经济观察与产品接入差异（2026-09-06）
+
+- 经济观察 4 调用/3 来源，以 revision_failed 拒绝；revision_count=1 说明已进入修订，不能说评测完全没运行。原始首次评分和修订错误未留存，仍未知。
+- 已复现诊断投影要求 attempt_0/1 齐全，修订失败时把有效 attempt_0 一并省略；新开发历史显式允许该已验证前缀，但正式终态/最终评分仍为空。标题、长度、引用失败新增固定安全码，不放宽规则。
+- 产品已经接了 Flash v1（max/2048），并非完全没接模型；low/4096 与查询指引、检索恢复、来源门目前只在候选路径。Worker 的普通 ContextBuilder、知识库及 SkillReviewExecutor 未消费这些候选开关；运行策略/Trace/Prompt Program 需要一致版本迁移。
+- 旧 V4 的 summary 是 5 局/3 胜/2 负，基线 report 却是 4 局/2 胜/2 负；逐案循环只因预算/异常停止，不因案例拒绝停止。两者必须在新正式版本中修复，但不是本次经济场景（独立两局 demo）的已证实根因。

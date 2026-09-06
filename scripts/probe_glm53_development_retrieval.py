@@ -25,7 +25,10 @@ from app.evaluation.provider_domain_plan import (
     DomainCaseContextCommitment, DomainCaseInput, DomainCaseInputPlanArtifact,
     DomainFixtureCommitment, LoadedDomainCaseInputPlan,
 )
-from app.evaluation.provider_domain_production import ProductionDomainCaseExecutor
+from app.evaluation.provider_domain_production import (
+    ProductionDomainCaseExecutor, _evaluation_observation,
+)
+from app.harness.store import FileRunStore
 from app.evaluation.glm53_guided_candidate import (
     GUIDANCE_ID, GUIDANCE_SHA256, build_guided_context_snapshot,
     require_guided_candidate, GuidedCandidateExecutor,
@@ -184,8 +187,18 @@ def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=l
         execution_error = "terminal_output_validation_failed"
     guidance_id = GUIDANCE_ID if retrieval_guidance is not None else None
     guidance_sha256 = GUIDANCE_SHA256 if retrieval_guidance is not None else None
+    evaluation_history = {"attempts": [], "complete": False}
+    if result is not None:
+        run_store = FileRunStore(runs_root, plan.artifact.case(case_id).run_id)
+        history, final_evaluation = _evaluation_observation(
+            run_store.read_manifest(), run_store, allow_incomplete_history=True,
+        )
+        evaluation_history = {
+            **history.model_dump(mode="json"),
+            "complete": final_evaluation is not None,
+        }
     return {
-        "schema_version": "1.0", "scope": "development_not_admission",
+        "schema_version": "1.1", "scope": "development_not_admission",
         "evidence_origin": "real_provider" if real else "offline_fake",
         "network_used": real and state.calls_used > 0,
         "candidate_registered": False, "production_admitted": False,
@@ -197,6 +210,7 @@ def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=l
         "retrieval_guidance_id": guidance_id, "retrieval_guidance_sha256": guidance_sha256,
         "queries": observer.queries,
         "observation": result.model_dump(mode="json") if result is not None else None,
+        "evaluation_history": evaluation_history,
         "execution_error": execution_error,
     }
 

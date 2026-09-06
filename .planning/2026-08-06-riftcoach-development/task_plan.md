@@ -86,7 +86,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-development / completed-survival-observation / pending-economy-observation`。
+当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-development / completed-revision-diagnostics-local / pending-public-ci`。
 
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
@@ -419,9 +419,9 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 
 ## Next Step
 
-当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-development / completed-survival-observation / pending-economy-observation`。
+当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-development / completed-revision-diagnostics-local / pending-public-ci`。
 
-RQ-241 本批：完整错误链路修复和公共 CI 完成；survival_adjustment 实际 3 次调用、2 来源、96 分、published。下一步为已有 economy_adjustment 场景的一次开发观察，再汇总正式接入条件；详见 `docs/plans/2026-09-06-guided-domain-candidate-assets.md`。不重跑任何旧 held-out，不把开发回执算作领域或生产准入。
+RQ-242 本批：economy_adjustment 实际 4 次调用、3 来源、revision_failed；已离线补齐修订错误类别和中间评测诊断，117 项测试通过。下一步取得本次修复公共 CI，再按当前计划内的产品接入差异清单处理合同对齐；不重复经济观察、不把开发回执算作正式准入。
 
 以下检索加固阶段的下一步均保留为历史记录，不能替代上方当前动作。
 RQ-230 已完成一次 V2 真实观察并完成失败归因；RQ-231 接受的全新 V3 最多一次受控修订、

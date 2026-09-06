@@ -8,9 +8,11 @@ from scripts.probe_glm53_development_retrieval import (
     DEVELOPMENT_SCENARIOS, QueryObserver, development_plan, main, observe,
 )
 from app.evaluation.glm53_flash_candidate_profile import GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
-from app.evaluation.provider_domain_production import ProductionDomainCaseExecutor
+from app.evaluation.provider_domain_production import ProductionDomainCaseExecutor, _evaluation_observation
 from tests.test_coaching_retrieval_development_chain import ScriptedCoach
 from tests.test_provider_domain_production import ROOT
+from tests.test_provider_domain_production import OneRevisionProvider, REVISION_REPORT
+from app.evaluation.coach_report import REVISER_SYSTEM_PROMPT
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.rag.coaching_query import COACHING_QUERY_GUIDANCE_V1
 from app.skills.review_executor import SkillReviewExecutionError
@@ -105,6 +107,99 @@ def test_guidance_is_an_explicit_candidate_context_addendum(tmp_path):
     assert report["retrieval_guidance_sha256"]
     system_text = "\n".join(message.content for message in provider.requests[0].messages if message.role.value == "system")
     assert COACHING_QUERY_GUIDANCE_V1 in system_text
+
+
+@pytest.mark.parametrize("failure", ["report_missing_headings", "report_too_short", "unknown_report_citation"])
+def test_revision_failure_keeps_prior_evaluation_without_claiming_final_score(tmp_path, failure):
+    class InvalidRevision(OneRevisionProvider):
+        def chat(self, request):
+            if any(message.content == REVISER_SYSTEM_PROMPT for message in request.messages):
+                self.requests.append(request)
+                report = REVISION_REPORT
+                if failure == "report_missing_headings":
+                    report = report.replace("## 6. 训练计划", "## private_heading")
+                elif failure == "unknown_report_citation":
+                    report = report.replace("[K1]", "[K999999]")
+                return self._text(report)
+            response = super().chat(request)
+            if failure == "report_too_short" and any(message.role.value == "tool" for message in request.messages):
+                return self._text(REVISION_REPORT + "\nprivate_original_details" * 50)
+            return response
+
+    provider = InvalidRevision(provider_name="zhipu", model_name="glm-5.3-flash")
+    report = observe(provider, root=ROOT, runs_root=tmp_path, retrieval_guidance=COACHING_QUERY_GUIDANCE_V1)
+    result = report["observation"]
+    assert result["terminal_status"] == "rejected"
+    assert result["terminal_reason"] == "revision_failed"
+    assert result["safe_provider_error_code"] == failure
+    assert result["revision_count"] == 1
+    assert result["evaluation_score"] is None
+    assert result["evaluation_validated"] is False
+    history = report["evaluation_history"]
+    assert history["complete"] is False
+    assert [row["score"] for row in history["attempts"]] == [70]
+    assert history["attempts"][0]["issue_category_counts"] == [{"name": "fact_error", "count": 1}]
+    assert report["resources"]["calls_used"] == 4
+    assert not any(secret in json.dumps(report) for secret in ("private_heading", "private_original_details", "K999999", "controlled"))
+    manifest = FileRunStore(tmp_path, development_plan(ROOT, guided=True).artifact.cases[0].run_id).read_manifest()
+    assert manifest.failure_code == failure
+    assert not any(row["kind"] == "final_report" for row in manifest.artifacts)
+
+
+def test_unknown_revision_exception_does_not_leak_code_or_text(tmp_path, monkeypatch):
+    def fail(*_args, **_kwargs):
+        error = ValueError("private revision text")
+        error.code = "report_missing_headings"
+        raise error
+    monkeypatch.setattr("app.harness.adapters.ChatCoachReviser.revise", fail)
+    provider = OneRevisionProvider(provider_name="zhipu", model_name="glm-5.3-flash")
+    report = observe(provider, root=ROOT, runs_root=tmp_path, retrieval_guidance=COACHING_QUERY_GUIDANCE_V1)
+    assert report["observation"]["terminal_reason"] == "revision_failed"
+    assert report["observation"]["safe_provider_error_code"] is None
+    assert report["evaluation_history"]["attempts"][0]["score"] == 70
+    assert "private revision text" not in json.dumps(report)
+
+
+@pytest.mark.parametrize("second_evaluation_fails", [False, True])
+def test_development_history_separates_prior_from_final_evaluation(tmp_path, second_evaluation_fails):
+    class EvaluatedRevision(OneRevisionProvider):
+        def chat(self, request):
+            if second_evaluation_fails and request.response_contract is not None and self.evaluation_attempts == 1:
+                self.requests.append(request)
+                raise ProviderTimeoutError(provider="zhipu", code="timeout")
+            return super().chat(request)
+    report = observe(EvaluatedRevision(provider_name="zhipu", model_name="glm-5.3-flash"),
+                     root=ROOT, runs_root=tmp_path, retrieval_guidance=COACHING_QUERY_GUIDANCE_V1)
+    history = report["evaluation_history"]
+    assert history["complete"] is not second_evaluation_fails
+    assert [row["score"] for row in history["attempts"]] == ([70] if second_evaluation_fails else [70, 95])
+    assert report["observation"]["evaluation_score"] == (None if second_evaluation_fails else 95)
+    assert report["observation"]["terminal_status"] == ("rejected" if second_evaluation_fails else "published")
+    assert report["resources"]["calls_used"] == 5
+
+
+@pytest.mark.parametrize("tamper", ["content", "path", "producer", "run_id", "duplicate"])
+def test_partial_development_history_rejects_corrupt_artifacts(tmp_path, monkeypatch, tamper):
+    def fail(*_args, **_kwargs):
+        raise ValueError("private revision error")
+    monkeypatch.setattr("app.harness.adapters.ChatCoachReviser.revise", fail)
+    observe(OneRevisionProvider(provider_name="zhipu", model_name="glm-5.3-flash"),
+            root=ROOT, runs_root=tmp_path, retrieval_guidance=COACHING_QUERY_GUIDANCE_V1)
+    run_id = development_plan(ROOT, guided=True).artifact.cases[0].run_id
+    store = FileRunStore(tmp_path, run_id)
+    manifest = store.read_manifest()
+    # The original formal observation contract remains complete-only.
+    assert not _evaluation_observation(manifest, store)[0].attempts
+    record = next(row for row in manifest.artifacts if row["kind"] == "evaluation_result")
+    if tamper == "content":
+        (tmp_path / run_id / record["path"]).write_text("private corrupt artifact", encoding="utf-8")
+    elif tamper == "duplicate":
+        manifest.artifacts.append(dict(record))
+    else:
+        record[tamper] = "private_invalid_identity"
+    history, payload = _evaluation_observation(manifest, store, allow_incomplete_history=True)
+    assert history.attempts == ()
+    assert payload is None
 
 
 def test_guided_executor_rebinds_exact_candidate_policy_and_context(tmp_path):

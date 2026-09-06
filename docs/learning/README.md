@@ -25,7 +25,9 @@ RiftCoach 的代码增长很快，但“代码已经存在”和“项目所有�
 [8E Flash fresh-recovery 合同 walkthrough](8e-glm53-fresh-recovery-attempt-contract-walkthrough.md) 与 [8E Flash 适配与身份 walkthrough](8e-glm53-adapter-profile-tdd-walkthrough.md)。
 该记录不把 8E coverage、领域采用或生产成熟度标为完成。
 
-> 当前学习指针（2026-09-05，RQ-237）：在 [检索加固领域资产实现 walkthrough](8e-glm53-retrieval-hardened-domain-assets-walkthrough.md) 继续阅读、
+> 当前学习指针（2026-09-06，RQ-242）：[开发观察、修订诊断与产品接入差异](../plans/2026-09-06-guided-domain-candidate-assets.md)。经济观察取得 3 来源但修订拒绝；本地诊断修复 117 项测试通过，待公共 CI。学习重点是中间评分与最终评分分离、验证规则与错误可观测性分离；8E coverage 仍 planned，未准入生产。
+
+> 历史学习指针（2026-09-05，RQ-237）：在 [检索加固领域资产实现 walkthrough](8e-glm53-retrieval-hardened-domain-assets-walkthrough.md) 继续阅读、
 > [新鲜协议回执修复与复核](8e-glm53-fresh-g53-3l-receipt-latency-fix-walkthrough.md)、
 > [V3 有界修订设计 walkthrough](8e-glm53-hardened-domain-v3-bounded-revision-design-walkthrough.md)、
 > [ADR-0094](../adr/0094-adopt-glm53-hardened-domain-v3-bounded-revision.md)、
