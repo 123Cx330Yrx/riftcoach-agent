@@ -59,13 +59,16 @@ def test_guidance_is_an_explicit_candidate_context_addendum(tmp_path):
             quality_hardening=True,
             retrieval_guidance=COACHING_QUERY_GUIDANCE_V1,
         )
+    provider = ScriptedCoach()
     report = observe(
-        ScriptedCoach(), root=ROOT, runs_root=tmp_path,
+        provider, root=ROOT, runs_root=tmp_path,
         retrieval_guidance=COACHING_QUERY_GUIDANCE_V1,
     )
     assert report["observation"]["terminal_status"] == "published"
     assert report["retrieval_guidance_id"] == "coaching-query-guidance-v1"
     assert report["retrieval_guidance_sha256"]
+    system_text = "\n".join(message.content for message in provider.requests[0].messages if message.role.value == "system")
+    assert COACHING_QUERY_GUIDANCE_V1 in system_text
 
 
 def test_terminal_projection_failure_retains_safe_diagnostics(tmp_path, monkeypatch):

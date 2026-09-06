@@ -17,12 +17,18 @@ if str(ROOT) not in sys.path:
 from app.evaluation.glm53_bounded_revision_budget import (
     BoundedRevisionBudgetedProvider, BoundedRevisionBudgetState,
 )
+from app.agent.context import CANDIDATE_CONTEXT_SAFETY_POLICY_V1
+from app.evaluation.prompt_context_identity import case_context_sha256
 from app.evaluation.glm53_flash_candidate_profile import GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
 from app.evaluation.provider_domain_experiment import DomainCaseExecutionPlan
 from app.evaluation.provider_domain_plan import (
-    DomainCaseInput, DomainCaseInputPlanArtifact, DomainFixtureCommitment, LoadedDomainCaseInputPlan,
+    DomainCaseContextCommitment, DomainCaseInput, DomainCaseInputPlanArtifact,
+    DomainFixtureCommitment, LoadedDomainCaseInputPlan,
 )
 from app.evaluation.provider_domain_production import ProductionDomainCaseExecutor
+from app.evaluation.glm53_guided_candidate import (
+    GUIDANCE_ID, GUIDANCE_SHA256, build_guided_context_snapshot, require_guided_candidate,
+)
 from app.skills.review_executor import SkillReviewExecutionError
 from app.rag.coaching_query import (
     COACHING_QUERY_GUIDANCE_V1, _TOPICS, _contains_alias, _normalize, _topic,
@@ -38,7 +44,7 @@ def digest(raw: bytes) -> str:
     return hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
 
 
-def development_plan(root: Path) -> LoadedDomainCaseInputPlan:
+def development_plan(root: Path, *, guided: bool = False) -> LoadedDomainCaseInputPlan:
     summary = root / "examples/fixtures/player_summary_demo.json"
     report = root / "examples/fixtures/deterministic_report_demo.md"
     artifact = DomainCaseInputPlanArtifact(
@@ -54,12 +60,45 @@ def development_plan(root: Path) -> LoadedDomainCaseInputPlan:
             focus="overall", knowledge_mode="standard",
         ),),
     )
+    if guided:
+        provisional = LoadedDomainCaseInputPlan(
+            artifact=artifact, player_summary_path=summary, deterministic_report_path=report,
+            execution_plan=DomainCaseExecutionPlan(
+                plan_id=artifact.plan_id, plan_version=artifact.plan_version,
+                plan_sha256=digest(artifact.model_dump_json().encode()), case_ids=(CASE_ID,),
+            ),
+        )
+        snapshot = build_guided_context_snapshot_for_plan(provisional, root)
+        artifact = DomainCaseInputPlanArtifact.model_validate({**artifact.model_dump(mode="json"),
+            "schema_version": "1.1",
+            "prompt_context_snapshot_id": snapshot.snapshot_id,
+            "prompt_context_snapshot_sha256": snapshot.snapshot_sha256,
+            "case_context_commitments": tuple(
+                DomainCaseContextCommitment(case_id=row.case_id, context_sha256=case_context_sha256(row))
+                for row in snapshot.case_contexts
+            ),
+        })
     return LoadedDomainCaseInputPlan(
         artifact=artifact, player_summary_path=summary, deterministic_report_path=report,
         execution_plan=DomainCaseExecutionPlan(
             plan_id=artifact.plan_id, plan_version=artifact.plan_version,
             plan_sha256=digest(artifact.model_dump_json().encode()), case_ids=(CASE_ID,),
         ),
+    )
+
+
+def build_guided_context_snapshot_for_plan(plan: LoadedDomainCaseInputPlan, root: Path):
+    """Build a provisional identity before sealing the schema 1.1 plan."""
+    from app.evaluation.prompt_context_identity import build_prompt_context_snapshot_for_cases
+    import json
+    return build_prompt_context_snapshot_for_cases(
+        skills_root=root / "skills",
+        player_summary=json.loads(plan.player_summary_path.read_text(encoding="utf-8")),
+        deterministic_report=plan.deterministic_report_path.read_text(encoding="utf-8"),
+        cases=plan.artifact.cases,
+        snapshot_id="glm53-guided-development-context-v1",
+        evaluation_contract_version="1.1.0",
+        policy_addendum="\n\n".join((CANDIDATE_CONTEXT_SAFETY_POLICY_V1, COACHING_QUERY_GUIDANCE_V1)),
     )
 
 
@@ -98,7 +137,9 @@ class QueryObserver:
 
 def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=lambda _event: None,
             retrieval_guidance: str | None = None):
-    plan = development_plan(root)
+    plan = development_plan(root, guided=retrieval_guidance is not None)
+    if retrieval_guidance is not None:
+        require_guided_candidate(project_root=root, input_plan=plan)
     state = BoundedRevisionBudgetState()
     state.register_case(CASE_ID)
     budgeted = BoundedRevisionBudgetedProvider(
@@ -119,8 +160,8 @@ def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=l
         # Never persist exception text, prompts, drafts or model reasoning.
         result = None
         execution_error = "terminal_output_validation_failed"
-    guidance_id = "coaching-query-guidance-v1" if retrieval_guidance is not None else None
-    guidance_sha256 = digest(retrieval_guidance.encode("utf-8")) if retrieval_guidance is not None else None
+    guidance_id = GUIDANCE_ID if retrieval_guidance is not None else None
+    guidance_sha256 = GUIDANCE_SHA256 if retrieval_guidance is not None else None
     return {
         "schema_version": "1.0", "scope": "development_not_admission",
         "evidence_origin": "real_provider" if real else "offline_fake",
