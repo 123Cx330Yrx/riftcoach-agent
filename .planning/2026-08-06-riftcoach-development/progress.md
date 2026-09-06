@@ -6216,3 +6216,4 @@
 - 复核发现“空正文是已确认根因”缺少直接证据；旧 V4 回执只保留稳定的 `evaluation_failed`，丢失了 ProviderError 的安全类别。
 - 新增向后兼容的 body-free `RunManifest.failure_code`，仅从安全 ProviderError 码填充；`DomainCaseSemanticObservation` 在没有 Agent 错误码时读取该字段。终态原因和质量门不变。
 - Harness/Store/生产执行器聚焦回归 36 项通过，compileall、diff check、governance 通过；下一步是该诊断提交的 exact-SHA 公共 CI，不重跑旧考卷。
+- 提交 `f2a7470` 的 exact-SHA 公共 CI `34017153819` 三项全绿；当前收口为等待一次新鲜观察的是否立项裁决，旧 V4 回执不重跑。
