@@ -6,7 +6,6 @@ import hashlib
 import json
 from pathlib import Path
 
-from app.agent.context import CANDIDATE_CONTEXT_SAFETY_POLICY_V1
 from app.evaluation.prompt_context_identity import (
     PromptContextSnapshot,
     build_prompt_context_snapshot_for_cases,
@@ -18,6 +17,10 @@ from app.evaluation.glm53_flash_candidate_profile import (
     GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
 )
 from app.evaluation.provider_domain_production import ProductionDomainCaseExecutor
+from app.evaluation.glm53_report_contract import (
+    DEVELOPMENT_PLAN_ID, DEVELOPMENT_SNAPSHOT_ID,
+    candidate_context_policy, require_report_contract,
+)
 
 GUIDANCE_ID = "coaching-query-guidance-v1"
 GUIDANCE_SHA256 = hashlib.sha256(COACHING_QUERY_GUIDANCE_V1.encode("utf-8")).hexdigest()
@@ -55,11 +58,22 @@ def _canonical_digest(path: Path) -> str:
 
 
 def build_guided_context_snapshot(
-    *, project_root: str | Path, input_plan: LoadedDomainCaseInputPlan
+    *, project_root: str | Path, input_plan: LoadedDomainCaseInputPlan,
+    report_contract_id: str | None = None,
 ) -> PromptContextSnapshot:
     """Rebuild the exact candidate Context identity; never trust a caller hash."""
 
     artifact = input_plan.artifact
+    require_report_contract(report_contract_id)
+    if report_contract_id is not None and not (
+        artifact.plan_id == DEVELOPMENT_PLAN_ID
+        and artifact.plan_version == "2.0.0"
+        and artifact.dataset_id == "demo-development-not-heldout"
+        and artifact.prompt_context_snapshot_id == DEVELOPMENT_SNAPSHOT_ID
+        and all(row.case_id.startswith("development_report_contract_")
+                and row.run_id == row.case_id for row in artifact.cases)
+    ):
+        raise ValueError("report contract development requires fresh bound identities")
     if artifact.schema_version != "1.1":
         raise ValueError("guided candidate requires a schema 1.1 input plan")
     if artifact.dataset_id.startswith("glm53-flash-retrieval-hardened-domain-heldout"):
@@ -71,6 +85,11 @@ def build_guided_context_snapshot(
     if artifact.max_revisions != 1:
         raise ValueError("guided candidate requires one bounded revision")
     root = Path(project_root).resolve()
+    if report_contract_id is not None and (
+        input_plan.player_summary_path.resolve() != root / "examples/fixtures/player_summary_demo.json"
+        or input_plan.deterministic_report_path.resolve() != root / "examples/fixtures/deterministic_report_demo.md"
+    ):
+        raise ValueError("report contract development requires the anonymous demo fixtures")
     summary = input_plan.player_summary_path.read_bytes()
     report = input_plan.deterministic_report_path.read_bytes()
     if _canonical_digest(input_plan.player_summary_path) != artifact.player_summary.sha256:
@@ -84,7 +103,7 @@ def build_guided_context_snapshot(
         cases=artifact.cases,
         snapshot_id=artifact.prompt_context_snapshot_id or "",
         evaluation_contract_version="1.1.0",
-        policy_addendum="\n\n".join((CANDIDATE_CONTEXT_SAFETY_POLICY_V1, COACHING_QUERY_GUIDANCE_V1)),
+        policy_addendum=candidate_context_policy(report_contract_id),
     )
     if snapshot.snapshot_id != artifact.prompt_context_snapshot_id:
         raise ValueError("guided candidate snapshot ID mismatch")
@@ -97,11 +116,13 @@ def build_guided_context_snapshot(
 
 
 def require_guided_candidate(
-    *, project_root: str | Path, input_plan: LoadedDomainCaseInputPlan
+    *, project_root: str | Path, input_plan: LoadedDomainCaseInputPlan,
+    report_contract_id: str | None = None,
 ) -> PromptContextSnapshot:
     """Public candidate gate used by future real runners before Provider I/O."""
 
-    return build_guided_context_snapshot(project_root=project_root, input_plan=input_plan)
+    return build_guided_context_snapshot(project_root=project_root, input_plan=input_plan,
+                                        report_contract_id=report_contract_id)
 
 
 class GuidedCandidateExecutor:
@@ -118,13 +139,16 @@ class GuidedCandidateExecutor:
         project_root: str | Path,
         input_plan: LoadedDomainCaseInputPlan,
         runs_root: str | Path,
+        report_contract_id: str | None = None,
     ) -> None:
         self.project_root = Path(project_root).resolve()
         self.input_plan = input_plan
         self.runs_root = Path(runs_root).resolve()
+        self.report_contract_id = report_contract_id
         self.context_snapshot = require_guided_candidate(
             project_root=self.project_root,
             input_plan=input_plan,
+            report_contract_id=report_contract_id,
         )
         artifact = input_plan.artifact
         if artifact.request_policy_id != GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY.policy_id:
@@ -144,6 +168,7 @@ class GuidedCandidateExecutor:
         self.context_snapshot = require_guided_candidate(
             project_root=self.project_root,
             input_plan=self.input_plan,
+            report_contract_id=self.report_contract_id,
         )
         executor = ProductionDomainCaseExecutor(
             project_root=self.project_root,
@@ -154,5 +179,6 @@ class GuidedCandidateExecutor:
             retrieval_hardening=True,
             retrieval_guidance=COACHING_QUERY_GUIDANCE_V1,
             max_revisions=1,
+            report_contract_id=self.report_contract_id,
         )
         return executor.execute(case_id=case_id, provider=provider)

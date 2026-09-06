@@ -17,7 +17,10 @@ if str(ROOT) not in sys.path:
 from app.evaluation.glm53_bounded_revision_budget import (
     BoundedRevisionBudgetedProvider, BoundedRevisionBudgetState,
 )
-from app.agent.context import CANDIDATE_CONTEXT_SAFETY_POLICY_V1
+from app.evaluation.glm53_report_contract import (
+    REPORT_CONTRACT_ID, REPORT_CONTRACT_SHA256, DEVELOPMENT_PLAN_ID,
+    DEVELOPMENT_SNAPSHOT_ID, candidate_context_policy, require_report_contract,
+)
 from app.evaluation.prompt_context_identity import case_context_sha256
 from app.evaluation.glm53_flash_candidate_profile import GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
 from app.evaluation.provider_domain_experiment import DomainCaseExecutionPlan
@@ -61,14 +64,22 @@ def digest(raw: bytes) -> str:
     return hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
 
 
-def development_plan(root: Path, *, guided: bool = False, scenario: str = "recent_review") -> LoadedDomainCaseInputPlan:
+def development_plan(root: Path, *, guided: bool = False, scenario: str = "recent_review",
+                     report_contract_id: str | None = None) -> LoadedDomainCaseInputPlan:
+    require_report_contract(report_contract_id)
+    if report_contract_id is not None and not guided:
+        raise ValueError("report contract requires guided development")
     if scenario not in DEVELOPMENT_SCENARIOS:
         raise ValueError("unknown development scenario")
     case_id, utterance, focus = DEVELOPMENT_SCENARIOS[scenario]
+    if report_contract_id is not None:
+        case_id = f"development_report_contract_{scenario}_v1"
     summary = root / "examples/fixtures/player_summary_demo.json"
     report = root / "examples/fixtures/deterministic_report_demo.md"
     artifact = DomainCaseInputPlanArtifact(
-        plan_id="glm53-autonomous-retrieval-development", plan_version="1.0.0",
+        plan_id=(DEVELOPMENT_PLAN_ID if report_contract_id is not None
+                 else "glm53-autonomous-retrieval-development"),
+        plan_version="2.0.0" if report_contract_id is not None else "1.0.0",
         dataset_id="demo-development-not-heldout", dataset_version="1.0.0",
         skill_name="recent-form-review", skill_version="0.2.0",
         player_summary=DomainFixtureCommitment(relative_path=summary.relative_to(root).as_posix(), sha256=digest(summary.read_bytes())),
@@ -88,7 +99,7 @@ def development_plan(root: Path, *, guided: bool = False, scenario: str = "recen
                 plan_sha256=digest(artifact.model_dump_json().encode()), case_ids=(case_id,),
             ),
         )
-        snapshot = build_guided_context_snapshot_for_plan(provisional, root)
+        snapshot = build_guided_context_snapshot_for_plan(provisional, root, report_contract_id=report_contract_id)
         artifact = DomainCaseInputPlanArtifact.model_validate({**artifact.model_dump(mode="json"),
             "schema_version": "1.1",
             "prompt_context_snapshot_id": snapshot.snapshot_id,
@@ -107,7 +118,8 @@ def development_plan(root: Path, *, guided: bool = False, scenario: str = "recen
     )
 
 
-def build_guided_context_snapshot_for_plan(plan: LoadedDomainCaseInputPlan, root: Path):
+def build_guided_context_snapshot_for_plan(plan: LoadedDomainCaseInputPlan, root: Path,
+                                         *, report_contract_id: str | None = None):
     """Build a provisional identity before sealing the schema 1.1 plan."""
     from app.evaluation.prompt_context_identity import build_prompt_context_snapshot_for_cases
     import json
@@ -116,9 +128,10 @@ def build_guided_context_snapshot_for_plan(plan: LoadedDomainCaseInputPlan, root
         player_summary=json.loads(plan.player_summary_path.read_text(encoding="utf-8")),
         deterministic_report=plan.deterministic_report_path.read_text(encoding="utf-8"),
         cases=plan.artifact.cases,
-        snapshot_id="glm53-guided-development-context-v1",
+        snapshot_id=(DEVELOPMENT_SNAPSHOT_ID if report_contract_id is not None
+                     else "glm53-guided-development-context-v1"),
         evaluation_contract_version="1.1.0",
-        policy_addendum="\n\n".join((CANDIDATE_CONTEXT_SAFETY_POLICY_V1, COACHING_QUERY_GUIDANCE_V1)),
+        policy_addendum=candidate_context_policy(report_contract_id),
     )
 
 
@@ -156,10 +169,12 @@ class QueryObserver:
 
 
 def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=lambda _event: None,
-            retrieval_guidance: str | None = None, scenario: str = "recent_review"):
-    plan = development_plan(root, guided=retrieval_guidance is not None, scenario=scenario)
+            retrieval_guidance: str | None = None, scenario: str = "recent_review",
+            report_contract_id: str | None = None):
+    plan = development_plan(root, guided=retrieval_guidance is not None, scenario=scenario,
+                            report_contract_id=report_contract_id)
     if retrieval_guidance is not None:
-        require_guided_candidate(project_root=root, input_plan=plan)
+        require_guided_candidate(project_root=root, input_plan=plan, report_contract_id=report_contract_id)
     state = BoundedRevisionBudgetState()
     case_id = plan.execution_plan.case_ids[0]
     state.register_case(case_id)
@@ -169,7 +184,8 @@ def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=l
     )
     observer = QueryObserver(budgeted, emit)
     executor = (
-        GuidedCandidateExecutor(project_root=root, input_plan=plan, runs_root=runs_root)
+        GuidedCandidateExecutor(project_root=root, input_plan=plan, runs_root=runs_root,
+                                report_contract_id=report_contract_id)
         if retrieval_guidance is not None
         else ProductionDomainCaseExecutor(
             project_root=root, input_plan=plan, runs_root=runs_root,
@@ -208,6 +224,8 @@ def observe(provider, *, root: Path, runs_root: Path, real: bool = False, emit=l
         "request_policy_id": POLICY.policy_id, "max_calls": 9, "max_tokens": 205_000,
         "request_timeout_s": 45, "resources": state.snapshot(),
         "retrieval_guidance_id": guidance_id, "retrieval_guidance_sha256": guidance_sha256,
+        "report_contract_id": report_contract_id,
+        "report_contract_sha256": REPORT_CONTRACT_SHA256 if report_contract_id is not None else None,
         "queries": observer.queries,
         "observation": result.model_dump(mode="json") if result is not None else None,
         "evaluation_history": evaluation_history,
@@ -222,10 +240,13 @@ def main(argv=None):
     parser.add_argument("--env-file", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--retrieval-guidance", action="store_true")
+    parser.add_argument("--report-contract", action="store_true")
     parser.add_argument("--scenario", choices=tuple(DEVELOPMENT_SCENARIOS), default="recent_review")
     args = parser.parse_args(argv)
     if not args.confirm_real_call:
         parser.error("real development observation requires --confirm-real-call")
+    if args.report_contract and not args.retrieval_guidance:
+        parser.error("report contract requires guided development")
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, timeout=10).strip()
     if head != args.implementation_sha:
         raise ValueError("implementation must match HEAD")
@@ -251,6 +272,7 @@ def main(argv=None):
             result = observe(provider, root=ROOT, runs_root=Path(temporary), real=True,
                              retrieval_guidance=(COACHING_QUERY_GUIDANCE_V1 if args.retrieval_guidance else None),
                              scenario=args.scenario,
+                             report_contract_id=REPORT_CONTRACT_ID if args.report_contract else None,
                              emit=lambda row: print(json.dumps(row), flush=True))
         result.update(identity)
         result["status"] = "execution_failed" if result["execution_error"] else "completed"

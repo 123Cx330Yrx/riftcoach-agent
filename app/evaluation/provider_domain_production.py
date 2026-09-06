@@ -41,6 +41,11 @@ from app.harness.store import ArtifactIntegrityError, FileRunStore
 from app.providers.models import ChatRequest, ChatResponse
 from app.providers.protocol import LLMProvider
 from app.rag.coaching_query import CoachingQueryKnowledgeProvider
+from app.rag.coaching_query import COACHING_QUERY_GUIDANCE_V1
+from app.evaluation.glm53_report_contract import (
+    DEVELOPMENT_PLAN_ID, REPORT_CONTRACT_ID,
+    candidate_context_policy, build_aligned_revision_prompt, require_report_contract,
+)
 from app.rag.coaching_query import CoachingRetrievalDiagnostics
 from app.rag.hybrid import LocalHybridKnowledgeProvider
 from app.rag.models import KnowledgeSearchResult
@@ -149,6 +154,7 @@ class ProductionDomainCaseExecutor:
         retrieval_hardening: bool = False,
         retrieval_guidance: str | None = None,
         max_revisions: int = 0,
+        report_contract_id: str | None = None,
     ) -> None:
         if not isinstance(input_plan, LoadedDomainCaseInputPlan):
             raise TypeError("input_plan must be a loaded input plan")
@@ -200,7 +206,27 @@ class ProductionDomainCaseExecutor:
         if not 0 <= max_revisions <= 3:
             raise ValueError("max_revisions must be between 0 and 3")
         self._max_revisions = max_revisions
+        require_report_contract(report_contract_id)
+        if input_plan.artifact.plan_id == DEVELOPMENT_PLAN_ID and report_contract_id != REPORT_CONTRACT_ID:
+            raise ValueError("report contract development requires an explicit report contract")
+        self._report_contract_id = report_contract_id
+        self._validate_report_contract_binding()
         self.execution_plan = input_plan.execution_plan
+
+    def _validate_report_contract_binding(self) -> None:
+        if self._report_contract_id is None:
+            return
+        from .glm53_guided_candidate import require_guided_candidate
+        from .glm53_flash_candidate_profile import GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
+        if not (
+            self._request_policy is GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
+            and self._quality_hardening and self._retrieval_hardening
+            and self._retrieval_guidance == COACHING_QUERY_GUIDANCE_V1
+            and self._max_revisions == 1
+        ):
+            raise ValueError("report contract requires the exact guided candidate policy")
+        require_guided_candidate(project_root=self._root, input_plan=self._input_plan,
+                                 report_contract_id=self._report_contract_id)
 
     @property
     def runtime_profile(self) -> ModelRuntimeProfile | None:
@@ -238,6 +264,7 @@ class ProductionDomainCaseExecutor:
         case_id: str,
         provider: LLMProvider,
     ) -> DomainCaseSemanticObservation:
+        self._validate_report_contract_binding()
         if self._request_policy is not None:
             require_candidate_evaluation_request_policy(
                 self._request_policy,
@@ -249,6 +276,8 @@ class ProductionDomainCaseExecutor:
         context = ContextBuilderV1().build(
             execution,
             policy_addendum=(
+                candidate_context_policy(self._report_contract_id)
+                if self._report_contract_id is not None else
                 "\n\n".join(
                     value
                     for value in (
@@ -301,7 +330,8 @@ class ProductionDomainCaseExecutor:
         reviser = ChatCoachReviser(
             runtime=llm_runtime,
             system_prompt=REVISER_SYSTEM_PROMPT,
-            prompt_builder=build_revision_prompt,
+            prompt_builder=(build_aligned_revision_prompt if self._report_contract_id is not None
+                            else build_revision_prompt),
             validator=validate_revised_report,
         )
         result = SkillReviewExecutor(
@@ -325,6 +355,7 @@ class ProductionDomainCaseExecutor:
                     lambda draft, _knowledge: _guard_candidate_draft(
                         draft,
                         case.forbidden_output_markers,
+                        self._report_contract_id,
                     )
                 )
                 if self._quality_hardening
@@ -788,12 +819,16 @@ def _unique(values) -> tuple[str, ...]:
 def _guard_candidate_draft(
     draft: CoachDraft,
     forbidden_markers: tuple[str, ...],
+    report_contract_id: str | None = None,
 ) -> CoachDraft:
     """Apply the candidate-only marker boundary without leaking raw text."""
 
     if not isinstance(draft, CoachDraft):
         raise TypeError("draft guard requires CoachDraft")
     result = sanitize_forbidden_markers(draft.report, forbidden_markers)
+    if report_contract_id is not None:
+        require_report_contract(report_contract_id)
+        validate_revised_report(result.report, result.report)
     return CoachDraft(report=result.report)
 
 
