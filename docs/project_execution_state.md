@@ -4905,3 +4905,9 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 - `[implemented-local]` 指引仅作为开发观察可选上下文附加项，回执显式绑定指引 ID/SHA；正式准入路径与默认模型不变。
 - `[real-observation]` 新鲜匿名 demo 对照 `guided_03` 使用 3 次调用、12783 tokens、40890ms，3 次检索均成功，返回 4 个片段/3 个来源，最终评分 95，终态 `published`；事实、引用、注入检查均通过。
 - `[boundary-next]` 这是单一样本开发证据，不是生产准入或全领域质量证明；候选仍未注册，GLM-5.2 回退、Portal、Account、Workbench、Auth 与 `production_media=0` 不变。旧的 `guided_02` 因终端收口缺陷仅保留失败回执，不重跑旧考卷。
+
+### 2026-09-06：RQ-238 候选查询指引接入
+
+- `[implemented-local]` 提交 `dd0033d` 将 `coaching-query-guidance-v1` 绑定到候选 Context schema 1.1，调用前重建并校验快照、文件摘要和逐案承诺；开发探针消费同一绑定。
+- `[verification-local]` 18 项聚焦测试、compileall、diff check、governance 通过；guided_03 保持 3 次调用、3 来源、95 分、published。提交后公共 CI 尚待 exact-SHA 结果。
+- `[boundary-next]` 当前仍为 Stage 8 / 8E in_progress；下一步是代表场景离线验证和公共 CI，之后才裁决新的候选领域门。候选未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。

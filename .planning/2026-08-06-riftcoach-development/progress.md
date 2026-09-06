@@ -6184,3 +6184,10 @@
 
 - 公共闭环：提交 `cbb4ccf474402e436a47dae2ec0d4579c28f38bb` 的 Actions `33968889947`
   三任务 exact-SHA 成功。实际开发观察仍绑定运行时 `dde1f84` 与独立probe SHA，不能回写成在新提交上运行。
+
+## RQ-238：查询指引候选路径接入（2026-09-06）
+
+- 候选 Context 快照重建与 schema 1.1 逐案承诺校验已接入，旧 held-out 或文件漂移在 Provider 调用前拒绝。
+- 开发探针消费同一绑定；18 项聚焦测试、compileall、diff check、governance 通过；实现提交 `dd0033d`，公共 CI 等待。
+- guided_03 是唯一真实开发模型证据（3 次调用、3 来源、95 分、published），不构成正式领域或生产准入。
+- 下一步为代表场景离线验证与 exact-SHA CI；默认模型、GLM-5.2 回退、产品模块和 `production_media=0` 不变。

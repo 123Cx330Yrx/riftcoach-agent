@@ -4563,3 +4563,7 @@ GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和 `production_med
 接受 ADR-0096，建立与 RQ-235 完全隔离的新 Dataset、Input Plan、Context、fixture、marker、协议和回执身份，显式消费 `coaching-query-recovery-v1`。旧考卷/回执不可变；仍保持 V3 一次修订、预算证明、事实/引用/注入/来源和 85 分门。本批仅做离线实现与 no-I/O 准入，provider calls=0；下一步为新资产实现，之后再取得同 SHA 公共 CI 与新鲜 G53-3-L。
 
 实现纠正：补齐 RQ-235 历史身份排重、输入计划/协议的检索策略绑定，并用开启检索加固的实际离线路径重新证明预算（每案 `205000`、全域 `613000`）。当前仍为 `completed-local / pending-public-ci`，旧 V3 预算和所有产品边界不变。
+
+## 2026-09-06：RQ-238 查询指引候选路径接入
+
+8E candidate-only 路径增加统一的版本化查询指引绑定，候选入口重建 Prompt/Context 快照并验证 schema 1.1 身份、文件摘要与逐案承诺。此项不改变 8-Core、默认模型、GLM-5.2 回退或前端；guided_03 仅为单样本开发证据。

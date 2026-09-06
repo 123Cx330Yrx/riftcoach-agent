@@ -1774,3 +1774,7 @@ Account、Workbench、Auth、路由或 `production_media=0`。实现提交
 领域观察归因更正：实际查询未留存，具体词句根因未知；“早期死亡相关资料”只是离线样例。首案
 故未触发受控补查并在 `evidence_required` 停止。候选白名单已离线修复；RQ-237 回执保持不可变，修复后
 如需重新验证必须另立新鲜版本。
+
+### RQ-238（2026-09-06）候选查询指引接入
+
+8E candidate-only 执行路径已绑定版本化 `coaching-query-guidance-v1`，通过 schema 1.1 Context 快照、文件摘要和逐案承诺校验；不改变 8-Core、默认模型、GLM-5.2 回退或产品前端，guided_03 仍只是单样本开发证据。

@@ -300,6 +300,8 @@ provider calls=0，仍需明确授权才执行真实协议门。
 | RQ-237 correction | 2026-09-05 | 修复新资产策略绑定、RQ-235 排重与检索加固预算墙 | 初版实现虽公共 CI 通过，后续审查发现上述合同覆盖不足；继续授权仅限离线修复，不发真实请求 | 输入计划/协议/候选门控现在显式绑定 `coaching-query-recovery-v1`、质量/检索加固；历史排重纳入 RQ-235；重建最坏预算为 `205000/613000`，并由候选执行器实际执行；旧 V3 `203000/608000` 不变。下一步取得修复提交的 exact-SHA 公共 CI。 |
 | RQ-237 observation | 2026-09-05 | 新鲜协议及一次检索加固领域观察完成；首案因零来源安全停止，实际词句原因未知 | 用户已授权在修复提交和新鲜 G53-3-L 后继续；本批未注册候选、不重跑旧考卷 | 新鲜协议 3/3、`1109` tokens、`12234ms` 通过；领域首案 2 次、`6624` tokens、`20453ms`，实际查询未留存，`topic=unmapped`，0 来源，`evidence_required`，`domain_case_outcome_mismatch`，后两案跳过；回执 `zhipu_glm53_flash_retrieval_hardened_domain_v3_rq237_v1.json` 已保存。下一步只做离线归因/是否另立版本，旧 RQ-237 证据不可变。 |
 
+| RQ-238 | 2026-09-06 | 查询指引候选路径接入 | 用户继续授权候选接入与代表场景验证，不扩大到前端或默认 Runtime | `coaching-query-guidance-v1` 已绑定候选 Context schema 1.1 快照、文件摘要和逐案承诺；旧 held-out 漂移在 Provider 调用前拒绝。guided_03 的 3 来源、95 分仅为开发证据；提交 `dd0033d` 等待 exact-SHA 公共 CI。 |
+
 ## 新条目格式
 
 后续新增长期要求时，使用新的 `RQ-xxx` 行，并注明日期、状态以及它如何改变

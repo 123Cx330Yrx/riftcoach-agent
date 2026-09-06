@@ -1289,3 +1289,5 @@ streaming、黄金切片、安全/部署/合规和 `production_media=0` 均不�
 
 观察归因更正：首案主题未映射且未补查，实际词句原因未知；“早期”是离线例子而非真实查询证据，
 后续验证必须使用新版本资产，不得重跑 RQ-237。
+
+RQ-238 补充候选执行接缝：`coaching-query-guidance-v1` 通过 schema 1.1 Prompt/Context 快照和逐案 SHA 承诺校验，调用前拒绝旧资产/漂移；不改变产品 Runtime、默认模型或前端模块。
