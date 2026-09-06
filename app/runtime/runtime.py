@@ -63,6 +63,7 @@ from .models import (
     RuntimeStatus,
 )
 from .identity import RuntimePromptIdentityResolver
+from .coach_contract import require_coach_contract, require_coach_context, guard_coach_draft
 
 
 _HARNESS_VERSION = "1.0.0"
@@ -100,12 +101,16 @@ class RuntimeExecutionFactory:
         evaluator_factory: EvaluatorFactory,
         reviser_factory: ReviserFactory,
         runtime_profile: ModelRuntimeProfile | None = None,
+        coach_contract=None,
     ) -> None:
         if not callable(evaluator_factory):
             raise TypeError("evaluator_factory must be callable")
         if not callable(reviser_factory):
             raise TypeError("reviser_factory must be callable")
         self._knowledge_provider = knowledge_provider
+        self.coach_contract = require_coach_contract(coach_contract)
+        if coach_contract is not None and runtime_profile is not None:
+            raise ValueError("unadmitted Coach contract cannot bind a product runtime profile")
         self._evaluator_factory = evaluator_factory
         self._reviser_factory = reviser_factory
         self._runtime_profile = (
@@ -131,7 +136,11 @@ class RuntimeExecutionFactory:
             provider.model_name,
         )
         selected_profile = self._runtime_profile
-        if expected_profile is not None:
+        if self.coach_contract is not None:
+            self.coach_contract.require_provider(provider)
+            from .coach_budget import CoachBudgetedProvider
+            provider = CoachBudgetedProvider(provider)
+        elif expected_profile is not None:
             if getattr(provider, "runtime_profile", None) != expected_profile:
                 raise RuntimeCompositionError(
                     "Flash Provider requires the registered runtime profile"
@@ -163,6 +172,7 @@ class RuntimeExecutionFactory:
         for definition in build_llm_tools(
             provider,
             runtime_profile=selected_profile,
+            request_policy=self.coach_contract.request_policy if self.coach_contract is not None else None,
         ):
             harness_llm_registry.register(definition)
         harness_llm_runtime = ToolRuntime(harness_llm_registry)
@@ -183,6 +193,7 @@ class RuntimeExecutionFactory:
                 agent_loop,
                 observer=observer,
                 runtime_profile=selected_profile,
+                request_policy=self.coach_contract.request_policy if self.coach_contract is not None else None,
             ),
             evaluator=evaluator,
             reviser=reviser,
@@ -275,6 +286,7 @@ class AgentRuntimeV1:
         self._catalog = catalog
         self._provider = provider
         self._execution_factory = execution_factory
+        self._coach_contract = require_coach_contract(getattr(execution_factory, "coach_contract", None))
         factory_profile = execution_factory.runtime_profile
         if runtime_profile is not None:
             runtime_profile = require_registered_model_runtime_profile(
@@ -290,7 +302,13 @@ class AgentRuntimeV1:
             provider.model_name,
         )
         provider_profile = getattr(provider, "runtime_profile", None)
-        if expected_profile is not None:
+        if self._coach_contract is not None:
+            if selected_profile is not None:
+                raise RuntimeCompositionError("Coach contract cannot use a registered runtime profile")
+            self._coach_contract.require_provider(provider)
+            if getattr(prompt_program_resolver, "coach_contract", None) is not self._coach_contract:
+                raise RuntimeCompositionError("Coach Prompt Program binding mismatch")
+        elif expected_profile is not None:
             if provider_profile != expected_profile:
                 raise RuntimeCompositionError(
                     "Flash Provider requires the registered runtime profile"
@@ -490,6 +508,8 @@ class AgentRuntimeV1:
                 execution,
                 **context_kwargs,
             )
+            if self._coach_contract is not None:
+                require_coach_context(context)
             observe_runtime_signal(
                 observer,
                 ContextBuiltSignal(
@@ -527,6 +547,9 @@ class AgentRuntimeV1:
                 evaluator=bundle.evaluator,
                 reviser=bundle.reviser,
                 max_revisions=request.policy.max_revisions,
+                minimum_evidence_sources=1 if self._coach_contract is not None else None,
+                allow_deterministic_fallback=False if self._coach_contract is not None else None,
+                draft_guard=guard_coach_draft if self._coach_contract is not None else None,
             ).execute(
                 execution=execution,
                 context=context,
@@ -840,6 +863,7 @@ class AgentRuntimeV1:
                 "Prompt Program resolver returned an inconsistent Skill identity"
             )
         return RuntimeIdentitySnapshot(
+            coach_contract=self._coach_contract.snapshot() if self._coach_contract is not None else None,
             skill_name=skill_name,
             skill_version=skill_version,
             context_contract_version=program.context_contract_version,
@@ -864,6 +888,16 @@ class AgentRuntimeV1:
         self,
         policy: RuntimePolicySnapshot,
     ) -> None:
+        expected_contract = self._coach_contract.snapshot() if self._coach_contract is not None else None
+        if policy.coach_contract != expected_contract:
+            raise RuntimeCompositionError("runtime policy Coach contract mismatch")
+        if self._coach_contract is not None:
+            # Revalidate copies as well: a matching digest cannot excuse
+            # execution settings that no longer describe that contract.
+            try:
+                RuntimePolicySnapshot.model_validate(policy.model_dump())
+            except ValueError as error:
+                raise RuntimeCompositionError("runtime policy Coach settings mismatch") from error
         policy_identity = (
             policy.runtime_profile_id,
             policy.runtime_profile_version,

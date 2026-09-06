@@ -21,6 +21,8 @@ from app.model_runtime import (
 )
 from app.prompt_program import PromptProgramCatalog, PromptProgramResolver
 from app.skills.catalog import SkillCatalog
+from .coach_contract import COACH_CONTRACT
+from .coach_context import CoachContextBuilder
 
 from .runtime import (
     AgentRuntimeV1,
@@ -78,6 +80,7 @@ class RuntimeCompositionRoot:
         *,
         skills_root: str | Path,
         prompt_programs_root: str | Path,
+        coach_contract=None,
     ) -> "RuntimeCompositionRoot":
         skill_catalog = SkillCatalog.from_directory(skills_root)
         prompt_program_catalog = PromptProgramCatalog.from_directory(
@@ -86,6 +89,7 @@ class RuntimeCompositionRoot:
         resolver = PromptProgramResolver(
             prompt_program_catalog,
             skill_catalog,
+            coach_contract=coach_contract,
         )
         # Composition is the product startup boundary: a stale manifest must
         # stop construction before any Runtime or Provider can be used.
@@ -94,6 +98,28 @@ class RuntimeCompositionRoot:
             skill_catalog=skill_catalog,
             prompt_program_catalog=prompt_program_catalog,
             prompt_program_resolver=resolver,
+        )
+
+    def build_offline_coach_runtime(self, *, runs_root, provider, knowledge_provider, context_builder=None):
+        """Explicit migration seam; ordinary build_runtime and worker startup stay unchanged."""
+        from app.rag.coaching_query import CoachingQueryKnowledgeProvider
+        from app.evaluation.glm53_report_contract import build_aligned_revision_prompt
+        if self.prompt_program_resolver.coach_contract is not COACH_CONTRACT:
+            raise RuntimeCompositionError("independent Coach assets must be explicitly verified")
+        COACH_CONTRACT.require_provider(provider)
+        factory = RuntimeExecutionFactory(
+            knowledge_provider=CoachingQueryKnowledgeProvider(knowledge_provider),
+            evaluator_factory=lambda runtime: SecureChatEvaluationAdapter(
+                runtime=runtime, system_prompt=EVALUATOR_SYSTEM_PROMPT, fact_pack_builder=build_fact_pack),
+            reviser_factory=lambda runtime: ChatCoachReviser(
+                runtime=runtime, system_prompt=REVISER_SYSTEM_PROMPT,
+                prompt_builder=build_aligned_revision_prompt, validator=validate_revised_report),
+            coach_contract=COACH_CONTRACT,
+        )
+        return AgentRuntimeV1(
+            runs_root=runs_root, catalog=self.skill_catalog, provider=provider,
+            execution_factory=factory, context_builder=context_builder or CoachContextBuilder(),
+            prompt_program_resolver=self.prompt_program_resolver,
         )
 
     def build_runtime(

@@ -9,7 +9,7 @@ from enum import Enum
 from pathlib import PurePosixPath
 from typing import Any, Generic, Literal, TypeVar
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator, model_serializer
 
 from app.harness.run_ids import normalize_run_id
 from app.memory.context_models import MemoryContextBinding
@@ -17,6 +17,7 @@ from app.skills.execution import SkillExecutionRequest
 from app.skills.routing_models import RouteOutcome
 
 from .lifecycle import RuntimeHarnessLifecycleV11
+from .coach_contract import CoachContractSnapshot
 from .signals import (
     AgentRunTerminatedSignal,
     ContextBuiltSignal,
@@ -70,6 +71,13 @@ class CostObservation(str, Enum):
 class RuntimeContractModel(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
+    @model_serializer(mode="wrap")
+    def omit_unused_coach_contract(self, handler):
+        result = handler(self)
+        if result.get("coach_contract") is None:
+            result.pop("coach_contract", None)
+        return result
+
 
 def _validate_semver(value: str, *, field_name: str) -> str:
     if not _SEMVER_PATTERN.fullmatch(value):
@@ -102,6 +110,7 @@ def _validate_utc(value: datetime, *, field_name: str) -> datetime:
 
 
 class RuntimePolicySnapshot(RuntimeContractModel):
+    coach_contract: CoachContractSnapshot | None = None
     policy_version: str
     event_budget: int = Field(default=256, ge=2, le=1024)
     max_iterations: int = Field(ge=1, le=20)
@@ -145,6 +154,12 @@ class RuntimePolicySnapshot(RuntimeContractModel):
 
     @model_validator(mode="after")
     def validate_runtime_profile_binding(self) -> "RuntimePolicySnapshot":
+        if self.coach_contract is not None and (
+            self.policy_version != "1.2.0" or self.runtime_profile_id is not None
+            or self.publish_score_threshold != 85 or self.max_revisions != 1
+            or self.allow_deterministic_fallback
+        ):
+            raise ValueError("Coach policy must retain its unadmitted version and quality rules")
         has_id = self.runtime_profile_id is not None
         has_version = self.runtime_profile_version is not None
         has_timeout = self.execution_timeout_s is not None
@@ -160,6 +175,7 @@ class RuntimePolicySnapshot(RuntimeContractModel):
 
 
 class RuntimeIdentitySnapshot(RuntimeContractModel):
+    coach_contract: CoachContractSnapshot | None = None
     skill_name: str
     skill_version: str
     context_contract_version: str
@@ -564,6 +580,8 @@ class RuntimeTrace(RuntimeContractModel):
 
     @model_validator(mode="after")
     def validate_trace_invariants(self) -> "RuntimeTrace":
+        if self.identity.coach_contract != self.policy.coach_contract:
+            raise ValueError("trace Coach contract identity does not match policy")
         if self.trace_schema_version != self.event_schema_version:
             raise ValueError("Trace and Event schema versions must match")
         if (

@@ -5884,3 +5884,8 @@
 - 完整预算余量只有约 2700；两局 demo 不能证明任意玩家数据和 Memory 的产品预算。计时参数检查不等于最长延迟实测，Agent 整段仍受 90 秒期限约束。
 - Worker 的 360 秒 lease 配合 60 秒 heartbeat，代表可续租所有权而不是整任务 timeout；不能把每调用时长简单相乘来调 lease。Runtime 目前仍未传候选 minimum_evidence_sources/draft_guard/fallback 覆盖参数。
 - 后续目标版本和代码地图见 RQ-244 计划，默认配置保持；下一批用实际 Runtime 的显式新组合做离线端到端接线，不另造首例考卷。
+
+
+## RQ-245：显式 Coach 产品运行时离线接线（2026-09-06）
+
+实际产品 Runtime 已显式接入新报告/查询/来源/一次修订与预算合同，并绑定独立 Skill 0.3.0、程序 2.0.0 和 policy 1.2.0；默认入口/注册表不变。新增 33 项、相邻 271 项离线测试通过，含 Memory 数据隔离/整条省略、长必需输入拒绝、Worker 失权不提交、真实智谱适配器假 SDK 和三主题九调用路径。SDK 重试必须可核验为0，目标产品档案 v2 尚未注册，不把候选身份写成已生产准入。资源与八维学习见 `docs/plans/2026-09-06-offline-coach-runtime-wiring.md`；ADR-0098 细化 RQ-244 的显式迁移方式。下一步本实现同 SHA 公共 CI；之后才准备新产品版本独立真实验收。本批真实 API=0，旧考卷/回执不重跑，GLM-5.2/前端/production_media=0 和 8E in_progress 不变。取代 RQ-244 的待接线动作，不改历史结果。

@@ -60,6 +60,14 @@ class ObservedLLMProvider:
 
         return getattr(self._delegate, "runtime_profile", None)
 
+    @property
+    def thinking_profile_id(self):
+        return getattr(self._delegate, "thinking_profile_id", None)
+
+    @property
+    def sdk_max_retries(self):
+        return getattr(self._delegate, "sdk_max_retries", None)
+
     def chat(self, request: ChatRequest) -> ChatResponse:
         if not isinstance(request, ChatRequest):
             raise TypeError("request must be a ChatRequest")

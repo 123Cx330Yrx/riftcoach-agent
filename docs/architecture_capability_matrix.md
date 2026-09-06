@@ -1299,3 +1299,8 @@ RQ-242：经济观察已完成（3 来源、revision_failed）；报告校验安
 RQ-243：候选生成与修订共用旧结构校验，具名合同进入 Context 与开发回执身份；13 项新合同及相邻合计 144 项测试、`57c73e5` / CI `34023099294` 三任务通过。实现默认关闭，不改 Worker/RuntimePolicy/Trace 的产品注册、GLM-5.2、前端与 production_media=0。下一步新合同预算证明与产品迁移版本对齐，见 [计划](plans/2026-09-06-candidate-generation-revision-contract-alignment.md)。
 
 RQ-244（2026-09-06）：新检查器经同一开发入口验证九请求和 Usage 预算墙，三场景固定输入预留均在 205000 内，104 项测试通过；实现 `1cd2deb` / CI `34025448118` 三任务同 SHA 全绿，下一步显式新产品执行组合离线接线。产品运行时/Worker 未改，长玩家输入与 Memory 尚需产品组合预算验证；未改变生产能力、默认模型、GLM-5.2、前端或 production_media=0。版本与文件映射见 [计划](plans/2026-09-06-report-contract-budget-and-runtime-migration.md)。
+
+
+## RQ-245：显式 Coach 产品运行时离线接线（2026-09-06）
+
+实际产品 Runtime 已显式接入新报告/查询/来源/一次修订与预算合同，并绑定独立 Skill 0.3.0、程序 2.0.0 和 policy 1.2.0；默认入口/注册表不变。新增 33 项、相邻 271 项离线测试通过，含 Memory 数据隔离/整条省略、长必需输入拒绝、Worker 失权不提交、真实智谱适配器假 SDK 和三主题九调用路径。SDK 重试必须可核验为0，目标产品档案 v2 尚未注册，不把候选身份写成已生产准入。资源与八维学习见 [计划](plans/2026-09-06-offline-coach-runtime-wiring.md)；ADR-0098 细化 RQ-244 的显式迁移方式。下一步本实现同 SHA 公共 CI；之后才准备新产品版本独立真实验收。本批真实 API=0，旧考卷/回执不重跑，GLM-5.2/前端/production_media=0 和 8E in_progress 不变。取代 RQ-244 的待接线动作，不改历史结果。

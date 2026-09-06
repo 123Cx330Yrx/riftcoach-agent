@@ -5,6 +5,7 @@ from __future__ import annotations
 from app.agent.context import context_contract_descriptor
 from app.evaluation.prompt_context_identity import build_component_fingerprints
 from app.skills.catalog import SkillCatalog
+from app.runtime.coach_contract import require_coach_contract, coach_component_fingerprint
 
 from .catalog import PromptProgramCatalog, PromptProgramCatalogError
 from .models import VerifiedPromptProgram
@@ -17,9 +18,12 @@ class PromptProgramResolver:
         self,
         catalog: PromptProgramCatalog,
         skill_catalog: SkillCatalog,
+        *,
+        coach_contract=None,
     ) -> None:
         self._catalog = catalog
         self._skill_catalog = skill_catalog
+        self.coach_contract = require_coach_contract(coach_contract)
 
     def resolve(
         self,
@@ -73,6 +77,10 @@ class PromptProgramResolver:
             skill,
             evaluation_contract_version=manifest.evaluation_contract_version,
         )
+        if self.coach_contract is not None:
+            if skill_version != "0.3.0" or manifest.program_version != "2.0.0":
+                raise PromptProgramCatalogError("Coach contract requires independent Skill/Program versions")
+            current = (*current, coach_component_fingerprint())
         if current != manifest.component_fingerprints:
             raise PromptProgramCatalogError(
                 "Prompt Program component fingerprint drift detected"

@@ -169,6 +169,11 @@ class ZhipuProvider:
 
         return self._runtime_profile
 
+    @property
+    def sdk_max_retries(self) -> int | None:
+        """Expose SDK retry ownership for an explicit bounded composition."""
+        return getattr(self._client, "max_retries", None)
+
     def stream_adapter(self, *, tool_stream: bool = False) -> ZhipuStreamAdapter:
         """Return an explicit candidate-only neutral stream adapter.
 
