@@ -6198,3 +6198,9 @@
 - Added the fresh four-case V4 Dataset, anonymous fixture, Input Plan, Context snapshot, body-free budget proof, and observation protocol.
 - Added `GuidedCandidateExecutor` so candidate execution rebinds the exact low-4096 policy and rebuilds Context before Provider I/O; added strict bundle admission and historical-identity rejection.
 - Local focused regression is green; no real Provider request was sent. Next checkpoint is exact-SHA public CI, followed only by a separately authorized fresh G53-3-L observation.
+
+## RQ-240：V4 回执契约修复（2026-09-06）
+
+- 上一公共 CI 的唯一失败是新 V4 回执未接入公共版本化结果分流，旧模型解析时出现多余字段/缺失字段；不是 Provider、额度或模型能力失败。
+- 新增严格 `GuidedDomainGateReceipt` 及资源/案例总量校验，并保持 body-free、create-only 与候选未注册约束；现有真实观察回执未改写。
+- 提交 `b7ac850` 的 Actions `34015592274` 三项全绿；当前唯一下一步是对 V4 `evaluation_unavailable` 做失败归因，不重跑旧考卷、不改默认 Runtime。

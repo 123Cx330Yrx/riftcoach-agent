@@ -302,6 +302,7 @@ provider calls=0，仍需明确授权才执行真实协议门。
 
 | RQ-238 | 2026-09-06 | 查询指引候选路径接入 | 用户继续授权候选接入与代表场景验证，不扩大到前端或默认 Runtime | `coaching-query-guidance-v1` 已绑定候选 Context schema 1.1 快照、文件摘要和逐案承诺；旧 held-out 漂移在 Provider 调用前拒绝。guided_03 的 3 来源、95 分仅为开发证据；提交 `dd0033d` 等待 exact-SHA 公共 CI。 |
 | RQ-239 | 2026-09-06 | 建立带查询指引的新候选领域资产设计 | RQ-238 完成后继续推进离线资产设计；真实领域调用仍后置 | 新 Dataset、case/run、fixture、Input Plan、Context、预算、协议和回执身份必须与 RQ-237 隔离，显式绑定 `coaching-query-guidance-v1` 与全部现有质量/安全门；不重跑旧考卷、不改默认模型或产品模块。 |
+| RQ-240 | 2026-09-06 | V4 领域回执公共契约修复并取得 exact-SHA CI | 上一公共 CI 仅因新协议回执未接入总检契约而失败；继续授权仅限结果契约修复，不重跑真实观察 | 新增严格、禁止多余字段的 `GuidedDomainGateReceipt` 及资源/案例校验，并将 `glm53-flash-guided-domain-observation-v4` 接入公共结果分流。提交 `b7ac850` 的 Actions `34015592274` 三项全绿；不改变 V4 评测失败事实，不注册候选、不改默认模型或产品模块。下一步只做评测失败归因。 |
 
 ## 新条目格式
 

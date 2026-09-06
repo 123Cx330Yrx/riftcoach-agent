@@ -86,7 +86,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-domain-assets-v4 / completed-real-observation / pending-failure-attribution`。
+当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-domain-assets-v4 / completed-contract-ci / pending-failure-attribution`。
 
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
@@ -419,7 +419,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 
 ## Next Step
 
-当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-domain-assets-v4 / completed-real-observation / pending-failure-attribution`。
+当前唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-guided-domain-assets-v4 / completed-contract-ci / pending-failure-attribution`。
 
 当前唯一下一步为
 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-retrieval-hardened-domain-assets-design / completed-real-observation / pending-retrieval-failure-attribution`。
