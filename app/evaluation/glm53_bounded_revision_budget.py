@@ -56,6 +56,7 @@ class BoundedRevisionBudgetState:
     stop_code: str | None = None
     provider_error_code: str | None = None
     cases: dict[str, _CaseBudget] = field(default_factory=dict)
+    max_cases: int = 3
 
     @property
     def total_tokens(self) -> int:
@@ -67,8 +68,8 @@ class BoundedRevisionBudgetState:
         normalized = case_id.strip()
         if normalized in self.cases:
             raise ValueError("case is already registered")
-        if len(self.cases) >= 3:
-            raise ValueError("V3 budget accepts exactly three case namespaces")
+        if len(self.cases) >= self.max_cases:
+            raise ValueError("budget case namespace limit exhausted")
         self.cases[normalized] = _CaseBudget()
 
     def stop(self, code: str, *, provider_error_code: str | None = None) -> None:
@@ -116,6 +117,7 @@ class BoundedRevisionBudgetedProvider:
         clock: Callable[[], float] = time.monotonic,
         case_max_tokens: int = V3_CASE_MAX_TOKENS,
         domain_max_tokens: int = V3_DOMAIN_MAX_TOKENS,
+        domain_max_calls: int = V3_DOMAIN_MAX_CALLS,
     ) -> None:
         if not callable(getattr(provider, "chat", None)):
             raise TypeError("provider must provide chat()")
@@ -143,12 +145,19 @@ class BoundedRevisionBudgetedProvider:
             raise ValueError("custom token walls must be positive integers")
         if case_max_tokens > domain_max_tokens:
             raise ValueError("case token wall cannot exceed domain token wall")
+        if (
+            isinstance(domain_max_calls, bool)
+            or not isinstance(domain_max_calls, int)
+            or domain_max_calls <= 0
+        ):
+            raise ValueError("domain call wall must be a positive integer")
         self._provider = provider
         self._state = state
         self._case_id = case_id
         self._clock = clock
         self._case_max_tokens = case_max_tokens
         self._domain_max_tokens = domain_max_tokens
+        self._domain_max_calls = domain_max_calls
         self.provider_name = provider.provider_name
         self.model_name = provider.model_name
         self.capabilities = provider.capabilities
@@ -197,7 +206,7 @@ class BoundedRevisionBudgetedProvider:
             self._block(self._state.stop_code)
         case = self._state.cases[self._case_id]
         if (
-            self._state.calls_used >= V3_DOMAIN_MAX_CALLS
+            self._state.calls_used >= self._domain_max_calls
             or case.calls_used >= V3_CASE_MAX_CALLS
         ):
             self._block("external_call_budget_exhausted")
