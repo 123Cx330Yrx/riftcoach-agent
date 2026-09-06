@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from app.evaluation.coach_grounded_development import prepare_observation, execute_once, verify_development_ci
+from app.evaluation.coach_grounded_development import prepare_observation, execute_once, verify_development_ci, prepare_suite, execute_suite_once
 from app.runtime.coach_contract import GROUNDED_COACH_CONTRACT
 
 
@@ -39,7 +39,8 @@ def high_provider(env_file):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--scenario", choices=("overall", "survival", "economy"), default="economy")
+    parser.add_argument("--scenario", choices=("overall", "survival", "economy", "memory"), default="economy")
+    parser.add_argument("--suite", action="store_true", help="Run all four known development cases, not an admission exam")
     parser.add_argument("--run-id")
     parser.add_argument("--plan-sha256")
     parser.add_argument("--confirm-real-call", action="store_true")
@@ -48,12 +49,14 @@ def main(argv=None):
     args = parser.parse_args(argv)
     phase = "local_preflight"
     try:
-        plan = prepare_observation(ROOT, scenario=args.scenario, run_id=args.run_id or "coach-grounded-dev-preview")
+        plan = (prepare_suite(ROOT, suite_id=args.run_id or "coach-grounded-suite-preview") if args.suite else
+                prepare_observation(ROOT, scenario=args.scenario, run_id=args.run_id or "coach-grounded-dev-preview"))
         if not args.confirm_real_call:
             print(json.dumps({"status": "ready", "scope": "development_not_admission", "network": 0,
-                "run_id": plan.run_id, "scenario": plan.scenario, "plan_sha256": plan.sha256,
-                "reasoning_effort": "high", "max_output_tokens": 8192, "max_calls": 9,
-                "max_total_tokens": 649728, "request_timeout_s": 60}))
+                **({"run_id": plan.suite_id, "scenarios": [p.scenario for p in plan.plans]} if args.suite else
+                   {"run_id": plan.run_id, "scenario": plan.scenario}), "plan_sha256": plan.sha256,
+                "reasoning_effort": "high", "max_output_tokens": 8192, "max_calls": 36 if args.suite else 9,
+                "max_total_tokens": 2598912 if args.suite else 649728, "request_timeout_s": 60}))
             return 0
         phase = "real_preflight"
         if not args.run_id or args.ci_run is None or args.plan_sha256 != plan.sha256:
@@ -62,6 +65,14 @@ def main(argv=None):
             raise ValueError("development_requires_clean_worktree")
         sha = command("git", "rev-parse", "HEAD")
         ci = json.loads(command("gh", "run", "view", str(args.ci_run), "--json", "headSha,status,conclusion,jobs,url"))
+        if args.suite:
+            phase = "reserved_suite_execution"
+            with ExitStack() as stack:
+                result = execute_suite_once(ROOT, suite=plan, implementation_sha=sha, ci=ci,
+                    provider_factory=lambda: stack.enter_context(high_provider(args.env_file)),
+                    on_progress=lambda row: print(json.dumps(row, ensure_ascii=True), flush=True))
+            print(json.dumps(result, ensure_ascii=True), flush=True)
+            return 0 if result["passed"] else 1
         evidence = verify_development_ci(plan, implementation_sha=sha, ci=ci)
         phase = "reserved_execution"
         with ExitStack() as stack:
