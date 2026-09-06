@@ -3622,3 +3622,7 @@ Portal、Account、Workbench、Auth、路由或生产准入。
 
 观察更正：RQ-237 首案回执确认 unmapped、零来源而停止；实际查询未知，离线例子不能证明词句根因。
 只允许未来新版本验证，不能修改或重跑已消费的 RQ-237 资产。
+
+### RQ-239：带查询指引的新候选领域资产（2026-09-06）
+
+接受 ADR-0097 的离线设计：新领域资产必须全量换新身份并显式消费 `coaching-query-guidance-v1`，通过 no-I/O 排重、Context/预算重建和 exact-SHA CI 后才进入新的真实领域门。旧考卷、默认模型、GLM-5.2 回退、Portal、Account、Workbench、Auth 和生产媒体保持不变。

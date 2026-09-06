@@ -4910,4 +4910,9 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 
 - `[implemented-local]` 提交 `dd0033d` 将 `coaching-query-guidance-v1` 绑定到候选 Context schema 1.1，调用前重建并校验快照、文件摘要和逐案承诺；开发探针消费同一绑定。
 - `[verification-local]` 18 项指引绑定测试和新增三场景离线 Evidence 链通过（合计 30 项聚焦测试）；guided_03 保持 3 次调用、3 来源、95 分、published。新增场景尚未发起真实 Provider 调用。
-- `[boundary-next]` 当前仍为 Stage 8 / 8E in_progress；下一步是提交并取得 exact-SHA 公共 CI，之后才裁决新的候选领域门。候选未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
+- `[boundary-next]` 当前仍为 Stage 8 / 8E in_progress；`93aae86` 的 exact-SHA 公共 CI 已三项通过。下一步是设计并离线冻结新的候选领域资产，之后才裁决新的候选领域门。候选未注册，默认 Runtime、GLM-5.2 回退、Portal、Account、Workbench、Auth、路由和 `production_media=0` 不变。
+
+### 2026-09-06：RQ-239 新候选领域资产设计准备
+
+- `[decision]` 采用与 RQ-237 完全隔离的新协议/数据集/输入计划/Context/预算/回执身份，显式绑定 `coaching-query-guidance-v1`；旧考卷和回执不可重跑。
+- `[boundary-next]` 先完成离线设计、身份排重和预算可达性，再取得公共 CI 与新的 G53-3-L；真实领域调用仍后置，不改变产品默认模型或前端。

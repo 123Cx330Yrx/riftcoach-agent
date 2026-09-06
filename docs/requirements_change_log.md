@@ -301,6 +301,7 @@ provider calls=0，仍需明确授权才执行真实协议门。
 | RQ-237 observation | 2026-09-05 | 新鲜协议及一次检索加固领域观察完成；首案因零来源安全停止，实际词句原因未知 | 用户已授权在修复提交和新鲜 G53-3-L 后继续；本批未注册候选、不重跑旧考卷 | 新鲜协议 3/3、`1109` tokens、`12234ms` 通过；领域首案 2 次、`6624` tokens、`20453ms`，实际查询未留存，`topic=unmapped`，0 来源，`evidence_required`，`domain_case_outcome_mismatch`，后两案跳过；回执 `zhipu_glm53_flash_retrieval_hardened_domain_v3_rq237_v1.json` 已保存。下一步只做离线归因/是否另立版本，旧 RQ-237 证据不可变。 |
 
 | RQ-238 | 2026-09-06 | 查询指引候选路径接入 | 用户继续授权候选接入与代表场景验证，不扩大到前端或默认 Runtime | `coaching-query-guidance-v1` 已绑定候选 Context schema 1.1 快照、文件摘要和逐案承诺；旧 held-out 漂移在 Provider 调用前拒绝。guided_03 的 3 来源、95 分仅为开发证据；提交 `dd0033d` 等待 exact-SHA 公共 CI。 |
+| RQ-239 | 2026-09-06 | 建立带查询指引的新候选领域资产设计 | RQ-238 完成后继续推进离线资产设计；真实领域调用仍后置 | 新 Dataset、case/run、fixture、Input Plan、Context、预算、协议和回执身份必须与 RQ-237 隔离，显式绑定 `coaching-query-guidance-v1` 与全部现有质量/安全门；不重跑旧考卷、不改默认模型或产品模块。 |
 
 ## 新条目格式
 
