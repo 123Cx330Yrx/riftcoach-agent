@@ -167,12 +167,16 @@ def _topic(text: str) -> tuple[Topic, str | None]:
     normalized = _normalize(text)
     candidates: set[tuple[Topic, str]] = set()
     for topic, aliases, terms in _TOPICS:
+        remainder = normalized
+        matched = False
         for alias in sorted(aliases, key=len, reverse=True):
-            if not _contains_alias(normalized, alias):
-                continue
-            remainder = _remove_alias(normalized, alias)
-            if _is_safe_wrapper(remainder):
-                candidates.add((topic, terms))
+            # Several aliases of one topic are still one concept. Each
+            # removal consumes an occurrence; unknown/other-topic words stay.
+            while _contains_alias(remainder, alias):
+                remainder = _remove_alias(remainder, alias)
+                matched = True
+        if matched and _is_safe_wrapper(remainder):
+            candidates.add((topic, terms))
     # A query which mixes concepts is intentionally left to the original
     # retriever.  Expanding one arbitrarily would be an unsafe semantic guess.
     if len(candidates) == 1:

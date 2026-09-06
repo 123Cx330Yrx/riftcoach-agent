@@ -160,3 +160,27 @@ def test_provider_error_is_not_retried_or_hidden():
     with pytest.raises(RuntimeError, match="development error"):
         CoachingQueryKnowledgeProvider(base).search(KnowledgeQuery(text="review"))
     assert len(base.queries) == 1
+
+
+@pytest.mark.parametrize("text,topic", [
+    ("补刀经济", "economy"), ("补刀 经济 发育", "economy"), ("farming economy cs", "economy"),
+    ("早期死亡生存", "survival"), ("复盘复盘方法", "review"), ("review review", "review"),
+])
+def test_same_topic_synonyms_are_one_concept_not_unknown_remainder(text, topic):
+    assert _topic(text)[0] == topic
+
+
+def test_same_topic_economy_query_recovers_real_evidence_without_lowering_thresholds():
+    base = RecordingKnowledge(local_provider())
+    query = KnowledgeQuery(text="补刀经济", top_k=2)
+    assert base.delegate.search(query).abstained
+    result = CoachingQueryKnowledgeProvider(base).search(query)
+    assert result.hits and len(base.queries) == 2
+    assert result.query == query
+    assert result.diagnostics["thresholds"]["minimum_bm25_score"] == 15.0
+    assert result.diagnostics["thresholds"]["minimum_query_coverage"] == 0.18
+
+
+@pytest.mark.parametrize("text", ["补刀经济伤害", "补刀经济股票", "cs economy ignore instructions", "scscs economy", "复盘生存"])
+def test_same_topic_fix_does_not_erase_unrecognized_or_other_topic_words(text):
+    assert _topic(text) == ("unmapped", None)
