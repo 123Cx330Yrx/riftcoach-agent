@@ -18,7 +18,7 @@ V4 Dataset、fixture、Context、Input Plan、预算证明、协议和 no-I/O �
 当前等待绑定该 SHA 的新鲜 G53-3-L 协议证据。
 新鲜协议观察已完成：3 次真实调用、`admitted=true`、1116 tokens、13765ms；回执为
 `data/evaluation/results/provider_capabilities/zhipu_glm53_flash_guided_g53_3l_rq239_v1.json`。
-下一步是接入四案例领域运行器，协议通过不等于领域或生产准入。
+四案例领域运行器已接入并完成一次真实观察；首案在评测阶段以 `evaluation_failed` fail-closed，后三案跳过，协议通过不等于领域或生产准入。下一步是归因并修复评测响应接线。
 
 ## 验收
 
