@@ -23,4 +23,4 @@ RuntimePolicy/Trace/Skill 版本绑定及端到端产品接入；不能以此批
 
 ## 验证记录
 
-实施中；尚无本批真实 Provider 调用。
+离线代表场景验证已完成：recent review、生存调整、补刀经济三种场景均经过同一候选绑定、真实本地检索、Evidence 与 Harness 发布链；30 项相关测试通过。尚未对新增场景发起真实 Provider 调用。

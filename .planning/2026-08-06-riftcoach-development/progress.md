@@ -6191,3 +6191,4 @@
 - 开发探针消费同一绑定；18 项聚焦测试、compileall、diff check、governance 通过；实现提交 `dd0033d`，公共 CI 等待。
 - guided_03 是唯一真实开发模型证据（3 次调用、3 来源、95 分、published），不构成正式领域或生产准入。
 - 下一步为代表场景离线验证与 exact-SHA CI；默认模型、GLM-5.2 回退、产品模块和 `production_media=0` 不变。
+- `[verification-local]` recent review、生存调整、补刀经济三个代表场景均通过同一候选绑定和真实本地 Evidence 链；30 项聚焦回归通过。新增场景尚未发起真实 Provider 调用，待 exact-SHA CI 后再决定领域门。
