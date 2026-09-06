@@ -403,6 +403,17 @@ def _single_attempt_llm_runtime(
         runtime_profile=runtime_profile,
         request_policy=request_policy,
     )[0]
+    # Candidate structured evaluation must let the decoder see an empty
+    # provider content response so it can classify an incomplete turn and use
+    # its single bounded repair attempt.  The normal product tool contract
+    # remains unchanged; this relaxation is scoped to this evaluation-only
+    # runtime and does not make empty content publishable.
+    if request_policy is not None or runtime_profile is not None:
+        output_schema = dict(definition.output_schema)
+        output_properties = dict(output_schema.get("properties", {}))
+        output_properties["content"] = {"type": ["string", "null"]}
+        output_schema["properties"] = output_properties
+        definition = replace(definition, output_schema=output_schema)
     registry.register(
         replace(
             definition,
