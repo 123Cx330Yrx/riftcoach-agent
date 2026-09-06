@@ -14,7 +14,8 @@
 
 当前进度：四个新案例的稳定身份和排重校验已落到 `app/evaluation/glm53_guided_candidate.py`；
 V4 Dataset、fixture、Context、Input Plan、预算证明、协议和 no-I/O 准入已在同一实现批中完成，
-聚焦测试通过，未进行真实 Provider 调用。
+聚焦测试通过，未进行真实 Provider 调用；提交 `53555f7` 的公共 CI `34013138068` 三项全绿，
+当前等待绑定该 SHA 的新鲜 G53-3-L 协议证据。
 
 ## 验收
 
