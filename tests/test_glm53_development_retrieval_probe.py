@@ -14,6 +14,7 @@ from tests.test_provider_domain_production import ROOT
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.rag.coaching_query import COACHING_QUERY_GUIDANCE_V1
 from app.skills.review_executor import SkillReviewExecutionError
+from app.evaluation.glm53_guided_candidate import GUIDED_DOMAIN_CASES, validate_guided_domain_case_set
 
 
 @pytest.fixture(autouse=True)
@@ -80,6 +81,13 @@ def test_guided_candidate_entry_supports_representative_coaching_scenarios(tmp_p
     assert report["observation"]["terminal_status"] == "published"
     assert report["observation"]["evidence_source_ids"]
     assert report["plan_sha256"]
+
+
+def test_fresh_guided_domain_case_set_is_canonical_and_rejects_reused_identity():
+    validate_guided_domain_case_set()
+    assert len(GUIDED_DOMAIN_CASES) == 4
+    with pytest.raises(ValueError, match="canonical"):
+        validate_guided_domain_case_set(GUIDED_DOMAIN_CASES[1:] + GUIDED_DOMAIN_CASES[:1])
 
 
 def test_terminal_projection_failure_retains_safe_diagnostics(tmp_path, monkeypatch):
