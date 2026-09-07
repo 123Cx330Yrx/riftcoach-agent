@@ -166,6 +166,44 @@ def user_sections(provider):
     return {s["section_id"]: s for s in json.loads(message.content)["sections"]}
 
 
+def test_application_and_evidence_consume_the_same_summary(tmp_path):
+    from datetime import datetime, timezone
+    from app.evidence.summary_bridge import summary_to_evidence
+
+    deps = dependencies()
+    source = deps["summary_builder"].summary
+    source["metadata"]["matches_requested"] = source["request"]["count"] = 5
+    for row in source["matches"]:
+        # This remains synthetic; the old 900001 demo ID is outside the
+        # existing typed Riot range and must not widen the production contract.
+        row["champion_id"] = 75
+        row["queue_id"] = 420
+        row["game_version"] = "16.16.804.9184"
+
+    class CapturingBuilder(SummaryBuilder):
+        def build(self, **kwargs):
+            self.delivered = super().build(**kwargs)
+            self.before = copy.deepcopy(self.delivered)
+            return self.delivered
+
+    builder = CapturingBuilder(source)
+    deps["summary_builder"] = builder
+    result = build_coach_application(runs_root=tmp_path, **deps).review(
+        product_request(), run_id="same_summary_evidence")
+    projection = summary_to_evidence(builder.delivered, routing_region="asia",
+                                     now=datetime(2026, 9, 7, tzinfo=timezone.utc))
+    expected = hashlib.sha256(json.dumps(builder.before, ensure_ascii=True, sort_keys=True,
+                                        separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+    assert projection.summary_digest == expected
+    assert builder.delivered == builder.before == source
+    assert len(builder.calls) == 1
+    assert result.publication_status.value == "published"
+    assert projection.included_count == 2
+    assert all(row.patch_version == "16.16" for row in projection.bundle.riot_matches)
+    assert "16.16.804.9184" in json.dumps(user_sections(deps["provider"]))
+    assert projection.bundle.data_dragon is None  # Not a persisted product snapshot.
+
+
 def review_by_puuid(service, run_id, memory=None):
     return service.review_by_puuid(
         ConversationRecentReviewRequest(count=5, queue=420, focus="overall"),

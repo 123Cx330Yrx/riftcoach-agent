@@ -80,7 +80,7 @@ git diff --check
 
 ## 6. RQ-252：离线应用组合实现（2026-09-06）
 
-状态：本地与公共验证均完成；下一步为第4节真实数据切片接入准备。上方第1至5节保留RQ-251设计时态，其中第3节离线批已完成；真实数据衔接仍未执行。
+状态：本地与公共验证均完成；第4节真实数据切片准备已由RQ-253完成，见 `docs/plans/2026-09-07-real-data-slice-preparation.md`。唯一下一批为该计划第3节Summary→Evidence纯桥接离线实现。上方第1至5节保留RQ-251设计时态，真实数据获取和生产接线仍未执行。
 
 公共证据：实现 `afda1934f699c5de5110ccbef67533b84e62d8e9` 的 [Actions 34076953653](https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/34076953653) 已核对精确headSha，三个任务全部success；后端2735 passed、145 skipped、127 subtests passed，数据库201 passed，前端单元270 passed、端到端38 passed，打包与检索/代码边界门通过。下方未提交/推送记录为历史，本条取代其待办；后续纯文档收口提交不能冒充此已核验实现SHA。真实API=0，无部署或默认启用。
 

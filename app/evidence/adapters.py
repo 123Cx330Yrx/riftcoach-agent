@@ -19,7 +19,7 @@ from .fusion import (
 )
 
 
-_PATCH_PREFIX = re.compile(r"^(\d{1,3}\.\d{1,3}(?:\.\d{1,3})?)$")
+_PATCH_PREFIX = re.compile(r"^([0-9]{1,3}\.[0-9]{1,3}(?:\.[0-9]{1,10}){0,2})$")
 _ROLE_MAP = {
     "top": "top",
     "jungle": "jungle",
@@ -118,7 +118,7 @@ def data_dragon_snapshot_from_identity(
 def _patch_version(value: object) -> str | None:
     if value is None:
         return None
-    if not isinstance(value, str) or not value.strip():
+    if not isinstance(value, str) or len(value) > 32 or not value.strip():
         raise EvidenceAdapterError("riot_patch_invalid")
     match = _PATCH_PREFIX.fullmatch(value.strip())
     if match is None:

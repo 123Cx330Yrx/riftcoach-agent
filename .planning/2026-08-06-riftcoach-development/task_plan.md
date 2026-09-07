@@ -1,6 +1,14 @@
 # RiftCoach 持续开发计划
 
-## RQ-252 最新离线接入
+## RQ-254 最新离线证据桥
+
+RQ-254（2026-09-07）Summary→Evidence纯桥及真实四段版本兼容已完成本地实现。新增52项、聚焦及相邻128项通过，编译/治理/diff通过；同一Summary应用整链、不可变摘要、局数/排除/失败、时间/队列及Meta降级边界均已验证。八维说明见 `docs/plans/2026-09-07-real-data-slice-preparation.md` 第6节。唯一下一步为本实现同SHA公共CI；未提交/推送，真实API=0、不写数据库、不改生产Worker/默认/前端/GLM-5.2，8E仍in_progress、production_media=0。本地实现推进不等于公共或生产准入；所有者理解未新增确认、来源无新增在线审计、公共证据保持RQ-252、无新部署。下方RQ-253及更早均为历史，待离线实现已由本条完成取代。
+
+## RQ-253 历史真实数据准备
+
+RQ-253（2026-09-07）真实数据切片准备完成，详见 `docs/plans/2026-09-07-real-data-slice-preparation.md`。已用历史真实版本16.16.804.9184离线复现证据转换拒绝，核实摘要队列fallback、静态缓存身份与报告回执/多来源快照的区别。唯一下一批仅Summary→Evidence纯桥接及版本格式窄修复的离线实现；不接数据库写入、不抓取真实数据、不改默认或另立考卷。本批仅文档、真实API=0；本地和公共实现证据保持RQ-252，所有者理解未新增确认、参考来源无新增在线审计、无新部署；8E仍in_progress、production_media=0。下方RQ-252及更早记录为历史，其待准备动作已由本条完成取代。
+
+## RQ-252 历史离线接入
 
 RQ-252 公共收口（2026-09-07）：实现 `afda1934f699c5de5110ccbef67533b84e62d8e9` 的 Actions `34076953653` 已核对精确headSha，pytest、postgres-migrations、packaging-smoke三任务全部success；后端2735项/145跳过/127子测试、数据库201项、前端270项及端到端38项通过。本次应用组合完成本地与公共闭环，旧“未提交/推送、待公共CI”待办由本条取代。唯一下一步为RQ-251计划第4节的真实数据切片接入准备，不自动发真实请求、切默认或另立考卷；8E仍in_progress、production_media=0，GLM-5.2和前端不变。学习说明复用RQ-251计划第6节；所有者理解和参考来源审计未新增确认，公共测试不等于生产准入。
 
@@ -98,7 +106,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-application-composition / completed-public / pending-real-data-slice-preparation`。
+当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-summary-evidence-bridge / completed-local / pending-public-ci`。
 
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
@@ -430,6 +438,10 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
   基础设施、migration、Compose 与真库 CI 又由 `854e52d` / Actions `32043214500` 公共完成。
 
 ## Next Step
+
+RQ-254 当前执行：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-summary-evidence-bridge / completed-local / pending-public-ci`。纯桥本地实现和128项验证已完成，下一步仅本实现同SHA公共CI；不调用真实接口或接生产。以下RQ-253及更早下一步均为历史。
+
+RQ-253 当前执行：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-data-slice-preparation / completed-design / pending-offline-summary-evidence-bridge`。按RQ-253计划第3节离线实现Summary→Evidence纯桥接及真实四段版本格式窄修复；不写数据库、不调用真实接口、不切默认。以下RQ-252及更早下一步均为历史。
 
 RQ-252 当前执行：应用组合实现afda193 / Actions34076953653三任务同SHA公共验证通过。下一步为RQ-251计划第4节真实数据切片接入准备；不再等待本实现CI，不新增真实请求。下方RQ-250与更早执行摘要均为历史。
 
