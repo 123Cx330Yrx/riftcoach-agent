@@ -166,6 +166,99 @@ def user_sections(provider):
     return {s["section_id"]: s for s in json.loads(message.content)["sections"]}
 
 
+@pytest.mark.parametrize("supplied", ["publication_sources", "publication_writer"])
+def test_publication_dependencies_require_pair(tmp_path, supplied):
+    with pytest.raises(ValueError, match="together"):
+        build_coach_application(runs_root=tmp_path, **dependencies(), **{supplied: object()})
+
+
+@pytest.mark.parametrize("mode", ["missing", "unconfigured", "wrong_run", "foreign_memory"])
+def test_publication_context_fails_before_builder_and_provider(tmp_path, mode):
+    from tests.test_evidence_publication import context
+    from tests.test_evidence_publication_store import prepared
+    app, deps, _, _ = prepared(tmp_path, explicit=mode != "unconfigured")
+    ctx = None if mode == "missing" else context("wrong" if mode == "wrong_run" else "publication")
+    with pytest.raises(RecentReviewApplicationError) as error:
+        if mode == "foreign_memory":
+            app.review_by_puuid(ConversationRecentReviewRequest(count=5, queue=420),
+                puuid="private", routing_region="asia", game_name="demo", tag_line="TEST",
+                run_id="publication", publication_context=ctx, memory_context_binding=binding("publication"))
+        else:
+            app.review(product_request(), run_id="publication", publication_context=ctx)
+    assert error.value.code == "service_configuration_invalid"
+    assert not deps["summary_builder"].calls and not deps["provider"].requests
+    assert not list(tmp_path.iterdir())
+
+
+def test_explicit_puuid_delivery_uses_one_summary(tmp_path):
+    from tests.test_evidence_publication import context
+    from tests.test_evidence_publication_store import prepared
+    app, deps, store, projection = prepared(tmp_path)
+    result = app.review_by_puuid(ConversationRecentReviewRequest(count=5, queue=420),
+        puuid="private", routing_region="asia", game_name="demo", tag_line="TEST",
+        run_id="publication", publication_context=context())
+    assert result.publication_status.value == "published"
+    assert store.read(context()).summary_digest == projection.summary_digest
+    assert len(deps["summary_builder"].calls) == 1
+    assert deps["summary_builder"].calls[0][0] == "build_by_puuid"
+
+
+def test_mutating_compiler_cannot_publish_different_input(tmp_path):
+    from tests.test_evidence_publication import context
+    from tests.test_evidence_publication_store import prepared
+    app, _, store, _ = prepared(tmp_path)
+    original = app._compiler
+    class MutatingCompiler:
+        def compile(self, request, **kwargs):
+            kwargs["player_summary"]["matches"][0]["champion_id"] = 76
+            return original.compile(request, **kwargs)
+    app._compiler = MutatingCompiler()
+    with pytest.raises(RecentReviewApplicationError) as error:
+        app.review(product_request(), run_id="publication", publication_context=context())
+    assert error.value.code == "review_runtime_failed"
+    assert not (tmp_path / "publication" / store.filename).exists()
+
+
+def test_runtime_failure_does_not_create_publication(tmp_path):
+    from tests.test_evidence_publication import context
+    from tests.test_evidence_publication_store import prepared
+    app, deps, store, _ = prepared(tmp_path)
+    # Unconfigured Memory makes the real Runtime return a typed failed result.
+    memory = binding("publication").model_copy(update={"owner_id": context().owner_id})
+    with pytest.raises(RecentReviewApplicationError) as error:
+        app.review_by_puuid(ConversationRecentReviewRequest(count=5, queue=420),
+            puuid="private", routing_region="asia", game_name="demo", tag_line="TEST",
+            run_id="publication", publication_context=context(), memory_context_binding=memory)
+    assert error.value.terminal_reason == "context_build_failed"
+    assert not deps["provider"].requests
+    assert not (tmp_path / "publication" / store.filename).exists()
+    assert not (tmp_path / "publication" / "evidence_bundle.json").exists()
+    assert FileRunReceiptStore(tmp_path).read_receipt("publication").runtime_status.value == "failed"
+
+
+def test_legacy_delivery_has_no_new_sidecars(tmp_path):
+    app = build_coach_application(runs_root=tmp_path, **dependencies())
+    app.review(product_request(), run_id="legacy_no_sidecar")
+    assert not list(tmp_path.rglob("evidence_*.json"))
+
+
+def test_provider_exception_retains_existing_rejected_semantics(tmp_path, monkeypatch):
+    from tests.test_evidence_publication import context
+    from tests.test_evidence_publication_store import prepared
+    app, deps, store, _ = prepared(tmp_path)
+    def broken(request):
+        raise RuntimeError("private-provider-body")
+    monkeypatch.setattr(deps["provider"], "chat", broken)
+    result = app.review(product_request(), run_id="publication", publication_context=context())
+    # Existing Runtime classifies draft failure as completed/rejected, not
+    # Runtime FAILED. Preserve that distinction rather than changing the gate.
+    assert result.publication_status.value == "rejected"
+    assert result.terminal_reason == "draft_preparation_failed"
+    manifest = store.read(context())
+    assert manifest.report is None
+    assert "private-provider-body" not in manifest.canonical_bytes().decode()
+
+
 def test_application_and_evidence_consume_the_same_summary(tmp_path):
     from datetime import datetime, timezone
     from app.evidence.summary_bridge import summary_to_evidence

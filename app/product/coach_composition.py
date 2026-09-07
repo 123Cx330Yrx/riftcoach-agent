@@ -3,6 +3,10 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.evidence.publication import EvidencePublicationSources, EvidencePublicationWriter
 
 from app.agent.memory_context import (
     MemoryAwareContextBuilder,
@@ -31,6 +35,8 @@ def build_coach_application(
     runs_root: str | Path,
     memory_repository: MemoryContextRepository | None = None,
     memory_manifest_store: MemoryContextManifestWriter | None = None,
+    publication_sources: EvidencePublicationSources | None = None,
+    publication_writer: EvidencePublicationWriter | None = None,
 ) -> RecentReviewApplicationService:
     """Assemble the verified 1.2.0 bundle from already constructed dependencies.
 
@@ -81,6 +87,8 @@ def build_coach_application(
         ),
         runtime=runtime,
         receipt_writer=FileRunReceiptStore(runs_root),
+        publication_sources=publication_sources,
+        publication_writer=publication_writer,
     )
 
 

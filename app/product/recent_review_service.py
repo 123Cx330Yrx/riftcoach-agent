@@ -10,7 +10,12 @@ from __future__ import annotations
 import copy
 import re
 from collections.abc import Callable, Mapping
-from typing import Any, Literal, Protocol
+from typing import TYPE_CHECKING, Any, Literal, Protocol
+
+if TYPE_CHECKING:
+    from app.evidence.publication import (
+        EvidencePublicationContext, EvidencePublicationSources, EvidencePublicationWriter,
+    )
 
 from pydantic import BaseModel, ConfigDict, field_validator, model_validator
 from requests.exceptions import (
@@ -216,6 +221,8 @@ class RecentReviewApplicationService:
         runtime: RecentReviewRuntime,
         receipt_writer: RunReceiptWriter,
         report_renderer: ReportRenderer = render_deterministic_report,
+        publication_sources: EvidencePublicationSources | None = None,
+        publication_writer: EvidencePublicationWriter | None = None,
     ) -> None:
         if not callable(getattr(summary_builder, "build", None)):
             raise TypeError("summary_builder must expose build()")
@@ -227,6 +234,14 @@ class RecentReviewApplicationService:
             raise TypeError("receipt_writer must expose write_result()")
         if not callable(report_renderer):
             raise TypeError("report_renderer must be callable")
+        if (publication_sources is None) != (publication_writer is None):
+            raise ValueError("publication sources and writer must be supplied together")
+        if publication_sources is not None:
+            from app.evidence.publication import EvidencePublicationSources
+            if not isinstance(publication_sources, EvidencePublicationSources) or not callable(getattr(publication_writer, "write", None)):
+                raise TypeError("invalid publication dependencies")
+        self._publication_sources = publication_sources
+        self._publication_writer = publication_writer
         self._summary_builder = summary_builder
         self._compiler = compiler
         self._runtime = runtime
@@ -238,16 +253,19 @@ class RecentReviewApplicationService:
         request: RecentReviewProductRequest,
         *,
         run_id: str | None = None,
+        publication_context: EvidencePublicationContext | None = None,
     ) -> RecentReviewApplicationResult:
         if not isinstance(request, RecentReviewProductRequest):
             raise TypeError("request must be a RecentReviewProductRequest")
         run_id = self._normalize_optional_run_id(run_id)
-
+        self._validate_publication_context(publication_context, run_id)
         summary = self._build_summary(request)
         return self._review_from_summary(
             request,
             summary=summary,
             run_id=run_id,
+            publication_context=publication_context,
+            routing_region=request.routing_region,
         )
 
     def review_by_puuid(
@@ -260,10 +278,12 @@ class RecentReviewApplicationService:
         tag_line: str,
         run_id: str | None = None,
         memory_context_binding: MemoryContextBinding | None = None,
+        publication_context: EvidencePublicationContext | None = None,
     ) -> RecentReviewApplicationResult:
         if not isinstance(request, ConversationRecentReviewRequest):
             raise TypeError("request must be a ConversationRecentReviewRequest")
         run_id = self._normalize_optional_run_id(run_id)
+        self._validate_publication_context(publication_context, run_id, memory_context_binding)
         summary = self._build_summary_by_puuid(
             request,
             puuid=puuid,
@@ -276,7 +296,25 @@ class RecentReviewApplicationService:
             summary=summary,
             run_id=run_id,
             memory_context_binding=memory_context_binding,
+            publication_context=publication_context,
+            routing_region=routing_region,
         )
+
+    def _validate_publication_context(self, context, run_id, memory=None) -> None:
+        if self._publication_sources is None and context is None:
+            return
+        valid = False
+        try:
+            from app.evidence.publication import EvidencePublicationContext
+            if not isinstance(context, EvidencePublicationContext):
+                raise TypeError("publication context must be typed")
+            checked = EvidencePublicationContext.model_validate(context)
+            valid = (self._publication_sources is not None and checked.run_id == run_id
+                     and (memory is None or (memory.run_id == run_id and memory.owner_id == checked.owner_id)))
+        except Exception:
+            pass
+        if not valid:
+            raise RecentReviewApplicationError("service_configuration_invalid")
 
     def _review_from_summary(
         self,
@@ -285,8 +323,19 @@ class RecentReviewApplicationService:
         summary: dict,
         run_id: str | None,
         memory_context_binding: MemoryContextBinding | None = None,
+        publication_context: EvidencePublicationContext | None = None,
+        routing_region: str | None = None,
     ) -> RecentReviewApplicationResult:
         self._validate_summary(summary)
+        projection = None
+        if self._publication_sources is not None:
+            failure = False
+            try:
+                projection = self._publication_sources.project(copy.deepcopy(summary), routing_region=routing_region)
+            except Exception:
+                failure = True
+            if failure:
+                raise RecentReviewApplicationError("service_configuration_invalid")
         deterministic_report = self._render_report(summary)
         runtime_request = self._compile_request(
             request,
@@ -312,6 +361,22 @@ class RecentReviewApplicationService:
             runtime_result,
         )
         self._write_receipt(runtime_request, runtime_result)
+        if projection is not None:
+            failure = False
+            try:
+                from app.evidence.publication import EvidencePublicationManifest
+                manifest = self._publication_writer.write(publication_context, projection)
+                manifest = EvidencePublicationManifest.model_validate(manifest)
+                if (not isinstance(manifest, EvidencePublicationManifest)
+                        or manifest.context != publication_context
+                        or manifest.summary_digest != projection.summary_digest
+                        or manifest.bundle.bundle_digest != projection.bundle.digest
+                        or manifest.trace != runtime_result.trace_reference):
+                    raise ValueError("publication delivery mismatch")
+            except Exception:
+                failure = True
+            if failure:
+                raise RecentReviewApplicationError("review_runtime_failed", run_id=runtime_request.run_id)
         return application_result
 
     @staticmethod
