@@ -2,6 +2,10 @@
 
 ## RQ-254 最新离线证据桥
 
+RQ-254公共收口（2026-09-07）：实现 `045fd05b8e52ded4336461a69735c32b7144aef3` 已提交推送，Actions `34096446523` 的headSha与实现一致，pytest、postgres-migrations、packaging-smoke全部success；后端2787 passed、145 skipped、127 subtests passed。本地128项证据保持有效，本次未重复运行。唯一下一步为同源Evidence应用/快照发布接线的离线设计，重点确定同一摘要交付、owner/task/run绑定、Worker失权围栏与发布顺序；沿用RQ-253计划第4节，不启动真实获取或生产写入。8E仍in_progress、production_media=0，默认/前端/GLM-5.2不变。八维学习复用RQ-253计划第6、7节；所有者理解未新增确认、来源无新增在线审计、无新部署。以下未提交/待CI为历史，已由本条完成取代。
+
+以下为公共验证前的本地记录。
+
 RQ-254（2026-09-07）Summary→Evidence纯桥及真实四段版本兼容已完成本地实现。新增52项、聚焦及相邻128项通过，编译/治理/diff通过；同一Summary应用整链、不可变摘要、局数/排除/失败、时间/队列及Meta降级边界均已验证。八维说明见 `docs/plans/2026-09-07-real-data-slice-preparation.md` 第6节。唯一下一步为本实现同SHA公共CI；未提交/推送，真实API=0、不写数据库、不改生产Worker/默认/前端/GLM-5.2，8E仍in_progress、production_media=0。本地实现推进不等于公共或生产准入；所有者理解未新增确认、来源无新增在线审计、公共证据保持RQ-252、无新部署。下方RQ-253及更早均为历史，待离线实现已由本条完成取代。
 
 ## RQ-253 历史真实数据准备
@@ -106,7 +110,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-summary-evidence-bridge / completed-local / pending-public-ci`。
+当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-summary-evidence-bridge / completed-public / pending-evidence-publication-wiring-design`。
 
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
@@ -438,6 +442,8 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
   基础设施、migration、Compose 与真库 CI 又由 `854e52d` / Actions `32043214500` 公共完成。
 
 ## Next Step
+
+RQ-254公共执行完成：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-summary-evidence-bridge / completed-public / pending-evidence-publication-wiring-design`。下一步为同源Evidence应用/快照发布接线离线设计，明确摘要交付、身份/执行权与发布顺序；以下待CI记录为历史。
 
 RQ-254 当前执行：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-summary-evidence-bridge / completed-local / pending-public-ci`。纯桥本地实现和128项验证已完成，下一步仅本实现同SHA公共CI；不调用真实接口或接生产。以下RQ-253及更早下一步均为历史。
 

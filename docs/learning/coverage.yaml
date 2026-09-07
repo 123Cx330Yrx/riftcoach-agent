@@ -867,6 +867,7 @@ groups:
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-application-composition / completed-public / pending-real-data-slice-preparation
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-data-slice-preparation / completed-design / pending-offline-summary-evidence-bridge
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-summary-evidence-bridge / completed-local / pending-public-ci
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-summary-evidence-bridge / completed-public / pending-evidence-publication-wiring-design
     status: planned
     evidence:
       problem_and_principle:

@@ -6,7 +6,7 @@
 
 **Tech Stack:** Python、现有dataclass/Pydantic合同、pytest；后续持久化复用SQLAlchemy/PostgreSQL。
 
-最新状态：RQ-254已完成第3节离线实现及本地验证，见第6节；唯一下一步为本实现同SHA公共CI。以下第1至5节保留RQ-253准备时态；真实抓取、数据库写入、生产Worker切换和新正式考卷均未执行。
+最新状态：RQ-254已完成第3节离线实现、本地及公共验证，见第6、7节；唯一下一步为同源Evidence应用/快照发布接线离线设计。以下第1至5节保留RQ-253准备时态；真实抓取、数据库写入、生产Worker切换和新正式考卷均未执行。
 
 ## 1. 问题、原理与核实结果
 
@@ -125,4 +125,12 @@ git diff --check
 
 桥只返回内存结果，不承诺现有应用自动调用它、不冻结并发调用方、不替代数据库owner/task/run与Worker lease校验；后续应用装配须消费同一不可变输入/核对摘要。它不重新计算所有游戏统计、不审计训练时长语义，不解决DataDragon缓存新鲜度、OP.GG英雄名别名或广度接入。
 
-四线状态：本地RQ-254实现和128项验证完成；八维学习材料已提供，所有者理解未新增确认；仅本地源码/历史证据，无新增在线参考审计；公共证据仍为RQ-252，RQ-254未提交/推送、待本实现同SHA公共CI，无新部署。Stage8/8E仍in_progress、production_media=0；默认模型、GLM-5.2、前端和生产Worker不变，真实API=0。
+四线状态（公共验证前历史）：本地RQ-254实现和128项验证完成；八维学习材料已提供，所有者理解未新增确认；仅本地源码/历史证据，无新增在线参考审计；当时待RQ-254公共CI，现由第7节完成取代。Stage8/8E仍in_progress、production_media=0；默认模型、GLM-5.2、前端和生产Worker不变，真实API=0。
+
+## 7. RQ-254公共验证与协作实践
+
+实现 `045fd05b8e52ded4336461a69735c32b7144aef3` 已推送至既有分支；[Actions34096446523](https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/34096446523) 的headSha已由主代理直接核对，pytest、postgres-migrations、packaging-smoke全部success。后端2787 passed、145 skipped、127 subtests passed、2条依赖弃用warnings。公共结果证明本实现通过现有CI，不代表真实数据或生产采用。
+
+本轮按用户要求采用Astra规划与审查、Luna执行：Luna完成只读文件清单、编译、治理与diff预检，主代理审查代码和测试。Luna默认Python缺pytest，主代理确认项目指定Python已有pytest9.0.3，未重复已通过128项；Luna后续监测任务因模型容量失败，主代理接手并核对公共结果。本机代理未运行，GitHub操作仅在当前命令中清除代理变量/覆盖Git代理以直连，没有修改持久代理配置。
+
+下一步为第4节涉及的同源Evidence应用/快照发布接线离线设计，需确定摘要交付/摘要校验、owner/task/run绑定、Worker失权围栏、证据写入失败与报告发布顺序。本批没有实际调用Riot/OP.GG/模型或写生产数据库，没有新部署。四线状态：本地与公共RQ-254完成；学习材料完成但所有者理解未新增确认；参考来源无新增在线审计；生产成熟度未提升。Stage8/8E仍in_progress、production_media=0。
