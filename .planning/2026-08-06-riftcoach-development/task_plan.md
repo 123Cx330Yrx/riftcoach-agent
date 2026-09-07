@@ -118,7 +118,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-manifest / completed-local / pending-public-ci`。
+当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-manifest / completed-public / pending-batch-b-authorization`。
 
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
@@ -451,7 +451,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 
 ## Next Step
 
-RQ-256 当前执行：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-manifest / completed-local / pending-public-ci`。A已本地完成，唯一下一步为同SHA公共CI；B/C数据库/恢复/查询批次尚未实施。以下更早下一步为历史。
+RQ-256 当前执行：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-manifest / completed-public / pending-batch-b-authorization`。A已完成同SHA公共CI（99a80d9 / Actions 34113092188）；B/C数据库/恢复/查询批次尚未实施，等待后续授权。
 
 RQ-254公共执行完成：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-summary-evidence-bridge / completed-public / pending-evidence-publication-wiring-design`。下一步为同源Evidence应用/快照发布接线离线设计，明确摘要交付、身份/执行权与发布顺序；以下待CI记录为历史。
 
