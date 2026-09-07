@@ -864,6 +864,7 @@ groups:
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-tool-batch-budget-repair / completed-development / pending-product-adoption-preparation
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-adoption-preparation / completed-design / pending-offline-application-composition
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-application-composition / completed-local / pending-public-ci
+      - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-product-application-composition / completed-public / pending-real-data-slice-preparation
     status: planned
     evidence:
       problem_and_principle:
