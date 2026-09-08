@@ -166,6 +166,9 @@ class PostgresTerminalTurnWriter:
                         conversation.last_message_at = message_time
                         session.flush()
                         disposition = TerminalTurnWriteDisposition.CREATED
+                    if task.message_projection_status == "pending":
+                        task.message_projection_status = "completed"
+                        session.flush()
         except IntegrityError:
             raise TerminalTurnWriterError(
                 "terminal_turn_integrity_failed"
