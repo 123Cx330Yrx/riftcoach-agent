@@ -216,6 +216,7 @@ class CreateReviewTaskCommand(TaskContractModel):
     owner_id: OwnerId
     idempotency_key: IdempotencyKey
     request: RecentReviewProductRequest
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
 
 
 class ConversationReviewTaskBinding(TaskContractModel):
@@ -250,6 +251,7 @@ class CreateConversationReviewTaskCommand(TaskContractModel):
     idempotency_key: IdempotencyKey
     conversation_id: UUID
     request: ConversationRecentReviewRequest
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
 
 
 class TaskCapacityPolicy(TaskContractModel):

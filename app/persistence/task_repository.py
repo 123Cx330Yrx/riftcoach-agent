@@ -1319,6 +1319,7 @@ class PostgresTaskRepository:
             owner_id=pending.owner_id,
             binding=binding,
             request_payload=pending.request_payload,
+            publication_mode=pending.publication_mode,
         )
 
         existing = session.scalar(
