@@ -30,6 +30,15 @@ class ReviewTaskRecord(Base):
         nullable=False,
         server_default=sa.text("'legacy'"),
     )
+    # Body-free durable publication identity.  These columns are populated
+    # only by the evidence-bound terminal transaction; legacy rows remain
+    # entirely NULL and keep their historical behavior.
+    publication_reference: Mapped[dict[str, Any] | None] = mapped_column(
+        JSONB(none_as_null=True)
+    )
+    summary_digest: Mapped[str | None] = mapped_column(sa.String(64))
+    first_snapshot_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
+    first_snapshot_digest: Mapped[str | None] = mapped_column(sa.String(64))
     conversation_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
     relationship_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
     player_subject_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
@@ -136,6 +145,32 @@ class ReviewTaskRecord(Base):
         sa.CheckConstraint(
             "publication_mode IN ('legacy', 'evidence_bound_v1')",
             name="publication_mode_allowed",
+        ),
+        sa.CheckConstraint(
+            "publication_reference IS NULL OR "
+            "(jsonb_typeof(publication_reference) = 'object' AND "
+            "octet_length(publication_reference::text) <= 4096)",
+            name="publication_reference_shape",
+        ),
+        sa.CheckConstraint(
+            "summary_digest IS NULL OR summary_digest ~ '^[0-9a-f]{64}$'",
+            name="summary_digest_format",
+        ),
+        sa.CheckConstraint(
+            "first_snapshot_digest IS NULL OR "
+            "first_snapshot_digest ~ '^[0-9a-f]{64}$'",
+            name="first_snapshot_digest_format",
+        ),
+        sa.CheckConstraint(
+            "(first_snapshot_id IS NULL AND first_snapshot_digest IS NULL) OR "
+            "(first_snapshot_id IS NOT NULL AND first_snapshot_digest IS NOT NULL)",
+            name="first_snapshot_binding_shape",
+        ),
+        sa.CheckConstraint(
+            "publication_mode = 'evidence_bound_v1' OR "
+            "(publication_reference IS NULL AND summary_digest IS NULL AND "
+            "first_snapshot_id IS NULL AND first_snapshot_digest IS NULL)",
+            name="legacy_publication_fields_empty",
         ),
         sa.CheckConstraint(
             "request_fingerprint ~ '^[0-9a-f]{64}$'",
