@@ -6327,4 +6327,9 @@ RQ-250（2026-09-06）：RQ-250工具批量预算修复完成本地、公共和�
 - Docker 通过可恢复的 `run`/`docker-secrets-engine` 目录重建在验证窗口恢复；旧目录保留为 recovery 备份，未执行出厂重置。
 - 创建独立 `riftcoach_test` 数据库，避免回归测试触碰开发库；四组 PostgreSQL 回归 `30 passed`，离线回归 `64 passed`。
 - `PostgresTaskRepository.succeed_with_evidence()` 已将快照写入、成功终态和生命周期事件置于同一事务；新增原子提交回归覆盖快照、终态和事件共同提交。
-- 限制：尚未加入持久 `publication_mode` 字段/迁移、显式模式指纹和读取/消息投影门；Docker 持久稳定性尚未证明。
+- 限制：读取/消息投影门与完整恢复重放测试仍未完成；Docker 持久稳定性尚未证明。
+
+## 2026-09-09 B发布身份加固
+
+- `succeed_with_evidence()` 在 evidence-bound 模式下现在要求发布引用与摘要 SHA，并将首次快照 ID/摘要写回任务行；legacy 仍使用旧成功路径。
+- 离线模型/合同回归 `39 passed`，编译、治理和差异检查通过；数据库验证待 Docker 恢复后补做。

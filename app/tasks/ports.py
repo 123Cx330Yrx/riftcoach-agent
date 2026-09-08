@@ -198,6 +198,8 @@ class TaskRepository(Protocol):
         now: datetime,
         terminal: TaskTerminal,
         pending_snapshot: "PendingEvidenceBundleSnapshot",
+        publication_reference: dict[str, object],
+        summary_digest: str,
     ) -> bool: ...
 
     def fail(

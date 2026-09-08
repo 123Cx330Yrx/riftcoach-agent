@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import re
 import secrets
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
@@ -1656,6 +1657,8 @@ class PostgresTaskRepository:
         now: datetime,
         terminal: TaskTerminal,
         pending_snapshot: PendingEvidenceBundleSnapshot,
+        publication_reference: dict[str, object],
+        summary_digest: str,
     ) -> bool:
         """Publish the evidence snapshot and successful task atomically.
 
@@ -1675,6 +1678,12 @@ class PostgresTaskRepository:
             raise TypeError(
                 "pending_snapshot must be a PendingEvidenceBundleSnapshot"
             )
+        if not isinstance(publication_reference, dict):
+            raise TypeError("publication_reference must be an object")
+        if not isinstance(summary_digest, str) or not re.fullmatch(
+            r"[0-9a-f]{64}", summary_digest
+        ):
+            raise ValueError("summary_digest must be a lowercase SHA-256 digest")
         if pending_snapshot.task_id != task_id or pending_snapshot.run_id != terminal.run_id:
             raise ValueError("pending snapshot must match task and terminal run")
         try:
@@ -1696,11 +1705,19 @@ class PostgresTaskRepository:
                     assert record is not None
                     if record.run_id != terminal.run_id:
                         return False
-                    _append_snapshot_in_session(
+                    if record.publication_mode != "evidence_bound_v1":
+                        raise TaskRepositoryError("evidence_publication_mode_required")
+                    snapshot_result = _append_snapshot_in_session(
                         session,
                         record,
                         pending_snapshot,
                     )
+                    record.publication_reference = copy.deepcopy(
+                        publication_reference
+                    )
+                    record.summary_digest = summary_digest
+                    record.first_snapshot_id = snapshot_result.snapshot.snapshot_id
+                    record.first_snapshot_digest = snapshot_result.snapshot.snapshot_digest
                     self._apply_terminal_in_session(
                         session,
                         record,

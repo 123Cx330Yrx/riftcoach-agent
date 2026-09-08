@@ -32,6 +32,7 @@ from app.tasks.models import (
     TaskCapacityPolicy,
     TaskPublicationStatus,
     TaskPublicationMode,
+    TaskPublicationMode,
     TaskStatus,
     TaskTerminal,
 )
@@ -197,7 +198,9 @@ def test_publication_mode_round_trips_as_trusted_task_metadata() -> None:
 
 def test_succeed_with_evidence_commits_snapshot_terminal_and_event_together() -> None:
     with migrated_repository() as (repository, factory):
-        task = pending(11)
+        task = pending(11).model_copy(
+            update={"publication_mode": TaskPublicationMode.EVIDENCE_BOUND_V1}
+        )
         create(repository, task)
         claimed = repository.claim_next(
             worker_id="evidence-worker", now=BASE + timedelta(seconds=20)
@@ -220,6 +223,8 @@ def test_succeed_with_evidence_commits_snapshot_terminal_and_event_together() ->
             now=BASE + timedelta(seconds=20),
             terminal=terminal(task.run_id),
             pending_snapshot=snapshot,
+            publication_reference={"schema_version": "1.0", "kind": "evidence"},
+            summary_digest="d" * 64,
         ) is True
 
         with factory() as session:
