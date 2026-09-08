@@ -71,6 +71,7 @@ _TASK_CREATE_ADVISORY_LOCK_ID = 593_231_842_001
 _WORKER_ID_ADAPTER = TypeAdapter(WorkerId)
 _SAFE_TASK_CODE_ADAPTER = TypeAdapter(SafeTaskCode)
 _EVENT_FIELD_UNSET = object()
+_PUBLICATION_DIGEST = re.compile(r"^[0-9a-f]{64}$")
 
 
 @dataclass(frozen=True, slots=True)
@@ -80,6 +81,23 @@ class _RecoveryIdentity:
     lease_generation: int
     lease_token: str = field(repr=False)
     now: datetime
+
+
+def _validate_publication_reference(value: dict[str, object]) -> None:
+    if not isinstance(value, dict) or not value:
+        raise TypeError("publication_reference must be a non-empty object")
+    context = value.get("context")
+    if not isinstance(context, dict):
+        raise ValueError("publication_reference.context is required")
+    required = ("owner_id", "task_id", "run_id", "request_fingerprint", "mode")
+    if any(not isinstance(context.get(key), str) or not context[key] for key in required):
+        raise ValueError("publication_reference context identity is incomplete")
+    if context["mode"] != "evidence_bound_v1":
+        raise ValueError("publication_reference mode is invalid")
+    for key in ("summary_digest",):
+        digest = value.get(key)
+        if not isinstance(digest, str) or not _PUBLICATION_DIGEST.fullmatch(digest):
+            raise ValueError(f"publication_reference {key} is invalid")
 
 
 class PostgresTaskRepository:
@@ -1643,8 +1661,7 @@ class PostgresTaskRepository:
             raise TypeError("pending_snapshot must be a PendingEvidenceBundleSnapshot")
         if pending_snapshot.task_id != task_id or pending_snapshot.run_id != terminal.run_id:
             raise ValueError("pending snapshot must match task and terminal run")
-        if not isinstance(publication_reference, dict):
-            raise TypeError("publication_reference must be an object")
+        _validate_publication_reference(publication_reference)
         if not isinstance(summary_digest, str) or not re.fullmatch(
             r"[0-9a-f]{64}", summary_digest
         ):
@@ -1750,8 +1767,7 @@ class PostgresTaskRepository:
             raise TypeError(
                 "pending_snapshot must be a PendingEvidenceBundleSnapshot"
             )
-        if not isinstance(publication_reference, dict):
-            raise TypeError("publication_reference must be an object")
+        _validate_publication_reference(publication_reference)
         if not isinstance(summary_digest, str) or not re.fullmatch(
             r"[0-9a-f]{64}", summary_digest
         ):

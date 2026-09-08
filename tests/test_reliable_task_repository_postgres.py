@@ -223,7 +223,17 @@ def test_succeed_with_evidence_commits_snapshot_terminal_and_event_together() ->
             now=BASE + timedelta(seconds=20),
             terminal=terminal(task.run_id),
             pending_snapshot=snapshot,
-            publication_reference={"schema_version": "1.0", "kind": "evidence"},
+            publication_reference={
+                "schema_version": "1.0",
+                "context": {
+                    "owner_id": task.owner_id,
+                    "task_id": str(task.task_id),
+                    "run_id": task.run_id,
+                    "request_fingerprint": task.request_fingerprint,
+                    "mode": "evidence_bound_v1",
+                },
+                "summary_digest": "d" * 64,
+            },
             summary_digest="d" * 64,
         ) is True
 
