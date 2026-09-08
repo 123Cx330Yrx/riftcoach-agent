@@ -324,6 +324,10 @@ class ReviewTask(TaskContractModel):
     request_fingerprint: Fingerprint
     request_payload: dict[str, JsonValue]
     publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
+    publication_reference: dict[str, JsonValue] | None = Field(default=None, exclude=True, repr=False)
+    summary_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
+    first_snapshot_id: UUID | None = Field(default=None, exclude=True, repr=False)
+    first_snapshot_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
     conversation_binding: ConversationReviewTaskBinding | None = None
     execution_target: ConversationReviewExecutionTarget | None = Field(
         default=None,
@@ -577,6 +581,11 @@ class ReviewTaskView(TaskContractModel):
     terminal_reason: str | None
     publication_status: TaskPublicationStatus | None
     report_available: bool
+    publication_mode: TaskPublicationMode = Field(default=TaskPublicationMode.LEGACY, exclude=True, repr=False)
+    publication_reference: dict[str, JsonValue] | None = Field(default=None, exclude=True, repr=False)
+    summary_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
+    first_snapshot_id: UUID | None = Field(default=None, exclude=True, repr=False)
+    first_snapshot_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
 
     @classmethod
     def from_task(cls, task: ReviewTask) -> "ReviewTaskView":
@@ -594,6 +603,11 @@ class ReviewTaskView(TaskContractModel):
             terminal_reason=task.terminal_reason,
             publication_status=task.publication_status,
             report_available=task.report_available,
+            publication_mode=task.publication_mode,
+            publication_reference=task.publication_reference,
+            summary_digest=task.summary_digest,
+            first_snapshot_id=task.first_snapshot_id,
+            first_snapshot_digest=task.first_snapshot_digest,
         )
 
 
