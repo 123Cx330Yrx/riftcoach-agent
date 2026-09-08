@@ -750,35 +750,12 @@ class PostgresTaskRepository:
                         or record.run_id != terminal.run_id
                     ):
                         return False
-                    terminal_time = max(record.claimed_at, identity.now)
-                    record.status = TaskStatus.SUCCEEDED.value
-                    record.finished_at = terminal_time
-                    record.updated_at = terminal_time
-                    record.terminal_reason = terminal.terminal_reason
-                    record.publication_status = terminal.publication_status.value
-                    record.report_available = terminal.report_available
-                    record.trace_reference = terminal.trace_reference.model_dump(
-                        mode="json"
-                    )
-                    record.receipt_reference = (
-                        terminal.receipt_reference.model_dump(mode="json")
-                    )
-                    record.artifact_reference = (
-                        None
-                        if terminal.artifact_reference is None
-                        else terminal.artifact_reference.model_dump(mode="json")
-                    )
-                    record.lease_token = None
-                    record.lease_expires_at = None
-                    self._append_event(
-                        session,
-                        record=record,
+                    self._apply_terminal_in_session(
+                        session, record, terminal,
                         event_kind=TaskLifecycleEventKind.RECONCILED,
-                        operation_identity=(
-                            f"reconciled-{identity.lease_generation}"
-                        ),
-                        occurred_at=terminal_time,
-                        reason="reconciled",
+                        operation_identity=f"reconciled-{identity.lease_generation}",
+                        occurred_at=max(record.claimed_at, identity.now),
+                        event_reason="reconciled",
                     )
                 return True
         except TaskRepositoryError:
@@ -1617,19 +1594,11 @@ class PostgresTaskRepository:
                         record.run_id != expected_run_id
                     ):
                         return False
-                    terminal_time = max(record.claimed_at, now)
-                    for key, value in values.items():
-                        setattr(record, key, value)
-                    record.updated_at = terminal_time
-                    record.finished_at = terminal_time
-                    record.lease_token = None
-                    record.lease_expires_at = None
-                    self._append_event(
-                        session,
-                        record=record,
+                    self._apply_values_in_session(
+                        session, record, values,
                         event_kind=event_kind,
                         operation_identity=operation_identity,
-                        occurred_at=terminal_time,
+                        occurred_at=max(record.claimed_at, now),
                         reason=event_reason,
                     )
                 return True
@@ -1639,6 +1608,63 @@ class PostgresTaskRepository:
             raise TaskRepositoryError("task_repository_unavailable") from None
         except (TypeError, ValueError, ValidationError):
             raise TaskRepositoryError("task_repository_integrity_failed") from None
+
+    def _apply_terminal_in_session(
+        self,
+        session: Session,
+        record: ReviewTaskRecord,
+        terminal: TaskTerminal,
+        *,
+        event_kind: TaskLifecycleEventKind,
+        operation_identity: str,
+        occurred_at: datetime,
+        event_reason: str | None = None,
+    ) -> None:
+        self._apply_values_in_session(
+            session, record,
+            {
+                "status": TaskStatus.SUCCEEDED.value,
+                "terminal_reason": terminal.terminal_reason,
+                "publication_status": terminal.publication_status.value,
+                "report_available": terminal.report_available,
+                "trace_reference": terminal.trace_reference.model_dump(mode="json"),
+                "receipt_reference": terminal.receipt_reference.model_dump(mode="json"),
+                "artifact_reference": (
+                    None if terminal.artifact_reference is None
+                    else terminal.artifact_reference.model_dump(mode="json")
+                ),
+            },
+            event_kind=event_kind,
+            operation_identity=operation_identity,
+            occurred_at=occurred_at,
+            reason=terminal.terminal_reason if event_reason is None else event_reason,
+        )
+
+    def _apply_values_in_session(
+        self,
+        session: Session,
+        record: ReviewTaskRecord,
+        values: dict[str, object],
+        *,
+        event_kind: TaskLifecycleEventKind,
+        operation_identity: str,
+        occurred_at: datetime,
+        reason: str,
+    ) -> None:
+        for key, value in values.items():
+            setattr(record, key, value)
+        record.updated_at = occurred_at
+        record.finished_at = occurred_at
+        record.lease_token = None
+        record.lease_expires_at = None
+        self._append_event(
+            session,
+            record=record,
+            event_kind=event_kind,
+            operation_identity=operation_identity,
+            occurred_at=occurred_at,
+            reason=reason,
+        )
 
 
 def _record_to_task(

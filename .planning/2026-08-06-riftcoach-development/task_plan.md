@@ -1,8 +1,12 @@
 # RiftCoach 持续开发计划
 
-## RQ-256 最新同源发布清单
+## RQ-256 公共收口与B恢复前置
 
-RQ-256（2026-09-07）ADR-0099 A已完成本地实现：显式成对来源/清单依赖、单次Summary交付、可信owner/task/run/指纹绑定、严格可重建证据包与不可覆盖文件清单。新增60项（56通过、4项真实符号链接测试因Windows权限跳过），聚焦及相邻合计153通过、4跳过；其中152项在完整聚焦集通过，随后新增Provider异常语义专项1项通过。另有4项不依赖OS权限的链接拒绝检查通过。唯一下一步为本实现同SHA公共CI；尚未提交/推送，B/C数据库事务、恢复和查询门未实施。默认/生产Worker/前端/GLM-5.2不变，真实API=0，8E仍in_progress、production_media=0。八维学习、接口和限制见ADR-0099末节；旧RQ-255待A实现由本条取代。
+RQ-256公共收口补齐（2026-09-08恢复）：A已同SHA公共成功（99a80d9 / Actions 34113092188）。B第一小步已完成：共享Session快照helper与9项真实PostgreSQL测试（提交/回滚、重放、跨身份）通过；任务完成/恢复接线尚未实现。Docker socket崩溃导致后续测试库暂不可达，不能把未执行的回归算作通过。
+
+## RQ-256 历史本地同源发布清单
+
+RQ-256（2026-09-07）ADR-0099 A已完成同SHA公共验证（99a80d9 / Actions 34113092188成功）。显式成对来源/清单依赖、单次Summary交付、身份绑定和严格可重建证据包均已落地；B/C数据库事务、恢复和查询门未实施。默认、生产Worker、前端、GLM-5.2与真实API保持不变。
 
 ## RQ-255 历史发布接线设计
 
@@ -118,7 +122,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-manifest / completed-public / pending-batch-b-authorization`。
+当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / in-progress / pending-B-publication-mode-and-terminal-publication-wiring`。
 
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
@@ -451,7 +455,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 
 ## Next Step
 
-RQ-256 当前执行：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-manifest / completed-public / pending-batch-b-authorization`。A已完成同SHA公共CI（99a80d9 / Actions 34113092188）；B/C数据库/恢复/查询批次尚未实施，等待后续授权。
+当前执行：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / in-progress / pending-B-publication-mode-and-terminal-publication-wiring`。A已完成同SHA公共CI（99a80d9 / Actions 34113092188）；B已完成同Session快照过程提取及正常/恢复共享终态事务接线，并通过真实数据库回归；下一步接入持久模式/发布引用/显式模式指纹与同事务发布门。C尚未实施。
 
 RQ-254公共执行完成：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-summary-evidence-bridge / completed-public / pending-evidence-publication-wiring-design`。下一步为同源Evidence应用/快照发布接线离线设计，明确摘要交付、身份/执行权与发布顺序；以下待CI记录为历史。
 

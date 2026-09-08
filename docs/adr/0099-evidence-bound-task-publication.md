@@ -1,6 +1,6 @@
 # ADR-0099：同源Evidence约束的任务发布
 
-状态：A completed locally（RQ-256，2026-09-07），待同SHA公共CI；B/C仍为Accepted design，尚未实施。不启用生产默认，原RQ-255设计见下文，实际证据见末节。
+状态：A completed publicly（RQ-256，99a80d9 / Actions34113092188成功）。2026-09-08用户继续推进B，目前前置检查发现专用PostgreSQL测试库不可达、Docker停止且当前会话启动服务返回OpenError，B产品代码/迁移未改动；C尚未实施。下文A待CI是历史记录，以此状态为准，不启用生产默认。
 
 ## 背景与要求
 
