@@ -16,6 +16,7 @@ pause_reason: ""
 
 ## 状态元数据
 
+- RQ-257（2026-09-09恢复）：Docker 已通过定向运行时目录恢复启动，专用 `riftcoach_test` 仅用于回归。B 的 publication_mode、发布引用身份锁内校验、快照+终态+事件原子提交、正常/过期恢复共享事务已实现；C 的 Worker/Reconciler/Recovery 模式分流与后置消息投影状态门已接入。数据库回归 42 项、离线相关回归 104 项、Worker/Executor/Reconciler 组合回归 128 项通过，治理、编译和差异检查通过。evidence-bound 上层 executor 尚未生成完整 `PendingEvidenceBundleSnapshot`/发布引用时会安全拒绝，不会走 legacy 假成功；消息补投仍需下一步从持久化绑定重建可重放载荷。真实 API、生产默认和生产 Worker 仍不变。
 - RQ-256公共收口补齐（2026-09-08恢复）：实现99a80d9f3ad062e90659ce374d804e8a358d3e10已由Actions 34113092188同SHA成功验证，收口提交5f7b45e已存在。用户继续推进ADR-0099 B；共享Session快照helper、正常完成/过期恢复共享终态事务、带证据成功提交入口、publication_mode、发布引用字段及显式模式指纹已实现，离线相关回归和指纹兼容检查通过；0013数据库迁移及本轮新增指纹改动尚未在专用PostgreSQL完整复验，因Docker再次崩溃。Docker运行时socket仍可能复现崩溃，不把Docker持久稳定性写成已解决。B剩余发布引用应用层校验、读取/消息投影门和恢复重放故障测试；C、真实API与生产默认保持不动。旧Docker命名卷数据不在当前环境，代码与Git历史保留。
 
 - RQ-256（2026-09-07）ADR-0099 A已完成同SHA公共验证：实现提交99a80d9、Actions 34113092188成功。显式成对来源/清单依赖、单次Summary交付、可信owner/task/run/指纹绑定、严格可重建证据包与不可覆盖文件清单均已落地。新增60项（56通过、4项真实符号链接测试因Windows权限跳过），聚焦及相邻合计153通过、4跳过；B/C数据库事务、恢复和查询门未实施。默认/生产Worker/前端/GLM-5.2不变，真实API=0，8E仍in_progress、production_media=0。八维学习、接口和限制见ADR-0099末节；旧RQ-255待A实现由本条取代。
@@ -23,6 +24,9 @@ pause_reason: ""
 - 所有者理解：已提供ADR-0099八维学习，未新增理解确认。
 - 参考来源审计：本批仅本地源码/合成数据，未新增在线来源审计。
 - 公共作品/部署成熟度：99a80d9 / Actions34113092188已同SHA成功；仅完成公共验证，未部署。
+
+- RQ-257 本地实现证据：B/C 相关 PostgreSQL 回归 42 项通过；离线模型/合同回归 104 项通过；Worker、Executor、Reconciler 组合回归 128 项通过；`task_product_vertical_postgres` 1 项通过。Docker 当前验证窗口可用，但持久稳定性仍不作永久保证。
+- RQ-257 限制与下一步：上层 executor 尚未构造完整 evidence-bound 发布载荷，Worker 会 fail-closed；消息补投仍需从持久化任务绑定重建可重放的 `TerminalAssistantTurn`。因此当前 checkpoint 仍为 in_progress，不宣称 B/C 完整收口、真实 API 或生产准入。
 
 - RQ-255（2026-09-07）同源Evidence发布接线设计完成，见 `docs/adr/0099-evidence-bound-task-publication.md`。决定显式持久发布模式、同源清单、正常完成/过期恢复共用快照与终态事务、读取绑定校验及消息后置补投；已核对当前API本身具有SQL状态门。唯一下一批为ADR-0099 A：版本化发布清单与同源应用交付的离线实现；数据库事务/恢复和查询门留B/C后续。本批仅文档、真实API=0；本地/公共实现维持RQ-254，所有者理解未新增确认、来源无新增在线审计、无新部署；8E仍in_progress、production_media=0。以下RQ-254待设计动作由本条完成取代，保留历史。
 

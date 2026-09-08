@@ -90,6 +90,15 @@ class RecentReviewApplicationPort(Protocol):
 
 class RecentReviewTaskExecutionResult(TaskTerminal):
     terminal_turn: TerminalAssistantTurn | None = None
+    # Evidence-bound publication metadata is intentionally carried alongside
+    # the terminal result so the Worker can select the atomic repository
+    # commit.  Legacy executions leave these fields unset.
+    # Kept structural here to avoid importing the evidence package from the
+    # tasks package (which would create an import cycle). The repository's
+    # atomic method performs the concrete PendingEvidenceBundleSnapshot check.
+    pending_snapshot: object | None = None
+    publication_reference: dict[str, object] | None = None
+    summary_digest: str | None = None
 
 
 class RecentReviewTaskExecutor:

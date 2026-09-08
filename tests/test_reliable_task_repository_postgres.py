@@ -251,6 +251,86 @@ def test_succeed_with_evidence_commits_snapshot_terminal_and_event_together() ->
         assert event_count == 4
 
 
+def test_succeed_with_evidence_rejects_cross_task_publication_reference() -> None:
+    with migrated_repository() as (repository, factory):
+        task = pending(13).model_copy(
+            update={"publication_mode": TaskPublicationMode.EVIDENCE_BOUND_V1}
+        )
+        create(repository, task)
+        claimed = repository.claim_next(
+            worker_id="evidence-worker", now=BASE + timedelta(seconds=20)
+        )
+        assert claimed is not None and claimed.lease is not None
+        with pytest.raises(TaskRepositoryError, match="evidence_publication_mode_required"):
+            repository.succeed(
+                task_id=task.task_id,
+                worker_id=claimed.lease.worker_id,
+                lease_generation=claimed.lease.generation,
+                lease_token=claimed.lease.token,
+                now=BASE + timedelta(seconds=20),
+                terminal=terminal(task.run_id),
+            )
+        snapshot = PendingEvidenceBundleSnapshot(
+            task_id=task.task_id,
+            run_id=task.run_id,
+            owner_id=task.owner_id,
+            refresh_id="atomic-identity-rejection",
+            bundle=bundle(),
+            stored_at=BASE + timedelta(seconds=20),
+        )
+        reference = {
+            "context": {
+                "owner_id": task.owner_id,
+                "task_id": str(task.task_id),
+                "run_id": task.run_id,
+                "request_fingerprint": task.request_fingerprint,
+                "mode": "evidence_bound_v1",
+            },
+            "summary_digest": "d" * 64,
+        }
+        for field, replacement in (
+            ("owner_id", "another-owner"),
+            ("task_id", str(UUID("82000000-0000-4000-8000-000000000999"))),
+            ("run_id", "another-run"),
+            ("request_fingerprint", "f" * 64),
+        ):
+            candidate = {
+                **reference,
+                "context": {**reference["context"], field: replacement},
+            }
+            with pytest.raises(TaskRepositoryError, match="publication_reference_identity_mismatch"):
+                repository.succeed_with_evidence(
+                    task_id=task.task_id,
+                    worker_id=claimed.lease.worker_id,
+                    lease_generation=claimed.lease.generation,
+                    lease_token=claimed.lease.token,
+                    now=BASE + timedelta(seconds=20),
+                    terminal=terminal(task.run_id),
+                    pending_snapshot=snapshot,
+                    publication_reference=candidate,
+                    summary_digest="d" * 64,
+                )
+
+        candidate = {**reference, "summary_digest": "e" * 64}
+        with pytest.raises(TaskRepositoryError, match="publication_reference_identity_mismatch"):
+            repository.succeed_with_evidence(
+                task_id=task.task_id,
+                worker_id=claimed.lease.worker_id,
+                lease_generation=claimed.lease.generation,
+                lease_token=claimed.lease.token,
+                now=BASE + timedelta(seconds=20),
+                terminal=terminal(task.run_id),
+                pending_snapshot=snapshot,
+                publication_reference=candidate,
+                summary_digest="d" * 64,
+            )
+
+        with factory() as session:
+            assert session.scalar(
+                sa.select(sa.func.count()).select_from(EvidenceBundleSnapshotRecord)
+            ) == 0
+
+
 def test_create_replay_and_claim_append_one_contiguous_history() -> None:
     with migrated_repository() as (repository, factory):
         task = pending(1)

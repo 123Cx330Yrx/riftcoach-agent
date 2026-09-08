@@ -21,6 +21,7 @@ from app.runtime.models import RuntimeStatus, RuntimeTraceReference
 from app.runtime.store import RuntimeTraceStore
 from app.tasks.models import (
     ReviewTask,
+    TaskPublicationMode,
     TaskPublicationStatus,
     TaskStatus,
     TaskTerminal,
@@ -267,14 +268,42 @@ class ReviewTaskReconciler:
             )
 
         try:
-            accepted = self._repository.reconcile_expired_success(
-                task_id=task.task_id,
-                worker_id=task.worker_id,
-                lease_generation=task.lease.generation,
-                lease_token=task.lease.private_token,
-                now=normalized_now,
-                terminal=terminal,
-            )
+            if task.publication_mode is TaskPublicationMode.EVIDENCE_BOUND_V1:
+                commit = getattr(
+                    self._repository, "reconcile_expired_success_with_evidence", None
+                )
+                pending_snapshot = getattr(terminal, "pending_snapshot", None)
+                publication_reference = getattr(terminal, "publication_reference", None)
+                summary_digest = getattr(terminal, "summary_digest", None)
+                if (
+                    not callable(commit)
+                    or pending_snapshot is None
+                    or not isinstance(publication_reference, dict)
+                    or not isinstance(summary_digest, str)
+                ):
+                    raise TaskReconciliationError("task_terminal_update_failed")
+                accepted = commit(
+                    task_id=task.task_id,
+                    worker_id=task.worker_id,
+                    lease_generation=task.lease.generation,
+                    lease_token=task.lease.private_token,
+                    now=normalized_now,
+                    terminal=terminal,
+                    pending_snapshot=pending_snapshot,
+                    publication_reference=publication_reference,
+                    summary_digest=summary_digest,
+                )
+            else:
+                accepted = self._repository.reconcile_expired_success(
+                    task_id=task.task_id,
+                    worker_id=task.worker_id,
+                    lease_generation=task.lease.generation,
+                    lease_token=task.lease.private_token,
+                    now=normalized_now,
+                    terminal=terminal,
+                )
+        except TaskReconciliationError:
+            raise
         except Exception:
             raise TaskReconciliationError(
                 "task_terminal_update_failed"
@@ -391,11 +420,38 @@ class ExpiredReviewTaskRecovery:
             if terminal.run_id != task.run_id:
                 evidence_failure = "terminal_evidence_invalid"
             else:
-                accepted = self._mutate(
-                    self._repository.reconcile_expired_success,
-                    terminal=terminal,
-                    **lease_arguments,
-                )
+                if task.publication_mode is TaskPublicationMode.EVIDENCE_BOUND_V1:
+                    commit = getattr(
+                        self._repository,
+                        "reconcile_expired_success_with_evidence",
+                        None,
+                    )
+                    pending_snapshot = getattr(terminal, "pending_snapshot", None)
+                    publication_reference = getattr(
+                        terminal, "publication_reference", None
+                    )
+                    summary_digest = getattr(terminal, "summary_digest", None)
+                    if (
+                        not callable(commit)
+                        or pending_snapshot is None
+                        or not isinstance(publication_reference, dict)
+                        or not isinstance(summary_digest, str)
+                    ):
+                        raise TaskReconciliationError("recovery_update_failed")
+                    accepted = self._mutate(
+                        commit,
+                        terminal=terminal,
+                        pending_snapshot=pending_snapshot,
+                        publication_reference=publication_reference,
+                        summary_digest=summary_digest,
+                        **lease_arguments,
+                    )
+                else:
+                    accepted = self._mutate(
+                        self._repository.reconcile_expired_success,
+                        terminal=terminal,
+                        **lease_arguments,
+                    )
                 return self._accepted_result(
                     task,
                     accepted=accepted,

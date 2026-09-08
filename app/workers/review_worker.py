@@ -12,7 +12,13 @@ from uuid import UUID
 
 from pydantic import TypeAdapter, ValidationError
 
-from app.tasks.models import ReviewTask, TaskStatus, TaskTerminal, WorkerId
+from app.tasks.models import (
+    ReviewTask,
+    TaskPublicationMode,
+    TaskStatus,
+    TaskTerminal,
+    WorkerId,
+)
 from app.tasks.ports import TaskRepository
 from app.tasks.reliable_runtime import (
     TaskCheckpointPhase,
@@ -369,14 +375,49 @@ class ReviewWorker:
             return self._commit_failure(claimed)
 
         try:
-            accepted = self._repository.succeed(
-                task_id=claimed.task_id,
-                worker_id=self._worker_id,
-                lease_generation=lease.generation,
-                lease_token=lease.private_token,
-                now=self._clock(),
-                terminal=terminal,
-            )
+            if claimed.publication_mode is TaskPublicationMode.EVIDENCE_BOUND_V1:
+                # Evidence-bound tasks may only cross the terminal boundary
+                # through the atomic snapshot+task+event repository method.
+                # An executor that has not produced the complete publication
+                # payload is a configuration error, never a reason to fall
+                # back to the legacy succeed() path.
+                commit = getattr(self._repository, "succeed_with_evidence", None)
+                pending_snapshot = getattr(terminal, "pending_snapshot", None)
+                publication_reference = getattr(
+                    terminal, "publication_reference", None
+                )
+                summary_digest = getattr(terminal, "summary_digest", None)
+                if (
+                    not callable(commit)
+                    or pending_snapshot is None
+                    or not isinstance(publication_reference, dict)
+                    or not isinstance(summary_digest, str)
+                ):
+                    self._observe(
+                        "worker.evidence_publication_missing",
+                        {"task_id": str(claimed.task_id), "run_id": claimed.run_id},
+                    )
+                    raise ReviewWorkerError("task_terminal_update_failed")
+                accepted = commit(
+                    task_id=claimed.task_id,
+                    worker_id=self._worker_id,
+                    lease_generation=lease.generation,
+                    lease_token=lease.private_token,
+                    now=self._clock(),
+                    terminal=terminal,
+                    pending_snapshot=pending_snapshot,
+                    publication_reference=publication_reference,
+                    summary_digest=summary_digest,
+                )
+            else:
+                accepted = self._repository.succeed(
+                    task_id=claimed.task_id,
+                    worker_id=self._worker_id,
+                    lease_generation=lease.generation,
+                    lease_token=lease.private_token,
+                    now=self._clock(),
+                    terminal=terminal,
+                )
         except Exception:
             self._observe(
                 "worker.terminal_update_failed",

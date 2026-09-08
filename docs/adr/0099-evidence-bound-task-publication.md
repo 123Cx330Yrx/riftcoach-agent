@@ -1,6 +1,6 @@
 # ADR-0099：同源Evidence约束的任务发布
 
-状态：A completed publicly（RQ-256，99a80d9 / Actions34113092188成功）。2026-09-08用户继续推进B，目前前置检查发现专用PostgreSQL测试库不可达、Docker停止且当前会话启动服务返回OpenError，B产品代码/迁移未改动；C尚未实施。下文A待CI是历史记录，以此状态为准，不启用生产默认。
+状态：A completed publicly（RQ-256，99a80d9 / Actions34113092188成功）。2026-09-09 RQ-257 已完成 B 的持久模式/原子事务/身份校验，以及 C 的 Worker、Reconciler、Recovery 安全分流和消息投影状态门；专用 PostgreSQL 42 项与相关离线回归通过。上层 executor 仍未生成完整 evidence-bound 发布载荷，持久消息补投重建仍待完成，因此 ADR-0099 与 8E 仍为 in_progress，不启用生产默认。
 
 ## 背景与要求
 
@@ -50,9 +50,17 @@ flowchart TD
 
 先写快照/先写终态的两段提交都留有窗口；单靠Worker内存检查不能覆盖恢复；新增消息系统/通用事务框架会扩大维护面。因此选择现有PostgreSQL事务和小型持久发布标记。代价是增加任务字段/迁移、版本化本地清单、双路径与查询门回归，以及有限的消息补投状态。收益是可用数据库回滚和并发测试直接证明发布约束。文件系统与数据库不构成分布式事务，残留未发布工件由既有生命周期处理；不可承诺磁盘损坏时报告依然可用。
 
+## RQ-257 实施复核（2026-09-09）
+
+- `publication_mode`、发布引用和 `summary_digest` 已持久化；证据提交与过期恢复均在锁定任务的同一 Session 中写入快照、终态和 lifecycle event，并逐项校验 owner/task/run/request fingerprint/mode 身份。
+- legacy `succeed()`/`reconcile_expired_success()` 对 evidence-bound 任务 fail-closed；Worker、Reconciler 与 ExpiredRecovery 只有在 executor 提供完整发布载荷时才调用原子 evidence 路径。
+- `message_projection_status` 记录终态提交后的消息投影状态，TerminalTurnWriter 成功写入后由 pending 标记为 completed；重复写入沿用 source task/run 幂等约束。
+- PostgreSQL 回归 42 passed，离线相关回归 104 passed，Worker/Executor/Reconciler 组合回归 128 passed；Docker 仅证明当前验证窗口可用，不宣称运行时永久稳定。
+- 未完成边界：当前 executor 只返回终态和可选载荷，尚未在真实 Coach 运行中构造 `PendingEvidenceBundleSnapshot`、publication reference 和摘要；消息补投重放器尚未从持久绑定重建 `TerminalAssistantTurn`。在此之前显式模式会拒绝而不会假发布。
+
 ## 实施顺序与明确验收
 
-原设计下一批仅A：离线实现版本化发布清单与同源应用交付，建立可恢复工件；现A已本地完成，下一步同SHA公共CI，B/C留在后续明确检查点。先验证应用交付合同，再改持久化事务。
+原设计下一批仅A：离线实现版本化发布清单与同源应用交付，建立可恢复工件；A 已完成并公共验证，RQ-257 又完成 B 的持久化事务与 C 的安全分流/状态门。剩余是上层 executor 载荷生产和持久消息补投重建，仍按 B/C 检查点收口，不进入真实 API 或生产默认。
 
 ### A：同源应用交付与发布清单（RQ-256本地已完成）
 

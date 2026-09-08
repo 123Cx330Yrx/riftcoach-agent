@@ -100,6 +100,29 @@ def _validate_publication_reference(value: dict[str, object]) -> None:
             raise ValueError(f"publication_reference {key} is invalid")
 
 
+def _validate_publication_reference_identity(
+    value: dict[str, object],
+    *,
+    record: ReviewTaskRecord,
+    summary_digest: str,
+) -> None:
+    """Ensure the body-free publication reference belongs to this task row."""
+    _validate_publication_reference(value)
+    context = value["context"]
+    assert isinstance(context, dict)
+    expected = {
+        "owner_id": record.owner_id,
+        "task_id": str(record.task_id),
+        "run_id": record.run_id,
+        "request_fingerprint": record.request_fingerprint,
+        "mode": record.publication_mode,
+    }
+    if any(context.get(key) != expected_value for key, expected_value in expected.items()):
+        raise TaskRepositoryError("publication_reference_identity_mismatch")
+    if value.get("summary_digest") != summary_digest:
+        raise TaskRepositoryError("publication_reference_identity_mismatch")
+
+
 class PostgresTaskRepository:
     def __init__(
         self,
@@ -770,7 +793,12 @@ class PostgresTaskRepository:
                     if (
                         record.cancel_requested_at is not None
                         or record.run_id != terminal.run_id
+                        or record.publication_mode != "legacy"
                     ):
+                        if record.publication_mode != "legacy":
+                            raise TaskRepositoryError(
+                                "evidence_publication_mode_required"
+                            )
                         return False
                     self._apply_terminal_in_session(
                         session, record, terminal,
@@ -1025,6 +1053,7 @@ class PostgresTaskRepository:
                     else terminal.artifact_reference.model_dump(mode="json")
                 ),
             },
+            require_legacy_publication=True,
         )
 
     def fail(
@@ -1597,6 +1626,7 @@ class PostgresTaskRepository:
         operation_identity: str,
         event_reason: str,
         values: dict[str, object],
+        require_legacy_publication: bool = False,
     ) -> bool:
         try:
             with self._session_factory() as session:
@@ -1615,6 +1645,10 @@ class PostgresTaskRepository:
                     ) or record.cancel_requested_at is not None:
                         return False
                     assert record is not None
+                    if require_legacy_publication and record.publication_mode != "legacy":
+                        raise TaskRepositoryError(
+                            "evidence_publication_mode_required"
+                        )
                     if expected_run_id is not None and (
                         record.run_id != expected_run_id
                     ):
@@ -1659,9 +1693,9 @@ class PostgresTaskRepository:
             raise TypeError("terminal must be a TaskTerminal")
         if not isinstance(pending_snapshot, PendingEvidenceBundleSnapshot):
             raise TypeError("pending_snapshot must be a PendingEvidenceBundleSnapshot")
+        _validate_publication_reference(publication_reference)
         if pending_snapshot.task_id != task_id or pending_snapshot.run_id != terminal.run_id:
             raise ValueError("pending snapshot must match task and terminal run")
-        _validate_publication_reference(publication_reference)
         if not isinstance(summary_digest, str) or not re.fullmatch(
             r"[0-9a-f]{64}", summary_digest
         ):
@@ -1683,6 +1717,11 @@ class PostgresTaskRepository:
                         or record.publication_mode != "evidence_bound_v1"
                     ):
                         return False
+                    _validate_publication_reference_identity(
+                        publication_reference,
+                        record=record,
+                        summary_digest=summary_digest,
+                    )
                     snapshot_result = _append_snapshot_in_session(
                         session, record, pending_snapshot
                     )
@@ -1798,6 +1837,11 @@ class PostgresTaskRepository:
                         return False
                     if record.publication_mode != "evidence_bound_v1":
                         raise TaskRepositoryError("evidence_publication_mode_required")
+                    _validate_publication_reference_identity(
+                        publication_reference,
+                        record=record,
+                        summary_digest=summary_digest,
+                    )
                     snapshot_result = _append_snapshot_in_session(
                         session,
                         record,
@@ -1913,12 +1957,16 @@ def _record_to_task(
         idempotency_key=record.idempotency_key,
         request_fingerprint=record.request_fingerprint,
         request_payload=copy.deepcopy(record.request_payload),
-        publication_mode=TaskPublicationMode(record.publication_mode),
+        # Older in-memory/fixture ORM rows may omit the post-0012 column;
+        # treat that pre-migration shape exactly like the database default.
+        publication_mode=TaskPublicationMode(record.publication_mode or "legacy"),
         publication_reference=copy.deepcopy(record.publication_reference),
         summary_digest=record.summary_digest,
         first_snapshot_id=record.first_snapshot_id,
         first_snapshot_digest=record.first_snapshot_digest,
-        message_projection_status=record.message_projection_status,
+        # Pre-0014 fixture rows have no projection marker; legacy tasks do not
+        # require a post-commit message projection.
+        message_projection_status=record.message_projection_status or "not_required",
         conversation_binding=conversation_binding,
         execution_target=execution_target,
         status=TaskStatus(record.status),

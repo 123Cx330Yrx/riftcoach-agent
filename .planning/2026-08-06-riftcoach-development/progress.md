@@ -6333,3 +6333,10 @@ RQ-250（2026-09-06）：RQ-250工具批量预算修复完成本地、公共和�
 
 - `succeed_with_evidence()` 在 evidence-bound 模式下现在要求发布引用与摘要 SHA，并将首次快照 ID/摘要写回任务行；legacy 仍使用旧成功路径。
 - 离线模型/合同回归 `39 passed`，编译、治理和差异检查通过；数据库验证待 Docker 恢复后补做。
+## RQ-257：B/C 事务接线与安全分流（2026-09-09）
+
+- Docker 通过定向运行时目录恢复启动；专用 `riftcoach_test` 重建并用于本轮数据库验证，开发库未触碰。
+- B 已完成 publication mode、发布引用与任务身份锁内一致性校验，以及快照、任务终态、lifecycle event 的原子提交；正常完成与过期恢复共用事务 helper。
+- C 已完成 Worker、Reconciler、ExpiredRecovery 的 evidence-bound 分流和消息投影 pending→completed 状态门；旧 legacy 入口对 evidence-bound 任务 fail-closed，不能假成功。
+- 证据：PostgreSQL 42 passed；离线相关 104 passed；Worker/Executor/Reconciler 组合 128 passed；产品垂直 PostgreSQL 1 passed；py_compile、governance、diff-check 通过。
+- 当前限制：上层 executor 尚未构造完整 evidence-bound 发布载荷；消息补投还不能从持久化绑定重建终态消息。下一步仅补这两项，不调用真实 API、不切生产默认。

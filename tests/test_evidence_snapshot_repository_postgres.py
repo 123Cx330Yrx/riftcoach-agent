@@ -37,7 +37,7 @@ from tests.test_evidence_snapshot_contracts import bundle
 
 ROOT = Path(__file__).resolve().parents[1]
 TEST_DATABASE_ENV = "RIFTCOACH_TEST_DATABASE_URL"
-HEAD = "0013_publication_bindings"
+HEAD = "0014_message_projection_status"
 NOW = datetime(2026, 8, 23, 10, 0, tzinfo=timezone.utc)
 TASK_ID = UUID("93000000-0000-4000-8000-000000000001")
 RUN_ID = "review_evidence_repository_1"
