@@ -96,6 +96,13 @@ class TaskPublicationStatus(StrEnum):
     REJECTED = "rejected"
 
 
+class TaskPublicationMode(StrEnum):
+    """Trusted task publication contract selected at creation time."""
+
+    LEGACY = "legacy"
+    EVIDENCE_BOUND_V1 = "evidence_bound_v1"
+
+
 class TaskTerminal(TaskContractModel):
     run_id: str
     terminal_reason: SafeTaskCode
@@ -268,6 +275,7 @@ class PendingReviewTask(TaskContractModel):
     idempotency_key: IdempotencyKey
     request_fingerprint: Fingerprint
     request_payload: dict[str, JsonValue]
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
     created_at: datetime
 
     @field_validator("run_id")
@@ -290,6 +298,7 @@ class PendingConversationReviewTask(TaskContractModel):
     idempotency_key: IdempotencyKey
     conversation_id: UUID
     request_payload: dict[str, JsonValue]
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
     created_at: datetime
 
     @field_validator("run_id")
@@ -312,6 +321,7 @@ class ReviewTask(TaskContractModel):
     idempotency_key: IdempotencyKey
     request_fingerprint: Fingerprint
     request_payload: dict[str, JsonValue]
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
     conversation_binding: ConversationReviewTaskBinding | None = None
     execution_target: ConversationReviewExecutionTarget | None = Field(
         default=None,

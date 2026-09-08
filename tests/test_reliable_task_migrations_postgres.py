@@ -23,7 +23,7 @@ from app.tasks.reliable_runtime import (
 
 ROOT = Path(__file__).resolve().parents[1]
 TEST_DATABASE_ENV = "RIFTCOACH_TEST_DATABASE_URL"
-HEAD = "0011_evidence_product_api"
+HEAD = "0012_evidence_bound_publication"
 
 
 def alembic_config() -> Config:
@@ -54,6 +54,11 @@ def test_reliable_runtime_metadata_and_head_are_explicit() -> None:
     assert event.c.occurred_at.type.timezone is True
     assert event.c.event_cursor.identity is not None
     assert task.c.status.type.length == 24
+    assert task.c.publication_mode.type.length == 32
+    assert task.c.publication_mode.server_default is not None
+    assert {
+        "ck_review_tasks_publication_mode_allowed",
+    } <= {constraint.name for constraint in task.constraints}
 
     assert {
         "lease_generation",
@@ -108,6 +113,8 @@ def test_reliable_runtime_offline_sql_has_stable_schema_and_bootstrap(
     assert "CONSTRAINT ck_review_tasks_reliable_lifecycle_shape" in sql
     assert "CONSTRAINT fk_review_task_events_task_identity" in sql
     assert "CREATE INDEX ix_review_tasks_expired_lease" in sql
+    assert "ADD COLUMN publication_mode VARCHAR(32) DEFAULT 'legacy' NOT NULL" in sql
+    assert "CONSTRAINT ck_review_tasks_publication_mode_allowed" in sql
     assert "CREATE INDEX ix_review_task_events_owner_cursor" in sql
     assert "INSERT INTO review_task_events" in sql
     assert "snapshot_imported" in sql

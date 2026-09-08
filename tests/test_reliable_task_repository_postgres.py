@@ -31,6 +31,7 @@ from app.tasks.models import (
     PendingReviewTask,
     TaskCapacityPolicy,
     TaskPublicationStatus,
+    TaskPublicationMode,
     TaskStatus,
     TaskTerminal,
 )
@@ -173,6 +174,25 @@ def test_create_queued_task_persists_sql_null_checkpoint() -> None:
             )
 
         assert checkpoint_is_sql_null is True
+
+
+def test_publication_mode_round_trips_as_trusted_task_metadata() -> None:
+    with migrated_repository() as (repository, factory):
+        task = pending(12).model_copy(
+            update={"publication_mode": TaskPublicationMode.EVIDENCE_BOUND_V1}
+        )
+        create(repository, task)
+
+        loaded = repository.get_by_task_id(owner_id=task.owner_id, task_id=task.task_id)
+        assert loaded is not None
+        assert loaded.publication_mode is TaskPublicationMode.EVIDENCE_BOUND_V1
+        with factory() as session:
+            stored = session.scalar(
+                sa.select(ReviewTaskRecord.publication_mode).where(
+                    ReviewTaskRecord.task_id == task.task_id
+                )
+            )
+        assert stored == TaskPublicationMode.EVIDENCE_BOUND_V1.value
 
 
 def test_succeed_with_evidence_commits_snapshot_terminal_and_event_together() -> None:

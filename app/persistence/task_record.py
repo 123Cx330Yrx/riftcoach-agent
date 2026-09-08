@@ -25,6 +25,11 @@ class ReviewTaskRecord(Base):
     idempotency_key: Mapped[str] = mapped_column(sa.String(128), nullable=False)
     request_fingerprint: Mapped[str] = mapped_column(sa.String(64), nullable=False)
     request_payload: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    publication_mode: Mapped[str] = mapped_column(
+        sa.String(32),
+        nullable=False,
+        server_default=sa.text("'legacy'"),
+    )
     conversation_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
     relationship_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
     player_subject_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
@@ -127,6 +132,10 @@ class ReviewTaskRecord(Base):
             "publication_status IS NULL OR "
             "publication_status IN ('published', 'degraded', 'rejected')",
             name="publication_status_allowed",
+        ),
+        sa.CheckConstraint(
+            "publication_mode IN ('legacy', 'evidence_bound_v1')",
+            name="publication_mode_allowed",
         ),
         sa.CheckConstraint(
             "request_fingerprint ~ '^[0-9a-f]{64}$'",
