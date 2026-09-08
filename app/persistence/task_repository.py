@@ -1616,6 +1616,78 @@ class PostgresTaskRepository:
         except (TypeError, ValueError, ValidationError):
             raise TaskRepositoryError("task_repository_integrity_failed") from None
 
+    def reconcile_expired_success_with_evidence(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
+        terminal: TaskTerminal,
+        pending_snapshot: PendingEvidenceBundleSnapshot,
+        publication_reference: dict[str, object],
+        summary_digest: str,
+    ) -> bool:
+        """Recover an expired task with the same atomic evidence contract."""
+        identity = _validate_recovery_identity(
+            task_id=task_id,
+            worker_id=worker_id,
+            lease_generation=lease_generation,
+            lease_token=lease_token,
+            now=now,
+        )
+        if not isinstance(terminal, TaskTerminal):
+            raise TypeError("terminal must be a TaskTerminal")
+        if not isinstance(pending_snapshot, PendingEvidenceBundleSnapshot):
+            raise TypeError("pending_snapshot must be a PendingEvidenceBundleSnapshot")
+        if pending_snapshot.task_id != task_id or pending_snapshot.run_id != terminal.run_id:
+            raise ValueError("pending snapshot must match task and terminal run")
+        if not isinstance(publication_reference, dict):
+            raise TypeError("publication_reference must be an object")
+        if not isinstance(summary_digest, str) or not re.fullmatch(
+            r"[0-9a-f]{64}", summary_digest
+        ):
+            raise ValueError("summary_digest must be a lowercase SHA-256 digest")
+        try:
+            with self._session_factory() as session:
+                with session.begin():
+                    record = session.scalar(
+                        sa.select(ReviewTaskRecord)
+                        .where(ReviewTaskRecord.task_id == identity.task_id)
+                        .with_for_update()
+                    )
+                    if not _record_has_expired_lease(record, identity=identity):
+                        return False
+                    assert record is not None
+                    if (
+                        record.cancel_requested_at is not None
+                        or record.run_id != terminal.run_id
+                        or record.publication_mode != "evidence_bound_v1"
+                    ):
+                        return False
+                    snapshot_result = _append_snapshot_in_session(
+                        session, record, pending_snapshot
+                    )
+                    record.publication_reference = copy.deepcopy(publication_reference)
+                    record.summary_digest = summary_digest
+                    record.first_snapshot_id = snapshot_result.snapshot.snapshot_id
+                    record.first_snapshot_digest = snapshot_result.snapshot.snapshot_digest
+                    self._apply_terminal_in_session(
+                        session, record, terminal,
+                        event_kind=TaskLifecycleEventKind.RECONCILED,
+                        operation_identity=f"reconciled-{identity.lease_generation}",
+                        occurred_at=max(record.claimed_at, identity.now),
+                        event_reason="reconciled",
+                    )
+                return True
+        except TaskRepositoryError:
+            raise
+        except SQLAlchemyError:
+            raise TaskRepositoryError("task_repository_unavailable") from None
+        except (TypeError, ValueError, ValidationError):
+            raise TaskRepositoryError("task_repository_integrity_failed") from None
+
     def _apply_terminal_in_session(
         self,
         session: Session,

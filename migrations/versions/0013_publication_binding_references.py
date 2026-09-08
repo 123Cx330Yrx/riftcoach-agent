@@ -13,7 +13,7 @@ from alembic import op
 from sqlalchemy.dialects import postgresql
 
 
-revision: str = "0013_publication_binding_references"
+revision: str = "0013_publication_bindings"
 down_revision: str | None = "0012_evidence_bound_publication"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
@@ -107,4 +107,3 @@ def downgrade() -> None:
     op.drop_column("review_tasks", "first_snapshot_id")
     op.drop_column("review_tasks", "summary_digest")
     op.drop_column("review_tasks", "publication_reference")
-
