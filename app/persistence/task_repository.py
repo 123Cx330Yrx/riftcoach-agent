@@ -1690,6 +1690,9 @@ class PostgresTaskRepository:
                     record.summary_digest = summary_digest
                     record.first_snapshot_id = snapshot_result.snapshot.snapshot_id
                     record.first_snapshot_digest = snapshot_result.snapshot.snapshot_digest
+                    record.message_projection_status = (
+                        "pending" if record.schema_version == "2.0" else "not_required"
+                    )
                     self._apply_terminal_in_session(
                         session, record, terminal,
                         event_kind=TaskLifecycleEventKind.RECONCILED,
@@ -1806,6 +1809,9 @@ class PostgresTaskRepository:
                     record.summary_digest = summary_digest
                     record.first_snapshot_id = snapshot_result.snapshot.snapshot_id
                     record.first_snapshot_digest = snapshot_result.snapshot.snapshot_digest
+                    record.message_projection_status = (
+                        "pending" if record.schema_version == "2.0" else "not_required"
+                    )
                     self._apply_terminal_in_session(
                         session,
                         record,
@@ -1912,6 +1918,7 @@ def _record_to_task(
         summary_digest=record.summary_digest,
         first_snapshot_id=record.first_snapshot_id,
         first_snapshot_digest=record.first_snapshot_digest,
+        message_projection_status=record.message_projection_status,
         conversation_binding=conversation_binding,
         execution_target=execution_target,
         status=TaskStatus(record.status),

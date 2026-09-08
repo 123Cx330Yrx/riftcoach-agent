@@ -328,6 +328,7 @@ class ReviewTask(TaskContractModel):
     summary_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
     first_snapshot_id: UUID | None = Field(default=None, exclude=True, repr=False)
     first_snapshot_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
+    message_projection_status: str = Field(default="not_required", exclude=True, repr=False)
     conversation_binding: ConversationReviewTaskBinding | None = None
     execution_target: ConversationReviewExecutionTarget | None = Field(
         default=None,
@@ -586,6 +587,7 @@ class ReviewTaskView(TaskContractModel):
     summary_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
     first_snapshot_id: UUID | None = Field(default=None, exclude=True, repr=False)
     first_snapshot_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
+    message_projection_status: str = Field(default="not_required", exclude=True, repr=False)
 
     @classmethod
     def from_task(cls, task: ReviewTask) -> "ReviewTaskView":
@@ -608,6 +610,7 @@ class ReviewTaskView(TaskContractModel):
             summary_digest=task.summary_digest,
             first_snapshot_id=task.first_snapshot_id,
             first_snapshot_digest=task.first_snapshot_digest,
+            message_projection_status=task.message_projection_status,
         )
 
 

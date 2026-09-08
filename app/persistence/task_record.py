@@ -39,6 +39,9 @@ class ReviewTaskRecord(Base):
     summary_digest: Mapped[str | None] = mapped_column(sa.String(64))
     first_snapshot_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
     first_snapshot_digest: Mapped[str | None] = mapped_column(sa.String(64))
+    message_projection_status: Mapped[str] = mapped_column(
+        sa.String(16), nullable=False, server_default=sa.text("'not_required'")
+    )
     conversation_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
     relationship_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
     player_subject_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
@@ -145,6 +148,10 @@ class ReviewTaskRecord(Base):
         sa.CheckConstraint(
             "publication_mode IN ('legacy', 'evidence_bound_v1')",
             name="publication_mode_allowed",
+        ),
+        sa.CheckConstraint(
+            "message_projection_status IN ('not_required', 'pending', 'completed')",
+            name="message_projection_status_allowed",
         ),
         sa.CheckConstraint(
             "publication_reference IS NULL OR "
