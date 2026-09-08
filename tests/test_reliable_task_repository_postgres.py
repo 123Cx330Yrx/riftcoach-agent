@@ -22,6 +22,9 @@ from app.persistence.task_event_record import ReviewTaskEventRecord
 from app.persistence.task_record import ReviewTaskRecord
 from app.persistence.task_repository import PostgresTaskRepository
 from app.persistence.task_repository import _checkpoint_from_storage
+from app.persistence.evidence_snapshot_record import EvidenceBundleSnapshotRecord
+from app.evidence.storage import PendingEvidenceBundleSnapshot
+from tests.test_evidence_snapshot_contracts import bundle
 from app.product.run_receipts import RunReceiptReference
 from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
 from app.tasks.models import (
@@ -170,6 +173,47 @@ def test_create_queued_task_persists_sql_null_checkpoint() -> None:
             )
 
         assert checkpoint_is_sql_null is True
+
+
+def test_succeed_with_evidence_commits_snapshot_terminal_and_event_together() -> None:
+    with migrated_repository() as (repository, factory):
+        task = pending(11)
+        create(repository, task)
+        claimed = repository.claim_next(
+            worker_id="evidence-worker", now=BASE + timedelta(seconds=20)
+        )
+        assert claimed is not None and claimed.lease is not None
+
+        snapshot = PendingEvidenceBundleSnapshot(
+            task_id=task.task_id,
+            run_id=task.run_id,
+            owner_id=task.owner_id,
+            refresh_id="atomic-success",
+            bundle=bundle(),
+            stored_at=BASE + timedelta(seconds=20),
+        )
+        assert repository.succeed_with_evidence(
+            task_id=task.task_id,
+            worker_id=claimed.lease.worker_id,
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.token,
+            now=BASE + timedelta(seconds=20),
+            terminal=terminal(task.run_id),
+            pending_snapshot=snapshot,
+        ) is True
+
+        with factory() as session:
+            row = session.get(ReviewTaskRecord, task.task_id)
+            snapshot_count = session.scalar(
+                sa.select(sa.func.count()).select_from(EvidenceBundleSnapshotRecord)
+            )
+            event_count = session.scalar(
+                sa.select(sa.func.count()).select_from(ReviewTaskEventRecord)
+                .where(ReviewTaskEventRecord.task_id == task.task_id)
+            )
+        assert row is not None and row.status == TaskStatus.SUCCEEDED.value
+        assert snapshot_count == 1
+        assert event_count == 4
 
 
 def test_create_replay_and_claim_append_one_contiguous_history() -> None:

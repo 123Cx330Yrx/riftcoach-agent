@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Protocol
+from typing import TYPE_CHECKING, Protocol
 from uuid import UUID
+
+if TYPE_CHECKING:
+    from app.evidence.storage import PendingEvidenceBundleSnapshot
 
 from app.tasks.models import (
     PendingConversationReviewTask,
@@ -183,6 +186,18 @@ class TaskRepository(Protocol):
         lease_token: str,
         now: datetime,
         terminal: TaskTerminal,
+    ) -> bool: ...
+
+    def succeed_with_evidence(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
+        terminal: TaskTerminal,
+        pending_snapshot: "PendingEvidenceBundleSnapshot",
     ) -> bool: ...
 
     def fail(

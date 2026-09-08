@@ -6322,3 +6322,9 @@ RQ-250（2026-09-06）：RQ-250工具批量预算修复完成本地、公共和�
 - 正确专用数据库凭据下运行 `tests/test_evidence_snapshot_repository_postgres.py`、`tests/test_reliable_task_repository_postgres.py`、`tests/test_reliable_task_recovery_postgres.py`、`tests/test_task_reconciliation_postgres.py`：29 passed；离线模型/合同回归64 passed；py_compile、diff check、governance passed。
 - Docker Desktop 曾因两个运行时 socket 残留循环崩溃；未重置出厂或删除数据，已将 `Docker/run` 与 `docker-secrets-engine` 运行时目录改名备份并重建，容器/测试库连续复验可用。
 - B 尚未完成 publication_mode/引用/消息投影字段及迁移，也未把快照、终态和发布清单完全接入同一产品发布过程；下一步只进入这些持久化字段与显式模式指纹，不进入 C、真实 API 或生产默认。
+## 2026-09-09 B事务恢复与原子发布入口
+
+- Docker 通过可恢复的 `run`/`docker-secrets-engine` 目录重建在验证窗口恢复；旧目录保留为 recovery 备份，未执行出厂重置。
+- 创建独立 `riftcoach_test` 数据库，避免回归测试触碰开发库；四组 PostgreSQL 回归 `30 passed`，离线回归 `64 passed`。
+- `PostgresTaskRepository.succeed_with_evidence()` 已将快照写入、成功终态和生命周期事件置于同一事务；新增原子提交回归覆盖快照、终态和事件共同提交。
+- 限制：尚未加入持久 `publication_mode` 字段/迁移、显式模式指纹和读取/消息投影门；Docker 持久稳定性尚未证明。

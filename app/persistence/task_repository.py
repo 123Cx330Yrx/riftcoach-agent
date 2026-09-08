@@ -21,6 +21,8 @@ from app.persistence.player_records import (
 )
 from app.persistence.task_record import ReviewTaskRecord
 from app.persistence.task_event_record import ReviewTaskEventRecord
+from app.persistence.evidence_snapshot_repository import _append_snapshot_in_session
+from app.evidence.storage import PendingEvidenceBundleSnapshot
 from app.players.models import RelationshipRole, RoutingRegion
 from app.tasks.fingerprint import compute_conversation_review_task_fingerprint
 from app.tasks.models import (
@@ -1639,6 +1641,77 @@ class PostgresTaskRepository:
             occurred_at=occurred_at,
             reason=terminal.terminal_reason if event_reason is None else event_reason,
         )
+
+    def succeed_with_evidence(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
+        terminal: TaskTerminal,
+        pending_snapshot: PendingEvidenceBundleSnapshot,
+    ) -> bool:
+        """Publish the evidence snapshot and successful task atomically.
+
+        The task row is locked first; snapshot insertion, terminal projection,
+        and the lifecycle event all share one transaction.  A failed snapshot
+        or terminal write therefore cannot leave a half-published task.
+        """
+        if not isinstance(task_id, UUID):
+            raise TypeError("task_id must be a UUID")
+        normalized_worker_id = _validate_worker_id(worker_id)
+        normalized_generation = _validate_lease_generation(lease_generation)
+        normalized_token = _validate_lease_token(lease_token)
+        normalized_now = _as_utc(now)
+        if not isinstance(terminal, TaskTerminal):
+            raise TypeError("terminal must be a TaskTerminal")
+        if not isinstance(pending_snapshot, PendingEvidenceBundleSnapshot):
+            raise TypeError(
+                "pending_snapshot must be a PendingEvidenceBundleSnapshot"
+            )
+        if pending_snapshot.task_id != task_id or pending_snapshot.run_id != terminal.run_id:
+            raise ValueError("pending snapshot must match task and terminal run")
+        try:
+            with self._session_factory() as session:
+                with session.begin():
+                    record = session.scalar(
+                        sa.select(ReviewTaskRecord)
+                        .where(ReviewTaskRecord.task_id == task_id)
+                        .with_for_update()
+                    )
+                    if not _record_has_live_lease(
+                        record,
+                        worker_id=normalized_worker_id,
+                        lease_generation=normalized_generation,
+                        lease_token=normalized_token,
+                        now=normalized_now,
+                    ) or record.cancel_requested_at is not None:
+                        return False
+                    assert record is not None
+                    if record.run_id != terminal.run_id:
+                        return False
+                    _append_snapshot_in_session(
+                        session,
+                        record,
+                        pending_snapshot,
+                    )
+                    self._apply_terminal_in_session(
+                        session,
+                        record,
+                        terminal,
+                        event_kind=TaskLifecycleEventKind.SUCCEEDED,
+                        operation_identity=f"succeeded-{normalized_generation}",
+                        occurred_at=max(record.claimed_at, normalized_now),
+                    )
+                return True
+        except TaskRepositoryError:
+            raise
+        except SQLAlchemyError:
+            raise TaskRepositoryError("task_repository_unavailable") from None
+        except (TypeError, ValueError, ValidationError):
+            raise TaskRepositoryError("task_repository_integrity_failed") from None
 
     def _apply_values_in_session(
         self,
