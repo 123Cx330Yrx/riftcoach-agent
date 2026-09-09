@@ -56,7 +56,7 @@ flowchart TD
 - legacy `succeed()`/`reconcile_expired_success()` 对 evidence-bound 任务 fail-closed；Worker、Reconciler 与 ExpiredRecovery 只有在 executor 提供完整发布载荷时才调用原子 evidence 路径。
 - `message_projection_status` 记录终态提交后的消息投影状态，TerminalTurnWriter 成功写入后由 pending 标记为 completed；重复写入沿用 source task/run 幂等约束。
 - PostgreSQL 回归 42 passed，离线相关回归 104 passed，Worker/Executor/Reconciler 组合回归 128 passed；Docker 仅证明当前验证窗口可用，不宣称运行时永久稳定。
-- 未完成边界：当前 executor 已在显式 evidence-bound 运行中校验 publication manifest，并构造 `PendingEvidenceBundleSnapshot`、publication reference 和摘要；消息补投重放器尚未从持久绑定及报告工件重建 `TerminalAssistantTurn`。消息投影在此之前保持 pending，绝不假完成。
+- 未完成边界：当前 executor 已在显式 evidence-bound 运行中校验 publication manifest，并构造 `PendingEvidenceBundleSnapshot`、publication reference 和摘要；TerminalTurnWriter 已能从持久绑定及报告工件重建 `TerminalAssistantTurn` 并幂等写入，Worker 启动批量调度尚未接线。消息投影在此之前保持 pending，绝不假完成。
 
 ## 实施顺序与明确验收
 

@@ -434,7 +434,9 @@ def build_review_worker_process(
             worker_id=normalized_worker_id,
             polling_policy=settings.polling_policy,
             observability=TaskObservability(logger_name="riftcoach.worker"),
-            terminal_turn_writer=PostgresTerminalTurnWriter(session_factory),
+            terminal_turn_writer=PostgresTerminalTurnWriter(
+                session_factory, runs_root=settings.runs_root
+            ),
             lease_policy=settings.lease_policy,
             recovery=ExpiredReviewTaskRecovery(
                 repository=repository,

@@ -4,6 +4,7 @@ import hashlib
 from collections.abc import Callable
 from datetime import timedelta
 from enum import StrEnum
+from pathlib import Path
 from uuid import NAMESPACE_URL, uuid5
 
 import sqlalchemy as sa
@@ -17,6 +18,8 @@ from app.conversations.turns import (
     TerminalTurnWriteDisposition,
     TerminalTurnWriteResult,
 )
+from app.harness.store import FileRunStore
+from app.memory.context_models import MemoryContextBinding
 from app.memory.gate import evaluate_candidate_gate
 from app.memory.models import (
     CandidateCreateDisposition,
@@ -27,6 +30,8 @@ from app.persistence.conversation_records import ConversationMessageRecord, Conv
 from app.persistence.memory_repository import PostgresMemoryCandidateRepository
 from app.persistence.task_record import ReviewTaskRecord
 from app.runtime.models import RuntimeArtifactReference
+from app.runtime.signals import RuntimePublicationStatus
+from app.players.models import RelationshipRole
 
 
 SessionFactory = Callable[[], Session]
@@ -42,13 +47,93 @@ class TerminalTurnWriterError(RuntimeError):
 
 
 class PostgresTerminalTurnWriter:
-    def __init__(self, session_factory: SessionFactory) -> None:
+    def __init__(self, session_factory: SessionFactory, *, runs_root: str | Path | None = None) -> None:
         if not callable(session_factory):
             raise TypeError("session_factory must be callable")
         self._session_factory = session_factory
         self._candidate_repository = PostgresMemoryCandidateRepository(
             session_factory
         )
+        self._runs_root = Path(runs_root).resolve() if runs_root is not None else None
+
+    def replay_pending(
+        self,
+        *,
+        task_id,
+        run_id: str,
+    ) -> TerminalTurnWriteResult | TerminalTurnWriterDisposition:
+        """Rebuild and idempotently project a succeeded task's pending turn.
+
+        The report bytes are read only from the immutable, digest-registered
+        Harness artifact; no model or provider is called during replay.
+        """
+        if self._runs_root is None:
+            raise TerminalTurnWriterError("terminal_turn_replay_unconfigured")
+        try:
+            with self._session_factory() as session:
+                task = session.scalar(
+                    sa.select(ReviewTaskRecord).where(
+                        ReviewTaskRecord.task_id == task_id,
+                        ReviewTaskRecord.run_id == run_id,
+                    )
+                )
+                if (
+                    task is None
+                    or task.schema_version != "2.0"
+                    or task.status != "succeeded"
+                    or task.message_projection_status != "pending"
+                    or not task.report_available
+                    or task.artifact_reference is None
+                    or task.publication_status not in {"published", "degraded"}
+                    or any(
+                        value is None
+                        for value in (
+                            task.conversation_id,
+                            task.relationship_id,
+                            task.player_subject_id,
+                            task.relationship_role,
+                        )
+                    )
+                ):
+                    return TerminalTurnWriterDisposition.SOURCE_INVALID
+                artifact = RuntimeArtifactReference.model_validate(
+                    task.artifact_reference
+                )
+                store = FileRunStore(self._runs_root, task.run_id)
+                manifest = store.read_manifest()
+                record = next(
+                    (
+                        row
+                        for row in manifest.artifacts
+                        if row.get("kind") == "final_report"
+                        and row.get("path") == artifact.relative_path
+                        and row.get("sha256") == artifact.sha256
+                    ),
+                    None,
+                )
+                if record is None:
+                    return TerminalTurnWriterDisposition.SOURCE_INVALID
+                content = store.read_artifact(record).decode("utf-8")
+                binding = MemoryContextBinding(
+                    run_id=task.run_id,
+                    owner_id=task.owner_id,
+                    conversation_id=task.conversation_id,
+                    relationship_id=task.relationship_id,
+                    player_subject_id=task.player_subject_id,
+                    relationship_role=RelationshipRole(task.relationship_role),
+                )
+                turn = TerminalAssistantTurn(
+                    source_task_id=task.task_id,
+                    binding=binding,
+                    publication_status=RuntimePublicationStatus(task.publication_status),
+                    artifact_reference=artifact,
+                    assistant_content=content,
+                    candidate_proposals=(),
+                    created_at=task.updated_at,
+                )
+        except (OSError, UnicodeDecodeError, KeyError, TypeError, ValueError, ValidationError):
+            return TerminalTurnWriterDisposition.SOURCE_INVALID
+        return self.write(turn)
 
     def write(
         self,
