@@ -17,7 +17,7 @@ if TYPE_CHECKING:
         EvidencePublicationContext, EvidencePublicationSources, EvidencePublicationWriter,
     )
 
-from pydantic import BaseModel, ConfigDict, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from requests.exceptions import (
     ConnectionError,
     HTTPError,
@@ -129,7 +129,9 @@ ReportRenderer = Callable[[dict], str]
 class RecentReviewApplicationResult(BaseModel):
     """Strict product projection of a completed Runtime result."""
 
-    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+    model_config = ConfigDict(
+        extra="forbid", frozen=True, strict=True, arbitrary_types_allowed=True
+    )
 
     schema_version: Literal["1.0"] = "1.0"
     run_id: str
@@ -138,6 +140,12 @@ class RecentReviewApplicationResult(BaseModel):
     terminal_reason: str
     output: RecentFormReviewOutput
     trace_reference: RuntimeTraceReference
+    # Internal hand-off for an evidence-bound task.  It is excluded from the
+    # public JSON projection; the task executor turns it into the concrete
+    # PendingEvidenceBundleSnapshot after binding task identity.
+    evidence_projection: object | None = Field(
+        default=None, exclude=True, repr=False
+    )
 
     @field_validator("run_id")
     @classmethod
@@ -223,6 +231,7 @@ class RecentReviewApplicationService:
         report_renderer: ReportRenderer = render_deterministic_report,
         publication_sources: EvidencePublicationSources | None = None,
         publication_writer: EvidencePublicationWriter | None = None,
+        allow_legacy_without_publication: bool = False,
     ) -> None:
         if not callable(getattr(summary_builder, "build", None)):
             raise TypeError("summary_builder must expose build()")
@@ -240,6 +249,9 @@ class RecentReviewApplicationService:
             from app.evidence.publication import EvidencePublicationSources
             if not isinstance(publication_sources, EvidencePublicationSources) or not callable(getattr(publication_writer, "write", None)):
                 raise TypeError("invalid publication dependencies")
+        if not isinstance(allow_legacy_without_publication, bool):
+            raise TypeError("allow_legacy_without_publication must be bool")
+        self._allow_legacy_without_publication = allow_legacy_without_publication
         self._publication_sources = publication_sources
         self._publication_writer = publication_writer
         self._summary_builder = summary_builder
@@ -301,7 +313,9 @@ class RecentReviewApplicationService:
         )
 
     def _validate_publication_context(self, context, run_id, memory=None) -> None:
-        if self._publication_sources is None and context is None:
+        if context is None and self._publication_sources is None:
+            return
+        if context is None and self._allow_legacy_without_publication:
             return
         valid = False
         try:
@@ -328,7 +342,7 @@ class RecentReviewApplicationService:
     ) -> RecentReviewApplicationResult:
         self._validate_summary(summary)
         projection = None
-        if self._publication_sources is not None:
+        if self._publication_sources is not None and publication_context is not None:
             failure = False
             try:
                 projection = self._publication_sources.project(copy.deepcopy(summary), routing_region=routing_region)
@@ -377,6 +391,13 @@ class RecentReviewApplicationService:
                 failure = True
             if failure:
                 raise RecentReviewApplicationError("review_runtime_failed", run_id=runtime_request.run_id)
+        if projection is not None:
+            # The file publication has been verified above.  Carry the same
+            # pure projection forward so the Worker can atomically publish it
+            # with the task terminal state, without rebuilding evidence.
+            application_result = application_result.model_copy(
+                update={"evidence_projection": projection}
+            )
         return application_result
 
     @staticmethod

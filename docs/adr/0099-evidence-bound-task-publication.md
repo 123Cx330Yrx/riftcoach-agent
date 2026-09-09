@@ -1,6 +1,6 @@
 # ADR-0099：同源Evidence约束的任务发布
 
-状态：A completed publicly（RQ-256，99a80d9 / Actions34113092188成功）。2026-09-09 RQ-257 已完成 B 的持久模式/原子事务/身份校验，以及 C 的 Worker、Reconciler、Recovery 安全分流和消息投影状态门；专用 PostgreSQL 42 项与相关离线回归通过。上层 executor 仍未生成完整 evidence-bound 发布载荷，持久消息补投重建仍待完成，因此 ADR-0099 与 8E 仍为 in_progress，不启用生产默认。
+状态：A completed publicly（RQ-256，99a80d9 / Actions34113092188成功）。2026-09-09 RQ-257 已完成 B 的持久模式/原子事务/身份校验，以及 C 的 Worker、Reconciler、Recovery 安全分流和消息投影状态门；上层 executor 已接入已验证 publication sidecar 到原子 evidence-bound 载荷。持久消息补投重建仍待完成，因此 ADR-0099 与 8E 仍为 in_progress，不启用生产默认。
 
 ## 背景与要求
 
@@ -56,7 +56,7 @@ flowchart TD
 - legacy `succeed()`/`reconcile_expired_success()` 对 evidence-bound 任务 fail-closed；Worker、Reconciler 与 ExpiredRecovery 只有在 executor 提供完整发布载荷时才调用原子 evidence 路径。
 - `message_projection_status` 记录终态提交后的消息投影状态，TerminalTurnWriter 成功写入后由 pending 标记为 completed；重复写入沿用 source task/run 幂等约束。
 - PostgreSQL 回归 42 passed，离线相关回归 104 passed，Worker/Executor/Reconciler 组合回归 128 passed；Docker 仅证明当前验证窗口可用，不宣称运行时永久稳定。
-- 未完成边界：当前 executor 只返回终态和可选载荷，尚未在真实 Coach 运行中构造 `PendingEvidenceBundleSnapshot`、publication reference 和摘要；消息补投重放器尚未从持久绑定重建 `TerminalAssistantTurn`。在此之前显式模式会拒绝而不会假发布。
+- 未完成边界：当前 executor 已在显式 evidence-bound 运行中校验 publication manifest，并构造 `PendingEvidenceBundleSnapshot`、publication reference 和摘要；消息补投重放器尚未从持久绑定及报告工件重建 `TerminalAssistantTurn`。消息投影在此之前保持 pending，绝不假完成。
 
 ## 实施顺序与明确验收
 

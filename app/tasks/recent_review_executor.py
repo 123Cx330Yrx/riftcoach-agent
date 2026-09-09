@@ -3,17 +3,14 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import Callable, Literal, Protocol, TypeAlias
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, Callable, Literal, Protocol, TypeAlias
 
 from app.conversations.turns import TerminalAssistantTurn
 from app.memory.context_models import MemoryContextBinding
 from app.product.recent_review import (
     ConversationRecentReviewRequest,
     RecentReviewProductRequest,
-)
-from app.product.recent_review_service import (
-    RecentReviewApplicationError,
-    RecentReviewApplicationResult,
 )
 from app.tasks.fingerprint import (
     compute_conversation_review_task_fingerprint,
@@ -25,10 +22,18 @@ from app.tasks.models import (
     ReviewTask,
     TaskStatus,
     TaskTerminal,
+    TaskPublicationMode,
 )
 from app.runtime.signals import RuntimePublicationStatus
 
 from .reconciliation import TerminalEvidenceVerifier
+
+if TYPE_CHECKING:
+    from app.evidence.publication import EvidencePublicationContext
+    from app.product.recent_review_service import (
+        RecentReviewApplicationError,
+        RecentReviewApplicationResult,
+    )
 
 
 RecentReviewTaskExecutionErrorCode: TypeAlias = Literal[
@@ -73,7 +78,8 @@ class RecentReviewApplicationPort(Protocol):
         request: RecentReviewProductRequest,
         *,
         run_id: str,
-    ) -> RecentReviewApplicationResult: ...
+        publication_context: Any | None = None,
+    ) -> Any: ...
 
     def review_by_puuid(
         self,
@@ -85,7 +91,8 @@ class RecentReviewApplicationPort(Protocol):
         tag_line: str,
         run_id: str,
         memory_context_binding: MemoryContextBinding | None = None,
-    ) -> RecentReviewApplicationResult: ...
+        publication_context: Any | None = None,
+    ) -> Any: ...
 
 
 class RecentReviewTaskExecutionResult(TaskTerminal):
@@ -109,6 +116,7 @@ class RecentReviewTaskExecutor:
         *,
         application_service: RecentReviewApplicationPort,
         evidence_verifier: TerminalEvidenceVerifier,
+        runs_root: str | Path | None = None,
         clock: Callable[[], datetime] | None = None,
     ) -> None:
         if not callable(getattr(application_service, "review", None)):
@@ -117,6 +125,14 @@ class RecentReviewTaskExecutor:
             raise TypeError("evidence_verifier must expose terminal_for()")
         self._application = application_service
         self._evidence = evidence_verifier
+        self._runs_root = (
+            Path(runs_root).resolve()
+            if runs_root is not None
+            else None
+        )
+        # The store is read-only here. The application service owns creation;
+        # the executor only rebuilds a verified payload for the DB transaction.
+        self._publication_store = None
         if clock is not None and not callable(clock):
             raise TypeError("clock must be callable")
         self._clock = clock or (lambda: datetime.now(timezone.utc))
@@ -129,12 +145,14 @@ class RecentReviewTaskExecutor:
         if task.task_kind != "recent_review":
             raise RecentReviewTaskExecutionError("task_contract_invalid")
 
+        publication_context = self._publication_context(task)
         if task.schema_version == "1.0":
-            result = self._execute_legacy(task)
+            result = self._execute_legacy(task, publication_context=publication_context)
         elif task.schema_version == "2.0":
-            result = self._execute_conversation_bound(task)
+            result = self._execute_conversation_bound(task, publication_context=publication_context)
         else:
             raise RecentReviewTaskExecutionError("task_contract_invalid")
+        from app.product.recent_review_service import RecentReviewApplicationResult
         if not isinstance(result, RecentReviewApplicationResult):
             raise RecentReviewTaskExecutionError("application_result_invalid")
         if (
@@ -184,15 +202,79 @@ class RecentReviewTaskExecutor:
                 candidate_proposals=(),
                 created_at=self._clock(),
             )
+        pending_snapshot = None
+        publication_reference = None
+        summary_digest = None
+        if task.publication_mode is TaskPublicationMode.EVIDENCE_BOUND_V1:
+            if publication_context is None:
+                raise RecentReviewTaskExecutionError("application_result_invalid")
+            try:
+                from app.evidence.publication_store import FileEvidencePublicationStore
+                from app.evidence.storage import PendingEvidenceBundleSnapshot
+                runs_root = self._runs_root or getattr(self._evidence, "_runs_root", None)
+                if runs_root is None:
+                    raise ValueError("publication evidence root unavailable")
+                publication_store = FileEvidencePublicationStore(runs_root)
+                manifest = publication_store.read(publication_context)
+                projection = getattr(result, "evidence_projection", None)
+                if projection is not None:
+                    if (
+                        getattr(projection, "summary_digest", None)
+                        != manifest.summary_digest
+                        or getattr(getattr(projection, "bundle", None), "digest", None)
+                        != manifest.bundle.bundle_digest
+                    ):
+                        raise ValueError("publication projection mismatch")
+                    pending_snapshot = PendingEvidenceBundleSnapshot(
+                        task_id=publication_context.task_id,
+                        run_id=publication_context.run_id,
+                        owner_id=publication_context.owner_id,
+                        refresh_id="publication-1",
+                        bundle=projection.bundle,
+                        stored_at=projection.bundle.created_at,
+                    )
+                else:
+                    pending_snapshot = publication_store.read_pending_snapshot(
+                        publication_context
+                    )
+                summary_digest = manifest.summary_digest
+                publication_reference = {
+                    "context": publication_context.model_dump(mode="json"),
+                    "summary_digest": manifest.summary_digest,
+                }
+            except Exception:
+                raise RecentReviewTaskExecutionError(
+                    "terminal_evidence_invalid"
+                ) from None
         return RecentReviewTaskExecutionResult(
             **terminal.model_dump(mode="python"),
             terminal_turn=terminal_turn,
+            pending_snapshot=pending_snapshot,
+            publication_reference=publication_reference,
+            summary_digest=summary_digest,
         )
+
+    @staticmethod
+    def _publication_context(task: ReviewTask) -> EvidencePublicationContext | None:
+        if task.publication_mode is not TaskPublicationMode.EVIDENCE_BOUND_V1:
+            return None
+        try:
+            from app.evidence.publication import EvidencePublicationContext
+            return EvidencePublicationContext(
+                owner_id=task.owner_id,
+                task_id=task.task_id,
+                run_id=task.run_id,
+                request_fingerprint=task.request_fingerprint,
+            )
+        except Exception:
+            raise RecentReviewTaskExecutionError("task_contract_invalid") from None
 
     def _execute_legacy(
         self,
         task: ReviewTask,
-    ) -> RecentReviewApplicationResult:
+        *,
+        publication_context: Any | None = None,
+    ) -> Any:
         try:
             request = RecentReviewProductRequest.model_validate(
                 task.request_payload
@@ -207,16 +289,20 @@ class RecentReviewTaskExecutor:
         if expected_fingerprint != task.request_fingerprint:
             raise RecentReviewTaskExecutionError("task_fingerprint_mismatch")
         try:
-            return self._application.review(request, run_id=task.run_id)
-        except RecentReviewApplicationError:
-            raise RecentReviewTaskExecutionError("application_failed") from None
+            return self._application.review(
+                request,
+                run_id=task.run_id,
+                **({"publication_context": publication_context} if publication_context is not None else {}),
+            )
         except Exception:
             raise RecentReviewTaskExecutionError("application_failed") from None
 
     def _execute_conversation_bound(
         self,
         task: ReviewTask,
-    ) -> RecentReviewApplicationResult:
+        *,
+        publication_context: Any | None = None,
+    ) -> Any:
         binding = task.conversation_binding
         target = task.execution_target
         if not isinstance(binding, ConversationReviewTaskBinding) or not isinstance(
@@ -258,9 +344,8 @@ class RecentReviewTaskExecutor:
                 tag_line=target.tag_line,
                 run_id=task.run_id,
                 memory_context_binding=memory_context_binding,
+                **({"publication_context": publication_context} if publication_context is not None else {}),
             )
-        except RecentReviewApplicationError:
-            raise RecentReviewTaskExecutionError("application_failed") from None
         except Exception:
             raise RecentReviewTaskExecutionError("application_failed") from None
 

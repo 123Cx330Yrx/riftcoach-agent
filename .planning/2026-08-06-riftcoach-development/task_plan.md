@@ -9,7 +9,7 @@ RQ-256公共收口补齐（2026-09-08恢复）：A已同SHA公共成功（99a80d
 - B：publication mode、发布引用与任务 owner/task/run/fingerprint 的锁内一致性校验、快照/终态/event 同事务提交、正常完成与过期恢复路径已接线。
 - C：Worker、Reconciler、ExpiredRecovery 按模式分流；evidence-bound 缺少完整发布载荷时 fail-closed，禁止旧 `succeed()`/`reconcile_expired_success()` 绕过；终态消息投影使用 pending→completed 状态门。
 - 证据：专用 PostgreSQL 42 项、离线相关 104 项、Worker/Executor/Reconciler 组合 128 项、产品垂直 PostgreSQL 1 项通过；治理、编译、`git diff --check` 通过。
-- 未完成：上层 executor 仍需产出 `PendingEvidenceBundleSnapshot`、publication reference 与摘要；消息补投需从持久绑定重建可重放终态载荷。下一步只做这两项，不调用真实 API、不切生产默认。
+- 已完成：上层 executor 会从已验证 publication sidecar 重建 `PendingEvidenceBundleSnapshot`、publication reference 与摘要，并交给 Worker 原子提交；新增 sidecar 重建回归。未完成：消息补投需从持久绑定和报告工件重建可重放终态载荷。下一步只做消息补投，不调用真实 API、不切生产默认。
 
 ## RQ-256 历史本地同源发布清单
 
@@ -462,7 +462,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 
 ## Next Step
 
-当前执行：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / in-progress / pending-B-publication-mode-and-terminal-publication-wiring`。A已完成同SHA公共CI（99a80d9 / Actions 34113092188）；B事务、publication identity 与模式门已通过专用 PostgreSQL 回归；C已完成 Worker/Reconciler/Recovery 安全分流和消息投影状态门。下一步是上层 executor 产出完整 evidence-bound 载荷，并实现持久消息补投重放；未进入真实 API 或生产默认。
+当前执行：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / in-progress / pending-B-publication-mode-and-terminal-publication-wiring`。A已完成同SHA公共CI（99a80d9 / Actions 34113092188）；B事务、publication identity 与模式门已通过专用 PostgreSQL 回归；C已完成 Worker/Reconciler/Recovery 安全分流和消息投影状态门。上层 executor evidence-bound 载荷已接线并通过相关回归；下一步是持久消息补投重放，未进入真实 API 或生产默认。
 
 RQ-254公共执行完成：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-summary-evidence-bridge / completed-public / pending-evidence-publication-wiring-design`。下一步为同源Evidence应用/快照发布接线离线设计，明确摘要交付、身份/执行权与发布顺序；以下待CI记录为历史。
 

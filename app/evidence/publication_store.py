@@ -15,7 +15,11 @@ from .publication import (
     EvidencePublicationIntegrityError, EvidencePublicationManifest,
     canonical_bytes, sha256_bytes,
 )
-from .storage import bundle_from_storage_projection, bundle_to_storage_projection
+from .storage import (
+    PendingEvidenceBundleSnapshot,
+    bundle_from_storage_projection,
+    bundle_to_storage_projection,
+)
 from .summary_bridge import SummaryEvidenceProjection, summary_to_evidence
 
 
@@ -132,6 +136,29 @@ class FileEvidencePublicationStore:
         except Exception:
             pass
         raise EvidencePublicationIntegrityError()
+
+    def read_pending_snapshot(
+        self, context: EvidencePublicationContext
+    ) -> PendingEvidenceBundleSnapshot:
+        """Rebuild the atomic-task input from a verified publication sidecar.
+
+        This is deliberately read-only: it validates the manifest and bundle
+        through ``read`` first, then reconstructs the in-memory pending value
+        consumed by the PostgreSQL transaction.  No model/provider call is
+        repeated during recovery.
+        """
+        context = EvidencePublicationContext.model_validate(context)
+        manifest = self.read(context)
+        raw = self._path(context.run_id, manifest.bundle.relative_path).read_bytes()
+        bundle = bundle_from_storage_projection(json.loads(raw))
+        return PendingEvidenceBundleSnapshot(
+            task_id=context.task_id,
+            run_id=context.run_id,
+            owner_id=context.owner_id,
+            refresh_id="publication-1",
+            bundle=bundle,
+            stored_at=bundle.created_at,
+        )
 
     @staticmethod
     def _write_once(target: Path, content: bytes) -> None:

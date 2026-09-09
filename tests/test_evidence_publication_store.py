@@ -57,6 +57,19 @@ def test_round_trip_and_same_content_replay(tmp_path, rejected):
     assert not list(tmp_path.rglob(".publication.*"))
 
 
+def test_read_pending_snapshot_rebuilds_verified_task_payload(tmp_path):
+    app, _, store, projection = prepared(tmp_path)
+    app.review(product_request(), run_id=context().run_id, publication_context=context())
+
+    pending = store.read_pending_snapshot(context())
+
+    assert pending.task_id == context().task_id
+    assert pending.run_id == context().run_id
+    assert pending.owner_id == context().owner_id
+    assert pending.refresh_id == "publication-1"
+    assert pending.bundle.digest == projection.bundle.digest
+
+
 @pytest.mark.parametrize("filename", ["evidence_publication_manifest.json", "evidence_bundle.json",
     "api_run_receipt.json", "runtime_trace.json", "manifest.json", "inputs/player_summary.json", "report"])
 @pytest.mark.parametrize("damage", ["truncate", "remove"])

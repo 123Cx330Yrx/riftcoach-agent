@@ -6339,4 +6339,4 @@ RQ-250（2026-09-06）：RQ-250工具批量预算修复完成本地、公共和�
 - B 已完成 publication mode、发布引用与任务身份锁内一致性校验，以及快照、任务终态、lifecycle event 的原子提交；正常完成与过期恢复共用事务 helper。
 - C 已完成 Worker、Reconciler、ExpiredRecovery 的 evidence-bound 分流和消息投影 pending→completed 状态门；旧 legacy 入口对 evidence-bound 任务 fail-closed，不能假成功。
 - 证据：PostgreSQL 42 passed；离线相关 104 passed；Worker/Executor/Reconciler 组合 128 passed；产品垂直 PostgreSQL 1 passed；py_compile、governance、diff-check 通过。
-- 当前限制：上层 executor 尚未构造完整 evidence-bound 发布载荷；消息补投还不能从持久化绑定重建终态消息。下一步仅补这两项，不调用真实 API、不切生产默认。
+- 上层 executor 已从已验证 publication sidecar 重建完整 evidence-bound 发布载荷并接入 Worker 原子提交；新增 sidecar 重建回归。当前限制：消息补投还不能从持久化绑定和报告工件重建终态消息。下一步仅补消息重放，不调用真实 API、不切生产默认。
