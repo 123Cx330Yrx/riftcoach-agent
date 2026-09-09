@@ -263,6 +263,14 @@ class ReviewWorker:
                 "worker.recovery_batch",
                 {"candidate_count": len(recovered)},
             )
+        replay_batch = getattr(self._terminal_turn_writer, "replay_pending_batch", None)
+        if callable(replay_batch):
+            try:
+                replay_batch(limit=8)
+            except Exception:
+                # A bad/tampered artifact remains pending and is retried on a
+                # later pass; it must not prevent unrelated queued work.
+                self._observe("worker.terminal_replay_failed", {})
         claim_started = time.perf_counter()
         try:
             claimed = self._repository.claim_next(

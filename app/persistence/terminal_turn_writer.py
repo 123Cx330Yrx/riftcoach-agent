@@ -135,6 +135,28 @@ class PostgresTerminalTurnWriter:
             return TerminalTurnWriterDisposition.SOURCE_INVALID
         return self.write(turn)
 
+    def replay_pending_batch(
+        self, *, limit: int = 8
+    ) -> tuple[TerminalTurnWriteResult | TerminalTurnWriterDisposition, ...]:
+        """Replay a bounded batch of durable pending conversation projections."""
+        if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 64:
+            raise ValueError("limit must be between 1 and 64")
+        with self._session_factory() as session:
+            rows = session.scalars(
+                sa.select(ReviewTaskRecord.task_id, ReviewTaskRecord.run_id)
+                .where(
+                    ReviewTaskRecord.status == "succeeded",
+                    ReviewTaskRecord.schema_version == "2.0",
+                    ReviewTaskRecord.message_projection_status == "pending",
+                )
+                .order_by(ReviewTaskRecord.updated_at, ReviewTaskRecord.task_id)
+                .limit(limit)
+            ).all()
+        return tuple(
+            self.replay_pending(task_id=task_id, run_id=run_id)
+            for task_id, run_id in rows
+        )
+
     def write(
         self,
         turn: TerminalAssistantTurn,

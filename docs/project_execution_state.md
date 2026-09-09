@@ -26,7 +26,7 @@ pause_reason: ""
 - 公共作品/部署成熟度：99a80d9 / Actions34113092188已同SHA成功；仅完成公共验证，未部署。
 
 - RQ-257 本地实现证据：B/C 相关 PostgreSQL 回归 42 项通过；离线模型/合同回归 104 项通过；Worker、Executor、Reconciler 组合回归 128 项通过；`task_product_vertical_postgres` 1 项通过。Docker 当前验证窗口可用，但持久稳定性仍不作永久保证。
-- RQ-257 限制与下一步：上层 executor 载荷接线已完成并有 sidecar 重建回归；TerminalTurnWriter 已提供从持久化报告工件重建并幂等写入 pending 消息的受控入口，Worker 启动时的批量调度接线仍待完成。因此当前 checkpoint 仍为 in_progress，不宣称 B/C 完整收口、真实 API 或生产准入。
+- RQ-257 限制与下一步：上层 executor 载荷接线、持久消息重建入口及 Worker 每轮有界批量调度均已完成并通过回归。因此 B/C 代码闭环已收口；当前 checkpoint 仍为 in_progress，仅等待后续公共验证，不宣称真实 API 或生产准入。
 
 - RQ-255（2026-09-07）同源Evidence发布接线设计完成，见 `docs/adr/0099-evidence-bound-task-publication.md`。决定显式持久发布模式、同源清单、正常完成/过期恢复共用快照与终态事务、读取绑定校验及消息后置补投；已核对当前API本身具有SQL状态门。唯一下一批为ADR-0099 A：版本化发布清单与同源应用交付的离线实现；数据库事务/恢复和查询门留B/C后续。本批仅文档、真实API=0；本地/公共实现维持RQ-254，所有者理解未新增确认、来源无新增在线审计、无新部署；8E仍in_progress、production_media=0。以下RQ-254待设计动作由本条完成取代，保留历史。
 

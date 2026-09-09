@@ -9,7 +9,7 @@ RQ-256公共收口补齐（2026-09-08恢复）：A已同SHA公共成功（99a80d
 - B：publication mode、发布引用与任务 owner/task/run/fingerprint 的锁内一致性校验、快照/终态/event 同事务提交、正常完成与过期恢复路径已接线。
 - C：Worker、Reconciler、ExpiredRecovery 按模式分流；evidence-bound 缺少完整发布载荷时 fail-closed，禁止旧 `succeed()`/`reconcile_expired_success()` 绕过；终态消息投影使用 pending→completed 状态门。
 - 证据：专用 PostgreSQL 42 项、离线相关 104 项、Worker/Executor/Reconciler 组合 128 项、产品垂直 PostgreSQL 1 项通过；治理、编译、`git diff --check` 通过。
-- 已完成：上层 executor 会从已验证 publication sidecar 重建 `PendingEvidenceBundleSnapshot`、publication reference 与摘要，并交给 Worker 原子提交；新增 sidecar 重建回归。TerminalTurnWriter 已提供从持久绑定和报告工件重建并幂等写入 pending 消息的受控入口。未完成：Worker 启动时批量调用该入口。下一步只做调度接线，不调用真实 API、不切生产默认。
+- 已完成：上层 executor 会从已验证 publication sidecar 重建 `PendingEvidenceBundleSnapshot`、publication reference 与摘要，并交给 Worker 原子提交；TerminalTurnWriter 已提供从持久绑定和报告工件重建并幂等写入 pending 消息的受控入口，Worker 每轮以有界批量自动调用。下一步为公共验证，不调用真实 API、不切生产默认。
 
 ## RQ-256 历史本地同源发布清单
 
