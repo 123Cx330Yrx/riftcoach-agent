@@ -129,7 +129,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / in-progress / pending-B-publication-mode-and-terminal-publication-wiring`。
+当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / completed-public / pending-next-decision`。
 
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
@@ -462,7 +462,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 
 ## Next Step
 
-当前执行：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / in-progress / pending-B-publication-mode-and-terminal-publication-wiring`。A已完成同SHA公共CI（99a80d9 / Actions 34113092188）；B事务、publication identity 与模式门已通过专用 PostgreSQL 回归；C已完成 Worker/Reconciler/Recovery 安全分流和消息投影状态门。上层 executor evidence-bound 载荷已接线并通过相关回归；下一步是持久消息补投重放，未进入真实 API 或生产默认。
+当前执行：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / completed-public / pending-next-decision`。A已完成同SHA公共CI（99a80d9 / Actions 34113092188）；B事务、publication identity 与模式门已通过专用 PostgreSQL 回归；C已完成 Worker/Reconciler/Recovery 安全分流和消息投影状态门。上层 executor evidence-bound 载荷与持久消息补投已接线，并通过相关回归；下一步等待新的产品/生产授权，未进入真实 API 或生产默认。
 
 RQ-254公共执行完成：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-summary-evidence-bridge / completed-public / pending-evidence-publication-wiring-design`。下一步为同源Evidence应用/快照发布接线离线设计，明确摘要交付、身份/执行权与发布顺序；以下待CI记录为历史。
 

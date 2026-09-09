@@ -3,7 +3,7 @@ state_schema: 1
 main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / completed-public / pending-next-decision"
-status: completed-public
+status: in_progress
 pause_reason: ""
 ---
 
