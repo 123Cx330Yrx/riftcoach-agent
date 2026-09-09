@@ -1,6 +1,6 @@
 # ADR-0099：同源Evidence约束的任务发布
 
-状态：A completed publicly（RQ-256，99a80d9 / Actions34113092188成功）。2026-09-09 RQ-257 已完成 B 的持久模式/原子事务/身份校验，以及 C 的 Worker、Reconciler、Recovery 安全分流和消息投影状态门；上层 executor 已接入已验证 publication sidecar 到原子 evidence-bound 载荷。持久消息补投重建仍待完成，因此 ADR-0099 与 8E 仍为 in_progress，不启用生产默认。
+状态：A completed publicly（RQ-256，99a80d9 / Actions34113092188成功）。2026-09-09 RQ-257 已完成 B 的持久模式/原子事务/身份校验，以及 C 的 Worker、Reconciler、Recovery 安全分流、消息投影状态门和有界补投调度；提交 `80ed693` / Actions `34324718617` 同 SHA 三 job 全绿。ADR-0099 B/C 达到 completed-public，不启用生产默认。
 
 ## 背景与要求
 
@@ -60,7 +60,7 @@ flowchart TD
 
 ## 实施顺序与明确验收
 
-原设计下一批仅A：离线实现版本化发布清单与同源应用交付，建立可恢复工件；A 已完成并公共验证，RQ-257 又完成 B 的持久化事务与 C 的安全分流/状态门。剩余是上层 executor 载荷生产和持久消息补投重建，仍按 B/C 检查点收口，不进入真实 API 或生产默认。
+原设计下一批仅A：离线实现版本化发布清单与同源应用交付，建立可恢复工件；A 已完成并公共验证，RQ-257 又完成 B/C 的持久化事务、安全分流、载荷生产和消息补投调度，并通过公共验证。下一步等待新的产品/生产授权，不进入真实 API 或生产默认。
 
 ### A：同源应用交付与发布清单（RQ-256本地已完成）
 
