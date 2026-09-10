@@ -228,3 +228,81 @@ def test_mixed_policy_still_requires_all_completion_gates(tmp_path,missing):
     with pytest.raises(Exception):
         collect(tmp_path,chunks,req,allow_tool_content=True,
                 close_error=RuntimeError("private") if missing=="close" else None)
+
+
+def test_timing_distinguishes_advance_local_work_and_close(tmp_path, monkeypatch):
+    from app.providers.stream_adapter_contract import ProviderStreamEvent
+    from app.providers.models import TokenUsage
+    now = [0.0]
+    accept = m.ProviderStreamAssembler.accept
+    write = m.write_progress
+    def slow_accept(self, event):
+        now[0] += .25
+        return accept(self, event)
+    def slow_write(directory, value):
+        now[0] += .01
+        write(directory, value)
+    monkeypatch.setattr(m.ProviderStreamAssembler, "accept", slow_accept)
+    monkeypatch.setattr(m, "write_progress", slow_write)
+    class Session:
+        close_report = NS(composite_state="closed")
+        def __iter__(self):
+            now[0] += 2
+            yield ProviderStreamEvent(reasoning_delta="secret", model="glm-5.3-flash", request_id_sha256="a"*64)
+            now[0] += 4
+            yield ProviderStreamEvent(content_delta="secret", finish_reason="stop", usage=TokenUsage(1, 2),
+                                      model="glm-5.3-flash", request_id_sha256="a"*64)
+        def close(self): now[0] += .5
+    def opener(r, hook):
+        now[0] += 1
+        return Session()
+    m.collect(request(), opener, directory=tmp_path, started=0, deadline=90, clock=lambda: now[0])
+    data = json.loads((tmp_path/"progress.json").read_text())
+    assert data["schema_version"] == "1.1"
+    assert data["open_duration_ms"] == 1000
+    assert data["advance_duration_ms"] == 6000 and data["max_advance_duration_ms"] == 4000
+    assert data["processing_duration_ms"] == 520 and data["close_duration_ms"] == 500
+    assert data["max_inter_event_gap_ms"] == 4260
+    assert data["last_content_ms"] > data["last_reasoning_ms"]
+    assert data["progress_write_duration_ms"] == data["progress_writes"] * 10
+    assert "secret" not in json.dumps(data)
+
+
+def test_advance_exception_retains_gap_and_unclipped_elapsed(tmp_path):
+    from app.providers.stream_adapter_contract import ProviderStreamEvent
+    now = [0.0]
+    class Session:
+        close_report = NS(composite_state="closed")
+        def __iter__(self):
+            now[0] = 1
+            yield ProviderStreamEvent(content_delta="secret", model="glm-5.3-flash", request_id_sha256="a"*64)
+            now[0] = 91
+            raise ProviderTimeoutError(provider="zhipu", code="fixture")
+        def close(self): now[0] += .5
+    with pytest.raises(ProviderTimeoutError):
+        m.collect(request(), lambda r, hook: Session(), directory=tmp_path, started=0, deadline=90, clock=lambda: now[0])
+    data = json.loads((tmp_path/"progress.json").read_text())
+    assert data["error"] == "deadline" and data["close_state"] == "closed"
+    assert data["last_event_ms"] == data["last_content_ms"] == 1000
+    assert data["max_inter_event_gap_ms"] == 0  # No second accepted event.
+    assert data["advance_duration_ms"] == 91000 and data["max_advance_duration_ms"] == 90000
+    assert data["observed_elapsed_ms"] == 91500 and data["elapsed_ms"] == 90000
+    assert data["terminal_ms"] is None and data["input_tokens"] is None
+
+
+def test_request_metrics_are_body_free_and_reserved_before_io(tmp_path, monkeypatch):
+    req = replace(request(), messages=(ChatMessage(MessageRole.SYSTEM, "secret-policy"),
+        ChatMessage(MessageRole.USER, "secret-prompt"),
+        ChatMessage(MessageRole.ASSISTANT, "secret-body", reasoning_content="secret-reasoning")))
+    def fake_child(*args, **kwargs):
+        data = json.loads((tmp_path/"stream-001"/"reservation.json").read_text())
+        assert "secret" not in json.dumps(data)
+        metrics = data["request_metrics"]
+        assert metrics["message_count"] == 3 and metrics["input_token_ceiling"] > 0
+        assert metrics["wire_bytes"] == len(m.validate_request(req))
+        assert metrics["messages_by_role"]["assistant"]["reasoning_chars"] == 16
+        raise ProviderResponseError(provider="zhipu", code="fixture")
+    monkeypatch.setattr(m, "run_child", fake_child)
+    provider = m.GoldenProcessStreamProvider(settings=NS(model="glm-5.3-flash",
+        base_url="https://open.bigmodel.cn/api/paas/v4", api_key="secret"), directory=tmp_path)
+    with pytest.raises(ProviderResponseError): provider.chat(req)

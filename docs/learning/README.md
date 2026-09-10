@@ -1,6 +1,8 @@
 # RiftCoach 学习与工程证据索引
 
-当前接续：流式诊断复用审查完成（主Agent代码/历史证据核查、Luna独立边界审计）。旧low/2048探针和固定recovery candidate合同不能直接套当前high/8192/1.3.5。底层ZhipuStreamAdapter经零网络假SDK验证可保留high/8192/90秒并区分reasoning/content/terminal/usage；产品streaming标志仍false。RQ-217仅证明受控transport gate客户端唤醒，不能外推自然阻塞取消。失败请求完整消息未保存，不能宣称精确重放。已定义独立单请求、父进程硬截止、仅安全时间/计数的报告形状诊断规范；下一步实现其离线入口与失败测试，真实调用新增0、累计40，8E保持in_progress。
+当前接续：安全计时补强已离线实现：bridge progress schema1.1记录末次事件/正文/reasoning、最长相邻事件间隔、open/advance/processing/close耗时和落盘开销；调用前预约增加无正文请求规模。advance含SDK解码与HTTP hook，不能当纯网络或供应商推理耗时；父杀子后的最后快照只是已落盘前缀。旧诊断1.0与Coach1.3.5/high8192/90秒/质量门不变。3262事件合成本地基准171ms，其中60次落盘约104ms，未支持常规本地组装导致90秒失败。保存输入合成9回合最大input ceiling49940，未超64000，不足以支持删掉来源事实。下一步比例回归及同SHA公共检查后一次带新计时的完整候选观察；真实新增0、累计54，报告/Training/live Workbench仍未验收，8E保持in_progress。
+
+以下为已被上方状态取代的历史接续记录。
 
 
 接续最新：d605c04/Actions34441904153已同SHA三job成功。随后发现评分/修订遗漏扩展来源，新增独立Coach1.3.1/Skill0.5.1/Program2.3.1，把同一deterministic_report作为数据贯穿9个请求；旧1.3.0/1.2.0不变，新补丁待独立公共验证。保存五局完整RAG预算对照仍通过且低分拒绝，无新增真实模型/玩家API/OP.GG。Training等待本人档案或观摩范围澄清，不影响报告准备。

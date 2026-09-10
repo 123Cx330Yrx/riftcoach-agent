@@ -8,11 +8,12 @@ import hashlib
 import math
 import os
 from pathlib import Path
+from typing import Literal
 import subprocess
 import sys
 import time
 
-from pydantic import TypeAdapter
+from pydantic import Field, TypeAdapter
 
 from app.evaluation.golden_journal import write_new_json
 from app.evaluation.golden_http_diagnostics import _EVENTS
@@ -30,6 +31,45 @@ REQUEST = TypeAdapter(ChatRequest)
 RESPONSE = TypeAdapter(ChatResponse)
 MAX_BYTES = 4_000_000
 ROOT = Path(__file__).resolve().parents[2]
+
+
+class BridgeObservation(Observation):
+    """Body-free prefix evidence; advance time includes SDK parsing and hooks.
+
+    Unlike legacy timestamps, new timing fields are not clipped at 90 seconds.
+    A killed worker can lose its last batch. Event times are local acceptance
+    times, not wire arrival times. The progress-write counter excludes its own
+    current write; phase durations include writes performed within that phase.
+    """
+    schema_version: Literal["1.1"] = "1.1"
+    observed_elapsed_ms: int = Field(default=0, ge=0)
+    last_event_ms: int | None = Field(default=None, ge=0)
+    last_reasoning_ms: int | None = Field(default=None, ge=0)
+    last_content_ms: int | None = Field(default=None, ge=0)
+    max_inter_event_gap_ms: int = Field(default=0, ge=0)
+    open_duration_ms: int = Field(default=0, ge=0)
+    advance_duration_ms: int = Field(default=0, ge=0)
+    max_advance_duration_ms: int = Field(default=0, ge=0)
+    processing_duration_ms: int = Field(default=0, ge=0)
+    close_duration_ms: int = Field(default=0, ge=0)
+    progress_write_duration_ms: int = Field(default=0, ge=0)
+    progress_writes: int = Field(default=0, ge=0)
+
+
+def request_metrics(request, raw):
+    """Counts only: no metadata, names, tool IDs, arguments or message bodies."""
+    from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
+    return {"schema_version": "1.0", "wire_bytes": len(raw),
+        "input_token_ceiling": estimate_runtime_request_input_ceiling(request),
+        "output_token_cap": request.max_tokens, "tool_count": len(request.tools),
+        "structured_output": request.response_contract is not None,
+        "message_count": len(request.messages),
+        "messages_by_role": {role: {
+            "count": sum(m.role.value == role for m in request.messages),
+            "content_chars": sum(len(m.content or "") for m in request.messages if m.role.value == role),
+            "reasoning_chars": sum(len(m.reasoning_content or "") for m in request.messages if m.role.value == role),
+            "tool_calls": sum(len(m.tool_calls) for m in request.messages if m.role.value == role),
+        } for role in ("system", "user", "assistant", "tool")}}
 
 
 def _mapping(value):
@@ -59,7 +99,8 @@ def validate_request(request):
 def collect(request, opener, *, directory, started, deadline, clock=time.monotonic, allow_tool_content=False):
     """Only deliver after exhaustion and owned close; partial data remain private."""
     validate_request(request)
-    value = Observation()
+    value = BridgeObservation()
+    durations = {name: 0.0 for name in ("open", "advance", "processing", "close", "progress_write")}
     assembler = ProviderStreamAssembler(provider_id="zhipu", requested_model="glm-5.3-flash",
         require_request_identity=True,
         allow_tool_calls_with_content=allow_tool_content,
@@ -68,9 +109,19 @@ def collect(request, opener, *, directory, started, deadline, clock=time.monoton
     session = None
     def stamp():
         return min(90000, max(0, round((clock() - started) * 1000)))
+    def observed_stamp():
+        return max(0, round((clock() - started) * 1000))
     def save():
         value.elapsed_ms = stamp()
-        write_progress(directory, value)
+        value.observed_elapsed_ms = observed_stamp()
+        for name, duration in durations.items():
+            setattr(value, name + "_duration_ms", max(0, round(duration * 1000)))
+        before = clock()
+        try:
+            write_progress(directory, value)
+        finally:
+            durations["progress_write"] += clock() - before
+            value.progress_writes += 1
     def check_time():
         if clock() >= deadline:
             raise ProviderTimeoutError(provider="zhipu", code="stream_deadline")
@@ -84,31 +135,60 @@ def collect(request, opener, *, directory, started, deadline, clock=time.monoton
     save()
     try:
         check_time()
-        session = opener(replace(request, timeout_s=max(.001, deadline - clock())), hook)
+        before = clock()
+        try:
+            session = opener(replace(request, timeout_s=max(.001, deadline - clock())), hook)
+        finally:
+            durations["open"] += clock() - before
         value.state = "reading"
         save()
-        for event in session:
+        iterator = iter(session)
+        while True:
             check_time()
-            assembler.accept(event)
-            value.events += 1
-            for field, present in (("first_event_ms", True),
-                    ("first_reasoning_ms", bool(event.reasoning_delta and event.reasoning_delta.strip())),
-                    ("first_visible_content_ms", bool(event.content_delta and event.content_delta.strip()))):
-                if present and getattr(value, field) is None:
-                    setattr(value, field, stamp())
+            before = clock()
+            try:
+                event = next(iterator)
+            except StopIteration:
+                break
+            finally:
+                duration = clock() - before
+                durations["advance"] += duration
+                value.max_advance_duration_ms = max(value.max_advance_duration_ms, round(duration * 1000))
+            before = clock()
+            try:
+                check_time()
+                assembler.accept(event)
+                now = observed_stamp()
+                if value.last_event_ms is not None:
+                    value.max_inter_event_gap_ms = max(value.max_inter_event_gap_ms, now - value.last_event_ms)
+                value.last_event_ms = now
+                value.events += 1
+                milestone = False
+                for field, last_field, present in (("first_event_ms", "last_event_ms", True),
+                        ("first_reasoning_ms", "last_reasoning_ms", bool(event.reasoning_delta and event.reasoning_delta.strip())),
+                        ("first_visible_content_ms", "last_content_ms", bool(event.content_delta and event.content_delta.strip()))):
+                    if present:
+                        setattr(value, last_field, now)
+                        if getattr(value, field) is None:
+                            setattr(value, field, stamp())
+                            milestone = True
+                value.content_chars += len(event.content_delta or "")
+                value.reasoning_chars += len(event.reasoning_delta or "")
+                if event.finish_reason:
+                    value.finish_reason, value.terminal_ms = event.finish_reason, stamp()
+                    milestone = True
+                if event.usage:
+                    value.input_tokens, value.output_tokens = event.usage.input_tokens, event.usage.output_tokens
+                    milestone = True
+                if milestone or value.events % 64 == 0:
                     save()
-            value.content_chars += len(event.content_delta or "")
-            value.reasoning_chars += len(event.reasoning_delta or "")
-            if event.finish_reason:
-                value.finish_reason, value.terminal_ms = event.finish_reason, stamp()
-                save()
-            if event.usage:
-                value.input_tokens, value.output_tokens = event.usage.input_tokens, event.usage.output_tokens
-                save()
-            if value.events % 64 == 0:
-                save()
+            finally:
+                durations["processing"] += clock() - before
         assembler.mark_exhausted()
         value.eof_ms = stamp()
+    except ProviderTimeoutError:
+        value.error = "deadline"
+        raise
     except BaseException:
         value.error = "provider_error"
         raise
@@ -116,6 +196,7 @@ def collect(request, opener, *, directory, started, deadline, clock=time.monoton
         value.state = "closing"
         save()
         if session is not None:
+            before = clock()
             try:
                 session.close()
                 if session.close_report.composite_state != "closed":
@@ -124,8 +205,11 @@ def collect(request, opener, *, directory, started, deadline, clock=time.monoton
                 value.close_ms = stamp()
             except BaseException:
                 value.close_state, value.error = "failed", "close_failed"
-                save()
                 raise
+            finally:
+                durations["close"] += clock() - before
+                if value.close_state == "failed":
+                    save()
         if value.error:
             value.state = "failed"
         save()
@@ -169,7 +253,7 @@ class GoldenProcessStreamProvider:
         directory.mkdir(parents=True, exist_ok=False)
         write_new_json(directory / "reservation.json", {"transport_id": self.transport_id,
             "ordinal": self._calls, "request_sha256": hashlib.sha256(raw).hexdigest(),
-            "state": "reserved_before_io"})
+            "state": "reserved_before_io", "request_metrics": request_metrics(request, raw)})
         environ = dict(os.environ)
         environ.update(LLM_API_KEY=self._settings.api_key, LLM_BASE_URL=self._settings.base_url,
                        LLM_MODEL=self.model_name, LLM_PROVIDER="zhipu")

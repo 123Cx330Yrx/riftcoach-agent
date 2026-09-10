@@ -3496,3 +3496,6 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 
 
 当前接续：8a72e2b / Actions34470700838三job同SHA成功（pytest3015 passed/152 skipped/127 subtests、PostgreSQL208）。新鲜协议3请求1007/101 tokens通过；V2黄金观察3次请求，前两次mixed工具回合完整且共6检索成功，第三次首reasoning8.359秒、首正文30.422秒，但90秒无terminal/Usage/EOF，父在90.031秒收口。修复兼容性已真实生效，完整报告仍不可用，未进入评分或发布。已知Coach输入16931/输出461仅前两次；第三次用量未知。本次新增6，接续累计54，四次历史超时用量未知。不再追加真实请求；下一步离线核查请求/输出结构负担与安全事件间隔诊断，先形成可验证修正再考虑新观察。Training/live Workbench及OP.GG具体建议质量仍未验收，8E保持in_progress。
+
+
+当前接续：安全计时补强已离线实现：bridge progress schema1.1记录末次事件/正文/reasoning、最长相邻事件间隔、open/advance/processing/close耗时和落盘开销；调用前预约增加无正文请求规模。advance含SDK解码与HTTP hook，不能当纯网络或供应商推理耗时；父杀子后的最后快照只是已落盘前缀。旧诊断1.0与Coach1.3.5/high8192/90秒/质量门不变。3262事件合成本地基准171ms，其中60次落盘约104ms，未支持常规本地组装导致90秒失败。保存输入合成9回合最大input ceiling49940，未超64000，不足以支持删掉来源事实。下一步比例回归及同SHA公共检查后一次带新计时的完整候选观察；真实新增0、累计54，报告/Training/live Workbench仍未验收，8E保持in_progress。

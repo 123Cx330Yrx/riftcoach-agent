@@ -6003,3 +6003,14 @@ RQ-250（2026-09-06）：RQ-250工具批量预算修复完成本地、公共和�
 
 
 当前接续：8a72e2b / Actions34470700838三job同SHA成功（pytest3015 passed/152 skipped/127 subtests、PostgreSQL208）。新鲜协议3请求1007/101 tokens通过；V2黄金观察3次请求，前两次mixed工具回合完整且共6检索成功，第三次首reasoning8.359秒、首正文30.422秒，但90秒无terminal/Usage/EOF，父在90.031秒收口。修复兼容性已真实生效，完整报告仍不可用，未进入评分或发布。已知Coach输入16931/输出461仅前两次；第三次用量未知。本次新增6，接续累计54，四次历史超时用量未知。不再追加真实请求；下一步离线核查请求/输出结构负担与安全事件间隔诊断，先形成可验证修正再考虑新观察。Training/live Workbench及OP.GG具体建议质量仍未验收，8E保持in_progress。
+
+
+### 失败定位的安全分段计时（2026-09-10）
+
+安全计时补强已离线实现：bridge progress schema1.1记录末次事件/正文/reasoning、最长相邻事件间隔、open/advance/processing/close耗时和落盘开销；调用前预约增加无正文请求规模。advance含SDK解码与HTTP hook，不能当纯网络或供应商推理耗时；父杀子后的最后快照只是已落盘前缀。旧诊断1.0与Coach1.3.5/high8192/90秒/质量门不变。3262事件合成本地基准171ms，其中60次落盘约104ms，未支持常规本地组装导致90秒失败。保存输入合成9回合最大input ceiling49940，未超64000，不足以支持删掉来源事实。下一步比例回归及同SHA公共检查后一次带新计时的完整候选观察；真实新增0、累计54，报告/Training/live Workbench仍未验收，8E保持in_progress。
+
+可复核的本地基准：使用真实collect和write_progress，假规范化session共3262事件（1630reasoning共3376字符、1630正文共3307字符、终态和Usage），只在内存以x占位，无网络；总171ms、60次真实fsync写入103.8773ms，TemporaryDirectory已清理。这是当前机器合成基准，不能排除原调用时机器或磁盘偶发停顿。
+
+Luna独立离线probe使用已保存player_summary与当前ADVICE合同，未传实时bundle。9个脚本请求input ceilings为27018/37056/43498/49940/45696/45930/24506/45696/45930；初始上下文13047units、最终24855（上限28000）。确定性报告5747字符，逐局等投影约4427字符存在重叠，但包含不同OP.GG/版本/位置边界，不能直接删完整报告。该脚本强制9调用/8工具/一次修订且低分拒绝，不是真实失败对话或模型速度证据。
+
+新计时只保留数值、固定字段/枚举；不保存正文、reasoning、工具参数、请求ID、HTTP info或异常原文。advance耗时包含next(iterator)中的SDK等待、解析、归一化与trace hook；processing是本地已接受事件处理，两者不是纯供应商耗时。progress_write耗时与所处阶段重叠，不能再相加；当前写入自身不包含在当前快照计数里。最长相邻事件间隔不含首事件前等待或末事件后的悬挂，后者需结合末事件时间/父截止和advance计时判断。新observed_elapsed不截顶，旧字段仍保留90秒截顶兼容；父kill可能丢失最后未落盘批次，不将前缀推断为精确末帧。旧standalone schema1.0完全不改，transport语义保持V2；没有新请求策略或加时。
