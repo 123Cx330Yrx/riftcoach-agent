@@ -111,12 +111,15 @@ def test_golden_entry_reads_exact_trace_and_counts_actual_provider_attempts(tmp_
     monkeypatch.setattr(module, "_assert_clean_tree", lambda: None)
     monkeypatch.setattr(module, "_implementation_sha", lambda: "a" * 40)
     monkeypatch.setattr(module, "RiotClient", lambda **kwargs: object())
+    # Protocol/CI validation has its own gate tests; this offline integration
+    # exercises the real application, Trace and publication consumers.
+    monkeypatch.setattr(module, "verify_real_evidence", lambda *args, **kwargs: SimpleNamespace(model_dump=lambda **kwargs: {}))
     monkeypatch.setattr(module, "GoldenMatchStaticData", lambda **kwargs: object())
     monkeypatch.setattr(module, "build_player_summary", lambda **kwargs: copy.deepcopy(summary))
     monkeypatch.setattr(module, "_official_patch", lambda **kwargs: None)
     monkeypatch.setattr(module, "_ddragon_snapshot", lambda *args: None)
     monkeypatch.setattr(module, "load_zhipu_settings", lambda env: SimpleNamespace(
-        api_key="offline", base_url="https://offline.invalid", default_timeout_s=1, model="glm-5.3-flash"))
+        api_key="offline", base_url="https://open.bigmodel.cn/api/paas/v4", default_timeout_s=1, model="glm-5.3-flash"))
     monkeypatch.setattr(openai, "OpenAI", lambda **kwargs: object())
     monkeypatch.setattr(ZhipuProvider, "from_candidate_profile", lambda **kwargs: deps["provider"])
     monkeypatch.setattr(LocalHybridKnowledgeProvider, "from_directory", lambda directory: deps["knowledge_provider"])
@@ -128,6 +131,24 @@ def test_golden_entry_reads_exact_trace_and_counts_actual_provider_attempts(tmp_
     assert receipt.result == "degraded" and not receipt.production_admitted
     assert receipt.evidence_projection_verified and not receipt.workbench_projection_verified
     assert receipt.coach_contract.version == "1.3.0"
+    first_prompt = "\n".join(message.content or "" for message in deps["provider"].requests[0].messages)
+    assert "外部来源事实" in first_prompt and receipt.evidence_bundle_digest in first_prompt
     assert "live_workbench_not_verified" in receipt.limitations
     state = tmp_path / "data/runs/golden_slice_reservations/exact_trace_counter"
     assert json.loads((state / "terminal.json").read_text(encoding="utf-8"))["attempt_counts"]["provider"] == 5
+    from app.evaluation.golden_saved_input import load_saved_summary
+    saved_args = dict(run_id=receipt.run_id, expected_digest=receipt.summary_digest,
+                      riot_id=summary["player"]["riot_id"], routing_region="asia", count=summary["request"]["count"], queue=420)
+    restored, observed = load_saved_summary(tmp_path / "data/runs/golden_slice", **saved_args)
+    assert restored == summary and observed.isoformat().startswith(summary["metadata"]["generated_at_utc"][:19])
+    with pytest.raises(ValueError, match="digest_mismatch"):
+        load_saved_summary(tmp_path / "data/runs/golden_slice", **{**saved_args, "expected_digest": "0" * 64})
+    with pytest.raises(ValueError, match="request_mismatch"):
+        load_saved_summary(tmp_path / "data/runs/golden_slice", **{**saved_args, "riot_id": "SomeoneElse#TEST"})
+    with pytest.raises(ValueError, match="region_mismatch"):
+        load_saved_summary(tmp_path / "data/runs/golden_slice", **{**saved_args, "routing_region": "europe"})
+    input_path = tmp_path / "data/runs/golden_slice" / receipt.run_id / "inputs/player_summary.json"
+    input_path.write_bytes(input_path.read_bytes() + b" ")
+    from app.evidence.publication import EvidencePublicationIntegrityError
+    with pytest.raises(EvidencePublicationIntegrityError):
+        load_saved_summary(tmp_path / "data/runs/golden_slice", **saved_args)

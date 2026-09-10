@@ -35,6 +35,7 @@ from app.lol.report_renderer import render_deterministic_report
 from app.evaluation.golden_sources import AUDITED_PATCH_ARTICLES, GoldenMatchStaticData, official_patch_from_html, read_official_bytes
 from app.evaluation.golden_journal import GoldenCallJournal, JournaledProvider, write_new_json
 from app.runtime.coach_contract import CoachContractSnapshot, GOLDEN_COACH_CONTRACT
+from app.evaluation.coach_product_acceptance_runner import verify_real_evidence
 from app.meta.models import MetaEvidence
 from app.providers.config import load_zhipu_settings
 from app.product.coach_positions import (
@@ -52,14 +53,14 @@ _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 class GoldenSlicePreflight(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: str = "1.2"
+    schema_version: str = "1.3"
     run_id: str = Field(min_length=8, max_length=96)
     riot_id: str = Field(min_length=3, max_length=97)
     routing_region: str
     queue: int = Field(gt=0, le=10_000)
     count: int = Field(ge=1, le=5)
     position: str
-    max_riot_calls: int = Field(ge=1, le=20)
+    max_riot_calls: int = Field(ge=0, le=20)
     max_ddragon_requests: int = Field(ge=1, le=21)
     max_opgg_tool_calls: int = Field(ge=1, le=5)
     max_opgg_session_initializations: int = Field(ge=1, le=5)
@@ -67,6 +68,8 @@ class GoldenSlicePreflight(BaseModel):
     training_positions: tuple[str, ...] = ()
     provider_enabled: bool = False
     network_allowed: bool = False
+    saved_run_id: str | None = None
+    saved_summary_digest: str | None = None
 
 
 class GoldenSliceReceipt(BaseModel):
@@ -110,6 +113,8 @@ class GoldenSliceConfig:
     training_positions: tuple[str, ...] = ()
     run_id: str = ""
     with_provider: bool = False
+    saved_run_id: str | None = None
+    saved_summary_digest: str | None = None
 
 
 def _digest_bytes(value: bytes) -> str:
@@ -164,9 +169,15 @@ def preflight(config: GoldenSliceConfig) -> GoldenSlicePreflight:
         raise ValueError("count_invalid")
     if config.queue != 420:
         raise ValueError("queue_not_admitted")
+    if (config.saved_run_id is None) != (config.saved_summary_digest is None):
+        raise ValueError("saved_golden_identity_pair_required")
+    if config.saved_run_id is not None:
+        if (not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{7,95}", config.saved_run_id)
+                or config.saved_run_id == config.run_id or not _SHA256.fullmatch(config.saved_summary_digest)):
+            raise ValueError("saved_golden_identity_invalid")
     # Account + IDs + detail + timeline for five matches; no fallback is
     # permitted after the identity is frozen.
-    max_riot_calls = 2 + config.count * 2
+    max_riot_calls = 0 if config.saved_run_id is not None else 2 + config.count * 2
     return GoldenSlicePreflight(
         run_id=config.run_id,
         riot_id=f"{game_name}#{tag}",
@@ -175,6 +186,8 @@ def preflight(config: GoldenSliceConfig) -> GoldenSlicePreflight:
         count=config.count,
         position="auto",
         max_riot_calls=max_riot_calls,
+        saved_run_id=config.saved_run_id,
+        saved_summary_digest=config.saved_summary_digest,
         max_ddragon_requests=1 + 4 * config.count,
         max_opgg_tool_calls=config.count,
         max_opgg_session_initializations=config.count,
@@ -329,8 +342,11 @@ def _training_plan(
     return tuple(plan)
 
 
-def render_golden_context_report(summary, *, summary_digest, bundle_digest, roles):
+def render_golden_context_report(summary, *, summary_digest, bundle_digest, roles, bundle=None):
     """Shared real/replay rendering; all positions remain attributed sample data."""
+    from app.evaluation.golden_source_context import render_source_context
+    if bundle is not None and bundle.digest != bundle_digest:
+        raise ValueError("golden_context_bundle_identity_mismatch")
     return (
         render_deterministic_report(summary)
         + "\n\nEvidence snapshot digest: " + summary_digest
@@ -339,6 +355,7 @@ def render_golden_context_report(summary, *, summary_digest, bundle_digest, role
         + roles.model_dump_json()
         + "\n位置边界：按实际位置分别分析；不可混合辅助与其他位置的经济评价，不可推断补位或长期主位置。"
         + "明确训练目标只决定后续训练重点，不改变历史比赛位置；目标位置无样本时说明缺口。"
+        + (render_source_context(bundle, roles) if bundle is not None else "")
     )
 
 
@@ -347,15 +364,23 @@ def run_golden_slice(
     *,
     environ: Mapping[str, str],
     opgg_fetcher=None,
+    ci=None,
+    protocol_bytes=None,
 ) -> GoldenSliceReceipt:
     """Reserve a unique identity before clients, and retain failed attempt counts."""
     gate = preflight(config)
     _assert_clean_tree()
     sha = _implementation_sha()
+    real_evidence = None
+    if config.with_provider:
+        real_evidence = verify_real_evidence(GOLDEN_COACH_CONTRACT.snapshot(),
+            implementation_sha=sha, ci=ci or {}, protocol_bytes=protocol_bytes or b"")
     journal = GoldenCallJournal(ROOT / "data/runs/golden_slice_reservations" / config.run_id,
         identity={"run_id": config.run_id, "implementation_sha": sha,
                   "request_digest": _digest_json(gate.model_dump(mode="json")),
-                  "coach_contract": GOLDEN_COACH_CONTRACT.snapshot().model_dump(mode="json")},
+                  "coach_contract": GOLDEN_COACH_CONTRACT.snapshot().model_dump(mode="json"),
+                  "saved_input": {"run_id": config.saved_run_id, "summary_digest": config.saved_summary_digest},
+                  "real_evidence": real_evidence.model_dump(mode="json") if real_evidence else None},
         limits={"riot": gate.max_riot_calls, "static": gate.max_ddragon_requests,
                 "official_patch": 1, "opgg_tool": gate.max_opgg_tool_calls,
                 "opgg_session": gate.max_opgg_session_initializations,
@@ -372,34 +397,40 @@ def run_golden_slice(
 
 
 def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, environ, opgg_fetcher):
-    riot_key = environ.get("RIOT_API_KEY", "")
-    if not riot_key.strip():
-        raise RuntimeError("riot_key_missing")
-    client = RiotClient(api_key=riot_key, region=config.routing_region,
-                        before_request=lambda: journal.reserve("riot"))
+    summary = None
+    if config.saved_run_id is not None:
+        from app.evaluation.golden_saved_input import load_saved_summary
+        summary, observed_at = load_saved_summary(ROOT / "data/runs/golden_slice",
+            run_id=config.saved_run_id, expected_digest=config.saved_summary_digest,
+            riot_id=config.riot_id, routing_region=config.routing_region, count=config.count, queue=config.queue)
+    else:
+        riot_key = environ.get("RIOT_API_KEY", "")
+        if not riot_key.strip():
+            raise RuntimeError("riot_key_missing")
+        client = RiotClient(api_key=riot_key, region=config.routing_region,
+                            before_request=lambda: journal.reserve("riot"))
     ddragon = GoldenMatchStaticData(language="zh_CN", cache_dir=str(ROOT / "data/static/ddragon"),
                                    max_versions=config.count, before_request=lambda: journal.reserve("static"))
-    summary = build_player_summary(
-        client=client,
-        ddragon=ddragon,
-        game_name=config.riot_id.rpartition("#")[0],
-        tag_line=config.riot_id.rpartition("#")[2],
-        count=config.count,
-        queue=config.queue,
-        min_duration_seconds=300,
-        allow_queue_fallback=False,
-    )
-    observed_at = datetime.now(timezone.utc)
+    if summary is not None:
+        from app.evaluation.golden_saved_input import refresh_saved_static
+        summary = refresh_saved_static(summary, ddragon)
+    else:
+        summary = build_player_summary(
+            client=client, ddragon=ddragon,
+            game_name=config.riot_id.rpartition("#")[0], tag_line=config.riot_id.rpartition("#")[2],
+            count=config.count, queue=config.queue, min_duration_seconds=300, allow_queue_fallback=False,
+        )
+        observed_at = datetime.now(timezone.utc)
     if summary.get("request", {}).get("queue_fallback_used"):
         raise ValueError("golden_queue_fallback_not_admitted")
     if not summary.get("matches"):
         raise ValueError("golden_valid_matches_unavailable")
     patch = _official_patch(
         patch=".".join(str(summary["matches"][0]["game_version"]).split(".")[:2]),
-        retrieved_at=observed_at,
+        retrieved_at=datetime.now(timezone.utc),
         before_request=lambda: journal.reserve("official_patch"),
     )
-    snapshot = _ddragon_snapshot(ddragon, observed_at)
+    snapshot = _ddragon_snapshot(ddragon, datetime.now(timezone.utc))
     roles = position_context(summary, training_positions=config.training_positions)
     if len(roles.observed) > gate.max_opgg_tool_calls:
         raise RuntimeError("opgg_position_budget_exceeded")
@@ -429,6 +460,8 @@ def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, env
     evidence_projection_verified = False
     if config.with_provider:
         settings = load_zhipu_settings(environ)
+        if settings.model != "glm-5.3-flash" or settings.base_url.rstrip("/") != "https://open.bigmodel.cn/api/paas/v4":
+            raise ValueError("golden_requires_standard_flash_api")
         # The golden Coach is an explicitly unadmitted candidate seam. Bind its
         # candidate-only high-thinking profile directly; the normal provider
         # resolver's product runtime profile is intentionally not attached.
@@ -440,7 +473,7 @@ def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, env
             client=OpenAI(
                 api_key=settings.api_key,
                 base_url=settings.base_url,
-                timeout=settings.default_timeout_s,
+                timeout=GOLDEN_COACH_CONTRACT.descriptor()["request_timeout_s"],
                 max_retries=0,
             ),
             model=settings.model,
@@ -488,7 +521,7 @@ def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, env
             publication_writer=publication_store,
             report_renderer=lambda value: render_golden_context_report(
                 value, summary_digest=projection.summary_digest,
-                bundle_digest=projection.bundle.digest, roles=roles),
+                bundle_digest=projection.bundle.digest, roles=roles, bundle=projection.bundle),
         )
         from app.product.recent_review import RecentReviewProductRequest
 
@@ -516,7 +549,8 @@ def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, env
             # return a degraded receipt instead of turning it into a false
             # success or losing its safe terminal category.
             code = getattr(error, "code", None)
-            coach_terminal_reason = code if isinstance(code, str) else "coach_execution_failed"
+            from app.harness.runtime import _SAFE_FAILURE_CODES
+            coach_terminal_reason = code if isinstance(code, str) and code in _SAFE_FAILURE_CODES else "coach_execution_failed"
             trace_reference = None
         provider_calls = journal.counts["provider"]
         if trace_reference is not None:

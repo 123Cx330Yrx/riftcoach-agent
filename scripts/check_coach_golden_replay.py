@@ -60,7 +60,7 @@ class _ReplayProvider(_WorstPathProvider):
             input_tokens=estimate_runtime_request_input_ceiling(request), output_tokens=8192))
 
 
-def probe(summary, *, contract=GOLDEN_COACH_CONTRACT, reasoning_characters=0):
+def probe(summary, *, contract=GOLDEN_COACH_CONTRACT, reasoning_characters=0, bundle=None):
     if contract is not BATCH_COACH_CONTRACT and contract is not GOLDEN_COACH_CONTRACT:
         raise ValueError("unsupported replay contract")
     if type(reasoning_characters) is not int or not 0 <= reasoning_characters <= 100000:
@@ -104,7 +104,8 @@ def probe(summary, *, contract=GOLDEN_COACH_CONTRACT, reasoning_characters=0):
             knowledge_provider=LocalHybridKnowledgeProvider.from_directory(ROOT / "data/rag_docs"),
             runs_root=directory, compact_context_json=True, coach_contract=contract,
             report_renderer=lambda value: render_golden_context_report(
-                value, summary_digest=digest, bundle_digest="0" * 64, roles=roles),
+                value, summary_digest=digest, bundle_digest=bundle.digest if bundle is not None else "0" * 64,
+                roles=roles, bundle=bundle),
         )
         result = app.review(RecentReviewProductRequest(
             riot_id="OfflineReplay#TEST", routing_region="asia", count=5, queue=420, focus="overall",
