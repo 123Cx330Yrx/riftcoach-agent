@@ -5,12 +5,12 @@ import json
 import pytest
 
 from app.evaluation.coach_report import build_fact_pack
-from app.runtime.coach_contract import FACT_COACH_CONTRACT, POSITION_COACH_CONTRACT
+from app.runtime.coach_contract import FACT_COACH_CONTRACT, POSITION_COACH_CONTRACT, ADVICE_COACH_CONTRACT
 from scripts.check_coach_golden_replay import probe, _ReplayProvider
 from tests.test_coach_application_composition import dependencies
 
 
-@pytest.mark.parametrize("contract,expected", [(FACT_COACH_CONTRACT, True), (POSITION_COACH_CONTRACT, False)])
+@pytest.mark.parametrize("contract,expected", [(FACT_COACH_CONTRACT, True), (POSITION_COACH_CONTRACT, False), (ADVICE_COACH_CONTRACT, True)])
 def test_generation_facts_survive_evaluation_correction_revision_and_recheck(monkeypatch, contract, expected):
     value = dependencies()["summary_builder"].summary
     value["metadata"]["generated_at_utc"] = "2026-09-01T12:34:56+00:00"

@@ -81,11 +81,12 @@ def build_grounded_revision_prompt(report, evaluation, knowledge):
 
 class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
     """One correction shares the existing two-call evaluation budget."""
-    def __init__(self, *, include_deterministic_facts=False, position_policy="", include_generation_facts=False, **kwargs):
+    def __init__(self, *, include_deterministic_facts=False, position_policy="", include_generation_facts=False, source_use_policy="", **kwargs):
         super().__init__(**kwargs)
         self.include_deterministic_facts = include_deterministic_facts
         self.position_policy = position_policy
         self.include_generation_facts = include_generation_facts
+        self.source_use_policy = source_use_policy
 
     def evaluate(self, request):
         if not request.user_utterance or not request.user_utterance.strip():
@@ -103,6 +104,8 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
         )
         if self.position_policy:
             prompt = self.position_policy + "\n\n" + prompt
+        if self.source_use_policy:
+            prompt = self.source_use_policy + "\n\n" + prompt
         contract = evaluation_response_contract_v12()
         def call(text, step):
             return _chat_response(self.runtime, system_prompt=self.system_prompt, user_prompt=text,
@@ -139,11 +142,12 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
 
 
 class GroundedCoachReviser(ChatCoachReviser):
-    def __init__(self, *, include_deterministic_facts=False, position_policy="", include_generation_facts=False, **kwargs):
+    def __init__(self, *, include_deterministic_facts=False, position_policy="", include_generation_facts=False, source_use_policy="", **kwargs):
         super().__init__(**kwargs)
         self.include_deterministic_facts = include_deterministic_facts
         self.position_policy = position_policy
         self.include_generation_facts = include_generation_facts
+        self.source_use_policy = source_use_policy
 
     def revise(self, request):
         knowledge = _knowledge_evaluation_projection(request.knowledge)
@@ -156,6 +160,8 @@ class GroundedCoachReviser(ChatCoachReviser):
                                                 knowledge)
         if self.position_policy:
             prompt = self.position_policy + "\n\n" + prompt
+        if self.source_use_policy:
+            prompt = self.source_use_policy + "\n\n" + prompt
         content = _chat_content(self.runtime, system_prompt=self.system_prompt, user_prompt=prompt,
                                 temperature=self.temperature, harness_step="revise")
         validate_revised_report(content, request.report)

@@ -34,7 +34,7 @@ from app.lol.riot_client import RiotClient
 from app.lol.report_renderer import render_deterministic_report
 from app.evaluation.golden_sources import AUDITED_PATCH_ARTICLES, GoldenMatchStaticData, official_patch_from_html, read_official_bytes
 from app.evaluation.golden_journal import GoldenCallJournal, JournaledProvider, write_new_json
-from app.runtime.coach_contract import CoachContractSnapshot, FACT_COACH_CONTRACT
+from app.runtime.coach_contract import CoachContractSnapshot, ADVICE_COACH_CONTRACT
 from app.evaluation.coach_product_acceptance_runner import verify_real_evidence
 from app.meta.models import MetaEvidence
 from app.providers.config import load_zhipu_settings
@@ -373,12 +373,12 @@ def run_golden_slice(
     sha = _implementation_sha()
     real_evidence = None
     if config.with_provider:
-        real_evidence = verify_real_evidence(FACT_COACH_CONTRACT.snapshot(),
+        real_evidence = verify_real_evidence(ADVICE_COACH_CONTRACT.snapshot(),
             implementation_sha=sha, ci=ci or {}, protocol_bytes=protocol_bytes or b"")
     journal = GoldenCallJournal(ROOT / "data/runs/golden_slice_reservations" / config.run_id,
         identity={"run_id": config.run_id, "implementation_sha": sha,
                   "request_digest": _digest_json(gate.model_dump(mode="json")),
-                  "coach_contract": FACT_COACH_CONTRACT.snapshot().model_dump(mode="json"),
+                  "coach_contract": ADVICE_COACH_CONTRACT.snapshot().model_dump(mode="json"),
                   "saved_input": {"run_id": config.saved_run_id, "summary_digest": config.saved_summary_digest},
                   "real_evidence": real_evidence.model_dump(mode="json") if real_evidence else None},
         limits={"riot": gate.max_riot_calls, "static": gate.max_ddragon_requests,
@@ -477,7 +477,7 @@ def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, env
                 client=OpenAI(
                     api_key=settings.api_key,
                     base_url=settings.base_url,
-                    timeout=FACT_COACH_CONTRACT.descriptor()["request_timeout_s"],
+                    timeout=ADVICE_COACH_CONTRACT.descriptor()["request_timeout_s"],
                     max_retries=0,
                     http_client=http_client,
                 ),
@@ -520,7 +520,7 @@ def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, env
                 provider=provider,
                 knowledge_provider=base_knowledge,
                 compact_context_json=True,
-                coach_contract=FACT_COACH_CONTRACT,
+                coach_contract=ADVICE_COACH_CONTRACT,
                 runs_root=ROOT / "data/runs/golden_slice",
                 publication_sources=publication_sources,
                 publication_writer=publication_store,
@@ -600,7 +600,7 @@ def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, env
         publication_manifest_digest=publication_manifest_digest,
         workbench_projection_verified=False,
         evidence_projection_verified=evidence_projection_verified,
-        coach_contract=FACT_COACH_CONTRACT.snapshot() if config.with_provider else None,
+        coach_contract=ADVICE_COACH_CONTRACT.snapshot() if config.with_provider else None,
         source_counts={
             "riot_official": len(projection.bundle.riot_matches),
             "data_dragon": int(projection.bundle.data_dragon is not None),
