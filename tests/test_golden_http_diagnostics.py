@@ -109,3 +109,23 @@ def test_interruption_is_preserved_and_not_retried(tmp_path):
     row = json.loads((journal.directory / "http-001.json").read_text())
     assert row["outcome"] == "interrupted" and row["http_requests"] == 0
     assert row["events"] == []
+
+
+def test_proxy_connect_tls_phase_uses_actual_httpcore_event_name(tmp_path):
+    journal = GoldenCallJournal(tmp_path / "run", identity={}, limits={"provider": 1})
+    diagnostics = GoldenHttpDiagnostics(journal)
+    transport = httpx.HTTPTransport()
+    transport._pool = httpcore.HTTPProxy(
+        proxy_url="http://proxy.invalid", network_backend=MockBackend([
+            b"HTTP/1.1 200 Connection Established\r\n\r\n",
+            b"HTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nok",
+        ]), retries=0)
+    with DefaultHttpxClient(transport=transport, trust_env=False,
+                            event_hooks={"request": [diagnostics.on_request]}) as client:
+        wrapped = JournaledProvider(SimpleNamespace(chat=lambda _: client.get("https://example.invalid")),
+                                    journal, diagnostics=diagnostics)
+        assert wrapped.chat(None).text == "ok"
+    row = json.loads((journal.directory / "http-001.json").read_text())
+    events = [event["event"] for event in row["events"]]
+    assert "proxy.start_tls.started" in events and "proxy.start_tls.complete" in events
+    assert row["http_requests"] == 1

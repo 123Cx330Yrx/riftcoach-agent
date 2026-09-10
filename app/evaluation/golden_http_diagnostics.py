@@ -13,7 +13,7 @@ _PHASES = {
     "http2.send_request_headers", "http2.send_request_body",
     "http2.receive_response_headers", "http2.receive_response_body",
     "http2.response_closed",
-    "http_proxy.start_tls",
+    "proxy.start_tls",
 }
 _EVENTS = frozenset(f"{phase}.{state}" for phase in _PHASES
                     for state in ("started", "complete", "failed"))

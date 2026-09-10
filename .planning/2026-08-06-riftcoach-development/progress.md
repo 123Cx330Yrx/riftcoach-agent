@@ -6423,3 +6423,16 @@ Coach3次尝试、2次完整响应、5检索成功；首两请求11.56秒/8.44�
 验证：使用真实OpenAI SDK→httpx→httpcore及测试专用假网络后端，直接得到连接超时、响应头超时、响应体超时与成功阶段事件；所有情况只有1请求，无外网、无实际等待。额外验证私密哨兵不落盘、未知事件拒绝、64条上限、逐次隔离、中断留痕、原请求正文/stream保持、完整Coach假Provider未发HTTP时记录0且资源已关闭。相关102 passed与27 subtests passed；资源释放最终调整后聚焦12 passed，改动Python编译/diff通过。真实调用新增0、累计仍27次（历史两次超时用量未知）。
 
 下一步：本补丁同SHA公共检查通过后，重新绑定新鲜3调用协议与一次带诊断的保存五局观察。只有阶段事实可观察，不承诺必然找到上游原因；若再次失败保留完整回执，不连续重试。本轮不重新运行旧四场景或A/B/C；Training与live Workbench仍未完成，8E不前移。
+
+
+### 8c02112带诊断真实报告与剩余消费缺口（2026-09-10）
+
+实现8c02112aeb8e8be4df2669f57d1f076f8065f36e / Actions34458836398三job同SHA成功：pytest2964 passed、152 skipped、127 subtests passed，PostgreSQL208 passed。随后新鲜协议3调用通过，输入1011/输出113 tokens。golden_20260910_saved_8c02112仍以合同1.3.4运行；Riot0、静态1、官方1、OP.GG两位置各一次工具/初始化/目录。Bundle 1db7b2e7712c35b73ec02b626df40ac550b0dcc11e62f019d6ccf91dda10ff90，原五局观察时间保留。
+
+Coach5调用均响应、4检索成功、一次修订；首轮90/needs_revision只发现“中RD路”错字，修订后95/pass。输入49002/输出6938 tokens完整观测，Runtime112.125秒；Harness本地published/quality_gate_passed，最终报告SHA f938a13d573f2da7e368e36e9e9a6bd5c58113b440ddfc80735f52dea12a1726。伤害占比27.5%本次被复评正确核对，生成/评分资料一致性得到一次真实正面观察；不能以一次成功宣称模型普遍可靠。
+
+HTTP5个诊断文件均各1次实际HTTP请求、无事件超限。初稿请求2总62578ms，receive_response_headers从0到62563ms，正文62563到62578ms；本次主要在等待响应头而非接收正文。没有超时，所以不能把本次阶段归因回填60/90秒旧失败，更不能区分上游处理时间与网络传输。首次连接的代理TLS事件未记录，核对已安装httpcore源码发现真实logger前缀proxy，原白名单误写http_proxy。修正为proxy.start_tls并新增真实httpcore HTTPProxy/假网络CONNECT+TLS测试，聚焦13项通过；不更改旧诊断或声称其TLS耗时为0，该小补丁待自身公共检查，不再为它重跑真实模型。
+
+主Agent与Luna各自复核最终报告：分路数据、未知主位和训练目标保持条件选项，辅助单局不当作能力差，混合位置指标不直接论证位置短板；引用和伤害占比与输入一致。但OP.GG在第7节仍只作为边界声明，没有任何具体快照数值用于第5/6节建议。因此自动95分不能代替四来源实际建议消费，黄金人工验收仍不通过；Training持久化/live Workbench也未验证。独立人工记录保存在golden_manual_reviews并绑定报告SHA，原运行/报告/评估不改写。用户可审阅副本导出至outputs/riftcoach-review-8c02112.md。
+
+新增实际Provider协议3+Coach5=8次，本接续累计35次（此前27次）；历史两次超时用量仍未知，累计完整成本不作宣称。下一步先补“来源存在”到“来源支持具体建议”的可检查契约，允许部分provenance下合规使用当前Meta，不能迫使无依据的版本/段位比较或为了凑四源编造建议。已授权Luna配合继续用于有独立输入输出的任务，由主Agent最终核验；本人Training仍需本人档案与目标答复，8E保持in_progress。
