@@ -13,6 +13,10 @@ from app.lol.data_dragon import DataDragonService
 _VERSION = re.compile(r"[0-9]+\.[0-9]+\.[0-9]+")
 _LEGACY_VERSION = re.compile(r"lolpatch_[0-9]+\.[0-9]+")
 _GAME_VERSION = re.compile(r"([0-9]+)\.([0-9]+)(?:\.[0-9]+){1,2}")
+# Audited pair only, not a general major+10 rule. See the RQ-258 source audit.
+AUDITED_PATCH_ARTICLES = {
+    "16.17": ("26.17", "https://www.leagueoflegends.com/en-gb/news/game-updates/league-of-legends-patch-26-17-notes/"),
+}
 
 
 def select_static_version(game_version, versions):
@@ -46,36 +50,70 @@ class _ArticleMetadata(HTMLParser):
     def __init__(self):
         super().__init__()
         self.values = {}
+        self.json_ld = []
+        self._script = None
 
     def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "script" and attrs.get("type") == "application/ld+json":
+            self._script = []
         if tag != "meta":
             return
-        attrs = dict(attrs)
         key = attrs.get("property") or attrs.get("name")
         if key in ("og:title", "article:published_time"):
             self.values.setdefault(key, set()).add(attrs.get("content", ""))
 
+    def handle_data(self, data):
+        if self._script is not None:
+            self._script.append(data)
 
-def official_patch_from_html(body, *, patch, retrieved_at):
+    def handle_endtag(self, tag):
+        if tag == "script" and self._script is not None:
+            self.json_ld.append("".join(self._script))
+            self._script = None
+
+
+def official_patch_from_html(body, *, patch, retrieved_at, source_patch=None):
     if not isinstance(patch, str) or not re.fullmatch(r"[0-9]+\.[0-9]+", patch):
         raise ValueError("official_patch_invalid")
     if not isinstance(body, bytes) or len(body) > 1_048_576:
         raise ValueError("official_source_invalid")
+    source_patch = source_patch or patch
+    if source_patch != patch and AUDITED_PATCH_ARTICLES.get(patch, (None,))[0] != source_patch:
+        raise ValueError("official_patch_mapping_not_audited")
     parser = _ArticleMetadata()
     try:
         parser.feed(body.decode("utf-8"))
         titles = parser.values.get("og:title", set())
-        dates = parser.values.get("article:published_time", set())
+        dates = set(parser.values.get("article:published_time", set()))
+        expected_title = r"\bpatch\s+" + re.escape(source_patch) + r"\s+notes\b"
+        for script in parser.json_ld:
+            document = json.loads(script)
+            rows = document.get("@graph", [document]) if isinstance(document, dict) else document
+            if not isinstance(rows, list):
+                return None
+            for article in rows:
+                if not isinstance(article, dict) or article.get("@type") not in ("TechArticle", "NewsArticle", "Article"):
+                    continue
+                headline = article.get("headline")
+                if not isinstance(headline, str) or not re.search(expected_title, headline, re.I):
+                    return None
+                if article.get("version", source_patch) != source_patch:
+                    return None
+                date = article.get("datePublished")
+                if not isinstance(date, str):
+                    return None
+                dates.add(date)
         if len(titles) != 1 or len(dates) != 1:
             return None
         title = next(iter(titles))
-        if not re.search(r"\bpatch\s+" + re.escape(patch) + r"\s+notes\b", title, re.I):
+        if not re.search(expected_title, title, re.I):
             return None
         published = datetime.fromisoformat(next(iter(dates)).replace("Z", "+00:00"))
         if published.tzinfo is None or published.utcoffset() is None:
             return None
         return OfficialPatchEvidence(
-            patch_version=patch, update_id="riot-patch-" + patch.replace(".", "-"),
+            patch_version=patch, update_id="riot-patch-" + source_patch.replace(".", "-"),
             published_at=published, retrieved_at=retrieved_at, expires_at=None,
             source_digest=hashlib.sha256(body).hexdigest(),
         )

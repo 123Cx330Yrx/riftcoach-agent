@@ -9,6 +9,9 @@ pause_reason: ""
 
 # RiftCoach 当前执行状态
 
+接续来源实证：a921e57已推送，Actions34440769118待完成；之后新增真实JSON-LD解析与审计限定16.17↔26.17映射，依据官方公告和前后两份静态目录逐项一致，详见2026-09-10黄金切片计划末节。新增仅官方来源审计3次直接请求及搜索查阅，无Riot玩家/OP.GG/Provider请求；未完成真实建议消费或Training/live UI。此记录更新先前“尚未提交、映射未知”的状态，后续代码仍需自身SHA公共验证。
+
+
 > 本文档是“项目现在做到哪一步”的唯一事实源。路线职责看
 > `docs/roadmap.md`，历史需求看 `docs/requirements_change_log.md`，本轮执行
 > 细节看 `.planning/.active_plan` 指向的计划，决策演变看

@@ -32,7 +32,7 @@ from app.lol.data_dragon import DataDragonService
 from app.lol.player_summary import build_player_summary
 from app.lol.riot_client import RiotClient
 from app.lol.report_renderer import render_deterministic_report
-from app.evaluation.golden_sources import GoldenMatchStaticData, official_patch_from_html, read_official_bytes
+from app.evaluation.golden_sources import AUDITED_PATCH_ARTICLES, GoldenMatchStaticData, official_patch_from_html, read_official_bytes
 from app.evaluation.golden_journal import GoldenCallJournal, JournaledProvider, write_new_json
 from app.runtime.coach_contract import CoachContractSnapshot, GOLDEN_COACH_CONTRACT
 from app.meta.models import MetaEvidence
@@ -206,14 +206,18 @@ def _ddragon_snapshot(service: DataDragonService, retrieved_at: datetime):
     )
 
 
-def _official_patch(*, patch: str, retrieved_at: datetime) -> OfficialPatchEvidence | None:
+def _official_patch(*, patch: str, retrieved_at: datetime, before_request=None) -> OfficialPatchEvidence | None:
     """Only an identified patch article with a source publication time qualifies."""
 
-    major, minor = patch.split(".", 1)
-    url = f"https://www.leagueoflegends.com/en-us/news/game-updates/patch-{major}-{minor}-notes/"
+    target = AUDITED_PATCH_ARTICLES.get(patch)
+    if target is None:
+        return None
+    source_patch, url = target
     try:
+        if before_request is not None:
+            before_request()
         body = read_official_bytes(url)
-        return None if body is None else official_patch_from_html(body, patch=patch, retrieved_at=retrieved_at)
+        return None if body is None else official_patch_from_html(body, patch=patch, source_patch=source_patch, retrieved_at=retrieved_at)
     except (requests.RequestException, ValueError):
         return None
 
@@ -390,10 +394,10 @@ def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, env
         raise ValueError("golden_queue_fallback_not_admitted")
     if not summary.get("matches"):
         raise ValueError("golden_valid_matches_unavailable")
-    journal.reserve("official_patch")
     patch = _official_patch(
         patch=".".join(str(summary["matches"][0]["game_version"]).split(".")[:2]),
         retrieved_at=observed_at,
+        before_request=lambda: journal.reserve("official_patch"),
     )
     snapshot = _ddragon_snapshot(ddragon, observed_at)
     roles = position_context(summary, training_positions=config.training_positions)

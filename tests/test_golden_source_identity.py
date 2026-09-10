@@ -115,4 +115,41 @@ def test_missing_patch_page_never_falls_back_to_version_feed(monkeypatch):
         return None
     monkeypatch.setattr(golden, "read_official_bytes", missing)
     assert golden._official_patch(patch="16.17", retrieved_at=NOW) is None
-    assert calls == ["https://www.leagueoflegends.com/en-us/news/game-updates/patch-16-17-notes/"]
+    assert calls == ["https://www.leagueoflegends.com/en-gb/news/game-updates/league-of-legends-patch-26-17-notes/"]
+
+
+def article_html(**overrides):
+    import json
+    article = {"@type": "TechArticle", "headline": "League of Legends Patch 26.17 Notes",
+               "version": "26.17", "datePublished": "2026-08-25T18:00:00.000Z"}
+    article.update(overrides)
+    return (b'<meta property="og:title" content="League of Legends Patch 26.17 Notes">'
+            + b'<script type="application/ld+json">'
+            + json.dumps({"@graph": [{"@type": "WebPage", "datePublished": "2026-09-09T18:00:00Z"}, article]}).encode()
+            + b'</script>')
+
+
+def test_audited_display_pair_uses_article_date_and_preserves_both_identities():
+    evidence = official_patch_from_html(article_html(), patch="16.17", source_patch="26.17", retrieved_at=NOW)
+    assert evidence.patch_version == "16.17"
+    assert evidence.update_id == "riot-patch-26-17"
+    assert evidence.published_at == datetime(2026, 8, 25, 18, tzinfo=timezone.utc)
+    with pytest.raises(ValueError, match="not_audited"):
+        official_patch_from_html(article_html(), patch="16.18", source_patch="26.18", retrieved_at=NOW)
+
+
+@pytest.mark.parametrize("body", [
+    article_html(version="26.18"), article_html(headline="Patch 26.18 Notes"),
+    article_html(datePublished="2026-09-11T00:00:00Z"), article_html(datePublished=None),
+    article_html() + b'<meta property="article:published_time" content="2026-08-26T18:00:00Z">',
+])
+def test_structured_article_rejects_mismatched_or_conflicting_metadata(body):
+    assert official_patch_from_html(body, patch="16.17", source_patch="26.17", retrieved_at=NOW) is None
+
+
+def test_unknown_patch_does_not_guess_a_url(monkeypatch):
+    import app.evaluation.coach_real_data_golden_slice as golden
+    def forbidden(*args):
+        raise AssertionError("unaudited URL must not be fetched")
+    monkeypatch.setattr(golden, "read_official_bytes", forbidden)
+    assert golden._official_patch(patch="16.18", retrieved_at=NOW) is None

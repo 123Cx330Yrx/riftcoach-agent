@@ -77,3 +77,17 @@ RQ-258 接续离线加固：新增黄金切片专用 Coach 1.3.0 / Skill 0.5.0 /
 来源边界：标准静态版本严格同major.minor选择，旧lolpatch条目只作为可识别历史目录项，不参与当前匹配；单快照不能表达多版本时返回缺失，不捏造统一版本。官方文章要求版本标题和唯一带时区发布时间，不再回退版本feed；16.xx内部版本到26.xx显示版本尚无本轮直接证据，不硬编码映射。
 
 运行边界：新schema1.2区分evidence_projection_verified与workbench_projection_verified；DTO校验不能把live UI标成已验证。持久reservation在客户端构造前创建，来源及Provider每次调用前fsync计数，失败/中断留终态；真实Trace用既有摘要校验读取，不猜调用次数。黄金入口在获取前关闭不限队列回退；排位记录为空即停止，不追加其他队列请求。获取预算仍按预检上限。回执分离/队列停止相关65项与原Summary默认行为9项回归通过。
+
+
+### 官方版本来源实证补齐（2026-09-10，首批提交之后）
+
+`a921e573ba71cf1a609c5403eb5d7275d4b23116`已推送，Actions 34440769118正在验证，尚不宣称通过。其后仅增补真实页面解析和已核对版本对，不复用该SHA为后续改动背书。
+
+来源审计读取一次官方文章、两份官方静态目录，均调用前持久计数并保存原件到私有data/runs/source_audits；另有搜索工具的官方页面检索，不计成Coach执行调用。Riot玩家API、OP.GG与真实Provider新增调用均为0。网页查阅是来源审计，不是黄金切片已消费证明。
+
+- [官方26.17文章](https://www.leagueoflegends.com/en-gb/news/game-updates/league-of-legends-patch-26-17-notes/)：HTML SHA256 `cf7b426c7860329488678ab7324f3f9df06c4cc7d8d3feae9e85175871009956`。2026-09-10T05:22:55Z读取；317159字节。og:title存在，article:published_time不存在；application/ld+json的TechArticle含version=26.17和datePublished=2026-08-25T18:00:00Z。
+- [16.16.1静态目录](https://ddragon.leagueoflegends.com/cdn/16.16.1/data/en_US/champion.json)：SHA256 `970c2b0ead25bd132ff9df260a42130c02e4d1cf3adbeb62f32bc3dc8178a324`。
+- [16.17.1静态目录](https://ddragon.leagueoflegends.com/cdn/16.17.1/data/en_US/champion.json)：SHA256 `056275dcddac3ecc81c497d269b10e7abe6a66ceaa0d6d965f1fc8d00943760b`。
+- 两份目录的Xerath生命596→575、Nocturne生命655→640/护甲38→36、Vayne生命550→580/成长103→98/回复3.5→4/回复成长.55→.5与26.17公告一致。据此作显式、有限的16.17↔26.17工程对应推断；不声称官方文档直接宣布所有版本major+10的通用规则，也不自动扩展16.18。
+
+解析器现读取目标文章的结构化日期，拒绝冲突日期/错误headline/version；无审计映射时不猜URL、不发请求。Evidence patch_version保留16.17匹配比赛，update_id保留riot-patch-26-17显示身份，内容SHA绑定完整文章。真实保存HTML离线解析通过，38项来源及入口测试通过。四来源实际建议消费、保存输入真实重放、Training和live UI仍待接线；本条取代上文“官方页面元数据与此版本映射仍未知”，旧记录保留。
