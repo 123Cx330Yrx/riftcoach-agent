@@ -256,3 +256,12 @@ Coach2次尝试、1次响应、4检索全部成功。第一请求21.437秒返回
 6. 离线必须验证：开启前阻塞、首事件前阻塞、已有reasoning但无正文、已有正文无终态、终态无Usage、关闭阻塞、子进程异常/超限、敏感哨兵过滤，以及输入身份拒绝前零调用。以假SDK和受控子进程验证，不用真实睡眠或重复模型请求模拟失败。
 
 本轮主Agent独立复核Luna结果；无新增真实Provider调用，累计仍40次，历史三次超时用量未知。48de155文档提交Actions34462088969已成功；本审查未变更产品默认或旧合同。下一步仅实现上述独立诊断的离线入口和比例测试；公共检查后才考虑一次真实诊断。OP.GG具体建议、Training和live Workbench仍未完成，8E不前移。
+
+
+### 单请求诊断实现与连续执行（2026-09-10）
+
+单请求流式诊断已实现：新身份golden-stream-timing-v1绑定Coach1.3.5与保存输入摘要，默认零网络；high/8192、输入上界31264、实际仅1请求、90秒父进程硬截止、零来源获取/工具/评分。父最终回执保留子最后快照，不能把未知阶段补成已完成；关闭只投影简化状态。Luna独立复核已完成，主Agent验证21项新增故障/隐私/SDK参数测试通过；相邻回归和公共检查接续进行。用户最新授权连续完成实现、验证及有界真实推进，取代逐小步等待授权；下一步本实现同SHA公共CI及新鲜协议后直接做一次真实诊断，不连续重试。真实新增0、累计40，OP.GG建议效果、本人Training/live Workbench仍未验收，8E保持in_progress。
+
+运行入口：python -B -m scripts.diagnose_coach_golden_stream --config <local-input-config> 默认零网络；执行另需 --execute --run-id <new-id> --ci-run <exact-sha-run> --protocol-report <fresh-proof>。配置仅inputs映射：saved_run_id、summary_sha、manifest_sha、riot_id、region；输入路径固定data/runs/golden_slice。父子两次核验输入、HEAD及公共证据；子进程读取凭据后仅使用标准GLM5.3Flash端点、SDK retries=0。回执位于data/runs/golden_stream_diagnostics/<new-id>，reservation/provider-001/result均不可覆盖。最后progress是实际观测快照，parent_deadline或child_unreaped是父层结果，不能外推上游取消/计费已结束。包含Usage尾帧参数的新请求并非失败请求精确重放，历史OP.GG不重新宣称新鲜。
+
+提交前验证：新增21项、聚焦与相邻合计72项通过；实际保存输入默认预检零网络，输入保守上界31264，request SHA 9b62bc42b4736790356ec0f1a887987c81a6198d6d1100b13dbe3a4a9adf9254。语法、治理及diff检查通过。
