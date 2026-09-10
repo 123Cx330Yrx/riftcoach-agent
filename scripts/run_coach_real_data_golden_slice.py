@@ -36,6 +36,7 @@ def main() -> int:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--with-provider", action="store_true")
+    parser.add_argument("--provider-transport", choices=("golden-process-stream-v1",))
     parser.add_argument("--saved-run-id", help="Reuse verified match facts; zero Riot player API calls")
     parser.add_argument("--saved-summary-digest", help="Expected canonical digest of the original Summary")
     parser.add_argument("--ci-run", type=int, help="Successful public CI for this exact committed implementation")
@@ -50,6 +51,7 @@ def main() -> int:
         training_positions=tuple(args.training_position),
         run_id=args.run_id,
         with_provider=args.with_provider,
+        provider_transport=args.provider_transport,
         saved_run_id=args.saved_run_id,
         saved_summary_digest=args.saved_summary_digest,
     )

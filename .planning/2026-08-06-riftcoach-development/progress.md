@@ -6492,3 +6492,6 @@ Coach2次尝试、1次响应、4检索全部成功。第一请求21.437秒返回
 
 
 当前接续：独立流式诊断完成真实观察。实现869e4b38c48b1a8f5c18c9fc2532c4042165528e / Actions34467329663三job同SHA成功（pytest2990 passed、152 skipped、127 subtests；PostgreSQL208）。新鲜协议3请求通过（输入1007/输出105）；诊断stream_20260910_869e4b3恰好1请求/1HTTP，首事件及reasoning5453ms、首正文20093ms、stop43312ms、normalized EOF与close43328ms、父收口43515ms，输入8328/输出3850，complete且closeclosed。仅证明这次新请求可完整流式返回，不是旧请求精确重放或黄金质量通过。本轮新增4次、接续累计44次Provider尝试，历史三次超时用量仍未知。下一步在显式候选范围设计完整流响应组装及绝对截止接线，先离线验证工具往返/终态/Usage/关闭，不盲目重跑报告。OP.GG具体建议、本人Training/live Workbench仍未验收，8E保持in_progress。
+
+
+当前接续：显式候选进程流式桥golden-process-stream-v1已离线实现并接入黄金入口可选参数；Coach1.3.5语义与资源墙不变。复用中立组装器、每请求子进程/私有JSON管道、完整终态/Usage/EOF/close才交付；9调用上限且一次失败后禁止再发。结构化规则mappingproxy序列化缺陷与Coach身份属性接线缺口已修复；完整9调用/8工具/一次修订离线回放仍按低质量拒绝。下一步本实现同SHA公共检查后新鲜3调用协议及一次保存五局完整流式Coach观察，不连续重试。当前真实新增0、累计44，Training/live Workbench待验收，8E保持in_progress。

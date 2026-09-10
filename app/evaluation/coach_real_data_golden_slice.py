@@ -70,6 +70,7 @@ class GoldenSlicePreflight(BaseModel):
     network_allowed: bool = False
     saved_run_id: str | None = None
     saved_summary_digest: str | None = None
+    provider_transport: str | None = Field(default=None, exclude_if=lambda value: value is None)
 
 
 class GoldenSliceReceipt(BaseModel):
@@ -101,6 +102,7 @@ class GoldenSliceReceipt(BaseModel):
     limitations: tuple[str, ...]
     candidate_registered: bool = False
     production_admitted: bool = False
+    provider_transport: str | None = Field(default=None, exclude_if=lambda value: value is None)
 
 
 @dataclass(frozen=True)
@@ -115,6 +117,7 @@ class GoldenSliceConfig:
     with_provider: bool = False
     saved_run_id: str | None = None
     saved_summary_digest: str | None = None
+    provider_transport: str | None = None
 
 
 def _digest_bytes(value: bytes) -> str:
@@ -152,6 +155,10 @@ def _assert_clean_tree() -> None:
 
 def preflight(config: GoldenSliceConfig) -> GoldenSlicePreflight:
     """Validate all bounds without reading secrets or touching the network."""
+    if config.provider_transport not in (None, "golden-process-stream-v1"):
+        raise ValueError("golden_transport_invalid")
+    if config.provider_transport is not None and not config.with_provider:
+        raise ValueError("golden_transport_requires_provider")
 
     if config.routing_region not in _REGIONS:
         raise ValueError("routing_region_invalid")
@@ -194,6 +201,7 @@ def preflight(config: GoldenSliceConfig) -> GoldenSlicePreflight:
         max_opgg_catalog_requests=config.count,
         training_positions=config.training_positions,
         provider_enabled=config.with_provider,
+        provider_transport=config.provider_transport,
         network_allowed=False,
     )
 
@@ -473,7 +481,7 @@ def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, env
         diagnostics = GoldenHttpDiagnostics(journal)
         http_client = DefaultHttpxClient(event_hooks={"request": [diagnostics.on_request]})
         try:
-            provider = ZhipuProvider.from_candidate_profile(
+            provider = None if config.provider_transport else ZhipuProvider.from_candidate_profile(
                 client=OpenAI(
                     api_key=settings.api_key,
                     base_url=settings.base_url,
@@ -484,7 +492,12 @@ def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, env
                 model=settings.model,
                 profile=ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE,
             )
-            provider = JournaledProvider(provider, journal, diagnostics=diagnostics)
+            if config.provider_transport is not None:
+                from app.evaluation.golden_stream_bridge import GoldenProcessStreamProvider
+                provider = GoldenProcessStreamProvider(settings=settings, directory=journal.directory)
+                provider = JournaledProvider(provider, journal)
+            else:
+                provider = JournaledProvider(provider, journal, diagnostics=diagnostics)
             # The provider execution seam is intentionally optional here; a
             # provider failure must not erase the valid evidence/training slice.
             from app.product.coach_composition import build_coach_application
@@ -601,6 +614,7 @@ def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, env
         workbench_projection_verified=False,
         evidence_projection_verified=evidence_projection_verified,
         coach_contract=ADVICE_COACH_CONTRACT.snapshot() if config.with_provider else None,
+        provider_transport=config.provider_transport,
         source_counts={
             "riot_official": len(projection.bundle.riot_matches),
             "data_dragon": int(projection.bundle.data_dragon is not None),

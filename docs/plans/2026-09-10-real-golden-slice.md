@@ -276,3 +276,14 @@ Coach2次尝试、1次响应、4检索全部成功。第一请求21.437秒返回
 HTTP末事件为http11.receive_response_body.failed，error=null且stop/normalized EOF/Usage/close均成立。主Agent及Luna只读核查本地OpenAI Stream.__stream__遇到[DONE]跳出并在finally关闭response；httpcore Trace.__exit__以异常退栈会发failed，包含生成器清理路径。主Agent用真实OpenAI/httpx/httpcore与MockBackend假网络、固定SSE正文/Usage/[DONE]离线复现state=complete与同一body.failed末事件共存，network_used=false。该复现证明字段不能单独判响应失败，不证明真实事件的确切异常类型；未读取或保存trace info。eof_ms是规范化SDK迭代结束，不是独立网络EOF证明。
 
 裁决：此次提供流式high报告形状请求可完整收口的正面时序证据；不同请求构造与运行时刻禁止推导相对旧c4a169b的因果加速比例。显式Coach仍同步，不能直接切生产streaming或放宽90秒。下一批直接做候选完整流组装/绝对截止接线设计与离线兼容验证，保留工具往返、完整Usage、质量门和部分输出不发布的要求；真实观察须在后续新实现独立公共检查后有界进行，无需为常规步骤再次询问。
+
+
+### 完整候选进程流式桥（2026-09-10）
+
+显式候选进程流式桥golden-process-stream-v1已离线实现并接入黄金入口可选参数；Coach1.3.5语义与资源墙不变。复用中立组装器、每请求子进程/私有JSON管道、完整终态/Usage/EOF/close才交付；9调用上限且一次失败后禁止再发。结构化规则mappingproxy序列化缺陷与Coach身份属性接线缺口已修复；完整9调用/8工具/一次修订离线回放仍按低质量拒绝。下一步本实现同SHA公共检查后新鲜3调用协议及一次保存五局完整流式Coach观察，不连续重试。当前真实新增0、累计44，Training/live Workbench待验收，8E保持in_progress。
+
+设计与边界见ADR-0100。入口添加--provider-transport golden-process-stream-v1且必须--with-provider；未指定时旧默认及旧回执序列化不变，新identity由preflight摘要及receipt显式字段绑定，Coach合同摘要不变。Provider API仍同步chat；stdio仅进程间私有内存，未把模型正文/reasoning/工具参数写入临时文件或诊断，已有产品最终报告输出仍按原规则保存。每请求进度保留HTTP安全事件名及首事件/正文/终态/Usage/关闭，父回执保存真实墙钟与终态。进程创建、IPC或回收失败均保留安全回执，不能交付partial。
+
+比例验证覆盖真实本地子进程+假SDK、工具片段与reasoning回放、结构化评分规则、缺Usage/截断/超限/关闭失败、partial pipe/崩溃/截止、失败后无第二次请求及默认隔离。完整9调用回放覆盖实际Coach/RAG/评测/一次修订，脚本低质量仍evaluation_failed且无报告；该验证不代表模型质量通过。
+
+提交前比例回归：126 passed；新增进程流式桥测试20项，语法、治理、diff检查通过。当前无新增真实调用。
