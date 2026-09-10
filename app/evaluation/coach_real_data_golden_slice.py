@@ -383,19 +383,19 @@ def run_golden_slice(
             provider_name = "golden-slice-capped-local-hybrid"
 
             def search(self, query):
-                bounded_query = replace(query, text=query.text[:160])
+                bounded_query = replace(query, text=query.text[:120])
                 result = base_knowledge.search(bounded_query)
                 # Keep attribution/citation metadata while bounding parent
                 # prose carried into the one real Coach context.
                 hits = tuple(
                     replace(
                         hit,
-                        content=hit.content[:1200],
-                        matched_content=(hit.matched_content or "")[:800] or None,
+                        content=hit.content[:240],
+                        matched_content=(hit.matched_content or "")[:160] or None,
                     )
                     for hit in result.hits[:1]
                 )
-                return replace(result, query=query, hits=hits)
+                return replace(result, query=bounded_query, hits=hits)
 
         publication_sources = EvidencePublicationSources(
             now=checked_now,
