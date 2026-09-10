@@ -36,7 +36,7 @@ def main() -> int:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--with-provider", action="store_true")
-    parser.add_argument("--provider-transport", choices=("golden-process-stream-v1",))
+    parser.add_argument("--provider-transport", choices=("golden-process-stream-v1", "golden-process-stream-v2"))
     parser.add_argument("--saved-run-id", help="Reuse verified match facts; zero Riot player API calls")
     parser.add_argument("--saved-summary-digest", help="Expected canonical digest of the original Summary")
     parser.add_argument("--ci-run", type=int, help="Successful public CI for this exact committed implementation")

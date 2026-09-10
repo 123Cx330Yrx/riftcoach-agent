@@ -20,10 +20,12 @@ from app.evaluation.golden_stream_diagnostic import Observation, write_progress
 from app.providers.errors import ProviderResponseError, ProviderTimeoutError
 from app.providers.models import ChatRequest, ChatResponse
 from app.providers.stream_adapter_contract import ProviderStreamAssembler
+from app.providers.stream_adapter_contract import StreamAdapterError
 from app.providers.zhipu import ZhipuProvider
 from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE
 
-TRANSPORT_ID = "golden-process-stream-v1"
+TRANSPORT_ID = "golden-process-stream-v2"
+TRANSPORTS = ("golden-process-stream-v1", TRANSPORT_ID)
 REQUEST = TypeAdapter(ChatRequest)
 RESPONSE = TypeAdapter(ChatResponse)
 MAX_BYTES = 4_000_000
@@ -54,12 +56,13 @@ def validate_request(request):
     return raw
 
 
-def collect(request, opener, *, directory, started, deadline, clock=time.monotonic):
+def collect(request, opener, *, directory, started, deadline, clock=time.monotonic, allow_tool_content=False):
     """Only deliver after exhaustion and owned close; partial data remain private."""
     validate_request(request)
     value = Observation()
     assembler = ProviderStreamAssembler(provider_id="zhipu", requested_model="glm-5.3-flash",
         require_request_identity=True,
+        allow_tool_calls_with_content=allow_tool_content,
         max_output_tokens=request.max_tokens, max_events=16384, max_content_chars=262144,
         max_reasoning_chars=262144, max_tool_calls=8, max_tool_argument_chars=256000)
     session = None
@@ -148,10 +151,13 @@ class GoldenProcessStreamProvider:
     sdk_max_retries = 0
     runtime_profile = None
 
-    def __init__(self, *, settings, directory):
+    def __init__(self, *, settings, directory, transport_id=TRANSPORT_ID):
+        if transport_id not in TRANSPORTS:
+            raise ValueError("stream_transport_identity")
         if settings.model != self.model_name or settings.base_url.rstrip("/") != "https://open.bigmodel.cn/api/paas/v4":
             raise ValueError("stream_provider_identity")
         self._settings, self._directory = settings, Path(directory)
+        self.transport_id = transport_id
         self._calls, self._failed = 0, False
 
     def chat(self, request):
@@ -161,7 +167,7 @@ class GoldenProcessStreamProvider:
         self._calls += 1
         directory = self._directory / f"stream-{self._calls:03d}"
         directory.mkdir(parents=True, exist_ok=False)
-        write_new_json(directory / "reservation.json", {"transport_id": TRANSPORT_ID,
+        write_new_json(directory / "reservation.json", {"transport_id": self.transport_id,
             "ordinal": self._calls, "request_sha256": hashlib.sha256(raw).hexdigest(),
             "state": "reserved_before_io"})
         environ = dict(os.environ)
@@ -169,13 +175,16 @@ class GoldenProcessStreamProvider:
                        LLM_MODEL=self.model_name, LLM_PROVIDER="zhipu")
         try:
             return run_child([sys.executable, "-B", "-m", "app.evaluation.golden_stream_bridge",
-                "--worker", str(directory)], raw, directory=directory, timeout_s=request.timeout_s, environ=environ)
+                "--worker", str(directory), "--transport-id", self.transport_id], raw,
+                directory=directory, timeout_s=request.timeout_s, environ=environ, transport_id=self.transport_id)
         except BaseException:
             self._failed = True
             raise
 
 
-def run_child(command, raw, *, directory, timeout_s, environ=None):
+def run_child(command, raw, *, directory, timeout_s, environ=None, transport_id=TRANSPORT_ID):
+    if transport_id not in TRANSPORTS:
+        raise ValueError("stream_transport_identity")
     if not math.isfinite(timeout_s) or not 0 < timeout_s <= 90 or len(raw) > MAX_BYTES:
         raise ValueError("stream_ipc_budget")
     started = time.monotonic()
@@ -219,13 +228,15 @@ def run_child(command, raw, *, directory, timeout_s, environ=None):
                             pipe.close()
                         except (OSError, ValueError):
                             state = "cleanup_failed"
-        write_new_json(directory / "result.json", {"transport_id": TRANSPORT_ID, "state": state,
+        write_new_json(directory / "result.json", {"transport_id": transport_id, "state": state,
             "elapsed_ms": round((time.monotonic() - started) * 1000), "body_free": True})
         if state in ("unreaped", "cleanup_failed"):
             raise ProviderResponseError(provider="zhipu", code="stream_cleanup_failed") from None
 
 
-def worker(directory, started, deadline):
+def worker(directory, started, deadline, transport_id=TRANSPORT_ID):
+    if transport_id not in TRANSPORTS:
+        raise ValueError("stream_transport_identity")
     from openai import OpenAI, DefaultHttpxClient
     from app.providers.config import load_zhipu_settings
     from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE
@@ -262,7 +273,8 @@ def worker(directory, started, deadline):
         except BaseException:
             client.close()
             raise
-    response = collect(request, opener, directory=directory, started=started, deadline=deadline)
+    response = collect(request, opener, directory=directory, started=started, deadline=deadline,
+                       allow_tool_content=transport_id == TRANSPORT_ID)
     output = RESPONSE.dump_json(response)
     if len(output) > MAX_BYTES:
         raise ValueError("stream_ipc_size")
@@ -276,8 +288,14 @@ if __name__ == "__main__":
     parser.add_argument("--worker", required=True, type=Path)
     parser.add_argument("--started", required=True, type=float)
     parser.add_argument("--deadline", required=True, type=float)
+    parser.add_argument("--transport-id", required=True, choices=TRANSPORTS)
     args = parser.parse_args()
     try:
-        worker(args.worker, args.started, args.deadline)
-    except BaseException:
+        worker(args.worker, args.started, args.deadline, args.transport_id)
+    except BaseException as error:
+        # StreamAdapterError codes are constructor-validated, bounded internal
+        # enums; never persist arbitrary SDK exception text or provider codes.
+        write_new_json(args.worker / "failure.json", {
+            "category": "assembly_rejected" if isinstance(error, StreamAdapterError) else "worker_failed",
+            "assembly_code": error.code if isinstance(error, StreamAdapterError) else None})
         raise SystemExit(1) from None

@@ -155,7 +155,7 @@ def _assert_clean_tree() -> None:
 
 def preflight(config: GoldenSliceConfig) -> GoldenSlicePreflight:
     """Validate all bounds without reading secrets or touching the network."""
-    if config.provider_transport not in (None, "golden-process-stream-v1"):
+    if config.provider_transport not in (None, "golden-process-stream-v1", "golden-process-stream-v2"):
         raise ValueError("golden_transport_invalid")
     if config.provider_transport is not None and not config.with_provider:
         raise ValueError("golden_transport_requires_provider")
@@ -494,7 +494,8 @@ def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, env
             )
             if config.provider_transport is not None:
                 from app.evaluation.golden_stream_bridge import GoldenProcessStreamProvider
-                provider = GoldenProcessStreamProvider(settings=settings, directory=journal.directory)
+                provider = GoldenProcessStreamProvider(settings=settings, directory=journal.directory,
+                    transport_id=config.provider_transport)
                 provider = JournaledProvider(provider, journal)
             else:
                 provider = JournaledProvider(provider, journal, diagnostics=diagnostics)

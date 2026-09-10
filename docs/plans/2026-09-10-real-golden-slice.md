@@ -287,3 +287,12 @@ HTTP末事件为http11.receive_response_body.failed，error=null且stop/normaliz
 比例验证覆盖真实本地子进程+假SDK、工具片段与reasoning回放、结构化评分规则、缺Usage/截断/超限/关闭失败、partial pipe/崩溃/截止、失败后无第二次请求及默认隔离。完整9调用回放覆盖实际Coach/RAG/评测/一次修订，脚本低质量仍evaluation_failed且无报告；该验证不代表模型质量通过。
 
 提交前比例回归：126 passed；新增进程流式桥测试20项，语法、治理、diff检查通过。当前无新增真实调用。
+
+
+### 8aff7be真实混合工具回合拒绝与V2修正（2026-09-10）
+
+8aff7be / Actions34469511638三job同SHA成功（pytest3010 passed/152 skipped/127 subtests、PostgreSQL208）；新鲜协议3请求1009/102 tokens通过。V1黄金观察仅1请求，8.953秒首reasoning、12.328秒首正文、15.078秒tool_calls终态、15.094秒EOF/close，输入7128/输出300；38字符正文与工具终态共存，本地组装拒绝，无工具执行/报告/评分。本轮新增4次，累计48，原三次超时用量仍未知。同步接口允许混合工具回合，旧assembler禁止；主Agent与Luna核对并离线复现兼容差异，不宣称原失败唯一根因。新增transport-v2固定允许完整混合工具回合，通用默认及V1仍严格；增加仅内部安全组装错误码。103项回归通过，下一步本修复公共检查与新鲜协议后一次独立V2黄金观察。Training/live Workbench未验收，8E不前移。
+
+真实运行golden_20260910_stream_8aff7be，Bundle4e76d5f01dba3c8a1eae592086cc466e78f23f836a59150372f9cb703fd86fc4。调用预约实际Riot0、static1、official_patch1、OP.GG每位置各1工具/初始化/目录，共2位置；receipt的riot_official=5为五条已保存比赛来源，并非新增5次Riot网络请求。父回收15.375秒，最后HTTP body.failed与先前正常SSE清理复现相容，不据此判网络故障。无最终报告，当前未进入OP.GG建议质量观察。原reservation/progress/result及人工检查引用保持不可变；真实回执不含工具JSON/组装具体码，所以只确认存在足以被旧合同拒绝的形状，不能排除其他参数错误。
+
+V2按ADR0100兼容同步Provider；默认assembler与V1仍拒绝混合内容，V2固定开启，metadata不能选择。完整九调用回放改为每工具回合都含正文，仍执行8工具、一次修订、低质量拒绝且无报告。新测试验证旧strict拒绝、新opt-in组装、缺工具/Usage/关闭失败仍拒绝。下一步仅修复后新SHA/新协议/新ID的一次有界观察，未扩大调用或质量预算。

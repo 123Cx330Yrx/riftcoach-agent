@@ -15,3 +15,9 @@
 验证：纯组装验证工具片段、reasoning回放、结构化JSON、缺Usage/截断/关闭失败；真实本地子进程验证卡住、超时、崩溃、私有输入输出管道、没有partial交付；黄金入口默认与显式身份/预算测试及相关回归。离线通过和公共同SHA验证后才有界真实观察，不能用假SDK结果认定报告质量或生产准入。
 
 代价与边界：每请求进程/SDK新建增加开销与连接建立；90秒包含启动、发送、读取和关闭，可能比原每阶段SDK超时更严格。SDK EOF不等于独立HTTP网络EOF；HTTP body.failed末事件可在正常SSE清理时出现，不能单字段判失败。JSON序列化只用于同一程序的本地私有管道，不作为公共接口。前端、生产Worker、默认模型不变。
+
+## V2兼容修正（2026-09-10）
+
+8aff7be的V1真实第一请求在15.094秒内得到tool_calls终态、Usage、EOF及成功关闭，另有38字符正文；本地组装失败，无工具执行或报告。该形状与旧assembler的content/tool_calls互斥要求冲突，而同步Zhipu.chat与AgentLoop允许带正文的工具回合。离线合成相同形状可复现tool_calls_with_content；原回执没有工具参数或具体异常码，故不能断言它是原调用唯一失败原因。
+
+新增独立golden-process-stream-v2，保留V1可选身份及其严格行为。通用assembler新增默认false的allow_tool_calls_with_content，仅V2内部固定开启，不接受request metadata控制。只允许完整tool_calls终态同时有正文；工具JSON、唯一ID、Usage、EOF、模型身份、关闭及调用/质量预算不变。AgentLoop将其作为工具回合保存内存并执行工具后继续；它不能成为最终报告。同期子失败工件只记录受校验的StreamAdapterError内部码，其他异常一律固定worker_failed，不存SDK原文。真实V1旧回执不改写或重复执行。

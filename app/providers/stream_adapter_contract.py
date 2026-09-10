@@ -461,6 +461,7 @@ class ProviderStreamAssembler:
         max_output_tokens: int | None = None,
         require_model_observation: bool = True,
         require_request_identity: bool = False,
+        allow_tool_calls_with_content: bool = False,
         max_events: int = _MAX_EVENTS,
         max_content_chars: int = _MAX_TEXT_CHARS,
         max_reasoning_chars: int = _MAX_TEXT_CHARS,
@@ -486,6 +487,9 @@ class ProviderStreamAssembler:
         self._require_request_identity = _validate_bool(
             require_request_identity,
             "require_request_identity",
+        )
+        self._allow_tool_calls_with_content = _validate_bool(
+            allow_tool_calls_with_content, "allow_tool_calls_with_content"
         )
         self._max_events = _validate_limit(max_events, "max_events")
         self._max_content_chars = _validate_limit(
@@ -741,7 +745,7 @@ class ProviderStreamAssembler:
             if content is None:
                 self._poison("missing_visible_content")
         elif self._finish_reason == "tool_calls":
-            if content is not None:
+            if content is not None and not self._allow_tool_calls_with_content:
                 self._poison("tool_calls_with_content")
             if not tool_calls:
                 self._poison("missing_tool_calls")

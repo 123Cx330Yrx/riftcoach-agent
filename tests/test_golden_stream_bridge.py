@@ -19,14 +19,15 @@ def request(**kwargs):
     return ChatRequest(messages=(ChatMessage(MessageRole.USER, "secret-prompt"),), max_tokens=8192, timeout_s=90, **kwargs)
 
 
-def collect(tmp_path, chunks, req=None, close_error=None):
+def collect(tmp_path, chunks, req=None, close_error=None, allow_tool_content=False):
     raw = ClosableStream(chunks, close_error=close_error)
     client = FakeClient(raw)
     provider = ZhipuProvider.from_candidate_profile(client=client, model="glm-5.3-flash",
         profile=ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE)
     req = req or request()
     result = m.collect(req, lambda r,hook: provider.stream_adapter(tool_stream=bool(r.tools)).stream_session(r, include_usage_tail=True),
-                       directory=tmp_path, started=0, deadline=90, clock=lambda: 1)
+                       directory=tmp_path, started=0, deadline=90, clock=lambda: 1,
+                       allow_tool_content=allow_tool_content)
     assert raw.closed
     return result, client.completions.calls[0]
 
@@ -181,6 +182,8 @@ def test_full_nine_call_coach_replay_through_wire_and_assembler(tmp_path,monkeyp
         def chat(self,request):
             request=m.REQUEST.validate_json(m.validate_request(request))
             scripted=super().chat(request)
+            if scripted.tool_calls:
+                scripted=replace(scripted,content="fixture tool preamble, not final report")
             event=ProviderStreamEvent(content_delta=scripted.content,reasoning_delta=scripted.reasoning_content,
                 finish_reason=scripted.finish_reason,usage=scripted.usage,model=scripted.model,
                 request_id_sha256="a"*64,tool_call_deltas=tuple(StreamToolCallDelta(index=i,call_id=c.id,
@@ -190,10 +193,38 @@ def test_full_nine_call_coach_replay_through_wire_and_assembler(tmp_path,monkeyp
                 def __iter__(self):return iter([event])
                 def close(self):pass
             directory=tmp_path/str(len(self.requests));directory.mkdir()
-            response=m.collect(request,lambda r,hook:Session(),directory=directory,started=0,deadline=90,clock=lambda:1)
+            response=m.collect(request,lambda r,hook:Session(),directory=directory,started=0,deadline=90,clock=lambda:1,
+                               allow_tool_content=True)
             return m.RESPONSE.validate_json(m.RESPONSE.dump_json(response))
     monkeypatch.setattr(replay,"_ReplayProvider",StreamReplay)
     result=replay.probe(dependencies()["summary_builder"].summary,contract=ADVICE_COACH_CONTRACT,training_positions=())
     assert result["scripted_provider_calls"]==9
     assert result["revision_count"]==1 and result["terminal_reason"]=="evaluation_failed"
     assert not result["report_available"]
+
+
+@pytest.mark.parametrize("enabled",[False,True])
+def test_mixed_tool_round_requires_new_explicit_policy(tmp_path,enabled):
+    from app.providers.stream_adapter_contract import StreamAdapterError
+    req=request(tools=(ToolSpec("knowledge.search","fixture",{"type":"object"}),))
+    chunks=[chunk(content="secret-preamble",tool_calls=[tool_fragment(index=0,call_id="call_1",
+        name="knowledge_search",arguments='{"query":"fixture"}')],finish_reason="tool_calls"),chunk(raw_usage=usage())]
+    if not enabled:
+        with pytest.raises(StreamAdapterError,match="tool_calls_with_content"):
+            collect(tmp_path,chunks,req)
+    else:
+        result,_=collect(tmp_path,chunks,req,allow_tool_content=True)
+        assert result.content=="secret-preamble" and result.requests_tools
+        assert result.finish_reason=="tool_calls"
+    assert "secret" not in (tmp_path/"progress.json").read_text()
+
+
+@pytest.mark.parametrize("missing",["tool","usage","close"])
+def test_mixed_policy_still_requires_all_completion_gates(tmp_path,missing):
+    req=request(tools=(ToolSpec("knowledge.search","fixture",{"type":"object"}),))
+    fragments=[] if missing=="tool" else [tool_fragment(index=0,call_id="call_1",name="knowledge_search",arguments='{}')]
+    chunks=[chunk(content="private",tool_calls=fragments,finish_reason="tool_calls")]
+    if missing!="usage":chunks.append(chunk(raw_usage=usage()))
+    with pytest.raises(Exception):
+        collect(tmp_path,chunks,req,allow_tool_content=True,
+                close_error=RuntimeError("private") if missing=="close" else None)
