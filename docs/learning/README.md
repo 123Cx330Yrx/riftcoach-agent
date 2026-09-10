@@ -1,6 +1,6 @@
 # RiftCoach 学习与工程证据索引
 
-当前接续：安全计时补强已离线实现：bridge progress schema1.1记录末次事件/正文/reasoning、最长相邻事件间隔、open/advance/processing/close耗时和落盘开销；调用前预约增加无正文请求规模。advance含SDK解码与HTTP hook，不能当纯网络或供应商推理耗时；父杀子后的最后快照只是已落盘前缀。旧诊断1.0与Coach1.3.5/high8192/90秒/质量门不变。3262事件合成本地基准171ms，其中60次落盘约104ms，未支持常规本地组装导致90秒失败。保存输入合成9回合最大input ceiling49940，未超64000，不足以支持删掉来源事实。下一步比例回归及同SHA公共检查后一次带新计时的完整候选观察；真实新增0、累计54，报告/Training/live Workbench仍未验收，8E保持in_progress。
+当前接续：7422396 / Actions34473254289三job成功（3018 passed/152 skipped/127 subtests、PostgreSQL208）；新鲜协议3请求通过，真实Coach3请求/4检索成功，第三请求90秒截止。最后前缀89.437秒仍有正文，max事件间隔328ms、本地processing250ms，支持生成未在预算内完成，不是本次已观测前缀中的长期读取卡死。累计60次Provider尝试、五次超时用量未知。继续新增Coach1.3.6简练组织软目标，全部来源/位置/事实与85分门、high8192/90秒预算不变，旧1.3.5保留。保存五局+同一来源Bundle离线9回合/8工具/一次修订仍低分拒绝，最大input ceiling54918、最终上下文27344<=28000，九回合均保留来源/位置。下一步本版比例回归/同SHA公共验证与新鲜协议后一次完整候选观察；报告质量/Training/live Workbench未验收，8E保持in_progress。
 
 以下为已被上方状态取代的历史接续记录。
 
