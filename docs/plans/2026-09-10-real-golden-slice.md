@@ -265,3 +265,14 @@ Coach2次尝试、1次响应、4检索全部成功。第一请求21.437秒返回
 运行入口：python -B -m scripts.diagnose_coach_golden_stream --config <local-input-config> 默认零网络；执行另需 --execute --run-id <new-id> --ci-run <exact-sha-run> --protocol-report <fresh-proof>。配置仅inputs映射：saved_run_id、summary_sha、manifest_sha、riot_id、region；输入路径固定data/runs/golden_slice。父子两次核验输入、HEAD及公共证据；子进程读取凭据后仅使用标准GLM5.3Flash端点、SDK retries=0。回执位于data/runs/golden_stream_diagnostics/<new-id>，reservation/provider-001/result均不可覆盖。最后progress是实际观测快照，parent_deadline或child_unreaped是父层结果，不能外推上游取消/计费已结束。包含Usage尾帧参数的新请求并非失败请求精确重放，历史OP.GG不重新宣称新鲜。
 
 提交前验证：新增21项、聚焦与相邻合计72项通过；实际保存输入默认预检零网络，输入保守上界31264，request SHA 9b62bc42b4736790356ec0f1a887987c81a6198d6d1100b13dbe3a4a9adf9254。语法、治理及diff检查通过。
+
+
+### 869e4b3单请求流式真实观察与裁决（2026-09-10）
+
+独立流式诊断完成真实观察。实现869e4b38c48b1a8f5c18c9fc2532c4042165528e / Actions34467329663三job同SHA成功（pytest2990 passed、152 skipped、127 subtests；PostgreSQL208）。新鲜协议3请求通过（输入1007/输出105）；诊断stream_20260910_869e4b3恰好1请求/1HTTP，首事件及reasoning5453ms、首正文20093ms、stop43312ms、normalized EOF与close43328ms、父收口43515ms，输入8328/输出3850，complete且closeclosed。仅证明这次新请求可完整流式返回，不是旧请求精确重放或黄金质量通过。本轮新增4次、接续累计44次Provider尝试，历史三次超时用量仍未知。下一步在显式候选范围设计完整流响应组装及绝对截止接线，先离线验证工具往返/终态/Usage/关闭，不盲目重跑报告。OP.GG具体建议、本人Training/live Workbench仍未验收，8E保持in_progress。
+
+回执SHA-256=c0783bb1ffc5f71f4a998eac7c33cf6ee0fa09dd8dec215d9a7a726d5f0d3462；原reservation/protocol/provider-001/progress/result保留不回填。新请求摘要9b62bc42b4736790356ec0f1a887987c81a6198d6d1100b13dbe3a4a9adf9254；3823个规范化事件、正文3679字符、reasoning4020字符，均未保存正文。总新增用量为输入9335/输出3955 tokens，仅为本批完整观测，不代表包含历史未知超时的完整累计成本。
+
+HTTP末事件为http11.receive_response_body.failed，error=null且stop/normalized EOF/Usage/close均成立。主Agent及Luna只读核查本地OpenAI Stream.__stream__遇到[DONE]跳出并在finally关闭response；httpcore Trace.__exit__以异常退栈会发failed，包含生成器清理路径。主Agent用真实OpenAI/httpx/httpcore与MockBackend假网络、固定SSE正文/Usage/[DONE]离线复现state=complete与同一body.failed末事件共存，network_used=false。该复现证明字段不能单独判响应失败，不证明真实事件的确切异常类型；未读取或保存trace info。eof_ms是规范化SDK迭代结束，不是独立网络EOF证明。
+
+裁决：此次提供流式high报告形状请求可完整收口的正面时序证据；不同请求构造与运行时刻禁止推导相对旧c4a169b的因果加速比例。显式Coach仍同步，不能直接切生产streaming或放宽90秒。下一批直接做候选完整流组装/绝对截止接线设计与离线兼容验证，保留工具往返、完整Usage、质量门和部分输出不发布的要求；真实观察须在后续新实现独立公共检查后有界进行，无需为常规步骤再次询问。
