@@ -121,3 +121,16 @@ d605c04abedd9796fab8b466f3cfff11dd3a12fb / Actions34441904153三job已同SHA成�
 Training完整持久化还需要本人档案，当前保存的ShowMaker是观摩对象，不能把它宣称为用户本人。已向用户询问本人Riot ID/区服或观摩范围；问题未回复前只推进可独立完成的报告和来源工作。旧观摩数据不自动写个人Training。
 
 同源评分补丁聚焦/相邻115 passed，治理、改动Python编译、diff检查通过。
+
+
+### 47e8914真实观察与单次等待分配（接续）
+
+47e89145800b4defb293003af3c6993ba4a83e03 / Actions34442973048已同SHA三job成功。之后真实三调用协议通过：输入1007、输出90 tokens。独立运行golden_20260910_saved_47e8914复用v14五局，Riot请求0；静态5、官方文章1、OP.GG两位置各一次工具（各自初始化/目录一次）。中路Vex/Anivia/Locke/Syndra与辅助Camille全部目标命中，比赛16.17.810.4348与静态16.17.1、官网显示26.17对应；官方文章日期来自JSON-LD。
+
+Bundle 754070df2233b35d8ddf6716064812d309dfd5122fd10be584d59a6e2580b015为complete/medium，无冲突或gap；OP.GG仍partial、没有upstream_patch，只支持其允许的当前快照用途，不能因此声称是精确16.17同段位基准。
+
+报告未生成：第一请求14.75秒后返回4个工具调用，四次检索全部成功；第二请求已发出，60.01秒时provider_error_code=timeout，Agent provider_error、Harness rejected/agent_loop_incomplete、terminal draft_preparation_failed。不是旧context_budget_exceeded，也没有进入评分。仅观察到第一请求输入6401/输出335 tokens；第二请求用量未知，不宣称完整token总额。本轮协议3+Coach2=5次真实Provider尝试，全部有调用前持久计数，旧回执不重写。原因限定为客户端等待超时，不能断言上游内部为何缓慢。
+
+在既有Agent120秒/整次480秒内，以独立Coach1.3.2、Skill0.5.2、Program2.3.2、flash_v2_golden_latency将单次最大等待60→90秒；仍取调用者剩余Agent时限、整次剩余时限与90的最小值，SDK额外重试0。9调用、8工具、28000上下文、64000输入、8192输出、649728总token、85分及一次修订不变。新身份67ae847819a64dc009e448b518e0fe3564bd395dfc4aed34aff3509cd2b854cc，旧1.3.1资产/摘要冻结。这是根据实际60秒失败在原外层时限内调整分配，不增加整体执行时限，不代表上游90秒必然成功。
+
+验证：116项相邻检查通过；新时限夹具最初误用字符串MessageRole导致3项测试构造失败，修正为实际枚举后4项时限测试通过。无真实睡眠，模拟75秒响应分别触发旧60秒拒绝/新90秒接收，调用者12秒和全局剩余5秒仍收紧请求、失败不重试。下一步为本补丁同SHA公共验证、新鲜协议，然后一次有界观察。Training仍等待本人档案/观摩范围答复；尚无数据库或live UI验收。

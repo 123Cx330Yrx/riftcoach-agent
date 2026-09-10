@@ -62,7 +62,7 @@ def test_full_source_context_and_eight_tool_revision_path_fit_existing_total_wal
     result = probe(value, bundle=bundle)
     assert result["scripted_provider_calls"] == 9 and result["agent"][0]["successful_tool_calls"] == 8
     assert result["terminal_reason"] == "evaluation_failed" and not result["report_available"]
-    assert result["coach_contract"]["version"] == "1.3.1"
+    assert result["coach_contract"]["version"] == "1.3.2"
     assert result["source_bundle_present_by_call"] == [True] * 9
     legacy = probe(value, bundle=bundle, contract=GOLDEN_COACH_CONTRACT)
     assert legacy["source_bundle_present_by_call"] == [True] * 4 + [False] * 5
