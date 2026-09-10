@@ -33,7 +33,7 @@ from app.product.recent_review import RecentReviewProductRequest
 from app.providers.models import TokenUsage, ToolCall
 from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE
 from app.rag.hybrid import LocalHybridKnowledgeProvider
-from app.runtime.coach_contract import BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT
+from app.runtime.coach_contract import BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT
 
 
 class _ReplayProvider(_WorstPathProvider):
@@ -60,8 +60,8 @@ class _ReplayProvider(_WorstPathProvider):
             input_tokens=estimate_runtime_request_input_ceiling(request), output_tokens=8192))
 
 
-def probe(summary, *, contract=GOLDEN_COACH_CONTRACT, reasoning_characters=0, bundle=None):
-    if contract is not BATCH_COACH_CONTRACT and contract is not GOLDEN_COACH_CONTRACT:
+def probe(summary, *, contract=SOURCE_COACH_CONTRACT, reasoning_characters=0, bundle=None):
+    if all(contract is not c for c in (BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT)):
         raise ValueError("unsupported replay contract")
     if type(reasoning_characters) is not int or not 0 <= reasoning_characters <= 100000:
         raise ValueError("invalid replay reasoning size")
@@ -120,6 +120,9 @@ def probe(summary, *, contract=GOLDEN_COACH_CONTRACT, reasoning_characters=0, bu
             "revision_count": manifest.revision_count,
             "agent": loop_rows,
             "request_input_ceilings": [estimate_runtime_request_input_ceiling(r) for r in provider.requests],
+            "source_bundle_present_by_call": [bundle is not None and any(
+                bundle.digest in (message.content or "") for message in request.messages
+            ) for request in provider.requests],
             "reserved_output_tokens": 8192 * len(provider.requests),
             "report_available": result.output.report is not None if result.output else False,
         }
@@ -133,7 +136,7 @@ def main():
     if args.summary.stat().st_size > 2_000_000:
         raise ValueError("saved summary too large")
     summary = json.loads(args.summary.read_text(encoding="utf-8"))
-    contracts = (BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT) if args.compare_legacy else (GOLDEN_COACH_CONTRACT,)
+    contracts = (BATCH_COACH_CONTRACT, SOURCE_COACH_CONTRACT) if args.compare_legacy else (SOURCE_COACH_CONTRACT,)
     print(json.dumps([probe(summary, contract=contract) for contract in contracts], indent=2))
 
 

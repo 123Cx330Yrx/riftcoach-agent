@@ -62,6 +62,19 @@ def test_full_source_context_and_eight_tool_revision_path_fit_existing_total_wal
     result = probe(value, bundle=bundle)
     assert result["scripted_provider_calls"] == 9 and result["agent"][0]["successful_tool_calls"] == 8
     assert result["terminal_reason"] == "evaluation_failed" and not result["report_available"]
+    assert result["coach_contract"]["version"] == "1.3.1"
+    assert result["source_bundle_present_by_call"] == [True] * 9
+    legacy = probe(value, bundle=bundle, contract=GOLDEN_COACH_CONTRACT)
+    assert legacy["source_bundle_present_by_call"] == [True] * 4 + [False] * 5
     limits = GOLDEN_COACH_CONTRACT.descriptor()
     assert max(result["request_input_ceilings"]) <= limits["max_input_tokens"]
     assert sum(result["request_input_ceilings"]) + result["reserved_output_tokens"] <= limits["total_tokens"]
+
+
+def test_prior_golden_contract_identity_is_frozen_and_new_contract_keeps_resource_walls():
+    from app.runtime.coach_contract import GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT
+    assert GOLDEN_COACH_CONTRACT.snapshot().sha256 == "cb2d1293578cadf08e9a302c40c3f67de3210ec7117e8b08a375a280b4a7f5c2"
+    old, new = GOLDEN_COACH_CONTRACT.descriptor(), SOURCE_COACH_CONTRACT.descriptor()
+    for key in ("max_calls", "max_input_tokens", "max_output_tokens", "total_tokens", "max_tool_calls", "minimum_score", "max_revisions", "max_context_tokens"):
+        assert old[key] == new[key]
+    assert new["include_deterministic_source_facts"] is True

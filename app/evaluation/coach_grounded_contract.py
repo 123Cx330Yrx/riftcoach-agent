@@ -81,12 +81,19 @@ def build_grounded_revision_prompt(report, evaluation, knowledge):
 
 class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
     """One correction shares the existing two-call evaluation budget."""
+    def __init__(self, *, include_deterministic_facts=False, **kwargs):
+        super().__init__(**kwargs)
+        self.include_deterministic_facts = include_deterministic_facts
+
     def evaluate(self, request):
         if not request.user_utterance or not request.user_utterance.strip():
             raise ValueError("security-aware evaluation requires user_utterance")
         knowledge = _knowledge_evaluation_projection(request.knowledge)
+        facts = self.fact_pack_builder(dict(request.player_summary))
+        if self.include_deterministic_facts:
+            facts["deterministic_source_facts"] = request.deterministic_report
         prompt = build_grounded_evaluation_prompt(
-            self.fact_pack_builder(dict(request.player_summary)), request.report,
+            facts, request.report,
             user_utterance=request.user_utterance, knowledge=knowledge,
         )
         contract = evaluation_response_contract_v12()
@@ -125,9 +132,16 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
 
 
 class GroundedCoachReviser(ChatCoachReviser):
+    def __init__(self, *, include_deterministic_facts=False, **kwargs):
+        super().__init__(**kwargs)
+        self.include_deterministic_facts = include_deterministic_facts
+
     def revise(self, request):
+        knowledge = _knowledge_evaluation_projection(request.knowledge)
+        if self.include_deterministic_facts:
+            knowledge["deterministic_source_facts"] = request.deterministic_report
         prompt = build_grounded_revision_prompt(request.report, _evaluation_payload(request.evaluation),
-                                                _knowledge_evaluation_projection(request.knowledge))
+                                                knowledge)
         content = _chat_content(self.runtime, system_prompt=self.system_prompt, user_prompt=prompt,
                                 temperature=self.temperature, harness_step="revise")
         validate_revised_report(content, request.report)

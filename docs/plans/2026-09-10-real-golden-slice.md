@@ -108,3 +108,16 @@ Runbook：新增--saved-run-id与--saved-summary-digest成对指定，预检sche
 当前不新增真实Provider/玩家API/OP.GG调用，数据库与live Workbench仍未执行，8E继续in_progress。下一步为本节同SHA公共验证及保存数据的实际有界来源/Coach消费准备。面试可说已实现可验签重放、分位置来源投影和真实执行门，不可说已完成黄金切片或生产准入。
 
 本节聚焦与相邻回归106 passed；治理、改动Python编译和diff检查通过。
+
+
+### 同源评分与修订补齐（Coach 1.3.1，接续本地）
+
+d605c04abedd9796fab8b466f3cfff11dd3a12fb / Actions34441904153三job已同SHA成功。公开验证后本地进一步检查发现，1.3.0只有初稿读取扩展来源，评分fact pack和修订knowledge仍缺这份输入；在新增真实模型调用前修复。
+
+新独立Coach1.3.1 / Skill0.5.1 / Program2.3.1 / flash_v2_golden_sources显式开启include_deterministic_source_facts，将同一个既有deterministic_report作为数据传给评分、评分纠正、修订和复评；没有另造获取或解释来源的链。旧1.3.0摘要cb2d1293578cadf08e9a302c40c3f67de3210ec7117e8b08a375a280b4a7f5c2与旧资产保留，默认1.2.0不变。新合同摘要f11f2755d19b2c670f86b54dce50ef60e1786fa29f0dacecb2c692572861d60f绑定该行为，所有质量/预算/次数墙不变。
+
+断网对照证明旧版仅前4个请求含来源包身份，新版9个请求全部包含，同一完整检索及低分拒绝路径未变。保存v14来源仅作预算负面对照，新版各请求上界26402/36440/42882/49324/34108/34342/17202/34108/34342，输出预约73728，总额仍低于649728。没有新增真实Provider/玩家API/OP.GG请求。
+
+Training完整持久化还需要本人档案，当前保存的ShowMaker是观摩对象，不能把它宣称为用户本人。已向用户询问本人Riot ID/区服或观摩范围；问题未回复前只推进可独立完成的报告和来源工作。旧观摩数据不自动写个人Training。
+
+同源评分补丁聚焦/相邻115 passed，治理、改动Python编译、diff检查通过。
