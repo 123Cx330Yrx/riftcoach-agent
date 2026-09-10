@@ -296,3 +296,16 @@ HTTP末事件为http11.receive_response_body.failed，error=null且stop/normaliz
 真实运行golden_20260910_stream_8aff7be，Bundle4e76d5f01dba3c8a1eae592086cc466e78f23f836a59150372f9cb703fd86fc4。调用预约实际Riot0、static1、official_patch1、OP.GG每位置各1工具/初始化/目录，共2位置；receipt的riot_official=5为五条已保存比赛来源，并非新增5次Riot网络请求。父回收15.375秒，最后HTTP body.failed与先前正常SSE清理复现相容，不据此判网络故障。无最终报告，当前未进入OP.GG建议质量观察。原reservation/progress/result及人工检查引用保持不可变；真实回执不含工具JSON/组装具体码，所以只确认存在足以被旧合同拒绝的形状，不能排除其他参数错误。
 
 V2按ADR0100兼容同步Provider；默认assembler与V1仍拒绝混合内容，V2固定开启，metadata不能选择。完整九调用回放改为每工具回合都含正文，仍执行8工具、一次修订、低质量拒绝且无报告。新测试验证旧strict拒绝、新opt-in组装、缺工具/Usage/关闭失败仍拒绝。下一步仅修复后新SHA/新协议/新ID的一次有界观察，未扩大调用或质量预算。
+
+
+### 8a72e2b V2真实工具成功与生成截止（2026-09-10）
+
+8a72e2b / Actions34470700838三job同SHA成功（pytest3015 passed/152 skipped/127 subtests、PostgreSQL208）。新鲜协议3请求1007/101 tokens通过；V2黄金观察3次请求，前两次mixed工具回合完整且共6检索成功，第三次首reasoning8.359秒、首正文30.422秒，但90秒无terminal/Usage/EOF，父在90.031秒收口。修复兼容性已真实生效，完整报告仍不可用，未进入评分或发布。已知Coach输入16931/输出461仅前两次；第三次用量未知。本次新增6，接续累计54，四次历史超时用量未知。不再追加真实请求；下一步离线核查请求/输出结构负担与安全事件间隔诊断，先形成可验证修正再考虑新观察。Training/live Workbench及OP.GG具体建议质量仍未验收，8E保持in_progress。
+
+运行golden_20260910_stream_8a72e2b，Bundle37bc2316ac952bda0994babfba547945437e22a28f23be2d2fee22187acdecb0；仍Riot0、static1、official_patch1、OP.GG每位置各1工具/初始化/目录，共2位置。第1请求tool_calls、正文21字符、reasoning874字符、Usage7107/358、父16.625秒；第2请求tool_calls、正文10字符、reasoning104字符、Usage9824/103、父11.547秒。两次完整mixed回合真实交给Agent继续，Trace确认第1轮4工具、第2轮2工具全部成功。
+
+第3请求已有3307字符正文/3376字符reasoning、3262事件，但terminal/eof/Usage均null。父result=deadline/90031ms；子最后progress=failed/provider_error/closeclosed，failure类别worker_failed，无具体assembly_code。时间字段上限90000有截顶，不能用close_ms反推精确先后；只可确认没有完整响应且父截止生效。原始最后HTTP事件response_closed.complete不构成上游成功或取消证明。没有last_delta或事件间隔，不能声称一直持续输出、不能排除中途停滞或确定上游原因。当前不保存partial正文，因此不能评价其内容质量或补写唯一根因。
+
+Runtime Trace仅3个provider_started、6次成功工具、末段draft_preparation_failed/rejected，无评估/修订/后续请求；独立manual_review绑定Trace SHA594394f5079533f48c4a839a068ae9855417b61d2ff666a4a752c0f5f885be4c。协议与前两次Coach已知输入17938/输出562，第三请求未知；本用户继续批合计10次Provider请求（V1阶段4次+V2阶段6次），不是54次新增。
+
+裁决：V2兼容修复已由真实mixed工具往返证实，流式提供早期可观察内容却未保证90秒内完整报告。保留原high/8192和质量门，不因本次失败马上加时、降分或连续重试。下一步仅离线审查已有报告结构与请求包络的重复负担，补充安全的last_delta/max_inter_event_gap等可区分生成和停滞的证据设计；现有input_digest不能重建第三请求完整对话，不宣称精确重放。新实际观察必须有新可验证修改与公共证据后再执行，常规推进无需用户重复授权。

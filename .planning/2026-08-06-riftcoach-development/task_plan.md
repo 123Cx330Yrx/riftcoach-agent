@@ -3493,3 +3493,6 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 
 
 当前接续：8aff7be / Actions34469511638三job同SHA成功（pytest3010 passed/152 skipped/127 subtests、PostgreSQL208）；新鲜协议3请求1009/102 tokens通过。V1黄金观察仅1请求，8.953秒首reasoning、12.328秒首正文、15.078秒tool_calls终态、15.094秒EOF/close，输入7128/输出300；38字符正文与工具终态共存，本地组装拒绝，无工具执行/报告/评分。本轮新增4次，累计48，原三次超时用量仍未知。同步接口允许混合工具回合，旧assembler禁止；主Agent与Luna核对并离线复现兼容差异，不宣称原失败唯一根因。新增transport-v2固定允许完整混合工具回合，通用默认及V1仍严格；增加仅内部安全组装错误码。103项回归通过，下一步本修复公共检查与新鲜协议后一次独立V2黄金观察。Training/live Workbench未验收，8E不前移。
+
+
+当前接续：8a72e2b / Actions34470700838三job同SHA成功（pytest3015 passed/152 skipped/127 subtests、PostgreSQL208）。新鲜协议3请求1007/101 tokens通过；V2黄金观察3次请求，前两次mixed工具回合完整且共6检索成功，第三次首reasoning8.359秒、首正文30.422秒，但90秒无terminal/Usage/EOF，父在90.031秒收口。修复兼容性已真实生效，完整报告仍不可用，未进入评分或发布。已知Coach输入16931/输出461仅前两次；第三次用量未知。本次新增6，接续累计54，四次历史超时用量未知。不再追加真实请求；下一步离线核查请求/输出结构负担与安全事件间隔诊断，先形成可验证修正再考虑新观察。Training/live Workbench及OP.GG具体建议质量仍未验收，8E保持in_progress。

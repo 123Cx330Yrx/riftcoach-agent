@@ -1,6 +1,6 @@
 # RiftCoach 架构能力覆盖矩阵
 
-当前黄金切片接续事实以docs/project_execution_state.md及docs/plans/2026-09-10-real-golden-slice.md末节为准：869e4b3单请求流式诊断已完整返回，累计44次Provider尝试；当前推进显式候选完整流组装与绝对截止的离线接线，8E仍in_progress。
+当前黄金切片接续事实以docs/project_execution_state.md及docs/plans/2026-09-10-real-golden-slice.md末节为准：V2 mixed工具回合真实兼容已通过，但报告第三请求90秒未收齐；累计54次Provider尝试，下一步离线核查结构负担/事件间隔，8E仍in_progress。
 
 
 接续最新：d605c04/Actions34441904153已同SHA三job成功。随后发现评分/修订遗漏扩展来源，新增独立Coach1.3.1/Skill0.5.1/Program2.3.1，把同一deterministic_report作为数据贯穿9个请求；旧1.3.0/1.2.0不变，新补丁待独立公共验证。保存五局完整RAG预算对照仍通过且低分拒绝，无新增真实模型/玩家API/OP.GG。Training等待本人档案或观摩范围澄清，不影响报告准备。
