@@ -33,7 +33,7 @@ from app.product.recent_review import RecentReviewProductRequest
 from app.providers.models import TokenUsage, ToolCall
 from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE
 from app.rag.hybrid import LocalHybridKnowledgeProvider
-from app.runtime.coach_contract import BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT
+from app.runtime.coach_contract import BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT
 
 
 class _ReplayProvider(_WorstPathProvider):
@@ -62,7 +62,7 @@ class _ReplayProvider(_WorstPathProvider):
 
 def probe(summary, *, contract=LATENCY_COACH_CONTRACT, reasoning_characters=0, bundle=None,
           training_positions=("mid", "support")):
-    if all(contract is not c for c in (BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT)):
+    if all(contract is not c for c in (BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT)):
         raise ValueError("unsupported replay contract")
     if type(reasoning_characters) is not int or not 0 <= reasoning_characters <= 100000:
         raise ValueError("invalid replay reasoning size")

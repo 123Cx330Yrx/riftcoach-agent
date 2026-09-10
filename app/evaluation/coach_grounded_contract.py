@@ -81,10 +81,11 @@ def build_grounded_revision_prompt(report, evaluation, knowledge):
 
 class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
     """One correction shares the existing two-call evaluation budget."""
-    def __init__(self, *, include_deterministic_facts=False, position_policy="", **kwargs):
+    def __init__(self, *, include_deterministic_facts=False, position_policy="", include_generation_facts=False, **kwargs):
         super().__init__(**kwargs)
         self.include_deterministic_facts = include_deterministic_facts
         self.position_policy = position_policy
+        self.include_generation_facts = include_generation_facts
 
     def evaluate(self, request):
         if not request.user_utterance or not request.user_utterance.strip():
@@ -93,6 +94,9 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
         facts = self.fact_pack_builder(dict(request.player_summary))
         if self.include_deterministic_facts:
             facts["deterministic_source_facts"] = request.deterministic_report
+        if self.include_generation_facts:
+            from app.agent.context import project_recent_form_facts
+            facts["generation_facts"] = project_recent_form_facts(request.player_summary)
         prompt = build_grounded_evaluation_prompt(
             facts, request.report,
             user_utterance=request.user_utterance, knowledge=knowledge,
@@ -135,15 +139,19 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
 
 
 class GroundedCoachReviser(ChatCoachReviser):
-    def __init__(self, *, include_deterministic_facts=False, position_policy="", **kwargs):
+    def __init__(self, *, include_deterministic_facts=False, position_policy="", include_generation_facts=False, **kwargs):
         super().__init__(**kwargs)
         self.include_deterministic_facts = include_deterministic_facts
         self.position_policy = position_policy
+        self.include_generation_facts = include_generation_facts
 
     def revise(self, request):
         knowledge = _knowledge_evaluation_projection(request.knowledge)
         if self.include_deterministic_facts:
             knowledge["deterministic_source_facts"] = request.deterministic_report
+        if self.include_generation_facts:
+            from app.agent.context import project_recent_form_facts
+            knowledge["generation_facts"] = project_recent_form_facts(request.player_summary)
         prompt = build_grounded_revision_prompt(request.report, _evaluation_payload(request.evaluation),
                                                 knowledge)
         if self.position_policy:

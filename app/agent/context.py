@@ -480,6 +480,7 @@ class ContextBuilderV1:
         recent_summary = summary.get("recent_summary")
         if not isinstance(recent_summary, Mapping):
             raise ContextBuildError("recent_summary must be a mapping")
+        generation_facts = project_recent_form_facts(summary)
 
         sections: list[ContextSection] = [
             *_instruction_sections(execution),
@@ -487,7 +488,7 @@ class ContextBuilderV1:
                 section_id="facts:scope",
                 trust=ContextTrust.DETERMINISTIC_FACTS,
                 source="player_summary:scope",
-                value=_project_scope(summary),
+                value=generation_facts["facts:scope"],
                 required=True,
                 priority=800,
             ),
@@ -495,7 +496,7 @@ class ContextBuilderV1:
                 section_id="facts:recent_aggregate",
                 trust=ContextTrust.DETERMINISTIC_FACTS,
                 source="player_summary:recent_summary",
-                value=_project_recent_summary(recent_summary),
+                value=generation_facts["facts:recent_aggregate"],
                 required=True,
                 priority=790,
             ),
@@ -503,7 +504,7 @@ class ContextBuilderV1:
                 section_id="facts:sample_boundaries",
                 trust=ContextTrust.DETERMINISTIC_FACTS,
                 source="player_summary:sample_boundaries",
-                value=_project_sample_boundaries(summary),
+                value=generation_facts["facts:sample_boundaries"],
                 required=True,
                 priority=780,
             ),
@@ -525,7 +526,7 @@ class ContextBuilderV1:
                     section_id=f"facts:recent_match:{index:02d}",
                     trust=ContextTrust.DETERMINISTIC_FACTS,
                     source=f"player_summary:matches[{index}]",
-                    value=_project_keys(row, _RECENT_MATCH_FIELDS),
+                    value=generation_facts[f"facts:recent_match:{index:02d}"],
                     required=False,
                     priority=500,
                 )
@@ -821,6 +822,24 @@ def _json_section(
         required=required,
         priority=priority,
     )
+
+
+def project_recent_form_facts(summary: Mapping[str, Any]) -> dict:
+    """The exact JSON facts used by recent-form generation, shared with review.
+
+    Deterministic report text remains a separate required Context section.
+    Reuse the established allowlists and cap; do not create a second selector.
+    """
+    recent = summary.get("recent_summary")
+    if not isinstance(recent, Mapping):
+        raise ContextBuildError("recent_summary must be a mapping")
+    return {
+        "facts:scope": _project_scope(summary),
+        "facts:recent_aggregate": _project_recent_summary(recent),
+        "facts:sample_boundaries": _project_sample_boundaries(summary),
+        **{f"facts:recent_match:{index:02d}": _project_keys(row, _RECENT_MATCH_FIELDS)
+           for index, row in enumerate(summary["matches"][:_RECENT_MATCH_PROJECTION_CAP])},
+    }
 
 
 def _project_keys(value: Mapping[str, Any], fields: tuple[str, ...]) -> dict:
