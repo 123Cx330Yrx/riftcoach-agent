@@ -465,102 +465,109 @@ def _run_reserved_golden_slice(config, *, gate, journal, implementation_sha, env
         # The golden Coach is an explicitly unadmitted candidate seam. Bind its
         # candidate-only high-thinking profile directly; the normal provider
         # resolver's product runtime profile is intentionally not attached.
-        from openai import OpenAI
+        from openai import OpenAI, DefaultHttpxClient
+        from app.evaluation.golden_http_diagnostics import GoldenHttpDiagnostics
         from app.providers.zhipu import ZhipuProvider
         from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE
 
-        provider = ZhipuProvider.from_candidate_profile(
-            client=OpenAI(
-                api_key=settings.api_key,
-                base_url=settings.base_url,
-                timeout=FACT_COACH_CONTRACT.descriptor()["request_timeout_s"],
-                max_retries=0,
-            ),
-            model=settings.model,
-            profile=ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE,
-        )
-        provider = JournaledProvider(provider, journal)
-        # The provider execution seam is intentionally optional here; a
-        # provider failure must not erase the valid evidence/training slice.
-        from app.product.coach_composition import build_coach_application
-
-        class _StaticSummary:
-            def build(self, **_: Any) -> dict:
-                return json.loads(json.dumps(summary))
-
-            def build_by_puuid(self, **_: Any) -> dict:
-                return json.loads(json.dumps(summary))
-
-        from app.rag.hybrid import LocalHybridKnowledgeProvider
-
-        base_knowledge = LocalHybridKnowledgeProvider.from_directory(ROOT / "data/rag_docs")
-
-        publication_sources = EvidencePublicationSources(
-            now=checked_now,
-            observed_at=observed_at,
-            data_dragon=snapshot,
-            official_patch=patch,
-            meta_evidence=meta,
-        )
-        publication_store = FileEvidencePublicationStore(ROOT / "data/runs/golden_slice")
-        from uuid import NAMESPACE_URL, uuid5
-        publication_context = EvidencePublicationContext(
-            owner_id="golden-slice",
-            task_id=uuid5(NAMESPACE_URL, "riftcoach:" + config.run_id),
-            run_id=config.run_id,
-            request_fingerprint=_digest_json({"riot_id": config.riot_id, "region": config.routing_region, "count": config.count, "queue": config.queue, "training_positions": config.training_positions}),
-        )
-        application = build_coach_application(
-            summary_builder=_StaticSummary(),
-            provider=provider,
-            knowledge_provider=base_knowledge,
-            compact_context_json=True,
-            coach_contract=FACT_COACH_CONTRACT,
-            runs_root=ROOT / "data/runs/golden_slice",
-            publication_sources=publication_sources,
-            publication_writer=publication_store,
-            report_renderer=lambda value: render_golden_context_report(
-                value, summary_digest=projection.summary_digest,
-                bundle_digest=projection.bundle.digest, roles=roles, bundle=projection.bundle),
-        )
-        from app.product.recent_review import RecentReviewProductRequest
-
+        diagnostics = GoldenHttpDiagnostics(journal)
+        http_client = DefaultHttpxClient(event_hooks={"request": [diagnostics.on_request]})
         try:
-            result = application.review(RecentReviewProductRequest(
-                riot_id=config.riot_id, routing_region=config.routing_region,
-                count=config.count, queue=config.queue, focus="overall",
-            ), run_id=config.run_id, publication_context=publication_context)
-            report = getattr(result.output, "report", None)
-            if isinstance(report, str) and report.strip():
-                coach_report_digest = _digest_bytes(report.encode("utf-8"))
-            coach_runtime_status = result.runtime_status.value
-            coach_publication_status = result.publication_status.value if result.publication_status else None
-            coach_terminal_reason = result.terminal_reason
-            trace_reference = result.trace_reference
-            if result.evidence_projection is not None:
-                evidence_projection_verified = EvidencePublicProjectionResponse.model_validate(
-                    result.evidence_projection.bundle.to_public_projection()
-                ).bundle_digest == projection.bundle.digest
-                manifest_path = ROOT / "data/runs/golden_slice" / config.run_id / FileEvidencePublicationStore.filename
-                if manifest_path.is_file():
-                    publication_manifest_digest = _digest_bytes(manifest_path.read_bytes())
-        except Exception as error:
-            # A provider/runtime failure is still a valid bounded observation;
-            # return a degraded receipt instead of turning it into a false
-            # success or losing its safe terminal category.
-            code = getattr(error, "code", None)
-            from app.harness.runtime import _SAFE_FAILURE_CODES
-            coach_terminal_reason = code if isinstance(code, str) and code in _SAFE_FAILURE_CODES else "coach_execution_failed"
-            trace_reference = None
-        provider_calls = journal.counts["provider"]
-        if trace_reference is not None:
-            from app.runtime.store import RuntimeTraceStore
+            provider = ZhipuProvider.from_candidate_profile(
+                client=OpenAI(
+                    api_key=settings.api_key,
+                    base_url=settings.base_url,
+                    timeout=FACT_COACH_CONTRACT.descriptor()["request_timeout_s"],
+                    max_retries=0,
+                    http_client=http_client,
+                ),
+                model=settings.model,
+                profile=ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE,
+            )
+            provider = JournaledProvider(provider, journal, diagnostics=diagnostics)
+            # The provider execution seam is intentionally optional here; a
+            # provider failure must not erase the valid evidence/training slice.
+            from app.product.coach_composition import build_coach_application
+
+            class _StaticSummary:
+                def build(self, **_: Any) -> dict:
+                    return json.loads(json.dumps(summary))
+
+                def build_by_puuid(self, **_: Any) -> dict:
+                    return json.loads(json.dumps(summary))
+
+            from app.rag.hybrid import LocalHybridKnowledgeProvider
+
+            base_knowledge = LocalHybridKnowledgeProvider.from_directory(ROOT / "data/rag_docs")
+
+            publication_sources = EvidencePublicationSources(
+                now=checked_now,
+                observed_at=observed_at,
+                data_dragon=snapshot,
+                official_patch=patch,
+                meta_evidence=meta,
+            )
+            publication_store = FileEvidencePublicationStore(ROOT / "data/runs/golden_slice")
+            from uuid import NAMESPACE_URL, uuid5
+            publication_context = EvidencePublicationContext(
+                owner_id="golden-slice",
+                task_id=uuid5(NAMESPACE_URL, "riftcoach:" + config.run_id),
+                run_id=config.run_id,
+                request_fingerprint=_digest_json({"riot_id": config.riot_id, "region": config.routing_region, "count": config.count, "queue": config.queue, "training_positions": config.training_positions}),
+            )
+            application = build_coach_application(
+                summary_builder=_StaticSummary(),
+                provider=provider,
+                knowledge_provider=base_knowledge,
+                compact_context_json=True,
+                coach_contract=FACT_COACH_CONTRACT,
+                runs_root=ROOT / "data/runs/golden_slice",
+                publication_sources=publication_sources,
+                publication_writer=publication_store,
+                report_renderer=lambda value: render_golden_context_report(
+                    value, summary_digest=projection.summary_digest,
+                    bundle_digest=projection.bundle.digest, roles=roles, bundle=projection.bundle),
+            )
+            from app.product.recent_review import RecentReviewProductRequest
+
             try:
-                trace = RuntimeTraceStore(ROOT / "data/runs/golden_slice", config.run_id).read_trace(trace_reference)
-                if trace.usage.provider_calls_attempted != provider_calls:
-                    raise ValueError("golden_provider_count_mismatch")
-            except Exception:
-                raise RuntimeError("golden_trace_integrity_failed") from None
+                result = application.review(RecentReviewProductRequest(
+                    riot_id=config.riot_id, routing_region=config.routing_region,
+                    count=config.count, queue=config.queue, focus="overall",
+                ), run_id=config.run_id, publication_context=publication_context)
+                report = getattr(result.output, "report", None)
+                if isinstance(report, str) and report.strip():
+                    coach_report_digest = _digest_bytes(report.encode("utf-8"))
+                coach_runtime_status = result.runtime_status.value
+                coach_publication_status = result.publication_status.value if result.publication_status else None
+                coach_terminal_reason = result.terminal_reason
+                trace_reference = result.trace_reference
+                if result.evidence_projection is not None:
+                    evidence_projection_verified = EvidencePublicProjectionResponse.model_validate(
+                        result.evidence_projection.bundle.to_public_projection()
+                    ).bundle_digest == projection.bundle.digest
+                    manifest_path = ROOT / "data/runs/golden_slice" / config.run_id / FileEvidencePublicationStore.filename
+                    if manifest_path.is_file():
+                        publication_manifest_digest = _digest_bytes(manifest_path.read_bytes())
+            except Exception as error:
+                # A provider/runtime failure is still a valid bounded observation;
+                # return a degraded receipt instead of turning it into a false
+                # success or losing its safe terminal category.
+                code = getattr(error, "code", None)
+                from app.harness.runtime import _SAFE_FAILURE_CODES
+                coach_terminal_reason = code if isinstance(code, str) and code in _SAFE_FAILURE_CODES else "coach_execution_failed"
+                trace_reference = None
+            provider_calls = journal.counts["provider"]
+            if trace_reference is not None:
+                from app.runtime.store import RuntimeTraceStore
+                try:
+                    trace = RuntimeTraceStore(ROOT / "data/runs/golden_slice", config.run_id).read_trace(trace_reference)
+                    if trace.usage.provider_calls_attempted != provider_calls:
+                        raise ValueError("golden_provider_count_mismatch")
+                except Exception:
+                    raise RuntimeError("golden_trace_integrity_failed") from None
+        finally:
+            http_client.close()
     # This runner does not yet verify Training persistence or live Workbench.
     # A report plus a valid public DTO must never stand in for that acceptance.
     outcome = "degraded"

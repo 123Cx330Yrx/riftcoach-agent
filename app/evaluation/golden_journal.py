@@ -36,12 +36,25 @@ class GoldenCallJournal:
 
 
 class JournaledProvider:
-    def __init__(self, delegate, journal):
+    def __init__(self, delegate, journal, *, diagnostics=None):
         self.delegate, self.journal = delegate, journal
+        self.diagnostics = diagnostics
 
     def __getattr__(self, name):
         return getattr(self.delegate, name)
 
     def chat(self, request):
         self.journal.reserve("provider")
-        return self.delegate.chat(request)
+        if self.diagnostics is None:
+            return self.delegate.chat(request)
+        self.diagnostics.begin(self.journal.counts["provider"])
+        outcome = "interrupted"
+        try:
+            response = self.delegate.chat(request)
+            outcome = "response"
+            return response
+        except Exception:
+            outcome = "failed"
+            raise
+        finally:
+            self.diagnostics.finish(outcome)

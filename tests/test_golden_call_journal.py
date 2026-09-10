@@ -121,12 +121,20 @@ def test_golden_entry_reads_exact_trace_and_counts_actual_provider_attempts(tmp_
     monkeypatch.setattr(module, "load_zhipu_settings", lambda env: SimpleNamespace(
         api_key="offline", base_url="https://open.bigmodel.cn/api/paas/v4", default_timeout_s=1, model="glm-5.3-flash"))
     monkeypatch.setattr(openai, "OpenAI", lambda **kwargs: object())
+    http_clients = []
+    http_factory = openai.DefaultHttpxClient
+    def capture_http_client(**kwargs):
+        client = http_factory(**kwargs)
+        http_clients.append(client)
+        return client
+    monkeypatch.setattr(openai, "DefaultHttpxClient", capture_http_client)
     monkeypatch.setattr(ZhipuProvider, "from_candidate_profile", lambda **kwargs: deps["provider"])
     monkeypatch.setattr(LocalHybridKnowledgeProvider, "from_directory", lambda directory: deps["knowledge_provider"])
     receipt = module.run_golden_slice(module.GoldenSliceConfig(
         riot_id="Offline#TEST", routing_region="asia", run_id="exact_trace_counter", with_provider=True,
     ), environ={"RIOT_API_KEY": "offline"}, opgg_fetcher=lambda **kwargs: None)
     assert receipt.provider_calls == len(deps["provider"].requests) == 5
+    assert len(http_clients) == 1 and http_clients[0].is_closed
     assert receipt.coach_terminal_reason == "quality_gate_passed"
     assert receipt.result == "degraded" and not receipt.production_admitted
     assert receipt.evidence_projection_verified and not receipt.workbench_projection_verified
@@ -136,6 +144,9 @@ def test_golden_entry_reads_exact_trace_and_counts_actual_provider_attempts(tmp_
     assert "live_workbench_not_verified" in receipt.limitations
     state = tmp_path / "data/runs/golden_slice_reservations/exact_trace_counter"
     assert json.loads((state / "terminal.json").read_text(encoding="utf-8"))["attempt_counts"]["provider"] == 5
+    assert len(list(state.glob("http-*.json"))) == 5
+    assert all(json.loads(path.read_text())["http_requests"] == 0
+               for path in state.glob("http-*.json"))
     from app.evaluation.golden_saved_input import load_saved_summary
     saved_args = dict(run_id=receipt.run_id, expected_digest=receipt.summary_digest,
                       riot_id=summary["player"]["riot_id"], routing_region="asia", count=summary["request"]["count"], queue=420)
