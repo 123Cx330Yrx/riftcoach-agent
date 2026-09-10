@@ -130,7 +130,7 @@ def test_golden_entry_reads_exact_trace_and_counts_actual_provider_attempts(tmp_
     assert receipt.coach_terminal_reason == "quality_gate_passed"
     assert receipt.result == "degraded" and not receipt.production_admitted
     assert receipt.evidence_projection_verified and not receipt.workbench_projection_verified
-    assert receipt.coach_contract.version == "1.3.2"
+    assert receipt.coach_contract.version == "1.3.3"
     first_prompt = "\n".join(message.content or "" for message in deps["provider"].requests[0].messages)
     assert "外部来源事实" in first_prompt and receipt.evidence_bundle_digest in first_prompt
     assert "live_workbench_not_verified" in receipt.limitations
