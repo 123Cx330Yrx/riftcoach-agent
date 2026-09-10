@@ -1,5 +1,9 @@
 # RiftCoach 持续开发发现
 
+## RQ-258 当前黄金切片发现（2026-09-10）
+
+新入口草稿缺少实际预算拦截/身份预约与失败裁决；v1/v2/v4/v8/v10 的 passed 不能充当验收结论。静态16.18与比赛16.17不一致；官方版本feed不等于patch notes；OP.GG快照抓取时间必须早于融合时间。Coach `_CappedKnowledge` 错把 dataclass 当作 Pydantic；v8 context_budget_exceeded、v10 final_response 后 draft_preparation_failed。先离线修复并重放已存在私有 Summary，不再盲目重复获取。完整细节见 RQ-258 计划。
+
 ## RQ-256 公共收口与B恢复前置
 
 RQ-256公共收口补齐（2026-09-08恢复）：实现99a80d9f3ad062e90659ce374d804e8a358d3e10已由Actions 34113092188同SHA成功验证，收口提交5f7b45e已存在；下方“未提交/待CI”仅为历史本地记录，不再是当前待办。用户后续“继续”推进ADR-0099 B；本次前置检查确认Docker服务停止、专用测试库127.0.0.1:54329/riftcoach_test不可达，未执行清库测试、迁移或B产品改动。下一步恢复该专用测试数据库，然后执行B既定事务与恢复批次；C、真实API与生产默认保持不动。Luna容量不足，本次由主代理恢复状态和核对接口。

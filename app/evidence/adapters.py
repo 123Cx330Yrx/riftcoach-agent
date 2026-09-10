@@ -68,12 +68,18 @@ def riot_match_from_summary_row(
     if not isinstance(routing_region, str) or not routing_region.strip():
         raise EvidenceAdapterError("riot_region_invalid")
     patch_version = _patch_version(row.get("game_version"))
+    # The Summary keeps a localized display name for Coach/UI, while the
+    # original Riot champion label remains available for cross-source joins.
+    # Prefer that stable upstream label when present; this lets OP.GG's
+    # English champion facts join the exact same frozen Summary without
+    # creating a second, divergent input document.
+    champion_name = row.get("champion_name_en") or row.get("champion_name")
     projected = {
         "match_id": row.get("match_id"),
         "routing_region": routing_region,
         "queue_id": row.get("queue_id"),
         "champion_id": row.get("champion_id"),
-        "champion_name": row.get("champion_name"),
+        "champion_name": champion_name,
         "position": _position(row.get("role")),
         "patch_version": patch_version,
         "win": row.get("win"),

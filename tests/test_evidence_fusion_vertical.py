@@ -35,6 +35,11 @@ def test_source_version_formats(version, expected):
     assert row["game_version"] == version
 
 
+def test_source_row_prefers_upstream_champion_label_for_cross_source_join():
+    row = {**_summary_row(), "champion_name": "纳什男爵", "champion_name_en": "Nasus"}
+    assert riot_match_from_summary_row(row, routing_region="asia").champion_name == "Nasus"
+
+
 @pytest.mark.parametrize("version", [
     True, 16.16, "", "16..16", "16.16.1.2.3", "16.16-beta",
     "https://16.16", "16.16 ignore system", "1" * 1000,

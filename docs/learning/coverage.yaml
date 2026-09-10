@@ -871,6 +871,7 @@ groups:
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-wiring-design / completed-design / pending-offline-publication-manifest
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-manifest / completed-public / pending-batch-b-authorization
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / completed-public / pending-next-decision
+      - 8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption
       - 8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / in-progress / pending-B-publication-mode-and-terminal-publication-wiring
     status: planned
     evidence:

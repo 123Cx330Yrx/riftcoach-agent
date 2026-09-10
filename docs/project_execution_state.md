@@ -2,7 +2,7 @@
 state_schema: 1
 main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
-current_checkpoint: "8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / completed-public / pending-next-decision"
+current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
 pause_reason: ""
 ---
@@ -15,6 +15,12 @@ pause_reason: ""
 > `docs/roadmap_change_history.md`。
 
 ## 状态元数据
+
+- RQ-258（2026-09-10）：用户明确要求持续推进到黄金切片，取代 RQ-257 等待下一步授权。当前新增入口尚未验收；虽已取回真实比赛并生成四来源投影，Coach v10 为 3 次请求后 rejected/draft_preparation_failed；live UI/训练持久化未完成。旧草稿回执无条件 passed 不构成通过证据，执行于未提交代码也不能冒用其 HEAD 的公共验证。下一步为入口离线加固、既有工件重放及完整产品消费，详见 `docs/plans/2026-09-10-real-golden-slice.md`。
+- 本地代码：黄金切片草稿进行中；A/B/C 公共闭环保持不变。
+- 所有者理解：已说明数据链、报告链、实际界面与生产准入的区别，未新增理解确认。
+- 参考来源审计：本轮存在 Riot、Data Dragon、OP.GG 真实读取；官方版本源 provenance 仍需修复，不能称 patch notes 完成。
+- 公共作品/部署成熟度：本轮未提交/未验证公共 CI，生产默认与主工作树前端不变，8E 仍 in_progress，production_media=0。
 
 - RQ-257（2026-09-09恢复）：Docker 已通过定向运行时目录恢复启动，专用 `riftcoach_test` 仅用于回归。B 的 publication_mode、发布引用身份锁内校验、快照+终态+事件原子提交、正常/过期恢复共享事务已实现；C 的 Worker/Reconciler/Recovery 模式分流与后置消息投影状态门已接入。上层 executor 现会把已验证 publication sidecar 重建为 `PendingEvidenceBundleSnapshot`，并与 manifest 摘要/Bundle digest 对齐后交给原子提交；Worker composition 已显式接入证据发布依赖且 legacy 任务保持兼容。真实 API、生产默认和生产 Worker 仍不变。
 - RQ-256公共收口补齐（2026-09-08恢复）：实现99a80d9f3ad062e90659ce374d804e8a358d3e10已由Actions 34113092188同SHA成功验证，收口提交5f7b45e已存在。用户继续推进ADR-0099 B；共享Session快照helper、正常完成/过期恢复共享终态事务、带证据成功提交入口、publication_mode、发布引用字段及显式模式指纹已实现，离线相关回归和指纹兼容检查通过；0013数据库迁移及本轮新增指纹改动尚未在专用PostgreSQL完整复验，因Docker再次崩溃。Docker运行时socket仍可能复现崩溃，不把Docker持久稳定性写成已解决。B剩余发布引用应用层校验、读取/消息投影门和恢复重放故障测试；C、真实API与生产默认保持不动。旧Docker命名卷数据不在当前环境，代码与Git历史保留。
@@ -360,7 +366,7 @@ pause_reason: ""
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
 - 历史下一步（RQ-211）：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`。RQ-211 已在 exact-SHA 公共绿灯的 `c31127b3c780fe4c493966d8b60f942d3b773fd4` 干净快照上执行一次且仅一次普通智谱 `glm-5.3-flash` 请求；回执为 `not_pending`，表示有限观察窗内没有形成待取消读取，因此没有执行 cancel，也不能宣称 provider close/wakeup 已通过。回执 `908` bytes、SHA-256 `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，只含允许列表状态；迭代器、外层 SDK stream wrapper 和组合关闭投影均为 `closed`。候选保持 activation gate `disabled`、`activation_state=candidate`、`execution_allowed=false`、`capabilities.streaming=False` 且未注册；严格 Flash v1 仍 2048/零额外调用，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变。RQ-212 当前离线回放指针见本文最新段落；不自动追加真实请求、G53-7、黄金切片或生产准入。
-- 唯一下一步：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / completed-public / pending-next-decision`。RQ-257 B/C 已完成并通过专用 PostgreSQL 与同 SHA 公共 CI（Actions `34324718617`）；下一步等待新的产品/生产授权，真实 API 与生产默认继续不动。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。先修复真实入口的状态语义、证据绑定、预算与工件重放，再推进合格 Coach/Training 与 live Workbench 消费；未完成前不切生产默认。
 - RQ-205 已覆盖前述公共 CI 待办（历史）：`90242822df0e47304700644572bc12f0a3aa88ad` / Actions `33598541029` 三 job exact-SHA 全绿，公共 pytest `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`，fake/local 协议演练通过。当时的下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`，不自动发真实 recovery。
 - RQ-206 已覆盖上述历史指针：同一干净隔离工作树的诊断提交 `0b2342c240cfdc1801e673e830c9a7f30bed3fbd` / Actions `33603143606` exact-SHA 三 job 全绿；按一次性授权只发出 1 次 `zhipu/glm-5.3-flash` primary。流观察到 reasoning、可见正文、`stop` 与 EOF，但 Usage 缺失、close 失败，90 秒 attempt 门在晚到事件中触发，回执为 `fail_closed / elapsed_limit`，没有第二次 recovery。当时的下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，先离线设计/测试硬墙钟取消与 Usage/终态尾帧处理，不自动重测。
 - RQ-210 最新状态（历史）：隔离分支实现提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 已完成本地与 exact-SHA 公共 CI（Actions `33657368435` 三 job 全绿）；候选 adapter/deadline/v2/real 聚焦共 `73 passed`，扩展相邻回归共 `182 passed, 27 subtests passed`，compileall、diff check、governance 通过。报告字段只反映 session 所拥有的迭代器和外层 SDK stream wrapper，`shared_resource` 仅说明对象别名；不外推底层 HTTP response、非阻塞 close 或唤醒能力。RQ-209 回执不重写，候选/产品边界不变；当前指针见 RQ-212 最新段落。

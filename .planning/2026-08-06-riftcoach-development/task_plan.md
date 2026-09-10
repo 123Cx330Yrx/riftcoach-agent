@@ -1,5 +1,9 @@
 # RiftCoach 持续开发计划
 
+## RQ-258：持续推进真实黄金切片（2026-09-10）
+
+执行 `docs/plans/2026-09-10-real-golden-slice.md`。本轮草稿不构成 completed：四来源投影已出现，但 Coach 拒绝、live UI 未验证、旧草稿回执 passed 撤销通过含义。先修资源/证据/重放入口和检索对象错误，再推进合格报告、A/B/C 与 Workbench 联调。
+
 ## RQ-256 公共收口与B恢复前置
 
 RQ-256公共收口补齐（2026-09-08恢复）：A已同SHA公共成功（99a80d9 / Actions 34113092188）。B已完成共享Session快照helper、正常完成/恢复共享终态事务和带证据成功提交入口；专用测试库回归30项通过，离线回归64项通过。Docker socket稳定性仍是环境风险，不把一次可用窗口写成永久修复。
@@ -129,7 +133,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 ## Current Phase
 
-当前精确 checkpoint：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / completed-public / pending-next-decision`。
+当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
 当前仍处于 `8e-productization`。RQ-212 的候选 evaluation-only 离线回放、RQ-213 的一次真实
 close/wakeup 观察、RQ-214 的 SDK/HTTP 闸门离线预检和 RQ-215 的一次真实 transport-gated
@@ -462,7 +466,7 @@ RQ-217 的一次真实观察与安全回执已完成，仍不注册候选或改�
 
 ## Next Step
 
-当前执行：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-evidence-publication-transaction / completed-public / pending-next-decision`。A已完成同SHA公共CI（99a80d9 / Actions 34113092188）；B事务、publication identity 与模式门已通过专用 PostgreSQL 回归；C已完成 Worker/Reconciler/Recovery 安全分流和消息投影状态门。上层 executor evidence-bound 载荷与持久消息补投已接线，并通过相关回归；下一步等待新的产品/生产授权，未进入真实 API 或生产默认。
+当前执行：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。用户已授权持续做到黄金切片，A/B/C 不重开；执行 RQ-258 计划，先完成真实入口的离线加固与工件重放，再做报告、事务、live Workbench 消费。本轮真实调用已发生但黄金切片未通过；不切生产默认。
 
 RQ-254公共执行完成：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-summary-evidence-bridge / completed-public / pending-evidence-publication-wiring-design`。下一步为同源Evidence应用/快照发布接线离线设计，明确摘要交付、身份/执行权与发布顺序；以下待CI记录为历史。
 

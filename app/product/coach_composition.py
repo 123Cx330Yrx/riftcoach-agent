@@ -18,6 +18,7 @@ from app.rag.provider import KnowledgeProvider
 from app.runtime.coach_context import CoachContextBuilder
 from app.runtime.coach_contract import BATCH_COACH_CONTRACT
 from app.runtime.composition import RuntimeCompositionRoot
+from app.lol.report_renderer import render_deterministic_report
 
 from .recent_review import RecentReviewRuntimeRequestCompiler
 from .recent_review_service import RecentReviewApplicationService, RecentReviewSummaryBuilder
@@ -37,6 +38,7 @@ def build_coach_application(
     memory_manifest_store: MemoryContextManifestWriter | None = None,
     publication_sources: EvidencePublicationSources | None = None,
     publication_writer: EvidencePublicationWriter | None = None,
+    report_renderer=None,
 ) -> RecentReviewApplicationService:
     """Assemble the verified 1.2.0 bundle from already constructed dependencies.
 
@@ -89,6 +91,7 @@ def build_coach_application(
         receipt_writer=FileRunReceiptStore(runs_root),
         publication_sources=publication_sources,
         publication_writer=publication_writer,
+        report_renderer=report_renderer or render_deterministic_report,
     )
 
 
