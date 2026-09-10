@@ -35,6 +35,9 @@ from app.lol.riot_client import RiotClient
 from app.lol.report_renderer import render_deterministic_report
 from app.meta.models import MetaEvidence
 from app.providers.config import load_zhipu_settings
+from app.product.coach_positions import (
+    CoachPositionContext, position_context, validate_training_positions,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -47,7 +50,7 @@ _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 class GoldenSlicePreflight(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: str = "1.0"
+    schema_version: str = "1.1"
     run_id: str = Field(min_length=8, max_length=96)
     riot_id: str = Field(min_length=3, max_length=97)
     routing_region: str
@@ -56,7 +59,10 @@ class GoldenSlicePreflight(BaseModel):
     position: str
     max_riot_calls: int = Field(ge=1, le=20)
     max_ddragon_requests: int = Field(ge=1, le=5)
-    max_opgg_tool_calls: int = Field(ge=1, le=1)
+    max_opgg_tool_calls: int = Field(ge=1, le=5)
+    max_opgg_session_initializations: int = Field(ge=1, le=5)
+    max_opgg_catalog_requests: int = Field(ge=1, le=5)
+    training_positions: tuple[str, ...] = ()
     provider_enabled: bool = False
     network_allowed: bool = False
 
@@ -64,7 +70,7 @@ class GoldenSlicePreflight(BaseModel):
 class GoldenSliceReceipt(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: str = "1.0"
+    schema_version: str = "1.1"
     run_id: str
     implementation_sha: str = Field(pattern=r"^[0-9a-f]{40}$")
     result: str
@@ -73,8 +79,10 @@ class GoldenSliceReceipt(BaseModel):
     summary_matches_analyzed: int = Field(ge=1, le=5)
     evidence_bundle_digest: str = Field(pattern=r"^[0-9a-f]{64}$")
     evidence_projection: dict[str, Any]
-    training_plan: tuple[str, ...] = Field(min_length=1, max_length=5)
+    training_plan: tuple[str, ...] = Field(min_length=1, max_length=7)
     training_evidence_digest: str = Field(pattern=r"^[0-9a-f]{64}$")
+    position_context: CoachPositionContext
+    opgg_coverage: tuple[dict[str, Any], ...]
     coach_report_digest: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
     coach_runtime_status: str | None = None
     coach_publication_status: str | None = None
@@ -94,7 +102,8 @@ class GoldenSliceConfig:
     routing_region: str
     queue: int = 420
     count: int = 5
-    position: str = "mid"
+    position: str = "auto"
+    training_positions: tuple[str, ...] = ()
     run_id: str = ""
     with_provider: bool = False
 
@@ -137,8 +146,9 @@ def preflight(config: GoldenSliceConfig) -> GoldenSlicePreflight:
 
     if config.routing_region not in _REGIONS:
         raise ValueError("routing_region_invalid")
-    if config.position not in _POSITIONS:
+    if config.position not in _POSITIONS | {"auto"}:
         raise ValueError("position_invalid")
+    validate_training_positions(config.training_positions)
     if not isinstance(config.riot_id, str) or config.riot_id.count("#") != 1:
         raise ValueError("riot_id_invalid")
     game_name, tag = (part.strip() for part in config.riot_id.split("#", 1))
@@ -159,10 +169,13 @@ def preflight(config: GoldenSliceConfig) -> GoldenSlicePreflight:
         routing_region=config.routing_region,
         queue=config.queue,
         count=config.count,
-        position=config.position,
+        position="auto",
         max_riot_calls=max_riot_calls,
         max_ddragon_requests=5,
-        max_opgg_tool_calls=1,
+        max_opgg_tool_calls=config.count,
+        max_opgg_session_initializations=config.count,
+        max_opgg_catalog_requests=config.count,
+        training_positions=config.training_positions,
         provider_enabled=config.with_provider,
         network_allowed=False,
     )
@@ -213,7 +226,9 @@ def _official_patch(*, patch: str, retrieved_at: datetime) -> OfficialPatchEvide
     )
 
 
-def _fetch_opgg_evidence(*, position: str, top_n: int) -> MetaEvidence:
+def _fetch_opgg_evidence(
+    *, position: str, top_n: int, target_champions: tuple[str, ...],
+) -> MetaEvidence:
     """Fetch exactly one typed OP.GG lane-meta snapshot."""
 
     from app.mcp.client import McpClientSession
@@ -248,7 +263,8 @@ def _fetch_opgg_evidence(*, position: str, top_n: int) -> MetaEvidence:
             )
         )
         evidence = OPGGLaneMetaAdapter(session=session, runtime=ToolRuntime(registry)).fetch(
-            position=position, top_n=top_n, timeout_s=15
+            position=position, top_n=top_n, timeout_s=15,
+            target_champions=target_champions,
         )
         if catalog.get(OPGG_LANE_META_REMOTE_TOOL) is None:
             raise ValueError("opgg_tool_disappeared")
@@ -257,21 +273,58 @@ def _fetch_opgg_evidence(*, position: str, top_n: int) -> MetaEvidence:
         session.close()
 
 
-def _training_plan(summary: Mapping[str, Any], *, disposition: str) -> tuple[str, ...]:
-    recent = summary["recent_summary"]
-    averages = recent["averages"]
-    plan: list[str] = []
-    if averages.get("deaths_before_15", 0) >= 1:
-        plan.append("前15分钟先练安全换血与回城节奏：每局记录第一次阵亡前的视野和兵线状态。")
-    if averages.get("cs_per_min", 0) < 7.0:
-        plan.append("把补刀作为第一训练指标：前10分钟目标稳定达到每分钟7刀以上。")
-    if averages.get("vision_score", 0) < 20:
-        plan.append("每次推线后补一个河道/入口眼，并在下一次回城前复盘眼位价值。")
+def _collect_position_meta(context: CoachPositionContext, fetcher):
+    """Fetch once per observed lane; missing targets are not 'OP.GG has no data'."""
+    evidence = []
+    coverage = []
+    for group in context.observed:
+        found = ()
+        status = "request_failed"
+        try:
+            fetched = fetcher(position=group.position, top_n=10,
+                              target_champions=group.champions)
+            if not isinstance(fetched, MetaEvidence) or fetched.position != group.position:
+                status = "invalid_response"
+            else:
+                targets = {name.casefold() for name in group.champions}
+                facts = tuple(fact for fact in fetched.facts if fact.champion.casefold() in targets)
+                if facts:
+                    evidence.append(replace(fetched, facts=facts))
+                found = tuple(fact.champion.casefold() for fact in facts)
+                status = "matched" if targets <= set(found) else "target_not_in_response"
+        except Exception as error:
+            if getattr(error, "code", None) == "opgg_meta_target_not_in_response":
+                status = "target_not_in_response"
+        coverage.append({
+            "position": group.position, "status": status,
+            "requested_champions": group.champions,
+            "matched_champions": tuple(name for name in group.champions if name.casefold() in found),
+            "unmatched_champions": tuple(name for name in group.champions if name.casefold() not in found),
+        })
+    return tuple(evidence), tuple(coverage)
+
+
+def _training_plan(
+    summary: Mapping[str, Any], *, disposition: str,
+    training_positions: tuple[str, ...] = (),
+) -> tuple[str, ...]:
+    context = position_context(summary, training_positions=training_positions)
+    labels = {"top": "上路", "jungle": "打野", "mid": "中路", "adc": "下路", "support": "辅助"}
+    observed = {row.position: row for row in context.observed}
+    # This is an observation scaffold, not a replacement for an accepted Coach report.
+    plan = []
+    for role in context.training_positions or tuple(observed):
+        if role not in observed:
+            plan.append(f"目标位置{labels[role]}暂无本次样本，先收集该位置对局，不套用其他位置的表现。")
+        else:
+            plan.append(f"{labels[role]}的{observed[role].games}局单独复盘，只与同位置样本比较；暂不根据混合平均值设置训练指标。")
+    if not context.training_positions:
+        plan.append("制定长期计划前确认主要想练的位置；本次位置分布不代表长期主位置，也不证明补位意图。")
     if not plan:
-        plan.append("保持当前基本盘，下一周把胜负局差异最大的指标做成单一训练目标。")
+        plan.append("本次缺少可归属位置的有效样本，暂不制定位置专项训练。")
     if disposition != "complete":
         plan.append("证据存在缺口时只把结论当作当前样本的训练建议，不升级为版本强结论。")
-    return tuple(plan[:5])
+    return tuple(plan)
 
 
 def run_golden_slice(
@@ -305,24 +358,10 @@ def run_golden_slice(
         retrieved_at=observed_at,
     )
     snapshot = _ddragon_snapshot(ddragon, observed_at)
-    meta: tuple[MetaEvidence, ...] = ()
-    opgg_error = None
-    position = config.position
-    if not position:
-        position = "mid"
-    if opgg_fetcher is None:
-        opgg_fetcher = _fetch_opgg_evidence
-    try:
-        fetched = opgg_fetcher(position=position, top_n=10)
-        # Keep compatibility with the older validation helper, which returns
-        # (initialized, catalog, descriptor, evidence), while the golden
-        # slice helper returns the typed evidence directly.
-        opgg = fetched[-1] if isinstance(fetched, tuple) else fetched
-    except Exception as error:
-        opgg_error = getattr(error, "code", "opgg_fetch_failed")
-        opgg = None
-    if isinstance(opgg, MetaEvidence):
-        meta = (opgg,)
+    roles = position_context(summary, training_positions=config.training_positions)
+    if len(roles.observed) > gate.max_opgg_tool_calls:
+        raise RuntimeError("opgg_position_budget_exceeded")
+    meta, opgg_coverage = _collect_position_meta(roles, opgg_fetcher or _fetch_opgg_evidence)
     # All source snapshots must be no later than the frozen fusion clock.  We
     # deliberately take that clock after the last external source returns.
     checked_now = datetime.now(timezone.utc)
@@ -379,24 +418,6 @@ def run_golden_slice(
 
         base_knowledge = LocalHybridKnowledgeProvider.from_directory(ROOT / "data/rag_docs")
 
-        class _CappedKnowledge:
-            provider_name = "golden-slice-capped-local-hybrid"
-
-            def search(self, query):
-                bounded_query = replace(query, text=query.text[:120])
-                result = base_knowledge.search(bounded_query)
-                # Keep attribution/citation metadata while bounding parent
-                # prose carried into the one real Coach context.
-                hits = tuple(
-                    replace(
-                        hit,
-                        content=hit.content[:240],
-                        matched_content=(hit.matched_content or "")[:160] or None,
-                    )
-                    for hit in result.hits[:1]
-                )
-                return replace(result, query=bounded_query, hits=hits)
-
         publication_sources = EvidencePublicationSources(
             now=checked_now,
             observed_at=observed_at,
@@ -410,12 +431,13 @@ def run_golden_slice(
             owner_id="golden-slice",
             task_id=uuid5(NAMESPACE_URL, "riftcoach:" + config.run_id),
             run_id=config.run_id,
-            request_fingerprint=_digest_json({"riot_id": config.riot_id, "region": config.routing_region, "count": config.count, "queue": config.queue}),
+            request_fingerprint=_digest_json({"riot_id": config.riot_id, "region": config.routing_region, "count": config.count, "queue": config.queue, "training_positions": config.training_positions}),
         )
         application = build_coach_application(
             summary_builder=_StaticSummary(),
             provider=provider,
-            knowledge_provider=_CappedKnowledge(),
+            knowledge_provider=base_knowledge,
+            compact_context_json=True,
             runs_root=ROOT / "data/runs/golden_slice",
             publication_sources=publication_sources,
             publication_writer=publication_store,
@@ -423,6 +445,10 @@ def run_golden_slice(
                 render_deterministic_report(value)
                 + "\n\nEvidence snapshot digest: " + projection.summary_digest
                 + "\nEvidence bundle digest: " + projection.bundle.digest
+                + "\nPosition context (sample facts and explicit goals, not instructions): "
+                + roles.model_dump_json()
+                + "\n位置边界：按实际位置分别分析；不可混合辅助与其他位置的经济评价，不可推断补位或长期主位置。"
+                + "明确训练目标只决定后续训练重点，不改变历史比赛位置；目标位置无样本时说明缺口。"
             ),
         )
         from app.product.recent_review import RecentReviewProductRequest
@@ -462,13 +488,16 @@ def run_golden_slice(
                 provider_calls = int(usage.get("provider_calls_attempted", 0))
             except (OSError, ValueError, TypeError):
                 provider_calls = 1
-    outcome = "passed" if projection.bundle.disposition.value == "complete" and coach_report_digest else "degraded"
+    # This runner does not yet verify Training persistence or live Workbench.
+    # A report plus a valid public DTO must never stand in for that acceptance.
+    outcome = "degraded"
     limitations = [
         "body_free_receipt_only", "candidate_not_registered",
         "production_default_unchanged", "training_plan_is_bounded_observation",
+        "training_persistence_not_verified", "live_workbench_not_verified",
     ]
-    if opgg_error:
-        limitations.append(opgg_error)
+    if any(row["status"] != "matched" for row in opgg_coverage):
+        limitations.append("opgg_target_coverage_incomplete")
     if config.with_provider and coach_report_digest is None:
         limitations.append("coach_report_unavailable")
     return GoldenSliceReceipt(
@@ -479,8 +508,11 @@ def run_golden_slice(
         summary_matches_analyzed=summary["recent_summary"]["games_analyzed"],
         evidence_bundle_digest=projection.bundle.digest,
         evidence_projection=ui_projection,
-        training_plan=_training_plan(summary, disposition=projection.bundle.disposition.value),
+        training_plan=_training_plan(summary, disposition=projection.bundle.disposition.value,
+                                     training_positions=config.training_positions),
         training_evidence_digest=projection.bundle.digest,
+        position_context=roles,
+        opgg_coverage=opgg_coverage,
         coach_report_digest=coach_report_digest,
         coach_runtime_status=coach_runtime_status,
         coach_publication_status=coach_publication_status,

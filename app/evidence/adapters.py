@@ -80,7 +80,7 @@ def riot_match_from_summary_row(
         "queue_id": row.get("queue_id"),
         "champion_id": row.get("champion_id"),
         "champion_name": champion_name,
-        "position": _position(row.get("role")),
+        "position": normalize_riot_position(row.get("role")),
         "patch_version": patch_version,
         "win": row.get("win"),
         "duration_seconds": row.get("game_duration_seconds"),
@@ -144,7 +144,8 @@ def _observed_at(value: object) -> datetime:
     raise EvidenceAdapterError("riot_observed_at_invalid")
 
 
-def _position(value: object) -> str:
+def normalize_riot_position(value: object) -> str:
+    """Normalize an observed role, never infer a player's preferred role."""
     if not isinstance(value, str):
         raise EvidenceAdapterError("riot_position_invalid")
     normalized = _ROLE_MAP.get(value.strip().casefold())
@@ -168,4 +169,5 @@ __all__ = [
     "EvidenceAdapterError",
     "data_dragon_snapshot_from_identity",
     "riot_match_from_summary_row",
+    "normalize_riot_position",
 ]

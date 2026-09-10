@@ -1,5 +1,9 @@
 # RiftCoach 持续开发发现
 
+## RQ-258 同日位置诊断与无损压缩
+
+v14仅保留mid前十条，实际有Camille support及榜单外中路英雄；这是本地选择范围缺口，不足以归因OP.GG数据缺失。现按实际分路分组并在完整响应中筛目标，目标位置与实际位置分离。原 `_training_plan` 对混合均值套7刀阈值已移除，加入按位置统计及缺样本提示。v14原始上下文12286单位，事实JSON无损压缩后10576，无省略；仍需验证完整检索后预算，不能宣称真实报告修复。随意知识截断已移除。长期历史/Memory/交互目标尚未实现，详见RQ-258计划。
+
 ## RQ-258 当前黄金切片发现（2026-09-10）
 
 新入口草稿缺少实际预算拦截/身份预约与失败裁决；v1/v2/v4/v8/v10 的 passed 不能充当验收结论。静态16.18与比赛16.17不一致；官方版本feed不等于patch notes；OP.GG快照抓取时间必须早于融合时间。Coach `_CappedKnowledge` 错把 dataclass 当作 Pydantic；v8 context_budget_exceeded、v10 final_response 后 draft_preparation_failed。先离线修复并重放已存在私有 Summary，不再盲目重复获取。完整细节见 RQ-258 计划。

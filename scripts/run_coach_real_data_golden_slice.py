@@ -27,7 +27,10 @@ def main() -> int:
     parser.add_argument("--riot-id", required=True)
     parser.add_argument("--region", choices=("americas", "asia", "europe", "sea"), required=True)
     parser.add_argument("--count", type=int, choices=tuple(range(1, 6)), default=5)
-    parser.add_argument("--position", choices=("top", "mid", "jungle", "adc", "support"), default="mid")
+    parser.add_argument("--position", choices=("auto", "top", "mid", "jungle", "adc", "support"), default="auto",
+                        help="Legacy option; data selection always follows actual match positions.")
+    parser.add_argument("--training-position", choices=("top", "mid", "jungle", "adc", "support"),
+                        action="append", default=[], help="Explicit training goal; repeat for multiple positions.")
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--with-provider", action="store_true")
@@ -38,6 +41,7 @@ def main() -> int:
         routing_region=args.region,
         count=args.count,
         position=args.position,
+        training_positions=tuple(args.training_position),
         run_id=args.run_id,
         with_provider=args.with_provider,
     )

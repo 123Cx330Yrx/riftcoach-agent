@@ -39,6 +39,7 @@ def build_coach_application(
     publication_sources: EvidencePublicationSources | None = None,
     publication_writer: EvidencePublicationWriter | None = None,
     report_renderer=None,
+    compact_context_json: bool = False,
 ) -> RecentReviewApplicationService:
     """Assemble the verified 1.2.0 bundle from already constructed dependencies.
 
@@ -63,7 +64,8 @@ def build_coach_application(
         raise ValueError("Memory repository and manifest store must be supplied together")
 
     context_builder: CoachContextBuilder | MemoryAwareContextBuilder
-    context_builder = CoachContextBuilder(coach_contract=BATCH_COACH_CONTRACT)
+    context_builder = CoachContextBuilder(coach_contract=BATCH_COACH_CONTRACT,
+                                         compact_json=compact_context_json)
     if memory_repository is not None and memory_manifest_store is not None:
         context_builder = MemoryAwareContextBuilder(
             delegate=context_builder,
