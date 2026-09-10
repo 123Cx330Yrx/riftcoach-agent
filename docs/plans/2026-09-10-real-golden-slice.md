@@ -223,3 +223,14 @@ HTTP5个诊断文件均各1次实际HTTP请求、无事件超限。初稿请求2
 验证118 passed。保存8c02112的真实Summary/Bundle仅离线预算重放：9模拟请求、8成功工具、一次修订，低分仍evaluation_failed；初始14966/最终26774（限28000），输入上界30856/40894/47336/53778/49536/49768/28344/49536/49768，全部低于64000，加输出预约73728低于649728；所有请求含原来源身份和位置策略。原85分/9调用/8工具/一次修订/90秒单次/120秒Agent/480秒总执行限制均不变。
 
 本批真实调用新增0，累计仍35次Provider尝试，旧超时用量未知。下一步本提交公共检查与新鲜协议后的一次有界语义观察；OP.GG到建议是否成立仍待实际报告，Training需要本人档案与目标，live Workbench尚未验证，8E不前移。
+
+
+### c4a169b真实响应头等待超时（2026-09-10）
+
+实现c4a169b5d1663677b796ef16711beff501d3f187 / Actions34460944693三job成功：pytest2969 passed、152 skipped、127 subtests passed，PostgreSQL208 passed。之后新鲜协议3调用、输入1009/输出115 tokens通过。运行golden_20260910_saved_c4a169b，合同1.3.5，仍复用原五局；Riot0、静态1、官方1、OP.GG两位置各一次工具/初始化/目录。Bundle 00a7059dd79751079a6a34ba4676cb24975ca87c1ccd48b2639f0bb198099b17。
+
+Coach2次尝试、1次响应、4检索全部成功。第一请求21.437秒返回tool_calls，已知输入7114/输出584 tokens；第二请求90.016秒timeout，用量未知。Runtime111.516秒，rejected/draft_preparation_failed，无初稿、评分或修订。不能称1.3.5语义策略失效或通过；尚未进入能观察效果的阶段。本轮协议3+Coach2共5次，本接续累计40次Provider尝试；累计三次超时请求用量未知，不宣称完整累计成本。
+
+新增直接阶段证据：http-002.json在elapsed16ms完成send_request_body并开始receive_response_headers，elapsed90016ms触发receive_response_headers.failed，等待90000ms；没有receive_response_body阶段。http-001.json实际记录proxy.start_tls.started/complete（1875→1922ms），TCP1875ms前完成且第一响应成功；TLS事件名修复已在真实环境生效。第二请求没有新建连接/TLS事件，符合复用连接路径，缺失阶段不能补写0ms。此次只能定位客户端等待响应头超时，不能从该记录区分代理、网络与上游排队/推理/生成，亦不回填此前两次无阶段记录的超时根因。
+
+原预约、诊断、Trace与失败回执保留；独立golden_manual_reviews绑定Trace摘要并记录未进入评分。没有追加重试、增加90/120/480秒限制、改模型默认或重跑旧四场景。下一步先审查已有候选stream adapter的首个事件/文本/完整响应诊断能力和有界使用条件，以决定是否能取得更有区分力的证据；不能把流式可用直接当作生产采用或延迟已修复。OP.GG具体建议效果仍待观察，Training与live Workbench仍未验收，8E不前移。
