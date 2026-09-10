@@ -1,6 +1,6 @@
 # RiftCoach 主路线 v1.1（阶段 0—8）
 
-当前接续：c4a169b/Actions34460944693三job同SHA成功（pytest2969、152 skips、127 subtests；PostgreSQL208），1.3.5来源建议策略已公共验证。新鲜协议3调用后，保存五局Coach2次尝试/1响应/4成功检索，第二次请求发送完成后等待响应头90000ms而超时，未进入评分、无初稿。HTTP阶段证据已定位失败在响应头等待，不能区分代理/网络与上游处理，也不能断言策略质量失败。本批新增5次Provider尝试，累计40，第三次历史超时用量未知。不连续重跑或扩预算；下一步审查现有流式诊断是否能补首个响应/完整生成时序。OP.GG建议效果、Training/live Workbench仍未验收，8E保持in_progress。
+当前接续：流式诊断复用审查完成（主Agent代码/历史证据核查、Luna独立边界审计）。旧low/2048探针和固定recovery candidate合同不能直接套当前high/8192/1.3.5。底层ZhipuStreamAdapter经零网络假SDK验证可保留high/8192/90秒并区分reasoning/content/terminal/usage；产品streaming标志仍false。RQ-217仅证明受控transport gate客户端唤醒，不能外推自然阻塞取消。失败请求完整消息未保存，不能宣称精确重放。已定义独立单请求、父进程硬截止、仅安全时间/计数的报告形状诊断规范；下一步实现其离线入口与失败测试，真实调用新增0、累计40，8E保持in_progress。
 
 
 接续最新：d605c04/Actions34441904153已同SHA三job成功。随后发现评分/修订遗漏扩展来源，新增独立Coach1.3.1/Skill0.5.1/Program2.3.1，把同一deterministic_report作为数据贯穿9个请求；旧1.3.0/1.2.0不变，新补丁待独立公共验证。保存五局完整RAG预算对照仍通过且低分拒绝，无新增真实模型/玩家API/OP.GG。Training等待本人档案或观摩范围澄清，不影响报告准备。

@@ -234,3 +234,25 @@ Coach2次尝试、1次响应、4检索全部成功。第一请求21.437秒返回
 新增直接阶段证据：http-002.json在elapsed16ms完成send_request_body并开始receive_response_headers，elapsed90016ms触发receive_response_headers.failed，等待90000ms；没有receive_response_body阶段。http-001.json实际记录proxy.start_tls.started/complete（1875→1922ms），TCP1875ms前完成且第一响应成功；TLS事件名修复已在真实环境生效。第二请求没有新建连接/TLS事件，符合复用连接路径，缺失阶段不能补写0ms。此次只能定位客户端等待响应头超时，不能从该记录区分代理、网络与上游排队/推理/生成，亦不回填此前两次无阶段记录的超时根因。
 
 原预约、诊断、Trace与失败回执保留；独立golden_manual_reviews绑定Trace摘要并记录未进入评分。没有追加重试、增加90/120/480秒限制、改模型默认或重跑旧四场景。下一步先审查已有候选stream adapter的首个事件/文本/完整响应诊断能力和有界使用条件，以决定是否能取得更有区分力的证据；不能把流式可用直接当作生产采用或延迟已修复。OP.GG具体建议效果仍待观察，Training与live Workbench仍未验收，8E不前移。
+
+
+### 现有流式能力审查与单请求诊断规范（2026-09-10）
+
+结论：可以复用底层ZhipuStreamAdapter与父子进程隔离模式；不能直接执行旧流式探针，也不能把流式接入当前Coach产品Runtime。当前记录只证明等待响应头90秒超时；首个SSE事件、首正文和终态分别记录，才能判断是否先有输出而整体生成较慢，但仍不能辨别供应商内部排队/推理原因。
+
+来源核查：glm53_flash_stream_visible_completion_probe固定low/2048、45秒、首正文即关闭；terminal_completion_probe同样low/2048且固定旧输入。candidate_stream_contract.CandidateZhipuStreamTransport严格绑定独立fresh-recovery candidate identity（90秒Agent/120秒transport等），不是当前Coach1.3.5。直接换入会混淆模型策略和历史实验身份。底层provider-local stream_adapter.stream_session可显式使用当前high候选Provider，include_usage_tail仅诊断选项。
+
+生命周期证据复核：ADR-0083/RQ-213为not_pending，未测到挂起读取；RQ-215见2026-09-03-glm53-candidate-transport-gate-real-observation.md，受控首帧闸门出现client_wakeup_close_race；RQ-217见同名-rq217.md，经reader-owned修复后受控闸门得到client_wakeup_clean。主Agent已直接读原记录。RQ-217是有价值的客户端证据，不能省略或否定；但不等于真实自然阻塞SDK读取一定能被close唤醒，所以独立诊断仍需父进程硬截止兜底。
+
+零网络可行性验证：使用现有tests/test_zhipu_stream_adapter.py的ClosableStream/FakeClient，创建high候选Provider与max_tokens8192/timeout90请求，通过stream_session(include_usage_tail=True)消费reasoning/content/stop/usage四个模拟事件。检查真实生成的SDK payload仍high/8192/90、stream=true、恰好1次create、资源已close、产品capabilities.streaming仍false。未打印任何正文；这是参数/事件兼容性验证，不是真实延迟或质量证据。当前没有新代码实现或测试套件修改。
+
+最小诊断规范（待离线实现，尚不可真实执行）：
+
+1. 使用新独立实验ID，绑定当前Coach1.3.5摘要与实现SHA。失败c4a169b只留Summary/确定性报告/Trace，没有完整第二次模型消息和检索回包，不能重建为同一请求。可从已验签的保存报告输入及检索证据构造一个新的报告形状请求，记录新的完整请求摘要、输入来源摘要和构造方式；明确newly_constructed_diagnostic，不叫精确失败重放。历史快照只作为诊断材料，绝不重新宣称为当前Meta建议。
+2. 默认零网络；单次显式执行只允许1个模型请求、0次Riot/静态/官方/OP.GG请求、0次工具执行，不进入Agent/RAG重查/评分/修订/发布流程。固定high、输出8192、输入不超64000、合计上界72192、SDK额外重试0，不启recovery。若输入不完整或不能验签，调用前拒绝。
+3. 请求90秒上界不增加；父进程从子进程启动开始计总时限，子进程打开流/读取/收尾都用剩余时间，父进程到期终止并回收子进程，不能依赖一个可能阻塞的close实现总时限。结束后不得自动再发请求；终止本地进程不代表上游已停止或计费已取消。
+4. 复用HTTP阶段白名单，加单调first_event_ms、first_reasoning_ms、first_visible_content_ms、terminal_ms、eof_ms、close_ms、total_ms；首事件不等于首正文，非空reasoning不等于可用报告。保留安全事件计数/字符数/finish枚举/实际Usage和资源状态，缺失为null/unknown，不存正文、reasoning、工具参数、headers、request ID或异常文本。调用前持久预约；父进程负责create-only最终回执，即使子进程被杀仍记录已尝试和未知用量。
+5. stop、EOF、Usage与成功close分别判断；只有首正文不算完整生成，finish=length/tool_calls或缺Usage不算完整报告质量通过。正常流结束也仅是延迟观察，不能发布为黄金报告或采用产品streaming。
+6. 离线必须验证：开启前阻塞、首事件前阻塞、已有reasoning但无正文、已有正文无终态、终态无Usage、关闭阻塞、子进程异常/超限、敏感哨兵过滤，以及输入身份拒绝前零调用。以假SDK和受控子进程验证，不用真实睡眠或重复模型请求模拟失败。
+
+本轮主Agent独立复核Luna结果；无新增真实Provider调用，累计仍40次，历史三次超时用量未知。48de155文档提交Actions34462088969已成功；本审查未变更产品默认或旧合同。下一步仅实现上述独立诊断的离线入口和比例测试；公共检查后才考虑一次真实诊断。OP.GG具体建议、Training和live Workbench仍未完成，8E不前移。
