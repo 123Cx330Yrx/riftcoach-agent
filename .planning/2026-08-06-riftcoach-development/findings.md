@@ -6030,3 +6030,23 @@ Luna独立离线probe使用已保存player_summary与当前ADVICE合同，未传
 主Agent指出“视野意识在辅助局90分体现”为统计→能力跃迁，“输局发育与输出同时塌陷”忽略输局2中路+1辅助对CS/GPM/DPM的混杂；Luna起初沿用整体通过判断，经针对性独立复核确认应收窄。两项自动漏检仍是未解决的自动质量边界，不伪装已由评分器修好。人工副本把它们改成单局事实/同位置描述，并去掉无依据风格相近、区分观摩基线与个人指标；原报告、评估、manifest不改写。副本C:/Users/33502/Documents/Codex/2026-09-10/new-chat-10/outputs/riftcoach-showmaker-reviewed-1cd694d.md，SHA8485a643fcc2578034e30ac7b74a3c98bebfb2706ef32152ad1402fe59f3d5ef，2249字符；人工副本未被模型重评，不能移作原95分产物。独立manual_review绑定原报告/Trace/副本摘要，original_accepted=false。
 
 后续接线已只读复核：POST /reviews/recent先创建认证owner/task/run绑定，Workbench通过profile latest links读取该任务证据；Training需明确本人self关系和USER_STRUCTURED_INPUT目标，候选事务经确认后materialize。现有ShowMaker只作观摩，不能凭广泛执行授权推断用户身份、创建self或使用观摩中位数作个人训练线。已再次在推进到此节点时询问本人Riot ID/区服/训练位置或明确只做观摩；尚无回复。授权继续有效，不再询问普通实施许可，但缺失身份不能猜。没有数据库写入、新部署、默认切换，8E未完成。
+
+
+### 2026-09-11：ShowMaker观摩范围明确与归档工作台
+
+2026-09-11用户明确沿用ShowMaker，用户无外服账号不再作为推进阻塞；范围为公开观摩复盘、示例练习和工作台验证，不创建用户self身份或个人Training记录。继续独立工作树D:/riftcoach-agent-rq192-pr，主树为旧状态且有用户工作，不回写主树。1cd694d已完成报告生成与人工副本，自动质量漏检仍保留。当前实现本地归档导出/工作台导入：以既有Summary/同源清单/manual review摘要校验，展示分位置数据、校订报告、归档来源和仅本页练习；不冒充authenticated API/DB/live消费。下一步完成真实归档文件的浏览器导入、交互和视觉核查，随后公共验证；当前新增Provider0、累计68，8E保持in_progress。
+
+用户纠正“继续用showmaker的，你不是知道我没有外服号吗”，随后授权继续。该决定取代昨日等待本人Riot ID/目标的阻塞；不再重复索取外服账号。个人self Training合同保留，观摩目标用示例练习表达，不把他人统计写为用户基线。当前产品目标仍在黄金切片内，完整持久化与authenticated live Workbench尚未验收，不能通过改口径将归档预览当作全部完成。
+
+实现顺序：离线导出器复用旧同源校验及人工副本绑定，只导出展示允许字段；工作台新增显式?view=observation入口，本地文件解析/报告摘要校验、React文本渲染、位置筛选及内存练习勾选。无认证网络、无个人训练读写，刷新清空勾选。过期OP.GG标归档快照，原95分与人工副本未重评分开。前端6项反例/成功检查、相邻共24项通过；独立无API浏览器测试1项通过。默认测试4174端口EACCES，独立观摩配置5186通过，不修改系统端口或安全配置。进一步真实数据UI验收进行中。
+
+
+### 观摩工作台本地验收（2026-09-11）
+
+在真实归档的浏览器验收中确认5局、2胜3负、中路4局/辅助1局，筛选与勾选正确，控制台无错误。手机390px宽度最初出现grid子项最小宽度引发的横向溢出；增加min-width:0后无页面溢出。关闭本页不需要的panel背景模糊，修复全页截图的长报告缺块。桌面1440px和手机390px已人工查看截图。
+
+代码地图：app/evaluation/observation_archive.py负责复用源清单并导出；scripts/export_showmaker_observation.py为create-only入口；web/src/workbench/observationArchive.ts验证允许的显示结构、报告内容摘要和练习与位置关联；ObservationWorkbench.tsx只消费本地文件。流程为原run+人工校订记录→归档JSON→浏览器本地校验→位置表/报告/来源/本页练习。导出拒绝覆盖，导入失败清除旧结果，报告通过React纯文本渲染，浏览器SHA用于内容完整性检查而非签名认证。
+
+运行：在仓库执行python -m scripts.export_showmaker_observation（参数以--help为准），在web启动现有开发服务器，打开/?view=observation后选择导出的JSON；不需要外服账号。截图位于用户outputs/showmaker-workbench-desktop.png及showmaker-workbench-mobile.png。练习刷新清空，归档来源时间不刷新；该页面不承担个人训练持久化或authenticated API/DB消费，无法据此宣布8E完成。面试表述可说“已实现有来源校验的ShowMaker观摩归档消费与位置隔离”，不可说“生产闭环全部完成”。
+
+前端完整单元276项通过；随后新增练习跨位置拒绝反例，相关7项通过。独立浏览器1项通过（包含移动端无溢出），类型检查与build通过；两张既有候选背景素材build警告不属于本页。未新增Provider或玩家API调用，累计Provider保持68。

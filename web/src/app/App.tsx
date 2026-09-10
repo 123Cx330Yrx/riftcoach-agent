@@ -68,6 +68,7 @@ import {
 } from "../cinematic/portalActivation"
 import { PortalActivationOverlay } from "../components/PortalActivationOverlay"
 import { RegionWallpaperLab } from "../components/RegionWallpaperLab"
+import { ObservationWorkbench } from "../components/ObservationWorkbench"
 
 export interface LiveWorkbenchControllerLike {
   readonly snapshot: LiveWorkbenchSnapshot
@@ -676,6 +677,7 @@ function AppFrame({
           </m.main>
           <footer className="app-footer">
             <span>{t("app.footer_product")}</span>
+            <a href="/?view=observation">ShowMaker 观摩归档</a>
             <span>{mode === "live" ? t("app.footer_live") : t("app.footer_fixture")}</span>
           </footer>
         </div>
@@ -685,6 +687,7 @@ function AppFrame({
 }
 
 function AppSurface({ scenarioOverride, createLiveController, createAuthSessionClient, createPlayerAccessApi, surfaceOverride }: AppProps) {
+  if (window.location.search === "?view=observation") return <ObservationWorkbench />
   if (getWallpaperLabSurface()) {
     return <RegionWallpaperLab onEnter={(region) => { window.location.assign(productJourneyUrl({ stage: "account", region })) }} />
   }
