@@ -1,6 +1,6 @@
 # RiftCoach 持续开发进度
 
-当前接续：47e8914/Actions34442973048已同SHA三job全绿，随后真实协议3调用通过；保存五局的Coach尝试2调用，在第二次60秒等待处timeout，4检索成功、无报告。四类来源齐备，中/辅五英雄OP.GG全部命中，但Meta缺精确版本。新增独立1.3.2将单次60→90秒分配在原Agent120/整次480秒内，其余预算/质量门不变；本地已验证，待该补丁公共CI与新鲜协议。累计本批真实Provider尝试5次，超时请求用量未知。Training等待本人档案或观摩范围澄清；8E仍in_progress。
+当前接续：2531f7a/Actions34444395200已同SHA三job全绿，随后真实协议3调用通过；保存五局Coach完成5调用、4检索、一次修订，自动88→98分并生成报告。第二请求60.94秒正常返回，整次112.38秒；但人工发现未指定目标却默认中单主位、排除辅助，且OP.GG仅声明边界未实际用于建议，黄金验收不通过。新增独立1.3.3位置意愿可信策略贯穿初稿/评分/修订，旧资产和全部预算不变；离线已验证，待本补丁公共CI。Training仍等待本人档案或观摩范围澄清；8E仍in_progress。
 
 
 接续最新：d605c04/Actions34441904153已同SHA三job成功。随后发现评分/修订遗漏扩展来源，新增独立Coach1.3.1/Skill0.5.1/Program2.3.1，把同一deterministic_report作为数据贯穿9个请求；旧1.3.0/1.2.0不变，新补丁待独立公共验证。保存五局完整RAG预算对照仍通过且低分拒绝，无新增真实模型/玩家API/OP.GG。Training等待本人档案或观摩范围澄清，不影响报告准备。
@@ -6364,3 +6364,18 @@ RQ-250（2026-09-06）：RQ-250工具批量预算修复完成本地、公共和�
 - C 已完成 Worker、Reconciler、ExpiredRecovery 的 evidence-bound 分流和消息投影 pending→completed 状态门；旧 legacy 入口对 evidence-bound 任务 fail-closed，不能假成功。
 - 证据：PostgreSQL 42 passed；离线相关 104 passed；Worker/Executor/Reconciler 组合 128 passed；产品垂直 PostgreSQL 1 passed；py_compile、governance、diff-check 通过。
 - 上层 executor 已从已验证 publication sidecar 重建完整 evidence-bound 发布载荷并接入 Worker 原子提交；TerminalTurnWriter 已新增从持久化任务绑定和报告工件重建并幂等写入 pending 消息的受控入口，Worker 每轮以有界批量自动调用。B/C 代码闭环已完成，下一步为公共验证，不调用真实 API、不切生产默认。
+
+
+### 2531f7a真实报告与人工语义复核（2026-09-10）
+
+2531f7a7f62473a95aed54b7f4e4cdbf18c36a63 / Actions34444395200三job已同SHA成功；新鲜协议3调用、输入1007/输出96 tokens通过。保存五局运行golden_20260910_saved_2531f7a使用Riot0、静态1（其余命中已核对缓存）、官方1、OP.GG两位置各一次工具/初始化/目录。源Bundle 09d47a7e5ff61a29ccf7c55503bad025e7c3e7b4ef83fd234b9556fbaa23338d，旧观察时间保留。
+
+Coach实际5调用全有响应、4检索、一次修订；输入40476/输出7393 tokens完整观测。Agent第二请求60.94秒返回，Agent共73.67秒，整次112.38秒，没有扩大120/480秒外层预算。自动评分88发现03:04/03:47被误写为3分钟内，修订后98/pass；报告摘要74733248689306cced62022eea8652022690bbe8db988003a5adb62e103846ec，Runtime published、Evidence投影验签成功。这里published仅指本地Harness产物，未写数据库或live UI，黄金回执仍degraded。
+
+人工不予黄金验收：报告第6节明知goal_source=unspecified却写“默认延续当前中单主位”“暂不安排辅助位”，与当前样本不等于长期主位/训练意愿冲突；第1节还把死亡均值升高笼统写成数值拖低。自动评分漏检，不能用98分替代业务语义验收。OP.GG仅在边界段落出现，未以具体事实形成建议，因此四来源建议消费尚不完整。旧报告/评分/回执不改写，私有data/runs/golden_manual_reviews保存绑定报告摘要的独立否决记录。
+
+修复原则：新独立Coach1.3.3 / Skill0.5.3 / Program2.3.3 / flash_v2_golden_positions，trusted POSITION_POLICY区分样本位置、长期位置和显式训练意愿。目标未知只给条件式分位置选项，不能默认最多场次的位置或排除其他位置；明确多目标都须尊重，缺样本保持缺口；评分检查正文实际建议，不能被末尾免责声明覆盖。策略以合同context_policy摘要绑定，初稿作为INTERNAL_POLICY输入，评分/纠正/修订/复评在数据块之外接收；默认关闭，旧1.3.2及更早资产/摘要保留。新摘要fb6df08655395d17e85be097b5a4cd859e18c8bee22b98167329892da4d2246f。全部模型/工具/时限/token/85分/一次修订预算不变，不新增自动重试。
+
+验证：96项相邻回归通过；新策略3项断言最初未考虑Context JSON换行转义导致测试漏识别，检查完整原文或其JSON编码后4项全部通过。涵盖未知目标、多目标、无样本新位置的9请求/8工具/一次修订路径，模拟低分仍拒绝。保存本次真实Summary/Bundle仅做离线预算重放：初始13993、最终25801/28000；完整请求上界28910/38948/45390/51832/36572/36806/19666/36572/36806，全部低于64000，总上界与73728输出预约低于649728，9个请求均含同源身份及位置策略。这是送达与预算证据，不是真实语义效果证明。
+
+本次新增协议3+Coach5=8个Provider请求；本接续合计13次（此前5次），先前超时请求用量仍未知，不宣称累计token完整。下一步为1.3.3同SHA公共验证及新鲜协议后的一次有界语义观察。Training等待本人档案或观摩范围；真实OP.GG建议消费和live Workbench仍未验收，8E不前移。

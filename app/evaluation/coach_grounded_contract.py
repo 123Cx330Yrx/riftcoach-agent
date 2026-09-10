@@ -81,9 +81,10 @@ def build_grounded_revision_prompt(report, evaluation, knowledge):
 
 class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
     """One correction shares the existing two-call evaluation budget."""
-    def __init__(self, *, include_deterministic_facts=False, **kwargs):
+    def __init__(self, *, include_deterministic_facts=False, position_policy="", **kwargs):
         super().__init__(**kwargs)
         self.include_deterministic_facts = include_deterministic_facts
+        self.position_policy = position_policy
 
     def evaluate(self, request):
         if not request.user_utterance or not request.user_utterance.strip():
@@ -96,6 +97,8 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
             facts, request.report,
             user_utterance=request.user_utterance, knowledge=knowledge,
         )
+        if self.position_policy:
+            prompt = self.position_policy + "\n\n" + prompt
         contract = evaluation_response_contract_v12()
         def call(text, step):
             return _chat_response(self.runtime, system_prompt=self.system_prompt, user_prompt=text,
@@ -132,9 +135,10 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
 
 
 class GroundedCoachReviser(ChatCoachReviser):
-    def __init__(self, *, include_deterministic_facts=False, **kwargs):
+    def __init__(self, *, include_deterministic_facts=False, position_policy="", **kwargs):
         super().__init__(**kwargs)
         self.include_deterministic_facts = include_deterministic_facts
+        self.position_policy = position_policy
 
     def revise(self, request):
         knowledge = _knowledge_evaluation_projection(request.knowledge)
@@ -142,6 +146,8 @@ class GroundedCoachReviser(ChatCoachReviser):
             knowledge["deterministic_source_facts"] = request.deterministic_report
         prompt = build_grounded_revision_prompt(request.report, _evaluation_payload(request.evaluation),
                                                 knowledge)
+        if self.position_policy:
+            prompt = self.position_policy + "\n\n" + prompt
         content = _chat_content(self.runtime, system_prompt=self.system_prompt, user_prompt=prompt,
                                 temperature=self.temperature, harness_step="revise")
         validate_revised_report(content, request.report)

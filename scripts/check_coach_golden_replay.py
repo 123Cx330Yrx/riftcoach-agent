@@ -33,7 +33,7 @@ from app.product.recent_review import RecentReviewProductRequest
 from app.providers.models import TokenUsage, ToolCall
 from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE
 from app.rag.hybrid import LocalHybridKnowledgeProvider
-from app.runtime.coach_contract import BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT
+from app.runtime.coach_contract import BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT
 
 
 class _ReplayProvider(_WorstPathProvider):
@@ -60,15 +60,16 @@ class _ReplayProvider(_WorstPathProvider):
             input_tokens=estimate_runtime_request_input_ceiling(request), output_tokens=8192))
 
 
-def probe(summary, *, contract=LATENCY_COACH_CONTRACT, reasoning_characters=0, bundle=None):
-    if all(contract is not c for c in (BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT)):
+def probe(summary, *, contract=LATENCY_COACH_CONTRACT, reasoning_characters=0, bundle=None,
+          training_positions=("mid", "support")):
+    if all(contract is not c for c in (BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT)):
         raise ValueError("unsupported replay contract")
     if type(reasoning_characters) is not int or not 0 <= reasoning_characters <= 100000:
         raise ValueError("invalid replay reasoning size")
     summary_bytes = json.dumps(summary, sort_keys=True, ensure_ascii=True,
                               separators=(",", ":")).encode()
     digest = hashlib.sha256(summary_bytes).hexdigest()
-    roles = position_context(summary, training_positions=("mid", "support"))
+    roles = position_context(summary, training_positions=training_positions)
     class FrozenSummary:
         def build(self, **kwargs):
             return copy.deepcopy(summary)
@@ -122,6 +123,11 @@ def probe(summary, *, contract=LATENCY_COACH_CONTRACT, reasoning_characters=0, b
             "request_input_ceilings": [estimate_runtime_request_input_ceiling(r) for r in provider.requests],
             "source_bundle_present_by_call": [bundle is not None and any(
                 bundle.digest in (message.content or "") for message in request.messages
+            ) for request in provider.requests],
+            "position_policy_present_by_call": [bool(contract.position_policy) and any(
+                contract.position_policy in (message.content or "")
+                or json.dumps(contract.position_policy, ensure_ascii=False)[1:-1] in (message.content or "")
+                for message in request.messages
             ) for request in provider.requests],
             "reserved_output_tokens": 8192 * len(provider.requests),
             "report_available": result.output.report is not None if result.output else False,
