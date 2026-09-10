@@ -167,3 +167,14 @@ e39cb6e9fbdc4cf9867ae118a70b3528d21f333e / Actions34446812086三job成功：pyte
 本接续真实Provider尝试累计21次（前13+本次协议3/Coach5），更早60秒超时的token仍未知。下一步为本补丁比例回归/公共CI及新鲜协议后有界真实观察；OP.GG仅边界声明、四来源实际建议消费尚不足。个人Training需要本人档案及已确认目标；数据库/Workbench应在模型运行前确定真实任务身份，不能把已有golden-slice本地文件事后改绑到另一个owner/run。原接口闭环A/B/C不重开，生产默认不变，8E不前移。
 
 本批最终聚焦与相邻回归136 passed；生成事实投影/旧Context与Program身份/位置策略/完整RAG修订均通过，治理和diff检查通过。
+
+
+### 6facdf6公共验证与90秒超时观察（2026-09-10）
+
+实现6facdf6bc37bc72feef64ecc227f87cf36d2552a / Actions34456915878三job成功；pytest2958 passed、152 skipped、127 subtests passed，PostgreSQL208 passed。其后新鲜协议3调用通过，输入1007/输出125 tokens，协议摘要5cc3fcbddcb4f73f2d7dd39a0ccff884ed436565f89dcc6798b41f180a69c846。
+
+golden_20260910_saved_6facdf6使用1.3.4原合同；Riot0、静态1、官方1、OP.GG两位置各一次工具/初始化/目录。Bundle 1a85868ac1ec60f87eecb5d9387d1c6d2205cea7dcaffce258c8eaae995dfc8d，五个英雄均命中；OP.GG仍partial/未知精确上游版本，不能当历史同版本基准。原五局与采集时间保留。
+
+Coach3次尝试、2次完整响应、5检索成功；首两请求11.56秒/8.44秒，第三次90.02秒后provider_error_code=timeout。Runtime110.09秒，Harness rejected/draft_preparation_failed、failure_code=agent_loop_incomplete，无初稿/评分/修订/最终报告。不是评分否决，也不是上下文超限；新事实同步未到达真实评分环节，效果仍未知。已知输入15566/输出516 tokens，超时请求用量未知，不能以已知部分当完整总量。本轮协议3+Coach3共6次，本接续累计27次Provider尝试；两次超时用量未知。
+
+保留原回执/Trace/预约，不放宽90/120/480秒墙，不新增自动重试或连续重复实跑。90秒也会超时，说明前次60→90秒仅改善一个观察，未证明可靠性解决；当前只能归因为客户端等待超时，缺少上游处理和网络分段证据。下一步先审查既有候选延迟证据与最小有界诊断方案，再决定是否值得新实跑。个人Training仍等本人档案/目标，数据库与live Workbench未验收，8E不前移。本文后续文档提交不冒用实现6facdf6的实跑身份。

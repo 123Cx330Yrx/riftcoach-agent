@@ -1,6 +1,6 @@
 # RiftCoach 路线 v1.3 局部校准
 
-当前接续：e39cb6e/Actions34446812086已同SHA三job成功；新鲜协议3调用后保存五局Coach完成5调用、3检索、一次修订，62→82分，revision_budget_exhausted而拒绝。位置意愿和跨位置混评已被审查/修正；复评又因评分投影遗漏实际存在的单局伤害占比、采集时间而误判缺证。新增独立1.3.4复用生成端既有事实投影，送达评分/纠正/修订/复评；原质量/资源墙不变，离线136项通过，待公共CI。OP.GG实际建议消费、本人Training和live Workbench尚未验收，8E仍in_progress。
+当前接续：6facdf6/Actions34456915878已同SHA三job成功（pytest 2958 passed、152 skipped、127 subtests；PostgreSQL 208 passed）。新鲜协议3调用通过；1.3.4保存五局实跑3次Coach尝试、2次响应、5次检索，第三次请求90.02秒超时，初稿准备失败且未进入评分。事实投影同步已公共验证，真实评分效果仍未观察到；不扩大时限、不连续重跑。下一步先核查既有候选调用延迟证据与有界诊断方案。OP.GG实际建议消费、本人Training和live Workbench仍未验收，8E保持in_progress。
 
 
 接续最新：d605c04/Actions34441904153已同SHA三job成功。随后发现评分/修订遗漏扩展来源，新增独立Coach1.3.1/Skill0.5.1/Program2.3.1，把同一deterministic_report作为数据贯穿9个请求；旧1.3.0/1.2.0不变，新补丁待独立公共验证。保存五局完整RAG预算对照仍通过且低分拒绝，无新增真实模型/玩家API/OP.GG。Training等待本人档案或观摩范围澄清，不影响报告准备。
