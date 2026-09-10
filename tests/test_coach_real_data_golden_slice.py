@@ -17,7 +17,7 @@ def test_golden_slice_preflight_is_network_free_and_freezes_budget() -> None:
     )
     assert gate.network_allowed is False
     assert gate.max_riot_calls == 12
-    assert gate.max_ddragon_requests == 5
+    assert gate.max_ddragon_requests == 21
     assert gate.max_opgg_tool_calls == 5
     assert gate.max_opgg_session_initializations == 5
     assert gate.max_opgg_catalog_requests == 5
@@ -95,11 +95,12 @@ def test_opgg_request_failure_and_wrong_lane_are_distinct():
     assert "private" not in str(coverage)
 
 
-def test_real_entry_uses_actual_role_queries_with_no_network(monkeypatch):
+def test_real_entry_uses_actual_role_queries_with_no_network(monkeypatch, tmp_path):
     import copy
     import json
     import socket
     import app.evaluation.coach_real_data_golden_slice as module
+    monkeypatch.setattr(module, "ROOT", tmp_path)
 
     def forbidden(*args, **kwargs):
         raise AssertionError("network forbidden")
@@ -109,6 +110,7 @@ def test_real_entry_uses_actual_role_queries_with_no_network(monkeypatch):
     monkeypatch.setattr(module, "_implementation_sha", lambda: "a" * 40)
     monkeypatch.setattr(module, "RiotClient", lambda **_: object())
     monkeypatch.setattr(module, "DataDragonService", lambda **_: object())
+    monkeypatch.setattr(module, "GoldenMatchStaticData", lambda **_: object())
     from tests.test_evidence_summary_bridge import summary as make_summary
     summary = make_summary()
     summary["matches"][0]["role"] = "MIDDLE"

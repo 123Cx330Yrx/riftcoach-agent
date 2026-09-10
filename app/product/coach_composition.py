@@ -16,7 +16,7 @@ from app.agent.memory_context import (
 from app.providers.protocol import LLMProvider
 from app.rag.provider import KnowledgeProvider
 from app.runtime.coach_context import CoachContextBuilder
-from app.runtime.coach_contract import BATCH_COACH_CONTRACT
+from app.runtime.coach_contract import BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT
 from app.runtime.composition import RuntimeCompositionRoot
 from app.lol.report_renderer import render_deterministic_report
 
@@ -40,8 +40,9 @@ def build_coach_application(
     publication_writer: EvidencePublicationWriter | None = None,
     report_renderer=None,
     compact_context_json: bool = False,
+    coach_contract=BATCH_COACH_CONTRACT,
 ) -> RecentReviewApplicationService:
-    """Assemble the verified 1.2.0 bundle from already constructed dependencies.
+    """Assemble explicit verified assets; default remains the frozen 1.2.0 bundle.
 
     Construction reads only repository-local assets, not environment or secrets,
     and performs no outbound calls or run writes. Calls can occur later through
@@ -63,8 +64,12 @@ def build_coach_application(
     if (memory_repository is None) != (memory_manifest_store is None):
         raise ValueError("Memory repository and manifest store must be supplied together")
 
+    if coach_contract is not BATCH_COACH_CONTRACT and coach_contract is not GOLDEN_COACH_CONTRACT:
+        raise ValueError("application requires an explicit supported Coach contract")
+    assets = (_COACH_ASSETS.parent / "flash_v2_golden"
+              if coach_contract is GOLDEN_COACH_CONTRACT else _COACH_ASSETS)
     context_builder: CoachContextBuilder | MemoryAwareContextBuilder
-    context_builder = CoachContextBuilder(coach_contract=BATCH_COACH_CONTRACT,
+    context_builder = CoachContextBuilder(coach_contract=coach_contract,
                                          compact_json=compact_context_json)
     if memory_repository is not None and memory_manifest_store is not None:
         context_builder = MemoryAwareContextBuilder(
@@ -74,9 +79,9 @@ def build_coach_application(
         )
 
     root = RuntimeCompositionRoot.from_directories(
-        skills_root=_COACH_ASSETS / "skills",
-        prompt_programs_root=_COACH_ASSETS / "prompt_programs",
-        coach_contract=BATCH_COACH_CONTRACT,
+        skills_root=assets / "skills",
+        prompt_programs_root=assets / "prompt_programs",
+        coach_contract=coach_contract,
     )
     runtime = root.build_offline_coach_runtime(
         runs_root=runs_root,
@@ -87,7 +92,7 @@ def build_coach_application(
     return RecentReviewApplicationService(
         summary_builder=summary_builder,
         compiler=RecentReviewRuntimeRequestCompiler(
-            root.skill_catalog, coach_contract=BATCH_COACH_CONTRACT,
+            root.skill_catalog, coach_contract=coach_contract,
         ),
         runtime=runtime,
         receipt_writer=FileRunReceiptStore(runs_root),

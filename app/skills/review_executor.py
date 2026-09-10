@@ -24,6 +24,7 @@ from app.harness.models import (
     RunStatus,
 )
 from app.harness.runtime import ReviewHarness
+from app.harness.preparation_errors import DraftPreparationError
 from app.harness.steps import (
     DraftPreparationRequest,
     DraftPreparationResult,
@@ -44,7 +45,7 @@ from .execution import InputArtifactCommitment, ValidatedSkillExecution
 _WARNING_CODE = re.compile(r"^[a-z][a-z0-9_]*$")
 
 
-class SkillReviewExecutionError(RuntimeError):
+class SkillReviewExecutionError(DraftPreparationError):
     """Raised when a reviewed Skill run cannot safely expose typed output."""
 
 
@@ -125,7 +126,7 @@ class _BoundAgentDraftPreparationStep:
         except AgentDraftPreparationError as exc:
             self.agent_failure = exc.failure
             raise SkillReviewExecutionError(
-                "agent draft preparation failed"
+                "agent draft preparation failed", code=exc.code,
             ) from exc
         except RuntimeObservationError:
             raise

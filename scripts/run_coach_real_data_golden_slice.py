@@ -20,6 +20,7 @@ from app.evaluation.coach_real_data_golden_slice import (
     preflight,
     run_golden_slice,
 )
+from app.evaluation.golden_journal import write_new_json
 
 
 def main() -> int:
@@ -49,8 +50,6 @@ def main() -> int:
     if not args.execute:
         print(gate.model_dump_json(indent=2))
         return 0
-    load_dotenv(ROOT.parent / "riftcoach-agent" / ".env")
-    receipt = run_golden_slice(config, environ=os.environ)
     output = args.output or (ROOT / "data/evaluation/results/golden_slices" / f"{args.run_id}.json")
     output = output if output.is_absolute() else ROOT / output
     output = output.resolve()
@@ -58,8 +57,10 @@ def main() -> int:
         raise SystemExit("output must remain inside data/evaluation/results/golden_slices")
     if output.exists():
         raise SystemExit("refusing to overwrite an existing golden-slice receipt")
+    load_dotenv(ROOT.parent / "riftcoach-agent" / ".env")
+    receipt = run_golden_slice(config, environ=os.environ)
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(receipt.model_dump_json(indent=2) + "\n", encoding="utf-8")
+    write_new_json(output, receipt.model_dump(mode="json"))
     print(json.dumps({"result": receipt.result, "bundle_digest": receipt.evidence_bundle_digest, "output": str(output)}, ensure_ascii=False))
     return 0
 

@@ -6,6 +6,7 @@ from typing import Any, Callable, Mapping
 from .artifact_content import encode_json_artifact, encode_text_artifact
 from .models import ArtifactKind, HarnessConfig, RunManifest, RunStatus
 from .state_machine import advance
+from .preparation_errors import DRAFT_PREPARATION_CODES, DraftPreparationError
 from .steps import (
     CoachDraft,
     DraftPreparationRequest,
@@ -37,7 +38,7 @@ from app.providers.errors import ProviderError
 from app.tools.errors import ToolError
 from app.report_validation import ReportValidationError
 
-_SAFE_FAILURE_CODES = frozenset(
+_SAFE_FAILURE_CODES = DRAFT_PREPARATION_CODES | frozenset(
     {
         "authentication_failed",
         "connection_failed",
@@ -471,7 +472,7 @@ class ReviewHarness:
         # body-free category for post-run diagnosis.
         code = (
             error.code
-            if isinstance(error, (ProviderError, ToolError, ReportValidationError))
+            if isinstance(error, (ProviderError, ToolError, ReportValidationError, DraftPreparationError))
             else None
         )
         if not isinstance(code, str) or code not in _SAFE_FAILURE_CODES:

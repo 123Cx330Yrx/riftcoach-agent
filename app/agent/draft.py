@@ -16,6 +16,7 @@ from app.harness.knowledge import (
     knowledge_evidence_from_search_payloads,
 )
 from app.harness.steps import CoachDraft, KnowledgeEvidence
+from app.harness.preparation_errors import DraftPreparationError
 from app.skills.execution import ValidatedSkillExecution
 
 from .compiler import AgentRunCompileError, AgentRunCompiler
@@ -36,7 +37,7 @@ _KNOWLEDGE_TOOL_NAME = "knowledge.search"
 _SAFE_ERROR_CODE = re.compile(r"^[a-z][a-z0-9_]{0,127}$")
 
 
-class AgentDraftPreparationError(RuntimeError):
+class AgentDraftPreparationError(DraftPreparationError):
     """Raised when an Agent run cannot safely become a Harness draft input."""
 
     def __init__(
@@ -44,6 +45,7 @@ class AgentDraftPreparationError(RuntimeError):
         message: str,
         *,
         failure: AgentFailureObservation | None = None,
+        code: str | None = None,
     ) -> None:
         if not isinstance(message, str) or not message.strip():
             raise ValueError("message must not be empty")
@@ -53,7 +55,7 @@ class AgentDraftPreparationError(RuntimeError):
         ):
             raise TypeError("failure must be an AgentFailureObservation or None")
         self.failure = failure
-        super().__init__(message)
+        super().__init__(message, code=code)
 
 
 @dataclass(frozen=True)
@@ -162,7 +164,8 @@ class SkillAgentDraftPreparer:
             request = self._compiler.compile(execution, context)
         except AgentRunCompileError as exc:
             raise AgentDraftPreparationError(
-                f"agent request compilation failed: {exc}"
+                f"agent request compilation failed: {exc}",
+                code="agent_request_compilation_failed",
             ) from exc
 
         try:
@@ -177,7 +180,7 @@ class SkillAgentDraftPreparer:
             raise
         except Exception as exc:
             raise AgentDraftPreparationError(
-                "agent loop raised an unexpected error"
+                "agent loop raised an unexpected error", code="agent_loop_failed",
             ) from exc
 
         _require_completed_final_response(agent_run)
@@ -185,7 +188,7 @@ class SkillAgentDraftPreparer:
         final_response = agent_run.final_response
         if final_response is None or final_response.content is None:
             raise AgentDraftPreparationError(
-                "completed agent run did not provide final text"
+                "completed agent run did not provide final text", code="agent_final_text_missing",
             )
 
         return AgentDraftPreparationResult(
@@ -198,7 +201,7 @@ class SkillAgentDraftPreparer:
 def _require_completed_final_response(agent_run: AgentRunResult) -> None:
     if not isinstance(agent_run, AgentRunResult):
         raise AgentDraftPreparationError(
-            "agent loop returned an invalid result contract"
+            "agent loop returned an invalid result contract", code="agent_result_invalid",
         )
     if (
         agent_run.status is not AgentRunStatus.COMPLETED
@@ -215,6 +218,9 @@ def _require_completed_final_response(agent_run: AgentRunResult) -> None:
             f"stop_reason={agent_run.stop_reason.value}"
             f"{safe_error}",
             failure=AgentFailureObservation.from_agent_run(agent_run),
+            code=("agent_context_budget_exceeded"
+                  if agent_run.stop_reason is AgentStopReason.CONTEXT_BUDGET_EXCEEDED
+                  else "agent_loop_incomplete"),
         )
     if (
         agent_run.final_response is None
@@ -222,7 +228,7 @@ def _require_completed_final_response(agent_run: AgentRunResult) -> None:
         or not agent_run.final_response.content.strip()
     ):
         raise AgentDraftPreparationError(
-            "completed agent run did not provide final text"
+            "completed agent run did not provide final text", code="agent_final_text_missing",
         )
 
 
@@ -233,11 +239,11 @@ def _knowledge_from_actual_tool_executions(
     for execution in agent_run.tool_executions:
         if execution.tool_name != _KNOWLEDGE_TOOL_NAME:
             raise AgentDraftPreparationError(
-                "agent run contains an unsupported tool execution"
+                "agent run contains an unsupported tool execution", code="knowledge_evidence_invalid",
             )
         if execution.result.tool_name != execution.tool_name:
             raise AgentDraftPreparationError(
-                "agent tool execution identity mismatch"
+                "agent tool execution identity mismatch", code="knowledge_evidence_invalid",
             )
         if not execution.result.success:
             code = (
@@ -246,11 +252,11 @@ def _knowledge_from_actual_tool_executions(
                 else "unknown"
             )
             raise AgentDraftPreparationError(
-                "knowledge.search failed with safe code: " + code
+                "knowledge.search failed with safe code: " + code, code="knowledge_tool_failed",
             )
         if execution.result.data is None:
             raise AgentDraftPreparationError(
-                "knowledge.search returned no data"
+                "knowledge.search returned no data", code="knowledge_evidence_invalid",
             )
         payloads.append(execution.result.data)
 
@@ -258,5 +264,5 @@ def _knowledge_from_actual_tool_executions(
         return knowledge_evidence_from_search_payloads(payloads)
     except KnowledgeEvidenceBuildError as exc:
         raise AgentDraftPreparationError(
-            "knowledge.search returned invalid attributable evidence"
+            "knowledge.search returned invalid attributable evidence", code="knowledge_evidence_invalid",
         ) from exc

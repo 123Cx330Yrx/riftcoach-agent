@@ -21,7 +21,7 @@ from app.model_runtime import (
 )
 from app.prompt_program import PromptProgramCatalog, PromptProgramResolver
 from app.skills.catalog import SkillCatalog
-from .coach_contract import COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT
+from .coach_contract import COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT
 from .coach_context import CoachContextBuilder
 
 from .runtime import (
@@ -105,7 +105,7 @@ class RuntimeCompositionRoot:
         from app.rag.coaching_query import CoachingQueryKnowledgeProvider
         from app.evaluation.glm53_report_contract import build_aligned_revision_prompt
         contract = self.prompt_program_resolver.coach_contract
-        if all(contract is not c for c in (COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT)):
+        if all(contract is not c for c in (COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT)):
             raise RuntimeCompositionError("independent Coach assets must be explicitly verified")
         contract.require_provider(provider)
         evaluator_type, reviser_type = SecureChatEvaluationAdapter, ChatCoachReviser
