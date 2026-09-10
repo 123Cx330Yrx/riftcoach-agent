@@ -13,12 +13,12 @@ pause_reason: ""
 
 ## 状态元数据
 
-当前接续：2026-09-11用户明确沿用ShowMaker，用户无外服账号不再作为推进阻塞；范围为公开观摩复盘、示例练习和工作台验证，不创建用户self身份或个人Training记录。继续独立工作树D:/riftcoach-agent-rq192-pr，主树为旧状态且有用户工作，不回写主树。1cd694d已完成报告生成与人工副本，自动质量漏检仍保留。当前实现本地归档导出/工作台导入：以既有Summary/同源清单/manual review摘要校验，展示分位置数据、校订报告、归档来源和仅本页练习；不冒充authenticated API/DB/live消费。2026-09-11观摩归档本地验收完成：最终导出器15项通过、相邻证据/保存Summary56项通过；前端完整276项通过，最后新增跨位置拒绝后聚焦7项通过，浏览器1项及真实5局桌面/手机导入通过，build/类型检查通过。最终JSON位于用户outputs/showmaker-observation.json。公开验证待本批SHA，新增Provider0、累计68；8E继续in_progress，下一步同SHA公共检查及观摩范围的持久化/API接线设计。
+当前接续：2026-09-11用户明确沿用ShowMaker，用户无外服账号不再作为推进阻塞；范围为公开观摩复盘、示例练习和工作台验证，不创建用户self身份或个人Training记录。继续独立工作树D:/riftcoach-agent-rq192-pr，主树为旧状态且有用户工作，不回写主树。1cd694d已完成报告生成与人工副本，自动质量漏检仍保留。当前实现本地归档导出/工作台导入：以既有Summary/同源清单/manual review摘要校验，展示分位置数据、校订报告、归档来源和仅本页练习；不冒充authenticated API/DB/live消费。2026-09-11观摩归档本地验收完成：最终导出器15项通过、相邻证据/保存Summary56项通过；前端完整276项通过，最后新增跨位置拒绝后聚焦7项通过，浏览器1项及真实5局桌面/手机导入通过，build/类型检查通过。最终JSON位于用户outputs/showmaker-observation.json。2026-09-11公共验收：实现a545972201cc8b98a19286fab0d92f9393c0c712由Actions34508165113同SHA三job成功验证（Python3037 passed/152 skipped/127 subtests、前端277、浏览器39、PostgreSQL208，打包smoke成功）。ShowMaker真实五局观摩归档已在桌面/手机完成导入、位置筛选与本页练习核查，最终归档SHA bde583c1ee3f850057f469bad9abe9c03f2383e333ce58a5ed57eab8d7022e2c，用户outputs/showmaker-observation.json。新增Provider0，累计68。未部署、未认证API/DB写入，原报告两项自动质量漏检保留；8E仍in_progress。下一步在既有observed关系下设计并实现保存观摩记录/API消费，保留源run与新产品身份的区别，禁止将旧归档伪装成新生成报告；无需本人外服账号或重复实施授权。
 
 - 本地代码：1.3.6完整真实报告流程已跑通；原报告仍有两项人工发现的自动质量漏检，另出人工校订副本。
 - 所有者理解：已解释完整返回、自动评分与人工质量复核的区别；用户已明确ShowMaker公开观摩范围，无新增理解验收确认。
 - 参考来源审计：OP.GG具体事实到条件建议已核对；Luna独立复核修正先前整体通过判断，无新来源范围推断。
-- 公共作品/部署成熟度：1cd694d公共通过，本轮归档工作台待同SHA公共验证，无部署；authenticated live UI与个人Training未完成。
+- 公共作品/部署成熟度：1cd694d公共通过，a545972/Actions34508165113三job成功，观摩归档UI已验收；无部署，authenticated API/DB消费未完成。
 
 ### 同日接续历史（由上方状态取代）
 

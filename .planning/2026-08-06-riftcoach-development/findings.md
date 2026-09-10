@@ -6050,3 +6050,6 @@ Luna独立离线probe使用已保存player_summary与当前ADVICE合同，未传
 运行：在仓库执行python -m scripts.export_showmaker_observation（参数以--help为准），在web启动现有开发服务器，打开/?view=observation后选择导出的JSON；不需要外服账号。截图位于用户outputs/showmaker-workbench-desktop.png及showmaker-workbench-mobile.png。练习刷新清空，归档来源时间不刷新；该页面不承担个人训练持久化或authenticated API/DB消费，无法据此宣布8E完成。面试表述可说“已实现有来源校验的ShowMaker观摩归档消费与位置隔离”，不可说“生产闭环全部完成”。
 
 前端完整单元276项通过；随后新增练习跨位置拒绝反例，相关7项通过。独立浏览器1项通过（包含移动端无溢出），类型检查与build通过；两张既有候选背景素材build警告不属于本页。未新增Provider或玩家API调用，累计Provider保持68。
+
+
+2026-09-11公共验收：实现a545972201cc8b98a19286fab0d92f9393c0c712由Actions34508165113同SHA三job成功验证（Python3037 passed/152 skipped/127 subtests、前端277、浏览器39、PostgreSQL208，打包smoke成功）。ShowMaker真实五局观摩归档已在桌面/手机完成导入、位置筛选与本页练习核查，最终归档SHA bde583c1ee3f850057f469bad9abe9c03f2383e333ce58a5ed57eab8d7022e2c，用户outputs/showmaker-observation.json。新增Provider0，累计68。未部署、未认证API/DB写入，原报告两项自动质量漏检保留；8E仍in_progress。下一步在既有observed关系下设计并实现保存观摩记录/API消费，保留源run与新产品身份的区别，禁止将旧归档伪装成新生成报告；无需本人外服账号或重复实施授权。
