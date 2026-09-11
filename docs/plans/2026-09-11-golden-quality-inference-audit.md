@@ -230,3 +230,49 @@ Interview wording: “Converted selective claim auditing into verifiable report
 coverage, kept the existing request envelope through lossless compaction, and
 validated five reject/five accept controls with real model calls; retained manual
 review for a separate stability-scope ambiguity.” No claim of universal accuracy.
+
+## Stability scope calibration (offline, 2026-09-11)
+
+2026-09-11稳定性边界离线校准完成：新增独立golden-stability-calibration-v1十二条人工开发案例，accept/reject/clarify各4条。逐行复算确认所选两场中路输局的经济与伤害各自均低于两场赢局，故样本内方向一致可保留；长期/未来/因果外推需拒绝，未定义范围的稳定或可靠措辞需澄清。原96分稿两处稳定措辞归为范围含混，不认定已证明长期断言。新检查器仅验证来源SHA、数值及案例构成，不给模型语义判分；相关10项测试通过。当前Runtime和冻结1.3.10未改，真实语义修复仍未验证；本次无Provider请求，累计95。唯一下一步为显式新版本接入范围判定和含混修订合同，先做预算/旧合同回归及公共验证，再以新身份执行有界真实观察。8E保持in_progress，Workbench四块设计后置。
+
+The label is about the inserted claim, not approval of a whole report. `clarify`
+means editorial scope is unresolved, not that the reported arithmetic is false.
+Do not collapse it into factual fabrication. A global small-sample disclaimer does
+not define what a local “stable difference” means. Explicit within-sample usage,
+negations, and questions are positive controls even when they contain “stable”.
+Predictions or enduring-ability claims can be unsupported without that word.
+
+Code map: `data/evaluation/datasets/golden_stability_calibration_v1.json` contains
+12 human labels and explanations, with immutable source/report hashes.
+`scripts/check_golden_stability_calibration.py` binds the old evidence bytes,
+selects MIDDLE win/loss rows, computes pairwise order and means using Decimal,
+and verifies three-way case coverage. `tests/test_golden_stability_calibration.py`
+checks changed source/duplicate identities/missing ambiguity controls and explicitly
+keeps semantic verification false. Run that checker then its tests alongside the
+existing golden-quality evidence tests (10 passed). No provider, credential or
+publication path is imported by the checker.
+
+Next implementation design: a new explicit contract (retain 1.3.10 unchanged)
+should record claim scope as selected_sample, beyond_sample, ambiguous, or
+question_or_negation. Ambiguous claims require a matching clarification issue and
+revision with explicit cohort/count/observed metric, without fabricated longer
+history. Preserve both inference dimensions and complete report coverage. Require
+scope data to reach revision and re-evaluation; prevent passing with unresolved
+clarification. Do not invent a sample-size threshold or a keyword classifier.
+Measure the complete saved-report request envelope before real calls; retain
+64000 input, 8192 output, one report revision and existing call ceilings.
+
+After offline implementation and matching public CI, freeze a fresh bounded run
+against the 96-point artifact and balanced complete-report controls. Keep human
+labels out of model input. Separately report accept retention, unsupported-claim
+rejection and ambiguity clarification, including skipped cases. Any paraphrases
+created during implementation are development cases, not held-out evidence;
+a genuinely withheld evaluation requires independent preparation and isolation.
+Neither this arithmetic check nor future structured mocks prove semantic quality.
+
+Learning: this change separates true sample descriptions from extrapolation and
+editorial ambiguity. Evidence flows from archived rows to recomputed facts to
+human-labeled controls, before evaluator changes. Its limitation is precisely that
+it does not grade prose. Interview wording: “Used paired positive, negative and
+ambiguous controls to avoid replacing an inference bug with a keyword blacklist.”
+The parent learning checkpoint remains in progress.
