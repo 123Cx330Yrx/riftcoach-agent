@@ -31,13 +31,15 @@ def _hash(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def prepare(source: Path):
+def prepare(source: Path, *, scope=False):
+    from app.runtime.coach_contract import SCOPE_COACH_CONTRACT
+    contract = SCOPE_COACH_CONTRACT if scope else CONTRACT
     dataset = json.loads(DATASET.read_text(encoding="utf-8")); check_evidence(dataset)
     report_path = source / "output/final_report.md"
     if _hash(report_path) != dataset["source_report_sha256"]:
         raise ValueError("source_report_identity_mismatch")
-    assets = ROOT / "examples/runtime_profiles/flash_v2_golden_coverage"
-    RuntimeCompositionRoot.from_directories(skills_root=assets / "skills", prompt_programs_root=assets / "prompt_programs", coach_contract=CONTRACT)
+    assets = ROOT / "examples/runtime_profiles" / ("flash_v2_golden_scope" if scope else "flash_v2_golden_coverage")
+    RuntimeCompositionRoot.from_directories(skills_root=assets / "skills", prompt_programs_root=assets / "prompt_programs", coach_contract=contract)
     summary = json.loads((source / "inputs/player_summary.json").read_text(encoding="utf-8"))
     # Bind the development labels to the same metric rows, not an arbitrary report.
     for actual, expected in zip(summary["matches"], dataset["samples"], strict=True):
@@ -58,6 +60,8 @@ def verify_public_ci(run_id: str):
 
 
 def score_case(case, result):
+    if "scope" in case:
+        return score_scope_case(case, result)
     payload = _evaluation_payload(result)
     expected_kind = {"mixed_role_deficit": "cohort_comparison", "metric_to_ability": "metric_to_ability"}.get(case.get("issue_kind"))
     unsupported = [a for a in payload.get("audits", []) if a["status"] == "unsupported"]
@@ -69,10 +73,37 @@ def score_case(case, result):
             "unsupported_kinds": [a["kind"] for a in unsupported]}
 
 
+def score_scope_case(case, result):
+    payload = _evaluation_payload(result)
+    claims = [c for a in payload.get("audits", []) for c in a["claims"]
+              if c["quote"] and c["quote"] in case["claim"]]
+    accepted = result.verdict.value == "pass" and result.score >= 85 and not payload["issues"]
+    detected = any(c.get("status") == "unsupported" and any(i["quote"] == c["quote"] for i in payload["issues"]) for c in claims)
+    clarified = any(c.get("scope") == "ambiguous" and any(i["quote"] == c["quote"] and i["category"] == "other" for i in payload["issues"]) for c in claims)
+    matched = accepted if case["expected"] == "accept" else result.verdict.value != "pass" and (clarified if case["expected"] == "clarify" else detected)
+    return {"id": case["id"], "expected": case["expected"], "verdict": result.verdict.value,
+            "matched": matched, "score": result.score, "expected_inference_detected": detected,
+            "scope_clarification_detected": clarified}
+
+
 def run(args):
-    dataset, summary, original = prepare(args.source_run)
+    from app.runtime.coach_contract import SCOPE_COACH_CONTRACT
+    scope = getattr(args, "scope", False)
+    contract = SCOPE_COACH_CONTRACT if scope else CONTRACT
+    if scope and not (args.report_only or args.controls_only):
+        raise ValueError("scope_requires_separate_report_or_controls_run")
+    dataset, summary, original = prepare(args.source_run, scope=scope)
+    dataset_path = DATASET
+    if scope:
+        from scripts.check_golden_stability_calibration import DATASET as SCOPE_DATASET, SOURCE, check_evidence as check_scope
+        calibration = json.loads(SCOPE_DATASET.read_text(encoding="utf-8"))
+        check_scope(calibration, SOURCE.read_bytes())
+        dataset = {**dataset, "cases": calibration["cases"]}
+        dataset_path = SCOPE_DATASET
+        if args.report_only and not args.target_report:
+            raise ValueError("scope_report_requires_frozen_96_point_target")
     if args.target_report:
-        if _hash(args.target_report) != "e351b8cb3a09137f895346dd42783a3944805ad48129cb31b2934c20ed91f52d":
+        if _hash(args.target_report) != ("3b4d530279951c54a79eaf330a0b03d841910ab6dc35b8f48402be285a9f8c6e" if scope else "e351b8cb3a09137f895346dd42783a3944805ad48129cb31b2934c20ed91f52d"):
             raise ValueError("reviewed_target_report_identity_mismatch")
         original = args.target_report.read_text(encoding="utf-8")
     selected_cases = [] if args.report_only else [c for c in dataset["cases"] if not args.case_id or c["id"] in args.case_id]
@@ -82,11 +113,13 @@ def run(args):
     if _hash(args.base_report) != "8485a643fcc2578034e30ac7b74a3c98bebfb2706ef32152ad1402fe59f3d5ef":
         raise ValueError("development_base_report_identity_mismatch")
     base_report = args.base_report.read_text(encoding="utf-8")
+    if base_report.count("## 3. 主要风险点\n") != 1:
+        raise ValueError("development_embedding_marker_missing_or_duplicate")
     knowledge_data = json.loads((args.source_run / "knowledge/retrieval_evidence.json").read_text(encoding="utf-8"))
     saved_knowledge = KnowledgeEvidence(context=knowledge_data["context"], source_ids=tuple(knowledge_data["source_ids"]),
         citations=tuple(KnowledgeCitation(**c) for c in knowledge_data["citations"]), abstained=knowledge_data.get("abstained", False))
-    plan = {"scope": "known_development_not_holdout_or_admission", "contract": CONTRACT.snapshot().model_dump(mode="json"),
-            "dataset_sha256": _hash(DATASET), "source_report_sha256": dataset["source_report_sha256"], "base_report_sha256": _hash(args.base_report),
+    plan = {"scope": "known_development_not_holdout_or_admission", "contract": contract.snapshot().model_dump(mode="json"),
+            "dataset_sha256": _hash(dataset_path), "source_report_sha256": dataset["source_report_sha256"], "base_report_sha256": _hash(args.base_report),
             "case_embedding": "full-manually-reviewed-report-with-single-claim-v2",
             "evaluated_report_sha256": hashlib.sha256(original.encode()).hexdigest(), "controls_only": args.controls_only,
             "cases": len(selected_cases), "selected_case_ids": [c["id"] for c in selected_cases], "max_provider_calls": call_limit,
@@ -119,19 +152,19 @@ def run(args):
             return response
 
     def components(name):
-        provider = CoachBudgetedProvider(Counted(GoldenProcessStreamProvider(settings=settings, directory=directory / name)), coach_contract=CONTRACT)
+        provider = CoachBudgetedProvider(Counted(GoldenProcessStreamProvider(settings=settings, directory=directory / name)), coach_contract=contract)
         registry = ToolRegistry()
-        for definition in build_llm_tools(provider, request_policy=CONTRACT.request_policy): registry.register(definition)
+        for definition in build_llm_tools(provider, request_policy=contract.request_policy): registry.register(definition)
         runtime = ToolRuntime(registry)
-        options = {"inference_audit": "coverage", "include_generation_facts": True, "include_deterministic_facts": True,
-                   "position_policy": CONTRACT.position_policy, "source_use_policy": CONTRACT.source_use_policy, "compact_report_policy": CONTRACT.compact_report_policy}
+        options = {"inference_audit": "scope" if scope else "coverage", "include_generation_facts": True, "include_deterministic_facts": True,
+                   "position_policy": contract.position_policy, "source_use_policy": contract.source_use_policy, "compact_report_policy": contract.compact_report_policy}
         return (GroundedChatEvaluationAdapter(runtime=runtime, system_prompt=EVALUATOR_SYSTEM_PROMPT, fact_pack_builder=build_fact_pack, **options),
                 GroundedCoachReviser(runtime=runtime, system_prompt=REVISER_SYSTEM_PROMPT, prompt_builder=lambda *x: "unused", validator=lambda *x: None, **options))
 
     deterministic = (args.source_run / "inputs/deterministic_report.md").read_text(encoding="utf-8")
     knowledge = saved_knowledge
     try:
-        for case in sorted(selected_cases, key=lambda c: c["id"] != "vision_fact"):
+        for case in sorted(selected_cases, key=lambda c: c["id"] != ("selected_pairs" if scope else "vision_fact")):
             evaluator, _ = components(case["id"])
             report = base_report.replace("## 3. 主要风险点\n", "## 3. 主要风险点\n\n" + case["claim"] + "\n", 1)
             write_new_json(directory / f"{case['id']}-input.json", {"report_sha256": hashlib.sha256(report.encode()).hexdigest(), "report": report})
@@ -139,7 +172,7 @@ def run(args):
             write_new_json(directory / f"{case['id']}.json", _evaluation_payload(result))
             state["cases"].append(score_case(case, result))
             print(json.dumps(state["cases"][-1]), flush=True)
-            if case["id"] == "vision_fact" and not state["cases"][-1]["matched"]:
+            if case["id"] == ("selected_pairs" if scope else "vision_fact") and not state["cases"][-1]["matched"]:
                 state["controls_stopped"] = "full_report_positive_control_failed"
                 break
         if args.controls_only:
@@ -166,6 +199,8 @@ def run(args):
         state["false_positive_denominator"] = sum(c["expected"] == "accept" for c in state["cases"])
         state["false_negatives"] = sum(c["expected"] == "reject" and not c["matched"] for c in state["cases"])
         state["false_positives"] = sum(c["expected"] == "accept" and not c["matched"] for c in state["cases"])
+        state["clarification_denominator"] = sum(c["expected"] == "clarify" for c in state["cases"])
+        state["clarification_misses"] = sum(c["expected"] == "clarify" and not c["matched"] for c in state["cases"])
         write_new_json(directory / "receipt.json", {**plan, **state})
         print(json.dumps(state), flush=True)
 
@@ -179,6 +214,7 @@ def main():
     selection.add_argument("--case-id", action="append")
     p.add_argument("--controls-only", action="store_true")
     p.add_argument("--target-report", type=Path)
+    p.add_argument("--scope", action="store_true")
     p.add_argument("--execute", action="store_true")
     p.add_argument("--env-file", type=Path)
     p.add_argument("--ci-run")
