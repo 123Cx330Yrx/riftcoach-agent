@@ -69,12 +69,14 @@ def test_development_scoring_requires_the_expected_finding(monkeypatch):
     assert runner.score_case(case, result)["matched"]
 
 
-@pytest.mark.parametrize("version", ["1.3.7", "1.3.8"])
+@pytest.mark.parametrize("version", ["1.3.7", "1.3.8", "1.3.9"])
 def test_new_contract_reaches_full_nine_call_path_without_changing_old_identity(monkeypatch, version):
-    from app.runtime.coach_contract import CLAIM_COACH_CONTRACT
-    contract = INFERENCE_COACH_CONTRACT if version == "1.3.7" else CLAIM_COACH_CONTRACT
+    from app.runtime.coach_contract import CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT
+    contract = {"1.3.7": INFERENCE_COACH_CONTRACT, "1.3.8": CLAIM_COACH_CONTRACT, "1.3.9": ANCHOR_COACH_CONTRACT}[version]
     from app.evaluation.golden_inference_audit_v2 import INFERENCE_POLICY as V2_POLICY
     policy = INFERENCE_POLICY if version == "1.3.7" else V2_POLICY
+    if version == "1.3.9":
+        from app.evaluation.golden_inference_audit_v3 import INFERENCE_POLICY as policy
     captured = []; original = _ReplayProvider.chat
     def record(self, request):
         captured.append(request); return original(self, request)
@@ -90,6 +92,7 @@ def test_new_contract_reaches_full_nine_call_path_without_changing_old_identity(
         assert "inference_facts" in text
     assert COMPACT_COACH_CONTRACT.snapshot().sha256 == "d20fc775e7be126d373163a7d72cf71be329e28614aeb1eacaaf5e560b1f59f3"
     assert INFERENCE_COACH_CONTRACT.snapshot().sha256 == "3ca4e014cf870d626e6dcb321b1881a6d4d19db3c854bab2e5c16b6f932445a0"
+    assert CLAIM_COACH_CONTRACT.snapshot().sha256 == "17f70cdba761d28359aa00bc17d4a072e65297dfc4a0362dbe97b159e6c5841e"
     old, new = COMPACT_COACH_CONTRACT.descriptor(), contract.descriptor()
     for key in ("max_calls", "max_input_tokens", "max_output_tokens", "total_tokens", "request_timeout_s", "max_revisions", "minimum_score"):
         assert old[key] == new[key]
@@ -108,6 +111,29 @@ def test_v2_mixed_claims_require_issues_only_for_unsupported_statements():
     validate_audit_anchors(parsed, "bad claim; correct caveat", {"scope:limits": {}})
     p["audits"][0]["status"] = "supported"
     with pytest.raises(ValueError): EvaluationResponseModelV14.model_validate(p)
+
     p["audits"][0]["status"] = "unsupported"
     p["issues"] = []
     with pytest.raises(ValueError): EvaluationResponseModelV14.model_validate(p)
+
+
+@pytest.mark.parametrize("initial_schema_bad", [False, True])
+def test_anchor_validation_shares_one_repair_and_never_weakens_exact_match(initial_schema_bad):
+    from app.providers.structured import decode_structured_response
+    from app.providers.models import ChatResponse, TokenUsage
+    from app.providers.errors import ProviderResponseError
+    from app.evaluation.golden_inference_audit_v2 import EvaluationResponseModelV14, inference_response_contract
+    p = payload()
+    p["audits"][0].update(status="supported", claims=[{"status": "supported", "quote": "**metric**", "evidence_refs": ["scope:limits"], "explanation": "descriptive"}])
+    good = ChatResponse(content=json.dumps(p), model="offline", provider="offline", usage=TokenUsage(input_tokens=1, output_tokens=1), finish_reason="stop")
+    p["audits"][0]["claims"][0]["quote"] = "metric only"
+    bad = ChatResponse(content="{}" if initial_schema_bad else json.dumps(p), model="offline", provider="offline", usage=good.usage, finish_reason="stop")
+    fixes=[]
+    def repair(request): fixes.append(request); return good
+    options = dict(contract=inference_response_contract(), output_model=EvaluationResponseModelV14, validate_context=lambda v: validate_audit_anchors(v, "**metric**", {"scope:limits": {}}))
+    assert decode_structured_response(response=bad, repair=repair, **options).repair_attempted
+    assert len(fixes) == 1
+    fixes.clear()
+    def still_bad(request): fixes.append(request); return bad
+    with pytest.raises(ProviderResponseError): decode_structured_response(response=bad, repair=still_bad, **options)
+    assert len(fixes) == 1

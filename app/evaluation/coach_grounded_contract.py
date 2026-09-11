@@ -117,9 +117,11 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
         output_model = EvaluationResponseModelV12
         if self.inference_audit:
             from app.evaluation.golden_inference_audit import audit_prompt, inference_response_contract, EvaluationResponseModelV13
-            if self.inference_audit == "v2":
+            if self.inference_audit in ("v2", "v3"):
                 from app.evaluation.golden_inference_audit_v2 import audit_prompt, inference_response_contract, EvaluationResponseModelV14
                 EvaluationResponseModelV13 = EvaluationResponseModelV14
+            if self.inference_audit == "v3":
+                from app.evaluation.golden_inference_audit_v3 import audit_prompt
             prompt = audit_prompt(prompt, contract)
             contract, output_model = inference_response_contract(), EvaluationResponseModelV13
         def call(text, step):
@@ -140,9 +142,14 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
             first = None
         if first and any(issue.category == "prompt_injection" for issue in first.issues):
             return self._result(first, verdict=EvaluationVerdict.FAIL)
+        contextual = {}
+        if self.inference_audit == "v3":
+            from app.evaluation.golden_inference_audit import validate_audit_anchors
+            contextual["validate_context"] = lambda p: validate_audit_anchors(p, request.report, facts["inference_facts"])
         payload = decode_structured_response(
             response=response, contract=contract, output_model=output_model,
             repair=lambda _: call(build_grounded_repair_prompt(prompt), "evaluate_repair"),
+            **contextual,
         ).value
         result = self._result(payload)
         if self.inference_audit:
@@ -196,8 +203,10 @@ class GroundedCoachReviser(ChatCoachReviser):
             prompt = self.source_use_policy + "\n\n" + prompt
         if self.inference_audit:
             from app.evaluation.golden_inference_audit import INFERENCE_POLICY
-            if self.inference_audit == "v2":
+            if self.inference_audit in ("v2", "v3"):
                 from app.evaluation.golden_inference_audit_v2 import INFERENCE_POLICY
+            if self.inference_audit == "v3":
+                from app.evaluation.golden_inference_audit_v3 import INFERENCE_POLICY
             prompt = INFERENCE_POLICY + "\n\n" + prompt
         content = _chat_content(self.runtime, system_prompt=self.system_prompt, user_prompt=prompt,
                                 temperature=self.temperature, harness_step="revise")

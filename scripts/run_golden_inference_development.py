@@ -16,7 +16,7 @@ from app.harness.steps import EvaluationRequest, RevisionRequest, KnowledgeEvide
 from app.harness.adapters import _evaluation_payload
 from app.providers.config import load_zhipu_settings
 from app.runtime.coach_budget import CoachBudgetedProvider
-from app.runtime.coach_contract import CLAIM_COACH_CONTRACT as CONTRACT
+from app.runtime.coach_contract import ANCHOR_COACH_CONTRACT as CONTRACT
 from app.runtime.composition import RuntimeCompositionRoot
 from app.tools.adapters.llm import build_llm_tools
 from app.tools.registry import ToolRegistry
@@ -36,7 +36,7 @@ def prepare(source: Path):
     report_path = source / "output/final_report.md"
     if _hash(report_path) != dataset["source_report_sha256"]:
         raise ValueError("source_report_identity_mismatch")
-    assets = ROOT / "examples/runtime_profiles/flash_v2_golden_claims"
+    assets = ROOT / "examples/runtime_profiles/flash_v2_golden_anchors"
     RuntimeCompositionRoot.from_directories(skills_root=assets / "skills", prompt_programs_root=assets / "prompt_programs", coach_contract=CONTRACT)
     summary = json.loads((source / "inputs/player_summary.json").read_text(encoding="utf-8"))
     # Bind the development labels to the same metric rows, not an arbitrary report.
@@ -71,6 +71,10 @@ def score_case(case, result):
 
 def run(args):
     dataset, summary, original = prepare(args.source_run)
+    selected_cases = [] if args.report_only else [c for c in dataset["cases"] if not args.case_id or c["id"] in args.case_id]
+    if args.case_id and not set(args.case_id) <= {c["id"] for c in dataset["cases"]}:
+        raise ValueError("unknown_development_case")
+    call_limit = min(MAX_CALLS, len(selected_cases) * 2 + 5)
     if _hash(args.base_report) != "8485a643fcc2578034e30ac7b74a3c98bebfb2706ef32152ad1402fe59f3d5ef":
         raise ValueError("development_base_report_identity_mismatch")
     base_report = args.base_report.read_text(encoding="utf-8")
@@ -80,8 +84,8 @@ def run(args):
     plan = {"scope": "known_development_not_holdout_or_admission", "contract": CONTRACT.snapshot().model_dump(mode="json"),
             "dataset_sha256": _hash(DATASET), "source_report_sha256": dataset["source_report_sha256"], "base_report_sha256": _hash(args.base_report),
             "case_embedding": "full-manually-reviewed-report-with-single-claim-v2",
-            "cases": len(dataset["cases"]), "max_provider_calls": MAX_CALLS,
-            "max_input_per_call": 64000, "max_output_per_call": 8192, "max_total_tokens": MAX_CALLS * (64000 + 8192),
+            "cases": len(selected_cases), "selected_case_ids": [c["id"] for c in selected_cases], "max_provider_calls": call_limit,
+            "max_input_per_call": 64000, "max_output_per_call": 8192, "max_total_tokens": call_limit * (64000 + 8192),
             "max_revisions": 1, "sdk_retries": 0, "real_calls_authorized": bool(args.execute)}
     if not args.execute:
         print(json.dumps(plan)); return
@@ -100,12 +104,13 @@ def run(args):
             self.provider = provider
         def __getattr__(self, key): return getattr(self.provider, key)
         def chat(self, request):
-            if state["calls"] >= MAX_CALLS: raise ValueError("development_call_limit")
+            if state["calls"] >= call_limit: raise ValueError("development_call_limit")
             state["calls"] += 1
             write_new_json(directory / f"call-{state['calls']:03d}.json", {"ordinal": state["calls"], "state": "reserved_before_io"})
             response = self.provider.chat(request)
             state["input_tokens"] += response.usage.input_tokens
             state["output_tokens"] += response.usage.output_tokens
+            write_new_json(directory / f"response-{state['calls']:03d}.json", {"content": response.content, "finish_reason": response.finish_reason})
             return response
 
     def components(name):
@@ -113,7 +118,7 @@ def run(args):
         registry = ToolRegistry()
         for definition in build_llm_tools(provider, request_policy=CONTRACT.request_policy): registry.register(definition)
         runtime = ToolRuntime(registry)
-        options = {"inference_audit": "v2", "include_generation_facts": True, "include_deterministic_facts": True,
+        options = {"inference_audit": "v3", "include_generation_facts": True, "include_deterministic_facts": True,
                    "position_policy": CONTRACT.position_policy, "source_use_policy": CONTRACT.source_use_policy, "compact_report_policy": CONTRACT.compact_report_policy}
         return (GroundedChatEvaluationAdapter(runtime=runtime, system_prompt=EVALUATOR_SYSTEM_PROMPT, fact_pack_builder=build_fact_pack, **options),
                 GroundedCoachReviser(runtime=runtime, system_prompt=REVISER_SYSTEM_PROMPT, prompt_builder=lambda *x: "unused", validator=lambda *x: None, **options))
@@ -121,7 +126,7 @@ def run(args):
     deterministic = (args.source_run / "inputs/deterministic_report.md").read_text(encoding="utf-8")
     knowledge = saved_knowledge
     try:
-        for case in sorted(dataset["cases"], key=lambda c: c["id"] != "vision_fact"):
+        for case in sorted(selected_cases, key=lambda c: c["id"] != "vision_fact"):
             evaluator, _ = components(case["id"])
             report = base_report.replace("## 3. 主要风险点\n", "## 3. 主要风险点\n\n" + case["claim"] + "\n", 1)
             write_new_json(directory / f"{case['id']}-input.json", {"report_sha256": hashlib.sha256(report.encode()).hexdigest(), "report": report})
@@ -158,6 +163,9 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--source-run", required=True, type=Path)
     p.add_argument("--base-report", required=True, type=Path)
+    selection = p.add_mutually_exclusive_group()
+    selection.add_argument("--report-only", action="store_true")
+    selection.add_argument("--case-id", action="append")
     p.add_argument("--execute", action="store_true")
     p.add_argument("--env-file", type=Path)
     p.add_argument("--ci-run")

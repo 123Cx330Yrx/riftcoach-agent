@@ -9,7 +9,7 @@ from .coach_contract import COACH_CONTRACT, require_coach_contract
 class CoachContextBuilder(ContextBuilderV1):
     def _build_recent_form_sections(self, execution, typed_input):
         sections = super()._build_recent_form_sections(execution, typed_input)
-        if self.coach_contract.version not in ("1.3.7", "1.3.8"):
+        if self.coach_contract.version not in ("1.3.7", "1.3.8", "1.3.9"):
             return sections
         from app.evaluation.golden_inference_audit import inference_facts
         return (*sections, ContextSection(
