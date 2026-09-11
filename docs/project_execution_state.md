@@ -13,6 +13,15 @@ pause_reason: ""
 
 ## 状态元数据
 
+2026-09-11自动质量漏检离线审查完成：核对原报告/95分pass空issues及五局证据，确认评估器将数值正确、位置/因果免责声明误当成结论支持。中路输局CS9.01高于赢局8.805，与混合位置方向相反；单局视野90不证明意识。新增10条人工标注开发正反例、匿名指标与可复算脚本；6项证据反例加既有请求送达3项共9项通过。此批不改Runtime或评分器，不宣称自动修复通过。修复设计见2026-09-11-golden-quality-inference-audit.md。唯一下一步为新显式1.3.7的同位置事实投影及结构化推断审查合同离线实现，旧版本/预算/质量门冻结。新增外部请求0、Provider累计68，8E仍in_progress，Workbench设计后置。
+
+- 本地代码：新增离线开发证据/检查工具，运行时未改。
+- 所有者理解：已解释数值正确不等于推断成立及分组方向反转；未新增理解验收。
+- 参考来源审计：仅旧报告、旧评估及五局输入，无在线新来源。
+- 公共作品/部署成熟度：本批待公共CI；此前本地真实笔记闭环不变，无部署。
+
+以下为历史接续，以上述最新动作优先。
+
 2026-09-11本地真实观摩消费完成：实现a1eb64e1591151820d20fe2c7bf57870814101c3由Actions34556770700同SHA三任务success（Python3051 passed/154 skipped/127 subtests、前端280、浏览器40、PostgreSQL210，打包通过）。默认入口未注入session的缺口由显式loopback local入口解决，生产默认不变。Docker启动失败已定位到sailor-ingest.sock及Secrets Engine engine.sock无法访问；备份重建两个通信目录后本次启动恢复，未删除数据库卷，不宣称永久修复。原riftcoach库先pg_dump备份，再0011→0014升级。实际通过现有API/单次player-link worker解析DK ShowMaker#KR1 asia为observed，归属于明确本地owner local-showmaker-observer；没有冒充用户正式登录身份。真实浏览器导入原五局归档→连接会话→保存明确标注的验证笔记→刷新/重新导入读回→重启API重新连接读回全部通过，真实DB只有1条验证笔记；390px无溢出，page errors=0。回执outputs/showmaker-notes-live-receipt.json，SHA256 011a8565d23a3d697ea6703fba743fb73156044a67029852c50d4e8a94df966c。实际新增1次Riot Account-V1读取，比赛/OP.GG/Provider0，累计Provider保持68。8E仍in_progress；正式OIDC/RSO、报告可信产品发布、个人Training和两项自动质量漏检仍未完成。唯一下一步为黄金切片剩余缺口审查，优先把两项已确认的自动质量漏检固化为离线反例，再确定修复批次；Workbench四块设计继续后置。
 
 - 本地代码（当前）：会话入口、真实ShowMaker观摩笔记保存及重启回读完成。
