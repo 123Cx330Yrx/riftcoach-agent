@@ -1,5 +1,7 @@
 # RiftCoach 主路线 v1.1（阶段 0—8）
 
+后续Workbench设计回看：[四块联动与视觉备忘](plans/2026-09-11-workbench-four-surface-design-followup.md)。仅后置留存，不改变当前黄金切片、阶段顺序或退出条件。
+
 当前黄金切片接续以docs/project_execution_state.md及黄金计划末节为准。1.3.6真实完整报告已返回，人工另校订两项漏检；用户2026-09-11已明确沿用ShowMaker观摩，不等待用户外服账号。当前推进校验后的归档工作台和示例练习；authenticated live/DB/个人Training未验收，累计68次Provider尝试，本轮新增0，8E仍in_progress。
 
 
