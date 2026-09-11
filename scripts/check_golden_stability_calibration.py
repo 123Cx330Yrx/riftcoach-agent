@@ -15,7 +15,7 @@ SOURCE = ROOT / "data/evaluation/datasets/golden_quality_counterexamples_v1.json
 def check_evidence(data: dict, source_bytes: bytes) -> dict:
     if data["schema_version"] != "golden-stability-calibration-v1":
         raise ValueError("unsupported calibration version")
-    if hashlib.sha256(source_bytes).hexdigest() != data["source_dataset_sha256"]:
+    if hashlib.sha256(source_bytes.replace(b"\r\n", b"\n")).hexdigest() != data["source_dataset_sha256"]:
         raise ValueError("source evidence changed")
     rows = json.loads(source_bytes)["samples"]
     wins = [r for r in rows if r["role"] == "MIDDLE" and r["win"] is True]

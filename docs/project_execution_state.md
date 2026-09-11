@@ -5143,3 +5143,6 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 
 
 范围合同最终本地验证：90 passed，治理检查和diff检查通过。公共验证待本次提交。
+
+
+公共首检34605503901发现校准来源SHA绑定Windows CRLF，Linux LF误报source evidence changed。校准资产明确utf8_lf_only，仅归一化CRLF，新增双平台一致及数值改动拒绝测试。旧来源文件/运行回执不改；待修复提交公共验证，Provider仍95。

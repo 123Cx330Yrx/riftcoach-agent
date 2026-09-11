@@ -314,3 +314,6 @@ preserving old contract fingerprints and request budgets.” Parent gate stays o
 
 
 2026-09-11范围真实验证入口已接线：--scope显式绑定1.3.11和十二案校准集；report-only强制96分稿SHA，controls-only最多24次，两批独立身份，原coverage路径不变。三类结果分开统计，只有命中插入原句及对应unsupported/ambiguous问题才算检出；正对照失败停止后续控制，完整报告嵌入标记在I/O前核验。30项聚焦回归通过，无I/O预检显示正确版本/12案/24次上限。唯一下一步为本提交同SHA公共检查后执行已授权的新鲜report-only，再按结果进行controls-only真实观察。当前Provider累计95，真实语义修复仍待验证，8E和Workbench后置边界不变。
+
+
+公共首检34605503901发现校准来源SHA绑定Windows CRLF，Linux LF误报source evidence changed。校准资产明确utf8_lf_only，仅归一化CRLF，新增双平台一致及数值改动拒绝测试。旧来源文件/运行回执不改；待修复提交公共验证，Provider仍95。

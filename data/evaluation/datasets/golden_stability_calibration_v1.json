@@ -1,7 +1,7 @@
 {
   "schema_version": "golden-stability-calibration-v1",
   "purpose": "development_only_human_labeled_not_holdout",
-  "source_dataset_sha256": "355241fefb6f16a40f7779b256f5f035746826ec53969632425459404269e195",
+  "source_dataset_sha256": "8259711a1cb378658882195468e855e68e5a4253ebe0c3b8646050bf0dc73318",
   "source_report_sha256": "3b4d530279951c54a79eaf330a0b03d841910ab6dc35b8f48402be285a9f8c6e",
   "labels": {
     "accept": "本条可保留；不代表整篇报告合格",
@@ -93,5 +93,6 @@
       "claim": "## 持续存在的输出差距",
       "rationale": "标题本身暗示时间持续，但没有范围。"
     }
-  ]
+  ],
+  "source_hash_encoding": "utf8_lf_only"
 }

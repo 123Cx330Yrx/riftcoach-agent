@@ -25,3 +25,12 @@ def test_changed_evidence_or_lost_ambiguity_control_rejected(mutation):
         data["cases"] = [c for c in data["cases"] if c["expected"] != "clarify"]
     with pytest.raises(ValueError):
         check_evidence(data, source)
+
+
+def test_windows_and_linux_checkouts_bind_the_same_source_content():
+    data = json.loads(DATASET.read_text(encoding="utf-8"))
+    lf = SOURCE.read_bytes().replace(b"\r\n", b"\n")
+    assert check_evidence(data, lf) == check_evidence(data, lf.replace(b"\n", b"\r\n"))
+    altered = lf.replace(b"1143.4", b"1143.5")
+    with pytest.raises(ValueError, match="source evidence changed"):
+        check_evidence(data, altered)
