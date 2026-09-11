@@ -190,3 +190,43 @@ unexamined automatic pass. The 8E checkpoint and deferred design remain unchange
 
 
 最终本地验证：144 passed、7 subtests，治理和diff检查通过。保存五局的完整脚本流程9调用/8工具/一次修订，最大请求输入估算56298；脚本低分仍拒绝。真实模型验证尚待本实现公共CI。
+
+## Coverage real observation and remaining boundary
+
+2026-09-11逐段覆盖已完成公共与真实开发验证：实现11278ba0b121b772002770cf5c4513dcae324abc，Actions34599166770三任务同SHA成功（Python3086 passed/154 skipped/127 subtests，PostgreSQL210）；本地144项/7 subtests。97分漏检稿在新鲜report-b运行中78/needs_revision→一次修订→96/pass，前后均完整覆盖27段，旧视野意识断言已实际改为结果记录并明确不证明意识；同位置补刀修正保留。人工仍needs_revision：稳定性措辞仍被支持，需区分所选样本内一致性与经证据证明的稳定性。独立controls运行10/10完成，5错误检出、5正确通过，漏检0/5、误报0/5，12调用含2次结构化纠正；仅已知开发集，非未见泛化或生产准入。首个report运行1请求在约74秒worker_failed中断，未获终态/用量；不是90秒截止，不能判定输出上限或网络具体根因。全新report-b的3请求52176 tokens及controls的12请求212083 tokens完整返回。本轮共16次Provider预约、已返回计量264259 tokens，中断请求用量未知；累计Provider95。旧记录/人工WorkBench副本不替换，8E仍in_progress，无可信发布/部署/个人Training。唯一下一步：为稳定性表述建立明确正反边界（样本内一致描述、长期稳定断言、含混措辞），离线校准后再验证，禁止靠关键词黑名单或重复抬高评分解决。Workbench四块设计仍后置。
+
+Evidence remains private under `data/runs/inference_development/`:
+
+| Fresh run suffix | Requests | Outcome | Receipt SHA-256 |
+|---|---:|---|---|
+| 11278ba-coverage-report | 1 | worker_failed, no terminal/usage | bba8fedf1cdec5fe0b33e1d35274a6c836a2cfd52a9dcccd8b2abed74d2dad10 |
+| 11278ba-coverage-report-b | 3 | 78 → revision → 96; manual needs_revision | 3569c3970d8777731c775a21f66ac938957b07c81976261da32abd3bf4ec05ae |
+| 11278ba-coverage-controls | 12 | 10/10 known controls matched | a93098c46a5c95b21d557a5c409392b425d3b70b125015a96b02f78c22477a12 |
+
+Run IDs have the prefix `inference-dev-`. The new report's manual-review SHA is
+3539a83d79e102dd84ccb37d7337afb5230fe49a8d10f000bbe5cfa71b7afa7b;
+report SHA is 3b4d530279951c54a79eaf330a0b03d841910ab6dc35b8f48402be285a9f8c6e.
+The original report, its 97-point false pass, the manually reviewed Workbench copy,
+and this new 96-point automatic result retain separate identities. No publication
+was performed. Zero usage in the failed receipt means no returned accounting,
+not free usage. The entire ten-case development set was completed this time.
+
+Next acceptance boundary must distinguish: a factual statement that both selected
+losses have lower gold/damage than both selected wins; an unsupported inference
+that this is a reliable future/long-term property; and ambiguous wording such as
+“stable difference” without a stated scope. The first can be supported by the rows,
+the second requires evidence not supplied here, and the third needs clearer
+wording. Do not reject all appearances of “stable” or invent a universal minimum
+sample count. This calibration is a separate remaining semantic issue, not another
+coverage omission. Prepare explicit positive/negative/ambiguous cases and unseen
+paraphrases before a further bounded real observation. Parent 8E remains open.
+
+Learning closure for this bounded coverage change: code map and control flow are
+above; tests prove complete inventory, report binding, persistence and shared
+repair limits; real controls demonstrate the observed known-case improvement;
+private run receipts and CLI examples support reproduction; the provider failure
+and unsupported stability language document operational and semantic limits.
+Interview wording: “Converted selective claim auditing into verifiable report
+coverage, kept the existing request envelope through lossless compaction, and
+validated five reject/five accept controls with real model calls; retained manual
+review for a separate stability-scope ambiguity.” No claim of universal accuracy.

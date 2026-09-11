@@ -1,6 +1,6 @@
 # RiftCoach 架构能力覆盖矩阵
 
-当前黄金切片推断修复以 `docs/project_execution_state.md` 和 [审查计划](plans/2026-09-11-golden-quality-inference-audit.md) 为准：97分自动通过仍被人工拒绝，正推进逐段覆盖合同；8E未完成，旧调用计数及等待动作仅属历史。
+当前黄金切片推断修复以 `docs/project_execution_state.md` 和 [审查计划](plans/2026-09-11-golden-quality-inference-audit.md) 为准：逐段覆盖已公共验证并完成10项真实开发正反例（5错误检出/5正确通过），视野漏句已修正，稳定性措辞边界仍待校准；8E未完成，旧调用计数及等待动作仅属历史。
 
 后续Workbench设计回看：[四块联动与视觉备忘](plans/2026-09-11-workbench-four-surface-design-followup.md)。仅后置留存，不改变当前黄金切片、阶段顺序或退出条件。
 

@@ -1,6 +1,6 @@
 # RiftCoach 路线变更历史
 
-当前黄金切片推断修复以 `docs/project_execution_state.md` 和 [审查计划](plans/2026-09-11-golden-quality-inference-audit.md) 为准：97分自动通过仍被人工拒绝，正推进逐段覆盖合同；8E未完成，旧调用计数及等待动作仅属历史。
+当前黄金切片推断修复以 `docs/project_execution_state.md` 和 [审查计划](plans/2026-09-11-golden-quality-inference-audit.md) 为准：逐段覆盖已公共验证并完成10项真实开发正反例（5错误检出/5正确通过），视野漏句已修正，稳定性措辞边界仍待校准；8E未完成，旧调用计数及等待动作仅属历史。
 
 当前接续：流式诊断复用审查完成（主Agent代码/历史证据核查、Luna独立边界审计）。旧low/2048探针和固定recovery candidate合同不能直接套当前high/8192/1.3.5。底层ZhipuStreamAdapter经零网络假SDK验证可保留high/8192/90秒并区分reasoning/content/terminal/usage；产品streaming标志仍false。RQ-217仅证明受控transport gate客户端唤醒，不能外推自然阻塞取消。失败请求完整消息未保存，不能宣称精确重放。已定义独立单请求、父进程硬截止、仅安全时间/计数的报告形状诊断规范；下一步实现其离线入口与失败测试，真实调用新增0、累计40，8E保持in_progress。
 

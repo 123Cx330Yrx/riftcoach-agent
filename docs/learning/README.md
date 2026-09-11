@@ -1,6 +1,6 @@
 # RiftCoach 学习与工程证据索引
 
-黄金切片推断漏检的离线证据与修复设计见 [推断审查](../plans/2026-09-11-golden-quality-inference-audit.md)，尚未完成自动语义修复。
+黄金切片推断审查的覆盖实现、预算压缩和10项真实正反例证据见 [推断审查](../plans/2026-09-11-golden-quality-inference-audit.md)。视野漏句已实证修正；稳定性措辞仍需校准，整体自动语义质量未完成验收。
 
 观摩笔记及本地会话消费的最新代码/流程/验证/运行边界见 [ADR-0101](../adr/0101-user-authored-observation-notes.md)，进度以当前执行状态为准；下方早期“待API接线”不再是最新待办。
 
