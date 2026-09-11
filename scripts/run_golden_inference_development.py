@@ -16,7 +16,7 @@ from app.harness.steps import EvaluationRequest, RevisionRequest, KnowledgeEvide
 from app.harness.adapters import _evaluation_payload
 from app.providers.config import load_zhipu_settings
 from app.runtime.coach_budget import CoachBudgetedProvider
-from app.runtime.coach_contract import ANCHOR_COACH_CONTRACT as CONTRACT
+from app.runtime.coach_contract import COVERAGE_COACH_CONTRACT as CONTRACT
 from app.runtime.composition import RuntimeCompositionRoot
 from app.tools.adapters.llm import build_llm_tools
 from app.tools.registry import ToolRegistry
@@ -36,7 +36,7 @@ def prepare(source: Path):
     report_path = source / "output/final_report.md"
     if _hash(report_path) != dataset["source_report_sha256"]:
         raise ValueError("source_report_identity_mismatch")
-    assets = ROOT / "examples/runtime_profiles/flash_v2_golden_anchors"
+    assets = ROOT / "examples/runtime_profiles/flash_v2_golden_coverage"
     RuntimeCompositionRoot.from_directories(skills_root=assets / "skills", prompt_programs_root=assets / "prompt_programs", coach_contract=CONTRACT)
     summary = json.loads((source / "inputs/player_summary.json").read_text(encoding="utf-8"))
     # Bind the development labels to the same metric rows, not an arbitrary report.
@@ -71,10 +71,14 @@ def score_case(case, result):
 
 def run(args):
     dataset, summary, original = prepare(args.source_run)
+    if args.target_report:
+        if _hash(args.target_report) != "e351b8cb3a09137f895346dd42783a3944805ad48129cb31b2934c20ed91f52d":
+            raise ValueError("reviewed_target_report_identity_mismatch")
+        original = args.target_report.read_text(encoding="utf-8")
     selected_cases = [] if args.report_only else [c for c in dataset["cases"] if not args.case_id or c["id"] in args.case_id]
     if args.case_id and not set(args.case_id) <= {c["id"] for c in dataset["cases"]}:
         raise ValueError("unknown_development_case")
-    call_limit = min(MAX_CALLS, len(selected_cases) * 2 + 5)
+    call_limit = min(MAX_CALLS, len(selected_cases) * 2 + (0 if args.controls_only else 5))
     if _hash(args.base_report) != "8485a643fcc2578034e30ac7b74a3c98bebfb2706ef32152ad1402fe59f3d5ef":
         raise ValueError("development_base_report_identity_mismatch")
     base_report = args.base_report.read_text(encoding="utf-8")
@@ -84,6 +88,7 @@ def run(args):
     plan = {"scope": "known_development_not_holdout_or_admission", "contract": CONTRACT.snapshot().model_dump(mode="json"),
             "dataset_sha256": _hash(DATASET), "source_report_sha256": dataset["source_report_sha256"], "base_report_sha256": _hash(args.base_report),
             "case_embedding": "full-manually-reviewed-report-with-single-claim-v2",
+            "evaluated_report_sha256": hashlib.sha256(original.encode()).hexdigest(), "controls_only": args.controls_only,
             "cases": len(selected_cases), "selected_case_ids": [c["id"] for c in selected_cases], "max_provider_calls": call_limit,
             "max_input_per_call": 64000, "max_output_per_call": 8192, "max_total_tokens": call_limit * (64000 + 8192),
             "max_revisions": 1, "sdk_retries": 0, "real_calls_authorized": bool(args.execute)}
@@ -118,7 +123,7 @@ def run(args):
         registry = ToolRegistry()
         for definition in build_llm_tools(provider, request_policy=CONTRACT.request_policy): registry.register(definition)
         runtime = ToolRuntime(registry)
-        options = {"inference_audit": "v3", "include_generation_facts": True, "include_deterministic_facts": True,
+        options = {"inference_audit": "coverage", "include_generation_facts": True, "include_deterministic_facts": True,
                    "position_policy": CONTRACT.position_policy, "source_use_policy": CONTRACT.source_use_policy, "compact_report_policy": CONTRACT.compact_report_policy}
         return (GroundedChatEvaluationAdapter(runtime=runtime, system_prompt=EVALUATOR_SYSTEM_PROMPT, fact_pack_builder=build_fact_pack, **options),
                 GroundedCoachReviser(runtime=runtime, system_prompt=REVISER_SYSTEM_PROMPT, prompt_builder=lambda *x: "unused", validator=lambda *x: None, **options))
@@ -137,6 +142,8 @@ def run(args):
             if case["id"] == "vision_fact" and not state["cases"][-1]["matched"]:
                 state["controls_stopped"] = "full_report_positive_control_failed"
                 break
+        if args.controls_only:
+            return
         evaluator, reviser = components("full-report")
         # Full report gets its own saved, attributable knowledge projection.
         knowledge = saved_knowledge
@@ -153,6 +160,10 @@ def run(args):
         state.update(stopped=True, error_type=type(error).__name__)
         raise
     finally:
+        state["evaluated_case_count"] = len(state["cases"])
+        state["all_selected_cases_completed"] = len(state["cases"]) == len(selected_cases)
+        state["false_negative_denominator"] = sum(c["expected"] == "reject" for c in state["cases"])
+        state["false_positive_denominator"] = sum(c["expected"] == "accept" for c in state["cases"])
         state["false_negatives"] = sum(c["expected"] == "reject" and not c["matched"] for c in state["cases"])
         state["false_positives"] = sum(c["expected"] == "accept" and not c["matched"] for c in state["cases"])
         write_new_json(directory / "receipt.json", {**plan, **state})
@@ -166,12 +177,15 @@ def main():
     selection = p.add_mutually_exclusive_group()
     selection.add_argument("--report-only", action="store_true")
     selection.add_argument("--case-id", action="append")
+    p.add_argument("--controls-only", action="store_true")
+    p.add_argument("--target-report", type=Path)
     p.add_argument("--execute", action="store_true")
     p.add_argument("--env-file", type=Path)
     p.add_argument("--ci-run")
     p.add_argument("--run-id", default="inference-dev-preview")
     p.add_argument("--output-root", type=Path, default=ROOT / "data/runs/inference_development")
     args = p.parse_args()
+    if args.controls_only and args.report_only: p.error("controls-only conflicts with report-only")
     if args.execute and (args.env_file is None or not args.ci_run): p.error("execution requires env-file and ci-run")
     try: run(args)
     except Exception as error:

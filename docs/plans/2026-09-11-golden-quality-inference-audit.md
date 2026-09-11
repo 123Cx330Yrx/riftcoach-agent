@@ -145,3 +145,48 @@ semantic failures. Interview wording: “Built versioned same-role inference aud
 found coverage gaps through real model evaluation, and prevented a 97-point false
 pass from being presented as a successful repair.” The parent checkpoint is not
 complete and its learning/quality exit gate is not advanced.
+
+## 2026-09-11 selected coverage implementation
+
+Explicit Coach 1.3.10 / Skill 0.5.10 / Program 2.3.10 / evaluation 1.5.0
+adds deterministic block coverage to the existing single evaluator. Earlier
+versions remain frozen. No additional model stage or package is introduced.
+
+`app/evaluation/golden_inference_coverage.py` groups wrapped prose and table rows,
+separates headings/list items, and retains every nonblank source line verbatim.
+Order + text-hash IDs bind all blocks to this exact report. There is no semantic
+keyword filter. A 24,000-character/64-block cap rejects oversized input before I/O.
+Every block needs both inference classifications. Missing/duplicate/stale/order
+mismatches reject; every unsupported classification must link to an unsupported
+claim in that same block and an issue. Aggregate audit status must agree. Exact
+anchors and coverage share the existing one structured correction, never two.
+Security findings still reject before any correction. The status coverage survives
+Harness artifacts and the revision projection. Revision receives original report,
+issues and coverage, and its new report gets a newly derived inventory.
+
+Tradeoff: coverage prevents silent omission but cannot prove a classification is
+correct. Tests explicitly demonstrate a structurally complete yet semantically
+wrong all-not-applicable answer, so no universal semantic guarantee is claimed.
+A deterministic content blacklist and another model call were not selected.
+
+Budget experiment: naively repeating the full report with its inventory produced
+an actual request ceiling of 73,580, above 64,000. New-version-only compact JSON
+preserves all values, and the indexed draft replaces the duplicate raw draft.
+The original and 97-point reports each contain 27 blocks. Offline actual request
+projections then fit the 64,000 limit (approximately 50–51k evaluation and 45–47k
+revision); output 8,192, timeout 90 seconds, nine calls and one revision stay fixed.
+`scripts/check_golden_coverage_requests.py` reproduces these private-input sizes
+using a scripted Provider only. It is not model quality or latency evidence.
+
+Validation: structural tampering, clause/negation retention, size rejection,
+JSON roundtrip, security fail-before-repair, persistence and all frozen version
+fingerprints; full nine-call replay and saved-report request-size checks. After
+exact-SHA public CI, use a fresh report-only run against the immutable 97-point
+counterexample (at most five calls), then balanced controls in a separate fresh
+controls-only run (at most twenty calls) if the report path is usable. Existing
+user authorization covers these bounded calls. Keep actual denominators and
+manual review separate; do not replace the reviewed Workbench artifact on an
+unexamined automatic pass. The 8E checkpoint and deferred design remain unchanged.
+
+
+最终本地验证：144 passed、7 subtests，治理和diff检查通过。保存五局的完整脚本流程9调用/8工具/一次修订，最大请求输入估算56298；脚本低分仍拒绝。真实模型验证尚待本实现公共CI。

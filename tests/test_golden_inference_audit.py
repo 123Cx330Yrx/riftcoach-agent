@@ -69,14 +69,16 @@ def test_development_scoring_requires_the_expected_finding(monkeypatch):
     assert runner.score_case(case, result)["matched"]
 
 
-@pytest.mark.parametrize("version", ["1.3.7", "1.3.8", "1.3.9"])
+@pytest.mark.parametrize("version", ["1.3.7", "1.3.8", "1.3.9", "1.3.10"])
 def test_new_contract_reaches_full_nine_call_path_without_changing_old_identity(monkeypatch, version):
-    from app.runtime.coach_contract import CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT
-    contract = {"1.3.7": INFERENCE_COACH_CONTRACT, "1.3.8": CLAIM_COACH_CONTRACT, "1.3.9": ANCHOR_COACH_CONTRACT}[version]
+    from app.runtime.coach_contract import CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT
+    contract = {"1.3.7": INFERENCE_COACH_CONTRACT, "1.3.8": CLAIM_COACH_CONTRACT, "1.3.9": ANCHOR_COACH_CONTRACT, "1.3.10": COVERAGE_COACH_CONTRACT}[version]
     from app.evaluation.golden_inference_audit_v2 import INFERENCE_POLICY as V2_POLICY
     policy = INFERENCE_POLICY if version == "1.3.7" else V2_POLICY
     if version == "1.3.9":
         from app.evaluation.golden_inference_audit_v3 import INFERENCE_POLICY as policy
+    if version == "1.3.10":
+        from app.evaluation.golden_inference_coverage import COVERAGE_POLICY as policy
     captured = []; original = _ReplayProvider.chat
     def record(self, request):
         captured.append(request); return original(self, request)
@@ -93,6 +95,7 @@ def test_new_contract_reaches_full_nine_call_path_without_changing_old_identity(
     assert COMPACT_COACH_CONTRACT.snapshot().sha256 == "d20fc775e7be126d373163a7d72cf71be329e28614aeb1eacaaf5e560b1f59f3"
     assert INFERENCE_COACH_CONTRACT.snapshot().sha256 == "3ca4e014cf870d626e6dcb321b1881a6d4d19db3c854bab2e5c16b6f932445a0"
     assert CLAIM_COACH_CONTRACT.snapshot().sha256 == "17f70cdba761d28359aa00bc17d4a072e65297dfc4a0362dbe97b159e6c5841e"
+    assert ANCHOR_COACH_CONTRACT.snapshot().sha256 == "f1c8865e8a11ff765ab547cf76c1aa8a47b9b5b68d49a6b9f22b38adfc05bd1f"
     old, new = COMPACT_COACH_CONTRACT.descriptor(), contract.descriptor()
     for key in ("max_calls", "max_input_tokens", "max_output_tokens", "total_tokens", "request_timeout_s", "max_revisions", "minimum_score"):
         assert old[key] == new[key]

@@ -397,6 +397,7 @@ def _evaluation_payload(result: EvaluationResult) -> dict[str, Any]:
         "passed_checks": list(result.passed_checks),
         "summary": result.summary,
         **({"audits": list(result.audits)} if getattr(result, "audits", ()) else {}),
+        **({"coverage": list(result.coverage)} if getattr(result, "coverage", ()) else {}),
     }
 
 

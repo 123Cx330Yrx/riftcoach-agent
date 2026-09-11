@@ -1,5 +1,7 @@
 # RiftCoach 主路线 v1.1（阶段 0—8）
 
+当前黄金切片推断修复以 `docs/project_execution_state.md` 和 [审查计划](plans/2026-09-11-golden-quality-inference-audit.md) 为准：97分自动通过仍被人工拒绝，正推进逐段覆盖合同；8E未完成，旧调用计数及等待动作仅属历史。
+
 后续Workbench设计回看：[四块联动与视觉备忘](plans/2026-09-11-workbench-four-surface-design-followup.md)。仅后置留存，不改变当前黄金切片、阶段顺序或退出条件。
 
 当前黄金切片接续以docs/project_execution_state.md及黄金计划末节为准。1.3.6真实完整报告已返回，人工另校订两项漏检；用户2026-09-11已明确沿用ShowMaker观摩，不等待用户外服账号。归档工作台、观摩笔记及显式本地会话已公开验证，并完成真实ShowMaker本地浏览器保存/刷新/服务重启回读；正式身份/部署、可信报告发布及个人Training未验收，详见ADR-0101及当前执行状态，累计68次Provider尝试，本轮新增0，8E仍in_progress。

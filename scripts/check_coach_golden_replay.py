@@ -33,7 +33,7 @@ from app.product.recent_review import RecentReviewProductRequest
 from app.providers.models import TokenUsage, ToolCall
 from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE
 from app.rag.hybrid import LocalHybridKnowledgeProvider
-from app.runtime.coach_contract import BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT
+from app.runtime.coach_contract import BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT
 
 
 class _ReplayProvider(_WorstPathProvider):
@@ -56,10 +56,15 @@ class _ReplayProvider(_WorstPathProvider):
                 for i, query in enumerate(queries)),
                 reasoning_content="x" * self.reasoning_characters or None)
         # Conservative resource settlement, not invented observed API usage.
-        if request.response_contract is not None and request.response_contract.version in ("1.3.0", "1.4.0") and ordinal in (6, 9):
+        if request.response_contract is not None and request.response_contract.version in ("1.3.0", "1.4.0", "1.5.0") and ordinal in (6, 9):
             payload = json.loads(response.content)
             payload["audits"] = [{"kind": kind, "status": "not_applicable", "claims": []}
                                  for kind in ("metric_to_ability", "cohort_comparison")]
+            if request.response_contract.version == "1.5.0":
+                text = request.messages[-1].content
+                offset = text.index('"report_blocks":') + len('"report_blocks":')
+                blocks, _ = json.JSONDecoder().raw_decode(text[offset:].lstrip())
+                payload["coverage"] = [{"block_id": b["block_id"], "metric_to_ability": "not_applicable", "cohort_comparison": "not_applicable"} for b in blocks]
             response = replace(response, content=json.dumps(payload, ensure_ascii=False))
         return replace(response, usage=TokenUsage(
             input_tokens=estimate_runtime_request_input_ceiling(request), output_tokens=8192))
@@ -67,7 +72,7 @@ class _ReplayProvider(_WorstPathProvider):
 
 def probe(summary, *, contract=LATENCY_COACH_CONTRACT, reasoning_characters=0, bundle=None,
           training_positions=("mid", "support")):
-    if all(contract is not c for c in (BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT)):
+    if all(contract is not c for c in (BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT)):
         raise ValueError("unsupported replay contract")
     if type(reasoning_characters) is not int or not 0 <= reasoning_characters <= 100000:
         raise ValueError("invalid replay reasoning size")
