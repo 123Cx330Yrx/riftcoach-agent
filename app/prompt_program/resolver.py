@@ -69,7 +69,7 @@ class PromptProgramResolver:
                 "Prompt Program evaluation contract ID is unsupported"
             )
         grounded = self.coach_contract is not None and self.coach_contract.grounded
-        expected_evaluation = "1.2.0" if grounded else "1.1.0"
+        expected_evaluation = self.coach_contract.descriptor()["evaluation_contract_version"] if grounded else "1.1.0"
         if manifest.evaluation_contract_version != expected_evaluation:
             raise PromptProgramCatalogError(
                 "Prompt Program evaluation version does not match execution contract"
@@ -82,6 +82,9 @@ class PromptProgramResolver:
         if grounded:
             from app.evaluation.coach_grounded_contract import grounded_component_fingerprints
             current = grounded_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.7":
+                from app.evaluation.golden_inference_audit import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
         if self.coach_contract is not None:
             if skill_version != self.coach_contract.descriptor()["skill_version"] or manifest.program_version != self.coach_contract.descriptor()["program_version"]:
                 raise PromptProgramCatalogError("Coach contract requires independent Skill/Program versions")

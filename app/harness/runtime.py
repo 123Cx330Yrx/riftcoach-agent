@@ -548,5 +548,6 @@ class ReviewHarness:
                 "issues": list(evaluation.issues),
                 "passed_checks": list(evaluation.passed_checks),
                 "summary": evaluation.summary,
+                **({"audits": list(evaluation.audits)} if getattr(evaluation, "audits", ()) else {}),
             }
         )

@@ -2,11 +2,22 @@
 from dataclasses import replace
 import json
 
-from app.agent.context import ContextBuilderV1
+from app.agent.context import ContextBuilderV1, ContextSection, ContextTrust
 from .coach_contract import COACH_CONTRACT, require_coach_contract
 
 
 class CoachContextBuilder(ContextBuilderV1):
+    def _build_recent_form_sections(self, execution, typed_input):
+        sections = super()._build_recent_form_sections(execution, typed_input)
+        if self.coach_contract.version != "1.3.7":
+            return sections
+        from app.evaluation.golden_inference_audit import inference_facts
+        return (*sections, ContextSection(
+            section_id="facts:inference_facts", trust=ContextTrust.DETERMINISTIC_FACTS,
+            source="golden-inference-audit-v1", required=True, priority=785,
+            content=json.dumps(inference_facts(typed_input.player_summary), ensure_ascii=False),
+        ))
+
     def __init__(self, *, coach_contract=COACH_CONTRACT, compact_json=False):
         super().__init__()
         self.coach_contract = require_coach_contract(coach_contract)

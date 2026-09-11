@@ -96,3 +96,9 @@ needed. Failure boundaries include missed claims, false positives and over-relia
 on disclaimers. Interview wording: “Diagnosed a false-negative evaluation with a
 within-role reversal and prepared balanced development controls”; not “solved model
 hallucinations” or “production evaluation proven”.
+
+## Implementation and authorized real development check
+
+2026-09-11同批推断修复接续：已实现显式Coach1.3.7的同位置/胜负事实投影、两类逐项推断审查、原句/证据键校验及修订回传；旧1.3.6身份及9调用/一次修订预算不变。相关120项测试通过。用户继续授权涵盖本批真实模型验证，公共同SHA三任务成功后执行10条已知开发正反例及旧报告评估→最多一次修订→复评，独立新身份最多25次Provider调用、每次64000输入/8192输出/90秒、SDK重试0。判定必须命中对应推断问题，其他拒绝原因不算修复。当前真实验证待执行，Provider累计68；唯一下一步为本批公共检查后完成该真实验证。8E仍in_progress，ShowMaker observed范围及后置Workbench设计不变。
+
+Code: `app/evaluation/golden_inference_audit.py`, opt-in contract/context/composition wiring and `scripts/run_golden_inference_development.py`. The runner defaults to no-I/O preview, checks source and dataset identities, requires clean exact-SHA public CI, reserves each request before I/O and stores private outputs under a create-only run directory. Development cases require the expected unsupported inference kind, not merely any rejection. This is not a held-out admission run.

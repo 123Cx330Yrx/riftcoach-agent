@@ -81,19 +81,23 @@ def build_grounded_revision_prompt(report, evaluation, knowledge):
 
 class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
     """One correction shares the existing two-call evaluation budget."""
-    def __init__(self, *, include_deterministic_facts=False, position_policy="", include_generation_facts=False, source_use_policy="", compact_report_policy="", **kwargs):
+    def __init__(self, *, include_deterministic_facts=False, position_policy="", include_generation_facts=False, source_use_policy="", compact_report_policy="", inference_audit=False, **kwargs):
         super().__init__(**kwargs)
         self.include_deterministic_facts = include_deterministic_facts
         self.position_policy = position_policy
         self.include_generation_facts = include_generation_facts
         self.source_use_policy = source_use_policy
         self.compact_report_policy = compact_report_policy
+        self.inference_audit = inference_audit
 
     def evaluate(self, request):
         if not request.user_utterance or not request.user_utterance.strip():
             raise ValueError("security-aware evaluation requires user_utterance")
         knowledge = _knowledge_evaluation_projection(request.knowledge)
         facts = self.fact_pack_builder(dict(request.player_summary))
+        if self.inference_audit:
+            from app.evaluation.golden_inference_audit import inference_facts
+            facts["inference_facts"] = inference_facts(request.player_summary)
         if self.include_deterministic_facts:
             facts["deterministic_source_facts"] = request.deterministic_report
         if self.include_generation_facts:
@@ -110,6 +114,11 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
         if self.source_use_policy:
             prompt = self.source_use_policy + "\n\n" + prompt
         contract = evaluation_response_contract_v12()
+        output_model = EvaluationResponseModelV12
+        if self.inference_audit:
+            from app.evaluation.golden_inference_audit import audit_prompt, inference_response_contract, EvaluationResponseModelV13
+            prompt = audit_prompt(prompt, contract)
+            contract, output_model = inference_response_contract(), EvaluationResponseModelV13
         def call(text, step):
             return _chat_response(self.runtime, system_prompt=self.system_prompt, user_prompt=text,
                                   temperature=self.temperature, harness_step=step, response_contract=contract)
@@ -117,16 +126,26 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
         # A typed security finding is terminal even if the verdict contradicts it.
         # Never let a correction call erase that finding and turn it into pass.
         try:
-            first = EvaluationResponseModelV11.model_validate_json(response.content or "", strict=True)
+            first_content = response.content or ""
+            if self.inference_audit:
+                first_data = json.loads(first_content)
+                if isinstance(first_data, dict):
+                    first_data.pop("audits", None)
+                    first_content = json.dumps(first_data)
+            first = EvaluationResponseModelV11.model_validate_json(first_content, strict=True)
         except ValueError:
             first = None
         if first and any(issue.category == "prompt_injection" for issue in first.issues):
             return self._result(first, verdict=EvaluationVerdict.FAIL)
         payload = decode_structured_response(
-            response=response, contract=contract, output_model=EvaluationResponseModelV12,
+            response=response, contract=contract, output_model=output_model,
             repair=lambda _: call(build_grounded_repair_prompt(prompt), "evaluate_repair"),
         ).value
         result = self._result(payload)
+        if self.inference_audit:
+            from app.evaluation.golden_inference_audit import validate_audit_anchors, AuditedEvaluationResult
+            validate_audit_anchors(payload, request.report, facts["inference_facts"])
+            result = AuditedEvaluationResult(**result.__dict__, audits=tuple(a.model_dump(mode="json") for a in payload.audits))
         if not re.search(r"\[(K\d+)\]", request.report) and result.verdict is not EvaluationVerdict.FAIL:
             # A deterministic structural issue, not a fabricated model finding.
             # Send it through the same single revision, keeping score and all issues.
@@ -145,16 +164,20 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
 
 
 class GroundedCoachReviser(ChatCoachReviser):
-    def __init__(self, *, include_deterministic_facts=False, position_policy="", include_generation_facts=False, source_use_policy="", compact_report_policy="", **kwargs):
+    def __init__(self, *, include_deterministic_facts=False, position_policy="", include_generation_facts=False, source_use_policy="", compact_report_policy="", inference_audit=False, **kwargs):
         super().__init__(**kwargs)
         self.include_deterministic_facts = include_deterministic_facts
         self.position_policy = position_policy
         self.include_generation_facts = include_generation_facts
         self.source_use_policy = source_use_policy
         self.compact_report_policy = compact_report_policy
+        self.inference_audit = inference_audit
 
     def revise(self, request):
         knowledge = _knowledge_evaluation_projection(request.knowledge)
+        if self.inference_audit:
+            from app.evaluation.golden_inference_audit import inference_facts
+            knowledge["inference_facts"] = inference_facts(request.player_summary)
         if self.include_deterministic_facts:
             knowledge["deterministic_source_facts"] = request.deterministic_report
         if self.include_generation_facts:
@@ -168,6 +191,9 @@ class GroundedCoachReviser(ChatCoachReviser):
             prompt = self.position_policy + "\n\n" + prompt
         if self.source_use_policy:
             prompt = self.source_use_policy + "\n\n" + prompt
+        if self.inference_audit:
+            from app.evaluation.golden_inference_audit import INFERENCE_POLICY
+            prompt = INFERENCE_POLICY + "\n\n" + prompt
         content = _chat_content(self.runtime, system_prompt=self.system_prompt, user_prompt=prompt,
                                 temperature=self.temperature, harness_step="revise")
         validate_revised_report(content, request.report)

@@ -21,7 +21,7 @@ from app.model_runtime import (
 )
 from app.prompt_program import PromptProgramCatalog, PromptProgramResolver
 from app.skills.catalog import SkillCatalog
-from .coach_contract import COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT
+from .coach_contract import COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT
 from .coach_context import CoachContextBuilder
 
 from .runtime import (
@@ -105,7 +105,7 @@ class RuntimeCompositionRoot:
         from app.rag.coaching_query import CoachingQueryKnowledgeProvider
         from app.evaluation.glm53_report_contract import build_aligned_revision_prompt
         contract = self.prompt_program_resolver.coach_contract
-        if all(contract is not c for c in (COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT)):
+        if all(contract is not c for c in (COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT)):
             raise RuntimeCompositionError("independent Coach assets must be explicitly verified")
         contract.require_provider(provider)
         evaluator_type, reviser_type = SecureChatEvaluationAdapter, ChatCoachReviser
@@ -116,6 +116,7 @@ class RuntimeCompositionRoot:
             knowledge_provider=CoachingQueryKnowledgeProvider(knowledge_provider),
             evaluator_factory=lambda runtime: evaluator_type(
                 runtime=runtime, system_prompt=EVALUATOR_SYSTEM_PROMPT, fact_pack_builder=build_fact_pack,
+                **({"inference_audit": True} if contract is INFERENCE_COACH_CONTRACT else {}),
                 **({"include_generation_facts": True} if contract.descriptor().get("include_generation_facts") else {}),
                 **({"compact_report_policy": contract.compact_report_policy} if contract.compact_report_policy else {}),
                 **({"source_use_policy": contract.source_use_policy} if contract.source_use_policy else {}),
@@ -123,6 +124,7 @@ class RuntimeCompositionRoot:
                 **({"include_deterministic_facts": True} if contract.descriptor().get("include_deterministic_source_facts") else {})),
             reviser_factory=lambda runtime: reviser_type(
                 runtime=runtime, system_prompt=REVISER_SYSTEM_PROMPT,
+                **({"inference_audit": True} if contract is INFERENCE_COACH_CONTRACT else {}),
                 prompt_builder=build_aligned_revision_prompt, validator=validate_revised_report,
                 **({"include_generation_facts": True} if contract.descriptor().get("include_generation_facts") else {}),
                 **({"compact_report_policy": contract.compact_report_policy} if contract.compact_report_policy else {}),
