@@ -206,6 +206,18 @@ export class ApiClient {
     return decode(value)
   }
 
+  async postEmpty<T>(endpoint: string, decode: (value: unknown) => T, csrfToken: string, signal?: AbortSignal): Promise<T> {
+    if (!csrfToken || csrfToken.length > 256 || /[\r\n]/.test(csrfToken)) throw new Error("api_mutation_headers_invalid")
+    const response = await this.fetcher(apiPath(endpoint), {
+      method: "POST", credentials: "same-origin",
+      headers: { Accept: "application/json", "X-CSRF-Token": csrfToken },
+      ...(signal === undefined ? {} : { signal }),
+    })
+    if (!response.ok) throw await errorFrom(response)
+    if (!isJson(response)) throw new Error("api_content_type_invalid")
+    return decode(JSON.parse(await boundedText(response, JSON_BODY_LIMIT)))
+  }
+
   async getText<T>(
     endpoint: string,
     decode: (value: unknown) => T,

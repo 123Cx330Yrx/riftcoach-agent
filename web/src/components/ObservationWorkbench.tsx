@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import { ARCHIVE_MAX_BYTES, parseObservationArchive, type ObservationArchive } from "../workbench/observationArchive"
 import { SafeMarkdown } from "./SafeMarkdown"
+import { ObservationNotes } from "./ObservationNotes"
 import "../styles/observation.css"
 
 const positions: Record<string, string> = { mid: "中路", support: "辅助", top: "上路", jungle: "打野", adc: "下路", MIDDLE: "中路", UTILITY: "辅助" }
@@ -41,7 +42,7 @@ export function ObservationWorkbench() {
       <h1>ShowMaker 观摩复盘</h1>
       <p>从同位置对局中提出问题，再用录像验证。无需外服账号。</p>
       <label className="observation-import">导入观摩资料<input aria-label="导入观摩资料" type="file" accept=".json,application/json" onChange={event => { void importFile(event.target.files?.[0]); event.target.value = "" }} /></label>
-      <p className="observation-note">文件仅在当前浏览器读取。练习勾选只保留在本页，刷新后清空，不写入个人训练记录。</p>
+      <p className="observation-note">文件在当前浏览器读取。练习勾选只保留在本页；观摩笔记可另行连接档案保存，不写入个人训练记录。</p>
       {loading && <p role="status">正在检查资料…</p>}
       {error && <p role="alert">资料不完整、内容已变更或格式不受支持，请重新导出观摩资料。</p>}
     </header>
@@ -63,6 +64,7 @@ export function ObservationWorkbench() {
           <section className="panel observation-section" aria-labelledby="observation-report"><h2 id="observation-report">人工校订报告</h2><p className="observation-note">原模型报告复评 {archive.report.automated_score} 分，人工复核仍发现问题；以下是另行校订副本，未重新自动评分。</p><SafeMarkdown markdown={archive.report.text} /></section>
         </div>
         <aside>
+          <ObservationNotes key={`${archive.source_run_id}:${archive.report.sha256}`} archive={archive} />
           <section className="panel observation-section" aria-labelledby="observation-exercises"><p className="eyebrow">WATCH · QUESTION · VERIFY</p><h2 id="observation-exercises">观摩练习示例</h2><p className="observation-note">勾选表示你完成了本页的观察，不代表该选手或你的训练指标改善。</p>{archive.exercises.map(e => <article className="observation-exercise" key={e.id}><label><input type="checkbox" checked={completed.has(e.id)} onChange={() => setCompleted(old => { const next = new Set(old); if (next.has(e.id)) next.delete(e.id); else next.add(e.id); return next })} /><strong>{e.title}</strong></label><p>{e.prompt}</p><small>{e.evidence_note}</small></article>)}<p role="status">本页已完成 {completed.size} / {archive.exercises.length} 项观察</p></section>
           <section className="panel observation-section" aria-labelledby="observation-sources"><h2 id="observation-sources">来源与时间</h2><p className="observation-note">以下均为归档快照，不能自动当作当前版本或同段位基准。</p>{archive.evidence.sources.map((s, i) => <article className="observation-source" key={i}><h3>{s.label}</h3><p>{s.detail}</p><time>{s.observed_at}</time></article>)}<details><summary>查看来源记录</summary><p>源运行：{archive.source_run_id}</p><p>证据摘要：{archive.evidence.bundle_digest}</p><p>校订报告摘要：{archive.report.sha256}</p><p>导出时间：{archive.exported_at}</p></details></section>
         </aside>

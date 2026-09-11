@@ -13,6 +13,15 @@ pause_reason: ""
 
 ## 状态元数据
 
+2026-09-11观摩笔记接线：复用既有Conversation→Memory Candidate→显式accept→Review Memory，新增observed用户输入observation_note窄门及用户附加归档引用；浏览器显式连接后保存并回读、失败沿用候选ID重试、刷新重连读取。导入本身仍无API请求，报告文件与临时练习不持久化，不创建self/Training。归档source_run只作用户附加引用，服务端source_task_id/source_run_id仍为空。详见ADR-0101。后端47项、前端280项、独立浏览器2项及类型/build通过；本机PostgreSQL因服务未启动连接超时，真实落库验证待公共CI。新增Provider0、累计68；8E仍in_progress。唯一下一步为本实现同SHA公共CI，完成后衔接真实观摩档案端到端消费验证。Workbench四块设计仍后置。
+
+- 本地代码（最新）：观摩笔记API接线及本地非数据库验证完成。
+- 所有者理解（最新）：复用既有记忆确认和回读机制，未新增理解验收。
+- 参考来源审计（最新）：本批只用既有归档和合成测试，无新来源读取。
+- 公共作品/部署成熟度（最新）：本批待同SHA公共验证；未部署或向用户真实档案写笔记。
+
+以下为上一批证据，待办以上述最新记录为准。
+
 后置设计提醒：2026-09-11用户要求后置保存Workbench四块讨论，当前顺序不变：继续ShowMaker观摩记录保存/API接线。Review/Coach/Training/Evidence的内容联动、专属计划流程、英雄头像及可能重做统一见 [后续设计备忘](plans/2026-09-11-workbench-four-surface-design-followup.md)。既有RQ-103/RQ-107及主树产品RQ-193保留；助手新提的布局/流程细节标为候选，不因记账视为最终批准。开始正式Coach交互或Workbench改版前先回看。
 
 当前接续：2026-09-11用户明确沿用ShowMaker，用户无外服账号不再作为推进阻塞；范围为公开观摩复盘、示例练习和工作台验证，不创建用户self身份或个人Training记录。继续独立工作树D:/riftcoach-agent-rq192-pr，主树为旧状态且有用户工作，不回写主树。1cd694d已完成报告生成与人工副本，自动质量漏检仍保留。当前实现本地归档导出/工作台导入：以既有Summary/同源清单/manual review摘要校验，展示分位置数据、校订报告、归档来源和仅本页练习；不冒充authenticated API/DB/live消费。2026-09-11观摩归档本地验收完成：最终导出器15项通过、相邻证据/保存Summary56项通过；前端完整276项通过，最后新增跨位置拒绝后聚焦7项通过，浏览器1项及真实5局桌面/手机导入通过，build/类型检查通过。最终JSON位于用户outputs/showmaker-observation.json。2026-09-11公共验收：实现a545972201cc8b98a19286fab0d92f9393c0c712由Actions34508165113同SHA三job成功验证（Python3037 passed/152 skipped/127 subtests、前端277、浏览器39、PostgreSQL208，打包smoke成功）。ShowMaker真实五局观摩归档已在桌面/手机完成导入、位置筛选与本页练习核查，最终归档SHA bde583c1ee3f850057f469bad9abe9c03f2383e333ce58a5ed57eab8d7022e2c，用户outputs/showmaker-observation.json。新增Provider0，累计68。未部署、未认证API/DB写入，原报告两项自动质量漏检保留；8E仍in_progress。下一步在既有observed关系下设计并实现保存观摩记录/API消费，保留源run与新产品身份的区别，禁止将旧归档伪装成新生成报告；无需本人外服账号或重复实施授权。

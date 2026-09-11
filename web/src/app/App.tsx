@@ -1,4 +1,6 @@
 import {
+  lazy,
+  Suspense,
   useCallback,
   useEffect,
   useRef,
@@ -68,7 +70,7 @@ import {
 } from "../cinematic/portalActivation"
 import { PortalActivationOverlay } from "../components/PortalActivationOverlay"
 import { RegionWallpaperLab } from "../components/RegionWallpaperLab"
-import { ObservationWorkbench } from "../components/ObservationWorkbench"
+const ObservationWorkbench = lazy(() => import("../components/ObservationWorkbench").then(module => ({ default: module.ObservationWorkbench })))
 
 export interface LiveWorkbenchControllerLike {
   readonly snapshot: LiveWorkbenchSnapshot
@@ -687,7 +689,7 @@ function AppFrame({
 }
 
 function AppSurface({ scenarioOverride, createLiveController, createAuthSessionClient, createPlayerAccessApi, surfaceOverride }: AppProps) {
-  if (window.location.search === "?view=observation") return <ObservationWorkbench />
+  if (window.location.search === "?view=observation") return <Suspense fallback={<main role="status">正在载入观摩工作台…</main>}><ObservationWorkbench /></Suspense>
   if (getWallpaperLabSurface()) {
     return <RegionWallpaperLab onEnter={(region) => { window.location.assign(productJourneyUrl({ stage: "account", region })) }} />
   }
