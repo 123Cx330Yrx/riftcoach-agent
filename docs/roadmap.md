@@ -2,7 +2,7 @@
 
 后续Workbench设计回看：[四块联动与视觉备忘](plans/2026-09-11-workbench-four-surface-design-followup.md)。仅后置留存，不改变当前黄金切片、阶段顺序或退出条件。
 
-当前黄金切片接续以docs/project_execution_state.md及黄金计划末节为准。1.3.6真实完整报告已返回，人工另校订两项漏检；用户2026-09-11已明确沿用ShowMaker观摩，不等待用户外服账号。当前推进校验后的归档工作台和示例练习；authenticated live/DB/个人Training未验收，累计68次Provider尝试，本轮新增0，8E仍in_progress。
+当前黄金切片接续以docs/project_execution_state.md及黄金计划末节为准。1.3.6真实完整报告已返回，人工另校订两项漏检；用户2026-09-11已明确沿用ShowMaker观摩，不等待用户外服账号。归档工作台已通过公共验证；观摩笔记保存/API接线见ADR-0101及当前执行状态，真实用户档案端到端消费与个人Training未验收，累计68次Provider尝试，本轮新增0，8E仍in_progress。
 
 
 接续最新：d605c04/Actions34441904153已同SHA三job成功。随后发现评分/修订遗漏扩展来源，新增独立Coach1.3.1/Skill0.5.1/Program2.3.1，把同一deterministic_report作为数据贯穿9个请求；旧1.3.0/1.2.0不变，新补丁待独立公共验证。保存五局完整RAG预算对照仍通过且低分拒绝，无新增真实模型/玩家API/OP.GG。Training等待本人档案或观摩范围澄清，不影响报告准备。
