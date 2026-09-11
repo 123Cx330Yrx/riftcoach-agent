@@ -2,6 +2,16 @@
 
 Status: Accepted for the bounded observation-note slice, 2026-09-11.
 
+Local consumption follow-up: the default composed API does not inject a session
+service, so /auth/session returns auth_unavailable even with a local owner. Add an
+explicit loopback-only launcher using the existing local session boundary and
+real composed PostgreSQL services. Require the local profile and an explicit owner;
+do not change the default API or invent a production identity provider. Session
+state lasts for the process lifetime; persisted notes survive restart. Verify the
+full composed session/conversation/candidate/accept/readback path with PostgreSQL,
+including missing-cookie and missing-CSRF rejection. This is local access, not
+OIDC/RSO or foreign Riot account login.
+
 Problem: the archive workbench can display ShowMaker but loses a viewer's notes.
 Existing Review Memory already stores observation_note under an owner-player
 relationship, but its public structured-input gate rejects this use case.
@@ -77,3 +87,36 @@ The fixture label is intentional; these are not real owner database screenshots.
 
 
 2026-09-11观摩笔记公共收口：实现d177f08a2ccc34c6eb388cf010188ff2eaad1f22经Actions34555782966同SHA三任务success。Python3049 passed/153 skipped/127 subtests、前端280、浏览器40、PostgreSQL209（包含新增真实数据库落库/重试/隔离测试），打包smoke成功。桌面及390px手机笔记区经合成浏览器截图复核。笔记保存/API接线达到completed-public；这不代表已向用户实际ShowMaker档案写入或已部署。新增Provider0、累计68；原报告两项自动质量漏检保留，8E仍in_progress。唯一下一步为现有认证服务与observed档案的真实端到端消费验证准备，沿用ShowMaker，无需本人外服账号；Workbench四块设计仍后置。
+
+## Explicit local session runbook (2026-09-11)
+
+The default composed API has no injected session service and intentionally returns
+503 auth_unavailable. The new scripts.run_local_observation_api launcher requires
+RIFTCOACH_API_PROFILE=local and an explicit RIFTCOACH_LOCAL_OWNER_ID; DATABASE_URL
+must point to an existing migrated local database. Start it from the repository:
+
+```powershell
+$env:RIFTCOACH_API_PROFILE = "local"
+# Select the owner already associated with the intended local observed profile.
+# Supply DATABASE_URL and RIFTCOACH_LOCAL_OWNER_ID locally; never paste secrets into logs.
+.venv/Scripts/python.exe -B -m scripts.run_local_observation_api --port 8000
+```
+
+The launcher binds only 127.0.0.1. The existing Vite /api proxy targets that port;
+for another port, set RIFTCOACH_WEB_API_TARGET to its loopback URL before starting
+Vite. Import the original ShowMaker archive and connect. Missing observed profiles
+remain an Account/real player-link setup step; this launcher does not fabricate
+player identity, seed user notes, start a Worker, migrate/reset a database, or call
+Riot/OP.GG/Provider. Local session cookies are HttpOnly, same-site, and HTTP-only
+for loopback development. This explicit local factory must not be publicly hosted;
+the default production factory remains unchanged and requires a selected auth adapter.
+Session restart requires reconnect; persisted notes remain in PostgreSQL.
+
+Verification: tests/test_local_observation_api.py checks explicit local/owner guards,
+session issuance and missing-cookie/CSRF rejection without DB I/O. The added composed
+PostgreSQL test uses the real lifecycle, service composition, conversation creation,
+note acceptance, app restart and owner isolation. Its seeded identity/text are
+synthetic; it is not proof of an actual user-owned ShowMaker profile being available.
+Local focused checks: 19 passed. Docker Desktop was started normally but its Linux
+engine pipe remained unavailable; no volume reset or runtime-directory moves were
+performed. Public PostgreSQL verification remains required for this batch.

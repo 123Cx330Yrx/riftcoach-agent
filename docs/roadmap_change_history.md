@@ -4713,3 +4713,6 @@ RQ-250（2026-09-06）：RQ-250工具批量预算修复完成本地、公共和�
 
 
 2026-09-11观摩笔记公共收口：实现d177f08a2ccc34c6eb388cf010188ff2eaad1f22经Actions34555782966同SHA三任务success。Python3049 passed/153 skipped/127 subtests、前端280、浏览器40、PostgreSQL209（包含新增真实数据库落库/重试/隔离测试），打包smoke成功。桌面及390px手机笔记区经合成浏览器截图复核。笔记保存/API接线达到completed-public；这不代表已向用户实际ShowMaker档案写入或已部署。新增Provider0、累计68；原报告两项自动质量漏检保留，8E仍in_progress。唯一下一步为现有认证服务与observed档案的真实端到端消费验证准备，沿用ShowMaker，无需本人外服账号；Workbench四块设计仍后置。
+
+
+2026-09-11真实消费准备发现默认API未注入session，/auth/session按合同返回503 auth_unavailable。新增显式local会话启动器，固定127.0.0.1、要求显式local profile与owner，复用会话/Cookie/CSRF及完整PostgreSQL组合，默认生产入口不变。新增完整组合数据库用例覆盖会话→对话→笔记→确认→重启回读/跨owner隔离；本地19项通过，数据库用例待同SHA公共CI。本机Docker普通启动后Linux engine pipe仍不可用，未重置卷或搬移运行目录；未验证实际ShowMaker用户档案。新增Provider0、累计68；8E仍in_progress，四块设计仍后置。唯一下一步为本实现公共验证，随后恢复本地数据库并核实已有observed关系进行真实浏览器消费。

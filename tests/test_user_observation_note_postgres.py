@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from uuid import UUID
+import os
 
 import sqlalchemy as sa
 from fastapi.testclient import TestClient
@@ -14,6 +15,7 @@ from app.persistence.typed_memory_query_repository import PostgresTypedMemoryQue
 from app.memory.models import RelationshipRole
 from tests.memory_candidate_postgres_support import migrated_memory_repository, seed_conversation
 from tests.test_memory_candidate_api import UnusedPlayerLinkService, UnusedTaskService, UnusedRunQuery, ReadyProbe
+from scripts.run_local_observation_api import create_local_observation_app
 
 
 def _client(*, owner: str, candidate_service, query_service) -> TestClient:
@@ -90,3 +92,54 @@ def test_user_observation_round_trip_and_scope() -> None:
             json={"target_scope": "owner_player", "candidate_kind": "training_plan", "memory_key": "observation_note", "operation": "append", "proposal_payload": {"value": payload}},
         )
         assert training_response.status_code == 422
+
+
+def test_local_composed_session_note_survives_app_restart(tmp_path) -> None:
+    with migrated_memory_repository() as (_repository, factory, _engine):
+        _, relationship_id, _ = seed_conversation(
+            factory, number=703, owner_id="local-observation-owner", role=RelationshipRole.OBSERVED,
+        )
+        environment = {
+            "DATABASE_URL": os.environ["RIFTCOACH_TEST_DATABASE_URL"],
+            "RIFTCOACH_API_PROFILE": "local",
+            "RIFTCOACH_LOCAL_OWNER_ID": "local-observation-owner",
+            "RIFTCOACH_RUNS_ROOT": str(tmp_path),
+        }
+        with TestClient(create_local_observation_app(environment)) as client:
+            assert client.get("/health/ready").status_code == 200
+            assert client.get(f"/memory/players/{relationship_id}/reviews").status_code == 401
+            issued = client.post("/auth/session")
+            assert issued.status_code == 200
+            csrf = {"X-CSRF-Token": issued.json()["csrf_token"]}
+            body = {"player_profile_id": str(relationship_id)}
+            assert client.post("/conversations", json=body).status_code == 403
+            created = client.post("/conversations", json=body, headers={
+                **csrf, "Idempotency-Key": "local-observation-session-conversation",
+            })
+            assert created.status_code == 201, created.text
+            conversation_id = created.json()["conversation_id"]
+            candidate = client.post(f"/conversations/{conversation_id}/memory-candidates", json={
+                "target_scope": "owner_player", "candidate_kind": "review_memory",
+                "memory_key": "observation_note", "operation": "append",
+                "proposal_payload": {"value": {"text": "Local session persistence fixture"}},
+            }, headers={**csrf, "Idempotency-Key": "local-session-note"})
+            assert candidate.status_code == 201, candidate.text
+            candidate_id = candidate.json()["candidate_id"]
+            endpoint = f"/memory-candidates/{candidate_id}/accept"
+            assert client.post(endpoint).status_code == 403
+            assert client.post(endpoint, headers=csrf).status_code == 200
+            assert client.post(endpoint, headers=csrf).status_code == 200
+        # Fresh composition and session store; records are queried from PostgreSQL.
+        with TestClient(create_local_observation_app(environment)) as restarted:
+            assert restarted.get(f"/memory/players/{relationship_id}/reviews").status_code == 401
+            assert restarted.post("/auth/session").status_code == 200
+            readback = restarted.get(f"/memory/players/{relationship_id}/reviews")
+            assert readback.status_code == 200
+            records = readback.json()["records"]
+            assert len(records) == 1
+            assert records[0]["payload"] == {"text": "Local session persistence fixture"}
+        with TestClient(create_local_observation_app({
+            **environment, "RIFTCOACH_LOCAL_OWNER_ID": "other-local-owner",
+        })) as other:
+            assert other.post("/auth/session").status_code == 200
+            assert other.get(f"/memory/players/{relationship_id}/reviews").status_code == 404
