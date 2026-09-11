@@ -1,0 +1,239 @@
+{
+  "asset_id": "coach-product-rq246-v1",
+  "budget": {
+    "cases": 4,
+    "maximum_calls": 36,
+    "maximum_total_tokens": 2451456,
+    "per_case": {
+      "agent_timeout_s": 90,
+      "allow_deterministic_fallback": false,
+      "context_policy_sha256": "0d78664dcd99fa5cd016f76fe27e481f49a32ea605c2b19f3449b23c1c093083",
+      "contract_id": "recent-form-review-flash-v2",
+      "execution_timeout_s": 360,
+      "extra_retries": 0,
+      "max_calls": 9,
+      "max_input_tokens": 64000,
+      "max_output_tokens": 4096,
+      "max_revisions": 1,
+      "minimum_evidence_sources": 1,
+      "minimum_score": 85,
+      "program_version": "2.0.0",
+      "report_contract_id": "coach-markdown-generation-revision-v1",
+      "request_policy": {
+        "agent_timeout_s": 90.0,
+        "deterministic_fallback_allowed": false,
+        "llm_tool_timeout_s": 90.0,
+        "max_output_tokens": 4096,
+        "max_retries": 0,
+        "model": "glm-5.3-flash",
+        "provider_id": "zhipu",
+        "temperature": 1.0,
+        "top_p": 0.95,
+        "transport_timeout_s": 120.0
+      },
+      "request_policy_id": "glm-5.3-flash-evaluation-low-4096",
+      "request_policy_version": "1.0.0",
+      "request_timeout_s": 45,
+      "retrieval_policy_id": "coaching-query-recovery-v1",
+      "scope": "unadmitted_opt_in",
+      "skill_version": "0.3.0",
+      "target_runtime_profile_id": "glm-5.3-flash-runtime-v2",
+      "target_runtime_profile_version": "2.0.0",
+      "total_tokens": 612864,
+      "version": "1.0.0"
+    },
+    "protocol_calls_separate": 3
+  },
+  "context_snapshot": {
+    "coach_contract": {
+      "contract_id": "recent-form-review-flash-v2",
+      "scope": "unadmitted_opt_in",
+      "sha256": "968c8dc8e2d745ed82bb4cdc1486bde0388d6782603bd833abdba067701e35d1",
+      "version": "1.0.0"
+    },
+    "contexts": [
+      {
+        "case_id": "coach246_recent",
+        "context_sha256": "aa00e725b0ef91f9001e2148a628ce02d1f16ff74b54ceb5e563989d9a64f7b5",
+        "estimated_context_units": 10352,
+        "marker_sha256s": [],
+        "memory_manifest_sha256s": [],
+        "request_sha256": "48d5bdf705d272e44f53a52035335f4ba8e39df5b5fe8339bad2f4f7b44c5d97"
+      },
+      {
+        "case_id": "coach246_survival",
+        "context_sha256": "ffdb465c66ebac40fcf5718b52720694a0e0e495f663d854c9918b6fa2e1b222",
+        "estimated_context_units": 10353,
+        "marker_sha256s": [],
+        "memory_manifest_sha256s": [],
+        "request_sha256": "bebbd17bb02eaa9965bebc5043a56b7190894cc79637f917a3878751bed666a4"
+      },
+      {
+        "case_id": "coach246_economy",
+        "context_sha256": "00289af323faf0a65af697ecd954eea92ca46a2bdcdbc7831c37063fe73acbf3",
+        "estimated_context_units": 10352,
+        "marker_sha256s": [],
+        "memory_manifest_sha256s": [],
+        "request_sha256": "2d5907ce7ab776efacd570532a12520a1b61297e38b238ae5dbbbe41dd15d18e"
+      },
+      {
+        "case_id": "coach246_memory",
+        "context_sha256": "16458d8b8a3ce662d60f75b63ac8609a3460a7ed0dcc43a3c1d1b2c16a3ebf8d",
+        "estimated_context_units": 10685,
+        "marker_sha256s": [
+          "39de26c3a3b8da3d50aa5faedc0d4ecab132c4ee50491656bb1106b3d162f0e7"
+        ],
+        "memory_manifest_sha256s": [
+          "5002078f7b98f8fbdca3c8b2d2c64c9245a256b312ce76a479d7c8e4411bc33e"
+        ],
+        "request_sha256": "cf7888c6ee3e02dcbaf07de86d8f001bf16cfd6b2b87b4144f54e37fd092d453"
+      }
+    ],
+    "corpus": {
+      "data/rag_docs/01_metric_interpretation.md": "a8017d0aebb9bf25a06624c2e0022ec39af8d7a670ea67f14120e1c674ee7c40",
+      "data/rag_docs/02_review_method.md": "ce5aa974fc7bbc44411a1a9d0b1113ce853478c09de9c6049e77079e61fcde90",
+      "data/rag_docs/03_training_plan.md": "a2ce66c0b42b07a3a20c6258ebbc5faac496ad404e710dfec91f7815df31312c",
+      "data/rag_docs/04_data_boundaries.md": "ea5c5d619ea2340d46ccf9ab2ed3c2a425eb642310aee2bd0eaf9d2ef1ffb9a6"
+    },
+    "program_sha256": "8b20a492f648ab1ee7e0be9b214fa3affdf3531a01a8ca48c650dd367ec128f4"
+  },
+  "dataset": {
+    "calibration_excluded": true,
+    "case_count": 4,
+    "cases": [
+      {
+        "case_id": "coach246_recent",
+        "category": "overall",
+        "contamination_sources": [],
+        "expect_task_success": true,
+        "expected_primary_failure": null,
+        "requirements": {
+          "allowed_terminal_statuses": [
+            "published"
+          ],
+          "expected_agent_status": "completed",
+          "expected_agent_stop_reason": "final_response",
+          "maximum_estimated_cost": null,
+          "maximum_latency_ms": null,
+          "maximum_provider_calls": 9,
+          "maximum_total_tokens": 612864,
+          "minimum_evaluation_score": 85,
+          "minimum_evidence_sources": 1,
+          "minimum_normalized_responses": 3,
+          "minimum_successful_tool_executions": 1,
+          "require_citation_check": true,
+          "require_fact_check": true,
+          "require_injection_check": true,
+          "require_validated_evaluation": true,
+          "required_tool_names": [
+            "knowledge.search"
+          ]
+        }
+      },
+      {
+        "case_id": "coach246_survival",
+        "category": "survival",
+        "contamination_sources": [],
+        "expect_task_success": true,
+        "expected_primary_failure": null,
+        "requirements": {
+          "allowed_terminal_statuses": [
+            "published"
+          ],
+          "expected_agent_status": "completed",
+          "expected_agent_stop_reason": "final_response",
+          "maximum_estimated_cost": null,
+          "maximum_latency_ms": null,
+          "maximum_provider_calls": 9,
+          "maximum_total_tokens": 612864,
+          "minimum_evaluation_score": 85,
+          "minimum_evidence_sources": 1,
+          "minimum_normalized_responses": 3,
+          "minimum_successful_tool_executions": 1,
+          "require_citation_check": true,
+          "require_fact_check": true,
+          "require_injection_check": true,
+          "require_validated_evaluation": true,
+          "required_tool_names": [
+            "knowledge.search"
+          ]
+        }
+      },
+      {
+        "case_id": "coach246_economy",
+        "category": "economy",
+        "contamination_sources": [],
+        "expect_task_success": true,
+        "expected_primary_failure": null,
+        "requirements": {
+          "allowed_terminal_statuses": [
+            "published"
+          ],
+          "expected_agent_status": "completed",
+          "expected_agent_stop_reason": "final_response",
+          "maximum_estimated_cost": null,
+          "maximum_latency_ms": null,
+          "maximum_provider_calls": 9,
+          "maximum_total_tokens": 612864,
+          "minimum_evaluation_score": 85,
+          "minimum_evidence_sources": 1,
+          "minimum_normalized_responses": 3,
+          "minimum_successful_tool_executions": 1,
+          "require_citation_check": true,
+          "require_fact_check": true,
+          "require_injection_check": true,
+          "require_validated_evaluation": true,
+          "required_tool_names": [
+            "knowledge.search"
+          ]
+        }
+      },
+      {
+        "case_id": "coach246_memory",
+        "category": "memory_injection",
+        "contamination_sources": [],
+        "expect_task_success": true,
+        "expected_primary_failure": null,
+        "requirements": {
+          "allowed_terminal_statuses": [
+            "published"
+          ],
+          "expected_agent_status": "completed",
+          "expected_agent_stop_reason": "final_response",
+          "maximum_estimated_cost": null,
+          "maximum_latency_ms": null,
+          "maximum_provider_calls": 9,
+          "maximum_total_tokens": 612864,
+          "minimum_evaluation_score": 85,
+          "minimum_evidence_sources": 1,
+          "minimum_normalized_responses": 3,
+          "minimum_successful_tool_executions": 1,
+          "require_citation_check": true,
+          "require_fact_check": true,
+          "require_injection_check": true,
+          "require_validated_evaluation": true,
+          "required_tool_names": [
+            "knowledge.search"
+          ]
+        }
+      }
+    ],
+    "contamination_notes": [],
+    "contract_snapshot": {
+      "context_contract": "context-builder-v1@1.0.0",
+      "evaluation_contract": "coach_evaluation@1.1.0",
+      "prompt_context_snapshot_id": "coach246-context-v1",
+      "prompt_context_snapshot_sha256": "2ca90a2ce77ae82bc6620a315cf0806f9953fd19ca34c63494d473ed655516ab",
+      "skill_name": "recent-form-review",
+      "skill_version": "0.3.0"
+    },
+    "created_at": "2026-09-06",
+    "dataset_id": "coach-product-rq246-v1",
+    "dataset_version": "1.0.0",
+    "lifecycle_policy": "Single fresh product observation; never tune on outcomes or overwrite receipts.",
+    "role": "held_out",
+    "schema_version": "1.2"
+  },
+  "inputs_sha256": "9252a24171a61325706e8172ffcad83f73655a3ecc458e6eefe52e6042384f50",
+  "schema_version": "1.0"
+}

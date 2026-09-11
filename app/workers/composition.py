@@ -416,6 +416,9 @@ def build_review_worker_process(
             ),
             runtime=runtime,
             receipt_writer=FileRunReceiptStore(settings.runs_root),
+            publication_sources=_publication_sources(settings.runs_root),
+            publication_writer=_publication_writer(settings.runs_root),
+            allow_legacy_without_publication=True,
         )
         evidence_verifier = RecentReviewTerminalEvidenceVerifier(
             settings.runs_root
@@ -423,6 +426,7 @@ def build_review_worker_process(
         executor = RecentReviewTaskExecutor(
             application_service=application,
             evidence_verifier=evidence_verifier,
+            runs_root=settings.runs_root,
         )
         worker = ReviewWorker(
             repository=repository,
@@ -430,7 +434,9 @@ def build_review_worker_process(
             worker_id=normalized_worker_id,
             polling_policy=settings.polling_policy,
             observability=TaskObservability(logger_name="riftcoach.worker"),
-            terminal_turn_writer=PostgresTerminalTurnWriter(session_factory),
+            terminal_turn_writer=PostgresTerminalTurnWriter(
+                session_factory, runs_root=settings.runs_root
+            ),
             lease_policy=settings.lease_policy,
             recovery=ExpiredReviewTaskRecovery(
                 repository=repository,
@@ -447,6 +453,32 @@ def build_review_worker_process(
         if engine is not None:
             engine.dispose()
         raise WorkerCompositionError("worker_dependency_invalid") from None
+
+
+def _publication_sources(runs_root: Path):
+    # Keep evidence publication opt-in at the task/context level while making
+    # the worker capable of producing the same verified payload when requested.
+    from app.evidence.publication import EvidencePublicationSources
+
+    class DynamicEvidencePublicationSources(EvidencePublicationSources):
+        def project(self, summary, *, routing_region):
+            # ``now`` must be per execution; a worker can live longer than the
+            # summary's generated_at timestamp.
+            return EvidencePublicationSources(
+                now=datetime.now(timezone.utc),
+                observed_at=self.observed_at,
+                data_dragon=self.data_dragon,
+                official_patch=self.official_patch,
+                meta_evidence=self.meta_evidence,
+            ).project(summary, routing_region=routing_region)
+
+    return DynamicEvidencePublicationSources(now=datetime.now(timezone.utc))
+
+
+def _publication_writer(runs_root: Path):
+    from app.evidence.publication_store import FileEvidencePublicationStore
+
+    return FileEvidencePublicationStore(runs_root)
 
 
 def _environment_secret_source(environment: Mapping[str, str]) -> InMemorySecretSource:

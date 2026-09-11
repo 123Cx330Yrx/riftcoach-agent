@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import re
-from typing import Any, Mapping
+from typing import Any, Callable, Mapping
 
 from .artifact_content import encode_json_artifact, encode_text_artifact
 from .models import ArtifactKind, HarnessConfig, RunManifest, RunStatus
 from .state_machine import advance
+from .preparation_errors import DRAFT_PREPARATION_CODES, DraftPreparationError
 from .steps import (
     CoachDraft,
     DraftPreparationRequest,
@@ -33,6 +34,38 @@ from app.runtime.signals import (
     RuntimeHarnessStatus,
     RuntimePublicationStatus,
 )
+from app.providers.errors import ProviderError
+from app.tools.errors import ToolError
+from app.report_validation import ReportValidationError
+
+_SAFE_FAILURE_CODES = DRAFT_PREPARATION_CODES | frozenset(
+    {
+        "authentication_failed",
+        "connection_failed",
+        "fallback_failed",
+        "incomplete_chat_response",
+        "invalid_chat_response",
+        "invalid_finish_reason",
+        "invalid_structured_output",
+        "invalid_tool_input",
+        "invalid_tool_output",
+        "missing_tool_data",
+        "provider_usage_unavailable",
+        "rate_limited",
+        "request_rejected",
+        "retry_budget_exhausted",
+        "service_unavailable",
+        "timeout",
+        "tool_execution_failed",
+        "unexpected_sdk_error",
+        "report_missing_headings",
+        "report_too_short",
+        "unknown_report_citation",
+        "external_call_budget_exhausted",
+        "token_budget_exhausted",
+        "token_envelope_exceeded",
+    }
+)
 
 
 class ReviewHarness:
@@ -47,6 +80,8 @@ class ReviewHarness:
         reviser: ReviserStep,
         config: HarnessConfig | None = None,
         observer: RuntimeSignalObserver | None = None,
+        draft_guard: Callable[[CoachDraft, KnowledgeEvidence], CoachDraft]
+        | None = None,
     ) -> None:
         self.store = store
         self.draft_preparer = draft_preparer
@@ -54,6 +89,9 @@ class ReviewHarness:
         self.reviser = reviser
         self.config = config or HarnessConfig()
         self.observer = observer
+        if draft_guard is not None and not callable(draft_guard):
+            raise TypeError("draft_guard must be callable or None")
+        self.draft_guard = draft_guard
 
     def run(
         self,
@@ -114,6 +152,26 @@ class ReviewHarness:
             producer="draft_preparer",
         )
         manifest = self._transition(RunStatus.KNOWLEDGE_READY)
+
+        if len(knowledge.source_ids) < self.config.minimum_evidence_sources:
+            return self._finish_unsuccessful_run(
+                deterministic_content,
+                reason="evidence_required",
+            )
+
+        if self.draft_guard is not None:
+            try:
+                guarded = self.draft_guard(draft, knowledge)
+                if not isinstance(guarded, CoachDraft):
+                    raise TypeError("draft guard must return CoachDraft")
+                draft = guarded
+            except RuntimeObservationError:
+                raise
+            except Exception as exc:
+                return self._finish_unsuccessful_run(
+                    deterministic_content,
+                    reason=self._step_failure_reason("draft_safety", exc),
+                )
 
         try:
             self._validate_report_citations(draft.report, knowledge)
@@ -361,6 +419,9 @@ class ReviewHarness:
         manifest = self.store.read_manifest()
         previous_status = manifest.status
         reason_code = self._reason_code(reason)
+        failure_code = self._failure_code(reason)
+        if failure_code is not None:
+            manifest.failure_code = failure_code
         advance(
             manifest,
             target,
@@ -407,7 +468,25 @@ class ReviewHarness:
 
     @staticmethod
     def _step_failure_reason(step: str, error: Exception) -> str:
-        return f"{step}_failed"
+        # Keep the public terminal reason stable while retaining one safe,
+        # body-free category for post-run diagnosis.
+        code = (
+            error.code
+            if isinstance(error, (ProviderError, ToolError, ReportValidationError, DraftPreparationError))
+            else None
+        )
+        if not isinstance(code, str) or code not in _SAFE_FAILURE_CODES:
+            code = None
+        return f"{step}_failed:{code}" if code else f"{step}_failed"
+
+    @staticmethod
+    def _failure_code(reason: str) -> str | None:
+        if ":" not in reason:
+            return None
+        code = reason.split(":", 1)[1].strip()
+        if code not in _SAFE_FAILURE_CODES:
+            return None
+        return code
 
     @staticmethod
     def _reason_code(reason: str) -> str:
@@ -454,7 +533,8 @@ class ReviewHarness:
         }
         unknown = sorted(cited_ids.difference(allowed_ids))
         if unknown:
-            raise ValueError(
+            raise ReportValidationError(
+                "unknown_report_citation",
                 "Coach report contains unknown knowledge citation IDs: "
                 + ", ".join(unknown)
             )
@@ -468,5 +548,7 @@ class ReviewHarness:
                 "issues": list(evaluation.issues),
                 "passed_checks": list(evaluation.passed_checks),
                 "summary": evaluation.summary,
+                **({"audits": list(evaluation.audits)} if getattr(evaluation, "audits", ()) else {}),
+                **({"coverage": list(evaluation.coverage)} if getattr(evaluation, "coverage", ()) else {}),
             }
         )

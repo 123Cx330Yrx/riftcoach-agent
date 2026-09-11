@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from app.agent.context import (
+    CANDIDATE_CONTEXT_SAFETY_POLICY_V1,
     ContextBuilderV1,
     ContextBudgetError,
     ContextBuildError,
@@ -673,3 +674,29 @@ def test_context_sizer_counts_preserved_reasoning_without_exposing_it():
     )
 
     assert sizer.estimate_messages(long) > sizer.estimate_messages(short)
+
+
+def test_candidate_policy_addendum_is_trusted_and_opt_in() -> None:
+    execution = validated_execution(
+        utterance="分析我最近十局的状态",
+        payload={
+            "player_summary": demo_summary(),
+            "deterministic_report": demo_report(),
+            "focus": "survival",
+        },
+        run_id="review_candidate_policy_addendum",
+    )
+
+    baseline = ContextBuilderV1().build(execution)
+    hardened = ContextBuilderV1().build(
+        execution,
+        policy_addendum=CANDIDATE_CONTEXT_SAFETY_POLICY_V1,
+    )
+
+    assert "candidate:policy_addendum" not in section_map(baseline)
+    addendum = section_map(hardened)["candidate:policy_addendum"]
+    assert addendum.trust is ContextTrust.INTERNAL_POLICY
+    assert addendum.required is True
+    assert addendum.source == "candidate-output-safety-v1"
+    assert CANDIDATE_CONTEXT_SAFETY_POLICY_V1.strip() in addendum.content
+    assert hardened.messages[0].role is MessageRole.SYSTEM

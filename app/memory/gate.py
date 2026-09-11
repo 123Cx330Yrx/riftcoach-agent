@@ -45,6 +45,15 @@ def evaluate_candidate_gate(
             and memory_key in {"observation_note", "public_trend"}
         ):
             return _denied("observed_kind_forbidden")
+        if (
+            provenance_kind is ProvenanceKind.USER_STRUCTURED_INPUT
+            and memory_key == "observation_note"
+        ):
+            return _allowed(
+                "user_observation_requires_confirmation",
+                requires_confirmation=True,
+                policy_version="memory-gate-v2-user-observation",
+            )
 
     if provenance_kind is ProvenanceKind.MODEL_INFERENCE:
         return _allowed("model_requires_confirmation", requires_confirmation=True)
@@ -76,12 +85,14 @@ def _allowed(
     *,
     requires_confirmation: bool = False,
     auto_accept_eligible: bool = False,
+    policy_version: str = "memory-gate-v1",
 ) -> GateDecision:
     return GateDecision(
         allowed=True,
         requires_confirmation=requires_confirmation,
         auto_accept_eligible=auto_accept_eligible,
         reason_code=reason_code,
+        policy_version=policy_version,
     )
 
 

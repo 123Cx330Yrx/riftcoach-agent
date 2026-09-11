@@ -18,6 +18,7 @@ from app.model_runtime import (
     require_registered_model_runtime_profile,
 )
 from app.runtime.models import RuntimePolicySnapshot, RuntimeRunRequest
+from app.runtime.coach_contract import require_coach_contract
 from app.skills.catalog import SkillCatalog
 from app.skills.execution import (
     SkillExecutionRequest,
@@ -156,6 +157,7 @@ def _select_recent_skill(
 def _compile_runtime_policy(
     skill: LoadedSkill,
     runtime_profile: ModelRuntimeProfile | None = None,
+    coach_contract=None,
 ) -> RuntimePolicySnapshot:
     budgets = skill.manifest.budgets
     quality_gate = skill.manifest.quality_gate
@@ -164,7 +166,9 @@ def _compile_runtime_policy(
             runtime_profile
         )
     return RuntimePolicySnapshot(
+        coach_contract=coach_contract.snapshot() if coach_contract is not None else None,
         policy_version=(
+            "1.2.0" if coach_contract is not None else
             _PROFILE_RUNTIME_POLICY_VERSION
             if runtime_profile is not None
             else _RUNTIME_POLICY_VERSION
@@ -202,8 +206,17 @@ class RecentReviewRuntimeRequestCompiler:
         *,
         run_id_factory: RunIdFactory = _default_run_id_factory,
         runtime_profile: ModelRuntimeProfile | None = None,
+        coach_contract=None,
     ) -> None:
         self._catalog = catalog
+        self.coach_contract = require_coach_contract(coach_contract)
+        if coach_contract is not None:
+            skill = catalog.get(_RECENT_SKILL_NAME)
+            if runtime_profile is not None or skill is None or skill.manifest.version != coach_contract.descriptor()["skill_version"]:
+                raise ProductRequestCompilationError("Coach compiler requires its independent versioned Skill")
+            expected_tools = coach_contract.descriptor().get("max_tool_calls")
+            if expected_tools is not None and skill.manifest.budgets.max_tool_calls != expected_tools:
+                raise ProductRequestCompilationError("Coach compiler tool budget mismatch")
         self._run_id_factory = run_id_factory
         self._runtime_profile = (
             require_registered_model_runtime_profile(runtime_profile)
@@ -273,7 +286,7 @@ class RecentReviewRuntimeRequestCompiler:
         )
         return RuntimeRunRequest(
             execution_request=execution_request,
-            policy=_compile_runtime_policy(skill, self._runtime_profile),
+            policy=_compile_runtime_policy(skill, self._runtime_profile, self.coach_contract),
             memory_context_binding=memory_context_binding,
         )
 

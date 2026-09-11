@@ -213,6 +213,7 @@ jobs:
             tests/test_typed_memory_records.py \
             tests/test_typed_memory_migrations_postgres.py \
             tests/test_typed_memory_repository_postgres.py \
+            tests/test_user_observation_note_postgres.py \
             tests/test_training_records.py \
             tests/test_training_migrations_postgres.py \
             tests/test_training_repository_postgres.py \

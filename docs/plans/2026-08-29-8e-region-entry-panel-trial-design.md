@@ -78,7 +78,43 @@ existing CSS and Motion stack are sufficient for this trial.
 
 ## References
 
-- MotionSites public browse: https://motionsites.org/browse
-- MotionSite public catalog: https://www.motionsite.ai/
-- React Bits component index: https://www.reactbits.dev/get-started/index
+- MotionSites public Apps catalog (the URL used for this review): https://motionsites.ai/apps
+- React Bits component index: https://reactbits.dev/
 - Motion React transitions: https://motion.dev/docs/react-transitions
+
+The two older `motionsites.org` / `motionsite.ai` spellings were historical
+search leads, not evidence URLs; they are intentionally not used by the
+current source-to-consumer record.
+
+## UI contract and route-readiness hardening (2026-08-29)
+
+The trial's presentation contract is now explicit at the DOM and URL boundary:
+
+- New region links are canonical `/?surface=wallpaper-lab&region=<allowlisted-region>`;
+  the old `/?region=<allowlisted-region>` form remains a narrow compatibility alias
+  and never opens the unrelated Awakening scene. Unknown regions, stages, surfaces,
+  and query keys fail closed to the default Portal.
+- Account handoff adds only `from=wallpaper-lab` when the user came from the atlas.
+  `pushState` and `popstate` reset the document scroll root so a copied/reloaded or
+  returned full-page scene cannot inherit a clipped Portal offset. A generation token
+  pairs activation with the selected region and prevents a stale timer from navigating
+  with a later selection.
+- Portal and Auth failure surfaces use labelled semantic `main` landmarks. The Portal
+  skip link focuses the atlas `h2`, heading focus is programmatic only (`tabindex=-1`),
+  and the selector exposes `aria-pressed`, `aria-current`, disabled pending states and
+  a live current-region announcement. This is presentation context only; the region
+  never changes Auth identity, owner scope, or Riot routing.
+- Poster, video and crest/detail images carry intrinsic dimensions. Media remains
+  poster-first with WebM→MP4 fallback, mobile/reduced-motion policy and playback-error
+fallback; local detailed badges are progressive research assets with the Universe
+  crest as fallback. These attributes prevent layout shifts but do not turn unverified
+  files into adopted media.
+- The scene media, scrim and activation layers are fixed to the viewport while
+  the atlas content scrolls, so long mobile/tablet pages keep a stable backdrop.
+
+The acceptance proof is kept in the focused unit suite and the isolated Playwright
+spec: semantic landmarks/skip focus, selection `replaceState`, URL copy→reload→Account→Back, scroll reset,
+tablet and narrow breakpoints, intrinsic media dimensions, reduced-motion/poster
+fallback and no early product I/O. This hardening remains inside RQ-154/RQ-156; it
+does not advance 8E, alter the default `/`, touch Workbench, or change
+`production_media=0`.

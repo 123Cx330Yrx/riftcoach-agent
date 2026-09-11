@@ -350,7 +350,7 @@ def test_revision_branch_fails_closed_before_a_fifth_domain_call(
     report = build_runner(provider, runs_root=tmp_path / "runs").run()
 
     assert report.admitted is False
-    assert report.error_code == "domain_execution_failed"
+    assert report.error_code == "structured_evaluation_failed"
     assert report.domain_calls_used == 4
     assert report.cumulative_calls_used == 7
     assert report.agent_calls == 2

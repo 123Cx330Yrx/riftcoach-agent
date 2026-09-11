@@ -813,7 +813,11 @@ def _is_git_sha(value: str) -> bool:
 
 
 def _file_sha256(path: str | Path) -> str:
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+    file_path = Path(path)
+    raw = file_path.read_bytes()
+    if file_path.suffix.lower() in {".json", ".md", ".txt", ".yaml", ".yml"}:
+        raw = raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(raw).hexdigest()
 
 
 __all__ = [

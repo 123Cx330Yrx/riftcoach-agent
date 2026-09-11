@@ -36,7 +36,8 @@ def test_frozen_input_plan_binds_exact_bytes_cases_and_fixtures():
     )
 
     raw = PLAN.read_bytes()
-    assert loaded.execution_plan.plan_sha256 == hashlib.sha256(raw).hexdigest()
+    canonical = raw.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    assert loaded.execution_plan.plan_sha256 == hashlib.sha256(canonical).hexdigest()
     assert loaded.execution_plan.case_ids == tuple(
         case.case_id for case in dataset.cases
     )

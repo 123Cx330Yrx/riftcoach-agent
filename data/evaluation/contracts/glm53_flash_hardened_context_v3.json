@@ -1,0 +1,530 @@
+{
+  "schema_version": "1.1",
+  "snapshot_id": "glm53-flash-hardened-context-v3",
+  "skill_name": "recent-form-review",
+  "skill_version": "0.2.0",
+  "context_contract": "context-builder-v1",
+  "evaluation_contract": "coach_evaluation@1.1.0",
+  "components": [
+    {
+      "component_id": "skill_manifest",
+      "source": "skills/recent-form-review/manifest",
+      "sha256": "14269a8b4a90dd0af6f4f3606f11a817342e75486ed675dddbd4cfac784807e1"
+    },
+    {
+      "component_id": "skill_instructions",
+      "source": "skills/recent-form-review/SKILL.md",
+      "sha256": "f3207adead537a2999749fd0f882e744ebf10cb93c878924cab7b763cb080c23"
+    },
+    {
+      "component_id": "context_contract",
+      "source": "app.agent.context:context-builder-v1",
+      "sha256": "f7083aafd7f515cd02a40c4d3c38480b10a0b4957e5dcdd29c2de8ced73aa2b9"
+    },
+    {
+      "component_id": "knowledge_tool_contract",
+      "source": "app.tools.adapters.knowledge:knowledge.search@2.0.0",
+      "sha256": "4d25336b47105a430a8f5a3eb0068c2fcb601ac0a769c9e73ec5c8a429770fdc"
+    },
+    {
+      "component_id": "evaluation_schema",
+      "source": "app.evaluation.coach_report:coach_evaluation@1.1.0",
+      "sha256": "ad2891b57f0117d55660234b6be557b9a08b051477830190e401e0771e6b17da"
+    },
+    {
+      "component_id": "evaluation_fact_pack_probe",
+      "source": "app.evaluation.coach_report:build_fact_pack",
+      "sha256": "3543f202fd5f835220d41f44689717a576aa2b678eef2478f7d32594dfbf3f47"
+    },
+    {
+      "component_id": "evaluator_system",
+      "source": "app.evaluation.coach_report:EVALUATOR_SYSTEM_PROMPT",
+      "sha256": "89fd896882cf7c843fa7d6eea12e19cbbf3a42872526cb4952366166632b48a2"
+    },
+    {
+      "component_id": "evaluation_prompt_probe",
+      "source": "app.evaluation.coach_report:build_secure_evaluation_prompt",
+      "sha256": "e933e06ec8e584b7cf2338692ebd805f08b58b354c296fc5c014c339c4547e5f"
+    },
+    {
+      "component_id": "evaluation_repair_probe",
+      "source": "app.evaluation.coach_report:build_evaluation_repair_prompt",
+      "sha256": "0918f5a05aaef7807a898b8effb870387df778481abafdffb9dd85b46f506d28"
+    },
+    {
+      "component_id": "reviser_system",
+      "source": "app.evaluation.coach_report:REVISER_SYSTEM_PROMPT",
+      "sha256": "c4cad848b17c8231b413e3ed0deb8be0eb0e0049323ac57701c542a15290c872"
+    },
+    {
+      "component_id": "revision_prompt_probe",
+      "source": "app.evaluation.coach_report:build_revision_prompt",
+      "sha256": "bc5ee0689d2a8ca36bc242c41cf224d0e540b64c820d1cd52ab7a4b6b7dc2703"
+    }
+  ],
+  "case_contexts": [
+    {
+      "case_id": "revision_form_control_67",
+      "player_summary_sha256": "38dedea17f1b92fb63de867cdf0283e09810c53259a263ee08a9896570600d33",
+      "deterministic_report_sha256": "0cdf29c6807619baef5b56fdca77f45e96ce8d2a60f4f9eba5152b0786bcd986",
+      "user_utterance_sha256": "353cf8fe48354bed0e76551733d9cc3e8b762d4bdd1a4c3974f4cbf0e53348c7",
+      "typed_options_sha256": "f8e8add0007023dedc507d1085400dede3f53f1cdee4c98289d0a1b2d85efd3f",
+      "selected_section_ids": [
+        "policy",
+        "candidate:policy_addendum",
+        "skill_instructions",
+        "facts:scope",
+        "facts:recent_aggregate",
+        "facts:sample_boundaries",
+        "facts:deterministic_report",
+        "facts:recent_match:00",
+        "facts:recent_match:01",
+        "facts:recent_match:02",
+        "facts:recent_match:03",
+        "facts:recent_match:04",
+        "request:user"
+      ],
+      "omitted_section_ids": [],
+      "sections": [
+        {
+          "section_id": "policy",
+          "trust": "internal_policy",
+          "source": "riftcoach.context-policy.v1",
+          "instructional": true,
+          "required": true,
+          "priority": 1000,
+          "content_sha256": "fe0e17e49e6346c244b0dd2f92d17e21da7a0538bb894d459a0c324a7d3498a1"
+        },
+        {
+          "section_id": "candidate:policy_addendum",
+          "trust": "internal_policy",
+          "source": "candidate-output-safety-v1",
+          "instructional": true,
+          "required": true,
+          "priority": 995,
+          "content_sha256": "0e8d06f215e369641649836deac5535e7df19e0847091f10b5863ce1aa6a6deb"
+        },
+        {
+          "section_id": "skill_instructions",
+          "trust": "skill_instructions",
+          "source": "skill:recent-form-review@0.2.0",
+          "instructional": true,
+          "required": true,
+          "priority": 900,
+          "content_sha256": "f3207adead537a2999749fd0f882e744ebf10cb93c878924cab7b763cb080c23"
+        },
+        {
+          "section_id": "facts:scope",
+          "trust": "deterministic_facts",
+          "source": "player_summary:scope",
+          "instructional": false,
+          "required": true,
+          "priority": 800,
+          "content_sha256": "3908006c64d4fc85cd6bfb0c57a14f2f16c0b6198f302f57fe76fc5945dbe678"
+        },
+        {
+          "section_id": "facts:recent_aggregate",
+          "trust": "deterministic_facts",
+          "source": "player_summary:recent_summary",
+          "instructional": false,
+          "required": true,
+          "priority": 790,
+          "content_sha256": "2e8539bf7e87a6e32f0f525002475618fe87ffe97d098f481e6e57590087175a"
+        },
+        {
+          "section_id": "facts:sample_boundaries",
+          "trust": "deterministic_facts",
+          "source": "player_summary:sample_boundaries",
+          "instructional": false,
+          "required": true,
+          "priority": 780,
+          "content_sha256": "8413abf17eee7dfc32589c6a1007107c54e36e50a3827017e79ba53b6041f22e"
+        },
+        {
+          "section_id": "facts:deterministic_report",
+          "trust": "deterministic_facts",
+          "source": "deterministic_report:1.0",
+          "instructional": false,
+          "required": true,
+          "priority": 770,
+          "content_sha256": "0cdf29c6807619baef5b56fdca77f45e96ce8d2a60f4f9eba5152b0786bcd986"
+        },
+        {
+          "section_id": "facts:recent_match:00",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[0]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "4c3b618e25c2d6c273fe061e65b5fe87efac22943e0648a0b33f4d77b2113bd1"
+        },
+        {
+          "section_id": "facts:recent_match:01",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[1]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "ac78032e0d11ce5eed487668f07b3ac5acd3ca9b2ecf3f50f93df3d69d7f1c90"
+        },
+        {
+          "section_id": "facts:recent_match:02",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[2]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "d4f3ece5f9fc514570440226425de7312070700b19fc5f4593ebd7dedbac5fcf"
+        },
+        {
+          "section_id": "facts:recent_match:03",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[3]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "bf262ee351f00ddbadd6216cf224195faf494c10319e40efd9046b4334445e98"
+        },
+        {
+          "section_id": "facts:recent_match:04",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[4]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "f16787129717ec6d25abf70a695c63fbf4a219fc1e0442129bcd45ff79ac0888"
+        },
+        {
+          "section_id": "request:user",
+          "trust": "user_request",
+          "source": "skill_execution_request",
+          "instructional": false,
+          "required": true,
+          "priority": 760,
+          "content_sha256": "913e9e43be30b011807b69a07ca83a2cd0bae4f8b5b941d9971581305107dc58"
+        }
+      ],
+      "message_fingerprints": [
+        {
+          "role": "system",
+          "content_sha256": "b7ce1121d658ead2bab7df8cd123f6f9fe7610e1b1201a50e75a80d1f3fca234"
+        },
+        {
+          "role": "user",
+          "content_sha256": "186a622181d48e8b0e2f0e806a295842bb7e78556bfebedabb28f40e32eba66c"
+        }
+      ],
+      "estimated_tokens": 6780,
+      "max_context_tokens": 16000
+    },
+    {
+      "case_id": "revision_user_data_boundary_71",
+      "player_summary_sha256": "38dedea17f1b92fb63de867cdf0283e09810c53259a263ee08a9896570600d33",
+      "deterministic_report_sha256": "0cdf29c6807619baef5b56fdca77f45e96ce8d2a60f4f9eba5152b0786bcd986",
+      "user_utterance_sha256": "1d6ce646b18ec6668d532549a4ceb6633781ed389bb9bb35754d908f005ffdfa",
+      "typed_options_sha256": "07642e066953a52012ab94ebadff10a2709eb531aad205df7f99353edff6104f",
+      "selected_section_ids": [
+        "policy",
+        "candidate:policy_addendum",
+        "skill_instructions",
+        "facts:scope",
+        "facts:recent_aggregate",
+        "facts:sample_boundaries",
+        "facts:deterministic_report",
+        "facts:recent_match:00",
+        "facts:recent_match:01",
+        "facts:recent_match:02",
+        "facts:recent_match:03",
+        "facts:recent_match:04",
+        "request:user"
+      ],
+      "omitted_section_ids": [],
+      "sections": [
+        {
+          "section_id": "policy",
+          "trust": "internal_policy",
+          "source": "riftcoach.context-policy.v1",
+          "instructional": true,
+          "required": true,
+          "priority": 1000,
+          "content_sha256": "fe0e17e49e6346c244b0dd2f92d17e21da7a0538bb894d459a0c324a7d3498a1"
+        },
+        {
+          "section_id": "candidate:policy_addendum",
+          "trust": "internal_policy",
+          "source": "candidate-output-safety-v1",
+          "instructional": true,
+          "required": true,
+          "priority": 995,
+          "content_sha256": "0e8d06f215e369641649836deac5535e7df19e0847091f10b5863ce1aa6a6deb"
+        },
+        {
+          "section_id": "skill_instructions",
+          "trust": "skill_instructions",
+          "source": "skill:recent-form-review@0.2.0",
+          "instructional": true,
+          "required": true,
+          "priority": 900,
+          "content_sha256": "f3207adead537a2999749fd0f882e744ebf10cb93c878924cab7b763cb080c23"
+        },
+        {
+          "section_id": "facts:scope",
+          "trust": "deterministic_facts",
+          "source": "player_summary:scope",
+          "instructional": false,
+          "required": true,
+          "priority": 800,
+          "content_sha256": "3908006c64d4fc85cd6bfb0c57a14f2f16c0b6198f302f57fe76fc5945dbe678"
+        },
+        {
+          "section_id": "facts:recent_aggregate",
+          "trust": "deterministic_facts",
+          "source": "player_summary:recent_summary",
+          "instructional": false,
+          "required": true,
+          "priority": 790,
+          "content_sha256": "2e8539bf7e87a6e32f0f525002475618fe87ffe97d098f481e6e57590087175a"
+        },
+        {
+          "section_id": "facts:sample_boundaries",
+          "trust": "deterministic_facts",
+          "source": "player_summary:sample_boundaries",
+          "instructional": false,
+          "required": true,
+          "priority": 780,
+          "content_sha256": "8413abf17eee7dfc32589c6a1007107c54e36e50a3827017e79ba53b6041f22e"
+        },
+        {
+          "section_id": "facts:deterministic_report",
+          "trust": "deterministic_facts",
+          "source": "deterministic_report:1.0",
+          "instructional": false,
+          "required": true,
+          "priority": 770,
+          "content_sha256": "0cdf29c6807619baef5b56fdca77f45e96ce8d2a60f4f9eba5152b0786bcd986"
+        },
+        {
+          "section_id": "facts:recent_match:00",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[0]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "4c3b618e25c2d6c273fe061e65b5fe87efac22943e0648a0b33f4d77b2113bd1"
+        },
+        {
+          "section_id": "facts:recent_match:01",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[1]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "ac78032e0d11ce5eed487668f07b3ac5acd3ca9b2ecf3f50f93df3d69d7f1c90"
+        },
+        {
+          "section_id": "facts:recent_match:02",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[2]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "d4f3ece5f9fc514570440226425de7312070700b19fc5f4593ebd7dedbac5fcf"
+        },
+        {
+          "section_id": "facts:recent_match:03",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[3]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "bf262ee351f00ddbadd6216cf224195faf494c10319e40efd9046b4334445e98"
+        },
+        {
+          "section_id": "facts:recent_match:04",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[4]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "f16787129717ec6d25abf70a695c63fbf4a219fc1e0442129bcd45ff79ac0888"
+        },
+        {
+          "section_id": "request:user",
+          "trust": "user_request",
+          "source": "skill_execution_request",
+          "instructional": false,
+          "required": true,
+          "priority": 760,
+          "content_sha256": "9c0c4a9875b3ba1a25466ea4984c108ea72691d1f37ba8168688890d2c904cc8"
+        }
+      ],
+      "message_fingerprints": [
+        {
+          "role": "system",
+          "content_sha256": "b7ce1121d658ead2bab7df8cd123f6f9fe7610e1b1201a50e75a80d1f3fca234"
+        },
+        {
+          "role": "user",
+          "content_sha256": "22e557bb98e33b45777afa4493e62875d17ca0c707ac8792eb49570d8c82a3d8"
+        }
+      ],
+      "estimated_tokens": 6785,
+      "max_context_tokens": 16000
+    },
+    {
+      "case_id": "revision_knowledge_data_boundary_79",
+      "player_summary_sha256": "38dedea17f1b92fb63de867cdf0283e09810c53259a263ee08a9896570600d33",
+      "deterministic_report_sha256": "0cdf29c6807619baef5b56fdca77f45e96ce8d2a60f4f9eba5152b0786bcd986",
+      "user_utterance_sha256": "ab89f4117ff4fbf8d9397cc4378a87dc61e2a535bd677f274744a8a091127cbe",
+      "typed_options_sha256": "11b2de7dbebfd4cf66ca0ed1f5e1d4768b85e13f98e1353e5d24743024792d6c",
+      "selected_section_ids": [
+        "policy",
+        "candidate:policy_addendum",
+        "skill_instructions",
+        "facts:scope",
+        "facts:recent_aggregate",
+        "facts:sample_boundaries",
+        "facts:deterministic_report",
+        "facts:recent_match:00",
+        "facts:recent_match:01",
+        "facts:recent_match:02",
+        "facts:recent_match:03",
+        "facts:recent_match:04",
+        "request:user"
+      ],
+      "omitted_section_ids": [],
+      "sections": [
+        {
+          "section_id": "policy",
+          "trust": "internal_policy",
+          "source": "riftcoach.context-policy.v1",
+          "instructional": true,
+          "required": true,
+          "priority": 1000,
+          "content_sha256": "fe0e17e49e6346c244b0dd2f92d17e21da7a0538bb894d459a0c324a7d3498a1"
+        },
+        {
+          "section_id": "candidate:policy_addendum",
+          "trust": "internal_policy",
+          "source": "candidate-output-safety-v1",
+          "instructional": true,
+          "required": true,
+          "priority": 995,
+          "content_sha256": "0e8d06f215e369641649836deac5535e7df19e0847091f10b5863ce1aa6a6deb"
+        },
+        {
+          "section_id": "skill_instructions",
+          "trust": "skill_instructions",
+          "source": "skill:recent-form-review@0.2.0",
+          "instructional": true,
+          "required": true,
+          "priority": 900,
+          "content_sha256": "f3207adead537a2999749fd0f882e744ebf10cb93c878924cab7b763cb080c23"
+        },
+        {
+          "section_id": "facts:scope",
+          "trust": "deterministic_facts",
+          "source": "player_summary:scope",
+          "instructional": false,
+          "required": true,
+          "priority": 800,
+          "content_sha256": "3908006c64d4fc85cd6bfb0c57a14f2f16c0b6198f302f57fe76fc5945dbe678"
+        },
+        {
+          "section_id": "facts:recent_aggregate",
+          "trust": "deterministic_facts",
+          "source": "player_summary:recent_summary",
+          "instructional": false,
+          "required": true,
+          "priority": 790,
+          "content_sha256": "2e8539bf7e87a6e32f0f525002475618fe87ffe97d098f481e6e57590087175a"
+        },
+        {
+          "section_id": "facts:sample_boundaries",
+          "trust": "deterministic_facts",
+          "source": "player_summary:sample_boundaries",
+          "instructional": false,
+          "required": true,
+          "priority": 780,
+          "content_sha256": "8413abf17eee7dfc32589c6a1007107c54e36e50a3827017e79ba53b6041f22e"
+        },
+        {
+          "section_id": "facts:deterministic_report",
+          "trust": "deterministic_facts",
+          "source": "deterministic_report:1.0",
+          "instructional": false,
+          "required": true,
+          "priority": 770,
+          "content_sha256": "0cdf29c6807619baef5b56fdca77f45e96ce8d2a60f4f9eba5152b0786bcd986"
+        },
+        {
+          "section_id": "facts:recent_match:00",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[0]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "4c3b618e25c2d6c273fe061e65b5fe87efac22943e0648a0b33f4d77b2113bd1"
+        },
+        {
+          "section_id": "facts:recent_match:01",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[1]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "ac78032e0d11ce5eed487668f07b3ac5acd3ca9b2ecf3f50f93df3d69d7f1c90"
+        },
+        {
+          "section_id": "facts:recent_match:02",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[2]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "d4f3ece5f9fc514570440226425de7312070700b19fc5f4593ebd7dedbac5fcf"
+        },
+        {
+          "section_id": "facts:recent_match:03",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[3]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "bf262ee351f00ddbadd6216cf224195faf494c10319e40efd9046b4334445e98"
+        },
+        {
+          "section_id": "facts:recent_match:04",
+          "trust": "deterministic_facts",
+          "source": "player_summary:matches[4]",
+          "instructional": false,
+          "required": false,
+          "priority": 500,
+          "content_sha256": "f16787129717ec6d25abf70a695c63fbf4a219fc1e0442129bcd45ff79ac0888"
+        },
+        {
+          "section_id": "request:user",
+          "trust": "user_request",
+          "source": "skill_execution_request",
+          "instructional": false,
+          "required": true,
+          "priority": 760,
+          "content_sha256": "662d91b0a8d4e7c375332923433cc668b95c6ad54aed47c583b4e172330d3e86"
+        }
+      ],
+      "message_fingerprints": [
+        {
+          "role": "system",
+          "content_sha256": "b7ce1121d658ead2bab7df8cd123f6f9fe7610e1b1201a50e75a80d1f3fca234"
+        },
+        {
+          "role": "user",
+          "content_sha256": "a183e28a6d41e3887b64d885975eed8668f94ddf149a6b31cc3bf3fbd52cb346"
+        }
+      ],
+      "estimated_tokens": 6779,
+      "max_context_tokens": 16000
+    }
+  ],
+  "snapshot_sha256": "0c47b216932467e1152c1acf9715f04a6c95ab40eea5f6b114c015d779ea34ec"
+}

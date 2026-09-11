@@ -21,6 +21,8 @@ from app.model_runtime import (
 )
 from app.prompt_program import PromptProgramCatalog, PromptProgramResolver
 from app.skills.catalog import SkillCatalog
+from .coach_contract import COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT
+from .coach_context import CoachContextBuilder
 
 from .runtime import (
     AgentRuntimeV1,
@@ -78,6 +80,7 @@ class RuntimeCompositionRoot:
         *,
         skills_root: str | Path,
         prompt_programs_root: str | Path,
+        coach_contract=None,
     ) -> "RuntimeCompositionRoot":
         skill_catalog = SkillCatalog.from_directory(skills_root)
         prompt_program_catalog = PromptProgramCatalog.from_directory(
@@ -86,6 +89,7 @@ class RuntimeCompositionRoot:
         resolver = PromptProgramResolver(
             prompt_program_catalog,
             skill_catalog,
+            coach_contract=coach_contract,
         )
         # Composition is the product startup boundary: a stale manifest must
         # stop construction before any Runtime or Provider can be used.
@@ -94,6 +98,45 @@ class RuntimeCompositionRoot:
             skill_catalog=skill_catalog,
             prompt_program_catalog=prompt_program_catalog,
             prompt_program_resolver=resolver,
+        )
+
+    def build_offline_coach_runtime(self, *, runs_root, provider, knowledge_provider, context_builder=None):
+        """Explicit migration seam; ordinary build_runtime and worker startup stay unchanged."""
+        from app.rag.coaching_query import CoachingQueryKnowledgeProvider
+        from app.evaluation.glm53_report_contract import build_aligned_revision_prompt
+        contract = self.prompt_program_resolver.coach_contract
+        if all(contract is not c for c in (COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT)):
+            raise RuntimeCompositionError("independent Coach assets must be explicitly verified")
+        contract.require_provider(provider)
+        evaluator_type, reviser_type = SecureChatEvaluationAdapter, ChatCoachReviser
+        if contract.grounded:
+            from app.evaluation.coach_grounded_contract import GroundedChatEvaluationAdapter, GroundedCoachReviser
+            evaluator_type, reviser_type = GroundedChatEvaluationAdapter, GroundedCoachReviser
+        factory = RuntimeExecutionFactory(
+            knowledge_provider=CoachingQueryKnowledgeProvider(knowledge_provider),
+            evaluator_factory=lambda runtime: evaluator_type(
+                runtime=runtime, system_prompt=EVALUATOR_SYSTEM_PROMPT, fact_pack_builder=build_fact_pack,
+                **({"inference_audit": "scope" if contract is SCOPE_COACH_CONTRACT else "coverage" if contract is COVERAGE_COACH_CONTRACT else "v3" if contract is ANCHOR_COACH_CONTRACT else "v2" if contract is CLAIM_COACH_CONTRACT else True} if contract in (INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT) else {}),
+                **({"include_generation_facts": True} if contract.descriptor().get("include_generation_facts") else {}),
+                **({"compact_report_policy": contract.compact_report_policy} if contract.compact_report_policy else {}),
+                **({"source_use_policy": contract.source_use_policy} if contract.source_use_policy else {}),
+                **({"position_policy": contract.position_policy} if contract.position_policy else {}),
+                **({"include_deterministic_facts": True} if contract.descriptor().get("include_deterministic_source_facts") else {})),
+            reviser_factory=lambda runtime: reviser_type(
+                runtime=runtime, system_prompt=REVISER_SYSTEM_PROMPT,
+                **({"inference_audit": "scope" if contract is SCOPE_COACH_CONTRACT else "coverage" if contract is COVERAGE_COACH_CONTRACT else "v3" if contract is ANCHOR_COACH_CONTRACT else "v2" if contract is CLAIM_COACH_CONTRACT else True} if contract in (INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT) else {}),
+                prompt_builder=build_aligned_revision_prompt, validator=validate_revised_report,
+                **({"include_generation_facts": True} if contract.descriptor().get("include_generation_facts") else {}),
+                **({"compact_report_policy": contract.compact_report_policy} if contract.compact_report_policy else {}),
+                **({"source_use_policy": contract.source_use_policy} if contract.source_use_policy else {}),
+                **({"position_policy": contract.position_policy} if contract.position_policy else {}),
+                **({"include_deterministic_facts": True} if contract.descriptor().get("include_deterministic_source_facts") else {})),
+            coach_contract=contract,
+        )
+        return AgentRuntimeV1(
+            runs_root=runs_root, catalog=self.skill_catalog, provider=provider,
+            execution_factory=factory, context_builder=context_builder or CoachContextBuilder(coach_contract=contract),
+            prompt_program_resolver=self.prompt_program_resolver,
         )
 
     def build_runtime(

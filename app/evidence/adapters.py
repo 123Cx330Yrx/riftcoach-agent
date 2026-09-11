@@ -19,7 +19,7 @@ from .fusion import (
 )
 
 
-_PATCH_PREFIX = re.compile(r"^(\d{1,3}\.\d{1,3}(?:\.\d{1,3})?)$")
+_PATCH_PREFIX = re.compile(r"^([0-9]{1,3}\.[0-9]{1,3}(?:\.[0-9]{1,10}){0,2})$")
 _ROLE_MAP = {
     "top": "top",
     "jungle": "jungle",
@@ -68,13 +68,19 @@ def riot_match_from_summary_row(
     if not isinstance(routing_region, str) or not routing_region.strip():
         raise EvidenceAdapterError("riot_region_invalid")
     patch_version = _patch_version(row.get("game_version"))
+    # The Summary keeps a localized display name for Coach/UI, while the
+    # original Riot champion label remains available for cross-source joins.
+    # Prefer that stable upstream label when present; this lets OP.GG's
+    # English champion facts join the exact same frozen Summary without
+    # creating a second, divergent input document.
+    champion_name = row.get("champion_name_en") or row.get("champion_name")
     projected = {
         "match_id": row.get("match_id"),
         "routing_region": routing_region,
         "queue_id": row.get("queue_id"),
         "champion_id": row.get("champion_id"),
-        "champion_name": row.get("champion_name"),
-        "position": _position(row.get("role")),
+        "champion_name": champion_name,
+        "position": normalize_riot_position(row.get("role")),
         "patch_version": patch_version,
         "win": row.get("win"),
         "duration_seconds": row.get("game_duration_seconds"),
@@ -118,7 +124,7 @@ def data_dragon_snapshot_from_identity(
 def _patch_version(value: object) -> str | None:
     if value is None:
         return None
-    if not isinstance(value, str) or not value.strip():
+    if not isinstance(value, str) or len(value) > 32 or not value.strip():
         raise EvidenceAdapterError("riot_patch_invalid")
     match = _PATCH_PREFIX.fullmatch(value.strip())
     if match is None:
@@ -138,7 +144,8 @@ def _observed_at(value: object) -> datetime:
     raise EvidenceAdapterError("riot_observed_at_invalid")
 
 
-def _position(value: object) -> str:
+def normalize_riot_position(value: object) -> str:
+    """Normalize an observed role, never infer a player's preferred role."""
     if not isinstance(value, str):
         raise EvidenceAdapterError("riot_position_invalid")
     normalized = _ROLE_MAP.get(value.strip().casefold())
@@ -162,4 +169,5 @@ __all__ = [
     "EvidenceAdapterError",
     "data_dragon_snapshot_from_identity",
     "riot_match_from_summary_row",
+    "normalize_riot_position",
 ]
