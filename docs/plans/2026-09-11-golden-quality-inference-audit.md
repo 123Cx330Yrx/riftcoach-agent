@@ -108,3 +108,40 @@ Code: `app/evaluation/golden_inference_audit.py`, opt-in contract/context/compos
 
 
 2026-09-11真实校验接续：a913b4881a4ecb56be98911dd4c098d059ad2265/Actions34595485432三任务成功。第二批b首个请求返回13297+2781 tokens后ValueError停止，具体原响应未留存，不能断言根因；新鲜单调用诊断c的完整正确对照96/pass（13297+3072），随后因诊断1调用上限正常停止，未完成10案。独立report-only诊断又1调用13107+5200 tokens，确认原句引用删除Markdown加粗并把中文引号换成英文引号，精确anchor拒绝，原报告尚未修订。四次运行共8次Provider预约，累计76；已返回计量114647 tokens，主动中止的未返回用量仍未知。只读诊断观察保存私有响应/anchor细节，范围收窄和上限已单独记录，不冒充完整批次。新增显式1.3.9将anchor校验纳入同一次结构化纠正机会，仍精确匹配且不增加9调用/一次修订预算；1.3.7/1.3.8冻结。真实入口新增显式report-only/选案、按范围缩小调用上限和响应私有留档。下一步为新补丁公共CI后优先原报告真实评估→修订→复评。
+
+
+2026-09-11真实闭环收口（质量未通过）：f5caf181f4f3e0d030dcdf3b9c47c38024124df6/Actions34596802159同SHA三任务success，Python3071 passed/154 skipped/127 subtests、PostgreSQL210。新鲜inference-dev-f5caf18-20260911-report实际3调用38142输入+11767输出=49909 tokens，原报告78/needs_revision→一次修订→97/pass，格式/原句校验通过。但人工拒绝：视野90→意识原句仍在，前后两次audits都未覆盖；修订引入“稳定同位置差距/较稳定差异项”，四局同位置小样本不能支持稳定性。混合位置补刀方向及相关建议已改正，仅这一部分得到实证。完整10案未跑完，不能用receipt中0/0推算误报/漏报率。所有五次新鲜运行共11次Provider预约，累计79；已返回计量164556 tokens，被主动中止流可能另有未返回用量。原95分报告、人工副本、全部失败记录保留；新97分稿不替换Workbench、不发布可信报告。8E仍in_progress。唯一下一步为以本次漏句和稳定性误判设计并离线验证可核对的逐段/候选判断覆盖合同，再决定新鲜真实验证；不继续盲目重复同一提示。Workbench四块设计继续后置。
+
+## Next bounded design: coverage before semantic approval
+
+The observed defect is now concrete: valid audits can select only easy qualified
+statements, omit an unsupported sentence, and still return pass. Per-claim status
+and exact anchors establish internal consistency, not exhaustive coverage. The
+97-point revised report also calls a four-game difference stable. This remains a
+failed development review, even though the end-to-end revision path completed.
+
+Next design should assign deterministic IDs to report paragraphs/list items and
+require auditable treatment of every candidate block, preserving negations and
+conditional questions. Assess input/output and time costs before implementation;
+do not silently add another model stage, loosen the gate, or rewrite frozen
+versions. Coverage does not prove semantic correctness, so evaluation must retain
+balanced positive controls, ineffective disclaimers, newly observed stability
+claims and unseen paraphrases. Do not replace reasoning with a blacklist of the
+known two Chinese strings or accept a model score as manual review.
+
+Operations: `scripts/run_golden_inference_development.py` now supports explicit
+`--report-only` (maximum five calls) and `--case-id`; no flag runs all ten controls
+then the report. It defaults to preview. Execution requires exact public CI,
+clean checkout, a fresh run ID and fixed original/base report hashes. Provider
+response text is private under the run directory; no reasoning text or credentials
+are included in these response artifacts. A full positive control failure stops
+remaining controls, and receipts state actual case count. Private manual-review
+JSON is separate from the automatic evaluation and never overwrites its score.
+
+Learning: source rows → role/outcome facts → model-selected claims → exact anchors
+→ issues → one revision → reevaluation → manual development review. Tests establish
+bounded control flow and contracts; the five real observations establish remaining
+semantic failures. Interview wording: “Built versioned same-role inference audits,
+found coverage gaps through real model evaluation, and prevented a 97-point false
+pass from being presented as a successful repair.” The parent checkpoint is not
+complete and its learning/quality exit gate is not advanced.
