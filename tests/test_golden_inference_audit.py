@@ -69,14 +69,16 @@ def test_development_scoring_requires_the_expected_finding(monkeypatch):
     assert runner.score_case(case, result)["matched"]
 
 
-@pytest.mark.parametrize("version", ["1.3.7", "1.3.8", "1.3.9", "1.3.10"])
+@pytest.mark.parametrize("version", ["1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11"])
 def test_new_contract_reaches_full_nine_call_path_without_changing_old_identity(monkeypatch, version):
-    from app.runtime.coach_contract import CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT
-    contract = {"1.3.7": INFERENCE_COACH_CONTRACT, "1.3.8": CLAIM_COACH_CONTRACT, "1.3.9": ANCHOR_COACH_CONTRACT, "1.3.10": COVERAGE_COACH_CONTRACT}[version]
+    from app.runtime.coach_contract import CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT
+    contract = {"1.3.7": INFERENCE_COACH_CONTRACT, "1.3.8": CLAIM_COACH_CONTRACT, "1.3.9": ANCHOR_COACH_CONTRACT, "1.3.10": COVERAGE_COACH_CONTRACT, "1.3.11": SCOPE_COACH_CONTRACT}[version]
     from app.evaluation.golden_inference_audit_v2 import INFERENCE_POLICY as V2_POLICY
     policy = INFERENCE_POLICY if version == "1.3.7" else V2_POLICY
     if version == "1.3.9":
         from app.evaluation.golden_inference_audit_v3 import INFERENCE_POLICY as policy
+    if version == "1.3.11":
+        from app.evaluation.golden_inference_scope import SCOPE_POLICY as policy
     if version == "1.3.10":
         from app.evaluation.golden_inference_coverage import COVERAGE_POLICY as policy
     captured = []; original = _ReplayProvider.chat

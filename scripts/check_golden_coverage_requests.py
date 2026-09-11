@@ -17,7 +17,9 @@ from app.tools.adapters.llm import build_llm_tools
 from scripts.check_coach_golden_replay import _ReplayProvider
 
 
-def measure(source, report_path):
+def measure(source, report_path, *, scope=False):
+    from app.runtime.coach_contract import SCOPE_COACH_CONTRACT
+    contract = SCOPE_COACH_CONTRACT if scope else CONTRACT
     summary = json.loads((source / "inputs/player_summary.json").read_text(encoding="utf-8"))
     report = report_path.read_text(encoding="utf-8")
     deterministic = (source / "inputs/deterministic_report.md").read_text(encoding="utf-8")
@@ -31,14 +33,16 @@ def measure(source, report_path):
             evaluation = {"score": 95, "verdict": "pass", "issues": [], "passed_checks": [], "summary": "Scripted size probe only",
                 "audits": [{"kind": kind, "status": "not_applicable", "claims": []} for kind in ("metric_to_ability", "cohort_comparison")],
                 "coverage": [{"block_id": b["block_id"], "metric_to_ability": "not_applicable", "cohort_comparison": "not_applicable"} for b in report_blocks(report)]}
+            if scope:
+                for item in evaluation["coverage"]: item["scope_ambiguous"] = False
             return ChatResponse(content=json.dumps(evaluation) if request.response_contract else report,
                 model=self.model_name, provider=self.provider_name, finish_reason="stop", usage=TokenUsage())
 
     registry = ToolRegistry()
-    for definition in build_llm_tools(CoachBudgetedProvider(Offline(), coach_contract=CONTRACT), request_policy=CONTRACT.request_policy):
+    for definition in build_llm_tools(CoachBudgetedProvider(Offline(), coach_contract=contract), request_policy=contract.request_policy):
         registry.register(definition)
-    options = dict(runtime=ToolRuntime(registry), inference_audit="coverage", include_generation_facts=True, include_deterministic_facts=True,
-                   position_policy=CONTRACT.position_policy, source_use_policy=CONTRACT.source_use_policy, compact_report_policy=CONTRACT.compact_report_policy)
+    options = dict(runtime=ToolRuntime(registry), inference_audit="scope" if scope else "coverage", include_generation_facts=True, include_deterministic_facts=True,
+                   position_policy=contract.position_policy, source_use_policy=contract.source_use_policy, compact_report_policy=contract.compact_report_policy)
     evaluator = GroundedChatEvaluationAdapter(system_prompt=EVALUATOR_SYSTEM_PROMPT, fact_pack_builder=build_fact_pack, **options)
     result = evaluator.evaluate(EvaluationRequest(summary, deterministic, knowledge, report, "Observe report quality."))
     reviser = GroundedCoachReviser(system_prompt=REVISER_SYSTEM_PROMPT, prompt_builder=lambda *x: "unused", validator=lambda *x: None, **options)
@@ -51,5 +55,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-run", required=True, type=Path)
     parser.add_argument("--report", required=True, type=Path)
+    parser.add_argument("--scope", action="store_true")
     args = parser.parse_args()
-    print(json.dumps(measure(args.source_run, args.report)))
+    print(json.dumps(measure(args.source_run, args.report, scope=args.scope)))

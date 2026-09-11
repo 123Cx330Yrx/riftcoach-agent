@@ -87,10 +87,11 @@ def test_oversize_inputs_fail_before_a_model_call(report):
     with pytest.raises(ValueError): report_blocks(report)
 
 
-def test_coverage_fields_cannot_hide_terminal_security_finding(monkeypatch):
+@pytest.mark.parametrize("mode", ["coverage", "scope"])
+def test_coverage_fields_cannot_hide_terminal_security_finding(monkeypatch, mode):
     from dataclasses import replace
     from scripts.check_coach_golden_replay import _ReplayProvider, probe
-    from app.runtime.coach_contract import COVERAGE_COACH_CONTRACT
+    from app.runtime.coach_contract import COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT
     from tests.test_coach_application_composition import dependencies
     original = _ReplayProvider.chat
     def injected(self, request):
@@ -101,7 +102,7 @@ def test_coverage_fields_cannot_hide_terminal_security_finding(monkeypatch):
             return replace(response, content=json.dumps(value))
         return response
     monkeypatch.setattr(_ReplayProvider, "chat", injected)
-    result = probe(dependencies()["summary_builder"].summary, contract=COVERAGE_COACH_CONTRACT, training_positions=())
+    result = probe(dependencies()["summary_builder"].summary, contract=SCOPE_COACH_CONTRACT if mode == "scope" else COVERAGE_COACH_CONTRACT, training_positions=())
     assert result["scripted_provider_calls"] == 5
     assert result["revision_count"] == 0
     assert not result["report_available"]

@@ -16,7 +16,7 @@ from app.agent.memory_context import (
 from app.providers.protocol import LLMProvider
 from app.rag.provider import KnowledgeProvider
 from app.runtime.coach_context import CoachContextBuilder
-from app.runtime.coach_contract import BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT
+from app.runtime.coach_contract import BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT
 from app.runtime.composition import RuntimeCompositionRoot
 from app.lol.report_renderer import render_deterministic_report
 
@@ -64,7 +64,7 @@ def build_coach_application(
     if (memory_repository is None) != (memory_manifest_store is None):
         raise ValueError("Memory repository and manifest store must be supplied together")
 
-    if all(coach_contract is not c for c in (BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT)):
+    if all(coach_contract is not c for c in (BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT)):
         raise ValueError("application requires an explicit supported Coach contract")
     assets = (_COACH_ASSETS.parent / "flash_v2_golden"
               if coach_contract is GOLDEN_COACH_CONTRACT else _COACH_ASSETS)
@@ -86,6 +86,8 @@ def build_coach_application(
         assets = _COACH_ASSETS.parent / "flash_v2_golden_claims"
     if coach_contract is ANCHOR_COACH_CONTRACT:
         assets = _COACH_ASSETS.parent / "flash_v2_golden_anchors"
+    if coach_contract is SCOPE_COACH_CONTRACT:
+        assets = _COACH_ASSETS.parent / "flash_v2_golden_scope"
     if coach_contract is COVERAGE_COACH_CONTRACT:
         assets = _COACH_ASSETS.parent / "flash_v2_golden_coverage"
     context_builder: CoachContextBuilder | MemoryAwareContextBuilder

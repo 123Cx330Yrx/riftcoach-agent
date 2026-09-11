@@ -276,3 +276,38 @@ human-labeled controls, before evaluator changes. Its limitation is precisely th
 it does not grade prose. Interview wording: “Used paired positive, negative and
 ambiguous controls to avoid replacing an inference bug with a keyword blacklist.”
 The parent learning checkpoint remains in progress.
+
+
+## Scope contract implementation
+
+2026-09-11范围澄清合同已本地接入：显式Coach1.3.11/Skill0.5.11/Program2.3.11/evaluation1.6.0；逐条scope及逐段scope_ambiguous绑定，含混原句必须有other类澄清issue且不能pass，复用一次结构化纠正与一次报告修订。范围和覆盖经既有audits/coverage保存并传入修订，复评重建清单；冻结1.3.10及旧合同身份不变。保存96分稿27段离线请求估算52544评估/48544修订，均小于64000，8192输出及既有调用墙不变。当前未完成真实语义验证；Provider累计95。唯一下一步为本实现同SHA公共验证后，接续新身份的范围校准真实评估与修订验证，旧对照和工作台人工稿不替换；8E仍in_progress、四块设计后置。
+
+Code map: `golden_inference_scope.py` extends frozen V15 with per-claim scope and
+per-block ambiguity. `validate_scope` reuses literal anchors and complete coverage,
+then verifies each ambiguity flag against an ambiguous claim in that same block.
+A supported arithmetic statement may still require clarification; the extra
+validator requires a quote-matched `other` issue and nonpass, without forcing a
+false factual finding. Structured correction shares the existing one-call repair.
+The grounded adapter sends the same scope policy to revision; persisted audits and
+coverage retain the extra fields. New composition/assets/resolver opt in to1.3.11.
+No keyword classifier, new dependency, score change or sample threshold is used.
+
+Tests cover unresolved pass, quote/category mismatch, missing fields, hidden block
+ambiguity, existing-security terminal refusal, new asset resolution and old
+fingerprints. Nine-request replay validates policy delivery and refusal after the
+one revision is consumed. Scripted supported labels do not prove prose is correct.
+Run `python -m scripts.check_golden_coverage_requests --scope --source-run <saved>
+--report <96-point-report>` for the actual saved-shape budget probe. It runs locally
+and reports estimates only. The new schema still relies on model semantic labels;
+incorrect supported/selected_sample classifications can remain structurally valid.
+The real development entry still uses frozen coverage until separately wired for
+scope cases; do not treat an old-version run as validation of the new contract.
+
+Learning: ambiguity is a distinct editorial obligation carried through the same
+revision flow. An unresolved claim cannot be cleared merely by a high score.
+Evidence/control flow: report→indexed blocks→scoped audit→quote-bound issue→
+revision→fresh full audit. Interview: “Added scope-aware revision obligations while
+preserving old contract fingerprints and request budgets.” Parent gate stays open.
+
+
+范围合同最终本地验证：90 passed，治理检查和diff检查通过。公共验证待本次提交。
