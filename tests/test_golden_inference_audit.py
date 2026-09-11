@@ -69,21 +69,45 @@ def test_development_scoring_requires_the_expected_finding(monkeypatch):
     assert runner.score_case(case, result)["matched"]
 
 
-def test_new_contract_reaches_full_nine_call_path_without_changing_old_identity(monkeypatch):
+@pytest.mark.parametrize("version", ["1.3.7", "1.3.8"])
+def test_new_contract_reaches_full_nine_call_path_without_changing_old_identity(monkeypatch, version):
+    from app.runtime.coach_contract import CLAIM_COACH_CONTRACT
+    contract = INFERENCE_COACH_CONTRACT if version == "1.3.7" else CLAIM_COACH_CONTRACT
+    from app.evaluation.golden_inference_audit_v2 import INFERENCE_POLICY as V2_POLICY
+    policy = INFERENCE_POLICY if version == "1.3.7" else V2_POLICY
     captured = []; original = _ReplayProvider.chat
     def record(self, request):
         captured.append(request); return original(self, request)
     monkeypatch.setattr(_ReplayProvider, "chat", record)
-    result = probe(dependencies()["summary_builder"].summary, contract=INFERENCE_COACH_CONTRACT, training_positions=())
+    result = probe(dependencies()["summary_builder"].summary, contract=contract, training_positions=())
     assert result["scripted_provider_calls"] == 9
     assert result["revision_count"] == 1
     assert result["report_available"] is False
     assert result["terminal_reason"] == "evaluation_failed"
     for request in captured:
         text = "\n".join(m.content or "" for m in request.messages)
-        assert INFERENCE_POLICY in text or json.dumps(INFERENCE_POLICY, ensure_ascii=False)[1:-1] in text
+        assert policy in text or json.dumps(policy, ensure_ascii=False)[1:-1] in text
         assert "inference_facts" in text
     assert COMPACT_COACH_CONTRACT.snapshot().sha256 == "d20fc775e7be126d373163a7d72cf71be329e28614aeb1eacaaf5e560b1f59f3"
-    old, new = COMPACT_COACH_CONTRACT.descriptor(), INFERENCE_COACH_CONTRACT.descriptor()
+    assert INFERENCE_COACH_CONTRACT.snapshot().sha256 == "3ca4e014cf870d626e6dcb321b1881a6d4d19db3c854bab2e5c16b6f932445a0"
+    old, new = COMPACT_COACH_CONTRACT.descriptor(), contract.descriptor()
     for key in ("max_calls", "max_input_tokens", "max_output_tokens", "total_tokens", "request_timeout_s", "max_revisions", "minimum_score"):
         assert old[key] == new[key]
+
+
+def test_v2_mixed_claims_require_issues_only_for_unsupported_statements():
+    from app.evaluation.golden_inference_audit_v2 import EvaluationResponseModelV14
+    p = payload()
+    p.update(score=70, verdict="needs_revision", issues=[{"severity": "medium", "category": "other", "quote": "bad claim", "evidence": "metric only", "explanation": "unsupported ability", "suggested_correction": "remove inference"}])
+    p["audits"][0].update(status="unsupported", claims=[
+        {"status": "unsupported", "quote": "bad claim", "evidence_refs": ["scope:limits"], "explanation": "unsupported"},
+        {"status": "supported", "quote": "correct caveat", "evidence_refs": ["scope:limits"], "explanation": "correct"},
+    ])
+    parsed = EvaluationResponseModelV14.model_validate(p)
+    assert len(parsed.issues) == 1
+    validate_audit_anchors(parsed, "bad claim; correct caveat", {"scope:limits": {}})
+    p["audits"][0]["status"] = "supported"
+    with pytest.raises(ValueError): EvaluationResponseModelV14.model_validate(p)
+    p["audits"][0]["status"] = "unsupported"
+    p["issues"] = []
+    with pytest.raises(ValueError): EvaluationResponseModelV14.model_validate(p)

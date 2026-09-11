@@ -85,6 +85,9 @@ class PromptProgramResolver:
             if self.coach_contract.version == "1.3.7":
                 from app.evaluation.golden_inference_audit import inference_component_fingerprints
                 current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.8":
+                from app.evaluation.golden_inference_audit_v2 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
         if self.coach_contract is not None:
             if skill_version != self.coach_contract.descriptor()["skill_version"] or manifest.program_version != self.coach_contract.descriptor()["program_version"]:
                 raise PromptProgramCatalogError("Coach contract requires independent Skill/Program versions")

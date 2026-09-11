@@ -16,7 +16,7 @@ from app.harness.steps import EvaluationRequest, RevisionRequest, KnowledgeEvide
 from app.harness.adapters import _evaluation_payload
 from app.providers.config import load_zhipu_settings
 from app.runtime.coach_budget import CoachBudgetedProvider
-from app.runtime.coach_contract import INFERENCE_COACH_CONTRACT as CONTRACT
+from app.runtime.coach_contract import CLAIM_COACH_CONTRACT as CONTRACT
 from app.runtime.composition import RuntimeCompositionRoot
 from app.tools.adapters.llm import build_llm_tools
 from app.tools.registry import ToolRegistry
@@ -36,7 +36,7 @@ def prepare(source: Path):
     report_path = source / "output/final_report.md"
     if _hash(report_path) != dataset["source_report_sha256"]:
         raise ValueError("source_report_identity_mismatch")
-    assets = ROOT / "examples/runtime_profiles/flash_v2_golden_inference"
+    assets = ROOT / "examples/runtime_profiles/flash_v2_golden_claims"
     RuntimeCompositionRoot.from_directories(skills_root=assets / "skills", prompt_programs_root=assets / "prompt_programs", coach_contract=CONTRACT)
     summary = json.loads((source / "inputs/player_summary.json").read_text(encoding="utf-8"))
     # Bind the development labels to the same metric rows, not an arbitrary report.
@@ -61,7 +61,7 @@ def score_case(case, result):
     payload = _evaluation_payload(result)
     expected_kind = {"mixed_role_deficit": "cohort_comparison", "metric_to_ability": "metric_to_ability"}.get(case.get("issue_kind"))
     unsupported = [a for a in payload.get("audits", []) if a["status"] == "unsupported"]
-    detected = any(a["kind"] == expected_kind and any(c["quote"] in case["claim"] for c in a["claims"]) for a in unsupported)
+    detected = any(a["kind"] == expected_kind and any(c.get("status", "unsupported") == "unsupported" and c["quote"] in case["claim"] for c in a["claims"]) for a in unsupported)
     accepted = result.verdict.value == "pass" and result.score >= 85 and not payload["issues"] and not unsupported
     matched = (result.verdict.value != "pass" and detected) if case["expected"] == "reject" else accepted
     return {"id": case["id"], "expected": case["expected"], "verdict": result.verdict.value,
@@ -71,8 +71,15 @@ def score_case(case, result):
 
 def run(args):
     dataset, summary, original = prepare(args.source_run)
+    if _hash(args.base_report) != "8485a643fcc2578034e30ac7b74a3c98bebfb2706ef32152ad1402fe59f3d5ef":
+        raise ValueError("development_base_report_identity_mismatch")
+    base_report = args.base_report.read_text(encoding="utf-8")
+    knowledge_data = json.loads((args.source_run / "knowledge/retrieval_evidence.json").read_text(encoding="utf-8"))
+    saved_knowledge = KnowledgeEvidence(context=knowledge_data["context"], source_ids=tuple(knowledge_data["source_ids"]),
+        citations=tuple(KnowledgeCitation(**c) for c in knowledge_data["citations"]), abstained=knowledge_data.get("abstained", False))
     plan = {"scope": "known_development_not_holdout_or_admission", "contract": CONTRACT.snapshot().model_dump(mode="json"),
-            "dataset_sha256": _hash(DATASET), "source_report_sha256": dataset["source_report_sha256"],
+            "dataset_sha256": _hash(DATASET), "source_report_sha256": dataset["source_report_sha256"], "base_report_sha256": _hash(args.base_report),
+            "case_embedding": "full-manually-reviewed-report-with-single-claim-v2",
             "cases": len(dataset["cases"]), "max_provider_calls": MAX_CALLS,
             "max_input_per_call": 64000, "max_output_per_call": 8192, "max_total_tokens": MAX_CALLS * (64000 + 8192),
             "max_revisions": 1, "sdk_retries": 0, "real_calls_authorized": bool(args.execute)}
@@ -106,26 +113,28 @@ def run(args):
         registry = ToolRegistry()
         for definition in build_llm_tools(provider, request_policy=CONTRACT.request_policy): registry.register(definition)
         runtime = ToolRuntime(registry)
-        options = {"inference_audit": True, "include_generation_facts": True, "include_deterministic_facts": True,
+        options = {"inference_audit": "v2", "include_generation_facts": True, "include_deterministic_facts": True,
                    "position_policy": CONTRACT.position_policy, "source_use_policy": CONTRACT.source_use_policy, "compact_report_policy": CONTRACT.compact_report_policy}
         return (GroundedChatEvaluationAdapter(runtime=runtime, system_prompt=EVALUATOR_SYSTEM_PROMPT, fact_pack_builder=build_fact_pack, **options),
                 GroundedCoachReviser(runtime=runtime, system_prompt=REVISER_SYSTEM_PROMPT, prompt_builder=lambda *x: "unused", validator=lambda *x: None, **options))
 
     deterministic = (args.source_run / "inputs/deterministic_report.md").read_text(encoding="utf-8")
-    knowledge = KnowledgeEvidence(context="[K1] 指标描述单局结果，不能单独证明意识、稳定能力或因果。", source_ids=("development_boundary",), citations=(KnowledgeCitation(citation_id="K1", chunk_id="development-boundary", parent_id=None, source_id="development_boundary", title="Development metric boundary", content="指标描述单局结果，不能单独证明意识、稳定能力或因果。"),))
+    knowledge = saved_knowledge
     try:
-        for case in dataset["cases"]:
+        for case in sorted(dataset["cases"], key=lambda c: c["id"] != "vision_fact"):
             evaluator, _ = components(case["id"])
-            report = case["claim"] + "\n\n指标与能力、因果需要区分。[K1]"
-            result = evaluator.evaluate(EvaluationRequest(summary, deterministic, knowledge, report, "检查这条观摩记录是否有事实或推断错误。"))
+            report = base_report.replace("## 3. 主要风险点\n", "## 3. 主要风险点\n\n" + case["claim"] + "\n", 1)
+            write_new_json(directory / f"{case['id']}-input.json", {"report_sha256": hashlib.sha256(report.encode()).hexdigest(), "report": report})
+            result = evaluator.evaluate(EvaluationRequest(summary, deterministic, knowledge, report, "复核ShowMaker观摩报告的事实、推断和建议；这是观摩对象，不是阅读者本人。"))
             write_new_json(directory / f"{case['id']}.json", _evaluation_payload(result))
             state["cases"].append(score_case(case, result))
             print(json.dumps(state["cases"][-1]), flush=True)
+            if case["id"] == "vision_fact" and not state["cases"][-1]["matched"]:
+                state["controls_stopped"] = "full_report_positive_control_failed"
+                break
         evaluator, reviser = components("full-report")
         # Full report gets its own saved, attributable knowledge projection.
-        knowledge_data = json.loads((args.source_run / "knowledge/retrieval_evidence.json").read_text(encoding="utf-8"))
-        knowledge = KnowledgeEvidence(context=knowledge_data["context"], source_ids=tuple(knowledge_data["source_ids"]),
-            citations=tuple(KnowledgeCitation(**c) for c in knowledge_data["citations"]), abstained=knowledge_data.get("abstained", False))
+        knowledge = saved_knowledge
         result = evaluator.evaluate(EvaluationRequest(summary, deterministic, knowledge, original, "复核已归档ShowMaker观摩报告的事实、推断和建议。"))
         write_new_json(directory / "original-evaluation.json", _evaluation_payload(result))
         state["report"]["original_verdict"] = result.verdict.value
@@ -148,6 +157,7 @@ def run(args):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--source-run", required=True, type=Path)
+    p.add_argument("--base-report", required=True, type=Path)
     p.add_argument("--execute", action="store_true")
     p.add_argument("--env-file", type=Path)
     p.add_argument("--ci-run")

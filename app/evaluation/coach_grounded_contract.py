@@ -117,6 +117,9 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
         output_model = EvaluationResponseModelV12
         if self.inference_audit:
             from app.evaluation.golden_inference_audit import audit_prompt, inference_response_contract, EvaluationResponseModelV13
+            if self.inference_audit == "v2":
+                from app.evaluation.golden_inference_audit_v2 import audit_prompt, inference_response_contract, EvaluationResponseModelV14
+                EvaluationResponseModelV13 = EvaluationResponseModelV14
             prompt = audit_prompt(prompt, contract)
             contract, output_model = inference_response_contract(), EvaluationResponseModelV13
         def call(text, step):
@@ -193,6 +196,8 @@ class GroundedCoachReviser(ChatCoachReviser):
             prompt = self.source_use_policy + "\n\n" + prompt
         if self.inference_audit:
             from app.evaluation.golden_inference_audit import INFERENCE_POLICY
+            if self.inference_audit == "v2":
+                from app.evaluation.golden_inference_audit_v2 import INFERENCE_POLICY
             prompt = INFERENCE_POLICY + "\n\n" + prompt
         content = _chat_content(self.runtime, system_prompt=self.system_prompt, user_prompt=prompt,
                                 temperature=self.temperature, harness_step="revise")
