@@ -5146,3 +5146,6 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 
 
 公共首检34605503901发现校准来源SHA绑定Windows CRLF，Linux LF误报source evidence changed。校准资产明确utf8_lf_only，仅归一化CRLF，新增双平台一致及数值改动拒绝测试。旧来源文件/运行回执不改；待修复提交公共验证，Provider仍95。
+
+
+2026-09-14范围合同真实验证结果：公共修复提交1d9504d的Actions34606570608三任务最终success。新版本1.3.11报告复核run inference-dev-1d9504d-scope-report实际1次请求、12345输入/5497输出，原96分稿仍verdict=pass；这确认含混稳定措辞在真实报告中仍被漏放，不能宣称修复完成。独立controls run inference-dev-1d9504d-scope-controls最多24次但第3次模型流ToolError中断，已完成前2条accept控制且均96/pass/matched=true，calls=3、已返回24713输入/12145输出，第三次及后续未知用量/未完成，不能统计三类完整率，也不自动重跑同一身份。第3次未产生终态回执，保存stream私有进度。累计Provider预约至少99（95+1+3）；本轮新增已返回30042 tokens按两回执共30042，具体单次失败用量未知，不将其记为零。下一步：先做失败流归因，再决定是否另立新身份的最小诊断；若继续真实调用，需保留原报告漏检这一失败作为门槛，不能只跑正对照。8E仍in_progress，工作台人工稿不替换，四块设计后置。
