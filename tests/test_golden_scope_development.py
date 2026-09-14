@@ -25,9 +25,3 @@ def test_three_way_scoring_requires_the_matching_claim_finding(monkeypatch, labe
 def test_scope_rejects_unbounded_combined_selection_before_io():
     with pytest.raises(ValueError, match="scope_requires_separate"):
         runner.run(SimpleNamespace(scope=True, report_only=False, controls_only=False))
-
-
-def test_low_candidate_requires_isolated_scope_report_only_before_io():
-    with pytest.raises(ValueError, match="candidate_low_4096_requires_scope_v2_report_only"):
-        runner.run(SimpleNamespace(candidate_low_4096=True, scope_v2=False,
-                                   scope=False, report_only=False, controls_only=False))

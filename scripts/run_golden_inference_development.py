@@ -27,6 +27,25 @@ ROOT = Path(__file__).resolve().parents[1]
 MAX_CALLS = 25  # Ten evaluations with one format correction each, plus eval/revise/eval (5).
 
 
+class Counted:
+    def __init__(self, provider, *, state, call_limit, directory):
+        self.provider = provider
+        self.state = state
+        self.call_limit = call_limit
+        self.directory = directory
+    def __getattr__(self, key): return getattr(self.provider, key)
+    def chat(self, request):
+        state, call_limit, directory = self.state, self.call_limit, self.directory
+        if state["calls"] >= call_limit: raise ValueError("development_call_limit")
+        state["calls"] += 1
+        write_new_json(directory / f"call-{state['calls']:03d}.json", {"ordinal": state["calls"], "state": "reserved_before_io"})
+        response = self.provider.chat(request)
+        state["input_tokens"] += response.usage.input_tokens
+        state["output_tokens"] += response.usage.output_tokens
+        write_new_json(directory / f"response-{state['calls']:03d}.json", {"content": response.content, "finish_reason": response.finish_reason})
+        return response
+
+
 def _hash(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -89,14 +108,11 @@ def score_scope_case(case, result):
 def run(args):
     from app.runtime.coach_contract import SCOPE_COACH_CONTRACT
     scope_v2 = getattr(args, "scope_v2", False)
-    candidate_low = getattr(args, "candidate_low_4096", False)
     scope = getattr(args, "scope", False) or scope_v2
     from app.runtime.coach_contract import SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT
     contract = SCOPE_V2_COACH_CONTRACT if scope_v2 else SCOPE_COACH_CONTRACT if scope else CONTRACT
     if scope and not (args.report_only or args.controls_only):
         raise ValueError("scope_requires_separate_report_or_controls_run")
-    if candidate_low and not (scope_v2 and args.report_only and not args.controls_only):
-        raise ValueError("candidate_low_4096_requires_scope_v2_report_only")
     dataset, summary, original = prepare(args.source_run, scope=scope, scope_v2=scope_v2)
     dataset_path = DATASET
     if scope:
@@ -114,7 +130,7 @@ def run(args):
     selected_cases = [] if args.report_only else [c for c in dataset["cases"] if not args.case_id or c["id"] in args.case_id]
     if args.case_id and not set(args.case_id) <= {c["id"] for c in dataset["cases"]}:
         raise ValueError("unknown_development_case")
-    call_limit = 4 if candidate_low else min(MAX_CALLS, len(selected_cases) * 2 + (0 if args.controls_only else 5))
+    call_limit = min(MAX_CALLS, len(selected_cases) * 2 + (0 if args.controls_only else 5))
     if _hash(args.base_report) != "8485a643fcc2578034e30ac7b74a3c98bebfb2706ef32152ad1402fe59f3d5ef":
         raise ValueError("development_base_report_identity_mismatch")
     base_report = args.base_report.read_text(encoding="utf-8")
@@ -128,19 +144,8 @@ def run(args):
             "case_embedding": "full-manually-reviewed-report-with-single-claim-v2",
             "evaluated_report_sha256": hashlib.sha256(original.encode()).hexdigest(), "controls_only": args.controls_only,
             "cases": len(selected_cases), "selected_case_ids": [c["id"] for c in selected_cases], "max_provider_calls": call_limit,
-            "max_input_per_call": 64000, "max_output_per_call": 4096 if candidate_low else 8192,
-            "max_total_tokens": 72000 if candidate_low else call_limit * (64000 + 8192),
-            "max_revisions": 1, "sdk_retries": 0, "real_calls_authorized": bool(args.execute),
-            "transport_mode": "sync" if candidate_low else "golden-process-stream-v2",
-            "candidate_profile_binding": ({
-                "profile_id": "glm-5.3-flash-candidate-low-4096",
-                "profile_version": "1.0.0",
-                "request_policy_id": "glm53-flash-candidate-low-4096",
-                "request_policy_version": "1.0.0",
-                "reasoning_effort": "low",
-                "max_output_tokens": 4096,
-                "activation_state": "candidate",
-            } if candidate_low else None)}
+            "max_input_per_call": 64000, "max_output_per_call": 8192, "max_total_tokens": call_limit * (64000 + 8192),
+            "max_revisions": 1, "sdk_retries": 0, "real_calls_authorized": bool(args.execute)}
     if not args.execute:
         print(json.dumps(plan)); return
     if not re.fullmatch(r"inference-dev-[a-z0-9-]{1,55}", args.run_id):
@@ -152,57 +157,11 @@ def run(args):
     from dotenv import dotenv_values
     settings = load_zhipu_settings(dotenv_values(args.env_file))
     state = {"calls": 0, "input_tokens": 0, "output_tokens": 0, "cases": [], "report": {}, "stopped": False}
-    low_state = None
-    low_clients = []
-    if candidate_low:
-        from app.evaluation.glm53_low_profile_budget import CandidateEvaluationBudgetState
-        low_state = CandidateEvaluationBudgetState()
-
-    class Counted:
-        def __init__(self, provider):
-            self.provider = provider
-        def __getattr__(self, key): return getattr(self.provider, key)
-        def chat(self, request):
-            if not candidate_low:
-                if state["calls"] >= call_limit: raise ValueError("development_call_limit")
-                state["calls"] += 1
-                write_new_json(directory / f"call-{state['calls']:03d}.json", {"ordinal": state["calls"], "state": "reserved_before_io"})
-            response = self.provider.chat(request)
-            if candidate_low:
-                state["calls"] = low_state.calls_used
-                write_new_json(directory / f"call-{state['calls']:03d}.json", {"ordinal": state["calls"], "state": "settled"})
-            state["input_tokens"] += response.usage.input_tokens
-            state["output_tokens"] += response.usage.output_tokens
-            write_new_json(directory / f"response-{state['calls']:03d}.json", {"finish_reason": response.finish_reason,
-                "input_tokens": response.usage.input_tokens, "output_tokens": response.usage.output_tokens,
-                "body_free": candidate_low})
-            return response
 
     def components(name):
-        if candidate_low:
-            from openai import OpenAI
-            from app.evaluation.glm53_flash_candidate_profile import GLM53_FLASH_LOW_CANDIDATE_PROFILE_PLAN, GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
-            from app.evaluation.glm53_low_profile_budget import CandidateEvaluationBudgetedProvider
-            from app.providers.zhipu import ZhipuProvider
-            if name not in low_state.cases:
-                low_state.register_case(name)
-            client = OpenAI(api_key=settings.api_key, base_url=settings.base_url,
-                            timeout=GLM53_FLASH_LOW_CANDIDATE_PROFILE_PLAN.transport_timeout_s, max_retries=0)
-            low_clients.append(client)
-            raw_provider = ZhipuProvider.from_candidate_profile(
-                client=client, model=settings.model,
-                profile=GLM53_FLASH_LOW_CANDIDATE_PROFILE_PLAN.thinking_profile,
-            )
-            provider = Counted(CandidateEvaluationBudgetedProvider(
-                provider=raw_provider, state=low_state, case_id=name,
-                request_policy=GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
-            ))
-            request_policy = GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY
-        else:
-            provider = CoachBudgetedProvider(Counted(GoldenProcessStreamProvider(settings=settings, directory=directory / name)), coach_contract=contract)
-            request_policy = contract.request_policy
+        provider = CoachBudgetedProvider(Counted(GoldenProcessStreamProvider(settings=settings, directory=directory / name), state=state, call_limit=call_limit, directory=directory), coach_contract=contract)
         registry = ToolRegistry()
-        for definition in build_llm_tools(provider, request_policy=request_policy): registry.register(definition)
+        for definition in build_llm_tools(provider, request_policy=contract.request_policy): registry.register(definition)
         runtime = ToolRuntime(registry)
         options = {"inference_audit": "scope_v2" if scope_v2 else "scope" if scope else "coverage", "include_generation_facts": True, "include_deterministic_facts": True,
                    "position_policy": contract.position_policy, "source_use_policy": contract.source_use_policy, "compact_report_policy": contract.compact_report_policy}
@@ -241,10 +200,6 @@ def run(args):
         state.update(stopped=True, error_type=type(error).__name__)
         raise
     finally:
-        if candidate_low:
-            state["candidate_budget"] = low_state.snapshot()
-            for client in low_clients:
-                client.close()
         state["evaluated_case_count"] = len(state["cases"])
         state["all_selected_cases_completed"] = len(state["cases"]) == len(selected_cases)
         state["false_negative_denominator"] = sum(c["expected"] == "reject" for c in state["cases"])
@@ -268,7 +223,6 @@ def main():
     p.add_argument("--target-report", type=Path)
     p.add_argument("--scope", action="store_true")
     p.add_argument("--scope-v2", action="store_true")
-    p.add_argument("--candidate-low-4096", action="store_true")
     p.add_argument("--execute", action="store_true")
     p.add_argument("--env-file", type=Path)
     p.add_argument("--ci-run")

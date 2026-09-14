@@ -39,6 +39,28 @@ def test_anchor_must_be_literal_text_of_claim():
         EvaluationResponseModelV17.model_validate(value)
 
 
+@pytest.mark.parametrize("anchor", ["这四场", "本次", "所选", "4局", "n=4"])
+def test_chinese_explicit_sample_claim_can_pass(anchor):
+    value = anchored_payload()
+    value.update(verdict="pass", issues=[])
+    value["coverage"][0]["scope_ambiguous"] = False
+    value["audits"][1]["claims"][0].update(
+        scope="selected_sample", scope_anchor=anchor,
+        quote=f"{anchor}方向稳定。", status="supported")
+    EvaluationResponseModelV17.model_validate(value)
+
+
+def test_original_missed_phrase_cannot_use_loss_group_as_sample_anchor():
+    value = anchored_payload()
+    value.update(verdict="pass", issues=[])
+    value["coverage"][0]["scope_ambiguous"] = False
+    value["audits"][1]["claims"][0].update(
+        scope="selected_sample", scope_anchor="输局",
+        quote="输局的稳定同位置差距", status="supported")
+    with pytest.raises(ValueError, match="selected_sample_scope_anchor_missing"):
+        EvaluationResponseModelV17.model_validate(value)
+
+
 def test_new_scope_v2_assets_resolve():
     from pathlib import Path
     from app.skills.catalog import SkillCatalog
