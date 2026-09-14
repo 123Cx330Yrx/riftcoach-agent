@@ -396,3 +396,8 @@ preserving old contract fingerprints and request budgets.” Parent gate stays o
 复现：既有run_golden_inference_development命令增加--scope-v4 --expanded-output --report-only；预检不带--execute。真实要求干净同SHA三job CI、全新run-id。保留旧回执，工作台人工稿不替换，不开展controls或生产默认调整。
 
 本批最终本地验证：100项stream/expanded/scope-v4及41项runtime/profile/预算/入口相邻回归，合计141 passed；编译、治理、diff检查通过。真实预检：1.3.15/high/16384/180秒/最多5次/401920总上界，无外部模型调用。
+
+
+### 扩大预算后的真实结果与新定位
+
+2026-09-14扩大输出预算公共及真实验证：实现04088096ccb5cf09822873f804e2c35655b2caec/Actions34814338305三job同SHAsuccess，本地141 passed。新身份inference-dev-0408809-expanded-report/Coach1.3.15/high/16384/180秒共2次Provider调用：首轮86.046秒完整stop（12055输入+8406输出），唯一纠正88.781秒完整stop（12104输入+9959输出），共24159输入+18365输出=42524 tokens。两轮均突破旧8192且完整返回，证实本次输出截断障碍解除，不证明长期稳定性。两份raw都verdict=needs_revision、完整27段coverage，并各自指出原报告“输局的稳定同位置差距”和“是输局较稳定的差异项”需澄清；但都因selected_sample_scope_anchor_missing未通过canonical校验，未生成accepted original-evaluation、未修订/复评/controls。不可把raw needs_revision冒充完整闭环。离线审计：首轮5项/纠正9项selected_sample锚点不满足现规则，既有模型选择“中单同位置”等非范围词，也有规则对“一局”“1 局”漏识别；两轮还分别使用4/5种不存在的facts:recent_match:*或facts:recent_aggregate证据键。隔离进程仅作诊断地跳过样本锚点正则后仍触发inference_audit_anchor_invalid，未保存或接受放宽结果。当前一次纠正只发送泛化重评提示，未反馈具体非法锚点/证据键，重复错误风险已实证。下一步离线补齐合法中文/空格范围表达并设计带精确校验反馈的独立纠正版本，保留原句/证据/含混门；用两份私有失败响应回归，随后新身份验证，不原样第三次调用。Provider累计至少106，本轮42524已返回tokens，旧未知用量仍未知；Workbench人工稿与默认模型不变，8E仍in_progress。

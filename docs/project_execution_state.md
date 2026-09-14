@@ -13,6 +13,15 @@ pause_reason: ""
 
 ## 状态元数据
 
+2026-09-14扩大输出预算公共及真实验证：实现04088096ccb5cf09822873f804e2c35655b2caec/Actions34814338305三job同SHAsuccess，本地141 passed。新身份inference-dev-0408809-expanded-report/Coach1.3.15/high/16384/180秒共2次Provider调用：首轮86.046秒完整stop（12055输入+8406输出），唯一纠正88.781秒完整stop（12104输入+9959输出），共24159输入+18365输出=42524 tokens。两轮均突破旧8192且完整返回，证实本次输出截断障碍解除，不证明长期稳定性。两份raw都verdict=needs_revision、完整27段coverage，并各自指出原报告“输局的稳定同位置差距”和“是输局较稳定的差异项”需澄清；但都因selected_sample_scope_anchor_missing未通过canonical校验，未生成accepted original-evaluation、未修订/复评/controls。不可把raw needs_revision冒充完整闭环。离线审计：首轮5项/纠正9项selected_sample锚点不满足现规则，既有模型选择“中单同位置”等非范围词，也有规则对“一局”“1 局”漏识别；两轮还分别使用4/5种不存在的facts:recent_match:*或facts:recent_aggregate证据键。隔离进程仅作诊断地跳过样本锚点正则后仍触发inference_audit_anchor_invalid，未保存或接受放宽结果。当前一次纠正只发送泛化重评提示，未反馈具体非法锚点/证据键，重复错误风险已实证。下一步离线补齐合法中文/空格范围表达并设计带精确校验反馈的独立纠正版本，保留原句/证据/含混门；用两份私有失败响应回归，随后新身份验证，不原样第三次调用。Provider累计至少106，本轮42524已返回tokens，旧未知用量仍未知；Workbench人工稿与默认模型不变，8E仍in_progress。
+
+- 本地代码：新预算端到端接通，完整输出实证通过；校验反馈与范围词覆盖待修。
+- 所有者理解：已解释完整输出、实际检出、校验接受、自动修订四个独立结果，无新增理解验收。
+- 参考来源审计：官方模型输出上限已核查；比赛继续复用ShowMaker五局。
+- 公共作品/部署成熟度：0408809三项公共检查通过，无新部署，无自动质量准入。
+
+以下为历史记录。
+
 2026-09-14用户要求接续解决输出截断及语义漏检，执行方向更新为先核实并扩大单次输出预算，再验证完整评估/修订。官方GLM-5.3-Flash模型页标明最大输出128K（https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash.md，2026-09-14读取）；8192是项目限制。新增显式Coach1.3.15/Skill0.5.15/Program2.3.15，复用scope-v4 evaluation1.9.0及原语义规则；执行方选择16384输出/180秒请求/900秒整批，high不变，report-only最多5次/一次修订/零SDK重试，总token上界401920（较360960增加11.35%）。这不是用户指定16384，也不因Luna更改模型策略。新--expanded-output仅与--scope-v4 --report-only配合。请求策略、预算包装、SDK流适配器、进程父子验证、assembler、1.2进度观测及新transport identity共同支持新上限；旧transport/合同/默认限制保留。离线实链测试确认16384实际送达SDK、高档不变、120秒/10000输出合法结果交付，旧路径拒绝新预算，length及超额仍拒绝。当前待本地回归收口、同SHA公共三项检查后执行一个新身份真实报告批次，判断完整性及两处含混检出/修订/复评；没有真实通过前不声称两类问题修复。Provider累计至少104，Stage8E仍in_progress。
 
 以下为历史记录。
