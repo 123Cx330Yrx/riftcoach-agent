@@ -59,3 +59,18 @@ scope-v5 的四种 scope 同时承担“陈述是什么”和“推断适用哪�
 ## 下一步及完成门
 
 实现上述直接事实证据索引及正交 claim 候选，逐项验证数值绑定、混合陈述、否定、范围外推和输入预算；之后才注册独立 Coach/Skill/Program/evaluation 身份并接入本诊断。冻结 v5、历史回执和 Workbench 人工稿不变。新身份同 SHA 公共检查通过后，执行原报告完整初评→最多一次修订→复评，再做正确事实与伪装外推的真实对照。未完成这些之前，自动漏检修复仍未验收。
+
+
+## 2026-09-14 候选实现与预算观察
+
+2026-09-14直接事实离线候选：上一批75ecfb07d5c5342de208b8b329e59947837c22c9/Actions34822465677三job success。新增golden_fact_candidate复用实际generation投影并合并role事实，21个事实键/18个来源条目，以完整summary摘要及比赛顺序绑定来源；单局保留排除标志，role均值排除未纳入及无效数值，不混位置。新增claim_kind正交表示及数字到证据字段路径绑定，直接事实无需范围锚点，未知键/错误数值/漏绑数字拒绝；unsupported错误数字仍可携带完整issue，原含混和覆盖门保留。76项聚焦相邻测试通过。明确未解边界：数字正确的长期能力伪装仍可结构合法，返回semantic_approval=false；总体统计仅source_reported非重算，当前数值绑定不支持差值/百分比换算。候选未注册或接Runtime。实际27段请求基础输入估算51486/54496/48088；叠加候选schema及来源索引的离线大小探针60608/63616/57208，纠正仅剩384余量且尚无新策略，不能当完整出站预算通过。下一步先压缩候选重复schema/绑定表示并补齐派生数值操作，测量含策略与纠正反馈的完整候选请求，再决定独立版本接线；保持high/16384/180秒及既有总预算。无新增Provider预约，累计至少108，真实语义闭环未验收，Workbench人工稿不变，8E仍in_progress。
+
+代码入口：`app/evaluation/golden_fact_candidate.py`，测试：`tests/test_golden_fact_candidate.py`。这只是离线结构候选；不输出正式评估结果，不参与自动修订。数值token以ROUND_HALF_UP按原句小数位核对；每个直接事实的阿拉伯数字须有绑定。重复数值是否对应正确对象、非数字限定词是否夸大、所有应审原句是否被列出，仍需要语义审查；测试明确记录伪装外推结构可通过，不冒称已经检出。
+
+可复现大小探针：
+
+```powershell
+.\.venv\Scripts\python.exe scripts/check_golden_fact_candidate.py --source-run data/runs/golden_slice/golden_20260910_compact_1cd694d --report data/runs/inference_development/inference-dev-11278ba-coverage-report-b/revised-report.md --failed-response data/runs/inference_development/inference-dev-e3826eb-feedback-report/response-001.json
+```
+
+探针使用离线Provider，原请求包含同一份generation和role事实，不重复添加其值；额外叠加候选来源及schema是体积观察，不是最终请求接线。不包含新策略，因此63616不能作为实际预算合格回执。源文件在私有data/runs，不进入Git。
