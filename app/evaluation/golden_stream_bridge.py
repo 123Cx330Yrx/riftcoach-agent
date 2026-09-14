@@ -27,12 +27,15 @@ from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFIL
 
 TRANSPORT_ID = "golden-process-stream-v2"
 EXPANDED_TRANSPORT_ID = "golden-process-stream-high-16384-v1"
-TRANSPORTS = ("golden-process-stream-v1", TRANSPORT_ID, EXPANDED_TRANSPORT_ID)
+CAPACITY_TRANSPORT_ID = "golden-process-stream-high-32768-v1"
+TRANSPORTS = ("golden-process-stream-v1", TRANSPORT_ID, EXPANDED_TRANSPORT_ID, CAPACITY_TRANSPORT_ID)
 
 
 def transport_limits(transport_id):
     if transport_id not in TRANSPORTS:
         raise ValueError("stream_transport_identity")
+    if transport_id == CAPACITY_TRANSPORT_ID:
+        return (32768, 300, 65536)
     return (16384, 180, 32768) if transport_id == EXPANDED_TRANSPORT_ID else (8192, 90, 16384)
 # Persist only the bounded codes emitted by our ProviderError constructors.
 # Raw SDK messages and provider response bodies never enter a receipt.
@@ -84,6 +87,18 @@ class ExpandedBridgeObservation(BridgeObservation):
     output_tokens: int | None = Field(default=None, ge=0, le=16384)
 
 
+class CapacityBridgeObservation(BridgeObservation):
+    schema_version: Literal["1.3"] = "1.3"
+    first_event_ms: int | None = Field(default=None, ge=0, le=300000)
+    first_reasoning_ms: int | None = Field(default=None, ge=0, le=300000)
+    first_visible_content_ms: int | None = Field(default=None, ge=0, le=300000)
+    terminal_ms: int | None = Field(default=None, ge=0, le=300000)
+    eof_ms: int | None = Field(default=None, ge=0, le=300000)
+    close_ms: int | None = Field(default=None, ge=0, le=300000)
+    elapsed_ms: int = Field(default=0, ge=0, le=300000)
+    output_tokens: int | None = Field(default=None, ge=0, le=32768)
+
+
 def request_metrics(request, raw):
     """Counts only: no metadata, names, tool IDs, arguments or message bodies."""
     from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
@@ -129,7 +144,7 @@ def collect(request, opener, *, directory, started, deadline, clock=time.monoton
     """Only deliver after exhaustion and owned close; partial data remain private."""
     validate_request(request, transport_id=transport_id)
     _, seconds, max_events = transport_limits(transport_id)
-    value = ExpandedBridgeObservation() if transport_id == EXPANDED_TRANSPORT_ID else BridgeObservation()
+    value = CapacityBridgeObservation() if transport_id == CAPACITY_TRANSPORT_ID else ExpandedBridgeObservation() if transport_id == EXPANDED_TRANSPORT_ID else BridgeObservation()
     durations = {name: 0.0 for name in ("open", "advance", "processing", "close", "progress_write")}
     assembler = ProviderStreamAssembler(provider_id="zhipu", requested_model="glm-5.3-flash",
         require_request_identity=True,
@@ -384,8 +399,8 @@ def worker(directory, started, deadline, transport_id=TRANSPORT_ID):
         try:
             provider = ZhipuProvider.from_candidate_profile(client=client, model=settings.model,
                 profile=ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE)
-            from app.runtime.coach_contract import EXPANDED_COACH_CONTRACT
-            policy = EXPANDED_COACH_CONTRACT.request_policy if transport_id == EXPANDED_TRANSPORT_ID else None
+            from app.runtime.coach_contract import EXPANDED_COACH_CONTRACT, CAPACITY_COACH_CONTRACT
+            policy = CAPACITY_COACH_CONTRACT.request_policy if transport_id == CAPACITY_TRANSPORT_ID else EXPANDED_COACH_CONTRACT.request_policy if transport_id == EXPANDED_TRANSPORT_ID else None
             return Owned(provider.stream_adapter(tool_stream=bool(request.tools), **({"evaluation_request_policy": policy} if policy is not None else {})).stream_session(request, include_usage_tail=True))
         except BaseException:
             client.close()

@@ -146,6 +146,9 @@ class CandidateEvaluationRequestPolicy:
             raise ValueError("version must be a semantic version")
         object.__setattr__(self, "version", self.version.strip())
 
+        capacity_policy = (self.policy_id, self.version, self.provider_id, self.model) == (
+            "glm-5.3-flash-coach-high-32768", "1.0.0", "zhipu", "glm-5.3-flash")
+        timeout_limit = 360 if capacity_policy else 300
         for field_name in (
             "agent_timeout_s",
             "llm_tool_timeout_s",
@@ -153,9 +156,9 @@ class CandidateEvaluationRequestPolicy:
         ):
             value = getattr(self, field_name)
             if isinstance(value, bool) or not isinstance(value, (int, float)):
-                raise ValueError(f"{field_name} must be in (0, 300]")
-            if not isfinite(value) or value <= 0 or value > 300:
-                raise ValueError(f"{field_name} must be in (0, 300]")
+                raise ValueError(f"{field_name} must be in (0, {timeout_limit}]")
+            if not isfinite(value) or value <= 0 or value > timeout_limit:
+                raise ValueError(f"{field_name} must be in (0, {timeout_limit}]")
         if self.llm_tool_timeout_s < self.agent_timeout_s:
             raise ValueError(
                 "llm_tool_timeout_s must cover the Agent total deadline"
@@ -164,7 +167,7 @@ class CandidateEvaluationRequestPolicy:
             raise ValueError(
                 "transport_timeout_s must cover the LLM tool deadline"
             )
-        output_limit = (16384 if (self.policy_id, self.version, self.provider_id, self.model) ==
+        output_limit = (32768 if capacity_policy else 16384 if (self.policy_id, self.version, self.provider_id, self.model) ==
                         ("glm-5.3-flash-coach-high-16384", "1.0.0", "zhipu", "glm-5.3-flash") else 8192)
         if (
             isinstance(self.max_output_tokens, bool)

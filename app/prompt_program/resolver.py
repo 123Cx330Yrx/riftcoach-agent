@@ -100,6 +100,9 @@ class PromptProgramResolver:
             if self.coach_contract.version in ("1.3.14", "1.3.15"):
                 from app.evaluation.golden_inference_scope_v4 import inference_component_fingerprints
                 current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.20":
+                from app.evaluation.golden_capacity_runtime import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
             if self.coach_contract.version == "1.3.19":
                 from app.evaluation.golden_evidence_runtime_v2 import inference_component_fingerprints
                 current = inference_component_fingerprints(skill)
