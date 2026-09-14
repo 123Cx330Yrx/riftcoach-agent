@@ -16,7 +16,7 @@ from app.harness.steps import EvaluationRequest, RevisionRequest, KnowledgeEvide
 from app.harness.adapters import _evaluation_payload
 from app.providers.config import load_zhipu_settings
 from app.runtime.coach_budget import CoachBudgetedProvider
-from app.runtime.coach_contract import FACT_INFERENCE_COACH_CONTRACT, FEEDBACK_COACH_CONTRACT, EXPANDED_COACH_CONTRACT, COVERAGE_COACH_CONTRACT as CONTRACT
+from app.runtime.coach_contract import EVIDENCE_COACH_CONTRACT, FACT_INFERENCE_COACH_CONTRACT, FEEDBACK_COACH_CONTRACT, EXPANDED_COACH_CONTRACT, COVERAGE_COACH_CONTRACT as CONTRACT
 from app.runtime.composition import RuntimeCompositionRoot
 from app.tools.adapters.llm import build_llm_tools
 from app.tools.registry import ToolRegistry
@@ -50,14 +50,14 @@ def _hash(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def prepare(source: Path, *, scope=False, scope_v2=False, scope_v3=False, scope_v4=False, expanded_output=False, scope_v5=False, fact_inference=False):
+def prepare(source: Path, *, scope=False, scope_v2=False, scope_v3=False, scope_v4=False, expanded_output=False, scope_v5=False, fact_inference=False, evidence_scope=False):
     from app.runtime.coach_contract import SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT
-    contract = FACT_INFERENCE_COACH_CONTRACT if fact_inference else FEEDBACK_COACH_CONTRACT if scope_v5 else EXPANDED_COACH_CONTRACT if expanded_output else SCOPE_V4_COACH_CONTRACT if scope_v4 else SCOPE_V3_COACH_CONTRACT if scope_v3 else SCOPE_V2_COACH_CONTRACT if scope_v2 else SCOPE_COACH_CONTRACT if scope else CONTRACT
+    contract = EVIDENCE_COACH_CONTRACT if evidence_scope else FACT_INFERENCE_COACH_CONTRACT if fact_inference else FEEDBACK_COACH_CONTRACT if scope_v5 else EXPANDED_COACH_CONTRACT if expanded_output else SCOPE_V4_COACH_CONTRACT if scope_v4 else SCOPE_V3_COACH_CONTRACT if scope_v3 else SCOPE_V2_COACH_CONTRACT if scope_v2 else SCOPE_COACH_CONTRACT if scope else CONTRACT
     dataset = json.loads(DATASET.read_text(encoding="utf-8")); check_evidence(dataset)
     report_path = source / "output/final_report.md"
     if _hash(report_path) != dataset["source_report_sha256"]:
         raise ValueError("source_report_identity_mismatch")
-    assets = ROOT / "examples/runtime_profiles" / ("flash_v2_golden_fact" if fact_inference else "flash_v2_golden_feedback" if scope_v5 else "flash_v2_golden_expanded" if expanded_output else "flash_v2_golden_scope_v4" if scope_v4 else "flash_v2_golden_scope_v3" if scope_v3 else "flash_v2_golden_scope_v2" if scope_v2 else "flash_v2_golden_scope" if scope else "flash_v2_golden_coverage")
+    assets = ROOT / "examples/runtime_profiles" / ("flash_v2_golden_evidence" if evidence_scope else "flash_v2_golden_fact" if fact_inference else "flash_v2_golden_feedback" if scope_v5 else "flash_v2_golden_expanded" if expanded_output else "flash_v2_golden_scope_v4" if scope_v4 else "flash_v2_golden_scope_v3" if scope_v3 else "flash_v2_golden_scope_v2" if scope_v2 else "flash_v2_golden_scope" if scope else "flash_v2_golden_coverage")
     RuntimeCompositionRoot.from_directories(skills_root=assets / "skills", prompt_programs_root=assets / "prompt_programs", coach_contract=contract)
     summary = json.loads((source / "inputs/player_summary.json").read_text(encoding="utf-8"))
     # Bind the development labels to the same metric rows, not an arbitrary report.
@@ -107,24 +107,27 @@ def score_scope_case(case, result):
 
 def run(args):
     from app.runtime.coach_contract import SCOPE_COACH_CONTRACT
+    evidence_scope = getattr(args, "evidence_scope", False)
     fact_inference = getattr(args, "fact_inference", False)
     scope_v5 = getattr(args, "scope_v5", False)
     expanded_output = getattr(args, "expanded_output", False)
+    if evidence_scope and (not expanded_output or not args.report_only or args.controls_only or any(getattr(args, k, False) for k in ("scope", "scope_v2", "scope_v3", "scope_v4", "scope_v5", "fact_inference"))):
+        raise ValueError("evidence_scope_requires_exclusive_expanded_report_only")
     if fact_inference and (not expanded_output or not args.report_only or args.controls_only or any(getattr(args, k, False) for k in ("scope", "scope_v2", "scope_v3", "scope_v4", "scope_v5"))):
         raise ValueError("fact_inference_requires_exclusive_expanded_report_only")
     if scope_v5 and not expanded_output:
         raise ValueError("scope_v5_requires_expanded_output")
-    scope_v4 = getattr(args, "scope_v4", False) or scope_v5 or fact_inference
+    scope_v4 = getattr(args, "scope_v4", False) or scope_v5 or fact_inference or evidence_scope
     if expanded_output and (not scope_v4 or not args.report_only or args.controls_only):
         raise ValueError("expanded_output_requires_scope_v4_report_only")
     scope_v3 = getattr(args, "scope_v3", False)
     scope_v2 = getattr(args, "scope_v2", False)
     scope = getattr(args, "scope", False) or scope_v2 or scope_v3 or scope_v4
     from app.runtime.coach_contract import SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT
-    contract = FACT_INFERENCE_COACH_CONTRACT if fact_inference else FEEDBACK_COACH_CONTRACT if scope_v5 else EXPANDED_COACH_CONTRACT if expanded_output else SCOPE_V4_COACH_CONTRACT if scope_v4 else SCOPE_V3_COACH_CONTRACT if scope_v3 else SCOPE_V2_COACH_CONTRACT if scope_v2 else SCOPE_COACH_CONTRACT if scope else CONTRACT
+    contract = EVIDENCE_COACH_CONTRACT if evidence_scope else FACT_INFERENCE_COACH_CONTRACT if fact_inference else FEEDBACK_COACH_CONTRACT if scope_v5 else EXPANDED_COACH_CONTRACT if expanded_output else SCOPE_V4_COACH_CONTRACT if scope_v4 else SCOPE_V3_COACH_CONTRACT if scope_v3 else SCOPE_V2_COACH_CONTRACT if scope_v2 else SCOPE_COACH_CONTRACT if scope else CONTRACT
     if scope and not (args.report_only or args.controls_only):
         raise ValueError("scope_requires_separate_report_or_controls_run")
-    dataset, summary, original = prepare(args.source_run, scope=scope, scope_v2=scope_v2, scope_v3=scope_v3, scope_v4=scope_v4, expanded_output=expanded_output, scope_v5=scope_v5, fact_inference=fact_inference)
+    dataset, summary, original = prepare(args.source_run, scope=scope, scope_v2=scope_v2, scope_v3=scope_v3, scope_v4=scope_v4, expanded_output=expanded_output, scope_v5=scope_v5, fact_inference=fact_inference, evidence_scope=evidence_scope)
     dataset_path = DATASET
     if scope:
         from scripts.check_golden_stability_calibration import DATASET as SCOPE_DATASET, SOURCE, check_evidence as check_scope
@@ -178,7 +181,7 @@ def run(args):
         registry = ToolRegistry()
         for definition in build_llm_tools(provider, request_policy=contract.request_policy): registry.register(definition)
         runtime = ToolRuntime(registry)
-        options = {"inference_audit": "fact_v1" if fact_inference else "scope_v5" if scope_v5 else "scope_v4" if scope_v4 else "scope_v3" if scope_v3 else "scope_v2" if scope_v2 else "scope" if scope else "coverage", "include_generation_facts": True, "include_deterministic_facts": True,
+        options = {"inference_audit": "evidence_v1" if evidence_scope else "fact_v1" if fact_inference else "scope_v5" if scope_v5 else "scope_v4" if scope_v4 else "scope_v3" if scope_v3 else "scope_v2" if scope_v2 else "scope" if scope else "coverage", "include_generation_facts": True, "include_deterministic_facts": True,
                    "position_policy": contract.position_policy, "source_use_policy": contract.source_use_policy, "compact_report_policy": contract.compact_report_policy}
         return (GroundedChatEvaluationAdapter(runtime=runtime, system_prompt=EVALUATOR_SYSTEM_PROMPT, fact_pack_builder=build_fact_pack, **options),
                 GroundedCoachReviser(runtime=runtime, system_prompt=REVISER_SYSTEM_PROMPT, prompt_builder=lambda *x: "unused", validator=lambda *x: None, **options))
@@ -242,6 +245,7 @@ def main():
     p.add_argument("--scope-v4", action="store_true")
     p.add_argument("--scope-v5", action="store_true")
     p.add_argument("--fact-inference", action="store_true")
+    p.add_argument("--evidence-scope", action="store_true")
     p.add_argument("--expanded-output", action="store_true")
     p.add_argument("--execute", action="store_true")
     p.add_argument("--env-file", type=Path)

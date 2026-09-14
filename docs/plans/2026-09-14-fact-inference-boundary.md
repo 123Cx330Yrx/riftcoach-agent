@@ -109,3 +109,14 @@ scope-v5 的四种 scope 同时承担“陈述是什么”和“推断适用哪�
 私有证据：`data/runs/inference_development/inference-dev-3b82b97-fact-report/plan.json`、`call-001.json`、`receipt.json`、`full-report/stream-001/progress.json`、`failure.json`、`result.json`。未形成response-001.json，不能用截断片段拼接成有效评估，也不能把旧响应改造为新版本的成功证据。上述已观测用量并未计入父receipt，人工账目要单列而非覆盖原回执。
 
 设计复审重点：先确定逐数字绑定相比原句级引用实际多阻止了哪些错误，以及哪些对象/语义错误依旧只能由模型判断；预计算可减少模型算术和输出，但不能悄悄将错误文本正规化。候选比较需保留数值错误、错位置、否定、局部方向和伪装外推反例。当前运算模块可以作为离线证据核对工具保留，不必因为已经实现就强迫每次语义审查输出全部绑定。不得在没有对照证据时再次宣称缩短输入或压缩schema解决了终态预算。
+
+
+## 2026-09-14 计算支持移至程序侧
+
+2026-09-14用户要求持续定位解决、不再停等确认：新增evidence_v1/Coach1.3.18/Skill0.5.18/Program2.3.18/evaluation1.12.0，移除模型逐数字numeric_bindings输出要求，保留原句、实际证据引用、直接事实/推断分类、局部范围、逐字issue和紧凑coverage。新增程序侧golden_numeric_evidence从实际引用的允许数值字段核对原值、同位置同指标均值差/比值、明确比例字段转百分比等，输出本地候选来源ledger；未知来源、无证据数字、跨位置均值差和错比例仍拒绝，unsupported数字错误仍允许形成对应issue。边界：支持搜索证明可由引用值计算，不证明语义对象或因果/能力；数字重合/错误分类仍须模型语义反例检验，不宣称完整证明。旧运算绑定工具及1.3.17身份冻结。实际适配器27段输入估算53808/54280/43912，纠正回放旧schema失败、修订为脚本形状，真实每请求仍检查64000输入；high/16384/180秒/5次/401920总上界不变。两组63及172项检查通过，编译/治理通过，无I/O入口验证绑定同一原报告；本实现待同SHA公共三项通过后直接执行新身份--evidence-scope --expanded-output --report-only，检验完整初评/至多一次修订/复评，不停等用户授权。Provider累计至少109，此版本尚无真实调用；Workbench人工稿不替换，8E保持in_progress。
+
+选择依据：逐数绑定即使完整，也只证明模型选出的数值与字段对应，不能证明整个自然语言结论正确；让模型重复输出每个数字的运算记录增加了协议成本。新方案从引用证据中的允许数值字段生成候选，按原句精度ROUND_HALF_UP核对，保留来源和操作候选，不修改原句。指标标识、比赛ID、玩家ID等不作数值候选；比例字段的百分比、时长秒转分钟、死亡统计窗口仅使用显式定义。两元均值运算仅同位置同指标，零分母不生成比值候选。
+
+代价与保留边界：不再要求模型指出每个数字的唯一字段路径，程序可能发现多种计算来源；数字巧合或相同数值的对象错配仍必须由模型审核。测试明确保留“数字正确却声称长期能力”的结构可通过例，作为尚未解决的语义反例，不把此结构测试当检出成绩。旧OperationBinding校验工具仍可离线用于人工指定路径的核对。
+
+新实现：`golden_numeric_evidence.py`、`golden_evidence_scope.py`、`golden_evidence_requests.py`、`golden_evidence_runtime.py`。新资产目录`examples/runtime_profiles/flash_v2_golden_evidence`；合同SHA `ef2f3852912fea2ed68296564a75f538dba8e2abdac67e6e38344cc6ce3a3141`。沿用实际出站预算、一次纠正、安全早停与canonical修订传递。真实接口只增加独立evidence-scope选项，不能混用旧scope/fact标志。
