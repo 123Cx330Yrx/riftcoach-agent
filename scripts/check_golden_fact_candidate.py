@@ -3,7 +3,12 @@ import argparse
 from dataclasses import replace
 import json
 from pathlib import Path
+import sys
 from unittest.mock import patch
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from app.evaluation.golden_fact_candidate import fact_pack, FactEvaluation
 from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
