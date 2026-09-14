@@ -32,7 +32,7 @@
     {
       "component_id": "evaluation_schema",
       "source": "app.evaluation.golden_inference_scope_v2:evaluation_schema",
-      "sha256": "ce1f2eb30853fcac1b2f613c7f9c801790bad4d84bae17a9b82630a718844eb1"
+      "sha256": "f03851c4d0fe30d7fc779fbff6ed5d9cedf690890672d885fe7f534db29f0bd5"
     },
     {
       "component_id": "evaluation_fact_pack_probe",
@@ -97,13 +97,13 @@
     {
       "component_id": "scope_v2_implementation",
       "source": "app.evaluation.golden_inference_scope_v2:scope_v2_implementation",
-      "sha256": "3322f5a12d2f899c83ecc25cd7eaa3ae51c96055ab2d06351e342195241d67aa"
+      "sha256": "132ef7741ebf60ed1c843b99076df38f29e80f3f7713aa5b31f12d87785ec8a5"
     },
     {
       "component_id": "coach_execution_contract",
       "source": "app.runtime.coach_contract:v1.3.12",
-      "sha256": "5051df0dd1bcacf08b8793965ba706f53003dc25cd1bf9fb44a703efb1f68423"
+      "sha256": "8d96f008ffa5f902ae7c8dbf84367c34dec3690678a2fbec5faf23ec3a742533"
     }
   ],
-  "program_sha256": "fe32d575c67c4a74547ec5cfe73ed9640f3a3b3fce9b05f74cca32f893aa7e6d"
+  "program_sha256": "169d85cd7c9a48e5dc2976cd378eff09309b57ff1e10c508e12f5e9c7bf3e5f3"
 }

@@ -995,3 +995,5 @@ Workbench、Auth、路由、`production_media=0`、黄金切片、安全/部署/
 
 
 2026-09-14范围合同v2离线修复：针对1.3.11真实报告把“输局的稳定同位置差距”错误标为selected_sample，新增隔离Coach1.3.12/Skill0.5.12/Program2.3.12/evaluation1.7.0。每条claim必须携带scope_anchor且逐字落在quote；selected_sample的锚点必须是本次/样本/所选/明确场次或n=数等局部范围表达。明确“这四场方向稳定”仍可supported，长期外推仍beyond_sample；不是禁止关键词。新增48项相关回归，无Provider调用；scope-v2预检绑定12案/24次和新资产解析通过。旧1.3.11及其真实失败证据冻结不改。唯一下一步为新提交同SHA公共CI，之后重新执行scope-v2报告复核；不自动重跑controls旧身份。
+
+2026-09-14范围合同v2输出预算收口：首个真实scope-v2报告身份`inference-dev-6e0cde2-scope-v2-report`未拿到终态JSON，原因是Provider流在`finish_reason=length`、`output_tokens=8192`、`input_tokens=12507`、`content_chars=0`时结束，未进入锚点校验；该失败按`incomplete_stream/assembly_rejected`保留，不复用身份、不记作语义通过。为给终态结构化JSON留出空间，v2提示加入输出预算：锚点最多20字符、每条解释最多40字符、证据键只列必要项且不输出额外说明；并已重新生成v2资产组件指纹。32项范围/覆盖/诊断回归与治理检查通过，尚未产生新Provider调用。下一步是提交并完成同SHA公共CI，然后以新run-id重做report-only；controls保持暂停，8E与Workbench四块设计边界不变。

@@ -21,10 +21,15 @@ scope=selected_sample时，scope_anchor必须是明确的局部范围表达（�
 这不是按词拒绝“稳定”：明确写“这四场方向稳定”可以supported；长期外推仍属beyond_sample。
 """
 _ANCHOR = re.compile(r"(?:本次|样本|所选|这[一二三四五六七八九十0-9]+[场局]|[0-9]+[场局]|n\s*[=:：]\s*[0-9]+)")
+SCOPE_V2_POLICY += """
+输出预算规则：scope_anchor只保留一个短语，最多20个字符；每条claim的explanation最多40个字符，
+evidence_refs只列必要键，不复述报告正文或逐条解释已通过内容。优先完成完整JSON和coverage，
+不要输出额外说明；这不是降低审查标准，而是为终态结构化结果保留输出空间。
+"""
 
 
 class AnchoredClaim(ScopedClaim):
-    scope_anchor: str = Field(min_length=1, max_length=120)
+    scope_anchor: str = Field(min_length=1, max_length=20)
 
 
 class AnchoredAudit(ScopedAudit):

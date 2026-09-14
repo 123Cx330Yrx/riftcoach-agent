@@ -392,3 +392,5 @@ RQ-252 公共收口（2026-09-07）：用户继续授权本实现公共验证；
 ## RQ-261（2026-09-14）：范围锚点隔离修复
 
 真实1.3.11复核仍放行范围含混的“稳定同位置差距”。新增不改变旧合同的1.3.12，要求selected_sample claim提供逐字范围锚点，并保留明确局部稳定描述的正例。先公共验证再重新观察；不把旧不完整controls运行算作成功。
+
+2026-09-14范围合同v2输出预算收口：首个真实scope-v2报告身份`inference-dev-6e0cde2-scope-v2-report`未拿到终态JSON，原因是Provider流在`finish_reason=length`、`output_tokens=8192`、`input_tokens=12507`、`content_chars=0`时结束，未进入锚点校验；该失败按`incomplete_stream/assembly_rejected`保留，不复用身份、不记作语义通过。为给终态结构化JSON留出空间，v2提示加入输出预算：锚点最多20字符、每条解释最多40字符、证据键只列必要项且不输出额外说明；并已重新生成v2资产组件指纹。32项范围/覆盖/诊断回归与治理检查通过，尚未产生新Provider调用。下一步是提交并完成同SHA公共CI，然后以新run-id重做report-only；controls保持暂停，8E与Workbench四块设计边界不变。
