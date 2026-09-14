@@ -13,6 +13,15 @@ pause_reason: ""
 
 ## 状态元数据
 
+2026-09-14覆盖协议及展示精度修复：4fb5b82b614acc84c53438e15d40b96386b3cb43/Actions34834017775三项success。inference-dev-4fb5b82-evidence-v3-report两次均完整stop，150.344秒/12892+15999及142.765秒/13148+14701，共56740 returned tokens，累计预约至少116。初评80/needs_revision有两处稳定澄清，但模型抄表格时移位分隔行、混合样本2.35差值未被现核对支持；唯一纠正JSON尾部多两个反引号，完整对象另有coverage与claim不一致，仍无accepted evaluation、未修订。纠正raw对象74/needs_revision共5issues，其中3条把8.805展示8.81错误要求改8.80；只从JSON完整前缀做离线诊断，不改写或接受旧回执。新增evidence_v4/Coach1.3.22/Skill0.5.22/Program2.3.22/evaluation1.15.0：模型输出完整顺序reviewed_blocks及逐条claims，程序派生coverage与audit聚合状态；不再重复要求模型填写冗余状态，原句/证据/unsupported及ambiguous逐字issue/nonpass/完整段落清单仍验证。仅允许完整JSON对象外的1至3个尾反引号，额外文本/第二JSON/重复键仍拒绝；Counted原始journal保留，typed安全停止与一次纠正不变。明确混合样本可核对同来源同指标赢输均值差，但不支持跨位置能力推断。明确来源half_even_6dp与展示ROUND_HALF_UP不同，8.805两位为8.81，不把合法展示报事实错误。旧纠正响应只做新表示投影的离线比较：claims及5issues逐字保留，派生27段后结构可校验；其中3条舍入误报仍是语义错误，该投影不是真实评估或质量通过。176项相关回归通过，最终精度提示/资产更新后15项聚焦再次通过。实际Adapter输入54050/54534/45206，输出32768；纠正来自旧schema失败、修订脚本形状，非最坏保证。high/32768/300秒/5次/一次修订/401920整批tokens/900秒均保持。下一步本实现同SHA公共三项通过后直接--evidence-scope-v4 --expanded-output --report-only真实初评/修订/复评，人工复核两处澄清及舍入误报没有污染修订；Workbench人工稿不替换，8E仍in_progress。
+
+- 本地代码：覆盖派生、格式容错和展示精度提示完成回归；真实修订闭环未验收。
+- 所有者理解：已解释重复字段与数值精度误报，无新增理解验收。
+- 参考来源审计：同一ShowMaker五局和原报告，无新来源。
+- 公共作品/部署成熟度：上一实现三项公共通过，本实现待公共；无部署或准入。
+
+以下为历史记录。
+
 2026-09-14容量真实观察与进度/数值补全：fd0bdffb7ebc9da6f85570ccfb523971e50d9abd/Actions34832094213三项同SHAsuccess。inference-dev-fd0bdff-capacity-report初评159.235秒完整stop，12793输入+16247输出=29040 returned tokens，raw needs_revision/82，已正确提出两处完整稳定措辞的other澄清issue；canonical因4项缺口拒绝。唯一纠正154.328秒中断，events恰为16384、无finish/usage，费用未知；累计Provider预约至少114。无accepted evaluation/修订/复评。发现并离线复现：进度模型继承events<=16384，实际通道允许32768/65536，第16385次赋值即ValidationError，足以解释真实边界中断；旧failure仅worker_failed/provider_code=null，不能冒称保存了真实异常类型或Provider根因。修复两个进度子类事件上限与各自assembler一致；真实流形状17002事件测试完整交付且关闭资源。新evidence_v3/Coach1.3.21/Skill0.5.21/Program2.3.21/evaluation1.14.0补引用单局的同位置mean/median，去重、排除未纳入及无效数值，不跨位置/补零；队列ID按原句标签和实际引用queue_id核对，不拿巧合统计数字或request.queue顶替；局数候选只用于局/场计数。上表锚点须存在前置表格，混合位置均值仍不是有效范围词。旧raw回放均值/中位数两项误拒消失，只剩引用不充分的queue及旧非范围锚点，未改写或接受旧响应。high/32768/300秒/5次/一次修订/401920整批tokens/900秒不变。155项相关回归通过；实际Adapter27段输入54680/55610/44782，输出32768，纠正回放真实失败、修订仅脚本形状，非最坏保证。下一步同SHA公共三项通过后直接--evidence-scope-v3 --expanded-output --report-only真实初评/修订/复评；必须核实两处issue、修订保留正确事实及复评完整有效。Workbench人工稿不替换，8E保持in_progress。
 
 - 本地代码：进度计数与数值误拒修复已回归通过，新版本真实闭环待验证。
