@@ -18,7 +18,7 @@ from pydantic import Field, TypeAdapter
 from app.evaluation.golden_journal import write_new_json
 from app.evaluation.golden_http_diagnostics import _EVENTS
 from app.evaluation.golden_stream_diagnostic import Observation, write_progress
-from app.providers.errors import ProviderResponseError, ProviderTimeoutError
+from app.providers.errors import ProviderError, ProviderResponseError, ProviderTimeoutError
 from app.providers.models import ChatRequest, ChatResponse
 from app.providers.stream_adapter_contract import ProviderStreamAssembler
 from app.providers.stream_adapter_contract import StreamAdapterError
@@ -27,6 +27,14 @@ from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFIL
 
 TRANSPORT_ID = "golden-process-stream-v2"
 TRANSPORTS = ("golden-process-stream-v1", TRANSPORT_ID)
+# Persist only the bounded codes emitted by our ProviderError constructors.
+# Raw SDK messages and provider response bodies never enter a receipt.
+SAFE_PROVIDER_FAILURE_CODES = frozenset({
+    "stream_bridge_exhausted", "stream_request_budget", "stream_request_encoding",
+    "stream_request_size", "stream_child_failed", "stream_child_response",
+    "stream_cleanup_failed", "stream_close_failed", "stream_input_usage_limit",
+    "stream_deadline", "stream_provider_identity", "stream_transport_identity",
+})
 REQUEST = TypeAdapter(ChatRequest)
 RESPONSE = TypeAdapter(ChatResponse)
 MAX_BYTES = 4_000_000
@@ -379,7 +387,9 @@ if __name__ == "__main__":
     except BaseException as error:
         # StreamAdapterError codes are constructor-validated, bounded internal
         # enums; never persist arbitrary SDK exception text or provider codes.
+        provider_code = error.code if isinstance(error, ProviderError) and error.code in SAFE_PROVIDER_FAILURE_CODES else None
         write_new_json(args.worker / "failure.json", {
             "category": "assembly_rejected" if isinstance(error, StreamAdapterError) else "worker_failed",
-            "assembly_code": error.code if isinstance(error, StreamAdapterError) else None})
+            "assembly_code": error.code if isinstance(error, StreamAdapterError) else None,
+            "provider_code": provider_code})
         raise SystemExit(1) from None

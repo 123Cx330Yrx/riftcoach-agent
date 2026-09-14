@@ -3564,3 +3564,6 @@ source-side brief，再决定是否允许一次视频 preflight。该门完成�
 
 
 2026-09-14范围合同真实验证结果：公共修复提交1d9504d的Actions34606570608三任务最终success。新版本1.3.11报告复核run inference-dev-1d9504d-scope-report实际1次请求、12345输入/5497输出，原96分稿仍verdict=pass；这确认含混稳定措辞在真实报告中仍被漏放，不能宣称修复完成。独立controls run inference-dev-1d9504d-scope-controls最多24次但第3次模型流ToolError中断，已完成前2条accept控制且均96/pass/matched=true，calls=3、已返回24713输入/12145输出，第三次及后续未知用量/未完成，不能统计三类完整率，也不自动重跑同一身份。第3次未产生终态回执，保存stream私有进度。累计Provider预约至少99（95+1+3）；本轮新增已返回54700 tokens按两回执共54700，具体单次失败用量未知，不将其记为零。下一步：先做失败流归因，再决定是否另立新身份的最小诊断；若继续真实调用，需保留原报告漏检这一失败作为门槛，不能只跑正对照。8E仍in_progress，工作台人工稿不替换，四块设计后置。
+
+
+2026-09-14流失败诊断加固：旧scope-controls第三案回执只有worker_failed且assembly_code=null，实际progress为provider_error、http11.response_closed.complete、36.656秒、无终态/用量，具体Provider根因仍未知。新增GoldenProcessStream受控SAFE_PROVIDER_FAILURE_CODES，仅在failure.json投影内部固定码，不保存SDK异常、响应正文、密钥或原始Provider文本；26项聚焦回归、治理和diff通过。此次是诊断加固，不改变模型调用预算、重试或旧回执，不重跑已失败身份。下一步先以新SHA公共验证，再决定最小新身份诊断；原报告scope真实漏检仍是质量门。
