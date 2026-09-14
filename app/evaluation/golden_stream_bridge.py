@@ -26,7 +26,14 @@ from app.providers.zhipu import ZhipuProvider
 from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE
 
 TRANSPORT_ID = "golden-process-stream-v2"
-TRANSPORTS = ("golden-process-stream-v1", TRANSPORT_ID)
+EXPANDED_TRANSPORT_ID = "golden-process-stream-high-16384-v1"
+TRANSPORTS = ("golden-process-stream-v1", TRANSPORT_ID, EXPANDED_TRANSPORT_ID)
+
+
+def transport_limits(transport_id):
+    if transport_id not in TRANSPORTS:
+        raise ValueError("stream_transport_identity")
+    return (16384, 180, 32768) if transport_id == EXPANDED_TRANSPORT_ID else (8192, 90, 16384)
 # Persist only the bounded codes emitted by our ProviderError constructors.
 # Raw SDK messages and provider response bodies never enter a receipt.
 SAFE_PROVIDER_FAILURE_CODES = frozenset({
@@ -65,6 +72,18 @@ class BridgeObservation(Observation):
     progress_writes: int = Field(default=0, ge=0)
 
 
+class ExpandedBridgeObservation(BridgeObservation):
+    schema_version: Literal["1.2"] = "1.2"
+    first_event_ms: int | None = Field(default=None, ge=0, le=180000)
+    first_reasoning_ms: int | None = Field(default=None, ge=0, le=180000)
+    first_visible_content_ms: int | None = Field(default=None, ge=0, le=180000)
+    terminal_ms: int | None = Field(default=None, ge=0, le=180000)
+    eof_ms: int | None = Field(default=None, ge=0, le=180000)
+    close_ms: int | None = Field(default=None, ge=0, le=180000)
+    elapsed_ms: int = Field(default=0, ge=0, le=180000)
+    output_tokens: int | None = Field(default=None, ge=0, le=16384)
+
+
 def request_metrics(request, raw):
     """Counts only: no metadata, names, tool IDs, arguments or message bodies."""
     from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
@@ -90,10 +109,11 @@ def _mapping(value):
     raise TypeError("stream_wire_type")
 
 
-def validate_request(request):
+def validate_request(request, *, transport_id=TRANSPORT_ID):
+    output_limit, seconds, _ = transport_limits(transport_id)
     from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
-    if (not math.isfinite(request.timeout_s) or not 0 < request.timeout_s <= 90
-            or request.max_tokens is None or request.max_tokens > 8192
+    if (not math.isfinite(request.timeout_s) or not 0 < request.timeout_s <= seconds
+            or request.max_tokens is None or request.max_tokens > output_limit
             or estimate_runtime_request_input_ceiling(request) > 64000):
         raise ProviderResponseError(provider="zhipu", code="stream_request_budget")
     try:
@@ -105,19 +125,20 @@ def validate_request(request):
     return raw
 
 
-def collect(request, opener, *, directory, started, deadline, clock=time.monotonic, allow_tool_content=False):
+def collect(request, opener, *, directory, started, deadline, clock=time.monotonic, allow_tool_content=False, transport_id=TRANSPORT_ID):
     """Only deliver after exhaustion and owned close; partial data remain private."""
-    validate_request(request)
-    value = BridgeObservation()
+    validate_request(request, transport_id=transport_id)
+    _, seconds, max_events = transport_limits(transport_id)
+    value = ExpandedBridgeObservation() if transport_id == EXPANDED_TRANSPORT_ID else BridgeObservation()
     durations = {name: 0.0 for name in ("open", "advance", "processing", "close", "progress_write")}
     assembler = ProviderStreamAssembler(provider_id="zhipu", requested_model="glm-5.3-flash",
         require_request_identity=True,
         allow_tool_calls_with_content=allow_tool_content,
-        max_output_tokens=request.max_tokens, max_events=16384, max_content_chars=262144,
+        max_output_tokens=request.max_tokens, max_events=max_events, max_content_chars=262144,
         max_reasoning_chars=262144, max_tool_calls=8, max_tool_argument_chars=256000)
     session = None
     def stamp():
-        return min(90000, max(0, round((clock() - started) * 1000)))
+        return min(seconds * 1000, max(0, round((clock() - started) * 1000)))
     def observed_stamp():
         return max(0, round((clock() - started) * 1000))
     def save():
@@ -254,7 +275,7 @@ class GoldenProcessStreamProvider:
         self._calls, self._failed = 0, False
 
     def chat(self, request):
-        raw = validate_request(request)
+        raw = validate_request(request, transport_id=self.transport_id)
         if self._failed or self._calls >= 9:
             raise ProviderResponseError(provider="zhipu", code="stream_bridge_exhausted")
         self._calls += 1
@@ -278,7 +299,8 @@ class GoldenProcessStreamProvider:
 def run_child(command, raw, *, directory, timeout_s, environ=None, transport_id=TRANSPORT_ID):
     if transport_id not in TRANSPORTS:
         raise ValueError("stream_transport_identity")
-    if not math.isfinite(timeout_s) or not 0 < timeout_s <= 90 or len(raw) > MAX_BYTES:
+    output_limit, seconds, _ = transport_limits(transport_id)
+    if not math.isfinite(timeout_s) or not 0 < timeout_s <= seconds or len(raw) > MAX_BYTES:
         raise ValueError("stream_ipc_budget")
     started = time.monotonic()
     deadline = started + timeout_s
@@ -294,7 +316,7 @@ def run_child(command, raw, *, directory, timeout_s, environ=None, transport_id=
         response = RESPONSE.validate_json(output)
         if (response.model != "glm-5.3-flash" or response.provider != "zhipu"
                 or response.finish_reason not in ("stop", "tool_calls")
-                or response.usage.input_tokens > 64000 or response.usage.output_tokens > 8192):
+                or response.usage.input_tokens > 64000 or response.usage.output_tokens > output_limit):
             raise ValueError("stream_child_response")
         state = "complete"
         return response
@@ -337,7 +359,7 @@ def worker(directory, started, deadline, transport_id=TRANSPORT_ID):
     if len(raw) > MAX_BYTES:
         raise ValueError("stream_ipc_size")
     request = REQUEST.validate_json(raw)
-    validate_request(request)
+    validate_request(request, transport_id=transport_id)
     settings = load_zhipu_settings()
     if settings.model != "glm-5.3-flash" or settings.base_url.rstrip("/") != "https://open.bigmodel.cn/api/paas/v4":
         raise ValueError("stream_provider_identity")
@@ -362,12 +384,14 @@ def worker(directory, started, deadline, transport_id=TRANSPORT_ID):
         try:
             provider = ZhipuProvider.from_candidate_profile(client=client, model=settings.model,
                 profile=ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE)
-            return Owned(provider.stream_adapter(tool_stream=bool(request.tools)).stream_session(request, include_usage_tail=True))
+            from app.runtime.coach_contract import EXPANDED_COACH_CONTRACT
+            policy = EXPANDED_COACH_CONTRACT.request_policy if transport_id == EXPANDED_TRANSPORT_ID else None
+            return Owned(provider.stream_adapter(tool_stream=bool(request.tools), **({"evaluation_request_policy": policy} if policy is not None else {})).stream_session(request, include_usage_tail=True))
         except BaseException:
             client.close()
             raise
     response = collect(request, opener, directory=directory, started=started, deadline=deadline,
-                       allow_tool_content=transport_id == TRANSPORT_ID)
+                       allow_tool_content=transport_id != "golden-process-stream-v1", transport_id=transport_id)
     output = RESPONSE.dump_json(response)
     if len(output) > MAX_BYTES:
         raise ValueError("stream_ipc_size")

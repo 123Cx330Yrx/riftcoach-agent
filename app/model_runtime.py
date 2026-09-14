@@ -164,12 +164,14 @@ class CandidateEvaluationRequestPolicy:
             raise ValueError(
                 "transport_timeout_s must cover the LLM tool deadline"
             )
+        output_limit = (16384 if (self.policy_id, self.version, self.provider_id, self.model) ==
+                        ("glm-5.3-flash-coach-high-16384", "1.0.0", "zhipu", "glm-5.3-flash") else 8192)
         if (
             isinstance(self.max_output_tokens, bool)
             or not isinstance(self.max_output_tokens, int)
-            or not 1 <= self.max_output_tokens <= 8192
+            or not 1 <= self.max_output_tokens <= output_limit
         ):
-            raise ValueError("max_output_tokens must be between 1 and 8192")
+            raise ValueError(f"max_output_tokens must be between 1 and {output_limit}")
         if (
             isinstance(self.temperature, bool)
             or not isinstance(self.temperature, (int, float))

@@ -404,3 +404,8 @@ RQ-252 公共收口（2026-09-07）：用户继续授权本实现公共验证；
 【已撤回的历史实现；不再作为下一步】2026-09-14 low+4096同步诊断分支离线接入：新增`--candidate-low-4096`，仅允许scope-v2/report-only；复用1.3.12语义contract/schema，但真实Provider身份单独记录`glm-5.3-flash-candidate-low-4096`、request policy 1.0.0与`transport_mode=sync`，直接使用既有候选low profile和`CandidateEvaluationBudgetedProvider`，不复用高档stream bridge，不改scope-v2资产指纹。预算为最多4次调用、4096输出、72,000总token，响应journal body-free。38项聚焦回归、预检、治理和差异检查通过；本批尚未调用Provider。若公共CI通过，下一步才执行一个全新低档report-only身份；结果只用于区分同步低档语义可用性与高档stream故障，不构成stream或生产证据。
 
 2026-09-14审计纠正（取代此前模型策略澄清及low下一步）：Luna指Codex执行工作时的协作模型，与RIFTCOACH的GLM模型策略无关；此前将其写成“用户确认”是助手误记，撤销该归因和等待模型策略裁决的下一步。撤回00fa4ad新增的scope-v2 low诊断入口，恢复高档响应正文私有留档和I/O前预约计数；既有独立low研究资产不删除。保留scope-v2与HTTP异常分类修复，但两次真实scope-v2均未得到有效评估，断流根因及原报告语义漏检仍未解决。修复提交1eb8c440d24a8905f0e61592ff22a6628b4fd40a已由Actions34803738781同SHA三项success验证，本地相邻255项及补充中文锚点聚焦14项通过。当前下一步为继续高档故障定位及原报告真实验证；不因Luna调整GLM档位。Stage 8E仍in_progress，Workbench四块设计后置。
+
+
+### 2026-09-14 用户要求优先核查并解决预算截断
+
+2026-09-14用户要求接续解决输出截断及语义漏检，执行方向更新为先核实并扩大单次输出预算，再验证完整评估/修订。官方GLM-5.3-Flash模型页标明最大输出128K（https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash.md，2026-09-14读取）；8192是项目限制。新增显式Coach1.3.15/Skill0.5.15/Program2.3.15，复用scope-v4 evaluation1.9.0及原语义规则；执行方选择16384输出/180秒请求/900秒整批，high不变，report-only最多5次/一次修订/零SDK重试，总token上界401920（较360960增加11.35%）。这不是用户指定16384，也不因Luna更改模型策略。新--expanded-output仅与--scope-v4 --report-only配合。请求策略、预算包装、SDK流适配器、进程父子验证、assembler、1.2进度观测及新transport identity共同支持新上限；旧transport/合同/默认限制保留。离线实链测试确认16384实际送达SDK、高档不变、120秒/10000输出合法结果交付，旧路径拒绝新预算，length及超额仍拒绝。当前待本地回归收口、同SHA公共三项检查后执行一个新身份真实报告批次，判断完整性及两处含混检出/修订/复评；没有真实通过前不声称两类问题修复。Provider累计至少104，Stage8E仍in_progress。

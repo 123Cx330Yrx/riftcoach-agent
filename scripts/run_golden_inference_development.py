@@ -16,7 +16,7 @@ from app.harness.steps import EvaluationRequest, RevisionRequest, KnowledgeEvide
 from app.harness.adapters import _evaluation_payload
 from app.providers.config import load_zhipu_settings
 from app.runtime.coach_budget import CoachBudgetedProvider
-from app.runtime.coach_contract import COVERAGE_COACH_CONTRACT as CONTRACT
+from app.runtime.coach_contract import EXPANDED_COACH_CONTRACT, COVERAGE_COACH_CONTRACT as CONTRACT
 from app.runtime.composition import RuntimeCompositionRoot
 from app.tools.adapters.llm import build_llm_tools
 from app.tools.registry import ToolRegistry
@@ -50,14 +50,14 @@ def _hash(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def prepare(source: Path, *, scope=False, scope_v2=False, scope_v3=False, scope_v4=False):
+def prepare(source: Path, *, scope=False, scope_v2=False, scope_v3=False, scope_v4=False, expanded_output=False):
     from app.runtime.coach_contract import SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT
-    contract = SCOPE_V4_COACH_CONTRACT if scope_v4 else SCOPE_V3_COACH_CONTRACT if scope_v3 else SCOPE_V2_COACH_CONTRACT if scope_v2 else SCOPE_COACH_CONTRACT if scope else CONTRACT
+    contract = EXPANDED_COACH_CONTRACT if expanded_output else SCOPE_V4_COACH_CONTRACT if scope_v4 else SCOPE_V3_COACH_CONTRACT if scope_v3 else SCOPE_V2_COACH_CONTRACT if scope_v2 else SCOPE_COACH_CONTRACT if scope else CONTRACT
     dataset = json.loads(DATASET.read_text(encoding="utf-8")); check_evidence(dataset)
     report_path = source / "output/final_report.md"
     if _hash(report_path) != dataset["source_report_sha256"]:
         raise ValueError("source_report_identity_mismatch")
-    assets = ROOT / "examples/runtime_profiles" / ("flash_v2_golden_scope_v4" if scope_v4 else "flash_v2_golden_scope_v3" if scope_v3 else "flash_v2_golden_scope_v2" if scope_v2 else "flash_v2_golden_scope" if scope else "flash_v2_golden_coverage")
+    assets = ROOT / "examples/runtime_profiles" / ("flash_v2_golden_expanded" if expanded_output else "flash_v2_golden_scope_v4" if scope_v4 else "flash_v2_golden_scope_v3" if scope_v3 else "flash_v2_golden_scope_v2" if scope_v2 else "flash_v2_golden_scope" if scope else "flash_v2_golden_coverage")
     RuntimeCompositionRoot.from_directories(skills_root=assets / "skills", prompt_programs_root=assets / "prompt_programs", coach_contract=contract)
     summary = json.loads((source / "inputs/player_summary.json").read_text(encoding="utf-8"))
     # Bind the development labels to the same metric rows, not an arbitrary report.
@@ -107,15 +107,18 @@ def score_scope_case(case, result):
 
 def run(args):
     from app.runtime.coach_contract import SCOPE_COACH_CONTRACT
+    expanded_output = getattr(args, "expanded_output", False)
     scope_v4 = getattr(args, "scope_v4", False)
+    if expanded_output and (not scope_v4 or not args.report_only or args.controls_only):
+        raise ValueError("expanded_output_requires_scope_v4_report_only")
     scope_v3 = getattr(args, "scope_v3", False)
     scope_v2 = getattr(args, "scope_v2", False)
     scope = getattr(args, "scope", False) or scope_v2 or scope_v3 or scope_v4
     from app.runtime.coach_contract import SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT
-    contract = SCOPE_V4_COACH_CONTRACT if scope_v4 else SCOPE_V3_COACH_CONTRACT if scope_v3 else SCOPE_V2_COACH_CONTRACT if scope_v2 else SCOPE_COACH_CONTRACT if scope else CONTRACT
+    contract = EXPANDED_COACH_CONTRACT if expanded_output else SCOPE_V4_COACH_CONTRACT if scope_v4 else SCOPE_V3_COACH_CONTRACT if scope_v3 else SCOPE_V2_COACH_CONTRACT if scope_v2 else SCOPE_COACH_CONTRACT if scope else CONTRACT
     if scope and not (args.report_only or args.controls_only):
         raise ValueError("scope_requires_separate_report_or_controls_run")
-    dataset, summary, original = prepare(args.source_run, scope=scope, scope_v2=scope_v2, scope_v3=scope_v3, scope_v4=scope_v4)
+    dataset, summary, original = prepare(args.source_run, scope=scope, scope_v2=scope_v2, scope_v3=scope_v3, scope_v4=scope_v4, expanded_output=expanded_output)
     dataset_path = DATASET
     if scope:
         from scripts.check_golden_stability_calibration import DATASET as SCOPE_DATASET, SOURCE, check_evidence as check_scope
@@ -141,13 +144,17 @@ def run(args):
     knowledge_data = json.loads((args.source_run / "knowledge/retrieval_evidence.json").read_text(encoding="utf-8"))
     saved_knowledge = KnowledgeEvidence(context=knowledge_data["context"], source_ids=tuple(knowledge_data["source_ids"]),
         citations=tuple(KnowledgeCitation(**c) for c in knowledge_data["citations"]), abstained=knowledge_data.get("abstained", False))
+    output_cap = contract.descriptor()["max_output_tokens"]
     plan = {"scope": "known_development_not_holdout_or_admission", "contract": contract.snapshot().model_dump(mode="json"),
             "dataset_sha256": _hash(dataset_path), "source_report_sha256": dataset["source_report_sha256"], "base_report_sha256": _hash(args.base_report),
             "case_embedding": "full-manually-reviewed-report-with-single-claim-v2",
             "evaluated_report_sha256": hashlib.sha256(original.encode()).hexdigest(), "controls_only": args.controls_only,
             "cases": len(selected_cases), "selected_case_ids": [c["id"] for c in selected_cases], "max_provider_calls": call_limit,
-            "max_input_per_call": 64000, "max_output_per_call": 8192, "max_total_tokens": call_limit * (64000 + 8192),
+            "max_input_per_call": 64000, "max_output_per_call": output_cap, "max_total_tokens": call_limit * (64000 + output_cap),
             "max_revisions": 1, "sdk_retries": 0, "real_calls_authorized": bool(args.execute)}
+    if expanded_output:
+        plan.update(request_timeout_s=180, execution_timeout_s=900,
+                    transport_id=contract.descriptor()["stream_transport_id"], reasoning_effort="high")
     if not args.execute:
         print(json.dumps(plan)); return
     if not re.fullmatch(r"inference-dev-[a-z0-9-]{1,55}", args.run_id):
@@ -161,7 +168,7 @@ def run(args):
     state = {"calls": 0, "input_tokens": 0, "output_tokens": 0, "cases": [], "report": {}, "stopped": False}
 
     def components(name):
-        provider = CoachBudgetedProvider(Counted(GoldenProcessStreamProvider(settings=settings, directory=directory / name), state=state, call_limit=call_limit, directory=directory), coach_contract=contract)
+        provider = CoachBudgetedProvider(Counted(GoldenProcessStreamProvider(settings=settings, directory=directory / name, **({"transport_id": contract.descriptor()["stream_transport_id"]} if expanded_output else {})), state=state, call_limit=call_limit, directory=directory), coach_contract=contract)
         registry = ToolRegistry()
         for definition in build_llm_tools(provider, request_policy=contract.request_policy): registry.register(definition)
         runtime = ToolRuntime(registry)
@@ -227,6 +234,7 @@ def main():
     p.add_argument("--scope-v2", action="store_true")
     p.add_argument("--scope-v3", action="store_true")
     p.add_argument("--scope-v4", action="store_true")
+    p.add_argument("--expanded-output", action="store_true")
     p.add_argument("--execute", action="store_true")
     p.add_argument("--env-file", type=Path)
     p.add_argument("--ci-run")

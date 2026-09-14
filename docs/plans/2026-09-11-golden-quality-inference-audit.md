@@ -383,3 +383,16 @@ preserving old contract fingerprints and request budgets.” Parent gate stays o
 ### 公共和真实结果
 
 2026-09-14紧凑覆盖公共及真实观察：实现eb8a43d60f6be4ebb2b70618ea61f914e76721a8/Actions34812583224三job同SHAsuccess；本地134 passed、7 subtests。新身份inference-dev-eb8a43d-compact-report使用1.3.14/high/8192，1次Provider预约，10.157秒首reasoning、68.000秒首正文、87.985秒终态length（88.000秒EOF），正文6424字符/reasoning15906字符。子progress明确12055输入+8192输出=20247已观测tokens；父receipt因未交付有效响应仍记录0，这不是零费用。failure为assembly_rejected/incomplete_stream，provider_code=null；即使最后HTTP事件标failed，也不据此覆盖已明确的length输出耗尽证据。没有有效评估JSON、未进入修订或controls，含混漏检仍未验证。紧凑格式接入已完成，但本次不足以解决完整返回；停止原样重试，不将正文更多当作质量改善。Provider累计至少104，历史未知用量保留未知。下一步先离线分析剩余audits/issues重复输出，设计并验证进一步减少单次终态负担的表示方案，保留完整报告上下文、原句证据、既有总调用预算和高档；新方案得到离线证据前不追加真实请求。8E仍in_progress，Workbench人工稿不替换。
+
+
+## 2026-09-14 显式扩大高档输出预算
+
+2026-09-14用户要求接续解决输出截断及语义漏检，执行方向更新为先核实并扩大单次输出预算，再验证完整评估/修订。官方GLM-5.3-Flash模型页标明最大输出128K（https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash.md，2026-09-14读取）；8192是项目限制。新增显式Coach1.3.15/Skill0.5.15/Program2.3.15，复用scope-v4 evaluation1.9.0及原语义规则；执行方选择16384输出/180秒请求/900秒整批，high不变，report-only最多5次/一次修订/零SDK重试，总token上界401920（较360960增加11.35%）。这不是用户指定16384，也不因Luna更改模型策略。新--expanded-output仅与--scope-v4 --report-only配合。请求策略、预算包装、SDK流适配器、进程父子验证、assembler、1.2进度观测及新transport identity共同支持新上限；旧transport/合同/默认限制保留。离线实链测试确认16384实际送达SDK、高档不变、120秒/10000输出合法结果交付，旧路径拒绝新预算，length及超额仍拒绝。当前待本地回归收口、同SHA公共三项检查后执行一个新身份真实报告批次，判断完整性及两处含混检出/修订/复评；没有真实通过前不声称两类问题修复。Provider累计至少104，Stage8E仍in_progress。
+
+此前固定8192的多次实证已表明仅调整提示或缩短coverage不够。比较选择：再次缩短audits/issues会同时改输出表示并引入新还原复杂度；分段审查改变跨段上下文及调用预算；先把16384/180秒作为独立开发合同，保持语义/schema/原稿固定，能够直接观察是否突破完整输出障碍。上限翻倍不代表实耗必翻倍；5次输入加输出保守上界从360960至401920，实际费用依返回usage和账单，不提供未经核实的人民币报价。即使完整返回，仍可能漏检，需要逐句审查和一次修订后的复评。
+
+代码与流程：_expanded_request_policy → ToolRuntime → CoachBudgetedProvider → expanded process transport → issued evaluation policy传入ZhipuStreamAdapter → SDK，返回由新上限assembler和父进程双检后送scope-v4原校验。ExpandedBridgeObservation独立1.2字段支持180秒/16384，避免旧90000/8192观测schema报错或截断时间。测试覆盖真实worker（假网络客户端）和actual policy/tool/budget链，不仅检查常量。旧1.3.14快照仍56fe4d...，评估标准不变。
+
+复现：既有run_golden_inference_development命令增加--scope-v4 --expanded-output --report-only；预检不带--execute。真实要求干净同SHA三job CI、全新run-id。保留旧回执，工作台人工稿不替换，不开展controls或生产默认调整。
+
+本批最终本地验证：100项stream/expanded/scope-v4及41项runtime/profile/预算/入口相邻回归，合计141 passed；编译、治理、diff检查通过。真实预检：1.3.15/high/16384/180秒/最多5次/401920总上界，无外部模型调用。

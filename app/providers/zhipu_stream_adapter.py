@@ -455,6 +455,7 @@ class ZhipuStreamAdapter:
         *,
         tool_stream: bool = False,
         default_max_output_tokens: int | None = None,
+        evaluation_request_policy=None,
     ) -> None:
         if not isinstance(provider, _ZhipuStreamProvider):
             raise TypeError("provider must expose the explicit Zhipu stream port")
@@ -463,10 +464,17 @@ class ZhipuStreamAdapter:
         if not isinstance(tool_stream, bool):
             raise ValueError("tool_stream must be a boolean")
         provider_bound_cap = _provider_bound_output_cap(provider)
+        self._output_limit = 8192
+        if evaluation_request_policy is not None:
+            from app.model_runtime import require_candidate_evaluation_request_policy
+            policy = require_candidate_evaluation_request_policy(
+                evaluation_request_policy, provider_id=provider.provider_name, model=provider.model_name)
+            self._output_limit = policy.max_output_tokens
+            provider_bound_cap = min(provider_bound_cap, self._output_limit) if provider_bound_cap is not None else self._output_limit
         if default_max_output_tokens is not None:
             _validate_positive_limit(
                 default_max_output_tokens,
-                "default_max_output_tokens",
+                "default_max_output_tokens", maximum=self._output_limit,
             )
             if (
                 provider_bound_cap is not None
@@ -507,9 +515,9 @@ class ZhipuStreamAdapter:
 
         request_cap = request.max_tokens
         if request_cap is not None:
-            _validate_positive_limit(request_cap, "request.max_tokens")
+            _validate_positive_limit(request_cap, "request.max_tokens", maximum=self._output_limit)
         if explicit_cap is not None:
-            _validate_positive_limit(explicit_cap, "max_output_tokens")
+            _validate_positive_limit(explicit_cap, "max_output_tokens", maximum=self._output_limit)
         cap = explicit_cap
         if cap is None:
             cap = self._default_max_output_tokens
@@ -603,7 +611,7 @@ class ZhipuStreamAdapter:
             else max_output_tokens
         )
         if effective_cap is not None:
-            _validate_positive_limit(effective_cap, "max_output_tokens")
+            _validate_positive_limit(effective_cap, "max_output_tokens", maximum=self._output_limit)
         if (
             self._default_max_output_tokens is not None
             and max_output_tokens is not None
@@ -925,14 +933,14 @@ def _safe_identifier(value: str, field_name: str) -> str:
     return normalized
 
 
-def _validate_positive_limit(value: int, field_name: str) -> None:
+def _validate_positive_limit(value: int, field_name: str, *, maximum=8192) -> None:
     if (
         isinstance(value, bool)
         or not isinstance(value, int)
         or value < 1
-        or value > 8192
+        or value > maximum
     ):
-        raise ValueError(f"{field_name} must be between 1 and 8192")
+        raise ValueError(f"{field_name} must be between 1 and {maximum}")
 
 
 def _read_field(value: Any, name: str, default: Any = None) -> Any:

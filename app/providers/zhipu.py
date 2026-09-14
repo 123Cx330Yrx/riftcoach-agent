@@ -175,7 +175,7 @@ class ZhipuProvider:
         """Expose SDK retry ownership for an explicit bounded composition."""
         return getattr(self._client, "max_retries", None)
 
-    def stream_adapter(self, *, tool_stream: bool = False) -> ZhipuStreamAdapter:
+    def stream_adapter(self, *, tool_stream: bool = False, evaluation_request_policy=None) -> ZhipuStreamAdapter:
         """Return an explicit candidate-only neutral stream adapter.
 
         The returned object is deliberately separate from ``LLMProvider`` and
@@ -193,6 +193,7 @@ class ZhipuProvider:
         return ZhipuStreamAdapter(
             self,
             tool_stream=tool_stream,
+            evaluation_request_policy=evaluation_request_policy,
             default_max_output_tokens=(
                 self._runtime_profile.max_output_tokens
                 if self._runtime_profile is not None
