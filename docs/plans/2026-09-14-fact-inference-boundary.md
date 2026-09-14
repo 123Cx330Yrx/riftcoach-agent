@@ -100,3 +100,12 @@ scope-v5 的四种 scope 同时承担“陈述是什么”和“推断适用哪�
 2026-09-14事实推断独立版本接线：新增fact_v1/Coach1.3.17/Skill0.5.17/Program2.3.17/evaluation1.11.0，合同快照7f1ca3c6b5efe2a449d8ecadb0e98a8591f2eb5e2d2d91563ad2af571d62aa02。复用完整候选请求及实际输入预算门；新增含原句/计算binding位置的固定错误码诊断，与issue/coverage关系共用ledger，最多12条/3000字符。原始JSON保留到canonical展开校验，完整绑定持久化并传入修订；初评/唯一纠正的typed prompt_injection均单次安全早停，超输入预算在I/O前拒绝。--fact-inference仅允许独立expanded-output/report-only，五调用/一次修订/high/16384/180秒/401920上界不变。旧1.3.16快照及资产保留。实际Adapter保存27段首评/纠正/脚本修订输入估算56254/56726/44034，全部16384输出；这里纠正回放旧schema失败，修订脚本为空audit形状，不能当最坏修订预算，完整有界诊断候选上轮60764仍是参考，真实每次重检输入。两组122项及134项回归通过（存在重叠），编译/治理通过；真实入口无I/O预检绑定同一96分稿SHA。上一批cc49f9e/Actions34825603586已三job success；本批待同SHA公共三项后执行新身份fact-inference真实report-only，按完整初评/至多一次修订/复评审查，不运行controls或替换Workbench人工稿。Provider累计至少108，无新增真实预约；语义伪装、真实完整返回与自动漏检修复均未验收，8E保持in_progress。
 
 `golden_fact_runtime.py`连接已测构造器与既有ToolRuntime/CoachBudgetedProvider。`golden_fact_diagnostics.py`先读取字段结构，再收集关系和运算错误；不自动修改任何响应。新资产位于`examples/runtime_profiles/flash_v2_golden_fact`，内容指纹包含事实、运算、提示、诊断及接线实现。新标识不等于默认或生产准入。语义评估仍可能误分类，尤其伪装为direct_result的能力结论，必须通过后续真实对照验证，不能以本批结构测试宣称修复。
+
+
+## 2026-09-14 实际终态失败及后续边界
+
+2026-09-14 fact-v1公共及真实观察：实现3b82b97e72cf73a5f5e109c736d46debf76b7dd4/Actions34826646827三job同SHAsuccess。新身份inference-dev-3b82b97-fact-report/Coach1.3.17/high/16384/180秒仅1次Provider预约；6.735秒首reasoning、130.735秒首正文、164.563秒length/EOF/close，正文12793字符/reasoning33263字符，输出未完成。子progress为12875输入+16384输出=29259已观测tokens，父receipt因没有完整响应仍为0，这不是零费用。失败assembly_rejected/incomplete_stream、provider_code=null；尽管末HTTP事件failed，本次有明确输出耗尽证据，不是180秒截止或已证明网络故障。无accepted evaluation、纠正/修订/复评/controls均未启动；不能判断新版本是否检出两处原漏检。累计Provider预约至少109，历史未知用量继续保留。输入预算与结构接线通过不代表终态可完成；新增逐数字绑定增加输出义务，但尚无证据将全部推理耗时归因于它。旧v5完整响应有13条claim、逐claim去重数字合计52个，仅作历史形状参考，不冒充本次截断正文。停止原样重试，不继续增加预算。下一步离线重审逐数字强制绑定的必要性及代价，比较程序预计算/原句级证据引用与当前模型逐数重述，保留完整段落覆盖、事实/推断区分、原句issue绑定、一次纠正和高档预算；以可复现大小/正反例证据选方案后才发新版本真实请求。Workbench人工稿不替换，自动语义闭环未验收，8E仍in_progress。
+
+私有证据：`data/runs/inference_development/inference-dev-3b82b97-fact-report/plan.json`、`call-001.json`、`receipt.json`、`full-report/stream-001/progress.json`、`failure.json`、`result.json`。未形成response-001.json，不能用截断片段拼接成有效评估，也不能把旧响应改造为新版本的成功证据。上述已观测用量并未计入父receipt，人工账目要单列而非覆盖原回执。
+
+设计复审重点：先确定逐数字绑定相比原句级引用实际多阻止了哪些错误，以及哪些对象/语义错误依旧只能由模型判断；预计算可减少模型算术和输出，但不能悄悄将错误文本正规化。候选比较需保留数值错误、错位置、否定、局部方向和伪装外推反例。当前运算模块可以作为离线证据核对工具保留，不必因为已经实现就强迫每次语义审查输出全部绑定。不得在没有对照证据时再次宣称缩短输入或压缩schema解决了终态预算。

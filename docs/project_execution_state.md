@@ -13,6 +13,15 @@ pause_reason: ""
 
 ## 状态元数据
 
+2026-09-14 fact-v1公共及真实观察：实现3b82b97e72cf73a5f5e109c736d46debf76b7dd4/Actions34826646827三job同SHAsuccess。新身份inference-dev-3b82b97-fact-report/Coach1.3.17/high/16384/180秒仅1次Provider预约；6.735秒首reasoning、130.735秒首正文、164.563秒length/EOF/close，正文12793字符/reasoning33263字符，输出未完成。子progress为12875输入+16384输出=29259已观测tokens，父receipt因没有完整响应仍为0，这不是零费用。失败assembly_rejected/incomplete_stream、provider_code=null；尽管末HTTP事件failed，本次有明确输出耗尽证据，不是180秒截止或已证明网络故障。无accepted evaluation、纠正/修订/复评/controls均未启动；不能判断新版本是否检出两处原漏检。累计Provider预约至少109，历史未知用量继续保留。输入预算与结构接线通过不代表终态可完成；新增逐数字绑定增加输出义务，但尚无证据将全部推理耗时归因于它。旧v5完整响应有13条claim、逐claim去重数字合计52个，仅作历史形状参考，不冒充本次截断正文。停止原样重试，不继续增加预算。下一步离线重审逐数字强制绑定的必要性及代价，比较程序预计算/原句级证据引用与当前模型逐数重述，保留完整段落覆盖、事实/推断区分、原句issue绑定、一次纠正和高档预算；以可复现大小/正反例证据选方案后才发新版本真实请求。Workbench人工稿不替换，自动语义闭环未验收，8E仍in_progress。
+
+- 本地代码：独立版本接线与公共检查完成；真实初评仍因输出截断未完成。
+- 所有者理解：已说明输入预算和输出完整性是两道不同限制，无新增理解验收。
+- 参考来源审计：仍是同一ShowMaker五局及96分稿，无新来源。
+- 公共作品/部署成熟度：3b82b97三项公共检查通过，无部署或自动报告准入。
+
+以下为历史记录。
+
 2026-09-14事实推断独立版本接线：新增fact_v1/Coach1.3.17/Skill0.5.17/Program2.3.17/evaluation1.11.0，合同快照7f1ca3c6b5efe2a449d8ecadb0e98a8591f2eb5e2d2d91563ad2af571d62aa02。复用完整候选请求及实际输入预算门；新增含原句/计算binding位置的固定错误码诊断，与issue/coverage关系共用ledger，最多12条/3000字符。原始JSON保留到canonical展开校验，完整绑定持久化并传入修订；初评/唯一纠正的typed prompt_injection均单次安全早停，超输入预算在I/O前拒绝。--fact-inference仅允许独立expanded-output/report-only，五调用/一次修订/high/16384/180秒/401920上界不变。旧1.3.16快照及资产保留。实际Adapter保存27段首评/纠正/脚本修订输入估算56254/56726/44034，全部16384输出；这里纠正回放旧schema失败，修订脚本为空audit形状，不能当最坏修订预算，完整有界诊断候选上轮60764仍是参考，真实每次重检输入。两组122项及134项回归通过（存在重叠），编译/治理通过；真实入口无I/O预检绑定同一96分稿SHA。上一批cc49f9e/Actions34825603586已三job success；本批待同SHA公共三项后执行新身份fact-inference真实report-only，按完整初评/至多一次修订/复评审查，不运行controls或替换Workbench人工稿。Provider累计至少108，无新增真实预约；语义伪装、真实完整返回与自动漏检修复均未验收，8E保持in_progress。
 
 - 本地代码：独立版本及一次纠正/修订接线通过；真实质量验证待执行。
