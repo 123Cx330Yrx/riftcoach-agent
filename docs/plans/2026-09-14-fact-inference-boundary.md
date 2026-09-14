@@ -120,3 +120,10 @@ scope-v5 的四种 scope 同时承担“陈述是什么”和“推断适用哪�
 代价与保留边界：不再要求模型指出每个数字的唯一字段路径，程序可能发现多种计算来源；数字巧合或相同数值的对象错配仍必须由模型审核。测试明确保留“数字正确却声称长期能力”的结构可通过例，作为尚未解决的语义反例，不把此结构测试当检出成绩。旧OperationBinding校验工具仍可离线用于人工指定路径的核对。
 
 新实现：`golden_numeric_evidence.py`、`golden_evidence_scope.py`、`golden_evidence_requests.py`、`golden_evidence_runtime.py`。新资产目录`examples/runtime_profiles/flash_v2_golden_evidence`；合同SHA `ef2f3852912fea2ed68296564a75f538dba8e2abdac67e6e38344cc6ce3a3141`。沿用实际出站预算、一次纠正、安全早停与canonical修订传递。真实接口只增加独立evidence-scope选项，不能混用旧scope/fact标志。
+
+
+## 2026-09-14 真实完整返回后的提示及窗口修复
+
+2026-09-14 evidence-v1真实失败定位与v2修复：07d777225db594b171173faa591d36deacff129a/Actions34828768377三项success。inference-dev-07d7772-evidence-report两次完整stop返回，分别72.641秒/12641输入+7515输出、80.078秒/13254输入+8360输出，共41770 returned tokens；累计Provider预约至少111，历史未知用量保留。两份raw均pass/95/issues为空，仍漏两处稳定措辞；canonical均拒绝，没有accepted evaluation或修订。确定缺陷：提示“原句1到20字符”被两次机械理解为前20字符，每份6条selected_sample_anchor_missing；总体统计deaths_before_15没有生成窗口15支持，正确表格被误拒。新增独立evidence_v2/Coach1.3.19/Skill0.5.19/Program2.3.19/evaluation1.13.0，明确从原句内部选真正范围短语及稳定含义须在判断处定义，不能借同段其他位置场次数；总体统计补实际10/15分钟窗口支持，伪造16仍拒绝。旧身份/资产冻结。旧两份响应离线回放只剩各6条范围错误，没有改写或接受旧结果。两组50及144项测试通过；无I/O预检绑定原报告9687ea5b4c91eb962dc9f88f0b93f1b408ed3c9c64cc2fb2422f11e72b59fd82。实际Adapter输入上界54316/56332/44420，纠正用真实旧失败，修订仅脚本形状；真实每请求仍重检输入。high/16384/180秒/5次/一次修订/401920及900秒整批不变。下一步本实现同SHA三项公共检查通过后直接执行--evidence-scope-v2 --expanded-output --report-only，验证完整初评/修订/复评和两处实际issue；不等待额外授权，不将结构通过等同语义通过。Workbench人工稿不替换，Stage8E仍in_progress。
+
+代码：golden_evidence_requests_v2.py、golden_evidence_scope_v2.py、golden_numeric_evidence_v2.py、golden_evidence_runtime_v2.py；新资产flash_v2_golden_evidence_v2，合同SHA ad87caaa870f2975e5fc84121c38d4c26e89fe7a8588c9b0bdf97054b961333e。数字计算支持仍不证明语义对象或能力归因，伪装外推真实对照仍待后续验证。
