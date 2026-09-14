@@ -401,3 +401,14 @@ preserving old contract fingerprints and request budgets.” Parent gate stays o
 ### 扩大预算后的真实结果与新定位
 
 2026-09-14扩大输出预算公共及真实验证：实现04088096ccb5cf09822873f804e2c35655b2caec/Actions34814338305三job同SHAsuccess，本地141 passed。新身份inference-dev-0408809-expanded-report/Coach1.3.15/high/16384/180秒共2次Provider调用：首轮86.046秒完整stop（12055输入+8406输出），唯一纠正88.781秒完整stop（12104输入+9959输出），共24159输入+18365输出=42524 tokens。两轮均突破旧8192且完整返回，证实本次输出截断障碍解除，不证明长期稳定性。两份raw都verdict=needs_revision、完整27段coverage，并各自指出原报告“输局的稳定同位置差距”和“是输局较稳定的差异项”需澄清；但都因selected_sample_scope_anchor_missing未通过canonical校验，未生成accepted original-evaluation、未修订/复评/controls。不可把raw needs_revision冒充完整闭环。离线审计：首轮5项/纠正9项selected_sample锚点不满足现规则，既有模型选择“中单同位置”等非范围词，也有规则对“一局”“1 局”漏识别；两轮还分别使用4/5种不存在的facts:recent_match:*或facts:recent_aggregate证据键。隔离进程仅作诊断地跳过样本锚点正则后仍触发inference_audit_anchor_invalid，未保存或接受放宽结果。当前一次纠正只发送泛化重评提示，未反馈具体非法锚点/证据键，重复错误风险已实证。下一步离线补齐合法中文/空格范围表达并设计带精确校验反馈的独立纠正版本，保留原句/证据/含混门；用两份私有失败响应回归，随后新身份验证，不原样第三次调用。Provider累计至少106，本轮42524已返回tokens，旧未知用量仍未知；Workbench人工稿与默认模型不变，8E仍in_progress。
+
+
+## 2026-09-14 范围表达和纠正反馈
+
+2026-09-14范围词及精确纠正反馈本地接线：新增scope-v5/Coach1.3.16/Skill0.5.16/Program2.3.16/evaluation1.10.0，复用紧凑wire schema；独立canonical模型保留coverage/issue/原句/证据校验并识别一局、两局、1 局、一次结果记录等明确范围，非范围词中单同位置/输局仍拒绝。新纠正仅在既有一次预算内发送最多12条/约3000字符诊断，包含claim位置、80字符原句片段、固定错误码及允许证据键；片段明确标记不可信数据，未知证据不自动映射，模型需重评完整JSON，第二次无效仍拒绝，typed security finding仍单次早停。上轮两份私有响应离线回放仍拒绝；反馈分别定位3/7条缺范围锚点claim与6/4条未知证据claim，未遗漏；合法别名不再误拒，其他错误没有被放宽。实际Adapter评估/纠正/修订请求上界51486/54408或54508/48088，均低于64000。高档/16384/180秒/5调用/401920总上界及旧1.3.15快照保持不变。126 passed、7 subtests及编译/治理通过；Provider累计至少106，无新增真实调用。下一步为本实现同SHA公共三项通过后，以新身份--scope-v5 --expanded-output --report-only执行原报告完整审查/一次修订/复评，仍不替换Workbench人工稿，不做controls或生产准入；8E in_progress。
+
+原理：让模型收到校验的具体失败位置，才能利用唯一纠正机会修复；诊断不是替模型改答案或证明结论正确。数据流为原响应→严格wire解析→逐claim定位→有界不可信数据区→原始完整证据/提示→纠正响应→同等canonical/coverage/原句/证据校验。无法解析的响应只给invalid_json_or_schema，不反射任意异常内容；覆盖/结论错误没有逐claim定位时保留一致性失败提示。
+
+旧scope-v2/v3/v4代码与资产冻结；新模型继承V16完整语义一致性规则，使用既有AnchoredAudit与ScopedBlock并独立执行扩展范围锚点校验。诊断不修改旧回执，真实响应的人工分类不冒充评估接受；没有降低unknown ref或含混问题必须修订的门槛。纯数值事实若缺局部范围，仍由模型按真实语义澄清，不由程序猜测范围。
+
+测试包括新别名通过、非范围词拒绝、重复JSON键/非有限数拒绝、原句/未知ref定位、实际Adapter唯一纠正及第二次失败终止、security早停、反馈长度截断和旧预算指纹。复现私有回放可用check_golden_coverage_requests --scope-v5 --failed-response指定上轮response-001.json或002.json，仅测请求大小不判模拟pass为质量证据。

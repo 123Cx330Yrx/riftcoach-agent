@@ -11,7 +11,7 @@ from pydantic import BaseModel, ConfigDict, Field
 class CoachContractSnapshot(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     contract_id: Literal["recent-form-review-flash-v2"] = "recent-form-review-flash-v2"
-    version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"] = "1.0.0"
+    version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"] = "1.0.0"
     scope: Literal["unadmitted_opt_in"] = "unadmitted_opt_in"
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
@@ -22,22 +22,22 @@ class CoachExecutionContract:
 
     @property
     def grounded(self):
-        return self.version in ("1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15")
+        return self.version in ("1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16")
 
     @property
     def context_policy(self):
         if self.grounded:
             from app.evaluation.coach_grounded_contract import grounded_context_policy
             base = grounded_context_policy()
-            if self.version in ("1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"):
+            if self.version in ("1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"):
                 from app.evaluation.golden_inference_audit import INFERENCE_POLICY
-                if self.version in ("1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"):
+                if self.version in ("1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"):
                     from app.evaluation.golden_inference_audit_v2 import INFERENCE_POLICY
                 if self.version == "1.3.9":
                     from app.evaluation.golden_inference_audit_v3 import INFERENCE_POLICY
                 if self.version == "1.3.13":
                     from app.evaluation.golden_inference_scope_v3 import SCOPE_V3_POLICY as INFERENCE_POLICY
-                if self.version in ("1.3.14", "1.3.15"):
+                if self.version in ("1.3.14", "1.3.15", "1.3.16"):
                     from app.evaluation.golden_inference_scope_v4 import SCOPE_V4_POLICY as INFERENCE_POLICY
                 if self.version == "1.3.12":
                     from app.evaluation.golden_inference_scope_v2 import SCOPE_V2_POLICY as INFERENCE_POLICY
@@ -45,6 +45,8 @@ class CoachExecutionContract:
                     from app.evaluation.golden_inference_scope import SCOPE_POLICY as INFERENCE_POLICY
                 if self.version == "1.3.10":
                     from app.evaluation.golden_inference_coverage import COVERAGE_POLICY as INFERENCE_POLICY
+                if self.version == "1.3.16":
+                    from app.evaluation.golden_inference_scope_v5 import SCOPE_V5_POLICY as INFERENCE_POLICY
                 base += "\n\n" + INFERENCE_POLICY
             if self.position_policy:
                 base += "\n\n" + self.position_policy
@@ -56,21 +58,21 @@ class CoachExecutionContract:
 
     @property
     def position_policy(self):
-        if self.version in ("1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"):
+        if self.version in ("1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"):
             from app.evaluation.golden_position_policy import POSITION_POLICY
             return POSITION_POLICY
         return ""
 
     @property
     def source_use_policy(self):
-        if self.version in ("1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"):
+        if self.version in ("1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"):
             from app.evaluation.golden_source_use_policy import SOURCE_USE_POLICY
             return SOURCE_USE_POLICY
         return ""
 
     @property
     def compact_report_policy(self):
-        if self.version in ("1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"):
+        if self.version in ("1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"):
             from app.evaluation.golden_compact_report_policy import COMPACT_REPORT_POLICY
             return COMPACT_REPORT_POLICY
         return ""
@@ -103,23 +105,23 @@ class CoachExecutionContract:
                          missing_citation_policy="existing-single-revision", evaluation_repair_policy="one-evidence-grounded-correction")
             value.update(reasoning_effort="high", max_output_tokens=8192, total_tokens=9 * (64000 + 8192),
                          request_timeout_s=60, agent_timeout_s=120, execution_timeout_s=480)
-        if self.version in ("1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"):
+        if self.version in ("1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"):
             value.update(skill_version="0.4.0", program_version="2.2.0", max_tool_calls=8)
-        if self.version in ("1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"):
+        if self.version in ("1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"):
             value.update(skill_version="0.5.0", program_version="2.3.0", max_context_tokens=28000)
-        if self.version in ("1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"):
+        if self.version in ("1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"):
             value.update(skill_version="0.5.1", program_version="2.3.1", include_deterministic_source_facts=True)
-        if self.version in ("1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"):
+        if self.version in ("1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"):
             value.update(skill_version="0.5.2", program_version="2.3.2", request_timeout_s=90)
-        if self.version in ("1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"):
+        if self.version in ("1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"):
             from app.evaluation.golden_position_policy import POSITION_POLICY_ID
             value.update(skill_version="0.5.3", program_version="2.3.3", position_policy_id=POSITION_POLICY_ID)
-        if self.version in ("1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"):
+        if self.version in ("1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"):
             value.update(skill_version="0.5.4", program_version="2.3.4", include_generation_facts=True)
-        if self.version in ("1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"):
+        if self.version in ("1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"):
             from app.evaluation.golden_source_use_policy import SOURCE_USE_POLICY_ID
             value.update(skill_version="0.5.5", program_version="2.3.5", source_use_policy_id=SOURCE_USE_POLICY_ID)
-        if self.version in ("1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15"):
+        if self.version in ("1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16"):
             from app.evaluation.golden_compact_report_policy import COMPACT_REPORT_POLICY_ID
             value.update(skill_version="0.5.6", program_version="2.3.6", compact_report_policy_id=COMPACT_REPORT_POLICY_ID)
         if self.version == "1.3.7":
@@ -134,7 +136,7 @@ class CoachExecutionContract:
         if self.version == "1.3.13":
             from app.evaluation.golden_inference_scope_v3 import SCOPE_V3_POLICY_ID
             value.update(skill_version="0.5.13", program_version="2.3.13", evaluation_contract_version="1.8.0", inference_policy_id=SCOPE_V3_POLICY_ID, anchor_repair_policy="shared-single-structured-repair")
-        if self.version in ("1.3.14", "1.3.15"):
+        if self.version in ("1.3.14", "1.3.15", "1.3.16"):
             from app.evaluation.golden_inference_scope_v4 import SCOPE_V4_POLICY_ID
             value.update(skill_version="0.5.14", program_version="2.3.14", evaluation_contract_version="1.9.0", inference_policy_id=SCOPE_V4_POLICY_ID, anchor_repair_policy="shared-single-structured-repair")
         if self.version == "1.3.12":
@@ -146,11 +148,15 @@ class CoachExecutionContract:
         if self.version == "1.3.10":
             from app.evaluation.golden_inference_coverage import COVERAGE_POLICY_ID
             value.update(skill_version="0.5.10", program_version="2.3.10", evaluation_contract_version="1.5.0", inference_policy_id=COVERAGE_POLICY_ID, anchor_repair_policy="shared-single-structured-repair")
-        if self.version == "1.3.15":
+        if self.version in ("1.3.15", "1.3.16"):
             value.update(skill_version="0.5.15", program_version="2.3.15",
                          max_calls=5, max_output_tokens=16384, total_tokens=5 * (64000 + 16384),
                          request_timeout_s=180, agent_timeout_s=240, execution_timeout_s=900,
                          stream_transport_id="golden-process-stream-high-16384-v1")
+        if self.version == "1.3.16":
+            from app.evaluation.golden_inference_scope_v5 import SCOPE_V5_POLICY_ID
+            value.update(skill_version="0.5.16", program_version="2.3.16", evaluation_contract_version="1.10.0",
+                         inference_policy_id=SCOPE_V5_POLICY_ID, evaluation_repair_policy="one-grounded-correction-with-bounded-diagnostics")
         return value
 
     def snapshot(self):
@@ -159,7 +165,7 @@ class CoachExecutionContract:
 
     @property
     def request_policy(self):
-        if self.version == "1.3.15":
+        if self.version in ("1.3.15", "1.3.16"):
             return _expanded_request_policy()
         if self.grounded:
             return _grounded_request_policy()
@@ -197,6 +203,7 @@ def _expanded_request_policy():
 
 
 EXPANDED_COACH_CONTRACT = CoachExecutionContract(version="1.3.15")
+FEEDBACK_COACH_CONTRACT = CoachExecutionContract(version="1.3.16")
 COACH_CONTRACT = CoachExecutionContract()
 GROUNDED_COACH_CONTRACT = CoachExecutionContract(version="1.1.0")
 BATCH_COACH_CONTRACT = CoachExecutionContract(version="1.2.0")
@@ -218,7 +225,7 @@ COVERAGE_COACH_CONTRACT = CoachExecutionContract(version="1.3.10")
 
 
 def require_coach_contract(value):
-    if value is not None and all(value is not c for c in (COACH_CONTRACT, EXPANDED_COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT)):
+    if value is not None and all(value is not c for c in (COACH_CONTRACT, FEEDBACK_COACH_CONTRACT, EXPANDED_COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT)):
         raise ValueError("unsupported Coach execution contract")
     return value
 
@@ -227,7 +234,7 @@ def coach_component_fingerprint(contract=COACH_CONTRACT):
     from app.evaluation.prompt_context_identity import ComponentFingerprint
     require_coach_contract(contract)
     return ComponentFingerprint(component_id="coach_execution_contract",
-                                source=("app.runtime.coach_contract:v1.3.15" if contract.version == "1.3.15" else "app.runtime.coach_contract:v1.3.14" if contract.version == "1.3.14" else "app.runtime.coach_contract:v1.3.13" if contract.version == "1.3.13" else "app.runtime.coach_contract:v1.3.12" if contract.version == "1.3.12" else "app.runtime.coach_contract:v1.3.11" if contract.version == "1.3.11" else "app.runtime.coach_contract:v1.3.10" if contract.version == "1.3.10" else
+                                source=("app.runtime.coach_contract:v1.3.16" if contract.version == "1.3.16" else "app.runtime.coach_contract:v1.3.15" if contract.version == "1.3.15" else "app.runtime.coach_contract:v1.3.14" if contract.version == "1.3.14" else "app.runtime.coach_contract:v1.3.13" if contract.version == "1.3.13" else "app.runtime.coach_contract:v1.3.12" if contract.version == "1.3.12" else "app.runtime.coach_contract:v1.3.11" if contract.version == "1.3.11" else "app.runtime.coach_contract:v1.3.10" if contract.version == "1.3.10" else
                                         "app.runtime.coach_contract:v1.3.9" if contract.version == "1.3.9" else
                                         "app.runtime.coach_contract:v1.3.8" if contract.version == "1.3.8" else
                                         "app.runtime.coach_contract:v1.3.7" if contract.version == "1.3.7" else
