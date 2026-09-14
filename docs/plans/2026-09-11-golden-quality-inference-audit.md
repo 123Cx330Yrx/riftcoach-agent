@@ -378,3 +378,8 @@ preserving old contract fingerprints and request budgets.” Parent gate stays o
 测试直接调用真实Adapter：正确回执保持issues/audits/coverage；错误布尔、隐藏含混、缺issue、假锚点/证据、重复键均使用唯一纠正机会，第二次仍错则拒绝；已类型化安全问题单次终止。另验证旧合同快照和新资产解析。模拟标签只证明传输/校验流程，不证明模型的语义质量；字符缩减也不能证明真实token或延迟改善。
 
 最终本地验证：69项范围/紧凑聚焦，加65项grounded/structured相邻测试，合计134 passed、7 subtests；编译、治理、diff检查通过。
+
+
+### 公共和真实结果
+
+2026-09-14紧凑覆盖公共及真实观察：实现eb8a43d60f6be4ebb2b70618ea61f914e76721a8/Actions34812583224三job同SHAsuccess；本地134 passed、7 subtests。新身份inference-dev-eb8a43d-compact-report使用1.3.14/high/8192，1次Provider预约，10.157秒首reasoning、68.000秒首正文、87.985秒终态length（88.000秒EOF），正文6424字符/reasoning15906字符。子progress明确12055输入+8192输出=20247已观测tokens；父receipt因未交付有效响应仍记录0，这不是零费用。failure为assembly_rejected/incomplete_stream，provider_code=null；即使最后HTTP事件标failed，也不据此覆盖已明确的length输出耗尽证据。没有有效评估JSON、未进入修订或controls，含混漏检仍未验证。紧凑格式接入已完成，但本次不足以解决完整返回；停止原样重试，不将正文更多当作质量改善。Provider累计至少104，历史未知用量保留未知。下一步先离线分析剩余audits/issues重复输出，设计并验证进一步减少单次终态负担的表示方案，保留完整报告上下文、原句证据、既有总调用预算和高档；新方案得到离线证据前不追加真实请求。8E仍in_progress，Workbench人工稿不替换。
