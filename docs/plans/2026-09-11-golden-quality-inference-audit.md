@@ -412,3 +412,17 @@ preserving old contract fingerprints and request budgets.” Parent gate stays o
 旧scope-v2/v3/v4代码与资产冻结；新模型继承V16完整语义一致性规则，使用既有AnchoredAudit与ScopedBlock并独立执行扩展范围锚点校验。诊断不修改旧回执，真实响应的人工分类不冒充评估接受；没有降低unknown ref或含混问题必须修订的门槛。纯数值事实若缺局部范围，仍由模型按真实语义澄清，不由程序猜测范围。
 
 测试包括新别名通过、非范围词拒绝、重复JSON键/非有限数拒绝、原句/未知ref定位、实际Adapter唯一纠正及第二次失败终止、security早停、反馈长度截断和旧预算指纹。复现私有回放可用check_golden_coverage_requests --scope-v5 --failed-response指定上轮response-001.json或002.json，仅测请求大小不判模拟pass为质量证据。
+
+
+### scope-v5真实失败及后续边界审查
+
+2026-09-14 scope-v5公共及真实观察：e3826eb0ad4dadab1d35069c114e251fb6f4787a/Actions34816930316三job同SHAsuccess，本地126 passed、7 subtests。新身份inference-dev-e3826eb-feedback-report/high/16384/180秒共2次Provider预约：初评99.610秒完整stop，12227输入+10897输出=23124已返回tokens，raw needs_revision再次指出两处含混稳定措辞，但canonical因ambiguous_scope_requires_clarification_issue_and_nonpass拒绝；其中一条issue仅取“是输局较稳定的差异项”，未与对应完整claim逐字一致。初评还存在4条缺样本锚点和5条未知证据claim，诊断均返回且无遗漏；但当前诊断未逐项覆盖ambiguous对应issue原句不一致这一真实失败，不能称全部精准反馈。唯一纠正148.188秒首正文、151.656秒length/EOF（151.672秒进度），正文1199字符/reasoning47826字符；子progress为13041输入+16384输出=29425已观测tokens，父receipt仅累计初评23124，因为纠正未交付完整响应。本轮已观测合计52549 tokens，累计预约至少108，旧未知用量仍未知。未产生accepted evaluation、自动修订/复评/controls均未启动，增加反馈不等于真实闭环成功；不原样第三次调用或继续加上限。规则审查另发现直接统计陈述（表格及同位置纯数值对照）没有局部范围词，却被所有selected_sample claim统一要求范围锚点，可能使正确事实也被迫澄清；需明确直接事实与稳定/能力推断的不同表示和证据引用，不能以放宽正则猜测解决或断言它是推理耗时根因。下一步先离线完成该表示/校验边界设计，并补齐逐claim含混/unsupported与issue逐字绑定诊断；用已保存失败响应及正确纯数值/否定/范围外推对照验证，再注册独立版本。保持高档/现预算，未经离线论证不新增真实调用；8E仍in_progress，Workbench人工稿不替换。
+
+后续离线设计的必测矩阵：
+- 直接数值陈述：表格行、同位置均值、单局结果；应核对原事实，不因缺少稳定性范围短语就把正确数值当成错误。
+- 样本内稳定/方向推断：要求明确本地样本范围及相应证据，保留当前含混澄清门。
+- 长期/能力/因果外推：不能靠局部样本词或任意存在的证据键伪装成supported。
+- 否定/问题/条件假设：保留原文否定和条件，避免错误归入selected_sample。
+- 诊断覆盖：范围、unknown refs、原句连续性、ambiguous/unsupported对应issue的逐字一致性、完整coverage及verdict；每类应提供确定错误定位，不通过反射任意异常文本或改写评估来“修好”。
+
+这只是下一步设计约束，不是已注册新scope类别或已放宽校验。当前两份新失败记录仍按原合同拒绝；不得事后改变其通过标签。

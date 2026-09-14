@@ -13,6 +13,15 @@ pause_reason: ""
 
 ## 状态元数据
 
+2026-09-14 scope-v5公共及真实观察：e3826eb0ad4dadab1d35069c114e251fb6f4787a/Actions34816930316三job同SHAsuccess，本地126 passed、7 subtests。新身份inference-dev-e3826eb-feedback-report/high/16384/180秒共2次Provider预约：初评99.610秒完整stop，12227输入+10897输出=23124已返回tokens，raw needs_revision再次指出两处含混稳定措辞，但canonical因ambiguous_scope_requires_clarification_issue_and_nonpass拒绝；其中一条issue仅取“是输局较稳定的差异项”，未与对应完整claim逐字一致。初评还存在4条缺样本锚点和5条未知证据claim，诊断均返回且无遗漏；但当前诊断未逐项覆盖ambiguous对应issue原句不一致这一真实失败，不能称全部精准反馈。唯一纠正148.188秒首正文、151.656秒length/EOF（151.672秒进度），正文1199字符/reasoning47826字符；子progress为13041输入+16384输出=29425已观测tokens，父receipt仅累计初评23124，因为纠正未交付完整响应。本轮已观测合计52549 tokens，累计预约至少108，旧未知用量仍未知。未产生accepted evaluation、自动修订/复评/controls均未启动，增加反馈不等于真实闭环成功；不原样第三次调用或继续加上限。规则审查另发现直接统计陈述（表格及同位置纯数值对照）没有局部范围词，却被所有selected_sample claim统一要求范围锚点，可能使正确事实也被迫澄清；需明确直接事实与稳定/能力推断的不同表示和证据引用，不能以放宽正则猜测解决或断言它是推理耗时根因。下一步先离线完成该表示/校验边界设计，并补齐逐claim含混/unsupported与issue逐字绑定诊断；用已保存失败响应及正确纯数值/否定/范围外推对照验证，再注册独立版本。保持高档/现预算，未经离线论证不新增真实调用；8E仍in_progress，Workbench人工稿不替换。
+
+- 本地代码：范围别名与有界反馈已接入并公共通过；诊断覆盖与事实/推断表示仍有缺口。
+- 所有者理解：已说明新真实失败与预算观察，无新增理解验收。
+- 参考来源审计：仍为同一ShowMaker五局与96分稿，无新外部来源。
+- 公共作品/部署成熟度：本实现三项CI通过，无部署或自动质量准入。
+
+以下为历史记录。
+
 2026-09-14范围词及精确纠正反馈本地接线：新增scope-v5/Coach1.3.16/Skill0.5.16/Program2.3.16/evaluation1.10.0，复用紧凑wire schema；独立canonical模型保留coverage/issue/原句/证据校验并识别一局、两局、1 局、一次结果记录等明确范围，非范围词中单同位置/输局仍拒绝。新纠正仅在既有一次预算内发送最多12条/约3000字符诊断，包含claim位置、80字符原句片段、固定错误码及允许证据键；片段明确标记不可信数据，未知证据不自动映射，模型需重评完整JSON，第二次无效仍拒绝，typed security finding仍单次早停。上轮两份私有响应离线回放仍拒绝；反馈分别定位3/7条缺范围锚点claim与6/4条未知证据claim，未遗漏；合法别名不再误拒，其他错误没有被放宽。实际Adapter评估/纠正/修订请求上界51486/54408或54508/48088，均低于64000。高档/16384/180秒/5调用/401920总上界及旧1.3.15快照保持不变。126 passed、7 subtests及编译/治理通过；Provider累计至少106，无新增真实调用。下一步为本实现同SHA公共三项通过后，以新身份--scope-v5 --expanded-output --report-only执行原报告完整审查/一次修订/复评，仍不替换Workbench人工稿，不做controls或生产准入；8E in_progress。
 
 以下为历史记录。
