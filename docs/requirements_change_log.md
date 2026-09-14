@@ -402,3 +402,5 @@ RQ-252 公共收口（2026-09-07）：用户继续授权本实现公共验证；
 2026-09-14 Provider流诊断分类修复公共闭环：提交`578d1fa`对应Actions run `34798046857`，pytest、postgres-migrations、packaging-smoke三项均`completed/success`；新增httpx迭代异常分类回归已随公共pytest通过。本批没有新增Provider调用。当前scope-v2两次真实报告身份仍分别是输出耗尽与body迭代断流，均未得到语义终态；下一步只评估既有low+4096候选档位是否建立独立隔离合同，不修改1.3.12高思考合同、不重用旧身份。
 
 2026-09-14 low+4096同步诊断分支离线接入：新增`--candidate-low-4096`，仅允许scope-v2/report-only；复用1.3.12语义contract/schema，但真实Provider身份单独记录`glm-5.3-flash-candidate-low-4096`、request policy 1.0.0与`transport_mode=sync`，直接使用既有候选low profile和`CandidateEvaluationBudgetedProvider`，不复用高档stream bridge，不改scope-v2资产指纹。预算为最多4次调用、4096输出、72,000总token，响应journal body-free。38项聚焦回归、预检、治理和差异检查通过；本批尚未调用Provider。若公共CI通过，下一步才执行一个全新低档report-only身份；结果只用于区分同步低档语义可用性与高档stream故障，不构成stream或生产证据。
+
+2026-09-14模型策略边界澄清：用户确认此前“Luna/省额度保质量”讨论属于RIFTCOACH模型策略，不等于本轮把高档Provider流故障自动切成low。`00fa4ad`的low+4096同步分支公共CI `34798984857`三项全绿，但它仍只是候选诊断路径；本批不发送low真实请求、不改变高档1.3.12、不改变默认模型或产品Runtime。下一步需先完成模型策略裁决，再决定是否执行一次low同步report-only；无论候选结果如何，不能直接升级为生产模型结论。
