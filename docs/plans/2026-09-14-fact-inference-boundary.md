@@ -74,3 +74,22 @@ scope-v5 的四种 scope 同时承担“陈述是什么”和“推断适用哪�
 ```
 
 探针使用离线Provider，原请求包含同一份generation和role事实，不重复添加其值；额外叠加候选来源及schema是体积观察，不是最终请求接线。不包含新策略，因此63616不能作为实际预算合格回执。源文件在私有data/runs，不进入Git。
+
+
+## 2026-09-14 派生操作与完整请求测量
+
+2026-09-14派生数值及完整请求离线推进：新增golden_fact_operations独立候选，numeric binding使用op/operands/token，支持原值、顺序差值、单局比例转百分比及同指标比值百分比；拒绝除零、错误单位、混指标、跨role均值运算、错误顺序/数值，ROUND_HALF_UP只在最后按原句精度舍入。复用紧凑coverage并还原后执行原句/证据/issue/范围/coverage校验；旧candidate/v5不改。新增golden_fact_requests构造含完整新策略、替换而非叠加schema、单一可引用事实表、来源索引及有界纠正反馈的离线请求；修订传入canonical claims/operations。保存27段实际输入测量为56262初评/60764纠正/49156修订示例，输出均16384、超时180秒；纠正含48条候选错误经12条/3000字符裁剪，修订是scripted_not_maximum，非所有后续报告的预算保证。90项聚焦/相邻测试及编译通过；无Runtime注册、真实请求或语义通过，累计Provider预约仍至少108。下一步为将操作候选诊断补齐后注册独立Coach/Skill/Program/evaluation身份，复用这些完整请求构造器并保留实际出站输入预算检查、一次纠正、typed安全早停及canonical修订持久化；完成同SHA公共检查再执行新身份真实report-only，不能将direct_result结构合法当语义准入。8E仍in_progress，Workbench人工稿不变。
+
+代码：`golden_fact_operations.py`负责计算和canonical校验；`golden_fact_requests.py`提供离线完整请求构造；`check_golden_fact_requests.py`提供无网络测量。候选合同名称offline_fact_candidate/0.0.2未注册为正式身份。
+
+操作含义：value取原字段；difference=a-b；percent只支持明确比例字段乘100；ratio_percent=a/b*100，不是增长率或百分比变化。百分比变化尚无操作，禁止把ratio_percent误用为变化率。两元运算检查相同指标；两个role均值必须同位置。单纯正确计算仍不证明自然语言对象、因果或能力归因正确。
+
+完整提示保留安全策略、位置/来源/报告策略、两类audit、逐段覆盖、含混与unsupported对应完整issue、否定上下文、直接事实伪装检查、短解释要求。结构schema在正文仅出现一次，另由response_contract传递给适配器。两个位置的schema都计入预算。事实值仍有基础审查投影，但生成事实不再作为第二个generation_facts注册表重复添加。
+
+复现命令：
+
+```powershell
+.\.venv\Scripts\python.exe scripts/check_golden_fact_requests.py --source-run data/runs/golden_slice/golden_20260910_compact_1cd694d --report data/runs/inference_development/inference-dev-11278ba-coverage-report-b/revised-report.md
+```
+
+测量不是实际模型用量；修订用人工脚本构造的含混标签，只为测量输入形状，不是正式评估。完整真实循环尚未开始；后续修订文本变长、真实issues变多时须重新执行实际输入预算门。当前诊断参数仍由调用方提供；独立版本注册前必须接入适用于新操作/新scope空值的诊断器，不可直接使用只认识v5结构的旧诊断。
