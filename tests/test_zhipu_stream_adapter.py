@@ -506,6 +506,46 @@ def test_provider_sdk_iterator_error_keeps_typed_error_without_body() -> None:
     assert raw.closed is True
 
 
+@pytest.mark.parametrize(
+    ("error", "expected_code"),
+    [
+        (
+            httpx.ReadError(
+                "body transport detail",
+                request=httpx.Request("GET", "https://example.invalid"),
+            ),
+            "connection_failed",
+        ),
+        (
+            httpx.RemoteProtocolError(
+                "body protocol detail",
+                request=httpx.Request("GET", "https://example.invalid"),
+            ),
+            "connection_failed",
+        ),
+        (
+            httpx.ReadTimeout(
+                "body timeout detail",
+                request=httpx.Request("GET", "https://example.invalid"),
+            ),
+            "timeout",
+        ),
+    ],
+)
+def test_httpx_iterator_failures_use_bounded_provider_codes(error, expected_code) -> None:
+    raw = ClosableStream([chunk(content="partial")], error=error)
+    provider = ZhipuProvider(client=FakeClient(raw), model=MODEL)
+
+    with pytest.raises((ProviderUnavailableError, ProviderTimeoutError)) as caught:
+        provider.stream_adapter().assemble(request())
+
+    assert caught.value.code == expected_code
+    assert "transport detail" not in str(caught.value)
+    assert "protocol detail" not in str(caught.value)
+    assert "timeout detail" not in str(caught.value)
+    assert raw.closed is True
+
+
 def test_disabled_thinking_profile_rejects_reasoning_in_neutral_stream() -> None:
     raw = ClosableStream(
         [

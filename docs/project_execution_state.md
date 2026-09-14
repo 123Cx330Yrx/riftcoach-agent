@@ -13,9 +13,10 @@ pause_reason: ""
 
 ## 状态元数据
 
-2026-09-14范围合同v2第二次真实报告观察：新身份`inference-dev-d59c596-scope-v2-report-c`已通过同SHA公共CI并完成1次Provider预留；约29.7秒后流以`http11.receive_response_body.failed`结束，`content_chars=0`、`finish_reason/input_tokens/output_tokens`均为空，受控诊断为`worker_failed/provider_code=null`，receipt中的token计数为0。该次没有进入结构化解析或锚点语义判断，不能当作通过或失败语义样本；不复用身份。此前`inference-dev-6e0cde2-scope-v2-report`是另一种`finish_reason=length`/8192输出耗尽，二者分别保留。当前不继续controls；需先决定Provider流稳定性是否值得第三个新身份观察，8E和Workbench边界不变。
+2026-09-14 Provider流诊断分类修复：离线审查确认`http11.receive_response_body.failed`只是HTTP body迭代异常的观测事件，不能单独当作根因；最新失败流在约29.7秒内持续收到reasoning后断开，非本地90秒deadline。现将迭代期`httpx.ReadError/RemoteProtocolError/ConnectError/WriteError`映射为安全`connection_failed`，四类httpx timeout映射为`timeout`，并把`connection_failed/timeout/unexpected_sdk_error`加入body-free诊断白名单；不改重试、墙钟、close或assembly语义。新增HTTP迭代异常回归，相关69项测试/27 subtests、治理和差异检查通过。尚未新增Provider调用；下一步为同SHA公共CI，之后是否用低思考候选档位做独立观察仍保持隔离裁决。
 
 以下为此前证据，当前下一步以上述为准。
+
 
 
 
@@ -5162,3 +5163,5 @@ pytest 的首个错误仅是 PostgreSQL fixture 缺少 `RIFTCOACH_TEST_DATABASE_
 2026-09-14范围合同v2输出预算收口：首个真实scope-v2报告身份`inference-dev-6e0cde2-scope-v2-report`未拿到终态JSON，原因是Provider流在`finish_reason=length`、`output_tokens=8192`、`input_tokens=12507`、`content_chars=0`时结束，未进入锚点校验；该失败按`incomplete_stream/assembly_rejected`保留，不复用身份、不记作语义通过。为给终态结构化JSON留出空间，v2提示加入输出预算：锚点最多20字符、每条解释最多40字符、证据键只列必要项且不输出额外说明；并已重新生成v2资产组件指纹。32项范围/覆盖/诊断回归与治理检查通过，尚未产生新Provider调用。下一步是提交并完成同SHA公共CI，然后以新run-id重做report-only；controls保持暂停，8E与Workbench四块设计边界不变。
 
 2026-09-14范围合同v2第二次真实报告观察：新身份`inference-dev-d59c596-scope-v2-report-c`已通过同SHA公共CI并完成1次Provider预留；约29.7秒后流以`http11.receive_response_body.failed`结束，`content_chars=0`、`finish_reason/input_tokens/output_tokens`均为空，受控诊断为`worker_failed/provider_code=null`，receipt中的token计数为0。该次没有进入结构化解析或锚点语义判断，不能当作通过或失败语义样本；不复用身份。此前`inference-dev-6e0cde2-scope-v2-report`是另一种`finish_reason=length`/8192输出耗尽，二者分别保留。当前不继续controls；需先决定Provider流稳定性是否值得第三个新身份观察，8E和Workbench边界不变。
+
+2026-09-14 Provider流诊断分类修复：离线审查确认`http11.receive_response_body.failed`只是HTTP body迭代异常的观测事件，不能单独当作根因；最新失败流在约29.7秒内持续收到reasoning后断开，非本地90秒deadline。现将迭代期`httpx.ReadError/RemoteProtocolError/ConnectError/WriteError`映射为安全`connection_failed`，四类httpx timeout映射为`timeout`，并把`connection_failed/timeout/unexpected_sdk_error`加入body-free诊断白名单；不改重试、墙钟、close或assembly语义。新增HTTP迭代异常回归，相关69项测试/27 subtests、治理和差异检查通过。尚未新增Provider调用；下一步为同SHA公共CI，之后是否用低思考候选档位做独立观察仍保持隔离裁决。

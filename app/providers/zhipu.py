@@ -8,6 +8,7 @@ from types import SimpleNamespace
 from typing import TYPE_CHECKING, Any
 
 import openai
+import httpx
 
 from app.model_runtime import (
     ModelRuntimeProfile,
@@ -961,6 +962,21 @@ class ZhipuProvider:
                 code="timeout",
             )
         if isinstance(error, openai.APIConnectionError):
+            return ProviderUnavailableError(
+                provider=self.provider_name,
+                code="connection_failed",
+            )
+        # Stream iteration failures occur after ``create`` has returned, so
+        # the OpenAI SDK does not always wrap httpx's transport exception in
+        # APIConnectionError. Keep the mapping explicit and body-free.
+        if isinstance(error, (httpx.ReadTimeout, httpx.ConnectTimeout,
+                              httpx.WriteTimeout, httpx.PoolTimeout)):
+            return ProviderTimeoutError(
+                provider=self.provider_name,
+                code="timeout",
+            )
+        if isinstance(error, (httpx.ReadError, httpx.RemoteProtocolError,
+                              httpx.ConnectError, httpx.WriteError)):
             return ProviderUnavailableError(
                 provider=self.provider_name,
                 code="connection_failed",

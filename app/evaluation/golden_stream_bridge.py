@@ -34,6 +34,7 @@ SAFE_PROVIDER_FAILURE_CODES = frozenset({
     "stream_request_size", "stream_child_failed", "stream_child_response",
     "stream_cleanup_failed", "stream_close_failed", "stream_input_usage_limit",
     "stream_deadline", "stream_provider_identity", "stream_transport_identity",
+    "connection_failed", "timeout", "unexpected_sdk_error",
 })
 REQUEST = TypeAdapter(ChatRequest)
 RESPONSE = TypeAdapter(ChatResponse)
