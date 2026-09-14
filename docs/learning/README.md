@@ -992,3 +992,6 @@ Workbench、Auth、路由、`production_media=0`、黄金切片、安全/部署/
 保持不变；推进时钟测试覆盖旧固定时钟遗漏。聚焦 `18 passed`、相关相邻 `32 passed`；修复提交
 `110f9e8008486bfb976643a6abdaa8e88ea334e6` 的 Actions `33897787039` 三任务 exact-SHA 全绿，
 公共 pytest 2380、PostgreSQL 201、packaging-smoke 通过。当前等待新的真实协议授权，不自动重跑。
+
+
+2026-09-14范围合同v2离线修复：针对1.3.11真实报告把“输局的稳定同位置差距”错误标为selected_sample，新增隔离Coach1.3.12/Skill0.5.12/Program2.3.12/evaluation1.7.0。每条claim必须携带scope_anchor且逐字落在quote；selected_sample的锚点必须是本次/样本/所选/明确场次或n=数等局部范围表达。明确“这四场方向稳定”仍可supported，长期外推仍beyond_sample；不是禁止关键词。新增48项相关回归，无Provider调用；scope-v2预检绑定12案/24次和新资产解析通过。旧1.3.11及其真实失败证据冻结不改。唯一下一步为新提交同SHA公共CI，之后重新执行scope-v2报告复核；不自动重跑controls旧身份。

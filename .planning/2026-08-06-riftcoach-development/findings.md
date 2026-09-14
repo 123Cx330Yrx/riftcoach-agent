@@ -6106,3 +6106,6 @@ Luna独立离线probe使用已保存player_summary与当前ADVICE合同，未传
 
 
 2026-09-14流失败诊断加固：旧scope-controls第三案回执只有worker_failed且assembly_code=null，实际progress为provider_error、http11.response_closed.complete、36.656秒、无终态/用量，具体Provider根因仍未知。新增GoldenProcessStream受控SAFE_PROVIDER_FAILURE_CODES，仅在failure.json投影内部固定码，不保存SDK异常、响应正文、密钥或原始Provider文本；26项聚焦回归、治理和diff通过。此次是诊断加固，不改变模型调用预算、重试或旧回执，不重跑已失败身份。下一步先以新SHA公共验证，再决定最小新身份诊断；原报告scope真实漏检仍是质量门。
+
+
+2026-09-14范围合同v2离线修复：针对1.3.11真实报告把“输局的稳定同位置差距”错误标为selected_sample，新增隔离Coach1.3.12/Skill0.5.12/Program2.3.12/evaluation1.7.0。每条claim必须携带scope_anchor且逐字落在quote；selected_sample的锚点必须是本次/样本/所选/明确场次或n=数等局部范围表达。明确“这四场方向稳定”仍可supported，长期外推仍beyond_sample；不是禁止关键词。新增48项相关回归，无Provider调用；scope-v2预检绑定12案/24次和新资产解析通过。旧1.3.11及其真实失败证据冻结不改。唯一下一步为新提交同SHA公共CI，之后重新执行scope-v2报告复核；不自动重跑controls旧身份。

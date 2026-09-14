@@ -31,14 +31,14 @@ def _hash(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def prepare(source: Path, *, scope=False):
-    from app.runtime.coach_contract import SCOPE_COACH_CONTRACT
-    contract = SCOPE_COACH_CONTRACT if scope else CONTRACT
+def prepare(source: Path, *, scope=False, scope_v2=False):
+    from app.runtime.coach_contract import SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT
+    contract = SCOPE_V2_COACH_CONTRACT if scope_v2 else SCOPE_COACH_CONTRACT if scope else CONTRACT
     dataset = json.loads(DATASET.read_text(encoding="utf-8")); check_evidence(dataset)
     report_path = source / "output/final_report.md"
     if _hash(report_path) != dataset["source_report_sha256"]:
         raise ValueError("source_report_identity_mismatch")
-    assets = ROOT / "examples/runtime_profiles" / ("flash_v2_golden_scope" if scope else "flash_v2_golden_coverage")
+    assets = ROOT / "examples/runtime_profiles" / ("flash_v2_golden_scope_v2" if scope_v2 else "flash_v2_golden_scope" if scope else "flash_v2_golden_coverage")
     RuntimeCompositionRoot.from_directories(skills_root=assets / "skills", prompt_programs_root=assets / "prompt_programs", coach_contract=contract)
     summary = json.loads((source / "inputs/player_summary.json").read_text(encoding="utf-8"))
     # Bind the development labels to the same metric rows, not an arbitrary report.
@@ -88,11 +88,13 @@ def score_scope_case(case, result):
 
 def run(args):
     from app.runtime.coach_contract import SCOPE_COACH_CONTRACT
-    scope = getattr(args, "scope", False)
-    contract = SCOPE_COACH_CONTRACT if scope else CONTRACT
+    scope_v2 = getattr(args, "scope_v2", False)
+    scope = getattr(args, "scope", False) or scope_v2
+    from app.runtime.coach_contract import SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT
+    contract = SCOPE_V2_COACH_CONTRACT if scope_v2 else SCOPE_COACH_CONTRACT if scope else CONTRACT
     if scope and not (args.report_only or args.controls_only):
         raise ValueError("scope_requires_separate_report_or_controls_run")
-    dataset, summary, original = prepare(args.source_run, scope=scope)
+    dataset, summary, original = prepare(args.source_run, scope=scope, scope_v2=scope_v2)
     dataset_path = DATASET
     if scope:
         from scripts.check_golden_stability_calibration import DATASET as SCOPE_DATASET, SOURCE, check_evidence as check_scope
@@ -156,7 +158,7 @@ def run(args):
         registry = ToolRegistry()
         for definition in build_llm_tools(provider, request_policy=contract.request_policy): registry.register(definition)
         runtime = ToolRuntime(registry)
-        options = {"inference_audit": "scope" if scope else "coverage", "include_generation_facts": True, "include_deterministic_facts": True,
+        options = {"inference_audit": "scope_v2" if scope_v2 else "scope" if scope else "coverage", "include_generation_facts": True, "include_deterministic_facts": True,
                    "position_policy": contract.position_policy, "source_use_policy": contract.source_use_policy, "compact_report_policy": contract.compact_report_policy}
         return (GroundedChatEvaluationAdapter(runtime=runtime, system_prompt=EVALUATOR_SYSTEM_PROMPT, fact_pack_builder=build_fact_pack, **options),
                 GroundedCoachReviser(runtime=runtime, system_prompt=REVISER_SYSTEM_PROMPT, prompt_builder=lambda *x: "unused", validator=lambda *x: None, **options))
@@ -215,6 +217,7 @@ def main():
     p.add_argument("--controls-only", action="store_true")
     p.add_argument("--target-report", type=Path)
     p.add_argument("--scope", action="store_true")
+    p.add_argument("--scope-v2", action="store_true")
     p.add_argument("--execute", action="store_true")
     p.add_argument("--env-file", type=Path)
     p.add_argument("--ci-run")
