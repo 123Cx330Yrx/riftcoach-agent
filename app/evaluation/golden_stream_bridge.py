@@ -76,6 +76,7 @@ class BridgeObservation(Observation):
 
 
 class ExpandedBridgeObservation(BridgeObservation):
+    events: int = Field(default=0, ge=0, le=32768)
     schema_version: Literal["1.2"] = "1.2"
     first_event_ms: int | None = Field(default=None, ge=0, le=180000)
     first_reasoning_ms: int | None = Field(default=None, ge=0, le=180000)
@@ -88,6 +89,7 @@ class ExpandedBridgeObservation(BridgeObservation):
 
 
 class CapacityBridgeObservation(BridgeObservation):
+    events: int = Field(default=0, ge=0, le=65536)
     schema_version: Literal["1.3"] = "1.3"
     first_event_ms: int | None = Field(default=None, ge=0, le=300000)
     first_reasoning_ms: int | None = Field(default=None, ge=0, le=300000)
