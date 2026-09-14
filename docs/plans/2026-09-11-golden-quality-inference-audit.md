@@ -337,7 +337,7 @@ preserving old contract fingerprints and request budgets.” Parent gate stays o
 
 【已撤回的历史实现；不再作为下一步】2026-09-14 low+4096同步诊断分支离线接入：新增`--candidate-low-4096`，仅允许scope-v2/report-only；复用1.3.12语义contract/schema，但真实Provider身份单独记录`glm-5.3-flash-candidate-low-4096`、request policy 1.0.0与`transport_mode=sync`，直接使用既有候选low profile和`CandidateEvaluationBudgetedProvider`，不复用高档stream bridge，不改scope-v2资产指纹。预算为最多4次调用、4096输出、72,000总token，响应journal body-free。38项聚焦回归、预检、治理和差异检查通过；本批尚未调用Provider。若公共CI通过，下一步才执行一个全新低档report-only身份；结果只用于区分同步低档语义可用性与高档stream故障，不构成stream或生产证据。
 
-2026-09-14审计纠正（取代此前模型策略澄清及low下一步）：Luna指Codex执行工作时的协作模型，与RIFTCOACH的GLM模型策略无关；此前将其写成“用户确认”是助手误记，撤销该归因和等待模型策略裁决的下一步。撤回00fa4ad新增的scope-v2 low诊断入口，恢复高档响应正文私有留档和I/O前预约计数；既有独立low研究资产不删除。保留scope-v2与HTTP异常分类修复，但两次真实scope-v2均未得到有效评估，断流根因及原报告语义漏检仍未解决。当前下一步为本轮修复验证与公共检查，随后继续高档故障定位及原报告验证；不因Luna调整GLM档位。Stage 8E仍in_progress，Workbench四块设计后置。
+2026-09-14审计纠正（取代此前模型策略澄清及low下一步）：Luna指Codex执行工作时的协作模型，与RIFTCOACH的GLM模型策略无关；此前将其写成“用户确认”是助手误记，撤销该归因和等待模型策略裁决的下一步。撤回00fa4ad新增的scope-v2 low诊断入口，恢复高档响应正文私有留档和I/O前预约计数；既有独立low研究资产不删除。保留scope-v2与HTTP异常分类修复，但两次真实scope-v2均未得到有效评估，断流根因及原报告语义漏检仍未解决。修复提交1eb8c440d24a8905f0e61592ff22a6628b4fd40a已由Actions34803738781同SHA三项success验证，本地相邻255项及补充中文锚点聚焦14项通过。当前下一步为继续高档故障定位及原报告真实验证；不因Luna调整GLM档位。Stage 8E仍in_progress，Workbench四块设计后置。
 
 
 ## 2026-09-14 额度耗尽检查点之后的修复审计
@@ -353,3 +353,5 @@ preserving old contract fingerprints and request budgets.” Parent gate stays o
 - 保留的有效改动：scope-v2显式合同/独立资产、输出简化提示、httpx安全异常分类。后者改善可诊断性而非修复网络；输出简化尚未证实能解决reasoning耗尽。
 - 未解决的产品问题：高档完整响应稳定性、原报告含混措辞的真实检出与修订、完整12案验证。需在公共CI之后沿用高档和新运行身份继续验证；本次代码纠错不算这些问题已通过。
 - 工作台人工稿、默认配置、历史回执、主工作树用户修改均未改动。
+
+公共收口：修复提交`1eb8c440d24a8905f0e61592ff22a6628b4fd40a`对应[Actions34803738781](https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/34803738781)，pytest、postgres-migrations、packaging-smoke均success。零网络scope-v2/report-only预检通过，合同SHA和8192输出上限保持不变。本轮没有真实Provider请求；这不是原报告语义质量收口。
