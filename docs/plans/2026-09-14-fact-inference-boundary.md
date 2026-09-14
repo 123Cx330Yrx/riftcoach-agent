@@ -93,3 +93,10 @@ scope-v5 的四种 scope 同时承担“陈述是什么”和“推断适用哪�
 ```
 
 测量不是实际模型用量；修订用人工脚本构造的含混标签，只为测量输入形状，不是正式评估。完整真实循环尚未开始；后续修订文本变长、真实issues变多时须重新执行实际输入预算门。当前诊断参数仍由调用方提供；独立版本注册前必须接入适用于新操作/新scope空值的诊断器，不可直接使用只认识v5结构的旧诊断。
+
+
+## 2026-09-14 独立Runtime版本接线
+
+2026-09-14事实推断独立版本接线：新增fact_v1/Coach1.3.17/Skill0.5.17/Program2.3.17/evaluation1.11.0，合同快照7f1ca3c6b5efe2a449d8ecadb0e98a8591f2eb5e2d2d91563ad2af571d62aa02。复用完整候选请求及实际输入预算门；新增含原句/计算binding位置的固定错误码诊断，与issue/coverage关系共用ledger，最多12条/3000字符。原始JSON保留到canonical展开校验，完整绑定持久化并传入修订；初评/唯一纠正的typed prompt_injection均单次安全早停，超输入预算在I/O前拒绝。--fact-inference仅允许独立expanded-output/report-only，五调用/一次修订/high/16384/180秒/401920上界不变。旧1.3.16快照及资产保留。实际Adapter保存27段首评/纠正/脚本修订输入估算56254/56726/44034，全部16384输出；这里纠正回放旧schema失败，修订脚本为空audit形状，不能当最坏修订预算，完整有界诊断候选上轮60764仍是参考，真实每次重检输入。两组122项及134项回归通过（存在重叠），编译/治理通过；真实入口无I/O预检绑定同一96分稿SHA。上一批cc49f9e/Actions34825603586已三job success；本批待同SHA公共三项后执行新身份fact-inference真实report-only，按完整初评/至多一次修订/复评审查，不运行controls或替换Workbench人工稿。Provider累计至少108，无新增真实预约；语义伪装、真实完整返回与自动漏检修复均未验收，8E保持in_progress。
+
+`golden_fact_runtime.py`连接已测构造器与既有ToolRuntime/CoachBudgetedProvider。`golden_fact_diagnostics.py`先读取字段结构，再收集关系和运算错误；不自动修改任何响应。新资产位于`examples/runtime_profiles/flash_v2_golden_fact`，内容指纹包含事实、运算、提示、诊断及接线实现。新标识不等于默认或生产准入。语义评估仍可能误分类，尤其伪装为direct_result的能力结论，必须通过后续真实对照验证，不能以本批结构测试宣称修复。

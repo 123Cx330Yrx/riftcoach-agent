@@ -38,6 +38,11 @@ def collect_diagnostics(raw, report, facts):
         wire = _WireShape.model_validate_json(raw, strict=True)
     except (ValueError, TypeError):
         return [{"codes": ["invalid_json_or_schema"]}]
+    return collect_relations(wire, report, facts)
+
+
+def collect_relations(wire, report, facts, *, check_anchors=True):
+    """Shared relation ledger; never mutates the supplied diagnostic shape."""
     errors = []
 
     def add(codes, **location):
@@ -69,9 +74,9 @@ def collect_diagnostics(raw, report, facts):
                     codes.append("unsupported_exact_issue_missing")
                 if wire.verdict == "pass":
                     codes.append("unsupported_requires_nonpass")
-            if claim.scope_anchor not in claim.quote:
+            if check_anchors and claim.scope_anchor not in claim.quote:
                 codes.append("scope_anchor_not_in_quote")
-            if claim.scope == "selected_sample" and not SAMPLE_ANCHOR.search(claim.scope_anchor):
+            if check_anchors and claim.scope == "selected_sample" and not SAMPLE_ANCHOR.search(claim.scope_anchor):
                 codes.append("selected_sample_anchor_missing")
             if any(ref not in facts for ref in claim.evidence_refs):
                 codes.append("unknown_evidence_ref")

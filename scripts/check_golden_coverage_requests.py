@@ -17,9 +17,9 @@ from app.tools.adapters.llm import build_llm_tools
 from scripts.check_coach_golden_replay import _ReplayProvider
 
 
-def measure(source, report_path, *, scope=False, scope_v3=False, scope_v4=False, scope_v5=False, failed_response=None):
-    from app.runtime.coach_contract import FEEDBACK_COACH_CONTRACT, SCOPE_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT
-    contract = FEEDBACK_COACH_CONTRACT if scope_v5 else SCOPE_V4_COACH_CONTRACT if scope_v4 else SCOPE_V3_COACH_CONTRACT if scope_v3 else SCOPE_COACH_CONTRACT if scope else CONTRACT
+def measure(source, report_path, *, scope=False, scope_v3=False, scope_v4=False, scope_v5=False, fact_inference=False, failed_response=None):
+    from app.runtime.coach_contract import FACT_INFERENCE_COACH_CONTRACT, FEEDBACK_COACH_CONTRACT, SCOPE_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT
+    contract = FACT_INFERENCE_COACH_CONTRACT if fact_inference else FEEDBACK_COACH_CONTRACT if scope_v5 else SCOPE_V4_COACH_CONTRACT if scope_v4 else SCOPE_V3_COACH_CONTRACT if scope_v3 else SCOPE_COACH_CONTRACT if scope else CONTRACT
     summary = json.loads((source / "inputs/player_summary.json").read_text(encoding="utf-8"))
     report = report_path.read_text(encoding="utf-8")
     deterministic = (source / "inputs/deterministic_report.md").read_text(encoding="utf-8")
@@ -33,9 +33,9 @@ def measure(source, report_path, *, scope=False, scope_v3=False, scope_v4=False,
             evaluation = {"score": 95, "verdict": "pass", "issues": [], "passed_checks": [], "summary": "Scripted size probe only",
                 "audits": [{"kind": kind, "status": "not_applicable", "claims": []} for kind in ("metric_to_ability", "cohort_comparison")],
                 "coverage": [{"block_id": b["block_id"], "metric_to_ability": "not_applicable", "cohort_comparison": "not_applicable"} for b in report_blocks(report)]}
-            if scope or scope_v3 or scope_v4 or scope_v5:
+            if scope or scope_v3 or scope_v4 or scope_v5 or fact_inference:
                 for item in evaluation["coverage"]: item["scope_ambiguous"] = False
-            if scope_v4 or scope_v5:
+            if scope_v4 or scope_v5 or fact_inference:
                 evaluation["coverage"] = [[r["block_id"], "N", "N", False] for r in evaluation["coverage"]]
             content = json.dumps(evaluation) if request.response_contract else report
             if failed_response is not None and len(requests) == 1:
@@ -46,7 +46,7 @@ def measure(source, report_path, *, scope=False, scope_v3=False, scope_v4=False,
     registry = ToolRegistry()
     for definition in build_llm_tools(CoachBudgetedProvider(Offline(), coach_contract=contract), request_policy=contract.request_policy):
         registry.register(definition)
-    options = dict(runtime=ToolRuntime(registry), inference_audit="scope_v5" if scope_v5 else "scope_v4" if scope_v4 else "scope_v3" if scope_v3 else "scope" if scope else "coverage", include_generation_facts=True, include_deterministic_facts=True,
+    options = dict(runtime=ToolRuntime(registry), inference_audit="fact_v1" if fact_inference else "scope_v5" if scope_v5 else "scope_v4" if scope_v4 else "scope_v3" if scope_v3 else "scope" if scope else "coverage", include_generation_facts=True, include_deterministic_facts=True,
                    position_policy=contract.position_policy, source_use_policy=contract.source_use_policy, compact_report_policy=contract.compact_report_policy)
     evaluator = GroundedChatEvaluationAdapter(system_prompt=EVALUATOR_SYSTEM_PROMPT, fact_pack_builder=build_fact_pack, **options)
     result = evaluator.evaluate(EvaluationRequest(summary, deterministic, knowledge, report, "Observe report quality."))

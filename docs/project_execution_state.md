@@ -13,6 +13,15 @@ pause_reason: ""
 
 ## 状态元数据
 
+2026-09-14事实推断独立版本接线：新增fact_v1/Coach1.3.17/Skill0.5.17/Program2.3.17/evaluation1.11.0，合同快照7f1ca3c6b5efe2a449d8ecadb0e98a8591f2eb5e2d2d91563ad2af571d62aa02。复用完整候选请求及实际输入预算门；新增含原句/计算binding位置的固定错误码诊断，与issue/coverage关系共用ledger，最多12条/3000字符。原始JSON保留到canonical展开校验，完整绑定持久化并传入修订；初评/唯一纠正的typed prompt_injection均单次安全早停，超输入预算在I/O前拒绝。--fact-inference仅允许独立expanded-output/report-only，五调用/一次修订/high/16384/180秒/401920上界不变。旧1.3.16快照及资产保留。实际Adapter保存27段首评/纠正/脚本修订输入估算56254/56726/44034，全部16384输出；这里纠正回放旧schema失败，修订脚本为空audit形状，不能当最坏修订预算，完整有界诊断候选上轮60764仍是参考，真实每次重检输入。两组122项及134项回归通过（存在重叠），编译/治理通过；真实入口无I/O预检绑定同一96分稿SHA。上一批cc49f9e/Actions34825603586已三job success；本批待同SHA公共三项后执行新身份fact-inference真实report-only，按完整初评/至多一次修订/复评审查，不运行controls或替换Workbench人工稿。Provider累计至少108，无新增真实预约；语义伪装、真实完整返回与自动漏检修复均未验收，8E保持in_progress。
+
+- 本地代码：独立版本及一次纠正/修订接线通过；真实质量验证待执行。
+- 所有者理解：已解释校验接线与语义准入区别，无新增理解验收。
+- 参考来源审计：同一ShowMaker五局和原报告，无新来源。
+- 公共作品/部署成熟度：上一批公共三项通过，本批待同SHA检查，无部署。
+
+以下为历史记录。
+
 2026-09-14派生数值及完整请求离线推进：新增golden_fact_operations独立候选，numeric binding使用op/operands/token，支持原值、顺序差值、单局比例转百分比及同指标比值百分比；拒绝除零、错误单位、混指标、跨role均值运算、错误顺序/数值，ROUND_HALF_UP只在最后按原句精度舍入。复用紧凑coverage并还原后执行原句/证据/issue/范围/coverage校验；旧candidate/v5不改。新增golden_fact_requests构造含完整新策略、替换而非叠加schema、单一可引用事实表、来源索引及有界纠正反馈的离线请求；修订传入canonical claims/operations。保存27段实际输入测量为56262初评/60764纠正/49156修订示例，输出均16384、超时180秒；纠正含48条候选错误经12条/3000字符裁剪，修订是scripted_not_maximum，非所有后续报告的预算保证。90项聚焦/相邻测试及编译通过；无Runtime注册、真实请求或语义通过，累计Provider预约仍至少108。下一步为将操作候选诊断补齐后注册独立Coach/Skill/Program/evaluation身份，复用这些完整请求构造器并保留实际出站输入预算检查、一次纠正、typed安全早停及canonical修订持久化；完成同SHA公共检查再执行新身份真实report-only，不能将direct_result结构合法当语义准入。8E仍in_progress，Workbench人工稿不变。
 
 - 本地代码：派生操作与完整请求离线通过；独立版本注册和诊断接线待完成。
