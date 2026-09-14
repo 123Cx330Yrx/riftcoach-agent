@@ -1,5 +1,7 @@
 # RiftCoach 持续开发进度
 
+2026-09-14紧凑覆盖版本接线：新增scope-v4/Coach1.3.14/Skill0.5.14/Program2.3.14/evaluation1.9.0，出站coverage使用四元素数组，原始JSON（含纠正响应）在共享一次纠正预算内严格展开并执行V17及validate_scope_v2；结果和修订输入保存canonical coverage/audits/issues。安全早停仍优先识别typed high prompt_injection，不因coverage损坏尝试纠正；此前“安全早停之前恢复canonical”应以此保留安全短路的顺序为准。旧1.3.12/1.3.13身份及high/8192/90秒/调用预算不变。69项聚焦通过；27段实际形状请求输入上界50906/47508，输出上限8192，预检绑定同一96分稿和最多5调用。本地接线已完成，真实完整返回及含混检出尚未验证。下一步为同实现SHA公共三项通过后，执行新身份scope-v4高档report-only；先审查真实结果，controls仍后置。Provider累计至少103，无新增调用；Stage8E保持in_progress。
+
 当前接续：e39cb6e/Actions34446812086已同SHA三job成功；新鲜协议3调用后保存五局Coach完成5调用、3检索、一次修订，62→82分，revision_budget_exhausted而拒绝。位置意愿和跨位置混评已被审查/修正；复评又因评分投影遗漏实际存在的单局伤害占比、采集时间而误判缺证。新增独立1.3.4复用生成端既有事实投影，送达评分/纠正/修订/复评；原质量/资源墙不变，离线136项通过，待公共CI。OP.GG实际建议消费、本人Training和live Workbench尚未验收，8E仍in_progress。
 
 

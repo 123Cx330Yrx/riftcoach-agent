@@ -13,6 +13,10 @@ pause_reason: ""
 
 ## 状态元数据
 
+2026-09-14紧凑覆盖版本接线：新增scope-v4/Coach1.3.14/Skill0.5.14/Program2.3.14/evaluation1.9.0，出站coverage使用四元素数组，原始JSON（含纠正响应）在共享一次纠正预算内严格展开并执行V17及validate_scope_v2；结果和修订输入保存canonical coverage/audits/issues。安全早停仍优先识别typed high prompt_injection，不因coverage损坏尝试纠正；此前“安全早停之前恢复canonical”应以此保留安全短路的顺序为准。旧1.3.12/1.3.13身份及high/8192/90秒/调用预算不变。69项聚焦通过；27段实际形状请求输入上界50906/47508，输出上限8192，预检绑定同一96分稿和最多5调用。本地接线已完成，真实完整返回及含混检出尚未验证。下一步为同实现SHA公共三项通过后，执行新身份scope-v4高档report-only；先审查真实结果，controls仍后置。Provider累计至少103，无新增调用；Stage8E保持in_progress。
+
+以下为历史记录。
+
 2026-09-14紧凑覆盖候选离线验证：新增golden-compact-coverage-v1纯转换模块与测量脚本，尚未注册Runtime或真实入口。每段用[block_id,N/S/U,N/S/U,bool]保留原ID、顺序、两类状态与含混标记；只转换coverage，issues/audits/原句/证据不变，还原后调用原V17及validate_scope_v2全部校验。JSON重复键、非法状态/布尔、漏段重复乱序、过时ID、隐藏含混、缺issue、假锚点/证据拒绝；正确明确样本内描述仍可通过。54项聚焦及相邻测试、编译通过。旧1d9504d完整评估的27段coverage从3343降至838字符，整个JSON从6882降至4377字符（约36.4%）；该回执只作为大小样本，旧漏检标签不视为正确，不把字符数当token或速度证据。比较后优先选择紧凑表示：保持全报告上下文和现有调用数量；分段方案暂不采用，因重复输入和跨段关系/汇总需额外预算合同。下一步以新显式Coach/评估合同接入紧凑wire格式，在安全早停之前和修订保存之前恢复canonical结构，共享既有一次格式纠正预算；完成实际出站/修订回传测试及同SHA公共CI后再高档真实report-only。本轮Provider0、累计至少103，旧1.3.13及失败证据冻结，8E仍in_progress。
 
 以下为历史记录。
