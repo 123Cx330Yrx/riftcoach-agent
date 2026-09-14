@@ -355,3 +355,6 @@ preserving old contract fingerprints and request budgets.” Parent gate stays o
 - 工作台人工稿、默认配置、历史回执、主工作树用户修改均未改动。
 
 公共收口：修复提交`1eb8c440d24a8905f0e61592ff22a6628b4fd40a`对应[Actions34803738781](https://github.com/123Cx330Yrx/riftcoach-agent/actions/runs/34803738781)，pytest、postgres-migrations、packaging-smoke均success。零网络scope-v2/report-only预检通过，合同SHA和8192输出上限保持不变。本轮没有真实Provider请求；这不是原报告语义质量收口。
+
+
+2026-09-14高档接续真实观察：提交89caceaeb0ec9c5917e2f4d61b5697eecf37234b/Actions34804211689同SHA三任务success后，执行新身份inference-dev-89cacea-scope-v2-report，保持1.3.12/high/8192及同一96分稿。仅1次Provider预约，13.406秒首reasoning，89.968秒仍收到事件，90秒截止并关闭；8005 events、24610 reasoning chars、正文0，failure明确provider_code=stream_deadline。未得终态/Usage/评估JSON，父receipt的0计量不是零费用；累计预约至少102，新增用量未知。该次未重现29.7秒断流，不能据此认定历史连接问题已修复；也不是语义通过。停止controls及原样重复调用。离线核对27段报告、2620字符继承策略和3670字符schema，发现旧规则泛称小样本不能证明稳定性与新规则允许明确样本内方向稳定并存，旧coverage字段说明未同步范围字段；这是待消歧问题，不认定为超时根因。唯一下一步：整理独立新版本评估规则，消除继承歧义并离线验证原漏检/合理样本描述及输出预算；通过公共检查后再进行新身份高档真实验证。Workbench人工稿、默认配置和既有回执不变，8E仍in_progress。
