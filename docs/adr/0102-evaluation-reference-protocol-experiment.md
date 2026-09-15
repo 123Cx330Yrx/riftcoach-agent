@@ -1,9 +1,106 @@
 # ADR-0102: Source references and bounded evaluation correction
 
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
-an isolated candidate; no runtime adoption or semantic-quality approval.
+an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
-## 2026-09-15 isolated candidate implementation
+## 2026-09-15 four-case observation and next diagnostic experiment
+
+Implementation `9c5aad9cb2e9c3764b23e78435c7daa5048763fe` passed all three jobs
+in Actions `34936247772`. The critical real batch did not pass. The original
+receipt and 47 original files remain unchanged; `audit-v2.json` is a separate
+private replay, not a replacement receipt or new model output.
+
+| Case | Accepted final | Manual assessment |
+|---|---|---|
+| stable_unbounded | 95/pass, after anchor-only patch | Wrong acceptance: section heading treated as definition of stability |
+| stable_defined_before | 96/pass | Correct explicit forward definition |
+| heading_unbounded | 95/pass, after full reassessment | Wrong acceptance: unrelated summary limitation treated as definition of this heading |
+| heading_defined_after | None | Initial definition reasoning appropriate, but numeric/anchor contract failed; reassessment connection failed |
+
+Seven reservations, six complete responses: 78479 input + 66435 output = 144914
+returned tokens. One interrupted request has unknown usage; cumulative requests
+are at least 162. Counts are planned 4 / started 4 / finalized 3 / interrupted 1 /
+not started 0. Last worker failed at 151438 ms with `connection_failed`; there was
+no visible content, finish or usage. This is not evidence of a 300-second deadline
+or output exhaustion. Underlying connection cause remains unknown.
+
+Scoring defect: the first target was fully quoted except its final Chinese full
+stop. The prior exact-string scorer called this target absent. The corrected
+scorer requires its original block and every word, allowing only omission of
+that final full stop. It now records wrong acceptance; neither target nor whole
+report becomes correct. Old labels, evaluations and receipts are preserved.
+
+Diagnostic regression: contextual reassessment sent only one error code. The new
+offline helper reports claim/reference positions and actual unsupported numeric
+source candidates without changing a response or accepting one. Independent
+claim diagnosis also reveals two anchors hidden behind the last case's initial
+420 error. Actual queue candidates reference all five `/queue_id` fields. Five
+saved response replays with complete feedback measure 57910–59848 input ceilings,
+below 64000. This helper is not yet part of frozen Coach 1.3.27.
+
+Decision: reject another unchanged full-review run or a regex that declares
+semantic correctness. First isolate the interpretation question in a small
+**diagnostic experiment**, not a replacement evaluator: send each of the same
+four complete reports with full facts, knowledge and one source-bound target.
+Do not send expected labels, case names, prior verdicts, or prior explanations.
+Ask only whether the exact assertion has an explicit definition/negation or
+needs clarification; require the actual referring phrase and defined meaning
+from source text. Program validation checks exact references and output shape,
+not whether those phrases semantically establish the relationship.
+
+This changes task decomposition and output obligation, not GLM profile. Freeze
+an experiment ID and implementation/source hashes, validate inputs and public CI,
+then make at most four separate calls (one per case; no repair, report revision,
+or automatic rerun). Keep high / 32768 output / 300 seconds / zero SDK retries
+and 401920 tokens / 900 seconds for the batch. Stop on protocol or transport
+failure; preserve unknown usage and unfinished cases. Compare both positive and
+negative cases manually. It is an assistant-labeled development diagnostic,
+not holdout, not whole-report acceptance, and cannot prove task size alone caused
+the previous failure. A production candidate needs a budgeted integration
+choice and full evaluation/revision validation after this experiment.
+
+Data/control flow: frozen complete report + facts + target reference → narrow
+model judgment → reference/shape validation → immutable response and score →
+manual semantic audit. The legacy evaluator and product report are untouched.
+Code, tests, runbook and measured results are recorded with this section as the
+experiment is completed. Stage 8E and all deferred Workbench scope stay unchanged.
+
+### Diagnostic implementation and verification
+
+`golden_context_diagnostics.py` supplies bounded reference/numeric hints and
+unabridged context pairs for inspection. `run_golden_context_controls.py` fixes
+terminal-full-stop scoring while retaining exact block/word binding.
+`golden_context_relation_probe.py` and `run_golden_context_relation_probe.py`
+implement the independent diagnostic contract `context_relation_probe/1.0.0`
+and experiment `golden-context-relation-probe-v1`. This is not a new Coach
+version or a replacement for frozen 1.3.27. No production runtime is registered.
+
+The complete four requests measure 36708, 36870, 36736, and 36800 input ceilings;
+see `data/evaluation/results/golden_context_relation_probe_v1.json`. At their
+output caps their total reservation estimate is 278186, below the unchanged
+401920 batch limit. Every actual request is checked again. This is not token
+usage or a guarantee all four finish within 900 seconds.
+
+Runbook: `python -m scripts.run_golden_context_relation_probe --source-run
+ data/runs/golden_slice/golden_20260910_compact_1cd694d --base-report
+ data/runs/inference_development/inference-dev-c69cb3e-evidence-v7-report/revised-report.md`
+previews without secret/CI/Provider I/O. Only after same-SHA three-job CI, append
+`--execute --env-file <private-path> --ci-run <run> --run-id context-relation-<sha>-critical`.
+All four cases and their already frozen labels are fixed by the manifest. Labels
+and prior verdicts/explanations never enter a request. Existing run directories
+are refused. Reservations precede I/O; transport failures preserve started but
+unfinished cases, and invalid JSON/reference output stops after saving that case.
+Semantic disagreement alone completes the selected four; no automatic retry.
+
+107 focused/adjacent regressions passed; after adding missing-content diagnostics,
+all 11 diagnostic tests passed again. Compilation and governance checks passed.
+These regressions cover scoring, independent location/numeric diagnosis,
+full request/transport budgeting, literal reference validation, zero-I/O preview,
+one-call execution, and protocol/transport/semantic counter distinctions.
+The verifier checks a phrase exists, not whether it really defines the target.
+A source-valid but semantically wrong judgment remains a failed diagnostic.
+
+## 2026-09-15 isolated candidate implementation (historical preparation)
 
 The next implementation is now opt-in Coach **1.3.27**, Skill **0.5.27**, Program
 **2.3.27**, evaluation **1.20.0**, policy `golden-context-reference-v1`. This is an

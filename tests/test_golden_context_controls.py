@@ -24,7 +24,7 @@ def result_fixture():
 
 def test_target_correctness_is_independent_of_whole_report_failure():
     result, target = result_fixture()
-    case = dict(id="target", target=target, expected_target="accept", expected_report="reject", must_flag="长期能力差。")
+    case = dict(id="target", target=target, report=target, expected_target="accept", expected_report="reject", must_flag="长期能力差。")
     audits = json.loads(json.dumps(result.audits))
     audits[1]["claims"].append(dict(audits[1]["claims"][0], quote="长期能力差。", status="unsupported", scope="beyond_sample"))
     bad = replace(result, verdict=EvaluationVerdict.NEEDS_REVISION, audits=tuple(audits),
@@ -37,9 +37,25 @@ def test_target_correctness_is_independent_of_whole_report_failure():
 
 def test_pass_without_target_claim_does_not_count_as_semantic_acceptance():
     result, target = result_fixture()
-    case = dict(id="target", target=target, expected_target="accept", expected_report="accept")
+    case = dict(id="target", target=target, report=target, expected_target="accept", expected_report="accept")
     row = controls.score(case, replace(result, audits=()))
     assert row["report_matched"] and not row["target_matched"]
+
+
+def test_terminal_full_stop_does_not_hide_wrong_acceptance_but_words_and_block_are_exact():
+    result, target = result_fixture()
+    audits = json.loads(json.dumps(result.audits))
+    original = audits[1]["claims"][0]
+    target = target.replace("。[K1]", "。")
+    from app.evaluation.golden_inference_coverage import report_blocks
+    original.update(quote=target[:-1], block_id=report_blocks(target)[0]["block_id"])
+    case = dict(id="target", target=target, report=target, expected_target="clarify", expected_report="clarify")
+    row = controls.score(case, replace(result, audits=tuple(audits)))
+    assert row["target_accepted"] and not row["target_matched"]
+    original["quote"] = original["quote"][:-2]
+    assert not controls.score(case, replace(result, audits=tuple(audits)))["target_accepted"]
+    original.update(quote=target, block_id="b99-invalid")
+    assert not controls.score(case, replace(result, audits=tuple(audits)))["target_accepted"]
 
 
 def test_complete_assembly_removes_confounding_definition_and_preserves_rest(monkeypatch):

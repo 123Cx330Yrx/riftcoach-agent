@@ -7,6 +7,7 @@ import re
 from app.evaluation.golden_context_requests import evaluation_request
 from app.evaluation.golden_review_experiment import compact, digest
 from app.evaluation.golden_journal import write_new_json
+from app.evaluation.golden_inference_coverage import report_blocks
 from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
 from app.harness.adapters import _evaluation_payload
 from app.harness.steps import EvaluationRequest, KnowledgeEvidence, KnowledgeCitation
@@ -64,11 +65,19 @@ def load_inputs(source_run, base_report):
     return summary, deterministic, knowledge, load_cases(base_report.read_text(encoding="utf-8"))
 
 
+def target_quote_matches(target, quote):
+    """Allow omission of the terminal Chinese full stop, never any claim text."""
+    return quote == target or (target.endswith("。") and quote == target[:-1])
+
+
 def score(case, result):
     payload = _evaluation_payload(result)
-    # Exact target binding prevents an error elsewhere from counting as detection.
-    claims = [c for a in payload.get("audits", []) for c in a["claims"] if c["quote"] == case["target"]]
-    issues = [i for i in payload["issues"] if i["quote"] == case["target"]]
+    # Require the exact source block and all words. A missing terminal Chinese
+    # full stop is not a missing semantic target; other excerpts remain excluded.
+    blocks = {b["block_id"] for b in report_blocks(case["report"]) if case["target"] in b["text"]}
+    claims = [c for a in payload.get("audits", []) for c in a["claims"]
+              if c.get("block_id") in blocks and target_quote_matches(case["target"], c["quote"])]
+    issues = [i for i in payload["issues"] if target_quote_matches(case["target"], i["quote"])]
     clarified = any(c["scope"] == "ambiguous" for c in claims) and any(i["category"] == "other" for i in issues)
     rejected = any(c["status"] == "unsupported" for c in claims) and bool(issues)
     accepted = bool(claims) and all(c["status"] == "supported" and c["scope"] != "ambiguous" for c in claims) and not issues
