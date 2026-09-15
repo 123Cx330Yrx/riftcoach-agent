@@ -221,3 +221,81 @@ def test_feedback_cap_cannot_hide_any_of_48_claim_scope_errors():
     assert {row[0] for row in matrix['targets']}==set(state.mutable_claims)
     assert len(matrix['targets'])==48
     assert len(json.dumps(feedback,ensure_ascii=False))<=3000
+
+
+def outcome_pack():
+    from app.evaluation.golden_fact_candidate import fact_pack
+    source=summary()
+    source['matches']=[dict(match_id=f'TEST_{i}',included_in_aggregate=True,
+        role='MIDDLE',win=win,cs_per_min=cs) for i,(win,cs) in enumerate(
+            [(True,8.95),(True,8.66),(False,9.64),(False,8.38)])]
+    source['matches'].append(dict(match_id='SUPPORT',included_in_aggregate=True,
+        role='UTILITY',win=False,cs_per_min=1.34))
+    return fact_pack(source)
+
+
+def test_complete_cited_rows_support_role_outcome_mean_without_derived_ref():
+    pack=outcome_pack()
+    refs=[f'facts:recent_match:{i:02}' for i in range(5)]
+    row=SimpleNamespace(quote='中单输局补刀9.01，赢局8.81。',evidence_refs=refs)
+    ledger=numeric_support(row,pack)
+    assert all(v['supported'] for v in ledger)
+    evidence=next(v for v in ledger if v['token']=='9.01')['candidates'][0]
+    assert evidence['op']=='cited_complete_role_outcome_mean'
+    assert evidence['role']=='MIDDLE' and evidence['outcome']=='loss'
+    assert evidence['operands']==[('facts:recent_match:02','/cs_per_min'),('facts:recent_match:03','/cs_per_min')]
+    assert row.evidence_refs==refs
+
+
+@pytest.mark.parametrize('mutation',['missing_citation','missing_metric','other_role','excluded','wrong_value','unknown_provenance'])
+def test_outcome_mean_does_not_invent_operands_or_cross_roles(mutation):
+    pack=outcome_pack();refs=[f'facts:recent_match:{i:02}' for i in range(5)]
+    quote='中单输局补刀9.01。'
+    if mutation=='missing_citation':refs.remove('facts:recent_match:03')
+    if mutation=='missing_metric':pack['facts']['facts:recent_match:03']['cs_per_min']=None
+    if mutation=='other_role':pack['facts']['facts:recent_match:03']['role']='UTILITY'
+    if mutation=='excluded':pack['facts']['facts:recent_match:03']['included_in_aggregate']=False
+    if mutation=='wrong_value':quote='中单输局补刀9.02。'
+    if mutation=='unknown_provenance':pack['provenance'].pop('facts:recent_match:03')
+    ledger=numeric_support(SimpleNamespace(quote=quote,evidence_refs=refs),pack)
+    assert not all(v['supported'] for v in ledger)
+
+
+@pytest.mark.parametrize('quote,anchor,valid',[
+    ('输局中艾尼维亚的表现是值得单局验证的假设。','输局中',True),
+    ('赢局中的表现仅限本次观察。','赢局中',True),
+    ('输局中表现更差。','输局中',False),
+    ('中单的表现是值得单局验证的假设。','中单',False),
+    ('赢局中表现仅限本次观察。','输局中',False),
+])
+def test_outcome_anchor_needs_sample_limitation_in_its_own_cited_passage(quote,anchor,valid):
+    inputs,first=fixture(quote)
+    first['audits'][0]['claims']=[claim(inputs,quote,scope_anchor=anchor)]
+    if valid:
+        result=expand_context(compact(first),quote,json.loads(inputs.pack_json))
+        assert result.audits[0].claims[0].scope_anchor==anchor
+    else:
+        with pytest.raises(ValueError,match='scope_anchor_invalid'):
+            expand_context(compact(first),quote,json.loads(inputs.pack_json))
+
+
+def test_sample_words_do_not_cancel_an_unsupported_future_issue():
+    quote='本次输局的情况保证所有未来输局都会更差。'
+    inputs,first=fixture(quote)
+    first['audits'][0]['claims']=[claim(inputs,quote,status='unsupported',
+        scope='beyond_sample',scope_anchor='未来')]
+    with pytest.raises(ValueError):
+        expand_context(compact(first),quote,json.loads(inputs.pack_json))
+
+
+def test_feedback_reviews_numbers_introduced_only_by_evaluator_explanation():
+    inputs,first=fixture('这四场中单经济差异只指本样本。')
+    first['audits'][0]['claims']=[claim(inputs,inputs.source.report,
+        explanation='中单经济差值115.88，伤害差值695.42。')]
+    state=current.prepare_state(compact(first),inputs)
+    feedback=json.loads(state.diagnostics_json)
+    assert feedback['errors'][0]['codebook']==['review_explanation_numbers_need_source_check']
+    assert feedback['errors'][1]==dict(target_id='c001',explanation_numbers=['115.88','695.42'])
+    assert 'claim_edits修正解释及证据' in current.CORRECTION_POLICY
+    # A local lookup failure is not an automatically manufactured report issue.
+    assert expand_context(compact(first),inputs.source.report,json.loads(inputs.pack_json)).issues==[]

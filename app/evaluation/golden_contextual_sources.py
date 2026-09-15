@@ -13,6 +13,7 @@ from app.evaluation.golden_integrated_review import ReviewInput
 from app.evaluation.golden_review_experiment import SourceIndex, compact, digest
 from app.evaluation.golden_inference_scope_v5 import strict_json
 from app.evaluation.golden_numeric_evidence_v4 import numeric_support as riot_numeric_support
+from app.evaluation.golden_numeric_evidence_v3 import METRICS
 from app.evaluation.golden_fact_candidate import NUMBER
 from app.meta.models import LaneMetaChampionFact, MetaProvenance, MetaUseCase
 
@@ -82,6 +83,7 @@ def numeric_support(claim,pack):
     riot_claim = SimpleNamespace(quote=claim.quote,
         evidence_refs=[r for r in claim.evidence_refs if not r.startswith("external:")])
     ledger = riot_numeric_support(riot_claim, pack)
+    _support_complete_outcome_means(ledger, riot_claim, pack)
     if pack.get("schema_version") != PACK_ID:
         return ledger
     tokens = {row["token"] for row in ledger}
@@ -129,6 +131,52 @@ def numeric_support(claim,pack):
         matches = [row for matches in per_occurrence for row in matches] if all(per_occurrence) else []
         row.update(supported=bool(matches),candidates=matches[:8],omitted_candidates=max(0,len(matches)-8))
     return ledger
+
+
+def _support_complete_outcome_means(ledger, claim, pack):
+    """Compute complete role/outcome cohorts from explicitly cited raw rows.
+
+    Citing both outcomes does not erase either subgroup. Never use an uncited
+    row, an arbitrary subset, another role, or a missing metric as an operand.
+    This establishes arithmetic only; the evaluator still checks attribution.
+    """
+    role_names = {"TOP": "上单", "JUNGLE": "打野", "MIDDLE": "中单",
+                  "BOTTOM": "下路|射手|ADC", "UTILITY": "辅助"}
+    groups = {}
+    for ref, row in pack["facts"].items():
+        if not ref.startswith("facts:recent_match:") or ref not in pack["provenance"]:
+            continue
+        if row.get("included_in_aggregate") is not True or type(row.get("win")) is not bool:
+            continue
+        role = row.get("role")
+        if role in role_names:
+            groups.setdefault((role, row["win"]), []).append((ref, row))
+    cited = set(claim.evidence_refs)
+    candidates = []
+    for (role, win), rows in groups.items():
+        outcome = r"赢局|胜局" if win else r"输局|负局|败局"
+        if not re.search(role_names[role], claim.quote, re.I) or not re.search(outcome, claim.quote):
+            continue
+        if not all(ref in cited for ref, _ in rows):
+            continue
+        for metric in METRICS:
+            values = [row.get(metric) for _, row in rows]
+            if not all(type(v) in (int, float) and math.isfinite(v) and 0 <= v < 1e15 for v in values):
+                continue
+            mean = sum(Decimal(str(v)) for v in values) / len(values)
+            evidence = dict(op="cited_complete_role_outcome_mean", role=role,
+                outcome="win" if win else "loss", operands=[(ref, "/"+metric) for ref, _ in rows])
+            candidates.append((mean, evidence))
+    for row in ledger:
+        if row["supported"]:
+            continue
+        token = row["token"]
+        places = len(token.split(".")[1]) if "." in token else 0
+        if len(token) > 20 or places > 6 or re.search(r"队列(?:编号|ID)?\s*[:：]?\s*"+re.escape(token), claim.quote):
+            continue
+        matches = [e for n, e in candidates
+                   if n.quantize(Decimal(1).scaleb(-places), rounding=ROUND_HALF_UP) == Decimal(token)]
+        row.update(supported=bool(matches), candidates=matches[:8], omitted_candidates=max(0,len(matches)-8))
 
 
 _LABELS = {

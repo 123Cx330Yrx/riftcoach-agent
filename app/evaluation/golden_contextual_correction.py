@@ -18,7 +18,7 @@ from app.evaluation.golden_contextual_requests import request as table_request
 
 
 STANDARD_ID = "whole-context-acceptance-v1"
-EXPERIMENT_ID = "golden-contextual-bounded-review-v4"
+EXPERIMENT_ID = "golden-contextual-bounded-review-v5"
 
 
 def replace_rules(policy, changes):
@@ -51,7 +51,7 @@ CORRECTION_POLICY = replace_rules(requests.CORRECTION_POLICY, [
      "标题kind=navigation仅用于无断言标题；有断言须有完整标题claim。泛泛免责声明不能取消后文外推；引用后明确否定的错误说法不当作作者支持的断言。"),
     ("引用存在不证明关系，不能借相邻主题猜定义。",
      "引用存在不证明关系，须解释该范围如何适用于同一组样本及比较对象，并核查后文有无冲突。"),
-])
+]) + "\nreview_explanation_numbers_need_source_check指评估解释中的数值尚未被局部算子核实，不自动表示报告错误。逐项核对指标、位置与胜负组；原claim.explanation若算错或混组，须用claim_edits修正解释及证据，不能只在review_notes说已核对。确实可复算但算子未覆盖时解释具体运算，勿为通过而删报告的正确事实。"
 
 
 def prepare_state(raw, inputs):

@@ -3,6 +3,47 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 V5: complete cited outcome arithmetic and evaluator explanation audit
+
+769d65101b3d25eace7f9246e11529d8ee4a99a4 passed Actions 34997110778, all three
+jobs. Its real pair stopped on contextual_01 after two complete stop responses:
+25,215 input + 28,492 output = 53,707 returned tokens, no unknown usage.
+Provider cumulative requests are at least 181; the three recovery runs total
+six requests and 160,442 returned tokens. Contextual_02 and revision/recheck
+were not started. The original failure remains unchanged.
+
+All eight feedback targets were explicitly edited. Two receiver limitations
+remained: c011 cited all four raw mid rows but the arithmetic checker could
+only aggregate the full role, not its complete loss subgroup; c012 used
+“输局中” within a quote explicitly saying “单局验证”, rejected by the old lexical
+anchor list. V5 computes an outcome mean only from a complete explicitly cited,
+included role/outcome cohort, with all metric values present. It retains raw
+operand provenance and never adds citations. Outcome noun anchors require a
+separate explicit sample limitation in the same cited passage; bare outcome or
+position terms remain insufficient. Historical fingerprinted modules stay fixed.
+
+The exact unmodified second response replays to structural 94/pass, zero issues,
+but manual review rejects its semantic quality: c004's retained explanation
+calls 115.88 gold and 695.42 damage differences same-role values, although those
+are mixed-role differences. Original-precision mid row differences are 72.475
+and 669.235 (72.48/669.24 at two decimals). Its second-step review note did not
+fix the persisted first-step explanation. New per-target feedback includes
+numbers introduced by evaluator explanations and explicitly requires a claim
+edit for erroneous explanations. A local arithmetic lookup miss is a review
+hint, not an automatic report issue or a complete semantic proof. Manual
+explanation audit remains required; the offline replay is not adopted.
+
+138 focused tests pass, including missing citations/metrics, wrong role,
+excluded rows, wrong values, provenance loss, unsupported future claims, and
+explanation-only numbers. Four recent correction shapes are 63912/60834/59464/
+59214; first requests 47540/47612 and revision 50540. All measured shapes fit
+63936, with little headroom for the largest historical case; future shapes
+remain bounded by the existing runtime. high and all call/Token/time limits
+remain unchanged. Artifacts: golden_contextual_recovery_769d651_v5.json and
+golden_contextual_readiness_v5.json. Next: exact-SHA public CI, then a fresh
+complete pair with manual arithmetic/scope review and required revision/recheck.
+8E and the 62-theme global/frontend follow-up inventory remain in progress.
+
 ## 2026-09-16 Complete per-target diagnostics instead of first-error masking
 
 The subsequent 5645afc487f7a89d63da93e16954bfee2f026e0f implementation passed

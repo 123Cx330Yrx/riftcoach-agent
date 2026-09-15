@@ -5,9 +5,21 @@ because changing the frozen context module would invalidate historical assets.
 Validation and per-claim feedback share the same checks, so one early error
 cannot hide later representation defects from the correction request.
 """
+import re
+from types import SimpleNamespace
+
 from app.evaluation import golden_context_review as context
 from app.evaluation.golden_context_diagnostics import collect_diagnostics
 from app.evaluation.golden_contextual_sources import numeric_support
+
+
+def sample_anchor_valid(anchor, text):
+    if context.SAMPLE_ANCHOR.search(anchor):
+        return True
+    # A cohort noun can point to an explicit sample limitation in the same
+    # cited passage. Bare outcome/position words still do not establish scope.
+    return bool(re.search(r"(?:输|赢|胜|负|败)局", anchor)
+                and context.SAMPLE_ANCHOR.search(text))
 
 
 def claim_errors(claim, report, pack):
@@ -34,7 +46,7 @@ def claim_errors(claim, report, pack):
     anchor_text = linked.quote if linked else claim.quote
     valid = bool(claim.scope_anchor and claim.scope_anchor in anchor_text)
     if claim.scope == "selected_sample":
-        valid = valid and bool(context.SAMPLE_ANCHOR.search(claim.scope_anchor))
+        valid = valid and sample_anchor_valid(claim.scope_anchor, anchor_text)
     if not valid:
         codes.append("context_anchor_invalid_requires_reassessment" if linked else "scope_anchor_invalid")
     if not context.table_anchor_valid(claim,report):
@@ -73,7 +85,7 @@ def diagnostics(raw, report, pack):
         value = context.restore(raw,report,pack)
     except (ValueError,TypeError,AttributeError):
         return detailed
-    targets, codebook = [], []
+    targets, codebook, explanation_details = [], [], []
     def add(target,codes):
         if not codes:
             return
@@ -88,6 +100,14 @@ def diagnostics(raw, report, pack):
             n += 1
             claim = context.ContextClaim.model_validate(row,strict=True)
             codes = claim_errors(claim,report,pack)
+            # Explanations may introduce new numbers absent from the quote.
+            # A failed local lookup is a review hint, not proof the report is
+            # false: arithmetic prose can exceed the bounded numeric operators.
+            missing = [item['token'] for item in numeric_support(SimpleNamespace(
+                quote=claim.explanation,evidence_refs=claim.evidence_refs),pack) if not item['supported']]
+            if missing:
+                codes.append('review_explanation_numbers_need_source_check')
+                explanation_details.append(dict(target_id=f'c{n:03}',explanation_numbers=missing))
             key = (claim.block_id,claim.quote)
             if key in seen:
                 codes.append("duplicate_context_claim")
@@ -119,4 +139,4 @@ def diagnostics(raw, report, pack):
                 details.append(dict(target_id=f"c{number:03}",**extra))
         elif any(code not in codebook for code in row.get("codes",[])):
             details.append(row)
-    return [matrix,*details]
+    return [matrix,*explanation_details,*details]
