@@ -4,6 +4,7 @@ The current wire rejects legacy meaning-field patches. Review notes explain deci
 and source identity come only from final claims, avoiding contradictory copies.
 """
 from typing import Literal
+import re
 
 from pydantic import Field
 
@@ -17,7 +18,7 @@ from app.evaluation.golden_contextual_requests import request as table_request
 
 
 STANDARD_ID = "whole-context-acceptance-v1"
-EXPERIMENT_ID = "golden-contextual-bounded-review-v3"
+EXPERIMENT_ID = "golden-contextual-bounded-review-v4"
 
 
 def replace_rules(policy, changes):
@@ -40,7 +41,7 @@ FIRST_POLICY = replace_rules(requests.POLICY, [
 
 CORRECTION_POLICY = replace_rules(requests.CORRECTION_POLICY, [
     ("meaning_reviews恰好逐项覆盖required_reviews，允许乱序，不得遗漏或重复；每个新增claim也须meaning。",
-     "review_notes恰好逐项覆盖required_reviews，允许乱序，不得遗漏或重复；每个新增claim也须review_note。"),
+     "review_notes逐项覆盖required_reviews，允许乱序，不得遗漏或重复；每个新增claim须review_note。若额外给新增claim附说明，编号按added_claims顺序从已有claim数+1继续；它只作补充说明，不能代替新增claim或创建另一套判断。"),
     ("literal仅为直接事实；defined仅在原文明确表达样本范围及用词含义时使用，language_ref引用实际定义，可在同句或前后文；negated引用明确否定原句的文字。",
      "最终判断只在claim_kind/scope/context表达一次；不要再填写disposition或language_ref。review_notes解释判断依据，来源引用只在最终claim的quote_ref/context中提供。"),
     ("这两类explanation必须说明文字如何确切指向本句及定义/否定了什么，不能以均值正确、背景样本或一种可能解读替代关系证据。", FULL_CONTEXT_RULE),
@@ -109,6 +110,35 @@ def _witness(claim, explanation):
     return dict(disposition=disposition,language_ref=ref,explanation=explanation)
 
 
+def _resolve_anchor(claim, source, target_id, journal):
+    """Restore display whitespace only, with an explicit, unique source span.
+
+    Never change words, punctuation, digits, context identity or scope. In
+    particular, whitespace between ASCII word characters is not removable.
+    """
+    anchor = claim.get("scope_anchor")
+    if not anchor:
+        return
+    ref = claim["context"]["quote_ref"] if claim.get("context") else claim["quote_ref"]
+    text = source.resolve(ref)
+    if anchor in text or re.search(r"[A-Za-z0-9]\s+[A-Za-z0-9]",anchor):
+        return
+    chars = re.sub(r"\s+","",anchor)
+    if not chars:
+        return
+    pattern = re.escape(chars[0])
+    for left,right in zip(chars,chars[1:]):
+        ascii_word_pair = all(c.isascii() and c.isalnum() for c in (left,right))
+        pattern += ("" if ascii_word_pair else r"\s*") + re.escape(right)
+    matches = list(re.finditer(pattern,text))
+    if len(matches) != 1 or len(matches[0].group()) > 20:
+        return
+    resolved = matches[0].group()
+    claim["scope_anchor"] = resolved
+    journal.append(dict(target_id=target_id,field="scope_anchor",before=anchor,after=resolved,
+        source_ref=ref,operation="unique_display_whitespace_resolution"))
+
+
 def apply_correction(state, raw, *, inputs):
     if state.inputs != inputs or prepare_state(state.raw, inputs) != state:
         raise ValueError("correction_state_changed")
@@ -116,8 +146,21 @@ def apply_correction(state, raw, *, inputs):
     previous._security(value,inputs)
     patch = ContextualCorrection.model_validate(value,strict=True)
     notes = previous._unique(patch.review_notes)
-    if set(notes) != set(state.required_reviews):
+    claim_count = sum(row["type"] == "claim" for row in state.entries().values())
+    added_ids = [f"c{claim_count+i:03}" for i in range(1,len(patch.added_claims)+1)]
+    required = set(state.required_reviews)
+    if not required <= set(notes) or not set(notes) <= required | set(added_ids):
         raise ValueError("contextual_review_inventory_mismatch")
+    supplemental = [dict(target_id=key,added_claim_index=added_ids.index(key),
+        explanation=note.explanation) for key,note in notes.items() if key not in required]
+    notes = {key:note for key,note in notes.items() if key in required}
+    anchor_resolutions = []
+    values = patch.model_dump(mode="json")
+    for row in values["claim_edits"]:
+        _resolve_anchor(row["value"],inputs.source,row["target_id"],anchor_resolutions)
+    for key,row in zip(added_ids,values["added_claims"],strict=True):
+        _resolve_anchor(row["value"],inputs.source,key,anchor_resolutions)
+    patch = ContextualCorrection.model_validate(values,strict=True)
     entries = state.entries()
     edits = previous._unique(patch.claim_edits)
     headings = previous._unique(patch.heading_edits)
@@ -147,5 +190,6 @@ def apply_correction(state, raw, *, inputs):
         prepare=prepare_state,expand=expand_context)
     journal.update(protocol=EXPERIMENT_ID,standard_id=STANDARD_ID,
         model_review_notes=[row.model_dump(mode="json") for row in patch.review_notes],
+        supplemental_added_claim_notes=supplemental,anchor_resolutions=anchor_resolutions,
         meaning_fields_derived_from_final_claims=True)
     return result,journal

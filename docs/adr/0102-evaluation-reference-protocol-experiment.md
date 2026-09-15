@@ -3,6 +3,55 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 Bounded reception of supplemental notes and display whitespace
+
+Implementation ad1003dd72437842e300ae5ec2cf4dc61bf2d47a passed exact-SHA Actions
+34992614360 (pytest, PostgreSQL migrations and package smoke). Its v3 live run
+completed two stop responses: 25,829 input + 33,123 output = 58,952 returned
+tokens. No unknown usage; cumulative Provider requests at least 177. The second
+request was actually issued, verifying the input-budget repair. The pair stopped
+on the first report before revision; the future-claim report was not started.
+
+All 22 required reviews were present. The model also supplied c014-c016 notes
+for its three added claims, although each addition already had its own note.
+The receiver rejected these extras. Offline inspection then found one further
+mechanical error: scope_anchor “各只1局” omitted spaces in “各只 1 局”. After
+explicit diagnostic projection of those two items, the entire validator passed;
+there were no other observed downstream errors. This was not a live pass.
+
+V4 changes reception, not the approved semantic standard. Optional supplemental
+notes are allowed only for declared additions, numbered deterministically after
+the existing claims in addition-array order. Every original required note remains
+mandatory; duplicates, unknown IDs, source reassignment and missing fact issues
+still fail. Supplemental text is retained in the journal and never supplies a
+second classification or source reference. Its semantic explanation still needs
+human/model scrutiny just as the other explanation fields do.
+
+For an edited or added claim's scope_anchor only, the host can restore display
+whitespace when all original characters match a single span within that claim's
+own quote or explicitly referenced context. Digits/ASCII word characters cannot
+be joined or split; numbers, punctuation, words, source and scope cannot change.
+Multiple possible spans and out-of-bound anchors still fail. Before/after and
+source reference are journaled. Quotes and original request/response bytes are
+not edited. This is bounded source-location resolution, not a semantic fix or
+permission to rewrite a model's judgment.
+
+111 focused tests passed, including supplemental-ID binding, missing/duplicate
+reviews, different digits, split numeric strings, ambiguous whitespace and
+punctuation negatives. The original v3 responses replay directly through v4 to
+93/pass with zero issues, 13 retained claim edits, three supplemental notes and
+one whitespace resolution. `golden_contextual_recovery_ad1003d_v4.json` records
+this strictly offline result and unchanged hashes for both responses and the
+original failed result. It does not relabel the historical v3 run.
+
+`golden_contextual_readiness_v4.json` measures first requests 47540/47612, three
+historical correction shapes 59312/59226/56974, the actual v3 first-response
+shape 62348, and revision shape 50540. These are shape measurements, not future
+completion guarantees. No budget, timeout, model tier or retry limit changes.
+Next: exact-SHA public checks then one new-identity two-report live validation,
+including genuine future-claim detection, revision and recheck. Preserve stage
+8E and all broader product/frontend follow-ups from the retrospective.
+
 ## 2026-09-15 Recovery after the comprehensive retrospective
 
 This batch resumes the latest 206a4c3 contextual candidate. Coach 1.3.25 is a

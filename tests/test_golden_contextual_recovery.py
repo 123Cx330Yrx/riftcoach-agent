@@ -149,3 +149,45 @@ def test_five_calls_include_external_sources_and_correct_direct_misclassificatio
     assert current.FULL_CONTEXT_RULE in revision.messages[0].content
     assert "external_fact_paths" in revision.messages[1].content
     assert "禁止把另一个report_block里的定义借给本句" not in "".join(m.content for m in revision.messages)
+
+
+def test_supplemental_notes_bind_only_to_declared_added_claims():
+    target="这四场仅作样本观察。"
+    inputs,first=fixture(target)
+    state=current.prepare_state(compact(first),inputs)
+    edit=patch(state)
+    edit['added_claims']=[dict(audit='cohort_comparison',value=claim(inputs,target),review_note='新增的样本观察')]
+    edit['review_notes']=[dict(target_id='c001',explanation='新增项目的补充说明')]
+    result,journal=current.apply_correction(state,compact(edit),inputs=inputs)
+    assert result.verdict=='pass'
+    assert journal['supplemental_added_claim_notes']==[
+        dict(target_id='c001',added_claim_index=0,explanation='新增项目的补充说明')]
+    edit['review_notes'][0]['target_id']='c002'
+    with pytest.raises(ValueError,match='inventory_mismatch'):
+        current.apply_correction(state,compact(edit),inputs=inputs)
+
+
+@pytest.mark.parametrize('quote,anchor,accepted',[
+    ('各只 1 局，无统计稳定性。','各只1局',True),
+    ('这 4 场只供观察。','这4场',True),
+    ('这 4 场只供观察。','这5场',False),
+    ('这1 0局只供观察。','这10局',False),
+    ('这10局只供观察。','这1 0局',False),
+    ('这 4 场与这4 场只供观察。','这4场',False),
+    ('这4，场只供观察。','这4场',False),
+])
+def test_anchor_display_whitespace_is_source_bound_and_journaled(quote,anchor,accepted):
+    inputs,first=fixture(quote)
+    row=claim(inputs,quote,scope_anchor=anchor)
+    first['audits'][0]['claims']=[row]
+    raw=compact(first);state=current.prepare_state(raw,inputs);edit=patch(state)
+    edit['claim_edits']=[dict(target_id='c001',value=row,reason='核对样本范围')]
+    if not accepted:
+        with pytest.raises(ValueError):current.apply_correction(state,compact(edit),inputs=inputs)
+        return
+    result,journal=current.apply_correction(state,compact(edit),inputs=inputs)
+    canonical=result.audits[0].claims[0]
+    assert canonical.scope_anchor in quote and canonical.quote==quote
+    assert state.raw==raw and row['scope_anchor']==anchor
+    assert journal['anchor_resolutions'][0]['before']==anchor
+    assert journal['anchor_resolutions'][0]['after']==canonical.scope_anchor

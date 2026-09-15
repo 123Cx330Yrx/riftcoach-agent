@@ -26,6 +26,8 @@ def measurement_state(raw, request):
     old = ReviewInput.build(request)
     inputs = ContextualCorrectionWorkflow.build_inputs(request)
     value = strict_json(raw)
+    if value["source_digest"] == inputs.source.source_digest:
+        return contextual.prepare_state(raw,inputs)
     if value["source_digest"] != old.source.source_digest:
         raise ValueError("readiness_historical_source_mismatch")
     for audit in value["audits"]:
