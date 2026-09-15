@@ -3,6 +3,49 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 Complete per-target diagnostics instead of first-error masking
+
+The subsequent 5645afc487f7a89d63da93e16954bfee2f026e0f implementation passed
+Actions 34994694662, all three public jobs. Its new v4 run completed two stop
+responses, 25,243 input + 22,540 output = 47,783 returned tokens, no unknown usage.
+Cumulative Provider requests are at least 179. It stopped on report one before
+revision; the second report was not started. Both recent live runs together
+returned 106,735 tokens in four requests. They are not successful complete pairs.
+
+The second review fixed c001/c002/c005 but left c006/c007/c009/c011/c012/c013
+as direct_result with selected_sample scope. The receiver correctly rejected
+that combination. The engineering defect was upstream: collect_diagnostics
+reported the earliest global anchor failure plus numeric/anchor details, but
+never enumerated these later direct-result representation errors. The agent's
+preceding offline review failed to detect this coverage hole.
+
+The current candidate now shares claim_errors between final validation and
+per-target diagnostics. It enumerates representation, numeric/provenance,
+duplicate-reference, context relation, anchor and table checks for each claim;
+diagnostics additionally targets issue/verdict and heading inconsistencies.
+A compact target/codebook matrix precedes optional detailed numeric navigation,
+so the existing 12-row / 3000-character feedback cap cannot suppress later
+claims behind early verbose messages. Repeated rules and quote identities are
+not duplicated in those details; complete original state and sources remain.
+No final acceptance check is relaxed and no unsupported field is fixed by the
+host. The model must decide and explicitly edit each conflicting claim.
+
+Tests cover an early anchor error followed by a later direct-scope conflict,
+multiple simultaneous errors, and 48 affected claims all surviving the feedback
+cap. All 124 focused tests passed, including existing future-error/issue guards,
+source identity and five-call workflow checks. Contextual tests now construct
+state through the actual contextual builder rather than the old bounded builder.
+
+`golden_contextual_diagnostics_5645afc.json` preserves raw hashes and the original
+rejection, records all nine affected targets (including the six missed ones),
+and labels a manual null-field projection strictly as downstream diagnosis:
+93/pass only after those six manual changes, not a model success. The unmodified
+second response still fails. `golden_contextual_readiness_v4_diagnostics.json`
+checks all three recent first-response shapes: 63076, 62242 and 58794. Existing
+first and revision shapes also fit. Acceptance standard, model, call/Token/time
+limits and stage status are unchanged. Next: exact-SHA CI, then a new-identity
+complete pair; inspect actual edits and subsequent revision/recheck receipts.
+
 ## 2026-09-16 Bounded reception of supplemental notes and display whitespace
 
 Implementation ad1003dd72437842e300ae5ec2cf4dc61bf2d47a passed exact-SHA Actions

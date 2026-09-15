@@ -191,3 +191,33 @@ def test_anchor_display_whitespace_is_source_bound_and_journaled(quote,anchor,ac
     assert state.raw==raw and row['scope_anchor']==anchor
     assert journal['anchor_resolutions'][0]['before']==anchor
     assert journal['anchor_resolutions'][0]['after']==canonical.scope_anchor
+
+
+def test_feedback_exposes_later_direct_scope_errors_after_an_earlier_anchor_error():
+    inputs,first=fixture('这四场仅作观察。\n\n直接数值结果。')
+    first['audits'][0]['claims']=[claim(inputs,inputs.source.blocks[0][1],scope_anchor='另四场')]
+    ref=inputs.source.evidence_keys.index('facts:recent_match:00')+1
+    first['audits'][1]['claims']=[claim(inputs,inputs.source.blocks[1][1],claim_kind='direct_result',
+        scope='selected_sample',scope_anchor='样本',evidence_refs=[ref,ref])]
+    state=current.prepare_state(compact(first),inputs)
+    matrix=json.loads(state.diagnostics_json)['errors'][0]
+    found={target:{matrix['codebook'][i-1] for i in indices} for target,indices in matrix['targets']}
+    assert 'scope_anchor_invalid' in found['c001']
+    assert {'direct_result_scope_must_be_null','duplicate_evidence_reference'} <= found['c002']
+    assert set(found)=={'c001','c002'}
+
+
+def test_feedback_cap_cannot_hide_any_of_48_claim_scope_errors():
+    quotes=[f'样本 {chr(65+i)} 只作观察。' for i in range(48)]
+    inputs,first=fixture('\n\n'.join(quotes))
+    ref=inputs.source.evidence_keys.index('facts:recent_match:00')+1
+    for i,quote in enumerate(quotes):
+        first['audits'][i//24]['claims'].append(claim(inputs,quote,claim_kind='direct_result',
+            scope='selected_sample',scope_anchor='样本',evidence_refs=[ref]))
+    state=current.prepare_state(compact(first),inputs)
+    feedback=json.loads(state.diagnostics_json)
+    matrix=feedback['errors'][0]
+    assert matrix['codes']==['per_target_validation_errors']
+    assert {row[0] for row in matrix['targets']}==set(state.mutable_claims)
+    assert len(matrix['targets'])==48
+    assert len(json.dumps(feedback,ensure_ascii=False))<=3000

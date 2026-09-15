@@ -6,7 +6,7 @@ from types import SimpleNamespace
 import pytest
 
 from app.evaluation import golden_contextual_correction as contextual
-from app.evaluation.golden_bounded_correction import prepare_state
+from app.evaluation.golden_contextual_correction import prepare_state
 from app.evaluation.golden_contextual_workflow import ContextualCorrectionWorkflow
 from app.evaluation.golden_integrated_runtime import BudgetedReviewSender
 from app.evaluation.golden_review_experiment import compact
