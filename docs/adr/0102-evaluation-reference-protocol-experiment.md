@@ -3,6 +3,64 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-15 narrow diagnostic v1 result and v2 correction
+
+The diagnostic implementation `6a73101dbf6d342686fe6aa219f19ad7d247cf95` passed
+all three jobs in Actions `34940550415`. The normal Git transport failed twice;
+the authenticated Git Data API uploaded identical blobs/tree/commit, verified
+the exact SHA and advanced the branch with force=false. This did not create a
+different implementation or bypass CI.
+
+`context-relation-6a73101-critical` completed four calls, all stop: 37452 input +
+1748 output = **39200 returned tokens**, no unknown usage. Cumulative Provider
+reservations are at least **166**. Three outputs were protocol-valid, one invalid;
+only two targets matched. Terminal times were 7.375, 6.031, 13.266 and 6.844 seconds.
+This is the same high profile and capacity; smaller requests/outputs and a changed
+task were observed, not a controlled proof of a single latency cause.
+
+| Target | v1 result | Manual finding |
+|---|---|---|
+| stable_unbounded | valid / needs_clarification | Correct target classification; an additional claim of conflict with another single-game warning is not separately validated |
+| stable_defined_before | valid / sample_defined | Correct explicit definition |
+| heading_unbounded | valid / beyond_sample | Overstates missing meaning as a definite extrapolation; explanation also incorrectly says 2–3 games in each mid group |
+| heading_defined_after | invalid / raw sample_defined | Correct definition reference and interpretation, but paraphrase violated the required verbatim defined_meaning field |
+
+The frozen report has two mid wins and two mid losses, not 2–3 per group. Never
+count the heading's refusal as the correct clarify label or the invalid last
+response as a successful result. The private manual audit records these details;
+all original inputs, outputs and receipts remain untouched.
+
+The last failure exposes avoidable protocol duplication: context_ref already
+recovers the complete original definition. Requiring a second full verbatim
+copy does not prove entailment and caused a faithful paraphrase to reject.
+**Adopt a separate diagnostic v2**, removing referring_expression/defined_meaning,
+keeping the exact target/context references and one natural-language explanation.
+Do not relax v1 in place or mark its old invalid response accepted. The source
+binding and disposition/context consistency still reject stale or forged input.
+
+The v2 policy also distinguishes undefined wording from an explicit unsupported
+extension. Missing meaning gets clarification; beyond_sample requires an actual
+assertion beyond the evidence. This is a model judgment, not a keyword allowlist.
+No old label changes. A scripted projection of the last v1 response demonstrates
+v2 shape validity while retaining its original context, not new model quality.
+
+Implementation: `golden_context_relation_probe_v2.py`; runner selects it only
+with `--v2`, records experiment `golden-context-relation-probe-v2` and response
+contract 2.0.0. Complete source data and high/32768/300-second settings are the
+same. Measured full inputs are recorded in
+`data/evaluation/results/golden_context_relation_probe_v2.json`. 36 related tests
+passed, including unchanged v1 rejection, v2 reference rejection, full source
+preservation, explicit dispatch and separate accounting.
+
+Next: same-SHA public checks, then **one new four-case batch**, at most four calls,
+no correction or revision, existing 401920-token/900-second batch caps. Run the
+same diagnostic command with `--v2` and a fresh `context-relation-<sha>-v2` run ID.
+Stop on protocol/transport failure, manually inspect all decisions/explanations,
+and do not automatically start a third diagnostic batch if it fails. These two
+small experiments are not a whole-report acceptance gate. A later integrated
+candidate must fit factual checks, scope judgment and correction within the
+existing evaluation/revision call budget, before Workbench report admission.
+
 ## 2026-09-15 four-case observation and next diagnostic experiment
 
 Implementation `9c5aad9cb2e9c3764b23e78435c7daa5048763fe` passed all three jobs
