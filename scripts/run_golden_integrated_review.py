@@ -26,15 +26,19 @@ from scripts.run_golden_inference_development import verify_public_ci
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def implementation_identity(*, bounded=False):
+def implementation_identity(*, bounded=False, full_context=False):
     names = ("app/evaluation/golden_integrated_review.py", "app/evaluation/golden_integrated_runtime.py",
         "app/evaluation/golden_context_review.py", "app/evaluation/golden_context_diagnostics.py",
         "app/evaluation/golden_stream_bridge.py", "app/runtime/coach_budget.py",
         "scripts/run_golden_integrated_review.py")
-    if bounded:
+    if bounded or full_context:
         names += ("app/evaluation/golden_bounded_correction.py",
             "app/evaluation/golden_bounded_correction_requests.py",
             "app/evaluation/golden_bounded_workflow.py", "scripts/run_golden_bounded_review.py")
+    if full_context:
+        names += ("app/evaluation/golden_contextual_correction.py",
+            "app/evaluation/golden_contextual_workflow.py", "scripts/run_golden_contextual_review.py",
+            "data/evaluation/datasets/golden_contextual_reports_v2.json")
     return {n: hashlib.sha256((ROOT/n).read_bytes()).hexdigest() for n in names}
 
 
@@ -100,7 +104,9 @@ def observe_report(provider, directory, request, case, *, workflow_factory=Integ
         write_new_json(directory/"result.json", outcome)
 
 
-def run(args, *, bounded=False):
+def run(args, *, bounded=False, full_context=False):
+    if bounded and full_context:
+        raise ValueError("review_mode_conflict")
     first_request = review.discovery_request
     workflow_factory = IntegratedReviewWorkflow
     experiment_id, prefix = review.EXPERIMENT_ID, "integrated-review"
@@ -110,9 +116,15 @@ def run(args, *, bounded=False):
         workflow_factory, experiment_id, prefix = BoundedCorrectionWorkflow, EXPERIMENT_ID, "bounded-review"
     summary, deterministic, knowledge, cases = load_inputs(args.source_run, args.base_report)
     selected = [c for c in cases if c["pair"] == PAIRS[args.pair-1]]
+    if full_context:
+        from app.evaluation.golden_contextual_correction import first_request, EXPERIMENT_ID, STANDARD_ID
+        from app.evaluation.golden_contextual_workflow import ContextualCorrectionWorkflow
+        from scripts.run_golden_contextual_review import select_cases, MANIFEST
+        selected = select_cases(cases)
+        workflow_factory, experiment_id, prefix = ContextualCorrectionWorkflow, EXPERIMENT_ID, "contextual-review"
     requests = [EvaluationRequest(summary, deterministic, knowledge, c["report"], UTTERANCE) for c in selected]
     discovery_sizes = [size(first_request(review.ReviewInput.build(r))) for r in requests]
-    plan = dict(experiment_id=experiment_id, implementation=implementation_identity(bounded=bounded),
+    plan = dict(experiment_id=experiment_id, implementation=implementation_identity(bounded=bounded, full_context=full_context),
         scope="complete_report_development_candidate_not_production", pair=args.pair,
         selected_cases=[c["id"] for c in selected], discovery_input_ceilings=discovery_sizes,
         report_sha256=[c["report_sha256"] for c in selected], labels_sent_to_model=False,
@@ -120,9 +132,13 @@ def run(args, *, bounded=False):
         max_tokens_per_report=401920, max_seconds_per_report=900,
         max_output_per_call=32768, max_seconds_per_call=300, reasoning_effort="high", sdk_retries=0,
         stop_policy="stop_pair_on_protocol_transport_or_semantic_failure; manual_review_required_for_acceptance")
-    if bounded:
+    if bounded or full_context:
         plan["first_review_input_ceilings"] = plan.pop("discovery_input_ceilings")
         plan["budget_admission"] = "each_request_reserved_against_remaining_actual_usage_no_completion_guarantee"
+    if full_context:
+        plan.pop("pair")
+        plan.update(standard_id=STANDARD_ID, manifest_sha256=hashlib.sha256(MANIFEST.read_bytes()).hexdigest(),
+            source_case_ids=[c["source_case_id"] for c in selected])
     if not args.execute:
         print(review.compact(plan)); return plan
     if not re.fullmatch(prefix+r"-[a-z0-9-]{1,55}", args.run_id):
@@ -162,7 +178,7 @@ def run(args, *, bounded=False):
         print(review.compact({k:v for k,v in receipt.items() if k not in ("cases", "implementation")}), flush=True)
 
 
-def main(*, bounded=False):
+def main(*, bounded=False, full_context=False):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--source-run", type=Path, required=True)
     p.add_argument("--base-report", type=Path, required=True)
@@ -172,7 +188,7 @@ def main(*, bounded=False):
     p.add_argument("--ci-run", default="")
     p.add_argument("--env-file", type=Path)
     p.add_argument("--output-root", type=Path, default=ROOT/"data/runs/inference_development")
-    run(p.parse_args(), bounded=bounded)
+    run(p.parse_args(), bounded=bounded, full_context=full_context)
 
 
 if __name__ == "__main__":

@@ -27,13 +27,13 @@ class BoundedCorrectionWorkflow(IntegratedReviewWorkflow):
             raise ValueError("bounded_recheck_source_changed")
         self.evaluations += 1
         try:
-            first_raw = self._call(first_request(inputs), "first_review")
+            first_raw = self._call(self.build_first(inputs), "first_review")
             state = prepare_state(first_raw, inputs)
-            prepared = correction_request(state)
+            prepared = self.build_correction(state)
             raw = self._call(prepared.request, "bounded_correction")
             # _call verifies the budget-transformed request and real receipt
             # before returning content. Never accept a partial patch by itself.
-            payload, self.last_journal = apply_correction(state, raw, inputs=inputs)
+            payload, self.last_journal = self.merge_correction(state, raw, inputs=inputs)
             result = _result(payload)
         except Exception as error:
             self.stopped = True
@@ -51,3 +51,6 @@ class BoundedCorrectionWorkflow(IntegratedReviewWorkflow):
                 explanation="建议必须由所给知识支持。", suggested_correction="核对实际支持的知识并引用，或删除无依据建议。")))
         self._accepted = (inputs, result)
         return result
+    build_first = staticmethod(first_request)
+    build_correction = staticmethod(correction_request)
+    merge_correction = staticmethod(apply_correction)

@@ -1,0 +1,144 @@
+"""Owner-approved whole-context standard with one authoritative semantic label.
+
+New v2 wire rejects v1 patches. Review notes explain decisions; classification
+and source identity come only from final claims, avoiding contradictory copies.
+"""
+from typing import Literal
+
+from pydantic import Field
+
+from app.evaluation import golden_bounded_correction as previous
+from app.evaluation import golden_bounded_correction_requests as requests
+from app.evaluation.golden_context_review import ClaimRef, IssueRef
+from app.evaluation.golden_integrated_review import Strict
+from app.evaluation.golden_review_experiment import compact
+
+
+STANDARD_ID = "whole-context-acceptance-v1"
+EXPERIMENT_ID = "golden-contextual-bounded-review-v2"
+
+
+def replace_rules(policy, changes):
+    for old, new in changes:
+        if policy.count(old) != 1:
+            raise ValueError("contextual_policy_source_drift")
+        policy = policy.replace(old,new)
+    return policy
+
+
+FULL_CONTEXT_RULE = "按完整上下文验收：若同一组样本、比较对象和含义已清楚限定且无无依据外推，可selected_sample并通过；不要求每句重复范围或专门定义稳定/持续等词。额外措辞优化不单独阻断。仅相邻、泛泛免责声明或正确数字不能支持实际长期、未来或因果断言；后文独立错误仍须检出。真正无法确定范围、对象或存在冲突才要求澄清。"
+
+FIRST_POLICY = replace_rules(requests.POLICY, [
+    ("稳定/可靠/持续等词按完整上下文理解；未定义含义不能凭样本数或相邻同主题就猜为selected_sample。", FULL_CONTEXT_RULE),
+    ("允许显式上下文关联：context.quote_ref定位实际定义或否定原文；relation=defines_scope或negates，explanation简述为何它确实指向本句。",
+     "允许完整上下文关联：context.quote_ref定位实际范围限定、定义或否定原文；relation=defines_scope或negates，explanation说明如何适用于本句的同一组样本、对象和含义。"),
+    ("前段明确说“下句中的某词仅指…”或正文明确说“本标题的某词仅指…”可以跨段定义；不要求本句再重复定义。",
+     "前后文已经说明同一比较的样本、指标和方向即可作为范围依据，不必出现‘下句’‘本标题’等专门指代句式；同时核对后文有无冲突。"),
+]) + "\ngeneration_view无损复用facts_and_provenance中的值：按source路径取对象，保留keys或field_sets中fields编号的字段，再应用overrides；未共享字段保留原值。"
+
+CORRECTION_POLICY = replace_rules(requests.CORRECTION_POLICY, [
+    ("meaning_reviews恰好逐项覆盖required_reviews，允许乱序，不得遗漏或重复；每个新增claim也须meaning。",
+     "review_notes恰好逐项覆盖required_reviews，允许乱序，不得遗漏或重复；每个新增claim也须review_note。"),
+    ("literal仅为直接事实；defined仅在原文明确表达样本范围及用词含义时使用，language_ref引用实际定义，可在同句或前后文；negated引用明确否定原句的文字。",
+     "最终判断只在claim_kind/scope/context表达一次；不要再填写disposition或language_ref。review_notes解释判断依据，来源引用只在最终claim的quote_ref/context中提供。"),
+    ("这两类explanation必须说明文字如何确切指向本句及定义/否定了什么，不能以均值正确、背景样本或一种可能解读替代关系证据。", FULL_CONTEXT_RULE),
+    ("无法确定含义则clarify，必须改成ambiguous并补other澄清issue；明确无依据的长期/未来/因果结论则unsupported，不能混为数值错误。",
+     "实际不能确定范围或对象时scope=ambiguous并补other澄清issue；明确无依据的长期/未来/因果结论则beyond_sample/unsupported并列issue，不能混为数值错误。"),
+    ("其他disposition的language_ref为null；navigation只用于无断言的标题。泛泛免责声明不能取消后文外推；引用后明确否定的错误说法不当作作者支持的断言。",
+     "标题kind=navigation仅用于无断言标题；有断言须有完整标题claim。泛泛免责声明不能取消后文外推；引用后明确否定的错误说法不当作作者支持的断言。"),
+    ("引用存在不证明关系，不能借相邻主题猜定义。",
+     "引用存在不证明关系，须解释该范围如何适用于同一组样本及比较对象，并核查后文有无冲突。"),
+])
+
+
+class ReviewNote(Strict):
+    target_id: str = Field(pattern=r"^[ch][0-9]{3}$")
+    explanation: str = Field(min_length=1,max_length=500)
+
+
+class AddedClaim(Strict):
+    audit: Literal["metric_to_ability", "cohort_comparison"]
+    value: ClaimRef
+    review_note: str = Field(min_length=1,max_length=500)
+
+
+class ContextualCorrection(Strict):
+    claim_edits: list[previous.ClaimEdit] = Field(max_length=16)
+    issue_edits: list[previous.IssueEdit] = Field(max_length=12)
+    added_claims: list[AddedClaim] = Field(max_length=16)
+    added_issues: list[IssueRef] = Field(max_length=16)
+    heading_edits: list[previous.HeadingEdit] = Field(max_length=16)
+    review_notes: list[ReviewNote] = Field(max_length=64)
+    score: int = Field(ge=0,le=100)
+    verdict: Literal["pass", "needs_revision", "fail"]
+    summary: str = Field(min_length=1,max_length=1200)
+    passed_checks: list[str] = Field(max_length=12)
+
+
+class CorrectionWire(requests.UntitledSchema, ContextualCorrection):
+    pass
+
+
+def first_request(inputs):
+    return requests.budget_check(requests._request(requests.source_data(inputs),FIRST_POLICY,
+        requests.FirstWire,"full_context_first"))
+
+
+def correction_request(state):
+    return requests.PreparedCorrection(state,requests.budget_check(requests._request(
+        requests.correction_data(state),CORRECTION_POLICY,CorrectionWire,"full_context_correction")))
+
+
+def _witness(claim, explanation):
+    scope = claim["scope"]
+    dispositions = {
+        "selected_sample":"defined", "question_or_negation":"negated",
+        "ambiguous":"clarify", "beyond_sample":"unsupported"}
+    if claim["claim_kind"] != "direct_result" and scope not in dispositions:
+        raise ValueError("contextual_inference_scope_required")
+    disposition = "literal" if claim["claim_kind"] == "direct_result" else dispositions[scope]
+    ref = None
+    if disposition in {"defined","negated"}:
+        ref = claim["context"]["quote_ref"] if claim.get("context") else claim["quote_ref"]
+    return dict(disposition=disposition,language_ref=ref,explanation=explanation)
+
+
+def apply_correction(state, raw, *, inputs):
+    if state.inputs != inputs or previous.prepare_state(state.raw, inputs) != state:
+        raise ValueError("correction_state_changed")
+    value = previous.strict_json(raw)
+    previous._security(value,inputs)
+    patch = ContextualCorrection.model_validate(value,strict=True)
+    notes = previous._unique(patch.review_notes)
+    if set(notes) != set(state.required_reviews):
+        raise ValueError("contextual_review_inventory_mismatch")
+    entries = state.entries()
+    edits = previous._unique(patch.claim_edits)
+    headings = previous._unique(patch.heading_edits)
+    claims = {key:edits[key].value.model_dump(mode="json") if key in edits else row["value"]
+              for key,row in entries.items() if row["type"] == "claim"}
+    payload = patch.model_dump(mode="json",exclude={"review_notes","added_claims"})
+    payload["added_claims"] = [dict(audit=row.audit,value=row.value.model_dump(mode="json"),
+        meaning=_witness(row.value.model_dump(mode="json"),row.review_note)) for row in patch.added_claims]
+    payload["meaning_reviews"] = []
+    for key,note in notes.items():
+        entry = entries[key]
+        if entry["type"] == "claim":
+            witness = _witness(claims[key],note.explanation)
+        else:
+            kind = headings[key].kind if key in headings else entry["value"]["kind"]
+            if kind == "navigation":
+                witness = dict(disposition="navigation",language_ref=None,explanation=note.explanation)
+            else:
+                block = entry["value"]["block_id"]
+                candidates = [row for row in [*claims.values(),*(r["value"] for r in payload["added_claims"])]
+                    if row["quote_ref"]["block"] == block and inputs.source.resolve(row["quote_ref"]) == inputs.source.blocks[block-1][1]]
+                if not candidates:
+                    raise ValueError("correction_heading_claim_missing")
+                witness = _witness(candidates[0],note.explanation)
+        payload["meaning_reviews"].append(dict(target_id=key,**witness))
+    result,journal = previous.apply_correction(state,compact(payload),inputs=inputs)
+    journal.update(protocol=EXPERIMENT_ID,standard_id=STANDARD_ID,
+        model_review_notes=[row.model_dump(mode="json") for row in patch.review_notes],
+        meaning_fields_derived_from_final_claims=True)
+    return result,journal

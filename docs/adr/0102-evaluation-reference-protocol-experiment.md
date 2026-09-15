@@ -3,6 +3,60 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-15 Owner-approved whole-context standard and single decision protocol
+
+The owner explicitly selected “采用完整上下文标准（推荐）”. A complete report
+that clearly bounds the same sample, comparison and meaning may pass without a
+special dictionary-like definition of “stable”. Optional wording improvements
+must not alone block it. Real factual errors, unsupported long-term/future/causal
+claims, and contradictory assessments remain blockers. This supersedes the
+assistant-authored strict word-definition gate for the new experiment only.
+
+The preceding v1 observation `bounded-review-96c2c3a-definitions` used implementation
+96c2c3a1b90d0df105938ccbef98d937f8f65ba4 and exact-SHA Actions 34956898101
+(all three jobs successful). Both responses finished with stop; 50669 returned
+tokens, no unknown usage, 2 requests, cumulative Provider requests at least 174.
+It failed before revision: c001/c005/c008 duplicated literal vs inference labels;
+c010 duplicated conflicting context sources. Raw scores 95/94 were not valid
+passes. `golden_bounded_observation_96c2c3a_v1.json` records all four conflicts,
+full original response digests and timing. Its old strict labels and raw results
+remain unchanged; this decision does not retroactively accept them.
+
+The isolated `golden-contextual-bounded-review-v2` uses
+`whole-context-acceptance-v1`. Classification and source reference are expressed
+once, in the final claim; review_notes explains each required decision. The host
+derives the legacy validation witness from that same final claim. It does not
+repair any incoming old response: the v2 wire rejects v1 meaning_reviews and extra
+disposition/language_ref. The complete final factual, source, numerical, issue,
+heading, security, state and receipt checks still execute. This derivation
+removes contradictory duplicate fields but cannot prove semantic entailment.
+
+`golden_contextual_reports_v2.json` assigns independent contextual_01/02 identities
+to byte-identical complete reports stable_unbounded/future_with_disclaimer. Under
+the approved standard these are accept/reject respectively. Original ten-case
+and twelve-case labels remain frozen. These are development controls, not a held-out
+benchmark. Labels remain outside model input. The next real run must verify both
+correct acceptance and unsupported-future detection, revision and full recheck.
+
+Flow: complete source/report -> first review -> bounded explicit correction ->
+full merged validation -> at most one report revision -> complete review and
+correction again. Request construction includes the full lossless generation_view
+explanation and verbatim deterministic source in both independent evaluations.
+The actual-usage budget runner still enforces high, 32768 output, 300 seconds per
+call, 401920 total tokens, 900 seconds and at most five calls per report, no SDK
+retries. Larger unexpected requests remain refused before I/O.
+
+Reproduction: `python -m scripts.run_golden_contextual_review --source-run ...
+--base-report ...` previews without credentials/network; real mode additionally
+requires --execute, --run-id contextual-review-..., --ci-run and --env-file.
+`python -m scripts.check_golden_contextual_readiness` measures first requests
+50576/50646; historical correction shapes 61386/62024/58960 and revision 53584.
+The size replay does not regrade historical responses or guarantee runtime cost.
+Tests in test_golden_contextual_review cover protocol isolation, contradictions,
+state/source binding, fact issue retention, security, heading additions and full
+five-call flow. Local focused/adjacent regression: 129 passed, compilation, governance and diff checks passed. Real semantic acceptance remains pending public checks and the
+new observation. No product default, production admission or stage advance.
+
 ## 2026-09-15 Efficiency correction: verbatim source and actual-usage admission
 
 The owner asked why the work still was not complete and required more efficient
