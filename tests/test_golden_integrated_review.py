@@ -128,6 +128,44 @@ def test_correct_number_with_wrong_semantic_group_is_not_proven_by_protocol():
     # Real acceptance MUST still reject this unsupported inference in explanation.
 
 
+def test_assessment_feedback_does_not_hide_count_failures_behind_extra_field():
+    inputs = review.ReviewInput.build(request("这四场方向一致。\n\n下一段也需审查。"))
+    targets, _ = review.discover(compact(discover_all(inputs)), inputs)
+    row = judgment(inputs)
+    row["context_ref_note"] = "不允许的额外字段"
+    value = assessment(inputs, [row], additions=[[]])
+    raw = compact(value)
+    feedback = review.assessment_feedback(raw, inputs, targets)
+    codes = {code for error in feedback["errors"] for code in error["codes"]}
+    assert codes == {"assessment_schema_invalid", "assessment_judgments_count_mismatch",
+                     "assessment_additions_count_mismatch"}
+    counts = {e["location"][0]: (e["expected_count"], e["actual_count"])
+              for e in feedback["errors"] if "expected_count" in e}
+    assert counts == {"judgments": (2, 1), "additions": (2, 1)}
+    assert feedback["omitted_errors"] == 0
+    assert compact(value) == raw
+    with pytest.raises(ValueError):
+        review.assessment_result(raw, inputs, targets)
+
+
+@pytest.mark.parametrize("raw,code", [("{}{}", "assessment_json_invalid"),
+                                     ("[]", "assessment_object_required")])
+def test_assessment_feedback_names_actual_phase_for_malformed_response(raw, code):
+    inputs = review.ReviewInput.build(request("这四场方向一致。"))
+    assert review.assessment_feedback(raw, inputs, ({"block": 1},))["errors"] == [{"codes": [code]}]
+
+
+def test_assessment_feedback_keeps_canonical_diagnostics_after_structure_passes():
+    inputs = review.ReviewInput.build(request("这四场方向一致。"))
+    targets = ({"block": 1},)
+    raw = compact(assessment(inputs, [judgment(inputs, scope_anchor=None)]))
+    feedback = review.assessment_feedback(raw, inputs, targets)
+    assert feedback["errors"]
+    assert all("discovery_schema_invalid" not in error["codes"] for error in feedback["errors"])
+    with pytest.raises(ValueError):
+        review.assessment_result(raw, inputs, targets)
+
+
 def test_two_call_runtime_recovers_invalid_discovery_with_full_sweep():
     req = request("这四场方向一致。[K1]")
     inputs = review.ReviewInput.build(req)

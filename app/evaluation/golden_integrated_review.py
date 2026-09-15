@@ -9,7 +9,7 @@ import re
 from types import SimpleNamespace
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from app.evaluation.coach_report import EvaluationIssueCategoryV11, build_fact_pack, EVALUATOR_SYSTEM_PROMPT
 from app.evaluation.golden_context_review import ContextEvaluation, ContextRef, IssueRef, expand_context
@@ -303,8 +303,32 @@ def assessment_result(raw, inputs, targets):
 
 
 def assessment_feedback(raw, inputs, targets):
+    # Diagnose independent structural defects together. In particular, a stray
+    # field must not hide omitted positional rows. This does not repair, align,
+    # or accept any part of a rejected response.
+    try:
+        value = strict_json(raw)
+    except (ValueError, TypeError):
+        return bounded_feedback([dict(codes=["assessment_json_invalid"])])
+    if not isinstance(value, dict):
+        return bounded_feedback([dict(codes=["assessment_object_required"])])
+    errors = []
+    for field, expected in (("judgments", len(targets)), ("additions", len(inputs.source.blocks))):
+        rows = value.get(field)
+        if isinstance(rows, list) and len(rows) != expected:
+            errors.append(dict(codes=["assessment_" + field + "_count_mismatch"],
+                location=[field], expected_count=expected, actual_count=len(rows)))
+    try:
+        Assessment.model_validate(value, strict=True)
+    except ValidationError as error:
+        errors.extend(dict(codes=["assessment_schema_invalid"], location=list(e["loc"]))
+            for e in error.errors(include_input=False, include_context=False))
+    if errors:
+        return bounded_feedback(errors)
     try:
         wire = assessment_wire(raw, inputs, targets)
     except (ValueError, TypeError) as error:
-        return discovery_feedback(error)
+        code = str(error)
+        return bounded_feedback([dict(codes=[code if re.fullmatch(r"[a-z_]{1,80}", code)
+            else "assessment_validation_invalid"])])
     return bounded_feedback(collect_diagnostics(compact(wire), inputs.source.report, strict_json(inputs.pack_json)))

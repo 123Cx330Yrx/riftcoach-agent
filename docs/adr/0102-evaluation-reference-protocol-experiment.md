@@ -3,6 +3,103 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-15 Follow-up: the redesign needs a correction path, not another full pass
+
+The owner again challenged repeated failures after the workflow reassessment.
+This is a process defect as well as a model-quality problem: scripted tests
+established transport, restoration and refusal behavior, but were not evidence
+that the changed division of reasoning would improve the failed controls. The
+integrated extraction step left the substantive assessment workload in one call.
+Do not repeat the claim that the original report never completed: Coach 1.3.25
+already produced its accepted revision and 96/pass recheck. The unresolved work
+is reliable independent report evaluation, including protocol validity.
+
+New reproducible offline evidence is in
+`data/evaluation/results/golden_review_redesign_offline_v1.json`, produced by
+`scripts/check_golden_review_redesign.py`. It makes no Provider calls and does not
+contain an executable new Coach candidate:
+
+- Replaying the unchanged v2 response exposes three concurrent structural
+  defects: 47/48 judgments, 4/28 additions rows and an unexpected field. The old
+  diagnostic returned only that field and mislabeled it `discovery_schema_invalid`.
+  `assessment_feedback` now collects independent counts and schema errors under
+  the actual assessment phase, then retains existing canonical diagnostics when
+  the shape permits them. It does not zip misaligned rows, delete fields, repair
+  results or change acceptance. This fixes diagnosis, not the model's omission.
+- An explicit short-handle prototype preserves correspondence under reordered
+  responses and rejects missing, duplicate and unknown handles. Old positional
+  responses are never retrospectively assigned identities. Sparse additions
+  should carry their own source references, rather than empty rows for every block.
+- A deliberately scripted counterexample points to the genuine overall-summary
+  paragraph and claims that its correct statistics define this target's word
+  “较稳定”. The existing bound-scope decoder accepts the source/reference protocol;
+  the interpretation is still unproved under the frozen rubric. This is an
+  executable demonstration that source existence is insufficient, not a new
+  model failure or an accepted whole-report evaluation.
+- Direct reuse of the full review measures 57692–57866 input-ceiling tokens;
+  the existing single-target scope request measures 35630–35896. A batch sizing
+  template with explicit handles and sparse additions measures 40930–45886,
+  using the actual 48 discovered targets for the failing report and whole blocks
+  for the other nine. The historical revision shape is 53584. Five-call envelope
+  sums are 404948 (single target) and 424928 (batch), above 401920. These are
+  measured reuse shapes, not a minimal fact-only implementation or future maxima.
+  The runtime settles actual usage, so this does NOT predict every run fails.
+  It does disprove treating this unmodified composition as a proven envelope.
+- Two mandatory phases for both initial evaluation and recheck, plus revision,
+  consume all five calls. One extra correction after each evaluation needs seven.
+  A valid fact issue must survive later scope approval; missing or malformed
+  facts cannot be silently filled by a supposedly scope-only judge. A target
+  interpreted correctly cannot clear an independent later conflict. A design
+  that has no way to satisfy these obligations is not ready for registration.
+
+Rubric audit: the complete negative report DOES already state sample limits and
+per-game direction in its opening summary. The frozen target asks for clarification
+of an undefined stability term under the explicit-reference rubric; it is not an
+arithmetical falsehood or proven assertion of long-term ability. Labels and old
+results remain unchanged. A plausible ordinary-language reading must not be
+reported as objective numerical error, and these assistant-authored controls are
+not independent holdout or an owner-approved universal style rule. Actual
+unsupported causal/future claims remain substantive errors; explicitly negated
+quotes and genuinely defined local observations must remain acceptable.
+
+Decision: reject direct reuse of “full factual review + scope review” as a ready
+candidate. Keep the integrated candidate rejected. Adopt ONLY the next offline
+experiment: retain a first review's source-bound state, use the second slot for
+bounded corrections and a scope challenge, then perform full final validation.
+Unlike the earlier anchor-only patch, this must permit explicit semantic changes
+and newly discovered assertions without regenerating every unaffected judgment.
+It is not yet an implementation or a claim that patching will improve semantics.
+
+The prototype must preserve first-pass fact/numeric/source issues and diagnostics;
+only explicit, justified edits may supersede a finding, and injection findings
+remain terminal. Every target uses a host-owned handle; additions resolve an
+explicit source reference. The challenger must distinguish the report's language
+from empirical support, identify an actual definition/negation relationship or
+record unresolved meaning, and test the same facts under changed definition,
+negation and later-conflict text. A correct number or a valid reference alone
+cannot count as a resolved challenge. Existing canonical validation is the final
+gate, not a partial patch acceptance rule. Measure the actual old state, concrete
+diagnostics, full report/facts and patch schema together, including revision and
+recheck; reject the proposal if these obligations cannot fit two calls per
+evaluation/five per report. Do not hide another full review in a “narrow” request.
+
+Reproduction (repository root, use the project Python):
+
+```powershell
+python -m scripts.check_golden_review_redesign --source-run data/runs/golden_slice/golden_20260910_compact_1cd694d --base-report data/runs/inference_development/inference-dev-c69cb3e-evidence-v7-report/revised-report.md --run-dir data/runs/inference_development/integrated-review-153ae2c-definitions --historical-evaluation data/runs/inference_development/context-controls-9c5aad9-critical/pair-01/stable_defined_before-evaluation.json
+```
+
+The source runs are private audit inputs; public CI tests the independent
+correspondence and diagnostic behavior. This checkpoint adds no paid calls,
+changes no GLM profile, and makes no production or model-quality claim. The next
+offline experiment is within standing authorization and requires no new approval.
+
+Local verification: 35 integrated-review tests plus 23 correspondence,
+bound-scope and context-diagnostic tests passed; compile, governance and diff
+checks passed. The saved failed response now reports all three structural defects
+with no omitted diagnostics, and its original bytes remain unchanged. Public
+verification of this diagnostic-only code change is still pending its own SHA.
+
 ## 2026-09-15 Integrated v2 complete responses rejected; adoption paused
 
 Implementation 153ae2c240f9c48ac60963ad27a7b30fd454ba33 passed all three jobs in
