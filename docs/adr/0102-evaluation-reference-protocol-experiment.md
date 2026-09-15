@@ -3,6 +3,106 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated candidate; no runtime adoption or semantic-quality approval.
 
+## 2026-09-15 isolated candidate implementation
+
+The next implementation is now opt-in Coach **1.3.27**, Skill **0.5.27**, Program
+**2.3.27**, evaluation **1.20.0**, policy `golden-context-reference-v1`. This is an
+unadmitted development candidate, not a production/default selection. Its Coach
+snapshot is `22dff4e9c22367a009a32804a3fbfab868e4d556e14dabcc303932e800c349a5`.
+The earlier offline experiment and historical v7/v8 results below remain distinct.
+
+Problem/principle: the old local-only anchor contract cannot express a definition
+in a preceding paragraph that explicitly names the next sentence, or a paragraph
+that explicitly defines a heading. The new contract preserves that connection
+without concatenating different source sentences or treating proximity as proof.
+
+`golden_context_review.py` defines integer quote/evidence references, complete
+ordered inventories, heading classifications and an optional context reference.
+`defines_scope` corresponds to `selected_sample`; `negates` corresponds to
+`question_or_negation`. A contextual anchor comes from the actual referenced
+context. Both exact texts, their block identities and the model's explanation
+survive into canonical audits, persisted evaluations and report revision.
+Unknown/stale/ambiguous references reject; a context relation is a model claim,
+not a deterministic proof that the interpretation follows. Every remaining
+paragraph still requires review. Heading misclassification and omitted claims
+remain semantic risks that inventories alone cannot detect.
+
+The canonical result retains the existing verdict/issue consistency, scope,
+coverage, evidence existence, direct numeric support and table-antecedent checks.
+It additionally rejects duplicate same-block claims and duplicate evidence refs.
+It does not rewrite old results or automatically inherit their acceptance.
+
+`golden_context_runtime.py` makes at most two requests per evaluation. If full
+validation finds only one to four non-context scope-anchor errors, the second
+request may change only those anchors. The exact original response and source
+digests bind the patch. Any other failure selects one complete reassessment.
+A patch response may request reassessment, but that stops the current evaluation
+as invalid: it does not create a third call. No new report revision is permitted
+in this control batch. Typed prompt-injection findings stop the evaluation; raw
+responses/reservations remain in the existing private Counted/stream journals.
+
+`golden_context_requests.py` retains complete report context, facts/provenance,
+deterministic report, retrieved knowledge and the observed-user request. It
+checks every outgoing input ceiling before I/O. GLM high, 32768 output, 300-second
+request deadline, zero SDK retry and the existing per-pair 401920-token/900-second
+budget remain unchanged. The common composition entry also explicitly accepts
+this new identity and selects its evaluator and reviser; the default stays put.
+
+Full-input review: `golden_context_reports_v1.json` freezes ten complete-report
+hashes and separate target/report labels before model execution. The assembler
+replaces the first risk bullet in section 3 with the corresponding diagnostic
+fragment, removing that bullet's pre-existing local stability definition; the
+second risk bullet and all other sections remain. The complete base report was
+read, each inserted context reviewed, and the new target/report rationale stored
+alongside each hash. These are assistant-reviewed development cases, not a
+held-out set or labels individually approved by the user. The original twelve
+cases and scores are untouched. Private assembled inputs are in
+`data/runs/inference_development/context-inputs-20260915-v1/`.
+
+Measured before candidate registration, `golden_context_requests_v1.json` records
+initial input ceilings 57692–57866 and reassessment 57882–58054 across the ten
+complete inputs. Projecting the saved v8 pair-04 response and manually correcting
+its anchor produces a **scripted** patch-request ceiling 49998 and revision
+ceiling 59246. All are below 64000; the projection is neither new model output
+nor a worst-case guarantee. Every future request is measured again.
+
+Data/control flow: complete report and facts → source index → independent model
+review → exact reference resolution → canonical checks → accepted result, one
+bounded anchor correction, or one full reassessment → final full validation.
+Accepted contextual audits can pass through the existing revision seam; control
+evaluation itself never revises the source report or writes Workbench content.
+
+Verification: 97 focused and adjacent tests passed, including explicit
+cross-paragraph definitions, quoted negation, continued rejection of a later
+wrong claim, unchanged numerical rejection, stale/forged references, patch escape
+and the two-call limit, typed security stop, context preservation in revision,
+actual composition factory selection, separate target/report scoring, and
+label-blind zero-I/O preview. An additional 102 existing Coach repair/runtime/
+product-acceptance tests passed. Old v7/v8/experiment tests still pass. These tests
+prove protocol behavior and wiring, not model accuracy. Public CI and real
+semantic observations are still required for this new implementation.
+
+Runbook: `python -m scripts.run_golden_context_controls --source-run
+data/runs/golden_slice/golden_20260910_compact_1cd694d --base-report
+data/runs/inference_development/inference-dev-c69cb3e-evidence-v7-report/revised-report.md`
+is a zero-I/O preview with full initial-request measurements. It defaults to
+definition and heading pairs only (four cases, at most eight calls total).
+After same-SHA public success, add `--execute --env-file <private-path>
+--ci-run <run> --run-id context-controls-<sha>-critical`. Existing output paths
+are refused. Reported counters separate planned/started/finalized/interrupted
+and not-started. Raw transport/timeout/auth failures stop the remainder. A final
+protocol-invalid case is saved and also stops the suite. Semantically wrong but
+valid results finish the selected contrast batch for comparison; no automatic
+remaining-six/full-twelve run follows. Inspect each actual target and full report
+before deciding the next bounded run. Do not combine versions into an all-pass
+score. If the critical set fails, classify representation vs interpretation vs
+transport and change the corresponding design before further paid repetition.
+
+Learning/interview boundary: implemented a versioned source/context review
+protocol, bounded correction, preserved canonical revision evidence and frozen
+full-input contrasts; independent model quality and product admission remain
+unverified. Stage 8E stays in progress and the Workbench design memo stays queued.
+
 ## Problem and scope
 
 The goal remains a usable, evidence-grounded Coach report followed by revision,
