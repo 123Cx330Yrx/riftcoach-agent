@@ -3,6 +3,88 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-15 Integrated whole-report candidate (offline verified, live pending)
+
+The new isolated `golden-integrated-review-v1` prototype separates source discovery
+from assessment. Discovery receives the complete ordered report and user request,
+selects spans without a verdict, and does not need the numeric/knowledge payload.
+Assessment receives ALL generation facts, inference facts/provenance, deterministic
+source facts, knowledge and the complete report. Model-selected spans become
+host-owned targets; complete headings and any block with no selected spans are
+always retained. Assessment judges each target by position and separately sweeps
+all source blocks for omitted assertions. It may add a later conflicting statement;
+a correct first clause cannot make an omitted later clause disappear structurally.
+A model can still misclassify or overlook a sentence: ordinal/coverage validation
+is not evidence of semantic correctness.
+
+Two calls per evaluation are allocated to discovery and assessment. If discovery
+format/coverage is invalid, concrete bounded locations are included in assessment,
+which then receives every complete block as a target and must discover/split out
+claims itself. A valid prompt-injection finding stops immediately, even with other
+invalid discovery fields. After assessment, the unchanged contextual validators
+check source, evidence, numerical support, scope, headings and issue relations.
+Additional numerical checks reject unsupported numbers in explanations; correct
+numbers or fluent text can still make wrong mean-versus-individual claims. This
+remains a real semantic acceptance item, with an explicit test of the limitation.
+
+Assessment issues bind to target quotes on the host and pass to the existing full
+revision request. Canonical diagnostic locations are retained on a rejected final
+assessment. Tradeoff: there is no third format-repair call after assessment; an
+invalid second output stops the report, rather than re-running silently. This is
+not a claim that the old diagnostic helper now repairs frozen Coach 1.3.27.
+The workflow permits one revision and a fresh two-call full recheck, at most five
+calls. Recheck requires the exact revised text and unchanged facts/knowledge.
+
+`ReceiptedStreamProvider` reads its own reservation and terminal result, after the
+real `CoachBudgetedProvider` transformation. The host compares exact issued-input
+bytes with that trusted SHA; model output has no source/target identity fields.
+It uses existing high/32768/300-second transport, zero retries, and the shared
+401920-token/900-second budget. No old Coach/Skill/program registration is changed.
+This is an explicit experiment entry, not a production default or new release.
+
+Files: `golden_integrated_review.py` owns requests, source restoration and canonical
+validation; `golden_integrated_runtime.py` owns receipt binding, state transitions,
+revision/recheck and budget integration; `run_golden_integrated_review.py` is the
+isolated real entry; `test_golden_integrated_review.py` supplies scripted protocol
+and control-flow tests. These scripts reuse historical validators without editing
+old outputs, labels or receipts. The meaningful owner-learning distinction is:
+source identity belongs to the host, discovery/interpretation belongs to the
+model, and acceptance requires both transport and independently reviewed meaning.
+
+Offline measurement on ten frozen complete reports is in
+`data/evaluation/results/golden_integrated_workflow_v1.json`. Discovery requests
+measure 12500–12676 input-ceiling tokens; assessment shapes 58648–58866. One complete
+historical revision shape measures 53584. Combining the maxima twice and all five
+32768 output reservations gives 360508, below 401920. These are conservative size
+estimates, not billed usage, model accuracy or an arbitrary-future-output bound.
+Every actual generated target/assessment/revision is checked again. Five calls at
+300 seconds each do not fit 900 seconds; the shared deadline still stops overruns.
+
+Implementation choice: the first prototype duplicated target text plus unbounded
+numeric navigation and reached 80352 assessment input tokens offline. It was
+rejected BEFORE external I/O. The adopted request references existing complete
+source blocks and bounds navigation to 3000 JSON characters, without dropping the
+underlying facts. This does not increase output limits or lower reasoning effort.
+
+Next live gate after same-SHA public checks: one explicit-definition pair of
+complete reports with no supplied target/label to either model request. At most
+five calls and one revision per report; stop the pair on initial label mismatch,
+invalid output, transport failure or unsuccessful revision/recheck. Persist the
+original initial result separately so later revision never erases a control
+failure. Manually inspect definitions, means versus individual comparisons,
+source facts, all discovered targets and additions before any acceptance. Only
+then consider the remaining frozen heading/negation/future/conflict pairs. This
+is not a third narrow target probe and is not a held-out quality score.
+
+Run preview with `python -m scripts.run_golden_integrated_review --source-run
+ data/runs/golden_slice/golden_20260910_compact_1cd694d --base-report
+ data/runs/inference_development/inference-dev-c69cb3e-evidence-v7-report/revised-report.md`.
+Real use appends `--execute --pair 1 --ci-run <same-SHA-success> --env-file
+ <private-path> --run-id integrated-review-<sha>-definitions` and writes only to
+private run artifacts. Provider reservation/returned usage are counted separately;
+interrupted and unstarted cases remain explicit. Stage 8E stays in progress,
+Workbench report admission and the four-surface redesign remain pending.
+
 ## 2026-09-15 v2 observation and host-owned target binding
 
 Public closeout: offline binding implementation
