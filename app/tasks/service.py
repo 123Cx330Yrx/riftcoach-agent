@@ -103,6 +103,7 @@ class ReviewTaskService:
             task_kind="recent_review",
             schema_version="1.0",
             request_payload=request_payload,
+            publication_mode=command.publication_mode,
         )
         try:
             pending = PendingReviewTask(
@@ -112,6 +113,7 @@ class ReviewTaskService:
                 idempotency_key=command.idempotency_key,
                 request_fingerprint=fingerprint,
                 request_payload=request_payload,
+                publication_mode=command.publication_mode,
                 created_at=self._clock(),
             )
         except (StopIteration, TypeError, ValueError, ValidationError):
@@ -171,6 +173,7 @@ class ReviewTaskService:
                 idempotency_key=command.idempotency_key,
                 conversation_id=command.conversation_id,
                 request_payload=command.request.model_dump(mode="json"),
+                publication_mode=command.publication_mode,
                 created_at=self._clock(),
             )
         except (StopIteration, TypeError, ValueError, ValidationError):

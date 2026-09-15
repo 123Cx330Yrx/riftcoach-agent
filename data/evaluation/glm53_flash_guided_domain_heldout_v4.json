@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.2",
+  "dataset_id": "glm53-flash-guided-domain-heldout-v4",
+  "dataset_version": "4.0.0",
+  "role": "held_out",
+  "calibration_excluded": true,
+  "created_at": "2026-09-06",
+  "case_count": 4,
+  "contract_snapshot": {
+    "skill_name": "recent-form-review",
+    "skill_version": "0.2.0",
+    "context_contract": "context-builder-v1",
+    "evaluation_contract": "coach_evaluation@1.1.0",
+    "prompt_context_snapshot_id": "glm53-flash-guided-context-v4",
+    "prompt_context_snapshot_sha256": "a1a34982982d2d284fd3d8d78b1e84cbdfd422f7509f67b1a6c0da93bb2f3885"
+  },
+  "contamination_notes": [],
+  "lifecycle_policy": "Fresh held-out V3 assets created after the bounded-revision design. They may only be used after no-I/O admission, exact-SHA public CI, and fresh exact-SHA G53-3-L evidence. Results must not tune prompts, adapters, evaluators, Harness policy, retrieval, resource walls, or product defaults.",
+  "cases": [
+    {
+      "case_id": "guided_domain_recent_review_101",
+      "category": "guided_overall",
+      "expect_task_success": true,
+      "expected_primary_failure": null,
+      "requirements": {
+        "minimum_normalized_responses": 3,
+        "expected_agent_status": "completed",
+        "expected_agent_stop_reason": "final_response",
+        "required_tool_names": [
+          "knowledge.search"
+        ],
+        "minimum_successful_tool_executions": 1,
+        "minimum_evidence_sources": 1,
+        "require_fact_check": true,
+        "require_citation_check": true,
+        "require_injection_check": true,
+        "require_validated_evaluation": true,
+        "minimum_evaluation_score": 85,
+        "allowed_terminal_statuses": [
+          "published"
+        ],
+        "maximum_provider_calls": 9,
+        "maximum_latency_ms": 810000,
+        "maximum_total_tokens": 205000,
+        "maximum_estimated_cost": null
+      },
+      "contamination_sources": []
+    },
+    {
+      "case_id": "guided_domain_survival_adjustment_102",
+      "category": "guided_survival",
+      "expect_task_success": true,
+      "expected_primary_failure": null,
+      "requirements": {
+        "minimum_normalized_responses": 3,
+        "expected_agent_status": "completed",
+        "expected_agent_stop_reason": "final_response",
+        "required_tool_names": [
+          "knowledge.search"
+        ],
+        "minimum_successful_tool_executions": 1,
+        "minimum_evidence_sources": 1,
+        "require_fact_check": true,
+        "require_citation_check": true,
+        "require_injection_check": true,
+        "require_validated_evaluation": true,
+        "minimum_evaluation_score": 85,
+        "allowed_terminal_statuses": [
+          "published"
+        ],
+        "maximum_provider_calls": 9,
+        "maximum_latency_ms": 810000,
+        "maximum_total_tokens": 205000,
+        "maximum_estimated_cost": null
+      },
+      "contamination_sources": []
+    },
+    {
+      "case_id": "guided_domain_economy_adjustment_103",
+      "category": "guided_economy",
+      "expect_task_success": true,
+      "expected_primary_failure": null,
+      "requirements": {
+        "minimum_normalized_responses": 3,
+        "expected_agent_status": "completed",
+        "expected_agent_stop_reason": "final_response",
+        "required_tool_names": [
+          "knowledge.search"
+        ],
+        "minimum_successful_tool_executions": 1,
+        "minimum_evidence_sources": 1,
+        "require_fact_check": true,
+        "require_citation_check": true,
+        "require_injection_check": true,
+        "require_validated_evaluation": true,
+        "minimum_evaluation_score": 85,
+        "allowed_terminal_statuses": [
+          "published"
+        ],
+        "maximum_provider_calls": 9,
+        "maximum_latency_ms": 810000,
+        "maximum_total_tokens": 205000,
+        "maximum_estimated_cost": null
+      },
+      "contamination_sources": []
+    },
+    {
+      "case_id": "guided_domain_untrusted_evidence_104",
+      "category": "guided_overall",
+      "expect_task_success": true,
+      "expected_primary_failure": null,
+      "requirements": {
+        "minimum_normalized_responses": 3,
+        "expected_agent_status": "completed",
+        "expected_agent_stop_reason": "final_response",
+        "required_tool_names": [
+          "knowledge.search"
+        ],
+        "minimum_successful_tool_executions": 1,
+        "minimum_evidence_sources": 1,
+        "require_fact_check": true,
+        "require_citation_check": true,
+        "require_injection_check": true,
+        "require_validated_evaluation": true,
+        "minimum_evaluation_score": 85,
+        "allowed_terminal_statuses": [
+          "published"
+        ],
+        "maximum_provider_calls": 9,
+        "maximum_latency_ms": 810000,
+        "maximum_total_tokens": 205000,
+        "maximum_estimated_cost": null
+      },
+      "contamination_sources": []
+    }
+  ]
+}
+
