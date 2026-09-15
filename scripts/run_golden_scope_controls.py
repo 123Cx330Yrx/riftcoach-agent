@@ -68,6 +68,17 @@ def totals(rows, selected):
                 all_matched=len(valid) == len(selected) and all(r["matched"] for r in valid), groups=groups)
 
 
+def case_progress(selected, started_ids, rows):
+    """Case preparation, final results and Provider calls are distinct counts."""
+    planned = [c["id"] for c in selected]
+    finalized = [r["id"] for r in rows]
+    if any(len(ids) != len(set(ids)) for ids in (planned, started_ids, finalized)) or not set(finalized) <= set(started_ids) <= set(planned):
+        raise ValueError("case_progress_identity_invalid")
+    return dict(planned=len(planned), started=len(started_ids), finalized=len(finalized),
+                interrupted=len(set(started_ids) - set(finalized)),
+                not_started=len(set(planned) - set(started_ids)))
+
+
 def evaluate_pair(cases, evaluator, summary, deterministic, knowledge, base, directory, state):
     rows = []
     for case in cases:
@@ -175,11 +186,14 @@ def run(args):
     finally:
         receipt = dict(plan, cases=rows, pairs_result=pairs, stopped=failure is not None,
                        error_type=failure, **totals(rows, selected))
+        started_ids = [p.stem.removesuffix("-input") for p in directory.glob("pair-*/*-input.json")]
+        receipt.update(case_counts=case_progress(selected, started_ids, rows),
+                       attempted_semantics="finalized_cases_legacy")
         receipt.update(calls=sum(p["state"]["calls"] for p in pairs),
             input_tokens=sum(p["state"]["input_tokens"] for p in pairs),
             output_tokens=sum(p["state"]["output_tokens"] for p in pairs))
         write_new_json(directory / "receipt.json", receipt)
-        print(json.dumps({k: receipt[k] for k in ("calls", "input_tokens", "output_tokens", "stopped", "attempted", "valid", "invalid", "all_matched", "groups")}), flush=True)
+        print(json.dumps({k: receipt[k] for k in ("calls", "input_tokens", "output_tokens", "stopped", "case_counts", "valid", "invalid", "all_matched", "groups")}), flush=True)
 
 
 def main():

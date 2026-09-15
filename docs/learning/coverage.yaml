@@ -876,6 +876,7 @@ groups:
     status: planned
     evidence:
       problem_and_principle:
+        - docs/adr/0102-evaluation-reference-protocol-experiment.md
         - docs/plans/2026-09-15-golden-scope-controls.md
         - docs/plans/2026-09-10-real-golden-slice.md
         - docs/plans/2026-09-06-coach-product-acceptance-preparation.md
@@ -1025,6 +1026,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       design_and_implementation:
+        - docs/adr/0102-evaluation-reference-protocol-experiment.md
         - docs/plans/2026-09-15-golden-scope-controls.md
         - docs/plans/2026-09-10-real-golden-slice.md
         - docs/plans/2026-09-06-coach-product-acceptance-preparation.md
@@ -1165,6 +1167,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       code_map:
+        - docs/adr/0102-evaluation-reference-protocol-experiment.md
         - docs/plans/2026-09-15-golden-scope-controls.md
         - docs/plans/2026-09-10-real-golden-slice.md
         - docs/plans/2026-09-06-coach-product-acceptance-preparation.md
@@ -1257,6 +1260,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       data_and_control_flow:
+        - docs/adr/0102-evaluation-reference-protocol-experiment.md
         - docs/plans/2026-09-15-golden-scope-controls.md
         - docs/plans/2026-09-10-real-golden-slice.md
         - docs/plans/2026-09-06-coach-product-acceptance-preparation.md
@@ -1363,6 +1367,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       verification:
+        - docs/adr/0102-evaluation-reference-protocol-experiment.md
         - docs/plans/2026-09-15-golden-scope-controls.md
         - docs/plans/2026-09-10-real-golden-slice.md
         - docs/plans/2026-09-06-coach-product-acceptance-preparation.md
@@ -1493,6 +1498,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       runbook:
+        - docs/adr/0102-evaluation-reference-protocol-experiment.md
         - docs/plans/2026-09-15-golden-scope-controls.md
         - docs/plans/2026-09-10-real-golden-slice.md
         - docs/plans/2026-09-06-coach-product-acceptance-preparation.md
@@ -1602,6 +1608,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       failure_security_boundary:
+        - docs/adr/0102-evaluation-reference-protocol-experiment.md
         - docs/plans/2026-09-15-golden-scope-controls.md
         - docs/plans/2026-09-10-real-golden-slice.md
         - docs/plans/2026-09-06-coach-product-acceptance-preparation.md
@@ -1740,6 +1747,7 @@ groups:
         - docs/plans/2026-09-04-glm53-low-profile-protocol-and-assets-offline-implementation.md
         - docs/learning/8e-glm53-low-profile-protocol-and-assets-offline-implementation-walkthrough.md
       interview_wording:
+        - docs/adr/0102-evaluation-reference-protocol-experiment.md
         - docs/plans/2026-09-15-golden-scope-controls.md
         - docs/plans/2026-09-10-real-golden-slice.md
         - docs/plans/2026-09-06-coach-product-acceptance-preparation.md

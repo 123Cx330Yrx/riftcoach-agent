@@ -1,5 +1,9 @@
 # RiftCoach 持续开发进度
 
+2026-09-15离线复盘实验完成：23/28响应可无损索引化，13份原有效结果全部保留；可转换子集紧凑字符减少33.8%，不等于模型成本或质量改进。引用局部纠正与完整请求预算已离线验证，旧标签保留，新语境对照及明确案例计数已补齐。下一步按ADR-0102接入独立候选的原文引用、显式上下文关联与有界纠正，完成实际请求预算和公共验证后优先定义/标题成对实测；不原样续跑v8。本批未注册新Runtime、无新增真实Provider请求（累计至少155不变），不称语义修复或准入。GLM high/32768/300秒、ShowMaker observed及既有Workbench人工稿保持，四块设计后置，8E仍in_progress。 依据：`docs/adr/0102-evaluation-reference-protocol-experiment.md`。公共验证待执行。
+
+以下旧下一步为历史，以最新canonical状态为准。
+
 2026-09-15候选1.3.26真实重验停止：c8450dcba64a52a67ff1b28b75d5a67b1e13c7a9/Actions34918468492同SHA三项success；scope-controls-c8450dc-v8-all实际启动7例、完成6例，5有效且目标匹配、1格式无效，第七例纠正超时、后5例未启动。原含混original_stable一次有效85/needs_revision，正确不借邻段并有非空锚点；selected_means纠正后附加第二JSON对象被拒；stable_local_definition首评背景锚点错，唯一整篇纠正292172ms才出正文，父进程300016ms deadline，无finish/usage，不称length。11次预约，10份完整返回137849+133323=271172tokens，另1用量未知，累计Provider至少155；receipt.attempted=6实际是已完成结果数，input证明启动7。标题及其余未跑例不可宣称修好，无全套质量率或准入。用户质疑连续失败后重新审视执行方式：局部提示叠加及整篇重审纠正仍不可靠，停止原样重复真实全套。唯一下一步改为docs/plans/2026-09-15-evaluation-workflow-reassessment.md的最小审查表示与局部纠正流程离线设计/测量/原型决策，减少原文和身份重复抄写但不放宽证据、语义、覆盖或后缀拒绝；完成新流程离线证据和公共验证后再决定有界实测。保持GLM high/32768/300秒，原报告闭环和Workbench人工稿不变，8E仍in_progress、四块设计后置。
 
 以下为历史记录。

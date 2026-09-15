@@ -4,7 +4,7 @@ from types import SimpleNamespace as NS
 import pytest
 
 from app.providers.errors import ProviderResponseError, ProviderTimeoutError
-from scripts.run_golden_scope_controls import embed, evaluate_pair, score, totals, PAIRS
+from scripts.run_golden_scope_controls import embed, evaluate_pair, score, totals, case_progress, PAIRS
 
 
 def result(verdict="pass", score=96, issues=(), claims=()):
@@ -73,6 +73,18 @@ def test_transport_failure_stops_remaining_cases(tmp_path):
     with pytest.raises(ProviderTimeoutError):
         evaluate_pair(cases, Fake(), {}, "facts", None, "## 3. 主要风险点\n", tmp_path, {"calls": 0})
     assert not (tmp_path / "b-input.json").exists()
+    started = [p.stem.removesuffix("-input") for p in tmp_path.glob("*-input.json")]
+    assert case_progress(cases, started, []) == dict(planned=2, started=1, finalized=0, interrupted=1, not_started=1)
+
+
+def test_progress_keeps_completed_results_when_next_case_is_interrupted():
+    selected = [dict(id=str(i)) for i in range(12)]
+    assert case_progress(selected, [str(i) for i in range(7)], [dict(id=str(i)) for i in range(6)]) == dict(
+        planned=12, started=7, finalized=6, interrupted=1, not_started=5)
+    with pytest.raises(ValueError, match="identity"):
+        case_progress(selected, ["0", "0"], [])
+    with pytest.raises(ValueError, match="identity"):
+        case_progress(selected, ["0"], [dict(id="1")])
 
 
 def test_pair_inventory_covers_frozen_dataset_once():
