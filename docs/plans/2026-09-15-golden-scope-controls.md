@@ -1,5 +1,19 @@
 # 十二条范围对照真实验证
 
+## 1.3.26 候选实现（待真实重验）
+
+2026-09-15范围对照修复候选：新增隔离evidence_v8/Coach1.3.26/Skill0.5.26/Program2.3.26/evaluation1.19.0，旧1.3.25及所有失败响应冻结。标题须逐个显式判断navigation/assertion，后者必须绑定完整标题的inference claim；含混锚点明确引用触发原词且非空，不得借邻段定义猜成selected_sample。原canonical原句/证据/覆盖/数值/范围校验不放宽。新诊断独立报告清单差异和局部字段，私有诊断投影只用于定位，不接受或修改旧模型输出；给出范围词导航/含混字段修复规则。84项相关回归通过，旧18响应离线诊断全部反馈无遗漏；完整初评输入57464–57522，旧失败诊断请求投影58502–59752，均<64000，非任意未来最大保证。默认预检零I/O，显式--evidence-scope-v8绑定同基准稿和冻结十二例；high/32768/300秒/每组4调用及原批次预算不变。唯一下一步为本实现同SHA公共三项通过后新身份完整十二例真实重验；不得称离线测试已修好语义。Provider仍累计至少144；8E仍in_progress，Workbench人工稿不替换、四块设计后置。
+
+问题/原理：明确审过每段不等于识别了标题断言；将标题分类作为单独、很小的输出清单，并绑定已有claim，让遗漏可定位。分类本身仍由模型判断，误标navigation仍可能漏检，必须真实语义验证，不能声称程序自动证明了标题正确。
+
+代码地图与流程：golden_evidence_scope_v8验证标题完整顺序、断言与原文claim绑定，再调用未放宽的v5 canonical；golden_evidence_requests_v8明确标题内容、ambiguous锚点和本句定义；golden_evidence_diagnostics_v8独立定位inventory与局部字段，再复用v7数值来源导航；golden_evidence_runtime_v8保留现有一次纠正和安全早停。heading_reviews保存在私有raw journal，规范结果中的标题claims/issues/coverage仍走既有消费者。本候选没有新产品默认或第二模型。
+
+验证：tests/test_golden_evidence_v8.py覆盖普通标题通过、标题漏项/重复/过时拒绝、断言缺claim拒绝、含混标题带原文锚点与other issue可进入修订、无锚点仍拒、inventory错误不遮蔽局部错误、原始输入不变、重复字段不扁平化、畸形诊断输入、真实Adapter一次纠正上限和旧快照/容量不变。连同v3–v7、范围入口与容量共84项通过。旧响应投影仅用于检查诊断和输入大小，没有写accepted结果。
+
+操作：沿用本页十二条运行命令，增加--evidence-scope-v8及全新scope-controls-*身份、对应实现ci-run。保持每例一次纠正、无报告修订，invalid继续独立例、其他运行错误停止。真实结果逐例人工核对及用量审计后才作质量结论，不拼接旧批次。可以表述为“基于完整真实失败证据修复诊断和明确审查合同”，不能说“准确率已改善”。
+
+以下为上一候选真实结果与此前计划。
+
 ## 2026-09-15 全套结果：未通过
 
 实现 `d8576beed1622404e2dcc25c5d104526b29275ab`，公共 Actions `34869512903` 的 pytest、postgres-migrations、packaging-smoke 均为同 SHA success。真实身份 `scope-controls-d8576be-v7-all` 已完成全部十二例，未修改候选 1.3.25、基准修订报告、标签或运行中的规则。以下入口准备状态均为历史。

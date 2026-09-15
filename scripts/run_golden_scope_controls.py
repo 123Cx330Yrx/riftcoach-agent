@@ -97,9 +97,17 @@ def evaluate_pair(cases, evaluator, summary, deterministic, knowledge, base, dir
 
 
 def run(args):
+    v8 = getattr(args, "evidence_scope_v8", False)
+    from app.runtime.coach_contract import EVIDENCE_V8_COACH_CONTRACT
+    contract = EVIDENCE_V8_COACH_CONTRACT if v8 else CONTRACT
+    mode = "evidence_v8" if v8 else "evidence_v7"
     data = json.loads(DATASET.read_text(encoding="utf-8"))
     check_evidence(data, SOURCE.read_bytes())
     _, summary, _ = prepare(args.source_run, evidence_scope_v7=True)
+    if v8:
+        from app.runtime.composition import RuntimeCompositionRoot
+        assets = ROOT / "examples/runtime_profiles/flash_v2_golden_evidence_v8"
+        RuntimeCompositionRoot.from_directories(skills_root=assets / "skills", prompt_programs_root=assets / "prompt_programs", coach_contract=contract)
     base = args.base_report.read_text(encoding="utf-8")
     if hashlib.sha256(base.encode()).hexdigest() != BASE_SHA:
         raise ValueError("verified_base_report_required")
@@ -109,7 +117,7 @@ def run(args):
         raise ValueError("duplicate_pair")
     selected = [lookup[key] for n in pair_numbers for key in PAIRS[n-1]]
     plan = dict(scope="known_development_controls_not_holdout_or_admission", pairs=pair_numbers,
-        contract=CONTRACT.snapshot().model_dump(mode="json"), base_report_sha256=BASE_SHA,
+        contract=contract.snapshot().model_dump(mode="json"), base_report_sha256=BASE_SHA,
         dataset_sha256=hashlib.sha256(DATASET.read_bytes().replace(b"\r\n", b"\n")).hexdigest(),
         selected_case_ids=[c["id"] for c in selected], labels_sent_to_model=False,
         max_calls_per_pair=4, max_calls=4*len(pair_numbers), max_revisions=0,
@@ -142,13 +150,13 @@ def run(args):
             pair_receipt = dict(pair=n, state=state)
             pairs.append(pair_receipt)
             provider = CoachBudgetedProvider(Counted(GoldenProcessStreamProvider(settings=settings,
-                directory=pair_dir / "streams", transport_id=CONTRACT.descriptor()["stream_transport_id"]),
-                state=state, call_limit=4, directory=pair_dir), coach_contract=CONTRACT)
+                directory=pair_dir / "streams", transport_id=contract.descriptor()["stream_transport_id"]),
+                state=state, call_limit=4, directory=pair_dir), coach_contract=contract)
             registry = ToolRegistry()
-            for definition in build_llm_tools(provider, request_policy=CONTRACT.request_policy):
+            for definition in build_llm_tools(provider, request_policy=contract.request_policy):
                 registry.register(definition)
             evaluator = GroundedChatEvaluationAdapter(runtime=ToolRuntime(registry), system_prompt=EVALUATOR_SYSTEM_PROMPT,
-                fact_pack_builder=build_fact_pack, inference_audit="evidence_v7")
+                fact_pack_builder=build_fact_pack, inference_audit=mode)
             try:
                 pair_rows = evaluate_pair([lookup[key] for key in PAIRS[n-1]], evaluator, summary,
                                           deterministic, knowledge, base, pair_dir, state)
@@ -179,6 +187,7 @@ def main():
     p.add_argument("--source-run", type=Path, required=True)
     p.add_argument("--base-report", type=Path, required=True)
     p.add_argument("--pair", action="append", type=int, choices=range(1, 7))
+    p.add_argument("--evidence-scope-v8", action="store_true")
     p.add_argument("--execute", action="store_true")
     p.add_argument("--env-file", type=Path)
     p.add_argument("--ci-run")

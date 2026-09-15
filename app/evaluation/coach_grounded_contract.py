@@ -93,6 +93,9 @@ class GroundedChatEvaluationAdapter(SecureChatEvaluationAdapter):
     def evaluate(self, request):
         if not request.user_utterance or not request.user_utterance.strip():
             raise ValueError("security-aware evaluation requires user_utterance")
+        if self.inference_audit == "evidence_v8":
+            from app.evaluation.golden_evidence_runtime_v8 import evaluate
+            return evaluate(self, request)
         if self.inference_audit == "evidence_v7":
             from app.evaluation.golden_evidence_runtime_v7 import evaluate
             return evaluate(self, request)
@@ -269,6 +272,9 @@ class GroundedCoachReviser(ChatCoachReviser):
         self.inference_audit = inference_audit
 
     def revise(self, request):
+        if self.inference_audit == "evidence_v8":
+            from app.evaluation.golden_evidence_runtime_v8 import revise
+            return revise(self, request)
         if self.inference_audit == "evidence_v7":
             from app.evaluation.golden_evidence_runtime_v7 import revise
             return revise(self, request)
