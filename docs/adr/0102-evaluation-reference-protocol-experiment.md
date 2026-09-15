@@ -16,6 +16,11 @@ reports. Its first response finished with stop: 11,807 input + 13,526 output =
 64,300; no correction, revision or recheck was sent. Cumulative Provider requests
 in the existing scope are at least 175, correcting the stale 174 checkpoint.
 
+2026-09-16 preflight follow-up: complete-report inspection additionally covered
+Chinese ordinal rank wording, T-tier numerals and ISO retrieval timestamps at
+displayed precision. Wrong rank, tier, timestamp and rate-unit negatives remain
+rejected. The two current contextual suites passed all 43 tests after this change.
+
 The v3 candidate repairs connected engineering defects:
 
 - Every first-review claim can be corrected and must be reviewed, including
@@ -50,7 +55,7 @@ there is no blanket worst-case completion guarantee or hidden retry.
 includes the latest failing response shape. Old integer references are rebound
 by source identity for measurement only; this is not a new model judgment. First
 requests: 47540 / 47612. Three historical corrections: 59198 / 59112 / 56860.
-Latest shape: 62458, with 21 mutable claims, 30 reviews and five external facts.
+Latest shape: 63124, with 21 mutable claims, 30 reviews and five external facts.
 Revision shape: 50540. All measured requests fit; future responses can still hit
 a declared limit and must stop honestly. Original response hashes are retained.
 

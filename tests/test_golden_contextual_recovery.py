@@ -66,6 +66,11 @@ def test_direct_result_misclassification_can_be_corrected_without_erasing_quote(
 @pytest.mark.parametrize("quote,valid",[
     ("OP.GG 辛德拉 T2，胜率49%，登场率2%，禁用率10%，排名12。",True),
     ("OP.GG 胜率0.49，上期排名18，上版本排名5。",True),
+    ("OP.GG 辛德拉为 T2、第 12 名（上期第 18）。",True),
+    ("OP.GG 快照（2026-09-10T12:00:00Z）辛德拉 T2、第 12 名。",True),
+    ("OP.GG 辛德拉 T9。",False),
+    ("OP.GG 辛德拉上期第 12 名。",False),
+    ("OP.GG 快照（2026-09-11T12:00:00Z）辛德拉 T2。",False),
     ("OP.GG 伤害49。",False),("OP.GG 胜率49。",False),
     ("OP.GG 胜率0.49%。",False),("OP.GG 禁用率49%。",False),
     ("OP.GG 队列12。",False),("OP.GG 上期排名12。",False),
