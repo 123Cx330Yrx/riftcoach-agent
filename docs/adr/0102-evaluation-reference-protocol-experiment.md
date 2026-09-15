@@ -88,8 +88,10 @@ Original Coach 1.3.25 report revision and 96/pass recheck remain valid. Independ
 control reliability and Stage 8E remain in progress. Observation persistence/API/
 restart readback are already complete; four-surface design and hero-avatar work
 remain indexed in the 2026-09-11 follow-up. Provider cumulative count remains at
-least 172, with zero additional calls here. Public verification is pending this
-implementation SHA; no production admission or deployment follows from CI.
+least 172, with zero additional calls here. Implementation `56a5467c83371f9da3b462ad94bcdacd2800726f` passed all three
+public jobs in Actions `34954808947` with the exact same head SHA. This
+documentation closeout changes no product code. No production admission or
+deployment follows from CI.
 
 ## 2026-09-15 Follow-up: the redesign needs a correction path, not another full pass
 
