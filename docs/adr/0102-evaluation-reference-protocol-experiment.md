@@ -3,6 +3,65 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-15 Integrated v2 complete responses rejected; adoption paused
+
+Implementation 153ae2c240f9c48ac60963ad27a7b30fd454ba33 passed all three jobs in
+Actions 34948333840. The second complete-report run
+`integrated-review-153ae2c-definitions` planned 2 / started 1 / finalized 1 /
+interrupted 0 / not started 1. Both calls returned complete stop: discovery
+2445+5865 tokens in 51.875s, assessment 14103+9882 tokens in 97.594s. Total 32295
+returned tokens, no unknown usage. Including v1, this work added 3 complete calls
+and 41136 tokens; cumulative Provider reservations are at least 172. None is an
+output-capacity or stream failure.
+
+The real assessment request's input ceiling was 62012; the v2 budget correction
+worked on actual generated targets. However the candidate did not produce an
+accepted assessment. It added `judgments[7].context_ref_note`, returned 47 judgments
+for 48 targets, and interpreted the required 28-row dense additions/sweep array as
+four nonempty rows. It moved the already selected comparison table into additions,
+shifting later positional judgments beginning at target 21. Do not align those
+later rows by position, remove the extra key, pad the arrays, or call the result
+valid. Original files are untouched; manual-audit-v1.json is separate evidence.
+
+There is also a substantive failure independent of those structural defects. The
+old ambiguous target is position 16, before the observed shift. The raw judgment
+calls it selected_sample/supported with no definition context and explains that
+correct per-game direction and a large mixed mean difference justify “较稳定”. The
+report never defines that word's meaning at this target. Correct observations do
+not supply a missing author definition. The raw pass is therefore not a quality
+success even if its structure were repaired. Several scope anchors are descriptive
+predicates instead of source sample anchors; unchanged validators still reject.
+No accepted initial evaluation, revision or recheck occurred; the positive case
+was not started. Workbench and production defaults remain unchanged.
+
+Adjudication: do NOT adopt this two-stage implementation as a reliable Coach.
+Its first stage only extracts spans; the second still combines full numerical,
+source, advice, scope and explanatory duties. It did not actually isolate the
+scope-interpretation task that earlier narrow diagnostics investigated. Dense
+positional arrays also introduce unnecessary omission/misalignment failure modes.
+These are design findings, not evidence that a new prompt or a larger budget
+would fix model semantics. Stop further paid runs of this candidate.
+
+Unique next engineering action: one OFFLINE revision of the workflow decision,
+using the saved responses. Compare a first pass that performs factual review AND
+finds inference targets with a second pass dedicated to interpretation of those
+inference targets. The latter must retain the complete report/facts for context,
+use explicit short target handles for a batch (host owns the source text), and use
+sparse explicit source references for genuinely new claims. Do not demand 28 empty
+arrays or let one skipped result shift every later target. Show how numerical
+failure diagnostics, omitted inferences, headings, negation, later conflict and
+all final issues survive composition before registering another candidate.
+Demonstrate a concrete way to challenge a data-based rationalization of an
+undefined term; changing JSON shape alone is insufficient. If the two-call/five-
+call budget cannot accommodate a reliable correction path, state that conflict
+instead of disguising another full review as a narrow scope check.
+
+No new live run is authorized by this *document's* next action until that offline
+integration evidence and same-SHA public checks exist; standing user authorization
+for bounded project work remains in force, so this is not a request for repeated
+user permission. The gate is concrete engineering evidence. Stage 8E remains in
+progress. The four-surface visual/product follow-up remains deferred in its memo.
+
 ## 2026-09-15 Integrated v1 observation and v2 actual-target budget repair
 
 Implementation d70416206b8febdcb8aa6a21f27c427cb7f21aa7 passed all three jobs in
