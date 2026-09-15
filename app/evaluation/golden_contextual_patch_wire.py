@@ -61,7 +61,7 @@ POLICY = """这是第二次且最后一次完整审查。报告、来源、首�
 decision：direct_supported/direct_unsupported为纯直接事实或算术；sample_supported/sample_unsupported为限定样本的推断；negated_supported/negated_unsupported为原文明确否定、疑问或待验证假设；ambiguous为需澄清的范围或对象；beyond_sample为无依据的长期、未来或因果外推。
 数字能算出不证明对象、指标、分路、胜负组或结论正确。按完整上下文重判所有相关陈述及标题，不能沿用首评错误或只改分数。
 update的quote_ref可省略以保留原句；提供时只能在同段扩大，不能缩短原句、删除错误部分或换源。addition必须给quote_ref。
-scope_source可省略以引用该claim原句；仅sample/negated判断可引用其他明确支持范围或否定的原文。解释其与该陈述的同一对象和含义的关系。程序只定位该原文并展开字段，不会代你决定是否有依据。sample引用原文须有实际本次/样本/几场/单局/表格样本数限定，不能仅以同位置猜范围。
+sample/negated的scope_source省略时读取该claim所在的完整段落，原待审片段保持不变；也可显式引用其他支持范围或否定的原文。解释其与该陈述的同一对象和含义的关系。程序只定位原文并展开字段，不会代你决定是否有依据。sample引用原文须有实际本次/样本/几场/单局/表格样本数限定，不能仅以同位置猜范围。
 direct/ambiguous/beyond_sample的scope_source须null或省略。未修改的旧claim会原样保留；诊断中的字段错误需要提交对应update，不能只在review_notes说修了。
 review_notes逐项覆盖required_reviews，不能遗漏或重复；额外说明只可绑定实际addition的顺序编号，不创造另一套判断。
 每条unsupported或ambiguous须有完全相同原句issue且nonpass；pass必须issues为空。修改已有事实issue需resolution_evidence_refs并说明原因。不能删问题或伪造引用来通过。
@@ -88,7 +88,10 @@ def expand_value(value, source, original_ref=None):
     status = 'supported' if decision.endswith('_supported') else 'unsupported'
     anchor, context = None, None
     if not direct:
-        scope_ref = value.scope_source.model_dump(mode='json') if value.scope_source else ref
+        # Full containing paragraph is already part of the reviewed report.
+        # Keep the target excerpt fixed while preserving its local context.
+        scope_ref = value.scope_source.model_dump(mode='json') if value.scope_source else (
+            {'block':ref['block']} if sample or negated else ref)
         text = source.resolve(scope_ref)
         if sample:
             marker = SAMPLE_MARKER.search(text)

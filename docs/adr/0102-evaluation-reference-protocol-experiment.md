@@ -3,6 +3,41 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 V7: preserve local paragraph context when the target is an excerpt
+
+92aed177993452507ae70b1720e00db13cd8276d passed Actions 35001860148, all three
+jobs. Its v6 real run completed two stop responses, 24,624 input + 27,816 output
+= 52,440 returned tokens, no unknown usage; cumulative Provider calls at least
+185. Five recovery runs total ten calls and 262,403 returned tokens. It stopped
+on contextual_01 before the second report or revision/recheck.
+
+The compact correction was structurally complete, with explicit decisions.
+Its c010 correctly explained that the two winning games were being compared,
+but the initial target excerpt contained only “输出与参团数据明显好于整体均值”.
+The default scope lookup searched just that excerpt, losing “两局胜局” in the
+same original paragraph, and raised contextual_patch_sample_source_required.
+
+V7 makes the default local scope source for sample/negated decisions the full
+containing paragraph. The audited target excerpt stays unchanged. Explicit
+scope_source references remain exact model choices; no different paragraph is
+borrowed automatically. Ambiguous/beyond_sample decisions do not acquire a
+definition/negation context. The host does not infer a decision, change its
+status, or prove semantic entailment; source and issue guards remain in force.
+
+The unmodified response now replays to 95/pass and zero issues; all actual model
+decisions, explanation text and source choices remain. This is an offline replay,
+not a new real complete-pair success. Original failed results and hashes remain.
+147 focused tests pass, including a scope-free excerpt with an explicit local
+sample antecedent, refusal to borrow the neighboring paragraph, and a future
+claim excerpt with a preceding disclaimer. Six historical correction shapes
+measure 62132/59054/57684/57436/57916/56620; first and revision shapes remain
+47540/47612 and 50540. All measured inputs fit the same limits.
+
+Evidence: golden_contextual_scope_92aed17_v7.json and golden_contextual_readiness_v7.json.
+Next: exact-SHA public checks and a fresh complete pair with manual explanation
+review and necessary revision/recheck. No model downgrade, cap increase,
+production admission or change to 8E/global follow-up scope.
+
 ## 2026-09-16 V6: one explicit decision, host-bound source locations
 
 c453088759b5afe8c16cac6d891b77f591ff2654 passed Actions 34999382329 (all three

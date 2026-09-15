@@ -82,7 +82,7 @@ def test_compact_wire_preserves_identity_and_rejects_missing_or_conflicting_deci
 
 def test_explicit_future_decision_requires_issue_and_nonpass():
     quote='所有未来输局都会更差。'
-    inputs,first=fixture(quote)
+    inputs,first=fixture('这四场仅作观察；'+quote)
     first['audits'][0]['claims']=[claim(inputs,quote)]
     state=canonical.prepare_state(compact(first),inputs);value=wire_patch(patch(state))
     value['claim_updates']=[dict(target_id='c001',decision='beyond_sample',
@@ -91,3 +91,22 @@ def test_explicit_future_decision_requires_issue_and_nonpass():
     value.update(verdict='needs_revision',score=70,added_issues=[issue(inputs,quote)])
     result,_=apply_wire(state,compact(value),inputs=inputs)
     assert result.verdict=='needs_revision' and result.audits[0].claims[0].status=='unsupported'
+
+
+def test_default_scope_keeps_target_excerpt_and_reads_its_containing_paragraph():
+    quote='输出与参团数据高于整体均值'
+    report='两局胜局的'+quote+'，仅作样本观察。'
+    inputs,first=fixture(report)
+    first['audits'][0]['claims']=[claim(inputs,quote)]
+    state=canonical.prepare_state(compact(first),inputs);value=wire_patch(patch(state))
+    value['claim_updates']=[dict(target_id='c001',decision='sample_supported',
+        evidence_refs=first['audits'][0]['claims'][0]['evidence_refs'],explanation='同段明示两局胜局，仅限样本。')]
+    result,journal=apply_wire(state,compact(value),inputs=inputs)
+    row=result.audits[0].claims[0]
+    assert row.quote==quote and row.context.quote==report and row.scope_anchor=='两局'
+    # It must not borrow a different paragraph when the local one has no scope.
+    separate,other=fixture('两局胜局仅作样本观察。\n\n'+quote)
+    other['audits'][0]['claims']=[claim(separate,quote)]
+    other_state=canonical.prepare_state(compact(other),separate)
+    with pytest.raises(ValueError,match='sample_source_required'):
+        apply_wire(other_state,compact(value),inputs=separate)
