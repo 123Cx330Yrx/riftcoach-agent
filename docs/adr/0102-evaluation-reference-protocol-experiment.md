@@ -3,6 +3,80 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-15 v2 observation and host-owned target binding
+
+Implementation `86358e85839b00128eb4d64672780b22b1f12674` passed Actions
+`34941920885`, all three jobs. `context-relation-86358e8-v2` stopped after case 3:
+planned 4 / started 3 / finalized 3 / interrupted 0 / not started 1. All three
+Provider calls completed with stop. Returned input 28000 + output 1936 = **29936
+tokens**, no unknown usage. Cumulative reservations are at least **169**. The two
+narrow experiments together used 7 complete calls and 69136 returned tokens.
+Earlier historical unknown usage remains unknown.
+
+| Case | V2 observation | Boundary |
+|---|---|---|
+| stable_unbounded | valid, needs_clarification | Correct target classification |
+| stable_defined_before | valid, sample_defined | Explicit definition recognized; explanation inserts group means into an individual-game comparison and is not fully fact-validated |
+| heading_unbounded | raw needs_clarification, protocol invalid | Model echoes the complete visible heading while omitting `## ` in target_ref; exact target check rejects |
+| heading_defined_after | not started | No v2 result |
+
+Terminal times: 10.484 / 6.297 / 18.094 seconds. The third interpretation correctly
+identified missing meaning rather than definite extrapolation, but is not an
+accepted v2 result. Do not count it as passing or combine versions into all four.
+The previous definition-copy defect has not received a v2 fourth-case result.
+No third paid diagnostic follows this batch.
+
+Root design correction: a known request target is host-owned identity. Asking the
+model to echo its Markdown representation or source digest is redundant and does
+not prove semantic correctness. This recreates a copying failure after source
+references were introduced to reduce copying. Keep model-chosen definition
+references, but bind the requested target and source through the actual request.
+
+`golden_bound_scope_review.py` is an **offline seam**, not a registered runtime.
+It preserves all complete data and the single target in the input; output contains
+only disposition, context_ref and explanation. `seal_issued_request` runs after
+trusted budget-wrapper changes, verifies unchanged messages/schema, and computes
+the same exact byte SHA as `golden_stream_bridge.validate_request`. `decode`
+requires that SHA from the trusted transport receipt, restores the full original
+target including Markdown, resolves any definition reference, and retains the
+model explanation. The receipt SHA must never come from model JSON. Actual
+transport/runtime integration is still required; a caller-provided fake receipt
+or a unit test is not end-to-end provenance evidence.
+
+Data flow: prepare full input → budget wrapper → seal exact issued bytes → trusted
+transport response/receipt → compare request SHA → parse judgment → restore host
+source/target and model-chosen context. Changed input/schema, wrong receipt, stale
+reference, incomplete stream and model-injected identity fields reject. A source
+reference still does not prove meaning, and numerical explanation errors remain
+semantic work. No automatic whole-report pass is produced.
+
+Verification: 43 focused/adjacent tests passed. The old third response is preserved;
+an explicitly scripted projection removes its redundant model identity fields
+and demonstrates that the host restores the exact `##` heading. This is not a new
+model result or acceptance of the old response. Full post-budget request sizes
+are in `data/evaluation/results/golden_bound_scope_review_v1.json`. Current tests
+exercise binding after a changed deadline/metadata, mismatch rejection, exact
+heading restoration, literal context restoration and unchanged complete facts.
+Run `python -m pytest tests/test_golden_bound_scope_review.py
+ tests/test_golden_context_relation_probe_v2.py tests/test_golden_context_diagnostics.py`
+for the core offline checks. No real CLI mode exists for this seam.
+
+Next bounded engineering action: prove the unified full-report data flow and
+budget offline before an isolated runtime candidate. It must automatically find
+review targets, preserve numerical/source/coverage/security checks, use the
+concrete diagnostic feedback, and schedule scope interpretation within at most
+two calls per evaluation and one revision/five calls per report. Retain the
+existing shared 401920-token/900-second bound; do not assume five maximum-sized
+requests fit. Verify negation, explicit extrapolation, missing target discovery
+and later contradictory claims as well as these four scope controls. The narrow
+runner's accept→sample_defined mapping is intentionally limited to these four
+cases and must not be reused for negation or whole-report quality scoring.
+
+Do not launch another isolated target-only probe, register the offline seam as a
+finished Coach, or replace the Workbench report before the integrated evidence.
+Stage 8E stays in progress. Learning outcome: source identity is a transport/host
+responsibility; model interpretation is a separate, still fallible obligation.
+
 ## 2026-09-15 narrow diagnostic v1 result and v2 correction
 
 The diagnostic implementation `6a73101dbf6d342686fe6aa219f19ad7d247cf95` passed
