@@ -155,8 +155,10 @@ suffixes and duplicate keys, patch escape to reassessment, full request limits,
 and interrupted-case accounting. A known misclassified-heading fixture still
 passes, explicitly documenting that protocol tests do not prove semantic quality.
 The focused experiment, measurement, scope-runner and adjacent v7/v8 suite passed
-66 tests locally; compilation, governance and diff checks passed. Public evidence
-is recorded in the canonical checkpoint after it completes.
+66 tests locally; compilation, governance and diff checks passed. Implementation
+`8d3857251e147ff2ce4f13efd9275a9db3aa7653` passed Actions `34924328754`: all
+three jobs (`postgres-migrations`, `packaging-smoke`, `pytest`) succeeded on that
+exact SHA. This verifies engineering behavior, not model semantic quality.
 
 The scope runner now additionally reports `case_counts` with planned, started,
 finalized, interrupted and not_started, preserving the legacy `attempted` field

@@ -17,6 +17,8 @@
   新增五组十条语境开发对照，分开目标判断与整篇结果；尚无模型语义验收。
 - 修正未来范围对照回执，分别记录planned/started/finalized/interrupted/not_started；旧attempted保留并标明旧含义，旧回执不修改。
 
+实现8d3857251e147ff2ce4f13efd9275a9db3aa7653已由Actions34924328754同SHA公共验证，postgres-migrations、packaging-smoke及pytest三项均success；仅证明本批工程检查通过，不代表模型语义质量通过。
+
 原计划第1–4项及第5项的离线选择已有具体产物。下一步为按ADR-0102接入一个独立候选：
 原文引用、显式上下文关联和有界纠正必须一起检查完整请求与恢复结果，公共同SHA验证后先做最相关的定义/标题成对实测。
 不原样续跑v8，不重跑已通过的原报告，不提高上限或切低档。8E仍进行中。

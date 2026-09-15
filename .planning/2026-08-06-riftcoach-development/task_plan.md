@@ -1,6 +1,6 @@
 # RiftCoach 持续开发计划
 
-2026-09-15离线复盘实验完成：23/28响应可无损索引化，13份原有效结果全部保留；可转换子集紧凑字符减少33.8%，不等于模型成本或质量改进。引用局部纠正与完整请求预算已离线验证，旧标签保留，新语境对照及明确案例计数已补齐。下一步按ADR-0102接入独立候选的原文引用、显式上下文关联与有界纠正，完成实际请求预算和公共验证后优先定义/标题成对实测；不原样续跑v8。本批未注册新Runtime、无新增真实Provider请求（累计至少155不变），不称语义修复或准入。GLM high/32768/300秒、ShowMaker observed及既有Workbench人工稿保持，四块设计后置，8E仍in_progress。 依据：`docs/adr/0102-evaluation-reference-protocol-experiment.md`。公共验证待执行。
+2026-09-15离线复盘实验完成：23/28响应可无损索引化，13份原有效结果全部保留；可转换子集紧凑字符减少33.8%，不等于模型成本或质量改进。引用局部纠正与完整请求预算已离线验证，旧标签保留，新语境对照及明确案例计数已补齐。下一步按ADR-0102接入独立候选的原文引用、显式上下文关联与有界纠正，完成实际请求预算和公共验证后优先定义/标题成对实测；不原样续跑v8。本批未注册新Runtime、无新增真实Provider请求（累计至少155不变），不称语义修复或准入。GLM high/32768/300秒、ShowMaker observed及既有Workbench人工稿保持，四块设计后置，8E仍in_progress。 依据：`docs/adr/0102-evaluation-reference-protocol-experiment.md`。实现8d3857251e147ff2ce4f13efd9275a9db3aa7653已由Actions34924328754同SHA公共验证，postgres-migrations、packaging-smoke及pytest三项均success；仅证明本批工程检查通过，不代表模型语义质量通过。
 
 以下旧下一步为历史，以最新canonical状态为准。
 
