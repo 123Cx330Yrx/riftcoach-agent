@@ -1,6 +1,6 @@
 """Owner-approved whole-context standard with one authoritative semantic label.
 
-New v2 wire rejects v1 patches. Review notes explain decisions; classification
+The current wire rejects legacy meaning-field patches. Review notes explain decisions; classification
 and source identity come only from final claims, avoiding contradictory copies.
 """
 from typing import Literal
@@ -12,10 +12,12 @@ from app.evaluation import golden_bounded_correction_requests as requests
 from app.evaluation.golden_context_review import ClaimRef, IssueRef
 from app.evaluation.golden_integrated_review import Strict
 from app.evaluation.golden_review_experiment import compact
+from app.evaluation.golden_contextual_validation import expand_context, diagnostics
+from app.evaluation.golden_contextual_requests import request as table_request
 
 
 STANDARD_ID = "whole-context-acceptance-v1"
-EXPERIMENT_ID = "golden-contextual-bounded-review-v2"
+EXPERIMENT_ID = "golden-contextual-bounded-review-v3"
 
 
 def replace_rules(policy, changes):
@@ -51,6 +53,10 @@ CORRECTION_POLICY = replace_rules(requests.CORRECTION_POLICY, [
 ])
 
 
+def prepare_state(raw, inputs):
+    return previous.prepare_state(raw, inputs, review_all_claims=True, diagnose=diagnostics)
+
+
 class ReviewNote(Strict):
     target_id: str = Field(pattern=r"^[ch][0-9]{3}$")
     explanation: str = Field(min_length=1,max_length=500)
@@ -80,13 +86,13 @@ class CorrectionWire(requests.UntitledSchema, ContextualCorrection):
 
 
 def first_request(inputs):
-    return requests.budget_check(requests._request(requests.source_data(inputs),FIRST_POLICY,
-        requests.FirstWire,"full_context_first"))
+    return table_request(requests.source_data(inputs),FIRST_POLICY,
+        requests.FirstWire,"full_context_first")
 
 
 def correction_request(state):
-    return requests.PreparedCorrection(state,requests.budget_check(requests._request(
-        requests.correction_data(state),CORRECTION_POLICY,CorrectionWire,"full_context_correction")))
+    return requests.PreparedCorrection(state,table_request(
+        requests.correction_data(state),CORRECTION_POLICY,CorrectionWire,"full_context_correction"))
 
 
 def _witness(claim, explanation):
@@ -104,7 +110,7 @@ def _witness(claim, explanation):
 
 
 def apply_correction(state, raw, *, inputs):
-    if state.inputs != inputs or previous.prepare_state(state.raw, inputs) != state:
+    if state.inputs != inputs or prepare_state(state.raw, inputs) != state:
         raise ValueError("correction_state_changed")
     value = previous.strict_json(raw)
     previous._security(value,inputs)
@@ -137,7 +143,8 @@ def apply_correction(state, raw, *, inputs):
                     raise ValueError("correction_heading_claim_missing")
                 witness = _witness(candidates[0],note.explanation)
         payload["meaning_reviews"].append(dict(target_id=key,**witness))
-    result,journal = previous.apply_correction(state,compact(payload),inputs=inputs)
+    result,journal = previous.apply_correction(state,compact(payload),inputs=inputs,
+        prepare=prepare_state,expand=expand_context)
     journal.update(protocol=EXPERIMENT_ID,standard_id=STANDARD_ID,
         model_review_notes=[row.model_dump(mode="json") for row in patch.review_notes],
         meaning_fields_derived_from_final_claims=True)

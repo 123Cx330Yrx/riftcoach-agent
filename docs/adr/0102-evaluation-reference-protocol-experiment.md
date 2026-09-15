@@ -3,6 +3,93 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-15 Recovery after the comprehensive retrospective
+
+This batch resumes the latest 206a4c3 contextual candidate. Coach 1.3.25 is a
+regression baseline, not the development target. Its original report revision
+success remains evidence for that report only; later control failures remain.
+No historical response, strict label, or frozen Prompt Program is rewritten.
+
+The 206a4c3 run (Actions 34959615129, three successful jobs) started one of two
+reports. Its first response finished with stop: 11,807 input + 13,526 output =
+25,333 returned tokens. The next request was rejected locally at input ceiling
+64,300; no correction, revision or recheck was sent. Cumulative Provider requests
+in the existing scope are at least 175, correcting the stale 174 checkpoint.
+
+The v3 candidate repairs connected engineering defects:
+
+- Every first-review claim can be corrected and must be reviewed, including
+  claims initially labelled direct_result. The immutable original and explicit
+  edit journal remain; quote shrinking/reassignment and unsupported issue removal
+  are still rejected. The prior label cannot freeze a semantic mistake.
+- Already supplied OP.GG rows become indexed evidence with snapshot provenance,
+  position, timestamps, allowed uses and unknown patch preserved. Existing Meta
+  row validation is reused. Rank/tier/rates are checked by named metric and unit;
+  external values cannot masquerade as queue IDs or unrelated statistics. This
+  does not establish semantic entailment or turn a current snapshot into a
+  historical, region/rank-matched or personal performance source.
+- Fact, provenance and review tables remove repeated keys; external facts refer
+  to the complete original snapshot already present in the request. Before I/O,
+  the host reconstructs every value and compares canonical JSON. Entire source
+  text, report blocks, first-review explanations and diagnostics remain visible.
+- Revision now uses the same contextual standard and indexed evidence. The old
+  revision constructor inherited v8's superseded local-definition policy. It is
+  no longer used by this candidate. Historical constructors remain unchanged.
+- The unfinished modification of frozen numeric_v4 was removed: it caused
+  component fingerprint drift before baseline loading. New numeric validation
+  stays isolated; the current validator reuses frozen restoration/scope helpers.
+
+Data/control flow: supplied report and evidence -> source-bound input -> first
+review -> immutable all-claim state -> explicit correction -> complete validation
+-> optional report revision -> first review and correction of the revised report.
+Maximum five calls, one revision, high / 32768 / 300 seconds, 401920 total tokens
+and 900 seconds remain. Actual usage is settled before reserving the next request;
+there is no blanket worst-case completion guarantee or hidden retry.
+
+`golden_contextual_readiness_v3.json` uses the actual workflow input builder and
+includes the latest failing response shape. Old integer references are rebound
+by source identity for measurement only; this is not a new model judgment. First
+requests: 47540 / 47612. Three historical corrections: 59198 / 59112 / 56860.
+Latest shape: 62458, with 21 mutable claims, 30 reviews and five external facts.
+Revision shape: 50540. All measured requests fit; future responses can still hit
+a declared limit and must stop honestly. Original response hashes are retained.
+
+Code map: golden_contextual_sources (index/numbers), golden_contextual_requests
+(lossless tables/revision), golden_contextual_validation (final validation),
+golden_contextual_correction/workflow (state/sequence). The bounded/integrated
+base workflows expose explicit hooks while retaining their existing defaults.
+`test_golden_contextual_recovery.py` covers false direct-result classification,
+external field/unit negatives, source mutation, malformed snapshots, lossless
+reconstruction and a five-call scripted path with changed-source rejection.
+These tests prove engineering behavior, not a model's ability to judge language.
+
+Validation: all 642 golden-slice-related tests passed, including historical
+profiles and the new regressions; compile, actual CLI preview and governance
+passed. A full local suite was interrupted after two database setup errors: the
+inherited test URL was set without DATABASE_URL. Setting it for the dedicated
+local riftcoach_test database exposed an unavailable endpoint (3-second connection
+probe timed out). No migrations completed. Database integration remains for the
+existing isolated PostgreSQL CI job; do not claim a full local suite pass.
+
+Reproduce sizes with `python -m scripts.check_golden_contextual_readiness`, passing
+--source-run, --base-report, --bounded-run, --context-pair, --latest-case and a NEW
+--output path. No Provider is created. After local checks and exact-SHA public CI,
+run the existing contextual entry on the two frozen complete reports under a new
+run identity. Inspect every finding and source link; stop the pair on a genuine
+protocol, transport or semantic failure and retain full receipts.
+
+Stage 8E remains in progress. Do not rebuild the already completed ADR-0099
+publication chain or observation-note persistence. Broader follow-ups stay in
+the comprehensive retrospective's 62-theme requirements table and separate
+frontend-renewal attachment: Review/Coach/Training/Evidence integration, natural
+encyclopedic Coach, requested training plans, observed-vs-self identity, full
+frontend aesthetic redesign (including champion portraits, Portal and Account),
+data/version/role quality, deployment/Auth, and learning/portfolio coverage.
+Codex Astra/Luna execution allocation is unrelated to the GLM product tier.
+Interview wording: repaired evidence indexing, corrective state mutability and
+request composition with reproducible regressions; real quality and production
+admission remain unverified.
+
 ## 2026-09-15 Owner-approved whole-context standard and single decision protocol
 
 The owner explicitly selected “采用完整上下文标准（推荐）”. A complete report

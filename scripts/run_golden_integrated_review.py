@@ -37,6 +37,8 @@ def implementation_identity(*, bounded=False, full_context=False):
             "app/evaluation/golden_bounded_workflow.py", "scripts/run_golden_bounded_review.py")
     if full_context:
         names += ("app/evaluation/golden_contextual_correction.py",
+            "app/evaluation/golden_contextual_sources.py", "app/evaluation/golden_contextual_validation.py",
+            "app/evaluation/golden_contextual_requests.py", "app/evaluation/golden_numeric_evidence_v4.py",
             "app/evaluation/golden_contextual_workflow.py", "scripts/run_golden_contextual_review.py",
             "data/evaluation/datasets/golden_contextual_reports_v2.json")
     return {n: hashlib.sha256((ROOT/n).read_bytes()).hexdigest() for n in names}
@@ -123,7 +125,7 @@ def run(args, *, bounded=False, full_context=False):
         selected = select_cases(cases)
         workflow_factory, experiment_id, prefix = ContextualCorrectionWorkflow, EXPERIMENT_ID, "contextual-review"
     requests = [EvaluationRequest(summary, deterministic, knowledge, c["report"], UTTERANCE) for c in selected]
-    discovery_sizes = [size(first_request(review.ReviewInput.build(r))) for r in requests]
+    discovery_sizes = [size(first_request(workflow_factory.build_inputs(r))) for r in requests]
     plan = dict(experiment_id=experiment_id, implementation=implementation_identity(bounded=bounded, full_context=full_context),
         scope="complete_report_development_candidate_not_production", pair=args.pair,
         selected_cases=[c["id"] for c in selected], discovery_input_ceilings=discovery_sizes,

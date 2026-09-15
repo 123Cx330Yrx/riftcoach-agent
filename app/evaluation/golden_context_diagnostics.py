@@ -15,10 +15,10 @@ from app.evaluation.golden_evidence_scope_v5 import normalize_json, SAMPLE_ANCHO
 from app.evaluation.golden_inference_scope_v5 import strict_json
 
 
-def collect_diagnostics(raw, report, pack):
+def collect_diagnostics(raw, report, pack, *, expand=expand_context, numeric=numeric_support):
     rows = []
     try:
-        expand_context(raw, report, pack)
+        expand(raw, report, pack)
     except (ValueError, TypeError, AttributeError) as error:
         code = str(error) if re.fullmatch(r"[a-z_]{1,100}", str(error)) else "invalid_json_or_context_schema"
         rows.append({"codes": [code]})
@@ -65,11 +65,11 @@ def collect_diagnostics(raw, report, pack):
                 continue
             if claim["claim_kind"] != "direct_result" or claim["status"] != "supported":
                 continue
-            actual = numeric_support(SimpleNamespace(**claim), pack)
+            actual = numeric(SimpleNamespace(**claim), pack)
             missing = [v for v in actual if not v["supported"]]
             if not missing:
                 continue
-            candidates = {v["token"]: v for v in numeric_support(
+            candidates = {v["token"]: v for v in numeric(
                 SimpleNamespace(**dict(claim, evidence_refs=sorted(pack["provenance"]))), pack)}
             rows.append(dict(location, codes=["direct_result_number_not_in_evidence"], unsupported_numbers=[
                     {"token": v["token"], "source_candidates": candidates[v["token"]]["candidates"][:2]}

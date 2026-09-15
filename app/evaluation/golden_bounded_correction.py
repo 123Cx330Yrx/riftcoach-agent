@@ -98,7 +98,7 @@ def _security(value, inputs):
                 raise ValueError("correction_security_terminal")
 
 
-def prepare_state(raw, inputs):
+def prepare_state(raw, inputs, *, review_all_claims=False, diagnose=collect_diagnostics):
     value = strict_json(raw)
     _security(value, inputs)
     wire = ContextWire.model_validate(value, strict=True)
@@ -111,7 +111,7 @@ def prepare_state(raw, inputs):
         raise ValueError("correction_heading_inventory_not_patchable")
     if [a.kind for a in wire.audits] != ["metric_to_ability", "cohort_comparison"]:
         raise ValueError("correction_audit_inventory_invalid")
-    diagnostics = collect_diagnostics(raw, inputs.source.report, strict_json(inputs.pack_json))
+    diagnostics = diagnose(raw, inputs.source.report, strict_json(inputs.pack_json))
     diagnosed = {(d.get("audit_index"), d.get("claim_index")) for d in diagnostics}
     entries, mutable, required, issue_quotes = {}, [], [], set()
     for i, issue in enumerate(wire.issues, 1):
@@ -125,7 +125,7 @@ def prepare_state(raw, inputs):
             n += 1
             key = f"c{n:03}"
             entries[key] = dict(type="claim", audit_index=ai, claim_index=ci, value=value["audits"][ai]["claims"][ci])
-            if claim.claim_kind == "inference" or (ai, ci) in diagnosed or quote in issue_quotes:
+            if review_all_claims or claim.claim_kind == "inference" or (ai, ci) in diagnosed or quote in issue_quotes:
                 mutable.append(key)
                 required.append(key)
     for i, heading in enumerate(wire.heading_reviews, 1):
@@ -179,13 +179,13 @@ def _check_meaning(review, claim, source):
         raise ValueError("correction_unexpected_language_evidence")
 
 
-def apply_correction(state, raw, *, inputs):
+def apply_correction(state, raw, *, inputs, prepare=prepare_state, expand=expand_context):
     """Offline merge; a future caller must first verify its actual exchange.
 
     Return both a fully validated result and an explicit edit journal. No old
     file is rewritten and no invalid partial result is exposed as accepted.
     """
-    if state.inputs != inputs or prepare_state(state.raw, inputs) != state:
+    if state.inputs != inputs or prepare(state.raw, inputs) != state:
         raise ValueError("correction_state_changed")
     value = strict_json(raw)
     _security(value, inputs)
@@ -258,7 +258,7 @@ def apply_correction(state, raw, *, inputs):
         merged[field] = getattr(patch, field)
     # Additions and edits must satisfy every old numerical/source/issue/coverage
     # rule together. An unchanged numeric defect is not forgiven by scope success.
-    result = expand_context(compact(merged), inputs.source.report, strict_json(inputs.pack_json))
+    result = expand(compact(merged), inputs.source.report, strict_json(inputs.pack_json))
     return result, dict(state_id=state.state_id, edits=edits, issue_resolutions=resolutions,
         added_claims=[r.model_dump(mode="json") for r in patch.added_claims],
         added_issues=[r.model_dump(mode="json") for r in patch.added_issues],

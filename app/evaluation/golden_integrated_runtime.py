@@ -90,6 +90,7 @@ def _result(payload):
 
 class IntegratedReviewWorkflow:
     """Serial, one-report scope: 2 evaluations, one revision, at most five calls."""
+    build_inputs = staticmethod(review.ReviewInput.build)
     def __init__(self, send, *, record=None):
         self.send = send
         self.record = record or (lambda *_: None)
@@ -116,7 +117,7 @@ class IntegratedReviewWorkflow:
     def evaluate(self, request):
         if self.stopped or self.evaluations >= 2 or (self.evaluations == 1 and self.revisions != 1):
             raise ValueError("integrated_evaluation_order_invalid")
-        inputs = review.ReviewInput.build(request)
+        inputs = self.build_inputs(request)
         if self.evaluations == 1 and inputs != self._expected_recheck:
             raise ValueError("integrated_recheck_source_changed")
         self.evaluations += 1
@@ -176,13 +177,12 @@ class IntegratedReviewWorkflow:
         from app.harness.steps import EvaluationRequest
         original = self._accepted[0]
         # Bind revision to the same facts, evidence and report as its evaluation.
-        check = review.ReviewInput.build(EvaluationRequest(request.player_summary, request.deterministic_report,
+        check = self.build_inputs(EvaluationRequest(request.player_summary, request.deterministic_report,
             request.knowledge, request.report, strict_json(original.data_json)["user_utterance"]))
         if check != original:
             raise ValueError("integrated_revision_source_changed")
         canonical = ContextEvaluation.model_validate(_evaluation_payload(request.evaluation), strict=True)
-        built = revision_request(request.player_summary, request.deterministic_report, request.knowledge,
-            request.report, canonical)
+        built = self.build_revision(request, canonical, original)
         self.revisions += 1
         raw = self._call(built, "revision")
         try:
@@ -190,6 +190,10 @@ class IntegratedReviewWorkflow:
         except Exception:
             self.stopped = True
             raise
-        self._expected_recheck = review.ReviewInput.build(EvaluationRequest(request.player_summary,
+        self._expected_recheck = self.build_inputs(EvaluationRequest(request.player_summary,
             request.deterministic_report, request.knowledge, raw, strict_json(original.data_json)["user_utterance"]))
         return CoachDraft(report=raw)
+
+    def build_revision(self, request, canonical, inputs):
+        return revision_request(request.player_summary, request.deterministic_report, request.knowledge,
+            request.report, canonical)
