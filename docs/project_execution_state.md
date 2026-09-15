@@ -13,6 +13,15 @@ pause_reason: ""
 
 ## 状态元数据
 
+2026-09-16 v8修复新协议接线遗漏：c7e7322/Actions35003547705公共三项success；v7实测两次stop共53637返回tokens，无未知用量，累计Provider至少187。本批六轮12请求共316040返回tokens。新入口未复用既有合法Markdown结尾规范化导致JSONDecodeError；补齐后仍因c010把request.queue当实际比赛queue证据拒绝。另查到诊断repair_rule仍指导旧字段、旧队列来源要求漏迁新policy。v8复用有界结尾处理（不吞第二JSON/解释），修复新wire诊断说明，恢复实际queue_id来源要求并把source_candidates映射成真实evidence编号。原响应仍拒绝；人工改c010证据与解释后92/pass仅诊断投影，不算模型成功。149项相关测试及七轮预算测量通过（62648/59304/57976/57726/58166/56872/61128）。唯一下一步：本实现同SHA公共检查后完整两例新身份实测，核对真实来源修正及修订复评。high/硬上限/完整上下文标准/8E和全局后续保持。详见ADR-0102及golden_contextual_queue_c7e7322_v8.json、golden_contextual_readiness_v8.json。
+
+- 本地代码：新wire格式/诊断/队列来源策略接线已补；149项相关检查通过，待公共检查。
+- 所有者理解：已说明格式遗漏与实际来源错误；无新增理解验收。
+- 参考来源审计：保留原始失败，人工来源投影仍非真实通过。
+- 公共作品/部署成熟度：c7e7322公共三项通过；v8尚未实测或准入。
+
+以下为历史记录，当前以最新canonical为准。
+
 2026-09-16 v7保留完整同段范围：92aed17/Actions35001860148公共三项success；v6实测两次stop共52440返回tokens，无未知用量，累计Provider至少185。本批五轮10请求共262403返回tokens。新单一判定输出完整且结构合法，但c010待审片段只剩“输出与参团数据明显好于整体均值”，同段“两局胜局”被默认范围引用遗漏，触发sample_source_required。v7仅将sample/negated省略scope_source的默认定位改为原陈述所在完整段落，待审片段不改，显式跨段来源仍须模型提供；ambiguous/beyond_sample不自动加定义/否定上下文。原始响应不改地离线复验95/pass、零issues，仍不算新实测或完整两例通过。147项相关检查通过，六轮纠正形状62132/59054/57684/57436/57916/56620均在预算内。唯一下一步：v7同SHA公共检查后新身份完整两例实测并核对全部解释与修订复评；标准/high/硬上限/8E及全局后续保持。证据见ADR-0102最新节、golden_contextual_scope_92aed17_v7.json和golden_contextual_readiness_v7.json。
 
 - 本地代码：同段完整上下文默认定位已修复，147项相关检查通过；待公共检查。

@@ -10,6 +10,7 @@ from pydantic import Field
 from app.evaluation.golden_integrated_review import Strict
 from app.evaluation.golden_review_experiment import QuoteRef, compact
 from app.evaluation.golden_context_review import Index, IssueRef
+from app.evaluation.golden_evidence_scope_v5 import normalize_json
 from app.evaluation.golden_bounded_correction import IssueEdit, HeadingEdit
 from app.evaluation.golden_bounded_correction_requests import UntitledSchema
 from app.evaluation.golden_contextual_validation import SAMPLE_MARKER
@@ -67,10 +68,30 @@ review_notes逐项覆盖required_reviews，不能遗漏或重复；额外说明�
 每条unsupported或ambiguous须有完全相同原句issue且nonpass；pass必须issues为空。修改已有事实issue需resolution_evidence_refs并说明原因。不能删问题或伪造引用来通过。
 explanation本身也须核对数值、分路与胜负组。review_explanation_numbers_need_source_check只是待核对提示，不自动说明报告错误；若解释算错、混组或证据缺失，须update修正解释与引用，不能只在review_notes说已检查。
 同位置同胜负均值引用完整实际纳入原始行或对应派生事实；不混位置、不补缺失、不借未引用数据。逐行方向须检查逐行数据。数值用原精度运算后ROUND_HALF_UP展示；外部排名不当作玩家胜率，保留来源时间、位置和适用边界。
+实际比赛队列只能由所引facts:recent_match的queue_id证明，facts:scope/request.queue仅是请求筛选条件，不能证明实际返回比赛的队列。诊断source_candidates给出可核对的真实操作数；核实后须把实际来源编号加入evidence_refs，不能只在解释中提到来源。
 标题navigation只用于无断言标题；有断言必须有完整标题claim及heading_edits。后文真实外推不能由前面的免责声明抵消。建议保留真实[K编号]知识支持。
 quote_ref用source_index.blocks的一基block编号；全段{block:编号}，片段用同段唯一head/tail，各最多32字，不拼接。evidence_refs是source_index.evidence_keys的一基编号。
 generation_view是来源的无损共享视图，不是新事实。最终还会执行完整数值、来源、范围、问题与覆盖校验；解释关系仍须审查。
 """
+
+
+def correction_data(state):
+    from app.evaluation.golden_bounded_correction_requests import correction_data as previous_data
+    data = previous_data(state)
+    # Legacy diagnostic codes remain auditable, but their old field-edit
+    # instructions must not contradict the new single-decision wire.
+    for row in data['diagnostics'].get('errors', []):
+        if 'per_target_validation_errors' in row.get('codes', []):
+            row['repair_rule'] = ('逐项核对targets，提交对应claim_updates的decision/evidence_refs/explanation。'
+                'direct_result_scope_must_be_null等是旧首评状态错误；用一次显式decision修复，'
+                '不要输出旧分类/范围字段。引用错误须实际补正确来源编号，解释错误须更新explanation。')
+        for number in row.get('unsupported_numbers', []):
+            for candidate in number.get('source_candidates', []):
+                candidate['evidence_indices'] = list(dict.fromkeys(
+                    state.inputs.source.evidence_keys.index(ref)+1
+                    for ref, _ in candidate.get('operands', [])
+                    if ref in state.inputs.source.evidence_keys))
+    return data
 
 
 def expand_value(value, source, original_ref=None):
@@ -110,7 +131,7 @@ def expand_value(value, source, original_ref=None):
 
 def apply_wire(state, raw, *, inputs):
     from app.evaluation import golden_contextual_correction as canonical
-    value = canonical.previous.strict_json(raw)
+    value = canonical.previous.strict_json(normalize_json(raw))
     canonical.previous._security(value,inputs)
     patch = PatchWire.model_validate(value,strict=True)
     entries = state.entries()

@@ -3,6 +3,38 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 V8: correct new-wire integration omissions
+
+c7e7322329fe2f20670ae022d48304e9441c948d passed Actions 35003547705, all three
+jobs. Its v7 real run completed two stop responses: 25,725 input + 27,912 output
+= 53,637 returned tokens, no unknown usage. Provider cumulative calls at least
+187; six recovery runs total twelve calls and 316,040 returned tokens. The
+first case still failed before second-case/revision/recheck execution.
+
+The response was a complete JSON object followed by two Markdown backticks.
+The new wire omitted existing normalize_json reception behavior. Reusing that
+bounded normalization reveals a further genuine source error: c010 uses
+facts:scope/request.queue as proof all actual matches have queue_id 420.
+The validator correctly rejects it. Offline inspection found two migration
+omissions: the diagnostic repair_rule still instructed old field edits, and
+the new policy had omitted the explicit actual-queue vs request-filter rule.
+V8 fixes both and maps diagnostic source_candidates operands to actual evidence
+indices, preserving the source paths and leaving model verification mandatory.
+
+No claim/evidence is filled automatically. Raw response remains rejected after
+suffix normalization. A manual c010 source/explanation projection yields
+92/pass, zero issues, only demonstrating remaining downstream checks; it is
+not a model success. Original failure and hashes remain. Tests reject second
+JSON objects, arbitrary text and excess fences; require actual source-index
+mapping without mutating saved diagnostics. 149 focused tests pass. Seven
+historical correction shapes measure 62648/59304/57976/57726/58166/56872/61128,
+all under unchanged input limits. First/revision shapes remain unchanged.
+
+Artifacts: golden_contextual_queue_c7e7322_v8.json and golden_contextual_readiness_v8.json.
+Next: exact-SHA checks, then a fresh complete pair with source/meaning audit and
+required revision/recheck. No cap increase, downgrade, retry or production
+admission; 8E and global follow-ups remain unchanged.
+
 ## 2026-09-16 V7: preserve local paragraph context when the target is an excerpt
 
 92aed177993452507ae70b1720e00db13cd8276d passed Actions 35001860148, all three

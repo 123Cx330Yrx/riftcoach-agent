@@ -110,3 +110,33 @@ def test_default_scope_keeps_target_excerpt_and_reads_its_containing_paragraph()
     other_state=canonical.prepare_state(compact(other),separate)
     with pytest.raises(ValueError,match='sample_source_required'):
         apply_wire(other_state,compact(value),inputs=separate)
+
+
+def test_wire_reuses_bounded_markdown_suffix_normalization_not_extra_json():
+    inputs,first=fixture('这四场仅作观察。')
+    state=canonical.prepare_state(compact(first),inputs);raw=compact(wire_patch(patch(state)))
+    for suffix in ('`','``','```','\n```\n'):
+        assert apply_wire(state,raw+suffix,inputs=inputs)[0].verdict=='pass'
+    for suffix in ('{}','\n解释','````','```{}'):
+        with pytest.raises(ValueError):apply_wire(state,raw+suffix,inputs=inputs)
+
+
+def test_wire_diagnostic_advice_matches_decisions_and_indexes_actual_numeric_sources():
+    from app.evaluation.golden_contextual_patch_wire import correction_data, POLICY
+    from app.evaluation.golden_contextual_sources import build_inputs
+    from app.harness.steps import EvaluationRequest, KnowledgeEvidence
+    from tests.test_golden_fact_candidate import summary
+    quote='实际队列420。';inputs,first=fixture(quote)
+    data=summary()
+    for row in data['matches']:row['queue_id']=420
+    inputs=build_inputs(EvaluationRequest(data,'source',KnowledgeEvidence.empty(),quote,'review'))
+    first['source_digest']=inputs.source.source_digest
+    ref=inputs.source.evidence_keys.index('facts:scope')+1
+    first['audits'][0]['claims']=[claim(inputs,quote,claim_kind='direct_result',scope=None,
+        scope_anchor=None,evidence_refs=[ref])]
+    state=canonical.prepare_state(compact(first),inputs);before=state.diagnostics_json
+    feedback=correction_data(state)['diagnostics']['errors']
+    assert 'claim_updates' in feedback[0]['repair_rule']
+    candidates=[c for r in feedback for n in r.get('unsupported_numbers',[]) for c in n['source_candidates']]
+    assert any(c['op']=='queue_id' and c['evidence_indices'] for c in candidates)
+    assert state.diagnostics_json==before and '仅是请求筛选条件' in POLICY
