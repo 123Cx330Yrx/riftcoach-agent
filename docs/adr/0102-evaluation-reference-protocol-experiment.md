@@ -97,8 +97,10 @@ offline experiment is within standing authorization and requires no new approval
 Local verification: 35 integrated-review tests plus 23 correspondence,
 bound-scope and context-diagnostic tests passed; compile, governance and diff
 checks passed. The saved failed response now reports all three structural defects
-with no omitted diagnostics, and its original bytes remain unchanged. Public
-verification of this diagnostic-only code change is still pending its own SHA.
+with no omitted diagnostics, and its original bytes remain unchanged. Implementation
+abcfc0242b30798d9a239338a1a043dd6ae6ef11 then passed pytest, postgres-migrations
+and packaging-smoke in Actions 34951075015 at that exact SHA. This verifies the
+diagnostic change and offline experiment, not model semantics or a new candidate.
 
 ## 2026-09-15 Integrated v2 complete responses rejected; adoption paused
 
