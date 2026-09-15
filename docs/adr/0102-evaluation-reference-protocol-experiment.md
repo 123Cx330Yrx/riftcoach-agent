@@ -5,6 +5,15 @@ an isolated development candidate, now observed; no production admission or sema
 
 ## 2026-09-15 v2 observation and host-owned target binding
 
+Public closeout: offline binding implementation
+`753267aa57a34c1460ac37d2f6c21a0ae7aa29fc` passed all three jobs in Actions
+`34943310239`. The final issued-input/tool-choice guard also passed its seven
+focused tests after the 43-test regression run. This closeout changes documents
+only and binds evidence to that implementation SHA; it does not claim a new
+model result, runtime registration or whole-report admission. Temporary Git API
+relay code is removed after publishing this record. The next action below is
+full-report offline integration design/verification, not a third target probe.
+
 Implementation `86358e85839b00128eb4d64672780b22b1f12674` passed Actions
 `34941920885`, all three jobs. `context-relation-86358e8-v2` stopped after case 3:
 planned 4 / started 3 / finalized 3 / interrupted 0 / not started 1. All three
