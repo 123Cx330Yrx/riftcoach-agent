@@ -3,6 +3,94 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-15 Bounded state correction: offline implementation, readiness rejected
+
+The prototype now exists in `app/evaluation/golden_bounded_correction.py` and
+`golden_bounded_correction_requests.py`. It is not registered, has no five-call
+runtime, and makes no Provider calls. Existing candidates and old responses are
+unchanged. Its purpose is to keep the first assessment as host-owned state and
+let the second response explicitly correct it without regenerating unaffected
+claims or dropping independent issues.
+
+Data/control flow: complete report/facts -> source-bound ContextWire first
+assessment -> immutable state and short claim/issue/heading handles -> explicit
+changes, additions and meaning reviews -> complete canonical validation and an
+edit journal. A future runtime must bind the actual budget-transformed request
+and receipt before merging; the offline `finish` function enforces this boundary.
+Structural first responses without trustworthy source inventories stop rather
+than receiving guessed positional identities. No extra repair slot is assumed.
+
+The host preserves untouched fields exactly, rejects unknown/duplicate/missing
+handles, and prevents source reassignment or shortening a claim to hide an error.
+Every mutable claim (including diagnosed direct facts) and every heading needs a
+meaning review. New claims carry their own review. Fact-issue removal requires an
+explicit reason and source references; before/after remain in the journal.
+Injection is terminal, including when introduced through an issue edit. Full
+canonical numeric, source, heading, scope, issue and coverage checks run after
+merging, so a scope correction cannot forgive an independent fact error.
+
+Request compaction deduplicates only identical fact values, preserves distinct
+JSON types and restores the entire original generation projection. Schema title
+annotations are removed, but constraints and literal values named title remain.
+The independent correction request now contains its required source and factual
+rules explicitly; it cannot rely on an earlier prompt absent from its messages.
+A generation-only length policy is replaced with its evaluator obligations;
+position/source policies and accuracy/evidence/actionability remain intact.
+
+Evidence: `tests/test_golden_bounded_correction.py` and adjacent source/context,
+integrated review and budget tests: **115 passed**. Tests cover explicit definition,
+negation, later conflict, overlooked headings, retained facts, numeric rejection,
+state tampering, injection, source restoration, request-size boundaries and actual
+receipt binding. These are scripted protocol tests, not real semantic controls.
+A deliberate wrong definition relationship with a valid source still receives
+canonical pass; the journal records `semantic_approval=False`. This explicitly
+proves the remaining semantic limitation rather than declaring it fixed.
+
+Reproduce measurement (private frozen source runs required):
+
+```powershell
+python -m scripts.check_golden_bounded_correction --source-run data/runs/golden_slice/golden_20260910_compact_1cd694d --base-report data/runs/inference_development/inference-dev-c69cb3e-evidence-v7-report/revised-report.md --context-pair data/runs/inference_development/context-controls-9c5aad9-critical/pair-01
+```
+
+The body-free result is
+`data/evaluation/results/golden_bounded_correction_offline_v1.json`:
+
+- Ten complete first requests: input ceilings **51598–51772**, all source values
+  and JSON types reconstruct exactly.
+- Two actual saved first-review states: correction ceilings **64790** and
+  **61726** after budget metadata. The first fails both preparation limit 63936
+  and runtime input limit 64000. Earlier 63662 omitted necessary standalone
+  correction rules and is superseded, not an accepted optimization.
+- Historical revision shape: **53584**. Twice the measured maximum first and
+  correction requests, plus revision and five 32768 output reservations, yields
+  **450548 > 401920**, excess **48628**. This is a measured-shape envelope, not a
+  bound on future first responses/revised reports or actual billed usage.
+- Even an UNUSABLE sizing ablation deleting all prior state from correction
+  requests yields **434584 > 401920**. Shortening handles or state alone cannot
+  establish the envelope. This ablation is not an executable request proposal.
+- Actual usage settlement may permit some runs despite the conservative summed
+  envelope; five 300-second calls also do not guarantee the shared 900 seconds.
+  No limits, estimator, GLM profile or retry policy were changed.
+
+Decision: retain the offline state-merge prototype and its regression evidence,
+but **reject this composition as ready for real calls or candidate wiring**.
+Do not run another paid batch to find out whether the budget happens to suffice.
+The current canonical next action is an offline component-level budget decision
+for the complete first/correction/revision requests: identify exact source/schema
+repetition removable without losing obligations, quantify its achievable saving
+against 48628, and accept or reject a concrete composition before more runtime
+implementation. Do not add another protocol or reinterpret ordinary-language
+ambiguity as a numerical error. If no adequate lossless saving exists, record
+that boundary and present a concrete cost/scope choice rather than silently
+raising limits, lowering GLM or weakening quality rules.
+
+Original Coach 1.3.25 report revision and 96/pass recheck remain valid. Independent
+control reliability and Stage 8E remain in progress. Observation persistence/API/
+restart readback are already complete; four-surface design and hero-avatar work
+remain indexed in the 2026-09-11 follow-up. Provider cumulative count remains at
+least 172, with zero additional calls here. Public verification is pending this
+implementation SHA; no production admission or deployment follows from CI.
+
 ## 2026-09-15 Follow-up: the redesign needs a correction path, not another full pass
 
 The owner again challenged repeated failures after the workflow reassessment.
