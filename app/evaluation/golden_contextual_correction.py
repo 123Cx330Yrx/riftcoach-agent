@@ -18,7 +18,7 @@ from app.evaluation.golden_contextual_requests import request as table_request
 
 
 STANDARD_ID = "whole-context-acceptance-v1"
-EXPERIMENT_ID = "golden-contextual-bounded-review-v5"
+EXPERIMENT_ID = "golden-contextual-bounded-review-v6"
 
 
 def replace_rules(policy, changes):
@@ -92,8 +92,9 @@ def first_request(inputs):
 
 
 def correction_request(state):
+    from app.evaluation.golden_contextual_patch_wire import PatchWire, POLICY
     return requests.PreparedCorrection(state,table_request(
-        requests.correction_data(state),CORRECTION_POLICY,CorrectionWire,"full_context_correction"))
+        requests.correction_data(state),POLICY+FULL_CONTEXT_RULE,PatchWire,"full_context_correction"))
 
 
 def _witness(claim, explanation):

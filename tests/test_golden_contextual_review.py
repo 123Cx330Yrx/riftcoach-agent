@@ -119,7 +119,8 @@ def test_complete_five_call_revision_rechecks_same_sources():
     correction=patch(prepare_state(compact(first),inputs))
     correction.update(score=70,verdict="needs_revision",added_issues=[issue(inputs,target)])
     recheck=patch(prepare_state(compact(second),after))
-    replies=[compact(first),compact(correction),revised,compact(second),compact(recheck)]
+    from tests.test_golden_contextual_patch_wire import wire_patch
+    replies=[compact(first),compact(wire_patch(correction)),revised,compact(second),compact(wire_patch(recheck))]
     provider=ReplayProvider(lambda _,n:replies[n-1]); sender=BudgetedReviewSender(provider)
     flow=ContextualCorrectionWorkflow(sender)
     req=EvaluationRequest(summary(),"完整来源",KnowledgeEvidence.empty(),report,"检查观摩报告")

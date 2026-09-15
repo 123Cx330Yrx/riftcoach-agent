@@ -12,14 +12,16 @@ from app.evaluation import golden_context_review as context
 from app.evaluation.golden_context_diagnostics import collect_diagnostics
 from app.evaluation.golden_contextual_sources import numeric_support
 
+SAMPLE_MARKER = re.compile(context.SAMPLE_ANCHOR.pattern + r'|(?:赢|输|胜|负|败)局[（(][0-9]+[）)]')
+
 
 def sample_anchor_valid(anchor, text):
-    if context.SAMPLE_ANCHOR.search(anchor):
+    if SAMPLE_MARKER.search(anchor):
         return True
     # A cohort noun can point to an explicit sample limitation in the same
     # cited passage. Bare outcome/position words still do not establish scope.
     return bool(re.search(r"(?:输|赢|胜|负|败)局", anchor)
-                and context.SAMPLE_ANCHOR.search(text))
+                and SAMPLE_MARKER.search(text))
 
 
 def claim_errors(claim, report, pack):

@@ -3,6 +3,53 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 V6: one explicit decision, host-bound source locations
+
+c453088759b5afe8c16cac6d891b77f591ff2654 passed Actions 34999382329 (all three
+jobs) and 658 local golden tests. Its real v5 run completed two stop responses,
+25,339 input + 24,182 output = 49,521 returned tokens, no unknown usage. It
+stopped on contextual_01: c010/c013 omitted status, claim_kind, scope and
+scope_anchor inside their replacement values. Their prose said the fields were
+null, but prose cannot substitute for missing typed decisions. Offline traversal
+also found c007/c011 anchors absent from their explicitly cited context. The
+second report and revision/recheck were not started. Provider cumulative count
+is at least 183; four recovery runs total eight requests and 209,963 returned
+tokens. The original bytes and failed result remain immutable.
+
+V6 reduces redundant model responsibilities. The actual correction wire now
+uses flat claim_updates and claim_additions. Each entry requires exactly one
+decision plus evidence_refs and explanation. The decision expands into the
+canonical type/status/scope; no missing decision is inferred from prose or old
+state. An omitted update quote_ref retains the original target verbatim; an
+explicit replacement must still contain it in the same source block. The
+model chooses scope_source (or its own quote); the host only locates a literal
+sample marker in that exact passage and derives the redundant relation/anchor.
+Table headers such as 赢局(2) are explicit sample-count markers. Bare position
+or outcome nouns still do not establish a sample. The final canonical issue,
+source, numeric, coverage, heading and unsupported-future checks all remain.
+A valid location or decision label is not proof of semantic entailment.
+
+The historical first-review schema and canonical correction helper remain for
+compatibility/regression; the runtime correction request and merge both use the
+new wire. The new module is included in implementation identity. Actual five-call
+workflow fixtures were migrated to emit this wire. Tests cover explicit decision
+requirements, source preservation, duplicate/unknown targets, shortened quotes,
+contradictory scope sources, table location, and future issue/nonpass enforcement.
+146 focused tests pass. Five historical correction shapes now measure
+62106/59028/57658/57410/57890, first requests 47540/47612, revision 50540. These
+are estimator units, not billed tokens or completion guarantees.
+
+A manual protocol projection fills only the two omitted decisions as
+explicitly labelled diagnostic choices and preserves all model scope sources.
+It yields structural 93/pass and zero issues under the new wire. It is not an
+unaltered replay or model success. The persisted explanation no longer contains
+the previous mixed-role difference error; actual next-run explanations still
+require independent audit. Evidence is golden_contextual_wire_c453088_v6.json
+and golden_contextual_readiness_v6.json. Next: exact-SHA public checks followed
+by a fresh full pair, including revision/recheck where required. No output/time/
+call cap change, no downgrade, no production admission; 8E and global follow-ups
+remain unchanged.
+
 ## 2026-09-16 V5: complete cited outcome arithmetic and evaluator explanation audit
 
 769d65101b3d25eace7f9246e11529d8ee4a99a4 passed Actions 34997110778, all three

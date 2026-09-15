@@ -38,6 +38,7 @@ def implementation_identity(*, bounded=False, full_context=False):
     if full_context:
         names += ("app/evaluation/golden_contextual_correction.py",
             "app/evaluation/golden_contextual_sources.py", "app/evaluation/golden_contextual_validation.py",
+            "app/evaluation/golden_contextual_patch_wire.py",
             "app/evaluation/golden_contextual_requests.py", "app/evaluation/golden_numeric_evidence_v4.py",
             "app/evaluation/golden_contextual_workflow.py", "scripts/run_golden_contextual_review.py",
             "data/evaluation/datasets/golden_contextual_reports_v2.json")

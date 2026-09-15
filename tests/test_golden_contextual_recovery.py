@@ -135,7 +135,8 @@ def test_five_calls_include_external_sources_and_correct_direct_misclassificatio
         claim_edits=[dict(target_id="c001",value=claim(inputs,target,status="unsupported",
             scope="beyond_sample",scope_anchor="未来"),reason="首评错把未来推断当直接事实")])
     recheck=patch(current.prepare_state(compact(second),after))
-    replies=[compact(first),compact(correction),revised,compact(second),compact(recheck)]
+    from tests.test_golden_contextual_patch_wire import wire_patch
+    replies=[compact(first),compact(wire_patch(correction)),revised,compact(second),compact(wire_patch(recheck))]
     provider=ReplayProvider(lambda _,n:replies[n-1]); sender=BudgetedReviewSender(provider)
     flow=ContextualCorrectionWorkflow(sender)
     initial=flow.evaluate(req)
