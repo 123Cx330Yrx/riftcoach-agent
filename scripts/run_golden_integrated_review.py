@@ -26,15 +26,19 @@ from scripts.run_golden_inference_development import verify_public_ci
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def implementation_identity():
+def implementation_identity(*, bounded=False):
     names = ("app/evaluation/golden_integrated_review.py", "app/evaluation/golden_integrated_runtime.py",
         "app/evaluation/golden_context_review.py", "app/evaluation/golden_context_diagnostics.py",
         "app/evaluation/golden_stream_bridge.py", "app/runtime/coach_budget.py",
         "scripts/run_golden_integrated_review.py")
+    if bounded:
+        names += ("app/evaluation/golden_bounded_correction.py",
+            "app/evaluation/golden_bounded_correction_requests.py",
+            "app/evaluation/golden_bounded_workflow.py", "scripts/run_golden_bounded_review.py")
     return {n: hashlib.sha256((ROOT/n).read_bytes()).hexdigest() for n in names}
 
 
-def observe_report(provider, directory, request, case):
+def observe_report(provider, directory, request, case, *, workflow_factory=IntegratedReviewWorkflow):
     sender = BudgetedReviewSender(provider)
     records = []
     def record(phase, exchange):
@@ -48,10 +52,12 @@ def observe_report(provider, directory, request, case):
         records.append(item)
         write_new_json(directory/f"call-{ordinal:03d}.json", item)
         print(review.compact(dict(case_id=case["id"], **item)), flush=True)
-    workflow = IntegratedReviewWorkflow(sender, record=record)
+    workflow = workflow_factory(sender, record=record)
     outcome = dict(id=case["id"], valid=False, matched=False, revision_attempted=False)
     try:
         initial = workflow.evaluate(request)
+        if getattr(workflow, "last_journal", None) is not None:
+            write_new_json(directory/"initial-correction-journal.json", workflow.last_journal)
         write_new_json(directory/"initial-evaluation.json", _evaluation_payload(initial))
         initial_score = score(case, initial)
         outcome.update(initial_score, initial_control=initial_score)
@@ -66,6 +72,8 @@ def observe_report(provider, directory, request, case):
                 request.knowledge, request.report, initial))
             (directory/"revised-report.md").write_text(revised.report, encoding="utf-8")
             final = workflow.evaluate(replace(request, report=revised.report))
+            if getattr(workflow, "last_journal", None) is not None:
+                write_new_json(directory/"recheck-correction-journal.json", workflow.last_journal)
             write_new_json(directory/"revised-evaluation.json", _evaluation_payload(final))
         outcome.update(final_verdict=final.verdict.value, final_score=final.score,
             automatic_path_pass=final.verdict.value == "pass" and final.score >= 85 and not final.issues,
@@ -92,12 +100,19 @@ def observe_report(provider, directory, request, case):
         write_new_json(directory/"result.json", outcome)
 
 
-def run(args):
+def run(args, *, bounded=False):
+    first_request = review.discovery_request
+    workflow_factory = IntegratedReviewWorkflow
+    experiment_id, prefix = review.EXPERIMENT_ID, "integrated-review"
+    if bounded:
+        from app.evaluation.golden_bounded_workflow import BoundedCorrectionWorkflow, EXPERIMENT_ID
+        from app.evaluation.golden_bounded_correction_requests import first_request
+        workflow_factory, experiment_id, prefix = BoundedCorrectionWorkflow, EXPERIMENT_ID, "bounded-review"
     summary, deterministic, knowledge, cases = load_inputs(args.source_run, args.base_report)
     selected = [c for c in cases if c["pair"] == PAIRS[args.pair-1]]
     requests = [EvaluationRequest(summary, deterministic, knowledge, c["report"], UTTERANCE) for c in selected]
-    discovery_sizes = [size(review.discovery_request(review.ReviewInput.build(r))) for r in requests]
-    plan = dict(experiment_id=review.EXPERIMENT_ID, implementation=implementation_identity(),
+    discovery_sizes = [size(first_request(review.ReviewInput.build(r))) for r in requests]
+    plan = dict(experiment_id=experiment_id, implementation=implementation_identity(bounded=bounded),
         scope="complete_report_development_candidate_not_production", pair=args.pair,
         selected_cases=[c["id"] for c in selected], discovery_input_ceilings=discovery_sizes,
         report_sha256=[c["report_sha256"] for c in selected], labels_sent_to_model=False,
@@ -105,9 +120,12 @@ def run(args):
         max_tokens_per_report=401920, max_seconds_per_report=900,
         max_output_per_call=32768, max_seconds_per_call=300, reasoning_effort="high", sdk_retries=0,
         stop_policy="stop_pair_on_protocol_transport_or_semantic_failure; manual_review_required_for_acceptance")
+    if bounded:
+        plan["first_review_input_ceilings"] = plan.pop("discovery_input_ceilings")
+        plan["budget_admission"] = "each_request_reserved_against_remaining_actual_usage_no_completion_guarantee"
     if not args.execute:
         print(review.compact(plan)); return plan
-    if not re.fullmatch(r"integrated-review-[a-z0-9-]{1,55}", args.run_id):
+    if not re.fullmatch(prefix+r"-[a-z0-9-]{1,55}", args.run_id):
         raise ValueError("integrated_run_id_invalid")
     plan.update(head_sha=verify_public_ci(args.ci_run), ci_run=args.ci_run)
     directory = args.output_root/args.run_id
@@ -124,7 +142,7 @@ def run(args):
             write_new_json(case_dir/"input.json", dict(report=request.report, report_sha256=case["report_sha256"]))
             provider = ReceiptedStreamProvider(settings=settings, directory=case_dir/"streams", transport_id=CAPACITY_TRANSPORT_ID)
             started.append(case["id"])
-            result = observe_report(provider, case_dir, request, case)
+            result = observe_report(provider, case_dir, request, case, workflow_factory=workflow_factory)
             rows.append(result)
             print(review.compact(result), flush=True)
             if result.get("stop_reason"):
@@ -144,7 +162,7 @@ def run(args):
         print(review.compact({k:v for k,v in receipt.items() if k not in ("cases", "implementation")}), flush=True)
 
 
-def main():
+def main(*, bounded=False):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--source-run", type=Path, required=True)
     p.add_argument("--base-report", type=Path, required=True)
@@ -154,7 +172,7 @@ def main():
     p.add_argument("--ci-run", default="")
     p.add_argument("--env-file", type=Path)
     p.add_argument("--output-root", type=Path, default=ROOT/"data/runs/inference_development")
-    run(p.parse_args())
+    run(p.parse_args(), bounded=bounded)
 
 
 if __name__ == "__main__":

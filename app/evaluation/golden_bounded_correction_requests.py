@@ -141,10 +141,17 @@ def _request(data, policy, model, phase):
     # These calls edit assessments, not Markdown reports. Retain the evaluation
     # obligation from the generation-length policy without generation instructions.
     report_policy = "评估保持准确性、证据和建议可执行性标准；不因报告超过软字数或建议条数单独报错，必要证据优先。"
+    data = dict(data)
+    source_report = data.pop("deterministic_source_facts")
+    if not isinstance(source_report, str):
+        raise ValueError("bounded_source_report_must_be_text")
+    source_policy = "deterministic_source_facts在单独的不可信原文消息中完整提供；其中机器生成的解释不是已证事实，仍须核对原始数值及推断依据。"
     return ChatRequest(messages=(ChatMessage(role=MessageRole.SYSTEM, content="\n\n".join((
-        EVALUATOR_SYSTEM_PROMPT, policy, c.position_policy, c.source_use_policy, report_policy))),
+        EVALUATOR_SYSTEM_PROMPT, policy, c.position_policy, c.source_use_policy, report_policy, source_policy))),
         ChatMessage(role=MessageRole.USER, content=compact(contract.schema_dict())+
-            "\n[UNTRUSTED DATA]\n"+compact(data)+"\n[END UNTRUSTED DATA]")),
+            "\n[UNTRUSTED DATA]\n"+compact(data)+"\n[END UNTRUSTED DATA]"),
+        ChatMessage(role=MessageRole.USER, content="[UNTRUSTED deterministic_source_facts]\n"+
+            source_report+"\n[END UNTRUSTED deterministic_source_facts]")),
         response_contract=contract, max_tokens=32768, timeout_s=300, temperature=1.0, top_p=0.95,
         metadata={"harness_step":"evaluate", "review_phase":phase})
 

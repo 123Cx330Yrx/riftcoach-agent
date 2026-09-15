@@ -3,6 +3,83 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-15 Efficiency correction: verbatim source and actual-usage admission
+
+The owner asked why the work still was not complete and required more efficient
+execution. This audit corrects an assistant-imposed readiness criterion: adding
+five independent maximum reservations and requiring that sum to fit 401920 was
+being treated as mandatory even though the existing runner reserves only the
+NEXT call and settles returned actual usage. This section supersedes the prior
+blanket prohibition based on that summed envelope. It does not claim the sum now
+fits, guarantee completion, change any budget, or assert owner approval of a new
+model tier or weakened quality rule.
+
+A concrete request defect is fixed: deterministic source text was embedded as a
+JSON string, repeatedly escaping its own structured sections. It now occupies a
+separately labeled untrusted user message. Every source character remains, and
+the actual high-profile SDK request retains all three messages. A note makes
+clear that machine-generated explanations inside this source report are not
+already-proven facts. The complete schema, source rules, local validation and
+generic estimator remain unchanged. SDK capture confirms JSON-object mode, not
+server-enforced JSON Schema; generic accounting of the local schema remains a
+conservative allowance, not a removed constraint.
+
+Measurement: `data/evaluation/results/golden_bounded_review_readiness_v1.json`,
+reproducible with `python -m scripts.check_golden_bounded_readiness` and the same
+three private source arguments as the previous measurement. Ten complete first
+requests measure **50282–50456**; the two actual saved state shapes measure
+**63474/60410**, both below preparation limit 63936 and hard input limit 64000.
+Historical revision remains **53584**. The summed maximum envelope is still
+**445284 > 401920** and is explicitly retained as a limitation. Larger future
+states can still be rejected before sending.
+
+`BoundedCorrectionWorkflow` now reuses the established receipt-bearing sender,
+revision source binding, report validation and five-call guards. Its evaluation
+is first review -> preserved state -> mandatory explicit correction -> complete
+canonical validation. One revision may be followed by the same two-step review;
+there is no sixth call or silent repair. Invalid first inventories stop rather
+than inventing source identities. Correction journals are persisted separately
+for initial and revised evaluations. `scripts/run_golden_bounded_review.py` is an
+isolated development entry; default preview is offline and execution still
+requires clean checkout and the same implementation SHA passing all public jobs.
+Old integrated entry defaults, registered Coach versions and production remain
+unchanged.
+
+The real `CoachBudgetedProvider` tests demonstrate both sides of admission:
+
+- Five requests whose hypothetical reservation sum exceeds 401920 can complete
+  when their returned actual usages leave enough room for each next reservation.
+- One token above remaining capacity rejects BEFORE Provider I/O; exact remaining
+  capacity admits the next request. The sixth call and elapsed-time exhaustion
+  remain rejected. No estimated count is substituted for real returned usage.
+- Full first/correction/revision/recheck/correction control flow uses actual
+  canonical validation, full revised-report validation and receipt identities;
+  changing recheck evidence is refused before another call. SDK capture confirms
+  high/32768 and verbatim source transport. These are scripted tests, not claims
+  about future real-model accuracy, usage or latency.
+
+Focused and adjacent verification totals **122 tests passing** after correcting
+an incomplete test fixture. Code, source text, receipt, budget and semantic
+boundaries are tested separately; the existing valid-source/wrong-relationship
+counterexample remains documented and is NOT declared solved.
+
+Decision: allow a conditional bounded development observation after this SHA's
+public checks, using the frozen complete explicit-definition pair with unchanged
+labels: at most five calls/one revision/401920 tokens/900 seconds per report,
+32768 output/300 seconds per call, high, SDK retries zero. Stop the pair on any
+protocol, transport or scored control failure; preserve first failure and all
+responses. Inspect meaning explanations and correction journals before claiming
+semantic acceptance. No production admission or broad accuracy estimate follows
+from two development reports. This falls within the owner's standing continuation
+authorization; no new approval is needed for the local work or already authorized
+bounded testing. Do not repeat a failed identity or launch an extra batch merely
+because the code checks pass.
+
+The immediate next action is same-SHA public verification followed by that one
+bounded observation. The original 1.3.25 ShowMaker revision stays valid; independent
+control reliability and Stage 8E remain in progress. Provider count is at least
+172 before this observation; source restoration and these tests made no calls.
+
 ## 2026-09-15 Bounded state correction: offline implementation, readiness rejected
 
 The prototype now exists in `app/evaluation/golden_bounded_correction.py` and
