@@ -3,6 +3,48 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-15 Integrated v1 observation and v2 actual-target budget repair
+
+Implementation d70416206b8febdcb8aa6a21f27c427cb7f21aa7 passed all three jobs in
+Actions 34946858753. The full-report pair stopped before assessment:
+`integrated-review-d704162-definitions` planned 2 / started 1 / finalized 1 /
+interrupted 0 / not started 1. Discovery returned complete stop and selected 57
+valid source spans. Returned input 2445 + output 6396 = 8841 tokens, one Provider
+request, no unknown usage. Cumulative reservations are at least 170. No semantic
+assessment, report revision or recheck occurred, so this is not a semantic failure
+or success. Original request/response/receipt files remain unchanged; the new
+manual-audit-v1.json records the independent offline diagnosis.
+
+The assessment builder reached 64348 input-ceiling tokens, above 64000, and stopped
+locally BEFORE a second Provider call. The earlier complete-block shape measured
+only 28 targets for this report. That estimate was not a generated-span bound;
+the actual source selection legitimately expanded it. This exposed a gap in the
+candidate request builder, not output exhaustion, GLM profile or a lost stream.
+
+Adopt a distinct `golden-integrated-review-v2` experiment identity. Avoid a redundant
+quote_ref wrapper around every known target and check the actual assembled
+assessment after budget metadata. When needed, remove only optional numeric-source
+navigation entries and increase their explicit omitted count; all source values,
+report text, target references, generation facts, knowledge, instructions and schema
+remain complete. Stop before I/O if the complete core still cannot fit. Keep
+63936 as the preparation threshold, allowing 64 tokens of headroom within the same
+64000 input limit for a shorter deadline representation. Do not raise any limits.
+
+Offline replay of the exact saved 57 targets now measures 63136 after the budget
+wrapper with the complete core unchanged. This shape needs no navigation removal;
+a separate boundary regression exercises actual removal and rejects a core overrun.
+The existing request/response files are not reclassified as a successful report.
+31 focused tests pass. The ten full-block shapes plus historical revision measure
+359276 total reservation in data/evaluation/results/golden_integrated_workflow_v2.json;
+these remain measured shapes, not a guarantee for arbitrary future output or time.
+
+Next: same-SHA public checks for v2, then a fresh complete-report definition pair
+through discovery, assessment, optional revision and full recheck. Keep old v1
+failure, old usage, source data and frozen labels. The new run has its own shared
+report budget; it must not pretend the earlier extraction was a new model result.
+Stop on a protocol/transport/semantic failure and inspect the concrete evidence.
+No production registration, Workbench admission, redesign or stage advancement.
+
 ## 2026-09-15 Integrated whole-report candidate (offline verified, live pending)
 
 The new isolated `golden-integrated-review-v1` prototype separates source discovery

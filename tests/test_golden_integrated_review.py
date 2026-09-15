@@ -335,3 +335,36 @@ def test_rejected_complete_response_is_recorded_before_validation():
     flow = runtime.IntegratedReviewWorkflow(lambda _: invalid, record=lambda *args: records.append(args))
     with pytest.raises(ValueError, match="receipt_mismatch"): flow._call(built, "discovery")
     assert len(records) == 1 and flow.stopped
+
+
+def test_actual_assessment_budget_can_drop_only_optional_navigation():
+    from scripts.check_golden_integrated_workflow import budgeted, size
+    inputs = review.ReviewInput.build(request("中单经济 505.29 vs 432.82。[K1]"))
+    targets = ({"block":1},)
+    initial = review.assessment_request(inputs, targets)
+    def data_of(built):
+        return review.strict_json(built.messages[1].content.split("[UNTRUSTED DATA]\n")[1].split("\n[END UNTRUSTED DATA]")[0])
+    data = data_of(initial)
+    assert data["number_navigation"]["candidates"]
+    # Construct a real request near the boundary; no mocked token estimator.
+    lo, hi = 0, 40000
+    while lo < hi:
+        mid = (lo+hi)//2
+        trial = dict(data, deterministic_source_facts="补"*mid)
+        built = review._request(trial, review.ASSESSMENT_POLICY, review.Assessment, "assessment", enforce_budget=False)
+        if size(budgeted(built)) < 64032: lo = mid+1
+        else: hi = mid
+    core = review.strict_json(inputs.data_json)
+    core["deterministic_source_facts"] = "补"*lo
+    padded = replace(inputs, data_json=compact(core))
+    fitted = review.assessment_request(padded, targets)
+    actual = data_of(fitted)
+    assert size(budgeted(fitted)) <= 64000
+    assert all(actual[k] == v for k,v in core.items())
+    assert actual["discovered_targets"] == list(targets)
+    assert len(actual["number_navigation"]["candidates"]) < len(data["number_navigation"]["candidates"])
+    assert actual["number_navigation"]["omitted_candidates"] > data["number_navigation"]["omitted_candidates"]
+    # Core overrun is rejected; it never truncates the real report or evidence.
+    core["deterministic_source_facts"] = "补"*100000
+    with pytest.raises(ValueError, match="assessment_core_input_budget_exceeded"):
+        review.assessment_request(replace(inputs, data_json=compact(core)), targets)

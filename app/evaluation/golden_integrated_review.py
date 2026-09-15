@@ -4,7 +4,7 @@ Discovery selects source spans; assessment judges host-owned targets and sweeps
 the full report for omissions. Source/identity restoration is deterministic;
 semantic correctness still needs independent real controls.
 """
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import re
 from types import SimpleNamespace
 from typing import Literal
@@ -20,12 +20,13 @@ from app.evaluation.golden_review_experiment import SourceIndex, QuoteRef, compa
 from app.evaluation.golden_inference_scope_v5 import strict_json
 from app.evaluation.golden_numeric_evidence_v4 import numeric_support
 from app.evaluation.golden_scope_diagnostics import bounded_feedback
+from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
 from app.harness.adapters import _knowledge_evaluation_projection
 from app.providers.models import ChatRequest, ChatMessage, MessageRole
 from app.providers.structured import contract_for_model
 from app.runtime.coach_contract import FEEDBACK_COACH_CONTRACT
 
-EXPERIMENT_ID = "golden-integrated-review-v1"
+EXPERIMENT_ID = "golden-integrated-review-v2"
 AUDITS = ("metric_to_ability", "cohort_comparison")
 
 
@@ -128,17 +129,18 @@ class ReviewInput:
         return cls(source, compact(data), compact(pack))
 
 
-def _request(data, policy, model, step):
+def _request(data, policy, model, step, *, enforce_budget=True):
     contract = contract_for_model(name="integrated_" + step, version="1.0.0", output_model=model)
     c = FEEDBACK_COACH_CONTRACT
     policies = (EVALUATOR_SYSTEM_PROMPT, policy) if step == "discovery" else (
         EVALUATOR_SYSTEM_PROMPT, policy, c.position_policy, c.source_use_policy, c.compact_report_policy)
     system = "\n\n".join(policies)
-    return checked(ChatRequest(messages=(ChatMessage(role=MessageRole.SYSTEM, content=system),
+    request = ChatRequest(messages=(ChatMessage(role=MessageRole.SYSTEM, content=system),
         ChatMessage(role=MessageRole.USER, content=compact(contract.schema_dict()) +
             "\n[UNTRUSTED DATA]\n" + compact(data) + "\n[END UNTRUSTED DATA]")),
         temperature=1.0, top_p=0.95, max_tokens=32768, timeout_s=300,
-        response_contract=contract, metadata={"harness_step": "evaluate", "review_phase": step}))
+        response_contract=contract, metadata={"harness_step": "evaluate", "review_phase": step})
+    return checked(request) if enforce_budget else request
 
 
 def discovery_request(inputs):
@@ -197,14 +199,30 @@ def assessment_request(inputs, targets, *, feedback=None):
     for position, ref in enumerate(targets, 1):
         quote = inputs.source.resolve(ref)
         support = numeric_support(SimpleNamespace(quote=quote, evidence_refs=list(pack["provenance"])), pack)
-        rows.append(dict(quote_ref=ref))
+        rows.append(ref)
         navigation.extend(dict(target_position=position, token=n["token"], source_candidates=n["candidates"][:2])
             for n in support if n["candidates"])
     bounded = bounded_feedback(navigation)
     data.update(discovered_targets=rows, number_navigation=dict(
         candidates=bounded["errors"], omitted_candidates=bounded["omitted_errors"]),
         discovery_diagnostics=feedback or {"errors": [], "omitted_errors": 0})
-    return _request(data, ASSESSMENT_POLICY, Assessment, "assessment")
+    # Navigation is optional: its source values remain in the complete pack.
+    # Measure the *actual discovered spans*, including the budget metadata,
+    # before sending. Never truncate report, targets, facts, knowledge or schema.
+    def build():
+        return _request(data, ASSESSMENT_POLICY, Assessment, "assessment", enforce_budget=False)
+    def issued_size(request):
+        return estimate_runtime_request_input_ceiling(replace(request, metadata={
+            **request.metadata, "coach_budget_contract": "coach-bounded-review-v2"}))
+    request = build()
+    while issued_size(request) > 63936 and data["number_navigation"]["candidates"]:
+        data["number_navigation"]["candidates"].pop()
+        data["number_navigation"]["omitted_candidates"] += 1
+        request = build()
+    # Small headroom covers a shorter shared-deadline float representation.
+    if issued_size(request) > 63936:
+        raise ValueError("assessment_core_input_budget_exceeded")
+    return checked(request)
 
 
 def assessment_wire(raw, inputs, targets):

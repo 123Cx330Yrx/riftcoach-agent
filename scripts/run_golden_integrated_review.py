@@ -76,6 +76,8 @@ def observe_report(provider, directory, request, case):
     except Exception as error:
         outcome.update(valid=False, matched=False, stop_reason="protocol_or_execution_failure", error_type=type(error).__name__)
         code = getattr(error, "code", None)
+        if code is None and isinstance(error, ValueError):
+            code = str(error)
         if isinstance(code, str) and re.fullmatch(r"[a-z_]{1,80}", code):
             outcome["error_code"] = code
         outcome["interrupted"] = provider._calls > len(records)
