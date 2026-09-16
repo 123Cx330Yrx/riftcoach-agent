@@ -10,20 +10,30 @@ from tests.test_golden_bounded_correction import fixture, claim, issue
 from tests.test_golden_contextual_review import patch
 
 
+def fixture_decision(row):
+    """Scripted decision only; must never repair or accept a live response."""
+    scope=row['scope']
+    decision='direct' if row['claim_kind']=='direct_result' else {
+        'selected_sample':'sample','question_or_negation':'negated',
+        'ambiguous':'ambiguous','beyond_sample':'beyond_sample'}[scope]
+    if decision not in ('ambiguous','beyond_sample'):
+        decision+='_'+row['status']
+    return dict(decision=decision,evidence_refs=row['evidence_refs'],explanation=row['explanation'],
+        quote_ref=row['quote_ref'],scope_source=row['context']['quote_ref'] if row.get('context') else None)
+
+
+def first_wire(value):
+    value=json.loads(compact(value))
+    for audit in value['audits']:
+        audit['claims']=[fixture_decision(row) for row in audit['claims']]
+    return value
+
+
 def wire_patch(value):
     """Explicit fixture conversion; never used to accept historical live output."""
     value=json.loads(compact(value))
-    def convert(row):
-        scope=row['scope']
-        decision='direct' if row['claim_kind']=='direct_result' else {
-            'selected_sample':'sample','question_or_negation':'negated',
-            'ambiguous':'ambiguous','beyond_sample':'beyond_sample'}[scope]
-        if decision not in ('ambiguous','beyond_sample'):
-            decision+='_'+row['status']
-        return dict(decision=decision,evidence_refs=row['evidence_refs'],explanation=row['explanation'],
-            quote_ref=row['quote_ref'],scope_source=row['context']['quote_ref'] if row.get('context') else None)
-    value['claim_updates']=[dict(target_id=r['target_id'],**convert(r['value'])) for r in value.pop('claim_edits')]
-    value['claim_additions']=[dict(audit=r['audit'],**convert(r['value'])) for r in value.pop('added_claims')]
+    value['claim_updates']=[dict(target_id=r['target_id'],**fixture_decision(r['value'])) for r in value.pop('claim_edits')]
+    value['claim_additions']=[dict(audit=r['audit'],**fixture_decision(r['value'])) for r in value.pop('added_claims')]
     return value
 
 

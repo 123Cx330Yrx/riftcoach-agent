@@ -3,6 +3,66 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 V10: unify decisions across both reviews; stop suffix-specific repair
+
+The v9 implementation 013dbe106c45c0a842a411933dc10b05b0f4db29 passed
+Actions 35047568110, all three jobs. Its only live response completed with stop:
+11,344 input + 15,378 output = 26,722 returned tokens, no unknown usage.
+The complete JSON was followed by non-JSON text (two backticks and `=count`),
+so strict parsing rejected it. No second call or second report started.
+Cumulative Provider requests are at least 195. This recovery series now totals
+eight runs, twenty calls and 501,650 returned tokens; historical failures stay
+failed and byte-identical.
+
+Transport diagnosis: the real worker uses Zhipu's stream adapter, which sends
+`response_format={"type":"json_object"}`. The neutral response contract's
+strict schema is supplied in the prompt and validated locally; it is not sent
+as a server-enforced JSON Schema. Thus “ordinary text mode” was an incorrect
+description. This evidence does not establish native json_schema support or a
+specific vendor defect. Existing stream payload tests cover this path.
+
+An initial local suffix-adjudication branch was rejected before publication or
+paid I/O: it required 64,912 input-estimator units for the actual 24-claim,
+33-review shape, exceeding 63,936. It also treated the latest symptom while
+leaving the first review's contradictory representation intact. Its runtime
+and tests were removed. The new candidate does not silently strip substantive
+suffixes, accept the first of several JSON objects, or add a repair call.
+
+Across the nine historical first-response shapes, direct-result claims had
+6–14 contradictory scope/context combinations per response. V6 simplified only
+the correction output; the first review kept manufacturing the old combinations.
+V10 uses one decision/source/reason representation in BOTH steps and one shared
+domain policy. The host derives classification, status and literal source
+anchors; it never chooses a missing model decision. The second request carries
+the original first decisions rather than asking the model to reconcile another
+expanded representation. All claim/issue/heading identities and sources remain.
+The complete first wire is retained in the correction journal. A missing sample
+anchor remains an invalid, diagnosable provisional claim and must be corrected
+explicitly before final acceptance. Fact resolution still requires evidence.
+
+This is a representation change, not a new semantic acceptance rule. No report,
+expected label, model tier, retry count or budget is changed. Numerical mistakes,
+cohort drift, misleading context and substantive trailing text can still occur;
+none are declared solved by schema construction. Native constrained output is
+unverified and is not silently enabled. General completion is not guaranteed.
+
+Validation covers five-call revision/recheck, source tampering, incomplete
+inventories, missing/conflicting decisions, absent sample support, protected
+fact issues and prompt injection. Offline readiness projects nine historical
+first-response shapes and the actual v8 recheck shape. Old contradictory labels
+are used only as explicit synthetic size assumptions, with both explanation
+texts retained when distinct; the projection is NOT a corrected model result.
+The first requests measure 45,830/45,902; the ten correction shapes measure
+56,204–61,508, all below 63,936. The malformed v9 raw itself remains rejected.
+See `golden_contextual_decision_readiness_v10.json` and the reproducible script
+`scripts/check_golden_decision_readiness.py`. All 698 golden-focused tests pass;
+compile, governance and diff checks pass. Public checks and a new live
+pair are required before any quality claim. Next: finish regression and exact
+SHA CI, then one bounded pair; inspect both complete explanations, source cohorts
+and actual revision/recheck. Failure is a candidate result, not permission for
+another automatic symptom patch and paid rerun. 8E and the 62-theme roadmap stay
+in progress; frontend renewal and all other deferred work remain tracked.
+
 ## 2026-09-16 V9: actual revision/recheck reached; retain direct-fact source boundaries
 
 68e8670a8d83999b002fb58c76836cff3c92cf77 passed Actions 35005362095, all three

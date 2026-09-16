@@ -18,7 +18,7 @@ from app.evaluation.golden_contextual_requests import request as table_request
 
 
 STANDARD_ID = "whole-context-acceptance-v1"
-EXPERIMENT_ID = "golden-contextual-bounded-review-v9"
+EXPERIMENT_ID = "golden-contextual-bounded-review-v10"
 
 
 def replace_rules(policy, changes):
@@ -30,14 +30,6 @@ def replace_rules(policy, changes):
 
 
 FULL_CONTEXT_RULE = "按完整上下文验收：若同一组样本、比较对象和含义已清楚限定且无无依据外推，可selected_sample并通过；不要求每句重复范围或专门定义稳定/持续等词。额外措辞优化不单独阻断。仅相邻、泛泛免责声明或正确数字不能支持实际长期、未来或因果断言；后文独立错误仍须检出。真正无法确定范围、对象或存在冲突才要求澄清。"
-
-FIRST_POLICY = replace_rules(requests.POLICY, [
-    ("稳定/可靠/持续等词按完整上下文理解；未定义含义不能凭样本数或相邻同主题就猜为selected_sample。", FULL_CONTEXT_RULE),
-    ("允许显式上下文关联：context.quote_ref定位实际定义或否定原文；relation=defines_scope或negates，explanation简述为何它确实指向本句。",
-     "允许完整上下文关联：context.quote_ref定位实际范围限定、定义或否定原文；relation=defines_scope或negates，explanation说明如何适用于本句的同一组样本、对象和含义。"),
-    ("前段明确说“下句中的某词仅指…”或正文明确说“本标题的某词仅指…”可以跨段定义；不要求本句再重复定义。",
-     "前后文已经说明同一比较的样本、指标和方向即可作为范围依据，不必出现‘下句’‘本标题’等专门指代句式；同时核对后文有无冲突。"),
-]) + "\ngeneration_view无损复用facts_and_provenance中的值：按source路径取对象，保留keys或field_sets中fields编号的字段，再应用overrides；未共享字段保留原值。"
 
 CORRECTION_POLICY = replace_rules(requests.CORRECTION_POLICY, [
     ("meaning_reviews恰好逐项覆盖required_reviews，允许乱序，不得遗漏或重复；每个新增claim也须meaning。",
@@ -87,8 +79,8 @@ class CorrectionWire(requests.UntitledSchema, ContextualCorrection):
 
 
 def first_request(inputs):
-    return table_request(requests.source_data(inputs),FIRST_POLICY,
-        requests.FirstWire,"full_context_first")
+    from app.evaluation.golden_contextual_first_wire import first_request as build
+    return build(inputs)
 
 
 def correction_request(state):
