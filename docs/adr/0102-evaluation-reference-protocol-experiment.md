@@ -34,7 +34,9 @@ fingerprints remain byte-identical; altered summaries cannot reuse the snapshot.
 No new acceptance score or live success is inferred.
 
 128 affected renderer, domain, synthetic-acceptance, real-golden preparation,
-Stage-1 and product-service/compiler checks pass. Original c3ff392 live response
+Stage-1 and product-service/compiler checks pass. Implementation fcf0ac3 passed
+all three public jobs in Actions35073525804; preceding failure hold/audit
+33c03ce passed Actions35072891451. Original c3ff392 live response
 and failure hashes still match. No additional Provider call follows the failed
 pair. Next offline dataflow adjudication must distinguish raw facts, derived
 statistics, old template interpretation, first-review opinions and final claim
