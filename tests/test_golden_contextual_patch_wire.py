@@ -75,7 +75,7 @@ def test_compact_wire_preserves_identity_and_rejects_missing_or_conflicting_deci
     if mutation=='unknown':row['target_id']='c999'
     if mutation=='duplicate':value['claim_updates'].append(row.copy())
     if mutation=='shorten':row['quote_ref']=inputs.source.reference('这四场仅作观察')
-    if mutation=='contradictory':row['decision']='direct_supported';row['scope_source']=inputs.source.reference(inputs.source.report)
+    if mutation=='contradictory':row['decision']='beyond_sample';row['scope_source']=inputs.source.reference(inputs.source.report)
     if mutation=='legacy':row['value']={}
     with pytest.raises(ValueError):apply_wire(state,compact(value),inputs=inputs)
 
@@ -140,3 +140,18 @@ def test_wire_diagnostic_advice_matches_decisions_and_indexes_actual_numeric_sou
     candidates=[c for r in feedback for n in r.get('unsupported_numbers',[]) for c in n['source_candidates']]
     assert any(c['op']=='queue_id' and c['evidence_indices'] for c in candidates)
     assert state.diagnostics_json==before and '仅是请求筛选条件' in POLICY
+
+
+def test_direct_fact_supplemental_scope_is_validated_and_retained_without_reclassification():
+    inputs,first=fixture('直接结果。\n\n本次仅作对照。')
+    ref=inputs.source.evidence_keys.index('facts:recent_match:00')+1
+    state=canonical.prepare_state(compact(first),inputs);value=wire_patch(patch(state))
+    value['claim_additions']=[dict(audit='cohort_comparison',decision='direct_supported',
+        quote_ref=inputs.source.reference('直接结果。'),scope_source=inputs.source.reference('本次仅作对照。'),
+        evidence_refs=[ref],explanation='直接事实附带使用边界。')]
+    result,journal=apply_wire(state,compact(value),inputs=inputs)
+    row=result.audits[1].claims[0]
+    assert row.claim_kind=='direct_result' and row.scope is row.context is None
+    assert journal['model_patch_wire']['claim_additions'][0]['scope_source']['block']==2
+    value['claim_additions'][0]['scope_source']={'block':999}
+    with pytest.raises(ValueError):apply_wire(state,compact(value),inputs=inputs)

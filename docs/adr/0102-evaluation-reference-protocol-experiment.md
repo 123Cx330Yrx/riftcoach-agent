@@ -3,6 +3,42 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 V9: actual revision/recheck reached; retain direct-fact source boundaries
+
+68e8670a8d83999b002fb58c76836cff3c92cf77 passed Actions 35005362095, all three
+jobs. The v8 run started both reports and completed seven stop responses:
+89,783 input + 69,105 output = 158,888 returned tokens, no unknown usage.
+Cumulative Provider requests at least 194; seven recovery runs total nineteen
+calls and 474,928 returned tokens.
+
+Contextual_01 reached valid 96/pass with matching labels. Manual review does
+not accept its explanation quality: the stable-difference claim is justified
+using five mixed-role games although the earlier comparison explicitly covers
+four mid games. Correct direction in both sets does not license changing the
+subject. Contextual_02 reached valid 80/needs_revision, rejecting the actual
+future assertion; it also raised the unqualified four-game count and revised
+only these two sentences. Revision and both recheck calls actually completed.
+The final receiver rejected two added OP.GG direct facts because the model
+supplied scope_source to document snapshot-use boundaries.
+
+V9 validates and journals a direct fact's optional supplemental scope_source
+without turning it into a canonical inference/context or changing its decision.
+All evidence/status/numeric checks remain; ambiguous/beyond_sample still reject
+this field. Unknown source references fail. The full model patch remains in the
+journal, including supplemental sources. The unmodified second-report recheck
+now validates offline at 95/pass, zero issues; this does not replace the failed
+live receipt or constitute a passing pair. The correction policy additionally
+requires preserving the original role/outcome/sample subject across paragraphs,
+not expanding a specific subgroup because a heading refers to selected games.
+
+150 focused tests pass. Eight first-assessment correction shapes measure
+62994/59650/58322/58072/58512/57218/61474/57570, and the actual revised-report
+correction shape is 59660. All measured inputs fit unchanged limits. Evidence:
+golden_contextual_pair_68e8670_v9.json and golden_contextual_readiness_v9.json.
+Next: exact-SHA CI, then a fresh pair with manual subject/number/source review
+and required revision/recheck. No production admission; 8E and all global
+follow-ups remain in progress.
+
 ## 2026-09-16 V8: correct new-wire integration omissions
 
 c7e7322329fe2f20670ae022d48304e9441c948d passed Actions 35003547705, all three

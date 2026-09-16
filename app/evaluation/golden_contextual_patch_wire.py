@@ -63,10 +63,11 @@ decision：direct_supported/direct_unsupported为纯直接事实或算术；samp
 数字能算出不证明对象、指标、分路、胜负组或结论正确。按完整上下文重判所有相关陈述及标题，不能沿用首评错误或只改分数。
 update的quote_ref可省略以保留原句；提供时只能在同段扩大，不能缩短原句、删除错误部分或换源。addition必须给quote_ref。
 sample/negated的scope_source省略时读取该claim所在的完整段落，原待审片段保持不变；也可显式引用其他支持范围或否定的原文。解释其与该陈述的同一对象和含义的关系。程序只定位原文并展开字段，不会代你决定是否有依据。sample引用原文须有实际本次/样本/几场/单局/表格样本数限定，不能仅以同位置猜范围。
-direct/ambiguous/beyond_sample的scope_source须null或省略。未修改的旧claim会原样保留；诊断中的字段错误需要提交对应update，不能只在review_notes说修了。
+direct可附scope_source作为来源适用边界的补充引用，程序校验并记入审计，不据此改变直接事实分类；ambiguous/beyond_sample的scope_source须null或省略。未修改的旧claim会原样保留；诊断中的字段错误需要提交对应update，不能只在review_notes说修了。
 review_notes逐项覆盖required_reviews，不能遗漏或重复；额外说明只可绑定实际addition的顺序编号，不创造另一套判断。
 每条unsupported或ambiguous须有完全相同原句issue且nonpass；pass必须issues为空。修改已有事实issue需resolution_evidence_refs并说明原因。不能删问题或伪造引用来通过。
 explanation本身也须核对数值、分路与胜负组。review_explanation_numbers_need_source_check只是待核对提示，不自动说明报告错误；若解释算错、混组或证据缺失，须update修正解释与引用，不能只在review_notes说已检查。
+跨段沿用比较时，解释须保持前文同一分路、胜负组和样本集合；标题“所选比赛”等泛称不能把前文明示的同位置子样本扩大成含其他位置的全集。即使两个集合方向巧合一致，也不能替换比较对象。核对首评已有解释并显式纠正这种对象漂移。
 同位置同胜负均值引用完整实际纳入原始行或对应派生事实；不混位置、不补缺失、不借未引用数据。逐行方向须检查逐行数据。数值用原精度运算后ROUND_HALF_UP展示；外部排名不当作玩家胜率，保留来源时间、位置和适用边界。
 实际比赛队列只能由所引facts:recent_match的queue_id证明，facts:scope/request.queue仅是请求筛选条件，不能证明实际返回比赛的队列。诊断source_candidates给出可核对的真实操作数；核实后须把实际来源编号加入evidence_refs，不能只在解释中提到来源。
 标题navigation只用于无断言标题；有断言必须有完整标题claim及heading_edits。后文真实外推不能由前面的免责声明抵消。建议保留真实[K编号]知识支持。
@@ -103,7 +104,9 @@ def expand_value(value, source, original_ref=None):
     direct = decision.startswith('direct_')
     sample = decision.startswith('sample_')
     negated = decision.startswith('negated_')
-    if value.scope_source is not None and not (sample or negated):
+    if value.scope_source is not None:
+        source.resolve(value.scope_source.model_dump(mode='json'))
+    if value.scope_source is not None and not (direct or sample or negated):
         raise ValueError('contextual_patch_unexpected_scope_source')
     scope = None if direct else 'selected_sample' if sample else 'question_or_negation' if negated else decision
     status = 'supported' if decision.endswith('_supported') else 'unsupported'
