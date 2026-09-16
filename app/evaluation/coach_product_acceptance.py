@@ -18,7 +18,6 @@ from app.evaluation.domain_e2e import (
     DomainEvaluationDataset,
 )
 from app.lol.match_analyzer import aggregate_recent_matches
-from app.lol.report_renderer import render_deterministic_report
 from app.memory.context_models import (
     MemoryContextBinding, MemoryContextRecord, MemoryContextSnapshot, MemoryContextRecordKind,
 )
@@ -119,7 +118,22 @@ def summary_from_inputs(inputs):
     }
 
 
-def compile_case(root, inputs, case):
+def frozen_deterministic_report(summary, project_root=None):
+    """Historical acceptance input, not today's production renderer.
+
+    The original manifest still verifies its exact compiled request/context.
+    Bind this snapshot to its source summary instead of silently rendering new
+    wording under the historical dataset identity.
+    """
+    project_root = project_root or Path(__file__).resolve().parents[2]
+    snapshot = json.loads((project_root / ASSET_PATH / "deterministic_report_snapshot.json").read_text(encoding="utf-8"))
+    if (snapshot["summary_sha256"] != digest(summary)
+            or snapshot["report_sha256"] != hashlib.sha256(snapshot["report"].encode("utf-8")).hexdigest()):
+        raise ValueError("acceptance_asset_drift")
+    return snapshot["report"]
+
+
+def compile_case(root, inputs, case, *, project_root=None):
     compiler = RecentReviewRuntimeRequestCompiler(root.skill_catalog, coach_contract=COACH_CONTRACT)
     builder, binding, memory = context_builder(case)
     summary = summary_from_inputs(inputs)
@@ -127,7 +141,7 @@ def compile_case(root, inputs, case):
         RecentReviewProductRequest(riot_id=inputs["player"], routing_region="asia", count=5, focus=case["focus"]),
         player_summary=summary, deterministic_report=(
             "> 独立验收：以下比赛、英雄和账号均为合成数据；本次未调用 Riot API 或 Data Dragon，"
-            "不能把模板里的数据渠道说明当成本次真实联网来源。\n\n" + render_deterministic_report(summary)),
+            "不能把模板里的数据渠道说明当成本次真实联网来源。\n\n" + frozen_deterministic_report(summary, project_root)),
         run_id=case["case_id"], memory_context_binding=binding,
     )
     return request, builder, memory
@@ -153,7 +167,7 @@ def build_assets(project_root: Path) -> AcceptanceAssets:
     root = composition(project_root)
     contexts = []
     for case in inputs["cases"]:
-        request, builder, memory = compile_case(root, inputs, case)
+        request, builder, memory = compile_case(root, inputs, case, project_root=project_root)
         execution = SkillExecutionBoundary(root.skill_catalog).validate(request.execution_request)
         context = builder.build(execution, max_context_tokens=request.policy.max_context_tokens,
                                 **({"memory_context_binding": request.memory_context_binding} if memory else {}))

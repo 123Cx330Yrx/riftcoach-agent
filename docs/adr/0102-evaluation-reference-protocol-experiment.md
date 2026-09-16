@@ -3,6 +3,44 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 Upstream deterministic evidence wording corrected
+
+Inspection expanded beyond the evaluator to the actual second request's third
+message. The deterministic source report includes legacy template conclusions
+such as mixed-role CS implying declining development stability, damage implying
+output-conversion ability, and an unqualified main-role label. The current
+`app/lol/report_renderer.py` still generated those conclusions. The prompt marks
+that report as untrusted and says machine explanations are not facts, but that
+does not make the upstream statements valid. Whether this material caused the
+observed target mistake is unproven; anchoring on first review is not the only
+hypothesis to examine.
+
+Fix the producer independently: `build_findings` now reports scoped sample
+statistics and descriptive differences over displayed aggregates, distinguishes
+mixed/single/missing role information, preserves absent metrics and states the
+limits of means. It does not infer stability, ability, win/loss causes or
+training intent. Sample role/champion frequency labels replace unqualified
+main-role/usual-champion labels. This is source-quality correction under the
+existing role/ability boundaries, not a new evaluation standard.
+
+New live/report generation consumes the current renderer. Historical RQ-246
+acceptance had accidentally depended on regenerating its input through the
+current renderer; its manifest correctly detected wording drift. Preserve its
+EXACT original Markdown as `examples/evaluation/coach_product_rq246_v1/`
+`deterministic_report_snapshot.json`, generated from c3ff392's pure renderer,
+with summary/report hashes and source identity. Historical acceptance uses
+that bound snapshot. The original inputs, manifest and compiled request/context
+fingerprints remain byte-identical; altered summaries cannot reuse the snapshot.
+No new acceptance score or live success is inferred.
+
+128 affected renderer, domain, synthetic-acceptance, real-golden preparation,
+Stage-1 and product-service/compiler checks pass. Original c3ff392 live response
+and failure hashes still match. No additional Provider call follows the failed
+pair. Next offline dataflow adjudication must distinguish raw facts, derived
+statistics, old template interpretation, first-review opinions and final claim
+meaning together; suppressing the first opinion alone is not established as a
+sufficient remedy. Keep all three failed live entries disabled.
+
 ## 2026-09-16 Provisional live result: semantic reassessment did not correct the source object
 
 Implementation c3ff392 passed Actions35071182777, all three jobs. The isolated
