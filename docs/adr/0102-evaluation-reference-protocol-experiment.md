@@ -3,6 +3,55 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 Restart: full reassessment feasibility, not live qualification
+
+The instruction audit is complete and the owner authorized resumption. The
+next offline experiment compares the old bounded patch, one decision per
+source block, and full reassessment with source-range preservation. A block
+can contain several distinct assertions (v10 block 3 has sample and direct
+judgments), so one decision per block alone is not an adequate replacement.
+
+The independent prototype `golden_reassessment_feasibility.py` uses the same
+full first/final review schema. It permits regrouping but requires each old
+claim's complete character interval to remain covered in the same audit and
+block. It preserves the first response and all issue dispositions in a journal;
+changing/removing an old issue requires explicit valid source references and a
+reason. High injection remains terminal, and full existing final validation
+still applies. There is no Provider, production registration, live runner or
+change to the retired candidate's offline_only guard.
+
+99 relevant tests pass, including 23 new offline tests for full-block duplicates,
+splits without lost characters, 48 updates, more than 16 headings, more than
+12 issue resolutions, security, source/state integrity and a false-cohort
+semantic witness. The explicitly synthetic projection of actual v10 applies
+its recorded updates and splits block 3 into exhaustive source spans. All 12
+old references remain covered and the final structural validator passes, but
+c010's five-mixed-games explanation is still wrong. This is deliberately a
+negative semantic result, not a repaired historical success.
+
+Complete first requests measure 45830/45902; second-request shapes 55686/55762.
+Ten historical state projections measure 55872–60866; an actual historically
+revised report's recheck first/second shapes are 45984/58062. A synthetic
+revision request measures 54004. A legal 48-claim state with 500-character
+explanations exceeds the complete input budget and is rejected before another
+call. Nothing is truncated, no hard budget increases and no five-maxima-sum
+rule is introduced. All measurements are offline projections, not guarantees
+of output length, latency, semantic quality or completion.
+
+Decision: retain full reassessment as the structural offline direction; do not
+extend the old bounded patch. It is NOT qualified for live use. Next complete
+the comparison-object/evidence/explanation contract using the actual cohort
+and heading failures, assess how the second review checks those relations
+within the existing call/budget envelope, and only then choose runtime wiring.
+No extra user approval is invented. Details and reproducible command are in
+`docs/plans/2026-09-16-review-reassessment-feasibility.md`; full evidence is
+`data/evaluation/results/golden_reassessment_feasibility_v2.json`.
+
+The old Current Phase/Next Step sections are preserved verbatim in the active
+plan's `history-2026-09-16-pre-restart-sections.md`; their active replacements
+now point to this work. Stage 8E and all deferred themes remain unchanged.
+No new Provider request occurred; cumulative count remains at least 197.
+
 ## 2026-09-16 Execution constraint: enforce offline-only status and known dead ends
 
 The owner's further challenge was that written promises had not constrained
