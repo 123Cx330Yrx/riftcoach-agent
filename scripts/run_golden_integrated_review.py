@@ -26,16 +26,16 @@ from scripts.run_golden_inference_development import verify_public_ci
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def implementation_identity(*, bounded=False, full_context=False, comparison=False):
+def implementation_identity(*, bounded=False, full_context=False, comparison=False, provisional=False):
     names = ("app/evaluation/golden_integrated_review.py", "app/evaluation/golden_integrated_runtime.py",
         "app/evaluation/golden_context_review.py", "app/evaluation/golden_context_diagnostics.py",
         "app/evaluation/golden_stream_bridge.py", "app/runtime/coach_budget.py",
         "scripts/run_golden_integrated_review.py")
-    if bounded or full_context or comparison:
+    if bounded or full_context or comparison or provisional:
         names += ("app/evaluation/golden_bounded_correction.py",
             "app/evaluation/golden_bounded_correction_requests.py",
             "app/evaluation/golden_bounded_workflow.py", "scripts/run_golden_bounded_review.py")
-    if full_context or comparison:
+    if full_context or comparison or provisional:
         names += ("app/evaluation/golden_contextual_correction.py",
             "app/evaluation/golden_contextual_sources.py", "app/evaluation/golden_contextual_validation.py",
             "app/evaluation/golden_contextual_patch_wire.py",
@@ -44,11 +44,14 @@ def implementation_identity(*, bounded=False, full_context=False, comparison=Fal
             "app/evaluation/golden_contextual_requests.py", "app/evaluation/golden_numeric_evidence_v4.py",
             "app/evaluation/golden_contextual_workflow.py", "scripts/run_golden_contextual_review.py",
             "data/evaluation/datasets/golden_contextual_reports_v2.json")
-    if comparison:
+    if comparison or provisional:
         names += ("app/evaluation/golden_reassessment_feasibility.py",
             "app/evaluation/golden_comparison_reassessment.py",
             "app/evaluation/golden_comparison_workflow.py",
             "scripts/run_golden_comparison_review.py")
+    if provisional:
+        names += ("app/evaluation/golden_provisional_reassessment.py",
+            "app/evaluation/golden_provisional_workflow.py", "scripts/run_golden_provisional_review.py")
     return {n: hashlib.sha256((ROOT/n).read_bytes()).hexdigest() for n in names}
 
 
@@ -114,8 +117,8 @@ def observe_report(provider, directory, request, case, *, workflow_factory=Integ
         write_new_json(directory/"result.json", outcome)
 
 
-def run(args, *, bounded=False, full_context=False, comparison=False):
-    if sum((bounded, full_context, comparison)) > 1:
+def run(args, *, bounded=False, full_context=False, comparison=False, provisional=False):
+    if sum((bounded, full_context, comparison, provisional)) > 1:
         raise ValueError("review_mode_conflict")
     if full_context and args.execute:
         from app.evaluation.golden_contextual_admission import require_live_qualification
@@ -132,7 +135,7 @@ def run(args, *, bounded=False, full_context=False, comparison=False):
         workflow_factory, experiment_id, prefix = BoundedCorrectionWorkflow, EXPERIMENT_ID, "bounded-review"
     summary, deterministic, knowledge, cases = load_inputs(args.source_run, args.base_report)
     selected = [c for c in cases if c["pair"] == PAIRS[args.pair-1]]
-    if full_context or comparison:
+    if full_context or comparison or provisional:
         from app.evaluation.golden_contextual_correction import first_request, EXPERIMENT_ID, STANDARD_ID
         from app.evaluation.golden_contextual_workflow import ContextualCorrectionWorkflow
         from scripts.run_golden_contextual_review import select_cases, MANIFEST
@@ -141,12 +144,16 @@ def run(args, *, bounded=False, full_context=False, comparison=False):
     if comparison:
         from app.evaluation.golden_comparison_workflow import ComparisonReassessmentWorkflow, EXPERIMENT_ID
         workflow_factory, experiment_id, prefix = ComparisonReassessmentWorkflow, EXPERIMENT_ID, "comparison-review"
+    if provisional:
+        from app.evaluation.golden_provisional_workflow import ProvisionalReassessmentWorkflow, EXPERIMENT_ID
+        workflow_factory, experiment_id, prefix = ProvisionalReassessmentWorkflow, EXPERIMENT_ID, "provisional-review"
+    if comparison or provisional:
         # Run exactly one frozen case so a human/agent must inspect its actual
         # explanations before starting the other case. No pass-label-only loop.
         selected = [selected[args.case_index - 1]]
     requests = [EvaluationRequest(summary, deterministic, knowledge, c["report"], UTTERANCE) for c in selected]
     discovery_sizes = [size(first_request(workflow_factory.build_inputs(r))) for r in requests]
-    plan = dict(experiment_id=experiment_id, implementation=implementation_identity(bounded=bounded, full_context=full_context, comparison=comparison),
+    plan = dict(experiment_id=experiment_id, implementation=implementation_identity(bounded=bounded, full_context=full_context, comparison=comparison, provisional=provisional),
         scope="complete_report_development_candidate_not_production", pair=args.pair,
         selected_cases=[c["id"] for c in selected], discovery_input_ceilings=discovery_sizes,
         report_sha256=[c["report_sha256"] for c in selected], labels_sent_to_model=False,
@@ -154,7 +161,7 @@ def run(args, *, bounded=False, full_context=False, comparison=False):
         max_tokens_per_report=401920, max_seconds_per_report=900,
         max_output_per_call=32768, max_seconds_per_call=300, reasoning_effort="high", sdk_retries=0,
         stop_policy="stop_pair_on_protocol_transport_or_semantic_failure; manual_review_required_for_acceptance")
-    if bounded or full_context or comparison:
+    if bounded or full_context or comparison or provisional:
         plan["first_review_input_ceilings"] = plan.pop("discovery_input_ceilings")
         plan["budget_admission"] = "each_request_reserved_against_remaining_actual_usage_no_completion_guarantee"
     if full_context:
@@ -163,9 +170,11 @@ def run(args, *, bounded=False, full_context=False, comparison=False):
         plan.update(standard_id=STANDARD_ID, manifest_sha256=hashlib.sha256(MANIFEST.read_bytes()).hexdigest(),
             source_case_ids=[c["source_case_id"] for c in selected],
             live_status=LIVE_STATUS, live_block_reason=LIVE_BLOCK_REASON)
-    if comparison:
+    if comparison or provisional:
         plan.pop("pair")
         from app.evaluation.golden_comparison_workflow import LIVE_STATUS, LIVE_BLOCK_REASON
+        if provisional:
+            from app.evaluation.golden_provisional_workflow import LIVE_STATUS, LIVE_BLOCK_REASON
         plan.update(standard_id=STANDARD_ID, manifest_sha256=hashlib.sha256(MANIFEST.read_bytes()).hexdigest(),
             source_case_ids=[c["source_case_id"] for c in selected],
             live_status=LIVE_STATUS, live_block_reason=LIVE_BLOCK_REASON, production_admitted=False,
@@ -209,19 +218,19 @@ def run(args, *, bounded=False, full_context=False, comparison=False):
         print(review.compact({k:v for k,v in receipt.items() if k not in ("cases", "implementation")}), flush=True)
 
 
-def main(*, bounded=False, full_context=False, comparison=False):
+def main(*, bounded=False, full_context=False, comparison=False, provisional=False):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--source-run", type=Path, required=True)
     p.add_argument("--base-report", type=Path, required=True)
     p.add_argument("--pair", type=int, choices=range(1, 6), default=1)
-    if comparison:
+    if comparison or provisional:
         p.add_argument("--case-index", type=int, choices=(1, 2), default=1)
     p.add_argument("--execute", action="store_true")
     p.add_argument("--run-id", default="")
     p.add_argument("--ci-run", default="")
     p.add_argument("--env-file", type=Path)
     p.add_argument("--output-root", type=Path, default=ROOT/"data/runs/inference_development")
-    run(p.parse_args(), bounded=bounded, full_context=full_context, comparison=comparison)
+    run(p.parse_args(), bounded=bounded, full_context=full_context, comparison=comparison, provisional=provisional)
 
 
 if __name__ == "__main__":

@@ -3,6 +3,38 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 Provisional contract qualification for one bounded observation
+
+The full contract is eligible for an isolated development observation after
+exact implementation SHA public CI, not semantic or production acceptance.
+The offline implementation f034b01 passed Actions35067580216 (all three jobs).
+
+| Contract obligation | Finding and remaining boundary |
+|---|---|
+| Correct provisional errors | Overlong refs, invalid decision/scope fields and bad spans in known blocks retain their original values; regrouping is permitted. Unknown blocks, inventories, malformed JSON and high injection stop before another request. |
+| Preserve source | Valid spans protect exact character intervals within the same audit; invalid spans protect the whole known block. Splits/merges cannot lose characters. More than 24 distinct protected blocks is rejected before the final review. |
+| Preserve issues | Every old issue survives unchanged or receives an explicit source-valid disposition, with original data journaled. Disposition truth still needs semantic inspection. |
+| Discover omissions | The second request contains the complete report and requests new claims. Tests prove omitted cross-paragraph and future claims can be added and that unsupported claims need blocking issues. They do not prove actual model discovery. |
+| Preserve comparison meaning | Operand membership and complete arithmetic validate, while wrong cohort/metric, omitted bindings or contradictory prose remain semantic failures requiring manual examination. |
+| Revision and recheck | Existing scripted five-call path preserves evidence bindings, receipts, one revision and source identity. Strict final schema and validators remain unchanged. |
+| Budget and transport | Reuse the unchanged request builders: original failed response second request 57206; historical sizing projections 58800–62944, with prior assumptions disclosed. Each actual request still passes its own budget reservation; this is not a guarantee for every schema-legal response. |
+
+New `run_golden_provisional_review` has its own experiment/run identity and
+implementation fingerprint. Both failed entry points remain offline_only.
+It selects exactly one frozen case, checks clean exact-SHA public CI before
+credentials, and uses the existing high/32768/300s request and
+5 calls/1 revision/401920 tokens/900s report limits with zero SDK retries.
+159 distinct focused checks pass (158 suite checks plus one added dispatch check).
+
+Run contextual_01 first. Inspect all actual source spans, decisions, headings,
+comparisons, explanations, issue dispositions and the omitted block10 target.
+Only a semantically correct positive permits contextual_02 and its actual
+revision/recheck. A protocol, transport or semantic failure stops the batch;
+no automatic local-patch-and-paid-repeat loop. Existing broad authorization
+covers this bounded development observation. No claim of holdout accuracy,
+Stage 8E completion, production admission or owner understanding follows.
+No new live request has occurred at this qualification checkpoint.
+
 ## 2026-09-16 First live comparison failure: provisional input is not final acceptance
 
 387b8ef passed all three public jobs in Actions35065251865. The first positive

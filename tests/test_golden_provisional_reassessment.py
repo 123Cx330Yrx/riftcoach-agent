@@ -112,3 +112,33 @@ def test_offline_workflow_can_reassess_invalid_provisional_fields_without_extra_
     result = flow.evaluate(req)
     assert result.verdict.value == "pass" and len(provider.requests) == 2
     assert len(flow.last_journal["provisional_diagnostics"]) == 2
+
+
+def test_second_review_can_add_omitted_cross_paragraph_claim_without_losing_old_source():
+    inputs = inputs_for(report="这四场中单仅作本样本观察。\n\n经济和伤害是较稳定的差异项。")
+    before, after = assessment(inputs)
+    before["audits"][1]["claims"].pop()
+    after["audits"][1]["claims"][1]["scope_source"] = {"block": 1}
+    result, journal = run(inputs, before, after)
+    assert len(result.audits[1].claims) == 2
+    assert result.audits[1].claims[1].context.quote == inputs.source.blocks[0][1]
+    assert len(journal["source_coverage"]) == 1  # Only old source is protected here.
+
+
+def test_newly_discovered_future_error_requires_issue_and_blocks_pass():
+    bad = "以后所有中单输局经济都会更差。"
+    inputs = inputs_for(report="这四场中单仅作本样本观察。\n\n" + bad)
+    before, after = assessment(inputs)
+    before["audits"][1]["claims"].pop()
+    after["audits"][1]["claims"][1].update(decision="beyond_sample", scope_source=None)
+    with pytest.raises(ValueError): run(inputs, before, after)
+    after.update(issues=[issue(inputs, bad)], score=70, verdict="needs_revision")
+    result, _ = run(inputs, before, after)
+    assert result.verdict == "needs_revision"
+
+
+def test_too_many_distinct_protected_blocks_stops_before_second_request():
+    inputs = inputs_for(report="\n\n".join(f"这四场样本观察{chr(65+i)}。" for i in range(25)))
+    before, _ = assessment(inputs)
+    with pytest.raises(ValueError, match="coverage_exceeds_final_capacity"):
+        candidate.prepare(compact(before), inputs)

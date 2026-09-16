@@ -141,8 +141,8 @@ def apply(state, raw, *, inputs):
     return result, journal
 
 
-# Offline replay only; the failed live entry is deliberately not switched to
-# this class. A new whole-contract qualification is required before observation.
+# The retired comparison entry is never switched to this class. A separately
+# qualified development runner imports it through golden_provisional_workflow.
 from app.evaluation.golden_comparison_workflow import ComparisonReassessmentWorkflow
 from app.evaluation.golden_bounded_correction_requests import PreparedCorrection
 

@@ -84,7 +84,8 @@ def test_bad_operands_stop_after_second_call_without_revision_or_retry():
 
 
 @pytest.mark.parametrize("case_index", [1, 2])
-def test_preview_is_one_frozen_case_with_no_ci_secrets_or_provider(monkeypatch, tmp_path, case_index):
+@pytest.mark.parametrize("mode", ["comparison", "provisional"])
+def test_preview_is_one_frozen_case_with_no_ci_secrets_or_provider(monkeypatch, tmp_path, case_index, mode):
     from types import SimpleNamespace
     from scripts import run_golden_integrated_review as runner
     from scripts import run_golden_contextual_review as controls
@@ -97,10 +98,14 @@ def test_preview_is_one_frozen_case_with_no_ci_secrets_or_provider(monkeypatch, 
     monkeypatch.setattr(runner, "verify_public_ci", lambda *_: pytest.fail("preview called CI"))
     monkeypatch.setattr(runner, "ReceiptedStreamProvider", lambda **_: pytest.fail("preview constructed Provider"))
     args = SimpleNamespace(source_run=tmp_path, base_report=tmp_path, pair=1, execute=False, case_index=case_index)
-    result = runner.run(args, comparison=True)
+    result = runner.run(args, **{mode: True})
     assert result["selected_cases"] == [f"contextual_0{case_index}"]
     assert result["max_calls"] == 5 and result["manual_between_cases"]
     assert result["reasoning_effort"] == "high" and not result["production_admitted"]
+    assert result["experiment_id"] == f"golden-{mode}-review-v1"
+    if mode == "provisional":
+        assert result["live_status"] == "bounded_development_observation"
+        assert "app/evaluation/golden_provisional_reassessment.py" in result["implementation"]
 
 
 def test_failed_live_candidate_stops_before_inputs_ci_or_credentials(monkeypatch):
@@ -110,3 +115,33 @@ def test_failed_live_candidate_stops_before_inputs_ci_or_credentials(monkeypatch
     monkeypatch.setattr(runner, "verify_public_ci", lambda *_: pytest.fail("called CI"))
     with pytest.raises(ValueError, match="provisional_first_contract_requires_qualification"):
         runner.run(SimpleNamespace(execute=True), comparison=True)
+
+
+def test_provisional_runner_uses_new_workflow_after_ci_without_opening_retired_entry(monkeypatch, tmp_path):
+    from types import SimpleNamespace
+    import dotenv
+    from app.providers import config
+    from app.evaluation import golden_comparison_workflow as retired
+    from scripts import run_golden_integrated_review as runner
+    from scripts import run_golden_contextual_review as controls
+    inputs = inputs_for(report="这四场中单只作本样本比较。[K1]")
+    req = make_request(inputs)
+    case = dict(id="contextual_01", source_case_id="source_1", report=req.report,
+        pair="explicit_definition", report_sha256="0" * 64)
+    events = []
+    monkeypatch.setattr(runner, "load_inputs", lambda *_: (req.player_summary, req.deterministic_report, req.knowledge, [case]))
+    monkeypatch.setattr(controls, "select_cases", lambda c: c)
+    monkeypatch.setattr(retired, "require_live_qualification", lambda: pytest.fail("retired entry used"))
+    monkeypatch.setattr(runner, "verify_public_ci", lambda *_: events.append("ci") or "test_sha")
+    monkeypatch.setattr(dotenv, "dotenv_values", lambda *_: events.append("credentials") or {})
+    monkeypatch.setattr(config, "load_zhipu_settings", lambda _: None)
+    monkeypatch.setattr(runner, "ReceiptedStreamProvider", lambda **_: events.append("provider"))
+    def observe(*args, workflow_factory):
+        assert workflow_factory is ProvisionalReassessmentWorkflow
+        events.append("observe")
+        return dict(id="contextual_01", stop_reason="scripted_terminal")
+    monkeypatch.setattr(runner, "observe_report", observe)
+    args = SimpleNamespace(source_run=tmp_path, base_report=tmp_path, pair=1, execute=True,
+        case_index=1, run_id="provisional-review-scripted", ci_run="test", output_root=tmp_path, env_file=tmp_path/"unused")
+    runner.run(args, provisional=True)
+    assert events == ["ci", "credentials", "provider", "observe"]
