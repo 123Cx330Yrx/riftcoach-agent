@@ -126,6 +126,9 @@ def run(args, *, bounded=False, full_context=False, comparison=False, provisiona
     if comparison and args.execute:
         from app.evaluation.golden_comparison_workflow import require_live_qualification
         require_live_qualification()
+    if provisional and args.execute:
+        from app.evaluation.golden_provisional_workflow import require_live_qualification
+        require_live_qualification()
     first_request = review.discovery_request
     workflow_factory = IntegratedReviewWorkflow
     experiment_id, prefix = review.EXPERIMENT_ID, "integrated-review"

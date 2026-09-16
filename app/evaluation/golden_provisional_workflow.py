@@ -1,12 +1,16 @@
-"""Separately qualified development entry; retired candidates remain blocked.
+"""Failed provisional development entry; all retired candidates remain blocked.
 
-Qualification allows a bounded observation, not production or semantic approval.
-See ADR-0102's provisional contract qualification for evidence and stop rules.
+See ADR-0102's live result and format-only witness. Executable correction did
+not correct semantic sample selection; no local field-fix rerun is qualified.
 """
 from app.evaluation.golden_provisional_reassessment import ProvisionalReassessmentWorkflow
 
 EXPERIMENT_ID = "golden-provisional-review-v1"
-LIVE_STATUS = "bounded_development_observation"
-LIVE_BLOCK_REASON = None
+LIVE_STATUS = "offline_only"
+LIVE_BLOCK_REASON = "provisional_final_comparison_and_scope_failed"
+
+
+def require_live_qualification():
+    raise ValueError(LIVE_BLOCK_REASON)
 
 __all__ = ["ProvisionalReassessmentWorkflow", "EXPERIMENT_ID", "LIVE_STATUS", "LIVE_BLOCK_REASON"]

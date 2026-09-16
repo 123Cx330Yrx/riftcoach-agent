@@ -3,6 +3,69 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 Provisional live result: semantic reassessment did not correct the source object
+
+Implementation c3ff392 passed Actions35071182777, all three jobs. The isolated
+positive `provisional-review-c3ff392-positive-v1/contextual_01` completed both
+calls with stop: 75.468s and 131.156s; 25511 input + 23007 output = 48518 tokens.
+No unknown usage; cumulative Provider requests at least 200. No negative,
+revision or recheck ran. Neither output allowance nor timeout was exhausted.
+
+The provisional entrance worked, source preservation succeeded for all 13 old
+claim ranges, and second review added claims. Nevertheless:
+
+- block13 table has correct selected operands but evidence_refs=[6], missing
+  the required actual rows. Runtime stopped at comparison_operands_not_cited.
+- Independent per-claim inspection also found target block10 sample_supported
+  without the necessary cross-paragraph scope reference.
+- The target explanation repeats the first assessment's five mixed-role games,
+  binding selected rather than the four MIDDLE games established in context.
+  The same numeric direction does not establish the same comparison object.
+- block21's training median and overall mean are decorated with win/loss
+  comparison bindings, even though those are different operations. Membership
+  validation alone cannot establish that the operation matches the sentence.
+
+`audit_golden_provisional_result.py` checks every final claim independently.
+Its explicitly synthetic witness ONLY supplies the table's missing operands
+and target's block3 scope link. Full application then returns structural pass
+while the WRONG explanation and selected bindings remain unchanged. No live
+response, receipt, target label or original bytes are edited. This disproves
+any claim that fixing the first two validation failures solves semantic quality.
+Evidence: `data/evaluation/results/golden_provisional_result_c3ff392.json`.
+
+Decision: stop this batch and mark its live entry offline_only before inputs,
+CI, secrets or Provider, alongside both previously retired entries. A local
+field fix is not a reason for another paid trial. 35 affected checks pass.
+
+### Method correction and next offline deliverable
+
+What was achieved: a previously impossible corrective path is now executable.
+What was NOT achieved: independent semantic correction. The second response
+retains the first wrong target interpretation despite having both cohort
+calculations. Copying is observable; anchoring as its cause is a hypothesis,
+not a proven Provider defect. More output or another mandatory duplicate
+reference would not establish author meaning.
+
+Before further implementation/live entry, compare the current full-opinion
+second input with a source-first alternative: second review receives complete
+original report/facts, protected source ranges and every old issue needing
+explicit disposition, while prior claim verdicts/explanations remain immutable
+in the journal rather than becoming the starting semantic answer. This is a
+candidate design for offline adjudication, not adopted product architecture.
+
+The offline deliverable must cover cross-paragraph scope inheritance, mixed
+clauses, selected versus same-role comparisons, median/mean versus win/loss
+operations, omitted/fabricated spans, genuine future extrapolation, issue and
+security retention, final validation and all request budgets. Do not force
+MIDDLE by keyword or send expected test labels as a shortcut. Distinguish
+program-verifiable arithmetic/identity from language interpretation explicitly.
+A subsequent real experiment needs a concrete discriminating hypothesis and
+whole-contract qualification, not another claim that fixtures prove semantics.
+
+Whole-context user acceptance remains unchanged; no new definition-of-stable
+requirement. GLM high and all limits remain. Stage 8E is in progress; broader
+frontend/product follow-ups remain in the restart plan and 62-theme ledger.
+
 ## 2026-09-16 Provisional contract qualification for one bounded observation
 
 The full contract is eligible for an isolated development observation after
