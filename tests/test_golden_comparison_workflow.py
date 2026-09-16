@@ -5,6 +5,7 @@ from dataclasses import replace
 import pytest
 
 from app.evaluation.golden_comparison_workflow import ComparisonReassessmentWorkflow
+from app.evaluation.golden_provisional_reassessment import ProvisionalReassessmentWorkflow
 from app.evaluation.golden_integrated_runtime import BudgetedReviewSender
 from app.evaluation.golden_review_experiment import compact
 from app.harness.steps import EvaluationRequest, RevisionRequest, KnowledgeEvidence
@@ -25,7 +26,8 @@ def make_request(inputs):
     return EvaluationRequest(source, "来源", KnowledgeEvidence.empty(), inputs.source.report, "检查观摩报告")
 
 
-def test_full_reassessment_revision_and_recheck_keep_bindings_and_five_call_budget():
+@pytest.mark.parametrize("workflow", [ComparisonReassessmentWorkflow, ProvisionalReassessmentWorkflow])
+def test_full_reassessment_revision_and_recheck_keep_bindings_and_five_call_budget(workflow):
     bad = "所有未来输局的经济都会更低。"
     fixed = "这四场中单中经济的赢局逐行高于输局。"
     report = "\n\n".join(COACH_REPORT_HEADINGS) + "\n\n" + bad + "\n\n建议核对单局。[K1]"
@@ -49,7 +51,7 @@ def test_full_reassessment_revision_and_recheck_keep_bindings_and_five_call_budg
     provider = ReplayProvider(lambda _, n: replies[n - 1])
     sender = BudgetedReviewSender(provider)
     phases = []
-    flow = ComparisonReassessmentWorkflow(sender, record=lambda phase, _: phases.append(phase))
+    flow = workflow(sender, record=lambda phase, _: phases.append(phase))
     initial = flow.evaluate(req)
     assert initial.verdict.value == "needs_revision"
     journal = deepcopy(flow.last_journal)
@@ -99,3 +101,12 @@ def test_preview_is_one_frozen_case_with_no_ci_secrets_or_provider(monkeypatch, 
     assert result["selected_cases"] == [f"contextual_0{case_index}"]
     assert result["max_calls"] == 5 and result["manual_between_cases"]
     assert result["reasoning_effort"] == "high" and not result["production_admitted"]
+
+
+def test_failed_live_candidate_stops_before_inputs_ci_or_credentials(monkeypatch):
+    from types import SimpleNamespace
+    from scripts import run_golden_integrated_review as runner
+    monkeypatch.setattr(runner, "load_inputs", lambda *_: pytest.fail("loaded inputs"))
+    monkeypatch.setattr(runner, "verify_public_ci", lambda *_: pytest.fail("called CI"))
+    with pytest.raises(ValueError, match="provisional_first_contract_requires_qualification"):
+        runner.run(SimpleNamespace(execute=True), comparison=True)

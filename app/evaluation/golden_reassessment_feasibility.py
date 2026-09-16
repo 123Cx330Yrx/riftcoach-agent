@@ -141,6 +141,12 @@ def apply(state, raw, *, inputs):
     before = _read(state.raw, inputs)
     after = _read(raw, inputs, ReassessmentWire)
     mapping = coverage_map(before, after, inputs.source)
+    return finalize([row.model_dump(mode="json") for row in before.issues],
+        after, inputs=inputs, raw=raw, first_raw=state.raw, state_id=state.identity, mapping=mapping)
+
+
+def finalize(old_issues, after, *, inputs, raw, first_raw, state_id, mapping):
+    """Shared final validation; old issue bytes/values remain explicit obligations."""
     resolutions = {}
     for row in after.issue_resolutions:
         if row.target_id in resolutions:
@@ -150,9 +156,7 @@ def apply(state, raw, *, inputs):
             raise ValueError("reassessment_resolution_source_invalid")
         resolutions[row.target_id] = row
     retained = [i.model_dump(mode="json") for i in after.issues]
-    missing = {f"i{i:03}": row.model_dump(mode="json")
-               for i, row in enumerate(before.issues, 1)
-               if row.model_dump(mode="json") not in retained}
+    missing = {f"i{i:03}": row for i, row in enumerate(old_issues, 1) if row not in retained}
     if set(resolutions) != set(missing):
         raise ValueError("reassessment_issue_disposition_missing_or_extra")
     projected = after.model_dump(mode="json", exclude={"issue_resolutions"})
@@ -160,8 +164,8 @@ def apply(state, raw, *, inputs):
         target["claims"] = [expand_value(row, inputs.source) for row in audit.claims]
     result = canonical.expand_context(compact(projected), inputs.source.report,
                                       strict_json(inputs.pack_json))
-    return result, dict(experiment=EXPERIMENT_ID, state_id=state.identity,
-        first_raw=state.raw, final_raw=raw, final_response_sha256=digest(raw),
+    return result, dict(experiment=EXPERIMENT_ID, state_id=state_id,
+        first_raw=first_raw, final_raw=raw, final_response_sha256=digest(raw),
         source_coverage=mapping,
         resolved_issues=[dict(target_id=k, before=missing[k],
             resolution=v.model_dump(mode="json")) for k, v in resolutions.items()],

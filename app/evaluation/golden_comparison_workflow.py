@@ -7,6 +7,12 @@ from app.evaluation.golden_contextual_requests import revision_request
 from app.evaluation.golden_contextual_correction import FULL_CONTEXT_RULE
 
 EXPERIMENT_ID = "golden-comparison-review-v1"
+LIVE_STATUS = "offline_only"
+LIVE_BLOCK_REASON = "comparison_provisional_first_contract_requires_qualification"
+
+
+def require_live_qualification():
+    raise ValueError(LIVE_BLOCK_REASON)
 
 
 class ComparisonReassessmentWorkflow(ContextualCorrectionWorkflow):

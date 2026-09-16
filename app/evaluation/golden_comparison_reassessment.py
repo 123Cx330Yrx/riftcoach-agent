@@ -165,6 +165,10 @@ def validate_bindings(wire, inputs, evidence):
 
 def build_request(state):
     data, _ = full.request_parts(state)
+    return request_from_parts(data, state.inputs)
+
+
+def request_from_parts(data, inputs, *, extra_policy=""):
     # Lossless shared columns for the complete first review; never strip an
     # explanation or shrink a quote to fit the budget.
     for audit in data["first_review"]["audits"]:
@@ -174,7 +178,7 @@ def build_request(state):
         if [restored[i] for i in range(1, len(claims) + 1)] != claims:
             raise ValueError("comparison_first_review_projection_loss")
         audit["claim_tables"] = tables
-    evidence = catalog(state.inputs)
+    evidence = catalog(inputs)
     # Omit only redundant metric names and impossible pair calculations from
     # the derived navigation, never source facts or first-review content.
     cohorts = {key: dict(group, rows=[
@@ -185,7 +189,7 @@ def build_request(state):
         columns=["metric_index", *evidence["columns"][1:]])
     policy = (REASSESSMENT_POLICY + "\n" + POLICY +
         "\nfirst_review.audits的claim_tables按columns还原rows中的[原顺序编号,值数组]，包含完整首评，不是新判断。")
-    return request(data, policy, ComparisonWire, "comparison_reassessment")
+    return request(data, policy + extra_policy, ComparisonWire, "comparison_reassessment")
 
 
 def apply(state, raw, *, inputs):

@@ -13,6 +13,15 @@ pause_reason: ""
 
 ## 状态元数据
 
+2026-09-16 比较候选真实首评失败并完成离线入口修复：387b8ef/Actions35065251865三项success；正例第一调用约59.2秒完整stop，11162输入+5619输出=16781tokens，无未知用量，累计Provider至少198。首评14个来源超过最终schema的12个，另有block14引用片段写错、block10目标遗漏，尚未执行第二步/负例/修订/复评。根因是把首评临时判断当作最终合格结果准入，非断流或额度耗尽。已停本批并将比较入口设offline_only（旧contextual也保持停用）。新独立离线临时首评合同保留全部原值和诊断，有效来源照常保护；错误片段但真实block则要求全段覆盖，不猜未知block、不吞坏JSON、不删除旧issue；最终schema/语义标准不放宽。原响应不改即可构造57206的第二步请求，十份历史投影58800–62944；153项相关检查通过，含离线五调用和入口阻断。真实语义仍未验证，8E/high/硬上限/前端及62主题后续保持。
+
+- 本地代码：失败候选停用；临时首评离线纠正与最终严格校验分离，153项相关检查通过。
+- 所有者理解：已说明首评临时性与最终验收的边界；未代替用户做理解验收。
+- 参考来源审计：原始响应、输入及失败结果哈希不变；原字节仅离线构造第二步，无新增成功模型结果。
+- 公共作品/部署成熟度：387b8ef公共三项通过但真实失败；最新离线修复尚待公共检查，未生产准入。
+
+以下为历史记录，当前以最新canonical为准。
+
 2026-09-16 比较关系合同已接入独立完整重评工作流：程序生成完整样本/位置胜负组、指标均值及逐行关系；模型在claim内绑定cohort/metric/operand_refs并保留唯一说明。计算成员与整句其他事实引用分离，避免误拒混合陈述。原文覆盖、旧issue处置及最终校验仍在；五调用初评→重评→修订→复评串联测试通过，绑定依据进入修订。134项相关检查通过。两例第二步58502/58576，十份历史58608–62718，修订形状56892，均在既定上限内；首评完整表格视图逐项还原核验，无删证据。实际旧c010选错cohort仍可结构pass，保留为语义反例；本轮尚未真实验证。旧失败入口继续offline_only，新入口每次只执行一例，待同SHA公共CI后按既有授权进行成对开发验证。累计Provider仍至少197；high/所有预算/完整上下文标准/8E及全局后续保持。
 
 - 本地代码：比较绑定、完整重评及修订复评隔离接线完成，134项相关检查通过。
@@ -973,7 +982,7 @@ RQ-258 接续离线加固：新增黄金切片专用 Coach 1.3.0 / Skill 0.5.0 /
   worktree，须先有新实现 exact-SHA 公共 CI，并在新 SHA 上重新取得 G53-3 协议证据。该批本地聚焦回归
   `159 passed, 27 subtests passed`，相关回归 `586 passed, 50 subtests passed`，未执行真实 API。
 - 历史下一步（RQ-211）：`8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-close-wakeup-follow-up-decision / pending-user-decision`。RQ-211 已在 exact-SHA 公共绿灯的 `c31127b3c780fe4c493966d8b60f942d3b773fd4` 干净快照上执行一次且仅一次普通智谱 `glm-5.3-flash` 请求；回执为 `not_pending`，表示有限观察窗内没有形成待取消读取，因此没有执行 cancel，也不能宣称 provider close/wakeup 已通过。回执 `908` bytes、SHA-256 `9c86b72561b9c9eb40ab083e326b0386b3572e6d4d684a40f66b54908d2613d2`，只含允许列表状态；迭代器、外层 SDK stream wrapper 和组合关闭投影均为 `closed`。候选保持 activation gate `disabled`、`activation_state=candidate`、`execution_allowed=false`、`capabilities.streaming=False` 且未注册；严格 Flash v1 仍 2048/零额外调用，默认模型、产品 Runtime、Portal、Account、Workbench、Auth、路由和 `production_media=0` 均不变。RQ-212 当前离线回放指针见本文最新段落；不自动追加真实请求、G53-7、黄金切片或生产准入。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。当前实现通过同SHA公共检查后，执行一次冻结正反例开发验证；逐例人工核对原文对象、comparison绑定、说明和实际修订复评，一例失败即停止本批并检查整个候选，不自动补丁付费连跑。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。先完成临时首评合同的整体准入裁决（已知错误族、原文与问题保护、完整五调用及预算），确认新实现公共检查；若合格再以独立身份验证冻结两例，逐例人工审查。当前两条失败入口均offline_only，不重跑已失败批次。
 - RQ-205 已覆盖前述公共 CI 待办（历史）：`90242822df0e47304700644572bc12f0a3aa88ad` / Actions `33598541029` 三 job exact-SHA 全绿，公共 pytest `2218 passed, 145 skipped, 1 warning, 127 subtests passed`，PostgreSQL 控制面 `201 passed, 1 warning`，fake/local 协议演练通过。当时的下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-recovery-diagnostic-real-call / pending-user-authorization`，不自动发真实 recovery。
 - RQ-206 已覆盖上述历史指针：同一干净隔离工作树的诊断提交 `0b2342c240cfdc1801e673e830c9a7f30bed3fbd` / Actions `33603143606` exact-SHA 三 job 全绿；按一次性授权只发出 1 次 `zhipu/glm-5.3-flash` primary。流观察到 reasoning、可见正文、`stop` 与 EOF，但 Usage 缺失、close 失败，90 秒 attempt 门在晚到事件中触发，回执为 `fail_closed / elapsed_limit`，没有第二次 recovery。当时的下一精确项为 `8e-productization / candidate-explicit-zhipu-neutral-stream-adapter-seam / candidate-real-call-timeout-usage-followup / pending-user-authorization`，先离线设计/测试硬墙钟取消与 Usage/终态尾帧处理，不自动重测。
 - RQ-210 最新状态（历史）：隔离分支实现提交 `15026a8abeeb2f343fbf893e55e2d94c512a86f6` 已完成本地与 exact-SHA 公共 CI（Actions `33657368435` 三 job 全绿）；候选 adapter/deadline/v2/real 聚焦共 `73 passed`，扩展相邻回归共 `182 passed, 27 subtests passed`，compileall、diff check、governance 通过。报告字段只反映 session 所拥有的迭代器和外层 SDK stream wrapper，`shared_resource` 仅说明对象别名；不外推底层 HTTP response、非阻塞 close 或唤醒能力。RQ-209 回执不重写，候选/产品边界不变；当前指针见 RQ-212 最新段落。

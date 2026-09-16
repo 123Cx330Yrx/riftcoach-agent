@@ -3,6 +3,52 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 First live comparison failure: provisional input is not final acceptance
+
+387b8ef passed all three public jobs in Actions35065251865. The first positive
+control then completed one stop response in 59157ms: 11162 input + 5619 output
+= 16781 returned tokens, no unknown usage. Cumulative Provider count is at
+least 198. Its first review used 14 evidence references where FirstWire allows
+12. Independent source inspection also found a rewritten, unresolvable tail
+in block14 and no claim for target block10. No second evaluation, negative
+control, revision or recheck occurred. This was not length or timeout.
+
+The deeper flaw is admitting a provisional review only after it meets final
+field and source-span validity. Raising 12 to 14 alone would still fail on the
+invented tail and would not address omission. Stop this live batch and retire
+its entry before inputs/CI/credentials, while keeping the old contextual hold.
+The new offline `golden_provisional_reassessment.py` separates input identity
+and source obligations from the correctness of provisional judgments:
+
+- Complete JSON, host-identifiable block/audit/heading inventories and source
+  identity remain necessary. Unknown blocks and high injection are terminal.
+- All provisional fields, errors and old issues remain data, not accepted
+  judgments. Overlong refs, missing decisions, bad scope refs and extra fields
+  are diagnosed without truncation or changing the raw first response.
+- A bad span in an existing block protects that entire real block. It does
+  not guess the intended phrase or accept the invented quote. Exact valid
+  spans retain their original source coverage; cross-block/audit loss fails.
+- Final ComparisonWire and complete validation remain strict. Every old issue
+  must be retained or explicitly disposed of with evidence/reason in the
+  journal; malformed old issues cannot disappear silently. Final schema
+  capacities are not enlarged. Full-review omission still needs real checks.
+
+The failed response's original bytes now construct a 57206-ceiling second
+request offline; ten historical sizing projections are 58800–62944. These
+projections retain their earlier explicit sizing-only assumptions and do not
+regrade any historical failures. 153 relevant checks pass, including two/five
+call scripted paths, full-block protection, old issue preservation, malformed
+JSON/source/security rejection and both retired entry guards. No second paid
+request followed this failure. The first response still omits the target; this
+is explicitly not a successful semantic replay.
+
+Evidence: `golden_provisional_reassessment_v1.json` and the write-once local run
+`comparison-review-387b8ef-positive-v1`. Next decide the complete provisional
+contract's readiness and verify public checks before any separately identified
+new control pair. The stopped batch cannot be resumed or relabeled success.
+Stage, high, hard budgets, whole-context standard and all deferred product/UI
+requirements remain unchanged.
+
 ## 2026-09-16 Comparison contract and isolated workflow decision
 
 Select an explicit per-claim cohort/metric/operand binding for the second full

@@ -120,6 +120,9 @@ def run(args, *, bounded=False, full_context=False, comparison=False):
     if full_context and args.execute:
         from app.evaluation.golden_contextual_admission import require_live_qualification
         require_live_qualification()
+    if comparison and args.execute:
+        from app.evaluation.golden_comparison_workflow import require_live_qualification
+        require_live_qualification()
     first_request = review.discovery_request
     workflow_factory = IntegratedReviewWorkflow
     experiment_id, prefix = review.EXPERIMENT_ID, "integrated-review"
@@ -162,9 +165,10 @@ def run(args, *, bounded=False, full_context=False, comparison=False):
             live_status=LIVE_STATUS, live_block_reason=LIVE_BLOCK_REASON)
     if comparison:
         plan.pop("pair")
+        from app.evaluation.golden_comparison_workflow import LIVE_STATUS, LIVE_BLOCK_REASON
         plan.update(standard_id=STANDARD_ID, manifest_sha256=hashlib.sha256(MANIFEST.read_bytes()).hexdigest(),
             source_case_ids=[c["source_case_id"] for c in selected],
-            live_status="bounded_development_probe_only", production_admitted=False,
+            live_status=LIVE_STATUS, live_block_reason=LIVE_BLOCK_REASON, production_admitted=False,
             manual_between_cases=True)
     if not args.execute:
         print(review.compact(plan)); return plan
