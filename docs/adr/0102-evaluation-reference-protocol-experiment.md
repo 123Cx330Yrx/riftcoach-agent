@@ -3,6 +3,65 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 V10 outcome: reject candidate; audit correction reachability before more live runs
+
+6bcaa869f24164687665aaf9d10f59da01f89973 passed Actions 35049563440,
+all three jobs. The one authorized v10 pair stopped after contextual_01:
+two complete stop responses, 24,935 input + 18,021 output = 42,956 returned
+tokens, no unknown usage. No second report, revision or recheck ran. Cumulative
+Provider requests are at least 197; this recovery series is nine runs,
+twenty-two requests, 544,606 returned tokens. The original receipt stays failed.
+
+The single-decision schema avoided the old mutually contradictory fields in
+this run. It did NOT fix the workflow. First claims c004/c005/c006 all reference
+the complete block 3 in the same audit. Diagnostics explicitly reported the
+duplicates, but the patch cannot delete a claim, shrink its original quote or
+move it to another block. A full-block quote cannot be enlarged. Therefore no
+legal patch can remove this duplicate group; better prompting cannot make that
+transition possible. The second response edited c005/c006 but was necessarily
+rejected as duplicate_context_claim. This is an execution-design defect, not
+an output-cap, transport-interruption or merely insufficient model effort.
+
+Independent manual rejection remains: c010 explains the stable difference with
+five mixed-role games and a generic heading instead of the preceding four-mid
+comparison. The second review leaves c010 unchanged and repeats the approval.
+Even allowing duplicate quotes would not establish semantic acceptance.
+Seven of nine heading review notes also name a different heading than their
+target ID; their navigation decisions happen to agree, but the explanations
+are not reliable evidence of correct target review.
+
+The read-only executable audit in
+`scripts/audit_golden_correction_reachability.py` reproduces the impossibility
+and records unchanged response/result hashes in
+`golden_contextual_reachability_v10.json`. It also identifies capacity mismatches:
+first reviews can contain 48 claims, but patches can update 16; first heading
+reviews allow 64, but heading edits allow 16; first issue lists have no schema
+maximum while issue edits allow 12. These are potential failures for admitted
+states, not claims that this particular response hit all those limits.
+
+| Failure class | Present evidence | Required treatment before another candidate |
+|---|---|---|
+| Redundant decision fields | Unified in both steps, scripted and live evidence | Retain shared decision schema; do not claim semantics solved |
+| Complete-block duplicate targets | Actual first state cannot be legally corrected | Establish source-unit identity before first review, or prove a coverage-preserving regrouping protocol; no silent deletion |
+| Changes exceeding patch capacity | Schema limits disagree | Align admitted state and correction capacity with measured full requests; keep hard budgets |
+| Wrong cohort/context or misbound explanation | Actual c010 and heading notes | Validate meaning and target binding independently; a correct numeric direction or pass label is insufficient |
+| Truncated/malformed output, wrong source, security block | Existing terminal guards | Explicit terminal failure; never accept a prefix or invent a missing decision |
+| Correctness after revision | Not reached in v10 | Preserve both frozen controls and require actual complete revision/recheck |
+
+Next action is OFFLINE correction-contract feasibility, not another paid pair:
+prove source coverage, target identity, preservation of factual/security issues,
+repair-operation completeness for the admitted failure classes, and complete
+request budgets together. Source spans must be mechanically traceable to the
+unchanged complete report; segmentation alone cannot prove semantic entailment.
+Compare this with a full reassessment under the same existing five-call budget.
+Select and implement only after the counterexamples demonstrate a coherent
+end-to-end contract. Do not simply add a deduplication exception, more prompt
+text, larger limits or another model retry. The previous v10 next-action wording
+below no longer directs another live run. Existing broad user authorization
+still applies once a justified, tested new candidate is ready; no new generic
+permission question is required. Stage 8E remains
+in progress; this is not a new product scope or a rollback to 1.3.25.
+
 ## 2026-09-16 V10: unify decisions across both reviews; stop suffix-specific repair
 
 The v9 implementation 013dbe106c45c0a842a411933dc10b05b0f4db29 passed
