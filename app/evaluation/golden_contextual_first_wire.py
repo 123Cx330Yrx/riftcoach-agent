@@ -78,6 +78,8 @@ def prepare_state(raw, inputs):
 def build_correction(state):
     if prepare_state(state.raw, state.base.inputs) != state:
         raise ValueError("contextual_first_state_changed")
+    from app.evaluation.golden_contextual_admission import require_correction_reachability
+    require_correction_reachability(state.base)
     data = correction_data(state.base)
     wire = FirstWire.model_validate(strict_json(normalize_json(state.raw)), strict=True)
     n = 0

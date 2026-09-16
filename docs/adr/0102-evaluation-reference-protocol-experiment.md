@@ -3,6 +3,35 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 Execution constraint: enforce offline-only status and known dead ends
+
+The owner's further challenge was that written promises had not constrained
+execution. The failed contextual candidate now rejects `--execute` before
+loading inputs, checking public CI, reading credentials or constructing a
+Provider. Preview remains available and explicitly reports offline_only and
+contextual_candidate_requires_offline_qualification. There is no force flag.
+This is retirement of the failed candidate, not a request for fresh user
+authorization; a replacement still requires the offline contract work below.
+
+The correction builder also rejects known impossible states before sending
+the second request: duplicate complete-block quotes within one audit, and a
+lower bound of mandatory claim changes exceeding the patch's update capacity.
+Scope/number/source errors that require claim updates count toward that lower
+bound; explanation-number hints and issues that can be added do not. The check
+does not infer semantic correctness, prove all remaining states repairable or
+relax a final validator. Distinct audits and expandable subspans are not
+mistakenly treated as duplicate complete blocks.
+
+134 focused checks pass, including the real runner stopping before I/O and
+the workflow consuming only its scripted first response. Replay of the actual
+v10 first-response bytes also stops locally before correction, identifying
+c004/c005/c006; no second request and no real Provider request was made.
+The original SHA256 remains unchanged. Evidence is
+`golden_contextual_admission_v10.json`. This cost/execution constraint is not
+the replacement correction design, semantic acceptance, or completion of 8E.
+Next remains offline feasibility of the entire correction contract, including
+source coverage, target identity, issue preservation, capacity and budgets.
+
 ## 2026-09-16 V10 outcome: reject candidate; audit correction reachability before more live runs
 
 6bcaa869f24164687665aaf9d10f59da01f89973 passed Actions 35049563440,

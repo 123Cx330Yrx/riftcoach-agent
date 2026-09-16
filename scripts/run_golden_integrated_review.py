@@ -40,6 +40,7 @@ def implementation_identity(*, bounded=False, full_context=False):
             "app/evaluation/golden_contextual_sources.py", "app/evaluation/golden_contextual_validation.py",
             "app/evaluation/golden_contextual_patch_wire.py",
             "app/evaluation/golden_contextual_first_wire.py",
+            "app/evaluation/golden_contextual_admission.py",
             "app/evaluation/golden_contextual_requests.py", "app/evaluation/golden_numeric_evidence_v4.py",
             "app/evaluation/golden_contextual_workflow.py", "scripts/run_golden_contextual_review.py",
             "data/evaluation/datasets/golden_contextual_reports_v2.json")
@@ -111,6 +112,9 @@ def observe_report(provider, directory, request, case, *, workflow_factory=Integ
 def run(args, *, bounded=False, full_context=False):
     if bounded and full_context:
         raise ValueError("review_mode_conflict")
+    if full_context and args.execute:
+        from app.evaluation.golden_contextual_admission import require_live_qualification
+        require_live_qualification()
     first_request = review.discovery_request
     workflow_factory = IntegratedReviewWorkflow
     experiment_id, prefix = review.EXPERIMENT_ID, "integrated-review"
@@ -140,9 +144,11 @@ def run(args, *, bounded=False, full_context=False):
         plan["first_review_input_ceilings"] = plan.pop("discovery_input_ceilings")
         plan["budget_admission"] = "each_request_reserved_against_remaining_actual_usage_no_completion_guarantee"
     if full_context:
+        from app.evaluation.golden_contextual_admission import LIVE_STATUS, LIVE_BLOCK_REASON
         plan.pop("pair")
         plan.update(standard_id=STANDARD_ID, manifest_sha256=hashlib.sha256(MANIFEST.read_bytes()).hexdigest(),
-            source_case_ids=[c["source_case_id"] for c in selected])
+            source_case_ids=[c["source_case_id"] for c in selected],
+            live_status=LIVE_STATUS, live_block_reason=LIVE_BLOCK_REASON)
     if not args.execute:
         print(review.compact(plan)); return plan
     if not re.fullmatch(prefix+r"-[a-z0-9-]{1,55}", args.run_id):
