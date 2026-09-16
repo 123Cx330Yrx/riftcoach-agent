@@ -3,6 +3,53 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-16 Comparison contract and isolated workflow decision
+
+Select an explicit per-claim cohort/metric/operand binding for the second full
+reassessment, backed by host-computed complete selected/role outcome groups,
+means and all-pairs relations. Preserve full source, the original first review,
+all old issue dispositions, one decision/explanation and complete final validation.
+Bindings describe the operands of one calculation; the overall claim may cite
+additional facts. Equating those sets was rejected during offline development
+because a sentence can legitimately mention five total games and compare four
+mid games. A model selecting the wrong cohort or metric remains a semantic
+failure: structured references alone cannot prove the author's intended meaning.
+The historical c010 wrong explanation still structurally passes when explicitly
+bound to selected instead of MIDDLE; the evidence records that negative result.
+
+The first implementation's added instructions exceeded one historical request
+shape. The final candidate uses one coherent reassessment policy and lossless
+shared columns for the complete first review, checked by exact reconstruction.
+It does not remove source, explanations, issue history or raise budgets.
+Final v4 measures both frozen second requests at 58502/58576, ten historical
+shapes at 58608–62718, and a revision with comparison bindings at 56892.
+Intermediate v1/v2/v3 results are not current readiness evidence. Schema-legal
+large states remain subject to preflight, not a universal completion promise.
+
+134 relevant tests pass, including actual scripted five-call review/revision/
+recheck with source identity and transport receipts, terminal bad operands,
+cross-paragraph scope, mixed claims, misleading same-direction groups, title
+binding, missing values, upstream truncation and future extrapolation. The
+new isolated workflow forwards comparison bindings to revision. The new runner
+executes exactly one frozen case at a time; inspect all explanations manually
+before starting the next case. The old contextual entry remains offline_only.
+
+Decision: this complete design is eligible for one bounded development pair
+AFTER exact implementation SHA public CI passes. This is a test opportunity,
+not semantic approval, production admission, or a change to the owner's
+whole-context standard. Preserve high, 32768/300s per request and 5 calls,
+1 revision, 401920 tokens/900s per report. Any protocol/transport/semantic
+failure stops this pair; no automatic patch-and-paid-rerun loop. No extra user
+approval is needed within existing authorization. Current Provider count is
+unchanged (at least 197); no new live response exists at this checkpoint.
+
+Evidence: `golden_comparison_reassessment_v4.json`, comparison reassessment and
+workflow tests, and the current section of the feasibility plan. Previous
+ff13c1c passed all three public checks in Actions35063171248; it does not cover
+the new implementation. Luna review failed to start with an unsupported-model
+404; no independent-agent approval is claimed. Codex model availability does
+not change RiftCoach GLM settings.
+
 ## 2026-09-16 Restart: full reassessment feasibility, not live qualification
 
 The instruction audit is complete and the owner authorized resumption. The

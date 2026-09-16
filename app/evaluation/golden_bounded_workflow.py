@@ -18,6 +18,8 @@ EXPERIMENT_ID = "golden-bounded-review-v1"
 
 class BoundedCorrectionWorkflow(IntegratedReviewWorkflow):
     """Reuse the existing receipt, five-call, revision and source-binding guards."""
+    first_phase = "first_review"
+    correction_phase = "bounded_correction"
 
     def evaluate(self, request):
         if self.stopped or self.evaluations >= 2 or (self.evaluations == 1 and self.revisions != 1):
@@ -27,10 +29,10 @@ class BoundedCorrectionWorkflow(IntegratedReviewWorkflow):
             raise ValueError("bounded_recheck_source_changed")
         self.evaluations += 1
         try:
-            first_raw = self._call(self.build_first(inputs), "first_review")
+            first_raw = self._call(self.build_first(inputs), self.first_phase)
             state = self.prepare_state(first_raw, inputs)
             prepared = self.build_correction(state)
-            raw = self._call(prepared.request, "bounded_correction")
+            raw = self._call(prepared.request, self.correction_phase)
             # _call verifies the budget-transformed request and real receipt
             # before returning content. Never accept a partial patch by itself.
             payload, self.last_journal = self.merge_correction(state, raw, inputs=inputs)

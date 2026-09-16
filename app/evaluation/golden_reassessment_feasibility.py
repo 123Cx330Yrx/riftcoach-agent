@@ -113,7 +113,7 @@ def coverage_map(before, after, source):
     return mappings
 
 
-def build_request(state):
+def request_parts(state):
     _check_state(state, state.inputs)
     before = _read(state.raw, state.inputs)
     data = source_data(state.inputs)
@@ -128,6 +128,11 @@ def build_request(state):
         "逐条核对新explanation对应的原文对象、分路、胜负组和指标，数字方向相同不能替换样本。"
         "旧issues逐字保留；确需撤销或变更时，在issue_resolutions逐项填写旧issue_ids、"
         "有效evidence_refs及解释，新问题列issues。存在引用只证明位置，不证明撤销合理。")
+    return data, policy
+
+
+def build_request(state):
+    data, policy = request_parts(state)
     return request(data, policy, ReassessmentWire, "offline_full_reassessment")
 
 

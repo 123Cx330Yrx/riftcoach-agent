@@ -300,9 +300,9 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-16：完整重评离线原型及全请求可行性裁决已完成；结构可行，c010 混组解释仍能结构通过，语义未合格。旧候选 offline_only，未新增真实请求。
+2026-09-16：比较关系合同及完整五调用串联已完成，134项相关检查通过；原始c010错误选择仍是语义反例，新候选待公共检查及真实成对验证。旧候选offline_only。
 
-当前唯一行动：按 `docs/plans/2026-09-16-review-reassessment-feasibility.md` 的“下一项具体工作”，补齐比较对象—证据—解释的语义合同，再决定完整重评工作流接线；不扩建旧补丁或立即付费重跑。
+当前唯一行动：当前实现通过同SHA公共检查后，执行一次冻结正反例开发验证；逐例人工核对原文对象、comparison绑定、说明和实际修订复评，一例失败即停止本批并检查整个候选，不自动补丁付费连跑。
 
 全局后续见 `docs/plans/2026-09-16-astra-restart-plan.md`；包括前端整体升级与四块联动。
 
@@ -554,9 +554,9 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-16：完整重评离线原型及全请求可行性裁决已完成；结构可行，c010 混组解释仍能结构通过，语义未合格。旧候选 offline_only，未新增真实请求。
+2026-09-16：比较关系合同及完整五调用串联已完成，134项相关检查通过；原始c010错误选择仍是语义反例，新候选待公共检查及真实成对验证。旧候选offline_only。
 
-当前唯一行动：按 `docs/plans/2026-09-16-review-reassessment-feasibility.md` 的“下一项具体工作”，补齐比较对象—证据—解释的语义合同，再决定完整重评工作流接线；不扩建旧补丁或立即付费重跑。
+当前唯一行动：当前实现通过同SHA公共检查后，执行一次冻结正反例开发验证；逐例人工核对原文对象、comparison绑定、说明和实际修订复评，一例失败即停止本批并检查整个候选，不自动补丁付费连跑。
 
 全局后续见 `docs/plans/2026-09-16-astra-restart-plan.md`；包括前端整体升级与四块联动。
 
