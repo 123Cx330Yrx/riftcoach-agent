@@ -1,7 +1,8 @@
 # Whole-review source contract repair — offline next action
 
-Status: source-catalog prototype and full-report matrix implemented and checked
-offline; judgment/semantic integration and full workflow qualification remain.
+Status: source catalog, typed judgment contract and complete scripted
+revision/recheck implemented offline. Semantic workflow comparison, representative
+qualification and real-model acceptance remain; no live entry is enabled.
 Evidence: ADR-0102, source-first probe `e23c90d`, and
 `data/evaluation/results/golden_source_first_result_e23c90d.json`.
 
@@ -90,8 +91,8 @@ Naively appending the manifest raises the archived second-request input ceiling
 53104→63160; compact addresses give55028. These are input-envelope projections
 only, not new calls, a final prompt, or full five-call budget qualification.
 
-The next concrete deliverable is the **offline whole-report judgment contract**,
-using this catalog and the source matrix rather than changing old validators:
+The **offline whole-report judgment contract** now implements the following
+representation obligations (evidence and limits in ADR-0102's typed-review section):
 
 - Source facts (including nonnumeric values) must name the typed source and
   actual field; literal equality alone is no proof that the report says that
@@ -118,6 +119,50 @@ Do not execute another paid review merely because one local check turns green.
 Fresh full positive/negative live qualification follows only an internally
 consistent contract and exact-implementation public checks under existing
 authorization. One model success will not establish representative accuracy.
+
+## Current next action: separate meaning from arithmetic, offline first
+
+`golden_typed_review.py` and `golden_typed_source_checks.py` now provide legal
+ordinary source checks, explicit summary operations and category correction
+without losing original text. `check_golden_typed_review.py` exercises both
+complete frozen reports and the five-call revision path using explicitly
+analyst-authored responses. It is not a real-model pass or a new live candidate.
+The final native review is sent to revision once, with its original source
+addresses; expanded canonical copies stay in the host journal. All current
+sources survive unchanged. Thirty new tests and160 related tests pass.
+
+Five measured inputs are60884/63054/58104/60814/62766 (limit63936). Their
+conservative full-output sum469462 exceeds401920; the existing runtime settles
+actual usage before reserving the next request, rather than guaranteeing all
+five calls at their maxima. The900s total and arbitrary future response shapes
+are not qualified. The wrong-cohort witness still structurally passes.
+
+The next comparison replaces the first review within the existing two-call
+budget; it does not add a third verifier. Prototype a first step that identifies
+the full report's subjects, scope antecedents and operations before receiving
+derived comparison navigation. The second step receives full original sources,
+checks the interpretation as a hypothesis, computes the selected operations,
+and can correct the first step while retaining every original obligation and
+issue. The first step must not be treated as an accepted evaluation. Compare
+against the present all-catalog review on these independent dimensions:
+
+- Explicit distinction between source location, claimed subject/sample,
+  requested operation and actual numeric support; avoid duplicated decisions
+  that can disagree without a legal correction path.
+- Original whole-context positive and real-future-negative reports, including
+  the different paragraph inventories, cross-paragraph scope, missing data,
+  metadata and training calculations. Keep expected labels out of requests.
+- Incorrect first interpretation can be challenged; agreement between two
+  wrong interpretations is not proof. Preserve the four-MIDDLE/five-selected
+  witness, and add no rule that assigns MIDDLE from keywords or frozen IDs.
+- Complete first/second/revision/recheck inputs, actual runtime budget admission,
+  issue preservation and security. Native output growth is a risk: required
+  arrays/sources have increased schema obligations, not proved model compliance.
+
+Record the concrete comparison and selected design before implementing a live
+identity. If the alternative has no demonstrated structural/control-flow benefit,
+do not present a reordered prompt as a verified semantic repair. Actual meaning
+quality can only be assessed on new complete model responses with manual review.
 
 ## Product boundaries and downstream work
 

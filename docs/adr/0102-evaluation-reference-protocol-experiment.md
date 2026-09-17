@@ -3,6 +3,77 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-17 Typed whole-review contract and native revision handoff
+
+Recovery implementation e3f5fcc passed Actions35215700732. The new implementation
+is offline only; it registers no Coach, Provider runner or production identity.
+`golden_typed_review.py` preserves the two-review/one-revision/two-recheck control
+flow. `golden_typed_source_checks.py` gives ordinary knowledge, goal, patch and
+source-boundary facts a representation separate from the inference audits.
+Typed paths bind to the existing source catalog. Literal date/version/file and
+numeric formatting are checked against actual source values. Match/aggregate
+statistics, including position-context observed statistics, cannot use this lane.
+This validates location and value, not the natural-language entailment.
+
+Summary calculations name mean/median, cohort, metric, exact member set and the
+actual reported value. Missing/invalid numbers remain missing, never reduce the
+cohort or become zero; supported judgments require complete numeric evidence.
+Unsupported judgments can retain the missing-member ledger for revision.
+Percentage units are explicit and restricted to ratio metrics. HALF_UP applies
+after full-precision calculation. Empty or missing operation fields are distinct;
+real response omissions are never silently filled.
+
+Whole-review source coverage preserves the union of original character spans
+while allowing audit/source-check category corrections, including split mixed
+paragraphs. The journal records original and final lanes. This intentionally
+replaces the old category-lock in this offline candidate only; otherwise a
+misclassified first source fact would have no correction path. Valid final lane
+selection still requires semantic inspection. Headings and all final inference
+checks remain enforced. Old issues are retained or explicitly resolved with
+valid legacy references or typed source paths; high injection remains terminal.
+
+The initial full-report revision composition exceeded the input envelope.
+Expanded canonical context and explanation fields duplicated the same native
+review, and adding a separate source ledger compounded it. The final design
+sends the **validated native full review once** to the reviser, with the source
+catalog and full original inputs. Before handoff, replay validation must reproduce
+the exact accepted canonical evaluation. No old prompt or validator was changed;
+the expanded canonical representation remains in the audit record. No original
+report/source/issue/reason is deleted to fit the request. The typed review policy
+is coherent rather than concatenating contradictory legacy category-lock rules.
+
+Evidence: `data/evaluation/results/golden_typed_review_offline_v1.json` produced
+by `scripts/check_golden_typed_review.py`. Two complete frozen reports retain
+their identities (28 versus29 blocks); fixture transfer resolves original text
+rather than assuming equal block indices. Every synthetic edit is recorded by
+changed JSON path. Existing failed raw response still fails the new schema;
+original receipts/hashes and verdicts are unchanged. Analyst-authored positive
+and future-negative outputs are representable. The latter runs all five scripted
+exchanges through actual workflow revision and recheck, using the full positive
+report as an explicitly scripted revision. This is not a model-generated fix.
+
+Thirty new tests and160 related checks pass, including exact source/value/type
+and member mismatches, old-issue disposal, category correction without deletion,
+invalid first-quote fallback, source preservation, security, percent/median/mean,
+native revision handoff and mutation rejection. Five-phase input ceilings are
+60884/63054/58104/60814/62766, all below63936. With five full32768 reservations
+their conservative sum is469462, above401920. Existing actual-settlement-plus-
+next-reservation admission is unchanged; this is not a full-maxima guarantee,
+elapsed900s proof, output-capacity guarantee or representative qualification.
+
+The historical four-MIDDLE/five-selected semantic failure is deliberately still
+reproducible as a structurally valid wrong-cohort witness. Legal citations,
+correct arithmetic and scripted pass/revision labels do not solve it. No new
+Provider request was made (cumulative at least201); all four failed live entry
+points remain offline_only. Model/high, budgets, owner whole-context standard,
+Stage8E and the frontend/Workbench/62-theme followups remain unchanged.
+
+Next: the source-contract repair plan's explicit meaning-first versus current
+all-catalog comparison, inside the same two-review budget. Do not create a live
+identity just because this contract and CI pass; first validate the complete
+alternative's state transitions, counterexamples and request budget. Native
+schema has more obligations, so real response compliance remains an open risk.
+
 ## 2026-09-17 Typed source catalog and complete offline source matrix
 
 Recovery HEAD9cd602015e3f0f6bc5599307db37e3f34c04555c passed Actions35176454030.
