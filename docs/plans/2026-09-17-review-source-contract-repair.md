@@ -1,9 +1,12 @@
 # Whole-review source contract repair — offline next action
 
-Status: meaning-first live positive failed on2026-09-17 at the first response.
-Its entry is now offline_only, alongside the four previously failed entries.
-No second evidence review, negative, revision or recheck ran. The offline
-contract still works with scripted outputs; real semantic success is unproven.
+Status: the failed meaning-first entry and four older entries remain offline.
+Grounded-reading replaces model-owned hash/inventory with host binding, supplies
+the original player identity without arithmetic, and preserves identical-key
+first responses with explicit diagnostics. Whole-report/raw-failure replay and
+229 related tests pass offline. After exact public CI, run one fresh positive
+and manually inspect it before negative/revision/recheck. Real quality remains
+unproven; this is existing bounded development authorization, not production.
 Evidence: ADR-0102, source-first probe `e23c90d`, and
 `data/evaluation/results/golden_source_first_result_e23c90d.json`.
 
@@ -250,6 +253,57 @@ reject the design rather than add another field-specific repair layer.
 This finding changes the next action from running the negative control to
 repairing first-step admission and grounding. It does not justify a claim that
 the interpretation split has solved the original quality problem.
+
+## Grounded-reading contract decision and qualification
+
+The first proposed follow-up (flatten references and remove first issues) was
+not adopted: changing coordinates cannot guarantee model formatting, and
+dropping issues loses security/contradiction obligations. The selected design
+in `golden_grounded_reading_review.py` retains all readings and all issues.
+
+- Player identity is copied verbatim from original `generation_facts.player`;
+  the first call receives no source arithmetic, expected cohort or frozen
+  outcome. User request and identity remain data, not privileged instructions.
+- Hash and inventory belong to host request/receipt/state binding. The model
+  outputs readings and issues, without redundant identity/inventory echoes.
+  Original source coverage, final block/heading inventory and mutation guards
+  remain. This reduces unnecessary generation; it does not prove coverage by
+  itself or make a wrong sample interpretation acceptable.
+- The first response is provisional. Identical repeated JSON values have an
+  unambiguous semantic view; raw bytes and every repetition path remain in the
+  journal. Conflicting values, malformed JSON, unknown fields and invalid
+  references still stop. High injection findings stop before another call.
+  This exception does not change the strict parser for final assessments.
+- All old issue values require retention or explicit source-grounded resolution.
+  No fake first verdict is created. Reused internal hash/inventory fields are
+  host-derived adapter values, never represented as model output. Revision
+  still receives the validated native final assessment and replays it first.
+- Only the transmitted reading references use positional arrays to save
+  repeated keys. Reconstruction is compared exactly. Original evidence,
+  interpretations, issues, final schema, estimator and budgets are unchanged.
+
+`golden_grounded_reading_offline_v1.json` records full frozen positive/negative
+inputs and the actual2b08fe9 failed first response. Its18 identical repeats,
+all29 readings, incorrect scope/identity interpretations and1 issue survive
+unchanged. A deliberately analyst-authored final response can cover them and
+resolve the false issue with actual user-request/player sources. This is an
+offline correction witness, not a successful model response or a relabelled
+historical run. Earlier short-quote fixtures did not cover the real first
+response's longer clauses; their new witness now covers them and explicitly
+binds the newly included whole-role mean calculations.
+
+Inputs: frozen second58880/58820; original failed first-response replay62484,
+under63936. Complete scripted five-call path13248/58820/58298/13176/58880;
+conservative full-output sum366262<401920. Larger outputs and900s completion
+remain runtime-limited, not guaranteed. Public verification is still required
+for the new exact implementation before a fresh live case.
+
+Use `scripts.run_golden_grounded_reading_review`, case1, fresh
+`grounded-reading-...` id. Inspect full original output, scope, operations,
+identity, issues and source use. Only then case2. Do not silently fix final
+JSON, relax frozen labels, add calls or issue automatic paid patch retries.
+All five earlier failed entries remain blocked. Existing broad authorization
+covers this bounded test once engineering qualification passes.
 
 ## Product boundaries and downstream work
 

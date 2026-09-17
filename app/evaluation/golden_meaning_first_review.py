@@ -109,6 +109,11 @@ reading_tables按columns还原rows的[一基编号,值数组]，是report-only�
 
 
 def second_request(state):
+    return budget_check(build_second_request(state))
+
+
+def build_second_request(state):
+    """Pure materialization; callers must budget the final representation."""
     _check(state, state.inputs)
     data = source_data(state.inputs)
     readings = [r.model_dump(mode="json", exclude_none=True) for r in state.reading.readings]
@@ -129,7 +134,7 @@ def second_request(state):
     if not message.content.startswith(schema + "\n"):
         raise ValueError("meaning_schema_message_changed")
     message = replace(message, content=schema_notation(request.response_contract.schema_dict()) + message.content[len(schema):])
-    return budget_check(replace(request, messages=(request.messages[0], message, *request.messages[2:])))
+    return replace(request, messages=(request.messages[0], message, *request.messages[2:]))
 
 
 def apply(state, raw, *, inputs):

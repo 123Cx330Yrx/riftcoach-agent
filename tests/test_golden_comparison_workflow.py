@@ -85,7 +85,7 @@ def test_bad_operands_stop_after_second_call_without_revision_or_retry():
 
 
 @pytest.mark.parametrize("case_index", [1, 2])
-@pytest.mark.parametrize("mode", ["comparison", "provisional", "meaning"])
+@pytest.mark.parametrize("mode", ["comparison", "provisional", "meaning", "grounded"])
 def test_preview_is_one_frozen_case_with_no_ci_secrets_or_provider(monkeypatch, tmp_path, case_index, mode):
     from types import SimpleNamespace
     from scripts import run_golden_integrated_review as runner
@@ -104,6 +104,7 @@ def test_preview_is_one_frozen_case_with_no_ci_secrets_or_provider(monkeypatch, 
     assert result["max_calls"] == 5 and result["manual_between_cases"]
     assert result["reasoning_effort"] == "high" and not result["production_admitted"]
     expected_id = "golden-meaning-first-whole-review-v1" if mode == "meaning" else f"golden-{mode}-review-v1"
+    if mode == "grounded": expected_id = "golden-grounded-reading-review-v1"
     assert result["experiment_id"] == expected_id
     if mode == "meaning":
         assert "app/evaluation/golden_meaning_first_review.py" in result["implementation"]
@@ -122,7 +123,7 @@ def test_failed_live_candidate_stops_before_inputs_ci_or_credentials(monkeypatch
         runner.run(SimpleNamespace(execute=True), comparison=True)
 
 
-@pytest.mark.parametrize("mode", ["provisional", "meaning"])
+@pytest.mark.parametrize("mode", ["provisional", "meaning", "grounded"])
 def test_provisional_runner_uses_new_workflow_after_ci_without_opening_retired_entry(monkeypatch, tmp_path, mode):
     from types import SimpleNamespace
     import dotenv
@@ -149,12 +150,15 @@ def test_provisional_runner_uses_new_workflow_after_ci_without_opening_retired_e
     monkeypatch.setattr(runner, "ReceiptedStreamProvider", lambda **_: events.append("provider"))
     def observe(*args, workflow_factory):
         from app.evaluation.golden_meaning_first_review import MeaningFirstWorkflow
-        assert workflow_factory is (MeaningFirstWorkflow if mode == "meaning" else ProvisionalReassessmentWorkflow)
+        from app.evaluation.golden_grounded_reading_review import GroundedReadingWorkflow
+        assert workflow_factory is {"meaning": MeaningFirstWorkflow, "provisional": ProvisionalReassessmentWorkflow,
+            "grounded": GroundedReadingWorkflow}[mode]
         events.append("observe")
         return dict(id="contextual_01", stop_reason="scripted_terminal")
     monkeypatch.setattr(runner, "observe_report", observe)
     args = SimpleNamespace(source_run=tmp_path, base_report=tmp_path, pair=1, execute=True,
-        case_index=1, run_id=f"{mode}-review-scripted", ci_run="test", output_root=tmp_path, env_file=tmp_path/"unused")
+        case_index=1, run_id=("grounded-reading-scripted" if mode == "grounded" else f"{mode}-review-scripted"),
+        ci_run="test", output_root=tmp_path, env_file=tmp_path/"unused")
     runner.run(args, **{mode: True})
     assert events == ["ci", "credentials", "provider", "observe"]
 
