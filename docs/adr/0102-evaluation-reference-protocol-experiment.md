@@ -5,7 +5,11 @@ an isolated development candidate, now observed; no production admission or sema
 
 ## 2026-09-17 Typed whole-review contract and native revision handoff
 
-Recovery implementation e3f5fcc passed Actions35215700732. The new implementation
+Recovery implementation e3f5fcc passed Actions35215700732. This implementation
+`8bc7d4e2bdd6231074c0067653bde8fb4dcc735d` passed Actions35218637665:
+pytest, postgres-migrations and packaging-smoke all completed successfully.
+The committed offline artifact reproduces exactly; historical hashes still match.
+This is engineering evidence only. The new implementation
 is offline only; it registers no Coach, Provider runner or production identity.
 `golden_typed_review.py` preserves the two-review/one-revision/two-recheck control
 flow. `golden_typed_source_checks.py` gives ordinary knowledge, goal, patch and
