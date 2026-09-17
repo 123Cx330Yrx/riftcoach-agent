@@ -3,6 +3,82 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-17 Source-first reassessment: opinion isolation and a single diagnostic
+
+The current action is a bounded discriminating diagnostic, not reopening any
+failed candidate or claiming fixtures prove quality. Latest recovery HEAD
+1f2bc62 passed Actions35074258939, all three jobs.
+
+### Dataflow decision
+
+| Input category | Role in selected alternative |
+|---|---|
+| Report being reviewed | Full original ordered source index; model determines the meaning from this text and its context. No target labels or forced cohort supplied. |
+| Raw facts, provenance, knowledge, derived arithmetic | Retained losslessly; cohort catalog provides possible calculations without selecting the author's intended cohort/operation. |
+| Deterministic legacy report | Kept byte-identical in the frozen diagnostic, including old interpretations. The existing instruction treats interpretations as unproven. The producer fix affects new reports only. Changing this text simultaneously would confound comparison. |
+| First claim judgments/explanations/score/references | Retained in original state and journal, not transmitted to second review. Mutating these fields leaves the second request identical. |
+| Prior source coverage | Exact resolved spans per audit, deduplicated only when identical. Invalid span still protects whole known block. No host inference of the intended scope. |
+| Prior issues | All raw issues, including malformed fields, supplied with stable IDs. Retain or explicitly resolve; high injection remains terminal. |
+| Second output | Existing ComparisonWire and all final validators; original source coverage, issue dispositions, numeric/source checks and budgets unchanged. |
+
+`golden_source_first_review.py` implements this input contract and reuses the
+five-call workflow offline. Policy explicitly distinguishes cross-paragraph
+scope from convenient arithmetic, and complete win/loss comparisons from
+medians, overall means and subgroups. These are existing semantic obligations,
+not new product acceptance rules. No new output fields or model tier changes.
+
+Alternatives: reject merely filling missing refs/scope (known wrong semantics
+then pass); reject host assignment of MIDDLE by keywords (silently chooses
+meaning); reject extra verifier/model calls at this point (no evidence they
+solve this task within the existing flow). Opinion isolation is selected for
+an experiment, not asserted as a proven cure. Scope/audit obligations and old
+issues still originate partly from first review, so this is not statistical
+independence. Original first headings are reclassified from report text.
+
+### Offline evidence and limits
+
+94 relevant checks pass after fixing a test double's double-counted initial
+reservation; production call accounting was not changed. Checks include
+opinion-change invariance, lossless source tables, old malformed issue retention,
+full-block fallback, source-loss/security rejection, omitted future-error
+handling, five-call revision/recheck, single-call receipts, no retry after
+invalid output, interrupted unknown usage and CI-before-credentials.
+
+`golden_source_first_readiness_v1.json`: actual archived first's second request
+58742 → 53104 input ceiling. Two synthetic frozen input shapes 52924/52994;
+ten historical sizing projections 53056–54510; revision shape 63322 (below
+63936). Their historical assumptions remain explicit and are not live results.
+The raw failed first and second bytes remain unchanged. The format-only wrong
+semantic witness STILL structurally passes under the new final validation;
+manual semantic inspection remains essential. No reliability rate is inferred.
+
+### Qualified diagnostic and interpretation
+
+After clean exact-SHA public CI, `run_golden_source_first_probe` may execute
+ONE new second-review request from c3ff392's frozen positive first response.
+The baseline files are checked against the existing audit's hashes; frozen
+report, facts, knowledge and legacy source text remain. It is a new run with
+max_new_calls=1, high, 32768 output/300 seconds, SDK retry=0, no revision or
+negative case. The reused first call is not counted as new or portrayed as a
+fresh complete workflow. All three previously failed entries remain disabled.
+Existing user authorization covers this bounded diagnostic.
+
+Hypothesis: excluding first opinions and ordering judgment from original text
+can avoid retaining the five-game interpretation while correctly preserving
+four-game contextual scope. Inspect target scope link/cohort/explanation,
+all other claims, operations, headings, numeric citations and issue dispositions.
+Also inspect failures after the first validator to avoid local-patch tunnel vision.
+
+A complete correct response is evidence for this one diagnostic only; then
+qualify a fresh full positive/negative workflow before claiming a working cycle.
+Wrong sample/operation or any protocol/transport failure ends this diagnostic;
+no automatic field patch and retry. A failure cannot identify first-opinion
+anchoring as the sole cause, and success cannot isolate input omission from
+policy wording or model variability. Preserve all resulting evidence.
+
+Stage 8E, the user whole-context standard, model/budgets, production admission,
+frontend overhaul and 62-theme future work remain unchanged.
+
 ## 2026-09-16 Upstream deterministic evidence wording corrected
 
 Inspection expanded beyond the evaluator to the actual second request's third

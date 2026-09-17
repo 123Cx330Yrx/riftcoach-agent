@@ -178,6 +178,13 @@ def request_from_parts(data, inputs, *, extra_policy=""):
         if [restored[i] for i in range(1, len(claims) + 1)] != claims:
             raise ValueError("comparison_first_review_projection_loss")
         audit["claim_tables"] = tables
+    data["comparison_evidence"] = prompt_catalog(inputs)
+    policy = (REASSESSMENT_POLICY + "\n" + POLICY +
+        "\nfirst_review.audits的claim_tables按columns还原rows中的[原顺序编号,值数组]，包含完整首评，不是新判断。")
+    return request(data, policy + extra_policy, ComparisonWire, "comparison_reassessment")
+
+
+def prompt_catalog(inputs):
     evidence = catalog(inputs)
     # Omit only redundant metric names and impossible pair calculations from
     # the derived navigation, never source facts or first-review content.
@@ -185,11 +192,8 @@ def request_from_parts(data, inputs, *, extra_policy=""):
         [METRICS.index(row[0]) + 1, *row[1:]] for row in group["rows"]]
         if group["wins"] and group["losses"] else [])
         for key, group in evidence["cohorts"].items()}
-    data["comparison_evidence"] = dict(evidence, metrics=list(METRICS), cohorts=cohorts,
+    return dict(evidence, metrics=list(METRICS), cohorts=cohorts,
         columns=["metric_index", *evidence["columns"][1:]])
-    policy = (REASSESSMENT_POLICY + "\n" + POLICY +
-        "\nfirst_review.audits的claim_tables按columns还原rows中的[原顺序编号,值数组]，包含完整首评，不是新判断。")
-    return request(data, policy + extra_policy, ComparisonWire, "comparison_reassessment")
 
 
 def apply(state, raw, *, inputs):

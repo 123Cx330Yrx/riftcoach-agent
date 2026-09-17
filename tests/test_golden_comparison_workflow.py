@@ -6,6 +6,7 @@ import pytest
 
 from app.evaluation.golden_comparison_workflow import ComparisonReassessmentWorkflow
 from app.evaluation.golden_provisional_reassessment import ProvisionalReassessmentWorkflow
+from app.evaluation.golden_source_first_review import SourceFirstReviewWorkflow
 from app.evaluation.golden_integrated_runtime import BudgetedReviewSender
 from app.evaluation.golden_review_experiment import compact
 from app.harness.steps import EvaluationRequest, RevisionRequest, KnowledgeEvidence
@@ -26,7 +27,7 @@ def make_request(inputs):
     return EvaluationRequest(source, "来源", KnowledgeEvidence.empty(), inputs.source.report, "检查观摩报告")
 
 
-@pytest.mark.parametrize("workflow", [ComparisonReassessmentWorkflow, ProvisionalReassessmentWorkflow])
+@pytest.mark.parametrize("workflow", [ComparisonReassessmentWorkflow, ProvisionalReassessmentWorkflow, SourceFirstReviewWorkflow])
 def test_full_reassessment_revision_and_recheck_keep_bindings_and_five_call_budget(workflow):
     bad = "所有未来输局的经济都会更低。"
     fixed = "这四场中单中经济的赢局逐行高于输局。"
@@ -63,7 +64,7 @@ def test_full_reassessment_revision_and_recheck_keep_bindings_and_five_call_budg
     final = flow.evaluate(replace(req, report=draft.report))
     assert final.verdict.value == "pass"
     assert flow.calls == sender.budget.calls == len(provider.requests) == 5
-    assert phases == ["first_review", "comparison_reassessment", "revision", "first_review", "comparison_reassessment"]
+    assert phases == ["first_review", flow.correction_phase, "revision", "first_review", flow.correction_phase]
     assert journal["final_raw"] == compact(after) and flow.last_journal["final_raw"] == compact(next_final)
     assert sender.budget.tokens == 100
     with pytest.raises(ValueError): flow.evaluate(req)
