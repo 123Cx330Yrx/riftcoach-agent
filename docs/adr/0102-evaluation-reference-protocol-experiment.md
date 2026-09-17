@@ -3,6 +3,62 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-17 Typed source catalog and complete offline source matrix
+
+Recovery HEAD9cd602015e3f0f6bc5599307db37e3f34c04555c passed Actions35176454030.
+`golden_review_source_catalog.py` now supplies an offline address layer over the
+existing full input. It retains the original26 integer evidence references and
+adds11 addresses, including position context, three knowledge citations, patch
+and static metadata, complete source declaration and user request. It does not
+change the old pack, validators, prompts or historical receipts. No live entry
+uses it yet. Model/high and all admission/publication boundaries remain.
+
+Each entry carries a source kind, exact original JSON path (or original text
+span containing structured JSON), value hash and full-input binding. Embedded
+position/patch/static metadata uses existing strict domain schemas for shape
+validation without rewriting values. Null/absent data remains explicit, duplicate
+IDs/markers are rejected, report prose cannot create a missing source, and
+source text is only a declaration. A literal checker requires exact type/path/
+value correspondence; it neither interprets prose nor certifies source truth.
+Knowledge cannot be used as a match value, and an OP.GG source cannot be used as
+official patch metadata. Semantic attribution and inference remain separate.
+
+`check_golden_review_source_catalog.py` freezes the contextual_01 report hash and
+records an analyst-authored source matrix for all28 blocks. Eight literal checks
+resolve actual goal state, knowledge files/titles, patch identity/date and static
+version. Every one of37 addresses resolves losslessly; old/new receipt hashes
+still match their recorded audits. Output:
+`golden_review_source_catalog_compact_v1.json`. The matrix and its expected
+interpretation are offline evidence, never model input or newly adopted labels.
+
+Correction to the previous audit's broad wording: `scope:limits` (old ref26)
+ALREADY states that numeric outcomes cannot establish stable ability and that
+no video decision evidence is supplied. The model selected ref12 (counts and
+exclusions) instead. Detailed renderer prose was not indexed, but block28 is
+not proof of an entirely missing capability boundary. Goal/knowledge/patch
+address gaps and wrong existing-source selection must not be conflated. The
+matrix/plan now preserve that distinction rather than editing the old result.
+
+Twenty-one source-catalog checks plus12 adjacent source-first/probe checks pass.
+They include wrong source kinds and values, input mutation, original index/pack
+disagreement, missing/null records, duplicate sources, literal injection retained
+as data, and complete compact-address restoration. Naively appending the host
+manifest would raise archived second-request ceiling53104→63160; the lossless
+compact address table gives55028. These are envelope sizing projections, not a
+final request, full workflow budget proof or model-quality evidence.
+
+Next: implement the offline whole-report judgment contract described in
+`../plans/2026-09-17-review-source-contract-repair.md`, jointly handling nonnumeric
+source facts, computed operations, contextual inference and separate ordinary
+source/advice checks. Do not stuff nonnumeric checks into specialized inference
+audits or pass them through a generic numeric allowlist. Compare explicit
+source-grounded meaning before arithmetic; current typed addresses alone do
+NOT resolve the four-MIDDLE versus selected-five error. Preserve the wrong-cohort
+semantic witness, all coverage/issues/security obligations, original whole-context
+acceptance, and the full five-call budget before new live qualification.
+No new Provider call; cumulative remains at least201. Stage8E and frontend/
+Review-Coach-Training-Evidence/62-theme followups stay in force.
+
 ## 2026-09-17 Source-first live result: failed, entry retired, complete contract audit
 
 Implementation `e23c90d59b8b782a51c6b02c4b38cc2113419695` passed all three

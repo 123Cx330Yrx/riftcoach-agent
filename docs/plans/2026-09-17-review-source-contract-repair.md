@@ -1,6 +1,7 @@
 # Whole-review source contract repair — offline next action
 
-Status: planned, not implemented or qualified for another paid run.
+Status: source-catalog prototype and full-report matrix implemented and checked
+offline; judgment/semantic integration and full workflow qualification remain.
 Evidence: ADR-0102, source-first probe `e23c90d`, and
 `data/evaluation/results/golden_source_first_result_e23c90d.json`.
 
@@ -23,7 +24,7 @@ source categories are visible to the model but absent from that catalog.
 | Training goal unspecified, block20 | Structured `Position context ...` JSON in deterministic source, `goal_source` and `training_positions` | Ref13 is request/count/queue and player metadata, not training goals; no indexed position-context record. |
 | K1/K2/K3 files and sections, block26 | `knowledge.citations`, with content, source/chunk IDs and version | Ref12 is match counts/exclusions, not knowledge; no citation entries in the index. |
 | Patch version and publication date, block27 | External JSON `official_patch` | Refs2/3/5 are OP.GG champion snapshots; contextual source builder imports only `opgg`, not `official_patch` or `data_dragon`. |
-| API resolution and replay limitations, block28 | Supplied source boundary prose and runtime source-use policy | Ref12 is match counts/exclusions; it does not express the claimed capability boundary. |
+| API resolution and replay limitations, block28 | Indexed `scope:limits` already gives a generic no-video boundary; source text gives the more detailed declaration | Ref12 is match counts/exclusions and is wrong. Ref26's generic boundary already exists; this is not wholly missing evidence. |
 
 All four must retain their real provenance. Accepting any present reference or
 adding provenance to the unrelated old reference would hide the defect. A new
@@ -69,8 +70,50 @@ not establish that every binding is semantically appropriate to its quote.
    time and correction reachability for every phase. A field-only synthetic
    repair, offline expected answer or public CI cannot establish model quality.
 
-The next concrete deliverable is item1's source matrix and proposed source
-representation, reviewed together with items2/3 before implementation admission.
+Item1's concrete deliverable now exists in `golden_review_source_catalog.py` and
+`golden_review_source_catalog_compact_v1.json`: all28 report blocks mapped to
+37 typed, hash-bound source addresses. Eight exact source-value checks cover the
+previously unindexed goal, knowledge, patch and static-data sources. Twenty-one
+catalog tests plus12 adjacent checks pass. This is source addressability, not a
+new accepted review. No old source index, response, validator or prompt changed.
+
+The catalog is separate from the old integer `evidence_refs`. Its legacy rows
+retain all26 integer mappings; additional rows cite exact JSON paths or exact
+character spans of structured JSON embedded in the original source message.
+Source and request text remain declarations. Knowledge can supply advice or
+metadata; it cannot attest a match result. Missing or null source records stay
+explicit gaps. The host manifest holds complete input/value hashes; prompt
+navigation omits redundant hashes and repeats no source values. A lossless
+restoration test checks every address against the original input.
+
+Naively appending the manifest raises the archived second-request input ceiling
+53104→63160; compact addresses give55028. These are input-envelope projections
+only, not new calls, a final prompt, or full five-call budget qualification.
+
+The next concrete deliverable is the **offline whole-report judgment contract**,
+using this catalog and the source matrix rather than changing old validators:
+
+- Source facts (including nonnumeric values) must name the typed source and
+  actual field; literal equality alone is no proof that the report says that
+  value about that source. Separate date/version/text values from measurements.
+- Computed statistics must identify operation and exact member set. Medians,
+  whole-group means, subset comparisons and complete win/loss comparisons have
+  different operand obligations. Neither audit name nor a conveniently equal
+  number determines the operation. Missing fields are never auto-decisions.
+- Scope/inference must link the original assertion to the relevant original
+  context and explain the relation. Keep object, sample and operation distinct
+  from arithmetic support. The frozen block10 wrong-cohort response remains a
+  semantic failure even when all citations and arithmetic are valid. Source
+  metadata cannot fix this; compare the meaning-first alternative before any
+  new live candidate, with no keyword assignment or supplied expected labels.
+- Ordinary source/knowledge/intent checks need a legal home in the whole-report
+  review; do not force them into the two specialized inference audit categories
+  merely to satisfy a legacy numeric provenance check. Preserve all report
+  coverage, headings, existing issues, security checks and revision obligations.
+
+Review the new representation and semantic/control flow together, exercise all
+known failed shapes and the full revision path, then measure all phases. Keep
+the existing five-call limit; do not add another reviewer to hide inconsistency.
 Do not execute another paid review merely because one local check turns green.
 Fresh full positive/negative live qualification follows only an internally
 consistent contract and exact-implementation public checks under existing
