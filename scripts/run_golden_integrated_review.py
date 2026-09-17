@@ -126,6 +126,9 @@ def observe_report(provider, directory, request, case, *, workflow_factory=Integ
 def run(args, *, bounded=False, full_context=False, comparison=False, provisional=False, meaning=False):
     if sum((bounded, full_context, comparison, provisional, meaning)) > 1:
         raise ValueError("review_mode_conflict")
+    if meaning and args.execute:
+        from app.evaluation.golden_meaning_first_review import require_live_qualification
+        require_live_qualification()
     if full_context and args.execute:
         from app.evaluation.golden_contextual_admission import require_live_qualification
         require_live_qualification()
@@ -188,7 +191,7 @@ def run(args, *, bounded=False, full_context=False, comparison=False, provisiona
         if provisional:
             from app.evaluation.golden_provisional_workflow import LIVE_STATUS, LIVE_BLOCK_REASON
         if meaning:
-            LIVE_STATUS, LIVE_BLOCK_REASON = "bounded_development_after_exact_ci", ""
+            from app.evaluation.golden_meaning_first_review import LIVE_STATUS, LIVE_BLOCK_REASON
         plan.update(standard_id=STANDARD_ID, manifest_sha256=hashlib.sha256(MANIFEST.read_bytes()).hexdigest(),
             source_case_ids=[c["source_case_id"] for c in selected],
             live_status=LIVE_STATUS, live_block_reason=LIVE_BLOCK_REASON, production_admitted=False,

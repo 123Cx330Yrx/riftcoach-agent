@@ -23,6 +23,12 @@ from app.providers.structured import contract_for_model
 from app.evaluation.golden_schema_notation import schema_notation
 
 EXPERIMENT_ID = "golden-meaning-first-whole-review-v1"
+LIVE_STATUS = "offline_only"
+LIVE_BLOCK_REASON = "meaning_first_duplicate_keys_and_interpretation_failed"
+
+
+def require_live_qualification():
+    raise ValueError(LIVE_BLOCK_REASON)
 
 
 class Reading(Strict):

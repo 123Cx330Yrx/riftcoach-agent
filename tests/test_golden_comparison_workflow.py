@@ -129,6 +129,7 @@ def test_provisional_runner_uses_new_workflow_after_ci_without_opening_retired_e
     from app.providers import config
     from app.evaluation import golden_comparison_workflow as retired
     from app.evaluation import golden_provisional_workflow as held
+    from app.evaluation import golden_meaning_first_review as meaning_held
     from scripts import run_golden_integrated_review as runner
     from scripts import run_golden_contextual_review as controls
     inputs = inputs_for(report="这四场中单只作本样本比较。[K1]")
@@ -138,6 +139,7 @@ def test_provisional_runner_uses_new_workflow_after_ci_without_opening_retired_e
     events = []
     # Replay dispatch only; the actual failed candidate remains blocked.
     monkeypatch.setattr(held, "require_live_qualification", lambda: None)
+    monkeypatch.setattr(meaning_held, "require_live_qualification", lambda: None)
     monkeypatch.setattr(runner, "load_inputs", lambda *_: (req.player_summary, req.deterministic_report, req.knowledge, [case]))
     monkeypatch.setattr(controls, "select_cases", lambda c: c)
     monkeypatch.setattr(retired, "require_live_qualification", lambda: pytest.fail("retired entry used"))

@@ -139,3 +139,12 @@ def test_oversized_first_reading_stops_before_another_provider_call():
     state = meaning.prepare(compact(value), enlarged)
     with pytest.raises(ValueError, match="budget_exceeded"):
         meaning.second_request(state)
+
+
+def test_failed_meaning_entry_stops_before_inputs_ci_credentials_or_provider(monkeypatch):
+    from types import SimpleNamespace
+    from scripts import run_golden_integrated_review as runner
+    monkeypatch.setattr(runner, "load_inputs", lambda *_: pytest.fail("loaded inputs"))
+    monkeypatch.setattr(runner, "verify_public_ci", lambda *_: pytest.fail("called CI"))
+    with pytest.raises(ValueError, match="meaning_first_duplicate_keys_and_interpretation_failed"):
+        runner.run(SimpleNamespace(execute=True), meaning=True)

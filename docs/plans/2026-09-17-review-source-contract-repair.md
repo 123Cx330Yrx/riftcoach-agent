@@ -1,10 +1,9 @@
 # Whole-review source contract repair — offline next action
 
-Status: source catalog, typed contract and meaning-first alternative qualified
-offline. The new isolated entry is eligible for one frozen positive after its
-exact implementation passes public CI, under existing authorization. Inspect
-all raw explanations before the negative/revision/recheck case. All four old
-failed entries remain blocked; no semantic success or production admission yet.
+Status: meaning-first live positive failed on2026-09-17 at the first response.
+Its entry is now offline_only, alongside the four previously failed entries.
+No second evidence review, negative, revision or recheck ran. The offline
+contract still works with scripted outputs; real semantic success is unproven.
 Evidence: ADR-0102, source-first probe `e23c90d`, and
 `data/evaluation/results/golden_source_first_result_e23c90d.json`.
 
@@ -192,7 +191,8 @@ Synthetic growth to32 readings of80 Chinese characters each fits at63666;
 growth and elapsed time are not guaranteed. Runtime reservation and stop rules
 are unchanged; this result does not justify widening limits.
 
-Run `scripts.run_golden_meaning_first_review` with the existing frozen source
+Historical pre-run procedure (this entry is now blocked):
+run `scripts.run_golden_meaning_first_review` with the existing frozen source
 and report, `--case-index 1`, then exact public `--ci-run` and a fresh
 `--run-id meaning-review-...` for execution. Preview has no credentials or
 Provider construction. Raw request/response and usage are write-once; failure
@@ -202,11 +202,60 @@ case2 only after genuine first-case success; then inspect the revised report
 and both rechecks. On failure diagnose the full result without modifying raw
 responses or launching another paid field-fix attempt.
 
+## Live result and next action
+
+Implementation2b08fe9 passed Actions35222004364, all three public jobs. The
+positive reading returned complete stop in87.578s:2710 input+8307 output=11017
+tokens, unknown usage0. Cumulative Provider requests are now at least202.
+The strict JSON parser rejected18 repeated `block` keys. Every repeated value
+was identical, but the response remains rejected; no replacement response is
+created. A read-only forensic projection confirms the remaining schema and
+all quote/context locations are valid:29 readings,1 issue. The projected
+second request fits. This is neither a lost stream nor an exhausted budget.
+
+Manual review of the *complete raw response* establishes independent defects:
+
+- The reading correctly identifies block3's four-MIDDLE scope, but links
+  block10 to block13's mixed-position table. Thus arithmetic isolation did
+  not establish correct scope inheritance. This is a first-reading defect;
+  the unexecuted second review's ability to correct it remains unknown.
+- Its sole issue asserts this is the reader's self-review rather than the
+  observed ShowMaker report. The actual user utterance explicitly says the
+  opposite. The original source player is DK ShowMaker#KR1; report-only input
+  omits that identity source. Omitting source arithmetic was intentional;
+  treating unavailable identity evidence as a contradiction was not justified.
+- The first response remains a rigid structural admission gate even though
+  its judgments are only hypotheses. The design can correct a wrong meaning
+  in synthetic tests but cannot reach the second step from this actual raw
+  response. This is a workflow reachability gap, not proof of final review
+  accuracy or a reason to silently repair/accept duplicate JSON.
+
+Evidence: `golden_meaning_first_result_2b08fe9.json` hashes all original run
+files and inventories every duplicate without overwriting receipts. The failed
+entry is blocked before inputs, CI, credentials or Provider construction.
+29 focused checks cover this hold, unchanged prior holds and read-only audit.
+
+The next authorized action is an **offline first-step contract decision using
+this raw failure**, not another paid prompt patch. Keep original identities
+available without providing computed answers. Decide which values are host
+owned (input hash/inventory/quote locations) rather than making the model
+reproduce them; provide a legal route for an untrusted incorrect hypothesis
+and every original issue to reach final strict review without discarding or
+silently choosing conflicting values. Test wrong scope, false identity, repeated
+keys, omitted clauses, security and complete five-step budget together. Do not
+add calls, raise budgets, accept the mistaken five-game interpretation or make
+the frozen positive easier. If a simpler coherent contract cannot be shown,
+reject the design rather than add another field-specific repair layer.
+
+This finding changes the next action from running the negative control to
+repairing first-step admission and grounding. It does not justify a claim that
+the interpretation split has solved the original quality problem.
+
 ## Product boundaries and downstream work
 
 Stage8E remains in progress. Model/high, 32768 output and 300 seconds per request,
 five calls/one revision/401920 tokens/900 seconds per report and retry0 remain.
-All four failed live entry points stay offline. No production admission or
+All five failed live entry points stay offline. No production admission or
 replacement of the manual Workbench report occurred.
 
 After reliable report evaluation, continue the existing integration/acceptance
