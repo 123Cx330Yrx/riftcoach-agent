@@ -1,5 +1,12 @@
 # ADR-0102: Source references and bounded evaluation correction
 
+## 2026-09-17 Meaning-first workflow selection
+
+2026-09-17 原文含义首读方案已完成离线选择与接线：首步只读整篇报告/用户话语，次步以完整来源核算并可纠正首读；不提供冻结答案或派生比较导航。原文覆盖、旧问题处置、typed来源与运算校验保持，复用五调用修订复评。格式说明改为完整约束的紧凑类型记法，host schema/估算器/证据不变。209项相关测试通过；正反例第二请求59170/59082，完整脚本路径12952/59082/57770/12882/59170，全输出预约合计365696低于401920；较长首读32项×80字可容纳，25项×140字本地超限拒绝，不保证任意输出或时限。唯一下一步：新meaning-review实现同SHA公共CI后运行一份冻结正例，逐项人工核对范围、运算、来源和解释，合格才负例修订复评；任何失败停批分析，不补字段自动付费重跑。无新增Provider请求，累计至少201；语义仍待真实验证，四个旧失败入口offline_only。8E/high/全部上限/前端审美、四块联动与62主题后续保持。
+
+See the source-contract repair plan for comparison, entry and failure boundaries.
+
+
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 

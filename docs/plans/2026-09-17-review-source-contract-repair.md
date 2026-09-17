@@ -1,8 +1,10 @@
 # Whole-review source contract repair — offline next action
 
-Status: source catalog, typed judgment contract and complete scripted
-revision/recheck implemented offline. Semantic workflow comparison, representative
-qualification and real-model acceptance remain; no live entry is enabled.
+Status: source catalog, typed contract and meaning-first alternative qualified
+offline. The new isolated entry is eligible for one frozen positive after its
+exact implementation passes public CI, under existing authorization. Inspect
+all raw explanations before the negative/revision/recheck case. All four old
+failed entries remain blocked; no semantic success or production admission yet.
 Evidence: ADR-0102, source-first probe `e23c90d`, and
 `data/evaluation/results/golden_source_first_result_e23c90d.json`.
 
@@ -120,7 +122,7 @@ Fresh full positive/negative live qualification follows only an internally
 consistent contract and exact-implementation public checks under existing
 authorization. One model success will not establish representative accuracy.
 
-## Current next action: separate meaning from arithmetic, offline first
+## Comparison baseline: simultaneous meaning and arithmetic
 
 `golden_typed_review.py` and `golden_typed_source_checks.py` now provide legal
 ordinary source checks, explicit summary operations and category correction
@@ -163,6 +165,42 @@ Record the concrete comparison and selected design before implementing a live
 identity. If the alternative has no demonstrated structural/control-flow benefit,
 do not present a reordered prompt as a verified semantic repair. Actual meaning
 quality can only be assessed on new complete model responses with manual review.
+
+## Selected meaning-first experiment (2026-09-17)
+
+Choose the separate report-reading step within the existing five-call workflow.
+Its first input contains the complete report and user request, without source
+arithmetic or expected answers. Second input contains the original sources and
+all first interpretations as challengeable hypotheses. Scripted wrong-cohort
+and future-negative readings can be corrected; original source coverage and
+issue disposition remain mandatory. This demonstrates a control-flow benefit,
+not demonstrated model quality. The wrong-cohort structural witness still applies.
+
+`golden_meaning_first_review.py` reuses typed finalization directly, without
+inventing a provisional factual verdict. `golden_schema_notation.py` renders
+the same schema constraints as readable type notation in the prompt; the host
+JSON Schema and conservative estimator remain unchanged. Unknown schema
+keywords fail locally. No evidence, policy, hypothesis or issue is truncated.
+The provider uses JSON-object mode, so actual schema compliance still needs
+live validation. This representation is not native provider schema enforcement.
+
+Evidence: `golden_meaning_first_offline_v1.json`, 209 related passing tests.
+Frozen positive/negative second inputs are59170/59082; the full scripted path
+is12952/59082/57770/12882/59170. Full-output reservation sums365696<401920.
+Synthetic growth to32 readings of80 Chinese characters each fits at63666;
+25 readings of140 characters fail before another call. Arbitrary response
+growth and elapsed time are not guaranteed. Runtime reservation and stop rules
+are unchanged; this result does not justify widening limits.
+
+Run `scripts.run_golden_meaning_first_review` with the existing frozen source
+and report, `--case-index 1`, then exact public `--ci-run` and a fresh
+`--run-id meaning-review-...` for execution. Preview has no credentials or
+Provider construction. Raw request/response and usage are write-once; failure
+stops the case with no automatic retry. Manually inspect complete explanations,
+scope links, source checks and operations, not only verdict/score. Proceed to
+case2 only after genuine first-case success; then inspect the revised report
+and both rechecks. On failure diagnose the full result without modifying raw
+responses or launching another paid field-fix attempt.
 
 ## Product boundaries and downstream work
 

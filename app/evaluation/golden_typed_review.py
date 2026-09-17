@@ -169,9 +169,6 @@ def validate_summaries(wire, inputs):
 def apply(state, raw, *, inputs):
     if prepare(state.raw, inputs) != state:
         raise ValueError("typed_review_state_changed")
-    wire = full._read(raw, inputs, TypedReview)
-    general = validate_checks(wire.source_checks, wire.issues, wire.verdict, inputs)
-    summaries = validate_summaries(wire, inputs)
     original, obligations, diagnostics = provisional.inspect(state.base.raw, inputs)
     # Compatibility schemas do not know the new source/summary fields. Report
     # native schema errors, plus real source-location diagnostics, rather than
@@ -184,6 +181,19 @@ def apply(state, raw, *, inputs):
             for e in error.errors(include_input=False, include_context=False))
     old_rows = [(a.kind, c) for a in obligations.audits for c in a.claims]
     old_rows += [("source_checks", SimpleNamespace(quote_ref=r)) for r in state.source_refs]
+    return finalize(raw, inputs=inputs, old_rows=old_rows, old_issues=original["issues"],
+        first_raw=state.raw, diagnostics=diagnostics)
+
+
+def finalize(raw, *, inputs, old_rows, old_issues, first_raw, diagnostics=()):
+    """Final validation shared by full-review and report-reading first steps.
+
+The caller supplies source obligations and actual old issues, never an invented
+first verdict. Native output, arithmetic, security and canonical checks stay here.
+"""
+    wire = full._read(raw, inputs, TypedReview)
+    general = validate_checks(wire.source_checks, wire.issues, wire.verdict, inputs)
+    summaries = validate_summaries(wire, inputs)
     new_rows = [(a.kind, c) for a in wire.audits for c in a.claims]
     new_rows += [("source_checks", c) for c in wire.source_checks]
     def combined(rows):
@@ -200,19 +210,19 @@ def apply(state, raw, *, inputs):
         resolution_sources.append(resolution.model_dump(mode="json"))
     evidence = comparison.catalog(inputs)
     bindings = comparison.validate_bindings(wire, inputs, evidence)
-    old_issues = []
-    for row in original["issues"]:
+    normalized_issues = []
+    for row in old_issues:
         try: row = IssueRef.model_validate(row, strict=True).model_dump(mode="json")
         except ValueError: pass  # Full finalizer still requires explicit disposition.
-        old_issues.append(row)
+        normalized_issues.append(row)
     projected = wire.model_dump(mode="json", exclude={"source_checks"})
     for audit in projected["audits"]:
         for claim in audit["claims"]:
             claim.pop("summaries")
     inference = InferenceProjection.model_validate(projected, strict=True)
-    result, journal = full.finalize(old_issues, inference, inputs=inputs, raw=raw,
-        first_raw=state.raw, state_id=digest(state.raw), mapping=mapping)
-    journal.update(experiment=EXPERIMENT_ID, first_raw=state.raw, final_raw=raw,
+    result, journal = full.finalize(normalized_issues, inference, inputs=inputs, raw=raw,
+        first_raw=first_raw, state_id=digest(first_raw), mapping=mapping)
+    journal.update(experiment=EXPERIMENT_ID, first_raw=first_raw, final_raw=raw,
         final_response_sha256=digest(raw), source_catalog=build_catalog(inputs).manifest(),
         source_checks=general, summaries=summaries, general_coverage=mapping,
         comparison_evidence=evidence, comparison_bindings=bindings,
