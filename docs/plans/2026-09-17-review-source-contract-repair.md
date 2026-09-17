@@ -1,0 +1,91 @@
+# Whole-review source contract repair — offline next action
+
+Status: planned, not implemented or qualified for another paid run.
+Evidence: ADR-0102, source-first probe `e23c90d`, and
+`data/evaluation/results/golden_source_first_result_e23c90d.json`.
+
+## What the diagnostic establishes
+
+Removing first-review opinions did not correct the target's meaning: block10
+still uses selected-five gold/damage means instead of the four-MIDDLE scope
+established by block3. Both cohorts have the same pairwise direction, so correct
+arithmetic cannot distinguish the wrong interpretation. The response has no
+scope link for block10. This is a semantic failure regardless of missing fields.
+It does not establish the sole cause, or that the model is incapable in general.
+
+The same response also exposes a host contract gap: complete source delivery is
+not complete *addressability*. The wire requires every claim to cite integer
+`evidence_refs`; `SourceIndex.build` indexes `pack.facts` only. Other supplied
+source categories are visible to the model but absent from that catalog.
+
+| Report obligation | Actual supplied source | Current selected reference / gap |
+|---|---|---|
+| Training goal unspecified, block20 | Structured `Position context ...` JSON in deterministic source, `goal_source` and `training_positions` | Ref13 is request/count/queue and player metadata, not training goals; no indexed position-context record. |
+| K1/K2/K3 files and sections, block26 | `knowledge.citations`, with content, source/chunk IDs and version | Ref12 is match counts/exclusions, not knowledge; no citation entries in the index. |
+| Patch version and publication date, block27 | External JSON `official_patch` | Refs2/3/5 are OP.GG champion snapshots; contextual source builder imports only `opgg`, not `official_patch` or `data_dragon`. |
+| API resolution and replay limitations, block28 | Supplied source boundary prose and runtime source-use policy | Ref12 is match counts/exclusions; it does not express the claimed capability boundary. |
+
+All four must retain their real provenance. Accepting any present reference or
+adding provenance to the unrelated old reference would hide the defect. A new
+numeric allowlist for patch/date strings would not prove attribution either.
+
+The response's 14 metric-to-ability claims omit required `comparisons` entirely.
+The training calculation is correctly explained and contains no wrong win/loss
+binding, but omission is not a valid empty array. These two observations must
+remain separate. Its nine cohort claims have valid supplied bindings; this does
+not establish that every binding is semantically appropriate to its quote.
+
+## Implementation sequence and exit evidence
+
+1. **Complete the source map before editing prompts or acceptance.** Create a
+   versioned, typed source catalog for match/aggregate values, position intent,
+   retrieved knowledge, external snapshots, official patch/static-data metadata,
+   and declared source limitations. Bind each entry to its original path/hash
+   and applicable source role. Retain complete original messages, observed-player
+   identity and unknown/missing fields. Do not invent source facts from report
+   prose or retroactively change old IDs, response bytes, scores or fingerprints.
+   First produce an offline report-to-source matrix proving all supplied source
+   categories have an honest citation path. Missing evidence remains missing.
+2. **Align judgment and validation across the whole report.** Distinguish literal
+   source facts, computed statistics, capability boundaries, sample inference,
+   hypotheses and actual extrapolation. Knowledge references cannot establish a
+   match fact; OP.GG cannot establish a Riot patch date; request.queue cannot
+   establish actual match queue. A correct nonnumeric fact must have a legal
+   representation without being disguised as an inference. Decide required
+   fields by actual operation, not merely by audit name. Never silently fill a
+   missing comparison or scope decision in a real response.
+3. **Resolve semantic interpretation independently of arithmetic.** Compare an
+   explicit source-grounded meaning step (object, scope antecedent, operation)
+   followed by deterministic arithmetic with the current all-catalog judgment.
+   Keep this inside the existing call/revision budget, not another verifier
+   layer. The host can verify location, operands and arithmetic, but cannot infer
+   the author's meaning from a keyword or force MIDDLE. Correct arithmetic on
+   the wrong sample must remain a failing semantic witness. Do not tell the
+   model frozen case labels. Preserve the user's whole-context standard.
+4. **Qualify the whole candidate offline before any new live identity.** Use
+   truthful and mutated source-type cases, the frozen positive/future-negative
+   reports, all known failed response shapes, preserved-source and issue tests,
+   and the complete revision/recheck path. Measure input, output reservation,
+   time and correction reachability for every phase. A field-only synthetic
+   repair, offline expected answer or public CI cannot establish model quality.
+
+The next concrete deliverable is item1's source matrix and proposed source
+representation, reviewed together with items2/3 before implementation admission.
+Do not execute another paid review merely because one local check turns green.
+Fresh full positive/negative live qualification follows only an internally
+consistent contract and exact-implementation public checks under existing
+authorization. One model success will not establish representative accuracy.
+
+## Product boundaries and downstream work
+
+Stage8E remains in progress. Model/high, 32768 output and 300 seconds per request,
+five calls/one revision/401920 tokens/900 seconds per report and retry0 remain.
+All four failed live entry points stay offline. No production admission or
+replacement of the manual Workbench report occurred.
+
+After reliable report evaluation, continue the existing integration/acceptance
+roadmap; do not rebuild already implemented record/publication APIs. Frontend
+aesthetic overhaul (including possible rebuild and the recorded portrait
+requirements), Review/Coach/Training/Evidence linkage, Coach requests producing
+personal training plans, and the other deferred themes remain in the Astra
+restart plan and the 62-theme retrospective. This repair is not their replacement.

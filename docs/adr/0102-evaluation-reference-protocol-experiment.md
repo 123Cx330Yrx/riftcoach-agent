@@ -3,6 +3,67 @@
 Date: 2026-09-15. Status: accepted for offline experimentation and preparation of
 an isolated development candidate, now observed; no production admission or semantic-quality approval.
 
+## 2026-09-17 Source-first live result: failed, entry retired, complete contract audit
+
+Implementation `e23c90d59b8b782a51c6b02c4b38cc2113419695` passed all three
+jobs of Actions35175139341 before the one authorized diagnostic. New run:
+`data/runs/inference_development/source-first-probe-e23c90d-v1`.
+One new complete `stop` response, first visible content120.922s, stream closed
+156.734s (wrapper157.078s), input12376 + output17347 = **29723tokens**;
+unknown usage0, cumulative Provider requests at least201. Model/high and all
+budgets unchanged. No new first review, negative, revision or recheck occurred.
+
+The model's raw `96/pass` is **not an accepted result**. Full inspection found:
+
+- Schema: all14 metric-to-ability claims omit required `comparisons`. Empty and
+  absent are not equivalent under this wire; no defaults were inserted.
+- Independent scope validation: cohort claim block10 has `sample_supported`
+  but no scope source; its own short sentence contains no sample boundary.
+- Independent source validation: blocks20/26/28 lack qualifying cited value
+  provenance; block27's patch/date numbers lack support in its cited snapshots.
+- Semantic: block10 STILL uses selected-five means505.29/389.41 and
+  1286.76/591.34 instead of the four-MIDDLE context505.29/432.82 and
+  1286.76/617.52. Removing first opinions was insufficient in this observation.
+  Equal pairwise direction cannot justify replacing the original sample.
+- Positive but limited evidence: block13 now cites all actual operands;
+  block21 correctly explains the median8.805 and overall death mean1.5 and
+  does not invent win/loss bindings. Its missing field still invalidates it.
+  All13 protected source ranges remain covered. All28 block inventory entries,
+  nine heading entries,23 claims, summaries and issue inventories were inspected;
+  old/final issues and resolutions are empty. All supplied comparison operand
+  bindings validate, without establishing semantic relevance to every quote.
+
+The source errors reveal an implementation issue as well as invalid model
+references. `SourceIndex.build` indexes only `pack.facts`. Position intent is
+present in structured source text, K1/K2/K3 in `knowledge.citations`, patch and
+Data Dragon in external JSON, and API limitations in source-boundary text.
+They are not complete indexed provenance entries. Ref13 does not contain
+`goal_source`; ref12 contains match counts/exclusions, not knowledge or API
+capabilities; OP.GG refs2/3/5 cannot establish a Riot patch publication date.
+Complete source transmission did not prove full-report citation representability.
+Neither widening acceptance to any existing ref nor adding a numeric allowlist
+would repair this attribution gap. It also does NOT explain away the separate
+wrong-cohort judgment. Legacy template anchoring remains a hypothesis, not a
+confirmed sole cause; no new run changed that variable.
+
+`audit_golden_source_first_result.py` reads the original response and continues
+component checks after schema failure, without repairing missing fields or
+promoting a component result to acceptance. Its public audit is
+`golden_source_first_result_e23c90d.json`; original request/plan/response/result
+hashes are preserved. Source-first's paid CLI is retired before baseline,
+credential or network access; offline preview, replay and observation test
+doubles remain. Twelve focused checks cover retirement, nonmutation, and
+detecting later binding failure after earlier schema failure. Prior94-check
+readiness and CI remain engineering evidence, not semantic success.
+
+Next action is the offline whole-source contract repair in
+`../plans/2026-09-17-review-source-contract-repair.md`: source matrix and typed
+provenance, whole-report judgment representation, independent scope/operation
+interpretation, then complete reachability/budget qualification. Do not patch
+only missing arrays/scope and run another paid retry. Four live entries remain
+offline, Stage8E stays in progress, manual Workbench report stays retained, and
+the global frontend/product roadmap remains in force.
+
 ## 2026-09-17 Source-first reassessment: opinion isolation and a single diagnostic
 
 The current action is a bounded discriminating diagnostic, not reopening any

@@ -42,15 +42,31 @@ def test_interruption_accounts_for_unknown_usage_without_retry(tmp_path):
     assert result["completed_calls"] == 0
 
 
-def test_preview_and_failed_ci_do_not_open_credentials_or_provider(monkeypatch, tmp_path):
+def test_preview_and_retired_entry_do_not_open_credentials_or_provider(monkeypatch, tmp_path):
     import dotenv
     state, request, _ = prepared()
-    monkeypatch.setattr(probe, "prepare", lambda _: (state, request, {"max_new_calls": 1}))
+    monkeypatch.setattr(probe, "prepare", lambda _: (state, request, {"max_new_calls": 0}))
     monkeypatch.setattr(dotenv, "dotenv_values", lambda *_: pytest.fail("read credentials"))
-    monkeypatch.setattr(probe, "ReceiptedStreamProvider", lambda **_: pytest.fail("opened Provider"))
-    monkeypatch.setattr(probe, "verify_public_ci", lambda _: (_ for _ in ()).throw(ValueError("ci_missing")))
     args = SimpleNamespace(execute=False, output_root=tmp_path, run_id="source-first-probe-scripted", ci_run="test")
-    assert probe.run(args) == {"max_new_calls": 1}
+    assert probe.run(args) == {"max_new_calls": 0}
     args.execute = True
-    with pytest.raises(ValueError, match="ci_missing"): probe.run(args)
+    monkeypatch.setattr(probe, "prepare", lambda _: pytest.fail("retired entry read baseline"))
+    with pytest.raises(ValueError, match="offline_only_after_failed_diagnostic"): probe.run(args)
     assert not (tmp_path / args.run_id).exists()
+
+
+def test_full_audit_does_not_stop_at_first_schema_error_or_repair_response():
+    from scripts.audit_golden_source_first_result import inspect_response
+    state, _, final = prepared()
+    first = final["audits"][1]["claims"][0]
+    duplicate = dict(first)
+    first.pop("comparisons")
+    duplicate["comparisons"] = [dict(duplicate["comparisons"][0], operand_refs=[999])]
+    final["audits"][1]["claims"].append(duplicate)
+    raw = compact(final)
+    result = inspect_response(state, raw)
+    assert compact(final) == raw
+    assert any(e["code"] == "missing" for e in result["schema_errors"])
+    assert any(e["code"] == "comparison_operand_set_mismatch"
+               for row in result["claims"] for e in row["errors"])
+    assert not result["response_repaired"] and not result["semantic_approval"]

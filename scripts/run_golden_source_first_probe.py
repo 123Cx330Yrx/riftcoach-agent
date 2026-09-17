@@ -1,7 +1,7 @@
 """One new second-review request over a frozen failed first review.
 
-Default is offline preview. This diagnostic never claims a fresh full workflow
-or runs a negative/revision automatically. Existing failed entries stay blocked.
+Retired after the e23c90d diagnostic failed both schema and semantic inspection.
+Offline preview/replay remain available; no new paid retry of this candidate.
 """
 import argparse
 import hashlib
@@ -13,7 +13,7 @@ from pydantic import TypeAdapter
 from app.evaluation import golden_source_first_review as candidate
 from app.evaluation import golden_provisional_reassessment as provisional
 from app.evaluation.golden_contextual_sources import build_inputs
-from app.evaluation.golden_integrated_runtime import BudgetedReviewSender, ReceiptedStreamProvider, validate_exchange
+from app.evaluation.golden_integrated_runtime import BudgetedReviewSender, validate_exchange
 from app.evaluation.golden_inference_scope_v5 import strict_json
 from app.evaluation.golden_journal import write_new_json
 from app.evaluation.golden_review_experiment import compact
@@ -23,7 +23,6 @@ from app.providers.models import ChatResponse
 from scripts.check_golden_reassessment_feasibility import measured
 from scripts.run_golden_context_controls import load_inputs, UTTERANCE
 from scripts.run_golden_contextual_review import select_cases
-from scripts.run_golden_inference_development import verify_public_ci
 from scripts.run_golden_integrated_review import implementation_identity
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -58,9 +57,10 @@ def prepare(args):
     plan = dict(experiment_id=EXPERIMENT_ID, implementation=files,
         baseline=str(BASELINE.relative_to(ROOT)), baseline_hashes=original_hashes,
         baseline_first_is_reused_not_a_new_call=True, input_ceiling=measured(request),
-        max_new_calls=1, max_output_tokens=32768, max_seconds=300, reasoning_effort="high", sdk_retries=0,
+        max_new_calls=0, historical_diagnostic_max_new_calls=1,
+        max_output_tokens=32768, max_seconds=300, reasoning_effort="high", sdk_retries=0,
         full_workflow=False, labels_sent_to_model=False, manual_semantic_acceptance=False,
-        live_status="bounded_single_diagnostic_only", production_admitted=False)
+        live_status="offline_only_after_failed_diagnostic", production_admitted=False)
     return state, request, plan
 
 
@@ -91,22 +91,11 @@ def observe(provider, directory, state, request):
 
 
 def run(args):
-    state, request, plan = prepare(args)
-    if not args.execute:
-        print(compact(plan)); return plan
-    if not re.fullmatch(r"source-first-probe-[a-z0-9-]{1,55}", args.run_id):
-        raise ValueError("source_first_probe_id_invalid")
-    plan.update(head_sha=verify_public_ci(args.ci_run), ci_run=args.ci_run)
-    directory = args.output_root / args.run_id
-    directory.mkdir(parents=True, exist_ok=False)
-    write_new_json(directory / "plan.json", plan)
-    from dotenv import dotenv_values
-    from app.providers.config import load_zhipu_settings
-    settings = load_zhipu_settings(dotenv_values(args.env_file))
-    provider = ReceiptedStreamProvider(settings=settings, directory=directory / "streams", transport_id=CAPACITY_TRANSPORT_ID)
-    result = observe(provider, directory, state, request)
-    print(compact(result), flush=True)
-    return result
+    if args.execute:
+        raise ValueError("source_first_probe_offline_only_after_failed_diagnostic")
+    _, _, plan = prepare(args)
+    print(compact(plan))
+    return plan
 
 
 def main():
