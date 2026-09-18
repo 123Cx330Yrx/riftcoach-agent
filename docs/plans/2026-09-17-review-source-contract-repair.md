@@ -305,11 +305,71 @@ JSON, relax frozen labels, add calls or issue automatic paid patch retries.
 All five earlier failed entries remain blocked. Existing broad authorization
 covers this bounded test once engineering qualification passes.
 
+## 2026-09-19 Provisional reading: complete coverage and recoverable admission
+
+The grounded-reading implementation `a5d90cf` passed public CI35228469730 but
+its frozen positive stopped after one complete response: 2856 input +3750
+output =6606 tokens,40.578s, no unknown usage. Four first QuoteRef heads exceeded
+32 characters; there were21 readings and no issues, and body blocks10,20,26
+were omitted. Identity was understood as ShowMaker observation, but the target
+scope was not examined, so no semantic success is claimed. The original run
+and hashes remain immutable. `golden_grounded_reading_result_a5d90cf.json` is a
+read-only forensic inventory. The grounded entry joins the five retired holds.
+
+The selected change concerns the entire first-to-final contract rather than
+raising a quote length limit. First readings are advisory hypotheses. Complete,
+unambiguous JSON with readings/issues lists, actual primary block coordinates
+and bounded row counts is still required. Every supplied value and issue,
+including unknown fields, malformed references and wrong interpretations,
+is retained; schema/location defects become diagnostics. Conflicting duplicate
+values, malformed JSON, unknown primary blocks, excessive capacity and high
+injection findings still stop. Final parsing, numeric/source validation and
+issue disposition remain strict. No first response is presented as a verdict.
+
+Final coverage now comes from the host's complete body inventory, including
+all characters of each body paragraph; it no longer depends on what the first
+model happened to read. A wrong navigation-heading first reading can be
+corrected by the complete final heading inventory. Assertion headings still
+require full factual audit. This fixes the independent reviewer’s reproduced
+navigation dead end without exempting any substantive body or assertion.
+
+Original references are transmitted as reversible positional values, malformed
+shapes are explicitly wrapped, and diagnostics are grouped by code. Exact
+roundtrip comparisons protect both. Redundant instructions were consolidated;
+source facts, model level, schema, estimator and limits are unchanged. An older
+raw replay initially exceeded63936; the final lossless representation fits.
+The data artifact `golden_provisional_reading_offline_v1.json` records:
+
+- Both entire frozen reports:19/20 body blocks, second requests58770/58826.
+- Both actual failed raw first responses:63728/61634. All18 identical-key
+  diagnostics,29 older readings and its identity issue, and all21 newer
+  readings/overlong refs/omissions survive. No failed receipt is relabelled.
+- Analyst-authored final results demonstrate legal correction and explicit
+  issue resolution. Complete scripted five-call inputs are13248/58826/58458/
+  13176/58770; full-output reservations total366318<401920. These fixtures
+  establish reachability, not live semantic quality or a900s guarantee.
+-253 relevant tests pass, including omitted tails, malformed references,
+  navigation correction, input tampering, strict final duplicates and local
+  rejection of an oversized response before paying for its second call.
+
+Alternative of only increasing QuoteRef length was rejected: it would leave
+omissions and other provisional defects blocking or unreviewed. Deleting
+first issues or silently replacing their values was also rejected. This
+candidate does not promise recovery of ambiguous JSON or arbitrary output
+growth, nor can character coverage prove correct sample selection.
+
+Run only `scripts.run_golden_provisional_reading_review`, case1, after clean
+same-SHA public CI. Manually inspect every final explanation, sample, operation,
+identity, source and issue; only semantic success permits case2 and its actual
+revision/recheck. A failed final response stops the batch and is fully audited;
+no field-specific paid retry. Existing authorization covers this bounded test.
+Production entry and the Workbench manual report remain untouched.
+
 ## Product boundaries and downstream work
 
 Stage8E remains in progress. Model/high, 32768 output and 300 seconds per request,
 five calls/one revision/401920 tokens/900 seconds per report and retry0 remain.
-All five failed live entry points stay offline. No production admission or
+All six failed live entry points stay offline. No production admission or
 replacement of the manual Workbench report occurred.
 
 After reliable report evaluation, continue the existing integration/acceptance

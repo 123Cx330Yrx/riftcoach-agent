@@ -21,14 +21,12 @@ from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.providers.structured import contract_for_model
 
 EXPERIMENT_ID = "golden-grounded-reading-review-v1"
-LIVE_STATUS = "bounded_development_after_exact_ci"
-LIVE_BLOCK_REASON = ""
+LIVE_STATUS = "offline_only"
+LIVE_BLOCK_REASON = "grounded_reading_strict_first_reference_failed"
 
 
 def require_live_qualification():
-    # Offline whole-report/replay qualification is recorded with this exact
-    # implementation. The runner still checks a clean SHA and its public CI.
-    return None
+    raise ValueError(LIVE_BLOCK_REASON)
 
 
 class ReportReading(UntitledSchema, Strict):
