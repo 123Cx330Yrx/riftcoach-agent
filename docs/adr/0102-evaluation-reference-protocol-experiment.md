@@ -1,5 +1,13 @@
 # ADR-0102: Source references and bounded evaluation correction
 
+## 2026-09-19 Host computation and full-context review batches
+
+Selected the complete method described in `../plans/2026-09-19-review-workload-partition.md` after rejecting the initial half-batch prototype. Explicit model scope/source selectors remain semantic decisions; host only supplies derived arithmetic, members and source metadata. All old issues and strict native final checks remain. Offline whole-report and error witnesses fit unchanged per-call admission; real quality and latency remain unverified. Bounded execution requires exact-SHA public CI, frozen positive first and manual semantic inspection. No production registration or stage change.
+
+## 2026-09-19 Complete second review missed its deadline
+
+2026-09-19 provisional-reading真实正例触发二评整次时限：36b41b5/Actions35370480008公共三项success；首读54.453秒完整stop，25条理解覆盖全部19正文段、无首读schema诊断，第二请求59364通过预算准入。二评264.579秒才开始正文，300秒截止；持续收流、最大事件间隔484ms，未获完整结果及Usage，不能称网络停流或输出额度耗尽。2次Provider请求，已知7447tokens，另1次用量未知，累计至少205；负例/修订/复评未执行，语义纠正仍未验证。已保留原回执哈希并停用该入口，现七个失败入口offline_only；42项受影响检查通过。唯一下一步：按docs/plans/2026-09-19-review-workload-partition.md离线裁决完整上下文下的两批审查/全局裁决与host确定性工作分工，检查合并、首批纠错、全链预算和语义边界，不原样付费重跑。8E/high/所有上限/完整上下文标准不变；已核对现有发布和消费接缝，前端审美、四块联动、头像及62主题后续保持。
+
 ## 2026-09-19 Provisional first admission and host body coverage
 
 2026-09-19 首读临时性与全文覆盖合同完成离线验证：a5d90cf/Actions35228469730公共三项success，但真实正例首步4处引用超长且漏10/20/26段，1次完整stop共6606tokens，累计Provider至少203，无未知用量；旧回执与哈希保留，grounded入口停用，现有六个失败入口均offline_only。新provisional-reading保留全部首读原值/问题/错误解释，格式和引用缺陷作为诊断，正文覆盖改由host完整清单负责；导航标题可纠正分类，断言标题仍严格审查。未改最终schema、模型high、估算器及所有预算；253项相关测试通过，两份真实失败回放请求63728/61634<63936，完整五步脚本输入13248/58826/58458/13176/58770，全输出预约366318<401920。合成修正不证明语义正确。唯一下一步：本实现同SHA公共CI后运行冻结正例，逐条人工核对完整最终判断/范围/来源/解释，合格才负例修订复评；失败整批停止并审查，不补字段自动付费重跑。8E仍in_progress；前端审美/四块联动和62主题全局后续不变。

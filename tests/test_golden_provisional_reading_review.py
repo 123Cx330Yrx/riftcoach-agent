@@ -101,6 +101,14 @@ def test_grounded_failed_entry_blocks_before_input_or_provider(monkeypatch):
         runner.run(SimpleNamespace(execute=True), grounded=True)
 
 
+def test_deadline_failed_entry_blocks_before_input_ci_credentials_or_provider(monkeypatch):
+    from scripts import run_golden_integrated_review as runner
+    monkeypatch.setattr(runner, "load_inputs", lambda *_: pytest.fail("loaded inputs"))
+    monkeypatch.setattr(runner, "verify_public_ci", lambda *_: pytest.fail("called CI"))
+    with pytest.raises(ValueError, match="provisional_reading_final_review_deadline"):
+        runner.run(SimpleNamespace(execute=True), advisory=True)
+
+
 def test_first_navigation_reading_can_be_classified_without_fabricated_fact_audit():
     inputs, _, final = source_scenario("## 资料\n\n官方补丁16.17。")
     final["reviewed_blocks"] = [1, 2]

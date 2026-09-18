@@ -365,11 +365,18 @@ revision/recheck. A failed final response stops the batch and is fully audited;
 no field-specific paid retry. Existing authorization covers this bounded test.
 Production entry and the Workbench manual report remain untouched.
 
+## Latest result and successor decision
+
+The qualified implementation was tested and failed its second-call deadline.
+Its entry is now offline_only; do not follow the preceding historical live-run
+instructions as the next action. Current timing evidence, method comparison and
+product integration seams are in `2026-09-19-review-workload-partition.md`.
+
 ## Product boundaries and downstream work
 
 Stage8E remains in progress. Model/high, 32768 output and 300 seconds per request,
 five calls/one revision/401920 tokens/900 seconds per report and retry0 remain.
-All six failed live entry points stay offline. No production admission or
+All seven failed live entry points stay offline. No production admission or
 replacement of the manual Workbench report occurred.
 
 After reliable report evaluation, continue the existing integration/acceptance

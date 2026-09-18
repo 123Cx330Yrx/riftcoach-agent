@@ -20,8 +20,8 @@ from app.evaluation.golden_review_experiment import QuoteRef, compact, digest
 from app.evaluation.golden_schema_notation import schema_notation
 
 EXPERIMENT_ID = "golden-provisional-reading-review-v1"
-LIVE_STATUS = "bounded_development_after_exact_ci"
-LIVE_BLOCK_REASON = ""
+LIVE_STATUS = "offline_only"
+LIVE_BLOCK_REASON = "provisional_reading_final_review_deadline"
 
 
 def require_live_qualification():
