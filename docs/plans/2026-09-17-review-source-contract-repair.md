@@ -1,5 +1,11 @@
 # Whole-review source contract repair — offline next action
 
+## Current supersession — 2026-09-19
+
+See `2026-09-19-native-review-reset.md` and `2026-09-19-review-oracle-provenance.md`. Computed partition failed its live first call (a2bf015; 32007 tokens); all eight predecessor entries are offline_only. The old exclusive-four-scope claim below is historical analysis, superseded by the source audit: selecting five alone is not proof of an incorrect interpretation of the ambiguous old control. Original receipts and outcomes remain unchanged.
+
+Historical proposal follows.
+
 Status: the failed meaning-first entry and four older entries remain offline.
 Grounded-reading replaces model-owned hash/inventory with host binding, supplies
 the original player identity without arithmetic, and preserves identical-key

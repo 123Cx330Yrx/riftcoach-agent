@@ -68,7 +68,7 @@ def implementation_identity(*, bounded=False, full_context=False, comparison=Fal
     return {n: hashlib.sha256((ROOT/n).read_bytes()).hexdigest() for n in names}
 
 
-def observe_report(provider, directory, request, case, *, workflow_factory=IntegratedReviewWorkflow):
+def observe_report(provider, directory, request, case, *, workflow_factory=IntegratedReviewWorkflow, score_case=score):
     sender = BudgetedReviewSender(provider)
     records = []
     def record(phase, exchange):
@@ -89,7 +89,7 @@ def observe_report(provider, directory, request, case, *, workflow_factory=Integ
         if getattr(workflow, "last_journal", None) is not None:
             write_new_json(directory/"initial-correction-journal.json", workflow.last_journal)
         write_new_json(directory/"initial-evaluation.json", _evaluation_payload(initial))
-        initial_score = score(case, initial)
+        initial_score = score_case(case, initial)
         outcome.update(initial_score, initial_control=initial_score)
         # A wrong initial control verdict stops here; rewriting cannot erase it.
         if not outcome["matched"]:

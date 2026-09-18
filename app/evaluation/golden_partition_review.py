@@ -29,8 +29,8 @@ from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.providers.structured import contract_for_model
 
 EXPERIMENT_ID = "golden-computed-partition-review-v1"
-LIVE_STATUS = "bounded_development_after_exact_ci"
-LIVE_BLOCK_REASON = ""
+LIVE_STATUS = "offline_only"
+LIVE_BLOCK_REASON = "computed_partition_first_contract_failed"
 
 
 def require_live_qualification():

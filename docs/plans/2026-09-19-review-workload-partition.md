@@ -1,5 +1,11 @@
 # Whole-review workload decision after the 300-second deadline
 
+## Current supersession — 2026-09-19
+
+See `2026-09-19-native-review-reset.md` and `2026-09-19-review-oracle-provenance.md`. Computed partition failed its live first call (a2bf015; 32007 tokens); all eight predecessor entries are offline_only. The old exclusive-four-scope claim below is historical analysis, superseded by the source audit: selecting five alone is not proof of an incorrect interpretation of the ambiguous old control. Original receipts and outcomes remain unchanged.
+
+Historical proposal follows.
+
 Status: whole-method offline qualification completed; bounded development only
 after same-implementation public CI. No production entry or semantic approval.
 Current product checkpoint remains Stage8E in progress. Existing model/high,

@@ -1,5 +1,15 @@
 # ADR-0102: Source references and bounded evaluation correction
 
+## 2026-09-19 Restore business contract and correct acceptance provenance
+
+2026-09-19 审查合同与验收依据整体纠偏完成，native-business实验进入同SHA公共CI前资格阶段。a2bf015/Actions35374657988三项success后，computed-partition真实首步192.032秒完整stop，32007tokens、无未知用量，累计Provider至少206；数组/对象合同不一致及独立来源/覆盖缺陷导致失败，未二评/修订，原响应哈希保持，现八个失败入口offline_only。追溯原始用户裁决发现“旧正例只能解释为四场中单”并非用户标准或冻结标签，撤回将五场解释本身定为确定错误的判断；旧模板观摩身份也有歧义，不能靠宽松改标签通过。历史68e8670已实际检出未来外推并完成修订请求，最终受引用合同拒绝；旧失败仍原样保留。
+
+新实现用完整逐块判断、真实来源编号和原生问题清单替代模型重建字符/标量路径；正常初评1次、需修订3次，合同纠正最多5次。来源、知识、原问题显式处置、输入/修订绑定、安全与记账边界保持。新五份完整观摩对照已由不同agent逐块逐源独立审读；另七份范围差异对照明确为分析者开发用例，旧报告/标签/回执不变。163项相关回归通过；新五例初评46162–46238、长首评纠正57148–57850均低于63936。五次满额预约405122（长旧模板426268）超过总401920，继续按实际消耗+下次预约准入，不保证任意输出必能完成，不改预算/估算器。以上都是离线证据，未证明真实速度或判断质量。
+
+唯一下一步：本实现同SHA公共三项success后，以新observed_01正例实际逐条审读合格为前提，执行未来外推负例→修订→复评及其余身份/来源日期/断言标题对照；任何失败停批诊断，不补字段自动付费重跑。方法、来源审计和剩余边界见docs/plans/2026-09-19-native-review-reset.md及review-oracle-provenance.md。Stage8E仍in_progress，glm-5.3-flash/high、32768/300秒、5次/1修订/401920/900秒保持；尚无新模型质量准入或生产发布，人工工作台稿未替换。前端审美重做、英雄头像、Coach/Review/Training/Evidence联动、专属训练和62主题继续按Astra restart plan追踪。
+
+This version replaces experimental character/scalar reference representation, not product quality or the historical result. The replacement is justified by the provenance and necessity audits; no dependency, production registration, model downgrade or budget increase. Eligibility is one-case bounded development after exact-SHA CI, with manual semantic review before the next case.
+
 ## 2026-09-19 Host computation and full-context review batches
 
 Selected the complete method described in `../plans/2026-09-19-review-workload-partition.md` after rejecting the initial half-batch prototype. Explicit model scope/source selectors remain semantic decisions; host only supplies derived arithmetic, members and source metadata. All old issues and strict native final checks remain. Offline whole-report and error witnesses fit unchanged per-call admission; real quality and latency remain unverified. Bounded execution requires exact-SHA public CI, frozen positive first and manual semantic inspection. No production registration or stage change.
