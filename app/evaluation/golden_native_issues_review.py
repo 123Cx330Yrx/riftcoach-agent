@@ -19,9 +19,9 @@ from app.evaluation.golden_review_experiment import compact, digest
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.providers.structured import contract_for_model
 
-EXPERIMENT_ID = 'golden-native-issues-review-v3.3'
-LIVE_STATUS = 'bounded_development_after_exact_ci'
-LIVE_BLOCK_REASON = 'native_whole_context_scope_qualification_required'
+EXPERIMENT_ID = 'golden-native-issues-review-v3.4'
+LIVE_STATUS = 'offline_missing_field_reassessment'
+LIVE_BLOCK_REASON = 'native_missing_field_reassessment_qualification_required'
 strict_json = previous.strict_json
 build_inputs = previous.build_inputs
 request_data = partial(request_data, include_role_contrasts=True)
@@ -74,7 +74,11 @@ _rules.insert(1, previous.FULL_CONTEXT_RULE +
     '不得用另一范围、通用免责声明或其他正确内容替作者改写原断言。'
     '只有全文仍存在会改变结论的未解歧义或真实冲突才阻断，并在现有explanation说明具体依据；'
     '可补写范围以改善阅读，不等于已有事实错误。')
-POLICY = '\n'.join(_rules)
+POLICY = '\n'.join(_rules).replace(
+    'retained要求对应最终同一问题；replaced给修正后的final_issue编号；',
+    'retained仅用于旧issue的全部字段和值原样不变（包括block和source_ids）；'
+    '任何补字段、改值或改说明，即使仍是同一业务问题，也必须用replaced并给修正后的final_issue编号；'
+    '修正须体现在最终issues对象的实际字段中，只在explanation声称已经修正不算修复；')
 
 
 def prior_issues(value):

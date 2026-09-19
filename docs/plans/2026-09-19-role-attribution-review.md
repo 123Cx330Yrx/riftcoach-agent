@@ -1,5 +1,45 @@
 # Metric-specific attribution review
 
+## Latest outcome: three accepted controls, then missing-field recovery failure
+
+V3.3 (ad6b2d9/CI35432825188 all three jobs successful) made7 complete calls:
+81603 input +19607 output=101210 tokens, no unknown usage. Both positives
+passed, including the exact earlier false positive. The explicit-mid scope
+negative correctly located the error, changed only its relevant sentence, and
+rechecked97/pass. All three outcomes were manually accepted. This is a real
+bounded improvement, not attribution recall or overall admission.
+
+Case4 found the wrong mid early-death value, but both initial and sole allowed
+reassessment omitted issue.block. The second explanation claimed it had added
+block14; the JSON had not. Strict validation correctly stopped before revision.
+The batch ended; case5 (the original attribution miss) and the historical five
+were not run. All receipts/text/hashes and manual decisions are preserved in
+`golden_native_scope_result_ad6b2d9.json`. Across both new batches:8 calls,
+117430 tokens, no unknown usage; historical Provider count at least247.
+
+Offline replay exposed a separate wording mismatch: retained is exact equality
+in the validator, while the prompt described the same problem. Adding a field
+with retained is invalid; the same fully corrected issue with replaced has a
+valid path. This does not establish why the model omitted block. V3.4 makes
+that existing contract explicit; it does not infer block from prose, insert a
+field, erase an issue, relax final validation or add another call. Its live
+status is `offline_missing_field_reassessment`, Coach1.4.4/Program3.0.4.
+
+The fixture preserves the original input identity and both real responses.
+Seventy affected checks passed. An analyst-authored block addition plus explicit
+replacement reaches revision and recheck including a second format correction
+in five calls, reservation383294. Original-control five-call reservation401442;
+actual-usage budgeting remains authoritative. The original missing fields are
+still rejected. No scripted success is credited to the model.
+
+Independent final review passed: all17 raw-file hashes, both response contents, original input identity, five-call arithmetic and live manifest verification matched. It found no blocking offline defect and confirmed that the real reassessment also changed explanation, so retained would still be invalid even if block were added. Real correction remains unproven. Next complete exact-SHA CI and the new candidate qualification.
+Prioritize the full positive then original attribution negative in the next
+bounded batch, before supplementary controls; this run left the central
+attribution effect unmeasured by putting all added scope cases ahead of it.
+Preserve all required regressions rather than dropping them. No third paid
+batch in this turn. Product execution remains offline and Stage8E in progress.
+
+
 ## Current candidate after independent scope review
 
 An independent default Codex agent read all five complete scope reports, both

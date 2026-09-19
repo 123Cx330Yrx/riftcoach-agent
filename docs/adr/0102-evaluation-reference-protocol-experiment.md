@@ -1,5 +1,18 @@
 # ADR-0102: Source references and bounded evaluation correction
 
+## 2026-09-19 Explicit replacement for changed issue fields
+
+V3.3 passed two positives and one negative revision/recheck but failed the next
+case after two complete responses omitted block. Keep that failure and stop
+paid calls. The existing validator requires exact-value retention; adding or
+changing fields requires replaced. V3.4 aligns the prompt with this distinction
+and requires actual corrected fields, without parsing targets from prose or
+weakening final validation. Source identity, original findings and five-call
+limits are preserved. The actual-failure replay reaches a legal full synthetic
+repair path; real repair remains unproven. Native/product entrypoints stay
+offline, and the original attribution negative remains to be measured.
+
+
 ## 2026-09-19 Whole-document scope before arithmetic
 
 Independent read-only review confirmed the five scope-control labels from the
