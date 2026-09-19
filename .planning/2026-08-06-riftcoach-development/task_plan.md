@@ -300,13 +300,13 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-19 归因审查已完成整体离线改动：native policy v3.2 / Coach1.4.2 / Skill0.6.0 / Program3.0.2，wire3.1.0不变。程序按原精度提供所有已有位置/指标筛选前后的胜负均值差与差值变化，审查逐指标核验复合推断；不硬编码ShowMaker答案、不把重分组当因果贡献、不增加固定模型调用。计算证据随原有来源hash贯穿评估/修订/复评，旧调用默认数据形状不变。
+2026-09-19 独立开发审读完成：默认Agent完整核对五份范围对照、父数据集和三份原始来源，独立复算并确认accept/accept/reject/reject/reject；v3.2唯一issue的计算正确但局部口径阻断不成立。原始误报和16220tokens原样保存，累计Provider至少240。Luna开发协作请求因通道不支持模型404未执行，未涉及产品GLM参数；独立审读由默认Agent完成。
 
-相关算术/来源/原生审查/应用/runner/Prompt Program回归通过。原五例及完整归因正反例的脚本三次/最多五次路径通过；五次满额预约分别398682和377744，均低于401920，实际用量+下次预约仍为准。旧真实尾文重评49820、长旧响应重评58384<63936。正反例输入43860/43940；未证明新模型语义。离线证据golden_native_role_contrasts_offline_v1.json、golden_native_attribution_offline_v1.json；两份冻结控制集/旧回执未改。新runner沿用同SHA CI/预算/回执，仅显式选择归因suite，标签与人工算式不入模型；它的用户请求为冻结简述，不冒称exact原产品重放。
+native v3.3 / Coach1.4.3 / Skill0.6.0 / Program3.0.3在原问题清单内落实“全文定范围，再按组核算”：同指标/比较对象/期间的明确后文可补足未写明范围；明确原断言与来源冲突时仍阻断，不能借另一范围/免责声明覆盖。采用标准被移到判断前置位置，不复制为互相竞争规则；role_contrasts及逐指标归因检查保持，不增加强制调用/字段，不自动过滤issue。范围suite复用现有CI/预算/回执并冻结来源绑定。旧v3.2失败不重标；native新候选仅准同SHA有界开发验证，product仍offline。
 
-唯一下一步：本实现同SHA公共三项成功后，先归因正确对照人工合格，再原错稿检出→修订→复评，并复核原五例。任一失败停批保留后整体诊断；质量通过才恢复一次来源绑定后的完整产品实测。产品runner仍offline，8E仍in_progress，累计Provider至少239（本次尚无新调用）。来源接线修复与归因漏检分别记账，不能以工程通过称语义修复。方案见docs/plans/2026-09-19-role-attribution-review.md。
+77项受影响回归通过，五份范围对照输入44370–44468，原五例48540–48614，完整三次/五次脚本路径通过；五次满额原五例400722、归因379784<401920，实际消耗+下一预约仍为准，不承诺任意输出都能完成。长历史原响应重评58894<63936。证据golden_native_scope_controls_offline_v2.json、golden_native_attribution_offline_v2.json、golden_native_scope_review_offline_v1.json。这里只证明输入/合同/预算，模型语义尚待验证。
 
-后续任务原子事务/API/Workbench实际消费、独立评估、学习覆盖、前端审美重做/英雄头像、Coach/Review/Training/Evidence与专属Training及62主题沿用restart plan。
+唯一下一步：本实现同SHA公共三项成功后，五份完整范围对照按两正例先行、显式范围/数值负例和原伤害负例依次检出→修订→复评，每例逐项人工审读，失败停批。通过后复核原五例，才恢复来源绑定后的完整产品实测。Stage8E仍in_progress；其余任务事务/API/Workbench、独立评估、学习覆盖和前端审美/头像/四块联动/个人Training/62主题沿用restart plan。
 
 ## Phases
 
@@ -554,7 +554,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-本实现同SHA公共三项后，归因正确对照先人工合格，再原错稿自动检出/修订/复评及原五例回归。失败停批整体诊断；成功后才恢复来源绑定产品实测。全局后续见docs/plans/2026-09-16-astra-restart-plan.md。
+独立审读支持全文范围裁决，v3.3离线/预算已通过。本实现同SHA公共三项后按五份范围对照先两正再三负逐项实测，失败停批；合格才原五例及来源绑定产品实测。详见docs/plans/2026-09-19-role-attribution-review.md，全局后续沿用restart plan。
 
 ## RQ-195 / 候选 runtime 接线架构评审（2026-09-01）
 

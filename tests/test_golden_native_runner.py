@@ -73,6 +73,22 @@ def test_attribution_loader_keeps_labels_and_analyst_arithmetic_outside_input(co
     assert plan['suite'] == 'attribution' and plan['manifest_sha256'] == hashlib.sha256(path.read_bytes()).hexdigest()
     prompt = '\n'.join(m.content for m in active.request(active.build_inputs(req)).messages)
     assert 'never_send_oracle' not in prompt and 'expected_report' not in prompt
+    data['cases'].append(dict(data['cases'][0], id='synthetic-second-positive'))
+    path.write_text(compact(data), encoding='utf-8')
+    scope = dict(parent_dataset=path.name, parent_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+        source_files=data['source_files'], user_utterance=data['user_utterance'],
+        cases=[dict(case, analyst_rationale='never_send_oracle')])
+    scope_path = root/'scope.json'
+    scope_path.write_text(compact(scope), encoding='utf-8')
+    monkeypatch.setattr(runner, 'SCOPE_DATASET', scope_path)
+    _, scope_req = runner.prepare_scope(1)
+    assert scope_req == req
+    control.args.suite = 'scope'
+    assert runner.run(control.args, candidate_module=active)['suite'] == 'scope'
+    scope['user_utterance'] = 'changed'
+    scope_path.write_text(compact(scope), encoding='utf-8')
+    with pytest.raises(ValueError, match='native_scope_sources_changed'):
+        runner.prepare_scope(1)
     (root/'player_summary.json').write_text('{}', encoding='utf-8')
     with pytest.raises(ValueError, match='native_attribution_source_changed'):
         runner.prepare_attribution(1)

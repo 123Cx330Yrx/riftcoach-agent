@@ -4,6 +4,7 @@ Preview is local/read-only. Labels stay in the scorer, never in model input.
 This runner does not register a production Coach or publish a report.
 """
 import argparse
+from dataclasses import replace
 import hashlib
 from pathlib import Path
 import re
@@ -22,6 +23,7 @@ from scripts.run_golden_inference_development import verify_public_ci
 ROOT = Path(__file__).resolve().parents[1]
 DATASET = ROOT / "data/evaluation/datasets/golden_observed_review_controls_v1.json"
 ATTRIBUTION_DATASET = ROOT / "data/evaluation/datasets/golden_native_product_attribution_controls_v1.json"
+SCOPE_DATASET = ROOT / "data/evaluation/datasets/golden_native_scope_resolution_controls_v1.json"
 
 
 def score_case(case, result):
@@ -86,17 +88,41 @@ def prepare_attribution(case_index):
         sources['deterministic_report.md'], knowledge, case['report'], data['user_utterance'])
 
 
+def prepare_scope(case_index):
+    data = candidate.strict_json(SCOPE_DATASET.read_text(encoding='utf-8'))
+    if (ROOT / data['parent_dataset']).resolve() != ATTRIBUTION_DATASET.resolve():
+        raise ValueError('native_scope_parent_changed')
+    if hashlib.sha256(ATTRIBUTION_DATASET.read_bytes()).hexdigest() != data['parent_sha256']:
+        raise ValueError('native_scope_parent_changed')
+    _, original = prepare_attribution(2)
+    parent = candidate.strict_json(ATTRIBUTION_DATASET.read_text(encoding='utf-8'))
+    if data['source_files'] != parent['source_files'] or data['user_utterance'] != original.user_utterance:
+        raise ValueError('native_scope_sources_changed')
+    if not 1 <= case_index <= len(data['cases']):
+        raise ValueError('native_control_case_index_invalid')
+    if len({c['id'] for c in data['cases']}) != len(data['cases']):
+        raise ValueError('native_control_duplicate_identity')
+    for case in data['cases']:
+        if digest(case['report']) != case['report_sha256'] or case['report'].count(case['target']) != 1:
+            raise ValueError('native_control_report_changed')
+        if case['expected_report'] not in ('accept', 'reject'):
+            raise ValueError('native_control_label_invalid')
+    case = data['cases'][case_index - 1]
+    return case, replace(original, report=case['report'])
+
+
 def run(args, *, candidate_module=None):
     active = candidate_module or candidate
     if args.execute:
         active.require_live_qualification()
-    attribution = getattr(args, 'suite', 'observed') == 'attribution'
-    case, req = (prepare_attribution if attribution else prepare)(args.case_index)
-    dataset = ATTRIBUTION_DATASET if attribution else DATASET
+    suite = getattr(args, 'suite', 'observed')
+    loader, dataset = {'observed': (prepare, DATASET), 'attribution': (prepare_attribution, ATTRIBUTION_DATASET),
+                       'scope': (prepare_scope, SCOPE_DATASET)}[suite]
+    case, req = loader(args.case_index)
     inputs = active.NativeBusinessReviewWorkflow.build_inputs(req)
     plan = dict(experiment_id=active.EXPERIMENT_ID, selected_cases=[case["id"]],
         manifest_sha256=hashlib.sha256(dataset.read_bytes()).hexdigest(),
-        suite='attribution' if attribution else 'observed',
+        suite=suite,
         report_sha256=digest(req.report), input_sha256=digest(inputs.data_json),
         first_input_ceiling=size(active.request(inputs)), labels_sent_to_model=False,
         source_scope="complete_observed_report_analyst_development_control_not_holdout",
@@ -141,7 +167,7 @@ def run(args, *, candidate_module=None):
 def main(*, candidate_module=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--case-index", type=int, default=1)
-    parser.add_argument("--suite", choices=('observed', 'attribution'), default='observed')
+    parser.add_argument("--suite", choices=('observed', 'attribution', 'scope'), default='observed')
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--run-id", default="")
     parser.add_argument("--ci-run", default="")

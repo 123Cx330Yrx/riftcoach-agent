@@ -1,5 +1,68 @@
 # Metric-specific attribution review
 
+## Current candidate after independent scope review
+
+An independent default Codex agent read all five complete scope reports, both
+parent reports and all three hashed original sources, and recomputed the key
+numbers. It confirmed accept/accept/reject/reject/reject. Later same-metric
+scope resolves an unspecified earlier scope; explicit wrong mid scope is a
+source-fact error and is not excused by a correct statement about another
+cohort. The Luna delegation failed with unsupported-model404 before execution;
+it provided no review and changed no product GLM setting.
+
+V3.3 implements that ordering in the existing review policy: determine scope
+from the whole document before selecting numeric groups. It moves the adopted
+whole-context rule forward and explains the explicit-versus-inferred scope
+boundary, without duplicate output fields, mandatory calls, automatic issue
+suppression or semantic approval by the host. Coach1.4.3/Program3.0.3 bind it;
+wire3.1 and Skill0.6 stay unchanged. The v3.2 failure remains failed. The new
+native candidate uses same-SHA development admission; product execution remains
+offline. Seventy-seven affected checks passed; full scripted budget artifacts
+cover original controls and attribution revision/recheck. Five maximum-output
+reservations are400722 and379784 respectively, still subject to actual usage.
+
+After this implementation's three public CI jobs pass, run scope cases1,2
+(positives) then3,4,5 (explicit-scope/numeric/attribution negatives), manually
+inspect each full opinion and actual revision before advancing. Case1 is the
+unchanged attribution positive and case5 the unchanged attribution negative;
+do not run their aliases again. Any failure stops the batch. Only after those
+and the five historical controls pass can the source-bound product run resume.
+
+
+## Live result and current stop
+
+Implementation 3a73231 / public CI35431889592 passed all three jobs. The first
+complete positive returned 80/needs_revision after 63.704 seconds, with 11562
+input + 4658 output tokens and no unknown usage. It reported an early-death
+scope error: mid wins/losses 2.5/0.5 versus selected 2.5/2.6667. Those numbers
+are correct; the scope assignment is the issue. Its explanation acknowledges
+that block14 explicitly provides selected scope but treats block4's proximity
+to a mid damage clause as binding. Block4 does not explicitly call early deaths
+mid-only. Under the adopted whole-context rule, later same-metric specifics
+resolve that clause; this is an editorial clarity opportunity, not a blocking
+fact error. Neither labels nor the response were rewritten.
+
+The batch stopped at one call. The original attribution negative, revision,
+recheck and five historical regressions were not tested on v3.2. The new
+arithmetic therefore remains engineering evidence, not established recall.
+Both data and policy changed in v3.2; this single result cannot isolate which,
+if either, caused the scope choice. Native status is now
+`offline_role_scope_false_positive`; product status remains offline.
+
+The five full-report scope controls preserve all original data and 25 blocks:
+late explicit same-metric scope and explicit scope in both places are positive;
+explicit wrong mid scope, wrong mid loss number, and the original false damage
+attribution remain negative. This prevents a permissive 'any later correct
+sentence cancels an error' fix. They are analyst development labels and still
+need independent review. `check_native_product_regression --scope-controls`
+proves unchanged arithmetic/source delivery and input ceilings 43860–43958,
+not model judgments. The next method review must establish whole-document
+scope before numerical judgment, distinguish explicit assertions from an
+inferred local reading, and retain per-metric attribution scrutiny without a
+new mandatory call or a repeated fact-report output protocol. Do not start
+another paid batch immediately after a local policy patch.
+
+
 The ac2725c product report conflated CS and damage: its review returned 97/pass
 even though removing support changed the damage win/loss gap only from 695.4183
 to 669.235. Both source groups were already present. Transport completed; the

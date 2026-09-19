@@ -1,5 +1,30 @@
 # ADR-0102: Source references and bounded evaluation correction
 
+## 2026-09-19 Whole-document scope before arithmetic
+
+Independent read-only review confirmed the five scope-control labels from the
+original sources and adopted standard. Native v3.3 establishes same-metric
+scope across the complete report before selecting a cohort, while preserving
+explicit factual errors and compound attribution scrutiny. This clarifies the
+accepted standard, does not change it, and adds no call or output field.
+Coach1.4.3/Program3.0.3 bind it. Full offline budget paths passed; new same-SHA
+live controls remain required, and product admission stays closed. Earlier
+v3.2 failure is preserved, never reclassified as success.
+
+
+## 2026-09-19 Stop v3.2 after a whole-context false positive
+
+After 3a73231 / Actions35431889592 success, the complete corrected attribution
+control returned 80/needs_revision. It treated the introductory early-death
+clause as mid-only despite acknowledging its explicit later all-sample scope.
+The numerical source was correct and present. One complete call used 16220
+tokens; no later cases ran. Preserve the response and positive label; do not
+claim attribution recall or revision success. Native/product runners remain
+offline. Five full-report scope contrasts now retain both legitimate contextual
+resolution and explicit local factual errors. See the role-attribution plan and
+`golden_native_role_contrasts_result_3a73231.json` for the acceptance rationale.
+
+
 ## 2026-09-19 Metric-specific role contrasts
 
 Native v3.2 keeps wire3.1 and the issue-list workflow, adds opt-in deterministic

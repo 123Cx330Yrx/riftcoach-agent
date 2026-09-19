@@ -19,9 +19,9 @@ from app.evaluation.golden_review_experiment import compact, digest
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.providers.structured import contract_for_model
 
-EXPERIMENT_ID = 'golden-native-issues-review-v3.2'
+EXPERIMENT_ID = 'golden-native-issues-review-v3.3'
 LIVE_STATUS = 'bounded_development_after_exact_ci'
-LIVE_BLOCK_REASON = 'native_issues_whole_contract_qualification_required'
+LIVE_BLOCK_REASON = 'native_whole_context_scope_qualification_required'
 strict_json = previous.strict_json
 build_inputs = previous.build_inputs
 request_data = partial(request_data, include_role_contrasts=True)
@@ -63,6 +63,17 @@ _rules.insert(6, '复合推断按每个指标分别核验：一个指标的证�
     '完整成员/缺失见cohorts，null不可当0，负差或方向反转须按原含义解释。'
     '这是描述性重分组，不是因果贡献或反事实实验；范围明确、量级支持的样本构成解释可通过，'
     '不能一概将样本解释判成因果错误，也不能忽略否定句和待验假设。')
+# Scope is decided from the whole document before a numeric cohort is chosen.
+# Move the existing accepted standard here, rather than adding a competing rule.
+_rules.remove(previous.FULL_CONTEXT_RULE)
+_rules.insert(1, previous.FULL_CONTEXT_RULE +
+    '先结合全文中同一指标、比较对象和期间的明确说明确定范围，再选来源组核算。'
+    '匹配的后文说明可以补足原句未写明的范围，出现先后不决定效力；'
+    '邻近另一指标的范围或“最自然的局部读法”不能压过全文对本指标的具体说明。'
+    '原句已明确的范围、数字、方向或归因若与来源冲突，仍须阻断，'
+    '不得用另一范围、通用免责声明或其他正确内容替作者改写原断言。'
+    '只有全文仍存在会改变结论的未解歧义或真实冲突才阻断，并在现有explanation说明具体依据；'
+    '可补写范围以改善阅读，不等于已有事实错误。')
 POLICY = '\n'.join(_rules)
 
 

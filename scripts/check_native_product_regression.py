@@ -18,11 +18,46 @@ from app.evaluation.golden_integrated_runtime import Exchange
 from app.evaluation.golden_review_experiment import compact
 from app.evaluation.golden_stream_bridge import validate_request, CAPACITY_TRANSPORT_ID
 from app.providers.models import ChatResponse, TokenUsage
-from scripts.run_golden_native_review import prepare_attribution
+from scripts.run_golden_native_review import prepare_attribution, prepare_scope
 from scripts.check_golden_native_issues_review import scripted
 
 ROOT = Path(__file__).resolve().parents[1]
 DATASET = ROOT / 'data/evaluation/datasets/golden_native_product_attribution_controls_v1.json'
+SCOPE_DATASET = ROOT / 'data/evaluation/datasets/golden_native_scope_resolution_controls_v1.json'
+
+
+def inspect_scope_controls():
+    """Full-report scope contrasts; expected meanings remain analyst labels."""
+    import hashlib
+    data = json.loads(SCOPE_DATASET.read_text(encoding='utf-8'))
+    assert hashlib.sha256((ROOT / data['parent_dataset']).read_bytes()).hexdigest() == data['parent_sha256']
+    _, original = prepare_attribution(2)
+    baseline = native.request_data(native.build_inputs(original))['computed_evidence']
+    baseline.pop('source_digest')
+    rows = []
+    for number, case in enumerate(data['cases'], 1):
+        assert digest(case['report']) == case['report_sha256']
+        assert case['report'].count(case['target']) == 1
+        req = replace(original, report=case['report'])
+        loaded_case, loaded_req = prepare_scope(number)
+        assert loaded_case == case and loaded_req == req
+        inputs = native.build_inputs(req)
+        request = native.request(inputs)
+        sent = native.strict_json(request.messages[1].content.split('[UNTRUSTED DATA]\n', 1)[1].rsplit('\n[END UNTRUSTED DATA]', 1)[0])
+        calculated = sent['computed_evidence']
+        calculated.pop('source_digest')
+        assert calculated == baseline
+        assert [(b['block'], b['text']) for b in sent['source_index']['blocks']] == [
+            (i, text) for i, (_, text) in enumerate(inputs.source.blocks, 1)]
+        assert 'analyst_rationale' not in sent and 'expected_report' not in sent
+        rows.append(dict(id=case['id'], report_sha256=case['report_sha256'],
+            expected_report=case['expected_report'], input_ceiling=estimate_runtime_request_input_ceiling(request),
+            blocks=len(inputs.source.blocks), complete_report_and_original_sources=True,
+            fresh_model_judgment=False))
+    return dict(scope='offline_scope_discrimination_controls_not_model_semantics',
+        dataset_sha256=hashlib.sha256(SCOPE_DATASET.read_bytes()).hexdigest(), cases=rows,
+        same_computed_values_across_all_reports=True, labels_sent_to_model=False,
+        new_provider_calls=0, semantic_fix_proven=False)
 
 
 def inspect():
@@ -104,4 +139,8 @@ def inspect():
 
 
 if __name__ == '__main__':
-    print(json.dumps(inspect(), ensure_ascii=False, indent=2))
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--scope-controls', action='store_true')
+    args = parser.parse_args()
+    print(json.dumps(inspect_scope_controls() if args.scope_controls else inspect(), ensure_ascii=False, indent=2))
