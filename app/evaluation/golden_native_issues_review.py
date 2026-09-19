@@ -18,7 +18,7 @@ from app.evaluation.golden_review_experiment import compact, digest
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.providers.structured import contract_for_model
 
-EXPERIMENT_ID = 'golden-native-issues-review-v3'
+EXPERIMENT_ID = 'golden-native-issues-review-v3.1'
 LIVE_STATUS = 'bounded_development_after_exact_ci'
 LIVE_BLOCK_REASON = 'native_issues_whole_contract_qualification_required'
 strict_json = previous.strict_json
@@ -38,8 +38,6 @@ class NativeIssuesReview(previous.UntitledSchema, previous.Strict):
     score: int = Field(ge=0, le=100)
     verdict: Literal['pass', 'needs_revision', 'fail']
     issues: list[Problem] = Field(max_length=512)
-    summary: str = Field(min_length=1, max_length=1200)
-    passed_checks: list[str] = Field(max_length=12)
     issue_resolutions: list[previous.IssueResolution] = Field(max_length=512)
 
 
@@ -49,8 +47,8 @@ assert _rules[2].startswith('reviews恰好覆盖')
 assert '问题按reviews顺序及段内顺序编号1起。' in _rules[3]
 _rules[2] = ('检查source_index.blocks中的全文，包括标题中的断言和复合句尾部。'
     '只在issues输出实际问题，每个问题用block定位完整原段；可对同一段列多个不同问题。'
-    '没有问题的段落无需重写事实、来源路径或逐段解释。summary简述审核结论及实际问题，'
-    'passed_checks仅列完成的检查维度，不再次复述全部数字和来源编号。'
+    '没有问题的段落无需重写事实、来源路径或逐段解释。只输出score、verdict、issues、issue_resolutions四项；'
+    '状态摘要由程序根据verdict和问题数量生成，不输出summary、passed_checks或其他重复事实的字段。'
     '这不缩减审查范围；正确否定/条件建议不是作者赞同被否定的结论。')
 _rules[3] = _rules[3].replace('问题按reviews顺序及段内顺序编号1起。', '问题按issues顺序编号1起。')
 POLICY = '\n'.join(_rules)
@@ -70,7 +68,7 @@ def request(inputs, *, previous_raw=None, diagnostics=None, accepted=None):
         raise ValueError('native_report_block_capacity')
     data = request_data(inputs)
     phase, policy = 'native_business_review', POLICY
-    contract = contract_for_model(name='native_business_review', version='3.0.0', output_model=NativeIssuesReview)
+    contract = contract_for_model(name='native_business_review', version='3.1.0', output_model=NativeIssuesReview)
     if previous_raw is not None:
         value, suffix = previous.provisional_review(previous_raw)
         if previous.security_terminal(value):
@@ -133,8 +131,14 @@ def validate(raw, inputs, *, previous_raw=None):
                 raise ValueError('native_resolution_target_missing')
             if resolution.disposition == 'retained' and old_issues[resolution.previous_id - 1] != current[resolution.final_issue - 1]:
                 raise ValueError('native_retained_issue_changed')
+    # Describe the model's outcome, never invent a passed-check certificate or
+    # a second fact report. Extra model narratives are rejected by Strict above;
+    # they may enter bounded reassessment unchanged, never stripped to pass.
+    summary = {'pass': '模型未发现需要修订的问题。',
+        'needs_revision': f'模型提出 {len(issues)} 项问题，需要修订后复评。',
+        'fail': '模型评估未通过，停止自动修订。'}[wire.verdict]
     payload = EvaluationResponseModelV12.model_validate(dict(score=wire.score, verdict=wire.verdict,
-        summary=wire.summary, passed_checks=wire.passed_checks, issues=issues), strict=True)
+        summary=summary, passed_checks=[], issues=issues), strict=True)
     knowledge = strict_json(inputs.data_json)['knowledge']['citations']
     available = {entry['citation_id'] for entry in knowledge}
     cited = set(re.findall(r'\[(K\d+)\]', inputs.source.report))

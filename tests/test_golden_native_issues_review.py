@@ -1,6 +1,7 @@
 """Native result obligations and complete input; scripted judgments are not quality proof."""
 from copy import deepcopy
 from dataclasses import replace
+from pathlib import Path
 
 import pytest
 
@@ -20,7 +21,7 @@ def opinion(inputs, *, block=None):
         severity='medium', category='fact_error', explanation='合成问题：提供的官方来源与报告不一致。',
         suggested_correction='按原始官方来源修订。')]
     return dict(score=95 if block is None else 70, verdict='pass' if block is None else 'needs_revision',
-        issues=issues, summary='脚本化结果，不是模型质量证明。', passed_checks=[], issue_resolutions=[])
+        issues=issues, issue_resolutions=[])
 
 
 def flow_with(replies, *, clock=None):
@@ -143,6 +144,52 @@ def test_complete_response_uses_one_call_and_tail_gets_one_full_reassessment():
     data = request_data(provider.requests[1])
     assert len(provider.requests) == 2 and data['previous_non_json_suffix'] == '\nUnstructured commentary'
     assert flow.last_journal['previous_raw'] == bad and data['previous_raw_sha256'] == digest(bad)
+
+
+@pytest.mark.parametrize('field', ['summary', 'passed_checks'])
+def test_unrequested_fact_narratives_are_rejected_not_discarded(field):
+    req = evaluation_request(); inputs = candidate.build_inputs(req)
+    value = opinion(inputs)
+    wrong = '错误来源或胜负事实。'
+    value[field] = wrong if field == 'summary' else [wrong]
+    raw = compact(value)
+    with pytest.raises(ValueError): candidate.validate(raw, inputs)
+    flow, provider, _ = flow_with([raw, compact(opinion(inputs))])
+    result = flow.evaluate(req)
+    assert request_data(provider.requests[1])['previous_review'][field] == value[field]
+    assert flow.last_journal['previous_raw'] == raw
+    assert result.summary == '模型未发现需要修订的问题。'
+    assert not result.passed_checks
+    # Repeated bad output must stop; no silent field removal or third attempt.
+    flow, provider, _ = flow_with([raw, raw])
+    with pytest.raises(ValueError): flow.evaluate(req)
+    assert flow.stopped and len(provider.requests) == 2
+
+
+def test_actual_wrong_summary_is_preserved_and_cannot_be_reclassified_as_pass():
+    from scripts.run_golden_native_review import prepare
+    artifact = candidate.strict_json(Path('data/evaluation/results/golden_native_review_result_42a5fc0.json').read_text(encoding='utf-8'))
+    raw = artifact['raw']
+    _, req = prepare(1)
+    inputs = candidate.build_inputs(req)
+    assert '辅助1局0负' in raw and not artifact['manual_semantic_acceptance']
+    with pytest.raises(ValueError): candidate.validate(raw, inputs)
+    correction = request_data(candidate.request(inputs, previous_raw=raw))
+    assert correction['previous_review'] == candidate.strict_json(raw)
+    assert correction['previous_raw_sha256'] == digest(raw)
+    # The test asserts rejection/preservation, not semantic correction by a model.
+
+
+def test_problem_and_failed_status_summaries_only_describe_the_review_outcome():
+    inputs = candidate.build_inputs(evaluation_request())
+    value = opinion(inputs, block=1)
+    payload, _, _ = candidate.validate(compact(value), inputs)
+    assert payload.summary == '模型提出 1 项问题，需要修订后复评。'
+    assert payload.issues[0].explanation == value['issues'][0]['explanation']
+    assert not payload.passed_checks
+    value['verdict'] = 'fail'
+    payload, _, _ = candidate.validate(compact(value), inputs)
+    assert payload.summary == '模型评估未通过，停止自动修订。'
 
 
 @pytest.mark.parametrize('changed', ['summary', 'report', 'utterance'])

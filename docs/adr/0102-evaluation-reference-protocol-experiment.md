@@ -1,5 +1,15 @@
 # ADR-0102: Source references and bounded evaluation correction
 
+## 2026-09-19 Host-owned status summary, unchanged actual findings
+
+2026-09-19 native v3正例在42a5fc0/Actions35420153601三项success后完整返回：30.563秒，11932输入+2411输出=14343tokens，无未知用量，累计Provider至少222。判断pass，但summary将辅助0胜写成0负，人工语义拒绝，负例未跑。独立核对实际请求及无损还原的五处来源一致，原请求无previous_review；错误是本次新生成，不能从输出断言模型内部原因。原始回执不修改，证据golden_native_review_result_42a5fc0.json。
+
+v3.1落实此前未做彻底的职责边界：模型仅输出score/verdict/issues/issue_resolutions，状态摘要由程序按结论和问题数量生成，passed_checks为空，不编造通过证明。多余summary/检查文本严格拒绝、完整保留进入原有一次重评；第二次仍坏则停止。实际问题解释、来源与修正建议、完整报告/来源/领域标准和旧问题处置不减；不静默删错字段过关。原九旧入口继续离线，失败的v3输出合同不再准入，旧失败不重标。
+
+214项相关检查通过，golden_native_issues_offline_v2.json核对冻结五例来源/报告/标签不变；输入45254–45330，真实坏摘要/尾文重评47080/55610，脚本五次满额385498<401920，仍按实际用量+下次预约准入。仅为工程证明。唯一下一步：v3.1同SHA公共三项后，正例完整审读合格再逐例未来/身份/日期/标题负例→自动修订→复评；失败结束批次后整体诊断。
+
+合格后继续Runtime/原子保存/Evidence/API/Workbench接线，生成和审查共享预算、状态按任务隔离并保留观摩身份。Stage8E仍in_progress；GLM/high/全部硬上限/人工稿不变。前端审美重做、头像、四块联动、专属Training及62主题继续追踪。详见docs/plans/2026-09-19-native-problem-list.md。
+
 ## 2026-09-19 Native issue-list output obligation
 
 2026-09-19 已确认native v2的真实进展和失败边界：4f2307b/Actions35417428624五例共13次、231826tokens，正确报告与未来外推/身份/日期三条修订复评链路通过独立审读；标题虽检出并修正，最终复评含错误解释和尾文，仍失败。恢复路径实现0140531/Actions35419119267公共三项success，180项检查通过；新增正确报告1次、17789tokens、50.032秒，业务通过判断正确但解释把辛德拉/薇古丝错误挂到洛克来源external:opgg:00:00，语义验收拒绝，未跑负例。累计Provider至少221，无本两批未知用量；原回执和失败不重标，证据见golden_native_review_result_4f2307b.json及_0140531.json。

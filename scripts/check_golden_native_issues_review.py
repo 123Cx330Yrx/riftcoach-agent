@@ -23,7 +23,7 @@ def scripted(inputs, *, block=None):
         category='fact_error', explanation='分析者构造的接口见证；不代表该问题已被模型检出。',
         suggested_correction='按完整来源修正实际问题。')]
     return dict(score=95 if block is None else 70, verdict='pass' if block is None else 'needs_revision',
-        issues=problems, summary='离线脚本结果，不是模型评估。', passed_checks=[], issue_resolutions=[])
+        issues=problems, issue_resolutions=[])
 
 
 def audit():
@@ -71,6 +71,10 @@ def audit():
     data = candidate.strict_json(replay.messages[1].content.split('[UNTRUSTED DATA]\n',1)[1].rsplit('\n[END UNTRUSTED DATA]',1)[0])
     assert data['previous_review'] == candidate.previous.provisional_review(fixture['raw'])[0]
     assert data['previous_non_json_suffix'] == '\n``结束。'
+    actual = candidate.strict_json(Path('data/evaluation/results/golden_native_review_result_42a5fc0.json').read_text(encoding='utf-8'))
+    summary_replay = candidate.request(inputs[0], previous_raw=actual['raw'], diagnostics=[{'code':'extra_forbidden'}])
+    summary_data = candidate.strict_json(summary_replay.messages[1].content.split('[UNTRUSTED DATA]\n',1)[1].rsplit('\n[END UNTRUSTED DATA]',1)[0])
+    assert summary_data['previous_review'] == candidate.strict_json(actual['raw'])
     return dict(experiment=candidate.EXPERIMENT_ID, provider_calls=0, semantic_approval=False, production_admitted=False,
         dataset_sha256=hashlib.sha256(DATASET.read_bytes()).hexdigest(), source_controls_and_labels_unchanged=True,
         all_sources_roundtrip=True, shapes=shapes, normal_three_call_path=normal, maximum_five_call_path=five,
@@ -78,6 +82,8 @@ def audit():
         total_budget=401920, actual_usage_plus_next_reservation_still_authoritative=True,
         legacy_raw_and_semantic_errors_preserved=True, actual_failed_raw_sha256=digest(fixture['raw']),
         actual_failed_response_correction_input_ceiling=size(replay),
+        actual_wrong_summary_correction_input_ceiling=size(summary_replay),
+        status_summary_host_generated=True, generated_passed_check_claims=False,
         limitations=['No synthetic result proves issue recall, source relevance or accurate correction.',
             'No generated per-paragraph checklist is treated as proof of semantic coverage.',
             'Historical v2 failures stay failed; removing their output field is not reclassification.'])
