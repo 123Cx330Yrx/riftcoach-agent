@@ -4,6 +4,7 @@ Block responsibility and source identity are machine checked. They do not prove
 semantic coverage, entailment or model quality. No production registration.
 """
 from dataclasses import replace
+import json
 import re
 from typing import Literal
 
@@ -86,6 +87,31 @@ def _decoded(raw):
     return strict_json(normalize_json(raw))
 
 
+def provisional_review(raw):
+    """Recover an unambiguous object only as input to a fresh full review.
+
+    Never used to accept the current response. Incomplete/ambiguous JSON and
+    duplicate keys remain terminal. Non-JSON trailing text stays in the prompt
+    and journal; no previous opinion or finding is silently repaired or lost.
+    """
+    try:
+        return _decoded(raw), ""
+    except json.JSONDecodeError:
+        text = normalize_json(raw).lstrip()
+        _, end = json.JSONDecoder().raw_decode(text)
+        value = strict_json(text[:end])  # Includes duplicate/nonfinite rejection.
+        suffix = text[end:]
+        if not isinstance(value, dict) or not suffix.strip() or any(c in suffix for c in "{["):
+            raise ValueError("native_ambiguous_previous_response") from None
+        try:
+            json.JSONDecoder().raw_decode(suffix.lstrip())
+        except json.JSONDecodeError:
+            pass
+        else:
+            raise ValueError("native_ambiguous_previous_response") from None
+        return value, suffix
+
+
 def prior_issues(value):
     """Preserve every identifiable first finding, including malformed values."""
     found = []
@@ -130,13 +156,15 @@ def request(inputs, *, previous_raw=None, diagnostics=None, accepted=None):
     policy = POLICY
     contract = contract_for_model(name=phase, version="2.0.0", output_model=NativeReview)
     if previous_raw is not None:
-        value = _decoded(previous_raw)
+        value, suffix = provisional_review(previous_raw)
         if security_terminal(value):
             raise ValueError("native_security_terminal")
         if len(prior_issues(value)) > 512:
             raise ValueError("native_previous_issue_capacity")
         data.update(previous_review=value, previous_issues=prior_issues(value),
             previous_raw_sha256=digest(previous_raw), diagnostics=diagnostics)
+        if suffix:
+            data["previous_non_json_suffix"] = suffix
         phase = "native_business_reassessment"
     if accepted is not None:
         if previous_raw is not None:
@@ -159,7 +187,7 @@ def request(inputs, *, previous_raw=None, diagnostics=None, accepted=None):
 
 def validate(raw, inputs, *, previous_raw=None):
     from app.evaluation.golden_semantic_sources import resolve_refs
-    if previous_raw is not None and security_terminal(_decoded(previous_raw)):
+    if previous_raw is not None and security_terminal(provisional_review(previous_raw)[0]):
         raise ValueError("native_security_terminal")
     value = _decoded(raw)
     if security_terminal(value):
@@ -182,7 +210,7 @@ def validate(raw, inputs, *, previous_raw=None):
             evidence = "问题所选来源编号：" + compact(issue.source_ids) + "。" + issue.explanation
             issues.append(dict(issue.model_dump(exclude={"source_ids"}), quote=quote,
                                evidence=evidence))
-    previous = prior_issues(_decoded(previous_raw)) if previous_raw is not None else []
+    previous = prior_issues(provisional_review(previous_raw)[0]) if previous_raw is not None else []
     resolutions = wire.issue_resolutions
     if sorted(r.previous_id for r in resolutions) != list(range(1, len(previous) + 1)):
         raise ValueError("native_issue_resolution_inventory")
@@ -233,7 +261,7 @@ class NativeBusinessReviewWorkflow(IntegratedReviewWorkflow):
             try:
                 payload, wire, journal = validate(raw, inputs)
             except ValueError as error:
-                value = _decoded(raw)  # Bad/conflicting JSON is not silently repaired.
+                value, _ = provisional_review(raw)  # Provisional only; final stays strict.
                 if security_terminal(value) or str(error) == "native_security_terminal":
                     raise ValueError("native_security_terminal") from error
                 previous_raw = raw

@@ -1,0 +1,453 @@
+{
+  "experiment": "golden-native-business-review-v2",
+  "first_error_correction_input": 50508,
+  "full_reservation": 398024,
+  "full_sources_preserved": true,
+  "limitations": [
+    "synthetic_block_inventory_does_not_prove_semantic_coverage",
+    "source_identity_is_not_entailment",
+    "old_positive_unique_cohort_oracle_disputed",
+    "real_quality_and_latency_unmeasured",
+    "no_production_registration"
+  ],
+  "long_explanation_stress": {
+    "admission": "actual_usage_plus_next_reservation_no_completion_guarantee",
+    "author": "analyst_authored_offline_composition",
+    "full_five_call_path": [
+      {
+        "input_ceiling": 45150,
+        "output_reservation": 32768,
+        "phase": "native_business_review"
+      },
+      {
+        "input_ceiling": 59742,
+        "output_reservation": 32768,
+        "phase": "native_business_reassessment"
+      },
+      {
+        "input_ceiling": 51510,
+        "output_reservation": 32768,
+        "phase": "native_business_revision"
+      },
+      {
+        "input_ceiling": 45078,
+        "output_reservation": 32768,
+        "phase": "native_business_review"
+      },
+      {
+        "input_ceiling": 58882,
+        "output_reservation": 32768,
+        "phase": "native_business_reassessment"
+      }
+    ],
+    "full_reservation": 424202,
+    "full_reservation_exceeds_limit": true,
+    "legacy_controls_used_for_size_only": true,
+    "model_response_replay": false,
+    "provider_calls": 0,
+    "semantic_approval": false,
+    "shapes": [
+      {
+        "all_sources_preserved": true,
+        "case_id": "contextual_01",
+        "complete_paragraphs_prefixed": [
+          5,
+          6,
+          7,
+          10,
+          11,
+          13,
+          14,
+          16,
+          17,
+          18,
+          20,
+          21,
+          22,
+          23,
+          25,
+          26,
+          27,
+          28
+        ],
+        "correction_input_ceiling": 58882,
+        "explanations_truncated": false,
+        "first_error_diagnostics": [
+          {
+            "loc": [
+              "score"
+            ],
+            "msg": "Input should be a valid integer",
+            "type": "int_type",
+            "url": "https://errors.pydantic.dev/2.13/v/int_type"
+          }
+        ],
+        "first_raw_chars": 7363,
+        "first_raw_sha256": "eb3f0b33f643127da76d4588e09e7668b55e084e8f601cfd5195c70e1412c504",
+        "first_raw_truncated": false,
+        "first_values_and_hash_preserved": true,
+        "max_explanation_chars": 486,
+        "original_raw_retained_in_journal": true,
+        "primary_input_ceiling": 45078,
+        "report_sha256": "84e4b38931255f7a3b7e5ce322987eb997302c7f46d922a7aa8ab4682479b219",
+        "revision_input_ceiling": 50764,
+        "revision_workflow_eligible": false,
+        "semantic_approval": false,
+        "source_roots": 38
+      },
+      {
+        "all_sources_preserved": true,
+        "case_id": "contextual_02",
+        "complete_paragraphs_prefixed": [
+          5,
+          6,
+          7,
+          10,
+          11,
+          12,
+          14,
+          15,
+          17,
+          18,
+          19,
+          21,
+          22,
+          23,
+          24,
+          26,
+          27,
+          28,
+          29
+        ],
+        "correction_input_ceiling": 59742,
+        "explanations_truncated": false,
+        "first_error_diagnostics": [
+          {
+            "loc": [
+              "score"
+            ],
+            "msg": "Input should be a valid integer",
+            "type": "int_type",
+            "url": "https://errors.pydantic.dev/2.13/v/int_type"
+          }
+        ],
+        "first_raw_chars": 7629,
+        "first_raw_sha256": "dfd0ba66b4f89626aa2ab460be140a442b2d70a8bcfd732a6439f83c6bcd4441",
+        "first_raw_truncated": false,
+        "first_values_and_hash_preserved": true,
+        "max_explanation_chars": 486,
+        "original_raw_retained_in_journal": true,
+        "primary_input_ceiling": 45150,
+        "report_sha256": "760519d806a5fd52ab97364653d29d1bb52d72b195f29b92ccb27028ab6d6153",
+        "revision_input_ceiling": 51510,
+        "revision_workflow_eligible": true,
+        "semantic_approval": false,
+        "source_roots": 38
+      }
+    ],
+    "source_fixture": "scripts.check_golden_computed_partition_review.prepared",
+    "total_limit": 401920
+  },
+  "malformed_first_issue_preserved": true,
+  "normal_revision_path": [
+    {
+      "input_ceiling": 45150,
+      "output_reservation": 32768,
+      "phase": "native_business_review"
+    },
+    {
+      "input_ceiling": 42552,
+      "output_reservation": 32768,
+      "phase": "native_business_revision"
+    },
+    {
+      "input_ceiling": 45078,
+      "output_reservation": 32768,
+      "phase": "native_business_review"
+    }
+  ],
+  "observed_controls": {
+    "admission": "actual_usage_plus_next_reservation_no_arbitrary_completion_guarantee",
+    "all_source_reports_intact": true,
+    "author": "analyst_scripted_responses",
+    "full_output_reservation": 403656,
+    "maximum_call_path": [
+      {
+        "input_ceiling": 46354,
+        "output_reservation": 32768,
+        "phase": "native_business_review"
+      },
+      {
+        "input_ceiling": 52044,
+        "output_reservation": 32768,
+        "phase": "native_business_reassessment"
+      },
+      {
+        "input_ceiling": 43772,
+        "output_reservation": 32768,
+        "phase": "native_business_revision"
+      },
+      {
+        "input_ceiling": 46280,
+        "output_reservation": 32768,
+        "phase": "native_business_review"
+      },
+      {
+        "input_ceiling": 51366,
+        "output_reservation": 32768,
+        "phase": "native_business_reassessment"
+      }
+    ],
+    "normal_revision_path": [
+      {
+        "input_ceiling": 46354,
+        "output_reservation": 32768,
+        "phase": "native_business_review"
+      },
+      {
+        "input_ceiling": 43596,
+        "output_reservation": 32768,
+        "phase": "native_business_revision"
+      },
+      {
+        "input_ceiling": 46280,
+        "output_reservation": 32768,
+        "phase": "native_business_review"
+      }
+    ],
+    "provider_calls": 0,
+    "semantic_approval": false,
+    "shapes": [
+      {
+        "analyst_created": true,
+        "case_id": "observed_01",
+        "correction_input": 56550,
+        "initial_input": 46280,
+        "long_first_chars": 5162,
+        "long_first_prefixed_blocks": [
+          3,
+          5,
+          6,
+          7,
+          10,
+          11,
+          13,
+          14,
+          16,
+          17,
+          18,
+          20,
+          21,
+          22,
+          23,
+          25,
+          26,
+          27,
+          28
+        ],
+        "report_sha256": "f6a6c508d2ad86763d01c59edc74a5885ca59867d5a5bfc336072434132a655a",
+        "revision_eligible": false,
+        "revision_input_shape": 48432,
+        "semantic_approval": false
+      },
+      {
+        "analyst_created": true,
+        "case_id": "observed_02_future",
+        "correction_input": 57304,
+        "initial_input": 46354,
+        "long_first_chars": 5375,
+        "long_first_prefixed_blocks": [
+          3,
+          5,
+          6,
+          7,
+          10,
+          11,
+          13,
+          14,
+          16,
+          17,
+          18,
+          20,
+          21,
+          22,
+          23,
+          25,
+          26,
+          27,
+          28
+        ],
+        "report_sha256": "440ae4b39ff9ea45611c2840afd73867053e42f22648ff6ccf14eb3bc90faa4a",
+        "revision_eligible": true,
+        "revision_input_shape": 48854,
+        "semantic_approval": false
+      },
+      {
+        "analyst_created": true,
+        "case_id": "observed_03_reader_identity",
+        "correction_input": 57154,
+        "initial_input": 46278,
+        "long_first_chars": 5327,
+        "long_first_prefixed_blocks": [
+          3,
+          5,
+          6,
+          7,
+          10,
+          11,
+          13,
+          14,
+          16,
+          17,
+          18,
+          20,
+          21,
+          22,
+          23,
+          25,
+          26,
+          27,
+          28
+        ],
+        "report_sha256": "ba9d63e2100c48fecdcf4c7d46f66ab25cfc2f06d4d254d06c8fb06bebe6049a",
+        "revision_eligible": true,
+        "revision_input_shape": 48702,
+        "semantic_approval": false
+      },
+      {
+        "analyst_created": true,
+        "case_id": "observed_04_official_date",
+        "correction_input": 57266,
+        "initial_input": 46336,
+        "long_first_chars": 5369,
+        "long_first_prefixed_blocks": [
+          3,
+          5,
+          6,
+          7,
+          10,
+          11,
+          13,
+          14,
+          16,
+          17,
+          18,
+          20,
+          21,
+          22,
+          23,
+          25,
+          26,
+          27,
+          28
+        ],
+        "report_sha256": "cde1759906f569b64f24b5165161d06ad81526470f2068d821bb152f3890d6ab",
+        "revision_eligible": true,
+        "revision_input_shape": 48816,
+        "semantic_approval": false
+      },
+      {
+        "analyst_created": true,
+        "case_id": "observed_05_heading_ability",
+        "correction_input": 57272,
+        "initial_input": 46322,
+        "long_first_chars": 5374,
+        "long_first_prefixed_blocks": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          10,
+          11,
+          13,
+          14,
+          16,
+          17,
+          18,
+          20,
+          21,
+          22,
+          23,
+          25,
+          26,
+          27,
+          28
+        ],
+        "report_sha256": "9cb31bbcc0f66b5e0c71244381afc63a0b5d65d6b8abea89492f1d5978034c2d",
+        "revision_eligible": true,
+        "revision_input_shape": 48824,
+        "semantic_approval": false
+      }
+    ]
+  },
+  "oversized_first_stops_before_provider": true,
+  "production_admitted": false,
+  "provider_calls": 0,
+  "semantic_approval": false,
+  "shapes": [
+    {
+      "blocks": 28,
+      "case_id": "contextual_01",
+      "complete_block_inventory": true,
+      "input_ceiling": 45078,
+      "report_sha256": "84e4b38931255f7a3b7e5ce322987eb997302c7f46d922a7aa8ab4682479b219",
+      "scripted_verdict": "pass",
+      "semantic_approval": false,
+      "source_roots": 38
+    },
+    {
+      "blocks": 29,
+      "case_id": "contextual_02",
+      "complete_block_inventory": true,
+      "input_ceiling": 45150,
+      "report_sha256": "760519d806a5fd52ab97364653d29d1bb52d72b195f29b92ccb27028ab6d6153",
+      "scripted_verdict": "needs_revision",
+      "semantic_approval": false,
+      "source_roots": 38
+    }
+  ],
+  "synthetic_only": true,
+  "total_limit": 401920,
+  "valid_source_ids_with_false_explanation_can_pass": true,
+  "worst_case_revision_path": [
+    {
+      "input_ceiling": 45150,
+      "output_reservation": 32768,
+      "phase": "native_business_review"
+    },
+    {
+      "input_ceiling": 51036,
+      "output_reservation": 32768,
+      "phase": "native_business_reassessment"
+    },
+    {
+      "input_ceiling": 42724,
+      "output_reservation": 32768,
+      "phase": "native_business_revision"
+    },
+    {
+      "input_ceiling": 45078,
+      "output_reservation": 32768,
+      "phase": "native_business_review"
+    },
+    {
+      "input_ceiling": 50196,
+      "output_reservation": 32768,
+      "phase": "native_business_reassessment"
+    }
+  ],
+  "actual_failed_response_replay": {
+    "source_fixture": "tests/fixtures/native_heading_recheck_failure.json",
+    "raw_sha256": "a18cae038813e5df4af56bc4ad7fbcf27e35c7431cf9f1de99048dea7c8db147",
+    "previous_value_unchanged": true,
+    "suffix_preserved": true,
+    "final_acceptance_still_strict": true,
+    "correction_input_ceiling": 56634,
+    "first_semantic_defects_preserved": true,
+    "analyst_corrected_final_raw_sha256": "ac8ebaea55a9c98cecf95a8f827d99178e0193d24b466c4ba6598849130a82a9",
+    "full_4_and_5_call_paths_tested": true,
+    "semantic_recovery_verified": false,
+    "provider_calls": 0
+  }
+}

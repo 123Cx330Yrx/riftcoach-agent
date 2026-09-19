@@ -1,5 +1,31 @@
 # Restore the business review contract
 
+## Current result and recovery qualification
+
+The 4f2307b five-control batch has one accepted positive and three complete
+negative/revision/recheck chains. The heading negative was correctly detected
+and revised, but recheck appended non-JSON text and contained independent
+incorrect explanations. It remains failed. No timeout/output exhaustion occurred.
+See `golden_native_review_result_4f2307b.json` (13 calls, 231826 known tokens).
+
+The normal prompt, business schema and accepted standard stay unchanged.
+One unambiguous complete JSON object with trailing unstructured text may enter
+ONLY the existing one complete reassessment. The suffix and every original
+value/finding survive as untrusted data. It is never directly accepted by
+trimming; incomplete/multiple JSON values, duplicate/nonfinite values and high
+injection are terminal. A malformed final response is still terminal.
+The saved real response is a structural-pass/semantic-fail counterexample.
+Scripted correction proves reachability, not actual semantic recovery.
+
+After exact-SHA CI, validate positive then heading revision/recheck as a fresh
+bounded batch. Inspect all actual explanations, not just schema/target removal.
+Do not rerun the three other successful controls without a relevant change.
+Failure ends the batch. Product composition waits for semantic qualification;
+its budget must include generation and review, with run-scoped state and receipts.
+All four workbench areas, frontend aesthetics/portraits and 62 themes remain.
+
+The sections below preserve previous design and evidence.
+
 ## Current revision: v2 issue evidence
 
 The cacd2dd live positive completed in one call (90.938s, 20350 tokens).
