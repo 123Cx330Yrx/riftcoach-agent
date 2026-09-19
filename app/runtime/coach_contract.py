@@ -11,7 +11,7 @@ from pydantic import BaseModel, ConfigDict, Field
 class CoachContractSnapshot(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     contract_id: Literal["recent-form-review-flash-v2"] = "recent-form-review-flash-v2"
-    version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16", "1.3.17", "1.3.18", "1.3.19", "1.3.20", "1.3.21", "1.3.22", "1.3.23", "1.3.24", "1.3.25", "1.3.26", "1.3.27"] = "1.0.0"
+    version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16", "1.3.17", "1.3.18", "1.3.19", "1.3.20", "1.3.21", "1.3.22", "1.3.23", "1.3.24", "1.3.25", "1.3.26", "1.3.27", "1.4.0"] = "1.0.0"
     scope: Literal["unadmitted_opt_in"] = "unadmitted_opt_in"
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
@@ -314,8 +314,34 @@ SCOPE_COACH_CONTRACT = CoachExecutionContract(version="1.3.11")
 COVERAGE_COACH_CONTRACT = CoachExecutionContract(version="1.3.10")
 
 
+class NativeCoachExecutionContract(CoachExecutionContract):
+    @property
+    def grounded(self):
+        return True
+
+    @property
+    def context_policy(self):
+        from .native_coach_contract import generation_policy
+        return generation_policy()
+
+    @property
+    def request_policy(self):
+        return _capacity_request_policy()
+
+    def descriptor(self):
+        value = CONTEXT_COACH_CONTRACT.descriptor()
+        value.update(version=self.version, skill_version="0.6.0", program_version="3.0.0",
+            evaluation_contract_version="3.1.0", inference_policy_id="golden-native-issues-review-v3.1",
+            evaluation_repair_policy="one-full-native-reassessment-with-original-response",
+            context_policy_sha256=hashlib.sha256(self.context_policy.encode()).hexdigest())
+        return value
+
+
+NATIVE_COACH_CONTRACT = NativeCoachExecutionContract(version="1.4.0")
+
+
 def require_coach_contract(value):
-    if value is not None and all(value is not c for c in (COACH_CONTRACT, CONTEXT_COACH_CONTRACT, EVIDENCE_V8_COACH_CONTRACT, EVIDENCE_V7_COACH_CONTRACT, EVIDENCE_V6_COACH_CONTRACT, EVIDENCE_V5_COACH_CONTRACT, EVIDENCE_V4_COACH_CONTRACT, EVIDENCE_V3_COACH_CONTRACT, CAPACITY_COACH_CONTRACT, EVIDENCE_V2_COACH_CONTRACT, EVIDENCE_COACH_CONTRACT, FACT_INFERENCE_COACH_CONTRACT, FEEDBACK_COACH_CONTRACT, EXPANDED_COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT)):
+    if value is not None and all(value is not c for c in (COACH_CONTRACT, NATIVE_COACH_CONTRACT, CONTEXT_COACH_CONTRACT, EVIDENCE_V8_COACH_CONTRACT, EVIDENCE_V7_COACH_CONTRACT, EVIDENCE_V6_COACH_CONTRACT, EVIDENCE_V5_COACH_CONTRACT, EVIDENCE_V4_COACH_CONTRACT, EVIDENCE_V3_COACH_CONTRACT, CAPACITY_COACH_CONTRACT, EVIDENCE_V2_COACH_CONTRACT, EVIDENCE_COACH_CONTRACT, FACT_INFERENCE_COACH_CONTRACT, FEEDBACK_COACH_CONTRACT, EXPANDED_COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT)):
         raise ValueError("unsupported Coach execution contract")
     return value
 
@@ -324,7 +350,7 @@ def coach_component_fingerprint(contract=COACH_CONTRACT):
     from app.evaluation.prompt_context_identity import ComponentFingerprint
     require_coach_contract(contract)
     return ComponentFingerprint(component_id="coach_execution_contract",
-                                source=("app.runtime.coach_contract:v1.3.19" if contract.version == "1.3.19" else "app.runtime.coach_contract:v1.3.18" if contract.version == "1.3.18" else "app.runtime.coach_contract:v1.3.17" if contract.version == "1.3.17" else "app.runtime.coach_contract:v1.3.16" if contract.version == "1.3.16" else "app.runtime.coach_contract:v1.3.15" if contract.version == "1.3.15" else "app.runtime.coach_contract:v1.3.14" if contract.version == "1.3.14" else "app.runtime.coach_contract:v1.3.13" if contract.version == "1.3.13" else "app.runtime.coach_contract:v1.3.12" if contract.version == "1.3.12" else "app.runtime.coach_contract:v1.3.11" if contract.version == "1.3.11" else "app.runtime.coach_contract:v1.3.10" if contract.version == "1.3.10" else
+                                source=("app.runtime.native_coach_contract:v1.4.0" if contract is NATIVE_COACH_CONTRACT else "app.runtime.coach_contract:v1.3.19" if contract.version == "1.3.19" else "app.runtime.coach_contract:v1.3.18" if contract.version == "1.3.18" else "app.runtime.coach_contract:v1.3.17" if contract.version == "1.3.17" else "app.runtime.coach_contract:v1.3.16" if contract.version == "1.3.16" else "app.runtime.coach_contract:v1.3.15" if contract.version == "1.3.15" else "app.runtime.coach_contract:v1.3.14" if contract.version == "1.3.14" else "app.runtime.coach_contract:v1.3.13" if contract.version == "1.3.13" else "app.runtime.coach_contract:v1.3.12" if contract.version == "1.3.12" else "app.runtime.coach_contract:v1.3.11" if contract.version == "1.3.11" else "app.runtime.coach_contract:v1.3.10" if contract.version == "1.3.10" else
                                         "app.runtime.coach_contract:v1.3.9" if contract.version == "1.3.9" else
                                         "app.runtime.coach_contract:v1.3.8" if contract.version == "1.3.8" else
                                         "app.runtime.coach_contract:v1.3.7" if contract.version == "1.3.7" else

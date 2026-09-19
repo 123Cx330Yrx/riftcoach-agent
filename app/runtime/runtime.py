@@ -327,6 +327,7 @@ class AgentRuntimeV1:
         context_builder: ContextBuilderV1 | None = None,
         prompt_program_resolver: RuntimePromptIdentityResolver,
         runtime_profile: ModelRuntimeProfile | None = None,
+        provider_factory: Callable[[str], LLMProvider] | None = None,
     ) -> None:
         if not isinstance(catalog, SkillCatalog):
             raise TypeError("catalog must be a SkillCatalog")
@@ -339,6 +340,9 @@ class AgentRuntimeV1:
         self._runs_root = Path(runs_root).resolve()
         self._catalog = catalog
         self._provider = provider
+        if provider_factory is not None and not callable(provider_factory):
+            raise TypeError("provider_factory must be callable")
+        self._provider_factory = provider_factory
         self._execution_factory = execution_factory
         self._coach_contract = require_coach_contract(getattr(execution_factory, "coach_contract", None))
         factory_profile = execution_factory.runtime_profile
@@ -587,8 +591,17 @@ class AgentRuntimeV1:
             )
 
         try:
+            run_provider = self._provider
+            if self._provider_factory is not None:
+                run_provider = self._provider_factory(request.run_id)
+                if not isinstance(run_provider, LLMProvider) or run_provider is self._provider:
+                    raise RuntimeCompositionError("run provider must be a fresh LLMProvider")
+                for field in ("provider_name", "model_name", "capabilities", "runtime_profile",
+                              "thinking_profile_id", "sdk_max_retries"):
+                    if getattr(run_provider, field, None) != getattr(self._provider, field, None):
+                        raise RuntimeCompositionError("run provider identity does not match Runtime")
             observed_provider = ObservedLLMProvider(
-                delegate=self._provider,
+                delegate=run_provider,
                 observer=observer,
             )
             bundle = self._execution_factory.build(

@@ -300,13 +300,11 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-19 a04df23/Actions35421736689公共三项success后的v3.1正例：1次完整stop，27.062秒，11918输入+2198输出=14116tokens，无未知用量，累计Provider至少223。JSON后附审查说明，完整人工审读未见事实错误，但协议拒绝；负例未跑。原因是恢复代码把普通[K1]也当第二JSON，原失败与原始回执保留于golden_native_review_result_a04df23.json。
+2026-09-19 a71eb94/Actions35423244997公共三项success后，冻结五例全部通过真实调用及完整人工审读：正例通过，未来外推/阅读者身份/官方日期/标题能力四负例均检出→实际修订→复评通过。包括此前失败的标题案例。13次完整返回，151898输入+28105输出=180003tokens，无未知用量；累计Provider至少236。证据golden_native_review_result_a71eb94.json逐项保存原回执、实际文本、哈希和审读。未来负例的causality分类与建议类别不同，但定位、解释和改文正确，保留原信号。该批未触发重评，尾文恢复仍只有离线回放证明；不代表holdout/生产准入。
 
-现修复非JSON尾文的重评准入，并在通用输出约束中明确唯一JSON对象。原始意见/尾文完整保留，真正第二JSON或其截断前缀仍拒绝；最终严格解析不变，二次坏响应终止。冻结五例不变；可复现离线脚本给出尾文重评47138、五次满额385874<401920，仅为工程证明。
+native产品候选已完成接线和离线回放：Coach1.4.0/Skill0.6.0/Program3.0.0明确绑定wire3.1.0；生成仅带业务报告约束。每任务独立运输/回执、生成与全部审查共享5次预算，实际请求和响应留存；沿用原有应用服务、Harness、回执和Evidence发布/读取，观摩身份贯通。239项受影响检查通过；冻结ShowMaker首生成请求预约29790<63936，仅是首步容量证明。尚未进行该产品候选真实生成，不称用户链路已交付。
 
-已合并经审查的产品接缝准备：Runtime每次build创建同一评估/修订workflow并共享生成预算；ObservedProvider只转发新鲜真实回执；compiler从可信冻结关系携带观摩身份。243项受影响检查通过。尚未注册native产品合同、建立逐任务运输实例或完成Evidence/API/Workbench真实消费，不称产品已接通。
-
-唯一下一步：本实现同SHA公共三项后，正例完整审读合格再逐例未来/身份/日期/标题负例→自动修订→复评；失败停批整体诊断。合格后完成native产品合同/每任务隔离/现有原子保存和消费链路。Stage8E仍in_progress；GLM/high、所有预算、人工工作台稿不变。前端审美重做、头像、四块联动、专属Training及62主题继续按restart plan追踪。
+唯一下一步：当前产品候选同SHA公共三项后，运行一次冻结ShowMaker完整生成→审查/必要修订→Evidence保存/读取实测，逐项人工核对实际报告与来源；失败停批保留并整体诊断。随后验证既有任务原子事务、API/Workbench消费、独立评估与学习覆盖。Stage8E仍in_progress；GLM/high及所有预算、生产默认和工作台人工稿不变。前端审美重做、头像、Coach/Review/Training/Evidence、个人训练及62主题沿用全局restart plan。细节见docs/plans/2026-09-19-native-product-integration.md。
 
 全局后续见 `docs/plans/2026-09-16-astra-restart-plan.md`。
 
@@ -556,7 +554,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-完成当前实现同SHA公共三项后，按冻结五例逐个真实验证并人工审读；合格再注册native产品合同，复用共享预算和观摩身份接缝，完成每任务运输隔离及原子Evidence消费。失败停止本批，先整体诊断。
+当前native产品候选同SHA公共三项后，一次冻结ShowMaker生成/审查/必要修订/Evidence保存读取实测并完整审读；失败先诊断。合格后验证现有任务事务、API/Workbench消费、独立评估和学习覆盖。
 
 全局后续见 `docs/plans/2026-09-16-astra-restart-plan.md`。
 

@@ -1,5 +1,9 @@
 # Review outcomes without a second generated fact report
 
+## Current: five real controls accepted
+
+All five a71eb94 controls passed manual inspection, including four actual revision/recheck chains. Thirteen calls,180003tokens,unknown0. See `2026-09-19-native-product-integration.md` for the product continuation; older failures and their limits below remain historical evidence.
+
 ## Current: complete-object recovery and product seams
 
 The v3.1 positive at a04df23/Actions35421736689 returned a complete response

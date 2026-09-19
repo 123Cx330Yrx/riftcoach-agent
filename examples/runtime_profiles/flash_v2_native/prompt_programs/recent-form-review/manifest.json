@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "program_id": "recent-form-review-coach",
+  "program_version": "3.0.0",
+  "skill_name": "recent-form-review",
+  "skill_version": "0.6.0",
+  "context_contract_id": "context-builder-v1",
+  "context_contract_version": "1.0.0",
+  "evaluation_contract_id": "coach_evaluation",
+  "evaluation_contract_version": "3.1.0",
+  "component_fingerprints": [
+    {
+      "component_id": "skill_manifest",
+      "source": "skills/recent-form-review/manifest",
+      "sha256": "4279737022f2c81a317641fe775b6906bd0ddfcc5ccd789ee513cf7a46c62386"
+    },
+    {
+      "component_id": "skill_instructions",
+      "source": "skills/recent-form-review/SKILL.md",
+      "sha256": "f3207adead537a2999749fd0f882e744ebf10cb93c878924cab7b763cb080c23"
+    },
+    {
+      "component_id": "context_contract",
+      "source": "app.agent.context:context-builder-v1",
+      "sha256": "f7083aafd7f515cd02a40c4d3c38480b10a0b4957e5dcdd29c2de8ced73aa2b9"
+    },
+    {
+      "component_id": "knowledge_tool_contract",
+      "source": "app.tools.adapters.knowledge:knowledge.search@2.0.0",
+      "sha256": "4d25336b47105a430a8f5a3eb0068c2fcb601ac0a769c9e73ec5c8a429770fdc"
+    },
+    {
+      "component_id": "evaluation_schema",
+      "source": "evaluation_schema",
+      "sha256": "c7a921c319db6e3b099d118693c992484598dd3c972324e454d50ad6ed553470"
+    },
+    {
+      "component_id": "generation_policy",
+      "source": "generation_policy",
+      "sha256": "d059bfb9b0a5a2e050ffcd4511fb9228ed130864ea331034e395111ffa3225ae"
+    },
+    {
+      "component_id": "app.evaluation.golden_native_issues_review",
+      "source": "app/evaluation/golden_native_issues_review.py",
+      "sha256": "02aa601398a979810a9e278faa65b6fd9751ccebc927064e9f2597e7bebef349"
+    },
+    {
+      "component_id": "app.evaluation.golden_semantic_review",
+      "source": "app/evaluation/golden_semantic_review.py",
+      "sha256": "f72dca85969b4cf3ef12f2567f19d98ab91ec94e5acf7ee5fe0b1ccdb4048e78"
+    },
+    {
+      "component_id": "app.evaluation.golden_semantic_sources",
+      "source": "app/evaluation/golden_semantic_sources.py",
+      "sha256": "122fc00bd05504efe2bc8d4767bb379a5ad9e5e3264458406a34de4cc23a9db5"
+    },
+    {
+      "component_id": "app.evaluation.golden_contextual_sources",
+      "source": "app/evaluation/golden_contextual_sources.py",
+      "sha256": "db891f59333ef8fb82fb0f8af4cd222eb9a0bdd34d828dba140376d9023621be"
+    },
+    {
+      "component_id": "app.evaluation.golden_computed_evidence",
+      "source": "app/evaluation/golden_computed_evidence.py",
+      "sha256": "c8192fce713ea39a265f51fd0fe6b6bc0ccd715de64f821d05aa9813b45809db"
+    },
+    {
+      "component_id": "app.evaluation.golden_integrated_runtime",
+      "source": "app/evaluation/golden_integrated_runtime.py",
+      "sha256": "182a01bf29236ad47c48d443cecd1d625901b9c0d9ef5a59bd46d069ca60a219"
+    },
+    {
+      "component_id": "app.evaluation.golden_stream_bridge",
+      "source": "app/evaluation/golden_stream_bridge.py",
+      "sha256": "5ac1f78778aef2aa55caa2e1b153d2283b3a1cb5192a1bf70f0e2d51c5bccd5a"
+    },
+    {
+      "component_id": "app.runtime.review_sender",
+      "source": "app/runtime/review_sender.py",
+      "sha256": "5148f82b0df38a7b982fff47153f6ea266c7851d61e3b53f1bb1f6f4d42cea56"
+    },
+    {
+      "component_id": "app.runtime.receipted_provider_factory",
+      "source": "app/runtime/receipted_provider_factory.py",
+      "sha256": "07b53ec41acea73488a22255d09c21d156456beee5b3aeef223b530240473fb9"
+    },
+    {
+      "component_id": "app.runtime.native_coach_contract",
+      "source": "app/runtime/native_coach_contract.py",
+      "sha256": "2aa16067bb794847159cf6559f98da8bd634bc182c28fb31cd7fda7c415946fb"
+    },
+    {
+      "component_id": "coach_execution_contract",
+      "source": "app.runtime.native_coach_contract:v1.4.0",
+      "sha256": "a4f75e43a71fd36f7604a24bee7a7b21a0f3447c0e5a3fe29e8543cd670b36f1"
+    }
+  ],
+  "program_sha256": "0253906922ceea827b15428df28e5617f9e2a4c9da9ca7d35657070403ee7968"
+}
