@@ -1,5 +1,43 @@
 # Restore the business review contract
 
+## Current revision: v2 issue evidence
+
+The cacd2dd live positive completed in one call (90.938s, 20350 tokens).
+Its business judgments were correct on independent inspection; block28's
+no-video explanation selected unrelated source12. Source26 already contained
+the correct limit. The original response stays unchanged and is not quality
+approved. No negative/revision/recheck ran. See
+`golden_native_review_result_cacd2dd.json` for hashes and all-block audit.
+
+Contract necessity: native `EvaluationResponseModelV12` requires evidence for
+actual issues, not a second provenance graph for every accepted paragraph.
+V2 therefore removes block-level source_ids entirely (no replay compatibility
+that silently reclassifies old output), keeps full explanations and binds
+actual issue evidence to real sources. Empty issue source selections can express
+absent evidence/internal contradiction; their explanations must justify it.
+Source identities never mechanically prove that a claim follows from them.
+Computed evidence is an additional explicitly derived root with source/value
+hashes and unchanged original numbering; it is not new external evidence.
+
+Offline artifact `golden_native_review_v2_offline_v1.json` preserves all five
+source reports and scripted 3/5-call paths. Initial estimates46278–46354,
+long correction56550–57304; long historical stress reaches59742. Full five-call
+reservation403656 exceeds401920, so actual-use plus next-reservation admission
+remains mandatory. No input estimator, output/clock budget or GLM/high change.
+
+Execute positive first after exact-SHA CI and inspect the complete response;
+then the explicit future negative through automatic revision/recheck. Inspect
+all changed prose and sources, not just score or target removal. Continue the
+other declared controls only after success. Diagnosis precedes further paid
+experiments; an arbitrary new proof requirement cannot become a new gate.
+After current quality validation, use request-scoped Runtime wiring, the shared
+generation/review budget, existing succeed_with_evidence transaction, API and
+Workbench readback. No production default switch or manual substitute for the
+automatic capability. All broader 8E and frontend requirements remain tracked.
+
+The following v1 design/qualification is historical.
+
+
 Status: whole-method offline qualification complete; bounded development
 requires exact-SHA public CI. No production registration or quality admission. This replaces an experimental response representation, not the
 accepted product quality standard or the repository history.

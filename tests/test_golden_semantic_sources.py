@@ -56,6 +56,8 @@ def test_request_projection_preserves_all_original_input_values_and_root_navigat
         navigation[number] = ("legacy/" + key, kind, restored["facts_and_provenance"]["facts"][key])
     for number, key, kind, path, span in roots["additional"]:
         base = restored if span is None else strict_json(restored["deterministic_source_facts"][span[0]:span[1]])
+        if key == sources.COMPUTED_KEY:
+            base = {"computed_evidence": calculated}
         navigation[number] = (key, kind, at(base, path))
     assert set(navigation) == set(lookup)
     for number, (key, kind, value) in navigation.items():
@@ -146,3 +148,21 @@ def test_untrusted_text_remains_source_content_and_numbering_never_follows_it():
     assert selected["kind"] == "source_declaration"
     assert sources.source_catalog(inputs)[1].kind != "official_patch"
     assert not selected["semantic_approval"]
+
+
+def test_computed_root_preserves_original_ids_and_recomputes_from_bound_inputs():
+    from app.evaluation.golden_review_source_catalog import build_catalog
+    from app.evaluation.golden_computed_evidence import build
+    inputs = source_input()
+    original = build_catalog(inputs)
+    catalog = sources.source_catalog(inputs)
+    assert list(catalog.values())[:-1] == list(original.entries)
+    number = source_id(inputs, sources.COMPUTED_KEY)
+    row = sources.resolve_refs(inputs, [number])[0]
+    assert row["kind"] == "computed_evidence"
+    assert row["value"] == build(inputs)
+    assert row["value"]["source_digest"] == inputs.source.source_digest
+    row["value"]["cohorts"].clear()
+    assert sources.resolve_refs(inputs, [number])[0]["value"] == build(inputs)
+    changed = rewrite(inputs, lambda d: d.update(user_utterance="另一次审查"))
+    assert sources.resolve_refs(changed, [number])[0]["input_sha256"] != row["input_sha256"]

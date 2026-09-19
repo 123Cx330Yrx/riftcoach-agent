@@ -26,11 +26,10 @@ def scripted(inputs, *, problem_block=None):
     rows = []
     for block, (_, text) in enumerate(inputs.source.blocks, 1):
         heading = bool(re.match(r"^#{1,6}\s", text))
-        issues = [] if block != problem_block else [dict(severity="medium", category="unsupported_comparison",
+        issues = [] if block != problem_block else [dict(source_ids=declarations, severity="medium", category="unsupported_comparison",
             explanation="分析者构造的流程见证：未来全称结论超出所给有限样本。",
             suggested_correction="收窄为本样本观察，未来是否延续有待验证。")]
         rows.append(dict(block=block, kind="navigation" if heading and not issues else "content",
-            source_ids=[] if heading and not issues else declarations,
             explanation="仅为接口/预算见证，来源存在不代表本段已获语义支持。", issues=issues))
     return dict(reviews=rows, score=70 if problem_block else 95,
         verdict="needs_revision" if problem_block else "pass", summary="离线脚本响应，不是模型评估。",
@@ -68,9 +67,8 @@ def long_explanation_stress(args, expected_inputs):
                     refs.update(check.get("evidence_refs", []))
                     refs.update(numbers[source["key"]] for source in check.get("sources", []))
                     refs.update(numbers[literal["source"]["key"]] for literal in check.get("literals", []))
-                row["source_ids"] = sorted(refs)
-            row["issues"] = [{key: issue[key] for key in
-                ("severity", "category", "explanation", "suggested_correction")}
+            row["issues"] = [dict({key: issue[key] for key in
+                ("severity", "category", "explanation", "suggested_correction")}, source_ids=sorted(refs))
                 for issue in fixture["issues"] if issue["quote_ref"]["block"] == row["block"]]
             if row["kind"] == "content":
                 expanded = "原段：" + current.source.blocks[row["block"] - 1][1] + "。核查：" + row["explanation"]
@@ -81,14 +79,14 @@ def long_explanation_stress(args, expected_inputs):
         first = deepcopy(value)
         broken_index = next(index for index, row in enumerate(first["reviews"])
             if row["kind"] == "content" and not row["issues"])
-        first["reviews"][broken_index]["source_ids"] = [True]
+        first["score"] = str(first["score"])
         raw = compact(first)
         try:
             candidate.validate(raw, current)
-            raise AssertionError("synthetic boolean source accepted")
+            raise AssertionError("synthetic string score accepted")
         except ValueError as error:
             diagnostics = candidate.diagnostics_for(error)
-        assert any(tuple(error.get("loc", ())) == ("reviews", broken_index, "source_ids", 0)
+        assert any(tuple(error.get("loc", ())) == ("score",)
             for error in diagnostics)
         corrected = deepcopy(value)
         corrected["issue_resolutions"] = [dict(previous_id=number, disposition="retained",
@@ -141,10 +139,10 @@ def audit(args):
     first = deepcopy(values[0])
     first["extra"] = "首评所有多余原值保留，不能把接口错误变成新事实。"
     row = next(row for row in first["reviews"] if row["kind"] == "content")
-    row["issues"] = dict(severity="medium", category="fact_error", explanation="合成首评误报", suggested_correction="合成意见")
+    row["issues"] = dict(source_ids=[], severity="medium", category="fact_error", explanation="合成首评误报", suggested_correction="合成意见")
     corrected = deepcopy(values[0])
     corrected["issue_resolutions"] = [dict(previous_id=1, disposition="withdrawn", final_issue=None,
-        source_ids=row["source_ids"], explanation="分析者构造的撤销见证，不证明真实来源否定该意见。")]
+        source_ids=[next(n for n, e in source_catalog(inputs[0]).items() if e.key == "source/deterministic")], explanation="分析者构造的撤销见证，不证明真实来源否定该意见。")]
     raw = compact(first)
     _, _, correction_journal = candidate.validate(compact(corrected), inputs[0], previous_raw=raw)
     assert correction_journal["previous_raw"] == raw
@@ -183,7 +181,7 @@ def audit(args):
     second_negative = deepcopy(values[1])
     selected_row = next(r for r in values[1]["reviews"] if r["issues"])
     second_negative["issue_resolutions"] = [dict(previous_id=1, disposition="retained", final_issue=1,
-        source_ids=selected_row["source_ids"], explanation="完整保留同一原问题；合成状态机见证。")]
+        source_ids=selected_row["issues"][0]["source_ids"], explanation="完整保留同一原问题；合成状态机见证。")]
     five = run([compact(broken_negative), compact(second_negative), reqs[0].report,
         compact(broken_positive), compact(values[0])])
     long_shapes, long_replies = long_explanation_stress(args, inputs)
@@ -227,11 +225,11 @@ def observed_witnesses():
                     row["explanation"] = expanded
                     prefixed.append(row["block"])
         broken = deepcopy(long)
-        next(r for r in broken["reviews"] if r["kind"] == "content")["source_ids"] = [True]
+        broken["score"] = str(broken["score"])
         raw = compact(broken)
         try:
             candidate.validate(raw, current)
-            raise AssertionError("boolean accepted")
+            raise AssertionError("string score accepted")
         except ValueError as error:
             diagnostics = candidate.diagnostics_for(error)
         correction = candidate.request(current, previous_raw=raw, diagnostics=diagnostics)

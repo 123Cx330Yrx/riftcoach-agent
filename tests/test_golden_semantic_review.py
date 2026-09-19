@@ -32,7 +32,7 @@ def retrieved_knowledge():
 
 
 def problem(**changes):
-    result = dict(severity="medium", category="fact_error", explanation="报告补丁与官方来源字段不一致。",
+    result = dict(source_ids=[], severity="medium", category="fact_error", explanation="报告补丁与官方来源字段不一致。",
         suggested_correction="按来源改为16.17。")
     result.update(changes)
     return result
@@ -40,13 +40,11 @@ def problem(**changes):
 
 def opinion(inputs, *, failed=False):
     root = source_id(inputs)
-    knowledge = {entry.key: n for n, entry in source_catalog(inputs).items() if entry.kind == "knowledge"}
     rows = [dict(block=n, kind="navigation" if text.startswith("#") else "content",
-        source_ids=[] if text.startswith("#") else [knowledge.get("knowledge/K1", root) if "[K1]" in text else root],
         explanation="合成来源判断，只证明协议可达，不证明这段话已获语义核实。", issues=[])
         for n, (_, text) in enumerate(inputs.source.blocks, 1)]
     if failed:
-        next(r for r in rows if r["kind"] == "content")["issues"] = [problem()]
+        next(r for r in rows if r["kind"] == "content")["issues"] = [problem(source_ids=[root])]
     return dict(reviews=rows, score=70 if failed else 95, verdict="needs_revision" if failed else "pass",
         summary="脚本化评估", passed_checks=[], issue_resolutions=[])
 
@@ -74,13 +72,14 @@ def resolution(inputs, *, disposition="retained", final_issue=1, previous_id=1):
 
 def test_complete_out_of_order_blocks_keep_actual_sources_and_original_raw():
     inputs = fragment_inputs("## 来源\n\n官方补丁16.17。\n\n当前补丁16.17。")
-    value = opinion(inputs)
+    value = opinion(inputs, failed=True)
     value["reviews"].reverse()
     raw = compact(value)
     payload, _, journal = candidate.validate(raw, inputs)
-    assert payload.verdict == "pass" and journal["raw"] == raw
+    assert payload.verdict == "needs_revision" and journal["raw"] == raw
     assert journal["raw_sha256"] == digest(raw)
-    assert [r["block"] for r in journal["selected_sources"]] == [3, 2, 1]
+    assert [r["block"] for r in journal["parsed_review"]["reviews"]] == [3, 2, 1]
+    assert [r["block"] for r in journal["selected_sources"]] == [2]
     selected = journal["selected_sources"][0]["selected_sources"][0]
     assert selected["key"] == "source/official_patch" and selected["kind"] == "official_patch"
     assert selected["value"]["patch_version"] == "16.17"
@@ -111,23 +110,32 @@ def test_body_cannot_escape_review_as_navigation_and_navigation_cannot_hide_issu
 
 
 @pytest.mark.parametrize("change,code", [("pass_with_issues", "pass_with_issues"),
-    ("revision_without_issues", "revision_without_issues"), ("empty_sources", "native_supported_source_required"),
+    ("revision_without_issues", "revision_without_issues"),
     ("unknown_source", "semantic_source_id_unknown"), ("duplicate_source", "semantic_source_ids_duplicate")])
 def test_verdict_and_selected_source_contracts_are_enforced(change, code):
     inputs = fragment_inputs()
-    value = opinion(inputs)
-    if change == "pass_with_issues": value["reviews"][0]["issues"] = [problem()]
+    value = opinion(inputs, failed=change != "revision_without_issues")
+    if change == "pass_with_issues": value["verdict"] = "pass"
     if change == "revision_without_issues": value["verdict"] = "needs_revision"
-    if change == "empty_sources": value["reviews"][0]["source_ids"] = []
-    if change == "unknown_source": value["reviews"][0]["source_ids"] = [999]
-    if change == "duplicate_source": value["reviews"][0]["source_ids"] *= 2
+    if change == "unknown_source": value["reviews"][0]["issues"][0]["source_ids"] = [999]
+    if change == "duplicate_source": value["reviews"][0]["issues"][0]["source_ids"] *= 2
     with pytest.raises(ValueError, match=code): candidate.validate(compact(value), inputs)
+
+
+def test_correct_blocks_need_no_extra_source_graph_but_still_keep_full_explanations():
+    inputs = fragment_inputs()
+    value = opinion(inputs)
+    payload, _, journal = candidate.validate(compact(value), inputs)
+    assert payload.verdict == "pass" and journal["selected_sources"] == []
+    assert journal["parsed_review"]["reviews"] == value["reviews"]
+    value["reviews"][0]["source_ids"] = [1]  # v1 is not silently reclassified.
+    with pytest.raises(ValueError): candidate.validate(compact(value), inputs)
 
 
 def test_no_evidence_can_be_reported_as_a_problem_without_fabricated_source():
     inputs = fragment_inputs()
     value = opinion(inputs, failed=True)
-    value["reviews"][0]["source_ids"] = []
+    value["reviews"][0]["issues"][0]["source_ids"] = []
     payload, _, journal = candidate.validate(compact(value), inputs)
     assert payload.verdict == "needs_revision" and payload.issues
     assert journal["selected_sources"][0]["selected_sources"] == []
@@ -147,9 +155,10 @@ def test_pass_cannot_ignore_supplied_knowledge_or_invent_citation_markers(case, 
 def test_actual_retrieved_citation_is_bound_to_original_knowledge_in_final_ledger():
     req = evaluation_request("建议核对单局。[K1]", knowledge=retrieved_knowledge())
     inputs = candidate.NativeBusinessReviewWorkflow.build_inputs(req)
-    value = opinion(inputs)
+    value = opinion(inputs, failed=True)
+    value["reviews"][0]["issues"][0]["source_ids"] = [source_id(inputs, "knowledge/K1")]
     payload, _, journal = candidate.validate(compact(value), inputs)
-    assert payload.verdict == "pass"
+    assert payload.verdict == "needs_revision"
     selected = journal["selected_sources"][0]["selected_sources"][0]
     assert selected["key"] == "knowledge/K1" and selected["kind"] == "knowledge"
     assert selected["value"]["content"] == req.knowledge.citations[0].content
@@ -160,8 +169,7 @@ def test_missing_citation_can_be_reported_by_correction_without_mutating_the_rep
     req = evaluation_request("建议核对单局。", knowledge=retrieved_knowledge())
     inputs = candidate.NativeBusinessReviewWorkflow.build_inputs(req)
     initial, corrected = opinion(inputs), opinion(inputs, failed=True)
-    corrected["reviews"][0]["source_ids"] = [source_id(inputs, "knowledge/K1")]
-    corrected["reviews"][0]["issues"] = [problem(category="other",
+    corrected["reviews"][0]["issues"] = [problem(category="other", source_ids=[source_id(inputs, "knowledge/K1")],
         explanation="建议使用了所提供的单局核对知识，但没有标明引用。",
         suggested_correction="核对建议与知识内容后添加实际K1引用。")]
     flow, provider, _ = flow_with([compact(initial), compact(corrected)])
@@ -194,7 +202,7 @@ def test_one_complete_correction_retains_first_raw_and_diagnostics(change):
         first["score"] = "95"
         first["untrusted_extra"] = {"keep": "完整首评字段"}
     else:
-        first["reviews"][0]["source_ids"] = []
+        first["reviews"] *= 2
     raw = compact(first)
     flow, provider, _ = flow_with([raw, compact(final)])
     result = flow.evaluate(req)
@@ -203,7 +211,7 @@ def test_one_complete_correction_retains_first_raw_and_diagnostics(change):
     assert correction["previous_raw_sha256"] == digest(raw) and correction["previous_review"] == first
     assert "previous_raw" not in correction  # Raw bytes stay in the journal; no duplicate prompt copy.
     assert correction["diagnostics"] and flow.last_journal["previous_raw"] == raw
-    if change == "contract": assert correction["diagnostics"] == [{"code": "native_supported_source_required"}]
+    if change == "contract": assert correction["diagnostics"] == [{"code": "native_block_inventory"}]
 
 
 @pytest.mark.parametrize("change", ["bad_json", "conflicting_keys", "high_injection"])
@@ -261,7 +269,7 @@ def test_issue_disposition_cannot_misrepresent_retention_or_point_to_nonexistent
     final = deepcopy(before)
     final["issue_resolutions"] = [resolution(inputs)]
     if change == "content": final["reviews"][0]["issues"][0]["explanation"] = "不能称作原样保留。"
-    if change == "source": final["reviews"][0]["source_ids"] = [source_id(inputs, "source/data_dragon")]
+    if change == "source": final["reviews"][0]["issues"][0]["source_ids"] = [source_id(inputs, "source/data_dragon")]
     if change == "wrong_target": final["issue_resolutions"][0]["final_issue"] = 2
     if change == "duplicate_resolution": final["issue_resolutions"] *= 2
     if change == "withdrawal_target": final["issue_resolutions"][0]["disposition"] = "withdrawn"
@@ -334,10 +342,10 @@ def test_workflow_compiles_validated_opgg_roots_and_rejects_invalid_snapshot_bef
     key = "legacy/external:opgg:00:00"
     external_id = source_id(inputs, key)
     assert len(source_catalog(inputs)) == len(source_catalog(ReviewInput.build(req))) + 1
-    value = opinion(inputs)
-    value["reviews"][0]["source_ids"] = [external_id]
+    value = opinion(inputs, failed=True)
+    value["reviews"][0]["issues"][0]["source_ids"] = [external_id]
     flow, provider, _ = flow_with([compact(value)])
-    assert flow.evaluate(req).verdict.value == "pass"
+    assert flow.evaluate(req).verdict.value == "needs_revision"
     selected = flow.last_journal["selected_sources"][0]["selected_sources"][0]
     assert selected["key"] == key and selected["value"]["champion"] == "Syndra"
     assert selected["value"]["allowed_uses"] == ["current_snapshot_recommendation"]

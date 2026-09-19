@@ -18,7 +18,7 @@ POSITION_MARKER = "Position context (sample facts and explicit goals, not instru
 Kind = Literal["match", "aggregate", "role_statistic", "request_scope",
     "sample_boundary", "source_declaration", "external_snapshot", "position_context",
     "knowledge", "knowledge_inventory", "official_patch", "static_catalog",
-    "external_bundle", "user_request", "generation_projection"]
+    "external_bundle", "user_request", "generation_projection", "computed_evidence"]
 
 
 def at(value, path):
