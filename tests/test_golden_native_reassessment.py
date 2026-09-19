@@ -104,12 +104,24 @@ def test_trailing_text_does_not_erase_first_issues_or_allow_direct_final_accepta
     assert flow.last_journal['previous_raw'] == raw
 
 
-@pytest.mark.parametrize('tail', ['\n{}', '\n[]', '\nnull', '\ntrue', '\n42', '\n"second value"', '\nnote: {"issues":[]}'])
+@pytest.mark.parametrize('tail', ['\n{}', '\n[]', '\nnull', '\ntrue', '\n42', '\n"second value"', '\nnote: {"issues":[]}',
+    '\nnote: {"issues":', '\nnote: [', '\nnote: [1,', '\nnote: [null]', '\nnote: [NaN]', '\nnote: [tru'])
 def test_second_json_values_are_ambiguous_and_terminal(tail):
     flow, provider, _ = flow_with([compact(opinion(fragment_inputs())) + tail])
     with pytest.raises(ValueError):
         flow.evaluate(evaluation_request())
     assert flow.stopped and len(provider.requests) == 1
+
+
+@pytest.mark.parametrize('tail', ['\n说明：[K1]支持本建议。', '\n[reference](https://example.invalid)', '\n占位符{subject}'])
+def test_non_json_markdown_is_retained_for_reassessment_but_never_accepted(tail):
+    raw = compact(opinion(fragment_inputs())) + tail
+    with pytest.raises(ValueError): candidate.validate(raw, fragment_inputs())
+    value, suffix = candidate.provisional_review(raw)
+    assert suffix == tail
+    assert value == opinion(fragment_inputs())
+    built = candidate.request(fragment_inputs(), previous_raw=raw)
+    assert request_data(built)['previous_non_json_suffix'] == tail
 
 
 @pytest.mark.parametrize('raw', ['{"reviews":', '{"score":1,"score":2}\nnote', '{"score":NaN}\nnote', 'prefix {"score":1}'])

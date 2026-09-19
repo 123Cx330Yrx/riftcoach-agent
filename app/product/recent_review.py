@@ -13,6 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from app.harness.run_ids import normalize_run_id
 from app.memory.context_models import MemoryContextBinding
+from app.players.models import RelationshipRole
 from app.model_runtime import (
     ModelRuntimeProfile,
     require_registered_model_runtime_profile,
@@ -261,12 +262,23 @@ class RecentReviewRuntimeRequestCompiler:
                 raise ProductRequestCompilationError(
                     "trusted run_id is invalid"
                 ) from exc
-        if (
-            memory_context_binding is not None
-            and memory_context_binding.run_id != normalized_run_id
-        ):
-            raise ProductRequestCompilationError(
-                "Memory Context binding run_id does not match the trusted run"
+        if memory_context_binding is not None:
+            memory_context_binding = MemoryContextBinding.model_validate(memory_context_binding)
+            if memory_context_binding.run_id != normalized_run_id:
+                raise ProductRequestCompilationError(
+                    "Memory Context binding run_id does not match the trusted run"
+                )
+
+        user_utterance = f"typed-entrypoint reviews.recent focus={request.focus}"
+        # The Worker supplies this frozen relationship from the task, never
+        # from HTTP fields or a player's display name. Player identity itself
+        # remains in the bound player_summary, without hardcoding a pro player.
+        if (memory_context_binding is not None
+                and memory_context_binding.relationship_role is RelationshipRole.OBSERVED):
+            user_utterance += (
+                "。所提供 player_summary.player 是观摩对象，不是阅读者本人。"
+                "生成并复核该对象的观摩报告；练习建议限于观摩，"
+                "不可把这些比赛当作阅读者的个人基线或个人训练依据。"
             )
 
         binding = SkillInputArtifactBinding.from_content(
@@ -276,10 +288,7 @@ class RecentReviewRuntimeRequestCompiler:
         )
         execution_request = SkillExecutionRequest(
             run_id=normalized_run_id,
-            user_utterance=(
-                "typed-entrypoint reviews.recent "
-                f"focus={request.focus}"
-            ),
+            user_utterance=user_utterance,
             router_decision=decision,
             input_payload=input_payload,
             input_artifacts=binding,

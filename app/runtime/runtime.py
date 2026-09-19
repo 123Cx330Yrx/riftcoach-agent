@@ -51,6 +51,7 @@ from app.tools.adapters import build_knowledge_tools, build_llm_tools
 from app.tools.adapters.llm import LLM_CHAT_RETRY_MAX_ATTEMPTS
 from app.tools.registry import ToolRegistry
 from app.tools.runtime import ToolRuntime
+from .coach_budget import CoachBudgetedProvider
 
 from .models import (
     RuntimeArtifactReference,
@@ -84,6 +85,21 @@ class RuntimeExecutionBundle:
 
 EvaluatorFactory = Callable[[ToolRuntime], Any]
 ReviserFactory = Callable[[ToolRuntime], Any]
+ReviewWorkflowFactory = Callable[[ToolRuntime, LLMProvider], Any]
+
+
+class _ReceiptForwardingCoachBudgetedProvider(CoachBudgetedProvider):
+    """Keep the budget gate and expose the delegate's real receipt.
+
+    The review workflow must receive the same budgeted object used by the
+    Agent and Harness.  A budget gate does not create a transport receipt;
+    this adapter only forwards the optional receipt from the already observed
+    delegate and therefore cannot fabricate one or create another budget.
+    """
+
+    @property
+    def last_exchange(self):
+        return getattr(self.provider, "last_exchange", None)
 
 
 class RuntimeExecutionFactory:
@@ -98,21 +114,35 @@ class RuntimeExecutionFactory:
         self,
         *,
         knowledge_provider: Any,
-        evaluator_factory: EvaluatorFactory,
-        reviser_factory: ReviserFactory,
+        evaluator_factory: EvaluatorFactory | None = None,
+        reviser_factory: ReviserFactory | None = None,
+        review_workflow_factory: ReviewWorkflowFactory | None = None,
         runtime_profile: ModelRuntimeProfile | None = None,
         coach_contract=None,
     ) -> None:
-        if not callable(evaluator_factory):
-            raise TypeError("evaluator_factory must be callable")
-        if not callable(reviser_factory):
-            raise TypeError("reviser_factory must be callable")
+        if review_workflow_factory is not None:
+            if evaluator_factory is not None or reviser_factory is not None:
+                raise ValueError(
+                    "review_workflow_factory is mutually exclusive with evaluator_factory and reviser_factory"
+                )
+            if not callable(review_workflow_factory):
+                raise TypeError("review_workflow_factory must be callable")
+        else:
+            if evaluator_factory is not None and not callable(evaluator_factory):
+                raise TypeError("evaluator_factory must be callable")
+            if reviser_factory is not None and not callable(reviser_factory):
+                raise TypeError("reviser_factory must be callable")
+            if evaluator_factory is None or reviser_factory is None:
+                raise ValueError(
+                    "evaluator_factory and reviser_factory must be supplied together"
+                )
         self._knowledge_provider = knowledge_provider
         self.coach_contract = require_coach_contract(coach_contract)
         if coach_contract is not None and runtime_profile is not None:
             raise ValueError("unadmitted Coach contract cannot bind a product runtime profile")
         self._evaluator_factory = evaluator_factory
         self._reviser_factory = reviser_factory
+        self._review_workflow_factory = review_workflow_factory
         self._runtime_profile = (
             require_registered_model_runtime_profile(runtime_profile)
             if runtime_profile is not None
@@ -138,8 +168,15 @@ class RuntimeExecutionFactory:
         selected_profile = self._runtime_profile
         if self.coach_contract is not None:
             self.coach_contract.require_provider(provider)
-            from .coach_budget import CoachBudgetedProvider
-            provider = CoachBudgetedProvider(provider, coach_contract=self.coach_contract)
+            budgeted_type = (
+                _ReceiptForwardingCoachBudgetedProvider
+                if self._review_workflow_factory is not None
+                else CoachBudgetedProvider
+            )
+            provider = budgeted_type(
+                provider,
+                coach_contract=self.coach_contract,
+            )
         elif expected_profile is not None:
             if getattr(provider, "runtime_profile", None) != expected_profile:
                 raise RuntimeCompositionError(
@@ -177,15 +214,32 @@ class RuntimeExecutionFactory:
             harness_llm_registry.register(definition)
         harness_llm_runtime = ToolRuntime(harness_llm_registry)
 
-        evaluator = self._evaluator_factory(harness_llm_runtime)
-        reviser = self._reviser_factory(harness_llm_runtime)
+        if self._review_workflow_factory is not None:
+            workflow = self._review_workflow_factory(
+                harness_llm_runtime,
+                provider,
+            )
+            evaluator = workflow
+            reviser = workflow
+        else:
+            # Constructor validation establishes that both factories exist.
+            evaluator = self._evaluator_factory(harness_llm_runtime)
+            reviser = self._reviser_factory(harness_llm_runtime)
         if not callable(getattr(evaluator, "evaluate", None)):
             raise RuntimeCompositionError(
-                "evaluator_factory returned an invalid evaluator"
+                (
+                    "review_workflow_factory returned an invalid workflow"
+                    if self._review_workflow_factory is not None
+                    else "evaluator_factory returned an invalid evaluator"
+                )
             )
         if not callable(getattr(reviser, "revise", None)):
             raise RuntimeCompositionError(
-                "reviser_factory returned an invalid reviser"
+                (
+                    "review_workflow_factory returned an invalid workflow"
+                    if self._review_workflow_factory is not None
+                    else "reviser_factory returned an invalid reviser"
+                )
             )
 
         return RuntimeExecutionBundle(
@@ -990,4 +1044,5 @@ __all__ = [
     "RuntimeCompositionError",
     "RuntimeExecutionBundle",
     "RuntimeExecutionFactory",
+    "ReviewWorkflowFactory",
 ]

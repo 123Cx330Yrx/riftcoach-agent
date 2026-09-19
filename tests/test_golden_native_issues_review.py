@@ -201,6 +201,29 @@ def test_problem_and_failed_status_summaries_only_describe_the_review_outcome():
     assert payload.summary == '模型评估未通过，停止自动修订。'
 
 
+def test_actual_markdown_tail_can_reach_one_full_reassessment_without_being_trimmed_to_pass():
+    from tests.test_golden_native_reassessment import recorded_failure
+    artifact = candidate.strict_json(Path('data/evaluation/results/golden_native_review_result_a04df23.json').read_text(encoding='utf-8'))
+    _, req = recorded_failure()
+    controls = candidate.strict_json(Path('data/evaluation/datasets/golden_observed_review_controls_v1.json').read_text(encoding='utf-8'))
+    req = replace(req, report=controls['cases'][0]['report'], user_utterance=controls['user_utterance'])
+    inputs = candidate.build_inputs(req)
+    assert digest(inputs.data_json) == artifact['receipt']['input_sha256']
+    raw = artifact['raw']
+    with pytest.raises(ValueError): candidate.validate(raw, inputs)
+    flow, provider, _ = flow_with([raw, compact(opinion(inputs))])
+    result = flow.evaluate(req)
+    data = request_data(provider.requests[1])
+    assert '[K1]' in data['previous_non_json_suffix']
+    assert data['previous_raw_sha256'] == digest(raw)
+    assert flow.last_journal['previous_raw'] == raw
+    assert len(provider.requests) == 2 and result.verdict.value == 'pass'
+    # The second response is scripted; this proves reachability, not live repair.
+    flow, provider, _ = flow_with([raw, raw])
+    with pytest.raises(ValueError): flow.evaluate(req)
+    assert flow.stopped and len(provider.requests) == 2
+
+
 @pytest.mark.parametrize('changed', ['summary', 'report', 'utterance'])
 def test_recheck_is_bound_to_revised_text_same_facts_and_original_user(changed):
     from app.report_validation import COACH_REPORT_HEADINGS

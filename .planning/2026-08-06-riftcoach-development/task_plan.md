@@ -300,13 +300,13 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-19 native v3正例在42a5fc0/Actions35420153601三项success后完整返回：30.563秒，11932输入+2411输出=14343tokens，无未知用量，累计Provider至少222。判断pass，但summary将辅助0胜写成0负，人工语义拒绝，负例未跑。独立核对实际请求及无损还原的五处来源一致，原请求无previous_review；错误是本次新生成，不能从输出断言模型内部原因。原始回执不修改，证据golden_native_review_result_42a5fc0.json。
+2026-09-19 a04df23/Actions35421736689公共三项success后的v3.1正例：1次完整stop，27.062秒，11918输入+2198输出=14116tokens，无未知用量，累计Provider至少223。JSON后附审查说明，完整人工审读未见事实错误，但协议拒绝；负例未跑。原因是恢复代码把普通[K1]也当第二JSON，原失败与原始回执保留于golden_native_review_result_a04df23.json。
 
-v3.1落实此前未做彻底的职责边界：模型仅输出score/verdict/issues/issue_resolutions，状态摘要由程序按结论和问题数量生成，passed_checks为空，不编造通过证明。多余summary/检查文本严格拒绝、完整保留进入原有一次重评；第二次仍坏则停止。实际问题解释、来源与修正建议、完整报告/来源/领域标准和旧问题处置不减；不静默删错字段过关。原九旧入口继续离线，失败的v3输出合同不再准入，旧失败不重标。
+现修复非JSON尾文的重评准入，并在通用输出约束中明确唯一JSON对象。原始意见/尾文完整保留，真正第二JSON或其截断前缀仍拒绝；最终严格解析不变，二次坏响应终止。冻结五例不变；可复现离线脚本给出尾文重评47138、五次满额385874<401920，仅为工程证明。
 
-214项相关检查通过，golden_native_issues_offline_v2.json核对冻结五例来源/报告/标签不变；输入45254–45330，真实坏摘要/尾文重评47080/55610，脚本五次满额385498<401920，仍按实际用量+下次预约准入。仅为工程证明。唯一下一步：v3.1同SHA公共三项后，正例完整审读合格再逐例未来/身份/日期/标题负例→自动修订→复评；失败结束批次后整体诊断。
+已合并经审查的产品接缝准备：Runtime每次build创建同一评估/修订workflow并共享生成预算；ObservedProvider只转发新鲜真实回执；compiler从可信冻结关系携带观摩身份。243项受影响检查通过。尚未注册native产品合同、建立逐任务运输实例或完成Evidence/API/Workbench真实消费，不称产品已接通。
 
-合格后继续Runtime/原子保存/Evidence/API/Workbench接线，生成和审查共享预算、状态按任务隔离并保留观摩身份。Stage8E仍in_progress；GLM/high/全部硬上限/人工稿不变。前端审美重做、头像、四块联动、专属Training及62主题继续追踪。详见docs/plans/2026-09-19-native-problem-list.md。
+唯一下一步：本实现同SHA公共三项后，正例完整审读合格再逐例未来/身份/日期/标题负例→自动修订→复评；失败停批整体诊断。合格后完成native产品合同/每任务隔离/现有原子保存和消费链路。Stage8E仍in_progress；GLM/high、所有预算、人工工作台稿不变。前端审美重做、头像、四块联动、专属Training及62主题继续按restart plan追踪。
 
 全局后续见 `docs/plans/2026-09-16-astra-restart-plan.md`。
 
@@ -556,7 +556,7 @@ v3.1落实此前未做彻底的职责边界：模型仅输出score/verdict/issue
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-先完成v3.1同SHA公共三项；按原冻结正例及四负例完整审查实际模型判断、来源和修订复评。失败停批诊断；合格后按已查接缝推进共享生成/审查预算、逐任务隔离、观摩身份与原子Evidence保存。当前证据及边界以canonical和docs/plans/2026-09-19-native-problem-list.md为准。
+完成当前实现同SHA公共三项后，按冻结五例逐个真实验证并人工审读；合格再注册native产品合同，复用共享预算和观摩身份接缝，完成每任务运输隔离及原子Evidence消费。失败停止本批，先整体诊断。
 
 全局后续见 `docs/plans/2026-09-16-astra-restart-plan.md`。
 

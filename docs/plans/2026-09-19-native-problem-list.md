@@ -1,6 +1,44 @@
 # Review outcomes without a second generated fact report
 
-## Current: enforce the output responsibility (v3.1)
+## Current: complete-object recovery and product seams
+
+The v3.1 positive at a04df23/Actions35421736689 returned a complete response
+in27.062s,11918input+2198output=14116tokens,unknown0. The four JSON fields
+were valid and the inspected appended explanation agreed with the provided
+facts, but the response included Markdown after the object. It remains a failed
+protocol result, not a pass. No negative followed; cumulative requests223.
+The new replay fixture initially depended on ignored local files in CI; it was
+corrected to reconstruct the exact input hash from committed fixtures. Public
+checks then passed; this was an engineering mistake, not a Provider failure.
+
+The recovery predicate incorrectly equated every `[` with another JSON value,
+so `[K1]` in the explanatory tail prevented the existing complete reassessment.
+The fix classifies possible second containers by JSON opening characters;
+ordinary Markdown/prose remains intact in previous_non_json_suffix. Actual or
+possibly truncated JSON containers, multiple top-level values, duplicate keys,
+nonfinite values, ambiguous beginnings and terminal injection still stop.
+The final result stays strict. A second malformed response stops, never gets
+trimmed to pass. Tests replay the entire actual response unchanged. The request
+also makes the single-object boundary explicit and scopes explanation to actual
+issues, while keeping all business facts and accepted criteria unchanged.
+
+The Provider's existing stream payload already requests json_object (covered by
+test_golden_stream_bridge.py); a returned tail is evidence that the observed
+response did not conform, not proof of a server-side syntax guarantee. No model
+or reasoning downgrade, output increase or hidden retry is introduced.
+golden_native_issues_offline_v3.json measures the actual tail correction47138
+and five-call full reservation385874. Independent product seam preparation adds
+a combined per-build evaluator/reviser sharing the generation budget and passes
+the frozen observed relationship to the generation/review user request. This is
+not native production registration, nor evidence that model quality is solved.
+
+Next: same-SHA public checks for this complete change; unchanged positive then
+each of the four negatives through actual revision/recheck, inspecting all
+returned text/sources and changes. A failure stops that batch for diagnosis.
+Only qualified results can activate the native product composition and proceed
+to atomic Evidence publication/readback and broader8E acceptance.
+
+## Earlier: enforce the output responsibility (v3.1)
 
 The v3 positive at42a5fc0/Actions35420153601 completed in30.563s with
 11932input+2411output=14343tokens, unknown0. Its verdict was correct, but its

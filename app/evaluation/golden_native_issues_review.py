@@ -45,6 +45,8 @@ class NativeIssuesReview(previous.UntitledSchema, previous.Strict):
 _rules = previous.POLICY.splitlines()
 assert _rules[2].startswith('reviews恰好覆盖')
 assert '问题按reviews顺序及段内顺序编号1起。' in _rules[3]
+_rules[0] += '响应必须恰好是一个JSON对象；对象前后不得附加Markdown、审查说明或其他文字。'
+_rules[1] = _rules[1].replace('explanation说明原文含义', '每个实际问题的explanation说明原文含义')
 _rules[2] = ('检查source_index.blocks中的全文，包括标题中的断言和复合句尾部。'
     '只在issues输出实际问题，每个问题用block定位完整原段；可对同一段列多个不同问题。'
     '没有问题的段落无需重写事实、来源路径或逐段解释。只输出score、verdict、issues、issue_resolutions四项；'

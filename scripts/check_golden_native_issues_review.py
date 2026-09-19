@@ -75,6 +75,13 @@ def audit():
     summary_replay = candidate.request(inputs[0], previous_raw=actual['raw'], diagnostics=[{'code':'extra_forbidden'}])
     summary_data = candidate.strict_json(summary_replay.messages[1].content.split('[UNTRUSTED DATA]\n',1)[1].rsplit('\n[END UNTRUSTED DATA]',1)[0])
     assert summary_data['previous_review'] == candidate.strict_json(actual['raw'])
+    tail_artifact = candidate.strict_json(Path('data/evaluation/results/golden_native_review_result_a04df23.json').read_text(encoding='utf-8'))
+    assert digest(inputs[0].data_json) == tail_artifact['receipt']['input_sha256']
+    tail_replay = candidate.request(inputs[0], previous_raw=tail_artifact['raw'], diagnostics=[{'code':'invalid_json'}])
+    tail_data = candidate.strict_json(tail_replay.messages[1].content.split('[UNTRUSTED DATA]\n',1)[1].rsplit('\n[END UNTRUSTED DATA]',1)[0])
+    assert tail_data['previous_raw_sha256'] == digest(tail_artifact['raw'])
+    assert tail_data['previous_non_json_suffix'] == candidate.previous.provisional_review(tail_artifact['raw'])[1]
+    assert '[K1]' in tail_data['previous_non_json_suffix']
     return dict(experiment=candidate.EXPERIMENT_ID, provider_calls=0, semantic_approval=False, production_admitted=False,
         dataset_sha256=hashlib.sha256(DATASET.read_bytes()).hexdigest(), source_controls_and_labels_unchanged=True,
         all_sources_roundtrip=True, shapes=shapes, normal_three_call_path=normal, maximum_five_call_path=five,
@@ -83,6 +90,7 @@ def audit():
         legacy_raw_and_semantic_errors_preserved=True, actual_failed_raw_sha256=digest(fixture['raw']),
         actual_failed_response_correction_input_ceiling=size(replay),
         actual_wrong_summary_correction_input_ceiling=size(summary_replay),
+        actual_markdown_tail_input_ceiling=size(tail_replay), actual_markdown_tail_preserved=True,
         status_summary_host_generated=True, generated_passed_check_claims=False,
         limitations=['No synthetic result proves issue recall, source relevance or accurate correction.',
             'No generated per-paragraph checklist is treated as proof of semantic coverage.',

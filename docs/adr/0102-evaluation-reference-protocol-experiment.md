@@ -1,5 +1,15 @@
 # ADR-0102: Source references and bounded evaluation correction
 
+## 2026-09-19 Preserve explanatory tails for full reassessment
+
+2026-09-19 a04df23/Actions35421736689公共三项success后的v3.1正例：1次完整stop，27.062秒，11918输入+2198输出=14116tokens，无未知用量，累计Provider至少223。JSON后附审查说明，完整人工审读未见事实错误，但协议拒绝；负例未跑。原因是恢复代码把普通[K1]也当第二JSON，原失败与原始回执保留于golden_native_review_result_a04df23.json。
+
+现修复非JSON尾文的重评准入，并在通用输出约束中明确唯一JSON对象。原始意见/尾文完整保留，真正第二JSON或其截断前缀仍拒绝；最终严格解析不变，二次坏响应终止。冻结五例不变；可复现离线脚本给出尾文重评47138、五次满额385874<401920，仅为工程证明。
+
+已合并经审查的产品接缝准备：Runtime每次build创建同一评估/修订workflow并共享生成预算；ObservedProvider只转发新鲜真实回执；compiler从可信冻结关系携带观摩身份。243项受影响检查通过。尚未注册native产品合同、建立逐任务运输实例或完成Evidence/API/Workbench真实消费，不称产品已接通。
+
+唯一下一步：本实现同SHA公共三项后，正例完整审读合格再逐例未来/身份/日期/标题负例→自动修订→复评；失败停批整体诊断。合格后完成native产品合同/每任务隔离/现有原子保存和消费链路。Stage8E仍in_progress；GLM/high、所有预算、人工工作台稿不变。前端审美重做、头像、四块联动、专属Training及62主题继续按restart plan追踪。
+
 ## 2026-09-19 Host-owned status summary, unchanged actual findings
 
 2026-09-19 native v3正例在42a5fc0/Actions35420153601三项success后完整返回：30.563秒，11932输入+2411输出=14343tokens，无未知用量，累计Provider至少222。判断pass，但summary将辅助0胜写成0负，人工语义拒绝，负例未跑。独立核对实际请求及无损还原的五处来源一致，原请求无previous_review；错误是本次新生成，不能从输出断言模型内部原因。原始回执不修改，证据golden_native_review_result_42a5fc0.json。

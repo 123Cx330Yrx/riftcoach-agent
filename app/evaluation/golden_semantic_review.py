@@ -101,7 +101,14 @@ def provisional_review(raw):
         _, end = json.JSONDecoder().raw_decode(text)
         value = strict_json(text[:end])  # Includes duplicate/nonfinite rejection.
         suffix = text[end:]
-        if not isinstance(value, dict) or not suffix.strip() or any(c in suffix for c in "{["):
+        # Brackets in Markdown citations/links are not JSON containers. Reject
+        # actual or potentially incomplete second containers by JSON's opening
+        # grammar; preserve non-JSON prose verbatim for full reassessment only.
+        possible_container = re.search(
+            r'\{\s*(?:["}]|$)|\[\s*(?:["{\[\]\-0-9tfnNI]|$)',
+            suffix,
+        )
+        if not isinstance(value, dict) or not suffix.strip() or possible_container:
             raise ValueError("native_ambiguous_previous_response") from None
         try:
             json.JSONDecoder().raw_decode(suffix.lstrip())

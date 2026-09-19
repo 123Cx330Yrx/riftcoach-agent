@@ -88,6 +88,31 @@ class ScriptedProvider:
         return outcome
 
 
+class ReceiptProvider:
+    provider_name = "zhipu"
+    model_name = "glm-5.2"
+    capabilities = ProviderCapabilities(text_chat=True)
+
+    def __init__(self, outcomes, receipts):
+        self.outcomes = list(outcomes)
+        self.receipts = list(receipts)
+        self.last_exchange = None
+
+    def chat(self, request):
+        receipt = self.receipts.pop(0)
+        outcome = self.outcomes.pop(0)
+        self.last_exchange = receipt
+        if isinstance(outcome, Exception):
+            raise outcome
+        receipt.response = outcome
+        return outcome
+
+
+@dataclass
+class Receipt:
+    response: ChatResponse | None = None
+
+
 def test_observed_provider_emits_continuous_ordinals_and_safe_phase_metadata():
     delegate = ScriptedProvider(
         outcomes=[
@@ -128,6 +153,51 @@ def test_observed_provider_emits_continuous_ordinals_and_safe_phase_metadata():
     assert provider.provider_name == delegate.provider_name
     assert provider.model_name == delegate.model_name
     assert provider.capabilities == delegate.capabilities
+
+
+def test_observed_provider_forwards_exact_optional_transport_receipt():
+    receipt = Receipt()
+    delegate = ReceiptProvider([_response()], [receipt])
+    observer = RecordingObserver()
+    provider = ObservedLLMProvider(delegate=delegate, observer=observer)
+
+    provider.chat(_request(agent_loop_iteration=1))
+
+    assert provider.last_exchange is receipt
+    assert provider.last_exchange is delegate.last_exchange
+
+
+def test_observed_provider_does_not_reuse_receipt_after_failed_call():
+    first, stale = Receipt(), Receipt()
+    delegate = ReceiptProvider(
+        [_response(), RuntimeError("private transport failure")],
+        [first, stale],
+    )
+    provider = ObservedLLMProvider(delegate=delegate, observer=RecordingObserver())
+
+    provider.chat(_request(agent_loop_iteration=1))
+    assert provider.last_exchange is first
+    with pytest.raises(RuntimeError, match="private transport failure"):
+        provider.chat(_request(agent_loop_iteration=2))
+
+    assert provider.last_exchange is None
+    # The delegate may retain a transport-side value; the observation layer
+    # must not expose it after a failed call.
+    assert delegate.last_exchange is stale
+
+
+def test_observed_provider_clears_receipt_when_completion_observation_fails():
+    receipt = Receipt()
+    delegate = ReceiptProvider([_response()], [receipt])
+    provider = ObservedLLMProvider(
+        delegate=delegate,
+        observer=SelectiveFailingObserver(ProviderCallCompletedSignal),
+    )
+
+    with pytest.raises(RuntimeObservationError):
+        provider.chat(_request(agent_loop_iteration=1))
+
+    assert provider.last_exchange is None
 
 
 def test_observed_provider_emits_stable_failure_and_allowlisted_safe_detail():
