@@ -57,20 +57,21 @@ def prepare(case_index):
     return case, req
 
 
-def run(args):
+def run(args, *, candidate_module=None):
+    active = candidate_module or candidate
     if args.execute:
-        candidate.require_live_qualification()
+        active.require_live_qualification()
     case, req = prepare(args.case_index)
-    inputs = candidate.NativeBusinessReviewWorkflow.build_inputs(req)
-    plan = dict(experiment_id=candidate.EXPERIMENT_ID, selected_cases=[case["id"]],
+    inputs = active.NativeBusinessReviewWorkflow.build_inputs(req)
+    plan = dict(experiment_id=active.EXPERIMENT_ID, selected_cases=[case["id"]],
         manifest_sha256=hashlib.sha256(DATASET.read_bytes()).hexdigest(),
         report_sha256=digest(req.report), input_sha256=digest(inputs.data_json),
-        first_input_ceiling=size(candidate.request(inputs)), labels_sent_to_model=False,
+        first_input_ceiling=size(active.request(inputs)), labels_sent_to_model=False,
         source_scope="complete_observed_report_analyst_development_control_not_holdout",
         max_calls_per_report=5, max_revisions_per_report=1, max_tokens_per_report=401920,
         max_seconds_per_report=900, max_output_per_call=32768, max_seconds_per_call=300,
-        reasoning_effort="high", sdk_retries=0, live_status=candidate.LIVE_STATUS,
-        live_block_reason=candidate.LIVE_BLOCK_REASON, production_admitted=False,
+        reasoning_effort="high", sdk_retries=0, live_status=active.LIVE_STATUS,
+        live_block_reason=active.LIVE_BLOCK_REASON, production_admitted=False,
         manual_between_cases=True, semantic_approval=False)
     if not args.execute:
         print(compact(plan))
@@ -91,7 +92,7 @@ def run(args):
         settings = load_zhipu_settings(dotenv_values(args.env_file))
         provider = ReceiptedStreamProvider(settings=settings, directory=case_dir / "streams", transport_id=CAPACITY_TRANSPORT_ID)
         outcome = observe_report(provider, case_dir, req, case,
-            workflow_factory=candidate.NativeBusinessReviewWorkflow, score_case=score_case)
+            workflow_factory=active.NativeBusinessReviewWorkflow, score_case=score_case)
         print(compact(outcome), flush=True)
         return outcome
     finally:
@@ -105,7 +106,7 @@ def run(args):
         write_new_json(directory / "receipt.json", receipt)
 
 
-def main():
+def main(*, candidate_module=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--case-index", type=int, default=1)
     parser.add_argument("--execute", action="store_true")
@@ -113,7 +114,7 @@ def main():
     parser.add_argument("--ci-run", default="")
     parser.add_argument("--env-file", type=Path)
     parser.add_argument("--output-root", type=Path, default=ROOT / "data/runs/inference_development")
-    run(parser.parse_args())
+    run(parser.parse_args(), candidate_module=candidate_module)
 
 
 if __name__ == "__main__":

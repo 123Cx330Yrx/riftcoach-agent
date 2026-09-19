@@ -142,6 +142,31 @@ def test_preview_is_local_and_control_labels_never_enter_model_input(control, mo
     assert not control.args.output_root.exists()
 
 
+def test_issue_only_entry_uses_its_own_qualification_and_schema(control, monkeypatch):
+    from app.evaluation import golden_native_issues_review as active
+    isolate_external(monkeypatch)
+    preview = runner.run(control.args, candidate_module=active)
+    assert preview['experiment_id'] == active.EXPERIMENT_ID
+    control.args.execute = True
+    monkeypatch.setattr(active, 'LIVE_STATUS', 'offline_qualification')
+    monkeypatch.setattr(runner, 'prepare', forbidden)
+    with pytest.raises(ValueError, match=active.LIVE_BLOCK_REASON):
+        runner.run(control.args, candidate_module=active)
+
+
+def test_issue_only_execution_reuses_exact_ci_and_receipt_orchestration(control, monkeypatch):
+    from app.evaluation import golden_native_issues_review as active
+    from tests.test_golden_native_issues_review import opinion as issue_opinion
+    inputs = active.build_inputs(control.req)
+    provider, events = enable_synthetic_execution(control, monkeypatch, lambda *_: compact(issue_opinion(inputs)))
+    monkeypatch.setattr(active, 'require_live_qualification', lambda: events.append('issue-only-qualification'))
+    outcome = runner.run(control.args, candidate_module=active)
+    assert outcome['automatic_path_pass'] and len(provider.requests) == 1
+    assert provider.requests[0].response_contract.version == '3.0.0'
+    assert events[:2] == ['issue-only-qualification', 'exact-ci']
+    assert read_receipt(control)['experiment_id'] == active.EXPERIMENT_ID
+
+
 @pytest.mark.parametrize("change,code", [
     ("source", "native_control_source_changed"),
     ("report_hash", "native_control_report_changed"),

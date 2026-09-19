@@ -27,8 +27,8 @@ from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.providers.structured import contract_for_model
 
 EXPERIMENT_ID = "golden-native-business-review-v2"
-LIVE_STATUS = "bounded_development_after_exact_ci"
-LIVE_BLOCK_REASON = None
+LIVE_STATUS = "offline_only"
+LIVE_BLOCK_REASON = "native_verbose_review_semantic_failure"
 
 
 def require_live_qualification():
@@ -247,6 +247,12 @@ class NativeBusinessReviewWorkflow(IntegratedReviewWorkflow):
     """One valid call or one full corrective call, one revision, one recheck."""
     build_inputs = staticmethod(build_inputs)
 
+    def make_request(self, *args, **kwargs):
+        return request(*args, **kwargs)
+
+    def validate_review(self, *args, **kwargs):
+        return validate(*args, **kwargs)
+
     def evaluate(self, req):
         if self.stopped or self.evaluations >= 2 or (self.evaluations == 1 and self.revisions != 1):
             raise ValueError("native_evaluation_order_invalid")
@@ -257,9 +263,9 @@ class NativeBusinessReviewWorkflow(IntegratedReviewWorkflow):
         previous_raw = None
         phase = "native_business_review"
         try:
-            raw = self._call(request(inputs), phase)
+            raw = self._call(self.make_request(inputs), phase)
             try:
-                payload, wire, journal = validate(raw, inputs)
+                payload, wire, journal = self.validate_review(raw, inputs)
             except ValueError as error:
                 value, _ = provisional_review(raw)  # Provisional only; final stays strict.
                 if security_terminal(value) or str(error) == "native_security_terminal":
@@ -268,9 +274,9 @@ class NativeBusinessReviewWorkflow(IntegratedReviewWorkflow):
                 diagnostics = diagnostics_for(error)
                 self.last_feedback = diagnostics
                 phase = "native_business_reassessment"
-                raw = self._call(request(inputs, previous_raw=raw, diagnostics=diagnostics),
+                raw = self._call(self.make_request(inputs, previous_raw=raw, diagnostics=diagnostics),
                     phase)
-                payload, wire, journal = validate(raw, inputs, previous_raw=previous_raw)
+                payload, wire, journal = self.validate_review(raw, inputs, previous_raw=previous_raw)
             self.last_journal = journal
             result = _result(payload)
             self._accepted = (inputs, result)
@@ -294,12 +300,12 @@ class NativeBusinessReviewWorkflow(IntegratedReviewWorkflow):
         initial = EvaluationRequest(req.player_summary, req.deterministic_report, req.knowledge, req.report, utterance)
         if self.build_inputs(initial) != original:
             raise ValueError("native_revision_source_changed")
-        payload, wire, _ = validate(self._accepted_raw, original, previous_raw=self._accepted_previous)
+        payload, wire, _ = self.validate_review(self._accepted_raw, original, previous_raw=self._accepted_previous)
         if _result(payload) != req.evaluation:
             raise ValueError("native_accepted_evaluation_changed")
         self.revisions += 1
         try:
-            raw = self._call(request(original, accepted=wire), "native_business_revision")
+            raw = self._call(self.make_request(original, accepted=wire), "native_business_revision")
             validate_revised_report(raw, req.report)
             self._expected_recheck = self.build_inputs(replace(initial, report=raw))
             return CoachDraft(report=raw)
