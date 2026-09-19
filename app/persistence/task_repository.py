@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+import re
 import secrets
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
@@ -21,6 +22,8 @@ from app.persistence.player_records import (
 )
 from app.persistence.task_record import ReviewTaskRecord
 from app.persistence.task_event_record import ReviewTaskEventRecord
+from app.persistence.evidence_snapshot_repository import _append_snapshot_in_session
+from app.evidence.storage import PendingEvidenceBundleSnapshot
 from app.players.models import RelationshipRole, RoutingRegion
 from app.tasks.fingerprint import compute_conversation_review_task_fingerprint
 from app.tasks.models import (
@@ -31,6 +34,7 @@ from app.tasks.models import (
     ReviewTask,
     SafeTaskCode,
     TaskCapacityPolicy,
+    TaskPublicationMode,
     TaskPublicationStatus,
     TaskRepositoryCreateDisposition,
     TaskRepositoryCreateResult,
@@ -67,6 +71,7 @@ _TASK_CREATE_ADVISORY_LOCK_ID = 593_231_842_001
 _WORKER_ID_ADAPTER = TypeAdapter(WorkerId)
 _SAFE_TASK_CODE_ADAPTER = TypeAdapter(SafeTaskCode)
 _EVENT_FIELD_UNSET = object()
+_PUBLICATION_DIGEST = re.compile(r"^[0-9a-f]{64}$")
 
 
 @dataclass(frozen=True, slots=True)
@@ -76,6 +81,46 @@ class _RecoveryIdentity:
     lease_generation: int
     lease_token: str = field(repr=False)
     now: datetime
+
+
+def _validate_publication_reference(value: dict[str, object]) -> None:
+    if not isinstance(value, dict) or not value:
+        raise TypeError("publication_reference must be a non-empty object")
+    context = value.get("context")
+    if not isinstance(context, dict):
+        raise ValueError("publication_reference.context is required")
+    required = ("owner_id", "task_id", "run_id", "request_fingerprint", "mode")
+    if any(not isinstance(context.get(key), str) or not context[key] for key in required):
+        raise ValueError("publication_reference context identity is incomplete")
+    if context["mode"] != "evidence_bound_v1":
+        raise ValueError("publication_reference mode is invalid")
+    for key in ("summary_digest",):
+        digest = value.get(key)
+        if not isinstance(digest, str) or not _PUBLICATION_DIGEST.fullmatch(digest):
+            raise ValueError(f"publication_reference {key} is invalid")
+
+
+def _validate_publication_reference_identity(
+    value: dict[str, object],
+    *,
+    record: ReviewTaskRecord,
+    summary_digest: str,
+) -> None:
+    """Ensure the body-free publication reference belongs to this task row."""
+    _validate_publication_reference(value)
+    context = value["context"]
+    assert isinstance(context, dict)
+    expected = {
+        "owner_id": record.owner_id,
+        "task_id": str(record.task_id),
+        "run_id": record.run_id,
+        "request_fingerprint": record.request_fingerprint,
+        "mode": record.publication_mode,
+    }
+    if any(context.get(key) != expected_value for key, expected_value in expected.items()):
+        raise TaskRepositoryError("publication_reference_identity_mismatch")
+    if value.get("summary_digest") != summary_digest:
+        raise TaskRepositoryError("publication_reference_identity_mismatch")
 
 
 class PostgresTaskRepository:
@@ -748,37 +793,19 @@ class PostgresTaskRepository:
                     if (
                         record.cancel_requested_at is not None
                         or record.run_id != terminal.run_id
+                        or record.publication_mode != "legacy"
                     ):
+                        if record.publication_mode != "legacy":
+                            raise TaskRepositoryError(
+                                "evidence_publication_mode_required"
+                            )
                         return False
-                    terminal_time = max(record.claimed_at, identity.now)
-                    record.status = TaskStatus.SUCCEEDED.value
-                    record.finished_at = terminal_time
-                    record.updated_at = terminal_time
-                    record.terminal_reason = terminal.terminal_reason
-                    record.publication_status = terminal.publication_status.value
-                    record.report_available = terminal.report_available
-                    record.trace_reference = terminal.trace_reference.model_dump(
-                        mode="json"
-                    )
-                    record.receipt_reference = (
-                        terminal.receipt_reference.model_dump(mode="json")
-                    )
-                    record.artifact_reference = (
-                        None
-                        if terminal.artifact_reference is None
-                        else terminal.artifact_reference.model_dump(mode="json")
-                    )
-                    record.lease_token = None
-                    record.lease_expires_at = None
-                    self._append_event(
-                        session,
-                        record=record,
+                    self._apply_terminal_in_session(
+                        session, record, terminal,
                         event_kind=TaskLifecycleEventKind.RECONCILED,
-                        operation_identity=(
-                            f"reconciled-{identity.lease_generation}"
-                        ),
-                        occurred_at=terminal_time,
-                        reason="reconciled",
+                        operation_identity=f"reconciled-{identity.lease_generation}",
+                        occurred_at=max(record.claimed_at, identity.now),
+                        event_reason="reconciled",
                     )
                 return True
         except TaskRepositoryError:
@@ -1026,6 +1053,7 @@ class PostgresTaskRepository:
                     else terminal.artifact_reference.model_dump(mode="json")
                 ),
             },
+            require_legacy_publication=True,
         )
 
     def fail(
@@ -1222,6 +1250,7 @@ class PostgresTaskRepository:
             idempotency_key=pending.idempotency_key,
             request_fingerprint=pending.request_fingerprint,
             request_payload=copy.deepcopy(pending.request_payload),
+            publication_mode=pending.publication_mode.value,
             status=TaskStatus.QUEUED.value,
             worker_id=None,
             created_at=pending.created_at,
@@ -1338,6 +1367,7 @@ class PostgresTaskRepository:
             owner_id=pending.owner_id,
             binding=binding,
             request_payload=pending.request_payload,
+            publication_mode=pending.publication_mode,
         )
 
         existing = session.scalar(
@@ -1396,6 +1426,7 @@ class PostgresTaskRepository:
             idempotency_key=pending.idempotency_key,
             request_fingerprint=request_fingerprint,
             request_payload=copy.deepcopy(pending.request_payload),
+            publication_mode=pending.publication_mode.value,
             conversation_id=binding.conversation_id,
             relationship_id=binding.relationship_id,
             player_subject_id=binding.player_subject_id,
@@ -1595,6 +1626,7 @@ class PostgresTaskRepository:
         operation_identity: str,
         event_reason: str,
         values: dict[str, object],
+        require_legacy_publication: bool = False,
     ) -> bool:
         try:
             with self._session_factory() as session:
@@ -1613,23 +1645,19 @@ class PostgresTaskRepository:
                     ) or record.cancel_requested_at is not None:
                         return False
                     assert record is not None
+                    if require_legacy_publication and record.publication_mode != "legacy":
+                        raise TaskRepositoryError(
+                            "evidence_publication_mode_required"
+                        )
                     if expected_run_id is not None and (
                         record.run_id != expected_run_id
                     ):
                         return False
-                    terminal_time = max(record.claimed_at, now)
-                    for key, value in values.items():
-                        setattr(record, key, value)
-                    record.updated_at = terminal_time
-                    record.finished_at = terminal_time
-                    record.lease_token = None
-                    record.lease_expires_at = None
-                    self._append_event(
-                        session,
-                        record=record,
+                    self._apply_values_in_session(
+                        session, record, values,
                         event_kind=event_kind,
                         operation_identity=operation_identity,
-                        occurred_at=terminal_time,
+                        occurred_at=max(record.claimed_at, now),
                         reason=event_reason,
                     )
                 return True
@@ -1639,6 +1667,236 @@ class PostgresTaskRepository:
             raise TaskRepositoryError("task_repository_unavailable") from None
         except (TypeError, ValueError, ValidationError):
             raise TaskRepositoryError("task_repository_integrity_failed") from None
+
+    def reconcile_expired_success_with_evidence(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
+        terminal: TaskTerminal,
+        pending_snapshot: PendingEvidenceBundleSnapshot,
+        publication_reference: dict[str, object],
+        summary_digest: str,
+    ) -> bool:
+        """Recover an expired task with the same atomic evidence contract."""
+        identity = _validate_recovery_identity(
+            task_id=task_id,
+            worker_id=worker_id,
+            lease_generation=lease_generation,
+            lease_token=lease_token,
+            now=now,
+        )
+        if not isinstance(terminal, TaskTerminal):
+            raise TypeError("terminal must be a TaskTerminal")
+        if not isinstance(pending_snapshot, PendingEvidenceBundleSnapshot):
+            raise TypeError("pending_snapshot must be a PendingEvidenceBundleSnapshot")
+        _validate_publication_reference(publication_reference)
+        if pending_snapshot.task_id != task_id or pending_snapshot.run_id != terminal.run_id:
+            raise ValueError("pending snapshot must match task and terminal run")
+        if not isinstance(summary_digest, str) or not re.fullmatch(
+            r"[0-9a-f]{64}", summary_digest
+        ):
+            raise ValueError("summary_digest must be a lowercase SHA-256 digest")
+        try:
+            with self._session_factory() as session:
+                with session.begin():
+                    record = session.scalar(
+                        sa.select(ReviewTaskRecord)
+                        .where(ReviewTaskRecord.task_id == identity.task_id)
+                        .with_for_update()
+                    )
+                    if not _record_has_expired_lease(record, identity=identity):
+                        return False
+                    assert record is not None
+                    if (
+                        record.cancel_requested_at is not None
+                        or record.run_id != terminal.run_id
+                        or record.publication_mode != "evidence_bound_v1"
+                    ):
+                        return False
+                    _validate_publication_reference_identity(
+                        publication_reference,
+                        record=record,
+                        summary_digest=summary_digest,
+                    )
+                    snapshot_result = _append_snapshot_in_session(
+                        session, record, pending_snapshot
+                    )
+                    record.publication_reference = copy.deepcopy(publication_reference)
+                    record.summary_digest = summary_digest
+                    record.first_snapshot_id = snapshot_result.snapshot.snapshot_id
+                    record.first_snapshot_digest = snapshot_result.snapshot.snapshot_digest
+                    record.message_projection_status = (
+                        "pending" if record.schema_version == "2.0" else "not_required"
+                    )
+                    self._apply_terminal_in_session(
+                        session, record, terminal,
+                        event_kind=TaskLifecycleEventKind.RECONCILED,
+                        operation_identity=f"reconciled-{identity.lease_generation}",
+                        occurred_at=max(record.claimed_at, identity.now),
+                        event_reason="reconciled",
+                    )
+                return True
+        except TaskRepositoryError:
+            raise
+        except SQLAlchemyError:
+            raise TaskRepositoryError("task_repository_unavailable") from None
+        except (TypeError, ValueError, ValidationError):
+            raise TaskRepositoryError("task_repository_integrity_failed") from None
+
+    def _apply_terminal_in_session(
+        self,
+        session: Session,
+        record: ReviewTaskRecord,
+        terminal: TaskTerminal,
+        *,
+        event_kind: TaskLifecycleEventKind,
+        operation_identity: str,
+        occurred_at: datetime,
+        event_reason: str | None = None,
+    ) -> None:
+        self._apply_values_in_session(
+            session, record,
+            {
+                "status": TaskStatus.SUCCEEDED.value,
+                "terminal_reason": terminal.terminal_reason,
+                "publication_status": terminal.publication_status.value,
+                "report_available": terminal.report_available,
+                "trace_reference": terminal.trace_reference.model_dump(mode="json"),
+                "receipt_reference": terminal.receipt_reference.model_dump(mode="json"),
+                "artifact_reference": (
+                    None if terminal.artifact_reference is None
+                    else terminal.artifact_reference.model_dump(mode="json")
+                ),
+            },
+            event_kind=event_kind,
+            operation_identity=operation_identity,
+            occurred_at=occurred_at,
+            reason=terminal.terminal_reason if event_reason is None else event_reason,
+        )
+
+    def succeed_with_evidence(
+        self,
+        *,
+        task_id: UUID,
+        worker_id: str,
+        lease_generation: int,
+        lease_token: str,
+        now: datetime,
+        terminal: TaskTerminal,
+        pending_snapshot: PendingEvidenceBundleSnapshot,
+        publication_reference: dict[str, object],
+        summary_digest: str,
+    ) -> bool:
+        """Publish the evidence snapshot and successful task atomically.
+
+        The task row is locked first; snapshot insertion, terminal projection,
+        and the lifecycle event all share one transaction.  A failed snapshot
+        or terminal write therefore cannot leave a half-published task.
+        """
+        if not isinstance(task_id, UUID):
+            raise TypeError("task_id must be a UUID")
+        normalized_worker_id = _validate_worker_id(worker_id)
+        normalized_generation = _validate_lease_generation(lease_generation)
+        normalized_token = _validate_lease_token(lease_token)
+        normalized_now = _as_utc(now)
+        if not isinstance(terminal, TaskTerminal):
+            raise TypeError("terminal must be a TaskTerminal")
+        if not isinstance(pending_snapshot, PendingEvidenceBundleSnapshot):
+            raise TypeError(
+                "pending_snapshot must be a PendingEvidenceBundleSnapshot"
+            )
+        _validate_publication_reference(publication_reference)
+        if not isinstance(summary_digest, str) or not re.fullmatch(
+            r"[0-9a-f]{64}", summary_digest
+        ):
+            raise ValueError("summary_digest must be a lowercase SHA-256 digest")
+        if pending_snapshot.task_id != task_id or pending_snapshot.run_id != terminal.run_id:
+            raise ValueError("pending snapshot must match task and terminal run")
+        try:
+            with self._session_factory() as session:
+                with session.begin():
+                    record = session.scalar(
+                        sa.select(ReviewTaskRecord)
+                        .where(ReviewTaskRecord.task_id == task_id)
+                        .with_for_update()
+                    )
+                    if not _record_has_live_lease(
+                        record,
+                        worker_id=normalized_worker_id,
+                        lease_generation=normalized_generation,
+                        lease_token=normalized_token,
+                        now=normalized_now,
+                    ) or record.cancel_requested_at is not None:
+                        return False
+                    assert record is not None
+                    if record.run_id != terminal.run_id:
+                        return False
+                    if record.publication_mode != "evidence_bound_v1":
+                        raise TaskRepositoryError("evidence_publication_mode_required")
+                    _validate_publication_reference_identity(
+                        publication_reference,
+                        record=record,
+                        summary_digest=summary_digest,
+                    )
+                    snapshot_result = _append_snapshot_in_session(
+                        session,
+                        record,
+                        pending_snapshot,
+                    )
+                    record.publication_reference = copy.deepcopy(
+                        publication_reference
+                    )
+                    record.summary_digest = summary_digest
+                    record.first_snapshot_id = snapshot_result.snapshot.snapshot_id
+                    record.first_snapshot_digest = snapshot_result.snapshot.snapshot_digest
+                    record.message_projection_status = (
+                        "pending" if record.schema_version == "2.0" else "not_required"
+                    )
+                    self._apply_terminal_in_session(
+                        session,
+                        record,
+                        terminal,
+                        event_kind=TaskLifecycleEventKind.SUCCEEDED,
+                        operation_identity=f"succeeded-{normalized_generation}",
+                        occurred_at=max(record.claimed_at, normalized_now),
+                    )
+                return True
+        except TaskRepositoryError:
+            raise
+        except SQLAlchemyError:
+            raise TaskRepositoryError("task_repository_unavailable") from None
+        except (TypeError, ValueError, ValidationError):
+            raise TaskRepositoryError("task_repository_integrity_failed") from None
+
+    def _apply_values_in_session(
+        self,
+        session: Session,
+        record: ReviewTaskRecord,
+        values: dict[str, object],
+        *,
+        event_kind: TaskLifecycleEventKind,
+        operation_identity: str,
+        occurred_at: datetime,
+        reason: str,
+    ) -> None:
+        for key, value in values.items():
+            setattr(record, key, value)
+        record.updated_at = occurred_at
+        record.finished_at = occurred_at
+        record.lease_token = None
+        record.lease_expires_at = None
+        self._append_event(
+            session,
+            record=record,
+            event_kind=event_kind,
+            operation_identity=operation_identity,
+            occurred_at=occurred_at,
+            reason=reason,
+        )
 
 
 def _record_to_task(
@@ -1699,6 +1957,16 @@ def _record_to_task(
         idempotency_key=record.idempotency_key,
         request_fingerprint=record.request_fingerprint,
         request_payload=copy.deepcopy(record.request_payload),
+        # Older in-memory/fixture ORM rows may omit the post-0012 column;
+        # treat that pre-migration shape exactly like the database default.
+        publication_mode=TaskPublicationMode(record.publication_mode or "legacy"),
+        publication_reference=copy.deepcopy(record.publication_reference),
+        summary_digest=record.summary_digest,
+        first_snapshot_id=record.first_snapshot_id,
+        first_snapshot_digest=record.first_snapshot_digest,
+        # Pre-0014 fixture rows have no projection marker; legacy tasks do not
+        # require a post-commit message projection.
+        message_projection_status=record.message_projection_status or "not_required",
         conversation_binding=conversation_binding,
         execution_target=execution_target,
         status=TaskStatus(record.status),

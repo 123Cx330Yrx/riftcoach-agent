@@ -1,0 +1,44 @@
+{
+  "experiment_id": "golden-context-relation-probe-v1",
+  "scope": "target_scope_diagnostic_not_report_evaluation",
+  "selected_case_ids": [
+    "stable_unbounded",
+    "stable_defined_before",
+    "heading_unbounded",
+    "heading_defined_after"
+  ],
+  "labels_sent_to_model": false,
+  "manifest_sha256": "9483374e8cdc1fd3b68c5c7bbe3c401b72c9325d01f63ecddf7a31b8df02746c",
+  "input_ceilings": [
+    36708,
+    36870,
+    36736,
+    36800
+  ],
+  "input_identities": [
+    "25a4b58167f66419f6a3fdd9fbd3122cf7d03d7a5e37689f3ac2bdbeba838e80",
+    "5d105f38e24d3cc95d6bbaefcae9b4f277f69fc454b7e355a588e37addc33919",
+    "b2070d7d8badde761f160f2be579c37c2369e9cd5d7b5e43384140da60f0efd6",
+    "ab289e0efe34491ac547e9d24796fcc3d71cc1489ac309999a952aaeb00e48a5"
+  ],
+  "budget_contract": {
+    "contract_id": "recent-form-review-flash-v2",
+    "version": "1.3.27",
+    "scope": "unadmitted_opt_in",
+    "sha256": "22dff4e9c22367a009a32804a3fbfab868e4d556e14dabcc303932e800c349a5"
+  },
+  "max_calls": 4,
+  "max_revisions": 0,
+  "max_corrections": 0,
+  "sdk_retries": 0,
+  "reasoning_effort": "high",
+  "max_input_tokens": 64000,
+  "max_output_tokens": 32768,
+  "request_timeout_s": 300,
+  "total_tokens": 401920,
+  "execution_timeout_s": 900,
+  "whole_report_acceptance": false,
+  "kind": "offline_full_request_measurement_not_model_usage",
+  "runtime_registered": false,
+  "evaluation_contract_version": "1.0.0"
+}

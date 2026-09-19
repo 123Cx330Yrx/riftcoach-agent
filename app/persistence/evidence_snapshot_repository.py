@@ -65,77 +65,9 @@ class PostgresEvidenceSnapshotRepository:
                         )
                         .with_for_update()
                     )
-                    if task is None:
-                        raise EvidenceSnapshotRepositoryError(
-                            "evidence_task_not_found"
-                        )
-                    if task.status not in _WRITABLE_STATUSES:
-                        raise EvidenceSnapshotRepositoryError(
-                            "evidence_task_not_writable"
-                        )
-                    if pending.stored_at < task.created_at:
-                        raise EvidenceSnapshotRepositoryError(
-                            "evidence_snapshot_time_invalid"
-                        )
-
-                    existing = session.scalar(
-                        sa.select(EvidenceBundleSnapshotRecord).where(
-                            EvidenceBundleSnapshotRecord.task_id == pending.task_id,
-                            EvidenceBundleSnapshotRecord.refresh_id
-                            == pending.refresh_id,
-                        )
-                    )
-                    if existing is not None:
-                        snapshot = _record_to_snapshot(existing)
-                        # ``stored_at`` belongs to the first committed snapshot,
-                        # not to a client's retry attempt.  Refresh idempotency is
-                        # therefore content-based: the same validated bundle
-                        # replays even when the retry happens later.
-                        if pending.bundle.digest != snapshot.bundle.digest:
-                            raise EvidenceSnapshotRepositoryError(
-                                "evidence_snapshot_conflict"
-                            )
-                        return EvidenceSnapshotWriteResult(
-                            disposition=EvidenceSnapshotWriteDisposition.REPLAYED,
-                            snapshot=snapshot,
-                        )
-
-                    latest_revision = session.scalar(
-                        sa.select(sa.func.max(EvidenceBundleSnapshotRecord.revision))
-                        .where(
-                            EvidenceBundleSnapshotRecord.task_id == pending.task_id
-                        )
-                    )
-                    revision = int(latest_revision or 0) + 1
-                    snapshot = EvidenceBundleSnapshot.create(
-                        snapshot_id=self._snapshot_id_factory(),
-                        task_id=pending.task_id,
-                        run_id=pending.run_id,
-                        owner_id=pending.owner_id,
-                        revision=revision,
-                        refresh_id=pending.refresh_id,
-                        bundle=pending.bundle,
-                        stored_at=pending.stored_at,
-                    )
-                    session.add(
-                        EvidenceBundleSnapshotRecord(
-                            snapshot_id=snapshot.snapshot_id,
-                            task_id=snapshot.task_id,
-                            run_id=snapshot.run_id,
-                            owner_id=snapshot.owner_id,
-                            revision=snapshot.revision,
-                            refresh_id=snapshot.refresh_id,
-                            bundle_digest=snapshot.bundle.digest,
-                            snapshot_digest=snapshot.snapshot_digest,
-                            payload=copy.deepcopy(payload),
-                            stored_at=snapshot.stored_at,
-                            expires_at=snapshot.expires_at,
-                        )
-                    )
-                    session.flush()
-                    return EvidenceSnapshotWriteResult(
-                        disposition=EvidenceSnapshotWriteDisposition.CREATED,
-                        snapshot=snapshot,
+                    return _append_snapshot_in_session(
+                        session, task, pending,
+                        snapshot_id_factory=self._snapshot_id_factory,
                     )
         except EvidenceSnapshotRepositoryError:
             raise
@@ -182,6 +114,99 @@ class PostgresEvidenceSnapshotRepository:
             raise EvidenceSnapshotRepositoryError(
                 "evidence_snapshot_integrity_failed"
             ) from None
+
+
+def _append_snapshot_in_session(
+    session: Session,
+    task: ReviewTaskRecord | None,
+    pending: PendingEvidenceBundleSnapshot,
+    *,
+    snapshot_id_factory=uuid4,
+) -> EvidenceSnapshotWriteResult:
+    """Insert under the caller's task-row lock and transaction.
+
+    Never opens, commits, or rolls back a Session. The caller must acquire
+    the task lock first; publication additionally checks its lease/mode.
+    """
+    if not session.in_transaction():
+        raise ValueError("snapshot insertion requires an active transaction")
+    pending = PendingEvidenceBundleSnapshot.model_validate(pending)
+    payload = bundle_to_storage_projection(pending.bundle)
+    if _payload_size(payload) > _MAX_PAYLOAD_BYTES:
+        raise EvidenceSnapshotRepositoryError("evidence_snapshot_too_large")
+    if (task is None or task.task_id != pending.task_id
+            or task.run_id != pending.run_id or task.owner_id != pending.owner_id):
+        raise EvidenceSnapshotRepositoryError(
+            "evidence_task_not_found"
+        )
+    if task.status not in _WRITABLE_STATUSES:
+        raise EvidenceSnapshotRepositoryError(
+            "evidence_task_not_writable"
+        )
+    if pending.stored_at < task.created_at:
+        raise EvidenceSnapshotRepositoryError(
+            "evidence_snapshot_time_invalid"
+        )
+
+    existing = session.scalar(
+        sa.select(EvidenceBundleSnapshotRecord).where(
+            EvidenceBundleSnapshotRecord.task_id == pending.task_id,
+            EvidenceBundleSnapshotRecord.refresh_id
+            == pending.refresh_id,
+        )
+    )
+    if existing is not None:
+        snapshot = _record_to_snapshot(existing)
+        # ``stored_at`` belongs to the first committed snapshot,
+        # not to a client's retry attempt.  Refresh idempotency is
+        # therefore content-based: the same validated bundle
+        # replays even when the retry happens later.
+        if pending.bundle.digest != snapshot.bundle.digest:
+            raise EvidenceSnapshotRepositoryError(
+                "evidence_snapshot_conflict"
+            )
+        return EvidenceSnapshotWriteResult(
+            disposition=EvidenceSnapshotWriteDisposition.REPLAYED,
+            snapshot=snapshot,
+        )
+
+    latest_revision = session.scalar(
+        sa.select(sa.func.max(EvidenceBundleSnapshotRecord.revision))
+        .where(
+            EvidenceBundleSnapshotRecord.task_id == pending.task_id
+        )
+    )
+    revision = int(latest_revision or 0) + 1
+    snapshot = EvidenceBundleSnapshot.create(
+        snapshot_id=snapshot_id_factory(),
+        task_id=pending.task_id,
+        run_id=pending.run_id,
+        owner_id=pending.owner_id,
+        revision=revision,
+        refresh_id=pending.refresh_id,
+        bundle=pending.bundle,
+        stored_at=pending.stored_at,
+    )
+    session.add(
+        EvidenceBundleSnapshotRecord(
+            snapshot_id=snapshot.snapshot_id,
+            task_id=snapshot.task_id,
+            run_id=snapshot.run_id,
+            owner_id=snapshot.owner_id,
+            revision=snapshot.revision,
+            refresh_id=snapshot.refresh_id,
+            bundle_digest=snapshot.bundle.digest,
+            snapshot_digest=snapshot.snapshot_digest,
+            payload=copy.deepcopy(payload),
+            stored_at=snapshot.stored_at,
+            expires_at=snapshot.expires_at,
+        )
+    )
+    session.flush()
+    return EvidenceSnapshotWriteResult(
+        disposition=EvidenceSnapshotWriteDisposition.CREATED,
+        snapshot=snapshot,
+    )
 
 
 def _record_to_snapshot(

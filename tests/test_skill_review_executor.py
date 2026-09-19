@@ -327,6 +327,29 @@ def test_builder_uses_final_revision_and_final_attempt_evaluation():
         assert output.evaluation_score == 91
 
 
+@pytest.mark.parametrize("fallback", [False, True])
+@pytest.mark.parametrize("failure_step", ["revision", "evaluation"])
+def test_builder_handles_failed_revision_attempt_without_reusing_old_score(tmp_path, fallback, failure_step):
+    execution = validated_recent("review_terminal_failed_revision")
+    results = [EvaluationResult(
+        score=70, verdict=EvaluationVerdict.NEEDS_REVISION,
+        issues=({"category": "fact_error"},),
+    )]
+    if failure_step == "evaluation":
+        results.append(RuntimeError("private evaluator failure"))
+    store = run_harness(
+        tmp_path, execution, evaluator=SequenceEvaluator(results),
+        reviser=(UnexpectedReviser() if failure_step == "revision"
+                 else FixedReviser("# Coach\n\n谨慎建议 [K1]。")),
+        config=HarnessConfig(allow_deterministic_fallback=fallback),
+    )
+    output = SkillTerminalOutputBuilder().build(execution=execution, store=store)
+    assert output.status == ("degraded" if fallback else "rejected")
+    assert output.evaluation_score is None
+    assert f"{failure_step}_failed" in output.warnings
+    assert output.report == (execution.typed_input.deterministic_report if fallback else None)
+
+
 def test_builder_reports_deterministic_degradation_without_inventing_score():
     with tempfile.TemporaryDirectory() as directory:
         execution = validated_recent("review_terminal_degraded")

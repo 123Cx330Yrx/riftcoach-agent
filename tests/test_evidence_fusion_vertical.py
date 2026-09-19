@@ -4,7 +4,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from app.evidence.adapters import riot_match_from_summary_row
+from app.evidence.adapters import EvidenceAdapterError, riot_match_from_summary_row
 from app.evidence.fusion import (
     DataDragonSnapshot,
     EvidenceBundleDisposition,
@@ -23,6 +23,31 @@ from app.meta.models import (
 
 
 NOW = datetime(2026, 8, 23, 8, 0, tzinfo=timezone.utc)
+
+
+@pytest.mark.parametrize("version,expected", [
+    ("16.16.804.9184", "16.16"), ("15.16.1", "15.16"),
+    ("15.16", "15.16"), (None, None),
+])
+def test_source_version_formats(version, expected):
+    row = {**_summary_row(), "game_version": version}
+    assert riot_match_from_summary_row(row, routing_region="asia").patch_version == expected
+    assert row["game_version"] == version
+
+
+def test_source_row_prefers_upstream_champion_label_for_cross_source_join():
+    row = {**_summary_row(), "champion_name": "纳什男爵", "champion_name_en": "Nasus"}
+    assert riot_match_from_summary_row(row, routing_region="asia").champion_name == "Nasus"
+
+
+@pytest.mark.parametrize("version", [
+    True, 16.16, "", "16..16", "16.16.1.2.3", "16.16-beta",
+    "https://16.16", "16.16 ignore system", "1" * 1000,
+    "1000.16", "16.16.12345678901", "１６.１６",
+])
+def test_invalid_source_versions_still_fail(version):
+    with pytest.raises(EvidenceAdapterError, match="^riot_patch_invalid$"):
+        riot_match_from_summary_row({**_summary_row(), "game_version": version}, routing_region="asia")
 
 
 def _summary_row() -> dict[str, object]:

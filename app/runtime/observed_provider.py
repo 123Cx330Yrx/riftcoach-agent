@@ -32,8 +32,6 @@ _FINISH_REASONS = {
     for value in RuntimeFinishReason
     if value is not RuntimeFinishReason.OTHER
 }
-
-
 class ObservedLLMProvider:
     """Emit body-free signals around every real delegate call in one run."""
 
@@ -53,6 +51,20 @@ class ObservedLLMProvider:
         self.provider_name = delegate.provider_name
         self.model_name = delegate.model_name
         self.capabilities = delegate.capabilities
+        # A new observation wrapper never inherits a receipt from a delegate
+        # that may have served an earlier run.  Only a fresh, fully observed
+        # call can publish the delegate-owned object below.
+        self._last_exchange = None
+
+    @property
+    def last_exchange(self):
+        """Return the delegate's exact successful transport receipt, if any.
+
+        A failed or observation-incomplete call clears the value.  The
+        observation layer never constructs, copies, or reuses an Exchange.
+        """
+
+        return self._last_exchange
 
     @property
     def runtime_profile(self):
@@ -60,9 +72,20 @@ class ObservedLLMProvider:
 
         return getattr(self._delegate, "runtime_profile", None)
 
+    @property
+    def thinking_profile_id(self):
+        return getattr(self._delegate, "thinking_profile_id", None)
+
+    @property
+    def sdk_max_retries(self):
+        return getattr(self._delegate, "sdk_max_retries", None)
+
     def chat(self, request: ChatRequest) -> ChatResponse:
         if not isinstance(request, ChatRequest):
             raise TypeError("request must be a ChatRequest")
+
+        previous_exchange = getattr(self._delegate, "last_exchange", None)
+        self._last_exchange = None
 
         phase, iteration = _request_phase(request)
         require_provider_capabilities(
@@ -91,9 +114,17 @@ class ObservedLLMProvider:
                     provider=self.provider_name,
                     code="invalid_chat_response",
                 )
+            candidate_exchange = getattr(self._delegate, "last_exchange", None)
+            if (
+                candidate_exchange is previous_exchange
+                or getattr(candidate_exchange, "response", None) is not response
+            ):
+                candidate_exchange = None
         except RuntimeObservationError:
+            self._last_exchange = None
             raise
         except ProviderError as exc:
+            self._last_exchange = None
             _observe_provider_failure(
                 observer=self._observer,
                 provider_name=self.provider_name,
@@ -103,6 +134,7 @@ class ObservedLLMProvider:
             )
             raise
         except Exception:
+            self._last_exchange = None
             observe_runtime_signal(
                 self._observer,
                 ProviderCallFailedSignal(
@@ -115,17 +147,22 @@ class ObservedLLMProvider:
             )
             raise
 
-        observe_runtime_signal(
-            self._observer,
-            ProviderCallCompletedSignal(
-                provider_id=self.provider_name,
-                model=self.model_name,
-                ordinal=ordinal,
-                finish_reason=_finish_reason(response.finish_reason),
-                input_tokens=response.usage.input_tokens,
-                output_tokens=response.usage.output_tokens,
-            ),
-        )
+        try:
+            observe_runtime_signal(
+                self._observer,
+                ProviderCallCompletedSignal(
+                    provider_id=self.provider_name,
+                    model=self.model_name,
+                    ordinal=ordinal,
+                    finish_reason=_finish_reason(response.finish_reason),
+                    input_tokens=response.usage.input_tokens,
+                    output_tokens=response.usage.output_tokens,
+                ),
+            )
+        except RuntimeObservationError:
+            self._last_exchange = None
+            raise
+        self._last_exchange = candidate_exchange
         return response
 
 

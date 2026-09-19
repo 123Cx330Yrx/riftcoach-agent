@@ -36,6 +36,8 @@ MAX_TREND_METRIC_LENGTH = 64
 MAX_VERSION = 2_147_483_647
 
 _SAFE_METRIC_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$")
+_SAFE_RUN_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,95}$")
+_LOWER_HEX_DIGEST = r"^[0-9a-f]{64}$"
 
 SafeMetric = Annotated[
     str,
@@ -149,8 +151,35 @@ class ReviewSummaryPayload(CandidateDomainModel):
         return value
 
 
+class ObservationArchiveReference(CandidateDomainModel):
+    kind: Literal["user_attached_archive"]
+    source_run_id: str = Field(min_length=1, max_length=96)
+    bundle_digest: str = Field(pattern=_LOWER_HEX_DIGEST)
+    report_sha256: str = Field(pattern=_LOWER_HEX_DIGEST)
+    observed_at: str = Field(min_length=1)
+
+    @field_validator("source_run_id")
+    @classmethod
+    def validate_source_run_id(cls, value: str) -> str:
+        if not _SAFE_RUN_ID_PATTERN.fullmatch(value):
+            raise ValueError("archive_reference.source_run_id must be a safe run identifier")
+        return value
+
+    @field_validator("observed_at")
+    @classmethod
+    def validate_observed_at(cls, value: str) -> str:
+        try:
+            parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError as exc:
+            raise ValueError("archive_reference.observed_at must be ISO-8601") from exc
+        if parsed.tzinfo is None or parsed.utcoffset() is None:
+            raise ValueError("archive_reference.observed_at must include timezone")
+        return parsed.isoformat()
+
+
 class ObservationNotePayload(CandidateDomainModel):
     text: str = Field(min_length=1, max_length=MAX_REVIEW_TEXT_LENGTH)
+    archive_reference: ObservationArchiveReference | None = None
 
     @field_validator("text")
     @classmethod
@@ -415,6 +444,7 @@ __all__ = [
     "MemoryTargetKind",
     "MemoryTargetStatus",
     "MemoryWriteEnvelope",
+    "ObservationArchiveReference",
     "ObservationNotePayload",
     "ParsedTypedMemoryWrite",
     "PublicTrendPayload",
