@@ -1,3 +1,7 @@
+# 2026-09-19 CI replay input correction
+
+Actions35421331099/ad7400d had 4049 tests pass and one new replay test fail because it read ignored local run data. The test now reconstructs its full input from committed fixtures and the unchanged report dataset, verifies the exact real input hash, and forbids data/runs reads. All32 native issue-list tests passed after correction, plus the focused no-local-runs check. Product implementation and model prompts are unchanged; no paid retry occurred. Exact-SHA public verification remains required.
+
 # 2026-09-19 Enforced native output responsibility
 
 2026-09-19 native v3正例在42a5fc0/Actions35420153601三项success后完整返回：30.563秒，11932输入+2411输出=14343tokens，无未知用量，累计Provider至少222。判断pass，但summary将辅助0胜写成0负，人工语义拒绝，负例未跑。独立核对实际请求及无损还原的五处来源一致，原请求无previous_review；错误是本次新生成，不能从输出断言模型内部原因。原始回执不修改，证据golden_native_review_result_42a5fc0.json。

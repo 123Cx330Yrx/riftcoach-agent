@@ -166,12 +166,21 @@ def test_unrequested_fact_narratives_are_rejected_not_discarded(field):
     assert flow.stopped and len(provider.requests) == 2
 
 
-def test_actual_wrong_summary_is_preserved_and_cannot_be_reclassified_as_pass():
-    from scripts.run_golden_native_review import prepare
+def test_actual_wrong_summary_is_preserved_and_cannot_be_reclassified_as_pass(monkeypatch):
+    from tests.test_golden_native_reassessment import recorded_failure
+    original_open = Path.open
+    def committed_only(path, *args, **kwargs):
+        assert 'data/runs/' not in path.as_posix(), 'replay must not depend on ignored local runs'
+        return original_open(path, *args, **kwargs)
+    monkeypatch.setattr(Path, 'open', committed_only)
     artifact = candidate.strict_json(Path('data/evaluation/results/golden_native_review_result_42a5fc0.json').read_text(encoding='utf-8'))
     raw = artifact['raw']
-    _, req = prepare(1)
+    # Reconstruct from committed fixtures only; CI has no ignored local runs.
+    _, req = recorded_failure()
+    controls = candidate.strict_json(Path('data/evaluation/datasets/golden_observed_review_controls_v1.json').read_text(encoding='utf-8'))
+    req = replace(req, report=controls['cases'][0]['report'], user_utterance=controls['user_utterance'])
     inputs = candidate.build_inputs(req)
+    assert digest(inputs.data_json) == artifact['receipt']['input_sha256']
     assert '辅助1局0负' in raw and not artifact['manual_semantic_acceptance']
     with pytest.raises(ValueError): candidate.validate(raw, inputs)
     correction = request_data(candidate.request(inputs, previous_raw=raw))
