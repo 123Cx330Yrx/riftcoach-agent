@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from app.evidence.publication import (
         EvidencePublicationContext, EvidencePublicationSources, EvidencePublicationWriter,
     )
+    from app.evidence.summary_bridge import SummaryEvidenceProjection
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from requests.exceptions import (
@@ -124,6 +125,7 @@ class RecentReviewRuntime(Protocol):
 
 
 ReportRenderer = Callable[[dict], str]
+PublicationReportRenderer = Callable[[str, dict, "SummaryEvidenceProjection"], str]
 
 
 class RecentReviewApplicationResult(BaseModel):
@@ -231,6 +233,7 @@ class RecentReviewApplicationService:
         report_renderer: ReportRenderer = render_deterministic_report,
         publication_sources: EvidencePublicationSources | None = None,
         publication_writer: EvidencePublicationWriter | None = None,
+        publication_report_renderer: PublicationReportRenderer | None = None,
         allow_legacy_without_publication: bool = False,
     ) -> None:
         if not callable(getattr(summary_builder, "build", None)):
@@ -243,6 +246,8 @@ class RecentReviewApplicationService:
             raise TypeError("receipt_writer must expose write_result()")
         if not callable(report_renderer):
             raise TypeError("report_renderer must be callable")
+        if publication_report_renderer is not None and not callable(publication_report_renderer):
+            raise TypeError("publication_report_renderer must be callable")
         if (publication_sources is None) != (publication_writer is None):
             raise ValueError("publication sources and writer must be supplied together")
         if publication_sources is not None:
@@ -259,6 +264,7 @@ class RecentReviewApplicationService:
         self._runtime = runtime
         self._receipt_writer = receipt_writer
         self._report_renderer = report_renderer
+        self._publication_report_renderer = publication_report_renderer
 
     def review(
         self,
@@ -350,7 +356,7 @@ class RecentReviewApplicationService:
                 failure = True
             if failure:
                 raise RecentReviewApplicationError("service_configuration_invalid")
-        deterministic_report = self._render_report(summary)
+        deterministic_report = self._render_report(summary, projection=projection)
         runtime_request = self._compile_request(
             request,
             summary=summary,
@@ -563,11 +569,13 @@ class RecentReviewApplicationService:
         if failure is not None:
             raise failure
 
-    def _render_report(self, summary: dict) -> str:
+    def _render_report(self, summary: dict, *, projection=None) -> str:
         failure: RecentReviewApplicationError | None = None
         report: Any = None
         try:
             report = self._report_renderer(copy.deepcopy(summary))
+            if projection is not None and self._publication_report_renderer is not None:
+                report = self._publication_report_renderer(report, copy.deepcopy(summary), projection)
         except Exception:
             failure = RecentReviewApplicationError(
                 "service_configuration_invalid"

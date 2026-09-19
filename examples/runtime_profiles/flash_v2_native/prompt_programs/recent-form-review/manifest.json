@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "program_id": "recent-form-review-coach",
-  "program_version": "3.0.0",
+  "program_version": "3.0.1",
   "skill_name": "recent-form-review",
   "skill_version": "0.6.0",
   "context_contract_id": "context-builder-v1",
@@ -87,13 +87,33 @@
     {
       "component_id": "app.runtime.native_coach_contract",
       "source": "app/runtime/native_coach_contract.py",
-      "sha256": "2aa16067bb794847159cf6559f98da8bd634bc182c28fb31cd7fda7c415946fb"
+      "sha256": "0297ab4fe8c1b51d74046d1f16f2babce891d000180e16639c2a873058ad3730"
+    },
+    {
+      "component_id": "app.product.native_coach_composition",
+      "source": "app/product/native_coach_composition.py",
+      "sha256": "8430f0005ef9e0f4f0a5e70d6e1acb7dcef006e5f2412546d337e4cdc8e4c4d4"
+    },
+    {
+      "component_id": "app.product.recent_review_service",
+      "source": "app/product/recent_review_service.py",
+      "sha256": "e4ecaf5dd177db17b5d54cd02525770fd5647f840a9b55e77d8aec3b0c0c3103"
+    },
+    {
+      "component_id": "app.evaluation.golden_source_context",
+      "source": "app/evaluation/golden_source_context.py",
+      "sha256": "2103ec35ebd02ebde3ce32db1c686a1e41f7d727ee6b610c4597f1f28bdffd28"
+    },
+    {
+      "component_id": "app.product.coach_positions",
+      "source": "app/product/coach_positions.py",
+      "sha256": "cb6d8ccc7944c8328d3f8dd4e420b0df70d53c3b7c0fd6594ab1ae6d2ea65e3c"
     },
     {
       "component_id": "coach_execution_contract",
-      "source": "app.runtime.native_coach_contract:v1.4.0",
-      "sha256": "a4f75e43a71fd36f7604a24bee7a7b21a0f3447c0e5a3fe29e8543cd670b36f1"
+      "source": "app.runtime.native_coach_contract:v1.4.1",
+      "sha256": "3ed78b3bcbd1442cee6133ceca7a640f06206ef971af9d5096457a82eccfafba"
     }
   ],
-  "program_sha256": "0253906922ceea827b15428df28e5617f9e2a4c9da9ca7d35657070403ee7968"
+  "program_sha256": "10d8fa67d28247f3405c5042e8ab9c0e07a9b93bc7f4a328bf9573d5850fa204"
 }

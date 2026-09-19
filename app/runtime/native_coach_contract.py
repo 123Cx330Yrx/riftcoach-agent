@@ -39,6 +39,10 @@ def component_fingerprints(skill):
         'app/evaluation/golden_stream_bridge.py',
         'app/runtime/review_sender.py', 'app/runtime/receipted_provider_factory.py',
         'app/runtime/native_coach_contract.py',
+        'app/product/native_coach_composition.py',
+        'app/product/recent_review_service.py',
+        'app/evaluation/golden_source_context.py',
+        'app/product/coach_positions.py',
     )
     values = {'evaluation_schema': json.dumps(native.NativeIssuesReview.model_json_schema(), sort_keys=True),
               'generation_policy': generation_policy()}

@@ -19,6 +19,27 @@ from .run_receipts import FileRunReceiptStore
 ASSETS = Path(__file__).resolve().parents[2] / 'examples/runtime_profiles/flash_v2_native'
 
 
+def render_native_publication_context(report, summary, projection):
+    """Use the very projection that will be saved, including expired-source gaps.
+
+    The same deterministic document reaches generation, review and revision.
+    No second projection, fetch, inferred training goal or timestamp is created.
+    """
+    import hashlib
+    import json
+    from app.evaluation.golden_source_context import render_source_context
+    from .coach_positions import position_context
+    encoded = json.dumps(summary, sort_keys=True, ensure_ascii=True,
+                         separators=(',', ':'), allow_nan=False).encode()
+    if hashlib.sha256(encoded).hexdigest() != projection.summary_digest:
+        raise ValueError('native_publication_summary_mismatch')
+    roles = position_context(summary)
+    return (report + '\n\nEvidence snapshot digest: ' + projection.summary_digest
+        + '\nEvidence bundle digest: ' + projection.bundle.digest
+        + '\nPosition context (sample facts, not a training goal): ' + roles.model_dump_json()
+        + render_source_context(projection.bundle, roles))
+
+
 def build_native_coach_application(*, summary_builder, provider_factory, knowledge_provider,
         runs_root, memory_repository=None, memory_manifest_store=None,
         publication_sources=None, publication_writer=None, report_renderer=None):
@@ -52,4 +73,5 @@ def build_native_coach_application(*, summary_builder, provider_factory, knowled
         compiler=RecentReviewRuntimeRequestCompiler(root.skill_catalog, coach_contract=contract),
         runtime=runtime, receipt_writer=FileRunReceiptStore(runs_root),
         publication_sources=publication_sources, publication_writer=publication_writer,
+        publication_report_renderer=render_native_publication_context,
         report_renderer=report_renderer or render_deterministic_report)

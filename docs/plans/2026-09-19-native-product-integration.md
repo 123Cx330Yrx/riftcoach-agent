@@ -1,5 +1,70 @@
 # Native review into the existing product pipeline
 
+## Latest result: transport and file delivery worked; semantic admission failed
+
+`ac2725c` passed all three jobs in Actions35424463066. The single frozen
+ShowMaker product run completed real local RAG, generation, native review and
+Evidence file publication. Three complete calls took 21.391/54.359/21.688 seconds
+and used 26883 input + 3494 output = 30377 tokens, with no unknown usage.
+RunQueryService independently read the same report hash, summary and all five
+timelines. Historical Provider count is now at least 239. Evidence:
+`data/evaluation/results/golden_native_product_result_ac2725c.json`.
+
+The model returned 97/pass, but manual inspection rejected the report's claim
+that the mixed-role damage gap mainly came from the support match. The selected
+win/loss gap is 695.4183 damage/min; removing support leaves 669.235. Only 26.1833
+changes. The correct CS composition observation cannot justify the same damage
+attribution. The original response and files remain unchanged. This is a new
+false negative from unrestricted generation, not a timeout, output cap or a
+retraction of the five earlier control outcomes. No further paid run followed.
+
+Input tracing also found that publication sources were saved but never passed
+to generation or review. The standalone controls had supplied them. This is a
+separate integration defect, not proof of why the model missed the attribution:
+the needed damage numbers were already present. Both supplied OP.GG snapshots
+expired on September 10; fixing input delivery must not make them current.
+
+## Source-binding repair and bounded next action
+
+Coach 1.4.1 / Program 3.0.1 (Skill 0.6.0, review wire 3.1.0) passes the exact
+already-built publication projection to a server-side renderer. It verifies the
+summary digest, reuses the existing source/position renderer, and sends one
+deterministic document through generation, review, revision and persistence.
+Fresh, applicable OP.GG facts retain their uses and timestamps; expired facts
+remain omitted with a reason. Snapshot time is never reset and no data is
+fetched. Legacy application behavior is unchanged when no renderer is supplied.
+Composition, service and source-renderer files now enter candidate fingerprints.
+
+Eleven native integration checks cover this repair, mismatched summary rejection,
+the real executor/Worker atomic-commit branch, rejected/lost-lease publication
+fences and conversation-turn/report binding. The task repository in those Worker
+checks is a test double: they do not claim a new PostgreSQL/API/browser vertical.
+Related application/publication regressions also passed. Two test-fixture defects
+were corrected (existing typed text trimming and a missing empty objective-events
+collection); neither required a product readback change.
+
+The fresh source-bound preview input ceiling is 33240 < 63936. The preserved
+complete attribution pair has input ceilings 41178/41260; the diagnostic
+`python -m scripts.check_native_product_regression` reproduces the original
+schema-valid false negative and recomputes the numerical contradiction without
+Provider calls. It does not prove a semantic fix. The original five controls
+are untouched; the new pair is analyst development evidence, not holdout.
+
+The product runner is now explicitly offline pending attribution qualification.
+This is a known-quality gate, not a request for more user authorization. Next:
+review this full-report pair and the actual comparison evidence as one semantic
+case, choose and justify any evaluator change against both the negative and its
+correct counterpart, then run relevant offline/full-budget checks and exact-SHA
+CI before a bounded new quality experiment. Do not claim the source-binding
+repair fixes semantic recall or add another mandatory model call outside the
+shared five-call budget. A fresh product run needs this quality evidence first.
+
+The remaining task transaction/API/Workbench vertical, independent evaluation,
+learning coverage, frontend redesign/portraits/four-part linkage and personalized
+Training remain in the restart plan. Stage8E is still in progress.
+
+The following describes the earlier integration milestone and its design.
+
 The a71eb94 implementation passed public Actions35423244997 and all five
 frozen analyst controls. Four wrong reports completed real detect/revise/recheck
 and manual inspection; the heading case that failed before now completed too.

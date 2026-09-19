@@ -33,6 +33,8 @@ from app.skills.execution import SkillExecutionBoundary
 from scripts.run_golden_native_review import prepare, DATASET, ROOT
 from scripts.run_golden_inference_development import verify_public_ci
 
+PRODUCT_LIVE_STATUS = 'offline_source_binding_and_attribution_review'
+
 
 class EmptyObservedMemory:
     def load(self, binding):
@@ -45,6 +47,8 @@ class NoopObserver:
 
 
 def run(args):
+    if args.execute and PRODUCT_LIVE_STATUS != 'bounded_development_after_exact_ci':
+        raise ValueError('native_product_semantic_qualification_required')
     _, original = prepare(1)  # Hash-check every frozen source; no old report is generated.
     source_run = ROOT/json.loads(DATASET.read_text(encoding='utf-8'))['source_bindings']['source_run']
     bundle = bundle_from_storage_projection(json.loads((source_run/'evidence_bundle.json').read_text(encoding='utf-8')))
@@ -82,8 +86,10 @@ def run(args):
     request = ConversationRecentReviewRequest(count=5,queue=420)
     # Use the actual compiler and Agent request compiler. Empty Memory adds no
     # prompt records; the frozen observed identity is already in user_utterance.
+    projection = app._publication_sources.project(deepcopy(original.player_summary), routing_region='asia')
     compiled = app._compiler.compile(request, player_summary=deepcopy(original.player_summary),
-        deterministic_report=app._report_renderer(original.player_summary), run_id=run_id, memory_context_binding=memory)
+        deterministic_report=app._render_report(original.player_summary, projection=projection),
+        run_id=run_id, memory_context_binding=memory)
     execution = SkillExecutionBoundary(app._runtime._catalog).validate(compiled.execution_request)
     ctx = CoachContextBuilder(coach_contract=NATIVE_COACH_CONTRACT, compact_json=True).build(
         execution, max_context_tokens=compiled.policy.max_context_tokens)
@@ -101,6 +107,7 @@ def run(args):
         contract=NATIVE_COACH_CONTRACT.snapshot().model_dump(), first_input_ceiling=ceiling,
         total_calls=5, total_tokens=401920, max_seconds=900, max_revisions=1,
         production_admitted=False, real_generation_included=args.execute, semantic_approval=False)
+    plan['live_status'] = PRODUCT_LIVE_STATUS
     if not args.execute:
         print(compact(plan))
         return plan
