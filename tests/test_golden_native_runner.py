@@ -46,6 +46,38 @@ def forbidden(*args, **kwargs):
     pytest.fail("forbidden external or later-stage operation was reached")
 
 
+def test_attribution_loader_keeps_labels_and_analyst_arithmetic_outside_input(control, monkeypatch):
+    from dataclasses import asdict, replace
+    from app.evaluation import golden_native_issues_review as active
+    control.req = replace(control.req, deterministic_report=control.req.deterministic_report.replace('\r\n', '\n'))
+    root = control.path.parent
+    sources = []
+    for name, value in [('player_summary.json', compact(control.req.player_summary)),
+                        ('deterministic_report.md', control.req.deterministic_report),
+                        ('retrieval_evidence.json', compact(asdict(control.req.knowledge)))]:
+        path = root/name
+        path.write_text(value, encoding='utf-8')
+        sources.append(dict(path=name, sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
+    data = dict(origin_artifact=control.source.name,
+        origin_artifact_sha256=hashlib.sha256(control.source.read_bytes()).hexdigest(),
+        source_files=sources, cases=[dict(control.case, expected_categories=[])],
+        user_utterance=control.req.user_utterance, arithmetic={'never_send_oracle': 'sentinel'})
+    path = root/'attribution.json'
+    path.write_text(compact(data), encoding='utf-8')
+    monkeypatch.setattr(runner, 'ATTRIBUTION_DATASET', path)
+    isolate_external(monkeypatch)
+    case, req = runner.prepare_attribution(1)
+    assert req == control.req
+    control.args.suite = 'attribution'
+    plan = runner.run(control.args, candidate_module=active)
+    assert plan['suite'] == 'attribution' and plan['manifest_sha256'] == hashlib.sha256(path.read_bytes()).hexdigest()
+    prompt = '\n'.join(m.content for m in active.request(active.build_inputs(req)).messages)
+    assert 'never_send_oracle' not in prompt and 'expected_report' not in prompt
+    (root/'player_summary.json').write_text('{}', encoding='utf-8')
+    with pytest.raises(ValueError, match='native_attribution_source_changed'):
+        runner.prepare_attribution(1)
+
+
 def isolate_external(monkeypatch):
     import dotenv
     import app.providers.config as config

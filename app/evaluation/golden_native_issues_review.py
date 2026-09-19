@@ -5,6 +5,7 @@ new explanatory prose and source selections. Model recall/relevance are measured
 by full-report controls, not certified by a block checklist or generated claims.
 """
 import re
+from functools import partial
 from typing import Literal
 
 from pydantic import Field
@@ -18,11 +19,13 @@ from app.evaluation.golden_review_experiment import compact, digest
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.providers.structured import contract_for_model
 
-EXPERIMENT_ID = 'golden-native-issues-review-v3.1'
+EXPERIMENT_ID = 'golden-native-issues-review-v3.2'
 LIVE_STATUS = 'bounded_development_after_exact_ci'
 LIVE_BLOCK_REASON = 'native_issues_whole_contract_qualification_required'
 strict_json = previous.strict_json
 build_inputs = previous.build_inputs
+request_data = partial(request_data, include_role_contrasts=True)
+resolve_refs = partial(resolve_refs, include_role_contrasts=True)
 
 
 def require_live_qualification():
@@ -53,6 +56,13 @@ _rules[2] = ('检查source_index.blocks中的全文，包括标题中的断言�
     '状态摘要由程序根据verdict和问题数量生成，不输出summary、passed_checks或其他重复事实的字段。'
     '这不缩减审查范围；正确否定/条件建议不是作者赞同被否定的结论。')
 _rules[3] = _rules[3].replace('问题按reviews顺序及段内顺序编号1起。', '问题按issues顺序编号1起。')
+_rules.insert(6, '复合推断按每个指标分别核验：一个指标的证据不能支持同句另一个指标。'
+    '声称差异主要来自某组、混合样本被某组拉低或某组解释了差异时，核对实际指标、方向和量级，'
+    '区分该组有影响与足以解释主要差距；正确数字和不推断能力的免责声明不能抵消错误归因。'
+    'computed_evidence.role_contrasts提供保留各位置前后的胜均值减败均值及两者之差，使用原值计算；'
+    '完整成员/缺失见cohorts，null不可当0，负差或方向反转须按原含义解释。'
+    '这是描述性重分组，不是因果贡献或反事实实验；范围明确、量级支持的样本构成解释可通过，'
+    '不能一概将样本解释判成因果错误，也不能忽略否定句和待验假设。')
 POLICY = '\n'.join(_rules)
 
 

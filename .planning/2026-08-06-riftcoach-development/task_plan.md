@@ -300,13 +300,13 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-19 ac2725c/Actions35424463066公共三项success后，native产品首次完成真实本地RAG→生成→审查→Evidence文件保存/读取：3次完整请求，26883输入+3494输出=30377tokens，无未知用量；累计Provider至少239。独立读取核对报告哈希、五局摘要和全部五局Timeline一致。但模型97/pass漏检“全样本伤害差距主要来自辅助局”：全样本差695.4183，去掉辅助后仍669.235，仅改变26.1833；人工语义拒绝，原响应/回执不改。本批立即停止付费调用。五个a71eb94开发对照通过仍有效，不等于新生成报告或生产准入。
+2026-09-19 归因审查已完成整体离线改动：native policy v3.2 / Coach1.4.2 / Skill0.6.0 / Program3.0.2，wire3.1.0不变。程序按原精度提供所有已有位置/指标筛选前后的胜负均值差与差值变化，审查逐指标核验复合推断；不硬编码ShowMaker答案、不把重分组当因果贡献、不增加固定模型调用。计算证据随原有来源hash贯穿评估/修订/复评，旧调用默认数据形状不变。
 
-追踪还发现独立接线缺陷：保存了外部Evidence却没传给生成/审查。Coach1.4.1/Skill0.6.0/Program3.0.1已离线修复，使用同一已构建投影校验summary digest并贯穿生成/评估/修订/保存；复用已有来源过滤，过期OP.GG保持缺失原因，不伪造当前可用事实。本修复不能冒称解决伤害归因漏检。148项相关检查通过（包括11项native测试）；真实Executor/Worker原子提交分支、拒绝/丢租约不发布和观摩会话内容绑定已有离线证明，测试仓库替身不等于新的PostgreSQL/API/浏览器闭环。
+相关算术/来源/原生审查/应用/runner/Prompt Program回归通过。原五例及完整归因正反例的脚本三次/最多五次路径通过；五次满额预约分别398682和377744，均低于401920，实际用量+下次预约仍为准。旧真实尾文重评49820、长旧响应重评58384<63936。正反例输入43860/43940；未证明新模型语义。离线证据golden_native_role_contrasts_offline_v1.json、golden_native_attribution_offline_v1.json；两份冻结控制集/旧回执未改。新runner沿用同SHA CI/预算/回执，仅显式选择归因suite，标签与人工算式不入模型；它的用户请求为冻结简述，不冒称exact原产品重放。
 
-原产品证据golden_native_product_result_ac2725c.json；完整原错稿/仅修正归因对照golden_native_product_attribution_controls_v1.json。可复现离线诊断scripts/check_native_product_regression.py：错误原响应仍可通过协议，输入41178/41260；新来源接入首生成33240<63936。无新增语义修复证明，产品runner已设offline_source_binding_and_attribution_review。唯一下一步：按完整报告和实际数值裁决归因审查方法，同时验证原错稿及正确对照，离线/完整预算/同SHA公共检查后才启动新的有界质量实验；不能把来源接线修复当模型漏检已修好或原样重跑生成。细节见docs/plans/2026-09-19-native-product-integration.md。
+唯一下一步：本实现同SHA公共三项成功后，先归因正确对照人工合格，再原错稿检出→修订→复评，并复核原五例。任一失败停批保留后整体诊断；质量通过才恢复一次来源绑定后的完整产品实测。产品runner仍offline，8E仍in_progress，累计Provider至少239（本次尚无新调用）。来源接线修复与归因漏检分别记账，不能以工程通过称语义修复。方案见docs/plans/2026-09-19-role-attribution-review.md。
 
-Stage8E仍in_progress；GLM/high、所有预算、生产默认和工作台人工稿保持。后续任务原子事务/API/Workbench、独立评估、学习覆盖、前端审美重做/头像、Coach/Review/Training/Evidence、专属训练和62主题继续按restart plan完整追踪。
+后续任务原子事务/API/Workbench实际消费、独立评估、学习覆盖、前端审美重做/英雄头像、Coach/Review/Training/Evidence与专属Training及62主题沿用restart plan。
 
 ## Phases
 
@@ -554,9 +554,7 @@ Stage8E仍in_progress；GLM/high、所有预算、生产默认和工作台人工
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-完整原错稿/正确归因对照与实际数值一起审查，先离线裁决审查方法并验证完整预算和新来源一致性；相关回归与同SHA公共检查后，才进入新的有界质量实验。来源接线已修复，伤害归因真实漏检尚未修复；不原样重跑生成、不重标旧回执。质量合格后继续任务事务/API/Workbench与独立评估、学习覆盖。
-
-全局后续见 `docs/plans/2026-09-16-astra-restart-plan.md`。
+本实现同SHA公共三项后，归因正确对照先人工合格，再原错稿自动检出/修订/复评及原五例回归。失败停批整体诊断；成功后才恢复来源绑定产品实测。全局后续见docs/plans/2026-09-16-astra-restart-plan.md。
 
 ## RQ-195 / 候选 runtime 接线架构评审（2026-09-01）
 

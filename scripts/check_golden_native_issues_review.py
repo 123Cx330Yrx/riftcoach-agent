@@ -36,7 +36,7 @@ def audit():
         candidate.validate(compact(value), current)
         built = candidate.request(current)
         sent = candidate.strict_json(built.messages[1].content.split('[UNTRUSTED DATA]\n', 1)[1].rsplit('\n[END UNTRUSTED DATA]', 1)[0])
-        original = request_data(current)
+        original = candidate.request_data(current)
         deterministic = original.pop('deterministic_source_facts')
         assert sent == original and deterministic in built.messages[2].content
         cases.append(case); requests.append(req); inputs.append(current); values.append(value)

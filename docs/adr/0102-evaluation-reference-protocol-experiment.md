@@ -1,5 +1,17 @@
 # ADR-0102: Source references and bounded evaluation correction
 
+## 2026-09-19 Metric-specific role contrasts
+
+Native v3.2 keeps wire3.1 and the issue-list workflow, adds opt-in deterministic
+selected/role gap contrasts to the existing hashed evidence root, and checks
+compound attribution per metric. Raw-data arithmetic is not a causal verdict.
+No new mandatory call, answer-specific threshold, reduced source scope or
+changed acceptance standard. Coach1.4.2/Program3.0.2 bind the implementation.
+Full proposal, alternatives and evidence gates:
+`docs/plans/2026-09-19-role-attribution-review.md`. Offline three/five-call paths
+and source binding passed; real semantic qualification remains outstanding.
+
+
 ## 2026-09-19 Product observation and source-binding repair
 
 2026-09-19 ac2725c/Actions35424463066公共三项success后，native产品首次完成真实本地RAG→生成→审查→Evidence文件保存/读取：3次完整请求，26883输入+3494输出=30377tokens，无未知用量；累计Provider至少239。独立读取核对报告哈希、五局摘要和全部五局Timeline一致。但模型97/pass漏检“全样本伤害差距主要来自辅助局”：全样本差695.4183，去掉辅助后仍669.235，仅改变26.1833；人工语义拒绝，原响应/回执不改。本批立即停止付费调用。五个a71eb94开发对照通过仍有效，不等于新生成报告或生产准入。

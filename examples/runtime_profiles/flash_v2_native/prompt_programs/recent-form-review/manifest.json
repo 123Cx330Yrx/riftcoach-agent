@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "program_id": "recent-form-review-coach",
-  "program_version": "3.0.1",
+  "program_version": "3.0.2",
   "skill_name": "recent-form-review",
   "skill_version": "0.6.0",
   "context_contract_id": "context-builder-v1",
@@ -42,7 +42,7 @@
     {
       "component_id": "app.evaluation.golden_native_issues_review",
       "source": "app/evaluation/golden_native_issues_review.py",
-      "sha256": "02aa601398a979810a9e278faa65b6fd9751ccebc927064e9f2597e7bebef349"
+      "sha256": "db7d5f0eea3a089cc41d132b65efe0c8cc2a7e999cfddb8d5dc9fd8424f385f7"
     },
     {
       "component_id": "app.evaluation.golden_semantic_review",
@@ -52,7 +52,7 @@
     {
       "component_id": "app.evaluation.golden_semantic_sources",
       "source": "app/evaluation/golden_semantic_sources.py",
-      "sha256": "122fc00bd05504efe2bc8d4767bb379a5ad9e5e3264458406a34de4cc23a9db5"
+      "sha256": "bc334ef5ec28678ad248b581632b27bdd079dfbe5c33ec4950b2cd218c4ce2be"
     },
     {
       "component_id": "app.evaluation.golden_contextual_sources",
@@ -62,7 +62,7 @@
     {
       "component_id": "app.evaluation.golden_computed_evidence",
       "source": "app/evaluation/golden_computed_evidence.py",
-      "sha256": "c8192fce713ea39a265f51fd0fe6b6bc0ccd715de64f821d05aa9813b45809db"
+      "sha256": "d9c3c74102c5e4524f454ea306c559108c9bbf112887c106fbd44f03f2baacef"
     },
     {
       "component_id": "app.evaluation.golden_integrated_runtime",
@@ -111,9 +111,9 @@
     },
     {
       "component_id": "coach_execution_contract",
-      "source": "app.runtime.native_coach_contract:v1.4.1",
-      "sha256": "3ed78b3bcbd1442cee6133ceca7a640f06206ef971af9d5096457a82eccfafba"
+      "source": "app.runtime.native_coach_contract:v1.4.2",
+      "sha256": "560329cfdbc9ec53b53d4f91f4ea233bfdb273f3fca97e17393e7fe93170312a"
     }
   ],
-  "program_sha256": "10d8fa67d28247f3405c5042e8ab9c0e07a9b93bc7f4a328bf9573d5850fa204"
+  "program_sha256": "8b2d2178dc321f13d3266391fd297d07a0fd1ea1891606b3a6b832db8d3fd116"
 }
