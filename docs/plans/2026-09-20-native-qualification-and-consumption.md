@@ -53,3 +53,15 @@ Never transfer older successful semantics automatically to this implementation.
 Stage8E completion still requires applicable independent evaluation and learning
 coverage. Frontend aesthetics/rebuild, portraits, Coach/Review/Training/Evidence,
 personal Training and all 62 tracked themes remain in the Astra restart plan.
+
+## Preflight integration correction
+
+Admission commit dde258c / CI35520737854 failed eight native application tests:
+changing LIVE_STATUS changed a fingerprinted module, but its checked-in manifest
+was not refreshed. The narrow runner/recovery tests omitted this dependency.
+The manifest is regenerated from existing component_fingerprints/digest_for;
+only the native module fingerprint changes. Actual Runtime composition and the
+existing native application/Prompt Program tests are now included in preflight.
+No validator is weakened, no semantic policy changes, and no paid call preceded
+this failure. Future admission/status edits must verify their product manifest
+even when the model-visible request is unchanged.
