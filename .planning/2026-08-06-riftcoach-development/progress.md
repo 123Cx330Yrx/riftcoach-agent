@@ -6947,3 +6947,11 @@ native v3.3 / Coach1.4.3 / Skill0.6.0 / Program3.0.3在原问题清单内落实�
 
 
 独立收尾审查已通过：复核原失败17份文件哈希、真实输入指纹、两次原响应、383294五调用预约及manifest；未发现需要阻断离线补丁的问题。还确认原重评改了explanation，故即便补block也不能使用retained。未新增产品模型调用，真实修正仍待验证。
+
+## 2026-09-20 / native v3.4 qualification continuation
+
+2026-09-20继续native v3.4开发资格验证。修复提交3f7836022be7641a5964ca807a3540d93abfff8d/Actions35434107706公共三项success，70项相关离线检查及独立审查已完成；原失败、来源、标签保持。native仅恢复同SHA有界开发资格，产品runner仍offline，不改评估策略/模型/预算/标准，不把工程通过算语义通过。
+
+唯一下一步：本次准入提交公共三项成功后，依次scope1正确全文→scope5原伤害归因错稿，逐份完整审读；都合格再scope4缺字段来源案例、scope2/3及原五例回归。本批至多10份不同完整对照，任一失败停批并离线诊断，本轮不因局部补丁另开付费批。全部通过才来源绑定产品实测/实际事务/API/Workbench。每报告5次/1修订/401920/900秒，单次GLM/high/32768/300秒、SDK retry0和输入63936保持；未触发恢复不算真实恢复验证。
+
+当前新增Provider调用0，历史至少247；Stage8E仍in_progress。前端审美重做、头像、四块联动、专属Training及62主题持续按restart plan追踪。完整执行/验收顺序见docs/plans/2026-09-20-native-qualification-and-consumption.md。

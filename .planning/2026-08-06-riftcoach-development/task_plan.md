@@ -300,17 +300,11 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-19 v3.3实现ad6b2d9/Actions35432825188公共三项success后，四份完整范围对照实测共7次、81603输入+19607输出=101210tokens，无未知用量。两正例通过；显式错误中单范围负例正确检出、只改相关句、复评97/pass，三例经人工审读接受。前批误报的同一正确原文现100/pass，证明该开发对照有所改进，不是全局语义准入。
+2026-09-20继续native v3.4开发资格验证。修复提交3f7836022be7641a5964ca807a3540d93abfff8d/Actions35434107706公共三项success，70项相关离线检查及独立审查已完成；原失败、来源、标签保持。native仅恢复同SHA有界开发资格，产品runner仍offline，不改评估策略/模型/预算/标准，不把工程通过算语义通过。
 
-第四例将中单败局早死写为2.67，模型两次均指出正确值0.5，但初评与唯一一次重评的issues均缺block。重评文字声称已补block=14，实际JSON没有，严格校验终止，未修订。本批立即停止；原伤害归因负例及原五例尚未在v3.3实测。证据golden_native_scope_result_ad6b2d9.json保留全部实际文本/回执/哈希与逐例审读。加上v3.2一请求，本轮共8次、117430tokens，无未知用量；历史Provider至少247。不得把数字错误被文字指出称完整修订通过，也不得称伤害漏检修复已证实。
+唯一下一步：本次准入提交公共三项成功后，依次scope1正确全文→scope5原伤害归因错稿，逐份完整审读；都合格再scope4缺字段来源案例、scope2/3及原五例回归。本批至多10份不同完整对照，任一失败停批并离线诊断，本轮不因局部补丁另开付费批。全部通过才来源绑定产品实测/实际事务/API/Workbench。每报告5次/1修订/401920/900秒，单次GLM/high/32768/300秒、SDK retry0和输入63936保持；未触发恢复不算真实恢复验证。
 
-离线进一步定位恢复合同差异：程序retained要求旧issue逐字段原样不变，提示此前只说同一问题；补block后仍标retained必被拒，明确replaced才合法。不能断言这造成模型漏字段，但合同表述应与验证一致。native v3.4/Coach1.4.4/Program3.0.4（Skill0.6.0/wire3.1不变）已对齐定义，修正必须写入实际字段，不从说明猜段号、不自动补值、不删旧问题、不加第三评；状态offline_missing_field_reassessment，产品runner仍offline。
-
-70项受影响检查通过。新fixture与原真实input_sha256一致，保留两次原失败；脚本显式替换→修订→尾文重评的五次路径可达，满额预约383294<401920；原五例脚本五次401442<401920，长历史响应重评59074<63936。证据golden_native_missing_field_offline_v1.json及golden_native_scope_review_offline_v2.json仅证明工程可执行，不证明真实模型会补字段。
-
-独立收尾审查已通过：复核原失败17份文件哈希、真实输入指纹、两次原响应、383294五调用预约及manifest；未发现需要阻断离线补丁的问题。还确认原重评改了explanation，故即便补block也不能使用retained。未新增产品模型调用，真实修正仍待验证。
-
-唯一下一步：完成v3.4恢复合同独立审查与同SHA公共检查，确定新批资格后优先验证正确全文→原伤害归因负例，再验证缺字段恢复及剩余范围/原五例回归；不要再把所有附加对照排到核心归因之前，导致核心效果始终未测。沿用现有runner和每报告5次/1修订/401920/900秒、GLM/high、单次32768/300秒；本轮不再第三批付费。完整质量通过后才来源绑定产品实测/原子事务/API/Workbench。Stage8E仍in_progress；前端审美重做/头像/四块联动/个人Training及62主题持续保留。
+当前新增Provider调用0，历史至少247；Stage8E仍in_progress。前端审美重做、头像、四块联动、专属Training及62主题持续按restart plan追踪。完整执行/验收顺序见docs/plans/2026-09-20-native-qualification-and-consumption.md。
 
 ## Phases
 
@@ -558,7 +552,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-v3.4恢复合同独立审查与同SHA公共检查后确定新批资格，优先正确全文→原伤害归因负例，再验证缺字段恢复及其余范围/原五例回归。保持原始失败、严格字段检查和所有预算；本轮不再第三批付费，native/product入口目前offline。质量通过才产品实测/事务/API/Workbench；全局后续沿用restart plan。
+本次准入提交同SHA公共三项后，按2026-09-20方案先scope1→scope5核心正反例，再补范围/原五例；逐份人工审读、失败停批。质量合格后继续来源绑定产品实测和事务/API/Workbench；不改GLM/high或预算，8E及全局后续保持。
 
 ## RQ-195 / 候选 runtime 接线架构评审（2026-09-01）
 
