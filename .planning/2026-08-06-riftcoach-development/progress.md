@@ -1,3 +1,13 @@
+# 2026-09-21 Real attribution repair and scope false-positive diagnosis
+
+5aa20b4 / Actions35521189302三项success后完成scope1/5/4/2/3实测：4份接受；原伤害归因和分组数值错误均实际修订复评通过；scope3目标错误检出但额外范围误报，人工拒绝停批。11次、160157tokens，未知0，累计Provider至少258。真实结果golden_native_scope_result_5aa20b4.json保留完整公开响应/原回执/实际报告；独立审读核对11请求及110文件hash。没有原五例重跑、产品实测或真实缺字段恢复证明。
+
+v3.5离线替换原范围规则，区分观察窗口/分母/量词，保留显式错误和真正未解歧义。独立审查发现“存在合理读法就可通过”过宽，已收紧后再次审查接受。七完整对照标签A/A/R/R/A/R/A，原失败仍重放为needs_revision；新对照/原五例/归因五调用预约381302/401762/380824<401920。Coach1.4.5、Program3.0.5；组装/manifest核验，123相关测试通过，native/product仍offline，新语义未验证。本轮不再付费，完成公共检查后按2026-09-20方案进入下一开发资格批。
+
+当前8E保持in_progress；后续同版本完整回归→来源绑定产品→Evidence/真实事务/API/Workbench→独立评估/学习覆盖。前端审美、头像、四块联动、专属Training与62主题仍由restart plan追踪。
+
+以下为历史记录，当前以最新canonical为准。
+
 # 2026-09-19 Native product observation, source binding repair and preserved false negative
 
 2026-09-19 ac2725c/Actions35424463066公共三项success后，native产品首次完成真实本地RAG→生成→审查→Evidence文件保存/读取：3次完整请求，26883输入+3494输出=30377tokens，无未知用量；累计Provider至少239。独立读取核对报告哈希、五局摘要和全部五局Timeline一致。但模型97/pass漏检“全样本伤害差距主要来自辅助局”：全样本差695.4183，去掉辅助后仍669.235，仅改变26.1833；人工语义拒绝，原响应/回执不改。本批立即停止付费调用。五个a71eb94开发对照通过仍有效，不等于新生成报告或生产准入。

@@ -24,11 +24,13 @@ ROOT = Path(__file__).resolve().parents[1]
 DATASET = ROOT / "data/evaluation/datasets/golden_observed_review_controls_v1.json"
 ATTRIBUTION_DATASET = ROOT / "data/evaluation/datasets/golden_native_product_attribution_controls_v1.json"
 SCOPE_DATASET = ROOT / "data/evaluation/datasets/golden_native_scope_resolution_controls_v1.json"
+CLAIM_SCOPE_DATASET = ROOT / "data/evaluation/datasets/golden_native_claim_scope_controls_v1.json"
 
 
 def score_case(case, result):
     """Location/category match is only a development signal, not entailment."""
-    flagged = [i for i in result.issues if case["target"] in i["quote"]]
+    targets = case['targets'] if 'targets' in case else [case['target']]
+    flagged = [i for i in result.issues if any(target in i["quote"] for target in targets)]
     accepted = result.verdict.value == "pass" and result.score >= 85 and not result.issues
     matched = accepted if case["expected_report"] == "accept" else result.verdict.value != "pass" and bool(flagged)
     return dict(id=case["id"], valid=True, matched=matched,
@@ -111,13 +113,23 @@ def prepare_scope(case_index):
     return case, replace(original, report=case['report'])
 
 
+def prepare_claim_scope(case_index):
+    """Reuse committed source checks; analyst labels never enter the request."""
+    from scripts.check_native_claim_scope import load_controls
+    data, requests, _ = load_controls()
+    if not 1 <= case_index <= len(data['cases']):
+        raise ValueError('native_control_case_index_invalid')
+    return data['cases'][case_index - 1], requests[case_index - 1]
+
+
 def run(args, *, candidate_module=None):
     active = candidate_module or candidate
     if args.execute:
         active.require_live_qualification()
     suite = getattr(args, 'suite', 'observed')
     loader, dataset = {'observed': (prepare, DATASET), 'attribution': (prepare_attribution, ATTRIBUTION_DATASET),
-                       'scope': (prepare_scope, SCOPE_DATASET)}[suite]
+                       'scope': (prepare_scope, SCOPE_DATASET),
+                       'claim-scope': (prepare_claim_scope, CLAIM_SCOPE_DATASET)}[suite]
     case, req = loader(args.case_index)
     inputs = active.NativeBusinessReviewWorkflow.build_inputs(req)
     plan = dict(experiment_id=active.EXPERIMENT_ID, selected_cases=[case["id"]],
@@ -167,7 +179,7 @@ def run(args, *, candidate_module=None):
 def main(*, candidate_module=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--case-index", type=int, default=1)
-    parser.add_argument("--suite", choices=('observed', 'attribution', 'scope'), default='observed')
+    parser.add_argument("--suite", choices=('observed', 'attribution', 'scope', 'claim-scope'), default='observed')
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--run-id", default="")
     parser.add_argument("--ci-run", default="")

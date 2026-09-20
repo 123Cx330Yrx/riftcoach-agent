@@ -13,11 +13,11 @@ pause_reason: ""
 
 ## 状态元数据
 
-2026-09-20继续native v3.4开发资格验证。修复提交3f7836022be7641a5964ca807a3540d93abfff8d/Actions35434107706公共三项success，70项相关离线检查及独立审查已完成；原失败、来源、标签保持。native仅恢复同SHA有界开发资格，产品runner仍offline，不改评估策略/模型/预算/标准，不把工程通过算语义通过。
+2026-09-21本批真实验证及离线诊断完成。clean 5aa20b450c1b539b6030d66e6e67bdf62a6781c5/Actions35521189302公共三项success后，scope1→5→4→2→3共11次完整调用、126300输入+33857输出=160157tokens，无未知用量，历史Provider至少258。两正例通过；原伤害归因错误和中单早死错误均完成自动检出→实际修订→复评，并经独立人工审读接受。第五例虽检出目标错句，但首评/复评另有范围误报，最终85/needs_revision，人工拒绝并停批。完整原文、回执、改稿和hash保存在golden_native_scope_result_5aa20b4.json；旧失败不重标。
 
-唯一下一步：本次准入提交公共三项成功后，依次scope1正确全文→scope5原伤害归因错稿，逐份完整审读；都合格再scope4缺字段来源案例、scope2/3及原五例回归。本批至多10份不同完整对照，任一失败停批并离线诊断，本轮不因局部补丁另开付费批。全部通过才来源绑定产品实测/实际事务/API/Workbench。每报告5次/1修订/401920/900秒，单次GLM/high/32768/300秒、SDK retry0和输入63936保持；未触发恢复不算真实恢复验证。
+剩余故障是把观察窗口当合并分母、把泛指均值补成全称量词，非断流/预算/缺字段。native v3.5替换既有范围补充规则，先确定对象、指标、比较组和量词；全文仍有影响结论的未解歧义或明确事实错误则阻断，不能因存在一种合理读法就通过。七份完整对照独立裁决A/A/R/R/A/R/A；旧响应回放仍失败。Coach1.4.5/Skill0.6.0/Program3.0.5/wire3.1.0；实际组装已校验，native保持offline_claim_scope_adjudication，产品保持offline。123项相关测试通过；新对照/原五例/归因脚本五次预约381302/401762/380824均在401920内，长响应输入59154<63936。仅证明离线工程可达，未证明v3.5真实语义修复。
 
-当前新增Provider调用0，历史至少247；Stage8E仍in_progress。前端审美重做、头像、四块联动、专属Training及62主题持续按restart plan追踪。完整执行/验收顺序见docs/plans/2026-09-20-native-qualification-and-consumption.md。
+本批未触发缺字段恢复；未重跑原五例，也未新跑产品。单次GLM/high/32768/300秒、SDK retry0/输入63936，每报告5次/1修订/401920/900秒保持。本轮不再付费；完成同实现公共检查后，下一行动是按docs/plans/2026-09-20-native-qualification-and-consumption.md的有界顺序取得v3.5开发质量资格：先新对照及原核心负例，再同版本完整历史回归。恢复开发入口时须同步manifest并取得该SHA公共三项；质量齐全才来源绑定产品实测、Evidence、真实事务/API/Workbench。Stage8E仍in_progress；前端审美重做、英雄头像、Coach/Review/Training/Evidence、专属Training及62主题按restart plan保留。
 
 以下为历史记录，当前以最新canonical为准。
 

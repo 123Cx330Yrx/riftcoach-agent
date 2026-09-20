@@ -1,5 +1,9 @@
 # RiftCoach 持续开发计划
 
+2026-09-21：最新行动见下文Current Phase / Next Step与canonical。真实归因修订通过，但范围误报仍阻塞；v3.5离线修复及七份对照已完成，本轮不追加付费实验。后续与完整证据见2026-09-20资格验证计划。
+
+以下为历史记录，当前以最新canonical为准。
+
 2026-09-16：当前行动已统一为比较对象—证据—解释语义合同；完整重评结构及预算原型已离线验证，尚未准入实测。Current Phase/Next Step 的过时段落已原文归档。见完整重评可行性计划及canonical。
 
 以下为历史记录，当前以最新canonical为准。
@@ -300,11 +304,11 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-20继续native v3.4开发资格验证。修复提交3f7836022be7641a5964ca807a3540d93abfff8d/Actions35434107706公共三项success，70项相关离线检查及独立审查已完成；原失败、来源、标签保持。native仅恢复同SHA有界开发资格，产品runner仍offline，不改评估策略/模型/预算/标准，不把工程通过算语义通过。
+2026-09-21：5aa20b4/Actions35521189302后的5份完整实测中，4份经人工/独立审读接受；原伤害归因及错误早死数字已完成检出→修订→复评。第五份范围误报导致停批。11调用160157tokens、未知0，历史Provider至少258；原五例、真实缺字段恢复、产品未验证。证据golden_native_scope_result_5aa20b4.json保持原始成功/失败。
 
-唯一下一步：本次准入提交公共三项成功后，依次scope1正确全文→scope5原伤害归因错稿，逐份完整审读；都合格再scope4缺字段来源案例、scope2/3及原五例回归。本批至多10份不同完整对照，任一失败停批并离线诊断，本轮不因局部补丁另开付费批。全部通过才来源绑定产品实测/实际事务/API/Workbench。每报告5次/1修订/401920/900秒，单次GLM/high/32768/300秒、SDK retry0和输入63936保持；未触发恢复不算真实恢复验证。
+v3.5/Coach1.4.5/Program3.0.5已离线区分观察窗口、比较分母与全称量词，保留会改变结论的未解歧义和明确错误阻断。七份完整对照独立审查通过、123相关测试通过、完整5调用预算通过，原失败回放仍失败；新scope suite复用原runner，执行仍offline。本轮不再付费；新语义未验证，不能进产品。
 
-当前新增Provider调用0，历史至少247；Stage8E仍in_progress。前端审美重做、头像、四块联动、专属Training及62主题持续按restart plan追踪。完整执行/验收顺序见docs/plans/2026-09-20-native-qualification-and-consumption.md。
+下一步按docs/plans/2026-09-20-native-qualification-and-consumption.md完成同SHA公共检查及有界资格验证，再同版本历史回归、来源绑定产品/实际事务/API/Workbench。每报告5次/1修订/401920/900秒与GLM/high不变，失败停批。Stage8E、前端审美重做、头像、四块联动、专属Training和62主题持续保留。
 
 ## Phases
 
@@ -552,7 +556,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-本次准入提交同SHA公共三项后，按2026-09-20方案先scope1→scope5核心正反例，再补范围/原五例；逐份人工审读、失败停批。质量合格后继续来源绑定产品实测和事务/API/Workbench；不改GLM/high或预算，8E及全局后续保持。
+本轮以v3.5离线修复、独立审查、提交推送和公共检查收束，不另开付费批。下一资格批按2026-09-20方案先完整范围对照及核心负例，原成功/失败和标签保持；恢复开发入口须同步manifest及该SHA公共三项。全部同版本质量回归通过才来源绑定产品实测和事务/API/Workbench；不改GLM/high、预算或用户标准，8E及全局后续保持。
 
 ## RQ-195 / 候选 runtime 接线架构评审（2026-09-01）
 

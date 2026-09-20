@@ -19,9 +19,9 @@ from app.evaluation.golden_review_experiment import compact, digest
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.providers.structured import contract_for_model
 
-EXPERIMENT_ID = 'golden-native-issues-review-v3.4'
-LIVE_STATUS = 'bounded_development_after_exact_ci'
-LIVE_BLOCK_REASON = 'native_missing_field_reassessment_qualification_required'
+EXPERIMENT_ID = 'golden-native-issues-review-v3.5'
+LIVE_STATUS = 'offline_claim_scope_adjudication'
+LIVE_BLOCK_REASON = 'native_claim_scope_qualification_required'
 strict_json = previous.strict_json
 build_inputs = previous.build_inputs
 request_data = partial(request_data, include_role_contrasts=True)
@@ -67,13 +67,12 @@ _rules.insert(6, '复合推断按每个指标分别核验：一个指标的证�
 # Move the existing accepted standard here, rather than adding a competing rule.
 _rules.remove(previous.FULL_CONTEXT_RULE)
 _rules.insert(1, previous.FULL_CONTEXT_RULE +
-    '先结合全文中同一指标、比较对象和期间的明确说明确定范围，再选来源组核算。'
-    '匹配的后文说明可以补足原句未写明的范围，出现先后不决定效力；'
-    '邻近另一指标的范围或“最自然的局部读法”不能压过全文对本指标的具体说明。'
-    '原句已明确的范围、数字、方向或归因若与来源冲突，仍须阻断，'
-    '不得用另一范围、通用免责声明或其他正确内容替作者改写原断言。'
-    '只有全文仍存在会改变结论的未解歧义或真实冲突才阻断，并在现有explanation说明具体依据；'
-    '可补写范围以改善阅读，不等于已有事实错误。')
+    '先从全文确定断言的对象、指标、比较组和量词，再核算。'
+    '观察窗口或总样本数不自动替换同句明确的子组；泛指均值不自动等于所有指标。'
+    '按实际主语、分母、量词和同指标前后文判断范围切换，不能只凭邻近词或数字。'
+    '具体后文可补足省略范围；明确的组别、数字、方向、全称或归因错误仍阻断，不能借其他正确内容开脱。'
+    '列问题前核对全文实际表达，不补造对象、分母或全称量词；只有全文已足以确定含义且与来源一致、无影响结论的未解歧义时，措辞优化才不列issue。'
+    '否则在现有explanation说明实际冲突或会改变结论的未解歧义；建议准确指向原段，不混淆block编号和章节号。')
 POLICY = '\n'.join(_rules).replace(
     'retained要求对应最终同一问题；replaced给修正后的final_issue编号；',
     'retained仅用于旧issue的全部字段和值原样不变（包括block和source_ids）；'

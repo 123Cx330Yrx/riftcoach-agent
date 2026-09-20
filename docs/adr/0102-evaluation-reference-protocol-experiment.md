@@ -1,5 +1,34 @@
 # ADR-0102: Source references and bounded evaluation correction
 
+## 2026-09-21 Attribution repaired in development; quantify actual claims
+
+V3.4 at 5aa20b4 / Actions35521189302 completed 11 real calls (160157 tokens,
+unknown usage 0). The original damage attribution was detected, revised and
+rechecked successfully; so was the explicit wrong mid-loss death number. Two
+positive reports passed. The fifth report failed manual acceptance because
+initial and final reviews invented a merged denominator and an all-metrics
+quantifier respectively. Preserve all results in
+`golden_native_scope_result_5aa20b4.json`; stop the paid batch. Missing-field
+recovery was not exercised; historical regression and product did not run.
+
+V3.5 replaces the existing scope supplement with claim subject/metric/cohort/
+quantifier adjudication, without adding a schema field or fixed call. Only
+whole-report meaning sufficiently determined and consistent with sources can
+pass; a merely possible supported reading does not discharge an ambiguity that
+changes the conclusion. Explicit groups, universal quantifiers, numeric and
+attribution errors remain blocking. This implements the accepted complete-
+context standard, rather than changing it. Prior-review omission alone cannot
+explain initial-review errors, so it does not justify an architectural change.
+
+Seven complete source-bound development controls, including explicit negatives
+and an unresolved/conditional pair, were independently reviewed. The existing
+runner reuses their committed-source loader; no live bypass was added. Offline
+replay preserves the actual failure, and full five-call witnesses remain within
+401920. Native/product gates remain offline. Coach1.4.5 / Skill0.6.0 /
+Program3.0.5 / wire3.1.0 bind the candidate. See the updated
+`2026-09-20-native-qualification-and-consumption.md` for exact real decisions,
+offline evidence, bounded qualification order and product/deferred work.
+
 ## 2026-09-19 Explicit replacement for changed issue fields
 
 V3.3 passed two positives and one negative revision/recheck but failed the next

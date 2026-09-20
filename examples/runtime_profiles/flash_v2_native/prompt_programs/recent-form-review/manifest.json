@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "program_id": "recent-form-review-coach",
-  "program_version": "3.0.4",
+  "program_version": "3.0.5",
   "skill_name": "recent-form-review",
   "skill_version": "0.6.0",
   "context_contract_id": "context-builder-v1",
@@ -42,7 +42,7 @@
     {
       "component_id": "app.evaluation.golden_native_issues_review",
       "source": "app/evaluation/golden_native_issues_review.py",
-      "sha256": "4ce7b96db124968fab7655b36d5d910606cd163e39561a6a27f2932409f0ba0e"
+      "sha256": "5f93aee6721930b2278abaf93ad07d968f7037a022bd35b66fd170dff5975cf1"
     },
     {
       "component_id": "app.evaluation.golden_semantic_review",
@@ -111,9 +111,9 @@
     },
     {
       "component_id": "coach_execution_contract",
-      "source": "app.runtime.native_coach_contract:v1.4.4",
-      "sha256": "506f56c5302948c2b9f1a7f05f4a590ba55beb7d62ea03923c4242a0af19af29"
+      "source": "app.runtime.native_coach_contract:v1.4.5",
+      "sha256": "b8f10b733ff8c32f3ce0389f24471c8b6dc38714d5ac0ecbac59e272980d4186"
     }
   ],
-  "program_sha256": "8b9ffc7a7705f51c6813a83c5a46c025a5bd4a07cd32e59dccf131405a1c55ed"
+  "program_sha256": "967add911348b0b09f8c21a6cd84fcd58d32ca81a9b81443b98ace64a2a9d7bb"
 }
