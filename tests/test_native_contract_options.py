@@ -70,7 +70,6 @@ def test_invalid_editor_outputs_stop_without_hidden_retry(damage):
     with pytest.raises(ValueError): flow.revise(revision(req, initial))
     assert len(provider.requests) == 2
 
-
 def test_real_positive_needs_no_editor_and_real_universal_negative_retains_revision():
     req, saved = actual_case(1)
     provider = OfflineResponses([saved['responses'][0]['content']])
