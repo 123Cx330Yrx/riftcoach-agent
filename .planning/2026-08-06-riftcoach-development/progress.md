@@ -1,3 +1,19 @@
+# 2026-09-21 Claim-scope batch and dual-failure correction
+
+2026-09-21，v3.5 的本批真实验证已停止。clean `0cdb1c7dd0b51d7b1f23b21b1bb4b092f159425b` / Actions `35550890557` 三项 success 后，四份完整 claim-scope 对照共 7 次完整返回，82303 输入 + 14627 输出 = 96930 tokens，未知用量 0，历史 Provider 至少 265。两正例分别 95/pass、97/pass；明确合并分母错稿完成 80/needs_revision → 实际修订 → 96/pass。第四例检出全称错误，但两次评估都把中单全组视野均值 33.75 写成胜局均值/中位数 33.5；尾文触发重评后，又修改问题字段却标 retained，严格验证在修订前停止。前三例独立人工接受，第四例为协议及语义双重失败，不算成功恢复。未跑剩余三份、核心旧负例回归、历史五例或产品。
+
+真实汇总 `data/evaluation/results/golden_native_claim_scope_result_0cdb1c7.json` 保留完整原报告、实际改稿、七份响应公开投影、原回执和 68 文件哈希；7 个实际请求已按原提交逐字段及传输哈希重建核对。原始回执不改，人工裁决单列，private reasoning 不进入汇总。原伤害归因与早死数值的历史真实修订成功仍有效，但不能转授新版本资格。
+
+v3.6 / Coach1.4.6 / Skill0.6.0 / Program3.0.6 / wire3.2.0 的离线改动有两项：重评仅用 replaced/withdrawn，每个旧问题仍须显式映射；旧 retained 逐字段验证仅显式历史回放可用，新请求与验证均拒绝 retained。计算证据改为按统计量命名的数组，win_mean/loss_mean 与 cohort_mean/cohort_median 分开；全部原值、成员、缺失、位置对比与引用编号无损，来源解析和哈希绑定同一投影。默认旧布局不变。这消除重评的复制选择分支并改善数值定位，不证明模型语义已经修复。
+
+反证已固化：只把真实 retained 改成 replaced，结构可通过但错误 33.5 仍在。四份同来源完整报告对照区分全组均值、胜局均值和中位数；分析者修正版能走完重评→修订→最终复评的五调用路径，仅为工程证明。160 项相关测试通过，Runtime 实际组装/manifest 已校验；聚合证据 `golden_native_v36_offline_qualification.json` 中 claim-scope/本次恢复/历史五例/原归因的五调用预约分别 380514/382552/400972/380036，均低于 401920；长历史重评输入 58972 < 63936。独立复核通过新旧合同边界、manifest、7请求、68文件哈希及数值反例；公共 CI 以 PR7 对应提交为准，不能用离线结果替代真实质量。
+
+唯一下一步：为新有界资格批核对准入与同SHA公共检查，本轮不再追加付费。下一次开发资格批先正确全文，再本次全称负例，优先核对评估自身数字/来源、问题映射和实际改文，随后补齐同版本范围/归因/历史五例；任一语义或执行失败停批。重新开放开发入口需同步 manifest 并再次取得该 SHA 公共检查；当前 native 为 offline_claim_scope_reassessment_contract，产品仍 offline。每报告 5 次/1 修订/401920 tokens/900 秒，GLM-5.3-flash/high、单次32768/300秒/输入63936、SDK retry0 均保持。
+
+Stage8E 仍 in_progress。完整同版本质量通过后才来源绑定产品生成/审查与 Evidence 读写，再实际事务/API/Workbench 消费、独立评估与学习覆盖。前端整体审美优化乃至重做、英雄头像、Coach/Review/Training/Evidence、按用户请求制定专属 Training 及62主题均沿用 restart plan，不用当前缺陷吞并后续范围。
+
+以下为历史记录，当前以最新 canonical 为准。
+
 # 2026-09-21 Real attribution repair and scope false-positive diagnosis
 
 5aa20b4 / Actions35521189302三项success后完成scope1/5/4/2/3实测：4份接受；原伤害归因和分组数值错误均实际修订复评通过；scope3目标错误检出但额外范围误报，人工拒绝停批。11次、160157tokens，未知0，累计Provider至少258。真实结果golden_native_scope_result_5aa20b4.json保留完整公开响应/原回执/实际报告；独立审读核对11请求及110文件hash。没有原五例重跑、产品实测或真实缺字段恢复证明。

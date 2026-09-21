@@ -210,7 +210,7 @@ def test_issue_only_execution_reuses_exact_ci_and_receipt_orchestration(control,
     monkeypatch.setattr(active, 'require_live_qualification', lambda: events.append('issue-only-qualification'))
     outcome = runner.run(control.args, candidate_module=active)
     assert outcome['automatic_path_pass'] and len(provider.requests) == 1
-    assert provider.requests[0].response_contract.version == '3.1.0'
+    assert provider.requests[0].response_contract.version == '3.2.0'
     assert events[:2] == ['issue-only-qualification', 'exact-ci']
     assert read_receipt(control)['experiment_id'] == active.EXPERIMENT_ID
 

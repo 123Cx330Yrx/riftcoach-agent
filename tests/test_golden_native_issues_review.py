@@ -78,7 +78,7 @@ def test_multiple_different_issues_on_same_block_are_preserved():
     assert len(payload.issues) == len(journal['selected_sources']) == 2
 
 
-@pytest.mark.parametrize('disposition', ['retained', 'replaced', 'withdrawn'])
+@pytest.mark.parametrize('disposition', ['replaced', 'withdrawn'])
 def test_first_findings_have_explicit_disposition_and_source_binding(disposition):
     inputs = candidate.build_inputs(evaluation_request())
     before = opinion(inputs, block=1)
@@ -93,9 +93,26 @@ def test_first_findings_have_explicit_disposition_and_source_binding(disposition
     _, _, journal = candidate.validate(compact(value), inputs, previous_raw=compact(before))
     assert journal['previous_issues'][0]['block'] == 1
     assert journal['previous_issues'][0]['issue'] == before['issues'][0]
-    if disposition == 'retained':
-        value['issues'][0]['block'] = 2
-        with pytest.raises(ValueError): candidate.validate(compact(value), inputs, previous_raw=compact(before))
+
+
+def test_new_request_and_validator_agree_on_two_state_resolution_and_legacy_is_explicit():
+    inputs = candidate.build_inputs(evaluation_request())
+    before = opinion(inputs, block=1)
+    value = deepcopy(before)
+    value['issue_resolutions'] = [dict(previous_id=1, disposition='retained', final_issue=1,
+        source_ids=[source_id(inputs)], explanation='历史合同逐字段保留。')]
+    request = candidate.request(inputs, previous_raw=compact(before))
+    schema = request.response_contract.schema_dict()
+    assert request.response_contract.version == '3.2.0'
+    assert schema['$defs']['IssueResolution']['properties']['disposition']['enum'] == ['replaced', 'withdrawn']
+    with pytest.raises(ValueError, match='disposition'):
+        candidate.validate(compact(value), inputs, previous_raw=compact(before))
+    _, _, journal = candidate.validate_legacy_v31(compact(value), inputs, previous_raw=compact(before))
+    assert journal['wire_version'] == '3.1.0' and journal['historical_replay_only']
+    # An unchanged finding has the same explicit current owner as an edited one.
+    value['issue_resolutions'][0]['disposition'] = 'replaced'
+    _, _, journal = candidate.validate(compact(value), inputs, previous_raw=compact(before))
+    assert journal['wire_version'] == '3.2.0' and not journal['historical_replay_only']
 
 
 def test_no_source_problem_is_explicit_and_does_not_fabricate_an_id():
@@ -271,7 +288,7 @@ def test_reassessment_cannot_erase_or_change_a_retained_legacy_finding():
     value['issue_resolutions'] = [dict(previous_id=1, disposition='retained', final_issue=1,
         source_ids=[source_id(inputs)], explanation='错误声称完全保留。')]
     with pytest.raises(ValueError, match='native_retained_issue_changed'):
-        candidate.validate(compact(value), inputs, previous_raw=compact(before))
+        candidate.validate_legacy_v31(compact(value), inputs, previous_raw=compact(before))
     value['issue_resolutions'][0]['disposition'] = 'replaced'
     _, _, journal = candidate.validate(compact(value), inputs, previous_raw=compact(before))
     assert journal['previous_issues'][0]['issue'] == old_issue

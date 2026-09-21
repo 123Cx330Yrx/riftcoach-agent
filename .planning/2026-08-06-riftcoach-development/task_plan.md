@@ -1,5 +1,9 @@
 # RiftCoach 持续开发计划
 
+2026-09-21：v3.5 四份真实对照前三份接受，第四份协议与语义双重失败，7次/96930tokens/未知0。v3.6 改两状态重评合同及无损统计序列，160项相关测试通过；仍须真实资格验证，当前本轮完成离线审查和公共CI，不再付费。
+
+以下为历史记录，当前以 canonical、Current Phase 和 Next Step 为准。
+
 2026-09-21：最新行动见下文Current Phase / Next Step与canonical。真实归因修订通过，但范围误报仍阻塞；v3.5离线修复及七份对照已完成，本轮不追加付费实验。后续与完整证据见2026-09-20资格验证计划。
 
 以下为历史记录，当前以最新canonical为准。
@@ -304,11 +308,9 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-21：5aa20b4/Actions35521189302后的5份完整实测中，4份经人工/独立审读接受；原伤害归因及错误早死数字已完成检出→修订→复评。第五份范围误报导致停批。11调用160157tokens、未知0，历史Provider至少258；原五例、真实缺字段恢复、产品未验证。证据golden_native_scope_result_5aa20b4.json保持原始成功/失败。
+2026-09-21：clean0cdb1c7/CI35550890557后，前三份完整对照人工/独立接受，第四份评估同时误写中单全组视野均值及retained映射，停在修订前。7请求/96930tokens，未知0，累计Provider至少265；7实际请求与68文件hash已核对。原始结果保持，不把协议通过当语义通过。
 
-v3.5/Coach1.4.5/Program3.0.5已离线区分观察窗口、比较分母与全称量词，保留会改变结论的未解歧义和明确错误阻断。七份完整对照独立审查通过、123相关测试通过、完整5调用预算通过，原失败回放仍失败；新scope suite复用原runner，执行仍offline。本轮不再付费；新语义未验证，不能进产品。
-
-下一步按docs/plans/2026-09-20-native-qualification-and-consumption.md完成同SHA公共检查及有界资格验证，再同版本历史回归、来源绑定产品/实际事务/API/Workbench。每报告5次/1修订/401920/900秒与GLM/high不变，失败停批。Stage8E、前端审美重做、头像、四块联动、专属Training和62主题持续保留。
+v3.6/Coach1.4.6/Program3.0.6/wire3.2.0离线实现两状态重评与无损统计序列；160项相关测试/实际组装通过，四类完整五调用预算均在401920内。反证表明仅改disposition仍保留错误33.5。当前native和product均offline，本轮不再付费；Stage8E仍in_progress。
 
 ## Phases
 
@@ -556,7 +558,9 @@ v3.5/Coach1.4.5/Program3.0.5已离线区分观察窗口、比较分母与全称�
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-本轮以v3.5离线修复、独立审查、提交推送和公共检查收束，不另开付费批。下一资格批按2026-09-20方案先完整范围对照及核心负例，原成功/失败和标签保持；恢复开发入口须同步manifest及该SHA公共三项。全部同版本质量回归通过才来源绑定产品实测和事务/API/Workbench；不改GLM/high、预算或用户标准，8E及全局后续保持。
+本次独立审查、最终证据与manifest已核对；提交和公共CI见PR7对应HEAD。本轮不再付费。下一步为新资格批核对开发准入与同SHA公共检查。下一开发资格批优先正确全文和本次全称负例，逐项查评估自身数字/来源及实际改稿，再补齐同版本范围/归因/历史五例；开发准入状态变化须再同步manifest与同SHA CI。任一失败停批，不原样重试。
+
+同版本质量齐全才来源绑定产品生成/审查/Evidence读写，随后实际原子事务/API/Workbench、独立评估与学习覆盖。每报告5次/1修订/401920/900秒和GLM/high保持。前端审美重做、英雄头像、Coach/Review/Training/Evidence、专属Training及62主题继续按restart plan跟踪。
 
 ## RQ-195 / 候选 runtime 接线架构评审（2026-09-01）
 

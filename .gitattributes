@@ -23,6 +23,7 @@
 /data/evaluation/datasets/golden_native_scope_resolution_controls_v1.json text eol=lf
 /data/evaluation/datasets/golden_native_claim_scope_controls_v1.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /data/evaluation/results/golden_native_scope_result_5aa20b4.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/golden_native_claim_scope_result_0cdb1c7.json text eol=lf
 
 # Keep the new report-contract budget proof byte-reproducible on Windows and CI.
 /data/evaluation/contracts/glm53_report_contract_development_budget_v1.json text eol=lf

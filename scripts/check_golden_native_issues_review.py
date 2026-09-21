@@ -60,7 +60,7 @@ def audit():
         return [dict(phase=r.metadata['review_phase'], input_ceiling=size(r), output_reservation=r.max_tokens) for r in issued]
     normal = path([compact(values[1]), requests[0].report, compact(values[0])])
     first = deepcopy(values[1]); first['score'] = '70'
-    fixed = deepcopy(values[1]); fixed['issue_resolutions'] = [dict(previous_id=1, disposition='retained', final_issue=1,
+    fixed = deepcopy(values[1]); fixed['issue_resolutions'] = [dict(previous_id=1, disposition='replaced', final_issue=1,
         source_ids=first['issues'][0]['source_ids'], explanation='脚本原样保留同一问题，不是语义质量证明。')]
     five = path([compact(first), compact(fixed), requests[0].report, compact(values[0])+'\nUnstructured ending', compact(values[0])])
 

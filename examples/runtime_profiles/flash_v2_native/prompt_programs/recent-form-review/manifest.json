@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
   "program_id": "recent-form-review-coach",
-  "program_version": "3.0.5",
+  "program_version": "3.0.6",
   "skill_name": "recent-form-review",
   "skill_version": "0.6.0",
   "context_contract_id": "context-builder-v1",
   "context_contract_version": "1.0.0",
   "evaluation_contract_id": "coach_evaluation",
-  "evaluation_contract_version": "3.1.0",
+  "evaluation_contract_version": "3.2.0",
   "component_fingerprints": [
     {
       "component_id": "skill_manifest",
@@ -32,7 +32,7 @@
     {
       "component_id": "evaluation_schema",
       "source": "evaluation_schema",
-      "sha256": "c7a921c319db6e3b099d118693c992484598dd3c972324e454d50ad6ed553470"
+      "sha256": "e6094add6b65905133ac5155296b84bbf1e5d7e6e2cf9b1fbc17e944577ffbd9"
     },
     {
       "component_id": "generation_policy",
@@ -42,7 +42,7 @@
     {
       "component_id": "app.evaluation.golden_native_issues_review",
       "source": "app/evaluation/golden_native_issues_review.py",
-      "sha256": "5824370a3dd78f24721b5a9a20a02bc510a28b6d2c02bb4568b07c1234237b71"
+      "sha256": "eba4011893014073fb24686c5415b9d09985c912377118854c0a0df41a9a1bbd"
     },
     {
       "component_id": "app.evaluation.golden_semantic_review",
@@ -52,7 +52,7 @@
     {
       "component_id": "app.evaluation.golden_semantic_sources",
       "source": "app/evaluation/golden_semantic_sources.py",
-      "sha256": "bc334ef5ec28678ad248b581632b27bdd079dfbe5c33ec4950b2cd218c4ce2be"
+      "sha256": "78462ff5032778b78809961c259414b8183efd681c7367b78951e7518adb5cce"
     },
     {
       "component_id": "app.evaluation.golden_contextual_sources",
@@ -111,9 +111,9 @@
     },
     {
       "component_id": "coach_execution_contract",
-      "source": "app.runtime.native_coach_contract:v1.4.5",
-      "sha256": "b8f10b733ff8c32f3ce0389f24471c8b6dc38714d5ac0ecbac59e272980d4186"
+      "source": "app.runtime.native_coach_contract:v1.4.6",
+      "sha256": "94fa4ed248628f0801ff83a999a6c14e54464b838ed11e453f718c448502ef0d"
     }
   ],
-  "program_sha256": "c6bb77562e01686183f56274e441768e3d3d2fad56a5a6d1481d0a12584a3478"
+  "program_sha256": "3d0a9420ab6e7ea46df0f27dda6674094813a1c0d6e4d49742e57c34a9ede257"
 }

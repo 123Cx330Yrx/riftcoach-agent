@@ -61,7 +61,7 @@ def test_adding_field_is_not_exact_retention_but_explicit_replacement_is_reachab
     fixed = json.loads(saved['recheck_raw'])
     fixed['issues'][0]['block'] = 14  # Analyst-authored witness, never an output parser.
     with pytest.raises(ValueError, match='native_retained_issue_changed'):
-        native.validate(compact(fixed), inputs, previous_raw=saved['initial_raw'])
+        native.validate_legacy_v31(compact(fixed), inputs, previous_raw=saved['initial_raw'])
     fixed['issue_resolutions'][0]['disposition'] = 'replaced'
     result, _, journal = native.validate(compact(fixed), inputs, previous_raw=saved['initial_raw'])
     assert result.verdict == 'needs_revision'

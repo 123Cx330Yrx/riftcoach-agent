@@ -1,5 +1,40 @@
 # ADR-0102: Source references and bounded evaluation correction
 
+## 2026-09-21 Dual failure: simplify reassessment and separate statistics
+
+V3.5 at 0cdb1c7 / CI35550890557 made 7 complete calls, 96930 tokens, no unknown
+usage. Two positive full reports and one actual merged-CS correction were
+accepted. The universal-metrics negative exposed both an execution failure
+(edited finding labelled retained) and a false all-mid vision mean in both
+reviews (33.5 instead of 33.75). Original requests, responses, revisions,
+receipts and 68 hashes are preserved; all seven requests were reconstructed.
+The paid batch stopped. No product or remaining regression followed.
+
+Decision: wire3.2.0 removes retained from new requests and validation. A current
+issue replaces its old counterpart whether edited or unchanged; withdrawal
+still requires a complete old-issue inventory, no target, explanation and
+source references. Legacy3.1 exact retention remains explicit replay only.
+This removes an unnecessary copy/change decision while preserving accountability;
+it does not coerce a failed raw response into success or add another call.
+
+Separately, native computed evidence opts into lossless statistic arrays with
+distinct cohort_mean/cohort_median and win_mean/loss_mean names. Full objects per
+metric were rejected for their input cost; default row callers stay compatible.
+All values, missing/member data and role contrasts are preserved, with request
+and selected evidence bound to the same new catalog hash. This is an input
+usability hypothesis, not a proven semantic fix. The source was already correct.
+
+Nativev3.6 / Coach1.4.6 / Program3.0.6 bind wire3.2.0; Skill0.6.0 unchanged.
+160 affected tests and actual composition passed. Full five-call offline
+reservations are 380514/382552/400972/380036 below 401920. The disposition-only
+counterexample still passes protocol with the wrong mean; analyst-authored
+corrected recovery and complete numeric controls cannot establish live quality.
+Native/product remain offline, this turn has no further paid calls, and Stage8E
+does not advance. See the 2026-09-20 qualification plan for exact next order,
+quality checks, integration path and deferred frontend/product requirements.
+
+以下为历史记录，当前裁决以上述内容及 canonical 为准。
+
 ## 2026-09-21 Attribution repaired in development; quantify actual claims
 
 V3.4 at 5aa20b4 / Actions35521189302 completed 11 real calls (160157 tokens,

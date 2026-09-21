@@ -19,13 +19,13 @@ from app.evaluation.golden_review_experiment import compact, digest
 from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.providers.structured import contract_for_model
 
-EXPERIMENT_ID = 'golden-native-issues-review-v3.5'
-LIVE_STATUS = 'bounded_development_after_exact_ci'
-LIVE_BLOCK_REASON = 'native_claim_scope_qualification_required'
+EXPERIMENT_ID = 'golden-native-issues-review-v3.6'
+LIVE_STATUS = 'offline_claim_scope_reassessment_contract'
+LIVE_BLOCK_REASON = 'native_claim_scope_reassessment_qualification_required'
 strict_json = previous.strict_json
 build_inputs = previous.build_inputs
-request_data = partial(request_data, include_role_contrasts=True)
-resolve_refs = partial(resolve_refs, include_role_contrasts=True)
+request_data = partial(request_data, include_role_contrasts=True, computed_layout='statistic_series')
+resolve_refs = partial(resolve_refs, include_role_contrasts=True, computed_layout='statistic_series')
 
 
 def require_live_qualification():
@@ -37,11 +37,21 @@ class Problem(previous.Problem):
     block: int = Field(ge=1, le=64)
 
 
-class NativeIssuesReview(previous.UntitledSchema, previous.Strict):
+class LegacyIssuesReviewV31(previous.UntitledSchema, previous.Strict):
     score: int = Field(ge=0, le=100)
     verdict: Literal['pass', 'needs_revision', 'fail']
     issues: list[Problem] = Field(max_length=512)
     issue_resolutions: list[previous.IssueResolution] = Field(max_length=512)
+
+
+class IssueResolution(previous.IssueResolution):
+    # A fresh full review owns every current issue, including unchanged ones.
+    # Retained's exact-copy branch is reserved for explicit historical replay.
+    disposition: Literal['replaced', 'withdrawn']
+
+
+class NativeIssuesReview(LegacyIssuesReviewV31):
+    issue_resolutions: list[IssueResolution] = Field(max_length=512)
 
 
 # Keep all domain rules; replace only the extra narrative-output obligation.
@@ -56,6 +66,9 @@ _rules[2] = ('检查source_index.blocks中的全文，包括标题中的断言�
     '状态摘要由程序根据verdict和问题数量生成，不输出summary、passed_checks或其他重复事实的字段。'
     '这不缩减审查范围；正确否定/条件建议不是作者赞同被否定的结论。')
 _rules[3] = _rules[3].replace('问题按reviews顺序及段内顺序编号1起。', '问题按issues顺序编号1起。')
+_rules[5] = _rules[5].replace(
+    'rows按columns、metric_index按metrics一基编号读取。win_mean/loss_mean比较胜负，mean/median为全组；',
+    '各统计量数组按metrics顺序读取：win_mean/loss_mean为胜/败局均值，cohort_mean/cohort_median为全组均值/中位数；')
 _rules.insert(6, '复合推断按每个指标分别核验：一个指标的证据不能支持同句另一个指标。'
     '声称差异主要来自某组、混合样本被某组拉低或某组解释了差异时，核对实际指标、方向和量级，'
     '区分该组有影响与足以解释主要差距；正确数字和不推断能力的免责声明不能抵消错误归因。'
@@ -75,9 +88,8 @@ _rules.insert(1, previous.FULL_CONTEXT_RULE +
     '否则在现有explanation说明实际冲突或会改变结论的未解歧义；建议准确指向原段，不混淆block编号和章节号。')
 POLICY = '\n'.join(_rules).replace(
     'retained要求对应最终同一问题；replaced给修正后的final_issue编号；',
-    'retained仅用于旧issue的全部字段和值原样不变（包括block和source_ids）；'
-    '任何补字段、改值或改说明，即使仍是同一业务问题，也必须用replaced并给修正后的final_issue编号；'
-    '修正须体现在最终issues对象的实际字段中，只在explanation声称已经修正不算修复；')
+    '只用replaced或withdrawn；replaced给当前完整issues中的final_issue编号，即使问题内容未变；'
+    '所有修正写入实际字段，不能只在explanation声称已修复；')
 
 
 def prior_issues(value):
@@ -94,7 +106,7 @@ def request(inputs, *, previous_raw=None, diagnostics=None, accepted=None):
         raise ValueError('native_report_block_capacity')
     data = request_data(inputs)
     phase, policy = 'native_business_review', POLICY
-    contract = contract_for_model(name='native_business_review', version='3.1.0', output_model=NativeIssuesReview)
+    contract = contract_for_model(name='native_business_review', version='3.2.0', output_model=NativeIssuesReview)
     if previous_raw is not None:
         value, suffix = previous.provisional_review(previous_raw)
         if previous.security_terminal(value):
@@ -127,11 +139,21 @@ def request(inputs, *, previous_raw=None, diagnostics=None, accepted=None):
 
 
 def validate(raw, inputs, *, previous_raw=None):
+    return _validate(raw, inputs, previous_raw=previous_raw, legacy_v31=False)
+
+
+def validate_legacy_v31(raw, inputs, *, previous_raw=None):
+    """Replay the former wire contract; never registered in a live workflow."""
+    return _validate(raw, inputs, previous_raw=previous_raw, legacy_v31=True)
+
+
+def _validate(raw, inputs, *, previous_raw, legacy_v31):
     before = previous.provisional_review(previous_raw)[0] if previous_raw is not None else None
     value = previous._decoded(raw)
     if previous.security_terminal(value) or previous.security_terminal(before):
         raise ValueError('native_security_terminal')
-    wire = NativeIssuesReview.model_validate(value, strict=True)
+    model = LegacyIssuesReviewV31 if legacy_v31 else NativeIssuesReview
+    wire = model.model_validate(value, strict=True)
     issues, sources = [], []
     for number, issue in enumerate(wire.issues, 1):
         if issue.block > len(inputs.source.blocks):
@@ -173,7 +195,8 @@ def validate(raw, inputs, *, previous_raw=None):
             raise ValueError('native_unknown_knowledge_citation_unreported')
         if available and not cited:
             raise ValueError('native_missing_knowledge_citation_unreported')
-    journal = dict(experiment=EXPERIMENT_ID, raw=raw, raw_sha256=digest(raw), previous_raw=previous_raw,
+    journal = dict(experiment=EXPERIMENT_ID, wire_version='3.1.0' if legacy_v31 else '3.2.0',
+        historical_replay_only=legacy_v31, raw=raw, raw_sha256=digest(raw), previous_raw=previous_raw,
         previous_issues=old_issues, resolutions=[r.model_dump() for r in wire.issue_resolutions],
         input_sha256=digest(inputs.data_json), report_sha256=digest(inputs.source.report),
         selected_sources=sources, parsed_review=wire.model_dump(mode='json'),

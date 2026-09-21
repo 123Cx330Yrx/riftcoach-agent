@@ -62,10 +62,10 @@ def test_native_application_roundtrips_report_receipt_and_distinct_contract(tmp_
         trace = RuntimeTraceStore(tmp_path/'runs',run_id).read_trace(result.trace_reference)
         receipt = FileRunReceiptStore(tmp_path/'runs').read_receipt(run_id)
         assert trace.identity.coach_contract == trace.policy.coach_contract == NATIVE_COACH_CONTRACT.snapshot()
-        assert trace.identity.skill_version == '0.6.0' and trace.identity.prompt_profile_version == '3.0.5'
+        assert trace.identity.skill_version == '0.6.0' and trace.identity.prompt_profile_version == '3.0.6'
         assert receipt.trace_reference == result.trace_reference and receipt.report_available
         assert len(factory.providers[run_id].requests) == 3
-        assert factory.providers[run_id].requests[-1].response_contract.version == '3.1.0'
+        assert factory.providers[run_id].requests[-1].response_contract.version == '3.2.0'
         report = next(row for row in trace.artifacts if row.kind == 'final_report')
         content = (tmp_path/'runs'/run_id/report.relative_path).read_bytes()
         assert hashlib.sha256(content).hexdigest() == report.sha256

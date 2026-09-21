@@ -108,7 +108,7 @@ def inspect():
         replies = [compact(first), requests[1].report, compact(correct)]
         if recovery:
             malformed = dict(first, score='70')
-            first['issue_resolutions'] = [dict(previous_id=1, disposition='retained', final_issue=1,
+            first['issue_resolutions'] = [dict(previous_id=1, disposition='replaced', final_issue=1,
                 source_ids=first['issues'][0]['source_ids'], explanation='离线保留原问题见证。')]
             replies = [compact(malformed), compact(first), requests[1].report,
                        compact(correct)+'\nUnstructured ending', compact(correct)]

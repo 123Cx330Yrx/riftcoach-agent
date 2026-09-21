@@ -1,5 +1,124 @@
 # Native qualification, claim scope diagnosis and product consumption
 
+## Current result and v3.6 offline design — 2026-09-21
+
+V3.5 ran after clean `0cdb1c7dd0b51d7b1f23b21b1bb4b092f159425b` passed all
+three public jobs in Actions `35550890557`.
+
+| Full-report case | Observed result | Independent decision | Calls | Tokens |
+|---|---|---|---:|---:|
+| original topic window | 95/pass | Accept | 1 | 13458 |
+| actual revised topic | 97/pass | Accept | 1 | 13948 |
+| explicit combined population | 80/needs_revision → actual revision → 96/pass | Accept | 3 | 39967 |
+| explicit universal metrics | Correct target detection, wrong all-mid vision mean in both reviews; changed issue labelled retained | Reject: semantic and protocol | 2 | 29557 |
+
+Total: 7 completed calls, 82303 input + 14627 output = 96930 tokens; unknown
+usage 0; historical Provider calls at least 265. The batch stopped at case 4,
+before revision. Cases 5–7, original negatives, historical five and product
+did not run. This attempted trailing-text recovery **failed**.
+
+`golden_native_claim_scope_result_0cdb1c7.json` is an analyst summary, with full
+reports/revision, public response fields, original receipts and 68 immutable
+file hashes. All seven issued requests were reconstructed from the original
+implementation, including the budget wrapper metadata and transport hashes.
+Original automated receipts still say manual acceptance is false; independent
+manual findings are separate, not edits to those receipts.
+
+### End-to-end diagnosis
+
+The four middle vision values are 40/43/25/27: all-mid mean **33.75**, winning
+mean **33.5**, losing mean **34**, median **33.5**. Source 16 explicitly identifies
+the winning group. Sources 1/20 also permit `(45*5-90)/4=33.75`; the source data
+was present and correct. Computed source 31 contains the full calculation and
+early-death operands (middle 1.5, support 7, selected 2.6). The selected roots
+1/16/20 do not fully support those early-death operands. This is not missing
+input, truncation or an output-limit failure, and no internal model cause is
+claimed from its text.
+
+The execution contract separately asked for a complete new review while
+offering exact-copy retained versus replaced. Two real recoveries have now
+failed around that distinction. Repeating the same rule more forcefully was
+insufficient; the first uncommitted attempt also exceeded the offline budget.
+That wording-only attempt was discarded, not promoted as a repair.
+
+### Implemented change and rejected alternatives
+
+V3.6 / Coach1.4.6 / Skill0.6.0 / Program3.0.6 / wire3.2.0:
+
+- New review schema and validator allow only `replaced` or `withdrawn` for old
+  findings. Replaced points to the current complete issue even when unchanged;
+  withdrawn has no target and requires explanation and real source references.
+  Every original finding is accounted for; full raw text and suffix survive.
+  No automatic relabelling, field filling or extra call is introduced. Strict
+  retained validation remains only in the explicitly named legacy wire replay.
+- Native computed evidence is transposed to named statistic arrays in metric
+  order: `win_mean`, `loss_mean`, `cohort_mean`, `cohort_median`, `all_pairs`,
+  `missing_refs`. Original values, membership, completeness and role contrasts
+  reconstruct exactly. Request and resolved source hash the same projection;
+  original input identity and reference numbering stay stable. Default old
+  callers keep their original layout. This reduces cross-column lookup; it is
+  not proof that layout caused or fixed the observed model mistake.
+- Avoid full objects per metric: an offline prototype added about 4352 input
+  units per request. The chosen transpose is smaller. No model/effort/budget,
+  whole-context acceptance standard, default production policy or architecture
+  is changed; no ShowMaker answer is encoded in runtime validation.
+
+### Verification and its limits
+
+`scripts/check_native_claim_scope.py --reassessment` reproduces a decisive
+counterexample: changing only the second real response's disposition makes the
+wire valid while leaving its false 33.5 claim. It also reconstructs the mean
+from original rows, checks delivered/selected evidence, produces four complete
+statistic-binding controls, and runs an explicitly analyst-authored corrected
+review → report revision → full recheck witness. These controls and witness are
+offline engineering evidence, not model judgments or added live successes.
+
+160 affected local tests passed, including source reconstruction/hash binding,
+missing-field and trailing-text recovery, native application, runner and Prompt
+Program checks. Runtime composition verifies the regenerated manifest. Aggregate
+evidence is `golden_native_v36_offline_qualification.json`:
+
+| Scripted five-call path | Full output reservation |
+|---|---:|
+| seven claim-scope controls | 380514 |
+| preserved failure plus analyst-corrected recovery | 382552 |
+| historical five controls | 400972 |
+| original attribution pair | 380036 |
+
+All are below 401920; every measured input is below 63936, including the long
+historical reassessment at 58972. Actual usage plus next reservation remains
+authoritative: these are not guarantees for arbitrary response lengths.
+
+### Next executable action and product path
+
+Independent review accepted the new wire, manifest, original-request audit and
+numeric counterexamples. Commit and exact-SHA public CI are recorded on PR7.
+**No additional paid request in this turn.** Native remains
+`offline_claim_scope_reassessment_contract`; product remains offline. A later
+development-admission change must refresh the manifest and obtain its own
+exact-SHA public checks before any paid request, under existing authorization.
+
+Next bounded qualification order: claim-scope 1 → 4 (this failure) → 3;
+then original scope 5/4/3; then remaining claim-scope 2/5/6/7 and the historical
+five. All original sources, complete reports and labels stay frozen. Read each
+entire review and actual revision before continuing, including every numeric
+statement and selected source in the review itself. A schema-valid response with
+33.5 as the all-mid mean is still a failure. Stop on the first semantic or
+execution failure. Do not force malformed output merely to exercise recovery;
+if no live recovery occurs, that qualification limit remains explicit. The four
+new statistic-binding full reports are available as focused offline regression
+evidence, not silently counted as live tests or automatically required extra calls.
+
+After same-version quality qualification: source-bound product generation →
+review/necessary revision → immutable Evidence save/read; then real task lease
+and atomic-commit integration, API and Workbench consumption, independent
+evaluation and learning coverage. GLM/high and the 5-call/1-revision/401920-token/
+900-second envelope are unchanged. Stage8E remains in progress. Frontend redesign,
+champion portraits, Coach/Review/Training/Evidence links, requested personal
+Training and the full 62-theme list remain in the Astra restart plan.
+
+## Historical records — current action is above
+
 ## Latest result: 2026-09-21
 
 The paid batch is closed. Clean implementation

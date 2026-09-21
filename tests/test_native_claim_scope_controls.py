@@ -1,6 +1,8 @@
 """Reproducible real-failure replay, provenance checks and bounded offline witness."""
 import json
 from types import SimpleNamespace
+import hashlib
+from pathlib import Path
 
 import pytest
 
@@ -17,6 +19,46 @@ def test_committed_sources_replay_failure_and_bounded_workflow_without_live_runs
     assert result['full_output_reservation'] <= result['total_budget']
     assert result['provider_calls'] == 0
     assert not result['semantic_approval'] and not result['production_admitted']
+
+
+def test_numeric_failure_survives_disposition_fix_and_explicit_corrected_path_is_bounded():
+    result = controls.audit_reassessment()
+    assert result['disposition_only_counterexample'] == dict(protocol_valid=True, numeric_statement_correct=False)
+    assert result['vision_from_original_rows']['cohort_mean'] == '33.75'
+    assert result['vision_from_original_rows']['win_mean'] == result['vision_from_original_rows']['cohort_median'] == '33.5'
+    assert [c['expected_report'] for c in result['full_report_controls']] == ['accept', 'reject', 'reject', 'reject']
+    assert len(result['scripted_five_call_path']) == 5
+    assert result['full_output_reservation'] <= 401920
+    assert not result['semantic_fix_proven'] and result['provider_calls'] == 0
+
+
+def test_real_universal_case_reassessment_failure_is_preserved_as_contract_failure():
+    from app.evaluation import golden_native_issues_review as native
+    from app.evaluation.golden_integrated_runtime import Exchange
+    from app.evaluation.golden_stream_bridge import CAPACITY_TRANSPORT_ID, validate_request
+    from app.providers.models import ChatResponse, TokenUsage
+
+    data, requests, _ = controls.load_controls()
+    fixture = json.loads(Path('tests/fixtures/native_claim_scope_retained_changed.json').read_text(encoding='utf-8'))
+    assert fixture['case_id'] == data['cases'][3]['id']
+    issued = []
+
+    def send(request):
+        issued.append(request)
+        saved = fixture['responses'][len(issued) - 1]
+        return Exchange(request, ChatResponse(content=saved['content'], provider='zhipu',
+            model='glm-5.3-flash', finish_reason=saved['finish_reason'],
+            usage=TokenUsage(**saved['usage'])),
+            hashlib.sha256(validate_request(request, transport_id=CAPACITY_TRANSPORT_ID)).hexdigest())
+
+    flow = native.NativeBusinessReviewWorkflow(send)
+    with pytest.raises(ValueError, match='disposition'):
+        flow.evaluate(requests[3])
+    assert len(issued) == 2 and flow.calls == 2 and flow.revisions == 0
+    assert flow.last_feedback['errors'][0]['loc'] == ('issue_resolutions', 0, 'disposition')
+    with pytest.raises(ValueError, match='native_retained_issue_changed'):
+        native.validate_legacy_v31(fixture['responses'][1]['content'], native.build_inputs(requests[3]),
+            previous_raw=fixture['responses'][0]['content'])
 
 
 @pytest.mark.parametrize('mutation, error', [
@@ -61,8 +103,7 @@ def test_claim_scope_preview_and_execution_gate_precede_external_io(monkeypatch)
         issues=[dict(quote=negative['targets'][0], category='fact_error')])
     assert runner.score_case(negative, result)['target_location_flagged']
     args.execute = True
-    # The real candidate is now opened for exact-CI bounded development;
-    # explicitly simulate the earlier offline state to test the gate itself.
+    # Admission is stateful; explicitly test the offline gate independently.
     monkeypatch.setattr(native, 'LIVE_STATUS', 'offline_claim_scope_adjudication')
     monkeypatch.setattr(runner, 'prepare_claim_scope', forbidden)
     with pytest.raises(ValueError, match=native.LIVE_BLOCK_REASON):
