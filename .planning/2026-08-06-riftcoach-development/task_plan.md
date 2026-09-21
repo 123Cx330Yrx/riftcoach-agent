@@ -1,5 +1,9 @@
 # RiftCoach 持续开发计划
 
+2026-09-21续推：b600fe2 / Actions35554367583公共三项success及独立审查已核实。v3.6仅开放bounded_development_after_exact_ci，状态修改后已同步manifest，仍须本次新提交三项全绿才执行。顺序claim-scope1→4→3，随后scope5/4/3、claim-scope2/5/6/7、历史五例；逐例完整人工审读，任一协议/语义失败停批。此前“本轮不再付费”属于上一轮，当前继续沿用既有授权和原预算；产品仍offline，8E不变。
+
+以下为历史记录，当前以最新canonical为准。
+
 2026-09-21：v3.5 四份真实对照前三份接受，第四份协议与语义双重失败，7次/96930tokens/未知0。v3.6 改两状态重评合同及无损统计序列，161项相关测试通过；仍须真实资格验证，本轮目标为完成离线审查和公共CI，不再付费。
 
 以下为历史记录，当前以 canonical、Current Phase 和 Next Step 为准。
@@ -308,9 +312,9 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-21：clean0cdb1c7/CI35550890557后，前三份完整对照人工/独立接受，第四份评估同时误写中单全组视野均值及retained映射，停在修订前。7请求/96930tokens，未知0，累计Provider至少265；7实际请求与68文件hash已核对。原始结果保持，不把协议通过当语义通过。
+2026-09-21续推：b600fe2 / Actions35554367583公共三项success及独立审查已核实。v3.6仅开放bounded_development_after_exact_ci，状态修改后已同步manifest，仍须本次新提交三项全绿才执行。顺序claim-scope1→4→3，随后scope5/4/3、claim-scope2/5/6/7、历史五例；逐例完整人工审读，任一协议/语义失败停批。此前“本轮不再付费”属于上一轮，当前继续沿用既有授权和原预算；产品仍offline，8E不变。
 
-v3.6/Coach1.4.6/Program3.0.6/wire3.2.0离线实现两状态重评与无损统计序列；161项相关测试/实际组装通过，四类完整五调用预算均在401920内。反证表明仅改disposition仍保留错误33.5。当前native和product均offline，本轮不再付费；Stage8E仍in_progress。
+完整同版本资格后才推进来源绑定产品、Evidence/事务/API/Workbench；前端审美/头像/四块联动/专属Training与62主题保持。
 
 ## Phases
 
@@ -558,9 +562,9 @@ v3.6/Coach1.4.6/Program3.0.6/wire3.2.0离线实现两状态重评与无损统计
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-本次独立审查、最终证据与manifest已核对；提交和公共CI见PR7对应HEAD。本轮不再付费。下一步为新资格批核对开发准入与同SHA公共检查。下一开发资格批优先正确全文和本次全称负例，逐项查评估自身数字/来源及实际改稿，再补齐同版本范围/归因/历史五例；开发准入状态变化须再同步manifest与同SHA CI。任一失败停批，不原样重试。
+2026-09-21续推：b600fe2 / Actions35554367583公共三项success及独立审查已核实。v3.6仅开放bounded_development_after_exact_ci，状态修改后已同步manifest，仍须本次新提交三项全绿才执行。顺序claim-scope1→4→3，随后scope5/4/3、claim-scope2/5/6/7、历史五例；逐例完整人工审读，任一协议/语义失败停批。此前“本轮不再付费”属于上一轮，当前继续沿用既有授权和原预算；产品仍offline，8E不变。
 
-同版本质量齐全才来源绑定产品生成/审查/Evidence读写，随后实际原子事务/API/Workbench、独立评估与学习覆盖。每报告5次/1修订/401920/900秒和GLM/high保持。前端审美重做、英雄头像、Coach/Review/Training/Evidence、专属Training及62主题继续按restart plan跟踪。
+完整同版本资格后才推进来源绑定产品、Evidence/事务/API/Workbench；前端审美/头像/四块联动/专属Training与62主题保持。
 
 ## RQ-195 / 候选 runtime 接线架构评审（2026-09-01）
 

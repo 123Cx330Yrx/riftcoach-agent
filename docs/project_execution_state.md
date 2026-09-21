@@ -13,6 +13,10 @@ pause_reason: ""
 
 ## 状态元数据
 
+2026-09-21续推：b600fe2 / Actions35554367583公共三项success及独立审查已核实。v3.6仅开放bounded_development_after_exact_ci，状态修改后已同步manifest，仍须本次新提交三项全绿才执行。顺序claim-scope1→4→3，随后scope5/4/3、claim-scope2/5/6/7、历史五例；逐例完整人工审读，任一协议/语义失败停批。此前“本轮不再付费”属于上一轮，当前继续沿用既有授权和原预算；产品仍offline，8E不变。
+
+以下为历史记录，当前以最新canonical为准。
+
 2026-09-21，v3.5 的本批真实验证已停止。clean `0cdb1c7dd0b51d7b1f23b21b1bb4b092f159425b` / Actions `35550890557` 三项 success 后，四份完整 claim-scope 对照共 7 次完整返回，82303 输入 + 14627 输出 = 96930 tokens，未知用量 0，历史 Provider 至少 265。两正例分别 95/pass、97/pass；明确合并分母错稿完成 80/needs_revision → 实际修订 → 96/pass。第四例检出全称错误，但两次评估都把中单全组视野均值 33.75 写成胜局均值/中位数 33.5；尾文触发重评后，又修改问题字段却标 retained，严格验证在修订前停止。前三例独立人工接受，第四例为协议及语义双重失败，不算成功恢复。未跑剩余三份、核心旧负例回归、历史五例或产品。
 
 真实汇总 `data/evaluation/results/golden_native_claim_scope_result_0cdb1c7.json` 保留完整原报告、实际改稿、七份响应公开投影、原回执和 68 文件哈希；7 个实际请求已按原提交逐字段及传输哈希重建核对。原始回执不改，人工裁决单列，private reasoning 不进入汇总。原伤害归因与早死数值的历史真实修订成功仍有效，但不能转授新版本资格。

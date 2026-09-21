@@ -1,5 +1,9 @@
 # Native qualification, claim scope diagnosis and product consumption
 
+2026-09-21续推：b600fe2 / Actions35554367583公共三项success及独立审查已核实。v3.6仅开放bounded_development_after_exact_ci，状态修改后已同步manifest，仍须本次新提交三项全绿才执行。顺序claim-scope1→4→3，随后scope5/4/3、claim-scope2/5/6/7、历史五例；逐例完整人工审读，任一协议/语义失败停批。此前“本轮不再付费”属于上一轮，当前继续沿用既有授权和原预算；产品仍offline，8E不变。
+
+以下为历史记录，当前以最新canonical为准。
+
 ## Current result and v3.6 offline design — 2026-09-21
 
 V3.5 ran after clean `0cdb1c7dd0b51d7b1f23b21b1bb4b092f159425b` passed all
