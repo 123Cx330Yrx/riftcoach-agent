@@ -24,7 +24,7 @@ from scripts.run_native_editor_pair import ROOT, read, sha
 
 EXPERIMENT = 'native-blind-edit-settlement-diagnostic-v1'
 PLAN = ROOT/'data/evaluation/results/golden_blind_edit_diagnostic_plan_v1.json'
-LIVE_STATUS = 'bounded_frozen_diagnostic_after_exact_ci'
+LIVE_STATUS = 'offline_final_review_false_positive'
 
 
 def prepare():

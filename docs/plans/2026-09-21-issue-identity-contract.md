@@ -1,5 +1,68 @@
 # Issue meaning, independent editing and two-state review
 
+## 2026-09-22 observed outcome: editor accepted, two-state final rejected
+
+Implementation6c22e93 / Actions35623066673 passed all three public jobs before
+one two-call diagnostic. Both transport calls ended complete/stop:25569 input,
+10442 output,36011 total tokens,197.732 seconds, unknown usage0. Historical
+Provider requests are at least277. No second paid batch was run.
+
+The actual editor fixed the combined-five-game CS claim and preserved the old
+block4 and all other substantive content. Removing the retrieval preamble loses
+no fact/knowledge list. Primary and independent full-source reviews accept this
+specific edit. The final reviewer correctly confirms/corrects issue1, but again
+confirms/persists the false generic-to-universal allegation as issue2. Accurate
+counter-metric numbers do not establish an original universal quantifier.
+
+The final also omits block/suggested_correction. Analyst-only field completion
+exposes a second failure: original findings were mapped in issue_resolutions,
+which belongs to recovery of the current final review, not the original report.
+Clearing that misplaced mapping in memory makes the structure valid while the
+same semantic false positive remains. No actual response was modified.
+Selected sources support the arithmetic; explicitly cited role_contrasts source31
+was not selected, a citation precision limit rather than invented values.
+
+Decision: withdraw this two-state candidate; close its live gate. Independent
+editing is a successful single-case observation, not first-reviewer repair or
+product qualification. The effect is consistent with old-opinion anchoring, but
+the result does not isolate a causal mechanism.
+
+Evidence: golden_blind_edit_result_6c22e93.json, its separate adjudication, and
+ golden_blind_edit_failure_audit_6c22e93.json. Export reconstructs both actual
+requests, all public responses/reports, receipt hashes and usage. Private raw
+files, if present, are hashed only.19 focused tests verify export tamper rejection,
+original failed output preservation, fresh/stale receipt accounting and closure.
+The exporter also rejects internally contradictory call/token totals even after
+a new adjudication binding; the actual recorded2calls/36011tokens was correct.
+
+## Next action and decision boundary
+
+Prepare one ordinary existing native review of this exact actual edited report
+with complete original sources. Use native.request(new_inputs) unchanged: no new
+prompt/schema, original report, old opinions, editor process, decisions, oracle
+or desired verdict. The offline artifact freezes its44440 input ceiling and full
+request hash. This artifact alone does not execute or reopen any paid gate.
+The final implementation still needs independent execution review and exact-SHA
+public CI before a separately bounded diagnostic. No paid retry this continuation.
+
+The earlier positive reports differ from this actual draft; their success is
+not proof about this request. A correct pass answers only whether plain native
+review can assess this same draft. A repeated false positive shows that removing
+old opinions is insufficient. A new true issue requires independent adjudication;
+a protocol/transport failure leaves the semantic question unanswered. No outcome
+automatically clears original findings, authorizes publication or qualifies the
+pipeline. Keep original issues/receipts and later require full same-version true
+error/false-positive/no-error/history coverage before product adoption.
+
+This changes the entire task context (original/new-report comparison and output
+obligations as well as opinion exposure); it is not an isolated anchoring test.
+Do not repair two-state fields and pay again, lower the accepted quality standard,
+or change models/budgets because of development-agent collaboration.
+
+The sections below record the pre-execution design and its limits, not current
+candidate admission. Stage8E and the full downstream restart plan remain open.
+
+
 ## Decision and correction of the initial prototype
 
 The initial uncommitted character-anchor wrapper is withdrawn. It called the

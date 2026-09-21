@@ -1,3 +1,17 @@
+# 2026-09-22 Blind edit accepted for one case; two-state final rejected
+
+2026-09-22真实诊断完成：clean `6c22e93d94f26b6166daccbc359bf39c441faf96` / Actions `35623066673` 三项success后，仅执行独立改稿→两状态终评两次。编辑实际修复五局合并补刀真错、保留原block4及其余实质内容，删除的检索前言不丢知识清单；主Agent和独立Agent接受此单例改稿。终评仍把泛指补成全称，错误confirmed/persists原误报，整链拒绝。两响应完整stop，共25569输入+10442输出=36011tokens，197.732秒，未知0；累计Provider至少277。不是断流或额度耗尽，也不代表首评精度修好。
+
+终评另缺block/suggested_correction；离线仅补字段继续触发native_issue_resolution_inventory（将原稿指控混入仅供终评恢复的issue_resolutions），再内存清空该映射才结构通过，但错误needs_revision仍在。这些是明确标注的分析者反例，不改真实响应、不算模型修复。two-state候选撤回，诊断入口offline_final_review_false_positive，旧native/editor/product仍offline；本轮不追加付费。
+
+两个实际请求、原/新稿、公开响应、回执hash及独立裁决保存在golden_blind_edit_result_6c22e93.json；离线分层失败回放和无旧意见的普通native请求冻结在golden_blind_edit_failure_audit_6c22e93.json（输入上界44440），未改原生policy/schema/GLM/high/预算，也没有新live入口。69项前置回归与执行独立复核已通过；本次回执导出/失败回放/关闭入口19项通过（含调用数/用量账目矛盾拒绝），公共检查以最终提交PR7为准。
+
+8E仍in_progress。后续同版本完整资格、来源绑定产品/Evidence/真实Worker/DB事务/API/Workbench/独立评估/学习，以及前端整体审美乃至重做、英雄头像、Coach/Review/Training/Evidence、专属Training与62主题继续按restart plan保留。
+
+唯一下一步：依据已冻结的实际正确稿，准备既有native普通审查的一次独立有界验证及同SHA执行检查；本轮仅完成离线准备，不补字段重跑two-state、不新造提示/Schema、不恢复旧批。目标只回答没有旧意见时普通审查能否正确评估同一实际稿；不能据单次pass自动结清旧问题或获得产品资格。旧意见、原稿和输出任务同时变化，不能冒称锚定因果。详见docs/plans/2026-09-21-issue-identity-contract.md最新结果。
+
+以下为历史记录。
+
 # 2026-09-21 Projection rejected; blind edit and two-state review
 
 2026-09-21长途继续：原未提交字符锚点包装已撤回。离线反例证明删suggested_correction也可能丢逐条指控范围，故不采用locator-only或删建议作通用修复。改为独立改稿（不见旧评估）→两状态终评（见完整原/新稿与旧意见），分开原指控成立性和实际修复状态。来源、两个报告索引、全部旧issue与单修订边界已接入离线Workflow；终评仍可能锚定，不宣称语义修复。
