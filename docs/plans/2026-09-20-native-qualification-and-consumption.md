@@ -6,7 +6,7 @@
 
 The two proposed contracts were compared against the immutable `354d752` claim-scope
 artifact without credentials or Provider I/O. The result is recorded in
-`data/evaluation/results/golden_native_contract_options_offline_v2.json`; it keeps the
+`data/evaluation/results/golden_native_contract_options_offline_v3.json`; it keeps the
 actual first review, full reports, source identities and old failure hashes. The new
 comparison has `provider_calls=0`, `semantic_fix_proven=false` and
 `production_admitted=false`.
@@ -23,9 +23,9 @@ review digest, requires every issue exactly once, resolves real sources, preserv
 the full report and still performs the independent final review. An analyst case-3
 analyst witness changed block 6 only (apply the explicit combined-CS error, withdraw
 the block-4 false positive). The normal three-call path and the malformed-output
-five-call path fit the existing 401920-token report budget: **388070** reserved in
+five-call path fit the existing 401920-token report budget: **388108** reserved in
 the conservative offline envelope. The historical five-call witness reserves
-**403790**. Saturated synthetic usage makes the real shared budget stop before its
+**403828**. Saturated synthetic usage makes the real shared budget stop before its
 fifth request; low synthetic usage completes the same five-call path. This does not
 establish that historical reports cannot run: actual usage plus the next request
 reservation is authoritative, not a new requirement to reserve every future call
@@ -36,6 +36,12 @@ The initial v1 analyst edit unnecessarily replaced all of block 6, dropping corr
 mid-only details. V2 replaces only the false combined-population clause and keeps
 the correct prefix byte-for-byte; this accounts for the 150-token envelope change.
 V1 stays as historical offline evidence. No actual model report or receipt changed.
+The final v3 comparison also restores the existing revision prohibition on invented
+facts or unrequested training goals, omitted from the first editor prototype.
+This adds 38 input-envelope tokens to the editor request; all current figures and
+prepared-request identities above/below use that final policy. The 72-test affected
+suite passed before this addition, and all 21 prototype/product-budget tests passed
+again afterward. Governance and independent review remain separate from model quality.
 
 Structured dispositions remain non-semantic. The comparison deliberately accepts
 negative protocol witnesses where a true issue is withdrawn, an applied issue only
@@ -57,13 +63,13 @@ share the first generation response; this is not exact historical product replay
 observed-identity qualification or external-Evidence qualification.
 
 The complete generation → generation → review → editor → recheck path has input
-ceilings 29620/41946/44552/41056/44586 and full synthetic usage **365600 < 401920**.
+ceilings 29620/41946/44552/41094/44586 and full synthetic usage **365638 < 401920**.
 It completes in five calls. Adding a first-review reassessment consumes the fifth
 slot at editing; the attempted sixth final review raises
 `external_call_budget_exhausted`, and no report is published. Low synthetic usage
 of 100 isolates the call-count limit from token exhaustion. These are measured
 boundaries, not a promise that every product report or recovery will fit.
-Evidence: `golden_native_editor_product_budget_offline_v1.json`.
+Evidence: `golden_native_editor_product_budget_offline_v2.json`.
 
 ### Next decision and limits
 
@@ -77,12 +83,12 @@ the full revised report; final pass alone never validates the decisions.
 
 The three complete inputs, review provenance, source/report/request digests,
 schemas and input measurements are now prepared in
-`golden_native_editor_diagnostic_plan_v1.json`; reproduce with
+`golden_native_editor_diagnostic_plan_v2.json`; reproduce with
 `python -m scripts.check_native_contract_options --editor-diagnostic`.
 The false-only proposal is explicitly an analyst extraction, not a new actual
 model opinion. Labels stay outside the serialized request. The plan is offline
 and has no executable paid runner. Independent read-only review verified these
-identities, host-only labels and ceilings 41104/40362/40154.
+identities, host-only labels and ceilings 41142/40400/40192.
 
 This would be a separately identified editor diagnostic, not resuming the stopped
 development run, not new first-review precision evidence, and not a bypass of the

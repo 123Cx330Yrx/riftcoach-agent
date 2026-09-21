@@ -105,6 +105,7 @@ EDITOR_POLICY = (
     'withdraw用于误报，explanation说明原句、同指标上下文及来源为何不支持该问题，不因难改而撤销。'
     'source_ids只选真实支持该裁决的来源；来源编号存在不证明裁决正确。'
     '保留正确章节、身份、位置、数字、知识引用和未受影响内容；不能静默丢弃真实问题。'
+    '不新增未提供事实或擅定训练目标。'
     '所有问题withdraw时report必须逐字等于原报告，否则交出完整改稿，不输出额外说明。'
     '后续独立复评仍检查完整新稿；本次改稿不能追认原评估正确。\n'
     + native.previous.FULL_CONTEXT_RULE+'\n'+native.previous.TABLE_POLICY
