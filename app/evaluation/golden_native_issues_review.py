@@ -148,6 +148,9 @@ def validate_legacy_v31(raw, inputs, *, previous_raw=None):
 
 
 def _validate(raw, inputs, *, previous_raw, legacy_v31):
+    # The legacy helper replays the adjacent v3.5 source contract as well as
+    # wire3.1; a raw reference must not acquire the new projection's identity.
+    layout = 'rows' if legacy_v31 else 'statistic_series'
     before = previous.provisional_review(previous_raw)[0] if previous_raw is not None else None
     value = previous._decoded(raw)
     if previous.security_terminal(value) or previous.security_terminal(before):
@@ -160,7 +163,7 @@ def _validate(raw, inputs, *, previous_raw, legacy_v31):
             raise ValueError('native_issue_block_unknown')
         if issue.category == 'prompt_injection':
             raise ValueError('native_security_terminal')
-        selected = resolve_refs(inputs, issue.source_ids)
+        selected = resolve_refs(inputs, issue.source_ids, computed_layout=layout)
         sources.append(dict(block=issue.block, issue=number, selected_sources=selected))
         issues.append(dict(issue.model_dump(exclude={'source_ids', 'block'}),
             quote=inputs.source.blocks[issue.block - 1][1],
@@ -170,7 +173,7 @@ def _validate(raw, inputs, *, previous_raw, legacy_v31):
         raise ValueError('native_issue_resolution_inventory')
     current = prior_issues(value)
     for resolution in wire.issue_resolutions:
-        resolve_refs(inputs, resolution.source_ids)
+        resolve_refs(inputs, resolution.source_ids, computed_layout=layout)
         if resolution.disposition == 'withdrawn':
             if resolution.final_issue is not None:
                 raise ValueError('native_withdrawal_has_final_issue')

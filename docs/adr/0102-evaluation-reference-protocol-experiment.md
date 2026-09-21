@@ -25,7 +25,7 @@ and selected evidence bound to the same new catalog hash. This is an input
 usability hypothesis, not a proven semantic fix. The source was already correct.
 
 Nativev3.6 / Coach1.4.6 / Program3.0.6 bind wire3.2.0; Skill0.6.0 unchanged.
-160 affected tests and actual composition passed. Full five-call offline
+161 affected tests and actual composition passed. Full five-call offline
 reservations are 380514/382552/400972/380036 below 401920. The disposition-only
 counterexample still passes protocol with the wrong mean; analyst-authored
 corrected recovery and complete numeric controls cannot establish live quality.

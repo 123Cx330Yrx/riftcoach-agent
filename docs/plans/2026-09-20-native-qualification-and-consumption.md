@@ -50,7 +50,9 @@ V3.6 / Coach1.4.6 / Skill0.6.0 / Program3.0.6 / wire3.2.0:
   withdrawn has no target and requires explanation and real source references.
   Every original finding is accounted for; full raw text and suffix survive.
   No automatic relabelling, field filling or extra call is introduced. Strict
-  retained validation remains only in the explicitly named legacy wire replay.
+  retained validation remains only in the explicitly named legacy wire replay,
+  which also fixes source resolution to the adjacent v3.5 row layout. Its journal
+  cannot silently bind old references to the new projected catalog.
 - Native computed evidence is transposed to named statistic arrays in metric
   order: `win_mean`, `loss_mean`, `cohort_mean`, `cohort_median`, `all_pairs`,
   `missing_refs`. Original values, membership, completeness and role contrasts
@@ -73,10 +75,10 @@ statistic-binding controls, and runs an explicitly analyst-authored corrected
 review → report revision → full recheck witness. These controls and witness are
 offline engineering evidence, not model judgments or added live successes.
 
-160 affected local tests passed, including source reconstruction/hash binding,
+161 affected local tests passed, including source reconstruction/hash binding,
 missing-field and trailing-text recovery, native application, runner and Prompt
 Program checks. Runtime composition verifies the regenerated manifest. Aggregate
-evidence is `golden_native_v36_offline_qualification.json`:
+evidence is `golden_native_v36_offline_qualification_v2.json`:
 
 | Scripted five-call path | Full output reservation |
 |---|---:|

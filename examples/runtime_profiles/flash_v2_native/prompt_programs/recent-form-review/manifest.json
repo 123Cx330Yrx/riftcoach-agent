@@ -42,7 +42,7 @@
     {
       "component_id": "app.evaluation.golden_native_issues_review",
       "source": "app/evaluation/golden_native_issues_review.py",
-      "sha256": "eba4011893014073fb24686c5415b9d09985c912377118854c0a0df41a9a1bbd"
+      "sha256": "0781ded9237fc4735287c7d988a30ce750e6f9a93afd6a571ac9e80144318a23"
     },
     {
       "component_id": "app.evaluation.golden_semantic_review",
@@ -115,5 +115,5 @@
       "sha256": "94fa4ed248628f0801ff83a999a6c14e54464b838ed11e453f718c448502ef0d"
     }
   ],
-  "program_sha256": "3d0a9420ab6e7ea46df0f27dda6674094813a1c0d6e4d49742e57c34a9ede257"
+  "program_sha256": "89066e020c4001721bc067fc06bab6e7b236f713a024b719eb1fc998671e8612"
 }

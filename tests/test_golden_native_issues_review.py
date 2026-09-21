@@ -123,6 +123,28 @@ def test_no_source_problem_is_explicit_and_does_not_fabricate_an_id():
     assert journal['selected_sources'][0]['selected_sources'] == []
 
 
+def test_legacy_replay_binds_old_source_values_and_catalog_not_the_new_projection():
+    from app.evaluation import golden_semantic_sources as sources
+    inputs = candidate.build_inputs(evaluation_request())
+    old_catalog = sources.source_catalog(inputs, include_role_contrasts=True)
+    computed = next(n for n, entry in old_catalog.items() if entry.key == sources.COMPUTED_KEY)
+    selected = [source_id(inputs), computed]
+    value = opinion(inputs, block=1)
+    value['issues'][0]['source_ids'] = selected
+    _, _, legacy = candidate.validate_legacy_v31(compact(value), inputs)
+    _, _, current = candidate.validate(compact(value), inputs)
+    old_values = legacy['selected_sources'][0]['selected_sources']
+    new_values = current['selected_sources'][0]['selected_sources']
+    assert old_values == sources.resolve_refs(inputs, selected, include_role_contrasts=True)
+    assert new_values == candidate.resolve_refs(inputs, selected)
+    assert old_values[0]['value'] == new_values[0]['value']
+    assert 'columns' in old_values[1]['value'] and 'series_order' in new_values[1]['value']
+    assert old_values[1]['value_sha256'] != new_values[1]['value_sha256']
+    assert old_values[0]['catalog_sha256'] != new_values[0]['catalog_sha256']
+    assert old_values[0]['catalog_sha256'] == old_values[1]['catalog_sha256']
+    assert all(old['input_sha256'] == new['input_sha256'] for old, new in zip(old_values, new_values))
+
+
 def test_malformed_first_and_legacy_findings_are_not_silently_dropped():
     inputs = candidate.build_inputs(evaluation_request())
     first = {'reviews': [{'block': 1, 'issues': 'malformed original finding'}], 'issues': [{'block': 1, 'source_ids': []}]}
