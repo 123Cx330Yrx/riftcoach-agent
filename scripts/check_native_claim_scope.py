@@ -222,12 +222,54 @@ def audit():
                     'Complete unchanged reports, explicit population and explicit universal-metric negatives still require real manual-reviewed qualification.'])
 
 
+def audit_unexpected_findings():
+    """Reproduce the real false positive and the development-only stop decision."""
+    from app.evaluation.golden_integrated_runtime import _result
+    from scripts.run_golden_native_review import score_case
+    artifact_path = ROOT / 'data/evaluation/results/golden_native_claim_scope_result_354d752.json'
+    artifact = json.loads(artifact_path.read_text(encoding='utf-8'))
+    dataset, requests, _ = load_controls()
+    runs = {case['index']: case for case in artifact['cases']}
+    positive = native.build_inputs(requests[0])
+    negative = native.build_inputs(requests[2])
+    changed = [i for i, (a, b) in enumerate(zip(positive.source.blocks, negative.source.blocks, strict=True), 1) if a != b]
+    assert changed == [6] and runs[1]['original_report'] == requests[0].report
+    assert runs[3]['original_report'] == requests[2].report
+    first = runs[3]['responses'][0]
+    assert digest(first['content']) == first['content_sha256']
+    payload, wire, _ = native.validate(first['content'], negative)
+    signal = score_case(dataset['cases'][2], _result(payload))
+    assert [issue.block for issue in wire.issues] == [6, 4]
+    assert signal['matched'] and signal['unexpected_issue_indices'] == [2]
+    assert signal['manual_adjudication_required'] and not signal['semantic_approval']
+    assert runs[3]['result']['automatic_path_pass'] and not runs[3]['manual_semantic_acceptance']
+    downstream = runs[3]['responses'][1:]
+    return dict(evidence_kind='offline_replay_of_real_public_findings', provider_calls=0,
+        artifact_sha256=hashlib.sha256(artifact_path.read_bytes()).hexdigest(),
+        changed_report_blocks=changed, unchanged_block_newly_flagged=4,
+        actual_first_review_sha256=first['content_sha256'], protocol_valid=True,
+        development_signal=signal, initial_semantic_failure_preserved=True,
+        historical_calls=runs[3]['result']['completed_calls'],
+        guarded_calls_verified_by_integration_tests=1,
+        historical_downstream_calls_avoidable=2,
+        historical_downstream_tokens_avoidable=sum(r['usage']['input_tokens']+r['usage']['output_tokens'] for r in downstream),
+        current_policy_sha256=digest(native.POLICY),
+        model_policy_changed=False, semantic_fix_proven=False, production_admitted=False,
+        limitations=['An unexpected finding is unadjudicated, not automatically false.',
+                    'The guard is for labelled development controls; it does not filter production findings.',
+                    'Same-block errors, wrong explanations and unsupported selected sources still require manual review.',
+                    'The two avoided calls are an offline counterfactual, not refunded or unspent historical usage.',
+                    'The stopped run has no implicit resume or fresh paid retry. A real additional problem requires reviewing control coverage.'])
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path)
-    parser.add_argument('--reassessment', action='store_true')
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--reassessment', action='store_true')
+    mode.add_argument('--unexpected-findings', action='store_true')
     args = parser.parse_args()
-    result = audit_reassessment() if args.reassessment else audit()
+    result = audit_unexpected_findings() if args.unexpected_findings else audit_reassessment() if args.reassessment else audit()
     if args.output:
         write_new_json(args.output, result)
     print(compact(result))

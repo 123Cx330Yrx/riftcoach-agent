@@ -31,11 +31,15 @@ def score_case(case, result):
     """Location/category match is only a development signal, not entailment."""
     targets = case['targets'] if 'targets' in case else [case['target']]
     flagged = [i for i in result.issues if any(target in i["quote"] for target in targets)]
+    unexpected = [number for number, issue in enumerate(result.issues, 1)
+                  if not any(target in issue["quote"] for target in targets)]
     accepted = result.verdict.value == "pass" and result.score >= 85 and not result.issues
     matched = accepted if case["expected_report"] == "accept" else result.verdict.value != "pass" and bool(flagged)
     return dict(id=case["id"], valid=True, matched=matched,
         verdict=result.verdict.value, score=result.score, expected_report=case["expected_report"],
         target_location_flagged=bool(flagged),
+        unexpected_issue_indices=unexpected,
+        manual_adjudication_required=bool(unexpected),
         suggested_category_matched=any(i["category"] in case.get("expected_categories", []) for i in flagged),
         semantic_approval=False)
 
@@ -142,7 +146,7 @@ def run(args, *, candidate_module=None):
         max_seconds_per_report=900, max_output_per_call=32768, max_seconds_per_call=300,
         reasoning_effort="high", sdk_retries=0, live_status=active.LIVE_STATUS,
         live_block_reason=active.LIVE_BLOCK_REASON, production_admitted=False,
-        manual_between_cases=True, semantic_approval=False)
+        manual_between_cases=True, stop_before_unadjudicated_revision=True, semantic_approval=False)
     if not args.execute:
         print(compact(plan))
         return plan

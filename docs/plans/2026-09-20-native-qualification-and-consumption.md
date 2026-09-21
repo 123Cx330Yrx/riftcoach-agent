@@ -1,5 +1,111 @@
 # Native qualification, claim scope diagnosis and product consumption
 
+## Current: v3.6 partial improvement, scope false positive, offline only
+
+The interrupted continuation stopped at clean `354d752b76506a78b543a86975487721c344a2df`
+before any live request. Its Actions `35565312170` finished with pytest,
+postgres-migrations and packaging-smoke all successful. No surviving Provider
+process, partial run or uncommitted backend edit was found on recovery.
+
+The resumed order was claim-scope 1 → 4 → 3. Seven complete stops used 79804
+input + 29040 output = **108844 tokens**, unknown usage 0, historical Provider
+requests at least 272. All seven actual requests and transport hashes were
+independently reconstructed at the original implementation.
+
+| Complete report | Actual result | Independent whole-path decision |
+|---|---|---|
+| Correct original topic window | 95/pass, unchanged | Accept; 1 call, 22766 tokens, 250.891 seconds |
+| Explicit every-metric claim | 82/needs_revision → actual revision → 96/pass | Accept with precision limitations; 3 calls, 40142 tokens |
+| Explicit combined CS population | Target detected, plus a false positive; actual edit → 96/pass | Reject; 3 calls, 45936 tokens |
+
+Case 4's actual report correctly says all-mid vision mean 33.75 and early-death
+mean 1.5. Its first explanation's `33.5/33.75` wording is imprecise; the same
+issue's correction and actual edit explicitly disambiguate 33.75, so the accepted
+whole-context standard does not equate it with the former unequivocal wrong
+all-mid mean. The extra kills suggestion is true in the complete source, although
+its chosen source roots do not fully expose that calculation. These limits remain
+recorded. No reassessment occurred; real v3.6 recovery is still unproven.
+
+Case 3 differs from accepted case 1 **only at block 6**, changing the CS claim
+to an explicit five-game combined population. Block 4 and its clarifying later
+context are identical. Its extra issue turns generic means into all metrics;
+the actual new CS sentence cannot justify this quantifier. The proposed numeric
+comparisons are correct, but apply to an invented universal claim. The existing
+delivered policy already prohibits this expansion. The initial false positive
+caused an extra edit to block 4; final pass cannot erase that initial failure.
+This establishes scope misclassification, not a missing source, interruption,
+output cap or proven internal model cause. The batch stopped before further cases.
+
+Evidence: `data/evaluation/results/golden_native_claim_scope_result_354d752.json`
+keeps full actual content, manual decisions, unchanged receipts and file hashes;
+private reasoning is excluded. Older successes and failures are not rewritten.
+
+### Completed execution repair and exact limits
+
+The development scorer previously considered any target hit enough to authorize
+revision even with other unadjudicated findings. It now exposes unexpected issue
+indices; `observe_report` ends that development run **before revision**, retaining
+the whole response, assessment and accounting. `matched` still means target hit,
+while `manual_adjudication_required` and `unadjudicated_control_findings` explicitly
+deny automatic continuation. This is not an automatic false-positive classifier.
+
+Real-response replay preserves the positive's one-call path and the accepted
+negative's three-call path. The failed third case stops after one call. Its two
+historical downstream requests used 27739 tokens; this is avoidable work in the
+replay, not a refund or a reduction of the actual 108844-token total. A synthetic
+genuine extra problem also stops as unadjudicated. Same-block false positives,
+wrong explanations and unsupported references still require full manual review.
+There is no implicit resume, bypass or fresh paid first review: a genuine extra
+problem requires adjudicating control coverage, not treating labels as truth.
+
+89 related tests passed, including real content replay, original accounting,
+native application and Runtime composition. The status-change manifest includes
+the complete resolver fingerprints, including Coach; an omitted Coach entry in
+local regeneration was caught and corrected before public CI or any new paid run.
+The reproducible offline diagnostic is
+`python -m scripts.check_native_claim_scope --unexpected-findings`; its saved
+result is `golden_native_unexpected_findings_offline_v1.json`.
+
+Native is now `offline_claim_scope_false_positive`; product remains offline.
+Model-visible policy, review schema, GLM/high and all budgets are unchanged.
+The guard is only development execution hardening, **not a semantic repair**.
+
+### Next offline decision, before another candidate or paid batch
+
+Do not append another paraphrase of a rule already present in the failed request.
+The next deliverable is a measured contract comparison using complete source-bound
+reports and these real findings, rather than another immediate live rerun:
+
+| Candidate to assess, not yet adopted | Required proof | Main limitation to test |
+|---|---|---|
+| Minimal original-claim and disambiguating-context anchors for each actual issue | Exact text/identity binding, entire report retained, true explicit quantifier/denominator errors still expressible, current and historical maximum input sizes | Exact quotation alone does not prove the interpretation; no keyword whitelist or guaranteed semantic claim |
+| Editor explicitly adjudicates each proposed issue while revising in the existing revision slot | Every original issue receives a source-backed disposition; preserve true CS error while declining the false extra issue; actual text and final review remain consistent | Must not treat final pass as retroactive first-review correctness, silently discard findings, or change accepted evaluation criteria |
+
+Measure both against the existing 5-call/1-revision/401920-token/900-second
+envelope, including actual product generation and any recovery. A mandatory extra
+review cannot simply be bolted on: two generation calls plus initial review,
+new review, revision and final review already require **six**. No architecture,
+acceptance standard or budget change is approved by this comparison. If neither
+candidate has a legal complete path, reject both before requesting live evidence.
+
+The fixed semantic contrasts remain: correct topic window; explicit universal
+negative; explicit combined-CS negative with its true issue preserved and false
+extra issue rejected; unresolved denominator; correctly stated conditional groups.
+Keep original labels and full reports. Use analyst witnesses only for engineering
+reachability, never as model success. Current failed batch makes no more paid calls.
+Only a justified new candidate, independent review and its own public CI can open
+another bounded development batch; remaining same-version qualification is not
+waived by the two accepted controls.
+
+After full qualification, product admission must bind the new candidate's evidence;
+the product runner's historical `a71eb94` artifact is not sufficient for v3.6.
+Source-bound generation/review/Evidence, real transaction/API/Workbench consumption,
+independent evaluation and learning remain unfinished. Stage8E is still in progress.
+Frontend redesign, portraits, four-part linkage, personal Training and all 62 themes
+remain in the restart plan; the current failure does not replace that scope.
+
+以下为历史记录，当前以上述本批结果与离线下一步为准。
+
 2026-09-21续推：b600fe2 / Actions35554367583公共三项success及独立审查已核实。v3.6仅开放bounded_development_after_exact_ci，状态修改后已同步manifest，仍须本次新提交三项全绿才执行。顺序claim-scope1→4→3，随后scope5/4/3、claim-scope2/5/6/7、历史五例；逐例完整人工审读，任一协议/语义失败停批。此前“本轮不再付费”属于上一轮，当前继续沿用既有授权和原预算；产品仍offline，8E不变。
 
 以下为历史记录，当前以最新canonical为准。

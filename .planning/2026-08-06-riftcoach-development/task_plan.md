@@ -1,6 +1,6 @@
 # RiftCoach 持续开发计划
 
-2026-09-21续推：b600fe2 / Actions35554367583公共三项success及独立审查已核实。v3.6仅开放bounded_development_after_exact_ci，状态修改后已同步manifest，仍须本次新提交三项全绿才执行。顺序claim-scope1→4→3，随后scope5/4/3、claim-scope2/5/6/7、历史五例；逐例完整人工审读，任一协议/语义失败停批。此前“本轮不再付费”属于上一轮，当前继续沿用既有授权和原预算；产品仍offline，8E不变。
+2026-09-21: 354d752 / CI35565312170 verified; claim-scope 1 and 4 accepted, 3 rejected for a scope false positive. 7 complete calls / 108844 tokens / unknown 0. Development pre-revision adjudication stop is implemented and tested; native and product remain offline. Next: offline semantic-contract decision in docs/plans/2026-09-20-native-qualification-and-consumption.md (latest section), then only a justified new candidate. No more paid calls in this failed batch. Stage8E and all deferred product/design scope remain open.
 
 以下为历史记录，当前以最新canonical为准。
 
@@ -312,7 +312,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-21续推：b600fe2 / Actions35554367583公共三项success及独立审查已核实。v3.6仅开放bounded_development_after_exact_ci，状态修改后已同步manifest，仍须本次新提交三项全绿才执行。顺序claim-scope1→4→3，随后scope5/4/3、claim-scope2/5/6/7、历史五例；逐例完整人工审读，任一协议/语义失败停批。此前“本轮不再付费”属于上一轮，当前继续沿用既有授权和原预算；产品仍offline，8E不变。
+2026-09-21: 354d752 / CI35565312170 verified; claim-scope 1 and 4 accepted, 3 rejected for a scope false positive. 7 complete calls / 108844 tokens / unknown 0. Development pre-revision adjudication stop is implemented and tested; native and product remain offline. Next: offline semantic-contract decision in docs/plans/2026-09-20-native-qualification-and-consumption.md (latest section), then only a justified new candidate. No more paid calls in this failed batch. Stage8E and all deferred product/design scope remain open.
 
 完整同版本资格后才推进来源绑定产品、Evidence/事务/API/Workbench；前端审美/头像/四块联动/专属Training与62主题保持。
 
@@ -562,7 +562,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-21续推：b600fe2 / Actions35554367583公共三项success及独立审查已核实。v3.6仅开放bounded_development_after_exact_ci，状态修改后已同步manifest，仍须本次新提交三项全绿才执行。顺序claim-scope1→4→3，随后scope5/4/3、claim-scope2/5/6/7、历史五例；逐例完整人工审读，任一协议/语义失败停批。此前“本轮不再付费”属于上一轮，当前继续沿用既有授权和原预算；产品仍offline，8E不变。
+2026-09-21: 354d752 / CI35565312170 verified; claim-scope 1 and 4 accepted, 3 rejected for a scope false positive. 7 complete calls / 108844 tokens / unknown 0. Development pre-revision adjudication stop is implemented and tested; native and product remain offline. Next: offline semantic-contract decision in docs/plans/2026-09-20-native-qualification-and-consumption.md (latest section), then only a justified new candidate. No more paid calls in this failed batch. Stage8E and all deferred product/design scope remain open.
 
 完整同版本资格后才推进来源绑定产品、Evidence/事务/API/Workbench；前端审美/头像/四块联动/专属Training与62主题保持。
 

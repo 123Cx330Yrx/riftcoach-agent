@@ -95,6 +95,13 @@ def observe_report(provider, directory, request, case, *, workflow_factory=Integ
         if not outcome["matched"]:
             outcome["stop_reason"] = "initial_control_mismatch"
             return outcome
+        # Development control labels are not a semantic oracle. An extra
+        # finding may be real, but must not authorize an unreviewed paid edit.
+        # Preserve the full assessment; do not filter or relabel its issues.
+        if initial_score.get("manual_adjudication_required", False):
+            outcome.update(stop_reason="unadjudicated_control_findings",
+                automatic_path_pass=False, manual_semantic_acceptance=False)
+            return outcome
         final = initial
         if initial.verdict.value == "needs_revision":
             outcome["revision_attempted"] = True
