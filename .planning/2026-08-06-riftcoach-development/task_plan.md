@@ -1,6 +1,6 @@
 # RiftCoach 持续开发计划
 
-2026-09-21: offline contract comparison v3 completed. A anchors remain audit-only. B adjudicates in the existing revision slot, with full-source analyst witnesses and semantic counterexamples, without changing initial-review precision or bypassing the development guard. Claim five-call reservation is 388108; historical five-call reservation is 403828. The real budget stops before call five with saturated usage but allows five with low usage: actual usage plus next reservation remains authoritative. Product generation and the next candidate decision are tracked in the latest section of docs/plans/2026-09-20-native-qualification-and-consumption.md. No new paid calls; both live gates remain offline. Stage8E and deferred design/product scope remain open.
+2026-09-21继续：独立编辑诊断runner已实现，沿用冻结v2三例与原GLM/high/预算。逐例编辑→完整人工审读→最终复评→完整人工接受，才可下一例；最多三例、每例最多三调用，任一失败结束本付费批。原900秒包含审读时间；请求原字节、公开响应和不可变回执绑定接受摘要，失败/中断不重试。当前新增Provider调用0；须独立审查与本实现同SHA公共检查后才实测。该诊断不恢复旧native失败批、不证明首评精度、不开放产品。唯一下一步为完成runner验证后执行这一个有界诊断并按完整实际内容裁决；失败先诊断，不在本轮补丁后再付费开新批。8E及后续来源绑定产品/Evidence/事务/API/Workbench、独立评估/学习、前端审美重做/头像/四块联动/个人Training与62主题保持。
 
 以下为历史记录，当前以最新canonical为准。
 
@@ -312,7 +312,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-21: offline contract comparison v3 completed. A anchors remain audit-only. B adjudicates in the existing revision slot, with full-source analyst witnesses and semantic counterexamples, without changing initial-review precision or bypassing the development guard. Claim five-call reservation is 388108; historical five-call reservation is 403828. The real budget stops before call five with saturated usage but allows five with low usage: actual usage plus next reservation remains authoritative. Product generation and the next candidate decision are tracked in the latest section of docs/plans/2026-09-20-native-qualification-and-consumption.md. No new paid calls; both live gates remain offline. Stage8E and deferred design/product scope remain open.
+2026-09-21继续：独立编辑诊断runner已实现，沿用冻结v2三例与原GLM/high/预算。逐例编辑→完整人工审读→最终复评→完整人工接受，才可下一例；最多三例、每例最多三调用，任一失败结束本付费批。原900秒包含审读时间；请求原字节、公开响应和不可变回执绑定接受摘要，失败/中断不重试。当前新增Provider调用0；须独立审查与本实现同SHA公共检查后才实测。该诊断不恢复旧native失败批、不证明首评精度、不开放产品。唯一下一步为完成runner验证后执行这一个有界诊断并按完整实际内容裁决；失败先诊断，不在本轮补丁后再付费开新批。8E及后续来源绑定产品/Evidence/事务/API/Workbench、独立评估/学习、前端审美重做/头像/四块联动/个人Training与62主题保持。
 
 完整同版本资格后才推进来源绑定产品、Evidence/事务/API/Workbench；前端审美/头像/四块联动/专属Training与62主题保持。
 
@@ -562,7 +562,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-21: offline contract comparison v3 completed. A anchors remain audit-only. B adjudicates in the existing revision slot, with full-source analyst witnesses and semantic counterexamples, without changing initial-review precision or bypassing the development guard. Claim five-call reservation is 388108; historical five-call reservation is 403828. The real budget stops before call five with saturated usage but allows five with low usage: actual usage plus next reservation remains authoritative. Product generation and the next candidate decision are tracked in the latest section of docs/plans/2026-09-20-native-qualification-and-consumption.md. No new paid calls; both live gates remain offline. Stage8E and deferred design/product scope remain open.
+2026-09-21继续：独立编辑诊断runner已实现，沿用冻结v2三例与原GLM/high/预算。逐例编辑→完整人工审读→最终复评→完整人工接受，才可下一例；最多三例、每例最多三调用，任一失败结束本付费批。原900秒包含审读时间；请求原字节、公开响应和不可变回执绑定接受摘要，失败/中断不重试。当前新增Provider调用0；须独立审查与本实现同SHA公共检查后才实测。该诊断不恢复旧native失败批、不证明首评精度、不开放产品。唯一下一步为完成runner验证后执行这一个有界诊断并按完整实际内容裁决；失败先诊断，不在本轮补丁后再付费开新批。8E及后续来源绑定产品/Evidence/事务/API/Workbench、独立评估/学习、前端审美重做/头像/四块联动/个人Training与62主题保持。
 
 完整同版本资格后才推进来源绑定产品、Evidence/事务/API/Workbench；前端审美/头像/四块联动/专属Training与62主题保持。
 

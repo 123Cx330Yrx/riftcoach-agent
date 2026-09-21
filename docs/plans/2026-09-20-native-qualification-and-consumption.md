@@ -2,6 +2,37 @@
 
 ## Current: v3.6 partial improvement, scope false positive, offline only
 
+### 2026-09-21 continuation: independent editor diagnostic
+
+The current long-continuation request authorizes completing the separately
+identified editor diagnostic after independent review and clean exact-SHA CI.
+The previous stopped native batch stays stopped; native and product remain
+offline. `scripts/run_native_editor_diagnostic.py` is the only new executable
+boundary, not a product registration or qualification bypass.
+
+Use the frozen v2 plan in order: mixed true/false, true-only, false-only. Each
+case executes one edit, pauses for full human/agent semantic adjudication, then
+at most two final-review requests (one existing schema recovery). Review the
+whole actual report, each disposition, explanation, selected source and changed
+sentence. Host expected dispositions are necessary but not sufficient, and
+never enter the model request. The next case requires accepted final review
+bound to actual request bytes, public responses and immutable transport receipts.
+An interrupted phase cannot resume or retry. The original 900-second case
+deadline includes adjudication time and is never reset between phases.
+
+Keep GLM-5.3-flash/high, 32768 output, 63936 input, 300-second request cap,
+401920 total tokens and SDK retries zero. Maximum three distinct cases, three
+requests per case, one edit; any execution/protocol/semantic failure ends this
+paid batch. Diagnose it without starting another patched paid batch this turn.
+No initial-review precision improvement or Stage8E/product admission follows
+even if all three editor cases succeed. Preserve full receipts and separate
+known/unknown usage; private reasoning never enters public artifacts.
+
+Runner regression coverage includes editor failure/no retry, tampered acceptance
+identity, raw wire/receipt binding, CRLF preservation, final schema recovery,
+shared elapsed budget and next-case gating before credentials. Public CI is
+required on the final implementation SHA, not the preceding offline checkpoint.
+
 ## 2026-09-21 offline contract comparison completed
 
 The two proposed contracts were compared against the immutable `354d752` claim-scope
@@ -86,15 +117,14 @@ schemas and input measurements are now prepared in
 `golden_native_editor_diagnostic_plan_v2.json`; reproduce with
 `python -m scripts.check_native_contract_options --editor-diagnostic`.
 The false-only proposal is explicitly an analyst extraction, not a new actual
-model opinion. Labels stay outside the serialized request. The plan is offline
-and has no executable paid runner. Independent read-only review verified these
+model opinion. Labels stay outside the serialized request. The plan was prepared offline before the separate runner above. Independent read-only review verified these
 identities, host-only labels and ceilings 41142/40400/40192.
 
 This would be a separately identified editor diagnostic, not resuming the stopped
 development run, not new first-review precision evidence, and not a bypass of the
 unexpected-findings guard. It requires a prepared reproducible request/receipt
 boundary and independent review before same-SHA public checks and any execution.
-Keep the current batch offline. No additional authorization turn is needed for the
+Keep the stopped native batch offline; the separately identified editor diagnostic follows the current continuation above. No additional authorization turn is needed for the
 already-authorized preparation; a failed outcome calls for diagnosis, not another
 wording patch followed by a fresh paid batch.
 
