@@ -1,3 +1,15 @@
+# 2026-09-21 Projection rejected; blind edit and two-state review
+
+2026-09-21长途继续：原未提交字符锚点包装已撤回。离线反例证明删suggested_correction也可能丢逐条指控范围，故不采用locator-only或删建议作通用修复。改为独立改稿（不见旧评估）→两状态终评（见完整原/新稿与旧意见），分开原指控成立性和实际修复状态。来源、两个报告索引、全部旧issue与单修订边界已接入离线Workflow；终评仍可能锚定，不宣称语义修复。
+
+69相关测试通过；独立复核23项settlement/product及8项投影。已修review外问题在恢复时可能漏映射、blind请求phase误标两处本地缺口；另修诊断runner在响应后预算拒绝时漏记已知用量、中断缺停止原因，覆盖fresh/stale回执。报告三调用预约237890，五调用409820满额时第5次前拒绝；实际产品生成两次→首评→独立改稿→终评五调用374902可达，多首评重评使第六调用被拒不发布。均脚本证据，Provider新增0，累计至少275。旧native/editor/product入口仍offline。
+
+唯一下一步：完成新两调用diagnostic的独立执行审查与本提交同SHA公共检查，然后依既有授权执行冻结混合样本的一次独立改稿→两状态终评；完整人工核对原指控/实际改稿/来源/新稿评审。失败停止，本轮不补丁后开第二付费批，不恢复旧pair，不宣称首评精度或产品资格。新候选/方案/边界见docs/plans/2026-09-21-issue-identity-contract.md。
+
+8E仍in_progress。后续同版本完整资格、来源绑定产品/Evidence/真实Worker/DB事务/API/Workbench/独立评估/学习，以及前端整体审美乃至重做、英雄头像、Coach/Review/Training/Evidence、专属Training与62主题继续按restart plan保留。
+
+以下为历史记录。
+
 # 2026-09-21 Opinion pair completed and identity boundary
 
 2026-09-21配对诊断已完成：clean483f91d / Actions35601045617三项success后，两臂均完整stop。locator_only实际修正block6补刀真错、撤销block4误报并保留原文；full_opinion也修正真错，却仍采纳泛指→全称误报。两臂公开全文/实际改稿/来源由主Agent及独立Agent核对；定位臂另有选引不完整和非精确转述限制，不冒称完全合格。两次共23418输入+9564输出=32982tokens、89.902秒、未知0，累计Provider至少275；无终评/发布。本轮不再付费。完整回执重建与人工裁决见golden_native_editor_pair_result_483f91d.json；原始失败不改。

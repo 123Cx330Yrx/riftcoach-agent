@@ -53,7 +53,7 @@ def body(request):
 
 
 def _replace(request, data, contract, policy, phase):
-    header = schema_notation(contract.schema_dict())+'\n'
+    header = schema_notation(contract.schema_dict())+'\n' if contract else ''
     return budget_check(replace(request, messages=(
         ChatMessage(role=MessageRole.SYSTEM, content=policy),
         ChatMessage(role=MessageRole.USER, content=header+'[UNTRUSTED DATA]\n'+compact(data)+'\n[END UNTRUSTED DATA]'),
