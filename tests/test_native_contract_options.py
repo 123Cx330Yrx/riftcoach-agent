@@ -37,10 +37,13 @@ def test_complete_offline_audit_preserves_actual_failure_and_semantic_counterexa
     assert len(a['claim_shapes']) == 7 and len(a['history_shapes']) == 5
     assert len(a['attribution_shapes']) == 2
     assert b['changed_blocks'] == [6] and b['original_review_retained']
+    assert b['unaffected_block6_prefix_preserved']
     assert len(b['normal_three_call_path']) == 3 and len(b['maximum_five_call_path']) == 5
     assert b['five_call_full_reservation'] <= b['total_budget']
     # Record the measured boundary rather than making the audit falsely green.
     assert b['historical_full_reservation'] > b['total_budget']
+    assert b['historical_saturated_budget']['completed_calls'] == 4
+    assert b['historical_saturated_budget']['stop_reason'] == 'token_budget_exhausted'
     assert all(n['protocol_valid'] and not n['semantic_acceptance']
                for n in b['semantically_wrong_but_structurally_valid'])
 

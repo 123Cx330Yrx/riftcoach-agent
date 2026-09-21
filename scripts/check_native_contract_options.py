@@ -19,6 +19,7 @@ from app.evaluation.golden_stream_bridge import validate_request, CAPACITY_TRANS
 from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling as size
 from app.harness.steps import EvaluationRequest, KnowledgeEvidence, KnowledgeCitation, RevisionRequest
 from app.providers.models import ChatResponse, TokenUsage
+from app.providers.errors import ProviderResponseError
 from scripts.check_native_claim_scope import load_controls
 from scripts.check_golden_native_issues_review import scripted
 from scripts.native_contract_options import (OfflineEditorWorkflow, anchored_request, validate_anchors,
@@ -65,10 +66,10 @@ def editor_value(inputs, review_raw, report, dispositions, explanations=None):
 def corrected_case3():
     req, saved = actual_case(3)
     inputs = native.build_inputs(req)
-    original = inputs.source.blocks[5][1]
+    original = '将所选全部 5 局（包括辅助局）合并计算后，胜局与败局的平均补刀/分钟也基本持平。'
     # Change the sole explicitly wrong comparison, preserving every other byte.
-    correct = ('合并包括辅助在内的所选五局，胜局补刀均值约为 8.8/分钟，败局约为 6.45/分钟，'
-               '两组并非基本持平；仅中单四局则约为 8.8 与 9.01，应区分这两种口径。')
+    correct = ('将所选全部 5 局（包括辅助局）合并计算后，胜局补刀均值为 8.805/分钟，'
+               '败局约为 6.45/分钟，两组并非基本持平。')
     revised = req.report.replace(original, correct)
     assert req.report.count(original) == 1
     raw = saved['responses'][0]['content']
@@ -201,7 +202,24 @@ def audit():
     block = next(i for i, (_, t) in enumerate(old_inputs.source.blocks, 1) if target in t)
     old_first = compact(scripted(old_inputs, block=block))
     old_edit = editor_value(old_inputs, old_first, history_requests[0].report, ['apply'])
-    old_five = sizes(path(old_negative, recovery_responses(old_inputs, old_first, old_edit))[1].requests)
+    historic_responses = recovery_responses(old_inputs, old_first, old_edit)
+    old_five = sizes(path(old_negative, historic_responses)[1].requests)
+    # Verify the real gate with saturated synthetic usage as well as arithmetic.
+    saturated = OfflineResponses(historic_responses, charge_ceiling=True)
+    budget = BudgetedReviewSender(saturated)
+    flow = OfflineEditorWorkflow(budget)
+    initial = flow.evaluate(old_negative)
+    draft = flow.revise(RevisionRequest(old_negative.player_summary, old_negative.deterministic_report,
+        old_negative.knowledge, old_negative.report, initial))
+    try:
+        flow.evaluate(replace(old_negative, report=draft.report))
+    except ProviderResponseError as error:
+        assert error.code == 'token_budget_exhausted'
+    else:
+        raise AssertionError('saturated historical budget must reject fifth call')
+    assert len(saturated.requests) == 4 and flow.stopped
+    tail_artifact = json.loads((ROOT/'data/evaluation/results/golden_native_review_result_a04df23.json').read_text(encoding='utf-8'))
+    assert digest(native.build_inputs(history_requests[0]).data_json) == tail_artifact['receipt']['input_sha256']
     # Full-output reservation is a conservative measurement; actual usage plus
     # the next reservation governs execution. Do not silently raise the budget.
     long = anchored_request(native.build_inputs(historic), previous_raw=fixture['raw'],
@@ -224,11 +242,15 @@ def audit():
             claim_shapes=shapes, history_shapes=history_shapes, attribution_shapes=attribution_shapes,
             complete_historical_reassessment_input_ceiling=size(long)),
         option_b=dict(analyst_editor_witness=edited, changed_blocks=changed,
+            unaffected_block6_prefix_preserved=wire.report.split('将所选全部 5 局',1)[0] == req.report.split('将所选全部 5 局',1)[0],
             original_review_retained=journal['review_raw']==first, editor_input_ceiling=size(edit_request),
             normal_three_call_path=normal, maximum_five_call_path=five,
             five_call_full_reservation=reservation(five), historical_five_call_path=old_five,
             historical_full_reservation=reservation(old_five), total_budget=401920,
             historical_full_reservation_fits=reservation(old_five)<=401920,
+            historical_saturated_budget=dict(completed_calls=len(saturated.requests),
+                stop_reason='token_budget_exhausted', sixth_call_possible=False,
+                usage_kind='synthetic_ceiling_not_actual_model_usage', total_usage=budget.budget.tokens),
             semantically_wrong_but_structurally_valid=negatives),
         decision='A_not_a_standalone_fix_B_offline_candidate_only',
         limitations=['All newly supplied judgments and edited reports are analyst authored.',
