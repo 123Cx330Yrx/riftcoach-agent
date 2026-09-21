@@ -141,6 +141,56 @@ def assert_complete(request, inputs):
     assert not {'targets', 'expected_report', 'analyst_rationale'}.intersection(sent)
 
 
+def prepare_editor_diagnostic():
+    """Prepare three shadow inputs, without opening a live gate or paid client.
+
+    A real first review is reused only with its original source/report. The
+    false-only contrast is explicitly an analyst extraction, never a model run.
+    Expected dispositions remain outside all serialized requests.
+    """
+    mixed, mixed_actual = actual_case(3)
+    universal, universal_actual = actual_case(4)
+    correct, _ = actual_case(1)
+    mixed_raw = mixed_actual['responses'][0]['content']
+    false_only = json.loads(mixed_raw)
+    false_only['issues'] = [false_only['issues'][1]]
+    rows = []
+    for name, req, raw, provenance, expected, parent_hash in [
+        ('mixed_true_false', mixed, mixed_raw, 'actual_354d752_case3_first_review',
+         ['apply', 'withdraw'], digest(mixed_raw)),
+        ('true_universal', universal, universal_actual['responses'][0]['content'],
+         'actual_354d752_case4_first_review', ['apply'], universal_actual['responses'][0]['content_sha256']),
+        ('false_only_correct_report', correct, compact(false_only),
+         'analyst_extraction_of_case3_issue2_against_unchanged_block4', ['withdraw'], digest(mixed_raw)),
+    ]:
+        inputs = native.build_inputs(req)
+        request = editor_request(inputs, raw)
+        assert_complete(request, inputs)
+        assert not {'expected_dispositions', 'provenance', 'analyst_edit'}.intersection(body(request))
+        transport = validate_request(request, transport_id=CAPACITY_TRANSPORT_ID)
+        rows.append(dict(id=name, provenance=provenance, source_review_sha256=parent_hash,
+            report=req.report, report_sha256=digest(req.report), input_sha256=digest(inputs.data_json),
+            proposed_review_raw=raw, proposed_review_sha256=digest(raw),
+            expected_dispositions_host_only=expected,
+            request_sha256=hashlib.sha256(transport).hexdigest(), input_ceiling=size(request),
+            output_reservation=request.max_tokens, request_timeout_s=request.timeout_s,
+            system_policy_sha256=digest(request.messages[0].content),
+            response_contract=request.response_contract.model_dump(mode='json')
+            if hasattr(request.response_contract, 'model_dump') else
+            dict(name=request.response_contract.name,version=request.response_contract.version,
+                 schema=request.response_contract.schema_dict())))
+    assert native.build_inputs(correct).source.blocks[3] == native.build_inputs(mixed).source.blocks[3]
+    return dict(evidence_kind='offline_prepared_editor_diagnostic_not_execution',
+        live_status='offline_unregistered', provider_calls=0, semantic_approval=False,
+        initial_reviewer_qualified=False, production_admitted=False, cases=rows,
+        labels_sent_to_model=False, diagnostic_is_not_resume_of_stopped_run=True,
+        existing_guard_bypassed=False,
+        next_execution_requires='separate_receipted_diagnostic_runner_independent_review_and_exact_sha_ci',
+        stop_on='first_invalid_or_semantically_wrong_editor_decision_or_report',
+        remaining_after_success=['initial_review_precision', 'same_version_full_qualification',
+                                 'source_bound_product_admission'])
+
+
 def audit():
     data, requests, _ = load_controls()
     req, first, edited = corrected_case3()
@@ -263,11 +313,13 @@ def audit():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path)
+    parser.add_argument('--editor-diagnostic', action='store_true')
     args = parser.parse_args()
-    result = audit()
+    result = prepare_editor_diagnostic() if args.editor_diagnostic else audit()
     if args.output:
         write_new_json(args.output, result)
-    print(compact({k:v for k,v in result.items() if k not in ('option_a', 'option_b')}))
-    print(compact(dict(editor_input=result['option_b']['editor_input_ceiling'],
-        five=result['option_b']['five_call_full_reservation'],
-        historic_five=result['option_b']['historical_full_reservation'])))
+    print(compact({k:v for k,v in result.items() if k not in ('option_a', 'option_b', 'cases')}))
+    if not args.editor_diagnostic:
+        print(compact(dict(editor_input=result['option_b']['editor_input_ceiling'],
+            five=result['option_b']['five_call_full_reservation'],
+            historic_five=result['option_b']['historical_full_reservation'])))

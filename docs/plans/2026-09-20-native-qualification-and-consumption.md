@@ -6,7 +6,7 @@
 
 The two proposed contracts were compared against the immutable `354d752` claim-scope
 artifact without credentials or Provider I/O. The result is recorded in
-`data/evaluation/results/golden_native_contract_options_offline_v1.json`; it keeps the
+`data/evaluation/results/golden_native_contract_options_offline_v2.json`; it keeps the
 actual first review, full reports, source identities and old failure hashes. The new
 comparison has `provider_calls=0`, `semantic_fix_proven=false` and
 `production_admitted=false`.
@@ -20,23 +20,84 @@ this fixes an interface gap, not the semantic failure.
 Option B (one existing revision call first adjudicates every proposed issue, then
 returns the complete Markdown) is a viable offline candidate. It binds the original
 review digest, requires every issue exactly once, resolves real sources, preserves
-the full report and still performs the independent final review. A real case-3
+the full report and still performs the independent final review. An analyst case-3
 analyst witness changed block 6 only (apply the explicit combined-CS error, withdraw
 the block-4 false positive). The normal three-call path and the malformed-output
-five-call path fit the existing 401920-token report budget: **387920** reserved in
-the conservative offline envelope. The longest historical witness reserves
-**403790**, which exceeds that budget. This is an explicit capacity failure, not a
-reason to raise the limit or add a sixth call; the product's two generation calls,
-actual usage and next reservation must be included before any live candidate.
+five-call path fit the existing 401920-token report budget: **388070** reserved in
+the conservative offline envelope. The historical five-call witness reserves
+**403790**. Saturated synthetic usage makes the real shared budget stop before its
+fifth request; low synthetic usage completes the same five-call path. This does not
+establish that historical reports cannot run: actual usage plus the next request
+reservation is authoritative, not a new requirement to reserve every future call
+in advance. The product's two generation calls must also share the existing budget.
+No limit is raised and no sixth call is added.
+
+The initial v1 analyst edit unnecessarily replaced all of block 6, dropping correct
+mid-only details. V2 replaces only the false combined-population clause and keeps
+the correct prefix byte-for-byte; this accounts for the 150-token envelope change.
+V1 stays as historical offline evidence. No actual model report or receipt changed.
 
 Structured dispositions remain non-semantic. The comparison deliberately accepts
-negative protocol witnesses where a true issue is withdrawn, an applied issue leaves
-the report unchanged, or the old false-positive edit is retained. Each remains
+negative protocol witnesses where a true issue is withdrawn, an applied issue only
+adds a newline without fixing the true error, or the false-positive edit is retained. Each remains
 `semantic_approval=false`; an independent whole-report semantic review is still
 required. The existing unadjudicated-finding guard, native offline status and product
-offline gate remain unchanged. B can be considered for a new candidate only after a
-product-plus-history budget envelope and same-SHA public checks pass; this work does
-not authorize a paid batch.
+offline gate remain unchanged. B still uses the same first reviewer; successful
+editing would not prove initial false-positive precision improved. It must not
+bypass the labelled development guard or retroactively accept case 3. No product
+admission follows from this offline comparison or its public engineering checks.
+
+### Product shared-budget verification
+
+`tests/test_native_editor_product_budget.py` injects B only into a test instance
+after current production assembly. The actual typed compiler, local RAG and Runtime
+execute; generation, evaluation and editing replies are scripted. Production
+registration, manifests and live gates are not modified. Five knowledge searches
+share the first generation response; this is not exact historical product replay,
+observed-identity qualification or external-Evidence qualification.
+
+The complete generation → generation → review → editor → recheck path has input
+ceilings 29620/41946/44552/41056/44586 and full synthetic usage **365600 < 401920**.
+It completes in five calls. Adding a first-review reassessment consumes the fifth
+slot at editing; the attempted sixth final review raises
+`external_call_budget_exhausted`, and no report is published. Low synthetic usage
+of 100 isolates the call-count limit from token exhaustion. These are measured
+boundaries, not a promise that every product report or recovery will fit.
+Evidence: `golden_native_editor_product_budget_offline_v1.json`.
+
+### Next decision and limits
+
+Do not wire B into production merely because its interface executes. A future
+bounded diagnostic can reuse the frozen, independently adjudicated first reviews
+to measure the editor directly: mixed real true/false findings from case 3,
+true-only every-metric error from case 4, and a false-only proposal against the
+unchanged correct report. Expected dispositions and analyst edits stay out of the
+request. Compare every decision, selected source and actual changed sentence, then
+the full revised report; final pass alone never validates the decisions.
+
+The three complete inputs, review provenance, source/report/request digests,
+schemas and input measurements are now prepared in
+`golden_native_editor_diagnostic_plan_v1.json`; reproduce with
+`python -m scripts.check_native_contract_options --editor-diagnostic`.
+The false-only proposal is explicitly an analyst extraction, not a new actual
+model opinion. Labels stay outside the serialized request. The plan is offline
+and has no executable paid runner. Independent read-only review verified these
+identities, host-only labels and ceilings 41104/40362/40154.
+
+This would be a separately identified editor diagnostic, not resuming the stopped
+development run, not new first-review precision evidence, and not a bypass of the
+unexpected-findings guard. It requires a prepared reproducible request/receipt
+boundary and independent review before same-SHA public checks and any execution.
+Keep the current batch offline. No additional authorization turn is needed for the
+already-authorized preparation; a failed outcome calls for diagnosis, not another
+wording patch followed by a fresh paid batch.
+
+Even an accepted editor diagnostic would leave initial review reliability,
+same-version full qualification and product admission unresolved. Do not change
+the accepted complete-context criterion or convert explicit true errors into
+optional suggestions to make the new path pass.
+
+## Earlier real batch and retained diagnosis
 
 The interrupted continuation stopped at clean `354d752b76506a78b543a86975487721c344a2df`
 before any live request. Its Actions `35565312170` finished with pytest,
@@ -106,7 +167,7 @@ Native is now `offline_claim_scope_false_positive`; product remains offline.
 Model-visible policy, review schema, GLM/high and all budgets are unchanged.
 The guard is only development execution hardening, **not a semantic repair**.
 
-### Next offline decision, before another candidate or paid batch
+### Original comparison brief (completed above; retained for traceability)
 
 Do not append another paraphrase of a rule already present in the failed request.
 The next deliverable is a measured contract comparison using complete source-bound

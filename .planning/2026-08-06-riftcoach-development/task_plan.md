@@ -1,6 +1,6 @@
 # RiftCoach 持续开发计划
 
-2026-09-21: 354d752 / CI35565312170 verified; claim-scope 1 and 4 accepted, 3 rejected for a scope false positive. 7 complete calls / 108844 tokens / unknown 0. Development pre-revision adjudication stop is implemented and tested; native and product remain offline. Offline contract comparison is complete: A anchors remain audit-only; B is an offline candidate, with normal five-call reservation 387920 and longest historical witness 403790 > 401920. No paid calls. Next: include product generation plus historical worst-case in a bounded B candidate envelope, then obtain same-SHA public checks; do not raise the budget or add a sixth call. Stage8E and all deferred product/design scope remain open.
+2026-09-21: offline contract comparison v2 completed. A anchors remain audit-only. B adjudicates in the existing revision slot, with full-source analyst witnesses and semantic counterexamples, without changing initial-review precision or bypassing the development guard. Claim five-call reservation is 388070; historical five-call reservation is 403790. The real budget stops before call five with saturated usage but allows five with low usage: actual usage plus next reservation remains authoritative. Product generation and the next candidate decision are tracked in the latest section of docs/plans/2026-09-20-native-qualification-and-consumption.md. No new paid calls; both live gates remain offline. Stage8E and deferred design/product scope remain open.
 
 以下为历史记录，当前以最新canonical为准。
 
@@ -312,7 +312,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-21: 354d752 / CI35565312170 verified; claim-scope 1 and 4 accepted, 3 rejected for a scope false positive. 7 complete calls / 108844 tokens / unknown 0. Development pre-revision adjudication stop is implemented and tested; native and product remain offline. Offline contract comparison is complete: A anchors remain audit-only; B is an offline candidate, with normal five-call reservation 387920 and longest historical witness 403790 > 401920. No paid calls. Next: include product generation plus historical worst-case in a bounded B candidate envelope, then obtain same-SHA public checks; do not raise the budget or add a sixth call. Stage8E and all deferred product/design scope remain open.
+2026-09-21: offline contract comparison v2 completed. A anchors remain audit-only. B adjudicates in the existing revision slot, with full-source analyst witnesses and semantic counterexamples, without changing initial-review precision or bypassing the development guard. Claim five-call reservation is 388070; historical five-call reservation is 403790. The real budget stops before call five with saturated usage but allows five with low usage: actual usage plus next reservation remains authoritative. Product generation and the next candidate decision are tracked in the latest section of docs/plans/2026-09-20-native-qualification-and-consumption.md. No new paid calls; both live gates remain offline. Stage8E and deferred design/product scope remain open.
 
 完整同版本资格后才推进来源绑定产品、Evidence/事务/API/Workbench；前端审美/头像/四块联动/专属Training与62主题保持。
 
@@ -562,7 +562,7 @@ RQ-211 已完成 RQ-210 后的一次有界 provider close/wakeup 观察。探针
 
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 
-2026-09-21: 354d752 / CI35565312170 verified; claim-scope 1 and 4 accepted, 3 rejected for a scope false positive. 7 complete calls / 108844 tokens / unknown 0. Development pre-revision adjudication stop is implemented and tested; native and product remain offline. Next: offline semantic-contract decision in docs/plans/2026-09-20-native-qualification-and-consumption.md (latest section), then only a justified new candidate. No more paid calls in this failed batch. Stage8E and all deferred product/design scope remain open.
+2026-09-21: offline contract comparison v2 completed. A anchors remain audit-only. B adjudicates in the existing revision slot, with full-source analyst witnesses and semantic counterexamples, without changing initial-review precision or bypassing the development guard. Claim five-call reservation is 388070; historical five-call reservation is 403790. The real budget stops before call five with saturated usage but allows five with low usage: actual usage plus next reservation remains authoritative. Product generation and the next candidate decision are tracked in the latest section of docs/plans/2026-09-20-native-qualification-and-consumption.md. No new paid calls; both live gates remain offline. Stage8E and deferred design/product scope remain open.
 
 完整同版本资格后才推进来源绑定产品、Evidence/事务/API/Workbench；前端审美/头像/四块联动/专属Training与62主题保持。
 

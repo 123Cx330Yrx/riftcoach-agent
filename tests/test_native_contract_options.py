@@ -12,7 +12,7 @@ from app.evaluation.golden_review_experiment import compact, digest
 from app.harness.steps import RevisionRequest
 from app.providers.errors import ProviderResponseError
 from scripts.check_native_contract_options import (audit, actual_case, corrected_case3, editor_value,
-    OfflineResponses, PASS, path, recovery_responses)
+    OfflineResponses, PASS, path, recovery_responses, prepare_editor_diagnostic)
 from scripts.native_contract_options import (OfflineEditorWorkflow, validate_editor, validate_anchors,
     anchored_request, editor_request, body)
 
@@ -46,6 +46,23 @@ def test_complete_offline_audit_preserves_actual_failure_and_semantic_counterexa
     assert b['historical_saturated_budget']['stop_reason'] == 'token_budget_exhausted'
     assert all(n['protocol_valid'] and not n['semantic_acceptance']
                for n in b['semantically_wrong_but_structurally_valid'])
+
+
+def test_prepared_editor_diagnostic_does_not_relabel_extraction_as_model_output():
+    plan = prepare_editor_diagnostic()
+    assert plan['live_status'] == 'offline_unregistered' and plan['provider_calls'] == 0
+    assert not plan['initial_reviewer_qualified'] and not plan['existing_guard_bypassed']
+    mixed, universal, extracted = plan['cases']
+    for row, index in ((mixed, 3), (universal, 4)):
+        req, saved = actual_case(index)
+        assert row['report'] == req.report
+        assert row['proposed_review_raw'] == saved['responses'][0]['content']
+        assert row['input_sha256'] == digest(native.build_inputs(req).data_json)
+    assert extracted['provenance'].startswith('analyst_extraction')
+    assert extracted['source_review_sha256'] == mixed['proposed_review_sha256']
+    assert extracted['proposed_review_sha256'] != extracted['source_review_sha256']
+    assert extracted['report'] == actual_case(1)[0].report
+    assert json.loads(extracted['proposed_review_raw'])['issues'] == [json.loads(mixed['proposed_review_raw'])['issues'][1]]
 
 
 @pytest.mark.parametrize('damage', ['missing', 'duplicate', 'unknown', 'wrong_hash', 'source',
