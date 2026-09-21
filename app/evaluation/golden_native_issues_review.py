@@ -20,7 +20,7 @@ from app.providers.models import ChatMessage, ChatRequest, MessageRole
 from app.providers.structured import contract_for_model
 
 EXPERIMENT_ID = 'golden-native-issues-review-v3.5'
-LIVE_STATUS = 'offline_claim_scope_adjudication'
+LIVE_STATUS = 'bounded_development_after_exact_ci'
 LIVE_BLOCK_REASON = 'native_claim_scope_qualification_required'
 strict_json = previous.strict_json
 build_inputs = previous.build_inputs

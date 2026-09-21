@@ -61,6 +61,9 @@ def test_claim_scope_preview_and_execution_gate_precede_external_io(monkeypatch)
         issues=[dict(quote=negative['targets'][0], category='fact_error')])
     assert runner.score_case(negative, result)['target_location_flagged']
     args.execute = True
+    # The real candidate is now opened for exact-CI bounded development;
+    # explicitly simulate the earlier offline state to test the gate itself.
+    monkeypatch.setattr(native, 'LIVE_STATUS', 'offline_claim_scope_adjudication')
     monkeypatch.setattr(runner, 'prepare_claim_scope', forbidden)
     with pytest.raises(ValueError, match=native.LIVE_BLOCK_REASON):
         runner.run(args, candidate_module=native)

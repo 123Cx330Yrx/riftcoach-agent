@@ -62,7 +62,8 @@ and it was corrected before commitment or any further paid request.
 
 Coach1.4.5 / Skill0.6.0 / Program3.0.5 bind native v3.5 / wire3.1.0. The checked-in
 manifest is regenerated with the existing fingerprint algorithm and actual
-Runtime composition verified. Native stays `offline_claim_scope_adjudication`;
+Runtime composition verified. Native will use `bounded_development_after_exact_ci`
+only after the new exact-SHA public checks;
 the product runner stays `offline_source_binding_and_attribution_review`.
 
 Seven frozen full-report controls in
@@ -100,9 +101,9 @@ pinned where byte hashes cross platforms. Evidence:
 
 These reservations describe the measured scripted responses, not a guarantee
 for any possible long response. Actual usage plus the next request reservation
-remains authoritative. No limit was increased. No further paid batch is allowed
-in this turn; finish independent review, documentation, commit/push and public
-checks. Offline evidence does not establish the semantic fix.
+remains authoritative. No limit was increased. The earlier paid batch ended at
+the first semantic failure; this new turn may run the separately gated v3.5
+qualification batch below. Offline evidence does not establish the semantic fix.
 
 Next, qualify v3.5 through the existing development gate, refreshing its manifest
 and obtaining public checks for the resulting exact SHA before live requests.
