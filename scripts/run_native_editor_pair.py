@@ -24,7 +24,7 @@ from scripts.run_golden_inference_development import verify_public_ci
 
 EXPERIMENT='native-editor-opinion-pair-v1'
 PLAN=ROOT/'data/evaluation/results/golden_native_editor_pair_plan_v1.json'
-LIVE_STATUS='bounded_frozen_pair_after_exact_ci'
+LIVE_STATUS='offline_pair_completed_identity_unresolved'
 
 
 def prepare_pair():

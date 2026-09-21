@@ -97,6 +97,7 @@ def test_preview_and_repeat_gate_before_credentials(tmp_path,monkeypatch):
     import dotenv
     monkeypatch.setattr(dotenv,'dotenv_values',lambda *_:pytest.fail('secrets read before gate'))
     assert pair.run(SimpleNamespace(execute=False))['max_calls']==2
+    monkeypatch.setattr(pair,'LIVE_STATUS','bounded_frozen_pair_after_exact_ci')
     monkeypatch.setattr(pair,'verify_public_ci',lambda *_:'test-head')
     (tmp_path/pair.EXPERIMENT).mkdir()
     with pytest.raises(FileExistsError):

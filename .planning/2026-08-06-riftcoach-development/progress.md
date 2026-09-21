@@ -1,3 +1,13 @@
+# 2026-09-21 Opinion pair completed and identity boundary
+
+2026-09-21配对诊断已完成：clean483f91d / Actions35601045617三项success后，两臂均完整stop。locator_only实际修正block6补刀真错、撤销block4误报并保留原文；full_opinion也修正真错，却仍采纳泛指→全称误报。两臂公开全文/实际改稿/来源由主Agent及独立Agent核对；定位臂另有选引不完整和非精确转述限制，不冒称完全合格。两次共23418输入+9564输出=32982tokens、89.902秒、未知0，累计Provider至少275；无终评/发布。本轮不再付费。完整回执重建与人工裁决见golden_native_editor_pair_result_483f91d.json；原始失败不改。
+
+唯一下一步：按docs/plans/2026-09-21-editor-opinion-pair.md完成逐条指控身份与独立改稿的离线合同裁决。新反例已证明同段两条不同指控在locator-only中失去可读对应关系（摘要不同，非完整输入字节相同）；不能直接采用仅段号方案，也不能将精确原句当成语义正确证明。先保全每条原指控/原句/全文/来源并验证同段及同句多指控、选引、实际改稿和完整共享预算，再决定新有界资格批；本轮不补提示后再付费。pair入口已关闭，native/editor/product仍offline，首评误报未证明修好，8E仍in_progress。
+
+后续同版本完整资格→来源绑定生成/审查/修订与Evidence→真实Worker/DB事务/API/Workbench→独立评估/学习保持。前端整体审美优化乃至重做、英雄头像、Coach/Review/Training/Evidence联动、按玩家request专属Training及62主题继续按restart plan追踪，主库未动。38项相关测试已通过；最终公共检查以PR7本次提交记录为准。
+
+以下为历史记录。
+
 # 2026-09-21 Offline contract comparison and bounded editor prototype
 
 从354d752真实失败继续：首评错误地将泛指补成全称，最终pass不能追认该误报。完成A精确锚点与B单修订逐项裁决的离线原型、完整请求对比和故障边界测试，未改GLM/high、预算、原生首评、产品注册或开发守卫，未新增Provider请求；累计真实调用仍至少272。
