@@ -86,6 +86,12 @@ _rules.insert(1, previous.FULL_CONTEXT_RULE +
     '具体后文可补足省略范围；明确的组别、数字、方向、全称或归因错误仍阻断，不能借其他正确内容开脱。'
     '列问题前核对全文实际表达，不补造对象、分母或全称量词；只有全文已足以确定含义且与来源一致、无影响结论的未解歧义时，措辞优化才不列issue。'
     '否则在现有explanation说明实际冲突或会改变结论的未解歧义；建议准确指向原段，不混淆block编号和章节号。')
+# Phase-neutral domain policy, shared by independently adjudicating editors.
+# Deliberately exclude reviewer output fields, score/verdict and reassessment
+# mapping instructions. Native review's serialized policy remains unchanged.
+SEMANTIC_POLICIES = dict(scope=_rules[1], identity_and_training=_rules[5],
+    computed_statistics=_rules[6], attribution=_rules[7], source_use=_rules[8],
+    external_evidence=_rules[9], lossless_tables=_rules[11])
 POLICY = '\n'.join(_rules).replace(
     'retained要求对应最终同一问题；replaced给修正后的final_issue编号；',
     '只用replaced或withdrawn；replaced给当前完整issues中的final_issue编号，即使问题内容未变；'

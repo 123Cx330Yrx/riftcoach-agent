@@ -1,4 +1,4 @@
-"""Offline-only contract prototypes; neither is registered with a live runner.
+"""Unregistered contract prototypes; B has a separate stopped diagnostic runner.
 
 Exact anchors prove identity, not meaning. Editor dispositions prove accounting,
 not that withdrawing an issue is justified. No Provider or credential loading.
@@ -108,7 +108,7 @@ EDITOR_POLICY = (
     '不新增未提供事实或擅定训练目标。'
     '所有问题withdraw时report必须逐字等于原报告，否则交出完整改稿，不输出额外说明。'
     '后续独立复评仍检查完整新稿；本次改稿不能追认原评估正确。\n'
-    + native.previous.FULL_CONTEXT_RULE+'\n'+native.previous.TABLE_POLICY
+    + '\n'.join(native.SEMANTIC_POLICIES.values())
 )
 
 

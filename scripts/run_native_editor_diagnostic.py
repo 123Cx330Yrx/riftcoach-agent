@@ -26,9 +26,9 @@ from scripts.check_native_contract_options import prepare_editor_diagnostic, ROO
 from scripts.native_contract_options import editor_request, validate_editor
 from scripts.run_golden_inference_development import verify_public_ci
 
-PLAN = ROOT/'data/evaluation/results/golden_native_editor_diagnostic_plan_v2.json'
-EXPERIMENT = 'native-editor-diagnostic-v1'
-LIVE_STATUS = 'bounded_editor_diagnostic_after_exact_ci'
+PLAN = ROOT/'data/evaluation/results/golden_native_editor_diagnostic_plan_v3.json'
+EXPERIMENT = 'native-editor-diagnostic-v2-offline'
+LIVE_STATUS = 'offline_editor_scope_false_positive'
 
 
 def read(path):

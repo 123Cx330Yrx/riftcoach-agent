@@ -1,6 +1,17 @@
 # Native qualification, claim scope diagnosis and product consumption
 
-## Current: v3.6 partial improvement, scope false positive, offline only
+## Current: native and editor scope false positives, offline only
+
+2026-09-21: the separate editor diagnostic failed on its first mixed case after
+one complete request (14113 tokens). The true error was repaired, but the false
+positive was also applied. Independent full-report review rejected it; no final
+review/later case ran. Shared semantic-policy delivery was then corrected
+offline, preserving native's exact policy and the original failed request.
+The aligned editor has not been tested on a real model. Current evidence,
+104-test verification, budget boundaries and next action are in
+[the editor decision](2026-09-21-editor-diagnostic-decision.md).
+The following execution brief records the completed batch, not an instruction
+to reopen it or issue another paid request in this continuation.
 
 ### 2026-09-21 continuation: independent editor diagnostic
 

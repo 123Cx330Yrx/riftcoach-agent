@@ -134,6 +134,7 @@ def test_final_schema_recovery_is_last_call_and_deadline_does_not_reset(tmp_path
 
 def test_next_case_requires_previous_final_manual_acceptance_before_credentials(tmp_path,monkeypatch):
     import dotenv
+    monkeypatch.setattr(runner,'LIVE_STATUS','bounded_editor_diagnostic_after_exact_ci')
     monkeypatch.setattr(runner,'verify_public_ci',lambda _: 'tested-head')
     monkeypatch.setattr(dotenv,'dotenv_values',lambda *a:pytest.fail('gate loaded secrets'))
     args=SimpleNamespace(execute=True,case_index=2,phase='edit',batch_id='editor-diagnostic-test',
@@ -146,6 +147,12 @@ def test_next_case_requires_previous_final_manual_acceptance_before_credentials(
         order=[c['id'] for c in runner.read(runner.PLAN)['cases']]))
     with pytest.raises(FileNotFoundError): runner.run(args)
     assert not (batch/'true_universal').exists()
+
+
+def test_failed_candidate_is_offline_before_ci_or_credentials(monkeypatch):
+    monkeypatch.setattr(runner,'verify_public_ci',lambda *_:pytest.fail('closed diagnostic reached CI'))
+    with pytest.raises(ValueError,match='editor_diagnostic_offline'):
+        runner.run(SimpleNamespace(execute=True,case_index=1,phase='edit'))
 
 
 def test_crlf_report_is_preserved_exactly_across_manual_pause(tmp_path):
