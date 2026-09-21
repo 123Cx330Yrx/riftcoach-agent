@@ -2,6 +2,42 @@
 
 ## Current: v3.6 partial improvement, scope false positive, offline only
 
+## 2026-09-21 offline contract comparison completed
+
+The two proposed contracts were compared against the immutable `354d752` claim-scope
+artifact without credentials or Provider I/O. The result is recorded in
+`data/evaluation/results/golden_native_contract_options_offline_v1.json`; it keeps the
+actual first review, full reports, source identities and old failure hashes. The new
+comparison has `provider_calls=0`, `semantic_fix_proven=false` and
+`production_admitted=false`.
+
+Option A (claim plus exact source anchors) is useful for audit location only. The
+case-3 false-positive issue remains wire-valid when its original block and complete
+context are anchored, so anchors do not prove entailment or prevent a scope expansion.
+The reassessment path now preserves the prior issue inventory and has its own phase;
+this fixes an interface gap, not the semantic failure.
+
+Option B (one existing revision call first adjudicates every proposed issue, then
+returns the complete Markdown) is a viable offline candidate. It binds the original
+review digest, requires every issue exactly once, resolves real sources, preserves
+the full report and still performs the independent final review. A real case-3
+analyst witness changed block 6 only (apply the explicit combined-CS error, withdraw
+the block-4 false positive). The normal three-call path and the malformed-output
+five-call path fit the existing 401920-token report budget: **387920** reserved in
+the conservative offline envelope. The longest historical witness reserves
+**403790**, which exceeds that budget. This is an explicit capacity failure, not a
+reason to raise the limit or add a sixth call; the product's two generation calls,
+actual usage and next reservation must be included before any live candidate.
+
+Structured dispositions remain non-semantic. The comparison deliberately accepts
+negative protocol witnesses where a true issue is withdrawn, an applied issue leaves
+the report unchanged, or the old false-positive edit is retained. Each remains
+`semantic_approval=false`; an independent whole-report semantic review is still
+required. The existing unadjudicated-finding guard, native offline status and product
+offline gate remain unchanged. B can be considered for a new candidate only after a
+product-plus-history budget envelope and same-SHA public checks pass; this work does
+not authorize a paid batch.
+
 The interrupted continuation stopped at clean `354d752b76506a78b543a86975487721c344a2df`
 before any live request. Its Actions `35565312170` finished with pytest,
 postgres-migrations and packaging-smoke all successful. No surviving Provider
