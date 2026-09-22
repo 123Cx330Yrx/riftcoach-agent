@@ -143,7 +143,7 @@ Luna请求因开发服务404未执行；后续只读审查由默认Codex Agent�
 使用现有 `scripts.run_golden_native_issues_review --policy business`；模型GLM-5.3-flash/high，
 每报告最多5次/一次修订/401920tokens/900秒、单次32768/300秒、SDK retry0不变。
 本批至多四份完整已有开发报告、总20调用上限，顺序为claim-scope 3（核心真错+正确段）、
-claim-scope 4（明确全称错误）、claim-scope 1（正确全文）、attribution 2（原伤害归因错误）。
+claim-scope 4（明确全称错误）、claim-scope 1（正确全文）、attribution 1（原伤害归因错误）。
 每例先完整人工核对判断、引用、实际改文和复评，成功才继续；任一语义或执行失败终止本付费批。
 所有预期裁决留在host；不是独立holdout。现有runner会在未裁决额外issue时先停修订。
 
@@ -154,3 +154,5 @@ claim-scope 4（明确全称错误）、claim-scope 1（正确全文）、attrib
 
 这批成功也不能直接批准产品；旧native/editor/product入口仍关闭，同版本完整覆盖、实际产品生成/消费、
 独立评估与后续产品工作仍需完成。新策略仅显式开发验证，未注册到正式组合。
+
+执行前逐项编译核对发现最初文字误写attribution索引2；该例实际是正确稿且与claim-scope1同输入。已在任何付费请求前纠正为索引1的原归因负例；四例实际ID/标签/请求hash冻结在golden_native_business_plan_v1.json，不重复正确稿充数。
