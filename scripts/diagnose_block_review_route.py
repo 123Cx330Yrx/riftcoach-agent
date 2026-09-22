@@ -79,7 +79,7 @@ def observed_usage(directory):
     return dict(input_tokens=progress.input_tokens, output_tokens=progress.output_tokens)
 
 
-def observe(directory, request, inputs, factory, *, argument_diagnostic=False):
+def observe(directory, request, inputs, factory, *, argument_diagnostic=False, experiment=None):
     records = []
     for route in (('direct',) if argument_diagnostic else ('direct', 'proxy_12000')):
         arm = directory / route
@@ -116,7 +116,7 @@ def observe(directory, request, inputs, factory, *, argument_diagnostic=False):
         print(json.dumps({k:v for k,v in record.items() if k != 'response'}), flush=True)
         if not record['valid']:
             break
-    result = dict(experiment='block-review-tool-args-v1' if argument_diagnostic else RUN_ID,
+    result = dict(experiment=experiment or ('block-review-tool-args-v1' if argument_diagnostic else RUN_ID),
         cases=records, production_admitted=False,
         semantic_approval=False, reserved_calls=sum(r['reserved_calls'] for r in records),
         unknown_usage_calls=sum(r['unknown_usage_calls'] for r in records),

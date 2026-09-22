@@ -11,13 +11,14 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-22：定点配对能区别归因真错/正确稿，但自主全文修复仍未验证。最新直连诊断已正常结束，却在终态工具参数解码被拒绝，进一步定位到`tool_call_arguments`。不能宣称漏检修好、代理根因确定或产品可接入。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。修复终态坏参数丢证据及已返回usage误记未知的缺口后，精确HEAD CI通过再执行一次有界原请求参数捕获；分片可离线重放，不靠增加超时/输出或反复付费重现。计划及结果分支见attribution-miss-diagnosis。
+2026-09-22：已捕获并离线精确重现终态参数拒绝：25个段落对象各重复advisories字段，其中1处前后值冲突。严格解析器拒绝正确；原始意见检出了block14但仍误报block4且给出错误经济归因建议，当前机制仍不合格。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。精确HEAD CI后执行冻结的single-schema全文正反配对，移除正文里重复的1619字符输出Schema说明；保留工具Schema、业务规则/来源/模型/预算。若仍结构或语义错误，不采用、不继续靠换Schema/堆提示付费试运气。计划及结果分支见attribution-miss-diagnosis。
+- 1f75120 / CI35707311912三项通过；原分片离线回放得到同一tool_call_arguments，模型/服务端原输出含重复成员，不是本地拼接丢字。实测1次/18087tokens/未知0；证据`golden_block_tool_argument_result_1f75120.json`。坏参数保留及usage统计修复已实际验证；旧丢失输出不能追补。
 - 54dfea1 / CI35705495669三项通过，直连122.297秒正常EOF/关闭，tool_calls和usage已返回，但组装拒绝tool_call_arguments。代理臂未执行。本次实际1调用/18098已知tokens/未知0，原回执未知1不改写，独立校正见`golden_block_route_result_54dfea1.json`。原始失败参数当时未保存，具体语法/解码原因未知。
 - a501c33 / CI35700582136三项通过；原归因自主全文首评最后保存事件83.484秒，300.016秒由父进程截止并回收子进程，无完整response/usage、未知用量1。前缀最多会丢末尾未保存事件，不能当精确断流时刻。证据`golden_native_block_tool_interruption_a501c33.json`。
 - 当前Provider走环境代理12000；无凭据短GET经代理3.000秒、直连1.032秒均401。只证明当时短请求可达，未证明长连接/Provider/代理哪层导致停滞。Git配置和NO_PROXY未改。
 - 修复进度记录遗漏tool deltas：新增首末工具事件、分片数、参数字符数，无正文/参数泄露，原预算/请求不变；native manifest仅更新该组件hash及自校验digest。020e52b公共CI35703296766三项通过。
-- 终态坏参数留存和stream usage记账修复已离线验证；原分片仅供本地诊断、无私有reasoning，仍拒绝交付坏结果。待本次精确HEAD公共CI；原模型、提示、请求、预算与产品关闭状态不变。
+- 终态坏参数留存和stream usage记账修复已真实验证；原分片仅供诊断、无私有reasoning，仍拒绝交付坏结果。当前single-schema诊断离线8项通过，待其精确HEAD公共CI后实测；不启用产品或旧失败批。
 - 定点配对cb69f82 / CI35698979457：错误稿80/revise，正确稿95/pass，2次/26738tokens、未知0；其结果不能计入自主全文资格。完整公开证据`golden_partitioned_focus_result_cb69f82.json`。
 - 本次续办真实请求4次：归因旧候选1次完成、定点2次完成、逐段1次中断；已知42299tokens，另1次未知。不改旧回执。ADR0104及ADR0105的live入口均停止；产品入口仍关闭。
 - b47818e测试误读忽略目录的缺陷已在651a207修复并公共CI三项通过；原归因完整失败证据`golden_native_partitioned_tool_public_651a207.json`。完整诊断/取舍见attribution-miss-diagnosis和ADR0105。
