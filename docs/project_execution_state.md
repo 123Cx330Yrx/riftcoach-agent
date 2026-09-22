@@ -11,8 +11,10 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-23：用户另行允许的显式ID两例诊断已完成，错误稿检出且引用准确，正确全文97/pass；没有改稿/终评、15例资格或产品准入。旧失败保留。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。准备可审查的模型角色合同与接线方案：Flash/high生成/工具与改稿，GLM-5.3/high首评/终评，共用既有5次/401920tokens/900秒账本；核对实际组合、资格绑定和恢复路径。此为后续提案，产品角色采用与额外付费仍需具体决定。停止编号/提示排列组合，不将这两份纯审查结果当产品资格，不重开已结束批。
+2026-09-23：显式来源两例真实诊断通过后，已完成未注册的审查分工原型和接线影响核查；尚未采用产品分工或获得整链资格。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。审阅ADR0109的具体角色采用决定：是否实现opt-in候选的Flash/high生成/工具/改稿、GLM-5.3/high首评/重评/终评。采用后一次完成角色合同、实际观测/定价/回执及资格绑定接线，再准备有界真实整链验证。产品默认、额外付费和质量准入均不由本提案自动更改。
+- 离线实物：scripts/reviewer_role_proposal.py复用现有预算和审查状态机；实际产品生成/工具消息及5条知识来源经两模型身份替身验证，常规5调用完成，恢复后的第6调用拒绝。异常身份/来源投影/回执/时限/tokens停止且不fallback；91项相关回归通过（后续见progress最终结果）。只证明离线组合，不证明真实模型改稿或默认产品接线完成。
+- 新发现的接线依赖：ObservedProvider固定单模型且各实例序号独立，Recorder单价格整场计费，回执Factory绑定单传输。不能只改路由或把GLM记成Flash；具体代码入口、费用估算、失败路径和验证顺序见ADR0109。没有新付费调用，上批关闭保持。
 - 0c061b2 / CI35752331153公共三项通过后，两例完整返回并经host逐项核对：原错误稿80/needs_revision，仅block14，sources31/1/14/10/18支持原意及修正建议；正确稿97/pass、无issue/advisory。2次输入24453+输出4483=28936tokens、未知0，缓存2368已含输入，按全未缓存价估算0.321148元；流耗时48.062/28.235秒，含host批耗时230.515秒。20份原JSON/hash、回执和人工来源审查见golden_explicit_source_pair_result_0c061b2.json。无早期死亡建议输出，不能单独认定旧advisory错引已复现修好；两例不证明稳定率或变更因果。
 - 编号全路径核查：表格生产index+1、恢复index-1、source_roots及解析均一致，并非程序错位。歧义来自模型侧bare evidence_keys数组。离线适配替换为同ID的evidence_by_id对象及一句读取说明，首评/重评/改稿严格往返，完整坏意见及原hash保留；OP.GG零基物理路径不改。两控制经真实SDK MockTransport确认只有这两处消息变化；原失败仍拒绝，建议的错引不能统一+1修好。证据golden_explicit_source_projection_v1.json；未改产品指纹或注册新产品候选。
 - b6b30f8 / CI35747690218三项通过后，批准的首例完整tool_calls，82/needs_revision，一问题一建议，56.406秒。文本检出正确且未把上下文建议升级阻断，但semantic_source_id_unknown；1次输入12149+输出3480=15629tokens、未知0，按单价估算0.194632元。未耗尽/超时，第二例未发，不能称正反配对成功。完整8份原工件/hash、请求身份、逐项来源及独立算术见golden_review_model_comparison_result_b6b30f8.json。
@@ -32,7 +34,7 @@ pause_reason: ""
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。
 实际后端：`D:\riftcoach-agent-rq192-pr`，分支 `codex/rq192-provider-stream-contract-ci`，
-当前ADR0103—0108及布局实验真实批均停止；ADR0108首例来源绑定失败，第二例未调用，具体实现以本分支HEAD为准；`8014a56`仅是以下ADR0104历史控制基线。主库前端工作保留，未合并/重置。
+当前旧真实批均已关闭；ADR0108原批首例失败、第二例未发，新授权的显式ID两例均通过；ADR0109分工仅为离线提案。具体实现以本分支HEAD为准；`8014a56`仅是以下ADR0104历史控制基线。主库前端工作保留，未合并/重置。
 
 ## 已验证事实与阻断
 

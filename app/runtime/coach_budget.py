@@ -25,6 +25,10 @@ class CoachBudgetedProvider:
         self.stopped = True
         raise ProviderResponseError(provider=self.provider_name, code=code)
 
+    def _provider_for_request(self, request):
+        """Default composition uses its contract-validated single provider."""
+        return self.provider
+
     def chat(self, request):
         from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
         limits = self.contract.descriptor()
@@ -40,15 +44,21 @@ class CoachBudgetedProvider:
         ceiling = estimate_runtime_request_input_ceiling(request)
         if ceiling > limits["max_input_tokens"] or self.tokens + ceiling + request.max_tokens > limits["total_tokens"]:
             self._fail("token_budget_exhausted")
+        try:
+            provider = self._provider_for_request(request)
+            expected_identity = (provider.provider_name, provider.model_name)
+        except Exception:
+            self.stopped = True
+            raise
         self.calls += 1
         try:
-            response = self.provider.chat(request)
+            response = provider.chat(request)
         except Exception:
             self.stopped = True
             raise
         if not isinstance(response, ChatResponse):
             self._fail("invalid_chat_response")
-        if response.provider != self.provider_name or response.model != self.model_name:
+        if (response.provider, response.model) != expected_identity:
             self._fail("invalid_chat_response")
         self.tokens += response.usage.input_tokens + response.usage.output_tokens
         if response.usage.input_tokens > ceiling or response.usage.output_tokens > request.max_tokens:
