@@ -138,6 +138,19 @@ def test_run_requires_exact_ci_before_credentials_or_output(monkeypatch):
     def forbidden(*args, **kwargs):
         pytest.fail('credentials loaded before CI')
     monkeypatch.setattr(diagnostic, 'verify_public_ci', blocked)
+    monkeypatch.setattr(diagnostic, 'LIVE_STATUS', 'bounded_diagnostic_after_exact_ci')
     monkeypatch.setattr(dotenv, 'dotenv_values', forbidden)
     with pytest.raises(ValueError, match='exact_sha_public_ci_required'):
         diagnostic.run(argparse.Namespace(execute=True, ci_run='wrong', env_file=None))
+
+
+def test_rejected_layout_entry_stops_before_sources_ci_or_secrets(monkeypatch):
+    import argparse
+    import dotenv
+    def forbidden(*args, **kwargs):
+        pytest.fail('closed layout diagnostic reached input/CI/credentials')
+    monkeypatch.setattr(diagnostic, 'prepare', forbidden)
+    monkeypatch.setattr(diagnostic, 'verify_public_ci', forbidden)
+    monkeypatch.setattr(dotenv, 'dotenv_values', forbidden)
+    with pytest.raises(ValueError, match='layout_semantic_failure_no_retry'):
+        diagnostic.run(argparse.Namespace(execute=True, ci_run='', env_file=None))

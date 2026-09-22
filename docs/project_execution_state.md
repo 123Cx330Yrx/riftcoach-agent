@@ -12,7 +12,8 @@ pause_reason: ""
 ## 当前行动
 
 2026-09-22：核心实际改稿/终评仍未走通。buffered工具参数分支仍重复关键字段；JSON正文分支300秒无正式结果，二者live入口均停止，未接产品。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。全文平铺/逐段清单比较完成；不再靠逐段输出义务强迫覆盖。精确HEAD公共CI后执行review-target-layout-v1：保持全部内容/规则/schema，把待审source_index移至最后user消息尾部，与旧布局做原错误稿/正确稿四单元对照。共享401920tokens/900秒，最多4调用，无恢复/改稿。失败停止布局变体；两臂都正确也不能归功布局。方案及结果分支见review-submission-contract-decision，尚未发起本批付费，模型质量仍未通过。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。输入布局对照已否决充分修法，停止布局/格式变体。下一项为审查能力/分工可行性裁决：准备可对照的评审能力、实际接口、成本和五调用共享预算方案，再判断是否需要改变模型分工。当前GLM-5.3-flash/high及产品标准/预算不变，未选择/调用其他模型；不原样重开已失败定位/两状态编辑。方案边界见review-submission-contract-decision，模型质量仍未通过。
+- 1d5f7a2 / CI35730692196三项通过后，review-target-layout-v1四次完整合法返回、61159tokens、未知0。baseline负例漏检/正例通过；target负例检出但advisory经济比例写反，正例block4泛指又被判全称。拒绝采用并关闭execute；不拼两臂成功，无编辑/终评。34份原文件hash和逐局算术核验保存在golden_review_target_layout_result_1d5f7a2.json，均未触及输出/时限。
 - a82cfeb / CI35728654384三项通过，92项本地相关检查及6份历史只读回放通过；两个工程缺口已修复，未修复模型语义。位置数组不直接接入，未新增候选。
 - 指定起点审查后的修复：关闭遗漏的旧tool开发入口，7个CLI策略均先于资料/凭据/Provider拒绝；导出器补调用序号/transport关联、预约清单及计数守恒，拒绝错配与漏算，6份历史运行只读回放成功。旧da06b5a回执unknown1不改，独立校正继续保留。恢复诊断见golden_review_submission_recovery_boundary_v1.json；检查通过不等于核心语义闭环通过。
 - 11bc7bd / CI35716166747三项通过；JSON正文首调用300.015秒截止，最后事件299.906秒，无正文/终态/usage。1次费用未知，语义未获验证。完整请求重建hash与reservation一致，证据golden_json_block_deadline_11bc7bd.json。不能称网络停流或输出token额度耗尽。

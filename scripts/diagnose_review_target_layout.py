@@ -27,6 +27,7 @@ from scripts.run_golden_inference_development import verify_public_ci
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPERIMENT = 'review-target-layout-v1'
+LIVE_STATUS = 'offline_semantic_failure'
 PLAN = ROOT / 'data/evaluation/results/golden_review_target_layout_plan_v1.json'
 DATASET = ROOT / 'data/evaluation/datasets/golden_native_product_attribution_controls_v1.json'
 
@@ -148,6 +149,8 @@ def observe(provider, directory, variants):
 
 
 def run(args):
+    if args.execute and LIVE_STATUS != 'bounded_diagnostic_after_exact_ci':
+        raise ValueError('layout_semantic_failure_no_retry')
     variants, plan = prepare()
     if plan != json.loads(PLAN.read_text(encoding='utf-8')):
         raise ValueError('layout_plan_changed')
