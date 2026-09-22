@@ -85,5 +85,65 @@ def audit():
             'Historical failed outputs remain failed; roundtrip is not retroactive qualification.'])
 
 
+def audit_recovery_boundary():
+    """Test the existing recovery consumer before building a new candidate.
+
+    Positional data cannot be substituted for the old wire contract: passing
+    it verbatim loses issue enumeration; projecting first changes raw identity.
+    These are offline proposal inputs, not repaired historical model outputs.
+    """
+    pair = json.loads((ROOT/'data/evaluation/results/golden_block_buffered_pair_result_eadb930.json').read_text(encoding='utf-8'))
+    dataset = json.loads((ROOT/'data/evaluation/datasets/golden_native_product_attribution_controls_v1.json').read_text(encoding='utf-8'))
+    _, _, source = load_controls()
+    spec = dataset['cases'][0]
+    inputs = review.native.build_inputs(replace(source, report=spec['report'], user_utterance=dataset['user_utterance']))
+    original = pair['cases'][0]['response']['tool_calls'][0]['arguments']
+    independent = {key: original[key] for key in ('reviews', 'score', 'verdict')}
+    packed = pack(independent)
+    packed['score'] = 'invalid'  # An eligible malformed-field reassessment.
+    raw = compact(packed)
+    projected = unpack(packed)
+    expected = review.native.prior_issues(projected)
+    assert len(expected) == 1
+    observations = []
+    for label, previous_raw in [('unchanged_positional_raw', raw), ('named_projection_as_raw', compact(projected))]:
+        prepared = review.request(inputs, previous_raw=previous_raw, diagnostics={'errors': ['score']})
+        body = json.loads(prepared.messages[1].content.split('[UNTRUSTED DATA]\n')[1].split('\n[END UNTRUSTED DATA]')[0])
+        observations.append(dict(path=label, expected_issues=len(expected), actual_issues=len(body['previous_issues']),
+            preserves_original_raw_identity=body['previous_raw_sha256'] == digest(raw),
+            enumerated_issues_equal=body['previous_issues'] == expected))
+    assert observations[0]['actual_issues'] == 0 and observations[0]['preserves_original_raw_identity']
+    assert observations[1]['actual_issues'] == 1 and not observations[1]['preserves_original_raw_identity']
+    preserved = []
+    issue_row = next(i for i, row in enumerate(packed['reviews']) if row[1])
+    for label, malformed in [('null', None), ('text', 'malformed finding'), ('bad_source', {'source_ids': 'invalid'})]:
+        changed = deepcopy(packed)
+        changed['score'] = independent['score']  # Isolate the malformed opinion.
+        changed['reviews'][issue_row][1] = malformed
+        mapped = unpack(changed)
+        opinions = review.native.prior_issues(mapped)
+        assert len(opinions) == 1 and opinions[0]['issue'] == malformed
+        assert mapped['reviews'][issue_row]['issues'] == malformed
+        try:
+            review.validate(compact(mapped), inputs)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError('malformed proposal accepted as a review')
+        preserved.append(label)
+    return dict(evidence_kind='offline_existing_recovery_consumer_probe', original_raw_sha256=digest(raw),
+        observations=observations, malformed_opinions_preserved_by_projection=preserved,
+        decision='not_a_drop_in_replacement_do_not_open_live_candidate',
+        sdk_probe_performed=False, sdk_probe_skip_reason='existing_consumer_incompatibility_decides_against_direct_replacement',
+        live_requests=0, production_admitted=False,
+        limitations=['A separate representation-aware recovery adapter could be designed, but has not been implemented.',
+                    'No conclusion about model reliability, semantic coverage or latency follows from projection.',
+                    'Existing object-based recovery is not claimed broken by these unsupported positional inputs.'])
+
+
 if __name__ == '__main__':
-    print(json.dumps(audit(),ensure_ascii=False,indent=2))
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--recovery-boundary', action='store_true')
+    args = parser.parse_args()
+    print(json.dumps(audit_recovery_boundary() if args.recovery_boundary else audit(),ensure_ascii=False,indent=2))

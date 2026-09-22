@@ -57,7 +57,8 @@ def test_export_binds_json_content_to_original_journal_without_tool_projection(s
     with pytest.raises(ValueError, match='journal_response'): export_run(saved_run[0])
 
 
-def test_export_checks_observed_usage_without_inventing_completed_response(tmp_path):
+@pytest.fixture
+def failed_run(tmp_path):
     evidence = json.loads(Path('data/evaluation/results/golden_buffered_phase_failure_da06b5a.json').read_text(encoding='utf-8'))
     receipt = evidence['original_receipt']
     result = evidence['original_result']
@@ -73,13 +74,99 @@ def test_export_checks_observed_usage_without_inventing_completed_response(tmp_p
         path.write_text(json.dumps(value),encoding='utf-8')
     for name in ('reservation','progress','result'):
         (stream/f'{name}.json').write_text(json.dumps(evidence['transport'][name]),encoding='utf-8')
+    return run, case, stream
+
+
+def test_export_checks_observed_usage_without_inventing_completed_response(failed_run):
+    run, case, _ = failed_run
     exported=export_run(run)
     assert not exported['calls'] and exported['result']['completed_calls'] == 0
     assert exported['result']['unknown_usage_calls'] == 0 and not exported['result']['valid']
     assert len(exported['unassembled_usage_evidence']) == 1
+    result = json.loads((case/'result.json').read_text(encoding='utf-8'))
     result['unassembled_usage'][0]['output_tokens'] += 1
     (case/'result.json').write_text(json.dumps(result),encoding='utf-8')
     with pytest.raises(ValueError,match='unassembled_usage'): export_run(run)
+
+
+@pytest.mark.parametrize('fault,code', [
+    ('reservation_ordinal', 'reservation_identity'),
+    ('reservation_transport', 'reservation_identity'),
+    ('terminal_transport', 'transport_identity'),
+    ('unaccounted_call', 'accounting_balance'),
+    ('receipt_reserved_count', 'reserved_count'),
+    ('boolean_count', 'count_invalid'),
+    ('negative_unknown', 'count_invalid'),
+    ('duplicate_usage', 'unassembled_ordinal'),
+    ('unknown_with_known_usage', 'accounting_balance'),
+])
+def test_failed_export_rejects_mismatched_call_identity_and_accounting(failed_run, fault, code):
+    run, case, stream = failed_run
+    paths = dict(receipt=run/'receipt.json', result=case/'result.json',
+        reservation=stream/'reservation.json', terminal=stream/'result.json')
+    values = {key: json.loads(path.read_text(encoding='utf-8')) for key, path in paths.items()}
+    if fault == 'reservation_ordinal': values['reservation']['ordinal'] = 2
+    elif fault == 'reservation_transport': values['reservation']['transport_id'] = 'other'
+    elif fault == 'terminal_transport': values['terminal']['transport_id'] = 'other'
+    elif fault == 'receipt_reserved_count': values['receipt']['reserved_calls'] = 2
+    elif fault == 'boolean_count':
+        values['receipt']['reserved_calls'] = values['result']['reserved_calls'] = True
+    elif fault == 'negative_unknown':
+        values['receipt']['unknown_usage_calls'] = values['result']['unknown_usage_calls'] = -1
+    elif fault == 'unaccounted_call':
+        values['receipt']['reserved_calls'] = values['result']['reserved_calls'] = 2
+    elif fault == 'unknown_with_known_usage':
+        values['receipt']['unknown_usage_calls'] = values['result']['unknown_usage_calls'] = 1
+    else: values['result']['unassembled_usage'] *= 2
+    for key, path in paths.items(): path.write_text(json.dumps(values[key]), encoding='utf-8')
+    with pytest.raises(ValueError, match=code): export_run(run)
+
+
+def test_export_keeps_genuinely_unknown_failed_call_without_invented_usage(failed_run):
+    run, case, stream = failed_run
+    for path in (run/'receipt.json', case/'result.json'):
+        value = json.loads(path.read_text(encoding='utf-8'))
+        value.update(input_tokens=0, output_tokens=0, unknown_usage_calls=1)
+        value.pop('unassembled_usage', None)
+        path.write_text(json.dumps(value), encoding='utf-8')
+    progress = json.loads((stream/'progress.json').read_text(encoding='utf-8'))
+    progress.update(input_tokens=None, output_tokens=None)
+    (stream/'progress.json').write_text(json.dumps(progress), encoding='utf-8')
+    exported = export_run(run)
+    assert exported['result']['unknown_usage_calls'] == 1
+    assert exported['result']['input_tokens'] == exported['result']['output_tokens'] == 0
+    assert not exported['calls'] and not exported['unassembled_usage_evidence']
+
+
+def test_completed_export_checks_actual_stream_ordinal(saved_run):
+    stream = saved_run[1]/'streams/stream-001/reservation.json'
+    value = json.loads(stream.read_text(encoding='utf-8'))
+    value['ordinal'] = 2
+    stream.write_text(json.dumps(value), encoding='utf-8')
+    with pytest.raises(ValueError, match='reservation_identity'): export_run(saved_run[0])
+
+
+def test_completed_call_followed_by_unknown_failure_keeps_separate_accounting(saved_run):
+    run, case = saved_run
+    for path in (run/'receipt.json', case/'result.json'):
+        value = json.loads(path.read_text(encoding='utf-8'))
+        value.update(reserved_calls=2, unknown_usage_calls=1)
+        path.write_text(json.dumps(value), encoding='utf-8')
+    # A process may fail after reservation but before a progress record exists.
+    second = case/'streams/stream-002'
+    second.mkdir()
+    reservation = json.loads((case/'streams/stream-001/reservation.json').read_text(encoding='utf-8'))
+    reservation.update(ordinal=2, request_sha256='1'*64)
+    (second/'reservation.json').write_text(json.dumps(reservation), encoding='utf-8')
+    exported = export_run(run)
+    assert len(exported['calls']) == exported['result']['completed_calls'] == 1
+    assert exported['result']['unknown_usage_calls'] == 1
+    assert not exported['unassembled_usage_evidence']
+    for key in ('input_tokens', 'output_tokens'):
+        assert exported['result'][key] == exported['calls'][0]['call'][key]
+    (second/'reservation.json').unlink()
+    second.rmdir()
+    with pytest.raises(ValueError, match='reservation_inventory'): export_run(run)
 
 
 @pytest.mark.parametrize('filename,key,value,error', [

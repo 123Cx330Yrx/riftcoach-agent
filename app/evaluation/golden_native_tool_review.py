@@ -12,8 +12,8 @@ from app.evaluation.golden_stream_bridge import CAPACITY_TRANSPORT_ID, validate_
 from app.providers.models import ToolChoiceMode, ToolSpec
 
 EXPERIMENT_ID = 'golden-native-tool-review-v1'
-LIVE_STATUS = 'bounded_development_after_exact_ci'
-LIVE_BLOCK_REASON = ''
+LIVE_STATUS = 'offline_scope_false_positive'
+LIVE_BLOCK_REASON = 'tool_review_scope_false_positive_requires_redesign'
 SUBMIT_TOOL = 'submit_report_review'
 TEXT_DELIVERY = '只输出给定schema的一个JSON对象，不加前后文字。'
 TOOL_DELIVERY = (

@@ -12,11 +12,12 @@ pause_reason: ""
 ## 当前行动
 
 2026-09-22：核心实际改稿/终评仍未走通。buffered工具参数分支仍重复关键字段；JSON正文分支300秒无正式结果，二者live入口均停止，未接产品。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。按活动工作卡和review-submission-contract-decision先完成最小合同反例与方案裁决；位置数组尚未选为完整修法。通过后才做完整恢复/追溯/共享预算接线，当前诊断批0次付费，不再循环切换传输开关。全周期方法已补决策触发点和消费路径核查，方法修订不代表模型问题解决。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。按活动工作卡和review-submission-contract-decision比较全文平铺意见与逐段清单的语义职责、输出/恢复负担及既有反例，选定针对语义覆盖的最小干预；不继续直接接数组或循环换通道。位置数组恢复探针已发现旧意见枚举/原响应身份不能直接兼容，暂不投入专用适配。当前批0次付费，模型质量仍未通过。
+- 指定起点审查后的修复：关闭遗漏的旧tool开发入口，7个CLI策略均先于资料/凭据/Provider拒绝；导出器补调用序号/transport关联、预约清单及计数守恒，拒绝错配与漏算，6份历史运行只读回放成功。旧da06b5a回执unknown1不改，独立校正继续保留。恢复诊断见golden_review_submission_recovery_boundary_v1.json；检查通过不等于核心语义闭环通过。
 - 11bc7bd / CI35716166747三项通过；JSON正文首调用300.015秒截止，最后事件299.906秒，无正文/终态/usage。1次费用未知，语义未获验证。完整请求重建hash与reservation一致，证据golden_json_block_deadline_11bc7bd.json。不能称网络停流或输出token额度耗尽。
 - da06b5a / CI35714036543三项通过；buffered工具首调用161.828秒正常终态，单个2299字符参数重复block/issues并合并14/15段。离线原样重放拒绝，无合法评估；4/6建议亦缺来源字段。证据golden_buffered_phase_failure_da06b5a.json。
 - 该buffered调用11640+5845=17485tokens，未知0；原runner误记未知1保留并独立校正。实际整链和公开导出现在记录已观察usage但不伪造完成响应，61项相关离线检查及11bc7bd公共CI通过。
-- 本轮累计7次真实请求：6次用量已知102235tokens，另JSON正文1次未知。更早4次/42299已知及a501c33未知1单列。未修改原失败回执，不将两个未知调用合并或估算费用。
+- 此前16:19起的长推进累计7次真实请求：6次用量已知102235tokens，另JSON正文1次未知。更早4次/42299已知及a501c33未知1单列。本次审查后修复与恢复裁决未发起Provider请求。未修改原失败回执，不将两个未知调用合并或估算费用。
 - 阶段合同已实现：独立审查三字段，重评四字段及逐项映射；原始输出与内部已知空映射分开记录。该接口改进不等于工具格式或模型质量通过。
 - 5c952ad CI失败因新增测试再次误读本机忽略资料，da06b5a改用提交fixture并禁止该组测试读data/runs；这是本轮执行遗漏。eadb930配对虽两JSON完整，正例旧合同失败仍保留；不能算新候选合格。
 - 逐段独立工具提交超过当前每响应8个工具结果上限，离线排除；位置数组可省去重复段字段名，但其模型表现、延迟、重评接线未证实。原型golden_review_submission_shapes_v1.json仅离线证据。
