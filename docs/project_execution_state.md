@@ -11,8 +11,10 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-22：核心审查漏检/误报仍未解决，尚无可准入的完整改稿/终评版本。已否决输入布局充分修法，转为审查能力/分工可行性裁决；不是又一次超时或输出耗尽。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。用户已明确“允许”ADR0108两例GLM-5.3/high隔离诊断；不是产品换模批准。明确诊断profile/传输身份/共享两调用账本已实现，原负/正全文及规则不变，预留154202tokens/600秒，未缓存估算2.544336元非账单硬限。下一步精确HEAD公共CI后逐例执行，审读全部意见，首个失败即停；目前无新增Provider请求。产品GLM-5.3-flash/high、采用标准和五次共享预算保持；方案/失败分支/后续接线缺口见ADR0108。
+2026-09-22：GLM-5.3/high首例检出原伤害归因真错，但两条意见均引用不存在的source0，完整审查仍不合格。按批准边界停止，第二例未调用，无实际改稿/终评或产品准入。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。离线核查来源坐标合同：同一输入有bare evidence_keys数组与1起source_roots，block14七个ID恰好对应前者0起位置；建议引用不能靠统一+1修好。核对生产者/消费者及恢复身份，比较能完整保留来源的单一显式ID；不改号/删0后放行，不立即再调模型或换提示。ADR0108批execute已关闭，后续付费变化需具体新决定；产品Flash/high和五次共享预算保持。
+- b6b30f8 / CI35747690218三项通过后，批准的首例完整tool_calls，82/needs_revision，一问题一建议，56.406秒。文本检出正确且未把上下文建议升级阻断，但semantic_source_id_unknown；1次输入12149+输出3480=15629tokens、未知0，按单价估算0.194632元。未耗尽/超时，第二例未发，不能称正反配对成功。完整8份原工件/hash、请求身份、逐项来源及独立算术见golden_review_model_comparison_result_b6b30f8.json。
+- 本轮工程遗漏：15c8940公共CI18个native组装失败来自共享源码指纹未同步；修复活动manifest两项源码及派生program hash，66项受影响回归和b6b30f8公共检查通过。旧资格/回执未改；这是执行遗漏，不归因于模型。
 - 1d5f7a2 / CI35730692196三项通过后，review-target-layout-v1四次完整合法返回、61159tokens、未知0。baseline负例漏检/正例通过；target负例检出但advisory经济比例写反，正例block4泛指又被判全称。拒绝采用并关闭execute；不拼两臂成功，无编辑/终评。34份原文件hash和逐局算术核验保存在golden_review_target_layout_result_1d5f7a2.json，均未触及输出/时限。
 - a82cfeb / CI35728654384三项通过，92项本地相关检查及6份历史只读回放通过；两个工程缺口已修复，未修复模型语义。位置数组不直接接入，未新增候选。
 - 指定起点审查后的修复：关闭遗漏的旧tool开发入口，7个CLI策略均先于资料/凭据/Provider拒绝；导出器补调用序号/transport关联、预约清单及计数守恒，拒绝错配与漏算，6份历史运行只读回放成功。旧da06b5a回执unknown1不改，独立校正继续保留。恢复诊断见golden_review_submission_recovery_boundary_v1.json；检查通过不等于核心语义闭环通过。
@@ -28,7 +30,7 @@ pause_reason: ""
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。
 实际后端：`D:\riftcoach-agent-rq192-pr`，分支 `codex/rq192-provider-stream-contract-ci`，
-当前ADR0103—0107旧真实入口及布局实验均停止；ADR0108仅获准两例隔离能力诊断，具体实现以本分支HEAD为准；`8014a56`仅是以下ADR0104历史控制基线。主库前端工作保留，未合并/重置。
+当前ADR0103—0108及布局实验真实批均停止；ADR0108首例来源绑定失败，第二例未调用，具体实现以本分支HEAD为准；`8014a56`仅是以下ADR0104历史控制基线。主库前端工作保留，未合并/重置。
 
 ## 已验证事实与阻断
 

@@ -31,7 +31,7 @@ from scripts.prepare_review_model_comparison import build_plan, OUTPUT, ROOT
 from scripts.run_golden_inference_development import verify_public_ci
 
 EXPERIMENT = 'review-model-capability-pair-v1'
-LIVE_STATUS = 'approved_bounded_diagnostic_after_exact_ci'
+LIVE_STATUS = 'stopped_source_binding_failure'
 RUN_DIRECTORY = ROOT / 'data/runs/model_comparison' / EXPERIMENT
 
 

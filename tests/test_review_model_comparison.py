@@ -175,6 +175,27 @@ def test_ci_gate_precedes_directory_and_credentials(monkeypatch):
     def refuse(_):
         raise ValueError('exact_sha_public_ci_required')
     monkeypatch.setattr(runner, 'verify_public_ci', refuse)
+    monkeypatch.setattr(runner, 'LIVE_STATUS', 'approved_bounded_diagnostic_after_exact_ci')
     monkeypatch.setattr(runner, 'RUN_DIRECTORY', NS(mkdir=lambda **_: pytest.fail('created run before CI')))
     with pytest.raises(ValueError, match='exact_sha_public_ci_required'):
         runner.run(NS(execute=True, ci_run='wrong', env_file=None))
+
+
+def test_stopped_batch_refuses_before_sources_ci_or_credentials(monkeypatch):
+    def forbidden(*_):
+        pytest.fail('closed batch accessed preparation or CI')
+    monkeypatch.setattr(runner, 'build_plan', forbidden)
+    monkeypatch.setattr(runner, 'verify_public_ci', forbidden)
+    with pytest.raises(ValueError, match='model_comparison_closed_no_retry'):
+        runner.run(NS(execute=True, ci_run='', env_file=None))
+
+
+def test_actual_completed_response_remains_rejected_without_id_repair():
+    artifact = json.loads((runner.ROOT / 'data/evaluation/results/golden_review_model_comparison_result_b6b30f8.json').read_text(encoding='utf-8'))
+    response = artifact['original_json_contents']['attribution_original-baseline/response.json']
+    arguments = response['tool_calls'][0]['arguments']
+    assert arguments['issues'][0]['source_ids'] == [9, 13, 17, 8, 12, 16, 0]
+    assert artifact['original_json_contents']['result.json']['reserved_calls'] == 1
+    variants, _ = prepared()
+    with pytest.raises(ValueError, match='semantic_source_id_unknown'):
+        runner.review.validate(runner.compact(arguments), variants[0][1])

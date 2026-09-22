@@ -5,6 +5,54 @@ Approval covers implementation and the two bounded GLM-5.3/high requests only.
 No product model change or product candidate admission is adopted here.
 The current model remains GLM-5.3-flash/high. This is unrelated to Codex Luna.
 
+## Actual result: batch stopped after one response
+
+Implementation15c8940 initially failed public CI due to native source-manifest
+drift. Fixed in b6b30f8; exact-HEAD CI35747690218 passed all three jobs before
+the sole paid request. The run completed in56.406seconds, first tool output at
+48.828seconds, terminal at55.937seconds; no output cap, timeout or transport failure.
+
+GLM-5.3/high returned82/needs_revision with one block14 issue and one block4
+advisory. Its issue correctly distinguishes CS composition effects from the
+damage difference already present within mid: whole damage gap695.4183,
+mid669.235, change26.1833. Its optional early-death clarification correctly
+recognizes that later full context supplies the whole-sample denominator and
+does not turn that wording into a blocker. These are positive textual observations
+from **one** response, not a passed full review or stable model-quality evidence.
+
+Strict validation rejected `semantic_source_id_unknown`: **both findings cite
+source0, which does not exist** in the declared1–31 source catalog. Block14's
+entire sequence `[9,13,17,8,12,16,0]` corresponds to zero-based positions in the
+parallel bare `source_index.evidence_keys` array: damage loss/win/support,
+CS loss/win/support, aggregate. Under the declared IDs they point instead to
+CS/scope/vision or nothing. This supports investigating competing source
+coordinates. It is not proof of a universal off-by-one fix: the advisory's
+references still do not support its early-death figures after adding one.
+No ID shifting, dropped0 or corrected response was accepted or sent onward.
+
+The first rejected result terminated the batch; corrected-control call2 was not
+issued. No host acceptance, editing, final review or product replacement occurred.
+Actual input12149+output3480=15629tokens; unknown0. At listed uncached prices,
+estimated cost0.194632CNY; account bill not independently verified.
+
+Evidence: `data/evaluation/results/golden_review_model_comparison_result_b6b30f8.json`
+contains all8 original JSON artifacts/hashes, exact unchanged request identity,
+response, rejected accounting, per-source resolution and independent Decimal
+arithmetic from original game rows. Raw run remains untouched. The execute gate
+is now closed before input/CI/credentials access; the unused second call is not
+permission for a retry with changed inputs.
+
+**Decision:** full-model substitution alone has not delivered an adoptable review.
+Its true-error detection changes the diagnosis: investigate source addressing
+explicitly rather than assuming another semantic-policy rewrite is necessary.
+Next authorized independent work is an offline source-contract comparison:
+inspect producers/consumers of both coordinate systems; determine whether one
+explicit ID can address all original evidence, report blocks and recovery mappings
+without losing data or changing raw identities. Use this response plus legacy
+wrong-source/unknown/duplicate cases. Do not start another model/prompt/schema
+batch or relabel original evidence as passing. Further paid experiments or product
+role adoption need a concrete decision beyond this stopped two-call authorization.
+
 ## Problem and discriminating question
 
 The four-cell input-layout experiment returned complete valid tool responses,
