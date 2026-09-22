@@ -15,7 +15,8 @@ pause_reason: ""
 - 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。先处理ADR0105实测中断的证据缺口：核对Provider/代理长连接终止行为，并使用新增工具通道活动记录区分无数据、工具参数接收和终止缺失。不得原样重发付费请求或增加时限；需要有信息增益的有界诊断后再恢复当前机制实测。
 - a501c33 / CI35700582136三项通过；原归因自主全文首评最后保存事件83.484秒，300.016秒由父进程截止并回收子进程，无完整response/usage、未知用量1。前缀最多会丢末尾未保存事件，不能当精确断流时刻。证据`golden_native_block_tool_interruption_a501c33.json`。
 - 当前Provider走环境代理12000；无凭据短GET经代理3.000秒、直连1.032秒均401。只证明当时短请求可达，未证明长连接/Provider/代理哪层导致停滞。Git配置和NO_PROXY未改。
-- 修复进度记录遗漏tool deltas：新增首末工具事件、分片数、参数字符数，无正文/参数泄露，原预算/请求不变；native manifest仅更新该组件hash及自校验digest。传输相关35项及完整产品组装/新机制21项通过，公共CI待本次推送。
+- 修复进度记录遗漏tool deltas：新增首末工具事件、分片数、参数字符数，无正文/参数泄露，原预算/请求不变；native manifest仅更新该组件hash及自校验digest。020e52b公共CI35703296766三项通过。
+- 当前路径诊断已准备：原请求字节hash不变，先直连，完整且协议合法后才经12000对照，最多两次/600秒，不修订或重试。脚本`diagnose_block_review_route.py`，具体结果分支见attribution-miss-diagnosis；本诊断5项、相关42项离线通过。等待该脚本精确HEAD公共CI后执行；未新增真实请求。
 - 定点配对cb69f82 / CI35698979457：错误稿80/revise，正确稿95/pass，2次/26738tokens、未知0；其结果不能计入自主全文资格。完整公开证据`golden_partitioned_focus_result_cb69f82.json`。
 - 本次续办真实请求4次：归因旧候选1次完成、定点2次完成、逐段1次中断；已知42299tokens，另1次未知。不改旧回执。ADR0104及ADR0105的live入口均停止；产品入口仍关闭。
 - b47818e测试误读忽略目录的缺陷已在651a207修复并公共CI三项通过；原归因完整失败证据`golden_native_partitioned_tool_public_651a207.json`。完整诊断/取舍见attribution-miss-diagnosis和ADR0105。
@@ -24,11 +25,11 @@ pause_reason: ""
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。
 实际后端：`D:\riftcoach-agent-rq192-pr`，分支 `codex/rq192-provider-stream-contract-ci`，
-当前候选实现基线 `8014a56fca1ca54cb4c791e358db300588745edc`；主库前端工作保留，未合并/重置。
+当前ADR0105开发机制及其传输诊断以本分支HEAD为准；`8014a56`仅是以下ADR0104历史控制基线。主库前端工作保留，未合并/重置。
 
 ## 已验证事实与阻断
 
-### ADR0104三例开发控制（当前候选）
+### ADR0104三例历史开发控制（不计入ADR0105资格）
 
 - 正确稿`original_topic_window`：1次调用，96/pass，无issue/advisory。
 - 明确全称错误`explicit_universal_metrics`：首评正确发现真实全称错误；修订后95/pass，2条范围表达建议留在advisories；3次调用。
