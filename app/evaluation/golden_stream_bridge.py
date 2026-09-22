@@ -23,18 +23,43 @@ from app.providers.models import ChatRequest, ChatResponse
 from app.providers.stream_adapter_contract import ProviderStreamAssembler
 from app.providers.stream_adapter_contract import StreamAdapterError
 from app.providers.zhipu import ZhipuProvider
-from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE
+from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE, ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE
 
 TRANSPORT_ID = "golden-process-stream-v2"
 EXPANDED_TRANSPORT_ID = "golden-process-stream-high-16384-v1"
 CAPACITY_TRANSPORT_ID = "golden-process-stream-high-32768-v1"
-TRANSPORTS = ("golden-process-stream-v1", TRANSPORT_ID, EXPANDED_TRANSPORT_ID, CAPACITY_TRANSPORT_ID)
+REVIEW_MODEL_TRANSPORT_ID = "golden-glm53-review-high-32768-v1"
+TRANSPORTS = ("golden-process-stream-v1", TRANSPORT_ID, EXPANDED_TRANSPORT_ID, CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID)
+
+
+def transport_profile(transport_id):
+    if transport_id not in TRANSPORTS:
+        raise ValueError("stream_transport_identity")
+    return (ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE if transport_id == REVIEW_MODEL_TRANSPORT_ID
+            else ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE)
+
+
+def transport_request_policy(transport_id):
+    transport_profile(transport_id)
+    from app.runtime.coach_contract import CAPACITY_COACH_CONTRACT, EXPANDED_COACH_CONTRACT
+    if transport_id == REVIEW_MODEL_TRANSPORT_ID:
+        from app.model_runtime import _issue_candidate_evaluation_request_policy
+        return _issue_candidate_evaluation_request_policy(
+            policy_id="glm-5.3-review-diagnostic-high-32768", version="1.0.0",
+            provider_id="zhipu", model="glm-5.3", agent_timeout_s=330.0,
+            llm_tool_timeout_s=330.0, transport_timeout_s=360.0,
+            max_output_tokens=32768, temperature=1.0, top_p=0.95)
+    if transport_id == CAPACITY_TRANSPORT_ID:
+        return CAPACITY_COACH_CONTRACT.request_policy
+    if transport_id == EXPANDED_TRANSPORT_ID:
+        return EXPANDED_COACH_CONTRACT.request_policy
+    return None
 
 
 def transport_limits(transport_id):
     if transport_id not in TRANSPORTS:
         raise ValueError("stream_transport_identity")
-    if transport_id == CAPACITY_TRANSPORT_ID:
+    if transport_id in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID):
         return (32768, 300, 65536)
     return (16384, 180, 32768) if transport_id == EXPANDED_TRANSPORT_ID else (8192, 90, 16384)
 # Persist only the bounded codes emitted by our ProviderError constructors.
@@ -152,9 +177,9 @@ def collect(request, opener, *, directory, started, deadline, clock=time.monoton
     """Only deliver after exhaustion and owned close; partial data remain private."""
     validate_request(request, transport_id=transport_id)
     _, seconds, max_events = transport_limits(transport_id)
-    value = CapacityBridgeObservation() if transport_id == CAPACITY_TRANSPORT_ID else ExpandedBridgeObservation() if transport_id == EXPANDED_TRANSPORT_ID else BridgeObservation()
+    value = CapacityBridgeObservation() if transport_id in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID) else ExpandedBridgeObservation() if transport_id == EXPANDED_TRANSPORT_ID else BridgeObservation()
     durations = {name: 0.0 for name in ("open", "advance", "processing", "close", "progress_write")}
-    assembler = ProviderStreamAssembler(provider_id="zhipu", requested_model="glm-5.3-flash",
+    assembler = ProviderStreamAssembler(provider_id="zhipu", requested_model=transport_profile(transport_id).model,
         require_request_identity=True,
         allow_tool_calls_with_content=allow_tool_content,
         max_output_tokens=request.max_tokens, max_events=max_events, max_content_chars=262144,
@@ -308,6 +333,8 @@ class GoldenProcessStreamProvider:
             raise ValueError("stream_transport_identity")
         if type(stream_tool_arguments) is not bool:
             raise ValueError("stream_tool_arguments_must_be_boolean")
+        profile = transport_profile(transport_id)
+        self.model_name, self.thinking_profile_id = profile.model, profile.profile_id
         if settings.model != self.model_name or settings.base_url.rstrip("/") != "https://open.bigmodel.cn/api/paas/v4":
             raise ValueError("stream_provider_identity")
         self._settings, self._directory = settings, Path(directory)
@@ -322,10 +349,13 @@ class GoldenProcessStreamProvider:
         self._calls += 1
         directory = self._directory / f"stream-{self._calls:03d}"
         directory.mkdir(parents=True, exist_ok=False)
-        write_new_json(directory / "reservation.json", {"transport_id": self.transport_id,
+        reservation = {"transport_id": self.transport_id,
             "ordinal": self._calls, "request_sha256": hashlib.sha256(raw).hexdigest(),
             "stream_tool_arguments": self.stream_tool_arguments and bool(request.tools),
-            "state": "reserved_before_io", "request_metrics": request_metrics(request, raw)})
+            "state": "reserved_before_io", "request_metrics": request_metrics(request, raw)}
+        if self.transport_id == REVIEW_MODEL_TRANSPORT_ID:
+            reservation.update(model=self.model_name, thinking_profile_id=self.thinking_profile_id)
+        write_new_json(directory / "reservation.json", reservation)
         environ = dict(os.environ)
         environ.update(LLM_API_KEY=self._settings.api_key, LLM_BASE_URL=self._settings.base_url,
                        LLM_MODEL=self.model_name, LLM_PROVIDER="zhipu")
@@ -357,7 +387,7 @@ def run_child(command, raw, *, directory, timeout_s, environ=None, transport_id=
         if process.returncode != 0 or len(output) > MAX_BYTES or time.monotonic() >= deadline:
             raise ValueError("stream_child_incomplete")
         response = RESPONSE.validate_json(output)
-        if (response.model != "glm-5.3-flash" or response.provider != "zhipu"
+        if (response.model != transport_profile(transport_id).model or response.provider != "zhipu"
                 or response.finish_reason not in ("stop", "tool_calls")
                 or response.usage.input_tokens > 64000 or response.usage.output_tokens > output_limit):
             raise ValueError("stream_child_response")
@@ -397,14 +427,14 @@ def worker(directory, started, deadline, transport_id=TRANSPORT_ID, *, stream_to
         raise ValueError("stream_transport_identity")
     from openai import OpenAI, DefaultHttpxClient
     from app.providers.config import load_zhipu_settings
-    from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE
     raw = sys.stdin.buffer.read(MAX_BYTES + 1)
     if len(raw) > MAX_BYTES:
         raise ValueError("stream_ipc_size")
     request = REQUEST.validate_json(raw)
     validate_request(request, transport_id=transport_id)
     settings = load_zhipu_settings()
-    if settings.model != "glm-5.3-flash" or settings.base_url.rstrip("/") != "https://open.bigmodel.cn/api/paas/v4":
+    profile = transport_profile(transport_id)
+    if settings.model != profile.model or settings.base_url.rstrip("/") != "https://open.bigmodel.cn/api/paas/v4":
         raise ValueError("stream_provider_identity")
     client = None
     class Owned:
@@ -426,9 +456,8 @@ def worker(directory, started, deadline, transport_id=TRANSPORT_ID, *, stream_to
                        http_client=DefaultHttpxClient(event_hooks={"request": [hook]}))
         try:
             provider = ZhipuProvider.from_candidate_profile(client=client, model=settings.model,
-                profile=ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE)
-            from app.runtime.coach_contract import EXPANDED_COACH_CONTRACT, CAPACITY_COACH_CONTRACT
-            policy = CAPACITY_COACH_CONTRACT.request_policy if transport_id == CAPACITY_TRANSPORT_ID else EXPANDED_COACH_CONTRACT.request_policy if transport_id == EXPANDED_TRANSPORT_ID else None
+                profile=profile)
+            policy = transport_request_policy(transport_id)
             return Owned(provider.stream_adapter(tool_stream=stream_tool_arguments and bool(request.tools), **({"evaluation_request_policy": policy} if policy is not None else {})).stream_session(request, include_usage_tail=True))
         except BaseException:
             client.close()

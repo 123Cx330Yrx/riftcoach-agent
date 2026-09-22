@@ -113,8 +113,8 @@ def build_plan():
     cost = (Decimal(input_total) * 8 + Decimal(output_total) * 28) / 1_000_000
     return {
         'experiment': 'review-model-capability-pair-v1',
-        'status': 'offline_prepared_pending_model_decision',
-        'production_admitted': False, 'live_entry_implemented': False,
+        'status': 'offline_feasibility_only',
+        'production_admitted': False, 'live_entry_in_this_script': False,
         'provider_requests': 0, 'paid_usage_tokens': 0,
         'baseline_model': 'glm-5.3-flash', 'proposed_model': ALTERNATIVE,
         'reasoning_effort': 'high', 'sdk_retries': 0,

@@ -22,7 +22,7 @@ def test_full_request_comparison_is_offline_and_uses_committed_sources(monkeypat
     monkeypatch.setattr(Path, 'open', committed_sources_only)
     result = comparison.build_plan()
     assert result == json.loads(comparison.OUTPUT.read_text(encoding='utf-8'))
-    assert result['live_entry_implemented'] is False
+    assert result['live_entry_in_this_script'] is False
     assert all(c['changed_sdk_fields'] == ['model'] for c in result['cells'])
 
 

@@ -146,8 +146,10 @@ class CandidateEvaluationRequestPolicy:
             raise ValueError("version must be a semantic version")
         object.__setattr__(self, "version", self.version.strip())
 
-        capacity_policy = (self.policy_id, self.version, self.provider_id, self.model) == (
-            "glm-5.3-flash-coach-high-32768", "1.0.0", "zhipu", "glm-5.3-flash")
+        capacity_policy = (self.policy_id, self.version, self.provider_id, self.model) in (
+            ("glm-5.3-flash-coach-high-32768", "1.0.0", "zhipu", "glm-5.3-flash"),
+            # ADR0108 approved isolated diagnostic; no default/runtime admission.
+            ("glm-5.3-review-diagnostic-high-32768", "1.0.0", "zhipu", "glm-5.3"))
         timeout_limit = 360 if capacity_policy else 300
         for field_name in (
             "agent_timeout_s",

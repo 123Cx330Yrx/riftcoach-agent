@@ -144,6 +144,14 @@ ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE = ZhipuThinkingProfile(
     reasoning_effort="high",
     clear_thinking=False,
 )
+# ADR0108 isolated two-call capability diagnostic; never a default resolver.
+ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE = ZhipuThinkingProfile(
+    profile_id="glm-5.3-review-diagnostic-high-replay",
+    model=ZHIPU_GLM53_MODEL,
+    thinking_type="enabled",
+    reasoning_effort="high",
+    clear_thinking=False,
+)
 
 _MODEL_PROFILES = MappingProxyType(
     {
@@ -165,6 +173,8 @@ _PROFILE_BY_ID = MappingProxyType(
 )
 _CANDIDATE_PROFILE_BY_ID = MappingProxyType(
     {
+        ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE.profile_id:
+        ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE,
         ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE.profile_id:
         ZHIPU_GLM53_FLASH_LOW_CANDIDATE_PROFILE,
         ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE.profile_id:
@@ -253,6 +263,7 @@ __all__ = [
     "ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE",
     "ZHIPU_GLM53_FLASH_THINKING_PROFILE",
     "ZHIPU_GLM53_MODEL",
+    "ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE",
     "ZHIPU_GLM53_THINKING_PROFILE",
     "ZHIPU_LEGACY_THINKING_PROFILE",
     "ZHIPU_STANDARD_BASE_URL",

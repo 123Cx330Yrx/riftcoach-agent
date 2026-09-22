@@ -1,7 +1,8 @@
 # ADR0108: Proposed isolated reviewer capability comparison
 
-2026-09-22. **Proposed; paid alternative-model diagnostic awaits user decision.**
-No product model change, candidate registration or live entry is adopted here.
+2026-09-22. **User approved the isolated two-call diagnostic with “允许”.**
+Approval covers implementation and the two bounded GLM-5.3/high requests only.
+No product model change or product candidate admission is adopted here.
 The current model remains GLM-5.3-flash/high. This is unrelated to Codex Luna.
 
 ## Problem and discriminating question
@@ -49,7 +50,14 @@ read; no paid API availability or response quality is claimed by this check.
 The reproducible plan, body/request hashes, input reservations and cost are in
 `data/evaluation/results/golden_review_model_comparison_feasibility_v1.json`.
 Run `python -m scripts.prepare_review_model_comparison` to reconstruct it.
-There is **no execute flag** and no alternate model registered in this change.
+That preparation script has **no execute flag**. The approved live runner is
+`python -m scripts.run_review_model_comparison --execute --ci-run <exact-head-run>
+--env-file <authorized-local-env>`. It reserves one create-only run directory,
+uses one two-call/154202-token/600-second ledger, and requires host adjudication
+of the full first response before the second call. The host's response-file hash
+binds that decision. Waiting for host review consumes the same elapsed budget.
+Only the diagnostic transport/profile/policy accepts GLM-5.3/high; product
+composition and its Flash-only contract are unchanged. A first failure stops.
 
 | Bound | Proposed diagnostic |
 |---|---|
@@ -94,6 +102,11 @@ not silently inherit this default.
 
 The real product is **not** a drop-in model-name switch:
 
+The approved diagnostic now implements the profile, policy and transport rows
+below. Product role dispatch, product qualification and its shared ledger remain
+unimplemented decisions; the diagnostic runner has its own single two-call
+ledger, not a second product budget. Relevant130 offline checks passed before CI.
+
 | Existing seam | Required scope if a later decision permits implementation |
 |---|---|
 | `zhipu_profiles.py`, request policies | Isolated explicit model/high identity; default Flash selection stays unchanged |
@@ -127,9 +140,10 @@ Use the pricing table rather than assuming a promotional discount advertised on
 another page. Model guides and mock serialization are necessary feasibility
 evidence, not proof the API/account will accept this exact live request.
 
-The next required user decision is only permission for this isolated paid
-alternative-model diagnostic, with ordinary implementation and exact-HEAD CI
-before its requests. It does not authorize product replacement or a budget increase.
+The user has authorized this isolated paid alternative-model diagnostic;
+ordinary implementation and exact-HEAD CI precede its requests. No further
+permission is needed for these two calls. It does not authorize product replacement
+or a budget increase.
 This boundary follows the user's explicit Flash product selection and the
 current exact-model contract; it is not an approval rule invented by a Skill.
 All other Agent/Training/four-panel/frontend/identity/integration/holdout work

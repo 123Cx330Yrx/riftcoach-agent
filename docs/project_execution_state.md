@@ -12,7 +12,7 @@ pause_reason: ""
 ## 当前行动
 
 2026-09-22：核心审查漏检/误报仍未解决，尚无可准入的完整改稿/终评版本。已否决输入布局充分修法，转为审查能力/分工可行性裁决；不是又一次超时或输出耗尽。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。GLM-5.3/high隔离能力对照已准备，待用户决定是否允许这两次替代模型诊断；不等于产品换模。官方接口/high/工具流及价格已核验，原负/正全文经实际SDK MockTransport只改变model，预留154202tokens/600秒，未缓存估算2.544336元而非账单硬限。无live入口、无新增Provider请求；方案/失败分支/角色接线缺口见ADR0108及golden_review_model_comparison_feasibility_v1.json。当前GLM-5.3-flash/high及产品标准/五次共享预算保持，未注册/调用其他候选；获准后实现有界诊断及同HEAD公共CI再执行，首个失败即停。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。用户已明确“允许”ADR0108两例GLM-5.3/high隔离诊断；不是产品换模批准。明确诊断profile/传输身份/共享两调用账本已实现，原负/正全文及规则不变，预留154202tokens/600秒，未缓存估算2.544336元非账单硬限。下一步精确HEAD公共CI后逐例执行，审读全部意见，首个失败即停；目前无新增Provider请求。产品GLM-5.3-flash/high、采用标准和五次共享预算保持；方案/失败分支/后续接线缺口见ADR0108。
 - 1d5f7a2 / CI35730692196三项通过后，review-target-layout-v1四次完整合法返回、61159tokens、未知0。baseline负例漏检/正例通过；target负例检出但advisory经济比例写反，正例block4泛指又被判全称。拒绝采用并关闭execute；不拼两臂成功，无编辑/终评。34份原文件hash和逐局算术核验保存在golden_review_target_layout_result_1d5f7a2.json，均未触及输出/时限。
 - a82cfeb / CI35728654384三项通过，92项本地相关检查及6份历史只读回放通过；两个工程缺口已修复，未修复模型语义。位置数组不直接接入，未新增候选。
 - 指定起点审查后的修复：关闭遗漏的旧tool开发入口，7个CLI策略均先于资料/凭据/Provider拒绝；导出器补调用序号/transport关联、预约清单及计数守恒，拒绝错配与漏算，6份历史运行只读回放成功。旧da06b5a回执unknown1不改，独立校正继续保留。恢复诊断见golden_review_submission_recovery_boundary_v1.json；检查通过不等于核心语义闭环通过。
@@ -28,7 +28,7 @@ pause_reason: ""
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。
 实际后端：`D:\riftcoach-agent-rq192-pr`，分支 `codex/rq192-provider-stream-contract-ci`，
-当前ADR0103—0107旧真实入口及布局实验均停止；ADR0108仅为待决定的能力诊断方案，具体实现以本分支HEAD为准；`8014a56`仅是以下ADR0104历史控制基线。主库前端工作保留，未合并/重置。
+当前ADR0103—0107旧真实入口及布局实验均停止；ADR0108仅获准两例隔离能力诊断，具体实现以本分支HEAD为准；`8014a56`仅是以下ADR0104历史控制基线。主库前端工作保留，未合并/重置。
 
 ## 已验证事实与阻断
 

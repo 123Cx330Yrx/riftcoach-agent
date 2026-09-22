@@ -11,7 +11,7 @@ from app.evaluation import golden_integrated_review as review
 from app.evaluation.golden_context_requests import revision_request
 from app.evaluation.golden_context_review import ContextEvaluation
 from app.evaluation.golden_review_experiment import compact
-from app.evaluation.golden_stream_bridge import validate_request, CAPACITY_TRANSPORT_ID, GoldenProcessStreamProvider
+from app.evaluation.golden_stream_bridge import validate_request, CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, GoldenProcessStreamProvider
 from app.evaluation.golden_inference_scope_v5 import strict_json
 from app.evaluation.coach_report import validate_revised_report, EvaluationResponseModelV11
 from app.evaluation.golden_inference_coverage import CoveredEvaluationResult
@@ -52,9 +52,9 @@ class ReceiptedStreamProvider(GoldenProcessStreamProvider):
         reservation = strict_json((directory / "reservation.json").read_text(encoding="utf-8"))
         terminal = strict_json((directory / "result.json").read_text(encoding="utf-8"))
         sha = hashlib.sha256(validate_request(request, transport_id=CAPACITY_TRANSPORT_ID)).hexdigest()
-        if (self.transport_id != CAPACITY_TRANSPORT_ID or reservation["transport_id"] != CAPACITY_TRANSPORT_ID
+        if (self.transport_id not in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID) or reservation["transport_id"] != self.transport_id
                 or reservation["ordinal"] != self._calls or reservation["request_sha256"] != sha
-                or terminal["state"] != "complete" or terminal["transport_id"] != CAPACITY_TRANSPORT_ID):
+                or terminal["state"] != "complete" or terminal["transport_id"] != self.transport_id):
             self._failed = True
             raise ProviderResponseError(provider=self.provider_name, code="integrated_transport_receipt_invalid")
         self.last_exchange = Exchange(request, response, sha)
