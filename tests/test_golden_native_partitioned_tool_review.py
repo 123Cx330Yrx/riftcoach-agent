@@ -54,6 +54,8 @@ def test_partitioned_schema_preserves_sources_and_makes_advisory_nonblocking():
     prepared = current.request(inputs)
     assert prepared.response_contract is None and prepared.tool_choice is ToolChoiceMode.AUTO
     assert 'advisories' in prepared.tools[0].input_schema['properties']
+    assert '五个字段为score、verdict、issues、issue_resolutions、advisories。' in prepared.messages[0].content
+    assert '四个字段为score、verdict、issues、issue_resolutions。' not in prepared.messages[0].content
     value = valid_review(advisory=True)
     payload, wire, journal = current.validate(compact(value), inputs)
     assert payload.verdict == 'pass' and payload.issues == []

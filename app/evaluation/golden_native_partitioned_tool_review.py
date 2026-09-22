@@ -41,6 +41,12 @@ def _partition_policy(policy):
     policy = policy.replace(
         '只输出给定schema的一个JSON对象，不加前后文字。四个字段为score、verdict、issues、issue_resolutions。',
         '只调用工具提交一个完整结果，不输出其他文字。五个字段为score、verdict、issues、issue_resolutions、advisories。')
+    # tool.request has already replaced the delivery sentence. Keep this
+    # fallback explicit so a policy assembled through that seam cannot retain a
+    # contradictory four-field declaration.
+    policy = policy.replace(
+        '四个字段为score、verdict、issues、issue_resolutions。',
+        '五个字段为score、verdict、issues、issue_resolutions、advisories。')
     policy = policy.replace(
         'issues仅列实际问题，同段不同问题可分别列；每项须填写block、severity、category、source_ids、explanation、suggested_correction。',
         'issues仅列需要修改报告的真实问题（事实冲突、无依据外推、内部矛盾或完整上下文无法消解且影响结论的歧义）；'
