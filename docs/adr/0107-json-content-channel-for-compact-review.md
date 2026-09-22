@@ -1,6 +1,6 @@
 # 0107: Isolate the output channel for compact phase-specific review
 
-Date: 2026-09-22. Status: bounded development after exact CI, not product adoption.
+Date: 2026-09-22. Status: stopped after a real deadline; not product adoption.
 
 ## Failure and what it actually establishes
 
@@ -63,3 +63,13 @@ claim/source relation; protocol success cannot approve the reviewer.
 
 ADR0106's tool live gate closes. The actual product entry remains closed and its
 old qualification binding still needs replacement before any later adoption.
+
+## Actual result
+
+11bc7bd / CI35716166747 passed all three public jobs. The original attribution
+first review ended at the parent300.015-second deadline. Last event299.906seconds,
+no public content, terminal or usage. No edit/recheck. One request with unknown
+usage; cannot judge the absent JSON or infer a stalled network. Exact reconstructed
+request hash matches its reservation. Evidence: golden_json_block_deadline_11bc7bd.json.
+This live branch is stopped. Further paid channel toggling is not the next action;
+see review-submission-contract-decision for the offline representation comparison.

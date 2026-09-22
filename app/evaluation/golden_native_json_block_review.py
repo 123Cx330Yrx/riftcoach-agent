@@ -14,8 +14,8 @@ from app.providers.structured import contract_for_model
 
 native = previous.native
 EXPERIMENT_ID = 'golden-native-json-block-review-v1'
-LIVE_STATUS = 'bounded_development_after_exact_ci'
-LIVE_BLOCK_REASON = ''
+LIVE_STATUS = 'offline_json_content_deadline'
+LIVE_BLOCK_REASON = 'json_content_review_no_public_result_before_deadline'
 STREAM_TOOL_ARGUMENTS = False
 
 
