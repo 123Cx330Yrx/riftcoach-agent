@@ -156,3 +156,8 @@ claim-scope 4（明确全称错误）、claim-scope 1（正确全文）、attrib
 独立评估与后续产品工作仍需完成。新策略仅显式开发验证，未注册到正式组合。
 
 执行前逐项编译核对发现最初文字误写attribution索引2；该例实际是正确稿且与claim-scope1同输入。已在任何付费请求前纠正为索引1的原归因负例；四例实际ID/标签/请求hash冻结在golden_native_business_plan_v1.json，不重复正确稿充数。
+
+公共CI 35680877225：4260 passed、154 skipped、1 failed（另127 subtests）。唯一失败是
+治理负例测试依赖精简前的`Decisions Made`标题，未执行到实际检查。改为定位Next Step后的
+任意同级章节或文尾，仍注入过期checkpoint并要求治理拒绝；没有放宽治理实现或业务标准。
+聚焦阶段漏跑该文档耦合测试是本轮验证范围遗漏。修复后重跑治理测试及当前提交公共CI；付费调用尚未开始。
