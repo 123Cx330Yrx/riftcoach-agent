@@ -284,24 +284,22 @@ class ReviewHarnessPassingPathTests(unittest.TestCase):
         )
 
     def test_provider_failure_keeps_only_a_safe_failure_code(self) -> None:
-        harness = self._build_harness(
-            evaluator=SequenceEvaluator([
-                ProviderResponseError(
-                    provider="zhipu",
-                    code="invalid_structured_output",
+        for code in ("invalid_structured_output", "native_review_non_json_suffix"):
+            with self.subTest(code=code):
+                self.store = FileRunStore(self.runs_root, f"{self.run_id}_{code}")
+                harness = self._build_harness(
+                    evaluator=SequenceEvaluator([
+                        ProviderResponseError(provider="zhipu", code=code)
+                    ]),
+                    reviser=UnexpectedReviser(),
                 )
-            ]),
-            reviser=UnexpectedReviser(),
-        )
-
-        manifest = harness.run(
-            player_summary=self.player_summary,
-            deterministic_report=self.deterministic_report,
-        )
-
-        self.assertEqual(RunStatus.DEGRADED, manifest.status)
-        self.assertEqual("invalid_structured_output", manifest.failure_code)
-        self.assertEqual("evaluation_failed", manifest.transitions[-1]["reason"])
+                manifest = harness.run(
+                    player_summary=self.player_summary,
+                    deterministic_report=self.deterministic_report,
+                )
+                self.assertEqual(RunStatus.DEGRADED, manifest.status)
+                self.assertEqual(code, manifest.failure_code)
+                self.assertEqual("evaluation_failed", manifest.transitions[-1]["reason"])
 
     def test_failure_diagnostic_drops_unknown_and_non_string_codes(self) -> None:
         error = ProviderResponseError(provider="zhipu", code="private_token_text")

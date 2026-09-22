@@ -1,6 +1,8 @@
-"""Policy-only intervention: real input/validation/budget, scripted judgments."""
+"""Business policy and terminal framing failures, using offline response replay."""
 from dataclasses import replace
 import hashlib
+import json
+from pathlib import Path
 
 import pytest
 
@@ -10,6 +12,7 @@ from app.evaluation.golden_integrated_runtime import BudgetedReviewSender
 from app.evaluation.golden_review_experiment import compact
 from app.evaluation.golden_stream_bridge import CAPACITY_TRANSPORT_ID, validate_request
 from app.harness.steps import RevisionRequest, EvaluationVerdict
+from app.providers.errors import ProviderResponseError
 from scripts.check_native_contract_options import OfflineResponses
 from scripts.run_golden_native_review import prepare_claim_scope
 from tests.test_golden_semantic_review import evaluation_request
@@ -75,7 +78,9 @@ def test_existing_workflow_preserves_one_revision_and_full_recheck():
 def test_reassessment_still_requires_explicit_disposition_of_old_findings():
     req = evaluation_request()
     inputs = legacy.build_inputs(req)
-    old = compact(opinion(inputs, block=1)) + '\nnon-json suffix'
+    malformed = opinion(inputs, block=1)
+    malformed['score'] = '70'
+    old = compact(malformed)
     # A fresh clean pass silently drops the identifiable old finding: reject.
     provider = OfflineResponses([old, compact(opinion(inputs))])
     workflow = current.NativeBusinessReviewWorkflow(BudgetedReviewSender(provider, clock=lambda: 1000))
@@ -90,3 +95,56 @@ def test_final_policy_size_is_checked_before_provider_io(monkeypatch):
     monkeypatch.setattr(current, 'INITIAL_POLICY', '很长的策略' * 100000)
     with pytest.raises(ValueError):
         current.request(inputs)
+
+
+def test_failed_business_batch_cannot_resume_before_preparation_or_credentials(monkeypatch):
+    from types import SimpleNamespace
+    from scripts import run_golden_native_review as runner
+
+    def forbidden(*args, **kwargs):
+        pytest.fail('failed business policy must stop before preparation or CI')
+
+    monkeypatch.setattr(runner, 'prepare', forbidden)
+    monkeypatch.setattr(runner, 'verify_public_ci', forbidden)
+    with pytest.raises(ValueError, match='business_policy_reassessment_scope_false_positive_requires_redesign'):
+        runner.run(SimpleNamespace(execute=True), candidate_module=current)
+
+
+@pytest.mark.parametrize('block', [None, 1])
+def test_prose_tail_cannot_erase_findings_or_trigger_another_semantic_decision(block):
+    req = evaluation_request()
+    raw = compact(opinion(legacy.build_inputs(req), block=block)) + '\n另一个真实问题可能存在。'
+    provider, recorded = OfflineResponses([raw]), []
+    flow = current.NativeBusinessReviewWorkflow(BudgetedReviewSender(provider, clock=lambda: 1000),
+        record=lambda phase, exchange: recorded.append(exchange.response.content))
+    with pytest.raises(ProviderResponseError) as error:
+        flow.evaluate(req)
+    assert error.value.code == 'native_review_non_json_suffix'
+    assert recorded == [raw] and len(provider.requests) == 1 and flow.stopped
+
+
+@pytest.mark.parametrize('index, expected_calls', [(3, 3), (4, 3)])
+def test_real_batch_replay_preserves_success_and_stops_tail_before_new_judgment(index, expected_calls):
+    artifact = json.loads((Path(__file__).resolve().parents[1] /
+        'data/evaluation/results/golden_native_business_result_d41c0bd.json').read_text(encoding='utf-8'))
+    saved = artifact['cases'][index - 3]
+    _, req = prepare_claim_scope(index)
+    assert req.report == saved['original_report']
+    recorded = []
+    provider = OfflineResponses([call['content'] for call in saved['calls']])
+    flow = current.NativeBusinessReviewWorkflow(BudgetedReviewSender(provider, clock=lambda: 1000),
+        record=lambda phase, exchange: recorded.append(exchange.response.content))
+    initial = flow.evaluate(req)
+    revised = flow.revise(RevisionRequest(req.player_summary, req.deterministic_report,
+        req.knowledge, req.report, initial))
+    assert revised.report == saved['revised_report']
+    recheck = replace(req, report=revised.report)
+    if index == 3:
+        assert flow.evaluate(recheck).verdict is EvaluationVerdict.PASS
+    else:
+        with pytest.raises(ProviderResponseError) as error:
+            flow.evaluate(recheck)
+        assert error.value.code == 'native_review_non_json_suffix'
+        assert flow.stopped
+    assert len(provider.requests) == flow.calls == expected_calls
+    assert recorded == [call['content'] for call in saved['calls'][:expected_calls]]

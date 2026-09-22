@@ -47,6 +47,7 @@ _SAFE_FAILURE_CODES = DRAFT_PREPARATION_CODES | frozenset(
         "invalid_chat_response",
         "invalid_finish_reason",
         "invalid_structured_output",
+        "native_review_non_json_suffix",
         "invalid_tool_input",
         "invalid_tool_output",
         "missing_tool_data",

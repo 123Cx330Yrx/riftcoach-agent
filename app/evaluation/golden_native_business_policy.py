@@ -1,16 +1,18 @@
-"""Phase-specific business policy on the existing native workflow and wire.
+"""Business policy and terminal prose-tail handling on the native workflow.
 
 The v3.6 module stays byte-compatible for historical request reconstruction.
-Only system instructions change here: sources, schema, validators, revision
-count and shared budget remain the native implementation's responsibility.
+Sources, schema, issue validation, revision count and shared budget remain the
+native implementation's responsibility. V2 stops non-JSON prose tails instead
+of spending a full semantic reassessment to resolve an unsafe framing failure.
 """
 from dataclasses import replace
 
 from app.evaluation import golden_native_issues_review as native
+from app.providers.errors import ProviderResponseError
 
-EXPERIMENT_ID = 'golden-native-business-policy-v1'
-LIVE_STATUS = 'bounded_development_after_exact_ci'
-LIVE_BLOCK_REASON = ''
+EXPERIMENT_ID = 'golden-native-business-policy-v2'
+LIVE_STATUS = 'offline_reassessment_scope_false_positive'
+LIVE_BLOCK_REASON = 'business_policy_reassessment_scope_false_positive_requires_redesign'
 
 SCOPE_POLICY = (
     '按完整上下文确定原文实际断言的对象、指标、组别、期间和量词，再对照来源。'
@@ -66,6 +68,15 @@ def request(inputs, *, previous_raw=None, diagnostics=None, accepted=None):
 
 
 def validate(raw, inputs, *, previous_raw=None):
+    # A prose tail may contradict the JSON or contain omitted findings. Never
+    # discard it, accept its JSON prefix, or call a fresh business judgment a
+    # format repair. The workflow already records the complete public response
+    # before validation. This terminal error bypasses its ValueError recovery.
+    value, suffix = native.previous.provisional_review(raw)
+    if suffix:
+        if native.previous.security_terminal(value):
+            raise ValueError('native_security_terminal')
+        raise ProviderResponseError(provider='zhipu', code='native_review_non_json_suffix')
     payload, wire, journal = native.validate(raw, inputs, previous_raw=previous_raw)
     journal = dict(journal, experiment=EXPERIMENT_ID, validator_experiment=native.EXPERIMENT_ID,
         policy_sha256=native.digest(INITIAL_POLICY if previous_raw is None else REASSESSMENT_POLICY))

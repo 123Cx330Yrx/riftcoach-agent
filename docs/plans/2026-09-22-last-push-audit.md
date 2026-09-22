@@ -161,3 +161,78 @@ claim-scope 4（明确全称错误）、claim-scope 1（正确全文）、attrib
 治理负例测试依赖精简前的`Decisions Made`标题，未执行到实际检查。改为定位Next Step后的
 任意同级章节或文尾，仍注入过期checkpoint并要求治理拒绝；没有放宽治理实现或业务标准。
 聚焦阶段漏跑该文档耦合测试是本轮验证范围遗漏。修复后重跑治理测试及当前提交公共CI；付费调用尚未开始。
+
+### d41c0bd 真实业务结果与后续裁决
+
+修复后的d41c0bd / Actions35681607246公共三项通过。按冻结顺序执行前两份完整报告；
+第二份最终失败后立即停止本批，正确全文和原伤害归因两例未运行。原始回执不改。
+完整公开投影、原稿/改稿、回执哈希和人工裁决：
+`data/evaluation/results/golden_native_business_result_d41c0bd.json`。
+
+| 实际步骤 | 结果与证据边界 |
+|---|---|
+| 混合例初评 | 82/needs_revision，仅检出明确全五局合并补刀持平的真错，没有原block4误报 |
+| 混合例改稿/终评 | 改为胜8.81、败6.45，保留正确block4及其他实质内容；96/pass，主Agent及独立审查接受；3调用，40600tokens |
+| 全称例初评/改稿 | 80/needs_revision，正确检出每指标下降；改稿明确全组CS7.39/中单8.91、视野45/33.75、早死2.6/1.5；其他实质正文保留，人工接受 |
+| 全称例第一次终评 | 96/pass的JSON后追加审查说明，公开响应共1042字符，严格解析拒绝；说明未发现语义矛盾，但不是合法完成 |
+| 唯一恢复 | 完整合法JSON，93/needs_revision；把未改动的中单补刀句中“这5局内”窗口补成全部五局分母，新增low/fact_error，整链人工拒绝；本例共4调用63355tokens |
+
+总计7次、77951输入+26004输出=103955tokens，未知0；各请求耗时合计642.266秒（非整轮墙钟）。
+历史累计至少284次沿用旧277加本轮7，不是全量账单审计。全称例首评248.719秒，完整stop，
+接近但未触及300秒；本次失败不是截断、输出额度耗尽或传输超时。单例成功不能证明稳定性。
+
+已确认的机制：`golden_semantic_review.NativeBusinessReviewWorkflow.evaluate`对解析/结构ValueError
+统一发送完整语义重评。此次previous_issues为空，恢复中新问题不是漏映射或保留旧误报；
+第3/4请求共同报告与所有来源逐项相同，差别为阶段policy与previous_review/诊断/尾文。
+恢复流程允许重判全文，因此格式失败会额外触发一次业务裁决。实际误报已由两个审查者对照全文确认：
+同句标题、四局中单、胜败均值和后文明确区分中单与混合；混合组不持平不证明原句切换了分母。
+这仍不能单独区分恢复措辞、旧意见暴露、采样波动各自的因果作用。
+
+排除“忘开JSON模式”的修法：离线重建实际请求经同一Zhipu适配器/32768策略到SDK调用，
+确实得到response_format=json_object、high、32768、300秒、temperature1/top_p0.95。
+原live没有保存HTTP正文，因此这是实际代码路径重建，不冒称独立抓包。
+2026-09-22读取官方结构化输出文档、Flash模型文档及OpenAPI，公布的response_format枚举为text/json_object，
+tool_choice仅auto；没有找到可直接采用的strict json_schema/required工具能力，不能靠猜参数再付费试。
+官方OpenAPI描述含“三种”笔误但实际只列两种，以枚举及示例为据。
+来源：https://docs.bigmodel.cn/cn/guide/capabilities/struct-output.md ，
+https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash.md ，https://docs.bigmodel.cn/openapi/openapi.json 。
+本地原文存在第二run/provider-docs/；sha256依次为
+d35cbef8f6019008e4e91dee9683270c58e10dd76bd5fee40b2e414e2a4882ce、
+7e83558c739a50cf74c771032c5edb8c455bd561d697887a354f088072ea866c、
+19323a78f0052c6e28b053e24a19c582595430a5658a01adb22bbc704d461f9d。
+
+**方案裁决而非再重跑：**
+- 单纯清理policy已取得本例首评/改稿成功，但未获得整链资格；关闭business live，保留离线重建。
+- 不保留JSON前缀而忽略自然语言尾文；尾文可能提出真实错误或撤回pass，归档不等于语义无损。
+- “只做格式恢复并强制与原对象相等”不能解决任意尾文的业务信息，不能直接采用。
+- 外围空白/明确展示围栏可定义确定性归一，但本次长审查尾文不属于该类，不是本次修法。
+- 不恢复旧两状态终评、强加固定双评、降低high或将low/fact_error全部视为建议。
+- 下一机制设计必须明确语义裁决与格式恢复各自职责；保留全部问题和尾文的潜在事实责任，
+  对正确全文、真实错误、混合真假和尾文矛盾给出可检查路径；生成/工具/审查/修订合计仍在原5调用预算内。
+  尚未选出满足这些条件且有真实证据的通用替代；不得写成“根因已明、只差接线”。
+
+解除主阻断后既有资格去重清单：本四例之外observed1–5、scope3/4、claim-scope2/5/6/7共11个不同输入。
+独立审查确认claim-scope1=attribution2=scope1，attribution1=scope5；重复输入复用同版本结果并记录映射。
+scope2和离线统计反例不自动新增为付费门槛。来源为原2026-09-20资格计划最新覆盖记录。
+全部通过之后仍需替换产品硬编码a71eb94资格、绑定实际workflow/组件指纹，再做真实生成/同源保存；
+Worker/DB/API/Workbench、独立评估和全局产品/前端要求保持，不能提前宣布接入或8E完成。
+
+### 本轮离线修复：不把自然语言尾文当作可自动格式恢复
+
+采用能由现有证据支持的控制流改动：business v2在existing provisional_review识别出JSON后尾文时，
+以`native_review_non_json_suffix`终止自动路径，不进入ValueError触发的完整重评。响应在校验前已由
+既有record保存；不接受JSON前缀、不删尾文、不制造pass。高危注入仍优先安全终止；纯JSON字段
+错误仍沿用旧映射重评，不悄悄丢旧问题。business v1原实测失败不改写为成功，v2仍offline。
+
+93项聚焦回归通过，含两份本轮真实公开响应回放：核心混合例仍3调用/pass；全称例在第3调用
+保留协议失败，不发送第4次业务重评。此处6次是离线回放调用，真实费用仍为7次/103955tokens；
+原第4次16922tokens已经花费，不能称本轮省回。也不代表未来模型能稳定输出合法JSON。
+
+静态检查`zhipu_stream_adapter`从content和reasoning_content分别创建事件，assembler分别append/join，
+未见主动追加审查尾文逻辑。旧run只存聚合响应/进度，未保留原始content delta；因此不能独立
+逐片证明当时Provider/SDK/装配每层一致，亦不能只因已发json_object就把问题确定归因服务端。
+当前真正未解的是稳定的合法输出及完整上下文业务判断，不是再加一次重评或一次准入检查。
+
+独立审查认可v2限定边界，提出Harness会隐藏新错误码。已将`native_review_non_json_suffix`加入
+既有安全错误码清单并验证实际Harness仍degraded/停止修订，保留明确分类；未知/私密错误码仍丢弃。
+另17项Harness测试及2个子用例通过；本轮相关验证合计110项及2个子用例，不冒充新一轮模型证据。
