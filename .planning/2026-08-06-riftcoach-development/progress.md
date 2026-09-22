@@ -7096,3 +7096,8 @@ Closed business live entry and checked refusal before preparation/credentials. S
 Next action is the current short work card's recovery responsibility/budget decision. Remaining same-version qualification, genuine product generation/Evidence, Worker/DB/API/Workbench, independent evaluation/learning and frontend/portraits/four-panel/personal training requirements remain open. Historical next-action paragraphs above are not a current queue.
 
 Offline follow-up in this same round: business v2 now terminates JSON-plus-prose tails with native_review_non_json_suffix instead of triggering a fresh semantic reassessment. Full public responses are retained before validation; no JSON prefix is accepted and no verdict is fabricated. Pure-JSON field recovery retains existing issue mappings. 93 focused tests passed, including replay of the actual two runs: mixed-case three-call success preserved; universal case stops as a protocol failure on call3, without historical call4. Real usage remains7/103955, not the six scripted replay calls. Live remains closed; this improves failure handling and potential cost, not output/semantic reliability.
+
+## 2026-09-22 工具提交开发实验：实现与离线验证
+
+复用NativeIssuesReview/全部来源/business语义，仅改为AUTO工具提交；严格接收、保留原始response，投影参数明确标记。新增ADR0103、--policy tool和冻结1/4/3计划。旧business批和产品入口不变。
+62项聚焦回归通过（60项协议/历史/native sender/stream，加2项完整产品组装）；原生Runtime、知识工具/生成/首评/Markdown修订/终评五次共享355508tokens上界，非模型质量。字段恢复用掉第六次预算时网络前拒绝且无发布。SDK模拟确认完整schema、auto、high、32768及无JSON mode。首次SDK测试漏选CAPACITY transport，离线修正后通过，无付费调用。独立审查暂无阻断；接下来精确HEAD公共CI，再冻结有界实测。
