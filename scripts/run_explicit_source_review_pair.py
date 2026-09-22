@@ -20,6 +20,7 @@ from scripts.run_golden_inference_development import verify_public_ci
 from scripts.run_review_model_comparison import observe
 
 EXPERIMENT = 'review-explicit-source-pair-v1'
+LIVE_STATUS = 'completed_pair_requires_role_decision'
 RUN_DIRECTORY = ROOT / 'data/runs/model_comparison' / EXPERIMENT
 
 
@@ -39,6 +40,8 @@ def prepare_pair():
 
 
 def run(args):
+    if args.execute and LIVE_STATUS != 'approved_bounded_pair_after_exact_ci':
+        raise ValueError('completed_source_pair_no_retry')
     if args.execute and not args.approval_plan_sha:
         raise ValueError('explicit_source_specific_approval_required')
     variants, plan = prepare_pair()

@@ -34,6 +34,7 @@ def test_preparation_is_reproducible_without_private_run_files(monkeypatch):
 @pytest.mark.parametrize('mode', ['missing_approval', 'wrong_plan', 'ci_failure', 'already_run'])
 def test_gates_precede_credentials_or_provider(monkeypatch, tmp_path, mode):
     variants, plan = runner.prepare_pair()
+    monkeypatch.setattr(runner, 'LIVE_STATUS', 'approved_bounded_pair_after_exact_ci')
     args = NS(execute=True, approval_plan_sha=plan['preparation_sha256'], ci_run='test', env_file=None)
     called = []
     def prepare():
@@ -86,3 +87,34 @@ def test_offline_acceptance_journal_binds_actual_projected_request(tmp_path):
         assert journal['policy_sha256'] == digest(request.messages[0].content)
         assert journal['validator_policy_sha256'] != journal['policy_sha256']
         assert journal['raw_sha256'] == digest(compact(valid_review()))
+
+
+def test_completed_batch_cannot_be_reopened_by_old_approval_hash(monkeypatch):
+    def forbidden():
+        pytest.fail('completed batch touched sources')
+    monkeypatch.setattr(runner, 'prepare_pair', forbidden)
+    with pytest.raises(ValueError, match='completed_source_pair_no_retry'):
+        runner.run(NS(execute=True, approval_plan_sha='previously-approved', ci_run='', env_file=None))
+
+
+def test_recorded_pair_replays_with_original_sources_and_request_identity():
+    import hashlib
+    from app.evaluation import golden_native_partitioned_tool_review as review
+    from app.evaluation.golden_stream_bridge import validate_request, REVIEW_MODEL_TRANSPORT_ID
+    result = json.loads((runner.ROOT / 'data/evaluation/results/golden_explicit_source_pair_result_0c061b2.json')
+                        .read_text(encoding='utf-8'))
+    originals = result['original_json_contents']
+    for ordinal, (name, inputs, prepared) in enumerate(runner.prepare_pair()[0], 1):
+        response = originals[name + '/response.json']
+        request = originals[name + '/request.json']
+        raw = compact(response['tool_calls'][0]['arguments'])
+        _, wire, journal = review.validate(raw, inputs)
+        assert digest(raw) == originals[name + '/journal.json']['raw_sha256']
+        assert journal['selected_sources'] == originals[name + '/journal.json']['selected_sources']
+        issued = replace(prepared, timeout_s=request['timeout_s'])
+        encoded = validate_request(issued, transport_id=REVIEW_MODEL_TRANSPORT_ID)
+        assert json.loads(encoded) == request
+        assert hashlib.sha256(encoded).hexdigest() == originals[f'transport/stream-{ordinal:03d}/reservation.json']['request_sha256']
+        assert not journal['production_admitted']
+    assert result['result']['reserved_calls'] == 2
+    assert result['cost']['total_tokens'] == 28936

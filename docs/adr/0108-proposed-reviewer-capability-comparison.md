@@ -102,7 +102,7 @@ review. Max2 calls/154846 reserved tokens/600seconds;32768 output and300seconds
 per call. At8/28 CNY per million input/output, the conservative reservation
 estimate is **2.549488 CNY**, not a hard billing cap or prediction of actual usage.
 
-Execution requires a **new explicit user decision for this proposal**, its exact
+At preparation time, execution required a **new explicit user decision for this proposal**, its exact
 preparation hash (`--approval-plan-sha`) and clean exact-HEAD three-job public CI.
 The hash selects the approved prepared inputs; possession of the hash alone is
 not authorization. The stopped original batch and its unused call stay closed.
@@ -114,7 +114,54 @@ stops the pair; valid IDs alone are insufficient. Both complete controls correct
 would support the next role/workflow decision only, not stable accuracy, model
 replacement or15-case product qualification. If references remain irrelevant,
 this correction is insufficient: reassess evidence selection/task allocation,
-not another numbering permutation. No follow-up paid calls have occurred yet.
+not another numbering permutation. The following section supersedes the proposal's pending status.
+
+## 2026-09-23: approved follow-up completed; both development controls accepted
+
+The user explicitly replied **“允许执行这两次诊断”** to the2-call/600second/
+approximately2.55CNY reservation proposal. Preparation hash
+`1d6c72b8d6afb5604eb7172193e932683034e964698c1b3fc70ed5a6800b5c29`;
+clean execution HEAD`0c061b265ab55bca4be4d935ef27ad87bee5076c`, public
+CI`35752331153` passed all three jobs before either paid request.
+
+| Complete control | Actual response and host/source audit |
+|---|---|
+| Original wrong attribution |80/needs_revision; only block14 issue, sources31/1/14/10/18 all relevant; no advisories. Correctly separates CS direction reversal from damage gap695.4183 vs mid669.235; difference26.1833/3.7651%, mid96.2349%; all mid win damage rows exceed both loss rows. |
+| Corrected full report |97/pass; no issues/advisories; no false positive on the generic mixed-position sentence, sample-scoped stable CS wording or corrected attribution. |
+
+Both transport/tool/source validations passed and the host inspected the entire
+response before accepting it by its original response-file hash. Neither response
+was rewritten. The first stream completed in48.062seconds, the second28.235seconds;
+the batch, including host inspection, used230.515seconds. Actual input24453 +
+output4483 = **28936tokens**, unknown0. Cached input2368 is already included in
+24453, not added again. All input priced conservatively as uncached gives
+**0.321148CNY**; actual vendor bill/cache discount was not independently verified.
+
+Full20 original JSON files/hashes, exact requests/receipts, original responses,
+source resolution, host decisions/analysis and timing/accounting are preserved in
+`data/evaluation/results/golden_explicit_source_pair_result_0c061b2.json`.
+Every raw file hash was rechecked; original earlier failures remain unchanged.
+The batch entry is closed before sources/CI/credentials; the completed approval
+hash cannot trigger another execution. Offline preparation and replay remain.
+
+**Decision changed by evidence:** this configuration now distinguishes the two
+full attribution controls with supported references in its actual issue. It is
+reasonable to proceed to a concrete reviewer-role integration design, rather
+than continuing source-number permutations or semantic-policy edits. A single
+paired run does not prove the input change caused the improvement or establish
+repeatability. No early-death advisory was emitted, so its former wrong-source
+case was not reproduced and specifically fixed by this result.
+
+There was **no actual edit or final review**, no15-case qualification, no product
+role/default change and no candidate/product admission. The frozen correct report
+was prepared before the model run; it is not a model-produced revision.
+Next independent work is to prepare the reviewable role-contract/dispatch change:
+Flash/high for generation/tool rounds and editing, full GLM-5.3/high for initial
+and final review, one existing5-call/401920-token/900-second ledger and one edit.
+Product role adoption and any additional paid batch still require their concrete
+decision; these two diagnostic approvals do not authorize that replacement.
+Reuse the product runtime and replace its obsolete qualification binding during
+integration, not by turning these two review-only results into product evidence.
 
 ## Problem and discriminating question
 

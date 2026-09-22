@@ -11,8 +11,9 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-23：来源编号歧义的离线修正与实测准备完成；模型质量仍未获得新验证。原GLM-5.3/high首例来源失败保留，原第二例未调用，无实际改稿/终评或产品准入。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。对已准备的显式ID两份完整请求取得具体付费决定，再按精确HEAD公共三项检查执行。准备入口run_explicit_source_review_pair.py；最多2次/154846tokens/600秒，预留估价2.549488元。首例任一协议/语义/引用不支持即停止；两例正确也不等于产品资格。原ADR0108批停止，未发第二次不转作新批额度；本次尚无真实调用。产品Flash/high和五次共享预算保持。
+2026-09-23：用户另行允许的显式ID两例诊断已完成，错误稿检出且引用准确，正确全文97/pass；没有改稿/终评、15例资格或产品准入。旧失败保留。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。准备可审查的模型角色合同与接线方案：Flash/high生成/工具与改稿，GLM-5.3/high首评/终评，共用既有5次/401920tokens/900秒账本；核对实际组合、资格绑定和恢复路径。此为后续提案，产品角色采用与额外付费仍需具体决定。停止编号/提示排列组合，不将这两份纯审查结果当产品资格，不重开已结束批。
+- 0c061b2 / CI35752331153公共三项通过后，两例完整返回并经host逐项核对：原错误稿80/needs_revision，仅block14，sources31/1/14/10/18支持原意及修正建议；正确稿97/pass、无issue/advisory。2次输入24453+输出4483=28936tokens、未知0，缓存2368已含输入，按全未缓存价估算0.321148元；流耗时48.062/28.235秒，含host批耗时230.515秒。20份原JSON/hash、回执和人工来源审查见golden_explicit_source_pair_result_0c061b2.json。无早期死亡建议输出，不能单独认定旧advisory错引已复现修好；两例不证明稳定率或变更因果。
 - 编号全路径核查：表格生产index+1、恢复index-1、source_roots及解析均一致，并非程序错位。歧义来自模型侧bare evidence_keys数组。离线适配替换为同ID的evidence_by_id对象及一句读取说明，首评/重评/改稿严格往返，完整坏意见及原hash保留；OP.GG零基物理路径不改。两控制经真实SDK MockTransport确认只有这两处消息变化；原失败仍拒绝，建议的错引不能统一+1修好。证据golden_explicit_source_projection_v1.json；未改产品指纹或注册新产品候选。
 - b6b30f8 / CI35747690218三项通过后，批准的首例完整tool_calls，82/needs_revision，一问题一建议，56.406秒。文本检出正确且未把上下文建议升级阻断，但semantic_source_id_unknown；1次输入12149+输出3480=15629tokens、未知0，按单价估算0.194632元。未耗尽/超时，第二例未发，不能称正反配对成功。完整8份原工件/hash、请求身份、逐项来源及独立算术见golden_review_model_comparison_result_b6b30f8.json。
 - 本轮工程遗漏：15c8940公共CI18个native组装失败来自共享源码指纹未同步；修复活动manifest两项源码及派生program hash，66项受影响回归和b6b30f8公共检查通过。旧资格/回执未改；这是执行遗漏，不归因于模型。
