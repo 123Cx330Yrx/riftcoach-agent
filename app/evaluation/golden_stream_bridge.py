@@ -303,13 +303,16 @@ class GoldenProcessStreamProvider:
     sdk_max_retries = 0
     runtime_profile = None
 
-    def __init__(self, *, settings, directory, transport_id=TRANSPORT_ID):
+    def __init__(self, *, settings, directory, transport_id=TRANSPORT_ID, stream_tool_arguments=True):
         if transport_id not in TRANSPORTS:
             raise ValueError("stream_transport_identity")
+        if type(stream_tool_arguments) is not bool:
+            raise ValueError("stream_tool_arguments_must_be_boolean")
         if settings.model != self.model_name or settings.base_url.rstrip("/") != "https://open.bigmodel.cn/api/paas/v4":
             raise ValueError("stream_provider_identity")
         self._settings, self._directory = settings, Path(directory)
         self.transport_id = transport_id
+        self.stream_tool_arguments = stream_tool_arguments
         self._calls, self._failed = 0, False
 
     def chat(self, request):
@@ -321,13 +324,15 @@ class GoldenProcessStreamProvider:
         directory.mkdir(parents=True, exist_ok=False)
         write_new_json(directory / "reservation.json", {"transport_id": self.transport_id,
             "ordinal": self._calls, "request_sha256": hashlib.sha256(raw).hexdigest(),
+            "stream_tool_arguments": self.stream_tool_arguments and bool(request.tools),
             "state": "reserved_before_io", "request_metrics": request_metrics(request, raw)})
         environ = dict(os.environ)
         environ.update(LLM_API_KEY=self._settings.api_key, LLM_BASE_URL=self._settings.base_url,
                        LLM_MODEL=self.model_name, LLM_PROVIDER="zhipu")
         try:
             return run_child([sys.executable, "-B", "-m", "app.evaluation.golden_stream_bridge",
-                "--worker", str(directory), "--transport-id", self.transport_id], raw,
+                "--worker", str(directory), "--transport-id", self.transport_id,
+                *([] if self.stream_tool_arguments else ["--buffered-tools"])], raw,
                 directory=directory, timeout_s=request.timeout_s, environ=environ, transport_id=self.transport_id)
         except BaseException:
             self._failed = True
@@ -387,7 +392,7 @@ def run_child(command, raw, *, directory, timeout_s, environ=None, transport_id=
             raise ProviderResponseError(provider="zhipu", code="stream_cleanup_failed") from None
 
 
-def worker(directory, started, deadline, transport_id=TRANSPORT_ID):
+def worker(directory, started, deadline, transport_id=TRANSPORT_ID, *, stream_tool_arguments=True):
     if transport_id not in TRANSPORTS:
         raise ValueError("stream_transport_identity")
     from openai import OpenAI, DefaultHttpxClient
@@ -424,7 +429,7 @@ def worker(directory, started, deadline, transport_id=TRANSPORT_ID):
                 profile=ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE)
             from app.runtime.coach_contract import EXPANDED_COACH_CONTRACT, CAPACITY_COACH_CONTRACT
             policy = CAPACITY_COACH_CONTRACT.request_policy if transport_id == CAPACITY_TRANSPORT_ID else EXPANDED_COACH_CONTRACT.request_policy if transport_id == EXPANDED_TRANSPORT_ID else None
-            return Owned(provider.stream_adapter(tool_stream=bool(request.tools), **({"evaluation_request_policy": policy} if policy is not None else {})).stream_session(request, include_usage_tail=True))
+            return Owned(provider.stream_adapter(tool_stream=stream_tool_arguments and bool(request.tools), **({"evaluation_request_policy": policy} if policy is not None else {})).stream_session(request, include_usage_tail=True))
         except BaseException:
             client.close()
             raise
@@ -444,9 +449,11 @@ if __name__ == "__main__":
     parser.add_argument("--started", required=True, type=float)
     parser.add_argument("--deadline", required=True, type=float)
     parser.add_argument("--transport-id", required=True, choices=TRANSPORTS)
+    parser.add_argument("--buffered-tools", action="store_true")
     args = parser.parse_args()
     try:
-        worker(args.worker, args.started, args.deadline, args.transport_id)
+        worker(args.worker, args.started, args.deadline, args.transport_id,
+               stream_tool_arguments=not args.buffered_tools)
     except BaseException as error:
         # StreamAdapterError codes are constructor-validated, bounded internal
         # enums; never persist arbitrary SDK exception text or provider codes.

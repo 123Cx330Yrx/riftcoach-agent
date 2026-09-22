@@ -54,11 +54,24 @@ def prepare():
 
 def run(args):
     variants, plan = prepare()
+    experiment = EXPERIMENT
+    if args.buffered_tools:
+        experiment = 'block-review-buffered-tools-v1'
+        plan.update(experiment=experiment, stream_tool_arguments=False,
+            baseline_experiment=EXPERIMENT,
+            intervention='Same single-schema requests and SSE stream; only omit vendor extra_body.tool_stream. Default product unchanged.',
+            decisions={
+                'valid_full_pair': 'Inspect semantics, not just JSON; this is not product admission or proof of deterministic causality.',
+                'duplicate_keys_again': 'Tool token streaming is not necessary for the malformed JSON; stop this transport hypothesis.',
+                'semantic_error': 'Retain failure; transport success cannot qualify substantive judgment.',
+                'other_protocol_or_execution_failure': 'Stop pair without retry; inspect saved completion evidence.'})
+    else:
+        plan['stream_tool_arguments'] = True
     if not args.execute:
         print(json.dumps(plan))
         return plan
     head = base.verify_public_ci(args.ci_run)
-    directory = base.ROOT / 'data/runs/schema_diagnostic' / EXPERIMENT
+    directory = base.ROOT / 'data/runs/schema_diagnostic' / experiment
     directory.mkdir(parents=True, exist_ok=False)
     write_new_json(directory / 'plan.json', dict(plan, head_sha=head, ci_run=args.ci_run))
     for name, request, _ in variants:
@@ -73,13 +86,14 @@ def run(args):
             arm = directory / name
             arm.mkdir(exist_ok=False)
             result = base.observe(arm, request, inputs, lambda path: base.ReceiptedStreamProvider(
-                settings=settings, directory=path, transport_id=base.CAPACITY_TRANSPORT_ID),
-                argument_diagnostic=True, experiment=EXPERIMENT)
+                settings=settings, directory=path, transport_id=base.CAPACITY_TRANSPORT_ID,
+                stream_tool_arguments=not args.buffered_tools),
+                argument_diagnostic=True, experiment=experiment)
             rows.append(dict(id=name, result=result))
             if not result['cases'][0]['valid']:
                 break
     finally:
-        write_new_json(directory / 'result.json', dict(experiment=EXPERIMENT, cases=rows,
+        write_new_json(directory / 'result.json', dict(experiment=experiment, cases=rows,
             production_admitted=False, manual_semantic_acceptance=False,
             **{key:sum(r['result'][key] for r in rows)
                 for key in ('reserved_calls', 'input_tokens', 'output_tokens', 'unknown_usage_calls')}))
@@ -90,4 +104,5 @@ if __name__ == '__main__':
     parser.add_argument('--execute', action='store_true')
     parser.add_argument('--ci-run', default='')
     parser.add_argument('--env-file', type=Path)
+    parser.add_argument('--buffered-tools', action='store_true')
     run(parser.parse_args())

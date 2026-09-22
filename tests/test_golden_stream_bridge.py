@@ -19,17 +19,48 @@ def request(**kwargs):
     return ChatRequest(messages=(ChatMessage(MessageRole.USER, "secret-prompt"),), max_tokens=8192, timeout_s=90, **kwargs)
 
 
-def collect(tmp_path, chunks, req=None, close_error=None, allow_tool_content=False):
+def collect(tmp_path, chunks, req=None, close_error=None, allow_tool_content=False, stream_tool_arguments=True):
     raw = ClosableStream(chunks, close_error=close_error)
     client = FakeClient(raw)
     provider = ZhipuProvider.from_candidate_profile(client=client, model="glm-5.3-flash",
         profile=ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE)
     req = req or request()
-    result = m.collect(req, lambda r,hook: provider.stream_adapter(tool_stream=bool(r.tools)).stream_session(r, include_usage_tail=True),
+    result = m.collect(req, lambda r,hook: provider.stream_adapter(tool_stream=stream_tool_arguments and bool(r.tools)).stream_session(r, include_usage_tail=True),
                        directory=tmp_path, started=0, deadline=90, clock=lambda: 1,
                        allow_tool_content=allow_tool_content)
     assert raw.closed
     return result, client.completions.calls[0]
+
+
+def test_buffered_tool_mode_changes_only_vendor_tool_stream_flag(tmp_path):
+    req = request(tools=(ToolSpec('knowledge.search', 'fixture', {'type': 'object'}),))
+    payloads = []
+    for mode in (True, False):
+        directory = tmp_path / str(mode)
+        directory.mkdir()
+        chunks = [chunk(tool_calls=[tool_fragment(index=0, call_id='call', name='knowledge_search',
+            arguments='{"query":"fixture"}')], finish_reason='tool_calls'), chunk(raw_usage=usage())]
+        result, payload = collect(directory, chunks, req, stream_tool_arguments=mode)
+        assert result.tool_calls[0].arguments == {'query': 'fixture'}
+        assert payload['stream'] is True and payload['stream_options']['include_usage'] is True
+        payloads.append(payload)
+    assert payloads[0]['extra_body'].pop('tool_stream') is True
+    assert payloads[0] == payloads[1]
+
+
+@pytest.mark.parametrize('mode', [True, False])
+def test_provider_records_and_forwards_tool_argument_mode(tmp_path, monkeypatch, mode):
+    req = request(tools=(ToolSpec('knowledge.search', 'fixture', {'type': 'object'}),))
+    def child(command, raw, **kwargs):
+        saved = json.loads((tmp_path / 'stream-001/reservation.json').read_text())
+        assert saved['stream_tool_arguments'] is mode
+        assert ('--buffered-tools' in command) is (not mode)
+        raise ProviderResponseError(provider='zhipu', code='fixture')
+    monkeypatch.setattr(m, 'run_child', child)
+    provider = m.GoldenProcessStreamProvider(settings=NS(model='glm-5.3-flash',
+        base_url='https://open.bigmodel.cn/api/paas/v4', api_key='fixture'), directory=tmp_path,
+        stream_tool_arguments=mode)
+    with pytest.raises(ProviderResponseError): provider.chat(req)
 
 
 def test_complete_response_private_reasoning_and_payload(tmp_path):
