@@ -14,8 +14,8 @@ from app.evaluation.golden_review_experiment import compact, digest
 
 native = previous.native
 EXPERIMENT_ID = 'golden-native-block-tool-review-v1'
-LIVE_STATUS = 'bounded_development_after_exact_ci'
-LIVE_BLOCK_REASON = ''
+LIVE_STATUS = 'offline_stream_interruption'
+LIVE_BLOCK_REASON = 'block_review_stream_interruption_requires_transport_diagnosis'
 
 
 class Advisory(native.previous.Strict):

@@ -17,8 +17,8 @@ from app.evaluation import golden_native_tool_review as tool
 from app.evaluation.golden_review_experiment import compact, digest
 
 EXPERIMENT_ID = 'golden-native-partitioned-tool-review-v1'
-LIVE_STATUS = 'bounded_development_after_exact_ci'
-LIVE_BLOCK_REASON = ''
+LIVE_STATUS = 'offline_attribution_miss'
+LIVE_BLOCK_REASON = 'partitioned_review_attribution_miss_requires_coverage_diagnosis'
 
 
 class Advisory(native.previous.Strict):

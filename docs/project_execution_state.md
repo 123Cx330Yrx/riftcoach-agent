@@ -11,14 +11,15 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-22：ADR0104完整覆盖的原归因负例真实漏检。执行HEAD `651a207` / CI `35697455886` 三项通过；模型合法返回93/pass、issues为空，只列两条正确上下文的措辞建议，未发现block14的错误伤害归因。1次调用、12149输入/3412输出、未知0，未修订/复评。当前候选批停止，剩余11例不继续付费，未进入产品准入。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。定点诊断已分辨正确/错误归因；按ADR0105验证紧凑逐段结果，先原归因负例，再正确稿/混合真错/全称错误/原观摩正例。人工定位结果不能计入自主审查资格。
-- 已核对实际请求含全部原文、来源和role_contrasts计算：伤害五局差约695.418，中单差669.235，仅改变26.183；补刀变化确实显著。排除输入缺失、截断、解析丢弃和额度耗尽，不能再把重复增加算术/归因提示当作已知修法。
-- 完整失败公开证据：`data/evaluation/results/golden_native_partitioned_tool_public_651a207.json`。诊断/竞争解释/结果决策：`docs/plans/2026-09-22-attribution-miss-diagnosis.md`；冻结两次请求：`data/evaluation/results/golden_partitioned_focus_plan_v1.json`。定点实测已完成：错误稿80/revise、正确稿95/pass，2次/26738tokens、未知0；完整证据golden_partitioned_focus_result_cb69f82.json。它仅支持试验覆盖机制，不证明根因或稳定率。
-- 三例旧成功仍是已选开发证据，不能抵消新漏检：此前8次调用/113477tokens；连本次归因共9次/129038tokens、未知0。15个既有不同输入中3例已接受、1例漏检、11例停止未测。coverage_v2保留原计划而非结果表。
-- b47818e的新增覆盖测试曾因忽略目录依赖导致CI失败；651a207改用提交内真实fixture、显式禁止读取data/runs，精确公共CI三项已通过。模型策略、来源和预算未改。
-- ADR0105紧凑逐段结果替换自由列问题；不增加调用、正确段不输出解释，保留阻断/建议分层和原预算。38项相关离线回归通过，包括实际产品五调用预算；自主全文实测尚未执行，产品资格仍为false。
-- Git代理12000可用。旧business/tool失败批不改写，产品入口仍关闭，主库前端未合并/重置。
+2026-09-22：原归因漏检已通过定点配对进一步定位，但自主全文修复仍未验证。ADR0104原归因负例完整返回93/pass而漏检；同全文/来源下定点block14诊断能拒绝真错、通过正确稿。随后ADR0105紧凑逐段机制已离线实现并通过公共CI，首个真实请求却在300秒截止时未完成，语义结果未知。不能宣称漏检已修好或产品可接入。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。先处理ADR0105实测中断的证据缺口：核对Provider/代理长连接终止行为，并使用新增工具通道活动记录区分无数据、工具参数接收和终止缺失。不得原样重发付费请求或增加时限；需要有信息增益的有界诊断后再恢复当前机制实测。
+- a501c33 / CI35700582136三项通过；原归因自主全文首评最后保存事件83.484秒，300.016秒由父进程截止并回收子进程，无完整response/usage、未知用量1。前缀最多会丢末尾未保存事件，不能当精确断流时刻。证据`golden_native_block_tool_interruption_a501c33.json`。
+- 当前Provider走环境代理12000；无凭据短GET经代理3.000秒、直连1.032秒均401。只证明当时短请求可达，未证明长连接/Provider/代理哪层导致停滞。Git配置和NO_PROXY未改。
+- 修复进度记录遗漏tool deltas：新增首末工具事件、分片数、参数字符数，无正文/参数泄露，原预算/请求不变；native manifest仅更新该组件hash及自校验digest。传输相关35项及完整产品组装/新机制21项通过，公共CI待本次推送。
+- 定点配对cb69f82 / CI35698979457：错误稿80/revise，正确稿95/pass，2次/26738tokens、未知0；其结果不能计入自主全文资格。完整公开证据`golden_partitioned_focus_result_cb69f82.json`。
+- 本次续办真实请求4次：归因旧候选1次完成、定点2次完成、逐段1次中断；已知42299tokens，另1次未知。不改旧回执。ADR0104及ADR0105的live入口均停止；产品入口仍关闭。
+- b47818e测试误读忽略目录的缺陷已在651a207修复并公共CI三项通过；原归因完整失败证据`golden_native_partitioned_tool_public_651a207.json`。完整诊断/取舍见attribution-miss-diagnosis和ADR0105。
+- 旧三例成功、失败批和原始证据保留；Git网络可用。主库前端未合并/重置；整体8E、后续四块联动/训练/前端等退出条件仍未完成。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。

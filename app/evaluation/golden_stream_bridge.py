@@ -65,6 +65,12 @@ class BridgeObservation(Observation):
     last_event_ms: int | None = Field(default=None, ge=0)
     last_reasoning_ms: int | None = Field(default=None, ge=0)
     last_content_ms: int | None = Field(default=None, ge=0)
+    # Additive, body-free tool-channel activity. Text content can remain empty
+    # throughout a valid tool submission; do not mistake it for no answer yet.
+    first_tool_ms: int | None = Field(default=None, ge=0)
+    last_tool_ms: int | None = Field(default=None, ge=0)
+    tool_delta_count: int = Field(default=0, ge=0)
+    tool_argument_chars: int = Field(default=0, ge=0, le=256000)
     max_inter_event_gap_ms: int = Field(default=0, ge=0)
     open_duration_ms: int = Field(default=0, ge=0)
     advance_duration_ms: int = Field(default=0, ge=0)
@@ -221,6 +227,14 @@ def collect(request, opener, *, directory, started, deadline, clock=time.monoton
                             milestone = True
                 value.content_chars += len(event.content_delta or "")
                 value.reasoning_chars += len(event.reasoning_delta or "")
+                if event.tool_call_deltas:
+                    value.last_tool_ms = now
+                    if value.first_tool_ms is None:
+                        value.first_tool_ms = now
+                        milestone = True
+                    value.tool_delta_count += len(event.tool_call_deltas)
+                    value.tool_argument_chars += sum(len(delta.arguments_delta or "")
+                        for delta in event.tool_call_deltas)
                 if event.finish_reason:
                     value.finish_reason, value.terminal_ms = event.finish_reason, stamp()
                     milestone = True

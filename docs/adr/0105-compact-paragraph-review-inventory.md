@@ -2,6 +2,13 @@
 
 Date: 2026-09-22. Status: development experiment; not product adoption.
 
+First real trial on a501c33 / CI 35700582136 ended at the 300-second process
+deadline with no complete response or usage. The last saved stream event was at
+83.484 seconds; that prefix can omit later unsaved events. This is an unknown
+semantic outcome, not a semantic rejection or a success. The live batch is
+stopped pending transport diagnosis; no blind retry or time-limit increase.
+Evidence: `data/evaluation/results/golden_native_block_tool_interruption_a501c33.json`.
+
 ## Evidence and problem
 
 ADR0104's whole-report reviewer missed the original compound attribution error:

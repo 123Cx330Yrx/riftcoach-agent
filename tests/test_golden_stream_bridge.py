@@ -49,6 +49,12 @@ def test_tool_fragments_then_tool_result_reasoning_roundtrip(tmp_path):
         chunk(raw_usage=usage())], req)
     assert payload["extra_body"]["tool_stream"] is True
     assert result.tool_calls[0].arguments == {"query": "fixture"}
+    activity = json.loads((tmp_path / 'progress.json').read_text())
+    assert activity['content_chars'] == 0 and activity['first_visible_content_ms'] is None
+    assert activity['first_tool_ms'] == activity['last_tool_ms'] == 1000
+    assert activity['tool_delta_count'] == 2
+    assert activity['tool_argument_chars'] == len('{"query":"fixture"}')
+    assert all(private not in json.dumps(activity) for private in ('query', 'fixture', 'call_1', 'knowledge_search', 'private-thinking'))
     req2 = replace(req, messages=(*req.messages, ChatMessage(MessageRole.ASSISTANT, tool_calls=result.tool_calls,
         reasoning_content=result.reasoning_content), ChatMessage(MessageRole.TOOL, "fixture-result", tool_call_id="call_1")))
     assert m.REQUEST.validate_json(m.REQUEST.dump_json(req2)) == req2
@@ -56,6 +62,19 @@ def test_tool_fragments_then_tool_result_reasoning_roundtrip(tmp_path):
     _, sent = collect(other, [chunk(content="answer", finish_reason="stop"), chunk(raw_usage=usage())], req2)
     assert sent["messages"][1]["reasoning_content"] == "private-thinking"
     assert sent["messages"][2]["tool_call_id"] == "call_1"
+
+
+def test_incomplete_tool_prefix_records_activity_without_exposing_arguments(tmp_path):
+    req = request(tools=(ToolSpec('knowledge.search', 'fixture', {'type': 'object'}),))
+    with pytest.raises(Exception):
+        collect(tmp_path, [chunk(tool_calls=[tool_fragment(index=0, call_id='private-call',
+            name='knowledge_search', arguments='{"query":"PRIVATE_TOOL_PREFIX')])], req)
+    activity = json.loads((tmp_path / 'progress.json').read_text())
+    assert activity['first_tool_ms'] == activity['last_tool_ms'] == 1000
+    assert activity['tool_delta_count'] == 1 and activity['tool_argument_chars'] > 0
+    assert activity['terminal_ms'] is None
+    assert 'PRIVATE_TOOL_PREFIX' not in json.dumps(activity)
+    assert 'private-call' not in json.dumps(activity)
 
 
 @pytest.mark.parametrize("chunks", [
