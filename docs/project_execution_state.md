@@ -11,10 +11,10 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-22：business v1实测两例；核心混合例完整成功，全称例修订成功但格式恢复新增范围误报，整链失败，已停止付费批。v2已离线修复此类尾文的自动恢复分支：保留协议失败，避免额外业务重判；不是语义修好。入口关闭，后两例未运行。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。ADR0103工具提交实验已完成前两例：第一例一次工具调用96/pass；第二例合法工具调用正确发现真错但新增范围误报，按规则停止批次，第三例未执行。协议问题已改善，语义主阻断仍在。
-- ADR0104分层候选已完成离线验证：把阻断问题与完整上下文下的非阻断建议拆字段，advisory-only可通过且保留审计，真实事实错误仍阻断；38项相关回归通过，完整产品组装五调用可达。尚未实测、未接产品，需精确CI后再做一例正确稿和一例全称错误稿。
-- 工具实验提交 `3fa81a3` 的精确CI `35687655648` 三项均通过；其两例公共receipt冻结在 `data/evaluation/results/golden_native_tool_result_3fa81a3.json`。当前HEAD为 `51b6bf6`（仅证据/状态记录），工作树干净。
+2026-09-22：ADR0104分层候选已完成三例真实开发控制：正确稿、明确全称错误稿、混合真错/正确段均合法结束；真实错误进入`issues`并触发一次修订，完整上下文下的表达建议进入`advisories`且不触发修订。混合例最终只改变合并五局补刀错误，正确的中单段落保留。精确CI为`35689438741`，当前HEAD为`8014a56`，公开证据冻结在`data/evaluation/results/golden_native_partitioned_tool_result_8014a56.json`。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。三例只证明该候选在已选开发控制上可继续同版本覆盖；不构成完整资格、产品接入或8E完成。下一步是同版本去重后的完整覆盖，再按既有门槛绑定真实产品生成/来源发布和消费链路。
+- ADR0104离线38项聚焦回归、治理检查和完整产品组装均已通过；本轮三例共8次真实Provider调用，输入94702、输出18775、未知用量0。案例3曾发生一次协议字段恢复，原始回执和恢复journal均保留，不能把恢复路径等同于零失败。
+- 既有business v1失败批、旧tool批及其原始回执保持历史证据；未改写为通过，未启用任何产品入口。主库前端未合并、未重置。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。
@@ -22,6 +22,14 @@ pause_reason: ""
 真实验证基线 `d41c0bda19312a20e48d674683defe4badec1cf3`；主库前端工作保留，未合并/重置。
 
 ## 已验证事实与阻断
+
+### ADR0104三例开发控制（当前候选）
+
+- 正确稿`original_topic_window`：1次调用，96/pass，无issue/advisory。
+- 明确全称错误`explicit_universal_metrics`：首评正确发现真实全称错误；修订后95/pass，2条范围表达建议留在advisories；3次调用。
+- 混合稿`explicit_combined_population`：首评只发现合并五局补刀事实错误；修订后96/pass，2条可选表达建议留在advisories；4次调用。逐字差异审查确认实际修订只改该补刀句，正确的中单伤害段和其余实质段保留。
+- 三例合计8次调用、94702输入、18775输出、未知用量0；模型为GLM-5.3-flash/high，生产准入仍为false。案例3的重评前有一次协议字段恢复，恢复只保留合法结构并未隐藏语义结果。
+- 这批是已选开发控制而非holdout或稳定率证据；不能据此注册候选、开启产品入口、替换真实消费或宣布8E完成。
 
 - 核心混合例：初评只报真实补刀错误，实际修正五局合并胜8.81/败6.45，保留正确原block4；终评96/pass，独立全文审查接受。本次3调用完整走通，不代表稳定率或完整资格。
 - 全称例：初评和改稿正确；第一次终评96/pass后附Markdown，严格解析拒绝；唯一完整重评合法返回93/needs_revision，把正确中单句的五局观察窗口补成全部五局分母。整链拒绝。第3/4请求共同报告/来源一致，恢复新增判断，不是旧issue映射丢失。
