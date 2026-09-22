@@ -11,9 +11,10 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-22：ADR0104分层候选已完成三例真实开发控制：正确稿、明确全称错误稿、混合真错/正确段均合法结束；真实错误进入`issues`并触发一次修订，完整上下文下的表达建议进入`advisories`且不触发修订。混合例最终只改变合并五局补刀错误，正确的中单段落保留。精确CI为`35689438741`，当前HEAD为`8014a56`，公开证据冻结在`data/evaluation/results/golden_native_partitioned_tool_result_8014a56.json`。
+2026-09-22：ADR0104分层候选已完成三例真实开发控制：正确稿、明确全称错误稿、混合真错/正确段均合法结束；真实错误进入`issues`并触发一次修订，完整上下文下的表达建议进入`advisories`且不触发修订。混合例最终只改变合并五局补刀错误，正确的中单段落保留。候选代码精确CI为`35689438741`（HEAD `8014a56`），公开证据冻结在`data/evaluation/results/golden_native_partitioned_tool_result_8014a56.json`；当前状态提交为`34133c2`，尚无该提交的exact CI。
 - 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。三例只证明该候选在已选开发控制上可继续同版本覆盖；不构成完整资格、产品接入或8E完成。下一步是同版本去重后的完整覆盖，再按既有门槛绑定真实产品生成/来源发布和消费链路。
-- ADR0104离线38项聚焦回归、治理检查和完整产品组装均已通过；本轮三例共8次真实Provider调用，输入94702、输出18775、未知用量0。案例3曾发生一次协议字段恢复，原始回执和恢复journal均保留，不能把恢复路径等同于零失败。
+- ADR0104离线38项聚焦回归、组合回归112项、治理检查和完整产品组装均已通过；三例共8次真实Provider调用，输入94702、输出18775、未知用量0。案例3曾发生一次协议字段恢复，原始回执和恢复journal均保留，不能把恢复路径等同于零失败。
+- 11个剩余去重案例已完成本地preview，身份、来源哈希和首请求预算冻结在`data/evaluation/results/golden_native_partitioned_tool_coverage_plan_8014a56.json`；没有新增Provider调用。由于当前提交尚无exact CI，下一批付费执行保持关闭。
 - 既有business v1失败批、旧tool批及其原始回执保持历史证据；未改写为通过，未启用任何产品入口。主库前端未合并、未重置。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
