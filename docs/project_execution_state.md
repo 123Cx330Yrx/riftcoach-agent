@@ -12,7 +12,8 @@ pause_reason: ""
 ## 当前行动
 
 2026-09-22：核心实际改稿/终评仍未走通。buffered工具参数分支仍重复关键字段；JSON正文分支300秒无正式结果，二者live入口均停止，未接产品。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。按活动工作卡和review-submission-contract-decision比较全文平铺意见与逐段清单的语义职责、输出/恢复负担及既有反例，选定针对语义覆盖的最小干预；不继续直接接数组或循环换通道。位置数组恢复探针已发现旧意见枚举/原响应身份不能直接兼容，暂不投入专用适配。当前批0次付费，模型质量仍未通过。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。全文平铺/逐段清单比较完成；不再靠逐段输出义务强迫覆盖。精确HEAD公共CI后执行review-target-layout-v1：保持全部内容/规则/schema，把待审source_index移至最后user消息尾部，与旧布局做原错误稿/正确稿四单元对照。共享401920tokens/900秒，最多4调用，无恢复/改稿。失败停止布局变体；两臂都正确也不能归功布局。方案及结果分支见review-submission-contract-decision，尚未发起本批付费，模型质量仍未通过。
+- a82cfeb / CI35728654384三项通过，92项本地相关检查及6份历史只读回放通过；两个工程缺口已修复，未修复模型语义。位置数组不直接接入，未新增候选。
 - 指定起点审查后的修复：关闭遗漏的旧tool开发入口，7个CLI策略均先于资料/凭据/Provider拒绝；导出器补调用序号/transport关联、预约清单及计数守恒，拒绝错配与漏算，6份历史运行只读回放成功。旧da06b5a回执unknown1不改，独立校正继续保留。恢复诊断见golden_review_submission_recovery_boundary_v1.json；检查通过不等于核心语义闭环通过。
 - 11bc7bd / CI35716166747三项通过；JSON正文首调用300.015秒截止，最后事件299.906秒，无正文/终态/usage。1次费用未知，语义未获验证。完整请求重建hash与reservation一致，证据golden_json_block_deadline_11bc7bd.json。不能称网络停流或输出token额度耗尽。
 - da06b5a / CI35714036543三项通过；buffered工具首调用161.828秒正常终态，单个2299字符参数重复block/issues并合并14/15段。离线原样重放拒绝，无合法评估；4/6建议亦缺来源字段。证据golden_buffered_phase_failure_da06b5a.json。
