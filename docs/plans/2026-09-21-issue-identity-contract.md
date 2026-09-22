@@ -1,5 +1,15 @@
 # Issue meaning, independent editing and two-state review
 
+2026-09-22 scheduling update: [agent delivery method](2026-09-22-agent-delivery-method.md)
+supersedes the standalone plain-native probe below. Reuse the frozen request as
+qualification material; do not run it automatically. Historical outcomes and
+closed live gates remain unchanged.
+
+2026-09-22 follow-up audit: see [last-push-audit](2026-09-22-last-push-audit.md).
+Later conversational claims of proven root cause, failed locator-only editing and
+a determined programmatic semantic fix are withdrawn. The recorded experiment
+results and candidate rejection below remain unchanged. No new paid run occurred.
+
 ## 2026-09-22 observed outcome: editor accepted, two-state final rejected
 
 Implementation6c22e93 / Actions35623066673 passed all three public jobs before

@@ -180,7 +180,7 @@ def run(args, *, candidate_module=None):
         write_new_json(directory / "receipt.json", receipt)
 
 
-def main(*, candidate_module=None):
+def main(*, candidate_module=None, policy_variants=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--case-index", type=int, default=1)
     parser.add_argument("--suite", choices=('observed', 'attribution', 'scope', 'claim-scope'), default='observed')
@@ -189,7 +189,12 @@ def main(*, candidate_module=None):
     parser.add_argument("--ci-run", default="")
     parser.add_argument("--env-file", type=Path)
     parser.add_argument("--output-root", type=Path, default=ROOT / "data/runs/inference_development")
-    run(parser.parse_args(), candidate_module=candidate_module)
+    if policy_variants:
+        parser.add_argument('--policy', choices=('legacy', *policy_variants), default='legacy')
+    args = parser.parse_args()
+    if policy_variants and args.policy != 'legacy':
+        candidate_module = policy_variants[args.policy]
+    run(args, candidate_module=candidate_module)
 
 
 if __name__ == "__main__":

@@ -19,9 +19,12 @@ and accepted ADRs.
   present the concrete result, unresolved choice and applicable boundary.
   Identify the exact instruction if it causes a pause; do not invent a gate.
 - Completion requires the requested result and proportional verification.
-  A failed or blocked result must say what is unproven. Repeated failure calls
-  for checking the end-to-end contract and discriminating evidence before
-  another experiment, not automatic paid retries after each local patch.
+  Use a short active work card for each substantive business outcome: goal,
+  implementation path, evidence, dependencies and failure decisions. Do not
+  create a card or approval turn for every command. On repeated failure, check
+  the expected behavior and full data/control path, then use evidence that can
+  distinguish explanations; do not turn symptoms into proven causes. Fix clear
+  defects directly. Stop uninformative retries, not all independent project work.
 
 ## Context recovery by task
 
@@ -34,6 +37,10 @@ read an older checkout's checkpoint as the latest backend state.
   and the selected plan's current action. In legacy files, the first
   "以下为历史记录" marks the end of the latest update. Search older sections
   only to resolve a specific fact; do not replay the full history each turn.
+  For current 8E recovery, apply `docs/plans/2026-09-22-agent-delivery-method.md`:
+  work from the product task and existing runtime; a diagnostic must change a
+  technical decision. Keep canonical state and the active plan short and current;
+  historical records and old candidate experiments are evidence, not a work queue.
 - **Requirements or conflicting decisions:** read relevant entries in
   `docs/requirements_change_log.md`, `docs/roadmap_change_history.md` and their
   cited ADRs. Later explicit user decisions supersede assistant proposals;

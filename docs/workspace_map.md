@@ -14,11 +14,14 @@ Do not merge product code, copy state documents between branches, or resolve
 same-number RQ entries merely to make the checkouts look identical. Read both
 sets of requirements when preparing their eventual integration.
 
-For the next backend continuation, read
-`docs/plans/2026-09-16-astra-restart-plan.md` **in the backend checkout**.
-It records the instruction audit's restart sequence and downstream coverage;
-it does not override the canonical checkpoint, accepted requirements or ADRs.
-The current instruction-only task is not permission to restart paid experiments.
+For backend continuation, read the short canonical state and active work card
+**in the backend checkout**. Apply `docs/plans/2026-09-22-agent-delivery-method.md`
+for the execution method. `docs/plans/2026-09-16-astra-restart-plan.md` retains
+downstream coverage, but its old experiment sequence is superseded. Original long
+state/plan files are archived under `docs/archive/2026-09-22-execution-method/`;
+their actions are historical only. Method maintenance is not model qualification;
+subsequent implementation and experiments follow the user's existing authorization
+and actual product contracts, not a historical pause instruction.
 
 The 2026-09-15 retrospective is under
 `C:\Users\33502\Documents\Agent\outputs\riftcoach-retrospective-2026-09-15`.

@@ -1,6 +1,10 @@
 # Preserve the byte-for-byte CRLF snapshot used by the historical hash test.
 /data/evaluation/results/history/skill_router_v1_single_skill_development_baseline_1_0_0.json binary
 
+# Historical instruction/state snapshots are bound to their original bytes.
+/docs/archive/2026-09-22-execution-method/*-before.md -text
+/docs/archive/2026-09-22-execution-method/delivery-method-first-pass.md -text whitespace=-blank-at-eol
+
 # Keep the immutable real-provider evidence digest stable across platforms.
 /data/evaluation/results/provider_capabilities/deepseek_v4_pro_adapter_protocol.json text eol=lf
 /data/evaluation/results/provider_capabilities/deepseek_v4_pro_domain_heldout.json text eol=lf
