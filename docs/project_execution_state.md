@@ -12,7 +12,8 @@ pause_reason: ""
 ## 当前行动
 
 2026-09-22：business v1实测两例；核心混合例完整成功，全称例修订成功但格式恢复新增范围误报，整链失败，已停止付费批。v2已离线修复此类尾文的自动恢复分支：保留协议失败，避免额外业务重判；不是语义修好。入口关闭，后两例未运行。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。ADR0103工具提交实验已完成前两例：第一例一次工具调用96/pass；第二例合法工具调用正确发现真错但新增范围误报，按规则停止批次，第三例未执行。协议问题已改善，语义主阻断仍在；不接产品、不恢复旧批，不对工具通道原样重试。下一动作改做误报机制诊断。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。ADR0103工具提交实验已完成前两例：第一例一次工具调用96/pass；第二例合法工具调用正确发现真错但新增范围误报，按规则停止批次，第三例未执行。协议问题已改善，语义主阻断仍在。
+- ADR0104分层候选已完成离线验证：把阻断问题与完整上下文下的非阻断建议拆字段，advisory-only可通过且保留审计，真实事实错误仍阻断；38项相关回归通过，完整产品组装五调用可达。尚未实测、未接产品，需精确CI后再做一例正确稿和一例全称错误稿。
 - 工具实验提交 `3fa81a3` 的精确CI `35687655648` 三项均通过；其两例公共receipt冻结在 `data/evaluation/results/golden_native_tool_result_3fa81a3.json`。当前HEAD为 `51b6bf6`（仅证据/状态记录），工作树干净。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。

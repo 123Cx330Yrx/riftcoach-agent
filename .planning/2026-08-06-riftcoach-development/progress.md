@@ -7107,3 +7107,9 @@ Offline follow-up in this same round: business v2 now terminates JSON-plus-prose
 精确HEAD `3fa81a3` / CI `35687655648` 三项全通过。第一例 `original_topic_window` 一次工具调用返回96/pass，正确保留中单4局与“这5局内”观察窗口，无额外问题；1次、实际输入11508/输出3986，unknown0。第二例 `explicit_universal_metrics` 一次合法工具调用返回86/needs_revision，正确指出全部指标断言中视野45>中单33.75、15分钟前死亡2.6>1.5等方向错误；同时把完整上下文可消解的“这5局内”误判为五局分母，列为额外low问题。runner按批次规则在未修订前停止（1次、11518/1834、unknown0），不执行第三例。
 
 裁决：工具通道改善了合法结构提交，复用了完整来源且保留原始response；它没有解决核心语义范围误报，不能进入产品或恢复旧business批。第三例不付费执行；保留两例receipt与第二例 reasoning/tool args作为区分协议成功和语义失败的证据。下一步改做误报机制诊断/方案选择，不对同一工具通道原样重试。
+
+## 2026-09-22 分层阻断/建议合同：离线完成
+
+ADR0103实测说明合法工具提交仍将可由全文消解的表达建议放入阻断issues。没有按低severity自动放行，而是实现ADR0104候选：新增advisories字段，issues仅允许触发报告修改的真错/无依据外推/内部矛盾/未解歧义；advisory-only通过且审计保留，来源错、额外字段和混合阻断均拒绝或修订。复用同一工具通道、全部来源和五调用预算，不改产品入口。
+
+38项聚焦回归通过，完整产品组装测试通过，预览请求输入上界44418；`--policy partitioned-tool` claim-scope4预览生成成功。尚未真实调用；下一步精确HEAD CI后只测冻结正确稿与全称错误稿，任一真错进advisory或可消解建议仍进issues即停止。
