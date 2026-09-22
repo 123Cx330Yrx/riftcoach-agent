@@ -25,6 +25,12 @@ and accepted ADRs.
   the expected behavior and full data/control path, then use evidence that can
   distinguish explanations; do not turn symptoms into proven causes. Fix clear
   defects directly. Stop uninformative retries, not all independent project work.
+- Apply the delivery method throughout planning, implementation, diagnosis,
+  integration and handoff, not just the next experiment. At a work-package
+  boundary or disconfirming result, revisit the solution choice and remaining
+  product dependencies. Record the evidence that changes the decision; do not
+  treat a feasible prototype as the selected fix. Scale this check to the change,
+  reuse existing records, and fix obvious defects without a new ceremony.
 
 ## Context recovery by task
 
@@ -37,7 +43,7 @@ read an older checkout's checkpoint as the latest backend state.
   and the selected plan's current action. In legacy files, the first
   "以下为历史记录" marks the end of the latest update. Search older sections
   only to resolve a specific fact; do not replay the full history each turn.
-  For current 8E recovery, apply `docs/plans/2026-09-22-agent-delivery-method.md`:
+  Throughout project delivery, apply `docs/plans/2026-09-22-agent-delivery-method.md`:
   work from the product task and existing runtime; a diagnostic must change a
   technical decision. Keep canonical state and the active plan short and current;
   historical records and old candidate experiments are evidence, not a work queue.

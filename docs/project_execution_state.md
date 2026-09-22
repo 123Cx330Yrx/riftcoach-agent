@@ -12,7 +12,7 @@ pause_reason: ""
 ## 当前行动
 
 2026-09-22：核心实际改稿/终评仍未走通。buffered工具参数分支仍重复关键字段；JSON正文分支300秒无正式结果，二者live入口均停止，未接产品。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。按review-submission-contract-decision完成位置数组结果协议的旧意见重评、无损投影和原始回执接线离线验证，再裁决是否替换提交表示法。已有原型只证明两份结果可往返及12个损坏反例被拒绝，不是live候选；不再付费循环切换传输开关。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。按活动工作卡和review-submission-contract-decision先完成最小合同反例与方案裁决；位置数组尚未选为完整修法。通过后才做完整恢复/追溯/共享预算接线，当前诊断批0次付费，不再循环切换传输开关。全周期方法已补决策触发点和消费路径核查，方法修订不代表模型问题解决。
 - 11bc7bd / CI35716166747三项通过；JSON正文首调用300.015秒截止，最后事件299.906秒，无正文/终态/usage。1次费用未知，语义未获验证。完整请求重建hash与reservation一致，证据golden_json_block_deadline_11bc7bd.json。不能称网络停流或输出token额度耗尽。
 - da06b5a / CI35714036543三项通过；buffered工具首调用161.828秒正常终态，单个2299字符参数重复block/issues并合并14/15段。离线原样重放拒绝，无合法评估；4/6建议亦缺来源字段。证据golden_buffered_phase_failure_da06b5a.json。
 - 该buffered调用11640+5845=17485tokens，未知0；原runner误记未知1保留并独立校正。实际整链和公开导出现在记录已观察usage但不伪造完成响应，61项相关离线检查及11bc7bd公共CI通过。
