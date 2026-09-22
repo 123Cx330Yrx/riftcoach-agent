@@ -11,19 +11,14 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-22：已离线精确重现供应方终态参数的重复键。删除重复文字Schema后仍出现block14的issues先非空后空，严格解析拒绝正确；当前机制仍不合格，未进入修订或产品。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。精确HEAD CI后执行buffered-tools配对：同一single-schema请求，仅关闭vendor工具参数逐token返回，保留SSE/high/来源/预算/采用标准。若再出现重复键，停止此传输假设；结构合法也必须核对完整语义及建议。计划及结果分支见attribution-miss-diagnosis。
-- 3778683 / CI35709067242三项通过；single-schema错误稿92秒正常结束仍重复block/issues，正确稿未调用。本次1请求/15909tokens/未知0。证据`golden_block_single_schema_result_3778683.json`。删除文字重复不是充分修法，不再变换Schema/词句追逐通过。
-- 1f75120 / CI35707311912三项通过；原分片离线回放得到同一tool_call_arguments，模型/服务端原输出含重复成员，不是本地拼接丢字。实测1次/18087tokens/未知0；证据`golden_block_tool_argument_result_1f75120.json`。坏参数保留及usage统计修复已实际验证；旧丢失输出不能追补。
-- 54dfea1 / CI35705495669三项通过，直连122.297秒正常EOF/关闭，tool_calls和usage已返回，但组装拒绝tool_call_arguments。代理臂未执行。本次实际1调用/18098已知tokens/未知0，原回执未知1不改写，独立校正见`golden_block_route_result_54dfea1.json`。原始失败参数当时未保存，具体语法/解码原因未知。
-- a501c33 / CI35700582136三项通过；原归因自主全文首评最后保存事件83.484秒，300.016秒由父进程截止并回收子进程，无完整response/usage、未知用量1。前缀最多会丢末尾未保存事件，不能当精确断流时刻。证据`golden_native_block_tool_interruption_a501c33.json`。
-- 当前Provider走环境代理12000；无凭据短GET经代理3.000秒、直连1.032秒均401。只证明当时短请求可达，未证明长连接/Provider/代理哪层导致停滞。Git配置和NO_PROXY未改。
-- 修复进度记录遗漏tool deltas：新增首末工具事件、分片数、参数字符数，无正文/参数泄露，原预算/请求不变；native manifest仅更新该组件hash及自校验digest。020e52b公共CI35703296766三项通过。
-- 终态坏参数留存和stream usage记账修复已真实验证；原分片仅供诊断、无私有reasoning，仍拒绝交付坏结果。buffered-tools显式传输选项及相关55项离线通过，待其精确HEAD公共CI后实测；不启用产品或旧失败批。
-- 定点配对cb69f82 / CI35698979457：错误稿80/revise，正确稿95/pass，2次/26738tokens、未知0；其结果不能计入自主全文资格。完整公开证据`golden_partitioned_focus_result_cb69f82.json`。
-- 本次续办真实请求4次：归因旧候选1次完成、定点2次完成、逐段1次中断；已知42299tokens，另1次未知。不改旧回执。ADR0104及ADR0105的live入口均停止；产品入口仍关闭。
-- b47818e测试误读忽略目录的缺陷已在651a207修复并公共CI三项通过；原归因完整失败证据`golden_native_partitioned_tool_public_651a207.json`。完整诊断/取舍见attribution-miss-diagnosis和ADR0105。
-- 旧三例成功、失败批和原始证据保留；Git网络可用。主库前端未合并/重置；整体8E、后续四块联动/训练/前端等退出条件仍未完成。
+2026-09-22：buffered-tools的全文正反配对均完整返回且无重复键；错误稿85/needs_revision只阻断真实归因错误，正确稿95/pass仅有建议，但漏了初审无实际内容的issue_resolutions而被旧合同拒绝。配对未通过，未走实际修订，未接产品。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。完成ADR0106阶段合同与buffered传输组合，精确HEAD三项CI后，先执行原归因负例的发现→改稿→终评，再正确全文与既有控制。每例核对实际输出/改文；失败停止该批并诊断，不拼旧版本成功。
+- eadb930 / CI35710759810三项通过；配对2调用/32656tokens/未知0，完整公开证据golden_block_buffered_pair_result_eadb930.json。错误稿解释中CS差距2.355有混合舍入偏差，精确值2.3516667；建议的定性修正成立，不能声称每个数字都精确。
+- 新独立审查合同仅reviews/score/verdict；有旧评估的重评仍强制issue_resolutions及逐项映射。保留原始三字段输出，内部已知空映射显式记journal；不回填旧失败，不放宽重复键解析。单一工具Schema、完整上下文标准、来源、模型与预算不变。开发代码不等于模型或产品资格。
+- 3778683 single-schema92秒完成但仍重复block/issues；1调用/15909tokens。1f75120已捕获并离线重现25处重复advisories，1调用/18087tokens；原意见亦有语义问题。删除文字重复不是充分修法。
+- 54dfea1直连122.297秒正常EOF后参数解析拒绝，1调用/18098已知tokens。原回执未知1保留，独立校正未知0。a501c33历史300秒中断仍1次未知，不能归因代理；Git代理不改。
+- 本轮上述实测合计5调用/84750已知tokens/未知0；此前4次/42299已知tokens及历史未知1单列，不混账。终态坏参数留存和失败usage记账修复已实际验证；不能重建旧未保存参数。
+- ADR0104/0105原失败批、旧产品入口仍关闭。所有原始失败、定点配对和历史控制证据保留；没有进入新候选完整15例资格。后续四块联动/训练/前端等退出条件仍未完成。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。

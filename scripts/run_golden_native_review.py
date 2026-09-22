@@ -4,6 +4,7 @@ Preview is local/read-only. Labels stay in the scorer, never in model input.
 This runner does not register a production Coach or publish a report.
 """
 import argparse
+from contextlib import nullcontext
 from dataclasses import replace
 import hashlib
 from pathlib import Path
@@ -136,9 +137,13 @@ def run(args, *, candidate_module=None):
                        'claim-scope': (prepare_claim_scope, CLAIM_SCOPE_DATASET)}[suite]
     case, req = loader(args.case_index)
     inputs = active.NativeBusinessReviewWorkflow.build_inputs(req)
+    route = getattr(args, 'provider_route', 'environment')
+    if route not in ('environment', 'direct', 'proxy_12000'):
+        raise ValueError('native_provider_route_invalid')
+    stream_tools = getattr(active, 'STREAM_TOOL_ARGUMENTS', True)
     plan = dict(experiment_id=active.EXPERIMENT_ID, selected_cases=[case["id"]],
         manifest_sha256=hashlib.sha256(dataset.read_bytes()).hexdigest(),
-        suite=suite,
+        suite=suite, provider_route=route, stream_tool_arguments=stream_tools,
         report_sha256=digest(req.report), input_sha256=digest(inputs.data_json),
         first_input_ceiling=size(active.request(inputs)), labels_sent_to_model=False,
         source_scope="complete_observed_report_analyst_development_control_not_holdout",
@@ -164,9 +169,12 @@ def run(args, *, candidate_module=None):
     outcome = None
     try:
         settings = load_zhipu_settings(dotenv_values(args.env_file))
-        provider = ReceiptedStreamProvider(settings=settings, directory=case_dir / "streams", transport_id=CAPACITY_TRANSPORT_ID)
-        outcome = observe_report(provider, case_dir, req, case,
-            workflow_factory=active.NativeBusinessReviewWorkflow, score_case=score_case)
+        from scripts.diagnose_block_review_route import route_environment
+        provider = ReceiptedStreamProvider(settings=settings, directory=case_dir / "streams",
+            transport_id=CAPACITY_TRANSPORT_ID, stream_tool_arguments=stream_tools)
+        with nullcontext() if route == 'environment' else route_environment(route):
+            outcome = observe_report(provider, case_dir, req, case,
+                workflow_factory=active.NativeBusinessReviewWorkflow, score_case=score_case)
         print(compact(outcome), flush=True)
         return outcome
     finally:
@@ -187,6 +195,7 @@ def main(*, candidate_module=None, policy_variants=None):
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--run-id", default="")
     parser.add_argument("--ci-run", default="")
+    parser.add_argument('--provider-route', choices=('environment', 'direct', 'proxy_12000'), default='environment')
     parser.add_argument("--env-file", type=Path)
     parser.add_argument("--output-root", type=Path, default=ROOT / "data/runs/inference_development")
     if policy_variants:
