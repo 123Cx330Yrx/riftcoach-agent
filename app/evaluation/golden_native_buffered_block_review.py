@@ -13,8 +13,8 @@ from app.evaluation.golden_review_experiment import compact, digest
 
 native = previous.native
 EXPERIMENT_ID = 'golden-native-buffered-block-review-v1'
-LIVE_STATUS = 'bounded_development_after_exact_ci'
-LIVE_BLOCK_REASON = ''
+LIVE_STATUS = 'offline_buffered_duplicate_arguments'
+LIVE_BLOCK_REASON = 'buffered_tool_arguments_still_duplicate_members'
 STREAM_TOOL_ARGUMENTS = False
 
 

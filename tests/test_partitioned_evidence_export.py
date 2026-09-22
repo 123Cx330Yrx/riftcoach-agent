@@ -41,6 +41,47 @@ def test_export_retains_public_review_and_excludes_reasoning(saved_run):
     assert 'reasoning_content' not in result['calls'][0]['response']
 
 
+def test_export_binds_json_content_to_original_journal_without_tool_projection(saved_run):
+    case = saved_run[1]
+    journal = json.loads((case/'initial-correction-journal.json').read_text(encoding='utf-8'))
+    response = json.loads((case/'response-001.json').read_text(encoding='utf-8'))
+    response.update(content=journal['raw'], tool_calls=[], finish_reason='stop')
+    journal['raw_representation'] = 'response_content'
+    (case/'response-001.json').write_text(json.dumps(response), encoding='utf-8')
+    (case/'initial-correction-journal.json').write_text(json.dumps(journal), encoding='utf-8')
+    output = export_run(saved_run[0])
+    assert output['calls'][0]['response']['content'] == journal['raw']
+    assert 'PRIVATE_SENTINEL' not in json.dumps(output)
+    response['content'] += 'unmatched tail'
+    (case/'response-001.json').write_text(json.dumps(response), encoding='utf-8')
+    with pytest.raises(ValueError, match='journal_response'): export_run(saved_run[0])
+
+
+def test_export_checks_observed_usage_without_inventing_completed_response(tmp_path):
+    evidence = json.loads(Path('data/evaluation/results/golden_buffered_phase_failure_da06b5a.json').read_text(encoding='utf-8'))
+    receipt = evidence['original_receipt']
+    result = evidence['original_result']
+    usage = evidence['accounting_correction']
+    for key in ('input_tokens', 'output_tokens', 'unknown_usage_calls'):
+        receipt[key] = result[key] = usage[key]
+    result['unassembled_usage'] = [dict(ordinal=1, input_tokens=usage['input_tokens'],
+        output_tokens=usage['output_tokens'], source='normalized_stream_usage')]
+    run=tmp_path/'scripted'; case=run/'attribution_original'; stream=case/'streams/stream-001'
+    stream.mkdir(parents=True)
+    for path,value in [(run/'receipt.json',receipt),(case/'result.json',result),
+            (case/'input.json',evidence['original_report'])]:
+        path.write_text(json.dumps(value),encoding='utf-8')
+    for name in ('reservation','progress','result'):
+        (stream/f'{name}.json').write_text(json.dumps(evidence['transport'][name]),encoding='utf-8')
+    exported=export_run(run)
+    assert not exported['calls'] and exported['result']['completed_calls'] == 0
+    assert exported['result']['unknown_usage_calls'] == 0 and not exported['result']['valid']
+    assert len(exported['unassembled_usage_evidence']) == 1
+    result['unassembled_usage'][0]['output_tokens'] += 1
+    (case/'result.json').write_text(json.dumps(result),encoding='utf-8')
+    with pytest.raises(ValueError,match='unassembled_usage'): export_run(run)
+
+
 @pytest.mark.parametrize('filename,key,value,error', [
     ('result.json', 'completed_calls', 2, 'call_count'),
     ('call-001.json', 'input_tokens', 1, 'call_usage'),

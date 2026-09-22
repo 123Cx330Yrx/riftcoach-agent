@@ -11,19 +11,19 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-22：buffered-tools的全文正反配对均完整返回且无重复键；错误稿85/needs_revision只阻断真实归因错误，正确稿95/pass仅有建议，但漏了初审无实际内容的issue_resolutions而被旧合同拒绝。配对未通过，未走实际修订，未接产品。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。完成ADR0106阶段合同与buffered传输组合，精确HEAD三项CI后，先执行原归因负例的发现→改稿→终评，再正确全文与既有控制。每例核对实际输出/改文；失败停止该批并诊断，不拼旧版本成功。
-- eadb930 / CI35710759810三项通过；配对2调用/32656tokens/未知0，完整公开证据golden_block_buffered_pair_result_eadb930.json。错误稿解释中CS差距2.355有混合舍入偏差，精确值2.3516667；建议的定性修正成立，不能声称每个数字都精确。
-- 新独立审查合同仅reviews/score/verdict；有旧评估的重评仍强制issue_resolutions及逐项映射。保留原始三字段输出，内部已知空映射显式记journal；不回填旧失败，不放宽重复键解析。单一工具Schema、完整上下文标准、来源、模型与预算不变。开发代码不等于模型或产品资格。
-- 3778683 single-schema92秒完成但仍重复block/issues；1调用/15909tokens。1f75120已捕获并离线重现25处重复advisories，1调用/18087tokens；原意见亦有语义问题。删除文字重复不是充分修法。
-- 54dfea1直连122.297秒正常EOF后参数解析拒绝，1调用/18098已知tokens。原回执未知1保留，独立校正未知0。a501c33历史300秒中断仍1次未知，不能归因代理；Git代理不改。
-- 本轮上述实测合计5调用/84750已知tokens/未知0；此前4次/42299已知tokens及历史未知1单列，不混账。终态坏参数留存和失败usage记账修复已实际验证；不能重建旧未保存参数。
-- ADR0104/0105原失败批、旧产品入口仍关闭。所有原始失败、定点配对和历史控制证据保留；没有进入新候选完整15例资格。后续四块联动/训练/前端等退出条件仍未完成。
+2026-09-22：阶段合同已实现；buffered工具通道的真实整链首调用仍返回冲突重复键，未进入改稿。该工具分支停止，不能把此前两次结构完整当稳定修复。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。ADR0107保留完整逐段/阶段合同与来源，隔离为JSON正文通道；离线及精确HEAD三项CI后，执行原归因负例发现→改稿→终评。合法后核对全部改文，再正确全文和既有控制；失败按ADR0107分支处理，不换开关循环。
+- da06b5a / CI35714036543三项通过；真实1调用，161.828秒终态/usage/EOF/close完整，单个2299字符参数含冲突重复block/issues，离线原样回放拒绝。意见指向真错，但无合法评估；建议4/6亦缺source_ids。证据golden_buffered_phase_failure_da06b5a.json。
+- 本次11640输入+5845输出=17485tokens，未知0；原runner回执误记未知1不改写，补充校正独立存证。此前仅诊断脚本修好usage记账，实际整链仍漏接；现修整链和公开导出，不能将有用量的参数拒绝称未知。
+- 本轮累计6次真实请求/102235已知tokens/未知0；前续办4次/42299已知及历史a501c33未知1单列。5c952ad公共测试失败因新增测试误读本机忽略资料，da06b5a改用已提交同源fixture并禁止该组测试读data/runs，未改变业务实现；这是本轮执行遗漏。
+- eadb930 buffered配对2调用/32656tokens，两JSON完整但正确稿缺初审无用映射字段，原配对仍失败；ADR0106实现阶段合同消除该要求，重评保留逐项映射。新单片重复结果证明buffering不是充分修法，不推断网络根因。
+- 3778683 single-schema仍重复；1f75120捕获原分片，54dfea1直连完整后解析拒绝。a501c33历史300秒中断仍未知；原参数未保存部分不可重建。所有原始失败、正确诊断及历史控制保留。
+- ADR0104/0105/0106失败批、旧产品入口均未开放；实际产品仍是旧审查组合，发布前必须同改审查器、传输和版本/资格绑定。15个既有不同输入核对未换题，不拼旧成功；整体8E及四块联动/训练/前端等仍未完成。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。
 实际后端：`D:\riftcoach-agent-rq192-pr`，分支 `codex/rq192-provider-stream-contract-ci`，
-当前ADR0105开发机制及其传输诊断以本分支HEAD为准；`8014a56`仅是以下ADR0104历史控制基线。主库前端工作保留，未合并/重置。
+当前ADR0107正文通道开发机制以本分支HEAD为准；`8014a56`仅是以下ADR0104历史控制基线。主库前端工作保留，未合并/重置。
 
 ## 已验证事实与阻断
 

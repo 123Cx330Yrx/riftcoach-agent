@@ -45,8 +45,24 @@ def export_run(run):
         calls.append(dict(call=call, request=request, response=response, transport=transport))
     if len(calls) != result['completed_calls'] or len(calls) != receipt['completed_calls']:
         raise ValueError('export_call_count_mismatch')
+    unassembled = result.get('unassembled_usage', [])
+    unassembled_evidence = []
+    for item in unassembled:
+        ordinal = item['ordinal']
+        if (not isinstance(ordinal, int) or isinstance(ordinal, bool)
+                or not len(calls) < ordinal <= result['reserved_calls']
+                or ordinal in [e['ordinal'] for e in unassembled_evidence]):
+            raise ValueError('export_unassembled_ordinal_invalid')
+        stream = case_dir / 'streams' / f'stream-{ordinal:03d}'
+        from app.evaluation.golden_stream_bridge import CapacityBridgeObservation
+        observation = CapacityBridgeObservation.model_validate_json((stream/'progress.json').read_bytes())
+        if (item['input_tokens'] != observation.input_tokens or item['output_tokens'] != observation.output_tokens
+                or item['source'] != 'normalized_stream_usage'):
+            raise ValueError('export_unassembled_usage_mismatch')
+        unassembled_evidence.append(dict(ordinal=ordinal, progress=observation.model_dump(mode='json'),
+            reservation=read(stream/'reservation.json'), result=read(stream/'result.json')))
     for key in ('input_tokens', 'output_tokens'):
-        total = sum(c['call'][key] for c in calls)
+        total = sum(c['call'][key] for c in calls) + sum(item[key] for item in unassembled)
         if total != result[key] or total != receipt[key]:
             raise ValueError('export_total_usage_mismatch')
     if result['unknown_usage_calls'] != receipt['unknown_usage_calls']:
@@ -56,9 +72,10 @@ def export_run(run):
         journal = read(file)
         if digest(journal['raw']) != journal['raw_sha256']:
             raise ValueError('export_journal_hash_mismatch')
-        matching = [c for c in calls if any(
-            t['arguments'] == journal['parsed_review']
-            for t in c['response']['tool_calls'])]
+        matching = [c for c in calls if (any(t['arguments'] == journal['parsed_review']
+            for t in c['response']['tool_calls']) or
+            (journal.get('raw_representation') == 'response_content'
+             and not c['response']['tool_calls'] and c['response']['content'] == journal['raw']))]
         if len(matching) != 1:
             raise ValueError('export_journal_response_mismatch')
         if digest(matching[0]['request']['messages'][0]['content']) != journal['policy_sha256']:
@@ -68,7 +85,7 @@ def export_run(run):
     revised = revised_file.read_text(encoding='utf-8') if revised_file.exists() else None
     return dict(run_id=run.name, receipt=receipt, result=result,
                 original_report=original['report'], revised_report=revised,
-                calls=calls, journals=journals,
+                calls=calls, journals=journals, unassembled_usage_evidence=unassembled_evidence,
                 file_sha256={p.relative_to(run).as_posix(): sha(p)
                              for p in sorted(run.rglob('*')) if p.is_file()})
 

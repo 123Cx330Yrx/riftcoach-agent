@@ -130,10 +130,23 @@ def observe_report(provider, directory, request, case, *, workflow_factory=Integ
             write_new_json(directory/"diagnostics.json", workflow.last_feedback)
         return outcome
     finally:
+        # A terminal assembler rejection can occur after valid usage arrived.
+        # Preserve failed status and count only genuinely unavailable usage as
+        # unknown. These are not completed/delivered ChatResponses.
+        from app.evaluation.golden_stream_bridge import CapacityBridgeObservation
+        unassembled_usage = []
+        for ordinal in range(len(records) + 1, provider._calls + 1):
+            path = directory / 'streams' / f'stream-{ordinal:03d}' / 'progress.json'
+            if path.exists():
+                observation = CapacityBridgeObservation.model_validate_json(path.read_bytes())
+                if observation.input_tokens is not None and observation.output_tokens is not None:
+                    unassembled_usage.append(dict(ordinal=ordinal, input_tokens=observation.input_tokens,
+                        output_tokens=observation.output_tokens, source='normalized_stream_usage'))
         outcome.update(attempted_calls=workflow.calls, reserved_calls=provider._calls,
-            completed_calls=len(records), input_tokens=sum(r["input_tokens"] for r in records),
-            output_tokens=sum(r["output_tokens"] for r in records),
-            unknown_usage_calls=max(0, provider._calls-len(records)))
+            completed_calls=len(records), unassembled_usage=unassembled_usage,
+            input_tokens=sum(r["input_tokens"] for r in records + unassembled_usage),
+            output_tokens=sum(r["output_tokens"] for r in records + unassembled_usage),
+            unknown_usage_calls=max(0, provider._calls-len(records)-len(unassembled_usage)))
         write_new_json(directory/"result.json", outcome)
 
 
