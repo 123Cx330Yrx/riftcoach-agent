@@ -59,6 +59,12 @@ def _partition_policy(policy):
     return policy
 
 
+def _review_policy(previous_raw=None):
+    seed = business.REASSESSMENT_POLICY if previous_raw is not None else business.INITIAL_POLICY
+    # Match tool.request's already-applied delivery replacement exactly.
+    return _partition_policy(seed.replace(tool.TEXT_DELIVERY, tool.TOOL_DELIVERY))
+
+
 def request(inputs, *, previous_raw=None, diagnostics=None, accepted=None):
     if accepted is not None:
         # Advisories remain in the audit journal but are deliberately excluded
@@ -73,6 +79,8 @@ def request(inputs, *, previous_raw=None, diagnostics=None, accepted=None):
     schema = PartitionedReview.model_json_schema()
     old_schema = base.tools[0].input_schema
     policy = _partition_policy(base.messages[0].content)
+    if policy != _review_policy(previous_raw):
+        raise ValueError('native_partition_policy_identity_mismatch')
     new_header = native.schema_notation(schema) + '\n'
     # The v1 tool candidate has already removed its old schema notation before
     # sending; prepend the partitioned notation at the same seam.
@@ -101,7 +109,7 @@ def validate(raw, inputs, *, previous_raw=None):
         validator_experiment=business.EXPERIMENT_ID,
         raw=raw, raw_sha256=digest(raw), parsed_review=wire.model_dump(mode='json'),
         advisories=selected, raw_representation='tool_arguments_projection',
-        policy_sha256=digest(_partition_policy(business.INITIAL_POLICY if previous_raw is None else business.REASSESSMENT_POLICY)))
+        policy_sha256=digest(_review_policy(previous_raw)))
     return payload, wire, journal
 
 

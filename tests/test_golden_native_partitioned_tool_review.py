@@ -63,6 +63,20 @@ def test_partitioned_schema_preserves_sources_and_makes_advisory_nonblocking():
     assert journal['raw_representation'] == 'tool_arguments_projection'
 
 
+@pytest.mark.parametrize('previous', [None, compact(valid_review(issue=True))])
+def test_policy_journal_hash_matches_actual_initial_or_reassessment_request(previous):
+    _, req = prepare_claim_scope(4)
+    inputs = current.native.build_inputs(req)
+    prepared = current.request(inputs, previous_raw=previous)
+    assert current.digest(prepared.messages[0].content) == current.digest(current._review_policy(previous))
+    final = valid_review(issue=True)
+    if previous is not None:
+        final['issue_resolutions'] = [dict(previous_id=1, disposition='replaced', final_issue=1,
+            source_ids=[31], explanation='保留并修复同一阻断问题。')]
+    payload, _, journal = current.validate(compact(final), inputs, previous_raw=previous)
+    assert journal['policy_sha256'] == current.digest(prepared.messages[0].content)
+
+
 def test_real_fact_error_stays_blocking_while_advisory_is_preserved():
     _, req = prepare_claim_scope(4)
     inputs = current.native.build_inputs(req)
