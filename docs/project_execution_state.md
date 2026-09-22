@@ -19,6 +19,8 @@ pause_reason: ""
 - 既有business v1失败批、旧tool批及其原始回执保持历史证据；未改写为通过，未启用任何产品入口。主库前端未合并、未重置。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
+本轮 b47818e CI 的新增覆盖检查暴露本地未跟踪文件依赖；已改用提交内真实输入fixture并禁止访问data/runs。
+5项聚焦测试通过，待修复提交精确CI后运行归因负例；失败CI期间无新增Provider调用。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。
 实际后端：`D:\riftcoach-agent-rq192-pr`，分支 `codex/rq192-provider-stream-contract-ci`，
 当前候选实现基线 `8014a56fca1ca54cb4c791e358db300588745edc`；主库前端工作保留，未合并/重置。

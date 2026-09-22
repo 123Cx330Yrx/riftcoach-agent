@@ -55,18 +55,43 @@ def test_export_rejects_inconsistent_receipt(saved_run, filename, key, value, er
         export_run(saved_run[0])
 
 
-def test_coverage_accounts_for_attribution_not_just_unique_ids():
+def test_coverage_accounts_for_attribution_not_just_unique_ids(monkeypatch):
+    from dataclasses import replace
+    import hashlib
     from scripts import run_golden_native_review as runner
+    from scripts.check_native_claim_scope import load_controls
+    from tests.test_golden_native_reassessment import recorded_failure
     from app.evaluation import golden_native_partitioned_tool_review as review
     from app.evaluation.golden_review_experiment import digest
+
+    original_open = Path.open
+
+    def committed_only(path, *args, **kwargs):
+        assert 'data/runs/' not in path.as_posix(), 'coverage must not depend on ignored local runs'
+        return original_open(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, 'open', committed_only)
+    # Existing committed actual-request fixtures preserve the complete sources.
+    # Recompile each report and compare the frozen live-input hash; do not mock
+    # the source checks or replace missing sources with invented data.
+    _, _, attribution_source = load_controls()
+    _, observed_source = recorded_failure()
     plan = json.loads(Path('data/evaluation/results/golden_native_partitioned_tool_coverage_v2.json').read_text(encoding='utf-8'))
     all_cases = plan['completed'] + plan['cases']
-    loaders = {'claim-scope': runner.prepare_claim_scope, 'scope': runner.prepare_scope,
-               'attribution': runner.prepare_attribution, 'observed': runner.prepare}
+    manifests = {'claim-scope': runner.CLAIM_SCOPE_DATASET, 'scope': runner.SCOPE_DATASET,
+                 'attribution': runner.ATTRIBUTION_DATASET, 'observed': runner.DATASET}
     for item in all_cases:
-        case, req = loaders[item['suite']](item['index'])
+        path = manifests[item['suite']]
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == item['manifest_sha256']
+        dataset = json.loads(path.read_text(encoding='utf-8'))
+        case = dataset['cases'][item['index'] - 1]
+        source = observed_source if item['suite'] == 'observed' else attribution_source
+        req = replace(source, report=case['report'], user_utterance=dataset['user_utterance'])
         assert item['id'] == case['id']
+        assert item['expected_initial'] == case['expected_report']
+        assert item['report_sha256'] == digest(req.report)
         assert item['input_sha256'] == digest(review.native.build_inputs(req).data_json)
-    attribution = runner.prepare_attribution(1)[1]
+    data = json.loads(runner.ATTRIBUTION_DATASET.read_text(encoding='utf-8'))
+    attribution = replace(attribution_source, report=data['cases'][0]['report'], user_utterance=data['user_utterance'])
     assert digest(review.native.build_inputs(attribution).data_json) in {i['input_sha256'] for i in plan['cases']}
     assert len({i['input_sha256'] for i in all_cases}) == 15
