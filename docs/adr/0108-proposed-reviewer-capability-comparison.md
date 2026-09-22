@@ -106,6 +106,11 @@ The approved diagnostic now implements the profile, policy and transport rows
 below. Product role dispatch, product qualification and its shared ledger remain
 unimplemented decisions; the diagnostic runner has its own single two-call
 ledger, not a second product budget. Relevant130 offline checks passed before CI.
+CI then exposed18 product composition failures: the native program hashes both
+shared transport source files. Its active manifest now records their actual new
+hashes and its derived program digest; the strict drift check and all historical
+qualification artifacts remain intact. All66 affected product/diagnostic checks
+then passed locally. This source-identity update grants no model qualification.
 
 | Existing seam | Required scope if a later decision permits implementation |
 |---|---|

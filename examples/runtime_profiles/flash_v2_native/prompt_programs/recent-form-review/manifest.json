@@ -67,12 +67,12 @@
     {
       "component_id": "app.evaluation.golden_integrated_runtime",
       "source": "app/evaluation/golden_integrated_runtime.py",
-      "sha256": "182a01bf29236ad47c48d443cecd1d625901b9c0d9ef5a59bd46d069ca60a219"
+      "sha256": "b927c90bdb61a104ef310aaa68992f173db3f94f20d82a1727d8a4ffd594a958"
     },
     {
       "component_id": "app.evaluation.golden_stream_bridge",
       "source": "app/evaluation/golden_stream_bridge.py",
-      "sha256": "478139a52a8027aedc60cdb80127d3b4a420d74ba18ccbdb04e07d0d148d7575"
+      "sha256": "9cae5009df191f10c94808c8512582128641c3523572e908e148333fd46dd345"
     },
     {
       "component_id": "app.runtime.review_sender",
@@ -115,5 +115,5 @@
       "sha256": "94fa4ed248628f0801ff83a999a6c14e54464b838ed11e453f718c448502ef0d"
     }
   ],
-  "program_sha256": "4cf022bf82ed3d343d11aa975e5bb41762734deb7a49ae9bc90cf09a3e5a19a6"
+  "program_sha256": "a31abd46ec89596d96823510ff9d7c4030a3819b8c7020d543c2d3c964629794"
 }
