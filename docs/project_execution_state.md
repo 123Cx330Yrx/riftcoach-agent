@@ -12,7 +12,7 @@ pause_reason: ""
 ## 当前行动
 
 2026-09-22：business v1实测两例；核心混合例完整成功，全称例修订成功但格式恢复新增范围误报，整链失败，已停止付费批。v2已离线修复此类尾文的自动恢复分支：保留协议失败，避免额外业务重判；不是语义修好。入口关闭，后两例未运行。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。实施ADR0103工具提交开发实验，复用Schema、来源、验证器及共享预算；离线检查与精确HEAD公共CI通过后，依次核查claim-scope 1/4/3。协议或语义失败即停新批，不截尾、不强制改字段、不改变采用标准。成功也须继续原定同版本覆盖，未准入产品。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。ADR0103工具提交实验已完成前两例：第一例一次工具调用96/pass；第二例合法工具调用正确发现真错但新增范围误报，按规则停止批次，第三例未执行。协议问题已改善，语义主阻断仍在；不接产品、不恢复旧批，不对工具通道原样重试。下一动作改做误报机制诊断。
 - ce75c34公共CI 35684021625的pytest/packaging-smoke/postgres-migrations均通过；与d41c0bd实测基线分别记录。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。

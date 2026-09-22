@@ -7101,3 +7101,9 @@ Offline follow-up in this same round: business v2 now terminates JSON-plus-prose
 
 复用NativeIssuesReview/全部来源/business语义，仅改为AUTO工具提交；严格接收、保留原始response，投影参数明确标记。新增ADR0103、--policy tool和冻结1/4/3计划。旧business批和产品入口不变。
 62项聚焦回归通过（60项协议/历史/native sender/stream，加2项完整产品组装）；原生Runtime、知识工具/生成/首评/Markdown修订/终评五次共享355508tokens上界，非模型质量。字段恢复用掉第六次预算时网络前拒绝且无发布。SDK模拟确认完整schema、auto、high、32768及无JSON mode。首次SDK测试漏选CAPACITY transport，离线修正后通过，无付费调用。独立审查暂无阻断；接下来精确HEAD公共CI，再冻结有界实测。
+
+## 2026-09-22 工具通道有界实测：第二例停止
+
+精确HEAD `3fa81a3` / CI `35687655648` 三项全通过。第一例 `original_topic_window` 一次工具调用返回96/pass，正确保留中单4局与“这5局内”观察窗口，无额外问题；1次、实际输入11508/输出3986，unknown0。第二例 `explicit_universal_metrics` 一次合法工具调用返回86/needs_revision，正确指出全部指标断言中视野45>中单33.75、15分钟前死亡2.6>1.5等方向错误；同时把完整上下文可消解的“这5局内”误判为五局分母，列为额外low问题。runner按批次规则在未修订前停止（1次、11518/1834、unknown0），不执行第三例。
+
+裁决：工具通道改善了合法结构提交，复用了完整来源且保留原始response；它没有解决核心语义范围误报，不能进入产品或恢复旧business批。第三例不付费执行；保留两例receipt与第二例 reasoning/tool args作为区分协议成功和语义失败的证据。下一步改做误报机制诊断/方案选择，不对同一工具通道原样重试。
