@@ -12,6 +12,16 @@ from tests.test_golden_native_partitioned_tool_review import exchange_provider, 
 from tests.test_native_editor_product_budget import offline  # autouse no-network guard
 
 
+@pytest.fixture(autouse=True)
+def committed_inputs_only(monkeypatch):
+    from pathlib import Path
+    original = Path.open
+    def checked(path, *args, **kwargs):
+        assert 'data/runs/' not in path.as_posix(), 'Tests must use committed source fixtures'
+        return original(path, *args, **kwargs)
+    monkeypatch.setattr(Path, 'open', checked)
+
+
 def independent(flat, count):
     value = block_tests.grouped(flat, count)
     del value['issue_resolutions']
@@ -105,7 +115,7 @@ def test_actual_product_five_call_budget_with_phase_specific_contract(tmp_path, 
 def test_runner_declares_buffered_transport_and_route(capsys, tmp_path):
     from types import SimpleNamespace
     from scripts.run_golden_native_review import run
-    plan = run(SimpleNamespace(execute=False, suite='attribution', case_index=1,
+    plan = run(SimpleNamespace(execute=False, suite='claim-scope', case_index=1,
         provider_route='direct'), candidate_module=current)
     assert plan['provider_route'] == 'direct' and plan['stream_tool_arguments'] is False
     assert plan['max_calls_per_report'] == 5 and plan['max_tokens_per_report'] == 401920
@@ -113,11 +123,13 @@ def test_runner_declares_buffered_transport_and_route(capsys, tmp_path):
 
 def test_archived_failed_positive_compatibility_is_only_new_contract_offline_evidence():
     from pathlib import Path
-    from scripts.run_golden_native_review import prepare_attribution
+    from scripts.run_golden_native_review import prepare_claim_scope
     artifact = json.loads(Path('data/evaluation/results/golden_block_buffered_pair_result_eadb930.json').read_text(encoding='utf-8'))
     case = artifact['cases'][1]
     assert case['original_result']['cases'][0]['valid'] is False
-    _, req = prepare_attribution(2)
+    # claim-scope:1 is the identical attribution:2 input with committed sources.
+    _, req = prepare_claim_scope(1)
+    assert digest(req.report) == artifact['plan']['conditions'][1]['report_sha256']
     raw = compact(case['response']['tool_calls'][0]['arguments'])
     payload, _, _ = current.validate(raw, current.native.build_inputs(req))
     assert payload.verdict == 'pass' and not payload.issues
