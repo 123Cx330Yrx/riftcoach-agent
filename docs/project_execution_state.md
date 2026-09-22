@@ -11,15 +11,15 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-22：核心实际改稿/终评仍未走通。buffered工具参数分支仍重复关键字段；JSON正文分支300秒无正式结果，二者live入口均停止，未接产品。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。输入布局对照已否决充分修法，停止布局/格式变体。下一项为审查能力/分工可行性裁决：准备可对照的评审能力、实际接口、成本和五调用共享预算方案，再判断是否需要改变模型分工。当前GLM-5.3-flash/high及产品标准/预算不变，未选择/调用其他模型；不原样重开已失败定位/两状态编辑。方案边界见review-submission-contract-decision，模型质量仍未通过。
+2026-09-22：核心审查漏检/误报仍未解决，尚无可准入的完整改稿/终评版本。已否决输入布局充分修法，转为审查能力/分工可行性裁决；不是又一次超时或输出耗尽。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。GLM-5.3/high隔离能力对照已准备，待用户决定是否允许这两次替代模型诊断；不等于产品换模。官方接口/high/工具流及价格已核验，原负/正全文经实际SDK MockTransport只改变model，预留154202tokens/600秒，未缓存估算2.544336元而非账单硬限。无live入口、无新增Provider请求；方案/失败分支/角色接线缺口见ADR0108及golden_review_model_comparison_feasibility_v1.json。当前GLM-5.3-flash/high及产品标准/五次共享预算保持，未注册/调用其他候选；获准后实现有界诊断及同HEAD公共CI再执行，首个失败即停。
 - 1d5f7a2 / CI35730692196三项通过后，review-target-layout-v1四次完整合法返回、61159tokens、未知0。baseline负例漏检/正例通过；target负例检出但advisory经济比例写反，正例block4泛指又被判全称。拒绝采用并关闭execute；不拼两臂成功，无编辑/终评。34份原文件hash和逐局算术核验保存在golden_review_target_layout_result_1d5f7a2.json，均未触及输出/时限。
 - a82cfeb / CI35728654384三项通过，92项本地相关检查及6份历史只读回放通过；两个工程缺口已修复，未修复模型语义。位置数组不直接接入，未新增候选。
 - 指定起点审查后的修复：关闭遗漏的旧tool开发入口，7个CLI策略均先于资料/凭据/Provider拒绝；导出器补调用序号/transport关联、预约清单及计数守恒，拒绝错配与漏算，6份历史运行只读回放成功。旧da06b5a回执unknown1不改，独立校正继续保留。恢复诊断见golden_review_submission_recovery_boundary_v1.json；检查通过不等于核心语义闭环通过。
 - 11bc7bd / CI35716166747三项通过；JSON正文首调用300.015秒截止，最后事件299.906秒，无正文/终态/usage。1次费用未知，语义未获验证。完整请求重建hash与reservation一致，证据golden_json_block_deadline_11bc7bd.json。不能称网络停流或输出token额度耗尽。
 - da06b5a / CI35714036543三项通过；buffered工具首调用161.828秒正常终态，单个2299字符参数重复block/issues并合并14/15段。离线原样重放拒绝，无合法评估；4/6建议亦缺来源字段。证据golden_buffered_phase_failure_da06b5a.json。
 - 该buffered调用11640+5845=17485tokens，未知0；原runner误记未知1保留并独立校正。实际整链和公开导出现在记录已观察usage但不伪造完成响应，61项相关离线检查及11bc7bd公共CI通过。
-- 此前16:19起的长推进累计7次真实请求：6次用量已知102235tokens，另JSON正文1次未知。更早4次/42299已知及a501c33未知1单列。本次审查后修复与恢复裁决未发起Provider请求。未修改原失败回执，不将两个未知调用合并或估算费用。
+- 此前16:19起的长推进累计7次真实请求：6次用量已知102235tokens，另JSON正文1次未知。更早4次/42299已知及a501c33未知1单列。a82cfeb审查后修复与恢复裁决未发起Provider请求；其后的1d5f7a2布局批4次/61159tokens另列。本次能力方案准备0次。未修改原失败回执，不将两个未知调用合并或估算费用。
 - 阶段合同已实现：独立审查三字段，重评四字段及逐项映射；原始输出与内部已知空映射分开记录。该接口改进不等于工具格式或模型质量通过。
 - 5c952ad CI失败因新增测试再次误读本机忽略资料，da06b5a改用提交fixture并禁止该组测试读data/runs；这是本轮执行遗漏。eadb930配对虽两JSON完整，正例旧合同失败仍保留；不能算新候选合格。
 - 逐段独立工具提交超过当前每响应8个工具结果上限，离线排除；位置数组可省去重复段字段名，但其模型表现、延迟、重评接线未证实。原型golden_review_submission_shapes_v1.json仅离线证据。
@@ -28,7 +28,7 @@ pause_reason: ""
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。
 实际后端：`D:\riftcoach-agent-rq192-pr`，分支 `codex/rq192-provider-stream-contract-ci`，
-当前已停止ADR0107真实分支，新的结果表示比较仅离线，具体实现以本分支HEAD为准；`8014a56`仅是以下ADR0104历史控制基线。主库前端工作保留，未合并/重置。
+当前ADR0103—0107旧真实入口及布局实验均停止；ADR0108仅为待决定的能力诊断方案，具体实现以本分支HEAD为准；`8014a56`仅是以下ADR0104历史控制基线。主库前端工作保留，未合并/重置。
 
 ## 已验证事实与阻断
 
