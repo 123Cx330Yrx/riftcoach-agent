@@ -50,3 +50,16 @@ tool_calls 返回 93/pass、issues=[]、两条范围措辞 advisory；block14 �
 定点诊断使用人工定位，不能冒充Agent自主发现，也不能把通过结果拼入15例完整资格。
 若后续要增加逐段任务/输出，须先证明不会重现旧逐claim巨量输出、超时与五调用预算问题；
 复用现有运行时，不先搭建新的多Agent审查框架。
+
+## 实际结果及选定下一步
+
+cb69f82 / CI35698979457三项通过后，冻结配对完成：错误稿80/needs_revision，唯一issue在block14，
+正确稿95/pass且无issue/advisory。2次调用，24425输入/2313输出=26738，未知0，无恢复/改稿。
+逐条来源核验确认其使用原计算的695.418、669.235、26.183，问题及修正方向正确；解释中括号列的是
+显示舍入数，不能把由此产生的0.005差异当作实质归因错误。结果未用于替换报告。
+实际请求仅比prepared多出共享预算metadata，messages/tools完全一致。
+完整公开请求/响应/journal、transport和文件hash存golden_partitioned_focus_result_cb69f82.json；
+原machine result的manual_semantic_acceptance=false保留，人工定点裁决另列。
+
+采用上表第一分支：试验紧凑逐段结果，保留完整上下文，减少自由列问题时跳段的机会；
+不是断言根因已被证明，更不是保证逐段列表可证明语义完整。具体替换与限制见ADR0105。

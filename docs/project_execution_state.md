@@ -12,11 +12,12 @@ pause_reason: ""
 ## 当前行动
 
 2026-09-22：ADR0104完整覆盖的原归因负例真实漏检。执行HEAD `651a207` / CI `35697455886` 三项通过；模型合法返回93/pass、issues为空，只列两条正确上下文的措辞建议，未发现block14的错误伤害归因。1次调用、12149输入/3412输出、未知0，未修订/复评。当前候选批停止，剩余11例不继续付费，未进入产品准入。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。保留完整来源，冻结原错误稿/正确稿的两次定点诊断，区分全文漏查与指定段仍无法正确判断；不能把人工定位成功计入自主审查资格。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。定点诊断已分辨正确/错误归因；按ADR0105验证紧凑逐段结果，先原归因负例，再正确稿/混合真错/全称错误/原观摩正例。人工定位结果不能计入自主审查资格。
 - 已核对实际请求含全部原文、来源和role_contrasts计算：伤害五局差约695.418，中单差669.235，仅改变26.183；补刀变化确实显著。排除输入缺失、截断、解析丢弃和额度耗尽，不能再把重复增加算术/归因提示当作已知修法。
-- 完整失败公开证据：`data/evaluation/results/golden_native_partitioned_tool_public_651a207.json`。诊断/竞争解释/结果决策：`docs/plans/2026-09-22-attribution-miss-diagnosis.md`；冻结两次请求：`data/evaluation/results/golden_partitioned_focus_plan_v1.json`。诊断代码已离线检查，实测结果尚未产生。
+- 完整失败公开证据：`data/evaluation/results/golden_native_partitioned_tool_public_651a207.json`。诊断/竞争解释/结果决策：`docs/plans/2026-09-22-attribution-miss-diagnosis.md`；冻结两次请求：`data/evaluation/results/golden_partitioned_focus_plan_v1.json`。定点实测已完成：错误稿80/revise、正确稿95/pass，2次/26738tokens、未知0；完整证据golden_partitioned_focus_result_cb69f82.json。它仅支持试验覆盖机制，不证明根因或稳定率。
 - 三例旧成功仍是已选开发证据，不能抵消新漏检：此前8次调用/113477tokens；连本次归因共9次/129038tokens、未知0。15个既有不同输入中3例已接受、1例漏检、11例停止未测。coverage_v2保留原计划而非结果表。
 - b47818e的新增覆盖测试曾因忽略目录依赖导致CI失败；651a207改用提交内真实fixture、显式禁止读取data/runs，精确公共CI三项已通过。模型策略、来源和预算未改。
+- ADR0105紧凑逐段结果替换自由列问题；不增加调用、正确段不输出解释，保留阻断/建议分层和原预算。38项相关离线回归通过，包括实际产品五调用预算；自主全文实测尚未执行，产品资格仍为false。
 - Git代理12000可用。旧business/tool失败批不改写，产品入口仍关闭，主库前端未合并/重置。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
