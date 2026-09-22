@@ -61,6 +61,12 @@ def _partition_policy(policy):
 
 def request(inputs, *, previous_raw=None, diagnostics=None, accepted=None):
     if accepted is not None:
+        # Advisories remain in the audit journal but are deliberately excluded
+        # from the editor's accepted-review input. Revision acts only on report
+        # changing findings and cannot silently turn clarity advice into a fix.
+        if isinstance(accepted, PartitionedReview):
+            accepted = native.NativeIssuesReview.model_validate(
+                accepted.model_dump(exclude={'advisories'}), strict=True)
         return business.request(inputs, previous_raw=previous_raw, diagnostics=diagnostics, accepted=accepted)
     base = tool.request(inputs, previous_raw=previous_raw, diagnostics=diagnostics)
     # Rebuild only the submitted tool schema and the policy's result partition.

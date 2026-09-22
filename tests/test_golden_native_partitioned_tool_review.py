@@ -92,6 +92,15 @@ def test_partitioned_workflow_does_not_revise_for_advisory_only():
     assert result.verdict is EvaluationVerdict.PASS and flow.calls == 1 and flow.revisions == 0
 
 
+def test_revision_request_receives_blockers_without_advisories():
+    _, req = prepare_claim_scope(4)
+    inputs = current.native.build_inputs(req)
+    wire = current.PartitionedReview.model_validate(valid_review(issue=True, advisory=True), strict=True)
+    prepared = current.request(inputs, accepted=wire)
+    text = prepared.messages[1].content
+    assert 'accepted_review' in text and 'advisories' not in text
+
+
 def test_partitioned_workflow_keeps_one_revision_for_blocking_issue():
     _, req = prepare_claim_scope(4)
     revised = req.report + '\n\n修订见证。[K1]'
