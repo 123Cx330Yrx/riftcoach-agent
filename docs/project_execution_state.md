@@ -11,16 +11,17 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-22：ADR0104分层候选已完成三例真实开发控制：正确稿、明确全称错误稿、混合真错/正确段均合法结束；真实错误进入`issues`并触发一次修订，完整上下文下的表达建议进入`advisories`且不触发修订。混合例最终只改变合并五局补刀错误，正确的中单段落保留。候选代码精确CI为`35689438741`（HEAD `8014a56`），公开证据冻结在`data/evaluation/results/golden_native_partitioned_tool_result_8014a56.json`；当前状态提交为`34133c2`，尚无该提交的exact CI。
+2026-09-22：ADR0104分层候选已完成三例真实开发控制：正确稿、明确全称错误稿、混合真错/正确段均合法结束；真实错误进入`issues`并触发一次修订，完整上下文下的表达建议进入`advisories`且不触发修订。混合例最终只改变合并五局补刀错误，正确的中单段落保留。候选代码精确CI为`35689438741`（HEAD `8014a56`），公开证据冻结在`data/evaluation/results/golden_native_partitioned_tool_result_8014a56.json`。后续证据提交`44ed9bc`的精确CI `35692962399`三项通过，Git代理已纠正为12000；网络等待解除。
 - 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。三例只证明该候选在已选开发控制上可继续同版本覆盖；不构成完整资格、产品接入或8E完成。下一步是同版本去重后的完整覆盖，再按既有门槛绑定真实产品生成/来源发布和消费链路。
 - ADR0104离线38项聚焦回归、组合回归112项、治理检查和完整产品组装均已通过；三例共8次真实Provider调用，输入94702、输出18775、未知用量0。案例3曾发生一次协议字段恢复，原始回执和恢复journal均保留，不能把恢复路径等同于零失败。
-- 11个剩余去重案例已完成本地preview，身份、来源哈希和首请求预算冻结在`data/evaluation/results/golden_native_partitioned_tool_coverage_plan_8014a56.json`；没有新增Provider调用。由于当前提交尚无exact CI，下一批付费执行保持关闭。
+- 已修正旧清单遗漏原伤害归因负例：15个既有不同输入=3个已完成+12个待测。完整集合与3组输入别名已核对，清单为`data/evaluation/results/golden_native_partitioned_tool_coverage_v2.json`。下一例attribution 1，再scope 4/3、claim-scope 2/5/6/7、observed 1–5；每例审查后才继续，不重跑已完成三例。执行提交仍由现有runner核对精确CI。
+- 三例完整公开请求/响应、原回执、journal和哈希已机械导出至`golden_native_partitioned_tool_public_8014a56.json`；人工逐例裁决另存`golden_native_partitioned_tool_adjudication_8014a56.json`（均在data/evaluation/results）。原machine receipt的manual_semantic_acceptance=false保留，不将单例人工接受改写成产品准入。
 - 既有business v1失败批、旧tool批及其原始回执保持历史证据；未改写为通过，未启用任何产品入口。主库前端未合并、未重置。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。
 实际后端：`D:\riftcoach-agent-rq192-pr`，分支 `codex/rq192-provider-stream-contract-ci`，
-真实验证基线 `d41c0bda19312a20e48d674683defe4badec1cf3`；主库前端工作保留，未合并/重置。
+当前候选实现基线 `8014a56fca1ca54cb4c791e358db300588745edc`；主库前端工作保留，未合并/重置。
 
 ## 已验证事实与阻断
 
@@ -29,8 +30,12 @@ pause_reason: ""
 - 正确稿`original_topic_window`：1次调用，96/pass，无issue/advisory。
 - 明确全称错误`explicit_universal_metrics`：首评正确发现真实全称错误；修订后95/pass，2条范围表达建议留在advisories；3次调用。
 - 混合稿`explicit_combined_population`：首评只发现合并五局补刀事实错误；修订后96/pass，2条可选表达建议留在advisories；4次调用。逐字差异审查确认实际修订只改该补刀句，正确的中单伤害段和其余实质段保留。
-- 三例合计8次调用、94702输入、18775输出、未知用量0；模型为GLM-5.3-flash/high，生产准入仍为false。案例3的重评前有一次协议字段恢复，恢复只保留合法结构并未隐藏语义结果。
+- 三例合计8次调用、94702输入、18775输出、未知用量0；模型为GLM-5.3-flash/high，生产准入仍为false。案例3的重评前有一次协议字段恢复，恢复补齐suggested_correction，同时重写两条advisory的解释和引用；前后issues为空且96/pass一致，不是只补字段，也不证明恢复不会重新误判。
 - 这批是已选开发控制而非holdout或稳定率证据；不能据此注册候选、开启产品入口、替换真实消费或宣布8E完成。
+
+### 历史失败及仍适用的产品边界
+
+以下d41c0bd等旧版本结果不计入当前候选资格。
 
 - 核心混合例：初评只报真实补刀错误，实际修正五局合并胜8.81/败6.45，保留正确原block4；终评96/pass，独立全文审查接受。本次3调用完整走通，不代表稳定率或完整资格。
 - 全称例：初评和改稿正确；第一次终评96/pass后附Markdown，严格解析拒绝；唯一完整重评合法返回93/needs_revision，把正确中单句的五局观察窗口补成全部五局分母。整链拒绝。第3/4请求共同报告/来源一致，恢复新增判断，不是旧issue映射丢失。
