@@ -11,16 +11,15 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-22：ADR0104分层候选已完成三例真实开发控制：正确稿、明确全称错误稿、混合真错/正确段均合法结束；真实错误进入`issues`并触发一次修订，完整上下文下的表达建议进入`advisories`且不触发修订。混合例最终只改变合并五局补刀错误，正确的中单段落保留。候选代码精确CI为`35689438741`（HEAD `8014a56`），公开证据冻结在`data/evaluation/results/golden_native_partitioned_tool_result_8014a56.json`。后续证据提交`44ed9bc`的精确CI `35692962399`三项通过，Git代理已纠正为12000；网络等待解除。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。三例只证明该候选在已选开发控制上可继续同版本覆盖；不构成完整资格、产品接入或8E完成。下一步是同版本去重后的完整覆盖，再按既有门槛绑定真实产品生成/来源发布和消费链路。
-- ADR0104离线38项聚焦回归、组合回归112项、治理检查和完整产品组装均已通过；三例共8次真实Provider调用，输入94702、输出18775、未知用量0。案例3曾发生一次协议字段恢复，原始回执和恢复journal均保留，不能把恢复路径等同于零失败。
-- 已修正旧清单遗漏原伤害归因负例：15个既有不同输入=3个已完成+12个待测。完整集合与3组输入别名已核对，清单为`data/evaluation/results/golden_native_partitioned_tool_coverage_v2.json`。下一例attribution 1，再scope 4/3、claim-scope 2/5/6/7、observed 1–5；每例审查后才继续，不重跑已完成三例。执行提交仍由现有runner核对精确CI。
-- 三例完整公开请求/响应、原回执、journal和哈希已机械导出至`golden_native_partitioned_tool_public_8014a56.json`；人工逐例裁决另存`golden_native_partitioned_tool_adjudication_8014a56.json`（均在data/evaluation/results）。原machine receipt的manual_semantic_acceptance=false保留，不将单例人工接受改写成产品准入。
-- 既有business v1失败批、旧tool批及其原始回执保持历史证据；未改写为通过，未启用任何产品入口。主库前端未合并、未重置。
+2026-09-22：ADR0104完整覆盖的原归因负例真实漏检。执行HEAD `651a207` / CI `35697455886` 三项通过；模型合法返回93/pass、issues为空，只列两条正确上下文的措辞建议，未发现block14的错误伤害归因。1次调用、12149输入/3412输出、未知0，未修订/复评。当前候选批停止，剩余11例不继续付费，未进入产品准入。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。保留完整来源，冻结原错误稿/正确稿的两次定点诊断，区分全文漏查与指定段仍无法正确判断；不能把人工定位成功计入自主审查资格。
+- 已核对实际请求含全部原文、来源和role_contrasts计算：伤害五局差约695.418，中单差669.235，仅改变26.183；补刀变化确实显著。排除输入缺失、截断、解析丢弃和额度耗尽，不能再把重复增加算术/归因提示当作已知修法。
+- 完整失败公开证据：`data/evaluation/results/golden_native_partitioned_tool_public_651a207.json`。诊断/竞争解释/结果决策：`docs/plans/2026-09-22-attribution-miss-diagnosis.md`；冻结两次请求：`data/evaluation/results/golden_partitioned_focus_plan_v1.json`。诊断代码已离线检查，实测结果尚未产生。
+- 三例旧成功仍是已选开发证据，不能抵消新漏检：此前8次调用/113477tokens；连本次归因共9次/129038tokens、未知0。15个既有不同输入中3例已接受、1例漏检、11例停止未测。coverage_v2保留原计划而非结果表。
+- b47818e的新增覆盖测试曾因忽略目录依赖导致CI失败；651a207改用提交内真实fixture、显式禁止读取data/runs，精确公共CI三项已通过。模型策略、来源和预算未改。
+- Git代理12000可用。旧business/tool失败批不改写，产品入口仍关闭，主库前端未合并/重置。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
-本轮 b47818e CI 的新增覆盖检查暴露本地未跟踪文件依赖；已改用提交内真实输入fixture并禁止访问data/runs。
-5项聚焦测试通过，待修复提交精确CI后运行归因负例；失败CI期间无新增Provider调用。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。
 实际后端：`D:\riftcoach-agent-rq192-pr`，分支 `codex/rq192-provider-stream-contract-ci`，
 当前候选实现基线 `8014a56fca1ca54cb4c791e358db300588745edc`；主库前端工作保留，未合并/重置。

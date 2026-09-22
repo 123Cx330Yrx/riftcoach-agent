@@ -2,6 +2,12 @@
 
 Date: 2026-09-22. Status: development experiment; not product adoption.
 
+Latest evidence: three selected controls passed, but the original attribution
+negative returned pass on 651a207 (CI 35697455886). The attribution was absent
+from both issues and advisories. The qualification batch is stopped; separating
+advisories is not sufficient for complete semantic coverage. See
+`../plans/2026-09-22-attribution-miss-diagnosis.md` for the bounded diagnostic.
+
 ## Context
 
 ADR0103 showed that `submit_report_review` reliably delivered a complete typed
