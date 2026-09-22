@@ -68,3 +68,24 @@ def test_pair_keeps_complete_public_responses_and_does_not_claim_quality(tmp_pat
     assert all(r['valid'] for r in result['cases'])
     assert not result['semantic_approval'] and not result['production_admitted']
     assert 'private reasoning' not in json.dumps(result)
+
+
+def test_failed_assembly_keeps_observed_usage_and_single_diagnostic_call(tmp_path):
+    from app.evaluation.golden_stream_bridge import CapacityBridgeObservation
+    request, inputs = diagnostic.prepare()
+    class Failed:
+        _calls = 0
+        def __init__(self, path):
+            self.path = path
+        def chat(self, request):
+            self._calls = 1
+            stream = self.path / 'stream-001'
+            stream.mkdir(parents=True)
+            (stream / 'progress.json').write_text(CapacityBridgeObservation(
+                input_tokens=12307, output_tokens=5791).model_dump_json())
+            raise ProviderTimeoutError(provider='zhipu', code='stream_child_failed')
+    result = diagnostic.observe(tmp_path, request, inputs, Failed, argument_diagnostic=True)
+    assert result['reserved_calls'] == 1 and result['unknown_usage_calls'] == 0
+    assert result['input_tokens'] == 12307 and result['output_tokens'] == 5791
+    assert result['cases'][0]['usage_source'] == 'normalized_stream_usage'
+    assert not result['cases'][0]['completed']

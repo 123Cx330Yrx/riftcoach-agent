@@ -72,7 +72,7 @@
     {
       "component_id": "app.evaluation.golden_stream_bridge",
       "source": "app/evaluation/golden_stream_bridge.py",
-      "sha256": "3039e81dc81705cf1faad91b0c0c74401e0db79edff57a536c320e6adfd91ad8"
+      "sha256": "cc089620ce50343a875f1c9f07811eb44979fa87d5036953f474d10d66c8a941"
     },
     {
       "component_id": "app.runtime.review_sender",
@@ -115,5 +115,5 @@
       "sha256": "94fa4ed248628f0801ff83a999a6c14e54464b838ed11e453f718c448502ef0d"
     }
   ],
-  "program_sha256": "1979524c4f17de598a162dae9a56aa1ac21934caa7dce87c39273a8adb112d5c"
+  "program_sha256": "fd2d6cd9eeb18673cae8545a775afa486901a6d87ef910815a537f2ddc775108"
 }

@@ -850,6 +850,24 @@ class ProviderStreamAssembler:
                 self._poison("tool_call_arguments")
         return tuple(decoded)
 
+    def rejected_tool_arguments(self) -> dict[str, Any] | None:
+        """Explicit local diagnostic for a terminal argument rejection only.
+
+        Not a response or public trace. Keep original fragments for offline
+        reconstruction; never include reasoning, content, or SDK error bodies.
+        A caller must also have closed its owned stream before persisting this.
+        """
+        if (self._failed_code != "tool_call_arguments" or not self._exhausted
+                or self._finish_reason != "tool_calls" or self._usage is None):
+            return None
+        return {"evidence_kind": "rejected_terminal_tool_arguments",
+            "publishable": False, "finish_reason": self._finish_reason,
+            "usage": {"input_tokens": self._usage.input_tokens,
+                      "output_tokens": self._usage.output_tokens},
+            "tools": [{"index": index, "id": state["id"], "name": state["name"],
+                       "argument_parts": list(state["arguments_parts"])}
+                      for index, state in sorted(self._tool_fragments.items())]}
+
     def _poison(self, code: str) -> None:
         if self._failed_code is None:
             self._failed_code = code

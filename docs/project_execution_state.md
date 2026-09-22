@@ -11,12 +11,13 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-22：原归因漏检已通过定点配对进一步定位，但自主全文修复仍未验证。ADR0104原归因负例完整返回93/pass而漏检；同全文/来源下定点block14诊断能拒绝真错、通过正确稿。随后ADR0105紧凑逐段机制已离线实现并通过公共CI，首个真实请求却在300秒截止时未完成，语义结果未知。不能宣称漏检已修好或产品可接入。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。先处理ADR0105实测中断的证据缺口：核对Provider/代理长连接终止行为，并使用新增工具通道活动记录区分无数据、工具参数接收和终止缺失。不得原样重发付费请求或增加时限；需要有信息增益的有界诊断后再恢复当前机制实测。
+2026-09-22：定点配对能区别归因真错/正确稿，但自主全文修复仍未验证。最新直连诊断已正常结束，却在终态工具参数解码被拒绝，进一步定位到`tool_call_arguments`。不能宣称漏检修好、代理根因确定或产品可接入。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。修复终态坏参数丢证据及已返回usage误记未知的缺口后，精确HEAD CI通过再执行一次有界原请求参数捕获；分片可离线重放，不靠增加超时/输出或反复付费重现。计划及结果分支见attribution-miss-diagnosis。
+- 54dfea1 / CI35705495669三项通过，直连122.297秒正常EOF/关闭，tool_calls和usage已返回，但组装拒绝tool_call_arguments。代理臂未执行。本次实际1调用/18098已知tokens/未知0，原回执未知1不改写，独立校正见`golden_block_route_result_54dfea1.json`。原始失败参数当时未保存，具体语法/解码原因未知。
 - a501c33 / CI35700582136三项通过；原归因自主全文首评最后保存事件83.484秒，300.016秒由父进程截止并回收子进程，无完整response/usage、未知用量1。前缀最多会丢末尾未保存事件，不能当精确断流时刻。证据`golden_native_block_tool_interruption_a501c33.json`。
 - 当前Provider走环境代理12000；无凭据短GET经代理3.000秒、直连1.032秒均401。只证明当时短请求可达，未证明长连接/Provider/代理哪层导致停滞。Git配置和NO_PROXY未改。
 - 修复进度记录遗漏tool deltas：新增首末工具事件、分片数、参数字符数，无正文/参数泄露，原预算/请求不变；native manifest仅更新该组件hash及自校验digest。020e52b公共CI35703296766三项通过。
-- 当前路径诊断已准备：原请求字节hash不变，先直连，完整且协议合法后才经12000对照，最多两次/600秒，不修订或重试。脚本`diagnose_block_review_route.py`，具体结果分支见attribution-miss-diagnosis；本诊断5项、相关42项离线通过。等待该脚本精确HEAD公共CI后执行；未新增真实请求。
+- 终态坏参数留存和stream usage记账修复已离线验证；原分片仅供本地诊断、无私有reasoning，仍拒绝交付坏结果。待本次精确HEAD公共CI；原模型、提示、请求、预算与产品关闭状态不变。
 - 定点配对cb69f82 / CI35698979457：错误稿80/revise，正确稿95/pass，2次/26738tokens、未知0；其结果不能计入自主全文资格。完整公开证据`golden_partitioned_focus_result_cb69f82.json`。
 - 本次续办真实请求4次：归因旧候选1次完成、定点2次完成、逐段1次中断；已知42299tokens，另1次未知。不改旧回执。ADR0104及ADR0105的live入口均停止；产品入口仍关闭。
 - b47818e测试误读忽略目录的缺陷已在651a207修复并公共CI三项通过；原归因完整失败证据`golden_native_partitioned_tool_public_651a207.json`。完整诊断/取舍见attribution-miss-diagnosis和ADR0105。

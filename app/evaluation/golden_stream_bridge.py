@@ -285,6 +285,13 @@ def collect(request, opener, *, directory, started, deadline, clock=time.monoton
     except BaseException:
         value.state, value.error = "failed", "provider_error"
         save()
+        # Local rejected output is evidence, never a delivered ChatResponse.
+        # This point is reached only after normal EOF and owned close. Preserve
+        # public-channel tool fragments without private reasoning so an invalid
+        # JSON result can be diagnosed without paying to recreate its contents.
+        diagnostic = assembler.rejected_tool_arguments()
+        if diagnostic is not None and value.close_state == "closed":
+            write_new_json(Path(directory) / "rejected-tool-output.json", diagnostic)
         raise
 
 

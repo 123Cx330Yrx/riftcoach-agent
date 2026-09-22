@@ -75,6 +75,28 @@ def test_incomplete_tool_prefix_records_activity_without_exposing_arguments(tmp_
     assert activity['terminal_ms'] is None
     assert 'PRIVATE_TOOL_PREFIX' not in json.dumps(activity)
     assert 'private-call' not in json.dumps(activity)
+    assert not (tmp_path / 'rejected-tool-output.json').exists()
+
+
+@pytest.mark.parametrize('arguments', ['{"value":1,"value":2}', '{"value":unfinished'])
+def test_terminal_rejected_arguments_remain_available_for_local_replay(tmp_path, arguments):
+    from app.providers.stream_adapter_contract import StreamAdapterError
+    req = request(tools=(ToolSpec('knowledge.search', 'fixture', {'type': 'object'}),))
+    pieces = [arguments[:7], arguments[7:]]
+    chunks = [chunk(reasoning='PRIVATE_REASONING'),
+        chunk(tool_calls=[tool_fragment(index=0, call_id='call_1', name='knowledge_search', arguments=pieces[0])]),
+        chunk(tool_calls=[tool_fragment(index=0, arguments=pieces[1])], finish_reason='tool_calls'),
+        chunk(raw_usage=usage())]
+    with pytest.raises(StreamAdapterError, match='tool_call_arguments'):
+        collect(tmp_path, chunks, req)
+    evidence = json.loads((tmp_path / 'rejected-tool-output.json').read_text())
+    assert evidence['tools'][0]['argument_parts'] == pieces
+    assert ''.join(evidence['tools'][0]['argument_parts']) == arguments
+    assert not evidence['publishable'] and evidence['usage']['output_tokens'] > 0
+    assert 'PRIVATE_REASONING' not in json.dumps(evidence)
+    progress = json.loads((tmp_path / 'progress.json').read_text())
+    assert progress['close_state'] == 'closed' and progress['state'] == 'failed'
+    assert arguments not in json.dumps(progress)
 
 
 @pytest.mark.parametrize("chunks", [

@@ -67,9 +67,21 @@ def route_environment(route):
         os.environ.update(saved)
 
 
-def observe(directory, request, inputs, factory):
+def observed_usage(directory):
+    """Usage may arrive even when assembly rejects the completed wire output."""
+    from app.evaluation.golden_stream_bridge import CapacityBridgeObservation
+    path = directory / 'stream-001/progress.json'
+    if not path.exists():
+        return None
+    progress = CapacityBridgeObservation.model_validate_json(path.read_bytes())
+    if progress.input_tokens is None or progress.output_tokens is None:
+        return None
+    return dict(input_tokens=progress.input_tokens, output_tokens=progress.output_tokens)
+
+
+def observe(directory, request, inputs, factory, *, argument_diagnostic=False):
     records = []
-    for route in ('direct', 'proxy_12000'):
+    for route in (('direct',) if argument_diagnostic else ('direct', 'proxy_12000')):
         arm = directory / route
         arm.mkdir(exist_ok=False)
         record = dict(route=route, completed=False, valid=False, reserved_calls=0)
@@ -94,16 +106,22 @@ def observe(directory, request, inputs, factory):
                 record['error_code'] = code
         finally:
             record['reserved_calls'] = provider._calls
-            record['unknown_usage_calls'] = max(0, provider._calls - int(record['completed']))
+            usage = (record['response']['usage'] if record['completed']
+                     else observed_usage(arm / 'transport'))
+            record['observed_usage'] = usage
+            record['usage_source'] = ('complete_response' if record['completed']
+                else 'normalized_stream_usage' if usage is not None else 'unavailable')
+            record['unknown_usage_calls'] = max(0, provider._calls - int(usage is not None))
             write_new_json(arm / 'result.json', record)
         print(json.dumps({k:v for k,v in record.items() if k != 'response'}), flush=True)
         if not record['valid']:
             break
-    result = dict(experiment=RUN_ID, cases=records, production_admitted=False,
+    result = dict(experiment='block-review-tool-args-v1' if argument_diagnostic else RUN_ID,
+        cases=records, production_admitted=False,
         semantic_approval=False, reserved_calls=sum(r['reserved_calls'] for r in records),
         unknown_usage_calls=sum(r['unknown_usage_calls'] for r in records),
-        input_tokens=sum(r.get('response', {}).get('usage', {}).get('input_tokens', 0) for r in records),
-        output_tokens=sum(r.get('response', {}).get('usage', {}).get('output_tokens', 0) for r in records))
+        input_tokens=sum((r['observed_usage'] or {}).get('input_tokens', 0) for r in records),
+        output_tokens=sum((r['observed_usage'] or {}).get('output_tokens', 0) for r in records))
     write_new_json(directory / 'result.json', result)
     return result
 
@@ -119,11 +137,18 @@ def run(args):
             'direct_complete_proxy_incomplete': 'Route association supports direct follow-up, not causal proof from one pair.',
             'both_complete': 'Historical stall remains unattributed; inspect full semantics before a new quality batch.',
             'semantic_error': 'Keep the error; route success does not qualify the reviewer.'})
+    if args.argument_diagnostic:
+        plan.update(experiment='block-review-tool-args-v1', routes=['direct'], max_calls=1,
+            intervention='Preserve terminal rejected tool fragments for offline reconstruction; same request bytes.',
+            decisions={
+                'rejected_arguments': 'Inspect exact fragments and reproduce rejection offline; no retry.',
+                'complete_valid': 'Inspect full semantics; prior lost malformed output stays unknown.',
+                'incomplete_stream': 'Stop without another request; no inference about absent final arguments.'})
     if not args.execute:
         print(json.dumps(plan))
         return plan
     head = verify_public_ci(args.ci_run)
-    directory = ROOT / 'data/runs/route_diagnostic' / RUN_ID
+    directory = ROOT / 'data/runs/route_diagnostic' / plan['experiment']
     directory.mkdir(parents=True, exist_ok=False)
     write_new_json(directory / 'plan.json', dict(plan, head_sha=head, ci_run=args.ci_run))
     write_new_json(directory / 'request.json', json.loads(validate_request(request, transport_id=CAPACITY_TRANSPORT_ID)))
@@ -131,7 +156,8 @@ def run(args):
     from app.providers.config import load_zhipu_settings
     settings = load_zhipu_settings(dotenv_values(args.env_file))
     return observe(directory, request, inputs, lambda path: ReceiptedStreamProvider(
-        settings=settings, directory=path, transport_id=CAPACITY_TRANSPORT_ID))
+        settings=settings, directory=path, transport_id=CAPACITY_TRANSPORT_ID),
+        argument_diagnostic=args.argument_diagnostic)
 
 
 if __name__ == '__main__':
@@ -139,4 +165,5 @@ if __name__ == '__main__':
     parser.add_argument('--execute', action='store_true')
     parser.add_argument('--ci-run', default='')
     parser.add_argument('--env-file', type=Path)
+    parser.add_argument('--argument-diagnostic', action='store_true')
     run(parser.parse_args())
