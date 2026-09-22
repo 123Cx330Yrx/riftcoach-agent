@@ -1,3 +1,19 @@
+# 2026-09-23 来源编号歧义离线修正；两请求准备完成，未付费执行
+
+沿SourceIndex→表格project/restore→semantic roots/resolve→首评/重评/编辑→SDK/回执追踪：
+host始终1起，未发现程序减一错误。裸evidence_keys列表与显式source_id混合暴露位置计数歧义；
+block14实际引用支持该解释，advisory即使加一仍错引，故不是整体根因已证明。
+新增未注册到产品的显式ID适配：evidence_by_id映射和一条读取说明，保全catalog、所有来源/原文、
+物理路径、上一轮完整意见及原hash。请求往返完全相等；原source0失败仍严格拒绝。
+两冻结完整控制经SDK MockTransport验证，只改system读取说明与user来源索引，其余wire一致。
+证据golden_explicit_source_projection_v1.json含完整新请求、原错引和对应关系、前后hash及预算。
+复用原观察器准备单独两例入口；补实际请求/策略身份与validator策略分别记录，旧批不重开。
+下一具体建议为2次GLM-5.3/high、154846tokens/600秒，预留估价2.549488元；需该新批明确决定
+及精确HEAD公共三项。调用/凭据/新run目录均未使用。质量、改稿/终评、15例及8E未完成。
+最终157项来源/恢复/诊断入口/产品组装回归通过，离线CLI准备可复现且禁止依赖data/runs；
+治理、编译和diff检查通过。此前9a0c711的公共CI35750408116已补核为三项通过，
+不作为本次新代码的CI证明；本次提交需另核其精确HEAD。原失败回执和活动产品manifest未修改。
+
 # 2026-09-22 GLM-5.3/high首例检出真错但来源绑定失败，按约停止
 
 b6b30f8 / CI35747690218三项通过后，仅首例实际执行。完整tool_calls、82/needs_revision，

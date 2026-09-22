@@ -20,7 +20,7 @@ from pydantic import TypeAdapter
 from app.evaluation import golden_native_partitioned_tool_review as review
 from app.evaluation.golden_integrated_runtime import ReceiptedStreamProvider
 from app.evaluation.golden_journal import write_new_json
-from app.evaluation.golden_review_experiment import compact
+from app.evaluation.golden_review_experiment import compact, digest
 from app.evaluation.golden_stream_bridge import REVIEW_MODEL_TRANSPORT_ID, CapacityBridgeObservation, validate_request
 from app.providers.models import ChatResponse
 from app.providers.zhipu_profiles import ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE
@@ -60,7 +60,7 @@ def observe(provider, directory, variants, plan, *, adjudicate=terminal_adjudica
     limits = plan['proposed_diagnostic_budget']
     started = clock()
     records = []
-    result = dict(experiment=EXPERIMENT, production_admitted=False, pair_accepted=False)
+    result = dict(experiment=plan['experiment'], production_admitted=False, pair_accepted=False)
     try:
         for index, (name, inputs, prepared) in enumerate(variants):
             record = dict(id=name, completed=False, valid=False, reserved_calls=0,
@@ -96,6 +96,11 @@ def observe(provider, directory, variants, plan, *, adjudicate=terminal_adjudica
                     raise ValueError('model_comparison_exchange_identity')
                 raw = review.tool.tool_result(prepared, exchange)
                 _, wire, journal = review.validate(raw, inputs)
+                journal.update(diagnostic_experiment=plan['experiment'],
+                    validator_policy_sha256=journal['policy_sha256'],
+                    policy_sha256=digest(prepared.messages[0].content),
+                    request_sha256=exchange.receipt_request_sha256,
+                    source_projection=prepared.metadata.get('source_projection'))
                 write_new_json(arm / 'journal.json', journal)
                 record.update(valid=True, score=wire.score, verdict=wire.verdict,
                               issue_blocks=[i.block for i in wire.issues],

@@ -53,6 +53,69 @@ wrong-source/unknown/duplicate cases. Do not start another model/prompt/schema
 batch or relabel original evidence as passing. Further paid experiments or product
 role adoption need a concrete decision beyond this stopped two-call authorization.
 
+## 2026-09-23: offline addressing correction and prepared follow-up
+
+The full path is now checked: `SourceIndex.prompt_sources` exposes a bare list;
+`golden_contextual_requests.project` writes fact/provenance IDs as index+1 and
+`restore` reads index-1; `golden_semantic_sources._numbered/resolve_refs` use the
+same one-based IDs. **There is no demonstrated off-by-one bug in host code.**
+The ambiguity is model-facing: a bare array suggests positional addressing while
+the root catalog requires explicit one-based IDs. The actual block14 alignment
+supports this mechanism; the advisory's unrelated refs remain contrary evidence
+against treating it as the complete explanation or a universal +1 repair.
+
+Selected offline correction: `golden_explicit_source_projection.py` replaces
+only `source_index.evidence_keys` with `evidence_by_id`, an explicit JSON object
+whose keys are the original source IDs. The corresponding single policy clause
+now says to look up those keys. It leaves root IDs/catalog identity, tables,
+computed evidence, source text, report blocks, external zero-based physical paths
+and the complete prior review/diagnostics untouched. Review, reassessment and
+revision requests round-trip exactly. Wrong IDs and changed data are rejected.
+The adapter does not rewrite any model response or infer supporting sources.
+
+Why this correction: adding another reminder would leave the positional list;
+shifting response IDs would accept guesses and still fail the advisory; copying
+every source value beside every opinion would add unrelated output obligations.
+This removes the evidenced ambiguity without another semantic-policy rewrite or
+new output schema. It is **offline engineering**, not adoption of another layout
+candidate or proof that the model will select relevant evidence.
+
+`scripts/check_review_source_projection.py` reconstructs both frozen controls
+and serializes original/projected/restored requests through the SDK MockTransport.
+Only the system reading clause and user source-index member change; round-trip
+SDK bodies equal the originals. Evidence and full projected bodies are in
+`data/evaluation/results/golden_explicit_source_projection_v1.json`. Original
+failure replay still rejects `semantic_source_id_unknown`; raw evidence is intact.
+The active product source fingerprints/default model are unchanged because this
+adapter is not registered in the product composition.
+Local verification:157 relevant source/recovery/diagnostic/product-composition
+tests passed, along with offline CLI preparation, compilation and governance.
+Preparation is tested without access to local ignored `data/runs` files.
+
+The concrete next proposal is **two new GLM-5.3/high diagnostic requests** over
+these frozen full reports, using only this addressing correction versus the
+previous full-model input. `run_explicit_source_review_pair.py` reuses the existing
+two-call observer, process deadlines, strict validation, host review and receipts;
+it records the actual projected policy/request separately from validator policy.
+One fresh create-once directory; no warm-up, retry, reassessment, edit or final
+review. Max2 calls/154846 reserved tokens/600seconds;32768 output and300seconds
+per call. At8/28 CNY per million input/output, the conservative reservation
+estimate is **2.549488 CNY**, not a hard billing cap or prediction of actual usage.
+
+Execution requires a **new explicit user decision for this proposal**, its exact
+preparation hash (`--approval-plan-sha`) and clean exact-HEAD three-job public CI.
+The hash selects the approved prepared inputs; possession of the hash alone is
+not authorization. The stopped original batch and its unused call stay closed.
+Offline CLI invocation is available without credentials or network Provider I/O.
+
+Inspect all issues and advisories, including whether each selected source really
+supports its explanation. First protocol, source relevance or semantic failure
+stops the pair; valid IDs alone are insufficient. Both complete controls correct
+would support the next role/workflow decision only, not stable accuracy, model
+replacement or15-case product qualification. If references remain irrelevant,
+this correction is insufficient: reassess evidence selection/task allocation,
+not another numbering permutation. No follow-up paid calls have occurred yet.
+
 ## Problem and discriminating question
 
 The four-cell input-layout experiment returned complete valid tool responses,

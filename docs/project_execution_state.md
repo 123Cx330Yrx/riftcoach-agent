@@ -11,8 +11,9 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-22：GLM-5.3/high首例检出原伤害归因真错，但两条意见均引用不存在的source0，完整审查仍不合格。按批准边界停止，第二例未调用，无实际改稿/终评或产品准入。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。离线核查来源坐标合同：同一输入有bare evidence_keys数组与1起source_roots，block14七个ID恰好对应前者0起位置；建议引用不能靠统一+1修好。核对生产者/消费者及恢复身份，比较能完整保留来源的单一显式ID；不改号/删0后放行，不立即再调模型或换提示。ADR0108批execute已关闭，后续付费变化需具体新决定；产品Flash/high和五次共享预算保持。
+2026-09-23：来源编号歧义的离线修正与实测准备完成；模型质量仍未获得新验证。原GLM-5.3/high首例来源失败保留，原第二例未调用，无实际改稿/终评或产品准入。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。对已准备的显式ID两份完整请求取得具体付费决定，再按精确HEAD公共三项检查执行。准备入口run_explicit_source_review_pair.py；最多2次/154846tokens/600秒，预留估价2.549488元。首例任一协议/语义/引用不支持即停止；两例正确也不等于产品资格。原ADR0108批停止，未发第二次不转作新批额度；本次尚无真实调用。产品Flash/high和五次共享预算保持。
+- 编号全路径核查：表格生产index+1、恢复index-1、source_roots及解析均一致，并非程序错位。歧义来自模型侧bare evidence_keys数组。离线适配替换为同ID的evidence_by_id对象及一句读取说明，首评/重评/改稿严格往返，完整坏意见及原hash保留；OP.GG零基物理路径不改。两控制经真实SDK MockTransport确认只有这两处消息变化；原失败仍拒绝，建议的错引不能统一+1修好。证据golden_explicit_source_projection_v1.json；未改产品指纹或注册新产品候选。
 - b6b30f8 / CI35747690218三项通过后，批准的首例完整tool_calls，82/needs_revision，一问题一建议，56.406秒。文本检出正确且未把上下文建议升级阻断，但semantic_source_id_unknown；1次输入12149+输出3480=15629tokens、未知0，按单价估算0.194632元。未耗尽/超时，第二例未发，不能称正反配对成功。完整8份原工件/hash、请求身份、逐项来源及独立算术见golden_review_model_comparison_result_b6b30f8.json。
 - 本轮工程遗漏：15c8940公共CI18个native组装失败来自共享源码指纹未同步；修复活动manifest两项源码及派生program hash，66项受影响回归和b6b30f8公共检查通过。旧资格/回执未改；这是执行遗漏，不归因于模型。
 - 1d5f7a2 / CI35730692196三项通过后，review-target-layout-v1四次完整合法返回、61159tokens、未知0。baseline负例漏检/正例通过；target负例检出但advisory经济比例写反，正例block4泛指又被判全称。拒绝采用并关闭execute；不拼两臂成功，无编辑/终评。34份原文件hash和逐局算术核验保存在golden_review_target_layout_result_1d5f7a2.json，均未触及输出/时限。
