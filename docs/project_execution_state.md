@@ -11,8 +11,8 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-23：来源职责核查已完成。固定目录原型可防止目录本身自由改写，保留原稿/成稿、未知/重复时间、正文引用与编辑绑定；在现有Runtime替身五调用路径通过。但正确目录与错误正文共存时，真实95/pass回放仍被格式校验接受，因此明确不把它当核心漏检修复，也未注册/接入新产品候选。详见ADR0110及golden_source_responsibility_audit_v1.json。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。执行已准备的独立Flash编辑能力检查：完整错误稿应修真错、正确参考稿应保留，不送旧评审意见、不同时启用来源组装。具体预检golden_independent_edit_preparation_v1.json，最多2次/600秒/161062tokens，未缓存估价上界0.2599216元；须当前提交公共CI及该新批授权后执行，当前尚无新增付费请求。首例失败即停，不在本批排列提示变体；若成功才进入实际改稿的普通GLM终评验证，不直接采用pass后核验或授予15例资格。
+2026-09-23：独立Flash整稿编辑首例300秒无正文，已停止并关闭；1次用量/费用未知，第二例未发，不接入pass后强制编辑。最后事件299.968秒，不能称网络断流、输出额度耗尽或语义编辑已失败。58449abb / CI35843805636三项通过，原9份工件和独立核验见golden_independent_edit_result_58449abb.json。来源目录原型依然只证明职责边界，不能修复正文漏检；默认产品未切换，8E未完成。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。补此前缺失的同输入Flash日期审查对照：两请求与v2预检字节相同，错稿还与GLM实际请求相同，只换Provider模型/transport；旧Flash审查是另一归因输入，不能冒充该对照已做过。最多2次/600秒/164182tokens，上界估价0.2624176元，沿用用户连续诊断授权，本提交公共CI后执行。任一问题即停，不变提示重试；通过只支持准备现有needs_revision→改稿→GLM终评整链，不直接改路由或授予原15资格。详见ADR0110、golden_flash_knowledge_time_review_preparation_v1.json。
 - 新诊断依据：Harness首评pass即发布，当前那次实际用了2生成+1首评；可考虑使用其余编辑/终评预算交叉核验，但现有状态机只允许needs_revision后编辑，不能伪造issue借道。旧6c22e93证明过一次独立Flash编辑成功，失败的是复杂Flash两状态终评，不能说这条新假设已被原样否定或已获验证。正常2+1+1+1可容纳5次，任何生成多轮/恢复则会减少余量；正式控制流尚未修改。
 - 最新实测及诊断：13768输入+3345输出=17113tokens，其中4992缓存输入已含总输入，未知0；按全部未缓存估价0.203804元（非账单）。模型147.797秒正常完成，含host批耗时189.016秒。请求与预检一致，与v1仅citation.retrievals及派生catalog摘要不同；政策、正文、其余事实、工具一致。知识26—30均携带9月23日检索时间，故排除丢字段/传错稿/编号偏移/预算失败。v1检出、v2漏检是两个观察，不证明新增字段导致退化或任何稳定率。12份原文件hash与独立审查见golden_knowledge_time_citation_result_6c3a3db.json。
 - 本次实测：执行883c23e / CI35832963559三项通过；1次正常完整tool_calls，13578输入+4378输出=17956tokens、未知0，估价0.231208元，含host审查380.610秒。唯一issue的日期判断正确，block8/11为非阻断建议；选中26—30只有文档更新时间，真正检索记录位于25。编号没有错位，问题是选中的来源缺少时间依据，不是断流、耗尽或再次漏检。12份原文件hash及独立来源审查见golden_knowledge_time_result_883c23e.json，原失败不改。

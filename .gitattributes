@@ -77,3 +77,7 @@
 /scripts/run_review_model_comparison.py text eol=lf
 /data/evaluation/results/golden_source_responsibility_audit_v1.json text eol=lf
 /data/evaluation/results/golden_independent_edit_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_independent_edit_result_58449abb.json text eol=lf
+/scripts/run_flash_knowledge_time_review_pair.py text eol=lf
+/data/evaluation/results/golden_flash_knowledge_time_review_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_flash_knowledge_time_review_result_v1.json text eol=lf

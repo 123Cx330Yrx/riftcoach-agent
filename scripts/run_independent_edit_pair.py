@@ -29,6 +29,7 @@ from scripts.check_source_bound_report import original_request, ROOT, APPLICATIO
 from scripts.native_contract_options import body
 
 EXPERIMENT = "independent-flash-edit-capability-pair-v1"
+LIVE_STATUS = "stopped_deadline_without_report"
 RUN_DIRECTORY = ROOT / "data/runs/model_comparison" / EXPERIMENT
 POLICY = (
     "独立检查完整报告与全部来源，直接修订需要修改的真实错误。你没有收到其他评估意见。"
@@ -116,6 +117,8 @@ def inspect_edit(prepared, exchange, inputs):
 
 
 def run(args):
+    if args.execute and LIVE_STATUS != "bounded_development_after_exact_ci":
+        raise ValueError("independent_edit_closed_after_deadline")
     variants, plan = prepare()
     plan_sha = digest(compact(plan))
     if not args.execute:

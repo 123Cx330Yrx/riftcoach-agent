@@ -55,7 +55,12 @@ def test_preparation_preserves_reports_all_sources_without_old_opinions_or_assem
     assert plan["proposed_diagnostic_budget"]["max_seconds_total"] == 600
     assert plan["provider_requests"] == 0 and not plan["production_admitted"]
     saved_plan = json.loads((runner.ROOT / "data/evaluation/results/golden_independent_edit_preparation_v1.json").read_text(encoding="utf-8"))
-    assert saved_plan == dict(preparation_plan=plan, preparation_plan_sha256=digest(compact(plan)))
+    # The execution plan remains historical evidence after closing the CLI.
+    # Closure changes this runner's source hash, not either frozen request.
+    original_plan = dict(plan, source_sha256=dict(plan["source_sha256"]))
+    original_plan["source_sha256"]["scripts/run_independent_edit_pair.py"] = saved_plan["preparation_plan"]["source_sha256"]["scripts/run_independent_edit_pair.py"]
+    assert saved_plan["preparation_plan"] == original_plan
+    assert saved_plan["preparation_plan_sha256"] == digest(compact(original_plan))
 
 
 def test_host_rejection_stops_after_unchanged_wrong_report_not_format_success(tmp_path):
@@ -97,6 +102,7 @@ def test_editor_cannot_introduce_unknown_citation_and_raw_response_survives(tmp_
 
 def test_old_authorization_cannot_start_new_plan_or_touch_ci_or_credentials(monkeypatch):
     import scripts.run_golden_inference_development as ci
+    monkeypatch.setattr(runner, "LIVE_STATUS", "bounded_development_after_exact_ci")
     monkeypatch.setattr(ci, "verify_public_ci", lambda *_: pytest.fail("unauthorized plan reached CI"))
     with pytest.raises(ValueError, match="independent_edit_specific_plan_approval_required"):
         runner.run(SimpleNamespace(execute=True, approval_plan_sha="8a4b189416a7fede2c7690f9a7dde1c993504d00294739135e4bfb7d48a8dde2",
@@ -104,10 +110,19 @@ def test_old_authorization_cannot_start_new_plan_or_touch_ci_or_credentials(monk
 
 
 def test_existing_batch_cannot_restart_even_with_matching_plan_hash(tmp_path, monkeypatch):
+    monkeypatch.setattr(runner, "LIVE_STATUS", "bounded_development_after_exact_ci")
     monkeypatch.setattr(runner, "RUN_DIRECTORY", tmp_path)
     _, plan = runner.prepare()
     with pytest.raises(ValueError, match="independent_edit_batch_exists"):
         runner.run(SimpleNamespace(execute=True, approval_plan_sha=digest(compact(plan)), env_file=None, ci_run="old"))
+
+
+def test_deadline_batch_closed_before_preparation_even_in_fresh_directory(tmp_path, monkeypatch):
+    monkeypatch.setattr(runner, "RUN_DIRECTORY", tmp_path / "unused")
+    monkeypatch.setattr(runner, "prepare", lambda: pytest.fail("closed batch reached inputs"))
+    with pytest.raises(ValueError, match="independent_edit_closed_after_deadline"):
+        runner.run(SimpleNamespace(execute=True, approval_plan_sha="previously_accepted", env_file=tmp_path / ".env", ci_run="old"))
+    assert not runner.RUN_DIRECTORY.exists()
 
 
 def test_failed_execution_is_nonzero_but_preview_and_success_can_exit_normally(monkeypatch):
