@@ -10,8 +10,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class CoachContractSnapshot(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
-    contract_id: Literal["recent-form-review-flash-v2"] = "recent-form-review-flash-v2"
-    version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16", "1.3.17", "1.3.18", "1.3.19", "1.3.20", "1.3.21", "1.3.22", "1.3.23", "1.3.24", "1.3.25", "1.3.26", "1.3.27", "1.4.0", "1.4.1", "1.4.2", "1.4.3", "1.4.4", "1.4.5", "1.4.6"] = "1.0.0"
+    contract_id: Literal["recent-form-review-flash-v2", "recent-form-review-roles-v1"] = "recent-form-review-flash-v2"
+    version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16", "1.3.17", "1.3.18", "1.3.19", "1.3.20", "1.3.21", "1.3.22", "1.3.23", "1.3.24", "1.3.25", "1.3.26", "1.3.27", "1.4.0", "1.4.1", "1.4.2", "1.4.3", "1.4.4", "1.4.5", "1.4.6", "1.5.0"] = "1.0.0"
     scope: Literal["unadmitted_opt_in"] = "unadmitted_opt_in"
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
@@ -340,8 +340,74 @@ class NativeCoachExecutionContract(CoachExecutionContract):
 NATIVE_COACH_CONTRACT = NativeCoachExecutionContract(version="1.4.6")
 
 
+@lru_cache(maxsize=1)
+def _role_request_policy():
+    from app.model_runtime import _issue_candidate_evaluation_request_policy
+    from .reviewer_roles import ROLE_COMPOSITION_ID
+    return _issue_candidate_evaluation_request_policy(
+        policy_id="flash-generation-glm53-review-high-32768", version="1.0.0",
+        provider_id="zhipu", model=ROLE_COMPOSITION_ID,
+        agent_timeout_s=330.0, llm_tool_timeout_s=330.0, transport_timeout_s=360.0,
+        max_output_tokens=32768, temperature=1.0, top_p=0.95)
+
+
+class RoleCoachExecutionContract(NativeCoachExecutionContract):
+    """Opt-in roles are explicit in the immutable execution snapshot."""
+    @property
+    def request_policy(self):
+        return _role_request_policy()
+
+    def descriptor(self):
+        from .reviewer_roles import ROLE_COMPOSITION_ID, ROLE_PROFILE_ID, role_descriptor
+        from app.evaluation.golden_explicit_source_projection import VERSION
+        value = super().descriptor()
+        value.update(contract_id="recent-form-review-roles-v1", model=ROLE_COMPOSITION_ID,
+            thinking_profile_id=ROLE_PROFILE_ID, skill_version="0.6.1", program_version="3.1.0",
+            evaluation_contract_version="3.3.0", inference_policy_id="golden-role-review-v1",
+            roles=role_descriptor(), source_projection=VERSION,
+            stream_transport_id="per-role-explicit", evaluation_repair_policy="one-full-native-reassessment-with-original-response")
+        policy = self.request_policy
+        value.update(request_policy_id=policy.policy_id, request_policy_version=policy.version,
+            request_policy={key: getattr(policy, key) for key in value["request_policy"]},
+            target_runtime_profile_id=ROLE_PROFILE_ID, target_runtime_profile_version="1.0.0")
+        return value
+
+    def snapshot(self):
+        raw = json.dumps(self.descriptor(), sort_keys=True, separators=(",", ":"))
+        return CoachContractSnapshot(contract_id="recent-form-review-roles-v1", version=self.version,
+            sha256=hashlib.sha256(raw.encode()).hexdigest())
+
+    @staticmethod
+    def request_identity(request):
+        from .reviewer_roles import request_identity
+        return request_identity(request)
+
+    def require_provider(self, provider):
+        from .reviewer_roles import ROLE_COMPOSITION_ID, ROLE_PROFILE_ID
+        if (provider.provider_name != "zhipu" or provider.model_name != ROLE_COMPOSITION_ID
+                or getattr(provider, "thinking_profile_id", None) != ROLE_PROFILE_ID
+                or type(getattr(provider, "sdk_max_retries", None)) is not int or provider.sdk_max_retries != 0
+                or getattr(provider, "runtime_profile", None) is not None):
+            raise ValueError("role_contract_provider_mismatch")
+
+    @property
+    def pricing_profiles(self):
+        # ADR0108 official-price snapshot; conservative uncached estimate, not a bill.
+        from decimal import Decimal
+        from .models import RuntimePricingProfile
+        return {( "zhipu", model): RuntimePricingProfile(profile_id="glm53-roles-uncached-20260922", version="1.0.0",
+            provider_id="zhipu", model=model, currency="CNY",
+            input_cost_per_million=Decimal(input_price), output_cost_per_million=Decimal(output_price))
+            for model, input_price, output_price in (
+                ("glm-5.3-flash", "0.8", "2.8"),
+                ("glm-5.3", "8", "28"))}
+
+
+ROLE_COACH_CONTRACT = RoleCoachExecutionContract(version="1.5.0")
+
+
 def require_coach_contract(value):
-    if value is not None and all(value is not c for c in (COACH_CONTRACT, NATIVE_COACH_CONTRACT, CONTEXT_COACH_CONTRACT, EVIDENCE_V8_COACH_CONTRACT, EVIDENCE_V7_COACH_CONTRACT, EVIDENCE_V6_COACH_CONTRACT, EVIDENCE_V5_COACH_CONTRACT, EVIDENCE_V4_COACH_CONTRACT, EVIDENCE_V3_COACH_CONTRACT, CAPACITY_COACH_CONTRACT, EVIDENCE_V2_COACH_CONTRACT, EVIDENCE_COACH_CONTRACT, FACT_INFERENCE_COACH_CONTRACT, FEEDBACK_COACH_CONTRACT, EXPANDED_COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT)):
+    if value is not None and all(value is not c for c in (COACH_CONTRACT, NATIVE_COACH_CONTRACT, ROLE_COACH_CONTRACT, CONTEXT_COACH_CONTRACT, EVIDENCE_V8_COACH_CONTRACT, EVIDENCE_V7_COACH_CONTRACT, EVIDENCE_V6_COACH_CONTRACT, EVIDENCE_V5_COACH_CONTRACT, EVIDENCE_V4_COACH_CONTRACT, EVIDENCE_V3_COACH_CONTRACT, CAPACITY_COACH_CONTRACT, EVIDENCE_V2_COACH_CONTRACT, EVIDENCE_COACH_CONTRACT, FACT_INFERENCE_COACH_CONTRACT, FEEDBACK_COACH_CONTRACT, EXPANDED_COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT)):
         raise ValueError("unsupported Coach execution contract")
     return value
 
@@ -350,7 +416,7 @@ def coach_component_fingerprint(contract=COACH_CONTRACT):
     from app.evaluation.prompt_context_identity import ComponentFingerprint
     require_coach_contract(contract)
     return ComponentFingerprint(component_id="coach_execution_contract",
-                                source=(f"app.runtime.native_coach_contract:v{contract.version}" if contract is NATIVE_COACH_CONTRACT else "app.runtime.coach_contract:v1.3.19" if contract.version == "1.3.19" else "app.runtime.coach_contract:v1.3.18" if contract.version == "1.3.18" else "app.runtime.coach_contract:v1.3.17" if contract.version == "1.3.17" else "app.runtime.coach_contract:v1.3.16" if contract.version == "1.3.16" else "app.runtime.coach_contract:v1.3.15" if contract.version == "1.3.15" else "app.runtime.coach_contract:v1.3.14" if contract.version == "1.3.14" else "app.runtime.coach_contract:v1.3.13" if contract.version == "1.3.13" else "app.runtime.coach_contract:v1.3.12" if contract.version == "1.3.12" else "app.runtime.coach_contract:v1.3.11" if contract.version == "1.3.11" else "app.runtime.coach_contract:v1.3.10" if contract.version == "1.3.10" else
+                                source=(f"app.runtime.reviewer_roles:v{contract.version}" if contract is ROLE_COACH_CONTRACT else f"app.runtime.native_coach_contract:v{contract.version}" if contract is NATIVE_COACH_CONTRACT else "app.runtime.coach_contract:v1.3.19" if contract.version == "1.3.19" else "app.runtime.coach_contract:v1.3.18" if contract.version == "1.3.18" else "app.runtime.coach_contract:v1.3.17" if contract.version == "1.3.17" else "app.runtime.coach_contract:v1.3.16" if contract.version == "1.3.16" else "app.runtime.coach_contract:v1.3.15" if contract.version == "1.3.15" else "app.runtime.coach_contract:v1.3.14" if contract.version == "1.3.14" else "app.runtime.coach_contract:v1.3.13" if contract.version == "1.3.13" else "app.runtime.coach_contract:v1.3.12" if contract.version == "1.3.12" else "app.runtime.coach_contract:v1.3.11" if contract.version == "1.3.11" else "app.runtime.coach_contract:v1.3.10" if contract.version == "1.3.10" else
                                         "app.runtime.coach_contract:v1.3.9" if contract.version == "1.3.9" else
                                         "app.runtime.coach_contract:v1.3.8" if contract.version == "1.3.8" else
                                         "app.runtime.coach_contract:v1.3.7" if contract.version == "1.3.7" else

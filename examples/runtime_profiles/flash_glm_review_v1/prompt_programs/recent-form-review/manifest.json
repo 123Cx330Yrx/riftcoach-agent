@@ -1,0 +1,224 @@
+{
+  "schema_version": "1.0",
+  "program_id": "recent-form-review-coach",
+  "program_version": "3.1.0",
+  "skill_name": "recent-form-review",
+  "skill_version": "0.6.1",
+  "context_contract_id": "context-builder-v1",
+  "context_contract_version": "1.0.0",
+  "evaluation_contract_id": "coach_evaluation",
+  "evaluation_contract_version": "3.3.0",
+  "component_fingerprints": [
+    {
+      "component_id": "skill_manifest",
+      "source": "skills/recent-form-review/manifest",
+      "sha256": "f00ca2b398af3a04838bad3c2a0ab78153fca4438282f34e9a01a1a2659cce8b"
+    },
+    {
+      "component_id": "skill_instructions",
+      "source": "skills/recent-form-review/SKILL.md",
+      "sha256": "f3207adead537a2999749fd0f882e744ebf10cb93c878924cab7b763cb080c23"
+    },
+    {
+      "component_id": "context_contract",
+      "source": "app.agent.context:context-builder-v1",
+      "sha256": "f7083aafd7f515cd02a40c4d3c38480b10a0b4957e5dcdd29c2de8ced73aa2b9"
+    },
+    {
+      "component_id": "knowledge_tool_contract",
+      "source": "app.tools.adapters.knowledge:knowledge.search@2.0.0",
+      "sha256": "4d25336b47105a430a8f5a3eb0068c2fcb601ac0a769c9e73ec5c8a429770fdc"
+    },
+    {
+      "component_id": "evaluation_schema",
+      "source": "evaluation_schema",
+      "sha256": "51087e6ade6d919950f5fe93a0cfdbc919ab28298436092b3f79b72ee14fc8a5"
+    },
+    {
+      "component_id": "generation_policy",
+      "source": "generation_policy",
+      "sha256": "d059bfb9b0a5a2e050ffcd4511fb9228ed130864ea331034e395111ffa3225ae"
+    },
+    {
+      "component_id": "app.evaluation.golden_native_issues_review",
+      "source": "app/evaluation/golden_native_issues_review.py",
+      "sha256": "fd51ed703f3961b4f0cbd6af7b7b0f76928505ae354f4b04026f50ead1af4f47"
+    },
+    {
+      "component_id": "app.evaluation.golden_semantic_review",
+      "source": "app/evaluation/golden_semantic_review.py",
+      "sha256": "f72dca85969b4cf3ef12f2567f19d98ab91ec94e5acf7ee5fe0b1ccdb4048e78"
+    },
+    {
+      "component_id": "app.evaluation.golden_semantic_sources",
+      "source": "app/evaluation/golden_semantic_sources.py",
+      "sha256": "78462ff5032778b78809961c259414b8183efd681c7367b78951e7518adb5cce"
+    },
+    {
+      "component_id": "app.evaluation.golden_contextual_sources",
+      "source": "app/evaluation/golden_contextual_sources.py",
+      "sha256": "db891f59333ef8fb82fb0f8af4cd222eb9a0bdd34d828dba140376d9023621be"
+    },
+    {
+      "component_id": "app.evaluation.golden_computed_evidence",
+      "source": "app/evaluation/golden_computed_evidence.py",
+      "sha256": "d9c3c74102c5e4524f454ea306c559108c9bbf112887c106fbd44f03f2baacef"
+    },
+    {
+      "component_id": "app.evaluation.golden_integrated_runtime",
+      "source": "app/evaluation/golden_integrated_runtime.py",
+      "sha256": "b927c90bdb61a104ef310aaa68992f173db3f94f20d82a1727d8a4ffd594a958"
+    },
+    {
+      "component_id": "app.evaluation.golden_stream_bridge",
+      "source": "app/evaluation/golden_stream_bridge.py",
+      "sha256": "9cae5009df191f10c94808c8512582128641c3523572e908e148333fd46dd345"
+    },
+    {
+      "component_id": "app.runtime.review_sender",
+      "source": "app/runtime/review_sender.py",
+      "sha256": "5148f82b0df38a7b982fff47153f6ea266c7851d61e3b53f1bb1f6f4d42cea56"
+    },
+    {
+      "component_id": "app.runtime.receipted_provider_factory",
+      "source": "app/runtime/receipted_provider_factory.py",
+      "sha256": "cae28be9511801760043a4e75efbc742b3c555ea1337e74c7fa843acced68b07"
+    },
+    {
+      "component_id": "app.runtime.native_coach_contract",
+      "source": "app/runtime/native_coach_contract.py",
+      "sha256": "0297ab4fe8c1b51d74046d1f16f2babce891d000180e16639c2a873058ad3730"
+    },
+    {
+      "component_id": "app.product.native_coach_composition",
+      "source": "app/product/native_coach_composition.py",
+      "sha256": "9d38f5cb54275bebd5cb00534cc72fafa2c687704d580138b6e45426a5534122"
+    },
+    {
+      "component_id": "app.product.recent_review_service",
+      "source": "app/product/recent_review_service.py",
+      "sha256": "e4ecaf5dd177db17b5d54cd02525770fd5647f840a9b55e77d8aec3b0c0c3103"
+    },
+    {
+      "component_id": "app.evaluation.golden_source_context",
+      "source": "app/evaluation/golden_source_context.py",
+      "sha256": "2103ec35ebd02ebde3ce32db1c686a1e41f7d727ee6b610c4597f1f28bdffd28"
+    },
+    {
+      "component_id": "app.product.coach_positions",
+      "source": "app/product/coach_positions.py",
+      "sha256": "cb6d8ccc7944c8328d3f8dd4e420b0df70d53c3b7c0fd6594ab1ae6d2ea65e3c"
+    },
+    {
+      "component_id": "initial_review_policy",
+      "source": "initial_review_policy",
+      "sha256": "0cdd9f43897443721993986d2bd049eae31a3c916e33f978a92c3554c50243f4"
+    },
+    {
+      "component_id": "reassessment_policy",
+      "source": "reassessment_policy",
+      "sha256": "a7d4a017e095727e4fe5d937b94191ef9fb28f85c57fcd2745a5c09426d1598f"
+    },
+    {
+      "component_id": "revision_policy",
+      "source": "revision_policy",
+      "sha256": "3c7a7afe4f23bb4913db8cb09135205e548f6a84cab906b7b955de81fa5dbd56"
+    },
+    {
+      "component_id": "source_projection",
+      "source": "source_projection",
+      "sha256": "1f3b8459102fc04fe107f0ecdc270db6241b3f0dddc5052bc3ba7d9db9ff2049"
+    },
+    {
+      "component_id": "role_descriptor",
+      "source": "role_descriptor",
+      "sha256": "d297fcd01ce992ef9cfdde3fa73ac118add1d5b460a3f9d028b1d96d4a4307c0"
+    },
+    {
+      "component_id": "app.evaluation.golden_role_review",
+      "source": "app/evaluation/golden_role_review.py",
+      "sha256": "0df297d7d865478f1298c1c9b8fdd37be435b6c3a92c879861c69cc22699d9ff"
+    },
+    {
+      "component_id": "app.evaluation.golden_native_partitioned_tool_review",
+      "source": "app/evaluation/golden_native_partitioned_tool_review.py",
+      "sha256": "e5d35ede3151429cbbd51eb25d80256ce3668011c1cb299b2ab682d6cd6a7df8"
+    },
+    {
+      "component_id": "app.evaluation.golden_native_tool_review",
+      "source": "app/evaluation/golden_native_tool_review.py",
+      "sha256": "27f3e2a4aaf1aa5f446d70de04cf902aa44767cdad6feda143283d6b1408d3aa"
+    },
+    {
+      "component_id": "app.evaluation.golden_native_business_policy",
+      "source": "app/evaluation/golden_native_business_policy.py",
+      "sha256": "dc70edc303a614fb1133941f478a6179a53c48a1d513911a366abeb92a311f3f"
+    },
+    {
+      "component_id": "app.evaluation.golden_explicit_source_projection",
+      "source": "app/evaluation/golden_explicit_source_projection.py",
+      "sha256": "39c9aea06682ca1834f4afc9887ce2962f17c2a3b34a0cc1726d00156077aee1"
+    },
+    {
+      "component_id": "app.runtime.role_coach_contract",
+      "source": "app/runtime/role_coach_contract.py",
+      "sha256": "f9407896bfdce96bdf11b50f3997e96d746146170e9614428445eaac4bc1cbc2"
+    },
+    {
+      "component_id": "app.runtime.coach_contract",
+      "source": "app/runtime/coach_contract.py",
+      "sha256": "d693ed52f7c165de8392f36d11296968d268c9073a624d8cca2a9414e587bd23"
+    },
+    {
+      "component_id": "app.providers.zhipu_profiles",
+      "source": "app/providers/zhipu_profiles.py",
+      "sha256": "6105062dc42f684ebe07808541fe6d269f1ed4a3540cd91b393c32fd7dd4131e"
+    },
+    {
+      "component_id": "app.runtime.reviewer_roles",
+      "source": "app/runtime/reviewer_roles.py",
+      "sha256": "a8b35565cf1f92f556a4962b4af36a73828920f2b9178d422467d8f22995a9fd"
+    },
+    {
+      "component_id": "app.runtime.coach_budget",
+      "source": "app/runtime/coach_budget.py",
+      "sha256": "9c2183a069c5dd06ba2f722ff4c9dfacabd8960001e961b35ceb573755460f8f"
+    },
+    {
+      "component_id": "app.runtime.coach_context",
+      "source": "app/runtime/coach_context.py",
+      "sha256": "40e38f566e2a49ba4a40d37eca20f24e4b79a9e5bc14fd05dd4ad18f04dc5219"
+    },
+    {
+      "component_id": "app.runtime.observed_provider",
+      "source": "app/runtime/observed_provider.py",
+      "sha256": "4a85e2065b58b1093a20c5bd6bd5dc41844698fb6be5b2d470208c2a7f59ad56"
+    },
+    {
+      "component_id": "app.runtime.recorder",
+      "source": "app/runtime/recorder.py",
+      "sha256": "24c307dee84dcad7e68b0c6df2ac6921fcb7c8834e05c33c0780f99daa98658f"
+    },
+    {
+      "component_id": "app.runtime.runtime",
+      "source": "app/runtime/runtime.py",
+      "sha256": "357dfc88badb58de57cec82db1150dc9dd8c6ea65ea312d59b8f1ddc0a9c15a1"
+    },
+    {
+      "component_id": "app.runtime.models",
+      "source": "app/runtime/models.py",
+      "sha256": "56133ca50ea9e9c27beb17a979d5ed342e8370552a727d74a7c873c7208d2dce"
+    },
+    {
+      "component_id": "app.model_runtime",
+      "source": "app/model_runtime.py",
+      "sha256": "7c2f227c21e518858ccaa960fdadad5af4ca505af31b1c840ba0d21d64210728"
+    },
+    {
+      "component_id": "coach_execution_contract",
+      "source": "app.runtime.reviewer_roles:v1.5.0",
+      "sha256": "f15855c3c5cdbb3a579c5769fb07e731d2383efa07fd0d3deb785aee5536745d"
+    }
+  ],
+  "program_sha256": "9c0f03b4e5954aab5f89c20a8ca7f87a52e01bf83a6cd5f7d137e68fa5276568"
+}

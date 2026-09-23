@@ -31,3 +31,28 @@
 
 # Keep the new report-contract budget proof byte-reproducible on Windows and CI.
 /data/evaluation/contracts/glm53_report_contract_development_budget_v1.json text eol=lf
+
+# Preserve the original byte-hashed DeepSeek adoption fixtures on Windows.
+/examples/fixtures/player_summary_domain_adoption_v2.json text eol=lf
+/examples/fixtures/deterministic_report_domain_adoption_v2.md text eol=lf
+
+# Keep frozen portal prompt digests identical to their original Git bytes.
+/docs/assets/8e-portal/portal-motion-brief-kling-v3-omni-b1.txt text eol=lf
+/docs/assets/8e-portal/portal-motion-brief-kling-v3-omni-video-image-b2.txt text eol=lf
+/docs/assets/8e-portal/portal-motion-brief-wan3-first-frame-reopen-v1.txt text eol=lf
+
+# Pin byte-bound historical plans and fixtures; no evidence content changes.
+/data/evaluation/deepseek_v4_pro_domain_adoption_v2_input_plan.json text eol=lf
+/examples/fixtures/player_summary_resource_calibration_baseline.json text eol=lf
+/examples/fixtures/deterministic_report_resource_calibration_baseline.md text eol=lf
+/examples/fixtures/player_summary_resource_calibration_ceiling.json text eol=lf
+/examples/fixtures/deterministic_report_resource_calibration_ceiling.md text eol=lf
+/data/evaluation/deepseek_v4_pro_resource_calibration_development_profiles.json text eol=lf
+/data/evaluation/stage8/advanced_adoption_cases_v1.json text eol=lf
+/examples/fixtures/player_summary_demo.json text eol=lf
+/examples/fixtures/deterministic_report_demo.md text eol=lf
+/data/evaluation/history/skill_router_v1_single_skill_development_cases_1_0_0.json text eol=lf
+/data/evaluation/deepseek_v4_pro_domain_heldout_input_plan.json text eol=lf
+
+# Pin the prepared role-batch request and plan bytes before any real execution.
+/data/evaluation/results/role_flash_glm_review_preflight_20260923_v1/** text eol=lf

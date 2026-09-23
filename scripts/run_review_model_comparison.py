@@ -21,7 +21,7 @@ from app.evaluation import golden_native_partitioned_tool_review as review
 from app.evaluation.golden_integrated_runtime import ReceiptedStreamProvider
 from app.evaluation.golden_journal import write_new_json
 from app.evaluation.golden_review_experiment import compact, digest
-from app.evaluation.golden_stream_bridge import REVIEW_MODEL_TRANSPORT_ID, CapacityBridgeObservation, validate_request
+from app.evaluation.golden_stream_bridge import REVIEW_MODEL_TRANSPORT_ID, CapacityBridgeObservation, validate_request, transport_profile
 from app.providers.models import ChatResponse
 from app.providers.zhipu_profiles import ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE
 from scripts.diagnose_block_review_route import route_environment
@@ -51,12 +51,32 @@ def terminal_adjudication(response_path, remaining):
                 scope='all issues and advisories in full context; host judgment, not model output')
 
 
-def observe(provider, directory, variants, plan, *, adjudicate=terminal_adjudication, clock=time.monotonic):
-    if (len(variants) != 2 or provider.model_name != 'glm-5.3'
-            or provider.thinking_profile_id != ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE.profile_id
-            or provider.transport_id != REVIEW_MODEL_TRANSPORT_ID or provider.sdk_max_retries != 0
+def observe(provider, directory, variants, plan, *, adjudicate=terminal_adjudication, clock=time.monotonic,
+            reviewer_profile=ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE,
+            transport_id=REVIEW_MODEL_TRANSPORT_ID):
+    """Two controls with host resume in the same live, deadline-bounded session.
+
+    The default stays the historical GLM diagnostic. An explicit profile must
+    match the canonical transport, so selecting Flash cannot silently use GLM
+    settings (or vice versa). Restarting never overwrites a previous batch.
+    """
+    if (reviewer_profile != transport_profile(transport_id)
+            or len(variants) != 2 or provider.model_name != reviewer_profile.model
+            or provider.thinking_profile_id != reviewer_profile.profile_id
+            or provider.transport_id != transport_id or provider.sdk_max_retries != 0
             or provider._calls != 0):
         raise ValueError('model_comparison_identity')
+    names = [variant[0] for variant in variants]
+    if (len(set(names)) != 2 or len(plan['cells']) != 2
+            or any(not re.fullmatch(r'[a-z0-9][a-z0-9_-]{0,95}', name) for name in names)
+            or names != [cell['id'] for cell in plan['cells']]):
+        raise ValueError('model_comparison_input_identity')
+    if (directory / 'result.json').exists() or any((directory / name).exists() for name in names):
+        raise ValueError('model_comparison_batch_exists')
+    for (_, _, request), cell in zip(variants, plan['cells'], strict=True):
+        raw = validate_request(request, transport_id=transport_id)
+        if 'request_sha256' in cell and hashlib.sha256(raw).hexdigest() != cell['request_sha256']:
+            raise ValueError('model_comparison_input_identity')
     limits = plan['proposed_diagnostic_budget']
     started = clock()
     records = []
@@ -78,21 +98,26 @@ def observe(provider, directory, variants, plan, *, adjudicate=terminal_adjudica
                         or used + cell['input_reservation'] + cell['output_cap'] > limits['total_token_reservation']):
                     raise ValueError('model_comparison_shared_budget')
                 issued = replace(prepared, timeout_s=min(prepared.timeout_s, remaining))
-                write_new_json(arm / 'request.json', json.loads(validate_request(issued, transport_id=REVIEW_MODEL_TRANSPORT_ID)))
+                issued_raw = validate_request(issued, transport_id=transport_id)
+                with (arm / 'request.raw.json').open('xb') as request_file:
+                    request_file.write(issued_raw)
+                write_new_json(arm / 'request.json', json.loads(issued_raw))
+                record['request_sha256'] = hashlib.sha256(issued_raw).hexdigest()
                 response = provider.chat(issued)
                 public = public_response(json.loads(TypeAdapter(ChatResponse).dump_json(response)))
                 # Preserve even a completed response rejected by later checks.
                 response_path = arm / 'response.json'
                 write_new_json(response_path, public)
                 record.update(completed=True, observed_usage=public['usage'], usage_source='complete_response')
-                if (response.provider != 'zhipu' or response.model != 'glm-5.3'
+                if (response.provider != 'zhipu' or response.model != reviewer_profile.model
                         or response.usage.input_tokens > cell['input_reservation']
                         or response.usage.output_tokens > cell['output_cap']):
                     raise ValueError('model_comparison_response_identity_or_budget')
                 if clock() - started >= limits['max_seconds_total']:
                     raise ValueError('model_comparison_shared_budget')
                 exchange = provider.last_exchange
-                if exchange is None or exchange.response is not response or exchange.issued_request != issued:
+                if (exchange is None or exchange.response is not response or exchange.issued_request != issued
+                        or exchange.receipt_request_sha256 != record['request_sha256']):
                     raise ValueError('model_comparison_exchange_identity')
                 raw = review.tool.tool_result(prepared, exchange)
                 _, wire, journal = review.validate(raw, inputs)

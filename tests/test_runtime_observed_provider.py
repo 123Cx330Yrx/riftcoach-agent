@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 import pytest
 
@@ -386,3 +386,139 @@ def test_provider_signals_never_include_request_or_response_bodies():
         "arguments",
     ):
         assert forbidden not in serialized
+
+
+
+def test_role_identity_resolver_uses_one_global_ordinal_for_actual_models():
+    generation_model = "glm-5.3-flash"
+    review_model = "glm-5.3"
+    model_sequence = [generation_model, review_model, generation_model, review_model]
+    responses = [replace(_response(), model=model) for model in model_sequence]
+    delegate = ScriptedProvider(outcomes=list(responses), model_name="coach-role-bundle")
+    observer = RecordingObserver()
+    resolved_requests = []
+
+    def resolve(request):
+        resolved_requests.append(request)
+        step = request.metadata.get("harness_step")
+        model = review_model if step in {"evaluate", "evaluate_repair"} else generation_model
+        return "zhipu", model
+
+    provider = ObservedLLMProvider(
+        delegate=delegate, observer=observer, request_identity=resolve,
+    )
+    requests = [
+        _request(agent_loop_iteration=1),
+        _request(harness_step="evaluate"),
+        _request(harness_step="revise"),
+        _request(harness_step="evaluate_repair"),
+    ]
+    for request, expected in zip(requests, responses, strict=True):
+        assert provider.chat(request) is expected
+
+    assert resolved_requests == requests
+    assert provider.model_name == "coach-role-bundle"
+    starts = [signal for signal in observer.signals if isinstance(signal, ProviderCallStartedSignal)]
+    completions = [signal for signal in observer.signals if isinstance(signal, ProviderCallCompletedSignal)]
+    assert [signal.ordinal for signal in starts] == [1, 2, 3, 4]
+    assert [signal.model for signal in starts] == model_sequence
+    assert [(signal.provider_id, signal.model, signal.ordinal) for signal in starts] == [
+        (signal.provider_id, signal.model, signal.ordinal) for signal in completions
+    ]
+    assert [(signal.input_tokens, signal.output_tokens) for signal in completions] == [(11, 7)] * 4
+
+
+@pytest.mark.parametrize("wrong_identity", [{"model": "wrong-model"}, {"provider": "wrong-provider"}])
+def test_role_response_identity_mismatch_cannot_complete_or_publish_receipt(wrong_identity):
+    response = replace(_response(), **{"model": "glm-5.3", **wrong_identity})
+    delegate = ReceiptProvider([response], [Receipt()])
+    observer = RecordingObserver()
+    provider = ObservedLLMProvider(
+        delegate=delegate,
+        observer=observer,
+        request_identity=lambda request: ("zhipu", "glm-5.3"),
+    )
+
+    with pytest.raises(ProviderResponseError, match="response_identity_mismatch"):
+        provider.chat(_request(harness_step="evaluate"))
+
+    assert provider.last_exchange is None
+    assert [type(signal) for signal in observer.signals] == [ProviderCallStartedSignal, ProviderCallFailedSignal]
+    assert [(signal.provider_id, signal.model, signal.ordinal) for signal in observer.signals] == [
+        ("zhipu", "glm-5.3", 1), ("zhipu", "glm-5.3", 1),
+    ]
+
+
+@pytest.mark.parametrize("outcome", ["response", "error"])
+def test_identity_is_frozen_before_delegate_mutates_its_attributes(outcome):
+    class MutatingProvider(ScriptedProvider):
+        def chat(self, request):
+            self.provider_name = "changed-provider"
+            self.model_name = "changed-model"
+            return super().chat(request)
+
+    delegate = MutatingProvider(outcomes=[
+        _response() if outcome == "response" else ProviderResponseError(provider="zhipu", code="invalid_json")
+    ])
+    observer = RecordingObserver()
+    provider = ObservedLLMProvider(delegate=delegate, observer=observer)
+    if outcome == "response":
+        provider.chat(_request(agent_loop_iteration=1))
+    else:
+        with pytest.raises(ProviderResponseError):
+            provider.chat(_request(agent_loop_iteration=1))
+    assert len(observer.signals) == 2
+    assert [(signal.provider_id, signal.model) for signal in observer.signals] == [("zhipu", "glm-5.2")] * 2
+
+
+def test_identity_resolution_failure_does_not_start_or_consume_call_ordinal():
+    delegate = ScriptedProvider(outcomes=[_response()])
+    observer = RecordingObserver()
+
+    def resolve(request):
+        if request.metadata.get("harness_step") == "evaluate":
+            raise ValueError("invalid role selection")
+        return "zhipu", "glm-5.2"
+
+    provider = ObservedLLMProvider(delegate=delegate, observer=observer, request_identity=resolve)
+    with pytest.raises(ValueError, match="invalid role selection"):
+        provider.chat(_request(harness_step="evaluate"))
+    assert delegate.requests == []
+    assert observer.signals == []
+    provider.chat(_request(agent_loop_iteration=1))
+    assert observer.signals[0].ordinal == 1
+
+
+def test_default_observation_does_not_implicitly_trust_delegate_resolver():
+    delegate = ScriptedProvider(outcomes=[_response()])
+    delegate.request_identity = lambda request: ("other", "other-model")
+    observer = RecordingObserver()
+    provider = ObservedLLMProvider(delegate=delegate, observer=observer)
+    provider.chat(_request(agent_loop_iteration=1))
+    assert observer.signals[0].model == "glm-5.2"
+
+
+
+@pytest.mark.parametrize("matching", [True, False])
+def test_post_response_receipt_failure_preserves_only_identifiable_usage(matching):
+    error = ProviderResponseError(provider="zhipu", code="receipt_binding_invalid")
+    error.observed_response = replace(_response(), model="glm-5.3" if matching else "other-model")
+    delegate = ScriptedProvider(outcomes=[error])
+    observer = RecordingObserver()
+    provider = ObservedLLMProvider(
+        delegate=delegate, observer=observer,
+        request_identity=lambda request: ("zhipu", "glm-5.3"),
+    )
+    with pytest.raises(ProviderResponseError) as captured:
+        provider.chat(_request(harness_step="evaluate"))
+    assert captured.value is error
+    assert provider.last_exchange is None
+    assert len(observer.signals) == 2
+    closure = observer.signals[-1]
+    assert (closure.provider_id, closure.model, closure.ordinal) == ("zhipu", "glm-5.3", 1)
+    if matching:
+        assert isinstance(closure, ProviderCallCompletedSignal)
+        assert (closure.input_tokens, closure.output_tokens) == (11, 7)
+    else:
+        assert isinstance(closure, ProviderCallFailedSignal)
+    assert "private response" not in closure.model_dump_json()

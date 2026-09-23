@@ -148,6 +148,8 @@ class CandidateEvaluationRequestPolicy:
 
         capacity_policy = (self.policy_id, self.version, self.provider_id, self.model) in (
             ("glm-5.3-flash-coach-high-32768", "1.0.0", "zhipu", "glm-5.3-flash"),
+            # ADR0109 adopted opt-in roles; no default/runtime admission.
+            ("flash-generation-glm53-review-high-32768", "1.0.0", "zhipu", "flash-generation-glm53-review-v1"),
             # ADR0108 approved isolated diagnostic; no default/runtime admission.
             ("glm-5.3-review-diagnostic-high-32768", "1.0.0", "zhipu", "glm-5.3"))
         timeout_limit = 360 if capacity_policy else 300

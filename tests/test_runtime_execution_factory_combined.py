@@ -177,7 +177,8 @@ def test_combined_workflow_and_generation_share_the_high_five_call_budget():
 
     assert budgeted.calls == 5
     assert coach_provider.transport_calls == 5
-    assert budgeted.last_exchange.response is latest
+    assert budgeted.last_exchange is None
+    assert observed.last_exchange.response is latest
 
 
 def test_legacy_factory_pair_keeps_the_original_budget_provider_type():

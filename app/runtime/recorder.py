@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import time
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from decimal import Decimal
+from types import MappingProxyType
 
 from app.harness.run_ids import normalize_run_id
 
@@ -64,6 +65,7 @@ class RuntimeRecorder:
         run_id: str,
         event_budget: int = 256,
         pricing_profile: RuntimePricingProfile | None = None,
+        model_pricing_profiles: Mapping[tuple[str, str], RuntimePricingProfile] | None = None,
         utc_now: Callable[[], datetime] | None = None,
         monotonic: Callable[[], float] | None = None,
     ) -> None:
@@ -71,7 +73,10 @@ class RuntimeRecorder:
             raise ValueError("event_budget must be between 2 and 1024")
         self._run_id = normalize_run_id(run_id)
         self._event_budget = event_budget
-        self._pricing_profile = pricing_profile
+        self._model_pricing_profiles = _pricing_map(
+            pricing_profile=pricing_profile,
+            model_pricing_profiles=model_pricing_profiles,
+        )
         self._utc_now = utc_now or (lambda: datetime.now(timezone.utc))
         self._monotonic = monotonic or time.monotonic
         self._events: list[RuntimeEvent] = []
@@ -135,7 +140,9 @@ class RuntimeRecorder:
             for event in self._events
         )
 
-        pricing = self._pricing_profile
+        # Every row belongs to one versioned price schedule. Actual event
+        # identity selects its row; the event history remains the usage ledger.
+        pricing = next(iter(self._model_pricing_profiles.values()), None)
         if pricing is None:
             cost = None
             currency = None
@@ -150,12 +157,19 @@ class RuntimeRecorder:
                 TokenObservation.COMPLETE,
                 TokenObservation.NOT_APPLICABLE,
             }:
-                cost = (
-                    Decimal(input_tokens or 0)
-                    * pricing.input_cost_per_million
-                    + Decimal(output_tokens or 0)
-                    * pricing.output_cost_per_million
-                ) / Decimal(1_000_000)
+                cost = sum(
+                    (
+                        Decimal(signal.input_tokens)
+                        * self._model_pricing_profiles[
+                            (signal.provider_id, signal.model)
+                        ].input_cost_per_million
+                        + Decimal(signal.output_tokens)
+                        * self._model_pricing_profiles[
+                            (signal.provider_id, signal.model)
+                        ].output_cost_per_million
+                    ) / Decimal(1_000_000)
+                    for signal in completed_provider_calls
+                ) if completed_provider_calls else Decimal(0)
                 cost_observation = CostObservation.COMPLETE
             elif token_observation is TokenObservation.PARTIAL:
                 cost = None
@@ -338,11 +352,9 @@ class RuntimeRecorder:
                 raise RuntimeRecorderError(
                     f"provider call ordinal must be {expected}"
                 )
-            pricing = self._pricing_profile
-            if pricing is not None and (
-                signal.provider_id != pricing.provider_id
-                or signal.model != pricing.model
-            ):
+            if self._model_pricing_profiles and (
+                signal.provider_id, signal.model
+            ) not in self._model_pricing_profiles:
                 raise RuntimeRecorderError(
                     "provider call does not match the pricing profile"
                 )
@@ -493,3 +505,44 @@ class RuntimeRecorder:
             completed_at_utc=terminal_event.occurred_at_utc,
             elapsed_ms=terminal_event.elapsed_ms,
         )
+
+
+def _pricing_map(
+    *,
+    pricing_profile: RuntimePricingProfile | None,
+    model_pricing_profiles: Mapping[tuple[str, str], RuntimePricingProfile] | None,
+) -> Mapping[tuple[str, str], RuntimePricingProfile]:
+    """Freeze explicit model prices from one versioned schedule.
+
+    Mixed models share one schedule identity/currency so existing persisted
+    RuntimeUsage fields identify the complete schedule, never an arbitrary
+    model's price. A different price bundle needs its own schedule version.
+    """
+
+    if pricing_profile is not None and model_pricing_profiles is not None:
+        raise ValueError("choose pricing_profile or model_pricing_profiles, not both")
+    if pricing_profile is not None:
+        if not isinstance(pricing_profile, RuntimePricingProfile):
+            raise TypeError("pricing_profile must be a RuntimePricingProfile")
+        return MappingProxyType({
+            (pricing_profile.provider_id, pricing_profile.model): pricing_profile
+        })
+    if model_pricing_profiles is None:
+        return MappingProxyType({})
+    if not isinstance(model_pricing_profiles, Mapping):
+        raise TypeError("model_pricing_profiles must be a mapping")
+    if not model_pricing_profiles:
+        raise ValueError("model_pricing_profiles must not be empty")
+    copied = dict(model_pricing_profiles)
+    schedule_identity: tuple[str, str, str] | None = None
+    for identity, profile in copied.items():
+        if not isinstance(profile, RuntimePricingProfile):
+            raise TypeError("model_pricing_profiles values must be RuntimePricingProfile")
+        if identity != (profile.provider_id, profile.model):
+            raise ValueError("pricing map key does not match the profile identity")
+        current = (profile.profile_id, profile.version, profile.currency)
+        if schedule_identity is None:
+            schedule_identity = current
+        elif current != schedule_identity:
+            raise ValueError("pricing profiles must share schedule id, version and currency")
+    return MappingProxyType(copied)

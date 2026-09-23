@@ -99,7 +99,7 @@ class _ReceiptForwardingCoachBudgetedProvider(CoachBudgetedProvider):
 
     @property
     def last_exchange(self):
-        return getattr(self.provider, "last_exchange", None)
+        return None if self.stopped else getattr(self.provider, "last_exchange", None)
 
 
 class RuntimeExecutionFactory:
@@ -497,6 +497,7 @@ class AgentRuntimeV1:
         recorder = RuntimeRecorder(
             run_id=request.run_id,
             event_budget=request.policy.event_budget,
+            model_pricing_profiles=getattr(self._coach_contract, "pricing_profiles", None),
         )
         observer = _RecorderObserver(recorder, event_sink)
         identity = self._identity(
@@ -603,6 +604,7 @@ class AgentRuntimeV1:
             observed_provider = ObservedLLMProvider(
                 delegate=run_provider,
                 observer=observer,
+                request_identity=getattr(self._coach_contract, "request_identity", None),
             )
             bundle = self._execution_factory.build(
                 provider=observed_provider,

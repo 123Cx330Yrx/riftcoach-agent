@@ -582,6 +582,26 @@ class RuntimeTrace(RuntimeContractModel):
     def validate_trace_invariants(self) -> "RuntimeTrace":
         if self.identity.coach_contract != self.policy.coach_contract:
             raise ValueError("trace Coach contract identity does not match policy")
+        role_contract = None
+        role_descriptor = None
+        snapshot = self.identity.coach_contract
+        if snapshot is not None and (
+            snapshot.contract_id == "recent-form-review-roles-v1"
+            or snapshot.version == "1.5.0"
+        ):
+            # Only this exact opt-in contract permits per-request model roles.
+            # Its digest binds the model/profile/transport role map; a caller
+            # cannot grant itself mixed-model access by changing a label.
+            from .coach_contract import ROLE_COACH_CONTRACT
+            role_contract = ROLE_COACH_CONTRACT
+            if snapshot != role_contract.snapshot():
+                raise ValueError("trace role contract is not the trusted contract")
+            role_descriptor = role_contract.descriptor()
+            if (
+                self.identity.provider_id != "zhipu"
+                or self.identity.provider_model != role_descriptor["model"]
+            ):
+                raise ValueError("trace role composition identity mismatch")
         if self.trace_schema_version != self.event_schema_version:
             raise ValueError("Trace and Event schema versions must match")
         if (
@@ -690,10 +710,19 @@ class RuntimeTrace(RuntimeContractModel):
                     raise ValueError("provider call requires built context")
                 if signal.ordinal != next_provider_ordinal:
                     raise ValueError("provider call ordinal is not contiguous")
-                if (
-                    signal.provider_id != self.identity.provider_id
-                    or signal.model != self.identity.provider_model
-                ):
+                if role_descriptor is None:
+                    expected_provider = self.identity.provider_id
+                    expected_model = self.identity.provider_model
+                else:
+                    role = {
+                        RuntimeProviderPhase.AGENT: "generation",
+                        RuntimeProviderPhase.EVALUATION: "review",
+                        RuntimeProviderPhase.EVALUATION_REPAIR: "review",
+                        RuntimeProviderPhase.REVISION: "revision",
+                    }[signal.phase]
+                    expected = role_descriptor["roles"][role]
+                    expected_provider, expected_model = expected["provider"], expected["model"]
+                if (signal.provider_id, signal.model) != (expected_provider, expected_model):
                     raise ValueError("provider call identity mismatch")
                 provider_open[signal.ordinal] = (
                     signal.provider_id,
@@ -788,6 +817,24 @@ class RuntimeTrace(RuntimeContractModel):
             signal.output_tokens for signal in provider_completes
         ):
             raise ValueError("observed token usage does not match events")
+        if role_contract is not None:
+            prices = role_contract.pricing_profiles
+            schedule = next(iter(prices.values()))
+            if (
+                self.usage.pricing_profile_id,
+                self.usage.pricing_profile_version,
+                self.usage.currency,
+            ) != (schedule.profile_id, schedule.version, schedule.currency):
+                raise ValueError("trace role pricing schedule mismatch")
+            if self.usage.cost_observation is CostObservation.COMPLETE:
+                expected_cost = sum((
+                    (Decimal(signal.input_tokens) * prices[(signal.provider_id, signal.model)].input_cost_per_million
+                     + Decimal(signal.output_tokens) * prices[(signal.provider_id, signal.model)].output_cost_per_million)
+                    / Decimal(1_000_000)
+                    for signal in provider_completes
+                ), Decimal(0))
+                if self.usage.cost != expected_cost:
+                    raise ValueError("trace role cost does not match actual model events")
 
         tool_starts = sum(
             isinstance(event.signal, ToolCallStartedSignal)

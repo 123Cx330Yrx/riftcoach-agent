@@ -1,3 +1,15 @@
+# 2026-09-23 用户采用的角色分工已接实际应用，有界实测准备完成
+
+用户明确“那我认可你这个方案，允诺了”，已落实ADR0109的opt-in接线。Flash/high生成、工具及一次改稿；GLM/high首评、必要重评及终评，共用5次/401920tokens/900秒。默认产品未切换，8E checkpoint不变。
+实际应用复用Memory/RAG、Harness及同源Evidence；新增单Observer/逐模型计价、全局序号、双传输原回执和可信角色合同。预算或传输拒绝不会误用前次成功回执；完整响应后落盘失败仍保留已知usage但拒绝发布，损坏核算不能当零费用或成功。新组合原15个不同输入均重新pending，不能继承旧五例、旧三例或两个诊断。
+
+两个开发验证入口均可执行：run_flash_source_review_pair用同一完整请求比较Flash；run_role_coach_development走真实应用生成、工具、审查和必要改稿。后者绑定预定run-id、固定source-now、预检hash和首请求，先核对无凭据预检与干净HEAD公共CI，再读取配置，并在首次发送前核对实际请求。预览不读凭据、不联网；产品入口仍关闭。初评直接通过时revision_exercised=false，不能宣称实际编辑已验证；即使生成报告，核算失败也使开发结果失败。
+独立审查未发现执行顺序或权限边界阻断；开发入口及资格48项通过，后续主Agent连同旧输入计划62项通过；Flash对照27项通过。首次完整本机回归72failed/4483passed/154skipped/129subtests：24个失败来自MCP/Pi未安装Node依赖，按已有锁文件npm ci恢复后43项通过；其余冻结资料身份失败按Git原始字节核对，不改历史内容/预期hash。第二次完整回归1failed/4601passed/154skipped/129subtests；最后一例为同类旧输入计划CRLF，恢复后上述62项全过。共16份冻结文本加入精确LF属性，内容diff为空；原始CRLF历史结果不动。测试子进程移除失联的本机DB变量，154项skip不冒充真实DB验证；Postgres由公共CI验证。提交前对21份预检JSON核对Git暂存字节，发现仅未执行的qualification清单用了平台默认换行；统一新清单生成器输出LF并固定该目录属性，18份请求原字节不改，资格相关28项通过。新提交的公共三项结果以该HEAD的CI回执为准，执行器会再次核对。
+
+具体资料：data/evaluation/results/role_flash_glm_review_preflight_20260923_v1/next-batches.json、qualification.json、17份固定请求，以及application-preflight.json/first-application-request.json。实际应用预检run-id role-development-20260923-v1，source-now 2026-09-23T11:09:57+08:00，preparation_plan_sha256 4fe0e123f3993502f82e019e96bfdda959131303a010477fcef67820f7b243ed；首输入上界33240。已离线重建确认计划和请求一致，Provider请求0；本地原始来源仍依赖冻结data/runs，公共测试使用提交fixture，不声称原始预览全机可移植。
+下一批为同输入Flash对照≤2次/600秒，加一项真实混合应用任务≤5次/900秒，共≤7次/1500秒。按ADR0108价格快照及最坏合法2Flash+3GLM路径，保守未缓存估价0.2549488+4.5088768=4.7638256元；非账单或硬金额限。Flash对照先失败就停止比较并暂缓应用批，结论只属于Flash；混合应用任何实质失败停止，保留全部意见/来源/改文和真实/未知usage，不用旧成功拼资格。
+原已授权两次诊断用完，本包新增付费0，新批尚未获费用授权；角色采用不替代这项独立范围。准备/提交/公共检查完成后只需确认这份具体新增批次。后续仍有同组合原15资格、Worker/DB/API/Workbench真实消费、Coach/Review/Training/Evidence联动与个性化训练、前端审美/必要重做/英雄头像、Memory/RAG、身份运维、两树整合、holdout和学习，不称8E完成。
+
 # 2026-09-23 审查角色离线原型完成，实际接线依赖明确
 
 d93b6e8公共CI35754673557三项已通过。沿真实runtime核查发现预算、观测模型/序号、价格、回执传输和资格均绑定单模型；只切路由会误记模型甚至价格。

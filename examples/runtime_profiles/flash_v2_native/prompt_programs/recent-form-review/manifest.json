@@ -82,7 +82,7 @@
     {
       "component_id": "app.runtime.receipted_provider_factory",
       "source": "app/runtime/receipted_provider_factory.py",
-      "sha256": "07b53ec41acea73488a22255d09c21d156456beee5b3aeef223b530240473fb9"
+      "sha256": "cae28be9511801760043a4e75efbc742b3c555ea1337e74c7fa843acced68b07"
     },
     {
       "component_id": "app.runtime.native_coach_contract",
@@ -92,7 +92,7 @@
     {
       "component_id": "app.product.native_coach_composition",
       "source": "app/product/native_coach_composition.py",
-      "sha256": "8430f0005ef9e0f4f0a5e70d6e1acb7dcef006e5f2412546d337e4cdc8e4c4d4"
+      "sha256": "9d38f5cb54275bebd5cb00534cc72fafa2c687704d580138b6e45426a5534122"
     },
     {
       "component_id": "app.product.recent_review_service",
@@ -115,5 +115,5 @@
       "sha256": "94fa4ed248628f0801ff83a999a6c14e54464b838ed11e453f718c448502ef0d"
     }
   ],
-  "program_sha256": "a31abd46ec89596d96823510ff9d7c4030a3819b8c7020d543c2d3c964629794"
+  "program_sha256": "7721cb666d9b89464392fd3d05ba10b919980f37313c5781e0ff03d6b1b29cf8"
 }

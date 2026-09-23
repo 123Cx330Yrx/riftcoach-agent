@@ -1,8 +1,9 @@
-# ADR0109: Proposed reviewer roles under one Coach task budget
+# ADR0109: Adopted reviewer roles under one Coach task budget
 
-2026-09-23. Status: **proposed, offline prototype verified; not adopted**.
-Product remains GLM-5.3-flash/high. No new live batch or admission is authorized
-by this record. This decision concerns product models, unrelated to Codex Luna.
+2026-09-23. Status: **adopted for opt-in candidate integration; live quality and production admission pending**.
+Default product remains GLM-5.3-flash/high until qualification. The user adopted
+the role proposal on 2026-09-23 (requirements_change_log); no completed diagnostic
+batch is reopened and no production admission is granted by this record. This decision concerns product models, unrelated to Codex Luna.
 
 ## Problem and evidence
 
@@ -13,7 +14,7 @@ correctly rejected the original attribution error and accepted the correct full
 report, including all emitted source references. These are two development
 controls, not stable accuracy, an actual edit or qualification across15 inputs.
 
-The proposed change assigns this review work to the model with the new positive
+The adopted change assigns this review work to the model with the new positive
 evidence, retaining Flash for generation, tools and editing. It does not loosen
 full-context acceptance or move truth checking to deterministic phrase rules.
 
@@ -52,46 +53,60 @@ revision. Ordinary two-round generation + initial review + edit + final review
 uses all5 calls. Recovery can leave insufficient room; reject, never open another
 ledger. Time remaining clamps every request, including calls to the other model.
 
-## Implemented preparation and exact boundary
+## Implemented opt-in integration and exact boundary
 
-`scripts/reviewer_role_proposal.py` implements the dispatch and projected review
-workflow without a live entry point or credentials. `coach_budget.py` has one
-protected delegate-selection seam; the ordinary single-provider path is unchanged.
-The proposal deliberately has a composite identity rejected by the existing
-single-model product contract. It is **not** injected into the default app.
+The initial offline proposal remains as historical evidence. The adopted path is
+now `build_role_coach_application` with `ROLE_COACH_CONTRACT` (1.5.0), the
+`flash_glm_review_v1` assets (Skill0.6.1 / Program3.1.0 / evaluation3.3.0), and
+`RoleReviewWorkflow`. It reuses the actual Agent generation/tools, Memory/RAG,
+Harness review/revision and existing Evidence publication path. The default
+single-model composition is unchanged; neither path acquires quality admission.
 
-`tests/test_reviewer_role_proposal.py` first runs the existing application with
-scripted responses to capture actual generation/tool messages and five retrieved
-knowledge citations. It then feeds those compiled requests and actual review
-inputs through two separately identified scripted providers and the shared
-budget/state machine. Both normal completion and recovery exhaustion pass.
-Other checks cover incorrect model/profile, missing projection, conflicting
-phases, transport exception, bad/missing receipt, pre-call deadline, late response
-and token exhaustion. Receipt failure retains already observed usage. No network
-is permitted in these tests. This is an offline composition check, **not** proof
-that default product observation/storage/publication supports multiple models.
+One budget wraps one observed router and two run-scoped receipted transports.
+Every request has a task-global ordinal, selected model/profile/transport and
+request SHA. Runtime traces record and price each actual model; only the exact
+trusted role-contract snapshot permits mixed identities. Raw call bindings use
+create-only global ordinals and distinct generation/review directories. Complete
+responses with failed receipts retain observed usage but cannot publish; unknown
+usage remains unknown, and failures stop the same task. A stopped budget does
+not expose the preceding successful Exchange as the current result.
 
-91 relevant tests pass, including existing single-model composition, runtime
-observations, recorder, native sender and product budgets. No frozen production
-component fingerprint changed; actual native application construction also passed.
+Candidate fingerprints bind the actual projected policies, validator, source
+projection, router, observation, accounting, transports and shared application.
+The original15 distinct controls, including the three completed by older
+versions, must all be qualified afresh. The dormant product entry no longer
+uses the old a71eb94 five-control evidence. No historical success, scalar count
+or scripted result grants admission to this composition.
 
-## Required integration before live qualification or product consumption
+Offline application checks exercise normal five-call publication, recovery
+exhausting the final-review budget, wrong model/transport/receipt failures,
+observed-player Memory identity, Evidence files and persisted per-model usage.
+They verify engineering behavior, not the real models' semantic quality. The
+observation fixture's clock was corrected to follow its source timestamp;
+production source-date validation was not weakened. Final verification is
+recorded in the active progress log rather than a second rolling test count.
 
-| Existing component | Necessary change and completion evidence |
-|---|---|
-| Coach contract and runtime factory | New opt-in role descriptor binds both profiles, source projection, policies and transports. All phases receive one budget object. Preserve default selection until admitted. |
-| Observed provider | Record the selected model for each request under one global call ordinal; two observers with independent counters are insufficient. Verify start/completion/failure identities together. |
-| Recorder and pricing | Existing recorder prices the whole run using one model. Add explicit per-model pricing under the role descriptor; retain start/completion identity checks. Mixed runs cannot be priced as Flash; unknown usage stays unknown. |
-| Receipted provider factory | Run-scoped transports for each model, distinct raw paths and task-global call bindings. Actual model/profile/transport/request SHA must agree; preserve malformed response usage and process deadline. |
-| Composition and fingerprints | Register the chosen workflow and explicit source projection in the candidate manifest, update affected hashes and derived digest together; test actual assembly, not only injected factories. |
-| Qualification and product entry | Replace dormant a71eb94 five-control binding with the exact new role/workflow/transport identity and original15 varied inputs. Old successful cases or the two ADR0108 reviews cannot grant admission. |
-| Consumer path | Once qualified, verify actual generation/edit/final review, Evidence persistence and existing Worker/DB/API/Workbench consumption. No new parallel product stack. |
+The executable development preparation is under
+`data/evaluation/results/role_flash_glm_review_preflight_20260923_v1/`.
+`next-batches.json` binds the Flash pair and the actual application preview,
+including run ID `role-development-20260923-v1`, fixed source time
+`2026-09-23T11:09:57+08:00`, the original first request and
+preparation SHA `4fe0e123f3993502f82e019e96bfdda959131303a010477fcef67820f7b243ed`.
+`scripts.run_flash_source_review_pair` and
+`scripts.run_role_coach_development` support credential-free preview and bounded
+execution after an approved plan and clean exact-HEAD public checks. The latter
+reuses the real application, not a prewritten report. If initial review passes,
+`revision_exercised=false`; this does not prove live revision. Receipt accounting
+failure marks the whole observation failed even if a report already exists.
+Local original-source preview still depends on frozen data/runs; CI uses committed
+fixtures. Neither preview nor this decision authorizes new paid calls.
 
-All six integration areas arise from the traced current code. Implement them as
-one role-composition change after adoption, with regression at shared boundaries;
-do not run a paid test after each individual wiring edit. Existing raw diagnostic
-batches remain closed. New real requests require a prepared, separately bounded
-plan and exact clean-HEAD public checks.
+The next real batch must use this concrete bounded plan and clean exact-HEAD public
+checks. Completed diagnostic batches remain closed. Same-input Flash controls
+separate model choice from explicit-ID representation; a real mixed Agent run
+must inspect its generated and, if needed, actually revised report. A complete
+mixed task and the original15 qualification are still unproven. Consumer/DB/API/
+Workbench evidence follows qualification using the existing product stack.
 
 ## Alternatives, costs and remaining uncertainty
 
@@ -104,25 +119,30 @@ plan and exact clean-HEAD public checks.
   observation/pricing and requalification. It may still fail on editing or other
   inputs. Two successful reviews do not guarantee success.
 
-Official pricing snapshot from ADR0108 lists uncached input/output per million
-tokens: Flash0.8/2.8CNY, GLM8/28CNY. For the ordinary3Flash+2GLM path, conservatively
-reserving64000 input +32768 output **per call** gives3.2878592CNY. This deliberately
-overestimates the joint401920-token envelope; it is a planning estimate, not a
-bill, spending authorization or guarantee for other recovery paths. Cached input
-is included in input tokens, never added again. Actual latency of the two GLM
-diagnostics was48.062/28.235s, not a whole-task latency prediction.
+ADR0108's 2026-09-22 pricing snapshot lists uncached input/output per million
+tokens: Flash0.8/2.8CNY, GLM8/28CNY. The ordinary3Flash+2GLM path previously had a
+per-call-full-reservation estimate of3.2878592CNY; this was not an upper estimate
+for recovery. A legal generation/review/reassessment/revision/final-review path
+can use2Flash+3GLM. `scripts.prepare_role_qualification.bounded_product_estimate`
+now accounts for that path under the shared401920-token ceiling, giving a
+conservative uncached estimate of4.5088768CNY for the actual task. The two fixed
+Flash controls reserve154846tokens and0.2549488CNY; together the next preparation
+allows at most7calls/1500s and estimates4.7638256CNY. These are planning estimates,
+not bills, hard monetary caps or spending authorization. Cached input is included
+in input tokens, never added again; unknown usage is not priced as zero. Actual
+latency of the two GLM diagnostics was48.062/28.235s, not a whole-task prediction.
 
 ## Adoption decision and next verification
 
-The reviewable decision is whether to implement this **opt-in candidate role
-composition**. It does not select a production default, grant qualification,
+The user approved implementation of this **opt-in candidate role
+composition** on 2026-09-23. It does not select a production default, grant qualification,
 increase the task budget or authorize further paid requests. This boundary comes
 from the user's explicit Flash product selection and narrowly completed two-call
 diagnostic approval, recorded in requirements_change_log and ADR0108.
 
-If adopted, complete the integration table and offline default/candidate/failure
-checks first. Then prepare bounded real validation using the original wrong and
-correct reports, actual Flash revision and GLM final review; retain the original15
+Following the implemented integration, finish offline/default/failure verification
+and prepare bounded real validation using the same-input controls, actual Flash
+generation/revision and GLM final review; retain the original15
 coverage requirements and independently audit every finding, source and changed
 paragraph. Stop at the first substantive failure and diagnose that earliest
 divergence. Quality success unlocks consumption; it does not complete8E by itself.
