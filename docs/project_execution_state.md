@@ -20,7 +20,7 @@ pause_reason: ""
 - 确切工程诊断：原应用evidence_bundle含两条OP.GG自身9月10日检索时间，source_context在排除过期指标时只留digest/reason，误把来源元数据也丢掉。日期与上游相符，但旧模型输入不能支持它；旧无据断言裁决保留，不称客观日期错误或模型内部根因已明。
 - 已修复：omitted_opgg保留各条自身来源、位置、检索/过期/来源生成时间、版本和未知值，仍不提供过期或不匹配的指标、分级/胜率和推荐许可。生成/审查/修订/落盘沿同一来源文档。两个活动manifest已同步，原15与旧失败不改。真实旧bundle离线复放及59项相关测试通过，独立审查无阻断；见golden_omitted_source_metadata_audit_v1.json。
 - 责任调整已落地：advisory没有API/报告/编辑消费者，取消其强制替换文本，保留block/source_ids/explanation与非阻断通道；issues仍须修正建议。当前opt-in角色合同1.5.1 / Program3.1.1 / evaluation3.4.0。旧RoleReviewWorkflow和可信1.5.0 Trace读回保留，旧字段不静默剥离、旧ID不扩大。62项链路、8项新合同、147项周边回归及额外旧Trace反例通过；原15完整输入保持，见golden_role_note_contract_audit_v1.json。新合同0真实调用，不能称错引已修好。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。准备同版本原15中的真错→实际编辑→终评与正确全文控制，复用现有共享预算和回执/资格校验，逐项核对所有意见；先完成可审查执行准备与同提交公共检查。资料传递已取得本次真实证据，不再重复调时间字段、延长预算或重复自然生成碰运气；不采用新增粗来源变体。原15与实际改稿/终评仍是准入依赖。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。同版本原15真错→编辑→终评/正确全文对照，准备摘要d61975ac…4241c6。run_role_qualification_pair复用现有共享预算、回执和资格重建；每阶段/恢复前host检查、首失败停批。49项聚焦离线通过，独立审查及同提交公共检查后执行；最多7调用/595456tokens/1500秒，保守未缓存估价8.6185984元，非账单。本批0真实调用。原资格回放补上合同已有minimum_score85，未改变采用标准。具体工作卡见活动计划；不再重复调时间字段、延长预算或自然生成同题。
 - 历史失败分开计：Flash日期审查v2为1次16169tokens、未知0、估价0.0177372元；更早整稿编辑300秒无正文为1次用量费用未知。两批均关闭，未知费用不能并入已知总费用。详见各原结果和ADR0110。
 - ADR0109角色应用仍为Flash/high生成/工具/改稿，GLM/high完整审查，共享原预算。原真实2生成+1首评曾96/pass而被host拒绝；最新成稿可接受、审查输出引用不全，结论分开。显式编辑原型能力失败，正式pass后状态机未实现；真实编辑/终评、原15、真实消费和后续四块产品闭环仍未完成。
 

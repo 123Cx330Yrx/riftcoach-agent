@@ -258,7 +258,9 @@ def replay_case(frozen, source, calls):
     initial = workflow.evaluate(source)
     journals.append(deepcopy(workflow.last_journal))
     verdict = "accept" if initial.verdict is EvaluationVerdict.PASS else "reject"
-    if verdict != frozen["expected_initial"] or initial.verdict is EvaluationVerdict.FAIL:
+    minimum_score = ROLE_COACH_CONTRACT.descriptor()["minimum_score"]
+    if (verdict != frozen["expected_initial"] or initial.verdict is EvaluationVerdict.FAIL
+            or (initial.verdict is EvaluationVerdict.PASS and initial.score < minimum_score)):
         raise ValueError("role_qualification_initial_semantics_failed")
     final_report = source.report
     if initial.verdict is EvaluationVerdict.NEEDS_REVISION:
@@ -266,7 +268,7 @@ def replay_case(frozen, source, calls):
         final_report = draft.report
         final = workflow.evaluate(replace(source, report=final_report))
         journals.append(deepcopy(workflow.last_journal))
-        if final.verdict is not EvaluationVerdict.PASS:
+        if final.verdict is not EvaluationVerdict.PASS or final.score < minimum_score:
             raise ValueError("role_qualification_final_review_failed")
     if next(iterator, None) is not None:
         raise ValueError("role_qualification_unused_actual_call")
