@@ -1,6 +1,7 @@
 """Bounded original-set review/edit controls for the current role candidate.
 
-Preview is offline. Execute requires the prepared hash, clean exact-HEAD CI,
+Preview is offline. This completed batch is closed before any execution IO.
+Its original execution required the prepared hash, clean exact-HEAD CI,
 and existing spending authorization. Host checks every completed business
 stage before further IO. Two controls cannot admit the original fifteen or
 the product. Raw receipts and run directories are create-only.
@@ -35,6 +36,7 @@ from scripts.run_role_coach_development import load_role_settings, require_uncha
 EXPERIMENT = 'role-qualification-notes-pair-v1'
 KEYS = ('attribution:1', 'claim-scope:1')
 RUN_DIRECTORY = ROOT / 'data/runs/role_qualification' / EXPERIMENT
+CLOSED_EVIDENCE = ROOT / 'data/evaluation/results/golden_role_note_qualification_pair_result_v1.json'
 
 
 def prepare():
@@ -221,6 +223,8 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
 
 
 def run(args):
+    if args.execute:
+        raise ValueError('role_pair_batch_closed')
     plan, requests = prepare()
     plan_sha = digest(compact(plan))
     if not args.execute:

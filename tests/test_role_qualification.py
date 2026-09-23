@@ -142,6 +142,13 @@ def test_global_receipt_accounting_preserves_interleaved_models(recorded_revisio
     assert summary["output_tokens"] == sum(r.usage.output_tokens for r in responses)
 
 
+def test_receipt_reader_accepts_relative_directory_without_mixing_path_roots(recorded_revision, monkeypatch):
+    directory = recorded_revision[0]
+    expected = qualification.read_role_calls(directory)
+    monkeypatch.chdir(directory.parent)
+    assert qualification.read_role_calls(directory.name) == expected
+
+
 def test_replay_requires_actual_revision_and_final_review(recorded_revision):
     directory, frozen, source, corrected, _ = recorded_revision
     calls = qualification.read_role_calls(directory)

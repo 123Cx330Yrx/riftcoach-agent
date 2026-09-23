@@ -183,7 +183,10 @@ def test_response_without_completion_receipt_cannot_form_accepted_fragment(setup
     assert not (setup_pair['directory'] / 'attribution-1/host-review.json').exists()
 
 
-def test_mismatched_plan_cannot_load_credentials_or_verify_ci(prepared, monkeypatch):
-    monkeypatch.setattr(runner, 'verify_public_ci', lambda *_: pytest.fail('CI must follow binding'))
-    with pytest.raises(ValueError, match='preparation_required'):
-        runner.run(SimpleNamespace(execute=True, env_file='unused', ci_run='unused', approval_plan_sha='bad'))
+def test_closed_batch_cannot_restart_even_without_local_run_directory(tmp_path, monkeypatch):
+    monkeypatch.setattr(runner, 'RUN_DIRECTORY', tmp_path / 'never-created')
+    for name in ('prepare', 'verify_public_ci', 'load_role_settings'):
+        monkeypatch.setattr(runner, name, lambda *_: pytest.fail('closed batch performed execution IO'))
+    with pytest.raises(ValueError, match='role_pair_batch_closed'):
+        runner.run(SimpleNamespace(execute=True))
+    assert not runner.RUN_DIRECTORY.exists()

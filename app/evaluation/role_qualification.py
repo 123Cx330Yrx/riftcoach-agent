@@ -141,7 +141,7 @@ def read_role_calls(directory):
     No recursive counting: model paths and stream ordinals come from the shared
     reservation. A reserved call with no observed usage remains unknown.
     """
-    directory = Path(directory)
+    directory = Path(directory).resolve()
     files = sorted(p for p in directory.glob("call-*.json") if not p.name.startswith("call-result-"))
     result_files = {p.name for p in directory.glob("call-result-*.json")}
     expected_results = set()

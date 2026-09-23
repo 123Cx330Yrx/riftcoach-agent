@@ -5,6 +5,25 @@ Default product remains GLM-5.3-flash/high until qualification. The user adopted
 the role proposal on 2026-09-23 (requirements_change_log); no completed diagnostic
 batch is reopened and no production admission is granted by this record. This decision concerns product models, unrelated to Codex Luna.
 
+## 2026-09-24: latest evidence, not production admission
+
+The current opt-in role contract is1.5.1 (Program3.1.1 / evaluation3.4.0);
+ADR0110 records the prospective removal of unused advisory replacement text.
+On6a5afe9c / CI35903747333, attribution:1 completed actual GLM review,
+Flash revision and GLM final review (96/pass), accepted after full host and
+independent review. The subsequent frozen correct claim-scope:1 received a
+false-positive needs_revision and omitted severity; no recovery was sent.
+The closed batch used4requests/68811tokens, unknown usage0, estimated uncached
+cost0.865566CNY (not a bill). Original15 coverage is1accepted/1failed/13not run;
+the composition remains unqualified. Full source/receipt audit and the host's
+invalid rejection-hash terminal error are preserved in
+`golden_role_note_qualification_pair_result_v1.json` and ADR0110.
+
+This is evidence of one ordinary corrective chain, not independent editing
+after pass, reliable false-positive correction or real Worker/DB/UI consumption.
+The findings below retain their historical versions; they do not reset the
+latest action to the original integration or reopen completed batches.
+
 ## 2026-09-23: approved live integration observation completed
 
 On clean `346213c` / CI `35814004366`, the user-approved two-batch plan used
