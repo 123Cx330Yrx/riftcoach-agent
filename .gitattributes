@@ -69,3 +69,11 @@
 /data/evaluation/results/golden_knowledge_time_preparation_v2.json text eol=lf
 /examples/runtime_profiles/flash_glm_review_v1/prompt_programs/recent-form-review/manifest.json text eol=lf
 /examples/runtime_profiles/flash_v2_native/prompt_programs/recent-form-review/manifest.json text eol=lf
+
+# New offline diagnosis/paid preparation bind these exact source and evidence bytes.
+/app/evaluation/source_bound_report.py text eol=lf
+/scripts/check_source_bound_report.py text eol=lf
+/scripts/run_independent_edit_pair.py text eol=lf
+/scripts/run_review_model_comparison.py text eol=lf
+/data/evaluation/results/golden_source_responsibility_audit_v1.json text eol=lf
+/data/evaluation/results/golden_independent_edit_preparation_v1.json text eol=lf

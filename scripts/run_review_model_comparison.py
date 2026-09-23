@@ -53,7 +53,7 @@ def terminal_adjudication(response_path, remaining):
 
 def observe(provider, directory, variants, plan, *, adjudicate=terminal_adjudication, clock=time.monotonic,
             reviewer_profile=ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE,
-            transport_id=REVIEW_MODEL_TRANSPORT_ID):
+            transport_id=REVIEW_MODEL_TRANSPORT_ID, inspect_response=None):
     """Two controls with host resume in the same live, deadline-bounded session.
 
     The default stays the historical GLM diagnostic. An explicit profile must
@@ -119,17 +119,24 @@ def observe(provider, directory, variants, plan, *, adjudicate=terminal_adjudica
                 if (exchange is None or exchange.response is not response or exchange.issued_request != issued
                         or exchange.receipt_request_sha256 != record['request_sha256']):
                     raise ValueError('model_comparison_exchange_identity')
-                raw = review.tool.tool_result(prepared, exchange)
-                _, wire, journal = review.validate(raw, inputs)
+                if inspect_response is None:
+                    raw = review.tool.tool_result(prepared, exchange)
+                    _, wire, journal = review.validate(raw, inputs)
+                    outcome = dict(score=wire.score, verdict=wire.verdict,
+                        issue_blocks=[i.block for i in wire.issues],
+                        advisory_blocks=[i.block for i in wire.advisories])
+                else:
+                    # Task-specific output parsing only. Identity, usage,
+                    # deadlines and host adjudication remain this runner's job.
+                    outcome, journal = inspect_response(prepared, exchange, inputs)
                 journal.update(diagnostic_experiment=plan['experiment'],
                     validator_policy_sha256=journal['policy_sha256'],
                     policy_sha256=digest(prepared.messages[0].content),
                     request_sha256=exchange.receipt_request_sha256,
                     source_projection=prepared.metadata.get('source_projection'))
                 write_new_json(arm / 'journal.json', journal)
-                record.update(valid=True, score=wire.score, verdict=wire.verdict,
-                              issue_blocks=[i.block for i in wire.issues],
-                              advisory_blocks=[i.block for i in wire.advisories])
+                record.update(outcome)
+                record['valid'] = True
                 decision = adjudicate(response_path, limits['max_seconds_total'] - (clock() - started))
                 if (type(decision.get('accepted')) is not bool
                         or decision.get('response_sha256') != hashlib.sha256(response_path.read_bytes()).hexdigest()):
