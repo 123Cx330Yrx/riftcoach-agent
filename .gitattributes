@@ -81,3 +81,6 @@
 /scripts/run_flash_knowledge_time_review_pair.py text eol=lf
 /data/evaluation/results/golden_flash_knowledge_time_review_preparation_v1.json text eol=lf
 /data/evaluation/results/golden_flash_knowledge_time_review_result_v1.json text eol=lf
+/data/evaluation/datasets/golden_source_time_reference_audit_v2.json text eol=lf
+/data/evaluation/results/golden_flash_knowledge_time_review_preparation_v2.json text eol=lf
+/data/evaluation/results/golden_flash_knowledge_time_review_result_v2.json text eol=lf

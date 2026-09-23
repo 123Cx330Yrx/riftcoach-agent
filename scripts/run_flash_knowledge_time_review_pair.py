@@ -1,4 +1,9 @@
-"""Same-request Flash reviewer control; existing GLM and edit batches stay closed."""
+"""Original-request Flash review with a fully audited positive reference.
+
+The unexecuted v1 plan retained an unsupported OP.GG date in its purported
+positive control. Its inputs and withdrawal remain immutable evidence. Only
+the original negative request is byte-identical to the historical GLM call.
+"""
 import argparse
 from dataclasses import replace
 from decimal import Decimal
@@ -7,15 +12,20 @@ import json
 from pathlib import Path
 
 from app.evaluation.golden_review_experiment import compact, digest
+from app.evaluation.golden_native_issues_review import build_inputs
+from app.evaluation.golden_role_review import RoleReviewWorkflow
+from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling as size
 from app.evaluation.golden_stream_bridge import CAPACITY_TRANSPORT_ID, validate_request
 from app.runtime.coach_contract import ROLE_COACH_CONTRACT
 from app.providers.zhipu_profiles import ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE
 from scripts.run_knowledge_time_review_pair import prepare as prepare_original, ROOT
+from scripts.check_source_bound_report import original_request
 
-EXPERIMENT = "flash-knowledge-time-same-request-review-v1"
+EXPERIMENT = "flash-source-time-reviewed-reference-v2"
 RUN_DIRECTORY = ROOT / "data/runs/model_comparison" / EXPERIMENT
-CLOSED_EVIDENCE = ROOT / "data/evaluation/results/golden_flash_knowledge_time_review_result_v1.json"
+CLOSED_EVIDENCE = ROOT / "data/evaluation/results/golden_flash_knowledge_time_review_result_v2.json"
 PREDECESSOR = ROOT / "data/evaluation/results/golden_knowledge_time_citation_result_6c3a3db.json"
+REFERENCE_AUDIT = ROOT / "data/evaluation/datasets/golden_source_time_reference_audit_v2.json"
 
 
 def prepare():
@@ -30,20 +40,45 @@ def prepare():
         raw = validate_request(request, transport_id=CAPACITY_TRANSPORT_ID)
         if hashlib.sha256(raw).hexdigest() != cell["request_sha256"]:
             raise ValueError("flash_time_same_request_required")
+    reference = json.loads(REFERENCE_AUDIT.read_text(encoding="utf-8"))
+    source, _, _ = original_request()
+    if (build_inputs(source) != variants[0][1]
+            or reference["full_reference_audit_status"] != "independently_reviewed_full_context"
+            or digest(source.report) != reference["original_report_sha256"]
+            or digest(variants[1][1].source.report) != reference["previous_reference_sha256"]):
+        raise ValueError("flash_time_reference_audit_identity")
+    corrected = source.report
+    for edit in reference["edits_from_original"]:
+        if corrected.count(edit["before"]) != 1:
+            raise ValueError("flash_time_reference_edit_identity")
+        corrected = corrected.replace(edit["before"], edit["after"])
+    if corrected != reference["reference_report"] or digest(corrected) != reference["reference_sha256"]:
+        raise ValueError("flash_time_reference_report_identity")
+    inputs = build_inputs(replace(source, report=corrected))
+    prepared = RoleReviewWorkflow.make_request(inputs)
+    raw = validate_request(prepared, transport_id=CAPACITY_TRANSPORT_ID)
+    variants[1] = ("source-time-corrected-reference", inputs, prepared)
+    cells = [dict(original["cells"][0], expected_host_only="needs_revision: knowledge date conflict and unsupported OP.GG date; all findings sourced."),
+        dict(id=variants[1][0], report_sha256=digest(corrected), input_sha256=digest(inputs.data_json),
+            request_sha256=hashlib.sha256(raw).hexdigest(), input_reservation=size(prepared),
+            output_cap=prepared.max_tokens, expected_host_only="pass: two unsupported source-time clauses removed; correct full context retained.")]
     budget = dict(original["proposed_diagnostic_budget"])
+    budget["total_token_reservation"] = sum(c["input_reservation"] + c["output_cap"] for c in cells)
     price = ROLE_COACH_CONTRACT.pricing_profiles["zhipu", "glm-5.3-flash"]
-    cost = (Decimal(sum(c["input_reservation"] for c in original["cells"])) * price.input_cost_per_million
-        + Decimal(sum(c["output_cap"] for c in original["cells"])) * price.output_cost_per_million) / 1_000_000
+    cost = (Decimal(sum(c["input_reservation"] for c in cells)) * price.input_cost_per_million
+        + Decimal(sum(c["output_cap"] for c in cells)) * price.output_cost_per_million) / 1_000_000
     budget["estimated_uncached_cny"] = str(cost)
     plan = dict(experiment=EXPERIMENT, model="glm-5.3-flash", reasoning_effort="high", sdk_retries=0,
-        transport_id=CAPACITY_TRANSPORT_ID, cells=original["cells"], proposed_diagnostic_budget=budget,
+        transport_id=CAPACITY_TRANSPORT_ID, cells=cells, proposed_diagnostic_budget=budget,
         original_glm_preparation_sha256=digest(compact(original)),
         original_glm_result_sha256=hashlib.sha256(PREDECESSOR.read_bytes()).hexdigest(),
+        reference_audit_sha256=hashlib.sha256(REFERENCE_AUDIT.read_bytes()).hexdigest(),
         source_sha256={name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest() for name in (
             "scripts/run_flash_knowledge_time_review_pair.py", "scripts/run_knowledge_time_review_pair.py",
             "scripts/run_review_model_comparison.py")},
         source_candidate=original["candidate"], provider_requests=0, production_admitted=False,
-        both_requests_byte_identical_to_glm_preparation=True, original_glm_reference_call_sent=False,
+        original_error_request_byte_identical_to_actual_glm=True, original_glm_reference_call_sent=False,
+        corrected_reference_is_host_edit=True, old_positive_reference_label_withdrawn=True,
         labels_sent_to_model=False, prior_reviews_sent_to_model=False,
         stop_rule="Any protocol/source/semantic/budget failure stops before the next call; no retries.",
         decision_if_accepted="Prepare actual needs_revision/edit/final-review with existing workflow; no model-route adoption or qualification yet.",
