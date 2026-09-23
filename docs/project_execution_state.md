@@ -11,35 +11,13 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-23：同错误输入Flash审查v2已完整返回95/pass，issues为空，知识日期冲突与无依据OP.GG日期两处均漏检；一条非阻断建议的引用支持也不完整。该批已关闭，不采用简单审查模型替换。执行061482e7 / CI35851847210三项成功；64.938秒、1次16169tokens、未知0，全未缓存估价0.0177372元（非账单）。第二例未发，无真实改稿或终评。12份原工件hash及独立审查见golden_flash_knowledge_time_review_result_v2.json。核心漏检仍未修好，默认产品未切换，8E未完成。
-- 前一独立Flash整稿编辑首例300秒无正文，已停止并关闭；1次用量/费用未知，第二例未发，不接入pass后强制编辑。最后事件299.968秒，不能称网络断流、输出额度耗尽或语义编辑已失败。58449abb / CI35843805636三项通过，原9份工件见golden_independent_edit_result_58449abb.json。上述两个实际调用合计仅1次用量已知，不能把0.0177372元说成总费用。
-- 新发现已修正：原“正确参考”除知识日期外，还保留无来源支持的OP.GG检索日期，不能预期pass；775f7bbf / CI35846295212虽三项通过，Flash v1计划已在0请求时撤回。新人工参考只删除两处日期，七节全文/算术/引用/身份由独立审查复核，原工件和原15不改。见golden_source_time_reference_audit_v2.json；这是验收材料修复，不是模型已改稿。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。核对来源核验与完整业务评审的职责分工及完整控制流可行性，再选择实现；不重开已关闭批，不准备第三个字段/提示/模型变体。直接叠加来源专审会使正常需修订路径达到2生成+来源审查+完整首评+编辑+终评=6次，超过5次合同；替换完整首评则损失提前发现业务错误的机会。旧source-first实际是复杂全稿重评，不能当作独立来源专审的失败证据。详见ADR0110，尚未采用新架构。
-- 以下各项为当前接线所依据的历史证据，旧假设和“本次”按各自回执日期解读；不恢复为待执行计划。
-- 新诊断依据：Harness首评pass即发布，当前那次实际用了2生成+1首评；可考虑使用其余编辑/终评预算交叉核验，但现有状态机只允许needs_revision后编辑，不能伪造issue借道。旧6c22e93证明过一次独立Flash编辑成功，失败的是复杂Flash两状态终评，不能说这条新假设已被原样否定或已获验证。正常2+1+1+1可容纳5次，任何生成多轮/恢复则会减少余量；正式控制流尚未修改。
-- 最新实测及诊断：13768输入+3345输出=17113tokens，其中4992缓存输入已含总输入，未知0；按全部未缓存估价0.203804元（非账单）。模型147.797秒正常完成，含host批耗时189.016秒。请求与预检一致，与v1仅citation.retrievals及派生catalog摘要不同；政策、正文、其余事实、工具一致。知识26—30均携带9月23日检索时间，故排除丢字段/传错稿/编号偏移/预算失败。v1检出、v2漏检是两个观察，不证明新增字段导致退化或任何稳定率。12份原文件hash与独立审查见golden_knowledge_time_citation_result_6c3a3db.json。
-- 本次实测：执行883c23e / CI35832963559三项通过；1次正常完整tool_calls，13578输入+4378输出=17956tokens、未知0，估价0.231208元，含host审查380.610秒。唯一issue的日期判断正确，block8/11为非阻断建议；选中26—30只有文档更新时间，真正检索记录位于25。编号没有错位，问题是选中的来源缺少时间依据，不是断流、耗尽或再次漏检。12份原文件hash及独立来源审查见golden_knowledge_time_result_883c23e.json，原失败不改。
-- 本次工程证据：共享citation_retrieval_fields只按chunk归属关联provider/time，保留重复与null；顶层记录继续保留空检索。真实反例离线解析26—30已有对应时间，缓存/过期/混合未知、生成上下文、实际组装的五次模拟路径及旧15输入hash回归通过。两个活动manifest同步，默认产品未切换。更新指纹时误用native构造器处理role组合已被测试拦截并修正；Luna服务404未执行独立审查，主Agent接手复核。公开CI状态以对应提交及progress为准。
-- 实际接线：build_role_coach_application / ROLE_COACH_CONTRACT 1.5.0；Flash/high生成、工具与一次改稿，GLM/high首评、重评与终评。全任务一个预算、一套全局序号，逐模型观察/定价、双传输原回执、可信Trace、来源投影、Memory/RAG/Evidence沿用原应用。新资产flash_glm_review_v1及资格绑定原15输入，旧默认不切换。
-- 工程验证：实际组装的离线正常五次路径可发布；恢复耗尽、错模型/传输/回执拒绝。observed身份、同源Evidence、追踪持久化及已知/未知费用边界受检；预算停止后不暴露旧成功回执。新旧活动指纹一并维护，历史资格/失败不改。最终本机与公共检查见progress。离线不证明真实语义可靠。
-- 新实测：346213c / CI35814004366三项通过；用户“允许，继续吧”后，Flash原错误稿84/needs_revision、正确稿95/pass，四条advisory逐项核对均为非阻断建议。两个请求与旧GLM诊断内容完全相同，因此不能称GLM已对照证明更优。结果golden_flash_source_pair_result_346213c.json保留22份原文件hash。
-- 实际应用：role-development-20260923-v1真实Flash生成两调用并执行三次knowledge.search，GLM一调用96/pass，开发目录published；生成稿/draft/final同字节，审查全文、Evidence读回、逐模型Trace与回执核算均一致。人工不接受block27“知识检索时间2026-09-10”：引用仅提供updated_at=2026-07-23，真实未缓存检索发生9月23日。原始结果保持，独立host记needs_revision。不是断流/预算失败，也未证明增加时间字段即可修好；详见golden_role_application_result_346213c.json及诊断文档。
-- 前批用量和边界：实际2+3=5调用，输入56241+输出12230=68471tokens，未知0，全未缓存价估算0.2303468元；两项任务已结束，不挪用未用满上限启动其他试验。真实混合应用初评直接通过，revision_exercised=false；observed空Memory不证明长期记忆召回。仍缺来源修复后的真实正负验证、真实Flash改稿/GLM终评、同版本原15输入、Worker/DB/API/Workbench真实消费和8E其余退出项。默认产品未切换。
-- 0c061b2 / CI35752331153公共三项通过后，两例完整返回并经host逐项核对：原错误稿80/needs_revision，仅block14，sources31/1/14/10/18支持原意及修正建议；正确稿97/pass、无issue/advisory。2次输入24453+输出4483=28936tokens、未知0，缓存2368已含输入，按全未缓存价估算0.321148元；流耗时48.062/28.235秒，含host批耗时230.515秒。20份原JSON/hash、回执和人工来源审查见golden_explicit_source_pair_result_0c061b2.json。无早期死亡建议输出，不能单独认定旧advisory错引已复现修好；两例不证明稳定率或变更因果。
-- 编号全路径核查：表格生产index+1、恢复index-1、source_roots及解析均一致，并非程序错位。歧义来自模型侧bare evidence_keys数组。离线适配替换为同ID的evidence_by_id对象及一句读取说明，首评/重评/改稿严格往返，完整坏意见及原hash保留；OP.GG零基物理路径不改。两控制经真实SDK MockTransport确认只有这两处消息变化；原失败仍拒绝，建议的错引不能统一+1修好。证据golden_explicit_source_projection_v1.json；未改产品指纹或注册新产品候选。
-- b6b30f8 / CI35747690218三项通过后，批准的首例完整tool_calls，82/needs_revision，一问题一建议，56.406秒。文本检出正确且未把上下文建议升级阻断，但semantic_source_id_unknown；1次输入12149+输出3480=15629tokens、未知0，按单价估算0.194632元。未耗尽/超时，第二例未发，不能称正反配对成功。完整8份原工件/hash、请求身份、逐项来源及独立算术见golden_review_model_comparison_result_b6b30f8.json。
-- 本轮工程遗漏：15c8940公共CI18个native组装失败来自共享源码指纹未同步；修复活动manifest两项源码及派生program hash，66项受影响回归和b6b30f8公共检查通过。旧资格/回执未改；这是执行遗漏，不归因于模型。
-- 1d5f7a2 / CI35730692196三项通过后，review-target-layout-v1四次完整合法返回、61159tokens、未知0。baseline负例漏检/正例通过；target负例检出但advisory经济比例写反，正例block4泛指又被判全称。拒绝采用并关闭execute；不拼两臂成功，无编辑/终评。34份原文件hash和逐局算术核验保存在golden_review_target_layout_result_1d5f7a2.json，均未触及输出/时限。
-- a82cfeb / CI35728654384三项通过，92项本地相关检查及6份历史只读回放通过；两个工程缺口已修复，未修复模型语义。位置数组不直接接入，未新增候选。
-- 指定起点审查后的修复：关闭遗漏的旧tool开发入口，7个CLI策略均先于资料/凭据/Provider拒绝；导出器补调用序号/transport关联、预约清单及计数守恒，拒绝错配与漏算，6份历史运行只读回放成功。旧da06b5a回执unknown1不改，独立校正继续保留。恢复诊断见golden_review_submission_recovery_boundary_v1.json；检查通过不等于核心语义闭环通过。
-- 11bc7bd / CI35716166747三项通过；JSON正文首调用300.015秒截止，最后事件299.906秒，无正文/终态/usage。1次费用未知，语义未获验证。完整请求重建hash与reservation一致，证据golden_json_block_deadline_11bc7bd.json。不能称网络停流或输出token额度耗尽。
-- da06b5a / CI35714036543三项通过；buffered工具首调用161.828秒正常终态，单个2299字符参数重复block/issues并合并14/15段。离线原样重放拒绝，无合法评估；4/6建议亦缺来源字段。证据golden_buffered_phase_failure_da06b5a.json。
-- 该buffered调用11640+5845=17485tokens，未知0；原runner误记未知1保留并独立校正。实际整链和公开导出现在记录已观察usage但不伪造完成响应，61项相关离线检查及11bc7bd公共CI通过。
-- 此前16:19起的长推进累计7次真实请求：6次用量已知102235tokens，另JSON正文1次未知。更早4次/42299已知及a501c33未知1单列。a82cfeb审查后修复与恢复裁决未发起Provider请求；其后的1d5f7a2布局批4次/61159tokens另列。本次能力方案准备0次。未修改原失败回执，不将两个未知调用合并或估算费用。
-- 阶段合同已实现：独立审查三字段，重评四字段及逐项映射；原始输出与内部已知空映射分开记录。该接口改进不等于工具格式或模型质量通过。
-- 5c952ad CI失败因新增测试再次误读本机忽略资料，da06b5a改用提交fixture并禁止该组测试读data/runs；这是本轮执行遗漏。eadb930配对虽两JSON完整，正例旧合同失败仍保留；不能算新候选合格。
-- 逐段独立工具提交超过当前每响应8个工具结果上限，离线排除；位置数组可省去重复段字段名，但其模型表现、延迟、重评接线未证实。原型golden_review_submission_shapes_v1.json仅离线证据。
-- ADR0104/0105/0106/0107失败批及产品入口均关闭；实际产品仍是旧审查组合，发布前必须绑定新审查器、传输和资格版本。15个既有不同输入未换题，不拼旧成功；整体8E及四块联动/训练/前端等仍未完成。
+2026-09-24：核心来源时间漏检仍未证明修好，默认产品未切换，8E未完成。上一失败批已归档于4c3cfd96，公共CI35890999453三项成功；这仅证明归档与工程检查，不是语义修复。
+
+- 最新实测仍为Flash日期审查v2：061482e7 / CI35851847210，64.938秒完整95/pass，两处日期均漏检；1次16169tokens、未知0、估价0.0177372元。更早独立整稿编辑300秒无正文，1次用量费用未知。两批均关闭、第二例未发，不能把已知估价当合计费用。完整回执见golden_flash_knowledge_time_review_result_v2.json与golden_independent_edit_result_58449abb.json。
+- 本次选择能力原型：保留动态工具与GLM完整首评，在一次Flash编辑机会中核验来源并提交明确替换/空操作，再完整终评。正常2+1+1+1保持五调用；尚未采用新产品控制流。额外专审会变六调用，替代首评会推迟业务错误发现，强制预取会改变Agent动态检索，故均未选。详见ADR0110。
+- 实现与复核：原子应用、未知引用/重叠拒绝、真实章节顺序、实际成稿完整终评容量和输入身份已检查。独立审查发现的标题及容量缺口已修复并定点复核。离线两处操作重建参考、原15全文保持；错误keep保留旧错误pass，未赋语义资格。五调用384350tokens仅容量样本，生成部分用历史尺寸，耗时仍未知。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。冻结并在同提交公共CI后执行来源编辑两例能力检查，最多2次/600秒/156506tokens、上界估价0.2562768元，沿用当前连续授权；首例失败立即停。无首评意见入模，仅验证来源补漏/正确稿keep。通过才继续实际成稿GLM完整终评与显式pass后状态机；失败不排列提示变体。新实现目前Provider请求0。
+- ADR0109实际角色候选已接线：Flash/high生成/工具/改稿，GLM/high首评/重评/终评，一个共享预算；曾完成真实2生成+1首评，但96/pass漏检后由host拒绝，没有真实编辑/终评资格。原“正确参考”的第二处OP.GG无据日期已修正并独立全文核验，见golden_source_time_reference_audit_v2.json，不能计作模型改稿。来源时间传播修复已接入活动候选，默认产品不变。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。

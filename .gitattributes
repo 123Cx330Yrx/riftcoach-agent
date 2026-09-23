@@ -84,3 +84,9 @@
 /data/evaluation/datasets/golden_source_time_reference_audit_v2.json text eol=lf
 /data/evaluation/results/golden_flash_knowledge_time_review_preparation_v2.json text eol=lf
 /data/evaluation/results/golden_flash_knowledge_time_review_result_v2.json text eol=lf
+/app/evaluation/source_patch_editor.py text eol=lf
+/scripts/check_source_patch_editor.py text eol=lf
+/scripts/run_source_patch_pair.py text eol=lf
+/data/evaluation/results/golden_source_patch_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_source_patch_feasibility_v1.json text eol=lf
+/data/evaluation/results/golden_source_patch_pair_result_v1.json text eol=lf
