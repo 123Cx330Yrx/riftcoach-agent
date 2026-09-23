@@ -147,6 +147,19 @@ def _retrieved_at(value: Any) -> str | None:
     return value
 
 
+def citation_retrieval_fields(
+    knowledge: KnowledgeEvidence, citation: KnowledgeCitation,
+) -> dict[str, Any]:
+    """Attach only this chunk's retrievals, preserving repeats and unknown times."""
+    if not knowledge.retrievals:
+        return {}  # Historical inputs without time metadata stay byte-compatible.
+    return {"retrievals": [
+        {"provider": retrieval.provider, "retrieved_at": retrieval.retrieved_at}
+        for retrieval in knowledge.retrievals
+        if citation.chunk_id in retrieval.chunk_ids
+    ]}
+
+
 def knowledge_projection(knowledge: KnowledgeEvidence) -> dict[str, Any]:
     """Shared bounded evidence for review and storage; excludes diagnostics."""
     # Preserve the byte order of historical review inputs and their frozen hashes.
@@ -154,7 +167,10 @@ def knowledge_projection(knowledge: KnowledgeEvidence) -> dict[str, Any]:
         "context": knowledge.context,
         "abstained": knowledge.abstained,
         "source_ids": list(knowledge.source_ids),
-        "citations": [asdict(citation) for citation in knowledge.citations],
+        "citations": [
+            {**asdict(citation), **citation_retrieval_fields(knowledge, citation)}
+            for citation in knowledge.citations
+        ],
     }
     if knowledge.retrievals:
         value["retrievals"] = [

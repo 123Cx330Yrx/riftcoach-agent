@@ -29,7 +29,8 @@ from scripts.run_golden_inference_development import verify_public_ci
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / 'data/evaluation/results/golden_role_application_result_346213c.json'
 RETRIEVALS = ROOT / 'data/evaluation/datasets/golden_knowledge_time_retrievals_v1.json'
-EXPERIMENT = 'knowledge-time-review-pair-v1'
+PREDECESSOR = ROOT / 'data/evaluation/results/golden_knowledge_time_result_883c23e.json'
+EXPERIMENT = 'knowledge-time-citation-review-pair-v2'
 RUN_DIRECTORY = ROOT / 'data/runs/model_comparison' / EXPERIMENT
 
 
@@ -56,6 +57,8 @@ def prepare():
     knowledge = knowledge_evidence_from_search_payloads(row['data'] for row in searches)
     current = knowledge_projection(knowledge)
     times = current.pop('retrievals')
+    for citation in current['citations']:
+        citation.pop('retrievals')
     if current != knowledge_projection(knowledge_evidence_from_search_payloads(old_payloads)):
         raise ValueError('knowledge_time_citation_contents_changed')
     source = old.messages[2].content.split('[UNTRUSTED deterministic_source_facts]\n', 1)[1].rsplit(
@@ -93,6 +96,7 @@ def prepare():
         + Decimal(total_output) * price.output_cost_per_million) / 1_000_000
     plan = dict(experiment=EXPERIMENT, candidate=candidate_identity(),
         source_evidence_sha256=retrievals['original_sha256'],
+        predecessor_result_sha256=hashlib.sha256(PREDECESSOR.read_bytes()).hexdigest(),
         local_retrievals_sha256=hashlib.sha256(RETRIEVALS.read_bytes()).hexdigest(),
         model='glm-5.3', reasoning_effort='high', sdk_retries=0,
         transport_id=REVIEW_MODEL_TRANSPORT_ID, retrievals=times, cells=cells,

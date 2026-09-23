@@ -60,6 +60,10 @@ def test_real_cache_preserves_origin_and_expiry_records_a_new_search():
         "2026-09-23T04:00:00Z", "2026-09-23T04:00:00Z", "2026-09-23T04:06:00Z"]
     assert all(r.chunk_ids == ("guide:1",) for r in evidence.retrievals)
     projection = knowledge_projection(evidence)
+    assert projection['citations'][0]['retrievals'] == [
+        {'provider': 'test-knowledge', 'retrieved_at': timestamp}
+        for timestamp in ('2026-09-23T04:00:00Z', '2026-09-23T04:00:00Z', '2026-09-23T04:06:00Z')
+    ]
     assert "2026-09-10" not in json.dumps(projection)
     stored = json.loads(ReviewHarness._knowledge_bytes(evidence))
     stored.pop("diagnostics")
@@ -83,6 +87,10 @@ def test_mixed_old_and_new_searches_keep_unknown_membership_and_empty_search():
         (None, ("a",)), (second["retrieved_at"], ("b",)), (empty["retrieved_at"], ())]
     old = knowledge_evidence_from_search_payloads([first])
     assert old.retrievals == () and "retrievals" not in knowledge_projection(old)
+    assert 'retrievals' not in knowledge_projection(old)['citations'][0]
+    citations = knowledge_projection(evidence)['citations']
+    assert citations[0]['retrievals'] == [{'provider': 'local-hybrid', 'retrieved_at': None}]
+    assert citations[1]['retrievals'] == [{'provider': 'local-hybrid', 'retrieved_at': second['retrieved_at']}]
     explicit_unknown = knowledge_evidence_from_search_payloads([dict(first, retrieved_at=None)])
     assert explicit_unknown.retrievals[0].retrieved_at is None
 
@@ -106,3 +114,5 @@ def test_initial_context_keeps_only_each_citations_retrieval_membership():
     rows = [json.loads(s.content) for s in sections]
     assert rows[0]["retrievals"] == [{"provider": "local-hybrid", "retrieved_at": "2026-09-23T04:00:00Z"}]
     assert rows[1]["retrievals"] == [{"provider": "local-hybrid", "retrieved_at": None}]
+    assert [row['retrievals'] for row in rows] == [
+        row['retrievals'] for row in knowledge_projection(evidence)['citations']]

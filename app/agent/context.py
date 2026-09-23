@@ -11,6 +11,7 @@ from enum import Enum
 from typing import Any
 from typing import Protocol, runtime_checkable
 
+from app.harness.knowledge import citation_retrieval_fields
 from app.harness.run_ids import normalize_run_id
 from app.harness.steps import KnowledgeCitation, KnowledgeEvidence
 from app.providers.models import ChatMessage, MessageRole
@@ -729,10 +730,7 @@ def _insert_knowledge_sections(
                 "matched_content": citation.matched_content,
                 "version": citation.version,
                 "updated_at": citation.updated_at,
-                **({"retrievals": [
-                    {"provider": r.provider, "retrieved_at": r.retrieved_at}
-                    for r in knowledge.retrievals if citation.chunk_id in r.chunk_ids
-                ]} if knowledge.retrievals else {}),
+                **citation_retrieval_fields(knowledge, citation),
             },
             required=False,
             priority=400,

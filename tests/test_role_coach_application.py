@@ -182,8 +182,13 @@ def test_role_observed_task_preserves_memory_identity_and_evidence_store(tmp_pat
         knowledge = body(review_request)["knowledge"]
         assert [r["retrieved_at"] for r in knowledge["retrievals"]] == [p["retrieved_at"] for p in payloads]
         assert [r["chunk_ids"] for r in knowledge["retrievals"]] == [[c["chunk_id"] for c in p["chunks"]] for p in payloads]
+        for citation in knowledge['citations']:
+            assert citation['retrievals'] == [
+                {'provider': p['provider'], 'retrieved_at': p['retrieved_at']}
+                for p in payloads if any(c['chunk_id'] == citation['chunk_id'] for c in p['chunks'])]
     stored = json.loads(next(tmp_path.rglob("retrieval_evidence.json")).read_text(encoding="utf-8"))
     assert stored["retrievals"] == knowledge["retrievals"]
+    assert stored['citations'] == knowledge['citations']
     for request in (provider.generator.requests[0], provider.reviewer.requests[-1]):
         assert '不是阅读者本人' in ''.join(m.content or '' for m in request.messages)
     trace = RuntimeTraceStore(tmp_path, ctx.run_id).read_trace(result.trace_reference)

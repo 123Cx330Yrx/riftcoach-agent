@@ -31,6 +31,10 @@ def test_pair_changes_only_attributable_times_and_single_reference_edit(monkeypa
     assert before['source_roots']['additional'] == after['source_roots']['additional']
     after['source_roots']['catalog_sha256'] = before['source_roots']['catalog_sha256']
     times = after['knowledge'].pop('retrievals')
+    for citation in after['knowledge']['citations']:
+        assert citation.pop('retrievals') == [
+            {'provider': row['provider'], 'retrieved_at': row['retrieved_at']}
+            for row in times if citation['chunk_id'] in row['chunk_ids']]
     assert after == before and times == plan['retrievals']
     assert len(times) == 3 and all(row['retrieved_at'] for row in times)
     assert variants[0][2].messages[0] == variants[1][2].messages[0] == old.messages[0]
@@ -41,10 +45,32 @@ def test_pair_changes_only_attributable_times_and_single_reference_edit(monkeypa
     assert all(cell['expected_host_only'] not in compact(REQUEST.dump_python(v[2], mode='json'))
         for v, cell in zip(variants, plan['cells'], strict=True))
     assert runner.prepare()[1] == plan
-    saved = json.loads((runner.ROOT / 'data/evaluation/results/golden_knowledge_time_preparation_v1.json').read_text(encoding='utf-8'))
+    saved = json.loads((runner.ROOT / 'data/evaluation/results/golden_knowledge_time_preparation_v2.json').read_text(encoding='utf-8'))
     assert saved['preparation_plan'] == plan
     assert saved['preparation_plan_sha256'] == digest(compact(plan))
     assert plan['provider_requests'] == 0 and not plan['production_admitted']
+
+
+def test_real_failed_sources_now_resolve_their_own_times_without_changing_history():
+    from app.evaluation import golden_native_issues_review as native
+    from hashlib import sha256
+
+    failure_bytes = runner.PREDECESSOR.read_bytes()
+    failure = json.loads(failure_bytes)
+    variants, plan = runner.prepare()
+    assert plan['predecessor_result_sha256'] == sha256(failure_bytes).hexdigest()
+    old_sources = failure['host_review']['selected_issue_sources']
+    assert [row['source_id'] for row in old_sources] == [26, 27, 28, 29, 30]
+    new_sources = native.resolve_refs(variants[0][1], [row['source_id'] for row in old_sources])
+    for old, new in zip(old_sources, new_sources, strict=True):
+        value = dict(new['value'])
+        assert value.pop('retrievals') == [
+            {'provider': row['provider'], 'retrieved_at': row['retrieved_at']}
+            for row in plan['retrievals'] if value['chunk_id'] in row['chunk_ids']]
+        assert 'retrievals' not in old['value'] and value == old['value']
+        assert new['key'] == old['key'] and new['path'] == old['path']
+    assert not failure['conclusion']['pair_accepted']
+    assert runner.PREDECESSOR.read_bytes() == failure_bytes
 
 
 def test_sdk_wire_uses_glm_high_and_bound_request_without_network():

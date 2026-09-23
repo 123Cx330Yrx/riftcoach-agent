@@ -122,7 +122,7 @@
     {
       "component_id": "app.harness.knowledge",
       "source": "app/harness/knowledge.py",
-      "sha256": "467176417cf167d5bc26f2cb345aee3772ccafdc41f194a90631a73e8cf58311"
+      "sha256": "16b40ae0f1fc856c682367ed9b357646f5a51a5c57cd34ed2c8726b74cfb59f6"
     },
     {
       "component_id": "app.harness.adapters",
@@ -137,7 +137,7 @@
     {
       "component_id": "app.agent.context",
       "source": "app/agent/context.py",
-      "sha256": "d7a095f56d8194e80b841c3a4480a96747f374eaef0e4044a386d19b265ad14b"
+      "sha256": "5df787d40e7ea905661406f9ff4551da8ab826adceea89d41f0ebc4c1d7c0b3d"
     },
     {
       "component_id": "app.runtime.runtime",
@@ -250,5 +250,5 @@
       "sha256": "f15855c3c5cdbb3a579c5769fb07e731d2383efa07fd0d3deb785aee5536745d"
     }
   ],
-  "program_sha256": "b291ba442fe849940a87d8700b68abbf8895d1335efeb8e54358664023dfdb56"
+  "program_sha256": "6cd52188905afc8c106e81a262fd598ef1634a8390c7ac8c66f02c2298513d0a"
 }
