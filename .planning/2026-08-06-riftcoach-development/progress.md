@@ -1,5 +1,7 @@
 # 2026-09-23 知识时间同源链路修复完成，真实漏检待新预检
 
+8fa9e87推送后立即核对Git存储字节，发现Windows写JSON产生CRLF而新.gitattributes要求LF，导致本地预检中的两个文件摘要与Git不一致。已将新检索fixture及两个活动manifest的本地文件规范为与Git相同的LF，再生成预检摘要f0f4c479280d4b83a987e3d5890a2dc65043662a45517d8fff61790ea5fc6f2d，5项预检回归重新通过。此修正只影响预检文件身份；请求正文、工具时间值、政策及历史回执不变。
+
 候选knowledge.search 2.1增加主机UTC检索完成时间，缓存沿用原时间；KnowledgeEvidence按provider/chunk归属保留逐次检索记录，生成、审查、改稿和Evidence落盘同源。旧默认2.0及无时间历史输入保持不变。非法时间拒绝，未知时间不补猜；没有修改模型政策、人工标准或原失败报告。
 
 修复中出现的历史JSON字段顺序回归已还原，审查和落盘各自保留原顺序；两份活动manifest同步时漏加的执行合同指纹也已补回，通过实际RuntimeCompositionRoot解析。系统默认python属于其他应用且没有pytest，改用本库.venv；一次测试命令包含不存在的文件，没有执行测试，随后使用实际文件完成。上述是本地执行遗漏，不是新的Provider失败，也没有修改旧hash/夹带模型调用来放行。
