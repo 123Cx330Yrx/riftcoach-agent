@@ -57,6 +57,28 @@ experiment; an extra review call cannot silently exceed the five-call task.
 
 ## Problem and evidence
 
+### 2026-09-24: source propagation verified; advisory output responsibility narrowed
+
+On 6c100a25 / CI35896981340, the bounded application completed three calls in
+213.718s. The complete generated report passed independent host inspection;
+attributable OP.GG metadata and local knowledge provenance survived generation,
+review and file readback. GLM returned93/pass, but one optional note cited only
+CS/gold roots while adding damage figures. Report acceptance and incomplete
+review-output support remain separate; no real revision occurred. Public
+evidence is golden_role_source_metadata_result_v1.json. This is not original15
+qualification or proof of a generic recall fix.
+
+The current opt-in role contract is1.5.1 / Program3.1.1 / evaluation3.4.0. It
+retains nonblocking advisories but requires only block, source_ids and
+explanation. No product consumer uses their former mandatory replacement prose;
+real issues still require suggested_correction and follow the same edit gate.
+The previous RoleReviewWorkflow remains unchanged for historical replay.
+Old traces retain their exact trusted1.5.0 identity for readback only; old
+responses are not stripped into new valid outputs. Source mappings, model
+roles, shared budget and full-context acceptance are unchanged. The leaner
+contract has offline evidence only, not live quality or production admission.
+Decision, alternatives and limitations are in ADR0110.
+
 The Agent must turn a player request into a sourced report, detect material
 errors, edit once and review the edited report before publication. Repeated Flash
 review failures prevented this loop. ADR0108's explicit-ID GLM-5.3/high diagnostic

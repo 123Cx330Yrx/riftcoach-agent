@@ -8,15 +8,15 @@ from .native_coach_contract import component_fingerprints as native_fingerprints
 
 
 def component_fingerprints(skill):
-    from app.evaluation import golden_native_partitioned_tool_review as partitioned
+    from app.evaluation.golden_role_notes import RoleNoteReview, review_policy
     from app.evaluation.golden_native_business_policy import REVISION_POLICY
     from app.evaluation.golden_explicit_source_projection import VERSION, OLD_ADDRESS, NEW_ADDRESS
     from .reviewer_roles import role_descriptor
     rows = {row.component_id: row for row in native_fingerprints(skill)}
     values = {
-        "evaluation_schema": json.dumps(partitioned.PartitionedReview.model_json_schema(), sort_keys=True),
-        "initial_review_policy": partitioned._review_policy().replace(OLD_ADDRESS, NEW_ADDRESS),
-        "reassessment_policy": partitioned._review_policy("prior").replace(OLD_ADDRESS, NEW_ADDRESS),
+        "evaluation_schema": json.dumps(RoleNoteReview.model_json_schema(), sort_keys=True),
+        "initial_review_policy": review_policy(),
+        "reassessment_policy": review_policy("prior"),
         "revision_policy": REVISION_POLICY.replace(OLD_ADDRESS, NEW_ADDRESS),
         "source_projection": VERSION,
         "role_descriptor": json.dumps(role_descriptor(), sort_keys=True),
@@ -24,6 +24,7 @@ def component_fingerprints(skill):
     root = Path(__file__).resolve().parents[2]
     sources = (
         "app/evaluation/golden_role_review.py",
+        "app/evaluation/golden_role_notes.py",
         "app/evaluation/golden_native_partitioned_tool_review.py",
         "app/evaluation/golden_native_tool_review.py",
         "app/evaluation/golden_native_business_policy.py",

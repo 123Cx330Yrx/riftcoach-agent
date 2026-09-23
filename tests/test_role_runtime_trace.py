@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from decimal import Decimal
+from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
@@ -100,6 +101,22 @@ def test_role_trace_persistence_round_trip_prices_actual_model_and_all_roles(tmp
             if isinstance(event.signal, ProviderCallStartedSignal)] == [
         "glm-5.3-flash", "glm-5.3", "glm-5.3", "glm-5.3-flash", "glm-5.3",
     ]
+
+
+def test_original_role_trace_remains_readable_but_cannot_execute_old_contract():
+    from app.runtime.coach_contract import LEGACY_ROLE_COACH_CONTRACT, require_coach_contract
+    saved = json.loads((Path(__file__).parents[1] / 'data/evaluation/results'
+        / 'golden_role_source_metadata_result_v1.json').read_text(encoding='utf-8'))
+    original = saved['public_json_contents']['reports/runtime_trace.json']
+    trace = RuntimeTrace.model_validate_json(json.dumps(original))
+    assert trace.identity.coach_contract == LEGACY_ROLE_COACH_CONTRACT.snapshot()
+    assert trace.model_dump(mode='json') == original
+    with pytest.raises(ValueError, match='unsupported Coach execution contract'):
+        require_coach_contract(LEGACY_ROLE_COACH_CONTRACT)
+    for section in ('identity', 'policy'):
+        original[section]['coach_contract']['sha256'] = '0' * 64
+    with pytest.raises(ValidationError, match='trusted contract'):
+        RuntimeTrace.model_validate_json(json.dumps(original))
 
 
 def test_role_trace_failed_review_keeps_partial_usage_through_persistence(tmp_path):

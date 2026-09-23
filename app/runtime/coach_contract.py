@@ -11,7 +11,7 @@ from pydantic import BaseModel, ConfigDict, Field
 class CoachContractSnapshot(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     contract_id: Literal["recent-form-review-flash-v2", "recent-form-review-roles-v1"] = "recent-form-review-flash-v2"
-    version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16", "1.3.17", "1.3.18", "1.3.19", "1.3.20", "1.3.21", "1.3.22", "1.3.23", "1.3.24", "1.3.25", "1.3.26", "1.3.27", "1.4.0", "1.4.1", "1.4.2", "1.4.3", "1.4.4", "1.4.5", "1.4.6", "1.5.0"] = "1.0.0"
+    version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16", "1.3.17", "1.3.18", "1.3.19", "1.3.20", "1.3.21", "1.3.22", "1.3.23", "1.3.24", "1.3.25", "1.3.26", "1.3.27", "1.4.0", "1.4.1", "1.4.2", "1.4.3", "1.4.4", "1.4.5", "1.4.6", "1.5.0", "1.5.1"] = "1.0.0"
     scope: Literal["unadmitted_opt_in"] = "unadmitted_opt_in"
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
@@ -362,10 +362,14 @@ class RoleCoachExecutionContract(NativeCoachExecutionContract):
         from app.evaluation.golden_explicit_source_projection import VERSION
         value = super().descriptor()
         value.update(contract_id="recent-form-review-roles-v1", model=ROLE_COMPOSITION_ID,
-            thinking_profile_id=ROLE_PROFILE_ID, skill_version="0.6.1", program_version="3.1.0",
-            evaluation_contract_version="3.3.0", inference_policy_id="golden-role-review-v1",
+            thinking_profile_id=ROLE_PROFILE_ID, skill_version="0.6.1", program_version="3.1.1",
+            evaluation_contract_version="3.4.0", inference_policy_id="golden-role-review-notes-v1",
             roles=role_descriptor(), source_projection=VERSION,
             stream_transport_id="per-role-explicit", evaluation_repair_policy="one-full-native-reassessment-with-original-response")
+        if self.version == "1.5.0":
+            # Readback only: preserve the trusted descriptor of saved traces.
+            value.update(program_version="3.1.0", evaluation_contract_version="3.3.0",
+                         inference_policy_id="golden-role-review-v1")
         policy = self.request_policy
         value.update(request_policy_id=policy.policy_id, request_policy_version=policy.version,
             request_policy={key: getattr(policy, key) for key in value["request_policy"]},
@@ -403,7 +407,8 @@ class RoleCoachExecutionContract(NativeCoachExecutionContract):
                 ("glm-5.3", "8", "28"))}
 
 
-ROLE_COACH_CONTRACT = RoleCoachExecutionContract(version="1.5.0")
+ROLE_COACH_CONTRACT = RoleCoachExecutionContract(version="1.5.1")
+LEGACY_ROLE_COACH_CONTRACT = RoleCoachExecutionContract(version="1.5.0")
 
 
 def require_coach_contract(value):

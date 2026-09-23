@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
   "program_id": "recent-form-review-coach",
-  "program_version": "3.1.0",
+  "program_version": "3.1.1",
   "skill_name": "recent-form-review",
   "skill_version": "0.6.1",
   "context_contract_id": "context-builder-v1",
   "context_contract_version": "1.0.0",
   "evaluation_contract_id": "coach_evaluation",
-  "evaluation_contract_version": "3.3.0",
+  "evaluation_contract_version": "3.4.0",
   "component_fingerprints": [
     {
       "component_id": "skill_manifest",
@@ -32,7 +32,7 @@
     {
       "component_id": "evaluation_schema",
       "source": "evaluation_schema",
-      "sha256": "51087e6ade6d919950f5fe93a0cfdbc919ab28298436092b3f79b72ee14fc8a5"
+      "sha256": "5248c7020a7bb63c71db43aaee11d509ff68536133b70664600a05c15e5b0b46"
     },
     {
       "component_id": "generation_policy",
@@ -92,7 +92,7 @@
     {
       "component_id": "app.product.native_coach_composition",
       "source": "app/product/native_coach_composition.py",
-      "sha256": "9d38f5cb54275bebd5cb00534cc72fafa2c687704d580138b6e45426a5534122"
+      "sha256": "a09d83ced7f9494e5ae01167585e2860bc6dd03bd5735115823ce92295c8dbdc"
     },
     {
       "component_id": "app.product.recent_review_service",
@@ -147,12 +147,12 @@
     {
       "component_id": "initial_review_policy",
       "source": "initial_review_policy",
-      "sha256": "0cdd9f43897443721993986d2bd049eae31a3c916e33f978a92c3554c50243f4"
+      "sha256": "add504f1b20057ca3ce3afad2db8421d098fa926fdcab3306ef1393adab6ebed"
     },
     {
       "component_id": "reassessment_policy",
       "source": "reassessment_policy",
-      "sha256": "a7d4a017e095727e4fe5d937b94191ef9fb28f85c57fcd2745a5c09426d1598f"
+      "sha256": "03600a868797d5b5d8ac69c0ed7c436c811d577ba25dda1ab1a8ab5f2ebfa99e"
     },
     {
       "component_id": "revision_policy",
@@ -173,6 +173,11 @@
       "component_id": "app.evaluation.golden_role_review",
       "source": "app/evaluation/golden_role_review.py",
       "sha256": "0df297d7d865478f1298c1c9b8fdd37be435b6c3a92c879861c69cc22699d9ff"
+    },
+    {
+      "component_id": "app.evaluation.golden_role_notes",
+      "source": "app/evaluation/golden_role_notes.py",
+      "sha256": "6c678ab01689d5bab3bd7cea074139ab88ec264b4b82d599101fa9f7e8b06002"
     },
     {
       "component_id": "app.evaluation.golden_native_partitioned_tool_review",
@@ -197,12 +202,12 @@
     {
       "component_id": "app.runtime.role_coach_contract",
       "source": "app/runtime/role_coach_contract.py",
-      "sha256": "f9407896bfdce96bdf11b50f3997e96d746146170e9614428445eaac4bc1cbc2"
+      "sha256": "234ee091439b09c18850c17eed749249bb5e5641a8e63f4099651a2c695db946"
     },
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "d693ed52f7c165de8392f36d11296968d268c9073a624d8cca2a9414e587bd23"
+      "sha256": "8a70ed62c35108757dd19cf9d82824ba4e8bc69dfb50c417ed64f38ee160d286"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -222,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_context",
       "source": "app/runtime/coach_context.py",
-      "sha256": "40e38f566e2a49ba4a40d37eca20f24e4b79a9e5bc14fd05dd4ad18f04dc5219"
+      "sha256": "59575ff8a961ef9875a7c2e8781a56a3a4a5b59394ca39ef356affa0f927e4b5"
     },
     {
       "component_id": "app.runtime.observed_provider",
@@ -237,7 +242,7 @@
     {
       "component_id": "app.runtime.models",
       "source": "app/runtime/models.py",
-      "sha256": "56133ca50ea9e9c27beb17a979d5ed342e8370552a727d74a7c873c7208d2dce"
+      "sha256": "ca054045d4b799e576ed4b9b835203c3b8ad4b1515faedbb97abdeb70441cb7e"
     },
     {
       "component_id": "app.model_runtime",
@@ -246,9 +251,9 @@
     },
     {
       "component_id": "coach_execution_contract",
-      "source": "app.runtime.reviewer_roles:v1.5.0",
-      "sha256": "f15855c3c5cdbb3a579c5769fb07e731d2383efa07fd0d3deb785aee5536745d"
+      "source": "app.runtime.reviewer_roles:v1.5.1",
+      "sha256": "538f9be6325bbb722423e85d0835a2c04b21a2fb1a003379b562176dc7ac3d0a"
     }
   ],
-  "program_sha256": "4a6a0a0fd933fb31442dcc8c70e176eeaa29f5999e83ed5e73757931db713ba2"
+  "program_sha256": "8a5a0bd3ca3d3492fd6f23eb17e5daffb7e9e8fed5a18b2a804c44ee80db1cd5"
 }

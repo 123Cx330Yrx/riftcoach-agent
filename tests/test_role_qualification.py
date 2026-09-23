@@ -14,7 +14,7 @@ from app.evaluation import golden_stream_bridge as bridge
 from app.evaluation import role_qualification as qualification
 from app.evaluation.golden_journal import write_new_json
 from app.evaluation.golden_review_experiment import compact, digest
-from app.evaluation.golden_role_review import RoleReviewWorkflow
+from app.evaluation.golden_role_notes import RoleNoteReviewWorkflow as RoleReviewWorkflow
 from app.harness.steps import EvaluationVerdict, RevisionRequest
 from app.providers.models import ChatResponse, TokenUsage
 from app.runtime.receipted_provider_factory import RunScopedRoleReceiptedProviderFactory

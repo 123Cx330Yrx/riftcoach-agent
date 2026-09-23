@@ -8,7 +8,7 @@ from app.rag.coaching_query import CoachingQueryKnowledgeProvider
 from app.rag.provider import KnowledgeProvider
 from app.runtime.coach_context import CoachContextBuilder
 from app.runtime.coach_contract import NATIVE_COACH_CONTRACT, ROLE_COACH_CONTRACT
-from app.evaluation.golden_role_review import RoleReviewWorkflow
+from app.evaluation.golden_role_notes import RoleNoteReviewWorkflow
 from app.runtime.composition import RuntimeCompositionRoot
 from app.runtime.review_sender import SharedBudgetReviewSender
 from app.runtime.runtime import AgentRuntimeV1, RuntimeExecutionFactory
@@ -87,4 +87,4 @@ def build_native_coach_application(**kwargs):
 def build_role_coach_application(**kwargs):
     """Explicit adopted role candidate; this construction does not grant admission."""
     return _build_coach_application(contract=ROLE_COACH_CONTRACT, assets=ROLE_ASSETS,
-        workflow_type=RoleReviewWorkflow, **kwargs)
+        workflow_type=RoleNoteReviewWorkflow, **kwargs)

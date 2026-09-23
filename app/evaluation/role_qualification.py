@@ -9,11 +9,11 @@ import hashlib
 from pathlib import Path
 
 from app.evaluation import golden_native_partitioned_tool_review as review
-from app.evaluation.golden_explicit_source_projection import VERSION as PROJECTION_VERSION, OLD_ADDRESS, NEW_ADDRESS
+from app.evaluation.golden_explicit_source_projection import VERSION as PROJECTION_VERSION
 from app.evaluation.golden_inference_scope_v5 import strict_json
 from app.evaluation.golden_integrated_runtime import Exchange
 from app.evaluation.golden_review_experiment import compact, digest
-from app.evaluation.golden_role_review import RoleReviewWorkflow
+from app.evaluation.golden_role_notes import RoleNoteReviewWorkflow as RoleReviewWorkflow, RoleNoteReview, review_policy
 from app.evaluation.golden_stream_bridge import (
     REQUEST, RESPONSE, CapacityBridgeObservation, validate_request,
 )
@@ -106,8 +106,8 @@ def candidate_identity(*, root=ROOT):
         asset_sha256={name: _sha(root / ASSETS / name) for name in (
             "skills/recent-form-review/SKILL.md", "skills/recent-form-review/manifest.yaml")},
         source_projection=PROJECTION_VERSION, roles=role_descriptor(),
-        policy_sha256=digest(review._review_policy().replace(OLD_ADDRESS, NEW_ADDRESS)),
-        schema_sha256=digest(compact(review.PartitionedReview.model_json_schema())))
+        policy_sha256=digest(review_policy()),
+        schema_sha256=digest(compact(RoleNoteReview.model_json_schema())))
 
 
 def prepare_qualification(*, root=ROOT):

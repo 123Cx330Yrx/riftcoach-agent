@@ -587,14 +587,16 @@ class RuntimeTrace(RuntimeContractModel):
         snapshot = self.identity.coach_contract
         if snapshot is not None and (
             snapshot.contract_id == "recent-form-review-roles-v1"
-            or snapshot.version == "1.5.0"
+            or snapshot.version in {"1.5.0", "1.5.1"}
         ):
             # Only this exact opt-in contract permits per-request model roles.
             # Its digest binds the model/profile/transport role map; a caller
             # cannot grant itself mixed-model access by changing a label.
-            from .coach_contract import ROLE_COACH_CONTRACT
-            role_contract = ROLE_COACH_CONTRACT
-            if snapshot != role_contract.snapshot():
+            from .coach_contract import ROLE_COACH_CONTRACT, LEGACY_ROLE_COACH_CONTRACT
+            role_contract = next((contract for contract in
+                (ROLE_COACH_CONTRACT, LEGACY_ROLE_COACH_CONTRACT)
+                if snapshot == contract.snapshot()), None)
+            if role_contract is None:
                 raise ValueError("trace role contract is not the trusted contract")
             role_descriptor = role_contract.descriptor()
             if (

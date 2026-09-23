@@ -11,14 +11,18 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-24：已修复一个实际资料投影缺口；模型来源漏检的通用修法仍未证明，默认产品未切换，8E未完成。
+2026-09-24：来源元数据修复已通过一次真实应用传递验证，实际成稿经全文审查可接受；审查建议的引用仍不完整，默认产品未切换，8E未完成。
 
-- 最新真实结果：e7bfc42b / CI35893267211三项成功后，Flash显式编辑47.187秒完整返回，仅把知识日期改为9月23；来源25—30支持且其余全文保持，但OP.GG日期仍无送达依据。host拒绝，第二例与GLM终评未发，未采用新状态机。1次14984tokens、未知0、估价0.0161852元；12份原件/hash见golden_source_patch_pair_result_v1.json，execute已关闭。
+- 最新真实结果：6c100a25 / CI35896981340三项成功后，现有角色应用213.718秒完成2次Flash生成/工具及1次GLM审查，93/pass、2条非阻断建议，工程published。实际28段报告的数值、身份、条件训练及K1—K5来源经主/独立审查可接受，原来源日期错误未在新稿复现；这不是旧错误稿的自动修订或稳定性证明。
+- 剩余具体缺口：GLM第二条建议引用9/11/13/15，仅支持中单补刀和经济，却扩写伤害617.52/1286.76，未引用10/14或其他伤害来源。完整输入有正确数值，原始模型输出已缺引用，解析/映射无损；不把它倒算为成稿事实错误。首条范围澄清合理，但扩写中单同样适用K1的依据不足，未认证为完整建议。完整审查输出未通过，建议未进入成稿。无追加付费重试。
+- 实测核验：生成、审查、KnowledgeEvidence与Evidence读回同源；过期OP.GG仍无指标许可；初稿/成稿/模型文本同hash bb7e414c…d13445。3次44654tokens，缓存输入7936，未知0，未缓存估价0.3872344元，非账单；36份公开原件内容/原字节hash及完整裁决见golden_role_source_metadata_result_v1.json。真实改稿/终评未发生，原15、Worker/DB/API/Workbench尚未取得本组合资格。
+- 此前显式编辑：e7bfc42b / CI35893267211首例仅修知识日期，host拒绝并关闭；第二例与GLM终评未发，未采用新状态机。1次14984tokens、估价0.0161852元、未知0，12份原件/hash见golden_source_patch_pair_result_v1.json。
 - 确切工程诊断：原应用evidence_bundle含两条OP.GG自身9月10日检索时间，source_context在排除过期指标时只留digest/reason，误把来源元数据也丢掉。日期与上游相符，但旧模型输入不能支持它；旧无据断言裁决保留，不称客观日期错误或模型内部根因已明。
 - 已修复：omitted_opgg保留各条自身来源、位置、检索/过期/来源生成时间、版本和未知值，仍不提供过期或不匹配的指标、分级/胜率和推荐许可。生成/审查/修订/落盘沿同一来源文档。两个活动manifest已同步，原15与旧失败不改。真实旧bundle离线复放及59项相关测试通过，独立审查无阻断；见golden_omitted_source_metadata_audit_v1.json。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。同提交公共CI后执行一次修正资料合同的现有角色应用，自然检索、生成、审查并落盘；逐项host审查全文、所有问题/建议引用和回执。冻结计划golden_role_source_metadata_preparation_v1.json，5次/401920tokens/900秒、单次32768/300秒，估价上界4.5088768元；当前连续授权覆盖，失败不追加任务。没有采用失败编辑路线、切默认或取得原15资格。
+- 责任调整已落地：advisory没有API/报告/编辑消费者，取消其强制替换文本，保留block/source_ids/explanation与非阻断通道；issues仍须修正建议。当前opt-in角色合同1.5.1 / Program3.1.1 / evaluation3.4.0。旧RoleReviewWorkflow和可信1.5.0 Trace读回保留，旧字段不静默剥离、旧ID不扩大。62项链路、8项新合同、147项周边回归及额外旧Trace反例通过；原15完整输入保持，见golden_role_note_contract_audit_v1.json。新合同0真实调用，不能称错引已修好。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。准备同版本原15中的真错→实际编辑→终评与正确全文控制，复用现有共享预算和回执/资格校验，逐项核对所有意见；先完成可审查执行准备与同提交公共检查。资料传递已取得本次真实证据，不再重复调时间字段、延长预算或重复自然生成碰运气；不采用新增粗来源变体。原15与实际改稿/终评仍是准入依赖。
 - 历史失败分开计：Flash日期审查v2为1次16169tokens、未知0、估价0.0177372元；更早整稿编辑300秒无正文为1次用量费用未知。两批均关闭，未知费用不能并入已知总费用。详见各原结果和ADR0110。
-- ADR0109角色应用仍为Flash/high生成/工具/改稿，GLM/high完整审查，共享原预算。原真实2生成+1首评曾96/pass而被host拒绝。显式编辑原型能力失败，正式pass后状态机未实现；真实编辑/终评、原15、真实消费和后续四块产品闭环仍未完成。
+- ADR0109角色应用仍为Flash/high生成/工具/改稿，GLM/high完整审查，共享原预算。原真实2生成+1首评曾96/pass而被host拒绝；最新成稿可接受、审查输出引用不全，结论分开。显式编辑原型能力失败，正式pass后状态机未实现；真实编辑/终评、原15、真实消费和后续四块产品闭环仍未完成。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。
