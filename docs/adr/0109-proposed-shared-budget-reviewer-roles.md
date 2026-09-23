@@ -38,6 +38,23 @@ and `golden_role_application_result_346213c.json` under `data/evaluation/results
 The reference is not a model revision or qualification result. Diagnosis and the
 next work package are in `docs/plans/2026-09-23-role-live-evidence-and-knowledge-time.md`.
 
+## 2026-09-23: knowledge-time controls do not qualify the reviewer
+
+The time-provenance controls are complete and closed. On 883c23e, GLM detected
+the unsupported date but cited knowledge rows without the retrieval-time basis.
+On 6c3a3db / CI35835943718, those rows contained the corresponding actual times,
+yet GLM returned 95/pass and missed the same report error. A nonblocking advisory
+also selected CS sources for an otherwise correct early-deaths comparison.
+The host rejected both first cases; neither second case was sent. Full responses
+and separate host decisions remain under golden_knowledge_time_result_883c23e.json
+and golden_knowledge_time_citation_result_6c3a3db.json. This is no evidence of
+stable review, model superiority or a completed revision loop.
+
+The source propagation fix remains useful, but is not a sufficient semantic fix.
+No default/model/budget/acceptance change follows from these results. The linked
+diagnosis now requires a method-level responsibility check before another paid
+experiment; an extra review call cannot silently exceed the five-call task.
+
 ## Problem and evidence
 
 The Agent must turn a player request into a sourced report, detect material

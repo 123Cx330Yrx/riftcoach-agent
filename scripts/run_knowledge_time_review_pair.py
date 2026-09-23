@@ -1,8 +1,8 @@
 """Preview two complete reports with actual local retrieval times.
 
-Execution reuses the existing bounded observer and requires a new specific
-approval. No new policy, candidate, retries or product admission is introduced.
-The first failed protocol/source/semantic check stops the pair.
+The v2 batch stopped after a complete semantic failure; execution is closed.
+Offline preview preserves the approved request for audit. A new method requires
+its own preparation and authorization, not reopening this completed batch.
 """
 import argparse
 from dataclasses import replace
@@ -31,6 +31,7 @@ EVIDENCE = ROOT / 'data/evaluation/results/golden_role_application_result_346213
 RETRIEVALS = ROOT / 'data/evaluation/datasets/golden_knowledge_time_retrievals_v1.json'
 PREDECESSOR = ROOT / 'data/evaluation/results/golden_knowledge_time_result_883c23e.json'
 EXPERIMENT = 'knowledge-time-citation-review-pair-v2'
+LIVE_STATUS = 'stopped_semantic_failure'
 RUN_DIRECTORY = ROOT / 'data/runs/model_comparison' / EXPERIMENT
 
 
@@ -109,6 +110,8 @@ def prepare():
 
 
 def run(args):
+    if args.execute and LIVE_STATUS != 'bounded_development_after_exact_ci':
+        raise ValueError('knowledge_time_citation_semantic_failure_requires_method_review')
     variants, plan = prepare()
     plan_sha = digest(compact(plan))
     if not args.execute:

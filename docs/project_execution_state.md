@@ -11,8 +11,9 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-23：批准的日期实测首例已正确检出block27日期错误（91/needs_revision），但选择的K1—K5来源条目不含其断言所用的retrieved_at，host拒绝并停止；第二例未发。现已将各知识对应的逐次检索记录加入单条可引用投影，生成、审查、改稿和Evidence共用关联规则。193项相关测试及2个子用例通过；这证明工程传递修复，不证明新版本真实配对或自动改稿通过。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。提交并核验修复HEAD公共CI后，请求新v2两例的具体执行授权。golden_knowledge_time_preparation_v2.json已绑定原失败证据和新请求，最多2次GLM/high、600秒、164182tokens，未缓存上界估价2.624176元。只给单条知识增加其检索记录，保持报告、政策、编号和完整上下文标准；首例协议/来源/语义失败即停止。旧v1授权已按停止规则结束，剩余次数不能挪用。两例通过后再验证真实改稿/终评及原15资格，不把人工参考当自动修复。
+2026-09-23：用户“确认继续”后，6c3a3db / CI35835943718三项成功上执行v2。首例正常完整返回95/pass、无issue，再次漏掉block27知识检索日期；block14可选建议的数值正确，但来源9/13实际是补刀统计。host拒绝并停止，第二例未发；该批execute入口已关闭。引用字段修复已生效，但不足以保证真实审查；不能再报“日期已经修好”。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。按日期诊断文档的“方法级决策”完成来源事实与模型分析职责的离线方案核查：复用已有Evidence/Knowledge数据，评估让程序生成可确定的来源信息并保留模型分析和完整语义审查。必须先证明不隐藏正文矛盾、不偷换历史报告、兼容生成/改稿/终评及5调用预算；这只是待核查方案，不是已采用修法。不再准备v3字段变体或原样付费重试，当前没有待执行新付费计划。
+- 最新实测及诊断：13768输入+3345输出=17113tokens，其中4992缓存输入已含总输入，未知0；按全部未缓存估价0.203804元（非账单）。模型147.797秒正常完成，含host批耗时189.016秒。请求与预检一致，与v1仅citation.retrievals及派生catalog摘要不同；政策、正文、其余事实、工具一致。知识26—30均携带9月23日检索时间，故排除丢字段/传错稿/编号偏移/预算失败。v1检出、v2漏检是两个观察，不证明新增字段导致退化或任何稳定率。12份原文件hash与独立审查见golden_knowledge_time_citation_result_6c3a3db.json。
 - 本次实测：执行883c23e / CI35832963559三项通过；1次正常完整tool_calls，13578输入+4378输出=17956tokens、未知0，估价0.231208元，含host审查380.610秒。唯一issue的日期判断正确，block8/11为非阻断建议；选中26—30只有文档更新时间，真正检索记录位于25。编号没有错位，问题是选中的来源缺少时间依据，不是断流、耗尽或再次漏检。12份原文件hash及独立来源审查见golden_knowledge_time_result_883c23e.json，原失败不改。
 - 本次工程证据：共享citation_retrieval_fields只按chunk归属关联provider/time，保留重复与null；顶层记录继续保留空检索。真实反例离线解析26—30已有对应时间，缓存/过期/混合未知、生成上下文、实际组装的五次模拟路径及旧15输入hash回归通过。两个活动manifest同步，默认产品未切换。更新指纹时误用native构造器处理role组合已被测试拦截并修正；Luna服务404未执行独立审查，主Agent接手复核。公开CI状态以对应提交及progress为准。
 - 实际接线：build_role_coach_application / ROLE_COACH_CONTRACT 1.5.0；Flash/high生成、工具与一次改稿，GLM/high首评、重评与终评。全任务一个预算、一套全局序号，逐模型观察/定价、双传输原回执、可信Trace、来源投影、Memory/RAG/Evidence沿用原应用。新资产flash_glm_review_v1及资格绑定原15输入，旧默认不切换。

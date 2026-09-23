@@ -94,6 +94,7 @@ def test_sdk_wire_uses_glm_high_and_bound_request_without_network():
 
 @pytest.mark.parametrize('failure', ['approval', 'ci', 'existing_batch'])
 def test_execution_stops_before_credentials_or_calls(monkeypatch, tmp_path, failure):
+    monkeypatch.setattr(runner, 'LIVE_STATUS', 'bounded_development_after_exact_ci')
     variants, plan = runner.prepare()
     monkeypatch.setattr(runner, 'prepare', lambda: (variants, plan))
     output = tmp_path / 'batch'
@@ -114,3 +115,18 @@ def test_execution_stops_before_credentials_or_calls(monkeypatch, tmp_path, fail
     }[failure]):
         runner.run(args)
     assert not output.exists() or not list(output.iterdir())
+
+
+def test_failed_batch_cannot_restart_with_old_approval_or_an_empty_directory(monkeypatch, tmp_path):
+    saved = json.loads((runner.ROOT / 'data/evaluation/results/golden_knowledge_time_preparation_v2.json').read_text(encoding='utf-8'))
+    def forbidden(*args, **kwargs):
+        raise AssertionError('Closed batch must stop before preparation or external checks')
+    monkeypatch.setattr(runner, 'prepare', forbidden)
+    monkeypatch.setattr(runner, 'verify_public_ci', forbidden)
+    output = tmp_path / 'fresh-checkout'
+    monkeypatch.setattr(runner, 'RUN_DIRECTORY', output)
+    args = runner.parser().parse_args(['--execute', '--approval-plan-sha', saved['preparation_plan_sha256'],
+        '--ci-run', '35835943718'])
+    with pytest.raises(ValueError, match='citation_semantic_failure_requires_method_review'):
+        runner.run(args)
+    assert not output.exists()

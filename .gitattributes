@@ -65,6 +65,7 @@
 /data/evaluation/datasets/golden_knowledge_time_retrievals_v1.json text eol=lf
 /data/evaluation/results/golden_knowledge_time_preparation_v1.json text eol=lf
 /data/evaluation/results/golden_knowledge_time_result_883c23e.json text eol=lf
+/data/evaluation/results/golden_knowledge_time_citation_result_6c3a3db.json text eol=lf
 /data/evaluation/results/golden_knowledge_time_preparation_v2.json text eol=lf
 /examples/runtime_profiles/flash_glm_review_v1/prompt_programs/recent-form-review/manifest.json text eol=lf
 /examples/runtime_profiles/flash_v2_native/prompt_programs/recent-form-review/manifest.json text eol=lf
