@@ -56,3 +56,7 @@
 
 # Pin the prepared role-batch request and plan bytes before any real execution.
 /data/evaluation/results/role_flash_glm_review_preflight_20260923_v1/** text eol=lf
+
+# Preserve the public projections of the completed role-development observations.
+/data/evaluation/results/golden_flash_source_pair_result_346213c.json text eol=lf
+/data/evaluation/results/golden_role_application_result_346213c.json text eol=lf

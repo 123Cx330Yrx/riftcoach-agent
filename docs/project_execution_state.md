@@ -11,12 +11,13 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-23：用户已明确采用ADR0109，实际opt-in审查分工已接入应用；离线核验和具体实测预检已完成，新提交公共三项核验及新增付费确认后进入有界真实验证。两例固定报告审查已获得证据；同输入Flash对照、真实混合整链及完整资格尚未通过。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。按next-batches.json完成新提交公共三项核验和具体新增批次授权，随后验证相同显式ID正负输入和真实Agent生成/工具/必要改稿/终评；遇最早实质失败停止后续批并诊断，不重开旧诊断，不拼旧成功授予准入。
+2026-09-23：用户批准的新两项实测已完成。Flash相同输入正负控制均通过；真实混合Agent完成生成/知识工具/GLM审查/同源文件发布，但人工复核发现知识检索日期漏检，报告质量不通过。实际5调用，未追加付费请求；分工优越性与完整资格仍未证明。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。按docs/plans/2026-09-23-role-live-evidence-and-knowledge-time.md处理真实报告的知识来源时间归属：核对工具时钟/缓存及KnowledgeEvidence到生成、审查的同源元数据，完成最小离线修复与回归，再准备具体新实测；不原样重试、不用人工参考改文冒充自动修复，不先推进未满足的15例及产品准入。
 - 实际接线：build_role_coach_application / ROLE_COACH_CONTRACT 1.5.0；Flash/high生成、工具与一次改稿，GLM/high首评、重评与终评。全任务一个预算、一套全局序号，逐模型观察/定价、双传输原回执、可信Trace、来源投影、Memory/RAG/Evidence沿用原应用。新资产flash_glm_review_v1及资格绑定原15输入，旧默认不切换。
 - 工程验证：实际组装的离线正常五次路径可发布；恢复耗尽、错模型/传输/回执拒绝。observed身份、同源Evidence、追踪持久化及已知/未知费用边界受检；预算停止后不暴露旧成功回执。新旧活动指纹一并维护，历史资格/失败不改。最终本机与公共检查见progress。离线不证明真实语义可靠。
-- 具体预检：data/evaluation/results/role_flash_glm_review_preflight_20260923_v1/next-batches.json绑定两份Flash对照及role-development-20260923-v1真实应用；≤7次/1500秒，保守未缓存估价4.7638256元，尚未授权支出。应用预检hash绑定run-id、固定来源时间及首请求；初评通过不算改稿已验证。
-- 本包边界：没有新增付费请求；原GLM两次诊断已结束。审查分工采用不等于质量准入，仍缺同输入Flash对照、真实Flash改稿/GLM终评、同版本原15输入、Worker/DB/API/Workbench真实消费和8E其余退出项。
+- 新实测：346213c / CI35814004366三项通过；用户“允许，继续吧”后，Flash原错误稿84/needs_revision、正确稿95/pass，四条advisory逐项核对均为非阻断建议。两个请求与旧GLM诊断内容完全相同，因此不能称GLM已对照证明更优。结果golden_flash_source_pair_result_346213c.json保留22份原文件hash。
+- 实际应用：role-development-20260923-v1真实Flash生成两调用并执行三次knowledge.search，GLM一调用96/pass，开发目录published；生成稿/draft/final同字节，审查全文、Evidence读回、逐模型Trace与回执核算均一致。人工不接受block27“知识检索时间2026-09-10”：引用仅提供updated_at=2026-07-23，真实未缓存检索发生9月23日。原始结果保持，独立host记needs_revision。不是断流/预算失败，也未证明增加时间字段即可修好；详见golden_role_application_result_346213c.json及诊断文档。
+- 本批用量和边界：实际2+3=5调用，输入56241+输出12230=68471tokens，未知0，全未缓存价估算0.2303468元；两项任务已结束，不挪用未用满上限启动其他试验。真实混合应用初评直接通过，revision_exercised=false；observed空Memory不证明长期记忆召回。仍缺日期漏检修复、真实Flash改稿/GLM终评、同版本原15输入、Worker/DB/API/Workbench真实消费和8E其余退出项。默认产品未切换。
 - 0c061b2 / CI35752331153公共三项通过后，两例完整返回并经host逐项核对：原错误稿80/needs_revision，仅block14，sources31/1/14/10/18支持原意及修正建议；正确稿97/pass、无issue/advisory。2次输入24453+输出4483=28936tokens、未知0，缓存2368已含输入，按全未缓存价估算0.321148元；流耗时48.062/28.235秒，含host批耗时230.515秒。20份原JSON/hash、回执和人工来源审查见golden_explicit_source_pair_result_0c061b2.json。无早期死亡建议输出，不能单独认定旧advisory错引已复现修好；两例不证明稳定率或变更因果。
 - 编号全路径核查：表格生产index+1、恢复index-1、source_roots及解析均一致，并非程序错位。歧义来自模型侧bare evidence_keys数组。离线适配替换为同ID的evidence_by_id对象及一句读取说明，首评/重评/改稿严格往返，完整坏意见及原hash保留；OP.GG零基物理路径不改。两控制经真实SDK MockTransport确认只有这两处消息变化；原失败仍拒绝，建议的错引不能统一+1修好。证据golden_explicit_source_projection_v1.json；未改产品指纹或注册新产品候选。
 - b6b30f8 / CI35747690218三项通过后，批准的首例完整tool_calls，82/needs_revision，一问题一建议，56.406秒。文本检出正确且未把上下文建议升级阻断，但semantic_source_id_unknown；1次输入12149+输出3480=15629tokens、未知0，按单价估算0.194632元。未耗尽/超时，第二例未发，不能称正反配对成功。完整8份原工件/hash、请求身份、逐项来源及独立算术见golden_review_model_comparison_result_b6b30f8.json。

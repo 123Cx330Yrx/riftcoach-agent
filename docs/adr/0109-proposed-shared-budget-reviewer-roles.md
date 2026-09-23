@@ -5,6 +5,39 @@ Default product remains GLM-5.3-flash/high until qualification. The user adopted
 the role proposal on 2026-09-23 (requirements_change_log); no completed diagnostic
 batch is reopened and no production admission is granted by this record. This decision concerns product models, unrelated to Codex Luna.
 
+## 2026-09-23: approved live integration observation completed
+
+On clean `346213c` / CI `35814004366`, the user-approved two-batch plan used
+five calls in total. Both identical-input Flash controls were accepted by the
+host: the original attribution error received 84/needs_revision; the corrected
+complete report received 95/pass with four supported, nonblocking advisories.
+These paired observations do **not** demonstrate that GLM outperforms Flash.
+The adopted composition remains a candidate; no performance ranking is inferred.
+
+The actual application used two Flash generation calls, three real local
+knowledge searches and one GLM review. The original GLM response was 96/pass,
+and the development application wrote its report/Evidence files successfully.
+Report bytes, complete review input, file publication readback and per-model
+Trace/receipt accounting were verified. No revision occurred; populated Memory,
+Worker/DB/API/Workbench consumption and original-15 qualification are unproven.
+
+Independent host review rejects the report's block27 knowledge-retrieval date:
+it says 2026-09-10, while K1-K5 supply only document updated_at=2026-07-23 and
+the actual uncached searches occurred on 2026-09-23. The raw pass/published
+receipts remain unchanged. This is an unsupported source-time claim missed by
+review, not transport failure or exhausted output/time budgets. The generation
+and review inputs preserved the supplied knowledge metadata; actual query time
+exists in the Trace but is not provided as knowledge provenance to the models.
+Neither an internal model cause nor the sufficiency of adding metadata is proven.
+
+The two tasks used 68,471 tokens with zero unknown-usage calls and an all-input
+uncached estimate of CNY0.2303468 (not a vendor bill). No new paid retry followed.
+Original responses, source audit, private-field-safe public projections and a
+host-only minimal reference edit are in `golden_flash_source_pair_result_346213c.json`
+and `golden_role_application_result_346213c.json` under `data/evaluation/results/`.
+The reference is not a model revision or qualification result. Diagnosis and the
+next work package are in `docs/plans/2026-09-23-role-live-evidence-and-knowledge-time.md`.
+
 ## Problem and evidence
 
 The Agent must turn a player request into a sourced report, detect material
