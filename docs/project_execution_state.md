@@ -11,13 +11,14 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-24：核心来源时间漏检仍未证明修好，默认产品未切换，8E未完成。上一失败批已归档于4c3cfd96，公共CI35890999453三项成功；这仅证明归档与工程检查，不是语义修复。
+2026-09-24：已修复一个实际资料投影缺口；模型来源漏检的通用修法仍未证明，默认产品未切换，8E未完成。
 
-- 最新实测仍为Flash日期审查v2：061482e7 / CI35851847210，64.938秒完整95/pass，两处日期均漏检；1次16169tokens、未知0、估价0.0177372元。更早独立整稿编辑300秒无正文，1次用量费用未知。两批均关闭、第二例未发，不能把已知估价当合计费用。完整回执见golden_flash_knowledge_time_review_result_v2.json与golden_independent_edit_result_58449abb.json。
-- 本次选择能力原型：保留动态工具与GLM完整首评，在一次Flash编辑机会中核验来源并提交明确替换/空操作，再完整终评。正常2+1+1+1保持五调用；尚未采用新产品控制流。额外专审会变六调用，替代首评会推迟业务错误发现，强制预取会改变Agent动态检索，故均未选。详见ADR0110。
-- 实现与复核：原子应用、未知引用/重叠拒绝、真实章节顺序、实际成稿完整终评容量和输入身份已检查。独立审查发现的标题及容量缺口已修复并定点复核。离线两处操作重建参考、原15全文保持；错误keep保留旧错误pass，未赋语义资格。五调用384350tokens仅容量样本，生成部分用历史尺寸，耗时仍未知。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。冻结并在同提交公共CI后执行来源编辑两例能力检查，最多2次/600秒/156506tokens、上界估价0.2562768元，沿用当前连续授权；首例失败立即停。无首评意见入模，仅验证来源补漏/正确稿keep。通过才继续实际成稿GLM完整终评与显式pass后状态机；失败不排列提示变体。新实现目前Provider请求0。
-- ADR0109实际角色候选已接线：Flash/high生成/工具/改稿，GLM/high首评/重评/终评，一个共享预算；曾完成真实2生成+1首评，但96/pass漏检后由host拒绝，没有真实编辑/终评资格。原“正确参考”的第二处OP.GG无据日期已修正并独立全文核验，见golden_source_time_reference_audit_v2.json，不能计作模型改稿。来源时间传播修复已接入活动候选，默认产品不变。
+- 最新真实结果：e7bfc42b / CI35893267211三项成功后，Flash显式编辑47.187秒完整返回，仅把知识日期改为9月23；来源25—30支持且其余全文保持，但OP.GG日期仍无送达依据。host拒绝，第二例与GLM终评未发，未采用新状态机。1次14984tokens、未知0、估价0.0161852元；12份原件/hash见golden_source_patch_pair_result_v1.json，execute已关闭。
+- 确切工程诊断：原应用evidence_bundle含两条OP.GG自身9月10日检索时间，source_context在排除过期指标时只留digest/reason，误把来源元数据也丢掉。日期与上游相符，但旧模型输入不能支持它；旧无据断言裁决保留，不称客观日期错误或模型内部根因已明。
+- 已修复：omitted_opgg保留各条自身来源、位置、检索/过期/来源生成时间、版本和未知值，仍不提供过期或不匹配的指标、分级/胜率和推荐许可。生成/审查/修订/落盘沿同一来源文档。两个活动manifest已同步，原15与旧失败不改。真实旧bundle离线复放及59项相关测试通过，独立审查无阻断；见golden_omitted_source_metadata_audit_v1.json。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。同提交公共CI后执行一次修正资料合同的现有角色应用，自然检索、生成、审查并落盘；逐项host审查全文、所有问题/建议引用和回执。冻结计划golden_role_source_metadata_preparation_v1.json，5次/401920tokens/900秒、单次32768/300秒，估价上界4.5088768元；当前连续授权覆盖，失败不追加任务。没有采用失败编辑路线、切默认或取得原15资格。
+- 历史失败分开计：Flash日期审查v2为1次16169tokens、未知0、估价0.0177372元；更早整稿编辑300秒无正文为1次用量费用未知。两批均关闭，未知费用不能并入已知总费用。详见各原结果和ADR0110。
+- ADR0109角色应用仍为Flash/high生成/工具/改稿，GLM/high完整审查，共享原预算。原真实2生成+1首评曾96/pass而被host拒绝。显式编辑原型能力失败，正式pass后状态机未实现；真实编辑/终评、原15、真实消费和后续四块产品闭环仍未完成。
 
 活动工作卡：`.planning/2026-08-06-riftcoach-development/task_plan.md`。
 执行方法：`docs/plans/2026-09-22-agent-delivery-method.md`。

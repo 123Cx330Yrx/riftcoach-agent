@@ -41,6 +41,48 @@ def test_unrelated_positions_champions_and_expired_meta_do_not_supply_facts():
     assert expired["opgg"] == [] and expired["omitted_opgg"][0]["reason"] == "not_usable_at_execution"
 
 
+@pytest.mark.parametrize("excluded", ["expired", "other_position", "other_champion"])
+def test_excluded_source_provenance_survives_without_metrics_or_borrowed_dates(excluded):
+    value = summary()
+    # Deliberately differs from patch/static and from the second Meta record.
+    meta = replace(_meta(), retrieved_at=NOW-timedelta(days=2), expires_at=NOW-timedelta(days=1))
+    reason = "not_usable_at_execution"
+    if excluded != "expired":
+        meta = replace(meta, expires_at=NOW+timedelta(hours=1))
+        reason = "no_matching_observed_champions"
+        meta = (replace(meta, position="support") if excluded == "other_position" else
+                replace(meta, facts=(replace(meta.facts[0], champion="Anivia"),)))
+    other = replace(meta, retrieved_at=meta.retrieved_at-timedelta(hours=3),
+                    expires_at=meta.expires_at-timedelta(minutes=5))
+    bundle = summary_to_evidence(value, routing_region="asia", now=NOW, observed_at=NOW,
+        data_dragon=_static(), official_patch=_patch(), meta_evidence=(meta, other)).bundle
+    context = source_context(bundle, position_context(value))
+    assert context["opgg"] == []
+    by_digest = {row["digest"]: row for row in context["omitted_opgg"]}
+    assert len(by_digest) == 2
+    for original in (meta, other):
+        row = by_digest[original.digest]
+        assert row["retrieved_at"] == original.retrieved_at.isoformat()
+        assert row["expires_at"] == original.expires_at.isoformat()
+        assert row["position"] == original.position and row["source"] == "opgg"
+        assert row["provenance"] == original.provenance.value
+        assert row["upstream_patch"] is None and row["source_generated_at"] is None
+        assert row["reason"] == reason and row["facts_available"] is False
+        assert not {"facts", "win_rate", "rank", "tier", "allowed_uses"} & row.keys()
+
+
+def test_omitted_metadata_retains_known_upstream_identity_without_enabling_facts():
+    from app.meta.models import MetaProvenance
+    meta = replace(_meta(), provenance=MetaProvenance.COMPLETE, upstream_patch="15.16",
+        source_generated_at=NOW-timedelta(hours=1))
+    context = source_context(projection(summary(), meta=meta, now=NOW+timedelta(hours=1)).bundle,
+                             position_context(summary()))
+    omitted, = context["omitted_opgg"]
+    assert omitted["upstream_patch"] == "15.16"
+    assert omitted["source_generated_at"] == meta.source_generated_at.isoformat()
+    assert omitted["facts_available"] is False and context["opgg"] == []
+
+
 def test_renderer_rejects_different_bundle_identity():
     value = summary()
     with pytest.raises(ValueError, match="identity_mismatch"):

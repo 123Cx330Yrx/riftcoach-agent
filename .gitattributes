@@ -90,3 +90,6 @@
 /data/evaluation/results/golden_source_patch_preparation_v1.json text eol=lf
 /data/evaluation/results/golden_source_patch_feasibility_v1.json text eol=lf
 /data/evaluation/results/golden_source_patch_pair_result_v1.json text eol=lf
+/data/evaluation/results/golden_omitted_source_metadata_audit_v1.json text eol=lf
+/data/evaluation/results/golden_role_source_metadata_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_role_source_metadata_result_v1.json text eol=lf

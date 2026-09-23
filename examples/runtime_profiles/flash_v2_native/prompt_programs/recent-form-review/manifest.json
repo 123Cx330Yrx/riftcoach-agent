@@ -102,7 +102,7 @@
     {
       "component_id": "app.evaluation.golden_source_context",
       "source": "app/evaluation/golden_source_context.py",
-      "sha256": "2103ec35ebd02ebde3ce32db1c686a1e41f7d727ee6b610c4597f1f28bdffd28"
+      "sha256": "bf5a792ec5e43c74057bb187f7802d6538151934ba12221d5dba96b251f1c7f4"
     },
     {
       "component_id": "app.product.coach_positions",
@@ -150,5 +150,5 @@
       "sha256": "94fa4ed248628f0801ff83a999a6c14e54464b838ed11e453f718c448502ef0d"
     }
   ],
-  "program_sha256": "5fc2949cfcb4909cb1e5241bf5dbb3acf31b1e4b8c76ef86110abea1f740de1f"
+  "program_sha256": "a6e6dc2bfd672941f7f865c970f9aa79a802a5ca955deeaa6f802004243f3594"
 }

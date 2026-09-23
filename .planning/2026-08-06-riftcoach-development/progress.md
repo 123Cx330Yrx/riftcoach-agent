@@ -1,3 +1,13 @@
+# 2026-09-24 显式编辑只修一处；确认并修复来源元数据投影缺口
+
+e7bfc42b / CI35893267211三项成功后，Flash首例47.187秒完整tool_calls，仅修知识日期9/10→9/23，来源25—30完整支持、其余全文逐字保持。OP.GG9/10仍无送达依据，reason也将它当成已知；host拒绝且第二例未发。1次12885+2099=14984tokens，未知0，估价0.0161852元，含host84.39秒。12份公开原件/hash和独立审查导出golden_source_patch_pair_result_v1.json，execute关闭。冻结plan用执行提交原manifest重建确认005b87be…5b20a，未把更新候选身份写回旧计划。没有GLM终评/产品新控制流。
+
+继续追到原evidence_bundle：两个同digest OP.GG确有自身9月10日检索时间，但source_context排除过期指标时连时间/范围也删掉。已修为omitted元数据独立保留，过期/位置或英雄不匹配指标保持不可用，未知版本/生成时间不猜。两个活动manifest同步。原bundle回放只改变omitted，见golden_omitted_source_metadata_audit_v1.json；旧实际请求的无据断言仍失败，不能说上游日期客观错误或模型内部机制已确定。
+
+59项来源投影、native/role实际组装及开发/停批相关测试通过，独立审查无阻断。新增role测试最初误用空Meta fixture已改用真实过期记录；旧批冻结测试在候选变更后重建历史身份而非覆写原快照。未对旧错误输入再付费加提示。
+
+下一动作冻结为一次现有role application验证新资料合同：role-development-20260924-source-metadata-v1，source_now和hash见golden_role_source_metadata_preparation_v1.json。最多5次/401920tokens/900秒，估价上界4.5088768元，公共CI后沿用连续授权；实际全文/引用/来源链/用量独立审查后再裁决，不以published替代质量验收。失败不追加任务，未采纳显式编辑路线。
+
 # 2026-09-24 来源核验与显式编辑原型准备
 
 上一失败归档4c3cfd96的CI35890999453三项成功。沿真实动态工具和KnowledgeEvidence接线排除强制预取替代，选择先验证一次Flash编辑内核来源并产出明确替换/keep，保留GLM完整首评/终评、五调用和900秒合同。未采用新产品状态机，未新增Provider调用。

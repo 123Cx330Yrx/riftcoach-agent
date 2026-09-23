@@ -58,8 +58,12 @@ def test_preparation_offline_bound_to_complete_controls_and_frozen_hash(monkeypa
         return original(path, *args, **kwargs)
     monkeypatch.setattr(Path, "read_text", read)
     monkeypatch.setattr(socket.socket, "connect", lambda *_: pytest.fail("network"))
-    _, plan = runner.prepare()
     frozen = json.loads((runner.ROOT / "data/evaluation/results/golden_source_patch_preparation_v1.json").read_text(encoding="utf-8"))
+    # This batch is closed. Rebuild its historical candidate identity instead
+    # of silently relabelling it when the active product manifest evolves.
+    import scripts.run_knowledge_time_review_pair as source_plan
+    monkeypatch.setattr(source_plan, "candidate_identity", lambda: frozen["preparation_plan"]["source_candidate"])
+    _, plan = runner.prepare()
     assert frozen == dict(preparation_plan=plan, preparation_plan_sha256=digest(compact(plan)))
     assert plan["proposed_diagnostic_budget"]["max_calls"] == 2
     assert not plan["labels_sent_to_model"] and not plan["prior_reviews_sent_to_model"]

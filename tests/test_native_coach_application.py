@@ -236,12 +236,20 @@ def test_publication_sources_reach_generation_review_and_saved_evidence(tmp_path
     assert external['data_dragon']['catalog_digest'] == _static().catalog_digest
     assert bool(external['opgg']) is not expired
     assert bool(external['omitted_opgg']) is expired
+    if expired:
+        omitted, = external['omitted_opgg']
+        assert omitted['retrieved_at'] == meta.retrieved_at.isoformat()
+        assert omitted['expires_at'] == meta.expires_at.isoformat()
+        assert omitted['facts_available'] is False and 'facts' not in omitted
     requests = factory.providers[ctx.run_id].requests
     for request in requests:
         content = ''.join(m.content or '' for m in request.messages)
         assert manifest.bundle.bundle_digest in content
         assert _patch().source_digest in content and _static().catalog_digest in content
         assert meta.digest in content
+        if expired:
+            assert meta.retrieved_at.isoformat() in content
+            assert meta.expires_at.isoformat() in content
     evaluation_source = requests[-1].messages[-1].content
     assert line in evaluation_source
     assert result.evidence_projection.bundle.digest == manifest.bundle.bundle_digest

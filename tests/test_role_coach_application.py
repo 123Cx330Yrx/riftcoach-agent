@@ -151,6 +151,7 @@ def test_role_observed_task_preserves_memory_identity_and_evidence_store(tmp_pat
     from app.players.models import RelationshipRole
     from app.product.recent_review import ConversationRecentReviewRequest
     from tests.test_evidence_publication import context, sources
+    from tests.test_evidence_fusion_vertical import _meta
     from tests.test_memory_aware_context_builder import FakeRepository, FakeManifestStore, binding
     factory = Factory()
     summary = SummaryBuilder(factory.descriptor.generator.req.player_summary)
@@ -164,7 +165,7 @@ def test_role_observed_task_preserves_memory_identity_and_evidence_store(tmp_pat
     app = build_role_coach_application(summary_builder=summary, provider_factory=factory,
         knowledge_provider=LocalHybridKnowledgeProvider.from_directory(Path('data/rag_docs')),
         runs_root=tmp_path, memory_repository=repo, memory_manifest_store=FakeManifestStore(),
-        publication_sources=replace(sources(), now=datetime(2026, 9, 23, tzinfo=timezone.utc)),
+        publication_sources=replace(sources(meta_evidence=(_meta(),)), now=datetime(2026, 9, 23, tzinfo=timezone.utc)),
         publication_writer=store)
     result = app.review_by_puuid(ConversationRecentReviewRequest(count=5, queue=420), puuid='private',
         routing_region='asia', game_name='DK ShowMaker', tag_line='KR1', run_id=ctx.run_id,
@@ -172,9 +173,23 @@ def test_role_observed_task_preserves_memory_identity_and_evidence_store(tmp_pat
     assert result.publication_status.value == 'published', result
     manifest = store.read(ctx)
     assert manifest.report is not None and repo.calls == [memory]
+    from app.evaluation.golden_contextual_sources import MARKER
+    saved_context = (tmp_path/ctx.run_id/'inputs/deterministic_report.md').read_text(encoding='utf-8')
+    external = json.loads(next(line[len(MARKER):] for line in saved_context.splitlines() if line.startswith(MARKER)))
+    assert external['opgg'] == [] and external['omitted_opgg']
+    omitted = {row['digest']: row for row in external['omitted_opgg']}
+    for original in result.evidence_projection.bundle.meta_evidence:
+        row = omitted[original.digest]
+        assert row['retrieved_at'] == original.retrieved_at.isoformat()
+        assert row['expires_at'] == original.expires_at.isoformat()
+        assert row['facts_available'] is False and 'facts' not in row
     pending = store.read_pending_snapshot(ctx)
     assert pending.owner_id == ctx.owner_id and pending.task_id == ctx.task_id and pending.run_id == ctx.run_id
     provider = factory.providers[ctx.run_id]
+    for request in (*provider.generator.requests, *provider.reviewer.requests):
+        content = ''.join(message.content or '' for message in request.messages)
+        for row in omitted.values():
+            assert row['digest'] in content and row['retrieved_at'] in content and row['expires_at'] in content
     payloads = [json.loads(m.content)["data"] for m in provider.generator.requests[1].messages
         if m.role.value == "tool"]
     assert len(payloads) == 5 and all(p["retrieved_at"].endswith("Z") for p in payloads)
