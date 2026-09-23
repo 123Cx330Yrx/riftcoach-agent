@@ -18,6 +18,10 @@ def test_comparison_preserves_actual_glm_request_and_only_repairs_reference_repo
         assert "data/runs/" not in path.as_posix() and path.name != ".env"
         return read(path, *args, **kwargs)
     monkeypatch.setattr(Path, "read_text", offline)
+    frozen = json.loads((runner.ROOT / "data/evaluation/results/golden_flash_knowledge_time_review_preparation_v2.json").read_text(encoding="utf-8"))
+    # Replay the closed batch's identity, not the evolving active candidate.
+    import scripts.run_knowledge_time_review_pair as source_plan
+    monkeypatch.setattr(source_plan, "candidate_identity", lambda: frozen["preparation_plan"]["source_candidate"])
     variants, plan = runner.prepare()
     original, original_plan = runner.prepare_original()
     historical = json.loads(runner.PREDECESSOR.read_text(encoding="utf-8"))
@@ -48,7 +52,6 @@ def test_comparison_preserves_actual_glm_request_and_only_repairs_reference_repo
     assert not plan["original_glm_reference_call_sent"] and not plan["production_admitted"]
     assert plan["proposed_diagnostic_budget"]["max_calls"] == 2
     assert plan["proposed_diagnostic_budget"]["max_seconds_total"] == 600
-    frozen = json.loads((runner.ROOT / "data/evaluation/results/golden_flash_knowledge_time_review_preparation_v2.json").read_text(encoding="utf-8"))
     assert frozen == dict(preparation_plan=plan, preparation_plan_sha256=digest(compact(plan)))
 
 

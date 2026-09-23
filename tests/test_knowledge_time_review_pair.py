@@ -24,6 +24,9 @@ def test_pair_changes_only_attributable_times_and_single_reference_edit(monkeypa
         raise AssertionError('offline preparation cannot use network')
     monkeypatch.setattr(Path, 'read_text', read)
     monkeypatch.setattr(socket, 'create_connection', no_network)
+    saved = json.loads((runner.ROOT / 'data/evaluation/results/golden_knowledge_time_preparation_v2.json').read_text(encoding='utf-8'))
+    # Historical evidence stays bound to the candidate that issued it.
+    monkeypatch.setattr(runner, 'candidate_identity', lambda: saved['preparation_plan']['candidate'])
     variants, plan = runner.prepare()
     original = json.loads(runner.EVIDENCE.read_text(encoding='utf-8'))
     old = REQUEST.validate_json(compact(original['public_json_contents']['transport/review/request-003.json']))
@@ -45,7 +48,6 @@ def test_pair_changes_only_attributable_times_and_single_reference_edit(monkeypa
     assert all(cell['expected_host_only'] not in compact(REQUEST.dump_python(v[2], mode='json'))
         for v, cell in zip(variants, plan['cells'], strict=True))
     assert runner.prepare()[1] == plan
-    saved = json.loads((runner.ROOT / 'data/evaluation/results/golden_knowledge_time_preparation_v2.json').read_text(encoding='utf-8'))
     assert saved['preparation_plan'] == plan
     assert saved['preparation_plan_sha256'] == digest(compact(plan))
     assert plan['provider_requests'] == 0 and not plan['production_admitted']

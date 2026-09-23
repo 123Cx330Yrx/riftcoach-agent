@@ -1,5 +1,7 @@
 # 2026-09-24 显式编辑只修一处；确认并修复来源元数据投影缺口
 
+补充公共检查：7e85c4f9 / CI35895770676的数据库与打包通过，pytest为2失败/4682通过/154跳过/129子用例通过。两个失败均为已关闭knowledge/Flash批的测试拿当前候选identity重建旧冻结plan；我在处理source_patch同类问题时漏查这两项，是回归范围遗漏。现两项均绑定各自历史candidate并保留原请求/hash、报告、事实及停批断言；没有改历史JSON、模型输入或产品标准。已检索同类冻结测试，最终26项相关旧/新批边界检查通过；真实新应用仍0调用，等待修正提交的公共CI。
+
 e7bfc42b / CI35893267211三项成功后，Flash首例47.187秒完整tool_calls，仅修知识日期9/10→9/23，来源25—30完整支持、其余全文逐字保持。OP.GG9/10仍无送达依据，reason也将它当成已知；host拒绝且第二例未发。1次12885+2099=14984tokens，未知0，估价0.0161852元，含host84.39秒。12份公开原件/hash和独立审查导出golden_source_patch_pair_result_v1.json，execute关闭。冻结plan用执行提交原manifest重建确认005b87be…5b20a，未把更新候选身份写回旧计划。没有GLM终评/产品新控制流。
 
 继续追到原evidence_bundle：两个同digest OP.GG确有自身9月10日检索时间，但source_context排除过期指标时连时间/范围也删掉。已修为omitted元数据独立保留，过期/位置或英雄不匹配指标保持不可用，未知版本/生成时间不猜。两个活动manifest同步。原bundle回放只改变omitted，见golden_omitted_source_metadata_audit_v1.json；旧实际请求的无据断言仍失败，不能说上游日期客观错误或模型内部机制已确定。
