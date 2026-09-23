@@ -26,7 +26,7 @@ def component_fingerprints(skill):
     from app.evaluation import golden_native_issues_review as native
     from app.evaluation.prompt_context_identity import build_component_fingerprints, ComponentFingerprint
     common = {'skill_manifest', 'skill_instructions', 'context_contract', 'knowledge_tool_contract'}
-    rows = [r for r in build_component_fingerprints(skill, evaluation_contract_version='1.1.0')
+    rows = [r for r in build_component_fingerprints(skill, evaluation_contract_version='1.1.0', knowledge_retrieval_time=True)
             if r.component_id in common]
     root = Path(__file__).resolve().parents[2]
     sources = (
@@ -43,6 +43,13 @@ def component_fingerprints(skill):
         'app/product/recent_review_service.py',
         'app/evaluation/golden_source_context.py',
         'app/product/coach_positions.py',
+        'app/tools/adapters/knowledge.py',
+        'app/harness/steps.py',
+        'app/harness/knowledge.py',
+        'app/harness/adapters.py',
+        'app/harness/runtime.py',
+        'app/agent/context.py',
+        'app/runtime/runtime.py',
     )
     values = {'evaluation_schema': json.dumps(native.NativeIssuesReview.model_json_schema(), sort_keys=True),
               'generation_policy': generation_policy()}

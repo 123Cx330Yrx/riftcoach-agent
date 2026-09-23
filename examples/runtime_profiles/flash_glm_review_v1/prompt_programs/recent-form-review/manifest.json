@@ -26,8 +26,8 @@
     },
     {
       "component_id": "knowledge_tool_contract",
-      "source": "app.tools.adapters.knowledge:knowledge.search@2.0.0",
-      "sha256": "4d25336b47105a430a8f5a3eb0068c2fcb601ac0a769c9e73ec5c8a429770fdc"
+      "source": "app.tools.adapters.knowledge:knowledge.search@2.1.0",
+      "sha256": "d191445af1d0a93e67e8f0d72f097af2042d2c1a90502a52e1503a53f319f109"
     },
     {
       "component_id": "evaluation_schema",
@@ -87,7 +87,7 @@
     {
       "component_id": "app.runtime.native_coach_contract",
       "source": "app/runtime/native_coach_contract.py",
-      "sha256": "0297ab4fe8c1b51d74046d1f16f2babce891d000180e16639c2a873058ad3730"
+      "sha256": "b56924300b78364926e17816b0652d629d920efdaef266f03ce09e71a43582d5"
     },
     {
       "component_id": "app.product.native_coach_composition",
@@ -108,6 +108,41 @@
       "component_id": "app.product.coach_positions",
       "source": "app/product/coach_positions.py",
       "sha256": "cb6d8ccc7944c8328d3f8dd4e420b0df70d53c3b7c0fd6594ab1ae6d2ea65e3c"
+    },
+    {
+      "component_id": "app.tools.adapters.knowledge",
+      "source": "app/tools/adapters/knowledge.py",
+      "sha256": "21ae0584e8683ea49d31886968c2de956c3e810b62211745f2ba140732802f44"
+    },
+    {
+      "component_id": "app.harness.steps",
+      "source": "app/harness/steps.py",
+      "sha256": "231e4f3e27e67aaa853f7aef90fc3206564a4a5222f2186fcbfb10c75a7cedb6"
+    },
+    {
+      "component_id": "app.harness.knowledge",
+      "source": "app/harness/knowledge.py",
+      "sha256": "467176417cf167d5bc26f2cb345aee3772ccafdc41f194a90631a73e8cf58311"
+    },
+    {
+      "component_id": "app.harness.adapters",
+      "source": "app/harness/adapters.py",
+      "sha256": "e6a00a9a92a350a5e4770adfdbb423814a281f4cdaefb706cabe7993da104ff5"
+    },
+    {
+      "component_id": "app.harness.runtime",
+      "source": "app/harness/runtime.py",
+      "sha256": "c2e240851eff48d44a49d5c588da1b498cf3c477b8f48ef8f200a6edf2dfde91"
+    },
+    {
+      "component_id": "app.agent.context",
+      "source": "app/agent/context.py",
+      "sha256": "d7a095f56d8194e80b841c3a4480a96747f374eaef0e4044a386d19b265ad14b"
+    },
+    {
+      "component_id": "app.runtime.runtime",
+      "source": "app/runtime/runtime.py",
+      "sha256": "dc6e8b6d268b35a86dc442ed1a2ede443143c3cd9e5bd9fc7ed919e999cdca9c"
     },
     {
       "component_id": "initial_review_policy",
@@ -200,11 +235,6 @@
       "sha256": "24c307dee84dcad7e68b0c6df2ac6921fcb7c8834e05c33c0780f99daa98658f"
     },
     {
-      "component_id": "app.runtime.runtime",
-      "source": "app/runtime/runtime.py",
-      "sha256": "357dfc88badb58de57cec82db1150dc9dd8c6ea65ea312d59b8f1ddc0a9c15a1"
-    },
-    {
       "component_id": "app.runtime.models",
       "source": "app/runtime/models.py",
       "sha256": "56133ca50ea9e9c27beb17a979d5ed342e8370552a727d74a7c873c7208d2dce"
@@ -220,5 +250,5 @@
       "sha256": "f15855c3c5cdbb3a579c5769fb07e731d2383efa07fd0d3deb785aee5536745d"
     }
   ],
-  "program_sha256": "9c0f03b4e5954aab5f89c20a8ca7f87a52e01bf83a6cd5f7d137e68fa5276568"
+  "program_sha256": "b291ba442fe849940a87d8700b68abbf8895d1335efeb8e54358664023dfdb56"
 }

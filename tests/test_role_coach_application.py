@@ -144,6 +144,7 @@ def test_role_full_output_reservations_fit_single_existing_task_budget(tmp_path)
 
 
 def test_role_observed_task_preserves_memory_identity_and_evidence_store(tmp_path):
+    import json
     from datetime import datetime, timezone
     from app.evidence.publication_store import FileEvidencePublicationStore
     from app.memory.context_models import MemoryContextSnapshot
@@ -174,12 +175,22 @@ def test_role_observed_task_preserves_memory_identity_and_evidence_store(tmp_pat
     pending = store.read_pending_snapshot(ctx)
     assert pending.owner_id == ctx.owner_id and pending.task_id == ctx.task_id and pending.run_id == ctx.run_id
     provider = factory.providers[ctx.run_id]
+    payloads = [json.loads(m.content)["data"] for m in provider.generator.requests[1].messages
+        if m.role.value == "tool"]
+    assert len(payloads) == 5 and all(p["retrieved_at"].endswith("Z") for p in payloads)
+    for review_request in (provider.reviewer.requests[0], provider.generator.requests[-1], provider.reviewer.requests[-1]):
+        knowledge = body(review_request)["knowledge"]
+        assert [r["retrieved_at"] for r in knowledge["retrievals"]] == [p["retrieved_at"] for p in payloads]
+        assert [r["chunk_ids"] for r in knowledge["retrievals"]] == [[c["chunk_id"] for c in p["chunks"]] for p in payloads]
+    stored = json.loads(next(tmp_path.rglob("retrieval_evidence.json")).read_text(encoding="utf-8"))
+    assert stored["retrievals"] == knowledge["retrievals"]
     for request in (provider.generator.requests[0], provider.reviewer.requests[-1]):
         assert '不是阅读者本人' in ''.join(m.content or '' for m in request.messages)
     trace = RuntimeTraceStore(tmp_path, ctx.run_id).read_trace(result.trace_reference)
     assert trace.usage.provider_calls_attempted == 5
 
-@pytest.mark.parametrize("source", ["app/providers/zhipu_profiles.py", "app/runtime/coach_contract.py"])
+@pytest.mark.parametrize("source", ["app/providers/zhipu_profiles.py", "app/runtime/coach_contract.py",
+    "app/tools/adapters/knowledge.py", "app/harness/knowledge.py", "app/harness/adapters.py", "app/harness/runtime.py"])
 def test_role_manifest_rejects_execution_source_drift_with_unchanged_labels(monkeypatch, source):
     target = (Path(__file__).resolve().parents[1] / source).resolve()
     original = Path.read_text
@@ -188,7 +199,8 @@ def test_role_manifest_rejects_execution_source_drift_with_unchanged_labels(monk
         if path.resolve() == target:
             before, after = (('reasoning_effort="high"', 'reasoning_effort="low"')
                 if source.endswith("zhipu_profiles.py") else ("def require_provider(self, provider):",
-                    "def require_provider(self, provider):\n        return None"))
+                    "def require_provider(self, provider):\n        return None") if source.endswith("coach_contract.py")
+                else ("from __future__ import annotations", "from __future__ import annotations\n# drift probe"))
             assert before in text
             return text.replace(before, after)
         return text

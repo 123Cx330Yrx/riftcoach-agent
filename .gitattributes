@@ -60,3 +60,9 @@
 # Preserve the public projections of the completed role-development observations.
 /data/evaluation/results/golden_flash_source_pair_result_346213c.json text eol=lf
 /data/evaluation/results/golden_role_application_result_346213c.json text eol=lf
+
+# Bind the knowledge-time control plan and candidate manifests across platforms.
+/data/evaluation/datasets/golden_knowledge_time_retrievals_v1.json text eol=lf
+/data/evaluation/results/golden_knowledge_time_preparation_v1.json text eol=lf
+/examples/runtime_profiles/flash_glm_review_v1/prompt_programs/recent-form-review/manifest.json text eol=lf
+/examples/runtime_profiles/flash_v2_native/prompt_programs/recent-form-review/manifest.json text eol=lf

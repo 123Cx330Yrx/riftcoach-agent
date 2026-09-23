@@ -4,6 +4,7 @@ import re
 from typing import Any, Callable, Mapping
 
 from .artifact_content import encode_json_artifact, encode_text_artifact
+from .knowledge import knowledge_projection
 from .models import ArtifactKind, HarnessConfig, RunManifest, RunStatus
 from .state_machine import advance
 from .preparation_errors import DRAFT_PREPARATION_CODES, DraftPreparationError
@@ -499,28 +500,15 @@ class ReviewHarness:
 
     @classmethod
     def _knowledge_bytes(cls, knowledge: KnowledgeEvidence) -> bytes:
-        return cls._json_bytes(
-            {
-                "context": knowledge.context,
-                "source_ids": list(knowledge.source_ids),
-                "citations": [
-                    {
-                        "citation_id": citation.citation_id,
-                        "chunk_id": citation.chunk_id,
-                        "parent_id": citation.parent_id,
-                        "source_id": citation.source_id,
-                        "title": citation.title,
-                        "content": citation.content,
-                        "matched_content": citation.matched_content,
-                        "version": citation.version,
-                        "updated_at": citation.updated_at,
-                    }
-                    for citation in knowledge.citations
-                ],
-                "abstained": knowledge.abstained,
-                "diagnostics": dict(knowledge.diagnostics),
-            }
-        )
+        projection = knowledge_projection(knowledge)
+        # Artifact order predates the review projection; preserve old file hashes.
+        payload = {key: projection[key] for key in (
+            "context", "source_ids", "citations", "abstained"
+        )}
+        if "retrievals" in projection:
+            payload["retrievals"] = projection["retrievals"]
+        payload["diagnostics"] = dict(knowledge.diagnostics)
+        return cls._json_bytes(payload)
 
     @staticmethod
     def _validate_report_citations(

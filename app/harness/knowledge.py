@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Mapping
+from dataclasses import asdict
+from datetime import datetime
+import re
 from typing import Any
 
-from .steps import KnowledgeCitation, KnowledgeEvidence
+from .steps import KnowledgeCitation, KnowledgeEvidence, KnowledgeRetrieval
 
 
 class KnowledgeEvidenceBuildError(ValueError):
@@ -25,6 +28,8 @@ def knowledge_evidence_from_search_payloads(
     seen_chunks: dict[str, tuple[Any, ...]] = {}
     search_diagnostics: list[dict[str, Any]] = []
     abstained_values: list[bool] = []
+    retrievals: list[KnowledgeRetrieval] = []
+    has_retrieval_metadata = False
 
     for search_index, payload in enumerate(search_payloads, start=1):
         if not isinstance(payload, Mapping):
@@ -60,6 +65,14 @@ def knowledge_evidence_from_search_payloads(
             for chunk in chunks
         ]
         normalized_chunks.sort(key=lambda chunk: chunk["rank"])
+        has_retrieval_metadata |= "retrieved_at" in payload
+        retrievals.append(
+            KnowledgeRetrieval(
+                provider=provider,
+                retrieved_at=_retrieved_at(payload.get("retrieved_at")),
+                chunk_ids=tuple(dict.fromkeys(chunk["chunk_id"] for chunk in normalized_chunks)),
+            )
+        )
         for chunk in normalized_chunks:
             chunk_id = chunk["chunk_id"]
             identity = _attribution_identity(chunk)
@@ -112,7 +125,47 @@ def knowledge_evidence_from_search_payloads(
         citations=citations,
         abstained=not citations and all(abstained_values),
         diagnostics=diagnostics,
+        # Keep historical no-time projections byte-stable. In mixed results,
+        # retain null records as well: one dated search cannot date another.
+        retrievals=tuple(retrievals) if has_retrieval_metadata else (),
     )
+
+
+def _retrieved_at(value: Any) -> str | None:
+    if value is None:
+        return None
+    if not isinstance(value, str) or not re.fullmatch(
+        r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})", value
+    ):
+        raise KnowledgeEvidenceBuildError("retrieved_at must be an aware timestamp or null")
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if parsed.utcoffset() is None:
+            raise ValueError("missing offset")
+    except ValueError as exc:
+        raise KnowledgeEvidenceBuildError("retrieved_at is not a valid timestamp") from exc
+    return value
+
+
+def knowledge_projection(knowledge: KnowledgeEvidence) -> dict[str, Any]:
+    """Shared bounded evidence for review and storage; excludes diagnostics."""
+    # Preserve the byte order of historical review inputs and their frozen hashes.
+    value = {
+        "context": knowledge.context,
+        "abstained": knowledge.abstained,
+        "source_ids": list(knowledge.source_ids),
+        "citations": [asdict(citation) for citation in knowledge.citations],
+    }
+    if knowledge.retrievals:
+        value["retrievals"] = [
+            {
+                "provider": retrieval.provider,
+                "retrieved_at": retrieval.retrieved_at,
+                "chunk_ids": list(retrieval.chunk_ids),
+            }
+            for retrieval in knowledge.retrievals
+        ]
+    return value
 
 
 def _normalize_chunk(

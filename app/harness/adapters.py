@@ -20,7 +20,7 @@ from app.providers.structured import decode_structured_response
 from app.tools.errors import ToolError
 from app.tools.runtime import ToolRuntime
 
-from .knowledge import knowledge_evidence_from_search_payloads
+from .knowledge import knowledge_evidence_from_search_payloads, knowledge_projection
 from .steps import (
     CoachDraft,
     DraftPreparationRequest,
@@ -403,23 +403,4 @@ def _evaluation_payload(result: EvaluationResult) -> dict[str, Any]:
 
 def _knowledge_evaluation_projection(knowledge: KnowledgeEvidence) -> dict[str, Any]:
     """Project only bounded, attributable evidence into the security prompt."""
-
-    return {
-        "context": knowledge.context,
-        "abstained": knowledge.abstained,
-        "source_ids": list(knowledge.source_ids),
-        "citations": [
-            {
-                "citation_id": citation.citation_id,
-                "chunk_id": citation.chunk_id,
-                "parent_id": citation.parent_id,
-                "source_id": citation.source_id,
-                "title": citation.title,
-                "content": citation.content,
-                "matched_content": citation.matched_content,
-                "version": citation.version,
-                "updated_at": citation.updated_at,
-            }
-            for citation in knowledge.citations
-        ],
-    }
+    return knowledge_projection(knowledge)

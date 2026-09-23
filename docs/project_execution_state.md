@@ -11,8 +11,9 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-23：用户批准的新两项实测已完成。Flash相同输入正负控制均通过；真实混合Agent完成生成/知识工具/GLM审查/同源文件发布，但人工复核发现知识检索日期漏检，报告质量不通过。实际5调用，未追加付费请求；分工优越性与完整资格仍未证明。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。按docs/plans/2026-09-23-role-live-evidence-and-knowledge-time.md处理真实报告的知识来源时间归属：核对工具时钟/缓存及KnowledgeEvidence到生成、审查的同源元数据，完成最小离线修复与回归，再准备具体新实测；不原样重试、不用人工参考改文冒充自动修复，不先推进未满足的15例及产品准入。
+2026-09-23：知识来源时间传递的离线修复已完成；候选knowledge.search 2.1由主机记录检索完成时间，缓存保留原时间，生成/审查/改稿/Evidence传递同一记录。143项相关测试和2个子用例通过，旧无时间输入及落盘字节保持兼容。真实日期漏检仍未证明修好；本次没有追加Provider请求。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。提交并核验本次HEAD公共CI，再取得已准备的知识日期两例实测具体授权：原错误全文与仅删除无依据日期的人工参考，沿用GLM/high原政策、完整上下文标准及真实来源。计划golden_knowledge_time_preparation_v1.json，最多2次/600秒/162972tokens，按全未缓存上界估算2.614496元；第一次协议/来源/语义失败即停止，不重试。成功仅解锁实际应用验证，不计原15资格或自动改稿完成。
+- 本次工程证据：真实缓存与过期、多检索重复chunk、未知/非法时间、生成上下文及混合应用五次路径通过；旧空/完整Evidence序列化与HEAD原实现逐字节相等，原15输入仍可按原hash恢复。新本地三次查询的五条知识引用与旧实测一致，仅增加各次检索的真实UTC时间，不伪造旧工具输出。两个活动manifest同步，默认产品仍为旧2.0合同，历史失败与资格证据未改。测试过程中的字段顺序与manifest执行合同漏项已修复；公开验证以progress对应提交记录为准。
 - 实际接线：build_role_coach_application / ROLE_COACH_CONTRACT 1.5.0；Flash/high生成、工具与一次改稿，GLM/high首评、重评与终评。全任务一个预算、一套全局序号，逐模型观察/定价、双传输原回执、可信Trace、来源投影、Memory/RAG/Evidence沿用原应用。新资产flash_glm_review_v1及资格绑定原15输入，旧默认不切换。
 - 工程验证：实际组装的离线正常五次路径可发布；恢复耗尽、错模型/传输/回执拒绝。observed身份、同源Evidence、追踪持久化及已知/未知费用边界受检；预算停止后不暴露旧成功回执。新旧活动指纹一并维护，历史资格/失败不改。最终本机与公共检查见progress。离线不证明真实语义可靠。
 - 新实测：346213c / CI35814004366三项通过；用户“允许，继续吧”后，Flash原错误稿84/needs_revision、正确稿95/pass，四条advisory逐项核对均为非阻断建议。两个请求与旧GLM诊断内容完全相同，因此不能称GLM已对照证明更优。结果golden_flash_source_pair_result_346213c.json保留22份原文件hash。

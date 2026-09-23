@@ -1,3 +1,10 @@
+# 2026-09-23 来源时间链与历史兼容
+
+- 文档updated_at、知识查询retrieved_at、第三方快照日期是三个不同来源事实。主机只记录实际本地检索完成；ToolRuntime缓存原payload使命中保留原时间，不能把查询as_of或provider diagnostics提升为主机时钟。
+- 去重chunk不等于去重检索：逐次provider/time/chunk集合才允许重复知识对应多个查询时间，混合旧输入的未知成员必须保留null。
+- 共享语义投影仍有两个历史字节边界：审查顺序context/abstained/source_ids/citations，落盘顺序context/source_ids/citations/abstained/diagnostics。统一字段内容不应悄悄重排历史摘要；本轮回归由此产生并已修复。
+- 真实本地重查得到相同五条引用，允许下一诊断仅增加有来源的时间信息，不同时更换政策或改错误原文。它仍不证明模型会用对时间，必须由具体原错/正确全文对照判定。
+
 # 2026-09-22 工具参数形状、截止和记账的不同故障
 
 - 完整终态不等于可交付响应。重复成员在原始工具参数中可擦除真错；即使单个buffered delta也出现，因此本地逐片拼接不是必要原因。

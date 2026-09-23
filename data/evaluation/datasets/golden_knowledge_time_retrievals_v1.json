@@ -1,0 +1,302 @@
+{
+  "kind": "actual_local_retrievals_not_provider_calls",
+  "original_evidence": "data/evaluation/results/golden_role_application_result_346213c.json",
+  "original_sha256": "02e8a82c65d1b706a32431c2effc93d1b549f05d67c3b8e57eaf7481953f7e1a",
+  "scope": "Fresh local searches with original queries; identical bounded citation contents. Times describe these new searches, never retrospectively rewrite the old run.",
+  "searches": [
+    {
+      "original_call_id": "call_fd8254c21cb24181bfeef905",
+      "arguments": {
+        "query": "早期死亡 生存 对线 复盘",
+        "top_k": 5
+      },
+      "cached": false,
+      "tool_version": "2.1.0",
+      "data": {
+        "provider": "local-hybrid-rrf",
+        "abstained": false,
+        "diagnostics": {
+          "reason": "evidence_available",
+          "candidate_count": 10,
+          "applicable_count": 10,
+          "supported_count": 1,
+          "returned_count": 1,
+          "rejected_for_support": 9,
+          "rejected_for_diversity": 0,
+          "conflict_keys": [],
+          "thresholds": {
+            "minimum_bm25_score": 15.0,
+            "minimum_query_coverage": 0.18,
+            "max_hits_per_source": 1,
+            "coverage_denominator_cap": 12
+          },
+          "query_recovery": {
+            "policy_id": "coaching-query-recovery-v1",
+            "topic": "unmapped",
+            "query_term_count": 19,
+            "filter_names": [],
+            "attempts": [
+              {
+                "candidate_count": 10,
+                "applicable_count": 10,
+                "supported_count": 1,
+                "returned_count": 1,
+                "reason": "evidence_available"
+              }
+            ]
+          }
+        },
+        "chunks": [
+          {
+            "chunk_id": "01_metric_interpretation.md:child:06f0f96b44e7d8e4",
+            "parent_id": "01_metric_interpretation.md:parent:ce1f2f4d928533d1",
+            "source_id": "01_metric_interpretation.md",
+            "title": "早期死亡",
+            "content": "## 早期死亡\n\n15 分钟前死亡用于定位前中期风险窗口。胜负样本的早期死亡差异很小时，不能把它列为主要胜负分界点。某局早期没有死亡只能说明生存结果较好，不能直接推出防抓、走位或对线能力优秀。",
+            "matched_content": "早期死亡\n15 分钟前死亡用于定位前中期风险窗口。胜负样本的早期死亡差异很小时，不能把它列为主要胜负分界点。某局早期没有死亡只能说明生存结果较好，不能直接推出防抓、走位或对线能力优秀。",
+            "score": 0.03278689,
+            "rank": 1,
+            "knowledge_type": "metric_interpretation",
+            "version": "evergreen",
+            "updated_at": "2026-07-23",
+            "valid_from": null,
+            "valid_until": null,
+            "positions": [
+              "ALL"
+            ],
+            "attributes": {
+              "document_title": "指标解释原则",
+              "knowledge_key": "01_metric_interpretation.md#早期死亡",
+              "bm25_rank": 1,
+              "bm25_score": 31.9761114,
+              "dense_rank": 1,
+              "dense_score": 0.47018589,
+              "embedding_provider": "local-hashing",
+              "embedding_fallback": false,
+              "query_coverage": 0.55555556,
+              "rerank_score": 0.75555556
+            }
+          }
+        ],
+        "count": 1,
+        "retrieved_at": "2026-09-23T07:31:33.148777Z"
+      }
+    },
+    {
+      "original_call_id": "call_76be0e2802d8405095b81bc7",
+      "arguments": {
+        "query": "补刀 经济 伤害输出 中路 差异",
+        "top_k": 5
+      },
+      "cached": false,
+      "tool_version": "2.1.0",
+      "data": {
+        "provider": "local-hybrid-rrf",
+        "abstained": false,
+        "diagnostics": {
+          "reason": "evidence_available",
+          "candidate_count": 11,
+          "applicable_count": 11,
+          "supported_count": 3,
+          "returned_count": 2,
+          "rejected_for_support": 8,
+          "rejected_for_diversity": 1,
+          "conflict_keys": [],
+          "thresholds": {
+            "minimum_bm25_score": 15.0,
+            "minimum_query_coverage": 0.18,
+            "max_hits_per_source": 1,
+            "coverage_denominator_cap": 12
+          },
+          "query_recovery": {
+            "policy_id": "coaching-query-recovery-v1",
+            "topic": "unmapped",
+            "query_term_count": 23,
+            "filter_names": [],
+            "attempts": [
+              {
+                "candidate_count": 11,
+                "applicable_count": 11,
+                "supported_count": 3,
+                "returned_count": 2,
+                "reason": "evidence_available"
+              }
+            ]
+          }
+        },
+        "chunks": [
+          {
+            "chunk_id": "01_metric_interpretation.md:child:4b78a4d331bef05d",
+            "parent_id": "01_metric_interpretation.md:parent:4ad2d884b2a1b00c",
+            "source_id": "01_metric_interpretation.md",
+            "title": "伤害与输出占比",
+            "content": "## 伤害与输出占比\n\n伤害/分钟和输出占比需要结合英雄定位、经济占比、对局时长与胜负环境解释。伤害下降可能与经济、参团环境或阵容职责同时变化，统计数据只能说明共同变化，不能证明其中一个指标导致另一个指标下降。",
+            "matched_content": "伤害与输出占比\n伤害/分钟和输出占比需要结合英雄定位、经济占比、对局时长与胜负环境解释。伤害下降可能与经济、参团环境或阵容职责同时变化，统计数据只能说明共同变化，不能证明其中一个指标导致另一个指标下降。",
+            "score": 0.03278689,
+            "rank": 1,
+            "knowledge_type": "metric_interpretation",
+            "version": "evergreen",
+            "updated_at": "2026-07-23",
+            "valid_from": null,
+            "valid_until": null,
+            "positions": [
+              "ALL"
+            ],
+            "attributes": {
+              "document_title": "指标解释原则",
+              "knowledge_key": "01_metric_interpretation.md#伤害与输出占比",
+              "bm25_rank": 1,
+              "bm25_score": 20.41272718,
+              "dense_rank": 1,
+              "dense_score": 0.29132602,
+              "embedding_provider": "local-hashing",
+              "embedding_fallback": false,
+              "query_coverage": 0.27272727,
+              "rerank_score": 0.6
+            }
+          },
+          {
+            "chunk_id": "03_training_plan.md:child:7d93df91676caf94",
+            "parent_id": "03_training_plan.md:parent:6c113c07b61434f9",
+            "source_id": "03_training_plan.md",
+            "title": "避免伪精确目标",
+            "content": "## 避免伪精确目标\n\n没有位置、英雄和段位基准时，不应随意设定必须达到的补刀、经济、伤害或视野固定阈值。更稳妥的做法是与玩家自己的同位置历史样本比较，并在样本扩大后调整目标。",
+            "matched_content": "避免伪精确目标\n没有位置、英雄和段位基准时，不应随意设定必须达到的补刀、经济、伤害或视野固定阈值。更稳妥的做法是与玩家自己的同位置历史样本比较，并在样本扩大后调整目标。",
+            "score": 0.03175403,
+            "rank": 2,
+            "knowledge_type": "training_rule",
+            "version": "evergreen",
+            "updated_at": "2026-07-23",
+            "valid_from": null,
+            "valid_until": null,
+            "positions": [
+              "ALL"
+            ],
+            "attributes": {
+              "document_title": "训练计划设计",
+              "knowledge_key": "03_training_plan.md#避免伪精确目标",
+              "bm25_rank": 2,
+              "bm25_score": 18.67768741,
+              "dense_rank": 4,
+              "dense_score": 0.1603313,
+              "embedding_provider": "local-hashing",
+              "embedding_fallback": false,
+              "query_coverage": 0.45454545,
+              "rerank_score": 0.42916666
+            }
+          }
+        ],
+        "count": 2,
+        "retrieved_at": "2026-09-23T07:31:33.150776Z"
+      }
+    },
+    {
+      "original_call_id": "call_d8efde271af5461c8f980cf4",
+      "arguments": {
+        "query": "训练目标 事实与复盘假设",
+        "top_k": 5
+      },
+      "cached": false,
+      "tool_version": "2.1.0",
+      "data": {
+        "provider": "local-hybrid-rrf",
+        "abstained": false,
+        "diagnostics": {
+          "reason": "evidence_available",
+          "candidate_count": 11,
+          "applicable_count": 11,
+          "supported_count": 2,
+          "returned_count": 2,
+          "rejected_for_support": 9,
+          "rejected_for_diversity": 0,
+          "conflict_keys": [],
+          "thresholds": {
+            "minimum_bm25_score": 15.0,
+            "minimum_query_coverage": 0.18,
+            "max_hits_per_source": 1,
+            "coverage_denominator_cap": 12
+          },
+          "query_recovery": {
+            "policy_id": "coaching-query-recovery-v1",
+            "topic": "unmapped",
+            "query_term_count": 21,
+            "filter_names": [],
+            "attempts": [
+              {
+                "candidate_count": 11,
+                "applicable_count": 11,
+                "supported_count": 2,
+                "returned_count": 2,
+                "reason": "evidence_available"
+              }
+            ]
+          }
+        },
+        "chunks": [
+          {
+            "chunk_id": "03_training_plan.md:child:a4757e98d9e86cc0",
+            "parent_id": "03_training_plan.md:parent:aed28490a37d3f59",
+            "source_id": "03_training_plan.md",
+            "title": "可执行性",
+            "content": "## 可执行性\n\n训练计划应围绕一到两个可观察目标，说明观察周期和复盘方式。建议可以包括固定位置与小英雄池采样、标记死亡时间、比较目标资源前后的活动路线，以及记录训练后的指标变化。",
+            "matched_content": "可执行性\n训练计划应围绕一到两个可观察目标，说明观察周期和复盘方式。建议可以包括固定位置与小英雄池采样、标记死亡时间、比较目标资源前后的活动路线，以及记录训练后的指标变化。",
+            "score": 0.03278689,
+            "rank": 1,
+            "knowledge_type": "training_rule",
+            "version": "evergreen",
+            "updated_at": "2026-07-23",
+            "valid_from": null,
+            "valid_until": null,
+            "positions": [
+              "ALL"
+            ],
+            "attributes": {
+              "document_title": "训练计划设计",
+              "knowledge_key": "03_training_plan.md#可执行性",
+              "bm25_rank": 1,
+              "bm25_score": 15.42337513,
+              "dense_rank": 1,
+              "dense_score": 0.25909698,
+              "embedding_provider": "local-hashing",
+              "embedding_fallback": false,
+              "query_coverage": 0.3,
+              "rerank_score": 0.615
+            }
+          },
+          {
+            "chunk_id": "02_review_method.md:child:96b81776eb6c78e0",
+            "parent_id": "02_review_method.md:parent:39e66fef28381d61",
+            "source_id": "02_review_method.md",
+            "title": "证据分层",
+            "content": "## 证据分层\n\n比赛统计用于描述发生了什么，时间线用于定位事件发生时间，录像才能判断换血、走位、技能、兵线和决策原因。报告必须把事实、相关性和复盘假设分开表达。",
+            "matched_content": "证据分层\n比赛统计用于描述发生了什么，时间线用于定位事件发生时间，录像才能判断换血、走位、技能、兵线和决策原因。报告必须把事实、相关性和复盘假设分开表达。",
+            "score": 0.03200205,
+            "rank": 2,
+            "knowledge_type": "review_method",
+            "version": "evergreen",
+            "updated_at": "2026-07-23",
+            "valid_from": null,
+            "valid_until": null,
+            "positions": [
+              "ALL"
+            ],
+            "attributes": {
+              "document_title": "赛后复盘方法",
+              "knowledge_key": "02_review_method.md#证据分层",
+              "bm25_rank": 2,
+              "bm25_score": 15.14510637,
+              "dense_rank": 3,
+              "dense_score": 0.09954479,
+              "embedding_provider": "local-hashing",
+              "embedding_fallback": false,
+              "query_coverage": 0.4,
+              "rerank_score": 0.42
+            }
+          }
+        ],
+        "count": 2,
+        "retrieved_at": "2026-09-23T07:31:33.151777Z"
+      }
+    }
+  ]
+}

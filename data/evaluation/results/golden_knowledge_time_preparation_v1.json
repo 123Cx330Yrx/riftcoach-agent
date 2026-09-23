@@ -1,0 +1,138 @@
+{
+  "preparation_plan": {
+    "experiment": "knowledge-time-review-pair-v1",
+    "candidate": {
+      "composition": "flash-generation-glm53-review-v1",
+      "contract": {
+        "contract_id": "recent-form-review-roles-v1",
+        "version": "1.5.0",
+        "scope": "unadmitted_opt_in",
+        "sha256": "f15855c3c5cdbb3a579c5769fb07e731d2383efa07fd0d3deb785aee5536745d"
+      },
+      "program_sha256": "b291ba442fe849940a87d8700b68abbf8895d1335efeb8e54358664023dfdb56",
+      "manifest_sha256": "9c3d2f4578559e8c07a708d5a462854cd0f43e31555d7f6cc09b6550f22d13ea",
+      "asset_sha256": {
+        "skills/recent-form-review/SKILL.md": "a06cc50f56bf3581580626532b1d6d39aaedb7dca098ae0624a9965af5875117",
+        "skills/recent-form-review/manifest.yaml": "c9409933c3e4069749f59dd582887656055f9450b30ab84014ec5018a8cce7a0"
+      },
+      "source_projection": "native-explicit-source-projection-v1",
+      "roles": {
+        "generation": {
+          "provider": "zhipu",
+          "model": "glm-5.3-flash",
+          "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+          "request_extra_body": {
+            "thinking": {
+              "type": "enabled",
+              "clear_thinking": false
+            },
+            "reasoning_effort": "high"
+          },
+          "transport_id": "golden-process-stream-high-32768-v1",
+          "sdk_max_retries": 0
+        },
+        "revision": {
+          "provider": "zhipu",
+          "model": "glm-5.3-flash",
+          "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+          "request_extra_body": {
+            "thinking": {
+              "type": "enabled",
+              "clear_thinking": false
+            },
+            "reasoning_effort": "high"
+          },
+          "transport_id": "golden-process-stream-high-32768-v1",
+          "sdk_max_retries": 0
+        },
+        "review": {
+          "provider": "zhipu",
+          "model": "glm-5.3",
+          "thinking_profile_id": "glm-5.3-review-diagnostic-high-replay",
+          "request_extra_body": {
+            "thinking": {
+              "type": "enabled",
+              "clear_thinking": false
+            },
+            "reasoning_effort": "high"
+          },
+          "transport_id": "golden-glm53-review-high-32768-v1",
+          "sdk_max_retries": 0
+        }
+      },
+      "policy_sha256": "0cdd9f43897443721993986d2bd049eae31a3c916e33f978a92c3554c50243f4",
+      "schema_sha256": "5c12ede6b731265942f4ee020911c3db2b1bda0868e3cbd0a49802949188b70f"
+    },
+    "source_evidence_sha256": "02e8a82c65d1b706a32431c2effc93d1b549f05d67c3b8e57eaf7481953f7e1a",
+    "local_retrievals_sha256": "c4fb675cfa0ed71efd1b92b5052e69b1dc136cc3f40c32ad2304ab7dd11abc2d",
+    "model": "glm-5.3",
+    "reasoning_effort": "high",
+    "sdk_retries": 0,
+    "transport_id": "golden-glm53-review-high-32768-v1",
+    "retrievals": [
+      {
+        "provider": "local-hybrid-rrf",
+        "retrieved_at": "2026-09-23T07:31:33.148777Z",
+        "chunk_ids": [
+          "01_metric_interpretation.md:child:06f0f96b44e7d8e4"
+        ]
+      },
+      {
+        "provider": "local-hybrid-rrf",
+        "retrieved_at": "2026-09-23T07:31:33.150776Z",
+        "chunk_ids": [
+          "01_metric_interpretation.md:child:4b78a4d331bef05d",
+          "03_training_plan.md:child:7d93df91676caf94"
+        ]
+      },
+      {
+        "provider": "local-hybrid-rrf",
+        "retrieved_at": "2026-09-23T07:31:33.151777Z",
+        "chunk_ids": [
+          "03_training_plan.md:child:a4757e98d9e86cc0",
+          "02_review_method.md:child:96b81776eb6c78e0"
+        ]
+      }
+    ],
+    "cells": [
+      {
+        "id": "original-date-error",
+        "report_sha256": "4335abe19f9162f2c00a3ee3f2c0b507a08dfe1d477cd8395e8701dba007a4ca",
+        "input_sha256": "be8a0c40f5cdc09096e3fd990eead324c561bfff87db413e8f32583be9dac80c",
+        "request_sha256": "2422896e825db37e1f032dfb9c0be72e38cb5ec383762d3610539b0a37e47108",
+        "input_reservation": 48730,
+        "output_cap": 32768,
+        "expected_host_only": "needs_revision: unsupported knowledge retrieval date"
+      },
+      {
+        "id": "date-removed-reference",
+        "report_sha256": "9ce30980724d226cda0d1e984875d6a62d0ac42e15dacb137e183dd0378b056e",
+        "input_sha256": "7e30e522c57c77ac4b9c58ed95c4a074d6d4e2b3e27a66aca6178204fe27bf6c",
+        "request_sha256": "faad315ab029504fac2c5ab27da98861c006e5c9afbb33045ee4a27e27cc2e07",
+        "input_reservation": 48706,
+        "output_cap": 32768,
+        "expected_host_only": "pass: optional wording stays advisory"
+      }
+    ],
+    "proposed_diagnostic_budget": {
+      "max_calls": 2,
+      "max_seconds_total": 600,
+      "max_seconds_per_call": 300,
+      "total_token_reservation": 162972,
+      "estimated_uncached_cny": "2.614496"
+    },
+    "provider_requests": 0,
+    "production_admitted": false,
+    "labels_sent_to_model": false,
+    "evidence_scope": "Fresh local retrievals, original full report and host reference; not model revision or original-15 qualification.",
+    "stop_rule": "Stop after any rejected protocol, source or full-context host review. No retries."
+  },
+  "preparation_plan_sha256": "bcd0fac55f3bed3ad79f7086c959add8be3d7ec4f342e67be00614084fd99c55",
+  "execution_status": "not_executed_requires_new_specific_paid_authorization",
+  "verification": {
+    "related_tests_passed": 143,
+    "subtests_passed": 2,
+    "historical_empty_and_full_artifact_bytes_unchanged": true,
+    "original_distinct_inputs_unchanged": 15
+  }
+}

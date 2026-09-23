@@ -420,6 +420,7 @@ def _component_fingerprints(
     skill,
     *,
     evaluation_contract_version: str = "1.0.0",
+    knowledge_retrieval_time: bool = False,
 ) -> tuple[ComponentFingerprint, ...]:
     secure = evaluation_contract_version == "1.1.0"
     contract = (
@@ -463,7 +464,7 @@ def _component_fingerprints(
             "failed_matches": [],
         }
     )
-    tool = build_knowledge_tools(object())[0]
+    tool = build_knowledge_tools(object(), include_retrieval_time=knowledge_retrieval_time)[0]
     knowledge_tool_contract = {
         "name": tool.name,
         "version": tool.version,
@@ -515,7 +516,7 @@ def _component_fingerprints(
         ),
         (
             "knowledge_tool_contract",
-            "app.tools.adapters.knowledge:knowledge.search@2.0.0",
+            f"app.tools.adapters.knowledge:knowledge.search@{tool.version}",
             knowledge_tool_contract,
         ),
         (
@@ -576,6 +577,7 @@ def build_component_fingerprints(
     skill,
     *,
     evaluation_contract_version: str = "1.0.0",
+    knowledge_retrieval_time: bool = False,
 ) -> tuple[ComponentFingerprint, ...]:
     """Return the canonical fingerprints for a loaded Skill's prompt assets.
 
@@ -588,6 +590,7 @@ def build_component_fingerprints(
     return _component_fingerprints(
         skill,
         evaluation_contract_version=evaluation_contract_version,
+        knowledge_retrieval_time=knowledge_retrieval_time,
     )
 
 

@@ -64,7 +64,7 @@ from .models import (
     RuntimeStatus,
 )
 from .identity import RuntimePromptIdentityResolver
-from .coach_contract import require_coach_contract, require_coach_context, guard_coach_draft
+from .coach_contract import require_coach_contract, require_coach_context, guard_coach_draft, NATIVE_COACH_CONTRACT, ROLE_COACH_CONTRACT
 
 
 _HARNESS_VERSION = "1.0.0"
@@ -196,7 +196,8 @@ class RuntimeExecutionFactory:
                 "runtime_profile does not match the observed Provider"
             )
         knowledge_registry = ToolRegistry()
-        for definition in build_knowledge_tools(self._knowledge_provider):
+        for definition in build_knowledge_tools(self._knowledge_provider,
+                include_retrieval_time=self.coach_contract in (NATIVE_COACH_CONTRACT, ROLE_COACH_CONTRACT)):
             knowledge_registry.register(definition)
 
         agent_loop = AgentLoop(

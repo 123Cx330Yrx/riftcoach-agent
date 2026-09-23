@@ -729,6 +729,10 @@ def _insert_knowledge_sections(
                 "matched_content": citation.matched_content,
                 "version": citation.version,
                 "updated_at": citation.updated_at,
+                **({"retrievals": [
+                    {"provider": r.provider, "retrieved_at": r.retrieved_at}
+                    for r in knowledge.retrievals if citation.chunk_id in r.chunk_ids
+                ]} if knowledge.retrievals else {}),
             },
             required=False,
             priority=400,
