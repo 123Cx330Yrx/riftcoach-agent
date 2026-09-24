@@ -1,3 +1,12 @@
+## 2026-09-25 粗来源两控制完成
+
+b0ac8e83 / CI36034943285公共三项通过，pytest4924/154skip/129subtests。
+observed:2为68/needs_revision，实际27/38/39覆盖全部解释与修法；observed:1原稿96/pass。
+主审+独立完整审查均接受，2calls/30618tokens/cached2048/unknown0/286.172s，未缓存估价0.329384元非账单。
+32原件/hash封存golden_coarse_source_result_v1.json，SHA f7c8a787816e98ca797fdd0337ec1e6ddb94999206687220df7631b62331a4a8。
+错误稿未编辑，原15/生产未授资格；选择接现有工作流编辑/终評进行下一验证，不把此可行性当稳定修复。
+导出helper原路径假设修正后核实际stream/arm收据，原件未修改，详见本包方案文档。
+
 
 ## 2026-09-25 历史预览回归修复（待新提交公共检查）
 

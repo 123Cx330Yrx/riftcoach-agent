@@ -11,13 +11,13 @@ pause_reason: ""
 
 ## 当前行动
 
-2026-09-25：原同版本严格资格已从3项推进到8/15，8E及生产准入未完成。a325e4dc / CI35979222638之后五例完成并有耐久回执；第六例初评后，用户报告Codex额度耗尽使对话中断，后台随后等待host超时。前五例未丢失，第六例另有真实引用缺口，不能当完成。
+2026-09-25：旧1.5.2严格资格保留8/15；新粗来源两控制真实审查均经主/独立接受，8E和生产准入未完成。
 
-- 新实测：claim-scope:2为95、claim-scope:5为96、claim-scope:6为88→Flash真实修正→95、claim-scope:7为95、observed:1原“较稳定”稿96/pass；主/独立完整来源审查接受。8实际请求114177tokens、未知0、1854.282秒，估价1.1445408元非账单。134原件/hash/公开投影见golden_role_unexecuted_result_v1.json，独立事后审计另存。
-- 正式恢复：失败批的原连续完成前缀经严格回放与全批账目验证，加前三例为validated_partial/8；公开证据golden_role_partial_qualification_v1.json。原15及失败尾部不改。旧两例计时缺口、scope:3及observed:2未完成、observed:3–5未跑共七项未资格，不把同版本10例语义完整当15全过。
-- 工程修复：逐例耐久回执已在这次中断实际起效；适配器现保留失败result同时验收已完成前缀。未知调用按实际已发请求预留核账。下一例在case计时/Provider创建前需绑定run/plan/key的就绪信号，等待计入原batch期限；已开始例仍可能因Codex离线超时，不承诺自动恢复或重置预算。
-- 核心诊断：observed:2正确检出未来全称外推，但引用6/15/19只支持混合汇总/中单伤害均值，不能支持其新增逐局伤害及经济排序。完整输入有事实，编号/传输/解析无错，原始输出已缺充分引用；不称误报/漏检或模型内部根因已明。细节与方案比较见docs/plans/2026-09-25-source-granularity-diagnosis.md。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。完成全来源保留的粗引用目录离线验证和同提交公共CI后，执行原observed:2错误稿与observed:1正确稿两次可行性初评；最多2calls/158246tokens/600秒，保守估价2.576688元，失败停止。复用现有根解析/执行器，默认角色合同1.5.2不变；两例不授原15、新身份或产品资格，不把历史fine对比当因果证明。后续仍需原15缺口与同一真实入队Agent→DB/API/Workbench消费及既有四块/前端规划。
+- 最新实测：b0ac8e83 / CI36034943285三项通过后执行冻结两控制。observed:2为68/needs_revision，正确检出未来全称外推，引用[27,38,39]完整支持解释和修法；原正确observed:1为96/pass、issues空，仅block18可选标记。未改正确稿、未补模型引用；错误稿尚未实际编辑。
+- 用量与证据：2请求30618tokens（26396输入/4222输出，缓存2048、未知0），含host286.172秒，未缓存估价0.329384元非账单。32原件/hash/公开投影见golden_coarse_source_result_v1.json，SHA f7c8a787816e98ca797fdd0337ec1e6ddb94999206687220df7631b62331a4a8。两例是来源表示可行性，不是因果/稳定性证明，不授原15或产品资格。
+- 本轮工程：修复三处已关闭历史preview因共用执行器变化重算旧源码身份的回归；仍重建并核对实际请求/报告/预算。56项相关检查和独立六请求核对通过；公共pytest4924通过/154跳过/129子测试。原失败CI36029467605保留，修复后才发Provider。
+- 此前恢复：原9例中断批前五例正式恢复，加前三例validated_partial/8。用户报告Codex额度耗尽先导致对话停止，后台随后等host超时；前五例耐久回执未丢失。observed:2旧首评真实引用缺口保留；旧两例计时不足、scope:3及observed:2未完成、observed:3–5未跑共七缺口，不能迁成新表示资格。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。在现有角色工作流接入已验证可行的粗来源表示，补齐编辑/终评/身份/回放分支，先离线以本批真实首评验证，再冻结最小Flash真实改稿+GLM终评及预算，同提交CI后执行。复用既有Agent与编辑路径，不新造平行状态机，不重跑两初评。新表示需独立身份，默认合同1.5.2和生产Worker暂不切换。具体完成与失败分支见docs/plans/2026-09-25-source-granularity-diagnosis.md末节；原15、真实入队Agent→DB/API/Workbench、四块联动和前端等原路线仍待完成。
 
 ### 2026-09-24剩12中断的已封存边界
 
