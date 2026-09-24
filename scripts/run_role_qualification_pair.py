@@ -69,13 +69,16 @@ def _hash(path):
 
 
 def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
-            clock=time.monotonic, before_send=lambda: None):
+            clock=time.monotonic, before_send=lambda: None,
+            workflow_type=RoleNoteReviewWorkflow, replay=replay_case,
+            success_field='pair_accepted'):
     """Run frozen workflows, retaining per-stage host gates outside model input."""
     started = clock()
     sources = {f['key']: (f, source) for f, source in frozen_cases()[0]}
     outcomes = []
-    result = dict(experiment=EXPERIMENT, pair_accepted=False, production_admitted=False,
+    result = dict(experiment=plan.get('experiment', EXPERIMENT), production_admitted=False,
         review_controls_qualified=False, actual_product_task_qualified=False)
+    result[success_field] = False
     try:
         for row, budget in zip(plan['cases'], plan['case_budgets'], strict=True):
             key = row['key']
@@ -85,7 +88,7 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
             frozen, source = sources[key]
             outcome = dict(key=key, status='failed', stages=[])
             outcomes.append(outcome)
-            write_new_json(arm / 'source.json', dict(input_json=RoleNoteReviewWorkflow.build_inputs(source).data_json,
+            write_new_json(arm / 'source.json', dict(input_json=workflow_type.build_inputs(source).data_json,
                 report=source.report, input_sha256=frozen['input_sha256'], report_sha256=frozen['report_sha256']))
             case_started = clock()
             provider = factory(case_id)
@@ -112,9 +115,12 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
                             provider.last_exchange.response))),
                             recovery_input=request.messages[1].content))
                 before_send()
-                return sender(replace(request, timeout_s=min(request.timeout_s, remaining())))
+                available = remaining()
+                if available <= 0:
+                    raise ValueError('role_pair_execution_limit')
+                return sender(replace(request, timeout_s=min(request.timeout_s, available)))
 
-            workflow = RoleNoteReviewWorkflow(send)
+            workflow = workflow_type(send)
 
             def inspect(stage, report, journal=None):
                 path = arm / (stage + '.json')
@@ -165,7 +171,7 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
             if sum(call['usage']['input_tokens'] + call['usage']['output_tokens']
                     for call in calls) > budget['max_tokens']:
                 raise ValueError('role_pair_execution_limit')
-            replayed = replay_case(frozen, source, calls)
+            replayed = replay(frozen, source, calls)
             if (replayed['final_report_sha256'] != digest(final_report)
                     or replayed['journals_sha256'] != [digest(compact(j)) for j in journals]):
                 raise ValueError('role_pair_replay_mismatch')
@@ -178,7 +184,7 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
                 qualification_row={**row, 'status': 'host_accepted',
                     'transport_directory': f'transport/{case_id}',
                     'host_review_file': f'{case_id}/host-review.json', 'host_review_sha256': _hash(host_path)})
-        result['pair_accepted'] = True
+        result[success_field] = True
     except BaseException as error:
         result.update(error_type=type(error).__name__)
         code = getattr(error, 'code', None) or (str(error) if isinstance(error, ValueError) else None)
@@ -192,7 +198,7 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
             except (ValueError, OSError, KeyError, TypeError):
                 outcome['accounting'] = dict(accounting_status='invalid_receipts', reserved_calls=None,
                     completed_calls=None, unknown_usage_calls=None, total_estimated_uncached_cny=None)
-                result['pair_accepted'] = False
+                result[success_field] = False
         result.update(cases=outcomes, elapsed_seconds=round(clock() - started, 3))
         write_new_json(directory / 'result.json', result)
     return result

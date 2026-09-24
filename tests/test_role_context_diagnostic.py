@@ -209,3 +209,11 @@ def test_execution_requires_frozen_plan_ci_and_closes_permanently(prepared, monk
     monkeypatch.setattr(runner, 'prepare', lambda: pytest.fail('closed batch prepared inputs'))
     with pytest.raises(ValueError, match='context_batch_closed'):
         runner.run(NS(execute=True))
+
+
+def test_closed_preview_never_inherits_current_candidate(monkeypatch):
+    monkeypatch.setattr(runner, 'candidate_identity', lambda: pytest.fail('historical preview used current identity'))
+    plan, _ = runner.prepare()
+    assert plan == json.loads(runner.PREPARATION.read_text(encoding='utf-8'))
+    assert plan['candidate']['contract']['version'] == '1.5.1'
+    assert 'review_output' not in plan['candidate']

@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
   "program_id": "recent-form-review-coach",
-  "program_version": "3.1.1",
+  "program_version": "3.1.2",
   "skill_name": "recent-form-review",
   "skill_version": "0.6.1",
   "context_contract_id": "context-builder-v1",
   "context_contract_version": "1.0.0",
   "evaluation_contract_id": "coach_evaluation",
-  "evaluation_contract_version": "3.4.0",
+  "evaluation_contract_version": "3.5.0",
   "component_fingerprints": [
     {
       "component_id": "skill_manifest",
@@ -32,7 +32,7 @@
     {
       "component_id": "evaluation_schema",
       "source": "evaluation_schema",
-      "sha256": "5248c7020a7bb63c71db43aaee11d509ff68536133b70664600a05c15e5b0b46"
+      "sha256": "df3914d79f94b82e435b0318ced9c1dfa70687dda085c6c38084e6239da8fe72"
     },
     {
       "component_id": "generation_policy",
@@ -92,7 +92,7 @@
     {
       "component_id": "app.product.native_coach_composition",
       "source": "app/product/native_coach_composition.py",
-      "sha256": "c9f8ee3dcb6e6f3ab0edd550eb9436e39aeeb724a51bb7286b724320145ac2c6"
+      "sha256": "0a642b1101c263e72d58030360593263d5b2a5033cba8c4f49d81219f1883e5a"
     },
     {
       "component_id": "app.product.recent_review_service",
@@ -147,12 +147,12 @@
     {
       "component_id": "initial_review_policy",
       "source": "initial_review_policy",
-      "sha256": "add504f1b20057ca3ce3afad2db8421d098fa926fdcab3306ef1393adab6ebed"
+      "sha256": "521ff0cc8a005edadc72173a345d707ab89700fb833b10d6556a74fe8c58769e"
     },
     {
       "component_id": "reassessment_policy",
       "source": "reassessment_policy",
-      "sha256": "03600a868797d5b5d8ac69c0ed7c436c811d577ba25dda1ab1a8ab5f2ebfa99e"
+      "sha256": "d235bd87f58ba14d215fc63f3027e41a48b80fdcb582618a5ecf61fcd20a67ec"
     },
     {
       "component_id": "revision_policy",
@@ -168,6 +168,11 @@
       "component_id": "request_delivery",
       "source": "request_delivery",
       "sha256": "02a981655dcba208cb14dfae68273e121d55e6c328cbd5b0d6c93c0ec7184d17"
+    },
+    {
+      "component_id": "review_output",
+      "source": "review_output",
+      "sha256": "d25226a3bfed8d6606aa284b6744dcc0092ac3299145a00393998e700698c3bb"
     },
     {
       "component_id": "role_descriptor",
@@ -188,6 +193,11 @@
       "component_id": "app.evaluation.golden_role_tool_delivery",
       "source": "app/evaluation/golden_role_tool_delivery.py",
       "sha256": "b7a92c204c675d2049ae7ee713e5c9335d30939cfd0be32d3cd92aaac5f5af0a"
+    },
+    {
+      "component_id": "app.evaluation.golden_role_clarity",
+      "source": "app/evaluation/golden_role_clarity.py",
+      "sha256": "1b65f57b16b6b486c7d1e3a98aadddb1fdc3cb5336efe13a495de8b323503088"
     },
     {
       "component_id": "app.evaluation.golden_native_partitioned_tool_review",
@@ -212,12 +222,12 @@
     {
       "component_id": "app.runtime.role_coach_contract",
       "source": "app/runtime/role_coach_contract.py",
-      "sha256": "ed768d26d39582e89a20f3ec5a12f24959919f6f09002accd480cab92f7aed60"
+      "sha256": "9cabf27cc93d25a906473390c3f0afe463221452ed19ed016adb301f0a6af699"
     },
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "8a70ed62c35108757dd19cf9d82824ba4e8bc69dfb50c417ed64f38ee160d286"
+      "sha256": "96ec75da7e067678d30abe21abaab066cb3c16a0e17445ac306cf946dd390e7c"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -237,7 +247,7 @@
     {
       "component_id": "app.runtime.coach_context",
       "source": "app/runtime/coach_context.py",
-      "sha256": "59575ff8a961ef9875a7c2e8781a56a3a4a5b59394ca39ef356affa0f927e4b5"
+      "sha256": "d82c0d1a970023a53e6c1dc3d636c9ab7dada8bc598b343d79b088ef86e270fb"
     },
     {
       "component_id": "app.runtime.observed_provider",
@@ -252,7 +262,7 @@
     {
       "component_id": "app.runtime.models",
       "source": "app/runtime/models.py",
-      "sha256": "ca054045d4b799e576ed4b9b835203c3b8ad4b1515faedbb97abdeb70441cb7e"
+      "sha256": "8904dbb3dbaf778c78bd524f2fbac100ab72bb2cef356e432c2a8440e3ac0666"
     },
     {
       "component_id": "app.model_runtime",
@@ -261,9 +271,9 @@
     },
     {
       "component_id": "coach_execution_contract",
-      "source": "app.runtime.reviewer_roles:v1.5.1",
-      "sha256": "538f9be6325bbb722423e85d0835a2c04b21a2fb1a003379b562176dc7ac3d0a"
+      "source": "app.runtime.reviewer_roles:v1.5.2",
+      "sha256": "ffc45471455a546a2b75a35ee902e5f5405ebd01b9bfbe3606fac34649fcea4a"
     }
   ],
-  "program_sha256": "ec4ab4aae3e8083ff0edb50f06fa1b7a4110f8448b86394fa6d1ce4bb0b022c2"
+  "program_sha256": "4d06962c1ce035d27e665b0718b2451f7cb9f19977fc842be1738c40f4ac5c50"
 }

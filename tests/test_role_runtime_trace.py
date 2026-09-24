@@ -131,6 +131,24 @@ def test_role_trace_failed_review_keeps_partial_usage_through_persistence(tmp_pa
     assert store.read_trace(store.write_trace(trace)) == trace
 
 
+def test_note_contract_digest_remains_read_only_after_clarity_upgrade():
+    from app.runtime.coach_contract import LEGACY_NOTE_ROLE_COACH_CONTRACT, require_coach_contract
+    old = LEGACY_NOTE_ROLE_COACH_CONTRACT
+    assert old.snapshot().sha256 == '538f9be6325bbb722423e85d0835a2c04b21a2fb1a003379b562176dc7ac3d0a'
+    # Synthetic trace fixture checks supported readback, not new live evidence.
+    payload = role_trace().model_dump(mode='json')
+    for section in ('identity', 'policy'):
+        payload[section]['coach_contract'] = old.snapshot().model_dump(mode='json')
+    payload['identity']['prompt_profile_version'] = old.descriptor()['program_version']
+    assert RuntimeTrace.model_validate_json(json.dumps(payload)).model_dump(mode='json') == payload
+    with pytest.raises(ValueError, match='unsupported Coach execution contract'):
+        require_coach_contract(old)
+    for section in ('identity', 'policy'):
+        payload[section]['coach_contract']['sha256'] = '0' * 64
+    with pytest.raises(ValidationError, match='trusted contract'):
+        RuntimeTrace.model_validate_json(json.dumps(payload))
+
+
 @pytest.mark.parametrize("old_contract", [True, False])
 def test_mixed_trace_without_exact_role_contract_remains_rejected(old_contract):
     payload = role_trace().model_dump(mode="python")

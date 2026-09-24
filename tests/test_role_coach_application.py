@@ -5,7 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from app.evaluation.golden_role_tool_delivery import DELIVERY_ID, RoleToolDeliveryReviewWorkflow as RoleReviewWorkflow
+from app.evaluation.golden_role_tool_delivery import DELIVERY_ID
+from app.evaluation.golden_role_clarity import CLARITY_ID, RoleClarityReviewWorkflow as RoleReviewWorkflow
 from app.product.native_coach_composition import build_role_coach_application, ROLE_ASSETS, ASSETS
 from app.product.recent_review import RecentReviewProductRequest
 from app.product.run_receipts import FileRunReceiptStore
@@ -81,7 +82,7 @@ def test_role_application_uses_real_budget_observation_and_publication(tmp_path,
     assert flow.send.provider.provider._delegate is delegate
     assert trace.identity.provider_model == ROLE_COMPOSITION_ID
     assert trace.identity.coach_contract == trace.policy.coach_contract == ROLE_COACH_CONTRACT.snapshot()
-    assert trace.identity.skill_version == '0.6.1' and trace.identity.prompt_profile_version == '3.1.1'
+    assert trace.identity.skill_version == '0.6.1' and trace.identity.prompt_profile_version == '3.1.2'
     calls = [e.signal for e in trace.events if e.signal.kind == 'provider_call_started']
     assert [c.ordinal for c in calls] == list(range(1, 6))
     assert [c.model for c in calls] == ['glm-5.3' if role == 'review' else 'glm-5.3-flash' for role in expected_roles]
@@ -92,6 +93,7 @@ def test_role_application_uses_real_budget_observation_and_publication(tmp_path,
     assert delegate.reviewer.knowledge_count == 5
     for request in delegate.reviewer.requests:
         assert request.metadata['review_delivery'] == DELIVERY_ID
+        assert request.metadata['review_output'] == CLARITY_ID
         assert request.messages[1].content.startswith('[UNTRUSTED DATA]\n')
         assert len(request.tools) == 1
         assert 'severity' in request.tools[0].input_schema['$defs']['Problem']['required']

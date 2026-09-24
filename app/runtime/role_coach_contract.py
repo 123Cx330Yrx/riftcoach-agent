@@ -8,19 +8,20 @@ from .native_coach_contract import component_fingerprints as native_fingerprints
 
 
 def component_fingerprints(skill):
-    from app.evaluation.golden_role_notes import RoleNoteReview, review_policy
+    from app.evaluation.golden_role_clarity import RoleClarityReview, CLARITY_ID, review_policy
     from app.evaluation.golden_role_tool_delivery import DELIVERY_ID
     from app.evaluation.golden_native_business_policy import REVISION_POLICY
     from app.evaluation.golden_explicit_source_projection import VERSION, OLD_ADDRESS, NEW_ADDRESS
     from .reviewer_roles import role_descriptor
     rows = {row.component_id: row for row in native_fingerprints(skill)}
     values = {
-        "evaluation_schema": json.dumps(RoleNoteReview.model_json_schema(), sort_keys=True),
+        "evaluation_schema": json.dumps(RoleClarityReview.model_json_schema(), sort_keys=True),
         "initial_review_policy": review_policy(),
         "reassessment_policy": review_policy("prior"),
         "revision_policy": REVISION_POLICY.replace(OLD_ADDRESS, NEW_ADDRESS),
         "source_projection": VERSION,
         "request_delivery": DELIVERY_ID,
+        "review_output": CLARITY_ID,
         "role_descriptor": json.dumps(role_descriptor(), sort_keys=True),
     }
     root = Path(__file__).resolve().parents[2]
@@ -28,6 +29,7 @@ def component_fingerprints(skill):
         "app/evaluation/golden_role_review.py",
         "app/evaluation/golden_role_notes.py",
         "app/evaluation/golden_role_tool_delivery.py",
+        "app/evaluation/golden_role_clarity.py",
         "app/evaluation/golden_native_partitioned_tool_review.py",
         "app/evaluation/golden_native_tool_review.py",
         "app/evaluation/golden_native_business_policy.py",

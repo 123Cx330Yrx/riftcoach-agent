@@ -40,8 +40,17 @@ def canonical_sha(value):
 
 
 def prepare():
-    RuntimeCompositionRoot.from_directories(skills_root=ROOT/ASSETS/'skills',
-        prompt_programs_root=ROOT/ASSETS/'prompt_programs', coach_contract=ROLE_COACH_CONTRACT)
+    historical = None
+    if CLOSED_RESULT.exists():
+        raw_closed = CLOSED_RESULT.read_bytes()
+        if hashlib.sha256(raw_closed).hexdigest() != '559aa91e8343542f977a87981e5376bc36204fcb7f882ed0d480b7b3fa162c4d':
+            raise ValueError('context_historical_evidence_changed')
+        historical = json.loads(raw_closed)['public_json_contents']['plan.json']['preparation_plan']
+        if historical != json.loads(PREPARATION.read_text(encoding='utf-8')):
+            raise ValueError('context_historical_plan_changed')
+    else:
+        RuntimeCompositionRoot.from_directories(skills_root=ROOT/ASSETS/'skills',
+            prompt_programs_root=ROOT/ASSETS/'prompt_programs', coach_contract=ROLE_COACH_CONTRACT)
     raw = EVIDENCE.read_bytes()
     if hashlib.sha256(raw).hexdigest() != '700eacc1d70d5c8b651c8f1adcfe23ca2ccc906c3906fd8309805a7fe6b0f673':
         raise ValueError('context_original_evidence_changed')
@@ -88,6 +97,10 @@ def prepare():
             request_sha256=hashlib.sha256(request_raw).hexdigest(), input_ceiling=size(request),
             block_count=len(inputs.source.blocks), input_sha256=digest(inputs.data_json)))
         variants[name] = (inputs, request)
+    if historical is not None:
+        if cells != historical['cells'] or digest(target) != historical['original_target_sha256']:
+            raise ValueError('context_historical_request_changed')
+        return historical, variants
     total_input = 2 * sum(c['input_ceiling'] for c in cells)
     price = ROLE_COACH_CONTRACT.pricing_profiles['zhipu', 'glm-5.3']
     cost = (Decimal(total_input)*price.input_cost_per_million + Decimal(8*32768)*price.output_cost_per_million)/1_000_000
@@ -248,7 +261,8 @@ def run(args):
             with args.output.open('x', encoding='utf-8', newline='\n') as target:
                 json.dump(plan, target, ensure_ascii=False, indent=2)
                 target.write('\n')
-        return dict(plan_sha256=plan_sha, budget=plan['budget'], provider_requests=0)
+        return dict(plan_sha256=plan_sha, budget=plan['budget'], provider_requests=0,
+            historical_closed=CLOSED_RESULT.exists(), execution_enabled=False)
     if (plan != json.loads(PREPARATION.read_text(encoding='utf-8'))
             or args.plan_sha != plan_sha or args.env_file is None or not args.ci_run):
         raise ValueError('context_preparation_required')

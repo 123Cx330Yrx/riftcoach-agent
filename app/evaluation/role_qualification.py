@@ -13,8 +13,11 @@ from app.evaluation.golden_explicit_source_projection import VERSION as PROJECTI
 from app.evaluation.golden_inference_scope_v5 import strict_json
 from app.evaluation.golden_integrated_runtime import Exchange
 from app.evaluation.golden_review_experiment import compact, digest
-from app.evaluation.golden_role_notes import RoleNoteReviewWorkflow, RoleNoteReview, review_policy
-from app.evaluation.golden_role_tool_delivery import RoleToolDeliveryReviewWorkflow as RoleReviewWorkflow, DELIVERY_ID
+from app.evaluation.golden_role_notes import RoleNoteReviewWorkflow
+from app.evaluation.golden_role_tool_delivery import DELIVERY_ID
+from app.evaluation.golden_role_clarity import (
+    RoleClarityReviewWorkflow as RoleReviewWorkflow, RoleClarityReview, CLARITY_ID, review_policy,
+)
 from app.evaluation.golden_stream_bridge import (
     REQUEST, RESPONSE, CapacityBridgeObservation, validate_request,
 )
@@ -106,9 +109,9 @@ def candidate_identity(*, root=ROOT):
         program_sha256=manifest["program_sha256"], manifest_sha256=_sha(manifest_path),
         asset_sha256={name: _sha(root / ASSETS / name) for name in (
             "skills/recent-form-review/SKILL.md", "skills/recent-form-review/manifest.yaml")},
-        source_projection=PROJECTION_VERSION, request_delivery=DELIVERY_ID, roles=role_descriptor(),
+        source_projection=PROJECTION_VERSION, request_delivery=DELIVERY_ID, review_output=CLARITY_ID, roles=role_descriptor(),
         policy_sha256=digest(review_policy()),
-        schema_sha256=digest(compact(RoleNoteReview.model_json_schema())))
+        schema_sha256=digest(compact(RoleClarityReview.model_json_schema())))
 
 
 def prepare_qualification(*, root=ROOT):

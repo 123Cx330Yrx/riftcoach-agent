@@ -1,4 +1,4 @@
-"""Offline request equivalence audit; no Provider IO or semantic approval."""
+"""Replay the frozen historical delivery audit, never the current candidate."""
 import argparse
 from dataclasses import replace
 import hashlib
@@ -10,11 +10,15 @@ from app.evaluation.golden_review_experiment import compact, digest
 from app.evaluation.golden_role_notes import RoleNoteReviewWorkflow as Legacy
 from app.evaluation.golden_role_tool_delivery import DELIVERY_ID, RoleToolDeliveryReviewWorkflow as Current
 from app.evaluation.golden_stream_bridge import CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, validate_request
-from app.evaluation.role_qualification import ROOT, candidate_identity, frozen_cases
+from app.evaluation.role_qualification import ROOT, frozen_cases
 from scripts.prepare_review_model_comparison import mock_wire, sdk_arguments
 
 
 def audit():
+    original = (ROOT/'data/evaluation/results/golden_role_tool_delivery_audit_v1.json').read_bytes()
+    if hashlib.sha256(original).hexdigest() != '7b981fa8277e5380411e6c2501d379855a51f78eca91acbc07a59b477b2bd517':
+        raise ValueError('role_delivery_historical_audit_changed')
+    historical = json.loads(original)
     evidence_path = ROOT / 'data/evaluation/results/golden_role_note_qualification_pair_result_v1.json'
     evidence = json.loads(evidence_path.read_text(encoding='utf-8'))
     saved = evidence['public_json_contents']
@@ -47,7 +51,7 @@ def audit():
     editor = Legacy.make_request(inputs, accepted=accepted)
     assert Current.make_request(inputs, accepted=accepted) == editor
     return dict(kind='offline-request-delivery-audit-v1', request_delivery=DELIVERY_ID,
-        candidate_identity=candidate_identity(), frozen_case_count=len(rows), cases=rows,
+        candidate_identity=historical['candidate_identity'], frozen_case_count=len(rows), cases=rows,
         checks=dict(initial_and_reassessment_only_header_and_metadata_changed=True,
             sdk_wire_only_header_changed=True, full_source_system_and_tool_schema_unchanged=True,
             editor_request_unchanged=True),

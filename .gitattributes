@@ -99,3 +99,5 @@
 /data/evaluation/results/golden_role_tool_delivery_audit_v1.json text eol=lf
 /data/evaluation/results/golden_role_context_preparation_v1.json text eol=lf
 /data/evaluation/results/golden_role_context_result_v1.json text eol=lf
+/data/evaluation/results/golden_role_clarity_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_role_clarity_result_v1.json text eol=lf
