@@ -241,9 +241,10 @@ def _within(root, value):
     return path
 
 
-def replay_case(frozen, source, calls):
+def replay_case(frozen, source, calls, *, include_stage_evidence=False):
     """Current qualification always reconstructs the current request delivery."""
-    return _replay_case(frozen, source, calls, workflow_type=RoleReviewWorkflow)
+    return _replay_case(frozen, source, calls, workflow_type=RoleReviewWorkflow,
+        include_stage_evidence=include_stage_evidence)
 
 
 def replay_legacy_note_case(frozen, source, calls):
@@ -251,10 +252,10 @@ def replay_legacy_note_case(frozen, source, calls):
     return _replay_case(frozen, source, calls, workflow_type=RoleNoteReviewWorkflow)
 
 
-def _replay_case(frozen, source, calls, *, workflow_type):
+def _replay_case(frozen, source, calls, *, workflow_type, include_stage_evidence=False):
     """Reconstruct review -> actual revision -> final review from raw exchanges."""
     iterator = iter(calls)
-    used, journals = [], []
+    used, journals, stages = [], [], []
     def send(prepared):
         call = next(iterator, None)
         if call is None:
@@ -271,6 +272,7 @@ def _replay_case(frozen, source, calls, *, workflow_type):
     workflow = workflow_type(send)
     initial = workflow.evaluate(source)
     journals.append(deepcopy(workflow.last_journal))
+    stages.append(dict(stage="initial", report=source.report, journal=deepcopy(workflow.last_journal)))
     verdict = "accept" if initial.verdict is EvaluationVerdict.PASS else "reject"
     minimum_score = ROLE_COACH_CONTRACT.descriptor()["minimum_score"]
     if (verdict != frozen["expected_initial"] or initial.verdict is EvaluationVerdict.FAIL
@@ -280,15 +282,20 @@ def _replay_case(frozen, source, calls, *, workflow_type):
     if initial.verdict is EvaluationVerdict.NEEDS_REVISION:
         draft = workflow.revise(RevisionRequest(source.player_summary, source.deterministic_report, source.knowledge, source.report, initial))
         final_report = draft.report
+        stages.append(dict(stage="revision", report=final_report, journal=None))
         final = workflow.evaluate(replace(source, report=final_report))
         journals.append(deepcopy(workflow.last_journal))
+        stages.append(dict(stage="final", report=final_report, journal=deepcopy(workflow.last_journal)))
         if final.verdict is not EvaluationVerdict.PASS or final.score < minimum_score:
             raise ValueError("role_qualification_final_review_failed")
     if next(iterator, None) is not None:
         raise ValueError("role_qualification_unused_actual_call")
-    return dict(final_report_sha256=digest(final_report),
+    bindings = dict(final_report_sha256=digest(final_report),
         journals_sha256=[digest(compact(j)) for j in journals],
         artifact_sha256=[c["artifact_sha256"] for c in used])
+    if include_stage_evidence:
+        return dict(bindings=bindings, stages=stages)
+    return bindings
 
 
 def validate_qualification(result, *, evidence_root, root=ROOT):

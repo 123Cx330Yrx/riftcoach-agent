@@ -14,7 +14,11 @@ but the review explanation added the false middle-vision range27–43 instead of
 25–43. The batch stopped before editing:2requests/29576tokens, unknown0,
 uncached estimateCNY0.355568, not invoice. Current qualification is1accepted,
 1failed,13unrun. ADR0110 records an unchanged-fixture two-call containment
-observation; it does not overturn the failed review or grant product admission.
+observation. That tail subsequently completed on465e3fd8 with a correct actual
+edit and95/pass fresh review, accepted by primary/independent source checks:
+2new calls/25693tokens, unknown0, uncached estimateCNY0.1510924. It does not
+overturn the failed review or grant original15/product admission. ADR0110 and
+the task-outcome qualification design keep these evidence levels separate.
 
 ## 2026-09-24: earlier 1.5.1 evidence, not production admission
 

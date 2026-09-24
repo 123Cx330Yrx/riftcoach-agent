@@ -71,7 +71,7 @@ def _hash(path):
 def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
             clock=time.monotonic, before_send=lambda: None,
             workflow_type=RoleNoteReviewWorkflow, replay=replay_case,
-            success_field='pair_accepted'):
+            success_field='pair_accepted', task_observer=None):
     """Run frozen workflows, retaining per-stage host gates outside model input."""
     started = clock()
     sources = {f['key']: (f, source) for f, source in frozen_cases()[0]}
@@ -95,6 +95,7 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
             wrapped = _ReceiptForwardingCoachBudgetedProvider(provider, clock=clock, coach_contract=ROLE_COACH_CONTRACT)
             sender = SharedBudgetReviewSender(wrapped)
             journals = []
+            stage_decisions = []
             current_report = source.report
 
             def remaining():
@@ -108,6 +109,8 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
                         request, transport_id=REVIEW_MODEL_TRANSPORT_ID)).hexdigest() != row['request_sha256']:
                     raise ValueError('role_pair_first_request_changed')
                 if request.metadata.get('review_phase') == 'native_business_reassessment':
+                    if task_observer is not None:
+                        raise ValueError('task_observation_reassessment_forbidden')
                     # A recovery is a new business judgment. Inspect the full
                     # bad response before paying for it, never strip its fields.
                     inspect(f'reassessment-before-{wrapped.calls + 1}', current_report,
@@ -134,7 +137,10 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
                         or decision.get('response_sha256') != _hash(path)):
                     raise ValueError('role_pair_host_binding_invalid')
                 write_new_json(arm / (stage + '-host.json'), decision)
-                if not decision['accepted']:
+                continuation = (task_observer.validate_stage(plan, row, path, decision)
+                    if task_observer is not None else decision['accepted'])
+                stage_decisions.append(decision)
+                if not continuation:
                     raise ValueError('role_pair_host_rejected')
                 if remaining() <= 0:
                     raise ValueError('role_pair_execution_limit')
@@ -175,6 +181,28 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
             if (replayed['final_report_sha256'] != digest(final_report)
                     or replayed['journals_sha256'] != [digest(compact(j)) for j in journals]):
                 raise ValueError('role_pair_replay_mismatch')
+            if task_observer is not None:
+                observation = task_observer.finish(plan, row, calls, stage_decisions)
+                before_send()  # Also binds the final host/replay to execution HEAD.
+                if remaining() <= 0:
+                    raise ValueError('role_pair_execution_limit')
+                write_new_json(arm / 'task-observation.json', observation)
+                if remaining() <= 0:
+                    raise ValueError('role_pair_execution_limit')
+                if not observation['task_outcome']:
+                    raise ValueError('task_observation_final_outcome_rejected')
+                # Include receipt/accounting validation in this case's elapsed
+                # time; later batch aggregation is not a new case-time budget.
+                outcome['accounting'] = summarize_calls(directory / 'transport' / case_id)
+                if remaining() <= 0:
+                    outcome.update(elapsed_seconds=round(clock()-case_started,3),
+                        continuous_observation_budget_verified=False)
+                    raise ValueError('role_pair_execution_limit')
+                outcome.update(status='task_observed', task_outcome=observation['task_outcome'],
+                    reviewer_quality=observation['reviewer_quality'], final_report_sha256=digest(final_report),
+                    elapsed_seconds=round(clock()-case_started,3), fresh_receipts_verified=True,
+                    continuous_observation_budget_verified=True, real_generation_included=False)
+                continue  # Supplementary observation can never create an old qualification row.
             host_path = arm / 'host-review.json'
             write_new_json(host_path, dict(candidate_sha256=digest(compact(plan['identity'])),
                 input_sha256=frozen['input_sha256'], initial_request_sha256=calls[0]['binding']['request_sha256'],
@@ -194,11 +222,15 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
         # Receipts, including unknown usage, are the accounting authority.
         for outcome in outcomes:
             try:
-                outcome['accounting'] = summarize_calls(directory / 'transport' / outcome['key'].replace(':', '-'))
+                if not (task_observer is not None and 'accounting' in outcome):
+                    outcome['accounting'] = summarize_calls(directory / 'transport' / outcome['key'].replace(':', '-'))
             except (ValueError, OSError, KeyError, TypeError):
                 outcome['accounting'] = dict(accounting_status='invalid_receipts', reserved_calls=None,
                     completed_calls=None, unknown_usage_calls=None, total_estimated_uncached_cny=None)
                 result[success_field] = False
+        if task_observer is not None and clock() - started >= plan['batch_budget']['max_seconds']:
+            result[success_field] = False
+            result.update(error_type='ValueError', error_code='role_pair_execution_limit')
         result.update(cases=outcomes, elapsed_seconds=round(clock() - started, 3))
         write_new_json(directory / 'result.json', result)
     return result

@@ -1,3 +1,44 @@
+# 2026-09-24 任务观察合同和连续执行器准备
+
+新增ADR0111及role_task_outcome补充观测，复用原工作流回放和role receipts；原正确稿重建
+reviewer_quality/task_outcome=true/true，历史首评加真实尾部false/true，所有准入门仍false。
+原15/原标签/产品身份、模型和预算未改。原29份尾部证据与投影经主/独立逐件核对一致。
+
+新runner复用pair executor，通过显式observer接入逐stage源审核；仅附属explanation事实错误
+在全issues目标/修法正确时允许继续，accepted=false及缺陷不删，协议reassessment关闭。
+真实调用原回执校验后重放、成稿绑定，成功也不创建旧qualification_row；不能把离线组合
+说成fresh或完整产品任务。全阶段时间与最后host后identity绑定由执行器检查。
+
+开发中发现并修正公开JSON键序导致回放hash不符，保留原请求byte SHA并由builder恢复顺序；
+阶段摘要使用canonical JSON以对应落盘。独立反例发现收尾核验超时与末阶段identity漂移，
+均修正且新增测试；这些是实测前工程缺陷，不算新的模型失败。用量字段也绑定host观察摘要。
+新outcome39项、runner15项、旧role qualification/clarity/containment与pair相关回归通过；
+治理、compile、diff通过。完整公共CI以最终提交为准，不复述旧提交为本包证明。
+
+新三例冻结plan 6a04b8f45de649c003a7288c65081fb83e505b0f1b5a3a0d55e3792685c2d953，
+最多7调用/677376tokens/2100秒，保守全GLM预留估价10.006528元，非账单；仍待同提交
+CI成功后执行。当前无活动Provider请求、无新付费用量或未知调用。旧失败批均不重开。
+
+# 2026-09-24 实际尾部容错通过，保留失败首评与未完资格
+
+465e3fd8 / CI35962952000三项通过（4751 passed、154 skipped、129 subtests）。按冻结
+45c2f0…df466运行：首评仅离线注入，原始bad review不删改；Flash实际编辑修正真全称错误、
+删除冗余引言、23原段保持，GLM fresh终评95/pass，issues空、block13非阻断marker。
+主/独立完整source/全文/新句/marker审查接受，实际final request按当前builder重建一致，
+无旧review污染。结果tail_accepted=true、initial_review_accepted=false，不拼成原15成功。
+
+新2调用（Flash编辑1、GLM终评1），22371输入＋3322输出＝25693tokens，缓存0、未知0，
+含host401.391秒；未缓存估价0.1510924元，非账单。29份原件与公开投影、完整裁决、真实
+两调用＋离线注入重放见golden_role_containment_result_v1.json，SHA
+cb2991fc122b38ba9ef7cca3940b0e983dee41f1698741f2766eb0c22c17e2cb。
+成稿SHA0100639eb87e0af7a4b1d7d1b12ee31754fe7846f59fa574085d76780dd546af。
+
+本次结果改变方法选择：先复用现有编辑/终评，把初评质量和完整交付质量分开测量；暂不建
+新的数字选择/渲染协议。前瞻设计docs/plans/2026-09-24-task-outcome-qualification.md保留
+原15、正确稿原样通过、真错修正、最终全来源与内部缺陷记录；现有准入没有被自动放宽。
+尾部闭批preview固定原identity/plan/request，不继承未来候选。新增历史边界与旧批组15测试
+通过；最终提交CI另记。没有活动模型请求、恢复或未知调用；当前原15仍1接受/1失败/13未跑。
+
 # 2026-09-24 尾部容错验证准备
 
 职责比较后选未修改bad review＋现有Flash编辑/fresh GLM终评，暂不新增数值协议。

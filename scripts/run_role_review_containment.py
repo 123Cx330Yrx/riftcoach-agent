@@ -68,6 +68,21 @@ def fixture():
 
 
 def prepare():
+    if CLOSED_RESULT.exists():
+        if sha(CLOSED_RESULT) != 'cb2991fc122b38ba9ef7cca3940b0e983dee41f1698741f2766eb0c22c17e2cb':
+            raise ValueError('containment_historical_evidence_changed')
+        saved = json.loads(CLOSED_RESULT.read_text(encoding='utf-8'))['public_json_contents']['plan.json']
+        plan = saved['preparation_plan']
+        if (plan != json.loads(PREPARATION.read_text(encoding='utf-8'))
+                or canonical_sha(plan) != saved['plan_sha256']):
+            raise ValueError('containment_historical_plan_changed')
+        frozen, source, response, initial, editor = fixture()
+        if (frozen['report_sha256'] != plan['original_report_sha256']
+                or digest(RESPONSE.dump_json(response).decode()) != plan['injected_public_response_sha256']
+                or hashlib.sha256(validate_request(editor,transport_id=CAPACITY_TRANSPORT_ID)).hexdigest()
+                    != plan['editor_request_sha256']):
+            raise ValueError('containment_historical_request_changed')
+        return plan, (source,response,initial,editor)
     RuntimeCompositionRoot.from_directories(skills_root=ROOT/ASSETS/'skills',
         prompt_programs_root=ROOT/ASSETS/'prompt_programs',coach_contract=ROLE_COACH_CONTRACT)
     frozen, source, response, initial, editor = fixture()
@@ -188,7 +203,8 @@ def run(args):
     if not args.execute:
         if args.output:
             write_new_json(args.output,plan)
-        return dict(plan_sha256=plan_sha,budget=plan['budget'],provider_requests=0)
+        return dict(plan_sha256=plan_sha,budget=plan['budget'],provider_requests=0,
+            historical_closed=CLOSED_RESULT.exists(),execution_enabled=False)
     if (not args.env_file or not args.ci_run or args.plan_sha != plan_sha
             or plan != json.loads(PREPARATION.read_text(encoding='utf-8'))):
         raise ValueError('containment_preparation_required')

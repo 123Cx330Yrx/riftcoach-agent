@@ -102,3 +102,18 @@ def test_closed_batch_and_wrong_preparation_never_read_keys(prepared,monkeypatch
     monkeypatch.setattr(runner,'prepare',lambda:pytest.fail('closed batch prepared'))
     with pytest.raises(ValueError,match='batch_closed'):
         runner.run(NS(execute=True))
+
+
+def test_closed_tail_preview_does_not_inherit_current_identity(monkeypatch):
+    monkeypatch.setattr(runner,'candidate_identity',lambda:pytest.fail('closed preview used current identity'))
+    plan,_=runner.prepare()
+    assert plan==json.loads(runner.PREPARATION.read_text(encoding='utf-8'))
+    assert runner.canonical_sha(plan)=='45c2f0f8e90d3b8194f995ebf1cfc4a9ae6d8aafbfdf87ee9ef91175de2df466'
+    assert runner.run(NS(execute=False,output=None))['historical_closed']
+
+
+def test_closed_tail_preview_rejects_changed_evidence(monkeypatch,tmp_path):
+    changed=tmp_path/'changed.json';changed.write_bytes(runner.CLOSED_RESULT.read_bytes()+b'\n')
+    monkeypatch.setattr(runner,'CLOSED_RESULT',changed)
+    with pytest.raises(ValueError,match='historical_evidence_changed'):
+        runner.prepare()
