@@ -4,6 +4,8 @@ No source ledger or product state change. Two complete frozen reports, no prior
 opinions/labels, no retries. A real final GLM review is a later dependency, not
 silently included in this pair or claimed by its success.
 """
+from scripts.closed_comparison_preview import bind_closed_plan
+
 import argparse
 from dataclasses import replace
 from decimal import Decimal
@@ -29,6 +31,7 @@ from scripts.check_source_bound_report import original_request, ROOT, APPLICATIO
 from scripts.native_contract_options import body
 
 EXPERIMENT = "independent-flash-edit-capability-pair-v1"
+CLOSED_EVIDENCE = ROOT / "data/evaluation/results/golden_independent_edit_result_58449abb.json"
 LIVE_STATUS = "stopped_deadline_without_report"
 RUN_DIRECTORY = ROOT / "data/runs/model_comparison" / EXPERIMENT
 POLICY = (
@@ -94,7 +97,7 @@ def prepare():
         decision_if_rejected="Reject adding this independent edit step for the observed failure; no prompt retry in this batch.",
         decision_if_accepted="Limited evidence to prepare an actual edit/final-GLM-review path; not stable quality or product adoption.",
         stop_rule="Host checks the entire actual report and diff; any failure stops before the next request, no recovery or retries.")
-    return variants, plan
+    return variants, bind_closed_plan(plan, CLOSED_EVIDENCE, "c7cb672cf27192413f9aacab437810693e55348e0f97111aaff65884b5190d26")
 
 
 def inspect_edit(prepared, exchange, inputs):

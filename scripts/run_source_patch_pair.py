@@ -3,6 +3,8 @@
 Uses the complete failed report and the independently audited correct reference.
 The operation set and actual assembled report both require host adjudication.
 """
+from scripts.closed_comparison_preview import bind_closed_plan
+
 import argparse
 from dataclasses import replace
 from decimal import Decimal
@@ -44,7 +46,7 @@ def prepare():
         "scripts/run_flash_knowledge_time_review_pair.py", "scripts/run_review_model_comparison.py",
         "data/evaluation/datasets/golden_source_time_reference_audit_v2.json",
         "data/evaluation/results/golden_flash_knowledge_time_review_result_v2.json")
-    return variants, dict(experiment=EXPERIMENT, source_candidate=controls["source_candidate"],
+    plan = dict(experiment=EXPERIMENT, source_candidate=controls["source_candidate"],
         source_control_plan_sha256=digest(compact(controls)), model="glm-5.3-flash", reasoning_effort="high",
         sdk_retries=0, transport_id=CAPACITY_TRANSPORT_ID, policy_sha256=digest(editor.POLICY), cells=cells,
         source_sha256={p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in paths},
@@ -55,6 +57,7 @@ def prepare():
         decision_if_accepted="Prepare actual edited-report GLM final review, then explicit full-task control flow; no admission.",
         decision_if_rejected="Reject this source-check/editor route for the observed failure; no prompt variants or paid retries.",
         stop_rule="Any protocol, source, semantic, preservation or budget failure stops before the next call.")
+    return variants, bind_closed_plan(plan, CLOSED_EVIDENCE, "ba840bc71f762fad04834466dd98d37187321ae5c17a51d8b95b8f90ac7c0945")
 
 
 def run(args):

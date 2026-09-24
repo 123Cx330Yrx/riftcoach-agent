@@ -4,6 +4,8 @@ The unexecuted v1 plan retained an unsupported OP.GG date in its purported
 positive control. Its inputs and withdrawal remain immutable evidence. Only
 the original negative request is byte-identical to the historical GLM call.
 """
+from scripts.closed_comparison_preview import bind_closed_plan
+
 import argparse
 from dataclasses import replace
 from decimal import Decimal
@@ -31,6 +33,9 @@ REFERENCE_AUDIT = ROOT / "data/evaluation/datasets/golden_source_time_reference_
 def prepare():
     variants, original = prepare_original()
     prior = json.loads(PREDECESSOR.read_text(encoding="utf-8"))
+    # The predecessor is closed: its candidate label is historical metadata.
+    historical_preparation = json.loads((ROOT / "data/evaluation/results/golden_flash_knowledge_time_review_preparation_v2.json").read_text(encoding="utf-8"))
+    original["candidate"] = historical_preparation["preparation_plan"]["source_candidate"]
     actual = prior["public_json_contents"]["original-date-error/request.raw.json"]
     raw_original = validate_request(variants[0][2], transport_id=CAPACITY_TRANSPORT_ID)
     if (json.loads(raw_original) != actual or hashlib.sha256(raw_original).hexdigest()
@@ -83,7 +88,7 @@ def prepare():
         stop_rule="Any protocol/source/semantic/budget failure stops before the next call; no retries.",
         decision_if_accepted="Prepare actual needs_revision/edit/final-review with existing workflow; no model-route adoption or qualification yet.",
         decision_if_rejected="Do not adopt this reviewer substitution; close the pair, no policy variants or automatic paid retries.")
-    return variants, plan
+    return variants, bind_closed_plan(plan, CLOSED_EVIDENCE, "7ea9206f33ac962782dc3b8fd24039182d862a5bdd7076766a3399d69ef87060")
 
 
 def run(args):
