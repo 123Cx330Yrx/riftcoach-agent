@@ -5,7 +5,18 @@ Default product remains GLM-5.3-flash/high until qualification. The user adopted
 the role proposal on 2026-09-23 (requirements_change_log); no completed diagnostic
 batch is reopened and no production admission is granted by this record. This decision concerns product models, unrelated to Codex Luna.
 
-## 2026-09-24: latest evidence, not production admission
+## 2026-09-24: current 1.5.2 state
+
+Role contract1.5.2 / Program3.1.2 / evaluation3.5.0 retains only nonblocking
+paragraph markers. On88f05647 / CI35960739920, the correct frozen report passed
+95 with full host acceptance. The next explicit error was correctly detected,
+but the review explanation added the false middle-vision range27–43 instead of
+25–43. The batch stopped before editing:2requests/29576tokens, unknown0,
+uncached estimateCNY0.355568, not invoice. Current qualification is1accepted,
+1failed,13unrun. ADR0110 records an unchanged-fixture two-call containment
+observation; it does not overturn the failed review or grant product admission.
+
+## 2026-09-24: earlier 1.5.1 evidence, not production admission
 
 The current opt-in role contract is1.5.1 (Program3.1.1 / evaluation3.4.0);
 ADR0110 records the prospective removal of unused advisory replacement text.

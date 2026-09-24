@@ -80,5 +80,27 @@ def test_preview_does_not_load_credentials_and_bad_plan_stops_before_ci(prepared
     monkeypatch.setattr(runner,'load_role_settings',lambda *_:pytest.fail('preview read credentials'))
     monkeypatch.setattr(runner,'verify_public_ci',lambda *_:pytest.fail('bad plan reached CI'))
     assert runner.run(NS(execute=False,output=None))['provider_requests']==0
+    monkeypatch.setattr(runner,'CLOSED_RESULT',tmp_path/'not-closed.json')
+    monkeypatch.setattr(runner,'prepare',lambda:prepared)
     with pytest.raises(ValueError,match='preparation_required'):
         runner.run(NS(execute=True,env_file=tmp_path/'unused',ci_run='fake',plan_sha='wrong'))
+
+
+def test_closed_preview_keeps_executed_identity_and_request_bytes(monkeypatch):
+    monkeypatch.setattr(runner,'prepare_qualification',lambda:pytest.fail('historical preview used current candidate'))
+    plan,requests=runner.prepare()
+    assert plan==json.loads(runner.PREPARATION.read_text(encoding='utf-8'))
+    assert runner.canonical_sha(plan)=='abf2686d68190dd4c45d6287062eade65bf642a4e6e557f0537e2ba1222f7339'
+    assert len(requests)==3
+    evidence=json.loads(runner.CLOSED_RESULT.read_text(encoding='utf-8'))
+    for key,raw in requests.items():
+        assert hashlib.sha256(raw).hexdigest()==evidence['original_file_sha256'][key.replace(':','-')+'-prepared-request.json']
+    assert runner.run(NS(execute=False,output=None))['historical_closed']
+
+
+def test_closed_preview_rejects_changed_public_evidence(monkeypatch,tmp_path):
+    changed=tmp_path/'changed.json'
+    changed.write_bytes(runner.CLOSED_RESULT.read_bytes()+b'\n')
+    monkeypatch.setattr(runner,'CLOSED_RESULT',changed)
+    with pytest.raises(ValueError,match='historical_evidence_changed'):
+        runner.prepare()

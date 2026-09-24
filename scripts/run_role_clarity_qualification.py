@@ -13,7 +13,8 @@ from pathlib import Path
 from app.evaluation.golden_journal import write_new_json
 from app.evaluation.golden_review_experiment import compact, digest
 from app.evaluation.golden_role_clarity import RoleClarityReviewWorkflow
-from app.evaluation.role_qualification import ROOT, ASSETS, prepare_qualification, replay_case
+from app.evaluation.role_qualification import ROOT, ASSETS, frozen_cases, prepare_qualification, replay_case
+from app.evaluation.golden_stream_bridge import REVIEW_MODEL_TRANSPORT_ID, validate_request
 from app.runtime.coach_contract import ROLE_COACH_CONTRACT
 from app.runtime.composition import RuntimeCompositionRoot
 from app.runtime.receipted_provider_factory import RunScopedRoleReceiptedProviderFactory
@@ -31,6 +32,30 @@ RUN_DIRECTORY = ROOT/'data/runs/role_qualification'/EXPERIMENT
 
 
 def prepare():
+    if CLOSED_RESULT.exists():
+        raw = CLOSED_RESULT.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != '2884776f4f866e67738d43bdb9f4966ec37400486ccb1e6706a0f59aee8dcdd9':
+            raise ValueError('clarity_historical_evidence_changed')
+        evidence = json.loads(raw)
+        saved = evidence['public_json_contents']['plan.json']
+        plan = saved['preparation_plan']
+        if (plan != json.loads(PREPARATION.read_text(encoding='utf-8'))
+                or canonical_sha(plan) != saved['plan_sha256']
+                or [c['key'] for c in plan['cases']] != list(KEYS)):
+            raise ValueError('clarity_historical_plan_changed')
+        sources = {f['key']: source for f, source in frozen_cases()[0]}
+        requests = {}
+        for row in plan['cases']:
+            key = row['key']
+            request = RoleClarityReviewWorkflow.make_request(
+                RoleClarityReviewWorkflow.build_inputs(sources[key]))
+            raw_request = validate_request(request, transport_id=REVIEW_MODEL_TRANSPORT_ID)
+            if (hashlib.sha256(raw_request).hexdigest() != row['request_sha256']
+                    or row['request_sha256'] != evidence['original_file_sha256'][
+                        key.replace(':', '-') + '-prepared-request.json']):
+                raise ValueError('clarity_historical_request_changed')
+            requests[key] = raw_request
+        return plan, requests
     RuntimeCompositionRoot.from_directories(skills_root=ROOT/ASSETS/'skills',
         prompt_programs_root=ROOT/ASSETS/'prompt_programs', coach_contract=ROLE_COACH_CONTRACT)
     qualification, requests = prepare_qualification()
@@ -68,7 +93,8 @@ def run(args):
         if args.output:
             with args.output.open('x',encoding='utf-8',newline='\n') as f:
                 json.dump(plan,f,ensure_ascii=False,indent=2); f.write('\n')
-        return dict(plan_sha256=sha,budget=plan['batch_budget'],provider_requests=0)
+        return dict(plan_sha256=sha,budget=plan['batch_budget'],provider_requests=0,
+            historical_closed=CLOSED_RESULT.exists(),execution_enabled=False)
     if (not args.env_file or not args.ci_run or args.plan_sha != sha
             or plan != json.loads(PREPARATION.read_text(encoding='utf-8'))):
         raise ValueError('clarity_qualification_preparation_required')
