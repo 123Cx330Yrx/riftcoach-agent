@@ -25,6 +25,7 @@ def test_continuation_only_covers_untouched_inputs_and_charges_parent():
 
 @pytest.mark.parametrize('defect',['unknown_usage','call_limit','tokens','started_key'])
 def test_parent_constraints_cannot_be_bypassed(monkeypatch,defect):
+    monkeypatch.setattr(runner,'CLOSED_RESULT',runner.ROOT/'data/runs/nonexistent-unexecuted-result.json')
     evidence=deepcopy(runner.interruption())
     if defect=='unknown_usage':
         evidence['unknown_usage_calls']=1
@@ -63,3 +64,24 @@ def test_original_seal_uses_raw_bytes_not_public_projection(monkeypatch,tmp_path
     monkeypatch.setattr(runner,'interruption',lambda:evidence)
     with pytest.raises(ValueError,match='parent_raw_changed'):
         runner.verify_original_seal()
+
+
+def test_historical_preview_freezes_plan_and_never_reopens_closed_batch(monkeypatch):
+    import hashlib
+    import json
+    monkeypatch.setattr(runner,'interruption',lambda:pytest.fail('closed preview recomputed plan'))
+    plan,requests=runner.prepare()
+    assert plan==json.loads(runner.PREPARATION.read_text(encoding='utf-8'))
+    assert runner.canonical_sha(plan)=='1f2ec454bffab2b7dcbf1d48cd2d21d7e6c9b40a18ed35b32a919ef401fbdc8a'
+    evidence=json.loads(runner.CLOSED_RESULT.read_text(encoding='utf-8'))
+    for key,raw in requests.items():
+        assert hashlib.sha256(raw).hexdigest()==evidence['original_file_sha256'][key.replace(':','-')+'-prepared-request.json']
+    assert runner.run(NS(execute=False,output=None))['historical_closed']
+
+
+def test_historical_preview_rejects_tampered_seal(monkeypatch,tmp_path):
+    altered=tmp_path/'closed.json'
+    altered.write_bytes(runner.CLOSED_RESULT.read_bytes()+b'\n')
+    monkeypatch.setattr(runner,'CLOSED_RESULT',altered)
+    with pytest.raises(ValueError,match='historical_evidence_changed'):
+        runner.prepare()

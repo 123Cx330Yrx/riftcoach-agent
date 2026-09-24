@@ -253,6 +253,76 @@ def _completed_prefix(run, plan):
     return outcomes, batch_elapsed
 
 
+def _interrupted_prefix(run, plan, result):
+    """Accept only durable completions; charge and retain the failed suffix.
+
+    A failed/missing batch summary does not invalidate earlier completed cases.
+    It also cannot hide a started case, refund its calls, or skip over a gap.
+    """
+    outcomes, completed_elapsed = _completed_prefix(run, plan)
+    count = len(outcomes)
+    rows, budgets = plan['cases'], plan['case_budgets']
+    recorded = [] if result is None else result.get('cases')
+    if result is not None:
+        if (not isinstance(recorded, list) or not count <= len(recorded) <= count + 1
+                or len(recorded) > len(rows) or recorded[:count] != outcomes
+                or [r.get('key') for r in recorded] != [r['key'] for r in rows[:len(recorded)]]
+                or any(r.get('status') != 'failed' for r in recorded[count:])):
+            _fail('failed_batch_prefix_mismatch')
+        original_elapsed = _seconds(result.get('elapsed_seconds'), float('inf'))
+        if original_elapsed < completed_elapsed:
+            _fail('completion_clock_order')
+    else:
+        original_elapsed = None
+    allowed_ids = {r['key'].replace(':', '-') for r in rows}
+    transport_root = run / 'transport'
+    if any(p.name not in allowed_ids or not p.is_dir() for p in transport_root.iterdir()):
+        _fail('unrecorded_transport')
+    total_calls = total_tokens = unknown_calls = 0
+    tail = []
+    for index, (row, budget) in enumerate(zip(rows, budgets, strict=True)):
+        case_id = row['key'].replace(':', '-')
+        summary = qualification.summarize_role_calls(transport_root / case_id)
+        started = (run / case_id / 'source.json').exists() or summary['reserved_calls'] > 0
+        if started and (index > count or result is not None and index >= len(recorded)):
+            _fail('execution_after_incomplete_case')
+        if result is not None and index < len(recorded):
+            if any(recorded[index].get('accounting', {}).get(k) != v for k, v in summary.items()):
+                _fail('accounting_mismatch')
+        calls = summary['reserved_calls']
+        known_tokens = summary['input_tokens'] + summary['output_tokens']
+        if (calls > _count(budget.get('max_calls'), 5)
+                or known_tokens > _count(budget.get('max_tokens'), 401920)):
+            _fail('case_budget_exceeded')
+        # A declared case allowance is not a bound on an already issued
+        # unknown call. Charge the actual request's conservative input ceiling
+        # and output reservation; a small declaration must not refund it.
+        tokens = known_tokens
+        if summary['unknown_usage_calls']:
+            tokens += sum(qualification.size(call['request']) + call['request'].max_tokens
+                for call in qualification.read_role_calls(transport_root / case_id) if call['usage'] is None)
+        if tokens > budget['max_tokens']:
+            _fail('case_budget_exceeded')
+        total_calls += calls
+        total_tokens += tokens
+        unknown_calls += summary['unknown_usage_calls']
+        if index >= count and started:
+            tail.append(dict(key=row['key'], qualified=False, accounting=summary))
+    if (total_calls > _count(plan['batch_budget'].get('max_calls'), 75)
+            or total_tokens > _count(plan['batch_budget'].get('max_tokens'), 15 * 401920)):
+        _fail('batch_budget_exceeded')
+    boundary = dict(batch_result_present=result is not None,
+        original_error_code=None if result is None else result.get('error_code'),
+        original_error_type=None if result is None else result.get('error_type'),
+        accepted_prefix_keys=[r['key'] for r in outcomes], unqualified_started_cases=tail,
+        full_batch_reserved_calls=total_calls, full_batch_charged_tokens=total_tokens,
+        unknown_usage_calls=unknown_calls, original_elapsed_seconds=original_elapsed)
+    # The original result may record a later timeout, including scheduler
+    # overrun. Only the already-finished prefix claims to fit the batch clock;
+    # preserve the later elapsed/error above without passing the failed tail.
+    return outcomes, completed_elapsed, boundary
+
+
 def qualify(run_directories, *, evidence_root, output_directory, closed_exports):
     """Create new original-gate rows; only all fifteen invoke its validator.
 
@@ -289,15 +359,16 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports)
         rows, budgets = plan.get('cases'), plan.get('case_budgets')
         if not isinstance(rows, list) or not rows or not isinstance(budgets, list) or len(rows) != len(budgets):
             _fail('closed_case_inventory_mismatch')
-        if not (run / 'result.json').exists():
-            outcomes, elapsed = _completed_prefix(run, plan)
+        boundary = None
+        result = _json(run / 'result.json') if (run / 'result.json').exists() else None
+        if result is not None and result.get('experiment') != plan.get('experiment'):
+            _fail('closed_case_inventory_mismatch')
+        if result is None or 'error_code' in result or 'error_type' in result:
+            outcomes, elapsed, boundary = _interrupted_prefix(run, plan, result)
             rows, budgets = rows[:len(outcomes)], budgets[:len(outcomes)]
-            completion_source = 'durable_case_receipts_without_batch_result'
+            completion_source = ('durable_case_receipts_without_batch_result' if result is None
+                else 'durable_case_receipts_before_failed_batch_suffix')
         else:
-            result = _json(run / 'result.json')
-            if (result.get('experiment') != plan.get('experiment')
-                    or 'error_code' in result or 'error_type' in result):
-                _fail('closed_case_inventory_mismatch')
             outcomes = result.get('cases')
             elapsed = result.get('elapsed_seconds')
             completion_source = 'original_batch_result'
@@ -329,7 +400,7 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports)
             _fail('batch_budget_exceeded')
         seals.append(dict(run_directory=run.relative_to(evidence_root).as_posix(),
             closed_export=export_path.as_posix(), closed_export_sha256=export_sha,
-            original_file_sha256=hashes))
+            original_file_sha256=hashes, interruption_boundary=boundary))
     # All evidence is checked before the first write. Create-only output never
     # edits a closed run, even if the final original-gate validator rejects it.
     output.mkdir(parents=True, exist_ok=False)

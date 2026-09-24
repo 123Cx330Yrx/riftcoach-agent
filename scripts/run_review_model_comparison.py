@@ -53,7 +53,8 @@ def terminal_adjudication(response_path, remaining):
 
 def observe(provider, directory, variants, plan, *, adjudicate=terminal_adjudication, clock=time.monotonic,
             reviewer_profile=ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE,
-            transport_id=REVIEW_MODEL_TRANSPORT_ID, inspect_response=None):
+            transport_id=REVIEW_MODEL_TRANSPORT_ID, inspect_response=None,
+            before_case=None, before_send=lambda: None):
     """Two controls with host resume in the same live, deadline-bounded session.
 
     The default stays the historical GLM diagnostic. An explicit profile must
@@ -83,6 +84,14 @@ def observe(provider, directory, variants, plan, *, adjudicate=terminal_adjudica
     result = dict(experiment=plan['experiment'], production_admitted=False, pair_accepted=False)
     try:
         for index, (name, inputs, prepared) in enumerate(variants):
+            if before_case is not None:
+                remaining = limits['max_seconds_total'] - (clock() - started)
+                if remaining <= 0:
+                    raise ValueError('model_comparison_shared_budget')
+                before_case(directory, dict(plan['cells'][index], key=name), plan, remaining)
+                if clock() - started >= limits['max_seconds_total']:
+                    raise ValueError('model_comparison_shared_budget')
+            case_started = clock()
             record = dict(id=name, completed=False, valid=False, reserved_calls=0,
                           observed_usage=None, usage_source='unavailable')
             records.append(record)
@@ -90,6 +99,7 @@ def observe(provider, directory, variants, plan, *, adjudicate=terminal_adjudica
             arm.mkdir(exist_ok=False)
             before = provider._calls
             try:
+                before_send()
                 remaining = limits['max_seconds_total'] - (clock() - started)
                 used = sum(r['observed_usage']['input_tokens'] + r['observed_usage']['output_tokens']
                            for r in records if r['observed_usage'])
@@ -103,6 +113,8 @@ def observe(provider, directory, variants, plan, *, adjudicate=terminal_adjudica
                     request_file.write(issued_raw)
                 write_new_json(arm / 'request.json', json.loads(issued_raw))
                 record['request_sha256'] = hashlib.sha256(issued_raw).hexdigest()
+                if clock() - started >= limits['max_seconds_total']:
+                    raise ValueError('model_comparison_shared_budget')
                 response = provider.chat(issued)
                 public = public_response(json.loads(TypeAdapter(ChatResponse).dump_json(response)))
                 # Preserve even a completed response rejected by later checks.
@@ -145,6 +157,7 @@ def observe(provider, directory, variants, plan, *, adjudicate=terminal_adjudica
                 record['host_accepted'] = decision['accepted']
                 if not decision['accepted']:
                     raise ValueError('model_comparison_semantic_failure')
+                before_send()  # Bind host acceptance to the same checkout too.
                 if clock() - started >= limits['max_seconds_total']:
                     raise ValueError('model_comparison_shared_budget')
             finally:
@@ -159,6 +172,8 @@ def observe(provider, directory, variants, plan, *, adjudicate=terminal_adjudica
                             record.update(observed_usage=dict(input_tokens=progress.input_tokens, output_tokens=progress.output_tokens),
                                           usage_source='normalized_stream_usage')
                 record['unknown_usage_calls'] = record['reserved_calls'] - int(record['observed_usage'] is not None)
+                record['elapsed_seconds'] = round(clock() - case_started, 3)
+                record['batch_elapsed_seconds'] = round(clock() - started, 3)
                 write_new_json(arm / 'accounting.json', record)
         result.update(pair_accepted=True, stop_reason='two_host_accepted_development_controls_not_qualification')
     except BaseException as error:

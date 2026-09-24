@@ -71,7 +71,7 @@ def _hash(path):
 def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
             clock=time.monotonic, before_send=lambda: None,
             workflow_type=RoleNoteReviewWorkflow, replay=replay_case,
-            success_field='pair_accepted', task_observer=None):
+            success_field='pair_accepted', task_observer=None, before_case=None):
     """Run frozen workflows, retaining per-stage host gates outside model input."""
     started = clock()
     sources = {f['key']: (f, source) for f, source in frozen_cases()[0]}
@@ -81,6 +81,13 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
     result[success_field] = False
     try:
         for row, budget in zip(plan['cases'], plan['case_budgets'], strict=True):
+            if before_case is not None:
+                available = plan['batch_budget']['max_seconds'] - (clock() - started)
+                if available <= 0:
+                    raise ValueError('role_pair_execution_limit')
+                before_case(directory, row, plan, available)
+                if clock() - started >= plan['batch_budget']['max_seconds']:
+                    raise ValueError('role_pair_execution_limit')
             key = row['key']
             case_id = key.replace(':', '-')
             arm = directory / case_id

@@ -28,6 +28,7 @@ EXPERIMENT = 'role-unexecuted-qualification-v1'
 RUN_DIRECTORY = ROOT/'data/runs/role_task_observation'/EXPERIMENT
 PREPARATION = ROOT/'data/evaluation/results/golden_role_unexecuted_preparation_v1.json'
 CLOSED_RESULT = ROOT/'data/evaluation/results/golden_role_unexecuted_result_v1.json'
+CLOSED_SHA = '2c1932f2d769958a2c4f33119e79c60f4b5624058f4af54bd15ded0022a1d62c'
 
 
 def interruption():
@@ -38,6 +39,24 @@ def interruption():
 
 
 def prepare():
+    if CLOSED_RESULT.exists():
+        raw = CLOSED_RESULT.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != CLOSED_SHA:
+            raise ValueError('unexecuted_historical_evidence_changed')
+        evidence = json.loads(raw)
+        saved = evidence['public_json_contents']['plan.json']
+        plan = saved['preparation_plan']
+        if (plan != json.loads(PREPARATION.read_text(encoding='utf-8'))
+                or canonical_sha(plan) != saved['plan_sha256']):
+            raise ValueError('unexecuted_historical_plan_changed')
+        current, requests = prepare_qualification()
+        if current['identity'] != plan['identity']:
+            raise ValueError('unexecuted_historical_identity_changed')
+        for row in plan['cases']:
+            if hashlib.sha256(requests[row['key']]).hexdigest() != evidence['original_file_sha256'][
+                    row['key'].replace(':', '-') + '-prepared-request.json']:
+                raise ValueError('unexecuted_historical_request_changed')
+        return plan, {r['key']:requests[r['key']] for r in plan['cases']}
     RuntimeCompositionRoot.from_directories(skills_root=ROOT/ASSETS/'skills',
         prompt_programs_root=ROOT/ASSETS/'prompt_programs',coach_contract=ROLE_COACH_CONTRACT)
     evidence = interruption()
@@ -94,7 +113,8 @@ def run(args):
         if args.output:
             write_new_json(args.output,plan)
         return dict(plan_sha256=sha,budget=plan['batch_budget'],charged_prior_budget=plan['charged_prior_budget'],
-            keys=[r['key'] for r in plan['cases']],provider_requests=0,execution_enabled=False)
+            keys=[r['key'] for r in plan['cases']],provider_requests=0,execution_enabled=False,
+            historical_closed=CLOSED_RESULT.exists())
     if (not args.env_file or not args.ci_run or args.plan_sha!=sha
             or plan!=json.loads(PREPARATION.read_text(encoding='utf-8'))):
         raise ValueError('unexecuted_preparation_required')

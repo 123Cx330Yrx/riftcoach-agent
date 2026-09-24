@@ -45,7 +45,7 @@ def make_run(tmp_path, monkeypatch):
     sources = {f['key']: source for f, source in q.frozen_cases()[0]}
     counter = [0]
 
-    def build(keys=('claim-scope:1', 'claim-scope:4'), *, write_fault=None):
+    def build(keys=('claim-scope:1', 'claim-scope:4'), *, write_fault=None, before_case=None, clock=lambda:0):
         counter[0] += 1
         run = tmp_path / ('run-' + str(counter[0]))
         run.mkdir()
@@ -116,9 +116,10 @@ def make_run(tmp_path, monkeypatch):
             return write_new_json(path, value)
         with monkeypatch.context() as patch:
             patch.setattr(pair, 'write_new_json', write)
-            result = observe(factory, run, observation, adjudicate=adjudicate, clock=lambda: 0,
-                workflow_type=Workflow, replay=q.replay_case, success_field='tasks_observed', task_observer=Observer)
-        if write_fault:
+            result = observe(factory, run, observation, adjudicate=adjudicate, clock=clock,
+                workflow_type=Workflow, replay=q.replay_case, success_field='tasks_observed', task_observer=Observer,
+                before_case=before_case)
+        if write_fault or before_case:
             return run, result
         assert result['tasks_observed'], result
         export = tmp_path / (run.name + '-closed.json')
@@ -167,6 +168,140 @@ def test_original_durable_receipt_can_be_qualified_after_lost_batch_summary(make
     host=read(tmp_path/'audit/claim-scope-1-host-review.json')
     assert host['completion_source']=='durable_case_receipts_without_batch_result'
     assert before=={p:audit._sha(p) for p in run.rglob('*') if p.is_file()}
+
+
+def interrupted_run(make_run, tmp_path):
+    def fail(path, value):
+        if path.parent.name=='claim-scope-4' and path.name=='initial.json':
+            raise ValueError('task_observation_host_deadline')
+    run,result=make_run(write_fault=fail)
+    assert result['error_code']=='task_observation_host_deadline'
+    return run,seal(run,tmp_path,tmp_path/'interrupted.json')
+
+
+def test_failed_batch_accepts_completed_prefix_and_retains_all_charges(make_run,tmp_path):
+    run,sealed=interrupted_run(make_run,tmp_path)
+    before={p:audit._sha(p) for p in run.rglob('*') if p.is_file()}
+    result=accept(run,sealed,tmp_path)
+    assert result['validated_keys']==['claim-scope:1']
+    assert 'claim-scope:4' in result['remaining_keys']
+    assert not result['review_controls_qualified']
+    boundary=read(tmp_path/'audit/source-seals.json')['closed_runs'][0]['interruption_boundary']
+    assert boundary['original_error_code']=='task_observation_host_deadline'
+    assert boundary['full_batch_reserved_calls']==2
+    assert boundary['unqualified_started_cases'][0]['key']=='claim-scope:4'
+    assert boundary['unqualified_started_cases'][0]['qualified'] is False
+    assert boundary['full_batch_charged_tokens']==sum(
+        row['accounting']['input_tokens']+row['accounting']['output_tokens'] for row in read(run/'result.json')['cases'])
+    assert before=={p:audit._sha(p) for p in run.rglob('*') if p.is_file()}
+
+
+@pytest.mark.parametrize('defect',['prefix','tail_status','tail_key','tail_accounting','missing_tail','unrecorded_transport'])
+def test_failed_summary_cannot_override_completions_or_hide_tail(make_run,tmp_path,defect):
+    run,sealed=interrupted_run(make_run,tmp_path)
+    if defect=='prefix':
+        change(run/'result.json',lambda d:d['cases'][0].update(initial_score=99))
+    elif defect=='tail_status':
+        change(run/'result.json',lambda d:d['cases'][1].update(status='task_observed'))
+    elif defect=='tail_key':
+        change(run/'result.json',lambda d:d['cases'][1].update(key='observed:2'))
+    elif defect=='tail_accounting':
+        change(run/'result.json',lambda d:d['cases'][1]['accounting'].update(reserved_calls=0))
+    elif defect=='missing_tail':
+        change(run/'result.json',lambda d:d['cases'].pop())
+    else:
+        (run/'transport/not-in-plan').mkdir()
+    sealed=seal(run,tmp_path,sealed[0])
+    with pytest.raises(ValueError):
+        accept(run,sealed,tmp_path)
+    assert not (tmp_path/'audit').exists()
+
+
+def test_failed_tail_calls_count_against_batch_cap(make_run,tmp_path):
+    run,sealed=interrupted_run(make_run,tmp_path)
+    saved=read(run/'plan.json')
+    saved['preparation_plan']['batch_budget']['max_calls']=1
+    saved['plan_sha256']=audit._canonical_sha(saved['preparation_plan'])
+    (run/'plan.json').write_text(json.dumps(saved),encoding='utf-8')
+    change(run/'claim-scope-1/case-completed.json',lambda d:d.update(plan_sha256=saved['plan_sha256']))
+    sealed=seal(run,tmp_path,sealed[0])
+    with pytest.raises(ValueError,match='batch_budget_exceeded'):
+        accept(run,sealed,tmp_path)
+
+
+@pytest.mark.parametrize('tiny_cap',[False,True])
+def test_unknown_tail_uses_issued_request_reservation_not_declared_allowance(make_run,tmp_path,tiny_cap):
+    run,sealed=interrupted_run(make_run,tmp_path)
+    transport=run/'transport/claim-scope-4'
+    call=q.read_role_calls(transport)[0]
+    upper=q.size(call['request'])+call['request'].max_tokens
+    (transport/'review/response-001.json').unlink()
+    (transport/'call-result-001.json').unlink()
+    summary=q.summarize_role_calls(transport)
+    assert summary['unknown_usage_calls']==1
+    change(run/'result.json',lambda d:d['cases'][1].update(accounting=summary))
+    if tiny_cap:
+        saved=read(run/'plan.json')
+        saved['preparation_plan']['case_budgets'][1]['max_tokens']=1
+        saved['preparation_plan']['batch_budget']['max_tokens']=21
+        saved['plan_sha256']=audit._canonical_sha(saved['preparation_plan'])
+        (run/'plan.json').write_text(json.dumps(saved),encoding='utf-8')
+        change(run/'claim-scope-1/case-completed.json',lambda d:d.update(plan_sha256=saved['plan_sha256']))
+    sealed=seal(run,tmp_path,sealed[0])
+    if tiny_cap:
+        with pytest.raises(ValueError,match='case_budget_exceeded'):
+            accept(run,sealed,tmp_path)
+    else:
+        assert accept(run,sealed,tmp_path)['validated_inputs']==1
+        boundary=read(tmp_path/'audit/source-seals.json')['closed_runs'][0]['interruption_boundary']
+        assert boundary['unknown_usage_calls']==1
+        assert boundary['full_batch_charged_tokens']==20+upper
+
+
+@pytest.mark.parametrize('with_result',[False,True])
+def test_no_case_can_be_skipped_after_first_incomplete(make_run,tmp_path,with_result):
+    run,sealed=make_run(('claim-scope:1','claim-scope:4','claim-scope:2'))
+    for key in ('claim-scope-4','claim-scope-2'):
+        (run/key/'case-completed.json').unlink()
+    if with_result:
+        change(run/'result.json',lambda d:(d.update(error_type='ValueError'),
+            d['cases'][1].update(status='failed'),d['cases'].pop()))
+    else:
+        (run/'result.json').unlink()
+    sealed=seal(run,tmp_path,sealed[0])
+    with pytest.raises(ValueError,match='execution_after_incomplete_case'):
+        accept(run,sealed,tmp_path)
+
+
+def test_not_ready_next_case_never_creates_provider_or_loses_previous_completion(make_run,tmp_path):
+    def ready(directory,row,plan,remaining):
+        assert remaining==plan['batch_budget']['max_seconds']
+        assert not (directory/'transport'/row['key'].replace(':','-')).exists()
+        if row['key']=='claim-scope:4':
+            assert (directory/'claim-scope-1/case-completed.json').exists()
+            raise ValueError('task_observation_ready_deadline')
+    run,result=make_run(before_case=ready)
+    assert result['error_code']=='task_observation_ready_deadline'
+    assert len(result['cases'])==1
+    assert not (run/'claim-scope-4').exists()
+    sealed=seal(run,tmp_path,tmp_path/'ready-closed.json')
+    assert accept(run,sealed,tmp_path)['validated_keys']==['claim-scope:1']
+
+
+def test_later_readiness_batch_timeout_retains_on_time_completed_case(make_run,tmp_path):
+    now=[0.0]
+    def ready(directory,row,plan,remaining):
+        if row['key']=='claim-scope:4':
+            now[0]=plan['batch_budget']['max_seconds']+.2
+    run,result=make_run(before_case=ready,clock=lambda:now[0])
+    assert result['error_code']=='role_pair_execution_limit'
+    assert result['elapsed_seconds']==1200.2
+    assert not (run/'claim-scope-4').exists()
+    sealed=seal(run,tmp_path,tmp_path/'batch-timeout.json')
+    assert accept(run,sealed,tmp_path)['validated_keys']==['claim-scope:1']
+    boundary=read(tmp_path/'audit/source-seals.json')['closed_runs'][0]['interruption_boundary']
+    assert boundary['original_elapsed_seconds']==1200.2
+    assert boundary['original_error_code']=='role_pair_execution_limit'
 
 
 @pytest.mark.parametrize('defect',['missing_all','gap','plan','observation','elapsed','batch_elapsed','inconsistent_clock'])

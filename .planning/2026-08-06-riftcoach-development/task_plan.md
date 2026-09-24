@@ -11,12 +11,11 @@
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-当前1.5.2前三例严格validated_partial；剩12批又有两例完整语义通过，第三例只有首评后中断。
-旧两例精确执行计时丢失，尚不授严格资格；剩9未执行。完整生成/产品消费仍待验证。
+当前1.5.2前三例严格validated_partial；旧剩12批两例完整语义通过但精确计时丢失。后继9例批前五例完成并保存耐久回执，第六例初评后等待host超时，最后三例未运行。用户说明对话先因Codex额度耗尽中断；host超时是后台的后续结果。完整生成/产品消费仍待验证。
 
 ## Active Work Package
 
-**目标：** 修复本次暴露的长批证据耐久性缺陷，保留真实成功/中断边界，在原预算内完成尚未运行的9输入；继而解决原15缺口并解锁真实Agent产品消费。
+**目标：** 正式验收已完成五例，避免对话中断后自动发起无人接审的新例；根据第六例原始输出定位引用责任缺口，保留原15准入要求并推进真实Agent消费的必要依赖。
 
 **起点与证据：** 先前三例7请求104967tokens，严格适配器validated_partial/3。后续6bc3470f / CI35972161945执行剩12：claim-scope:3为80→92、scope:4为80→94，六阶段主/独立接受；scope:3仅首评。新7请求102455tokens/未知0/估价1.0247968元；103原件封存golden_role_remaining_interruption_v1.json。根result缺失、原进程不存在，退出原因未知。日志外包时间只作旁证，不补造旧elapsed。
 
@@ -24,9 +23,9 @@
 
 **反证与边界：** 三例不是稳定率或独立holdout；旧失败不改。后续任何实质误报/漏检、错修法、错误解释/引用、编辑/终评/来源/身份/协议/预算失败均停止批次并定位首次偏离，不自动换提示再试。不得用部分资格代替15覆盖或完整Agent任务。
 
-**当前动作：** 完成相关测试、独立复核及同提交公共CI后执行run_role_unexecuted_qualification：claim-scope:2、claim-scope:5–7、observed:1–5，最多19调用/1838592tokens/5700秒（含host），保守估价27.160576元非账单。原预算28调用/2709504tokens/8400秒已扣7次真实请求/102455tokens及三例全额2700秒，不能退款计时或改名重置。入口验证原103文件、当前candidate与前三例严格资格后才读取密钥；原scope:3不重发。文件host裁决必须在原剩余时限内到达，任何真实缺陷停止。逐例成功才存completion，完成后封闭导出并独立验收。
+**当前动作：** 前五例已封存并加前三例正式validated_partial/8。恢复工程和未知用量反例已验证；当前新工作是来源粒度的两控制可行性诊断，详见docs/plans/2026-09-25-source-granularity-diagnosis.md。原observed:2真错→observed:1正确，最多2calls/158246tokens/600秒，保守估价2.576688元。冻结准备d7639087ff4e171c12f9a8bab9d600687e393dadd3fbb5485d7471e1815e53e9；同提交CI后执行，逐例就绪+完整主/独立审查，首失败停，无重试/编辑/生产切换。保留原全文/来源，只有可引用目录与引用规则改变。成功仅支持后继资格决策，不继承旧8项为新身份；失败否定充分修法，不无信息重试。旧预算消耗15calls/216632tokens/4554.282秒照记。
 
-**另列未解决：** 旧两例业务链通过但精确单调计时没有恢复；墙钟旁证不自动替代旧门。scope:3首评尚无完整host接受及编辑终评；不能重置旧case时钟。9未执行输入可独立推进，不能用其成功掩盖这三例证据缺口。Worker默认仍单模型，角色应用现有能力须显式接线后用同一真实入队身份/任务验证；报告/任务/event原子提交与assistant terminal turn的幂等投影分开验证。
+**另列未解决：** 旧两例业务链通过但精确单调计时没有恢复；墙钟旁证不自动替代旧门。scope:3首评尚无完整host接受及编辑终评；不能重置旧case时钟。后三例observed:3–5尚未执行；observed:2另有引用缺口，不用换批名重试。Worker默认仍单模型，角色应用现有能力须显式接线后用同一真实入队身份/任务验证；报告/任务/event原子提交与assistant terminal turn的幂等投影分开验证。
 
 ## Dependencies and Follow-through
 

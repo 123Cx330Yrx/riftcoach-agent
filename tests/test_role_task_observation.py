@@ -199,3 +199,36 @@ def test_file_host_gate_has_no_stdin_dependency_and_keeps_original_deadline(tmp_
     assert now[0] <= 1
     required = json.loads((tmp_path/'initial-host-required.json').read_text())
     assert required['remaining_seconds']==1 and required['decision_file']==decision_path.name
+
+
+@pytest.mark.parametrize('mode',['ready','wrong_case','wrong_plan','wrong_run','premature','late','absent'])
+def test_case_readiness_is_bound_to_live_handoff_and_original_batch_deadline(tmp_path,mode):
+    row=dict(key='observed:3',request_sha256='a'*64)
+    plan=dict(experiment='offline-ready-fixture')
+    handoff=tmp_path/'handoff'
+    signal_path=handoff/'observed-3-ready.json'
+    required_path=handoff/'observed-3-ready-required.json'
+    if mode=='premature':
+        handoff.mkdir()
+        write_new_json(signal_path,dict(ready=True))
+    now=[0.0]
+    def sleep(delay):
+        now[0]+=delay
+        if mode=='absent' or signal_path.exists() or mode=='late' and now[0]<1:
+            return
+        required=json.loads(required_path.read_text(encoding='utf-8'))
+        assert required['remaining_batch_seconds']==1
+        assert required['run_directory']==tmp_path.resolve().as_posix()
+        assert required['request_sha256']==row['request_sha256']
+        signal=dict(schema_version='role-case-ready-v1',ready=True,key=row['key'],
+            plan_sha256=runner.canonical_sha(plan),required_sha256=hashlib.sha256(required_path.read_bytes()).hexdigest())
+        if mode=='wrong_case': signal['key']='observed:4'
+        if mode=='wrong_plan': signal['plan_sha256']='b'*64
+        if mode=='wrong_run': signal['required_sha256']='c'*64
+        write_new_json(signal_path,signal)
+    if mode=='ready':
+        runner.await_case_ready(tmp_path,row,plan,1,clock=lambda:now[0],sleep=sleep)
+    else:
+        with pytest.raises(ValueError):
+            runner.await_case_ready(tmp_path,row,plan,1,clock=lambda:now[0],sleep=sleep)
+    assert now[0]<=1

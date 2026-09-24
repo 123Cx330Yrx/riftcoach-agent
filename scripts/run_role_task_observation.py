@@ -144,6 +144,43 @@ def adjudicate_file(path, remaining, *, clock=time.monotonic, sleep=time.sleep):
         return decision
 
 
+def await_case_ready(directory, row, plan, remaining, *, clock=time.monotonic, sleep=time.sleep):
+    """A fresh host handoff before case time/reservations begin, never consent.
+
+    Waiting consumes this running batch's original deadline. The signal binds
+    the exact plan, case, request and run, so a queued/stale signal cannot start
+    the next paid case. It does not promise the host will stay online mid-case.
+    """
+    deadline = clock() + remaining
+    handoff = directory / 'handoff'
+    handoff.mkdir(exist_ok=True)
+    name = row['key'].replace(':', '-')
+    required_path = handoff / (name + '-ready-required.json')
+    signal_path = handoff / (name + '-ready.json')
+    if signal_path.exists():
+        raise ValueError('task_observation_ready_signal_premature')
+    required = dict(schema_version='role-case-ready-required-v1', key=row['key'],
+        run_directory=directory.resolve().as_posix(), plan_sha256=canonical_sha(plan),
+        request_sha256=row['request_sha256'], remaining_batch_seconds=remaining,
+        signal_file=signal_path.name)
+    write_new_json(required_path, required)
+    expected = dict(schema_version='role-case-ready-v1', ready=True, key=row['key'],
+        plan_sha256=required['plan_sha256'],
+        required_sha256=hashlib.sha256(required_path.read_bytes()).hexdigest())
+    while True:
+        available = deadline - clock()
+        if available <= 0:
+            raise ValueError('task_observation_ready_deadline')
+        try:
+            signal = json.loads(signal_path.read_text(encoding='utf-8'))
+        except (FileNotFoundError, UnicodeDecodeError, json.JSONDecodeError):
+            sleep(min(.25, available))
+            continue
+        if signal != expected or signal.get('ready') is not True or clock() >= deadline:
+            raise ValueError('task_observation_ready_signal_invalid')
+        return
+
+
 def prepare():
     if CLOSED_RESULT.exists():
         raw = CLOSED_RESULT.read_bytes()
