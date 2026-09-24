@@ -18,7 +18,8 @@ pause_reason: ""
 - 排除与未知：成功终评和失败首评的system/schema/来源正文/metadata相同，无旧评历史；共同事实、知识、用户原话及generation_view相同。差别为报告和派生来源身份，未隔离措辞具体化与随机性，不能宣称模型内部根因已明。原始输出已含错误，非丢报告/编号错位/解析制造/断流/额度耗尽。取消advisory替换文本不能作为通用误报修法；首例编辑成功也不证明Flash可撤销错误审查或补GLM漏检。
 - 用量与执行边界：4请求（3GLM＋1Flash），47244输入＋21567输出＝68811tokens，缓存输入4800，未知0，917.188秒；未缓存估价0.865566元，非账单。拒绝时我从终端复制hash多抄一个尾字符，runner实际以model_comparison_host_decision_invalid安全停止；实质拒绝另有原件记录，无额外请求，不改写原result。CLI执行入口已关闭，不依赖本机run目录；今后从文件计算hash，不抄折行文本。
 - 证据：golden_role_note_qualification_pair_result_v1.json包含49份原件hash/公开内容、逐项裁决、资格回放、用量和请求差异。全部原字节hash及公开投影已核对，不含私有推理字段。消费回执时发现相对/绝对路径混用，已修read_role_calls并验证相对路径等价；不影响原绝对路径真实运行。当前收尾提交的公共检查单独记录在progress，不冒用实测前CI。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。固化本批结果并关闭该候选的原样扩测；下一工作包先针对自然语言范围判定与完整审查职责做最小隔离方案核查，明确各观察对应的技术去留及五调用整任务可达性，再决定是否值得实测。没有选定或准备新的付费变体，不跑剩余13例凑数，不以补severity、提高上限或措辞特判代替语义修复。真实生成、Worker/DB/API/Workbench质量准入仍受原15阻断。
+- 当前工程包：后继工具交付builder移除user中的重复JSON文本指令，业务规则与必填字段保持；新request_delivery＋manifest/candidate/request摘要隔离新旧身份。旧配对和Flash比较均按冻结计划回放，旧比较不再排入下一批。此包未发Provider请求，不证明核心误报已修。24ddf358 / CI35908526036公共三项已成功；本包143项不同离线测试、全15请求/SDK审计和独立代码复核通过，最终公共检查以PR7对应提交为准。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。完成本包公开CI核验后，针对正确全文不改稿的核验路径选择能改变误判机制的诊断。三类旧候选诊断及自由文本首审路线仍不足以选修法；没有新付费批，不以原样重试、补severity、提额度或措辞特判代替语义修复。真实生成、Worker/DB/API/Workbench质量准入仍受原15阻断。
 
 ### 此前来源修复与合同演进（历史结果，非待执行批）
 

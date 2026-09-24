@@ -92,7 +92,7 @@
     {
       "component_id": "app.product.native_coach_composition",
       "source": "app/product/native_coach_composition.py",
-      "sha256": "a09d83ced7f9494e5ae01167585e2860bc6dd03bd5735115823ce92295c8dbdc"
+      "sha256": "c9f8ee3dcb6e6f3ab0edd550eb9436e39aeeb724a51bb7286b724320145ac2c6"
     },
     {
       "component_id": "app.product.recent_review_service",
@@ -165,6 +165,11 @@
       "sha256": "1f3b8459102fc04fe107f0ecdc270db6241b3f0dddc5052bc3ba7d9db9ff2049"
     },
     {
+      "component_id": "request_delivery",
+      "source": "request_delivery",
+      "sha256": "02a981655dcba208cb14dfae68273e121d55e6c328cbd5b0d6c93c0ec7184d17"
+    },
+    {
       "component_id": "role_descriptor",
       "source": "role_descriptor",
       "sha256": "d297fcd01ce992ef9cfdde3fa73ac118add1d5b460a3f9d028b1d96d4a4307c0"
@@ -178,6 +183,11 @@
       "component_id": "app.evaluation.golden_role_notes",
       "source": "app/evaluation/golden_role_notes.py",
       "sha256": "6c678ab01689d5bab3bd7cea074139ab88ec264b4b82d599101fa9f7e8b06002"
+    },
+    {
+      "component_id": "app.evaluation.golden_role_tool_delivery",
+      "source": "app/evaluation/golden_role_tool_delivery.py",
+      "sha256": "b7a92c204c675d2049ae7ee713e5c9335d30939cfd0be32d3cd92aaac5f5af0a"
     },
     {
       "component_id": "app.evaluation.golden_native_partitioned_tool_review",
@@ -202,7 +212,7 @@
     {
       "component_id": "app.runtime.role_coach_contract",
       "source": "app/runtime/role_coach_contract.py",
-      "sha256": "234ee091439b09c18850c17eed749249bb5e5641a8e63f4099651a2c695db946"
+      "sha256": "ed768d26d39582e89a20f3ec5a12f24959919f6f09002accd480cab92f7aed60"
     },
     {
       "component_id": "app.runtime.coach_contract",
@@ -255,5 +265,5 @@
       "sha256": "538f9be6325bbb722423e85d0835a2c04b21a2fb1a003379b562176dc7ac3d0a"
     }
   ],
-  "program_sha256": "8a5a0bd3ca3d3492fd6f23eb17e5daffb7e9e8fed5a18b2a804c44ee80db1cd5"
+  "program_sha256": "ec4ab4aae3e8083ff0edb50f06fa1b7a4110f8448b86394fa6d1ce4bb0b022c2"
 }

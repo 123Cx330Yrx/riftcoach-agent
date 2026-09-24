@@ -14,7 +14,7 @@ from app.evaluation import golden_stream_bridge as bridge
 from app.evaluation import role_qualification as qualification
 from app.evaluation.golden_journal import write_new_json
 from app.evaluation.golden_review_experiment import compact, digest
-from app.evaluation.golden_role_notes import RoleNoteReviewWorkflow as RoleReviewWorkflow
+from app.evaluation.golden_role_tool_delivery import RoleToolDeliveryReviewWorkflow as RoleReviewWorkflow
 from app.harness.steps import EvaluationVerdict, RevisionRequest
 from app.providers.models import ChatResponse, TokenUsage
 from app.runtime.receipted_provider_factory import RunScopedRoleReceiptedProviderFactory
@@ -218,6 +218,10 @@ def test_incomplete_call_preserves_observed_or_unknown_usage(recorded_revision):
 
 def test_comparison_preserves_glm_inputs_and_prepares_real_flash_sdk_wire():
     plan, requests = preparation.prepare_comparison()
+    closed = json.loads(preparation.FLASH_EVIDENCE.read_text(encoding="utf-8"))["original_json_contents"]["plan.json"]
+    assert plan == closed["preparation_plan"]
+    assert closed["declared_approved_plan_sha256"] == '40d45ce95be8ee8c1536e19b85c7664bb54164d209fe18a485de10369ae95b63'
+    assert plan['candidate'] != qualification.candidate_identity()
     saved = json.loads(preparation.PAIR_EVIDENCE.read_text(encoding="utf-8"))["original_json_contents"]
     assert len(plan["cells"]) == 2 and not plan["paid_execution_authorized"]
     for cell in plan["cells"]:
@@ -229,6 +233,23 @@ def test_comparison_preserves_glm_inputs_and_prepares_real_flash_sdk_wire():
     assert plan["proposed_diagnostic_budget"]["max_calls"] == 2
     assert plan["proposed_diagnostic_budget"]["total_token_reservation"] == sum(
         c["input_reservation"] + c["output_cap"] for c in plan["cells"])
+
+
+def test_current_preparation_does_not_requeue_closed_comparison(tmp_path):
+    result = preparation.run(SimpleNamespace(output_directory=tmp_path / 'preview'))
+    preview = json.loads((tmp_path / 'preview/next-batches.json').read_text(encoding='utf-8'))
+    assert preview['batches'] == [] and result['planned_paid_batches'] == 0
+    assert preview['historical_batches'][0]['status'] == 'closed'
+    assert result['provider_requests'] == 0
+    assert (tmp_path / 'preview/historical-comparison-requests').is_dir()
+
+
+def test_changed_historical_comparison_export_is_rejected(tmp_path, monkeypatch):
+    path = tmp_path / 'changed.json'
+    path.write_bytes(preparation.FLASH_EVIDENCE.read_bytes() + b'\n')
+    monkeypatch.setattr(preparation, 'FLASH_EVIDENCE', path)
+    with pytest.raises(ValueError, match='role_comparison_frozen_evidence_changed'):
+        preparation.prepare_comparison()
 
 
 def test_product_budget_prices_the_reassessment_path_with_three_glm_reviews():

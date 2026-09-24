@@ -13,7 +13,8 @@ from app.evaluation.golden_explicit_source_projection import VERSION as PROJECTI
 from app.evaluation.golden_inference_scope_v5 import strict_json
 from app.evaluation.golden_integrated_runtime import Exchange
 from app.evaluation.golden_review_experiment import compact, digest
-from app.evaluation.golden_role_notes import RoleNoteReviewWorkflow as RoleReviewWorkflow, RoleNoteReview, review_policy
+from app.evaluation.golden_role_notes import RoleNoteReviewWorkflow, RoleNoteReview, review_policy
+from app.evaluation.golden_role_tool_delivery import RoleToolDeliveryReviewWorkflow as RoleReviewWorkflow, DELIVERY_ID
 from app.evaluation.golden_stream_bridge import (
     REQUEST, RESPONSE, CapacityBridgeObservation, validate_request,
 )
@@ -105,7 +106,7 @@ def candidate_identity(*, root=ROOT):
         program_sha256=manifest["program_sha256"], manifest_sha256=_sha(manifest_path),
         asset_sha256={name: _sha(root / ASSETS / name) for name in (
             "skills/recent-form-review/SKILL.md", "skills/recent-form-review/manifest.yaml")},
-        source_projection=PROJECTION_VERSION, roles=role_descriptor(),
+        source_projection=PROJECTION_VERSION, request_delivery=DELIVERY_ID, roles=role_descriptor(),
         policy_sha256=digest(review_policy()),
         schema_sha256=digest(compact(RoleNoteReview.model_json_schema())))
 
@@ -238,6 +239,16 @@ def _within(root, value):
 
 
 def replay_case(frozen, source, calls):
+    """Current qualification always reconstructs the current request delivery."""
+    return _replay_case(frozen, source, calls, workflow_type=RoleReviewWorkflow)
+
+
+def replay_legacy_note_case(frozen, source, calls):
+    """Explicit historical replay; never used by current validate_qualification."""
+    return _replay_case(frozen, source, calls, workflow_type=RoleNoteReviewWorkflow)
+
+
+def _replay_case(frozen, source, calls, *, workflow_type):
     """Reconstruct review -> actual revision -> final review from raw exchanges."""
     iterator = iter(calls)
     used, journals = [], []
@@ -254,7 +265,7 @@ def replay_case(frozen, source, calls):
             raise ValueError("role_qualification_replayed_request_mismatch")
         used.append(call)
         return Exchange(issued, call["response"], call["binding"]["request_sha256"])
-    workflow = RoleReviewWorkflow(send)
+    workflow = workflow_type(send)
     initial = workflow.evaluate(source)
     journals.append(deepcopy(workflow.last_journal))
     verdict = "accept" if initial.verdict is EvaluationVerdict.PASS else "reject"

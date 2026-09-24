@@ -9,6 +9,7 @@ from .native_coach_contract import component_fingerprints as native_fingerprints
 
 def component_fingerprints(skill):
     from app.evaluation.golden_role_notes import RoleNoteReview, review_policy
+    from app.evaluation.golden_role_tool_delivery import DELIVERY_ID
     from app.evaluation.golden_native_business_policy import REVISION_POLICY
     from app.evaluation.golden_explicit_source_projection import VERSION, OLD_ADDRESS, NEW_ADDRESS
     from .reviewer_roles import role_descriptor
@@ -19,12 +20,14 @@ def component_fingerprints(skill):
         "reassessment_policy": review_policy("prior"),
         "revision_policy": REVISION_POLICY.replace(OLD_ADDRESS, NEW_ADDRESS),
         "source_projection": VERSION,
+        "request_delivery": DELIVERY_ID,
         "role_descriptor": json.dumps(role_descriptor(), sort_keys=True),
     }
     root = Path(__file__).resolve().parents[2]
     sources = (
         "app/evaluation/golden_role_review.py",
         "app/evaluation/golden_role_notes.py",
+        "app/evaluation/golden_role_tool_delivery.py",
         "app/evaluation/golden_native_partitioned_tool_review.py",
         "app/evaluation/golden_native_tool_review.py",
         "app/evaluation/golden_native_business_policy.py",

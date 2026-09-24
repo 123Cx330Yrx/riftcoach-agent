@@ -1,11 +1,7 @@
-"""Two same-input Flash controls, default preview and bounded host resume.
+"""Preview the closed historical Flash comparison; execute is permanently closed.
 
---execute is only for an independently authorized new batch. Its plan hash
-binds inputs/configuration, not permission. The two completed historical GLM
-CLIs remain closed. After each response the running process waits for explicit
-host acceptance of all findings/sources; absent acceptance it cannot send the
-next call. This wait consumes the shared 600 seconds. Restart cannot reopen a
-batch: both the run directory and every receipt are create-only.
+Plans retain the historical candidate and requests. Preview serialization has
+its own digest; it cannot reopen the old batch or qualify current behavior.
 """
 import argparse
 from dataclasses import replace
@@ -58,12 +54,15 @@ def prepare_pair():
 
 
 def run(args):
+    if args.execute:
+        raise ValueError('flash_source_comparison_batch_closed')
     variants, plan = prepare_pair()
     plan_sha = digest(compact(plan))
     summary = dict(experiment=EXPERIMENT, preparation_plan_sha256=plan_sha,
         candidate_program_sha256=plan['candidate']['program_sha256'],
         budget=plan['proposed_diagnostic_budget'], provider_requests=0,
-        execution_enabled=bool(args.execute), production_admitted=False,
+        execution_enabled=False, production_admitted=False, batch_status='closed',
+        plan_representation='public_projection_not_original_plan_bytes',
         request_sha256={cell['id']: cell['request_sha256'] for cell in plan['cells']})
     if not args.execute:
         print(compact(summary), flush=True)

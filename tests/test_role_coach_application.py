@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from app.evaluation.golden_role_notes import RoleNoteReviewWorkflow as RoleReviewWorkflow
+from app.evaluation.golden_role_tool_delivery import DELIVERY_ID, RoleToolDeliveryReviewWorkflow as RoleReviewWorkflow
 from app.product.native_coach_composition import build_role_coach_application, ROLE_ASSETS, ASSETS
 from app.product.recent_review import RecentReviewProductRequest
 from app.product.run_receipts import FileRunReceiptStore
@@ -90,6 +90,12 @@ def test_role_application_uses_real_budget_observation_and_publication(tmp_path,
     assert trace.usage.cost == Decimal('0.000828')
     assert trace.usage.currency == 'CNY'
     assert delegate.reviewer.knowledge_count == 5
+    for request in delegate.reviewer.requests:
+        assert request.metadata['review_delivery'] == DELIVERY_ID
+        assert request.messages[1].content.startswith('[UNTRUSTED DATA]\n')
+        assert len(request.tools) == 1
+        assert 'severity' in request.tools[0].input_schema['$defs']['Problem']['required']
+    assert flow.last_journal['request_delivery'] == DELIVERY_ID
     assert any(m.role.value == 'tool' for m in delegate.generator.requests[1].messages)
     assert receipt.report_available is (not recover)
     if recover:

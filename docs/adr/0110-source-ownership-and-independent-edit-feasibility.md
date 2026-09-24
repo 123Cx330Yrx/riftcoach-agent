@@ -308,6 +308,43 @@ CLI执行入口在输入/CI/凭据读取前关闭，不能换空目录或借余�
 与评审任务负担，且在实现前交代完整五调用任务的可达性；当前没有选定新语义修法或付费批。
 一例普通编辑成功不证明Flash能独立补GLM漏检，来源正确稿也不证明Worker/DB/UI已实测。
 
+## 2026-09-24：工具交付冲突修复与诊断去留
+
+实际RoleNote请求的system要求仅用submit_report_review，但user首部schema_notation又
+要求输出JSON对象，工具参数同时已有完整schema。新增RoleToolDeliveryReviewWorkflow
+只移除精确匹配的文本头；完整system/来源/业务数据/字段与恢复原响应保持，编辑请求相同。
+明确缺陷可直接修，不能将它归因为误报；旧逐段schema去重实测已失败，见
+2026-09-22-attribution-miss-diagnosis“去重文字说明无效”。不因此另开付费批。
+
+请求身份以role-review-tool-schema-only-v1标记进入metadata、journal、candidate及组件摘要。
+Coach1.5.1 / Program3.1.1 / Evaluation3.4.0业务合同保持；manifest和请求摘要变化，版本标签
+相同不意味着请求相同。两个活动manifest同步；旧RoleNote builder未改，独立legacy回放
+可重建原3调用的成稿SHA ceeddca2…cc2a1及两份原journals。默认当前资格拒绝旧回执，
+不根据旧metadata自动降级；历史1成功/1失败/13未跑保留，新请求没有真实资格。
+
+独立复核发现prepare_comparison把旧RoleReview请求绑定当前candidate，prepare_all还把
+已结束Flash比较列下一批。现绑定原计划及整个原公开导出的SHA，移到历史区；旧执行CLI
+在准备/CI/凭据前永久关闭。公开导出曾排序dict键，原compact摘要却使用插入顺序；本次
+首次校验错误地重序列化比较，测试发现后改为原导出字节绑定，不改原摘要/原件，预览明确
+是public projection。两原导出SHA已与Git blob核对，换行以.gitattributes固定。
+
+下一语义路线的裁决：
+- 同请求重复能在翻转时证明不一致，不能直接选定修复；不翻转也不证明稳定。
+- 聚焦范围首读没有新的完整任务作用机制；旧meaning-first已读懂局部却仍继承错误，且新增调用挤占预算。
+- 全业务自由文本首审不能确定性恢复现有评分/类别/安全/来源/修改建议，不能伪造这些字段。
+- 独立复核补出“2生成→自由文本首审→可选1编辑→结构化终评”的4/5调用路线；调用上可行。
+  但首审正确且无需改稿时，终评仍是同全文、同结构审查，原核心误报机制没有改变。
+  仅首审通过不足以采用；不能把误报后移，或默认改写正确稿来规避冻结正例。
+
+上述裁决说明当前尚未选定新语义修法，不表示问题无解，也不要求在诊断前证明最终成功。
+下一诊断须能影响正确全文无需改稿的实际核验路径，明确观察如何决定下一实现；不再拿
+协议通过当语义通过，亦不因暂时未选修法把已获授权的独立产品工作永久冻结。
+
+离线证据golden_role_tool_delivery_audit_v1.json对全15的初评/恢复和真实SDK序列化逐项比较：
+只删文本头、加本地metadata；全文、来源、system、工具schema、编辑不变。相关测试覆盖
+旧缺severity继续拒绝、实际应用预算/落盘、真实历史回放和当前身份拒绝旧资料。
+新Provider请求0；无付费准备、语义准入或生产准入。独立代码复核与公共CI单独记录。
+
 ## 复核入口
 
 - `data/evaluation/results/golden_source_patch_preparation_v1.json`：本次新批冻结请求/源码与预算。

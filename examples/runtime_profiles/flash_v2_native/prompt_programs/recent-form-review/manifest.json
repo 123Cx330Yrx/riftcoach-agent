@@ -92,7 +92,7 @@
     {
       "component_id": "app.product.native_coach_composition",
       "source": "app/product/native_coach_composition.py",
-      "sha256": "a09d83ced7f9494e5ae01167585e2860bc6dd03bd5735115823ce92295c8dbdc"
+      "sha256": "c9f8ee3dcb6e6f3ab0edd550eb9436e39aeeb724a51bb7286b724320145ac2c6"
     },
     {
       "component_id": "app.product.recent_review_service",
@@ -150,5 +150,5 @@
       "sha256": "94fa4ed248628f0801ff83a999a6c14e54464b838ed11e453f718c448502ef0d"
     }
   ],
-  "program_sha256": "d2b05d729353c9d9186a9a2fb41da20160d9f40a1cda58e9bd3bc909722685e4"
+  "program_sha256": "c372c4fad6c832ff41407663a3d30dd75129d22236b27f61f0fd26fedd8757d5"
 }

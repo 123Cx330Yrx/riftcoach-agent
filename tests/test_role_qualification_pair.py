@@ -10,7 +10,7 @@ import pytest
 from app.evaluation import golden_stream_bridge as bridge
 from app.evaluation.golden_journal import write_new_json
 from app.evaluation.golden_review_experiment import compact, digest
-from app.evaluation.role_qualification import frozen_cases, read_role_calls, replay_case, validate_qualification
+from app.evaluation.role_qualification import frozen_cases, read_role_calls, replay_legacy_note_case as replay_case, validate_qualification
 from app.providers.models import ChatResponse, TokenUsage, ToolCall
 from app.runtime.receipted_provider_factory import RunScopedRoleReceiptedProviderFactory
 from scripts import run_role_qualification_pair as runner
@@ -92,8 +92,9 @@ def test_full_pair_records_actual_edit_host_stages_and_qualification_bindings(se
     first = result['cases'][0]
     assert first['accounting']['revision_completed']
     assert first['final_report_sha256'] == digest(setup_pair['source']['claim-scope:1'].report)
-    # A pair is a valid fragment, never a full fifteen-case qualification.
-    with pytest.raises(ValueError, match='case_inventory_mismatch'):
+    # This closed batch belongs to the previous request identity. Current
+    # qualification must reject it before checking completeness.
+    with pytest.raises(ValueError, match='identity_mismatch'):
         validate_qualification(dict(qualification_version=setup_pair['plan']['qualification_version'],
             identity=setup_pair['plan']['identity'], plan_sha256=setup_pair['plan']['qualification_plan_sha256'],
             cases=[row['qualification_row'] for row in result['cases']]), evidence_root=setup_pair['directory'])
@@ -190,3 +191,11 @@ def test_closed_batch_cannot_restart_even_without_local_run_directory(tmp_path, 
     with pytest.raises(ValueError, match='role_pair_batch_closed'):
         runner.run(SimpleNamespace(execute=True))
     assert not runner.RUN_DIRECTORY.exists()
+
+
+def test_changed_public_evidence_cannot_rebind_closed_plan(tmp_path, monkeypatch):
+    path = tmp_path / 'evidence.json'
+    path.write_bytes(runner.CLOSED_EVIDENCE.read_bytes() + b'\n')
+    monkeypatch.setattr(runner, 'CLOSED_EVIDENCE', path)
+    with pytest.raises(ValueError, match='role_pair_frozen_evidence_changed'):
+        runner.prepare()

@@ -1,7 +1,6 @@
-"""Prepare the original 15 controls and the next bounded comparison offline.
+"""Prepare current qualification inputs and reproduce a closed historical batch.
 
-Only writes reviewable plans and request artifacts, never credentials/provider
-IO. These plans do not reopen either completed GLM diagnostic batch.
+Offline only. History is not a pending execution queue or current qualification.
 """
 import argparse
 from decimal import Decimal
@@ -11,7 +10,7 @@ from pathlib import Path
 
 from app.evaluation.golden_review_experiment import compact, digest
 from app.evaluation.golden_stream_bridge import CAPACITY_TRANSPORT_ID, validate_request
-from app.evaluation.role_qualification import ROOT, frozen_cases, prepare_qualification, candidate_identity
+from app.evaluation.role_qualification import ROOT, frozen_cases, prepare_qualification
 from app.evaluation.golden_role_review import RoleReviewWorkflow
 from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling as size
 from app.evaluation import golden_native_partitioned_tool_review as review
@@ -19,6 +18,7 @@ from app.runtime.coach_contract import ROLE_COACH_CONTRACT
 from scripts.prepare_review_model_comparison import sdk_arguments, mock_wire
 
 PAIR_EVIDENCE = ROOT / 'data/evaluation/results/golden_explicit_source_pair_result_0c061b2.json'
+FLASH_EVIDENCE = ROOT / 'data/evaluation/results/golden_flash_source_pair_result_346213c.json'
 
 
 def bounded_product_estimate():
@@ -53,7 +53,14 @@ def bounded_product_estimate():
 
 
 def prepare_comparison():
-    """Same explicit-ID inputs as the two completed GLM calls, Flash only."""
+    """Exact closed Flash plan; never bind legacy requests to current identity."""
+    raw_evidence = FLASH_EVIDENCE.read_bytes()
+    # Exported dictionaries are key-sorted, whereas the original plan digest
+    # used insertion order. Bind the untouched export, not a new serialization.
+    if hashlib.sha256(raw_evidence).hexdigest() != 'a4fd1d69d12a74b20738c573487ef150c8ffe89fa4a2b2b3e68115fd05145e36':
+        raise ValueError('role_comparison_frozen_evidence_changed')
+    closed = json.loads(raw_evidence)["original_json_contents"]["plan.json"]
+    plan = closed["preparation_plan"]
     previous = json.loads(PAIR_EVIDENCE.read_text(encoding='utf-8'))
     sources = {f['key']: (f, req) for f, req in frozen_cases()[0]}
     cells, requests = [], {}
@@ -76,47 +83,22 @@ def prepare_comparison():
             input_reservation=size(request),
             output_cap=32768, expected_host_only=frozen['expected_initial'], sdk_body=sdk_body,
             same_request_as_glm=True))
-    total_input = sum(c['input_reservation'] for c in cells)
-    plan = dict(experiment='role-explicit-source-flash-comparison-v1', model='glm-5.3-flash',
-        reasoning_effort='high', sdk_retries=0, transport_id=CAPACITY_TRANSPORT_ID,
-        candidate=candidate_identity(),
-        comparison_evidence_sha256=hashlib.sha256(PAIR_EVIDENCE.read_bytes()).hexdigest(), cells=cells,
-        proposed_diagnostic_budget=dict(max_calls=2, max_seconds_total=600, max_seconds_per_call=300,
-            total_token_reservation=total_input + 65536,
-            estimated_uncached_cny=str((Decimal(total_input)*Decimal('0.8') + Decimal(65536)*Decimal('2.8')) / 1_000_000),
-            hard_billing_cap=False),
-        stop_rule='Stop on the first protocol, identity, citation or semantic failure; inspect complete issue/advisory sources.',
-        production_admitted=False, labels_sent_to_model=False, execution_enabled=False,
-        paid_execution_authorized=False,
-        runner_reuse=dict(module='scripts.run_review_model_comparison', function='observe',
-            development_cli='scripts.run_flash_source_review_pair',
-            preview_command='python -m scripts.run_flash_source_review_pair',
-            execute_arguments=['--execute', '--approval-plan-sha', 'PLAN_SHA256', '--ci-run', 'EXACT_HEAD_CI_RUN', '--env-file', 'AUTHORIZED_ENV_FILE'],
-            continuation='Within the same live session, inspect every issue/advisory against full report and sources, then type accept RESPONSE_FILE_SHA256 or reject RESPONSE_FILE_SHA256. Host time counts toward 600 seconds; restart is refused.',
-            paid_execution_requires='Specific unconsumed two-call authorization; flags and hashes do not grant permission.',
-            implemented=True),
-        causal_limit='Two same-input controls are a discriminating comparison, not a stability estimate.')
+    if cells != plan['cells']:
+        raise ValueError('role_comparison_frozen_cells_changed')
     return plan, requests
 
 
 def prepare_all():
     qualification, requests = prepare_qualification()
     comparison, pair_requests = prepare_comparison()
-    plan = dict(version='role-next-batches-v1', production_admitted=False, product_execution_enabled=False,
-        qualification_plan_sha256=digest(compact(qualification)),
-        batches=[dict(order=1, purpose='Same-input Flash comparison', plan=comparison),
-            dict(order=2, purpose='Actual role application generation/tools/review/revision/final review',
-                composition='flash-glm-review', budget=bounded_product_estimate(), paid_execution_authorized=False,
-                prerequisite='Inspect comparison and exact-HEAD CI; any paid execution needs its own already-scoped authorization.',
-                development_cli='scripts.run_role_coach_development',
-                preview_command='python -m scripts.run_role_coach_development --run-id role-development-FRESH_ID --source-now FIXED_TIME_WITH_TIMEZONE --request-output NEW_FIRST_REQUEST.json',
-                execute_arguments=['--execute', '--run-id', 'role-development-FRESH_ID',
-                    '--source-now', 'EXACT_PREVIEW_SOURCE_NOW', '--approval-plan-sha', 'PREPARATION_PLAN_SHA256',
-                    '--ci-run', 'EXACT_HEAD_CI_RUN', '--env-file', 'AUTHORIZED_ENV_FILE'],
-                preparation_binding='Reuse the same fresh run ID, source_now and preparation_plan_sha256 from the preview. Do not pass --request-output on execute; the runner reserves its own original request artifact.',
-                development_execution_available=True, product_execution_enabled=False, production_admitted=False,
-                evidence_scope='One bounded development application run; neither permission to spend nor original-15, semantic, product or production qualification.')],
-        original_15_status='all pending for this composition; no old acceptance inherited')
+    plan = dict(version='role-next-batches-v2', production_admitted=False, product_execution_enabled=False,
+        qualification_plan_sha256=digest(compact(qualification)), batches=[],
+        historical_batches=[dict(status='closed', plan=comparison,
+            evidence=FLASH_EVIDENCE.relative_to(ROOT).as_posix(),
+            evidence_sha256=hashlib.sha256(FLASH_EVIDENCE.read_bytes()).hexdigest())],
+        current_product_budget=bounded_product_estimate(),
+        next_action='No paid batch selected; see the active work card and canonical execution state.',
+        original_15_status='no qualification for current request identity; historical successes and failures remain in their original evidence')
     return qualification, plan, requests, pair_requests
 
 
@@ -127,7 +109,7 @@ def run(args):
         root.mkdir(parents=True, exist_ok=False)
         for name, value in [('qualification.json', qualification), ('next-batches.json', batches)]:
             (root / name).write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
-        for section, values in [('qualification-requests', requests), ('comparison-requests', pair_requests)]:
+        for section, values in [('qualification-requests', requests), ('historical-comparison-requests', pair_requests)]:
             directory = root / section
             directory.mkdir()
             for name, raw in values.items():
@@ -135,8 +117,8 @@ def run(args):
     summary = dict(required_inputs=len(qualification['cases']), pending_inputs=len(qualification['cases']),
         qualification_plan_sha256=digest(compact(qualification)),
         next_batches_sha256=digest(compact(batches)),
-        comparison_reservation=batches['batches'][0]['plan']['proposed_diagnostic_budget'],
-        product_reservation=batches['batches'][1]['budget'], provider_requests=0,
+        planned_paid_batches=len(batches['batches']),
+        product_reservation=batches['current_product_budget'], provider_requests=0,
         production_admitted=False, output_directory=str(args.output_directory) if args.output_directory else None)
     print(compact(summary))
     return summary

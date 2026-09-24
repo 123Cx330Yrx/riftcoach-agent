@@ -200,36 +200,16 @@ def test_prepared_drift_rejected_before_ci_credentials_or_provider(pair, monkeyp
     monkeypatch.setattr(cli, 'verify_public_ci', lambda *_: pytest.fail('drift contacted CI'))
     monkeypatch.setattr(cli, 'ReceiptedStreamProvider', lambda **_: pytest.fail('drift built provider'))
     with pytest.raises(ValueError, match='flash_source_comparison_(input_changed|plan_identity)'):
-        cli.run(NS(execute=True, approval_plan_sha='not-a-permission', ci_run='', env_file=None))
+        cli.prepare_pair()
 
 
-@pytest.mark.parametrize('kind', ['missing_approval', 'wrong_approval', 'bad_ci', 'exists', 'path'])
-def test_execute_gates_precede_credentials_and_paid_calls(pair, monkeypatch, tmp_path, kind):
-    monkeypatch.setattr(cli, 'prepare_pair', lambda: pair)
-    monkeypatch.setattr(cli, 'ROOT', tmp_path)
-    run_root = tmp_path / 'data/runs/model_comparison'
-    directory = run_root / cli.EXPERIMENT
-    monkeypatch.setattr(cli, 'RUN_ROOT', run_root)
-    monkeypatch.setattr(cli, 'RUN_DIRECTORY', directory)
-    monkeypatch.setattr(cli, 'ReceiptedStreamProvider', lambda **_: pytest.fail('gate built provider'))
-    plan_sha = digest(compact(pair[1]))
-    if kind == 'exists':
-        directory.mkdir(parents=True)
-        (directory / 'plan.json').write_bytes(b'original')
-    if kind == 'path':
-        monkeypatch.setattr(cli, 'RUN_DIRECTORY', tmp_path.parent / cli.EXPERIMENT)
-    def refuse_ci(*_):
-        if kind != 'bad_ci':
-            pytest.fail('earlier gate contacted CI')
-        raise ValueError('exact_sha_public_ci_required')
-    monkeypatch.setattr(cli, 'verify_public_ci', refuse_ci)
-    sha = '' if kind == 'missing_approval' else 'incorrect' if kind == 'wrong_approval' else plan_sha
-    with pytest.raises(ValueError):
-        cli.run(NS(execute=True, approval_plan_sha=sha, ci_run='', env_file=None))
-    if kind == 'exists':
-        assert (directory / 'plan.json').read_bytes() == b'original'
-    else:
-        assert not directory.exists()
+def test_closed_historical_batch_stops_before_prepare_ci_or_provider(monkeypatch, tmp_path):
+    monkeypatch.setattr(cli, 'RUN_DIRECTORY', tmp_path / 'never-created')
+    for name in ('prepare_pair', 'verify_public_ci', 'ReceiptedStreamProvider'):
+        monkeypatch.setattr(cli, name, lambda *a, **k: pytest.fail('closed batch attempted IO'))
+    with pytest.raises(ValueError, match='flash_source_comparison_batch_closed'):
+        cli.run(NS(execute=True))
+    assert not cli.RUN_DIRECTORY.exists()
 
 
 def test_terminal_requires_exact_hash_and_never_infers_verdict(tmp_path, monkeypatch):
@@ -253,39 +233,3 @@ def test_reviewer_model_copy_keeps_credentials_endpoint_timeout(real_settings):
     assert reviewer.api_key == settings.api_key
     assert reviewer.base_url == settings.base_url
     assert reviewer.default_timeout_s == settings.default_timeout_s
-
-
-def test_cli_executes_selected_flash_path_offline_and_cannot_restart(pair, responses, monkeypatch, tmp_path):
-    from contextlib import nullcontext
-    import app.providers.config as config
-    import dotenv
-    monkeypatch.setattr(cli, 'prepare_pair', lambda: pair)
-    monkeypatch.setattr(cli, 'ROOT', tmp_path)
-    run_root = tmp_path / 'data/runs/model_comparison'
-    directory = run_root / cli.EXPERIMENT
-    monkeypatch.setattr(cli, 'RUN_ROOT', run_root)
-    monkeypatch.setattr(cli, 'RUN_DIRECTORY', directory)
-    monkeypatch.setattr(cli, 'verify_public_ci', lambda _: 'offline-exact-head')
-    monkeypatch.setattr(cli, 'route_environment', lambda *_: nullcontext())
-    monkeypatch.setattr(dotenv, 'dotenv_values', lambda _: {})
-    monkeypatch.setattr(config, 'load_zhipu_settings', lambda _: ZhipuSettings(
-        api_key='offline-placeholder', base_url='https://open.bigmodel.cn/api/paas/v4', model='glm-5.3'))
-    created = []
-    def factory(**kwargs):
-        created.append(kwargs)
-        return flash_provider(responses)
-    monkeypatch.setattr(cli, 'ReceiptedStreamProvider', factory)
-    real_observe = runner.observe
-    monkeypatch.setattr(cli, 'observe', lambda *args, **kwargs:
-        real_observe(*args, **kwargs, adjudicate=decision(True)))
-    args = NS(execute=True, approval_plan_sha=digest(compact(pair[1])), ci_run='offline-ci', env_file=None)
-    result = cli.run(args)
-    assert result['pair_accepted'] and result['reserved_calls'] == 2
-    assert len(created) == 1
-    assert created[0]['settings'].model == FLASH.model
-    assert created[0]['settings'].api_key == 'offline-placeholder'
-    assert created[0]['transport_id'] == bridge.CAPACITY_TRANSPORT_ID
-    before = (directory / 'result.json').read_bytes()
-    with pytest.raises(ValueError, match='flash_source_comparison_batch_exists'):
-        cli.run(args)
-    assert len(created) == 1 and (directory / 'result.json').read_bytes() == before

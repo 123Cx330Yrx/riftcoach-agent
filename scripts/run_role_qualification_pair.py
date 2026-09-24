@@ -8,7 +8,6 @@ the product. Raw receipts and run directories are create-only.
 """
 import argparse
 from dataclasses import replace
-from decimal import Decimal
 import hashlib
 import json
 from pathlib import Path
@@ -20,11 +19,10 @@ from app.evaluation.golden_review_experiment import compact, digest
 from app.evaluation.golden_role_notes import RoleNoteReviewWorkflow
 from app.evaluation.golden_stream_bridge import RESPONSE, REVIEW_MODEL_TRANSPORT_ID, validate_request
 from app.evaluation.role_qualification import (
-    ROOT, ASSETS, frozen_cases, prepare_qualification, read_role_calls, replay_case,
+    ROOT, frozen_cases, read_role_calls, replay_legacy_note_case as replay_case,
 )
 from app.harness.steps import EvaluationVerdict, RevisionRequest
 from app.runtime.coach_contract import ROLE_COACH_CONTRACT
-from app.runtime.composition import RuntimeCompositionRoot
 from app.runtime.receipted_provider_factory import RunScopedRoleReceiptedProviderFactory
 from app.runtime.review_sender import SharedBudgetReviewSender
 from app.runtime.runtime import _ReceiptForwardingCoachBudgetedProvider
@@ -40,52 +38,30 @@ CLOSED_EVIDENCE = ROOT / 'data/evaluation/results/golden_role_note_qualification
 
 
 def prepare():
-    # Load real assets/fingerprints, not merely the identity copied in a manifest.
-    RuntimeCompositionRoot.from_directories(skills_root=ROOT / ASSETS / 'skills',
-        prompt_programs_root=ROOT / ASSETS / 'prompt_programs', coach_contract=ROLE_COACH_CONTRACT)
-    qualification, requests = prepare_qualification()
-    rows = {row['key']: row for row in qualification['cases']}
-    selected = [rows[key] for key in KEYS]
-    limits = ROLE_COACH_CONTRACT.descriptor()
-    if (limits['max_calls'], limits['total_tokens'], limits['execution_timeout_s'],
-            limits['max_revisions'], limits['max_output_tokens'], limits['request_timeout_s']) != (
-            5, 401920, 900, 1, 32768, 300):
-        raise ValueError('role_pair_budget_changed')
-    # Review-only controls permit at most 2 GLM calls; the edit case permits
-    # 4 GLM + 1 Flash calls including both legal reassessments. Allocate the
-    # shared token envelope to the most expensive categories first.
-    prices = ROLE_COACH_CONTRACT.pricing_profiles
-    glm, flash = [prices['zhipu', model] for model in ('glm-5.3', 'glm-5.3-flash')]
-    cost, case_budgets = Decimal(0), []
-    for row in selected:
-        editing = row['expected_initial'] == 'reject'
-        reviews, edits = (4, 1) if editing else (2, 0)
-        cap = min(limits['total_tokens'], (reviews + edits) * (
-            limits['max_input_tokens'] + limits['max_output_tokens']))
-        remaining, subtotal = cap, Decimal(0)
-        for count, rate in ((reviews * limits['max_output_tokens'], glm.output_cost_per_million),
-                (reviews * limits['max_input_tokens'], glm.input_cost_per_million),
-                (edits * limits['max_output_tokens'], flash.output_cost_per_million),
-                (edits * limits['max_input_tokens'], flash.input_cost_per_million)):
-            reserved = min(remaining, count)
-            subtotal += Decimal(reserved) * rate / 1_000_000
-            remaining -= reserved
-        cost += subtotal
-        case_budgets.append(dict(key=row['key'], max_calls=reviews + edits, max_tokens=cap,
-            max_seconds=900 if editing else 600, estimated_uncached_cny=str(subtotal)))
-    plan = dict(experiment=EXPERIMENT, qualification_version=qualification['qualification_version'],
-        qualification_plan_sha256=digest(compact(qualification)), identity=qualification['identity'],
-        cases=selected, per_case_budget=qualification['per_case_budget'], case_budgets=case_budgets,
-        batch_budget=dict(max_calls=sum(b['max_calls'] for b in case_budgets),
-            max_tokens=sum(b['max_tokens'] for b in case_budgets),
-            max_seconds=sum(b['max_seconds'] for b in case_budgets),
-            estimated_uncached_cny=str(cost), hard_billing_cap=False,
-            price_snapshot='ADR0108/2026-09-22'),
-        stop_rule='Stop at the first protocol, source, semantic or editing failure. No automatic new batch.',
-        host_checks='All issues, notes, resolutions and changed/retained text; host time counts toward deadlines.',
-        labels_sent_to_model=False, review_controls_qualified=False,
-        actual_product_task_qualified=False, production_admitted=False)
-    return plan, {key: requests[key] for key in KEYS}
+    """Reconstruct the closed batch, never rebind it to current manifests."""
+    raw_evidence = CLOSED_EVIDENCE.read_bytes()
+    # The public projection sorted dictionary keys. Its reserialized plan hash
+    # is not the original insertion-ordered compact JSON hash. Bind the whole
+    # unchanged export, including its original hash, rather than rewriting it.
+    if hashlib.sha256(raw_evidence).hexdigest() != '700eacc1d70d5c8b651c8f1adcfe23ca2ccc906c3906fd8309805a7fe6b0f673':
+        raise ValueError('role_pair_frozen_evidence_changed')
+    evidence = json.loads(raw_evidence)
+    saved = evidence['public_json_contents']['plan.json']
+    plan = saved['preparation_plan']
+    sources = {f['key']: source for f, source in frozen_cases()[0]}
+    requests = {}
+    if [row['key'] for row in plan['cases']] != list(KEYS):
+        raise ValueError('role_pair_frozen_cases_changed')
+    for row in plan['cases']:
+        key = row['key']
+        inputs = RoleNoteReviewWorkflow.build_inputs(sources[key])
+        request = RoleNoteReviewWorkflow.make_request(inputs)
+        raw = validate_request(request, transport_id=REVIEW_MODEL_TRANSPORT_ID)
+        original = evidence['original_file_sha256'][key.replace(':', '-') + '-prepared-request.json']
+        if hashlib.sha256(raw).hexdigest() != row['request_sha256'] or row['request_sha256'] != original:
+            raise ValueError('role_pair_frozen_request_changed')
+        requests[key] = raw
+    return plan, requests
 
 
 def _hash(path):
@@ -228,7 +204,8 @@ def run(args):
     plan, requests = prepare()
     plan_sha = digest(compact(plan))
     if not args.execute:
-        summary = dict(preparation_plan_sha256=plan_sha, plan=plan, provider_requests=0)
+        summary = dict(preparation_plan_sha256=plan_sha, plan=plan, provider_requests=0,
+            batch_status='closed', plan_representation='public_projection_not_original_plan_bytes')
         print(compact(summary), flush=True)
         return summary
     if not args.env_file or not args.ci_run or args.approval_plan_sha != plan_sha:

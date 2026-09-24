@@ -95,3 +95,5 @@
 /data/evaluation/results/golden_role_source_metadata_result_v1.json text eol=lf
 /app/evaluation/golden_role_notes.py text eol=lf
 /data/evaluation/results/golden_role_note_contract_audit_v1.json text eol=lf
+/data/evaluation/results/golden_role_note_qualification_pair_result_v1.json text eol=lf
+/data/evaluation/results/golden_role_tool_delivery_audit_v1.json text eol=lf
