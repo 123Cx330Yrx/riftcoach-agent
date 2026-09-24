@@ -11,6 +11,16 @@ pause_reason: ""
 
 ## 当前行动
 
+2026-09-24：当前1.5.2三例连续真实观察全部通过。原正确报告保持原文95/pass；全称错稿80/needs_revision→实际Flash修正→95/pass；归因错稿84/needs_revision→实际修正→96/pass。七个阶段均经主审与独立完整来源检查接受，未使用附属解释缺陷例外。8E及生产准入仍未完成。
+
+- 实测绑定：3464853158d2f811749b2d3c0bcb120fe716ec0f / CI35967784437三项成功（4807 passed、154 skipped、129 subtests；PostgreSQL210）后执行冻结plan6a04b8…c2d953。两个错例各自修正真错、删除冗余引言，其余23原段逐字保持；正确稿不改。最终完整请求无旧评意见，来源相同、报告与实际改稿绑定。
+- 本批首次把正确控制、明确全称错误和伤害归因错误在当前同一合同下都走通；不是零误报保证或15项全部通过。此前错误视野27–43与旧失败批原样保留，本批没有把它们改判为通过，也没有降低最终事实/来源标准。
+- 新7次请求（5GLM审查、2Flash编辑），80173输入＋24794输出＝104967tokens，缓存输入3840，未知0；含host1436.141秒，各例170.922/602.937/662.203秒均在冻结上限内。未缓存估价0.970882元，非账单。100份原件hash/公开投影、逐阶段裁决和精确回放见golden_role_task_result_v1.json，SHA ce0a6ab008c3e40ec5c89335bf1c7f7e3c70348ca2d38cc4699d4863bbbe5747。
+- 本批reviewer_quality/task_outcome三例均true/true，所有资格/完整生成/生产标志仍false。闭批preview固定原plan和请求，不能重新执行。本批没有生成新报告的Agent工具阶段，也不证明Worker/DB/API/UI已消费该组合。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。以独立离线验收按原read_role_calls/replay_case/validate_qualification合同核对这三例原件，然后执行原15剩12输入；不重跑相同三例、不跨候选拼成功、不把task_outcome改名成资格。严格适配器与剩12执行器、独立审查及聚焦检查已完成；前三例原件严格验收validated_partial；任一阶段不接受即停，禁用附属解释例外与reassessment。只有完整15原验证器通过才推进真实生成/消费，具体有界计划见活动卡。
+
+### 两调用尾部观察与三例准备（历史，后继三例已完成）
+
 2026-09-24：现有编辑/终评取得本例容错证据：保留失败首评原文，Flash真实修正报告，fresh GLM终评95/pass，主/独立接受成稿及最终审查。错误27–43未进入成稿；首评自身仍失败，原15和完整任务未准入，8E未完成。
 
 - 实测绑定：465e3fd8 / CI35962952000三项成功（4751 passed、154 skipped、129 subtests）后，离线注入原失败首评（不新增Provider调用），实际仅1次Flash编辑＋1次GLM终评。编辑只修原block4的真全称错句、删冗余引言，其他23原段逐字保留；最终24段稿与模型原content/终评输入/本地回放同hash0100639e…dd546af。
@@ -18,7 +28,7 @@ pause_reason: ""
 - 用量：新2请求，22371输入＋3322输出＝25693tokens，缓存0，未知0，含host401.391秒；未缓存估价0.1510924元，非账单。29份原件/hash、公开投影、完整裁决和两次真实调用回放见golden_role_containment_result_v1.json。原首评成本仍在前批，两批不拼作连续任务。
 - 方案裁决：当前证据支持优先利用既有纠错链，暂不扩建数值协议或再加提示。review自身质量与最终交付质量应分别测量；当前原15仍1接受/1失败/13未跑，tail_accepted不能改写旧资格。真实自然生成与共享完整任务预算、Worker/DB/API/UI仍缺该组合完整证据。
 - 新工程：ADR0111及role_task_outcome已把reviewer_quality/task_outcome分别绑定实际来源、请求、阶段、成稿和host检查。历史两例重建为true/true与false/true；所有原15/fresh/完整任务/生产门保持false。执行器仅允许带具体缺陷记录的附属解释错误继续，须确认全部目标/修法正确；误报、漏检、错误修改、错误终评及协议恢复均停，不写旧资格记录。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。完成新三例冻结/独立复核和同提交公共CI后，执行原正确稿→全称错稿→归因错稿的连续任务观察，最多7调用/677376tokens/2100秒（含host）、保守全GLM估价10.006528元，非账单。依据既有继续推进授权；原15、质量和发布门不变，旧两批已关闭。具体反例和后续消费依赖见活动卡及ADR0111。
+- 当时下一步（现已完成）：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。完成新三例冻结/独立复核和同提交公共CI后，执行原正确稿→全称错稿→归因错稿的连续任务观察，最多7调用/677376tokens/2100秒（含host）、保守全GLM估价10.006528元，非账单。依据既有继续推进授权；原15、质量和发布门不变，旧两批已关闭。具体反例和后续消费依赖见活动卡及ADR0111。
 
 ### 1.5.2原资格批结果（历史失败，保留原裁决）
 

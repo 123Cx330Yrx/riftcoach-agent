@@ -20,8 +20,12 @@ from tests.test_role_review_notes import tool_response
 
 
 @pytest.fixture(scope='module')
-def prepared():
-    return runner.prepare()
+def prepared(tmp_path_factory):
+    # Executor counterexamples need the current builder's identity ordering;
+    # closed previews intentionally preserve the key-sorted historical export.
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(runner, 'CLOSED_RESULT', tmp_path_factory.mktemp('open-plan')/'absent.json')
+        return runner.prepare()
 
 
 def test_plan_retains_original15_and_same_product_identity(prepared):
@@ -137,3 +141,22 @@ def test_closed_or_wrong_preparation_never_reads_keys_or_ci(prepared,monkeypatch
     monkeypatch.setattr(runner,'prepare',lambda:pytest.fail('closed batch prepared'))
     with pytest.raises(ValueError,match='batch_closed_or_exists'):
         runner.run(NS(execute=True))
+
+
+def test_closed_preview_retains_executed_plan_and_request_bytes(monkeypatch):
+    monkeypatch.setattr(runner,'prepare_qualification',lambda:pytest.fail('historical preview used current identity'))
+    plan,requests = runner.prepare()
+    assert plan == json.loads(runner.PREPARATION.read_text(encoding='utf-8'))
+    assert runner.canonical_sha(plan) == '6a04b8f45de649c003a7288c65081fb83e505b0f1b5a3a0d55e3792685c2d953'
+    evidence = json.loads(runner.CLOSED_RESULT.read_text(encoding='utf-8'))
+    for key,raw in requests.items():
+        assert hashlib.sha256(raw).hexdigest() == evidence['original_file_sha256'][key.replace(':','-')+'-prepared-request.json']
+    assert runner.run(NS(execute=False,output=None))['historical_closed']
+
+
+def test_closed_preview_rejects_modified_export(monkeypatch,tmp_path):
+    changed = tmp_path/'changed.json'
+    changed.write_bytes(runner.CLOSED_RESULT.read_bytes()+b'\n')
+    monkeypatch.setattr(runner,'CLOSED_RESULT',changed)
+    with pytest.raises(ValueError,match='historical_evidence_changed'):
+        runner.prepare()

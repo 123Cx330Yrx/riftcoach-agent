@@ -7,6 +7,16 @@ batch is reopened and no production admission is granted by this record. This de
 
 ## 2026-09-24: current 1.5.2 state
 
+Latest same-identity prospective evidence:34648531 / CI35967784437 completed
+three cases with all7 stages accepted after primary/independent source checks:
+correct95/pass; universal error80 -> real Flash edit ->95/pass; attribution
+error84 -> real edit ->96/pass. No ancillary-error exception or reassessment
+was used.104967tokens, unknown0, uncached estimateCNY0.970882, not invoice.
+ADR0111 and golden_role_task_result_v1.json preserve the full evidence. Strict
+offline qualification of these raw receipts plus the remaining original12 is
+the next action; neither task outcomes nor this paragraph grant qualification.
+The following prior failed batch remains unchanged historical evidence.
+
 Role contract1.5.2 / Program3.1.2 / evaluation3.5.0 retains only nonblocking
 paragraph markers. On88f05647 / CI35960739920, the correct frozen report passed
 95 with full host acceptance. The next explicit error was correctly detected,

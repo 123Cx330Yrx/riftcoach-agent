@@ -4,6 +4,30 @@
 observation only. This does not replace ADR0109 qualification, change production
 admission, or establish a new user acceptance standard.
 
+## 2026-09-24: completed prospective observation and strict follow-through
+
+On34648531 / CI35967784437, all three unchanged original inputs completed in
+one bounded batch: correct95/pass; universal-error80 -> actual edit ->95/pass;
+attribution-error84 -> actual edit ->96/pass. Primary and independent full-source
+inspection accepted all7 stages; the incidental-explanation exception was unused.
+Both corrected reports retain23 original paragraphs, with only the true-error
+paragraph changed and redundant introduction removed. Final requests are fresh.
+The100-original export is golden_role_task_result_v1.json, SHA
+ce0a6ab008c3e40ec5c89335bf1c7f7e3c70348ca2d38cc4699d4863bbbe5747.
+Seven actual calls used104967tokens, unknown0,1436.141s including host review,
+uncached estimateCNY0.970882, not invoice. All original admission flags stay false.
+
+This evidence supports proceeding to the remaining original12, not claiming
+stable accuracy or erasing previous failures. A separate offline strict audit
+may qualify the underlying same-identity complete receipts under the unchanged
+original contract: verify every actual stage, source judgment, receipt and budget,
+then create a new bound qualification host record. It must not copy task_outcome
+or reviewer_quality into semantic_acceptance. Any rejected intermediate review,
+exception path, incomplete task or changed identity is ineligible. Only all15
+rows passing the existing validate_qualification can qualify review controls;
+generated tasks and production remain separate. This clarifies evidence reuse,
+not a change to acceptance or permission to convert an old failure into success.
+
 ## Problem and evidence
 
 Current1.5.2 review correctly identifies the explicit universal-metrics error,

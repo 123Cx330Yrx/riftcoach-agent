@@ -18,7 +18,8 @@ from pydantic import BaseModel, ConfigDict
 from app.evaluation.golden_journal import write_new_json
 from app.evaluation.golden_review_experiment import compact, digest
 from app.evaluation.golden_role_clarity import RoleClarityReviewWorkflow as Workflow
-from app.evaluation.role_qualification import ROOT, ASSETS, prepare_qualification, replay_case
+from app.evaluation.role_qualification import ROOT, ASSETS, frozen_cases, prepare_qualification, replay_case
+from app.evaluation.golden_stream_bridge import REVIEW_MODEL_TRANSPORT_ID, validate_request
 from app.evaluation.role_task_outcome import (
     VERSION, StageAssessment, ReportAssessment, may_continue_initial,
     prepare_observation, assess_task_outcome, stage_identity,
@@ -112,6 +113,29 @@ def adjudicate(path,remaining):
 
 
 def prepare():
+    if CLOSED_RESULT.exists():
+        raw = CLOSED_RESULT.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != 'ce0a6ab008c3e40ec5c89335bf1c7f7e3c70348ca2d38cc4699d4863bbbe5747':
+            raise ValueError('task_observation_historical_evidence_changed')
+        evidence = json.loads(raw)
+        saved = evidence['public_json_contents']['plan.json']
+        plan = saved['preparation_plan']
+        if (plan != json.loads(PREPARATION.read_text(encoding='utf-8'))
+                or canonical_sha(plan) != saved['plan_sha256']
+                or [c['key'] for c in plan['cases']] != list(KEYS)):
+            raise ValueError('task_observation_historical_plan_changed')
+        sources = {f['key']: source for f, source in frozen_cases()[0]}
+        requests = {}
+        for row in plan['cases']:
+            key = row['key']
+            request = Workflow.make_request(Workflow.build_inputs(sources[key]))
+            raw_request = validate_request(request, transport_id=REVIEW_MODEL_TRANSPORT_ID)
+            if (hashlib.sha256(raw_request).hexdigest() != row['request_sha256']
+                    or row['request_sha256'] != evidence['original_file_sha256'][
+                        key.replace(':', '-') + '-prepared-request.json']):
+                raise ValueError('task_observation_historical_request_changed')
+            requests[key] = raw_request
+        return plan, requests
     RuntimeCompositionRoot.from_directories(skills_root=ROOT/ASSETS/'skills',
         prompt_programs_root=ROOT/ASSETS/'prompt_programs',coach_contract=ROLE_COACH_CONTRACT)
     qualification,requests=prepare_qualification()
