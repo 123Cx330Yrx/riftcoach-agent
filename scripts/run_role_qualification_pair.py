@@ -198,10 +198,27 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
                     outcome.update(elapsed_seconds=round(clock()-case_started,3),
                         continuous_observation_budget_verified=False)
                     raise ValueError('role_pair_execution_limit')
-                outcome.update(status='task_observed', task_outcome=observation['task_outcome'],
+                completion = dict(outcome, status='task_observed', task_outcome=observation['task_outcome'],
                     reviewer_quality=observation['reviewer_quality'], final_report_sha256=digest(final_report),
-                    elapsed_seconds=round(clock()-case_started,3), fresh_receipts_verified=True,
+                    fresh_receipts_verified=True,
                     continuous_observation_budget_verified=True, real_generation_included=False)
+                completed_at = clock()
+                if (completed_at - case_started >= budget['max_seconds']
+                        or completed_at - started >= plan['batch_budget']['max_seconds']):
+                    raise ValueError('role_pair_execution_limit')
+                completion['elapsed_seconds'] = round(completed_at - case_started, 3)
+                # Preserve a completed case before the next one starts. An
+                # externally killed process may never reach the batch finally.
+                # This is a completion receipt, not permission to resume IO or
+                # reset any case/batch deadline after an interruption.
+                write_new_json(arm / 'case-completed.json', dict(
+                    schema_version='role-case-completion-v1',
+                    plan_sha256=digest(json.dumps(plan, sort_keys=True,
+                        ensure_ascii=False, allow_nan=False, separators=(',', ':'))),
+                    batch_elapsed_seconds=round(completed_at - started, 3),
+                    outcome=completion,
+                    task_observation_sha256=_hash(arm / 'task-observation.json')))
+                outcome.update(completion)
                 continue  # Supplementary observation can never create an old qualification row.
             host_path = arm / 'host-review.json'
             write_new_json(host_path, dict(candidate_sha256=digest(compact(plan['identity'])),

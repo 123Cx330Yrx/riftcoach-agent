@@ -45,7 +45,7 @@ def make_run(tmp_path, monkeypatch):
     sources = {f['key']: source for f, source in q.frozen_cases()[0]}
     counter = [0]
 
-    def build(keys=('claim-scope:1', 'claim-scope:4')):
+    def build(keys=('claim-scope:1', 'claim-scope:4'), *, write_fault=None):
         counter[0] += 1
         run = tmp_path / ('run-' + str(counter[0]))
         run.mkdir()
@@ -109,13 +109,91 @@ def make_run(tmp_path, monkeypatch):
             write_new_json(path.parent / ('decision-' + name + '.json'), decision)
             return decision
 
-        result = observe(factory, run, observation, adjudicate=adjudicate, clock=lambda: 0,
-            workflow_type=Workflow, replay=q.replay_case, success_field='tasks_observed', task_observer=Observer)
+        from scripts import run_role_qualification_pair as pair
+        def write(path, value):
+            if write_fault:
+                write_fault(path, value)
+            return write_new_json(path, value)
+        with monkeypatch.context() as patch:
+            patch.setattr(pair, 'write_new_json', write)
+            result = observe(factory, run, observation, adjudicate=adjudicate, clock=lambda: 0,
+                workflow_type=Workflow, replay=q.replay_case, success_field='tasks_observed', task_observer=Observer)
+        if write_fault:
+            return run, result
         assert result['tasks_observed'], result
         export = tmp_path / (run.name + '-closed.json')
         sealed = seal(run, tmp_path, export)
         return run, sealed
     return build
+
+
+def test_completed_case_survives_next_case_and_batch_summary_write_failure(make_run, tmp_path):
+    def interrupt(path, value):
+        if path == tmp_path/'run-1/result.json' or path == tmp_path/'run-1/claim-scope-4/source.json':
+            raise OSError('simulated interrupted storage')
+    with pytest.raises(OSError, match='interrupted storage'):
+        make_run(write_fault=interrupt)
+    run = tmp_path/'run-1'
+    completion = read(run/'claim-scope-1/case-completed.json')
+    assert completion['plan_sha256'] == audit._canonical_sha(read(run/'plan.json')['preparation_plan'])
+    assert completion['task_observation_sha256'] == audit._sha(run/'claim-scope-1/task-observation.json')
+    outcome = completion['outcome']
+    assert outcome['status'] == 'task_observed' and outcome['elapsed_seconds'] == 0
+    assert outcome['accounting']['reserved_calls'] == 1
+    assert not (run/'result.json').exists()
+    assert not (run/'transport/claim-scope-4').exists()
+
+
+def test_failed_completion_receipt_stops_before_next_provider(make_run):
+    def fail(path, value):
+        if path.name == 'case-completed.json':
+            raise OSError('completion disk failure')
+    run, result = make_run(write_fault=fail)
+    assert not result['tasks_observed'] and result['error_type'] == 'OSError'
+    assert result['cases'][0]['status'] == 'failed'
+    assert len(result['cases']) == 1
+    assert not (run/'claim-scope-4').exists()
+    assert not (run/'claim-scope-1/case-completed.json').exists()
+
+
+def test_original_durable_receipt_can_be_qualified_after_lost_batch_summary(make_run, tmp_path):
+    run, sealed = make_run()
+    (run/'result.json').unlink()
+    sealed = seal(run,tmp_path,sealed[0])
+    before = {p:audit._sha(p) for p in run.rglob('*') if p.is_file()}
+    result = accept(run,sealed,tmp_path)
+    assert result['validated_inputs']==2
+    assert not result['review_controls_qualified']
+    host=read(tmp_path/'audit/claim-scope-1-host-review.json')
+    assert host['completion_source']=='durable_case_receipts_without_batch_result'
+    assert before=={p:audit._sha(p) for p in run.rglob('*') if p.is_file()}
+
+
+@pytest.mark.parametrize('defect',['missing_all','gap','plan','observation','elapsed','batch_elapsed','inconsistent_clock'])
+def test_partial_completion_cannot_fabricate_a_timed_execution(make_run,tmp_path,defect):
+    run,sealed=make_run()
+    (run/'result.json').unlink()
+    first=run/'claim-scope-1/case-completed.json'
+    last=run/'claim-scope-4/case-completed.json'
+    if defect=='missing_all':
+        first.unlink();last.unlink()
+    elif defect=='gap':
+        first.unlink()
+    elif defect=='plan':
+        change(first,lambda d:d.update(plan_sha256='0'*64))
+    elif defect=='observation':
+        change(first,lambda d:d.update(task_observation_sha256='0'*64))
+    elif defect=='elapsed':
+        change(first,lambda d:d['outcome'].update(elapsed_seconds=301))
+    elif defect=='inconsistent_clock':
+        change(first,lambda d:(d['outcome'].update(elapsed_seconds=200),d.update(batch_elapsed_seconds=1)))
+        change(last,lambda d:(d['outcome'].update(elapsed_seconds=100),d.update(batch_elapsed_seconds=500)))
+    else:
+        change(last,lambda d:d.update(batch_elapsed_seconds=1201))
+    sealed=seal(run,tmp_path,sealed[0])
+    with pytest.raises(ValueError):
+        accept(run,sealed,tmp_path)
+    assert not (tmp_path/'audit').exists()
 
 
 def accept(run, sealed, root, output='audit'):

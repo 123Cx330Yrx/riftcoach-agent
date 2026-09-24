@@ -160,3 +160,42 @@ def test_closed_preview_rejects_modified_export(monkeypatch,tmp_path):
     monkeypatch.setattr(runner,'CLOSED_RESULT',changed)
     with pytest.raises(ValueError,match='historical_evidence_changed'):
         runner.prepare()
+
+
+@pytest.mark.parametrize('mode', ['complete', 'partial_write', 'partial_utf8', 'wrong_hash', 'late', 'absent', 'invalid'])
+def test_file_host_gate_has_no_stdin_dependency_and_keeps_original_deadline(tmp_path, monkeypatch, mode):
+    path = tmp_path/'initial.json'
+    write_new_json(path, dict(stage='initial', report='offline fixture'))
+    decision_path = tmp_path/'decision-initial.json'
+    value = dict(response_sha256=hashlib.sha256(path.read_bytes()).hexdigest(), accepted=True,
+        candidate_sha256='a'*64, input_sha256='b'*64, key='claim-scope:1',
+        assessment=dict(stage='initial', stage_sha256='c'*64, reviewer='offline',
+            source_review='Synthetic file transport only.', accepted=True, defects=[]),
+        target_and_correction_valid=True, final_report=None)
+    if mode=='wrong_hash':
+        value['response_sha256']='0'*64
+    if mode=='invalid':
+        value['accepted']='yes'
+    now = [0.0]
+    def sleep(delay):
+        now[0] += delay
+        if mode in ('partial_write','partial_utf8') and now[0] >= .5 or mode=='late' and now[0] >= 1:
+            decision_path.write_text(json.dumps(value), encoding='utf-8')
+    class NoStdin:
+        def readline(self):
+            pytest.fail('file handoff read terminal stdin')
+    monkeypatch.setattr(runner.sys, 'stdin', NoStdin())
+    if mode in ('complete', 'wrong_hash', 'invalid'):
+        write_new_json(decision_path,value)
+    elif mode=='partial_write':
+        decision_path.write_text('{', encoding='utf-8')
+    elif mode=='partial_utf8':
+        decision_path.write_bytes(b'{"reason":"\xe4\xb8')
+    if mode in ('complete','partial_write','partial_utf8'):
+        assert runner.adjudicate_file(path,1,clock=lambda:now[0],sleep=sleep)==value
+    else:
+        with pytest.raises(ValueError):
+            runner.adjudicate_file(path,1,clock=lambda:now[0],sleep=sleep)
+    assert now[0] <= 1
+    required = json.loads((tmp_path/'initial-host-required.json').read_text())
+    assert required['remaining_seconds']==1 and required['decision_file']==decision_path.name

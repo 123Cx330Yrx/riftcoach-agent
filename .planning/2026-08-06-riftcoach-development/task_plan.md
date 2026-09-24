@@ -11,20 +11,22 @@
 当前精确 checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
 - Status: in_progress
 
-当前1.5.2三例连续真实观察均通过，正确报告原文保留，两类真错实际修正并完整终评通过。
-旧资格失败不改；新三例尚未自动转换为原15资格，剩12未执行，完整生成/产品消费仍待验证。
+当前1.5.2前三例严格validated_partial；剩12批又有两例完整语义通过，第三例只有首评后中断。
+旧两例精确执行计时丢失，尚不授严格资格；剩9未执行。完整生成/产品消费仍待验证。
 
 ## Active Work Package
 
-**目标：** 用已取得的同版本真实原件接上原15完整资格，减少无信息重跑；继而解锁实际Agent生成及产品消费。
+**目标：** 修复本次暴露的长批证据耐久性缺陷，保留真实成功/中断边界，在原预算内完成尚未运行的9输入；继而解决原15缺口并解锁真实Agent产品消费。
 
-**起点与证据：** 34648531 / CI35967784437三项成功后，原正确稿95/pass，全称错稿80→实际改稿→95/pass，归因错稿84→实际改稿→96/pass。所有7stage主/独立全文接受，无例外、重试或reassessment，两个改稿各保留23原段。7请求104967tokens/1436.141秒/未知0，估价0.970882元非账单；100原件及公开投影见golden_role_task_result_v1.json。旧失败原件与原裁决保持。
+**起点与证据：** 先前三例7请求104967tokens，严格适配器validated_partial/3。后续6bc3470f / CI35972161945执行剩12：claim-scope:3为80→92、scope:4为80→94，六阶段主/独立接受；scope:3仅首评。新7请求102455tokens/未知0/估价1.0247968元；103原件封存golden_role_remaining_interruption_v1.json。根result缺失、原进程不存在，退出原因未知。日志外包时间只作旁证，不补造旧elapsed。
 
-**实现路径：** 新qualify_role_observations只读封闭原件，重新核对身份/请求/真实回执/全部stage及主独立裁决/连续预算，单独写原格式host-review与qualification row；不读取两个结果布尔直接授资格，原validate_qualification不改。满15才调用原门。剩12复用同executor与StrictObserver，任何accepted=false或defect停止，不使用ADR0111的解释缺陷例外。模型、政策、schema及产品预算保持。
+**实现路径：** 原observe逐例保存计划/观察/用量/真实单调计时的完成回执；qualify_role_observations从封闭原件读取连续完成前缀，继续全部回放和主/独立审查，只有全15才调用原门。新入口使用有界文件host交接及隐藏独立进程，避免依赖终端stdin；中断不能重新计时续跑。旧批入口关闭且preview冻结。StrictObserver首失败停，无解释例外或reassessment。
 
 **反证与边界：** 三例不是稳定率或独立holdout；旧失败不改。后续任何实质误报/漏检、错修法、错误解释/引用、编辑/终评/来源/身份/协议/预算失败均停止批次并定位首次偏离，不自动换提示再试。不得用部分资格代替15覆盖或完整Agent任务。
 
-**当前动作：** 严格证据验收及剩12执行器已完成，前三例原件validated_partial；独立审查与聚焦检查通过。同提交公共CI通过后，沿用持续授权执行有界剩余输入。原顺序：claim-scope:3、scope:4、scope:3、claim-scope:2、claim-scope:5、claim-scope:6、claim-scope:7、observed:1–5。4正例各1调用/300秒，8错例各3调用/900秒，最多28调用/2709504tokens/8400秒（含host），保守全GLM预留估价40.026112元、非账单；首失败停，无重试/重评/计时重启。先以严格离线验收确认前三例，单个报告仍不得超过产品5calls/401920tokens/900秒。
+**当前动作：** 完成相关测试、独立复核及同提交公共CI后执行run_role_unexecuted_qualification：claim-scope:2、claim-scope:5–7、observed:1–5，最多19调用/1838592tokens/5700秒（含host），保守估价27.160576元非账单。原预算28调用/2709504tokens/8400秒已扣7次真实请求/102455tokens及三例全额2700秒，不能退款计时或改名重置。入口验证原103文件、当前candidate与前三例严格资格后才读取密钥；原scope:3不重发。文件host裁决必须在原剩余时限内到达，任何真实缺陷停止。逐例成功才存completion，完成后封闭导出并独立验收。
+
+**另列未解决：** 旧两例业务链通过但精确单调计时没有恢复；墙钟旁证不自动替代旧门。scope:3首评尚无完整host接受及编辑终评；不能重置旧case时钟。9未执行输入可独立推进，不能用其成功掩盖这三例证据缺口。Worker默认仍单模型，角色应用现有能力须显式接线后用同一真实入队身份/任务验证；报告/任务/event原子提交与assistant terminal turn的幂等投影分开验证。
 
 ## Dependencies and Follow-through
 

@@ -1,3 +1,11 @@
+# 2026-09-24 长批中断的证据耐久性与续推边界
+
+- confirmed：原executor逐stage和Provider回执已落盘，但整例elapsed/outcome只在内存，整批finally才写result。外部终止可丢失严格资格所需完成证据；这是已定位软件缺陷，不是新语义失败。触发进程消失的原因未知。
+- 主/独立回放确认claim-scope:3和scope:4真实纠错链通过；scope:3只有首评。新原件103份、请求7次/102455tokens/未知0。不能从后继请求存在编造旧elapsed：原最后remaining检查与elapsed采样之间仍有调度间隔。
+- 日志4个公开事件给出868.102/653.464秒外包时间；System日志未见相关时间变更，但不能证明与Python monotonic绝对一致。旁证单列，不修改原始计时合同或用文件mtime充数。
+- 改为逐例保存完成回执、有限时文件host交接；文件损坏/未完成/时序矛盾/保存失败均应拒绝或停止后继IO。checkpoint本例elapsed须不超过本次与前次batch elapsed增量，不能仅检查全批求和。
+- 新9例沿原预算扣除真实调用/用量；已启动三例耗时没有精确原件，按全部2700秒扣除。既不重跑成功例，也不把partial scope:3改名重试。新入口须保留原RuntimeCompositionRoot组件校验，不只比较manifest声明的candidate身份。
+
 # 2026-09-24 三例连续实测通过，推进完整15资格
 
 34648531 / CI35967784437三项成功（4807 passed、154 skipped、129 subtests；PostgreSQL210、packaging）后，本批7次真实调用完成三例。正确稿95/pass且全文不改；全称错80→改稿→95/pass；归因错84→改稿→96/pass。七个阶段主/独立完整来源审查均接受，无需附属解释缺陷例外。两份实际改稿各保留23原段、删冗余引言、修目标真错；无旧评进入fresh终评。模型与业务政策未变。

@@ -220,6 +220,39 @@ def _case(run, row, budget, outcome, source, current, candidate_sha, requests):
     return host, transport, summary, elapsed
 
 
+def _completed_prefix(run, plan):
+    """Read original durable completions when batch aggregation was lost.
+
+    This does not reconstruct result.json or permit IO to resume. A gap ends
+    the accepted prefix; subsequent completions, if any, are contradictory.
+    """
+    outcomes, batch_elapsed, gap = [], 0.0, False
+    for row in plan['cases']:
+        arm = run / row['key'].replace(':', '-')
+        path = arm / 'case-completed.json'
+        if not path.exists():
+            gap = True
+            continue
+        if gap:
+            _fail('completion_after_gap')
+        receipt = _json(path)
+        outcome = receipt.get('outcome', {})
+        if (receipt.get('schema_version') != 'role-case-completion-v1'
+                or receipt.get('plan_sha256') != _canonical_sha(plan)
+                or receipt.get('task_observation_sha256') != _sha(arm / 'task-observation.json')
+                or outcome.get('key') != row['key']):
+            _fail('completion_receipt_mismatch')
+        measured = _seconds(receipt.get('batch_elapsed_seconds'), plan['batch_budget']['max_seconds'])
+        case_elapsed = _seconds(outcome.get('elapsed_seconds'), 900)
+        if measured < batch_elapsed or measured - batch_elapsed + .01 < case_elapsed:
+            _fail('completion_clock_order')
+        outcomes.append(outcome)
+        batch_elapsed = measured
+    if not outcomes:
+        _fail('continuous_completion_missing')
+    return outcomes, batch_elapsed
+
+
 def qualify(run_directories, *, evidence_root, output_directory, closed_exports):
     """Create new original-gate rows; only all fifteen invoke its validator.
 
@@ -244,7 +277,7 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports)
     for run, (export_path, export_sha) in zip(runs, exports, strict=True):
         hashes = _seal(run, export_path, export_sha, evidence_root)
         saved = _json(run / 'plan.json')
-        plan, result = saved['preparation_plan'], _json(run / 'result.json')
+        plan = saved['preparation_plan']
         if (plan.get('identity') != current_plan['identity']
                 or ('original15_plan_sha256' in plan and plan['original15_plan_sha256'] != digest(compact(current_plan)))
                 or plan.get('original15_keys') != list(expected)
@@ -253,15 +286,27 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports)
                 or not re.fullmatch('[0-9a-f]{40}', str(saved.get('head_sha', '')))
                 or not str(saved.get('ci_run', '')).isdigit()):
             _fail('plan_identity_mismatch')
-        rows, budgets, outcomes = plan.get('cases'), plan.get('case_budgets'), result.get('cases')
+        rows, budgets = plan.get('cases'), plan.get('case_budgets')
+        if not isinstance(rows, list) or not rows or not isinstance(budgets, list) or len(rows) != len(budgets):
+            _fail('closed_case_inventory_mismatch')
+        if not (run / 'result.json').exists():
+            outcomes, elapsed = _completed_prefix(run, plan)
+            rows, budgets = rows[:len(outcomes)], budgets[:len(outcomes)]
+            completion_source = 'durable_case_receipts_without_batch_result'
+        else:
+            result = _json(run / 'result.json')
+            if (result.get('experiment') != plan.get('experiment')
+                    or 'error_code' in result or 'error_type' in result):
+                _fail('closed_case_inventory_mismatch')
+            outcomes = result.get('cases')
+            elapsed = result.get('elapsed_seconds')
+            completion_source = 'original_batch_result'
         if (not isinstance(rows, list) or not rows or not isinstance(budgets, list)
                 or not isinstance(outcomes, list) or not len(rows) == len(budgets) == len(outcomes)
-                or [r.get('key') for r in rows] != [r.get('key') for r in outcomes]
-                or result.get('experiment') != plan.get('experiment')
-                or 'error_code' in result or 'error_type' in result):
+                or [r.get('key') for r in rows] != [r.get('key') for r in outcomes]):
             _fail('closed_case_inventory_mismatch')
         batch = plan.get('batch_budget', {})
-        elapsed = _seconds(result.get('elapsed_seconds'), _seconds(batch.get('max_seconds'), 15 * 900))
+        elapsed = _seconds(elapsed, _seconds(batch.get('max_seconds'), 15 * 900))
         total_calls = total_tokens = 0
         total_elapsed = 0.0
         for row, budget, outcome in zip(rows, budgets, outcomes, strict=True):
@@ -273,6 +318,7 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports)
                 expected[key], candidate_sha, requests)
             host['closed_export'] = dict(path=export_path.as_posix(), sha256=export_sha,
                 run_directory=run.relative_to(evidence_root).as_posix())
+            host['completion_source'] = completion_source
             prepared.append((expected[key], host, transport))
             total_calls += summary['reserved_calls']
             total_tokens += summary['input_tokens'] + summary['output_tokens']

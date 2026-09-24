@@ -30,6 +30,8 @@ PRIOR_SHA = 'ce0a6ab008c3e40ec5c89335bf1c7f7e3c70348ca2d38cc4699d4863bbbe5747'
 PRIOR_KEYS = ('claim-scope:1', 'claim-scope:4', 'attribution:1')
 PREPARATION = ROOT/'data/evaluation/results/golden_role_remaining_preparation_v1.json'
 CLOSED_RESULT = ROOT/'data/evaluation/results/golden_role_remaining_result_v1.json'
+INTERRUPTION = ROOT/'data/evaluation/results/golden_role_remaining_interruption_v1.json'
+INTERRUPTION_SHA = 'f58ff6a6fe835ff7c55323ad3a0fafa11d48392fb24eded1817deeab267ed082'
 RUN_DIRECTORY = ROOT/'data/runs/role_task_observation'/EXPERIMENT
 
 
@@ -43,6 +45,27 @@ class StrictObserver(Observer):
 
 
 def prepare():
+    if INTERRUPTION.exists():
+        raw = INTERRUPTION.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != INTERRUPTION_SHA:
+            raise ValueError('remaining_interrupted_evidence_changed')
+        export = json.loads(raw)
+        saved = export['public_json_contents']['plan.json']
+        plan = saved['preparation_plan']
+        if (plan != json.loads(PREPARATION.read_text(encoding='utf-8'))
+                or canonical_sha(plan) != saved['plan_sha256']):
+            raise ValueError('remaining_interrupted_plan_changed')
+        current, requests = prepare_qualification()
+        if current['identity'] != plan['identity']:
+            raise ValueError('remaining_candidate_identity_changed')
+        raw_prior = PRIOR_RESULT.read_bytes()
+        if hashlib.sha256(raw_prior).hexdigest() != PRIOR_SHA:
+            raise ValueError('remaining_prior_evidence_changed')
+        for row in plan['cases']:
+            if hashlib.sha256(requests[row['key']]).hexdigest() != export['original_file_sha256'][
+                    row['key'].replace(':','-')+'-prepared-request.json']:
+                raise ValueError('remaining_interrupted_request_changed')
+        return plan, {r['key']:requests[r['key']] for r in plan['cases']}
     RuntimeCompositionRoot.from_directories(skills_root=ROOT/ASSETS/'skills',
         prompt_programs_root=ROOT/ASSETS/'prompt_programs',coach_contract=ROLE_COACH_CONTRACT)
     qualification, requests = prepare_qualification()
@@ -85,14 +108,15 @@ def prepare():
 
 
 def run(args):
-    if args.execute and (CLOSED_RESULT.exists() or RUN_DIRECTORY.exists()):
+    if args.execute and (CLOSED_RESULT.exists() or INTERRUPTION.exists() or RUN_DIRECTORY.exists()):
         raise ValueError('remaining_batch_closed_or_exists')
     plan,requests = prepare()
     sha = canonical_sha(plan)
     if not args.execute:
         if args.output:
             write_new_json(args.output,plan)
-        return dict(plan_sha256=sha,budget=plan['batch_budget'],provider_requests=0,execution_enabled=False)
+        return dict(plan_sha256=sha,budget=plan['batch_budget'],provider_requests=0,execution_enabled=False,
+            historical_closed=CLOSED_RESULT.exists() or INTERRUPTION.exists())
     if (not args.env_file or not args.ci_run or args.plan_sha!=sha
             or plan!=json.loads(PREPARATION.read_text(encoding='utf-8'))):
         raise ValueError('remaining_preparation_required')

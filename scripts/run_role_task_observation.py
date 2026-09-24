@@ -12,6 +12,7 @@ from pathlib import Path
 from queue import Empty, Queue
 import sys
 from threading import Thread
+import time
 
 from pydantic import BaseModel, ConfigDict
 
@@ -110,6 +111,37 @@ def adjudicate(path,remaining):
     if supplied.parent != path.parent.resolve() or supplied.suffix!='.json':
         raise ValueError('task_observation_decision_path')
     return StageDecision.model_validate_json(supplied.read_text(encoding='utf-8')).model_dump()
+
+
+def adjudicate_file(path, remaining, *, clock=time.monotonic, sleep=time.sleep):
+    """Bounded file handoff: loss of terminal stdin cannot approve or reset it.
+
+    Run this with a detached, hidden process and redirected output. A restart
+    remains forbidden; the original monotonic deadline continues while the
+    host inspects sources. Partial writes are retried only as local reads.
+    """
+    deadline = clock() + remaining
+    decision_path = path.with_name('decision-' + path.stem + '.json')
+    write_new_json(path.with_name(path.stem + '-host-required.json'), dict(
+        stage_file=path.name, response_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+        decision_file=decision_path.name, remaining_seconds=remaining,
+        deadline_scope='Original running process monotonic deadline; never a restart allowance.'))
+    while True:
+        available = deadline - clock()
+        if available <= 0:
+            raise ValueError('task_observation_host_deadline')
+        try:
+            value = json.loads(decision_path.read_text(encoding='utf-8'))
+        except (FileNotFoundError, UnicodeDecodeError, json.JSONDecodeError):
+            # A create-only writer may still be flushing the file. Neither an
+            # incomplete file nor a missing one changes the original deadline.
+            sleep(min(.25, available))
+            continue
+        decision = StageDecision.model_validate(value).model_dump()
+        if (decision['response_sha256'] != hashlib.sha256(path.read_bytes()).hexdigest()
+                or clock() >= deadline):
+            raise ValueError('task_observation_file_decision_invalid')
+        return decision
 
 
 def prepare():

@@ -1,3 +1,13 @@
+# 2026-09-24 剩12执行中断、耐久回执修复与未执行9例准备
+
+6bc3470f / CI35972161945公共三项通过后实际7次调用。claim-scope:3为80→真实修改→92/pass，scope:4为80→真实修改→94/pass，六阶段主/独立全部接受；scope:3初评完成但没有host/编辑/终评。恢复时session68562不存在、无进程、无根result，不能认定具体退出原因。新增用量102455tokens、未知0、冻结费率估价1.0247968元非账单。
+
+独立复核49底层回执hash、6份冻结源码、全部完成stage及观察回放；主审另封存103原件及公开投影，golden_role_remaining_interruption_v1.json SHA f58ff6a6fe835ff7c55323ad3a0fafa11d48392fb24eded1817deeab267ed082。日志时间旁证另封存SHA0fe04702dc4eff1ec7264ca25cc1ee254a436b1d77a467354cc8fb2f64162739；868.102/653.464不是原monotonic elapsed，未授旧两例严格资格。
+
+修复observe完成状态只在finally保存的耐久性缺口：逐例create-only/fsync绑定真实计时/用量/观察/plan，写失败停止下一例；资格适配器支持缺根result时读取原完成前缀，不造旧回执。新有限时文件host交接不依赖stdin。独立审查发现并修复逐checkpoint时序自矛盾缺口，及新入口漏既有RuntimeCompositionRoot指纹校验。首轮79项通过，末次两项反例及相关修复后67项受影响检查再次通过（不相加）；编译/治理/diff通过。Windows隐藏进程无网络探针确认启动终端退出后仍完成写回。公共CI尚待本次提交。
+
+新入口只运行9个未触发输入，排除已完整两例及partial scope:3；原预算扣旧7calls/102455tokens，时间保守扣三例全额2700秒。冻结计划1f2ec454bffab2b7dcbf1d48cd2d21d7e6c9b40a18ed35b32a919ef401fbdc8a，最多19calls/1838592tokens/5700秒，预留估价27.160576元非账单。当前无活动Provider请求；模型/原15/产品门不变。
+
 # 2026-09-24 严格资格接线及剩12准备完成
 
 qualify_role_observations纯离线核对封闭原件、当前原15身份/输入/首请求、全部真实调用与stage、主/独立完整来源裁决、正确报告与连续预算；不消费task_outcome/reviewer_quality布尔。仅满15调用未改的validate_qualification，部分不授资格。真实三例在最终实现通过，validated_partial/3项/12待执行/Provider0。16项新反例通过，含全15替身按原门验收，仅证明结构。

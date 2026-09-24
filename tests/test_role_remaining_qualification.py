@@ -66,3 +66,10 @@ def test_different_model_identity_cannot_consume_prior_observations(monkeypatch)
     monkeypatch.setattr(runner,'prepare_qualification',lambda:(changed,requests))
     with pytest.raises(ValueError,match='remaining_candidate_identity_changed'):
         runner.prepare()
+
+
+def test_interrupted_preview_keeps_frozen_plan_after_executor_repairs():
+    plan,requests=runner.prepare()
+    assert runner.canonical_sha(plan)=='4f9d9b77aec2f0bb583a2cba3686ffd403653c64b7863b6fb9f78a6b63ba0ce2'
+    assert len(requests)==12
+    assert runner.run(NS(execute=False,output=None))['historical_closed']
