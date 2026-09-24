@@ -19,7 +19,8 @@ pause_reason: ""
 - 用量与执行边界：4请求（3GLM＋1Flash），47244输入＋21567输出＝68811tokens，缓存输入4800，未知0，917.188秒；未缓存估价0.865566元，非账单。拒绝时我从终端复制hash多抄一个尾字符，runner实际以model_comparison_host_decision_invalid安全停止；实质拒绝另有原件记录，无额外请求，不改写原result。CLI执行入口已关闭，不依赖本机run目录；今后从文件计算hash，不抄折行文本。
 - 证据：golden_role_note_qualification_pair_result_v1.json包含49份原件hash/公开内容、逐项裁决、资格回放、用量和请求差异。全部原字节hash及公开投影已核对，不含私有推理字段。消费回执时发现相对/绝对路径混用，已修read_role_calls并验证相对路径等价；不影响原绝对路径真实运行。当前收尾提交的公共检查单独记录在progress，不冒用实测前CI。
 - 当前工程包：后继工具交付builder移除user中的重复JSON文本指令，业务规则与必填字段保持；新request_delivery＋manifest/candidate/request摘要隔离新旧身份。旧配对和Flash比较均按冻结计划回放，旧比较不再排入下一批。此包未发Provider请求，不证明核心误报已修。24ddf358 / CI35908526036公共三项已成功；本包143项不同离线测试、全15请求/SDK审计和独立代码复核通过，最终公共检查以PR7对应提交为准。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。完成本包公开CI核验后，针对正确全文不改稿的核验路径选择能改变误判机制的诊断。三类旧候选诊断及自由文本首审路线仍不足以选修法；没有新付费批，不以原样重试、补severity、提额度或措辞特判代替语义修复。真实生成、Worker/DB/API/Workbench质量准入仍受原15阻断。
+- 工程提交344c330c / CI35942105896三项通过（4711 passed、154 skipped、129 subtests）；不再等待该检查。当前开始上下文诊断准备，尚无新实测。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。冻结2×2完整上下文对照：解释整段替换×引言及连带段号处理，先4条件，只有目标全称误报有差异才反向复测4次；同提交公共CI后沿连续授权执行，最多8调用/2400秒/604804tokens、保守未缓存估价10.081312元。目标句、来源、采用标准、原15不改；协议/语义分记，无自动恢复/编辑/发布。具体分支和混杂见活动工作卡，不以诊断改写稿替代原正例或继承资格。
 
 ### 此前来源修复与合同演进（历史结果，非待执行批）
 
