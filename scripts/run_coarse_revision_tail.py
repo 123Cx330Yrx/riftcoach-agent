@@ -26,6 +26,7 @@ EVIDENCE_SHA = 'f7c8a787816e98ca797fdd0337ec1e6ddb94999206687220df7631b62331a4a8
 RUN_DIRECTORY = ROOT/'data/runs/role_containment'/EXPERIMENT
 PREPARATION = ROOT/'data/evaluation/results/golden_coarse_tail_preparation_v1.json'
 CLOSED_RESULT = ROOT/'data/evaluation/results/golden_coarse_tail_result_v1.json'
+CLOSED_SHA = '78258d19166cd6f8124db496fdebefd81f8f8b32f054960c5f8ec85335c5deaa'
 
 
 def sha(path):
@@ -76,6 +77,18 @@ def prepare():
         success_scope='Actual edit and fresh final review of one frozen error, not a continuous original task or original15 qualification.')
     if size(editor)+32768 > 96768:
         raise ValueError('coarse_tail_editor_capacity')
+    if CLOSED_RESULT.exists():
+        if sha(CLOSED_RESULT) != CLOSED_SHA:
+            raise ValueError('coarse_tail_closed_evidence_changed')
+        closed = json.loads(CLOSED_RESULT.read_bytes())
+        saved = closed['public_json_contents']['plan.json']
+        frozen = saved['preparation_plan']
+        # Preserve execution-time implementation identity while reconstructing
+        # the original input, accepted review, editor and budget exactly.
+        plan.update(identity=frozen['identity'], source_sha256=frozen['source_sha256'])
+        if (plan != frozen or canonical_sha(plan) != saved['plan_sha256']
+                or plan != json.loads(PREPARATION.read_bytes())):
+            raise ValueError('coarse_tail_closed_preparation_changed')
     return plan,(source,response,initial,editor)
 
 
@@ -108,7 +121,8 @@ def run(args):
     plan,prepared = prepare()
     if not args.execute:
         if args.output: write_new_json(args.output,plan)
-        return dict(plan_sha256=canonical_sha(plan),budget=plan['budget'],provider_requests=0)
+        return dict(plan_sha256=canonical_sha(plan),budget=plan['budget'],provider_requests=0,
+            historical_closed=CLOSED_RESULT.exists(),execution_enabled=False)
 
     if (not args.env_file or not args.ci_run or args.plan_sha!=canonical_sha(plan)
             or plan!=json.loads(PREPARATION.read_bytes())):

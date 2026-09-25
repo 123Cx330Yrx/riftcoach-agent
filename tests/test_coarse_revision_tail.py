@@ -28,9 +28,45 @@ def test_fixture_preserves_actual_review_and_editor_sources():
 
 def test_unfrozen_execution_stops_before_credentials(monkeypatch,tmp_path):
     monkeypatch.setattr(runner,'RUN_DIRECTORY',tmp_path/'run')
+    monkeypatch.setattr(runner,'CLOSED_RESULT',tmp_path/'no-result')
     monkeypatch.setattr(runner,'verify_public_ci',lambda *_:pytest.fail('unfrozen reached CI'))
     with pytest.raises(ValueError,match='preparation_required'):
         runner.run(NS(execute=True,env_file=None,ci_run=None,plan_sha=None))
+
+
+def test_closed_tail_cannot_restart_and_preview_reconstructs_frozen_plan(monkeypatch):
+    plan,_=runner.prepare()
+    assert runner.canonical_sha(plan)=='2a123d0e09f2cdfcc6500df49226c35c0f79e49c804871be865bf50cbe9bf04b'
+    assert runner.sha(runner.CLOSED_RESULT)==runner.CLOSED_SHA
+    preview=runner.run(NS(execute=False,output=None))
+    assert preview['historical_closed'] and not preview['execution_enabled']
+    monkeypatch.setattr(runner,'prepare',lambda:pytest.fail('closed batch reached preparation'))
+    with pytest.raises(ValueError,match='closed_or_exists'):
+        runner.run(NS(execute=True))
+
+
+def test_closed_tail_preserves_exact_requests_and_nonqualification_flags():
+    saved=json.loads(runner.CLOSED_RESULT.read_bytes())
+    assert saved['exact_tail_replay_verified']
+    assert saved['result']['tail_accepted'] and saved['result']['final_score']==96
+    assert saved['provider_requests']==2 and saved['unknown_usage_calls']==0
+    assert saved['offline_initial_injections']==1
+    assert not any(saved[k] for k in ('review_controls_qualified','actual_product_task_qualified','production_admitted'))
+    plan,prepared=runner.prepare()
+    from dataclasses import replace
+    from app.evaluation.golden_stream_bridge import REQUEST,CAPACITY_TRANSPORT_ID,REVIEW_MODEL_TRANSPORT_ID
+    public=saved['public_json_contents']
+    for name,expected,transport in (
+        ('generation/request-001.json',prepared[3],CAPACITY_TRANSPORT_ID),
+        ('review/request-002.json',runner.Workflow.make_request(runner.Workflow.build_inputs(
+            replace(prepared[0],report=public['revision.json']['report']))),REVIEW_MODEL_TRANSPORT_ID)):
+        relative='transport/tail/'+name
+        actual=REQUEST.validate_json(json.dumps(public[relative]),strict=True)
+        metadata=dict(actual.metadata); metadata.pop('coach_budget_contract',None)
+        assert replace(actual,metadata=metadata,timeout_s=expected.timeout_s)==expected
+        assert 0 < actual.timeout_s <= expected.timeout_s
+        # Public JSON preserves values, not original object-key byte order.
+        # The seal's raw hashes are verified against original files separately.
 
 
 def test_old_product_router_cannot_silently_accept_new_projection():
