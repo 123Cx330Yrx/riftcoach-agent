@@ -152,7 +152,7 @@ ADR0112现已实现独立opt-in合同、动态来源schema、资产清单、角�
 更广相关回归与公共CI另记progress。没有用模型调用试探这些可本地验证的错误。
 
 冻结计划：golden_coarse_tail_preparation_v1.json，规范SHA256
-4d38dbcba25cb02b3bbd7ac73cbeca791ef65a73dd22b2cbca6a9a9752a4a252。
+2a123d0e09f2cdfcc6500df49226c35c0f79e49c804871be865bf50cbe9bf04b。
 在同HEAD公共三项通过前不发请求。原accepted observed:2首评离线注入，新发Flash编辑和
 GLM fresh终评；2调用/193536tokens/600秒、保守2.859008元非账单，逐阶段主/独立接受。
 本准备覆盖尾部实测；原15仅准备与回放，正式资格适配、全输入质量与自然Agent任务未完成。
