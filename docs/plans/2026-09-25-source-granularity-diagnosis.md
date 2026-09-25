@@ -105,3 +105,37 @@ issues空，仅block18可选可读性标记。主审和独立审查分别核完�
 最小真实Flash改稿+GLM终评验证有据修正且保留正确内容。具体新请求和预算在实现后冻结，
 不是让本批剩余时间续跑。通过后才安排同身份原15及真实自然生成/工具/Worker消费验证。
 如果真实编辑/终评出现新问题，按首次偏离分辨表示/接线/语义，不直接增加提示或重试。
+
+## 后继工作流接线：离线完成，产品身份仍待注册
+
+新 `golden_role_coarse.RoleCoarseReviewWorkflow` 继承现有单次修订/终评状态机，
+完整来源投影支持初评、显式重评和编辑；本批真实首评[27,38,39]不改字段即可被验证，
+编辑仅收到实际issues，fresh终评只有实际修改稿与原始来源，不夹带旧意见。
+每项issue/resolution直接解析粗根，不转换ID或借旧校验器补引。动态来源schema、
+知识引用、安全终止、来源一致性、问题映射和可选段落标记均保持。
+
+共享旧native validator的参数化尝试触发既有manifest组件指纹检查，已撤回且旧文件无diff；
+新来源验证独立在新workflow内，不为一次局部接线无意改默认1.5.2身份。
+旧两控制preview从原封存结果固定source hashes，仍重建并核对完整请求和计划，原执行入口仍关闭。
+
+完整factory+预算模拟发现下一层真实阻断：`reviewer_roles.role_for_request`与
+`RoleCoachExecutionContract.request_identity`仅接受旧explicit投影。新请求会在网络前报
+`role_source_projection_required`。这不是模型失败，也不能通过改metadata或另造临时router绕过。
+因此 `run_coarse_revision_tail --execute` 当前在prepare/密钥前明确非零拒绝；它只提供有界请求准备，
+尚无冻结新实测计划，没有新增付费调用。拟议两次/193536tokens/600秒、保守2.859008元只是准备预算，
+不是已执行或生产任务证明。旧同版本8/15和两粗来源控制结论不变。
+
+下一步必须一次性接齐新opt-in执行身份：
+1. `reviewer_roles.py`显式路由选择新projection，禁止默认旧路由悄悄扩大；
+   `coach_contract.py`新合同独立snapshot/request identity，保留旧1.5.2回放身份和原预算。
+2. `role_coach_contract.py`及对应新runtime profile manifest绑定实际workflow/schema/policies/源码；
+   `native_coach_composition.py`显式新builder，默认Worker仍不切换。
+3. `runtime/models.py`可信Trace只接受精确新合同；`role_qualification.py`与任务回放绑定新workflow/来源目录，
+   拒绝跨版本/跨输入借资格。动态根schema由实际输入摘要绑定，不能拿一个固定observed schema覆盖15项。
+4. 验证真实factory→预算→workflow→receipt的替身整链、旧identity回归、全15来源保持，独立审查和同HEAD CI后，
+   才冻结并开放现有tail runner，执行真实编辑/终评。不要先加第三套诊断路由或绕过预算身份来追求一次模型成功。
+
+离线已验证68项：原15初评/显式重评投影无损，实际首评驱动继承状态机，完整改稿与fresh终评
+（编辑和终评用替身，不作为实测），拒绝leaf/未知/bool/重复引用、来源变化、prose尾部和安全问题，
+旧粗控制/旧编辑观察回归、host双审绑定及禁发入口。真实shared factory的拒绝证据单独保留为待接线边界，
+没有把替身workflow通过报告成实际产品factory已走通。

@@ -79,6 +79,14 @@ def prepare():
         stop_rule='Stop on any rejected whole-output/source review, wrong verdict, protocol/identity/transport/budget failure; no recovery, editing or retry.',
         decision='Both full-source controls accepted only supports a broader qualification decision; any failure rejects this as a sufficient fix. No causal or reliability claim from historical comparison.',
         review_controls_qualified=False,actual_product_task_qualified=False,production_admitted=False)
+    if CLOSED_RESULT.exists():
+        raw = CLOSED_RESULT.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != 'f7c8a787816e98ca797fdd0337ec1e6ddb94999206687220df7631b62331a4a8':
+            raise ValueError('coarse_pair_closed_evidence_changed')
+        frozen = json.loads(raw)['public_json_contents']['plan.json']
+        plan['source_sha256'] = frozen['preparation_plan']['source_sha256']
+        if plan != frozen['preparation_plan'] or canonical_sha(plan) != frozen['plan_sha256']:
+            raise ValueError('coarse_pair_closed_request_changed')
     return plan,variants
 
 

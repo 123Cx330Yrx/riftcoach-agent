@@ -107,11 +107,12 @@ def response_schema(inputs):
     return _schema(_catalog(inputs)[0])
 
 
-def _project(inputs):
-    base = RoleClarityReviewWorkflow.make_request(inputs)
+def _project(inputs, **kwargs):
+    base = RoleClarityReviewWorkflow.make_request(inputs, **kwargs)
+    editing = kwargs.get("accepted") is not None
     header, data = explicit._unpack(base)
     roots, _, _, manifest = _catalog(inputs)
-    if len(base.tools) != 1 or base.tools[0].input_schema != RoleClarityReview.model_json_schema():
+    if not editing and (len(base.tools) != 1 or base.tools[0].input_schema != RoleClarityReview.model_json_schema()):
         raise ValueError("coarse_source_tool_contract_changed")
     policy = base.messages[0].content
     if policy.count(explicit.NEW_ADDRESS) != 1 or policy.count(OLD_ROOT_POLICY) != 1:
@@ -130,7 +131,7 @@ def _project(inputs):
                for number, entry in roots.items()],
         unavailable=manifest["unavailable"])
     projected = replace(base,
-        tools=(replace(base.tools[0], input_schema=_schema(roots)),),
+        tools=base.tools if editing else (replace(base.tools[0], input_schema=_schema(roots)),),
         messages=(replace(base.messages[0], content=policy.replace(explicit.NEW_ADDRESS, ROW_ADDRESS)
                           .replace(OLD_ROOT_POLICY, ROOT_POLICY)),
             replace(base.messages[1], content=header + compact(data) + explicit.END),
@@ -140,18 +141,18 @@ def _project(inputs):
     return base, budget_check(projected)
 
 
-def project_request(inputs):
+def project_request(inputs, **kwargs):
     """Construct one offline initial/fresh review; no IO or workflow activation."""
-    return _project(inputs)[1]
+    return _project(inputs, **kwargs)[1]
 
 
-def restore_request(request, inputs):
+def restore_request(request, inputs, **kwargs):
     """Verify the entire source-bound projection before restoring the old request.
 
     This is an offline reversibility check, not a way to relabel old receipts or
     to send a coarse-root response through the old fine-root validator.
     """
-    base, expected = _project(inputs)
+    base, expected = _project(inputs, **kwargs)
     if request != expected:
         raise ValueError("coarse_source_request_binding_mismatch")
     return base

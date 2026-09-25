@@ -108,14 +108,15 @@ def prepare():
 
 
 def observe(factory,directory,plan,prepared,*,adjudicate=terminal_adjudication,
-            clock=time.monotonic,before_send=lambda:None):
+            clock=time.monotonic,before_send=lambda:None, workflow_type=Workflow,
+            initial_review_accepted=False):
     source, response, initial_request, editor_request = prepared
     started = clock()
     provider = factory('tail')
     wrapped = _ReceiptForwardingCoachBudgetedProvider(provider,clock=clock,coach_contract=ROLE_COACH_CONTRACT)
     sender = SharedBudgetReviewSender(wrapped)
     injected = False
-    result = dict(experiment=EXPERIMENT,tail_accepted=False,initial_review_accepted=False,
+    result = dict(experiment=plan["experiment"],tail_accepted=False,initial_review_accepted=initial_review_accepted,
         offline_initial_injections=0,review_controls_qualified=False,actual_product_task_qualified=False,production_admitted=False)
 
     def remaining():
@@ -155,11 +156,11 @@ def observe(factory,directory,plan,prepared,*,adjudicate=terminal_adjudication,
         if remaining() <= 0:
             raise ValueError('containment_tail_budget')
 
-    workflow = Workflow(send)
+    workflow = workflow_type(send)
     try:
         initial = workflow.evaluate(source)
         write_new_json(directory/'injected-initial-journal.json',dict(workflow.last_journal,
-            fixture_only=True,initial_review_accepted=False,new_provider_call=False))
+            fixture_only=True,initial_review_accepted=initial_review_accepted,new_provider_call=False))
         if initial.verdict is not EvaluationVerdict.NEEDS_REVISION:
             raise ValueError('containment_initial_verdict_changed')
         draft = workflow.revise(RevisionRequest(source.player_summary,source.deterministic_report,

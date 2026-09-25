@@ -1,3 +1,13 @@
+## 2026-09-25 粗来源工作流离线接线
+
+e15b0ddf封存提交CI36037398856已成功。新workflow沿用原状态机，实现初评/重评/编辑/fresh终评，
+真实首评原文[27,38,39]通过新来源验证；编辑/终评使用替身，68项相关检查通过。
+共享native validator修改因manifest fingerprint影响已撤回；默认1.5.2文件身份不改。
+真实factory模拟首次在网络前拒绝新投影role_source_projection_required，独立审查同时复现。
+新tail入口已明确在prepare/密钥前拒绝（非零），无新增付费调用、无实测失败或已编辑宣称。
+下一包需注册独立opt-in合同并统一路由/预算/manifest/Trace/qualification，不能新造临时router绕过。
+具体证据边界与接线文件已写方案文档和canonical，旧8/15及两粗控制结论均不改。
+
 ## 2026-09-25 粗来源两控制完成
 
 b0ac8e83 / CI36034943285公共三项通过，pytest4924/154skip/129subtests。
