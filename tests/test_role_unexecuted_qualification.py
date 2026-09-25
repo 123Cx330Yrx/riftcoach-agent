@@ -45,7 +45,9 @@ def test_closed_or_bad_preparation_fails_before_keys_or_ci(monkeypatch,tmp_path)
     monkeypatch.setattr(runner,'verify_public_ci',lambda *_:pytest.fail('CI accessed'))
     monkeypatch.setattr(runner,'RUN_DIRECTORY',tmp_path/'new')
     monkeypatch.setattr(runner,'CLOSED_RESULT',tmp_path/'closed')
-    with pytest.raises(ValueError,match='preparation_required'):
+    # An open continuation cannot consume the sealed older candidate after
+    # current implementation identity changed, even before preparation checks.
+    with pytest.raises(ValueError,match='candidate_changed'):
         runner.run(NS(execute=True,env_file=tmp_path/'unused',ci_run='x',plan_sha='bad'))
     (tmp_path/'new').mkdir()
     monkeypatch.setattr(runner,'prepare',lambda:pytest.fail('closed batch prepared'))

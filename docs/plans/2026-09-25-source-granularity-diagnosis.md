@@ -106,7 +106,7 @@ issues空，仅block18可选可读性标记。主审和独立审查分别核完�
 不是让本批剩余时间续跑。通过后才安排同身份原15及真实自然生成/工具/Worker消费验证。
 如果真实编辑/终评出现新问题，按首次偏离分辨表示/接线/语义，不直接增加提示或重试。
 
-## 后继工作流接线：离线完成，产品身份仍待注册
+## 后继工作流接线：历史阻断与实现过程
 
 新 `golden_role_coarse.RoleCoarseReviewWorkflow` 继承现有单次修订/终评状态机，
 完整来源投影支持初评、显式重评和编辑；本批真实首评[27,38,39]不改字段即可被验证，
@@ -139,3 +139,21 @@ issues空，仅block18可选可读性标记。主审和独立审查分别核完�
 （编辑和终评用替身，不作为实测），拒绝leaf/未知/bool/重复引用、来源变化、prose尾部和安全问题，
 旧粗控制/旧编辑观察回归、host双审绑定及禁发入口。真实shared factory的拒绝证据单独保留为待接线边界，
 没有把替身workflow通过报告成实际产品factory已走通。
+
+## 1.5.3完整接线与两调用准备
+
+ADR0112现已实现独立opt-in合同、动态来源schema、资产清单、角色/预算/Trace/回执身份，
+以及实际应用builder。默认Worker不切换；旧1.5.2 snapshot及封存回执不变，当前manifest因
+共享实现变化诚实更新。关闭历史preview验证封存整包和原请求，不用当前manifest冒充旧身份。
+
+实际factory离线模拟暴露的用量读取遗漏、完整Runtime观察包装未透传projection已修复。
+独立审查发现的旧合同接受新router、metadata与实际载荷不一致、旧Trace仅换新snapshot三项
+也已修复。新合同/完整应用/真实factory替身/预算/Trace共84项定向验证通过；
+更广相关回归与公共CI另记progress。没有用模型调用试探这些可本地验证的错误。
+
+冻结计划：golden_coarse_tail_preparation_v1.json，规范SHA256
+4d38dbcba25cb02b3bbd7ac73cbeca791ef65a73dd22b2cbca6a9a9752a4a252。
+在同HEAD公共三项通过前不发请求。原accepted observed:2首评离线注入，新发Flash编辑和
+GLM fresh终评；2调用/193536tokens/600秒、保守2.859008元非账单，逐阶段主/独立接受。
+本准备覆盖尾部实测；原15仅准备与回放，正式资格适配、全输入质量与自然Agent任务未完成。
+真实结果出来后按实际阶段更新，不以这份准备文本证明质量通过。

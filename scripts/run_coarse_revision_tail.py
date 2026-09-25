@@ -11,6 +11,9 @@ from app.evaluation.golden_review_experiment import compact, digest
 from app.evaluation.golden_journal import write_new_json
 from app.evaluation.role_qualification import ROOT, frozen_cases, size
 from app.runtime.receipted_provider_factory import RunScopedRoleReceiptedProviderFactory
+from app.runtime.coach_contract import COARSE_ROLE_COACH_CONTRACT
+from app.evaluation.golden_coarse_source_projection import VERSION as PROJECTION
+from app.evaluation.coarse_role_qualification import prepare_qualification
 from scripts.diagnose_role_context import canonical_sha
 from scripts.run_role_review_containment import observe
 from scripts.run_role_coach_development import load_role_settings, require_unchanged_checkout
@@ -57,7 +60,8 @@ def prepare():
     editor = Workflow.make_request(inputs,accepted=wire)
     paths = ('scripts/run_coarse_revision_tail.py','scripts/run_role_review_containment.py',
         'app/evaluation/golden_role_coarse.py','app/evaluation/golden_coarse_source_projection.py')
-    plan = dict(experiment=EXPERIMENT,workflow_id=CONTRACT_ID,fixture_evidence_sha256=EVIDENCE_SHA,
+    identity = prepare_qualification()[0]["identity"]
+    plan = dict(experiment=EXPERIMENT,identity=identity,workflow_id=CONTRACT_ID,fixture_evidence_sha256=EVIDENCE_SHA,
         original_report_sha256=digest(source.report),original_input_sha256=digest(inputs.data_json),
         initial_prepared_request_sha256=initial_sha,
         injected_public_response_sha256=digest(RESPONSE.dump_json(response).decode()),
@@ -99,14 +103,28 @@ def adjudicate_file(path, remaining):
 
 
 def run(args):
-    # Deliberately unavailable until a distinct runtime contract owns this
-    # projection in routing, budget identity and trusted trace replay.
-    if args.execute:
-        raise ValueError('coarse_tail_runtime_contract_not_registered')
+    if args.execute and (RUN_DIRECTORY.exists() or CLOSED_RESULT.exists()):
+        raise ValueError('coarse_tail_closed_or_exists')
     plan,prepared = prepare()
     if not args.execute:
         if args.output: write_new_json(args.output,plan)
         return dict(plan_sha256=canonical_sha(plan),budget=plan['budget'],provider_requests=0)
+
+    if (not args.env_file or not args.ci_run or args.plan_sha!=canonical_sha(plan)
+            or plan!=json.loads(PREPARATION.read_bytes())):
+        raise ValueError('coarse_tail_preparation_required')
+    head = verify_public_ci(args.ci_run)
+    RUN_DIRECTORY.mkdir(parents=True,exist_ok=False)
+    write_new_json(RUN_DIRECTORY/'plan.json',dict(preparation_plan=plan,plan_sha256=canonical_sha(plan),head_sha=head,ci_run=args.ci_run))
+    write_new_json(RUN_DIRECTORY/'source.json',dict(report=prepared[0].report,input_json=Workflow.build_inputs(prepared[0]).data_json))
+    (RUN_DIRECTORY/'prepared-editor-request.json').write_bytes(validate_request(prepared[3],transport_id=CAPACITY_TRANSPORT_ID))
+    generation,reviewer = load_role_settings(args.env_file)
+    factory = RunScopedRoleReceiptedProviderFactory(generator_settings=generation,reviewer_settings=reviewer,
+        transport_root=RUN_DIRECTORY/'transport',source_projection=PROJECTION)
+    with route_environment('direct'):
+        return observe(factory,RUN_DIRECTORY,plan,prepared,workflow_type=Workflow,initial_review_accepted=True,
+            coach_contract=COARSE_ROLE_COACH_CONTRACT,adjudicate=adjudicate_file,
+            before_send=lambda:require_unchanged_checkout(head))
 
 
 
@@ -117,4 +135,7 @@ if __name__=='__main__':
     parser.add_argument('--plan-sha')
     parser.add_argument('--ci-run')
     parser.add_argument('--env-file',type=Path)
-    print(compact(run(parser.parse_args())),flush=True)
+    args = parser.parse_args()
+    result = run(args)
+    print(compact(result),flush=True)
+    if args.execute and not result["tail_accepted"]: raise SystemExit(1)

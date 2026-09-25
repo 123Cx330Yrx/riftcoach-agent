@@ -88,3 +88,14 @@ def build_role_coach_application(**kwargs):
     """Explicit adopted role candidate; this construction does not grant admission."""
     return _build_coach_application(contract=ROLE_COACH_CONTRACT, assets=ROLE_ASSETS,
         workflow_type=RoleClarityReviewWorkflow, **kwargs)
+
+
+COARSE_ROLE_ASSETS = Path(__file__).resolve().parents[2] / 'examples/runtime_profiles/flash_glm_coarse_v1'
+
+
+def build_coarse_role_coach_application(**kwargs):
+    """Explicit unadmitted composition; default worker selection is unchanged."""
+    from app.runtime.coach_contract import COARSE_ROLE_COACH_CONTRACT
+    from app.evaluation.golden_role_coarse import RoleCoarseReviewWorkflow
+    return _build_coach_application(contract=COARSE_ROLE_COACH_CONTRACT, assets=COARSE_ROLE_ASSETS,
+        workflow_type=RoleCoarseReviewWorkflow, **kwargs)

@@ -32,7 +32,12 @@ def request(role="generation", *, iteration=1, max_tokens=32):
         "review_phase": "native_business_revision" if role == "revision" else "native_business_review",
         "harness_step": "revise" if role == "revision" else "evaluate", "source_projection": VERSION,
     }
-    return ChatRequest(messages=(ChatMessage(role=MessageRole.USER, content="offline request"),),
+    messages = (ChatMessage(role=MessageRole.USER, content="offline request"),)
+    if role != 'generation':
+        messages = (ChatMessage(role=MessageRole.SYSTEM, content='offline policy'),
+            ChatMessage(role=MessageRole.USER, content='[UNTRUSTED DATA]\n{"source_index":{"evidence_by_id":{}}}\n[END UNTRUSTED DATA]'),
+            ChatMessage(role=MessageRole.USER, content='offline facts'))
+    return ChatRequest(messages=messages,
         max_tokens=max_tokens, timeout_s=300, metadata=metadata)
 
 

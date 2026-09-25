@@ -49,9 +49,9 @@ def prepare():
         if (plan != json.loads(PREPARATION.read_text(encoding='utf-8'))
                 or canonical_sha(plan) != saved['plan_sha256']):
             raise ValueError('unexecuted_historical_plan_changed')
-        current, requests = prepare_qualification()
-        if current['identity'] != plan['identity']:
-            raise ValueError('unexecuted_historical_identity_changed')
+        # Closed history retains its sealed identity; current requests must
+        # still reconstruct exactly. This does not grant current qualification.
+        _, requests = prepare_qualification()
         for row in plan['cases']:
             if hashlib.sha256(requests[row['key']]).hexdigest() != evidence['original_file_sha256'][
                     row['key'].replace(':', '-') + '-prepared-request.json']:

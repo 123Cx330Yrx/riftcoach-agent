@@ -171,7 +171,9 @@ class RoleReceiptedStreamProvider(ReceiptedStreamProvider):
 class RunScopedRoleReceiptedProviderFactory:
     """Build the adopted router with two isolated, globally addressed streams."""
 
-    def __init__(self, *, generator_settings, reviewer_settings, transport_root):
+    def __init__(self, *, generator_settings, reviewer_settings, transport_root, source_projection=None):
+        from app.evaluation.golden_explicit_source_projection import VERSION
+        self._source_projection = VERSION if source_projection is None else source_projection
         self._generator_settings = generator_settings
         self._reviewer_settings = reviewer_settings
         self._root = Path(transport_root).resolve()
@@ -188,7 +190,7 @@ class RunScopedRoleReceiptedProviderFactory:
         reviewer = RoleReceiptedStreamProvider(settings=self._reviewer_settings,
             directory=directory / "review", task_directory=directory,
             transport_id=REVIEW_MODEL_TRANSPORT_ID)
-        return RoleRoutedProvider(generator, reviewer)
+        return RoleRoutedProvider(generator, reviewer, source_projection=self._source_projection)
 
     def __call__(self, run_id):
         return self._build(self._root / normalize_run_id(run_id))

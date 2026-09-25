@@ -82,7 +82,7 @@
     {
       "component_id": "app.runtime.receipted_provider_factory",
       "source": "app/runtime/receipted_provider_factory.py",
-      "sha256": "cae28be9511801760043a4e75efbc742b3c555ea1337e74c7fa843acced68b07"
+      "sha256": "5c3a9c7d0f3b0e9981b0c149865751d3273a758a9e66e2ba2c842a1f65f2b36c"
     },
     {
       "component_id": "app.runtime.native_coach_contract",
@@ -92,7 +92,7 @@
     {
       "component_id": "app.product.native_coach_composition",
       "source": "app/product/native_coach_composition.py",
-      "sha256": "0a642b1101c263e72d58030360593263d5b2a5033cba8c4f49d81219f1883e5a"
+      "sha256": "18affdb4f1d188083ff52b82fc6fd203d1a1da49d645750ffd5e2613c6f525c0"
     },
     {
       "component_id": "app.product.recent_review_service",
@@ -142,7 +142,7 @@
     {
       "component_id": "app.runtime.runtime",
       "source": "app/runtime/runtime.py",
-      "sha256": "dc6e8b6d268b35a86dc442ed1a2ede443143c3cd9e5bd9fc7ed919e999cdca9c"
+      "sha256": "791dab77b987361c47b2c6ff6fb5c77c33f9348562ae990aab7eb655433db9e3"
     },
     {
       "component_id": "coach_execution_contract",
@@ -150,5 +150,5 @@
       "sha256": "94fa4ed248628f0801ff83a999a6c14e54464b838ed11e453f718c448502ef0d"
     }
   ],
-  "program_sha256": "64fc275d406bb205e9d49ea55d88fbd4a101121aecf0d16e810041c9d64a0f74"
+  "program_sha256": "0be36ffe110fe479af8c989a7ffb8fc063337d8eddfbfd540b9be756e962cb7d"
 }

@@ -81,6 +81,10 @@ class ObservedLLMProvider:
         return getattr(self._delegate, "runtime_profile", None)
 
     @property
+    def source_projection(self):
+        return getattr(self._delegate, "source_projection", None)
+
+    @property
     def thinking_profile_id(self):
         return getattr(self._delegate, "thinking_profile_id", None)
 

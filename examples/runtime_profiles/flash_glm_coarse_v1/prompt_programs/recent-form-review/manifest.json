@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0",
   "program_id": "recent-form-review-coach",
-  "program_version": "3.1.2",
+  "program_version": "3.2.0",
   "skill_name": "recent-form-review",
-  "skill_version": "0.6.1",
+  "skill_version": "0.6.2",
   "context_contract_id": "context-builder-v1",
   "context_contract_version": "1.0.0",
   "evaluation_contract_id": "coach_evaluation",
-  "evaluation_contract_version": "3.5.0",
+  "evaluation_contract_version": "3.6.0",
   "component_fingerprints": [
     {
       "component_id": "skill_manifest",
       "source": "skills/recent-form-review/manifest",
-      "sha256": "f00ca2b398af3a04838bad3c2a0ab78153fca4438282f34e9a01a1a2659cce8b"
+      "sha256": "a7ed1a5e9348ab4454a479bf4e3e2fc271184ad8c0c5f38a14ab23b4c1386486"
     },
     {
       "component_id": "skill_instructions",
@@ -147,22 +147,22 @@
     {
       "component_id": "initial_review_policy",
       "source": "initial_review_policy",
-      "sha256": "521ff0cc8a005edadc72173a345d707ab89700fb833b10d6556a74fe8c58769e"
+      "sha256": "3e6f0b0ea817da26212697bf899bff90d171a446bd8c5f4619a0ee86cf61939b"
     },
     {
       "component_id": "reassessment_policy",
       "source": "reassessment_policy",
-      "sha256": "d235bd87f58ba14d215fc63f3027e41a48b80fdcb582618a5ecf61fcd20a67ec"
+      "sha256": "bdd2c386154963203d225150aeaec6c667f4745fdcef03314b6ba839c9dd3679"
     },
     {
       "component_id": "revision_policy",
       "source": "revision_policy",
-      "sha256": "3c7a7afe4f23bb4913db8cb09135205e548f6a84cab906b7b955de81fa5dbd56"
+      "sha256": "6d229f2342c387df62853bf5c61437ae549dd6086ff518300560ac819a0be7ab"
     },
     {
       "component_id": "source_projection",
       "source": "source_projection",
-      "sha256": "1f3b8459102fc04fe107f0ecdc270db6241b3f0dddc5052bc3ba7d9db9ff2049"
+      "sha256": "4e1004000efc8e77c72c9aa8e33e6896d102e7a77dbe53613ff729447abe55b8"
     },
     {
       "component_id": "request_delivery",
@@ -270,10 +270,45 @@
       "sha256": "7c2f227c21e518858ccaa960fdadad5af4ca505af31b1c840ba0d21d64210728"
     },
     {
+      "component_id": "app.evaluation.golden_role_coarse",
+      "source": "app/evaluation/golden_role_coarse.py",
+      "sha256": "48067c4d861ea4809ab87ab5d6fda2ba808529cf8e4f73e327acf147b91095cc"
+    },
+    {
+      "component_id": "app.evaluation.golden_coarse_source_projection",
+      "source": "app/evaluation/golden_coarse_source_projection.py",
+      "sha256": "c9a2762db605298a1f42f445e0d81b02ce42ebebbf587d922291e7bbcaa83490"
+    },
+    {
+      "component_id": "app.runtime.coarse_role_contract",
+      "source": "app/runtime/coarse_role_contract.py",
+      "sha256": "e825860745ac0e2afaa1d07f681cb3db081cc0a7d34cfed63d052c43991bddb4"
+    },
+    {
+      "component_id": "app.evaluation.coarse_role_qualification",
+      "source": "app/evaluation/coarse_role_qualification.py",
+      "sha256": "d1a656541f7ca62da72ca58e9fca9bbef4339c2bf63c8a36cbb01f3839e84d43"
+    },
+    {
+      "component_id": "app.prompt_program.resolver",
+      "source": "app/prompt_program/resolver.py",
+      "sha256": "0a4f00df96068086a01a0b646404e7c8c46bb6f40d00961ba71aefd9d00834ea"
+    },
+    {
+      "component_id": "app.prompt_program.models",
+      "source": "app/prompt_program/models.py",
+      "sha256": "3a3cfb115ede10d7da153f388f49af9bae7a2c2cba77a130dc98c0635e1b9982"
+    },
+    {
+      "component_id": "app.evaluation.golden_review_source_catalog",
+      "source": "app/evaluation/golden_review_source_catalog.py",
+      "sha256": "22e34b5099367f6ced516dcf29ea5b14e3b2c8a84f8ffc739b428391594d703d"
+    },
+    {
       "component_id": "coach_execution_contract",
-      "source": "app.runtime.reviewer_roles:v1.5.2",
-      "sha256": "ffc45471455a546a2b75a35ee902e5f5405ebd01b9bfbe3606fac34649fcea4a"
+      "source": "app.runtime.reviewer_roles:v1.5.3",
+      "sha256": "c40398b96be3c187976b96089a18d7967c20a51cdf84f9a46abd3d6d410a3e59"
     }
   ],
-  "program_sha256": "a864de2306b9e797a8d20c42696e8e9ba0d64fa9e8ed190ab368140c8b626717"
+  "program_sha256": "ebd1682c9b4c79c2d07837e5b2ec86203a7f1c6c758427ed205ce7f496c1f41f"
 }

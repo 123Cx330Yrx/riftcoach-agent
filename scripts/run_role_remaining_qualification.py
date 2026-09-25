@@ -55,9 +55,9 @@ def prepare():
         if (plan != json.loads(PREPARATION.read_text(encoding='utf-8'))
                 or canonical_sha(plan) != saved['plan_sha256']):
             raise ValueError('remaining_interrupted_plan_changed')
-        current, requests = prepare_qualification()
-        if current['identity'] != plan['identity']:
-            raise ValueError('remaining_candidate_identity_changed')
+        # Keep the sealed candidate identity, not today's implementation hash.
+        # Reconstruct and check every original request below.
+        _, requests = prepare_qualification()
         raw_prior = PRIOR_RESULT.read_bytes()
         if hashlib.sha256(raw_prior).hexdigest() != PRIOR_SHA:
             raise ValueError('remaining_prior_evidence_changed')

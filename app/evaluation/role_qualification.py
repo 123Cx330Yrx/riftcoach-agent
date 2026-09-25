@@ -139,7 +139,7 @@ def _count(value):
     return value
 
 
-def read_role_calls(directory):
+def read_role_calls(directory, *, source_projection=PROJECTION_VERSION):
     """Check the global call namespace and bind each returned raw artifact.
 
     No recursive counting: model paths and stream ordinals come from the shared
@@ -177,7 +177,7 @@ def read_role_calls(directory):
         # representation before the unchanged receipt validator hashes it;
         # never replace a raw request hash with a reserialized approximation.
         request = replace(request, **{k: wire[k] for k in ("temperature", "timeout_s", "top_p")})
-        if role_for_request(request) != role or validate_request(request, transport_id=record["transport_id"]) != raw:
+        if role_for_request(request, source_projection=source_projection) != role or validate_request(request, transport_id=record["transport_id"]) != raw:
             raise ValueError("role_receipt_request_identity_mismatch")
         stream = model_dir / f"stream-{ordinal:03d}"
         reservation_path = stream / "reservation.json"
@@ -224,8 +224,8 @@ def read_role_calls(directory):
     return calls
 
 
-def summarize_role_calls(directory):
-    calls = read_role_calls(directory)
+def summarize_role_calls(directory, *, source_projection=PROJECTION_VERSION):
+    calls = read_role_calls(directory, source_projection=source_projection)
     return dict(reserved_calls=len(calls), completed_calls=sum(c["completed"] for c in calls),
         unknown_usage_calls=sum(c["usage"] is None for c in calls),
         observed_unaccepted_calls=sum(not c["completed"] and c["usage"] is not None for c in calls),

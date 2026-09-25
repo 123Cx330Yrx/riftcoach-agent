@@ -191,7 +191,9 @@ def test_factory_builds_actual_router_and_reuses_task_ordinals_across_roles(tmp_
         {"review_phase": "native_business_review", "harness_step": "evaluate", "source_projection": VERSION},
         {"review_phase": "native_business_revision", "harness_step": "revise", "source_projection": VERSION})
     for item in metadata:
-        first.chat(replace(request(), metadata=item))
+        from tests.test_role_budget_failures import request as routed_request
+        role = 'generation' if 'agent_loop_iteration' in item else 'revision' if item['harness_step']=='revise' else 'review'
+        first.chat(replace(routed_request(role), metadata=item))
     assert first._calls == 3 and second._calls == 0
     assert [item["model"] for item in sent] == ["glm-5.3-flash", "glm-5.3", "glm-5.3-flash"]
     bindings = [json.loads((tmp_path / f"transport/first/call-{i:03d}.json").read_text()) for i in range(1, 4)]

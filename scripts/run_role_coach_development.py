@@ -119,9 +119,10 @@ def prepare(args, *, settings):
     return prepared, factory, raw, plan
 
 
-def summarize_calls(directory):
-    summary = summarize_role_calls(directory)
-    prices = ROLE_COACH_CONTRACT.pricing_profiles
+def summarize_calls(directory, *, coach_contract=ROLE_COACH_CONTRACT):
+    summary = summarize_role_calls(directory,
+        source_projection=coach_contract.descriptor()['source_projection'])
+    prices = coach_contract.pricing_profiles
     by_model = {}
     for (_, model), price in prices.items():
         rows = [c for c in summary['calls'] if c['model'] == model]

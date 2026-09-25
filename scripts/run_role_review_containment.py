@@ -109,11 +109,11 @@ def prepare():
 
 def observe(factory,directory,plan,prepared,*,adjudicate=terminal_adjudication,
             clock=time.monotonic,before_send=lambda:None, workflow_type=Workflow,
-            initial_review_accepted=False):
+            initial_review_accepted=False, coach_contract=ROLE_COACH_CONTRACT):
     source, response, initial_request, editor_request = prepared
     started = clock()
     provider = factory('tail')
-    wrapped = _ReceiptForwardingCoachBudgetedProvider(provider,clock=clock,coach_contract=ROLE_COACH_CONTRACT)
+    wrapped = _ReceiptForwardingCoachBudgetedProvider(provider,clock=clock,coach_contract=coach_contract)
     sender = SharedBudgetReviewSender(wrapped)
     injected = False
     result = dict(experiment=plan["experiment"],tail_accepted=False,initial_review_accepted=initial_review_accepted,
@@ -172,7 +172,7 @@ def observe(factory,directory,plan,prepared,*,adjudicate=terminal_adjudication,
         if final.verdict is not EvaluationVerdict.PASS or final.score < ROLE_COACH_CONTRACT.descriptor()['minimum_score']:
             raise ValueError('containment_final_semantics_failed')
         inspect('final',draft.report,workflow.last_journal)
-        calls = read_role_calls(directory/'transport/tail')
+        calls = read_role_calls(directory/'transport/tail', source_projection=coach_contract.descriptor()['source_projection'])
         if (len(calls)!=2 or not all(c['completed'] for c in calls)
                 or [c['binding']['role'] for c in calls] != ['revision','review']):
             raise ValueError('containment_receipts_incomplete')
@@ -186,7 +186,7 @@ def observe(factory,directory,plan,prepared,*,adjudicate=terminal_adjudication,
             result['error_code'] = code
     finally:
         try:
-            accounting = summarize_calls(directory/'transport/tail')
+            accounting = summarize_calls(directory/'transport/tail', coach_contract=coach_contract)
         except (ValueError,OSError,KeyError,TypeError):
             accounting = dict(accounting_status='invalid_receipts',reserved_calls=None,
                 completed_calls=None,unknown_usage_calls=None,total_estimated_uncached_cny=None)

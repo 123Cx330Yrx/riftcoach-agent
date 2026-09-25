@@ -85,6 +85,7 @@ def prepare():
             raise ValueError('coarse_pair_closed_evidence_changed')
         frozen = json.loads(raw)['public_json_contents']['plan.json']
         plan['source_sha256'] = frozen['preparation_plan']['source_sha256']
+        plan['baseline_candidate'] = frozen['preparation_plan']['baseline_candidate']
         if plan != frozen['preparation_plan'] or canonical_sha(plan) != frozen['plan_sha256']:
             raise ValueError('coarse_pair_closed_request_changed')
     return plan,variants

@@ -17,8 +17,8 @@ pause_reason: ""
 - 用量与证据：2请求30618tokens（26396输入/4222输出，缓存2048、未知0），含host286.172秒，未缓存估价0.329384元非账单。32原件/hash/公开投影见golden_coarse_source_result_v1.json，SHA f7c8a787816e98ca797fdd0337ec1e6ddb94999206687220df7631b62331a4a8。两例是来源表示可行性，不是因果/稳定性证明，不授原15或产品资格。
 - 本轮工程：修复三处已关闭历史preview因共用执行器变化重算旧源码身份的回归；仍重建并核对实际请求/报告/预算。56项相关检查和独立六请求核对通过；公共pytest4924通过/154跳过/129子测试。原失败CI36029467605保留，修复后才发Provider。
 - 此前恢复：原9例中断批前五例正式恢复，加前三例validated_partial/8。用户报告Codex额度耗尽先导致对话停止，后台随后等host超时；前五例耐久回执未丢失。observed:2旧首评真实引用缺口保留；旧两例计时不足、scope:3及observed:2未完成、observed:3–5未跑共七缺口，不能迁成新表示资格。
-- 最新工程：粗来源工作流初评/显式重评/编辑/fresh终评已离线接通，68项相关验证通过，旧默认身份未改。实际factory模拟确认角色路由与预算合同仍拒绝新投影；付费tail入口在prepare/密钥前明确禁用，未新增模型请求，不能称真实改稿成功。
-- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。注册独立opt-in粗来源执行合同，统一角色路由、预算身份、manifest、可信Trace和资格回放，再以真实factory替身验证整链；同HEAD CI后才冻结并开放两调用真实改稿/终评。不新增临时路由绕过默认合同，不重跑两初评，不迁移旧8/15。具体接线文件/验收见docs/plans/2026-09-25-source-granularity-diagnosis.md末节；原15和真实Agent→DB/API/Workbench及前端路线仍未完成。
+- 最新工程：ADR0112独立opt-in粗来源合同1.5.3接齐角色路由、预算、运行观察、回执用量、manifest、可信Trace和显式应用builder。完整应用生成/工具/审查/保存与实际factory编辑/终评用替身通过；拒绝跨投影载荷冒认、旧Trace仅换新snapshot、人工拒绝、协议失败和超时未知用量。共享代码变更刷新当前manifest，旧1.5.2 snapshot与封存历史身份保留。原15新准备/来源schema/回放已具备，正式完整资格验收适配仍待接入；新质量标志全false。未新增真实请求。
+- 唯一下一步：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。完成当前接线检查/独立复核及同HEAD公共CI后，执行冻结的最多两调用真实改稿/fresh终评，逐阶段主/独立全文核验；不重跑两初评，不迁移旧8/15。通过后才接同身份原15完整审计与自然Agent任务，随后真实DB/API/Workbench消费。具体边界见ADR0112及docs/plans/2026-09-25-source-granularity-diagnosis.md；前端审美/头像及四块联动仍在既有路线内。
 
 ### 2026-09-24剩12中断的已封存边界
 

@@ -1,5 +1,6 @@
 """Continuation covers only new inputs and cannot weaken stage acceptance."""
 from copy import deepcopy
+import json
 from types import SimpleNamespace as NS
 
 import pytest
@@ -13,7 +14,8 @@ def test_remaining_plan_preserves_identity_and_exact_unrun_inputs():
     original, _ = prepare_qualification()
     expected = [r for r in original['cases'] if r['key'] not in runner.PRIOR_KEYS]
     assert plan['cases'] == expected
-    assert plan['identity'] == original['identity']
+    sealed = json.loads(runner.INTERRUPTION.read_bytes())['public_json_contents']['plan.json']['preparation_plan']
+    assert plan['identity'] == sealed['identity']
     assert len(requests) == 12
     assert len(set(plan['prior_keys']) | set(requests)) == 15
     assert not (set(plan['prior_keys']) & set(requests))
@@ -59,7 +61,8 @@ def test_prior_export_change_rejected(monkeypatch,tmp_path):
         runner.prepare()
 
 
-def test_different_model_identity_cannot_consume_prior_observations(monkeypatch):
+def test_different_model_identity_cannot_consume_prior_observations(monkeypatch, tmp_path):
+    monkeypatch.setattr(runner, 'INTERRUPTION', tmp_path/'not-closed')
     original,requests = prepare_qualification()
     changed = deepcopy(original)
     changed['identity']['manifest_sha256']='0'*64

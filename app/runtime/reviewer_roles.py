@@ -17,14 +17,39 @@ ROLE_COMPOSITION_ID = "flash-generation-glm53-review-v1"
 ROLE_PROFILE_ID = "flash-generation-glm53-review-high-v1"
 
 
-def role_for_request(request):
+def _require_projection_payload(request, source_projection, phase):
+    from app.evaluation.golden_explicit_source_projection import _unpack
+    from app.evaluation.golden_coarse_source_projection import VERSION as COARSE_VERSION, _schema
+    try:
+        _, data = _unpack(request)
+        index = data['source_index']
+        if source_projection == VERSION:
+            valid = isinstance(index.get('evidence_by_id'), dict) and 'table_rows_by_id' not in index
+        elif source_projection == COARSE_VERSION:
+            roots = data['source_roots']
+            ids = [row[0] for row in roots['roots']]
+            valid = (isinstance(index.get('table_rows_by_id'), dict) and 'evidence_by_id' not in index
+                and roots['schema_version'] == COARSE_VERSION
+                and roots['catalog_sha256'] == request.metadata.get('source_catalog_sha256')
+                and bool(ids) and all(type(n) is int and n > 0 for n in ids) and len(set(ids)) == len(ids))
+            if phase != 'native_business_revision':
+                valid = valid and len(request.tools) == 1 and request.tools[0].input_schema == _schema(ids)
+        else:
+            valid = False
+        if not valid:
+            raise ValueError('role_source_projection_payload_mismatch')
+    except (ValueError, KeyError, TypeError, AttributeError, IndexError) as error:
+        raise ValueError('role_source_projection_payload_mismatch') from error
+
+
+def role_for_request(request, *, source_projection=VERSION):
     phase = request.metadata.get("review_phase")
     iteration = request.metadata.get("agent_loop_iteration")
     step = request.metadata.get("harness_step")
     if phase is None and type(iteration) is int and iteration >= 1 and step is None:
         return "generation"
     if iteration is None and phase in ("native_business_review", "native_business_reassessment", "native_business_revision"):
-        if request.metadata.get("source_projection") != VERSION:
+        if request.metadata.get("source_projection") != source_projection:
             raise ValueError("role_source_projection_required")
         steps = {
             "native_business_review": ("evaluate",),
@@ -33,6 +58,7 @@ def role_for_request(request):
         }
         if step not in steps[phase]:
             raise ValueError("role_phase_invalid")
+        _require_projection_payload(request, source_projection, phase)
         return "revision" if phase == "native_business_revision" else "review"
     raise ValueError("role_phase_invalid")
 
@@ -48,8 +74,8 @@ def transport_for_role(role):
     return REVIEW_MODEL_TRANSPORT_ID if role == "review" else CAPACITY_TRANSPORT_ID
 
 
-def request_identity(request):
-    return "zhipu", profile_for_role(role_for_request(request)).model
+def request_identity(request, *, source_projection=VERSION):
+    return "zhipu", profile_for_role(role_for_request(request, source_projection=source_projection)).model
 
 
 def role_descriptor():
@@ -77,7 +103,11 @@ class RoleRoutedProvider:
     sdk_max_retries = 0
     runtime_profile = None
 
-    def __init__(self, generator, reviewer):
+    def __init__(self, generator, reviewer, *, source_projection=VERSION):
+        from app.evaluation.golden_coarse_source_projection import VERSION as COARSE_VERSION
+        if source_projection not in (VERSION, COARSE_VERSION):
+            raise ValueError("role_source_projection_unsupported")
+        self.source_projection = source_projection
         require_role_provider(generator, "generation")
         require_role_provider(reviewer, "review")
         if generator is reviewer or generator.capabilities != reviewer.capabilities:
@@ -89,9 +119,8 @@ class RoleRoutedProvider:
         self._calls = 0
         self._failed = False
 
-    @staticmethod
-    def request_identity(request):
-        return request_identity(request)
+    def request_identity(self, request):
+        return request_identity(request, source_projection=self.source_projection)
 
     def chat(self, request):
         self.last_exchange = None
@@ -100,11 +129,11 @@ class RoleRoutedProvider:
         response = None
         attempt = None
         try:
-            role = role_for_request(request)
+            role = role_for_request(request, source_projection=self.source_projection)
             selected = self.reviewer if role == "review" else self.generator
             require_role_provider(selected, role)
             transport = transport_for_role(role)
-            expected_identity = request_identity(request)
+            expected_identity = self.request_identity(request)
             raw = validate_request(request, transport_id=transport)
             previous = getattr(selected, "last_exchange", None)
             self._calls += 1
