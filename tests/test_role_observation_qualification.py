@@ -45,7 +45,13 @@ def make_run(tmp_path, monkeypatch):
     sources = {f['key']: source for f, source in q.frozen_cases()[0]}
     counter = [0]
 
-    def build(keys=('claim-scope:1', 'claim-scope:4'), *, write_fault=None, before_case=None, clock=lambda:0):
+    def build(keys=('claim-scope:1', 'claim-scope:4'), *, write_fault=None, before_case=None, clock=lambda:0, profile='role', inspect_fault=None):
+        from app.runtime.coach_contract import ROLE_COACH_CONTRACT
+        backend, workflow, observer, contract = q, Workflow, Observer, ROLE_COACH_CONTRACT
+        if profile == 'coarse':
+            from app.evaluation import coarse_role_qualification as backend
+            from scripts.run_coarse_role_qualification import Workflow as workflow, CoarseObserver as observer, CONTRACT as contract
+        plan, requests = backend.prepare_qualification()
         counter[0] += 1
         run = tmp_path / ('run-' + str(counter[0]))
         run.mkdir()
@@ -63,11 +69,15 @@ def make_run(tmp_path, monkeypatch):
             (run / (row['key'].replace(':', '-') + '-prepared-request.json')).write_bytes(requests[row['key']])
         good = dict(score=95, verdict='pass', issues=[], issue_resolutions=[], advisories=[])
         bad = dict(score=80, verdict='needs_revision', issues=[dict(block=4, severity='medium',
-            category='fact_error', source_ids=[1], explanation='Offline structural fixture.',
+            category='fact_error', source_ids=[27 if profile == 'coarse' else 1], explanation='Offline structural fixture.',
             suggested_correction='Repair the identified error.')], issue_resolutions=[], advisories=[])
         replies = []
         for row in rows:
-            replies.append(tool_response(good if row['expected_initial'] == 'accept' else bad))
+            error = deepcopy(bad)
+            if profile == 'coarse':
+                from app.evaluation.golden_coarse_source_projection import source_catalog
+                error['issues'][0]['source_ids'] = [source_catalog(workflow.build_inputs(sources[row['key']]))['roots'][0]['source_id']]
+            replies.append(tool_response(good if row['expected_initial'] == 'accept' else error))
             if row['expected_initial'] == 'reject':
                 replies += [ChatResponse(content=sources[row['key']].report + '\n\nOffline structural edit fixture.', model='glm-5.3-flash',
                     provider='zhipu', finish_reason='stop', usage=TokenUsage(10, 10)), tool_response(good)]
@@ -79,7 +89,8 @@ def make_run(tmp_path, monkeypatch):
         def settings(model):
             return NS(model=model, api_key='offline-only', base_url='https://open.bigmodel.cn/api/paas/v4')
         factory = RunScopedRoleReceiptedProviderFactory(generator_settings=settings('glm-5.3-flash'),
-            reviewer_settings=settings('glm-5.3'), transport_root=run / 'transport')
+            reviewer_settings=settings('glm-5.3'), transport_root=run / 'transport',
+            source_projection=contract.descriptor()['source_projection'])
 
         def adjudicate(path, remaining):
             stage = read(path)
@@ -107,6 +118,11 @@ def make_run(tmp_path, monkeypatch):
                 assessment=dict(stage=name, stage_sha256=stage_identity(stage), reviewer='offline primary fixture',
                     source_review=primary['reason'], accepted=True, defects=[]), final_report=final_report)
             write_new_json(path.parent / ('decision-' + name + '.json'), decision)
+            if profile == 'coarse':
+                from scripts.run_coarse_role_qualification import validate_handoff
+                if inspect_fault:
+                    inspect_fault(path)
+                return validate_handoff(path, decision, observation, directory=run)
             return decision
 
         from scripts import run_role_qualification_pair as pair
@@ -117,9 +133,10 @@ def make_run(tmp_path, monkeypatch):
         with monkeypatch.context() as patch:
             patch.setattr(pair, 'write_new_json', write)
             result = observe(factory, run, observation, adjudicate=adjudicate, clock=clock,
-                workflow_type=Workflow, replay=q.replay_case, success_field='tasks_observed', task_observer=Observer,
-                before_case=before_case)
-        if write_fault or before_case:
+                workflow_type=workflow, replay=lambda *a: backend.replay_case(*a, include_stage_evidence=False),
+                success_field='tasks_observed', task_observer=observer,
+                before_case=before_case, coach_contract=contract)
+        if write_fault or before_case or inspect_fault:
             return run, result
         assert result['tasks_observed'], result
         export = tmp_path / (run.name + '-closed.json')

@@ -24,7 +24,8 @@ def test_original_15_have_independent_source_bound_identity():
     assert not plan['review_controls_qualified'] and not plan['production_admitted']
     assert ROLE_COACH_CONTRACT.snapshot().sha256 == 'ffc45471455a546a2b75a35ee902e5f5405ebd01b9bfbe3606fac34649fcea4a'
     for row, (frozen, source) in zip(plan['cases'], frozen_cases()[0], strict=True):
-        assert all(row[k] == v for k, v in frozen.items())
+        assert all(row[k] == v for k, v in frozen.items() if k != 'first_input_ceiling')
+        assert row['first_input_ceiling'] == qualification.size(Workflow.make_request(Workflow.build_inputs(source)))
         inputs = Workflow.build_inputs(source)
         request = Workflow.make_request(inputs)
         assert request.tools[0].input_schema == projection.response_schema(inputs)

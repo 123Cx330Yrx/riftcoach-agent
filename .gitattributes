@@ -1,6 +1,7 @@
 # Preserve the byte-for-byte CRLF snapshot used by the historical hash test.
 /examples/runtime_profiles/flash_glm_coarse_v1/prompt_programs/recent-form-review/manifest.json text eol=lf
 /data/evaluation/results/golden_coarse_tail_*.json text eol=lf
+/data/evaluation/results/golden_coarse_qualification_*.json text eol=lf
 /data/evaluation/results/history/skill_router_v1_single_skill_development_baseline_1_0_0.json binary
 
 # Historical instruction/state snapshots are bound to their original bytes.

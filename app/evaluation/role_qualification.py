@@ -305,7 +305,13 @@ def validate_qualification(result, *, evidence_root, root=ROOT):
     qualification and production admission are separate, still closed gates.
     """
     plan, _ = prepare_qualification(root=root)
-    if (result.get("qualification_version") != VERSION or result.get("identity") != plan["identity"]
+    return _validate_qualification(result, evidence_root=evidence_root, root=root,
+        plan=plan, read_calls=read_role_calls, replay=replay_case)
+
+
+def _validate_qualification(result, *, evidence_root, root, plan, read_calls, replay):
+    """Shared original-set gate; each public entry fixes its own contract."""
+    if (result.get("qualification_version") != plan["qualification_version"] or result.get("identity") != plan["identity"]
             or result.get("plan_sha256") != digest(compact(plan))):
         raise ValueError("role_qualification_identity_mismatch")
     rows = result.get("cases", [])
@@ -317,15 +323,17 @@ def validate_qualification(result, *, evidence_root, root=ROOT):
     evidence_root = Path(evidence_root)
     for row in rows:
         frozen = expected[row["key"]]
-        if any(row.get(k) != frozen[k] for k in ("input_sha256", "report_sha256", "request_sha256")):
+        identity_fields = ("input_sha256", "report_sha256", "request_sha256")
+        identity_fields += tuple(k for k in ("source_catalog_sha256", "schema_sha256") if k in frozen)
+        if any(row.get(k) != frozen[k] for k in identity_fields):
             raise ValueError("role_qualification_case_identity_mismatch")
         directory = _within(evidence_root, row["transport_directory"])
-        calls = read_role_calls(directory)
-        if not calls or len(calls) > 5 or not all(c["completed"] for c in calls):
+        calls = read_calls(directory)
+        if not calls or len(calls) > 5 or not all(c["completed"] and c["usage"] is not None for c in calls):
             raise ValueError("role_qualification_incomplete_receipts")
         if sum(c["usage"]["input_tokens"] + c["usage"]["output_tokens"] for c in calls) > 401920:
             raise ValueError("role_qualification_budget_exceeded")
-        replayed = replay_case(frozen, sources[row["key"]], calls)
+        replayed = replay(frozen, sources[row["key"]], calls)
         host_path = _within(evidence_root, row["host_review_file"])
         if _sha(host_path) != row.get("host_review_sha256"):
             raise ValueError("role_qualification_host_review_hash_mismatch")

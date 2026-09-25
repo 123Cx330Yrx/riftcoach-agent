@@ -82,7 +82,11 @@ class Observer:
 
     @staticmethod
     def finish(plan, row, calls, decisions):
-        observed = prepare_observation(row['key'],calls)
+        return Observer.finish_with_backend(plan, row, calls, decisions)
+
+    @staticmethod
+    def finish_with_backend(plan, row, calls, decisions, *, backend=None):
+        observed = prepare_observation(row['key'],calls,backend=backend)
         expected = dict(key=row['key'], input_sha256=row['input_sha256'],
             candidate_sha256=digest(compact(plan['identity'])))
         if (any(observed['binding'][k]!=v for k,v in expected.items())
@@ -90,7 +94,7 @@ class Observer:
             raise ValueError('task_observation_final_identity_drift')
         host = dict(**observed['binding'], stages=[d['assessment'] for d in decisions],
             final_report=decisions[-1]['final_report'])
-        return assess_task_outcome(row['key'],calls,host)
+        return assess_task_outcome(row['key'],calls,host,backend=backend)
 
 
 def adjudicate(path,remaining):

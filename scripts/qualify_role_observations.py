@@ -99,7 +99,7 @@ def _report(value, sha):
     return report
 
 
-def _stage(arm, expected, row, candidate_sha, source_sha, call, transport):
+def _stage(arm, expected, row, candidate_sha, source_sha, call, transport, *, pending_host=None):
     name = expected['stage']
     path = arm / (name + '.json')
     saved = _json(path)
@@ -110,7 +110,8 @@ def _stage(arm, expected, row, candidate_sha, source_sha, call, transport):
     host_path = arm / (name + '-host.json')
     primary_path = arm / ('primary-' + name + '-review.json')
     independent_path = arm / ('independent-' + name + '-review.json')
-    host, primary, independent = map(_json, (host_path, primary_path, independent_path))
+    host = _json(host_path) if pending_host is None else pending_host
+    primary, independent = map(_json, (primary_path, independent_path))
     for decision in (host, primary, independent):
         if decision is host:
             _accepted(dict(accepted=host.get('accepted'), defects=host.get('assessment', {}).get('defects')))
@@ -155,13 +156,15 @@ def _stage(arm, expected, row, candidate_sha, source_sha, call, transport):
         _fail('journal_replay_mismatch')
     return dict(stage=name, source_review=assessment.source_review,
         independent_source_review=independent['source_review'],
-        files={p.name: _sha(p) for p in (path, host_path, primary_path, independent_path, decision_path)})
+        files={p.name: _sha(p) for p in (path, host_path, primary_path, independent_path, decision_path)
+            if p != host_path or pending_host is None})
 
 
-def _case(run, row, budget, outcome, source, current, candidate_sha, requests):
+def _case(run, row, budget, outcome, source, current, candidate_sha, requests, *, backend=qualification):
     key, case_id = row['key'], row['key'].replace(':', '-')
     arm, transport = run / case_id, run / 'transport' / case_id
-    if any(row.get(k) != current[k] for k in IDENTITY_FIELDS):
+    fields = IDENTITY_FIELDS + tuple(k for k in ('source_catalog_sha256', 'schema_sha256') if k in current)
+    if any(row.get(k) != current[k] for k in fields):
         _fail('case_identity_mismatch')
     if (run / (case_id + '-prepared-request.json')).read_bytes() != requests[key]:
         _fail('prepared_request_mismatch')
@@ -170,7 +173,7 @@ def _case(run, row, budget, outcome, source, current, candidate_sha, requests):
         report=source.report, input_sha256=row['input_sha256'], report_sha256=row['report_sha256'])
     if original != expected_source:
         _fail('source_mismatch')
-    calls = qualification.read_role_calls(transport)
+    calls = backend.read_role_calls(transport)
     stages = ['initial'] if row['expected_initial'] == 'accept' else ['initial', 'revision', 'final']
     if (len(calls) != len(stages) or not all(c['completed'] and c['usage'] is not None for c in calls)
             or [c['binding']['role'] for c in calls] != (['review'] if len(stages) == 1 else ['review', 'revision', 'review'])):
@@ -189,7 +192,7 @@ def _case(run, row, budget, outcome, source, current, candidate_sha, requests):
     max_tokens = _count(budget.get('max_tokens'), 401920)
     max_seconds = _seconds(budget.get('max_seconds'), 900)
     elapsed = _seconds(outcome.get('elapsed_seconds'), max_seconds)
-    summary = qualification.summarize_role_calls(transport)
+    summary = backend.summarize_role_calls(transport)
     if len(calls) > max_calls or summary['input_tokens'] + summary['output_tokens'] > max_tokens:
         _fail('case_budget_exceeded')
     accounting = outcome.get('accounting', {})
@@ -204,7 +207,7 @@ def _case(run, row, budget, outcome, source, current, candidate_sha, requests):
         stream_seconds += _seconds(terminal.get('elapsed_ms'), 300_000) / 1000
     if stream_seconds > elapsed + .01:
         _fail('continuous_elapsed_inconsistent')
-    replayed = qualification.replay_case(current, source, calls, include_stage_evidence=True)
+    replayed = backend.replay_case(current, source, calls, include_stage_evidence=True)
     if [s['stage'] for s in replayed['stages']] != stages:
         _fail('stage_inventory_mismatch')
     inspections = [_stage(arm, stage, row, candidate_sha, _sha(arm / 'source.json'), call, transport)
@@ -253,7 +256,7 @@ def _completed_prefix(run, plan):
     return outcomes, batch_elapsed
 
 
-def _interrupted_prefix(run, plan, result):
+def _interrupted_prefix(run, plan, result, *, backend=qualification):
     """Accept only durable completions; charge and retain the failed suffix.
 
     A failed/missing batch summary does not invalidate earlier completed cases.
@@ -282,7 +285,7 @@ def _interrupted_prefix(run, plan, result):
     tail = []
     for index, (row, budget) in enumerate(zip(rows, budgets, strict=True)):
         case_id = row['key'].replace(':', '-')
-        summary = qualification.summarize_role_calls(transport_root / case_id)
+        summary = backend.summarize_role_calls(transport_root / case_id)
         started = (run / case_id / 'source.json').exists() or summary['reserved_calls'] > 0
         if started and (index > count or result is not None and index >= len(recorded)):
             _fail('execution_after_incomplete_case')
@@ -300,7 +303,7 @@ def _interrupted_prefix(run, plan, result):
         tokens = known_tokens
         if summary['unknown_usage_calls']:
             tokens += sum(qualification.size(call['request']) + call['request'].max_tokens
-                for call in qualification.read_role_calls(transport_root / case_id) if call['usage'] is None)
+                for call in backend.read_role_calls(transport_root / case_id) if call['usage'] is None)
         if tokens > budget['max_tokens']:
             _fail('case_budget_exceeded')
         total_calls += calls
@@ -323,26 +326,25 @@ def _interrupted_prefix(run, plan, result):
     return outcomes, completed_elapsed, boundary
 
 
-def qualify(run_directories, *, evidence_root, output_directory, closed_exports):
-    """Create new original-gate rows; only all fifteen invoke its validator.
-
-    closed_exports contains (path, independently recorded SHA256) pairs. Both
-    runs and output must lie under evidence_root; the output must be new and
-    outside every original run. This function never edits a source artifact.
-    """
+def inspect_runs(run_directories, *, evidence_root, closed_exports, profile='role'):
+    """Read-only full audit, also used when revalidating an issued result."""
+    if profile == 'coarse':
+        from app.evaluation import coarse_role_qualification as backend
+    elif profile == 'role':
+        backend = qualification
+    else:
+        _fail('unknown_qualification_profile')
     evidence_root = Path(evidence_root).resolve()
     runs = [_within(evidence_root, p) for p in run_directories]
-    output = _within(evidence_root, output_directory)
-    if (not runs or len(set(runs)) != len(runs) or len(closed_exports) != len(runs)
-            or output.exists() or any(output.is_relative_to(run) for run in runs)):
+    if not runs or len(set(runs)) != len(runs) or len(closed_exports) != len(runs):
         _fail('input_or_output_inventory_invalid')
     exports = []
     for p, sha in closed_exports:
         exports.append((Path(p).resolve(), sha))
-    current_plan, requests = qualification.prepare_qualification()
+    current_plan, requests = backend.prepare_qualification()
     candidate_sha = digest(compact(current_plan['identity']))
     expected = {r['key']: r for r in current_plan['cases']}
-    sources = {f['key']: s for f, s in qualification.frozen_cases()[0]}
+    sources = {f['key']: s for f, s in backend.frozen_cases()[0]}
     prepared, used_keys, seals = [], set(), []
     for run, (export_path, export_sha) in zip(runs, exports, strict=True):
         hashes = _seal(run, export_path, export_sha, evidence_root)
@@ -364,7 +366,7 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports)
         if result is not None and result.get('experiment') != plan.get('experiment'):
             _fail('closed_case_inventory_mismatch')
         if result is None or 'error_code' in result or 'error_type' in result:
-            outcomes, elapsed, boundary = _interrupted_prefix(run, plan, result)
+            outcomes, elapsed, boundary = _interrupted_prefix(run, plan, result, backend=backend)
             rows, budgets = rows[:len(outcomes)], budgets[:len(outcomes)]
             completion_source = ('durable_case_receipts_without_batch_result' if result is None
                 else 'durable_case_receipts_before_failed_batch_suffix')
@@ -372,6 +374,10 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports)
             outcomes = result.get('cases')
             elapsed = result.get('elapsed_seconds')
             completion_source = 'original_batch_result'
+            allowed_ids = {r['key'].replace(':', '-') for r in rows}
+            transport_root = run / 'transport'
+            if any(p.name not in allowed_ids or not p.is_dir() for p in transport_root.iterdir()):
+                _fail('unrecorded_transport')
         if (not isinstance(rows, list) or not rows or not isinstance(budgets, list)
                 or not isinstance(outcomes, list) or not len(rows) == len(budgets) == len(outcomes)
                 or [r.get('key') for r in rows] != [r.get('key') for r in outcomes]):
@@ -386,7 +392,7 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports)
                 _fail('duplicate_or_unknown_case')
             used_keys.add(key)
             host, transport, summary, case_elapsed = _case(run, row, budget, outcome, sources[key],
-                expected[key], candidate_sha, requests)
+                expected[key], candidate_sha, requests, backend=backend)
             host['closed_export'] = dict(path=export_path.as_posix(), sha256=export_sha,
                 run_directory=run.relative_to(evidence_root).as_posix())
             host['completion_source'] = completion_source
@@ -401,6 +407,18 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports)
         seals.append(dict(run_directory=run.relative_to(evidence_root).as_posix(),
             closed_export=export_path.as_posix(), closed_export_sha256=export_sha,
             original_file_sha256=hashes, interruption_boundary=boundary))
+    return backend, current_plan, expected, prepared, used_keys, seals
+
+
+def qualify(run_directories, *, evidence_root, output_directory, closed_exports, profile='role'):
+    """Create-only qualification after complete read-only inspection."""
+    evidence_root = Path(evidence_root).resolve()
+    output = _within(evidence_root, output_directory)
+    runs = [_within(evidence_root, p) for p in run_directories]
+    if output.exists() or any(output.is_relative_to(run) for run in runs):
+        _fail('input_or_output_inventory_invalid')
+    backend, current_plan, expected, prepared, used_keys, seals = inspect_runs(runs,
+        evidence_root=evidence_root, closed_exports=closed_exports, profile=profile)
     # All evidence is checked before the first write. Create-only output never
     # edits a closed run, even if the final original-gate validator rejects it.
     output.mkdir(parents=True, exist_ok=False)
@@ -412,14 +430,14 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports)
             transport_directory=transport.relative_to(evidence_root).as_posix(),
             host_review_file=host_path.relative_to(evidence_root).as_posix(), host_review_sha256=_sha(host_path)))
     rows.sort(key=lambda r: list(expected).index(r['key']))
-    result = dict(qualification_version=qualification.VERSION, identity=current_plan['identity'],
+    result = dict(qualification_version=backend.VERSION, identity=current_plan['identity'],
         plan_sha256=digest(compact(current_plan)), cases=rows,
         status='validated_partial', remaining_keys=[key for key in expected if key not in used_keys],
         validated_inputs=len(rows), validated_keys=[r['key'] for r in rows],
         provider_requests=0, review_controls_qualified=False,
         actual_product_task_qualified=False, production_admitted=False, execution_enabled=False)
     if len(rows) == 15:
-        result.update(qualification.validate_qualification(result, evidence_root=evidence_root))
+        result.update(backend.validate_qualification(result, evidence_root=evidence_root))
         result['status'] = 'qualified_original_review_controls'
     write_new_json(output / 'qualification.json', result)
     write_new_json(output / 'source-seals.json', dict(closed_runs=seals))
@@ -430,12 +448,13 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports)
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-directory', action='append', type=Path, required=True)
+    parser.add_argument('--profile', choices=('role', 'coarse'), default='role')
     parser.add_argument('--closed-export', action='append', nargs=2, metavar=('PATH', 'SHA256'), required=True)
     parser.add_argument('--evidence-root', type=Path, required=True)
     parser.add_argument('--output-directory', type=Path, required=True)
     args = parser.parse_args()
     result = qualify(args.run_directory, evidence_root=args.evidence_root,
-        output_directory=args.output_directory, closed_exports=args.closed_export)
+        output_directory=args.output_directory, closed_exports=args.closed_export, profile=args.profile)
     print(compact({k: v for k, v in result.items() if k not in ('identity', 'cases')}))
 
 

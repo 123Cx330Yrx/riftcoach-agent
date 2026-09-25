@@ -71,8 +71,8 @@ def test_actual_executor_preserves_failed_initial_and_obeys_stop_branches(prepar
     now = [0.0]
     if failure=='accounting_deadline':
         original_summary = pair.summarize_calls
-        def slow_summary(directory):
-            result = original_summary(directory)
+        def slow_summary(directory, **kwargs):
+            result = original_summary(directory, **kwargs)
             now[0]=901
             return result
         monkeypatch.setattr(pair,'summarize_calls',slow_summary)

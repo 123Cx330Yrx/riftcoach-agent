@@ -287,7 +287,7 @@
     {
       "component_id": "app.evaluation.coarse_role_qualification",
       "source": "app/evaluation/coarse_role_qualification.py",
-      "sha256": "d1a656541f7ca62da72ca58e9fca9bbef4339c2bf63c8a36cbb01f3839e84d43"
+      "sha256": "248e46e5c0e98319239ed9f2f55c9aef97d081f7849651d39b5904e84d5baa43"
     },
     {
       "component_id": "app.prompt_program.resolver",
@@ -310,5 +310,5 @@
       "sha256": "c40398b96be3c187976b96089a18d7967c20a51cdf84f9a46abd3d6d410a3e59"
     }
   ],
-  "program_sha256": "ebd1682c9b4c79c2d07837e5b2ec86203a7f1c6c758427ed205ce7f496c1f41f"
+  "program_sha256": "5b3974b7a4f1dea054c24fd05168227f6c5aec2615b0a299e170ec131857cb62"
 }

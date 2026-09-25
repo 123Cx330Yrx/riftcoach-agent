@@ -100,7 +100,7 @@ def may_continue_initial(assessment, *, expected_initial, target_and_correction_
         and all(d.kind == "unsupported_explanation" for d in host.defects))
 
 
-def prepare_observation(key, calls):
+def prepare_observation(key, calls, *, backend=None):
     """Rebuild current original-set workflow, without issuing any request.
 
     Calls may include an explicitly historical injection for a diagnostic. This
@@ -118,13 +118,15 @@ def prepare_observation(key, calls):
     tokens = sum(c["response"].usage.input_tokens + c["response"].usage.output_tokens for c in calls)
     if tokens > 401920:
         raise ValueError("task_outcome_replay_token_limit")
-    replayed = replay_case(frozen, source, calls, include_stage_evidence=True)
+    replay = replay_case if backend is None else backend.replay_case
+    identity = candidate_identity() if backend is None else backend.candidate_identity()
+    replayed = replay(frozen, source, calls, include_stage_evidence=True)
     # Bind supplied response content AND usage, even in a diagnostic without
     # raw files. This prevents reusing a host assessment after in-memory edits;
     # only read_role_calls can additionally certify the original receipt files.
     response_sha256 = [digest(RESPONSE.dump_json(c['response']).decode()) for c in calls]
     binding = dict(version=VERSION, key=key,
-        candidate_sha256=digest(compact(candidate_identity())),
+        candidate_sha256=digest(compact(identity)),
         input_sha256=frozen["input_sha256"], replay_sha256=digest(compact(dict(
             replayed["bindings"], provided_response_sha256=response_sha256))))
     stages = [dict(stage=s["stage"], stage_sha256=stage_identity(s)) for s in replayed["stages"]]
@@ -132,14 +134,14 @@ def prepare_observation(key, calls):
         expected_initial=frozen["expected_initial"], replay_tokens=tokens)
 
 
-def assess_task_outcome(key, calls, assessment):
+def assess_task_outcome(key, calls, assessment, *, backend=None):
     """Validate bindings and keep reviewer quality separate from final outcome.
 
     Accepted means the supplied, bound full-source host judgment says accepted;
     the validator does not replace that review with string or numeric heuristics.
     Every negative judgment and its concrete defect is retained in the result.
     """
-    observed = prepare_observation(key, calls)
+    observed = prepare_observation(key, calls, backend=backend)
     host = Assessment.model_validate(assessment)
     if any(getattr(host, k) != v for k, v in observed["binding"].items()):
         raise ValueError("task_outcome_assessment_binding_mismatch")

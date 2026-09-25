@@ -71,9 +71,13 @@ def _hash(path):
 def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
             clock=time.monotonic, before_send=lambda: None,
             workflow_type=RoleNoteReviewWorkflow, replay=replay_case,
-            success_field='pair_accepted', task_observer=None, before_case=None):
+            success_field='pair_accepted', task_observer=None, before_case=None,
+            coach_contract=ROLE_COACH_CONTRACT):
     """Run frozen workflows, retaining per-stage host gates outside model input."""
     started = clock()
+    projection = coach_contract.descriptor()['source_projection']
+    def accounting(path):
+        return summarize_calls(path, coach_contract=coach_contract)
     sources = {f['key']: (f, source) for f, source in frozen_cases()[0]}
     outcomes = []
     result = dict(experiment=plan.get('experiment', EXPERIMENT), production_admitted=False,
@@ -99,7 +103,7 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
                 report=source.report, input_sha256=frozen['input_sha256'], report_sha256=frozen['report_sha256']))
             case_started = clock()
             provider = factory(case_id)
-            wrapped = _ReceiptForwardingCoachBudgetedProvider(provider, clock=clock, coach_contract=ROLE_COACH_CONTRACT)
+            wrapped = _ReceiptForwardingCoachBudgetedProvider(provider, clock=clock, coach_contract=coach_contract)
             sender = SharedBudgetReviewSender(wrapped)
             journals = []
             stage_decisions = []
@@ -159,7 +163,7 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
             # Preserve a valid but wrong judgment even when no host gate is needed.
             write_new_json(arm / 'initial-journal.json', workflow.last_journal)
             if initial.verdict is not expected or (initial.verdict is EvaluationVerdict.PASS
-                    and initial.score < ROLE_COACH_CONTRACT.descriptor()['minimum_score']):
+                    and initial.score < coach_contract.descriptor()['minimum_score']):
                 raise ValueError('role_pair_initial_semantics_failed')
             inspect('initial', source.report, workflow.last_journal)
             final_report = source.report
@@ -174,10 +178,10 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
                 outcome.update(final_verdict=final.verdict.value, final_score=final.score)
                 write_new_json(arm / 'final-journal.json', workflow.last_journal)
                 if (final.verdict is not EvaluationVerdict.PASS
-                        or final.score < ROLE_COACH_CONTRACT.descriptor()['minimum_score']):
+                        or final.score < coach_contract.descriptor()['minimum_score']):
                     raise ValueError('role_pair_final_review_failed')
                 inspect('final', final_report, workflow.last_journal)
-            calls = read_role_calls(directory / 'transport' / case_id)
+            calls = read_role_calls(directory / 'transport' / case_id, source_projection=projection)
             if (not calls or len(calls) > budget['max_calls']
                     or not all(call['completed'] for call in calls)):
                 raise ValueError('role_pair_incomplete_receipts')
@@ -200,7 +204,7 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
                     raise ValueError('task_observation_final_outcome_rejected')
                 # Include receipt/accounting validation in this case's elapsed
                 # time; later batch aggregation is not a new case-time budget.
-                outcome['accounting'] = summarize_calls(directory / 'transport' / case_id)
+                outcome['accounting'] = accounting(directory / 'transport' / case_id)
                 if remaining() <= 0:
                     outcome.update(elapsed_seconds=round(clock()-case_started,3),
                         continuous_observation_budget_verified=False)
@@ -247,7 +251,7 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
         for outcome in outcomes:
             try:
                 if not (task_observer is not None and 'accounting' in outcome):
-                    outcome['accounting'] = summarize_calls(directory / 'transport' / outcome['key'].replace(':', '-'))
+                    outcome['accounting'] = accounting(directory / 'transport' / outcome['key'].replace(':', '-'))
             except (ValueError, OSError, KeyError, TypeError):
                 outcome['accounting'] = dict(accounting_status='invalid_receipts', reserved_calls=None,
                     completed_calls=None, unknown_usage_calls=None, total_estimated_uncached_cny=None)
