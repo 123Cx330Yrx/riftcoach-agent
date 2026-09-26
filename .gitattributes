@@ -1,5 +1,12 @@
 # Preserve the byte-for-byte CRLF snapshot used by the historical hash test.
+/examples/runtime_profiles/flash_glm_coarse_v1/prompt_programs/recent-form-review/manifest.json text eol=lf
+/data/evaluation/results/golden_coarse_tail_*.json text eol=lf
+/data/evaluation/results/golden_coarse_qualification_*.json text eol=lf
 /data/evaluation/results/history/skill_router_v1_single_skill_development_baseline_1_0_0.json binary
+
+# Historical instruction/state snapshots are bound to their original bytes.
+/docs/archive/2026-09-22-execution-method/*-before.md -text
+/docs/archive/2026-09-22-execution-method/delivery-method-first-pass.md -text whitespace=-blank-at-eol
 
 # Keep the immutable real-provider evidence digest stable across platforms.
 /data/evaluation/results/provider_capabilities/deepseek_v4_pro_adapter_protocol.json text eol=lf
@@ -13,3 +20,87 @@
 
 # Keep the immutable GLM-5.3 Flash evaluation evidence digest stable across platforms.
 /data/evaluation/results/provider_capabilities/zhipu_glm53_flash_*.json text eol=lf
+
+# These frozen Flash domain inputs are referenced by byte-level SHA-256 commitments.
+/data/evaluation/glm53_flash_domain_adoption_v1_input_plan.json text eol=lf
+/examples/fixtures/player_summary_glm53_flash_domain_v1.json text eol=lf
+/examples/fixtures/deterministic_report_glm53_flash_domain_v1.md text eol=lf
+
+# Preserve native evidence bytes; the new snapshots include original CRLF.
+/data/evaluation/datasets/golden_native_scope_resolution_controls_v1.json text eol=lf
+/data/evaluation/datasets/golden_native_claim_scope_controls_v1.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/golden_native_scope_result_5aa20b4.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/golden_native_claim_scope_result_0cdb1c7.json text eol=lf
+
+# Keep the new report-contract budget proof byte-reproducible on Windows and CI.
+/data/evaluation/contracts/glm53_report_contract_development_budget_v1.json text eol=lf
+
+# Preserve the original byte-hashed DeepSeek adoption fixtures on Windows.
+/examples/fixtures/player_summary_domain_adoption_v2.json text eol=lf
+/examples/fixtures/deterministic_report_domain_adoption_v2.md text eol=lf
+
+# Keep frozen portal prompt digests identical to their original Git bytes.
+/docs/assets/8e-portal/portal-motion-brief-kling-v3-omni-b1.txt text eol=lf
+/docs/assets/8e-portal/portal-motion-brief-kling-v3-omni-video-image-b2.txt text eol=lf
+/docs/assets/8e-portal/portal-motion-brief-wan3-first-frame-reopen-v1.txt text eol=lf
+
+# Pin byte-bound historical plans and fixtures; no evidence content changes.
+/data/evaluation/deepseek_v4_pro_domain_adoption_v2_input_plan.json text eol=lf
+/examples/fixtures/player_summary_resource_calibration_baseline.json text eol=lf
+/examples/fixtures/deterministic_report_resource_calibration_baseline.md text eol=lf
+/examples/fixtures/player_summary_resource_calibration_ceiling.json text eol=lf
+/examples/fixtures/deterministic_report_resource_calibration_ceiling.md text eol=lf
+/data/evaluation/deepseek_v4_pro_resource_calibration_development_profiles.json text eol=lf
+/data/evaluation/stage8/advanced_adoption_cases_v1.json text eol=lf
+/examples/fixtures/player_summary_demo.json text eol=lf
+/examples/fixtures/deterministic_report_demo.md text eol=lf
+/data/evaluation/history/skill_router_v1_single_skill_development_cases_1_0_0.json text eol=lf
+/data/evaluation/deepseek_v4_pro_domain_heldout_input_plan.json text eol=lf
+
+# Pin the prepared role-batch request and plan bytes before any real execution.
+/data/evaluation/results/role_flash_glm_review_preflight_20260923_v1/** text eol=lf
+
+# Preserve the public projections of the completed role-development observations.
+/data/evaluation/results/golden_flash_source_pair_result_346213c.json text eol=lf
+/data/evaluation/results/golden_role_application_result_346213c.json text eol=lf
+
+# Bind the knowledge-time control plan and candidate manifests across platforms.
+/data/evaluation/datasets/golden_knowledge_time_retrievals_v1.json text eol=lf
+/data/evaluation/results/golden_knowledge_time_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_knowledge_time_result_883c23e.json text eol=lf
+/data/evaluation/results/golden_knowledge_time_citation_result_6c3a3db.json text eol=lf
+/data/evaluation/results/golden_knowledge_time_preparation_v2.json text eol=lf
+/examples/runtime_profiles/flash_glm_review_v1/prompt_programs/recent-form-review/manifest.json text eol=lf
+/examples/runtime_profiles/flash_v2_native/prompt_programs/recent-form-review/manifest.json text eol=lf
+
+# New offline diagnosis/paid preparation bind these exact source and evidence bytes.
+/app/evaluation/source_bound_report.py text eol=lf
+/scripts/check_source_bound_report.py text eol=lf
+/scripts/run_independent_edit_pair.py text eol=lf
+/scripts/run_review_model_comparison.py text eol=lf
+/data/evaluation/results/golden_source_responsibility_audit_v1.json text eol=lf
+/data/evaluation/results/golden_independent_edit_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_independent_edit_result_58449abb.json text eol=lf
+/scripts/run_flash_knowledge_time_review_pair.py text eol=lf
+/data/evaluation/results/golden_flash_knowledge_time_review_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_flash_knowledge_time_review_result_v1.json text eol=lf
+/data/evaluation/datasets/golden_source_time_reference_audit_v2.json text eol=lf
+/data/evaluation/results/golden_flash_knowledge_time_review_preparation_v2.json text eol=lf
+/data/evaluation/results/golden_flash_knowledge_time_review_result_v2.json text eol=lf
+/app/evaluation/source_patch_editor.py text eol=lf
+/scripts/check_source_patch_editor.py text eol=lf
+/scripts/run_source_patch_pair.py text eol=lf
+/data/evaluation/results/golden_source_patch_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_source_patch_feasibility_v1.json text eol=lf
+/data/evaluation/results/golden_source_patch_pair_result_v1.json text eol=lf
+/data/evaluation/results/golden_omitted_source_metadata_audit_v1.json text eol=lf
+/data/evaluation/results/golden_role_source_metadata_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_role_source_metadata_result_v1.json text eol=lf
+/app/evaluation/golden_role_notes.py text eol=lf
+/data/evaluation/results/golden_role_note_contract_audit_v1.json text eol=lf
+/data/evaluation/results/golden_role_note_qualification_pair_result_v1.json text eol=lf
+/data/evaluation/results/golden_role_tool_delivery_audit_v1.json text eol=lf
+/data/evaluation/results/golden_role_context_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_role_context_result_v1.json text eol=lf
+/data/evaluation/results/golden_role_clarity_preparation_v1.json text eol=lf
+/data/evaluation/results/golden_role_clarity_result_v1.json text eol=lf

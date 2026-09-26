@@ -5,6 +5,7 @@ from __future__ import annotations
 from app.agent.context import context_contract_descriptor
 from app.evaluation.prompt_context_identity import build_component_fingerprints
 from app.skills.catalog import SkillCatalog
+from app.runtime.coach_contract import require_coach_contract, coach_component_fingerprint
 
 from .catalog import PromptProgramCatalog, PromptProgramCatalogError
 from .models import VerifiedPromptProgram
@@ -17,9 +18,12 @@ class PromptProgramResolver:
         self,
         catalog: PromptProgramCatalog,
         skill_catalog: SkillCatalog,
+        *,
+        coach_contract=None,
     ) -> None:
         self._catalog = catalog
         self._skill_catalog = skill_catalog
+        self.coach_contract = require_coach_contract(coach_contract)
 
     def resolve(
         self,
@@ -64,15 +68,93 @@ class PromptProgramResolver:
             raise PromptProgramCatalogError(
                 "Prompt Program evaluation contract ID is unsupported"
             )
-        if manifest.evaluation_contract_version != "1.1.0":
+        grounded = self.coach_contract is not None and self.coach_contract.grounded
+        expected_evaluation = self.coach_contract.descriptor()["evaluation_contract_version"] if grounded else "1.1.0"
+        if manifest.evaluation_contract_version != expected_evaluation:
             raise PromptProgramCatalogError(
-                "Prompt Program requires secure Evaluation contract 1.1.0"
+                "Prompt Program evaluation version does not match execution contract"
             )
 
         current = build_component_fingerprints(
             skill,
-            evaluation_contract_version=manifest.evaluation_contract_version,
+            evaluation_contract_version="1.1.0",
         )
+        if grounded:
+            from app.evaluation.coach_grounded_contract import grounded_component_fingerprints
+            current = grounded_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.7":
+                from app.evaluation.golden_inference_audit import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.8":
+                from app.evaluation.golden_inference_audit_v2 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.9":
+                from app.evaluation.golden_inference_audit_v3 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.10":
+                from app.evaluation.golden_inference_coverage import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.13":
+                from app.evaluation.golden_inference_scope_v3 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version in ("1.3.14", "1.3.15"):
+                from app.evaluation.golden_inference_scope_v4 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.25":
+                from app.evaluation.golden_evidence_runtime_v7 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.27":
+                from app.evaluation.golden_context_runtime import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.26":
+                from app.evaluation.golden_evidence_runtime_v8 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.24":
+                from app.evaluation.golden_evidence_runtime_v6 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.23":
+                from app.evaluation.golden_evidence_runtime_v5 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.22":
+                from app.evaluation.golden_evidence_runtime_v4 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.21":
+                from app.evaluation.golden_evidence_runtime_v3 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.20":
+                from app.evaluation.golden_capacity_runtime import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.19":
+                from app.evaluation.golden_evidence_runtime_v2 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.18":
+                from app.evaluation.golden_evidence_runtime import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.17":
+                from app.evaluation.golden_fact_runtime import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.16":
+                from app.evaluation.golden_inference_scope_v5 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.12":
+                from app.evaluation.golden_inference_scope_v2 import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+            if self.coach_contract.version == "1.3.11":
+                from app.evaluation.golden_inference_scope import inference_component_fingerprints
+                current = inference_component_fingerprints(skill)
+        if grounded and self.coach_contract.version == "1.4.6":
+            from app.runtime.native_coach_contract import component_fingerprints
+            current = component_fingerprints(skill)
+        if grounded and self.coach_contract.version == "1.5.2":
+            from app.runtime.role_coach_contract import component_fingerprints
+            current = component_fingerprints(skill)
+        if grounded and self.coach_contract.version == "1.5.3":
+            from app.runtime.coarse_role_contract import component_fingerprints
+            current = component_fingerprints(skill)
+        if self.coach_contract is not None:
+            if skill_version != self.coach_contract.descriptor()["skill_version"] or manifest.program_version != self.coach_contract.descriptor()["program_version"]:
+                raise PromptProgramCatalogError("Coach contract requires independent Skill/Program versions")
+            current = (*current, coach_component_fingerprint(self.coach_contract))
         if current != manifest.component_fingerprints:
             raise PromptProgramCatalogError(
                 "Prompt Program component fingerprint drift detected"

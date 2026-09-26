@@ -1,0 +1,314 @@
+{
+  "schema_version": "1.0",
+  "program_id": "recent-form-review-coach",
+  "program_version": "3.2.0",
+  "skill_name": "recent-form-review",
+  "skill_version": "0.6.2",
+  "context_contract_id": "context-builder-v1",
+  "context_contract_version": "1.0.0",
+  "evaluation_contract_id": "coach_evaluation",
+  "evaluation_contract_version": "3.6.0",
+  "component_fingerprints": [
+    {
+      "component_id": "skill_manifest",
+      "source": "skills/recent-form-review/manifest",
+      "sha256": "a7ed1a5e9348ab4454a479bf4e3e2fc271184ad8c0c5f38a14ab23b4c1386486"
+    },
+    {
+      "component_id": "skill_instructions",
+      "source": "skills/recent-form-review/SKILL.md",
+      "sha256": "f3207adead537a2999749fd0f882e744ebf10cb93c878924cab7b763cb080c23"
+    },
+    {
+      "component_id": "context_contract",
+      "source": "app.agent.context:context-builder-v1",
+      "sha256": "f7083aafd7f515cd02a40c4d3c38480b10a0b4957e5dcdd29c2de8ced73aa2b9"
+    },
+    {
+      "component_id": "knowledge_tool_contract",
+      "source": "app.tools.adapters.knowledge:knowledge.search@2.1.0",
+      "sha256": "d191445af1d0a93e67e8f0d72f097af2042d2c1a90502a52e1503a53f319f109"
+    },
+    {
+      "component_id": "evaluation_schema",
+      "source": "evaluation_schema",
+      "sha256": "df3914d79f94b82e435b0318ced9c1dfa70687dda085c6c38084e6239da8fe72"
+    },
+    {
+      "component_id": "generation_policy",
+      "source": "generation_policy",
+      "sha256": "d059bfb9b0a5a2e050ffcd4511fb9228ed130864ea331034e395111ffa3225ae"
+    },
+    {
+      "component_id": "app.evaluation.golden_native_issues_review",
+      "source": "app/evaluation/golden_native_issues_review.py",
+      "sha256": "fd51ed703f3961b4f0cbd6af7b7b0f76928505ae354f4b04026f50ead1af4f47"
+    },
+    {
+      "component_id": "app.evaluation.golden_semantic_review",
+      "source": "app/evaluation/golden_semantic_review.py",
+      "sha256": "f72dca85969b4cf3ef12f2567f19d98ab91ec94e5acf7ee5fe0b1ccdb4048e78"
+    },
+    {
+      "component_id": "app.evaluation.golden_semantic_sources",
+      "source": "app/evaluation/golden_semantic_sources.py",
+      "sha256": "78462ff5032778b78809961c259414b8183efd681c7367b78951e7518adb5cce"
+    },
+    {
+      "component_id": "app.evaluation.golden_contextual_sources",
+      "source": "app/evaluation/golden_contextual_sources.py",
+      "sha256": "db891f59333ef8fb82fb0f8af4cd222eb9a0bdd34d828dba140376d9023621be"
+    },
+    {
+      "component_id": "app.evaluation.golden_computed_evidence",
+      "source": "app/evaluation/golden_computed_evidence.py",
+      "sha256": "d9c3c74102c5e4524f454ea306c559108c9bbf112887c106fbd44f03f2baacef"
+    },
+    {
+      "component_id": "app.evaluation.golden_integrated_runtime",
+      "source": "app/evaluation/golden_integrated_runtime.py",
+      "sha256": "b927c90bdb61a104ef310aaa68992f173db3f94f20d82a1727d8a4ffd594a958"
+    },
+    {
+      "component_id": "app.evaluation.golden_stream_bridge",
+      "source": "app/evaluation/golden_stream_bridge.py",
+      "sha256": "9cae5009df191f10c94808c8512582128641c3523572e908e148333fd46dd345"
+    },
+    {
+      "component_id": "app.runtime.review_sender",
+      "source": "app/runtime/review_sender.py",
+      "sha256": "5148f82b0df38a7b982fff47153f6ea266c7851d61e3b53f1bb1f6f4d42cea56"
+    },
+    {
+      "component_id": "app.runtime.receipted_provider_factory",
+      "source": "app/runtime/receipted_provider_factory.py",
+      "sha256": "5c3a9c7d0f3b0e9981b0c149865751d3273a758a9e66e2ba2c842a1f65f2b36c"
+    },
+    {
+      "component_id": "app.runtime.native_coach_contract",
+      "source": "app/runtime/native_coach_contract.py",
+      "sha256": "b56924300b78364926e17816b0652d629d920efdaef266f03ce09e71a43582d5"
+    },
+    {
+      "component_id": "app.product.native_coach_composition",
+      "source": "app/product/native_coach_composition.py",
+      "sha256": "18affdb4f1d188083ff52b82fc6fd203d1a1da49d645750ffd5e2613c6f525c0"
+    },
+    {
+      "component_id": "app.product.recent_review_service",
+      "source": "app/product/recent_review_service.py",
+      "sha256": "e4ecaf5dd177db17b5d54cd02525770fd5647f840a9b55e77d8aec3b0c0c3103"
+    },
+    {
+      "component_id": "app.evaluation.golden_source_context",
+      "source": "app/evaluation/golden_source_context.py",
+      "sha256": "bf5a792ec5e43c74057bb187f7802d6538151934ba12221d5dba96b251f1c7f4"
+    },
+    {
+      "component_id": "app.product.coach_positions",
+      "source": "app/product/coach_positions.py",
+      "sha256": "cb6d8ccc7944c8328d3f8dd4e420b0df70d53c3b7c0fd6594ab1ae6d2ea65e3c"
+    },
+    {
+      "component_id": "app.tools.adapters.knowledge",
+      "source": "app/tools/adapters/knowledge.py",
+      "sha256": "21ae0584e8683ea49d31886968c2de956c3e810b62211745f2ba140732802f44"
+    },
+    {
+      "component_id": "app.harness.steps",
+      "source": "app/harness/steps.py",
+      "sha256": "231e4f3e27e67aaa853f7aef90fc3206564a4a5222f2186fcbfb10c75a7cedb6"
+    },
+    {
+      "component_id": "app.harness.knowledge",
+      "source": "app/harness/knowledge.py",
+      "sha256": "16b40ae0f1fc856c682367ed9b357646f5a51a5c57cd34ed2c8726b74cfb59f6"
+    },
+    {
+      "component_id": "app.harness.adapters",
+      "source": "app/harness/adapters.py",
+      "sha256": "e6a00a9a92a350a5e4770adfdbb423814a281f4cdaefb706cabe7993da104ff5"
+    },
+    {
+      "component_id": "app.harness.runtime",
+      "source": "app/harness/runtime.py",
+      "sha256": "c2e240851eff48d44a49d5c588da1b498cf3c477b8f48ef8f200a6edf2dfde91"
+    },
+    {
+      "component_id": "app.agent.context",
+      "source": "app/agent/context.py",
+      "sha256": "5df787d40e7ea905661406f9ff4551da8ab826adceea89d41f0ebc4c1d7c0b3d"
+    },
+    {
+      "component_id": "app.runtime.runtime",
+      "source": "app/runtime/runtime.py",
+      "sha256": "791dab77b987361c47b2c6ff6fb5c77c33f9348562ae990aab7eb655433db9e3"
+    },
+    {
+      "component_id": "initial_review_policy",
+      "source": "initial_review_policy",
+      "sha256": "3e6f0b0ea817da26212697bf899bff90d171a446bd8c5f4619a0ee86cf61939b"
+    },
+    {
+      "component_id": "reassessment_policy",
+      "source": "reassessment_policy",
+      "sha256": "bdd2c386154963203d225150aeaec6c667f4745fdcef03314b6ba839c9dd3679"
+    },
+    {
+      "component_id": "revision_policy",
+      "source": "revision_policy",
+      "sha256": "6d229f2342c387df62853bf5c61437ae549dd6086ff518300560ac819a0be7ab"
+    },
+    {
+      "component_id": "source_projection",
+      "source": "source_projection",
+      "sha256": "4e1004000efc8e77c72c9aa8e33e6896d102e7a77dbe53613ff729447abe55b8"
+    },
+    {
+      "component_id": "request_delivery",
+      "source": "request_delivery",
+      "sha256": "02a981655dcba208cb14dfae68273e121d55e6c328cbd5b0d6c93c0ec7184d17"
+    },
+    {
+      "component_id": "review_output",
+      "source": "review_output",
+      "sha256": "d25226a3bfed8d6606aa284b6744dcc0092ac3299145a00393998e700698c3bb"
+    },
+    {
+      "component_id": "role_descriptor",
+      "source": "role_descriptor",
+      "sha256": "d297fcd01ce992ef9cfdde3fa73ac118add1d5b460a3f9d028b1d96d4a4307c0"
+    },
+    {
+      "component_id": "app.evaluation.golden_role_review",
+      "source": "app/evaluation/golden_role_review.py",
+      "sha256": "0df297d7d865478f1298c1c9b8fdd37be435b6c3a92c879861c69cc22699d9ff"
+    },
+    {
+      "component_id": "app.evaluation.golden_role_notes",
+      "source": "app/evaluation/golden_role_notes.py",
+      "sha256": "6c678ab01689d5bab3bd7cea074139ab88ec264b4b82d599101fa9f7e8b06002"
+    },
+    {
+      "component_id": "app.evaluation.golden_role_tool_delivery",
+      "source": "app/evaluation/golden_role_tool_delivery.py",
+      "sha256": "b7a92c204c675d2049ae7ee713e5c9335d30939cfd0be32d3cd92aaac5f5af0a"
+    },
+    {
+      "component_id": "app.evaluation.golden_role_clarity",
+      "source": "app/evaluation/golden_role_clarity.py",
+      "sha256": "1b65f57b16b6b486c7d1e3a98aadddb1fdc3cb5336efe13a495de8b323503088"
+    },
+    {
+      "component_id": "app.evaluation.golden_native_partitioned_tool_review",
+      "source": "app/evaluation/golden_native_partitioned_tool_review.py",
+      "sha256": "e5d35ede3151429cbbd51eb25d80256ce3668011c1cb299b2ab682d6cd6a7df8"
+    },
+    {
+      "component_id": "app.evaluation.golden_native_tool_review",
+      "source": "app/evaluation/golden_native_tool_review.py",
+      "sha256": "27f3e2a4aaf1aa5f446d70de04cf902aa44767cdad6feda143283d6b1408d3aa"
+    },
+    {
+      "component_id": "app.evaluation.golden_native_business_policy",
+      "source": "app/evaluation/golden_native_business_policy.py",
+      "sha256": "dc70edc303a614fb1133941f478a6179a53c48a1d513911a366abeb92a311f3f"
+    },
+    {
+      "component_id": "app.evaluation.golden_explicit_source_projection",
+      "source": "app/evaluation/golden_explicit_source_projection.py",
+      "sha256": "39c9aea06682ca1834f4afc9887ce2962f17c2a3b34a0cc1726d00156077aee1"
+    },
+    {
+      "component_id": "app.runtime.role_coach_contract",
+      "source": "app/runtime/role_coach_contract.py",
+      "sha256": "9cabf27cc93d25a906473390c3f0afe463221452ed19ed016adb301f0a6af699"
+    },
+    {
+      "component_id": "app.runtime.coach_contract",
+      "source": "app/runtime/coach_contract.py",
+      "sha256": "3e03253b3848466f2d2ea054ebef08e5a5543a3365c0f9a1a17c84a5b1fb897e"
+    },
+    {
+      "component_id": "app.providers.zhipu_profiles",
+      "source": "app/providers/zhipu_profiles.py",
+      "sha256": "6105062dc42f684ebe07808541fe6d269f1ed4a3540cd91b393c32fd7dd4131e"
+    },
+    {
+      "component_id": "app.runtime.reviewer_roles",
+      "source": "app/runtime/reviewer_roles.py",
+      "sha256": "67de3448c69bc2bb91b8e3d78bb679c40fc0ac662c15f132dcddc25412149f79"
+    },
+    {
+      "component_id": "app.runtime.coach_budget",
+      "source": "app/runtime/coach_budget.py",
+      "sha256": "9c2183a069c5dd06ba2f722ff4c9dfacabd8960001e961b35ceb573755460f8f"
+    },
+    {
+      "component_id": "app.runtime.coach_context",
+      "source": "app/runtime/coach_context.py",
+      "sha256": "d82c0d1a970023a53e6c1dc3d636c9ab7dada8bc598b343d79b088ef86e270fb"
+    },
+    {
+      "component_id": "app.runtime.observed_provider",
+      "source": "app/runtime/observed_provider.py",
+      "sha256": "5e452840d8c5c0c4a4654ae3e72a8d5046f886f3ecb297c45d06e86c038cc40b"
+    },
+    {
+      "component_id": "app.runtime.recorder",
+      "source": "app/runtime/recorder.py",
+      "sha256": "24c307dee84dcad7e68b0c6df2ac6921fcb7c8834e05c33c0780f99daa98658f"
+    },
+    {
+      "component_id": "app.runtime.models",
+      "source": "app/runtime/models.py",
+      "sha256": "c364f1fc7dbe12221585897062e134dc5237955fb05caec77e55e8932c502c13"
+    },
+    {
+      "component_id": "app.model_runtime",
+      "source": "app/model_runtime.py",
+      "sha256": "7c2f227c21e518858ccaa960fdadad5af4ca505af31b1c840ba0d21d64210728"
+    },
+    {
+      "component_id": "app.evaluation.golden_role_coarse",
+      "source": "app/evaluation/golden_role_coarse.py",
+      "sha256": "48067c4d861ea4809ab87ab5d6fda2ba808529cf8e4f73e327acf147b91095cc"
+    },
+    {
+      "component_id": "app.evaluation.golden_coarse_source_projection",
+      "source": "app/evaluation/golden_coarse_source_projection.py",
+      "sha256": "c9a2762db605298a1f42f445e0d81b02ce42ebebbf587d922291e7bbcaa83490"
+    },
+    {
+      "component_id": "app.runtime.coarse_role_contract",
+      "source": "app/runtime/coarse_role_contract.py",
+      "sha256": "e825860745ac0e2afaa1d07f681cb3db081cc0a7d34cfed63d052c43991bddb4"
+    },
+    {
+      "component_id": "app.evaluation.coarse_role_qualification",
+      "source": "app/evaluation/coarse_role_qualification.py",
+      "sha256": "248e46e5c0e98319239ed9f2f55c9aef97d081f7849651d39b5904e84d5baa43"
+    },
+    {
+      "component_id": "app.prompt_program.resolver",
+      "source": "app/prompt_program/resolver.py",
+      "sha256": "0a4f00df96068086a01a0b646404e7c8c46bb6f40d00961ba71aefd9d00834ea"
+    },
+    {
+      "component_id": "app.prompt_program.models",
+      "source": "app/prompt_program/models.py",
+      "sha256": "3a3cfb115ede10d7da153f388f49af9bae7a2c2cba77a130dc98c0635e1b9982"
+    },
+    {
+      "component_id": "app.evaluation.golden_review_source_catalog",
+      "source": "app/evaluation/golden_review_source_catalog.py",
+      "sha256": "22e34b5099367f6ced516dcf29ea5b14e3b2c8a84f8ffc739b428391594d703d"
+    },
+    {
+      "component_id": "coach_execution_contract",
+      "source": "app.runtime.reviewer_roles:v1.5.3",
+      "sha256": "c40398b96be3c187976b96089a18d7967c20a51cdf84f9a46abd3d6d410a3e59"
+    }
+  ],
+  "program_sha256": "5b3974b7a4f1dea054c24fd05168227f6c5aec2615b0a299e170ec131857cb62"
+}

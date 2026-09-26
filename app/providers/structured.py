@@ -62,12 +62,14 @@ def decode_structured_response(
     contract: StructuredResponseContract,
     output_model: type[OutputModelT],
     repair: StructuredRepair | None = None,
+    validate_context: Callable[[OutputModelT], None] | None = None,
 ) -> StructuredDecodeResult[OutputModelT]:
     """Validate once, optionally repair once, then fail closed."""
 
     _validate_configuration(contract=contract, output_model=output_model)
     try:
         value = _decode_once(response=response, output_model=output_model)
+        _validate_context(value, validate_context)
     except _InvalidStructuredOutput as first_error:
         if repair is None:
             raise _safe_error(response.provider) from None
@@ -85,6 +87,7 @@ def decode_structured_response(
                 response=repaired_response,
                 output_model=output_model,
             )
+            _validate_context(repaired_value, validate_context)
         except _InvalidStructuredOutput:
             raise _safe_error(response.provider) from None
         return StructuredDecodeResult(
@@ -98,6 +101,14 @@ def decode_structured_response(
         response=response,
         repair_attempted=False,
     )
+
+
+def _validate_context(value, validate_context):
+    if validate_context is not None:
+        try:
+            validate_context(value)
+        except ValueError:
+            raise _InvalidStructuredOutput("context_validation_failed") from None
 
 
 def _validate_configuration(

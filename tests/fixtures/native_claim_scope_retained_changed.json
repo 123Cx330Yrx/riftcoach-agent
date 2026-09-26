@@ -1,0 +1,41 @@
+{
+  "case_id": "explicit_universal_metrics",
+  "implementation_sha": "0cdb1c7dd0b51d7b1f23b21b1bb4b092f159425b",
+  "source_input_sha256": "39ab474693151b624560c80a26790d748c9279104efad8a8e598635a5641623f",
+  "report_sha256": "2f642924110e98975b7d82baa49f43e039d2876b088e33a861398261354734c2",
+  "run_id": "native-review-0cdb1c7-claim-4",
+  "origin_result": "data/evaluation/results/golden_native_claim_scope_result_0cdb1c7.json",
+  "origin_result_sha256": "53c7c5915d52f11c04518207d86d7a9e61a24e9f1350461699b827f86337452a",
+  "responses": [
+    {
+      "ordinal": 1,
+      "path": "data/runs/inference_development/native-review-0cdb1c7-claim-4/explicit_universal_metrics/response-001.json",
+      "raw_file_sha256": "fa78cfb89f0d0db8726699c0744b873191cf264b6732b8a5f79e13ced49a9948",
+      "content_sha256": "1c96eaaf45f9d5efcb9cfe3a0af965ab0458312668f0aef98045cd5ffe6d615a",
+      "content": "\n{\n  \"score\": 80,\n  \"verdict\": \"needs_revision\",\n  \"issues\": [\n    {\n      \"severity\": \"medium\",\n      \"category\": \"fact_error\",\n      \"source_ids\": [1, 16, 20],\n      \"explanation\": \"Block 4 声称'所选全部 5 局的每一个指标均值都被辅助局拉低，包括视野分与 15 分钟前死亡'。这是全称断言，但对视野分不成立：辅助局视野分为 90，远高于中单各局（25–43），全样本视野分均值 45 反而被辅助局抬高，高于纯中单口径均值 33.5（中单胜局 33.5、败局 34.0）。该句把视野分列为'被拉低'的例子与数据方向相反，会误导读者对视野指标混合口径的解读。\",\n      \"suggested_correction\": \"将 Block 4 末句改为：'所选 5 局中，多数指标（如补刀、伤害、经济）的均值受辅助局拖累，但视野分均值反而被辅助局抬高（辅助局 90 对中单各局 25–43），15 分钟前死亡均值也被辅助局抬高，应按位置分开解读。'删除'每一个指标均值都被辅助局拉低'的全称表述。\",\n      \"block\": 4\n    }\n  ],\n  \"issue_resolutions\": []\n}\n``**审查说明**：报告整体质量较高——观摩对象与阅读者的区分、单局样本限定、条件性建议、[K1]–[K5] 引用、无 OP.GG 数据的正确声明均符合要求。主要问题是 Block 4 对全样本均值方向的全称断言中，视野分实例与实际数据方向相反（辅助局 90 抬高而非拉低均值），属可修复的事实错误，故判定 needs_revision。",
+      "usage": {
+        "cached_input_tokens": 0,
+        "input_tokens": 11812,
+        "output_tokens": 2692
+      },
+      "finish_reason": "stop",
+      "model": "glm-5.3-flash",
+      "provider": "zhipu"
+    },
+    {
+      "ordinal": 2,
+      "path": "data/runs/inference_development/native-review-0cdb1c7-claim-4/explicit_universal_metrics/response-002.json",
+      "raw_file_sha256": "8904c211cd969a96ec2bd52b7f1a9f4cb56278a206c468bd9ece7322a4358da3",
+      "content_sha256": "daad79c313e7ffa07d76ce866cc978e428ddd228d069682c597a3b4c6de3ea41",
+      "content": "{\"score\":80,\"verdict\":\"needs_revision\",\"issues\":[{\"severity\":\"medium\",\"category\":\"fact_error\",\"source_ids\":[1,16,20],\"explanation\":\"Block 4 声称'所选全部 5 局的每一个指标均值都被辅助局拉低，包括视野分与 15 分钟前死亡'。这是全称断言，但对视野分不成立：辅助局视野分为 90，远高于中单各局（25–43），全样本视野分均值 45 反而被辅助局抬高，高于纯中单口径均值 33.5（中单胜局 33.5、败局 34.0）。15 分钟前死亡同样被辅助局抬高：全样本均值 2.6 高于纯中单口径均值 1.5（辅助局 7 次对中单各局 0–3 次）。该句把这两个指标列为'被拉低'的例子与数据方向相反，会误导读者对混合口径的解读。\",\"suggested_correction\":\"将 Block 4 末句改为：'所选 5 局中，多数指标（如补刀、伤害、经济）的均值受辅助局拖累，但视野分均值和 15 分钟前死亡均值反而被辅助局抬高（视野分 90 对中单各局 25–43；早期死亡 7 次对中单各局 0–3 次），应按位置分开解读。'删除'每一个指标均值都被辅助局拉低'的全称表述。\",\"block\":4}],\"issue_resolutions\":[{\"previous_id\":1,\"disposition\":\"retained\",\"final_issue\":1,\"source_ids\":[1,16,20],\"explanation\":\"重审全文后确认 Block 4 的全称断言'每一个指标均值都被辅助局拉低'仍未修正：视野分（辅助局 90 抬高全样本均值 45，高于中单口径 33.5–34.0）和 15 分钟前死亡（全样本 2.6 高于中单口径 1.5）方向均与断言相反。旧问题全部字段原样保留，报告其余部分（数字、范围限定、条件建议、知识引用、无 OP.GG 数据声明）经核对与来源一致。\"}]}",
+      "usage": {
+        "cached_input_tokens": 64,
+        "input_tokens": 12545,
+        "output_tokens": 2508
+      },
+      "finish_reason": "stop",
+      "model": "glm-5.3-flash",
+      "provider": "zhipu"
+    }
+  ]
+}

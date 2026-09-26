@@ -10,6 +10,7 @@ import pytest
 from pydantic import ValidationError
 
 from app.evaluation.domain_e2e import load_domain_dataset
+from app.agent.context import CANDIDATE_CONTEXT_SAFETY_POLICY_V1
 from app.evaluation.prompt_context_identity import (
     PromptContextSnapshot,
     build_prompt_context_snapshot,
@@ -331,3 +332,32 @@ def test_v11_snapshot_persists_only_digests_not_case_or_fixture_bodies() -> None
         "MIDKING",
     ):
         assert protected_text not in serialized
+
+
+def test_v11_snapshot_policy_addendum_is_explicit_and_identity_bound() -> None:
+    cases = _fresh_cases()
+    baseline = build_prompt_context_snapshot_for_cases(
+        skills_root="skills",
+        player_summary=_summary(),
+        deterministic_report=_report(),
+        cases=cases,
+        snapshot_id="synthetic-candidate-policy-context-v1",
+    )
+    hardened = build_prompt_context_snapshot_for_cases(
+        skills_root="skills",
+        player_summary=_summary(),
+        deterministic_report=_report(),
+        cases=cases,
+        snapshot_id="synthetic-candidate-policy-context-v1",
+        policy_addendum=CANDIDATE_CONTEXT_SAFETY_POLICY_V1,
+    )
+
+    assert baseline.snapshot_sha256 != hardened.snapshot_sha256
+    assert all(
+        "candidate:policy_addendum" not in row.selected_section_ids
+        for row in baseline.case_contexts
+    )
+    assert all(
+        "candidate:policy_addendum" in row.selected_section_ids
+        for row in hardened.case_contexts
+    )

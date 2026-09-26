@@ -1,0 +1,404 @@
+{
+  "schema_version": "golden-scope-contrast-controls-v1",
+  "created_at": "2026-09-19",
+  "status": "offline_analyst_design_not_model_evaluated",
+  "author": {
+    "role": "analyst",
+    "artifact_kind": "synthetic_development_controls",
+    "case_oracle_owner_approved": false
+  },
+  "held_out": false,
+  "model_evaluated": false,
+  "standard_id": "whole-context-acceptance-v1",
+  "authority_boundary": "The owner approved whole-context acceptance, not these case labels or a unique cohort for the old frozen contextual_01. These are independently authored synthetic diagnostic controls, never a user-authored gold standard or evidence of model quality.",
+  "frozen_dataset_unchanged": {
+    "path": "data/evaluation/datasets/golden_contextual_reports_v2.json",
+    "sha256": "35892dc275b4b172edb3fa0a54af8625a59829a39002247b1cf59b0d10d34742",
+    "positive_report_sha256": "84e4b38931255f7a3b7e5ce322987eb997302c7f46d922a7aa8ab4682479b219",
+    "positive_expected_report": "accept",
+    "negative_expected_report": "reject"
+  },
+  "model_input_boundary": {
+    "allowed": [
+      "fixture.user_utterance",
+      "fixture.player",
+      "fixture.match_rows",
+      "case.report"
+    ],
+    "withheld": [
+      "case.id",
+      "case.category",
+      "case.expected",
+      "case.rationale",
+      "case.report_sha256",
+      "derived_checks",
+      "authority_boundary",
+      "frozen_dataset_unchanged"
+    ],
+    "note": "A future adapter must bind every report to the exact raw synthetic rows and withhold analyst labels, rationales, cohort answers and acceptance checks. No live adapter or production qualification is provided by this dataset.",
+    "optional_allowed": "An independently recomputed complete arithmetic catalog, equally covering all supplied cohorts and metrics, may be provided if the future method calls for it. Analyst expected values and case-specific selections stay withheld."
+  },
+  "fixture": {
+    "id": "synthetic-five-games-divergent-cohorts-v1",
+    "synthetic": true,
+    "player": {
+      "name": "合成观摩对象A",
+      "relationship_to_reader": "observed_player_not_reader"
+    },
+    "user_utterance": "复核这份合成观摩报告的数值、范围和推断；比赛属于被观摩对象，不是阅读者。只根据所给五场记录判断，不外推未来或长期能力。",
+    "match_rows": [
+      {
+        "evidence_ref": 1,
+        "match_id": "synthetic-M1",
+        "role": "MIDDLE",
+        "win": true,
+        "cs_per_min": 10,
+        "gold_per_min": 500
+      },
+      {
+        "evidence_ref": 2,
+        "match_id": "synthetic-M2",
+        "role": "MIDDLE",
+        "win": true,
+        "cs_per_min": 8,
+        "gold_per_min": 520
+      },
+      {
+        "evidence_ref": 3,
+        "match_id": "synthetic-M3",
+        "role": "MIDDLE",
+        "win": false,
+        "cs_per_min": 9,
+        "gold_per_min": 450
+      },
+      {
+        "evidence_ref": 4,
+        "match_id": "synthetic-M4",
+        "role": "MIDDLE",
+        "win": false,
+        "cs_per_min": 11,
+        "gold_per_min": 470
+      },
+      {
+        "evidence_ref": 5,
+        "match_id": "synthetic-U1",
+        "role": "UTILITY",
+        "win": false,
+        "cs_per_min": 1,
+        "gold_per_min": 900
+      }
+    ],
+    "missing_information": [
+      "No future games, long-term population, causality, reader-owned games or training intent is supplied."
+    ],
+    "note": "All identities and numeric values are analyst-authored synthetic data. They are not ShowMaker records, Riot observations or OP.GG evidence."
+  },
+  "derived_checks": {
+    "host_only": true,
+    "arithmetic": "Use Decimal from the raw numeric values; render nonterminating means with ROUND_HALF_UP at the stated two-place display precision.",
+    "cohorts": {
+      "MIDDLE": {
+        "members": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "wins": [
+          1,
+          2
+        ],
+        "losses": [
+          3,
+          4
+        ],
+        "cs_per_min": {
+          "win_mean_exact": "9",
+          "loss_mean_exact": "10",
+          "mean_direction": "less",
+          "all_pairs": "overlap"
+        },
+        "gold_per_min": {
+          "win_mean_exact": "510",
+          "loss_mean_exact": "460",
+          "mean_direction": "greater",
+          "all_pairs": "greater"
+        }
+      },
+      "selected": {
+        "members": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "wins": [
+          1,
+          2
+        ],
+        "losses": [
+          3,
+          4,
+          5
+        ],
+        "cs_per_min": {
+          "win_mean_exact": "9",
+          "loss_mean_exact": "7",
+          "mean_direction": "greater",
+          "all_pairs": "overlap"
+        },
+        "gold_per_min": {
+          "win_mean_exact": "510",
+          "loss_mean_fraction": "1820/3",
+          "loss_mean_display_2dp": "606.67",
+          "mean_direction": "less",
+          "all_pairs": "overlap"
+        }
+      }
+    },
+    "discriminator": "Adding the UTILITY loss reverses both win/loss mean directions and removes the MIDDLE gold all-pairs relation. Correct arithmetic on the wrong cohort therefore cannot accidentally satisfy every contrast."
+  },
+  "evaluation_boundary": {
+    "native_wire_adapter_required": true,
+    "exact_decision_enum_not_prescribed_for_supported_arithmetic": true,
+    "explanation_required": "Select the cohort and operation from report meaning, show the actual antecedent, and cite all required operands. The target verdict alone is insufficient.",
+    "source_witness_rule": "A scope_source must support this target's actual object and sample; an existing quote, the nearest sentence, a generic disclaimer or a true calculation from another cohort does not establish that relation.",
+    "capacity_or_protocol_failure": "Record separately; never convert incomplete or malformed review output into a semantic pass.",
+    "frozen_ambiguous_case_rule": "Do not change old reports or labels, and do not treat failure on the old case's disputed unique-cohort assumption as failure of these new independent controls."
+  },
+  "cases": [
+    {
+      "id": "scope_explicit_middle_01",
+      "category": "explicit_four_middle",
+      "author": "analyst",
+      "synthetic": true,
+      "report": "# 合成样本观察\n\n本段只分析所选四场中单，另一场辅助不纳入比较；仅描述这四场，不外推长期或未来。\n\n四场中单里，赢局补刀均值为9/分钟，输局为10/分钟，赢局均值低于输局。",
+      "target": "四场中单里，赢局补刀均值为9/分钟，输局为10/分钟，赢局均值低于输局。",
+      "expected": {
+        "target_status": "supported",
+        "report_verdict": "pass",
+        "cohort": "MIDDLE",
+        "metric": "cs_per_min",
+        "operation": "win_loss_mean",
+        "relation": "less",
+        "required_operand_refs": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "scope_evidence": [
+          "本段只分析所选四场中单，另一场辅助不纳入比较"
+        ],
+        "forbidden_readings": [
+          "selected wins9 versus losses7 used to assess the explicitly four-MIDDLE target",
+          "mean direction treated as all-pairs direction"
+        ]
+      },
+      "rationale": "明确中单四场决定对象，原始行给9<10；selected的9>7方向相反，不能选一个更有利组替代原文。纯样本均值正确，不要求额外术语定义。",
+      "report_sha256": "655b2118e6c37f03541deac1d6d19dc51fc163d282dd6a797137f01750dce4be"
+    },
+    {
+      "id": "scope_explicit_selected_02",
+      "category": "explicit_all_five",
+      "author": "analyst",
+      "synthetic": true,
+      "report": "# 合成样本观察\n\n本段采用全部五场，包括四场中单和一场辅助；这是混合位置的描述，不能据此判断中单能力。\n\n全部五场中，赢局补刀均值为9/分钟，输局为7/分钟，赢局均值高于输局。",
+      "target": "全部五场中，赢局补刀均值为9/分钟，输局为7/分钟，赢局均值高于输局。",
+      "expected": {
+        "target_status": "supported",
+        "report_verdict": "pass",
+        "cohort": "selected",
+        "metric": "cs_per_min",
+        "operation": "win_loss_mean",
+        "relation": "greater",
+        "required_operand_refs": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "scope_evidence": [
+          "本段采用全部五场，包括四场中单和一场辅助"
+        ],
+        "forbidden_readings": [
+          "default to MIDDLE because most games are mid",
+          "mixed-position description treated as a position-specific deficit",
+          "mean direction treated as all-pairs direction"
+        ]
+      },
+      "rationale": "混合位置统计可以作为明确限定的描述。目标明说五场，9>7为真；改成四场会逆转结果。",
+      "report_sha256": "2f8eff94dcd035785341ef77ff25994043a5c93e6fd4aab70d8b25184e71dd97"
+    },
+    {
+      "id": "scope_cross_paragraph_middle_03",
+      "category": "unique_cross_paragraph_antecedent",
+      "author": "analyst",
+      "synthetic": true,
+      "report": "# 合成样本观察\n\n资料共有五场，但本节只比较四场中单，辅助场不参与本节判断。\n\n这四场的两场胜局经济/分钟为500、520，两场负局为450、470，每场胜局均高于每场负局。以下观察仅限这个样本，不预测其他对局。\n\n## 观察结论\n\n这一组的经济差异较稳定。",
+      "target": "这一组的经济差异较稳定。",
+      "expected": {
+        "target_status": "supported",
+        "report_verdict": "pass",
+        "cohort": "MIDDLE",
+        "metric": "gold_per_min",
+        "operation": "all_pairs",
+        "relation": "greater",
+        "required_operand_refs": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "scope_evidence": [
+          "本节只比较四场中单，辅助场不参与本节判断",
+          "这四场的两场胜局经济/分钟为500、520，两场负局为450、470，每场胜局均高于每场负局",
+          "以下观察仅限这个样本，不预测其他对局"
+        ],
+        "forbidden_readings": [
+          "require a separate dictionary definition of 较稳定",
+          "selected all-pairs greater, contradicted by synthetic-U1 gold900",
+          "assume the generic observation heading resets an explicitly retained section scope"
+        ]
+      },
+      "rationale": "唯一前件和逐行方向已明确，跨段后仍同组；符合已确认完整上下文原则，无须专门定义稳定。全部五场不具备该逐行关系，因此能检验真实指代而非巧合同向。",
+      "report_sha256": "03d786ccbe54eda7ec99151d8426c27e909ffcf98bdc69f72e59d600d541efae"
+    },
+    {
+      "id": "scope_mixed_as_middle_04",
+      "category": "mixed_group_mislabeled_as_middle",
+      "author": "analyst",
+      "synthetic": true,
+      "report": "# 合成样本观察\n\n本段声明只比较四场中单，辅助局不纳入。\n\n这四场中单的赢局补刀均值为9/分钟，输局为7/分钟，因此中单赢局均值更高。",
+      "target": "这四场中单的赢局补刀均值为9/分钟，输局为7/分钟，因此中单赢局均值更高。",
+      "expected": {
+        "target_status": "unsupported",
+        "report_verdict": "needs_revision",
+        "claimed_cohort": "MIDDLE",
+        "metric": "cs_per_min",
+        "operation": "win_loss_mean",
+        "correct_values": {
+          "win_mean": "9",
+          "loss_mean": "10",
+          "relation": "less"
+        },
+        "required_operand_refs": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "must_flag": [
+          "loss_mean_7_comes_from_mixed_selected_not_middle",
+          "direction_wrong_for_explicit_middle_scope"
+        ],
+        "forbidden_repairs": [
+          "silently choose selected to make the existing four-MIDDLE text pass",
+          "treat true selected arithmetic as support for a middle-specific statement"
+        ],
+        "permitted_report_correction": "保留四场中单范围，将输局均值改为10/分钟、方向改为赢局低于输局。"
+      },
+      "rationale": "数字7能在另一口径算出，但原文明确四场中单。必须把数值与对象一起检查，不能只检查数字存在或方向是否在某组为真。",
+      "report_sha256": "2e8cb11ed6ca07e496e5a41384edd442a3fc0fd2248e7d4c14d620e35bc8e0d1"
+    },
+    {
+      "id": "scope_future_extrapolation_05",
+      "category": "unsupported_future_despite_valid_sample",
+      "author": "analyst",
+      "synthetic": true,
+      "report": "# 合成样本观察\n\n所选四场中单中，每场胜局经济/分钟均高于每场负局。这只是有限样本记录。\n\n因此，他未来所有中单输局的经济/分钟也都会低于未来所有中单赢局。",
+      "target": "因此，他未来所有中单输局的经济/分钟也都会低于未来所有中单赢局。",
+      "expected": {
+        "target_status": "unsupported",
+        "decision": "beyond_sample",
+        "report_verdict": "needs_revision",
+        "target_cohort": null,
+        "available_observed_cohort": "MIDDLE",
+        "metric": "gold_per_min",
+        "observed_relation": "greater",
+        "required_issue": "unsupported_future_universal_prediction",
+        "forbidden_readings": [
+          "earlier sample disclaimer cancels later explicit prediction",
+          "correct observed all-pairs calculation proves a future relation"
+        ],
+        "permitted_report_correction": "删除未来全称预测或改为尚待未来数据验证的明确问题，同时保留正确样本观察。"
+      },
+      "rationale": "样本计算正确也不提供未来证据；前句免责声明不取消后文独立预测。拒绝原因是外推，不是某个词未定义。",
+      "report_sha256": "db92dcbc6d72dfd41ea534b0643a763893f048e0e2d1e305165f404e98d6f91c"
+    },
+    {
+      "id": "scope_materially_ambiguous_06",
+      "category": "ambiguous_scope_changes_truth",
+      "author": "analyst",
+      "synthetic": true,
+      "report": "# 合成样本观察\n\n目前并列使用两套口径：四场中单，以及含辅助的全部五场；下述判断没有注明采用哪一套。\n\n在这一比较中，赢局补刀均值高于输局。",
+      "target": "在这一比较中，赢局补刀均值高于输局。",
+      "expected": {
+        "target_status": "ambiguous",
+        "decision": "ambiguous",
+        "report_verdict": "needs_revision",
+        "cohort": null,
+        "metric": "cs_per_min",
+        "operation": "win_loss_mean",
+        "alternatives": [
+          {
+            "cohort": "MIDDLE",
+            "relation": "less",
+            "supports_target": false
+          },
+          {
+            "cohort": "selected",
+            "relation": "greater",
+            "supports_target": true
+          }
+        ],
+        "required_issue": "identify_the_actual_comparison_scope",
+        "forbidden_readings": [
+          "infer selected solely because it makes the sentence true",
+          "infer MIDDLE from analyst preference or majority role"
+        ],
+        "permitted_report_correction": "先明确所用口径：若保留全部五场，限定为混位描述；若采用中单四场，则同步把方向改为赢局低于输局。"
+      },
+      "rationale": "此处显式留下两个未消解前件，而且选择会改变真假，属于实质范围不清。不能用预设答案或挑选能通过的cohort消除歧义；这不回溯改写旧contextual_01标签。",
+      "report_sha256": "d94e053846cb94a61569514bcf47e6aebb50361aa72e357addf5b52ae0ed78f0"
+    },
+    {
+      "id": "scope_cross_paragraph_selected_07",
+      "category": "explicit_total_scope_survives_middle_aside",
+      "author": "analyst",
+      "synthetic": true,
+      "report": "# 合成样本观察\n\n本节总样本为全部五场，以下另列的中单旁注不取代总样本。\n\n旁注：四场中单的赢局补刀均值为9/分钟，输局为10/分钟。\n\n## 总样本比较\n\n回到前述总样本，赢局补刀均值为9/分钟，高于输局的7/分钟；这不是中单能力结论。",
+      "target": "回到前述总样本，赢局补刀均值为9/分钟，高于输局的7/分钟；这不是中单能力结论。",
+      "expected": {
+        "target_status": "supported",
+        "report_verdict": "pass",
+        "cohort": "selected",
+        "metric": "cs_per_min",
+        "operation": "win_loss_mean",
+        "relation": "greater",
+        "required_operand_refs": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "scope_evidence": [
+          "本节总样本为全部五场，以下另列的中单旁注不取代总样本",
+          "回到前述总样本"
+        ],
+        "invalid_scope_witness": "只引用中单旁注作为本句范围定义",
+        "forbidden_readings": [
+          "nearest mention of four mid games overrides explicit total-sample return",
+          "always preserve the narrowest earlier cohort regardless of discourse"
+        ]
+      },
+      "rationale": "与四场跨段对照形成双向控制：范围来自真实指代关系，不是永远选较窄组，也不是永远选最近数字。selected正确，但scope_source仍必须对应总样本前件。",
+      "report_sha256": "0a9eaac1b1839d7b94c3f951548a58d56f386ee4e46f0e082920ba4a9e621384"
+    }
+  ],
+  "fixture_sha256": "a2c3e74651ed0f52995af414beb38f0f84cbd299e03e3b8837a184cccb091a56",
+  "fixture_hash_rule": "SHA256 of fixture JSON encoded as UTF-8, ensure_ascii=False, sort_keys=True, separators=(comma,colon)."
+}

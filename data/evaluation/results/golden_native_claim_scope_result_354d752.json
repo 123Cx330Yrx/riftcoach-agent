@@ -1,0 +1,794 @@
+{
+  "implementation_sha": "354d752b76506a78b543a86975487721c344a2df",
+  "ci_run": "35565312170",
+  "experiment": "golden-native-issues-review-v3.6",
+  "evidence_kind": "analyst_summary_of_immutable_provider_receipts",
+  "interruption_audit": {
+    "sha": "354d752b76506a78b543a86975487721c344a2df",
+    "ci": "35565312170",
+    "jobs": [
+      "pytest",
+      "postgres-migrations",
+      "packaging-smoke"
+    ],
+    "allSuccess": true,
+    "clean": true,
+    "noActiveProviderProcesses": true,
+    "noPriorRunDirs": true
+  },
+  "cases": [
+    {
+      "suite": "claim-scope",
+      "index": 1,
+      "run_id": "native-review-354d752-claim-1",
+      "manual_semantic_acceptance": true,
+      "notes": [
+        "完整上下文范围正确，95/pass无问题；未修订。",
+        "250.891秒完整stop；较慢但不是超时或输出耗尽。"
+      ],
+      "independent_review_acceptance": true,
+      "actual_requests_reconstructed_at_original_sha": true,
+      "independent_review_complete": true,
+      "independent_manual_decision": "accept",
+      "id": "original_topic_window",
+      "receipt": {
+        "cases": [
+          {
+            "attempted_calls": 1,
+            "automatic_path_pass": true,
+            "completed_calls": 1,
+            "expected_report": "accept",
+            "final_score": 95,
+            "final_verdict": "pass",
+            "id": "original_topic_window",
+            "initial_control": {
+              "expected_report": "accept",
+              "id": "original_topic_window",
+              "matched": true,
+              "score": 95,
+              "semantic_approval": false,
+              "suggested_category_matched": false,
+              "target_location_flagged": false,
+              "valid": true,
+              "verdict": "pass"
+            },
+            "input_tokens": 11695,
+            "manual_semantic_acceptance": false,
+            "matched": true,
+            "output_tokens": 11071,
+            "reserved_calls": 1,
+            "revision_attempted": false,
+            "score": 95,
+            "semantic_approval": false,
+            "suggested_category_matched": false,
+            "target_location_flagged": false,
+            "unknown_usage_calls": 0,
+            "valid": true,
+            "verdict": "pass"
+          }
+        ],
+        "ci_run": "35565312170",
+        "completed_calls": 1,
+        "experiment_id": "golden-native-issues-review-v3.6",
+        "first_input_ceiling": 44526,
+        "head_sha": "354d752b76506a78b543a86975487721c344a2df",
+        "input_sha256": "f1b773e4f7db1c38fa3e097b1951afa84182ea62ffdee53aba0909ae56ab6227",
+        "input_tokens": 11695,
+        "labels_sent_to_model": false,
+        "live_block_reason": "native_claim_scope_reassessment_qualification_required",
+        "live_status": "bounded_development_after_exact_ci",
+        "manifest_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+        "manual_between_cases": true,
+        "manual_semantic_acceptance": false,
+        "max_calls_per_report": 5,
+        "max_output_per_call": 32768,
+        "max_revisions_per_report": 1,
+        "max_seconds_per_call": 300,
+        "max_seconds_per_report": 900,
+        "max_tokens_per_report": 401920,
+        "output_tokens": 11071,
+        "production_admitted": false,
+        "reasoning_effort": "high",
+        "report_sha256": "0a07162210fa087073bb8bf881ff883e910b4df57623e7c301e86b3ccc168498",
+        "reserved_calls": 1,
+        "sdk_retries": 0,
+        "selected_cases": [
+          "original_topic_window"
+        ],
+        "semantic_approval": false,
+        "source_scope": "complete_observed_report_analyst_development_control_not_holdout",
+        "suite": "claim-scope",
+        "unknown_usage_calls": 0
+      },
+      "result": {
+        "attempted_calls": 1,
+        "automatic_path_pass": true,
+        "completed_calls": 1,
+        "expected_report": "accept",
+        "final_score": 95,
+        "final_verdict": "pass",
+        "id": "original_topic_window",
+        "initial_control": {
+          "expected_report": "accept",
+          "id": "original_topic_window",
+          "matched": true,
+          "score": 95,
+          "semantic_approval": false,
+          "suggested_category_matched": false,
+          "target_location_flagged": false,
+          "valid": true,
+          "verdict": "pass"
+        },
+        "input_tokens": 11695,
+        "manual_semantic_acceptance": false,
+        "matched": true,
+        "output_tokens": 11071,
+        "reserved_calls": 1,
+        "revision_attempted": false,
+        "score": 95,
+        "semantic_approval": false,
+        "suggested_category_matched": false,
+        "target_location_flagged": false,
+        "unknown_usage_calls": 0,
+        "valid": true,
+        "verdict": "pass"
+      },
+      "original_report": "已检索到可用的教练知识证据（早期死亡、补刀与经济、避免伪精确目标、可执行性、证据分层五条），并核对了五局样本与分位置统计。以下为观摩报告：\n\n# RiftCoach 教练式复盘报告\n\n## 1. 总体结论\n\n本报告为对 DK ShowMaker#KR1 的**观摩复盘**（5 局排位，2 胜 3 负，40.0%），观摩对象不是阅读者本人，所有结论仅描述这 5 局。中单 4 局 2 胜 2 负，辅助位（卡蜜尔）1 局告负。胜局与败局最明显的差异在中单的伤害/分钟（1286.76 对 617.52），而非补刀或视野；早期死亡在胜败样本间几乎相同，不应作为主要胜负分界点 [K1]。混合位置均值受辅助局强烈拉低，应按位置分开解读。\n\n## 2. 当前表现亮点\n\n- 中单补刀稳定：4 局中单补刀/分钟均在 8.38–9.64，且中单胜局均值 8.805 与败局均值 9.01 基本持平，说明这 5 局内发育节奏未随胜负明显波动。\n- 辛德拉胜局：14/5/10，8.66 补刀/分钟、1430.11 伤害/分钟、27.5% 输出占比，是本样本输出最高的对局。\n- 艾尼维亚败局：15 分钟前 0 次死亡、9.64 补刀/分钟；但根据证据规则，这只能说明生存与发育结果较好，不能直接推出防抓或对线能力优秀 [K1]。\n\n## 3. 主要风险点\n\n1. **辅助位卡蜜尔局**：1/13/11，补刀/分钟 1.34，15 分钟前死亡 7 次。这是单局样本，仅描述该局，不能推断位置适应或英雄池问题。\n2. **中单败局的伤害落差**：同位置胜局伤害/分钟 1286.76、败局 617.52（差约 669）。统计只能描述发生了什么；换血、技能命中与兵线原因需录像判断 [K5]。可把参团时机与资源分配列为复盘假设，但不能凭统计确定原因 [K2]。\n\n## 4. 赢局与输局差异\n\n| 指标 | 中单胜局 | 中单败局 | 辅助败局（单局） |\n|---|---:|---:|---:|\n| 补刀/分钟 | 8.805 | 9.01 | 1.34 |\n| 伤害/分钟 | 1286.76 | 617.52 | 538.97 |\n| 经济/分钟 | 505.29 | 432.82 | 302.59 |\n| 视野分 | 33.5 | 34.0 | 90 |\n\n全样本口径下早期死亡胜局 2.5、败局 2.67，差异很小 [K1]；全样本补刀差距受辅助局明显影响；伤害差距则在两场中单胜局与两场中单败局之间已存在，不能主要归因于辅助局。以上统计不能证明个人能力或胜负原因。均值差异也不代表逐局方向一致或因果关系。\n\n## 5. 下一步复盘建议\n\n1. 优先逐局核对两场中单败局（艾尼维亚、洛克）：用时间线定位死亡时间（艾尼维亚 25:35、29:27；洛克 12:05–25:29 分布），再决定是否需要录像验证伤害落差的原因 [K5]。\n2. 在胜局（薇古丝、辛德拉）中标记 15 分钟前的死亡（薇古丝 3 次、辛德拉 2 次）并比较死亡前的活动路线，作为假设验证，而非结论 [K2]。\n\n## 6. 训练计划\n\n由于本报告为观摩数据，不构成阅读者的个人基线；且未提供明确训练目标，训练位置保持不选。请先说明你想训练的位置（例如中单或辅助），以下为**条件性观摩练习**：\n\n- 若选择中单：从 5 局中选 1–2 局，观察 5 分钟区间的补刀节奏与资源争夺前后的走位路线，记录观察到的指标变化 [K4]。\n- 本样本无位置、英雄与段位基准，不设固定的补刀、经济或伤害数值目标；样本扩大后再与同位置历史样本比较 [K3]。\n\n## 7. 数据边界与知识来源\n\n- 玩家事实来源：Riot API 返回的 5 局赛后统计与 timeline（生成于 2026-09-10 UTC），确定性报告与分位置推断均为数据；Data Dragon 提供历史版本英雄名映射。仅 5 局、混合位置，单英雄均只 1 局，不能推断长期水平、英雄强弱或胜因。\n- 本会话未提供 OP.GG 数据，故不含基于外部快照的英雄池建议；这是一个数据缺口，不是结论。\n- 教练知识引用：[K1] 早期死亡（01_metric_interpretation.md）、[K2] 补刀与经济（01_metric_interpretation.md）、[K3] 避免伪精确目标（03_training_plan.md）、[K4] 可执行性（03_training_plan.md）、[K5] 证据分层（02_review_method.md）。以上均为通用方法，非玩家专属事实。",
+      "revised_report": null,
+      "responses": [
+        {
+          "ordinal": 1,
+          "path": "data/runs/inference_development/native-review-354d752-claim-1/original_topic_window/response-001.json",
+          "raw_file_sha256": "66ca72277ccc8734c46ca05f5d1d2404bd3ff7824a403b654f679d3cdfe1c0cb",
+          "content_sha256": "c84f07b44468d46bb631d3684c3c28c6f20f4680ce324c456e59c12c74d9ee8c",
+          "content": "\n{\"score\": 95, \"verdict\": \"pass\", \"issues\": [], \"issue_resolutions\": []}\n",
+          "usage": {
+            "cached_input_tokens": 0,
+            "input_tokens": 11695,
+            "output_tokens": 11071
+          },
+          "finish_reason": "stop",
+          "model": "glm-5.3-flash",
+          "provider": "zhipu"
+        }
+      ],
+      "immutable_files": [
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-1/original_topic_window/call-001.json",
+          "sha256": "8db46c6d91c702aeab29560799a021cecf3cea7b79329ab4cca52650d6e2e52c"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-1/original_topic_window/initial-correction-journal.json",
+          "sha256": "85df7e82fb42394a1439452e3e9a83c7a45a777f5fca66c92246532d07a03b3c"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-1/original_topic_window/initial-evaluation.json",
+          "sha256": "6e61f16a20daa44fa667b8107248792e60771af9fc6d9fcf384e7fa29fb82ee0"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-1/original_topic_window/input.json",
+          "sha256": "892769185d6504bf824932cc2c3a9c0d1558e4cf45de8377b92ad38569877540"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-1/original_topic_window/request-001.json",
+          "sha256": "13926cd1173a86200341292332881f641e82eb694a2aca728aade9d595cfd2a6"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-1/original_topic_window/response-001.json",
+          "sha256": "66ca72277ccc8734c46ca05f5d1d2404bd3ff7824a403b654f679d3cdfe1c0cb"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-1/original_topic_window/result.json",
+          "sha256": "e6aa8820b9a80b7b35e801fbc22994be38c014aad307ede8f9dd041a34ed23bb"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-1/original_topic_window/streams/stream-001/progress.json",
+          "sha256": "eeddb605ea50c50528838bb8b161465fac4788d34067ad382e1186f9fac758ee"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-1/original_topic_window/streams/stream-001/reservation.json",
+          "sha256": "7bf9b091621f8bba450a6528aa73c4260e0ac4e72cfc815ef3e829042ab7b7a5"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-1/original_topic_window/streams/stream-001/result.json",
+          "sha256": "04a7215ad7841c50341df5753f48a211b8a5e99de2401d4d9a3f9da9008c7303"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-1/plan.json",
+          "sha256": "d4c0af649ca8671aaffdb231c11752ad8d40061f07d2adf7c614eac8d31fb635"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-1/receipt.json",
+          "sha256": "a8658428c2e59661dd61bef30788f7197d5b4fc3a817532f9048dcc91f7b5be3"
+        }
+      ]
+    },
+    {
+      "suite": "claim-scope",
+      "index": 4,
+      "run_id": "native-review-354d752-claim-4",
+      "manual_semantic_acceptance": true,
+      "notes": [
+        "目标检出后仅修改第4段全称归因，实际报告明确视野45/33.75、早死2.6/1.5；82/needs_revision→修订→96/pass。",
+        "首评解释33.5/33.75并列不精确；同一issue建议明确全组33.75，实际改文也正确，按完整上下文标准接受但保留表达及击杀建议引用精确度限制。",
+        "无需重评，未验证真实两状态恢复。"
+      ],
+      "independent_review_acceptance": true,
+      "actual_requests_reconstructed_at_original_sha": true,
+      "independent_review_complete": true,
+      "independent_manual_decision": "accept",
+      "id": "explicit_universal_metrics",
+      "receipt": {
+        "cases": [
+          {
+            "attempted_calls": 3,
+            "automatic_path_pass": true,
+            "completed_calls": 3,
+            "expected_report": "reject",
+            "final_score": 96,
+            "final_verdict": "pass",
+            "id": "explicit_universal_metrics",
+            "initial_control": {
+              "expected_report": "reject",
+              "id": "explicit_universal_metrics",
+              "matched": true,
+              "score": 82,
+              "semantic_approval": false,
+              "suggested_category_matched": false,
+              "target_location_flagged": true,
+              "valid": true,
+              "verdict": "needs_revision"
+            },
+            "input_tokens": 33949,
+            "manual_semantic_acceptance": false,
+            "matched": true,
+            "output_tokens": 6193,
+            "reserved_calls": 3,
+            "revision_attempted": true,
+            "score": 82,
+            "semantic_approval": false,
+            "suggested_category_matched": false,
+            "target_location_flagged": true,
+            "unknown_usage_calls": 0,
+            "valid": true,
+            "verdict": "needs_revision"
+          }
+        ],
+        "ci_run": "35565312170",
+        "completed_calls": 3,
+        "experiment_id": "golden-native-issues-review-v3.6",
+        "first_input_ceiling": 44580,
+        "head_sha": "354d752b76506a78b543a86975487721c344a2df",
+        "input_sha256": "39ab474693151b624560c80a26790d748c9279104efad8a8e598635a5641623f",
+        "input_tokens": 33949,
+        "labels_sent_to_model": false,
+        "live_block_reason": "native_claim_scope_reassessment_qualification_required",
+        "live_status": "bounded_development_after_exact_ci",
+        "manifest_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+        "manual_between_cases": true,
+        "manual_semantic_acceptance": false,
+        "max_calls_per_report": 5,
+        "max_output_per_call": 32768,
+        "max_revisions_per_report": 1,
+        "max_seconds_per_call": 300,
+        "max_seconds_per_report": 900,
+        "max_tokens_per_report": 401920,
+        "output_tokens": 6193,
+        "production_admitted": false,
+        "reasoning_effort": "high",
+        "report_sha256": "2f642924110e98975b7d82baa49f43e039d2876b088e33a861398261354734c2",
+        "reserved_calls": 3,
+        "sdk_retries": 0,
+        "selected_cases": [
+          "explicit_universal_metrics"
+        ],
+        "semantic_approval": false,
+        "source_scope": "complete_observed_report_analyst_development_control_not_holdout",
+        "suite": "claim-scope",
+        "unknown_usage_calls": 0
+      },
+      "result": {
+        "attempted_calls": 3,
+        "automatic_path_pass": true,
+        "completed_calls": 3,
+        "expected_report": "reject",
+        "final_score": 96,
+        "final_verdict": "pass",
+        "id": "explicit_universal_metrics",
+        "initial_control": {
+          "expected_report": "reject",
+          "id": "explicit_universal_metrics",
+          "matched": true,
+          "score": 82,
+          "semantic_approval": false,
+          "suggested_category_matched": false,
+          "target_location_flagged": true,
+          "valid": true,
+          "verdict": "needs_revision"
+        },
+        "input_tokens": 33949,
+        "manual_semantic_acceptance": false,
+        "matched": true,
+        "output_tokens": 6193,
+        "reserved_calls": 3,
+        "revision_attempted": true,
+        "score": 82,
+        "semantic_approval": false,
+        "suggested_category_matched": false,
+        "target_location_flagged": true,
+        "unknown_usage_calls": 0,
+        "valid": true,
+        "verdict": "needs_revision"
+      },
+      "original_report": "已检索到可用的教练知识证据（早期死亡、补刀与经济、避免伪精确目标、可执行性、证据分层五条），并核对了五局样本与分位置统计。以下为观摩报告：\n\n# RiftCoach 教练式复盘报告\n\n## 1. 总体结论\n\n本报告为对 DK ShowMaker#KR1 的**观摩复盘**（5 局排位，2 胜 3 负，40.0%），观摩对象不是阅读者本人，所有结论仅描述这 5 局。中单 4 局 2 胜 2 负，辅助位（卡蜜尔）1 局告负。胜局与败局最明显的差异在中单的伤害/分钟（1286.76 对 617.52），而非补刀或视野；早期死亡在胜败样本间几乎相同，不应作为主要胜负分界点 [K1]。所选全部 5 局的每一个指标均值都被辅助局拉低，包括视野分与 15 分钟前死亡，应按位置分开解读。\n\n## 2. 当前表现亮点\n\n- 中单补刀稳定：4 局中单补刀/分钟均在 8.38–9.64，且中单胜局均值 8.805 与败局均值 9.01 基本持平，说明这 5 局内发育节奏未随胜负明显波动。\n- 辛德拉胜局：14/5/10，8.66 补刀/分钟、1430.11 伤害/分钟、27.5% 输出占比，是本样本输出最高的对局。\n- 艾尼维亚败局：15 分钟前 0 次死亡、9.64 补刀/分钟；但根据证据规则，这只能说明生存与发育结果较好，不能直接推出防抓或对线能力优秀 [K1]。\n\n## 3. 主要风险点\n\n1. **辅助位卡蜜尔局**：1/13/11，补刀/分钟 1.34，15 分钟前死亡 7 次。这是单局样本，仅描述该局，不能推断位置适应或英雄池问题。\n2. **中单败局的伤害落差**：同位置胜局伤害/分钟 1286.76、败局 617.52（差约 669）。统计只能描述发生了什么；换血、技能命中与兵线原因需录像判断 [K5]。可把参团时机与资源分配列为复盘假设，但不能凭统计确定原因 [K2]。\n\n## 4. 赢局与输局差异\n\n| 指标 | 中单胜局 | 中单败局 | 辅助败局（单局） |\n|---|---:|---:|---:|\n| 补刀/分钟 | 8.805 | 9.01 | 1.34 |\n| 伤害/分钟 | 1286.76 | 617.52 | 538.97 |\n| 经济/分钟 | 505.29 | 432.82 | 302.59 |\n| 视野分 | 33.5 | 34.0 | 90 |\n\n全样本口径下早期死亡胜局 2.5、败局 2.67，差异很小 [K1]；全样本补刀差距受辅助局明显影响；伤害差距则在两场中单胜局与两场中单败局之间已存在，不能主要归因于辅助局。以上统计不能证明个人能力或胜负原因。均值差异也不代表逐局方向一致或因果关系。\n\n## 5. 下一步复盘建议\n\n1. 优先逐局核对两场中单败局（艾尼维亚、洛克）：用时间线定位死亡时间（艾尼维亚 25:35、29:27；洛克 12:05–25:29 分布），再决定是否需要录像验证伤害落差的原因 [K5]。\n2. 在胜局（薇古丝、辛德拉）中标记 15 分钟前的死亡（薇古丝 3 次、辛德拉 2 次）并比较死亡前的活动路线，作为假设验证，而非结论 [K2]。\n\n## 6. 训练计划\n\n由于本报告为观摩数据，不构成阅读者的个人基线；且未提供明确训练目标，训练位置保持不选。请先说明你想训练的位置（例如中单或辅助），以下为**条件性观摩练习**：\n\n- 若选择中单：从 5 局中选 1–2 局，观察 5 分钟区间的补刀节奏与资源争夺前后的走位路线，记录观察到的指标变化 [K4]。\n- 本样本无位置、英雄与段位基准，不设固定的补刀、经济或伤害数值目标；样本扩大后再与同位置历史样本比较 [K3]。\n\n## 7. 数据边界与知识来源\n\n- 玩家事实来源：Riot API 返回的 5 局赛后统计与 timeline（生成于 2026-09-10 UTC），确定性报告与分位置推断均为数据；Data Dragon 提供历史版本英雄名映射。仅 5 局、混合位置，单英雄均只 1 局，不能推断长期水平、英雄强弱或胜因。\n- 本会话未提供 OP.GG 数据，故不含基于外部快照的英雄池建议；这是一个数据缺口，不是结论。\n- 教练知识引用：[K1] 早期死亡（01_metric_interpretation.md）、[K2] 补刀与经济（01_metric_interpretation.md）、[K3] 避免伪精确目标（03_training_plan.md）、[K4] 可执行性（03_training_plan.md）、[K5] 证据分层（02_review_method.md）。以上均为通用方法，非玩家专属事实。",
+      "revised_report": "已检索到可用的教练知识证据（早期死亡、补刀与经济、避免伪精确目标、可执行性、证据分层五条），并核对了五局样本与分位置统计。以下为观摩报告：\n\n# RiftCoach 教练式复盘报告\n\n## 1. 总体结论\n\n本报告为对 DK ShowMaker#KR1 的**观摩复盘**（5 局排位，2 胜 3 负，40.0%），观摩对象不是阅读者本人，所有结论仅描述这 5 局。中单 4 局 2 胜 2 负，辅助位（卡蜜尔）1 局告负。胜局与败局最明显的差异在中单的伤害/分钟（1286.76 对 617.52），而非补刀或视野；早期死亡在胜败样本间几乎相同，不应作为主要胜负分界点 [K1]。混合位置对均值的影响方向不一：辅助局拉低了击杀、补刀、经济、伤害等输出与发育类均值，但拉高了视野分（全样本均值 45，仅中单口径约 33.75）与 15 分钟前死亡（全样本均值 2.6，仅中单口径 1.5）的均值，因此各指标应按位置分开解读。\n\n## 2. 当前表现亮点\n\n- 中单补刀稳定：4 局中单补刀/分钟均在 8.38–9.64，且中单胜局均值 8.805 与败局均值 9.01 基本持平，说明这 5 局内发育节奏未随胜负明显波动。\n- 辛德拉胜局：14/5/10，8.66 补刀/分钟、1430.11 伤害/分钟、27.5% 输出占比，是本样本输出最高的对局。\n- 艾尼维亚败局：15 分钟前 0 次死亡、9.64 补刀/分钟；但根据证据规则，这只能说明生存与发育结果较好，不能直接推出防抓或对线能力优秀 [K1]。\n\n## 3. 主要风险点\n\n1. **辅助位卡蜜尔局**：1/13/11，补刀/分钟 1.34，15 分钟前死亡 7 次。这是单局样本，仅描述该局，不能推断位置适应或英雄池问题。\n2. **中单败局的伤害落差**：同位置胜局伤害/分钟 1286.76、败局 617.52（差约 669）。统计只能描述发生了什么；换血、技能命中与兵线原因需录像判断 [K5]。可把参团时机与资源分配列为复盘假设，但不能凭统计确定原因 [K2]。\n\n## 4. 赢局与输局差异\n\n| 指标 | 中单胜局 | 中单败局 | 辅助败局（单局） |\n|---|---:|---:|---:|\n| 补刀/分钟 | 8.805 | 9.01 | 1.34 |\n| 伤害/分钟 | 1286.76 | 617.52 | 538.97 |\n| 经济/分钟 | 505.29 | 432.82 | 302.59 |\n| 视野分 | 33.5 | 34.0 | 90 |\n\n全样本口径下早期死亡胜局 2.5、败局 2.67，差异很小 [K1]；全样本补刀差距受辅助局明显影响；伤害差距则在两场中单胜局与两场中单败局之间已存在，不能主要归因于辅助局。以上统计不能证明个人能力或胜负原因。均值差异也不代表逐局方向一致或因果关系。\n\n## 5. 下一步复盘建议\n\n1. 优先逐局核对两场中单败局（艾尼维亚、洛克）：用时间线定位死亡时间（艾尼维亚 25:35、29:27；洛克 12:05–25:29 分布），再决定是否需要录像验证伤害落差的原因 [K5]。\n2. 在胜局（薇古丝、辛德拉）中标记 15 分钟前的死亡（薇古丝 3 次、辛德拉 2 次）并比较死亡前的活动路线，作为假设验证，而非结论 [K2]。\n\n## 6. 训练计划\n\n由于本报告为观摩数据，不构成阅读者的个人基线；且未提供明确训练目标，训练位置保持不选。请先说明你想训练的位置（例如中单或辅助），以下为**条件性观摩练习**：\n\n- 若选择中单：从 5 局中选 1–2 局，观察 5 分钟区间的补刀节奏与资源争夺前后的走位路线，记录观察到的指标变化 [K4]。\n- 本样本无位置、英雄与段位基准，不设固定的补刀、经济或伤害数值目标；样本扩大后再与同位置历史样本比较 [K3]。\n\n## 7. 数据边界与知识来源\n\n- 玩家事实来源：Riot API 返回的 5 局赛后统计与 timeline（生成于 2026-09-10 UTC），确定性报告与分位置推断均为数据；Data Dragon 提供历史版本英雄名映射。仅 5 局、混合位置，单英雄均只 1 局，不能推断长期水平、英雄强弱或胜因。\n- 本会话未提供 OP.GG 数据，故不含基于外部快照的英雄池建议；这是一个数据缺口，不是结论。\n- 教练知识引用：[K1] 早期死亡（01_metric_interpretation.md）、[K2] 补刀与经济（01_metric_interpretation.md）、[K3] 避免伪精确目标（03_training_plan.md）、[K4] 可执行性（03_training_plan.md）、[K5] 证据分层（02_review_method.md）。以上均为通用方法，非玩家专属事实。",
+      "responses": [
+        {
+          "ordinal": 1,
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/response-001.json",
+          "raw_file_sha256": "07fab3105b7b2cac83baf3ae618b226c45509587e1faffd096485304c40014c7",
+          "content_sha256": "11ea878aff6617099686a36de70a9c2ebcbab97c689be7b0d5b9ab5998356c0a",
+          "content": "\n{\n  \"score\": 82,\n  \"verdict\": \"needs_revision\",\n  \"issues\": [\n    {\n      \"severity\": \"medium\",\n      \"category\": \"derived_math\",\n      \"source_ids\": [1, 3, 12, 16, 20],\n      \"explanation\": \"block 4 声称'所选全部 5 局的每一个指标均值都被辅助局拉低，包括视野分与 15 分钟前死亡'。但辅助局（卡蜜尔）视野分为 90，全样本视野分均值 45 高于仅中单口径的 33.5/33.75；15 分钟前死亡辅助局为 7 次，全样本均值 2.6 也高于仅中单口径的 1.5。这两个被点名的指标均值是被辅助局拉高而非拉低，全称断言在明示的指标上方向相反。'应按位置分开解读'的结论本身正确，但支撑该结论的方向性表述与数据不符，会误导读者对辅助局影响方式的理解。\",\n      \"suggested_correction\": \"改为：辅助局拉低了击杀、补刀、经济、伤害等输出与发育类均值（如伤害 869.5 对仅中单口径更高），但拉高了视野分（全样本 45，中单口径约 33.75）与 15 分钟前死亡（全样本 2.6，中单口径 1.5）的均值。因此各指标受混合位置影响方向不同，应按位置分开解读。\",\n      \"block\": 4\n    }\n  ],\n  \"issue_resolutions\": []\n}\n",
+          "usage": {
+            "cached_input_tokens": 0,
+            "input_tokens": 11705,
+            "output_tokens": 3068
+          },
+          "finish_reason": "stop",
+          "model": "glm-5.3-flash",
+          "provider": "zhipu"
+        },
+        {
+          "ordinal": 2,
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/response-002.json",
+          "raw_file_sha256": "77de7672f750072494248ca20a9885ab88620cbae86e1f8aaec1f5d5fc430163",
+          "content_sha256": "df4e71f0c7bfdd90d1e16131e9d4a78e65f92b2b924eea194b0653496a9fe995",
+          "content": "已检索到可用的教练知识证据（早期死亡、补刀与经济、避免伪精确目标、可执行性、证据分层五条），并核对了五局样本与分位置统计。以下为观摩报告：\n\n# RiftCoach 教练式复盘报告\n\n## 1. 总体结论\n\n本报告为对 DK ShowMaker#KR1 的**观摩复盘**（5 局排位，2 胜 3 负，40.0%），观摩对象不是阅读者本人，所有结论仅描述这 5 局。中单 4 局 2 胜 2 负，辅助位（卡蜜尔）1 局告负。胜局与败局最明显的差异在中单的伤害/分钟（1286.76 对 617.52），而非补刀或视野；早期死亡在胜败样本间几乎相同，不应作为主要胜负分界点 [K1]。混合位置对均值的影响方向不一：辅助局拉低了击杀、补刀、经济、伤害等输出与发育类均值，但拉高了视野分（全样本均值 45，仅中单口径约 33.75）与 15 分钟前死亡（全样本均值 2.6，仅中单口径 1.5）的均值，因此各指标应按位置分开解读。\n\n## 2. 当前表现亮点\n\n- 中单补刀稳定：4 局中单补刀/分钟均在 8.38–9.64，且中单胜局均值 8.805 与败局均值 9.01 基本持平，说明这 5 局内发育节奏未随胜负明显波动。\n- 辛德拉胜局：14/5/10，8.66 补刀/分钟、1430.11 伤害/分钟、27.5% 输出占比，是本样本输出最高的对局。\n- 艾尼维亚败局：15 分钟前 0 次死亡、9.64 补刀/分钟；但根据证据规则，这只能说明生存与发育结果较好，不能直接推出防抓或对线能力优秀 [K1]。\n\n## 3. 主要风险点\n\n1. **辅助位卡蜜尔局**：1/13/11，补刀/分钟 1.34，15 分钟前死亡 7 次。这是单局样本，仅描述该局，不能推断位置适应或英雄池问题。\n2. **中单败局的伤害落差**：同位置胜局伤害/分钟 1286.76、败局 617.52（差约 669）。统计只能描述发生了什么；换血、技能命中与兵线原因需录像判断 [K5]。可把参团时机与资源分配列为复盘假设，但不能凭统计确定原因 [K2]。\n\n## 4. 赢局与输局差异\n\n| 指标 | 中单胜局 | 中单败局 | 辅助败局（单局） |\n|---|---:|---:|---:|\n| 补刀/分钟 | 8.805 | 9.01 | 1.34 |\n| 伤害/分钟 | 1286.76 | 617.52 | 538.97 |\n| 经济/分钟 | 505.29 | 432.82 | 302.59 |\n| 视野分 | 33.5 | 34.0 | 90 |\n\n全样本口径下早期死亡胜局 2.5、败局 2.67，差异很小 [K1]；全样本补刀差距受辅助局明显影响；伤害差距则在两场中单胜局与两场中单败局之间已存在，不能主要归因于辅助局。以上统计不能证明个人能力或胜负原因。均值差异也不代表逐局方向一致或因果关系。\n\n## 5. 下一步复盘建议\n\n1. 优先逐局核对两场中单败局（艾尼维亚、洛克）：用时间线定位死亡时间（艾尼维亚 25:35、29:27；洛克 12:05–25:29 分布），再决定是否需要录像验证伤害落差的原因 [K5]。\n2. 在胜局（薇古丝、辛德拉）中标记 15 分钟前的死亡（薇古丝 3 次、辛德拉 2 次）并比较死亡前的活动路线，作为假设验证，而非结论 [K2]。\n\n## 6. 训练计划\n\n由于本报告为观摩数据，不构成阅读者的个人基线；且未提供明确训练目标，训练位置保持不选。请先说明你想训练的位置（例如中单或辅助），以下为**条件性观摩练习**：\n\n- 若选择中单：从 5 局中选 1–2 局，观察 5 分钟区间的补刀节奏与资源争夺前后的走位路线，记录观察到的指标变化 [K4]。\n- 本样本无位置、英雄与段位基准，不设固定的补刀、经济或伤害数值目标；样本扩大后再与同位置历史样本比较 [K3]。\n\n## 7. 数据边界与知识来源\n\n- 玩家事实来源：Riot API 返回的 5 局赛后统计与 timeline（生成于 2026-09-10 UTC），确定性报告与分位置推断均为数据；Data Dragon 提供历史版本英雄名映射。仅 5 局、混合位置，单英雄均只 1 局，不能推断长期水平、英雄强弱或胜因。\n- 本会话未提供 OP.GG 数据，故不含基于外部快照的英雄池建议；这是一个数据缺口，不是结论。\n- 教练知识引用：[K1] 早期死亡（01_metric_interpretation.md）、[K2] 补刀与经济（01_metric_interpretation.md）、[K3] 避免伪精确目标（03_training_plan.md）、[K4] 可执行性（03_training_plan.md）、[K5] 证据分层（02_review_method.md）。以上均为通用方法，非玩家专属事实。",
+          "usage": {
+            "cached_input_tokens": 0,
+            "input_tokens": 10472,
+            "output_tokens": 1451
+          },
+          "finish_reason": "stop",
+          "model": "glm-5.3-flash",
+          "provider": "zhipu"
+        },
+        {
+          "ordinal": 3,
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/response-003.json",
+          "raw_file_sha256": "9f6c372c31e02a940e8b8040bad31b492270daaeba86f403afa8bbeda679a457",
+          "content_sha256": "d3e1d1af724e481b750954cfd63ea0a97ad48ee162f9ab2ae0ff983d8a4f3b07",
+          "content": "\n{\"score\": 96, \"verdict\": \"pass\", \"issues\": [], \"issue_resolutions\": []}\n",
+          "usage": {
+            "cached_input_tokens": 0,
+            "input_tokens": 11772,
+            "output_tokens": 1674
+          },
+          "finish_reason": "stop",
+          "model": "glm-5.3-flash",
+          "provider": "zhipu"
+        }
+      ],
+      "immutable_files": [
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/call-001.json",
+          "sha256": "0fcaecd7496e38971ca459f9cd4756debecbf17a422fb916f7b02b1d2d4a2023"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/call-002.json",
+          "sha256": "9c064325680a4ea9ae11918abf8b01087d4e1459d197840de1bd0241cc7f71f8"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/call-003.json",
+          "sha256": "3d68c5db32d583222342585b6adc65715a9103fefd39e42058c8d56c0a8e5f06"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/initial-correction-journal.json",
+          "sha256": "902669fab75aa83d396f10a54b795eb05c206dfcb2133146c018c2257ec5e0eb"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/initial-evaluation.json",
+          "sha256": "aa3e72e213af3d6b0f5c0fbfa10d05ecc45e01cab60329b85acbfbcd992652fa"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/input.json",
+          "sha256": "7d985b63e8f458bcb008b299304cef841596bf5eb1527f397e25b2f9ccdd7573"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/recheck-correction-journal.json",
+          "sha256": "e08bd6b42b140dd05d64d50b1769af60bad890dda6ab4e5920111246ff756700"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/request-001.json",
+          "sha256": "d5d593cedb6a30360dff8d3eb1b001db610c3c4b290cbf042c3b55b2b60f4b40"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/request-002.json",
+          "sha256": "9e23c2c7d773f9a510848eda2a8c2a57513fe149ed9dde85dc3a7b4009bc6cf9"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/request-003.json",
+          "sha256": "f3d1eea1b3e9a0f0815c0ada1bac44b0d578c86db5b176c2b46cf5ba7d650a30"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/response-001.json",
+          "sha256": "07fab3105b7b2cac83baf3ae618b226c45509587e1faffd096485304c40014c7"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/response-002.json",
+          "sha256": "77de7672f750072494248ca20a9885ab88620cbae86e1f8aaec1f5d5fc430163"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/response-003.json",
+          "sha256": "9f6c372c31e02a940e8b8040bad31b492270daaeba86f403afa8bbeda679a457"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/result.json",
+          "sha256": "934981aa68b2c34a8ffc12a69c90ee4be3a4356e0d6392c0abfa21413a4885cb"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/revised-evaluation.json",
+          "sha256": "4a2bebe3577fff975b3ddfcf021d04c1e93d37edaf34b2db701707f7d1b2e520"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/revised-report.md",
+          "sha256": "eab9c0c700e19f2db8562a33cd6347aaba92d1a2f165b2fe289b3265cb93f753"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/streams/stream-001/progress.json",
+          "sha256": "faa9fadb67552d8484f12659e3304b889c2e8171e1f0321176e536543856e378"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/streams/stream-001/reservation.json",
+          "sha256": "0c890deb0b17cbcc08b0681dc529dd197d7214abe445300ea80efac93af0f2c3"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/streams/stream-001/result.json",
+          "sha256": "525199843edc2a19f92501d675a4f746bde9110a70fa64637b68f3f1c06823ad"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/streams/stream-002/progress.json",
+          "sha256": "2729a3a72845706f261b12512e668d412de76b2d81e2bca5eb0a0a12c2a3d385"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/streams/stream-002/reservation.json",
+          "sha256": "6eca7fd628a7547d26581fdf47674032cb453c9ba90a04cecca4dcf8565a05f8"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/streams/stream-002/result.json",
+          "sha256": "9a8f5d23036e1653ce732881ec4b1b83bcf4ea667b83c7f2644cbcc1df9b2bbe"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/streams/stream-003/progress.json",
+          "sha256": "145d0b6ebb12806e9f8b14b366ade361176e979443f84a7d5ff45b67ccf83f41"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/streams/stream-003/reservation.json",
+          "sha256": "ea2929a8e84aaa66bc6a83f78ea82f8175d7978467e5ba25d732c3c912d463c0"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/explicit_universal_metrics/streams/stream-003/result.json",
+          "sha256": "372514572fd2f8ba5183af1baa5dc91c03da1a39a4ff6045e3660eb36c4b55c6"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/plan.json",
+          "sha256": "757d404fa8ce072c50d2f3fd95352d2ced810182d4fbbdc919ea22eb3c990c98"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-4/receipt.json",
+          "sha256": "4f13c0f9dec919c2ce87205dc1d48291191e9d3adca849aa44d0287bb17b65f8"
+        }
+      ]
+    },
+    {
+      "suite": "claim-scope",
+      "index": 3,
+      "run_id": "native-review-354d752-claim-3",
+      "manual_semantic_acceptance": false,
+      "independent_review_acceptance": false,
+      "notes": [
+        "目标block6的合并补刀持平错误正确检出；额外把与case1相同的block4泛指判作全称，人工拒绝首评误报。",
+        "原文差异仅block6，无证据新增句能使block4变成所有指标；实际改稿修改了block4与6，最后96/pass不撤销首评误报。",
+        "当前runner仅按目标命中自动修订，无法在额外未裁决问题前停止；新守卫仅修开发流程，不能当模型语义修复。"
+      ],
+      "actual_requests_reconstructed_at_original_sha": true,
+      "independent_review_complete": true,
+      "independent_manual_decision": "reject",
+      "id": "explicit_combined_population",
+      "receipt": {
+        "cases": [
+          {
+            "attempted_calls": 3,
+            "automatic_path_pass": true,
+            "completed_calls": 3,
+            "expected_report": "reject",
+            "final_score": 96,
+            "final_verdict": "pass",
+            "id": "explicit_combined_population",
+            "initial_control": {
+              "expected_report": "reject",
+              "id": "explicit_combined_population",
+              "matched": true,
+              "score": 74,
+              "semantic_approval": false,
+              "suggested_category_matched": false,
+              "target_location_flagged": true,
+              "valid": true,
+              "verdict": "needs_revision"
+            },
+            "input_tokens": 34160,
+            "manual_semantic_acceptance": false,
+            "matched": true,
+            "output_tokens": 11776,
+            "reserved_calls": 3,
+            "revision_attempted": true,
+            "score": 74,
+            "semantic_approval": false,
+            "suggested_category_matched": false,
+            "target_location_flagged": true,
+            "unknown_usage_calls": 0,
+            "valid": true,
+            "verdict": "needs_revision"
+          }
+        ],
+        "ci_run": "35565312170",
+        "completed_calls": 3,
+        "experiment_id": "golden-native-issues-review-v3.6",
+        "first_input_ceiling": 44572,
+        "head_sha": "354d752b76506a78b543a86975487721c344a2df",
+        "input_sha256": "0b62a56852210caf441b7c7473430ca3c9ef1dae0a4619de2740a87ff59dc56d",
+        "input_tokens": 34160,
+        "labels_sent_to_model": false,
+        "live_block_reason": "native_claim_scope_reassessment_qualification_required",
+        "live_status": "bounded_development_after_exact_ci",
+        "manifest_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+        "manual_between_cases": true,
+        "manual_semantic_acceptance": false,
+        "max_calls_per_report": 5,
+        "max_output_per_call": 32768,
+        "max_revisions_per_report": 1,
+        "max_seconds_per_call": 300,
+        "max_seconds_per_report": 900,
+        "max_tokens_per_report": 401920,
+        "output_tokens": 11776,
+        "production_admitted": false,
+        "reasoning_effort": "high",
+        "report_sha256": "792db98a3e9ad94c8e1aa18ab8bf5da12824ac2f74d30a59bee132a700142518",
+        "reserved_calls": 3,
+        "sdk_retries": 0,
+        "selected_cases": [
+          "explicit_combined_population"
+        ],
+        "semantic_approval": false,
+        "source_scope": "complete_observed_report_analyst_development_control_not_holdout",
+        "suite": "claim-scope",
+        "unknown_usage_calls": 0
+      },
+      "result": {
+        "attempted_calls": 3,
+        "automatic_path_pass": true,
+        "completed_calls": 3,
+        "expected_report": "reject",
+        "final_score": 96,
+        "final_verdict": "pass",
+        "id": "explicit_combined_population",
+        "initial_control": {
+          "expected_report": "reject",
+          "id": "explicit_combined_population",
+          "matched": true,
+          "score": 74,
+          "semantic_approval": false,
+          "suggested_category_matched": false,
+          "target_location_flagged": true,
+          "valid": true,
+          "verdict": "needs_revision"
+        },
+        "input_tokens": 34160,
+        "manual_semantic_acceptance": false,
+        "matched": true,
+        "output_tokens": 11776,
+        "reserved_calls": 3,
+        "revision_attempted": true,
+        "score": 74,
+        "semantic_approval": false,
+        "suggested_category_matched": false,
+        "target_location_flagged": true,
+        "unknown_usage_calls": 0,
+        "valid": true,
+        "verdict": "needs_revision"
+      },
+      "original_report": "已检索到可用的教练知识证据（早期死亡、补刀与经济、避免伪精确目标、可执行性、证据分层五条），并核对了五局样本与分位置统计。以下为观摩报告：\n\n# RiftCoach 教练式复盘报告\n\n## 1. 总体结论\n\n本报告为对 DK ShowMaker#KR1 的**观摩复盘**（5 局排位，2 胜 3 负，40.0%），观摩对象不是阅读者本人，所有结论仅描述这 5 局。中单 4 局 2 胜 2 负，辅助位（卡蜜尔）1 局告负。胜局与败局最明显的差异在中单的伤害/分钟（1286.76 对 617.52），而非补刀或视野；早期死亡在胜败样本间几乎相同，不应作为主要胜负分界点 [K1]。混合位置均值受辅助局强烈拉低，应按位置分开解读。\n\n## 2. 当前表现亮点\n\n- 中单补刀稳定：4 局中单补刀/分钟均在 8.38–9.64，且中单胜局均值 8.805 与败局均值 9.01 基本持平，将所选全部 5 局（包括辅助局）合并计算后，胜局与败局的平均补刀/分钟也基本持平。\n- 辛德拉胜局：14/5/10，8.66 补刀/分钟、1430.11 伤害/分钟、27.5% 输出占比，是本样本输出最高的对局。\n- 艾尼维亚败局：15 分钟前 0 次死亡、9.64 补刀/分钟；但根据证据规则，这只能说明生存与发育结果较好，不能直接推出防抓或对线能力优秀 [K1]。\n\n## 3. 主要风险点\n\n1. **辅助位卡蜜尔局**：1/13/11，补刀/分钟 1.34，15 分钟前死亡 7 次。这是单局样本，仅描述该局，不能推断位置适应或英雄池问题。\n2. **中单败局的伤害落差**：同位置胜局伤害/分钟 1286.76、败局 617.52（差约 669）。统计只能描述发生了什么；换血、技能命中与兵线原因需录像判断 [K5]。可把参团时机与资源分配列为复盘假设，但不能凭统计确定原因 [K2]。\n\n## 4. 赢局与输局差异\n\n| 指标 | 中单胜局 | 中单败局 | 辅助败局（单局） |\n|---|---:|---:|---:|\n| 补刀/分钟 | 8.805 | 9.01 | 1.34 |\n| 伤害/分钟 | 1286.76 | 617.52 | 538.97 |\n| 经济/分钟 | 505.29 | 432.82 | 302.59 |\n| 视野分 | 33.5 | 34.0 | 90 |\n\n全样本口径下早期死亡胜局 2.5、败局 2.67，差异很小 [K1]；全样本补刀差距受辅助局明显影响；伤害差距则在两场中单胜局与两场中单败局之间已存在，不能主要归因于辅助局。以上统计不能证明个人能力或胜负原因。均值差异也不代表逐局方向一致或因果关系。\n\n## 5. 下一步复盘建议\n\n1. 优先逐局核对两场中单败局（艾尼维亚、洛克）：用时间线定位死亡时间（艾尼维亚 25:35、29:27；洛克 12:05–25:29 分布），再决定是否需要录像验证伤害落差的原因 [K5]。\n2. 在胜局（薇古丝、辛德拉）中标记 15 分钟前的死亡（薇古丝 3 次、辛德拉 2 次）并比较死亡前的活动路线，作为假设验证，而非结论 [K2]。\n\n## 6. 训练计划\n\n由于本报告为观摩数据，不构成阅读者的个人基线；且未提供明确训练目标，训练位置保持不选。请先说明你想训练的位置（例如中单或辅助），以下为**条件性观摩练习**：\n\n- 若选择中单：从 5 局中选 1–2 局，观察 5 分钟区间的补刀节奏与资源争夺前后的走位路线，记录观察到的指标变化 [K4]。\n- 本样本无位置、英雄与段位基准，不设固定的补刀、经济或伤害数值目标；样本扩大后再与同位置历史样本比较 [K3]。\n\n## 7. 数据边界与知识来源\n\n- 玩家事实来源：Riot API 返回的 5 局赛后统计与 timeline（生成于 2026-09-10 UTC），确定性报告与分位置推断均为数据；Data Dragon 提供历史版本英雄名映射。仅 5 局、混合位置，单英雄均只 1 局，不能推断长期水平、英雄强弱或胜因。\n- 本会话未提供 OP.GG 数据，故不含基于外部快照的英雄池建议；这是一个数据缺口，不是结论。\n- 教练知识引用：[K1] 早期死亡（01_metric_interpretation.md）、[K2] 补刀与经济（01_metric_interpretation.md）、[K3] 避免伪精确目标（03_training_plan.md）、[K4] 可执行性（03_training_plan.md）、[K5] 证据分层（02_review_method.md）。以上均为通用方法，非玩家专属事实。",
+      "revised_report": "已检索到可用的教练知识证据（早期死亡、补刀与经济、避免伪精确目标、可执行性、证据分层五条），并核对了五局样本与分位置统计。以下为观摩报告：\n\n# RiftCoach 教练式复盘报告\n\n## 1. 总体结论\n\n本报告为对 DK ShowMaker#KR1 的**观摩复盘**（5 局排位，2 胜 3 负，40.0%），观摩对象不是阅读者本人，所有结论仅描述这 5 局。中单 4 局 2 胜 2 负，辅助位（卡蜜尔）1 局告负。胜局与败局最明显的差异在中单的伤害/分钟（1286.76 对 617.52），而非补刀或视野；早期死亡在胜败样本间几乎相同，不应作为主要胜负分界点 [K1]。补刀、经济与伤害的混合败局均值受辅助局明显拉低；而视野分与 15 分钟前死亡的败局均值反而因辅助局更高，应按位置与指标分别解读。\n\n## 2. 当前表现亮点\n\n- 中单补刀稳定：4 局中单补刀/分钟均在 8.38–9.64，且中单胜局均值 8.805 与败局均值 9.01 基本持平。将所选全部 5 局（包括辅助局）合并计算后，胜局平均补刀/分钟为 8.8、败局为 6.45，差距明显，主要由辅助局 1.34 拉低。\n- 辛德拉胜局：14/5/10，8.66 补刀/分钟、1430.11 伤害/分钟、27.5% 输出占比，是本样本输出最高的对局。\n- 艾尼维亚败局：15 分钟前 0 次死亡、9.64 补刀/分钟；但根据证据规则，这只能说明生存与发育结果较好，不能直接推出防抓或对线能力优秀 [K1]。\n\n## 3. 主要风险点\n\n1. **辅助位卡蜜尔局**：1/13/11，补刀/分钟 1.34，15 分钟前死亡 7 次。这是单局样本，仅描述该局，不能推断位置适应或英雄池问题。\n2. **中单败局的伤害落差**：同位置胜局伤害/分钟 1286.76、败局 617.52（差约 669）。统计只能描述发生了什么；换血、技能命中与兵线原因需录像判断 [K5]。可把参团时机与资源分配列为复盘假设，但不能凭统计确定原因 [K2]。\n\n## 4. 赢局与输局差异\n\n| 指标 | 中单胜局 | 中单败局 | 辅助败局（单局） |\n|---|---:|---:|---:|\n| 补刀/分钟 | 8.805 | 9.01 | 1.34 |\n| 伤害/分钟 | 1286.76 | 617.52 | 538.97 |\n| 经济/分钟 | 505.29 | 432.82 | 302.59 |\n| 视野分 | 33.5 | 34.0 | 90 |\n\n全样本口径下早期死亡胜局 2.5、败局 2.67，差异很小 [K1]；全样本补刀差距受辅助局明显影响；伤害差距则在两场中单胜局与两场中单败局之间已存在，不能主要归因于辅助局。以上统计不能证明个人能力或胜负原因。均值差异也不代表逐局方向一致或因果关系。\n\n## 5. 下一步复盘建议\n\n1. 优先逐局核对两场中单败局（艾尼维亚、洛克）：用时间线定位死亡时间（艾尼维亚 25:35、29:27；洛克 12:05–25:29 分布），再决定是否需要录像验证伤害落差的原因 [K5]。\n2. 在胜局（薇古丝、辛德拉）中标记 15 分钟前的死亡（薇古丝 3 次、辛德拉 2 次）并比较死亡前的活动路线，作为假设验证，而非结论 [K2]。\n\n## 6. 训练计划\n\n由于本报告为观摩数据，不构成阅读者的个人基线；且未提供明确训练目标，训练位置保持不选。请先说明你想训练的位置（例如中单或辅助），以下为**条件性观摩练习**：\n\n- 若选择中单：从 5 局中选 1–2 局，观察 5 分钟区间的补刀节奏与资源争夺前后的走位路线，记录观察到的指标变化 [K4]。\n- 本样本无位置、英雄与段位基准，不设固定的补刀、经济或伤害数值目标；样本扩大后再与同位置历史样本比较 [K3]。\n\n## 7. 数据边界与知识来源\n\n- 玩家事实来源：Riot API 返回的 5 局赛后统计与 timeline（生成于 2026-09-10 UTC），确定性报告与分位置推断均为数据；Data Dragon 提供历史版本英雄名映射。仅 5 局、混合位置，单英雄均只 1 局，不能推断长期水平、英雄强弱或胜因。\n- 本会话未提供 OP.GG 数据，故不含基于外部快照的英雄池建议；这是一个数据缺口，不是结论。\n- 教练知识引用：[K1] 早期死亡（01_metric_interpretation.md）、[K2] 补刀与经济（01_metric_interpretation.md）、[K3] 避免伪精确目标（03_training_plan.md）、[K4] 可执行性（03_training_plan.md）、[K5] 证据分层（02_review_method.md）。以上均为通用方法，非玩家专属事实。",
+      "responses": [
+        {
+          "ordinal": 1,
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/response-001.json",
+          "raw_file_sha256": "219bcc460e1dd7bc8bede2e13e91ffad23c9d18dc02a5610c5dab2d34fb75b16",
+          "content_sha256": "065f93031590bc402c8bf8c849cb9ef82255e2cf6e33977fdc1ff6ccc2ff5f5b",
+          "content": "\n{\n  \"score\": 74,\n  \"verdict\": \"needs_revision\",\n  \"issues\": [\n    {\n      \"severity\": \"high\",\n      \"category\": \"derived_math\",\n      \"source_ids\": [1, 2, 3, 4, 5, 6],\n      \"explanation\": \"原句称将全部5局（含辅助局）合并计算后，胜局与败局的平均补刀/分钟\\\"也基本持平\\\"。实际合并口径胜局均值为8.8（薇古丝8.95、辛德拉8.66），败局均值为6.45（艾尼维亚9.64、洛克8.38、辅助卡蜜尔1.34），差距约2.35，败局均值显著更低，并非持平。该说法与报告第4节自身\\\"全样本补刀差距受辅助局明显影响\\\"（承认存在差距）相矛盾，属于组别/量级错误，且出现在亮点部分会误导读者认为合并口径同样无补刀差距。\",\n      \"suggested_correction\": \"将该句改为：合并5局后胜局补刀均值8.8、败局6.45，差距明显，主要由辅助局1.34拉低；或删除\\\"合并计算后基本持平\\\"的表述，仅保留中单口径8.805对9.01，并与第4节\\\"全样本补刀差距受辅助局明显影响\\\"保持一致。\",\n      \"block\": 6\n    },\n    {\n      \"severity\": \"low\",\n      \"category\": \"fact_error\",\n      \"source_ids\": [1, 2, 3, 4, 5, 6],\n      \"explanation\": \"原句未限定指标，泛称\\\"混合位置均值受辅助局强烈拉低\\\"。按来源，辅助败局确实拉低补刀（全样本败局6.45对中单败局9.01）、经济与伤害的败局均值，但方向并非对全部指标成立：视野分的败局均值反而被辅助局抬高（全样本52.67对中单败局34.0），15分钟前死亡亦被抬高（2.67对中单败局0.5）。报告第4节表格已展示辅助局视野分90，泛化方向表述与自身数据冲突，可能让读者误以为辅助局对所有败局均值都是拉低。\",\n      \"suggested_correction\": \"将该句限定为\\\"补刀、经济与伤害的混合败局均值受辅助局明显拉低\\\"，并注明视野分与15分钟前死亡的败局均值反而因辅助局更高，需按位置与指标分别解读。\",\n      \"block\": 4\n    }\n  ],\n  \"issue_resolutions\": []\n}\n",
+          "usage": {
+            "cached_input_tokens": 0,
+            "input_tokens": 11713,
+            "output_tokens": 6484
+          },
+          "finish_reason": "stop",
+          "model": "glm-5.3-flash",
+          "provider": "zhipu"
+        },
+        {
+          "ordinal": 2,
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/response-002.json",
+          "raw_file_sha256": "0cbf9d63631912915d7c20ee62df89011f08e5718fd10b73b2786b435c2ee3da",
+          "content_sha256": "4671d30fea2c82cd7038aa1139bf1ca85eb333c15caf4743dd4461c6542294cc",
+          "content": "已检索到可用的教练知识证据（早期死亡、补刀与经济、避免伪精确目标、可执行性、证据分层五条），并核对了五局样本与分位置统计。以下为观摩报告：\n\n# RiftCoach 教练式复盘报告\n\n## 1. 总体结论\n\n本报告为对 DK ShowMaker#KR1 的**观摩复盘**（5 局排位，2 胜 3 负，40.0%），观摩对象不是阅读者本人，所有结论仅描述这 5 局。中单 4 局 2 胜 2 负，辅助位（卡蜜尔）1 局告负。胜局与败局最明显的差异在中单的伤害/分钟（1286.76 对 617.52），而非补刀或视野；早期死亡在胜败样本间几乎相同，不应作为主要胜负分界点 [K1]。补刀、经济与伤害的混合败局均值受辅助局明显拉低；而视野分与 15 分钟前死亡的败局均值反而因辅助局更高，应按位置与指标分别解读。\n\n## 2. 当前表现亮点\n\n- 中单补刀稳定：4 局中单补刀/分钟均在 8.38–9.64，且中单胜局均值 8.805 与败局均值 9.01 基本持平。将所选全部 5 局（包括辅助局）合并计算后，胜局平均补刀/分钟为 8.8、败局为 6.45，差距明显，主要由辅助局 1.34 拉低。\n- 辛德拉胜局：14/5/10，8.66 补刀/分钟、1430.11 伤害/分钟、27.5% 输出占比，是本样本输出最高的对局。\n- 艾尼维亚败局：15 分钟前 0 次死亡、9.64 补刀/分钟；但根据证据规则，这只能说明生存与发育结果较好，不能直接推出防抓或对线能力优秀 [K1]。\n\n## 3. 主要风险点\n\n1. **辅助位卡蜜尔局**：1/13/11，补刀/分钟 1.34，15 分钟前死亡 7 次。这是单局样本，仅描述该局，不能推断位置适应或英雄池问题。\n2. **中单败局的伤害落差**：同位置胜局伤害/分钟 1286.76、败局 617.52（差约 669）。统计只能描述发生了什么；换血、技能命中与兵线原因需录像判断 [K5]。可把参团时机与资源分配列为复盘假设，但不能凭统计确定原因 [K2]。\n\n## 4. 赢局与输局差异\n\n| 指标 | 中单胜局 | 中单败局 | 辅助败局（单局） |\n|---|---:|---:|---:|\n| 补刀/分钟 | 8.805 | 9.01 | 1.34 |\n| 伤害/分钟 | 1286.76 | 617.52 | 538.97 |\n| 经济/分钟 | 505.29 | 432.82 | 302.59 |\n| 视野分 | 33.5 | 34.0 | 90 |\n\n全样本口径下早期死亡胜局 2.5、败局 2.67，差异很小 [K1]；全样本补刀差距受辅助局明显影响；伤害差距则在两场中单胜局与两场中单败局之间已存在，不能主要归因于辅助局。以上统计不能证明个人能力或胜负原因。均值差异也不代表逐局方向一致或因果关系。\n\n## 5. 下一步复盘建议\n\n1. 优先逐局核对两场中单败局（艾尼维亚、洛克）：用时间线定位死亡时间（艾尼维亚 25:35、29:27；洛克 12:05–25:29 分布），再决定是否需要录像验证伤害落差的原因 [K5]。\n2. 在胜局（薇古丝、辛德拉）中标记 15 分钟前的死亡（薇古丝 3 次、辛德拉 2 次）并比较死亡前的活动路线，作为假设验证，而非结论 [K2]。\n\n## 6. 训练计划\n\n由于本报告为观摩数据，不构成阅读者的个人基线；且未提供明确训练目标，训练位置保持不选。请先说明你想训练的位置（例如中单或辅助），以下为**条件性观摩练习**：\n\n- 若选择中单：从 5 局中选 1–2 局，观察 5 分钟区间的补刀节奏与资源争夺前后的走位路线，记录观察到的指标变化 [K4]。\n- 本样本无位置、英雄与段位基准，不设固定的补刀、经济或伤害数值目标；样本扩大后再与同位置历史样本比较 [K3]。\n\n## 7. 数据边界与知识来源\n\n- 玩家事实来源：Riot API 返回的 5 局赛后统计与 timeline（生成于 2026-09-10 UTC），确定性报告与分位置推断均为数据；Data Dragon 提供历史版本英雄名映射。仅 5 局、混合位置，单英雄均只 1 局，不能推断长期水平、英雄强弱或胜因。\n- 本会话未提供 OP.GG 数据，故不含基于外部快照的英雄池建议；这是一个数据缺口，不是结论。\n- 教练知识引用：[K1] 早期死亡（01_metric_interpretation.md）、[K2] 补刀与经济（01_metric_interpretation.md）、[K3] 避免伪精确目标（03_training_plan.md）、[K4] 可执行性（03_training_plan.md）、[K5] 证据分层（02_review_method.md）。以上均为通用方法，非玩家专属事实。",
+          "usage": {
+            "cached_input_tokens": 0,
+            "input_tokens": 10687,
+            "output_tokens": 2193
+          },
+          "finish_reason": "stop",
+          "model": "glm-5.3-flash",
+          "provider": "zhipu"
+        },
+        {
+          "ordinal": 3,
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/response-003.json",
+          "raw_file_sha256": "b824f1d7c128d96f97560dff4952bb8bc7af8d8ec379cc7c62381c4df0003135",
+          "content_sha256": "d3e1d1af724e481b750954cfd63ea0a97ad48ee162f9ab2ae0ff983d8a4f3b07",
+          "content": "\n{\"score\": 96, \"verdict\": \"pass\", \"issues\": [], \"issue_resolutions\": []}\n",
+          "usage": {
+            "cached_input_tokens": 0,
+            "input_tokens": 11760,
+            "output_tokens": 3099
+          },
+          "finish_reason": "stop",
+          "model": "glm-5.3-flash",
+          "provider": "zhipu"
+        }
+      ],
+      "immutable_files": [
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/call-001.json",
+          "sha256": "16157b003a526e6014e80adb176ad99b4759190a4337a5bdad6c0dfd3f5c38ac"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/call-002.json",
+          "sha256": "1bde7306cdbb26e51597abd2c2565acc1b4907f5d039620a05eab7b7620a8270"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/call-003.json",
+          "sha256": "6027f4ea2ed690ba6524e519d84e5adc54ab4e3fb8b80e0cbfaff271a500ebfc"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/initial-correction-journal.json",
+          "sha256": "47dd740b7c3cc2c93c34f06c49a3876c3c51febf53e68585581b2ec22190e505"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/initial-evaluation.json",
+          "sha256": "b476d5fdcaec41b0c81590a07979dfbc666c151cbcf1f69636795a2e4da09a07"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/input.json",
+          "sha256": "8443a3fe22fc003f70daa1d0b7f1f237e0daa6eca1208216df0f6bab64b06e59"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/recheck-correction-journal.json",
+          "sha256": "b486f0079ec6fc1b6d0d5085d79198d274ac15c5bfc11152911a3f7baf78f06c"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/request-001.json",
+          "sha256": "4bd96695a2d5e9bba0c6d41554f5360da8270547e421bed1b7fb93db62231c60"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/request-002.json",
+          "sha256": "dd2e349d3e809c6e9ec9aae47db3db1bb7ce3a4ec6ad523b23b084c32521cf04"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/request-003.json",
+          "sha256": "bd3af07767063a2d08d2d56d41df5ff490dff05ff6326fff5b290bcd107bdeca"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/response-001.json",
+          "sha256": "219bcc460e1dd7bc8bede2e13e91ffad23c9d18dc02a5610c5dab2d34fb75b16"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/response-002.json",
+          "sha256": "0cbf9d63631912915d7c20ee62df89011f08e5718fd10b73b2786b435c2ee3da"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/response-003.json",
+          "sha256": "b824f1d7c128d96f97560dff4952bb8bc7af8d8ec379cc7c62381c4df0003135"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/result.json",
+          "sha256": "1f75d35b88914883cfc1f6336663b3edb8b70af87467a908c28ed7c29b3b2aee"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/revised-evaluation.json",
+          "sha256": "4a2bebe3577fff975b3ddfcf021d04c1e93d37edaf34b2db701707f7d1b2e520"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/revised-report.md",
+          "sha256": "76cc6d68ad8a3667c12173d24dd5a28b90f7a9baf9729f9c053e068505c2af36"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/streams/stream-001/progress.json",
+          "sha256": "dbc18304b0a352d7fdef68d3a7e713fd74c13458ff5474fa0cb2a1b6d2de1d2c"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/streams/stream-001/reservation.json",
+          "sha256": "e3c26cb726f0919d9a86f40cd92c3b93c02ad6417a70712941c01eb34aed33ed"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/streams/stream-001/result.json",
+          "sha256": "87611832ceebf3d057b937a65c19a341c477c088cf52ee0bcc7af77ca3f655bc"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/streams/stream-002/progress.json",
+          "sha256": "37fcb28cc3b97781d075d332f4e19e990fbd05e89c41a855ce94cc3bf837e041"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/streams/stream-002/reservation.json",
+          "sha256": "284e4732dcd13ea673a17fbf223e660f0b74f759d11599c5dd154c11a86c6784"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/streams/stream-002/result.json",
+          "sha256": "1cdbce6d9b82d38c36f6906cac4127bee6d75e31db0447ea6acfb04630e5e293"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/streams/stream-003/progress.json",
+          "sha256": "847f4471726e54757cc603552e145e665040615d5dfb669f39dd90e0a3263b26"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/streams/stream-003/reservation.json",
+          "sha256": "5deab7bffd03e2d6ff711cefdd72324e957665e9dc3e277fd0f9520384668eee"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/explicit_combined_population/streams/stream-003/result.json",
+          "sha256": "affa87134f2bb56f250fbccae961e5b5c9b4c97a3890870d45b4ac93e3c8b88c"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/plan.json",
+          "sha256": "ab56f69285bb09a20c6f47560501efd36e92e926b4090a4e8b7be89f530eb715"
+        },
+        {
+          "path": "data/runs/inference_development/native-review-354d752-claim-3/receipt.json",
+          "sha256": "92e8bb51ed3d5a172f26e95a786b8fd29683339ce1e058c278b8e81148de9169"
+        }
+      ]
+    }
+  ],
+  "calls": 7,
+  "completed_calls": 7,
+  "input_tokens": 79804,
+  "output_tokens": 29040,
+  "total_tokens": 108844,
+  "unknown_usage_calls": 0,
+  "cumulative_provider_requests_at_least": 272,
+  "controls_accepted": 2,
+  "negative_revision_recheck_accepted": 1,
+  "raw_receipts_modified": false,
+  "semantic_approval": false,
+  "production_admitted": false,
+  "actual_requests_reconstructed_at_original_sha": true,
+  "historical_five_rerun": false,
+  "product_run": false,
+  "limitations": [
+    "Two accepted development controls do not qualify v3.6 for product or production.",
+    "Case4 explanation used imprecise 33.5/33.75 wording; same-issue correction and actual revision bind all-mid mean to 33.75. Its extra kills suggestion is supported by full facts but not completely by selected roots.",
+    "Case3 actual final report passed after a false positive propagated into an unnecessary edit; whole-path manual acceptance is false.",
+    "No reassessment was triggered: real v3.6 two-state recovery remains unverified.",
+    "Remaining claim-scope, original scope negatives, historical five and product generation were not run in this batch.",
+    "First positive took 250.891 seconds within the 300-second cap; no timeout/output exhaustion occurred."
+  ],
+  "followups": [
+    "Product runner admission still points at historical a71eb94 controls. Before enabling v3.6 product execution, bind qualification artifact to current candidate identity and same-version coverage; never infer new qualification from old green controls."
+  ],
+  "failed_case": "explicit_combined_population",
+  "failure_kinds": [
+    "false_positive_invented_universal_quantifier",
+    "development_runner_missing_pre_revision_adjudication_boundary"
+  ],
+  "live_tail_reassessment_attempted": false,
+  "live_tail_reassessment_succeeded": false
+}

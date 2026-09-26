@@ -1,0 +1,179 @@
+# 原完成证据恢复与来源粒度可行性检查
+
+本包服务于同一Agent教练任务的完整来源审查；不改变8E、原15输入/标签、产品模型或发布标准。
+
+## 已确认事实
+
+a325e4dc / CI35979222638三项成功后，9例批完成前五例：claim-scope:2为95，
+claim-scope:5为96，claim-scope:6为88/needs_revision→Flash实际修改→95/pass，
+claim-scope:7为95，observed:1原“较稳定”正确稿96/pass。各阶段主/独立全文接受；
+错稿只修真实错段，其余23段逐字保持。observed:2初评62/needs_revision返回后，
+用户说明Codex额度耗尽导致对话中断；后台随后等待host达到原期限，记录
+task_observation_host_deadline。触发和后果分开，不称GLM额度耗尽。
+
+134份原件/公开投影封存golden_role_unexecuted_result_v1.json，SHA
+2c1932f2d769958a2c4f33119e79c60f4b5624058f4af54bd15ded0022a1d62c。
+8次真实调用96045输入+18132输出=114177tokens，缓存11520、未知0；
+1854.282秒、未缓存估价1.1445408元非账单。后三例observed:3–5未调用。
+独立事后审计SHA7a044df35b5faf6ea3cb4bfe7b8685a28303cfc5e2894596ad99cd8f028317f7。
+
+逐例耐久回执避免了第一次中断的完成证据丢失。严格适配器原来拒绝带error的根result；
+现核对原耐久前缀与result一致、完整回放、主/独立来源和全批账目后，保留失败尾部另授
+前五例资格。加前三例为8/15；公开结果golden_role_partial_qualification_v1.json，SHA
+792d08835696041e5d0c1822ec14d5a26ce90388f32a920e0a82314b596db636。原批不改，
+旧两例计时缺口、scope:3与observed:2未完成、observed:3–5未跑仍是七个资格缺口。
+
+## 首次偏离与修法选择
+
+observed:2事后核查不是目标误报：未来全部MID输局低于全部赢局的预测确实无据。
+模型解释引用6/15/19（混合汇总/中单伤害均值），却新增四个逐局伤害、all_pairs及
+修法中的经济逐局排序。数值与完整输入相符，但所选来源不足以支持所有新增断言。
+缺口已在实际公开模型参数，排除传输、解析、编号错位和上游缺数据。模型内部原因未知。
+
+现合同可表达充分依据；同一响应换成7/9/10/11或29+38会提供本例需要的数据，
+但仅为离线反事实说明，绝不修改原输出或授资格。29的生成资料省略版本/时长/部分指标，
+不能让29+38冒充全部来源；更不能因为只是引用缺口便忽略完整审查质量门。
+
+选择先检查粗引用目录的可行性：复用SourceEntry/SourceCatalog/原根解析，追加完整
+facts_and_provenance根，保留知识/用户/位置/外部/计算根；事实表原行号仍用于读取，
+可引用根通过独立目录及工具schema明确限定。所有数据、段落、业务规则、模型/解码预算
+保持；source_ids必须由模型实际选择，host不补齐。宽根只证明可找到完整材料，不能证明
+预测/因果/身份/版本/来源用途正确，主/独立审查仍核对整份输出。
+
+备选：仅追加“选完整根”的提示改动小，但同样的粒度误选仍合法，未减少同时选粒度的负担；
+新造多层分组协议没有必要；ADR0111尾部容错不能拿来抹掉本例修法的引用缺口。
+不先构建新产品候选、改manifest或重新跑15项。离线投影证明无损后才实测最小两控制。
+
+## 本批执行与决策
+
+scripts/run_coarse_source_review_pair.py复用原双例执行器，原observed:2真错→observed:1正确，
+同完整来源、GLM-5.3/high、32768输出/单次300秒、retry0。最多2calls、158246tokens、
+整批600秒含host，保守估价2.576688元非账单。沿用用户持续诊断修复授权；这是明确的新
+机制可行性诊断，不是旧失败批续跑或借原预算退款。旧15调用216632tokens/4554.282秒
+保守消耗仍保留，剩3输入暂不原样付费继续。
+
+冻结准备d7639087ff4e171c12f9a8bab9d600687e393dadd3fbb5485d7471e1815e53e9。
+原始请求、source、response、journal、逐例accounting及主/独立检查保存；每例开始前
+要求绑定本run/plan/key/request的就绪信号，等待计batch期限。中断后不会自动开新例；
+已开始例仍可能超时，不能保证Codex持续在线。迟到信号/host不接受，不重启旧时钟。
+源码/冻结计划一致和同提交公共CI通过后才读密钥发请求。
+
+- 任一完整审查不接受、错误verdict、协议/身份/传输/预算失败：停；保留原始输出、已知与未知费用。
+- 两例通过：仅证明该表示在两例可行，主/独立审查实际解释/修法/来源后才决定后继资格路线。
+- 该两例与历史fine响应不是随机配对试验，不声称因果或稳定率，不将旧8项迁作新身份资格。
+- 若宽根仍出现实质误报/漏检/新事实或不支持断言，拒绝“缩目录已充分修好”的假设，不再原样变体重试。
+
+## 后继依赖
+
+原15及真实自然生成/工具/审查修订的共享5调用401920tokens/900秒完整任务仍待完成。
+现build_role_coach_application已含AgentLoop/Knowledge/Memory/Evidence；Worker默认仍单模型。
+质量达到既有标准后显式接线，用同一真实入队schema2.0/evidence_bound_v1身份验证
+Agent→DB/API/Workbench。snapshot/task/event原子提交与assistant terminal turn幂等投影
+分别核对，不拿开发runner合成身份冒充真实任务。
+Coach/Review/Training/Evidence联动、自然请求、本人训练反馈、审美优化/必要重做/英雄头像、
+两树整合、运维、独立评估与学习仍依原路线执行。
+
+## 2026-09-25 实测结果与去留
+
+执行提交 b0ac8e8395dd565cad5cb26374ab6289479802a2，公共CI36034943285三项通过
+（pytest 4924 passed /154 skipped /129 subtests，535.37秒）。历史preview三项回归先修复再发请求；
+固定旧源码身份同时重建完整请求/预算，独立复核六请求一致。此前70deb1e0的CI失败保留。
+
+冻结两控制实际完成：observed:2为68/needs_revision，唯一block10未来全称错误，实际引用
+[27,38,39]覆盖确定性资料、完整计算和完整原始事实。解释正确区分all_pairs本样本关系与未来预测；
+示例修法删除未来断言或改样本内关系，新增均值1286.76/617.52有充分引用。原正确observed:1为96/pass、
+issues空，仅block18可选可读性标记。主审和独立审查分别核完整28段/全部来源及实际输出，均接受；
+原正确稿未改、错误稿尚未编辑。这是两份审查的可行性证据，不能叫真实纠错链完成。
+
+2请求26396输入+4222输出=30618tokens，缓存2048、未知0；含host总286.172秒，
+单例141.219/134.922秒，未缓存估价0.329384元，非账单。32份原件哈希与公开投影：
+`data/evaluation/results/golden_coarse_source_result_v1.json`，SHA
+`f7c8a787816e98ca797fdd0337ec1e6ddb94999206687220df7631b62331a4a8`。
+逐项核request原字节、stream reservation/完整状态/用量、公开response/tool参数、journal、输入/报告和主独立裁决。
+导出临时脚本最初假定transport根目录有request-NNN/response-NNN，实际此执行器保存stream收据和arm公开响应；
+已按实际路径核对，未伪造不存在的原件，未改原run。两次调用结束后无追加请求。
+
+**方案裁决：** 粗引用在本两控制中可行，值得进入已有工作流的集成验证；不是证明它单独造成改善，
+也不是稳定性或生产采用。旧细引用合同1.5.2的8/15保留，新表示必须单独身份，不能迁移旧8项。
+不再为本两控制修改提示或重复请求，也不新造编辑器/状态机。下一包直接复用现有RoleClarity/SharedBudgetReviewSender
+和Flash编辑，打通新来源表示的初评、编辑和fresh终评。当前投影只实现初评，不能直接注册到产品：
+要先补previous_raw/accepted分支、动态根解析以及审查journal/可信Trace/资格回放的一致身份。
+
+**下一包完成标准：** 新工作流在完整来源上无损；旧身份回放和默认Worker不变；
+新根ID拒绝leaf/未知/跨输入引用，解释/修法不由host补引；fresh终评不夹旧评。
+离线用本批真实首评驱动既有修订流程，验证完整报告保存、原来源及共享预算；在同HEAD CI后，
+最小真实Flash改稿+GLM终评验证有据修正且保留正确内容。具体新请求和预算在实现后冻结，
+不是让本批剩余时间续跑。通过后才安排同身份原15及真实自然生成/工具/Worker消费验证。
+如果真实编辑/终评出现新问题，按首次偏离分辨表示/接线/语义，不直接增加提示或重试。
+
+## 后继工作流接线：历史阻断与实现过程
+
+新 `golden_role_coarse.RoleCoarseReviewWorkflow` 继承现有单次修订/终评状态机，
+完整来源投影支持初评、显式重评和编辑；本批真实首评[27,38,39]不改字段即可被验证，
+编辑仅收到实际issues，fresh终评只有实际修改稿与原始来源，不夹带旧意见。
+每项issue/resolution直接解析粗根，不转换ID或借旧校验器补引。动态来源schema、
+知识引用、安全终止、来源一致性、问题映射和可选段落标记均保持。
+
+共享旧native validator的参数化尝试触发既有manifest组件指纹检查，已撤回且旧文件无diff；
+新来源验证独立在新workflow内，不为一次局部接线无意改默认1.5.2身份。
+旧两控制preview从原封存结果固定source hashes，仍重建并核对完整请求和计划，原执行入口仍关闭。
+
+完整factory+预算模拟发现下一层真实阻断：`reviewer_roles.role_for_request`与
+`RoleCoachExecutionContract.request_identity`仅接受旧explicit投影。新请求会在网络前报
+`role_source_projection_required`。这不是模型失败，也不能通过改metadata或另造临时router绕过。
+因此 `run_coarse_revision_tail --execute` 当前在prepare/密钥前明确非零拒绝；它只提供有界请求准备，
+尚无冻结新实测计划，没有新增付费调用。拟议两次/193536tokens/600秒、保守2.859008元只是准备预算，
+不是已执行或生产任务证明。旧同版本8/15和两粗来源控制结论不变。
+
+下一步必须一次性接齐新opt-in执行身份：
+1. `reviewer_roles.py`显式路由选择新projection，禁止默认旧路由悄悄扩大；
+   `coach_contract.py`新合同独立snapshot/request identity，保留旧1.5.2回放身份和原预算。
+2. `role_coach_contract.py`及对应新runtime profile manifest绑定实际workflow/schema/policies/源码；
+   `native_coach_composition.py`显式新builder，默认Worker仍不切换。
+3. `runtime/models.py`可信Trace只接受精确新合同；`role_qualification.py`与任务回放绑定新workflow/来源目录，
+   拒绝跨版本/跨输入借资格。动态根schema由实际输入摘要绑定，不能拿一个固定observed schema覆盖15项。
+4. 验证真实factory→预算→workflow→receipt的替身整链、旧identity回归、全15来源保持，独立审查和同HEAD CI后，
+   才冻结并开放现有tail runner，执行真实编辑/终评。不要先加第三套诊断路由或绕过预算身份来追求一次模型成功。
+
+离线已验证68项：原15初评/显式重评投影无损，实际首评驱动继承状态机，完整改稿与fresh终评
+（编辑和终评用替身，不作为实测），拒绝leaf/未知/bool/重复引用、来源变化、prose尾部和安全问题，
+旧粗控制/旧编辑观察回归、host双审绑定及禁发入口。真实shared factory的拒绝证据单独保留为待接线边界，
+没有把替身workflow通过报告成实际产品factory已走通。
+
+## 1.5.3完整接线与两调用准备
+
+ADR0112现已实现独立opt-in合同、动态来源schema、资产清单、角色/预算/Trace/回执身份，
+以及实际应用builder。默认Worker不切换；旧1.5.2 snapshot及封存回执不变，当前manifest因
+共享实现变化诚实更新。关闭历史preview验证封存整包和原请求，不用当前manifest冒充旧身份。
+
+实际factory离线模拟暴露的用量读取遗漏、完整Runtime观察包装未透传projection已修复。
+独立审查发现的旧合同接受新router、metadata与实际载荷不一致、旧Trace仅换新snapshot三项
+也已修复。新合同/完整应用/真实factory替身/预算/Trace共84项定向验证通过；
+更广相关回归与公共CI另记progress。没有用模型调用试探这些可本地验证的错误。
+
+冻结计划：golden_coarse_tail_preparation_v1.json，规范SHA256
+2a123d0e09f2cdfcc6500df49226c35c0f79e49c804871be865bf50cbe9bf04b。
+在同HEAD公共三项通过前不发请求。原accepted observed:2首评离线注入，新发Flash编辑和
+GLM fresh终评；2调用/193536tokens/600秒、保守2.859008元非账单，逐阶段主/独立接受。
+本准备覆盖尾部实测；原15仅准备与回放，正式资格适配、全输入质量与自然Agent任务未完成。
+真实结果出来后按实际阶段更新，不以这份准备文本证明质量通过。
+
+## 真实尾段已完成并封存
+
+d675fbcea864476052e19418b3ec16b713ba0957 / CI36097695412公共三项成功后执行，
+初评来自封存已接受原件的离线注入，新发Flash编辑与GLM fresh终评各一次。
+Flash把原block10未来全称断言改为四场中单样本内逐行伤害关系和正确均值，
+明确不能预测未来；其他非空行保持，仅增加空行。全部来源、数字、身份与条件练习经双审接受。
+GLM实际终评96/pass，issues/advisories/resolutions空。实际第二请求按成稿与原来源重建一致，
+previous为空；主/独立全文接受终评，没有让旧评意见进入fresh请求。
+
+2调用25065输入＋4582输出＝29647tokens，cache0/unknown0，
+模型27.516/40.922秒，含host349.406秒，未缓存估价0.1934416元非账单。
+golden_coarse_tail_result_v1.json封存30原件hash/公开投影、报告diff和真实回执重放，
+SHA78258d19166cd6f8124db496fdebefd81f8f8b32f054960c5f8ec85335c5deaa。
+独立逐份核验全部原件、投影、host绑定、费用和声明边界通过；私有推理不导出。
+批次关闭，preview只恢复旧执行身份并重建原请求，不可重新付费执行。
+
+这证明本例真实改稿/终评尾段走通，不是完整连续初评任务或原15通过。
+不再修改这两控制的提示，不把旧8项拼进新合同。后继复用既有严格观察和资格审计，
+接通新身份原15逐阶段真实回执与独立来源验收，再开展自然Agent完整任务及真实产品消费。

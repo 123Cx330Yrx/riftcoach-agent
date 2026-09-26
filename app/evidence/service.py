@@ -71,7 +71,7 @@ class EvidenceProductService:
         snapshot = self._get_snapshot(owner_id=owner_id, run_id=task.run_id)
         if snapshot is None:
             raise EvidenceProductServiceError("evidence_not_available")
-        self._require_identity(task, snapshot.task_id, snapshot.run_id)
+        self._require_identity(task, snapshot.task_id, snapshot.run_id, owner_id)
         try:
             return project_evidence_snapshot(snapshot, now=self._clock())
         except Exception:
@@ -81,7 +81,7 @@ class EvidenceProductService:
         task = self._get_task(owner_id=owner_id, run_id=run_id)
         snapshot = self._get_snapshot(owner_id=owner_id, run_id=task.run_id)
         if snapshot is not None:
-            self._require_identity(task, snapshot.task_id, snapshot.run_id)
+            self._require_identity(task, snapshot.task_id, snapshot.run_id, owner_id)
         try:
             return project_product_run_state(task, snapshot, now=self._clock())
         except Exception:
@@ -116,8 +116,26 @@ class EvidenceProductService:
             raise EvidenceProductServiceError("evidence_unavailable") from None
 
     @staticmethod
-    def _require_identity(task: ReviewTaskView, task_id, run_id: str) -> None:
+    def _require_identity(task: ReviewTaskView, task_id, run_id: str, owner_id: str) -> None:
         if task_id != task.task_id or run_id != task.run_id:
+            raise EvidenceProductServiceError("evidence_integrity_failed")
+        if task.publication_mode.value != "evidence_bound_v1":
+            return
+        reference = task.publication_reference
+        if not isinstance(reference, dict):
+            raise EvidenceProductServiceError("evidence_integrity_failed")
+        context = reference.get("context")
+        if not isinstance(context, dict) or any(
+            context.get(key) != expected
+            for key, expected in {
+                "owner_id": owner_id,
+                "task_id": str(task.task_id),
+                "run_id": task.run_id,
+                "mode": "evidence_bound_v1",
+            }.items()
+        ):
+            raise EvidenceProductServiceError("evidence_integrity_failed")
+        if task.first_snapshot_id is None or task.first_snapshot_digest is None:
             raise EvidenceProductServiceError("evidence_integrity_failed")
 
 

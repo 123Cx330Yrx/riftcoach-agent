@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0",
+  "program_id": "recent-form-review-coach",
+  "program_version": "3.0.6",
+  "skill_name": "recent-form-review",
+  "skill_version": "0.6.0",
+  "context_contract_id": "context-builder-v1",
+  "context_contract_version": "1.0.0",
+  "evaluation_contract_id": "coach_evaluation",
+  "evaluation_contract_version": "3.2.0",
+  "component_fingerprints": [
+    {
+      "component_id": "skill_manifest",
+      "source": "skills/recent-form-review/manifest",
+      "sha256": "4279737022f2c81a317641fe775b6906bd0ddfcc5ccd789ee513cf7a46c62386"
+    },
+    {
+      "component_id": "skill_instructions",
+      "source": "skills/recent-form-review/SKILL.md",
+      "sha256": "f3207adead537a2999749fd0f882e744ebf10cb93c878924cab7b763cb080c23"
+    },
+    {
+      "component_id": "context_contract",
+      "source": "app.agent.context:context-builder-v1",
+      "sha256": "f7083aafd7f515cd02a40c4d3c38480b10a0b4957e5dcdd29c2de8ced73aa2b9"
+    },
+    {
+      "component_id": "knowledge_tool_contract",
+      "source": "app.tools.adapters.knowledge:knowledge.search@2.1.0",
+      "sha256": "d191445af1d0a93e67e8f0d72f097af2042d2c1a90502a52e1503a53f319f109"
+    },
+    {
+      "component_id": "evaluation_schema",
+      "source": "evaluation_schema",
+      "sha256": "e6094add6b65905133ac5155296b84bbf1e5d7e6e2cf9b1fbc17e944577ffbd9"
+    },
+    {
+      "component_id": "generation_policy",
+      "source": "generation_policy",
+      "sha256": "d059bfb9b0a5a2e050ffcd4511fb9228ed130864ea331034e395111ffa3225ae"
+    },
+    {
+      "component_id": "app.evaluation.golden_native_issues_review",
+      "source": "app/evaluation/golden_native_issues_review.py",
+      "sha256": "fd51ed703f3961b4f0cbd6af7b7b0f76928505ae354f4b04026f50ead1af4f47"
+    },
+    {
+      "component_id": "app.evaluation.golden_semantic_review",
+      "source": "app/evaluation/golden_semantic_review.py",
+      "sha256": "f72dca85969b4cf3ef12f2567f19d98ab91ec94e5acf7ee5fe0b1ccdb4048e78"
+    },
+    {
+      "component_id": "app.evaluation.golden_semantic_sources",
+      "source": "app/evaluation/golden_semantic_sources.py",
+      "sha256": "78462ff5032778b78809961c259414b8183efd681c7367b78951e7518adb5cce"
+    },
+    {
+      "component_id": "app.evaluation.golden_contextual_sources",
+      "source": "app/evaluation/golden_contextual_sources.py",
+      "sha256": "db891f59333ef8fb82fb0f8af4cd222eb9a0bdd34d828dba140376d9023621be"
+    },
+    {
+      "component_id": "app.evaluation.golden_computed_evidence",
+      "source": "app/evaluation/golden_computed_evidence.py",
+      "sha256": "d9c3c74102c5e4524f454ea306c559108c9bbf112887c106fbd44f03f2baacef"
+    },
+    {
+      "component_id": "app.evaluation.golden_integrated_runtime",
+      "source": "app/evaluation/golden_integrated_runtime.py",
+      "sha256": "b927c90bdb61a104ef310aaa68992f173db3f94f20d82a1727d8a4ffd594a958"
+    },
+    {
+      "component_id": "app.evaluation.golden_stream_bridge",
+      "source": "app/evaluation/golden_stream_bridge.py",
+      "sha256": "9cae5009df191f10c94808c8512582128641c3523572e908e148333fd46dd345"
+    },
+    {
+      "component_id": "app.runtime.review_sender",
+      "source": "app/runtime/review_sender.py",
+      "sha256": "5148f82b0df38a7b982fff47153f6ea266c7851d61e3b53f1bb1f6f4d42cea56"
+    },
+    {
+      "component_id": "app.runtime.receipted_provider_factory",
+      "source": "app/runtime/receipted_provider_factory.py",
+      "sha256": "5c3a9c7d0f3b0e9981b0c149865751d3273a758a9e66e2ba2c842a1f65f2b36c"
+    },
+    {
+      "component_id": "app.runtime.native_coach_contract",
+      "source": "app/runtime/native_coach_contract.py",
+      "sha256": "b56924300b78364926e17816b0652d629d920efdaef266f03ce09e71a43582d5"
+    },
+    {
+      "component_id": "app.product.native_coach_composition",
+      "source": "app/product/native_coach_composition.py",
+      "sha256": "18affdb4f1d188083ff52b82fc6fd203d1a1da49d645750ffd5e2613c6f525c0"
+    },
+    {
+      "component_id": "app.product.recent_review_service",
+      "source": "app/product/recent_review_service.py",
+      "sha256": "e4ecaf5dd177db17b5d54cd02525770fd5647f840a9b55e77d8aec3b0c0c3103"
+    },
+    {
+      "component_id": "app.evaluation.golden_source_context",
+      "source": "app/evaluation/golden_source_context.py",
+      "sha256": "bf5a792ec5e43c74057bb187f7802d6538151934ba12221d5dba96b251f1c7f4"
+    },
+    {
+      "component_id": "app.product.coach_positions",
+      "source": "app/product/coach_positions.py",
+      "sha256": "cb6d8ccc7944c8328d3f8dd4e420b0df70d53c3b7c0fd6594ab1ae6d2ea65e3c"
+    },
+    {
+      "component_id": "app.tools.adapters.knowledge",
+      "source": "app/tools/adapters/knowledge.py",
+      "sha256": "21ae0584e8683ea49d31886968c2de956c3e810b62211745f2ba140732802f44"
+    },
+    {
+      "component_id": "app.harness.steps",
+      "source": "app/harness/steps.py",
+      "sha256": "231e4f3e27e67aaa853f7aef90fc3206564a4a5222f2186fcbfb10c75a7cedb6"
+    },
+    {
+      "component_id": "app.harness.knowledge",
+      "source": "app/harness/knowledge.py",
+      "sha256": "16b40ae0f1fc856c682367ed9b357646f5a51a5c57cd34ed2c8726b74cfb59f6"
+    },
+    {
+      "component_id": "app.harness.adapters",
+      "source": "app/harness/adapters.py",
+      "sha256": "e6a00a9a92a350a5e4770adfdbb423814a281f4cdaefb706cabe7993da104ff5"
+    },
+    {
+      "component_id": "app.harness.runtime",
+      "source": "app/harness/runtime.py",
+      "sha256": "c2e240851eff48d44a49d5c588da1b498cf3c477b8f48ef8f200a6edf2dfde91"
+    },
+    {
+      "component_id": "app.agent.context",
+      "source": "app/agent/context.py",
+      "sha256": "5df787d40e7ea905661406f9ff4551da8ab826adceea89d41f0ebc4c1d7c0b3d"
+    },
+    {
+      "component_id": "app.runtime.runtime",
+      "source": "app/runtime/runtime.py",
+      "sha256": "791dab77b987361c47b2c6ff6fb5c77c33f9348562ae990aab7eb655433db9e3"
+    },
+    {
+      "component_id": "coach_execution_contract",
+      "source": "app.runtime.native_coach_contract:v1.4.6",
+      "sha256": "94fa4ed248628f0801ff83a999a6c14e54464b838ed11e453f718c448502ef0d"
+    }
+  ],
+  "program_sha256": "0be36ffe110fe479af8c989a7ffb8fc063337d8eddfbfd540b9be756e962cb7d"
+}
