@@ -1,3 +1,23 @@
+## 2026-09-27 恢复提交前断点
+
+9月25日修复后新旧资格审计60项通过（240.39秒），冻结计划仍为eb59acdd…491c7。
+9月27日核对四批296份原件，缺失/摘要不符均为0；新版原15运行目录不存在，无活动模型进程。
+此前两次口头“现在提交”未落实，HEAD仍8117369e；五个本地改动未丢失，不把计划当执行结果。
+本次先记录已完成验证、纠正当前状态中的旧适配措辞，再提交CI容量修复并验证同HEAD公共检查。
+真实原15仍待执行，产品模型、原始输入/标签、预算和采用标准不变。
+
+## 2026-09-25 CI timeout diagnosis and bounded capacity fix
+
+Actions36119731919 at 8117369e explicitly reports the 15-minute job limit.
+PostgreSQL and packaging succeeded; pytest was cancelled, not passed.
+The prior successful job36097695412 took 13m35s, including 9m33s of pytest.
+The new coarse suite passes 20 tests locally in 139.75s; full15 replay takes 53.66s.
+Removed unused duplicate preparation in make_run (about 0.81s per fixture),
+retained all executor/negative coverage, raised only CI job capacity to25min
+and added slowest20 reporting. Product model/time/token budgets are unchanged.
+Focused regression and same-HEAD public CI must finish before paid requests.
+No new Provider call or original15 live run has started.
+
 ## 2026-09-25 原15粗来源资格接线与验证准备
 
 新coarse profile复用既有执行器、原15冻结资料、严格封存审计和中断完成前缀，

@@ -11,7 +11,9 @@ permissions:
 jobs:
   pytest:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Browser checks and sealed-receipt regressions share this job.
+    # Previous successful job took 13m35s before the new suite.
+    timeout-minutes: 25
 
     steps:
       - name: Check out repository
@@ -77,7 +79,7 @@ jobs:
         run: python scripts/check_project_governance.py
 
       - name: Run tests
-        run: python -m pytest -q
+        run: python -m pytest -q --durations=20
 
       - name: Enforce RAG v1 retrieval quality gate
         run: |

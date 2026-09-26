@@ -41,7 +41,6 @@ def seal(run, root, export):
 @pytest.fixture
 def make_run(tmp_path, monkeypatch):
     """Real executor/receipt writer; stub only network with source-bound replies."""
-    plan, requests = q.prepare_qualification()
     sources = {f['key']: source for f, source in q.frozen_cases()[0]}
     counter = [0]
 
