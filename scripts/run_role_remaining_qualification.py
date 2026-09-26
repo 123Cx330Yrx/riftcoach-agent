@@ -37,8 +37,8 @@ RUN_DIRECTORY = ROOT/'data/runs/role_task_observation'/EXPERIMENT
 
 class StrictObserver(Observer):
     @staticmethod
-    def validate_stage(plan, row, path, decision):
-        allowed = Observer.validate_stage(plan, row, path, decision)
+    def validate_stage(plan, row, path, decision, *, backend=None):
+        allowed = Observer.validate_stage(plan, row, path, decision, backend=backend)
         initial_error = (decision['assessment']['stage']=='initial' and row['expected_initial']=='reject')
         return (allowed and decision['accepted'] is True and not decision['assessment']['defects']
             and (not initial_error or decision['target_and_correction_valid'] is True))

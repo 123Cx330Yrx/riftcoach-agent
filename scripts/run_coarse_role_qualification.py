@@ -5,6 +5,7 @@ reviews. Only the separate sealed audit may grant original-set qualification.
 """
 import argparse
 from decimal import Decimal
+import hashlib
 import json
 from pathlib import Path
 
@@ -25,14 +26,24 @@ from scripts.run_role_qualification_pair import observe
 from scripts.run_role_remaining_qualification import StrictObserver
 from scripts.run_role_task_observation import Observer, adjudicate_file, await_case_ready
 from scripts.qualify_role_observations import _stage, _sha
+from scripts.role_host_identity import candidate_sha256
 
 EXPERIMENT = 'coarse-role-qualification-v1'
 RUN_DIRECTORY = ROOT / 'data/runs/role_task_observation' / EXPERIMENT
 PREPARATION = ROOT / 'data/evaluation/results/golden_coarse_qualification_preparation_v1.json'
 CLOSED_RESULT = ROOT / 'data/evaluation/results/golden_coarse_qualification_result_v1.json'
+FAILURE_SHA = '8c534f0ec68624517ef71feb081be4cc29cb0beb758579757daa37db28311b6e'
+REPAIR_EXPERIMENT = 'coarse-role-file-handoff-v1'
+REPAIR_RUN = ROOT / 'data/runs/role_task_observation' / REPAIR_EXPERIMENT
+REPAIR_PREPARATION = ROOT / 'data/evaluation/results/golden_coarse_file_handoff_preparation_v1.json'
+REPAIR_RESULT = ROOT / 'data/evaluation/results/golden_coarse_file_handoff_result_v1.json'
 
 
 class CoarseObserver(StrictObserver):
+    @staticmethod
+    def validate_stage(plan, row, path, decision):
+        return StrictObserver.validate_stage(plan, row, path, decision, backend=qualification)
+
     @staticmethod
     def finish(plan, row, calls, decisions):
         return Observer.finish_with_backend(plan, row, calls, decisions, backend=qualification)
@@ -56,13 +67,25 @@ def validate_handoff(path, decision, plan, *, directory):
             or not all(c['completed'] for c in calls)):
         raise ValueError('coarse_qualification_stage_call_inventory')
     _stage(path.parent, {k:stage[k] for k in ('stage','report','journal')}, row,
-        digest(compact(plan['identity'])), _sha(path.parent/'source.json'),
+        candidate_sha256(plan['identity'], backend=qualification), _sha(path.parent/'source.json'),
         calls[-1], transport, pending_host=decision)
     return decision
 
 
-def prepare():
+def prepare(*, file_handoff_repair=False):
     original, requests = qualification.prepare_qualification()
+    if CLOSED_RESULT.exists() and not file_handoff_repair:
+        raw = CLOSED_RESULT.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != FAILURE_SHA:
+            raise ValueError('coarse_qualification_closed_evidence_changed')
+        saved = json.loads(raw)['public_json_contents']['plan.json']
+        plan = saved['preparation_plan']
+        if (canonical_sha(plan) != saved['plan_sha256']
+                or plan != json.loads(PREPARATION.read_bytes())
+                or any(hashlib.sha256(requests[r['key']]).hexdigest() != r['request_sha256']
+                       for r in plan['cases'])):
+            raise ValueError('coarse_qualification_closed_request_changed')
+        return plan, requests
     rows = original['cases']
     budgets = []
     for row in rows:
@@ -78,8 +101,10 @@ def prepare():
     paths = ('scripts/run_coarse_role_qualification.py', 'scripts/run_role_qualification_pair.py',
         'scripts/run_role_task_observation.py', 'scripts/run_role_remaining_qualification.py',
         'scripts/qualify_role_observations.py', 'app/evaluation/role_task_outcome.py',
-        'app/evaluation/role_qualification.py', 'app/evaluation/coarse_role_qualification.py')
-    plan = dict(experiment=EXPERIMENT, observation_version=VERSION, identity=original['identity'],
+        'app/evaluation/role_qualification.py', 'app/evaluation/coarse_role_qualification.py',
+        'scripts/role_host_identity.py', 'scripts/write_role_stage_decision.py')
+    plan = dict(experiment=REPAIR_EXPERIMENT if file_handoff_repair else EXPERIMENT,
+        observation_version=VERSION, identity=original['identity'],
         original15_plan_sha256=digest(compact(original)), original15_keys=[r['key'] for r in rows],
         cases=rows, case_budgets=budgets, source_sha256={p: digest((ROOT/p).read_text(encoding='utf-8')) for p in paths},
         batch_budget=dict(totals, estimated_uncached_cny=str(cost), hard_billing_cap=False),
@@ -88,13 +113,23 @@ def prepare():
         success_scope='Fresh continuous original15 controls; no natural generation, product consumption or production admission.',
         failure_decision='Preserve the earliest divergence and all charges. Diagnose before further paid work; no automatic new batch or prompt variant.',
         review_controls_qualified=False, actual_product_task_qualified=False, production_admitted=False)
+    if file_handoff_repair:
+        if not CLOSED_RESULT.exists() or hashlib.sha256(CLOSED_RESULT.read_bytes()).hexdigest() != FAILURE_SHA:
+            raise ValueError('coarse_qualification_prior_failure_required')
+        plan['prior_failure'] = dict(path=CLOSED_RESULT.relative_to(ROOT).as_posix(), sha256=FAILURE_SHA,
+            cause='Host used reordered saved JSON instead of the verified profile identity builder.',
+            repair='Tracked file decision writer and saved-plan identity validation; same product/request/labels.',
+            inherited_completed_cases=0, inherited_provider_calls=0)
     return plan, requests
 
 
 def run(args):
-    if args.execute and (RUN_DIRECTORY.exists() or CLOSED_RESULT.exists()):
+    repair = getattr(args, 'file_handoff_repair', False)
+    directory, preparation, closed = ((REPAIR_RUN, REPAIR_PREPARATION, REPAIR_RESULT) if repair
+                                     else (RUN_DIRECTORY, PREPARATION, CLOSED_RESULT))
+    if args.execute and (directory.exists() or closed.exists()):
         raise ValueError('coarse_qualification_closed_or_exists')
-    plan, requests = prepare()
+    plan, requests = prepare(file_handoff_repair=repair)
     sha = canonical_sha(plan)
     if not args.execute:
         if args.output:
@@ -102,21 +137,21 @@ def run(args):
         return dict(plan_sha256=sha, budget=plan['batch_budget'], cases=len(plan['cases']),
             provider_requests=0, execution_enabled=False)
     if (not args.env_file or not args.ci_run or args.plan_sha != sha
-            or plan != json.loads(PREPARATION.read_bytes())):
+            or plan != json.loads(preparation.read_bytes())):
         raise ValueError('coarse_qualification_preparation_required')
     head = verify_public_ci(args.ci_run)
-    RUN_DIRECTORY.mkdir(parents=True, exist_ok=False)
-    write_new_json(RUN_DIRECTORY/'plan.json', dict(preparation_plan=plan, plan_sha256=sha,
+    directory.mkdir(parents=True, exist_ok=False)
+    write_new_json(directory/'plan.json', dict(preparation_plan=plan, plan_sha256=sha,
         head_sha=head, ci_run=args.ci_run))
     for key, raw in requests.items():
-        (RUN_DIRECTORY/(key.replace(':', '-')+'-prepared-request.json')).write_bytes(raw)
+        (directory/(key.replace(':', '-')+'-prepared-request.json')).write_bytes(raw)
     generator, reviewer = load_role_settings(args.env_file)
     factory = RunScopedRoleReceiptedProviderFactory(generator_settings=generator, reviewer_settings=reviewer,
-        transport_root=RUN_DIRECTORY/'transport', source_projection=PROJECTION)
+        transport_root=directory/'transport', source_projection=PROJECTION)
     def adjudicate(path, remaining):
-        return validate_handoff(path, adjudicate_file(path, remaining), plan, directory=RUN_DIRECTORY)
+        return validate_handoff(path, adjudicate_file(path, remaining), plan, directory=directory)
     with route_environment('direct'):
-        return observe(factory, RUN_DIRECTORY, plan, adjudicate=adjudicate, workflow_type=Workflow,
+        return observe(factory, directory, plan, adjudicate=adjudicate, workflow_type=Workflow,
             replay=replay, success_field='tasks_observed', task_observer=CoarseObserver,
             coach_contract=CONTRACT, before_case=await_case_ready,
             before_send=lambda: require_unchanged_checkout(head))
@@ -125,6 +160,8 @@ def run(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--execute', action='store_true')
+    parser.add_argument('--file-handoff-repair', action='store_true',
+        help='Explicit new bounded batch after the sealed host identity failure; never resume the old run.')
     parser.add_argument('--output', type=Path)
     parser.add_argument('--plan-sha')
     parser.add_argument('--ci-run')

@@ -44,7 +44,7 @@ def make_run(tmp_path, monkeypatch):
     sources = {f['key']: source for f, source in q.frozen_cases()[0]}
     counter = [0]
 
-    def build(keys=('claim-scope:1', 'claim-scope:4'), *, write_fault=None, before_case=None, clock=lambda:0, profile='role', inspect_fault=None):
+    def build(keys=('claim-scope:1', 'claim-scope:4'), *, write_fault=None, before_case=None, clock=lambda:0, profile='role', inspect_fault=None, host_process=False):
         from app.runtime.coach_contract import ROLE_COACH_CONTRACT
         backend, workflow, observer, contract = q, Workflow, Observer, ROLE_COACH_CONTRACT
         if profile == 'coarse':
@@ -111,17 +111,36 @@ def make_run(tmp_path, monkeypatch):
                 reason='Synthetic primary source inspection.', target_and_correction_valid=True,
                 final_report_checks={k: True for k in audit.CHECKS} if final_report else None,
                 report_reason=final_report['source_review'] if final_report else 'Intentionally incorrect source.')
+            if profile == 'coarse':
+                # Exercise the actual file-based host: no in-memory plan is
+                # passed to the writer. JSON storage reorders nested keys.
+                from scripts.write_role_stage_decision import write_decision
+                if inspect_fault:
+                    inspect_fault(path)
+                notes = {
+                    k: primary[k] for k in ('accepted', 'defects', 'reason',
+                        'target_and_correction_valid', 'final_report_checks', 'report_reason')
+                }
+                if host_process:
+                    import subprocess
+                    import sys
+                    notes_path = run/(key.replace(':', '-')+'-'+name+'-notes.json')
+                    write_new_json(notes_path, notes)
+                    subprocess.run([sys.executable, '-m', 'scripts.write_role_stage_decision',
+                        '--run-directory', str(run), '--profile', profile, '--key', key,
+                        '--stage', name, '--notes', str(notes_path)], cwd=q.ROOT,
+                        capture_output=True, check=True, timeout=30)
+                    decision = read(path.with_name('decision-'+name+'.json'))
+                else:
+                    decision = write_decision(run, key, name, notes, profile=profile)
+                from scripts.run_coarse_role_qualification import validate_handoff
+                return validate_handoff(path, decision, observation, directory=run)
             write_new_json(path.parent / ('primary-' + name + '-review.json'), primary)
             decision = dict(response_sha256=raw_sha, accepted=True, candidate_sha256=digest(compact(plan['identity'])),
                 input_sha256=row['input_sha256'], key=key, target_and_correction_valid=True,
                 assessment=dict(stage=name, stage_sha256=stage_identity(stage), reviewer='offline primary fixture',
                     source_review=primary['reason'], accepted=True, defects=[]), final_report=final_report)
             write_new_json(path.parent / ('decision-' + name + '.json'), decision)
-            if profile == 'coarse':
-                from scripts.run_coarse_role_qualification import validate_handoff
-                if inspect_fault:
-                    inspect_fault(path)
-                return validate_handoff(path, decision, observation, directory=run)
             return decision
 
         from scripts import run_role_qualification_pair as pair

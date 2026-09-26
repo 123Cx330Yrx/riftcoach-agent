@@ -33,6 +33,7 @@ from scripts.diagnose_role_context import canonical_sha
 from scripts.run_golden_inference_development import verify_public_ci
 from scripts.run_role_coach_development import load_role_settings, require_unchanged_checkout
 from scripts.run_role_qualification_pair import observe
+from scripts.role_host_identity import candidate_sha256
 
 EXPERIMENT = 'role-task-observation-v1'
 KEYS = ('claim-scope:1', 'claim-scope:4', 'attribution:1')
@@ -55,14 +56,14 @@ class StageDecision(BaseModel):
 
 class Observer:
     @staticmethod
-    def validate_stage(plan, row, path, decision):
+    def validate_stage(plan, row, path, decision, *, backend=None):
         if plan.get('observation_version') != VERSION:
             raise ValueError('task_observation_plan_contract')
         host = StageDecision.model_validate(decision)
         stage = json.loads(path.read_text(encoding='utf-8'))
         if (host.response_sha256 != hashlib.sha256(path.read_bytes()).hexdigest()
                 or host.key != row['key'] or host.input_sha256 != row['input_sha256']
-                or host.candidate_sha256 != digest(compact(plan['identity']))
+                or host.candidate_sha256 != candidate_sha256(plan['identity'], backend=backend)
                 or host.assessment.stage != stage['stage']
                 or host.assessment.stage_sha256 != stage_identity(stage)
                 or host.assessment.accepted != host.accepted):
@@ -88,7 +89,7 @@ class Observer:
     def finish_with_backend(plan, row, calls, decisions, *, backend=None):
         observed = prepare_observation(row['key'],calls,backend=backend)
         expected = dict(key=row['key'], input_sha256=row['input_sha256'],
-            candidate_sha256=digest(compact(plan['identity'])))
+            candidate_sha256=candidate_sha256(plan['identity'], backend=backend))
         if (any(observed['binding'][k]!=v for k,v in expected.items())
                 or any(any(d.get(k)!=v for k,v in expected.items()) for d in decisions)):
             raise ValueError('task_observation_final_identity_drift')

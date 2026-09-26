@@ -1,5 +1,7 @@
 """Actual executor and sealed receipt audit with network-only substitutes."""
 import pytest
+import json
+from types import SimpleNamespace as NS
 
 from app.evaluation import coarse_role_qualification as q
 from scripts import qualify_role_observations as audit
@@ -39,6 +41,37 @@ def test_partial_never_calls_full_gate(make_run, tmp_path, monkeypatch):
     result = accept(run, sealed, tmp_path)
     assert result['validated_inputs'] == 2 and len(result['remaining_keys']) == 13
     assert not result['review_controls_qualified']
+
+
+def test_separate_host_process_and_saved_plan_pass_existing_gate(make_run, tmp_path):
+    from app.evaluation.golden_review_experiment import compact, digest
+    run, sealed = make_run(('claim-scope:1',), profile='coarse', host_process=True)
+    plan = read(run/'plan.json')['preparation_plan']
+    stage = run/'claim-scope-1/initial.json'
+    decision = read(stage.with_name('decision-initial.json'))
+    assert runner.CoarseObserver.validate_stage(plan, plan['cases'][0], stage, decision)
+    assert accept(run, sealed, tmp_path)['validated_inputs'] == 1
+    # Do not accept the actual historical bug as a compatibility digest.
+    wrong = dict(decision, candidate_sha256=digest(compact(plan['identity'])))
+    with pytest.raises(ValueError, match='host_binding'):
+        runner.CoarseObserver.validate_stage(plan, plan['cases'][0], stage, wrong)
+
+
+def test_closed_failed_batch_is_immutable_and_cannot_execute():
+    plan, _ = runner.prepare()
+    assert runner.canonical_sha(plan) == 'eb59acdd374cf7586ddea4ba090a793ba149e201a09c5f838472a444e33091c7'
+    with pytest.raises(ValueError, match='closed_or_exists'):
+        runner.run(NS(execute=True))
+
+
+def test_repair_plan_keeps_model_identity_and_exact_requests():
+    old, old_requests = runner.prepare()
+    new, new_requests = runner.prepare(file_handoff_repair=True)
+    assert old['identity'] == new['identity'] and old['cases'] == new['cases']
+    assert old_requests == new_requests and old['batch_budget'] == new['batch_budget']
+    assert new['prior_failure']['inherited_completed_cases'] == 0
+    assert new['experiment'] != old['experiment']
+    assert json.loads(runner.REPAIR_PREPARATION.read_bytes()) == new
 
 
 @pytest.mark.parametrize('defect', ['source', 'schema', 'catalog', 'missing_revision', 'rejected_review',
@@ -107,7 +140,7 @@ def test_runner_is_full_original_set_and_does_not_inject_tail():
     assert not plan['production_admitted'] and not plan['actual_product_task_qualified']
 
 
-@pytest.mark.parametrize('defect', ['rejected', 'missing', 'wrong_response'])
+@pytest.mark.parametrize('defect', ['rejected', 'missing', 'wrong_response', 'wrong_source', 'wrong_stage'])
 def test_independent_defect_stops_before_editor_request(make_run, defect):
     def sabotage(path):
         other = path.parent/('independent-'+path.stem+'-review.json')
@@ -115,9 +148,16 @@ def test_independent_defect_stops_before_editor_request(make_run, defect):
             other.unlink()
         elif defect == 'rejected':
             change(other, lambda d: d.update(accepted=False, defects=[{'kind':'wrong_correction','detail':'Unsafe edit.'}]))
+        elif defect == 'wrong_source':
+            change(other, lambda d: d.update(source_file_sha256='0'*64))
+        elif defect == 'wrong_stage':
+            change(other, lambda d: d.update(stage_sha256='0'*64))
         else:
             change(other, lambda d: d.update(response_sha256='0'*64))
     run, result = make_run(('claim-scope:4',), profile='coarse', inspect_fault=sabotage)
     assert not result['tasks_observed']
     assert result['cases'][0]['accounting']['reserved_calls'] == 1
     assert not (run/'claim-scope-4/revision.json').exists()
+    if defect in ('wrong_source', 'wrong_stage'):
+        assert (run/'claim-scope-4/decision-initial.json').exists()
+        assert result['error_code'] == 'role_observation_independent_binding_mismatch'

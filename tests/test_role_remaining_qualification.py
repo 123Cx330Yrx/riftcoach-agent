@@ -31,13 +31,13 @@ def test_remaining_plan_preserves_identity_and_exact_unrun_inputs():
     (True,[],False,False), (True,[{'kind':'wrong_correction'}],True,False),
 ])
 def test_continuation_never_uses_incidental_defect_exception(monkeypatch,accepted,defects,base_allowed,expected):
-    monkeypatch.setattr(runner.Observer,'validate_stage',lambda *_:base_allowed)
+    monkeypatch.setattr(runner.Observer,'validate_stage',lambda *_, **kwargs:base_allowed)
     decision = dict(accepted=accepted,assessment=dict(stage='final',defects=defects))
     assert runner.StrictObserver.validate_stage({}, {'expected_initial':'reject'}, None, decision) is expected
 
 
 def test_rejected_correction_intent_stops_before_editor(monkeypatch):
-    monkeypatch.setattr(runner.Observer,'validate_stage',lambda *_:True)
+    monkeypatch.setattr(runner.Observer,'validate_stage',lambda *_, **kwargs:True)
     decision = dict(accepted=True,assessment=dict(stage='initial',defects=[]),target_and_correction_valid=False)
     assert not runner.StrictObserver.validate_stage({}, {'expected_initial':'reject'}, None, decision)
 
