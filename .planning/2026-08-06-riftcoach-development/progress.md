@@ -1,3 +1,12 @@
+## 2026-09-27 续接公共检查的关闭预览回归
+
+d8811f33 / CI36292171121：5030 passed、1 failed、154 skipped、129 subtests，1037.14秒，非超时。
+唯一失败在旧coarse repair预览：原失败批已读历史封存，repair分支却仍以当前manifest重建，
+共享代码更新暴露历史身份漂移。全部15请求字节不变；不是模型语义或传输失败，Provider未启动。
+补齐两分支各自固定seal SHA、canonical plan、PREPARATION与全部请求hash验证；旧execute继续关闭。
+保留原断言，增加两分支seal/preparation/request篡改拒绝；独立根因与补丁审查无阻断，相关31项回归通过（226.43秒），治理/diff通过。
+新1.5.4准备25a62b5f…63564未变。后继同HEAD公共三项成功后执行原冻结15，不重跑历史诊断。
+
 ## 2026-09-27 同规则运行与完整验收接线
 
 ADR0113新增1.5.4/Program3.3.0/evaluation3.7.0，Skill0.6.2业务指令保持。

@@ -37,6 +37,7 @@ REPAIR_EXPERIMENT = 'coarse-role-file-handoff-v1'
 REPAIR_RUN = ROOT / 'data/runs/role_task_observation' / REPAIR_EXPERIMENT
 REPAIR_PREPARATION = ROOT / 'data/evaluation/results/golden_coarse_file_handoff_preparation_v1.json'
 REPAIR_RESULT = ROOT / 'data/evaluation/results/golden_coarse_file_handoff_result_v1.json'
+REPAIR_RESULT_SHA = 'd509d516f40739963ed9ac11679fea757ccd83a902e049cefb5e4110c947b69e'
 
 
 class CoarseObserver(StrictObserver):
@@ -74,14 +75,19 @@ def validate_handoff(path, decision, plan, *, directory):
 
 def prepare(*, file_handoff_repair=False):
     original, requests = qualification.prepare_qualification()
-    if CLOSED_RESULT.exists() and not file_handoff_repair:
-        raw = CLOSED_RESULT.read_bytes()
-        if hashlib.sha256(raw).hexdigest() != FAILURE_SHA:
+    closed, preparation, closed_sha = (
+        (REPAIR_RESULT, REPAIR_PREPARATION, REPAIR_RESULT_SHA) if file_handoff_repair
+        else (CLOSED_RESULT, PREPARATION, FAILURE_SHA))
+    # Both completed experiments are historical previews. Shared runtime
+    # changes must not silently rebuild their frozen source/manifest identity.
+    if closed.exists():
+        raw = closed.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != closed_sha:
             raise ValueError('coarse_qualification_closed_evidence_changed')
         saved = json.loads(raw)['public_json_contents']['plan.json']
         plan = saved['preparation_plan']
         if (canonical_sha(plan) != saved['plan_sha256']
-                or plan != json.loads(PREPARATION.read_bytes())
+                or plan != json.loads(preparation.read_bytes())
                 or any(hashlib.sha256(requests[r['key']]).hexdigest() != r['request_sha256']
                        for r in plan['cases'])):
             raise ValueError('coarse_qualification_closed_request_changed')

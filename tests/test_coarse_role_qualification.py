@@ -72,6 +72,26 @@ def test_repair_plan_keeps_model_identity_and_exact_requests():
     assert new['prior_failure']['inherited_completed_cases'] == 0
     assert new['experiment'] != old['experiment']
     assert json.loads(runner.REPAIR_PREPARATION.read_bytes()) == new
+    with pytest.raises(ValueError, match='closed_or_exists'):
+        runner.run(NS(execute=True, file_handoff_repair=True))
+
+
+@pytest.mark.parametrize('repair', [False, True])
+@pytest.mark.parametrize('defect', ['sealed_bytes', 'preparation', 'request'])
+def test_closed_previews_reject_changed_evidence_or_requests(tmp_path, monkeypatch, repair, defect):
+    if defect == 'request':
+        original, requests = q.prepare_qualification()
+        requests = dict(requests)
+        requests[next(iter(requests))] += b' '
+        monkeypatch.setattr(q, 'prepare_qualification', lambda: (original, requests))
+    else:
+        name = ('REPAIR_RESULT' if repair else 'CLOSED_RESULT') if defect == 'sealed_bytes' else (
+            'REPAIR_PREPARATION' if repair else 'PREPARATION')
+        path = tmp_path/'changed.json'
+        path.write_bytes(getattr(runner, name).read_bytes() + b' ' if defect == 'sealed_bytes' else b'{}')
+        monkeypatch.setattr(runner, name, path)
+    with pytest.raises(ValueError, match='coarse_qualification_closed_'):
+        runner.prepare(file_handoff_repair=repair)
 
 
 @pytest.mark.parametrize('defect', ['source', 'schema', 'catalog', 'missing_revision', 'rejected_review',
