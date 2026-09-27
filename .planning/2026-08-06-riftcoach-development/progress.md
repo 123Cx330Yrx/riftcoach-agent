@@ -1,3 +1,25 @@
+## 2026-09-27 恢复后发现并修复自然知识工具合同遗漏；付费前纠偏
+
+确认干净7d52fd64、无活动Provider后推送，公共CI36306595419启动。
+等待检查时沿真实下游发现correction-scope manifest声明knowledge.search2.1.0，
+实际工厂却构造2.0.0，未传host检索时间。修前四合同+legacy为1失败/4通过；
+按NativeCoachExecutionContract家族修复后完整17项通过，2.01秒。
+独立检查实际schema/完整工具指纹/本地RAG时间/引用投影，LLM调用0；legacy不变。
+
+原15请求字节完全不变，但runtime源指纹改变使manifest变化；当前严格门拒绝旧身份。
+因此旧九例在调用前停止，不花19次验证随后不能准入的组合。旧3/15作为历史保留，
+修后真实0/15，不改接受标准、不迁回执。三父239原件核验不变；累计消费仍12调用
+169342tokens/2799.094秒、unknown0、未缓存估价1.6393516元非账单。
+
+四当前manifest诚实刷新，scope新增LF规则，新manifest6be60527…fdebf。
+新增prepare_fresh只复用原完整十五例准备，关闭入口保护不变；新完整准备
+ 7a797831d4e029846bbe2773b85705237e16e293c5e4c5dbc443fe2adc9f322e
+及proposal已保存但execution_authorized=false。新批最坏35调用，累计最坏47，
+超过原35授权12调用。主任务相关应用/严格资格/工厂66项通过，166.65秒；
+加知识工具17项共83项相关验证通过，待新公共检查后请求必要预算决定。
+详见docs/plans/2026-09-27-knowledge-runtime-alignment.md。自然Agent/新组合消费、
+前端及其他既有需求未取消，8E未完成。本轮新增Provider为0。
+
 ## 2026-09-27 两个完整纠错任务通过；人审最终提交缺口进入修复
 
 ad3bc81b / CI36301717044三项成功，5138 passed/162 skipped/129 subtests，1169.52秒；

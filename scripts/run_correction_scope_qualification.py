@@ -80,6 +80,12 @@ def prepare():
                        for r in plan['cases'])):
             raise ValueError('correction_scope_closed_request_changed')
         return plan, requests
+    return prepare_fresh()
+
+
+def prepare_fresh(*, experiment=EXPERIMENT):
+    """Build current full-control inputs only; never reopen a historical run."""
+    original, requests = qualification.prepare_qualification()
     rows = original['cases']
     budgets = []
     for row in rows:
@@ -98,7 +104,7 @@ def prepare():
         'app/evaluation/role_qualification.py', 'app/evaluation/correction_scope_qualification.py',
         'app/evaluation/golden_role_correction_scope.py', 'scripts/role_host_identity.py',
         'scripts/write_role_stage_decision.py')
-    plan = dict(experiment=EXPERIMENT, observation_version=VERSION, identity=original['identity'],
+    plan = dict(experiment=experiment, observation_version=VERSION, identity=original['identity'],
         original15_plan_sha256=digest(compact(original)), original15_keys=[r['key'] for r in rows],
         cases=rows, case_budgets=budgets,
         source_sha256={p: digest((ROOT/p).read_text(encoding='utf-8')) for p in paths},

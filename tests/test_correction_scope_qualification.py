@@ -19,10 +19,9 @@ def accept(run, sealed, root):
         closed_exports=[sealed], profile=q.PROFILE)
 
 
-def test_new_preparation_is_fresh_original_fifteen_with_only_policy_changed(tmp_path, monkeypatch):
-    # Exercise creation, not the now-closed Windows batch's byte identity.
-    monkeypatch.setattr(runner, 'CLOSED_RESULT', tmp_path/'not-closed.json')
-    plan, requests = runner.prepare()
+def test_new_preparation_is_fresh_original_fifteen_with_only_policy_changed():
+    # The pure constructor does not inspect, reopen or rewrite the closed batch.
+    plan, requests = runner.prepare_fresh()
     qualification, expected = q.prepare_qualification()
     previous, old_requests = old.prepare_qualification()
     assert plan['identity'] == qualification['identity'] != previous['identity']
@@ -42,6 +41,17 @@ def test_new_preparation_is_fresh_original_fifteen_with_only_policy_changed(tmp_
         assert replace(current, messages=before.messages) == before
         assert current.messages[1:] == before.messages[1:]
         assert row['request_sha256'] == hashlib.sha256(requests[row['key']]).hexdigest()
+
+
+def test_fresh_preview_does_not_reopen_the_registered_run(tmp_path, monkeypatch):
+    closed = tmp_path / 'closed-result.json'
+    closed.write_text('{}', encoding='utf-8')
+    monkeypatch.setattr(runner, 'CLOSED_RESULT', closed)
+    plan, requests = runner.prepare_fresh(experiment='explicit-next-proposal')
+    assert plan['experiment'] == 'explicit-next-proposal' and len(requests) == 15
+    with pytest.raises(ValueError, match='qualification_closed_or_exists'):
+        runner.run(NS(execute=True))
+    assert closed.read_text(encoding='utf-8') == '{}'
 
 
 def test_full_fifteen_use_real_continuous_executor_and_sealed_gate(make_run, tmp_path):
