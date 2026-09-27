@@ -1,3 +1,27 @@
+## 2026-09-27 新原15发生对话额度中断，严格1/15保留
+
+5cc7d051 / CI36293530942三项成功：5037 passed/154 skipped/129 subtests，1006.61秒。
+原冻结25a62b5f…63564执行：claim1真实95/pass无issues、原稿保持；case4初评83/needs_revision
+解释与全部修法正确，Flash改错全称句并删冗余引言，其他内容保持，fresh93/pass。
+claim1及case4初评/改稿已及时双审；case4终评独立接受，主审读完来源/fresh请求但未及时落盘。
+用户报告402额度中断；后台原进程随后task_observation_host_deadline关闭。非模型断流，
+原第二例没有final-host/task-observation/case-completed，不得补写成为及时成功。
+本批4调用45949输入+12964输出=58913tokens，unknown0，原elapsed1132.828秒，估价0.6162624元。
+77原件/hash/公开投影封存golden_correction_scope_qualification_result_v1.json，SHA
+ee06f2188ddc70dfc5aafbc0bba4518f572b22d862c7382ff84ca950cdb9ce91；独立中断边界审计完成。
+qualify_role_observations只授claim-scope:1 validated_partial，保留所有失败，当前严格1/15。
+续接仅原未启动13例，31调用/2999808tokens/9300秒，原消费扣账，不重置35/10500总上限；
+第二例重验需另外3调用，当前不重跑。主审明确判断先落盘后限时等独立，闭批/变稿/超时拒绝。
+后继接口只读核对另发现发布mode指纹与恢复载荷缺口，同包已修复；不授产品资格。
+两修复最终相关166 passed/30 skipped（数据库），含新增8个真实事务用例待公共CI。
+续接/等待writer真实交错18项通过；独立审查解除读取独立意见后关闭/改稿/超时竞态阻断。
+续13canonical准备SHA358f178c829d788be7cd328620fecc63573fec5b5cfb7eb0952c8be519128cea，
+中断恢复后重新核对逐值不变及父封存原件、严格1例前缀；尚未启动Provider。
+
+Docker启动报9月11日遗留sailor-ingest.sock无法访问，尚未创建新数据库。用户已明确授权
+停止本次挂起启动CLI和删除单socket，但自动审批再次blocked by policy，未执行清理；已提供
+单路径手动命令。未删除镜像/容器/数据库，未恢复出厂，不能称本地DB已就绪。
+
 ## 2026-09-27 续接公共检查的关闭预览回归
 
 d8811f33 / CI36292171121：5030 passed、1 failed、154 skipped、129 subtests，1037.14秒，非超时。

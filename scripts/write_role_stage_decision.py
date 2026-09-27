@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import time
 
 from app.evaluation.golden_journal import write_new_json
 from app.evaluation.golden_review_experiment import digest
@@ -17,7 +18,8 @@ from scripts.role_host_identity import candidate_sha256
 from scripts.run_role_task_observation import Observer, StageDecision
 
 
-def write_decision(run, key, stage, notes, *, profile):
+def write_decision(run, key, stage, notes, *, profile,
+                   expected_response_sha256=None, before_write=lambda: None):
     from app.evaluation import role_qualification as backend
     observer = Observer
     if profile == 'coarse':
@@ -29,6 +31,11 @@ def write_decision(run, key, stage, notes, *, profile):
     elif profile != 'role':
         raise ValueError('host_writer_profile')
     run = Path(run).resolve()
+    def guard():
+        if (run/'result.json').exists():
+            raise ValueError('host_writer_batch_closed')
+        before_write()
+    guard()
     plan = json.loads((run/'plan.json').read_bytes())['preparation_plan']
     row = next(r for r in plan['cases'] if r['key'] == key)
     if stage not in ('initial', 'revision', 'final'):
@@ -37,6 +44,8 @@ def write_decision(run, key, stage, notes, *, profile):
     if not path.resolve().is_relative_to(run):
         raise ValueError('host_writer_path')
     value = json.loads(path.read_bytes())
+    if expected_response_sha256 is not None and hashlib.sha256(path.read_bytes()).hexdigest() != expected_response_sha256:
+        raise ValueError('host_writer_stage_changed')
     if value['key'] != key or value['stage'] != stage:
         raise ValueError('host_writer_stage_identity')
     sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
@@ -67,9 +76,54 @@ def write_decision(run, key, stage, notes, *, profile):
         independent_sha256=sha(other_path), reason=reason,
         target_and_correction_valid=notes['target_and_correction_valid'],
         final_report_checks=checks, report_reason=notes.get('report_reason'))
+    guard()
     write_new_json(path.with_name('primary-'+stage+'-review.json'), primary)
+    guard()
     write_new_json(path.with_name('decision-'+stage+'.json'), decision)
     return decision
+
+
+def wait_and_write_decision(run, key, stage, notes, *, profile, max_wait_seconds,
+                            clock=time.monotonic, sleep=time.sleep):
+    """Persist an explicit primary judgment before waiting for independent IO.
+
+    No judgment is inferred here. The normal writer still validates both
+    reviewers and the executor remains the authority for the original deadline.
+    Recheck before writes. The executor's original monotonic deadline remains
+    authoritative if closure races a file write; such a file is not completion.
+    """
+    if not 0 < max_wait_seconds <= 900:
+        raise ValueError('host_writer_wait_limit')
+    run = Path(run).resolve()
+    if stage not in ('initial', 'revision', 'final'):
+        raise ValueError('host_writer_stage')
+    path = run/key.replace(':', '-')/(stage+'.json')
+    if not path.resolve().is_relative_to(run):
+        raise ValueError('host_writer_path')
+    sha = hashlib.sha256(path.read_bytes()).hexdigest()
+    if (run/'result.json').exists():
+        raise ValueError('host_writer_batch_closed')
+    write_new_json(path.with_name('primary-notes-'+stage+'.json'),
+        dict(response_sha256=sha, notes=notes))
+    deadline = clock() + max_wait_seconds
+    other = path.with_name('independent-'+stage+'-review.json')
+    def guard():
+        if (run/'result.json').exists():
+            raise ValueError('host_writer_batch_closed')
+        if hashlib.sha256(path.read_bytes()).hexdigest() != sha:
+            raise ValueError('host_writer_stage_changed')
+        if clock() >= deadline:
+            raise ValueError('host_writer_independent_deadline')
+    while True:
+        guard()
+        try:
+            json.loads(other.read_bytes())
+        except (FileNotFoundError, UnicodeDecodeError, json.JSONDecodeError):
+            sleep(min(.25, max(0, deadline-clock())))
+            continue
+        guard()
+        return write_decision(run, key, stage, notes, profile=profile,
+            expected_response_sha256=sha, before_write=guard)
 
 
 if __name__ == '__main__':
@@ -79,7 +133,11 @@ if __name__ == '__main__':
     parser.add_argument('--key', required=True)
     parser.add_argument('--stage', required=True, choices=('initial', 'revision', 'final'))
     parser.add_argument('--notes', required=True, type=Path)
+    parser.add_argument('--wait-seconds', type=float,
+        help='Persist this explicit primary judgment, then wait boundedly for independent review.')
     args = parser.parse_args()
-    result = write_decision(args.run_directory, args.key, args.stage,
-        json.loads(args.notes.read_bytes()), profile=args.profile)
+    writer = write_decision if args.wait_seconds is None else wait_and_write_decision
+    options = {} if args.wait_seconds is None else dict(max_wait_seconds=args.wait_seconds)
+    result = writer(args.run_directory, args.key, args.stage,
+        json.loads(args.notes.read_bytes()), profile=args.profile, **options)
     print(json.dumps({k: result[k] for k in ('key', 'accepted', 'candidate_sha256')}))

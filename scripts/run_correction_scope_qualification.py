@@ -5,6 +5,7 @@ no historical-prefix migration, fixture injection, retry or reassessment.
 """
 import argparse
 from decimal import Decimal
+import hashlib
 import json
 from pathlib import Path
 
@@ -31,6 +32,7 @@ EXPERIMENT = 'correction-scope-role-qualification-v1'
 RUN_DIRECTORY = ROOT/'data/runs/role_task_observation'/EXPERIMENT
 PREPARATION = ROOT/'data/evaluation/results/golden_correction_scope_qualification_preparation_v1.json'
 CLOSED_RESULT = ROOT/'data/evaluation/results/golden_correction_scope_qualification_result_v1.json'
+CLOSED_SHA = 'ee06f2188ddc70dfc5aafbc0bba4518f572b22d862c7382ff84ca950cdb9ce91'
 
 
 class CorrectionScopeObserver(StrictObserver):
@@ -66,6 +68,18 @@ def validate_handoff(path, decision, plan, *, directory):
 
 def prepare():
     original, requests = qualification.prepare_qualification()
+    if CLOSED_RESULT.exists():
+        raw = CLOSED_RESULT.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != CLOSED_SHA:
+            raise ValueError('correction_scope_closed_evidence_changed')
+        saved = json.loads(raw)['public_json_contents']['plan.json']
+        plan = saved['preparation_plan']
+        if (plan != json.loads(PREPARATION.read_bytes())
+                or canonical_sha(plan) != saved['plan_sha256']
+                or any(hashlib.sha256(requests[r['key']]).hexdigest() != r['request_sha256']
+                       for r in plan['cases'])):
+            raise ValueError('correction_scope_closed_request_changed')
+        return plan, requests
     rows = original['cases']
     budgets = []
     for row in rows:
@@ -102,6 +116,12 @@ def run(args):
     if args.execute and (RUN_DIRECTORY.exists() or CLOSED_RESULT.exists()):
         raise ValueError('correction_scope_qualification_closed_or_exists')
     plan, requests = prepare()
+    return execute_prepared(args, plan, requests, directory=RUN_DIRECTORY,
+        preparation=PREPARATION)
+
+
+def execute_prepared(args, plan, requests, *, directory, preparation):
+    """Shared bounded execution; callers validate their own continuation seal."""
     plan_sha = canonical_sha(plan)
     if not args.execute:
         if args.output:
@@ -109,21 +129,21 @@ def run(args):
         return dict(plan_sha256=plan_sha, budget=plan['batch_budget'], cases=len(plan['cases']),
             provider_requests=0, execution_enabled=False)
     if (not args.env_file or not args.ci_run or args.plan_sha != plan_sha
-            or plan != json.loads(PREPARATION.read_bytes())):
+            or plan != json.loads(preparation.read_bytes())):
         raise ValueError('correction_scope_qualification_preparation_required')
     head = verify_public_ci(args.ci_run)
-    RUN_DIRECTORY.mkdir(parents=True, exist_ok=False)
-    write_new_json(RUN_DIRECTORY/'plan.json', dict(preparation_plan=plan, plan_sha256=plan_sha,
+    directory.mkdir(parents=True, exist_ok=False)
+    write_new_json(directory/'plan.json', dict(preparation_plan=plan, plan_sha256=plan_sha,
         head_sha=head, ci_run=args.ci_run))
     for key, raw in requests.items():
-        (RUN_DIRECTORY/(key.replace(':', '-')+'-prepared-request.json')).write_bytes(raw)
+        (directory/(key.replace(':', '-')+'-prepared-request.json')).write_bytes(raw)
     generator, reviewer = load_role_settings(args.env_file)
     factory = RunScopedRoleReceiptedProviderFactory(generator_settings=generator, reviewer_settings=reviewer,
-        transport_root=RUN_DIRECTORY/'transport', source_projection=PROJECTION)
+        transport_root=directory/'transport', source_projection=PROJECTION)
     def adjudicate(path, remaining):
-        return validate_handoff(path, adjudicate_file(path, remaining), plan, directory=RUN_DIRECTORY)
+        return validate_handoff(path, adjudicate_file(path, remaining), plan, directory=directory)
     with route_environment('direct'):
-        return observe(factory, RUN_DIRECTORY, plan, adjudicate=adjudicate, workflow_type=Workflow,
+        return observe(factory, directory, plan, adjudicate=adjudicate, workflow_type=Workflow,
             replay=replay, success_field='tasks_observed', task_observer=CorrectionScopeObserver,
             coach_contract=CONTRACT, before_case=await_case_ready,
             before_send=lambda: require_unchanged_checkout(head))

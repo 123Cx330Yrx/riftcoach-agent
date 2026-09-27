@@ -26,7 +26,11 @@ from app.tasks.models import (
 )
 from app.runtime.signals import RuntimePublicationStatus
 
-from .reconciliation import TerminalEvidenceVerifier
+from .reconciliation import (
+    EvidenceBoundTaskTerminal,
+    TerminalEvidenceVerifier,
+    read_evidence_bound_terminal,
+)
 
 if TYPE_CHECKING:
     from app.evidence.publication import EvidencePublicationContext
@@ -130,9 +134,6 @@ class RecentReviewTaskExecutor:
             if runs_root is not None
             else None
         )
-        # The store is read-only here. The application service owns creation;
-        # the executor only rebuilds a verified payload for the DB transaction.
-        self._publication_store = None
         if clock is not None and not callable(clock):
             raise TypeError("clock must be callable")
         self._clock = clock or (lambda: datetime.now(timezone.utc))
@@ -209,45 +210,31 @@ class RecentReviewTaskExecutor:
             if publication_context is None:
                 raise RecentReviewTaskExecutionError("application_result_invalid")
             try:
-                from app.evidence.publication_store import FileEvidencePublicationStore
-                from app.evidence.storage import PendingEvidenceBundleSnapshot
-                runs_root = self._runs_root or getattr(self._evidence, "_runs_root", None)
-                if runs_root is None:
-                    raise ValueError("publication evidence root unavailable")
-                publication_store = FileEvidencePublicationStore(runs_root)
-                manifest = publication_store.read(publication_context)
+                if isinstance(terminal, EvidenceBoundTaskTerminal):
+                    publication_terminal = terminal
+                else:
+                    runs_root = self._runs_root or getattr(self._evidence, "_runs_root", None)
+                    if runs_root is None:
+                        raise ValueError("publication evidence root unavailable")
+                    publication_terminal = read_evidence_bound_terminal(task, terminal, runs_root)
+                pending_snapshot = publication_terminal.pending_snapshot
+                summary_digest = publication_terminal.summary_digest
+                publication_reference = publication_terminal.publication_reference
                 projection = getattr(result, "evidence_projection", None)
                 if projection is not None:
                     if (
                         getattr(projection, "summary_digest", None)
-                        != manifest.summary_digest
+                        != summary_digest
                         or getattr(getattr(projection, "bundle", None), "digest", None)
-                        != manifest.bundle.bundle_digest
+                        != pending_snapshot.bundle.digest
                     ):
                         raise ValueError("publication projection mismatch")
-                    pending_snapshot = PendingEvidenceBundleSnapshot(
-                        task_id=publication_context.task_id,
-                        run_id=publication_context.run_id,
-                        owner_id=publication_context.owner_id,
-                        refresh_id="publication-1",
-                        bundle=projection.bundle,
-                        stored_at=projection.bundle.created_at,
-                    )
-                else:
-                    pending_snapshot = publication_store.read_pending_snapshot(
-                        publication_context
-                    )
-                summary_digest = manifest.summary_digest
-                publication_reference = {
-                    "context": publication_context.model_dump(mode="json"),
-                    "summary_digest": manifest.summary_digest,
-                }
             except Exception:
                 raise RecentReviewTaskExecutionError(
                     "terminal_evidence_invalid"
                 ) from None
         return RecentReviewTaskExecutionResult(
-            **terminal.model_dump(mode="python"),
+            **terminal.model_dump(mode="python", include=set(TaskTerminal.model_fields)),
             terminal_turn=terminal_turn,
             pending_snapshot=pending_snapshot,
             publication_reference=publication_reference,
@@ -283,6 +270,7 @@ class RecentReviewTaskExecutor:
                 task_kind=task.task_kind,
                 schema_version=task.schema_version,
                 request_payload=request.model_dump(mode="json"),
+                publication_mode=task.publication_mode,
             )
         except Exception:
             raise RecentReviewTaskExecutionError("task_input_invalid") from None
@@ -318,6 +306,7 @@ class RecentReviewTaskExecutor:
                 owner_id=task.owner_id,
                 binding=binding,
                 request_payload=request.model_dump(mode="json"),
+                publication_mode=task.publication_mode,
             )
         except Exception:
             raise RecentReviewTaskExecutionError("task_input_invalid") from None

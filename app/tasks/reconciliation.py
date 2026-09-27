@@ -111,6 +111,66 @@ class TerminalEvidenceVerifier(Protocol):
     def terminal_for(self, task: ReviewTask) -> TaskTerminal: ...
 
 
+class EvidenceBoundTaskTerminal(TaskTerminal):
+    """Verified files-ready payload for the existing atomic task commit."""
+
+    # Importing the concrete evidence models at module scope would create a
+    # tasks/evidence import cycle. The reader and repository validate the type.
+    pending_snapshot: object
+    publication_reference: dict[str, object]
+    summary_digest: str
+
+
+def read_evidence_bound_terminal(
+    task: ReviewTask,
+    terminal: TaskTerminal,
+    runs_root: str | Path,
+) -> EvidenceBoundTaskTerminal:
+    """Rebuild execution/recovery metadata from the same verified sidecars."""
+    try:
+        from app.evidence.publication import EvidencePublicationContext
+        from app.evidence.publication_store import FileEvidencePublicationStore
+        from app.evidence.storage import PendingEvidenceBundleSnapshot
+
+        if (
+            task.publication_mode is not TaskPublicationMode.EVIDENCE_BOUND_V1
+            or terminal.run_id != task.run_id
+        ):
+            raise ValueError("publication task identity mismatch")
+        context = EvidencePublicationContext(
+            owner_id=task.owner_id,
+            task_id=task.task_id,
+            run_id=task.run_id,
+            request_fingerprint=task.request_fingerprint,
+        )
+        store = FileEvidencePublicationStore(runs_root)
+        manifest = store.read(context)
+        pending = store.read_pending_snapshot(context)
+        if (
+            not isinstance(pending, PendingEvidenceBundleSnapshot)
+            or pending.owner_id != task.owner_id
+            or pending.task_id != task.task_id
+            or pending.run_id != task.run_id
+            or not pending.bundle.has_valid_digest()
+            or pending.bundle.digest != manifest.bundle.bundle_digest
+            or manifest.receipt != terminal.receipt_reference
+            or manifest.trace != terminal.trace_reference
+            or manifest.report != terminal.artifact_reference
+        ):
+            raise ValueError("publication dependencies changed")
+        return EvidenceBoundTaskTerminal(
+            **terminal.model_dump(mode="python", include=set(TaskTerminal.model_fields)),
+            pending_snapshot=pending,
+            publication_reference={
+                "context": context.model_dump(mode="json"),
+                "summary_digest": manifest.summary_digest,
+            },
+            summary_digest=manifest.summary_digest,
+        )
+    except Exception:
+        raise TaskTerminalEvidenceError("terminal_evidence_invalid") from None
+
+
 class RecentReviewTerminalEvidenceVerifier:
     """Rebuild a succeeded TaskTerminal from fully verified file evidence."""
 
@@ -191,7 +251,7 @@ class RecentReviewTerminalEvidenceVerifier:
             raise TaskTerminalEvidenceError("terminal_evidence_invalid")
 
         publication = TaskPublicationStatus(receipt.publication_status.value)
-        return TaskTerminal(
+        terminal = TaskTerminal(
             run_id=task.run_id,
             terminal_reason=receipt.terminal_reason,
             publication_status=publication,
@@ -206,6 +266,9 @@ class RecentReviewTerminalEvidenceVerifier:
                 final_references[0] if final_references else None
             ),
         )
+        if task.publication_mode is TaskPublicationMode.EVIDENCE_BOUND_V1:
+            return read_evidence_bound_terminal(task, terminal, self._runs_root)
+        return terminal
 
 
 class ReviewTaskReconciler:
@@ -625,6 +688,7 @@ def _as_utc(value: datetime) -> datetime:
 
 
 __all__ = [
+    "EvidenceBoundTaskTerminal",
     "ExpiredReviewTaskRecovery",
     "ManualRecoveryResult",
     "ManualRecoveryStatus",
@@ -639,4 +703,5 @@ __all__ = [
     "TaskRecoveryResult",
     "TaskRecoveryStatus",
     "TerminalEvidenceVerifier",
+    "read_evidence_bound_terminal",
 ]

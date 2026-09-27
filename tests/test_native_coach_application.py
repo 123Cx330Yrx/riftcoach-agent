@@ -143,7 +143,8 @@ def test_native_observed_worker_requires_atomic_evidence_before_conversation_tur
         'schema_version': '2.0', 'publication_mode': TaskPublicationMode.EVIDENCE_BOUND_V1,
         'request_payload': payload, 'conversation_binding': task_binding,
         'request_fingerprint': compute_conversation_review_task_fingerprint(
-            owner_id=original.owner_id, binding=task_binding, request_payload=payload),
+            owner_id=original.owner_id, binding=task_binding, request_payload=payload,
+            publication_mode=TaskPublicationMode.EVIDENCE_BOUND_V1),
         'execution_target': ConversationReviewExecutionTarget(puuid='private-observed-player',
             routing_region=RoutingRegion.ASIA, game_name='RiftCoachDemo', tag_line='TEST')})
     summary = SummaryBuilder()

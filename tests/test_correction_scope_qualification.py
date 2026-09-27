@@ -19,7 +19,9 @@ def accept(run, sealed, root):
         closed_exports=[sealed], profile=q.PROFILE)
 
 
-def test_new_preparation_is_fresh_original_fifteen_with_only_policy_changed():
+def test_new_preparation_is_fresh_original_fifteen_with_only_policy_changed(tmp_path, monkeypatch):
+    # Exercise creation, not the now-closed Windows batch's byte identity.
+    monkeypatch.setattr(runner, 'CLOSED_RESULT', tmp_path/'not-closed.json')
     plan, requests = runner.prepare()
     qualification, expected = q.prepare_qualification()
     previous, old_requests = old.prepare_qualification()
