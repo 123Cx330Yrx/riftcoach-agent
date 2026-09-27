@@ -11,6 +11,22 @@ pause_reason: ""
 
 ## 当前行动
 
+2026-09-27续接最新：修法范围责任两控制已实际通过。b54e9c76 / CI36288821006公共三项成功
+（4997 passed/154 skipped/129 subtests，784.85秒）后执行：attribution:1为80/needs_revision，
+正确检出伤害归因且完整修法未再扩展经济；claim-scope:1为96/pass，正确稿保持。
+两次主/独立全文接受、真实来源/请求/journal/回执绑定通过。2调用28380tokens、unknown0、
+266.875秒，未缓存估价0.3233元非账单；34原件封存golden_correction_scope_result_v1.json，
+SHA099734186c7a457d6b0ceaa705be109383e4429a24d0dcbb5a10c617f2adbe1e。
+
+- 新证据证明两个输入上的可行性，不证明采样稳定、因果修复或原15完整资格；旧coarse严格3/15保留，不迁新policy。
+- 唯一当前动作：用本次真实接受意见验证实际Flash编辑与相同规则的fresh GLM终评。
+  scripts/run_correction_scope_tail.py复用现有尾段执行器，初评仅离线注入，不冒称连续任务；
+  新2调用/193536tokens/600秒含双审、retry0，先冻结及同HEAD公共检查。独立实现审查通过，
+  编辑/全新终评相关19项通过，后补封存后的6项通过；尚未发尾段请求。
+- 完整同policy原15、自然Agent生成/工具/纠错、真实DB/API/Workbench仍未完成；产品合同/manifest及默认路径不变。
+
+以下为本日此前已完成记录；其中下一步以本段为准。
+
 2026-09-27最新：df895786 / CI36256021185公共三项成功后，新文件交接批取得同coarse合同严格3/15 partial。跨文件身份交接故障已在真实连续链证实修复。第四例attribution:1正确识别伤害归因错误，但修法又新增不受来源支持的经济归因，主/独立审查均拒绝，未进入编辑；本批已关闭，后11例未执行。8E和完整原15资格未完成。
 
 - 三例：claim-scope:1为96/pass、正确稿保持；claim-scope:4为76→实际修正→92；claim-scope:3为75→实际修正→95。七阶段全文双审、来源/实际请求回放及耐久计时全部接受。145原件封存golden_coarse_file_handoff_result_v1.json（d509d516…b69e）；严格partial审计golden_coarse_partial_qualification_v1.json（64e30d7b…6f1c）。

@@ -94,3 +94,28 @@ scripts/run_correction_scope_diagnostic.py复用既有observe、adjudicate_file�
 保存在golden_correction_scope_execution_preparation_v1.json。执行器独立审查和同HEAD公共检查待完成。
 原独立执行器任务两次503未形成结论，开发侧改派Luna复核；产品GLM角色/档位不变。
 新方案没有发Provider，也没有修改产品manifest或默认路径。
+
+## 后继真实结果与当前行动
+
+以上准备现已执行：b54e9c76 / CI36288821006三项通过，4997/154/129子测试，784.85秒。
+attribution:1真实80/needs_revision；唯一issue/block14正确，解释与完整修法不再扩经济，
+22/31支持补刀及伤害的全部断言。claim-scope:1为96/pass、issues空、可选标记14/4。
+两例均实际主/独立全文接受；2调用23567输入+4813输出=28380tokens，cache2112/unknown0，
+含host266.875秒，未缓存估价0.3233元。34原件封存golden_correction_scope_result_v1.json，
+SHA099734186c7a457d6b0ceaa705be109383e4429a24d0dcbb5a10c617f2adbe1e。两控制不构成因果证明或稳定率。
+
+当前动作变为实际编辑与fresh终评：run_correction_scope_tail.py继承原coarse工作流并仅为
+初评/终评追加同一RULE，编辑请求保持旧完整accepted_review。初评响应离线注入，明确不算
+新真实调用或连续原任务。复用run_role_review_containment.observe/真实角色factory及coarse
+文件双审门；不另造状态机。两调用总193536tokens/600秒含host、单次300秒/retry0，
+保守全GLM估价2.859008元；实际Flash编辑通常更低。这是通过两控制后已解锁的后继验证，
+不是给失败诊断重开预算。首不正确编辑/终评或来源/协议/预算失败均停止。
+独立实现审查无阻断，相关19项通过；封存补充后最终6项通过。准备冻结4b262af5…4ec760，
+同新HEAD公共检查后才发请求，当前尾段未执行。
+
+独立封存补查发现初评注入journal、终评摘要和stream用量三处未直接逐项核对；
+已分别绑定冻结真实意见、真实终评/改稿及实际进度回执。初评意见/分数/报告hash/终稿/
+用量篡改5组负例和已有独立裁决篡改均拒绝，最终6项通过8.89秒；这些离线修复未发Provider。
+
+尾段通过后仍须把相同政策显式绑定产品合同、重验同版本完整原15，再推进自然工具任务和
+真实发布消费；不把诊断metadata沿用旧值解释成已获旧3/15资格。旧错误修法与所有费用保留。
