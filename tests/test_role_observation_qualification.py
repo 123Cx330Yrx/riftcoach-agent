@@ -44,7 +44,7 @@ def make_run(tmp_path, monkeypatch):
     sources = {f['key']: source for f, source in q.frozen_cases()[0]}
     counter = [0]
 
-    def build(keys=('claim-scope:1', 'claim-scope:4'), *, write_fault=None, before_case=None, clock=lambda:0, profile='role', inspect_fault=None, host_process=False):
+    def build(keys=('claim-scope:1', 'claim-scope:4'), *, write_fault=None, before_case=None, clock=lambda:0, profile='role', inspect_fault=None, host_process=False, host_drafts=False):
         from app.runtime.coach_contract import ROLE_COACH_CONTRACT
         backend, workflow, observer, contract = q, Workflow, Observer, ROLE_COACH_CONTRACT
         if profile == 'coarse':
@@ -65,6 +65,9 @@ def make_run(tmp_path, monkeypatch):
             original15_plan_sha256=digest(compact(plan)), original15_keys=[r['key'] for r in plan['cases']],
             cases=rows, case_budgets=budgets, allow_reassessment=False,
             batch_budget={k: sum(b[k] for b in budgets) for k in budgets[0]})
+        if host_drafts:
+            from scripts.role_stage_review_drafts import MODE, MODE_FIELD
+            observation[MODE_FIELD] = MODE
         write_new_json(run / 'plan.json', dict(preparation_plan=observation,
             plan_sha256=audit._canonical_sha(observation), head_sha='a' * 40, ci_run='123'))
         for row in rows:
@@ -108,9 +111,10 @@ def make_run(tmp_path, monkeypatch):
                 reviewer='offline independent source fixture', source_review='Synthetic source inspection.',
                 target_and_correction_valid=True, final_report=final_report)
             independent_path = path.parent / ('independent-' + name + '-review.json')
-            write_new_json(independent_path, independent)
+            if not host_drafts:
+                write_new_json(independent_path, independent)
             primary = dict(accepted=True, defects=[], stage_sha256=raw_sha, report_sha256=report_sha,
-                independent_file=independent_path.name, independent_sha256=audit._sha(independent_path),
+                independent_file=independent_path.name, independent_sha256=audit._sha(independent_path) if not host_drafts else None,
                 reason='Synthetic primary source inspection.', target_and_correction_valid=True,
                 final_report_checks={k: True for k in audit.CHECKS} if final_report else None,
                 report_reason=final_report['source_review'] if final_report else 'Intentionally incorrect source.')
@@ -124,7 +128,16 @@ def make_run(tmp_path, monkeypatch):
                     k: primary[k] for k in ('accepted', 'defects', 'reason',
                         'target_and_correction_valid', 'final_report_checks', 'report_reason')
                 }
-                if host_process:
+                if host_drafts:
+                    from scripts.role_stage_review_drafts import write_independent_draft
+                    from scripts.run_role_task_observation import adjudicate_file
+                    def publish(_):
+                        draft = write_independent_draft(run, key, name, independent,
+                            reason='Offline explicit independent confirmation.', confirmed=True)
+                        write_decision(run, key, name, notes, profile=profile,
+                            independent_draft_sha256=draft['draft_sha256'])
+                    decision = adjudicate_file(path, remaining, clock=clock, sleep=publish)
+                elif host_process:
                     import subprocess
                     import sys
                     notes_path = run/(key.replace(':', '-')+'-'+name+'-notes.json')

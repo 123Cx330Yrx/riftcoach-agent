@@ -12,8 +12,8 @@ jobs:
   pytest:
     runs-on: ubuntu-latest
     # Browser checks and sealed-receipt regressions share this job.
-    # Previous successful job took 13m35s before the new suite.
-    timeout-minutes: 25
+    # Run 36301717044 took 23m02s before the draft/continuation regressions.
+    timeout-minutes: 30
 
     steps:
       - name: Check out repository

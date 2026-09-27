@@ -1,4 +1,4 @@
-"""Continue only twelve untouched controls after the sealed host audit.
+"""Preview closed history or continue a fixed ledger's untouched controls.
 
 The historical thirteen-case batch is permanently closed. Neither continuation
 retries a started case, refunds prior charges, or completes original15 admission.
@@ -18,6 +18,7 @@ from app.evaluation.role_qualification import ROOT
 from scripts import run_correction_scope_qualification as prior
 from scripts.diagnose_role_context import canonical_sha
 from scripts.qualify_role_observations import _seal, inspect_runs
+from scripts import role_continuation as continuation
 
 EXPERIMENT = 'correction-scope-unexecuted-v1'
 RUN_DIRECTORY = ROOT/'data/runs/role_task_observation'/EXPERIMENT
@@ -30,8 +31,9 @@ POST_HOST_AUDIT_RUN_DIRECTORY = ROOT/'data/runs/role_task_observation'/POST_HOST
 POST_HOST_AUDIT_PREPARATION = ROOT/'data/evaluation/results/golden_correction_scope_post_host_audit_preparation_v1.json'
 POST_HOST_AUDIT_CLOSED_RESULT = ROOT/'data/evaluation/results/golden_correction_scope_post_host_audit_result_v1.json'
 # Register the actual immutable export hash when this batch is closed.
-POST_HOST_AUDIT_CLOSED_SHA = None
+POST_HOST_AUDIT_CLOSED_SHA = 'd536cd2a99893c73c3aa022dc613158fdda90574517a732bb1af8ba959a33069'
 BUDGET_FIELDS = ('max_calls', 'max_tokens', 'max_seconds')
+CAMPAIGN = ROOT/'data/evaluation/manifests/correction_scope_continuation_campaign_v1.json'
 
 
 def _closed(path, sha, preparation, requests):
@@ -198,6 +200,23 @@ def verify_after_host_audit_parents():
 
 
 def run(args):
+    if getattr(args, 'campaign', False):
+        if getattr(args, 'after_host_audit', False):
+            raise ValueError('role_continuation_campaign_mode_conflict')
+        expected_sha = getattr(args, 'campaign_sha', None)
+        if args.execute and expected_sha is None:
+            raise ValueError('role_continuation_campaign_hash_required')
+        campaign, sha = continuation.load_campaign(CAMPAIGN, expected_sha=expected_sha, root=ROOT)
+        paths = continuation.require_unstarted_target(campaign, root=ROOT)
+        plan, requests = continuation.prepare_campaign(CAMPAIGN, expected_sha=sha, root=ROOT)
+        result = prior.execute_prepared(args, plan, requests,
+            directory=paths['run_directory'], preparation=paths['preparation'])
+        if not args.execute:
+            result.update(campaign_sha256=sha, charged_prior_budget=plan['charged_prior_budget'],
+                keys=[r['key'] for r in plan['cases']], excluded_started_keys=plan['excluded_started_keys'])
+        return result
+    if getattr(args, 'campaign_sha', None) is not None:
+        raise ValueError('role_continuation_campaign_mode_required')
     after = getattr(args, 'after_host_audit', False)
     if args.execute and not after:
         raise ValueError('correction_scope_unexecuted_closed_or_exists')
@@ -214,6 +233,8 @@ def run(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--campaign', action='store_true', help='Use the canonical closed-parent ledger.')
+    parser.add_argument('--campaign-sha', help='Bind execution to the current canonical campaign file.')
     parser.add_argument('--after-host-audit', action='store_true')
     parser.add_argument('--execute', action='store_true')
     parser.add_argument('--output', type=Path)

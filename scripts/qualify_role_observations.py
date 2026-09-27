@@ -102,6 +102,8 @@ def _report(value, sha):
 def _stage(arm, expected, row, candidate_sha, source_sha, call, transport, *, pending_host=None):
     name = expected['stage']
     path = arm / (name + '.json')
+    from scripts.role_stage_review_drafts import validate_submission
+    validate_submission(path)
     saved = _json(path)
     report_sha = digest(expected['report'])
     if saved != dict(expected, key=row['key'], report_sha256=report_sha):

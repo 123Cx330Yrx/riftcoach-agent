@@ -1,8 +1,7 @@
-"""Write an explicit human stage judgment from saved files; never call a model.
+"""Write explicit human stage judgments without model calls or inferred consent.
 
-The independent judgment is a separate input, not a source for the primary
-judgment. Validate identity before releasing the waiting executor, which then
-checks the complete persisted handoff before any further Provider request.
+Opted-in runs first retain independent working drafts, then materialize the
+same formal review files after an explicit primary submission.
 """
 import argparse
 import hashlib
@@ -16,10 +15,11 @@ from app.evaluation.role_task_outcome import stage_identity
 from scripts.qualify_role_observations import CHECKS
 from scripts.role_host_identity import candidate_sha256
 from scripts.run_role_task_observation import Observer, StageDecision
+from scripts.role_stage_review_drafts import plan_mode
 
 
-def write_decision(run, key, stage, notes, *, profile,
-                   expected_response_sha256=None, before_write=lambda: None):
+def build_formal_decision(run, key, stage, notes, other, *, independent_sha256, profile):
+    """Build the existing primary/decision formats; never publish a file."""
     from app.evaluation import role_qualification as backend
     observer = Observer
     if profile == 'coarse':
@@ -31,11 +31,6 @@ def write_decision(run, key, stage, notes, *, profile,
     elif profile != 'role':
         raise ValueError('host_writer_profile')
     run = Path(run).resolve()
-    def guard():
-        if (run/'result.json').exists():
-            raise ValueError('host_writer_batch_closed')
-        before_write()
-    guard()
     plan = json.loads((run/'plan.json').read_bytes())['preparation_plan']
     row = next(r for r in plan['cases'] if r['key'] == key)
     if stage not in ('initial', 'revision', 'final'):
@@ -44,13 +39,9 @@ def write_decision(run, key, stage, notes, *, profile,
     if not path.resolve().is_relative_to(run):
         raise ValueError('host_writer_path')
     value = json.loads(path.read_bytes())
-    if expected_response_sha256 is not None and hashlib.sha256(path.read_bytes()).hexdigest() != expected_response_sha256:
-        raise ValueError('host_writer_stage_changed')
     if value['key'] != key or value['stage'] != stage:
         raise ValueError('host_writer_stage_identity')
     sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
-    other_path = path.with_name('independent-'+stage+'-review.json')
-    other = json.loads(other_path.read_bytes())
     accepted, defects, reason = (notes[k] for k in ('accepted', 'defects', 'reason'))
     if other['response_sha256'] != sha(path) or (accepted and other['accepted'] is not True):
         raise ValueError('host_writer_independent_binding_or_rejection')
@@ -72,10 +63,39 @@ def write_decision(run, key, stage, notes, *, profile,
     if accepted and not allowed:
         raise ValueError('host_writer_invalid_acceptance')
     primary = dict(accepted=accepted, defects=defects, stage_sha256=sha(path),
-        report_sha256=report_sha, independent_file=other_path.name,
-        independent_sha256=sha(other_path), reason=reason,
+        report_sha256=report_sha, independent_file='independent-'+stage+'-review.json',
+        independent_sha256=independent_sha256, reason=reason,
         target_and_correction_valid=notes['target_and_correction_valid'],
         final_report_checks=checks, report_reason=notes.get('report_reason'))
+    return primary, decision
+
+
+def write_decision(run, key, stage, notes, *, profile,
+                   expected_response_sha256=None, before_write=lambda: None,
+                   independent_draft_sha256=None):
+    run = Path(run).resolve()
+    if plan_mode(run) is not None:
+        from scripts.role_stage_review_drafts import finalize_stage_review
+        if independent_draft_sha256 is None:
+            raise ValueError('host_writer_explicit_draft_submission_required')
+        return finalize_stage_review(run, key, stage, notes, profile=profile,
+            independent_draft_sha256=independent_draft_sha256, before_write=before_write)
+    def guard():
+        if (run/'result.json').exists():
+            raise ValueError('host_writer_batch_closed')
+        before_write()
+    guard()
+    if stage not in ('initial', 'revision', 'final'):
+        raise ValueError('host_writer_stage')
+    path = run/key.replace(':', '-')/(stage+'.json')
+    if not path.resolve().is_relative_to(run):
+        raise ValueError('host_writer_path')
+    if expected_response_sha256 is not None and hashlib.sha256(path.read_bytes()).hexdigest() != expected_response_sha256:
+        raise ValueError('host_writer_stage_changed')
+    other_path = path.with_name('independent-'+stage+'-review.json')
+    other_raw = other_path.read_bytes()
+    primary, decision = build_formal_decision(run, key, stage, notes, json.loads(other_raw),
+        independent_sha256=hashlib.sha256(other_raw).hexdigest(), profile=profile)
     guard()
     write_new_json(path.with_name('primary-'+stage+'-review.json'), primary)
     guard()
@@ -85,16 +105,12 @@ def write_decision(run, key, stage, notes, *, profile,
 
 def wait_and_write_decision(run, key, stage, notes, *, profile, max_wait_seconds,
                             clock=time.monotonic, sleep=time.sleep):
-    """Persist an explicit primary judgment before waiting for independent IO.
-
-    No judgment is inferred here. The normal writer still validates both
-    reviewers and the executor remains the authority for the original deadline.
-    Recheck before writes. The executor's original monotonic deadline remains
-    authoritative if closure races a file write; such a file is not completion.
-    """
+    """Legacy waiting writer; opted-in runs require an explicit draft SHA."""
     if not 0 < max_wait_seconds <= 900:
         raise ValueError('host_writer_wait_limit')
     run = Path(run).resolve()
+    if plan_mode(run) is not None:
+        raise ValueError('host_writer_explicit_draft_submission_required')
     if stage not in ('initial', 'revision', 'final'):
         raise ValueError('host_writer_stage')
     path = run/key.replace(':', '-')/(stage+'.json')
@@ -133,11 +149,31 @@ if __name__ == '__main__':
     parser.add_argument('--key', required=True)
     parser.add_argument('--stage', required=True, choices=('initial', 'revision', 'final'))
     parser.add_argument('--notes', required=True, type=Path)
+    parser.add_argument('--draft-independent', action='store_true')
+    parser.add_argument('--supersedes-sha')
+    parser.add_argument('--reason')
+    parser.add_argument('--confirmed', action='store_true')
+    parser.add_argument('--independent-draft-sha')
     parser.add_argument('--wait-seconds', type=float,
-        help='Persist this explicit primary judgment, then wait boundedly for independent review.')
+        help='Legacy mode only: persist primary notes and wait for independent review.')
     args = parser.parse_args()
-    writer = write_decision if args.wait_seconds is None else wait_and_write_decision
-    options = {} if args.wait_seconds is None else dict(max_wait_seconds=args.wait_seconds)
-    result = writer(args.run_directory, args.key, args.stage,
-        json.loads(args.notes.read_bytes()), profile=args.profile, **options)
-    print(json.dumps({k: result[k] for k in ('key', 'accepted', 'candidate_sha256')}))
+    notes = json.loads(args.notes.read_bytes())
+    if args.draft_independent:
+        if args.wait_seconds is not None or args.independent_draft_sha:
+            parser.error('Draft creation and final submission are separate actions.')
+        from scripts.role_stage_review_drafts import write_independent_draft
+        result = write_independent_draft(args.run_directory, args.key, args.stage, notes,
+            profile=args.profile, supersedes_sha256=args.supersedes_sha,
+            reason=args.reason, confirmed=args.confirmed)
+        print(json.dumps(result))
+    else:
+        if args.supersedes_sha or args.reason or args.confirmed:
+            parser.error('Draft options require --draft-independent.')
+        if args.wait_seconds is not None and args.independent_draft_sha:
+            parser.error('Explicit draft submission does not use the legacy waiting writer.')
+        writer = write_decision if args.wait_seconds is None else wait_and_write_decision
+        options = (dict(independent_draft_sha256=args.independent_draft_sha)
+            if args.wait_seconds is None else dict(max_wait_seconds=args.wait_seconds))
+        result = writer(args.run_directory, args.key, args.stage, notes,
+            profile=args.profile, **options)
+        print(json.dumps({k: result[k] for k in ('key', 'accepted', 'candidate_sha256')}))

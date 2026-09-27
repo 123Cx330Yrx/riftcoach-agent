@@ -41,6 +41,7 @@ def same_checkout_parents(tmp_path, monkeypatch):
     monkeypatch.setattr(runner, 'POST_HOST_AUDIT_RUN_DIRECTORY', tmp_path/'post-host-audit')
     monkeypatch.setattr(runner, 'POST_HOST_AUDIT_CLOSED_RESULT', tmp_path/'post-host-audit-closed.json')
     monkeypatch.setattr(runner, 'POST_HOST_AUDIT_PREPARATION', tmp_path/'post-host-audit-preparation.json')
+    monkeypatch.setattr(runner, 'POST_HOST_AUDIT_CLOSED_SHA', None)
     original = first['public_json_contents']['plan.json']['preparation_plan']
     original.update(identity=current['identity'], cases=current['cases'],
         original15_plan_sha256=digest(compact(current)))
@@ -164,6 +165,12 @@ def test_real_closed_thirteen_preview_retains_original_canonical_hash():
     plan, requests = runner.prepare()
     assert canonical_sha(plan) == '358f178c829d788be7cd328620fecc63573fec5b5cfb7eb0952c8be519128cea'
     assert len(requests) == 13
+
+
+def test_real_closed_twelve_preview_retains_original_canonical_hash():
+    plan, requests = runner.prepare(after_host_audit=True)
+    assert canonical_sha(plan) == '22a857bdda8e8c0a9e4b5312b8b72041f56bfbd9ba069f0908145a81d49f4fec'
+    assert len(requests) == 12
 
 
 @pytest.mark.parametrize('defect', ['preparation', 'request'])

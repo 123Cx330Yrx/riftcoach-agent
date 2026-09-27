@@ -125,12 +125,17 @@ def adjudicate_file(path, remaining, *, clock=time.monotonic, sleep=time.sleep):
     remains forbidden; the original monotonic deadline continues while the
     host inspects sources. Partial writes are retried only as local reads.
     """
+    from scripts.role_stage_review_drafts import MODE_FIELD, plan_mode, validate_submission
     deadline = clock() + remaining
+    mode = plan_mode(path.parent.parent)
     decision_path = path.with_name('decision-' + path.stem + '.json')
-    write_new_json(path.with_name(path.stem + '-host-required.json'), dict(
+    required = dict(
         stage_file=path.name, response_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
         decision_file=decision_path.name, remaining_seconds=remaining,
-        deadline_scope='Original running process monotonic deadline; never a restart allowance.'))
+        deadline_scope='Original running process monotonic deadline; never a restart allowance.')
+    if mode is not None:
+        required[MODE_FIELD] = mode
+    write_new_json(path.with_name(path.stem + '-host-required.json'), required)
     while True:
         available = deadline - clock()
         if available <= 0:
@@ -146,6 +151,10 @@ def adjudicate_file(path, remaining, *, clock=time.monotonic, sleep=time.sleep):
         if (decision['response_sha256'] != hashlib.sha256(path.read_bytes()).hexdigest()
                 or clock() >= deadline):
             raise ValueError('task_observation_file_decision_invalid')
+        if mode is not None:
+            validate_submission(path, expected_mode=mode)
+            if clock() >= deadline:
+                raise ValueError('task_observation_host_deadline')
         return decision
 
 
