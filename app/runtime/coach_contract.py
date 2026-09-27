@@ -11,7 +11,7 @@ from pydantic import BaseModel, ConfigDict, Field
 class CoachContractSnapshot(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     contract_id: Literal["recent-form-review-flash-v2", "recent-form-review-roles-v1"] = "recent-form-review-flash-v2"
-    version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16", "1.3.17", "1.3.18", "1.3.19", "1.3.20", "1.3.21", "1.3.22", "1.3.23", "1.3.24", "1.3.25", "1.3.26", "1.3.27", "1.4.0", "1.4.1", "1.4.2", "1.4.3", "1.4.4", "1.4.5", "1.4.6", "1.5.0", "1.5.1", "1.5.2", "1.5.3"] = "1.0.0"
+    version: Literal["1.0.0", "1.1.0", "1.2.0", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.3.4", "1.3.5", "1.3.6", "1.3.7", "1.3.8", "1.3.9", "1.3.10", "1.3.11", "1.3.12", "1.3.13", "1.3.14", "1.3.15", "1.3.16", "1.3.17", "1.3.18", "1.3.19", "1.3.20", "1.3.21", "1.3.22", "1.3.23", "1.3.24", "1.3.25", "1.3.26", "1.3.27", "1.4.0", "1.4.1", "1.4.2", "1.4.3", "1.4.4", "1.4.5", "1.4.6", "1.5.0", "1.5.1", "1.5.2", "1.5.3", "1.5.4"] = "1.0.0"
     scope: Literal["unadmitted_opt_in"] = "unadmitted_opt_in"
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
@@ -439,13 +439,24 @@ class CoarseRoleCoachExecutionContract(RoleCoachExecutionContract):
             raise ValueError("role_contract_projection_mismatch")
 
 
+class CorrectionScopeCoachExecutionContract(CoarseRoleCoachExecutionContract):
+    def descriptor(self):
+        from app.evaluation.golden_role_correction_scope import CONTRACT_ID
+        value = super().descriptor()
+        value.update(program_version="3.3.0", evaluation_contract_version="3.7.0",
+                     inference_policy_id=CONTRACT_ID)
+        return value
+
+
+CORRECTION_SCOPE_COACH_CONTRACT = CorrectionScopeCoachExecutionContract(version="1.5.4")
+
 COARSE_ROLE_COACH_CONTRACT = CoarseRoleCoachExecutionContract(version="1.5.3")
 LEGACY_NOTE_ROLE_COACH_CONTRACT = RoleCoachExecutionContract(version="1.5.1")
 LEGACY_ROLE_COACH_CONTRACT = RoleCoachExecutionContract(version="1.5.0")
 
 
 def require_coach_contract(value):
-    if value is not None and all(value is not c for c in (COACH_CONTRACT, NATIVE_COACH_CONTRACT, ROLE_COACH_CONTRACT, COARSE_ROLE_COACH_CONTRACT, CONTEXT_COACH_CONTRACT, EVIDENCE_V8_COACH_CONTRACT, EVIDENCE_V7_COACH_CONTRACT, EVIDENCE_V6_COACH_CONTRACT, EVIDENCE_V5_COACH_CONTRACT, EVIDENCE_V4_COACH_CONTRACT, EVIDENCE_V3_COACH_CONTRACT, CAPACITY_COACH_CONTRACT, EVIDENCE_V2_COACH_CONTRACT, EVIDENCE_COACH_CONTRACT, FACT_INFERENCE_COACH_CONTRACT, FEEDBACK_COACH_CONTRACT, EXPANDED_COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT)):
+    if value is not None and all(value is not c for c in (COACH_CONTRACT, NATIVE_COACH_CONTRACT, ROLE_COACH_CONTRACT, COARSE_ROLE_COACH_CONTRACT, CORRECTION_SCOPE_COACH_CONTRACT, CONTEXT_COACH_CONTRACT, EVIDENCE_V8_COACH_CONTRACT, EVIDENCE_V7_COACH_CONTRACT, EVIDENCE_V6_COACH_CONTRACT, EVIDENCE_V5_COACH_CONTRACT, EVIDENCE_V4_COACH_CONTRACT, EVIDENCE_V3_COACH_CONTRACT, CAPACITY_COACH_CONTRACT, EVIDENCE_V2_COACH_CONTRACT, EVIDENCE_COACH_CONTRACT, FACT_INFERENCE_COACH_CONTRACT, FEEDBACK_COACH_CONTRACT, EXPANDED_COACH_CONTRACT, GROUNDED_COACH_CONTRACT, BATCH_COACH_CONTRACT, GOLDEN_COACH_CONTRACT, SOURCE_COACH_CONTRACT, LATENCY_COACH_CONTRACT, POSITION_COACH_CONTRACT, FACT_COACH_CONTRACT, ADVICE_COACH_CONTRACT, COMPACT_COACH_CONTRACT, INFERENCE_COACH_CONTRACT, CLAIM_COACH_CONTRACT, ANCHOR_COACH_CONTRACT, COVERAGE_COACH_CONTRACT, SCOPE_COACH_CONTRACT, SCOPE_V2_COACH_CONTRACT, SCOPE_V3_COACH_CONTRACT, SCOPE_V4_COACH_CONTRACT)):
         raise ValueError("unsupported Coach execution contract")
     return value
 
@@ -454,7 +465,7 @@ def coach_component_fingerprint(contract=COACH_CONTRACT):
     from app.evaluation.prompt_context_identity import ComponentFingerprint
     require_coach_contract(contract)
     return ComponentFingerprint(component_id="coach_execution_contract",
-                                source=(f"app.runtime.reviewer_roles:v{contract.version}" if contract in (ROLE_COACH_CONTRACT, COARSE_ROLE_COACH_CONTRACT) else f"app.runtime.native_coach_contract:v{contract.version}" if contract is NATIVE_COACH_CONTRACT else "app.runtime.coach_contract:v1.3.19" if contract.version == "1.3.19" else "app.runtime.coach_contract:v1.3.18" if contract.version == "1.3.18" else "app.runtime.coach_contract:v1.3.17" if contract.version == "1.3.17" else "app.runtime.coach_contract:v1.3.16" if contract.version == "1.3.16" else "app.runtime.coach_contract:v1.3.15" if contract.version == "1.3.15" else "app.runtime.coach_contract:v1.3.14" if contract.version == "1.3.14" else "app.runtime.coach_contract:v1.3.13" if contract.version == "1.3.13" else "app.runtime.coach_contract:v1.3.12" if contract.version == "1.3.12" else "app.runtime.coach_contract:v1.3.11" if contract.version == "1.3.11" else "app.runtime.coach_contract:v1.3.10" if contract.version == "1.3.10" else
+                                source=(f"app.runtime.reviewer_roles:v{contract.version}" if contract in (ROLE_COACH_CONTRACT, COARSE_ROLE_COACH_CONTRACT, CORRECTION_SCOPE_COACH_CONTRACT) else f"app.runtime.native_coach_contract:v{contract.version}" if contract is NATIVE_COACH_CONTRACT else "app.runtime.coach_contract:v1.3.19" if contract.version == "1.3.19" else "app.runtime.coach_contract:v1.3.18" if contract.version == "1.3.18" else "app.runtime.coach_contract:v1.3.17" if contract.version == "1.3.17" else "app.runtime.coach_contract:v1.3.16" if contract.version == "1.3.16" else "app.runtime.coach_contract:v1.3.15" if contract.version == "1.3.15" else "app.runtime.coach_contract:v1.3.14" if contract.version == "1.3.14" else "app.runtime.coach_contract:v1.3.13" if contract.version == "1.3.13" else "app.runtime.coach_contract:v1.3.12" if contract.version == "1.3.12" else "app.runtime.coach_contract:v1.3.11" if contract.version == "1.3.11" else "app.runtime.coach_contract:v1.3.10" if contract.version == "1.3.10" else
                                         "app.runtime.coach_contract:v1.3.9" if contract.version == "1.3.9" else
                                         "app.runtime.coach_contract:v1.3.8" if contract.version == "1.3.8" else
                                         "app.runtime.coach_contract:v1.3.7" if contract.version == "1.3.7" else

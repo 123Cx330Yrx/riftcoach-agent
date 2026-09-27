@@ -92,7 +92,7 @@
     {
       "component_id": "app.product.native_coach_composition",
       "source": "app/product/native_coach_composition.py",
-      "sha256": "18affdb4f1d188083ff52b82fc6fd203d1a1da49d645750ffd5e2613c6f525c0"
+      "sha256": "feb5d18796886b21b7b65d11ad86c3842ae1501d5a0e72fc7171667ccfbcf272"
     },
     {
       "component_id": "app.product.recent_review_service",
@@ -227,7 +227,7 @@
     {
       "component_id": "app.runtime.coach_contract",
       "source": "app/runtime/coach_contract.py",
-      "sha256": "3e03253b3848466f2d2ea054ebef08e5a5543a3365c0f9a1a17c84a5b1fb897e"
+      "sha256": "4eae8f75049a7e0643138fefc5015397e7d20430b228f9b3fc7c665dd5583856"
     },
     {
       "component_id": "app.providers.zhipu_profiles",
@@ -262,7 +262,7 @@
     {
       "component_id": "app.runtime.models",
       "source": "app/runtime/models.py",
-      "sha256": "c364f1fc7dbe12221585897062e134dc5237955fb05caec77e55e8932c502c13"
+      "sha256": "61078023f2cbe89a8c20a108bb9f1b85fcaac8fdb82199e9d02c6a9002753f77"
     },
     {
       "component_id": "app.model_runtime",
@@ -292,12 +292,12 @@
     {
       "component_id": "app.prompt_program.resolver",
       "source": "app/prompt_program/resolver.py",
-      "sha256": "0a4f00df96068086a01a0b646404e7c8c46bb6f40d00961ba71aefd9d00834ea"
+      "sha256": "5b838f979ad85a2a4a5017a77abc7d15fb636658bc62e8378d2a7a0e00413178"
     },
     {
       "component_id": "app.prompt_program.models",
       "source": "app/prompt_program/models.py",
-      "sha256": "3a3cfb115ede10d7da153f388f49af9bae7a2c2cba77a130dc98c0635e1b9982"
+      "sha256": "80a23807f78441065532ff9d8ed816d8e674e2680efb97e23d37b8ca60d5c34e"
     },
     {
       "component_id": "app.evaluation.golden_review_source_catalog",
@@ -310,5 +310,5 @@
       "sha256": "c40398b96be3c187976b96089a18d7967c20a51cdf84f9a46abd3d6d410a3e59"
     }
   ],
-  "program_sha256": "5b3974b7a4f1dea054c24fd05168227f6c5aec2615b0a299e170ec131857cb62"
+  "program_sha256": "966099eb4e78972f9324a88a12aedb65aa90da03ce8a06aee3cf03a68f4c5ba1"
 }

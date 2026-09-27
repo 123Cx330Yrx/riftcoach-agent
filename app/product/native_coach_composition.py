@@ -99,3 +99,14 @@ def build_coarse_role_coach_application(**kwargs):
     from app.evaluation.golden_role_coarse import RoleCoarseReviewWorkflow
     return _build_coach_application(contract=COARSE_ROLE_COACH_CONTRACT, assets=COARSE_ROLE_ASSETS,
         workflow_type=RoleCoarseReviewWorkflow, **kwargs)
+
+
+CORRECTION_SCOPE_ASSETS = Path(__file__).resolve().parents[2] / 'examples/runtime_profiles/flash_glm_correction_scope_v1'
+
+
+def build_correction_scope_coach_application(**kwargs):
+    """Explicit responsibility-bound composition; qualification remains separate."""
+    from app.runtime.coach_contract import CORRECTION_SCOPE_COACH_CONTRACT
+    from app.evaluation.golden_role_correction_scope import RoleCorrectionScopeReviewWorkflow
+    return _build_coach_application(contract=CORRECTION_SCOPE_COACH_CONTRACT, assets=CORRECTION_SCOPE_ASSETS,
+        workflow_type=RoleCorrectionScopeReviewWorkflow, **kwargs)

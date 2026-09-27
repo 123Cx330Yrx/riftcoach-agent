@@ -93,19 +93,34 @@ def source_projection_time(value):
     return value
 
 
+def selected_profile(args):
+    """Explicit opt-in selection; the existing entry remains the default."""
+    profile = getattr(args, 'profile', 'role')
+    if profile == 'role':
+        return ROLE_COACH_CONTRACT, build_role_coach_application, candidate_identity
+    if profile == 'correction-scope':
+        from app.runtime.coach_contract import CORRECTION_SCOPE_COACH_CONTRACT
+        from app.product.native_coach_composition import build_correction_scope_coach_application
+        from app.evaluation.correction_scope_qualification import candidate_identity as identity
+        return CORRECTION_SCOPE_COACH_CONTRACT, build_correction_scope_coach_application, identity
+    raise ValueError('role_development_profile_unsupported')
+
+
 def prepare(args, *, settings):
-    descriptor = ROLE_COACH_CONTRACT.descriptor()
+    contract, builder, identify = selected_profile(args)
+    descriptor = contract.descriptor()
     if any(descriptor[k] != v for k, v in LIMITS.items()):
         raise ValueError('role_development_shared_budget_changed')
     factory = FirstRequestBoundFactory(RunScopedRoleReceiptedProviderFactory(
-        generator_settings=settings[0], reviewer_settings=settings[1], transport_root=args.output_root / 'transport'))
+        generator_settings=settings[0], reviewer_settings=settings[1], transport_root=args.output_root / 'transport',
+        source_projection=descriptor['source_projection']))
     source_now = source_projection_time(getattr(args, 'source_now', None))
-    prepared = prepare_frozen_application(builder=build_role_coach_application,
-        contract=ROLE_COACH_CONTRACT, provider_factory=factory,
+    prepared = prepare_frozen_application(builder=builder,
+        contract=contract, provider_factory=factory,
         output_root=args.output_root, run_id=args.run_id, now=source_now)
     factory.expected = prepared.first_request
     raw = validate_request(prepared.first_request, transport_id=CAPACITY_TRANSPORT_ID)
-    identity = candidate_identity()
+    identity = identify()
     plan = dict(experiment='actual-role-coach-development-v1', run_id=args.run_id,
         source_scope='frozen_ShowMaker_development_not_current_meta', source_now=prepared.source_now.isoformat(),
         candidate_identity=identity, candidate_sha256=digest(compact(identity)),
@@ -200,7 +215,7 @@ def run(args):
         if plan['preparation_plan_sha256'] != args.approval_plan_sha:
             raise ValueError('role_development_loaded_preparation_changed')
         require_unchanged_checkout(head)
-        if candidate_identity() != plan['candidate_identity']:
+        if selected_profile(args)[2]() != plan['candidate_identity']:
             raise ValueError('role_development_candidate_changed_after_plan')
         result = prepared.app.review_by_puuid(prepared.request, puuid='frozen-observation', routing_region='asia',
             game_name='DK ShowMaker', tag_line='KR1', run_id=run_id,
@@ -219,7 +234,8 @@ def run(args):
     finally:
         outcome['first_request_matched'] = factory.matched if factory is not None else False
         try:
-            outcome.update(summarize_calls(args.output_root / 'transport' / run_id))
+            outcome.update(summarize_calls(args.output_root / 'transport' / run_id,
+                coach_contract=selected_profile(args)[0]))
         except (ValueError, OSError, KeyError, TypeError):
             # Broken evidence cannot be interpreted as zero consumption or pass.
             outcome.update(status='cancelled' if outcome['status'] == 'cancelled' else 'failed',
@@ -235,6 +251,7 @@ def run(args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--execute', action='store_true')
+    parser.add_argument('--profile', choices=('role', 'correction-scope'), default='role')
     parser.add_argument('--run-id', default='')
     parser.add_argument('--ci-run', default='')
     parser.add_argument('--env-file', type=Path)

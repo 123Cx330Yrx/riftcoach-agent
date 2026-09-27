@@ -23,6 +23,9 @@ def write_decision(run, key, stage, notes, *, profile):
     if profile == 'coarse':
         from app.evaluation import coarse_role_qualification as backend
         from scripts.run_coarse_role_qualification import CoarseObserver as observer
+    elif profile == 'correction-scope':
+        from app.evaluation import correction_scope_qualification as backend
+        from scripts.run_correction_scope_qualification import CorrectionScopeObserver as observer
     elif profile != 'role':
         raise ValueError('host_writer_profile')
     run = Path(run).resolve()
@@ -72,7 +75,7 @@ def write_decision(run, key, stage, notes, *, profile):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-directory', required=True, type=Path)
-    parser.add_argument('--profile', required=True, choices=('role', 'coarse'))
+    parser.add_argument('--profile', required=True, choices=('role', 'coarse', 'correction-scope'))
     parser.add_argument('--key', required=True)
     parser.add_argument('--stage', required=True, choices=('initial', 'revision', 'final'))
     parser.add_argument('--notes', required=True, type=Path)
