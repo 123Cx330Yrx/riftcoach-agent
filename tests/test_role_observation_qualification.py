@@ -53,6 +53,9 @@ def make_run(tmp_path, monkeypatch):
         elif profile == 'correction-scope':
             from app.evaluation import correction_scope_qualification as backend
             from scripts.run_correction_scope_qualification import Workflow as workflow, CorrectionScopeObserver as observer, CONTRACT as contract
+        elif profile == 'boundary-examples':
+            from app.evaluation import boundary_examples_qualification as backend
+            from scripts.run_boundary_examples_qualification import Workflow as workflow, BoundaryExamplesObserver as observer, CONTRACT as contract
         plan, requests = backend.prepare_qualification()
         counter[0] += 1
         run = tmp_path / ('run-' + str(counter[0]))
@@ -74,12 +77,12 @@ def make_run(tmp_path, monkeypatch):
             (run / (row['key'].replace(':', '-') + '-prepared-request.json')).write_bytes(requests[row['key']])
         good = dict(score=95, verdict='pass', issues=[], issue_resolutions=[], advisories=[])
         bad = dict(score=80, verdict='needs_revision', issues=[dict(block=4, severity='medium',
-            category='fact_error', source_ids=[27 if profile in ('coarse', 'correction-scope') else 1], explanation='Offline structural fixture.',
+            category='fact_error', source_ids=[27 if profile in ('coarse', 'correction-scope', 'boundary-examples') else 1], explanation='Offline structural fixture.',
             suggested_correction='Repair the identified error.')], issue_resolutions=[], advisories=[])
         replies = []
         for row in rows:
             error = deepcopy(bad)
-            if profile in ('coarse', 'correction-scope'):
+            if profile in ('coarse', 'correction-scope', 'boundary-examples'):
                 from app.evaluation.golden_coarse_source_projection import source_catalog
                 error['issues'][0]['source_ids'] = [source_catalog(workflow.build_inputs(sources[row['key']]))['roots'][0]['source_id']]
             replies.append(tool_response(good if row['expected_initial'] == 'accept' else error))
@@ -118,7 +121,7 @@ def make_run(tmp_path, monkeypatch):
                 reason='Synthetic primary source inspection.', target_and_correction_valid=True,
                 final_report_checks={k: True for k in audit.CHECKS} if final_report else None,
                 report_reason=final_report['source_review'] if final_report else 'Intentionally incorrect source.')
-            if profile in ('coarse', 'correction-scope'):
+            if profile in ('coarse', 'correction-scope', 'boundary-examples'):
                 # Exercise the actual file-based host: no in-memory plan is
                 # passed to the writer. JSON storage reorders nested keys.
                 from scripts.write_role_stage_decision import write_decision
@@ -132,7 +135,7 @@ def make_run(tmp_path, monkeypatch):
                     from scripts.role_stage_review_drafts import write_independent_draft
                     from scripts.run_role_task_observation import adjudicate_file
                     def publish(_):
-                        draft = write_independent_draft(run, key, name, independent,
+                        draft = write_independent_draft(run, key, name, independent, profile=profile,
                             reason='Offline explicit independent confirmation.', confirmed=True)
                         write_decision(run, key, name, notes, profile=profile,
                             independent_draft_sha256=draft['draft_sha256'])
@@ -149,7 +152,9 @@ def make_run(tmp_path, monkeypatch):
                     decision = read(path.with_name('decision-'+name+'.json'))
                 else:
                     decision = write_decision(run, key, name, notes, profile=profile)
-                if profile == 'correction-scope':
+                if profile == 'boundary-examples':
+                    from scripts.run_boundary_examples_qualification import validate_handoff
+                elif profile == 'correction-scope':
                     from scripts.run_correction_scope_qualification import validate_handoff
                 else:
                     from scripts.run_coarse_role_qualification import validate_handoff

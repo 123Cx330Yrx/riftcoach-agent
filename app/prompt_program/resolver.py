@@ -154,6 +154,9 @@ class PromptProgramResolver:
         if grounded and self.coach_contract.version == "1.5.4":
             from app.runtime.correction_scope_contract import component_fingerprints
             current = component_fingerprints(skill)
+        if grounded and self.coach_contract.version == "1.5.5":
+            from app.runtime.boundary_examples_contract import component_fingerprints
+            current = component_fingerprints(skill)
         if self.coach_contract is not None:
             if skill_version != self.coach_contract.descriptor()["skill_version"] or manifest.program_version != self.coach_contract.descriptor()["program_version"]:
                 raise PromptProgramCatalogError("Coach contract requires independent Skill/Program versions")

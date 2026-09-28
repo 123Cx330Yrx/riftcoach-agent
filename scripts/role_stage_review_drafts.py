@@ -77,15 +77,25 @@ def _open(run, arm, stage, *, partial_submission=False):
         _fail('formal_file_exists')
 
 
-def binding(run, key, stage, *, profile='correction-scope', live=False):
+def binding(run, key, stage, *, profile=None, live=False):
     """Bind the actual frozen plan, source, stage and complete receipt prefix."""
-    from app.evaluation import correction_scope_qualification as backend
     from scripts.role_continuation import rebuild_stage_prefix
     run, arm, path, _ = _paths(run, key, stage)
-    if profile != 'correction-scope' or plan_mode(run) != MODE:
+    if plan_mode(run) != MODE:
         _fail('opt_in_required')
     saved = _read(run/'plan.json')
     plan = saved['preparation_plan']
+    # Select by the saved execution identity, then validate the complete trusted
+    # identity below. A profile label alone never authorizes a different policy.
+    from app.evaluation import correction_scope_qualification, boundary_examples_qualification
+    backends = {'correction-scope': correction_scope_qualification,
+                'boundary-examples': boundary_examples_qualification}
+    matched = [name for name, candidate in backends.items()
+               if plan.get('identity', {}).get('workflow_id') == candidate.CONTRACT_ID]
+    if len(matched) != 1 or profile is not None and profile != matched[0]:
+        _fail('opt_in_required')
+    profile = matched[0]
+    backend = backends[profile]
     rows = [r for r in plan['cases'] if r['key'] == key]
     if len(rows) != 1:
         _fail('case')

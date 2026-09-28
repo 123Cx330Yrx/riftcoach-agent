@@ -334,6 +334,8 @@ def inspect_runs(run_directories, *, evidence_root, closed_exports, profile='rol
         from app.evaluation import coarse_role_qualification as backend
     elif profile == 'correction-scope':
         from app.evaluation import correction_scope_qualification as backend
+    elif profile == 'boundary-examples':
+        from app.evaluation import boundary_examples_qualification as backend
     elif profile == 'role':
         backend = qualification
     else:
@@ -452,7 +454,7 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports,
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-directory', action='append', type=Path, required=True)
-    parser.add_argument('--profile', choices=('role', 'coarse', 'correction-scope'), default='role')
+    parser.add_argument('--profile', choices=('role', 'coarse', 'correction-scope', 'boundary-examples'), default='role')
     parser.add_argument('--closed-export', action='append', nargs=2, metavar=('PATH', 'SHA256'), required=True)
     parser.add_argument('--evidence-root', type=Path, required=True)
     parser.add_argument('--output-directory', type=Path, required=True)

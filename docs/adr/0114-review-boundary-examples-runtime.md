@@ -1,0 +1,58 @@
+# ADR0114 — 固定边界示例接入完整审查链
+
+2026-09-28。采用显式工程接线；模型分工、验收标准及阶段顺序不变。质量资格仍待验证。
+
+## 依据与决定
+
+当前失败的首次偏离是审查把全文已消歧的可选范围说明升级为事实错误。低温诊断仍误报，
+已停止该路线。固定虚构印刷厂四种边界只示范现有采用标准，不提供目标报告答案或事实来源。
+两控制真实完成：正确原稿96/pass保持、明确错组82/needs_revision且解释/修法正确。
+随后真实Flash改稿把中单早死改为2.50/0.50，区分全样本2.5/2.67，其他内容保留；
+同策略GLM fresh终评96/pass，两个阶段全文主审和独立审查均接受。
+尾段封存SHA da0d73a6a3a97c1da225fa591547cdfeaa1be43f6aada8f525436b1b4c4862ab。
+这是开发例可行性证据，不是稳定率、因果提升、独立holdout或完整原15资格。
+
+将实测示例逐字保留到app/evaluation/golden_role_boundary_examples.py，新增显式合同1.5.5、
+Program3.4.0、evaluation3.8.0，Skill0.6.2业务要求不变。初评、fresh及既有一次格式/来源
+恢复审查共用review_policy并指纹化。Flash编辑保留完整意见和原编辑政策。GLM/high、
+temperature1/top_p.95、输出结构及来源表示不变；共享5调用/401920tokens/900秒、一次改稿。
+默认Worker不切换，产品没有新增Agent、挑战步骤或第二套状态机。
+
+## 数据与控制路径
+
+显式build_boundary_examples_coach_application → RuntimeCompositionRoot核manifest →
+现有Agent生成/knowledge.search → 同预算初评 → 必要时Flash编辑 → 相同政策fresh →
+既有发布/存储路径。run_role_coach_development的boundary-examples profile绑定同一
+contract/builder/candidate_identity；可信Trace按新snapshot校验Program身份，旧snapshot不变。
+诊断scripts保留原版本历史；产品不import诊断scripts。新旧政策逐字一致由请求测试校验。
+
+完整原15仍复用连续executor、原标签、真实回执重放、全文双审、逐例耐久完成及封存门。
+新版本不接收旧3/15、两控制或离线初评注入尾段；只有同版本完整原15才授review_controls。
+独立草稿/主审提交复用已有模式；绑定模块从保存的workflow identity选择受信backend，
+再核完整candidate/source/request/response，显式profile冲突拒绝。修复的是旧版本硬编码，
+不是放宽审查或允许无人签署。正常、失败、恢复及后续封存回放均需同一绑定。
+
+## 验证与费用边界
+
+验证覆盖全部15请求与实测诊断逐值一致、editor不变、fresh无旧意见、实际应用的工具/
+编辑/终评及恢复预算、实际natural入口回执、可信Trace、新旧资格互拒、完整15的真实
+执行器与草稿提交/封存审计（网络替身）。这些软件验证不能统计成真实模型通过。
+共享源码指纹变更需刷新四个旧可运行manifest与新manifest；旧封存原件及其历史资格不改写。
+
+新完整原15预留35调用，其中Flash编辑10、GLM审查25；3386880tokens/10500秒含人工等待，
+按现有价格全未缓存估价37.167104元，非账单硬上限。真实新增请求需本批明确成本授权及
+同提交CI成功，首实质失败停批；不重试、不重评、不换示例借余量重跑。当前尚未执行。
+资格完成后才验证自然生成/工具/纠错及同组合真实Worker/DB/API/Workbench；前端审美/头像、
+四块联动、本人Training、Memory、身份运维、两树整合和学习依赖仍按活动计划保留。
+
+## 本轮验证结果
+
+新runtime/qualification15项通过，含完整15脚本回执、实际草稿双审、跨进程提交、新旧
+资格互拒及实际应用工具/恢复/共享预算。旧相关125项中124通过，历史pair preview身份
+漂移修复后该套18项全部通过，去重合计140项。独立审查无剩余阻断。以上均非模型质量。
+新准备canonical SHA 68ba8615cd18685d1f6be1bdac5fe78ce0a8f589a3a8a693fcf935acb0e927fd。
+历史pair先固定seal校验，再恢复执行时身份，实际输入/请求/政策/预算全量比原冻结；
+不能重开闭批。原tail封存33份逐件不变，修后export重建仍等于原封存。
+
+补充可信Trace/原native应用/角色回执/粗来源合同等61项通过14.95秒，其中1项与新准备重复；
+去重总计200项相关检查通过。冻结准备重建断言另通过，治理/编译/diff检查通过。

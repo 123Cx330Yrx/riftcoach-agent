@@ -110,3 +110,14 @@ def build_correction_scope_coach_application(**kwargs):
     from app.evaluation.golden_role_correction_scope import RoleCorrectionScopeReviewWorkflow
     return _build_coach_application(contract=CORRECTION_SCOPE_COACH_CONTRACT, assets=CORRECTION_SCOPE_ASSETS,
         workflow_type=RoleCorrectionScopeReviewWorkflow, **kwargs)
+
+
+BOUNDARY_EXAMPLES_ASSETS = Path(__file__).resolve().parents[2] / 'examples/runtime_profiles/flash_glm_boundary_examples_v1'
+
+
+def build_boundary_examples_coach_application(**kwargs):
+    """Explicit tested-example composition; full qualification is still required."""
+    from app.runtime.coach_contract import BOUNDARY_EXAMPLES_COACH_CONTRACT
+    from app.evaluation.golden_role_boundary_examples import RoleBoundaryExamplesReviewWorkflow
+    return _build_coach_application(contract=BOUNDARY_EXAMPLES_COACH_CONTRACT, assets=BOUNDARY_EXAMPLES_ASSETS,
+        workflow_type=RoleBoundaryExamplesReviewWorkflow, **kwargs)

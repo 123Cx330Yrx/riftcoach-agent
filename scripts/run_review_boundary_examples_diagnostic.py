@@ -40,6 +40,7 @@ EXPERIMENT = 'review-boundary-examples-pair-v1'
 KEYS = ('claim-scope:1', 'scope:3')
 PREPARATION = ROOT/'data/evaluation/results/golden_review_boundary_examples_preparation_v1.json'
 CLOSED_RESULT = ROOT/'data/evaluation/results/golden_review_boundary_examples_result_v1.json'
+CLOSED_SHA = '1a4df090a2d5d1f575b307f90b54e6c25bfc823d9c34db920fca4f8a96635ddc'
 RUN_DIRECTORY = ROOT/'data/runs/model_comparison'/EXPERIMENT
 
 
@@ -116,6 +117,18 @@ def prepare():
             recovery_exhausts_calls_before_fresh=True,
             scope='Scripted real application; request reservations are fixture-specific, not a live latency or semantic guarantee.'),
         review_controls_qualified=False, actual_product_task_qualified=False, production_admitted=False)
+    if CLOSED_RESULT.exists():
+        if sha(CLOSED_RESULT) != CLOSED_SHA:
+            raise ValueError('boundary_examples_closed_evidence_changed')
+        saved = read(CLOSED_RESULT)['public_json_contents']['plan.json']
+        frozen = saved['preparation_plan']
+        # A closed diagnostic keeps its historical code/manifest identity.
+        # Rebuild all actual inputs, policies, requests and budgets unchanged;
+        # current product wiring must never retroactively rebind its evidence.
+        plan.update(baseline_candidate=frozen['baseline_candidate'],
+                    source_sha256=frozen['source_sha256'])
+        if plan != frozen or plan != read(PREPARATION) or canonical_sha(plan) != saved['plan_sha256']:
+            raise ValueError('boundary_examples_closed_preparation_changed')
     return plan, variants
 
 

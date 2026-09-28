@@ -103,6 +103,11 @@ def selected_profile(args):
         from app.product.native_coach_composition import build_correction_scope_coach_application
         from app.evaluation.correction_scope_qualification import candidate_identity as identity
         return CORRECTION_SCOPE_COACH_CONTRACT, build_correction_scope_coach_application, identity
+    if profile == 'boundary-examples':
+        from app.runtime.coach_contract import BOUNDARY_EXAMPLES_COACH_CONTRACT
+        from app.product.native_coach_composition import build_boundary_examples_coach_application
+        from app.evaluation.boundary_examples_qualification import candidate_identity as identity
+        return BOUNDARY_EXAMPLES_COACH_CONTRACT, build_boundary_examples_coach_application, identity
     raise ValueError('role_development_profile_unsupported')
 
 
@@ -251,7 +256,7 @@ def run(args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--execute', action='store_true')
-    parser.add_argument('--profile', choices=('role', 'correction-scope'), default='role')
+    parser.add_argument('--profile', choices=('role', 'correction-scope', 'boundary-examples'), default='role')
     parser.add_argument('--run-id', default='')
     parser.add_argument('--ci-run', default='')
     parser.add_argument('--env-file', type=Path)

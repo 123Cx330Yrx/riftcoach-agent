@@ -28,6 +28,9 @@ def build_formal_decision(run, key, stage, notes, other, *, independent_sha256, 
     elif profile == 'correction-scope':
         from app.evaluation import correction_scope_qualification as backend
         from scripts.run_correction_scope_qualification import CorrectionScopeObserver as observer
+    elif profile == 'boundary-examples':
+        from app.evaluation import boundary_examples_qualification as backend
+        from scripts.run_boundary_examples_qualification import BoundaryExamplesObserver as observer
     elif profile != 'role':
         raise ValueError('host_writer_profile')
     run = Path(run).resolve()
@@ -145,7 +148,7 @@ def wait_and_write_decision(run, key, stage, notes, *, profile, max_wait_seconds
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-directory', required=True, type=Path)
-    parser.add_argument('--profile', required=True, choices=('role', 'coarse', 'correction-scope'))
+    parser.add_argument('--profile', required=True, choices=('role', 'coarse', 'correction-scope', 'boundary-examples'))
     parser.add_argument('--key', required=True)
     parser.add_argument('--stage', required=True, choices=('initial', 'revision', 'final'))
     parser.add_argument('--notes', required=True, type=Path)

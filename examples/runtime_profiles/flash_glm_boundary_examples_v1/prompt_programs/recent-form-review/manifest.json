@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
   "program_id": "recent-form-review-coach",
-  "program_version": "3.3.0",
+  "program_version": "3.4.0",
   "skill_name": "recent-form-review",
   "skill_version": "0.6.2",
   "context_contract_id": "context-builder-v1",
   "context_contract_version": "1.0.0",
   "evaluation_contract_id": "coach_evaluation",
-  "evaluation_contract_version": "3.7.0",
+  "evaluation_contract_version": "3.8.0",
   "component_fingerprints": [
     {
       "component_id": "skill_manifest",
@@ -147,12 +147,12 @@
     {
       "component_id": "initial_review_policy",
       "source": "initial_review_policy",
-      "sha256": "33b11c48b25f3a4dc2879743a0d76dd6c60c0afa4cc1b2b596edacfd967ba8f7"
+      "sha256": "b96095fc80d78a1594c7a5b70ebf8f44751a26464b4824539bef28d4ecc76bc7"
     },
     {
       "component_id": "reassessment_policy",
       "source": "reassessment_policy",
-      "sha256": "edac19d45244995c6b358f219287375c31216cb89dd192b1223227ca3cfa24a8"
+      "sha256": "0b26b727207a31eb1dbd137f274e9473994f865966e1ec2a029b62ec6c026da9"
     },
     {
       "component_id": "revision_policy",
@@ -320,10 +320,25 @@
       "sha256": "519bd157c48fed454b261334e5d708380bbbd434d4d4061118b6a67e93430b33"
     },
     {
+      "component_id": "app.evaluation.golden_role_boundary_examples",
+      "source": "app/evaluation/golden_role_boundary_examples.py",
+      "sha256": "d3abe09b72572b52755f353e8ef53b37585f5979eb65b2df0f1f6c4b7ea7a4a4"
+    },
+    {
+      "component_id": "app.runtime.boundary_examples_contract",
+      "source": "app/runtime/boundary_examples_contract.py",
+      "sha256": "eb264f5d6a8f32340df78cbeca6599811f70748587a8cb0e98769824147c4222"
+    },
+    {
+      "component_id": "app.evaluation.boundary_examples_qualification",
+      "source": "app/evaluation/boundary_examples_qualification.py",
+      "sha256": "0b646d3504cd16f932013d0389037ec8d506a084af90cf35e6c17354331ee92a"
+    },
+    {
       "component_id": "coach_execution_contract",
-      "source": "app.runtime.reviewer_roles:v1.5.4",
-      "sha256": "68f341bda79cc3c0b8d2e94fdfb02baa1e7b5572b3c4c16770aa61fa8f0b6193"
+      "source": "app.runtime.reviewer_roles:v1.5.5",
+      "sha256": "ecd91dc4a12e203b7f14e19fe43712361e40b4c3a090022770a2aae0d0f984c9"
     }
   ],
-  "program_sha256": "d95599538318d2a4f0dd80cdeccdd8a651e9aa707a7dc5d9b3989292c02832bd"
+  "program_sha256": "5d84d9a3e6f944064ee4a32e6bb082f625e0639869f8d31e73f638c7a60f7ce6"
 }
