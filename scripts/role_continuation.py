@@ -173,11 +173,11 @@ def require_unstarted_target(campaign, *, root=ROOT):
     return paths
 
 
-def _started(run, files, rows):
-    """Prepared requests alone are not execution; all other artifacts count."""
+def _started(run, files, rows, plan, result):
+    """Separate a bound pre-case readiness wait from actual case execution."""
     ids = {r['key'].replace(':', '-'): r['key'] for r in rows}
     allowed = {'plan.json', 'result.json'} | {cid + '-prepared-request.json' for cid in ids}
-    started = set()
+    started, handoff_keys = set(), set()
     for name in files:
         if name in allowed:
             continue
@@ -191,7 +191,7 @@ def _started(run, files, rows):
                 if parts[1] in (cid + '-ready.json', cid + '-ready-required.json')), None)
             if match is None:
                 _fail('started_inventory_changed')
-            started.add(match)
+            handoff_keys.add(match)
         else:
             _fail('started_inventory_changed')
     # Empty directories are not present in a file seal; they still cannot hide
@@ -208,6 +208,42 @@ def _started(run, files, rows):
     handoff = run / 'handoff'
     if handoff.exists() and any(not p.is_file() for p in handoff.iterdir()):
         _fail('started_inventory_changed')
+    pending = handoff_keys - started
+    recorded = result.get('cases', [])
+    if pending and (len(pending) != 1 or len(recorded) >= len(rows)
+            or pending != {rows[len(recorded)]['key']}
+            or any(item.get('status') != 'task_observed' for item in recorded)
+            or result.get('error_code') not in (
+                'task_observation_ready_deadline', 'role_pair_execution_limit')):
+        _fail('parent_boundary_changed')
+    for row in rows:
+        if row['key'] not in handoff_keys:
+            continue
+        name = row['key'].replace(':', '-')
+        required_path = handoff / (name + '-ready-required.json')
+        signal_path = handoff / (name + '-ready.json')
+        if not required_path.is_file():
+            _fail('started_inventory_changed')
+        required = _read(required_path)
+        remaining = required.get('remaining_batch_seconds')
+        if (type(remaining) not in (int, float) or not math.isfinite(remaining)
+                or not 0 < remaining <= plan['batch_budget']['max_seconds']
+                or required != dict(schema_version='role-case-ready-required-v1',
+                    key=row['key'], run_directory=run.resolve().as_posix(),
+                    plan_sha256=canonical_sha(plan), request_sha256=row['request_sha256'],
+                    remaining_batch_seconds=remaining, signal_file=signal_path.name)):
+            _fail('started_inventory_changed')
+        if signal_path.exists():
+            signal = _read(signal_path)
+            if signal.get('ready') is not True or signal != dict(
+                    schema_version='role-case-ready-v1', ready=True, key=row['key'],
+                    plan_sha256=canonical_sha(plan), required_sha256=_sha(required_path)):
+                _fail('started_inventory_changed')
+        # A signal alone cannot spend Provider budget; the executor creates
+        # the case directory before constructing or calling its Provider.
+        # Any case/transport trace above still counts as started, even empty.
+        if row['key'] in started and not signal_path.exists():
+            _fail('started_inventory_changed')
     return started
 
 
@@ -336,7 +372,7 @@ def _charge_parent(run, export, plan, rows, budgets, requests, backend, sources)
     if not isinstance(recorded, list) or len(recorded) > len(rows):
         _fail('parent_boundary_changed')
     keys = [r['key'] for r in rows]
-    actual = _started(run, export['original_file_sha256'], rows)
+    actual = _started(run, export['original_file_sha256'], rows, plan, result)
     recorded_keys = [r.get('key') for r in recorded]
     if recorded_keys != keys[:len(recorded)] or set(recorded_keys) != actual:
         _fail('parent_boundary_changed')

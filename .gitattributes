@@ -4,6 +4,7 @@
 /data/evaluation/results/golden_coarse_qualification_*.json text eol=lf
 # Correction-scope seals use raw-byte SHA-256 on Windows and public CI.
 /data/evaluation/results/golden_correction_scope_*.json text eol=lf
+/data/evaluation/results/golden_review_sampling_*.json text eol=lf
 /data/evaluation/manifests/correction_scope_continuation_campaign_v1.json text eol=lf
 /data/evaluation/results/history/skill_router_v1_single_skill_development_baseline_1_0_0.json binary
 

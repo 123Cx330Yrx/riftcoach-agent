@@ -1,5 +1,59 @@
 # 完整上下文误报：当前实证与方案边界
 
+## 复盘后继续执行：恢复修复与单变量采样准备
+
+2026-09-28，用户授权按复盘计划补缺并继续。历史误报、原15标签和闭批结论不变。
+
+**已修确定性缺陷：** `await_case_ready`在Provider创建前写交接文件，超时留下
+`cases=[]`；续接账本却将交接文件计为已启动，产生`parent_boundary_changed`。
+`role_continuation._started`现只将绑定正确、顺序正确且无案例/传输痕迹的待命交接
+保留为未执行；原等待时间仍累计扣除。已启动、冲突绑定和失败后追加交接仍拒绝。
+真实observe＋ready超时离线复现、完整campaign及已有恢复组126通过/1跳过。
+硬终止丢失原batch计时仍不能事后补造完成资格；此修复不解决模型误报。
+
+**排除重复路线：** ADR0102的上下文引用及9/19已看见后文却仍误读的反例，说明
+补引用不等于解决语义；9/22 target_last完整输入排列已有正例误报及修法引入错数。
+额外定向审查挤占正常五调用预算；替代全文则漏审业务义务，因此不重复这些方案。
+
+**待测假设：** 相同输入曾95/pass、又85/needs_revision，当前采样temperature1。
+仅把审查请求改为0.2，保持GLM-5.3/high、top_p=.95、全文/来源/schema/规则及额度。
+这是未验证的可行性假设；低温可能稳定地产生错误，不能把随机性当已证根因。
+历史已提交结果检索未发现非1的真实审查温度；通用temperature0探针不算本任务证据。
+
+厂商材料读取于2026-09-28：
+- https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3.md
+  内容UTF-8 SHA256 `7731b96335c6a263303240615e3b9f20d433e8bf04565bb04936444691036bcf`；
+  始终思考、支持high，示例同时有reasoning_effort与temperature。
+- https://docs.bigmodel.cn/api-reference/模型-api/对话补全.md
+  内容UTF-8 SHA256 `0b7a2a8af808eb946ec58a61242829f31d1b3e882c726d242a684be8504e82d9`；
+  temperature范围[0,1]，建议只调temperature或top_p之一。文档与SDK接受不能证明
+  服务端内部确实如何采样，也不证明质量改善。
+
+**完整任务可达性：** 初评/fresh/有界重评可共用request变换，Flash编辑分支保持原值；
+不加调用或tokens，正常仍两次生成/工具＋初评＋编辑＋fresh共5次，整体900秒。
+五次各300秒不代表必能全部完成，既有超时/恢复占额边界保留。
+独立审查发现`CoachBudgetedProvider.chat`目前会重置temperature=1。正式采用前必须
+在版本化可信合同及budget发送层按role落实review=.2、generation/revision=1，
+同步descriptor、manifest、factory/trace、同版本资格；仅改Workflow不会生效。
+本轮不提前注册新候选或改变旧产品身份。
+
+**具体诊断：** `scripts/run_review_sampling_diagnostic.py`复用的是
+`run_review_model_comparison.observe`，直接经receipted transport发送，不经过上述
+产品budget层；不是`run_role_qualification_pair.observe`。测试实际observer→
+bridge.collect→adapter→GLM/high SDK→MockTransport最终JSON，确认只有temperature
+改变。十五例原输入逐项绑定；初评/重评和编辑保持性离线核验，不冒充自然任务实测。
+
+两例固定顺序：claim-scope:1正确全文应pass且不改稿；scope:3明确中单早死错句
+应needs_revision，解释/引用/修法也须正确。逐例全文主审和独立审查，第一例实质
+失败就停止，不重评/编辑/重试，不扫邻近温度。两例成功仅支持后续整任务采用评估，
+不证明优于temperature1、稳定性或原15资格。失败则否决低温作为充分修法。
+
+新增批上限2调用/600秒（含审查等待）/150348预留tokens，按已存价格估价2.513504元，
+不是账单硬上限。旧闭批余额不作为新授权。执行前须冻结请求、独立代码复核、同提交
+公共检查及对应新批成本授权；预览不读凭据、不发网络请求。当前未发新Provider请求。
+完整实验请求、来源hash、SDK差异、预算和停止规则将固化于
+`data/evaluation/results/golden_review_sampling_preparation_v1.json`。
+
 ## 结果及影响
 
 2026-09-28，用户“确认，继续吧”批准修后完整十五例，随后“继续”恢复执行。

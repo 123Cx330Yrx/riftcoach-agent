@@ -387,7 +387,8 @@ def test_bad_parent_stops_before_shared_executor(ledger, monkeypatch):
         runner.run(NS(campaign=True, execute=True, campaign_sha=sha(ledger.path)))
 
 
-def test_new_closed_parent_appends_without_a_new_execution_branch(ledger):
+@pytest.mark.parametrize('readiness', ['none', 'required', 'ready'])
+def test_new_closed_parent_appends_without_a_new_execution_branch(ledger, readiness):
     plan, requests = prepare(ledger)
     old_target = dict(ledger.campaign['target'])
     run = ledger.root / old_target['run_directory']
@@ -397,6 +398,20 @@ def test_new_closed_parent_appends_without_a_new_execution_branch(ledger):
     # permanent target identity. It grants no qualification and refunds nothing.
     result = dict(experiment=plan['experiment'], cases=[], elapsed_seconds=0,
         tasks_observed=False, error_code='offline_before_first_case')
+    if readiness != 'none':
+        row = plan['cases'][0]
+        cid = row['key'].replace(':', '-')
+        required = run / 'handoff' / (cid + '-ready-required.json')
+        signal = required.with_name(cid + '-ready.json')
+        write(required, dict(schema_version='role-case-ready-required-v1', key=row['key'],
+            run_directory=run.resolve().as_posix(), plan_sha256=canonical_sha(plan),
+            request_sha256=row['request_sha256'], remaining_batch_seconds=plan['batch_budget']['max_seconds'],
+            signal_file=signal.name))
+        if readiness == 'ready':
+            write(signal, dict(schema_version='role-case-ready-v1', ready=True, key=row['key'],
+                plan_sha256=canonical_sha(plan), required_sha256=sha(required)))
+        result.update(elapsed_seconds=1.25, error_code=(
+            'role_pair_execution_limit' if readiness == 'ready' else 'task_observation_ready_deadline'))
     write(run / 'plan.json', saved)
     write(run / 'result.json', result)
     for key, raw in requests.items():
@@ -407,7 +422,7 @@ def test_new_closed_parent_appends_without_a_new_execution_branch(ledger):
         original_file_sha256={p.relative_to(run).as_posix(): sha(p) for p in run.rglob('*') if p.is_file()},
         public_json_contents={'plan.json': saved, 'result.json': result}, plan_sha256=saved['plan_sha256'],
         completed_keys=[], incomplete_keys=[], unexecuted_keys=list(requests),
-        original_error_code=result['error_code'], actual_batch_elapsed_seconds=0,
+        original_error_code=result['error_code'], actual_batch_elapsed_seconds=result['elapsed_seconds'],
         provider_requests=0, input_tokens=0, output_tokens=0, unknown_usage_calls=0))
     ledger.campaign['parents'].append(dict(run_directory=old_target['run_directory'],
         preparation=old_target['preparation'], closed_export=old_target['closed_export'], closed_export_sha256=sha(export)))
@@ -418,7 +433,8 @@ def test_new_closed_parent_appends_without_a_new_execution_branch(ledger):
     write(ledger.path, ledger.campaign)
     next_plan, next_requests = prepare(ledger)
     assert next_requests == requests
-    assert next_plan['charged_prior_budget'] == plan['charged_prior_budget']
+    assert next_plan['charged_prior_budget'] == dict(plan['charged_prior_budget'],
+        max_seconds=plan['charged_prior_budget']['max_seconds'] + result['elapsed_seconds'])
     assert len(next_plan['parent_seals']) == 4
     assert next_plan['previously_qualified_keys'] == ['claim-scope:1', 'attribution:1', 'scope:4']
     # Changing the target back to the now-closed parent is denied by the ledger,
@@ -427,6 +443,66 @@ def test_new_closed_parent_appends_without_a_new_execution_branch(ledger):
     write(ledger.path, ledger.campaign)
     with pytest.raises(ValueError, match='target_closed_or_exists'):
         prepare(ledger)
+
+
+@pytest.mark.parametrize('defect', ['none', 'ready', 'empty_arm', 'transport',
+    'wrong_plan', 'wrong_request', 'wrong_run', 'wrong_signal', 'signal_without_required',
+    'future_case', 'after_failure'])
+def test_real_readiness_timeout_is_unstarted_but_never_hides_execution(tmp_path, defect):
+    from scripts.run_role_task_observation import await_case_ready
+    from scripts.run_role_qualification_pair import observe
+    now = [0.0]
+    rows = [dict(key='claim-scope:1', request_sha256='a' * 64),
+            dict(key='claim-scope:4', request_sha256='b' * 64)]
+    plan = dict(experiment='offline-ready-boundary', cases=rows,
+        case_budgets=[dict(max_calls=1, max_tokens=96768, max_seconds=300)] * 2,
+        batch_budget=dict(max_calls=2, max_tokens=193536, max_seconds=1))
+    def sleep(delay):
+        now[0] += delay
+    def gate(run, row, plan, remaining):
+        await_case_ready(run, row, plan, remaining, clock=lambda: now[0], sleep=sleep)
+    def provider(*args):
+        pytest.fail('Pre-case readiness must not construct a Provider')
+    result = observe(provider, tmp_path, plan, clock=lambda: now[0], before_case=gate)
+    assert result['cases'] == [] and result['elapsed_seconds'] == 1
+    required = tmp_path / 'handoff/claim-scope-1-ready-required.json'
+    signal = required.with_name('claim-scope-1-ready.json')
+    if defect in ('ready', 'empty_arm', 'transport', 'wrong_signal', 'signal_without_required'):
+        write(signal, dict(schema_version='role-case-ready-v1', ready=True, key=rows[0]['key'],
+            plan_sha256=canonical_sha(plan), required_sha256=sha(required)))
+    if defect == 'empty_arm':
+        (tmp_path / 'claim-scope-1').mkdir()
+    elif defect == 'transport':
+        write(tmp_path / 'transport/claim-scope-1/reservation.json', {'request': 'not_hidden'})
+    elif defect in ('wrong_plan', 'wrong_request', 'wrong_run'):
+        value = read(required)
+        value[{'wrong_plan': 'plan_sha256', 'wrong_request': 'request_sha256',
+            'wrong_run': 'run_directory'}[defect]] = 'wrong'
+        write(required, value)
+    elif defect == 'wrong_signal':
+        value = read(signal)
+        value['required_sha256'] = 'c' * 64
+        write(signal, value)
+    elif defect == 'signal_without_required':
+        required.unlink()
+    elif defect == 'future_case':
+        required.rename(required.with_name('claim-scope-4-ready-required.json'))
+    elif defect == 'after_failure':
+        result.update(error_code='role_pair_host_rejected')
+    write(tmp_path / 'result.json', result)
+    files = {p.relative_to(tmp_path).as_posix(): sha(p) for p in tmp_path.rglob('*') if p.is_file()}
+    export = dict(public_json_contents={'result.json': result}, original_error_code=result['error_code'],
+        original_file_sha256=files, completed_keys=[], incomplete_keys=[],
+        unexecuted_keys=[r['key'] for r in rows], provider_requests=0, input_tokens=0,
+        output_tokens=0, unknown_usage_calls=0, actual_batch_elapsed_seconds=1)
+    if defect in ('none', 'ready'):
+        actual, charge, completed = continuation._charge_parent(tmp_path, export, plan,
+            rows, plan['case_budgets'], {}, None, {})
+        assert actual == set() and completed == []
+        assert charge == dict(max_calls=0, max_tokens=0, max_seconds=Decimal('1'))
+    else:
+        with pytest.raises(ValueError, match='role_continuation_(parent_boundary|started_inventory)_changed'):
+            continuation._charge_parent(tmp_path, export, plan, rows, plan['case_budgets'], {}, None, {})
 
 
 def test_committed_campaign_manifest_has_lf_byte_rule():
