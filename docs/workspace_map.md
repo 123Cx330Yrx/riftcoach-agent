@@ -29,3 +29,17 @@ Use `requirements-and-followups.md` (62 themes), `frontend-renewal.md` and their
 source links for requirement recovery, not as another always-read history.
 Past statements such as "当前只复盘" describe their date; the latest user request
 controls the current task. Current facts must be checked against code/receipts.
+
+## Verified local runtime, 2026-09-28
+
+Docker Desktop and the backend checkout's existing PostgreSQL volume are now
+usable. Windows reserves host ports 5374–5473, including 5432. The same Compose
+project `riftcoach-agent-rq192-pr` uses a machine-local override mapping only
+PostgreSQL to `127.0.0.1:15432`; container port and existing database remain unchanged.
+Do not run plain Compose for this machine's database and accidentally restore
+the unusable 5432 mapping. Startup command, override and before/after evidence:
+`C:/Users/33502/Documents/Agent/outputs/riftcoach-local-runtime-2026-09-28/README.md`.
+Host applications must use port15432 with their existing DB credentials; shared
+`.env` files were not rewritten. Docker29.7.2, container health, host SQL SELECT1
+and migration head0014_message_projection_status were verified. No model Worker
+or product candidate was enabled by this environment recovery.
