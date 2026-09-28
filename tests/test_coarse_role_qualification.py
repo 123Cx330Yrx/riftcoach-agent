@@ -178,6 +178,7 @@ def test_independent_defect_stops_before_editor_request(make_run, defect):
     assert not result['tasks_observed']
     assert result['cases'][0]['accounting']['reserved_calls'] == 1
     assert not (run/'claim-scope-4/revision.json').exists()
+    assert not (run/'claim-scope-4/primary-initial-review.json').exists()
+    assert not (run/'claim-scope-4/decision-initial.json').exists()
     if defect in ('wrong_source', 'wrong_stage'):
-        assert (run/'claim-scope-4/decision-initial.json').exists()
-        assert result['error_code'] == 'role_observation_independent_binding_mismatch'
+        assert result['error_code'] == 'host_writer_independent_binding_or_rejection'

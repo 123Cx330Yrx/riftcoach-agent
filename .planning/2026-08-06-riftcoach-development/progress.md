@@ -1,3 +1,13 @@
+## 2026-09-28 CI旧断言修复与剩余14授权
+
+用户“确认，继续吧”批准8eff6222…8f038的34调用/3290112tokens/10200秒新方案。
+授权单独落data/runs/authorizations，待同HEAD公共CI成功，不重复提问。
+1c81745c的CI36406479052数据库/打包success，pytest735通过后在旧coarse wrong_source断言失败。
+旧测试要求bad binding先写decision再被consumer拒绝；新修复正确提前拒绝，不应存在formal。
+同步wrong_source/wrong_stage预期为host_writer_independent_binding_or_rejection，并对全部
+五类独立缺陷断言primary和decision均未写，原不发编辑请求/只用一次请求断言保留。
+这是上轮调用方测试覆盖遗漏，不修改产品、真实回执、冻结请求或成本上限。
+
 ## 2026-09-28 原15首批关闭与host提交前修复
 
 29fce323 / CI36400549646三项success（pytest5301/163跳过/129子测试）后，执行用户批准的
