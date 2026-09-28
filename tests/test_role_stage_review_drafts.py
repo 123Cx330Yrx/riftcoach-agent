@@ -443,3 +443,140 @@ def test_changed_editor_output_stops_before_actual_final_call(make_run):
     assert not (arm/'review-drafts/revision').exists()
     assert not (arm/'decision-revision.json').exists()
     assert not (arm/'final.json').exists()
+
+
+@pytest.mark.parametrize('field,value', [
+    ('target_and_correction_valid', None), ('target_and_correction_valid', False),
+    ('target_and_correction_valid', 1), ('accepted', 1),
+    ('defects', [dict(kind='wrong_correction', detail='Contradictory acceptance.')]),
+    ('source_file_sha256', '0'*64)])
+@pytest.mark.parametrize('pending_edited', ['initial'], indirect=True)
+def test_negative_initial_invalid_confirmation_never_becomes_confirmed_draft(pending_edited, field, value):
+    run, arm, stage, review, _ = pending_edited
+    if stage != 'initial':
+        return
+    review[field] = value
+    if value is None:
+        review.pop(field)
+    with pytest.raises(ValueError):
+        drafts.write_independent_draft(run, 'claim-scope:4', stage, review,
+            reason='Explicit source review.', confirmed=True)
+    assert not (arm/'review-drafts').exists()
+    assert not any((arm/n).exists() for n in drafts._formal_names(stage))
+
+
+@pytest.mark.parametrize('value', [None, False, 1])
+@pytest.mark.parametrize('pending_edited', ['initial'], indirect=True)
+def test_primary_negative_requires_explicit_true_before_submission(pending_edited, value):
+    run, arm, stage, review, notes = pending_edited
+    if stage != 'initial':
+        return
+    sha = drafts.write_independent_draft(run, 'claim-scope:4', stage, review,
+        reason='Explicit source review.', confirmed=True)['draft_sha256']
+    notes['target_and_correction_valid'] = value
+    if value is None:
+        notes.pop('target_and_correction_valid')
+    with pytest.raises(ValueError, match='correction_confirmation_required'):
+        drafts.finalize_stage_review(run, 'claim-scope:4', stage, notes,
+            independent_draft_sha256=sha)
+    assert len(list((arm/'review-drafts'/stage).iterdir())) == 1
+    assert not any((arm/n).exists() for n in drafts._formal_names(stage))
+
+
+@pytest.mark.parametrize('field,value', [('facts_and_sources_correct', False),
+    ('correct_content_preserved', False), ('identity_and_goal_preserved', False),
+    ('true_errors_fixed', False), ('report_sha256', '0'*64)])
+def test_accepted_report_must_be_complete_before_confirmed_draft(pending, field, value):
+    _, arm, review, _ = pending
+    review['final_report'][field] = value
+    with pytest.raises(ValueError, match='report_(not_accepted|binding)'):
+        propose(pending)
+    assert not (arm/'review-drafts').exists()
+
+
+@pytest.mark.parametrize('pending_edited', ['initial'], indirect=True)
+def test_old_incomplete_confirmed_draft_cannot_be_finalized(pending_edited):
+    run, arm, stage, review, notes = pending_edited
+    if stage != 'initial':
+        return
+    review.pop('target_and_correction_valid')
+    drafts.write_independent_draft(run, 'claim-scope:4', stage, review,
+        reason='Incomplete working opinion.', confirmed=False)
+    path = arm/'review-drafts'/stage/'000001.json'
+    change(path, lambda d: d.update(confirmed=True))  # Simulate old writer's output.
+    with pytest.raises(ValueError, match='correction_confirmation_required'):
+        drafts.finalize_stage_review(run, 'claim-scope:4', stage, notes,
+            independent_draft_sha256=audit._sha(path))
+    assert len(list(path.parent.iterdir())) == 1
+    assert not any((arm/n).exists() for n in drafts._formal_names(stage))
+
+
+@pytest.mark.parametrize('pending_edited', ['initial'], indirect=True)
+def test_legacy_writer_rejects_missing_independent_confirmation_before_writing(pending_edited):
+    run, arm, stage, review, notes = pending_edited
+    if stage != 'initial':
+        return
+    saved = read(run/'plan.json')
+    saved['preparation_plan'].pop(drafts.MODE_FIELD)
+    saved['plan_sha256'] = canonical_sha(saved['preparation_plan'])
+    (run/'plan.json').write_text(json.dumps(saved), encoding='utf-8')
+    review.pop('target_and_correction_valid')
+    write_new_json(arm/'independent-initial-review.json', review)
+    with pytest.raises(ValueError, match='correction_confirmation_required'):
+        writer.write_decision(run, 'claim-scope:4', stage, notes, profile='correction-scope')
+    assert not (arm/'primary-initial-review.json').exists()
+    assert not (arm/'decision-initial.json').exists()
+
+
+@pytest.mark.parametrize('pending_edited', ['initial', 'revision', 'final'], indirect=True)
+def test_negative_opinion_can_still_be_explicitly_submitted(pending_edited):
+    run, arm, stage, review, notes = pending_edited
+    review = rejected(review)
+    notes.update(accepted=False, defects=review['defects'], target_and_correction_valid=False)
+    sha = drafts.write_independent_draft(run, 'claim-scope:4', stage, review,
+        reason='Explicit rejection.', confirmed=True)['draft_sha256']
+    result = drafts.finalize_stage_review(run, 'claim-scope:4', stage, notes,
+        independent_draft_sha256=sha)
+    assert result['accepted'] is False
+    drafts.validate_submission(arm/(stage+'.json'))
+
+
+@pytest.mark.parametrize('field', ['request_sha256', 'provider_response_sha256', 'final_input_sha256'])
+def test_legacy_raw_binding_is_checked_before_any_primary_write(pending, field):
+    run, arm, review, notes = pending
+    saved = read(run/'plan.json')
+    saved['preparation_plan'].pop(drafts.MODE_FIELD)
+    saved['plan_sha256'] = canonical_sha(saved['preparation_plan'])
+    (run/'plan.json').write_text(json.dumps(saved), encoding='utf-8')
+    review[field] = '0'*64
+    write_new_json(arm/'independent-initial-review.json', review)
+    with pytest.raises(ValueError, match='review_binding'):
+        writer.write_decision(run, 'claim-scope:1', 'initial', notes, profile='correction-scope')
+    assert not (arm/'primary-initial-review.json').exists()
+    assert not (arm/'decision-initial.json').exists()
+
+
+def test_positive_control_does_not_require_error_correction_confirmation(pending):
+    _, arm, review, notes = pending
+    review.pop('target_and_correction_valid')
+    notes.pop('target_and_correction_valid')
+    assert submit(pending, propose(pending))['accepted']
+    drafts.validate_submission(arm/'initial.json')
+
+
+@pytest.mark.parametrize('defect', ['report_check', 'contradictory_defects'])
+def test_legacy_acceptance_contract_fails_before_publication(pending, defect):
+    run, arm, review, notes = pending
+    saved = read(run/'plan.json')
+    saved['preparation_plan'].pop(drafts.MODE_FIELD)
+    saved['plan_sha256'] = canonical_sha(saved['preparation_plan'])
+    (run/'plan.json').write_text(json.dumps(saved), encoding='utf-8')
+    if defect == 'report_check':
+        review['final_report']['true_errors_fixed'] = False
+    else:
+        review['defects'] = [dict(kind='wrong_final_report', detail='Conflicts with acceptance.')]
+    write_new_json(arm/'independent-initial-review.json', review)
+    with pytest.raises(ValueError):
+        writer.write_decision(run, 'claim-scope:1', 'initial', notes, profile='correction-scope')
+    assert not (arm/'primary-initial-review.json').exists()
+    assert not (arm/'decision-initial.json').exists()

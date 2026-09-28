@@ -30,6 +30,94 @@ def test_preparation_preserves_original15_and_exact_tested_requests():
         assert row['request_sha256'] == hashlib.sha256(requests[row['key']]).hexdigest()
 
 
+def test_closed_preview_rejects_changed_seal(tmp_path, monkeypatch):
+    changed = tmp_path/'changed.json'
+    changed.write_bytes(runner.CLOSED_RESULT.read_bytes()+b' ')
+    monkeypatch.setattr(runner, 'CLOSED_RESULT', changed)
+    with pytest.raises(ValueError, match='closed_evidence_changed'):
+        runner.prepare()
+
+
+def test_closed_preview_rebuilds_requests_and_rejects_drift(monkeypatch):
+    original = runner.prepare_fresh
+    def changed(**kwargs):
+        plan, requests = original(**kwargs)
+        plan['cases'][0]['request_sha256'] = '0'*64
+        return plan, requests
+    monkeypatch.setattr(runner, 'prepare_fresh', changed)
+    with pytest.raises(ValueError, match='closed_preparation_changed'):
+        runner.prepare()
+
+
+def test_remaining_preparation_accounts_for_failed_call_without_reusing_it():
+    old, old_requests = runner.prepare()
+    plan, requests = runner.prepare_remaining()
+    assert plan == json.loads(runner.REMAINING_PREPARATION.read_bytes())
+    assert len(plan['cases']) == 14
+    assert [r['key'] for r in plan['cases']] == old['original15_keys'][1:]
+    assert plan['identity'] == old['identity']
+    assert plan['original15_keys'] == old['original15_keys']
+    assert plan['batch_budget'] == dict(max_calls=34, max_tokens=3290112,
+        max_seconds=10200, estimated_uncached_cny='35.737600', hard_billing_cap=False)
+    assert plan['role_call_reservations'] == {'glm-5.3-flash':10,'glm-5.3':24}
+    assert plan['prior_closed_batch']['reserved_calls'] == 2
+    assert plan['prior_closed_batch']['known_tokens'] == 29682
+    assert plan['prior_closed_batch']['unknown_usage_calls'] == 0
+    assert plan['explicit_new_execution_keys'] == ['claim-scope:4']
+    assert not plan['execution_authorized'] and not plan['allow_reassessment']
+    assert plan['offline_initial_injections'] == 0
+    assert requests == {key:raw for key,raw in old_requests.items() if key != 'claim-scope:1'}
+
+
+def test_closed_batch_cannot_restart_or_create_new_calls():
+    with pytest.raises(ValueError, match='closed_or_exists'):
+        runner.run(NS(execute=True))
+
+
+def test_remaining_closed_export_blocks_before_ci_or_credentials(tmp_path, monkeypatch):
+    closed = tmp_path/'closed.json'
+    closed.write_text('{}')
+    monkeypatch.setattr(runner, 'REMAINING_DIRECTORY', tmp_path/'absent')
+    monkeypatch.setattr(runner, 'REMAINING_CLOSED_RESULT', closed)
+    monkeypatch.setattr(runner, 'prepare_remaining', lambda: pytest.fail('Preparation after closure'))
+    with pytest.raises(ValueError, match='closed_or_exists'):
+        runner.run(NS(execute=True, remaining=True))
+
+
+@pytest.mark.parametrize('keys', [set(), {'claim-scope:4'}, {'claim-scope:1','claim-scope:4'}])
+def test_remaining_wrong_prior_qualification_cannot_execute(tmp_path, monkeypatch, keys):
+    monkeypatch.setattr(runner, 'REMAINING_DIRECTORY', tmp_path/'absent')
+    monkeypatch.setattr(audit, 'inspect_runs', lambda *a,**k: (None,None,None,None,keys))
+    monkeypatch.setattr(runner, 'execute_prepared', lambda *a,**k: pytest.fail('Unexpected execution'))
+    with pytest.raises(ValueError, match='remaining_qualification_changed'):
+        runner.run(NS(execute=True, remaining=True))
+
+
+def test_remaining_handoff_uses_new_full_requests_and_frozen_preparation(tmp_path, monkeypatch):
+    monkeypatch.setattr(runner, 'REMAINING_DIRECTORY', tmp_path/'new-run')
+    expected, requests = runner.prepare_remaining()
+    def inspect(runs, **kwargs):
+        assert runs == [runner.RUN_DIRECTORY]
+        assert kwargs['closed_exports'] == [(runner.CLOSED_RESULT,runner.CLOSED_SHA)]
+        return None,None,None,None,{'claim-scope:1'}
+    monkeypatch.setattr(audit, 'inspect_runs', inspect)
+    def execute(args, plan, actual_requests, **kwargs):
+        assert plan == expected and actual_requests == requests
+        assert kwargs == dict(directory=tmp_path/'new-run',preparation=runner.REMAINING_PREPARATION)
+        return {'provider_requests':0}
+    monkeypatch.setattr(runner, 'execute_prepared', execute)
+    assert runner.run(NS(execute=True,remaining=True)) == {'provider_requests':0}
+
+
+def test_remaining_stale_plan_is_rejected_before_ci(tmp_path, monkeypatch):
+    plan, requests = runner.prepare_remaining()
+    monkeypatch.setattr(runner, 'verify_public_ci', lambda *a: pytest.fail('CI before binding check'))
+    with pytest.raises(ValueError, match='preparation_required'):
+        runner.execute_prepared(NS(execute=True,env_file='unused',ci_run='123',plan_sha='0'*64),
+            plan,requests,directory=tmp_path/'new-run',preparation=runner.REMAINING_PREPARATION)
+    assert not (tmp_path/'new-run').exists()
+
+
 def test_full15_actual_executor_drafts_and_strict_gate(make_run,tmp_path):
     plan,_ = q.prepare_qualification()
     run,sealed = make_run(tuple(r['key'] for r in plan['cases']),profile=q.PROFILE,host_drafts=True)

@@ -32,6 +32,11 @@ EXPERIMENT = 'boundary-examples-role-qualification-v1'
 RUN_DIRECTORY = ROOT/'data/runs/role_task_observation'/EXPERIMENT
 PREPARATION = ROOT/'data/evaluation/results/golden_boundary_examples_qualification_preparation_v1.json'
 CLOSED_RESULT = ROOT/'data/evaluation/results/golden_boundary_examples_qualification_result_v1.json'
+CLOSED_SHA = '7aa34d62e42379e53985a713319b45ec937514025f85da9ab3673170249d99c2'
+REMAINING_EXPERIMENT = 'boundary-examples-role-remaining-v1'
+REMAINING_DIRECTORY = RUN_DIRECTORY.with_name(REMAINING_EXPERIMENT)
+REMAINING_PREPARATION = PREPARATION.with_name('golden_boundary_examples_remaining_preparation_v1.json')
+REMAINING_CLOSED_RESULT = PREPARATION.with_name('golden_boundary_examples_remaining_result_v1.json')
 
 
 class BoundaryExamplesObserver(StrictObserver):
@@ -66,13 +71,31 @@ def validate_handoff(path, decision, plan, *, directory):
 
 
 def prepare():
-    return prepare_fresh()
+    plan, requests = prepare_fresh()
+    if CLOSED_RESULT.exists():
+        if _sha(CLOSED_RESULT) != CLOSED_SHA:
+            raise ValueError('boundary_examples_closed_evidence_changed')
+        saved = json.loads(CLOSED_RESULT.read_bytes())['public_json_contents']['plan.json']
+        frozen = saved['preparation_plan']
+        # Keep closed execution code provenance; still rebuild every model
+        # request, product identity, source, budget and execution constraint.
+        plan['source_sha256'] = frozen['source_sha256']
+        if (plan != frozen or plan != json.loads(PREPARATION.read_bytes())
+                or canonical_sha(plan) != saved['plan_sha256']):
+            raise ValueError('boundary_examples_closed_preparation_changed')
+    return plan, requests
 
 
-def prepare_fresh(*, experiment=EXPERIMENT):
+def prepare_fresh(*, experiment=EXPERIMENT, keys=None):
     """Build current full-control inputs only; never reopen a historical run."""
     original, requests = qualification.prepare_qualification()
     rows = original['cases']
+    original_keys = [r['key'] for r in rows]
+    if keys is not None:
+        if not keys or len(set(keys)) != len(keys) or set(keys) - set(original_keys):
+            raise ValueError('boundary_examples_qualification_case_selection')
+        rows = [r for r in rows if r['key'] in keys]
+        requests = {r['key']: requests[r['key']] for r in rows}
     budgets = []
     for row in rows:
         calls = 1 if row['expected_initial'] == 'accept' else 3
@@ -93,7 +116,7 @@ def prepare_fresh(*, experiment=EXPERIMENT):
         'app/evaluation/golden_role_boundary_examples.py', 'scripts/role_host_identity.py',
         'scripts/write_role_stage_decision.py', 'scripts/role_stage_review_drafts.py')
     plan = dict(experiment=experiment, observation_version=VERSION, identity=original['identity'],
-        original15_plan_sha256=digest(compact(original)), original15_keys=[r['key'] for r in rows],
+        original15_plan_sha256=digest(compact(original)), original15_keys=original_keys,
         cases=rows, case_budgets=budgets,
         source_sha256={p: digest((ROOT/p).read_text(encoding='utf-8')) for p in paths},
         batch_budget=dict(totals, estimated_uncached_cny=str(cost), hard_billing_cap=False),
@@ -108,7 +131,47 @@ def prepare_fresh(*, experiment=EXPERIMENT):
     return plan, requests
 
 
+def prepare_remaining():
+    # Public sealed evidence supports portable preparation. Execution additionally
+    # revalidates all original bytes and the surviving case with the strict gate.
+    frozen, _ = prepare()
+    closed = json.loads(CLOSED_RESULT.read_bytes())
+    receipts = closed['public_json_contents']
+    completed = [r['key'] for r in frozen['cases']
+        if r['key'].replace(':', '-')+'/case-completed.json' in receipts]
+    if completed != ['claim-scope:1']:
+        raise ValueError('boundary_examples_remaining_completion_changed')
+    keys = [key for key in frozen['original15_keys'] if key not in completed]
+    plan, requests = prepare_fresh(experiment=REMAINING_EXPERIMENT, keys=keys)
+    plan['prior_closed_batch'] = dict(path=CLOSED_RESULT.relative_to(ROOT).as_posix(),
+        sha256=CLOSED_SHA, qualified_keys=completed, reserved_calls=closed['accounting']['reserved_calls'],
+        known_tokens=closed['accounting']['input_tokens']+closed['accounting']['output_tokens'],
+        unknown_usage_calls=closed['accounting']['unknown_usage_calls'],
+        elapsed_seconds=closed['execution_result']['elapsed_seconds'],
+        estimated_uncached_cny=closed['estimated_uncached_known_cny'])
+    plan['explicit_new_execution_keys'] = ['claim-scope:4']
+    plan['authorization_scope'] = ('New authorization required: 34 new calls, including a fresh complete '
+        'execution of claim-scope:4. Prior 2 calls remain charged; combined maximum 36 exceeds old 35. '
+        'Prior 357.719 seconds plus new 10200 reaches 10557.719, exceeding old 10500. '
+        'No failed-prefix injection or reopening. Surviving prior case is revalidated independently.')
+    plan['success_scope'] = ('Fourteen new continuous original controls; combine only strict same-identity '
+        'qualified evidence with the sealed first case. No natural generation or product admission.')
+    return plan, requests
+
+
 def run(args):
+    if getattr(args, 'remaining', False):
+        if args.execute and (REMAINING_DIRECTORY.exists() or REMAINING_CLOSED_RESULT.exists()):
+            raise ValueError('boundary_examples_qualification_closed_or_exists')
+        plan, requests = prepare_remaining()
+        if args.execute:
+            from scripts.qualify_role_observations import inspect_runs
+            audited = inspect_runs([RUN_DIRECTORY], evidence_root=ROOT,
+                closed_exports=[(CLOSED_RESULT, CLOSED_SHA)], profile='boundary-examples')
+            if audited[4] != {'claim-scope:1'}:
+                raise ValueError('boundary_examples_remaining_qualification_changed')
+        return execute_prepared(args, plan, requests, directory=REMAINING_DIRECTORY,
+            preparation=REMAINING_PREPARATION)
     if args.execute and (RUN_DIRECTORY.exists() or CLOSED_RESULT.exists()):
         raise ValueError('boundary_examples_qualification_closed_or_exists')
     plan, requests = prepare()
@@ -148,6 +211,7 @@ def execute_prepared(args, plan, requests, *, directory, preparation):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--execute', action='store_true')
+    parser.add_argument('--remaining', action='store_true', help='Newly authorized remaining14 batch; never resume old receipts.')
     parser.add_argument('--output', type=Path)
     parser.add_argument('--plan-sha')
     parser.add_argument('--ci-run')

@@ -182,6 +182,12 @@ def _review(review, bound, confirmed):
         report = ReportAssessment.model_validate(value.get('final_report'))
         if report.report_sha256 != bound['report_sha256']:
             _fail('report_binding')
+        if confirmed and value['accepted'] and not all((
+                report.facts_and_sources_correct, report.correct_content_preserved,
+                report.identity_and_goal_preserved, report.true_errors_fixed)):
+            _fail('report_not_accepted')
+    elif confirmed and value['accepted'] and value.get('target_and_correction_valid') is not True:
+        _fail('correction_confirmation_required')
     return value
 
 

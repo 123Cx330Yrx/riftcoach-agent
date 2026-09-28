@@ -15,7 +15,7 @@ from app.evaluation.role_task_outcome import stage_identity
 from scripts.qualify_role_observations import CHECKS
 from scripts.role_host_identity import candidate_sha256
 from scripts.run_role_task_observation import Observer, StageDecision
-from scripts.role_stage_review_drafts import plan_mode
+from scripts.role_stage_review_drafts import plan_mode, _review
 
 
 def build_formal_decision(run, key, stage, notes, other, *, independent_sha256, profile):
@@ -49,6 +49,32 @@ def build_formal_decision(run, key, stage, notes, other, *, independent_sha256, 
     if other['response_sha256'] != sha(path) or (accepted and other['accepted'] is not True):
         raise ValueError('host_writer_independent_binding_or_rejection')
     needs_report = stage != 'initial' or row['expected_initial'] == 'accept'
+    bound = dict(key=key, input_sha256=row['input_sha256'], stage=stage,
+        stage_sha256=stage_identity(value), response_sha256=sha(path),
+        report_sha256=digest(value['report']), source_file_sha256=sha(path.with_name('source.json')),
+        expected_initial=row['expected_initial'])
+    # Legacy records need not contain raw transport bindings, but every source
+    # and semantic binding required by the consuming gate must be explicit.
+    required = set(bound) - {'expected_initial'}
+    if any(other.get(k) != bound[k] for k in required):
+        raise ValueError('host_writer_independent_binding_or_rejection')
+    raw_fields = ('request_sha256', 'provider_response_sha256')
+    if any(field in other for field in raw_fields):
+        transport = run/'transport'/key.replace(':', '-')
+        ordinal = ('initial', 'revision', 'final').index(stage) + 1
+        calls = backend.read_calls(transport)
+        if len(calls) < ordinal:
+            raise ValueError('host_writer_independent_raw_binding')
+        call = calls[ordinal-1]['binding']
+        bound.update(request_sha256=call['request_sha256'],
+            provider_response_sha256=sha(transport/call['raw_directory']/f'response-{ordinal:03d}.json'))
+    else:
+        bound.update(request_sha256=None, provider_response_sha256=None)
+    if value['journal'] is not None:
+        bound['final_input_sha256'] = value['journal']['input_sha256']
+    _review(other, bound, True)
+    if accepted and not needs_report and notes.get('target_and_correction_valid') is not True:
+        raise ValueError('host_writer_correction_confirmation_required')
     checks = notes['final_report_checks'] if needs_report else None
     report_sha = digest(value['report'])
     if needs_report and set(checks) != set(CHECKS):
@@ -58,7 +84,7 @@ def build_formal_decision(run, key, stage, notes, other, *, independent_sha256, 
     decision = StageDecision.model_validate(dict(response_sha256=sha(path), accepted=accepted,
         candidate_sha256=candidate_sha256(plan['identity'], backend=backend),
         input_sha256=row['input_sha256'], key=key,
-        target_and_correction_valid=notes['target_and_correction_valid'],
+        target_and_correction_valid=notes.get('target_and_correction_valid', False),
         assessment=dict(stage=stage, stage_sha256=stage_identity(value),
             reviewer='Primary complete-source review', source_review=reason,
             accepted=accepted, defects=defects), final_report=report)).model_dump()
@@ -68,7 +94,7 @@ def build_formal_decision(run, key, stage, notes, other, *, independent_sha256, 
     primary = dict(accepted=accepted, defects=defects, stage_sha256=sha(path),
         report_sha256=report_sha, independent_file='independent-'+stage+'-review.json',
         independent_sha256=independent_sha256, reason=reason,
-        target_and_correction_valid=notes['target_and_correction_valid'],
+        target_and_correction_valid=notes.get('target_and_correction_valid', False),
         final_report_checks=checks, report_reason=notes.get('report_reason'))
     return primary, decision
 
