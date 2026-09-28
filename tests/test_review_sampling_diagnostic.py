@@ -34,6 +34,20 @@ def test_committed_preparation_rebuilds_without_local_run_artifacts(prepared):
     assert prepared[0] == runner.read(runner.PREPARATION)
 
 
+@pytest.mark.parametrize('change', ['seal', 'sampling'])
+def test_closed_preview_rejects_evidence_or_request_drift(monkeypatch, tmp_path, change):
+    if change == 'seal':
+        altered = tmp_path/'closed.json'
+        altered.write_bytes(runner.CLOSED_RESULT.read_bytes() + b' ')
+        monkeypatch.setattr(runner, 'CLOSED_RESULT', altered)
+        code = 'sampling_closed_evidence_changed'
+    else:
+        monkeypatch.setattr(runner, 'TEMPERATURE', .3)
+        code = 'sampling_closed_preparation_changed'
+    with pytest.raises(ValueError, match=code):
+        runner.prepare()
+
+
 def test_full_reports_initial_fresh_reassessment_and_editor_keep_other_fields(prepared):
     plan, variants = prepared
     assert len(plan['all15_input_audit']) == 15

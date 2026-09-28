@@ -40,6 +40,7 @@ KEYS = ('claim-scope:1', 'scope:3')
 TEMPERATURE = 0.2
 PREPARATION = ROOT/'data/evaluation/results/golden_review_sampling_preparation_v1.json'
 CLOSED_RESULT = ROOT/'data/evaluation/results/golden_review_sampling_result_v1.json'
+CLOSED_SHA = '596e46901693530bc190d26d4d36dfeff7d4b0c00f7a4ddb373f76b8585ab383'
 RUN_DIRECTORY = ROOT/'data/runs/model_comparison'/EXPERIMENT
 
 
@@ -111,6 +112,17 @@ def prepare():
         success_scope='Two feasibility controls only; no causal improvement, stability, edit/fresh, original15 or product qualification.',
         product_budget_unchanged=dict(calls=5, tokens=401920, seconds=900),
         review_controls_qualified=False, actual_product_task_qualified=False, production_admitted=False)
+    if CLOSED_RESULT.exists():
+        if sha(CLOSED_RESULT) != CLOSED_SHA:
+            raise ValueError('sampling_closed_evidence_changed')
+        saved = read(CLOSED_RESULT)['public_json_contents']['plan.json']
+        frozen = saved['preparation_plan']
+        # Closed evidence retains its original code/manifest identity. Actual
+        # sources, requests, SDK parameters and budgets are still rebuilt above.
+        plan.update(baseline_candidate=frozen['baseline_candidate'],
+                    source_sha256=frozen['source_sha256'])
+        if plan != frozen or plan != read(PREPARATION) or canonical_sha(plan) != saved['plan_sha256']:
+            raise ValueError('sampling_closed_preparation_changed')
     return plan, variants
 
 
