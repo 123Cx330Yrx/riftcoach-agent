@@ -182,9 +182,11 @@ def validate_adopted_timing(run_directory, plan, *, saved_plan_sha256):
         if row is None:
             raise ValueError('role_observation_host_timing_case_binding')
         remaining_active = binding.get('remaining_active_seconds')
+        batch_max = plan.get('batch_budget', {}).get('max_seconds')
         if (type(remaining_active) not in (int, float)
                 or not math.isfinite(remaining_active) or remaining_active <= 0
-                or remaining_active > plan.get('batch_budget', {}).get('max_seconds', 0) + .01):
+                or type(batch_max) not in (int, float) or not math.isfinite(batch_max)
+                or batch_max <= 0 or remaining_active > batch_max + .01):
             raise ValueError('role_observation_host_timing_active_budget')
         if binding.get('kind') == 'stage':
             stage = binding.get('stage')
