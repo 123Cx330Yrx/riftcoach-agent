@@ -8192,3 +8192,9 @@ policy绑定保存的plan SHA，等待/结束回执必须连续成对，阶段�
 现已补上，stage只允许实际initial/revision/final文件，剩余active预算也必须落在批次上限内。
 新增边界反例后计时模块15 passed，边界资格与观察器59 passed（合计74 passed；本次重跑418.46秒）。
 未发生Provider调用；这是同一证据机制的完整性修复，真实执行入口仍待下一工作包接入。
+## 2026-09-29 采用计时接入现有执行器
+
+新增`adopt_host_timing`计划转换和`execute_prepared(..., host_timing=...)`可选路径：
+只有新冻结计划显式携带采用策略时，case-ready、阶段文件审查和Provider发送前检查才统一使用
+DevelopmentHostClock；默认旧连续wall路径保持不变，已关闭批次没有重开入口。计时回读同时校验
+case/request绑定和active剩余预算。计时模块15项通过；编译和diff检查通过，未发Provider请求。

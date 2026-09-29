@@ -30,6 +30,16 @@ def test_preparation_preserves_original15_and_exact_tested_requests():
         assert row['request_sha256'] == hashlib.sha256(requests[row['key']]).hexdigest()
 
 
+def test_adopt_host_timing_creates_explicit_new_plan_without_mutating_base():
+    base = dict(batch_budget=dict(max_seconds=10200), cases=[])
+    adopted = runner.adopt_host_timing(base, max_host_seconds=86400)
+    assert 'host_review_timing' not in base
+    assert adopted['host_review_timing'] == dict(
+        mode='separate-development-host-clock-v1', adopted=True,
+        max_host_seconds=86400, process_restart_allowed=False,
+        timing_contract='wall_equals_active_plus_host_v1')
+
+
 def test_closed_preview_rejects_changed_seal(tmp_path, monkeypatch):
     changed = tmp_path/'changed.json'
     changed.write_bytes(runner.CLOSED_RESULT.read_bytes()+b' ')

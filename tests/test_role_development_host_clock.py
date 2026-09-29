@@ -160,13 +160,25 @@ def test_adopted_host_clock_requires_bound_receipts_and_checks_clock_equation(tm
     clock = DevelopmentHostClock(run, max_host_seconds=4000,
         qualification_adopted=True, plan_sha256=plan_sha)
     clock.adjudicate(stage, 900, lambda _path, _available: dict(accepted=True))
+    clock.await_case(run, {'key': 'claim-scope:4', 'request_sha256': 'b' * 64},
+        plan, 900, lambda _directory, _row, _plan, _available: None)
     checked = validate_adopted_timing(run, plan, saved_plan_sha256=plan_sha)
-    assert checked['waits'] == 1 and checked['host_elapsed_seconds'] == 0
+    assert checked['waits'] == 2 and checked['host_elapsed_seconds'] < .1
     finished = run/'development-host-clock/0001-finished.json'
     value = json.loads(finished.read_bytes())
+    original_wall = value['wall_elapsed_seconds']
     value['wall_elapsed_seconds'] = 1
     finished.write_text(json.dumps(value), encoding='utf-8')
     with pytest.raises(ValueError, match='clock_inconsistent'):
+        validate_adopted_timing(run, plan, saved_plan_sha256=plan_sha)
+    value['wall_elapsed_seconds'] = original_wall
+    finished.write_text(json.dumps(value), encoding='utf-8')
+    for name in ('0002-waiting.json', '0002-finished.json'):
+        path = run/'development-host-clock'/name
+        value = json.loads(path.read_bytes())
+        value['binding']['request_sha256'] = 'c' * 64
+        path.write_text(json.dumps(value), encoding='utf-8')
+    with pytest.raises(ValueError, match='case_request_binding'):
         validate_adopted_timing(run, plan, saved_plan_sha256=plan_sha)
 
 

@@ -4,10 +4,12 @@ Uses the existing continuous executor and source/receipt audit. This entry has
 no historical-prefix migration, fixture injection, retry or reassessment.
 """
 import argparse
+from copy import deepcopy
 from decimal import Decimal
 import hashlib
 import json
 from pathlib import Path
+import time
 
 from app.evaluation import boundary_examples_qualification as qualification
 from app.evaluation.golden_journal import write_new_json
@@ -25,6 +27,7 @@ from scripts.run_role_coach_development import load_role_settings, require_uncha
 from scripts.run_role_qualification_pair import observe
 from scripts.run_role_remaining_qualification import StrictObserver
 from scripts.run_role_task_observation import Observer, adjudicate_file, await_case_ready
+from scripts.role_development_host_clock import DevelopmentHostClock, TIMING_MODE
 from scripts.qualify_role_observations import _stage, _sha
 from scripts.role_host_identity import candidate_sha256
 
@@ -48,6 +51,21 @@ class BoundaryExamplesObserver(StrictObserver):
     @staticmethod
     def finish(plan, row, calls, decisions):
         return Observer.finish_with_backend(plan, row, calls, decisions, backend=qualification)
+
+
+def adopt_host_timing(plan, *, max_host_seconds=86400):
+    """Return a new preparation plan using the adopted developer-wait contract."""
+    if 'host_review_timing' in plan:
+        raise ValueError('boundary_examples_host_timing_already_selected')
+    if (type(max_host_seconds) not in (int, float)
+            or max_host_seconds <= 0):
+        raise ValueError('boundary_examples_host_timing_budget_invalid')
+    adopted = deepcopy(plan)
+    adopted['host_review_timing'] = dict(mode=TIMING_MODE, adopted=True,
+        max_host_seconds=max_host_seconds,
+        process_restart_allowed=False,
+        timing_contract='wall_equals_active_plus_host_v1')
+    return adopted
 
 
 def replay(frozen, source, calls):
@@ -189,7 +207,7 @@ def run(args):
         preparation=PREPARATION)
 
 
-def execute_prepared(args, plan, requests, *, directory, preparation):
+def execute_prepared(args, plan, requests, *, directory, preparation, host_timing=None):
     """Shared bounded execution; callers validate their own continuation seal."""
     plan_sha = canonical_sha(plan)
     if not args.execute:
@@ -200,6 +218,11 @@ def execute_prepared(args, plan, requests, *, directory, preparation):
     if (not args.env_file or not args.ci_run or args.plan_sha != plan_sha
             or plan != json.loads(preparation.read_bytes())):
         raise ValueError('boundary_examples_qualification_preparation_required')
+    if host_timing is not None:
+        if plan.get('host_review_timing') != host_timing:
+            raise ValueError('boundary_examples_host_timing_plan_mismatch')
+        if host_timing.get('adopted') is not True or host_timing.get('mode') != TIMING_MODE:
+            raise ValueError('boundary_examples_host_timing_not_adopted')
     head = verify_public_ci(args.ci_run)
     directory.mkdir(parents=True, exist_ok=False)
     write_new_json(directory/'plan.json', dict(preparation_plan=plan, plan_sha256=plan_sha,
@@ -209,13 +232,38 @@ def execute_prepared(args, plan, requests, *, directory, preparation):
     generator, reviewer = load_role_settings(args.env_file)
     factory = RunScopedRoleReceiptedProviderFactory(generator_settings=generator, reviewer_settings=reviewer,
         transport_root=directory/'transport', source_projection=PROJECTION)
+    clock = None
+    if host_timing is not None:
+        clock = DevelopmentHostClock(directory,
+            max_host_seconds=host_timing['max_host_seconds'],
+            qualification_adopted=True, plan_sha256=plan_sha)
+
     def adjudicate(path, remaining):
-        return validate_handoff(path, adjudicate_file(path, remaining), plan, directory=directory)
+        if clock is None:
+            decision = adjudicate_file(path, remaining)
+        else:
+            decision = clock.adjudicate(
+                path, remaining, lambda stage_path, available:
+                adjudicate_file(stage_path, available))
+        return validate_handoff(path, decision, plan, directory=directory)
+
+    def before_case(case_directory, row, current_plan, remaining):
+        if clock is None:
+            return await_case_ready(case_directory, row, current_plan, remaining)
+        return clock.await_case(case_directory, row, current_plan, remaining,
+            lambda current_directory, current_row, current_plan, available:
+            await_case_ready(current_directory, current_row, current_plan, available))
+
+    def before_send():
+        if clock is not None:
+            clock.before_send()
+        require_unchanged_checkout(head)
+
     with route_environment('direct'):
         return observe(factory, directory, plan, adjudicate=adjudicate, workflow_type=Workflow,
             replay=replay, success_field='tasks_observed', task_observer=BoundaryExamplesObserver,
-            coach_contract=CONTRACT, before_case=await_case_ready,
-            before_send=lambda: require_unchanged_checkout(head))
+            coach_contract=CONTRACT, before_case=before_case if host_timing is not None else await_case_ready,
+            clock=clock or time.monotonic, before_send=before_send)
 
 
 if __name__ == '__main__':

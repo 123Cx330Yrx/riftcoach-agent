@@ -173,8 +173,11 @@ def validate_adopted_timing(run_directory, plan, *, saved_plan_sha256):
                 or cumulative > max_host + .01):
             raise ValueError('role_observation_host_timing_clock_inconsistent')
         key = binding.get('key')
-        case_rows = {str(row.get('key')).replace(':', '-'): row
-                     for row in plan.get('cases', []) if isinstance(row, dict)}
+        case_rows = {}
+        for row in plan.get('cases', []):
+            if isinstance(row, dict) and isinstance(row.get('key'), str):
+                case_rows[row['key']] = row
+                case_rows[row['key'].replace(':', '-')] = row
         row = case_rows.get(key)
         if row is None:
             raise ValueError('role_observation_host_timing_case_binding')
