@@ -8208,3 +8208,11 @@ case/request绑定和active剩余预算。计时模块15项通过；编译和dif
 公共CI 36516897810在采用计时新增正例处失败；实际原因是测试将真实极短耗时严格比较为0，
 Linux上的0.000314秒被错误判失败。计时实现本身未出现失败，测试已改为小于明确容差，
 并继续检查case_ready的request SHA篡改。该CI失败保留为证据，不计作通过；包含修正的后续提交等待CI。
+## 2026-09-29 新采用计时冻结计划已保存
+
+按用户确认的34调用边界，将剩余14例重建为独立采用计时准备文件
+`data/evaluation/results/golden_boundary_examples_host_timed_preparation_v1.json`，
+计划SHA `b8e97f02c30355b5c1163dcc4422187c60b5c25dd338df339335bfe3c4b48612`。
+请求14份、批次上限3290112 tokens/10200 active seconds/未缓存估价35.737600元，
+新增host等待上限86400秒；没有Provider调用。该文件固定后须用其同HEAD公共CI执行，
+旧remaining封存仍只读、不重开。
