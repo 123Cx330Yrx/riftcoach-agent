@@ -382,6 +382,29 @@ def test_legacy_writer_and_waiter_cannot_implicitly_finalize_new_mode(pending):
     assert not (arm/'decision-initial.json').exists()
 
 
+def test_v2_without_host_event_fails_closed_before_submission(pending):
+    run, arm, independent, _ = pending
+    saved = read(run/'plan.json')
+    plan = saved['preparation_plan']
+    plan[drafts.MODE_FIELD] = drafts.MODE_V2
+    plan.update(
+        root_thread_id='root-thread-1',
+        review_event_provider='codex-collaboration-host-v1',
+        review_principals={
+            'primary': {'principal_id': 'root-principal'},
+            'independent': {'principal_id': 'child-principal'},
+        },
+    )
+    saved['plan_sha256'] = canonical_sha(plan)
+    (run/'plan.json').write_text(json.dumps(saved), encoding='utf-8')
+    change(arm/'initial-host-required.json', lambda value: value.update(
+        host_review_submission_mode=drafts.MODE_V2))
+    with pytest.raises(ValueError, match='independent_event_missing'):
+        propose(pending)
+    assert not (arm/'review-drafts').exists()
+    assert not (arm/'decision-initial.json').exists()
+
+
 def test_final_submission_validation_cannot_extend_original_clock(pending, monkeypatch):
     _, arm, _, _ = pending
     (arm/'initial-host-required.json').unlink()
