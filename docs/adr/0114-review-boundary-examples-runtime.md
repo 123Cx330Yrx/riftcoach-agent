@@ -56,3 +56,18 @@ contract/builder/candidate_identity；可信Trace按新snapshot校验Program身�
 
 补充可信Trace/原native应用/角色回执/粗来源合同等61项通过14.95秒，其中1项与新准备重复；
 去重总计200项相关检查通过。冻结准备重建断言另通过，治理/编译/diff检查通过。
+
+## 2026-09-29 后续裁决：独立审查身份合同仍未满足
+
+上一节的“独立审查无剩余阻断”只描述 2026-09-28 的离线/结构验证，不能覆盖随后真实批次的
+身份审计。2026-09-29 首例 `claim-scope:4` 虽完成初评→Flash 修订→GLM fresh 复评，三阶段
+独立意见和主审决定却由同一主执行主体写入；原 v1 只检查 JSON、SHA、append-only 和阶段绑定，
+没有受审计的第二主体，因此按 stop rule 停止，模型事实证据不授予 review_controls 资格。
+完整回执、下一例的一个 unknown/incomplete 请求和只读审计见
+`docs/plans/2026-09-29-review-independence-failure.md`；旧批不补签、不重开。
+
+已撤回“同一进程生成双密钥”作为伪独立证明。当前 v2 要求冻结 root/independent 主体、完整
+case/stage/request/response/source 绑定，以及由协作宿主产生的 completed event；事件正文必须
+逐值等于独立审查正文。`HostReviewEventSource.fetch(event_id, binding)` 已贯通草稿、正式提交和
+恢复校验，`freeze_v2_identity` 统一生成身份注册表副本，但真实宿主适配器尚未实现，故 v2
+保持 fail closed；这不是新的 Provider 资格或产品准入。
