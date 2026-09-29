@@ -14,10 +14,10 @@ from app.evaluation.golden_review_experiment import digest
 from app.evaluation.golden_stream_bridge import REQUEST
 from app.evaluation.role_task_outcome import ReportAssessment, StageAssessment, stage_identity
 from scripts.diagnose_role_context import canonical_sha
+from scripts.review_independence_contract import MODE_V2
 from scripts.role_host_identity import candidate_sha256
 
 MODE_V1 = 'independent-drafts-v1'
-MODE_V2 = 'independent-drafts-v2'
 # Kept as the legacy fixture default. New frozen plans must opt into MODE_V2.
 MODE = MODE_V1
 SUPPORTED_MODES = frozenset((MODE_V1, MODE_V2))
