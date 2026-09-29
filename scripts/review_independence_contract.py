@@ -12,11 +12,13 @@ not claim that an arbitrary file is a trusted platform event.
 import hashlib
 import json
 import re
+from copy import deepcopy
 from pathlib import Path
 from typing import Mapping, Protocol
 
 VERSION = 'independent-source-v2'
 EVENT_KIND = 'codex-collaboration-review-event-v1'
+MODE_V2 = 'independent-drafts-v2'
 _HEX64 = re.compile(r'^[0-9a-f]{64}$')
 
 
@@ -85,6 +87,28 @@ def _registry(plan: Mapping[str, object]) -> tuple[str, str, str]:
     if plan.get('review_event_provider') != 'codex-collaboration-host-v1':
         _fail('event_provider_unadopted')
     return primary_id, independent_id, root_thread
+
+
+def freeze_v2_identity(plan: Mapping[str, object], *, root_thread_id: str,
+                       primary_id: str, independent_id: str) -> dict[str, object]:
+    """Return a new plan with the complete v2 identity contract frozen.
+
+    This is preparation only: it performs no host lookup and no Provider call.
+    The caller must recompute the enclosing plan SHA after this function.
+    """
+    if plan.get('host_review_submission_mode') != MODE_V2:
+        _fail('mode_not_v2')
+    values = deepcopy(dict(plan))
+    values.update(
+        root_thread_id=root_thread_id,
+        review_event_provider='codex-collaboration-host-v1',
+        review_principals={
+            'primary': {'principal_id': primary_id},
+            'independent': {'principal_id': independent_id},
+        },
+    )
+    _registry(values)
+    return values
 
 
 def validate_primary_attestation(review: Mapping[str, object], *, plan: Mapping[str, object],

@@ -12,8 +12,10 @@ import pytest
 
 from scripts.review_independence_contract import (
     EVENT_KIND,
+    MODE_V2,
     VERSION,
     canonical_json,
+    freeze_v2_identity,
     review_digest,
     validate_independent_event,
     validate_primary_attestation,
@@ -112,3 +114,41 @@ def test_same_principal_registry_is_rejected():
     plan['review_principals']['independent']['principal_id'] = 'root-principal'
     with pytest.raises(ValueError, match='principal_roles_not_independent'):
         validate_primary_attestation(_primary(bound, plan), plan=plan, bound=bound)
+
+
+@pytest.mark.parametrize('mode', [None, 'independent-drafts-v1'])
+def test_freeze_v2_identity_requires_explicit_v2_mode(mode):
+    plan = {} if mode is None else {'host_review_submission_mode': mode}
+    with pytest.raises(ValueError, match='mode_not_v2'):
+        freeze_v2_identity(plan, root_thread_id='root-thread-1',
+                           primary_id='root-principal', independent_id='child-principal')
+
+
+def test_freeze_v2_identity_rejects_same_principal():
+    with pytest.raises(ValueError, match='principal_roles_not_independent'):
+        freeze_v2_identity({'host_review_submission_mode': MODE_V2},
+                           root_thread_id='root-thread-1',
+                           primary_id='same-principal', independent_id='same-principal')
+
+
+def test_freeze_v2_identity_returns_a_frozen_registry_copy():
+    original = {
+        'host_review_submission_mode': MODE_V2,
+        'identity': {'workflow_id': 'correction-scope'},
+        'review_principals': {'legacy': {'principal_id': 'do-not-preserve'}},
+    }
+    frozen = freeze_v2_identity(original, root_thread_id='root-thread-1',
+                                primary_id='root-principal', independent_id='child-principal')
+
+    assert frozen is not original
+    assert frozen['host_review_submission_mode'] == MODE_V2
+    assert frozen['root_thread_id'] == 'root-thread-1'
+    assert frozen['review_event_provider'] == 'codex-collaboration-host-v1'
+    assert frozen['review_principals'] == {
+        'primary': {'principal_id': 'root-principal'},
+        'independent': {'principal_id': 'child-principal'},
+    }
+    frozen['identity']['workflow_id'] = 'mutated-copy-only'
+    assert original['identity']['workflow_id'] == 'correction-scope'
+    assert 'root_thread_id' not in original
+    assert 'review_event_provider' not in original

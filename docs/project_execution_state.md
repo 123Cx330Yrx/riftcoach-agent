@@ -38,6 +38,10 @@ data/evaluation/results/golden_boundary_examples_host_timed_independence_failure
 新 v2 路径 fail closed。新增合同边界测试通过，未调用 Provider，未改写本批任何回执；v1 仅保留
 旧封存只读兼容，不产生新资格。
 
+身份冻结现在由 `freeze_v2_identity` 统一生成副本：只有显式 v2 模式才会写入 root/independent
+主体注册表和宿主提供方标识，并在主体相同、模式缺失或输入不完整时拒绝；调用方仍必须重新计算
+plan SHA，且该 helper 不执行宿主取证或 Provider 请求。
+
 宿主取证接口已贯通 draft、正式提交和恢复校验：`HostReviewEventSource.fetch(event_id, binding)`。
 没有真实宿主实现时仍拒绝 v2；代码不从运行目录读取自制 event 文件。新增接口成功/篡改边界测试
 通过，仍不能把离线替身当作真实独立主体或产品准入证据。
