@@ -16,7 +16,11 @@ from app.evaluation.role_task_outcome import ReportAssessment, StageAssessment, 
 from scripts.diagnose_role_context import canonical_sha
 from scripts.role_host_identity import candidate_sha256
 
-MODE = 'independent-drafts-v1'
+MODE_V1 = 'independent-drafts-v1'
+MODE_V2 = 'independent-drafts-v2'
+# Kept as the legacy fixture default. New frozen plans must opt into MODE_V2.
+MODE = MODE_V1
+SUPPORTED_MODES = frozenset((MODE_V1, MODE_V2))
 MODE_FIELD = 'host_review_submission_mode'
 STAGES = ('initial', 'revision', 'final')
 
@@ -48,7 +52,7 @@ def plan_mode(run, *, required=False):
     saved = _read(path)
     plan = saved['preparation_plan']
     mode = plan.get(MODE_FIELD)
-    if mode is not None and (mode != MODE or saved.get('plan_sha256') != canonical_sha(plan)):
+    if mode is not None and (mode not in SUPPORTED_MODES or saved.get('plan_sha256') != canonical_sha(plan)):
         _fail('plan_mode_or_hash')
     return mode
 
@@ -81,7 +85,7 @@ def binding(run, key, stage, *, profile=None, live=False):
     """Bind the actual frozen plan, source, stage and complete receipt prefix."""
     from scripts.role_continuation import rebuild_stage_prefix
     run, arm, path, _ = _paths(run, key, stage)
-    if plan_mode(run) != MODE:
+    if plan_mode(run) not in SUPPORTED_MODES:
         _fail('opt_in_required')
     saved = _read(run/'plan.json')
     plan = saved['preparation_plan']
@@ -191,7 +195,40 @@ def _review(review, bound, confirmed):
     return value
 
 
-def _chain(directory, bound):
+def _principal_registry(run):
+    """Load the v2 plan registry; identity comes from the host contract."""
+    from scripts import review_independence_contract as contract
+    saved = _read(Path(run) / 'plan.json')
+    plan = saved['preparation_plan']
+    if plan.get(MODE_FIELD) != MODE_V2:
+        return None
+    registry = plan.get('review_principals')
+    if not isinstance(registry, dict) or set(registry) != {'primary', 'independent'}:
+        _fail('principal_registry_incomplete')
+    try:
+        contract._registry(plan)
+    except ValueError as exc:
+        _fail(str(exc).removeprefix('review_independence_'))
+    return registry
+
+
+def _verify_principal_review(run, bound, review, *, role, trusted_event=None):
+    registry = _principal_registry(run)
+    if registry is None:
+        return
+    from scripts import review_independence_contract as contract
+    try:
+        plan = _read(Path(run) / 'plan.json')['preparation_plan']
+        if role == 'primary':
+            contract.validate_primary_attestation(review, plan=plan, bound=bound)
+        else:
+            contract.validate_independent_event(review, plan=plan, bound=bound,
+                                                event=trusted_event)
+    except ValueError as exc:
+        _fail(str(exc).removeprefix('review_independence_'))
+
+
+def _chain(directory, bound, *, run=None):
     if not directory.exists():
         return []
     paths = sorted(directory.iterdir())
@@ -210,6 +247,8 @@ def _chain(directory, bound):
                 _fail('change_reason_required')
             if _review(value['review'], bound, value.get('confirmed')) != value['review']:
                 _fail('review_binding')
+            if run is not None:
+                _verify_principal_review(run, bound, value['review'], role='independent')
         elif value.get('kind') == 'submission':
             if (not chain or chain[-1][0].get('confirmed') is not True
                     or value.get('independent_draft_sha256') != previous):
@@ -241,7 +280,7 @@ def write_independent_draft(run, key, stage, review, *, profile='correction-scop
     run, arm, _, directory = _paths(run, key, stage)
     _open(run, arm, stage)
     bound = binding(run, key, stage, profile=profile, live=True)
-    chain = _chain(directory, bound)
+    chain = _chain(directory, bound, run=run)
     if (chain and chain[-1][0]['kind'] == 'submission'):
         _fail('already_submitted')
     if supersedes_sha256 != (chain[-1][1] if chain else None):
@@ -249,6 +288,7 @@ def write_independent_draft(run, key, stage, review, *, profile='correction-scop
     if not isinstance(reason, str) or not reason.strip():
         _fail('change_reason_required')
     review = _review(deepcopy(review), bound, confirmed)
+    _verify_principal_review(run, bound, review, role='independent')
     before_write()
     _open(run, arm, stage)
     if binding(run, key, stage, profile=profile, live=True) != bound:
@@ -267,7 +307,7 @@ def finalize_stage_review(run, key, stage, primary_notes, *, profile='correction
     run, arm, path, directory = _paths(run, key, stage)
     _open(run, arm, stage, partial_submission=True)
     bound = binding(run, key, stage, profile=profile, live=True)
-    chain = _chain(directory, bound)
+    chain = _chain(directory, bound, run=run)
     if not chain:
         _fail('latest_confirmed_draft_required')
     last, tip = chain[-1]
@@ -280,6 +320,7 @@ def finalize_stage_review(run, key, stage, primary_notes, *, profile='correction
         if tip != independent_draft_sha256 or last.get('confirmed') is not True:
             _fail('latest_confirmed_draft_required')
         other = last['review']
+        _verify_principal_review(run, bound, other, role='independent')
         primary, decision = build_formal_decision(run, key, stage, primary_notes, other,
             independent_sha256=hashlib.sha256(encoded(other)).hexdigest(), profile=profile)
         names = _formal_names(stage)
@@ -296,7 +337,7 @@ def finalize_stage_review(run, key, stage, primary_notes, *, profile='correction
     for name in _formal_names(stage):
         before_write()
         _open(run, arm, stage, partial_submission=True)
-        if binding(run, key, stage, profile=profile, live=True) != bound or _chain(directory, bound)[-1][1] != tip:
+        if binding(run, key, stage, profile=profile, live=True) != bound or _chain(directory, bound, run=run)[-1][1] != tip:
             _fail('binding_or_chain_changed')
         target = arm/name
         expected = submission['formal_files'][name]
@@ -320,6 +361,12 @@ def _validate_formal_snapshot(submission):
     primary, decision = build_formal_decision(bound['run_directory'], bound['key'], bound['stage'],
         submission['primary_notes'], other, independent_sha256=hashlib.sha256(encoded(other)).hexdigest(),
         profile=bound['profile'])
+    # v2 requires both sides of the identity contract.  The primary
+    # attestation is checked here after the formal snapshot is reconstructed;
+    # a hand-authored primary JSON cannot bypass the same-body check.
+    run = Path(bound['run_directory'])
+    if plan_mode(run) == MODE_V2:
+        _verify_principal_review(run, bound, primary, role='primary')
     if submission['formal_files'] != dict(zip(names, (other, primary, decision))):
         _fail('submitted_opinion_changed')
 
@@ -341,7 +388,7 @@ def validate_submission(path, *, expected_mode=None):
         return
     value = _read(path)
     bound = binding(run, value['key'], stage)
-    chain = _chain(arm/'review-drafts'/stage, bound)
+    chain = _chain(arm/'review-drafts'/stage, bound, run=run)
     if not chain or chain[-1][0]['kind'] != 'submission':
         _fail('submission_required')
     submission = chain[-1][0]

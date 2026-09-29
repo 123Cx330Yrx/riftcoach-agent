@@ -4,30 +4,39 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "恢复推进：本地计时接线回归通过，公共CI 36514153114成功；未启动新Provider批次。"
+pause_reason: "本批在 claim-scope:4 后因独立审查身份合同失败停止；claim-scope:3 已有 1 个 unknown/incomplete Provider 请求，未形成终态。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
 
-2026-09-29工程恢复：工作区可直接读取，浏览器错误与仓库访问无关。
-五种新计时整链测试已恢复，原提交相关回归64项全部通过（339.28秒）。换号后已推送
-bb6b98b0，公共CI 36514153114三项成功。没有活动模型请求，严格结果仍为 **1/15**，8E未完成。
+2026-09-29真实批次已在 claim-scope:4 完成三次模型链后按合同停止；停止前已进入下一例 claim-scope:3 的 review 请求，但该请求没有形成终态。
+初评为 80/needs_revision，Flash 修订，GLM fresh 复评为 95/pass；三次回执完整、known
+48,607 tokens、unknown 0，模型报告和 transport/阶段 SHA 绑定结构回放通过。
 
-- 剩余14批已关闭：初评72正确检错、Flash改稿返回，Codex额度中断后人审等待超时，
-  无fresh。2调用27325tokens、unknown0、914.422秒；估价0.1930048元非账单。
-  46原件封存3929eb24…5c4eb4c，首批60原件不变；两批共4调用57007tokens/0.5345608元。
-- 本轮恢复正常完成/host超时/active超时/初评拒绝/改稿拒绝五场景，修fixture字典与封存元组
-  混淆。资格门拒绝新计时标记或计时目录，未标记也不能冒充旧连续时钟资格。
-- 原型仅支持同一后台进程存活时等待对话恢复；不支持进程死亡后续跑，不能称为通用恢复。
-  建议整批开发人审另限24小时，产品执行仍按原300/900秒；该验收口径尚待明确采用。
-- 当前动作：计时采用校验已接入资格审查器，且显式采用路径已接入现有执行器。它只接受 adopted=true、计划SHA绑定、完整等待/结束
-  回执和 wall=active+host 的累计关系；未采用原型、漏标记或篡改记录仍拒绝。受影响回归74项通过
-  （541.15秒），治理、编译和diff检查通过。尚未用新路径执行真实批次，也未启动Provider。
-  下一步是生成独立冻结计划并完成该路径的离线整链验证，再核预算后执行真实批次。
-- 完整15、自然Agent生成/工具/纠错、真实Worker/DB/API/Workbench仍未完成。
-  四块联动、本人Training、前端审美/头像、Memory、身份运维、两树整合和学习均沿活动计划。
+本批出现新的审查身份合同失败：三阶段 independent review 与 primary 决定均由同一主执行主体
+写入，没有第二个受审计独立审查主体或可验证签署。现有 JSON/append-only/绑定校验能通过，
+但不能把 reviewer 字符串当作独立人审证据。该失败不是 Provider、语义、来源、传输或预算失败；
+claim-scope:4 的模型事实证据保留，但不授 review_controls 资格，不计入严格 1.5.5。
+claim-scope:3-ready 信号生成后，主进程在下一例 review 请求已发出且流停在 reading 时被停止；该调用无 response、终态或 usage，按 1 个 unknown/incomplete call 记账，保留原始回执，不重试。
+
+原始 stage/journal/transport/host/primary/independent/decision/task-observation/case-completed/
+plan/handoff 均保留不改。只读审计：
+data/evaluation/results/golden_boundary_examples_host_timed_independence_failure_audit_v1.json
+（SHA fe2b31d1a05948cb230d17c8618ac88c48cb0ff6bff7d2bacc15a2e732691c6d）。
+更正审计 golden_boundary_examples_host_timed_independence_failure_correction_v1.json
+（SHA e2915c8adfdb13e45f0caa8a9b4c3441f9048bb075d2cb193670b79c7eef9f77）记录下一例
+已发出的 1 个 unknown/incomplete review 请求；不能按零调用或零费用处理。
+后续先做离线、可审计的独立审查主体/签署边界及判别测试；旧批不得补签或重开。新的真实执行
+需新冻结身份、重新核预算，并在新的付费授权明确后进行。模型/high/1.5.5、产品准入和 8E
+状态不变；真实原15、自然 Agent、DB/API/Workbench 和四块产品联动仍未完成。
+
+2026-09-29离线裁决已撤回“同一进程自生成双 Ed25519 密钥”的伪独立方案；它只能证明密钥不同，
+不能证明审查主体独立。当前保留的 v2 合同改为要求协作宿主的实际完成事件，绑定冻结主体、派发
+关系、plan/case/stage/response/source/request 和完整审查正文；宿主取证适配器尚未实现，因此
+新 v2 路径 fail closed。新增合同边界测试通过，未调用 Provider，未改写本批任何回执；v1 仅保留
+旧封存只读兼容，不产生新资格。
 
 以下为历史记录；当前行动以本段为准。
 
