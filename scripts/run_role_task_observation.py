@@ -118,7 +118,8 @@ def adjudicate(path,remaining):
     return StageDecision.model_validate_json(supplied.read_text(encoding='utf-8')).model_dump()
 
 
-def adjudicate_file(path, remaining, *, clock=time.monotonic, sleep=time.sleep):
+def adjudicate_file(path, remaining, *, clock=time.monotonic, sleep=time.sleep,
+                    event_source=None):
     """Bounded file handoff: loss of terminal stdin cannot approve or reset it.
 
     Run this with a detached, hidden process and redirected output. A restart
@@ -152,7 +153,7 @@ def adjudicate_file(path, remaining, *, clock=time.monotonic, sleep=time.sleep):
                 or clock() >= deadline):
             raise ValueError('task_observation_file_decision_invalid')
         if mode is not None:
-            validate_submission(path, expected_mode=mode)
+            validate_submission(path, expected_mode=mode, event_source=event_source)
             if clock() >= deadline:
                 raise ValueError('task_observation_host_deadline')
         return decision
