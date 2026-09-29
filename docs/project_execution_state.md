@@ -38,6 +38,10 @@ data/evaluation/results/golden_boundary_examples_host_timed_independence_failure
 新 v2 路径 fail closed。新增合同边界测试通过，未调用 Provider，未改写本批任何回执；v1 仅保留
 旧封存只读兼容，不产生新资格。
 
+宿主取证接口已贯通 draft、正式提交和恢复校验：`HostReviewEventSource.fetch(event_id, binding)`。
+没有真实宿主实现时仍拒绝 v2；代码不从运行目录读取自制 event 文件。新增接口成功/篡改边界测试
+通过，仍不能把离线替身当作真实独立主体或产品准入证据。
+
 以下为历史记录；当前行动以本段为准。
 
 2026-09-28：1.5.5 原15真实批次已关闭，严格资格 **1/15**。首例96/pass且原文保持；

@@ -101,14 +101,15 @@ def build_formal_decision(run, key, stage, notes, other, *, independent_sha256, 
 
 def write_decision(run, key, stage, notes, *, profile,
                    expected_response_sha256=None, before_write=lambda: None,
-                   independent_draft_sha256=None):
+                   independent_draft_sha256=None, event_source=None):
     run = Path(run).resolve()
     if plan_mode(run) is not None:
         from scripts.role_stage_review_drafts import finalize_stage_review
         if independent_draft_sha256 is None:
             raise ValueError('host_writer_explicit_draft_submission_required')
         return finalize_stage_review(run, key, stage, notes, profile=profile,
-            independent_draft_sha256=independent_draft_sha256, before_write=before_write)
+            independent_draft_sha256=independent_draft_sha256, before_write=before_write,
+            event_source=event_source)
     def guard():
         if (run/'result.json').exists():
             raise ValueError('host_writer_batch_closed')

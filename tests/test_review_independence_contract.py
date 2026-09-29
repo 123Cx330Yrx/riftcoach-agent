@@ -79,6 +79,19 @@ def test_independent_requires_host_fetched_event_and_exact_content():
         validate_independent_event(review, plan=plan, bound=bound)
 
 
+def test_event_source_fetches_by_event_id_and_exact_binding():
+    bound, plan = _binding(), _plan()
+    review, event = _independent(bound, plan)
+
+    class Source:
+        def fetch(self, *, event_id, binding):
+            assert event_id == 'event-1'
+            assert binding == bound
+            return event
+
+    validate_independent_event(review, plan=plan, bound=bound, event_source=Source())
+
+
 @pytest.mark.parametrize('mutation, error', [
     (lambda e: e.update(author_principal_id='root-principal'), 'independent_event_binding'),
     (lambda e: e['binding'].update(stage='initial'), 'independent_event_binding'),

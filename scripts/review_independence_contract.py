@@ -13,11 +13,19 @@ import hashlib
 import json
 import re
 from pathlib import Path
-from typing import Mapping
+from typing import Mapping, Protocol
 
 VERSION = 'independent-source-v2'
 EVENT_KIND = 'codex-collaboration-review-event-v1'
 _HEX64 = re.compile(r'^[0-9a-f]{64}$')
+
+
+class HostReviewEventSource(Protocol):
+    """Trusted host boundary; implementations must fetch platform events."""
+
+    def fetch(self, *, event_id: str, binding: Mapping[str, object]) -> Mapping[str, object]:
+        """Return the immutable completed event for this exact binding."""
+        ...
 
 
 def _fail(code: str) -> None:
@@ -104,7 +112,8 @@ def validate_primary_attestation(review: Mapping[str, object], *, plan: Mapping[
 
 
 def validate_independent_event(review: Mapping[str, object], *, plan: Mapping[str, object],
-                               bound: Mapping[str, object], event: Mapping[str, object] | None = None) -> None:
+                               bound: Mapping[str, object], event: Mapping[str, object] | None = None,
+                               event_source: HostReviewEventSource | None = None) -> None:
     """Validate a host-fetched independent event and exact review content.
 
     ``event`` must come from the host collaboration adapter.  Passing a JSON
@@ -116,6 +125,14 @@ def validate_independent_event(review: Mapping[str, object], *, plan: Mapping[st
     envelope = review.get('independent_source_event')
     if not isinstance(envelope, dict):
         _fail('independent_event_missing')
+    if event is None and event_source is not None:
+        event_id = envelope.get('event_id')
+        if not isinstance(event_id, str) or not event_id.strip():
+            _fail('independent_event_identity')
+        try:
+            event = event_source.fetch(event_id=event_id, binding=required_binding(bound))
+        except Exception as exc:
+            raise ValueError('review_independence_trusted_event_fetch_failed') from exc
     if event is None:
         _fail('trusted_event_fetch_required')
     if not isinstance(event, Mapping) or dict(event) != envelope:

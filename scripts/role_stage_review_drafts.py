@@ -212,7 +212,7 @@ def _principal_registry(run):
     return registry
 
 
-def _verify_principal_review(run, bound, review, *, role, trusted_event=None):
+def _verify_principal_review(run, bound, review, *, role, event_source=None, trusted_event=None):
     registry = _principal_registry(run)
     if registry is None:
         return
@@ -223,12 +223,12 @@ def _verify_principal_review(run, bound, review, *, role, trusted_event=None):
             contract.validate_primary_attestation(review, plan=plan, bound=bound)
         else:
             contract.validate_independent_event(review, plan=plan, bound=bound,
-                                                event=trusted_event)
+                                                event=trusted_event, event_source=event_source)
     except ValueError as exc:
         _fail(str(exc).removeprefix('review_independence_'))
 
 
-def _chain(directory, bound, *, run=None):
+def _chain(directory, bound, *, run=None, event_source=None):
     if not directory.exists():
         return []
     paths = sorted(directory.iterdir())
@@ -248,7 +248,8 @@ def _chain(directory, bound, *, run=None):
             if _review(value['review'], bound, value.get('confirmed')) != value['review']:
                 _fail('review_binding')
             if run is not None:
-                _verify_principal_review(run, bound, value['review'], role='independent')
+                _verify_principal_review(run, bound, value['review'], role='independent',
+                                         event_source=event_source)
         elif value.get('kind') == 'submission':
             if (not chain or chain[-1][0].get('confirmed') is not True
                     or value.get('independent_draft_sha256') != previous):
@@ -276,11 +277,12 @@ def _append(directory, chain, value):
 
 
 def write_independent_draft(run, key, stage, review, *, profile='correction-scope',
-                           supersedes_sha256=None, reason, confirmed=False, before_write=lambda: None):
+                           supersedes_sha256=None, reason, confirmed=False, before_write=lambda: None,
+                           event_source=None):
     run, arm, _, directory = _paths(run, key, stage)
     _open(run, arm, stage)
     bound = binding(run, key, stage, profile=profile, live=True)
-    chain = _chain(directory, bound, run=run)
+    chain = _chain(directory, bound, run=run, event_source=event_source)
     if (chain and chain[-1][0]['kind'] == 'submission'):
         _fail('already_submitted')
     if supersedes_sha256 != (chain[-1][1] if chain else None):
@@ -288,7 +290,7 @@ def write_independent_draft(run, key, stage, review, *, profile='correction-scop
     if not isinstance(reason, str) or not reason.strip():
         _fail('change_reason_required')
     review = _review(deepcopy(review), bound, confirmed)
-    _verify_principal_review(run, bound, review, role='independent')
+    _verify_principal_review(run, bound, review, role='independent', event_source=event_source)
     before_write()
     _open(run, arm, stage)
     if binding(run, key, stage, profile=profile, live=True) != bound:
@@ -299,7 +301,7 @@ def write_independent_draft(run, key, stage, review, *, profile='correction-scop
 
 
 def finalize_stage_review(run, key, stage, primary_notes, *, profile='correction-scope',
-                          independent_draft_sha256, before_write=lambda: None):
+                          independent_draft_sha256, before_write=lambda: None, event_source=None):
     # Import only at the explicit submission boundary; legacy writer imports
     # this module too. Both paths share the original decision construction.
     from scripts.write_role_stage_decision import build_formal_decision
@@ -307,7 +309,7 @@ def finalize_stage_review(run, key, stage, primary_notes, *, profile='correction
     run, arm, path, directory = _paths(run, key, stage)
     _open(run, arm, stage, partial_submission=True)
     bound = binding(run, key, stage, profile=profile, live=True)
-    chain = _chain(directory, bound, run=run)
+    chain = _chain(directory, bound, run=run, event_source=event_source)
     if not chain:
         _fail('latest_confirmed_draft_required')
     last, tip = chain[-1]
@@ -320,7 +322,7 @@ def finalize_stage_review(run, key, stage, primary_notes, *, profile='correction
         if tip != independent_draft_sha256 or last.get('confirmed') is not True:
             _fail('latest_confirmed_draft_required')
         other = last['review']
-        _verify_principal_review(run, bound, other, role='independent')
+        _verify_principal_review(run, bound, other, role='independent', event_source=event_source)
         primary, decision = build_formal_decision(run, key, stage, primary_notes, other,
             independent_sha256=hashlib.sha256(encoded(other)).hexdigest(), profile=profile)
         names = _formal_names(stage)
@@ -337,7 +339,8 @@ def finalize_stage_review(run, key, stage, primary_notes, *, profile='correction
     for name in _formal_names(stage):
         before_write()
         _open(run, arm, stage, partial_submission=True)
-        if binding(run, key, stage, profile=profile, live=True) != bound or _chain(directory, bound, run=run)[-1][1] != tip:
+        if (binding(run, key, stage, profile=profile, live=True) != bound
+                or _chain(directory, bound, run=run, event_source=event_source)[-1][1] != tip):
             _fail('binding_or_chain_changed')
         target = arm/name
         expected = submission['formal_files'][name]
@@ -371,7 +374,7 @@ def _validate_formal_snapshot(submission):
         _fail('submitted_opinion_changed')
 
 
-def validate_submission(path, *, expected_mode=None):
+def validate_submission(path, *, expected_mode=None, event_source=None):
     """Extra handoff bookkeeping only; the existing strict gate still follows."""
     path = Path(path)
     run, arm, stage = path.parent.parent, path.parent, path.stem
@@ -388,7 +391,7 @@ def validate_submission(path, *, expected_mode=None):
         return
     value = _read(path)
     bound = binding(run, value['key'], stage)
-    chain = _chain(arm/'review-drafts'/stage, bound, run=run)
+    chain = _chain(arm/'review-drafts'/stage, bound, run=run, event_source=event_source)
     if not chain or chain[-1][0]['kind'] != 'submission':
         _fail('submission_required')
     submission = chain[-1][0]
