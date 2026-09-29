@@ -1,6 +1,7 @@
 """Strict same-version qualification cannot borrow successful diagnostic tails."""
 import hashlib
 import json
+from contextlib import nullcontext
 from types import SimpleNamespace as NS
 import pytest
 from app.evaluation import boundary_examples_qualification as q
@@ -38,6 +39,29 @@ def test_adopt_host_timing_creates_explicit_new_plan_without_mutating_base():
         mode='separate-development-host-clock-v1', adopted=True,
         max_host_seconds=86400, process_restart_allowed=False,
         timing_contract='wall_equals_active_plus_host_v1')
+
+
+def test_execute_prepared_host_timing_wires_one_clock_to_all_gates(tmp_path, monkeypatch):
+    plan = runner.adopt_host_timing(dict(experiment='offline-host-timed',
+        identity={}, cases=[], batch_budget=dict(max_seconds=900)))
+    preparation = tmp_path/'preparation.json'
+    preparation.write_text(json.dumps(plan), encoding='utf-8')
+    captured = {}
+    monkeypatch.setattr(runner, 'verify_public_ci', lambda _run: 'a' * 40)
+    monkeypatch.setattr(runner, 'load_role_settings', lambda _path: ({}, {}))
+    monkeypatch.setattr(runner, 'RunScopedRoleReceiptedProviderFactory', lambda **_kwargs: object())
+    monkeypatch.setattr(runner, 'route_environment', lambda _name: nullcontext())
+    def fake_observe(_factory, _directory, _plan, **kwargs):
+        captured.update(kwargs)
+        return {'tasks_observed': True}
+    monkeypatch.setattr(runner, 'observe', fake_observe)
+    args = NS(execute=True, env_file=tmp_path/'env', ci_run='123', plan_sha=runner.canonical_sha(plan))
+    result = runner.execute_prepared(args, plan, {}, directory=tmp_path/'run',
+        preparation=preparation, host_timing=plan['host_review_timing'])
+    assert result == {'tasks_observed': True}
+    assert captured['clock'].__class__.__name__ == 'DevelopmentHostClock'
+    assert captured['before_case'] is not None and captured['before_send'] is not None
+    assert captured['adjudicate'] is not None
 
 
 def test_closed_preview_rejects_changed_seal(tmp_path, monkeypatch):

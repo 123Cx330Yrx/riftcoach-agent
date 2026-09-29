@@ -8198,3 +8198,8 @@ policy绑定保存的plan SHA，等待/结束回执必须连续成对，阶段�
 只有新冻结计划显式携带采用策略时，case-ready、阶段文件审查和Provider发送前检查才统一使用
 DevelopmentHostClock；默认旧连续wall路径保持不变，已关闭批次没有重开入口。计时回读同时校验
 case/request绑定和active剩余预算。计时模块15项通过；编译和diff检查通过，未发Provider请求。
+## 2026-09-29 采用路径调用链回归
+
+补充离线接线测试，确认显式采用计划下执行器把case-ready、阶段adjudication和发送前检查都交给
+同一个DevelopmentHostClock；默认路径仍保持原连续wall时钟。该测试不创建Provider、不读取凭据。
+计时模块15项及采用执行器接线正例通过，未启动真实批次。
