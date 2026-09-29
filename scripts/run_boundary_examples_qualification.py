@@ -37,6 +37,7 @@ REMAINING_EXPERIMENT = 'boundary-examples-role-remaining-v1'
 REMAINING_DIRECTORY = RUN_DIRECTORY.with_name(REMAINING_EXPERIMENT)
 REMAINING_PREPARATION = PREPARATION.with_name('golden_boundary_examples_remaining_preparation_v1.json')
 REMAINING_CLOSED_RESULT = PREPARATION.with_name('golden_boundary_examples_remaining_result_v1.json')
+REMAINING_CLOSED_SHA = '3929eb24166673dc3b015caa70d96cef57fc86379172f01a66ad4e9515c4eb4c'
 
 
 class BoundaryExamplesObserver(StrictObserver):
@@ -156,6 +157,15 @@ def prepare_remaining():
         'No failed-prefix injection or reopening. Surviving prior case is revalidated independently.')
     plan['success_scope'] = ('Fourteen new continuous original controls; combine only strict same-identity '
         'qualified evidence with the sealed first case. No natural generation or product admission.')
+    if REMAINING_CLOSED_RESULT.exists():
+        if _sha(REMAINING_CLOSED_RESULT) != REMAINING_CLOSED_SHA:
+            raise ValueError('boundary_examples_remaining_closed_evidence_changed')
+        saved = json.loads(REMAINING_CLOSED_RESULT.read_bytes())['public_json_contents']['plan.json']
+        frozen = saved['preparation_plan']
+        plan['source_sha256'] = frozen['source_sha256']
+        if (plan != frozen or plan != json.loads(REMAINING_PREPARATION.read_bytes())
+                or canonical_sha(plan) != saved['plan_sha256']):
+            raise ValueError('boundary_examples_remaining_closed_preparation_changed')
     return plan, requests
 
 

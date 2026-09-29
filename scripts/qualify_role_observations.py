@@ -79,6 +79,12 @@ def _seal(run, export_path, expected_sha, evidence_root):
     hashes = export.get('original_file_sha256')
     if not isinstance(hashes, dict) or not hashes:
         _fail('closed_export_inventory_missing')
+    # A development-only host clock excludes human waiting from the active
+    # task budget.  It is deliberately not part of the adopted continuous
+    # qualification contract; reject its durable evidence even if an adapter
+    # forgot to add the plan marker.
+    if any(name.startswith('development-host-clock/') for name in hashes):
+        _fail('unadopted_host_timing')
     actual = {p.relative_to(run).as_posix() for p in run.rglob('*') if p.is_file()}
     if actual != set(hashes):
         _fail('sealed_file_inventory_mismatch')
@@ -356,6 +362,10 @@ def inspect_runs(run_directories, *, evidence_root, closed_exports, profile='rol
         hashes = _seal(run, export_path, export_sha, evidence_root)
         saved = _json(run / 'plan.json')
         plan = saved['preparation_plan']
+        if 'host_review_timing' in plan:
+            # The prototype may exclude developer waiting from its clock.
+            # It cannot silently satisfy the adopted continuous-wall-time gate.
+            _fail('unadopted_host_timing')
         if (plan.get('identity') != current_plan['identity']
                 or ('original15_plan_sha256' in plan and plan['original15_plan_sha256'] != digest(compact(current_plan)))
                 or plan.get('original15_keys') != list(expected)

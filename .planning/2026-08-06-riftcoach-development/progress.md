@@ -1,3 +1,25 @@
+## 2026-09-29 计时原型整链测试恢复，用户换号暂停
+
+实际恢复前轮误删的五种整链测试，修复make_run的result字典误作封存元组；成功后显式seal，
+保留正常/host超时/active超时/初评拒绝/改稿拒绝的请求计数、未完成回执和资格拒绝断言。
+原型尚未接真实入口。资格门同时拒绝计时目录和计划标记，漏标记不能冒充原连续wall预算。
+旧remaining闭批预览固定原seal/代码摘要并重建所有请求/身份/预算，禁止重开。
+
+一次测试命令：pytest tests/test_role_development_host_clock.py tests/test_role_task_observation.py
+tests/test_boundary_examples_qualification.py -q --tb=short --junitxml=tmp/host-clock-recovery-tests.xml。
+最终64 passed / 339.28秒 / exit0：新原型14、旧observer31、boundary19。完整15为网络替身，
+不是新增真实模型资格。治理、编译、diff检查通过；公共CI尚未启动。未再重复启动同组测试。
+JUnit保存在工作区outputs/riftcoach-host-clock-recovery-tests.xml，供恢复时核查。
+
+首批60及remaining46原件逐项hash不变，公开response字段保持白名单。strict旧批仍1/15。
+remaining实际2调用27325tokens/unknown0/0.1930048元，原15与其合计4调用57007tokens/
+0.5345608元，均为未缓存估价非账单。本轮无Provider新调用，无production准入。
+本轮由主Agent直接读盘/验证，不把此前已撤回的独立报告计入审查通过。
+
+用户要求走到合适节点暂停以换号：保存本地提交后停，不发新请求、不启动公共CI；
+恢复后先推送该提交并检查CI，再处理docs/plans/2026-09-29-development-review-clock.md
+中的计时口径采用与后续接线。旧付费批已闭，不补签、不重跑，不把旧34次额度带到新方案。
+
 ## 2026-09-28 CI旧断言修复与剩余14授权
 
 用户“确认，继续吧”批准8eff6222…8f038的34调用/3290112tokens/10200秒新方案。

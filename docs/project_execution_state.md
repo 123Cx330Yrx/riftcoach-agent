@@ -4,12 +4,32 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: ""
+pause_reason: "用户换号请求暂停；本地64项验证通过，公共CI尚未启动。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
+
+2026-09-29工程恢复：工作区可直接读取，浏览器错误与仓库访问无关。
+五种新计时整链测试已恢复，单次相关回归64项全部通过（339.28秒）。用户要求换号，
+在保存本地提交后暂停；没有活动模型请求，公共CI尚未启动。
+计时原型未接真实入口，未采用或授予新资格；严格结果仍为 **1/15**，8E未完成。
+
+- 剩余14批已关闭：初评72正确检错、Flash改稿返回，Codex额度中断后人审等待超时，
+  无fresh。2调用27325tokens、unknown0、914.422秒；估价0.1930048元非账单。
+  46原件封存3929eb24…5c4eb4c，首批60原件不变；两批共4调用57007tokens/0.5345608元。
+- 本轮恢复正常完成/host超时/active超时/初评拒绝/改稿拒绝五场景，修fixture字典与封存元组
+  混淆。资格门拒绝新计时标记或计时目录，未标记也不能冒充旧连续时钟资格。
+- 原型仅支持同一后台进程存活时等待对话恢复；不支持进程死亡后续跑，不能称为通用恢复。
+  建议整批开发人审另限24小时，产品执行仍按原300/900秒；该验收口径尚待明确采用。
+- 当前动作：按用户要求暂停。恢复后先推送本地提交并收齐公共CI，再处理计时方案采用；
+  不重跑已经通过且输入未变的本地回归。具体机制、范围、采用后接线
+  与证据要求见docs/plans/2026-09-29-development-review-clock.md。未启动新Provider批次。
+- 完整15、自然Agent生成/工具/纠错、真实Worker/DB/API/Workbench仍未完成。
+  四块联动、本人Training、前端审美/头像、Memory、身份运维、两树整合和学习均沿活动计划。
+
+以下为历史记录；当前行动以本段为准。
 
 2026-09-28：1.5.5 原15真实批次已关闭，严格资格 **1/15**。首例96/pass且原文保持；
 第二例80/needs_revision正确检错，但独立审查遗漏显式纠错确认，主审和写入器未提前拦截，

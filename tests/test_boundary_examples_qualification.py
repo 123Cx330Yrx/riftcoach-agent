@@ -87,6 +87,7 @@ def test_remaining_closed_export_blocks_before_ci_or_credentials(tmp_path, monke
 @pytest.mark.parametrize('keys', [set(), {'claim-scope:4'}, {'claim-scope:1','claim-scope:4'}])
 def test_remaining_wrong_prior_qualification_cannot_execute(tmp_path, monkeypatch, keys):
     monkeypatch.setattr(runner, 'REMAINING_DIRECTORY', tmp_path/'absent')
+    monkeypatch.setattr(runner, 'REMAINING_CLOSED_RESULT', tmp_path/'absent-export.json')
     monkeypatch.setattr(audit, 'inspect_runs', lambda *a,**k: (None,None,None,None,keys))
     monkeypatch.setattr(runner, 'execute_prepared', lambda *a,**k: pytest.fail('Unexpected execution'))
     with pytest.raises(ValueError, match='remaining_qualification_changed'):
@@ -95,6 +96,7 @@ def test_remaining_wrong_prior_qualification_cannot_execute(tmp_path, monkeypatc
 
 def test_remaining_handoff_uses_new_full_requests_and_frozen_preparation(tmp_path, monkeypatch):
     monkeypatch.setattr(runner, 'REMAINING_DIRECTORY', tmp_path/'new-run')
+    monkeypatch.setattr(runner, 'REMAINING_CLOSED_RESULT', tmp_path/'absent-export.json')
     expected, requests = runner.prepare_remaining()
     def inspect(runs, **kwargs):
         assert runs == [runner.RUN_DIRECTORY]
@@ -116,6 +118,26 @@ def test_remaining_stale_plan_is_rejected_before_ci(tmp_path, monkeypatch):
         runner.execute_prepared(NS(execute=True,env_file='unused',ci_run='123',plan_sha='0'*64),
             plan,requests,directory=tmp_path/'new-run',preparation=runner.REMAINING_PREPARATION)
     assert not (tmp_path/'new-run').exists()
+
+
+def test_remaining_closed_preview_preserves_seal(tmp_path, monkeypatch):
+    altered = tmp_path/'altered.json'
+    altered.write_bytes(runner.REMAINING_CLOSED_RESULT.read_bytes()+b' ')
+    monkeypatch.setattr(runner, 'REMAINING_CLOSED_RESULT', altered)
+    with pytest.raises(ValueError, match='remaining_closed_evidence_changed'):
+        runner.prepare_remaining()
+
+
+def test_remaining_closed_preview_rejects_budget_drift(monkeypatch):
+    original = runner.prepare_fresh
+    def changed(**kwargs):
+        plan, requests = original(**kwargs)
+        if kwargs.get('experiment') == runner.REMAINING_EXPERIMENT:
+            plan['batch_budget']['max_seconds'] += 1
+        return plan, requests
+    monkeypatch.setattr(runner, 'prepare_fresh', changed)
+    with pytest.raises(ValueError, match='remaining_closed_preparation_changed'):
+        runner.prepare_remaining()
 
 
 def test_full15_actual_executor_drafts_and_strict_gate(make_run,tmp_path):
