@@ -111,6 +111,21 @@ def validate_primary_attestation(review: Mapping[str, object], *, plan: Mapping[
         _fail('primary_source_kind')
 
 
+def make_primary_attestation(review: Mapping[str, object], *, plan: Mapping[str, object],
+                             bound: Mapping[str, object]) -> dict[str, object]:
+    """Create the root-side binding record; no independent identity is implied."""
+    primary_id, _, _ = _registry(plan)
+    expected = required_binding(bound)
+    return {
+        'version': VERSION,
+        'role': 'primary',
+        'principal_id': primary_id,
+        'binding': expected,
+        'review_sha256': review_digest(review),
+        'source_kind': 'local-primary-decision-v1',
+    }
+
+
 def validate_independent_event(review: Mapping[str, object], *, plan: Mapping[str, object],
                                bound: Mapping[str, object], event: Mapping[str, object] | None = None,
                                event_source: HostReviewEventSource | None = None) -> None:

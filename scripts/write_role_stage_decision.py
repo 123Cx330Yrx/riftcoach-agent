@@ -96,6 +96,16 @@ def build_formal_decision(run, key, stage, notes, other, *, independent_sha256, 
         independent_sha256=independent_sha256, reason=reason,
         target_and_correction_valid=notes.get('target_and_correction_valid', False),
         final_report_checks=checks, report_reason=notes.get('report_reason'))
+    # v2 records root provenance as a deterministic local binding. This does
+    # not attest independent review; that still requires a host event.
+    from scripts.role_stage_review_drafts import MODE_V2, plan_mode
+    if plan_mode(run) == MODE_V2:
+        from scripts import review_independence_contract as independence
+        primary['primary_attestation'] = independence.make_primary_attestation(
+            primary, plan=plan, bound=dict(
+                plan_sha256=json.loads((run/'plan.json').read_bytes())['plan_sha256'],
+                key=key, stage=stage, response_sha256=sha(path),
+                report_sha256=report_sha, request_sha256=row['request_sha256']))
     return primary, decision
 
 

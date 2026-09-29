@@ -41,6 +41,8 @@ data/evaluation/results/golden_boundary_examples_host_timed_independence_failure
 宿主取证接口已贯通 draft、正式提交和恢复校验：`HostReviewEventSource.fetch(event_id, binding)`。
 没有真实宿主实现时仍拒绝 v2；代码不从运行目录读取自制 event 文件。新增接口成功/篡改边界测试
 通过，仍不能把离线替身当作真实独立主体或产品准入证据。
+v2 primary 记录现在由 writer 自动生成 root 绑定并在恢复时复核；这只证明主审正文一致性，仍不能
+替代 independent 的宿主完成事件。
 
 以下为历史记录；当前行动以本段为准。
 

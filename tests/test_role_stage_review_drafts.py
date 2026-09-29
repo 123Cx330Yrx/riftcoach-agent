@@ -405,6 +405,34 @@ def test_v2_without_host_event_fails_closed_before_submission(pending):
     assert not (arm/'decision-initial.json').exists()
 
 
+def test_v2_builds_root_attestation_for_primary_record(pending):
+    run, arm, independent, notes = pending
+    saved = read(run/'plan.json')
+    plan = saved['preparation_plan']
+    plan[drafts.MODE_FIELD] = drafts.MODE_V2
+    plan.update(
+        root_thread_id='root-thread-1',
+        review_event_provider='codex-collaboration-host-v1',
+        review_principals={
+            'primary': {'principal_id': 'root-principal'},
+            'independent': {'principal_id': 'child-principal'},
+        },
+    )
+    saved['plan_sha256'] = canonical_sha(plan)
+    (run/'plan.json').write_text(json.dumps(saved), encoding='utf-8')
+    primary, _ = writer.build_formal_decision(
+        run, 'claim-scope:1', 'initial', notes, independent,
+        independent_sha256=hashlib.sha256(drafts.encoded(independent)).hexdigest(),
+        profile='correction-scope')
+    from scripts.review_independence_contract import validate_primary_attestation
+    row = next(row for row in plan['cases'] if row['key'] == 'claim-scope:1')
+    validate_primary_attestation(primary, plan=plan, bound={
+        'plan_sha256': saved['plan_sha256'], 'key': 'claim-scope:1', 'stage': 'initial',
+        'response_sha256': hashlib.sha256((arm/'initial.json').read_bytes()).hexdigest(),
+        'report_sha256': primary['report_sha256'], 'request_sha256': row['request_sha256'],
+    })
+
+
 def test_final_submission_validation_cannot_extend_original_clock(pending, monkeypatch):
     _, arm, _, _ = pending
     (arm/'initial-host-required.json').unlink()
