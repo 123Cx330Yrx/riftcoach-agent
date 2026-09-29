@@ -105,7 +105,7 @@ def build_formal_decision(run, key, stage, notes, other, *, independent_sha256, 
             primary, plan=plan, bound=dict(
                 plan_sha256=json.loads((run/'plan.json').read_bytes())['plan_sha256'],
                 key=key, stage=stage, response_sha256=sha(path),
-                report_sha256=report_sha, request_sha256=row['request_sha256']))
+                report_sha256=report_sha, request_sha256=bound['request_sha256']))
     return primary, decision
 
 

@@ -8,6 +8,7 @@ from app.evaluation import boundary_examples_qualification as q
 from app.evaluation.golden_stream_bridge import REQUEST
 from scripts import run_boundary_examples_qualification as runner, qualify_role_observations as audit
 from tests.test_role_observation_qualification import make_run, change, seal
+from scripts.review_independence_contract import MODE_V2, freeze_v2_identity
 
 
 def test_preparation_preserves_original15_and_exact_tested_requests():
@@ -41,9 +42,21 @@ def test_adopt_host_timing_creates_explicit_new_plan_without_mutating_base():
         timing_contract='wall_equals_active_plus_host_v1')
 
 
-def test_execute_prepared_host_timing_wires_one_clock_to_all_gates(tmp_path, monkeypatch):
-    plan = runner.adopt_host_timing(dict(experiment='offline-host-timed',
-        identity={}, cases=[], batch_budget=dict(max_seconds=900)))
+def test_fresh_preparation_records_identity_and_native_reader_source():
+    from app.evaluation.golden_review_experiment import digest
+    plan, _ = runner.prepare_fresh(keys=['claim-scope:4'])
+    for path in ('scripts/review_independence_contract.py', 'scripts/codex_review_event_source.py'):
+        assert plan['source_sha256'][path] == digest((runner.ROOT/path).read_text(encoding='utf-8'))
+
+
+@pytest.mark.parametrize('timed', [False, True])
+def test_execute_prepared_wires_event_source_and_clock_to_all_gates(tmp_path, monkeypatch, timed):
+    plan = freeze_v2_identity(dict(experiment='offline-host-timed',
+        identity={}, cases=[], batch_budget=dict(max_seconds=900), host_review_submission_mode=MODE_V2),
+        root_thread_id='offline-root', primary_id='offline-primary', independent_id='offline-reviewer')
+    if timed:
+        plan = runner.adopt_host_timing(plan)
+    source = NS(fetch=lambda **_kwargs: pytest.fail('Unexpected host fetch in wiring test'))
     preparation = tmp_path/'preparation.json'
     preparation.write_text(json.dumps(plan), encoding='utf-8')
     captured = {}
@@ -51,17 +64,63 @@ def test_execute_prepared_host_timing_wires_one_clock_to_all_gates(tmp_path, mon
     monkeypatch.setattr(runner, 'load_role_settings', lambda _path: ({}, {}))
     monkeypatch.setattr(runner, 'RunScopedRoleReceiptedProviderFactory', lambda **_kwargs: object())
     monkeypatch.setattr(runner, 'route_environment', lambda _name: nullcontext())
+    monkeypatch.setattr(runner, 'require_unchanged_checkout', lambda _head: None)
+    seen = []
+    def adjudicate(path, remaining, *, event_source):
+        seen.append(('adjudicate', event_source))
+        return {'accepted': True}
+    def handoff(path, decision, plan, *, directory, event_source):
+        seen.append(('handoff', event_source))
+        return decision
+    monkeypatch.setattr(runner, 'adjudicate_file', adjudicate)
+    monkeypatch.setattr(runner, 'validate_handoff', handoff)
     def fake_observe(_factory, _directory, _plan, **kwargs):
         captured.update(kwargs)
+        stage = _directory/'claim-scope-4/initial.json'
+        stage.parent.mkdir()
+        stage.write_text('{"key":"claim-scope:4","stage":"initial"}')
+        assert kwargs['adjudicate'](stage, 300) == {'accepted': True}
+        kwargs['before_send']()
         return {'tasks_observed': True}
     monkeypatch.setattr(runner, 'observe', fake_observe)
     args = NS(execute=True, env_file=tmp_path/'env', ci_run='123', plan_sha=runner.canonical_sha(plan))
     result = runner.execute_prepared(args, plan, {}, directory=tmp_path/'run',
-        preparation=preparation, host_timing=plan['host_review_timing'])
+        preparation=preparation, host_timing=plan.get('host_review_timing'), event_source=source)
     assert result == {'tasks_observed': True}
-    assert captured['clock'].__class__.__name__ == 'DevelopmentHostClock'
+    assert (captured['clock'].__class__.__name__ == 'DevelopmentHostClock') is timed
+    assert seen == [('adjudicate', source), ('handoff', source)]
     assert captured['before_case'] is not None and captured['before_send'] is not None
     assert captured['adjudicate'] is not None
+
+
+@pytest.mark.parametrize('fault,error', [
+    ('legacy', 'mode_not_v2'), ('missing_source', 'trusted_event_fetch_required'),
+    ('missing_registry', 'principal_registry_missing'), ('same_author', 'principal_roles_not_independent'),
+    ('invalid_source', 'trusted_event_fetch_required'),
+])
+def test_execution_rejects_missing_review_dependency_before_any_io(tmp_path, monkeypatch, fault, error):
+    plan = freeze_v2_identity(dict(host_review_submission_mode=MODE_V2),
+        root_thread_id='offline-root', primary_id='offline-primary', independent_id='offline-reviewer')
+    source = NS(fetch=lambda **_kwargs: pytest.fail('Unexpected event fetch'))
+    if fault == 'legacy':
+        plan['host_review_submission_mode'] = 'independent-drafts-v1'
+    elif fault == 'missing_source':
+        source = None
+    elif fault == 'invalid_source':
+        source = object()
+    elif fault == 'missing_registry':
+        del plan['review_principals']
+    else:
+        plan['review_principals']['independent']['principal_id'] = 'offline-primary'
+    preparation = tmp_path/'preparation.json'
+    preparation.write_text(json.dumps(plan), encoding='utf-8')
+    for name in ('verify_public_ci', 'load_role_settings', 'RunScopedRoleReceiptedProviderFactory', 'observe'):
+        monkeypatch.setattr(runner, name, lambda *a, **kw: pytest.fail('IO before review admission'))
+    args = NS(execute=True, env_file=tmp_path/'env', ci_run='123', plan_sha=runner.canonical_sha(plan))
+    with pytest.raises(ValueError, match=error):
+        runner.execute_prepared(args, plan, {}, directory=tmp_path/'run', preparation=preparation,
+            event_source=source)
+    assert not (tmp_path/'run').exists()
 
 
 def test_closed_preview_rejects_changed_seal(tmp_path, monkeypatch):

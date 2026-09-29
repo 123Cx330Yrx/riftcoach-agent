@@ -30,6 +30,7 @@ from scripts.run_role_task_observation import Observer, adjudicate_file, await_c
 from scripts.role_development_host_clock import DevelopmentHostClock, TIMING_MODE
 from scripts.qualify_role_observations import _stage, _sha
 from scripts.role_host_identity import candidate_sha256
+from scripts.review_independence_contract import require_execution_event_source
 
 EXPERIMENT = 'boundary-examples-role-qualification-v1'
 RUN_DIRECTORY = ROOT/'data/runs/role_task_observation'/EXPERIMENT
@@ -72,7 +73,7 @@ def replay(frozen, source, calls):
     return qualification.replay_case(frozen, source, calls, include_stage_evidence=False)
 
 
-def validate_handoff(path, decision, plan, *, directory):
+def validate_handoff(path, decision, plan, *, directory, event_source=None):
     stage = json.loads(path.read_bytes())
     row = next(r for r in plan['cases'] if r['key'] == stage['key'])
     if not BoundaryExamplesObserver.validate_stage(plan, row, path, decision):
@@ -85,7 +86,7 @@ def validate_handoff(path, decision, plan, *, directory):
         raise ValueError('boundary_examples_qualification_stage_call_inventory')
     _stage(path.parent, {k: stage[k] for k in ('stage', 'report', 'journal')}, row,
         candidate_sha256(plan['identity'], backend=qualification), _sha(path.parent/'source.json'),
-        calls[-1], transport, pending_host=decision)
+        calls[-1], transport, pending_host=decision, event_source=event_source)
     return decision
 
 
@@ -133,7 +134,8 @@ def prepare_fresh(*, experiment=EXPERIMENT, keys=None):
         'scripts/qualify_role_observations.py', 'app/evaluation/role_task_outcome.py',
         'app/evaluation/role_qualification.py', 'app/evaluation/boundary_examples_qualification.py',
         'app/evaluation/golden_role_boundary_examples.py', 'scripts/role_host_identity.py',
-        'scripts/write_role_stage_decision.py', 'scripts/role_stage_review_drafts.py')
+        'scripts/write_role_stage_decision.py', 'scripts/role_stage_review_drafts.py',
+        'scripts/review_independence_contract.py', 'scripts/codex_review_event_source.py')
     plan = dict(experiment=experiment, observation_version=VERSION, identity=original['identity'],
         original15_plan_sha256=digest(compact(original)), original15_keys=original_keys,
         cases=rows, case_budgets=budgets,
@@ -207,7 +209,8 @@ def run(args):
         preparation=PREPARATION)
 
 
-def execute_prepared(args, plan, requests, *, directory, preparation, host_timing=None):
+def execute_prepared(args, plan, requests, *, directory, preparation, host_timing=None,
+                     event_source=None):
     """Shared bounded execution; callers validate their own continuation seal."""
     plan_sha = canonical_sha(plan)
     if not args.execute:
@@ -223,6 +226,7 @@ def execute_prepared(args, plan, requests, *, directory, preparation, host_timin
             raise ValueError('boundary_examples_host_timing_plan_mismatch')
         if host_timing.get('adopted') is not True or host_timing.get('mode') != TIMING_MODE:
             raise ValueError('boundary_examples_host_timing_not_adopted')
+    require_execution_event_source(plan, event_source)
     head = verify_public_ci(args.ci_run)
     directory.mkdir(parents=True, exist_ok=False)
     write_new_json(directory/'plan.json', dict(preparation_plan=plan, plan_sha256=plan_sha,
@@ -240,12 +244,12 @@ def execute_prepared(args, plan, requests, *, directory, preparation, host_timin
 
     def adjudicate(path, remaining):
         if clock is None:
-            decision = adjudicate_file(path, remaining)
+            decision = adjudicate_file(path, remaining, event_source=event_source)
         else:
             decision = clock.adjudicate(
                 path, remaining, lambda stage_path, available:
-                adjudicate_file(stage_path, available))
-        return validate_handoff(path, decision, plan, directory=directory)
+                adjudicate_file(stage_path, available, event_source=event_source))
+        return validate_handoff(path, decision, plan, directory=directory, event_source=event_source)
 
     def before_case(case_directory, row, current_plan, remaining):
         if clock is None:

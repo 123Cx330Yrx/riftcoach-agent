@@ -13,6 +13,8 @@ import hashlib
 import json
 import re
 from copy import deepcopy
+from contextlib import contextmanager
+from contextvars import ContextVar
 from pathlib import Path
 from typing import Mapping, Protocol
 
@@ -28,6 +30,29 @@ class HostReviewEventSource(Protocol):
     def fetch(self, *, event_id: str, binding: Mapping[str, object]) -> Mapping[str, object]:
         """Return the immutable completed event for this exact binding."""
         ...
+
+
+_qualification_event_source: ContextVar[HostReviewEventSource | None] = ContextVar(
+    'qualification_event_source', default=None)
+
+
+@contextmanager
+def using_host_event_source(event_source: HostReviewEventSource | None):
+    """Scope a host dependency across the frozen legacy qualification API.
+
+    That API re-enters inspect_runs without dependency arguments. A task-local
+    scope preserves its versioned code/identity and mandatory full replay; it
+    never grants acceptance or substitutes an event. The default stays closed.
+    """
+    token = _qualification_event_source.set(event_source)
+    try:
+        yield
+    finally:
+        _qualification_event_source.reset(token)
+
+
+def current_host_event_source() -> HostReviewEventSource | None:
+    return _qualification_event_source.get()
 
 
 def _fail(code: str) -> None:
@@ -109,6 +134,22 @@ def freeze_v2_identity(plan: Mapping[str, object], *, root_thread_id: str,
     )
     _registry(values)
     return values
+
+
+def require_execution_event_source(plan: Mapping[str, object],
+                                   event_source: HostReviewEventSource | None) -> None:
+    """Reject an unusable new execution before credentials or Provider IO.
+
+    This checks wiring, not host authenticity or future availability. The
+    application supplies the trusted adapter; each completed event is still
+    fetched and verified at submission and read-only qualification. Historical
+    v1 receipts remain readable, but cannot start another paid execution.
+    """
+    if plan.get('host_review_submission_mode') != MODE_V2:
+        _fail('mode_not_v2')
+    _registry(plan)
+    if event_source is None or not callable(getattr(event_source, 'fetch', None)):
+        _fail('trusted_event_fetch_required')
 
 
 def validate_primary_attestation(review: Mapping[str, object], *, plan: Mapping[str, object],

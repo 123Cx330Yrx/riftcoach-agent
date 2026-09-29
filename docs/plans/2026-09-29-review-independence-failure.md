@@ -61,3 +61,61 @@ reading，events=1344，reasoning_chars=3254，content_chars=0；没有 response
 终态或 usage。该请求按 unknown/incomplete call 计入，不重试、不补造结果。
 更正证据见
 data/evaluation/results/golden_boundary_examples_host_timed_independence_failure_correction_v1.json。
+
+## 同日后续：实际入口及原生宿主适配
+
+此前“接口已贯通、只剩外部集成”不成立。新增完整正例首次在initial阶段复现
+host_review_primary_binding_mismatch：writer用准备请求SHA，binding用实际transport请求SHA，
+二者不同；不能只修revision/final。现取实际阶段回执。event_source也已从execute_prepared
+传入adjudicate_file、validate_handoff、_stage、_case和inspect_runs。新执行的模式/身份/来源
+检查在CI、目录创建、凭据读取和Provider工厂之前；缺依赖不再先付费再失败。
+
+完整qualification会通过冻结的product API再次调用inspect_runs。直接修改该API触发
+manifest指纹漂移，已撤回该app改动；现以ContextVar作用域传递该宿主依赖，保留完整回读，
+finally恢复原上下文，无来源时v2仍拒绝。没有更新manifest、换产品版本或迁移历史资格。
+新的prepare_fresh将身份合同与原生读取器源码一起冻结；旧prepare仍回读旧封存SHA。
+
+### 原生取证候选与验证边界
+
+从安装的Codex CLI生成本机schema，并实际验证stdio app-server的thread/read、
+thread/turns/list可用。Windows的daemon生命周期命令不支持，不等于宿主API不可用。
+新scripts/codex_review_event_source.py只允许initialize和上述两个读取方法，禁止turn/start、
+thread/start、resume、fork；不会代用户重启桌面宿主或启动模型。
+
+证据来自冻结root的真实child：thread.id、parentThreadId、source.subAgent.thread_spawn
+一致；选定turn必须completed且itemsView=full；只有一条绑定任务userMessage及一条
+final_answer，任务在前、回复在后，二者binding与本次阶段逐值相等。独立正文来自最终回复，
+事件引用为child/turn/final-message；dispatch_id取原始任务item.id。raw_event_sha256由
+宿主返回的身份投影及完整turn规范化计算，不采用调用者声称的摘要。线程updatedAt/status等
+可变元数据不入该摘要。历史丢失、分页循环、错父子、未完成、无绑定旧任务、错阶段/请求、
+缺完整正文或后续原文改变均拒绝；本地event不能替代该读回。
+
+此方案尚未通过真实成功事件验收，不宣称宿主历史具有额外密码学签名或永久留存保证。
+本机真实读取本轮失败child 01a0ecfa-2af8-78e3-ac2f-4296c5b673f8，
+turn 01a0ecfa-2c95-7a22-bb26-ed4ec9b37541，被候选适配器拒绝为turn_not_completed_full。
+工程独立复核两次尝试均遇429，未完成；不反复重试、不记成代码通过或产品人审完成。
+
+调用方法：先通过review_task生成绑定任务，由独立子审查者真实完成；取其原生事件引用。
+使用CodexReadOnlyClient上下文和CodexHostReviewEventSource读取事件，再将事件中的review
+及independent_source_event传给write_independent_draft；同一来源依赖传入正式提交、批次
+入口和资格回读。执行文件路径由宿主配置提供，不由候选数据或运行目录指定。没有一条真实
+完成事件的导入/主审/回读证明之前，不开始新付费批次。
+
+### 本轮检查记录
+
+- 关联七文件：194 passed / 1 failed，1496.64秒，原JUnit保留于
+  tmp/review-identity-wiring-tests.xml。旧失败用例缺实际transport字段且预期prepared SHA，
+  修为缺字段拒绝和实际回执成功两分支，2 passed / 8.94秒。
+- v2完整十五例的实际连续执行器→draft→正式提交→封存→qualification重入通过，
+  **Provider与宿主均为离线替身，不是15/15真实模型资格**。
+- 原生schema适配器16 passed / 0.36秒；其接入实际三阶段consumer的离线测试
+  1 passed / 49.20秒，JUnit为tmp/native-review-wiring-tests.xml。
+- 第一组36 passed是上述相关测试的重叠运行，不重复累加。治理检查通过。
+- 本轮无新GLM请求；无旧批补签、重开、候选/Worker开关切换。全局路线与严格1/15不变。
+
+后续先完成工程独立复核和一条真实成功事件整链，确认实际宿主完整派发/最终消息字段；
+若字段缺失则按具体证据调整候选读取器。之后才准备新身份/同HEAD CI/累计预算/具体授权。
+完整原15后仍有自然Agent与同run真实Worker/DB/API/Workbench，以及原路线中的四块联动、
+本人Training、审美/头像、Memory、身份运维、两树整合与学习；本轮不宣称项目只剩一个问题。
+
+补充：身份合同和原生读取器加入新准备的源码冻结清单后，准备/闭批预览相关11项通过（39.61秒）；治理、编译、diff检查通过。三份JUnit已复制到C:/Users/33502/Documents/Agent/outputs/riftcoach-review-identity-2026-09-29，保留包含旧失败的原始整组结果。临时schema目录清理命令被自动审批拒绝（仅返回blocked by policy），目录保留；不改产品状态。

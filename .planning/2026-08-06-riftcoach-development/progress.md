@@ -1,3 +1,32 @@
+## 2026-09-29 独立身份整链修复与原生宿主取证
+
+纠正上一状态“接口已经贯通、只剩外部集成”的过早结论。新整链正例首先复现
+host_review_primary_binding_mismatch：准备请求摘要与实际传输请求摘要不同，初评也受影响。
+修复writer取实际阶段请求；补齐batch入口、handoff、_stage/_case/inspect_runs/qualify传递。
+新执行前置检查在CI、凭据、目录和Provider工厂前拒绝旧模式和缺来源。
+
+尝试给冻结product qualification API增加参数会触发manifest指纹漂移；已撤回该app代码
+改动，保留原字节身份。采用task-local scope跨原API回调传递宿主依赖，完整复查不跳过；
+测试覆盖嵌套/异常退出与上下文隔离，无来源时v2拒绝。
+
+七文件回归194通过/1失败，1496.64秒。失败是旧用例未给实际transport字段且断言prepared
+SHA，现拆为缺字段拒绝与真实回执成功，2通过/8.94秒。第一组36通过/86.62秒是重叠验证。
+v2完整15例使用离线Provider和独立事件替身，通过最终qualification重入；不授真实资格。
+原生host reader16通过/0.36秒；接实际三阶段writer/consumer的原生schema替身1通过/49.20秒。
+JUnit见tmp/review-identity-wiring-tests.xml（保留原失败）、tmp/native-review-wiring-tests.xml。
+
+安装的Codex app-server通过stdio实际可读thread/read和thread/turns/list；Windows daemon
+命令不支持，不是整个宿主API不可用。新只读adapter白名单拒绝turn/start等执行方法，
+从实际父子metadata、完整completed turn、绑定任务与final_answer构造证据并计算原始摘要。
+真实失败审查turn01a0ecfa-2c95-7a22-bb26-ed4ec9b37541被正确拒绝。工程复核两次429失败，
+不能记为独立通过；真实成功turn仍未验证。无新GLM请求、旧批原件不动，严格资格仍1/15。
+
+下一步是成功审查事件与导入/回读的真实证明，之后才谈新的冻结批次、公共CI与具体预算；
+不再原样重试429，不用本地event补签旧批。四块产品联动、前端审美/英雄头像等下游保持。
+
+
+补充：身份合同和原生读取器加入新准备的源码冻结清单后，准备/闭批预览相关11项通过（39.61秒）；治理、编译、diff检查通过。三份JUnit已复制到C:/Users/33502/Documents/Agent/outputs/riftcoach-review-identity-2026-09-29，保留包含旧失败的原始整组结果。临时schema目录清理命令被自动审批拒绝（仅返回blocked by policy），目录保留；不改产品状态。
+
 ## 2026-09-29 计时原型整链测试恢复，用户换号暂停
 
 实际恢复前轮误删的五种整链测试，修复make_run的result字典误作封存元组；成功后显式seal，

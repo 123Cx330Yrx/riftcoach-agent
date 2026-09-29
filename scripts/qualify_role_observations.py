@@ -100,11 +100,12 @@ def _report(value, sha):
     return report
 
 
-def _stage(arm, expected, row, candidate_sha, source_sha, call, transport, *, pending_host=None):
+def _stage(arm, expected, row, candidate_sha, source_sha, call, transport, *, pending_host=None,
+           event_source=None):
     name = expected['stage']
     path = arm / (name + '.json')
     from scripts.role_stage_review_drafts import validate_submission
-    validate_submission(path)
+    validate_submission(path, event_source=event_source)
     saved = _json(path)
     report_sha = digest(expected['report'])
     if saved != dict(expected, key=row['key'], report_sha256=report_sha):
@@ -163,7 +164,8 @@ def _stage(arm, expected, row, candidate_sha, source_sha, call, transport, *, pe
             if p != host_path or pending_host is None})
 
 
-def _case(run, row, budget, outcome, source, current, candidate_sha, requests, *, backend=qualification):
+def _case(run, row, budget, outcome, source, current, candidate_sha, requests, *, backend=qualification,
+          event_source=None):
     key, case_id = row['key'], row['key'].replace(':', '-')
     arm, transport = run / case_id, run / 'transport' / case_id
     fields = IDENTITY_FIELDS + tuple(k for k in ('source_catalog_sha256', 'schema_sha256') if k in current)
@@ -213,7 +215,8 @@ def _case(run, row, budget, outcome, source, current, candidate_sha, requests, *
     replayed = backend.replay_case(current, source, calls, include_stage_evidence=True)
     if [s['stage'] for s in replayed['stages']] != stages:
         _fail('stage_inventory_mismatch')
-    inspections = [_stage(arm, stage, row, candidate_sha, _sha(arm / 'source.json'), call, transport)
+    inspections = [_stage(arm, stage, row, candidate_sha, _sha(arm / 'source.json'), call, transport,
+        event_source=event_source)
         for stage, call in zip(replayed['stages'], calls, strict=True)]
     if outcome.get('final_report_sha256') != replayed['bindings']['final_report_sha256']:
         _fail('final_report_mismatch')
@@ -329,8 +332,11 @@ def _interrupted_prefix(run, plan, result, *, backend=qualification):
     return outcomes, completed_elapsed, boundary
 
 
-def inspect_runs(run_directories, *, evidence_root, closed_exports, profile='role'):
+def inspect_runs(run_directories, *, evidence_root, closed_exports, profile='role', event_source=None):
     """Read-only full audit, also used when revalidating an issued result."""
+    if event_source is None:
+        from scripts.review_independence_contract import current_host_event_source
+        event_source = current_host_event_source()
     if profile == 'coarse':
         from app.evaluation import coarse_role_qualification as backend
     elif profile == 'correction-scope':
@@ -413,7 +419,7 @@ def inspect_runs(run_directories, *, evidence_root, closed_exports, profile='rol
                 _fail('duplicate_or_unknown_case')
             used_keys.add(key)
             host, transport, summary, case_elapsed = _case(run, row, budget, outcome, sources[key],
-                expected[key], candidate_sha, requests, backend=backend)
+                expected[key], candidate_sha, requests, backend=backend, event_source=event_source)
             host['closed_export'] = dict(path=export_path.as_posix(), sha256=export_sha,
                 run_directory=run.relative_to(evidence_root).as_posix())
             host['completion_source'] = completion_source
@@ -431,7 +437,8 @@ def inspect_runs(run_directories, *, evidence_root, closed_exports, profile='rol
     return backend, current_plan, expected, prepared, used_keys, seals
 
 
-def qualify(run_directories, *, evidence_root, output_directory, closed_exports, profile='role'):
+def qualify(run_directories, *, evidence_root, output_directory, closed_exports, profile='role',
+            event_source=None):
     """Create-only qualification after complete read-only inspection."""
     evidence_root = Path(evidence_root).resolve()
     output = _within(evidence_root, output_directory)
@@ -439,7 +446,7 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports,
     if output.exists() or any(output.is_relative_to(run) for run in runs):
         _fail('input_or_output_inventory_invalid')
     backend, current_plan, expected, prepared, used_keys, seals = inspect_runs(runs,
-        evidence_root=evidence_root, closed_exports=closed_exports, profile=profile)
+        evidence_root=evidence_root, closed_exports=closed_exports, profile=profile, event_source=event_source)
     # All evidence is checked before the first write. Create-only output never
     # edits a closed run, even if the final original-gate validator rejects it.
     output.mkdir(parents=True, exist_ok=False)
@@ -458,7 +465,9 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports,
         provider_requests=0, review_controls_qualified=False,
         actual_product_task_qualified=False, production_admitted=False, execution_enabled=False)
     if len(rows) == 15:
-        result.update(backend.validate_qualification(result, evidence_root=evidence_root))
+        from scripts.review_independence_contract import using_host_event_source
+        with using_host_event_source(event_source):
+            result.update(backend.validate_qualification(result, evidence_root=evidence_root))
         result['status'] = 'qualified_original_review_controls'
     write_new_json(output / 'qualification.json', result)
     write_new_json(output / 'source-seals.json', dict(closed_runs=seals))

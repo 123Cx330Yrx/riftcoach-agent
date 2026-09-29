@@ -71,3 +71,10 @@ case/stage/request/response/source 绑定，以及由协作宿主产生的 compl
 逐值等于独立审查正文。`HostReviewEventSource.fetch(event_id, binding)` 已贯通草稿、正式提交和
 恢复校验，`freeze_v2_identity` 统一生成身份注册表副本，但真实宿主适配器尚未实现，故 v2
 保持 fail closed；这不是新的 Provider 资格或产品准入。
+
+同日整链复查更正：此前只覆盖了接口局部。现补齐实际请求SHA、批次调用方和严格回读，
+冻结product资格API通过task-local宿主依赖重入，保留原代码身份与全量审计。
+候选Codex原生适配器已能通过只读app-server读取实际child metadata与完整turn，验证
+真实父子/作者/任务绑定/最终正文，并从宿主记录计算摘要。离线完整15及适配整链通过；
+真实失败审查被正确拒绝，但实际成功事件未验证，两次工程复核均429，不能采用为可付费
+执行的成功证据。具体路径、验证及限制见上述身份失败审计后续段。旧批继续只读。

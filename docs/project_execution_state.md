@@ -11,47 +11,47 @@ pause_reason: "本批在 claim-scope:4 后因独立审查身份合同失败停�
 
 ## 当前行动
 
-2026-09-29真实批次已在 claim-scope:4 完成三次模型链后按合同停止；停止前已进入下一例 claim-scope:3 的 review 请求，但该请求没有形成终态。
-初评为 80/needs_revision，Flash 修订，GLM fresh 复评为 95/pass；三次回执完整、known
-48,607 tokens、unknown 0，模型报告和 transport/阶段 SHA 绑定结构回放通过。
+2026-09-29当前推进：修复独立审查身份合同的实际入口、三阶段提交和资格回读，
+并接入本机 Codex 原生只读历史接口。**尚未证明新 v2 真实独立审查成功；不启动新付费批次。**
+严格资格仍为 1.5.5 历史 **1/15**，完整原15、自然 Agent、真实产品消费和8E均未完成。
 
-本批出现新的审查身份合同失败：三阶段 independent review 与 primary 决定均由同一主执行主体
-写入，没有第二个受审计独立审查主体或可验证签署。现有 JSON/append-only/绑定校验能通过，
-但不能把 reviewer 字符串当作独立人审证据。该失败不是 Provider、语义、来源、传输或预算失败；
-claim-scope:4 的模型事实证据保留，但不授 review_controls 资格，不计入严格 1.5.5。
-claim-scope:3-ready 信号生成后，主进程在下一例 review 请求已发出且流停在 reading 时被停止；该调用无 response、终态或 usage，按 1 个 unknown/incomplete call 记账，保留原始回执，不重试。
+### 已确认事实与本轮修复
 
-原始 stage/journal/transport/host/primary/independent/decision/task-observation/case-completed/
-plan/handoff 均保留不改。只读审计：
-data/evaluation/results/golden_boundary_examples_host_timed_independence_failure_audit_v1.json
-（SHA fe2b31d1a05948cb230d17c8618ac88c48cb0ff6bff7d2bacc15a2e732691c6d）。
-更正审计 golden_boundary_examples_host_timed_independence_failure_correction_v1.json
-（SHA e2915c8adfdb13e45f0caa8a9b4c3441f9048bb075d2cb193670b79c7eef9f77）记录下一例
-已发出的 1 个 unknown/incomplete review 请求；不能按零调用或零费用处理。
-后续先做离线、可审计的独立审查主体/签署边界及判别测试；旧批不得补签或重开。新的真实执行
-需新冻结身份、重新核预算，并在新的付费授权明确后进行。模型/high/1.5.5、产品准入和 8E
-状态不变；真实原15、自然 Agent、DB/API/Workbench 和四块产品联动仍未完成。
+- 停止批 claim-scope:4 的真实模型链为80/needs_revision→Flash实际修订→95/pass，
+  3个完整回执、48,607 known tokens；三阶段独立稿与主审实际由同主体写入，不能授资格。
+  后续claim-scope:3已发出1个无终态/usage请求，记unknown/incomplete，不能称零调用。
+  原件和两个更正审计不改，旧批不补签、不重开，模型/high/1.5.5与采用标准不变。
+- 更正此前“接口已贯通、仅剩外部适配器”的说法：整链正例证明主审使用了准备请求SHA，
+  而不是实际调用回执SHA，首轮也会失败；批次入口、handoff、严格回读也漏传事件源。
+  现统一使用实际阶段请求，并贯通这些调用方。新执行在CI、凭据加载、目录创建和Provider
+  工厂之前拒绝v1、缺失主体或事件源；预览和旧封存仍只读兼容。
+- 冻结产品资格API会重新进入严格回读；宿主依赖通过可恢复的task-local scope传递，
+  并保留完整复查。未改产品资格代码、manifest、模型请求或历史资格身份。退出/异常后
+  依赖清除，无来源时新v2仍拒绝。入口检查证明依赖存在，不保证未来审查服务可用。
+- 新scripts/codex_review_event_source.py通过安装的app-server读取子线程元数据与完整turn：
+  验证实际父子关系、作者、completed终态、派发任务/最终回复的同一绑定、完整review，
+  从宿主原始记录计算摘要；不读取运行目录里的自制event，不提供turn/start能力。
+  本机真实读取已成功，并正确拒绝本轮429失败的审查turn；成功审查事件尚未验证。
 
-2026-09-29离线裁决已撤回“同一进程自生成双 Ed25519 密钥”的伪独立方案；它只能证明密钥不同，
-不能证明审查主体独立。当前保留的 v2 合同改为要求协作宿主的实际完成事件，绑定冻结主体、派发
-关系、plan/case/stage/response/source/request 和完整审查正文；宿主取证适配器尚未实现，因此
-新 v2 路径 fail closed。新增合同边界测试通过，未调用 Provider，未改写本批任何回执；v1 仅保留
-旧封存只读兼容，不产生新资格。
+### 验证及边界
 
-身份冻结现在由 `freeze_v2_identity` 统一生成副本：只有显式 v2 模式才会写入 root/independent
-主体注册表和宿主提供方标识，并在主体相同、模式缺失或输入不完整时拒绝；调用方仍必须重新计算
-plan SHA，且该 helper 不执行宿主取证或 Provider 请求。
+- 关联七文件回归：194通过、1条旧测试失败（旧断言省略实际请求凭据）。修正该测试后
+  两种分支均通过；没有隐藏失败或重新运行整组来冲淡结果。
+- 新v2完整十五例的连续执行、正式提交、封存、资格回读通过，均使用离线Provider/宿主
+  替身，**不是新15/15真实资格**。原生schema适配器另有16项通过，接实际三阶段消费链
+  的离线测试1项通过；第一组36项是重叠验证，不与上述结果重复累加。
+- 独立代码复核本轮两次尝试均遇429，未完成；本轮没有新增GLM Provider请求。
+  详情与证据入口：docs/plans/2026-09-29-review-independence-failure.md。
 
-宿主取证接口已贯通 draft、正式提交和恢复校验：`HostReviewEventSource.fetch(event_id, binding)`。
-没有真实宿主实现时仍拒绝 v2；代码不从运行目录读取自制 event 文件。新增接口成功/篡改边界测试
-通过，仍不能把离线替身当作真实独立主体或产品准入证据。
+### 下一动作
 
-下一项是外部集成边界，而不是继续扩展离线伪实现：由实际协作宿主提供按 `event_id + binding`
-查询 immutable completed event 的适配器，并用一条真实宿主事件做端到端回放；适配器必须验证派发
-关系、作者主体、终态和原始事件摘要。适配器接入前，v2 继续拒绝新提交，不能启动 14 例或任何
-新的付费批次。
-v2 primary 记录现在由 writer 自动生成 root 绑定并在恢复时复核；这只证明主审正文一致性，仍不能
-替代 independent 的宿主完成事件。
+在协作审查能够实际完成时，先完成本次代码独立复核及一条新v2工程审查任务的真实宿主
+取证→导入→主审→回读，确认原生历史确实保留完整派发与最终正文；当前原生读取器仍是
+候选适配器，不能把只读连接和拒绝测试当成成功接入。不再重复相同429尝试。
+通过后才准备新冻结身份、同HEAD公共CI、累计预算和具体付费授权；不沿用已关闭14例的
+授权启动新批。原15真实资格完成后依次验证自然Agent生成/工具/纠错及同run真实Worker、
+DB、API、Workbench消费。Coach/Review/Training/Evidence联动、前端审美/必要重做/英雄头像、
+Memory、身份运维、两树整合与学习仍在活动计划，不因本轮身份修复被省略。
 
 以下为历史记录；当前行动以本段为准。
 

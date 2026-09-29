@@ -44,7 +44,7 @@ def make_run(tmp_path, monkeypatch):
     sources = {f['key']: source for f, source in q.frozen_cases()[0]}
     counter = [0]
 
-    def build(keys=('claim-scope:1', 'claim-scope:4'), *, write_fault=None, before_case=None, clock=lambda:0, profile='role', inspect_fault=None, host_process=False, host_drafts=False):
+    def build(keys=('claim-scope:1', 'claim-scope:4'), *, write_fault=None, before_case=None, clock=lambda:0, profile='role', inspect_fault=None, host_process=False, host_drafts=False, host_event_source=None):
         from app.runtime.coach_contract import ROLE_COACH_CONTRACT
         backend, workflow, observer, contract = q, Workflow, Observer, ROLE_COACH_CONTRACT
         if profile == 'coarse':
@@ -71,6 +71,13 @@ def make_run(tmp_path, monkeypatch):
         if host_drafts:
             from scripts.role_stage_review_drafts import MODE, MODE_FIELD
             observation[MODE_FIELD] = MODE
+        if host_event_source is not None:
+            assert host_drafts and profile == 'boundary-examples'
+            from scripts.review_independence_contract import MODE_V2, freeze_v2_identity
+            observation[MODE_FIELD] = MODE_V2
+            observation = freeze_v2_identity(observation, root_thread_id='offline-root-thread',
+                primary_id=getattr(host_event_source, 'primary_id', 'offline-primary'),
+                independent_id='offline-independent')
         write_new_json(run / 'plan.json', dict(preparation_plan=observation,
             plan_sha256=audit._canonical_sha(observation), head_sha='a' * 40, ci_run='123'))
         for row in rows:
@@ -135,11 +142,20 @@ def make_run(tmp_path, monkeypatch):
                     from scripts.role_stage_review_drafts import write_independent_draft
                     from scripts.run_role_task_observation import adjudicate_file
                     def publish(_):
-                        draft = write_independent_draft(run, key, name, independent, profile=profile,
-                            reason='Offline explicit independent confirmation.', confirmed=True)
+                        source_options = {}
+                        review = independent
+                        if host_event_source is not None:
+                            from scripts.role_stage_review_drafts import binding, _review
+                            bound = binding(run, key, name, profile=profile, live=True)
+                            review = _review(deepcopy(independent), bound, True)
+                            review = host_event_source.attach(review, bound)
+                            source_options['event_source'] = host_event_source
+                        draft = write_independent_draft(run, key, name, review, profile=profile,
+                            reason='Offline explicit independent confirmation.', confirmed=True, **source_options)
                         write_decision(run, key, name, notes, profile=profile,
-                            independent_draft_sha256=draft['draft_sha256'])
-                    decision = adjudicate_file(path, remaining, clock=clock, sleep=publish)
+                            independent_draft_sha256=draft['draft_sha256'], **source_options)
+                    decision = adjudicate_file(path, remaining, clock=clock, sleep=publish,
+                        **({'event_source': host_event_source} if host_event_source is not None else {}))
                 elif host_process:
                     import subprocess
                     import sys
@@ -158,7 +174,8 @@ def make_run(tmp_path, monkeypatch):
                     from scripts.run_correction_scope_qualification import validate_handoff
                 else:
                     from scripts.run_coarse_role_qualification import validate_handoff
-                return validate_handoff(path, decision, observation, directory=run)
+                return validate_handoff(path, decision, observation, directory=run,
+                    **({'event_source': host_event_source} if host_event_source is not None else {}))
             write_new_json(path.parent / ('primary-' + name + '-review.json'), primary)
             decision = dict(response_sha256=raw_sha, accepted=True, candidate_sha256=digest(compact(plan['identity'])),
                 input_sha256=row['input_sha256'], key=key, target_and_correction_valid=True,

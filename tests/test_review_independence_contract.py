@@ -152,3 +152,19 @@ def test_freeze_v2_identity_returns_a_frozen_registry_copy():
     assert original['identity']['workflow_id'] == 'correction-scope'
     assert 'root_thread_id' not in original
     assert 'review_event_provider' not in original
+
+
+def test_host_dependency_scope_resets_after_nested_failure_and_does_not_leak():
+    from contextvars import Context
+    from scripts.review_independence_contract import current_host_event_source, using_host_event_source
+    first, second = object(), object()
+    assert current_host_event_source() is None
+    with using_host_event_source(first):
+        assert current_host_event_source() is first
+        assert Context().run(current_host_event_source) is None
+        with pytest.raises(RuntimeError):
+            with using_host_event_source(second):
+                assert current_host_event_source() is second
+                raise RuntimeError('offline failure')
+        assert current_host_event_source() is first
+    assert current_host_event_source() is None

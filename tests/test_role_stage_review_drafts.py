@@ -405,7 +405,8 @@ def test_v2_without_host_event_fails_closed_before_submission(pending):
     assert not (arm/'decision-initial.json').exists()
 
 
-def test_v2_builds_root_attestation_for_primary_record(pending):
+@pytest.mark.parametrize('include_transport', [False, True])
+def test_v2_builds_root_attestation_for_actual_issued_request(pending, include_transport):
     run, arm, independent, notes = pending
     saved = read(run/'plan.json')
     plan = saved['preparation_plan']
@@ -420,17 +421,22 @@ def test_v2_builds_root_attestation_for_primary_record(pending):
     )
     saved['plan_sha256'] = canonical_sha(plan)
     (run/'plan.json').write_text(json.dumps(saved), encoding='utf-8')
+    change(arm/'initial-host-required.json', lambda value: value.update(
+        host_review_submission_mode=drafts.MODE_V2))
+    if not include_transport:
+        with pytest.raises(ValueError, match='binding_hash_invalid'):
+            writer.build_formal_decision(run, 'claim-scope:1', 'initial', notes, independent,
+                independent_sha256=hashlib.sha256(drafts.encoded(independent)).hexdigest(),
+                profile='correction-scope')
+        return
+    bound = drafts.binding(run, 'claim-scope:1', 'initial', profile='correction-scope')
+    independent = drafts._review(independent, bound, True)
     primary, _ = writer.build_formal_decision(
         run, 'claim-scope:1', 'initial', notes, independent,
         independent_sha256=hashlib.sha256(drafts.encoded(independent)).hexdigest(),
         profile='correction-scope')
     from scripts.review_independence_contract import validate_primary_attestation
-    row = next(row for row in plan['cases'] if row['key'] == 'claim-scope:1')
-    validate_primary_attestation(primary, plan=plan, bound={
-        'plan_sha256': saved['plan_sha256'], 'key': 'claim-scope:1', 'stage': 'initial',
-        'response_sha256': hashlib.sha256((arm/'initial.json').read_bytes()).hexdigest(),
-        'report_sha256': primary['report_sha256'], 'request_sha256': row['request_sha256'],
-    })
+    validate_primary_attestation(primary, plan=plan, bound=bound)
 
 
 def test_final_submission_validation_cannot_extend_original_clock(pending, monkeypatch):
