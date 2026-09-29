@@ -45,6 +45,11 @@ plan SHA，且该 helper 不执行宿主取证或 Provider 请求。
 宿主取证接口已贯通 draft、正式提交和恢复校验：`HostReviewEventSource.fetch(event_id, binding)`。
 没有真实宿主实现时仍拒绝 v2；代码不从运行目录读取自制 event 文件。新增接口成功/篡改边界测试
 通过，仍不能把离线替身当作真实独立主体或产品准入证据。
+
+下一项是外部集成边界，而不是继续扩展离线伪实现：由实际协作宿主提供按 `event_id + binding`
+查询 immutable completed event 的适配器，并用一条真实宿主事件做端到端回放；适配器必须验证派发
+关系、作者主体、终态和原始事件摘要。适配器接入前，v2 继续拒绝新提交，不能启动 14 例或任何
+新的付费批次。
 v2 primary 记录现在由 writer 自动生成 root 绑定并在恢复时复核；这只证明主审正文一致性，仍不能
 替代 independent 的宿主完成事件。
 
