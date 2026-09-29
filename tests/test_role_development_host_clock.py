@@ -4,7 +4,9 @@ import json
 import pytest
 
 from app.evaluation.golden_journal import write_new_json
-from scripts.role_development_host_clock import DevelopmentHostClock, TIMING_MODE
+from scripts.role_development_host_clock import (
+    DevelopmentHostClock, TIMING_MODE, validate_adopted_timing,
+)
 from scripts import qualify_role_observations as audit
 from scripts.run_role_task_observation import adjudicate_file, await_case_ready
 from tests import test_role_observation_qualification as fixtures
@@ -143,6 +145,28 @@ def test_unmarked_host_clock_receipts_are_rejected_at_seal(make_run, tmp_path):
         audit.qualify([run], evidence_root=tmp_path,
             output_directory=tmp_path/'audit-with-clock', closed_exports=[sealed],
             profile='boundary-examples')
+
+
+def test_adopted_host_clock_requires_bound_receipts_and_checks_clock_equation(tmp_path):
+    run = tmp_path/'run'
+    arm = run/'claim-scope-4'
+    arm.mkdir(parents=True)
+    stage = arm/'initial.json'
+    write_new_json(stage, dict(stage='initial', report='offline', journal=None))
+    plan_sha = 'a' * 64
+    plan = dict(host_review_timing=dict(mode=TIMING_MODE, adopted=True,
+        max_host_seconds=4000))
+    clock = DevelopmentHostClock(run, max_host_seconds=4000,
+        qualification_adopted=True, plan_sha256=plan_sha)
+    clock.adjudicate(stage, 900, lambda _path, _available: dict(accepted=True))
+    checked = validate_adopted_timing(run, plan, saved_plan_sha256=plan_sha)
+    assert checked['waits'] == 1 and checked['host_elapsed_seconds'] == 0
+    finished = run/'development-host-clock/0001-finished.json'
+    value = json.loads(finished.read_bytes())
+    value['wall_elapsed_seconds'] = 1
+    finished.write_text(json.dumps(value), encoding='utf-8')
+    with pytest.raises(ValueError, match='clock_inconsistent'):
+        validate_adopted_timing(run, plan, saved_plan_sha256=plan_sha)
 
 
 def test_case_readiness_wait_uses_host_budget_and_same_bound_handoff(tmp_path):

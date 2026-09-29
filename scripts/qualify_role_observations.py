@@ -16,6 +16,7 @@ from app.evaluation.golden_journal import write_new_json
 from app.evaluation.golden_review_experiment import compact, digest
 from app.evaluation import role_qualification as qualification
 from app.evaluation.role_task_outcome import ReportAssessment, StageAssessment, VERSION, stage_identity
+from scripts.role_development_host_clock import validate_adopted_timing, TIMING_MODE
 
 CHECKS = ('facts_and_sources_correct', 'correct_content_preserved',
           'identity_and_goal_preserved', 'true_errors_fixed')
@@ -79,12 +80,6 @@ def _seal(run, export_path, expected_sha, evidence_root):
     hashes = export.get('original_file_sha256')
     if not isinstance(hashes, dict) or not hashes:
         _fail('closed_export_inventory_missing')
-    # A development-only host clock excludes human waiting from the active
-    # task budget.  It is deliberately not part of the adopted continuous
-    # qualification contract; reject its durable evidence even if an adapter
-    # forgot to add the plan marker.
-    if any(name.startswith('development-host-clock/') for name in hashes):
-        _fail('unadopted_host_timing')
     actual = {p.relative_to(run).as_posix() for p in run.rglob('*') if p.is_file()}
     if actual != set(hashes):
         _fail('sealed_file_inventory_mismatch')
@@ -362,9 +357,19 @@ def inspect_runs(run_directories, *, evidence_root, closed_exports, profile='rol
         hashes = _seal(run, export_path, export_sha, evidence_root)
         saved = _json(run / 'plan.json')
         plan = saved['preparation_plan']
+        timing_files = any(name.startswith('development-host-clock/') for name in hashes)
         if 'host_review_timing' in plan:
-            # The prototype may exclude developer waiting from its clock.
-            # It cannot silently satisfy the adopted continuous-wall-time gate.
+            if plan['host_review_timing'].get('mode') != TIMING_MODE:
+                _fail('unadopted_host_timing')
+            try:
+                timing = validate_adopted_timing(run, plan, saved_plan_sha256=saved.get('plan_sha256'))
+            except ValueError as exc:
+                _fail(str(exc).removeprefix('role_observation_'))
+            if not timing_files:
+                _fail('host_timing_receipts_missing')
+        elif timing_files:
+            # Durable timing files without an adopted plan marker are never
+            # allowed to masquerade as the old continuous-wall-time contract.
             _fail('unadopted_host_timing')
         if (plan.get('identity') != current_plan['identity']
                 or ('original15_plan_sha256' in plan and plan['original15_plan_sha256'] != digest(compact(current_plan)))
