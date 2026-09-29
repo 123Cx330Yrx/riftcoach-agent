@@ -29,7 +29,8 @@ make_run带inspect_fault时返回结果字典，正常分支先核完成/真实�
 
 资格门现在只接受明确的host_review_timing adopted=true，并回读封存中的
 development-host-clock目录：policy必须绑定保存的plan_sha256，等待/结束文件必须成对连续，
-阶段回执的key和response SHA必须对应实际文件，且每段与累计记录满足wall=active+host。
+阶段回执的key和response SHA必须对应实际文件，case_ready还必须对应计划中的request SHA，
+且每段与累计记录满足wall=active+host；阶段剩余active预算不能超过批次上限。
 未采用的计时原型、漏计划标记、缺失/篡改记录即使能算出active耗时，也不能冒充旧continuous-wall资格。
 已闭remaining只读预览保存原执行代码摘要，重新构造身份/请求/预算比较，拒绝历史漂移；
 目录或封存存在即拒绝重新执行，不给旧批添加批准记录。

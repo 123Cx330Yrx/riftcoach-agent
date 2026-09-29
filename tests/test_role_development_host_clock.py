@@ -155,7 +155,8 @@ def test_adopted_host_clock_requires_bound_receipts_and_checks_clock_equation(tm
     write_new_json(stage, dict(stage='initial', report='offline', journal=None))
     plan_sha = 'a' * 64
     plan = dict(host_review_timing=dict(mode=TIMING_MODE, adopted=True,
-        max_host_seconds=4000))
+        max_host_seconds=4000), cases=[dict(key='claim-scope:4',
+        request_sha256='b' * 64)], batch_budget=dict(max_seconds=900))
     clock = DevelopmentHostClock(run, max_host_seconds=4000,
         qualification_adopted=True, plan_sha256=plan_sha)
     clock.adjudicate(stage, 900, lambda _path, _available: dict(accepted=True))

@@ -172,13 +172,27 @@ def validate_adopted_timing(run_directory, plan, *, saved_plan_sha256):
                 or end['active_elapsed_seconds'] < previous_active
                 or cumulative > max_host + .01):
             raise ValueError('role_observation_host_timing_clock_inconsistent')
+        key = binding.get('key')
+        case_rows = {str(row.get('key')).replace(':', '-'): row
+                     for row in plan.get('cases', []) if isinstance(row, dict)}
+        row = case_rows.get(key)
+        if row is None:
+            raise ValueError('role_observation_host_timing_case_binding')
+        remaining_active = binding.get('remaining_active_seconds')
+        if (type(remaining_active) not in (int, float)
+                or not math.isfinite(remaining_active) or remaining_active <= 0
+                or remaining_active > plan.get('batch_budget', {}).get('max_seconds', 0) + .01):
+            raise ValueError('role_observation_host_timing_active_budget')
         if binding.get('kind') == 'stage':
-            key = binding.get('key')
             stage = binding.get('stage')
             response = Path(run_directory) / str(key) / f'{stage}.json'
-            if not response.is_file() or hashlib.sha256(response.read_bytes()).hexdigest() != binding.get('response_sha256'):
+            if (stage not in {'initial', 'revision', 'final'} or not response.is_file()
+                    or hashlib.sha256(response.read_bytes()).hexdigest() != binding.get('response_sha256')):
                 raise ValueError('role_observation_host_timing_stage_binding')
-        elif binding.get('kind') != 'case_ready':
+        elif binding.get('kind') == 'case_ready':
+            if binding.get('request_sha256') != row.get('request_sha256'):
+                raise ValueError('role_observation_host_timing_case_request_binding')
+        else:
             raise ValueError('role_observation_host_timing_binding_kind')
         previous_host = cumulative
         previous_active = end['active_elapsed_seconds']
