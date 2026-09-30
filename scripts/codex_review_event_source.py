@@ -6,6 +6,7 @@ The executable is supplied by the operator, not by the candidate run.
 from copy import deepcopy
 import hashlib
 import json
+import os
 from pathlib import Path
 import queue
 import subprocess
@@ -24,8 +25,11 @@ class CodexReadOnlyClient:
     """Bounded stdio session using the installed app-server's native schema."""
     METHODS = frozenset(('initialize', 'thread/read', 'thread/turns/list'))
 
-    def __init__(self, executable, *, timeout_seconds=15):
+    def __init__(self, executable, *, timeout_seconds=15, session_root=None):
         self.executable = str(Path(executable).resolve(strict=True))
+        # Operator/host configuration, never a path accepted from a run plan.
+        self.session_root = Path(session_root if session_root is not None else
+            Path(os.environ.get('CODEX_HOME', Path.home()/'.codex'))/'sessions').resolve()
         if not 0 < timeout_seconds <= 60:
             _fail('timeout_invalid')
         self.timeout = timeout_seconds
@@ -88,6 +92,101 @@ class CodexReadOnlyClient:
                 if 'error' in message or not isinstance(message.get('result'), dict):
                     _fail('request_failed')
                 return message['result']
+
+    def read_collaboration_dispatch(self, thread, turn, final):
+        """Read an omitted inter-agent input from the host-owned rollout.
+
+        Current app-server turn views omit response_item.agent_message. The
+        native thread selects its backing file; its session, turn and final
+        response must agree with the read-only API. This has the same local
+        history trust boundary as app-server, not cryptographic tamper proof.
+        """
+        try:
+            path = Path(thread['path']).resolve(strict=True)
+            if (not path.is_relative_to(self.session_root) or path.suffix != '.jsonl'
+                    or path.stat().st_size > 128 * 1024 * 1024):
+                _fail('rollout_path_invalid')
+            records = [json.loads(line) for line in path.read_text(encoding='utf-8').splitlines()]
+        except (OSError, KeyError, TypeError, ValueError) as exc:
+            raise ValueError('codex_review_host_rollout_unavailable') from exc
+        if not records or records[0].get('type') != 'session_meta':
+            _fail('rollout_session_missing')
+        meta = records[0].get('payload', {})
+        spawn = thread['source']['subAgent']['thread_spawn']
+        agent_path = spawn.get('agent_path')
+        if (meta.get('id') != thread['id'] or meta.get('parent_thread_id') != thread['parentThreadId']
+                or meta.get('source', {}).get('subagent', {}).get('thread_spawn') != spawn
+                or not isinstance(agent_path, str) or not agent_path.startswith('/root/')
+                or meta.get('agent_path') != agent_path):
+            _fail('rollout_session_mismatch')
+        parent_path = agent_path.rsplit('/', 1)[0]
+        dispatches, finals, completed_items = [], [], []
+        for index, record in enumerate(records):
+            payload = record.get('payload', {})
+            if record.get('type') == 'event_msg' and payload.get('type') == 'item_completed':
+                item = payload.get('item', {})
+                if item.get('id') == final['id']:
+                    content = item.get('content', [])
+                    if (payload.get('thread_id') != thread['id']
+                            or payload.get('turn_id') != turn['id']
+                            or item.get('type') != 'AgentMessage'
+                            or item.get('phase') != 'final_answer' or not content
+                            or any(v.get('type') != 'Text' or not isinstance(v.get('text'), str) for v in content)
+                            or ''.join(v['text'] for v in content) != final['text']):
+                        _fail('rollout_final_membership_mismatch')
+                    completed_items.append((index, record))
+            if record.get('type') != 'response_item':
+                continue
+            metadata = payload.get('internal_chat_message_metadata_passthrough', {})
+            if payload.get('type') == 'agent_message' and metadata.get('turn_id') == turn['id']:
+                content = payload.get('content', [])
+                if not content or content[0].get('type') != 'input_text':
+                    continue
+                text = content[0].get('text', '')
+                prefix = ('Message Type: NEW_TASK' + chr(10) + 'Task name: ' + agent_path
+                    + chr(10) + 'Sender: ' + parent_path + chr(10) + 'Payload:' + chr(10))
+                if not text.startswith(prefix):
+                    continue  # Ordinary follow-up messages are not a new dispatch.
+                if (payload.get('author') != parent_path or payload.get('recipient') != agent_path
+                        or not isinstance(payload.get('id'), str) or not payload['id']):
+                    _fail('rollout_dispatch_author')
+                if any(v.get('type') == 'encrypted_content' for v in content):
+                    # A local task or the answer cannot replace the opaque host binding.
+                    task = None
+                else:
+                    if len(content) != 1:
+                        _fail('rollout_dispatch_format')
+                    try:
+                        task = json.loads(text[len(prefix):])
+                    except ValueError:
+                        _fail('rollout_task_json')
+                dispatches.append((index, record, task))
+            if payload.get('id') == final['id']:
+                content = payload.get('content', [])
+                if (payload.get('type') != 'message' or payload.get('role') != 'assistant'
+                        or payload.get('phase') != 'final_answer' or not content
+                        or any(v.get('type') != 'output_text' or not isinstance(v.get('text'), str) for v in content)
+                        or ''.join(v['text'] for v in content) != final['text']):
+                    _fail('rollout_final_mismatch')
+                finals.append((index, metadata.get('turn_id')))
+        if (len(dispatches) != 1 or len(finals) != 1 or len(completed_items) > 1
+                or dispatches[0][0] >= finals[0][0]):
+            _fail('rollout_dispatch_or_final_ambiguous')
+        if completed_items and completed_items[0][0] <= dispatches[0][0]:
+            _fail('rollout_final_membership_order')
+        # Private transport turn IDs need the native item's exact API membership.
+        use_membership = finals[0][1] != turn['id']
+        if use_membership and len(completed_items) != 1:
+            _fail('rollout_final_membership_missing')
+        _, record, task = dispatches[0]
+        if task is None:
+            _fail('rollout_dispatch_encrypted')
+        raw = dict(
+            session={k: meta[k] for k in ('id', 'parent_thread_id', 'source', 'agent_path')},
+            dispatch=record)
+        if use_membership:
+            raw['final_membership'] = completed_items[0][1]
+        return dict(id=record['payload']['id'], task=task, raw=raw)
 
     def close(self):
         if self.process is None:
@@ -169,15 +268,24 @@ class CodexHostReviewEventSource:
         items = turn.get('items', [])
         users = [item for item in items if item.get('type') == 'userMessage']
         finals = [item for item in items if item.get('type') == 'agentMessage' and item.get('phase') == 'final_answer']
-        if len(users) != 1 or len(finals) != 1 or finals[0].get('id') != message_id:
+        if len(users) > 1 or len(finals) != 1 or finals[0].get('id') != message_id:
             _fail('dispatch_or_final_ambiguous')
-        content = users[0].get('content', [])
-        if len(content) != 1 or content[0].get('type') != 'text' or not users[0].get('id'):
-            _fail('dispatch_format')
-        if items.index(users[0]) >= items.index(finals[0]):
-            _fail('dispatch_order')
+        proof = None
+        if users:
+            content = users[0].get('content', [])
+            if len(content) != 1 or content[0].get('type') != 'text' or not users[0].get('id'):
+                _fail('dispatch_format')
+            if items.index(users[0]) >= items.index(finals[0]):
+                _fail('dispatch_order')
+            dispatch_id = users[0]['id']
+        else:
+            reader = getattr(self.client, 'read_collaboration_dispatch', None)
+            if not callable(reader):
+                _fail('native_dispatch_reader_required')
+            proof = reader(thread, turn, finals[0])
+            dispatch_id = proof['id']
         try:
-            task = json.loads(content[0]['text'])
+            task = json.loads(content[0]['text']) if users else proof['task']
             answer = json.loads(finals[0]['text'])
         except (KeyError, TypeError, ValueError) as exc:
             raise ValueError('codex_review_host_review_json_required') from exc
@@ -189,7 +297,9 @@ class CodexHostReviewEventSource:
         if not isinstance(review, dict) or any(k in review for k in ('independent_source_event', 'primary_attestation')):
             _fail('review_body_invalid')
         raw = dict(thread={k: thread[k] for k in ('id', 'parentThreadId', 'source')}, turn=turn)
+        if proof is not None:
+            raw['collaboration_dispatch'] = proof['raw']
         return dict(schema_version=contract.VERSION, event_kind=contract.EVENT_KIND, state='completed',
-            event_id=event_id, dispatch_id=users[0]['id'], author_principal_id=self.independent,
+            event_id=event_id, dispatch_id=dispatch_id, author_principal_id=self.independent,
             root_thread_id=self.root, binding=expected, review_sha256=contract.review_digest(review),
             raw_event_sha256=hashlib.sha256(contract.canonical_json(raw)).hexdigest(), review=deepcopy(review))

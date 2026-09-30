@@ -440,6 +440,9 @@ def inspect_runs(run_directories, *, evidence_root, closed_exports, profile='rol
 def qualify(run_directories, *, evidence_root, output_directory, closed_exports, profile='role',
             event_source=None):
     """Create-only qualification after complete read-only inspection."""
+    from scripts.review_independence_contract import current_host_event_source, using_host_event_source
+    if event_source is None:
+        event_source = current_host_event_source()
     evidence_root = Path(evidence_root).resolve()
     output = _within(evidence_root, output_directory)
     runs = [_within(evidence_root, p) for p in run_directories]
@@ -447,6 +450,15 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports,
         _fail('input_or_output_inventory_invalid')
     backend, current_plan, expected, prepared, used_keys, seals = inspect_runs(runs,
         evidence_root=evidence_root, closed_exports=closed_exports, profile=profile, event_source=event_source)
+    # Inspection remains read-only and version-compatible. Issuing new evidence
+    # is a different operation: a historical/local v1 seal cannot acquire v2
+    # independent-review qualification merely by choosing a new output path.
+    from scripts.review_independence_contract import MODE_V2, require_execution_event_source
+    for run in runs:
+        saved_plan = _json(run/'plan.json')['preparation_plan']
+        if saved_plan.get('host_review_submission_mode') != MODE_V2:
+            _fail('new_qualification_requires_v2')
+        require_execution_event_source(saved_plan, event_source)
     # All evidence is checked before the first write. Create-only output never
     # edits a closed run, even if the final original-gate validator rejects it.
     output.mkdir(parents=True, exist_ok=False)
@@ -465,7 +477,6 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports,
         provider_requests=0, review_controls_qualified=False,
         actual_product_task_qualified=False, production_admitted=False, execution_enabled=False)
     if len(rows) == 15:
-        from scripts.review_independence_contract import using_host_event_source
         with using_host_event_source(event_source):
             result.update(backend.validate_qualification(result, evidence_root=evidence_root))
         result['status'] = 'qualified_original_review_controls'

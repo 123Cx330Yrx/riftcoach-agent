@@ -234,9 +234,13 @@ def test_remaining_closed_preview_rejects_budget_drift(monkeypatch):
 
 
 def test_full15_actual_executor_drafts_and_strict_gate(make_run,tmp_path):
+    from tests.test_review_independence_integration import OfflineHostEvents
+    from scripts.review_independence_contract import using_host_event_source
+    source = OfflineHostEvents()
     plan,_ = q.prepare_qualification()
-    run,sealed = make_run(tuple(r['key'] for r in plan['cases']),profile=q.PROFILE,host_drafts=True)
-    result = audit.qualify([run],evidence_root=tmp_path,output_directory=tmp_path/'audit',closed_exports=[sealed],profile=q.PROFILE)
+    run,sealed = make_run(tuple(r['key'] for r in plan['cases']),profile=q.PROFILE,host_drafts=True,host_event_source=source)
+    with using_host_event_source(source):
+        result = audit.qualify([run],evidence_root=tmp_path,output_directory=tmp_path/'audit',closed_exports=[sealed],profile=q.PROFILE)
     assert result['accepted_inputs'] == 15 and result['review_controls_qualified']
     assert not result['production_admitted'] and not result['actual_product_task_qualified']
     change(run/'claim-scope-4/independent-final-review.json',lambda d:d.update(accepted=False))
@@ -245,8 +249,8 @@ def test_full15_actual_executor_drafts_and_strict_gate(make_run,tmp_path):
 
 def test_saved_handoff_in_separate_process(make_run,tmp_path):
     run,sealed = make_run(('claim-scope:4',),profile=q.PROFILE,host_process=True)
-    result = audit.qualify([run],evidence_root=tmp_path,output_directory=tmp_path/'audit',closed_exports=[sealed],profile=q.PROFILE)
-    assert result['validated_inputs'] == 1 and not result['review_controls_qualified']
+    result = audit.inspect_runs([run],evidence_root=tmp_path,closed_exports=[sealed],profile=q.PROFILE)
+    assert result[4] == {'claim-scope:4'}  # Read-only legacy replay; not new admission.
 
 
 @pytest.mark.parametrize('from_profile,to_profile',[('correction-scope','boundary-examples'),('boundary-examples','correction-scope')])

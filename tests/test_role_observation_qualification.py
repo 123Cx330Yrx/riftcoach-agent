@@ -75,9 +75,10 @@ def make_run(tmp_path, monkeypatch):
             assert host_drafts and profile == 'boundary-examples'
             from scripts.review_independence_contract import MODE_V2, freeze_v2_identity
             observation[MODE_FIELD] = MODE_V2
-            observation = freeze_v2_identity(observation, root_thread_id='offline-root-thread',
+            observation = freeze_v2_identity(observation,
+                root_thread_id=getattr(host_event_source, 'root_thread_id', 'offline-root-thread'),
                 primary_id=getattr(host_event_source, 'primary_id', 'offline-primary'),
-                independent_id='offline-independent')
+                independent_id=getattr(host_event_source, 'independent_id', 'offline-independent'))
         write_new_json(run / 'plan.json', dict(preparation_plan=observation,
             plan_sha256=audit._canonical_sha(observation), head_sha='a' * 40, ci_run='123'))
         for row in rows:
@@ -407,8 +408,48 @@ def test_partial_completion_cannot_fabricate_a_timed_execution(make_run,tmp_path
     assert not (tmp_path/'audit').exists()
 
 
+def legacy_qualification_fixture(run_directories, *, evidence_root, output_directory, closed_exports, profile='role',
+            event_source=None):
+    """Synthetic pre-v2 artifact builder for historical replay tests only; not admission."""
+    from scripts.review_independence_contract import current_host_event_source, using_host_event_source
+    if event_source is None:
+        event_source = current_host_event_source()
+    evidence_root = Path(evidence_root).resolve()
+    output = audit._within(evidence_root, output_directory)
+    runs = [audit._within(evidence_root, p) for p in run_directories]
+    if output.exists() or any(output.is_relative_to(run) for run in runs):
+        audit._fail('input_or_output_inventory_invalid')
+    backend, current_plan, expected, prepared, used_keys, seals = audit.inspect_runs(runs,
+        evidence_root=evidence_root, closed_exports=closed_exports, profile=profile, event_source=event_source)
+    # All evidence is checked before the first write. Create-only output never
+    # edits a closed run, even if the final original-gate validator rejects it.
+    output.mkdir(parents=True, exist_ok=False)
+    rows = []
+    for row, host, transport in prepared:
+        host_path = output / (row['key'].replace(':', '-') + '-host-review.json')
+        write_new_json(host_path, host)
+        rows.append(dict(row, status='host_accepted',
+            transport_directory=transport.relative_to(evidence_root).as_posix(),
+            host_review_file=host_path.relative_to(evidence_root).as_posix(), host_review_sha256=audit._sha(host_path)))
+    rows.sort(key=lambda r: list(expected).index(r['key']))
+    result = dict(qualification_version=backend.VERSION, identity=current_plan['identity'],
+        plan_sha256=digest(compact(current_plan)), cases=rows,
+        status='validated_partial', remaining_keys=[key for key in expected if key not in used_keys],
+        validated_inputs=len(rows), validated_keys=[r['key'] for r in rows],
+        provider_requests=0, review_controls_qualified=False,
+        actual_product_task_qualified=False, production_admitted=False, execution_enabled=False)
+    if len(rows) == 15:
+        with using_host_event_source(event_source):
+            result.update(backend.validate_qualification(result, evidence_root=evidence_root))
+        result['status'] = 'qualified_original_review_controls'
+    write_new_json(output / 'qualification.json', result)
+    write_new_json(output / 'source-seals.json', dict(closed_runs=seals))
+    write_new_json(output / 'result.json', {k: v for k, v in result.items() if k not in ('identity', 'cases')})
+    return result
+
+
 def accept(run, sealed, root, output='audit'):
-    return audit.qualify([run], evidence_root=root, output_directory=root / output, closed_exports=[sealed])
+    return legacy_qualification_fixture([run], evidence_root=root, output_directory=root / output, closed_exports=[sealed])
 
 
 def test_partial_replays_real_receipts_without_using_observation_success_flags(make_run, tmp_path, monkeypatch):

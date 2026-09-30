@@ -1,3 +1,4 @@
+from tests.test_role_observation_qualification import legacy_qualification_fixture
 """Versioned original-15 wiring uses the real executor with network substitutes."""
 from dataclasses import replace
 import hashlib
@@ -15,7 +16,7 @@ from tests.test_role_observation_qualification import make_run, change, seal, re
 
 
 def accept(run, sealed, root):
-    return audit.qualify([run], evidence_root=root, output_directory=root/'audit',
+    return legacy_qualification_fixture([run], evidence_root=root, output_directory=root/'audit',
         closed_exports=[sealed], profile=q.PROFILE)
 
 

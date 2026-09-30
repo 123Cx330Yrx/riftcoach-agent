@@ -40,6 +40,47 @@ class OfflineHostEvents:
         return deepcopy(event)
 
 
+@pytest.mark.parametrize('explicit', [False, True])
+def test_qualify_preserves_effective_source_through_recursive_validation(tmp_path, monkeypatch, explicit):
+    outer, supplied = object(), object()
+    expected_source = supplied if explicit else outer
+    rows = [dict(key='case:' + str(i)) for i in range(15)]
+    expected = {row['key']: row for row in rows}
+    prepared = [(row, {}, tmp_path/'transport') for row in rows]
+    calls = []
+    def inspect(*args, **kwargs):
+        calls.append(kwargs['event_source'])
+        assert kwargs['event_source'] is expected_source
+        return backend, dict(identity={}), expected, prepared, set(expected), []
+    def validate(result, **kwargs):
+        assert contract.current_host_event_source() is expected_source
+        # The frozen backend invokes the read-only consumer again in this scope.
+        inspect(event_source=contract.current_host_event_source())
+        return dict(accepted_inputs=15, review_controls_qualified=True)
+    backend = SimpleNamespace(VERSION='offline-test', validate_qualification=validate)
+    monkeypatch.setattr(audit, 'inspect_runs', inspect)
+    with contract.using_host_event_source(outer):
+        result = audit.qualify([], evidence_root=tmp_path, output_directory=tmp_path/'qualified',
+            closed_exports=[], event_source=supplied if explicit else None)
+        assert contract.current_host_event_source() is outer
+    assert result['accepted_inputs'] == 15 and calls == [expected_source, expected_source]
+    assert contract.current_host_event_source() is None
+
+
+@pytest.mark.parametrize('profile', ['role','coarse','correction-scope','boundary-examples'])
+def test_legacy_seal_is_readable_but_cannot_issue_new_qualification(make_run, tmp_path, profile):
+    run, sealed = make_run(('claim-scope:1',), profile=profile,
+        host_drafts=profile == 'boundary-examples')
+    before = {p: audit._sha(p) for p in run.rglob('*') if p.is_file()}
+    assert audit.inspect_runs([run], evidence_root=tmp_path, closed_exports=[sealed],
+        profile=profile)[4] == {'claim-scope:1'}
+    with pytest.raises(ValueError, match='new_qualification_requires_v2'):
+        audit.qualify([run], evidence_root=tmp_path, output_directory=tmp_path/'denied',
+            closed_exports=[sealed], profile=profile)
+    assert not (tmp_path/'denied').exists()
+    assert before == {p: audit._sha(p) for p in run.rglob('*') if p.is_file()}
+
+
 def test_v2_continuous_three_stage_handoff_and_sealed_replay(make_run, tmp_path):
     source = OfflineHostEvents()
     run, sealed = make_run(('claim-scope:4',), profile='boundary-examples',

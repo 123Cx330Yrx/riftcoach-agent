@@ -1,5 +1,9 @@
 # 2026-09-29 真实批次独立审查身份失败审计
 
+后续状态见2026-09-30-429-recovery-audit.md。本文初始裁决的“下一例零调用”
+已被下文“回执更正”推翻，现行事实为1个unknown/incomplete请求；保留初稿作为
+历史，不得据其旧陈述重新记账。旧批原件不改，新增真实资格仍为0。
+
 当前冻结批次 golden_boundary_examples_host_timed_preparation_v1 在第一例
 claim-scope:4 完成了真实三次模型链：初评 80 / needs_revision，Flash 修订，
 GLM fresh 复评 95 / pass。三次回执均完整，已知用量 48,607 tokens，unknown

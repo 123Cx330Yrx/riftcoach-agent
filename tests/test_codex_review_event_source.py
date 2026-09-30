@@ -116,3 +116,147 @@ def test_reader_timeout_and_host_errors_fail_closed(tmp_path):
     reader.messages.put(dict(id=2, error=dict(message='Unavailable')))
     with pytest.raises(ValueError, match='request_failed'):
         reader.request('thread/read', {})
+
+
+def native_rollout_fixture(tmp_path):
+    f = fixture()
+    sessions = tmp_path/'sessions'
+    sessions.mkdir()
+    executable = tmp_path/'unused.exe'
+    executable.touch()
+    reader = host.CodexReadOnlyClient(executable, session_root=sessions)
+    f.client.read_collaboration_dispatch = reader.read_collaboration_dispatch
+    spawn = f.thread['source']['subAgent']['thread_spawn']
+    spawn['agent_path'] = '/root/reviewer'
+    dispatch = f.turn['items'].pop(0)
+    final = f.turn['items'][0]
+    f.path = sessions/'native.jsonl'
+    f.thread['path'] = str(f.path)
+    f.records = [
+        dict(type='session_meta', payload=dict(id='child', parent_thread_id='root',
+            agent_path='/root/reviewer', source=dict(subagent=dict(thread_spawn=deepcopy(spawn))))),
+        dict(type='response_item', timestamp='2026-09-29T15:00:00Z', payload=dict(
+            type='agent_message', id='actual-dispatch', author='/root', recipient='/root/reviewer',
+            internal_chat_message_metadata_passthrough=dict(turn_id='turn-1'),
+            content=[dict(type='input_text', text=chr(10).join([
+                'Message Type: NEW_TASK', 'Task name: /root/reviewer', 'Sender: /root',
+                'Payload:', dispatch['content'][0]['text']]))])),
+        dict(type='response_item', payload=dict(type='message', id=final['id'], role='assistant',
+            phase='final_answer', internal_chat_message_metadata_passthrough=dict(turn_id='turn-1'),
+            content=[dict(type='output_text', text=final['text'])])),
+    ]
+    f.save = lambda: f.path.write_text(chr(10).join(json.dumps(v) for v in f.records), encoding='utf-8')
+    f.save()
+    return f
+
+
+def test_native_rollout_supplies_omitted_agent_dispatch_with_same_final(tmp_path):
+    f = native_rollout_fixture(tmp_path)
+    event = fetch(f)
+    assert event['dispatch_id'] == 'actual-dispatch' and event['review'] == f.review
+    proof = f.client.read_collaboration_dispatch(f.thread, f.turn, f.turn['items'][0])
+    assert event['raw_event_sha256'] == hashlib.sha256(contract.canonical_json(dict(
+        thread={k: f.thread[k] for k in ('id','parentThreadId','source')},
+        turn=f.turn, collaboration_dispatch=proof['raw']))).hexdigest()
+    # Adding a later unrelated turn does not invalidate the completed event.
+    f.records.append(dict(type='event_msg', payload=dict(type='task_started', turn_id='later')))
+    f.save()
+    assert fetch(f) == event
+
+
+@pytest.mark.parametrize('fault', ['outside_host', 'wrong_session', 'wrong_parent', 'wrong_author',
+    'wrong_recipient', 'wrong_turn', 'missing_dispatch', 'duplicate_dispatch', 'wrong_final',
+    'dispatch_after_final', 'unbound_task'])
+def test_native_rollout_rejects_untrusted_or_mismatched_dispatch(tmp_path, fault):
+    f = native_rollout_fixture(tmp_path)
+    if fault == 'outside_host':
+        f.path = tmp_path/'run-event.jsonl'
+        f.thread['path'] = str(f.path)
+    elif fault == 'wrong_session':f.records[0]['payload']['id'] = 'other'
+    elif fault == 'wrong_parent':f.records[0]['payload']['parent_thread_id'] = 'other'
+    elif fault == 'wrong_author':f.records[1]['payload']['author'] = '/root/reviewer'
+    elif fault == 'wrong_recipient':f.records[1]['payload']['recipient'] = '/root/other'
+    elif fault == 'wrong_turn':f.records[1]['payload']['internal_chat_message_metadata_passthrough']['turn_id'] = 'other'
+    elif fault == 'missing_dispatch':f.records.pop(1)
+    elif fault == 'duplicate_dispatch':f.records.insert(1, deepcopy(f.records[1]))
+    elif fault == 'wrong_final':f.records[2]['payload']['content'][0]['text'] = '{}'
+    elif fault == 'dispatch_after_final':f.records[1],f.records[2] = f.records[2],f.records[1]
+    elif fault == 'unbound_task':
+        text = f.records[1]['payload']['content'][0]['text']
+        f.records[1]['payload']['content'][0]['text'] = text.replace(f.bound['request_sha256'], 'f'*64)
+    f.save()
+    with pytest.raises(ValueError, match='codex_review_host_'):
+        fetch(f)
+
+
+def completed_item_fixture(tmp_path):
+    f = native_rollout_fixture(tmp_path)
+    f.records[2]['payload']['internal_chat_message_metadata_passthrough']['turn_id'] = 'private-transport-turn'
+    f.records.append(dict(type='event_msg', payload=dict(type='item_completed',
+        thread_id='child', turn_id='turn-1', item=dict(type='AgentMessage',
+            id='final-1', phase='final_answer',
+            content=[dict(type='Text', text=f.turn['items'][0]['text'])]))))
+    f.save()
+    return f
+
+
+@pytest.mark.parametrize('completion_first', [True, False])
+def test_native_completed_item_binds_private_transport_turn_to_api(tmp_path, completion_first):
+    f = completed_item_fixture(tmp_path)
+    completion = f.records[3]
+    if completion_first:
+        f.records[2], f.records[3] = f.records[3], f.records[2]
+        f.save()
+    event = fetch(f)
+    assert event['review'] == f.review
+    proof = f.client.read_collaboration_dispatch(f.thread, f.turn, f.turn['items'][0])
+    assert proof['raw']['final_membership'] == completion
+    source = host.CodexHostReviewEventSource(f.client, f.plan)
+    contract.validate_independent_event(dict(f.review, independent_source_event=event),
+        plan=f.plan, bound=f.bound, event_source=source)
+    f.records.append(dict(type='event_msg', payload=dict(type='task_started', turn_id='later')))
+    f.save()
+    assert fetch(f) == event
+
+
+@pytest.mark.parametrize('fault', ['missing', 'duplicate', 'wrong_thread', 'wrong_turn',
+    'wrong_id', 'wrong_body', 'wrong_type', 'wrong_phase', 'wrong_content_type', 'before_dispatch'])
+def test_native_completed_item_requires_exact_unique_membership(tmp_path, fault):
+    f = completed_item_fixture(tmp_path)
+    p = f.records[3]['payload']
+    if fault == 'missing': f.records.pop()
+    elif fault == 'duplicate': f.records.append(deepcopy(f.records[3]))
+    elif fault == 'wrong_thread': p['thread_id'] = 'other'
+    elif fault == 'wrong_turn': p['turn_id'] = 'other'
+    elif fault == 'wrong_id': p['item']['id'] = 'other'
+    elif fault == 'wrong_body': p['item']['content'][0]['text'] = '{}'
+    elif fault == 'wrong_type': p['item']['type'] = 'UserMessage'
+    elif fault == 'wrong_phase': p['item']['phase'] = 'commentary'
+    elif fault == 'wrong_content_type': p['item']['content'][0]['type'] = 'Other'
+    elif fault == 'before_dispatch': f.records.insert(1, f.records.pop(3))
+    f.save()
+    with pytest.raises(ValueError, match='codex_review_host_rollout_'):
+        fetch(f)
+
+
+def test_native_legacy_proof_digest_stays_stable_with_completed_projection(tmp_path):
+    f = native_rollout_fixture(tmp_path)
+    before = fetch(f)
+    f.records.append(dict(type='event_msg', payload=dict(type='item_completed',
+        thread_id='child', turn_id='turn-1', item=dict(type='AgentMessage',
+            id='final-1', phase='final_answer',
+            content=[dict(type='Text', text=f.turn['items'][0]['text'])]))))
+    f.save()
+    assert fetch(f) == before
+
+
+def test_native_encrypted_dispatch_is_explicitly_unverifiable(tmp_path):
+    f = completed_item_fixture(tmp_path)
+    content = f.records[1]['payload']['content']
+    content[0]['text'] = content[0]['text'].split('Payload:')[0] + 'Payload:' + chr(10)
+    content.append(dict(type='encrypted_content', encrypted_content='opaque-host-payload'))
+    # A correct local task and correct final are not evidence of the sent task.
+    (tmp_path/'task.json').write_text(host.review_task(f.bound, 'local assertion'), encoding='utf-8')
+    f.save()
+    with pytest.raises(ValueError, match='codex_review_host_rollout_dispatch_encrypted'):
+        fetch(f)
