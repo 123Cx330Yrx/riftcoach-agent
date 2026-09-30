@@ -363,12 +363,18 @@ def inspect_runs(run_directories, *, evidence_root, closed_exports, profile='rol
         hashes = _seal(run, export_path, export_sha, evidence_root)
         saved = _json(run / 'plan.json')
         plan = saved['preparation_plan']
+        result = _json(run / 'result.json') if (run / 'result.json').exists() else None
+        timing = None
         timing_files = any(name.startswith('development-host-clock/') for name in hashes)
         if 'host_review_timing' in plan:
             if plan['host_review_timing'].get('mode') != TIMING_MODE:
                 _fail('unadopted_host_timing')
             try:
-                timing = validate_adopted_timing(run, plan, saved_plan_sha256=saved.get('plan_sha256'))
+                timing = validate_adopted_timing(
+                    run, plan, saved_plan_sha256=saved.get('plan_sha256'),
+                    allow_unfinished_tail=(result is None or
+                                           'error_code' in (result or {}) or
+                                           'error_type' in (result or {})))
             except ValueError as exc:
                 _fail(str(exc).removeprefix('role_observation_'))
             if not timing_files:
@@ -389,11 +395,17 @@ def inspect_runs(run_directories, *, evidence_root, closed_exports, profile='rol
         if not isinstance(rows, list) or not rows or not isinstance(budgets, list) or len(rows) != len(budgets):
             _fail('closed_case_inventory_mismatch')
         boundary = None
-        result = _json(run / 'result.json') if (run / 'result.json').exists() else None
         if result is not None and result.get('experiment') != plan.get('experiment'):
             _fail('closed_case_inventory_mismatch')
         if result is None or 'error_code' in result or 'error_type' in result:
             outcomes, elapsed, boundary = _interrupted_prefix(run, plan, result, backend=backend)
+            if timing is not None and 'unfinished_tail' in timing:
+                tail = timing['unfinished_tail']
+                if (len(outcomes) >= len(rows) or tail['key'] != rows[len(outcomes)]['key']
+                        or boundary['unqualified_started_cases']):
+                    _fail('host_timing_tail_prefix')
+                boundary['unfinished_host_wait'] = tail
+                boundary['unfinished_host_wait_elapsed_seconds'] = None
             rows, budgets = rows[:len(outcomes)], budgets[:len(outcomes)]
             completion_source = ('durable_case_receipts_without_batch_result' if result is None
                 else 'durable_case_receipts_before_failed_batch_suffix')

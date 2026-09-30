@@ -1,8 +1,7 @@
-"""Offline prototype: separate developer waiting from active execution time.
+"""Separate developer waiting from active execution time in opted-in runs.
 
-Not enabled by any live entry point and not admitted by the qualification gate.
-The same process may wait through a conversation interruption. Reconstructing
-this clock in an existing run is forbidden; it is not process-crash recovery.
+The same process may wait through a conversation interruption. A sealed,
+interrupted run can retain its completed prefix; its clock is never restarted.
 """
 from pathlib import Path
 import hashlib
@@ -108,7 +107,8 @@ class DevelopmentHostClock:
             plan_sha256=self._plan_sha256)
 
 
-def validate_adopted_timing(run_directory, plan, *, saved_plan_sha256):
+def validate_adopted_timing(run_directory, plan, *, saved_plan_sha256,
+                            allow_unfinished_tail=False):
     """Validate the durable host clock before a result can enter qualification.
 
     The validator intentionally derives all totals from immutable wait/finish
@@ -138,11 +138,26 @@ def validate_adopted_timing(run_directory, plan, *, saved_plan_sha256):
         raise ValueError('role_observation_host_timing_policy_mismatch')
     waiting = sorted(directory.glob('*-waiting.json'))
     finished = sorted(directory.glob('*-finished.json'))
-    if not waiting or len(waiting) != len(finished):
+    if not waiting or len(waiting) != len(finished) and not (
+            allow_unfinished_tail and len(waiting) == len(finished) + 1):
         raise ValueError('role_observation_host_timing_receipt_inventory')
+    unfinished_tail = None
+    if len(waiting) == len(finished) + 1:
+        unfinished_tail = json.loads(waiting[-1].read_text(encoding='utf-8'))
+        binding = unfinished_tail.get('binding')
+        if (not allow_unfinished_tail or waiting[-1].name != f'{len(waiting):04d}-waiting.json'
+                or not isinstance(binding, dict) or binding.get('kind') != 'case_ready'):
+            raise ValueError('role_observation_host_timing_receipt_inventory')
+        tail_values = [unfinished_tail.get('active_elapsed_seconds'),
+                       unfinished_tail.get('wall_elapsed_seconds'),
+                       unfinished_tail.get('remaining_host_seconds')]
+        if any(type(value) not in (int, float) or not math.isfinite(value) or value < 0
+               for value in tail_values):
+            raise ValueError('role_observation_host_timing_elapsed_invalid')
     previous_host = 0.0
     previous_active = 0.0
-    for index, (start_path, end_path) in enumerate(zip(waiting, finished, strict=True), 1):
+    for index, (start_path, end_path) in enumerate(
+            zip(waiting[:len(finished)], finished, strict=True), 1):
         if start_path.name != f'{index:04d}-waiting.json' or end_path.name != f'{index:04d}-finished.json':
             raise ValueError('role_observation_host_timing_sequence')
         try:
@@ -201,6 +216,73 @@ def validate_adopted_timing(run_directory, plan, *, saved_plan_sha256):
             raise ValueError('role_observation_host_timing_binding_kind')
         previous_host = cumulative
         previous_active = end['active_elapsed_seconds']
-    return dict(mode=TIMING_MODE, waits=len(waiting), host_elapsed_seconds=previous_host,
+    result = dict(mode=TIMING_MODE, waits=len(finished), host_elapsed_seconds=previous_host,
                 active_elapsed_seconds=previous_active,
                 wall_elapsed_seconds=previous_active + previous_host)
+    if unfinished_tail is not None:
+        _validate_unfinished_case_wait(Path(run_directory), plan, saved_plan_sha256,
+            unfinished_tail, previous_active, previous_host)
+        result['unfinished_tail'] = unfinished_tail['binding']
+        result['unfinished_wait_elapsed_seconds'] = None
+    return result
+
+
+def _validate_unfinished_case_wait(run, plan, plan_sha, tail, previous_active, previous_host):
+    """Only a never-started next case can follow a fully completed prefix."""
+    binding = tail['binding']
+    rows = plan.get('cases', [])
+    matches = [i for i, row in enumerate(rows) if row.get('key') == binding.get('key')]
+    if len(matches) != 1 or matches[0] == 0:
+        raise ValueError('role_observation_host_timing_tail_prefix')
+    index = matches[0]
+    row = rows[index]
+    active, wall = tail['active_elapsed_seconds'], tail['wall_elapsed_seconds']
+    remaining = binding.get('remaining_active_seconds')
+    maximum = plan.get('batch_budget', {}).get('max_seconds')
+    if (type(remaining) not in (int, float) or not math.isfinite(remaining)
+            or type(maximum) not in (int, float) or not math.isfinite(maximum)
+            or remaining <= 0 or active < previous_active or active >= maximum
+            or abs(remaining + active - maximum) > .01
+            or abs(wall - active - previous_host) > .01
+            or abs(tail['remaining_host_seconds'] + previous_host
+                   - plan['host_review_timing']['max_host_seconds']) > .01
+            or binding.get('request_sha256') != row.get('request_sha256')):
+        raise ValueError('role_observation_host_timing_tail_binding')
+    for completed in rows[:index]:
+        arm = run/completed['key'].replace(':', '-')
+        try:
+            receipt = json.loads((arm/'case-completed.json').read_bytes())
+            measured = receipt['batch_elapsed_seconds']
+            if (receipt.get('schema_version') != 'role-case-completion-v1'
+                    or receipt.get('plan_sha256') != plan_sha
+                    or receipt.get('outcome', {}).get('key') != completed['key']
+                    or receipt.get('task_observation_sha256') != hashlib.sha256(
+                        (arm/'task-observation.json').read_bytes()).hexdigest()
+                    or type(measured) not in (int, float) or not math.isfinite(measured)
+                    or not 0 <= measured <= active + .01):
+                raise ValueError('invalid completion')
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            raise ValueError('role_observation_host_timing_tail_prefix') from exc
+    for pending in rows[index:]:
+        name = pending['key'].replace(':', '-')
+        if (run/name).exists() or (run/'transport'/name).exists():
+            raise ValueError('role_observation_host_timing_tail_started')
+    name = row['key'].replace(':', '-')
+    required_path = run/'handoff'/(name+'-ready-required.json')
+    try:
+        required = json.loads(required_path.read_bytes())
+        if (required.get('schema_version') != 'role-case-ready-required-v1'
+                or required.get('key') != row['key'] or required.get('plan_sha256') != plan_sha
+                or required.get('request_sha256') != row['request_sha256']
+                or required.get('run_directory') != run.resolve().as_posix()
+                or required.get('remaining_batch_seconds') != tail['remaining_host_seconds']
+                or required.get('signal_file') != name+'-ready.json'):
+            raise ValueError('invalid ready handoff')
+        signal = required_path.with_name(name+'-ready.json')
+        if signal.exists() and json.loads(signal.read_bytes()) != dict(
+                schema_version='role-case-ready-v1', ready=True, key=row['key'],
+                plan_sha256=plan_sha,
+                required_sha256=hashlib.sha256(required_path.read_bytes()).hexdigest()):
+            raise ValueError('invalid signal')
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise ValueError('role_observation_host_timing_tail_handoff') from exc

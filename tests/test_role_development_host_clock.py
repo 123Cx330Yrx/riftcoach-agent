@@ -182,6 +182,45 @@ def test_adopted_host_clock_requires_bound_receipts_and_checks_clock_equation(tm
         validate_adopted_timing(run, plan, saved_plan_sha256=plan_sha)
 
 
+def test_adopted_host_clock_can_audit_one_unfinished_case_ready_tail(tmp_path):
+    run = tmp_path/'run'
+    run.mkdir()
+    clock = DevelopmentHostClock(run, max_host_seconds=4000,
+        qualification_adopted=True, plan_sha256='a' * 64,
+        wall_clock=lambda: 0.0)
+    first = {'key': 'claim-scope:1', 'request_sha256': 'a' * 64}
+    row = {'key': 'claim-scope:4', 'request_sha256': 'b' * 64}
+    plan = {'host_review_timing': {'mode': TIMING_MODE, 'adopted': True,
+        'max_host_seconds': 4000}, 'cases': [first, row],
+        'batch_budget': {'max_seconds': 900}}
+    first_arm = run/'claim-scope-1'
+    first_arm.mkdir()
+    (first_arm/'task-observation.json').write_bytes(b'completed')
+    write_new_json(first_arm/'case-completed.json', dict(
+        schema_version='role-case-completion-v1', plan_sha256='a' * 64,
+        task_observation_sha256=__import__('hashlib').sha256(b'completed').hexdigest(),
+        batch_elapsed_seconds=0, outcome={'key': 'claim-scope:1'}))
+    clock.await_case(run, row, plan, 900,
+        lambda _directory, _row, _plan, _available: None)
+    # Simulate a process loss after the waiting receipt was flushed but before
+    # the matching finished receipt could be written.
+    finished = run/'development-host-clock/0001-finished.json'
+    finished.unlink()
+    handoff = run/'handoff'
+    handoff.mkdir()
+    write_new_json(handoff/'claim-scope-4-ready-required.json', dict(
+        schema_version='role-case-ready-required-v1', key=row['key'],
+        plan_sha256='a'*64, request_sha256=row['request_sha256'],
+        run_directory=run.resolve().as_posix(), remaining_batch_seconds=4000,
+        signal_file='claim-scope-4-ready.json'))
+    with pytest.raises(ValueError, match='receipt_inventory'):
+        validate_adopted_timing(run, plan, saved_plan_sha256='a' * 64)
+    checked = validate_adopted_timing(run, plan, saved_plan_sha256='a' * 64,
+        allow_unfinished_tail=True)
+    assert checked['waits'] == 0
+    assert checked['unfinished_tail']['key'] == 'claim-scope:4'
+
+
 def test_case_readiness_wait_uses_host_budget_and_same_bound_handoff(tmp_path):
     now=[0.0]
     clock=DevelopmentHostClock(tmp_path,max_host_seconds=4000,wall_clock=lambda:now[0])
