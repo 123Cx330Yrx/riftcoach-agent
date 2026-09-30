@@ -169,8 +169,10 @@ def test_native_rollout_supplies_omitted_agent_dispatch_with_same_final(tmp_path
 @pytest.mark.parametrize('fault', ['outside_host', 'wrong_session', 'wrong_parent', 'wrong_author',
     'wrong_recipient', 'wrong_turn', 'missing_dispatch', 'duplicate_dispatch', 'wrong_final',
     'dispatch_after_final', 'unbound_task'])
-def test_native_rollout_rejects_untrusted_or_mismatched_dispatch(tmp_path, fault):
+@pytest.mark.parametrize('policy', [contract.DISPATCH_POLICY, contract.FINAL_POLICY])
+def test_native_rollout_rejects_untrusted_or_mismatched_dispatch(tmp_path, fault, policy):
     f = native_rollout_fixture(tmp_path)
+    f.plan[contract.EVIDENCE_POLICY_FIELD] = policy
     if fault == 'outside_host':
         f.path = tmp_path/'run-event.jsonl'
         f.thread['path'] = str(f.path)
@@ -223,8 +225,10 @@ def test_native_completed_item_binds_private_transport_turn_to_api(tmp_path, com
 
 @pytest.mark.parametrize('fault', ['missing', 'duplicate', 'wrong_thread', 'wrong_turn',
     'wrong_id', 'wrong_body', 'wrong_type', 'wrong_phase', 'wrong_content_type', 'before_dispatch'])
-def test_native_completed_item_requires_exact_unique_membership(tmp_path, fault):
+@pytest.mark.parametrize('policy', [contract.DISPATCH_POLICY, contract.FINAL_POLICY])
+def test_native_completed_item_requires_exact_unique_membership(tmp_path, fault, policy):
     f = completed_item_fixture(tmp_path)
+    f.plan[contract.EVIDENCE_POLICY_FIELD] = policy
     p = f.records[3]['payload']
     if fault == 'missing': f.records.pop()
     elif fault == 'duplicate': f.records.append(deepcopy(f.records[3]))

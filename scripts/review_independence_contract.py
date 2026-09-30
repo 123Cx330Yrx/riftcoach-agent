@@ -21,6 +21,9 @@ from typing import Mapping, Protocol
 VERSION = 'independent-source-v2'
 EVENT_KIND = 'codex-collaboration-review-event-v1'
 MODE_V2 = 'independent-drafts-v2'
+EVIDENCE_POLICY_FIELD = 'host_review_evidence_policy'
+DISPATCH_POLICY = 'dispatch-and-final-v1'
+FINAL_POLICY = 'native-final-attestation-v1'
 _HEX64 = re.compile(r'^[0-9a-f]{64}$')
 
 
@@ -59,6 +62,14 @@ def _fail(code: str) -> None:
     raise ValueError('review_independence_' + code)
 
 
+def evidence_policy(plan: Mapping[str, object]) -> str:
+    """An explicit plan choice, never a fallback after an old proof fails."""
+    policy = plan.get(EVIDENCE_POLICY_FIELD, DISPATCH_POLICY)
+    if policy not in (DISPATCH_POLICY, FINAL_POLICY):
+        _fail('evidence_policy_unadopted')
+    return policy
+
+
 def _hash(value: str, *, code: str = 'hash_invalid') -> str:
     if not isinstance(value, str) or not _HEX64.fullmatch(value):
         _fail(code)
@@ -95,6 +106,7 @@ def required_binding(bound: Mapping[str, object]) -> dict[str, object]:
 
 
 def _registry(plan: Mapping[str, object]) -> tuple[str, str, str]:
+    evidence_policy(plan)
     values = plan.get('review_principals')
     if not isinstance(values, dict):
         _fail('principal_registry_missing')
@@ -218,6 +230,8 @@ def validate_independent_event(review: Mapping[str, object], *, plan: Mapping[st
     if not isinstance(event, Mapping) or dict(event) != envelope:
         _fail('event_envelope_mismatch')
     expected = required_binding(bound)
+    if event.get(EVIDENCE_POLICY_FIELD, DISPATCH_POLICY) != evidence_policy(plan):
+        _fail('event_evidence_policy_mismatch')
     if (event.get('schema_version') != VERSION or event.get('event_kind') != EVENT_KIND
             or event.get('state') != 'completed'
             or event.get('author_principal_id') != independent_id

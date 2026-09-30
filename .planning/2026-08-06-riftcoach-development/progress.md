@@ -1,3 +1,20 @@
+## 2026-10-01 密文取证方案调整与真实工程往返
+
+官方app-server文档和本机schema确认逐项只读及原生输入接口；thread/items/list仍无派发
+正文，直接resume子线程要求父管理，resume父线程报active writer。未启动原生turn或GLM。
+因此转到方案层：在既有工程授权内显式采用native-final-attestation-v1，保留真实宿主
+作者/路由/turn/完成final及全部原件绑定，不再独立重建派发逐字正文。提案先经独立复核，
+实际补丁再经独立复核，三个核心源码SHA匹配。旧策略缺省且继续拒绝密文，不自动fallback。
+
+五文件147测试通过，随后新增prepare策略参数及fixture参数后三文件57项通过（有重叠）。
+真实工程样例用全新目录和合成Provider；独立子Agent与主Agent分别阅读全文来源并重算。
+实际密文派发已完成宿主取证→独立草稿→正式双审提交→封存→严格回读，原件不变，
+real_glm_requests=0、product_qualification=false。详见native-final-evidence-proposal及
+data/evaluation/results/golden_native_final_host_handoff_20261001.json。未重跑旧批或增加原15资格。
+新进程回读工程封存及旧父首例均通过。最终补明文null不得伪装opaque的边界，102项来源
+相关回归和增量独立复核通过；再次真实回读事件和正式提交不变，源码哈希已记录。
+99de1782/CI36744936958三项已成功，只覆盖之前预检；本轮补丁公共CI按新提交另查。
+
 ## 2026-10-01 续批宿主来源失败与付费前检查
 
 8ac9cab1/CI36735390662三项成功后执行已授权续批。claim-scope:4初评78/needs_revision，

@@ -44,7 +44,7 @@ def make_run(tmp_path, monkeypatch):
     sources = {f['key']: source for f, source in q.frozen_cases()[0]}
     counter = [0]
 
-    def build(keys=('claim-scope:1', 'claim-scope:4'), *, write_fault=None, before_case=None, clock=lambda:0, profile='role', inspect_fault=None, host_process=False, host_drafts=False, host_event_source=None):
+    def build(keys=('claim-scope:1', 'claim-scope:4'), *, write_fault=None, before_case=None, clock=lambda:0, profile='role', inspect_fault=None, host_process=False, host_drafts=False, host_event_source=None, host_review_evidence_policy=None):
         from app.runtime.coach_contract import ROLE_COACH_CONTRACT
         backend, workflow, observer, contract = q, Workflow, Observer, ROLE_COACH_CONTRACT
         if profile == 'coarse':
@@ -75,6 +75,8 @@ def make_run(tmp_path, monkeypatch):
             assert host_drafts and profile == 'boundary-examples'
             from scripts.review_independence_contract import MODE_V2, freeze_v2_identity
             observation[MODE_FIELD] = MODE_V2
+            if host_review_evidence_policy is not None:
+                observation['host_review_evidence_policy'] = host_review_evidence_policy
             observation = freeze_v2_identity(observation,
                 root_thread_id=getattr(host_event_source, 'root_thread_id', 'offline-root-thread'),
                 primary_id=getattr(host_event_source, 'primary_id', 'offline-primary'),

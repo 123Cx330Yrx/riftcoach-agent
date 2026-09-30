@@ -13,18 +13,23 @@ from app.evaluation.golden_review_experiment import compact, digest
 from scripts import run_boundary_examples_qualification as runner
 from scripts.codex_review_event_source import CodexHostReviewEventSource, CodexReadOnlyClient
 from scripts.review_independence_contract import MODE_V2, freeze_v2_identity
+from scripts.review_independence_contract import (
+    evidence_policy, FINAL_POLICY, DISPATCH_POLICY, EVIDENCE_POLICY_FIELD)
 
 RUN_ROOT = runner.ROOT / 'data/runs/role_task_observation'
 EXPERIMENT = 'boundary-examples-independent-v2-20260930'
 
 
 def prepare(*, root_thread_id, independent_thread_id, experiment=EXPERIMENT,
-            max_host_seconds=86400):
+            max_host_seconds=86400, host_review_evidence_policy=DISPATCH_POLICY):
     if (not isinstance(experiment, str)
             or re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}', experiment) is None):
         raise ValueError('boundary_v2_experiment_invalid')
     plan, requests = runner.prepare_fresh(experiment=experiment)
     plan['host_review_submission_mode'] = MODE_V2
+    policy = evidence_policy({EVIDENCE_POLICY_FIELD: host_review_evidence_policy})
+    if policy != DISPATCH_POLICY:
+        plan[EVIDENCE_POLICY_FIELD] = policy
     plan = freeze_v2_identity(plan, root_thread_id=root_thread_id,
         primary_id=root_thread_id, independent_id=independent_thread_id)
     plan = runner.adopt_host_timing(plan, max_host_seconds=max_host_seconds)
@@ -52,7 +57,9 @@ def verify_native_principals(client, plan):
     if (parent.get('id') != root or child.get('id') != independent
             or child.get('parentThreadId') != root or spawn.get('parent_thread_id') != root):
         raise ValueError('boundary_v2_native_lineage_mismatch')
-    readability = client.check_latest_input(child)
+    policy = evidence_policy(plan)
+    readability = (client.check_latest_input(child, evidence_policy=policy)
+        if policy == FINAL_POLICY else client.check_latest_input(child))
     return dict(root_thread_id=root, independent_thread_id=independent, verified=True,
         independent_agent_path=spawn.get('agent_path'), input_readability=readability)
 
@@ -60,7 +67,8 @@ def verify_native_principals(client, plan):
 def run(args):
     plan, requests = prepare(root_thread_id=args.root_thread_id,
         independent_thread_id=args.independent_thread_id, experiment=args.experiment,
-        max_host_seconds=args.max_host_seconds)
+        max_host_seconds=args.max_host_seconds,
+        host_review_evidence_policy=getattr(args, EVIDENCE_POLICY_FIELD, DISPATCH_POLICY))
     directory = RUN_ROOT / plan['experiment']
     if directory.exists():
         raise ValueError('boundary_v2_run_already_exists')
@@ -87,6 +95,8 @@ def main():
     parser.add_argument('--independent-thread-id', required=True)
     parser.add_argument('--experiment', default=EXPERIMENT)
     parser.add_argument('--max-host-seconds', type=int, default=86400)
+    parser.add_argument('--host-review-evidence-policy', default=DISPATCH_POLICY,
+        choices=(DISPATCH_POLICY, FINAL_POLICY), help='Frozen proof policy; never a runtime fallback.')
     parser.add_argument('--output', type=Path, help='Create-only offline plan output.')
     parser.add_argument('--execute', action='store_true', help='Only after explicit new-batch paid authorization.')
     parser.add_argument('--preparation', type=Path)

@@ -4,12 +4,33 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "续批在1次完整初评后因真实宿主派发密文无法取证而停止；付费前可读性检查已补，宿主来源尚未恢复，禁止重开已停批。"
+pause_reason: "宿主密文交接已通过显式最终确认策略的真实工程往返；待修后公共检查及新批范围/累计预算核对。原停批只读，未恢复付费调用。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
+
+2026-10-01最新：已修复密文派发导致的工程交接阻断，并完成真实独立审查→宿主取证→
+草稿→主审正式提交→封存→回读。实际派发正文为密文；新策略校验宿主路由、真实作者、
+完成final与实际原件绑定。Provider是合成回复，真实GLM0；这不是新质量案例，原15仍1/15。
+
+采用native-final-attestation-v1取证策略：显式进入冻结计划与事件，缺省旧策略和历史摘要
+保持不变，不自动fallback、不补签旧批。失去的是独立重建派发逐字正文，不放弃独立作者、
+完整上下文、纠错确认或原件核验。独立方案/代码复核通过；147项相关测试通过，后续准备
+选择改动的57项受影响测试通过（有重叠）。细节见docs/plans/2026-10-01-native-final-evidence-proposal.md。
+99de1782公共CI36744936958三项成功，只覆盖上轮预检；新策略补丁需对应新提交公共CI。
+
+本次没有新增GLM消费，已停v2父子系列仍2调用35034tokens/估价0.491412元，unknown0。
+工程证据见data/evaluation/results/golden_native_final_host_handoff_20261001.json，明确
+product_qualification=false。停止目录及原件保持只读，新策略不能重开固定旧续批。
+
+下一动作：完成新策略补丁交付及公共检查，再根据未完成案例和所有已知/未知历史消费准备
+具体新批，核对原授权是否足够后执行；不继续在旧密文规则下付费试错。完整原15、自然Coach、
+当前组合真实Worker/DB/API/Workbench和8E未完成。四块联动、本人Training、前端审美/必要
+重做/英雄头像、Memory、身份运维、两树整合和学习沿活动计划保留。
+
+以下为历史记录；当前行动以本段为准。
 
 2026-10-01：已执行获授权的14例续批，但只完成claim-scope:4初评（78/needs_revision）。
 GLM正确检出“辅助局将每一个指标均值都拉低”的事实错误；1次调用19459tokens、unknown0、

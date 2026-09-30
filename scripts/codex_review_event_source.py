@@ -136,13 +136,14 @@ class CodexReadOnlyClient:
             _fail('rollout_dispatch_missing')
         return text
 
-    def check_latest_input(self, thread):
+    def check_latest_input(self, thread, *, evidence_policy=contract.DISPATCH_POLICY):
         """Check present readability, not future availability or review quality.
 
         Never search backwards for an older successful dispatch. This probe
         accepts ordinary host task text; actual review fetch still requires
         the exact six-field task binding and completed independent final.
         """
+        policy = contract.evidence_policy({contract.EVIDENCE_POLICY_FIELD: evidence_policy})
         page = self.request('thread/turns/list', dict(
             threadId=thread['id'], limit=1, itemsView='full'))
         turns = page.get('data', [])
@@ -153,6 +154,14 @@ class CodexReadOnlyClient:
                 or turn.get('itemsView') != 'full' or turn.get('error') is not None):
             _fail('latest_input_incomplete')
         users = [i for i in turn.get('items', []) if i.get('type') == 'userMessage']
+        final = None
+        readable = True
+        if policy == contract.FINAL_POLICY:
+            finals = [i for i in turn.get('items', []) if i.get('type') == 'agentMessage'
+                and i.get('phase') == 'final_answer']
+            if len(finals) != 1:
+                _fail('dispatch_or_final_ambiguous')
+            final = finals[0]
         if users:
             if len(users) != 1:
                 _fail('dispatch_or_final_ambiguous')
@@ -163,6 +172,13 @@ class CodexReadOnlyClient:
                     or not content[0]['text'].strip()):
                 _fail('dispatch_format')
             dispatch_id = users[0]['id']
+            if final is not None and turn['items'].index(users[0]) >= turn['items'].index(final):
+                _fail('dispatch_order')
+        elif policy == contract.FINAL_POLICY:
+            proof = self.read_collaboration_dispatch(thread, turn, final,
+                allow_opaque=True, parse_task=False)
+            dispatch_id = proof['id']
+            readable = proof['task'] is not None
         else:
             records, _ = self._collaboration_records(thread)
             dispatches = [r['payload'] for r in records if r.get('type') == 'response_item'
@@ -172,10 +188,15 @@ class CodexReadOnlyClient:
                 _fail('rollout_dispatch_or_final_ambiguous')
             self._collaboration_text(dispatches[0], thread)
             dispatch_id = dispatches[0]['id']
-        return dict(thread_id=thread['id'], turn_id=turn['id'], dispatch_id=dispatch_id,
-            current_input_readable=True, future_input_guaranteed=False)
+        result = dict(thread_id=thread['id'], turn_id=turn['id'], dispatch_id=dispatch_id,
+            current_input_readable=readable, future_input_guaranteed=False)
+        if policy == contract.FINAL_POLICY:
+            result.update(current_route_and_final_available=True,
+                host_review_evidence_policy=policy)
+        return result
 
-    def read_collaboration_dispatch(self, thread, turn, final):
+    def read_collaboration_dispatch(self, thread, turn, final, *, allow_opaque=False,
+                                    parse_task=True):
         """Bind omitted native input to its exact completed independent final."""
         records, meta = self._collaboration_records(thread)
         agent_path = thread['source']['subAgent']['thread_spawn']['agent_path']
@@ -211,12 +232,29 @@ class CodexReadOnlyClient:
                         or not isinstance(payload.get('id'), str) or not payload['id']):
                     _fail('rollout_dispatch_author')
                 if any(v.get('type') == 'encrypted_content' for v in content):
-                    # A local task or the answer cannot replace the opaque host binding.
+                    # Legacy policy still rejects this proof below. The new policy
+                    # proves route + final attestation, never the encrypted body.
                     task = None
+                    if allow_opaque:
+                        if (len(content) != 2 or content[1].get('type') != 'encrypted_content'
+                                or not isinstance(content[1].get('encrypted_content'), str)
+                                or not content[1]['encrypted_content']):
+                            _fail('rollout_dispatch_format')
+                        visible = text[len(prefix):]
+                        if visible.strip():
+                            try:
+                                task = json.loads(visible) if parse_task else visible
+                            except ValueError:
+                                _fail('rollout_task_json')
+                            if parse_task and not isinstance(task, dict):
+                                _fail('rollout_task_json')
                 else:
                     try:
-                        task = json.loads(self._collaboration_text(payload, thread))
+                        task_text = self._collaboration_text(payload, thread)
+                        task = json.loads(task_text) if parse_task else task_text
                     except ValueError:
+                        _fail('rollout_task_json')
+                    if parse_task and not isinstance(task, dict):
                         _fail('rollout_task_json')
                 dispatches.append((index, record, task))
             if payload.get('id') == final['id']:
@@ -237,7 +275,7 @@ class CodexReadOnlyClient:
         if use_membership and len(completed_items) != 1:
             _fail('rollout_final_membership_missing')
         _, record, task = dispatches[0]
-        if task is None:
+        if task is None and not allow_opaque:
             _fail('rollout_dispatch_encrypted')
         raw = dict(
             session={k: meta[k] for k in ('id', 'parent_thread_id', 'source', 'agent_path')},
@@ -284,6 +322,7 @@ class CodexHostReviewEventSource:
         if plan.get('host_review_submission_mode') != contract.MODE_V2:
             _fail('mode_not_v2')
         self.primary, self.independent, self.root = contract._registry(plan)
+        self.policy = contract.evidence_policy(plan)
         if self.primary != self.root:
             _fail('primary_not_root_thread')
         self.client = client
@@ -340,15 +379,18 @@ class CodexHostReviewEventSource:
             reader = getattr(self.client, 'read_collaboration_dispatch', None)
             if not callable(reader):
                 _fail('native_dispatch_reader_required')
-            proof = reader(thread, turn, finals[0])
+            proof = (reader(thread, turn, finals[0], allow_opaque=True)
+                if self.policy == contract.FINAL_POLICY else reader(thread, turn, finals[0]))
             dispatch_id = proof['id']
         try:
             task = json.loads(content[0]['text']) if users else proof['task']
             answer = json.loads(finals[0]['text'])
         except (KeyError, TypeError, ValueError) as exc:
             raise ValueError('codex_review_host_review_json_required') from exc
-        if (not isinstance(task, dict) or task.get('kind') != TASK_KIND
-                or task.get('binding') != expected or not isinstance(answer, dict)
+        opaque = (self.policy == contract.FINAL_POLICY and proof is not None
+            and task is None)
+        if ((not opaque and (not isinstance(task, dict) or task.get('kind') != TASK_KIND
+                or task.get('binding') != expected)) or not isinstance(answer, dict)
                 or answer.get('binding') != expected):
             _fail('dispatch_or_answer_binding')
         review = answer.get('review')
@@ -357,7 +399,12 @@ class CodexHostReviewEventSource:
         raw = dict(thread={k: thread[k] for k in ('id', 'parentThreadId', 'source')}, turn=turn)
         if proof is not None:
             raw['collaboration_dispatch'] = proof['raw']
-        return dict(schema_version=contract.VERSION, event_kind=contract.EVENT_KIND, state='completed',
+        if self.policy == contract.FINAL_POLICY:
+            raw[contract.EVIDENCE_POLICY_FIELD] = self.policy
+        event = dict(schema_version=contract.VERSION, event_kind=contract.EVENT_KIND, state='completed',
             event_id=event_id, dispatch_id=dispatch_id, author_principal_id=self.independent,
             root_thread_id=self.root, binding=expected, review_sha256=contract.review_digest(review),
             raw_event_sha256=hashlib.sha256(contract.canonical_json(raw)).hexdigest(), review=deepcopy(review))
+        if self.policy == contract.FINAL_POLICY:
+            event[contract.EVIDENCE_POLICY_FIELD] = self.policy
+        return event

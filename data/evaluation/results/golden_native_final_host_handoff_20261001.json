@@ -1,0 +1,66 @@
+{
+  "core_source_sha256": {
+    "scripts/codex_review_event_source.py": "2a8d98d806b71d569cc514d96ac7597f47d6af3aad9db89892556aecbf542d93",
+    "scripts/review_independence_contract.py": "d3d2673618a4536552d5652db2343a0b61a2095a79629d082f79f9bcee7f481f",
+    "scripts/run_boundary_examples_v2.py": "7c3d9311f9be5617f2cbb416a12cd63ca5d4faaa475d9c1d20adc208546829aa"
+  },
+  "current_preflight": {
+    "current_input_readable": false,
+    "current_route_and_final_available": true,
+    "dispatch_id": "amsg_01a0f34c-835f-7141-be34-866a9af01ba1",
+    "future_input_guaranteed": false,
+    "host_review_evidence_policy": "native-final-attestation-v1",
+    "thread_id": "01a0f093-d441-7fe2-9c68-99187920339c",
+    "turn_id": "01a0f34c-82f9-7bc1-b2bb-846436dee7fb"
+  },
+  "engineering_handoff_completed": true,
+  "fresh_process_readback": true,
+  "host_review_evidence_policy": "native-final-attestation-v1",
+  "independent_event": {
+    "event_id": "01a0f093-d441-7fe2-9c68-99187920339c/01a0f34c-82f9-7bc1-b2bb-846436dee7fb/msg_074072acab5cd086016abd42dcaa2487d081fe355822102e05"
+  },
+  "kind": "native-final-host-engineering-evidence-v1",
+  "legacy_parent_completed_cases": [
+    "claim-scope:1"
+  ],
+  "new_real_glm_qualified_cases": [],
+  "original_file_sha256": {
+    "claim-scope-1-prepared-request.json": "627b48cdc5ef1f3dfb4f791e5ef4aa4c525438b39d1f7ceb2bbfab67f5932253",
+    "claim-scope-1/case-completed.json": "10e07057ce4c31235ad2af1337dbf42370754d695a57a6c5071f142287d73c3c",
+    "claim-scope-1/decision-initial.json": "5126327abf505a1292dc525ae8b1072b5d1f564d28ccd5ea1a42b61651ce46e3",
+    "claim-scope-1/independent-initial-review.json": "e6d425a1fe4e4398a0872f27cb4ba6a7f7af5d9ff9b02ae9e3807468e08f348a",
+    "claim-scope-1/initial-host-required.json": "251099011c35f767e556113d8b6f9ef21578e5039159d6fb696addf05da90864",
+    "claim-scope-1/initial-host.json": "5126327abf505a1292dc525ae8b1072b5d1f564d28ccd5ea1a42b61651ce46e3",
+    "claim-scope-1/initial-journal.json": "cd684a810b48457dc381f52621fa2559df9f0c72727446b97be5a7a3ab3d75a8",
+    "claim-scope-1/initial.json": "c7a0526c1aca8d619cbfc6026b69184c52a58ed3d67ee5e0dc25d0796595ceed",
+    "claim-scope-1/primary-initial-review.json": "8dcc3a355ef2a427137c61c6b12527994488075bcd8aadf436445a99715c87ec",
+    "claim-scope-1/review-drafts/initial/000001.json": "07d8fec72c5a64af618df67f4740068bb87608bc3fd183da366819d09d8c3402",
+    "claim-scope-1/review-drafts/initial/000002.json": "3038d7347eb9c8e46706f51de2991df0a85d816b92e352ca4d1f6cad2fa5e345",
+    "claim-scope-1/source.json": "ec9d057640a6ca482844296d77c109d43279e99ab45b42158016188b1c221e71",
+    "claim-scope-1/task-observation.json": "84492ed4dcd8fa453f1e134dbc49c05932df3e88755c360548e9e6fb81a586dd",
+    "plan.json": "a0eae45cce9feffba62352dc5005152a9f8f37569d3ab0d1fdb96495bff52cb5",
+    "result.json": "81e0aa57c64de99e77d8b67e8c44bdb5be1db027e84f64f1251bfa520519aede",
+    "transport/claim-scope-1/call-001.json": "e9043ab2e4efdaf56cbfb1dc486febdb15080e7b24a5ccfd5bfc47eebfd4531b",
+    "transport/claim-scope-1/call-result-001.json": "75b8ee411c53da45dfbae34e0e92f7a72203251e28fe8473bca3493165f1745c",
+    "transport/claim-scope-1/review/request-001.json": "ef36a8dadd480671da0e8889d9bb7706e46a4365bdf8ab02343ad21c94bbe3df",
+    "transport/claim-scope-1/review/response-001.json": "6c1db3fff3e496babee2c061600aef131447114774d62a28608ccb6fdb663374",
+    "transport/claim-scope-1/review/stream-001/reservation.json": "86f3ec37e68f2ceb07d5f729d3f339adc0f7ad8cc710d39a072f313d1693dfb0",
+    "transport/claim-scope-1/review/stream-001/result.json": "98d88ace822f02f6c6878114cee2287b0993cdd8c16e6d08fe919ca59f2c8722"
+  },
+  "originals_unchanged": true,
+  "post_null_task_guard_recheck": {
+    "core_source_sha256": {
+      "scripts/codex_review_event_source.py": "89192c147c3d23718d85c9ce81bda9e269e6c4429652ff40ce248ae6f2b0089c",
+      "scripts/review_independence_contract.py": "d3d2673618a4536552d5652db2343a0b61a2095a79629d082f79f9bcee7f481f",
+      "scripts/run_boundary_examples_v2.py": "7c3d9311f9be5617f2cbb416a12cd63ca5d4faaa475d9c1d20adc208546829aa"
+    },
+    "formal_submission_valid": true,
+    "same_event": true
+  },
+  "product_qualification": false,
+  "real_glm_requests": 0,
+  "run": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-host-source-2026-10-01\\native-final-handoff\\run-1",
+  "seal": "C:\\Users\\33502\\Documents\\Agent\\outputs\\riftcoach-host-source-2026-10-01\\native-final-handoff\\run-1-closed.json",
+  "seal_sha256": "8f2ccf738f62464bcc1349b36377f6a72a6216d8b70881ecf3311486d0c93550",
+  "synthetic_provider": true
+}
