@@ -4,16 +4,18 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "本批在 claim-scope:4 后因独立审查身份合同失败停止；claim-scope:3 已有 1 个 unknown/incomplete Provider 请求，未形成终态。"
+pause_reason: "旧计时批已因身份问题关闭；新v2完整15等待包含新入口的公共CI和具体新预算授权，尚无新GLM调用。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
 
-2026-09-30：按用户指定的14例身份停批起点完成审查及修补；多次429、后续402、
-已完成审查和丢失结果已分开核验。新的真实宿主审查已完成导入→主审→正式提交→
-封存回读。**本轮仅完成工程修复，不启动付费验证；严格资格仍为1.5.5历史1/15。**
+2026-09-30：指定起点的审查修补已完成并推送5fd44a1d，公共CI36670205715三项success。
+用户已要求继续推进；新v2完整原15入口、冻结方案及累计预算已准备，47项相关测试
+通过且独立代码复核accepted=true；仍须新入口最终提交公共CI及具体新预算授权。
+真实宿主审查导入→主审→正式提交→封存回读已有工程证据，不重复旧样例。
+**当前无新GLM调用；严格资格仍为1.5.5历史1/15。新付费批需具体预算授权。**
 原15、自然Agent、当前组合真实Worker/DB/API/Workbench及8E仍未完成。
 
 ### 已确认事实
@@ -35,8 +37,12 @@ pause_reason: "本批在 claim-scope:4 后因独立审查身份合同失败停�
 
 ### 当前停止位置与后续
 
-先保存并汇报本次审查修补，按用户当前要求不进入新的付费批次。工程证据、原始
-终态、源文件SHA和限制统一见docs/plans/2026-09-30-429-recovery-audit.md。
+审查修补已汇报；用户后续继续指令恢复推进。新v2完整原15准备已完成，
+35次/3386880tokens/10500活动秒，宿主等待86400秒另列，未缓存预留37.167104元。
+含新入口的同HEAD公共CI及具体授权齐备后才执行。准备记录和累计预算见
+docs/plans/2026-09-30-v2-full15-preparation.md。
+旧批不重开、不借授权、不拼历史1/15。既有工程证据、源文件SHA和限制见
+docs/plans/2026-09-30-429-recovery-audit.md。
 未来宿主/消息格式变化须先验证真实派发可读；明文正例不能证明加密输入支持。
 继续真实质量验证仍需新冻结身份、当前HEAD公共CI、累计预算与对应授权，不借旧
 14例额度。模型/high/1.5.5政策及采用标准不变。完整原15之后仍有自然Agent和真实
