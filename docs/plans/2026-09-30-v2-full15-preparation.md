@@ -48,3 +48,19 @@ known+旧未知保守预留+新tokens上限为3569188；已知费用加新预留
 本轮两次本地文档生成命令在解析阶段因嵌套换行失败，没有写入，也未发Provider；
 随后改用明确文件补丁和独立数据生成步骤完成。测试筛选范围比原拟定宽，最终实际
 完成47项且保留JUnit，不另跑同一长套件。子审查自行启动的重复测试无终态，不计通过数。
+
+## 2026-09-30 中断续批冻结
+
+父批原始目录 `boundary-examples-independent-v2-20260930` 保持只读；其唯一严格完成
+前缀仍为 `claim-scope:1`，尾部 `claim-scope:4` 只留下 case-ready 等待回执，没有
+Provider 回执，不能算失败或通过。中断封存见
+`data/evaluation/results/golden_boundary_examples_independent_v2_interruption_20260930.json`，
+SHA256 为 `984d66ca597de2d655bbed62504b9e25dbb8ef02c39ac04143011c34cf61dc61`。
+
+用户已确认继续执行；续批入口和未完成尾部审计修补已推送 `9574040d`。本地时钟审计
+16项、续批入口19项通过。14例新批准备已冻结于
+`data/evaluation/results/golden_boundary_examples_independent_v2_continuation_preparation_20260930.json`，
+canonical SHA 为 `f3aa0f94fa62257f8a82cd84496cda26d642fd1a081063054ffac76ee34128f6`，
+预算为34次调用、3,290,112 tokens、10,200活动秒，尚未发Provider请求。执行门：
+同HEAD公共CI `36712501608` 三项全绿；然后使用同一父/独立宿主身份，首个实质、身份、
+来源、传输或预算失败立即停止，不重试、不复用父批回执。

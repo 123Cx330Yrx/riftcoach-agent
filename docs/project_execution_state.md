@@ -4,16 +4,17 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "旧计时批已因身份问题关闭；新v2完整15等待包含新入口的公共CI和具体新预算授权，尚无新GLM调用。"
+pause_reason: "续批已获授权并完成离线冻结，等待包含中断尾部审计修补的新提交公共CI；尚无新GLM调用。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
 
-2026-09-30：指定起点的审查修补已完成并推送5fd44a1d，公共CI36670205715三项success。
-用户已要求继续推进；新v2完整原15入口、冻结方案及累计预算已准备，47项相关测试
-通过且独立代码复核accepted=true；仍须新入口最终提交公共CI及具体新预算授权。
+2026-09-30：中断尾部审计修补与续批入口已推送9574040d；本地时钟审计16项、续批入口19项、
+编译/差异/治理检查通过。用户已确认继续执行，14例续批已离线冻结：34次调用、3,290,112
+tokens、10,200活动秒，SHA为f3aa0f94fa62257f8a82cd84496cda26d642fd1a081063054ffac76ee34128f6。
+同HEAD公共CI36712501608正在运行；CI未全绿前不发Provider请求。
 真实宿主审查导入→主审→正式提交→封存回读已有工程证据，不重复旧样例。
 **当前无新GLM调用；严格资格仍为1.5.5历史1/15。新付费批需具体预算授权。**
 原15、自然Agent、当前组合真实Worker/DB/API/Workbench及8E仍未完成。
@@ -37,10 +38,10 @@ pause_reason: "旧计时批已因身份问题关闭；新v2完整15等待包含�
 
 ### 当前停止位置与后续
 
-审查修补已汇报；用户后续继续指令恢复推进。新v2完整原15准备已完成，
-35次/3386880tokens/10500活动秒，宿主等待86400秒另列，未缓存预留37.167104元。
-含新入口的同HEAD公共CI及具体授权齐备后才执行。准备记录和累计预算见
-docs/plans/2026-09-30-v2-full15-preparation.md。
+审查修补已汇报；用户后续继续指令恢复推进。父批只读封存，保留严格前缀claim-scope:1；
+续批准备记录见data/evaluation/results/golden_boundary_examples_independent_v2_continuation_preparation_20260930.json，
+累计预算34次/3,290,112tokens/10,200活动秒（加父批仍不超过已授权35次/3,386,880tokens/10,500秒），
+宿主等待86400秒另列。含入口修补的公共CI全绿后才执行。
 旧批不重开、不借授权、不拼历史1/15。既有工程证据、源文件SHA和限制见
 docs/plans/2026-09-30-429-recovery-audit.md。
 未来宿主/消息格式变化须先验证真实派发可读；明文正例不能证明加密输入支持。
