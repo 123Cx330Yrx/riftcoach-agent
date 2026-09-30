@@ -359,10 +359,17 @@ def inspect_runs(run_directories, *, evidence_root, closed_exports, profile='rol
     expected = {r['key']: r for r in current_plan['cases']}
     sources = {f['key']: s for f, s in backend.frozen_cases()[0]}
     prepared, used_keys, seals = [], set(), []
+    continued_parents = set()
     for run, (export_path, export_sha) in zip(runs, exports, strict=True):
         hashes = _seal(run, export_path, export_sha, evidence_root)
         saved = _json(run / 'plan.json')
         plan = saved['preparation_plan']
+        if 'prior_interrupted_batch' in plan:
+            from scripts.run_boundary_examples_v2_continuation import validate_continuation_ledger
+            parent = validate_continuation_ledger(plan, root=evidence_root, runs=runs, exports=exports)
+            if parent in continued_parents:
+                _fail('duplicate_continuation_parent')
+            continued_parents.add(parent)
         result = _json(run / 'result.json') if (run / 'result.json').exists() else None
         timing = None
         timing_files = any(name.startswith('development-host-clock/') for name in hashes)

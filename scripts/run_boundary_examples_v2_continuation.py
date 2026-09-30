@@ -8,7 +8,6 @@ import argparse
 from decimal import Decimal
 import json
 from pathlib import Path
-import re
 
 from app.evaluation.golden_review_experiment import compact, digest
 from scripts import run_boundary_examples_qualification as runner
@@ -20,6 +19,21 @@ from scripts.review_independence_contract import MODE_V2, freeze_v2_identity
 
 RUN_ROOT = runner.ROOT / 'data/runs/role_task_observation'
 EXPERIMENT = 'boundary-examples-independent-v2-continuation-20260930'
+PARENT_SEAL = '984d66ca597de2d655bbed62504b9e25dbb8ef02c39ac04143011c34cf61dc61'
+
+
+def known_cost(summaries):
+    """Price actual role usage; the summaries contain no precomputed cost."""
+    total = Decimal(0)
+    for summary in summaries:
+        for call in summary['calls']:
+            usage = call['usage']
+            if usage is None:
+                raise ValueError('boundary_v2_continuation_unknown_cost')
+            pricing = runner.CONTRACT.pricing_profiles[(call['provider'], call['model'])]
+            total += (Decimal(usage['input_tokens']) * pricing.input_cost_per_million
+                      + Decimal(usage['output_tokens']) * pricing.output_cost_per_million) / 1_000_000
+    return total
 
 
 def read_parent(prior_run, prior_export, prior_sha, *, root=runner.ROOT):
@@ -54,15 +68,16 @@ def read_parent(prior_run, prior_export, prior_sha, *, root=runner.ROOT):
         raise ValueError('boundary_v2_continuation_elapsed_mismatch')
     accounting = dict(reserved_calls=charge['max_calls'], known_tokens=charge['max_tokens'],
         unknown_usage_calls=boundary['unknown_usage_calls'],
-        estimated_uncached_cny=str(sum((Decimal(s['known_usage_estimated_uncached_cny'])
-            for s in summaries if s.get('known_usage_estimated_uncached_cny') is not None), Decimal(0))))
+        estimated_uncached_cny=str(known_cost(summaries)))
     return prior_run, prior_export, saved, completed, charge, accounting
 
 
 def prepare(*, prior_run, prior_export, prior_sha, root_thread_id, independent_thread_id,
             experiment=EXPERIMENT, max_host_seconds=86400, root=runner.ROOT):
-    if not isinstance(experiment, str) or re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}', experiment) is None:
-        raise ValueError('boundary_v2_continuation_experiment_invalid')
+    # One fixed target for this sealed frontier. execute_prepared creates it
+    # atomically before credentials/Provider IO; renaming cannot spend again.
+    if experiment != EXPERIMENT or prior_sha != PARENT_SEAL:
+        raise ValueError('boundary_v2_continuation_target_invalid')
     prior_run, prior_export, saved, completed, charge, accounting = read_parent(
         prior_run, prior_export, prior_sha, root=root)
     prior = saved['preparation_plan']
@@ -103,6 +118,12 @@ def prepare(*, prior_run, prior_export, prior_sha, root_thread_id, independent_t
         for k in ('max_calls', 'max_tokens', 'max_seconds')}
     plan['cumulative_estimated_uncached_cny'] = str(Decimal(accounting['estimated_uncached_cny'])
         + Decimal(plan['batch_budget']['estimated_uncached_cny']))
+    timing = validate_adopted_timing(prior_run, prior,
+        saved_plan_sha256=saved['plan_sha256'], allow_unfinished_tail=True)
+    plan['continuation_host_accounting'] = dict(
+        scope='per_execution_process', parent_completed_wait_seconds=timing['host_elapsed_seconds'],
+        parent_unfinished_wait_seconds=None, cumulative_host_seconds=None,
+        child_wait_limit_seconds=max_host_seconds)
     plan['authorization_scope'] = (
         'Fresh continuation for the fourteen untouched original controls. '
         'The interrupted parent is read-only; no request or verdict is reused.')
@@ -117,6 +138,47 @@ def prepare(*, prior_run, prior_export, prior_sha, root_thread_id, independent_t
     for path in paths:
         plan['source_sha256'][path] = digest((runner.ROOT / path).read_text(encoding='utf-8'))
     return plan, requests
+
+
+def validate_continuation_ledger(plan, *, root, runs, exports):
+    """Rebuild the parent charge at consumption time, never trust claimed totals."""
+    link = plan['prior_interrupted_batch']
+    parent, export, saved, completed, charge, accounting = read_parent(
+        link['run_directory'], link['closed_export'], link['closed_export_sha256'], root=root)
+    prior = saved['preparation_plan']
+    expected_child, _ = runner.prepare_fresh(experiment=EXPERIMENT,
+        keys=[row['key'] for row in prior['cases'][len(completed):]])
+    if (plan.get('experiment') != EXPERIMENT or link['closed_export_sha256'] != PARENT_SEAL
+            or plan.get('batch_budget') != expected_child['batch_budget']
+            or parent not in runs or (export, PARENT_SEAL) not in exports
+            or link.get('plan_sha256') != saved['plan_sha256']
+            or link.get('accepted_prefix_keys') != completed
+            or link.get('charged_budget') != charge or link.get('accounting') != accounting
+            or plan.get('identity') != prior['identity']
+            or plan.get('review_principals') != prior['review_principals']
+            or plan.get('root_thread_id') != prior['root_thread_id']
+            or plan.get('cases') != prior['cases'][len(completed):]
+            or plan.get('case_budgets') != prior['case_budgets'][len(completed):]):
+        raise ValueError('boundary_v2_continuation_ledger_mismatch')
+    cumulative = {k: charge[k] + plan['batch_budget'][k]
+        for k in ('max_calls', 'max_tokens', 'max_seconds')}
+    if (plan.get('cumulative_reserved_budget') != cumulative
+            or any(plan['batch_budget'][k] != sum(b[k] for b in plan['case_budgets']) for k in cumulative)
+            or any(cumulative[k] > prior['batch_budget'][k] + (0.01 if k == 'max_seconds' else 0)
+                   for k in cumulative)
+            or Decimal(plan['cumulative_estimated_uncached_cny']) !=
+                Decimal(accounting['estimated_uncached_cny']) + Decimal(plan['batch_budget']['estimated_uncached_cny'])):
+        raise ValueError('boundary_v2_continuation_cumulative_budget')
+    timing = validate_adopted_timing(parent, prior,
+        saved_plan_sha256=saved['plan_sha256'], allow_unfinished_tail=True)
+    host_limit = plan['host_review_timing']['max_host_seconds']
+    if (not 0 < host_limit <= prior['host_review_timing']['max_host_seconds']
+            or plan.get('continuation_host_accounting') != dict(
+                scope='per_execution_process', parent_completed_wait_seconds=timing['host_elapsed_seconds'],
+                parent_unfinished_wait_seconds=None, cumulative_host_seconds=None,
+                child_wait_limit_seconds=host_limit)):
+        raise ValueError('boundary_v2_continuation_host_accounting')
+    return parent
 
 
 def verify_native_principals(client, plan):
