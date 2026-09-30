@@ -93,14 +93,8 @@ class CodexReadOnlyClient:
                     _fail('request_failed')
                 return message['result']
 
-    def read_collaboration_dispatch(self, thread, turn, final):
-        """Read an omitted inter-agent input from the host-owned rollout.
-
-        Current app-server turn views omit response_item.agent_message. The
-        native thread selects its backing file; its session, turn and final
-        response must agree with the read-only API. This has the same local
-        history trust boundary as app-server, not cryptographic tamper proof.
-        """
+    def _collaboration_records(self, thread):
+        """Read only the backing file selected by the native host thread."""
         try:
             path = Path(thread['path']).resolve(strict=True)
             if (not path.is_relative_to(self.session_root) or path.suffix != '.jsonl'
@@ -119,6 +113,72 @@ class CodexReadOnlyClient:
                 or not isinstance(agent_path, str) or not agent_path.startswith('/root/')
                 or meta.get('agent_path') != agent_path):
             _fail('rollout_session_mismatch')
+        return records, meta
+
+    @staticmethod
+    def _collaboration_text(payload, thread):
+        agent_path = thread['source']['subAgent']['thread_spawn']['agent_path']
+        parent_path = agent_path.rsplit('/', 1)[0]
+        prefix = ('Message Type: NEW_TASK' + chr(10) + 'Task name: ' + agent_path
+            + chr(10) + 'Sender: ' + parent_path + chr(10) + 'Payload:' + chr(10))
+        content = payload.get('content', [])
+        if (payload.get('author') != parent_path or payload.get('recipient') != agent_path
+                or not isinstance(payload.get('id'), str) or not payload['id']):
+            _fail('rollout_dispatch_author')
+        if any(v.get('type') == 'encrypted_content' for v in content):
+            _fail('rollout_dispatch_encrypted')
+        if (len(content) != 1 or content[0].get('type') != 'input_text'
+                or not isinstance(content[0].get('text'), str)
+                or not content[0]['text'].startswith(prefix)):
+            _fail('rollout_dispatch_format')
+        text = content[0]['text'][len(prefix):]
+        if not text.strip():
+            _fail('rollout_dispatch_missing')
+        return text
+
+    def check_latest_input(self, thread):
+        """Check present readability, not future availability or review quality.
+
+        Never search backwards for an older successful dispatch. This probe
+        accepts ordinary host task text; actual review fetch still requires
+        the exact six-field task binding and completed independent final.
+        """
+        page = self.request('thread/turns/list', dict(
+            threadId=thread['id'], limit=1, itemsView='full'))
+        turns = page.get('data', [])
+        if len(turns) != 1:
+            _fail('latest_input_unavailable')
+        turn = turns[0]
+        if (not turn.get('id') or turn.get('status') != 'completed'
+                or turn.get('itemsView') != 'full' or turn.get('error') is not None):
+            _fail('latest_input_incomplete')
+        users = [i for i in turn.get('items', []) if i.get('type') == 'userMessage']
+        if users:
+            if len(users) != 1:
+                _fail('dispatch_or_final_ambiguous')
+            content = users[0].get('content', [])
+            if (not users[0].get('id') or len(content) != 1
+                    or content[0].get('type') != 'text'
+                    or not isinstance(content[0].get('text'), str)
+                    or not content[0]['text'].strip()):
+                _fail('dispatch_format')
+            dispatch_id = users[0]['id']
+        else:
+            records, _ = self._collaboration_records(thread)
+            dispatches = [r['payload'] for r in records if r.get('type') == 'response_item'
+                and r.get('payload', {}).get('type') == 'agent_message'
+                and r['payload'].get('internal_chat_message_metadata_passthrough', {}).get('turn_id') == turn['id']]
+            if len(dispatches) != 1:
+                _fail('rollout_dispatch_or_final_ambiguous')
+            self._collaboration_text(dispatches[0], thread)
+            dispatch_id = dispatches[0]['id']
+        return dict(thread_id=thread['id'], turn_id=turn['id'], dispatch_id=dispatch_id,
+            current_input_readable=True, future_input_guaranteed=False)
+
+    def read_collaboration_dispatch(self, thread, turn, final):
+        """Bind omitted native input to its exact completed independent final."""
+        records, meta = self._collaboration_records(thread)
+        agent_path = thread['source']['subAgent']['thread_spawn']['agent_path']
         parent_path = agent_path.rsplit('/', 1)[0]
         dispatches, finals, completed_items = [], [], []
         for index, record in enumerate(records):
@@ -154,10 +214,8 @@ class CodexReadOnlyClient:
                     # A local task or the answer cannot replace the opaque host binding.
                     task = None
                 else:
-                    if len(content) != 1:
-                        _fail('rollout_dispatch_format')
                     try:
-                        task = json.loads(text[len(prefix):])
+                        task = json.loads(self._collaboration_text(payload, thread))
                     except ValueError:
                         _fail('rollout_task_json')
                 dispatches.append((index, record, task))

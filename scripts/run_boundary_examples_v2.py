@@ -52,7 +52,9 @@ def verify_native_principals(client, plan):
     if (parent.get('id') != root or child.get('id') != independent
             or child.get('parentThreadId') != root or spawn.get('parent_thread_id') != root):
         raise ValueError('boundary_v2_native_lineage_mismatch')
-    return dict(root_thread_id=root, independent_thread_id=independent, verified=True)
+    readability = client.check_latest_input(child)
+    return dict(root_thread_id=root, independent_thread_id=independent, verified=True,
+        independent_agent_path=spawn.get('agent_path'), input_readability=readability)
 
 
 def run(args):

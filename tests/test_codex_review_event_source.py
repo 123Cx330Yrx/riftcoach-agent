@@ -125,6 +125,8 @@ def native_rollout_fixture(tmp_path):
     executable = tmp_path/'unused.exe'
     executable.touch()
     reader = host.CodexReadOnlyClient(executable, session_root=sessions)
+    reader.request = f.client.request
+    f.reader = reader
     f.client.read_collaboration_dispatch = reader.read_collaboration_dispatch
     spawn = f.thread['source']['subAgent']['thread_spawn']
     spawn['agent_path'] = '/root/reviewer'
@@ -260,3 +262,72 @@ def test_native_encrypted_dispatch_is_explicitly_unverifiable(tmp_path):
     f.save()
     with pytest.raises(ValueError, match='codex_review_host_rollout_dispatch_encrypted'):
         fetch(f)
+
+
+def test_latest_input_probe_accepts_plain_engineering_text_without_granting_review(tmp_path):
+    f = native_rollout_fixture(tmp_path)
+    content = f.records[1]['payload']['content'][0]
+    content['text'] = content['text'].split('Payload:')[0] + 'Payload:\nCheck current host availability.'
+    f.save()
+    assert f.reader.check_latest_input(f.thread) == dict(thread_id='child', turn_id='turn-1',
+        dispatch_id='actual-dispatch', current_input_readable=True, future_input_guaranteed=False)
+    with pytest.raises(ValueError, match='rollout_task_json'):
+        fetch(f)  # Readability alone is never a signed stage judgment.
+
+
+@pytest.mark.parametrize('fault', ['encrypted', 'missing', 'duplicate', 'wrong_parent',
+    'wrong_author', 'wrong_recipient', 'wrong_turn', 'outside_host', 'running', 'empty'])
+def test_latest_input_probe_rejects_unreadable_or_unbound_current_input(tmp_path, fault):
+    f = native_rollout_fixture(tmp_path)
+    if fault == 'encrypted':
+        f.records[1]['payload']['content'].append(dict(type='encrypted_content', encrypted_content='opaque'))
+    elif fault == 'missing': f.records.pop(1)
+    elif fault == 'duplicate': f.records.insert(1, deepcopy(f.records[1]))
+    elif fault == 'wrong_parent': f.records[0]['payload']['parent_thread_id'] = 'other'
+    elif fault == 'wrong_author': f.records[1]['payload']['author'] = '/root/reviewer'
+    elif fault == 'wrong_recipient': f.records[1]['payload']['recipient'] = '/root/other'
+    elif fault == 'wrong_turn':
+        f.records[1]['payload']['internal_chat_message_metadata_passthrough']['turn_id'] = 'other'
+    elif fault == 'outside_host': f.thread['path'] = str(tmp_path/'outside.jsonl')
+    elif fault == 'running': f.turn['status'] = 'inProgress'
+    elif fault == 'empty':
+        f.records[1]['payload']['content'][0]['text'] = 'Message Type: NEW_TASK\nTask name: /root/reviewer\nSender: /root\nPayload:\n'
+    f.save()
+    with pytest.raises(ValueError, match='codex_review_host_'):
+        f.reader.check_latest_input(f.thread)
+
+
+@pytest.mark.parametrize('new_state', ['encrypted', 'missing', 'inProgress'])
+def test_latest_input_probe_never_falls_back_to_an_old_readable_review(tmp_path, new_state):
+    f = native_rollout_fixture(tmp_path)
+    assert fetch(f)['review'] == f.review
+    old_turn = deepcopy(f.turn)
+    f.turn.update(id='turn-2', items=[])
+    if new_state == 'inProgress': f.turn['status'] = 'inProgress'
+    if new_state == 'encrypted':
+        new = deepcopy(f.records[1])
+        new['payload']['id'] = 'latest-dispatch'
+        new['payload']['internal_chat_message_metadata_passthrough']['turn_id'] = 'turn-2'
+        new['payload']['content'].append(dict(type='encrypted_content', encrypted_content='opaque'))
+        f.records.append(new)
+    f.save()
+    queries = []
+    def request(method, params):
+        queries.append(params)
+        return dict(data=[deepcopy(old_turn if params.get('cursor') else f.turn)], nextCursor='older')
+    f.reader.request = request
+    with pytest.raises(ValueError, match='codex_review_host_'):
+        f.reader.check_latest_input(f.thread)
+    assert len(queries) == 1 and queries[0]['limit'] == 1 and 'cursor' not in queries[0]
+
+
+def test_latest_input_probe_supports_native_user_input_projection(tmp_path):
+    f = fixture()
+    executable = tmp_path/'unused.exe'
+    executable.touch()
+    reader = host.CodexReadOnlyClient(executable)
+    reader.request = f.client.request
+    assert reader.check_latest_input(f.thread)['dispatch_id'] == 'dispatch-1'
+    f.turn['items'][0]['content'].append(dict(type='encrypted_content'))
+    with pytest.raises(ValueError, match='dispatch_format'):
+        reader.check_latest_input(f.thread)

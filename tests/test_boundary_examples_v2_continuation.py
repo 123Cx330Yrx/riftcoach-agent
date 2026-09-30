@@ -1,10 +1,42 @@
 """Continuation accounting must charge actual receipts, including the parent."""
 from decimal import Decimal
+import json
+from types import SimpleNamespace
 
 import pytest
 
 from scripts.run_boundary_examples_v2_continuation import known_cost
 from scripts import run_boundary_examples_v2_continuation as entry
+
+
+def test_unreadable_current_host_stops_continuation_before_reservation_or_paid_io(tmp_path, monkeypatch):
+    plan = dict(experiment=entry.EXPERIMENT, root_thread_id='root', review_principals={
+        'primary': {'principal_id':'root'}, 'independent': {'principal_id':'child'}})
+    preparation = tmp_path/'prepared.json'
+    preparation.write_text(json.dumps(plan), encoding='utf-8')
+    args = SimpleNamespace(experiment=entry.EXPERIMENT, prior_run=tmp_path/'parent',
+        prior_export=tmp_path/'seal', prior_sha=entry.PARENT_SEAL, root_thread_id='root',
+        independent_thread_id='child', max_host_seconds=86400, execute=True,
+        preparation=preparation, env_file=tmp_path/'unused-env', ci_run='unused-ci',
+        codex_executable=tmp_path/'unused.exe', plan_sha=entry.runner.canonical_sha(plan))
+    class Client:
+        def __init__(self, *_): pass
+        def __enter__(self): return self
+        def __exit__(self, *_): pass
+        def request(self, method, params):
+            return dict(thread=dict(id=params['threadId'], parentThreadId='root',
+                source={'subAgent':{'thread_spawn':{'parent_thread_id':'root'}}}))
+        def check_latest_input(self, thread):
+            assert thread['id'] == 'child'
+            raise ValueError('codex_review_host_rollout_dispatch_encrypted')
+    monkeypatch.setattr(entry, 'RUN_ROOT', tmp_path/'runs')
+    monkeypatch.setattr(entry, 'prepare', lambda **kw: (plan, {}))
+    monkeypatch.setattr(entry, 'CodexReadOnlyClient', Client)
+    monkeypatch.setattr(entry.audit, 'inspect_runs', lambda *a, **kw: pytest.fail('audit before host readiness'))
+    monkeypatch.setattr(entry.runner, 'execute_prepared', lambda *a, **kw: pytest.fail('reservation or paid IO'))
+    with pytest.raises(ValueError, match='dispatch_encrypted'):
+        entry.run(args)
+    assert not (tmp_path/'runs').exists()
 
 
 def test_actual_parent_usage_is_not_silently_free():

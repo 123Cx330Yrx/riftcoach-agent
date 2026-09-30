@@ -4,12 +4,38 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "续批已获授权并完成离线冻结，等待包含中断尾部审计修补的新提交公共CI；尚无新GLM调用。"
+pause_reason: "续批在1次完整初评后因真实宿主派发密文无法取证而停止；付费前可读性检查已补，宿主来源尚未恢复，禁止重开已停批。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
+
+2026-10-01：已执行获授权的14例续批，但只完成claim-scope:4初评（78/needs_revision）。
+GLM正确检出“辅助局将每一个指标均值都拉低”的事实错误；1次调用19459tokens、unknown0、
+未缓存估价0.299992元。没有Flash编辑、全新终评或新增完整合格案例，原15严格完成仍1/15。
+
+独立审查确已完成，但指定线程的新派发正文为encrypted_content，原生只读接口及宿主日志
+均未提供可验证明文，正式导入报codex_review_host_rollout_dispatch_encrypted。已停止原等待
+进程并封存32份原件；没有伪造执行器result、重试、补签或撤销父批首例。不是本例语义失败，
+也不是402/429。封存及根因见`docs/plans/2026-10-01-host-input-readability.md`。
+
+本次还纠正了摘要里的独立Agent别名错误：冻结线程实际为/root/recovery_patch_check；
+此前错派/root/coarse_live_reviewer的意见未正式导入。以后从原生thread source读取实际映射。
+真实父子v2系列累计2调用35034tokens/估价0.491412元；不是全项目累计费用。
+
+已补首次/续批启动前的最新任务可读性检查，不回退旧成功事件；在凭据、目录及Provider IO前
+拒绝不可读宿主。真实只读检查已拒绝当前密文，零新调用。相关三文件最终覆盖91例通过
+（首次90通过1个新增fixture失败，修fixture后续批14例通过）；此预检不授资格或保证未来派发。
+执行前HEAD 8ac9cab1的CI36735390662三项成功，仅证明旧提交；新增补丁公共CI另行跟踪。
+
+下一动作：交付这批预检修补与停批审计；恢复满足现合同的真实派发明文来源，并先用不调用
+GLM的真实往返证明它可用。当前尚无已验证读取路径，不再开付费批碰运气；若需替代证据合同，
+先形成具体方案和影响评估，不能静默放宽或追认旧批。已停续批及原冻结保持只读。
+完整原15、自然Agent、当前组合真实Worker/DB/API/Workbench和8E仍未完成。四块联动、本人
+Training、前端审美/必要重做/英雄头像、Memory、身份运维、两树整合及学习沿活动计划保留。
+
+以下为历史记录；当前行动以本段为准。
 
 2026-09-30：新v2父批实际完成claim-scope:1（96/pass，1调用，15575tokens，未缓存估价0.19142元），
 真实独立宿主→主审→提交→封存回读通过。进程在下一例case_ready等待中消失；没有第二例

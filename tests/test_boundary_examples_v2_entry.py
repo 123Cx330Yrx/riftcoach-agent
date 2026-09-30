@@ -89,7 +89,8 @@ def test_run_name_cannot_escape_namespace(experiment):
         entry.prepare(root_thread_id='root', independent_thread_id='child', experiment=experiment)
 
 
-def test_execute_keeps_native_source_alive_and_passes_adopted_clock(tmp_path, monkeypatch):
+@pytest.mark.parametrize('readable', [True, False])
+def test_execute_keeps_native_source_alive_and_passes_adopted_clock(tmp_path, monkeypatch, readable):
     args = arguments(tmp_path, execute=True, env_file=tmp_path/'env', ci_run='ci',
         codex_executable=tmp_path/'codex.exe')
     plan, requests = freeze(args)
@@ -107,8 +108,15 @@ def test_execute_keeps_native_source_alive_and_passes_adopted_clock(tmp_path, mo
             identity = params['threadId']
             return {'thread':dict(id=identity, parentThreadId=args.root_thread_id,
                 source={'subAgent':{'thread_spawn':{'parent_thread_id':args.root_thread_id}}})}
+        def check_latest_input(self, thread):
+            assert thread['id'] == args.independent_thread_id
+            seen.append('readability')
+            if not readable:
+                raise ValueError('codex_review_host_rollout_dispatch_encrypted')
+            return dict(current_input_readable=True, future_input_guaranteed=False)
     def execute(actual_args, actual_plan, actual_requests, **kwargs):
-        assert seen == ['open']
+        assert seen == ['open', 'readability']
+        assert readable
         assert actual_args is args and actual_plan == plan and actual_requests == requests
         assert kwargs['host_timing'] == plan['host_review_timing']
         assert kwargs['preparation'] == args.preparation
@@ -118,8 +126,13 @@ def test_execute_keeps_native_source_alive_and_passes_adopted_clock(tmp_path, mo
     monkeypatch.setattr(entry, 'RUN_ROOT', tmp_path/'runs')
     monkeypatch.setattr(entry, 'CodexReadOnlyClient', Client)
     monkeypatch.setattr(entry.runner, 'execute_prepared', execute)
-    assert entry.run(args) == {'tasks_observed':True}
-    assert seen == ['open', 'closed']
+    if readable:
+        assert entry.run(args) == {'tasks_observed':True}
+    else:
+        with pytest.raises(ValueError, match='dispatch_encrypted'):
+            entry.run(args)
+        assert not (tmp_path/'runs').exists()
+    assert seen == ['open', 'readability', 'closed']
 
 
 @pytest.mark.parametrize('fault', ['root', 'child', 'parent', 'spawn', 'no_source'])
