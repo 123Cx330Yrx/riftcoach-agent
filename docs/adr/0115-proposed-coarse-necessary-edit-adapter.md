@@ -71,3 +71,24 @@ Worker及资格代码不注册此适配器。完整稿语义和引用是否正�
 1调用11442tokens，unknown0，估价0.0102356元；没有fresh/保持控制，不授产品或原15资格。
 失败封存、独立诊断、可诊断性修补与仅改变schema表示的后续假设见
 `docs/plans/2026-10-01-coarse-edit-diagnostic-result.md`。本ADR仍非产品采用；旧准备不可重开。
+
+## 单编辑inline表示验证准备（2026-10-01）
+
+在真实缺source_ids失败后，新增 `inline_edit_request` 精确展开唯一无递归的TextEdit定义；
+全部业务字段和约束保留，默认产品/原适配器不选择该表示。新单编辑入口为
+`scripts/run_coarse_inline_edit_diagnostic.py`，复用旧入口的CI、身份、凭据、回执、预算与双审。
+完整原始来源、报告、accepted_review与封存逐值比较；旧发出态budget标记先核对固定值再
+还原准备态比较。离线实际SDK编码只变工具schema；live期限仍可按剩余时间缩短。
+
+最多1次Flash，96768tokens/300活动秒、86400host秒、未缓存预留0.1429504元。成功须完整
+结构/来源/报告及真双审接受，随即结束，不发fresh/保持对照、不授十五例或产品资格。
+先前失败批不重开。用户本轮“继续”与已有总体授权支持本次更小的继续：含原实际最多
+2调用/108210tokens/318.562秒/0.153186元，均低于已批准3调用总边界；不扩大范围。
+
+冻结：`data/evaluation/results/golden_coarse_inline_edit_preparation_20261001.json`，
+SHA `a30d84bca9373ec115086e93dc3f25afe889257a407bd050523276c51061b0a2`。
+新11项通过，旧适配器22项与入口12项通过；首轮新9个失败均指向prepared/issued内部budget
+标记差异，已在不删提示/来源的前提下显式核验，修后11项通过。独立代码复核及真实只读
+宿主身份预检通过，最新派发仍可密文，证据合同沿native-final，不模拟签署。
+当前新Provider调用0。完成同提交公共CI才执行；单次成功只支持继续准备fresh/保持验证，
+不能证明因果或稳定率。若仍缺字段，放弃“inline足以修复”的判断，不自动再试下一提示。

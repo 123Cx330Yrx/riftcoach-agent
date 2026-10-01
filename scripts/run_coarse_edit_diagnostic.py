@@ -56,7 +56,7 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def controls():
+def controls(*, inline_schema=False):
     sources={row['key']:req for row,req in frozen_cases()[0]}
     rows=json.loads((ROOT/FIXTURE).read_bytes())['cases']
     if tuple(row['key'] for row in rows)!=KEYS:
@@ -70,7 +70,8 @@ def controls():
         _,accepted,_=Current.validate_review(row['initial_raw'],inputs)
         if accepted.verdict!=('needs_revision' if row['key']==KEYS[0] else 'pass'):
             raise ValueError('coarse_diagnostic_initial_verdict')
-        result.append((row,inputs,accepted,editor.edit_request(inputs,accepted)))
+        build = editor.inline_edit_request if inline_schema else editor.edit_request
+        result.append((row,inputs,accepted,build(inputs,accepted)))
     return result
 
 
@@ -140,15 +141,22 @@ def wait_reviews(path,remaining):
     raise ValueError('coarse_diagnostic_host_deadline')
 
 
-def observe(factory,directory,plan,*,event_source,adjudicate=wait_reviews,before_send=lambda:None):
+def observe(factory,directory,plan,*,event_source,adjudicate=wait_reviews,before_send=lambda:None,
+            inline_single_edit=False):
     """One non-restartable process; no paid response can bypass the host gate."""
     require_execution_event_source(plan,event_source)
+    if inline_single_edit and (plan['adapter']!=editor.INLINE_VERSION
+            or plan['sequence']!=['necessary-edit'] or plan['budget']['max_calls']!=1
+            or len(plan['cells'])!=1):
+        raise ValueError('coarse_diagnostic_inline_plan')
     clock=DevelopmentHostClock(directory,max_host_seconds=plan['max_host_seconds'])
     router=factory('diagnostic')
     budget=_ReceiptForwardingCoachBudgetedProvider(router,coach_contract=CONTRACT,clock=clock)
     send=SharedBudgetReviewSender(budget)
     ledger=[]
-    result=dict(experiment=EXPERIMENT,diagnostic_accepted=False,product_admitted=False,original15_qualified=False)
+    result=dict(experiment=plan['experiment'],diagnostic_accepted=False,product_admitted=False,original15_qualified=False)
+    if inline_single_edit:
+        result.update(diagnostic_scope='single_edit_only',fresh_review_completed=False,correct_keep_completed=False)
     plan_sha=canonical_sha(plan)
 
     def call(name,key,phase,inputs,request,parse):
@@ -185,14 +193,17 @@ def observe(factory,directory,plan,*,event_source,adjudicate=wait_reviews,before
         return stage
 
     try:
-        bad,good=controls()
+        bad,good=controls(inline_schema=inline_single_edit)
         row,inputs,accepted,prepared=bad
         if hashlib.sha256(validate_request(prepared,transport_id=CAPACITY_TRANSPORT_ID)).hexdigest()!=plan['cells'][0]['request_sha256']:
             raise ValueError('coarse_diagnostic_request_changed')
         def inspect_edit(request,exchange):
-            assembly=editor.inspect_edit_exchange(prepared,exchange,inputs,accepted)
+            assembly=editor.inspect_edit_exchange(prepared,exchange,inputs,accepted,inline_schema=inline_single_edit)
             return assembly.report,assembly.journal
         edited=call('necessary-edit',row['key'],'revision',inputs,prepared,inspect_edit)
+        if inline_single_edit:
+            result['diagnostic_accepted']=True
+            return result  # finally still writes usage, receipts and timing.
         final_inputs=report_inputs(inputs,edited['report'])
         def inspect_final(request,exchange):
             raw=tool_result(request,exchange)
@@ -233,7 +244,14 @@ def run(args):
     if not args.execute:
         if args.output: write_new_json(args.output,plan)
         return dict(plan_sha256=canonical_sha(plan),preparation=plan,provider_calls=0)
-    directory=ROOT/'data/runs/model_comparison'/EXPERIMENT
+    return execute_plan(args,plan)
+
+
+def execute_plan(args,plan,*,observer=observe):
+    """Share the existing CI, identity, credentials and create-only execution boundary."""
+    if re.fullmatch('[a-z0-9][a-z0-9-]{0,99}',plan['experiment']) is None:
+        raise ValueError('coarse_diagnostic_experiment')
+    directory=ROOT/'data/runs/model_comparison'/plan['experiment']
     if directory.exists(): raise ValueError('coarse_diagnostic_closed_or_exists')
     if (not args.preparation or not args.env_file or not args.codex_executable
             or args.plan_sha!=canonical_sha(plan) or plan!=json.loads(args.preparation.read_bytes())):
@@ -251,7 +269,7 @@ def run(args):
         write_new_json(directory/'plan.json',dict(preparation_plan=plan,plan_sha256=canonical_sha(plan),
             approved_plan_sha256=args.plan_sha,execution_head_sha=head,ci_run=args.ci_run))
         with route_environment('direct'):
-            return observe(factory,directory,plan,event_source=event_source,
+            return observer(factory,directory,plan,event_source=event_source,
                 before_send=lambda:require_unchanged_checkout(head))
 
 

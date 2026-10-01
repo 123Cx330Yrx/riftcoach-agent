@@ -18,6 +18,7 @@ from app.evaluation.source_patch_editor import EditSet, SUBMIT_TOOL, apply_edits
 from app.providers.models import ToolSpec, ToolChoiceMode
 
 VERSION = 'coarse-source-explicit-revision-v1'
+INLINE_VERSION = 'coarse-source-inline-schema-revision-v1'
 TEXT_OUTPUT = '只输出完整Markdown报告，不输出审查JSON或修改说明。'
 EDIT_OUTPUT = (
     '只调用submit_source_edits提交必要替换，不输出完整报告或其他文字。'
@@ -43,9 +44,22 @@ def edit_request(inputs, accepted):
         tool_choice=ToolChoiceMode.AUTO, response_contract=None))
 
 
-def inspect_edit_exchange(prepared, exchange, inputs, accepted):
+def inline_edit_request(inputs, accepted):
+    """Inline the sole local definition exactly; no business or field change."""
+    base = edit_request(inputs, accepted)
+    schema = deepcopy(base.tools[0].input_schema)
+    if (set(schema.get('$defs', {})) != {'TextEdit'}
+            or schema['properties']['edits']['items'] != {'$ref': '#/$defs/TextEdit'}
+            or compact(schema).count('"$ref"') != 1):
+        raise ValueError('coarse_edit_inline_schema_changed')
+    schema['properties']['edits']['items'] = schema.pop('$defs')['TextEdit']
+    return budget_check(replace(base, tools=(replace(base.tools[0], input_schema=schema),)))
+
+
+def inspect_edit_exchange(prepared, exchange, inputs, accepted, *, inline_schema=False):
     """Validate the real tool response, then bind the assembled full report."""
-    if prepared != edit_request(inputs, accepted):
+    expected = (inline_edit_request if inline_schema else edit_request)(inputs, accepted)
+    if prepared != expected:
         raise ValueError('coarse_edit_input_changed')
     issued, response = exchange.issued_request, exchange.response
     if (issued.messages != prepared.messages or issued.tools != prepared.tools
@@ -66,7 +80,7 @@ def inspect_edit_exchange(prepared, exchange, inputs, accepted):
     raw = compact(dict(response.tool_calls[0].arguments))
     assembly = apply_edits(raw, inputs, resolve_sources=resolve_refs,
         make_final_request=Current.make_request, policy=prepared.messages[0].content,
-        version=VERSION)
+        version=INLINE_VERSION if inline_schema else VERSION)
     reject_revision_policy_echo(assembly.report, inputs.source.report, prepared)
     return assembly
 
