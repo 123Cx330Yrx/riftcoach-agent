@@ -75,6 +75,59 @@ def test_existing_workflow_preserves_one_revision_and_full_recheck():
             req.knowledge, req.report, initial))
 
 
+@pytest.mark.parametrize('location', ['prefix', 'body', 'suffix'])
+def test_revision_policy_echo_stops_before_fresh_review_and_preserves_receipt(location):
+    _, req = prepare_claim_scope(3)
+    first = compact(opinion(legacy.build_inputs(req), block=1))
+    # The live failure copied the system prefix and then supplied all headings.
+    echo = current.REVISION_POLICY[:420]
+    revised = (echo + '\n\n' + req.report if location == 'prefix' else
+               req.report + '\n\n' + echo if location == 'suffix' else
+               req.report.replace('## 3.', echo + '\n\n## 3.', 1))
+    provider = OfflineResponses([first, revised])
+    recorded = []
+    workflow = current.NativeBusinessReviewWorkflow(
+        BudgetedReviewSender(provider, clock=lambda: 1000),
+        record=lambda phase, exchange: recorded.append((phase, exchange)))
+    initial = workflow.evaluate(req)
+    with pytest.raises(ValueError, match='native_revision_policy_echo'):
+        workflow.revise(RevisionRequest(req.player_summary, req.deterministic_report,
+            req.knowledge, req.report, initial))
+    assert workflow.stopped and workflow.calls == 2
+    assert recorded[-1][1].response.content == revised
+    assert workflow._expected_recheck is None
+    with pytest.raises(ValueError):
+        workflow.evaluate(replace(req, report=revised))
+    assert len(provider.requests) == 2
+
+
+def test_policy_echo_guard_preserves_original_quotes_and_domain_wording():
+    from app.evaluation.golden_semantic_review import reject_revision_policy_echo
+    _, req = prepare_claim_scope(3)
+    inputs = legacy.build_inputs(req)
+    _, wire, _ = legacy.validate(compact(opinion(inputs, block=1)), inputs)
+    request = current.request(inputs, accepted=wire)
+    quoted = current.SCOPE_POLICY
+    original = req.report + '\n\n引用的方法说明：' + quoted
+    reject_revision_policy_echo(original, original, request)
+    ordinary = req.report + '\n\n保持样本范围，按位置核对来源，不推断长期水平。'
+    reject_revision_policy_echo(ordinary, req.report, request)
+
+
+def test_actual_flash_revision_echo_is_rejected_without_cleaning():
+    from types import SimpleNamespace
+    from app.providers.models import ChatMessage, MessageRole
+    from app.evaluation.golden_semantic_review import reject_revision_policy_echo
+    saved = json.loads((Path(__file__).parent / 'fixtures' /
+        'native_revision_policy_echo_20261001.json').read_text(encoding='utf-8'))
+    report = saved['actual_report']
+    request = SimpleNamespace(messages=(ChatMessage(
+        role=MessageRole.SYSTEM, content=saved['system_policy']),))
+    with pytest.raises(ValueError, match='native_revision_policy_echo'):
+        reject_revision_policy_echo(report, saved['original_report'], request)
+    assert report == saved['actual_report']
+
+
 def test_reassessment_still_requires_explicit_disposition_of_old_findings():
     req = evaluation_request()
     inputs = legacy.build_inputs(req)

@@ -84,6 +84,45 @@ def test_actual_application_same_policy_shared_budget(tmp_path, coarse_script_so
         assert request_data(delegate.generator.requests[-1])['accepted_review']['issues']
 
 
+def test_application_rejects_editor_policy_echo_without_fresh_call(
+        tmp_path, coarse_script_sources, monkeypatch):
+    from app.rag.hybrid import LocalHybridKnowledgeProvider
+    generator, reviewer = providers()
+    original_chat = generator.chat
+    captured = []
+
+    def echoing_editor(request):
+        response = original_chat(request)
+        if request.metadata.get('harness_step') == 'revise':
+            response = replace(response,
+                content=request.messages[0].content[:420] + '\n\n' + response.content)
+            generator.last_exchange = replace(generator.last_exchange, response=response)
+            captured.append(response)
+        return response
+
+    monkeypatch.setattr(generator, 'chat', echoing_editor)
+    delegate = RoleRoutedProvider(generator, reviewer, source_projection=VERSION)
+
+    class Factory:
+        descriptor = RoleRoutedProvider(*providers(), source_projection=VERSION)
+
+        def __call__(self, run_id):
+            return delegate
+
+    app = build_boundary_examples_coach_application(
+        summary_builder=SummaryBuilder(generator.req.player_summary), provider_factory=Factory(),
+        knowledge_provider=LocalHybridKnowledgeProvider.from_directory(Path('data/rag_docs')),
+        runs_root=tmp_path)
+    result = run(app, 'boundary_echo_rejected')
+    assert result.publication_status.value == 'rejected'
+    assert result.output.report is None
+    assert len(captured) == 1
+    assert [row['role'] for row in delegate.attempts] == [
+        'generation', 'generation', 'review', 'revision']
+    assert delegate.attempts[-1]['status'] == 'completed'
+    assert len(reviewer.requests) == 1
+
+
 @pytest.mark.parametrize('scenario', ['normal','recover','failed'])
 def test_natural_entry_routes_and_receipts(tmp_path, monkeypatch, coarse_script_sources, scenario):
     from copy import deepcopy

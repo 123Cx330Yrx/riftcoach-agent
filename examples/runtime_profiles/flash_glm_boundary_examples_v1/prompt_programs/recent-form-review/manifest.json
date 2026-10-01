@@ -47,7 +47,7 @@
     {
       "component_id": "app.evaluation.golden_semantic_review",
       "source": "app/evaluation/golden_semantic_review.py",
-      "sha256": "f72dca85969b4cf3ef12f2567f19d98ab91ec94e5acf7ee5fe0b1ccdb4048e78"
+      "sha256": "8c09d5921d5824312a6df2f4c7a9cc9fe5a6a8fa8cf5b8d3df6540f41b648f4e"
     },
     {
       "component_id": "app.evaluation.golden_semantic_sources",
@@ -340,5 +340,5 @@
       "sha256": "ecd91dc4a12e203b7f14e19fe43712361e40b4c3a090022770a2aae0d0f984c9"
     }
   ],
-  "program_sha256": "5d84d9a3e6f944064ee4a32e6bb082f625e0639869f8d31e73f638c7a60f7ce6"
+  "program_sha256": "6d9316b1153f23611754dfb2c3f6efa83228f447f2c11137536744e7ed3ab0d2"
 }

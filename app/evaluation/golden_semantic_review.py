@@ -312,7 +312,9 @@ class NativeBusinessReviewWorkflow(IntegratedReviewWorkflow):
             raise ValueError("native_accepted_evaluation_changed")
         self.revisions += 1
         try:
-            raw = self._call(self.make_request(original, accepted=wire), "native_business_revision")
+            revision_request = self.make_request(original, accepted=wire)
+            raw = self._call(revision_request, "native_business_revision")
+            reject_revision_policy_echo(raw, req.report, revision_request)
             validate_revised_report(raw, req.report)
             self._expected_recheck = self.build_inputs(replace(initial, report=raw))
             return CoachDraft(report=raw)
@@ -321,3 +323,21 @@ class NativeBusinessReviewWorkflow(IntegratedReviewWorkflow):
                 self.last_feedback = dict(phase="native_business_revision", errors=diagnostics_for(error))
             self.stopped = True
             raise
+
+
+def reject_revision_policy_echo(report, original_report, request):
+    """Reject newly copied internal paragraphs; never clean a failed response.
+
+    This narrow check catches verbatim instruction leakage, not paraphrases or
+    semantic report defects. Existing quotations remain for the full reviewer.
+    Long complete paragraphs avoid treating ordinary shared domain words as
+    instructions. The actual issued policy is used, not a fixed word blacklist.
+    """
+    for message in request.messages:
+        if message.role is not MessageRole.SYSTEM:
+            continue
+        for line in (message.content or "").splitlines():
+            paragraph = line.strip()
+            if (len(paragraph) >= 80 and paragraph in report
+                    and paragraph not in original_report):
+                raise ValueError("native_revision_policy_echo")

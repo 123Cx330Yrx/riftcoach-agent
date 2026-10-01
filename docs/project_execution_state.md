@@ -4,31 +4,31 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "宿主密文交接已通过显式最终确认策略的真实工程往返；待修后公共检查及新批范围/累计预算核对。原停批只读，未恢复付费调用。"
+pause_reason: "新完整批在Flash编辑正文污染处按规则关闭；已补逐字指令复制拒绝防护，生成可靠性未修好，未重开付费。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
 
-2026-10-01最新：已修复密文派发导致的工程交接阻断，并完成真实独立审查→宿主取证→
-草稿→主审正式提交→封存→回读。实际派发正文为密文；新策略校验宿主路由、真实作者、
-完成final与实际原件绑定。Provider是合成回复，真实GLM0；这不是新质量案例，原15仍1/15。
+2026-10-01最新：用户批准新完整15批，6e322f69/CI36750706545三项成功后真实执行。
+claim-scope:1为91/pass，原文保持，真实独立→主审→正式提交→严格回读通过；第二例初评
+82/needs_revision正确检错，Flash修正方向数值却把编辑system前420字符写进报告开头。
+双审拒绝，执行器正常关闭；未发fresh或后续13例。不是429/402/断流/宿主取证失败。
 
-采用native-final-attestation-v1取证策略：显式进入冻结计划与事件，缺省旧策略和历史摘要
-保持不变，不自动fallback、不补签旧批。失去的是独立重建派发逐字正文，不放弃独立作者、
-完整上下文、纠错确认或原件核验。独立方案/代码复核通过；147项相关测试通过，后续准备
-选择改动的57项受影响测试通过（有重叠）。细节见docs/plans/2026-10-01-native-final-evidence-proposal.md。
-99de1782公共CI36744936958三项成功，只覆盖上轮预检；新策略补丁需对应新提交公共CI。
+本批3调用48001tokens、unknown0、230.265活动秒、估价0.5228656元；含此前v2系列共
+5调用83035tokens/估价1.0142776元，非全项目账单。83原件封存及修前strict回读1/15，
+详见docs/plans/2026-10-01-editor-policy-echo.md及其证据链接；旧批只读、不重试。
 
-本次没有新增GLM消费，已停v2父子系列仍2调用35034tokens/估价0.491412元，unknown0。
-工程证据见data/evaluation/results/golden_native_final_host_handoff_20261001.json，明确
-product_qualification=false。停止目录及原件保持只读，新策略不能重开固定旧续批。
+已定位原始Flash响应污染，本地没有拼接指令。程序只验标题/长度的缺口已补：在保留原回包
+后、成稿/fresh前拒绝新增的完整长system段逐字复制。真实回执离线重放拒绝；12份其他历史
+改稿未触发。应用模拟整链拒绝且无fresh/发布。此为出口防护，不是Flash生成质量修好。
+五个引用共享源码的manifest已刷新；执行版本1/15作为历史保留，修后新身份未获资格。
 
-下一动作：完成新策略补丁交付及公共检查，再根据未完成案例和所有已知/未知历史消费准备
-具体新批，核对原授权是否足够后执行；不继续在旧密文规则下付费试错。完整原15、自然Coach、
-当前组合真实Worker/DB/API/Workbench和8E未完成。四块联动、本人Training、前端审美/必要
-重做/英雄头像、Memory、身份运维、两树整合和学习沿活动计划保留。
+下一动作：完成防护交付与公共检查，围绕真实污染反例、正确稿保留和来源核验比较现有
+整稿编辑与显式替换机制，准备有区分力的最小编辑验证；不直接重开15例碰运气。
+完整原15、自然Coach、当前组合真实Worker/DB/API/Workbench和8E仍未完成；四块联动、
+本人Training、前端审美/必要重做/英雄头像、Memory、身份运维、两树整合及学习要求保留。
 
 以下为历史记录；当前行动以本段为准。
 
