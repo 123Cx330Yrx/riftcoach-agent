@@ -132,3 +132,4 @@
 /scripts/run_review_bound_edit_diagnostic.py text eol=lf
 /tests/test_review_bound_edit_diagnostic.py text eol=lf
 /data/evaluation/results/golden_review_bound_edit_preparation_20261001.json text eol=lf
+/data/evaluation/results/golden_review_bound_edit_result_20261001.json text eol=lf
