@@ -122,8 +122,14 @@ class EditAssembly:
     journal: dict
 
 
-def apply_edits(raw, inputs):
+def apply_edits(raw, inputs, *, resolve_sources=None, make_final_request=None,
+                policy=POLICY, version=VERSION):
     """Validate every operation before applying any; preserve untouched bytes."""
+    # The historical defaults remain byte-identical. Prospective adapters must
+    # explicitly supply their own source resolver and complete final reviewer.
+    resolve_sources = resolve_refs if resolve_sources is None else resolve_sources
+    make_final_request = (RoleReviewWorkflow.make_request if make_final_request is None
+                          else make_final_request)
     wire = EditSet.model_validate(strict_json(raw), strict=True)
     report_inputs(inputs, inputs.source.report)  # Reject inconsistent input views even for keep.
     source = inputs.source
@@ -140,7 +146,7 @@ def apply_edits(raw, inputs):
             raise ValueError("source_edit_noop_operation")
         if len(set(edit.source_ids)) != len(edit.source_ids):
             raise ValueError("source_edit_duplicate_reference")
-        selected = resolve_refs(inputs, edit.source_ids)
+        selected = resolve_sources(inputs, edit.source_ids)
         start = spans[edit.block - 1][0] + pos
         operations.append(dict(ordinal=number, start=start, end=start + len(edit.before),
             **edit.model_dump(mode="json"), selected_sources=selected))
@@ -155,7 +161,7 @@ def apply_edits(raw, inputs):
     _section_order(result)
     report_blocks(result)
     final_inputs = report_inputs(inputs, result)
-    final_request = RoleReviewWorkflow.make_request(final_inputs)  # Enforces the actual final request's input ceiling.
+    final_request = make_final_request(final_inputs)  # Enforces this adapter's actual final input ceiling.
     from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling as size
     from app.evaluation.golden_stream_bridge import validate_request, REVIEW_MODEL_TRANSPORT_ID
     import hashlib
@@ -164,12 +170,12 @@ def apply_edits(raw, inputs):
         KnowledgeCitation(**{k: v for k, v in row.items() if k != "retrievals"})
         for row in knowledge_data["citations"]))
     ReviewHarness._validate_report_citations(result, knowledge)
-    return EditAssembly(result, dict(version=VERSION, raw=raw, raw_sha256=digest(raw),
+    return EditAssembly(result, dict(version=version, raw=raw, raw_sha256=digest(raw),
         input_sha256=digest(inputs.data_json), original_report=source.report,
         original_report_sha256=digest(source.report), assembled_report=result,
         assembled_report_sha256=digest(result), operations=operations,
         edit_changed=result != source.report, semantic_approval=False, production_admitted=False,
-        full_final_review_required=True, policy_sha256=digest(POLICY),
+        full_final_review_required=True, policy_sha256=digest(policy),
         final_input_sha256=digest(final_inputs.data_json), final_review_input_reservation=size(final_request),
         final_review_request_sha256=hashlib.sha256(validate_request(final_request,
             transport_id=REVIEW_MODEL_TRANSPORT_ID)).hexdigest()))
