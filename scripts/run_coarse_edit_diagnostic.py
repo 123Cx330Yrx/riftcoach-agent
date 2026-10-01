@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import re
 import time
+from pydantic import ValidationError
 
 from app.evaluation import coarse_revision_editor as editor
 from app.evaluation.golden_journal import write_new_json
@@ -213,6 +214,11 @@ def observe(factory,directory,plan,*,event_source,adjudicate=wait_reviews,before
     except BaseException as error:
         code=getattr(error,'code',None) or (str(error) if isinstance(error,ValueError) else None)
         result.update(error_type=type(error).__name__)
+        if isinstance(error, ValidationError):
+            code='coarse_diagnostic_schema_validation'
+            # Keep field locations and error types, not input text or private data.
+            result['validation_errors']=error.errors(include_input=False,
+                include_context=False, include_url=False)
         if isinstance(code,str) and re.fullmatch('[a-z_]{1,100}',code):
             result['error_code']=code
     finally:

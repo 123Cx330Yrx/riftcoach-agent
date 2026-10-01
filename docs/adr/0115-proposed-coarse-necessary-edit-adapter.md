@@ -63,3 +63,11 @@ Worker及资格代码不注册此适配器。完整稿语义和引用是否正�
 真实只读宿主预检已确认root与/root/recovery_patch_check映射和native-final证据通路；
 派发正文仍可能加密，沿已采用的native-final-attestation-v1校验真实作者/路由/完成final。
 这不保证未来事件可取得，正式阶段仍逐条回读验证。此预检Provider调用为0。
+
+## 获准真实诊断结果（2026-10-01）
+
+上述冻结已由用户“确认”批准并执行；d2b080b1的公共CI36811529513三项成功。
+首个Flash调用的修改文字方向正确、无指令复制，但缺必填source_ids，工具结构校验拒绝并关闭。
+1调用11442tokens，unknown0，估价0.0102356元；没有fresh/保持控制，不授产品或原15资格。
+失败封存、独立诊断、可诊断性修补与仅改变schema表示的后续假设见
+`docs/plans/2026-10-01-coarse-edit-diagnostic-result.md`。本ADR仍非产品采用；旧准备不可重开。

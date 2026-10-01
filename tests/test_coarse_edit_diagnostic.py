@@ -9,7 +9,7 @@ import pytest
 
 from app.evaluation.golden_integrated_runtime import Exchange
 from app.evaluation.golden_review_experiment import compact
-from app.evaluation.golden_stream_bridge import CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, validate_request
+from app.evaluation.golden_stream_bridge import CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, RESPONSE, validate_request
 from app.providers.models import ChatResponse, ToolCall, TokenUsage
 from app.runtime.reviewer_roles import RoleRoutedProvider
 from scripts import run_coarse_edit_diagnostic as runner
@@ -74,6 +74,8 @@ def scripted(monkeypatch,fault):
         response=ChatResponse(provider='zhipu',model='glm-5.3-flash',content=None,
             finish_reason='tool_calls',tool_calls=(ToolCall(id='edit',name='submit_source_edits',arguments=dict(edits=ops)),),
             usage=TokenUsage(input_tokens=20,output_tokens=10))
+        if fault=='live_missing_sources':
+            response=RESPONSE.validate_json((runner.ROOT/'tests/fixtures/coarse_edit_missing_sources_response_20261001.json').read_bytes())
         generator.last_exchange=Exchange(request,response,hashlib.sha256(validate_request(request,transport_id=CAPACITY_TRANSPORT_ID)).hexdigest())
         if fault=='transport':
             raise RuntimeError('Synthetic incomplete request')
@@ -134,3 +136,22 @@ def test_closed_directory_is_rejected_before_ci_credentials_or_host(tmp_path,mon
     monkeypatch.setattr(runner,'load_role_settings',forbidden)
     args=SimpleNamespace(root_thread_id='synthetic-root',independent_thread_id='synthetic-independent',execute=True)
     with pytest.raises(ValueError,match='closed_or_exists'): runner.run(args)
+
+
+def test_real_missing_source_field_stops_before_host_or_fresh_and_records_location(tmp_path,monkeypatch):
+    plan=prepared()
+    host=Host(plan,None)
+    def forbidden(*args):
+        pytest.fail('invalid model edit reached host adjudication')
+    result=runner.observe(scripted(monkeypatch,'live_missing_sources'),tmp_path,plan,
+        event_source=host,adjudicate=forbidden)
+    assert result['error_code']=='coarse_diagnostic_schema_validation'
+    assert result['validation_errors']==[dict(type='missing',loc=('edits',0,'source_ids'),msg='Field required')]
+    assert result['calls']==1 and result['known_tokens']==11442 and result['unknown_reserved_tokens']==0
+    assert not result['diagnostic_accepted'] and not result['stages']
+    assert not (tmp_path/'conditional-fresh').exists()
+    assert not (tmp_path/'necessary-edit/stage.json').exists()
+    saved=json.loads((tmp_path/'necessary-edit/response.json').read_bytes())
+    original=json.loads((runner.ROOT/'tests/fixtures/coarse_edit_missing_sources_response_20261001.json').read_bytes())
+    assert saved==original
+    assert 'source_ids' not in saved['tool_calls'][0]['arguments']['edits'][0]
