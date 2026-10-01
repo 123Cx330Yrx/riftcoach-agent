@@ -128,3 +128,7 @@
 /app/evaluation/review_bound_editor.py text eol=lf
 /tests/test_review_bound_editor.py text eol=lf
 /data/evaluation/results/golden_review_bound_editor_offline_20261001.json text eol=lf
+/scripts/run_coarse_edit_diagnostic.py text eol=lf
+/scripts/run_review_bound_edit_diagnostic.py text eol=lf
+/tests/test_review_bound_edit_diagnostic.py text eol=lf
+/data/evaluation/results/golden_review_bound_edit_preparation_20261001.json text eol=lf

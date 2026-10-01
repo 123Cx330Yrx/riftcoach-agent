@@ -56,7 +56,9 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def controls(*, inline_schema=False):
+def controls(*, inline_schema=False, revision_adapter=None):
+    if inline_schema and revision_adapter is not None:
+        raise ValueError('coarse_diagnostic_adapter_conflict')
     sources={row['key']:req for row,req in frozen_cases()[0]}
     rows=json.loads((ROOT/FIXTURE).read_bytes())['cases']
     if tuple(row['key'] for row in rows)!=KEYS:
@@ -70,7 +72,8 @@ def controls(*, inline_schema=False):
         _,accepted,_=Current.validate_review(row['initial_raw'],inputs)
         if accepted.verdict!=('needs_revision' if row['key']==KEYS[0] else 'pass'):
             raise ValueError('coarse_diagnostic_initial_verdict')
-        build = editor.inline_edit_request if inline_schema else editor.edit_request
+        build = (revision_adapter.edit_request if revision_adapter is not None else
+                 editor.inline_edit_request if inline_schema else editor.edit_request)
         result.append((row,inputs,accepted,build(inputs,accepted)))
     return result
 
@@ -142,9 +145,14 @@ def wait_reviews(path,remaining):
 
 
 def observe(factory,directory,plan,*,event_source,adjudicate=wait_reviews,before_send=lambda:None,
-            inline_single_edit=False):
+            inline_single_edit=False,revision_adapter=None):
     """One non-restartable process; no paid response can bypass the host gate."""
     require_execution_event_source(plan,event_source)
+    if revision_adapter is not None and (inline_single_edit
+            or plan['adapter']!=revision_adapter.VERSION
+            or plan['sequence']!=['necessary-edit','conditional-fresh','correct-keep']
+            or plan['budget']['max_calls']!=3 or len(plan['cells'])!=2):
+        raise ValueError('coarse_diagnostic_adapter_plan')
     if inline_single_edit and (plan['adapter']!=editor.INLINE_VERSION
             or plan['sequence']!=['necessary-edit'] or plan['budget']['max_calls']!=1
             or len(plan['cells'])!=1):
@@ -180,7 +188,9 @@ def observe(factory,directory,plan,*,event_source,adjudicate=wait_reviews,before
         bound=dict(plan_sha256=plan_sha,key=key,stage=phase,response_sha256=sha(arm/'response.json'),
             report_sha256=digest(stage['report']),request_sha256=exchange.receipt_request_sha256)
         write_new_json(arm/'review-required.json',dict(binding=bound,stage_sha256=stage_identity(stage),
-            scope='All operations, selected sources, complete report, preserved correct content and all reviewer claims.'))
+            scope=('All operations, review source context (not proof of edit support), complete report, preserved correct content and all reviewer claims.'
+                if revision_adapter is not None else
+                'All operations, selected sources, complete report, preserved correct content and all reviewer claims.')))
         submitted=clock.adjudicate(arm/'review-required.json',plan['budget']['max_active_seconds']-clock(),adjudicate)
         write_new_json(arm/'host-reviews.json',submitted)
         accepted=validate_reviews(submitted,stage,bound,plan,event_source)
@@ -193,12 +203,14 @@ def observe(factory,directory,plan,*,event_source,adjudicate=wait_reviews,before
         return stage
 
     try:
-        bad,good=controls(inline_schema=inline_single_edit)
+        bad,good=controls(inline_schema=inline_single_edit,revision_adapter=revision_adapter)
         row,inputs,accepted,prepared=bad
         if hashlib.sha256(validate_request(prepared,transport_id=CAPACITY_TRANSPORT_ID)).hexdigest()!=plan['cells'][0]['request_sha256']:
             raise ValueError('coarse_diagnostic_request_changed')
         def inspect_edit(request,exchange):
-            assembly=editor.inspect_edit_exchange(prepared,exchange,inputs,accepted,inline_schema=inline_single_edit)
+            assembly=(revision_adapter.inspect_exchange(prepared,exchange,inputs,accepted)
+                if revision_adapter is not None else
+                editor.inspect_edit_exchange(prepared,exchange,inputs,accepted,inline_schema=inline_single_edit))
             return assembly.report,assembly.journal
         edited=call('necessary-edit',row['key'],'revision',inputs,prepared,inspect_edit)
         if inline_single_edit:
@@ -216,7 +228,8 @@ def observe(factory,directory,plan,*,event_source,adjudicate=wait_reviews,before
         if hashlib.sha256(validate_request(prepared,transport_id=CAPACITY_TRANSPORT_ID)).hexdigest()!=plan['cells'][1]['request_sha256']:
             raise ValueError('coarse_diagnostic_request_changed')
         def inspect_keep(request,exchange):
-            assembly=editor.inspect_edit_exchange(prepared,exchange,inputs,accepted)
+            assembly=(revision_adapter.inspect_exchange(prepared,exchange,inputs,accepted)
+                if revision_adapter is not None else editor.inspect_edit_exchange(prepared,exchange,inputs,accepted))
             if assembly.report!=inputs.source.report:
                 raise ValueError('coarse_diagnostic_correct_report_changed')
             return assembly.report,assembly.journal
