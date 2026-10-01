@@ -119,3 +119,6 @@
 /data/evaluation/results/golden_boundary_examples_*.json text eol=lf
 /examples/runtime_profiles/flash_glm_boundary_examples_v1/prompt_programs/recent-form-review/manifest.json text eol=lf
 /data/evaluation/results/golden_review_boundary_examples_*.json text eol=lf
+
+# Preserve this closed diagnostic seal's original CRLF bytes on every checkout.
+/data/evaluation/results/golden_coarse_edit_diagnostic_result_20261001.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

@@ -55,3 +55,8 @@ required tool能力，本地strict校验不等于服务端约束解码。本轮�
 完整原15、自然Coach生成/工具/纠错、同run Worker/DB/API/Workbench及8E仍未完成。
 四块联动、本人Training、审美/必要重做/英雄头像、Memory、身份运维、两树整合及学习要求
 沿活动计划保留；当前工作没有替代这些交付。
+
+## 公共CI封存字节修复
+
+公共CI36820293915因旧封存被Git规范化为LF而拒绝coarse_inline_prior_seal，等待进程正常退出、未启动Provider。已对该单文件指定-text并重新入库原CRLF，index与本地原始SHA均为a344b5f0…53500；原13件未改，冻结不变。新11项回归通过；待修复提交CI全绿后沿原授权启动。
+首次普通git add沿用了缓存，index核验仍失败；使用该文件的git add --renormalize后逐字节相等。只恢复原始保存字节，不换期望哈希或放松校验。
