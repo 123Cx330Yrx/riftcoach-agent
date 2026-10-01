@@ -96,6 +96,13 @@ class TaskPublicationStatus(StrEnum):
     REJECTED = "rejected"
 
 
+class TaskPublicationMode(StrEnum):
+    """Trusted task publication contract selected at creation time."""
+
+    LEGACY = "legacy"
+    EVIDENCE_BOUND_V1 = "evidence_bound_v1"
+
+
 class TaskTerminal(TaskContractModel):
     run_id: str
     terminal_reason: SafeTaskCode
@@ -209,6 +216,7 @@ class CreateReviewTaskCommand(TaskContractModel):
     owner_id: OwnerId
     idempotency_key: IdempotencyKey
     request: RecentReviewProductRequest
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
 
 
 class ConversationReviewTaskBinding(TaskContractModel):
@@ -243,6 +251,7 @@ class CreateConversationReviewTaskCommand(TaskContractModel):
     idempotency_key: IdempotencyKey
     conversation_id: UUID
     request: ConversationRecentReviewRequest
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
 
 
 class TaskCapacityPolicy(TaskContractModel):
@@ -268,6 +277,7 @@ class PendingReviewTask(TaskContractModel):
     idempotency_key: IdempotencyKey
     request_fingerprint: Fingerprint
     request_payload: dict[str, JsonValue]
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
     created_at: datetime
 
     @field_validator("run_id")
@@ -290,6 +300,7 @@ class PendingConversationReviewTask(TaskContractModel):
     idempotency_key: IdempotencyKey
     conversation_id: UUID
     request_payload: dict[str, JsonValue]
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
     created_at: datetime
 
     @field_validator("run_id")
@@ -312,6 +323,12 @@ class ReviewTask(TaskContractModel):
     idempotency_key: IdempotencyKey
     request_fingerprint: Fingerprint
     request_payload: dict[str, JsonValue]
+    publication_mode: TaskPublicationMode = TaskPublicationMode.LEGACY
+    publication_reference: dict[str, JsonValue] | None = Field(default=None, exclude=True, repr=False)
+    summary_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
+    first_snapshot_id: UUID | None = Field(default=None, exclude=True, repr=False)
+    first_snapshot_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
+    message_projection_status: str = Field(default="not_required", exclude=True, repr=False)
     conversation_binding: ConversationReviewTaskBinding | None = None
     execution_target: ConversationReviewExecutionTarget | None = Field(
         default=None,
@@ -565,6 +582,12 @@ class ReviewTaskView(TaskContractModel):
     terminal_reason: str | None
     publication_status: TaskPublicationStatus | None
     report_available: bool
+    publication_mode: TaskPublicationMode = Field(default=TaskPublicationMode.LEGACY, exclude=True, repr=False)
+    publication_reference: dict[str, JsonValue] | None = Field(default=None, exclude=True, repr=False)
+    summary_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
+    first_snapshot_id: UUID | None = Field(default=None, exclude=True, repr=False)
+    first_snapshot_digest: Fingerprint | None = Field(default=None, exclude=True, repr=False)
+    message_projection_status: str = Field(default="not_required", exclude=True, repr=False)
 
     @classmethod
     def from_task(cls, task: ReviewTask) -> "ReviewTaskView":
@@ -582,6 +605,12 @@ class ReviewTaskView(TaskContractModel):
             terminal_reason=task.terminal_reason,
             publication_status=task.publication_status,
             report_available=task.report_available,
+            publication_mode=task.publication_mode,
+            publication_reference=task.publication_reference,
+            summary_digest=task.summary_digest,
+            first_snapshot_id=task.first_snapshot_id,
+            first_snapshot_digest=task.first_snapshot_digest,
+            message_projection_status=task.message_projection_status,
         )
 
 

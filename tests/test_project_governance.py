@@ -1,3 +1,4 @@
+import re
 import shutil
 from pathlib import Path
 
@@ -85,11 +86,15 @@ def test_project_governance_rejects_a_stale_active_plan(tmp_path):
     task_plan_path = tmp_path / ".planning" / active_plan / "task_plan.md"
     task_plan = task_plan_path.read_text(encoding="utf-8")
     next_step_start = task_plan.index("## Next Step")
-    decisions_start = task_plan.index("## Decisions Made")
+    following_section = re.search(r"(?m)^## ", task_plan[next_step_start + 3:])
+    next_step_end = (
+        next_step_start + 3 + following_section.start()
+        if following_section else len(task_plan)
+    )
     task_plan_path.write_text(
         task_plan[:next_step_start]
         + "## Next Step\n\n直接进入 stale-checkpoint。\n\n"
-        + task_plan[decisions_start:],
+        + task_plan[next_step_end:],
         encoding="utf-8",
     )
 

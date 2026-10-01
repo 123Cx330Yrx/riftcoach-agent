@@ -1,0 +1,35 @@
+{
+  "experiment": "golden-native-partitioned-tool-review-v1",
+  "implementation_head": "34133c23704d530a44d7d3d5f642f3a3f6dbc7ce",
+  "exact_ci_required": true,
+  "exact_ci_run": null,
+  "live_status": "blocked_until_exact_ci_for_current_head",
+  "production_admitted": false,
+  "source_scope": "complete_observed_report_analyst_development_control_not_holdout",
+  "model": "glm-5.3-flash",
+  "reasoning_effort": "high",
+  "per_case_budget": {
+    "max_calls": 5,
+    "max_revisions": 1,
+    "max_tokens": 401920,
+    "max_seconds": 900,
+    "max_output_per_call": 32768,
+    "max_seconds_per_call": 300,
+    "sdk_retries": 0
+  },
+  "cases": [
+    {"suite":"observed","index":1,"id":"observed_01","expected_initial":"accept","manifest_sha256":"8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132","report_sha256":"f6a6c508d2ad86763d01c59edc74a5885ca59867d5a5bfc336072434132a655a","input_sha256":"8d1fd90da314457c5981068dc1be765870a27f0ccb45fa1a6b3ed28dc1ebf954","first_input_ceiling":48462},
+    {"suite":"observed","index":2,"id":"observed_02_future","expected_initial":"reject","manifest_sha256":"8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132","report_sha256":"440ae4b39ff9ea45611c2840afd73867053e42f22648ff6ccf14eb3bc90faa4a","input_sha256":"9a64c3f3b9302fed8ed1665ce2af2e0e7d9a3f4ecdbfb73c7976064b6ec32da9","first_input_ceiling":48538},
+    {"suite":"observed","index":3,"id":"observed_03_reader_identity","expected_initial":"reject","manifest_sha256":"8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132","report_sha256":"ba9d63e2100c48fecdcf4c7d46f66ab25cfc2f06d4d254d06c8fb06bebe6049a","input_sha256":"4ac28ff702fa7dacb2236b7ed46fe0b9170b9943d472fe67a94dcc508fab8211","first_input_ceiling":48462},
+    {"suite":"observed","index":4,"id":"observed_04_official_date","expected_initial":"reject","manifest_sha256":"8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132","report_sha256":"cde1759906f569b64f24b5165161d06ad81526470f2068d821bb152f3890d6ab","input_sha256":"e6f98d76e70f172e70e26f923017ac4cfba58b486a290221c4db67d1cf04e105","first_input_ceiling":48516},
+    {"suite":"observed","index":5,"id":"observed_05_heading_ability","expected_initial":"reject","manifest_sha256":"8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132","report_sha256":"9cb31bbcc0f66b5e0c71244381afc63a0b5d65d6b8abea89492f1d5978034c2d","input_sha256":"58c6a9c6348d890024d6dce56d35bfeeba3b7af8dde1233a355912d4a0c5b72c","first_input_ceiling":48506},
+    {"suite":"scope","index":3,"id":"scope_intro_wrong_explicit","expected_initial":"reject","manifest_sha256":"a2a493a37995e4d7844929480d5e1a64bf76a17f34f8d03a2fe933974dec5273","report_sha256":"b37807a43c1a62d4eab39951d3136909c0e0a02e4925707e5955a9a7b6d0290c","input_sha256":"8bc028f5ad6d3a9a475835c0321bbbb20a11b40babaed1644ef0e7d88e7369da","first_input_ceiling":44388},
+    {"suite":"scope","index":4,"id":"scope_numbers_wrong_explicit","expected_initial":"reject","manifest_sha256":"a2a493a37995e4d7844929480d5e1a64bf76a17f34f8d03a2fe933974dec5273","report_sha256":"a3889a655782132f269f1a4cda7b0506e242dbd783df17d03740f01b1d1b3ba4","input_sha256":"a0e789f23705d441dfe1b5fb487a5ef9bdccab21870e0caf38211e25329e64d8","first_input_ceiling":44370},
+    {"suite":"claim-scope","index":2,"id":"actual_revised_topic","expected_initial":"accept","manifest_sha256":"b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5","report_sha256":"f29b7b417544c8bd1352cd401be00e4c9a2a6a896b4ee34c37697c7df52d5753","input_sha256":"8a8138fdd6c2a36a0d1bf6f7b031f705cddf33933e498dfa1ffc68d83dea09bc","first_input_ceiling":44598},
+    {"suite":"claim-scope","index":5,"id":"explicit_scoped_metrics","expected_initial":"accept","manifest_sha256":"b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5","report_sha256":"8894f4efbf553acbf2db6d9f0198cedf712b672c71e66591b9f60f87a7a6a8b6","input_sha256":"5a932ffd0aa906f18ce24e7684f8f1b3cc24d5fb7e0be01ef5d3dca2a6243514","first_input_ceiling":44422},
+    {"suite":"claim-scope","index":6,"id":"unresolved_population","expected_initial":"reject","manifest_sha256":"b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5","report_sha256":"a3ed8a3d44159942d42aea0767eec651b74ce4487e271d5ef93ebb05255f3a14","input_sha256":"5e5b98436d367283728268070342b1004d3027f85a195d1cf731f43e63409db3","first_input_ceiling":44292},
+    {"suite":"claim-scope","index":7,"id":"conditional_population","expected_initial":"accept","manifest_sha256":"b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5","report_sha256":"ebcd06831cbe788dd18a2ca6beb2bbf082ec2743f2e2dabc8bbd05632647c4e3","input_sha256":"405edc1145c12f1ed6dc9de2e2eebb51b91e815f273e10d44845735de8f588a7","first_input_ceiling":44412}
+  ],
+  "stop_rule": "execute in listed order after exact CI; inspect the complete initial review, actual revision and final review for each case; stop on the first semantic miss, advisory/blocker misclassification, protocol failure, or revision that damages a correct passage",
+  "offline_preview_result": "all 11 identities and source hashes resolved; no Provider calls made"
+}

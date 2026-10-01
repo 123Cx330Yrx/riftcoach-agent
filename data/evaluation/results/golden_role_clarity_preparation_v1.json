@@ -1,0 +1,144 @@
+{
+  "experiment": "role-clarity-qualification-v1",
+  "qualification_version": "flash-glm-role-qualification-v1",
+  "qualification_plan_sha256": "b885cec972e1fa51be4c6d14581ce6aca1fa4bf4fa36df53d44b3c50bddd65ab",
+  "identity": {
+    "composition": "flash-generation-glm53-review-v1",
+    "contract": {
+      "contract_id": "recent-form-review-roles-v1",
+      "version": "1.5.2",
+      "scope": "unadmitted_opt_in",
+      "sha256": "ffc45471455a546a2b75a35ee902e5f5405ebd01b9bfbe3606fac34649fcea4a"
+    },
+    "program_sha256": "4d06962c1ce035d27e665b0718b2451f7cb9f19977fc842be1738c40f4ac5c50",
+    "manifest_sha256": "8e32e2c715aca98cad4dc6fc58f4e33416361d7a9f369758083601d52bb97294",
+    "asset_sha256": {
+      "skills/recent-form-review/SKILL.md": "a06cc50f56bf3581580626532b1d6d39aaedb7dca098ae0624a9965af5875117",
+      "skills/recent-form-review/manifest.yaml": "c9409933c3e4069749f59dd582887656055f9450b30ab84014ec5018a8cce7a0"
+    },
+    "source_projection": "native-explicit-source-projection-v1",
+    "request_delivery": "role-review-tool-schema-only-v1",
+    "review_output": "role-review-clarity-markers-v1",
+    "roles": {
+      "generation": {
+        "provider": "zhipu",
+        "model": "glm-5.3-flash",
+        "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+        "request_extra_body": {
+          "thinking": {
+            "type": "enabled",
+            "clear_thinking": false
+          },
+          "reasoning_effort": "high"
+        },
+        "transport_id": "golden-process-stream-high-32768-v1",
+        "sdk_max_retries": 0
+      },
+      "revision": {
+        "provider": "zhipu",
+        "model": "glm-5.3-flash",
+        "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+        "request_extra_body": {
+          "thinking": {
+            "type": "enabled",
+            "clear_thinking": false
+          },
+          "reasoning_effort": "high"
+        },
+        "transport_id": "golden-process-stream-high-32768-v1",
+        "sdk_max_retries": 0
+      },
+      "review": {
+        "provider": "zhipu",
+        "model": "glm-5.3",
+        "thinking_profile_id": "glm-5.3-review-diagnostic-high-replay",
+        "request_extra_body": {
+          "thinking": {
+            "type": "enabled",
+            "clear_thinking": false
+          },
+          "reasoning_effort": "high"
+        },
+        "transport_id": "golden-glm53-review-high-32768-v1",
+        "sdk_max_retries": 0
+      }
+    },
+    "policy_sha256": "521ff0cc8a005edadc72173a345d707ab89700fb833b10d6556a74fe8c58769e",
+    "schema_sha256": "095b37f52357d25c1d30091a786f91f3043573cb1c132fbe3f80f671a25486ea"
+  },
+  "cases": [
+    {
+      "key": "claim-scope:1",
+      "suite": "claim-scope",
+      "index": 1,
+      "id": "original_topic_window",
+      "manifest_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+      "input_sha256": "f1b773e4f7db1c38fa3e097b1951afa84182ea62ffdee53aba0909ae56ab6227",
+      "report_sha256": "0a07162210fa087073bb8bf881ff883e910b4df57623e7c301e86b3ccc168498",
+      "expected_initial": "accept",
+      "status": "pending",
+      "request_sha256": "e1128ddfe41a82b4945d9ecf4f2181302d0c80a02e8ab23568afc9e2d33d5e5f",
+      "first_input_ceiling": 42770
+    },
+    {
+      "key": "claim-scope:4",
+      "suite": "claim-scope",
+      "index": 4,
+      "id": "explicit_universal_metrics",
+      "manifest_sha256": "b4a5b8d729b029ed42bf49c2568dabad6a96b35f57aa359953b929be58b7f6e5",
+      "input_sha256": "39ab474693151b624560c80a26790d748c9279104efad8a8e598635a5641623f",
+      "report_sha256": "2f642924110e98975b7d82baa49f43e039d2876b088e33a861398261354734c2",
+      "expected_initial": "reject",
+      "status": "pending",
+      "request_sha256": "4010c28e8cd2c20d5ae9e7f263b8a3eaf97a84075f4b46835d326e92dd03a247",
+      "first_input_ceiling": 42820
+    },
+    {
+      "key": "attribution:1",
+      "suite": "attribution",
+      "index": 1,
+      "id": "attribution_original",
+      "manifest_sha256": "3e0bd231ca16449b89ecd5fd98c4d7e22788190dba1d4469ff00a7a061d7ea5a",
+      "input_sha256": "3f198eeedbca84097522e4c5a6bd0d3f2ffc0339c614381131aab3433dca4c9e",
+      "report_sha256": "9d274a3d107b2d37b3da1eda3533c727ae977a7b16b6287e8e6b1e537b3ce195",
+      "expected_initial": "reject",
+      "status": "pending",
+      "request_sha256": "0961548b6d5bdcb9218621ec8b6f04ce7a1029cd7645694ec3de79ef025eadbd",
+      "first_input_ceiling": 42688
+    }
+  ],
+  "case_budgets": [
+    {
+      "max_calls": 2,
+      "max_tokens": 193536,
+      "max_seconds": 600
+    },
+    {
+      "max_calls": 5,
+      "max_tokens": 401920,
+      "max_seconds": 900
+    },
+    {
+      "max_calls": 5,
+      "max_tokens": 401920,
+      "max_seconds": 900
+    }
+  ],
+  "batch_budget": {
+    "max_calls": 12,
+    "max_tokens": 997376,
+    "max_seconds": 2400,
+    "estimated_uncached_cny": "15.843328",
+    "hard_billing_cap": false,
+    "price_scope": "Conservative all-GLM reservation; Flash edits priced higher than actual."
+  },
+  "script_sha256": "67fd99ab751f7878bca0d643e58ba16e295a93e08bcec2841bfb02002005a514",
+  "executor_sha256": "f5d022f5bbace7664d1ab1d476bb68307344889a7f1f3775a66e8cd03c23e688",
+  "original_15_unchanged": true,
+  "labels_sent_to_model": false,
+  "sdk_retries": 0,
+  "stop_rule": "Stop at first rejected stage, unexpected verdict, unsafe/protocol/transport/identity/budget failure; preserve raw output. Inspect malformed review before any allowed recovery.",
+  "review_controls_qualified": false,
+  "actual_product_task_qualified": false,
+  "production_admitted": false
+}

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from datetime import date
-from typing import Any, Mapping
+from datetime import date, datetime, timezone
+from typing import Any, Callable, Mapping
 
 from app.rag.legacy_provider import LegacyLocalKnowledgeProvider
 from app.rag.models import KnowledgeQuery
@@ -12,7 +12,10 @@ from app.rag.provider import KnowledgeProvider
 from ..models import CachePolicy, ToolContext, ToolDefinition, ToolPolicy
 
 
-def build_knowledge_tools(knowledge: Any) -> tuple[ToolDefinition, ...]:
+def build_knowledge_tools(
+    knowledge: Any, *, include_retrieval_time: bool = False,
+    utc_now: Callable[[], datetime] | None = None,
+) -> tuple[ToolDefinition, ...]:
     provider: KnowledgeProvider = (
         knowledge
         if isinstance(knowledge, KnowledgeProvider)
@@ -31,13 +34,21 @@ def build_knowledge_tools(knowledge: Any) -> tuple[ToolDefinition, ...]:
             )
         )
         rows = [_serialize_hit(hit) for hit in result.hits]
-        return {
+        payload = {
             "provider": result.provider,
             "abstained": result.abstained,
             "diagnostics": dict(result.diagnostics),
             "chunks": rows,
             "count": len(rows),
         }
+        if include_retrieval_time:
+            # Host-owned completion time, never provider diagnostics or as_of.
+            # ToolRuntime caches this payload intact, including this timestamp.
+            now = utc_now() if utc_now is not None else datetime.now(timezone.utc)
+            if not isinstance(now, datetime) or now.utcoffset() is None:
+                raise ValueError("knowledge retrieval clock must return an aware datetime")
+            payload["retrieved_at"] = now.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+        return payload
 
     nullable_string = {"type": ["string", "null"]}
     chunk_schema = {
@@ -84,7 +95,7 @@ def build_knowledge_tools(knowledge: Any) -> tuple[ToolDefinition, ...]:
     return (
         ToolDefinition(
             name="knowledge.search",
-            version="2.0.0",
+            version="2.1.0" if include_retrieval_time else "2.0.0",
             description="Search attributable RiftCoach coaching knowledge.",
             handler=search_handler,
             input_schema={
@@ -123,6 +134,10 @@ def build_knowledge_tools(knowledge: Any) -> tuple[ToolDefinition, ...]:
                         "items": chunk_schema,
                     },
                     "count": {"type": "integer", "minimum": 0},
+                    **({"retrieved_at": {
+                        "type": "string", "format": "date-time",
+                        "description": "Host UTC search completion time; retained on cache hits. Not document updated_at or another source's retrieval time.",
+                    }} if include_retrieval_time else {}),
                 },
                 "required": [
                     "provider",
@@ -130,6 +145,7 @@ def build_knowledge_tools(knowledge: Any) -> tuple[ToolDefinition, ...]:
                     "diagnostics",
                     "chunks",
                     "count",
+                    *(["retrieved_at"] if include_retrieval_time else []),
                 ],
                 "additionalProperties": False,
             },

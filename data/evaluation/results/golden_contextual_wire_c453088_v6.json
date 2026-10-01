@@ -1,0 +1,101 @@
+{
+  "experiment": "golden-contextual-bounded-review-v6",
+  "kind": "manual_protocol_projection_only_not_model_success",
+  "original_result": {
+    "attempted_calls": 2,
+    "completed_calls": 2,
+    "error_type": "ValidationError",
+    "id": "contextual_01",
+    "input_tokens": 25339,
+    "interrupted": false,
+    "matched": false,
+    "output_tokens": 24182,
+    "reserved_calls": 2,
+    "revision_attempted": false,
+    "stop_reason": "protocol_or_execution_failure",
+    "unknown_usage_calls": 0,
+    "valid": false
+  },
+  "source_run": "contextual-review-c453088-explanation-v5",
+  "raw_hashes": {
+    "response-001.json": "2987be5bae384dbee8f6da5f1beb2268ae4a73ef9d09693e932063fec0ef7e6d",
+    "response-002.json": "1c267571fa329dbfe239b9379473fd3b17995b07c1764eb6b1e17225669c1512",
+    "result.json": "f34cc527eb0529e1bd6c1d87a27dd0c19a49313dacb729e1bf787fb148e3d648"
+  },
+  "manual_decisions": [
+    "c010:direct_supported",
+    "c013:direct_supported"
+  ],
+  "scope_sources_preserved_from_model": true,
+  "projection_score": 93,
+  "projection_verdict": "pass",
+  "projection_issues": 0,
+  "projection_source_locations": [
+    {
+      "target_id": "c005",
+      "decision": "direct_supported",
+      "scope_anchor": null,
+      "context": null
+    },
+    {
+      "target_id": "c006",
+      "decision": "direct_supported",
+      "scope_anchor": null,
+      "context": null
+    },
+    {
+      "target_id": "c007",
+      "decision": "sample_supported",
+      "scope_anchor": "赢局(2)",
+      "context": {
+        "quote_ref": {
+          "block": 13,
+          "head": null,
+          "tail": null
+        },
+        "relation": "defines_scope",
+        "explanation": "2.5 与 2.67 为近 5 局混合赢/输局的 15 分钟前死亡均值（与正文赢局/输局表格一致，facts:recent_aggregate 同值），差 2.67−2.5=0.17；该句明确否定其为分界点，与 K1 一致，未误作中单同位置数值。"
+      }
+    },
+    {
+      "target_id": "c008",
+      "decision": "direct_supported",
+      "scope_anchor": null,
+      "context": null
+    },
+    {
+      "target_id": "c010",
+      "decision": "direct_supported",
+      "scope_anchor": null,
+      "context": null
+    },
+    {
+      "target_id": "c011",
+      "decision": "sample_supported",
+      "scope_anchor": "上表",
+      "context": {
+        "quote_ref": {
+          "block": 14,
+          "head": "上表为混合位置均值",
+          "tail": null
+        },
+        "relation": "defines_scope",
+        "explanation": "混合输局视野52.67含卡蜜尔辅助局90（match 1 / role:UTILITY:loss:vision_score），混合补刀6.45含1.34（role:UTILITY:loss:cs_per_min），报告正确指出位置构成影响并声明不可直接对比，符合混合样本处理边界。"
+      }
+    },
+    {
+      "target_id": "c012",
+      "decision": "direct_supported",
+      "scope_anchor": null,
+      "context": null
+    },
+    {
+      "target_id": "c013",
+      "decision": "direct_supported",
+      "scope_anchor": null,
+      "context": null
+    }
+  ],
+  "manual_semantic_acceptance": false,
+  "provider_calls": 0
+}

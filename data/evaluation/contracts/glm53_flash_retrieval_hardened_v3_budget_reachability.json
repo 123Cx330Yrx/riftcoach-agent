@@ -1,0 +1,543 @@
+{
+  "schema_version": "1.0",
+  "algorithm_version": "deterministic-full-request-envelope-v1",
+  "provider_id": "zhipu",
+  "model": "glm-5.3-flash",
+  "request_policy_id": "glm-5.3-flash-evaluation-low-4096",
+  "request_policy_version": "1.0.0",
+  "sdk_max_retries": 0,
+  "max_revisions": 1,
+  "case_max_calls": 9,
+  "domain_max_calls": 27,
+  "input_plan_sha256": "7b5aa5aafc9c178da962735fc8070325a7a025be10fb884d8f3ebf30e4ae081e",
+  "snapshot_file_sha256": "3609e5082f9e46cf5dffb34b0001b6c19026f6ab2e9f2e627331a365b74e217e",
+  "snapshot_sha256": "a32517f678de1c8db69eb88adf4e6b7109f1f7863a7c294a6c0feb609803923d",
+  "cases": [
+    {
+      "case_id": "retrieval_short_survival_83",
+      "context_sha256": "28941dc5b8a65adc2f9106de9bf5b460a288d5eced534ce4a5a1ea714d834489",
+      "requests": [
+        {
+          "ordinal": 1,
+          "stage": "agent_initial",
+          "request_sha256": "9d73964e82576f221f3c83f352d8076eef0fa2a21d1054db1769f59c51d63e4a",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 1,
+          "structured_output": false,
+          "measured_local_units": 7233,
+          "prior_output_carryover_reservation": 0,
+          "estimated_input_token_ceiling": 14466,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 18562
+        },
+        {
+          "ordinal": 2,
+          "stage": "agent_after_tool_1",
+          "request_sha256": "41c0f9c8682e9094929871cb8091d87067e13bd24914046867755442faab7c40",
+          "message_count": 4,
+          "message_roles": [
+            "system",
+            "user",
+            "assistant",
+            "tool"
+          ],
+          "tool_count": 1,
+          "structured_output": false,
+          "measured_local_units": 8493,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 21082,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 25178
+        },
+        {
+          "ordinal": 3,
+          "stage": "agent_after_tool_2",
+          "request_sha256": "5e7d3a12d99b2e595ae2d7629b7fa806b136d0096c018a3877d6f118d497d0ce",
+          "message_count": 6,
+          "message_roles": [
+            "system",
+            "user",
+            "assistant",
+            "tool",
+            "assistant",
+            "tool"
+          ],
+          "tool_count": 1,
+          "structured_output": false,
+          "measured_local_units": 9118,
+          "prior_output_carryover_reservation": 8192,
+          "estimated_input_token_ceiling": 26428,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 30524
+        },
+        {
+          "ordinal": 4,
+          "stage": "agent_after_tool_3",
+          "request_sha256": "70e0cc444d5f59cc1a60f6555c76dc4ecf4c7bf588b9458ec6949106808e98ea",
+          "message_count": 8,
+          "message_roles": [
+            "system",
+            "user",
+            "assistant",
+            "tool",
+            "assistant",
+            "tool",
+            "assistant",
+            "tool"
+          ],
+          "tool_count": 1,
+          "structured_output": false,
+          "measured_local_units": 9743,
+          "prior_output_carryover_reservation": 12288,
+          "estimated_input_token_ceiling": 31774,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 35870
+        },
+        {
+          "ordinal": 5,
+          "stage": "evaluation_initial",
+          "request_sha256": "637fedf6447954cb081347dbe4bd2ace3a6791c8cb945ee21291555b4bf08b99",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": true,
+          "measured_local_units": 8022,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 20140,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 24236
+        },
+        {
+          "ordinal": 6,
+          "stage": "evaluation_repair_initial",
+          "request_sha256": "e45dfcec3fd82c4d79af750374fa42c039da9f1f58074189db46e8cb01520515",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": true,
+          "measured_local_units": 3731,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 11558,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 15654
+        },
+        {
+          "ordinal": 7,
+          "stage": "revision",
+          "request_sha256": "1996eea7005fd7b0fc0419dcb250a95e95d9d585d5035001e0cf2691c578f30e",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": false,
+          "measured_local_units": 848,
+          "prior_output_carryover_reservation": 8192,
+          "estimated_input_token_ceiling": 9888,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 13984
+        },
+        {
+          "ordinal": 8,
+          "stage": "evaluation_recheck",
+          "request_sha256": "b50d19bdd716ea73c64570fa4461809cdfd154be0c50f06235e19d9ff575e3d7",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": true,
+          "measured_local_units": 8022,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 20140,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 24236
+        },
+        {
+          "ordinal": 9,
+          "stage": "evaluation_repair_recheck",
+          "request_sha256": "e45dfcec3fd82c4d79af750374fa42c039da9f1f58074189db46e8cb01520515",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": true,
+          "measured_local_units": 3731,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 11558,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 15654
+        }
+      ],
+      "estimated_input_token_ceiling": 167034,
+      "output_token_reservation": 36864,
+      "reserved_total_tokens": 203898
+    },
+    {
+      "case_id": "retrieval_explicit_economy_89",
+      "context_sha256": "05eae49971e9c552690cc71576c0be3f75f2c81c03c9b98cca348389a0d2ecc9",
+      "requests": [
+        {
+          "ordinal": 1,
+          "stage": "agent_initial",
+          "request_sha256": "16fc13637114c2a52fa84e737b8d4b59aa222a3a0bfccf206466ac744b01472f",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 1,
+          "structured_output": false,
+          "measured_local_units": 7238,
+          "prior_output_carryover_reservation": 0,
+          "estimated_input_token_ceiling": 14476,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 18572
+        },
+        {
+          "ordinal": 2,
+          "stage": "agent_after_tool_1",
+          "request_sha256": "cde5026be150a04a3711e6212cc4310ab11a2b5ea8fc6a1ad6ca0f00e07a66b6",
+          "message_count": 4,
+          "message_roles": [
+            "system",
+            "user",
+            "assistant",
+            "tool"
+          ],
+          "tool_count": 1,
+          "structured_output": false,
+          "measured_local_units": 8498,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 21092,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 25188
+        },
+        {
+          "ordinal": 3,
+          "stage": "agent_after_tool_2",
+          "request_sha256": "b3a60cbe5a2919568e6f7f9dd4cdec352dac3aecd10dbbc972c49ea7d18afa7a",
+          "message_count": 6,
+          "message_roles": [
+            "system",
+            "user",
+            "assistant",
+            "tool",
+            "assistant",
+            "tool"
+          ],
+          "tool_count": 1,
+          "structured_output": false,
+          "measured_local_units": 9123,
+          "prior_output_carryover_reservation": 8192,
+          "estimated_input_token_ceiling": 26438,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 30534
+        },
+        {
+          "ordinal": 4,
+          "stage": "agent_after_tool_3",
+          "request_sha256": "d1bfcb5d017e436c42aefc73d7d8fc7265b2a6110c40f7dd1e09f646fa086c81",
+          "message_count": 8,
+          "message_roles": [
+            "system",
+            "user",
+            "assistant",
+            "tool",
+            "assistant",
+            "tool",
+            "assistant",
+            "tool"
+          ],
+          "tool_count": 1,
+          "structured_output": false,
+          "measured_local_units": 9748,
+          "prior_output_carryover_reservation": 12288,
+          "estimated_input_token_ceiling": 31784,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 35880
+        },
+        {
+          "ordinal": 5,
+          "stage": "evaluation_initial",
+          "request_sha256": "81b864196c301f5cbdeeedc7ef2ea099920b5cf511e0d1edb3e6e1d6d2ed9f10",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": true,
+          "measured_local_units": 8027,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 20150,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 24246
+        },
+        {
+          "ordinal": 6,
+          "stage": "evaluation_repair_initial",
+          "request_sha256": "e45dfcec3fd82c4d79af750374fa42c039da9f1f58074189db46e8cb01520515",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": true,
+          "measured_local_units": 3731,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 11558,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 15654
+        },
+        {
+          "ordinal": 7,
+          "stage": "revision",
+          "request_sha256": "1996eea7005fd7b0fc0419dcb250a95e95d9d585d5035001e0cf2691c578f30e",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": false,
+          "measured_local_units": 848,
+          "prior_output_carryover_reservation": 8192,
+          "estimated_input_token_ceiling": 9888,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 13984
+        },
+        {
+          "ordinal": 8,
+          "stage": "evaluation_recheck",
+          "request_sha256": "9b28a2aad183ce5a3fb3cdaed280d7695e4172e537305bee81b8bb1ebe4b4ae3",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": true,
+          "measured_local_units": 8027,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 20150,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 24246
+        },
+        {
+          "ordinal": 9,
+          "stage": "evaluation_repair_recheck",
+          "request_sha256": "e45dfcec3fd82c4d79af750374fa42c039da9f1f58074189db46e8cb01520515",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": true,
+          "measured_local_units": 3731,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 11558,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 15654
+        }
+      ],
+      "estimated_input_token_ceiling": 167094,
+      "output_token_reservation": 36864,
+      "reserved_total_tokens": 203958
+    },
+    {
+      "case_id": "retrieval_injection_boundary_97",
+      "context_sha256": "e777d1e023a128f8e9668ccca213fa7696a44924bf21fee1a4ea826fbf5463e3",
+      "requests": [
+        {
+          "ordinal": 1,
+          "stage": "agent_initial",
+          "request_sha256": "0ac63063a883cfd72a369b94bb2a94ee830b58aee5b855f0b6f1935e5d55c8d7",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 1,
+          "structured_output": false,
+          "measured_local_units": 7244,
+          "prior_output_carryover_reservation": 0,
+          "estimated_input_token_ceiling": 14488,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 18584
+        },
+        {
+          "ordinal": 2,
+          "stage": "agent_after_tool_1",
+          "request_sha256": "59152422f40d420c9bfca82d3d19fa3042e2d6b9ef74cf4dc65822b672e3f1e1",
+          "message_count": 4,
+          "message_roles": [
+            "system",
+            "user",
+            "assistant",
+            "tool"
+          ],
+          "tool_count": 1,
+          "structured_output": false,
+          "measured_local_units": 8553,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 21202,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 25298
+        },
+        {
+          "ordinal": 3,
+          "stage": "agent_after_tool_2",
+          "request_sha256": "591ad379b31cd693e3ea16e329915f4a1f728f79e026e0348bbced4bc585bde0",
+          "message_count": 6,
+          "message_roles": [
+            "system",
+            "user",
+            "assistant",
+            "tool",
+            "assistant",
+            "tool"
+          ],
+          "tool_count": 1,
+          "structured_output": false,
+          "measured_local_units": 9184,
+          "prior_output_carryover_reservation": 8192,
+          "estimated_input_token_ceiling": 26560,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 30656
+        },
+        {
+          "ordinal": 4,
+          "stage": "agent_after_tool_3",
+          "request_sha256": "d6068d28a50bedcddbf1f160cda50ac10a4a380ba5d65bb7dadb7668361f5736",
+          "message_count": 8,
+          "message_roles": [
+            "system",
+            "user",
+            "assistant",
+            "tool",
+            "assistant",
+            "tool",
+            "assistant",
+            "tool"
+          ],
+          "tool_count": 1,
+          "structured_output": false,
+          "measured_local_units": 9815,
+          "prior_output_carryover_reservation": 12288,
+          "estimated_input_token_ceiling": 31918,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 36014
+        },
+        {
+          "ordinal": 5,
+          "stage": "evaluation_initial",
+          "request_sha256": "62eaf091006fb9a15b9e8f58c06f8eae94de965b0e23870e625b1147759fc256",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": true,
+          "measured_local_units": 8117,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 20330,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 24426
+        },
+        {
+          "ordinal": 6,
+          "stage": "evaluation_repair_initial",
+          "request_sha256": "e45dfcec3fd82c4d79af750374fa42c039da9f1f58074189db46e8cb01520515",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": true,
+          "measured_local_units": 3731,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 11558,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 15654
+        },
+        {
+          "ordinal": 7,
+          "stage": "revision",
+          "request_sha256": "1996eea7005fd7b0fc0419dcb250a95e95d9d585d5035001e0cf2691c578f30e",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": false,
+          "measured_local_units": 848,
+          "prior_output_carryover_reservation": 8192,
+          "estimated_input_token_ceiling": 9888,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 13984
+        },
+        {
+          "ordinal": 8,
+          "stage": "evaluation_recheck",
+          "request_sha256": "643f91218d6902721b554214ee2c3112bfa8001674913b74b5d5030e6abedc2f",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": true,
+          "measured_local_units": 8117,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 20330,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 24426
+        },
+        {
+          "ordinal": 9,
+          "stage": "evaluation_repair_recheck",
+          "request_sha256": "e45dfcec3fd82c4d79af750374fa42c039da9f1f58074189db46e8cb01520515",
+          "message_count": 2,
+          "message_roles": [
+            "system",
+            "user"
+          ],
+          "tool_count": 0,
+          "structured_output": true,
+          "measured_local_units": 3731,
+          "prior_output_carryover_reservation": 4096,
+          "estimated_input_token_ceiling": 11558,
+          "output_token_reservation": 4096,
+          "reserved_total_tokens": 15654
+        }
+      ],
+      "estimated_input_token_ceiling": 167832,
+      "output_token_reservation": 36864,
+      "reserved_total_tokens": 204696
+    }
+  ],
+  "case_token_limit": 205000,
+  "domain_token_limit": 613000,
+  "external_provider_calls": 0,
+  "report_sha256": "2777dd5e846e2cb21fc97d17dbe67e6946e9160c0fbf459b8d8189ad2f2a0d31"
+}

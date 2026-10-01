@@ -17,12 +17,14 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.persistence.config import DatabaseSettings
 from app.persistence.database import build_engine, build_session_factory
 from app.persistence.task_repository import PostgresTaskRepository
+from app.evidence.storage import PendingEvidenceBundleSnapshot
 from app.product.run_receipts import RunReceiptReference
 from app.runtime.models import RuntimeArtifactReference, RuntimeTraceReference
 from app.tasks.models import (
     PendingReviewTask,
     TaskCapacityPolicy,
     TaskPublicationStatus,
+    TaskPublicationMode,
     TaskStatus,
     TaskTerminal,
 )
@@ -40,6 +42,7 @@ from app.tasks.reliable_runtime import (
     TaskLifecycleEventKind,
 )
 from tests.test_run_query_service import _create_terminal_run
+from tests.test_evidence_snapshot_contracts import bundle
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -129,6 +132,52 @@ def terminal(run_id: str) -> TaskTerminal:
             producer="review_harness.publisher",
         ),
     )
+
+
+def test_expired_evidence_reconciliation_commits_snapshot_and_terminal() -> None:
+    with migrated_repository() as repository:
+        task = pending(21).model_copy(
+            update={"publication_mode": TaskPublicationMode.EVIDENCE_BOUND_V1}
+        )
+        created = repository.create_or_replay(
+            task,
+            capacity=TaskCapacityPolicy(owner_active_limit=10, global_active_limit=20),
+        )
+        assert created.task is not None
+        claimed = repository.claim_next(
+            worker_id="worker-recovery-1",
+            now=BASE + timedelta(minutes=1),
+            lease_seconds=15,
+        )
+        assert claimed is not None and claimed.lease is not None
+        snapshot = PendingEvidenceBundleSnapshot(
+            task_id=task.task_id,
+            run_id=task.run_id,
+            owner_id=task.owner_id,
+            refresh_id="recovery-atomic",
+            bundle=bundle(),
+            stored_at=BASE + timedelta(minutes=1, seconds=2),
+        )
+        assert repository.reconcile_expired_success_with_evidence(
+            task_id=task.task_id,
+            worker_id=claimed.lease.worker_id,
+            lease_generation=claimed.lease.generation,
+            lease_token=claimed.lease.token,
+            now=BASE + timedelta(minutes=2),
+            terminal=terminal(task.run_id),
+            pending_snapshot=snapshot,
+            publication_reference={
+                "context": {
+                    "owner_id": task.owner_id,
+                    "task_id": str(task.task_id),
+                    "run_id": task.run_id,
+                    "request_fingerprint": task.request_fingerprint,
+                    "mode": "evidence_bound_v1",
+                },
+                "summary_digest": "e" * 64,
+            },
+            summary_digest="e" * 64,
+        ) is True
 
 
 class MissingReceiptVerifier:

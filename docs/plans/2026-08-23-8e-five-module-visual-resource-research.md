@@ -194,3 +194,29 @@ Make 偏 Figma context，v0 偏 React/Vercel。RiftCoach 已有真实代码库�
 - [TrainingPeaks](https://www.trainingpeaks.com/) / [WHOOP](https://www.whoop.com/) / [Strava](https://www.strava.com/)
 - [21st.dev Motion libraries](https://21st.dev/community/libraries/s/motion) / [Magic UI](https://magicui.design/) / [Animata](https://animata.design/)
 - [MotionSites Apps](https://motionsites.ai/apps) / [Aura](https://aura.build/) / [v0](https://v0.dev/) / [Framer Marketplace](https://www.framer.com/marketplace/)
+
+## 9. 补充 source 池复查（2026-08-29）
+
+本节把旧讨论中曾出现、但前一版矩阵合并得过粗的来源单独归档。它们是
+候选线索或工作流参考，不会因为写入本节就变成运行时依赖。
+
+| 补充来源 | 当前消费者/用途 | 采用边界与下一门 |
+|---|---|---|
+| Design Prompts（含 `designprompts.dev` 线索） | 入口/README 的情绪板、关键词和 brief 结构 | 只取词汇与构图问题清单；逐项官网、价格、授权和可复制性未核验前不购买、不把 prompt 当规格 |
+| Photoshop、After Effects、PowerPoint/PPT | 母图修图、遮罩/合成、演示稿和 README mockup | 必须保留原始来源、导出尺寸/retina、压缩和 alt 文本；PPT/静态 mockup 不能冒充可交互产品或 runtime 动效 |
+| Radix UI、shadcn/ui | Radix Dialog 已服务 Evidence drawer；shadcn 是后续行为/样式候选 | Radix 继续沿用其焦点/Esc 语义；shadcn 不因视觉需要整库引入，只有真实组件缺口和 bundle/a11y 证据才重开门 |
+| ECharts、Tremor、visx | 未来 Timeline/趋势图表 | 没有 owner-scoped DTO 不画假图；先用自主 SVG/CSS，只有可复现图表交互坏例才评估单项依赖 |
+| Tailwind Plus、Untitled UI | 付费 UI 参考/信息架构 | 不购买、不复制受限模板；只作为竞品密度和组件命名的对照，需具体消费者、许可和撤出方案 |
+| Steam Workshop/Wallpaper Engine、League Displays | Portal 动态壁纸候选与 codec/体积/循环研究 | 每个文件独立记录来源、再分发权、格式、移动端、reduced-motion、loop 和删除路径；不能假定“能下载”就能公开注入 |
+| Anime.js、Cult UI、DesignRocket、GetDesign、Anima、Envato、Colorlib、Fireart、Design4Users、DesignMD、Orbix、Toimi、OpenAI Showcase | 历史检索 lead | 没有具体 primary source + consumer + license 的只保留检索记录，不扩张 canonical 矩阵 |
+
+MotionSites 也拆成两层记录：`https://motionsites.ai/apps` 是公开目录证据；
+具体卡片（如 Cinematic Landing Hero、Container Scroll、Interactive Hover、
+Background Paper Shaders、Neon Nebula、F1 Racing Hub、Forecast Center）只记录
+预览日期、free/locked、可迁移机制和是否需要单独授权。用户提供的 Excel 是
+metadata 索引，不能替代官网当前预览或许可核验。
+
+补充复查不改变本轮 Portal 边界：当前只使用现有 CSS/React 重实现的
+spotlight、poster crossfade、diamond focus marker、localized aperture 和
+badge fallback；Radix/图表/训练/Trace 等仍由各自后续消费者持有，
+`production_media` 仍为 `0`。
