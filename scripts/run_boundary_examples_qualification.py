@@ -97,13 +97,25 @@ def prepare():
             raise ValueError('boundary_examples_closed_evidence_changed')
         saved = json.loads(CLOSED_RESULT.read_bytes())['public_json_contents']['plan.json']
         frozen = saved['preparation_plan']
-        # Keep closed execution code provenance; still rebuild every model
-        # request, product identity, source, budget and execution constraint.
-        plan['source_sha256'] = frozen['source_sha256']
-        if (plan != frozen or plan != json.loads(PREPARATION.read_bytes())
-                or canonical_sha(plan) != saved['plan_sha256']):
-            raise ValueError('boundary_examples_closed_preparation_changed')
+        plan = _closed_preview(plan, requests, frozen, saved, PREPARATION,
+            'boundary_examples_closed_preparation_changed')
     return plan, requests
+
+
+def _closed_preview(plan, requests, frozen, saved, preparation, error):
+    # Historical preview, never current qualification or execution authority.
+    # Runtime source fingerprints can change while issued request bytes remain
+    # identical. Keep sealed provenance; rebuild all rows, budgets and requests.
+    rebuilt = deepcopy(plan)
+    for field in ('source_sha256', 'identity', 'original15_plan_sha256'):
+        rebuilt[field] = frozen[field]
+    if (rebuilt != frozen or frozen != json.loads(preparation.read_bytes())
+            or canonical_sha(frozen) != saved['plan_sha256']
+            or set(requests) != {r['key'] for r in frozen['cases']}
+            or any(hashlib.sha256(requests[r['key']]).hexdigest() != r['request_sha256']
+                   for r in frozen['cases'])):
+        raise ValueError(error)
+    return deepcopy(frozen)
 
 
 def prepare_fresh(*, experiment=EXPERIMENT, keys=None):
@@ -182,10 +194,8 @@ def prepare_remaining():
             raise ValueError('boundary_examples_remaining_closed_evidence_changed')
         saved = json.loads(REMAINING_CLOSED_RESULT.read_bytes())['public_json_contents']['plan.json']
         frozen = saved['preparation_plan']
-        plan['source_sha256'] = frozen['source_sha256']
-        if (plan != frozen or plan != json.loads(REMAINING_PREPARATION.read_bytes())
-                or canonical_sha(plan) != saved['plan_sha256']):
-            raise ValueError('boundary_examples_remaining_closed_preparation_changed')
+        plan = _closed_preview(plan, requests, frozen, saved, REMAINING_PREPARATION,
+            'boundary_examples_remaining_closed_preparation_changed')
     return plan, requests
 
 

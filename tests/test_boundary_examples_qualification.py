@@ -162,6 +162,32 @@ def test_remaining_preparation_accounts_for_failed_call_without_reusing_it():
     assert requests == {key:raw for key,raw in old_requests.items() if key != 'claim-scope:1'}
 
 
+@pytest.mark.parametrize('remaining', [False, True])
+def test_closed_preview_keeps_historical_identity_but_checks_actual_bytes(monkeypatch, remaining):
+    prepare = runner.prepare_remaining if remaining else runner.prepare
+    expected, _ = prepare()
+    original = runner.prepare_fresh
+
+    def changed_identity(**kwargs):
+        plan, requests = original(**kwargs)
+        plan['identity']['manifest_sha256'] = 'a' * 64
+        plan['original15_plan_sha256'] = 'b' * 64
+        return plan, requests
+
+    monkeypatch.setattr(runner, 'prepare_fresh', changed_identity)
+    assert prepare()[0] == expected
+    assert runner.prepare_fresh()[0]['identity'] != expected['identity']
+
+    def changed_request(**kwargs):
+        plan, requests = changed_identity(**kwargs)
+        requests[next(iter(requests))] += b' '
+        return plan, requests
+
+    monkeypatch.setattr(runner, 'prepare_fresh', changed_request)
+    with pytest.raises(ValueError, match='closed_preparation_changed'):
+        prepare()
+
+
 def test_closed_batch_cannot_restart_or_create_new_calls():
     with pytest.raises(ValueError, match='closed_or_exists'):
         runner.run(NS(execute=True))
