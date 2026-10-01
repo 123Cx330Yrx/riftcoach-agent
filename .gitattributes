@@ -123,3 +123,8 @@
 # Preserve this closed diagnostic seal's original CRLF bytes on every checkout.
 /data/evaluation/results/golden_coarse_edit_diagnostic_result_20261001.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /data/evaluation/results/golden_coarse_inline_edit_result_20261001.json text eol=lf
+
+# Prospective revision protocol and its offline evidence use portable bytes.
+/app/evaluation/review_bound_editor.py text eol=lf
+/tests/test_review_bound_editor.py text eol=lf
+/data/evaluation/results/golden_review_bound_editor_offline_20261001.json text eol=lf
