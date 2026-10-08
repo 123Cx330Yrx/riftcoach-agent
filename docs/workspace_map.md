@@ -43,3 +43,10 @@ Host applications must use port15432 with their existing DB credentials; shared
 `.env` files were not rewritten. Docker29.7.2, container health, host SQL SELECT1
 and migration head0014_message_projection_status were verified. No model Worker
 or product candidate was enabled by this environment recovery.
+
+## Machine transfer checkpoint, 2026-10-08
+
+See `docs/plans/2026-10-08-machine-transfer-handoff.md` for the two-branch recovery,
+local uncommitted/frontend and raw-evidence snapshots, excluded credentials/DB/host
+history, and the closed-batch boundary. No actual transfer to a new machine has
+been performed. Old drive paths are not prerequisites for the next checkout.

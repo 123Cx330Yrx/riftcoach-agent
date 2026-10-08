@@ -131,3 +131,33 @@ This disproves sufficiency of the self-selected audit as implemented on this
 control, not the correctness of its returned issue list or general model ability.
 No prompt variant/retry, product registration, or original15 qualification follows.
 See `docs/plans/2026-10-08-scope-competition-result.md` for receipts and next decision.
+
+## 2026-10-08 adoption decision before machine transfer
+
+Do not adopt self-selected mandatory scope records as the general fix or add their
+completeness as a product acceptance gate. The one observed correct issue list is
+useful business evidence, but neither causal attribution to this mechanism nor
+complete coverage is established. Keep the original diagnostic rejection and all
+original15 admission flags unchanged; do not drop the failed requirement to turn
+that frozen batch into a pass. No field-completion retry or new paid plan follows.
+
+Targeted evaluation can enumerate a known disputed claim before execution and
+check its audit coverage. General runtime cannot use that test oracle: automatic
+selection of every disputed claim is another unproven semantic task. Requiring
+an additional explanation for every correct paragraph would expand work without
+solving that selection problem. Independent source review confirmed this boundary.
+
+The composed prompt also retains the base instruction not to require additional
+explanations for correct paragraphs while adding records for competing scopes.
+These have potential scope tension, but are not a demonstrated internal cause:
+explicit evidence records and redundant prose are different obligations, and the
+model's observable output cannot establish why it omitted the target. Do not
+announce a prompt-conflict fix or rewrite the policy on this evidence alone.
+
+The next technical question is how the existing full review / necessary-edit /
+fresh-review task can produce a correct final artifact without relying on complete
+model-authored audit coverage, under the unchanged five-call budget and original
+business standard. ADR0110/0111 constraints remain: no sixth call, host answer
+injection, mixed-error exception, skipped fresh review or borrowed qualification.
+Work from a complete executable task contract and negative controls before another
+paid plan; do not default to another schema-field or wording variant.
