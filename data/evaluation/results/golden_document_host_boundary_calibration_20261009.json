@@ -1,0 +1,136 @@
+{
+  "actual_product_task_qualified": false,
+  "decision": "Existing whole-context policy is adequate; reject mandatory full-block audit and lexical causality gate. Preserve the unresolved C06 interpretation; no same-version original15 retry or qualification credit follows this host-only calibration.",
+  "exact_classification_agreement_count": 8,
+  "independent": {
+    "common_rule": "按全文确定断言对象、指标、组别、期间与量词；对没有明示的全称不要自行补全，但要核实明确的全称、未来范围和归因。区分样本描述与因果结论。若声称某组造成或主要解释差距，逐指标比较分组前后的数值；某组对均值有影响，不等于它解释了主要差距。",
+    "judgments": [
+      {
+        "classification": "advisory_only",
+        "key": "C01",
+        "reason": "断言是“混合位置均值受辅助局强烈拉低”，没有写“所有指标”。全文将观摩范围限定为这5局，并建议按位置解读；来源也指出混合位置均值受位置构成影响。来源数值支持辅助局压低补刀、经济和伤害等部分均值，但视野和早期死亡方向相反，且“强烈”没有指定指标。可建议点明所指指标，不应把原句扩写成“所有均值都下降”后判错。"
+      },
+      {
+        "classification": "material_error",
+        "key": "C02",
+        "reason": "原文明确声称“所有指标”的混合位置均值都被辅助局拉低。来源显示辅助位卡蜜尔局视野分为90，远高于中单败局34，故混合败局视野均值升至52.67；该局早期死亡7次，也把败局均值从中单口径0.5抬至全样本2.67。全称范围与方向均错误。"
+      },
+      {
+        "classification": "supported",
+        "key": "C03",
+        "reason": "原文逐项限定为补刀、经济、伤害均值被辅助局拉低，以及视野分被抬高。来源中辅助位单局补刀/分钟1.34、经济/分钟302.59、伤害/分钟538.97，均低于中单败局对应均值9.01、432.815、617.52；其视野分90则高于中单败局34。全文其他段落也明确区分混合与中单口径。此句没有补造“所有指标”或因果解释。"
+      },
+      {
+        "classification": "material_error",
+        "key": "C04",
+        "reason": "原文称全样本补刀与伤害差距“主要来自辅助局拉低”。补刀差距确受辅助局强烈影响：混合胜负均值差为8.8−6.45=2.35，中单胜负差为8.805−9.01=−0.205；但伤害差距并非主要来自辅助局：混合胜负差为1286.76−591.34=695.42，中单胜负差仍为1286.755−617.52=669.235，约占混合差距的96%。这是复合断言，其中伤害归因错误；保留补刀部分即可。"
+      },
+      {
+        "classification": "supported",
+        "key": "C05",
+        "reason": "原文明确限定“中单口径”，并陈述胜局早期死亡均值2.5、败局0.5；来源的两场中单胜局分别为3和2次，两场中单败局分别为0和1次，均值准确。它说明败局更少，并明确说这里只描述样本、不能据此判断因果，与K1及全文数据边界一致；未声称全样本或其他位置也有此方向。"
+      },
+      {
+        "classification": "material_error",
+        "key": "C06",
+        "reason": "均值及“败局更少”符合上述四场中单记录，但“更少的早期死亡并未带来中单胜利”使用因果措辞。四场观察只能说明这两场败局的早期死亡均值较低，不能证明减少死亡没有带来胜利；全文来源边界也明确统计不能证明胜负原因。应改为描述这四场的观察结果。"
+      },
+      {
+        "classification": "material_error",
+        "key": "C07",
+        "reason": "原文从四场中单的2.5对0.5均值推出“证明减少早期死亡……没有任何促进作用”，这是无依据的因果无效应结论。两场胜局和两场败局的观察值不能证明干预效果为零；来源明确将统计限定为描述性证据。"
+      },
+      {
+        "classification": "material_error",
+        "key": "C08",
+        "reason": "原文将四场中单观察外推为“今后所有中单对局”，并断言减少早期死亡不会增加获胜概率。来源只含五局样本，且明确不能推断胜因；该未来全称和因果效果均无依据。"
+      },
+      {
+        "classification": "supported",
+        "key": "C09",
+        "reason": "中单胜局2.5、败局0.5的均值与两场胜局（3、2次）和两场败局（0、1次）一致；“不能据此证明减少早期死亡会带来胜利”是恰当的因果限制。全文同时保留全样本均值2.5对2.67，二者对象分别为中单与全样本，报告已标明口径，不构成内部矛盾。"
+      }
+    ],
+    "packet_sha256": "48e9f3b18c93d225858422ea8e14ba13cc65296d01c2592bf12e3d3a0864c052",
+    "remaining_disagreements_or_limits": "C01的“混合位置均值受辅助局强烈拉低”没有指明指标；我按现有规则将其理解为未扩展成“所有指标”的构成提醒，并将指标不明与“强烈”视为可改善的表达。若审查者认为该句在相邻上下文中明确涵盖所有均值，需比较其完整上下文解读与本裁决。五局观察仅支持所列描述，不构成因果或未来效果证据。其余正文的单局数值、分组表格、训练边界、知识引用和样本限制未见额外的实质冲突。"
+  },
+  "kind": "offline-host-boundary-calibration-result-v1",
+  "model_quality_proven": false,
+  "native_evidence": {
+    "calibration_event_id": "01a0ebaf-790b-70b2-9f02-9e354d9ea50b/01a11d13-0bcf-7d72-9947-9b1a64992871/msg_0a205e23b373be43016ac7f4d4f1748191b9faacfec79f20d5",
+    "calibration_raw_sha256": "1fa740ade5983ebb68c6ac426e2941b6a5f167e70dbd567001c052ee183dcafd",
+    "explanation_event_id": "01a0ebaf-790b-70b2-9f02-9e354d9ea50b/01a11d15-c74b-7f52-9d1c-dfe9f6c7ab59/msg_0a205e23b373be43016ac7f5483cb88191b2a77181c140b8e4",
+    "explanation_raw_sha256": "2c8227a26904a7b05c3ee6e489f76bd47db3208ad1705f202024f03b0a4da0d5",
+    "explanation_text": "C06 不必然断言因果效应为零。按观测性读法，它只说这四场中，早期死亡较少的两场败局没有获胜；败局记录为 0、1 次，胜局为 2、3 次，来源支持这一描述。\n\n若把“并未带来”解读为因果断言，最小的未证命题是：较低的早期死亡数造成了胜利缺失，或减少死亡也不会使这些对局获胜。来源没有提供这种因果或反事实证据。一个与四场实际记录兼容的反例是：那场记录 1 次早期死亡的败局，若避免该次死亡，比赛可能转为胜局；实际对局仍是 1 次死亡并告负。\n\n因此，C06 的裁决取决于是否将“带来”视为明确的因果标记。若如此，可按无依据因果推断判错；但不能说观测数据已证明因果结论错误。这是该词的裁决标准风险。C07 明确断言“没有任何促进作用”，C09 则明确限制证据能力，两者的含义更清楚。",
+    "formal_stage_submission": false,
+    "kind": "offline-host-calibration-native-evidence-v1",
+    "native_json_exact": false,
+    "native_trailing_text": "]}",
+    "qualification": false,
+    "structured_judgments_are_readonly_prefix_projection": true
+  },
+  "old_results_redecided": false,
+  "packet_sha256": "48e9f3b18c93d225858422ea8e14ba13cc65296d01c2592bf12e3d3a0864c052",
+  "primary": {
+    "judgments": [
+      {
+        "classification": "advisory_only",
+        "key": "C01",
+        "reason": "全文泛指不等于全部指标；表格及后文分别描述补刀、伤害、视野，未声称视野降低。建议更明确指标可读性，但不能补造全称。"
+      },
+      {
+        "classification": "material_error",
+        "key": "C02",
+        "reason": "明确所有指标均拉低，与辅助视野90将中单33.75提高到45冲突，也与早死方向不符；后文正确表格和免责声明不能撤销。"
+      },
+      {
+        "classification": "supported",
+        "key": "C03",
+        "reason": "补刀、经济、伤害全样本均值较低，视野均值较高；描述性重新分组不等于对单局因果贡献。"
+      },
+      {
+        "classification": "material_error",
+        "key": "C04",
+        "reason": "伤害全样本胜负差695.418333，中单差669.235；角色构成仅改变26.183333，无法作为主要解释。补刀重分组有影响不能替伤害作证。"
+      },
+      {
+        "classification": "supported",
+        "key": "C05",
+        "reason": "中单胜早死3、2，败0、1；2.5与0.5描述正确，明确拒绝因果推断。保留全样本2.5/2.67无冲突。"
+      },
+      {
+        "classification": "advisory_only",
+        "key": "C06",
+        "reason": "在完整文本中本样本限定、败局均更少早死、全文反复否定因果，最小含义是这一观测没有伴随胜利，不声称干预效应为零。带来可能让读者误解，建议纯观察措辞；仅出现该词不足以证明作者断言因果。与C07明确无促进作用不同。"
+      },
+      {
+        "classification": "material_error",
+        "key": "C07",
+        "reason": "即使仅限定这四场，也明确断言减少早死对获胜没有任何促进作用，是干预因果效应判断；观察胜负组均值不能确定。后文不能撤销明确证明断言。"
+      },
+      {
+        "classification": "material_error",
+        "key": "C08",
+        "reason": "未来所有对局获胜概率全称无依据，不能用样本限定或2.5/0.5正确数字抵消。"
+      },
+      {
+        "classification": "supported",
+        "key": "C09",
+        "reason": "不能据此证明是对证据能力的否定，未声称效果不存在。含带来但是否定推断，不是肯定因果。"
+      }
+    ],
+    "kind": "offline-primary-boundary-calibration-v1",
+    "packet_sha256": "48e9f3b18c93d225858422ea8e14ba13cc65296d01c2592bf12e3d3a0864c052",
+    "provider_requests": 0,
+    "qualification": false,
+    "reviewer": "01a0c6c5-01d1-78d0-82fb-e567e0ab7150"
+  },
+  "production_admitted": false,
+  "provider_requests": 0,
+  "remaining_disagreement_keys": [
+    "C06"
+  ],
+  "review_controls_qualified": false,
+  "source_seal_sha256": "d225f75e39e850e62c7af2cefab1ec823d837e6c46fd65606e93da373d2ed4c5",
+  "synthetic_controls": true
+}

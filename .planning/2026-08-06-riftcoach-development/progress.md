@@ -1,3 +1,17 @@
+## 2026-10-09 剩余十一例实际完成、封存和Host边界校准
+
+授权d5aa7c91…73429bf全部执行：11GLM/Flash0，输入145713/输出34674，共180387tokens，unknown0、receiptless0；活动483.233秒、Host2138.189秒、墙钟2621.422秒，未缓存估价2.136576元。
+十一例全部全文双审，十接受、一scope:3修法分歧；四份正确稿均pass>=85，七份带错稿均needs_revision。语义分歧后仍完成其余九例，无编辑/fresh/重评/重试。
+scan_completed=true、diagnostic_accepted=false；191原件摘要/90白名单JSON严格重建与封存，SHA8adfa5ce…0c6baa。原件和真实主/独立意见保持。
+scope:4独立前两final绑定hash错、claim-scope:5独立首final来源串例均未导入；作者核原件更正，14份真实native final原件留存，不能隐藏Host耗时。
+原CI超时及两次CI-only失败恢复之后，3f3669b9公共CI37823755271全success，5983父/129子精确覆盖；冻结69项模型依赖/业务请求/身份/方案/预算不变。唯一等待器和runner均退出，riftcoach已PAUSED。
+独立设计复核推荐全段范围账本后，核ADR0116尾部否决并撤回。现有policy已覆盖泛指/全称/因果，不能声称再加同义句就是修复。
+九个新全文Host控制由主审先存判断、既有独立作者分别审查，八一致一C06分歧。独立后续解释确认未带来不必然意味着零因果效应；最窄样本描述有来源，自动关键词门是裁决标准风险。
+九项native final尾多出]}，原文保留、native_json_exact=false；JSON前缀投影仅供阅读比较，没有导入正式签署。解释final单独保存，不改原裁决。
+结果及下一机制边界见2026-10-09-document-remaining11-scan-result.md、2026-10-09-host-boundary-calibration.md。原严格2/15/旧文档3/15分别保留，本次新增完整资格0，8E未完成。
+没有选定语义修法，没有新付费授权，不原样重买15；下一步从实际命题→问题→修法→fresh路径选共同机制，而非新增全块解释门。
+收尾逐项核191原件SHA和90公开文件与原run精确相等、11实际阶段、用量/资格边界与校准分离，公开敏感字段递归检查通过；治理与git diff检查通过。
+
 ## 2026-10-09 独立剩余11扫描实现、离线检查与冻结
 
 用户要求推进效率方案，已新增scan/handoff/只读seal，保持旧15业务identity/input/report/request；只测原来未执行11，旧四例封存不重买。

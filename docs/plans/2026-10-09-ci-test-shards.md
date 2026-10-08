@@ -46,9 +46,13 @@ set去重；子报告必须归属选中父节点、结果passed/skipped，失败
 不能绿灯及failed/foreign子报告篡改拒绝。联合合同/Provider/MCP/Tool/Zhipu检查115项、
 83子测试通过。旧等待器正常ci_not_passed付费前退出，Provider0；新HEAD/CI另行恢复。
 
-## 当前恢复边界
+## 2026-10-09 恢复完成
 
-推送本包后记录新执行HEAD/公共CI，恢复单份付费前等待。CI全绿、clean exact HEAD及
-真实native主体通过后才首次执行同一11例方案。不得重启已执行批、覆盖原授权或改变
-模型边界。11例语义失败收集继续，硬协议/来源/身份/native/transport/预算失败立即停。
-历史2/15、旧文档3/15分开保留，第四例分歧和完整15/产品消费/8E仍未完成。
+执行HEAD为3f3669b98a0db3852944cad7bf3b582a57bd0bbb，同提交公共CI37823755271全部
+success。汇总5983父节点完整终态、165父skip、129子结果，exact_full_coverage=true。
+ci-recovery-3原件保留新HEAD/CI与原方案授权；69项模型依赖、业务身份、input/report/
+request和预算未变。唯一等待器46924及执行器45300在全绿/clean HEAD/主体通过后首次
+执行，十一例全部返回并双审，十接受、一分歧，unknown0；已正常关闭、封存、暂停接续。
+没有重复runner，也没有用付费前工程故障重试模型。
+完整业务结果见2026-10-09-document-remaining11-scan-result.md。CI修复解决工程执行覆盖，
+不证明语义修复。历史2/15、旧文档3/15分开保留，完整15/产品消费/8E仍未完成。

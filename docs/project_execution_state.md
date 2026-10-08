@@ -4,40 +4,31 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "历史原15严格2/15；新文档旧批3/15，第四例分歧未解决。剩余11扫描已获授权，原公共CI一小时超时；正在修复隔离分片CI，Provider0。"
+pause_reason: "剩余11初评扫描全部完成、十接受一分歧并封存；旧第四例与本次修法仍有语义分歧，完整15和自然产品消费未完成。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
 
-2026-10-09：用户要求落实提速方案。剩余十一例独立初评扫描已实现，保持上一封存原15
-identity/input/report/request，旧四例不重复购买、不转授资格。语义拒绝/双审分歧/错verdict
-记录后继续独立案例；协议/来源/身份/native/transport/预算失败即停，无重试/编辑/重评。
-每例独立transport任务，共用全批预算；pre-transport身份拒绝无receipt时明确本地未知尝试，
-未验证Host尾材料只摘要留存、不公开为有效判断。完整15最终验收仍首失败停、全文双审。
-新入口21项及相邻旧入口30项离线检查通过；独立代码复核两类封账问题修复后无阻断，
-当前真实主体预检通过，后续阶段仍须当时native final。源码和精确计划重建、治理/编译/
-diff检查完成；公共CI须核本提交，不把替身或CI当模型质量。
-冻结方案d5aa7c914cb9b30d66422a28c83736afc1cc79313fc32be2d4feced1b73429bf；新增最多11次
-GLM-5.3/high、Flash0、1064448tokens、3300活动秒、86400Host秒，未缓存估价15.724544元。
-入口/操作/结果决策：docs/plans/2026-10-09-document-remaining11-scan.md。用户“确认，继续”
-已授权本冻结方案。准备提交4749c230的CI37809368023约83%触及一小时取消，无观察到的
-断言失败但未完成全套；等待器正常退出，Provider0、扫描run尚未创建，接续暂时暂停。
-CI-only修复把完整Python套件拆成四个隔离任务，保留原非Python门和汇总pytest门；
-汇总要求同HEAD/同完整收集清单、每项真实终态恰好一次。相关28项四片完整验证通过，
-独立代码复核无阻断。原69项模型源码、原请求、身份、方案和预算均未改变。
-工程故障与恢复记录：docs/plans/2026-10-09-ci-test-shards.md。
-f6ebae04的首次分片CI37819180174已主动取消：已有frontend contract测试仍绑定旧物理
-任务，现改为同时核汇总依赖/失败阻断与原前端完整检查；CI/前端/DB/打包合同36项通过。
-恢复等待器付费前停止、run仍未创建，Provider0；新HEAD/CI将另记，不覆盖原件。
-3adaa47b的CI37819992466四片和非pytest门全成功，汇总把129个unittest子结果误计父
-节点重复而拒绝。无缺失；实际27父/129子重放精确覆盖，记录器现分开保留父/子终态，
-失败及重复父执行仍拒绝。相关115项+83子测试通过，等待器正常付费前退出、Provider0。
-下一动作：推送CI修复后，沿原授权记录新执行HEAD/CI，核全绿/clean HEAD/真实主体，单次执行剩余11集中
-诊断；收集全失败及正确控制再共同修复与回归。当前第四例语义分歧未解决，没有下一次
-完整15已值得重跑的质量证明；不原样重跑或用扫描授资格。
-旧文档批3/15与历史严格2/15独立保留，完整review-controls/自然产品消费/8E未完成。
+2026-10-09：已授权剩余十一例独立初评扫描全部执行并关闭，十例全文双审接受，一例
+scope:3修法“本样本中…未带来中单胜利”主审接受/独立拒绝，真实分歧原样保存。
+四份正确稿均pass>=85，七份带错稿均needs_revision；不把verdict正确等同完整初评合格。
+语义分歧后仍完成其余九例，落实集中诊断与资格验收分离；无编辑、fresh、重评或重试。
+11次GLM-5.3/high、Flash0、180387tokens、unknown0、receiptless0，活动483.233秒、
+Host2138.189秒，未缓存实际用量估价2.136576元。191份原件摘要、90项白名单JSON已严格
+重建请求/来源/stage/native事件并封存；scan_completed=true，diagnostic_accepted=false。
+结果与Host插曲：docs/plans/2026-10-09-document-remaining11-scan-result.md。
+CI-only恢复HEAD3f3669b9、公共CI37823755271全success；5983父节点/129子结果精确覆盖。
+工程恢复未改原69项模型依赖/业务请求/身份/方案/预算，不作为语义修复证据。
+唯一等待器和runner均退出；riftcoach接续已暂停，关闭批不重开，不用余量另开付费批。
+历史严格2/15、旧文档批3/15独立保留，本次新增资格0；review-controls/自然消费/8E未完成。
+九个前瞻性全文Host控制已完成，八项一致、一项C06解释分歧；独立解释确认最窄样本
+描述有来源，自动把关键词升级为因果错属于标准风险。原意见及格式故障留存，未导入
+StageAssessment。证据见docs/plans/2026-10-09-host-boundary-calibration.md。
+下一动作：在现有全文标准下选原文命题→问题分流→必要修法的最小共同机制；覆盖两处
+失败及明确真错/正确对照，先证明方案有判别价值，再准备新15，不原样重复购买。
+ADR0116已否决的全段解释账本不复活，既有policy已覆盖这些边界；不能将近义提示当修复。
 自然Coach/四块联动、本人Training、Worker/DB/API/UI/journal、前端审美/必要重做/头像、
 Memory、身份运维、两树整合及八维学习保持活动计划依赖。
 
