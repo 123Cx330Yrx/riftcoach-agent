@@ -14,6 +14,7 @@ class Inventory:
             raise ValueError('ci_shard_index')
         self.index, self.count, self.head = index, count, head
         self.full, self.selected, self.executed, self.skipped = [], [], [], []
+        self.subtests = []
 
     @pytest.hookimpl(trylast=True)
     def pytest_collection_modifyitems(self, config, items):
@@ -25,20 +26,27 @@ class Inventory:
         config.hook.pytest_deselected(items=omitted)
 
     def pytest_runtest_logreport(self, report):
+        # pytest 9 emits unittest.subTest outcomes as additional call reports
+        # with a context, followed by one parent call report. Retain them as
+        # subtest evidence, never count them as another execution of the node.
+        if getattr(report, 'context', None) is not None:
+            self.subtests.append(dict(nodeid=report.nodeid, outcome=report.outcome))
+            return
         if report.when == 'call' or (report.when == 'setup' and report.skipped):
             self.executed.append(report.nodeid)
             if report.skipped:
                 self.skipped.append(report.nodeid)
 
     def record(self, code):
-        return dict(version=1, head_sha=self.head, index=self.index, count=self.count,
+        return dict(version=2, head_sha=self.head, index=self.index, count=self.count,
             full_nodeids=self.full, selected_nodeids=self.selected,
-            executed_nodeids=self.executed, skipped_nodeids=self.skipped, exit_code=int(code))
+            executed_nodeids=self.executed, skipped_nodeids=self.skipped,
+            subtest_reports=self.subtests, exit_code=int(code))
 
 
 def verify(records, *, count, head):
     if (len(records) != count or {r['index'] for r in records} != set(range(count))
-        or any(r['count'] != count or r['head_sha'] != head or r['version'] != 1
+        or any(r['count'] != count or r['head_sha'] != head or r['version'] != 2
             or r['exit_code'] != 0 for r in records)):
         raise ValueError('ci_shard_inventory_or_failure')
     full = records[0]['full_nodeids']
@@ -48,13 +56,16 @@ def verify(records, *, count, head):
     for r in records:
         selected = full[r['index']::count]
         if (r['selected_nodeids'] != selected or Counter(r['executed_nodeids']) != Counter(selected)
-            or not Counter(r['skipped_nodeids']) <= Counter(r['executed_nodeids'])):
+            or not Counter(r['skipped_nodeids']) <= Counter(r['executed_nodeids'])
+            or any(s['nodeid'] not in selected or s['outcome'] not in ('passed','skipped')
+                for s in r['subtest_reports'])):
             raise ValueError('ci_shard_missing_duplicate_or_unfinished_tests')
         all_executed.extend(r['executed_nodeids'])
     if Counter(all_executed) != Counter(full):
         raise ValueError('ci_shard_full_coverage')
     return dict(head_sha=head, shard_count=count, collected=len(full), completed=len(all_executed),
-        skipped=sum(len(r['skipped_nodeids']) for r in records), exact_full_coverage=True)
+        skipped=sum(len(r['skipped_nodeids']) for r in records),
+        subtest_reports=sum(len(r['subtest_reports']) for r in records), exact_full_coverage=True)
 
 
 def main():

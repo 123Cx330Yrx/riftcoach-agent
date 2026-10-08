@@ -34,6 +34,18 @@ Harness边界、secrets/run-data和dry-run；Postgres与packaging-smoke保持。
 再核web-checks原完整质量步骤。分片跳过计数也拒绝重复skip记录。CI/前端/DB/打包合同
 联合36项本地通过；原失败和恢复记录保留，下一执行HEAD/CI另行记录。
 
+3adaa47b的CI37819992466四分片、web、DB、packaging均成功，汇总因记录器将
+pytest 9的unittest.subTest子结果误算为父节点重复执行而失败。原清单5980父节点，
+额外129 call事件、无缺失；只读原件未改。现场probe确认SubtestReport带context，
+父TestReport仅一次。全部27个相关父节点用修复记录器重放，27通过/129子测试通过，
+精确父覆盖验证通过，逐项匹配公共失败清单；不是模型或真实漏跑失败。
+
+记录器version2把有context的子报告单独保留，父终态Counter仍恰好一次，不把父列表
+set去重；子报告必须归属选中父节点、结果passed/skipped，失败保持pytest原exitcode
+及汇总拒绝。四真实进程覆盖包括setup-skip、通过和跳过的subTest，另有真实失败子测试
+不能绿灯及failed/foreign子报告篡改拒绝。联合合同/Provider/MCP/Tool/Zhipu检查115项、
+83子测试通过。旧等待器正常ci_not_passed付费前退出，Provider0；新HEAD/CI另行恢复。
+
 ## 当前恢复边界
 
 推送本包后记录新执行HEAD/公共CI，恢复单份付费前等待。CI全绿、clean exact HEAD及

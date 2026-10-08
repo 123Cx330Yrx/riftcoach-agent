@@ -8763,3 +8763,7 @@ CI-only四隔离任务并行完整pytest，汇总保留pytest门，校验同HEAD
 细节见docs/plans/2026-10-09-ci-test-shards.md。第四例语义分歧仍未解决，旧2/15与文档3/15不拼接，8E未完成。
 跟进发现原frontend package contract漏适配pytest汇总：f6ebae04的CI37819180174主动取消，付费前等待器47536核身份后停止，Provider0。
 已有测试现检查汇总depends与failure/skip阻断、coverage verifier，再检查原frontend全步骤；补skip重复统计拒绝，联合CI/frontend/DB/packaging36项通过。
+3adaa47b的CI37819992466四片/前端/DB/打包通过，但pytest汇总把129个unittest.subTest结果当作父测试重复而拒绝。
+5980父节点无缺失；27相关父节点用修复记录器重放为27通过、129子测试通过、父精确覆盖，匹配公共额外事件。
+version2分开保留subtest report与唯一父终态，原exitcode和缺测/重复父/失败拒绝保持；相关115项+83子测试通过。
+旧等待器正常ci_not_passed付费前退出，run未创建、Provider0；原件保留，继续同授权CI-only修复并恢复。
