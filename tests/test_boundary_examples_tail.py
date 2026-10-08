@@ -14,9 +14,21 @@ from scripts import run_boundary_examples_tail as runner
 from tests.test_role_review_notes import tool_response, request_data
 
 
-def test_frozen_tail_preparation_matches_sealed_pair_and_current_sources():
+def test_frozen_tail_request_contract_is_preserved_without_reusing_source_identity():
     plan, _ = runner.prepare()
-    assert plan == runner.read(runner.PREPARATION)
+    frozen = runner.read(runner.PREPARATION)
+    closed = runner.read(runner.CLOSED_RESULT)
+    assert frozen == closed['public_json_contents']['plan.json']['preparation_plan']
+    assert runner.canonical_sha(frozen) == closed['public_json_contents']['plan.json']['plan_sha256']
+    # Source-only maintenance must not rewrite a closed plan or masquerade as
+    # its source identity. Keep every request/data/policy/budget binding exact.
+    assert {k: v for k, v in plan.items() if k != 'source_sha256'} == {
+        k: v for k, v in frozen.items() if k != 'source_sha256'}
+    assert plan['source_sha256'].keys() == frozen['source_sha256'].keys()
+    for path, sha in plan['source_sha256'].items():
+        assert sha == runner.digest((runner.ROOT/path).read_text(encoding='utf-8'))
+    with pytest.raises(ValueError, match='closed_or_exists'):
+        runner.run(NS(execute=True))
     assert plan['budget']['max_calls'] == 2
     assert plan['budget']['estimated_uncached_cny'] == '1.5724544'
     assert plan['offline_initial_injections'] == 1 and not plan['execution_authorized']

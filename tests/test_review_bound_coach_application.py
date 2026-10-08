@@ -26,6 +26,8 @@ from tests.test_role_coach_application import run
 
 
 class Responses(ScriptedProductProvider):
+    review_data = staticmethod(body)
+
     def __init__(self, *, mode, ceiling):
         super().__init__(recover=mode == 'recovery', charge_ceiling=ceiling)
         self.req, _, _, self.initial_raw = cases()['claim-scope:4']
@@ -35,7 +37,7 @@ class Responses(ScriptedProductProvider):
         if 'agent_loop_iteration' in request.metadata:
             return super().chat(request)
         self.requests.append(request)
-        data = body(request)
+        data = self.review_data(request)
         if request.metadata['review_phase'] == 'native_business_revision':
             op = dict(block=4, before=BEFORE, after=AFTER, reason='Scripted direction correction.')
             if self.mode == 'bad_anchor':

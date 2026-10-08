@@ -1,3 +1,14 @@
+## 2026-10-08 新呈现有三处身份消费者，历史身份不能被优化覆盖
+
+- 新视图除router外，还会被CoachBudget及Observed各自的contract.request_identity拒绝。
+  本轮只用隔离实例的显式身份替身验证现有编排，不能把通过伪称为默认产品接入。
+- editor原final_review_request摘要来自旧三消息；新呈现必须显式保留旧provenance、绑定成稿新请求。
+  fresh重评后还须区分首尝试和最终有效结果；独立审查促成补齐列表和结果回执。
+- 上轮CI首错来自旧tail测试对当前prepare/历史封存整plan强等，而请求摘要未变、源码摘要已变。
+  修测试比较合同，不能重写封存或让当前prepare冒充旧源码。两个旧exporter仍拒绝异源码重导，
+  它们是封存写入口而非必要只读路径，本轮不放宽。
+- 验证和限制：docs/plans/2026-10-08-document-view-integration.md。
+
 ## 2026-10-08 文档表示假设与来源目录重复计算
 
 - source_index.blocks已包含完整有序正文，不能称缺失上下文。旧target_last只改JSON位置；
