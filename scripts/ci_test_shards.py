@@ -48,7 +48,7 @@ def verify(records, *, count, head):
     for r in records:
         selected = full[r['index']::count]
         if (r['selected_nodeids'] != selected or Counter(r['executed_nodeids']) != Counter(selected)
-            or not set(r['skipped_nodeids']) <= set(selected)):
+            or not Counter(r['skipped_nodeids']) <= Counter(r['executed_nodeids'])):
             raise ValueError('ci_shard_missing_duplicate_or_unfinished_tests')
         all_executed.extend(r['executed_nodeids'])
     if Counter(all_executed) != Counter(full):

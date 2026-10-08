@@ -32,7 +32,7 @@ def test_four_real_pytest_processes_cover_all_collected_tests_once(actual_shards
     assert result['collected']==result['completed']==8 and result['skipped']==1
 
 
-@pytest.mark.parametrize('fault',['missing_shard','missing_test','duplicate_test','failed_shard','different_suite','wrong_head'])
+@pytest.mark.parametrize('fault',['missing_shard','missing_test','duplicate_test','failed_shard','different_suite','wrong_head','duplicate_skip'])
 def test_aggregate_rejects_incomplete_or_inconsistent_evidence(actual_shards,fault):
     records=deepcopy(actual_shards)
     if fault=='missing_shard': records.pop()
@@ -41,5 +41,8 @@ def test_aggregate_rejects_incomplete_or_inconsistent_evidence(actual_shards,fau
     if fault=='failed_shard': records[0]['exit_code']=1
     if fault=='different_suite': records[0]['full_nodeids']=records[0]['full_nodeids'][:-1]
     if fault=='wrong_head': records[0]['head_sha']='wrong'
+    if fault=='duplicate_skip':
+        skipped = next(r for r in records if r['skipped_nodeids'])
+        skipped['skipped_nodeids'].append(skipped['skipped_nodeids'][0])
     with pytest.raises(ValueError):
         verify(records,count=4,head=actual_shards[1]['head_sha'])

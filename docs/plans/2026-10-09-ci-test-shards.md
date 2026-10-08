@@ -27,6 +27,13 @@ Harness边界、secrets/run-data和dry-run；Postgres与packaging-smoke保持。
 新扫描21项与分片7项一起运行于四个独立进程，28项全部终态恰好一次，汇总通过；
 独立代码复核无阻断。这证明工程分片与覆盖机制，不能证明模型语义质量。
 
+跟进实际消费者时发现既有frontend package contract测试仍要求pytest物理任务直接
+包含Node/web步骤，未随汇总任务适配。f6ebae04的CI37819180174主动取消，唯一付费前
+等待器47536经命令行身份核实停止，run未创建、Provider0；不把此工程遗漏归咎于模型。
+该既有测试现同时核验汇总门对web-checks与全部分片的依赖、失败/skip阻断及覆盖验证，
+再核web-checks原完整质量步骤。分片跳过计数也拒绝重复skip记录。CI/前端/DB/打包合同
+联合36项本地通过；原失败和恢复记录保留，下一执行HEAD/CI另行记录。
+
 ## 当前恢复边界
 
 推送本包后记录新执行HEAD/公共CI，恢复单份付费前等待。CI全绿、clean exact HEAD及

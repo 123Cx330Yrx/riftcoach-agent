@@ -8761,3 +8761,5 @@ CI-only四隔离任务并行完整pytest，汇总保留pytest门，校验同HEAD
 方案精确重建仍d5aa7c914cb9b30d66422a28c83736afc1cc79313fc32be2d4feced1b73429bf，69项模型源码/身份/请求/预算不变。
 治理/编译/diff检查通过；推送CI-only工程修复后透明记录新执行HEAD/CI，恢复同授权唯一付费前等待器，无需重复申请。
 细节见docs/plans/2026-10-09-ci-test-shards.md。第四例语义分歧仍未解决，旧2/15与文档3/15不拼接，8E未完成。
+跟进发现原frontend package contract漏适配pytest汇总：f6ebae04的CI37819180174主动取消，付费前等待器47536核身份后停止，Provider0。
+已有测试现检查汇总depends与failure/skip阻断、coverage verifier，再检查原frontend全步骤；补skip重复统计拒绝，联合CI/frontend/DB/packaging36项通过。
