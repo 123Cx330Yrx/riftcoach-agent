@@ -1,3 +1,18 @@
+## 2026-10-08 文档十五例本批3/15，第四例双审分歧停止并封存
+
+ffab7c1e同提交CI37790363878全绿，用户真实授权6c9d36bb后单次执行。claim-scope:1为97/pass，
+claim-scope:4为72→编辑→96/pass，claim-scope:3为78→编辑→96/pass；真实全文双审和新成稿fresh接受。
+attribution:1初评78正确检出伤害归因真错，额外block4事实issue主审拒绝、独立接受；两份原件保留，
+正式拒绝后role_pair_host_rejected关闭，无后续编辑/fresh及十一例调用。无429/额度中断，无重试。
+8次GLM6/Flash2、117718tokens、unknown0、活动418.767秒、Host1882.593秒，未缓存估价1.171026元。
+188原件、精确十五请求/失败初评和native事件只读回放，public seal SHA d225f75e39e850e62c7af2cefab1ec823d837e6c46fd65606e93da373d2ed4c5；document-review strict为3/15。
+旧严格2/15独立保留，新身份整15/产品资格/8E未完成。自动接续暂停，不重开关闭批。
+第二例独立两份不完整/字段矛盾final未导入，作者第三份完整final后才提交，全部native原件留存；
+本地helper澄清字段，未改冻结产品/旧task，未增加Provider调用。完整正文/视野表/规则实际发出核验通过。
+新增离线audit可复现同源/同引言/后文差异、原值量级及评审分歧，Provider0；不宣称JSON因果或普遍可靠。
+用户指出效率拖沓：按2026-10-08-review-validation-efficiency.md准备成批初评诊断/集中修复/最后资格的离线方案，
+不擅自变更本批停止规则或启动新付费批。结果详见2026-10-08-document-original15-result.md。
+
 ## 2026-10-08 文档完整整链及原15入口离线适配、冻结完成
 
 新显式document-review合同1.5.6/backend接通发送预算、router/factory、回执分类、双审导入及

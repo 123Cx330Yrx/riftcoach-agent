@@ -4,8 +4,33 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "历史原15严格2/15；新呈现完整链路离线适配完成，原15真实编辑/fresh与产品消费尚待新授权。"
+pause_reason: "历史原15严格2/15；新文档批严格3/15，第四例双审分歧停止。先离线裁决语义分流及成批诊断效率方案，未开新付费批。"
 ---
+
+# RiftCoach 当前执行状态
+
+## 当前行动
+
+2026-10-08：用户已授权的新文档原15批实际执行并关闭，冻结ffab7c1e、公共CI37790363878
+全绿后单次启动；方案6c9d36bb…d0d304。正确稿claim-scope:1为97/pass，claim-scope:4与
+claim-scope:3均完成真实初评→必要Flash编辑→fresh96/pass；三个案例全文双审接受。
+第四例attribution:1为78/needs_revision：正确检出伤害归因真错，同时把block4泛指均值
+拉低判为事实错。主审按全文拒绝该项、独立审查接受，真实意见分歧原样保留，批按首失败
+即停关闭，未执行后续编辑/fresh及十一例。不是429/额度/CI中断，不宣称双审一致误报。
+实际8次（GLM6/Flash2）、117718tokens、unknown0、活动418.767秒，未缓存估价1.171026元；
+无重试，未超过授权。188原件及请求/阶段/native证据只读封存，document-review严格回放
+为新身份3/15 validated_partial，不能与历史严格2/15拼接。自动接续已暂停，不重开本批。
+完整规则、表格和原文确实发出；同引言、同来源而后文不同的结果不能证明表示修复可靠。
+结果/分歧/用量/Host合同插曲：docs/plans/2026-10-08-document-original15-result.md。
+下一动作：沿docs/plans/2026-10-08-review-validation-efficiency.md离线核语义分歧与旧反证，
+裁决最小含义→问题分流机制及独立成批初评收集路径。诊断和资格验收分开，先集中暴露
+失败、集中修复，再做同版本完整资格；当前无新付费授权或runner，不原样重跑十五例。
+默认产品合同/模型/预算/质量门保持，新身份完整原15与自然产品消费未证，8E未完成。
+自然Coach/四块联动、本人Training、Worker/DB/API/UI/journal、前端审美/必要重做/头像、
+Memory、身份运维、两树整合和八维学习保持原活动依赖。
+
+以下为历史记录；当前行动以本段为准。
+
 
 # RiftCoach 当前执行状态
 
