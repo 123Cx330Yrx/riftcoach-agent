@@ -120,3 +120,14 @@ uncached estimate CNY 2.859008. Related offline checks: 63 passed. No paid call 
 Same-final-commit CI and explicit new-batch cost authorization remain required.
 Failure rejects sufficiency of this mechanism for these controls; success does not
 establish natural-task budget reachability, original15 or product qualification.
+
+## 2026-10-08 live outcome: not admitted
+
+Authorized plan e5a40a42…86fbc ran one full actual-mixed review after CI37723918833.
+The output correctly listed only the true block6 error and did not reproduce the
+block4 false positive. However, scope_checks omitted the target block4 dispute;
+both actual host reviewers rejected coverage. The second control was not sent.
+This disproves sufficiency of the self-selected audit as implemented on this
+control, not the correctness of its returned issue list or general model ability.
+No prompt variant/retry, product registration, or original15 qualification follows.
+See `docs/plans/2026-10-08-scope-competition-result.md` for receipts and next decision.
