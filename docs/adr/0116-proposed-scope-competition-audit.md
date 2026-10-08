@@ -107,3 +107,16 @@ This proposal does not postpone or cancel natural Coach, Review/Training/Evidenc
 linkage, user training goals, frontend redesign/aesthetics/hero portraits, Memory,
 Worker/DB/API/Workbench, identity operations, two-tree integration or learning.
 Their dependencies remain in the active plan and the 9/16 restart plan.
+
+## 2026-10-08 bounded diagnostic preparation (not execution)
+
+The isolated sender and native handoff are prepared in
+`docs/plans/2026-10-08-scope-competition-diagnostic.md`. Two frozen complete-report
+controls use existing receipted GLM/high transport without registering or weakening
+production routing. Labels remain host-only; full semantic dual review is required.
+The preparation digest is `e5a40a420e56cff69b193afe58a92e98400f89dd4fcfa559bda2330188886fbc`.
+Limits: 2 calls, 193536 tokens, 600 active seconds, 86400 host seconds; conservative
+uncached estimate CNY 2.859008. Related offline checks: 63 passed. No paid call yet.
+Same-final-commit CI and explicit new-batch cost authorization remain required.
+Failure rejects sufficiency of this mechanism for these controls; success does not
+establish natural-task budget reachability, original15 or product qualification.
