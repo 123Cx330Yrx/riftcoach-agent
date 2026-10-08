@@ -2,7 +2,8 @@
 
 用户要求把诊断提速落地，并推进到下一次完整十五例验证的准备位置。本包完成独立初评
 扫描工程准备；还没有修好第四例语义分歧，也不能宣称下一次完整十五例已具有质量依据。
-新Provider调用0，旧批关闭、自动接续保持暂停。
+新Provider调用0，旧批关闭。用户随后“确认，继续”已授权本冻结方案；原CI超时，
+现修复CI并恢复同一授权的首次执行等待，详见2026-10-09-ci-test-shards.md。
 
 ## 为什么只测十一例
 
@@ -56,7 +57,7 @@ response，精确绑定task及真实作者final。主审notes和独立native事�
 方案SHA：`d5aa7c914cb9b30d66422a28c83736afc1cc79313fc32be2d4feced1b73429bf`。
 新增最多11次GLM-5.3/high，Flash0；1064448tokens、3300活动秒、86400Host秒；
 每请求最大64000input ceiling、32768output、300秒。保守未缓存估价15.724544元，
-不是实际账单保证。原授权已关闭，不借其余量；需要本方案具体新增付费授权。
+不是实际账单保证。旧15授权已关闭，不借其余量；本方案具体新增授权已由用户确认。
 
 准备器和执行器：`python -m scripts.run_document_review_scan`。执行时显式提供本准备文件、
 完整plan SHA、同提交CI run、真实root/independent IDs、env-file及codex-executable。

@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "历史原15严格2/15；新文档旧批3/15，第四例分歧未解决。剩余11独立扫描已离线验证冻结，待具体新授权及同提交CI；无新调用。"
+pause_reason: "历史原15严格2/15；新文档旧批3/15，第四例分歧未解决。剩余11扫描已获授权，原公共CI一小时超时；正在修复隔离分片CI，Provider0。"
 ---
 
 # RiftCoach 当前执行状态
@@ -21,9 +21,14 @@ identity/input/report/request，旧四例不重复购买、不转授资格。语
 diff检查完成；公共CI须核本提交，不把替身或CI当模型质量。
 冻结方案d5aa7c914cb9b30d66422a28c83736afc1cc79313fc32be2d4feced1b73429bf；新增最多11次
 GLM-5.3/high、Flash0、1064448tokens、3300活动秒、86400Host秒，未缓存估价15.724544元。
-入口/操作/结果决策：docs/plans/2026-10-09-document-remaining11-scan.md。尚无对应新付费
-授权，Provider0、未启动runner，自动接续暂停；旧批不得借余量重开。
-下一动作：取得本具体新授权并核同提交CI/clean HEAD/真实主体后，单次执行剩余11集中
+入口/操作/结果决策：docs/plans/2026-10-09-document-remaining11-scan.md。用户“确认，继续”
+已授权本冻结方案。准备提交4749c230的CI37809368023约83%触及一小时取消，无观察到的
+断言失败但未完成全套；等待器正常退出，Provider0、扫描run尚未创建，接续暂时暂停。
+CI-only修复把完整Python套件拆成四个隔离任务，保留原非Python门和汇总pytest门；
+汇总要求同HEAD/同完整收集清单、每项真实终态恰好一次。相关28项四片完整验证通过，
+独立代码复核无阻断。原69项模型源码、原请求、身份、方案和预算均未改变。
+工程故障与恢复记录：docs/plans/2026-10-09-ci-test-shards.md。
+下一动作：推送CI修复后，沿原授权记录新执行HEAD/CI，核全绿/clean HEAD/真实主体，单次执行剩余11集中
 诊断；收集全失败及正确控制再共同修复与回归。当前第四例语义分歧未解决，没有下一次
 完整15已值得重跑的质量证明；不原样重跑或用扫描授资格。
 旧文档批3/15与历史严格2/15独立保留，完整review-controls/自然产品消费/8E未完成。
