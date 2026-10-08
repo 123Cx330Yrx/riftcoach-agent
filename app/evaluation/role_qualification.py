@@ -139,11 +139,14 @@ def _count(value):
     return value
 
 
-def read_role_calls(directory, *, source_projection=PROJECTION_VERSION):
+def read_role_calls(directory, *, source_projection=PROJECTION_VERSION, request_role=None):
     """Check the global call namespace and bind each returned raw artifact.
 
     No recursive counting: model paths and stream ordinals come from the shared
     reservation. A reserved call with no observed usage remains unknown.
+    A trusted diagnostic may supply an exact-request role resolver; default
+    qualification always retains the adopted product classifier. Raw bytes,
+    role/model/profile, usage and terminal checks are never replaced.
     """
     directory = Path(directory).resolve()
     files = sorted(p for p in directory.glob("call-*.json") if not p.name.startswith("call-result-"))
@@ -177,7 +180,9 @@ def read_role_calls(directory, *, source_projection=PROJECTION_VERSION):
         # representation before the unchanged receipt validator hashes it;
         # never replace a raw request hash with a reserialized approximation.
         request = replace(request, **{k: wire[k] for k in ("temperature", "timeout_s", "top_p")})
-        if role_for_request(request, source_projection=source_projection) != role or validate_request(request, transport_id=record["transport_id"]) != raw:
+        resolved_role = (role_for_request(request, source_projection=source_projection)
+                         if request_role is None else request_role(request))
+        if resolved_role != role or validate_request(request, transport_id=record["transport_id"]) != raw:
             raise ValueError("role_receipt_request_identity_mismatch")
         stream = model_dir / f"stream-{ordinal:03d}"
         reservation_path = stream / "reservation.json"

@@ -1,3 +1,14 @@
+## 2026-10-08 三例文档初评执行入口及冻结完成
+
+复用execute_plan和真实RoleReceiptedStreamProvider，实例诊断selector仅允许三精确四消息请求；
+仅恢复baseline核身份，实际新字节发送/回执/共享预留均核验。默认产品router和原15资格不注册。
+read_role_calls新增显式诊断resolver，默认分类/所有原始回执与终态规则保留。新入口14项检查
+通过，与scope/准备器联合37项；晚提交关闭1项、默认回执/未知16项通过。独立复核发现审查
+模型与strict_json源码冻结遗漏已补；预算/role/Host绑定/关闭锁无其他阻断。真实主体预检通过。
+57项源码冻结及精确计划重建通过，SHA bdb678d80a8568443ce92d01ec3a636542a4ebe6f5c6ea0b5ecf6d63a1f376a6。
+拟新增3次/290304tokens/900活动秒/86400Host秒/4.288512元，尚未授权/调用/启动等待器。
+证据：docs/plans/2026-10-08-document-review-diagnostic.md；最终CI另核，Provider0，原15仍2/15。
+
 ## 2026-10-08 完整初评三例文档视图准备完成
 
 新增只读prepare/export/verify及不可覆写请求包：原混合、明确中单真错、完整正确稿，来源/政策/

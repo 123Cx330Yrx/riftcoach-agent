@@ -1,3 +1,14 @@
+## 2026-10-08 新呈现的真实读回也需要明确身份适配
+
+- 生产分类器会同时在发送预算和回执读取层拒绝四消息。测试替身只能证明离线可达；真实诊断
+  用精确请求白名单恢复旧来源/role核验，传输与receipt保持实际新字节。默认资格不传resolver。
+- 独立审查指出StageAssessment/stage_identity与strict_json所在文件影响决策和回执边界，
+  不能只冻结runner或既有粗略依赖；已将这两项及实际传输实现补入本计划57项源码。
+- native主体预检当前可核route与完成final，原生输入不可读且未来可读性不保证；沿已采用
+  native-final证明策略，不声称预检保证未来审查。实际每阶段仍需取得真实完成事件。
+- 绑定真实性与质量判断不同；完整报告/响应/journal均被双审绑定仍不能证明模型语义改善。
+  具体代码/验证/冻结：docs/plans/2026-10-08-document-review-diagnostic.md。
+
 ## 2026-10-08 完整初评对照的历史与呈现边界
 
 - 两原例报告、来源、prepared请求与真实issued/response/journal均可精确对齐；正确稿issued
