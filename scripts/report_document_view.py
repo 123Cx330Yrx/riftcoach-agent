@@ -21,11 +21,16 @@ DOCUMENT_ADDRESS = (
 
 def document(inputs):
     report_inputs(inputs, inputs.source.report)
-    text = inputs.source.report
+    return mark_document(inputs.source)
+
+
+def mark_document(source):
+    """Pure presentation shared with role validation; no source certification."""
+    text = source.report
     token = digest(text)[:16]
     while 'HOST_BLOCK:' + token in text:
         token += '_'
-    spans = _block_spans(inputs.source)
+    spans = _block_spans(source)
     markers = [f'\n[HOST_BLOCK:{token}:{i}]\n' for i in range(1, len(spans) + 1)]
     for (start, _), marker in reversed(list(zip(spans, markers))):
         text = text[:start] + marker + text[start:]

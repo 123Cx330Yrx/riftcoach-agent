@@ -190,7 +190,8 @@ class RunScopedRoleReceiptedProviderFactory:
         reviewer = RoleReceiptedStreamProvider(settings=self._reviewer_settings,
             directory=directory / "review", task_directory=directory,
             transport_id=REVIEW_MODEL_TRANSPORT_ID)
-        return RoleRoutedProvider(generator, reviewer, source_projection=self._source_projection)
+        router = getattr(self, 'router_type', RoleRoutedProvider)
+        return router(generator, reviewer, source_projection=self._source_projection)
 
     def __call__(self, run_id):
         return self._build(self._root / normalize_run_id(run_id))

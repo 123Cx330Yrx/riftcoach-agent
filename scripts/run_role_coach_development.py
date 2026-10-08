@@ -139,9 +139,9 @@ def prepare(args, *, settings):
     return prepared, factory, raw, plan
 
 
-def summarize_calls(directory, *, coach_contract=ROLE_COACH_CONTRACT):
-    summary = summarize_role_calls(directory,
-        source_projection=coach_contract.descriptor()['source_projection'])
+def summarize_calls(directory, *, coach_contract=ROLE_COACH_CONTRACT, summary_reader=None):
+    summary = (summary_reader(directory) if summary_reader is not None else summarize_role_calls(directory,
+        source_projection=coach_contract.descriptor()['source_projection']))
     prices = coach_contract.pricing_profiles
     by_model = {}
     for (_, model), price in prices.items():

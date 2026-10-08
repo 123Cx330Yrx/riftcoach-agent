@@ -72,12 +72,13 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
             clock=time.monotonic, before_send=lambda: None,
             workflow_type=RoleNoteReviewWorkflow, replay=replay_case,
             success_field='pair_accepted', task_observer=None, before_case=None,
-            coach_contract=ROLE_COACH_CONTRACT):
+            coach_contract=ROLE_COACH_CONTRACT, backend=None):
     """Run frozen workflows, retaining per-stage host gates outside model input."""
     started = clock()
     projection = coach_contract.descriptor()['source_projection']
     def accounting(path):
-        return summarize_calls(path, coach_contract=coach_contract)
+        return summarize_calls(path, coach_contract=coach_contract,
+            summary_reader=None if backend is None else backend.summarize_role_calls)
     sources = {f['key']: (f, source) for f, source in frozen_cases()[0]}
     outcomes = []
     result = dict(experiment=plan.get('experiment', EXPERIMENT), production_admitted=False,
@@ -184,7 +185,8 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
                         or final.score < coach_contract.descriptor()['minimum_score']):
                     raise ValueError('role_pair_final_review_failed')
                 inspect('final', final_report, workflow.last_journal)
-            calls = read_role_calls(directory / 'transport' / case_id, source_projection=projection)
+            calls = (read_role_calls(directory / 'transport' / case_id, source_projection=projection)
+                if backend is None else backend.read_role_calls(directory / 'transport' / case_id))
             if (not calls or len(calls) > budget['max_calls']
                     or not all(call['completed'] for call in calls)):
                 raise ValueError('role_pair_incomplete_receipts')

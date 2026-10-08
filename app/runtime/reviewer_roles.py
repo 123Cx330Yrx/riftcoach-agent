@@ -120,7 +120,10 @@ class RoleRoutedProvider:
         self._failed = False
 
     def request_identity(self, request):
-        return request_identity(request, source_projection=self.source_projection)
+        return "zhipu", profile_for_role(self.role_for_request(request)).model
+
+    def role_for_request(self, request):
+        return role_for_request(request, source_projection=self.source_projection)
 
     def chat(self, request):
         self.last_exchange = None
@@ -129,7 +132,7 @@ class RoleRoutedProvider:
         response = None
         attempt = None
         try:
-            role = role_for_request(request, source_projection=self.source_projection)
+            role = self.role_for_request(request)
             selected = self.reviewer if role == "review" else self.generator
             require_role_provider(selected, role)
             transport = transport_for_role(role)

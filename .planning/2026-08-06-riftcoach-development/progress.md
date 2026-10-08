@@ -1,3 +1,17 @@
+## 2026-10-08 文档完整整链及原15入口离线适配、冻结完成
+
+新显式document-review合同1.5.6/backend接通发送预算、router/factory、回执分类、双审导入及
+strict sealed replay。15原输入/report不变，request/schema/catalog/size重新绑定；编辑四字段和
+新成稿fresh/journal保持，默认产品composition/resolver不注册。新19项工程测试、既有130项
+回归通过，整15替身最终复验503.92秒；compile/diff/governance通过。六项冻结源码遗漏经
+独立复核发现并补齐，末次复核无剩余阻断。当前真实主体预检通过，仍须逐阶段native final。
+前稿原facts读取错和测试运行中改身份导致的失败均保留、明确修正；不是模型失败，无调用。
+五份manifest同步本次共享实现指纹并统一仓库LF；15请求及源码文本摘要逐项不变。最终
+方案SHA6c9d36bb3540b17fd88d636db71ac682f41ea53754f11a36d600062b81d0d304，39外层/22身份
+源码冻结；35次/3386880tokens/10500活动秒/86400Host秒/37.167104元。Provider0、无等待器；
+公共CI及对应新增授权尚待，接续暂停。历史原15仍2/15、新身份真实原15/自然消费/8E未完成。
+证据和全局后续见docs/plans/2026-10-08-document-original15-integration.md及活动计划。
+
 ## 2026-10-08 文档呈现三例真实初评全部接受并封存
 
 授权冻结bdb678d8…f376a6，d8f83ca5同提交CI37776987790三项成功后单次启动，退出0。

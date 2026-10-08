@@ -4,12 +4,31 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "历史原15严格2/15；新文档初评三例双审通过，完整编辑/fresh与产品资格仍未验证。"
+pause_reason: "历史原15严格2/15；新呈现完整链路离线适配完成，原15真实编辑/fresh与产品消费尚待新授权。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
+
+2026-10-08：文档呈现已离线接入完整初评→原四字段必要编辑→实际新成稿fresh，以及新
+`document-review`原15资格入口。发送预算、专用router/factory、回执读回、双审导入和
+strict关闭封存均用新显式1.5.6未准入合同/身份；默认产品resolver/质量门不变。
+所有15份原始input/report不变，实际四消息request SHA、size、catalog/schema逐例重建。
+新增19项工程检查含整15替身双审/封存回放通过，相关既有130项回归通过；独立代码复核
+发现六个解析/段落/报告校验源码冻结遗漏，补齐后末次复核无剩余阻断。真实主体预检通过，
+沿native-final-attestation-v1，后续各阶段仍须真实事件；替身结果不是真实模型质量。
+已冻结方案6c9d36bb…d0d304（35次/3386880tokens/10500活动秒/86400Host秒，估价37.167104元），
+精确重建通过；五份manifest按仓库LF及共享实现指纹同步，15请求字节/政策/预算无变化。
+详见docs/plans/2026-10-08-document-original15-integration.md和对应preparation JSON。
+上一三例真实完整初评3/3通过证据保留；本轮Provider0、未启动付费等待器、接续保持暂停。
+历史原15仍严格2/15；新呈现15例真实编辑/fresh、900秒可达性与自然产品消费未证，8E未完成。
+下一动作：最终提交公共CI全绿后申请该具体新方案授权，再在执行前主体预检通过后单次
+首次执行；首失败即停，不重试/重开/旧资格转授。新身份没有已获付费权限。
+自然Coach及四块联动、本人Training、前端审美/必要重做/头像、journal/Worker/DB/API/UI、
+Memory、身份运维、两树整合与学习仍沿原活动计划依赖保留。
+
+以下为历史记录；当前行动以本段为准。
 
 2026-10-08 文档呈现三例完整初评已真实执行并正常关闭，同提交d8f83ca5的公共CI37776987790
 全绿。原混合82/needs_revision仅检出补刀真错、未误报全样本早死；明确中单反例68/needs_revision

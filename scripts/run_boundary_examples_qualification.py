@@ -267,7 +267,8 @@ def execute_prepared(args, plan, requests, *, directory, preparation, host_timin
     for key, raw in requests.items():
         (directory/(key.replace(':', '-')+'-prepared-request.json')).write_bytes(raw)
     generator, reviewer = load_role_settings(args.env_file)
-    factory = RunScopedRoleReceiptedProviderFactory(generator_settings=generator, reviewer_settings=reviewer,
+    factory_type = getattr(selected, 'ProviderFactory', RunScopedRoleReceiptedProviderFactory)
+    factory = factory_type(generator_settings=generator, reviewer_settings=reviewer,
         transport_root=directory/'transport', source_projection=PROJECTION)
     clock = None
     if host_timing is not None:
@@ -300,7 +301,7 @@ def execute_prepared(args, plan, requests, *, directory, preparation, host_timin
     with route_environment('direct'):
         return observe(factory, directory, plan, adjudicate=adjudicate, workflow_type=selected_workflow,
             replay=selected_replay, success_field='tasks_observed', task_observer=selected_observer,
-            coach_contract=CONTRACT, before_case=before_case if host_timing is not None else await_case_ready,
+            coach_contract=selected.CONTRACT, backend=selected, before_case=before_case if host_timing is not None else await_case_ready,
             clock=clock or time.monotonic, before_send=before_send)
 
 

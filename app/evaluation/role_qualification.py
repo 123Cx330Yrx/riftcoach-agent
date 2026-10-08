@@ -229,8 +229,8 @@ def read_role_calls(directory, *, source_projection=PROJECTION_VERSION, request_
     return calls
 
 
-def summarize_role_calls(directory, *, source_projection=PROJECTION_VERSION):
-    calls = read_role_calls(directory, source_projection=source_projection)
+def summarize_role_calls(directory, *, source_projection=PROJECTION_VERSION, request_role=None):
+    calls = read_role_calls(directory, source_projection=source_projection, request_role=request_role)
     return dict(reserved_calls=len(calls), completed_calls=sum(c["completed"] for c in calls),
         unknown_usage_calls=sum(c["usage"] is None for c in calls),
         observed_unaccepted_calls=sum(not c["completed"] and c["usage"] is not None for c in calls),
