@@ -4,10 +4,33 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "历史原15严格2/15；新文档批严格3/15，第四例双审分歧停止。先离线裁决语义分流及成批诊断效率方案，未开新付费批。"
+pause_reason: "历史原15严格2/15；新文档旧批3/15，第四例分歧未解决。剩余11独立扫描已离线验证冻结，待具体新授权及同提交CI；无新调用。"
 ---
 
 # RiftCoach 当前执行状态
+
+## 当前行动
+
+2026-10-09：用户要求落实提速方案。剩余十一例独立初评扫描已实现，保持上一封存原15
+identity/input/report/request，旧四例不重复购买、不转授资格。语义拒绝/双审分歧/错verdict
+记录后继续独立案例；协议/来源/身份/native/transport/预算失败即停，无重试/编辑/重评。
+每例独立transport任务，共用全批预算；pre-transport身份拒绝无receipt时明确本地未知尝试，
+未验证Host尾材料只摘要留存、不公开为有效判断。完整15最终验收仍首失败停、全文双审。
+新入口21项及相邻旧入口30项离线检查通过；独立代码复核两类封账问题修复后无阻断，
+当前真实主体预检通过，后续阶段仍须当时native final。源码和精确计划重建、治理/编译/
+diff检查完成；公共CI须核本提交，不把替身或CI当模型质量。
+冻结方案d5aa7c914cb9b30d66422a28c83736afc1cc79313fc32be2d4feced1b73429bf；新增最多11次
+GLM-5.3/high、Flash0、1064448tokens、3300活动秒、86400Host秒，未缓存估价15.724544元。
+入口/操作/结果决策：docs/plans/2026-10-09-document-remaining11-scan.md。尚无对应新付费
+授权，Provider0、未启动runner，自动接续暂停；旧批不得借余量重开。
+下一动作：取得本具体新授权并核同提交CI/clean HEAD/真实主体后，单次执行剩余11集中
+诊断；收集全失败及正确控制再共同修复与回归。当前第四例语义分歧未解决，没有下一次
+完整15已值得重跑的质量证明；不原样重跑或用扫描授资格。
+旧文档批3/15与历史严格2/15独立保留，完整review-controls/自然产品消费/8E未完成。
+自然Coach/四块联动、本人Training、Worker/DB/API/UI/journal、前端审美/必要重做/头像、
+Memory、身份运维、两树整合及八维学习保持活动计划依赖。
+
+以下为历史记录；当前行动以本段为准。
 
 ## 当前行动
 
@@ -29,7 +52,7 @@ claim-scope:3均完成真实初评→必要Flash编辑→fresh96/pass；三个�
 自然Coach/四块联动、本人Training、Worker/DB/API/UI/journal、前端审美/必要重做/头像、
 Memory、身份运维、两树整合和八维学习保持原活动依赖。
 
-以下为历史记录；当前行动以本段为准。
+
 
 
 # RiftCoach 当前执行状态

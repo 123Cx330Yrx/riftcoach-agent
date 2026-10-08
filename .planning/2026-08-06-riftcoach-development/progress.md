@@ -1,3 +1,15 @@
+## 2026-10-09 独立剩余11扫描实现、离线检查与冻结
+
+用户要求推进效率方案，已新增scan/handoff/只读seal，保持旧15业务identity/input/report/request；只测原来未执行11，旧四例封存不重买。
+语义拒绝/分歧/错verdict收集继续，任何协议/身份/来源/native/transport/预算失败停；无编辑、fresh、重试或资格注册。
+每例单独transport ordinal1、全批共享预算，修复串11会撞旧transport九序号上限的实际接线限制，没有改产品上限或旧身份。
+独立代码复核发现pre-transport身份拒绝无receipt的封账缺口、pending未验证Host材料公有导出缺口；都已修并覆盖故障回归，末次无阻断。
+新21项检查86.91秒通过，相邻旧30项也通过；请求/回执/native handoff/late close/未知用量/篡改/白名单实际替身往返，非模型质量证明。
+真实主体预检通过（当时route/final可用，不保证未来）；沿native-final-attestation-v1。
+冻结69项源码和方案d5aa7c914cb9b30d66422a28c83736afc1cc79313fc32be2d4feced1b73429bf：11GLM、1064448tokens、3300活动秒、86400Host秒、估价15.724544元。
+Provider0，旧批关闭、自动任务暂停；等待具体新授权及本提交公共CI。第四例语义问题未解决，完整15尚无重跑质量依据。
+旧文档3/15和历史2/15独立保留，8E未完成；后续产品依赖仍在活动计划。执行/决策见2026-10-09-document-remaining11-scan.md。
+
 ## 2026-10-08 文档十五例本批3/15，第四例双审分歧停止并封存
 
 ffab7c1e同提交CI37790363878全绿，用户真实授权6c9d36bb后单次执行。claim-scope:1为97/pass，
