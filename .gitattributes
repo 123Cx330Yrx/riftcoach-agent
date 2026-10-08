@@ -140,3 +140,4 @@
 /data/evaluation/results/golden_scope_resolution_offline_20261008.json text eol=lf
 /data/evaluation/results/golden_scope_resolution_preparation_20261008.json text eol=lf
 /data/evaluation/results/review_bound_original15_qualification_20261008/*.json text eol=lf
+/data/evaluation/results/golden_scope_resolution_result_20261008.json text eol=lf
