@@ -21,11 +21,11 @@ EXPERIMENT = 'boundary-examples-independent-v2-20260930'
 
 
 def prepare(*, root_thread_id, independent_thread_id, experiment=EXPERIMENT,
-            max_host_seconds=86400, host_review_evidence_policy=DISPATCH_POLICY):
+            max_host_seconds=86400, host_review_evidence_policy=DISPATCH_POLICY, backend=None):
     if (not isinstance(experiment, str)
             or re.fullmatch(r'[a-z0-9][a-z0-9-]{0,100}', experiment) is None):
         raise ValueError('boundary_v2_experiment_invalid')
-    plan, requests = runner.prepare_fresh(experiment=experiment)
+    plan, requests = runner.prepare_fresh(experiment=experiment, **({'backend': backend} if backend is not None else {}))
     plan['host_review_submission_mode'] = MODE_V2
     policy = evidence_policy({EVIDENCE_POLICY_FIELD: host_review_evidence_policy})
     if policy != DISPATCH_POLICY:
@@ -64,17 +64,18 @@ def verify_native_principals(client, plan):
         independent_agent_path=spawn.get('agent_path'), input_readability=readability)
 
 
-def run(args):
+def run(args, *, backend=None):
     plan, requests = prepare(root_thread_id=args.root_thread_id,
         independent_thread_id=args.independent_thread_id, experiment=args.experiment,
         max_host_seconds=args.max_host_seconds,
-        host_review_evidence_policy=getattr(args, EVIDENCE_POLICY_FIELD, DISPATCH_POLICY))
+        host_review_evidence_policy=getattr(args, EVIDENCE_POLICY_FIELD, DISPATCH_POLICY),
+        **({'backend': backend} if backend is not None else {}))
     directory = RUN_ROOT / plan['experiment']
     if directory.exists():
         raise ValueError('boundary_v2_run_already_exists')
     if not args.execute:
         return runner.execute_prepared(args, plan, requests, directory=directory,
-            preparation=args.preparation)
+            preparation=args.preparation, **({'backend': backend} if backend is not None else {}))
     if (not args.preparation or not args.env_file or not args.ci_run
             or not args.codex_executable or args.plan_sha != runner.canonical_sha(plan)
             or plan != json.loads(args.preparation.read_bytes())):
@@ -86,7 +87,7 @@ def run(args):
         source = CodexHostReviewEventSource(client, plan)
         return runner.execute_prepared(args, plan, requests, directory=directory,
             preparation=args.preparation, host_timing=plan['host_review_timing'],
-            event_source=source)
+            event_source=source, **({'backend': backend} if backend is not None else {}))
 
 
 def main():

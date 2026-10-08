@@ -91,9 +91,9 @@ def binding(run, key, stage, *, profile=None, live=False):
     plan = saved['preparation_plan']
     # Select by the saved execution identity, then validate the complete trusted
     # identity below. A profile label alone never authorizes a different policy.
-    from app.evaluation import correction_scope_qualification, boundary_examples_qualification
+    from app.evaluation import correction_scope_qualification, boundary_examples_qualification, review_bound_qualification
     backends = {'correction-scope': correction_scope_qualification,
-                'boundary-examples': boundary_examples_qualification}
+                'boundary-examples': boundary_examples_qualification, 'review-bound': review_bound_qualification}
     matched = [name for name, candidate in backends.items()
                if plan.get('identity', {}).get('workflow_id') == candidate.CONTRACT_ID]
     if len(matched) != 1 or profile is not None and profile != matched[0]:
@@ -161,7 +161,7 @@ def binding(run, key, stage, *, profile=None, live=False):
         provider_response_sha256=_sha(transport/call['raw_directory']/f'response-{ordinal:03d}.json'),
         receipt_prefix_sha256=canonical_sha([c['artifact_sha256'] for c in prefix]),
         expected_initial=row['expected_initial'])
-    if value['journal'] is not None:
+    if stage != 'revision' and value['journal'] is not None:
         actual['final_input_sha256'] = value['journal']['input_sha256']
     return actual
 

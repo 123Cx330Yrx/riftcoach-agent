@@ -282,7 +282,8 @@ def _replay_case(frozen, source, calls, *, workflow_type, include_stage_evidence
     if initial.verdict is EvaluationVerdict.NEEDS_REVISION:
         draft = workflow.revise(RevisionRequest(source.player_summary, source.deterministic_report, source.knowledge, source.report, initial))
         final_report = draft.report
-        stages.append(dict(stage="revision", report=final_report, journal=None))
+        stages.append(dict(stage="revision", report=final_report,
+            journal=deepcopy(getattr(workflow, "last_edit_journal", None))))
         final = workflow.evaluate(replace(source, report=final_report))
         journals.append(deepcopy(workflow.last_journal))
         stages.append(dict(stage="final", report=final_report, journal=deepcopy(workflow.last_journal)))

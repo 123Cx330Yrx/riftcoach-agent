@@ -172,7 +172,10 @@ def observe(factory, directory, plan, *, adjudicate=terminal_adjudication,
                     source.knowledge, source.report, initial))
                 final_report = draft.report
                 current_report = final_report
-                inspect('revision', final_report)
+                edit_journal = getattr(workflow, 'last_edit_journal', None)
+                if edit_journal is not None:
+                    write_new_json(arm / 'revision-journal.json', edit_journal)
+                inspect('revision', final_report, edit_journal)
                 final = workflow.evaluate(replace(source, report=final_report))
                 journals.append(workflow.last_journal)
                 outcome.update(final_verdict=final.verdict.value, final_score=final.score)

@@ -56,6 +56,10 @@ def make_run(tmp_path, monkeypatch):
         elif profile == 'boundary-examples':
             from app.evaluation import boundary_examples_qualification as backend
             from scripts.run_boundary_examples_qualification import Workflow as workflow, BoundaryExamplesObserver as observer, CONTRACT as contract
+        elif profile == 'review-bound':
+            from app.evaluation import review_bound_qualification as backend
+            from scripts.run_boundary_examples_qualification import observer_for
+            workflow, observer, contract = backend.Workflow, observer_for(backend), backend.CONTRACT
         plan, requests = backend.prepare_qualification()
         counter[0] += 1
         run = tmp_path / ('run-' + str(counter[0]))
@@ -72,7 +76,7 @@ def make_run(tmp_path, monkeypatch):
             from scripts.role_stage_review_drafts import MODE, MODE_FIELD
             observation[MODE_FIELD] = MODE
         if host_event_source is not None:
-            assert host_drafts and profile == 'boundary-examples'
+            assert host_drafts and profile in ('boundary-examples', 'review-bound')
             from scripts.review_independence_contract import MODE_V2, freeze_v2_identity
             observation[MODE_FIELD] = MODE_V2
             if host_review_evidence_policy is not None:
@@ -87,18 +91,26 @@ def make_run(tmp_path, monkeypatch):
             (run / (row['key'].replace(':', '-') + '-prepared-request.json')).write_bytes(requests[row['key']])
         good = dict(score=95, verdict='pass', issues=[], issue_resolutions=[], advisories=[])
         bad = dict(score=80, verdict='needs_revision', issues=[dict(block=4, severity='medium',
-            category='fact_error', source_ids=[27 if profile in ('coarse', 'correction-scope', 'boundary-examples') else 1], explanation='Offline structural fixture.',
+            category='fact_error', source_ids=[27 if profile in ('coarse', 'correction-scope', 'boundary-examples', 'review-bound') else 1], explanation='Offline structural fixture.',
             suggested_correction='Repair the identified error.')], issue_resolutions=[], advisories=[])
         replies = []
         for row in rows:
             error = deepcopy(bad)
-            if profile in ('coarse', 'correction-scope', 'boundary-examples'):
+            if profile in ('coarse', 'correction-scope', 'boundary-examples', 'review-bound'):
                 from app.evaluation.golden_coarse_source_projection import source_catalog
                 error['issues'][0]['source_ids'] = [source_catalog(workflow.build_inputs(sources[row['key']]))['roots'][0]['source_id']]
             replies.append(tool_response(good if row['expected_initial'] == 'accept' else error))
             if row['expected_initial'] == 'reject':
-                replies += [ChatResponse(content=sources[row['key']].report + '\n\nOffline structural edit fixture.', model='glm-5.3-flash',
-                    provider='zhipu', finish_reason='stop', usage=TokenUsage(10, 10)), tool_response(good)]
+                if profile == 'review-bound':
+                    from app.providers.models import ToolCall
+                    # Structural fixture only: empty edits cannot prove semantic repair.
+                    replies += [ChatResponse(content=None, model='glm-5.3-flash', provider='zhipu',
+                        finish_reason='tool_calls', usage=TokenUsage(10, 10),
+                        tool_calls=(ToolCall(id='offline-edit', name='submit_review_edits',
+                            arguments={'edits': []}),)), tool_response(good)]
+                else:
+                    replies += [ChatResponse(content=sources[row['key']].report + '\n\nOffline structural edit fixture.', model='glm-5.3-flash',
+                        provider='zhipu', finish_reason='stop', usage=TokenUsage(10, 10)), tool_response(good)]
 
         def child(command, raw, *, directory, timeout_s, environ, transport_id):
             write_new_json(directory / 'result.json', dict(state='complete', elapsed_ms=0, transport_id=transport_id))
@@ -131,7 +143,7 @@ def make_run(tmp_path, monkeypatch):
                 reason='Synthetic primary source inspection.', target_and_correction_valid=True,
                 final_report_checks={k: True for k in audit.CHECKS} if final_report else None,
                 report_reason=final_report['source_review'] if final_report else 'Intentionally incorrect source.')
-            if profile in ('coarse', 'correction-scope', 'boundary-examples'):
+            if profile in ('coarse', 'correction-scope', 'boundary-examples', 'review-bound'):
                 # Exercise the actual file-based host: no in-memory plan is
                 # passed to the writer. JSON storage reorders nested keys.
                 from scripts.write_role_stage_decision import write_decision
@@ -171,13 +183,14 @@ def make_run(tmp_path, monkeypatch):
                     decision = read(path.with_name('decision-'+name+'.json'))
                 else:
                     decision = write_decision(run, key, name, notes, profile=profile)
-                if profile == 'boundary-examples':
+                if profile in ('boundary-examples', 'review-bound'):
                     from scripts.run_boundary_examples_qualification import validate_handoff
                 elif profile == 'correction-scope':
                     from scripts.run_correction_scope_qualification import validate_handoff
                 else:
                     from scripts.run_coarse_role_qualification import validate_handoff
                 return validate_handoff(path, decision, observation, directory=run,
+                    **({'backend': backend} if profile == 'review-bound' else {}),
                     **({'event_source': host_event_source} if host_event_source is not None else {}))
             write_new_json(path.parent / ('primary-' + name + '-review.json'), primary)
             decision = dict(response_sha256=raw_sha, accepted=True, candidate_sha256=digest(compact(plan['identity'])),

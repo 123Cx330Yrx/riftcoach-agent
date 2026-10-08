@@ -166,6 +166,22 @@ def test_native_rollout_supplies_omitted_agent_dispatch_with_same_final(tmp_path
     assert fetch(f) == event
 
 
+@pytest.mark.skipif(host.os.name != 'nt', reason='Windows native extended-length paths')
+@pytest.mark.parametrize('extended_root', [False, True])
+def test_extended_native_path_keeps_containment_and_identity(tmp_path, extended_root):
+    f = native_rollout_fixture(tmp_path)
+    expected = fetch(f)
+    if extended_root:
+        f.reader.session_root = host._resolved_local_path('\\\\?\\' + str(f.path.parent.resolve()))
+    f.thread['path'] = '\\\\?\\' + str(f.path.resolve())
+    assert fetch(f) == expected
+    outside = tmp_path/'outside.jsonl'
+    outside.write_bytes(f.path.read_bytes())
+    f.thread['path'] = '\\\\?\\' + str(outside.resolve())
+    with pytest.raises(ValueError, match='rollout_unavailable'):
+        fetch(f)
+
+
 @pytest.mark.parametrize('fault', ['outside_host', 'wrong_session', 'wrong_parent', 'wrong_author',
     'wrong_recipient', 'wrong_turn', 'missing_dispatch', 'duplicate_dispatch', 'wrong_final',
     'dispatch_after_final', 'unbound_task'])

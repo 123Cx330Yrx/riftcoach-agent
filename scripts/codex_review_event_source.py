@@ -21,6 +21,19 @@ def _fail(code):
     raise ValueError('codex_review_host_' + code)
 
 
+def _resolved_local_path(value, *, strict=False):
+    # Resolve junctions/symlinks before the containment check. Windows native
+    # APIs may spell the same drive/UNC path with an extended-length prefix.
+    path = Path(value).resolve(strict=strict)
+    text = str(path)
+    if os.name == 'nt':
+        if text.startswith('\\\\?\\UNC\\'):
+            path = Path('\\\\' + text[8:])
+        elif text.startswith('\\\\?\\') and len(text) > 6 and text[5:7] == ':\\':
+            path = Path(text[4:])
+    return path
+
+
 class CodexReadOnlyClient:
     """Bounded stdio session using the installed app-server's native schema."""
     METHODS = frozenset(('initialize', 'thread/read', 'thread/turns/list'))
@@ -28,8 +41,8 @@ class CodexReadOnlyClient:
     def __init__(self, executable, *, timeout_seconds=15, session_root=None):
         self.executable = str(Path(executable).resolve(strict=True))
         # Operator/host configuration, never a path accepted from a run plan.
-        self.session_root = Path(session_root if session_root is not None else
-            Path(os.environ.get('CODEX_HOME', Path.home()/'.codex'))/'sessions').resolve()
+        self.session_root = _resolved_local_path(session_root if session_root is not None else
+            Path(os.environ.get('CODEX_HOME', Path.home()/'.codex'))/'sessions')
         if not 0 < timeout_seconds <= 60:
             _fail('timeout_invalid')
         self.timeout = timeout_seconds
@@ -96,7 +109,7 @@ class CodexReadOnlyClient:
     def _collaboration_records(self, thread):
         """Read only the backing file selected by the native host thread."""
         try:
-            path = Path(thread['path']).resolve(strict=True)
+            path = _resolved_local_path(thread['path'], strict=True)
             if (not path.is_relative_to(self.session_root) or path.suffix != '.jsonl'
                     or path.stat().st_size > 128 * 1024 * 1024):
                 _fail('rollout_path_invalid')

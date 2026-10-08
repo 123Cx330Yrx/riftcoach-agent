@@ -139,7 +139,7 @@ def _stage(arm, expected, row, candidate_sha, source_sha, call, transport, *, pe
     binding = call['binding']
     response_path = transport / binding['raw_directory'] / f"response-{binding['ordinal']:03d}.json"
     optional = dict(provider_response_sha256=_sha(response_path), request_sha256=binding['request_sha256'])
-    if expected['journal'] is not None:
+    if name != 'revision' and expected['journal'] is not None:
         optional['final_input_sha256'] = expected['journal']['input_sha256']
     if any(key in independent and independent[key] != value for key, value in optional.items()):
         _fail('independent_raw_binding_mismatch')
@@ -156,7 +156,7 @@ def _stage(arm, expected, row, candidate_sha, source_sha, call, transport, *, pe
     decision_path = arm / ('decision-' + name + '.json')
     if _json(decision_path) != host:
         _fail('decision_host_mismatch')
-    if name != 'revision' and _json(arm / (name + '-journal.json')) != expected['journal']:
+    if expected['journal'] is not None and _json(arm / (name + '-journal.json')) != expected['journal']:
         _fail('journal_replay_mismatch')
     return dict(stage=name, source_review=assessment.source_review,
         independent_source_review=independent['source_review'],
@@ -341,6 +341,8 @@ def inspect_runs(run_directories, *, evidence_root, closed_exports, profile='rol
         from app.evaluation import coarse_role_qualification as backend
     elif profile == 'correction-scope':
         from app.evaluation import correction_scope_qualification as backend
+    elif profile == 'review-bound':
+        from app.evaluation import review_bound_qualification as backend
     elif profile == 'boundary-examples':
         from app.evaluation import boundary_examples_qualification as backend
     elif profile == 'role':
@@ -508,7 +510,7 @@ def qualify(run_directories, *, evidence_root, output_directory, closed_exports,
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-directory', action='append', type=Path, required=True)
-    parser.add_argument('--profile', choices=('role', 'coarse', 'correction-scope', 'boundary-examples'), default='role')
+    parser.add_argument('--profile', choices=('role', 'coarse', 'correction-scope', 'boundary-examples', 'review-bound'), default='role')
     parser.add_argument('--closed-export', action='append', nargs=2, metavar=('PATH', 'SHA256'), required=True)
     parser.add_argument('--evidence-root', type=Path, required=True)
     parser.add_argument('--output-directory', type=Path, required=True)

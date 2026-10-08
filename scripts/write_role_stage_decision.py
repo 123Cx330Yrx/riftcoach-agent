@@ -31,6 +31,10 @@ def build_formal_decision(run, key, stage, notes, other, *, independent_sha256, 
     elif profile == 'boundary-examples':
         from app.evaluation import boundary_examples_qualification as backend
         from scripts.run_boundary_examples_qualification import BoundaryExamplesObserver as observer
+    elif profile == 'review-bound':
+        from app.evaluation import review_bound_qualification as backend
+        from scripts.run_boundary_examples_qualification import observer_for
+        observer = observer_for(backend)
     elif profile != 'role':
         raise ValueError('host_writer_profile')
     run = Path(run).resolve()
@@ -70,7 +74,7 @@ def build_formal_decision(run, key, stage, notes, other, *, independent_sha256, 
             provider_response_sha256=sha(transport/call['raw_directory']/f'response-{ordinal:03d}.json'))
     else:
         bound.update(request_sha256=None, provider_response_sha256=None)
-    if value['journal'] is not None:
+    if stage != 'revision' and value['journal'] is not None:
         bound['final_input_sha256'] = value['journal']['input_sha256']
     _review(other, bound, True)
     if accepted and not needs_report and notes.get('target_and_correction_valid') is not True:
@@ -185,7 +189,7 @@ def wait_and_write_decision(run, key, stage, notes, *, profile, max_wait_seconds
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-directory', required=True, type=Path)
-    parser.add_argument('--profile', required=True, choices=('role', 'coarse', 'correction-scope', 'boundary-examples'))
+    parser.add_argument('--profile', required=True, choices=('role', 'coarse', 'correction-scope', 'boundary-examples', 'review-bound'))
     parser.add_argument('--key', required=True)
     parser.add_argument('--stage', required=True, choices=('initial', 'revision', 'final'))
     parser.add_argument('--notes', required=True, type=Path)

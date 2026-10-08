@@ -54,6 +54,20 @@ class BoundaryExamplesObserver(StrictObserver):
         return Observer.finish_with_backend(plan, row, calls, decisions, backend=qualification)
 
 
+def observer_for(backend):
+    if backend is qualification:
+        return BoundaryExamplesObserver
+    class BoundObserver(StrictObserver):
+        @staticmethod
+        def validate_stage(plan, row, path, decision):
+            return StrictObserver.validate_stage(plan, row, path, decision, backend=backend)
+
+        @staticmethod
+        def finish(plan, row, calls, decisions):
+            return Observer.finish_with_backend(plan, row, calls, decisions, backend=backend)
+    return BoundObserver
+
+
 def adopt_host_timing(plan, *, max_host_seconds=86400):
     """Return a new preparation plan using the adopted developer-wait contract."""
     if 'host_review_timing' in plan:
@@ -73,19 +87,21 @@ def replay(frozen, source, calls):
     return qualification.replay_case(frozen, source, calls, include_stage_evidence=False)
 
 
-def validate_handoff(path, decision, plan, *, directory, event_source=None):
+def validate_handoff(path, decision, plan, *, directory, event_source=None, backend=None):
     stage = json.loads(path.read_bytes())
     row = next(r for r in plan['cases'] if r['key'] == stage['key'])
-    if not BoundaryExamplesObserver.validate_stage(plan, row, path, decision):
+    selected = backend or qualification
+    observer = observer_for(selected)
+    if not observer.validate_stage(plan, row, path, decision):
         return decision
     transport = directory/'transport'/row['key'].replace(':', '-')
-    calls = qualification.read_calls(transport)
+    calls = selected.read_calls(transport)
     expected_roles = ['review'] if stage['stage'] == 'initial' else (
         ['review', 'revision'] if stage['stage'] == 'revision' else ['review', 'revision', 'review'])
     if [c['binding']['role'] for c in calls] != expected_roles or not all(c['completed'] for c in calls):
         raise ValueError('boundary_examples_qualification_stage_call_inventory')
     _stage(path.parent, {k: stage[k] for k in ('stage', 'report', 'journal')}, row,
-        candidate_sha256(plan['identity'], backend=qualification), _sha(path.parent/'source.json'),
+        candidate_sha256(plan['identity'], backend=selected), _sha(path.parent/'source.json'),
         calls[-1], transport, pending_host=decision, event_source=event_source)
     return decision
 
@@ -118,9 +134,9 @@ def _closed_preview(plan, requests, frozen, saved, preparation, error):
     return deepcopy(frozen)
 
 
-def prepare_fresh(*, experiment=EXPERIMENT, keys=None):
+def prepare_fresh(*, experiment=EXPERIMENT, keys=None, backend=None):
     """Build current full-control inputs only; never reopen a historical run."""
-    original, requests = qualification.prepare_qualification()
+    original, requests = (backend or qualification).prepare_qualification()
     rows = original['cases']
     original_keys = [r['key'] for r in rows]
     if keys is not None:
@@ -161,6 +177,9 @@ def prepare_fresh(*, experiment=EXPERIMENT, keys=None):
         success_scope='Fresh continuous original15 controls under the boundary-example contract; no natural generation, product consumption or production admission.',
         failure_decision='Preserve the earliest divergence and all charges. Diagnose before further paid work; no automatic new batch or prompt variant.',
         review_controls_qualified=False, actual_product_task_qualified=False, production_admitted=False)
+    if backend is not None:
+        for path in backend.SOURCE_FILES:
+            plan['source_sha256'][path] = digest((ROOT/path).read_text(encoding='utf-8'))
     return plan, requests
 
 
@@ -220,8 +239,12 @@ def run(args):
 
 
 def execute_prepared(args, plan, requests, *, directory, preparation, host_timing=None,
-                     event_source=None):
+                     event_source=None, backend=None):
     """Shared bounded execution; callers validate their own continuation seal."""
+    selected = backend or qualification
+    selected_workflow = selected.Workflow
+    selected_observer = observer_for(selected)
+    selected_replay = lambda *values: selected.replay_case(*values, include_stage_evidence=False)
     plan_sha = canonical_sha(plan)
     if not args.execute:
         if args.output:
@@ -259,7 +282,8 @@ def execute_prepared(args, plan, requests, *, directory, preparation, host_timin
             decision = clock.adjudicate(
                 path, remaining, lambda stage_path, available:
                 adjudicate_file(stage_path, available, event_source=event_source))
-        return validate_handoff(path, decision, plan, directory=directory, event_source=event_source)
+        return validate_handoff(path, decision, plan, directory=directory, event_source=event_source,
+            **({'backend': backend} if backend is not None else {}))
 
     def before_case(case_directory, row, current_plan, remaining):
         if clock is None:
@@ -274,8 +298,8 @@ def execute_prepared(args, plan, requests, *, directory, preparation, host_timin
         require_unchanged_checkout(head)
 
     with route_environment('direct'):
-        return observe(factory, directory, plan, adjudicate=adjudicate, workflow_type=Workflow,
-            replay=replay, success_field='tasks_observed', task_observer=BoundaryExamplesObserver,
+        return observe(factory, directory, plan, adjudicate=adjudicate, workflow_type=selected_workflow,
+            replay=selected_replay, success_field='tasks_observed', task_observer=selected_observer,
             coach_contract=CONTRACT, before_case=before_case if host_timing is not None else await_case_ready,
             clock=clock or time.monotonic, before_send=before_send)
 

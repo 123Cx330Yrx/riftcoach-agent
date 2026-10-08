@@ -300,7 +300,8 @@ def rebuild_stage_prefix(source, calls, backend):
             _fail('parent_call_inventory_changed')
         edited = workflow.revise(RevisionRequest(source.player_summary, source.deterministic_report,
             source.knowledge, source.report, initial))
-        stages.append(dict(stage='revision', report=edited.report, journal=None))
+        stages.append(dict(stage='revision', report=edited.report,
+            journal=deepcopy(getattr(workflow, 'last_edit_journal', None))))
         if len(calls) > 2:
             evaluations['final'] = workflow.evaluate(replace(source, report=edited.report))
             stages.append(dict(stage='final', report=edited.report, journal=deepcopy(workflow.last_journal)))
