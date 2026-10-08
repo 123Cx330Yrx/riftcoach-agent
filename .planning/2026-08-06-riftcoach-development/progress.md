@@ -1,3 +1,18 @@
+## 2026-10-08 文档呈现三例真实初评全部接受并封存
+
+授权冻结bdb678d8…f376a6，d8f83ca5同提交CI37776987790三项成功后单次启动，退出0。
+原混合82/needs_revision只检出block6；明确中单反例68/needs_revision检出block4/6；正确稿
+96/pass，仅非阻断advisory。逐项全文主审及真实native独立审查接受，report_assessment=null。
+3次GLM/Flash0，输入37751/输出7455、合计45206tokens、unknown0；活动134.891秒、Host
+688.781秒、墙钟823.672秒，未缓存保守估价0.510748元。无编辑/fresh、无重试和额外请求。
+第二例独立首final理由正确而拒绝字段错评原稿缺陷；导入前中性澄清，作者重新独立核查后
+提供一致final，原拒绝与纠正两份native证据均保存。没有已提交决定覆写或重新打开批次。
+seal.py精确重建冻结计划/实际请求/source/stage、核用量并重新取证native事件；52原件摘要
+及白名单公开封存SHA fc9f7abd617f2728ed3694008f947136f49d234c059e84e433f5aaed05146d61。
+核心混合例本次初评未复发，值得进入同版本整链准备；不证明通用修复/JSON因果，不加原15。
+下一动作为离线候选身份、编辑/fresh及资格读回适配与冻结准备，无新增付费批。接续自动任务
+已暂停。结果/下一工作卡见docs/plans/2026-10-08-document-review-result.md；原15仍2/15、8E未完成。
+
 ## 2026-10-08 三例文档初评执行入口及冻结完成
 
 复用execute_plan和真实RoleReceiptedStreamProvider，实例诊断selector仅允许三精确四消息请求；

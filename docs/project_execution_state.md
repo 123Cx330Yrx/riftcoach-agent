@@ -4,12 +4,29 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "新批严格2/15；第三例完整返回但有语义误报，已首失败停止，未授产品资格。"
+pause_reason: "历史原15严格2/15；新文档初评三例双审通过，完整编辑/fresh与产品资格仍未验证。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
+
+2026-10-08 文档呈现三例完整初评已真实执行并正常关闭，同提交d8f83ca5的公共CI37776987790
+全绿。原混合82/needs_revision仅检出补刀真错、未误报全样本早死；明确中单反例68/needs_revision
+检出两处真错；正确稿96/pass，仅非阻断advisory。三例均经真实全文双审接受，report_assessment
+为null；第二例独立首final混淆原报告/初评，导入前澄清并由作者重新审查，两份native原件保留。
+实际3次GLM、Flash0、45206tokens、unknown0、活动134.891秒，未缓存估价0.510748元；无重试。
+52份原件及精确请求/stage/native事件只读回放通过，白名单公开封存已完成。
+结果、限制和下一工作卡：docs/plans/2026-10-08-document-review-result.md。
+这是核心混合反例在新呈现本次初评中未复发的实证，支持进入同版本整链验证准备；不证明JSON
+根因或通用可靠率，编辑/fresh未由此批验证，标签结构风险保留。历史原15仍2/15，8E未完成。
+下一动作：离线复用现有文档工作流完成新身份的初评/必要编辑/fresh及原15资格读回适配，核已有
+回归并补实际缺口、完成独立代码复核和冻结准备；默认生产质量门不变，不直接注册已通过产品。
+本批调用已完成，自动接续暂停，不另开付费批；后续新增调用需具体冻结及对应新授权。
+自然Coach与四块联动、本人Training、前端审美/必要重做/头像、journal/Worker/DB/API/UI、
+Memory、身份运维、两树整合与学习保持原活动依赖。
+
+以下为历史记录；当前行动以本段为准。
 
 2026-10-08 文档呈现三例完整初评已具备冻结执行入口：复用既有真实流式端点/回执、实例预算、
 原生双审和关闭锁，仅白名单放行三份精确四消息请求，生产默认router/contract仍拒绝该视图。
