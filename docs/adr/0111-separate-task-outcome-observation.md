@@ -101,3 +101,15 @@ original15 qualification, Worker/DB/API/UI, four-surface Coach flows, training,
 frontend aesthetics/avatars and the remaining restart-plan dependencies remain
 open. This decision avoids building a new numerical language without evidence
 while retaining the product's final factual and source requirements.
+
+## 2026-10-08 single diagnostic exception, now closed
+
+The user explicitly authorized plan f0122c92…efda211 to observe the existing
+editor/fresh tail after one historical mixed false/true initial opinion. This
+was a one-batch diagnostic exception, not a change to the general rule above.
+One Flash edit repaired the true pooled-CS error and preserved the original
+correct whole-sample claim, but propagated the false necessity rationale and
+added an unsupported exclusion. Final host reviews rejected the edit; fresh was
+not sent. Original15 remains 2/15. Do not extend the exception or reuse unused
+calls. See docs/plans/2026-10-08-mixed-review-tail-result.md for both native
+independent opinions, final rejection, exact receipts and accounting.
