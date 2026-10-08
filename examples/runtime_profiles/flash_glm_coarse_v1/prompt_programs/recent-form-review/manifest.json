@@ -277,7 +277,7 @@
     {
       "component_id": "app.evaluation.golden_coarse_source_projection",
       "source": "app/evaluation/golden_coarse_source_projection.py",
-      "sha256": "c9a2762db605298a1f42f445e0d81b02ce42ebebbf587d922291e7bbcaa83490"
+      "sha256": "22893275d79765bed5b444980c774870bd4953bf8c3a7ba43822dbc1bb9c7260"
     },
     {
       "component_id": "app.runtime.coarse_role_contract",
@@ -310,5 +310,5 @@
       "sha256": "c40398b96be3c187976b96089a18d7967c20a51cdf84f9a46abd3d6d410a3e59"
     }
   ],
-  "program_sha256": "deb6dbf5674b2ee80b43f3948a8958f3ce07a4d4b2777024301b47cbdb866d00"
+  "program_sha256": "b7a172ca76b7abec54a5b9b78e7b9c6cce5d6aaba419f39f45468df140f96d5f"
 }

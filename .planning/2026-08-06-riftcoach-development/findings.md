@@ -1,3 +1,13 @@
+## 2026-10-08 文档表示假设与来源目录重复计算
+
+- source_index.blocks已包含完整有序正文，不能称缺失上下文。旧target_last只改JSON位置；
+  新Host标签Markdown仍只是未实测的序列化假设，不能因可逆而宣称理解改善。
+- 现有router严格只接收旧三消息结构，新四消息离线视图被拒；五槽容量不等于实际新路径可运行。
+- coarse._catalog原来另建original后又让semantic source_catalog重建，resolve_refs还再计算一次；
+  复用单次semantic._catalog返回的原catalog和computed值即可消除重复，保留全部校验和返回拷贝。
+- 组件源码是manifest指纹的一部分；即使请求字节相同也必须同步program自摘要，并保留历史身份边界。
+- 具体代码、性能样本和证据见docs/plans/2026-10-08-document-view-feasibility.md。
+
 ## 2026-10-08 编辑意见暴露的研究价值不等于初评修法
 
 - 五份封存没有当前四字段无意见的同条件对照；旧不同报告/五字段来源编辑失败不能替代它。

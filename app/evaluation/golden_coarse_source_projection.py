@@ -12,7 +12,7 @@ from app.evaluation import golden_explicit_source_projection as explicit
 from app.evaluation import golden_semantic_sources as sources
 from app.evaluation.golden_native_issues_review import budget_check, strict_json
 from app.evaluation.golden_review_experiment import compact, digest
-from app.evaluation.golden_review_source_catalog import SourceEntry, build_catalog
+from app.evaluation.golden_review_source_catalog import SourceEntry
 from app.evaluation.golden_role_clarity import RoleClarityReview, RoleClarityReviewWorkflow
 
 
@@ -35,8 +35,10 @@ ROOT_POLICY = (
 
 
 def _catalog(inputs):
-    original = build_catalog(inputs)
-    numbered = sources.source_catalog(
+    # One checked snapshot for this operation; no cache survives the call.
+    # The semantic catalog already contains the checked original catalog and
+    # the computed entry. Rebuilding either would repeat identical work.
+    original, numbered, _ = sources._catalog(
         inputs, include_role_contrasts=True, computed_layout="statistic_series")
     data = strict_json(inputs.data_json)
     # A complete supplied evidence document, not a newly certified fact. Reuse
@@ -73,16 +75,13 @@ def resolve_refs(inputs, ids):
         raise ValueError("coarse_source_ids_duplicate")
     if any(number not in roots for number in ids):
         raise ValueError("coarse_source_id_not_citable")
-    old_ids = [number for number in ids if number != facts_id]
-    original = {ref["source_id"]: ref for ref in sources.resolve_refs(
-        inputs, old_ids, include_role_contrasts=True, computed_layout="statistic_series")}
     result = []
     for number in ids:
         entry = roots[number]
-        if number == facts_id:
-            value = catalog.resolve(inputs, FACTS_KEY, kind=entry.kind)
+        if entry.key == sources.COMPUTED_KEY:
+            value = strict_json(entry.value_json)
         else:
-            value = original[number]["value"]
+            value = catalog.resolve(inputs, entry.key, kind=entry.kind)
         if digest(compact(value)) != entry.metadata()["value_sha256"]:
             raise ValueError("coarse_source_value_mismatch")
         result.append(dict(source_id=number, **entry.metadata(), value=value,

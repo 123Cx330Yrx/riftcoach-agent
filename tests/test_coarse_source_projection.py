@@ -101,6 +101,23 @@ def test_every_available_source_family_resolves_to_exact_original_values(cases):
         assert coarse.resolve_refs(inputs, [ids[-1]])[0]["value"] == raw["facts_and_provenance"]
 
 
+def test_one_fresh_computation_per_resolution_without_cross_call_cache(cases, monkeypatch):
+    inputs = cases['observed:2']
+    ids = [row['source_id'] for row in coarse.source_catalog(inputs)['roots']]
+    original = fine.computed_evidence
+    calls = []
+    def counted(*args, **kwargs):
+        calls.append(args[0])
+        return original(*args, **kwargs)
+    monkeypatch.setattr(fine, 'computed_evidence', counted)
+    first = coarse.resolve_refs(inputs, ids)
+    assert len(calls) == 1
+    first[0]['value'] = 'caller mutation'
+    second = coarse.resolve_refs(inputs, ids)
+    assert len(calls) == 2
+    assert second[0]['value'] != 'caller mutation'
+
+
 def test_full_pack_root_retains_fields_missing_from_generation_projection(cases):
     inputs = cases["observed:2"]
     roots = {row["key"]: row["source_id"] for row in coarse.source_catalog(inputs)["roots"]}
