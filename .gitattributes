@@ -133,3 +133,9 @@
 /tests/test_review_bound_edit_diagnostic.py text eol=lf
 /data/evaluation/results/golden_review_bound_edit_preparation_20261001.json text eol=lf
 /data/evaluation/results/golden_review_bound_edit_result_20261001.json text eol=lf
+
+# Current closed run and offline diagnostic are bound by raw-byte digests.
+/data/evaluation/results/golden_review_bound_original15_result_20261008.json text eol=lf
+/data/evaluation/results/golden_review_bound_scope_pair_diagnosis_20261008.json text eol=lf
+/data/evaluation/results/golden_scope_resolution_offline_20261008.json text eol=lf
+/data/evaluation/results/review_bound_original15_qualification_20261008/*.json text eol=lf

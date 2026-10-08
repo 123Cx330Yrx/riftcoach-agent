@@ -4,12 +4,34 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "三阶段真实诊断通过；待同合同完整原15与自然Agent验证，未授产品资格。"
+pause_reason: "新批严格2/15；第三例完整返回但有语义误报，已首失败停止，未授产品资格。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
+
+2026-10-08：用户授权的完整原15批已执行并关闭；同提交0f6069c4公共CI37705382449三项成功。
+新身份严格回放有效2/15：claim-scope:1正确稿96/pass；claim-scope:4初评84/needs_revision，
+Flash仅修正必要句，精确成稿GLM96/pass。五个阶段均有真实主审/独立审查及宿主事件取证。
+第三例claim-scope:3返回78/needs_revision，正确检出block6混合补刀均值错误，却对block4
+增加事实误报：第14块已明确全样本早死2.5/2.67，不能以局部中单读法强制修改正确描述。
+双审均拒绝，执行器以role_pair_host_rejected正常结束；未启动第三例Flash、未重试或续批。
+本批5调用72461tokens、unknown0，未缓存估价0.7274096元；活动约296.47秒，host约1160.27秒。
+127原件摘要封存golden_review_bound_original15_result_20261008.json（SHA c1c3bfda…ed525）；
+公开回包白名单不含私有推理。严格资格validated_partial/2，review_controls与产品资格仍false。
+配对诊断确认：两例只有block6文本及派生摘要不同，事实、规则、工具、输出预算相同；
+完整限定确实送达，公开错误解释还明确提及第14块。不是缺上下文、编辑破坏、超时或额度耗尽。
+尚不能区分随机波动与另处真错对判断的影响，不能宣称模型内部根因或可靠修法已被证明。
+已复用现有previous_raw/issue_resolutions生成实际混合例及明确中单反例，离线映射检查与独立复核通过；
+它仍是完整重评，不是窄裁决，不能把人工构造输出当模型正确。没有新提示或schema、没有额外Provider。
+下一动作：基于这两个具体输入准备现有重评的有界实测及失败分支，不原样重跑15或只追加提醒。
+新方案尚未冻结执行，旧批剩余额度不转授；新付费需具体冻结后另获授权。
+当前默认产品不变，8E未完成。自然Coach、当前组合Worker/DB/API/Workbench、四块联动、
+本人Training、审美/必要重做/英雄头像、Memory、身份运维、两树整合与学习沿原依赖保留。
+详细结果、排除项和待决策见docs/plans/2026-10-08-review-bound-original15-result.md。
+
+以下为历史记录；当前行动以本段为准。
 
 2026-10-08：四字段必要编辑协议已接回原15执行、阶段双审、前缀/完整回放及严格资格审计。
 独立 review-bound 身份隔离旧资格；原始15数据、初评请求及GLM/Flash/high保持，默认产品未注册。
