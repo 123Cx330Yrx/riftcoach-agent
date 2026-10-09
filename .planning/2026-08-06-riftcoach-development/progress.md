@@ -1,3 +1,12 @@
+## 2026-10-09 checkpoint六尾链入口与冻结准备
+
+- 新runner/handoff/seal保持旧冻结文件；六cells/request/身份/预算与旧方案精确相同，旧闭批21原件摘要不变。
+- submit和运行时下一send前强制完整task/checkpoint验证，seal再回放；显式abort只核pending binding，来源损坏可停但不能通过source_changed封存，review-submission关闭交付窗口。
+- 11项公开夹具synthetic IO测试114.58秒通过；Python编译通过。独立修后代码复核无剩余缺陷，实际native final与checkpoint核验通过，真实谱系/current-route预检通过。
+- 三次原生final多余括号严格拒绝并原样保留，最后由作者改多行JSON输出；主审未裁剪事件或降低解析门。代码复核不是业务重评/StageAssessment。
+- 方案231338b6b8ef970600e322311b82f2d68489cb5c3b527c3659d4d267cff93aeb：Flash6/GLM6、1161216tokens、3600活动秒/86400Host秒，估价9.4347264元非硬封顶。公开preparation/readiness落库，execution_authorized=false，Provider0/无run或等待器。
+- 最终提交公共CI和具体新授权仍是执行条件，接续PAUSED；长全文跨自动压缩稳定和真实尾链质量未证。两处分歧、旧3/15与历史2/15、资格0及8E/下游依赖保留。
+
 ## 2026-10-09 Host恢复漂移定位与任务checkpoint
 
 - 公开原生命令读回证明新task与当前材料先读；03:24:22.889Z压缩后03:24:45.230Z转读旧task，不能再把原因停留在“新任务完全未到”。未读压缩summary或私有推理。

@@ -1,5 +1,7 @@
 # Preserve the byte-for-byte CRLF snapshot used by the historical hash test.
 /data/evaluation/results/golden_document_remaining11_scan_preparation_20261009.json text eol=lf
+/data/evaluation/results/golden_document_checkpoint_tails_preparation_20261009.json text eol=lf
+/data/evaluation/results/golden_document_checkpoint_tails_readiness_20261009.json text eol=lf
 /examples/runtime_profiles/flash_glm_coarse_v1/prompt_programs/recent-form-review/manifest.json text eol=lf
 /data/evaluation/results/golden_coarse_tail_*.json text eol=lf
 /data/evaluation/results/golden_coarse_qualification_*.json text eol=lf

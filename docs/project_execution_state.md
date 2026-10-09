@@ -4,31 +4,33 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "旧六尾链已关闭；Host压缩后任务漂移已定位并落实checkpoint补救，路由探针通过；尚无新Provider批授权，接续暂停。"
+pause_reason: "新checkpoint六尾链方案已冻结准备，Provider0；待具体新授权及最终提交公共CI，旧批关闭、接续暂停。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
 
-2026-10-09继续：已确认独立作者先读取当前scope:4精确task及完整材料，在原生compacted
-记录之后转读旧claim-scope:4 task/材料并返回旧绑定。新任务确实到达，恢复阶段漂移
-可见；没有读取私有推理/压缩summary，不断言内部压缩算法或加密就是根因。
-新增create-only Host任务checkpoint：固定绝对task路径/文件SHA/六字段binding/主体，
-恢复后及final前重读、作者自己校验答复；不搜索旧任务，不读primary/其他Host意见。
-AGENTS补前瞻恢复规则；旧冻结源码/Provider政策/质量/native-final-attestation-v1不变。
-9项新聚焦检查与80项原native检查共89项通过。同一独立作者的alpha→beta真实路由
-探针分别读回精确新final，旧alpha答复用于beta拒绝；首次摘要转录错误也真实拦截并保留。
-探针不审业务报告，不生成StageAssessment/native review attestation，不新增Provider调用。
-自动compaction未在探针中复现，不能宣称长全文跨压缩稳定、质量门已过或故障绝不再现。
-证据/采用范围：docs/plans/2026-10-09-host-task-delivery-recovery.md。
-下一动作：把该交付方式纳入下一具体六尾链方案的操作/冻结资料，完成准备与CI，再申请
-明确的新Provider范围；不能重开旧批或借剩余预算发送，完整15不自动触发。
-旧六尾链首案仅1Flash/11741tokens、unknown0，主审暂接受、有效双审阶段0，fresh及
-另五案未发；严格封存21原件/8白名单和原错误事件保留，接续PAUSED。
-原结果：docs/plans/2026-10-09-accepted-tail-result.md。两处分歧attribution:1/scope:3
-仍未解决，旧文档3/15与历史严格2/15分别保留、不拼接，新增资格0；正式同批15、
-review-controls、自然产品消费和8E未完成。ADR0116否决的全段解释账本不复活。
+2026-10-09继续：Host恢复漂移补救已接入新的六例尾链入口，方案
+231338b6b8ef970600e322311b82f2d68489cb5c3b527c3659d4d267cff93aeb，
+独立目录document-checkpoint-tails-20261009；旧六案输入/实际request/身份/预算精确不变。
+新checkpoint固定精确task路径/SHA/六字段binding；submit、运行时发送前和seal均强制
+完整task核验，真实全文/native-final-attestation-v1及四项ReportAssessment/fresh门不降。
+新增显式abort可在来源损坏时关闭账目，但严格封存仍拒绝；提交后不再交付当前stage。
+11项公开夹具/synthetic IO检查通过（114.58秒），编译通过，冻结旧源码和21原件不变。
+独立最终代码复核无剩余缺陷，真实native final严格核验通过；三次原生输出多余括号
+失败原样保留，作者改多行呈现后通过，未裁剪/改写事件，不是业务重评或资格。
+实际谱系及当前native-final路由预检通过；未来可用性、长全文跨自动压缩稳定未证明。
+具体实现/边界/证据：docs/plans/2026-10-09-checkpoint-tail-diagnostic.md；
+冻结及readiness见data/evaluation/results/golden_document_checkpoint_tails_*_20261009.json。
+本轮Provider0、未建业务run/等待器、execution_authorized=false，接续保持PAUSED。
+下一动作：最终提交公共CI全绿并取得此新具体方案授权后，执行前再核真实主体/路由和
+clean exact HEAD，单次首次执行；不可重开旧批或借其余量，不自动触发完整15。
+最多Flash6/GLM6、1161216tokens、3600活动秒/86400Host秒，保守估价9.4347264元非硬封顶；
+有效语义拒绝停该案继续独立案，身份/来源/native/checkpoint/预算等硬故障停全批，无重试。
+旧六尾链仅1Flash/11741tokens、有效认证stage0，fresh及另五案未发；旧结果原样保留。
+两处分歧attribution:1/scope:3仍不下传；旧文档3/15与历史严格2/15分别保留、不拼接，
+新增资格0；正式同批15、review-controls、自然消费和8E未完成，ADR0116否决机制不复活。
 自然Coach/四块联动、本人Training、Worker/DB/API/UI/journal、前端审美/重做/头像、
 Memory、身份运维、两树整合及八维学习保持活动计划依赖。
 

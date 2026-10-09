@@ -21,12 +21,12 @@
 真实事件fetch拒绝绑定；按硬故障全批停止，runner自行关闭。1Flash/GLM0、11741tokens、unknown0，
 活动24.359秒、Host803.266秒、未缓存估价0.0112268元。fresh及另五案未发，已认证阶段0。
 只读回放和21原件/8白名单封存通过，未认证Host正文仅哈希；接续PAUSED。
-**当前动作：** Host压缩后恢复任务漂移已定位：新task/材料先读，compacted后读旧task并错绑。
-已新增固定task路径/SHA/binding的create-only checkpoint，恢复后及final前重读，作者自己校验；AGENTS补前瞻规则。
-89项工程检查通过，同作者alpha→beta两次真实路由探针通过，旧alpha在beta拒绝；首次摘要转录错被拦截并保留。
-没有业务重评、新Provider调用或qualification信用；自动压缩未复现，不宣称长全文跨压缩稳定。
-当前准备下一具体六尾链的操作/冻结资料及CI，新付费范围另获明确授权；不改Provider政策来处理Host故障。
-证据：docs/plans/2026-10-09-host-task-delivery-recovery.md；旧失败见accepted-tail-result.md。
+**当前动作：** 新checkpoint六尾链入口及冻结准备完成，精确task在submit/运行时发送前/seal强制核验；来源损坏可abort关闭但不能通过严格封存，提交后不重复交付。
+六个Provider输入/request/身份/预算与原方案完全一致；11项公开替身检查、编译、最终独立代码复核及真实native预检通过。
+三次代码复核native多余括号失败原样保留，作者改多行JSON后实际事件核验通过；没有业务重评、Provider调用或资格。
+方案231338b6…cff93aeb，Flash6/GLM6、1161216tokens、3600活动秒/86400Host秒，估价9.4347264元非硬计费封顶。
+具体计划：docs/plans/2026-10-09-checkpoint-tail-diagnostic.md；已冻结preparation及readiness，Provider0/无等待器/无业务run/接续PAUSED。
+下一动作：最终提交公共CI及此方案新授权后才单次首次执行，执行前重验真实主体/native及clean exact HEAD；长全文跨自动压缩稳定仍未证。
 **边界与失败分支：** 本批已关闭且不可重开，不发剩余Provider预算或自行另开付费批。
 新范围先完成可检查的修法/来源与任务绑定验证；全六尾链通过也不自动触发完整15。
 泛指不补全称，统计不足以解释胜负与明确因果断言分开，措辞建议不升级事实门。
@@ -52,7 +52,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-将已验证的checkpoint交付方式纳入下一具体六尾链准备/冻结与CI；新Provider范围授权前不发送，旧批关闭不可重开。
+新六尾链方案已冻结；最终提交公共CI全绿及具体新授权后单次首次执行，发送前真实预检；授权前Provider0，旧批关闭不可重开。
 
 ## History
 

@@ -1,3 +1,11 @@
+## 2026-10-09 固定任务应在运行时强制核验，停止不能依赖完整来源重建
+
+- 只在helper或末次seal验证pin不充分：运行时必须在下一send前验证checkpoint与完整task，再沿原native/全文质量门，漏pin应硬停。
+- 来源损坏正是需停止的情形，abort若调用完整material会使停止也失败。明确停止只核saved plan/当前pending binding；严格seal继续拒绝损坏原件，不把停止当认证。
+- review-submission写出到observer写host-reviews之间也属关闭窗口，live material应拒绝重交付。
+- 作者本地answer通过检查不保证native final原样输出；本轮代码复核连续三次多一个右括号，实际事件严格拒绝且保留。多行呈现的后续原生事件通过，但不能推导所有长任务或自动压缩稳定。
+- 新冻结方案不改变模型输入/请求/政策/预算，不重开旧闭批；本轮只有工程与路由证据，真实新编辑/fresh仍待授权后实测。
+
 ## 2026-10-09 新任务已经到达：偏离发生在压缩后的恢复
 
 - 同一错误turn先读当前精确task/来源/改文，03:24:22.889Z出现compacted后去搜索并读旧task及旧primary notes。这收窄为恢复任务选择漂移，排除新任务完全没有到达；内部压缩摘要成因未证。
