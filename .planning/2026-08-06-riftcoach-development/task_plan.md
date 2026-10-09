@@ -13,14 +13,14 @@
 
 ## Active Work Package
 
-**目标：** 同一本人训练对象在Training查询和Coach记忆中选择同一最新进度；一次记忆读取不把旧计划与新计划的进度混合。
-**起点与差距：** 发现training_query_repository按progress_id降序打破时间并列，而memory_context_repository升序；后者还两次选择active Plan，在READ COMMITTED并发换计划时可能混合对象。需最小可复现红灯，不将静态推断当真实运行事故。
-**实现路径：** 保留已有Candidate采用/版本/终态与进度追加合同，在Memory读取中选择一次active Plan，共用于Plan/Progress投影；时间并列排序与Training查询一致，不增加写入口或模型调用。
-**交付与验收：** 公共夹具验证同时间记录及读取中换计划；相邻Training/Memory查询、候选/身份/API检查；隔离真库验证同对象与回滚，避免触碰已有卷/数据库。
-**失败分支：** 若红灯不能复现，缩回证据而不造修法；若涉及业务语义变化，重审合同。数据库检查只能在本次新建专用test DB运行。
+**目标：** 核实完整复盘是否真的产生本人训练进度；先修复时间线缺失被汇总/交付为零的问题。
+**起点与差距：** 实际v2 executor零候选，terminal模型拒绝deterministic，公开POST来源也不允许Progress；生产者缺口已核。公共夹具原始未知却聚合为0，部分缺失均值没有样本分母，不能直接映射为训练测量。
+**实现路径：** 早期死亡的命名样本不完整则None，保留真正零；沿Summary→报告→已验签查询/HTTP/MCP→decoder/adapter/页面打通nullable，不新增写入口或放宽来源。
+**交付与验收：** 6个公共整链反例/正例，已有相邻后端/API检查、前端解码/组件与类型检查；只更新backend树，旧run/请求/评级原件保持。
+**失败分支：** 字段nullable无法通过消费者时修其真实合同，不能填零；测量范围/时间/去重未定时不抢接自动Progress，也不把获取时间当比赛时间。
 **边界与依赖：** Provider0，不改主树前端/冻结模型政策，不自动准入或重开闭批。两处分歧、旧2/15及3/15、新资格0、正式15/当前组合自然消费/8E与所有下游保持。
-**验证结果：** 两真库红灯已复现，修后含无计划并发边界9项通过；13项Memory消费通过，Sol精确SHA真实原生代码复核无阻断。专用test DB已删除，原库head保持；见training-context-consistency。
-**当前下一动作：** 收尾提交推送并核公共CI；随后免费追踪实际服务器Progress创建者与已批准指标映射，核完整复盘→Candidate生产路径，不把主观反馈当测量。
+**验证结果：** 生产路径5项通过；缺失修复前5失败/1正例，修后6通过，相邻后端合计131通过；前端15解码/适配与3中英文组件通过，类型检查通过。前一4e87e28c公共DB/web成功、全CI未结束；见training-progress-source-audit。
+**当前下一动作：** 本包提交推送/核公共CI；随后免费形成服务器Progress测量的范围、时间与跨run去重最小合同，先核公开正反例再选择接线。
 
 ## Dependencies and Follow-through
 
@@ -40,7 +40,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-五尾链硬关闭、尚无充分共同语义修法；既有Coach路径已核。本人Training页面/Coach记忆的并列Progress和换Plan混绑两真库反例已修复，9项真库/13项消费检查通过。下一免费动作核服务器Progress创建者与已批准指标映射、完整复盘→Candidate路径；不补旧字段、重开批或当当前组合真实消费。新资格0、正式15及全部下游保留。
+五尾链硬关闭、尚无充分共同语义修法；已有同对象Training/Memory缺陷修复。生产路径审计确认没有自动Progress创建者，先修了时间线缺失变零的Summary→报告→查询/MCP→页面路径，后端131/前端18检查通过。下一免费动作形成测量范围/时间/跨run去重最小合同；不补旧字段、重开批或当当前组合真实消费。新资格0、正式15及全部下游保留。
 
 ## History
 

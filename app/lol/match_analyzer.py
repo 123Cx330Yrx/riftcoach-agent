@@ -272,6 +272,17 @@ def aggregate_recent_matches(match_rows: list[dict]) -> dict:
         values = [row[key] * 100 for row in rows if row.get(key) is not None]
         return round(mean(values), 1) if values else 0.0
 
+    def early_death_average(rows: list[dict]) -> float | None:
+        # This field describes the entire named sample, not only the subset
+        # whose timelines were fetched. Missing evidence cannot mean zero.
+        if not rows or any(
+            row.get("timeline_status") == "unavailable"
+            or row.get("deaths_before_15") is None
+            for row in rows
+        ):
+            return None
+        return avg(rows, "deaths_before_15")
+
     champion_stats = defaultdict(lambda: {"games": 0, "wins": 0})
     role_stats = defaultdict(lambda: {"games": 0, "wins": 0})
 
@@ -325,7 +336,7 @@ def aggregate_recent_matches(match_rows: list[dict]) -> dict:
             "kill_participation_percent": avg_percent(match_rows, "kill_participation"),
             "damage_share_percent": avg_percent(match_rows, "damage_share"),
             "gold_share_percent": avg_percent(match_rows, "gold_share"),
-            "deaths_before_15": avg(match_rows, "deaths_before_15"),
+            "deaths_before_15": early_death_average(match_rows),
         },
 
         "win_loss_comparison": {
@@ -334,14 +345,14 @@ def aggregate_recent_matches(match_rows: list[dict]) -> dict:
                 "gold_per_min": avg(wins, "gold_per_min"),
                 "damage_per_min": avg(wins, "damage_per_min"),
                 "vision_score": avg(wins, "vision_score"),
-                "deaths_before_15": avg(wins, "deaths_before_15"),
+                "deaths_before_15": early_death_average(wins),
             },
             "losses": {
                 "cs_per_min": avg(losses, "cs_per_min"),
                 "gold_per_min": avg(losses, "gold_per_min"),
                 "damage_per_min": avg(losses, "damage_per_min"),
                 "vision_score": avg(losses, "vision_score"),
-                "deaths_before_15": avg(losses, "deaths_before_15"),
+                "deaths_before_15": early_death_average(losses),
             },
         },
 

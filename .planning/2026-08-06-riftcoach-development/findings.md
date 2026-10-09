@@ -1,3 +1,10 @@
+## 2026-10-09 Progress消费者存在不等于有测量生产；未知不能变成零
+
+- terminal_turn_writer动态接受proposal不说明生产者已接线：唯一复盘executor明确空列表，TerminalCandidateProposal只准模型/公开观察来源，公开API强制用户结构化来源。确定性Progress仅在内部通用Service/测试中可构造，实际创建者未找到。
+- timeline_fallback保留None，但旧avg忽略缺失且无值返回0，报告把None误变成测得零，部分子集又被标成整组。采用命名样本完整性：任何缺失/明确unavailable则该组早期死亡均值None；另有有效样本数的位置统计保留部分样本语义。
+- null须贯穿DTO、MCP输出schema、严格web decoder、adapter/model与页面，不能只修数值源导致下游拒收或Intl把null格式化成0。旧文件摘要/报告不回写，旧已保存聚合也不在此次查询中重算。
+- ADR0044仅约束metric allowlist/unit，尚无每场/窗口/位置映射。获取/生成时间不等于比赛时间；Candidate唯一只防同候选replay，不防新run重复观察相同比赛。下一测量接线要先解决范围/时间/去重，不用自动接受或让模型声明确定性绕过。
+
 ## 2026-10-09 同对象Training读取需要共同排序与一次Plan选择
 
 - 时间与创建时间完全并列时，Training查询DESC/Memory ASC使页面UUID尾号2值1.0与Coach记忆尾号1值2.0矛盾；编号稳定裁决需统一，不能解释为效果或真实先后。

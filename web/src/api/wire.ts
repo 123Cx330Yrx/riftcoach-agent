@@ -233,7 +233,7 @@ export interface RecentMetricRowWire {
   readonly gold_per_min: number
   readonly damage_per_min: number
   readonly vision_score: number
-  readonly deaths_before_15: number
+  readonly deaths_before_15: number | null
 }
 
 export interface RecentAveragesWire extends RecentMetricRowWire {

@@ -509,7 +509,7 @@ function metricRow(value: unknown, path: string): RecentMetricRowWire {
     gold_per_min: number(row.gold_per_min, `${path}.gold_per_min`, { min: 0 }),
     damage_per_min: number(row.damage_per_min, `${path}.damage_per_min`, { min: 0 }),
     vision_score: number(row.vision_score, `${path}.vision_score`, { min: 0 }),
-    deaths_before_15: number(row.deaths_before_15, `${path}.deaths_before_15`, { min: 0 }),
+    deaths_before_15: nullable(row.deaths_before_15, (item) => number(item, `${path}.deaths_before_15`, { min: 0 })),
   }
 }
 

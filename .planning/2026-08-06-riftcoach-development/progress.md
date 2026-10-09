@@ -1,3 +1,11 @@
+## 2026-10-09 Training生产路径核验与时间线缺失交付修复
+
+- 实读生产者/消费者全app路径并执行公共v2替身：候选0；terminal拒绝deterministic，公开POST固定user_structured_input，gate拒绝Progress。内部Service可用但未找到实际测量创建者，不能将直接构造测试当生产接线。
+- 公共来源反例：timeline原值None、旧整体均值0.0，分位置值None/sample_count0。新6例修前5失败/1正例；早期死亡整体/赢局/输局样本不完整或为空均返回None，完整真实零保留。
+- Summary→报告→实际文件摘要查询→MCP client整链6过；相邻后端131 passed/12.10秒，新增输出合同再核40 passed/17 subtests/2.17秒（不同文件，不重叠），前端解码/适配15及中英文组件3过，typecheck/编译/治理/diff通过。旧run/模型请求/封存未改，原值历史查询不重算，不声称修了所有未知指标。
+- 审计JSON SHA ce98cace…0c89c6固定修前11源摘要；计划与学习见training-progress-source-audit。Provider0/DB0/资格0，主树未动，自动任务保持PAUSED。前一4e87e28c公共DB/web/packaging成功、全CI待结束，本修改需自己提交验证。
+- 下一免费形成测量范围/时间/跨run去重最小合同；单场与近期均值不可直接互换，Summary生成时间不可冒充比赛时间。所有原质量与产品依赖保留。
+
 ## 2026-10-09 Training页面与Coach记忆同对象消费修复
 
 - 两处静态疑点已在独立Postgres真库复现红灯：同时间进度UUID排序相反、Plan SELECT后另一Candidate事务换Plan导致Plan/Progress混绑。Memory只选择一次Plan并统一UUID降序；无计划并发激活也保持两投影为空。

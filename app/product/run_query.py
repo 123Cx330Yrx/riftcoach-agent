@@ -99,7 +99,7 @@ class RecentAveragesView(BaseModel):
     kill_participation_percent: float = Field(ge=0, le=100)
     damage_share_percent: float = Field(ge=0, le=100)
     gold_share_percent: float = Field(ge=0, le=100)
-    deaths_before_15: float = Field(ge=0)
+    deaths_before_15: float | None = Field(ge=0)
 
 
 class RecentComparisonRowView(BaseModel):
@@ -114,7 +114,7 @@ class RecentComparisonRowView(BaseModel):
     gold_per_min: float = Field(ge=0)
     damage_per_min: float = Field(ge=0)
     vision_score: float = Field(ge=0)
-    deaths_before_15: float = Field(ge=0)
+    deaths_before_15: float | None = Field(ge=0)
 
 
 class RecentWinLossComparisonView(BaseModel):

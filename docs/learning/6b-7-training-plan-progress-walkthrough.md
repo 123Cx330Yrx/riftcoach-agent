@@ -2,6 +2,12 @@
 
 ## 1. 问题与原理
 
+2026-10-09生产侧核验：现有复盘executor没有提出Progress候选，模型terminal提案也不能
+声明deterministic_run_fact；存储/采用能力不等于服务器测量已接线。已复现并修复时间线
+缺失变成零或子集均值冒充整组均值的问题，Summary→报告→查询/MCP→页面保留number|null。
+实际范围、红绿证据、兼容边界和测量时间/跨run去重待办见
+docs/plans/2026-10-09-training-progress-source-audit.md；不把获取时刻当比赛时间或补签旧run。
+
 2026-10-09消费一致性补充：页面和Coach记忆必须选同一条最新进度；两个时间相同时，
 共同使用progress_id降序作为稳定裁决。一次Memory读取只选一次当前Plan，计划与进度
 共用plan_id，避免读取期间另一事务换计划后混绑。真库红灯和修后9项检查见
