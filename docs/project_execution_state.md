@@ -4,50 +4,35 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "六例尾链已获具体授权；执行前发现新增测试读取忽略的本机原件，正修复CI资料依赖，等待最终同提交CI全绿。模型冻结方案不变，尚未付费。"
+pause_reason: "六尾链首案独立native答复绑定旧批次，按硬故障关闭并封存；自动接续暂停，下一步免费定位任务交付，禁止重开已关闭批。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
 
-2026-10-09：已授权剩余十一例独立初评扫描全部执行并关闭，十例全文双审接受，一例
-scope:3修法“本样本中…未带来中单胜利”主审接受/独立拒绝，真实分歧原样保存。
-四份正确稿均pass>=85，七份带错稿均needs_revision；不把verdict正确等同完整初评合格。
-语义分歧后仍完成其余九例，落实集中诊断与资格验收分离；无编辑、fresh、重评或重试。
-11次GLM-5.3/high、Flash0、180387tokens、unknown0、receiptless0，活动483.233秒、
-Host2138.189秒，未缓存实际用量估价2.136576元。191份原件摘要、90项白名单JSON已严格
-重建请求/来源/stage/native事件并封存；scan_completed=true，diagnostic_accepted=false。
-结果与Host插曲：docs/plans/2026-10-09-document-remaining11-scan-result.md。
-CI-only恢复HEAD3f3669b9、公共CI37823755271全success；5983父节点/129子结果精确覆盖。
-工程恢复未改原69项模型依赖/业务请求/身份/方案/预算，不作为语义修复证据。
-唯一等待器和runner均退出；riftcoach接续已暂停，关闭批不重开，不用余量另开付费批。
-历史严格2/15、旧文档批3/15独立保留，本次新增资格0；review-controls/自然消费/8E未完成。
-九个前瞻性全文Host控制已完成，八项一致、一项C06解释分歧；独立解释确认最窄样本
-描述有来源，自动把关键词升级为因果错属于标准风险。原意见及格式故障留存，未导入
-StageAssessment。证据见docs/plans/2026-10-09-host-boundary-calibration.md。
-2026-10-09后续执行：已固定两处实际命题/来源依据及十五例阶段覆盖；五正确稿无需尾链，
-十带错稿中二例尾链已观察、六例初评接受但尾链未测、二例初评分歧，不跨批累计资格。
-新增document_review_host_task把已验证请求的完整policy交给Host，编辑同时交付初评/编辑
-规则；旧冻结helper不动。26项相关检查通过，19个历史阶段/21份原policy只读传递核验通过。
-新入口尚未真实开放阶段消费，九控制提供完整规则后仍C06分歧，不能称已修复模型语义。
-证据及具体缺口见docs/plans/2026-10-09-review-coverage-and-policy-delivery.md。
-2026-10-09继续：已核六个accepted历史初评与当前报告/来源/request/policy精确相容，
-新增独立edit/fresh批入口、完整policy真实native双审handoff和严格seal；不重买六次初评。
-20项离线检查及6项既有factory身份/SDK回归通过，单例语义拒绝停该例尾链并继续独立案，
-身份/来源/native/协议/transport/预算等硬故障停全批；shared预算及receiptless未知用量保留。
-冻结方案33ce91c8…caab8ce：最多12次（Flash6/GLM6）、1161216tokens、3600活动秒、
-86400Host秒、未缓存保守估价9.4347264元；当前Provider0，无该批run或等待器。
-下一动作：按已获具体授权，CI资料修复提交全绿和真实主体预检后单次执行六尾链诊断；
-原分歧初评不下传、两处含义分歧未解决，六尾链全过也不直接重买完整15。
-具体计划/失败决策见docs/plans/2026-10-09-accepted-tail-diagnostic.md。
-用户已明确允许上述12次尾链边界。dd870b63/CI37875366571在付费前发现新增测试直接
-读取未提交的本机历史目录；缺目录复现实证为FileNotFoundError，旧CI已取消，Provider0。
-仅改测试从已提交公开seal重建离线输入，并禁止测试读取本机data/runs；不补造transport/
-native原件，真实执行controls仍要求原件。冻结SHA33ce91c8…caab8ce精确不变，已授权
-模型输入/政策/身份/预算/失败边界不变；最终测试修复提交须自己的公共CI全绿后首次执行。
-ADR0116已否决的全段解释账本不复活，既有policy已覆盖这些边界；不能将近义提示当修复。
-自然Coach/四块联动、本人Training、Worker/DB/API/UI/journal、前端审美/必要重做/头像、
+2026-10-09：六例已接受初评的编辑/fresh尾链诊断已单次执行，首案Host绑定硬故障后关闭。
+执行HEAD62154124488bf35369cd0d78ad9c37875fdf6067，公共CI37876307787全部success；
+沿用户授权的原方案33ce91c8…caab8ce，冻结模型源码、输入、政策和预算未变。
+实际只发scope:4的Flash编辑：中单早死败均值2.67修为0.5，全样本2.5/2.67保留。
+主审已留完整全文接受意见；独立新完成native final却返回旧claim-scope:4/旧计划绑定，
+真实fetch拒绝codex_review_host_dispatch_or_answer_binding。精确独立审查未成立，
+不借旧答复、改绑定或重评通过，不把Host硬故障归为Flash语义失败。
+按授权硬故障停全批，原样错误final进入显式无效失败交接，既有runner校验后自行关闭，
+error_code=coarse_diagnostic_host_binding；未生成独立native attestation或成功阶段记录。
+1次Flash、GLM0，11741tokens（输入10824/输出917），unknown0、receiptless0，
+活动24.359秒、Host803.266秒；按已知用量未缓存估价0.0112268元，不是账单金额。
+首案fresh和另五案全部未发送，无重试/重评/关闭批重开。
+只读回放通过：21份原件摘要、8项白名单JSON、已认证阶段0；未认证Host正文不公开。
+独立final与dispatch原生取证、主审及预期task原件留本地，公开摘要与结果封存已提交。
+结果：docs/plans/2026-10-09-accepted-tail-result.md。等待器/runner已退出，riftcoach接续PAUSED。
+下一动作：免费定位并修复独立任务交付/旧上下文复用风险，先证明精确任务绑定可达，
+再准备具体后续范围；本批不能重开，不利用剩余预算自行发Provider或自动完整15。
+dispatch为opaque，当前不能区分派发内容错配与作者沿用旧任务，根因尚未确立。
+两处分歧attribution:1/scope:3保留；历史严格2/15、旧文档3/15各自不拼接，新增资格0。
+正式同批15、review-controls、自然产品消费和8E未完成；不把单次主审编辑接受当双审质量。
+ADR0116否决的全段解释账本不复活，完整上下文/引用/身份/质量门不变。
+自然Coach/四块联动、本人Training、Worker/DB/API/UI/journal、前端审美/重做/头像、
 Memory、身份运维、两树整合及八维学习保持活动计划依赖。
 
 以下为历史记录；当前行动以本段为准。

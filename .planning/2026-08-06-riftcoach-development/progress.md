@@ -1,3 +1,14 @@
+## 2026-10-09 六尾链首案Host绑定硬故障：关闭与封存
+
+- 同冻结方案在62154124/CI37876307787全success后单次执行；唯一等待器48292/runner4956均已退出，接续PAUSED。
+- scope:4编辑完整返回，中单早死败均值2.67→0.5，全样本正确值保留；主审先保存全文接受意见。
+- 独立新完成native final返回旧claim-scope:4及旧计划，真实fetch拒绝dispatch_or_answer_binding；未重评、改绑定或伪造事件。
+- 原样错批答复通过显式无效失败交接触发既有runner绑定校验关闭；不是有效submit或语义reject。跨盘link失败后原字节在D盘原子发布，没有新增调用。
+- 1Flash/GLM0、11741tokens、unknown0、receiptless0，活动24.359秒/Host803.266秒；未缓存估价0.0112268元。
+- 只读回放通过，21原件摘要/8白名单JSON/已认证阶段0；首案fresh与其余五案未发送，资格0。结果见2026-10-09-accepted-tail-result.md。
+- 下一步免费定位任务交付；opaque dispatch根因未明，不重开关闭批或原样重买完整15。旧3/15与历史2/15、两分歧及产品依赖保留。
+- 收尾仅文档/公开证据，治理及差异检查通过；没有冻结源码改动，不重复原21项回归。真实只读seal与原件摘要核对替代文档测试。
+
 ## 2026-10-09 六个接受初评的独立尾链诊断准备
 
 核旧十一扫描封存、完整初评/来源/真实request及当前DocumentReviewWorkflow相容，选scope:4、claim-scope:6、observed:2/3/4/5。两份分歧不注入，不重开旧批；历史accepted Exchange没有新IO/usage/签署。

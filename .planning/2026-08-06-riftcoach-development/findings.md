@@ -1,3 +1,11 @@
+## 2026-10-09 主体可用预检不能保证当前任务绑定正确
+
+- 前置真实谱系/native-final路由通过后，新完成独立final仍可能回答旧批任务。当前实际错批为claim-scope:4/b2eb550d…5261b7，期待scope:4/33ce91c8…caab8ce。
+- 当前task文件、dispatch ID、新turn/final和错误答复均有取证；dispatch为opaque，无法据此断言Host派发错还是作者沿用了旧上下文。症状已证，根因未证。
+- native fetch精确绑定校验正确拒绝；不能用旧意见换绑定，不能将其当Flash语义失败、标准分歧或Provider额度故障。
+- 原runner无显式operator-abort接口；原样真实错误答复的显式无效失败交接能触发绑定校验并保留真实账目关闭。没有独立attestation或成功stage，未认证文件只哈希不公开正文。
+- 首案改文的主审支持不能替代真实双审或fresh；六尾链覆盖仍未完成。后续优先免费验证任务交付，不继续花钱定位同一Host故障。
+
 ## 2026-10-09 接受初评可以隔离复用，但不是补资格或解决分歧
 
 - 当前没有Provider policy改动；六个真实双审接受初评与报告/来源/实际issued request/journal精确相容，能作新独立编辑/fresh历史输入。只注入accepted needs_revision完整意见，不将分歧意见删改后下传。
