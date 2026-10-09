@@ -13,13 +13,13 @@
 
 ## Active Work Package
 
-**目标：** 让新的完整本人复盘实际产生可信逐场训练测量候选，并沿用户accept事务物化。
-**方案与范围：** 显式match早死/count与视野/score，纳入的单场/全实际分路；原始比赛结束时间限定在Plan/task创建之间。旧泛指key/窗口/特定分路不猜映射。
-**实现路径：** Worker既有terminal入口→验签文件Summary/规范化来源摘要→当前active self Plan→同事务pending Candidate/消息/completed→统一用户accept/再核来源与单位→已有Progress writer。关系/Plan/metric/match固定key跨run首次占位，来源不改。
-**交付证据：** 测量23例通过；两组相邻纯合同/API/Worker/Source157+70（新4例另核，复跑23不累计）；生产/采用/来源损坏/并发/中断恢复/换Plan与相邻Memory真库31通过，测试库已删除。原库head0014未变；编译/diff通过。
-**失败及边界：** 未测到跳过，来源损坏整笔回滚；修正既有pending批双列查询scalars缺陷。completed/legacy不回填，重复/拒绝/隐藏不重发；system不自动采用。新逐场纠错未开放，旧泛指纠错保留，模型提案独立事务未扩大。
-**依赖：** Provider0、资格0；新提交需独立公共CI。未改主树/历史原件，不启动业务Worker、模型或闭批；旧2/15与3/15、正式15/自然消费/8E和所有下游保留。
-**当前下一动作：** 本包提交推送；核本人Training计划创建/候选说明与用户accept的现有HTTP/UI可达性，补最短产品断点。
+**目标：** 回到用户持续要求的完整15例主线，解决已暴露的初评语义分歧与编辑定位协议问题，再取得同版本完整链证据。
+**起点：** 原15前三例完成；剩余十一初评已收齐，十接受、一分歧；三轮尾链均在首例硬关闭，未新增认证尾链。五份封存435原件SHA已核一致，旧runner退出。
+**方案与范围：** 已实现block键归组编辑与成对全文教学的隔离候选，不能用全文唯一锚点猜block；attribution泛指与scope修法观测/因果分别处理，不强称一个共同原因。候选见2026-10-09-full15-resumption-candidate。
+**实现路径：** 完整来源/历史事实→现有DocumentReviewWorkflow初评→候选严格编辑组装→完整新稿fresh→真实全文双审。保留现行issues/修法字段与五调用上限；不引入全段审计账本。
+**验证：** 25项完整候选真实回执接缝测试及116项候选/Host/原Document相邻检查通过，旧缺字段回包保持拒绝；只读封存按原回执重建来源、编辑/fresh/native、账目与时钟。原生独立开发复核最终无阻断，当前新root/child route/final预检通过；模拟回复与开发复核均非业务质量证明。
+**依赖及失败：** 旧批不重开/补签/借余量；Provider0、新资格0，自动任务PAUSED。候选不充分就淘汰，明确剩余语义与真实执行证据；新付费方案需具体冻结后授权。
+**当前下一动作：** 提交本包并核同提交公共CI，具体新批授权齐备后再核真实主体与checkout，按精确候选计划单次执行。准备SHA fecb29b0…f9a242；45调用/4354560tokens/13500活动秒/86400Host秒/保守未缓存45.029376元。CI与授权未收齐，execution_ready=false；Training保留，不作当前动作。
 
 ## Dependencies and Follow-through
 
@@ -39,7 +39,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-五尾链硬关闭、尚无充分共同语义修法；同对象Training/Memory与nullable修复保留。服务器逐场生产已接线并通过23公开测量及31真库检查；仍待新提交公共CI与实际自然消费，不当真实训练效果。下一免费核本人Training计划创建/候选说明与用户accept的HTTP/UI可达性，补最短断点；不补旧字段、重开付费批或提前准入。新资格0、正式15及全部下游保留。
+用户纠偏后回到完整15主线，具体动作以活动工作卡为准。Training/Memory/nullable已交付成果与下游保留，不计入15质量；旧2/15与3/15独立，新资格0。旧批关闭且自动任务PAUSED，不补旧字段、重开或提前准入。
 
 ## History
 

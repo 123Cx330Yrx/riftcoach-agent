@@ -4,12 +4,38 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "五尾链硬关闭；离线责任反例未支持共同修法。接续独立产品接线核验，不重开付费批。"
+pause_reason: "旧付费批已关闭；用户纠偏后接续完整15主线的语义与编辑合同修复准备，不重开旧批。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
+
+2026-10-10在新聊天承接原完整15主线的未提交候选，完成实际回执、checkpoint原生导入、
+关闭提交及严格只读封存/回放。修复实际factory来源投影、响应导出、阶段绑定、发送前检查、
+失败请求留存与未执行清单；不补旧回包、不重开旧批、不转Training。
+25项候选真实回执接缝测试与116项相邻检查通过；模拟模型/Host，不是语义质量证据。
+独立原生开发复核发现的账目字段漏比对、时钟汇总下调和内层binding不明确已修复，
+最终复核无阻断；当前root/child native-final路由只读预检通过，未来容量仍未知。
+完整15候选准备SHA fecb29b0…f9a242，45调用/4354560tokens/13500活动秒/86400Host秒，
+保守未缓存估价45.029376元。当前Provider0、新资格0，旧2/15与3/15独立，自动任务PAUSED。
+完整15真实同版本验证仍未完成；此诊断不得授予资格，正式准入保留原首失败停止规则。
+下一动作：提交本完整候选包并核同提交公共CI，具体新批授权齐备后再核主体/checkout单次执行。
+同提交CI及授权未收齐，execution_ready=false；准备、复核、运行和限制见
+`docs/plans/2026-10-09-full15-resumption-candidate.md`。所有后续产品与学习依赖保留。
+
+## 以下为历史记录
+
+2026-10-09用户明确要求恢复之前完整15例主线，随后要求先核清历史并“继续呗”。
+已核五份公开结果及435份本机原件SHA全部一致；原15前三例完成、第四例分歧，
+后十一初评全部完成（十接受、一分歧），三轮尾链分别因错任务、Host不可用和缺block关闭。
+这不是同批15成功；旧2/15与3/15独立、新资格0。无活动旧runner，自动任务保持PAUSED。
+活动工作已从Training HTTP/UI切回初评→必要编辑→fresh：已实现未准入的block键归组
+编辑、成对全文教学候选及完整15 runner，旧合同/原件不改；32新离线及42既有相邻检查通过。
+重复文本定位、单次10段修改、五调用实际workflow/fresh接线由脚本IO核验，不证明模型质量。
+原15完整请求已create-only导出，未建业务run；候选执行入口已接入；真实native复核与严格只读回放尚未准备完成。
+完整15 runner 已能准备 15 例并串联初评→必要编辑→fresh、原生双审等待与 checkpoint 发布；最坏45调用/4354560 tokens/13500活动秒，仍仅离线候选。细节/限制见docs/plans/2026-10-09-full15-resumption-candidate.md；Provider0、资格0。
+Training已交付事实及所有下游依赖保留，不将其工程检查计入15例。旧下一动作被本段替代。
 
 2026-10-09用户恢复项目：先前checkpoint六尾链在d430046c/CI37883909798全绿后确实首次执行，
 scope:4仅1Flash编辑完整返回，11224tokens、unknown0、估价0.0097792元；独立Host容量故障无

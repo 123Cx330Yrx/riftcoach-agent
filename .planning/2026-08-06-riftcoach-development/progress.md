@@ -1,3 +1,19 @@
+## 2026-10-10 新聊天承接完整15主线并完成回执封存候选
+
+- 核原聊天最新失败和当前后端分支，承接未提交候选，主树未动；未转Training或重开旧批。
+- 真实factory/source投影、response dataclass导出、revision/final绑定、每次发送前检查、失败请求与未执行清单已修复。完整source→initial→必要keyed编辑→fresh及checkpoint/native导入、关闭锁与create-only封存/回放完成。
+- 25项新回执接缝检查+116项候选/Host/Document相邻检查通过，不重复计数；Provider/Host为模拟，不证明模型语义。已知progress usage与未释放live reservation分开核，篡改账目/时钟/原件/native拒绝。
+- 实际独立开发复核发现三项问题后修复，最终原生final无阻断；主代理只读API核parent/child及route/final可用，未来容量未知。开发final不作业务补签。
+- create-only输出riftcoach-full15-preflight-20261010，计划SHA fecb29b0…f9a242；具体15候选最坏45调用/4354560tokens/13500活动秒/86400Host秒/未缓存45.029376元。尚未新付费授权，待同提交CI；正式15与下游保持未完成，新资格0、旧批PAUSED。
+
+## 2026-10-09 用户纠偏后恢复完整15主线及候选实现
+
+- 五份封存435原件SHA一致，无活动旧runner；旧原15前三例完整、剩余十一初评全收齐，三轮尾链未新增认证。已把canonical/活动卡从Training HTTP/UI切回15主线，已交付Training事实保留。
+- 新隔离编辑以block_N对象键承载明确定位，一个工具call可覆盖10段；拒绝未知键、段内歧义/重叠/错回执/来源等，不补旧block。原真实缺字段在旧/新合同均严格失败。
+- 替换虚构教学示例作待检验假设：原范围控制保留，补泛指/明确全称、样本描述/因果零效应与未来外推对照。旧schema、完整修法字段及来源不变；旧身份拒绝候选初评，显式实例路由用于隔离，不注册生产默认。
+- 31新离线及42既有相邻通过；五调用实际workflow/预算/完整fresh用脚本IO检查，不是Host业务双审或真实GLM质量。原15请求create-only导出，preparation SHA3b054ad0…29eb51c，Provider0/资格0，无业务run/等待器。
+- 候选计划见full15-resumption-candidate；拟十例28调用/估价28.4471296元只是规模建议，execution_ready=false，未授权、未执行冻结。下一接入集中整链入口/checkpoint/handoff/strict replay与开发复核，不原样再买尾链或转Training；旧2/15与3/15独立、正式15和下游未完成。
+
 ## 2026-10-09 服务器逐场Training测量接线
 
 - 选逐场而非重叠窗口：两个显式match键、真实Riot结束时间、active self Plan允许列表/单位；旧泛指key不赋范围。文件字节SHA/规范化Evidence SHA分别核验，不补获取时间或缺失零。
@@ -8903,3 +8919,9 @@ version2分开保留subtest report与唯一父终态，原exitcode和缺测/重�
 仅修测试为公开seal离线夹具、禁止本机data/runs读取；live原件核验和冻结方案不变。
 当前真实主/独立谱系及native-final路由预检通过；执行前仍重新预检，不保证未来可用。
 禁止本机data/runs读取下21项全通过（251.90秒），治理检查通过，冻结方案精确不变。
+
+## 2026-10-09 完整15候选 runner 接入
+
+- 修复全局512操作边界测试的夹具冲突后，32项新离线检查、42项既有相邻检查、编译和治理均通过。
+- 新增 `scripts/run_full15_resumption_candidate.py` 与 runner 测试：从15份公开冻结来源重建候选请求，保持基线逐字段一致；每案按初评、必要 block-keyed 编辑、fresh 终评串联，阶段等待发布原生 Host checkpoint，并保留失败停案/硬故障停批边界。
+- runner 只生成冻结准备计划，execution_authorized=false、paid_plan_frozen=false、Provider0；最坏45调用（GLM30/Flash15）、4354560 tokens、13500活动秒、86400 Host 秒，估价45.029376元为未缓存估算且非硬封顶。只读 handoff/seal 回放和独立开发复核仍待完成，不能执行付费批。

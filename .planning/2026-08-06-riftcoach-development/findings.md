@@ -1,3 +1,16 @@
+## 2026-10-10 执行预览无法证明实际回执链与失败账目
+
+- 仅准备15案未触发factory默认source投影、dataclass导出或revision/final绑定，实际Provider替身接缝才暴露并修复这些真实软件缺口。每次发送须记录实际预算后的请求，协议失败也必须保留原输出与停止原因。
+- received progress中的完整usage可证明已知费用，却不是完整ChatResponse，也不解除live预算预留；两套账目应按typed response/progress分别重建，不能把未知当零或仅信结果字段。
+- clock两端binding相等不足以证明属于当前stage；须绑定review-required原件SHA、有序等待、剩余/累计与最终summary不倒退。独立开发复核发现最后汇总可下调的真反例，已加入拒绝测试。
+- 独立Host应只读完整来源和当前阶段材料；“读取所有文件”可能读到primary意见。outer与review.binding要明示六字段；本地checkpoint检查不替代原生final与真实语义审查。
+
+## 2026-10-09 15主线候选必须区分明确定位与语义充分性
+
+- 逐段工具名可承载段号，但stream最多8 tool calls；同一工具内按block_N键归组能保持一次跨更多段操作和跨段重复文本定位。段内唯一锚点仍必要，不能对缺段号旧输出猜选择器。候选改变输出组织，不证明远端可靠性或旧遗漏因果。
+- 现有虚构教学主要演示比较范围；成对全文对照可作两处分歧的前瞻教学假设，不等于证明旧示例导致错误。替换时保留范围消解/明确错误/行动歧义/未来外推控制，不新增结果字段或全段审计门。是否减少真实误报/错修法只能由新实际响应核验。
+- 显式诊断identity overlay仅恢复基线作角色核验，发送仍是完整新请求。原15源码/来源/request可离线核构造，脚本pass不替代真实native全文双审或fresh质量；未完成执行入口不能标execution_ready或请求付费授权。
+
 ## 2026-10-09 Progress消费者存在不等于有测量生产；未知不能变成零
 
 后续逐场接线已完成，见training-match-measurement。真实恢复反例证明session.scalars只返回
@@ -6779,3 +6792,7 @@ Luna独立离线probe使用已保存player_summary与当前ADVICE合同，未传
 资料可用。缺目录复现FileNotFoundError。改为公开seal完整输入夹具并禁止data/runs
 读取；公开JSON键排序不能代替原issued bytes，按当前业务请求重建后核原SHA，journal
 公开raw arguments保留真实键顺序。真实live controls继续要求原transport/native原件。
+
+- 完整15 runner 的计划必须把“候选 policy 身份”绑定到每个实际请求，不能只在 manifest 写 teaching_candidate；因此 CandidateLimits 仅作实例 overlay，默认合同注册和生产路由不变。
+- 初评若被 Host 接受且模型 pass>=85，可结束该案；needs_revision 才进入 Flash 编辑和新稿 fresh。编辑/新稿各阶段仍必须读取完整来源和真实双审，任何失败不能改作语义通过。
+- runner 的离线准备成功只说明控制流和账目边界可重建；45调用规模是最坏预算，不能将十例28调用建议或离线合法输出当成新授权/质量证据。
