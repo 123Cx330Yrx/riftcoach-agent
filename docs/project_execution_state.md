@@ -4,34 +4,31 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "六尾链首案独立native答复绑定旧批次，按硬故障关闭并封存；自动接续暂停，下一步免费定位任务交付，禁止重开已关闭批。"
+pause_reason: "旧六尾链已关闭；Host压缩后任务漂移已定位并落实checkpoint补救，路由探针通过；尚无新Provider批授权，接续暂停。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
 
-2026-10-09：六例已接受初评的编辑/fresh尾链诊断已单次执行，首案Host绑定硬故障后关闭。
-执行HEAD62154124488bf35369cd0d78ad9c37875fdf6067，公共CI37876307787全部success；
-沿用户授权的原方案33ce91c8…caab8ce，冻结模型源码、输入、政策和预算未变。
-实际只发scope:4的Flash编辑：中单早死败均值2.67修为0.5，全样本2.5/2.67保留。
-主审已留完整全文接受意见；独立新完成native final却返回旧claim-scope:4/旧计划绑定，
-真实fetch拒绝codex_review_host_dispatch_or_answer_binding。精确独立审查未成立，
-不借旧答复、改绑定或重评通过，不把Host硬故障归为Flash语义失败。
-按授权硬故障停全批，原样错误final进入显式无效失败交接，既有runner校验后自行关闭，
-error_code=coarse_diagnostic_host_binding；未生成独立native attestation或成功阶段记录。
-1次Flash、GLM0，11741tokens（输入10824/输出917），unknown0、receiptless0，
-活动24.359秒、Host803.266秒；按已知用量未缓存估价0.0112268元，不是账单金额。
-首案fresh和另五案全部未发送，无重试/重评/关闭批重开。
-只读回放通过：21份原件摘要、8项白名单JSON、已认证阶段0；未认证Host正文不公开。
-独立final与dispatch原生取证、主审及预期task原件留本地，公开摘要与结果封存已提交。
-结果：docs/plans/2026-10-09-accepted-tail-result.md。等待器/runner已退出，riftcoach接续PAUSED。
-下一动作：免费定位并修复独立任务交付/旧上下文复用风险，先证明精确任务绑定可达，
-再准备具体后续范围；本批不能重开，不利用剩余预算自行发Provider或自动完整15。
-dispatch为opaque，当前不能区分派发内容错配与作者沿用旧任务，根因尚未确立。
-两处分歧attribution:1/scope:3保留；历史严格2/15、旧文档3/15各自不拼接，新增资格0。
-正式同批15、review-controls、自然产品消费和8E未完成；不把单次主审编辑接受当双审质量。
-ADR0116否决的全段解释账本不复活，完整上下文/引用/身份/质量门不变。
+2026-10-09继续：已确认独立作者先读取当前scope:4精确task及完整材料，在原生compacted
+记录之后转读旧claim-scope:4 task/材料并返回旧绑定。新任务确实到达，恢复阶段漂移
+可见；没有读取私有推理/压缩summary，不断言内部压缩算法或加密就是根因。
+新增create-only Host任务checkpoint：固定绝对task路径/文件SHA/六字段binding/主体，
+恢复后及final前重读、作者自己校验答复；不搜索旧任务，不读primary/其他Host意见。
+AGENTS补前瞻恢复规则；旧冻结源码/Provider政策/质量/native-final-attestation-v1不变。
+9项新聚焦检查与80项原native检查共89项通过。同一独立作者的alpha→beta真实路由
+探针分别读回精确新final，旧alpha答复用于beta拒绝；首次摘要转录错误也真实拦截并保留。
+探针不审业务报告，不生成StageAssessment/native review attestation，不新增Provider调用。
+自动compaction未在探针中复现，不能宣称长全文跨压缩稳定、质量门已过或故障绝不再现。
+证据/采用范围：docs/plans/2026-10-09-host-task-delivery-recovery.md。
+下一动作：把该交付方式纳入下一具体六尾链方案的操作/冻结资料，完成准备与CI，再申请
+明确的新Provider范围；不能重开旧批或借剩余预算发送，完整15不自动触发。
+旧六尾链首案仅1Flash/11741tokens、unknown0，主审暂接受、有效双审阶段0，fresh及
+另五案未发；严格封存21原件/8白名单和原错误事件保留，接续PAUSED。
+原结果：docs/plans/2026-10-09-accepted-tail-result.md。两处分歧attribution:1/scope:3
+仍未解决，旧文档3/15与历史严格2/15分别保留、不拼接，新增资格0；正式同批15、
+review-controls、自然产品消费和8E未完成。ADR0116否决的全段解释账本不复活。
 自然Coach/四块联动、本人Training、Worker/DB/API/UI/journal、前端审美/重做/头像、
 Memory、身份运维、两树整合及八维学习保持活动计划依赖。
 

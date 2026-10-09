@@ -21,9 +21,12 @@
 真实事件fetch拒绝绑定；按硬故障全批停止，runner自行关闭。1Flash/GLM0、11741tokens、unknown0，
 活动24.359秒、Host803.266秒、未缓存估价0.0112268元。fresh及另五案未发，已认证阶段0。
 只读回放和21原件/8白名单封存通过，未认证Host正文仅哈希；接续PAUSED。
-**当前动作：** 免费核任务派发、精确task与旧上下文复用风险，选择能证明当前绑定实际交付的最小修法。
-opaque派发不能区分调度内容错配与作者答错任务；不能猜根因、换作者求通过或重复签旧意见。
-证据/决策见docs/plans/2026-10-09-accepted-tail-result.md；两处语义分歧不因Host故障而解决。
+**当前动作：** Host压缩后恢复任务漂移已定位：新task/材料先读，compacted后读旧task并错绑。
+已新增固定task路径/SHA/binding的create-only checkpoint，恢复后及final前重读，作者自己校验；AGENTS补前瞻规则。
+89项工程检查通过，同作者alpha→beta两次真实路由探针通过，旧alpha在beta拒绝；首次摘要转录错被拦截并保留。
+没有业务重评、新Provider调用或qualification信用；自动压缩未复现，不宣称长全文跨压缩稳定。
+当前准备下一具体六尾链的操作/冻结资料及CI，新付费范围另获明确授权；不改Provider政策来处理Host故障。
+证据：docs/plans/2026-10-09-host-task-delivery-recovery.md；旧失败见accepted-tail-result.md。
 **边界与失败分支：** 本批已关闭且不可重开，不发剩余Provider预算或自行另开付费批。
 新范围先完成可检查的修法/来源与任务绑定验证；全六尾链通过也不自动触发完整15。
 泛指不补全称，统计不足以解释胜负与明确因果断言分开，措辞建议不升级事实门。
@@ -49,7 +52,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-免费定位独立任务交付与旧上下文复用风险，先形成精确绑定可达的可检查修法；本批关闭，不再发送Provider。
+将已验证的checkpoint交付方式纳入下一具体六尾链准备/冻结与CI；新Provider范围授权前不发送，旧批关闭不可重开。
 
 ## History
 

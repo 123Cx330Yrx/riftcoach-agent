@@ -70,6 +70,15 @@ proof. Run `python scripts/check_project_governance.py` after recovering a
 product checkpoint and after governance changes; resolve relevant failures
 before accepting the result. Reuse the result until its inputs change.
 
+For prospective Host reviews dispatched with an explicit task checkpoint, read
+that exact checkpoint and expected SHA after context recovery and before final
+output. Do not select a task by searching old run directories or trusting a
+stale summary. If its path or digest cannot be recovered, report unavailable
+routing rather than reviewing another task. Do not read primary opinions or
+other Host judgments. The checkpoint only preserves task selection; full-source
+review and the existing native final import remain mandatory. It does not alter
+legacy frozen tasks, closed-batch replay or product qualification criteria.
+
 ## Stage and product boundaries
 
 - There are exactly nine main stages, 0 through 8. Do not add, remove, reorder,

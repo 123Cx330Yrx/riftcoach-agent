@@ -1,3 +1,11 @@
+## 2026-10-09 Host恢复漂移定位与任务checkpoint
+
+- 公开原生命令读回证明新task与当前材料先读；03:24:22.889Z压缩后03:24:45.230Z转读旧task，不能再把原因停留在“新任务完全未到”。未读压缩summary或私有推理。
+- 新helper固定create-only task路径/SHA/binding，用短dispatch精确命令恢复并在final前验证作者自己的答复；旧冻结helper/政策/native合同不变。AGENTS补前瞻恢复规则。
+- 9项新检查+80项既有native检查89通过；现有独立主体alpha→beta两次真实路由final核验一致，旧alpha在beta拒绝。alpha首次摘要转录错被拒绝后仅修正路由答复，原文件和失败保留。
+- 无Provider调用、业务重评、StageAssessment或资格贡献。自动compaction未复现，长全文跨压缩稳定仍未证。
+- 当前下一步准备新具体六尾链操作/冻结及CI，不重开旧批、不借余量，不自动完整15。证据见host-task-delivery-recovery.md。
+
 ## 2026-10-09 六尾链首案Host绑定硬故障：关闭与封存
 
 - 同冻结方案在62154124/CI37876307787全success后单次执行；唯一等待器48292/runner4956均已退出，接续PAUSED。

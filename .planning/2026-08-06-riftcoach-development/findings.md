@@ -1,3 +1,10 @@
+## 2026-10-09 新任务已经到达：偏离发生在压缩后的恢复
+
+- 同一错误turn先读当前精确task/来源/改文，03:24:22.889Z出现compacted后去搜索并读旧task及旧primary notes。这收窄为恢复任务选择漂移，排除新任务完全没有到达；内部压缩摘要成因未证。
+- 已实施显式create-only checkpoint+预期SHA，恢复与final前重新读取；不按相似案例搜索，不读主审意见，无法恢复就停路由。现有native final仍是唯一独立业务导入来源。
+- 两次短路由探针证明同作者能切换当前任务，旧答复在新checkpoint拒绝；不能替代长业务审查跨compaction或语义质量验证。首次摘要转录失败保留，dispatch自动生成命令减少手抄。
+- 不修改旧Provider策略来处理Host故障，不重评闭批报告，不靠改绑定签旧成功。具体前瞻采用范围见host-task-delivery-recovery.md。
+
 ## 2026-10-09 主体可用预检不能保证当前任务绑定正确
 
 - 前置真实谱系/native-final路由通过后，新完成独立final仍可能回答旧批任务。当前实际错批为claim-scope:4/b2eb550d…5261b7，期待scope:4/33ce91c8…caab8ce。
