@@ -1,3 +1,11 @@
+## 2026-10-09 编码证据排除本地丢字段，格式研究不能替代语义修法
+
+- 当时发送的schema经实际SDK接缝保持required，工程独立检查IPC/stream/公开导出也未发现主动删除block；缺block在公开模型参数，历史HTTP/SSE未封存，不能将离线重建夸成全部线上取证或证明遗漏原因。
+- 11次真实编辑公共库存去除stage/transport副本；相同请求不同返回是不同调用，不能只按request SHA去重。四字段8合规/1缺block、旧五字段2缺source_ids说明展开schema不是已证明修法；空edits合规不等于修好报告。
+- Function Calling文档仅auto，JSON模式并非schema严格生成；本地REQUIRED拒绝和strict接收校验不是远端约束开关。没有已确认strict能力时不猜参数继续付费。
+- before在当前历史源blocks均唯一，但重复block与重叠锚点直接否定通用定位充分性。移除block改变表达能力，不能作为已选共同修法，更不能解决初评语义分歧。保留四字段，回到任务/现有表示/旧正反例做方案取舍。
+- 固定库存审计不是通用坏响应解析器或I/O沙箱；schema合规尚未核实际block范围/锚点一致/重叠/成稿/语义。具体证据及独立原生事件见editor-protocol-audit.md。
+
 ## 2026-10-09 编辑返回缺定位字段，不能凭锚点补成有效交付
 
 - 实际request系统规则与工具input_schema.required均明确block/before/after/reason，Flash仅返回后三项。现有strict校验复现edits.0.block missing；明确的首次偏离在模型参数，构造冲突或输入负担因果仍未证明，不把协议拒绝当Host/额度故障或语义错误。

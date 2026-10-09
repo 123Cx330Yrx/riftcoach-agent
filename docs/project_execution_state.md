@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "已授权五尾链首次执行因Flash编辑缺必填block硬关闭；只读封存完成，下一动作免费核共同编辑协议与诊断方案，不重开付费批。"
+pause_reason: "已授权五尾链缺block硬关闭；免费协议审计未发现本地丢字段，下一动作回到共同语义修法选择，不重开付费批。"
 ---
 
 # RiftCoach 当前执行状态
@@ -28,8 +28,12 @@ claim-scope:6仅1Flash完整返回，10728输入+327输出=11055tokens，unknown
 15原件/6公开JSON严格只读封存并复核原件hash一致，SHA4628e972…fbad0c5；原六尾链封存不变。
 结果/精确错误/账目：docs/plans/2026-10-09-remaining-checkpoint-tail-result.md。自动接续已PAUSED，
 waiter/runner均退出，未超10调用/967680tokens/3000活动秒/86400Host秒的新授权，余量不借用。
-下一动作：免费对照已有实际编辑失败、四字段任务/工具schema与Provider传输能力，核是否存在
-可复现构造冲突后选择共同修法；不沿原剩余例自行另开付费批，不以自动补字段掩盖失败。
+免费协议审计核9份公共封存中的11次实际编辑：旧五字段2次缺source_ids，四字段8次合规、
+1次缺block；不是随机可靠率样本或语义认证。实际SDK编码接缝、IPC/stream工程复核未发现
+本地丢字段；官方文档未给出已确认的远端strict开关。保留四字段与严校验，唯一锚点三字段
+仅候选，重复/重叠文本反例保留。证据见docs/plans/2026-10-09-editor-protocol-audit.md。
+下一动作：免费对照完整初评/fresh任务、现有表示及两处分歧/旧反证，选择能作用于共同语义
+问题的机制与最小区分性验证；不沿剩余例另开付费批，不补旧字段或把格式研究当语义修复。
 模型遗漏block的输入/政策因果和整稿语义未证；工程代码复核/预检与20/41项重叠检查不当业务证据。
 真实全文双审/fresh门保留；泛指不补全称、措辞不升级事实门，历史初评不重签或重买。
 

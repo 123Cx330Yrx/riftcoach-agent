@@ -15,14 +15,14 @@
 
 **目标：** 在现有教练报告Review→必要编辑→fresh路径集中发现尚未测到的修法风险，修复共同问题后解锁同版本完整15及自然消费。
 **起点与差距：** 原checkpoint批首案scope:4仅1Flash/11224tokens，Host故障无native final关闭；新授权五尾链在3954ff16/CI37912659534全绿后首次执行，仅claim-scope:6 Flash1/11055tokens，工具参数缺block协议硬关闭。两批有效阶段均0，旧首案与新首案fresh、observed:2..5均未发；缺口各自保留。
-**已选路径：** 当前转免费对照已有实际编辑失败、四字段任务/工具schema及Provider传输能力，核可复现构造冲突后选择共同修法。单一隔离适配器/冻结源码保持；不补模型字段、不改旧原件、不切剩余例自行再开付费批。五份accepted初评只作原件输入，不重签/重买。
+**已选路径：** 免费协议审计未发现本地丢block，保留四字段与严格拒绝；官方文档没有已确认的远端strict开关，三字段唯一锚点仅未采用候选。回到完整初评/fresh任务、现有表示与两处分歧/旧反证，选择能作用于共同语义问题的机制；不补模型字段、不改旧原件、不切剩余例再开付费批。五份accepted初评不重签/重买。
 **Host处理：** Sol开发复核和实时谱系/current-route预检通过；本次编辑参数失败在成稿/checkpoint前，未派业务审查。未来实际阶段仍须checkpoint/SHA/全文policy/native final；工程证据不当业务认证。
-**交付与验收：** 新批15原件/6公开JSON只读严格seal及hash核对通过；实际Changes.model_validate精确复现edits.0.block缺失，实际policy/schema确实要求该字段。新结果/账目/最早偏离已公开；本次无源码修法，不为文档重复付费/全库测试。
+**交付与验收：** 新批15原件/6公开JSON只读strict seal保留；免费脚本从9份固定SHA公共seal审计11次真实编辑，实际schema与SDK接缝重建一致；7项离线检查覆盖字段丢失/通道/证据漂移/锚点歧义。工程复核不当模型质量证据，未改冻结模型源码。
 **成本与决策：** 用户明确“确认吧，继续下一轮”授权最多5Flash+5GLM、967680tokens、3000活动秒/86400Host秒、估价7.862272元非硬封顶。实际Flash1/GLM0、11055tokens、unknown0/receiptless0、估价0.009498元、活动14.266秒/Host0；未超预算，闭批余量不可用于重开或新批。接续自动任务PAUSED，唯一waiter/runner已退出。
 **失败分支：** 语义拒绝停该案依赖阶段并继续独立案；身份/来源/native/checkpoint/协议/transport/预算/主体不可用硬停全批，无重试、重评、重开或资格。发现Provider问题集中处理；没有有效新证据不原样重买15。
 **限制与依赖：** 首案未认证、两处分歧和共同语义修复保持未完成。旧3/15与历史2/15不拼，新资格0；正式15、自然消费、8E和下表产品依赖保留。泛指不补全称/措辞不升级事实门；ADR0116不复活。
 **已完成准备：** 单一117行隔离适配器；20项新旧检查及独立41项回归通过（重叠），实际代码复核native final严格读回/新主体谱系/current-route核验通过，旧冻结和strict replay保持，新五cells/request/identity精确不变。方案d7bf39c634a603b1bcee299de7e7d87e596e258c6c9b4c5afe8bc9c9329aa3e4。
-**当前下一动作：** 免费核编辑协议和集中诊断方案，区分确定的返回缺字段与未证的遗漏原因，结合两处分歧选择共同修法；不原样重买剩余尾链。详见docs/plans/2026-10-09-remaining-checkpoint-tail-result.md。
+**当前下一动作：** 免费对照完整初评/fresh任务、现有表示和两处分歧/旧正反例，提交共同语义修法取舍及最小区分性验证范围；不原样重买剩余尾链。协议去留见docs/plans/2026-10-09-editor-protocol-audit.md。
 
 ## Dependencies and Follow-through
 
@@ -42,7 +42,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-已授权五尾链因缺block协议硬关闭并封存。免费核已有编辑失败、输入/工具schema与实际传输能力后选择共同修法；不补旧字段或重开付费批。新资格0、正式15和下游依赖保留。
+已授权五尾链因缺block硬关闭；免费协议审计支持保留四字段与严校验。下一免费工作包回到完整初评/fresh与两处分歧选择共同语义修法及区分性验证，不补旧字段或重开付费批。新资格0、正式15和下游依赖保留。
 
 ## History
 
