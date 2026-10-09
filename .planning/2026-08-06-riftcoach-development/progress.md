@@ -1,3 +1,10 @@
+## 2026-10-09 已授权五尾链首次编辑协议硬关闭
+
+- 用户“确认吧，继续下一轮”已授权；3954ff16/CI37912659534全绿，唯一waiter57588实时精确准备/clean HEAD/native预检后首次启动runner69576。运行期间源码/HEAD保持，现两者退出。
+- claim-scope:6 Flash1完整返回，但submit_review_edits的edits[0]缺必填block，strict Changes.model_validate复现missing/edits.0.block；按协议硬故障accepted_tail_schema_validation关闭。成稿未组装、业务checkpoint/双审未产生，fresh及observed:2..5未发，无重试或补字段。
+- 实际输入10728/输出327=11055tokens，unknown0/receiptless0，估价0.009498元，活动14.266秒/Host0。15原件/6白名单JSON严格只读封存，SHA4628e972…fbad0c5，逐项hash一致，旧六尾链原封存不变；新增资格0。
+- 结果与精确校验诊断公开；canonical/活动计划已转免费核四字段编辑任务/schema和传输能力，遗漏原因未证，不原样再切剩余例开付费批。接续PAUSED，旧2/15和3/15各自保留、两处分歧/首案缺口/正式15/自然消费/8E及下游依赖保持。
+
 ## 2026-10-09 登录中断筛查、真实关闭与五尾链接续准备
 
 - checkpoint批在用户恢复后首次启动，首案Flash1/GLM0、11224tokens、unknown0/receiptless0、估价0.0097792元。独立Host serverOverloaded缺native final，显式reviewer_unavailable硬关闭；不是已认证语义拒绝或Provider额度不足。

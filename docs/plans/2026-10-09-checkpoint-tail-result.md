@@ -1,5 +1,7 @@
 # Checkpoint六尾链：恢复后Host硬故障关闭结果
 
+后续未执行五例方案已另获授权并首次执行，但首案claim-scope:6 Flash缺必填block导致协议硬关闭；本旧批结果/缺口不变。最新行动与账目见2026-10-09-remaining-checkpoint-tail-result.md；本文接续准备/未授权描述是当时快照。
+
 用户在最初独立主体503付费前停止之后明确恢复。冻结d430046c、公共CI37883909798全绿，沿同一方案231338b6…cff93aeb首次启动document-checkpoint-tails-20261009；没有重开此前已关闭的accepted-tail批。
 
 ## 实际结果与首次偏离

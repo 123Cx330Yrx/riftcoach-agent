@@ -1,5 +1,7 @@
 # 未执行五尾链：集中诊断冻结准备
 
+2026-10-09执行状态：用户已明确授权；3954ff16/CI37912659534全绿后首次启动。第一例Flash返回缺required block，协议硬失败关闭，仅1调用/11055tokens、fresh0/认证0/其余四案未发。已严格封存，接续PAUSED；本批不可重开。最终结果与下一动作见2026-10-09-remaining-checkpoint-tail-result.md。以下未授权/Provider0/无run的准备描述保留为授权前快照。
+
 ## 目标与取舍
 
 补足claim-scope:6、observed:2、observed:3、observed:4、observed:5的必要编辑/fresh开发观察。它们在两次六尾链Host硬故障批中都没有发出请求。scope:4已有本次真实Flash编辑但无有效native双审，保留覆盖缺口，不重买首案或新签旧意见。

@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "旧checkpoint六尾链已关闭；未执行五尾链新方案已冻结，等待具体新付费授权及本提交公共CI。"
+pause_reason: "已授权五尾链首次执行因Flash编辑缺必填block硬关闭；只读封存完成，下一动作免费核共同编辑协议与诊断方案，不重开付费批。"
 ---
 
 # RiftCoach 当前执行状态
@@ -19,23 +19,23 @@ native final，reviewer_unavailable硬关闭，已认证阶段0、fresh/其余�
 先前“首例实质范围错误”属于未完成交付意见，不能当已认证业务失败，相关表述已更正。
 结果与账目：docs/plans/2026-10-09-checkpoint-tail-result.md。
 
-当前工作包：为claim-scope:6、observed:2..5准备新集中编辑/fresh诊断，首案已执行但未认证的
-覆盖缺口保留，不重复购买它、不重签意见、不重开关闭批。新Host改用真实gpt-6.1-sol子主体，
-通信final已通过；业务native导入仍须逐阶段核原生谱系/当前task/checkpoint/完整policy与全文。
-用单一隔离适配器复用冻结旧observer/handoff/seal，五份accepted历史初评只作原件输入，
-不新签历史、不重买初评；新预算最多10调用/967680tokens/3000活动秒/86400Host秒、
-未缓存估价7.862272元非硬封顶。方案d7bf39c634a603b1bcee299de7e7d87e596e258c6c9b4c5afe8bc9c9329aa3e4，
-主线程20项/独立41项回归通过（有重叠）；真实独立代码复核final与新主体谱系/current-route核验通过。
-旧冻结准备/原封存strict replay精确不变，五cells/request/identity保持；新准备精确重建。
-具体计划：docs/plans/2026-10-09-remaining-checkpoint-tail-diagnostic.md。下一动作：取得该新范围
-明确付费授权及最终提交公共CI全绿后，实时预检/clean exact HEAD下首次执行；当前新Provider0、
-未建新run/等待器，自动接续PAUSED，不借关闭批剩余预算、不缓存未来Host可用性。
-有效语义失败停该案继续独立案，身份/来源/native/checkpoint/transport/预算/主体不可用硬停全批。
-泛指不补全称，措辞建议不升级事实门，全文事实/解释/修法/reason/引用及保留内容均须核。
+五尾链已获用户“确认吧，继续下一轮”明确授权；3954ff16/公共CI37912659534全绿，唯一
+等待器核clean exact HEAD/精确准备/当前真实Sol-native主体后首次执行方案d7bf39c6…29aa3e4。
+claim-scope:6仅1Flash完整返回，10728输入+327输出=11055tokens，unknown0/receiptless0，
+未缓存估价0.009498元；工具编辑项遗漏required block，strict Changes校验按协议硬故障关闭，exit1。
+首次偏离在编辑参数，不是Host/额度故障或已认证语义失败；编辑成稿未组装、业务审查未派发，
+有效阶段0、fresh0、observed:2..5未发。没有补block、改原件或重试；旧scope:4缺口另保留。
+15原件/6公开JSON严格只读封存并复核原件hash一致，SHA4628e972…fbad0c5；原六尾链封存不变。
+结果/精确错误/账目：docs/plans/2026-10-09-remaining-checkpoint-tail-result.md。自动接续已PAUSED，
+waiter/runner均退出，未超10调用/967680tokens/3000活动秒/86400Host秒的新授权，余量不借用。
+下一动作：免费对照已有实际编辑失败、四字段任务/工具schema与Provider传输能力，核是否存在
+可复现构造冲突后选择共同修法；不沿原剩余例自行另开付费批，不以自动补字段掩盖失败。
+模型遗漏block的输入/政策因果和整稿语义未证；工程代码复核/预检与20/41项重叠检查不当业务证据。
+真实全文双审/fresh门保留；泛指不补全称、措辞不升级事实门，历史初评不重签或重买。
 
 两处分歧attribution:1/scope:3不下传；Provider共同语义修复尚未证明，ADR0116否决机制不复活。
 旧文档3/15与历史严格2/15独立保留、不拼跨批成功数，新增资格0；正式同批15、review-controls、
-自然消费与8E仍未完成。集中暴露剩余问题后统一修复，达到既有条件再做同版本正式15。
+自然消费与8E仍未完成。集中失败证据后统一修复，达到既有条件再做同版本正式15。
 自然Coach/四块联动、本人Training、Worker/DB/API/UI/journal、前端审美/重做/头像、Memory、
 身份运维、两树整合和八维学习继续保留在活动计划依赖。
 

@@ -1,3 +1,9 @@
+## 2026-10-09 编辑返回缺定位字段，不能凭锚点补成有效交付
+
+- 实际request系统规则与工具input_schema.required均明确block/before/after/reason，Flash仅返回后三项。现有strict校验复现edits.0.block missing；明确的首次偏离在模型参数，构造冲突或输入负担因果仍未证明，不把协议拒绝当Host/额度故障或语义错误。
+- 失败发生在编辑成稿/阶段文件/checkpoint之前，无业务审查可导入。代码复核/当前native预检通过不等于Host已审整稿，也不需为这次格式诊断补签一个StageAssessment。
+- 唯一原文锚点可能帮助人工理解建议，但不能补字段或改response后继续关闭批；新schema建议也必须复核生产者/消费者和旧合同，不能把推断变真实回执。集中诊断本次只获协议证据，未覆盖后四例，下一步应先免费核共同路径和已有失败再决定修法，避免依次切未执行例继续付费。
+
 ## 2026-10-09 登录中断筛查、真实关闭与五尾链接续准备
 
 - checkpoint批在用户恢复后首次启动，首案Flash1/GLM0、11224tokens、unknown0/receiptless0、估价0.0097792元。独立Host serverOverloaded缺native final，显式reviewer_unavailable硬关闭；不是已认证语义拒绝或Provider额度不足。
