@@ -13,26 +13,16 @@
 
 ## Active Work Package
 
-**目标：** 修复真实全文独立审查的任务交付可靠性，为后续集中尾链诊断和同版本15创造有效证据；不降低质量门。
-**已核起点：** 剩余十一初评扫描十接受、一scope:3分歧；旧attribution:1分歧保留。
-历史严格2/15与旧文档3/15不拼接。九个Host控制八一致、一分歧，完整policy交付不是充分语义修法。
-**实际路径与结果：** 六尾链方案33ce91c8…caab8ce已获授权，在62154124/CI37876307787全绿后首次执行。
-仅scope:4编辑发送并完整返回，中单败早死修为0.5；主审全文暂接受，独立native新final错绑旧批。
-真实事件fetch拒绝绑定；按硬故障全批停止，runner自行关闭。1Flash/GLM0、11741tokens、unknown0，
-活动24.359秒、Host803.266秒、未缓存估价0.0112268元。fresh及另五案未发，已认证阶段0。
-只读回放和21原件/8白名单封存通过，未认证Host正文仅哈希；接续PAUSED。
-**当前动作：** 新checkpoint六尾链入口及冻结准备完成，精确task在submit/运行时发送前/seal强制核验；来源损坏可abort关闭但不能通过严格封存，提交后不重复交付。
-六个Provider输入/request/身份/预算与原方案完全一致；11项公开替身检查、编译、最终独立代码复核及真实native预检通过。
-三次代码复核native多余括号失败原样保留，作者改多行JSON后实际事件核验通过；没有业务重评、Provider调用或资格。
-方案231338b6…cff93aeb，Flash6/GLM6、1161216tokens、3600活动秒/86400Host秒，估价9.4347264元非硬计费封顶。
-具体计划：docs/plans/2026-10-09-checkpoint-tail-diagnostic.md；已冻结preparation及readiness，Provider0/无等待器/无业务run/接续PAUSED。
-下一动作：最终提交公共CI及此方案新授权后才单次首次执行，执行前重验真实主体/native及clean exact HEAD；长全文跨自动压缩稳定仍未证。
-**边界与失败分支：** 本批已关闭且不可重开，不发剩余Provider预算或自行另开付费批。
-新范围先完成可检查的修法/来源与任务绑定验证；全六尾链通过也不自动触发完整15。
-泛指不补全称，统计不足以解释胜负与明确因果断言分开，措辞建议不升级事实门。
-ADR0116已否决的全段解释账本不复活；全部改动/保留内容、reason与引用仍须真实全文双审。
-正式同批15、review-controls、自然消费及8E未完成；自然Coach/本人Training/四块联动/前端、
-Memory、身份运维、两树整合和八维学习保持下表依赖；主树未完成前端不动。
+**目标：** 在现有教练报告Review→必要编辑→fresh路径集中发现尚未测到的修法风险，修复共同问题后解锁同版本完整15及自然消费。
+**起点与差距：** checkpoint六尾链实际仅首案1Flash/11224tokens返回；Host容量故障无native final，硬关闭。有效阶段0；其余五案及首案fresh未执行。21次401无项目操作。关闭结果已严格封存，Provider0旧状态已纠正。
+**已选路径：** 只准备claim-scope:6、observed:2..5的新尾链，复用五份真正accepted历史初评，不重买首案/初评、不重新评级关闭批。一个隔离适配器复用冻结observer、完整handoff及seal；旧模块对象/源码/原件保持。
+**Host处理：** 原中转不支持Luna；新gpt-6.1-sol子主体真实通信final通过。新计划绑定其原生UUID，代码复核与当前路由预检后，实际阶段仍按checkpoint/SHA/全文policy/native final导入。
+**交付与验收：** 只读结果/公开停止记录、真实原件摘要；新五例完整替身往返、语义失败分流/硬故障停止、checkpoint/native/来源/late-close拒绝、旧模块回归和旧冻结重建；独立代码复核及具体冻结方案。替身/通信不当模型质量证据。
+**成本与决策：** 拟最多5Flash+5GLM、967680tokens、3000活动秒/86400Host秒、未缓存估价7.862272元非硬封顶。新付费范围未授权，准备不读取凭证或发送Provider，不启动run。六案旧授权不能借余量重开。
+**失败分支：** 语义拒绝停该案依赖阶段并继续独立案；身份/来源/native/checkpoint/协议/transport/预算/主体不可用硬停全批，无重试、重评、重开或资格。发现Provider问题集中处理；没有有效新证据不原样重买15。
+**限制与依赖：** 首案未认证、两处分歧和共同语义修复保持未完成。旧3/15与历史2/15不拼，新资格0；正式15、自然消费、8E和下表产品依赖保留。泛指不补全称/措辞不升级事实门；ADR0116不复活。
+**已完成准备：** 单一117行隔离适配器；20项新旧检查及独立41项回归通过（重叠），实际代码复核native final严格读回/新主体谱系/current-route核验通过，旧冻结和strict replay保持，新五cells/request/identity精确不变。方案d7bf39c634a603b1bcee299de7e7d87e596e258c6c9b4c5afe8bc9c9329aa3e4。
+**当前下一动作：** 取得具体新五例付费授权及本提交公共CI全绿后，实时预检/clean exact HEAD下首次执行。详见docs/plans/2026-10-09-remaining-checkpoint-tail-diagnostic.md。
 
 ## Dependencies and Follow-through
 
@@ -52,7 +42,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-新六尾链方案已冻结；最终提交公共CI全绿及具体新授权后单次首次执行，发送前真实预检；授权前Provider0，旧批关闭不可重开。
+五尾链准备已冻结；取得具体新范围付费授权及本提交公共CI全绿后实时预检/单次首次执行。关闭批不重开，当前新Provider0/无run。
 
 ## History
 

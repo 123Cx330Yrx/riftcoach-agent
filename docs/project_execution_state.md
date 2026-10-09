@@ -4,12 +4,45 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "新checkpoint六尾链方案已冻结准备，Provider0；待具体新授权及最终提交公共CI，旧批关闭、接续暂停。"
+pause_reason: "旧checkpoint六尾链已关闭；未执行五尾链新方案已冻结，等待具体新付费授权及本提交公共CI。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
+
+2026-10-09用户恢复项目：先前checkpoint六尾链在d430046c/CI37883909798全绿后确实首次执行，
+scope:4仅1Flash编辑完整返回，11224tokens、unknown0、估价0.0097792元；独立Host容量故障无
+native final，reviewer_unavailable硬关闭，已认证阶段0、fresh/其余五例未发送。
+原生筛查还核21次401缺认证头均无项目操作；账号变更具体因果未证，不视为Provider额度耗尽。
+20原件/9公开JSON严格只读封存，原件不变；最初503付费前停止记录已原字节恢复公开留存。
+先前“首例实质范围错误”属于未完成交付意见，不能当已认证业务失败，相关表述已更正。
+结果与账目：docs/plans/2026-10-09-checkpoint-tail-result.md。
+
+当前工作包：为claim-scope:6、observed:2..5准备新集中编辑/fresh诊断，首案已执行但未认证的
+覆盖缺口保留，不重复购买它、不重签意见、不重开关闭批。新Host改用真实gpt-6.1-sol子主体，
+通信final已通过；业务native导入仍须逐阶段核原生谱系/当前task/checkpoint/完整policy与全文。
+用单一隔离适配器复用冻结旧observer/handoff/seal，五份accepted历史初评只作原件输入，
+不新签历史、不重买初评；新预算最多10调用/967680tokens/3000活动秒/86400Host秒、
+未缓存估价7.862272元非硬封顶。方案d7bf39c634a603b1bcee299de7e7d87e596e258c6c9b4c5afe8bc9c9329aa3e4，
+主线程20项/独立41项回归通过（有重叠）；真实独立代码复核final与新主体谱系/current-route核验通过。
+旧冻结准备/原封存strict replay精确不变，五cells/request/identity保持；新准备精确重建。
+具体计划：docs/plans/2026-10-09-remaining-checkpoint-tail-diagnostic.md。下一动作：取得该新范围
+明确付费授权及最终提交公共CI全绿后，实时预检/clean exact HEAD下首次执行；当前新Provider0、
+未建新run/等待器，自动接续PAUSED，不借关闭批剩余预算、不缓存未来Host可用性。
+有效语义失败停该案继续独立案，身份/来源/native/checkpoint/transport/预算/主体不可用硬停全批。
+泛指不补全称，措辞建议不升级事实门，全文事实/解释/修法/reason/引用及保留内容均须核。
+
+两处分歧attribution:1/scope:3不下传；Provider共同语义修复尚未证明，ADR0116否决机制不复活。
+旧文档3/15与历史严格2/15独立保留、不拼跨批成功数，新增资格0；正式同批15、review-controls、
+自然消费与8E仍未完成。集中暴露剩余问题后统一修复，达到既有条件再做同版本正式15。
+自然Coach/四块联动、本人Training、Worker/DB/API/UI/journal、前端审美/重做/头像、Memory、
+身份运维、两树整合和八维学习继续保留在活动计划依赖。
+
+以下为历史记录；当前行动以本段为准。
+
+## 2026-10-09 checkpoint六尾链执行前准备（已被上述关闭结果接续）
+
 
 2026-10-09继续：Host恢复漂移补救已接入新的六例尾链入口，方案
 231338b6b8ef970600e322311b82f2d68489cb5c3b527c3659d4d267cff93aeb，
@@ -34,7 +67,7 @@ clean exact HEAD，单次首次执行；不可重开旧批或借其余量，不�
 自然Coach/四块联动、本人Training、Worker/DB/API/UI/journal、前端审美/重做/头像、
 Memory、身份运维、两树整合及八维学习保持活动计划依赖。
 
-以下为历史记录；当前行动以本段为准。
+
 
 ## 当前行动
 

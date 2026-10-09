@@ -1,3 +1,12 @@
+## 2026-10-09 登录中断筛查、真实关闭与五尾链接续准备
+
+- checkpoint批在用户恢复后首次启动，首案Flash1/GLM0、11224tokens、unknown0/receiptless0、估价0.0097792元。独立Host serverOverloaded缺native final，显式reviewer_unavailable硬关闭；不是已认证语义拒绝或Provider额度不足。
+- 原生21次401均command_count0；5次主审容量失败含成功工具，已执行操作不能因turn failed而抹除。更正先前“首例实质范围错误”的过度结论，本地草稿不当StageAssessment。
+- 严格只读封存20原件/9公开JSON，原件hash保持；最初付费前503记录按真实resumption SHA原字节恢复公开。首案fresh/后五案未发、认证0、资格0；批不可重开。
+- 用户恢复项目并要求策略改良；新gpt-6.1-sol子Agent通信final真实通过，拟只准备未执行五尾链、最多10调用/967680tokens/3000活动秒/86400Host秒/估价7.862272元非硬封顶。用单一隔离适配器复用旧完整核心，不改冻结源码、不重复买首案或初评。新付费范围仍未授权。
+- 结果/限制见2026-10-09-checkpoint-tail-result.md。旧3/15与历史2/15独立、两处分歧、同版本正式15/自然消费/8E与全部下游依赖保留；接续自动任务当前PAUSED。
+- 最终准备：新旧20项217.66秒、独立41项446.82秒通过（重叠不累计），实际独立代码复核native final严格读回、新Sol主体谱系/current-route通过；旧冻结prepare与strict replay保持，新五cells/request/identity精确不变。方案d7bf39c634a603b1bcee299de7e7d87e596e258c6c9b4c5afe8bc9c9329aa3e4，具体计划remaining-checkpoint-tail-diagnostic；下一动作只在新具体授权和本提交公共CI全绿后首次执行，当前新Provider0。
+
 ## 2026-10-09 固定任务应在运行时强制核验，停止不能依赖完整来源重建
 
 - 只在helper或末次seal验证pin不充分：运行时必须在下一send前验证checkpoint与完整task，再沿原native/全文质量门，漏pin应硬停。
