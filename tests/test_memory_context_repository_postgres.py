@@ -1,13 +1,18 @@
 from __future__ import annotations
 
+import json
 from datetime import timedelta
 from uuid import UUID
+
+import sqlalchemy as sa
+import pytest
 
 from app.conversations.models import PendingUserMessage, compute_message_content_sha256
 from app.memory.composition import build_typed_memory_materializers
 from app.memory.context_models import MemoryContextBinding, MemoryContextRecordKind
 from app.memory.models import (
     CandidateKind,
+    CandidateMutationDisposition,
     DecisionActorKind,
     MemoryOperation,
     ProvenanceKind,
@@ -16,13 +21,18 @@ from app.memory.models import (
 )
 from app.persistence.conversation_repository import PostgresConversationRepository
 from app.persistence.memory_context_repository import PostgresMemoryContextRepository
+from app.memory.training_materializers import TrainingProgressMaterializer
+from app.persistence.training_query_repository import PostgresTrainingQueryRepository
+from app.persistence.training_writer import PostgresTrainingTargetWriter
 from tests.memory_candidate_postgres_support import (
     BASE,
     migrated_memory_repository,
     pending_candidate,
     seed_conversation,
 )
-from tests.test_training_repository_postgres import _accept, _activate_payload, _identity_and_candidate
+from tests.test_training_repository_postgres import (
+    ARTIFACT_SHA, _accept, _activate_payload, _identity_and_candidate, _seed_terminal_review,
+)
 
 
 def _materialize(
@@ -216,3 +226,105 @@ def test_observed_context_excludes_self_only_records_but_keeps_global_preference
             row for row in snapshot.records if row.kind is MemoryContextRecordKind.REVIEW_MEMORY
         )
         assert review.relationship_role is RelationshipRole.OBSERVED
+
+
+def _progress(repository, factory, *, number, plan_id, conversation, relationship,
+              subject, progress_id, value):
+    task_id, run_id = _seed_terminal_review(factory, number=number,
+        conversation_id=conversation, relationship_id=relationship, subject_id=subject)
+    candidate = _identity_and_candidate(repository, factory, number=number,
+        conversation_id=conversation, kind=CandidateKind.TRAINING_PROGRESS,
+        payload={"value": {"plan_id": str(plan_id), "metric_key": "deaths_before_15",
+            "metric_value": value, "observed_at": BASE.isoformat()}},
+        source_task_id=task_id, source_run_id=run_id, source_artifact_sha256=ARTIFACT_SHA)
+    writer = PostgresTrainingTargetWriter(progress_id_factory=lambda: progress_id,
+        clock=lambda: BASE + timedelta(days=1))
+    result = repository.accept_candidate(owner_id="memory-owner",
+        candidate_id=candidate.candidate_id, actor_id="memory-owner",
+        actor_kind=DecisionActorKind.USER, now=BASE + timedelta(days=1),
+        materializers={CandidateKind.TRAINING_PROGRESS: TrainingProgressMaterializer(writer)})
+    assert result.disposition is CandidateMutationDisposition.ACCEPTED
+
+
+def test_latest_training_progress_tie_matches_query_and_coach_context():
+    with migrated_memory_repository() as (repository, factory, _engine):
+        subject, relationship, conversation = seed_conversation(factory, number=321)
+        candidate = _identity_and_candidate(repository, factory, number=322,
+            payload=_activate_payload(), kind=CandidateKind.TRAINING_PLAN,
+            conversation_id=conversation)
+        plan_id = _accept(repository, candidate.candidate_id).candidate.materialized_target_id
+        higher = UUID("94000000-0000-4000-8000-000000000002")
+        lower = UUID("94000000-0000-4000-8000-000000000001")
+        # Insert the higher UUID first: neither insertion order nor timestamps
+        # distinguish these two events. Both consumers must use the same tie-break.
+        for number, progress_id, value in ((323, higher, 1.0), (324, lower, 2.0)):
+            _progress(repository, factory, number=number, plan_id=plan_id,
+                conversation=conversation, relationship=relationship, subject=subject,
+                progress_id=progress_id, value=value)
+        page = PostgresTrainingQueryRepository(factory).list_progress(owner_id="memory-owner",
+            relationship_id=relationship, metric_key="deaths_before_15",
+            include_history=False, limit=50)
+        assert page.events[0].observed_at == page.events[1].observed_at
+        assert page.events[0].created_at == page.events[1].created_at
+        assert page.events[0].progress_id == higher
+        snapshot = PostgresMemoryContextRepository(factory).load(_binding(
+            conversation_id=conversation, relationship_id=relationship,
+            subject_id=subject, role=RelationshipRole.SELF))
+        progress, = (r for r in snapshot.records if r.kind is MemoryContextRecordKind.TRAINING_PROGRESS)
+        assert progress.record_id == page.events[0].progress_id
+        assert json.loads(progress.content)["metric_value"] == page.events[0].metric_value
+
+
+@pytest.mark.parametrize("has_plan", [True, False])
+def test_context_uses_one_plan_when_another_transaction_replaces_it(has_plan):
+    with migrated_memory_repository() as (repository, factory, engine):
+        subject, relationship, conversation = seed_conversation(factory, number=331)
+        first_id = None
+        if has_plan:
+            first = _identity_and_candidate(repository, factory, number=332,
+                payload=_activate_payload(), kind=CandidateKind.TRAINING_PLAN,
+                conversation_id=conversation)
+            first_id = _accept(repository, first.candidate_id).candidate.materialized_target_id
+            _progress(repository, factory, number=333, plan_id=first_id,
+                conversation=conversation, relationship=relationship, subject=subject,
+                progress_id=UUID("94000000-0000-4000-8000-000000000003"), value=2.0)
+        switched = False
+        second_id = None
+
+        def replace_after_plan_read(conn, cursor, statement, params, context, executemany):
+            nonlocal switched, second_id
+            if switched or "FROM training_plans" not in statement:
+                return
+            switched = True
+            # The reader's SELECT has executed, but the next SELECT under READ
+            # COMMITTED will see this separate committed Candidate transaction.
+            second = _identity_and_candidate(repository, factory, number=334,
+                payload=_activate_payload(expected_version=1 if has_plan else None),
+                kind=CandidateKind.TRAINING_PLAN,
+                conversation_id=conversation)
+            second_id = _accept(repository, second.candidate_id).candidate.materialized_target_id
+            _progress(repository, factory, number=335, plan_id=second_id,
+                conversation=conversation, relationship=relationship, subject=subject,
+                progress_id=UUID("94000000-0000-4000-8000-000000000004"), value=1.0)
+
+        sa.event.listen(engine, "after_cursor_execute", replace_after_plan_read)
+        try:
+            snapshot = PostgresMemoryContextRepository(factory).load(_binding(
+                conversation_id=conversation, relationship_id=relationship,
+                subject_id=subject, role=RelationshipRole.SELF))
+        finally:
+            sa.event.remove(engine, "after_cursor_execute", replace_after_plan_read)
+        assert switched and second_id != first_id
+        plans = [r for r in snapshot.records if r.kind is MemoryContextRecordKind.TRAINING_PLAN]
+        progresses = [r for r in snapshot.records if r.kind is MemoryContextRecordKind.TRAINING_PROGRESS]
+        if has_plan:
+            plan, = plans
+            progress, = progresses
+            assert plan.record_id == first_id
+            assert UUID(json.loads(progress.content)["plan_id"]) == plan.record_id
+            assert json.loads(progress.content)["metric_value"] == 2.0
+        else:
+            assert plans == progresses == []
+        page = PostgresTrainingQueryRepository(factory).list_plans(owner_id="memory-owner",
+            relationship_id=relationship, include_history=False, limit=50)
+        assert page[0].plan_id == second_id  # The replacement really committed.

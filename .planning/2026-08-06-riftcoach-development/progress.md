@@ -1,3 +1,10 @@
+## 2026-10-09 Training页面与Coach记忆同对象消费修复
+
+- 两处静态疑点已在独立Postgres真库复现红灯：同时间进度UUID排序相反、Plan SELECT后另一Candidate事务换Plan导致Plan/Progress混绑。Memory只选择一次Plan并统一UUID降序；无计划并发激活也保持两投影为空。
+- 最终9项Memory/Training真库检查9.99秒通过，13项Memory消费1.70秒通过；Sol独立精确SHA复核无阻断、原生final实读，独立34项纯检查有重叠不累计。不是模型质量/训练效果证据。
+- Docker两个运行socket残留由官方停止/可恢复目录备份解决，仅启动原postgres/15432；新建专用test DB已删除，原库head0014。Provider0、无API/模型Worker，未改主树前端/冻结政策或准入。
+- 证据见training-context-consistency；下一免费核服务器Progress创建者及指标映射，保留主观反馈/测量区别及原全部质量/产品依赖。
+
 ## 2026-10-09 自然Coach已有消费路径核验
 
 - compiler/Runtime/共享预算review/编辑/fresh/publication/Evidence/receipt/Worker路径已有；四份应用/构造测试58 passed/14.04秒，可靠Worker恢复11 passed/2.56秒。未发现需修复的接线缺陷，未改产品代码或读取真实密钥/DB。

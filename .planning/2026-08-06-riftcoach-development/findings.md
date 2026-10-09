@@ -1,3 +1,9 @@
+## 2026-10-09 同对象Training读取需要共同排序与一次Plan选择
+
+- 时间与创建时间完全并列时，Training查询DESC/Memory ASC使页面UUID尾号2值1.0与Coach记忆尾号1值2.0矛盾；编号稳定裁决需统一，不能解释为效果或真实先后。
+- READ COMMITTED的单事务不保证SELECT间active Plan不变，两个选择器实际在另一Candidate提交后混绑。复用一次Plan选择能保证本次训练投影一致；不扩大为所有Memory的时点快照。
+- 公开Candidate POST强制user_structured_input；Progress的deterministic来源不能由客户端声明。Writer的terminal/task/run/artifact gate是消费者证据，还需核服务器测量生产者是否接线，不推断已有真实训练闭环。
+
 ## 2026-10-09 当前分歧责任位置与删除字段的信息损失
 
 - attribution:1当前block14检出/修法正确，block4泛指被补成全部指标；旧经济扩题不能替代定位。scope:3当前明确中单、2.5/0.5检错正确，争议在修法“并未带来”的观测/因果读法；旧省略范围误读不能移植。

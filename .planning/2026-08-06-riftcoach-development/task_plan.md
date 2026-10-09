@@ -13,16 +13,14 @@
 
 ## Active Work Package
 
-**目标：** 在现有教练报告Review→必要编辑→fresh路径集中发现尚未测到的修法风险，修复共同问题后解锁同版本完整15及自然消费。
-**起点与差距：** 原checkpoint批首案scope:4仅1Flash/11224tokens，Host故障无native final关闭；新授权五尾链在3954ff16/CI37912659534全绿后首次执行，仅claim-scope:6 Flash1/11055tokens，工具参数缺block协议硬关闭。两批有效阶段均0，旧首案与新首案fresh、observed:2..5均未发；缺口各自保留。
-**已选路径：** 保留四字段与严格拒绝。当前attribution原文误读与scope修法观测/因果读法不支持共同根因；离线反例证实直接删修法丢指控身份、人工explanation可区分但不保证判断正确。尚无充分共同修法，不建候选发送器或付费冻结；转核自然Coach已有工程路径及独立缺口，不补模型字段/改旧原件/重签初评。
-**Host处理：** Sol开发复核和实时谱系/current-route预检通过；本次编辑参数失败在成稿/checkpoint前，未派业务审查。未来实际阶段仍须checkpoint/SHA/全文policy/native final；工程证据不当业务认证。
-**交付与验收：** 新批15原件/6公开JSON只读strict seal保留；免费脚本从9份固定SHA公共seal审计11次真实编辑，实际schema与SDK接缝重建一致；7项离线检查覆盖字段丢失/通道/证据漂移/锚点歧义。工程复核不当模型质量证据，未改冻结模型源码。
-**成本与决策：** 用户明确“确认吧，继续下一轮”授权最多5Flash+5GLM、967680tokens、3000活动秒/86400Host秒、估价7.862272元非硬封顶。实际Flash1/GLM0、11055tokens、unknown0/receiptless0、估价0.009498元、活动14.266秒/Host0；未超预算，闭批余量不可用于重开或新批。接续自动任务PAUSED，唯一waiter/runner已退出。
-**失败分支：** 语义拒绝停该案依赖阶段并继续独立案；身份/来源/native/checkpoint/协议/transport/预算/主体不可用硬停全批，无重试、重评、重开或资格。发现Provider问题集中处理；没有有效新证据不原样重买15。
-**限制与依赖：** 首案未认证、两处分歧和共同语义修复保持未完成。旧3/15与历史2/15不拼，新资格0；正式15、自然消费、8E和下表产品依赖保留。泛指不补全称/措辞不升级事实门；ADR0116不复活。
-**已完成准备：** 单一117行隔离适配器；20项新旧检查及独立41项回归通过（重叠），实际代码复核native final严格读回/新主体谱系/current-route核验通过，旧冻结和strict replay保持，新五cells/request/identity精确不变。方案d7bf39c634a603b1bcee299de7e7d87e596e258c6c9b4c5afe8bc9c9329aa3e4。
-**当前下一动作：** 自然Coach路径核验完成，69项已有离线检查通过、无接线缺陷，当前1.5.6真实消费未证。免费追踪本人Training采用/反馈及四块同对象消费的身份/版本/恢复，完成独立验收准备并修明确缺陷。证据见review-responsibility-decision与coach-consumption-path-audit；不重买剩余尾链。
+**目标：** 同一本人训练对象在Training查询和Coach记忆中选择同一最新进度；一次记忆读取不把旧计划与新计划的进度混合。
+**起点与差距：** 发现training_query_repository按progress_id降序打破时间并列，而memory_context_repository升序；后者还两次选择active Plan，在READ COMMITTED并发换计划时可能混合对象。需最小可复现红灯，不将静态推断当真实运行事故。
+**实现路径：** 保留已有Candidate采用/版本/终态与进度追加合同，在Memory读取中选择一次active Plan，共用于Plan/Progress投影；时间并列排序与Training查询一致，不增加写入口或模型调用。
+**交付与验收：** 公共夹具验证同时间记录及读取中换计划；相邻Training/Memory查询、候选/身份/API检查；隔离真库验证同对象与回滚，避免触碰已有卷/数据库。
+**失败分支：** 若红灯不能复现，缩回证据而不造修法；若涉及业务语义变化，重审合同。数据库检查只能在本次新建专用test DB运行。
+**边界与依赖：** Provider0，不改主树前端/冻结模型政策，不自动准入或重开闭批。两处分歧、旧2/15及3/15、新资格0、正式15/当前组合自然消费/8E与所有下游保持。
+**验证结果：** 两真库红灯已复现，修后含无计划并发边界9项通过；13项Memory消费通过，Sol精确SHA真实原生代码复核无阻断。专用test DB已删除，原库head保持；见training-context-consistency。
+**当前下一动作：** 收尾提交推送并核公共CI；随后免费追踪实际服务器Progress创建者与已批准指标映射，核完整复盘→Candidate生产路径，不把主观反馈当测量。
 
 ## Dependencies and Follow-through
 
@@ -42,7 +40,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-已授权五尾链缺block硬关闭；协议审计及责任反例取舍完成，尚无充分共同语义修法。自然Coach已有工程路径69项离线检查通过。下一免费工作包追踪本人Training采用/反馈与四块同对象消费的身份/版本/恢复，不补旧字段、重开付费批或把旧应用替身当当前组合消费。新资格0、正式15和下游依赖保留。
+五尾链硬关闭、尚无充分共同语义修法；既有Coach路径已核。本人Training页面/Coach记忆的并列Progress和换Plan混绑两真库反例已修复，9项真库/13项消费检查通过。下一免费动作核服务器Progress创建者与已批准指标映射、完整复盘→Candidate路径；不补旧字段、重开批或当当前组合真实消费。新资格0、正式15及全部下游保留。
 
 ## History
 
