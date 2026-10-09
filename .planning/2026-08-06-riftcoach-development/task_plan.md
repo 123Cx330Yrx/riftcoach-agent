@@ -39,7 +39,7 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-五尾链硬关闭、尚无充分共同语义修法；已有同对象Training/Memory缺陷修复。生产路径审计确认没有自动Progress创建者，先修了时间线缺失变零的Summary→报告→查询/MCP→页面路径，后端131/前端18检查通过。下一免费动作形成测量范围/时间/跨run去重最小合同；不补旧字段、重开批或当当前组合真实消费。新资格0、正式15及全部下游保留。
+五尾链硬关闭、尚无充分共同语义修法；同对象Training/Memory与nullable修复保留。服务器逐场生产已接线并通过23公开测量及31真库检查；仍待新提交公共CI与实际自然消费，不当真实训练效果。下一免费核本人Training计划创建/候选说明与用户accept的HTTP/UI可达性，补最短断点；不补旧字段、重开付费批或提前准入。新资格0、正式15及全部下游保留。
 
 ## History
 
