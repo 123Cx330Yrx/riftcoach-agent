@@ -1,5 +1,71 @@
 # 完整15主线恢复：编辑与语义候选
 
+## 当前接续：固定10例集中诊断（2026-10-10）
+
+用户核清旧聊天及临时接续后要求“开启新一轮长征好好继续推进”。临时聊天已提交
+d546bd23的回执/原生交接/严格回放工具；本轮复用该工具，回到原10例开发诊断范围，
+不把未授权的45调用全15诊断当必经前置。当前实现、检查和具体准备已完成，尚未新付费授权/执行。
+
+入口仍为scripts.run_full15_resumption_candidate，显式`--selection diagnostic10`；
+prepare、observe、load_plan/replay同时绑定固定案例及顺序、run_id、源码指纹和精确预算。
+完整15来源库存保持原样；不接受自由案例列表，不默选清单外案例，不手改旧准备JSON。
+独立run为document-focused10-resumption-candidate-20261010，旧run不重开、不借余额。
+
+顺序为attribution:1、scope:3、claim-scope:1、claim-scope:4、claim-scope:6、scope:4、
+observed:2..5。两处分歧先验证；正确控制、明确全称真错及六类未认证尾链一批收齐。
+policy改变，10例均新初评；只有双审接受且判断符合源材料的初评才进入必要编辑/fresh。
+Host标签不发送给Provider，保持四项ReportAssessment全真及fresh pass>=85、无实质误报漏检。
+
+上限28调用（GLM-5.3/high19、Flash9）、2709504tokens、8400活动秒、86400Host秒，
+单次32768输出/300秒、SDK retry0，保守未缓存估价28.4471296元，非账单硬封顶。
+正确控制不得因误判而编辑；该失败停止其依赖。语义拒绝停该案并继续独立案，
+身份/来源/native/checkpoint/协议/transport/预算/主体不可用硬故障停全批；无重试重评重开。
+完成状态按该冻结清单判断，不把10例扫描完成当正式15完成或产品资格。
+
+主审为当前聊天真实root，独立审者需为该root真实子主体；旧临时聊天身份不沿用。
+开发复核和当下native路由预检不替代逐阶段全文双审，不证明未来Host容量。
+完成相称选择隔离/实际回执/停止/只读回放验证及独立开发复核后，提交核同版本公共CI，
+再一次性确认具体方案成本；运行前核clean exact HEAD、新run不存在和即时主体。
+
+结果决策：两处分歧、正反控制与尾链支持候选后，准备原首失败停标准下的正式同版本15；
+有反证则按实际首次偏离集中修复，撤回候选充分性，不叠近义提示或立即重买全15。
+Training/自然消费及全部后续依赖不取消；本轮不转Training、不提前授资格。
+
+### 本轮精确准备与验证
+
+41项执行/回放检查及32项编辑/教学相邻检查通过。独立复核建议将10例cells中的
+candidate_request_sha256显式保留，已从完整库存按key选取带摘要的行并核与实际字节相等；
+最终小改受影响14项补跑通过（199.69秒），不重复累计。测试使用模拟Provider/Host。
+编译、diff与治理通过；未创建业务run或Provider请求。
+
+当前真实主审01a12190-25d7-79a1-9380-bccc9b355cb9；独立主体
+01a121b7-8b8d-79b0-897e-9e1307e2c983，原生API核parent/root一致及最新唯一completed final。
+原生开发复核事件：
+01a121b7-8b8d-79b0-897e-9e1307e2c983/01a121b7-8d72-7de0-ad75-88e99990426e/msg_05824002b93a8ad8016ac926a59828819584054619f3ec96fa。
+实读final status=approved、blockers=[]，仅开发复核，不导入业务StageAssessment。
+native-final-attestation-v1预检通过；当前输入正文不可读但route/final可核，未来容量不保证。
+
+create-only准备目录C:/Users/33502/Documents/Agent/outputs/riftcoach-focused10-preflight-20261010：
+- preparation.json规范计划SHA d976aa1ce4dae9dc7fd7e5c2a6051053c650ec68a857036657d9a63778aabbd5。
+- 文件SHA 924b721563351ce01277e82ccd9d0278274bfb8de8e15bf117ae9d6aecc06a98。
+- development-native-final.json实读投影SHA 2063c69bd82ce6f28a2fa437a9168079401399e42747fa6ca1276b7a70f7f1f3。
+- native-lineage.json、native-preflight.json、settings-check.json及preflight-summary.json保留。
+配置只读检查确认两模型/凭据存在，无Provider创建、无密钥输出。较早完整15准备不改原件。
+
+无--execute模式及当前prepare()重建与准备完全相等。临时提交d546bd23/CI37963794076
+已全绿，本次源码选择范围不同，仍须本提交公共CI；不能借旧CI或旧28调用规模建议发送。
+当前authorization=false，准备中的未授权标记是授权前快照；如用户随后批准，另保存真实
+authorization绑定本方案/提交/CI/时限，不回写准备或旧批。
+
+首次执行明确带`--selection diagnostic10`和上述preparation/plan-sha/current-root/current-child，
+使用本提交公共ci-run、D:/riftcoach-agent/.env及安装Codex只读事件入口。每阶段按dispatch.txt
+精确task-checkpoint路径/SHA读全文，作者重读同checkpoint并返回自己的唯一多行JSON原生final，
+主审独立完成自己的notes；用现有full15_resumption_evidence submit导入真实事件。
+不可用走abort硬停；结束后replay/seal核实际调用/known/unknown/receiptless/最早偏离/未执行，
+create-only白名单公开封存。无自动完整15、重评、旧意见补签或失败原件修改。
+
+## 以下为历史准备与实现记录
+
 用户纠正把“继续”接到Training的路线漂移后，本包回到原初评→必要编辑→fresh。
 已核原15、剩余11初评和三轮尾链五份封存共435份原件SHA一致，无缺失或改写。
 旧2/15与文档3/15独立、两处分歧保留，尾链新增认证0。旧runner退出、自动任务PAUSED。

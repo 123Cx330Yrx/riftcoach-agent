@@ -78,8 +78,9 @@ class Host:
         return evidence.read(folder / 'review-submission.json')
 
 
-def setup_run(tmp_path, monkeypatch, fault=None):
-    plan = runner.prepare(root_thread_id='synthetic-root', independent_thread_id='synthetic-independent')
+def setup_run(tmp_path, monkeypatch, fault=None, *, selection='full15'):
+    plan = runner.prepare(root_thread_id='synthetic-root', independent_thread_id='synthetic-independent',
+                          selection=selection)
     runner._write_json(tmp_path / 'plan.json', dict(preparation_plan=plan, plan_sha256=runner.canonical_sha(plan)))
     calls = []
     by_document = {request.messages[1].content: row for row, _, _, request in runner.controls()[1]}
@@ -236,4 +237,57 @@ def test_host_clock_cannot_lower_final_time_or_rebind_a_wait(tmp_path, monkeypat
             receipt = evidence.read(path)
             receipt['binding']['response_sha256'] = '0'*64
             path.write_text(json.dumps(receipt), encoding='utf-8')
+    with pytest.raises(ValueError): evidence.replay(tmp_path, event_source=host)
+
+
+@pytest.mark.parametrize('rejected_stage,expected_calls', [(None, 12), ('initial', 10),
+    ('revision', 11), ('final', 12)])
+def test_focused_scope_sends_only_selected_cases_and_replays_complete_diagnostic(
+        tmp_path, monkeypatch, rejected_stage, expected_calls):
+    plan, factory, calls = setup_run(tmp_path, monkeypatch, selection='diagnostic10')
+    host = Host(plan, tmp_path, rejected_stage + '_reject' if rejected_stage else None)
+    result = runner.observe(factory, tmp_path, plan, event_source=host, adjudicate=host.adjudicate)
+    assert result['scan_completed'] and len(result['cases']) == 10, result
+    assert [case['key'] for case in result['cases']] == list(runner.DIAGNOSTIC)
+    assert len(calls) == expected_calls
+    excluded = {row['key'] for row in runner.controls()[0]} - set(plan['sequence'])
+    assert all(not (tmp_path / key.replace(':', '-')).exists() for key in excluded)
+    sent_documents = {request.messages[1].content for request in calls}
+    assert all(request.messages[1].content not in sent_documents
+               for row, _, _, request in runner.controls()[1] if row['key'] in excluded)
+    sealed = evidence.replay(tmp_path, event_source=host)
+    assert sealed['accounting']['calls'] == expected_calls
+    assert result['experiment'] == plan['run_id'] != runner.RUN_ID
+    assert result['unexecuted_keys'] == [] and not sealed['production_admitted']
+    with pytest.raises(ValueError, match='handoff_scope'):
+        evidence.material(tmp_path, next(iter(excluded)), 'initial')
+
+
+@pytest.mark.parametrize('fault,expected_calls', [('identity', 1), ('bad_edit', 5)])
+def test_focused_hard_stop_keeps_exact_unexecuted_inventory(tmp_path, monkeypatch, fault, expected_calls):
+    plan, factory, calls = setup_run(tmp_path, monkeypatch, fault, selection='diagnostic10')
+    host = Host(plan, tmp_path, fault)
+    result = runner.observe(factory, tmp_path, plan, event_source=host, adjudicate=host.adjudicate)
+    assert not result['scan_completed'] and len(calls) == expected_calls, result
+    assert result['unexecuted_keys'] == plan['sequence'][len(result['cases']):]
+    assert evidence.replay(tmp_path, event_source=host)['accounting']['calls'] == expected_calls
+
+
+@pytest.mark.parametrize('change', ['selection', 'budget', 'experiment', 'orphan'])
+def test_focused_replay_rejects_scope_budget_run_or_excluded_case_tampering(tmp_path, monkeypatch, change):
+    plan, factory, _ = setup_run(tmp_path, monkeypatch, selection='diagnostic10')
+    host = Host(plan, tmp_path)
+    runner.observe(factory, tmp_path, plan, event_source=host, adjudicate=host.adjudicate)
+    if change in ('selection', 'budget'):
+        saved = evidence.read(tmp_path / 'plan.json')
+        if change == 'selection': saved['preparation_plan']['case_selection'] = 'full15'
+        else: saved['preparation_plan']['budget']['max_calls'] += 1
+        saved['plan_sha256'] = runner.canonical_sha(saved['preparation_plan'])
+        (tmp_path / 'plan.json').write_text(json.dumps(saved), encoding='utf-8')
+    elif change == 'experiment':
+        result = evidence.read(tmp_path / 'result.json')
+        result['experiment'] = runner.RUN_ID
+        (tmp_path / 'result.json').write_text(json.dumps(result), encoding='utf-8')
+    else:
+        (tmp_path / 'claim-scope-3').mkdir()
     with pytest.raises(ValueError): evidence.replay(tmp_path, event_source=host)

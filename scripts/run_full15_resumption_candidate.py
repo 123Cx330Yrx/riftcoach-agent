@@ -28,6 +28,7 @@ from app.runtime.runtime import _ReceiptForwardingCoachBudgetedProvider
 from app.runtime.review_sender import SharedBudgetReviewSender
 from app.runtime.receipted_provider_factory import RunScopedRoleReceiptedProviderFactory
 from scripts import report_contrast_review as candidate
+from scripts.prepare_full15_resumption_candidate import DIAGNOSTIC
 from scripts.review_independence_contract import (
     FINAL_POLICY, MODE_V2, freeze_v2_identity, require_execution_event_source,
     required_binding, validate_independent_event, validate_primary_attestation,
@@ -49,6 +50,8 @@ from scripts.codex_review_event_source import (
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN_ID = 'document-full15-resumption-candidate-20261009'
+RUN_IDS = {'full15': RUN_ID,
+           'diagnostic10': 'document-focused10-resumption-candidate-20261010'}
 STAGES = ('initial', 'revision', 'final')
 VERSION = 'full15-resumption-candidate-runner-v1'
 
@@ -77,6 +80,22 @@ def controls(root=ROOT):
     if len(variants) != 15:
         raise ValueError('full15_candidate_inventory')
     return rows, variants
+
+
+def selected_controls(selection='full15', root=ROOT):
+    """Select a fixed scope without changing any source or request."""
+    if selection not in RUN_IDS:
+        raise ValueError('full15_selection_unknown')
+    rows, variants = controls(root)
+    if selection == 'full15':
+        return rows, variants
+    by_key = {value[0]['key']: value for value in variants}
+    row_by_key = {row['key']: row for row in rows}
+    if (len(by_key) != len(variants) or set(row_by_key) != set(by_key)
+            or len(row_by_key) != len(rows) or not set(DIAGNOSTIC) <= by_key.keys()):
+        raise ValueError('full15_selection_inventory')
+    chosen = [by_key[key] for key in DIAGNOSTIC]
+    return [row_by_key[key] for key in DIAGNOSTIC], chosen
 
 
 class CandidateLimits:
@@ -112,18 +131,22 @@ class CandidateProviderFactory(RunScopedRoleReceiptedProviderFactory):
         super().__init__(**kwargs)
 
 
-def prepare(*, root_thread_id, independent_thread_id, root=ROOT):
-    rows, variants = controls(root)
+def prepare(*, root_thread_id, independent_thread_id, root=ROOT, selection='full15'):
+    rows, variants = selected_controls(selection, root)
     price = DOCUMENT_REVIEW_COACH_CONTRACT.pricing_profiles
     # Every case may need initial + fresh review and one Flash edit. This is a
     # worst-case envelope, not a prediction and not permission to spend it.
     role_calls = {'glm-5.3': 30, 'glm-5.3-flash': 15}
+    if selection == 'diagnostic10':
+        edits = sum(row['expected_initial'] == 'reject' for row in rows)
+        role_calls = {'glm-5.3': len(rows) + edits, 'glm-5.3-flash': edits}
     calls = sum(role_calls.values())
     cost = sum(n * (Decimal(64000) * price['zhipu', model].input_cost_per_million
         + Decimal(32768) * price['zhipu', model].output_cost_per_million) / 1_000_000
         for model, n in role_calls.items())
     source_files = tuple(dict.fromkeys((*qualification.SOURCE_FILES,
         'scripts/report_block_keyed_editor.py', 'scripts/report_contrast_review.py',
+        'scripts/prepare_full15_resumption_candidate.py',
         'scripts/run_full15_resumption_candidate.py',
         'scripts/full15_resumption_evidence.py',
         'scripts/host_review_task_checkpoint.py',
@@ -138,7 +161,7 @@ def prepare(*, root_thread_id, independent_thread_id, root=ROOT):
         'scripts/run_golden_inference_development.py',
         'app/evaluation/role_qualification.py',
         'app/runtime/runtime.py', 'app/runtime/review_sender.py')))
-    plan = dict(kind=VERSION, run_id=RUN_ID, cells=rows,
+    plan = dict(kind=VERSION, run_id=RUN_IDS[selection], case_selection=selection, cells=rows,
         sequence=[r['key'] for r in rows], source_sha256={p: _sha(root / p)
             for p in source_files}, candidate_policy=candidate.VERSION,
         candidate_editor=candidate.editor.VERSION, host_review_submission_mode=MODE_V2,
@@ -296,13 +319,16 @@ def _write_json(path, value):
 
 def observe(factory, directory, plan, *, event_source, adjudicate, before_send=lambda: None):
     require_execution_event_source(plan, event_source)
-    rows, variants = controls()
-    if plan['cells'] != rows or plan['sequence'] != [r['key'] for r in rows]:
+    expected_plan = prepare(root_thread_id=plan['root_thread_id'],
+        independent_thread_id=plan['review_principals']['independent']['principal_id'],
+        selection=plan['case_selection'])
+    rows, variants = selected_controls(plan['case_selection'])
+    if plan != expected_plan:
         raise ValueError('full15_controls_changed')
     directory = Path(directory)
     clock = DevelopmentHostClock(directory, max_host_seconds=plan['max_host_seconds'])
     budget = None
-    result = dict(experiment=RUN_ID, cases=[], scan_completed=False,
+    result = dict(experiment=plan['run_id'], cases=[], scan_completed=False,
         diagnostic_accepted=False, provider_calls=0, new_qualification=0,
         original15_qualified=False, product_admitted=False)
     try:
@@ -472,6 +498,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root-thread-id', required=True)
     parser.add_argument('--independent-thread-id', required=True)
+    parser.add_argument('--selection', choices=tuple(RUN_IDS), default='full15')
     parser.add_argument('--output', type=Path)
     parser.add_argument('--execute', action='store_true')
     parser.add_argument('--preparation', type=Path)
@@ -480,7 +507,8 @@ def main():
     parser.add_argument('--env-file', type=Path)
     parser.add_argument('--codex-executable', type=Path)
     args = parser.parse_args()
-    plan = prepare(root_thread_id=args.root_thread_id, independent_thread_id=args.independent_thread_id)
+    plan = prepare(root_thread_id=args.root_thread_id, independent_thread_id=args.independent_thread_id,
+                   selection=args.selection)
     if not args.execute:
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -492,7 +520,7 @@ def main():
         raise SystemExit('full15 execution requires preparation, plan-sha, ci-run, env-file and codex-executable')
     if args.plan_sha != canonical_sha(plan) or json.loads(args.preparation.read_bytes()) != plan:
         raise SystemExit('full15_frozen_preparation_required')
-    directory = ROOT / 'data/runs/model_comparison' / RUN_ID
+    directory = ROOT / 'data/runs/model_comparison' / plan['run_id']
     if directory.exists():
         raise SystemExit('full15_run_already_exists')
     head = verify_public_ci(args.ci_run)

@@ -30,7 +30,8 @@ def load_plan(directory):
     saved = read(Path(directory) / 'plan.json')
     plan = saved['preparation_plan']
     expected = runner.prepare(root_thread_id=plan['root_thread_id'],
-        independent_thread_id=plan['review_principals']['independent']['principal_id'])
+        independent_thread_id=plan['review_principals']['independent']['principal_id'],
+        selection=plan['case_selection'])
     if plan != expected or saved['plan_sha256'] != runner.canonical_sha(plan):
         raise ValueError('full15_replay_plan_changed')
     return plan
@@ -310,7 +311,7 @@ def replay(directory, *, event_source):
             or elapsed[2] + 0.05 < prior_wall):
         raise ValueError('full15_replay_clock_totals')
     keys = [c['key'] for c in result['cases']]
-    if (result['experiment'] != runner.RUN_ID or keys != plan['sequence'][:len(keys)]
+    if (result['experiment'] != plan['run_id'] or keys != plan['sequence'][:len(keys)]
             or result['unexecuted_keys'] != plan['sequence'][len(keys):]):
         raise ValueError('full15_replay_case_inventory')
     expected_arms = {k.replace(':', '-') for k in keys}
@@ -409,7 +410,7 @@ def replay(directory, *, event_source):
         for c in calls if c['response'] is not None)
     budget_reserved = sum(runner.qualification.size(c['request']) + c['request'].max_tokens
         for c in calls if c['response'] is None)
-    complete = len(keys) == 15 and not unfinished and not result.get('error_type')
+    complete = len(keys) == len(plan['sequence']) and not unfinished and not result.get('error_type')
     if (result['provider_calls'] != len(calls) or result['known_tokens'] != known
             or result['budget_known_tokens'] != budget_known
             or result['budget_unknown_reserved_tokens'] != budget_reserved
