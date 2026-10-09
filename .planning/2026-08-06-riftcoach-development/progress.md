@@ -1,3 +1,11 @@
+## 2026-10-09 服务器逐场Training测量接线
+
+- 选逐场而非重叠窗口：两个显式match键、真实Riot结束时间、active self Plan允许列表/单位；旧泛指key不赋范围。文件字节SHA/规范化Evidence SHA分别核验，不补获取时间或缺失零。
+- 生产已进入实际terminal writer：服务器pending候选/消息/completed同事务，稳定key首次占位跨run/跨聊天去重，拒绝/隐藏/变化不再提案。用户accept再核Plan/来源/单位，system不能接受新测量；不增路由/表/迁移。
+- 真库中断暴露既有batch双列scalars解包故障，改execute并恢复通过；锁序与Candidate一致，并发跨聊天仅一组。11新整链+20相邻真库31通过/28.34秒；独立库删除，业务库head0014不变。
+- 公开测量23通过，相邻157/70两组通过，新4解析例另核，重复不累计；编译/diff通过。Provider0/资格0/PAUSED保持，无真实Riot/模型/页面自然消费证据。新逐场纠错未接，旧泛指纠错保留，已完成/legacy不回填。
+- 合同/源码图/学习见training-match-measurement与ADR0044。下一核本人计划/候选说明与用户accept的HTTP/UI可达性，补最短断点；正式15/共同语义修复/自然消费/8E与全部依赖保留。
+
 ## 2026-10-09 Training生产路径核验与时间线缺失交付修复
 
 - 实读生产者/消费者全app路径并执行公共v2替身：候选0；terminal拒绝deterministic，公开POST固定user_structured_input，gate拒绝Progress。内部Service可用但未找到实际测量创建者，不能将直接构造测试当生产接线。

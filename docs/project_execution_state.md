@@ -45,16 +45,23 @@ waiter/runner均退出，未超10调用/967680tokens/3000活动秒/86400Host秒�
 真库/13项Memory消费检查通过，Sol真实原生开发复核无阻断。单独test DB已删除，
 原库head保持0014；Docker两socket目录可恢复备份后恢复服务，未启动模型Worker。
 见docs/plans/2026-10-09-training-context-consistency.md；不宣称全Memory时点一致或真实训练效果。
-生产侧现已核：v2复盘executor零候选，terminal提案拒绝deterministic；公开POST固定结构化
-用户来源也不能生成Progress，内部Service未找到生产调用者。5项路径合同检查通过。
-另实证timeline原值None在旧聚合变0，部分可用子集被当整组均值；现早期死亡整体/赢/输
-组样本不完整或为空则None。报告、已验签查询/HTTP/MCP、web解码与中英文页面保持未知，
-真正零仍保留。6例修前5失败/1正例、修后全过，相邻后端131/前端18项及类型检查通过。
-证据/兼容及旧历史值边界见docs/plans/2026-10-09-training-progress-source-audit.md。
-4e87e28c公共数据库/web/packaging成功、全CI仍运行；本次新修改另待自己提交的CI。
-下一动作：免费形成服务器Progress测量范围/时间/跨run去重最小合同，以公开正反例选
-接线；不把获取时刻当比赛时间、窗口均值当单场，不新加绕门路由/主观反馈测量。
-真实资格依赖保留，不另开付费批；旧run/报告/请求/评级不回写。
+此前生产缺口已免费接线：新增明确match.deaths_before_15/count及match.vision_score/score，
+只从新evidence_bound_v1完整任务的验签Summary生产逐场、全实际分路测量。Riot比赛结束
+原始毫秒须在Plan创建与task创建之间，未知不填0、不用获取时间补；旧泛指key不映射。
+Summary文件SHA与Evidence规范化SHA分别核验；服务器pending候选、终态消息与completed
+同事务。首次候选按本人关系/Plan/metric/match跨run去重，拒绝/隐藏/变化不重发来源。
+用户accept后才物化，system不能接受新测量；active Plan/单位与完整task再次核验。
+中断反例还发现既有pending batch用scalars读双列的真实恢复缺陷，现改execute并实测恢复。
+公开测量23例通过；相邻合同/API/Worker/Source两组157及70通过（新4例另核，其余不累计重复），
+真库生产/接受/并发/恢复/来源损坏/换Plan及相邻Memory共31通过，28.34秒。
+独立test DB已删除，原库仍head0014；无迁移/Provider/实际Riot消费/资格新增，自动任务PAUSED。
+合同/限制/代码与学习入口：docs/plans/2026-10-09-training-match-measurement.md、ADR0044。
+新逐场纠错、窗口与特定分路尚未接入；旧泛指追加纠错保留。已completed/legacy任务不回填，
+旧run/报告/请求/评级不回写；模型提案独立写事务不在本轮扩大。
+早期死亡nullable整链6例及相邻后端/前端检查保留；6c9f1f67公共DB/packaging/四shards成功，
+web仍运行，全CI尚未确认。此次新接线需自己提交的公共CI，不能借用前一提交。
+下一动作：核本人Training的计划创建/测量候选说明与用户accept在现有HTTP/UI是否实际可达，
+补最短产品断点；随后回到共同语义修复与同版本资格/自然消费的原依赖，不另开付费批。
 模型遗漏block的输入/政策因果和整稿语义未证；工程代码复核/预检与20/41项重叠检查不当业务证据。
 真实全文双审/fresh门保留；泛指不补全称、措辞不升级事实门，历史初评不重签或重买。
 

@@ -69,6 +69,12 @@ def analyze_match_detail(match_detail: dict, puuid: str) -> dict:
     return {
         "match_id": metadata["matchId"],
         "game_version": info.get("gameVersion"),
+        # Retrieval/generation time must never stand in for match end time.
+        "game_end_timestamp_ms": (
+            info.get("gameEndTimestamp")
+            if type(info.get("gameEndTimestamp")) is int
+            and 0 < info["gameEndTimestamp"] <= 253402300799999 else None
+        ),
         "queue_id": info.get("queueId"),
         "game_duration_seconds": duration_seconds,
         "game_duration_minutes": round(duration_minutes, 2),

@@ -27,7 +27,11 @@ from app.memory.models import (
     PendingMemoryCandidate,
 )
 from app.persistence.conversation_records import ConversationMessageRecord, ConversationRecord
-from app.persistence.memory_repository import PostgresMemoryCandidateRepository
+from app.persistence.memory_repository import PostgresMemoryCandidateRepository, _lock_conversation_identity
+from app.persistence.memory_records import MemoryCandidateRecord
+from app.persistence.training_progress_producer import produce_training_progress
+from app.memory.training_measurement import PRODUCER_ID
+from app.product.run_query import RunQueryError
 from app.persistence.task_record import ReviewTaskRecord
 from app.runtime.models import RuntimeArtifactReference
 from app.runtime.signals import RuntimePublicationStatus
@@ -142,7 +146,7 @@ class PostgresTerminalTurnWriter:
         if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 64:
             raise ValueError("limit must be between 1 and 64")
         with self._session_factory() as session:
-            rows = session.scalars(
+            rows = session.execute(
                 sa.select(ReviewTaskRecord.task_id, ReviewTaskRecord.run_id)
                 .where(
                     ReviewTaskRecord.status == "succeeded",
@@ -178,6 +182,15 @@ class PostgresTerminalTurnWriter:
         if any(not gate.allowed for gate in gates):
             return TerminalTurnWriterDisposition.SOURCE_INVALID
 
+        identity = MemoryConversationIdentity(
+            owner_id=turn.binding.owner_id,
+            conversation_id=turn.binding.conversation_id,
+            relationship_id=turn.binding.relationship_id,
+            player_subject_id=turn.binding.player_subject_id,
+            relationship_role=turn.binding.relationship_role,
+        )
+        measurement_candidate_ids = ()
+
         try:
             with self._session_factory() as session:
                 with session.begin():
@@ -191,6 +204,13 @@ class PostgresTerminalTurnWriter:
                     )
                     if not _task_matches_turn(task, turn):
                         return TerminalTurnWriterDisposition.SOURCE_INVALID
+                    # Candidate accept/create also locks relationship before Conversation.
+                    # Acquire that order before taking the Plan lock in measurement production.
+                    if _lock_conversation_identity(
+                        session, owner_id=identity.owner_id,
+                        conversation_id=identity.conversation_id, require_active=True,
+                    ) != identity:
+                        return TerminalTurnWriterDisposition.CONVERSATION_UNAVAILABLE
                     conversation = session.scalar(
                         sa.select(ConversationRecord)
                         .where(
@@ -274,8 +294,22 @@ class PostgresTerminalTurnWriter:
                         session.flush()
                         disposition = TerminalTurnWriteDisposition.CREATED
                     if task.message_projection_status == "pending":
+                        measurement_candidate_ids = produce_training_progress(
+                            session, task=task, turn=turn, message_id=message_id,
+                            identity=identity, repository=self._candidate_repository,
+                            runs_root=self._runs_root,
+                        )
                         task.message_projection_status = "completed"
                         session.flush()
+                    else:
+                        measurement_candidate_ids = tuple(session.scalars(
+                            sa.select(MemoryCandidateRecord.candidate_id).where(
+                                MemoryCandidateRecord.source_task_id == task.task_id,
+                                MemoryCandidateRecord.owner_id == identity.owner_id,
+                                MemoryCandidateRecord.producer_id == PRODUCER_ID,
+                                MemoryCandidateRecord.hidden_at.is_(None),
+                            ).order_by(MemoryCandidateRecord.candidate_id)
+                        ))
         except IntegrityError:
             raise TerminalTurnWriterError(
                 "terminal_turn_integrity_failed"
@@ -284,19 +318,12 @@ class PostgresTerminalTurnWriter:
             raise TerminalTurnWriterError(
                 "terminal_turn_repository_unavailable"
             ) from None
-        except (TypeError, ValueError, ValidationError):
+        except (TypeError, ValueError, ValidationError, RunQueryError, OSError):
             raise TerminalTurnWriterError(
                 "terminal_turn_integrity_failed"
             ) from None
 
-        candidate_ids = []
-        identity = MemoryConversationIdentity(
-            owner_id=turn.binding.owner_id,
-            conversation_id=turn.binding.conversation_id,
-            relationship_id=turn.binding.relationship_id,
-            player_subject_id=turn.binding.player_subject_id,
-            relationship_role=turn.binding.relationship_role,
-        )
+        candidate_ids = list(measurement_candidate_ids)
         for index, (proposal, gate) in enumerate(
             zip(turn.candidate_proposals, gates, strict=True),
             start=1,

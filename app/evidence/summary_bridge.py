@@ -56,6 +56,13 @@ def _ids(rows: list[dict]) -> set[str]:
     return set(ids)
 
 
+def summary_projection_digest(summary: dict) -> str:
+    """Existing canonical projection identity, distinct from artifact byte SHA."""
+    encoded = json.dumps(summary, sort_keys=True, ensure_ascii=True,
+                         separators=(",", ":"), allow_nan=False).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
 def summary_to_evidence(
     summary: dict,
     *,
@@ -84,8 +91,7 @@ def summary_to_evidence(
                 raise ValueError("invalid rows")
         validate_summary_document(summary)
         # No default=str: arbitrary objects and non-finite numbers are not evidence.
-        encoded = json.dumps(summary, sort_keys=True, ensure_ascii=True,
-                             separators=(",", ":"), allow_nan=False).encode("utf-8")
+        summary_digest = summary_projection_digest(summary)
         metadata, request = summary["metadata"], summary["request"]
         matches = summary["matches"]
         failed = summary.get("failed_matches", [])
@@ -149,7 +155,7 @@ def summary_to_evidence(
         bundle = fuse_evidence(riot_matches=facts, data_dragon=data_dragon,
                                official_patch=official_patch, meta_evidence=meta_evidence, now=checked_now)
         return SummaryEvidenceProjection(
-            summary_digest=hashlib.sha256(encoded).hexdigest(),
+            summary_digest=summary_digest,
             included_count=len(included), excluded_count=len(excluded), failed_count=len(failed),
             requested_queue=requested_queue, effective_queue=effective_queue,
             queue_fallback_used=fallback,
