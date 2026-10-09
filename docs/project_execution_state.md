@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "已授权五尾链缺block硬关闭；免费协议审计未发现本地丢字段，下一动作回到共同语义修法选择，不重开付费批。"
+pause_reason: "五尾链硬关闭；离线责任反例未支持共同修法。接续独立产品接线核验，不重开付费批。"
 ---
 
 # RiftCoach 当前执行状态
@@ -32,8 +32,16 @@ waiter/runner均退出，未超10调用/967680tokens/3000活动秒/86400Host秒�
 1次缺block；不是随机可靠率样本或语义认证。实际SDK编码接缝、IPC/stream工程复核未发现
 本地丢字段；官方文档未给出已确认的远端strict开关。保留四字段与严校验，唯一锚点三字段
 仅候选，重复/重叠文本反例保留。证据见docs/plans/2026-10-09-editor-protocol-audit.md。
-下一动作：免费对照完整初评/fresh任务、现有表示及两处分歧/旧反证，选择能作用于共同语义
-问题的机制与最小区分性验证；不沿剩余例另开付费批，不补旧字段或把格式研究当语义修复。
+免费责任取舍已完成：当前attribution分歧在泛指→全部指标误读，scope分歧在正确检错后的
+修法观测/因果读法，不能统一归为当前修法扩题。删suggested_correction会丢旧指控身份，
+人工explanation虽可区分范围，schema仍能接受错误指控；现Pydantic入口拒绝旧投影。
+三固定SHA封存/依赖schema指纹反例重建一致，Sol末次真实原生开发复核通过，Provider0/资格0；
+尚无充分共同修法，不建发送器/付费冻结。见docs/plans/2026-10-09-review-responsibility-decision.md。
+自然Coach既有消费路径已核：58项应用/共享预算/发布/回执/构造检查及11项可靠Worker
+恢复检查通过；未发现需修复的接线缺陷。这是旧opt-in工程证据，未证明当前1.5.6真实消费。
+见docs/plans/2026-10-09-coach-consumption-path-audit.md；不提前另造未准入构造器。
+下一动作：免费追踪本人Training采用/反馈及四块同对象消费的身份/版本/恢复合同，完成
+独立验收准备并修明确缺陷；真实资格依赖保留，不沿剩余例另开付费批。
 模型遗漏block的输入/政策因果和整稿语义未证；工程代码复核/预检与20/41项重叠检查不当业务证据。
 真实全文双审/fresh门保留；泛指不补全称、措辞不升级事实门，历史初评不重签或重买。
 

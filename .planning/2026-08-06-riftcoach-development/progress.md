@@ -1,3 +1,16 @@
+## 2026-10-09 自然Coach已有消费路径核验
+
+- compiler/Runtime/共享预算review/编辑/fresh/publication/Evidence/receipt/Worker路径已有；四份应用/构造测试58 passed/14.04秒，可靠Worker恢复11 passed/2.56秒。未发现需修复的接线缺陷，未改产品代码或读取真实密钥/DB。
+- 全app引用核当前1.5.6有诊断factory/资格入口，未见产品应用接线；原opt-in替身证据不能转为当前组合消费。默认Worker及语义资格门保留。
+- 路径与边界见coach-consumption-path-audit；下一独立准备本人Training采用/反馈与四块同对象消费身份/版本/恢复，真实正式15/自然消费及所有下游不冒充完成。
+
+## 2026-10-09 免费责任取舍与离线反例完成
+
+- 当前两处分歧经精确公共seal/path定位并由Sol纠正旧案例混入：attribution在泛指解释，scope在正确检错后的修法观测/因果读法，不支持同一个当前修法扩题根因。
+- 三固定SHA公共封存的小型反例：直接删修法丢指控身份，人工explanation可区分而结构仍可接纳错误指控；现行Pydantic入口拒绝投影。新增依赖/schema指纹及-O拒绝，产物重建相等。
+- 纠正方案/初版代码/边界修订三份completed原生final实读并create-only快照，末次无阻断缺陷；不是业务双审或旧补签。Provider0、资格0、app/冻结源码未改。
+- 取舍见review-responsibility-decision；尚无充分共同修法，不建新发送器/付费冻结。转核自然Coach已有工程消费路径及独立缺口，真实资格、全部下游和关闭批历史保留。
+
 ## 2026-10-09 免费编辑协议审计完成与路径选择
 
 - 固定9份公共封存SHA与11次实际调用，按当时schema和真实SDK编码接缝离线重建：旧五字段2次缺source_ids，四字段9次中8格式合规/1缺block；8合规含空edits，不当稳定率或成功修复数。没有本地丢字段证据，原件及冻结模型源码未改。
