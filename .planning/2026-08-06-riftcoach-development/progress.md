@@ -1,3 +1,14 @@
+## 2026-10-09 六个接受初评的独立尾链诊断准备
+
+核旧十一扫描封存、完整初评/来源/真实request及当前DocumentReviewWorkflow相容，选scope:4、claim-scope:6、observed:2/3/4/5。两份分歧不注入，不重开旧批；历史accepted Exchange没有新IO/usage/签署。
+新增runner/handoff/seal，六router共享预算，逐阶段真实native双审，revision task带原初评+编辑完整policy；fresh只读真实新稿。有效语义拒绝停该例并继续，协议/native/source/transport等硬故障停全批。
+20项离线真实回执替身往返/异常检查通过，含语义拒绝继续、未知预留/receiptless、native导入、tamper/closed/summary校验；既有factory身份/SDK6项通过。工程证据不认证模型质量。
+独立只读复核指出historical count封存缺口，已修；另补所有hard-failed pending source/historical journal/精确预期request/public response验证，不只核role/hash。新增response与receiptless针对性回归通过。
+方案33ce91c802bea1eb0c247fea85d9fc988ca616cdf32869730f913a176caab8ce：Flash6/GLM6、1161216tokens、3600活动秒/86400Host秒、估价9.4347264元。Provider0，未建付费run或等待器；准备文件与计划已落库，尚无新授权。
+旧Host交付提交f029ecb1的公共CI37873263985本轮仍在运行，已完成web/DB/packaging及两个pytest分片；不把未完成CI说成通过。最终执行须最终HEAD全绿及真实主体预检。
+最终源码冻结精确重建、Python编译、治理和diff通过；2项pending response/receiptless定向回归通过。真实主/独立谱系与当前native-final路由只读预检通过，未来可用性不缓存保证，执行前重验。
+两处分歧仍保留，六尾链仅补覆盖，不触发完整15；原文档3/15与另一身份2/15分别保留，8E未完成。下一动作具体新授权/最终CI后首次执行，不借旧预算。
+
 ## 2026-10-09 覆盖核对与Host完整policy交付
 
 用户“ok开始”后核两处实际命题/全文来源，重算早死、补刀、伤害和视野；覆盖表明确五正确、十带错，后者二尾链完成/六未测/二初评分歧。跨批清单不增加资格。

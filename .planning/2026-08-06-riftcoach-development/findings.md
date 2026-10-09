@@ -1,3 +1,11 @@
+## 2026-10-09 接受初评可以隔离复用，但不是补资格或解决分歧
+
+- 当前没有Provider policy改动；六个真实双审接受初评与报告/来源/实际issued request/journal精确相容，能作新独立编辑/fresh历史输入。只注入accepted needs_revision完整意见，不将分歧意见删改后下传。
+- 新共享budget跨六router保持calls/known与unknown reservation/活动时长；每案transport有独立ordinal1/2，保留产品九序号上限。12新调用替代18次重新初评→编辑→fresh，信息目标是六种尾链，不声明通用可靠性。
+- 关闭seal不能仅核role/hash，硬失败pending也必须核原source/historical journal、由真实edited report生成的精确fresh request和public response对真实receipt相等。无call receipt的局部身份失败按真实issued bytes记unknown，不能造receipt或算零消耗。
+- 独立复核发现历史注入summary未核，已补真实journal数校验；若注入后内部异常在journal落盘前发生，保留失败原件但严格seal拒绝假称完整回放，不补造材料。
+- 新六尾链可暴露尚未测的修法问题；收到完整规则仍C06分歧的反证继续存在，不能替代两处分歧的解决或同批完整15资格。
+
 ## 2026-10-09 policy实际发给Provider与显式交付Host是两件事
 
 - 旧Host task只摘要引用全文标准，未显式附完整policy；新入口绑定原始request字节并交付完整原文，编辑携带初评/编辑两规则。不能推断历史审查者从未读过规则。

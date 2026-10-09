@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "剩余11初评扫描全部完成、十接受一分歧并封存；旧第四例与本次修法仍有语义分歧，完整15和自然产品消费未完成。"
+pause_reason: "六个已接受初评的独立编辑/fresh尾链已离线准备并冻结，等待该具体新付费授权和同提交CI；两处语义分歧仍保留，完整15和自然产品消费未完成。"
 ---
 
 # RiftCoach 当前执行状态
@@ -32,9 +32,15 @@ StageAssessment。证据见docs/plans/2026-10-09-host-boundary-calibration.md。
 规则；旧冻结helper不动。26项相关检查通过，19个历史阶段/21份原policy只读传递核验通过。
 新入口尚未真实开放阶段消费，九控制提供完整规则后仍C06分歧，不能称已修复模型语义。
 证据及具体缺口见docs/plans/2026-10-09-review-coverage-and-policy-delivery.md。
-下一动作：核定六个未测尾链在现有合同中的隔离执行方式及两处分歧的前瞻检验，准备
-含初评/必要编辑/fresh的集中诊断；复用旧初评须先核合同，不原样购买完整15。
-执行顺序和退出条件仍见docs/plans/2026-10-08-review-validation-efficiency.md；当前无新付费授权。
+2026-10-09继续：已核六个accepted历史初评与当前报告/来源/request/policy精确相容，
+新增独立edit/fresh批入口、完整policy真实native双审handoff和严格seal；不重买六次初评。
+20项离线检查及6项既有factory身份/SDK回归通过，单例语义拒绝停该例尾链并继续独立案，
+身份/来源/native/协议/transport/预算等硬故障停全批；shared预算及receiptless未知用量保留。
+冻结方案33ce91c8…caab8ce：最多12次（Flash6/GLM6）、1161216tokens、3600活动秒、
+86400Host秒、未缓存保守估价9.4347264元；当前Provider0，无该批run或等待器。
+下一动作：该具体方案获新授权、最终同提交CI全绿和真实主体预检后单次执行六尾链诊断；
+原分歧初评不下传、两处含义分歧未解决，六尾链全过也不直接重买完整15。
+具体计划/失败决策见docs/plans/2026-10-09-accepted-tail-diagnostic.md；当前无新付费授权。
 ADR0116已否决的全段解释账本不复活，既有policy已覆盖这些边界；不能将近义提示当修复。
 自然Coach/四块联动、本人Training、Worker/DB/API/UI/journal、前端审美/必要重做/头像、
 Memory、身份运维、两树整合及八维学习保持活动计划依赖。
