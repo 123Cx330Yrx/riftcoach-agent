@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "六个已接受初评的独立编辑/fresh尾链已离线准备并冻结，等待该具体新付费授权和同提交CI；两处语义分歧仍保留，完整15和自然产品消费未完成。"
+pause_reason: "六例尾链已获具体授权；执行前发现新增测试读取忽略的本机原件，正修复CI资料依赖，等待最终同提交CI全绿。模型冻结方案不变，尚未付费。"
 ---
 
 # RiftCoach 当前执行状态
@@ -38,9 +38,14 @@ StageAssessment。证据见docs/plans/2026-10-09-host-boundary-calibration.md。
 身份/来源/native/协议/transport/预算等硬故障停全批；shared预算及receiptless未知用量保留。
 冻结方案33ce91c8…caab8ce：最多12次（Flash6/GLM6）、1161216tokens、3600活动秒、
 86400Host秒、未缓存保守估价9.4347264元；当前Provider0，无该批run或等待器。
-下一动作：该具体方案获新授权、最终同提交CI全绿和真实主体预检后单次执行六尾链诊断；
+下一动作：按已获具体授权，CI资料修复提交全绿和真实主体预检后单次执行六尾链诊断；
 原分歧初评不下传、两处含义分歧未解决，六尾链全过也不直接重买完整15。
-具体计划/失败决策见docs/plans/2026-10-09-accepted-tail-diagnostic.md；当前无新付费授权。
+具体计划/失败决策见docs/plans/2026-10-09-accepted-tail-diagnostic.md。
+用户已明确允许上述12次尾链边界。dd870b63/CI37875366571在付费前发现新增测试直接
+读取未提交的本机历史目录；缺目录复现实证为FileNotFoundError，旧CI已取消，Provider0。
+仅改测试从已提交公开seal重建离线输入，并禁止测试读取本机data/runs；不补造transport/
+native原件，真实执行controls仍要求原件。冻结SHA33ce91c8…caab8ce精确不变，已授权
+模型输入/政策/身份/预算/失败边界不变；最终测试修复提交须自己的公共CI全绿后首次执行。
 ADR0116已否决的全段解释账本不复活，既有policy已覆盖这些边界；不能将近义提示当修复。
 自然Coach/四块联动、本人Training、Worker/DB/API/UI/journal、前端审美/必要重做/头像、
 Memory、身份运维、两树整合及八维学习保持活动计划依赖。

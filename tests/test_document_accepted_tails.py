@@ -1,5 +1,6 @@
 """Synthetic IO verifies isolation/provenance paths, not model quality."""
 from copy import deepcopy
+from dataclasses import replace
 import hashlib
 import json
 from types import SimpleNamespace
@@ -16,10 +17,64 @@ from tests.test_coarse_edit_diagnostic import Host
 from tests.test_reviewer_role_proposal import providers
 
 
+@pytest.fixture(scope='module',autouse=True)
+def no_private_local_run_reads():
+    """Enforce public-checkout availability even on the operator's machine."""
+    from pathlib import Path
+    forbidden = (runner.base.ROOT/'data/runs').resolve()
+    with pytest.MonkeyPatch.context() as patch:
+        for method in ('read_bytes','read_text'):
+            original = getattr(Path,method)
+            def guarded(path,*args,_original=original,**kwargs):
+                if path.resolve().is_relative_to(forbidden):
+                    pytest.fail('Offline tests cannot read ignored local run originals')
+                return _original(path,*args,**kwargs)
+            patch.setattr(Path,method,guarded)
+        yield
+
+
+def public_controls():
+    """Public historical inputs for synthetic IO, never raw/native evidence.
+
+    A clean checkout has the sealed public export, not the private ignored run.
+    The live controls() must keep requiring those originals; do not reconstruct
+    transport receipts or independent attestations just to satisfy tests.
+    """
+    sealed = json.loads((runner.base.ROOT/runner.SEAL).read_bytes())
+    assert runner.base.sha(runner.base.ROOT/runner.SEAL) == runner.SEAL_SHA
+    preparation = json.loads((runner.base.ROOT/'data/evaluation/results/golden_document_accepted_tails_preparation_20261009.json').read_bytes())
+    rows = {r['key']:r for r in preparation['cells']}
+    sources = {r['key']:s for r,s in runner.backend.frozen_cases()[0]}
+    variants = []
+    for cell,inputs,initial in runner.scan.controls()[1]:
+        key = cell['key']
+        if key not in runner.KEYS:continue
+        public = sealed['public_json_contents']
+        issued = public[key.replace(':','-')+'/issued-request.json']
+        request = replace(initial,timeout_s=issued['timeout_s'],
+            metadata=dict(initial.metadata,coach_budget_contract=issued['metadata']['coach_budget_contract']))
+        raw = runner.base.validate_request(request,transport_id=runner.base.REVIEW_MODEL_TRANSPORT_ID)
+        assert json.loads(raw) == issued
+        assert hashlib.sha256(raw).hexdigest() == rows[key]['historical_raw_request_sha256']
+        response = runner.base.RESPONSE.validate_json(json.dumps(public[key.replace(':','-')+'/response.json']),strict=True)
+        saved_journal = public[key.replace(':','-')+'/stage.json']['journal']
+        arguments = json.loads(saved_journal['raw'])
+        assert response.tool_calls[0].arguments == arguments
+        response = replace(response,tool_calls=(replace(response.tool_calls[0],arguments=arguments),))
+        historical = Exchange(request,response,rows[key]['historical_raw_request_sha256'])
+        _,wire,journal = runner.backend.Workflow.validate_review(runner.base.tool_result(initial,historical),inputs)
+        assert journal == saved_journal
+        variants.append((rows[key],sources[key],inputs,initial,historical,runner.editor.edit_request(inputs,wire)))
+    assert tuple(r['key'] for r,*_ in variants) == runner.KEYS
+    return variants
+
+
 @pytest.fixture(scope='module')
 def frozen():
-    variants = runner.controls()
-    plan = runner.prepare(root_thread_id='synthetic-root',independent_thread_id='synthetic-independent')
+    variants = public_controls()
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(runner,'controls',lambda:variants)
+        plan = runner.prepare(root_thread_id='synthetic-root',independent_thread_id='synthetic-independent')
     return plan,variants
 
 
@@ -29,6 +84,15 @@ def setup_run(tmp_path,monkeypatch,frozen):
     plan = deepcopy(plan)
     monkeypatch.setattr(runner,'controls',lambda:variants)
     monkeypatch.setattr(runner,'prepare',lambda **_:plan)
+    # Policy delivery consumes exact public issued bytes, not invented receipts.
+    historical_root = tmp_path/'public-policy-inputs'
+    for row,_,_,_,historical,_ in variants:
+        arm = row['key'].replace(':','-')
+        target = historical_root/arm
+        target.mkdir(parents=True)
+        (target/'issued-request.json').write_bytes(runner.base.validate_request(
+            historical.issued_request,transport_id=runner.base.REVIEW_MODEL_TRANSPORT_ID))
+    monkeypatch.setattr(runner,'HISTORICAL_RUN',historical_root)
     runner.base.write_new_json(tmp_path/'plan.json',dict(preparation_plan=plan,plan_sha256=runner.base.canonical_sha(plan)))
     return plan,variants
 
@@ -89,6 +153,11 @@ def test_historical_acceptance_and_policy_compatibility(frozen):
         assert historical.issued_request.messages==initial.messages
         _,wire,_=runner.backend.Workflow.validate_review(runner.base.tool_result(initial,historical),inputs)
         assert wire.verdict=='needs_revision' and edit==runner.editor.edit_request(inputs,wire)
+
+
+def test_live_history_does_not_substitute_public_export_for_missing_originals(tmp_path,monkeypatch):
+    monkeypatch.setattr(runner,'HISTORICAL_RUN',tmp_path/'absent-private-run')
+    with pytest.raises(FileNotFoundError):runner.controls()
 
 
 @pytest.mark.parametrize('fault,calls,completed',[(None,12,True),('host_reject',11,True),

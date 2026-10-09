@@ -6702,3 +6702,9 @@ Luna独立离线probe使用已保存player_summary与当前ADVICE合同，未传
 - 5972项Python串行测试约83%触及一小时任务上限取消，是未完成工程验证，不是模型失败或已证断言失败；等待器因此付费前退出，Provider0。
 - 四隔离runner分片并由同HEAD/完整清单/真实终态恰好一次汇总，可缩短墙钟而保留全部测试与旧非pytest门。真实skip沿原标记，不允许遗漏或失败分片获得汇总绿灯。
 - CI-only修复不改变已授权模型方案；保留原授权原件并独立记录新执行HEAD/CI的恢复配置。不能覆盖过去失败日志、把工程检查当语义质量，或重复启动已发送批。
+# 2026-10-09 公开CI资料缺口
+
+新增accepted-tail测试误用live controls读取忽略历史run；本机20项通过不能证明公共CI
+资料可用。缺目录复现FileNotFoundError。改为公开seal完整输入夹具并禁止data/runs
+读取；公开JSON键排序不能代替原issued bytes，按当前业务请求重建后核原SHA，journal
+公开raw arguments保留真实键顺序。真实live controls继续要求原transport/native原件。
