@@ -21,7 +21,8 @@
 **依赖及失败：** 实际6调用GLM4/Flash2，known81642/unknown预留77868tokens，已知估价0.6973828元、未知不免费；receiptless0。runner退出exit1，自动任务PAUSED。本批不重开/补签/借余量；10例未完成、新资格0，scope超时不是语义反证。有限正证据保留，不宣称共同修法/协议可靠性充分。
 **本轮实现与验证（2026-10-10）：** 续接审计更正1d181238只是未使用标量函数/4测试，之前完整时钟与身份互拒表述过宽；58ba12dc回退失败共享集成、旧54检查恢复，三个提交CI均全绿。现已用TimedDocumentBudget复用真实CoachBudgetedProvider账目/自有时钟，完整原始/contrast请求的新时间身份、实际issued SHA、Exchange sender接线完成。25新完整请求/账本检查+4标量+9公开裁决+53旧业务回归共91通过，模型为模拟。旧指纹模块/default/300合同/历史seal原件未改，正式15/资格未推进。
 **本轮发送链交付：** b00a9eaf/CI38039283424已success。GLM600/Flash300实际router→共享ordinal/create-only回执→父子进程worker→SDK stream/close/usage→Exchange→初评/编辑/fresh已离线接通；复用旧生命周期和全文业务校验。新旧transport互拒标记、Host身份不发Provider；5个当前manifest组件及总SHA显式更新，旧裁决/seal原字节与历史源码摘要保持。12发送+25预算+4标量共41、104业务/stream、113factory/应用、63旧full15/合同检查通过；后续相关重核不累计。模型输出/450秒明确模拟，真实子进程不联网。本轮提交需自身公共CI，不能借上轮成功。
-**当前下一动作：** 沿现有runner/handoff/replay接入时间身份、每案900与整批账本，再核Worker续租/取消/失去所有权和发布；见document-review-timed-send-integration。任务900/5calls/401920tokens保持。本轮Provider0/无新run、execution_ready=false；checkpoint/native/严格回放尚未接通，不用旧native补签。具体新付费范围须方案冻结后授权，旧28/45额度不借；正式15、Training与下游保留。
+**本轮执行与取证交付：** 4de565dc/CI38042065301失败于旧scan夹具身份漂移；修公开封存输入/精确请求SHA取材，live旧入口仍拒绝当前源码冒认历史。63旧尾链、7runner、72资格/factory通过。显式time600模式沿既有runner/checkpoint/native/关闭锁/严格回放接通，每案900/5calls/401920tokens及整批墙独立核算；发送/案始终点create-only落盘。迟到完整回包用量已知但不交付，回放不造stage。所有Host/模型为离线替身，不当实审或质量证据；旧seal/裁决原字节保持。
+**当前下一动作：** 核Worker续租/取消/失去所有权及发布边界，然后准备具体新诊断范围和成本方案；见timed-document-execution-evidence。Provider0/无新run/资格0、execution_ready=false；本轮需自己公共CI，不借旧全绿或28/45调用余量、不用旧native补签，正式15/自然消费与下游保持未完成。
 
 ## Dependencies and Follow-through
 

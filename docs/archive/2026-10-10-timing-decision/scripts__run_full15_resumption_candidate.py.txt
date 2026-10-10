@@ -52,7 +52,6 @@ ROOT = Path(__file__).resolve().parents[1]
 RUN_ID = 'document-full15-resumption-candidate-20261009'
 RUN_IDS = {'full15': RUN_ID,
            'diagnostic10': 'document-focused10-resumption-candidate-20261010'}
-TIMED_RUN_IDS = {key: value + '-time600' for key, value in RUN_IDS.items()}
 STAGES = ('initial', 'revision', 'final')
 VERSION = 'full15-resumption-candidate-runner-v1'
 
@@ -83,19 +82,11 @@ def controls(root=ROOT):
     return rows, variants
 
 
-def selected_controls(selection='full15', root=ROOT, *, timing_mode='legacy'):
+def selected_controls(selection='full15', root=ROOT):
     """Select a fixed scope without changing any source or request."""
     if selection not in RUN_IDS:
         raise ValueError('full15_selection_unknown')
-    if timing_mode not in ('legacy', 'time600'):
-        raise ValueError('full15_timing_mode')
     rows, variants = controls(root)
-    if timing_mode == 'time600':
-        from scripts.report_timed_document_workflow import TimedDocumentWorkflow, request_sha
-        variants = [(cell, source, inputs, TimedDocumentWorkflow.make_request(inputs))
-                    for cell, source, inputs, _ in variants]
-        rows = [dict(row, candidate_request_sha256=request_sha(value[3]))
-                for row, value in zip(rows, variants, strict=True)]
     if selection == 'full15':
         return rows, variants
     by_key = {value[0]['key']: value for value in variants}
@@ -140,8 +131,8 @@ class CandidateProviderFactory(RunScopedRoleReceiptedProviderFactory):
         super().__init__(**kwargs)
 
 
-def prepare(*, root_thread_id, independent_thread_id, root=ROOT, selection='full15', timing_mode='legacy'):
-    rows, variants = selected_controls(selection, root, timing_mode=timing_mode)
+def prepare(*, root_thread_id, independent_thread_id, root=ROOT, selection='full15'):
+    rows, variants = selected_controls(selection, root)
     price = DOCUMENT_REVIEW_COACH_CONTRACT.pricing_profiles
     # Every case may need initial + fresh review and one Flash edit. This is a
     # worst-case envelope, not a prediction and not permission to spend it.
@@ -192,21 +183,6 @@ def prepare(*, root_thread_id, independent_thread_id, root=ROOT, selection='full
         stop_rule='No retry, reassessment, restart, old-review reuse, or qualification credit.',
         limitations=['Candidate policy and keyed editor are unproven teaching hypotheses.',
             'Preparation and local tests are not model or product evidence.'])
-    if timing_mode == 'time600':
-        from app.evaluation.document_review_timing_adapter import TIMED_IDENTITY, _TimedLimits
-        plan.update(kind='timed-document-resumption-candidate-runner-v1',
-            run_id=TIMED_RUN_IDS[selection], request_timing_identity=TIMED_IDENTITY,
-            timing_mode=timing_mode, timed_contract=_TimedLimits().descriptor(),
-            per_case_budget=dict(max_calls=5, max_tokens=401920, max_active_seconds=900),
-            execution_ready=False, natural_generation_included=False)
-        plan['budget'].update(max_active_seconds=len(rows) * 900,
-            per_request_seconds={'review': 600, 'generation': 300, 'revision': 300})
-        for path in ('app/evaluation/document_review_timing_adapter.py',
-                'app/evaluation/document_review_timed_transport.py',
-                'scripts/report_timed_document_workflow.py',
-                'app/evaluation/golden_stream_bridge.py', 'app/model_runtime.py',
-                'app/providers/zhipu_stream_adapter.py'):
-            plan['source_sha256'][path] = _sha(root / path)
     return freeze_v2_identity(plan, root_thread_id=root_thread_id,
         primary_id=root_thread_id, independent_id=independent_thread_id)
 
@@ -312,32 +288,17 @@ def validate_abort(marker, bound):
         raise ValueError('full15_abort_invalid')
 
 
-def workflow_for(plan):
-    if plan.get('timing_mode') == 'time600':
-        from scripts.report_timed_document_workflow import TimedDocumentWorkflow
-        return TimedDocumentWorkflow
-    return candidate.ContrastDocumentWorkflow
-
-
-def transport_for_stage(stage, plan):
-    if plan.get('timing_mode') == 'time600':
-        from app.evaluation.golden_stream_bridge import TIMED_FLASH_TRANSPORT_ID, TIMED_REVIEW_TRANSPORT_ID
-        return TIMED_FLASH_TRANSPORT_ID if stage == 'revision' else TIMED_REVIEW_TRANSPORT_ID
-    return CAPACITY_TRANSPORT_ID if stage == 'revision' else REVIEW_MODEL_TRANSPORT_ID
-
-
 class RecordedProvider:
     """Record the actual budgeted attempt before transport; never make a receipt."""
-    def __init__(self, provider, arm, plan=None):
+    def __init__(self, provider, arm):
         self.provider, self.arm, self.stage = provider, Path(arm), None
-        self.plan = plan or {}
 
     def __getattr__(self, name):
         return getattr(self.provider, name)
 
     def chat(self, request):
         folder = self.arm / self.stage
-        transport = transport_for_stage(self.stage, self.plan)
+        transport = CAPACITY_TRANSPORT_ID if self.stage == 'revision' else REVIEW_MODEL_TRANSPORT_ID
         with (folder / 'issued-request.json').open('xb') as stream:
             stream.write(validate_request(request, transport_id=transport))
         try:
@@ -360,16 +321,13 @@ def observe(factory, directory, plan, *, event_source, adjudicate, before_send=l
     require_execution_event_source(plan, event_source)
     expected_plan = prepare(root_thread_id=plan['root_thread_id'],
         independent_thread_id=plan['review_principals']['independent']['principal_id'],
-        selection=plan['case_selection'], timing_mode=plan.get('timing_mode', 'legacy'))
-    rows, variants = selected_controls(plan['case_selection'], timing_mode=plan.get('timing_mode', 'legacy'))
+        selection=plan['case_selection'])
+    rows, variants = selected_controls(plan['case_selection'])
     if plan != expected_plan:
         raise ValueError('full15_controls_changed')
     directory = Path(directory)
     clock = DevelopmentHostClock(directory, max_host_seconds=plan['max_host_seconds'])
     budget = None
-    case_budgets = []
-    case_budget_records = []
-    timed = plan.get('timing_mode') == 'time600'
     result = dict(experiment=plan['run_id'], cases=[], scan_completed=False,
         diagnostic_accepted=False, provider_calls=0, new_qualification=0,
         original15_qualified=False, product_admitted=False)
@@ -381,14 +339,8 @@ def observe(factory, directory, plan, *, event_source, adjudicate, before_send=l
             result['cases'].append(outcome)
             directory.joinpath('transport').mkdir(exist_ok=True)
             _write_json(arm / 'source.json', dict(input_json=inputs.data_json, report=source.report))
-            router = RecordedProvider(factory(cell['key'].replace(':', '-')), arm, plan)
-            if timed:
-                from app.evaluation.document_review_timing_adapter import TimedDocumentBudget
-                budget = TimedDocumentBudget(router, clock=clock)
-                case_budgets.append((key, budget))
-                _write_json(arm / 'case-budget-start.json', dict(key=key, started_active_seconds=budget.started,
-                    max_active_seconds=900, max_calls=5, max_tokens=401920))
-            elif budget is None:
+            router = RecordedProvider(factory(cell['key'].replace(':', '-')), arm)
+            if budget is None:
                 budget = _ReceiptForwardingCoachBudgetedProvider(router,
                     coach_contract=DOCUMENT_REVIEW_COACH_CONTRACT, clock=clock)
                 budget.contract = CandidateLimits(plan['budget'])
@@ -401,31 +353,12 @@ def observe(factory, directory, plan, *, event_source, adjudicate, before_send=l
                     raise ValueError('full15_reassessment_forbidden')
                 clock.before_send()
                 before_send()
-                if timed:
-                    remaining = plan['budget']['max_active_seconds'] - clock()
-                    if (remaining <= 0 or sum(b.calls for _, b in case_budgets) >= plan['budget']['max_calls']):
-                        raise ValueError('full15_batch_budget_exhausted')
-                    from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
-                    reservation = estimate_runtime_request_input_ceiling(request) + request.max_tokens
-                    if sum(b.tokens + b.reserved_tokens for _, b in case_budgets) + reservation > plan['budget']['max_tokens']:
-                        raise ValueError('full15_batch_budget_exhausted')
-                    request = replace(request, timeout_s=min(request.timeout_s, remaining))
                 (arm / router.stage).mkdir(exist_ok=False)
                 sent_stages.append(router.stage)
-                if timed:
-                    _write_json(arm / router.stage / 'send-start.json', dict(
-                        active_seconds=clock(), case_started_active_seconds=budget.started,
-                        requested_timeout_s=request.timeout_s, calls_before=budget.calls))
-                try:
-                    exchange = sender(request)
-                finally:
-                    if timed:
-                        _write_json(arm / router.stage / 'send-finished.json', dict(
-                            active_seconds=clock(), calls_after=budget.calls, known_tokens=budget.tokens,
-                            unknown_reserved_tokens=budget.reserved_tokens, stopped=budget.stopped))
+                exchange = sender(request)
                 exchanges.append(exchange)
                 return exchange
-            flow = workflow_for(plan)(send)
+            flow = candidate.ContrastDocumentWorkflow(send)
             sent_stages = []
             try:
                 router.stage = 'initial'
@@ -480,13 +413,6 @@ def observe(factory, directory, plan, *, event_source, adjudicate, before_send=l
                             outcome['semantic_accepted'] = True
             except BaseException:
                 raise
-            finally:
-                if timed:
-                    record = dict(key=key, calls=budget.calls, known_tokens=budget.tokens,
-                        unknown_reserved_tokens=budget.reserved_tokens, started_active_seconds=budget.started,
-                        finished_active_seconds=clock(), execution_timeout_s=900)
-                    case_budget_records.append(record)
-                    _write_json(arm / 'case-budget-finished.json', record)
             _write_terminal(arm, outcome)
             if clock() >= plan['budget']['max_active_seconds']:
                 raise ValueError('full15_active_deadline')
@@ -501,17 +427,14 @@ def observe(factory, directory, plan, *, event_source, adjudicate, before_send=l
         if isinstance(code, str) and re.fullmatch('[a-z][a-z0-9_]{0,99}', code):
             result['error_code'] = code
     finally:
-        all_budgets = [b for _, b in case_budgets] if timed else ([budget] if budget else [])
-        result.update(provider_calls=sum(b.calls for b in all_budgets),
-            known_tokens=sum(b.tokens for b in all_budgets),
-            unknown_reserved_tokens=sum(b.reserved_tokens for b in all_budgets),
+        result.update(provider_calls=budget.calls if budget else 0,
+            known_tokens=budget.tokens if budget else 0,
+            unknown_reserved_tokens=budget.reserved_tokens if budget else 0,
             timing=clock.summary(), unexecuted_keys=plan['sequence'][len(result['cases']):],
             unfinished_keys=[c['key'] for c in result['cases']
                 if not (directory / c['key'].replace(':', '-') / 'case-result.json').exists()])
         result.update(budget_known_tokens=result['known_tokens'],
             budget_unknown_reserved_tokens=result['unknown_reserved_tokens'])
-        if timed:
-            result['case_budgets'] = case_budget_records
         try:
             from scripts.full15_resumption_evidence import calls_for
             calls = [call for row in result['cases'] for call in calls_for(directory, row['key'])]
@@ -541,7 +464,7 @@ def _write_submission(folder, submission):
 def _write_stage(arm, stage, report, journal, exchange, plan, key, source, inputs, *, initial=False):
     folder = Path(arm) / stage
     response = public_response(json.loads(RESPONSE.dump_json(exchange.response)))
-    transport = transport_for_stage(stage, plan)
+    transport = CAPACITY_TRANSPORT_ID if stage == 'revision' else REVIEW_MODEL_TRANSPORT_ID
     request_raw = validate_request(exchange.issued_request, transport_id=transport)
     if ((folder / 'issued-request.json').read_bytes() != request_raw
             or json.loads((folder / 'response.json').read_bytes()) != response
@@ -576,7 +499,6 @@ def main():
     parser.add_argument('--root-thread-id', required=True)
     parser.add_argument('--independent-thread-id', required=True)
     parser.add_argument('--selection', choices=tuple(RUN_IDS), default='full15')
-    parser.add_argument('--timing-mode', choices=('legacy', 'time600'), default='legacy')
     parser.add_argument('--output', type=Path)
     parser.add_argument('--execute', action='store_true')
     parser.add_argument('--preparation', type=Path)
@@ -586,7 +508,7 @@ def main():
     parser.add_argument('--codex-executable', type=Path)
     args = parser.parse_args()
     plan = prepare(root_thread_id=args.root_thread_id, independent_thread_id=args.independent_thread_id,
-                   selection=args.selection, timing_mode=args.timing_mode)
+                   selection=args.selection)
     if not args.execute:
         if args.output:
             args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -608,11 +530,7 @@ def main():
         event_source = CodexHostReviewEventSource(client, plan)
         require_execution_event_source(plan, event_source)
         generator, reviewer = load_role_settings(args.env_file)
-        factory_type = CandidateProviderFactory
-        if args.timing_mode == 'time600':
-            from app.evaluation.document_review_timed_transport import TimedDocumentProviderFactory
-            factory_type = TimedDocumentProviderFactory
-        factory = factory_type(generator_settings=generator,
+        factory = CandidateProviderFactory(generator_settings=generator,
             reviewer_settings=reviewer, transport_root=directory / 'transport')
         directory.mkdir(parents=True, exist_ok=False)
         (directory / 'plan.json').write_text(json.dumps(dict(

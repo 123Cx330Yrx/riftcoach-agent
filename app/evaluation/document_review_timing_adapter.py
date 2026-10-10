@@ -2,7 +2,7 @@
 
 Classification projects onto the legacy protocol only. Actual timed issued
 bytes and receipt digests retain the new identity. SDK/process admission is
-still closed; neither a default factory nor a product contract selects this.
+available only by explicit candidate opt-in; default product admission is closed.
 """
 from dataclasses import dataclass, replace
 import hashlib

@@ -9,6 +9,9 @@
 |---|---|
 | scripts/audit_document_review_timing.py | 892892c628af3cabffa339bc8c3b6251a267a1dbf04022334f79ca89b65175f3 |
 | app/evaluation/golden_stream_bridge.py | 9cae5009df191f10c94808c8512582128641c3523572e908e148333fd46dd345 |
+| scripts/run_full15_resumption_candidate.py | a846c02612a3c1319cc451b2b86c1db0124a574bd5a36ee13b3aa5c5e0e10e46 |
+
+runner归档在后继time600接入前取4de565dc，仍与同一冻结裁决摘要一致。
 
 原裁决JSON原字节SHA c90a73efbe4c4282fd18c47d279fe13c0ec03ada3716b03743a0f3cbba95feb5，
 旧10例seal SHA76e9a70b808ce297d7d57c8f226a26daaa72f1f932de15f0c39467c582575f30均未改。

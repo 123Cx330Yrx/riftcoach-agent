@@ -139,7 +139,8 @@ def _count(value):
     return value
 
 
-def read_role_calls(directory, *, source_projection=PROJECTION_VERSION, request_role=None):
+def read_role_calls(directory, *, source_projection=PROJECTION_VERSION, request_role=None,
+                    role_contract=None, observation_type=CapacityBridgeObservation):
     """Check the global call namespace and bind each returned raw artifact.
 
     No recursive counting: model paths and stream ordinals come from the shared
@@ -153,7 +154,17 @@ def read_role_calls(directory, *, source_projection=PROJECTION_VERSION, request_
     result_files = {p.name for p in directory.glob("call-result-*.json")}
     expected_results = set()
     calls = []
-    roles = role_descriptor()
+    roles = role_descriptor() if role_contract is None else role_contract
+    if role_contract is None and observation_type is not CapacityBridgeObservation:
+        raise ValueError('role_receipt_diagnostic_contract_invalid')
+    if role_contract is not None:
+        # Explicit diagnostic opt-in, never a caller-selected arbitrary identity.
+        from app.evaluation.document_review_timing_adapter import role_for_request as timed_role
+        from app.evaluation.golden_stream_bridge import TIMED_REVIEW_TRANSPORT_ID, TIMED_FLASH_TRANSPORT_ID, TimedReviewBridgeObservation
+        expected = {k: dict(v, transport_id=TIMED_REVIEW_TRANSPORT_ID if k == 'review' else TIMED_FLASH_TRANSPORT_ID)
+                    for k, v in role_descriptor().items()}
+        if roles != expected or request_role is not timed_role or observation_type is not TimedReviewBridgeObservation:
+            raise ValueError('role_receipt_diagnostic_contract_invalid')
     for ordinal, file in enumerate(files, 1):
         record = _read(file)
         if file.name != f"call-{ordinal:03d}.json" or type(record.get("ordinal")) is not int or record["ordinal"] != ordinal:
@@ -218,7 +229,8 @@ def read_role_calls(directory, *, source_projection=PROJECTION_VERSION, request_
         usage = ({k: getattr(response.usage, k) for k in ("input_tokens", "output_tokens")} if response else None)
         progress_path = stream / "progress.json"
         if usage is None and progress_path.exists():
-            progress = CapacityBridgeObservation.model_validate(_read(progress_path))
+            schema = observation_type if role == 'review' else CapacityBridgeObservation
+            progress = schema.model_validate(_read(progress_path))
             if progress.input_tokens is not None and progress.output_tokens is not None:
                 usage = dict(input_tokens=progress.input_tokens, output_tokens=progress.output_tokens)
         artifacts = [file, request_path] + [p for p in (response_path, reservation_path, terminal_path, result_path, progress_path) if p.exists()]

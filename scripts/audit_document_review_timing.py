@@ -26,7 +26,8 @@ SEAL_SHA = '76e9a70b808ce297d7d57c8f226a26daaa72f1f932de15f0c39467c582575f30'
 CAPSULE = 'data/evaluation/results/golden_document_focused10_timing_metadata_20261010.json'
 OUTPUT = 'data/evaluation/contracts/document_review_timing_decision_20261010.json'
 OUTPUT_SHA = 'c90a73efbe4c4282fd18c47d279fe13c0ec03ada3716b03743a0f3cbba95feb5'
-FROZEN_SOURCES = ('scripts/audit_document_review_timing.py', 'app/evaluation/golden_stream_bridge.py')
+FROZEN_SOURCES = ('scripts/audit_document_review_timing.py', 'app/evaluation/golden_stream_bridge.py',
+                  'scripts/run_full15_resumption_candidate.py')
 SOURCE_ARCHIVE = 'docs/archive/2026-10-10-timing-decision'
 CALLS = tuple((case, stage, role, ordinal) for case in ('attribution-1', 'scope-3')
              for stage, role, ordinal in (('initial', 'review', 1),

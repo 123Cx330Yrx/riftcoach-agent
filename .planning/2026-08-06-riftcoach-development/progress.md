@@ -1,3 +1,10 @@
+## 2026-10-10 时间600执行与原生取证链离线接入
+
+- 4de565dc/CI38042065301四片失败同一旧scan身份夹具；生产拒绝有效。改从公开seal逐项核完整case/请求原字节SHA，另测live原入口仍拒绝当前源码冒认旧identity。63旧scan/accepted/checkpoint/remaining尾链通过，7候选prepare/runner、72旧role资格/factory/document资格通过。
+- 现有runner显式time600新run_id贯通workflow/transport→全文policy/task→checkpoint→原生final导入→关闭锁→严格回放/公开白名单。每案900/5calls/401920tokens独立、初评至fresh不重建，另核整批调用/token/活动墙；Host等待单独记录。
+- 新14工程反例+10时间裁决共24通过（235.38秒），补付费前零调用关闭/回放1项通过；全部模型与Host明确模拟。450+100后fresh350、下案600、Host等待20000不重置；迟到完整回包保留known usage但不交付stage，旧回放制造阶段的接缝已修。错checkpoint/native/abort/transport/observed usage及账目/时点/身份篡改拒绝。
+- 原时间裁决/seal原字节保持，第三份变化的历史runner源码按原摘要归档，冻结审计通过；旧native/Host时钟51项最终通过（665.56秒）。编译/治理/diff通过，Provider0/无run/资格0/PAUSED、execution_ready=false；下一核Worker取消/所有权/发布，再冻结具体成本范围与真实预检。
+
 ## 2026-10-10 新时间发送链与全文业务workflow离线接通
 
 - b00a9eaf/CI38039283424已全success。本轮显式GLM600/Flash300请求贯穿角色router、共享任务ordinal/create-only回执factory、真实父子进程worker/SDK编码/stream/close/usage、Exchange及初评/编辑/fresh。复用共享预算/生命周期和全文业务校验；任务900/5calls/401920tokens保持，默认入口不切换。

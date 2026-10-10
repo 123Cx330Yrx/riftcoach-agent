@@ -46,7 +46,8 @@ def public_controls():
     rows = {r['key']:r for r in preparation['cells']}
     sources = {r['key']:s for r,s in runner.backend.frozen_cases()[0]}
     variants = []
-    for cell,inputs,initial in runner.scan.controls()[1]:
+    from tests.test_document_review_scan import controls as public_scan_controls
+    for cell,inputs,initial in public_scan_controls()[1]:
         key = cell['key']
         if key not in runner.KEYS:continue
         public = sealed['public_json_contents']

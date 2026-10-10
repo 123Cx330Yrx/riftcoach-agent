@@ -31,7 +31,7 @@ def load_plan(directory):
     plan = saved['preparation_plan']
     expected = runner.prepare(root_thread_id=plan['root_thread_id'],
         independent_thread_id=plan['review_principals']['independent']['principal_id'],
-        selection=plan['case_selection'])
+        selection=plan['case_selection'], timing_mode=plan.get('timing_mode', 'legacy'))
     if plan != expected or saved['plan_sha256'] != runner.canonical_sha(plan):
         raise ValueError('full15_replay_plan_changed')
     return plan
@@ -45,13 +45,26 @@ def ensure_open(directory, folder):
 
 
 def role(request):
+    from app.evaluation.document_review_timing_adapter import METADATA, role_for_request
+    if METADATA in request.metadata:
+        return role_for_request(request)
     _, model = runner.candidate.request_identity(request)
     return 'revision' if model == 'glm-5.3-flash' else 'review'
 
 
 def calls_for(directory, key):
     arm = Path(directory) / key.replace(':', '-')
-    calls = read_role_calls(Path(directory) / 'transport' / arm.name, request_role=role)
+    plan = read(Path(directory) / 'plan.json')['preparation_plan']
+    if plan.get('timing_mode') == 'time600':
+        from app.evaluation.document_review_timing_adapter import role_for_request
+        from app.evaluation.golden_stream_bridge import TimedReviewBridgeObservation
+        from app.runtime.reviewer_roles import role_descriptor
+        roles = {k: dict(v, transport_id=runner.transport_for_stage('initial' if k == 'review' else 'revision', plan))
+                 for k, v in role_descriptor().items()}
+        calls = read_role_calls(Path(directory) / 'transport' / arm.name, request_role=role_for_request,
+            role_contract=roles, observation_type=TimedReviewBridgeObservation)
+    else:
+        calls = read_role_calls(Path(directory) / 'transport' / arm.name, request_role=role)
     issued = [s for s in runner.STAGES if (arm / s / 'issued-request.json').exists()]
     if issued != list(runner.STAGES[:len(issued)]) or len(calls) > len(issued):
         raise ValueError('full15_replay_call_inventory')
@@ -66,7 +79,7 @@ def calls_for(directory, key):
             receipt_missing=True, binding=dict(request_sha256=runner._bytes_sha(raw))))
     for name, call in zip(issued, calls, strict=True):
         folder = arm / name
-        transport = runner.CAPACITY_TRANSPORT_ID if name == 'revision' else runner.REVIEW_MODEL_TRANSPORT_ID
+        transport = runner.transport_for_stage(name, plan)
         raw = runner.validate_request(call['request'], transport_id=transport)
         if (role(call['request']) != ('revision' if name == 'revision' else 'review')
                 or raw != (folder / 'issued-request.json').read_bytes()
@@ -106,9 +119,22 @@ def reconstruct(directory, key, calls):
         consumed.append(call)
         if not call['completed']:
             raise PendingTransport('full15_replay_pending_transport')
+        plan = read(Path(directory) / 'plan.json')['preparation_plan']
+        if plan.get('timing_mode') == 'time600':
+            folder = arm / runner.STAGES[len(consumed) - 1]
+            start = read(folder / 'send-start.json')
+            end = read(folder / 'send-finished.json')
+            if (end['stopped'] and end['active_seconds'] - start['case_started_active_seconds'] >= 900):
+                if (read(Path(directory) / 'result.json').get('error_code') != 'timeout'
+                        or (folder / 'stage.json').exists()):
+                    raise ValueError('full15_replay_late_task_binding')
+                # Complete transport usage remains known; the task budget did
+                # not deliver a stage, so replay must not manufacture one.
+                raise PendingTransport('full15_replay_late_task_response')
         return Exchange(issued, call['response'], call['binding']['request_sha256'])
 
-    flow = runner.candidate.ContrastDocumentWorkflow(send)
+    plan = read(Path(directory) / 'plan.json')['preparation_plan']
+    flow = runner.workflow_for(plan)(send)
     error = None
     try:
         if calls:
@@ -234,6 +260,60 @@ def abort(directory, key, stage, reason):
     return dict(stopped=True, key=key, stage=stage)
 
 
+def validate_case_budget(directory, key, calls, plan, result, closed):
+    arm = Path(directory) / key.replace(':', '-')
+    start = read(arm / 'case-budget-start.json')
+    end = read(arm / 'case-budget-finished.json')
+    started, finished = start.get('started_active_seconds'), end.get('finished_active_seconds')
+    def number(value):
+        return type(value) in (int, float) and math.isfinite(value) and value >= 0
+    if (start != dict(key=key, started_active_seconds=started, max_active_seconds=900,
+            max_calls=5, max_tokens=401920) or not number(started) or not number(finished)
+            or finished < started or finished > result['timing']['active_elapsed_seconds'] + .05
+            or closed and finished - started >= 900):
+        raise ValueError('full15_replay_case_clock')
+    known = reserved = count = 0
+    previous = started
+    issued_stages = [name for name in runner.STAGES if (arm / name / 'issued-request.json').exists()]
+    sends = [name for name in runner.STAGES if (arm / name / 'send-start.json').exists()]
+    finishes = [name for name in runner.STAGES if (arm / name / 'send-finished.json').exists()]
+    if sends != finishes or sends != list(runner.STAGES[:len(sends)]) or not set(issued_stages) <= set(sends):
+        raise ValueError('full15_replay_case_send_inventory')
+    for index, name in enumerate(sends):
+        folder = arm / name
+        first, last = read(folder / 'send-start.json'), read(folder / 'send-finished.json')
+        begin, done = first.get('active_seconds'), last.get('active_seconds')
+        if (set(first) != {'active_seconds', 'case_started_active_seconds', 'requested_timeout_s', 'calls_before'}
+                or set(last) != {'active_seconds', 'calls_after', 'known_tokens', 'unknown_reserved_tokens', 'stopped'}
+                or not number(begin) or not number(done) or not previous <= begin <= done <= finished
+                or first['case_started_active_seconds'] != started or first['calls_before'] != count
+                or type(first['calls_before']) is not int or type(last['stopped']) is not bool
+                or not number(first['requested_timeout_s']) or not 0 < first['requested_timeout_s'] <= (300 if name == 'revision' else 600)):
+            raise ValueError('full15_replay_case_send_clock')
+        if name in issued_stages:
+            call = calls[count]
+            timeout = call['request'].timeout_s
+            if begin - started >= 900 or timeout > min(first['requested_timeout_s'], 900 - (begin - started)) + .05:
+                raise ValueError('full15_replay_case_timeout_reset')
+            count += 1
+            if call['response'] is None:
+                reserved += runner.qualification.size(call['request']) + call['request'].max_tokens
+            else:
+                known += call['response'].usage.input_tokens + call['response'].usage.output_tokens
+        elif index != len(sends) - 1 or closed or not result.get('error_type'):
+            raise ValueError('full15_replay_case_presend_failure')
+        if (last['calls_after'] != count or last['known_tokens'] != known
+                or last['unknown_reserved_tokens'] != reserved or count > 5 or known + reserved > 401920
+                or done - started >= 900 and not last['stopped']):
+            raise ValueError('full15_replay_case_accounting')
+        previous = done
+    expected = dict(key=key, calls=count, known_tokens=known, unknown_reserved_tokens=reserved,
+        started_active_seconds=started, finished_active_seconds=finished, execution_timeout_s=900)
+    if end != expected:
+        raise ValueError('full15_replay_case_accounting')
+    return end
+
+
 def replay(directory, *, event_source):
     directory = Path(directory)
     plan = load_plan(directory)
@@ -243,6 +323,8 @@ def replay(directory, *, event_source):
         'known_tokens', 'unknown_reserved_tokens', 'budget_known_tokens', 'budget_unknown_reserved_tokens',
         'new_qualification', 'original15_qualified', 'product_admitted', 'timing',
         'unexecuted_keys', 'unfinished_keys'}
+    if plan.get('timing_mode') == 'time600':
+        fields.add('case_budgets')
     if (not fields <= result.keys() or result.keys() - fields -
             {'error_type', 'error_code', 'validation_errors', 'accounting_error_type'}
             or result.get('accounting_error_type')):
@@ -321,6 +403,8 @@ def replay(directory, *, event_source):
     if actual_arms != expected_arms or not transport_arms <= expected_arms:
         raise ValueError('full15_replay_orphan_case')
     calls, stages, paths, unfinished = [], [], ['plan.json', 'result.json'], []
+    case_budgets = []
+    prior_case_finish = 0
     for index, case in enumerate(result['cases']):
         key = case['key']
         arm = directory / key.replace(':', '-')
@@ -390,6 +474,15 @@ def replay(directory, *, event_source):
                     raise ValueError('full15_replay_failure_changed')
         if case != expected_case:
             raise ValueError('full15_replay_case_changed')
+        if plan.get('timing_mode') == 'time600':
+            record = validate_case_budget(directory, key, actual, plan, result, closed)
+            if record['started_active_seconds'] < prior_case_finish:
+                raise ValueError('full15_replay_case_clock_overlap')
+            prior_case_finish = record['finished_active_seconds']
+            case_budgets.append(record)
+            paths += [f'{arm.name}/case-budget-start.json', f'{arm.name}/case-budget-finished.json']
+            paths += [f'{arm.name}/{name}/{filename}' for name in runner.STAGES
+                for filename in ('send-start.json', 'send-finished.json') if (arm / name / filename).exists()]
         calls.extend(actual)
         paths.append(f'{arm.name}/source.json')
         for name in runner.STAGES:
@@ -411,6 +504,8 @@ def replay(directory, *, event_source):
     budget_reserved = sum(runner.qualification.size(c['request']) + c['request'].max_tokens
         for c in calls if c['response'] is None)
     complete = len(keys) == len(plan['sequence']) and not unfinished and not result.get('error_type')
+    if plan.get('timing_mode') == 'time600' and result['case_budgets'] != case_budgets:
+        raise ValueError('full15_replay_case_budget_changed')
     if (result['provider_calls'] != len(calls) or result['known_tokens'] != known
             or result['budget_known_tokens'] != budget_known
             or result['budget_unknown_reserved_tokens'] != budget_reserved
@@ -424,7 +519,11 @@ def replay(directory, *, event_source):
     cost = Decimal(0)
     for call in calls:
         if call['usage'] is not None:
-            price = runner.DOCUMENT_REVIEW_COACH_CONTRACT.pricing_profiles[runner.candidate.request_identity(call['request'])]
+            identity = runner.candidate.request_identity
+            if plan.get('timing_mode') == 'time600':
+                from app.evaluation.document_review_timing_adapter import request_identity
+                identity = request_identity
+            price = runner.DOCUMENT_REVIEW_COACH_CONTRACT.pricing_profiles[identity(call['request'])]
             cost += (Decimal(call['usage']['input_tokens']) * price.input_cost_per_million
                 + Decimal(call['usage']['output_tokens']) * price.output_cost_per_million) / 1_000_000
     public = {p: read(directory / p) for p in dict.fromkeys(paths)}

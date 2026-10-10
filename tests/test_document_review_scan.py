@@ -19,7 +19,37 @@ from tests.test_reviewer_role_proposal import providers
 
 @lru_cache
 def controls():
-    return runner.controls()
+    # Closed historical batches bind their original source identity. Current
+    # shared code may evolve; use the public frozen inputs for synthetic IO,
+    # never claim today's source fingerprint is that historical identity.
+    sealed = json.loads((runner.base.ROOT / runner.SEAL).read_bytes())
+    assert runner.base.sha(runner.base.ROOT / runner.SEAL) == runner.SEAL_SHA
+    prior = sealed['public_json_contents']['plan.json']['preparation_plan']
+    current, requests = runner.qualification.prepare_qualification()
+    assert current['cases'] == prior['cases']
+    assert tuple(r['key'] for r in sealed['execution_result']['cases']) == runner.HISTORICAL
+    material = dict(current, identity=deepcopy(prior['identity']))
+    sources = {r['key']: s for r, s in runner.qualification.frozen_cases()[0]}
+    variants = []
+    for row in prior['cases']:
+        if row['key'] in runner.HISTORICAL:
+            continue
+        inputs = runner.qualification.Workflow.build_inputs(sources[row['key']])
+        request = runner.qualification.Workflow.make_request(inputs)
+        raw = runner.base.validate_request(request, transport_id=runner.base.REVIEW_MODEL_TRANSPORT_ID)
+        assert raw == requests[row['key']]
+        assert hashlib.sha256(raw).hexdigest() == row['request_sha256']
+        variants.append((dict(row, synthetic_report=False), inputs, request))
+    assert tuple(c['key'] for c, *_ in variants) == runner.KEYS
+    return material, variants
+
+
+LIVE_CONTROLS = runner.controls
+
+
+def test_live_scan_refuses_current_source_identity_for_historical_batch():
+    with pytest.raises(ValueError, match='document_scan_business_identity_changed'):
+        LIVE_CONTROLS()
 
 
 @lru_cache

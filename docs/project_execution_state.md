@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "固定10例已关闭；GLM600/Flash300共享900预算及SDK/进程/workflow发送链已离线接通，checkpoint/native/replay与Worker新时间边界待接，execution_ready=false、未授权新发送；旧批不重开。"
+pause_reason: "固定10例已关闭；GLM600/Flash300发送及runner/checkpoint/native/replay已离线接通，每案900账本保持，Worker边界待核，execution_ready=false、未授权新发送；旧批不重开。"
 ---
 
 # RiftCoach 当前执行状态
@@ -50,9 +50,20 @@ create-only回执factory、真实子进程worker/SDK编码/stream/close/usage、
 63旧full15/合同检查通过；后续角色门51项及构造默认4项相关重核通过，不累计重复项。
 真实子进程使用断网SDK替身，包括五调用fresh通过/拒绝、600关闭迟到与父进程kill/reap；
 450秒是模拟，没有真实模型耗时/语义质量证据。详情见document-review-timed-send-integration。
-下一动作：沿现有runner/handoff/replay接入新时间身份、每案900与整批账本，再核Worker
-续租/取消/失去所有权和发布边界。当前execution_ready=false，无新run/Provider/付费方案；
-checkpoint/native/严格回放未接通，不用旧native补签新请求。
+4de565dc/CI38042065301已failure：四片同一旧scan夹具要求当前共享源码等同旧封存
+身份，被有效身份门拒绝。现仅修公开离线取材，逐项核来源/原请求SHA不变、live旧入口
+仍拒绝；63旧scan/尾链、7候选runner、72旧资格/factory检查通过，不绕过生产身份门。
+现有runner显式time600新run_id已贯通新workflow/transport、checkpoint/native导入、
+关闭锁与严格只读回放白名单；每案独立900/5calls/401920tokens，另核整批墙与账目。
+发送/案始终点create-only取证，Host等待单独累计，不按阶段重置。450+100秒后fresh
+只余350、下案自身600是断网反例。迟到完整transport已知usage但不交付的尾部现在
+严格回放，不造stage或认证。新增真实native规则消费仍用模拟Host验证，不是实审完成。
+原时间裁决/旧seal字节不变，第三份变化历史runner源码按原摘要归档。结果及限制见
+timed-document-execution-evidence。14新时间反例+10公开时间裁决共24、补零调用1项、
+旧native/Host时钟51项最终通过；模拟不计真实资格。
+下一动作：核Worker续租/取消/失去所有权与发布边界，再准备具体新范围及成本授权。
+当前execution_ready=false，无新run/Provider/已授权付费方案；旧native不补签新请求，
+本轮公共CI须自己同SHA验证，不能用前一全绿替代。
 不原样重买未执行例，不调大旧批冻结300秒，不转Training或裁剪来源来绕关。
 新资格0，旧2/15与3/15独立，正式同版本15、自然消费、8E及全部下游依赖仍未完成。
 
