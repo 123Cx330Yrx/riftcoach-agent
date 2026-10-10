@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "固定10例scope:3 fresh超时批已关闭；免费时间裁决已选择GLM600/任务900隔离候选方向，实际新transport未接入/未授权发送；旧批不重开。"
+pause_reason: "固定10例已关闭；GLM600/Flash300完整请求与共享900预算已离线接入，SDK/进程/workflow/native新时间链未接通，execution_ready=false、未授权新发送；旧批不重开。"
 ---
 
 # RiftCoach 当前执行状态
@@ -29,12 +29,20 @@ fresh输入没有历史累积，与另一完成fresh规模近同；不将推理�
 前一ed445256/CI38018028991全success。诊断整批8400没有逐案产品900墙或自然生成，
 不能把其延迟当产品可达；旧transport/observation实际拒600，不能直接改CLI继续。
 取舍见`docs/plans/2026-10-10-document-review-time-decision.md`。
-下一动作：重新设计显式GLM600/Flash300、任务900不变的隔离时间身份候选，必须放在不改动
-旧指纹覆盖模块的独立适配层；本次候选曾直接改共享stream bridge/receipt factory，导致旧合同
-启动时出现Prompt Program component fingerprint drift，已在未提交状态回退，未发Provider。
-旧300合同/默认入口已恢复；已新增不依赖旧stream bridge/receipt factory的离线时间适配器，
-覆盖GLM600、Flash300、共享任务900和新旧身份互拒，33项时间/旧回归检查通过。新发送与native
-交接仍未实现，execution_ready=false；下一步才是把该边界接入独立transport并继续离线核验。
+续接审计已核：58852ee5有效时间裁决、58ba12dc回退失败集成并恢复旧54检查，1d181238
+只是未使用的标量辅助函数/4测试；此前“完整共享时钟/实际身份互拒完成”过宽，现更正。
+三提交公共CI均success；本机Codex502/capacity/429/断流与scope产品300秒截止分别保留，
+429本身不能证明账号限额耗尽。旧103原件及seal Git字节一致，无活动旧runner。
+新完整请求已接入TimedDocumentBudget，复用CoachBudgetedProvider的5调用/401920tokens/
+900自有任务时钟，不按阶段重建；实际issued及SHA保留新时间标记，Exchange与真实预算后
+请求逐字段绑定。15公开来源/政策/schema、生成工具前缀、600受剩余100截短、未知预留、
+时钟倒退/总时耗尽/超用量/错模型/假回执等25新检查通过；4标量/9公开裁决及53旧业务回归
+共91检查通过，Provider为明确模拟。旧默认/300合同和冻结指纹模块/封存原件未改。
+详见document-review-timed-budget-integration。“必须永不改共享指纹模块”是旧实现选择，
+不是用户要求；后续如需扩共享生命周期，显式更新当前manifest并保留历史，不绕过漂移。
+下一动作：新时间身份贯穿SDK/父子进程stream/close/observation及业务workflow，然后接
+checkpoint/native/strict replay和Worker边界。当前execution_ready=false，无新run/Provider/
+付费方案；已有完整请求预算接缝不冒充整条600链或业务质量完成。
 不原样重买未执行例，不调大旧批冻结300秒，不转Training或裁剪来源来绕关。
 新资格0，旧2/15与3/15独立，正式同版本15、自然消费、8E及全部下游依赖仍未完成。
 

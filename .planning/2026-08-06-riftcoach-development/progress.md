@@ -1,3 +1,10 @@
+## 2026-10-10 续接审计纠偏与完整请求时间预算接入
+
+- 原时间裁决有效；失败共享集成在58ba12dc完整回退，1d181238只有未使用标量函数/4测试。三个CI全绿，103原件与Git seal字节不变；本机Codex429/capacity/断流与业务300秒截止分开记录，账号限额具体原因未证。原过宽共享时钟/实际身份互拒描述更正。
+- 新TimedDocumentBudget复用CoachBudgetedProvider真实5调用/401920tokens/900自有时钟，完整原始/contrast请求新时间标记/实际issued SHA/Exchange sender离线接通；不按调用方elapsed重置、不新建账目、不复制transport。旧合同/default/指纹模块未改。
+- 25新完整请求/预算接缝、4标量、9公开时间裁决、53旧预算/workflow/contrast/editor回归共91通过；断网测试，实际compiler生成/工具前缀与初评/编辑/fresh共享，600被剩余100截短。未知预留/停止、超输入/用量/模型、时钟倒退与假receipt拒绝；不是模型语义或SDK600证明。
+- Provider0/无新run/资格0/PAUSED；execution_ready=false。下一贯穿SDK/共享进程stream-close/observation及workflow，再核native回放/Worker；旧预算不借，不另开付费批。详情见document-review-timed-budget-integration，正式15与全部下游未完成。
+
 ## 2026-10-10 免费完成审查时间取舍与真实预算器反例
 
 - 前一收尾ed445256/CI38018028991已全success。新增audit_document_review_timing，默认只读公开seal+18份元数据capsule；元数据原字节逐份绑定旧封存SHA，无私有reasoning/Key或忽略run依赖，出冻结数字证据及源码指纹。

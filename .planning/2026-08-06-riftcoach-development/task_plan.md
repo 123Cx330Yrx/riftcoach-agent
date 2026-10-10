@@ -19,7 +19,8 @@
 **实现路径：** 完整来源/历史事实→现有DocumentReviewWorkflow初评→候选严格编辑组装→完整新稿fresh→真实全文双审。保留现行issues/修法字段与五调用上限；不引入全段审计账本。
 **验证与实际结果：** 已授权10例在d790c157/全绿CI37968309635首次执行，方案d976aa1c…aabbd5。attribution全链94/pass；scope:3初评/编辑通过，fresh发送后300秒超时硬关闭；8案未发。5个完成阶段真实全文双审，103原件SHA/46公开JSON及5个native事件严格回放再核通过，独立收尾无工程阻断。旧离线检查保留，不重复计为业务证据。结果见2026-10-10-focused10-resumption-result。
 **依赖及失败：** 实际6调用GLM4/Flash2，known81642/unknown预留77868tokens，已知估价0.6973828元、未知不免费；receiptless0。runner退出exit1，自动任务PAUSED。本批不重开/补签/借余量；10例未完成、新资格0，scope超时不是语义反证。有限正证据保留，不宣称共同修法/协议可靠性充分。
-**当前下一动作（2026-10-10）：** 免费时间裁决选择GLM600/Flash300、产品任务900及5调用/401920tokens不变的隔离候选方向，见document-review-time-decision。8新反例/29既有预算检查通过，公开18元数据SHA绑定旧seal，真实预算器验证600受900剩余截短、未知不释放及总时耗尽发送0。450秒仅合成边界例，未证明真实完成。旧诊断仅整批8400墙且无自然生成，不当产品时间证据。下一离线接入新显式时间身份的请求/角色/transport/observation/预算/原生回放及Worker边界，旧300/default保持；当前execution_ready=false、Provider0。具体新付费范围须方案冻结后授权，旧28/45额度不借。正式15后置、Training保留。
+**本轮实现与验证（2026-10-10）：** 续接审计更正1d181238只是未使用标量函数/4测试，之前完整时钟与身份互拒表述过宽；58ba12dc回退失败共享集成、旧54检查恢复，三个提交CI均全绿。现已用TimedDocumentBudget复用真实CoachBudgetedProvider账目/自有时钟，完整原始/contrast请求的新时间身份、实际issued SHA、Exchange sender接线完成。25新完整请求/账本检查+4标量+9公开裁决+53旧业务回归共91通过，模型为模拟。旧指纹模块/default/300合同/历史seal原件未改，正式15/资格未推进。
+**当前下一动作：** 把GLM600/Flash300新身份接入SDK/共享进程stream-close/observation和业务workflow，再贯穿checkpoint/native/strict replay及Worker边界；见document-review-timed-budget-integration。任务900/5calls/401920tokens保持，不复制整套transport或绕指纹，必要时显式更新当前manifest、保留历史封存。本轮Provider0/无新run、execution_ready=false；完整发送链未接通，具体新付费范围须方案冻结后授权，旧28/45额度不借。正式15后置、Training与下游保留。
 
 ## Dependencies and Follow-through
 
