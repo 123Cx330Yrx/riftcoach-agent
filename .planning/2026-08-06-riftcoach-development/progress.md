@@ -1,5 +1,6 @@
 ## 2026-10-10 固定10例首次执行与超时硬关闭
 
+- 提交后字节核验发现Git默认归一化CRLF，已按既有.gitattributes做法对本份seal设置-text，保留初次封存SHA；run原件未改，最终Git对象与本机封存逐字节核同。
 - 用户“确认，继续吧”原生授权绑定d790c157/全绿CI37968309635/d976aa1c…aabbd5；即时主体/精确HEAD核验后唯一runner首次执行，无重发。attribution:1初评80→block14编辑→fresh94/pass全链完成；scope:3初评70/block4编辑通过，fresh实际发送后300秒stream_deadline，8案未发。
 - 5个完成阶段均真实全文双审；scope final无回包/stage/认证，semantic_accepted=false只是未完成。block4泛指不补全称，措辞advisory不作事实门；scope本次明确数值修法未隔离旧“并未带来”机制。诊断未完成、资格0/正式15未完成。
 - 实际6调用GLM4/Flash2，known81642tokens、unknown用量1次/预留77868tokens、receiptless0；已知未缓存估价0.6973828元，未知不免费。活动722.094秒/Host1581.64秒；runner退出exit1、自动任务已PAUSED，不重试重开/借余量。

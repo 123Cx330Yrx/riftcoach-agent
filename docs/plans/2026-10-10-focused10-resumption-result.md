@@ -108,6 +108,8 @@ create-only生成data/evaluation/results/golden_document_focused10_resumption_re
 SHA76e9a70b808ce297d7d57c8f226a26daaa72f1f932de15f0c39467c582575f30。
 103份原件SHA逐项重核全部一致，46个白名单JSON公开投影；原件未改，封存自身Provider0。
 公开内容不含密钥或私有reasoning；无超时response/stage/journal/receipt补造。
+提交后逐字节核验发现Git默认CRLF→LF转换，已按仓库现有做法为此单份封存设置-text，
+保留最初seal的原始CRLF字节；公开Git对象与本机seal的上述SHA须相同，run原件未改。
 
 现有独立主体只读收尾复核通过，再次严格回放核真实5个native事件、checkpoint、账目、
 封存和原件不变；这是工程收尾判断，不补作业务认证。主审实读唯一completed原生final：

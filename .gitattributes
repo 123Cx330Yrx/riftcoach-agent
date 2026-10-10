@@ -124,6 +124,7 @@
 /data/evaluation/results/golden_review_boundary_examples_*.json text eol=lf
 
 # Preserve this closed diagnostic seal's original CRLF bytes on every checkout.
+/data/evaluation/results/golden_document_focused10_resumption_result_20261010.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /data/evaluation/results/golden_coarse_edit_diagnostic_result_20261001.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /data/evaluation/results/golden_coarse_inline_edit_result_20261001.json text eol=lf
 
