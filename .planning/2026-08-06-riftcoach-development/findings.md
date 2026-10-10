@@ -1,3 +1,9 @@
+## 2026-10-10 子主体存在和两轮completed不能证明真实双审可用
+
+- /root/full15_independent的真实原生父子身份匹配，新模型确为Sol/custom，未用旧Luna；两次任务只剩82字符dispatch前缀及encrypted主体，实际回答均规则确认、工具0，native agentMessage phase=null。真实final策略门拒dispatch_or_final_ambiguous，不能因completed或存在ID宣布可用。加密单项不证明模型未读，未定位relay唯一根因；没有具体HTTP错误，不归因429/配额。
+- 现有公开15来源/请求已准备，可独立完成但不能冒填认证或付费授权；不修改native来源门迁就缺final的答复。真实独立执行需先恢复，旧聊天final不补签新请求。
+- CI真实数据库暴露新增测试漏必填reason，本地DB skip无法发现；是测试构造缺陷。生产方法签名实际bind补齐，两其他新事务边界已通过，仍须修正提交DB实跑，不能把局部静态检查说成数据库通过。
+
 ## 2026-10-10 Worker续租、任务截止与取消是不同边界
 
 - 实际Worker独立线程续租维护所有权，TimedDocumentBudget起点不因此变动，901秒完整回包仍拒绝交付。取消/LOST/heartbeat异常在executor返回后挡发布；同步executor没有阶段间取消回调，不能由这次检查推导在途调用或后续内部阶段已停止。诊断runner另沿每发送/Host边界abort，未由产品Worker驱动。

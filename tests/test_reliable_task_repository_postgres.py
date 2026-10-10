@@ -272,7 +272,7 @@ def test_evidence_commit_after_renewals_still_checks_cancel_and_ownership(fence)
         finish = BASE + timedelta(seconds=610)
         if fence == "cancel":
             repository.request_cancel(task_id=task.task_id, owner_id=task.owner_id,
-                request_id="cancel-before-evidence", now=finish)
+                request_id="cancel-before-evidence", now=finish, reason="owner_cancelled")
         elif fence == "wrong_generation":
             identity["lease_generation"] += 1
         else:

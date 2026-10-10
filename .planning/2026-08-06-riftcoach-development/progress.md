@@ -1,3 +1,10 @@
+## 2026-10-10 完整15材料与真实独立Host付费前预检
+
+- create-only导出15 source/15初评请求共30材料，manifest7402b53d…e1870；无业务run或Provider发送。范围/45调用/45.029376元提案保持，未冻结付费计划或借旧余量。
+- 新Sol/custom主体01a1257a…6068b6原生lineage与当前root一致；两轮completed却只确认规则、无工具、无JSON，native phase=null，真实Host预检拒dispatch_or_final_ambiguous。任务主体encrypted记录保留，仅公开元数据；不猜429/401/503或加密唯一根因，未派第三次重试或改final门。
+- 公共CI38046840121 DB234过/1失败：新cancel测试漏reason，实际wrong_generation/expiry新例通过。补必填reason，实际生产签名绑定/compile/diff检查通过；完整数据库复验交新提交CI，本机Docker未再启动。
+- 公开预检记录保存；20c77f49/CI38046089854已全success，不借旧绿。下一核修正CI，恢复独立Host真实执行/final路径后精确checkpoint预检与计划冻结，最后具体付费授权。Provider0/qualification0/自动任务PAUSED。
+
 ## 2026-10-10 Worker发布边界与完整15成本提案
 
 - 7新真实线程+候选factory/预算反例及42既有Worker/组合/可靠任务合同共49通过（33.77秒）。压缩时钟190/380秒续租360，590返回；901任务超时结known用量但不发布。取消/LOST/heartbeat异常与最终CAS竞争挡发布，未改生产Worker。

@@ -1,0 +1,63 @@
+{
+  "kind": "full15-time600-preexecution-readiness-v1",
+  "execution_head_checked": "9e1c4442216efa2d651c96c77020589c066f4abd",
+  "root_thread_id": "01a1248f-e18c-7282-92bf-7ceb2eb5dce4",
+  "independent_thread_id": "01a1257a-2c8b-7f11-9a86-da3e0b6068b6",
+  "independent_agent_path": "/root/full15_independent",
+  "native_lineage_matches": true,
+  "native_model": "gpt-6.1-sol",
+  "native_model_provider": "custom",
+  "native_completed_turns": [
+    {
+      "turn_id": "01a1257a-2e4b-78c0-9f1e-2ef70fa652f6",
+      "dispatch_id": "amsg_01a1257a-3513-7133-8917-233a1555168a",
+      "completed": true,
+      "explicit_error": null,
+      "dispatch_plaintext_prefix_length": 82,
+      "dispatch_encrypted_item_count": 1,
+      "tool_calls": 0,
+      "answer_matches_requested_json": false,
+      "native_final_phase": null
+    },
+    {
+      "turn_id": "01a1257a-ecd3-78e3-9037-b437563c516d",
+      "dispatch_id": "amsg_01a1257a-ed1d-7520-9868-37ac9e787e8f",
+      "completed": true,
+      "explicit_error": null,
+      "dispatch_plaintext_prefix_length": 82,
+      "dispatch_encrypted_item_count": 1,
+      "tool_calls": 0,
+      "answer_matches_requested_json": false,
+      "native_final_phase": null
+    }
+  ],
+  "native_readiness_error": "codex_review_host_dispatch_or_final_ambiguous",
+  "cause_proven": false,
+  "classification": "independent_host_execution_and_final_evidence_unavailable_before_provider_send",
+  "public_material_case_count": 15,
+  "public_material_artifact_count": 30,
+  "local_material_manifest_sha256": "7402b53df24ac1407815ef6d7da80235f13899292c2866516c30254c976e1870",
+  "provider_calls": 0,
+  "business_run_created": false,
+  "paid_plan_frozen": false,
+  "execution_authorized": false,
+  "execution_ready": false,
+  "new_qualification": 0,
+  "historical_review_reused": false,
+  "ci_checked": {
+    "run_id": "38046840121",
+    "database_job_id": "114197981578",
+    "database_result": "1 failed, 234 passed",
+    "first_failure": "new cancel test omitted required reason argument",
+    "wrong_generation_and_expiry_new_tests_passed": true,
+    "production_defect_established": false,
+    "test_fix": "pass reason=owner_cancelled; signature binding validated locally, real DB recheck pending"
+  },
+  "limitations": [
+    "Encrypted collaboration input alone does not prove it was unreadable to the model.",
+    "Two rule acknowledgements and zero tools do not constitute a connection test or independent review.",
+    "No 429, 401, 503 or quota error occurred in these two completed turns.",
+    "Absent native final_answer phase cannot be repaired by changing imported evidence or signing a root-written answer.",
+    "A new paid batch still requires working native double review, exact plan freeze, same-head green CI and specific cost authorization."
+  ]
+}

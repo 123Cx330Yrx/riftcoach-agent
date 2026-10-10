@@ -23,7 +23,8 @@
 **本轮发送链交付：** b00a9eaf/CI38039283424已success。GLM600/Flash300实际router→共享ordinal/create-only回执→父子进程worker→SDK stream/close/usage→Exchange→初评/编辑/fresh已离线接通；复用旧生命周期和全文业务校验。新旧transport互拒标记、Host身份不发Provider；5个当前manifest组件及总SHA显式更新，旧裁决/seal原字节与历史源码摘要保持。12发送+25预算+4标量共41、104业务/stream、113factory/应用、63旧full15/合同检查通过；后续相关重核不累计。模型输出/450秒明确模拟，真实子进程不联网。本轮提交需自身公共CI，不能借上轮成功。
 **本轮执行与取证交付：** 4de565dc/CI38042065301失败于旧scan夹具身份漂移；修公开封存输入/精确请求SHA取材，live旧入口仍拒绝当前源码冒认历史。63旧尾链、7runner、72资格/factory通过。显式time600模式沿既有runner/checkpoint/native/关闭锁/严格回放接通，每案900/5calls/401920tokens及整批墙独立核算；发送/案始终点create-only落盘。迟到完整回包用量已知但不交付，回放不造stage。所有Host/模型为离线替身，不当实审或质量证据；旧seal/裁决原字节保持。
 **本轮Worker证据与方案：** 7真实线程/候选factory/预算反例+42既有检查共49通过；续租不扩900墙，取消/LOST/heartbeat异常挡发布，原子提交拒绝不退legacy。同步executor内部后续阶段及在途Provider取消仍未接入，不能说节省后续付费已证明。本机Docker socket启动失败后官方stop，新增3项数据库反例待公共CI（本机2通过/15skip）。完整15原顺序/全文提案45调用/4354560tokens/13500活动秒/86400Host秒，每案900/5/401920，估价45.029376元非硬封顶；不再把重复10例设固定前置。
-**当前下一动作：** 核本包公共CI/数据库边界，绑定本聊天真实全文独立审主体，冻结完整15源/请求/原生身份/计划SHA并准备具体付费授权；见timed-document-worker-and-full15-proposal。Provider0/无新run/资格0，execution_ready=false；当前团队仅主审，旧主体不冒用。正式15/自然消费/8E与原下游保持未完成。
+**本轮实际预检：** 完整15的30份source/初评请求create-only导出，manifest7402b53d…e1870。新Sol独立主体01a1257a…6068b6原生lineage匹配，但两次只确认规则、工具0、任务encrypted、final phase=null；真实Host门拒dispatch_or_final_ambiguous，无429/401/503显式错，不猜加密是唯一根因。公共CI38046840121 DB234过/1失败是新增cancel测试漏reason，已补并核签名，两新错代次/expiry过，待本提交DB复验。
+**当前下一动作：** 核修正提交CI/数据库；恢复可执行原生独立Host路径后进行精确checkpoint预检，冻结完整15源/请求/身份/计划SHA及具体成本授权。Provider0/无业务run/资格0，execution_ready=false、paid_plan_frozen=false；没有把旧主体或规则确认当实审。正式15/自然消费/8E与原下游保持未完成。
 
 ## Dependencies and Follow-through
 

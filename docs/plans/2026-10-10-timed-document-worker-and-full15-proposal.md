@@ -59,12 +59,21 @@ fresh pass>=85且无实质误报漏检。实际native final事件导入、精确
 
 ## 执行前剩余项
 
-这份是具体范围/成本提案，没有冒填原生审查身份或生成可执行授权。当前团队仅有主审；
-原聊天独立主体不能冒用为新root的子主体。需在本聊天绑定真实可用独立主体，
+这份是具体范围/成本提案，没有生成可执行授权。原聊天独立主体不能冒用为新root子主体。
+新独立主体/root/full15_independent（01a1257a-2c8b-7f11-9a86-da3e0b6068b6）
+已真实创建，lineage匹配本root01a1248f-e18c-7282-92bf-7ceb2eb5dce4，模型Sol/custom。
+但两次只返回规则确认、工具0、任务主体encrypted、native agentMessage phase=null，
+实际read-only Host门拒codex_review_host_dispatch_or_final_ambiguous；没有HTTP错误，
+不将其推断成429/额度，也不能只因加密断言模型未读。不能将其视为可执行双审。
+完整15的30份材料已create-only导出，manifest7402b53d…e1870，业务run未创建。
+需先恢复真实可执行/产native final的独立Host路径，
 重读当前source/policy/checkpoint协议并核真实原生输入/final可读性。随后按既有prepare
 冻结源/原始请求SHA/审查身份/完整计划SHA及新run目录，同提交公共CI全绿后，
 请求此45调用范围的具体付费授权。授权前不创建业务run、不触发Provider。
 
-上一20c77f49/CI38046089854查询仍in_progress；本包提交也需自己CI，不能借旧绿。
-若公共数据库反例失败则按最早实际偏离修；CI查询失败不是测试失败。旧固定裁决
+9e1c4442/CI38046840121公共DB234过/1失败：新增cancel测试调用漏必填reason，
+错generation/精确expiry两新例已过。现补reason并核实际签名，本提交公共DB复验待完成；
+没有放宽生产门或改事务。公开预检元数据见
+data/evaluation/results/document_full15_time600_preexecution_readiness_20261010.json。
+上一20c77f49/CI38046089854现已全success，本提交需自己全绿；查询失败不是测试失败。旧固定裁决
 c90a73ef…feb5及旧seal76e9a70b…75f30原字节复核一致。

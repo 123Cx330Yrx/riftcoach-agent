@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "固定10例已关闭；time600发送/runner取证及Worker发布边界离线核验通过，数据库新增边界待公共CI；完整15范围/成本提案已准备，原生双审身份/冻结/具体付费授权未齐，execution_ready=false。"
+pause_reason: "固定10例已关闭；完整15 time600材料已导出Provider0；公共DB234过/1新增测试漏reason已修待自身CI；新Sol独立主体两次未执行且native final phase缺失，双审不可用，计划未冻结/未授权新付费。"
 ---
 
 # RiftCoach 当前执行状态
@@ -64,14 +64,22 @@ timed-document-execution-evidence。14新时间反例+10公开时间裁决共24�
 Worker核验已补：7新真实线程+候选factory/预算反例及42既有检查共49通过；
 续租不扩900任务墙，取消/LOST/续租异常挡发布，原子提交拒绝后不走legacy成功。
 同步executor仍可能继续内部阶段，不能冒认取消已能中断付费调用；自然消费保留此依赖。
-本机Docker再次sailor-ingest.sock失败，官方stop已关闭；新增3项数据库反例等待公共CI，
-本机2通过/15skip不算DB实证，未改业务库。20c77f49公共CI38046089854仍in_progress。
+本机Docker再次sailor-ingest.sock失败，官方stop已关闭；未重启或改业务库。
+9e1c4442/CI38046840121数据库实际234通过/1失败：新增cancel例漏必填reason，
+两项新增错代次/租约到期已过。现补reason并核实际签名绑定，待新提交自身公共DB复验；
+不是已定位生产事务缺陷。旧20c77f49/CI38046089854现已全success，不能借它代本包全绿。
 完整15新时间提案保持原15全文/顺序，最多GLM30+Flash15=45调用/4354560tokens/
 13500活动秒/86400Host秒、每案900/5calls/401920tokens，估价45.029376元非硬封顶。
 见timed-document-worker-and-full15-proposal；不另设重复10例为固定前置。
-下一动作：核本包公共CI/database反例，绑定本聊天真实全文独立审主体并冻结完整15
-源/请求/身份/计划SHA，具备同SHA全绿后请求具体成本授权。当前团队仅主审，
-execution_ready=false，无新run/Provider/已授权付费方案；旧native不补签新请求。
+完整15的30份source/初评请求已create-only导出，manifest7402b53d…e1870；业务run不存在。
+新独立主体/root/full15_independent，真实01a1257a…6068b6的lineage匹配本root，
+模型gpt-6.1-sol/custom；两次completed无显式HTTP错误，却仅确认规则、工具0，
+任务主体encrypted、native agentMessage phase=null；真实预检拒dispatch_or_final_ambiguous。
+不能由加密一项认定根因；不能把确认规则算可执行双审，也不以改事件或旧签替代。
+公开预检元数据见document_full15_time600_preexecution_readiness_20261010.json，无密文/凭据。
+下一动作：核修正提交公共CI/database；恢复可实际执行任务并产原生final的独立Host路径后，
+同checkpoint实读预检，再冻结完整15源/请求/身份/计划SHA及具体授权。
+execution_ready=false，paid_plan_frozen=false，无新run/Provider/已授权付费方案。
 不原样重买未执行例，不调大旧批冻结300秒，不转Training或裁剪来源来绕关。
 新资格0，旧2/15与3/15独立，正式同版本15、自然消费、8E及全部下游依赖仍未完成。
 
