@@ -4,12 +4,40 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "完整15 time600已授权首次执行，13调用后因旧root429及恢复分支冻结独立路径不可投递硬关闭；3通过、3语义拒绝/分歧、第7例未审、8未发。已严格封存，资格0/PAUSED；用户已纠正要求接续后8例；新8入口/独立路径准备中，不重开旧批。"
+pause_reason: "后8例真实执行6调用后因主审恢复重复NEW_TASK导致native导入硬关闭；3通过，observed:1未认证，后4从未发送。已封存/资格0/PAUSED；当前准备后4接续，待具体新预算确认，不重开旧批。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
+
+2026-10-11当前行动仍是用户要求的未发送案例接续，不转其他产品环节。
+后8例在冻结49010a33/全绿CI38062139250、方案fcc5adf8…cf556首次启动并真实推进：
+claim-scope:5和7初评96/pass通过，claim-scope:6初评80→block6单处口径修正→fresh96/pass，
+三例共5个stage完整全文双审及真实native导入通过。observed:1初评96/pass全文双审完成，
+但root恢复时在同一独立turn补发followup_task，真实两个NEW_TASK使唯一dispatch门拒绝，
+没有submission/认证，不记语义失败。责任在operator恢复，非Provider429/限额/401/503或超时。
+helper实际routing_failure abort，runner91176/wrapper77052于UTC2026-10-10T16:23:23退出exit1。
+后4 observed:2..5从未发送；observed:1未认证不重买/重评/补签，旧第7例缺口同样保留。
+实际6calls GLM5/Flash1、known98364tokens/unknown0/receiptless0；未缓存保守估价1.038154元
+非账单，活动433.812秒/Host2459.875秒。严格只读replay核5个认证stage真实native，
+create-only封存74白名单JSON，138原件SHA一致；seal75c8c04d…ec2bf8和close audit公开
+授权/CI/启动退出/首例相对路径纠正/重复dispatch元数据。收尾Provider0，自动任务实读PAUSED。
+证据入口：docs/plans/2026-10-11-remaining8-time600-result.md。
+当前准备后4隔离adapter，双旧seal与47原源码/原请求绑定，原native唯一dispatch和业务门不放宽。
+恢复同任务只发MESSAGE，不向active/interrupted turn补NEW_TASK；只有前任务完成/导入后派新stage。
+方案最多GLM8/Flash4=12calls、1161216tokens、3600活动秒/86400Host秒，估价12.0078336元非硬封顶。
+后4七项离线接缝通过，独立工程无blocking findings并实际核旧5认证native及observed:1仍拒；
+方案b44521f2…f0de1b已create-only，工程原生终答及当前lineage/单dispatch可用实读。
+尚无新run/Provider发送；提交同HEAD公共CI后呈现具体预算确认，旧批不重开。
+入口：docs/plans/2026-10-11-remaining4-continuation.md。历史2/15、3/15、remaining11与各新批独立；
+新增资格0，完整15未收齐且不能拼历史，默认产品入口未切换。
+正式同版本15、自然消费、8E、Coach/Training/四块联动、Worker-DB-API-UI-journal、前端审美头像、
+Memory、身份运维、两树整合与八维学习均未完成且依赖保留。
+
+## 以下为历史记录
+
+### 后8首次执行前准备快照（已被上方实际执行状态取代）
 
 2026-10-10完整15 time600获用户“授权”，在冻结febe2e7f/全绿CI38048400763首次执行；
 方案cd737c2b…f75cb，每案900秒/5calls/401920tokens、GLM600/Flash300受剩余截短。
@@ -47,7 +75,6 @@ SHA再核一致；seal SHA30f8e336…46f576。关闭审计公开授权/前后快
 默认产品入口未切换，正式同版本15/自然消费/8E与Coach/Training/四块联动、
 Worker-DB-API-UI-journal、前端审美头像、Memory、身份运维、两树整合和八维学习仍未完成。
 
-## 以下为历史记录
 
 ### 2026-10-10 time600授权执行前的准备与Host诊断历史
 

@@ -151,3 +151,10 @@
 # Preserve create-only time600 seals and their raw-byte audit bindings.
 /data/evaluation/results/golden_document_full15_time600_result_20261010.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /data/evaluation/results/document_full15_time600_close_audit_20261010.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve the new closed eight-case seal, operator audit and prospective plan.
+/data/evaluation/results/golden_document_remaining8_time600_result_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_remaining8_time600_close_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_remaining4_preparation_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_remaining4_engineering_review_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/scripts/document_remaining4_adapter.py text eol=lf

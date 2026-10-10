@@ -13,12 +13,14 @@
 
 ## Active Work Package
 
-**目标：** 按用户纠正要求执行完整15批尚未发送的后8例，收齐同政策下的独立开发覆盖；不是先改提示或转其他产品环节。
-**起点：** 原time600批3通过/3拒绝或分歧/第7例未审，后8未发；13calls/known226429/unknown0已封存。旧root429导致恢复分支不能派冻结独立主体，原批硬关闭，不重启/重发前7。
-**实现：** 新document_remaining8_adapter仅隔离接续原runner/evidence，核旧seal/unexecuted库存、原源码与8初评请求SHA；完整来源/政策/编辑/时间门/native门保持。新root01a1261f…/独立Sol01a1263f…原生工具执行和final_answer实核通过，工程独立复核无阻断。
-**范围与预算：** claim-scope:5/6/7、observed:1..5；最多GLM13+Flash5=18calls/1741824tokens/7200活动秒/86400Host秒，估价19.298304元非硬封顶，每案900/5/401920保持；新run=document-remaining8-time600-20261010。方案见2026-10-10-remaining8-continuation。
-**验收/失败：** 每stage真实全文双审及native/checkpoint实读导入；语义拒绝停案继续独立案，身份/路由/来源/协议/transport/预算硬停全批；无重试、重评、补签或旧额度迁移。合成接缝不是质量；8全过也不补第7例或拼同期完整15，新资格0。
-**当前下一动作：** Linux换行夹具修正后最终8项本机合成检查通过，生产源码/方案fcc5adf8…cf556不改；提交并核同HEAD全绿CI后即时native核验，沿用户当前8例接续要求首次发送；检查/等待期间Provider0/无新run。收齐后严格封存账目/原件/真实事件，再选共同语义改良。自动任务现保持PAUSED，正式15、自然消费、8E及全部下游未完成。
+**目标：** 继续用户要求的案例覆盖，准备后8批尚未发送的后4 observed:2..5，不以旧批关闭取消后续执行。
+**实际起点：** 后8在49010a33/CI38062139250首次执行；3通过/5认证stage，第4 observed:1初评96/pass双审完成但native不唯一。6calls/known98364/unknown0已封存，后4未发；完整15仍未收齐，新资格0。
+**最早偏离/修正：** root对active/interrupted同一turn补followup_task，产生第二个NEW_TASK，frozen native拒绝，helper实际abort退出；不是Provider语义失败或限额。恢复同checkpoint只MESSAGE，前任务完成/导入才派新stage；原事件不补签。首例CLI相对路径纠正独立留存。
+**实现：** document_remaining4_adapter隔离复用原remaining8 runner/evidence，核双旧seal、47源码和原完整cell/request；原时间预算、全文双审、唯一dispatch、checkpoint/native/replay/公开白名单不放宽。
+**范围与预算：** observed:2..5，最多GLM8+Flash4=12calls/1161216tokens/3600活动秒/86400Host秒、估价12.0078336元非硬封顶，每案900/5/401920；新run=document-remaining4-time600-20261011。前3、observed:1及旧claim-scope:2不重发/补签。
+**验收/失败：** 每stage真实全文双审、真实native导入；语义停案继续独立案，身份/来源/协议/native/transport/预算硬停全批；无重试/重评/重开/旧额度迁移。历史独立，不拼完整15。
+**当前下一动作：** 后4本机7项断网接缝及独立工程审查通过、native当前单dispatch实读可用，方案b44521f2…f0de1b已create-only；提交/同HEAD公共CI后确认具体新预算。当前Provider0/无新run，旧8不重开。自动任务保持PAUSED。执行收齐后再综合语义改良，正式15、自然消费、8E和全部下游仍保留。
+**证据：** docs/plans/2026-10-11-remaining8-time600-result.md、2026-10-11-remaining4-continuation.md；seal75c8c04d…ec2bf8、公开close audit，138原件SHA/5真实认证事件。
 
 ## Dependencies and Follow-through
 

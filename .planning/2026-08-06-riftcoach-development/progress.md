@@ -1,3 +1,12 @@
+## 2026-10-11 后8真实执行、恢复操作硬关闭与后4准备
+
+- 后8在49010a33/全绿CI38062139250首次执行，claim-scope:5/7初评96/pass，claim-scope:6初评80→只改block6统计口径→fresh96/pass；三例共5stage全文双审/native通过。没有因上一批封存而取消后续执行。
+- observed:1初评96/pass全文双审完成；root恢复错误补followup_task，同native turn两个NEW_TASK，submit拒rollout_dispatch_or_final_ambiguous，submission未写。helper实际routing_failure abort，runner91176/wrapper77052 UTC16:23:23 exit1；不是Provider语义拒绝或429/限额/超时。
+- 实际6calls GLM5/Flash1、known98364tokens/unknown0/receiptless0，未缓存估价1.038154元非账单；活动433.812秒/Host2459.875秒。只读replay核5认证stage真实native，create-only74白名单JSON/138原件SHA一致；seal75c8c04d…ec2bf8及close audit公开授权/CI/启动退出/原生dispatch元数据和首例路径纠正。收尾Provider0，自动任务PAUSED。
+- 后4 observed:2..5未发，明确保留执行目标；准备隔离remaining4 adapter核两份旧seal/47原源码/原cell/request，保持原native唯一dispatch与全文业务门。恢复同任务仅普通MESSAGE，active/interrupted不重派NEW_TASK；observed:1与旧第7例不重买/补签。
+- 新具体方案最多12calls/1161216tokens/3600活动秒/86400Host秒，估价12.0078336元非硬封顶；当前prepare/相称检查/独立工程审查，Provider0/无新run，准备完成后确认新预算。正式同版本15、自然消费、8E及全部产品学习依赖保留。
+- 后4本机7项离线检查通过（71.27秒），独立工程7项再次通过（70.65秒）、无blocking findings；实核47旧来源、138原件与5真实认证native，observed:1仍拒。真实工程终答/current lineage和唯一dispatch可用实读；方案b44521f2…f0de1b已create-only，文件SHA cb8d2104…c5086，公开preparation/工程终答，不冒认业务质量。编译/治理/diff通过，当前提交CI后具体预算确认。
+
 ## 2026-10-10 用户纠正接续未发送8例，恢复原覆盖动作
 
 - 用户明确“不是啊，我是说后面8例”。关闭旧批不等于取消剩余覆盖；此前停在封存/转策略分析没有接上执行意图。当前回到同政策后8，不先改教学，原7例不重发/补签。

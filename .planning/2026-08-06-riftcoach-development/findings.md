@@ -1,3 +1,10 @@
+## 2026-10-11 恢复同审查不能追加NEW_TASK
+
+- native interrupted和协作running可同时出现；interrupted快照不意味着可以重新派任务。root先MESSAGE后followup_task，真实同一turn插入两个NEW_TASK；final response/item_completed各一且completed/error=null仍被唯一dispatch门拒绝。这是operator恢复错误，有直接原生记录，不能归因Provider容量、限额或语义。
+- 未来同checkpoint恢复只MESSAGE及等待，不能因未马上回复而升级NEW_TASK。新stage需上一真实turn完成/无error/唯一final导入后再派。原validator继续拒绝双dispatch，不能更改原件或放宽门补旧签。
+- 本版本claim-scope:6真错被单处修正且fresh96/pass；相邻正确条件口径claim-scope:7直接通过，claim-scope:5亦通过。observed:1全文独立接受只是未认证意见，不能计入通过。有限正证据不证明15稳定或教学充分性。
+- 硬关闭只影响该冻结批，不取消四个从未发送独立案；后4继续准备，不转策略分析或外围产品替代案例覆盖。原默认入口与正式15/自然消费/8E依赖不变。
+
 ## 2026-10-10 用户纠正接续未发送8例，恢复原覆盖动作
 
 - 用户明确“不是啊，我是说后面8例”。关闭旧批不等于取消剩余覆盖；此前停在封存/转策略分析没有接上执行意图。当前回到同政策后8，不先改教学，原7例不重发/补签。
