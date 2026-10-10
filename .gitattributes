@@ -164,3 +164,7 @@
 /data/evaluation/results/document_remaining4_time600_close_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /data/evaluation/results/document_remaining4_close_engineering_review_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /data/evaluation/results/document_semantic_options_preparation_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/scripts/document_semantic_request.py text eol=lf
+/scripts/document_semantic_host_task.py text eol=lf
+/scripts/prepare_document_semantic_comparison.py text eol=lf
+/tests/test_document_semantic_comparison.py text eol=lf

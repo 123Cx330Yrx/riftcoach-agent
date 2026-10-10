@@ -21,8 +21,8 @@
 **机制与反证：** 两处误报解释已找到正确数字却选错实际命题，规则和扩展示例已存在，继续叠同义教学无区分力。短教学同样未全过，扩展教学有多例正证据，不宣称教学负担/中转为根因；scope:4摘要/正文分歧独立保留。
 **实现路径：** 保留完整source、block-keyed编辑和fresh，静态对照只替教学后缀；5固定实际请求×3组织（原扩展/既有短例/实际命题→全文范围→来源冲突→直接修法），非policy消息/schema/模型/时限逐项相同。scripts/prepare_document_semantic_options.py及公共preparation可重建；当前execution_ready=false。
 **验收/失败：** 正确泛指不得补全称、明确真错不得借正文免责声明撤销、修法须覆盖已确认直接影响。字数/协议/单次分数不证明机制或资格；失败保留，Host分歧不下传。
-**当前下一动作：** 完成有区分力比较的隔离身份、完整请求/预算/原生双审接缝及具体成本方案。当前仅免费准备，不自动新付费批、不重开旧批、不转外围工作替代三个语义阻断。
-**证据：** docs/plans/2026-10-11-remaining4-time600-result.md、2026-10-11-semantic-decision-preparation.md及所引seal/close audit/preparation；历史各批独立、新资格0，正式15/自然消费/8E未完成。
+**当前下一动作：** 用 `scripts/prepare_document_semantic_comparison.py` 生成并验证 5×3 完整请求包，随后做当前真实主审/独立主体预检；具体成本为 15 次 GLM、1,451,520 tokens、9,000 活动秒、86,400 Host 秒、估价21.44256元（非硬封顶）。在新的明确成本授权前不发 Provider，不重开旧批，不把静态材料当质量资格。
+**证据：** docs/plans/2026-10-11-remaining4-time600-result.md、2026-10-11-semantic-decision-preparation.md、2026-10-11-semantic-comparison-plan.md及所引seal/close audit/preparation；`scripts/document_semantic_request.py`、`scripts/document_semantic_host_task.py` 和 `tests/test_document_semantic_comparison.py` 已通过相关回归。历史各批独立、新资格0，正式15/自然消费/8E未完成。
 
 ## Dependencies and Follow-through
 

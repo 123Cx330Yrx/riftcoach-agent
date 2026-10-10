@@ -9028,3 +9028,9 @@ version2分开保留subtest report与唯一父终态，原exitcode和缺测/重�
 - 修复全局512操作边界测试的夹具冲突后，32项新离线检查、42项既有相邻检查、编译和治理均通过。
 - 新增 `scripts/run_full15_resumption_candidate.py` 与 runner 测试：从15份公开冻结来源重建候选请求，保持基线逐字段一致；每案按初评、必要 block-keyed 编辑、fresh 终评串联，阶段等待发布原生 Host checkpoint，并保留失败停案/硬故障停批边界。
 - runner 只生成冻结准备计划，execution_authorized=false、paid_plan_frozen=false、Provider0；最坏45调用（GLM30/Flash15）、4354560 tokens、13500活动秒、86400 Host 秒，估价45.029376元为未缓存估算且非硬封顶。只读 handoff/seal 回放和独立开发复核仍待完成，不能执行付费批。
+## 2026-10-11 语义对照执行前接线
+
+- 三个历史封存批严格只读重放通过：共29个已认证阶段、700份原件不变，Provider调用0，原账目与封存完全相等。
+- 新增独立语义对照请求身份、完整原请求包、Host全文任务生成器和离线边界回归；15个请求（5样本×3后缀）逐一恢复历史非教学内容，旧默认 transport 拒绝新身份。
+- 相关回归43项通过，完整新测试9项通过；未读取凭据、未访问 Provider、未生成业务认证或新资格。
+- 下一动作是用当前真实主体做原生预检并把请求包封存；真实15次请求需另有具体成本授权。执行方案见 `docs/plans/2026-10-11-semantic-comparison-plan.md`。

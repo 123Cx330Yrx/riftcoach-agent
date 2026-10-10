@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "后4已完成/4通过/12stage真实认证，严格封存；新资格0/自动任务PAUSED。当前免费准备实际命题与直接修法的共同机制检查，不另开付费批；旧3语义问题与2未认证缺口保留。"
+pause_reason: "后4已完成/4通过/12stage真实认证，严格封存；新资格0/自动任务PAUSED。语义对照执行前方案已接线并通过离线边界回归，仍无Provider调用，等待具体成本授权与真实原生主体预检；旧3语义问题与2未认证缺口保留。"
 ---
 
 # RiftCoach 当前执行状态
@@ -32,11 +32,11 @@ claim-scope:4额外早死误报、scope:3 fresh泛指误报、scope:4摘要/正�
 claim-scope:2路由失败与第11 observed:1 operator重复NEW_TASK未认证不重买/补签。
 历史2/15、3/15、remaining11、完整15、后8、后4各自独立，新资格0，默认产品入口未切换。
 
-唯一下一动作是实际命题与直接修法的共同机制检查准备：5固定完整请求×3教学组织静态
+当前行动是实际命题与直接修法的机制对照执行前准备：5固定完整请求×3教学组织静态
 对照已构造，逐项核非policy内容与业务规则不变；只替扩展教学后缀为既有短教学或紧凑决策顺序。
 尚不是可发送新身份或真实语义修复；先完成隔离身份/完整请求/预算/原生双审接缝及具体成本方案，
 不继续叠同义提示、不原样再买完整15、不转外围工程替代语义阻断。
-入口：docs/plans/2026-10-11-semantic-decision-preparation.md。
+入口：docs/plans/2026-10-11-semantic-decision-preparation.md、docs/plans/2026-10-11-semantic-comparison-plan.md。
 正式同版本15、自然消费、8E、Coach/Training/四块联动、Worker-DB-API-UI-journal、前端审美头像、
 Memory、身份运维、两树整合及八维学习仍未完成，原依赖与已交付基础保留。
 
