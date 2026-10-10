@@ -1,3 +1,11 @@
+## 2026-10-10 免费完成审查时间取舍与真实预算器反例
+
+- 前一收尾ed445256/CI38018028991已全success。新增audit_document_review_timing，默认只读公开seal+18份元数据capsule；元数据原字节逐份绑定旧封存SHA，无私有reasoning/Key或忽略run依赖，出冻结数字证据及源码指纹。
+- 单次300、产品任务900、开发批8400/Host86400分开核：本次开发批不逐案施900墙且无自然生成，不能转产品时间准入。旧transport实际拒600、旧observation实际拒450秒；未改冻结源码/旧原件或新建业务run。
+- 现有CoachBudgetedProvider的fake-clock反例：450秒合成fresh在300下超时、600且任务剩余足够时完成；已花500秒时fresh被剩余324.483截短至总900，未知预留77868不释放；总时已900则发送0。模拟Usage/时间不并入真实账目，不预测实际超时何时完成。
+- 8新断网/公开夹具检查和29既有预算检查通过，编译/治理/diff通过。裁决选择GLM600/Flash300、任务900/5calls/401920tokens不变的隔离候选方向；新时间身份实际发送/原生交接尚未实现，execution_ready=false。
+- Provider0、资格0/PAUSED；下一离线贯穿请求/角色/process/observation/预算/Worker/严格回放，不原样续买尾链、不扩总任务或裁来源。具体新成本方案齐备才授权发送；结果及取舍见document-review-time-decision，完整15及下游保留。
+
 ## 2026-10-10 固定10例首次执行与超时硬关闭
 
 - 提交后字节核验发现Git默认归一化CRLF，已按既有.gitattributes做法对本份seal设置-text，保留初次封存SHA；run原件未改，最终Git对象与本机封存逐字节核同。

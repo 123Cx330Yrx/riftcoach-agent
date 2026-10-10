@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "固定10例首次执行在scope:3 fresh的300秒stream_deadline硬关闭；封存已核，不重试重开；接续完整15主线的时间合同方案准备。"
+pause_reason: "固定10例scope:3 fresh超时批已关闭；免费时间裁决已选择GLM600/任务900隔离候选方向，实际新transport未接入/未授权发送；旧批不重开。"
 ---
 
 # RiftCoach 当前执行状态
@@ -23,9 +23,16 @@ runner退出exit1；自动任务PAUSED，不重试重开/补签/借余量，不�
 免费核超时前持续流读取、无tool/usage；父进程300秒硬截止生效，无已定位本地丢输出/重发缺陷。
 fresh输入没有历史累积，与另一完成fresh规模近同；不将推理字符数当token或根因。
 保留候选有限正证据，但10例未收齐，教学充分性/编辑稳定率/旧scope措辞机制未证明。
-下一动作：沿GLM/high、完整来源与质量门准备交付时间/整任务预算合同取舍，核transport、
-observation、共享预算、Worker生命周期和资格身份；免费方案及检查齐备后才提出具体新成本。
-不原样重买未执行例，不直接调大旧冻结300秒，不转Training或裁剪来源来绕关。
+免费时间裁决已完成：公开18份元数据原字节绑定旧seal，默认审计/测试不依赖忽略run；
+8项新断网反例及29项既有预算检查通过。真实预算器证明单次600仍受任务900剩余截短，
+已超总时发送0、失败未知预留不释放；450秒只是合成边界例，不预测真实超时的完成时间。
+前一ed445256/CI38018028991全success。诊断整批8400没有逐案产品900墙或自然生成，
+不能把其延迟当产品可达；旧transport/observation实际拒600，不能直接改CLI继续。
+取舍见`docs/plans/2026-10-10-document-review-time-decision.md`。
+下一动作：离线接入显式GLM600/Flash300、任务900不变的隔离时间身份候选，贯穿prepared/
+issued/role/process/observation/账目/回放与Worker所有权；旧300合同/默认入口不变。
+新发送与native交接未实现，execution_ready=false；免费实现/检查齐备后才提出具体新成本。
+不原样重买未执行例，不调大旧批冻结300秒，不转Training或裁剪来源来绕关。
 新资格0，旧2/15与3/15独立，正式同版本15、自然消费、8E及全部下游依赖仍未完成。
 
 ## 以下为历史记录
