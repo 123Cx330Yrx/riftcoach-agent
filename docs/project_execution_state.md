@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "固定10例已关闭；完整15 time600材料已导出Provider0；公共DB234过/1新增测试漏reason已修待自身CI；新Sol独立主体两次未执行且native final phase缺失，双审不可用，计划未冻结/未授权新付费。"
+pause_reason: "固定10例已关闭；完整15 time600材料已导出Provider0；修正提交公共DB已success、四pytest片待完成；独立Host三次未执行且native final phase缺失，停止同类试发，需修复或更换通道，计划未冻结/未授权新付费。"
 ---
 
 # RiftCoach 当前执行状态
@@ -66,7 +66,8 @@ Worker核验已补：7新真实线程+候选factory/预算反例及42既有检�
 同步executor仍可能继续内部阶段，不能冒认取消已能中断付费调用；自然消费保留此依赖。
 本机Docker再次sailor-ingest.sock失败，官方stop已关闭；未重启或改业务库。
 9e1c4442/CI38046840121数据库实际234通过/1失败：新增cancel例漏必填reason，
-两项新增错代次/租约到期已过。现补reason并核实际签名绑定，待新提交自身公共DB复验；
+两项新增错代次/租约到期已过。现补reason并核实际签名绑定；93cdf82a/CI38047477843
+公共DB job114199807184已success，web/packaging也success，四pytest片仍运行，整CI未全绿；
 不是已定位生产事务缺陷。旧20c77f49/CI38046089854现已全success，不能借它代本包全绿。
 完整15新时间提案保持原15全文/顺序，最多GLM30+Flash15=45调用/4354560tokens/
 13500活动秒/86400Host秒、每案900/5calls/401920tokens，估价45.029376元非硬封顶。
@@ -77,7 +78,12 @@ Worker核验已补：7新真实线程+候选factory/预算反例及42既有检�
 任务主体encrypted、native agentMessage phase=null；真实预检拒dispatch_or_final_ambiguous。
 不能由加密一项认定根因；不能把确认规则算可执行双审，也不以改事件或旧签替代。
 公开预检元数据见document_full15_time600_preexecution_readiness_20261010.json，无密文/凭据。
-下一动作：核修正提交公共CI/database；恢复可实际执行任务并产原生final的独立Host路径后，
+本次另一消息路径的第三turn01a12587…ed78同样工具0/无指定JSON/phase=null，实读门仍拒绝。
+当前root能调用工具但phase也null，旧成功Sol原生保留commentary/final_answer；
+网关配置已为Responses，未定位字段丢失层或具体根因，不归因429/401/503或加密单项。
+停止同类试发，不改native门、网关配置或用普通CLI冒充独立身份。30材料SHA再核一致；
+自动任务实读PAUSED，诊断与恢复见2026-10-10-full15-native-host-path-diagnostic。
+下一动作：修复或更换可执行子任务并保留原生终答的Host通道，核剩余CI；路径改变后，
 同checkpoint实读预检，再冻结完整15源/请求/身份/计划SHA及具体授权。
 execution_ready=false，paid_plan_frozen=false，无新run/Provider/已授权付费方案。
 不原样重买未执行例，不调大旧批冻结300秒，不转Training或裁剪来源来绕关。

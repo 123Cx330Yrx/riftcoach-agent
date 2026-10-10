@@ -1,3 +1,9 @@
+## 2026-10-10 普通文本成功和Responses配置不证明真实子任务路径完整
+
+- 第三轮换消息入队路径仍只确认规则，工具0/phase=null；当前root能用工具但同样缺phase，历史成功Sol有commentary/final_answer。这是端到端执行/来源兼容性疑点，不能只认加密任务为根因，也不把无HTTP错归因额度。
+- 本机配置wire_api=responses、网关apiFormat=openai_responses；没有依据再切同一格式。邻近HTTP200记录无精确ID绑定，日志未保存完整字段，不能定位缺失层；官方phase要求支持诊断方向，不替本案证明因果。现停止同类试发，保留修通通道后的真实checkpoint预检，不改门接受null或代写审判。
+- 修正提交公共DB已success，解除漏reason测试阻断；剩余四CI片未完成与独立Host不可用分开记录。30份准备材料SHA一致但不等于已冻结当前HEAD付费计划。
+
 ## 2026-10-10 子主体存在和两轮completed不能证明真实双审可用
 
 - /root/full15_independent的真实原生父子身份匹配，新模型确为Sol/custom，未用旧Luna；两次任务只剩82字符dispatch前缀及encrypted主体，实际回答均规则确认、工具0，native agentMessage phase=null。真实final策略门拒dispatch_or_final_ambiguous，不能因completed或存在ID宣布可用。加密单项不证明模型未读，未定位relay唯一根因；没有具体HTTP错误，不归因429/配额。

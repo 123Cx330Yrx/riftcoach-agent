@@ -72,8 +72,14 @@ fresh pass>=85且无实质误报漏检。实际native final事件导入、精确
 请求此45调用范围的具体付费授权。授权前不创建业务run、不触发Provider。
 
 9e1c4442/CI38046840121公共DB234过/1失败：新增cancel测试调用漏必填reason，
-错generation/精确expiry两新例已过。现补reason并核实际签名，本提交公共DB复验待完成；
+错generation/精确expiry两新例已过。现补reason并核实际签名；93cdf82a/CI38047477843
+公共DB job114199807184已success，web/packaging已success，四pytest片待完成，整CI未全绿；
 没有放宽生产门或改事务。公开预检元数据见
 data/evaluation/results/document_full15_time600_preexecution_readiness_20261010.json。
 上一20c77f49/CI38046089854现已全success，本提交需自己全绿；查询失败不是测试失败。旧固定裁决
 c90a73ef…feb5及旧seal76e9a70b…75f30原字节复核一致。
+
+另一消息路径第三turn仍未执行任务且phase=null；当前root亦缺phase，旧成功Sol保留终答标记。
+网关配置已经Responses，不能凭此猜修法或根因。停止同类试发，待Host通道修复/更换后再核
+精确checkpoint；具体证据/恢复条件见2026-10-10-full15-native-host-path-diagnostic。
+30材料SHA复核全一致，自动任务实读PAUSED；准备材料不回写为当前HEAD已冻结付费计划。

@@ -31,6 +31,56 @@
       "native_final_phase": null
     }
   ],
+  "followup_checked_head": "93cdf82af845d00342a4087b5090644eb74e6aeb",
+  "alternate_message_path_check": {
+    "turn_id": "01a12587-8155-74d2-a436-407a7ae4ed78",
+    "message_dispatch_id": "amsg_01a12587-81d1-7cf3-9feb-d99e63d71980",
+    "new_task_dispatch_id": "amsg_01a12587-81d4-7330-882b-d7c1104ade68",
+    "final_message_id": "msg_resp_04b1544c6422ca8a016aca1e991b4487d0a6251f02309bf2e6_0",
+    "completed": true,
+    "explicit_error": null,
+    "tool_calls": 0,
+    "answer_matches_requested_json": false,
+    "native_final_phase": null,
+    "encrypted_item_count_per_dispatch": 1,
+    "decision": "stop_equivalent_probes_until_host_path_changes"
+  },
+  "native_phase_comparison": {
+    "root_completed_turn_id": "01a12578-ac16-7673-88ad-5817c480979d",
+    "root_agent_message_phases": [null, null, null, null, null, null],
+    "root_tool_item_count": 27,
+    "historical_thread_id": "01a11fea-dc3d-72d0-a07e-90fde8f04f92",
+    "historical_turn_id": "01a1207e-e597-7871-9aed-e0695356e8ac",
+    "historical_agent_message_phases": ["commentary", "final_answer"],
+    "historical_tool_item_count": 4,
+    "historical_signature_reused": false
+  },
+  "local_gateway_observation": {
+    "configured_wire_api": "responses",
+    "gateway_api_format": "openai_responses",
+    "configuration_changed": false,
+    "request_metadata_statuses_near_probe_times": [200, 200, 200],
+    "strict_request_id_binding_established": false,
+    "field_loss_location_established": false
+  },
+  "followup_ci_checked": {
+    "run_id": "38047477843",
+    "head_sha": "93cdf82af845d00342a4087b5090644eb74e6aeb",
+    "database_job_id": "114199807184",
+    "database_job_conclusion": "success",
+    "web_checks_conclusion": "success",
+    "packaging_smoke_conclusion": "success",
+    "pytest_shards_status": "four_in_progress",
+    "run_status": "in_progress",
+    "run_conclusion": null,
+    "database_test_count_verified": false
+  },
+  "material_hash_recheck": {
+    "artifact_count": 30,
+    "hash_mismatch_count": 0,
+    "manifest_unchanged": true
+  },
+  "automation_observed_status": "PAUSED",
   "native_readiness_error": "codex_review_host_dispatch_or_final_ambiguous",
   "cause_proven": false,
   "classification": "independent_host_execution_and_final_evidence_unavailable_before_provider_send",

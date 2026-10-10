@@ -1,3 +1,10 @@
+## 2026-10-10 独立Host路径诊断收口与公共DB复验
+
+- 93cdf82a/CI38047477843的公共DB job114199807184、web和packaging已success；四pytest片仍运行，未宣称全绿或猜数据库汇总数量。漏reason测试修正已实跑验证，本机Docker未启动。
+- send_message入队再followup触发的第三turn01a12587…ed78依然只确认规则、工具0、无指定JSON、phase=null；实际native门拒绝。root能用工具但phase也null，旧成功Sol保留commentary/final_answer；只比元数据、不复用签名。
+- 网关已Responses，HTTP200邻近记录无精确ID绑定、无完整字段安全日志，根因未证实；停止同类试发，不改配置/来源门、不另造CLI主体。诊断及恢复条件已保存，原30材料摘要全一致、业务run不存在、Provider0/资格0，自动任务实读PAUSED。
+- 当前需修复或换可执行子任务/保留原生终答的通道；路径改变后精确checkpoint预检，再冻结当前计划和具体授权。正式15/自然消费/8E与下游保持未完成。
+
 ## 2026-10-10 完整15材料与真实独立Host付费前预检
 
 - create-only导出15 source/15初评请求共30材料，manifest7402b53d…e1870；无业务run或Provider发送。范围/45调用/45.029376元提案保持，未冻结付费计划或借旧余量。
