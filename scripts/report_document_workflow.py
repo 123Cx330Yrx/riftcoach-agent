@@ -23,6 +23,9 @@ def request_sha(request):
 
 
 class DocumentReviewWorkflow(editor.ReviewBoundRevisionWorkflow):
+    request_sha = staticmethod(request_sha)
+    check_request = staticmethod(budget_check)
+    tool_result = staticmethod(tool_result)
     @staticmethod
     def make_request(inputs, **kwargs):
         if kwargs.get('accepted') is not None:
@@ -50,11 +53,11 @@ class DocumentReviewWorkflow(editor.ReviewBoundRevisionWorkflow):
             self.last_edit_journal = dict(self.last_edit_journal,
                 workflow=VERSION, final_report_presentation=view.VERSION,
                 baseline_final_review_request_sha256=self.last_edit_journal['final_review_request_sha256'],
-                final_review_request_sha256=request_sha(final))
+                final_review_request_sha256=self.request_sha(final))
             return report
         if self.stopped or self.calls >= 5:
             raise ValueError('integrated_call_budget_exhausted')
-        budget_check(prepared)
+        self.check_request(prepared)
         self.calls += 1
         try:
             exchange = self.send(prepared)
@@ -67,9 +70,9 @@ class DocumentReviewWorkflow(editor.ReviewBoundRevisionWorkflow):
                     or replace(issued, timeout_s=prepared.timeout_s, metadata=metadata) != prepared
                     or (exchange.response.provider, exchange.response.model) != ('zhipu', 'glm-5.3')):
                 raise ValueError('document_view_exchange_identity')
-            raw = tool_result(prepared, exchange)
-            self._review_binding = dict(prepared_request_sha256=request_sha(prepared),
-                issued_request_sha256=request_sha(issued),
+            raw = self.tool_result(prepared, exchange)
+            self._review_binding = dict(prepared_request_sha256=self.request_sha(prepared),
+                issued_request_sha256=self.request_sha(issued),
                 receipt_request_sha256=exchange.receipt_request_sha256)
             self._evaluation_bindings.append(dict(phase=phase, **self._review_binding))
             return raw

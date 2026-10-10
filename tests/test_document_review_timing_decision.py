@@ -96,3 +96,15 @@ def test_source_fingerprints_are_portable_but_evidence_fingerprints_remain_raw(t
     path.write_bytes(b'one\ntwo\n')
     assert expected == timing.source_sha(path)
     assert raw != timing.sha(path.read_bytes())
+
+
+def test_frozen_decision_checks_archived_source_without_rewriting_history(tmp_path):
+    output = tmp_path / timing.OUTPUT
+    output.parent.mkdir(parents=True)
+    output.write_bytes((timing.ROOT / timing.OUTPUT).read_bytes())
+    source = timing.FROZEN_SOURCES[0]
+    archive = tmp_path / timing.SOURCE_ARCHIVE / (source.replace('/', '__') + '.txt')
+    archive.parent.mkdir(parents=True)
+    archive.write_text('changed historical source', encoding='utf-8')
+    with pytest.raises(ValueError, match='timing_archived_source_changed'):
+        timing.decision_source_sha(tmp_path, source)

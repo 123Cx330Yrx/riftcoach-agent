@@ -137,8 +137,19 @@ class _TimedLimits:
     request_identity = staticmethod(request_identity)
 
     def descriptor(self):
-        return dict(DOCUMENT_REVIEW_COACH_CONTRACT.descriptor(), request_timeout_s=600,
-                    request_timing_identity=TIMED_IDENTITY, execution_ready=False)
+        from app.evaluation.golden_stream_bridge import (
+            TIMED_REVIEW_TRANSPORT_ID, TIMED_FLASH_TRANSPORT_ID, transport_request_policy)
+        base = DOCUMENT_REVIEW_COACH_CONTRACT.descriptor()
+        roles = {role: dict(value, transport_id=(TIMED_REVIEW_TRANSPORT_ID if role == "review" else TIMED_FLASH_TRANSPORT_ID),
+                            request_timeout_s=allowed_timeout(role)) for role, value in base["roles"].items()}
+        policies = {role: transport_request_policy(value["transport_id"]).metadata()
+                    for role, value in roles.items()}
+        # Do not serialize the old uniform330 policy as the candidate's SDK
+        # policy. The existing Agent prefix policy remains a separate limit.
+        return dict(base, request_timeout_s=600, roles=roles, request_policy=policies,
+                    request_policy_id="document-review-time600-per-role-v1",
+                    request_timing_identity=TIMED_IDENTITY, base_contract_version=base["version"],
+                    execution_ready=False)
 
 
 class TimedDocumentBudget(CoachBudgetedProvider):

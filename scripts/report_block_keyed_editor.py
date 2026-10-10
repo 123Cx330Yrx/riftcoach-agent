@@ -65,8 +65,9 @@ def edit_request(inputs, accepted):
             *base.messages[1:])))
 
 
-def inspect_exchange(prepared, exchange, inputs, accepted):
-    if prepared != edit_request(inputs, accepted):
+def inspect_exchange(prepared, exchange, inputs, accepted, *, make_edit=edit_request,
+        receipt_sha=None, make_final=DocumentReviewWorkflow.make_request):
+    if prepared != make_edit(inputs, accepted):
         raise ValueError('block_keyed_input_changed')
     issued, response = exchange.issued_request, exchange.response
     metadata = dict(issued.metadata)
@@ -74,7 +75,7 @@ def inspect_exchange(prepared, exchange, inputs, accepted):
     if (marker not in (None, 'coach-bounded-review-v2')
             or not 0 < issued.timeout_s <= prepared.timeout_s
             or replace(issued, timeout_s=prepared.timeout_s, metadata=metadata) != prepared
-            or hashlib.sha256(validate_request(issued, transport_id=CAPACITY_TRANSPORT_ID)).hexdigest()
+            or (receipt_sha(issued) if receipt_sha is not None else hashlib.sha256(validate_request(issued, transport_id=CAPACITY_TRANSPORT_ID)).hexdigest())
             != exchange.receipt_request_sha256):
         raise ValueError('block_keyed_exchange_identity')
     if ((response.provider, response.model) != ('zhipu', 'glm-5.3-flash')
@@ -120,16 +121,18 @@ def inspect_exchange(prepared, exchange, inputs, accepted):
     ReviewHarness._validate_report_citations(report, KnowledgeEvidence(
         context=knowledge['context'], citations=tuple(KnowledgeCitation(**{
             k: v for k, v in c.items() if k != 'retrievals'}) for c in knowledge['citations'])))
-    final = DocumentReviewWorkflow.make_request(report_inputs(inputs, report))
+    final = make_final(report_inputs(inputs, report))
     return EditAssembly(report, dict(version=VERSION, raw=raw, raw_sha256=digest(raw),
         review_source_context=context, operations=operations,
         original_report=source.report, original_report_sha256=digest(source.report),
         assembled_report=report, assembled_report_sha256=digest(report),
         semantic_approval=False, production_admitted=False, full_final_review_required=True,
-        final_review_request_sha256=request_sha(final)))
+        final_review_request_sha256=(receipt_sha(final) if receipt_sha is not None else request_sha(final))))
 
 
 class BlockKeyedDocumentWorkflow(DocumentReviewWorkflow):
+    edit_request = staticmethod(edit_request)
+    inspect_exchange = staticmethod(inspect_exchange)
     @staticmethod
     def make_request(inputs, **kwargs):
         if kwargs.get('accepted') is not None:
@@ -147,14 +150,14 @@ class BlockKeyedDocumentWorkflow(DocumentReviewWorkflow):
         inputs = self._accepted[0]
         _, accepted, _ = self.validate_review(self._accepted_raw, inputs,
             previous_raw=self._accepted_previous)
-        if prepared != edit_request(inputs, accepted):
+        if prepared != self.edit_request(inputs, accepted):
             raise ValueError('block_keyed_input_changed')
-        budget_check(prepared)
+        self.check_request(prepared)
         self.calls += 1
         try:
             exchange = self.send(prepared)
             self.record(phase, exchange)
-            assembly = inspect_exchange(prepared, exchange, inputs, accepted)
+            assembly = self.inspect_exchange(prepared, exchange, inputs, accepted)
             self.last_edit_journal = assembly.journal
             return assembly.report
         except BaseException:

@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "固定10例已关闭；GLM600/Flash300完整请求与共享900预算已离线接入，SDK/进程/workflow/native新时间链未接通，execution_ready=false、未授权新发送；旧批不重开。"
+pause_reason: "固定10例已关闭；GLM600/Flash300共享900预算及SDK/进程/workflow发送链已离线接通，checkpoint/native/replay与Worker新时间边界待接，execution_ready=false、未授权新发送；旧批不重开。"
 ---
 
 # RiftCoach 当前执行状态
@@ -40,9 +40,19 @@ fresh输入没有历史累积，与另一完成fresh规模近同；不将推理�
 共91检查通过，Provider为明确模拟。旧默认/300合同和冻结指纹模块/封存原件未改。
 详见document-review-timed-budget-integration。“必须永不改共享指纹模块”是旧实现选择，
 不是用户要求；后续如需扩共享生命周期，显式更新当前manifest并保留历史，不绕过漂移。
-下一动作：新时间身份贯穿SDK/父子进程stream/close/observation及业务workflow，然后接
-checkpoint/native/strict replay和Worker边界。当前execution_ready=false，无新run/Provider/
-付费方案；已有完整请求预算接缝不冒充整条600链或业务质量完成。
+前一b00a9eaf/CI38039283424已全success。本轮新时间身份贯穿角色router、共享任务ordinal/
+create-only回执factory、真实子进程worker/SDK编码/stream/close/usage、Exchange和业务
+初评/编辑/fresh；GLM600、Flash300、任务900/5调用/401920tokens不变。复用既有生命周期
+和全文业务校验，SDK独立签发630/630/660新政策；新旧transport互拒时间标记，Host标签
+不发Provider。5个当前manifest组件及总SHA显式更新，原裁决/旧seal原字节保持，两个
+历史源码归档并固定摘要核验，不冒认旧身份。默认产品入口没有切换。
+12发送链+25预算+4标量共41检查、104时间裁决/业务/旧stream、113旧factory/应用和
+63旧full15/合同检查通过；后续角色门51项及构造默认4项相关重核通过，不累计重复项。
+真实子进程使用断网SDK替身，包括五调用fresh通过/拒绝、600关闭迟到与父进程kill/reap；
+450秒是模拟，没有真实模型耗时/语义质量证据。详情见document-review-timed-send-integration。
+下一动作：沿现有runner/handoff/replay接入新时间身份、每案900与整批账本，再核Worker
+续租/取消/失去所有权和发布边界。当前execution_ready=false，无新run/Provider/付费方案；
+checkpoint/native/严格回放未接通，不用旧native补签新请求。
 不原样重买未执行例，不调大旧批冻结300秒，不转Training或裁剪来源来绕关。
 新资格0，旧2/15与3/15独立，正式同版本15、自然消费、8E及全部下游依赖仍未完成。
 

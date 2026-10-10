@@ -25,9 +25,6 @@ SEAL = 'data/evaluation/results/golden_document_focused10_resumption_result_2026
 SEAL_SHA = '76e9a70b808ce297d7d57c8f226a26daaa72f1f932de15f0c39467c582575f30'
 CAPSULE = 'data/evaluation/results/golden_document_focused10_timing_metadata_20261010.json'
 OUTPUT = 'data/evaluation/contracts/document_review_timing_decision_20261010.json'
-OUTPUT_SHA = 'c90a73efbe4c4282fd18c47d279fe13c0ec03ada3716b03743a0f3cbba95feb5'
-FROZEN_SOURCES = ('scripts/audit_document_review_timing.py', 'app/evaluation/golden_stream_bridge.py')
-SOURCE_ARCHIVE = 'docs/archive/2026-10-10-timing-decision'
 CALLS = tuple((case, stage, role, ordinal) for case in ('attribution-1', 'scope-3')
              for stage, role, ordinal in (('initial', 'review', 1),
                                           ('revision', 'generation', 2), ('final', 'review', 3)))
@@ -43,21 +40,6 @@ def sha(raw):
 def source_sha(path):
     # Git normalizes source line endings; evidence bytes are never normalized.
     return sha(path.read_bytes().replace(b'\r\n', b'\n'))
-
-
-def decision_source_sha(root, source):
-    # Frozen decision proves the code used then, not today's transport. Shared
-    # source changes must not rewrite that evidence or impersonate its digest.
-    if source not in FROZEN_SOURCES:
-        return source_sha(root / source)
-    raw = (root / OUTPUT).read_bytes()
-    if sha(raw) != OUTPUT_SHA:
-        raise ValueError('timing_frozen_decision_bytes_changed')
-    archive = root / SOURCE_ARCHIVE / (source.replace('/', '__') + '.txt')
-    digest = source_sha(archive)
-    if digest != json.loads(raw)['source_sha256'][source]:
-        raise ValueError('timing_archived_source_changed')
-    return digest
 
 
 def load_seal(root=ROOT):
@@ -214,7 +196,7 @@ def audit(*, root=ROOT):
     return dict(kind='document-review-timing-decision-v1', seal_sha256=SEAL_SHA,
         metadata_sha256=sha((root / CAPSULE).read_bytes()),
         source_digest_mode='utf8-source-lf',
-        source_sha256={p: decision_source_sha(root, p) for p in paths},
+        source_sha256={p: source_sha(root / p) for p in paths},
         accounting=seal['accounting'], observed_calls=calls,
         right_censored=dict(key='scope:3', stage='final', completion_time_known=False,
             usage_known=False, causal_root_established=False, predicted_finish_s=None),

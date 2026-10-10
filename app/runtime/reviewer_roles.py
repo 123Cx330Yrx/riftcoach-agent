@@ -125,6 +125,12 @@ class RoleRoutedProvider:
     def role_for_request(self, request):
         return role_for_request(request, source_projection=self.source_projection)
 
+    def transport_for_role(self, role):
+        return transport_for_role(role)
+
+    def require_selected_provider(self, provider, role):
+        require_role_provider(provider, role)
+
     def chat(self, request):
         self.last_exchange = None
         if self._failed:
@@ -134,8 +140,8 @@ class RoleRoutedProvider:
         try:
             role = self.role_for_request(request)
             selected = self.reviewer if role == "review" else self.generator
-            require_role_provider(selected, role)
-            transport = transport_for_role(role)
+            self.require_selected_provider(selected, role)
+            transport = self.transport_for_role(role)
             expected_identity = self.request_identity(request)
             raw = validate_request(request, transport_id=transport)
             previous = getattr(selected, "last_exchange", None)

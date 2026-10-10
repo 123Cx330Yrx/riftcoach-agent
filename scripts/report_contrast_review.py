@@ -90,7 +90,7 @@ class ContrastDocumentWorkflow(editor.BlockKeyedDocumentWorkflow):
             final = self.make_request(report_inputs(self._accepted[0], report))
             self.last_edit_journal = dict(self.last_edit_journal, teaching_candidate=VERSION,
                 baseline_final_review_request_sha256=self.last_edit_journal['final_review_request_sha256'],
-                final_review_request_sha256=request_sha(final))
+                final_review_request_sha256=self.request_sha(final))
         return report
 
 

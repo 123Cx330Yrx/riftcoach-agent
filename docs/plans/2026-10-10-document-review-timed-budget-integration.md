@@ -1,5 +1,9 @@
 # 审查时间候选：完整请求与共享预算接入
 
+本记录是b00a9eaf预算接缝交付时点。后继SDK/进程/workflow发送链离线接通与剩余
+checkpoint/native/Worker边界见[发送链接入](2026-10-10-document-review-timed-send-integration.md)，
+以下历史状态表不作为当前下一动作。
+
 ## 当前交付及边界
 
 GLM600/Flash300候选已接到完整ChatRequest和既有CoachBudgetedProvider账本，

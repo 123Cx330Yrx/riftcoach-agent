@@ -42,9 +42,9 @@ class RoleReceiptedStreamProvider(ReceiptedStreamProvider):
     """
 
     def __init__(self, *, settings, directory, task_directory, transport_id):
-        from app.evaluation.golden_stream_bridge import REVIEW_MODEL_TRANSPORT_ID
+        from app.evaluation.golden_stream_bridge import REVIEW_MODEL_TRANSPORT_ID, TIMED_TRANSPORTS
 
-        if transport_id not in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID):
+        if transport_id not in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, *TIMED_TRANSPORTS):
             raise ValueError("role_transport_identity")
         super().__init__(settings=settings, directory=directory, transport_id=transport_id)
         self._task_directory = Path(task_directory)
@@ -76,7 +76,7 @@ class RoleReceiptedStreamProvider(ReceiptedStreamProvider):
         from app.evaluation.golden_inference_scope_v5 import strict_json
         from app.evaluation.golden_integrated_runtime import Exchange
         from app.evaluation.golden_journal import write_new_json
-        from app.evaluation.golden_stream_bridge import GoldenProcessStreamProvider, REVIEW_MODEL_TRANSPORT_ID
+        from app.evaluation.golden_stream_bridge import GoldenProcessStreamProvider, REVIEW_TRANSPORTS, TIMED_TRANSPORTS
         from app.providers.errors import ProviderError, ProviderResponseError
         from app.providers.models import ChatResponse
 
@@ -84,10 +84,14 @@ class RoleReceiptedStreamProvider(ReceiptedStreamProvider):
         self.last_response = None
         try:
             self._require_identity()
-            expected_roles = ("review",) if self.transport_id == REVIEW_MODEL_TRANSPORT_ID else ("generation", "revision")
+            expected_roles = ("review",) if self.transport_id in REVIEW_TRANSPORTS else ("generation", "revision")
             role = expected_roles[0] if role is None else role
             if role not in expected_roles:
                 raise ProviderResponseError(provider="zhipu", code="role_transport_identity_mismatch")
+            if self.transport_id in TIMED_TRANSPORTS:
+                from app.evaluation.document_review_timing_adapter import role_for_request
+                if role_for_request(request) != role:
+                    raise ProviderResponseError(provider="zhipu", code="role_transport_identity_mismatch")
             if self._failed:
                 raise ProviderResponseError(provider="zhipu", code="stream_bridge_exhausted")
             if type(ordinal) is not int or not self._calls < ordinal <= 9:
@@ -129,7 +133,7 @@ class RoleReceiptedStreamProvider(ReceiptedStreamProvider):
                 model_identity_valid = (
                     reservation.get("model") == self.model_name
                     and reservation.get("thinking_profile_id") == self.thinking_profile_id
-                ) if self.transport_id == REVIEW_MODEL_TRANSPORT_ID else (
+                ) if self.transport_id in REVIEW_TRANSPORTS else (
                     reservation.get("model", self.model_name) == self.model_name
                     and reservation.get("thinking_profile_id", self.thinking_profile_id) == self.thinking_profile_id
                 )

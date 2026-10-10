@@ -1,3 +1,10 @@
+## 2026-10-10 新时间发送链与全文业务workflow离线接通
+
+- b00a9eaf/CI38039283424已全success。本轮显式GLM600/Flash300请求贯穿角色router、共享任务ordinal/create-only回执factory、真实父子进程worker/SDK编码/stream/close/usage、Exchange及初评/编辑/fresh。复用共享预算/生命周期和全文业务校验；任务900/5calls/401920tokens保持，默认入口不切换。
+- 新旧transport互拒Host时间标记，包括Flash300及被剩余截短的GLM；Host标签不发Provider。专用SDK政策630/630/660按精确模型/能力签发，600关闭迟到不交付，父进程超时kill/reap。5个当前manifest组件SHA/总SHA显式刷新，原裁决/seal字节不变，两个历史源码归档并固定摘要验证。
+- 12发送链+25预算+4标量共41项通过；104时间裁决/业务/旧stream、113factory/预算/自然应用、63旧full15候选/runner/evidence与coarse/correction/boundary合同通过。后续角色门51项与factory默认构造4项重核通过，不叠加计数。真实子进程使用禁止联网的SDK替身，450秒是模拟；不证明真实耗时或质量。
+- Provider0/无新run/资格0/PAUSED、execution_ready=false。下一沿现有runner/handoff/replay接入时间身份、每案900/整批账本，再核Worker所有权/取消/发布；不补旧native、不重开旧批或借余量。正式15与原下游未完成，详见document-review-timed-send-integration。
+
 ## 2026-10-10 续接审计纠偏与完整请求时间预算接入
 
 - 原时间裁决有效；失败共享集成在58ba12dc完整回退，1d181238只有未使用标量函数/4测试。三个CI全绿，103原件与Git seal字节不变；本机Codex429/capacity/断流与业务300秒截止分开记录，账号限额具体原因未证。原过宽共享时钟/实际身份互拒描述更正。

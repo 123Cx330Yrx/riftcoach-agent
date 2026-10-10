@@ -29,31 +29,27 @@ TRANSPORT_ID = "golden-process-stream-v2"
 EXPANDED_TRANSPORT_ID = "golden-process-stream-high-16384-v1"
 CAPACITY_TRANSPORT_ID = "golden-process-stream-high-32768-v1"
 REVIEW_MODEL_TRANSPORT_ID = "golden-glm53-review-high-32768-v1"
-TIMED_REVIEW_TRANSPORT_ID = "golden-glm53-review-time600-high-32768-v1"
-TIMED_FLASH_TRANSPORT_ID = "golden-flash-time600-pair-high-32768-v1"
-REVIEW_TRANSPORTS = (REVIEW_MODEL_TRANSPORT_ID, TIMED_REVIEW_TRANSPORT_ID)
-TIMED_TRANSPORTS = (TIMED_FLASH_TRANSPORT_ID, TIMED_REVIEW_TRANSPORT_ID)
-TRANSPORTS = ("golden-process-stream-v1", TRANSPORT_ID, EXPANDED_TRANSPORT_ID, CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, *TIMED_TRANSPORTS)
+TRANSPORTS = ("golden-process-stream-v1", TRANSPORT_ID, EXPANDED_TRANSPORT_ID, CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID)
 
 
 def transport_profile(transport_id):
     if transport_id not in TRANSPORTS:
         raise ValueError("stream_transport_identity")
-    return (ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE if transport_id in REVIEW_TRANSPORTS
+    return (ZHIPU_GLM53_HIGH_REVIEW_DIAGNOSTIC_PROFILE if transport_id == REVIEW_MODEL_TRANSPORT_ID
             else ZHIPU_GLM53_FLASH_HIGH_CANDIDATE_PROFILE)
 
 
 def transport_request_policy(transport_id):
     transport_profile(transport_id)
     from app.runtime.coach_contract import CAPACITY_COACH_CONTRACT, EXPANDED_COACH_CONTRACT
-    if transport_id in REVIEW_TRANSPORTS:
+    if transport_id == REVIEW_MODEL_TRANSPORT_ID:
         from app.model_runtime import _issue_candidate_evaluation_request_policy
         return _issue_candidate_evaluation_request_policy(
-            policy_id=("glm-5.3-review-time600-high-32768" if transport_id == TIMED_REVIEW_TRANSPORT_ID else "glm-5.3-review-diagnostic-high-32768"), version="1.0.0",
-            provider_id="zhipu", model="glm-5.3", agent_timeout_s=(630.0 if transport_id == TIMED_REVIEW_TRANSPORT_ID else 330.0),
-            llm_tool_timeout_s=(630.0 if transport_id == TIMED_REVIEW_TRANSPORT_ID else 330.0), transport_timeout_s=(660.0 if transport_id == TIMED_REVIEW_TRANSPORT_ID else 360.0),
+            policy_id="glm-5.3-review-diagnostic-high-32768", version="1.0.0",
+            provider_id="zhipu", model="glm-5.3", agent_timeout_s=330.0,
+            llm_tool_timeout_s=330.0, transport_timeout_s=360.0,
             max_output_tokens=32768, temperature=1.0, top_p=0.95)
-    if transport_id in (CAPACITY_TRANSPORT_ID, TIMED_FLASH_TRANSPORT_ID):
+    if transport_id == CAPACITY_TRANSPORT_ID:
         return CAPACITY_COACH_CONTRACT.request_policy
     if transport_id == EXPANDED_TRANSPORT_ID:
         return EXPANDED_COACH_CONTRACT.request_policy
@@ -63,9 +59,7 @@ def transport_request_policy(transport_id):
 def transport_limits(transport_id):
     if transport_id not in TRANSPORTS:
         raise ValueError("stream_transport_identity")
-    if transport_id == TIMED_REVIEW_TRANSPORT_ID:
-        return (32768, 600, 65536)
-    if transport_id in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, TIMED_FLASH_TRANSPORT_ID):
+    if transport_id in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID):
         return (32768, 300, 65536)
     return (16384, 180, 32768) if transport_id == EXPANDED_TRANSPORT_ID else (8192, 90, 16384)
 # Persist only the bounded codes emitted by our ProviderError constructors.
@@ -138,17 +132,6 @@ class CapacityBridgeObservation(BridgeObservation):
     output_tokens: int | None = Field(default=None, ge=0, le=32768)
 
 
-class TimedReviewBridgeObservation(CapacityBridgeObservation):
-    schema_version: Literal["1.4"] = "1.4"
-    first_event_ms: int | None = Field(default=None, ge=0, le=600000)
-    first_reasoning_ms: int | None = Field(default=None, ge=0, le=600000)
-    first_visible_content_ms: int | None = Field(default=None, ge=0, le=600000)
-    terminal_ms: int | None = Field(default=None, ge=0, le=600000)
-    eof_ms: int | None = Field(default=None, ge=0, le=600000)
-    close_ms: int | None = Field(default=None, ge=0, le=600000)
-    elapsed_ms: int = Field(default=0, ge=0, le=600000)
-
-
 def request_metrics(request, raw):
     """Counts only: no metadata, names, tool IDs, arguments or message bodies."""
     from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
@@ -176,15 +159,6 @@ def _mapping(value):
 
 def validate_request(request, *, transport_id=TRANSPORT_ID):
     output_limit, seconds, _ = transport_limits(transport_id)
-    # Timing metadata is Host identity, never part of Provider messages. Both
-    # role transports require it, including a GLM call truncated below 300s.
-    from app.evaluation.document_review_timing_adapter import METADATA, role_for_request
-    if transport_id in TIMED_TRANSPORTS:
-        role = role_for_request(request)
-        if (role == "review") != (transport_id == TIMED_REVIEW_TRANSPORT_ID):
-            raise ProviderResponseError(provider="zhipu", code="stream_transport_identity")
-    elif METADATA in request.metadata:
-        raise ProviderResponseError(provider="zhipu", code="stream_transport_identity")
     from app.evaluation.glm53_bounded_revision_budget_reachability import estimate_runtime_request_input_ceiling
     if (not math.isfinite(request.timeout_s) or not 0 < request.timeout_s <= seconds
             or request.max_tokens is None or request.max_tokens > output_limit
@@ -203,7 +177,7 @@ def collect(request, opener, *, directory, started, deadline, clock=time.monoton
     """Only deliver after exhaustion and owned close; partial data remain private."""
     validate_request(request, transport_id=transport_id)
     _, seconds, max_events = transport_limits(transport_id)
-    value = TimedReviewBridgeObservation() if transport_id == TIMED_REVIEW_TRANSPORT_ID else CapacityBridgeObservation() if transport_id in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID, TIMED_FLASH_TRANSPORT_ID) else ExpandedBridgeObservation() if transport_id == EXPANDED_TRANSPORT_ID else BridgeObservation()
+    value = CapacityBridgeObservation() if transport_id in (CAPACITY_TRANSPORT_ID, REVIEW_MODEL_TRANSPORT_ID) else ExpandedBridgeObservation() if transport_id == EXPANDED_TRANSPORT_ID else BridgeObservation()
     durations = {name: 0.0 for name in ("open", "advance", "processing", "close", "progress_write")}
     assembler = ProviderStreamAssembler(provider_id="zhipu", requested_model=transport_profile(transport_id).model,
         require_request_identity=True,
@@ -379,7 +353,7 @@ class GoldenProcessStreamProvider:
             "ordinal": self._calls, "request_sha256": hashlib.sha256(raw).hexdigest(),
             "stream_tool_arguments": self.stream_tool_arguments and bool(request.tools),
             "state": "reserved_before_io", "request_metrics": request_metrics(request, raw)}
-        if self.transport_id in REVIEW_TRANSPORTS:
+        if self.transport_id == REVIEW_MODEL_TRANSPORT_ID:
             reservation.update(model=self.model_name, thinking_profile_id=self.thinking_profile_id)
         write_new_json(directory / "reservation.json", reservation)
         environ = dict(os.environ)
@@ -458,9 +432,6 @@ def worker(directory, started, deadline, transport_id=TRANSPORT_ID, *, stream_to
         raise ValueError("stream_ipc_size")
     request = REQUEST.validate_json(raw)
     validate_request(request, transport_id=transport_id)
-    if (not math.isfinite(started) or not math.isfinite(deadline)
-            or not 0 < deadline - started <= request.timeout_s + .000001):
-        raise ValueError("stream_worker_deadline")
     settings = load_zhipu_settings()
     profile = transport_profile(transport_id)
     if settings.model != profile.model or settings.base_url.rstrip("/") != "https://open.bigmodel.cn/api/paas/v4":
