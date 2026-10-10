@@ -32,8 +32,9 @@ fresh输入没有历史累积，与另一完成fresh规模近同；不将推理�
 下一动作：重新设计显式GLM600/Flash300、任务900不变的隔离时间身份候选，必须放在不改动
 旧指纹覆盖模块的独立适配层；本次候选曾直接改共享stream bridge/receipt factory，导致旧合同
 启动时出现Prompt Program component fingerprint drift，已在未提交状态回退，未发Provider。
-旧300合同/默认入口已恢复；新发送与native交接未实现，execution_ready=false。先完成独立适配层、
-新旧请求互拒和旧回归全绿，再提出具体新成本。
+旧300合同/默认入口已恢复；已新增不依赖旧stream bridge/receipt factory的离线时间适配器，
+覆盖GLM600、Flash300、共享任务900和新旧身份互拒，33项时间/旧回归检查通过。新发送与native
+交接仍未实现，execution_ready=false；下一步才是把该边界接入独立transport并继续离线核验。
 不原样重买未执行例，不调大旧批冻结300秒，不转Training或裁剪来源来绕关。
 新资格0，旧2/15与3/15独立，正式同版本15、自然消费、8E及全部下游依赖仍未完成。
 
