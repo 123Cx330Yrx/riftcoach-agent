@@ -251,6 +251,51 @@ def test_succeed_with_evidence_commits_snapshot_terminal_and_event_together() ->
         assert event_count == 4
 
 
+@pytest.mark.parametrize("fence", ["cancel", "wrong_generation", "expired"])
+def test_evidence_commit_after_renewals_still_checks_cancel_and_ownership(fence) -> None:
+    with migrated_repository() as (repository, factory):
+        task = pending(14).model_copy(
+            update={"publication_mode": TaskPublicationMode.EVIDENCE_BOUND_V1}
+        )
+        create(repository, task)
+        claimed = repository.claim_next(
+            worker_id="evidence-worker", now=BASE + timedelta(seconds=20),
+            lease_seconds=360,
+        )
+        assert claimed is not None and claimed.lease is not None
+        identity = dict(task_id=task.task_id, worker_id=claimed.lease.worker_id,
+            lease_generation=claimed.lease.generation, lease_token=claimed.lease.token)
+        for elapsed in (190, 380, 570):
+            heartbeat = repository.heartbeat(**identity, now=BASE + timedelta(seconds=20 + elapsed),
+                                             lease_seconds=360)
+            assert heartbeat.disposition is TaskHeartbeatDisposition.ACTIVE
+        finish = BASE + timedelta(seconds=610)
+        if fence == "cancel":
+            repository.request_cancel(task_id=task.task_id, owner_id=task.owner_id,
+                request_id="cancel-before-evidence", now=finish)
+        elif fence == "wrong_generation":
+            identity["lease_generation"] += 1
+        else:
+            finish = BASE + timedelta(seconds=950)  # exact latest lease expiry
+        before = repository.read_events(task_id=task.task_id, owner_id=task.owner_id, after_cursor=0, limit=100)
+        assert repository.succeed_with_evidence(**identity, now=finish,
+            terminal=terminal(task.run_id),
+            pending_snapshot=PendingEvidenceBundleSnapshot(task_id=task.task_id,
+                run_id=task.run_id, owner_id=task.owner_id, refresh_id="fenced",
+                bundle=bundle(), stored_at=finish),
+            publication_reference={"schema_version": "1.0", "context": {
+                "owner_id": task.owner_id, "task_id": str(task.task_id),
+                "run_id": task.run_id, "request_fingerprint": task.request_fingerprint,
+                "mode": "evidence_bound_v1"}, "summary_digest": "d" * 64},
+            summary_digest="d" * 64) is False
+        after = repository.read_events(task_id=task.task_id, owner_id=task.owner_id, after_cursor=0, limit=100)
+        assert before == after
+        with factory() as session:
+            row = session.get(ReviewTaskRecord, task.task_id)
+            assert row.status == TaskStatus.RUNNING.value and row.first_snapshot_id is None
+            assert session.scalar(sa.select(sa.func.count()).select_from(EvidenceBundleSnapshotRecord)) == 0
+
+
 def test_succeed_with_evidence_rejects_cross_task_publication_reference() -> None:
     with migrated_repository() as (repository, factory):
         task = pending(13).model_copy(

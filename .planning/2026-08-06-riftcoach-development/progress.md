@@ -1,3 +1,10 @@
+## 2026-10-10 Worker发布边界与完整15成本提案
+
+- 7新真实线程+候选factory/预算反例及42既有Worker/组合/可靠任务合同共49通过（33.77秒）。压缩时钟190/380秒续租360，590返回；901任务超时结known用量但不发布。取消/LOST/heartbeat异常与最终CAS竞争挡发布，未改生产Worker。
+- 新增3项真实Postgres原子边界反例，连续租后cancel/错generation/精确expiry均须无snapshot/terminal/event新增。Docker Desktop启动sailor-ingest.sock重命名失败，官方stop；本机2通过/15skip，新增数据库反例未执行，待公共CI。没有动业务数据库。
+- 同步executor无阶段间取消信号，发布保护不等于中断在途/后续Provider；此自然消费依赖保留。下一完整15原范围/顺序、45调用/4354560tokens/13500活动秒/86400Host秒，每案900/5/401920，估价45.029376元非硬封顶提案准备；未冒填新聊天独立主体。
+- Provider0/无新run/资格0/PAUSED，旧裁决与seal摘要一致。下一核本包CI/database、真实原生双审身份和计划冻结后具体授权；不借历史余量、不重开旧批、正式15及8E未完成。
+
 ## 2026-10-10 时间600执行与原生取证链离线接入
 
 - 4de565dc/CI38042065301四片失败同一旧scan身份夹具；生产拒绝有效。改从公开seal逐项核完整case/请求原字节SHA，另测live原入口仍拒绝当前源码冒认旧identity。63旧scan/accepted/checkpoint/remaining尾链通过，7候选prepare/runner、72旧role资格/factory/document资格通过。

@@ -1,3 +1,9 @@
+## 2026-10-10 Worker续租、任务截止与取消是不同边界
+
+- 实际Worker独立线程续租维护所有权，TimedDocumentBudget起点不因此变动，901秒完整回包仍拒绝交付。取消/LOST/heartbeat异常在executor返回后挡发布；同步executor没有阶段间取消回调，不能由这次检查推导在途调用或后续内部阶段已停止。诊断runner另沿每发送/Host边界abort，未由产品Worker驱动。
+- evidence_bound成功必须在DB同事务核任务行活租约/身份/取消后写snapshot/terminal/event。新增3项数据库负例针对最后heartbeat后状态变化，离线Repository替身不能证明真实事务；本机Docker socket启动残留与9月28恢复同类，当前官方停止，实证交公共CI。
+- 现有候选公开15完整库存可用。再以10例作固定前置不能收齐缺5项覆盖；推荐新身份完整15直接开发验证，但不冒认自然生成/资格。实际cost范围已列，当前新root只有主审，冻结时必须绑定真实独立原生身份，不能复用旧聊天的lineage。
+
 ## 2026-10-10 迟到完整回包与历史身份门的真实反例
 
 - transport完整返回与任务交付不同：900墙耗尽时usage已结算，但预算器停止、不产生stage。回放必须核实际send终态/案时钟/timeout错误再保留未交付尾部，不能只因receipt.complete制造业务journal/认证。

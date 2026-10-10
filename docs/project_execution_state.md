@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "固定10例已关闭；GLM600/Flash300发送及runner/checkpoint/native/replay已离线接通，每案900账本保持，Worker边界待核，execution_ready=false、未授权新发送；旧批不重开。"
+pause_reason: "固定10例已关闭；time600发送/runner取证及Worker发布边界离线核验通过，数据库新增边界待公共CI；完整15范围/成本提案已准备，原生双审身份/冻结/具体付费授权未齐，execution_ready=false。"
 ---
 
 # RiftCoach 当前执行状态
@@ -61,9 +61,17 @@ create-only回执factory、真实子进程worker/SDK编码/stream/close/usage、
 原时间裁决/旧seal字节不变，第三份变化历史runner源码按原摘要归档。结果及限制见
 timed-document-execution-evidence。14新时间反例+10公开时间裁决共24、补零调用1项、
 旧native/Host时钟51项最终通过；模拟不计真实资格。
-下一动作：核Worker续租/取消/失去所有权与发布边界，再准备具体新范围及成本授权。
-当前execution_ready=false，无新run/Provider/已授权付费方案；旧native不补签新请求，
-本轮公共CI须自己同SHA验证，不能用前一全绿替代。
+Worker核验已补：7新真实线程+候选factory/预算反例及42既有检查共49通过；
+续租不扩900任务墙，取消/LOST/续租异常挡发布，原子提交拒绝后不走legacy成功。
+同步executor仍可能继续内部阶段，不能冒认取消已能中断付费调用；自然消费保留此依赖。
+本机Docker再次sailor-ingest.sock失败，官方stop已关闭；新增3项数据库反例等待公共CI，
+本机2通过/15skip不算DB实证，未改业务库。20c77f49公共CI38046089854仍in_progress。
+完整15新时间提案保持原15全文/顺序，最多GLM30+Flash15=45调用/4354560tokens/
+13500活动秒/86400Host秒、每案900/5calls/401920tokens，估价45.029376元非硬封顶。
+见timed-document-worker-and-full15-proposal；不另设重复10例为固定前置。
+下一动作：核本包公共CI/database反例，绑定本聊天真实全文独立审主体并冻结完整15
+源/请求/身份/计划SHA，具备同SHA全绿后请求具体成本授权。当前团队仅主审，
+execution_ready=false，无新run/Provider/已授权付费方案；旧native不补签新请求。
 不原样重买未执行例，不调大旧批冻结300秒，不转Training或裁剪来源来绕关。
 新资格0，旧2/15与3/15独立，正式同版本15、自然消费、8E及全部下游依赖仍未完成。
 
