@@ -1,3 +1,11 @@
+## 2026-10-10 固定10例首次执行与超时硬关闭
+
+- 用户“确认，继续吧”原生授权绑定d790c157/全绿CI37968309635/d976aa1c…aabbd5；即时主体/精确HEAD核验后唯一runner首次执行，无重发。attribution:1初评80→block14编辑→fresh94/pass全链完成；scope:3初评70/block4编辑通过，fresh实际发送后300秒stream_deadline，8案未发。
+- 5个完成阶段均真实全文双审；scope final无回包/stage/认证，semantic_accepted=false只是未完成。block4泛指不补全称，措辞advisory不作事实门；scope本次明确数值修法未隔离旧“并未带来”机制。诊断未完成、资格0/正式15未完成。
+- 实际6调用GLM4/Flash2，known81642tokens、unknown用量1次/预留77868tokens、receiptless0；已知未缓存估价0.6973828元，未知不免费。活动722.094秒/Host1581.64秒；runner退出exit1、自动任务已PAUSED，不重试重开/借余量。
+- 绝对路径seal只读严格回放并create-only公开封存SHA76e9a70b…575f30，103原件SHA/46白名单JSON一致；独立收尾再核5个真实native事件/账目/checkpoint，无工程阻断。主审实读收尾唯一completed native final，原件未改、收尾Provider0。
+- 免费核父进程300秒硬截止、持续流到299.094秒、tool0/usage未知；请求无历史累积、与已完成fresh规模近同，未定位本地丢输出/重发缺陷，不猜长推理根因。下一沿GLM/high与完整质量合同准备时间预算取舍，不原样再买尾链、不转Training；结果与技术取舍见focused10-resumption-result，原全部依赖保留。
+
 ## 2026-10-10 核清两聊天后恢复固定10例集中诊断准备
 
 - 用户核清第三例/第四例之后的主线、三轮尾链硬停与Training路线漂移后明确继续。复用d546bd23回执/原生交接/strict replay工具，固定diagnostic10选择、顺序、独立run及28调用预算；原15库存不改，正式15后置。

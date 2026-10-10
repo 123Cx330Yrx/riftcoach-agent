@@ -4,29 +4,29 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "旧付费批已关闭；用户纠偏后接续完整15主线的语义与编辑合同修复准备，不重开旧批。"
+pause_reason: "固定10例首次执行在scope:3 fresh的300秒stream_deadline硬关闭；封存已核，不重试重开；接续完整15主线的时间合同方案准备。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
 
-2026-10-10用户要求从第三例修通、第四例失败后的效率改良复盘到临时聊天，核清后明确继续。
-主线仍是初评→必要编辑→fresh→真实全文双审；Training成果保留，不作当前动作。
-临时聊天d546bd23已提交回执/原生交接/严格回放候选，不能重复其未提交收尾。
-本轮复用该工具落实原10例集中诊断：两处分歧、正反控制与未认证尾链；固定selection同时
-绑定案例顺序、预算、独立run、发送前核验及只读回放，不新建执行器、不扩为两轮全15。
-拟28调用（GLM19/Flash9）、2709504tokens、8400活动秒/86400Host秒，保守未缓存估价
-28.4471296元，非账单硬封顶。新主审/独立主体需核真实谱系与native final，不借临时聊天身份。
-41项执行/回放及32项编辑/教学相邻检查通过，最后小改受影响14项补跑通过、不重复累计；
-独立原生开发复核无阻断，当前root01a12190…/child01a121b7…真实谱系与final路由通过。
-方案SHA d976aa1c…aabbd5，原15来源、候选请求SHA、10例顺序、预算及新身份均已精确绑定。
-临时聊天d546bd23/CI37963794076已全绿；本轮还需本提交公共CI，不能借前一提交成功。
-新Provider0、资格0，旧2/15与3/15独立，自动任务PAUSED，业务run未创建。
-下一动作：提交/核本10例方案公共CI，具体成本授权齐备后即时重核主体和clean exact HEAD，
-按本方案首次执行；未授权前不建等待器或发请求。旧45调用准备仅历史提案，不借额度。
-诊断仍语义停案/硬故障停批、不重试；正式资格另需同版本完整15且首失败停。
-实现与失败决策见`docs/plans/2026-10-09-full15-resumption-candidate.md`，全部后续依赖保留。
+2026-10-10固定10例已获用户“确认，继续吧”具体授权并在d790c157/全绿CI37968309635
+首次执行，方案d976aa1c…aabbd5；本批已因scope:3 fresh的300秒stream_deadline硬关闭。
+attribution:1初评80→只改block14→fresh94/pass全链通过；scope:3初评70及block4编辑通过，
+fresh实际发送后未完整返回，未认证语义失败。5个完成阶段真实全文双审通过，其余8案未发。
+实际6调用GLM4/Flash2，known81642tokens、未知用量1次/预留77868tokens、receiptless0；
+已知未缓存估价0.6973828元，未知不当免费。活动722.094秒/Host1581.64秒，未超整批上限。
+runner退出exit1；自动任务PAUSED，不重试重开/补签/借余量，不自动正式15。
+严格只读封存SHA76e9a70b…575f30，103原件SHA一致、46白名单JSON；独立收尾复核和
+真实5个native事件再核通过，收尾Provider0。结果见`docs/plans/2026-10-10-focused10-resumption-result.md`。
+免费核超时前持续流读取、无tool/usage；父进程300秒硬截止生效，无已定位本地丢输出/重发缺陷。
+fresh输入没有历史累积，与另一完成fresh规模近同；不将推理字符数当token或根因。
+保留候选有限正证据，但10例未收齐，教学充分性/编辑稳定率/旧scope措辞机制未证明。
+下一动作：沿GLM/high、完整来源与质量门准备交付时间/整任务预算合同取舍，核transport、
+observation、共享预算、Worker生命周期和资格身份；免费方案及检查齐备后才提出具体新成本。
+不原样重买未执行例，不直接调大旧冻结300秒，不转Training或裁剪来源来绕关。
+新资格0，旧2/15与3/15独立，正式同版本15、自然消费、8E及全部下游依赖仍未完成。
 
 ## 以下为历史记录
 
