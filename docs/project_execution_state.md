@@ -29,9 +29,11 @@ fresh输入没有历史累积，与另一完成fresh规模近同；不将推理�
 前一ed445256/CI38018028991全success。诊断整批8400没有逐案产品900墙或自然生成，
 不能把其延迟当产品可达；旧transport/observation实际拒600，不能直接改CLI继续。
 取舍见`docs/plans/2026-10-10-document-review-time-decision.md`。
-下一动作：离线接入显式GLM600/Flash300、任务900不变的隔离时间身份候选，贯穿prepared/
-issued/role/process/observation/账目/回放与Worker所有权；旧300合同/默认入口不变。
-新发送与native交接未实现，execution_ready=false；免费实现/检查齐备后才提出具体新成本。
+下一动作：重新设计显式GLM600/Flash300、任务900不变的隔离时间身份候选，必须放在不改动
+旧指纹覆盖模块的独立适配层；本次候选曾直接改共享stream bridge/receipt factory，导致旧合同
+启动时出现Prompt Program component fingerprint drift，已在未提交状态回退，未发Provider。
+旧300合同/默认入口已恢复；新发送与native交接未实现，execution_ready=false。先完成独立适配层、
+新旧请求互拒和旧回归全绿，再提出具体新成本。
 不原样重买未执行例，不调大旧批冻结300秒，不转Training或裁剪来源来绕关。
 新资格0，旧2/15与3/15独立，正式同版本15、自然消费、8E及全部下游依赖仍未完成。
 
