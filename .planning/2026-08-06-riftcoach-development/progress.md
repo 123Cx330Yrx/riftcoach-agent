@@ -1,3 +1,13 @@
+## 2026-10-11 后4真实执行全部完成及严格封存
+
+- 用户“继续吧，反正就是你第11例莫名其妙停了是吧，继续”授权后，在89f2408c/全绿CI38068536698首次启动唯一runner86300/wrapper92504。observed:2..5 initial80/82/84/90均真错，只做必要单段编辑，fresh95/95/96/97 pass；12stage完整全文双审与真实native认证、revision/final四项全真。
+- 实际12calls GLM8/Flash4、known202229/unknown0/receiptless0、估价1.5370744元非账单，活动550.297/Host3582.641秒。UTC18:10:06 exit0，运行冻结源码/HEAD，无第二runner/重试/重评/补签；恢复同任务仅MESSAGE，前任务完成/导入后才派下一stage。
+- 严格只读replay核12真实native，create-only138白名单JSON/260原件SHA一致，seal a9873491…51feec、close audit27d8b6b4…1d8d83；授权前快照与实际授权/CI/启动退出公开留存。收尾Provider0，自动任务实读PAUSED。
+- 后续独立工程用Codex0.162 alpha读取12事件仅raw_event_sha256不同，原合同0.153.4首例仍完全一致；逐字段定位新版新增turn.rootTurnId，终答/dispatch未变。新版严格门拒绝事实单独保留，不修改seal或签名，也不归因429/Provider语义。
+- 指定0.153.4的独立完整replay最终exit0，12事件与完整seal/138白名单相等、260原件不变；5×3准备在禁network/run/凭据条件下复建精确相同。工程唯一native final已实读，accepted=true/跨版本nonblocking，公开工程review SHA c328f7e8…f19a2，不补签业务或资格。
+- 原15初评全部已发送；分批覆盖库存10通过/3语义拒绝或分歧/2未认证，不是同批成功率或资格。旧第7/11不补签重买，旧2/15、3/15、remaining11及三个新批各自独立，新资格0。
+- 免费构造5固定完整请求×3教学组织对照，非policy内容/业务规则/schema/模型/预算精确不变，仅替教学后缀；execution_ready=false，不冒实际issued身份或真实修复。唯一下一动作仍是共同语义机制的隔离身份/请求/预算/native接缝与具体成本方案。结果和全部库存见remaining4-time600-result，正式15/自然消费/8E及全部下游依赖保留。
+
 ## 2026-10-11 后8真实执行、恢复操作硬关闭与后4准备
 
 - 后8在49010a33/全绿CI38062139250首次执行，claim-scope:5/7初评96/pass，claim-scope:6初评80→只改block6统计口径→fresh96/pass；三例共5stage全文双审/native通过。没有因上一批封存而取消后续执行。

@@ -1,3 +1,13 @@
+## 2026-10-11 真错修复正证据不撤销范围误报
+
+- 原生事件整体SHA含完整turn；Codex0.162 alpha相对本批指定0.153.4新增turn.rootTurnId，使同12事件封套仅raw_event_sha256变化，严格门拒绝。首例逐字段核thread/dispatch及其余turn未变，review与终答未变；不能把读取schema升级造成的差异当成业务结果变化，也不能忽略差异追认兼容。旧seal/原件保持，升级读取客户端要显式解决版本绑定。
+- 指定0.153.4独立全链strict replay实际exit0并与整个seal相等，12事件摘要相等、260原件不变；上述限制是跨读取版本兼容问题，原执行合同当前仍可复核。独立工程终答真实实读，不把首轮统计输出的KeyError（误取issued-request.model，后已从12 transport call计数）当成replay失败或业务失败。
+
+- 后4的未来外推、观摩归属、官方日期、标题能力证明均只改实际错误段，其他全文精确保留，fresh95/95/96/97与全文双审/native通过。现有完整来源和block-keyed编辑可保留，不需为第11例operator错误改Provider策略。
+- 标题“已证明防抓能力优秀”是独立明确命题，正文K1限制不能撤销；只删能力证明、改为样本结果观察充分。四场“较稳定差异”在明确样本范围下有逐对经济/伤害依据，不补长期命题。两种裁决需共同保留，不能一概放宽或关键词判错。
+- 旧claim-scope:4与scope:3 fresh误报已有正确数字却扩义，scope:4直接修法覆盖仍有Host分歧；四个新控制通过只扩大已核案例范围，没有证明共同机制稳定。三个独立批库存10/3/2仅为覆盖计数，不能拼同版完整15资格或补未认证签名。
+- 下一静态准备已固定5完整原请求并核3后缀变体只改教学组织。原expanded精确恢复、短例与决策顺序是备选而非已选择生产修复；canonical摘要不是actual issued SHA，旧candidate metadata不构成新可发送身份。不得用字符减少/静态合法性推导语义效果。
+
 ## 2026-10-11 恢复同审查不能追加NEW_TASK
 
 - native interrupted和协作running可同时出现；interrupted快照不意味着可以重新派任务。root先MESSAGE后followup_task，真实同一turn插入两个NEW_TASK；final response/item_completed各一且completed/error=null仍被唯一dispatch门拒绝。这是operator恢复错误，有直接原生记录，不能归因Provider容量、限额或语义。

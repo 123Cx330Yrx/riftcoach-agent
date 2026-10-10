@@ -13,14 +13,16 @@
 
 ## Active Work Package
 
-**目标：** 继续用户要求的案例覆盖，准备后8批尚未发送的后4 observed:2..5，不以旧批关闭取消后续执行。
-**实际起点：** 后8在49010a33/CI38062139250首次执行；3通过/5认证stage，第4 observed:1初评96/pass双审完成但native不唯一。6calls/known98364/unknown0已封存，后4未发；完整15仍未收齐，新资格0。
-**最早偏离/修正：** root对active/interrupted同一turn补followup_task，产生第二个NEW_TASK，frozen native拒绝，helper实际abort退出；不是Provider语义失败或限额。恢复同checkpoint只MESSAGE，前任务完成/导入才派新stage；原事件不补签。首例CLI相对路径纠正独立留存。
-**实现：** document_remaining4_adapter隔离复用原remaining8 runner/evidence，核双旧seal、47源码和原完整cell/request；原时间预算、全文双审、唯一dispatch、checkpoint/native/replay/公开白名单不放宽。
-**范围与预算：** observed:2..5，最多GLM8+Flash4=12calls/1161216tokens/3600活动秒/86400Host秒、估价12.0078336元非硬封顶，每案900/5/401920；新run=document-remaining4-time600-20261011。前3、observed:1及旧claim-scope:2不重发/补签。
-**验收/失败：** 每stage真实全文双审、真实native导入；语义停案继续独立案，身份/来源/协议/native/transport/预算硬停全批；无重试/重评/重开/旧额度迁移。历史独立，不拼完整15。
-**当前下一动作：** 后4本机7项断网接缝及独立工程审查通过、native当前单dispatch实读可用，方案b44521f2…f0de1b已create-only；提交/同HEAD公共CI后确认具体新预算。当前Provider0/无新run，旧8不重开。自动任务保持PAUSED。执行收齐后再综合语义改良，正式15、自然消费、8E和全部下游仍保留。
-**证据：** docs/plans/2026-10-11-remaining8-time600-result.md、2026-10-11-remaining4-continuation.md；seal75c8c04d…ec2bf8、公开close audit，138原件SHA/5真实认证事件。
+**目标：** 解决正确教练分析被扩义误报与真错修法直接影响遗漏，准备同版本完整15与真实Agent消费的质量证据。
+**实际起点：** 后4接续全部通过，fresh95/95/96/97，12stage真实全文双审/native；12calls/known202229/unknown0已严格封存。原15库存10通过、3语义拒绝/分歧、2未认证，不拼跨批资格；旧第7/11不补签或重买。
+**本次交付：** 同HEAD89f2408c/CI38068536698首次执行，runner正常exit0；12真实native只读重放、138公开JSON/260原件SHA一致，seal a9873491…51feec；自动任务PAUSED。
+**读取限制：** 原合同Codex0.153.4封存通过；0.162 alpha新增turn.rootTurnId导致12原生整体SHA不同，严格门拒绝，终答/dispatch不变。升级客户端兼容问题与Provider业务结果分开，原件/旧封套不回改。
+**独立收尾：** 指定0.153.4全链严格replay exit0，12事件/完整seal相等、260原件不变、138白名单一致；工程唯一native final实读accepted=true，非业务重审，跨版本限制单独保留。
+**机制与反证：** 两处误报解释已找到正确数字却选错实际命题，规则和扩展示例已存在，继续叠同义教学无区分力。短教学同样未全过，扩展教学有多例正证据，不宣称教学负担/中转为根因；scope:4摘要/正文分歧独立保留。
+**实现路径：** 保留完整source、block-keyed编辑和fresh，静态对照只替教学后缀；5固定实际请求×3组织（原扩展/既有短例/实际命题→全文范围→来源冲突→直接修法），非policy消息/schema/模型/时限逐项相同。scripts/prepare_document_semantic_options.py及公共preparation可重建；当前execution_ready=false。
+**验收/失败：** 正确泛指不得补全称、明确真错不得借正文免责声明撤销、修法须覆盖已确认直接影响。字数/协议/单次分数不证明机制或资格；失败保留，Host分歧不下传。
+**当前下一动作：** 完成有区分力比较的隔离身份、完整请求/预算/原生双审接缝及具体成本方案。当前仅免费准备，不自动新付费批、不重开旧批、不转外围工作替代三个语义阻断。
+**证据：** docs/plans/2026-10-11-remaining4-time600-result.md、2026-10-11-semantic-decision-preparation.md及所引seal/close audit/preparation；历史各批独立、新资格0，正式15/自然消费/8E未完成。
 
 ## Dependencies and Follow-through
 

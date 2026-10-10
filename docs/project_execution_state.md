@@ -4,12 +4,45 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "后8例真实执行6调用后因主审恢复重复NEW_TASK导致native导入硬关闭；3通过，observed:1未认证，后4从未发送。已封存/资格0/PAUSED；当前准备后4接续，待具体新预算确认，不重开旧批。"
+pause_reason: "后4已完成/4通过/12stage真实认证，严格封存；新资格0/自动任务PAUSED。当前免费准备实际命题与直接修法的共同机制检查，不另开付费批；旧3语义问题与2未认证缺口保留。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
+
+2026-10-11用户要求的后4 observed:2..5接续已完成：初评80/82/84/90分别必要编辑后
+fresh95/95/96/97 pass，12个stage完整全文双审/native通过，编辑和终评四项ReportAssessment全真。
+冻结89f2408c/同HEAD全绿CI38068536698；runner86300/wrapper92504 UTC18:10:06正常exit0。
+实际12calls GLM8/Flash4、known202229tokens/unknown0/receiptless0，未缓存估价1.5370744元非账单；
+活动550.297秒/Host3582.641秒，预算未改。只读replay实核12个真实native，create-only封存
+138白名单JSON/260原件SHA一致，seal a9873491…51feec；公开close audit保留授权/CI/启动退出。
+运行期间源码/HEAD冻结、无第二runner，无重试/重评/补签；同任务恢复仅MESSAGE，下一stage
+在前任务真实完成且导入后投递。收尾Provider0，自动任务实读PAUSED。
+结果及原15覆盖库存：docs/plans/2026-10-11-remaining4-time600-result.md。
+
+native读取有版本限制：本批指定Codex0.153.4首次严格封存通过；独立工程用0.162 alpha
+重放时新增turn.rootTurnId使原生整体SHA变化，12封套比较失败而终答/dispatch不变。
+保留跨版本失败与旧封存分别记录，原件/门不改；不能把新版读取宣称为严格通过。
+独立工程随后用指定0.153.4全链严格回放exit0，12事件与整个seal相等、260原件不变；
+唯一原生工程终答实读并公开留存，accepted=true，跨版本限制为nonblocking finding。
+
+原15所有初评均已发送，按独立批库存有10通过、3语义拒绝/分歧、2未认证；不拼同批完整15资格。
+claim-scope:4额外早死误报、scope:3 fresh泛指误报、scope:4摘要/正文修法分歧保留；旧第7
+claim-scope:2路由失败与第11 observed:1 operator重复NEW_TASK未认证不重买/补签。
+历史2/15、3/15、remaining11、完整15、后8、后4各自独立，新资格0，默认产品入口未切换。
+
+唯一下一动作是实际命题与直接修法的共同机制检查准备：5固定完整请求×3教学组织静态
+对照已构造，逐项核非policy内容与业务规则不变；只替扩展教学后缀为既有短教学或紧凑决策顺序。
+尚不是可发送新身份或真实语义修复；先完成隔离身份/完整请求/预算/原生双审接缝及具体成本方案，
+不继续叠同义提示、不原样再买完整15、不转外围工程替代语义阻断。
+入口：docs/plans/2026-10-11-semantic-decision-preparation.md。
+正式同版本15、自然消费、8E、Coach/Training/四块联动、Worker-DB-API-UI-journal、前端审美头像、
+Memory、身份运维、两树整合及八维学习仍未完成，原依赖与已交付基础保留。
+
+## 以下为历史记录
+
+### 后4执行前准备快照（已由上方实际执行结果取代）
 
 2026-10-11当前行动仍是用户要求的未发送案例接续，不转其他产品环节。
 后8例在冻结49010a33/全绿CI38062139250、方案fcc5adf8…cf556首次启动并真实推进：
@@ -35,7 +68,6 @@ create-only封存74白名单JSON，138原件SHA一致；seal75c8c04d…ec2bf8和
 正式同版本15、自然消费、8E、Coach/Training/四块联动、Worker-DB-API-UI-journal、前端审美头像、
 Memory、身份运维、两树整合与八维学习均未完成且依赖保留。
 
-## 以下为历史记录
 
 ### 后8首次执行前准备快照（已被上方实际执行状态取代）
 

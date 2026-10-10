@@ -158,3 +158,9 @@
 /data/evaluation/results/document_remaining4_preparation_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /data/evaluation/results/document_remaining4_engineering_review_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /scripts/document_remaining4_adapter.py text eol=lf
+
+# Preserve the closed four-case evidence and inert preparation byte digests.
+/data/evaluation/results/golden_document_remaining4_time600_result_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_remaining4_time600_close_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_remaining4_close_engineering_review_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_semantic_options_preparation_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
