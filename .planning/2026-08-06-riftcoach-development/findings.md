@@ -6877,4 +6877,3 @@ Luna独立离线probe使用已保存player_summary与当前ADVICE合同，未传
 
 - 首个接续提交c4f51552/CI38061326419的Linux controls夹具触发remaining8_frozen_program_changed；21份冻结源仅换行与Windows原字节不同，非Provider失败，新run未创建。
 - 生产adapter/旧源码/原seal不改；仅测试固定46文件原SHA/LF SHA映射逐项绑定旧seal。主审核Git对象，独立复核并执行46份追加内容不匹配反例；新增测试恢复真实SHA后验证生产仍拒绝LF副本。不是生产源漂移容许或质量证明。
-
