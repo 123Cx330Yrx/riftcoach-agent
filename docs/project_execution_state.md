@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "完整15 time600已授权首次执行，13调用后因旧root429及恢复分支冻结独立路径不可投递硬关闭；3通过、3语义拒绝/分歧、第7例未审、8未发。已严格封存，资格0/PAUSED；当前免费核固定证据与策略取舍，不重开旧批。"
+pause_reason: "完整15 time600已授权首次执行，13调用后因旧root429及恢复分支冻结独立路径不可投递硬关闭；3通过、3语义拒绝/分歧、第7例未审、8未发。已严格封存，资格0/PAUSED；用户已纠正要求接续后8例；新8入口/独立路径准备中，不重开旧批。"
 ---
 
 # RiftCoach 当前执行状态
@@ -32,9 +32,17 @@ SHA再核一致；seal SHA30f8e336…46f576。关闭审计公开授权/前后快
 结果与原件入口：`docs/plans/2026-10-10-full15-time600-result.md`，公开seal和close audit同文链接。
 免费实读actual issued policy与公开issue已确认：规则/来源/成对教学存在，误报仍优先按
 最近语境扩义；尚未证明输入负担或中转因果。摘要/正文修法分歧独立保留，不能放宽真错门。
-当前下一动作：准备既有短教学与替换扩展示例的紧凑决策流程对照，固定全文/来源和预算，
-同时覆盖旧成功、修后正确稿、明确全称真错及混合错；先核具体负担与反证，不直接新付费。
-取舍见结果文档末节。分支冻结协作路径不可移植单列工程依赖，不改旧身份门。
+用户随后明确“不是啊，我是说后面8例”，当前动作已转为同政策/同完整来源执行未发8例，
+不先改教学。新隔离adapter精确核旧unexecuted库存和原源码/初评请求SHA，前7例不重发。
+新root01a1261f…和独立01a1263f…原生lineage/current-route/completed/final_answer实际通过，
+真实5个工具items，独立工程复核无阻断；最终7项合成回执/Host接缝测试通过（126.68秒），
+覆盖初评、编辑/fresh、语义继续、硬停、严格回放封存；同提交CI待核，不冒认真实质量。
+新8方案最多GLM13+Flash5=18调用/1741824tokens/7200活动秒/86400Host秒，估价19.298304元
+非硬封顶，每案900/5calls/401920tokens保持。Provider0/无新run，源码旧指纹不变。
+准备方案fcc5adf8…cf556已create-only；下一动作：提交并核同HEAD公共CI后，
+即时native核验并沿用户当前要求首次执行后8；
+每stage真全文双审，语义拒绝继续独立案，硬故障停批，不拼完整15/资格。
+具体入口、身份、范围及停止规则见`docs/plans/2026-10-10-remaining8-continuation.md`。
 默认产品入口未切换，正式同版本15/自然消费/8E与Coach/Training/四块联动、
 Worker-DB-API-UI-journal、前端审美头像、Memory、身份运维、两树整合和八维学习仍未完成。
 

@@ -1,3 +1,10 @@
+## 2026-10-10 用户纠正接续未发送8例，恢复原覆盖动作
+
+- 用户明确“不是啊，我是说后面8例”。关闭旧批不等于取消剩余覆盖；此前停在封存/转策略分析没有接上执行意图。当前回到同政策后8，不先改教学，原7例不重发/补签。
+- 新隔离adapter核旧seal固定SHA、unexecuted库存8、原源码/cells/实际初评请求一致；新root01a1261f…及Sol独立01a1263f…实读native谱系、5工具items/completed/唯一final_answer通过。独立工程复核无blocking findings；仅静态，不冒认业务审。
+- 范围claim-scope:5/6/7、observed:1..5，最多18calls/1741824tokens/7200活动秒/86400Host秒、估价19.298304元非硬封顶，每案900/5/401920不变。新旧module隔离，旧源码/封存不改，Provider0；接缝/CI通过后首次执行，见remaining8-continuation。
+- 最终7项合成工程接缝实际通过（126.68秒），包括编辑/fresh完整成功接缝、语义停案继续、硬停、篡改拒绝、严格回放及create-only封存；不计真实质量。方案fcc5adf8…cf556已create-only，治理和diff通过；下一提交/同HEAD CI及即时native预检后首次发送。
+
 ## 2026-10-10 完整15 time600执行、分支路由硬关闭与严格封存
 
 - 用户“授权”后在febe2e7f/全绿CI38048400763/方案cd737c2b…f75cb首次执行。3例通过、3例语义拒绝/分歧，第7例claim-scope:2初评96/pass返回但未审，后8例未发；完整15未完成、新资格0。
