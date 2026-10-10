@@ -4,12 +4,45 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "固定10例已关闭；完整15 time600材料已导出Provider0；修正提交公共DB已success、四pytest片待完成；独立Host三次未执行且native final phase缺失，停止同类试发，需修复或更换通道，计划未冻结/未授权新付费。"
+pause_reason: "完整15 time600已授权首次执行，13调用后因旧root429及恢复分支冻结独立路径不可投递硬关闭；3通过、3语义拒绝/分歧、第7例未审、8未发。已严格封存，资格0/PAUSED；当前免费核固定证据与策略取舍，不重开旧批。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
+
+2026-10-10完整15 time600获用户“授权”，在冻结febe2e7f/全绿CI38048400763首次执行；
+方案cd737c2b…f75cb，每案900秒/5calls/401920tokens、GLM600/Flash300受剩余截短。
+本批已关闭：claim-scope:1、claim-scope:3、attribution:1通过；claim-scope:4实质误报拒绝，
+scope:4主审/独立分歧，scope:3编辑通过而fresh泛指误报拒绝。第7例claim-scope:2初评96/pass
+完整返回但独立审未执行；后8例未发送。完整15未完成，新资格0，不能拼历史成功。
+实际13调用GLM10/Flash3，known226429tokens、unknown0、receiptless0；未缓存保守估价
+2.5300928元（非账单），活动1146.984秒/Host5654.110秒。scope:3 fresh约135.172秒，
+本批无transport超时；这不证明600必能完成或解释历史300秒超时。
+旧主审01a1248f…原生failed/systemError为429；恢复分支01a1261f…不能followup冻结
+/root/full15_independent，同一子thread应用投递也明确拒绝。依routing_failure硬故障规则
+helper实际abort，runner88932/wrapper84884退出exit1（UTC14:05:43），不改身份/重开/补签。
+429不证明额度耗尽，与Provider语义问题、历史300秒截止分开。自动任务实读PAUSED。
+严格只读回放核12个已审stage真实native final，create-only封存156白名单JSON，302原件
+SHA再核一致；seal SHA30f8e336…46f576。关闭审计公开授权/前后快照、真实退出、路由故障、
+12个事件和历史对照；没有新增独立收尾审查，不以既有事件回放冒认新审。
+历史2/15、3/15第二例均编辑后96/pass；同原稿本轮新增早死误报是回退。remaining11旧扫描
+11初评/双审、10接受/1修法分歧；11原稿及完整input_json与本批冻结controls逐项相同，
+但编辑/fresh0，不能拼同期15通过。教学/时间标记/随机性/中转的语义因果均未证。
+结果与原件入口：`docs/plans/2026-10-10-full15-time600-result.md`，公开seal和close audit同文链接。
+免费实读actual issued policy与公开issue已确认：规则/来源/成对教学存在，误报仍优先按
+最近语境扩义；尚未证明输入负担或中转因果。摘要/正文修法分歧独立保留，不能放宽真错门。
+当前下一动作：准备既有短教学与替换扩展示例的紧凑决策流程对照，固定全文/来源和预算，
+同时覆盖旧成功、修后正确稿、明确全称真错及混合错；先核具体负担与反证，不直接新付费。
+取舍见结果文档末节。分支冻结协作路径不可移植单列工程依赖，不改旧身份门。
+默认产品入口未切换，正式同版本15/自然消费/8E与Coach/Training/四块联动、
+Worker-DB-API-UI-journal、前端审美头像、Memory、身份运维、两树整合和八维学习仍未完成。
+
+## 以下为历史记录
+
+### 2026-10-10 time600授权执行前的准备与Host诊断历史
+
+以下是执行前快照；其中Provider0、未授权和CI待完成不代表当前状态。
 
 2026-10-10固定10例已获用户“确认，继续吧”具体授权并在d790c157/全绿CI37968309635
 首次执行，方案d976aa1c…aabbd5；本批已因scope:3 fresh的300秒stream_deadline硬关闭。
@@ -89,7 +122,6 @@ execution_ready=false，paid_plan_frozen=false，无新run/Provider/已授权付
 不原样重买未执行例，不调大旧批冻结300秒，不转Training或裁剪来源来绕关。
 新资格0，旧2/15与3/15独立，正式同版本15、自然消费、8E及全部下游依赖仍未完成。
 
-## 以下为历史记录
 
 2026-10-10临时聊天完成实际回执、checkpoint原生导入、关闭锁及只读封存/严格回放候选；
 25项接缝及116项相邻检查通过，模型/Host模拟，不是业务质量证据。独立开发复核所指出

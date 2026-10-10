@@ -1,3 +1,12 @@
+## 2026-10-10 完整15 time600执行、分支路由硬关闭与严格封存
+
+- 用户“授权”后在febe2e7f/全绿CI38048400763/方案cd737c2b…f75cb首次执行。3例通过、3例语义拒绝/分歧，第7例claim-scope:2初评96/pass返回但未审，后8例未发；完整15未完成、新资格0。
+- 实际13调用GLM10/Flash3、known226429tokens/unknown0/receiptless0，未缓存估价2.5300928元非账单；活动1146.984秒/Host5654.110秒。scope:3 fresh135.172秒，本轮无transport超时，不推导历史超时根因。
+- 旧root429/systemError后恢复分支协作库存仅root；冻结独立路径不可followup，同一既有子thread应用投递明确拒绝。按原硬故障规则helper routing_failure abort，runner88932/wrapper84884退出exit1/UTC14:05:43；没有换主体、补签、重发或改运行源码/HEAD。自动任务实读PAUSED。
+- 严格只读native replay核12个已审stage/create-only156白名单JSON，302原件SHA一致；seal30f8e336…46f576及close audit公开12事件、授权快照/真实退出/路由故障和历史对照。没有新增独立收尾复核，回放不冒认新审。
+- 历史2/15、3/15第二例均编辑后96/pass，本轮同原稿新增早死误报。旧remaining11的11原稿/input_json与当前controls相同，10初评接受/1修法分歧、编辑/fresh0；不拼本轮成功。收尾Provider0，保留正式15和所有下游。
+- 免费核三处actual issued system policy及公开issues：全文消歧/泛指不补全称与甲乙成对教学实际存在，两个误报解释引用正确数字但按最近语境扩义。停止叠同义教学；下一准备短教学与紧凑决策流程替换扩展示例的固定输入正反对照，不宣称已定位负担因果或选择生产修复。详情见2026-10-10-full15-time600-result末节。
+
 ## 2026-10-10 独立Host路径诊断收口与公共DB复验
 
 - 93cdf82a/CI38047477843的公共DB job114199807184、web和packaging已success；四pytest片仍运行，未宣称全绿或猜数据库汇总数量。漏reason测试修正已实跑验证，本机Docker未启动。

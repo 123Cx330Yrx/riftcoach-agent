@@ -147,3 +147,7 @@
 /data/evaluation/results/golden_scope_resolution_preparation_20261008.json text eol=lf
 /data/evaluation/results/review_bound_original15_qualification_20261008/*.json text eol=lf
 /data/evaluation/results/golden_scope_resolution_result_20261008.json text eol=lf
+
+# Preserve create-only time600 seals and their raw-byte audit bindings.
+/data/evaluation/results/golden_document_full15_time600_result_20261010.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_full15_time600_close_audit_20261010.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

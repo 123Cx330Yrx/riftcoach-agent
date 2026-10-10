@@ -13,19 +13,13 @@
 
 ## Active Work Package
 
-**目标：** 回到用户持续要求的完整15例主线，解决已暴露的初评语义分歧与编辑定位协议问题，再取得同版本完整链证据。
-**起点：** 原15前三例完成；剩余十一初评已收齐，十接受、一分歧；三轮尾链均在首例硬关闭，未新增认证尾链。五份封存435原件SHA已核一致，旧runner退出。
-**方案与范围：** 已实现block键归组编辑与成对全文教学的隔离候选，不能用全文唯一锚点猜block；attribution泛指与scope修法观测/因果分别处理，不强称一个共同原因。候选见2026-10-09-full15-resumption-candidate。
-**实现路径：** 完整来源/历史事实→现有DocumentReviewWorkflow初评→候选严格编辑组装→完整新稿fresh→真实全文双审。保留现行issues/修法字段与五调用上限；不引入全段审计账本。
-**验证与实际结果：** 已授权10例在d790c157/全绿CI37968309635首次执行，方案d976aa1c…aabbd5。attribution全链94/pass；scope:3初评/编辑通过，fresh发送后300秒超时硬关闭；8案未发。5个完成阶段真实全文双审，103原件SHA/46公开JSON及5个native事件严格回放再核通过，独立收尾无工程阻断。旧离线检查保留，不重复计为业务证据。结果见2026-10-10-focused10-resumption-result。
-**依赖及失败：** 实际6调用GLM4/Flash2，known81642/unknown预留77868tokens，已知估价0.6973828元、未知不免费；receiptless0。runner退出exit1，自动任务PAUSED。本批不重开/补签/借余量；10例未完成、新资格0，scope超时不是语义反证。有限正证据保留，不宣称共同修法/协议可靠性充分。
-**本轮实现与验证（2026-10-10）：** 续接审计更正1d181238只是未使用标量函数/4测试，之前完整时钟与身份互拒表述过宽；58ba12dc回退失败共享集成、旧54检查恢复，三个提交CI均全绿。现已用TimedDocumentBudget复用真实CoachBudgetedProvider账目/自有时钟，完整原始/contrast请求的新时间身份、实际issued SHA、Exchange sender接线完成。25新完整请求/账本检查+4标量+9公开裁决+53旧业务回归共91通过，模型为模拟。旧指纹模块/default/300合同/历史seal原件未改，正式15/资格未推进。
-**本轮发送链交付：** b00a9eaf/CI38039283424已success。GLM600/Flash300实际router→共享ordinal/create-only回执→父子进程worker→SDK stream/close/usage→Exchange→初评/编辑/fresh已离线接通；复用旧生命周期和全文业务校验。新旧transport互拒标记、Host身份不发Provider；5个当前manifest组件及总SHA显式更新，旧裁决/seal原字节与历史源码摘要保持。12发送+25预算+4标量共41、104业务/stream、113factory/应用、63旧full15/合同检查通过；后续相关重核不累计。模型输出/450秒明确模拟，真实子进程不联网。本轮提交需自身公共CI，不能借上轮成功。
-**本轮执行与取证交付：** 4de565dc/CI38042065301失败于旧scan夹具身份漂移；修公开封存输入/精确请求SHA取材，live旧入口仍拒绝当前源码冒认历史。63旧尾链、7runner、72资格/factory通过。显式time600模式沿既有runner/checkpoint/native/关闭锁/严格回放接通，每案900/5calls/401920tokens及整批墙独立核算；发送/案始终点create-only落盘。迟到完整回包用量已知但不交付，回放不造stage。所有Host/模型为离线替身，不当实审或质量证据；旧seal/裁决原字节保持。
-**本轮Worker证据与方案：** 7真实线程/候选factory/预算反例+42既有检查共49通过；续租不扩900墙，取消/LOST/heartbeat异常挡发布，原子提交拒绝不退legacy。同步executor内部后续阶段及在途Provider取消仍未接入，不能说节省后续付费已证明。本机Docker socket启动失败后官方stop，新增3项数据库反例待公共CI（本机2通过/15skip）。完整15原顺序/全文提案45调用/4354560tokens/13500活动秒/86400Host秒，每案900/5/401920，估价45.029376元非硬封顶；不再把重复10例设固定前置。
-**本轮实际预检：** 完整15的30份source/初评请求create-only导出，manifest7402b53d…e1870。新Sol独立主体01a1257a…6068b6原生lineage匹配，但两次只确认规则、工具0、任务encrypted、final phase=null；真实Host门拒dispatch_or_final_ambiguous，无429/401/503显式错，不猜加密是唯一根因。公共CI38046840121 DB234过/1失败是新增cancel测试漏reason，已补并核签名，两新错代次/expiry过，待本提交DB复验。
-**本轮阻断收口：** 93cdf82a/CI38047477843公共DB、web、packaging已success，四pytest片仍运行。另一消息路径第三turn仍工具0/无JSON/phase=null；当前root也缺phase但能用工具，旧成功Sol保留终答phase。网关已Responses，未定位根因，停止同类试发、不改来源门；30材料SHA全一致，自动任务实读PAUSED。诊断见2026-10-10-full15-native-host-path-diagnostic。
-**当前下一动作：** 修复或更换能执行子任务并保留原生终答的Host通道，核剩余CI；路径改变后进行精确checkpoint预检，冻结完整15源/请求/身份/计划SHA及具体成本授权。Provider0/无业务run/资格0，execution_ready=false、paid_plan_frozen=false；没有把旧主体或规则确认当实审。正式15/自然消费/8E与原下游保持未完成。
+**目标：** 让完整来源支持的正确表述通过、实际数值/范围错误被检出并充分修复，再取得同版本完整15链证据；不以外围工程替代主线质量。
+**起点与差距：** time600完整15已授权首次执行并硬关闭。3例通过、3例语义拒绝/分歧、第7例初评返回未审、后8例未发；13调用/known226429/unknown0/receiptless0，估价2.5300928元非账单。结果见`docs/plans/2026-10-10-full15-time600-result.md`。
+**当前实现与证据：** 复用既有DocumentReviewWorkflow、block键归组编辑、全文成对教学、TimedDocumentBudget及真实回执/native交接。12已审stage真实终答严格核验，302原件SHA一致、156白名单封存；默认产品未切换，新资格0。旧2/15、3/15和remaining11不拼接；第二例旧成功与本轮回退均保留。
+**免费分析路径：** 固定公开seal中的源/完整原稿/实际policy/公开issues和修法，对照两份历史第二例及旧11扫描；分别核全文消歧、明确错误不可被后文撤销、修法覆盖摘要/正文和泛指不可补全称。现有policy/教学已含这些规则，不能将失败直接解释成缺一条提示；先区分信息缺失、决策顺序负担和Host边界分歧。
+**取舍与验收：** 输出可审查的逐issue证据及少量竞争机制，写明最强反证、替换掉什么负担和最小区分检查；证据不能选因果时照实保留，不先铺完整变体或新增字段/付费批。确定性软件缺陷可直接修，离线成功不能代替模型语义质量。
+**关闭及工程依赖：** 旧root429后新分支无法派冻结独立主体，实际helper routing_failure关闭，runner已退出、自动任务PAUSED。此批禁止重开/补签/借余量。未来批需自己的真实root/独立路径预检与具体新方案授权；不替换旧身份来补第7例，也不将429等同额度耗尽。
+**当前状态与下一动作：** 已核三处实际issued policy/响应，规则与对应教学存在，误报仍选择最近语境；不存在已证教学/中转因果。免费准备既有短教学与紧凑决策流程替换扩展示例的对照，固定原稿/来源/实际模型/时间身份，覆盖旧成功第二例、scope:3修后正确稿、明确全称真错及scope:4混合错。具体取舍/反证见结果文档末节；无新Provider调用，不直接实施或购买完整变体。正式15、自然消费、8E和下游依赖保留。
 
 ## Dependencies and Follow-through
 
