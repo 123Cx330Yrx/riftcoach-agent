@@ -1,6 +1,8 @@
 """Unsent inventory and real handoff/replay plumbing; models/Host are synthetic."""
 from copy import deepcopy
+import hashlib
 import json
+from pathlib import Path
 from types import SimpleNamespace as NS
 
 import pytest
@@ -12,6 +14,35 @@ from scripts import document_remaining8_adapter as adapter
 from scripts import full15_resumption_evidence as old_evidence
 from scripts import run_full15_resumption_candidate as old_runner
 from tests import test_full15_resumption_evidence as fixtures
+
+
+@pytest.fixture(scope='module', autouse=True)
+def portable_frozen_hashes():
+    # Test-only projection of the previously verified Windows raw bytes. Linux
+    # imports equivalent LF files; production prior() still requires raw SHA.
+    manifest = json.loads((adapter.runner.ROOT /
+        'tests/fixtures/document_remaining8_frozen_newlines.json').read_bytes())
+    seal = json.loads((adapter.runner.ROOT / adapter.PREVIOUS_SEAL).read_bytes())
+    frozen = seal['public_json_contents']['plan.json']['preparation_plan']['source_sha256']
+    assert manifest['previous_closed_seal_sha256'] == adapter.PREVIOUS_SHA
+    assert manifest['production_override'] is False
+    assert {p: v['frozen_raw_sha256'] for p, v in manifest['source'].items()} == frozen
+    original = adapter.runner._sha
+    def test_hash(path):
+        path = Path(path)
+        try:
+            relative = path.resolve().relative_to(adapter.runner.ROOT.resolve()).as_posix()
+        except ValueError:
+            return original(path)
+        entry = manifest['source'].get(relative)
+        if entry is not None:
+            normalized = hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+            if normalized == entry['lf_sha256']:
+                return entry['frozen_raw_sha256']
+        return original(path)
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(adapter.runner, '_sha', test_hash)
+        yield original
 
 
 @pytest.fixture(scope='module')
@@ -118,3 +149,19 @@ def test_prior_seal_digest_failure_stops_preparation_before_provider(monkeypatch
     monkeypatch.setattr(adapter.runner, '_sha', lambda path: '0' * 64)
     with pytest.raises(ValueError, match='prior_seal_changed'):
         adapter.prepare(root_thread_id='synthetic-root', independent_thread_id='synthetic-child')
+
+
+def test_production_prior_still_rejects_normalized_frozen_sources(
+        tmp_path, monkeypatch, portable_frozen_hashes):
+    previous = adapter.prior()
+    seal = tmp_path / adapter.PREVIOUS_SEAL
+    seal.parent.mkdir(parents=True)
+    seal.write_bytes((adapter.runner.ROOT / adapter.PREVIOUS_SEAL).read_bytes())
+    for name in previous['source_sha256']:
+        target = tmp_path / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((adapter.runner.ROOT / name).read_bytes().replace(b'\r\n', b'\n'))
+    monkeypatch.setattr(adapter.runner, '_sha', portable_frozen_hashes)
+    # No production newline fallback and no fixture consulted by the adapter.
+    with pytest.raises(ValueError, match='frozen_program_changed'):
+        adapter.prior(tmp_path)

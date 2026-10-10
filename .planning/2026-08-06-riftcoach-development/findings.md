@@ -6873,3 +6873,8 @@ Luna独立离线probe使用已保存player_summary与当前ADVICE合同，未传
 - 完整15 runner 的计划必须把“候选 policy 身份”绑定到每个实际请求，不能只在 manifest 写 teaching_candidate；因此 CandidateLimits 仅作实例 overlay，默认合同注册和生产路由不变。
 - 初评若被 Host 接受且模型 pass>=85，可结束该案；needs_revision 才进入 Flash 编辑和新稿 fresh。编辑/新稿各阶段仍必须读取完整来源和真实双审，任何失败不能改作语义通过。
 - runner 的离线准备成功只说明控制流和账目边界可重建；45调用规模是最坏预算，不能将十例28调用建议或离线合法输出当成新授权/质量证据。
+## 2026-10-10 未发送8例公共测试换行差异
+
+- 首个接续提交c4f51552/CI38061326419的Linux controls夹具触发remaining8_frozen_program_changed；21份冻结源仅换行与Windows原字节不同，非Provider失败，新run未创建。
+- 生产adapter/旧源码/原seal不改；仅测试固定46文件原SHA/LF SHA映射逐项绑定旧seal。主审核Git对象，独立复核并执行46份追加内容不匹配反例；新增测试恢复真实SHA后验证生产仍拒绝LF副本。不是生产源漂移容许或质量证明。
+

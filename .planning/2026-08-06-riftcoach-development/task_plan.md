@@ -18,7 +18,7 @@
 **实现：** 新document_remaining8_adapter仅隔离接续原runner/evidence，核旧seal/unexecuted库存、原源码与8初评请求SHA；完整来源/政策/编辑/时间门/native门保持。新root01a1261f…/独立Sol01a1263f…原生工具执行和final_answer实核通过，工程独立复核无阻断。
 **范围与预算：** claim-scope:5/6/7、observed:1..5；最多GLM13+Flash5=18calls/1741824tokens/7200活动秒/86400Host秒，估价19.298304元非硬封顶，每案900/5/401920保持；新run=document-remaining8-time600-20261010。方案见2026-10-10-remaining8-continuation。
 **验收/失败：** 每stage真实全文双审及native/checkpoint实读导入；语义拒绝停案继续独立案，身份/路由/来源/协议/transport/预算硬停全批；无重试、重评、补签或旧额度迁移。合成接缝不是质量；8全过也不补第7例或拼同期完整15，新资格0。
-**当前下一动作：** 最终7项合成接缝检查通过，方案fcc5adf8…cf556已create-only；提交并核同HEAD全绿CI后即时native核验，沿用户当前8例接续要求首次发送；检查/等待期间Provider0/无新run。收齐后严格封存账目/原件/真实事件，再选共同语义改良。自动任务现保持PAUSED，正式15、自然消费、8E及全部下游未完成。
+**当前下一动作：** Linux换行夹具修正后最终8项本机合成检查通过，生产源码/方案fcc5adf8…cf556不改；提交并核同HEAD全绿CI后即时native核验，沿用户当前8例接续要求首次发送；检查/等待期间Provider0/无新run。收齐后严格封存账目/原件/真实事件，再选共同语义改良。自动任务现保持PAUSED，正式15、自然消费、8E及全部下游未完成。
 
 ## Dependencies and Follow-through
 

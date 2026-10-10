@@ -51,6 +51,14 @@ opaque dispatch并不冒充正文可读，精确终答与原生membership仍强�
 create-only准备方案SHA：`fcc5adf8af0e37cc38add2cc4dbc9ae947deb5a0e676ad96eaa2b9d2a02cf556`；
 文件为operator的`preparation-plan.json`，首次发送前再核源码、文件及原生身份。
 
+首个公共CI38061326419在Linux的controls夹具触发旧原SHA漂移：21份冻结源码在Git
+检出时仅换行与Windows原字节不同。生产adapter及旧源码不改；仅测试使用固定46文件
+原SHA/LF SHA映射，逐项绑定旧seal并核当前Git对象；内容变化不能通过映射。
+独立工程复核无阻断，另实际检查46份追加内容均不匹配映射。新增反例恢复生产原SHA
+函数后，LF副本仍被prior拒绝；此夹具不进入真实执行，不放宽生产冻结门。
+该失败发生于付费前，新run不存在。原operator授权快照保留，修正提交另绑定实际CI。
+修正后最终8项本机检查实际通过（124.13秒）；公共Linux结果仍需同提交CI验证。
+
 Operator：`C:/Users/33502/Documents/Agent/outputs/riftcoach-remaining8-20261010`。
 首次发送前核最终准备/源码/clean exact HEAD/同提交全绿CI，并即时重读真实native主体。
 运行期源码/HEAD冻结，create-only启动记录，只有一份runner；等待无变化不重复通知。

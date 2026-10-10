@@ -4,6 +4,7 @@
 - 新隔离adapter核旧seal固定SHA、unexecuted库存8、原源码/cells/实际初评请求一致；新root01a1261f…及Sol独立01a1263f…实读native谱系、5工具items/completed/唯一final_answer通过。独立工程复核无blocking findings；仅静态，不冒认业务审。
 - 范围claim-scope:5/6/7、observed:1..5，最多18calls/1741824tokens/7200活动秒/86400Host秒、估价19.298304元非硬封顶，每案900/5/401920不变。新旧module隔离，旧源码/封存不改，Provider0；接缝/CI通过后首次执行，见remaining8-continuation。
 - 最终7项合成工程接缝实际通过（126.68秒），包括编辑/fresh完整成功接缝、语义停案继续、硬停、篡改拒绝、严格回放及create-only封存；不计真实质量。方案fcc5adf8…cf556已create-only，治理和diff通过；下一提交/同HEAD CI及即时native预检后首次发送。
+- 首个公共CI38061326419的Linux夹具因21份源换行字节差异失败；生产源码及方案不改。测试专用46文件映射逐项核旧seal/Git对象，独立工程复核无阻断、实际追加内容反例不匹配。新增生产原SHA反例，最终8项本机通过（124.13秒）；Provider0/无run，修正提交重新核CI。
 
 ## 2026-10-10 完整15 time600执行、分支路由硬关闭与严格封存
 
