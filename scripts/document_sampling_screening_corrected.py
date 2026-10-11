@@ -14,11 +14,17 @@ spec.loader.exec_module(base)
 
 base.VERSION = "document-sampling-screening-corrected-v1"
 base.AUTH_VERSION = "document-sampling-screening-corrected-authorization-v1"
-base.RUN_ID = "document-sampling-screening-20261012-corrected"
+base.RUN_ID = "document-sampling-screening-20261012-corrected-v2"
 base.OPERATOR_ROOT = Path(
-    r"C:/Users/33502/Documents/Agent/outputs/riftcoach-corrected-temperature-screening-20261012"
+    r"C:/Users/33502/Documents/Agent/outputs/riftcoach-corrected-temperature-screening-20261012-v2"
 )
 base.ADAPTER_SOURCE = "scripts/document_sampling_screening_corrected.py"
+# The base module loads the generic runner before this adapter overrides the
+# diagnostic identity.  Keep the runner's result and authorization gates on
+# the corrected identity as well; otherwise every valid corrected authorization
+# is rejected against the historical generic version.
+base.runner.VERSION = base.VERSION
+base.runner.AUTH_VERSION = base.AUTH_VERSION
 base.SAMPLES = (
     (
         "claim-scope:1",
