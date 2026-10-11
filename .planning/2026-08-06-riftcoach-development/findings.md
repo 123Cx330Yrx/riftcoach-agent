@@ -6936,3 +6936,8 @@ operator 为承接 native final 在 backend checkout 写入了临时审查 JSON�
 ## 2026-10-12 sample-3 工具参数诊断
 
 只读回放 `sample-3:baseline` 的 334 个 `argument_parts`，按原序为 626 字节并正常闭合；严格 JSON 解析在重复的第二个 `issues` 键处拒绝，普通解析会把前一个真实 block 14 issue 覆盖为空数组。现有重复键拒绝和不可发布原片段留存行为正确，不改接收代码、不重试旧批。该证据把首次偏离定位到 Provider 输出合同，不等同于温度、网络或额度根因。另核正 sample-1 预设 accept 与双审发现的 block 4 真错冲突，不能把它当作有效正确控制；r2 候选效果仍未判定。证据与限制见 `docs/plans/2026-10-12-stream-argument-diagnosis.md`。
+
+
+## 2026-10-12 温度筛查控制集审计
+
+只读对照 r2 五个样本与两份历史封存：`claim-scope:4 initial` 和 `scope:3 final` 均被 r2 预设为 accept，但历史均为 `semantic_accepted=false`；只有 `observed:3 final` 有历史支持的正确控制。`scope:4 initial` 的 reject 标签一致，`observed:5 initial` 作为需要修订的初评也与 reject 预期一致。原控制集不足以支撑温度结论，未重建正反控制前不发 Provider。详见 `docs/plans/2026-10-12-temperature-control-audit.md`。
