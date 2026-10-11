@@ -34,7 +34,7 @@ generation/revision保持1.0；五调用共享401920-token/900秒预算、角色
 产物为`data/evaluation/results/document_sampling_candidate_path_audit_20261011.json`，5次均为本地合成响应，
 known_tokens=150、reserved_tokens=0、network_client_constructed=false、credential_reads=0、production_admitted=false、new_qualification=0。
 该原型只证明离线接线/账本/回执一致，不证明Provider接受、模型遵循低温、语义改善、稳定率或付费授权；不改生产默认身份、预算类或产品入口。
-当前下一动作：保留该原型作为候选机制证据，先做相称治理/回归并提交；没有新可执行身份、runner或付费授权，不自动购买完整15。
+当前下一动作：依据已通过的原型准备一次有界review筛查方案（5个固定历史请求×现行/候选温度成对比较、最多10次调用）；方案仅准备，不启动Provider。只有新的明确付费授权、可执行候选身份和即时预检全部成立，才可执行；否则保持暂停。筛查方案见`docs/plans/2026-10-11-bounded-sampling-screening-preparation.md`。
 入口：docs/plans/2026-10-11-post-comparison-mechanism-decision.md。尚无新可执行身份/runner/付费授权。
 
 后4已通过fresh95/95/96/97及12stage严格封存；原15跨批覆盖库存10通过/3语义拒绝或分歧/2未认证，
