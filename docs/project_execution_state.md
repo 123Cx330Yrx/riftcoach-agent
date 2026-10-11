@@ -17,6 +17,9 @@ pause_reason: "有界温度筛查 r2 在 sample-3:baseline 发生 assembly_rejec
 
 ## 当前行动
 
+
+2026-10-12 免费回放已核实 `sample-3:baseline` 的流式参数失败：334 个原始片段按顺序完整拼接（626 字节、正常闭合），但 JSON 含两个 `issues` 成员。普通解析会以后一个空数组覆盖前一个真实 issue；现有严格重复键门正确拒绝并保留不可发布片段，因此不修改接收器、不放宽门，也不重开 r2。另发现 sample-1 的预设 accept 与双审发现的真实 block 4 错误冲突，温度控制标签不能按预设成立。详见 `docs/plans/2026-10-12-stream-argument-diagnosis.md`。
+
 2026-10-11 有界温度筛查 r2 已结束于 `sample-3:baseline` transport hard stop。候选温度效果未完成验证，不改变默认产品入口，不授予正式15资格。后续如要继续，必须基于 clean checkout、同提交 CI 和新的明确授权重新准备新 run；不得使用本批剩余预算或重开本批。正式同版本15、自然消费、8E、Coach/Training、Worker/DB/API/UI/journal、前端、Memory、身份运维、两树整合和八维学习继续未完成。
 
 ## 以下为历史记录

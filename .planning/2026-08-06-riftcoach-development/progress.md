@@ -9074,3 +9074,8 @@ receiptless=0。第二项发送前检测到 `role_development_checkout_changed_a
 严格 replay 通过（native_reviews=1），create-only seal SHA
 `16ba99da8419f48acbb897bca8f0aa108cbfde02d7dfd402b5050925980838`；完整记录见
 `docs/plans/2026-10-11-bounded-sampling-screening-result.md`。
+
+
+## 2026-10-12 sample-3 工具参数诊断
+
+只读回放 `sample-3:baseline` 的 334 个 `argument_parts`，按原序为 626 字节并正常闭合；严格 JSON 解析在重复的第二个 `issues` 键处拒绝，普通解析会把前一个真实 block 14 issue 覆盖为空数组。现有重复键拒绝和不可发布原片段留存行为正确，不改接收代码、不重试旧批。该证据把首次偏离定位到 Provider 输出合同，不等同于温度、网络或额度根因。另核正 sample-1 预设 accept 与双审发现的 block 4 真错冲突，不能把它当作有效正确控制；r2 候选效果仍未判定。证据与限制见 `docs/plans/2026-10-12-stream-argument-diagnosis.md`。
