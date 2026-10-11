@@ -60,12 +60,28 @@ block-keyed编辑校验把final request SHA重新绑定，DocumentReviewWorkflow
 格式恢复消耗同一上限，必要时fresh因余量不足停止；不是免费第六次审查。
 这些是现有代码和本地拒绝分支证据，没有生成/编辑/终评的新业务结果。
 
-下一动作是在免费隔离原型中验证构造→共享预算→角色/transport→receipt→fresh绑定均一致：
-候选身份与profile须显式隔离；所有原15完整输入/来源和验收门保留，正常路径与必要
-编辑路径仍用既有五调用/共享预算。先检查现有SDK及整任务消费者的覆盖与拒绝分支，
-不能仅修改request.temperature却沿冻结身份发送，也不能用“SDK能表达”代替方案采用。
-方案须显式替换候选审查角色的归一化约束，不改生产预算类、生成/编辑角色的温度或旧身份；
-不能用多个局部monkeypatch拼可发送入口。上述需求未实现，不称新原型已接线或采用。
+## 离线候选接线原型结果
+
+在不调用Provider、不联网、不读取凭据的条件下，新增隔离脚本
+`scripts/audit_document_sampling_candidate_path.py`，复用完整`claim-scope:4`业务fixture，
+按`generation×2 → review → revision → fresh review`重建一条完整五调用路径。候选review身份
+通过显式marker `document-review-sampling-temperature-02-v1`隔离，只有review请求使用0.2，
+generation和revision保持1.0。脚本不改生产预算类或产品入口，所有响应均为本地合成响应。
+
+结果已写入`data/evaluation/results/document_sampling_candidate_path_audit_20261011.json`：
+
+- 5 calls，角色序列为generation、generation、review、revision、review；温度为`[1.0, 1.0, 0.2, 1.0, 0.2]`。
+- 五调用共享`max_calls=5`、`total_tokens=401920`、active timeout 900秒；`known_tokens=150`、`reserved_tokens=0`。
+- 每次实际请求SHA与回执SHA一致；fresh请求由编辑后的完整业务输入重建。
+- `network_client_constructed=false`、`credential_reads=0`、`production_admitted=false`、`new_qualification=0`。
+
+这证明候选身份、角色分流、预算账本、回执绑定和fresh重建可以在隔离原型中保持一致，
+不证明Provider接受候选参数、模型遵循低温、语义质量改善、稳定率或付费授权；不能据此切换生产
+默认身份、给正式15授予资格，或自动开启新的付费筛查。正式15、自然消费、8E及下游依赖继续保持未完成。
+
+上述原型使用显式候选身份和本地预算逻辑完成了离线接线验证；它没有沿冻结身份发送，
+没有修改生产预算类、生成/编辑角色温度或旧身份，也没有用局部monkeypatch拼成可发送入口。
+所有原15完整输入/来源和验收门仍作为未来筛查约束，不因该原型而改变。
 
 只有这项完整可达性检查成立，且结果确实能决定是否继续该方向，才准备一次有界筛查的
 具体请求、身份、停止条件和成本。对照至少包含本轮正确泛指、明确全称真错、明确中单错组、

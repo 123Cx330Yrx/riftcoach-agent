@@ -28,8 +28,13 @@ native终答读取时一致；工程dispatch正文加密，明文task SHA缺失�
 温度1.0→0.2本地参数仅此项差异；全部低温请求被现有冻结身份拒绝，未读取凭据或构造网络客户端。
 这不是可发送候选、Provider接受/遵循证据或语义修复。免费整链入口已核：历史initial/final完整请求
 均在委派前拒低温，继承预算方法还强制重写1.0；当前整链不可达，不能只改lab请求。
-当前下一动作：免费隔离原型验证构造/预算归一化/角色transport/receipt/fresh绑定一致，
-保留生成编辑参数及五调用共享预算；原型未实现，不以SDK表达为采用或付费筛查理由。
+随后完成离线隔离原型：以完整claim-scope:4业务fixture重建generation×2→review→revision→fresh review，
+候选review身份显式使用marker `document-review-sampling-temperature-02-v1`，只把review温度设为0.2，
+generation/revision保持1.0；五调用共享401920-token/900秒预算、角色路由、请求SHA/回执SHA及fresh重建均通过。
+产物为`data/evaluation/results/document_sampling_candidate_path_audit_20261011.json`，5次均为本地合成响应，
+known_tokens=150、reserved_tokens=0、network_client_constructed=false、credential_reads=0、production_admitted=false、new_qualification=0。
+该原型只证明离线接线/账本/回执一致，不证明Provider接受、模型遵循低温、语义改善、稳定率或付费授权；不改生产默认身份、预算类或产品入口。
+当前下一动作：保留该原型作为候选机制证据，先做相称治理/回归并提交；没有新可执行身份、runner或付费授权，不自动购买完整15。
 入口：docs/plans/2026-10-11-post-comparison-mechanism-decision.md。尚无新可执行身份/runner/付费授权。
 
 后4已通过fresh95/95/96/97及12stage严格封存；原15跨批覆盖库存10通过/3语义拒绝或分歧/2未认证，

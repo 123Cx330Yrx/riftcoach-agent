@@ -177,3 +177,5 @@
 /data/evaluation/results/document_semantic_comparison_close_engineering_review_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 /scripts/audit_document_sampling_boundary.py text eol=lf
 /scripts/audit_document_sampling_reachability.py text eol=lf
+/scripts/audit_document_sampling_candidate_path.py text eol=lf
+/data/evaluation/results/document_sampling_candidate_path_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
