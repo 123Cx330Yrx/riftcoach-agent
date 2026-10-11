@@ -16,6 +16,10 @@
 
 历史结果来自两个只读封存的 `execution_result.cases` 及其绑定；原件未修改。 离线核验产物为 `data/evaluation/results/corrected_temperature_control_candidate_audit_20261012.json`，SHA256 `232b463f81ac69248e4f6b35d2e0fdb9fdbd45ec25b24600ba189015c9552c39`，五行标签、报告绑定、stage/request/source 存在性全部通过。每个新候选请求仍须重新生成自己的 request/receipt SHA，不能复用上表历史 request 或 response。
 
+## 离线接缝结果
+
+把上述五例注入现有 `scripts.document_sampling_screening.controls()` 的只读构造后，10 个请求（每例 baseline 与 temperature-02）全部重建成功；请求角色顺序、完整来源、policy、工具 schema、温度 `[1.0, 0.2]` 和候选 marker 均按现有身份规则生成。该检查没有构造网络客户端、读取凭据或写入 run，也没有证明 Provider 接受参数或改善语义。
+
 ## 保留的限制
 
 这组控制涵盖三份已接受正确稿和两份已拒绝真错稿，但初评与 final 混合、来源封存不同，不能直接证明温度因果或完整15质量。真实筛查前仍需重新绑定完整 source/material、当前 policy、候选 marker、原生双审和硬故障停止规则。任何协议、身份、来源、native 或预算硬故障都停止新批；旧 r2 不重开、不补发、不重评。
