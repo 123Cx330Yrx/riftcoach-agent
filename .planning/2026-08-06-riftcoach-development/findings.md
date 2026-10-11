@@ -6916,3 +6916,11 @@ Luna独立离线probe使用已保存player_summary与当前ADVICE合同，未传
 - 新分支后4例真实结果和三批只读重放均与封存一致；本次跨对话恢复不改变原15库存：10通过、3语义拒绝/分歧、2未认证，不能拼成完整15资格。
 - 后8第11例的认证缺口来自恢复时重复 `NEW_TASK`，是 operator 路由故障；本对话429后的独立主体不可续派是另一硬故障。两者均不归因 Provider 语义或额度，也不重买/补签。
 - 语义对照只更换 system teaching suffix；实际请求、真实回执、独立原生全文审查和硬停规则仍需单独接线。静态构造不能推出模型效果或因果。
+
+## 2026-10-11 有界温度筛查 operator 停止
+
+真实 baseline 请求本身完成且双审一致接受 Provider 意见，但在候选请求发送前，runner 发现
+CI 后 checkout 发生变化并以 `role_development_checkout_changed_after_ci` 停止。根因已由文件审计确认：
+operator 为承接 native final 在 backend checkout 写入了临时审查 JSON；清理后工作树干净，
+因此这是 operator 执行边界故障，不是 Provider 429/401/503、额度或模型语义故障。该事实不能
+通过后续重试抹平；本批只保留 1 个已知调用和 9 个未执行项，结果不授予资格。

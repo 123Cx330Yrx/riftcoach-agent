@@ -20,7 +20,7 @@
 **实现路径：** 免费SDK检查复建5份issued请求，只改变温度1.0→0.2，全文/schema/模型/high/top_p/时限相等。现有身份拒低温，当前无可发送身份；不读取凭据/构造网络client，不改生产默认或原件。
 **验收/失败：** SDK表达不证明服务端接受/遵循或语义效果。整任务初评和fresh均须可达，生成/必要编辑/格式恢复仍共享五调用/原预算；不得加定向第六审查、放宽标准、改正确稿迎合误报或拼跨批资格。
 **整链核查：** initial/final完整历史请求均在TimedDocumentBudget委派前拒低温；继承预算归一化还强制1.0。现有整任务不可达，不以SDK表达为接线证明。
-**当前下一动作：** 离线隔离原型已完成并通过：完整claim-scope:4 fixture按generation×2→review→revision→fresh review运行5次，review候选marker与0.2温度仅作用于review，generation/revision保持1.0；共享预算、角色路由、请求/回执SHA、fresh重建和零预留通过。产物为`data/evaluation/results/document_sampling_candidate_path_audit_20261011.json`。它只证明本地接线与账本一致，不证明Provider、语义效果或资格；不改生产默认身份/预算类/入口。下一步已准备为5个固定历史请求做现行/候选温度成对review筛查，最多10次调用，方案见`docs/plans/2026-10-11-bounded-sampling-screening-preparation.md`；没有新的明确付费授权和可执行身份前不启动。
+**当前下一动作：** 有界温度筛查已实际启动但未完成：`sample-1:baseline` 温度1.0真实调用1次，主/独立双审一致接受 Provider 意见，但 score=74/needs_revision 未命中预期 accept；第二项发送前发现 `role_development_checkout_changed_after_ci`，确认由 operator 临时审查 JSON 写入 backend checkout 触发，按边界停批。临时文件已清理，工作树 clean，严格 replay 与 create-only seal 已完成；候选温度0.2及其余9项未执行，新资格0。结果见 `docs/plans/2026-10-11-bounded-sampling-screening-result.md`。后续需从不再变动的 checkout 重新准备并重新授权，不能重试本批或使用剩余预算。
 **证据：** docs/plans/2026-10-11-semantic-comparison-result.md、2026-10-11-post-comparison-mechanism-decision.md、2026-10-11-bounded-sampling-screening-preparation.md及公共seal/close audit/sampling audit/candidate-path audit。后4已有12stage/fresh95/95/96/97；原15库存10/3/2是独立计数，旧第7/11缺口保留。正式15/自然消费/8E及下游未完成。
 
 ## Dependencies and Follow-through
@@ -41,7 +41,9 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-用户纠偏后回到完整15主线，具体动作以活动工作卡为准。Training/Memory/nullable已交付成果与下游保留，不计入15质量；旧2/15与3/15独立，新资格0。旧批关闭且自动任务PAUSED，不补旧字段、重开或提前准入。
+本次筛查因 operator checkout 边界偏离关闭，未验证候选温度效果，不改变既有15例库存或资格。
+在新方案前先保持工作树 clean、CI 后冻结不写入运行 checkout；新的真实筛查须重新准备、预检并取得明确授权。
+正式同版本15、自然消费、8E及下游联动继续保留，旧批次不重开。
 
 ## History
 

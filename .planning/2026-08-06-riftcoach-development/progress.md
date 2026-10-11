@@ -9054,3 +9054,16 @@ version2分开保留subtest report与唯一父终态，原exitcode和缺测/重�
 - 新增独立语义对照请求身份、完整原请求包、Host全文任务生成器和离线边界回归；15个请求（5样本×3后缀）逐一恢复历史非教学内容，旧默认 transport 拒绝新身份。
 - 相关回归43项通过，完整新测试9项通过；未读取凭据、未访问 Provider、未生成业务认证或新资格。
 - 下一动作是用当前真实主体做原生预检并把请求包封存；真实15次请求需另有具体成本授权。执行方案见 `docs/plans/2026-10-11-semantic-comparison-plan.md`。
+
+## 2026-10-11 有界温度筛查首例及 operator 停止
+
+按授权方案 `fcfb726a326085119f52246486eac21dd0c426d185c0bb44492a5de97c8087b3`、HEAD
+`8adcc24a88b0e9de1c8e3c898771716b21910dfd`、CI `38133097207` 启动唯一 runner。
+`sample-1:baseline` 温度 1.0 完成 1 次真实请求和主/独立全文双审，score 74、needs_revision，
+预期 accept 未命中，semantic_accepted=false；known_tokens=16341，HTTP=1，unknown=0，
+receiptless=0。第二项发送前检测到 `role_development_checkout_changed_after_ci`，由 operator
+承接审查答案时写入 backend checkout 的临时 JSON 触发，整批按边界停止；临时文件已清理，
+工作树恢复 clean，未重试、重开或补发。候选温度 0.2 及其余 9 项未执行，新资格 0。
+严格 replay 通过（native_reviews=1），create-only seal SHA
+`16ba99da8419f48acbb897bca8f0aa108cbfde02d7dfd402b5050925980838`；完整记录见
+`docs/plans/2026-10-11-bounded-sampling-screening-result.md`。

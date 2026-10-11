@@ -4,44 +4,31 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "5×3语义对照15项已完整执行/双审/严格封存：10接受、4双方拒绝、1分歧，三种教学均不足共同修复。新资格0。免费采样边界通过，整任务低温当前不可达；下一免费隔离原型核一致性；无新付费授权，旧3语义问题与2未认证缺口保留。"
+pause_reason: "有界温度筛查首例完成后在第二项发送前发现 role_development_checkout_changed_after_ci，operator 临时文件已清理；1次调用/9项未执行，严格 replay/seal 完成，新资格0；候选温度与完整15均未验证。"
 ---
 
 # RiftCoach 当前执行状态
 
 ## 当前行动
 
-2026-10-11已授权5份完整请求×3教学组织对照全部执行并关闭：10项语义接受、4项双方拒绝、
-1项Host分歧；每项真实全文双审/唯一native final/checkpoint导入，无编辑/fresh/重试。
-三种教学均在scope:3正确修后稿上误报，不能作为共同修复，不因分数或单次差异宣称根因/稳定率。
-运行前“调用0”快照已过期；这15项对照不是正式15份报告端到端验收。
-冻结a9a68049/同HEAD全绿CI38104135494，唯一runner92020 UTC04:33:23正常exit0，运行中源码/HEAD不改。
-实际15calls/observed_http15，input198834/output71846/known270680、unknown0/receiptless0；
-未缓存估价3.602360元非账单。活动1394.985/Host5230.078秒；无硬执行偏离/未执行，
-最早语义偏离是sample1 expanded的双审分歧。指定Codex0.153.4严格replay核15真实native，
-create-only290公开JSON/306原件SHA一致，seal370efc13…1a5d，close audit9ae7f5be…9805。
-原件/失败不改，收尾Provider0，自动任务实读PAUSED。独立工程收尾accepted/阻断0，32文件SHA与真实
-native终答读取时一致；工程dispatch正文加密，明文task SHA缺失如实保留，不当新业务认证。
-结果：docs/plans/2026-10-11-semantic-comparison-result.md。
+2026-10-11有界温度筛查已按授权启动唯一 runner，但在首个 baseline 完成后由 operator 侧硬边界停止：
+冻结 HEAD `8adcc24a88b0e9de1c8e3c898771716b21910dfd`、CI `38133097207`、plan
+`fcfb726a326085119f52246486eac21dd0c426d185c0bb44492a5de97c8087b3`。`sample-1:baseline`
+温度1.0完成真实传输、主/独立全文双审和 native checkpoint 导入；Provider 意见 score=74、
+needs_revision，与预期 accept 不匹配，semantic_accepted=false。实际1次HTTP、known_tokens=16341、
+unknown=0、receiptless=0、new_qualification=0。
 
-已停止同义教学试错、编辑迎合误报和增加第六调用。免费SDK边界审计精确重建5份完整issued请求，
-温度1.0→0.2本地参数仅此项差异；全部低温请求被现有冻结身份拒绝，未读取凭据或构造网络客户端。
-这不是可发送候选、Provider接受/遵循证据或语义修复。免费整链入口已核：历史initial/final完整请求
-均在委派前拒低温，继承预算方法还强制重写1.0；当前整链不可达，不能只改lab请求。
-随后完成离线隔离原型：以完整claim-scope:4业务fixture重建generation×2→review→revision→fresh review，
-候选review身份显式使用marker `document-review-sampling-temperature-02-v1`，只把review温度设为0.2，
-generation/revision保持1.0；五调用共享401920-token/900秒预算、角色路由、请求SHA/回执SHA及fresh重建均通过。
-产物为`data/evaluation/results/document_sampling_candidate_path_audit_20261011.json`，5次均为本地合成响应，
-known_tokens=150、reserved_tokens=0、network_client_constructed=false、credential_reads=0、production_admitted=false、new_qualification=0。
-该原型只证明离线接线/账本/回执一致，不证明Provider接受、模型遵循低温、语义改善、稳定率或付费授权；不改生产默认身份、预算类或产品入口。
-当前下一动作：依据已通过的原型准备一次有界review筛查方案（5个固定历史请求×现行/候选温度成对比较、最多10次调用）；方案仅准备，不启动Provider。只有新的明确付费授权、可执行候选身份和即时预检全部成立，才可执行；否则保持暂停。筛查方案见`docs/plans/2026-10-11-bounded-sampling-screening-preparation.md`。
-入口：docs/plans/2026-10-11-post-comparison-mechanism-decision.md。尚无新可执行身份/runner/付费授权。
+发送 `sample-1:temperature-02` 前，runner 检测 `role_development_checkout_changed_after_ci` 并停止整批。
+文件审计确认是 operator 为承接 native final 临时写入 backend checkout 的辅助 JSON；临时文件已清理，
+工作树 clean，HEAD 未变。该偏离不归因于429/401/503、Provider语义或额度；不重试、不重开、不补发。
+候选温度0.2及余下9项未执行。严格 replay 通过（native_reviews=1），create-only seal SHA
+`16ba99da8419f48acccbb897bca8f0aa108cbfde02d7dfd402b5050925980838`，结果见
+`docs/plans/2026-10-11-bounded-sampling-screening-result.md`。
 
-后4已通过fresh95/95/96/97及12stage严格封存；原15跨批覆盖库存10通过/3语义拒绝或分歧/2未认证，
-与本轮10/4/1不同，不能拼同版本正式15。历史2/15、3/15、remaining11及新独立批各自保留，
-旧第7/11不补签或重买，新资格0，默认产品入口未切换。Codex跨读取版本raw_event_sha差异限制保留。
-正式同版本15、自然消费、8E、Coach/Training/四块联动、Worker-DB-API-UI-journal、前端审美头像、
-Memory、身份运维、两树整合及八维学习仍未完成，原依赖与已交付基础保留。
+历史2/15、3/15、remaining11、完整15和本次筛查保持独立；本批不授予正式15资格，默认产品入口不切换。
+正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端、Memory、
+身份运维、两树整合和八维学习仍未完成。下一动作只能是清理后的新方案、同提交 CI 和新的明确授权，
+不得沿用本批剩余预算。
 
 ## 以下为历史记录
 
