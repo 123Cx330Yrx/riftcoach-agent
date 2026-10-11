@@ -6941,3 +6941,8 @@ operator 为承接 native final 在 backend checkout 写入了临时审查 JSON�
 ## 2026-10-12 温度筛查控制集审计
 
 只读对照 r2 五个样本与两份历史封存：`claim-scope:4 initial` 和 `scope:3 final` 均被 r2 预设为 accept，但历史均为 `semantic_accepted=false`；只有 `observed:3 final` 有历史支持的正确控制。`scope:4 initial` 的 reject 标签一致，`observed:5 initial` 作为需要修订的初评也与 reject 预期一致。原控制集不足以支撑温度结论，未重建正反控制前不发 Provider。详见 `docs/plans/2026-10-12-temperature-control-audit.md`。
+
+
+## 2026-10-12 修正控制候选
+
+基于两份历史封存绑定了 3 个正确控制（claim-scope:1 initial、observed:3 final、observed:4 final）和 2 个真错控制（claim-scope:4 initial、scope:4 initial），记录报告 SHA 与来源 seal SHA；仅作未来方案输入，未发送 Provider。详见 `docs/plans/2026-10-12-corrected-control-candidate.md`。

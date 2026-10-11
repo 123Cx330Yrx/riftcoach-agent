@@ -18,7 +18,7 @@ pause_reason: "有界温度筛查 r2 在 sample-3:baseline 发生 assembly_rejec
 ## 当前行动
 
 
-2026-10-12 免费控制审计进一步发现 r2 五个样本中两个预设 accept（claim-scope:4 initial、scope:3 final）与历史封存的 semantic_accepted=false 冲突；只有 observed:3 final 有历史支持的正确控制，另两个 reject 控制仍需按初评语义解释。原温度筛查控制集不足，未重建前不发 Provider。详见 `docs/plans/2026-10-12-temperature-control-audit.md`。
+2026-10-12 免费控制审计进一步发现 r2 五个样本中两个预设 accept（claim-scope:4 initial、scope:3 final）与历史封存的 semantic_accepted=false 冲突；只有 observed:3 final 有历史支持的正确控制，另两个 reject 控制仍需按初评语义解释。原温度筛查控制集不足，未重建前不发 Provider。详见 `docs/plans/2026-10-12-temperature-control-audit.md`。 已完成一份五例修正候选清单（3个历史正确稿、2个历史真错稿），仅作下一次方案输入，见 `docs/plans/2026-10-12-corrected-control-candidate.md`。
 
 2026-10-12 免费回放已核实 `sample-3:baseline` 的流式参数失败：334 个原始片段按顺序完整拼接（626 字节、正常闭合），但 JSON 含两个 `issues` 成员。普通解析会以后一个空数组覆盖前一个真实 issue；现有严格重复键门正确拒绝并保留不可发布片段，因此不修改接收器、不放宽门，也不重开 r2。另发现 sample-1 的预设 accept 与双审发现的真实 block 4 错误冲突，温度控制标签不能按预设成立。详见 `docs/plans/2026-10-12-stream-argument-diagnosis.md`。
 
