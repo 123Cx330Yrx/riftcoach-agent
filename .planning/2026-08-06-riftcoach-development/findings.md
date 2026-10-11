@@ -1,3 +1,12 @@
+## 2026-10-11 语义对照执行准备的工程反证
+
+准备请求包和Host task builder不是可运行执行器。离线真实子进程已证新marker经过worker/SDK/
+collect可用；未证明业务质量或教学负担因果。默认入口仍拒新identity。
+独立工程提前发现material写法与包canonical字节冲突；按原精确字节写入修复而不放松SHA门。
+其余反例说明只验证成功回执或文件basename不能构成严格封存：失败/receiptless必须独立核请求、
+reservation/terminal/progress与非负计数，白名单需精确路径/schema，clock需绑定实际Host阶段；
+abort与完成必须共同锁，耗时预检之后还需预留完整600秒。原例门/字段/schema及产品预算不改。
+
 ## 2026-10-11 真错修复正证据不撤销范围误报
 
 - 原生事件整体SHA含完整turn；Codex0.162 alpha相对本批指定0.153.4新增turn.rootTurnId，使同12事件封套仅raw_event_sha256变化，严格门拒绝。首例逐字段核thread/dispatch及其余turn未变，review与终答未变；不能把读取schema升级造成的差异当成业务结果变化，也不能忽略差异追认兼容。旧seal/原件保持，升级读取客户端要显式解决版本绑定。

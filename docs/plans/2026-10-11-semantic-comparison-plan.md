@@ -28,12 +28,40 @@
 独立对照请求。
 
 计划边界：15 次 GLM 审查、1,451,520 tokens、9,000 活动秒、86,400 Host 秒，未缓存保守估价
-21.44256 元；估价不是硬计费封顶。当前计划仍为 `execution_authorized=false`、
-`execution_ready=false`、`new_qualification=0`，没有 Provider 调用。
+21.44256 元；估价不是硬计费封顶。用户随后对该具体成本方案明确“继续”，本轮成本授权已取得，
+无需再次确认。静态准备包的 `execution_authorized=false` / `execution_ready=false` 只表示准备本身
+不能发送；首次执行必须另附 create-only 授权记录、同 HEAD 全绿 CI、即时真实主体预检。
+目前没有 Provider 调用，`new_qualification=0`。旧准备包原样保留，不把准备当成执行证据。
+
+## 执行接缝与恢复
+
+`scripts.document_semantic_comparison` 提供唯一 `run` 入口，以及 `material` / `submit` / `abort` /
+`replay` / `seal`。单次传输复用已有进程桥和 SDK；每 cell 使用独立实例并保留实际 issued bytes、
+reservation、完整 response、terminal、body-free progress 与 transport receipt，不套用产品45调用流程。
+全局15次、1,451,520 tokens、9,000活动秒为唯一总边界；每请求600秒/96768tokens。
+已观察HTTP发送、尝试、known/unknown用量和receiptless分开记录，缺回执不冒认为已认证。
+
+Host等待从活动时钟中扣除，wait/finish逐cell与六字段binding绑定。停止信号和cell完成共用短锁，
+导入后再次检查停止状态才能发下一个独立请求。同任务恢复只MESSAGE；前任务真实final并导入后
+才发新NEW_TASK。作者必须读取精确checkpoint并check-answer；主审只写自己的notes，submit实读
+原生final事件，不代写独立意见。ReportAssessment四真门与原source/引用/修法门保持。
+
+关闭后只读严格重建请求、传输、协议、双审、原生事件、clock和failure库存，按精确相对路径及
+字段schema公开白名单；private reasoning与rejected fragments不公开，原件仍以SHA保留。
+成功流不得带worker failure；不完整结果必须有唯一最早失败，禁止把发送后失败改记为付费前停止。
 
 ## 反证与决策
 
 若某变体仍把正确泛指补成全称，或借正文限定放过标题明确真错，则它不足以作为共同修复。
 若它只改善分数/字数而没有同时保留正例、真错和直接影响覆盖，也不采用。只有在隔离身份、
-完整请求、真实回执和双审接缝均可核验后，才可按用户另行确认的成本授权开始真实对照。
+完整请求、真实回执和双审接缝均可核验后，按用户已确认的本轮成本授权首次执行真实对照。
 失败、分歧和未执行项均保留，不能与旧批成功拼接为完整 15 资格。
+
+## 运行前验证（真实调用0）
+
+本机新准备/执行接缝34项、相关native/checkpoint/worker/transport108项、额外入口门禁3项均通过；
+后续变更仅加强preflight字段绑定和入口反例精确code，完整15单审/严格封存与慢门禁等5项再核通过。
+治理、编译和diff检查通过。最终独立工程唯一原生final实际读取、5个生产script及新测试SHA逐项
+一致，blocking_findings=[]。工程原件：outputs/riftcoach-semantic-comparison-20261011/engineering-native-final.json
+（本机operator，非业务回执）；旧工程final和旧准备包保持独立。下一步提交同HEAD公共CI、
+新prepared子目录精确31文件、外置授权/预检记录后首次唯一runner。暂不宣称实际语义结果。

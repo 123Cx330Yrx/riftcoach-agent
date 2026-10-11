@@ -1,3 +1,14 @@
+## 2026-10-11 已授权语义对照执行接缝（运行前）
+
+用户承接21.44256元/15次GLM具体方案明确继续，当前未发送Provider。
+补齐独立单审runner、实际新身份receipted transport、全文material/checkpoint/native submit/abort、
+严格失败链/clock/阶段库存重放与精确路径公开白名单封存。真实子进程三变体×两mode及15单审
+累计145项相关离线通过；独立工程反例指出的字节差异、失败校验、abort竞态、预算预留、clock库存、
+无failure不完整结果和worker失败/成功并存均已修复。最终工程唯一native final实读、SHA一致、阻断0。
+旧准备包/旧批原件不改；工程事件在outputs/riftcoach-semantic-comparison-20261011/engineering-native-final.json。
+下一动作同canonical：完成工程复核及检查、同HEAD全绿CI、即时真实主体预检后首次唯一runner。
+这不是实际语义修复/正式完整15资格，新资格0；全部下游依赖保留。
+
 ## 2026-10-11 后4真实执行全部完成及严格封存
 
 - 用户“继续吧，反正就是你第11例莫名其妙停了是吧，继续”授权后，在89f2408c/全绿CI38068536698首次启动唯一runner86300/wrapper92504。observed:2..5 initial80/82/84/90均真错，只做必要单段编辑，fresh95/95/96/97 pass；12stage完整全文双审与真实native认证、revision/final四项全真。

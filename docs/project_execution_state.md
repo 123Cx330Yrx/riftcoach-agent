@@ -4,7 +4,7 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "后4已完成/4通过/12stage真实认证，严格封存；新资格0/自动任务PAUSED。语义对照执行前方案已接线并通过离线边界回归，仍无Provider调用，等待具体成本授权与真实原生主体预检；旧3语义问题与2未认证缺口保留。"
+pause_reason: "后4已完成并严格封存，新资格0。用户已授权5×3语义对照具体成本；独立runner/原生双审导入/严格回放封存已实现，正在最终离线回归与工程复核，真实调用0。旧3语义问题与2未认证缺口保留。"
 ---
 
 # RiftCoach 当前执行状态
@@ -32,10 +32,16 @@ claim-scope:4额外早死误报、scope:3 fresh泛指误报、scope:4摘要/正�
 claim-scope:2路由失败与第11 observed:1 operator重复NEW_TASK未认证不重买/补签。
 历史2/15、3/15、remaining11、完整15、后8、后4各自独立，新资格0，默认产品入口未切换。
 
-当前行动是实际命题与直接修法的机制对照执行前准备：5固定完整请求×3教学组织静态
-对照已构造，逐项核非policy内容与业务规则不变；只替扩展教学后缀为既有短教学或紧凑决策顺序。
-尚不是可发送新身份或真实语义修复；先完成隔离身份/完整请求/预算/原生双审接缝及具体成本方案，
-不继续叠同义提示、不原样再买完整15、不转外围工程替代语义阻断。
+当前行动是已授权的5×3语义机制对照：5个完整历史请求×原扩展/既有短例/决策顺序，
+非policy消息、来源、业务规则、schema、模型与600秒时限保持。最多15次GLM-5.3/high、
+1,451,520tokens、9,000活动秒/86,400Host秒，估价21.44256元非硬计费封顶；不编辑/fresh/重试。
+新独立runner、单次transport、checkpoint/native导入、硬停、只读replay和create-only封存已补齐；
+实际子进程三variant×两mode/15次单审/语义继续/硬停/native/seal及反例回归通过，相关145项通过。
+独立工程已指出并修复材料字节差异、失败传输校验、白名单、abort竞态、预算及clock库存问题，
+最终唯一工程native final实读且当前源码SHA一致、阻断0。这不证明真实语义结果。
+仍无新业务run、Provider调用0；下一动作是提交推送，
+提交同HEAD全绿CI与即时真实主体预检后，沿本轮已获成本授权首次启动唯一runner。
+原准备包和历史失败证据不改，不重开旧批，不叠同义提示或用外围工程替代语义阻断。
 入口：docs/plans/2026-10-11-semantic-decision-preparation.md、docs/plans/2026-10-11-semantic-comparison-plan.md。
 正式同版本15、自然消费、8E、Coach/Training/四块联动、Worker-DB-API-UI-journal、前端审美头像、
 Memory、身份运维、两树整合及八维学习仍未完成，原依赖与已交付基础保留。

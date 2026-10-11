@@ -25,7 +25,14 @@ EXPECTED = ('reject', 'accept', 'reject', 'accept', 'reject')
 FILES = ('scripts/document_semantic_request.py',
          'scripts/prepare_document_semantic_comparison.py',
          'scripts/document_semantic_host_task.py',
-         'scripts/prepare_document_semantic_options.py')
+         'scripts/prepare_document_semantic_options.py',
+         'scripts/document_semantic_transport.py',
+         'scripts/document_semantic_comparison.py',
+         'app/providers/zhipu.py', 'app/providers/zhipu_profiles.py',
+         'app/providers/stream_adapter_contract.py',
+         'app/providers/config.py', 'app/evaluation/golden_stream_diagnostic.py',
+         'app/evaluation/golden_journal.py', 'scripts/diagnose_block_review_route.py',
+         'tests/test_document_semantic_comparison.py', 'tests/test_document_semantic_execution.py')
 
 
 def sha(raw):
@@ -107,7 +114,10 @@ def prepare(root=ROOT, *, root_thread_id, independent_thread_id):
         source_seal_sha256={p: sha((root / p).read_bytes()) for p, _, _ in options.SOURCES},
         sdk_retries=0, labels_sent_to_model=False, execution_authorized=False,
         execution_ready=False, native_preflight_verified=False,
-        runner_and_replay_verified=False, production_admitted=False,
+        runner_contract='document-semantic-comparison-run-v1',
+        execution_checks=['exact-source-package','explicit-cost-authorization',
+                          'clean-same-HEAD-public-CI','current-native-principals'],
+        production_admitted=False,
         original15_qualified=False, new_qualification=0,
         host_review_submission_mode=MODE_V2, host_review_evidence_policy=FINAL_POLICY,
         max_host_seconds=86400,

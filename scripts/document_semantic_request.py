@@ -115,10 +115,12 @@ def main():
     parser.add_argument('--started', required=True, type=float)
     parser.add_argument('--deadline', required=True, type=float)
     parser.add_argument('--transport-id', required=True, choices=(TRANSPORT,))
+    parser.add_argument('--buffered-tools', action='store_true')
     args = parser.parse_args()
     bridge = isolated_bridge()
     try:
-        bridge.worker(args.worker, args.started, args.deadline, TRANSPORT)
+        bridge.worker(args.worker, args.started, args.deadline, TRANSPORT,
+                      stream_tool_arguments=not args.buffered_tools)
     except BaseException as error:
         # Same bounded failure record as the existing process bridge.
         bridge.write_new_json(args.worker / 'failure.json', {
