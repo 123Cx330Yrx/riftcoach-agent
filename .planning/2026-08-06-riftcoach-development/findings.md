@@ -1,3 +1,10 @@
+## 2026-10-11 有界温度筛查 r2 的传输硬故障
+
+- `sample-1` 两变体都把正确预期判为 `needs_revision`（74/78），`sample-2` 两变体均正确接受 final（96/95）；这组有限结果未完成候选采用门，不能外推 temperature=0.2 的稳定性或质量收益。
+- `sample-3:baseline` 的 Provider 流在 `submit_report_review` 工具参数增量组装时进入 `assembly_rejected/tool_call_arguments`，终态没有可发布 JSON。该错误是实际 Provider/传输终态，不能被补写为 response、stage、receipt 或语义 verdict；按硬故障停全批。
+- 这次硬故障与历史 Codex 429、Provider 401/503、额度和审查路由问题分别记录，没有证据把它们合并为同一根因。不得重试该调用来“验证”分类，也不得用后续未执行项补齐候选筛查。
+- 账目必须同时保留成功回执和失败请求：5 attempted/5 HTTP、84081 known、unknown0、receiptless1；严格 replay 只认证4个真实 native review。`new_qualification=0`，正式15与默认产品入口保持关闭。
+
 ## 2026-10-11 全文教学对照的反证与采样边界
 
 - 三组织在同一正确泛指稿都新增早死/全称误报，否定三者作为共同修复的充分性，不证明提示负担、采样或中转内部根因。10/4/1只评实际审查意见，needs_revision可被Host接受，pass仍须四真门，不把分数当标签。

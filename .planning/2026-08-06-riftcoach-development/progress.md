@@ -1,3 +1,10 @@
+## 2026-10-11 有界温度筛查 r2 硬停止与封存
+
+- 按 HEAD `465daf92bfaecb47e800ebc343bd23f21c553220`、CI `38141643942`、plan/package `8c8fc50de3159dfc42bd02f2a3c53276dc5f537d9dfda2395de4f16f441b94d7` 启动唯一 runner `112000`。sample-1 baseline/candidate 为 74/78 needs_revision，sample-2 baseline/candidate 为 96/95 pass；4 个阶段均完成主审和真实独立 native 审查。
+- 第五次请求 `sample-3:baseline` 出现 `ProviderResponseError` / `assembly_rejected/tool_call_arguments`，无可发布 JSON，按硬故障停批。实际5 calls、5 HTTP、84081 known tokens、unknown0、receiptless1，活动338.234秒/Host4486.266秒；未执行5项，runner exit1。
+- 严格只读 replay exit0、native_reviews=4；create-only seal `bc2a89ad08b6c3390dfb2ed9e09df5b0d9ad0d17d362e7033dce02d848d666de`，close-audit SHA `5823f23dc76c5cfde27eb9d740e8ed7416c41544c70c3325d28efb80cef99f7b`。原件、冻结源码/HEAD不变，新资格0，历史2/15、3/15、remaining11和完整15独立。
+- 该结果不能判断 temperature=0.2 的采用价值，也不能把参数组装失败归因429/401/503或额度；后续须新方案、新run和新授权，不得重试/重评/补发/重开本批。
+
 ## 2026-10-11 教学对照15项执行完成，三方案均不足共同修复
 
 - 准确计数10项语义接受、4双方拒绝、1Host分歧（纠正运行中9/5/1笔误）。5完整历史请求×3教学仅做initial，不是正式15份报告端到端验收；scope:3正确稿三变体均误报，因此停止同义教学试错。

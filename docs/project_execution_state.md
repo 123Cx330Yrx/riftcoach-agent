@@ -4,31 +4,20 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "有界温度筛查首例完成后在第二项发送前发现 role_development_checkout_changed_after_ci，operator 临时文件已清理；1次调用/9项未执行，严格 replay/seal 完成，新资格0；候选温度与完整15均未验证。"
+pause_reason: "有界温度筛查 r2 在 sample-3:baseline 发生 assembly_rejected/tool_call_arguments receiptless 硬停止；5次调用、4个native审查、5项未执行，严格 replay/seal 完成，新资格0；候选温度与完整15均未验证。"
 ---
 
 # RiftCoach 当前执行状态
 
+2026-10-11 有界温度筛查 r2 已按明确授权启动唯一 runner，但在第五次 Provider 请求处发生流式工具参数组装失败，按硬故障规则关闭整批。冻结 HEAD `465daf92bfaecb47e800ebc343bd23f21c553220`、同提交全绿 CI `38141643942`、plan/package SHA `8c8fc50de3159dfc42bd02f2a3c53276dc5f537d9dfda2395de4f16f441b94d7`；run 为 `document-sampling-screening-20261011-r2`。
+
+前两对样本完成真实请求和主/独立全文审查：sample-1 baseline/candidate 得分 74/78、均为 needs_revision 且预期 accept 未命中；sample-2 baseline/candidate 得分 96/95、final 均 pass，双审接受且 ReportAssessment 四项全真。实际账目为 5 次 HTTP/attempted、84081 known tokens、unknown=0、receiptless=1；活动 338.234 秒、Host 4486.266 秒。失败项是 `sample-3:baseline` 的 `ProviderResponseError`，证据为 `assembly_rejected/tool_call_arguments`，无可发布 JSON；它计入实际调用并作为 receiptless 硬停止处理，不归因 429/401/503，也不重试或重评。
+
+严格只读 replay 成功（native_reviews=4），create-only seal 已生成，SHA `bc2a89ad08b6c3390dfb2ed9e09df5b0d9ad0d17d362e7033dce02d848d666de`；close audit 位于 operator 输出目录，SHA `5823f23dc76c5cfde27eb9d740e8ed7416c41544c70c3325d28efb80cef99f7b`。未执行 `sample-3:temperature-02`、sample-4 两项、sample-5 两项；`new_qualification=0`。原件、运行记录和冻结 checkout 未修改，历史 2/15、3/15、remaining11 及完整15保持独立。
+
 ## 当前行动
 
-2026-10-11有界温度筛查已按授权启动唯一 runner，但在首个 baseline 完成后由 operator 侧硬边界停止：
-冻结 HEAD `8adcc24a88b0e9de1c8e3c898771716b21910dfd`、CI `38133097207`、plan
-`fcfb726a326085119f52246486eac21dd0c426d185c0bb44492a5de97c8087b3`。`sample-1:baseline`
-温度1.0完成真实传输、主/独立全文双审和 native checkpoint 导入；Provider 意见 score=74、
-needs_revision，与预期 accept 不匹配，semantic_accepted=false。实际1次HTTP、known_tokens=16341、
-unknown=0、receiptless=0、new_qualification=0。
-
-发送 `sample-1:temperature-02` 前，runner 检测 `role_development_checkout_changed_after_ci` 并停止整批。
-文件审计确认是 operator 为承接 native final 临时写入 backend checkout 的辅助 JSON；临时文件已清理，
-工作树 clean，HEAD 未变。该偏离不归因于429/401/503、Provider语义或额度；不重试、不重开、不补发。
-候选温度0.2及余下9项未执行。严格 replay 通过（native_reviews=1），create-only seal SHA
-`16ba99da8419f48acccbb897bca8f0aa108cbfde02d7dfd402b5050925980838`，结果见
-`docs/plans/2026-10-11-bounded-sampling-screening-result.md`。
-
-历史2/15、3/15、remaining11、完整15和本次筛查保持独立；本批不授予正式15资格，默认产品入口不切换。
-正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端、Memory、
-身份运维、两树整合和八维学习仍未完成。下一动作只能是清理后的新方案、同提交 CI 和新的明确授权，
-不得沿用本批剩余预算。
+2026-10-11 有界温度筛查 r2 已结束于 `sample-3:baseline` transport hard stop。候选温度效果未完成验证，不改变默认产品入口，不授予正式15资格。后续如要继续，必须基于 clean checkout、同提交 CI 和新的明确授权重新准备新 run；不得使用本批剩余预算或重开本批。正式同版本15、自然消费、8E、Coach/Training、Worker/DB/API/UI/journal、前端、Memory、身份运维、两树整合和八维学习继续未完成。
 
 ## 以下为历史记录
 

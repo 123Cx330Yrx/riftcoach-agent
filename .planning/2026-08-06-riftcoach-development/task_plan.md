@@ -15,13 +15,13 @@
 
 **目标：** 修复正确教练分析被扩义误报和真错直接影响遗漏，进入同版本完整15及真实Agent消费。
 **实际起点：** 5×3教学对照15项已全部双审/submit：10接受、4双方拒绝、1Host分歧；三种教学均误报scope:3正确泛指。停止把教学微调当共同修复。
-**本次交付：** 冻结a9a68049/全绿CI38104135494唯一runner正常exit0，15calls/known270680/unknown0/receiptless0，未缓存估价3.602360元非账单。严格15真实native/290公开JSON/306原件SHA相等已封存；无编辑/fresh/重试、新资格0，自动任务PAUSED。
-**机制与反证：** 完整规则/来源已送达，三组织均误报；sample1 expanded真实分歧和short无依据排他解释保留。sample3修法可由正文补足摘要范围，sample5标题真错不能借正文限制撤销；不追改历史标签。
-**实现路径：** 免费SDK检查复建5份issued请求，只改变温度1.0→0.2，全文/schema/模型/high/top_p/时限相等。现有身份拒低温，当前无可发送身份；不读取凭据/构造网络client，不改生产默认或原件。
-**验收/失败：** SDK表达不证明服务端接受/遵循或语义效果。整任务初评和fresh均须可达，生成/必要编辑/格式恢复仍共享五调用/原预算；不得加定向第六审查、放宽标准、改正确稿迎合误报或拼跨批资格。
-**整链核查：** initial/final完整历史请求均在TimedDocumentBudget委派前拒低温；继承预算归一化还强制1.0。现有整任务不可达，不以SDK表达为接线证明。
-**当前下一动作：** 有界温度筛查已实际启动但未完成：`sample-1:baseline` 温度1.0真实调用1次，主/独立双审一致接受 Provider 意见，但 score=74/needs_revision 未命中预期 accept；第二项发送前发现 `role_development_checkout_changed_after_ci`，确认由 operator 临时审查 JSON 写入 backend checkout 触发，按边界停批。临时文件已清理，工作树 clean，严格 replay 与 create-only seal 已完成；候选温度0.2及其余9项未执行，新资格0。结果见 `docs/plans/2026-10-11-bounded-sampling-screening-result.md`。后续需从不再变动的 checkout 重新准备并重新授权，不能重试本批或使用剩余预算。
-**证据：** docs/plans/2026-10-11-semantic-comparison-result.md、2026-10-11-post-comparison-mechanism-decision.md、2026-10-11-bounded-sampling-screening-preparation.md及公共seal/close audit/sampling audit/candidate-path audit。后4已有12stage/fresh95/95/96/97；原15库存10/3/2是独立计数，旧第7/11缺口保留。正式15/自然消费/8E及下游未完成。
+**本次交付：** 有界温度筛查 r2 在 `465daf92bfaecb47e800ebc343bd23f21c553220` / CI `38141643942` / plan `8c8fc50de3159dfc42bd02f2a3c53276dc5f537d9dfda2395de4f16f441b94d7` 启动唯一 runner。sample-1 两变体真实完成但 74/78 needs_revision 未命中 accept；sample-2 两变体 96/95 pass，主/独立审查接受且四项 ReportAssessment 全真。第五次请求在 sample-3:baseline 发生 `ProviderResponseError` 的 `assembly_rejected/tool_call_arguments` receiptless 硬停止；实际5 calls/known84081/unknown0/receiptless1，5项未执行，新资格0。严格 replay 与 create-only seal 完成，seal `bc2a89ad…d666de`。
+**机制与反证：** 该批没有完成候选温度采用门，不能判断 temperature=0.2 是否改善语义质量，也不能把工具参数组装失败解释成温度、429、401、503或额度根因。四个已审阶段和失败流均按真实请求、原生终答、checkpoint及账目封存；历史批次和正确/错误质量门不重写。
+**实现路径：** 运行期 backend checkout 保持 clean，所有主审 notes、临时 JSON、close audit 和 seal 写在 operator 输出目录；提交只接受真实 native final 与精确 checkpoint SHA。该批停止后不再发送、不重评、不补发、不重开。
+**验收/失败：** 4个已审阶段均有真实双审；第五次 Provider 流无可发布 JSON，按身份/传输/预算硬故障停批。严格 replay 核 `native_reviews=4`，seal原始文件95/public文件89，结果、失败、未执行及最早偏离均可回溯。
+**整链核查：** 初始和 final 请求的来源、政策、模型、schema、温度标记和账目保持绑定；失败回执不伪造为业务stage或native review。未执行 sample-3 candidate、sample-4 两项、sample-5 两项。
+**当前下一动作：** 本批已封存并暂停；任何后续筛查须从 clean checkout、同提交CI和新的明确授权重新准备，不能使用本批剩余预算。正式同版本15、自然消费、8E及下游产品/学习依赖继续未完成。
+**证据：** `docs/plans/2026-10-11-bounded-sampling-screening-result-r2.md`、`C:/Users/33502/Documents/Agent/outputs/riftcoach-bounded-sampling-screening-20261011-r2/close-audit.json`、sealed file及本批 run 目录；历史2/15、3/15、remaining11和完整15继续独立。
 
 ## Dependencies and Follow-through
 
@@ -41,9 +41,9 @@ Postgres已恢复：官方停止及两运行目录完整备份，现用127.0.0.1
 ## Next Step
 
 Canonical checkpoint：`8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption`。
-本次筛查因 operator checkout 边界偏离关闭，未验证候选温度效果，不改变既有15例库存或资格。
-在新方案前先保持工作树 clean、CI 后冻结不写入运行 checkout；新的真实筛查须重新准备、预检并取得明确授权。
-正式同版本15、自然消费、8E及下游联动继续保留，旧批次不重开。
+本次筛查因 sample-3:baseline 的 Provider `assembly_rejected/tool_call_arguments` 硬停止，未验证候选温度效果，不改变既有15例库存或资格。
+本批已完成只读 replay 和 create-only seal；后续若继续，先保持工作树 clean、CI 后冻结不写入运行 checkout，重新准备新 run、预检并取得明确授权，不得使用本批剩余预算或重开本批。
+正式同版本15、自然消费、8E及下游联动继续保留。
 
 ## History
 
