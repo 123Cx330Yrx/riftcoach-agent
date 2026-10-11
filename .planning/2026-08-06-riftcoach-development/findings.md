@@ -6946,3 +6946,8 @@ operator 为承接 native final 在 backend checkout 写入了临时审查 JSON�
 ## 2026-10-12 修正控制候选
 
 基于两份历史封存绑定了 3 个正确控制（claim-scope:1 initial、observed:3 final、observed:4 final）和 2 个真错控制（claim-scope:4 initial、scope:4 initial），记录报告 SHA 与来源 seal SHA；仅作未来方案输入，未发送 Provider。详见 `docs/plans/2026-10-12-corrected-control-candidate.md`。
+
+
+## 2026-10-12 修正控制筛查准备
+
+五例控制离线绑定和 10 请求重建通过；新准备文件固定 5 对 baseline/temperature-02、最多 10 次 GLM-5.3/high、967680 tokens、3000 active 秒，估价约14.29504元且非硬封顶。Provider0；执行仍需新的明确成本授权、同 HEAD CI 与即时 native 预检。详见 `docs/plans/2026-10-12-corrected-temperature-screening-preparation.md`。
