@@ -14,7 +14,7 @@
 | `claim-scope:4` initial | 真错稿 | needs_revision / host rejected | `2f642924110e98975b7d82baa49f43e039d2876b088e33a861398261354734c2` | full15 `30f8e336d11fa2bd425434d90c37e8ce77cded74cec534a8c958fb914446f576` |
 | `scope:4` initial | 真错稿 | needs_revision / host rejected | `a3889a655782132f269f1a4cda7b0506e242dbd783df17d03740f01b1d1b3ba4` | full15 `30f8e336d11fa2bd425434d90c37e8ce77cded74cec534a8c958fb914446f576` |
 
-历史结果来自两个只读封存的 `execution_result.cases` 及其绑定；原件未修改。每个新候选请求仍须重新生成自己的 request/receipt SHA，不能复用上表历史 request 或 response。
+历史结果来自两个只读封存的 `execution_result.cases` 及其绑定；原件未修改。 离线核验产物为 `data/evaluation/results/corrected_temperature_control_candidate_audit_20261012.json`，SHA256 `232b463f81ac69248e4f6b35d2e0fdb9fdbd45ec25b24600ba189015c9552c39`，五行标签、报告绑定、stage/request/source 存在性全部通过。每个新候选请求仍须重新生成自己的 request/receipt SHA，不能复用上表历史 request 或 response。
 
 ## 保留的限制
 
