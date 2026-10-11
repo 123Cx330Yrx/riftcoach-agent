@@ -41,6 +41,24 @@ class PostgresTrainingQueryRepository:
             raise TypeError("session_factory must be callable")
         self._session_factory = session_factory
 
+    @staticmethod
+    def active_plan_for_measurement(session, *, identity, task_created_at):
+        """Use the same active-self scope, within the projection transaction."""
+        if identity.relationship_role.value != "self":
+            return None
+        relationship = _self_relationship(session, identity.owner_id, identity.relationship_id)
+        if relationship is None or relationship.player_subject_id != identity.player_subject_id:
+            return None
+        return session.scalar(sa.select(TrainingPlanRecord).where(
+            TrainingPlanRecord.owner_id == identity.owner_id,
+            TrainingPlanRecord.relationship_id == identity.relationship_id,
+            TrainingPlanRecord.player_subject_id == identity.player_subject_id,
+            TrainingPlanRecord.relationship_role == "self",
+            TrainingPlanRecord.status == "active",
+            TrainingPlanRecord.hidden_at.is_(None),
+            TrainingPlanRecord.created_at <= task_created_at,
+        ).with_for_update())
+
     def list_plans(self, *, owner_id, relationship_id, include_history, limit):
         owner, bounded = _validate(owner_id, relationship_id, limit)
         try:
@@ -144,6 +162,7 @@ def _self_relationship(session: Session, owner_id: str, relationship_id: UUID):
             OwnerPlayerRelationshipRecord.relationship_id == relationship_id,
             OwnerPlayerRelationshipRecord.relationship_role == "self",
             OwnerPlayerRelationshipRecord.status == "active",
+            OwnerPlayerRelationshipRecord.hidden_at.is_(None),
         )
     )
 

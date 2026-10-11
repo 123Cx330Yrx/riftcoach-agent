@@ -112,6 +112,7 @@ def build_player_summary(
     count: int,
     queue: int | None,
     min_duration_seconds: int,
+    allow_queue_fallback: bool = True,
 ) -> dict:
     account = client.get_account_by_riot_id(game_name, tag_line)
     puuid = account["puuid"]
@@ -123,6 +124,7 @@ def build_player_summary(
         count=count,
         queue=queue,
         min_duration_seconds=min_duration_seconds,
+        allow_queue_fallback=allow_queue_fallback,
     )
 
 
@@ -169,6 +171,7 @@ def _build_player_summary_for_account(
     count: int,
     queue: int | None,
     min_duration_seconds: int,
+    allow_queue_fallback: bool = True,
 ) -> dict:
     match_ids = client.get_recent_match_ids(
         puuid=puuid,
@@ -178,7 +181,7 @@ def _build_player_summary_for_account(
 
     effective_queue = queue
     queue_fallback_used = False
-    if not match_ids and queue is not None:
+    if not match_ids and queue is not None and allow_queue_fallback:
         match_ids = client.get_recent_match_ids(
             puuid=puuid,
             count=count,

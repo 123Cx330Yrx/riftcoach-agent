@@ -27,6 +27,7 @@ from app.tasks.models import (
     ConversationReviewExecutionTarget,
     ConversationReviewTaskBinding,
     ReviewTask,
+    TaskPublicationMode,
     TaskPublicationStatus,
     TaskStatus,
     TaskTerminal,
@@ -643,6 +644,22 @@ def test_reconciler_rejects_evidence_for_a_different_run_before_sql_cas():
 
     assert result.status is ReconciliationStatus.RECOVERY_REQUIRED
     assert result.reason == "terminal_evidence_invalid"
+    assert repository.succeed_calls == []
+
+
+def test_reconciler_never_uses_legacy_cas_for_evidence_bound_task():
+    task = running_task().model_copy(
+        update={"publication_mode": TaskPublicationMode.EVIDENCE_BOUND_V1}
+    )
+    repository = FakeRepository()
+
+    with pytest.raises(TaskReconciliationError) as caught:
+        ReviewTaskReconciler(
+            repository=repository,
+            verifier=FakeVerifier(terminal(run_id=task.run_id)),
+        ).reconcile(task, now=NOW + timedelta(minutes=10))
+
+    assert caught.value.code == "task_terminal_update_failed"
     assert repository.succeed_calls == []
 
 

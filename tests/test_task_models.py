@@ -14,6 +14,7 @@ from app.tasks.models import (
     TaskCreateDisposition,
     TaskCreateResult,
     TaskPublicationStatus,
+    TaskPublicationMode,
     TaskStatus,
     TaskTerminal,
 )
@@ -89,6 +90,13 @@ def test_task_status_contract_includes_reliable_recovery_and_cancel_states() -> 
         "failed",
         "cancelled",
     )
+
+
+def test_publication_mode_defaults_legacy_and_rejects_unknown_values() -> None:
+    task = queued_task()
+    assert task.publication_mode is TaskPublicationMode.LEGACY
+    with pytest.raises(ValidationError):
+        queued_task(publication_mode="untrusted_mode")
 
 
 def test_create_command_is_strict_frozen_and_normalizes_only_product_request() -> None:

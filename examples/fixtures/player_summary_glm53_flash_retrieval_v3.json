@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0",
+  "metadata": {
+    "generated_at_utc": "2026-09-04T12:30:00+00:00",
+    "source": "synthetic_fixture",
+    "matches_requested": 5,
+    "matches_received": 5,
+    "matches_analyzed": 5
+  },
+  "player": {
+    "game_name": "LanternMoss",
+    "tag_line": "R3",
+    "riot_id": "LanternMoss#V3",
+    "puuid_prefix": "glm53-retrieval-anon..."
+  },
+  "request": {
+    "count": 5,
+    "queue": 420,
+    "region": "asia"
+  },
+  "recent_summary": {
+    "games_analyzed": 5,
+    "wins": 3,
+    "losses": 2,
+    "win_rate": 60.0,
+    "main_role": "MIDDLE",
+    "main_champions": ["灯塔练习者", "苔原练习者"],
+    "averages": {
+      "cs_per_min": 6.88,
+      "deaths_before_15": 0.8
+    },
+    "win_loss_comparison": {
+      "wins": {
+        "cs_per_min": 6.93,
+        "deaths_before_15": 0.33
+      },
+      "losses": {
+        "cs_per_min": 6.8,
+        "deaths_before_15": 1.5
+      }
+    },
+    "champion_summary": [
+      {"champion": "灯塔练习者", "games": 3, "wins": 2, "win_rate": 66.67},
+      {"champion": "苔原练习者", "games": 2, "wins": 1, "win_rate": 50.0}
+    ],
+    "role_summary": [
+      {"role": "MIDDLE", "games": 5, "wins": 3, "win_rate": 60.0}
+    ]
+  },
+  "matches": [
+    {
+      "match_id": "GLM53_REVISION_SYNTH_731",
+      "game_duration_seconds": 1815,
+      "champion_id": 960731,
+      "champion_name": "灯塔练习者",
+      "role": "MIDDLE",
+      "win": true,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 7.4,
+      "deaths_before_15": 0
+    },
+    {
+      "match_id": "GLM53_REVISION_SYNTH_732",
+      "game_duration_seconds": 1945,
+      "champion_id": 960732,
+      "champion_name": "灯塔练习者",
+      "role": "MIDDLE",
+      "win": false,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 7.1,
+      "deaths_before_15": 1
+    },
+    {
+      "match_id": "GLM53_REVISION_SYNTH_733",
+      "game_duration_seconds": 1750,
+      "champion_id": 960733,
+      "champion_name": "苔原练习者",
+      "role": "MIDDLE",
+      "win": true,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 6.8,
+      "deaths_before_15": 0
+    },
+    {
+      "match_id": "GLM53_REVISION_SYNTH_734",
+      "game_duration_seconds": 2070,
+      "champion_id": 960734,
+      "champion_name": "苔原练习者",
+      "role": "MIDDLE",
+      "win": true,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 6.6,
+      "deaths_before_15": 1
+    },
+    {
+      "match_id": "GLM53_REVISION_SYNTH_735",
+      "game_duration_seconds": 1885,
+      "champion_id": 960735,
+      "champion_name": "灯塔练习者",
+      "role": "MIDDLE",
+      "win": false,
+      "timeline_status": "available",
+      "included_in_aggregate": true,
+      "cs_per_min": 6.5,
+      "deaths_before_15": 2
+    }
+  ],
+  "failed_matches": [],
+  "excluded_matches": []
+}

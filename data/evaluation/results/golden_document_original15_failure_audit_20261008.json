@@ -1,0 +1,40 @@
+{
+  "accepted_prefix_keys": [
+    "claim-scope:1",
+    "claim-scope:4",
+    "claim-scope:3"
+  ],
+  "causal_claims_proven": false,
+  "changed_blocks_between_correct_and_attribution": [
+    14
+  ],
+  "complete_report_and_existing_rules_delivered": true,
+  "decision": "Document presentation alone has not met the complete fifteen-control quality gate. Do not register it or repeat this batch. Preserve the existing full-context standard and both reviews; first distinguish genuine unresolved meaning from optional specificity using actual context, prior boundary evidence and existing runtime mechanisms.",
+  "dual_acceptance": false,
+  "failure_key": "attribution:1",
+  "full_damage_gap_display": "695.42",
+  "independent_accepted": true,
+  "independent_classification": "broad_mean_direction_claim_requires_metric_restriction",
+  "interpretation_disagreement_preserved": true,
+  "middle_damage_gap": "669.235",
+  "policy_sha256": "d7b9b8c7dca44ccd65114a13cbff0c94dc7fd0274f1f743d6bcc1ab139f39735",
+  "pooled_gap_minus_middle_gap": "26.1833333333333333333333333",
+  "primary_accepted": false,
+  "primary_classification": "false_positive_from_unsupported_universal_reading",
+  "production_admitted": false,
+  "provider_requests": 0,
+  "public_seal_sha256": "d225f75e39e850e62c7af2cefab1ec823d837e6c46fd65606e93da373d2ed4c5",
+  "raw_full_damage_gap": "695.4183333333333333333333333",
+  "review_controls_qualified": false,
+  "same_block4": true,
+  "schema_version": "document-original15-failure-audit-v1",
+  "shared_source_fields_equal": [
+    "facts_and_provenance",
+    "generation_facts",
+    "deterministic_source_facts",
+    "knowledge",
+    "user_utterance"
+  ],
+  "true_damage_attribution_error_detected": true,
+  "unexecuted_count": 11
+}

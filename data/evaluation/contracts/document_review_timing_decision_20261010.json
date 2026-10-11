@@ -1,0 +1,544 @@
+{
+  "accounting": {
+    "calls": 6,
+    "known_tokens": 81642,
+    "known_usage_estimated_uncached_cny": "0.6973828",
+    "local_attempts_without_transport_receipt": 0,
+    "unknown_usage_calls": 1,
+    "unknown_usage_is_not_free": true
+  },
+  "actual_new_provider_calls": 0,
+  "current_product_limits": {
+    "execution_timeout_s": 900,
+    "max_calls": 5,
+    "max_output_tokens": 32768,
+    "request_timeout_s": 300,
+    "total_tokens": 401920
+  },
+  "decision": "prepare_isolated_role_600_task_900_candidate_without_retries_or_live_admission",
+  "diagnostic_limits": {
+    "batch_active_seconds": 8400,
+    "batch_host_seconds": 86400,
+    "independent_case_900s_wall_enforced": false,
+    "natural_generation_included": false
+  },
+  "execution_ready": false,
+  "integration_blockers": {
+    "old_native_and_qualification_evidence_not_transferable": true,
+    "old_observation_450s_refused": true,
+    "old_transport_600_refusal": "stream_request_budget",
+    "prepared_request_and_role_identity_max_s": 300,
+    "workflow_prepared_vs_issued_timeout_requires_rebinding": true
+  },
+  "kind": "document-review-timing-decision-v1",
+  "metadata_sha256": "f45feecf68dbb96169b934c6731138b72c81548505c8e9701ea1b3e3f2fa5c43",
+  "new_qualification": 0,
+  "observed_calls": [
+    {
+      "elapsed_ms": 200688,
+      "first_event_ms": 8766,
+      "first_tool_ms": 190454,
+      "http_requests": 1,
+      "input_tokens": 12936,
+      "key": "attribution-1",
+      "last_event_ms": 200391,
+      "message_content_chars": [
+        3838,
+        2781,
+        16350,
+        2823
+      ],
+      "output_tokens": 6418,
+      "reasoning_chars": 18754,
+      "request_metrics": {
+        "input_token_ceiling": 44814,
+        "message_count": 4,
+        "messages_by_role": {
+          "assistant": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "system": {
+            "content_chars": 3838,
+            "count": 1,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "tool": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "user": {
+            "content_chars": 21954,
+            "count": 3,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          }
+        },
+        "output_token_cap": 32768,
+        "schema_version": "1.0",
+        "structured_output": false,
+        "tool_count": 1,
+        "wire_bytes": 44604
+      },
+      "request_sha256": "bdab371b9d8a3463fa4115c907a20df967194f3b820d4dd7f4789c1dce749e10",
+      "request_timeout_s": 300,
+      "role": "review",
+      "source_file_sha256": {
+        "progress.json": "c8045ba03548d6bfe48c3db7ab7493e55794229048e3d5b49a2617924f3f466f",
+        "reservation.json": "cd9605996646ded4ff8ede5f82e0a61183f36265ab23352a47b1001ccb841e85",
+        "result.json": "0df55204c3f063a302ff3231ab33201c781dc8f8a60d467c36e000f48db6a672"
+      },
+      "stage": "initial",
+      "state": "complete",
+      "tool_delta_count": 408
+    },
+    {
+      "elapsed_ms": 15984,
+      "first_event_ms": 9250,
+      "first_tool_ms": 10187,
+      "http_requests": 1,
+      "input_tokens": 14301,
+      "key": "attribution-1",
+      "last_event_ms": 15703,
+      "message_content_chars": [
+        1117,
+        19477,
+        2823
+      ],
+      "output_tokens": 433,
+      "reasoning_chars": 83,
+      "request_metrics": {
+        "input_token_ceiling": 53718,
+        "message_count": 3,
+        "messages_by_role": {
+          "assistant": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "system": {
+            "content_chars": 1117,
+            "count": 1,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "tool": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "user": {
+            "content_chars": 22300,
+            "count": 2,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          }
+        },
+        "output_token_cap": 32768,
+        "schema_version": "1.0",
+        "structured_output": false,
+        "tool_count": 1,
+        "wire_bytes": 47499
+      },
+      "request_sha256": "002e91937e89f5157811af1f36a382a3273206f0e8d680f5892290d2e2b6e221",
+      "request_timeout_s": 300,
+      "role": "generation",
+      "source_file_sha256": {
+        "progress.json": "86141cb4d102733ab43eb8728a852e899b5acc5e7b9b7fbe3d7537f8bf5f7340",
+        "reservation.json": "ae9b370f2d4e643431c9a6b139800ef9b3c70e1cf784178e5b2e253deed7f186",
+        "result.json": "058f2305007daa3f72216e79082cb18d0ca28228ce90eb483aa0240d0644bb74"
+      },
+      "stage": "revision",
+      "state": "complete",
+      "tool_delta_count": 401
+    },
+    {
+      "elapsed_ms": 90813,
+      "first_event_ms": 22922,
+      "first_tool_ms": 89657,
+      "http_requests": 1,
+      "input_tokens": 12959,
+      "key": "attribution-1",
+      "last_event_ms": 90157,
+      "message_content_chars": [
+        3838,
+        2914,
+        16350,
+        2823
+      ],
+      "output_tokens": 3991,
+      "reasoning_chars": 11725,
+      "request_metrics": {
+        "input_token_ceiling": 45056,
+        "message_count": 4,
+        "messages_by_role": {
+          "assistant": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "system": {
+            "content_chars": 3838,
+            "count": 1,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "tool": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "user": {
+            "content_chars": 22087,
+            "count": 3,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          }
+        },
+        "output_token_cap": 32768,
+        "schema_version": "1.0",
+        "structured_output": false,
+        "tool_count": 1,
+        "wire_bytes": 44889
+      },
+      "request_sha256": "2c225510fc04a23043bb681c3cfd1fd8e4f9a98b639ac6d4ec6e657751c6c547",
+      "request_timeout_s": 300,
+      "role": "review",
+      "source_file_sha256": {
+        "progress.json": "740cea6560a79af35aa30e8ba479270b73290d0adcf96e9a96ab5c538efaba14",
+        "reservation.json": "ed479cca4aa11cc99031cd11462377139df5398a9b312a61a15ec65dc6f550e1",
+        "result.json": "6a01eefccd9c5031004bdf4d84fca9d40ecf21e3ac85d719365a4e7946a0a8c3"
+      },
+      "stage": "final",
+      "state": "complete",
+      "tool_delta_count": 42
+    },
+    {
+      "elapsed_ms": 52985,
+      "first_event_ms": 7641,
+      "first_tool_ms": 45891,
+      "http_requests": 1,
+      "input_tokens": 12949,
+      "key": "scope-3",
+      "last_event_ms": 52579,
+      "message_content_chars": [
+        3838,
+        2822,
+        16350,
+        2823
+      ],
+      "output_tokens": 2453,
+      "reasoning_chars": 6249,
+      "request_metrics": {
+        "input_token_ceiling": 44908,
+        "message_count": 4,
+        "messages_by_role": {
+          "assistant": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "system": {
+            "content_chars": 3838,
+            "count": 1,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "tool": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "user": {
+            "content_chars": 21995,
+            "count": 3,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          }
+        },
+        "output_token_cap": 32768,
+        "schema_version": "1.0",
+        "structured_output": false,
+        "tool_count": 1,
+        "wire_bytes": 44727
+      },
+      "request_sha256": "2b4ad1ebfecc28e0a6b0cf361b580884b268b4841b49825ebab003b97473e8f8",
+      "request_timeout_s": 300,
+      "role": "review",
+      "source_file_sha256": {
+        "progress.json": "f8fcfec8bb214fcd9b6d3ca1cceffa47b6e4d0cae95513a0886792ffe4fe4280",
+        "reservation.json": "04adb5de8179fcd289d099bcc3f19290f79764fa4b0eba366a1ace2f073ba161",
+        "result.json": "3212e20434ed794d0f77685edaf19185bf7ffeb58fa3e18e1560765b74a373fa"
+      },
+      "stage": "initial",
+      "state": "complete",
+      "tool_delta_count": 420
+    },
+    {
+      "elapsed_ms": 22532,
+      "first_event_ms": 7875,
+      "first_tool_ms": 13797,
+      "http_requests": 1,
+      "input_tokens": 14362,
+      "key": "scope-3",
+      "last_event_ms": 22282,
+      "message_content_chars": [
+        1117,
+        19554,
+        2823
+      ],
+      "output_tokens": 840,
+      "reasoning_chars": 761,
+      "request_metrics": {
+        "input_token_ceiling": 53902,
+        "message_count": 3,
+        "messages_by_role": {
+          "assistant": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "system": {
+            "content_chars": 1117,
+            "count": 1,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "tool": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "user": {
+            "content_chars": 22377,
+            "count": 2,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          }
+        },
+        "output_token_cap": 32768,
+        "schema_version": "1.0",
+        "structured_output": false,
+        "tool_count": 1,
+        "wire_bytes": 47738
+      },
+      "request_sha256": "417ddce77678c7e04c53ff964168d50f9cd7e6d1b3d2ab1c0dee475596b66c92",
+      "request_timeout_s": 300,
+      "role": "generation",
+      "source_file_sha256": {
+        "progress.json": "80988afb758053ea2475aa3be11a3c89d7e1ddc8aa1fae7ea65a2d4999b1c990",
+        "reservation.json": "f9674e9b3afdb85c40d03260276c54e87d082d668b40d7dc0183cee5c57b041e",
+        "result.json": "01aa1f2c7cebc0f93bb47af6efb75fd4814991702d2c7112a061744b76314baa"
+      },
+      "stage": "revision",
+      "state": "complete",
+      "tool_delta_count": 527
+    },
+    {
+      "elapsed_ms": 300016,
+      "first_event_ms": 7500,
+      "first_tool_ms": null,
+      "http_requests": 1,
+      "input_tokens": null,
+      "key": "scope-3",
+      "last_event_ms": 299094,
+      "message_content_chars": [
+        3838,
+        2917,
+        16350,
+        2823
+      ],
+      "output_tokens": null,
+      "reasoning_chars": 22656,
+      "request_metrics": {
+        "input_token_ceiling": 45100,
+        "message_count": 4,
+        "messages_by_role": {
+          "assistant": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "system": {
+            "content_chars": 3838,
+            "count": 1,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "tool": {
+            "content_chars": 0,
+            "count": 0,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          },
+          "user": {
+            "content_chars": 22090,
+            "count": 3,
+            "reasoning_chars": 0,
+            "tool_calls": 0
+          }
+        },
+        "output_token_cap": 32768,
+        "schema_version": "1.0",
+        "structured_output": false,
+        "tool_count": 1,
+        "wire_bytes": 44950
+      },
+      "request_sha256": "40c96509f48837b8ac9b66310c1b3a1349efcce72bec92646d414e45178d6548",
+      "request_timeout_s": 300,
+      "role": "review",
+      "source_file_sha256": {
+        "progress.json": "e24fe5929605f963ff2731eeea13adef632b1a5cafd583db9f5978909ba3c055",
+        "reservation.json": "07d3f4609cc54a2b87dd21e99ef0e23319c51191ec615d47f97f72800032a110",
+        "result.json": "3685ffc24e5bedbaeb9fe3a1953cd019cc89925148664ecc2caf41a5fce156fa"
+      },
+      "stage": "final",
+      "state": "deadline",
+      "tool_delta_count": 0
+    }
+  ],
+  "right_censored": {
+    "causal_root_established": false,
+    "completion_time_known": false,
+    "key": "scope:3",
+    "predicted_finish_s": null,
+    "stage": "final",
+    "usage_known": false
+  },
+  "seal_sha256": "76e9a70b808ce297d7d57c8f226a26daaa72f1f932de15f0c39467c582575f30",
+  "source_digest_mode": "utf8-source-lf",
+  "source_sha256": {
+    "app/evaluation/document_review_identity.py": "510c023351b1eda484d250b88b23d7afc5ed153949cab0adfdc8e1afced592c9",
+    "app/evaluation/golden_stream_bridge.py": "9cae5009df191f10c94808c8512582128641c3523572e908e148333fd46dd345",
+    "app/runtime/coach_budget.py": "9c2183a069c5dd06ba2f722ff4c9dfacabd8960001e961b35ceb573755460f8f",
+    "app/runtime/coach_contract.py": "6703eef81f8dbc2d9c2e1bf6c001346831aac33190ab681c47c797d4b89271df",
+    "app/workers/review_worker.py": "3f52620f6f12bf08cf0fa0517b066ac591b6d6f4a2211a7c9036314e6afe2bc5",
+    "scripts/audit_document_review_timing.py": "892892c628af3cabffa339bc8c3b6251a267a1dbf04022334f79ca89b65175f3",
+    "scripts/role_development_host_clock.py": "9b9388e63e47d8092f180a1a1f4ac1e82e0f9aa7570df764932741ef22dc6d32",
+    "scripts/run_full15_resumption_candidate.py": "a846c02612a3c1319cc451b2b86c1db0124a574bd5a36ee13b3aa5c5e0e10e46"
+  },
+  "synthetic_probes": [
+    {
+      "completed": false,
+      "elapsed_s": 375.517,
+      "error": "stream_deadline",
+      "evidence": "synthetic_actual_shared_budget",
+      "hypothetical_fresh_s": 450,
+      "issued": [
+        {
+          "max_tokens": 32768,
+          "role": "review",
+          "timeout_s": 300
+        },
+        {
+          "max_tokens": 32768,
+          "role": "revision",
+          "timeout_s": 300
+        },
+        {
+          "max_tokens": 32768,
+          "role": "review",
+          "timeout_s": 300
+        }
+      ],
+      "review_cap_s": 300,
+      "spent_before_s": 0,
+      "stopped": true,
+      "synthetic_calls": 3,
+      "synthetic_known_tokens": 39000,
+      "task_cap_s": 900,
+      "unknown_reserved_tokens": 77868
+    },
+    {
+      "completed": true,
+      "elapsed_s": 525.517,
+      "error": null,
+      "evidence": "synthetic_actual_shared_budget",
+      "hypothetical_fresh_s": 450,
+      "issued": [
+        {
+          "max_tokens": 32768,
+          "role": "review",
+          "timeout_s": 600
+        },
+        {
+          "max_tokens": 32768,
+          "role": "revision",
+          "timeout_s": 300
+        },
+        {
+          "max_tokens": 32768,
+          "role": "review",
+          "timeout_s": 600
+        }
+      ],
+      "review_cap_s": 600,
+      "spent_before_s": 0,
+      "stopped": false,
+      "synthetic_calls": 3,
+      "synthetic_known_tokens": 58500,
+      "task_cap_s": 900,
+      "unknown_reserved_tokens": 0
+    },
+    {
+      "completed": false,
+      "elapsed_s": 900.0,
+      "error": "stream_deadline",
+      "evidence": "synthetic_actual_shared_budget",
+      "hypothetical_fresh_s": 450,
+      "issued": [
+        {
+          "max_tokens": 32768,
+          "role": "review",
+          "timeout_s": 400.0
+        },
+        {
+          "max_tokens": 32768,
+          "role": "revision",
+          "timeout_s": 300
+        },
+        {
+          "max_tokens": 32768,
+          "role": "review",
+          "timeout_s": 324.483
+        }
+      ],
+      "review_cap_s": 600,
+      "spent_before_s": 500,
+      "stopped": true,
+      "synthetic_calls": 3,
+      "synthetic_known_tokens": 39000,
+      "task_cap_s": 900,
+      "unknown_reserved_tokens": 77868
+    },
+    {
+      "completed": false,
+      "elapsed_s": 900,
+      "error": "timeout",
+      "evidence": "synthetic_actual_shared_budget",
+      "hypothetical_fresh_s": 450,
+      "issued": [],
+      "review_cap_s": 600,
+      "spent_before_s": 900,
+      "stopped": true,
+      "synthetic_calls": 0,
+      "synthetic_known_tokens": 0,
+      "task_cap_s": 900,
+      "unknown_reserved_tokens": 0
+    }
+  ]
+}

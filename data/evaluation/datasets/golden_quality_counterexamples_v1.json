@@ -1,0 +1,125 @@
+{
+  "schema_version": "golden-quality-counterexamples-v1",
+  "purpose": "development_only_human_labeled_not_holdout",
+  "source_report_sha256": "aade1720b7b2633cfb7842c175609d102b3504a71207a7ed8f70e86b3ff5fcae",
+  "baseline": {
+    "score": 95,
+    "verdict": "pass",
+    "issues": [],
+    "manual_original_accepted": false
+  },
+  "samples": [
+    {
+      "sample_id": "sample_1",
+      "role": "MIDDLE",
+      "win": true,
+      "included_in_aggregate": true,
+      "cs_per_min": 8.95,
+      "gold_per_min": 482.76,
+      "damage_per_min": 1143.4,
+      "vision_score": 40
+    },
+    {
+      "sample_id": "sample_2",
+      "role": "UTILITY",
+      "win": false,
+      "included_in_aggregate": true,
+      "cs_per_min": 1.34,
+      "gold_per_min": 302.59,
+      "damage_per_min": 538.97,
+      "vision_score": 90
+    },
+    {
+      "sample_id": "sample_3",
+      "role": "MIDDLE",
+      "win": false,
+      "included_in_aggregate": true,
+      "cs_per_min": 9.64,
+      "gold_per_min": 435.77,
+      "damage_per_min": 629.54,
+      "vision_score": 43
+    },
+    {
+      "sample_id": "sample_4",
+      "role": "MIDDLE",
+      "win": false,
+      "included_in_aggregate": true,
+      "cs_per_min": 8.38,
+      "gold_per_min": 429.86,
+      "damage_per_min": 605.5,
+      "vision_score": 25
+    },
+    {
+      "sample_id": "sample_5",
+      "role": "MIDDLE",
+      "win": true,
+      "included_in_aggregate": true,
+      "cs_per_min": 8.66,
+      "gold_per_min": 527.82,
+      "damage_per_min": 1430.11,
+      "vision_score": 27
+    }
+  ],
+  "cases": [
+    {
+      "id": "vision_original",
+      "expected": "reject",
+      "issue_kind": "metric_to_ability",
+      "claim": "视野意识在辅助局（90 分）体现，但这是辅助职责，不能与中单视野混评。"
+    },
+    {
+      "id": "vision_paraphrase",
+      "expected": "reject",
+      "issue_kind": "metric_to_ability",
+      "claim": "辅助这局拿到90视野分，证明他的地图意识很好。"
+    },
+    {
+      "id": "vision_disclaimer",
+      "expected": "reject",
+      "issue_kind": "metric_to_ability",
+      "claim": "单局不代表稳定水平，但90视野分已体现出良好的视野意识。"
+    },
+    {
+      "id": "vision_fact",
+      "expected": "accept",
+      "issue_kind": "none",
+      "claim": "辅助局视野分90；只记录该局结果，不能据此判断视野意识。"
+    },
+    {
+      "id": "vision_question",
+      "expected": "accept",
+      "issue_kind": "none",
+      "claim": "辅助局视野分90，可回看录像检查插眼时机是否帮助队伍获取信息。"
+    },
+    {
+      "id": "mixed_original",
+      "expected": "reject",
+      "issue_kind": "mixed_role_deficit",
+      "claim": "输局发育与输出同时塌陷：输局补刀低2.35/分。"
+    },
+    {
+      "id": "mixed_disclaimer",
+      "expected": "reject",
+      "issue_kind": "mixed_role_deficit",
+      "claim": "输局中路发育明显退步；虽然样本混有辅助且不能判因，但输局整体补刀低2.35/分说明这一点。"
+    },
+    {
+      "id": "mixed_descriptive",
+      "expected": "accept",
+      "issue_kind": "none",
+      "claim": "全样本输局补刀均值较低，但赢局都是中路，输局含辅助，不能据此判断中路发育退步。"
+    },
+    {
+      "id": "same_role_cs",
+      "expected": "accept",
+      "issue_kind": "none",
+      "claim": "仅看中路，输局补刀均值9.01/分，高于赢局8.805/分；这是小样本描述，不证明能力提升。"
+    },
+    {
+      "id": "same_role_damage",
+      "expected": "accept",
+      "issue_kind": "none",
+      "claim": "仅看中路，输局伤害均值617.52/分，低于赢局1286.755/分；可回看参团时机，但不能仅凭差异断定败因。"
+    }
+  ]
+}

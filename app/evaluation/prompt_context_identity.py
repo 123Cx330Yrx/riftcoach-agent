@@ -211,6 +211,7 @@ def build_prompt_context_snapshot_for_cases(
     cases: tuple[DomainCaseInput, ...],
     snapshot_id: str,
     evaluation_contract_version: str = "1.1.0",
+    policy_addendum: str | None = None,
 ) -> PromptContextSnapshot:
     """Build a body-free identity for every actual case in one experiment."""
 
@@ -234,6 +235,7 @@ def build_prompt_context_snapshot_for_cases(
             run_id=case.run_id,
             user_utterance=case.user_utterance,
             focus=case.focus,
+            policy_addendum=policy_addendum,
         )
         for case in cases
     )
@@ -269,6 +271,7 @@ def _build_case_context(
     run_id: str,
     user_utterance: str,
     focus: str,
+    policy_addendum: str | None = None,
 ) -> CaseContextFingerprint:
     decision = DeterministicSkillRouter().route(
         RouterRequest(
@@ -300,7 +303,10 @@ def _build_case_context(
             input_artifacts=binding,
         )
     )
-    context = ContextBuilderV1().build(execution)
+    context = ContextBuilderV1().build(
+        execution,
+        policy_addendum=policy_addendum,
+    )
     return CaseContextFingerprint(
         case_id=case_id,
         player_summary_sha256=binding.player_summary.sha256,
@@ -414,6 +420,7 @@ def _component_fingerprints(
     skill,
     *,
     evaluation_contract_version: str = "1.0.0",
+    knowledge_retrieval_time: bool = False,
 ) -> tuple[ComponentFingerprint, ...]:
     secure = evaluation_contract_version == "1.1.0"
     contract = (
@@ -457,7 +464,7 @@ def _component_fingerprints(
             "failed_matches": [],
         }
     )
-    tool = build_knowledge_tools(object())[0]
+    tool = build_knowledge_tools(object(), include_retrieval_time=knowledge_retrieval_time)[0]
     knowledge_tool_contract = {
         "name": tool.name,
         "version": tool.version,
@@ -509,7 +516,7 @@ def _component_fingerprints(
         ),
         (
             "knowledge_tool_contract",
-            "app.tools.adapters.knowledge:knowledge.search@2.0.0",
+            f"app.tools.adapters.knowledge:knowledge.search@{tool.version}",
             knowledge_tool_contract,
         ),
         (
@@ -570,6 +577,7 @@ def build_component_fingerprints(
     skill,
     *,
     evaluation_contract_version: str = "1.0.0",
+    knowledge_retrieval_time: bool = False,
 ) -> tuple[ComponentFingerprint, ...]:
     """Return the canonical fingerprints for a loaded Skill's prompt assets.
 
@@ -582,6 +590,7 @@ def build_component_fingerprints(
     return _component_fingerprints(
         skill,
         evaluation_contract_version=evaluation_contract_version,
+        knowledge_retrieval_time=knowledge_retrieval_time,
     )
 
 

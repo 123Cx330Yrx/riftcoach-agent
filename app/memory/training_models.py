@@ -24,6 +24,7 @@ from app.memory.models import (
     RelationshipRole,
     TargetScope,
 )
+from app.memory.training_measurement import MatchMeasurement, METRICS
 
 
 MAX_PLAN_TITLE_LENGTH = 120
@@ -215,6 +216,7 @@ class TrainingProgressValue(CandidateDomainModel):
 
 class TrainingProgressEnvelope(CandidateDomainModel):
     value: dict[str, Any]
+    measurement: MatchMeasurement | None = None
 
 
 class ParsedTrainingProgressWrite(CandidateDomainModel):
@@ -223,6 +225,7 @@ class ParsedTrainingProgressWrite(CandidateDomainModel):
     metric_value: float
     observed_at: datetime
     supersedes_progress_id: UUID | None = None
+    measurement: MatchMeasurement | None = None
 
 
 class TrainingTrendComparison(CandidateDomainModel):
@@ -422,7 +425,15 @@ def parse_training_progress_write(
                 value["observed_at"].replace("Z", "+00:00")
             )
         parsed = TrainingProgressValue.model_validate(value)
-        return ParsedTrainingProgressWrite(**parsed.model_dump(mode="python"))
+        measurement = envelope.measurement
+        if parsed.metric_key in METRICS:
+            if (measurement is None or measurement.observed_at != parsed.observed_at
+                    or parsed.supersedes_progress_id is not None
+                    or parsed.metric_value < 0 or not parsed.metric_value.is_integer()):
+                raise ValueError("per-match measurement evidence is invalid")
+        elif measurement is not None:
+            raise ValueError("legacy metric cannot acquire an inferred sample scope")
+        return ParsedTrainingProgressWrite(**parsed.model_dump(mode="python"), measurement=measurement)
     except (TypeError, ValueError) as exc:
         raise TrainingContractError("training_payload_invalid") from exc
 

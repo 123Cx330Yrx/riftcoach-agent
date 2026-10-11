@@ -7,7 +7,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
+
 from app.evaluation.domain_e2e import load_domain_dataset
+from app.evaluation.coach_report import REVISER_SYSTEM_PROMPT
 from app.evaluation.provider_domain_experiment import DomainCaseExecutionPlan
 from app.evaluation.provider_domain_plan import (
     DomainCaseInput,
@@ -18,6 +21,9 @@ from app.evaluation.provider_domain_plan import (
 )
 from app.evaluation.provider_domain_production import (
     ProductionDomainCaseExecutor,
+)
+from app.evaluation.glm53_flash_candidate_profile import (
+    GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
 )
 from app.providers.capabilities import ProviderCapabilities
 from app.providers.config import DEEPSEEK_MODEL
@@ -189,6 +195,47 @@ class SafeProvider:
 
 
 @dataclass
+class CandidateRecoveryProvider(SafeProvider):
+    provider_name: str = "zhipu"
+    model_name: str = "glm-5.3-flash"
+
+    def chat(self, request: ChatRequest) -> ChatResponse:
+        self.requests.append(request)
+        if request.response_contract is not None:
+            return self._text(
+                json.dumps(
+                    {
+                        "score": 95,
+                        "verdict": "pass",
+                        "issues": [],
+                        "passed_checks": ["facts", "citations", "security"],
+                        "summary": "controlled pass",
+                    },
+                    ensure_ascii=False,
+                )
+            )
+        if any(message.role.value == "tool" for message in request.messages):
+            return self._text(
+                "# RiftCoach 复盘\n\n"
+                "建议优先检查前期生存，知识依据见 [K1]。"
+            )
+        return ChatResponse(
+            content=None,
+            provider=self.provider_name,
+            model=self.model_name,
+            finish_reason="tool_calls",
+            tool_calls=(
+                ToolCall(
+                    id="candidate-recovery-knowledge-1",
+                    name="knowledge.search",
+                    arguments={"query": "复盘", "top_k": 2},
+                ),
+            ),
+            usage=TokenUsage(input_tokens=20, output_tokens=5),
+        )
+
+
+@dataclass
 class InjectionAwareProvider(SafeProvider):
     marker: str = ""
 
@@ -300,6 +347,14 @@ def test_production_executor_runs_real_local_skill_rag_and_harness():
     assert observation.proposed_tool_names == ("knowledge.search",)
     assert observation.successful_tool_names == ("knowledge.search",)
     assert observation.evidence_source_ids
+    assert observation.evidence_diagnostics.search_calls == 1
+    assert observation.evidence_diagnostics.successful_search_calls == 1
+    assert observation.evidence_diagnostics.payloads_with_data == 1
+    assert observation.evidence_diagnostics.chunks_returned >= 1
+    assert observation.evidence_diagnostics.source_count == len(
+        observation.evidence_source_ids
+    )
+    assert observation.evidence_diagnostics.artifact_present is True
     assert observation.fact_check_passed is True
     assert observation.citation_check_passed is True
     assert observation.injection_check_passed is True
@@ -308,6 +363,177 @@ def test_production_executor_runs_real_local_skill_rag_and_harness():
     assert observation.terminal_status == "published"
     assert observation.normalized_response_count == 3
     assert len(provider.requests) == 3
+
+
+def test_quality_hardening_requires_explicit_candidate_policy() -> None:
+    plan = development_multi_tool_input_plan()
+    with tempfile.TemporaryDirectory() as directory:
+        try:
+            ProductionDomainCaseExecutor(
+                project_root=ROOT,
+                input_plan=plan,
+                runs_root=directory,
+                quality_hardening=True,
+            )
+        except ValueError as exc:
+            assert "explicit candidate request policy" in str(exc)
+        else:
+            raise AssertionError("quality hardening must not use a product default")
+
+        executor = ProductionDomainCaseExecutor(
+            project_root=ROOT,
+            input_plan=plan,
+            runs_root=directory,
+            request_policy=GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
+            quality_hardening=True,
+        )
+        assert executor.quality_hardening is True
+        assert executor.retrieval_hardening is False
+
+        with pytest.raises(ValueError, match="candidate quality hardening"):
+            ProductionDomainCaseExecutor(
+                project_root=ROOT,
+                input_plan=plan,
+                runs_root=directory,
+                request_policy=GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
+                retrieval_hardening=True,
+            )
+
+
+def test_candidate_retrieval_hardening_recovers_short_query_through_full_chain() -> None:
+    plan = development_multi_tool_input_plan()
+    provider = CandidateRecoveryProvider()
+    with tempfile.TemporaryDirectory() as directory:
+        observation = ProductionDomainCaseExecutor(
+            project_root=ROOT,
+            input_plan=plan,
+            runs_root=directory,
+            request_policy=GLM53_FLASH_LOW_CANDIDATE_REQUEST_POLICY,
+            quality_hardening=True,
+            retrieval_hardening=True,
+        ).execute(
+            case_id=plan.execution_plan.case_ids[0],
+            provider=provider,
+        )
+
+    assert observation.evidence_source_ids
+    # One model tool call performs two bounded local retrieval attempts.
+    assert observation.evidence_diagnostics.search_calls == 1
+    assert observation.evidence_diagnostics.successful_search_calls == 1
+    assert observation.evidence_diagnostics.query_recovery_attempts == 2
+    assert observation.evidence_diagnostics.query_recovery_recovered is True
+    assert observation.evidence_diagnostics.query_recovery_topic == "review"
+    assert observation.evidence_diagnostics.chunks_returned >= 1
+    assert observation.evidence_diagnostics.source_count == len(
+        observation.evidence_source_ids
+    )
+    assert observation.fact_check_passed is True
+    assert observation.citation_check_passed is True
+    assert observation.injection_check_passed is True
+    assert observation.evaluation_validated is True
+    assert observation.evaluation_score == 95
+    assert observation.terminal_status == "published"
+    assert len(provider.requests) == 3
+
+
+REVISION_REPORT = """# RiftCoach 教练式复盘报告
+
+## 1. 总体结论
+当前两局合成样本只支持谨慎复盘，知识依据见 [K1]。
+
+## 2. 当前表现亮点
+赢局补刀表现较稳定，但样本不足以外推。
+
+## 3. 主要风险点
+输局前期死亡较多，需要回看录像验证。
+
+## 4. 赢局与输局差异
+这里只描述样本差异，不声称存在因果关系。
+
+## 5. 下一步复盘建议
+优先检查前十五分钟的决策节点。
+
+## 6. 训练计划
+用小样本记录前期死亡与补刀节奏。
+
+## 7. 数据边界与知识来源
+玩家数据来自匿名合成 fixture，知识来源见 [K1]。
+"""
+
+
+@dataclass
+class OneRevisionProvider(SafeProvider):
+    second_verdict: str = "pass"
+    evaluation_attempts: int = 0
+
+    def chat(self, request: ChatRequest) -> ChatResponse:
+        self.requests.append(request)
+        if request.response_contract is not None:
+            self.evaluation_attempts += 1
+            if self.evaluation_attempts == 1:
+                payload = {
+                    "score": 70,
+                    "verdict": "needs_revision",
+                    "issues": [
+                        {
+                            "severity": "medium",
+                            "category": "fact_error",
+                            "quote": "controlled",
+                            "evidence": "controlled",
+                            "explanation": "controlled",
+                            "suggested_correction": "controlled",
+                        }
+                    ],
+                    "passed_checks": ["schema"],
+                    "summary": "revision requested",
+                }
+            elif self.second_verdict == "pass":
+                payload = {
+                    "score": 95,
+                    "verdict": "pass",
+                    "issues": [],
+                    "passed_checks": ["facts", "citations", "security"],
+                    "summary": "controlled pass",
+                }
+            else:
+                payload = {
+                    "score": 80,
+                    "verdict": "fail",
+                    "issues": [
+                        {
+                            "severity": "low",
+                            "category": "other",
+                            "quote": "controlled",
+                            "evidence": "controlled",
+                            "explanation": "controlled",
+                            "suggested_correction": "controlled",
+                        }
+                    ],
+                    "passed_checks": ["schema", "citations"],
+                    "summary": "controlled rejection",
+                }
+            return self._text(json.dumps(payload, ensure_ascii=False))
+        if any(
+            message.content == REVISER_SYSTEM_PROMPT
+            for message in request.messages
+        ):
+            return self._text(REVISION_REPORT.replace("较多", "需要核验"))
+        if any(message.role.value == "tool" for message in request.messages):
+            return self._text(REVISION_REPORT)
+        return ChatResponse(
+            content=None,
+            provider=self.provider_name,
+            model=self.model_name,
+            finish_reason="tool_calls",
+            tool_calls=(
+                ToolCall(
+                    id="revision-knowledge-1",
+                    name="knowledge.search",
+                    arguments={"query": "早期死亡", "top_k": 2},
+                ),
+            ),
+            usage=TokenUsage(input_tokens=20, output_tokens=5),
+        )
 
 
 def test_deepseek_multi_tool_development_path_reaches_rag_and_harness():
@@ -483,3 +709,109 @@ def test_production_executor_disables_revision_calls_for_heldout():
     assert len(provider.requests) == 3
     assert observation.terminal_status == "degraded"
     assert observation.terminal_reason == "revision_budget_exhausted"
+
+
+def test_production_executor_exposes_default_closed_revision_budget():
+    plan = development_multi_tool_input_plan()
+    with tempfile.TemporaryDirectory() as directory:
+        executor = ProductionDomainCaseExecutor(
+            project_root=ROOT,
+            input_plan=plan,
+            runs_root=directory,
+        )
+        assert executor.max_revisions == 0
+
+        for invalid in (-1, 4, True, 1.5):
+            try:
+                ProductionDomainCaseExecutor(
+                    project_root=ROOT,
+                    input_plan=plan,
+                    runs_root=directory,
+                    max_revisions=invalid,
+                )
+            except (TypeError, ValueError):
+                pass
+            else:
+                raise AssertionError("invalid revision budget must fail closed")
+
+
+def test_production_executor_can_publish_after_one_bounded_revision():
+    plan = development_multi_tool_input_plan()
+    provider = OneRevisionProvider()
+    with tempfile.TemporaryDirectory() as directory:
+        observation = ProductionDomainCaseExecutor(
+            project_root=ROOT,
+            input_plan=plan,
+            runs_root=directory,
+            max_revisions=1,
+        ).execute(
+            case_id=plan.execution_plan.case_ids[0],
+            provider=provider,
+        )
+
+    assert len(provider.requests) == 5
+    assert observation.normalized_response_count == 5
+    assert observation.revision_count == 1
+    assert observation.terminal_status == "published"
+    assert [row.attempt_id for row in observation.evaluation_diagnostics.attempts] == [
+        0,
+        1,
+    ]
+    first, second = observation.evaluation_diagnostics.attempts
+    assert first.score == 70
+    assert first.verdict == "needs_revision"
+    assert first.passed_check_count == 1
+    assert first.issue_category_counts[0].name == "fact_error"
+    assert first.issue_category_counts[0].count == 1
+    assert first.severity_counts[0].name == "medium"
+    assert second.score == 95
+    assert second.verdict == "pass"
+    assert second.passed_check_count == 3
+    assert second.issue_category_counts == ()
+    assert second.severity_counts == ()
+    assert "controlled" not in observation.evaluation_diagnostics.model_dump_json()
+
+
+def test_production_executor_rejects_when_one_revision_still_fails():
+    plan = development_multi_tool_input_plan()
+    provider = OneRevisionProvider(second_verdict="fail")
+    with tempfile.TemporaryDirectory() as directory:
+        observation = ProductionDomainCaseExecutor(
+            project_root=ROOT,
+            input_plan=plan,
+            runs_root=directory,
+            max_revisions=1,
+        ).execute(
+            case_id=plan.execution_plan.case_ids[0],
+            provider=provider,
+        )
+
+    assert len(provider.requests) == 5
+    assert observation.revision_count == 1
+    assert observation.terminal_status == "degraded"
+    assert observation.terminal_reason == "evaluation_failed"
+    assert [row.score for row in observation.evaluation_diagnostics.attempts] == [
+        70,
+        80,
+    ]
+
+
+def test_prompt_injection_blocks_without_revision_even_when_enabled():
+    dataset = load_domain_dataset(DATASET)
+    plan = load_domain_case_input_plan(PLAN, project_root=ROOT, dataset=dataset)
+    provider = InjectionAwareProvider(marker="USER_INJECTION_ACCEPTED")
+    with tempfile.TemporaryDirectory() as directory:
+        observation = ProductionDomainCaseExecutor(
+            project_root=ROOT,
+            input_plan=plan,
+            runs_root=directory,
+            max_revisions=1,
+        ).execute(
+            case_id="heldout_user_request_instruction",
+            provider=provider,
+        )
+
+    assert len(provider.requests) == 3
+    assert observation.revision_count == 0
+    assert observation.terminal_status == "degraded"
+    assert observation.terminal_reason == "security_policy_blocked"

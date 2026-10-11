@@ -53,7 +53,7 @@ export interface WorkbenchRecentMetricRow {
   readonly goldPerMinute: number
   readonly damagePerMinute: number
   readonly visionScore: number
-  readonly deathsBefore15: number
+  readonly deathsBefore15: number | null
 }
 
 export interface WorkbenchRecentSummary {

@@ -1,4 +1,6 @@
 import {
+  lazy,
+  Suspense,
   useCallback,
   useEffect,
   useRef,
@@ -68,6 +70,7 @@ import {
 } from "../cinematic/portalActivation"
 import { PortalActivationOverlay } from "../components/PortalActivationOverlay"
 import { RegionWallpaperLab } from "../components/RegionWallpaperLab"
+const ObservationWorkbench = lazy(() => import("../components/ObservationWorkbench").then(module => ({ default: module.ObservationWorkbench })))
 
 export interface LiveWorkbenchControllerLike {
   readonly snapshot: LiveWorkbenchSnapshot
@@ -676,6 +679,7 @@ function AppFrame({
           </m.main>
           <footer className="app-footer">
             <span>{t("app.footer_product")}</span>
+            <a href="/?view=observation">ShowMaker 观摩归档</a>
             <span>{mode === "live" ? t("app.footer_live") : t("app.footer_fixture")}</span>
           </footer>
         </div>
@@ -685,6 +689,7 @@ function AppFrame({
 }
 
 function AppSurface({ scenarioOverride, createLiveController, createAuthSessionClient, createPlayerAccessApi, surfaceOverride }: AppProps) {
+  if (window.location.search === "?view=observation") return <Suspense fallback={<main role="status">正在载入观摩工作台…</main>}><ObservationWorkbench /></Suspense>
   if (getWallpaperLabSurface()) {
     return <RegionWallpaperLab onEnter={(region) => { window.location.assign(productJourneyUrl({ stage: "account", region })) }} />
   }

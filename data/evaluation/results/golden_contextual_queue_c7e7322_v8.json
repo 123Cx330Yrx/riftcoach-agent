@@ -1,0 +1,32 @@
+{
+  "experiment": "golden-contextual-bounded-review-v8",
+  "kind": "manual_queue_evidence_projection_not_model_success",
+  "source_run": "contextual-review-c7e7322-paragraph-v7",
+  "raw_hashes": {
+    "response-001.json": "e2217fcea38543d27f000cc81219bda29e66407ae0a74fef8f5c853f4afcd89f",
+    "response-002.json": "75c7a68322727e82a4c4244565dc30e9406e72eb6ba437f84617fb80e3fb8e88",
+    "result.json": "3040eae37ae4dffd51c5d86a01a45385140c1f817a203b6dcf8729a74236472e"
+  },
+  "original_result": {
+    "attempted_calls": 2,
+    "completed_calls": 2,
+    "error_type": "JSONDecodeError",
+    "id": "contextual_01",
+    "input_tokens": 25725,
+    "interrupted": false,
+    "matched": false,
+    "output_tokens": 27912,
+    "reserved_calls": 2,
+    "revision_attempted": false,
+    "stop_reason": "protocol_or_execution_failure",
+    "unknown_usage_calls": 0,
+    "valid": false
+  },
+  "after_suffix_normalization_rejection": "direct_result_number_not_in_evidence",
+  "manual_change": "c010 replace scope request citation with five actual match queue sources and correct explanation",
+  "projection_score": 92,
+  "projection_verdict": "pass",
+  "projection_issues": 0,
+  "provider_calls": 0,
+  "manual_semantic_acceptance": false
+}

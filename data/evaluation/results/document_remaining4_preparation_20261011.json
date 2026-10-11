@@ -1,0 +1,303 @@
+{
+  "kind": "timed-document-resumption-candidate-runner-v1",
+  "run_id": "document-remaining4-time600-20261011",
+  "case_selection": "remaining4",
+  "cells": [
+    {
+      "suite": "observed",
+      "index": 2,
+      "id": "observed_02_future",
+      "expected_initial": "reject",
+      "manifest_sha256": "8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132",
+      "report_sha256": "440ae4b39ff9ea45611c2840afd73867053e42f22648ff6ccf14eb3bc90faa4a",
+      "input_sha256": "9a64c3f3b9302fed8ed1665ce2af2e0e7d9a3f4ecdbfb73c7976064b6ec32da9",
+      "first_input_ceiling": 48538,
+      "key": "observed:2",
+      "candidate_request_sha256": "98967778ad94750bd695157bbfd05d7a383b1043ce41de36261f476cd140b15c"
+    },
+    {
+      "suite": "observed",
+      "index": 3,
+      "id": "observed_03_reader_identity",
+      "expected_initial": "reject",
+      "manifest_sha256": "8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132",
+      "report_sha256": "ba9d63e2100c48fecdcf4c7d46f66ab25cfc2f06d4d254d06c8fb06bebe6049a",
+      "input_sha256": "4ac28ff702fa7dacb2236b7ed46fe0b9170b9943d472fe67a94dcc508fab8211",
+      "first_input_ceiling": 48462,
+      "key": "observed:3",
+      "candidate_request_sha256": "c510d530802d10b83d728f58b111b9511876ee982c63d3d894cfa469d8fc8a95"
+    },
+    {
+      "suite": "observed",
+      "index": 4,
+      "id": "observed_04_official_date",
+      "expected_initial": "reject",
+      "manifest_sha256": "8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132",
+      "report_sha256": "cde1759906f569b64f24b5165161d06ad81526470f2068d821bb152f3890d6ab",
+      "input_sha256": "e6f98d76e70f172e70e26f923017ac4cfba58b486a290221c4db67d1cf04e105",
+      "first_input_ceiling": 48516,
+      "key": "observed:4",
+      "candidate_request_sha256": "19df2379d8ae261350e514285ede035ff9464975fcc7677478e0d33e62214f54"
+    },
+    {
+      "suite": "observed",
+      "index": 5,
+      "id": "observed_05_heading_ability",
+      "expected_initial": "reject",
+      "manifest_sha256": "8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132",
+      "report_sha256": "9cb31bbcc0f66b5e0c71244381afc63a0b5d65d6b8abea89492f1d5978034c2d",
+      "input_sha256": "58c6a9c6348d890024d6dce56d35bfeeba3b7af8dde1233a355912d4a0c5b72c",
+      "first_input_ceiling": 48506,
+      "key": "observed:5",
+      "candidate_request_sha256": "9fa7369b6e69b03e096da1e40a8470737bdea21cfb351aba331016be4bf6bce6"
+    }
+  ],
+  "sequence": [
+    "observed:2",
+    "observed:3",
+    "observed:4",
+    "observed:5"
+  ],
+  "source_sha256": {
+    "app/evaluation/review_bound_editor.py": "4472efe6028c4aaa85971467581cff226c6551308ca2ec46278700acfbf1a987",
+    "app/evaluation/coarse_revision_editor.py": "5ac4d9a1e2de418ffc5665ee251240e7da63384d2444938bf50f59a18b2bbbef",
+    "app/evaluation/source_patch_editor.py": "2d1795029bb4e4473acd6695368523fa01cb7516ac91d0d8675487a4e0366f92",
+    "app/evaluation/document_review_identity.py": "868a9c3e2d3b66fb551f9ff3630acbe3c3e7d3745432e749a973fe880ca58e6f",
+    "app/evaluation/golden_review_experiment.py": "0a0d14648fc0680811e89ce23b7b93757fb57ecc185dbc88825d8df59d058941",
+    "app/evaluation/golden_inference_coverage.py": "3d706c6960fd531d324d0e318697325a2d8b855554ca42c07c2e25864c5d7eb1",
+    "app/evaluation/golden_inference_scope_v5.py": "fab338f280c9b7fc530bd470b8ae6c7766afaa42484138b27687e2c36a17254a",
+    "app/providers/models.py": "7e857069cb9f4d1d3d3efa584a915a40ed36a42ad04a2b4a977e0796ec3e10ec",
+    "app/evaluation/coach_report.py": "4925e1734f14da84edeebf0f4637ad362d707d01f98b8115630e10ec4689b25e",
+    "app/report_validation.py": "6df082d3c6383febe875e6890b2380c8b87e6758347e3a1eaa66e78f198746fb",
+    "app/evaluation/document_review_qualification.py": "480857cb8d5788154d90b7807d7a399e0866359e4d6236c7a51b9a9456149680",
+    "app/runtime/document_review_roles.py": "0ee99fded510364e733293bc74ca57dee43e3602fdd192e6cf60a5a5275f0dbb",
+    "app/runtime/document_review_provider_factory.py": "d2d7debb74b488c72171e166172696ec65a242b58a7eed14a5cced6f81e60c50",
+    "app/runtime/reviewer_roles.py": "ead525a5dce6d02e6c4533b2812ef37719fe5739ab1c0bce8c751a75918c569c",
+    "app/runtime/receipted_provider_factory.py": "326bb08b313d9097c9c8d5d40a0c2875d8ebbee7bf429621c168e44c30ae045b",
+    "app/runtime/coach_contract.py": "9bb09bcd61b7865c980edb0015c35e1c0dc86c2346853c7f64f377d42c2c4763",
+    "app/runtime/coach_budget.py": "ef5511668aab64a78bc423d912ed86f0e5f7be67a782737d31229655866b9614",
+    "scripts/report_document_view.py": "8ff37e3ec5ab8131ac4bc8f4334ad2f022689b4308041ead5cf36bb138338cee",
+    "scripts/report_document_workflow.py": "e69f60dc5a3c99e2a08eeee074933e4e2804dfe8027cd4354e10e3abd68578d8",
+    "scripts/run_document_review_qualification.py": "7024501656119848e716ad1e54f717a7ce35a5e10d92d1c841f34ee7a857f54a",
+    "scripts/role_stage_review_drafts.py": "6243c953e685d84581407f0cc1a30204675102d02b8e04f28f6323c06c72034b",
+    "scripts/role_continuation.py": "c24cb6367b546b152b7b8273c1eb4af5ec7f919655163db7d5b506e5fdf717aa",
+    "scripts/report_block_keyed_editor.py": "57852ee42c79a6a759093836cb331b25b0352b64dd3d0ac0c2605bcd514a0272",
+    "scripts/report_contrast_review.py": "200e2a79baf297181954b2836d309ffc516978fe8507b504de3055669c78bead",
+    "scripts/prepare_full15_resumption_candidate.py": "ab5b35242073eddbae70bc1ab8a908cfe8d778dae1608d48102bcb48c877fd70",
+    "scripts/run_full15_resumption_candidate.py": "2503428e9053f8030b4cac063f4b4d1e202f2451af06bdae1d00c176ab92c49b",
+    "scripts/full15_resumption_evidence.py": "c9033d7afa93f05a33414934f724522c230ec7db3c37b8b55fa5cbf5bf809d73",
+    "scripts/host_review_task_checkpoint.py": "ea4842d3872faa370fa83ffefb568c88cddf5296e10c615ee8eca5a813023cb5",
+    "scripts/document_review_host_task.py": "1aef20b5464816c2dce91217d6bd0fa7feb2f8f1fce0c2148f5f31e79de57726",
+    "scripts/review_independence_contract.py": "d3d2673618a4536552d5652db2343a0b61a2095a79629d082f79f9bcee7f481f",
+    "scripts/codex_review_event_source.py": "548d60dd98863df59d36b6648e6cb9952a82541ab1269faa572eb1bb606fdde0",
+    "scripts/export_partitioned_review.py": "4365435596ac3c5c513cab899f0d3010d0e9ed3ba8705eebbf38c1155977dabc",
+    "scripts/role_development_host_clock.py": "9b9388e63e47d8092f180a1a1f4ac1e82e0f9aa7570df764932741ef22dc6d32",
+    "scripts/run_scope_resolution_diagnostic.py": "8754ee112938921e557121c676eead7bf3f75ad9d7b0e54d4f77f100272850a4",
+    "scripts/run_boundary_examples_v2.py": "7910a7d757c8cdd7d093f5f6f1c91edcc1bdbaeb24744b08167eb1afb3a5f1e9",
+    "scripts/run_role_coach_development.py": "4a544dca6b35b0c1deb97524cb5ed79549138db5a53b7010c6fe831e05e45516",
+    "scripts/run_golden_inference_development.py": "62a3c7f811fbe31ff166aeca450b8d4b91e9c970060d82fb9668a866195c6be3",
+    "app/evaluation/role_qualification.py": "c7083c7b018fac500c38ccb5f26e82e743885f0235f69e1725c20219488aad22",
+    "app/runtime/runtime.py": "be2999404b5275afd5110db02ff6ac6da9e3e673223a43188cc02d850233da2c",
+    "app/runtime/review_sender.py": "5148f82b0df38a7b982fff47153f6ea266c7851d61e3b53f1bb1f6f4d42cea56",
+    "app/evaluation/document_review_timing_adapter.py": "c1da437c24d9af39dfa6e5437a0049238234a0f4f4a450a92db961b1007452b0",
+    "app/evaluation/document_review_timed_transport.py": "792e01138824547399da7dc9173be85e44634db19a69d36e576cc1e2c0d00867",
+    "scripts/report_timed_document_workflow.py": "9987fbf500bb4091aac071c35d8ec6c25c5ad3aede665c1540ab65094baf7989",
+    "app/evaluation/golden_stream_bridge.py": "9648b2d90b10706a67f470957f87b74199c25e381429f57b3f0755aba413012b",
+    "app/model_runtime.py": "fc397c3b2d079eee14acca255ec6afe3e0a17313878d5c9098dbb86d6d45bd55",
+    "app/providers/zhipu_stream_adapter.py": "6c5c597fce6ee5ab53249ba2d87c88150954c1405adb9ce35df6e302aa92e73f",
+    "scripts/document_remaining8_adapter.py": "a332556027e5e75484e59193fcb070ab3339a8b0b0c5b3c16869507fb0c11e0d",
+    "scripts/document_remaining4_adapter.py": "274099121e3c3b448337c3863f9ce1dde4cf19f8883656e1b76dee477d8a2ffe"
+  },
+  "candidate_policy": "offline-whole-text-contrast-review-v1",
+  "candidate_editor": "offline-block-keyed-editor-v1",
+  "host_review_submission_mode": "independent-drafts-v2",
+  "host_review_evidence_policy": "native-final-attestation-v1",
+  "max_host_seconds": 86400,
+  "budget": {
+    "max_calls": 12,
+    "role_calls": {
+      "glm-5.3": 8,
+      "glm-5.3-flash": 4
+    },
+    "max_tokens": 1161216,
+    "max_active_seconds": 3600,
+    "max_host_seconds": 86400,
+    "per_request_output": 32768,
+    "per_request_seconds": {
+      "review": 600,
+      "generation": 300,
+      "revision": 300
+    },
+    "estimated_uncached_cny": "12.0078336",
+    "hard_billing_cap": false
+  },
+  "sdk_retries": 0,
+  "execution_authorized": false,
+  "paid_plan_frozen": false,
+  "product_admitted": false,
+  "original15_qualified": false,
+  "new_qualification": 0,
+  "historical_reviews_reused": false,
+  "acceptance": "Real full-source native primary and independent review for every completed stage. Initial assesses the opinion with report_assessment=null; accepted revision/final stages require four true ReportAssessment flags; fresh requires pass>=85 without material false or missed findings.",
+  "semantic_failure_rule": "A semantic rejection ends that case dependency and the next independent case may continue. Identity/source/native/checkpoint/protocol/transport/budget/availability failure stops the batch.",
+  "stop_rule": "No retry, reassessment, restart, old-review reuse, or qualification credit.",
+  "limitations": [
+    "Candidate policy and keyed editor are unproven teaching hypotheses.",
+    "Preparation and local tests are not model or product evidence."
+  ],
+  "request_timing_identity": "document-review-request-identity-time600-v1",
+  "timing_mode": "time600",
+  "timed_contract": {
+    "contract_id": "recent-form-review-roles-v1",
+    "version": "1.5.6",
+    "scope": "unadmitted_opt_in",
+    "target_runtime_profile_id": "flash-generation-glm53-review-high-v1",
+    "target_runtime_profile_version": "1.0.0",
+    "skill_version": "0.6.2",
+    "program_version": "3.4.0",
+    "request_policy_id": "document-review-time600-per-role-v1",
+    "request_policy_version": "1.0.0",
+    "request_policy": {
+      "generation": {
+        "evaluation_policy_id": "glm-5.3-flash-coach-high-32768",
+        "evaluation_policy_version": "1.0.0",
+        "evaluation_scope": "candidate-only",
+        "evaluation_transport_timeout_s": 360.0,
+        "deterministic_fallback_allowed": false
+      },
+      "revision": {
+        "evaluation_policy_id": "glm-5.3-flash-coach-high-32768",
+        "evaluation_policy_version": "1.0.0",
+        "evaluation_scope": "candidate-only",
+        "evaluation_transport_timeout_s": 360.0,
+        "deterministic_fallback_allowed": false
+      },
+      "review": {
+        "evaluation_policy_id": "glm-5.3-review-time600-high-32768",
+        "evaluation_policy_version": "1.0.0",
+        "evaluation_scope": "candidate-only",
+        "evaluation_transport_timeout_s": 660.0,
+        "deterministic_fallback_allowed": false
+      }
+    },
+    "report_contract_id": "coach-markdown-generation-revision-v2",
+    "retrieval_policy_id": "coaching-query-recovery-v1",
+    "context_policy_sha256": "d059bfb9b0a5a2e050ffcd4511fb9228ed130864ea331034e395111ffa3225ae",
+    "minimum_evidence_sources": 1,
+    "minimum_score": 85,
+    "max_revisions": 1,
+    "max_calls": 5,
+    "max_input_tokens": 64000,
+    "max_output_tokens": 32768,
+    "total_tokens": 401920,
+    "request_timeout_s": 600,
+    "agent_timeout_s": 330,
+    "execution_timeout_s": 900,
+    "extra_retries": 0,
+    "allow_deterministic_fallback": false,
+    "evaluation_contract_version": "3.8.0",
+    "missing_citation_policy": "existing-single-revision",
+    "evaluation_repair_policy": "one-full-native-reassessment-with-original-response",
+    "reasoning_effort": "high",
+    "max_tool_calls": 8,
+    "max_context_tokens": 28000,
+    "include_deterministic_source_facts": true,
+    "position_policy_id": "golden-position-intent-v1",
+    "include_generation_facts": true,
+    "source_use_policy_id": "golden-source-advice-v1",
+    "compact_report_policy_id": "golden-concise-evidence-report-v1",
+    "inference_policy_id": "golden-role-boundary-examples-workflow-v1",
+    "anchor_repair_policy": "shared-single-structured-repair",
+    "stream_transport_id": "per-role-explicit",
+    "model": "flash-generation-glm53-review-v1",
+    "thinking_profile_id": "flash-generation-glm53-review-high-v1",
+    "roles": {
+      "generation": {
+        "provider": "zhipu",
+        "model": "glm-5.3-flash",
+        "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+        "request_extra_body": {
+          "thinking": {
+            "type": "enabled",
+            "clear_thinking": false
+          },
+          "reasoning_effort": "high"
+        },
+        "transport_id": "golden-flash-time600-pair-high-32768-v1",
+        "sdk_max_retries": 0,
+        "request_timeout_s": 300
+      },
+      "revision": {
+        "provider": "zhipu",
+        "model": "glm-5.3-flash",
+        "thinking_profile_id": "glm-5.3-flash-candidate-enabled-high-replay",
+        "request_extra_body": {
+          "thinking": {
+            "type": "enabled",
+            "clear_thinking": false
+          },
+          "reasoning_effort": "high"
+        },
+        "transport_id": "golden-flash-time600-pair-high-32768-v1",
+        "sdk_max_retries": 0,
+        "request_timeout_s": 300
+      },
+      "review": {
+        "provider": "zhipu",
+        "model": "glm-5.3",
+        "thinking_profile_id": "glm-5.3-review-diagnostic-high-replay",
+        "request_extra_body": {
+          "thinking": {
+            "type": "enabled",
+            "clear_thinking": false
+          },
+          "reasoning_effort": "high"
+        },
+        "transport_id": "golden-glm53-review-time600-high-32768-v1",
+        "sdk_max_retries": 0,
+        "request_timeout_s": 600
+      }
+    },
+    "source_projection": "native-coarse-source-projection-v1",
+    "report_presentation": "offline-report-document-view-v1",
+    "qualification_only": true,
+    "request_timing_identity": "document-review-request-identity-time600-v1",
+    "base_contract_version": "1.5.6",
+    "execution_ready": false
+  },
+  "per_case_budget": {
+    "max_calls": 5,
+    "max_tokens": 401920,
+    "max_active_seconds": 900
+  },
+  "execution_ready": false,
+  "natural_generation_included": false,
+  "root_thread_id": "01a1261f-94b1-7510-8d72-fd5514789015",
+  "review_event_provider": "codex-collaboration-host-v1",
+  "review_principals": {
+    "primary": {
+      "principal_id": "01a1261f-94b1-7510-8d72-fd5514789015"
+    },
+    "independent": {
+      "principal_id": "01a1263f-db97-7e02-bd7e-70b3a11b59ce"
+    }
+  },
+  "previous_closed_seal": "data/evaluation/results/golden_document_remaining8_time600_result_20261011.json",
+  "previous_closed_seal_sha256": "75c8c04dbb6f045de4e24993cae0fa28d192f510fb6726bf68ca99f494ec2bf8",
+  "previous_run_not_restarted": true,
+  "previously_sent_cases_excluded": true,
+  "previous_unreviewed_cases": [
+    {
+      "key": "claim-scope:2",
+      "repeated": false,
+      "credit": 0
+    },
+    {
+      "key": "observed:1",
+      "repeated": false,
+      "credit": 0
+    }
+  ],
+  "success_scope": "Four never-sent cases only; no combined original15 qualification.",
+  "recovery_dispatch_policy": "One NEW_TASK per native turn. Recover the same checkpoint with MESSAGE only; never followup_task an active/interrupted turn."
+}

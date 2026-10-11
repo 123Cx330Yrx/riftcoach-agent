@@ -21,6 +21,7 @@ from app.runtime.models import RuntimeStatus, RuntimeTraceReference
 from app.runtime.store import RuntimeTraceStore
 from app.tasks.models import (
     ReviewTask,
+    TaskPublicationMode,
     TaskPublicationStatus,
     TaskStatus,
     TaskTerminal,
@@ -110,6 +111,66 @@ class TerminalEvidenceVerifier(Protocol):
     def terminal_for(self, task: ReviewTask) -> TaskTerminal: ...
 
 
+class EvidenceBoundTaskTerminal(TaskTerminal):
+    """Verified files-ready payload for the existing atomic task commit."""
+
+    # Importing the concrete evidence models at module scope would create a
+    # tasks/evidence import cycle. The reader and repository validate the type.
+    pending_snapshot: object
+    publication_reference: dict[str, object]
+    summary_digest: str
+
+
+def read_evidence_bound_terminal(
+    task: ReviewTask,
+    terminal: TaskTerminal,
+    runs_root: str | Path,
+) -> EvidenceBoundTaskTerminal:
+    """Rebuild execution/recovery metadata from the same verified sidecars."""
+    try:
+        from app.evidence.publication import EvidencePublicationContext
+        from app.evidence.publication_store import FileEvidencePublicationStore
+        from app.evidence.storage import PendingEvidenceBundleSnapshot
+
+        if (
+            task.publication_mode is not TaskPublicationMode.EVIDENCE_BOUND_V1
+            or terminal.run_id != task.run_id
+        ):
+            raise ValueError("publication task identity mismatch")
+        context = EvidencePublicationContext(
+            owner_id=task.owner_id,
+            task_id=task.task_id,
+            run_id=task.run_id,
+            request_fingerprint=task.request_fingerprint,
+        )
+        store = FileEvidencePublicationStore(runs_root)
+        manifest = store.read(context)
+        pending = store.read_pending_snapshot(context)
+        if (
+            not isinstance(pending, PendingEvidenceBundleSnapshot)
+            or pending.owner_id != task.owner_id
+            or pending.task_id != task.task_id
+            or pending.run_id != task.run_id
+            or not pending.bundle.has_valid_digest()
+            or pending.bundle.digest != manifest.bundle.bundle_digest
+            or manifest.receipt != terminal.receipt_reference
+            or manifest.trace != terminal.trace_reference
+            or manifest.report != terminal.artifact_reference
+        ):
+            raise ValueError("publication dependencies changed")
+        return EvidenceBoundTaskTerminal(
+            **terminal.model_dump(mode="python", include=set(TaskTerminal.model_fields)),
+            pending_snapshot=pending,
+            publication_reference={
+                "context": context.model_dump(mode="json"),
+                "summary_digest": manifest.summary_digest,
+            },
+            summary_digest=manifest.summary_digest,
+        )
+    except Exception:
+        raise TaskTerminalEvidenceError("terminal_evidence_invalid") from None
+
+
 class RecentReviewTerminalEvidenceVerifier:
     """Rebuild a succeeded TaskTerminal from fully verified file evidence."""
 
@@ -190,7 +251,7 @@ class RecentReviewTerminalEvidenceVerifier:
             raise TaskTerminalEvidenceError("terminal_evidence_invalid")
 
         publication = TaskPublicationStatus(receipt.publication_status.value)
-        return TaskTerminal(
+        terminal = TaskTerminal(
             run_id=task.run_id,
             terminal_reason=receipt.terminal_reason,
             publication_status=publication,
@@ -205,6 +266,9 @@ class RecentReviewTerminalEvidenceVerifier:
                 final_references[0] if final_references else None
             ),
         )
+        if task.publication_mode is TaskPublicationMode.EVIDENCE_BOUND_V1:
+            return read_evidence_bound_terminal(task, terminal, self._runs_root)
+        return terminal
 
 
 class ReviewTaskReconciler:
@@ -267,14 +331,42 @@ class ReviewTaskReconciler:
             )
 
         try:
-            accepted = self._repository.reconcile_expired_success(
-                task_id=task.task_id,
-                worker_id=task.worker_id,
-                lease_generation=task.lease.generation,
-                lease_token=task.lease.private_token,
-                now=normalized_now,
-                terminal=terminal,
-            )
+            if task.publication_mode is TaskPublicationMode.EVIDENCE_BOUND_V1:
+                commit = getattr(
+                    self._repository, "reconcile_expired_success_with_evidence", None
+                )
+                pending_snapshot = getattr(terminal, "pending_snapshot", None)
+                publication_reference = getattr(terminal, "publication_reference", None)
+                summary_digest = getattr(terminal, "summary_digest", None)
+                if (
+                    not callable(commit)
+                    or pending_snapshot is None
+                    or not isinstance(publication_reference, dict)
+                    or not isinstance(summary_digest, str)
+                ):
+                    raise TaskReconciliationError("task_terminal_update_failed")
+                accepted = commit(
+                    task_id=task.task_id,
+                    worker_id=task.worker_id,
+                    lease_generation=task.lease.generation,
+                    lease_token=task.lease.private_token,
+                    now=normalized_now,
+                    terminal=terminal,
+                    pending_snapshot=pending_snapshot,
+                    publication_reference=publication_reference,
+                    summary_digest=summary_digest,
+                )
+            else:
+                accepted = self._repository.reconcile_expired_success(
+                    task_id=task.task_id,
+                    worker_id=task.worker_id,
+                    lease_generation=task.lease.generation,
+                    lease_token=task.lease.private_token,
+                    now=normalized_now,
+                    terminal=terminal,
+                )
+        except TaskReconciliationError:
+            raise
         except Exception:
             raise TaskReconciliationError(
                 "task_terminal_update_failed"
@@ -391,11 +483,38 @@ class ExpiredReviewTaskRecovery:
             if terminal.run_id != task.run_id:
                 evidence_failure = "terminal_evidence_invalid"
             else:
-                accepted = self._mutate(
-                    self._repository.reconcile_expired_success,
-                    terminal=terminal,
-                    **lease_arguments,
-                )
+                if task.publication_mode is TaskPublicationMode.EVIDENCE_BOUND_V1:
+                    commit = getattr(
+                        self._repository,
+                        "reconcile_expired_success_with_evidence",
+                        None,
+                    )
+                    pending_snapshot = getattr(terminal, "pending_snapshot", None)
+                    publication_reference = getattr(
+                        terminal, "publication_reference", None
+                    )
+                    summary_digest = getattr(terminal, "summary_digest", None)
+                    if (
+                        not callable(commit)
+                        or pending_snapshot is None
+                        or not isinstance(publication_reference, dict)
+                        or not isinstance(summary_digest, str)
+                    ):
+                        raise TaskReconciliationError("recovery_update_failed")
+                    accepted = self._mutate(
+                        commit,
+                        terminal=terminal,
+                        pending_snapshot=pending_snapshot,
+                        publication_reference=publication_reference,
+                        summary_digest=summary_digest,
+                        **lease_arguments,
+                    )
+                else:
+                    accepted = self._mutate(
+                        self._repository.reconcile_expired_success,
+                        terminal=terminal,
+                        **lease_arguments,
+                    )
                 return self._accepted_result(
                     task,
                     accepted=accepted,
@@ -569,6 +688,7 @@ def _as_utc(value: datetime) -> datetime:
 
 
 __all__ = [
+    "EvidenceBoundTaskTerminal",
     "ExpiredReviewTaskRecovery",
     "ManualRecoveryResult",
     "ManualRecoveryStatus",
@@ -583,4 +703,5 @@ __all__ = [
     "TaskRecoveryResult",
     "TaskRecoveryStatus",
     "TerminalEvidenceVerifier",
+    "read_evidence_bound_terminal",
 ]

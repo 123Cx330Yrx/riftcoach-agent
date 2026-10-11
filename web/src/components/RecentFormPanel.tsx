@@ -93,7 +93,9 @@ export function RecentFormPanel({ summary }: { readonly summary: WorkbenchRecent
         <div className="outcome-comparison__facts">
           <span>{t("recent.gold_wins", { value: formatNumber(summary.winLossComparison.wins.goldPerMinute) })}</span>
           <span>{t("recent.gold_losses", { value: formatNumber(summary.winLossComparison.losses.goldPerMinute) })}</span>
-          <span>{t("recent.early_deaths_wins", { value: decimal(summary.winLossComparison.wins.deathsBefore15) })}</span>
+          <span>{summary.winLossComparison.wins.deathsBefore15 === null
+            ? t("recent.early_deaths_unavailable")
+            : t("recent.early_deaths_wins", { value: decimal(summary.winLossComparison.wins.deathsBefore15) })}</span>
         </div>
       </div>
     </section>

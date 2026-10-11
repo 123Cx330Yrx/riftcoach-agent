@@ -1,0 +1,142 @@
+{
+  "implementation_sha": "0140531e88bed909fc79971585a34bd54ecd0e1f",
+  "ci_run": 35419119267,
+  "case": "observed_01",
+  "result": {
+    "attempted_calls": 1,
+    "automatic_path_pass": true,
+    "completed_calls": 1,
+    "expected_report": "accept",
+    "final_score": 96,
+    "final_verdict": "pass",
+    "id": "observed_01",
+    "initial_control": {
+      "expected_report": "accept",
+      "id": "observed_01",
+      "matched": true,
+      "score": 96,
+      "semantic_approval": false,
+      "suggested_category_matched": false,
+      "target_location_flagged": false,
+      "valid": true,
+      "verdict": "pass"
+    },
+    "input_tokens": 11976,
+    "manual_semantic_acceptance": false,
+    "matched": true,
+    "output_tokens": 5813,
+    "reserved_calls": 1,
+    "revision_attempted": false,
+    "score": 96,
+    "semantic_approval": false,
+    "suggested_category_matched": false,
+    "target_location_flagged": false,
+    "unknown_usage_calls": 0,
+    "valid": true,
+    "verdict": "pass"
+  },
+  "receipt": {
+    "cases": [
+      {
+        "attempted_calls": 1,
+        "automatic_path_pass": true,
+        "completed_calls": 1,
+        "expected_report": "accept",
+        "final_score": 96,
+        "final_verdict": "pass",
+        "id": "observed_01",
+        "initial_control": {
+          "expected_report": "accept",
+          "id": "observed_01",
+          "matched": true,
+          "score": 96,
+          "semantic_approval": false,
+          "suggested_category_matched": false,
+          "target_location_flagged": false,
+          "valid": true,
+          "verdict": "pass"
+        },
+        "input_tokens": 11976,
+        "manual_semantic_acceptance": false,
+        "matched": true,
+        "output_tokens": 5813,
+        "reserved_calls": 1,
+        "revision_attempted": false,
+        "score": 96,
+        "semantic_approval": false,
+        "suggested_category_matched": false,
+        "target_location_flagged": false,
+        "unknown_usage_calls": 0,
+        "valid": true,
+        "verdict": "pass"
+      }
+    ],
+    "ci_run": "35419119267",
+    "completed_calls": 1,
+    "experiment_id": "golden-native-business-review-v2",
+    "first_input_ceiling": 46280,
+    "head_sha": "0140531e88bed909fc79971585a34bd54ecd0e1f",
+    "input_sha256": "8d1fd90da314457c5981068dc1be765870a27f0ccb45fa1a6b3ed28dc1ebf954",
+    "input_tokens": 11976,
+    "labels_sent_to_model": false,
+    "live_block_reason": null,
+    "live_status": "bounded_development_after_exact_ci",
+    "manifest_sha256": "8ca4a39f18bb1dca872f9cf1f72cfaba3c92cddb63f36743d59eed7f26bdb132",
+    "manual_between_cases": true,
+    "manual_semantic_acceptance": false,
+    "max_calls_per_report": 5,
+    "max_output_per_call": 32768,
+    "max_revisions_per_report": 1,
+    "max_seconds_per_call": 300,
+    "max_seconds_per_report": 900,
+    "max_tokens_per_report": 401920,
+    "output_tokens": 5813,
+    "production_admitted": false,
+    "reasoning_effort": "high",
+    "report_sha256": "f6a6c508d2ad86763d01c59edc74a5885ca59867d5a5bfc336072434132a655a",
+    "reserved_calls": 1,
+    "sdk_retries": 0,
+    "selected_cases": [
+      "observed_01"
+    ],
+    "semantic_approval": false,
+    "source_scope": "complete_observed_report_analyst_development_control_not_holdout",
+    "unknown_usage_calls": 0
+  },
+  "calls": 1,
+  "known_tokens": 17789,
+  "unknown_usage_calls": 0,
+  "cumulative_provider_requests_at_least": 221,
+  "elapsed_ms": 50032,
+  "complete_explanations_read": true,
+  "semantic_approval": false,
+  "production_admitted": false,
+  "batch_stopped": true,
+  "negative_attempted": false,
+  "recovery_path_exercised": false,
+  "observations": [
+    {
+      "block": 18,
+      "reported_ref": "external:opgg:00:00",
+      "actual_value": "Locke T2 rank10",
+      "claimed_values": "Syndra T2 rank12 and Vex T2 rank14",
+      "correct_refs": [
+        "external:opgg:00:01",
+        "external:opgg:00:02"
+      ]
+    },
+    {
+      "formatting": "Original raw ends in two backticks; existing pre-v2 formatting-only normalization accepts this. No reassessment used. Raw preserved."
+    }
+  ],
+  "diagnosis": "Verdict and report numbers are correct, but required restated accepted-block explanations introduce false source attribution. Recovery reachability is not semantic quality. Preserve this failed acceptance; assess necessity of accepted-block narrative output.",
+  "file_sha256": {
+    "data/runs/inference_development/native-review-0140531-positive-v2/plan.json": "b7c4f3f957342487c23446a4cc8b4c5451af32aafb8cfd0aade989ce6830bbb6",
+    "data/runs/inference_development/native-review-0140531-positive-v2/receipt.json": "506a9ee83dc4db130c9588a1a8b9da18e47a8367b6a31abc6719b7aec957ac94",
+    "data/runs/inference_development/native-review-0140531-positive-v2/observed_01/initial-correction-journal.json": "e2c16e7a4063d196803239e98910d5df4f383f7a611fd0f3b5acfbbca3299297",
+    "data/runs/inference_development/native-review-0140531-positive-v2/observed_01/request-001.json": "28482b7cb3f91445f2c9a9f6ca4d7fc6ab642dfb3a19ebf38b799b20833b0e5a",
+    "data/runs/inference_development/native-review-0140531-positive-v2/observed_01/response-001.json": "bc898a832d07777e1fa4300052476cded1f1880e1e8450b04fabf40cab3784d7",
+    "data/runs/inference_development/native-review-0140531-positive-v2/observed_01/result.json": "e4c9ff7aab078ac8ae3b954b9ec764e39e6bad49d60e82d4d54b345ed904ba0e",
+    "data/runs/inference_development/native-review-0140531-positive-v2/observed_01/streams/stream-001/result.json": "36e1ecca75dc1649ffd630936062dc8e03c7a2bfc1c05e021df3945486a9f34e"
+  }
+}
