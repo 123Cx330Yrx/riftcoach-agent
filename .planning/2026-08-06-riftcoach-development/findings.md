@@ -1,3 +1,11 @@
+## 2026-10-11 全文教学对照的反证与采样边界
+
+- 三组织在同一正确泛指稿都新增早死/全称误报，否定三者作为共同修复的充分性，不证明提示负担、采样或中转内部根因。10/4/1只评实际审查意见，needs_revision可被Host接受，pass仍须四真门，不把分数当标签。
+- sample1 expanded/short解释“只有补刀/经济/伤害下降”漏KDA等下降，expanded保留真实分歧。sample3 decision实际修法同时补全样本2.5/2.67及中单2.5/0.5和限制，不能机械要求摘要另改；sample5标题能力证明必须修，正文免责声明不能撤销。合法引用下路径简写内容准确，不升级事实门。
+- public seal按键排序会丢JSON对象插入顺序。新免费脚本最初直接反序列化issued-request得到结构相等但原字节SHA不等；改用public material中的完整current_input_json、SourceIndex/ReviewInput和实际TimedDocumentWorkflow构造，再强制请求结构与原issued SHA都相等。只修新审计，不改历史合同/原件。
+- 5样本temperature=0.2可在完全本地SDK recorder表达且kwargs仅temperature不同，但现有document identity明确拒绝document_identity_request_contract，不能沿旧身份发送。此证据不是HTTP wire、服务端遵循、语义改善或可采用机制；随后免费整链入口核查实际证明initial/final在委派前拒低温，继承预算还强制1.0；不能只改lab请求。下一隔离原型须核整链一致性，尚未实现。
+- 最早语义偏离与硬执行偏离分开：本轮sample1 expanded分歧，硬偏离0/未执行0。真实15native/306原件/290公开封存；旧原15库存与本轮计数独立，所有资格及下游缺口保持。
+
 ## 2026-10-11 语义对照执行准备的工程反证
 
 准备请求包和Host task builder不是可运行执行器。离线真实子进程已证新marker经过worker/SDK/

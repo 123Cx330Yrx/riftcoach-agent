@@ -1,3 +1,12 @@
+## 2026-10-11 教学对照15项执行完成，三方案均不足共同修复
+
+- 准确计数10项语义接受、4双方拒绝、1Host分歧（纠正运行中9/5/1笔误）。5完整历史请求×3教学仅做initial，不是正式15份报告端到端验收；scope:3正确稿三变体均误报，因此停止同义教学试错。
+- 冻结a9a68049/CI38104135494，唯一runner92020/wrapper89788 UTC04:33:23正常exit0；运行中源码/HEAD冻结，无第二runner/编辑/fresh/重试/补签。15calls/observed_http15、input198834/output71846/known270680、unknown0/receiptless0，估价3.602360元非账单；活动1394.985/Host5230.078秒。
+- 无硬执行偏离/未执行，最早语义偏离sample1 expanded双审分歧。指定0.153.4严格replay核15真实native，create-only290白名单JSON/306原件SHA一致；seal370efc13…1a5d、audit9ae7f5be…9805。原件不改/收尾Provider0/自动任务PAUSED。
+- 免费sampling audit精确复建5份issued请求，温度1.0/0.2本地SDK参数只此差异；全部低温请求被现有身份拒绝。未读凭据/构造网络client，无Provider或质量证据、新资格0。免费整链核查又证initial/final委派前拒低温，继承预算还强制1.0，目前不可达；下一隔离原型核整链一致性，无新付费授权。
+- 独立工程收尾accepted/阻断0，32实查文件SHA与唯一native final读取时一致；公开工程记录b665f537…f653，不重复业务重评。工程dispatch正文加密，明文task SHA不可用如实null；依赖导入的本地IPv6能力探测非Provider调用。治理、编译、两审计重建及Git精确证据字节检查通过。
+- 结果见semantic-comparison-result，取舍见post-comparison-mechanism-decision。原15跨批库存10/3/2与本轮10/4/1分开；历史与旧第7/11缺口不补签、不重买。正式15、自然消费、8E及原产品/学习依赖保留。
+
 ## 2026-10-11 已授权语义对照执行接缝（运行前）
 
 用户承接21.44256元/15次GLM具体方案明确继续，当前未发送Provider。

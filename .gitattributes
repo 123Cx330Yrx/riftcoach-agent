@@ -168,3 +168,12 @@
 /scripts/document_semantic_host_task.py text eol=lf
 /scripts/prepare_document_semantic_comparison.py text eol=lf
 /tests/test_document_semantic_comparison.py text eol=lf
+
+# Preserve this closed comparison and zero-call audits by their original bytes.
+/data/evaluation/results/document_semantic_comparison_result_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_semantic_comparison_close_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_sampling_boundary_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_sampling_reachability_audit_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_semantic_comparison_close_engineering_review_20261011.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/scripts/audit_document_sampling_boundary.py text eol=lf
+/scripts/audit_document_sampling_reachability.py text eol=lf

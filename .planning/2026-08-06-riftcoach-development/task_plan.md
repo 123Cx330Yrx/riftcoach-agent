@@ -13,16 +13,15 @@
 
 ## Active Work Package
 
-**目标：** 解决正确教练分析被扩义误报与真错修法直接影响遗漏，准备同版本完整15与真实Agent消费的质量证据。
-**实际起点：** 后4接续全部通过，fresh95/95/96/97，12stage真实全文双审/native；12calls/known202229/unknown0已严格封存。原15库存10通过、3语义拒绝/分歧、2未认证，不拼跨批资格；旧第7/11不补签或重买。
-**本次交付：** 同HEAD89f2408c/CI38068536698首次执行，runner正常exit0；12真实native只读重放、138公开JSON/260原件SHA一致，seal a9873491…51feec；自动任务PAUSED。
-**读取限制：** 原合同Codex0.153.4封存通过；0.162 alpha新增turn.rootTurnId导致12原生整体SHA不同，严格门拒绝，终答/dispatch不变。升级客户端兼容问题与Provider业务结果分开，原件/旧封套不回改。
-**独立收尾：** 指定0.153.4全链严格replay exit0，12事件/完整seal相等、260原件不变、138白名单一致；工程唯一native final实读accepted=true，非业务重审，跨版本限制单独保留。
-**机制与反证：** 两处误报解释已找到正确数字却选错实际命题，规则和扩展示例已存在，继续叠同义教学无区分力。短教学同样未全过，扩展教学有多例正证据，不宣称教学负担/中转为根因；scope:4摘要/正文分歧独立保留。
-**实现路径：** 保留完整source、block-keyed编辑和fresh，静态对照只替教学后缀；5固定实际请求×3组织（原扩展/既有短例/实际命题→全文范围→来源冲突→直接修法），非policy消息/schema/模型/时限逐项相同。scripts/prepare_document_semantic_options.py及公共preparation可重建；当前execution_ready=false。
-**验收/失败：** 正确泛指不得补全称、明确真错不得借正文免责声明撤销、修法须覆盖已确认直接影响。字数/协议/单次分数不证明机制或资格；失败保留，Host分歧不下传。
-**当前下一动作：** 用户已明确“继续”授权5×3具体成本方案：15次GLM、1,451,520tokens、9,000活动秒、86,400Host秒，估价21.44256元非硬封顶。独立执行/双审/native/严格replay/seal已补齐，相关145项通过；最终工程唯一native实读且当前SHA一致、阻断0。提交推送后，新同HEAD全绿CI/即时真实主体预检/create-only授权绑定后首次唯一runner；当前真实调用0，不再重复问本轮成本授权。
-**证据：** docs/plans/2026-10-11-remaining4-time600-result.md、2026-10-11-semantic-decision-preparation.md、2026-10-11-semantic-comparison-plan.md及所引seal/close audit/preparation；`scripts/document_semantic_request.py`、`scripts/document_semantic_host_task.py` 和 `tests/test_document_semantic_comparison.py` 已通过相关回归。历史各批独立、新资格0，正式15/自然消费/8E未完成。
+**目标：** 修复正确教练分析被扩义误报和真错直接影响遗漏，进入同版本完整15及真实Agent消费。
+**实际起点：** 5×3教学对照15项已全部双审/submit：10接受、4双方拒绝、1Host分歧；三种教学均误报scope:3正确泛指。停止把教学微调当共同修复。
+**本次交付：** 冻结a9a68049/全绿CI38104135494唯一runner正常exit0，15calls/known270680/unknown0/receiptless0，未缓存估价3.602360元非账单。严格15真实native/290公开JSON/306原件SHA相等已封存；无编辑/fresh/重试、新资格0，自动任务PAUSED。
+**机制与反证：** 完整规则/来源已送达，三组织均误报；sample1 expanded真实分歧和short无依据排他解释保留。sample3修法可由正文补足摘要范围，sample5标题真错不能借正文限制撤销；不追改历史标签。
+**实现路径：** 免费SDK检查复建5份issued请求，只改变温度1.0→0.2，全文/schema/模型/high/top_p/时限相等。现有身份拒低温，当前无可发送身份；不读取凭据/构造网络client，不改生产默认或原件。
+**验收/失败：** SDK表达不证明服务端接受/遵循或语义效果。整任务初评和fresh均须可达，生成/必要编辑/格式恢复仍共享五调用/原预算；不得加定向第六审查、放宽标准、改正确稿迎合误报或拼跨批资格。
+**整链核查：** initial/final完整历史请求均在TimedDocumentBudget委派前拒低温；继承预算归一化还强制1.0。现有整任务不可达，不以SDK表达为接线证明。
+**当前下一动作：** 免费隔离原型核构造/预算归一化/角色transport/receipt/fresh一致，保留生成编辑参数及五调用共享预算；尚未实现，无新付费授权或runner。只有有决策价值才准备具体筛查，不能凭本地可表达就采用/购买完整15。
+**证据：** docs/plans/2026-10-11-semantic-comparison-result.md、2026-10-11-post-comparison-mechanism-decision.md及公共seal/close audit/sampling audit。后4已有12stage/fresh95/95/96/97；原15库存10/3/2是独立计数，旧第7/11缺口保留。正式15/自然消费/8E及下游未完成。
 
 ## Dependencies and Follow-through
 
