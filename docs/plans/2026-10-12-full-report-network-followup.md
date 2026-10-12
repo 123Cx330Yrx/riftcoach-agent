@@ -62,3 +62,7 @@ checkpoint路径/SHA，每stage一次NEW_TASK，同task恢复仅MESSAGE，不泄
 如实保留，不保证将来可用，不替代执行前预检及实际唯一原生final。当前Provider0、业务submit0。
 
 准备验证结果：18项相关离线检查通过（54.57秒）；三稿request/material字节一致，14+146旧原件及旧冻结源码SHA保持。准备审计SHA `dc875f75c9d0c10c580782267ab17d321ef53e2149403425e52855b130840428`。同HEAD公共CI在提交后确认，当前不启动。
+
+## 实际关闭状态（取代准备快照）
+
+用户确认后，冻结11d1f9e0/同HEAD CI38232745159全绿上首次执行。首项模型97/pass，但独立命令用了不存在的backend子目录，未读checkpoint即路由失败，按硬故障停批。实际1调用/15927known/unknown0/receiptless0，后2项未发、双审认证0、资格0；严格只读封存通过。自动任务已暂停，无重试或补签。详见[关闭结果](2026-10-12-full-report-network-result.md)。上方“未授权/未启动”等仅准备快照。

@@ -4,10 +4,32 @@ main_stage: 8
 substage_group: "stage-8-multi-agent-reliable-runtime-productization"
 current_checkpoint: "8e-productization / candidate-real-golden-slice / in-progress / offline-hardening-and-live-consumption"
 status: in_progress
-pause_reason: "三稿初评诊断首项TCP建连超时，1尝试/unknown1/后2项未发；本批已严格封存且自动任务暂停，无语义结果或新资格。"
+pause_reason: "网络后续批首项模型正常返回，但独立审查误用工作目录导致原生路由失败；整批封存，后2项未发，认证0/新资格0，自动任务暂停。"
 ---
 
 # RiftCoach 当前执行状态
+
+2026-10-12 系统代理切换后的三稿诊断已执行并关闭。冻结 `11d1f9e0a1bc6eccfb370e2029db0cd8e7849758`、同HEAD全绿CI `38232745159`。V2模型正常返回97/pass（issues空、advisory block4），但独立主体以不存在的backend子目录作为工作目录，第一条命令OS error267，未读取checkpoint即输出唯一routing_failed原生终答。按规则abort整批，H5/S8未发。不是网络或Provider语义失败。
+
+实际1次调用/1 HTTP、15927 known tokens、unknown0/receiptless0；按合同价估计0.180276元，非账单。独立派发1、完成双审0、submit0、新资格0，V2不计认证通过。主审审查未完成，不补签。原生full turn已核实际错误cwd和唯一失败final。
+
+证据见[关闭结果](plans/2026-10-12-full-report-network-result.md)；strict seal `data/evaluation/results/document_full_report_network_result_20261012.json` SHA `746ae66a490fe211bb4fca3a305e329bcf9b94a70cc709c452ba1956a58ed086`，close audit SHA `c29139af631580bc9be87610bfc6a74c85324b86fc0af947a82c2dd333403a10`。26份原件/24公开JSON，native_reviews0；旧14+146原件与冻结源码不变。自动任务已暂停，runner退出，无重试/补发/重评。
+
+## 当前行动
+
+主线仍是正确全文概括不误报、真实范围/来源错误能检出，再取得同版本质量证据接入真实Agent消费。本次正常模型响应证实该次请求可完成，未完成双审就不能得出三稿语义验收结论，也不能据此改教学或温度。
+
+交接缺口是未明确给出绝对cwd/Python，只说backend repository；子主体作出错误目录假设。关闭后主审用正确根目录和绝对Python读取同checkpoint成功，证明路径可用，不代替独立执行。AGENTS已补未来明确路径、原样dispatch和启动验证要求；没有改旧helper、checkpoint或派回已终答任务。
+
+明确目录后的真实独立中性探针已完成：同一主体以正确根目录/绝对Python执行5条公开命令（两次读同checkpoint、帮助、写自己的答案、check-answer），全部exit0；唯一native final与作者文件相同。新中性任务不含报告，Provider0/业务submit0/资格0，未派回旧审查。证据`data/evaluation/results/host_explicit_cwd_probe_20261012.json`，SHA `cf23819bb3add8c37c84eb4d6c3f2aba43b1f212841c832b0c2f5586fa4f994b`。这是当前启动通路证据，不保证未来可用或语义正确。
+
+下一动作：依据明确路径的真实启动证据，确定后续语义诊断的最小范围和成本。旧V2只有Provider结果，不能补签或当合格；H5/S8未执行。已关闭批次不重开，不自动另开付费批，报告/来源/policy/教学/温度不变。
+
+前一TCP超时批unknown1/费用未知继续单列；旧温度批strict seal缺口保留。历史2/15、3/15、remaining11、完整15前段/后8/后4和教学对照不拼资格。temperature0.2未采用；正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与八维学习仍未完成。
+
+## 以下为历史记录
+
+### 2026-10-12 网络后续批执行前快照
 
 2026-10-12 三篇完整报告初评诊断已按授权首次执行并硬停止。冻结 `6265e14d458f0b060b9f188f97fdee3e56acec17`、同HEAD全绿CI `38226883176`；首项V2在TCP建连阶段超时，H5/S8未发送。实际1次客户端HTTP尝试、known0 tokens/unknown1/receiptless1，无模型输出或语义结论，native/submit0，新资格0。HTTP hook计数不证明服务器收到或计费，实际费用未知。
 
@@ -27,7 +49,6 @@ pause_reason: "三稿初评诊断首项TCP建连超时，1尝试/unknown1/后2�
 
 temperature=0.2未达到采用门，产品默认入口未切换。历史2/15、3/15、remaining11、完整15前段/后8/后4与教学对照各自独立；正式同版本15、自然消费、8E、Coach/Training、四块联动、Worker/DB/API/UI/journal、前端审美头像、Memory、身份运维、两树整合、独立评估与八维学习未完成。
 
-## 以下为历史记录
 
 ### 2026-10-12 三稿初评首次执行前快照
 

@@ -1,3 +1,11 @@
+## 2026-10-12 网络后续批首项成功传输，Host目录错误停批
+
+明确目录后的真实独立中性探针已完成：同一主体以正确根目录/绝对Python执行5条公开命令（两次读同checkpoint、帮助、写自己的答案、check-answer），全部exit0；唯一native final与作者文件相同。新中性任务不含报告，Provider0/业务submit0/资格0，未派回旧审查。证据`data/evaluation/results/host_explicit_cwd_probe_20261012.json`，SHA `cf23819bb3add8c37c84eb4d6c3f2aba43b1f212841c832b0c2f5586fa4f994b`。这是当前启动通路证据，不保证未来可用或语义正确。
+
+冻结11d1f9e0、同HEAD CI38232745159全绿后唯一runner117012启动。V2正常返回97/pass、issues空/advisory block4；独立实际cwd误写D:/riftcoach-agent-rq192-pr/backend，首条命令OS error267，未读checkpoint后唯一native routing_failed。主审实读full turn，未导入为审查，helper abort整批；exit1，后H5/S8未发送。1调用/1HTTP/15927known/unknown0/receiptless0，合同估价0.180276元非账单；双审0/submit0/资格0。
+
+只读replay和create-only seal成功（26原件/24公开JSON/native_reviews0），seal746ae66a…ed086，audit c29139af…03a10；旧14+146原件与冻结源码保持。主审明确cwd/Python读取同checkpoint成功，仅用于路径诊断，没有再次派审或补签。AGENTS补未来明确路径/原样dispatch要求，真实独立启动验证仍是下一动作。自动任务PAUSED，无新付费批。结果见docs/plans/2026-10-12-full-report-network-result.md。
+
 ## 2026-10-12 网络切换后的三稿后续包准备
 
 切回系统代理后的公网DNS/WLAN及TCP/TLS证据已固定。新入口只设置新run/授权身份并绑定原失败/路由记录，复用原三稿builder/runner/transport/native与封存门，不复制执行循环或改旧源码。三份request/material逐字节保持，18项离线回归通过（54.57秒），含旧授权拒绝、证据篡改拒绝、新旧包隔离及真实旧执行路径替身。14+146旧原件SHA和旧冻结源码保持。

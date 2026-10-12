@@ -203,3 +203,8 @@
 /tests/test_document_full_report_network_followup.py text eol=lf
 /data/evaluation/fixtures/document_full_report_network_followup_20261012/** -text
 /data/evaluation/results/document_full_report_network_preparation_20261012.json -text
+
+# Immutable closed network-followup evidence.
+/data/evaluation/results/document_full_report_network_result_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/document_full_report_network_close_audit_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+/data/evaluation/results/host_explicit_cwd_probe_20261012.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

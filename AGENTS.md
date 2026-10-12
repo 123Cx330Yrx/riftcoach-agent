@@ -79,6 +79,15 @@ other Host judgments. The checkpoint only preserves task selection; full-source
 review and the existing native final import remain mandatory. It does not alter
 legacy frozen tasks, closed-batch replay or product qualification criteria.
 
+For future checkpoint dispatches, the operator must provide the verified
+absolute repository working directory and Python executable, together with
+the exact checkpoint path and SHA. Use that working directory literally; do
+not append an inferred `backend` or other subdirectory. Before paid execution,
+validate the path/interpreter tuple locally; a native identity/final preflight
+alone does not prove command startup. Relay the full generated dispatch plus
+these concrete paths rather than paraphrasing its execution location. This
+does not authorize redelivery, a second final, or reopening a closed batch.
+
 ## Stage and product boundaries
 
 - There are exactly nine main stages, 0 through 8. Do not add, remove, reorder,

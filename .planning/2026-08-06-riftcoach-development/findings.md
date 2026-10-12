@@ -1,3 +1,11 @@
+## 2026-10-12 原生身份预检不证明子任务命令启动
+
+明确目录后的真实独立中性探针已完成：同一主体以正确根目录/绝对Python执行5条公开命令（两次读同checkpoint、帮助、写自己的答案、check-answer），全部exit0；唯一native final与作者文件相同。新中性任务不含报告，Provider0/业务submit0/资格0，未派回旧审查。证据`data/evaluation/results/host_explicit_cwd_probe_20261012.json`，SHA `cf23819bb3add8c37c84eb4d6c3f2aba43b1f212841c832b0c2f5586fa4f994b`。这是当前启动通路证据，不保证未来可用或语义正确。
+
+同一独立主体身份/终答读取预检通过，但派发正文只描述backend repository，主体自行附加/backend作为cwd；真实commandExecution显示processId=null、duration0、exitCode=-1/OS267，早于checkpoint读取。实际原生失败final与本任务路径/SHA相符。问题在开发交接/执行，不是Provider、网络或语义；不能用主审判断替代缺失独立审查。
+
+明确根目录D:/riftcoach-agent-rq192-pr和绝对.venv/Scripts/python.exe后，主审路径检查成功；这一证据不能冒充独立主体通路验证。未来必须给出验证过的cwd/Python并原样转交dispatch，在付费前另核真实独立启动。此次已终答任务及已关闭批次不重派，不用一次主审成功宣称机制完全修好。相应规则已补AGENTS，旧冻结helper未改。
+
 ## 2026-10-12 网络切换不需要改变语义实验变量
 
 已验证切换后解析/路由与TUN期间不同，当前一次TCP/TLS可用。后续应保持三稿、source、policy、采样和时限完全一致，才能把连接工程故障与仍未观察的语义结果分开。新run身份不自动构成新授权，旧已关闭批次和unknown1不能抹去；新包通过独立授权类型与plan绑定拒绝旧授权。无需另买空白模型连通性探针，若具体三稿范围获授权，其首项初评兼作API真实连接观察，硬故障仍停全批。
